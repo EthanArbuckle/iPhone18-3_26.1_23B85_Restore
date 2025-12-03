@@ -4,7 +4,7 @@
 - (id)suggestionDismissAction;
 - (id)suggestionImageSGView;
 - (id)suggestionPrimaryAction;
-- (void)_showErrorAlert:(id)a3;
+- (void)_showErrorAlert:(id)alert;
 - (void)ignore;
 - (void)unsubscribe;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001D1378;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD510 != -1)
   {
     dispatch_once(&qword_1006DD510, block);
@@ -30,12 +30,12 @@
 
 - (id)suggestionPrimaryAction
 {
-  v3 = [objc_opt_class() suggestionPrimaryActionString];
+  suggestionPrimaryActionString = [objc_opt_class() suggestionPrimaryActionString];
   if ([(MFListUnsubscribeSuggestion_iOS *)self shouldShowICloudUnsubscribe])
   {
-    v4 = [objc_opt_class() suggestionPrimaryActionStringICloud];
+    suggestionPrimaryActionStringICloud = [objc_opt_class() suggestionPrimaryActionStringICloud];
 
-    v3 = v4;
+    suggestionPrimaryActionString = suggestionPrimaryActionStringICloud;
   }
 
   v7[0] = _NSConcreteStackBlock;
@@ -43,20 +43,20 @@
   v7[2] = sub_1001D14F4;
   v7[3] = &unk_100654250;
   v7[4] = self;
-  v5 = [SGSuggestionAction actionWithTitle:v3 handler:v7];
+  v5 = [SGSuggestionAction actionWithTitle:suggestionPrimaryActionString handler:v7];
 
   return v5;
 }
 
 - (id)suggestionDismissAction
 {
-  v3 = [objc_opt_class() suggestionDismissActionTitle];
+  suggestionDismissActionTitle = [objc_opt_class() suggestionDismissActionTitle];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001D166C;
   v6[3] = &unk_100654250;
   v6[4] = self;
-  v4 = [SGSuggestionAction actionWithTitle:v3 handler:v6];
+  v4 = [SGSuggestionAction actionWithTitle:suggestionDismissActionTitle handler:v6];
 
   return v4;
 }
@@ -77,19 +77,19 @@
 
 - (id)_createConfirmationViewController
 {
-  v3 = [(MFListUnsubscribeSuggestion_iOS *)self listUnsubscribeCommand];
-  v4 = [MFListUnsubscribeMessageGenerator_iOS senderForCommand:v3];
+  listUnsubscribeCommand = [(MFListUnsubscribeSuggestion_iOS *)self listUnsubscribeCommand];
+  v4 = [MFListUnsubscribeMessageGenerator_iOS senderForCommand:listUnsubscribeCommand];
 
-  v5 = [objc_opt_class() unsubscribeTitleAlertString];
-  v6 = [(MFListUnsubscribeSuggestion_iOS *)self unsubscribeMessageAlertString];
-  v7 = [NSString stringWithFormat:v6, v4];
+  unsubscribeTitleAlertString = [objc_opt_class() unsubscribeTitleAlertString];
+  unsubscribeMessageAlertString = [(MFListUnsubscribeSuggestion_iOS *)self unsubscribeMessageAlertString];
+  v7 = [NSString stringWithFormat:unsubscribeMessageAlertString, v4];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"ALERT_UNSUBSCRIBE_CONFIRM" value:&stru_100662A88 table:@"Main"];
 
   if ([(MFListUnsubscribeSuggestion_iOS *)self shouldShowICloudUnsubscribe])
   {
-    v10 = [objc_opt_class() unsubscribeTitleAlertStringICloud];
+    unsubscribeTitleAlertStringICloud = [objc_opt_class() unsubscribeTitleAlertStringICloud];
 
     v11 = _EFLocalizedStringFromTable();
 
@@ -98,10 +98,10 @@
 
   else
   {
-    v10 = v5;
+    unsubscribeTitleAlertStringICloud = unsubscribeTitleAlertString;
   }
 
-  v12 = [UIAlertController alertControllerWithTitle:v10 message:v7 preferredStyle:1];
+  v12 = [UIAlertController alertControllerWithTitle:unsubscribeTitleAlertStringICloud message:v7 preferredStyle:1];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"CANCEL" value:&stru_100662A88 table:@"Main"];
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
@@ -124,31 +124,31 @@
 
 - (void)unsubscribe
 {
-  v3 = [(MFListUnsubscribeSuggestion_iOS *)self contentRepresentation];
+  contentRepresentation = [(MFListUnsubscribeSuggestion_iOS *)self contentRepresentation];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D1BCC;
   v5[3] = &unk_10064D028;
   v5[4] = self;
-  v4 = [v3 performUnsubscribeAction:1 completion:v5];
+  v4 = [contentRepresentation performUnsubscribeAction:1 completion:v5];
 }
 
 - (void)ignore
 {
-  v3 = [(MFListUnsubscribeSuggestion_iOS *)self contentRepresentation];
+  contentRepresentation = [(MFListUnsubscribeSuggestion_iOS *)self contentRepresentation];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001D1FF0;
   v6[3] = &unk_10064D028;
   v6[4] = self;
-  v4 = [v3 performUnsubscribeAction:0 completion:v6];
+  v4 = [contentRepresentation performUnsubscribeAction:0 completion:v6];
 
   v5.receiver = self;
   v5.super_class = MFListUnsubscribeSuggestion_iOS;
   [(MFListUnsubscribeSuggestion_iOS *)&v5 ignore];
 }
 
-- (void)_showErrorAlert:(id)a3
+- (void)_showErrorAlert:(id)alert
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;

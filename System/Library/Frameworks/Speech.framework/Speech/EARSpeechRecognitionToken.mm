@@ -1,112 +1,112 @@
 @interface EARSpeechRecognitionToken
-- (EARSpeechRecognitionToken)initWithCoder:(id)a3;
-- (EARSpeechRecognitionToken)initWithToken:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EARSpeechRecognitionToken)initWithCoder:(id)coder;
+- (EARSpeechRecognitionToken)initWithToken:(id)token;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARSpeechRecognitionToken
 
-- (EARSpeechRecognitionToken)initWithCoder:(id)a3
+- (EARSpeechRecognitionToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = EARSpeechRecognitionToken;
   v5 = [(EARSpeechRecognitionToken *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenName"];
     tokenName = v5->_tokenName;
     v5->_tokenName = v6;
 
-    [v4 decodeDoubleForKey:@"start"];
+    [coderCopy decodeDoubleForKey:@"start"];
     v5->_start = v8;
-    [v4 decodeDoubleForKey:@"end"];
+    [coderCopy decodeDoubleForKey:@"end"];
     v5->_end = v9;
-    [v4 decodeDoubleForKey:@"silenceStart"];
+    [coderCopy decodeDoubleForKey:@"silenceStart"];
     v5->_silenceStart = v10;
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v5->_confidence = v11;
-    v5->_hasSpaceAfter = [v4 decodeBoolForKey:@"hasSpaceAfter"];
-    v5->_hasSpaceBefore = [v4 decodeBoolForKey:@"hasSpaceBefore"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneSequence"];
+    v5->_hasSpaceAfter = [coderCopy decodeBoolForKey:@"hasSpaceAfter"];
+    v5->_hasSpaceBefore = [coderCopy decodeBoolForKey:@"hasSpaceBefore"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneSequence"];
     phoneSequence = v5->_phoneSequence;
     v5->_phoneSequence = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ipaPhoneSequence"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ipaPhoneSequence"];
     ipaPhoneSequence = v5->_ipaPhoneSequence;
     v5->_ipaPhoneSequence = v14;
 
-    v5->_appendedAutoPunctuation = [v4 decodeBoolForKey:@"appendedAutoPunctuation"];
-    v5->_prependedAutoPunctuation = [v4 decodeBoolForKey:@"prependedAutoPunctuation"];
-    v5->_isModifiedByAutoPunctuation = [v4 decodeBoolForKey:@"isModifiedByAutoPunctuation"];
-    [v4 decodeDoubleForKey:@"graphCost"];
+    v5->_appendedAutoPunctuation = [coderCopy decodeBoolForKey:@"appendedAutoPunctuation"];
+    v5->_prependedAutoPunctuation = [coderCopy decodeBoolForKey:@"prependedAutoPunctuation"];
+    v5->_isModifiedByAutoPunctuation = [coderCopy decodeBoolForKey:@"isModifiedByAutoPunctuation"];
+    [coderCopy decodeDoubleForKey:@"graphCost"];
     v5->_graphCost = v16;
-    [v4 decodeDoubleForKey:@"acousticCost"];
+    [coderCopy decodeDoubleForKey:@"acousticCost"];
     v5->_acousticCost = v17;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tokenName = self->_tokenName;
-  v5 = a3;
-  [v5 encodeObject:tokenName forKey:@"tokenName"];
-  [v5 encodeDouble:@"start" forKey:self->_start];
-  [v5 encodeDouble:@"end" forKey:self->_end];
-  [v5 encodeDouble:@"silenceStart" forKey:self->_silenceStart];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
-  [v5 encodeBool:self->_hasSpaceAfter forKey:@"hasSpaceAfter"];
-  [v5 encodeBool:self->_hasSpaceBefore forKey:@"hasSpaceBefore"];
-  [v5 encodeObject:self->_phoneSequence forKey:@"phoneSequence"];
-  [v5 encodeObject:self->_ipaPhoneSequence forKey:@"ipaPhoneSequence"];
-  [v5 encodeBool:self->_appendedAutoPunctuation forKey:@"appendedAutoPunctuation"];
-  [v5 encodeBool:self->_prependedAutoPunctuation forKey:@"prependedAutoPunctuation"];
-  [v5 encodeBool:self->_isModifiedByAutoPunctuation forKey:@"isModifiedByAutoPunctuation"];
-  [v5 encodeDouble:@"graphCost" forKey:self->_graphCost];
-  [v5 encodeDouble:@"acousticCost" forKey:self->_acousticCost];
+  coderCopy = coder;
+  [coderCopy encodeObject:tokenName forKey:@"tokenName"];
+  [coderCopy encodeDouble:@"start" forKey:self->_start];
+  [coderCopy encodeDouble:@"end" forKey:self->_end];
+  [coderCopy encodeDouble:@"silenceStart" forKey:self->_silenceStart];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
+  [coderCopy encodeBool:self->_hasSpaceAfter forKey:@"hasSpaceAfter"];
+  [coderCopy encodeBool:self->_hasSpaceBefore forKey:@"hasSpaceBefore"];
+  [coderCopy encodeObject:self->_phoneSequence forKey:@"phoneSequence"];
+  [coderCopy encodeObject:self->_ipaPhoneSequence forKey:@"ipaPhoneSequence"];
+  [coderCopy encodeBool:self->_appendedAutoPunctuation forKey:@"appendedAutoPunctuation"];
+  [coderCopy encodeBool:self->_prependedAutoPunctuation forKey:@"prependedAutoPunctuation"];
+  [coderCopy encodeBool:self->_isModifiedByAutoPunctuation forKey:@"isModifiedByAutoPunctuation"];
+  [coderCopy encodeDouble:@"graphCost" forKey:self->_graphCost];
+  [coderCopy encodeDouble:@"acousticCost" forKey:self->_acousticCost];
 }
 
-- (EARSpeechRecognitionToken)initWithToken:(id)a3
+- (EARSpeechRecognitionToken)initWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v22.receiver = self;
   v22.super_class = EARSpeechRecognitionToken;
   v5 = [(EARSpeechRecognitionToken *)&v22 init];
   if (v5)
   {
-    v6 = [v4 tokenName];
-    v7 = [v6 copy];
+    tokenName = [tokenCopy tokenName];
+    v7 = [tokenName copy];
     tokenName = v5->_tokenName;
     v5->_tokenName = v7;
 
-    [v4 start];
+    [tokenCopy start];
     v5->_start = v9;
-    [v4 end];
+    [tokenCopy end];
     v5->_end = v10;
-    [v4 silenceStart];
+    [tokenCopy silenceStart];
     v5->_silenceStart = v11;
-    [v4 confidence];
+    [tokenCopy confidence];
     v5->_confidence = v12;
-    v5->_hasSpaceAfter = [v4 hasSpaceAfter];
-    v5->_hasSpaceBefore = [v4 hasSpaceBefore];
-    v13 = [v4 phoneSequence];
-    v14 = [v13 copy];
+    v5->_hasSpaceAfter = [tokenCopy hasSpaceAfter];
+    v5->_hasSpaceBefore = [tokenCopy hasSpaceBefore];
+    phoneSequence = [tokenCopy phoneSequence];
+    v14 = [phoneSequence copy];
     phoneSequence = v5->_phoneSequence;
     v5->_phoneSequence = v14;
 
-    v16 = [v4 ipaPhoneSequence];
-    v17 = [v16 copy];
+    ipaPhoneSequence = [tokenCopy ipaPhoneSequence];
+    v17 = [ipaPhoneSequence copy];
     ipaPhoneSequence = v5->_ipaPhoneSequence;
     v5->_ipaPhoneSequence = v17;
 
-    v5->_appendedAutoPunctuation = [v4 appendedAutoPunctuation];
-    v5->_prependedAutoPunctuation = [v4 prependedAutoPunctuation];
-    v5->_isModifiedByAutoPunctuation = [v4 isModifiedByAutoPunctuation];
-    [v4 graphCost];
+    v5->_appendedAutoPunctuation = [tokenCopy appendedAutoPunctuation];
+    v5->_prependedAutoPunctuation = [tokenCopy prependedAutoPunctuation];
+    v5->_isModifiedByAutoPunctuation = [tokenCopy isModifiedByAutoPunctuation];
+    [tokenCopy graphCost];
     v5->_graphCost = v19;
-    [v4 acousticCost];
+    [tokenCopy acousticCost];
     v5->_acousticCost = v20;
   }
 

@@ -1,36 +1,36 @@
 @interface VNEspressoprintUpgradeDetector
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
 - ($FD4688982923A924290ECB669CAF1EC2)highResolutionNewEspressoprint;
 - ($FD4688982923A924290ECB669CAF1EC2)highResolutionNewEspressoprintSigma;
-- (BOOL)_bindEspressoprintClientBuffer:(id)a3 toNetworkInputBlobName:(id)a4 toNetworkBuffer:(id *)a5 error:(id *)a6;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (BOOL)_bindEspressoprintClientBuffer:(id)buffer toNetworkInputBlobName:(id)name toNetworkBuffer:(id *)networkBuffer error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
-- (void)setHighResolutionNewEspressoprint:(id *)a3;
-- (void)setHighResolutionNewEspressoprintSigma:(id *)a3;
+- (void)setHighResolutionNewEspressoprint:(id *)espressoprint;
+- (void)setHighResolutionNewEspressoprintSigma:(id *)sigma;
 @end
 
 @implementation VNEspressoprintUpgradeDetector
 
-- (void)setHighResolutionNewEspressoprintSigma:(id *)a3
+- (void)setHighResolutionNewEspressoprintSigma:(id *)sigma
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_highResolutionNewEspressoprintSigma.data = *&a3->var0;
+  v4 = *sigma->var2;
+  v3 = *&sigma->var2[2];
+  *&self->_highResolutionNewEspressoprintSigma.data = *&sigma->var0;
   *self->_highResolutionNewEspressoprintSigma.dim = v4;
   *&self->_highResolutionNewEspressoprintSigma.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_highResolutionNewEspressoprintSigma.width = *&a3->var4;
+  v5 = *&sigma->var6;
+  v7 = *sigma->var3;
+  v6 = *&sigma->var3[2];
+  *&self->_highResolutionNewEspressoprintSigma.width = *&sigma->var4;
   *&self->_highResolutionNewEspressoprintSigma.channels = v5;
   *self->_highResolutionNewEspressoprintSigma.stride = v7;
   *&self->_highResolutionNewEspressoprintSigma.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_highResolutionNewEspressoprintSigma.storage_type = *&a3->var14;
+  v9 = *&sigma->var10;
+  v8 = *&sigma->var12;
+  v10 = *&sigma->var8;
+  *&self->_highResolutionNewEspressoprintSigma.storage_type = *&sigma->var14;
   *&self->_highResolutionNewEspressoprintSigma.stride_height = v9;
   *&self->_highResolutionNewEspressoprintSigma.stride_batch_number = v8;
   *&self->_highResolutionNewEspressoprintSigma.sequence_length = v10;
@@ -57,24 +57,24 @@
   return self;
 }
 
-- (void)setHighResolutionNewEspressoprint:(id *)a3
+- (void)setHighResolutionNewEspressoprint:(id *)espressoprint
 {
-  v4 = *a3->var2;
-  v3 = *&a3->var2[2];
-  *&self->_highResolutionNewEspressoprint.data = *&a3->var0;
+  v4 = *espressoprint->var2;
+  v3 = *&espressoprint->var2[2];
+  *&self->_highResolutionNewEspressoprint.data = *&espressoprint->var0;
   *self->_highResolutionNewEspressoprint.dim = v4;
   *&self->_highResolutionNewEspressoprint.dim[2] = v3;
-  v5 = *&a3->var6;
-  v7 = *a3->var3;
-  v6 = *&a3->var3[2];
-  *&self->_highResolutionNewEspressoprint.width = *&a3->var4;
+  v5 = *&espressoprint->var6;
+  v7 = *espressoprint->var3;
+  v6 = *&espressoprint->var3[2];
+  *&self->_highResolutionNewEspressoprint.width = *&espressoprint->var4;
   *&self->_highResolutionNewEspressoprint.channels = v5;
   *self->_highResolutionNewEspressoprint.stride = v7;
   *&self->_highResolutionNewEspressoprint.stride[2] = v6;
-  v9 = *&a3->var10;
-  v8 = *&a3->var12;
-  v10 = *&a3->var8;
-  *&self->_highResolutionNewEspressoprint.storage_type = *&a3->var14;
+  v9 = *&espressoprint->var10;
+  v8 = *&espressoprint->var12;
+  v10 = *&espressoprint->var8;
+  *&self->_highResolutionNewEspressoprint.storage_type = *&espressoprint->var14;
   *&self->_highResolutionNewEspressoprint.stride_height = v9;
   *&self->_highResolutionNewEspressoprint.stride_batch_number = v8;
   *&self->_highResolutionNewEspressoprint.sequence_length = v10;
@@ -101,13 +101,13 @@
   return self;
 }
 
-- (BOOL)_bindEspressoprintClientBuffer:(id)a3 toNetworkInputBlobName:(id)a4 toNetworkBuffer:(id *)a5 error:(id *)a6
+- (BOOL)_bindEspressoprintClientBuffer:(id)buffer toNetworkInputBlobName:(id)name toNetworkBuffer:(id *)networkBuffer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  bufferCopy = buffer;
+  nameCopy = name;
+  if (bufferCopy)
   {
-    v12 = a5 == 0;
+    v12 = networkBuffer == 0;
   }
 
   else
@@ -117,31 +117,31 @@
 
   v13 = !v12;
   [VNError VNAssert:v13 log:@"One or more of output parameters is/are NULL"];
-  v14 = [v10 descriptorData];
-  v15 = [v14 bytes];
+  descriptorData = [bufferCopy descriptorData];
+  bytes = [descriptorData bytes];
 
-  memcpy(a5->var0, v15, 4 * [v10 elementCount]);
-  v16 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-  [v16 network];
-  [v11 UTF8String];
+  memcpy(networkBuffer->var0, bytes, 4 * [bufferCopy elementCount]);
+  espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+  [espressoResources network];
+  [nameCopy UTF8String];
   v17 = espresso_network_bind_buffer();
 
-  if (a6 && v17)
+  if (error && v17)
   {
-    *a6 = [VNError errorForEspressoReturnStatus:v17 localizedDescription:@"failed to bind buffer to network"];
+    *error = [VNError errorForEspressoReturnStatus:v17 localizedDescription:@"failed to bind buffer to network"];
   }
 
   return v17 == 0;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v11 = a5;
-  v12 = [objc_opt_class() espressoprintClass];
-  v13 = [VNValidationUtilities requiredObjectOfClass:v12 forKey:@"VNEspressoprintUpgradeDetectorProcessOption_FromEspressoprint" inOptions:v11 error:a8];
+  optionsCopy = options;
+  espressoprintClass = [objc_opt_class() espressoprintClass];
+  v13 = [VNValidationUtilities requiredObjectOfClass:espressoprintClass forKey:@"VNEspressoprintUpgradeDetectorProcessOption_FromEspressoprint" inOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredObjectOfClass:v12 forKey:@"VNEspressoprintUpgradeDetectorProcessOption_ToEspressoprint" inOptions:v11 error:a8];
+    v14 = [VNValidationUtilities requiredObjectOfClass:espressoprintClass forKey:@"VNEspressoprintUpgradeDetectorProcessOption_ToEspressoprint" inOptions:optionsCopy error:error];
     if (v14)
     {
       if ([objc_opt_class() isSupportedUpgradeFromPreviousEspressoprint:v13 toNewLowResolutionEspressoprint:v14])
@@ -154,20 +154,20 @@
         v19 = v13;
         v20 = v14;
         v15 = _Block_copy(aBlock);
-        if (v15[2](v15, a8))
+        if (v15[2](v15, error))
         {
-          a8 = MEMORY[0x1E695E0F0];
+          error = MEMORY[0x1E695E0F0];
         }
 
         else
         {
-          a8 = 0;
+          error = 0;
         }
 
         goto LABEL_12;
       }
 
-      if (!a8)
+      if (!error)
       {
 LABEL_12:
 
@@ -175,17 +175,17 @@ LABEL_12:
       }
 
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Espressoprint upgrade is not supported for these pair of                                                                  prints produced with request revisions: from = %lu; to = %lu", objc_msgSend(v13, "requestRevision"), objc_msgSend(v14, "requestRevision")];
-      *a8 = [VNError errorForInternalErrorWithLocalizedDescription:v16];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v16];
     }
 
-    a8 = 0;
+    error = 0;
     goto LABEL_12;
   }
 
-  a8 = 0;
+  error = 0;
 LABEL_13:
 
-  return a8;
+  return error;
 }
 
 uint64_t __132__VNEspressoprintUpgradeDetector_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -200,12 +200,12 @@ uint64_t __132__VNEspressoprintUpgradeDetector_processRegionOfInterest_croppedPi
   return [v4 executePlanAndReturnError:a2];
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VNEspressoprintUpgradeDetector;
-  if ([(VNEspressoModelFileBasedDetector *)&v8 completeInitializationForSession:a3 error:?])
+  if ([(VNEspressoModelFileBasedDetector *)&v8 completeInitializationForSession:session error:?])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -271,30 +271,30 @@ BOOL __73__VNEspressoprintUpgradeDetector_completeInitializationForSession_error
   [(VNDetector *)&v3 dealloc];
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"VNEspressoprintUpgradeDetectorProcessOption_EspressoprintClass"];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"VNEspressoprintUpgradeDetectorProcessOption_EspressoprintClass"];
   if (([v6 isEqual:objc_opt_class()] & 1) != 0 || objc_msgSend(v6, "isEqual:", objc_opt_class()))
   {
     v7 = objc_opt_class();
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Unknown espresso print type"];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

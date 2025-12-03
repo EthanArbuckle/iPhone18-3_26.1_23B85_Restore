@@ -1,16 +1,16 @@
 @interface AVCaptureTimecodeSource
-- (AVCaptureTimecodeSource)initWithDisplayName:(id)a3 sourceType:(int64_t)a4 uuid:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVCaptureTimecodeSource)initWithDisplayName:(id)name sourceType:(int64_t)type uuid:(id)uuid;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureTimecodeSource
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -22,24 +22,24 @@
     goto LABEL_8;
   }
 
-  v5 = -[NSString isEqualToString:](-[AVCaptureTimecodeSource displayName](self, "displayName"), "isEqualToString:", [a3 displayName]);
+  v5 = -[NSString isEqualToString:](-[AVCaptureTimecodeSource displayName](self, "displayName"), "isEqualToString:", [equal displayName]);
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [(AVCaptureTimecodeSource *)self type];
-  if (v6 != [a3 type])
+  type = [(AVCaptureTimecodeSource *)self type];
+  if (type != [equal type])
   {
 LABEL_8:
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  v7 = [(AVCaptureTimecodeSource *)self uuid];
-  v8 = [a3 uuid];
+  uuid = [(AVCaptureTimecodeSource *)self uuid];
+  uuid2 = [equal uuid];
 
-  LOBYTE(v5) = [(NSUUID *)v7 isEqual:v8];
+  LOBYTE(v5) = [(NSUUID *)uuid isEqual:uuid2];
   return v5;
 }
 
@@ -50,27 +50,27 @@ LABEL_8:
   return v4 ^ [(NSUUID *)[(AVCaptureTimecodeSource *)self uuid] hash];
 }
 
-- (AVCaptureTimecodeSource)initWithDisplayName:(id)a3 sourceType:(int64_t)a4 uuid:(id)a5
+- (AVCaptureTimecodeSource)initWithDisplayName:(id)name sourceType:(int64_t)type uuid:(id)uuid
 {
   v10.receiver = self;
   v10.super_class = AVCaptureTimecodeSource;
   v8 = [(AVCaptureTimecodeSource *)&v10 init];
   if (v8)
   {
-    v8->_displayName = [a3 copy];
-    v8->_type = a4;
-    if (a5)
+    v8->_displayName = [name copy];
+    v8->_type = type;
+    if (uuid)
     {
-      v8->_uuid = [a5 copy];
+      v8->_uuid = [uuid copy];
     }
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   displayName = self->_displayName;
   type = self->_type;
   uuid = self->_uuid;

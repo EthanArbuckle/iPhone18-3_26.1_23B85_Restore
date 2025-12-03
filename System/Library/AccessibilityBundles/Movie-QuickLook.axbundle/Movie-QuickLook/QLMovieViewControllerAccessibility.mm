@@ -1,17 +1,17 @@
 @interface QLMovieViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation QLMovieViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLMovieViewController" hasInstanceVariable:@"_playButton" withType:"QLOverlayPlayButton"];
-  [v3 validateClass:@"QLOverlayPlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"QLMovieViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLMovieViewController" hasInstanceVariable:@"_playButton" withType:"QLOverlayPlayButton"];
+  [validationsCopy validateClass:@"QLOverlayPlayButton" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"QLMovieViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

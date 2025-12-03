@@ -1,33 +1,33 @@
 @interface HDValueHistogramCollectionCalculator
-- (HDValueHistogramCollectionCalculator)initWithQuantityType:(id)a3 quantityRanges:(id)a4 intervalCollection:(id)a5;
+- (HDValueHistogramCollectionCalculator)initWithQuantityType:(id)type quantityRanges:(id)ranges intervalCollection:(id)collection;
 - (id)_currentHistogram;
 - (id)result;
-- (void)addSampleValue:(double)a3 startTime:(double)a4;
+- (void)addSampleValue:(double)value startTime:(double)time;
 @end
 
 @implementation HDValueHistogramCollectionCalculator
 
-- (HDValueHistogramCollectionCalculator)initWithQuantityType:(id)a3 quantityRanges:(id)a4 intervalCollection:(id)a5
+- (HDValueHistogramCollectionCalculator)initWithQuantityType:(id)type quantityRanges:(id)ranges intervalCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  rangesCopy = ranges;
+  collectionCopy = collection;
   v30.receiver = self;
   v30.super_class = HDValueHistogramCollectionCalculator;
   v13 = [(HDValueHistogramCollectionCalculator *)&v30 init];
   if (v13)
   {
-    if (([MEMORY[0x277CCD7F8] areRangesDisjoint:v11] & 1) == 0)
+    if (([MEMORY[0x277CCD7F8] areRangesDisjoint:rangesCopy] & 1) == 0)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v13 file:@"HDValueHistogramCollectionCalculator.m" lineNumber:130 description:@"Quantity ranges must be disjoint"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"HDValueHistogramCollectionCalculator.m" lineNumber:130 description:@"Quantity ranges must be disjoint"];
     }
 
-    objc_storeStrong(&v13->_quantityType, a3);
-    objc_storeStrong(&v13->_quantityRanges, a4);
-    v14 = [v10 canonicalUnit];
+    objc_storeStrong(&v13->_quantityType, type);
+    objc_storeStrong(&v13->_quantityRanges, ranges);
+    canonicalUnit = [typeCopy canonicalUnit];
     canonicalUnit = v13->_canonicalUnit;
-    v13->_canonicalUnit = v14;
+    v13->_canonicalUnit = canonicalUnit;
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -35,11 +35,11 @@
     v28[3] = &unk_278620A68;
     v16 = v13;
     v29 = v16;
-    v17 = [v11 hk_map:v28];
+    v17 = [rangesCopy hk_map:v28];
     valueRangesInCanonicalUnit = v16->_valueRangesInCanonicalUnit;
     v16->_valueRangesInCanonicalUnit = v17;
 
-    objc_storeStrong(&v16->_intervalCollection, a5);
+    objc_storeStrong(&v16->_intervalCollection, collection);
     currentInterval = v16->_currentInterval;
     v16->_currentInterval = 0;
 
@@ -62,17 +62,17 @@
       while (v23 < [(NSArray *)v13->_quantityRanges count]);
     }
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     finalizedHistogramsByDateIntervalIndex = v16->_finalizedHistogramsByDateIntervalIndex;
-    v16->_finalizedHistogramsByDateIntervalIndex = v24;
+    v16->_finalizedHistogramsByDateIntervalIndex = dictionary;
   }
 
   return v13;
 }
 
-- (void)addSampleValue:(double)a3 startTime:(double)a4
+- (void)addSampleValue:(double)value startTime:(double)time
 {
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a4];
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:time];
   v25 = 0;
   v8 = [(_HKDateIntervalCollection *)self->_intervalCollection dateIntervalContainingDate:v7 index:&v25];
   if ([(NSArray *)self->_valueRangesInCanonicalUnit count])
@@ -81,7 +81,7 @@
     while (1)
     {
       v10 = [(NSArray *)self->_valueRangesInCanonicalUnit objectAtIndexedSubscript:v9];
-      if ([v10 contains:a3])
+      if ([v10 contains:value])
       {
         break;
       }
@@ -107,18 +107,18 @@
 
       if (([v8 isEqual:currentInterval] & 1) == 0)
       {
-        v14 = [v8 startDate];
-        v15 = [(NSDateInterval *)self->_currentInterval startDate];
-        v16 = [v14 compare:v15];
+        startDate = [v8 startDate];
+        startDate2 = [(NSDateInterval *)self->_currentInterval startDate];
+        v16 = [startDate compare:startDate2];
 
         if (v16 != 1)
         {
-          v24 = [MEMORY[0x277CCA890] currentHandler];
-          [v24 handleFailureInMethod:a2 object:self file:@"HDValueHistogramCollectionCalculator.m" lineNumber:174 description:@"Samples must be added in ascending order by start date"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HDValueHistogramCollectionCalculator.m" lineNumber:174 description:@"Samples must be added in ascending order by start date"];
         }
 
-        v17 = [(HDValueHistogramCollectionCalculator *)&self->super.isa _currentHistogram];
-        [(NSMutableDictionary *)self->_finalizedHistogramsByDateIntervalIndex setObject:v17 forKeyedSubscript:self->_currentIntervalIndex];
+        _currentHistogram = [(HDValueHistogramCollectionCalculator *)&self->super.isa _currentHistogram];
+        [(NSMutableDictionary *)self->_finalizedHistogramsByDateIntervalIndex setObject:_currentHistogram forKeyedSubscript:self->_currentIntervalIndex];
 
         objc_storeStrong(&self->_currentInterval, v8);
         v18 = [MEMORY[0x277CCABB0] numberWithInteger:v25];
@@ -153,48 +153,48 @@ LABEL_5:
 
 - (id)_currentHistogram
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1[2], "count")}];
-    if ([v1[2] count])
+    v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self[2], "count")}];
+    if ([selfCopy[2] count])
     {
       v3 = 0;
       do
       {
-        v4 = [v1[2] objectAtIndexedSubscript:v3];
-        v5 = [v1[6] objectAtIndexedSubscript:v3];
-        v6 = [v5 integerValue];
+        v4 = [selfCopy[2] objectAtIndexedSubscript:v3];
+        v5 = [selfCopy[6] objectAtIndexedSubscript:v3];
+        integerValue = [v5 integerValue];
 
-        v7 = [objc_alloc(MEMORY[0x277CCDBA0]) initWithQuantityRange:v4 count:v6];
+        v7 = [objc_alloc(MEMORY[0x277CCDBA0]) initWithQuantityRange:v4 count:integerValue];
         [v2 addObject:v7];
 
         ++v3;
       }
 
-      while (v3 < [v1[2] count]);
+      while (v3 < [selfCopy[2] count]);
     }
 
-    v1 = [objc_alloc(MEMORY[0x277CCDB88]) initWithSegments:v2 dateInterval:v1[7]];
+    selfCopy = [objc_alloc(MEMORY[0x277CCDB88]) initWithSegments:v2 dateInterval:selfCopy[7]];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)result
 {
-  v3 = [(HDValueHistogramCollectionCalculator *)&self->super.isa _currentHistogram];
+  _currentHistogram = [(HDValueHistogramCollectionCalculator *)&self->super.isa _currentHistogram];
   v4 = [(NSMutableDictionary *)self->_finalizedHistogramsByDateIntervalIndex mutableCopy];
-  if ([v3 totalSampleCount] >= 1)
+  if ([_currentHistogram totalSampleCount] >= 1)
   {
-    [v4 setObject:v3 forKeyedSubscript:self->_currentIntervalIndex];
+    [v4 setObject:_currentHistogram forKeyedSubscript:self->_currentIntervalIndex];
   }
 
   v5 = objc_alloc(MEMORY[0x277CCDB90]);
   quantityRanges = self->_quantityRanges;
-  v7 = [(_HKDateIntervalCollection *)self->_intervalCollection anchorDate];
-  v8 = [(_HKDateIntervalCollection *)self->_intervalCollection intervalComponents];
-  v9 = [v5 initWithQuantityRanges:quantityRanges valueHistogramsByDateIntervalIndex:v4 anchorDate:v7 intervalComponents:v8];
+  anchorDate = [(_HKDateIntervalCollection *)self->_intervalCollection anchorDate];
+  intervalComponents = [(_HKDateIntervalCollection *)self->_intervalCollection intervalComponents];
+  v9 = [v5 initWithQuantityRanges:quantityRanges valueHistogramsByDateIntervalIndex:v4 anchorDate:anchorDate intervalComponents:intervalComponents];
 
   return v9;
 }

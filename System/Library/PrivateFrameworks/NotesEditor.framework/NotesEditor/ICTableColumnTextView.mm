@@ -1,105 +1,105 @@
 @interface ICTableColumnTextView
-- (BOOL)atCellBoundaryForDirection:(unint64_t)a3;
+- (BOOL)atCellBoundaryForDirection:(unint64_t)direction;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)indirectScribbleInteraction:(id)a3 isElementFocused:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)indirectScribbleInteraction:(id)interaction isElementFocused:(id)focused;
 - (BOOL)resignFirstResponder;
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)accessibilityFrame;
-- (CGRect)indirectScribbleInteraction:(id)a3 frameForElement:(id)a4;
+- (CGRect)indirectScribbleInteraction:(id)interaction frameForElement:(id)element;
 - (CGRect)selectionRect;
 - (ICHashtagController)hashtagController;
 - (ICMentionsController)mentionsController;
 - (ICNAEventReporter)eventReporter;
 - (ICTableColumnTextStorage)columnTextStorage;
-- (ICTableColumnTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (ICTableColumnTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (ICTableColumnTextViewDelegate)cellDelegate;
 - (ICTableSelectionDelegate)selectionDelegate;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)previousSelectedRange;
-- (_NSRange)rangeInSelectedCellFromRangeInTextView:(_NSRange)a3;
-- (_NSRange)rangeInTextViewFromRangeInSelectedCell:(_NSRange)a3;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
-- (id)_icaxAccessibilityAttributedStringFromOriginalString:(id)a3;
+- (_NSRange)rangeInSelectedCellFromRangeInTextView:(_NSRange)view;
+- (_NSRange)rangeInTextViewFromRangeInSelectedCell:(_NSRange)cell;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
+- (id)_icaxAccessibilityAttributedStringFromOriginalString:(id)string;
 - (id)baseAttributedStringForAccessibility;
-- (id)closestPositionToPoint:(CGPoint)a3;
+- (id)closestPositionToPoint:(CGPoint)point;
 - (id)inputAssistantItem;
 - (id)keyCommands;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
 - (id)undoManager;
 - (int64_t)returnKeyType;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)addColumnLeft:(id)a3;
-- (void)addColumnRight:(id)a3;
-- (void)addRowDown:(id)a3;
-- (void)addRowUp:(id)a3;
-- (void)altMoveDown:(id)a3;
-- (void)altMoveUp:(id)a3;
-- (void)createLink:(id)a3 title:(id)a4 textSelection:(id)a5 range:(_NSRange)a6 addApproach:(int64_t)a7;
-- (void)createNoteLinkAttachment:(id)a3 textSelection:(id)a4 range:(_NSRange)a5 addApproach:(int64_t)a6;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)addColumnLeft:(id)left;
+- (void)addColumnRight:(id)right;
+- (void)addRowDown:(id)down;
+- (void)addRowUp:(id)up;
+- (void)altMoveDown:(id)down;
+- (void)altMoveUp:(id)up;
+- (void)createLink:(id)link title:(id)title textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach;
+- (void)createNoteLinkAttachment:(id)attachment textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach;
 - (void)dealloc;
 - (void)deleteBackward;
-- (void)didPasteOrDropText:(id)a3 toRange:(id)a4;
-- (void)eventReporterLostSession:(id)a3;
-- (void)hashtagViewController:(id)a3 insertFutureHashtagWithText:(id)a4;
-- (void)hashtagViewController:(id)a3 insertHashtagWithText:(id)a4;
-- (void)hashtagViewController:(id)a3 insertUnknownInlineAttachmentWithText:(id)a4;
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
-- (void)insertInlineAttachment:(id)a3 saveAndResumeEditingForAttachment:(id)a4 inNote:(id)a5;
-- (void)insertInlineAttachment:(id)a3 saveAndResumeEditingForAttachment:(id)a4 inNote:(id)a5 forRange:(_NSRange)a6;
-- (void)moveDown:(id)a3;
-- (void)moveLeft:(id)a3;
+- (void)didPasteOrDropText:(id)text toRange:(id)range;
+- (void)eventReporterLostSession:(id)session;
+- (void)hashtagViewController:(id)controller insertFutureHashtagWithText:(id)text;
+- (void)hashtagViewController:(id)controller insertHashtagWithText:(id)text;
+- (void)hashtagViewController:(id)controller insertUnknownInlineAttachmentWithText:(id)text;
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
+- (void)insertInlineAttachment:(id)attachment saveAndResumeEditingForAttachment:(id)forAttachment inNote:(id)note;
+- (void)insertInlineAttachment:(id)attachment saveAndResumeEditingForAttachment:(id)forAttachment inNote:(id)note forRange:(_NSRange)range;
+- (void)moveDown:(id)down;
+- (void)moveLeft:(id)left;
 - (void)moveLeftCellAfterDelete;
-- (void)moveRight:(id)a3;
-- (void)moveToBeginningOfCell:(id)a3;
-- (void)moveToBeginningOfCellAndModifySelection:(id)a3;
-- (void)moveToEndOfCell:(id)a3;
-- (void)moveToEndOfCellAndModifySelection:(id)a3;
-- (void)moveUp:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openExperimentalHashtagUI:(id)a3;
-- (void)openLinkEditor:(id)a3;
-- (void)paste:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)moveRight:(id)right;
+- (void)moveToBeginningOfCell:(id)cell;
+- (void)moveToBeginningOfCellAndModifySelection:(id)selection;
+- (void)moveToEndOfCell:(id)cell;
+- (void)moveToEndOfCellAndModifySelection:(id)selection;
+- (void)moveUp:(id)up;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openExperimentalHashtagUI:(id)i;
+- (void)openLinkEditor:(id)editor;
+- (void)paste:(id)paste;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 - (void)removeLinksFromCurrentSelection;
-- (void)removeLinksFromTextSelection:(id)a3 range:(_NSRange)a4;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setEditorController:(id)a3;
+- (void)removeLinksFromTextSelection:(id)selection range:(_NSRange)range;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
+- (void)setEditorController:(id)controller;
 - (void)setupMenuController;
-- (void)startEditingForTapGesture:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
+- (void)startEditingForTapGesture:(id)gesture;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
 @end
 
 @implementation ICTableColumnTextView
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
-  v5 = [(ICTableColumnTextView *)self cellDelegate];
-  v6 = [v5 pasteCellRange];
+  pasteCopy = paste;
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  pasteCellRange = [cellDelegate pasteCellRange];
 
-  if ((v6 & 1) == 0)
+  if ((pasteCellRange & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = ICTableColumnTextView;
-    [(ICEditingTextView *)&v7 paste:v4];
+    [(ICEditingTextView *)&v7 paste:pasteCopy];
   }
 }
 
-- (ICTableColumnTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (ICTableColumnTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = ICTableColumnTextView;
-  v4 = [(ICBaseTextView *)&v9 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(ICBaseTextView *)&v9 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -119,35 +119,35 @@
 
 - (void)dealloc
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  [v3 ic_removeObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController ic_removeObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ICTableColumnTextView;
   [(ICEditingTextView *)&v5 dealloc];
 }
 
-- (void)setEditorController:(id)a3
+- (void)setEditorController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self editorController];
-  [v5 ic_removeObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5];
+  controllerCopy = controller;
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController ic_removeObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5];
 
   v7.receiver = self;
   v7.super_class = ICTableColumnTextView;
-  [(ICEditingTextView *)&v7 setEditorController:v4];
+  [(ICEditingTextView *)&v7 setEditorController:controllerCopy];
 
-  v6 = [(ICEditingTextView *)self editorController];
-  [v6 ic_addObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5 explicitOptions:4];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  [editorController2 ic_addObserver:self forKeyPath:@"textView.editable" context:&compoundliteral_5 explicitOptions:4];
 }
 
 - (ICTableColumnTextStorage)columnTextStorage
 {
   objc_opt_class();
-  v3 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v4 = ICDynamicCast();
 
   return v4;
@@ -155,14 +155,14 @@
 
 - (CGRect)selectionRect
 {
-  v3 = [(ICTableColumnTextView *)self selectedTextRange];
-  v4 = [v3 isEmpty];
+  selectedTextRange = [(ICTableColumnTextView *)self selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v4)
+  if (isEmpty)
   {
-    v5 = [(ICTableColumnTextView *)self selectedTextRange];
-    v6 = [v5 start];
-    [(ICEditingTextView *)self caretRectForPosition:v6];
+    selectedTextRange2 = [(ICTableColumnTextView *)self selectedTextRange];
+    start = [selectedTextRange2 start];
+    [(ICEditingTextView *)self caretRectForPosition:start];
     x = v7;
     y = v9;
     width = v11;
@@ -171,12 +171,12 @@
 
   else
   {
-    v5 = [(ICTableColumnTextView *)self layoutManager];
-    v15 = [(ICTableColumnTextView *)self selectedRange];
-    v17 = [v5 glyphRangeForCharacterRange:v15 actualCharacterRange:{v16, 0}];
+    selectedTextRange2 = [(ICTableColumnTextView *)self layoutManager];
+    selectedRange = [(ICTableColumnTextView *)self selectedRange];
+    v17 = [selectedTextRange2 glyphRangeForCharacterRange:selectedRange actualCharacterRange:{v16, 0}];
     v19 = v18;
-    v20 = [(ICTableColumnTextView *)self textContainer];
-    [v5 boundingRectForGlyphRange:v17 inTextContainer:{v19, v20}];
+    textContainer = [(ICTableColumnTextView *)self textContainer];
+    [selectedTextRange2 boundingRectForGlyphRange:v17 inTextContainer:{v19, textContainer}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -218,35 +218,35 @@
 
 - (BOOL)resignFirstResponder
 {
-  v3 = 1;
+  resignFirstResponder = 1;
   [(ICTableColumnTextView *)self setIsResigningFirstResponder:1];
-  v4 = [(ICTableColumnTextView *)self cellDelegate];
-  [v4 setPreventScrolling:1];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate setPreventScrolling:1];
 
   if ([(ICTableColumnTextView *)self isFirstResponder])
   {
-    v5 = [(ICEditingTextView *)self editorController];
-    v6 = [v5 textView];
-    v7 = [v6 shouldAvoidBecomingFirstResponder];
+    editorController = [(ICEditingTextView *)self editorController];
+    textView = [editorController textView];
+    shouldAvoidBecomingFirstResponder = [textView shouldAvoidBecomingFirstResponder];
 
-    v8 = [(ICEditingTextView *)self editorController];
-    v9 = [v8 textView];
-    [v9 setShouldAvoidBecomingFirstResponder:1];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    textView2 = [editorController2 textView];
+    [textView2 setShouldAvoidBecomingFirstResponder:1];
 
     [(ICTableColumnTextView *)self setSelectedRange:[(ICTableColumnTextView *)self selectedRange], 0];
     v14.receiver = self;
     v14.super_class = ICTableColumnTextView;
-    v3 = [(ICTableColumnTextView *)&v14 resignFirstResponder];
-    v10 = [(ICEditingTextView *)self editorController];
-    v11 = [v10 textView];
-    [v11 setShouldAvoidBecomingFirstResponder:v7];
+    resignFirstResponder = [(ICTableColumnTextView *)&v14 resignFirstResponder];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    textView3 = [editorController3 textView];
+    [textView3 setShouldAvoidBecomingFirstResponder:shouldAvoidBecomingFirstResponder];
   }
 
-  v12 = [(ICTableColumnTextView *)self cellDelegate];
-  [v12 setPreventScrolling:0];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate2 setPreventScrolling:0];
 
   [(ICTableColumnTextView *)self setIsResigningFirstResponder:0];
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -256,17 +256,17 @@
   v15.super_class = ICTableColumnTextView;
   if ([(ICEditingTextView *)&v15 canBecomeFirstResponder])
   {
-    v3 = [(ICTableColumnTextView *)self cellDelegate];
-    v4 = [v3 containedInNoteSelection];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    containedInNoteSelection = [cellDelegate containedInNoteSelection];
 
-    if (v4)
+    if (containedInNoteSelection)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [(ICTableColumnTextView *)self gestureRecognizers];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      gestureRecognizers = [(ICTableColumnTextView *)self gestureRecognizers];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v6)
       {
         v7 = *v12;
@@ -276,7 +276,7 @@
           {
             if (*v12 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(gestureRecognizers);
             }
 
             if ([*(*(&v11 + 1) + 8 * i) state] == 3)
@@ -292,7 +292,7 @@
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v6 = [gestureRecognizers countByEnumeratingWithState:&v11 objects:v16 count:16];
           if (v6)
           {
             continue;
@@ -319,64 +319,64 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v18.receiver = self;
   v18.super_class = ICTableColumnTextView;
-  v6 = [(ICEditingTextView *)&v18 canPerformAction:a3 withSender:a4];
-  if (sel_selectAll_ != a3 || v6 == 0)
+  v6 = [(ICEditingTextView *)&v18 canPerformAction:action withSender:sender];
+  if (sel_selectAll_ != action || v6 == 0)
   {
-    v12 = v6;
-    if (((sel_paste_ == a3) & v6) != 1)
+    hasStrings = v6;
+    if (((sel_paste_ == action) & v6) != 1)
     {
-      if (sel_shiftReturn_ == a3)
+      if (sel_shiftReturn_ == action)
       {
         return 1;
       }
 
-      if (sel_moveLeft_ == a3)
+      if (sel_moveLeft_ == action)
       {
-        v14 = self;
+        selfCopy2 = self;
         v15 = 0;
       }
 
       else
       {
-        if (sel_moveRight_ != a3)
+        if (sel_moveRight_ != action)
         {
-          return v12;
+          return hasStrings;
         }
 
-        v14 = self;
+        selfCopy2 = self;
         v15 = 1;
       }
 
-      return [(ICTableColumnTextView *)v14 atCellBoundaryForDirection:v15];
+      return [(ICTableColumnTextView *)selfCopy2 atCellBoundaryForDirection:v15];
     }
 
-    v8 = [MEMORY[0x277D75810] generalPasteboard];
-    v12 = [v8 hasStrings];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    hasStrings = [generalPasteboard hasStrings];
   }
 
   else
   {
     objc_opt_class();
-    v9 = [(ICTableColumnTextView *)self textStorage];
+    textStorage = [(ICTableColumnTextView *)self textStorage];
     v10 = ICDynamicCast();
 
     v17 = 0;
     v11 = [v10 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange", 0), &v16}];
-    v12 = v17 != 0;
+    hasStrings = v17 != 0;
   }
 
-  return v12;
+  return hasStrings;
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
-  v4 = a3;
+  selectCopy = select;
   objc_opt_class();
-  v5 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v6 = ICDynamicCast();
 
   v10 = 0;
@@ -386,20 +386,20 @@ LABEL_16:
   {
     v9.receiver = self;
     v9.super_class = ICTableColumnTextView;
-    [(ICEditingTextView *)&v9 select:v4];
+    [(ICEditingTextView *)&v9 select:selectCopy];
   }
 
   else
   {
-    v8 = [(ICTableColumnTextView *)self cellDelegate];
-    [v8 selectCell];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate selectCell];
   }
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   objc_opt_class();
-  v4 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v5 = ICDynamicCast();
 
   v10 = 0;
@@ -408,8 +408,8 @@ LABEL_16:
   [(ICTableColumnTextView *)self selectedRange];
   if (v7 == v11)
   {
-    v8 = [(ICTableColumnTextView *)self cellDelegate];
-    [v8 selectTable];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate selectTable];
   }
 
   else
@@ -436,27 +436,27 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
 {
   v47.receiver = self;
   v47.super_class = ICTableColumnTextView;
-  v3 = [(ICTableColumnTextView *)&v47 keyCommands];
-  v4 = [v3 mutableCopy];
+  keyCommands = [(ICTableColumnTextView *)&v47 keyCommands];
+  v4 = [keyCommands mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   if ([(ICTableColumnTextView *)self isFirstResponder])
   {
-    v8 = [(ICTableColumnTextView *)self cellDelegate];
-    v9 = [v8 acceptsKeystrokes];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    acceptsKeystrokes = [cellDelegate acceptsKeystrokes];
 
-    if (v9)
+    if (acceptsKeystrokes)
     {
       [(ICTableColumnTextView *)self selectedRange];
       if (v10)
@@ -475,12 +475,12 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
           [v7 addObject:v15];
         }
 
-        v16 = [(ICTableColumnTextView *)self selectedRange];
-        v17 = [(ICTableColumnTextView *)self textStorage];
-        v18 = [v17 length];
+        selectedRange = [(ICTableColumnTextView *)self selectedRange];
+        textStorage = [(ICTableColumnTextView *)self textStorage];
+        v18 = [textStorage length];
 
         v12 = *MEMORY[0x277D76AC0];
-        if (v16 == v18)
+        if (selectedRange == v18)
         {
           v19 = [MEMORY[0x277D75650] keyCommandWithInput:*MEMORY[0x277D76AC0] modifierFlags:0 action:sel_moveDown_];
           [v7 addObject:v19];
@@ -494,7 +494,7 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
         [v7 addObject:v21];
 
         objc_opt_class();
-        v22 = [(ICTableColumnTextView *)self textStorage];
+        textStorage2 = [(ICTableColumnTextView *)self textStorage];
         v23 = ICDynamicCast();
 
         v45 = 0;
@@ -503,21 +503,21 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
         v24 = [v23 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), &v45}];
         v13 = *MEMORY[0x277D76B48];
         v25 = [MEMORY[0x277D75650] keyCommandWithInput:*MEMORY[0x277D76B48] modifierFlags:0 action:sel_moveLeft_];
-        v26 = [v25 ic_wantPriorityOverSystemBehavior];
-        [v7 addObject:v26];
+        ic_wantPriorityOverSystemBehavior = [v25 ic_wantPriorityOverSystemBehavior];
+        [v7 addObject:ic_wantPriorityOverSystemBehavior];
 
         v27 = [MEMORY[0x277D75650] keyCommandWithInput:v13 modifierFlags:0x80000 action:sel_moveLeft_];
-        v28 = [v27 ic_wantPriorityOverSystemBehavior];
-        [v7 addObject:v28];
+        ic_wantPriorityOverSystemBehavior2 = [v27 ic_wantPriorityOverSystemBehavior];
+        [v7 addObject:ic_wantPriorityOverSystemBehavior2];
 
         v14 = *MEMORY[0x277D76B60];
         v29 = [MEMORY[0x277D75650] keyCommandWithInput:*MEMORY[0x277D76B60] modifierFlags:0 action:sel_moveRight_];
-        v30 = [v29 ic_wantPriorityOverSystemBehavior];
-        [v7 addObject:v30];
+        ic_wantPriorityOverSystemBehavior3 = [v29 ic_wantPriorityOverSystemBehavior];
+        [v7 addObject:ic_wantPriorityOverSystemBehavior3];
 
         v31 = [MEMORY[0x277D75650] keyCommandWithInput:v14 modifierFlags:0x80000 action:sel_moveRight_];
-        v32 = [v31 ic_wantPriorityOverSystemBehavior];
-        [v7 addObject:v32];
+        ic_wantPriorityOverSystemBehavior4 = [v31 ic_wantPriorityOverSystemBehavior];
+        [v7 addObject:ic_wantPriorityOverSystemBehavior4];
 
         if (!v46)
         {
@@ -558,114 +558,114 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)moveUp:(id)a3
+- (void)moveUp:(id)up
 {
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
-  [v3 moveUpCell];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate moveUpCell];
 }
 
-- (void)altMoveUp:(id)a3
+- (void)altMoveUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   if ([(ICTableColumnTextView *)self selectedRange])
   {
     if ([(ICTableColumnTextView *)self atCellBoundaryForDirection:0])
     {
-      [(ICTableColumnTextView *)self moveUp:v4];
+      [(ICTableColumnTextView *)self moveUp:upCopy];
     }
 
-    [(ICTableColumnTextView *)self moveToBeginningOfCell:v4];
+    [(ICTableColumnTextView *)self moveToBeginningOfCell:upCopy];
   }
 }
 
-- (void)moveDown:(id)a3
+- (void)moveDown:(id)down
 {
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
-  [v3 moveDownCell];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate moveDownCell];
 }
 
-- (void)altMoveDown:(id)a3
+- (void)altMoveDown:(id)down
 {
-  v7 = a3;
-  v4 = [(ICTableColumnTextView *)self selectedRange];
-  v5 = [(ICTableColumnTextView *)self textStorage];
-  v6 = [v5 length];
+  downCopy = down;
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
+  v6 = [textStorage length];
 
-  if (v4 != v6)
+  if (selectedRange != v6)
   {
     if ([(ICTableColumnTextView *)self atCellBoundaryForDirection:1])
     {
-      [(ICTableColumnTextView *)self moveDown:v7];
+      [(ICTableColumnTextView *)self moveDown:downCopy];
     }
 
-    [(ICTableColumnTextView *)self moveToEndOfCell:v7];
+    [(ICTableColumnTextView *)self moveToEndOfCell:downCopy];
   }
 }
 
-- (void)moveLeft:(id)a3
+- (void)moveLeft:(id)left
 {
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
-  [v3 moveLeftCell];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate moveLeftCell];
 }
 
-- (void)moveRight:(id)a3
+- (void)moveRight:(id)right
 {
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
-  [v3 moveRightCell];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate moveRightCell];
 }
 
-- (void)addRowUp:(id)a3
+- (void)addRowUp:(id)up
 {
-  v4 = [(ICTableColumnTextView *)self cellDelegate];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableColumnTextView *)self cellDelegate];
-    [v6 addRowAboveSelection:self];
+    cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate2 addRowAboveSelection:self];
   }
 }
 
-- (void)addRowDown:(id)a3
+- (void)addRowDown:(id)down
 {
-  v4 = [(ICTableColumnTextView *)self cellDelegate];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableColumnTextView *)self cellDelegate];
-    [v6 addRowBelowSelection:self];
+    cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate2 addRowBelowSelection:self];
   }
 }
 
-- (void)addColumnLeft:(id)a3
+- (void)addColumnLeft:(id)left
 {
-  v4 = [(ICTableColumnTextView *)self cellDelegate];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableColumnTextView *)self cellDelegate];
-    [v6 addColumnLeftOfSelection:self];
+    cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate2 addColumnLeftOfSelection:self];
   }
 }
 
-- (void)addColumnRight:(id)a3
+- (void)addColumnRight:(id)right
 {
-  v4 = [(ICTableColumnTextView *)self cellDelegate];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICTableColumnTextView *)self cellDelegate];
-    [v6 addColumnRightOfSelection:self];
+    cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate2 addColumnRightOfSelection:self];
   }
 }
 
 - (void)deleteBackward
 {
   objc_opt_class();
-  v3 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v4 = ICDynamicCast();
 
   v11 = 0;
@@ -673,8 +673,8 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
   v5 = [v4 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), &v11}];
   if (v12 || (-[ICTableColumnTextView cellDelegate](self, "cellDelegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 acceptsKeystrokes], v6, !v7))
   {
-    v8 = [(ICTableColumnTextView *)self selectedRange];
-    if (v8 > v11 || ([(ICTableColumnTextView *)self selectedRange], v9))
+    selectedRange = [(ICTableColumnTextView *)self selectedRange];
+    if (selectedRange > v11 || ([(ICTableColumnTextView *)self selectedRange], v9))
     {
       v10.receiver = self;
       v10.super_class = ICTableColumnTextView;
@@ -699,8 +699,8 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
 - (void)moveLeftCellAfterDelete
 {
   [(ICTableColumnTextView *)self finishProcessingDelete];
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
-  [v3 moveLeftCell];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate moveLeftCell];
 }
 
 - (int64_t)returnKeyType
@@ -716,29 +716,29 @@ void __35__ICTableColumnTextView_selectAll___block_invoke(uint64_t a1)
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v38 = a3;
-  v6 = a4;
-  v7 = [v6 _modifierFlags];
-  v8 = [v6 _modifiedInput];
-  v9 = [v6 _unmodifiedInput];
+  beganCopy = began;
+  eventCopy = event;
+  _modifierFlags = [eventCopy _modifierFlags];
+  _modifiedInput = [eventCopy _modifiedInput];
+  _unmodifiedInput = [eventCopy _unmodifiedInput];
   v10 = 0;
-  if ([v8 length] == 1 && v7 == 0x80000)
+  if ([_modifiedInput length] == 1 && _modifierFlags == 0x80000)
   {
-    v11 = [(ICTableColumnTextView *)self cellDelegate];
-    if ([v11 acceptsKeystrokes])
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    if ([cellDelegate acceptsKeystrokes])
     {
-      if ([v8 isEqualToString:@"\t"])
+      if ([_modifiedInput isEqualToString:@"\t"])
       {
 
 LABEL_9:
-        [(ICEditingTextView *)self insertText:v8];
+        [(ICEditingTextView *)self insertText:_modifiedInput];
         v10 = 1;
         goto LABEL_10;
       }
 
-      v12 = [v8 isEqualToString:@"\n"];
+      v12 = [_modifiedInput isEqualToString:@"\n"];
 
       if (v12)
       {
@@ -754,32 +754,32 @@ LABEL_9:
   }
 
 LABEL_10:
-  if ([v8 length] != 1)
+  if ([_modifiedInput length] != 1)
   {
     goto LABEL_32;
   }
 
-  if ((v7 & 0x180000) != 0)
+  if ((_modifierFlags & 0x180000) != 0)
   {
     goto LABEL_32;
   }
 
-  v13 = [(ICTableColumnTextView *)self cellDelegate];
-  v14 = [v13 acceptsKeystrokes];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  acceptsKeystrokes = [cellDelegate2 acceptsKeystrokes];
 
-  if (!v14)
+  if (!acceptsKeystrokes)
   {
     goto LABEL_32;
   }
 
-  v15 = [v8 characterAtIndex:0];
+  v15 = [_modifiedInput characterAtIndex:0];
   v16 = v15;
   if (v15 == 13 || v15 == 10)
   {
-    v19 = [(ICTableColumnTextView *)self markedTextRange];
-    if (v19)
+    markedTextRange = [(ICTableColumnTextView *)self markedTextRange];
+    if (markedTextRange)
     {
-      v18 = v19;
+      cellDelegate3 = markedTextRange;
 LABEL_31:
 
       goto LABEL_32;
@@ -790,33 +790,33 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if ((v7 & 0x20000) != 0)
+    if ((_modifierFlags & 0x20000) != 0)
     {
-      v18 = [(ICTableColumnTextView *)self cellDelegate];
-      [v18 moveShiftReturnCell];
+      cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+      [cellDelegate3 moveShiftReturnCell];
     }
 
     else
     {
-      v20 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
-      if (v16 == 13 && v20)
+      isInHardwareKeyboardMode = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+      if (v16 == 13 && isInHardwareKeyboardMode)
       {
-        v21 = [(ICTableColumnTextView *)self cellDelegate];
-        v18 = v21;
+        cellDelegate4 = [(ICTableColumnTextView *)self cellDelegate];
+        cellDelegate3 = cellDelegate4;
 LABEL_29:
-        [v21 moveReturnCell];
+        [cellDelegate4 moveReturnCell];
         goto LABEL_30;
       }
 
-      v22 = [(ICTableColumnTextView *)self returnKeyType];
-      v21 = [(ICTableColumnTextView *)self cellDelegate];
-      v18 = v21;
-      if (v22 != 4)
+      returnKeyType = [(ICTableColumnTextView *)self returnKeyType];
+      cellDelegate4 = [(ICTableColumnTextView *)self cellDelegate];
+      cellDelegate3 = cellDelegate4;
+      if (returnKeyType != 4)
       {
         goto LABEL_29;
       }
 
-      [v21 moveNextCell];
+      [cellDelegate4 moveNextCell];
     }
 
 LABEL_30:
@@ -826,85 +826,85 @@ LABEL_30:
 
   if (v15 == 9)
   {
-    v17 = [(ICTableColumnTextView *)self cellDelegate];
-    v18 = v17;
-    if ((v7 & 0x20000) != 0)
+    cellDelegate5 = [(ICTableColumnTextView *)self cellDelegate];
+    cellDelegate3 = cellDelegate5;
+    if ((_modifierFlags & 0x20000) != 0)
     {
-      [v17 movePrevCell];
+      [cellDelegate5 movePrevCell];
     }
 
     else
     {
-      [v17 moveTabCell];
+      [cellDelegate5 moveTabCell];
     }
 
     goto LABEL_30;
   }
 
 LABEL_32:
-  v23 = [v9 isEqualToString:*MEMORY[0x277D76B48]];
-  v37 = v9;
-  v24 = [v9 isEqualToString:*MEMORY[0x277D76B60]];
+  v23 = [_unmodifiedInput isEqualToString:*MEMORY[0x277D76B48]];
+  v37 = _unmodifiedInput;
+  v24 = [_unmodifiedInput isEqualToString:*MEMORY[0x277D76B60]];
   v25 = v24;
   v26 = v23 | v24;
-  if ((v7 & 0x20000) != 0 && (v26 & 1) != 0 && [(ICTableColumnTextView *)self atCellBoundaryForDirection:v23 ^ 1u])
+  if ((_modifierFlags & 0x20000) != 0 && (v26 & 1) != 0 && [(ICTableColumnTextView *)self atCellBoundaryForDirection:v23 ^ 1u])
   {
-    v27 = [(ICTableColumnTextView *)self cellDelegate];
-    [v27 extendCellRangeSelectionInDirection:v23 ^ 1u toEnd:(v7 >> 20) & 1];
+    cellDelegate6 = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate6 extendCellRangeSelectionInDirection:v23 ^ 1u toEnd:(_modifierFlags >> 20) & 1];
   }
 
   if ((v10 & 1) == 0)
   {
-    v28 = [(ICTableColumnTextView *)self selectedRange];
+    selectedRange = [(ICTableColumnTextView *)self selectedRange];
     v30 = v29;
     v41.receiver = self;
     v41.super_class = ICTableColumnTextView;
-    [(ICTableColumnTextView *)&v41 pressesBegan:v38 withEvent:v6];
-    if (([v6 _isKeyDown] & v26) == 1)
+    [(ICTableColumnTextView *)&v41 pressesBegan:beganCopy withEvent:eventCopy];
+    if (([eventCopy _isKeyDown] & v26) == 1)
     {
-      if (v7 == 0x100000)
+      if (_modifierFlags == 0x100000)
       {
-        if ([(ICTableColumnTextView *)self selectedRange]== v28)
+        if ([(ICTableColumnTextView *)self selectedRange]== selectedRange)
         {
           [(ICTableColumnTextView *)self selectedRange];
           if (v31 == v30)
           {
             if (v23)
             {
-              v32 = [(ICTableColumnTextView *)self cellDelegate];
-              [v32 moveLeftCell];
+              cellDelegate7 = [(ICTableColumnTextView *)self cellDelegate];
+              [cellDelegate7 moveLeftCell];
               goto LABEL_52;
             }
 
             if (v25)
             {
-              v32 = [(ICTableColumnTextView *)self cellDelegate];
-              [v32 moveRightCell];
+              cellDelegate7 = [(ICTableColumnTextView *)self cellDelegate];
+              [cellDelegate7 moveRightCell];
               goto LABEL_52;
             }
           }
         }
       }
 
-      else if (v7 == 0x80000)
+      else if (_modifierFlags == 0x80000)
       {
         objc_opt_class();
-        v33 = [(ICTableColumnTextView *)self textStorage];
-        v32 = ICDynamicCast();
+        textStorage = [(ICTableColumnTextView *)self textStorage];
+        cellDelegate7 = ICDynamicCast();
 
         v40[0] = 0;
         v40[1] = 0;
-        v34 = [v32 rowAtIndex:v28 rowRange:v40];
+        v34 = [cellDelegate7 rowAtIndex:selectedRange rowRange:v40];
         v39[0] = 0;
         v39[1] = 0;
-        v35 = [v32 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), v39}];
+        v35 = [cellDelegate7 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), v39}];
         if (v40[0] != v39[0])
         {
-          [(ICTableColumnTextView *)self setSelectedRange:v28, v30];
+          [(ICTableColumnTextView *)self setSelectedRange:selectedRange, v30];
           if (v23)
           {
-            v36 = [(ICTableColumnTextView *)self cellDelegate];
-            [v36 moveLeftCell];
+            cellDelegate8 = [(ICTableColumnTextView *)self cellDelegate];
+            [cellDelegate8 moveLeftCell];
           }
 
           else
@@ -914,8 +914,8 @@ LABEL_32:
               goto LABEL_52;
             }
 
-            v36 = [(ICTableColumnTextView *)self cellDelegate];
-            [v36 moveRightCell];
+            cellDelegate8 = [(ICTableColumnTextView *)self cellDelegate];
+            [cellDelegate8 moveRightCell];
           }
         }
 
@@ -925,31 +925,31 @@ LABEL_52:
   }
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v8 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  positionCopy = position;
+  if ((direction & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v9 = [(ICTableColumnTextView *)self beginningOfDocument];
-    v10 = [(ICTableColumnTextView *)self offsetFromPosition:v9 toPosition:v8];
+    beginningOfDocument = [(ICTableColumnTextView *)self beginningOfDocument];
+    v10 = [(ICTableColumnTextView *)self offsetFromPosition:beginningOfDocument toPosition:positionCopy];
 
     v43.receiver = self;
     v43.super_class = ICTableColumnTextView;
-    v11 = [(ICTableColumnTextView *)&v43 positionFromPosition:v8 inDirection:a4 offset:a5];
-    v12 = [(ICTableColumnTextView *)self beginningOfDocument];
-    v13 = [(ICTableColumnTextView *)self offsetFromPosition:v12 toPosition:v11];
+    v11 = [(ICTableColumnTextView *)&v43 positionFromPosition:positionCopy inDirection:direction offset:offset];
+    beginningOfDocument2 = [(ICTableColumnTextView *)self beginningOfDocument];
+    v13 = [(ICTableColumnTextView *)self offsetFromPosition:beginningOfDocument2 toPosition:v11];
 
     if (v13 == v10 && v13 >= 1)
     {
       v13 = v10 - 1;
-      v15 = [(ICTableColumnTextView *)self beginningOfDocument];
-      v16 = [(ICTableColumnTextView *)self positionFromPosition:v15 offset:v10 - 1];
+      beginningOfDocument3 = [(ICTableColumnTextView *)self beginningOfDocument];
+      v16 = [(ICTableColumnTextView *)self positionFromPosition:beginningOfDocument3 offset:v10 - 1];
 
       v11 = v16;
     }
 
     objc_opt_class();
-    v17 = [(ICTableColumnTextView *)self textStorage];
+    textStorage = [(ICTableColumnTextView *)self textStorage];
     v18 = ICDynamicCast();
 
     v42[0] = 0;
@@ -960,13 +960,13 @@ LABEL_52:
     v20 = [v18 rowAtIndex:v13 rowRange:v41];
     if (v42[0] != v41[0])
     {
-      [(ICEditingTextView *)self caretRectForPosition:v8];
+      [(ICEditingTextView *)self caretRectForPosition:positionCopy];
       MidX = CGRectGetMidX(v45);
-      v22 = [(ICTableColumnTextView *)self layoutManager];
-      v23 = [v22 glyphIndexForCharacterAtIndex:v13];
+      layoutManager = [(ICTableColumnTextView *)self layoutManager];
+      v23 = [layoutManager glyphIndexForCharacterAtIndex:v13];
 
-      v24 = [(ICTableColumnTextView *)self layoutManager];
-      [v24 lineFragmentRectForGlyphAtIndex:v23 effectiveRange:0 withoutAdditionalLayout:1];
+      layoutManager2 = [(ICTableColumnTextView *)self layoutManager];
+      [layoutManager2 lineFragmentRectForGlyphAtIndex:v23 effectiveRange:0 withoutAdditionalLayout:1];
       v26 = v25;
       v28 = v27;
       v30 = v29;
@@ -978,19 +978,19 @@ LABEL_52:
       v46.size.height = v32;
       if (!CGRectIsEmpty(v46))
       {
-        v33 = [(ICTableColumnTextView *)self layoutManager];
+        layoutManager3 = [(ICTableColumnTextView *)self layoutManager];
         v47.origin.x = v26;
         v47.origin.y = v28;
         v47.size.width = v30;
         v47.size.height = v32;
         MidY = CGRectGetMidY(v47);
-        v35 = [(ICTableColumnTextView *)self textContainer];
-        v36 = [v33 characterIndexForPoint:v35 inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{MidX, MidY}];
+        textContainer = [(ICTableColumnTextView *)self textContainer];
+        v36 = [layoutManager3 characterIndexForPoint:textContainer inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{MidX, MidY}];
 
         if (v13 != v36)
         {
-          v37 = [(ICTableColumnTextView *)self beginningOfDocument];
-          v38 = [(ICTableColumnTextView *)self positionFromPosition:v37 offset:v36];
+          beginningOfDocument4 = [(ICTableColumnTextView *)self beginningOfDocument];
+          v38 = [(ICTableColumnTextView *)self positionFromPosition:beginningOfDocument4 offset:v36];
 
           v11 = v38;
         }
@@ -1002,30 +1002,30 @@ LABEL_52:
   {
     v40.receiver = self;
     v40.super_class = ICTableColumnTextView;
-    v11 = [(ICTableColumnTextView *)&v40 positionFromPosition:v8 inDirection:a4 offset:a5];
+    v11 = [(ICTableColumnTextView *)&v40 positionFromPosition:positionCopy inDirection:direction offset:offset];
   }
 
   return v11;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v40 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v6 = [(ICTableColumnTextView *)self layoutManager];
+  layoutManager = [(ICTableColumnTextView *)self layoutManager];
   v7 = ICDynamicCast();
-  v8 = [v7 tableLayoutManager];
+  tableLayoutManager = [v7 tableLayoutManager];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [(ICTableColumnTextView *)self columnTextStorage];
-  v10 = [v9 populatedRows];
+  columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+  populatedRows = [columnTextStorage populatedRows];
 
-  v11 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v11 = [populatedRows countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1039,12 +1039,12 @@ LABEL_52:
       {
         if (*v36 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(populatedRows);
         }
 
         v17 = *(*(&v35 + 1) + 8 * v15);
-        v18 = [v8 rowPositions];
-        v19 = [v18 objectForKey:v17];
+        rowPositions = [tableLayoutManager rowPositions];
+        v19 = [rowPositions objectForKey:v17];
         [v19 doubleValue];
         v21 = v20;
 
@@ -1061,7 +1061,7 @@ LABEL_52:
       }
 
       while (v12 != v15);
-      v12 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v12 = [populatedRows countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v12)
       {
         continue;
@@ -1083,12 +1083,12 @@ LABEL_12:
   v22 = [(ICTableColumnTextView *)&v34 closestPositionToPoint:x, y];
   if (v13)
   {
-    v23 = [(ICTableColumnTextView *)self columnTextStorage];
-    v24 = [v23 characterRangeForRowID:v13];
+    columnTextStorage2 = [(ICTableColumnTextView *)self columnTextStorage];
+    v24 = [columnTextStorage2 characterRangeForRowID:v13];
     v26 = v25;
 
-    v27 = [(ICTableColumnTextView *)self beginningOfDocument];
-    v28 = [(ICTableColumnTextView *)self offsetFromPosition:v27 toPosition:v22];
+    beginningOfDocument = [(ICTableColumnTextView *)self beginningOfDocument];
+    v28 = [(ICTableColumnTextView *)self offsetFromPosition:beginningOfDocument toPosition:v22];
 
     v29 = v24 + v26;
     if (v28 < v24 + v26)
@@ -1108,8 +1108,8 @@ LABEL_12:
 
     if (v28 != v30)
     {
-      v31 = [(ICTableColumnTextView *)self beginningOfDocument];
-      v32 = [(ICTableColumnTextView *)self positionFromPosition:v31 offset:v30];
+      beginningOfDocument2 = [(ICTableColumnTextView *)self beginningOfDocument];
+      v32 = [(ICTableColumnTextView *)self positionFromPosition:beginningOfDocument2 offset:v30];
 
       v22 = v32;
     }
@@ -1120,59 +1120,59 @@ LABEL_12:
 
 - (id)undoManager
 {
-  v2 = [(ICEditingTextView *)self TTTextStorage];
-  v3 = [v2 undoManager];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  undoManager = [tTTextStorage undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v7.receiver = self;
   v7.super_class = ICTableColumnTextView;
-  v3 = a3;
-  v4 = [(ICEditingTextView *)&v7 gestureRecognizerShouldBegin:v3];
+  beginCopy = begin;
+  v4 = [(ICEditingTextView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   NSClassFromString(&cfstr_Uitextselectio.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   return v4 & ~isKindOfClass & 1;
 }
 
-- (void)startEditingForTapGesture:(id)a3
+- (void)startEditingForTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICTableColumnTextView *)self superview];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  superview = [(ICTableColumnTextView *)self superview];
+  [gestureCopy locationInView:superview];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ICTableColumnTextView *)self cellDelegate];
-  [v10 tappedTableAtLocation:{v7, v9}];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate tappedTableAtLocation:{v7, v9}];
 }
 
-- (void)didPasteOrDropText:(id)a3 toRange:(id)a4
+- (void)didPasteOrDropText:(id)text toRange:(id)range
 {
-  v5 = [(ICTableColumnTextView *)self cellDelegate:a3];
+  v5 = [(ICTableColumnTextView *)self cellDelegate:text];
   [v5 didPasteOrDropTextForTableColumnTextView:self];
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [v5 dropSession];
-  v7 = [(ICEditingTextView *)self shouldAcceptDropSession:v6];
+  dropCopy = drop;
+  dropSession = [dropCopy dropSession];
+  v7 = [(ICEditingTextView *)self shouldAcceptDropSession:dropSession];
 
   if (v7)
   {
-    if ([v5 isSameView])
+    if ([dropCopy isSameView])
     {
-      v8 = [(ICTableColumnTextView *)self selectedRange];
-      v9 = [(ICTableColumnTextView *)self columnTextStorage];
-      [v9 logicalRangeForLocation:v8];
+      selectedRange = [(ICTableColumnTextView *)self selectedRange];
+      columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+      [columnTextStorage logicalRangeForLocation:selectedRange];
 
-      v10 = [(ICTableColumnTextView *)self beginningOfDocument];
-      v11 = [v5 dropPosition];
-      [(ICTableColumnTextView *)self offsetFromPosition:v10 toPosition:v11];
+      beginningOfDocument = [(ICTableColumnTextView *)self beginningOfDocument];
+      dropPosition = [dropCopy dropPosition];
+      [(ICTableColumnTextView *)self offsetFromPosition:beginningOfDocument toPosition:dropPosition];
 
       v12 = 3;
     }
@@ -1193,73 +1193,73 @@ LABEL_12:
   return v13;
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
   v3.receiver = self;
   v3.super_class = ICTableColumnTextView;
-  [(ICTableColumnTextView *)&v3 toggleBoldface:a3];
+  [(ICTableColumnTextView *)&v3 toggleBoldface:boldface];
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
   v3.receiver = self;
   v3.super_class = ICTableColumnTextView;
-  [(ICTableColumnTextView *)&v3 toggleItalics:a3];
+  [(ICTableColumnTextView *)&v3 toggleItalics:italics];
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
   v3.receiver = self;
   v3.super_class = ICTableColumnTextView;
-  [(ICTableColumnTextView *)&v3 toggleUnderline:a3];
+  [(ICTableColumnTextView *)&v3 toggleUnderline:underline];
 }
 
 - (id)inputAssistantItem
 {
-  v2 = [(ICEditingTextView *)self editorController];
-  v3 = [v2 textView];
-  v4 = [v3 inputAssistantItem];
+  editorController = [(ICEditingTextView *)self editorController];
+  textView = [editorController textView];
+  inputAssistantItem = [textView inputAssistantItem];
 
-  return v4;
+  return inputAssistantItem;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([(ICTableColumnTextView *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/ICTableColumnTextView_iOS.m"]& 1) != 0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([(ICTableColumnTextView *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/ICTableColumnTextView_iOS.m"]& 1) != 0)
   {
-    v13 = [(ICTableColumnTextView *)self ic_shouldIgnoreObserveValue:v12 ofObject:v11 forKeyPath:v10];
+    v13 = [(ICTableColumnTextView *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [(ICEditingTextView *)self editorController];
-      v15 = v14;
-      if (v14 == v11)
+      editorController = [(ICEditingTextView *)self editorController];
+      v15 = editorController;
+      if (editorController == objectCopy)
       {
-        v16 = [v10 isEqual:@"textView.editable"];
+        v16 = [pathCopy isEqual:@"textView.editable"];
 
         if (v16)
         {
-          v17 = [(ICEditingTextView *)self editorController];
-          v18 = [v17 textView];
-          v19 = [v18 isEditable];
+          editorController2 = [(ICEditingTextView *)self editorController];
+          textView = [editorController2 textView];
+          isEditable = [textView isEditable];
 
-          if (v19 != [(ICTableColumnTextView *)self isEditable])
+          if (isEditable != [(ICTableColumnTextView *)self isEditable])
           {
-            v20 = [(ICTableColumnTextView *)self columnTextStorage];
-            [v20 setShouldPreventUndoCommands:1];
+            columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+            [columnTextStorage setShouldPreventUndoCommands:1];
 
-            v21 = [(ICTableColumnTextView *)self columnTextStorage];
-            [v21 beginPreventEditingUpdates];
+            columnTextStorage2 = [(ICTableColumnTextView *)self columnTextStorage];
+            [columnTextStorage2 beginPreventEditingUpdates];
 
-            [(ICTableColumnTextView *)self setEditable:v19];
-            v22 = [(ICTableColumnTextView *)self columnTextStorage];
-            [v22 endPreventEditingUpdates];
+            [(ICTableColumnTextView *)self setEditable:isEditable];
+            columnTextStorage3 = [(ICTableColumnTextView *)self columnTextStorage];
+            [columnTextStorage3 endPreventEditingUpdates];
 
-            v23 = [(ICTableColumnTextView *)self columnTextStorage];
-            [v23 setShouldPreventUndoCommands:0];
+            columnTextStorage4 = [(ICTableColumnTextView *)self columnTextStorage];
+            [columnTextStorage4 setShouldPreventUndoCommands:0];
           }
         }
       }
@@ -1274,31 +1274,31 @@ LABEL_12:
   {
     v24.receiver = self;
     v24.super_class = ICTableColumnTextView;
-    [(ICTableColumnTextView *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICTableColumnTextView *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (id)baseAttributedStringForAccessibility
 {
   objc_opt_class();
-  v3 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v4 = ICDynamicCast();
 
   v9 = 0;
   v10 = 0;
   v5 = [v4 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), &v9}];
-  v6 = [(ICTableColumnTextView *)self textStorage];
-  v7 = [v6 attributedSubstringFromRange:{v9, v10}];
+  textStorage2 = [(ICTableColumnTextView *)self textStorage];
+  v7 = [textStorage2 attributedSubstringFromRange:{v9, v10}];
 
   return v7;
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
-  location = a3->location;
-  length = a3->length;
-  v6 = [(ICTableColumnTextView *)self baseAttributedStringForAccessibility];
-  v7 = [(ICTableColumnTextView *)self _icaxAccessibilityAttributedStringFromOriginalString:v6];
+  location = range->location;
+  length = range->length;
+  baseAttributedStringForAccessibility = [(ICTableColumnTextView *)self baseAttributedStringForAccessibility];
+  v7 = [(ICTableColumnTextView *)self _icaxAccessibilityAttributedStringFromOriginalString:baseAttributedStringForAccessibility];
 
   if (location <= [v7 length])
   {
@@ -1324,24 +1324,24 @@ LABEL_12:
   return v8;
 }
 
-- (id)_icaxAccessibilityAttributedStringFromOriginalString:(id)a3
+- (id)_icaxAccessibilityAttributedStringFromOriginalString:(id)string
 {
   v4 = MEMORY[0x277CCAB48];
-  v5 = a3;
+  stringCopy = string;
   v6 = [v4 alloc];
-  v7 = [v5 string];
-  v8 = [v6 initWithString:v7];
+  string = [stringCopy string];
+  v8 = [v6 initWithString:string];
 
   v9 = *MEMORY[0x277D74060];
-  v10 = [v5 length];
+  v10 = [stringCopy length];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalString___block_invoke;
   v17 = &unk_2781AC8D0;
-  v18 = self;
+  selfCopy = self;
   v19 = v8;
   v11 = v8;
-  [v5 enumerateAttribute:v9 inRange:0 options:v10 usingBlock:{0, &v14}];
+  [stringCopy enumerateAttribute:v9 inRange:0 options:v10 usingBlock:{0, &v14}];
 
   v12 = [v11 copy];
 
@@ -1365,21 +1365,21 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v4 = [(ICTableColumnTextView *)self selectedRange];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
 
-  v5 = [(ICTableColumnTextView *)self rangeInSelectedCellFromRangeInTextView:v4, v3];
+  v5 = [(ICTableColumnTextView *)self rangeInSelectedCellFromRangeInTextView:selectedRange, v3];
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a3.location + a3.length;
-  v7 = [(ICTableColumnTextView *)self baseAttributedStringForAccessibility];
-  v8 = [v7 length];
+  length = range.length;
+  location = range.location;
+  v6 = range.location + range.length;
+  baseAttributedStringForAccessibility = [(ICTableColumnTextView *)self baseAttributedStringForAccessibility];
+  v8 = [baseAttributedStringForAccessibility length];
 
   if (v6 <= v8)
   {
@@ -1389,9 +1389,9 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   }
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  v4 = [(ICTableColumnTextView *)self rangeInTextViewFromRangeInSelectedCell:a3.location, a3.length];
+  v4 = [(ICTableColumnTextView *)self rangeInTextViewFromRangeInSelectedCell:range.location, range.length];
   v10.receiver = self;
   v10.super_class = ICTableColumnTextView;
   [(ICEditingTextView *)&v10 _accessibilityBoundsForRange:v4, v5];
@@ -1402,21 +1402,21 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   return result;
 }
 
-- (_NSRange)rangeInSelectedCellFromRangeInTextView:(_NSRange)a3
+- (_NSRange)rangeInSelectedCellFromRangeInTextView:(_NSRange)view
 {
   v14 = 0;
   v15 = 0;
   objc_opt_class();
-  v4 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v5 = ICDynamicCast();
 
   v6 = [v5 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), &v14}];
   if (v6)
   {
-    v7 = [(ICTableColumnTextView *)self selectedRange];
-    if (v7 >= v14)
+    selectedRange = [(ICTableColumnTextView *)self selectedRange];
+    if (selectedRange >= v14)
     {
-      v8 = v7 - v14;
+      v8 = selectedRange - v14;
     }
 
     else
@@ -1450,14 +1450,14 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   return result;
 }
 
-- (_NSRange)rangeInTextViewFromRangeInSelectedCell:(_NSRange)a3
+- (_NSRange)rangeInTextViewFromRangeInSelectedCell:(_NSRange)cell
 {
-  length = a3.length;
-  location = a3.location;
+  length = cell.length;
+  location = cell.location;
   v12 = 0;
   v13 = 0;
   objc_opt_class();
-  v6 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v7 = ICDynamicCast();
 
   v8 = [v7 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), &v12}];
@@ -1486,13 +1486,13 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
 - (CGRect)accessibilityFrame
 {
   objc_opt_class();
-  v3 = [(ICTableColumnTextView *)self cellDelegate];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
   v4 = ICDynamicCast();
 
-  v5 = [v4 tableAXController];
-  v6 = [v5 selectedCells];
-  v7 = [v6 firstObject];
-  [v7 accessibilityFrame];
+  tableAXController = [v4 tableAXController];
+  selectedCells = [tableAXController selectedCells];
+  firstObject = [selectedCells firstObject];
+  [firstObject accessibilityFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1509,51 +1509,51 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   return result;
 }
 
-- (BOOL)scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  v5 = [(ICTableColumnTextView *)self cellDelegate:a3];
+  v5 = [(ICTableColumnTextView *)self cellDelegate:interaction];
   if ([v5 isNoteEditable])
   {
-    v6 = [(ICTableColumnTextView *)self canBecomeFirstResponder];
+    canBecomeFirstResponder = [(ICTableColumnTextView *)self canBecomeFirstResponder];
   }
 
   else
   {
-    v6 = 0;
+    canBecomeFirstResponder = 0;
   }
 
-  return v6;
+  return canBecomeFirstResponder;
 }
 
-- (void)indirectScribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)indirectScribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  v5 = [(ICTableColumnTextView *)self cellDelegate:a3];
+  v5 = [(ICTableColumnTextView *)self cellDelegate:interaction];
   [v5 beginEditingSelectedRangeInTextView:self];
 }
 
-- (void)indirectScribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)indirectScribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
-  v10 = a5;
-  v6 = [(ICTableColumnTextView *)self columnTextStorage];
-  v7 = [v6 populatedRows];
-  v8 = [v7 count];
+  completionCopy = completion;
+  columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+  populatedRows = [columnTextStorage populatedRows];
+  v8 = [populatedRows count];
 
   if (v8)
   {
-    v9 = [v6 populatedRows];
-    v10[2](v10, v9);
+    populatedRows2 = [columnTextStorage populatedRows];
+    completionCopy[2](completionCopy, populatedRows2);
   }
 
   else
   {
-    v10[2](v10, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
-- (BOOL)indirectScribbleInteraction:(id)a3 isElementFocused:(id)a4
+- (BOOL)indirectScribbleInteraction:(id)interaction isElementFocused:(id)focused
 {
-  v5 = a4;
-  v6 = [(ICTableColumnTextView *)self isFirstResponder];
+  focusedCopy = focused;
+  isFirstResponder = [(ICTableColumnTextView *)self isFirstResponder];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1564,7 +1564,7 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   v7 = ICDynamicCast();
   if (v7)
   {
-    v8 = v6;
+    v8 = isFirstResponder;
   }
 
   else
@@ -1574,17 +1574,17 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
 
   if (v8 == 1)
   {
-    v9 = [(ICTableColumnTextView *)self columnTextStorage];
-    v10 = [v9 rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), 0}];
-    LOBYTE(v6) = [v10 isEqual:v7];
+    columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+    v10 = [columnTextStorage rowAtIndex:-[ICTableColumnTextView selectedRange](self rowRange:{"selectedRange"), 0}];
+    LOBYTE(isFirstResponder) = [v10 isEqual:v7];
   }
 
-  return v6;
+  return isFirstResponder;
 }
 
-- (CGRect)indirectScribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)indirectScribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1595,8 +1595,8 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   v6 = ICDynamicCast();
   if (v6)
   {
-    v7 = [(ICTableColumnTextView *)self cellDelegate];
-    [v7 frameOfCellForColumnTextView:self row:v6];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate frameOfCellForColumnTextView:self row:v6];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -1622,12 +1622,12 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   return result;
 }
 
-- (void)indirectScribbleInteraction:(id)a3 focusElementIfNeeded:(id)a4 referencePoint:(CGPoint)a5 completion:(id)a6
+- (void)indirectScribbleInteraction:(id)interaction focusElementIfNeeded:(id)needed referencePoint:(CGPoint)point completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
-  v24 = a4;
-  v10 = a6;
+  y = point.y;
+  x = point.x;
+  neededCopy = needed;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1636,9 +1636,9 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
 
   objc_opt_class();
   v11 = ICDynamicCast();
-  v12 = [(ICTableColumnTextView *)self columnTextStorage];
-  v13 = v12;
-  if (v11 && ([v12 populatedRows], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v11), v14, v15))
+  columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+  v13 = columnTextStorage;
+  if (v11 && ([columnTextStorage populatedRows], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "containsObject:", v11), v14, v15))
   {
     [(ICTableColumnTextView *)self becomeFirstResponder];
     v16 = [v13 characterRangeForRowID:v11];
@@ -1661,8 +1661,8 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
       v21 = [(ICTableColumnTextView *)self closestPositionToPoint:x, y];
       if (v21)
       {
-        v22 = [(ICTableColumnTextView *)self beginningOfDocument];
-        v23 = [(ICTableColumnTextView *)self offsetFromPosition:v22 toPosition:v21];
+        beginningOfDocument = [(ICTableColumnTextView *)self beginningOfDocument];
+        v23 = [(ICTableColumnTextView *)self offsetFromPosition:beginningOfDocument toPosition:v21];
 
         [(ICTableColumnTextView *)self setSelectedRange:v23, 0];
       }
@@ -1674,7 +1674,7 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
     self = 0;
   }
 
-  v10[2](v10, self);
+  completionCopy[2](completionCopy, self);
 }
 
 - (void)setupMenuController
@@ -1682,39 +1682,39 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   v5[1] = *MEMORY[0x277D85DE8];
   if (ICDebugModeEnabled())
   {
-    v2 = [MEMORY[0x277D75718] sharedMenuController];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
     v3 = [objc_alloc(MEMORY[0x277D75728]) initWithTitle:@"Tags" action:sel_openExperimentalHashtagUI_];
     v5[0] = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
-    [v2 ic_addMenuItemsIfNecessary:v4];
+    [mEMORY[0x277D75718] ic_addMenuItemsIfNecessary:v4];
   }
 }
 
-- (void)openExperimentalHashtagUI:(id)a3
+- (void)openExperimentalHashtagUI:(id)i
 {
   if (ICDebugModeEnabled())
   {
     v6 = objc_alloc_init(ICHashtagViewController);
     [(ICHashtagViewController *)v6 setDelegate:self];
-    v4 = [(ICTableColumnTextView *)self cellDelegate];
-    v5 = [v4 viewController];
-    [v5 presentViewController:v6 animated:1 completion:0];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    viewController = [cellDelegate viewController];
+    [viewController presentViewController:v6 animated:1 completion:0];
   }
 }
 
-- (void)hashtagViewController:(id)a3 insertHashtagWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertHashtagWithText:(id)text
 {
-  v5 = a4;
-  v6 = [(ICTableColumnTextView *)self cellDelegate];
-  v15 = [v6 account];
+  textCopy = text;
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  account = [cellDelegate account];
 
-  v7 = [(ICTableColumnTextView *)self cellDelegate];
-  v8 = [v7 note];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate2 note];
 
-  v9 = [(ICTableColumnTextView *)self cellDelegate];
-  v10 = [v9 attachment];
+  cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+  attachment = [cellDelegate3 attachment];
 
-  v11 = [MEMORY[0x277D35EE0] hashtagWithDisplayText:v5 account:v15 createIfNecessary:1];
+  v11 = [MEMORY[0x277D35EE0] hashtagWithDisplayText:textCopy account:account createIfNecessary:1];
 
   if (!v11)
   {
@@ -1722,47 +1722,47 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   }
 
   v12 = MEMORY[0x277D35EF8];
-  v13 = [v11 displayText];
-  v14 = [v12 createHashtagAttachmentIfApplicableWithHashtagText:v13 forHashtag:v11 note:v8 parentAttachment:v10];
+  displayText = [v11 displayText];
+  v14 = [v12 createHashtagAttachmentIfApplicableWithHashtagText:displayText forHashtag:v11 note:note parentAttachment:attachment];
 
   if (v14)
   {
-    [(ICTableColumnTextView *)self insertInlineAttachment:v14 saveAndResumeEditingForAttachment:v10 inNote:v8];
+    [(ICTableColumnTextView *)self insertInlineAttachment:v14 saveAndResumeEditingForAttachment:attachment inNote:note];
   }
 }
 
-- (void)hashtagViewController:(id)a3 insertUnknownInlineAttachmentWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertUnknownInlineAttachmentWithText:(id)text
 {
-  v5 = a4;
-  v6 = [(ICTableColumnTextView *)self cellDelegate];
-  v12 = [v6 note];
+  textCopy = text;
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate note];
 
-  v7 = [(ICTableColumnTextView *)self cellDelegate];
-  v8 = [v7 attachment];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  attachment = [cellDelegate2 attachment];
 
   v9 = MEMORY[0x277D35EF8];
   v10 = [*MEMORY[0x277D35D48] stringByAppendingString:@".unknown"];
-  v11 = [v9 createInlineAttachmentIfApplicableWithTypeUTI:v10 altText:v5 tokenContentIdentifier:v5 note:v12 parentAttachment:v8];
+  v11 = [v9 createInlineAttachmentIfApplicableWithTypeUTI:v10 altText:textCopy tokenContentIdentifier:textCopy note:note parentAttachment:attachment];
 
   if (v11)
   {
-    [(ICTableColumnTextView *)self insertInlineAttachment:v11 saveAndResumeEditingForAttachment:v8 inNote:v12];
+    [(ICTableColumnTextView *)self insertInlineAttachment:v11 saveAndResumeEditingForAttachment:attachment inNote:note];
   }
 }
 
-- (void)hashtagViewController:(id)a3 insertFutureHashtagWithText:(id)a4
+- (void)hashtagViewController:(id)controller insertFutureHashtagWithText:(id)text
 {
-  v5 = a4;
-  v6 = [(ICTableColumnTextView *)self cellDelegate];
-  v15 = [v6 account];
+  textCopy = text;
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  account = [cellDelegate account];
 
-  v7 = [(ICTableColumnTextView *)self cellDelegate];
-  v8 = [v7 note];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate2 note];
 
-  v9 = [(ICTableColumnTextView *)self cellDelegate];
-  v10 = [v9 attachment];
+  cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+  attachment = [cellDelegate3 attachment];
 
-  v11 = [MEMORY[0x277D35EE0] hashtagWithDisplayText:v5 account:v15 createIfNecessary:1];
+  v11 = [MEMORY[0x277D35EE0] hashtagWithDisplayText:textCopy account:account createIfNecessary:1];
 
   if (!v11)
   {
@@ -1770,34 +1770,34 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   }
 
   v12 = MEMORY[0x277D35EF8];
-  v13 = [v11 displayText];
-  v14 = [v12 createHashtagAttachmentIfApplicableWithHashtagText:v13 forHashtag:v11 note:v8 parentAttachment:v10];
+  displayText = [v11 displayText];
+  v14 = [v12 createHashtagAttachmentIfApplicableWithHashtagText:displayText forHashtag:v11 note:note parentAttachment:attachment];
 
   if (v14)
   {
     [v14 requireMinimumSupportedVersionAndPropagateToChildObjects:{objc_msgSend(MEMORY[0x277D35E80], "currentNotesVersion") + 1}];
-    [(ICTableColumnTextView *)self insertInlineAttachment:v14 saveAndResumeEditingForAttachment:v10 inNote:v8];
+    [(ICTableColumnTextView *)self insertInlineAttachment:v14 saveAndResumeEditingForAttachment:attachment inNote:note];
   }
 }
 
-- (void)insertInlineAttachment:(id)a3 saveAndResumeEditingForAttachment:(id)a4 inNote:(id)a5
+- (void)insertInlineAttachment:(id)attachment saveAndResumeEditingForAttachment:(id)forAttachment inNote:(id)note
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a3;
-  v10 = [(ICTableColumnTextView *)self selectedRange];
-  [(ICTableColumnTextView *)self insertInlineAttachment:v12 saveAndResumeEditingForAttachment:v9 inNote:v8 forRange:v10, v11];
+  noteCopy = note;
+  forAttachmentCopy = forAttachment;
+  attachmentCopy = attachment;
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
+  [(ICTableColumnTextView *)self insertInlineAttachment:attachmentCopy saveAndResumeEditingForAttachment:forAttachmentCopy inNote:noteCopy forRange:selectedRange, v11];
 }
 
-- (void)insertInlineAttachment:(id)a3 saveAndResumeEditingForAttachment:(id)a4 inNote:(id)a5 forRange:(_NSRange)a6
+- (void)insertInlineAttachment:(id)attachment saveAndResumeEditingForAttachment:(id)forAttachment inNote:(id)note forRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  length = range.length;
+  location = range.location;
+  attachmentCopy = attachment;
+  forAttachmentCopy = forAttachment;
+  noteCopy = note;
   objc_opt_class();
-  v14 = [(ICTableColumnTextView *)self textStorage];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
   v15 = ICCheckedDynamicCast();
 
   if (v15)
@@ -1815,7 +1815,7 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
       location = [v15 length];
     }
 
-    v17 = [MEMORY[0x277D367F0] textAttachmentWithAttachment:v11];
+    v17 = [MEMORY[0x277D367F0] textAttachmentWithAttachment:attachmentCopy];
     v18 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v17];
     v19 = [v18 mutableCopy];
 
@@ -1823,39 +1823,39 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
     [v15 replaceCharactersInRange:location withAttributedString:{length, v19}];
     [(ICTableColumnTextView *)self setSelectedRange:location + length, 0];
     [v15 fixupAfterEditing];
-    v20 = [(ICTableColumnTextView *)self cellDelegate];
-    [v20 setNeedsSaveAfterUserEdit];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate setNeedsSaveAfterUserEdit];
 
-    [v11 updateChangeCountWithReason:@"Inserted inline attachment in table"];
-    [v12 updateChangeCountWithReason:@"Inserted inline attachment in table"];
-    [v13 updateChangeCountWithReason:@"Inserted inline attachment in table"];
-    [v13 save];
+    [attachmentCopy updateChangeCountWithReason:@"Inserted inline attachment in table"];
+    [forAttachmentCopy updateChangeCountWithReason:@"Inserted inline attachment in table"];
+    [noteCopy updateChangeCountWithReason:@"Inserted inline attachment in table"];
+    [noteCopy save];
   }
 }
 
-- (void)openLinkEditor:(id)a3
+- (void)openLinkEditor:(id)editor
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D35DF0];
-  v5 = [(ICTableColumnTextView *)self textStorage];
-  v6 = [(ICTableColumnTextView *)self selectedRange];
-  v8 = [v4 URLForAttributedString:v5 range:{v6, v7}];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
+  v8 = [v4 URLForAttributedString:textStorage range:{selectedRange, v7}];
 
-  v9 = [(ICTableColumnTextView *)self selectedText];
-  v10 = [(ICTableColumnTextView *)self textStorage];
-  v11 = [v10 attribute:*MEMORY[0x277D74060] atIndex:-[ICTableColumnTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
+  selectedText = [(ICTableColumnTextView *)self selectedText];
+  textStorage2 = [(ICTableColumnTextView *)self textStorage];
+  v11 = [textStorage2 attribute:*MEMORY[0x277D74060] atIndex:-[ICTableColumnTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
 
   objc_opt_class();
   v30 = v11;
   v29 = ICDynamicCast();
-  v12 = [v29 attachment];
+  attachment = [v29 attachment];
   v31 = xmmword_2154BBE70;
   if (v8 && (-[ICTableColumnTextView textStorage](self, "textStorage"), v13 = objc_claimAutoreleasedReturnValue(), v14 = *MEMORY[0x277D740E8], v15 = -[ICTableColumnTextView selectedRange](self, "selectedRange"), -[ICTableColumnTextView textStorage](self, "textStorage"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v13 attribute:v14 atIndex:v15 longestEffectiveRange:&v31 inRange:{0, objc_msgSend(v16, "length")}], v16, v13, v31 != 0x7FFFFFFFFFFFFFFFLL) && *(&v31 + 1))
   {
     v18 = [(ICTableColumnTextView *)self ic_textRangeFromCharacterRange:?];
     v19 = [(ICTableColumnTextView *)self textInRange:v18];
 
-    v9 = v19;
+    selectedText = v19;
   }
 
   else
@@ -1864,63 +1864,63 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
     *(&v31 + 1) = v20;
   }
 
-  v21 = [(ICTableColumnTextView *)self cellDelegate];
-  v22 = [v21 note];
-  v23 = [v22 mergeableString];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate note];
+  mergeableString = [note mergeableString];
   v24 = [MEMORY[0x277CCAE60] valueWithRange:v31];
   v32[0] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v26 = [v23 selectionForCharacterRanges:v25 selectionAffinity:1];
+  v26 = [mergeableString selectionForCharacterRanges:v25 selectionAffinity:1];
 
-  v27 = [(ICEditingTextView *)self editorController];
-  v28 = [ICLinkEditorControllerHelper presentFromViewController:v27 delegate:self text:v9 url:v8 attachment:v12 stringSelection:v26 range:v31 addApproach:3];
+  editorController = [(ICEditingTextView *)self editorController];
+  v28 = [ICLinkEditorControllerHelper presentFromViewController:editorController delegate:self text:selectedText url:v8 attachment:attachment stringSelection:v26 range:v31 addApproach:3];
 }
 
-- (void)createLink:(id)a3 title:(id)a4 textSelection:(id)a5 range:(_NSRange)a6 addApproach:(int64_t)a7
+- (void)createLink:(id)link title:(id)title textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ICTableColumnTextView *)self textStorage];
-  v43 = [v14 attributesAtIndex:location effectiveRange:0];
+  length = range.length;
+  location = range.location;
+  titleCopy = title;
+  linkCopy = link;
+  textStorage = [(ICTableColumnTextView *)self textStorage];
+  v43 = [textStorage attributesAtIndex:location effectiveRange:0];
 
-  v15 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v12];
-  v16 = [v15 ic_range];
-  [v15 addAttributes:v43 range:{v16, v17}];
+  v15 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:titleCopy];
+  ic_range = [v15 ic_range];
+  [v15 addAttributes:v43 range:{ic_range, v17}];
   v18 = *MEMORY[0x277D740E8];
-  v19 = [v15 ic_range];
-  [v15 addAttribute:v18 value:v13 range:{v19, v20}];
+  ic_range2 = [v15 ic_range];
+  [v15 addAttribute:v18 value:linkCopy range:{ic_range2, v20}];
   Helper_x8__DDResultAttributeName = gotLoadHelper_x8__DDResultAttributeName(v21);
   v24 = **(v23 + 472);
-  v25 = [v15 ic_range];
-  [v15 removeAttribute:v24 range:{v25, v26}];
-  v27 = [(ICTableColumnTextView *)self textStorage];
+  ic_range3 = [v15 ic_range];
+  [v15 removeAttribute:v24 range:{ic_range3, v26}];
+  textStorage2 = [(ICTableColumnTextView *)self textStorage];
   v28 = [v15 copy];
-  [v27 replaceCharactersInRange:location withAttributedString:{length, v28}];
+  [textStorage2 replaceCharactersInRange:location withAttributedString:{length, v28}];
 
-  v29 = [(ICTableColumnTextView *)self cellDelegate];
-  [v29 setNeedsSaveAfterUserEdit];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate setNeedsSaveAfterUserEdit];
 
-  v30 = [(ICTableColumnTextView *)self cellDelegate];
-  v31 = [v30 attachment];
-  [v31 updateChangeCountWithReason:@"Created link in table"];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  attachment = [cellDelegate2 attachment];
+  [attachment updateChangeCountWithReason:@"Created link in table"];
 
-  v32 = [(ICTableColumnTextView *)self cellDelegate];
-  v33 = [v32 note];
-  [v33 updateChangeCountWithReason:@"Created link in table"];
+  cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate3 note];
+  [note updateChangeCountWithReason:@"Created link in table"];
 
-  v34 = [(ICTableColumnTextView *)self cellDelegate];
-  v35 = [v34 note];
-  [v35 save];
+  cellDelegate4 = [(ICTableColumnTextView *)self cellDelegate];
+  note2 = [cellDelegate4 note];
+  [note2 save];
 
-  v36 = [(ICTableColumnTextView *)self eventReporter];
-  v37 = [(ICTableColumnTextView *)self cellDelegate];
-  v38 = [v37 note];
-  [v36 submitAddLinkEvent:v38 addApproach:a7 url:v13];
+  eventReporter = [(ICTableColumnTextView *)self eventReporter];
+  cellDelegate5 = [(ICTableColumnTextView *)self cellDelegate];
+  note3 = [cellDelegate5 note];
+  [eventReporter submitAddLinkEvent:note3 addApproach:approach url:linkCopy];
 
-  v39 = [(ICEditingTextView *)self editorController];
-  [v39 startEditing];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController startEditing];
 
   [(ICTableColumnTextView *)self becomeFirstResponder];
   v40 = [v15 length];
@@ -1947,45 +1947,45 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   [(ICTableColumnTextView *)self setSelectedRange:v41, v42];
 }
 
-- (void)createNoteLinkAttachment:(id)a3 textSelection:(id)a4 range:(_NSRange)a5 addApproach:(int64_t)a6
+- (void)createNoteLinkAttachment:(id)attachment textSelection:(id)selection range:(_NSRange)range addApproach:(int64_t)approach
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v10 = MEMORY[0x277D35F28];
-  v11 = a3;
-  v12 = [(ICTableColumnTextView *)self cellDelegate];
-  v13 = [v12 note];
-  v14 = [v13 managedObjectContext];
-  v15 = [v10 noteWithIdentifier:v11 context:v14];
+  attachmentCopy = attachment;
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate note];
+  managedObjectContext = [note managedObjectContext];
+  v15 = [v10 noteWithIdentifier:attachmentCopy context:managedObjectContext];
 
   if (v15)
   {
     v16 = MEMORY[0x277D35EF8];
-    v17 = [(ICTableColumnTextView *)self cellDelegate];
-    v18 = [v17 note];
-    v19 = [v16 newLinkAttachmentToNote:v15 fromNote:v18 parentAttachment:0];
+    cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+    note2 = [cellDelegate2 note];
+    v19 = [v16 newLinkAttachmentToNote:v15 fromNote:note2 parentAttachment:0];
 
     if (v19)
     {
-      v20 = [(ICTableColumnTextView *)self cellDelegate];
-      v21 = [v20 attachment];
-      v22 = [(ICTableColumnTextView *)self cellDelegate];
-      v23 = [v22 note];
-      [(ICTableColumnTextView *)self insertInlineAttachment:v19 saveAndResumeEditingForAttachment:v21 inNote:v23 forRange:location, length];
+      cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+      attachment = [cellDelegate3 attachment];
+      cellDelegate4 = [(ICTableColumnTextView *)self cellDelegate];
+      note3 = [cellDelegate4 note];
+      [(ICTableColumnTextView *)self insertInlineAttachment:v19 saveAndResumeEditingForAttachment:attachment inNote:note3 forRange:location, length];
 
-      v24 = [(ICTableColumnTextView *)self eventReporter];
-      v25 = [(ICTableColumnTextView *)self cellDelegate];
-      v26 = [v25 note];
-      [v24 submitAddLinkEvent:v26 addApproach:a6 contentType:1 isTokenized:1];
+      eventReporter = [(ICTableColumnTextView *)self eventReporter];
+      cellDelegate5 = [(ICTableColumnTextView *)self cellDelegate];
+      note4 = [cellDelegate5 note];
+      [eventReporter submitAddLinkEvent:note4 addApproach:approach contentType:1 isTokenized:1];
 
-      v27 = [(ICEditingTextView *)self editorController];
-      [v27 startEditing];
+      editorController = [(ICEditingTextView *)self editorController];
+      [editorController startEditing];
 
       [(ICTableColumnTextView *)self becomeFirstResponder];
       if (length)
       {
-        v28 = [v19 displayText];
-        -[ICTableColumnTextView setSelectedRange:](self, "setSelectedRange:", location, [v28 length]);
+        displayText = [v19 displayText];
+        -[ICTableColumnTextView setSelectedRange:](self, "setSelectedRange:", location, [displayText length]);
       }
 
       else
@@ -2006,43 +2006,43 @@ void __78__ICTableColumnTextView__icaxAccessibilityAttributedStringFromOriginalS
   }
 }
 
-- (void)removeLinksFromTextSelection:(id)a3 range:(_NSRange)a4
+- (void)removeLinksFromTextSelection:(id)selection range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(ICTableColumnTextView *)self textStorage];
-  [v7 removeAttribute:*MEMORY[0x277D740E8] range:{location, length}];
+  length = range.length;
+  location = range.location;
+  textStorage = [(ICTableColumnTextView *)self textStorage];
+  [textStorage removeAttribute:*MEMORY[0x277D740E8] range:{location, length}];
 
-  v8 = [(ICTableColumnTextView *)self cellDelegate];
-  [v8 setNeedsSaveAfterUserEdit];
+  cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+  [cellDelegate setNeedsSaveAfterUserEdit];
 
-  v9 = [(ICTableColumnTextView *)self cellDelegate];
-  v10 = [v9 attachment];
-  [v10 updateChangeCountWithReason:@"Removed link from table"];
+  cellDelegate2 = [(ICTableColumnTextView *)self cellDelegate];
+  attachment = [cellDelegate2 attachment];
+  [attachment updateChangeCountWithReason:@"Removed link from table"];
 
-  v11 = [(ICTableColumnTextView *)self cellDelegate];
-  v12 = [v11 note];
-  [v12 updateChangeCountWithReason:@"Removed link from table"];
+  cellDelegate3 = [(ICTableColumnTextView *)self cellDelegate];
+  note = [cellDelegate3 note];
+  [note updateChangeCountWithReason:@"Removed link from table"];
 
-  v14 = [(ICTableColumnTextView *)self cellDelegate];
-  v13 = [v14 note];
-  [v13 save];
+  cellDelegate4 = [(ICTableColumnTextView *)self cellDelegate];
+  note2 = [cellDelegate4 note];
+  [note2 save];
 }
 
 - (void)removeLinksFromCurrentSelection
 {
-  v3 = [(ICTableColumnTextView *)self textStorage];
-  v4 = [(ICTableColumnTextView *)self selectedRange];
+  textStorage = [(ICTableColumnTextView *)self textStorage];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
   v6 = v5;
-  [v3 removeAttribute:*MEMORY[0x277D740E8] range:{v4, v5}];
+  [textStorage removeAttribute:*MEMORY[0x277D740E8] range:{selectedRange, v5}];
   v7 = *MEMORY[0x277D74060];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke;
   v9[3] = &unk_2781AC5D8;
-  v10 = v3;
-  v8 = v3;
-  [v8 enumerateAttribute:v7 inRange:v4 options:v6 usingBlock:{0, v9}];
+  v10 = textStorage;
+  v8 = textStorage;
+  [v8 enumerateAttribute:v7 inRange:selectedRange options:v6 usingBlock:{0, v9}];
 }
 
 void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -2075,8 +2075,8 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
     eventReporter = self->_eventReporter;
     self->_eventReporter = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
   }
 
   v9 = self->_eventReporter;
@@ -2084,17 +2084,17 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
   return v9;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
 - (ICTableColumnTextViewDelegate)cellDelegate
@@ -2135,16 +2135,16 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
   return WeakRetained;
 }
 
-- (void)moveToBeginningOfCell:(id)a3
+- (void)moveToBeginningOfCell:(id)cell
 {
-  v4 = [(ICTableColumnTextView *)self selectedRange];
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  v6 = [v5 logicalRangeForLocation:v4];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v6 = [tTTextStorage logicalRangeForLocation:selectedRange];
 
-  if (v4 == v6)
+  if (selectedRange == v6)
   {
-    v7 = [(ICTableColumnTextView *)self cellDelegate];
-    [v7 moveUpCell];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate moveUpCell];
   }
 
   else
@@ -2154,18 +2154,18 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
   }
 }
 
-- (void)moveToEndOfCell:(id)a3
+- (void)moveToEndOfCell:(id)cell
 {
-  v4 = [(ICTableColumnTextView *)self selectedRange];
-  v6 = v4 + v5;
-  v7 = [(ICEditingTextView *)self TTTextStorage];
-  v8 = [v7 logicalRangeForLocation:v6];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
+  v6 = selectedRange + v5;
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v8 = [tTTextStorage logicalRangeForLocation:v6];
   v10 = v9;
 
   if (v6 == v8 + v10)
   {
-    v11 = [(ICTableColumnTextView *)self cellDelegate];
-    [v11 moveDownCell];
+    cellDelegate = [(ICTableColumnTextView *)self cellDelegate];
+    [cellDelegate moveDownCell];
   }
 
   else
@@ -2175,52 +2175,52 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
   }
 }
 
-- (void)moveToBeginningOfCellAndModifySelection:(id)a3
+- (void)moveToBeginningOfCellAndModifySelection:(id)selection
 {
-  v4 = [(ICTableColumnTextView *)self selectedRange];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
   v6 = v5;
-  v7 = [(ICEditingTextView *)self TTTextStorage];
-  v8 = [v7 logicalRangeForLocation:v4];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v8 = [tTTextStorage logicalRangeForLocation:selectedRange];
 
   v11.location = v8;
   v11.length = 0;
-  v12.location = v4;
+  v12.location = selectedRange;
   v12.length = v6;
   v9 = NSUnionRange(v11, v12);
 
   [(ICTableColumnTextView *)self setSelectedRange:v9.location, v9.length];
 }
 
-- (void)moveToEndOfCellAndModifySelection:(id)a3
+- (void)moveToEndOfCellAndModifySelection:(id)selection
 {
-  v4 = [(ICTableColumnTextView *)self selectedRange];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
   v6 = v5;
-  v7 = [(ICEditingTextView *)self TTTextStorage];
-  v8 = [v7 logicalRangeForLocation:v4];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v8 = [tTTextStorage logicalRangeForLocation:selectedRange];
   v10 = v9;
 
   v13.location = v8 + v10;
   v13.length = 0;
-  v14.location = v4;
+  v14.location = selectedRange;
   v14.length = v6;
   v11 = NSUnionRange(v13, v14);
 
   [(ICTableColumnTextView *)self setSelectedRange:v11.location, v11.length];
 }
 
-- (BOOL)atCellBoundaryForDirection:(unint64_t)a3
+- (BOOL)atCellBoundaryForDirection:(unint64_t)direction
 {
-  v5 = [(ICTableColumnTextView *)self selectedRange];
+  selectedRange = [(ICTableColumnTextView *)self selectedRange];
   v7 = v6;
   v20 = 0;
   v21 = 0;
-  v8 = [(ICTableColumnTextView *)self columnTextStorage];
-  v9 = [v8 rowAtIndex:v5 rowRange:&v20];
+  columnTextStorage = [(ICTableColumnTextView *)self columnTextStorage];
+  v9 = [columnTextStorage rowAtIndex:selectedRange rowRange:&v20];
   v10 = v20;
   v11 = v21;
   if (v21)
   {
-    v12 = v5 == v20;
+    v12 = selectedRange == v20;
   }
 
   else
@@ -2230,10 +2230,10 @@ void __56__ICTableColumnTextView_removeLinksFromCurrentSelection__block_invoke(u
 
   if (v12)
   {
-    v13 = [(ICTableColumnTextView *)self textStorage];
-    v14 = [v13 ic_writingDirectionAtIndex:v5];
+    textStorage = [(ICTableColumnTextView *)self textStorage];
+    v14 = [textStorage ic_writingDirectionAtIndex:selectedRange];
 
-    if (!(a3 | v14) || a3 == 1 && v14 == 1)
+    if (!(direction | v14) || direction == 1 && v14 == 1)
     {
       goto LABEL_16;
     }
@@ -2249,23 +2249,23 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v15 = v5 + v7;
+  v15 = selectedRange + v7;
   if (v15 != v11 + v10)
   {
     v18 = 0;
     goto LABEL_18;
   }
 
-  v16 = [(ICTableColumnTextView *)self textStorage];
-  v17 = [v16 ic_writingDirectionAtIndex:v15 - 1];
+  textStorage2 = [(ICTableColumnTextView *)self textStorage];
+  v17 = [textStorage2 ic_writingDirectionAtIndex:v15 - 1];
 
-  if (!a3 && v17 == 1)
+  if (!direction && v17 == 1)
   {
     goto LABEL_16;
   }
 
   v18 = 0;
-  if (a3 == 1 && !v17)
+  if (direction == 1 && !v17)
   {
     goto LABEL_16;
   }

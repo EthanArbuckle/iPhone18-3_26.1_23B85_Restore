@@ -1,14 +1,14 @@
 @interface IDVTrailingAccessoryLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9CoreIDVUI25IDVTrailingAccessoryLabel)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9CoreIDVUI25IDVTrailingAccessoryLabel)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)registerAccessoryWithView:(id)a3 withSize:(CGSize)a4 for:(id)a5;
+- (void)registerAccessoryWithView:(id)view withSize:(CGSize)size for:(id)for;
 - (void)unregisterAccessories;
 @end
 
 @implementation IDVTrailingAccessoryLabel
 
-- (_TtC9CoreIDVUI25IDVTrailingAccessoryLabel)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI25IDVTrailingAccessoryLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25IDVTrailingAccessoryLabel_attributedText) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI25IDVTrailingAccessoryLabel_trailingMargin) = 0x4043000000000000;
@@ -26,10 +26,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_2458B6870(1, 0.0, 0.0, width, 1.79769313e308);
 
   v6 = width;
@@ -49,20 +49,20 @@
   sub_2458B6870(0, v3, v4, v5, v6);
 }
 
-- (void)registerAccessoryWithView:(id)a3 withSize:(CGSize)a4 for:(id)a5
+- (void)registerAccessoryWithView:(id)view withSize:(CGSize)size for:(id)for
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v9 = sub_245910A04();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  sub_2458B5CD0(v12, v9, v11, width, height);
+  viewCopy = view;
+  selfCopy = self;
+  sub_2458B5CD0(viewCopy, v9, v11, width, height);
 }
 
 - (void)unregisterAccessories
 {
-  v2 = self;
+  selfCopy = self;
   sub_2458B5B6C();
 }
 

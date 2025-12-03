@@ -1,22 +1,22 @@
 @interface _NUPipelineEvaluationContext
 - (_NUPipelineEvaluationContext)init;
-- (id)dataForChannel:(id)a3;
+- (id)dataForChannel:(id)channel;
 - (id)debugDescription;
 - (id)description;
-- (void)beginScope:(id)a3;
+- (void)beginScope:(id)scope;
 - (void)dealloc;
-- (void)endScope:(id)a3;
-- (void)setChannelData:(id)a3;
-- (void)setData:(id)a3 forChannel:(id)a4;
+- (void)endScope:(id)scope;
+- (void)setChannelData:(id)data;
+- (void)setData:(id)data forChannel:(id)channel;
 @end
 
 @implementation _NUPipelineEvaluationContext
 
-- (void)setChannelData:(id)a3
+- (void)setChannelData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  if (!v21)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v5 = NUAssertLogger_5769();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v12;
         v24 = 2114;
@@ -49,8 +49,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -59,16 +59,16 @@
     _NUAssertFailHandler("[_NUPipelineEvaluationContext setChannelData:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3764, @"Invalid parameter not satisfying: %s", v17, v18, v19, v20, "channelData != nil");
   }
 
-  v4 = [(_NUPipelineEvaluationContext *)self currentScope];
-  [v4 setChannelData:v21];
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  [currentScope setChannelData:dataCopy];
 }
 
-- (void)setData:(id)a3 forChannel:(id)a4
+- (void)setData:(id)data forChannel:(id)channel
 {
   v45 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v6 = a4;
-  if (!v40)
+  dataCopy = data;
+  channelCopy = channel;
+  if (!dataCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -89,8 +89,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v22;
         v43 = 2114;
@@ -101,8 +101,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -111,7 +111,7 @@
     _NUAssertFailHandler("[_NUPipelineEvaluationContext setData:forChannel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3758, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "data != nil");
   }
 
-  if (!v6)
+  if (!channelCopy)
   {
     v15 = NUAssertLogger_5769();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -132,8 +132,8 @@
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v32 callStackSymbols];
+        v35 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -144,8 +144,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -154,15 +154,15 @@
     _NUAssertFailHandler("[_NUPipelineEvaluationContext setData:forChannel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3759, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "channel != nil");
   }
 
-  v7 = [(_NUPipelineEvaluationContext *)self currentScope];
-  [v7 setData:v40 forChannel:v6];
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  [currentScope setData:dataCopy forChannel:channelCopy];
 }
 
-- (id)dataForChannel:(id)a3
+- (id)dataForChannel:(id)channel
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     v9 = NUAssertLogger_5769();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -183,8 +183,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -195,8 +195,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -205,18 +205,18 @@
     _NUAssertFailHandler("[_NUPipelineEvaluationContext dataForChannel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3753, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "channel != nil");
   }
 
-  v5 = v4;
-  v6 = [(_NUPipelineEvaluationContext *)self currentScope];
-  v7 = [v6 dataForChannel:v5];
+  v5 = channelCopy;
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  v7 = [currentScope dataForChannel:v5];
 
   return v7;
 }
 
-- (void)endScope:(id)a3
+- (void)endScope:(id)scope
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  scopeCopy = scope;
+  if (!scopeCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -237,8 +237,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -249,8 +249,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -259,10 +259,10 @@
     _NUAssertFailHandler("[_NUPipelineEvaluationContext endScope:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3747, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "name != nil");
   }
 
-  v43 = v4;
-  v5 = [(_NUPipelineEvaluationContext *)self currentScope];
-  v6 = [v5 name];
-  v7 = [v43 isEqualToString:v6];
+  v43 = scopeCopy;
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  name = [currentScope name];
+  v7 = [v43 isEqualToString:name];
 
   if ((v7 & 1) == 0)
   {
@@ -270,9 +270,9 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [(_NUPipelineEvaluationContext *)self currentScope];
-      v18 = [v17 name];
-      v19 = [v16 stringWithFormat:@"Scope '%@' is not current ('%@')", v43, v18];
+      currentScope2 = [(_NUPipelineEvaluationContext *)self currentScope];
+      name2 = [currentScope2 name];
+      v19 = [v16 stringWithFormat:@"Scope '%@' is not current ('%@')", v43, name2];
       *buf = 138543362;
       v45 = v19;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -288,8 +288,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -300,8 +300,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -316,11 +316,11 @@
   [(NSMutableArray *)self->_scopes removeLastObject];
 }
 
-- (void)beginScope:(id)a3
+- (void)beginScope:(id)scope
 {
   v29 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  scopeCopy = scope;
+  if (!scopeCopy)
   {
     v8 = NUAssertLogger_5769();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -341,8 +341,8 @@
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v15;
         v27 = 2114;
@@ -353,8 +353,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -364,9 +364,9 @@
   }
 
   v4 = [_NUPipelineEvaluationScope alloc];
-  v5 = [(_NUPipelineEvaluationContext *)self currentScope];
-  v6 = [v5 channelData];
-  v7 = [(_NUPipelineEvaluationScope *)v4 initWithName:v24 channelData:v6];
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  channelData = [currentScope channelData];
+  v7 = [(_NUPipelineEvaluationScope *)v4 initWithName:scopeCopy channelData:channelData];
 
   [(NSMutableArray *)self->_scopes addObject:v7];
 }
@@ -385,8 +385,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUPipelineEvaluationContext *)self currentScope];
-  v6 = [v3 stringWithFormat:@"%@:%@", v4, v5];
+  currentScope = [(_NUPipelineEvaluationContext *)self currentScope];
+  v6 = [v3 stringWithFormat:@"%@:%@", v4, currentScope];
 
   return v6;
 }
@@ -415,8 +415,8 @@
         v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v11 = MEMORY[0x1E696AF00];
         v12 = v10;
-        v13 = [v11 callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v11 callStackSymbols];
+        v14 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v10;
         v23 = 2114;
@@ -427,8 +427,8 @@
 
     else if (v7)
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v9;
       _os_log_error_impl(&dword_1C0184000, v6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

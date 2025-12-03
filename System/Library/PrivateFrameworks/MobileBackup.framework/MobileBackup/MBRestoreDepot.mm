@@ -1,24 +1,24 @@
 @interface MBRestoreDepot
-+ (BOOL)disposeAllDepotsForPersona:(id)a3 error:(id *)a4;
-+ (id)restoreDepotWithPersona:(id)a3 destination:(id)a4 restoreDepotOverridePath:(id)a5 error:(id *)a6;
-- (BOOL)containsAsset:(id)a3 alreadyPresentOut:(BOOL *)a4 error:(id *)a5;
-- (BOOL)depositWithAsset:(id)a3 assetPath:(id)a4 error:(id *)a5;
-- (BOOL)disposeWithShouldDelete:(BOOL)a3 error:(id *)a4;
++ (BOOL)disposeAllDepotsForPersona:(id)persona error:(id *)error;
++ (id)restoreDepotWithPersona:(id)persona destination:(id)destination restoreDepotOverridePath:(id)path error:(id *)error;
+- (BOOL)containsAsset:(id)asset alreadyPresentOut:(BOOL *)out error:(id *)error;
+- (BOOL)depositWithAsset:(id)asset assetPath:(id)path error:(id *)error;
+- (BOOL)disposeWithShouldDelete:(BOOL)delete error:(id *)error;
 - (NSString)description;
 - (_TtC7backupd14MBRestoreDepot)init;
-- (id)stagingTemporaryDirectoryWithIdentifier:(id)a3 error:(id *)a4;
+- (id)stagingTemporaryDirectoryWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation MBRestoreDepot
 
-+ (id)restoreDepotWithPersona:(id)a3 destination:(id)a4 restoreDepotOverridePath:(id)a5 error:(id *)a6
++ (id)restoreDepotWithPersona:(id)persona destination:(id)destination restoreDepotOverridePath:(id)path error:(id *)error
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (a5)
+  if (path)
   {
     v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v12;
+    path = v12;
   }
 
   else
@@ -26,32 +26,32 @@
     v11 = 0;
   }
 
-  v13 = a3;
-  v14 = sub_10002E0EC(v13, v8, v10, v11, a5);
+  personaCopy = persona;
+  v14 = sub_10002E0EC(personaCopy, v8, v10, v11, path);
 
   return v14;
 }
 
-- (BOOL)disposeWithShouldDelete:(BOOL)a3 error:(id *)a4
+- (BOOL)disposeWithShouldDelete:(BOOL)delete error:(id *)error
 {
-  v5 = self;
-  sub_1000289A8(a3);
+  selfCopy = self;
+  sub_1000289A8(delete);
 
   return 1;
 }
 
-+ (BOOL)disposeAllDepotsForPersona:(id)a3 error:(id *)a4
++ (BOOL)disposeAllDepotsForPersona:(id)persona error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
-  sub_1000299B0(v5);
+  personaCopy = persona;
+  sub_1000299B0(personaCopy);
 
   return 1;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002A2B0();
 
   v3 = String._bridgeToObjectiveC()();
@@ -59,31 +59,31 @@
   return v3;
 }
 
-- (id)stagingTemporaryDirectoryWithIdentifier:(id)a3 error:(id *)a4
+- (id)stagingTemporaryDirectoryWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_10002A85C(v5, v7);
 
   return v9;
 }
 
-- (BOOL)containsAsset:(id)a3 alreadyPresentOut:(BOOL *)a4 error:(id *)a5
+- (BOOL)containsAsset:(id)asset alreadyPresentOut:(BOOL *)out error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
-  sub_100028AC8(v7, a4);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_100028AC8(assetCopy, out);
 
   return 1;
 }
 
-- (BOOL)depositWithAsset:(id)a3 assetPath:(id)a4 error:(id *)a5
+- (BOOL)depositWithAsset:(id)asset assetPath:(id)path error:(id *)error
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_100028BE4(v7);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_100028BE4(assetCopy);
 
   return 1;
 }

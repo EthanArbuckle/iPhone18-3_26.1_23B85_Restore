@@ -1,29 +1,29 @@
 @interface HSPlaybackStage
-- (BOOL)_decodePlayFrame:(const PlayFrame *)a3 toFrame:(Frame *)a4;
+- (BOOL)_decodePlayFrame:(const PlayFrame *)frame toFrame:(Frame *)toFrame;
 - (BOOL)playing;
-- (HSPlaybackStage)initWithQueue:(id)a3;
+- (HSPlaybackStage)initWithQueue:(id)queue;
 - (float)progress;
 - (id).cxx_construct;
 - (id)data;
-- (void)_load:(shared_ptr<HSUtil::IO::Readable>)a3;
-- (void)_playConsumeFrame:(const PlayFrame *)a3;
+- (void)_load:(shared_ptr<HSUtil::IO::Readable>)_load;
+- (void)_playConsumeFrame:(const PlayFrame *)frame;
 - (void)_playNextFrame;
-- (void)_playStateFrame:(const PlayFrame *)a3;
-- (void)_setPlaying:(BOOL)a3;
-- (void)_updatePlaybackTime:(int64_t)a3;
+- (void)_playStateFrame:(const PlayFrame *)frame;
+- (void)_setPlaying:(BOOL)playing;
+- (void)_updatePlaybackTime:(int64_t)time;
 - (void)data;
-- (void)loadFromData:(id)a3;
-- (void)loadFromSource:(shared_ptr<HSUtil::IO::Readable>)a3;
+- (void)loadFromData:(id)data;
+- (void)loadFromSource:(shared_ptr<HSUtil::IO::Readable>)source;
 - (void)reset;
-- (void)setPlaying:(BOOL)a3;
-- (void)setProgress:(float)a3 dispatchEvent:(BOOL)a4;
+- (void)setPlaying:(BOOL)playing;
+- (void)setProgress:(float)progress dispatchEvent:(BOOL)event;
 @end
 
 @implementation HSPlaybackStage
 
-- (HSPlaybackStage)initWithQueue:(id)a3
+- (HSPlaybackStage)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = HSPlaybackStage;
   v6 = [(HSStage *)&v19 init];
@@ -33,7 +33,7 @@
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v6->_queue, a3);
+  objc_storeStrong(&v6->_queue, queue);
   if (!v7->_queue)
   {
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, -15);
@@ -91,18 +91,18 @@ void __33__HSPlaybackStage_initWithQueue___block_invoke(uint64_t a1)
 
 - (BOOL)playing
 {
-  v2 = self;
+  selfCopy = self;
   HSUtil::ObjectLock::ObjectLock(v4, self);
-  LOBYTE(v2) = v2->_state.play.playing;
+  LOBYTE(selfCopy) = selfCopy->_state.play.playing;
   HSUtil::ObjectLock::~ObjectLock(v4);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  [(HSPlaybackStage *)self _setPlaying:v3];
+  [(HSPlaybackStage *)self _setPlaying:playingCopy];
   HSUtil::ObjectLock::~ObjectLock(v5);
 }
 
@@ -153,12 +153,12 @@ void __33__HSPlaybackStage_initWithQueue___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setProgress:(float)a3 dispatchEvent:(BOOL)a4
+- (void)setProgress:(float)progress dispatchEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   HSUtil::ObjectLock::ObjectLock(v25, self);
   [(HSPlaybackStage *)self _setPlaying:0];
-  v7 = fmax(fmin(a3, 1.0), 0.0);
+  v7 = fmax(fmin(progress, 1.0), 0.0);
   if (v7 == 0.0)
   {
     goto LABEL_2;
@@ -195,7 +195,7 @@ LABEL_2:
 
 LABEL_3:
   Playback::resetTime(&self->_state.play.playback, v8);
-  if (v4)
+  if (eventCopy)
   {
     i = self->_state.play.playback._nextFrame.__i_;
     v10 = self->_state.play.playback._frames.__end_;
@@ -312,10 +312,10 @@ LABEL_24:
   HSUtil::ObjectLock::~ObjectLock(v25);
 }
 
-- (void)loadFromSource:(shared_ptr<HSUtil::IO::Readable>)a3
+- (void)loadFromSource:(shared_ptr<HSUtil::IO::Readable>)source
 {
-  ptr = a3.__ptr_;
-  if (!*a3.__ptr_)
+  ptr = source.__ptr_;
+  if (!*source.__ptr_)
   {
     v7 = +[NSAssertionHandler currentHandler];
     [v7 handleFailureInMethod:a2 object:self file:@"HSPlaybackStage.mm" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"source"}];
@@ -339,9 +339,9 @@ LABEL_24:
   HSUtil::ObjectLock::~ObjectLock(v10);
 }
 
-- (void)loadFromData:(id)a3
+- (void)loadFromData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     v5 = +[NSAssertionHandler currentHandler];
     [v5 handleFailureInMethod:a2 object:self file:@"HSPlaybackStage.mm" lineNumber:281 description:{@"Invalid parameter not satisfying: %@", @"data"}];
@@ -402,13 +402,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)_setPlaying:(BOOL)a3
+- (void)_setPlaying:(BOOL)playing
 {
   p_state = &self->_state;
-  if (self->_state.play.playing != a3)
+  if (self->_state.play.playing != playing)
   {
-    self->_state.play.playing = a3;
-    if (a3)
+    self->_state.play.playing = playing;
+    if (playing)
     {
       if (self->_state.play.playback._nextFrame.__i_ == self->_state.play.playback._frames.__end_)
       {
@@ -436,10 +436,10 @@ LABEL_12:
   }
 }
 
-- (void)_load:(shared_ptr<HSUtil::IO::Readable>)a3
+- (void)_load:(shared_ptr<HSUtil::IO::Readable>)_load
 {
-  ptr = a3.__ptr_;
-  [(HSPlaybackStage *)self _setPlaying:0, a3.__cntrl_];
+  ptr = _load.__ptr_;
+  [(HSPlaybackStage *)self _setPlaying:0, _load.__cntrl_];
   v26 = 0;
   Playback::Playback(&v27);
   v28 = 0u;
@@ -560,9 +560,9 @@ LABEL_12:
   }
 }
 
-- (void)_updatePlaybackTime:(int64_t)a3
+- (void)_updatePlaybackTime:(int64_t)time
 {
-  v3 = self->_state.play.startTimeOffset + a3 - self->_state.play.startTime;
+  v3 = self->_state.play.startTimeOffset + time - self->_state.play.startTime;
   if (self->_state.play.playback._time > v3)
   {
     [HSPlaybackStage _updatePlaybackTime:];
@@ -571,10 +571,10 @@ LABEL_12:
   self->_state.play.playback._time = v3;
 }
 
-- (BOOL)_decodePlayFrame:(const PlayFrame *)a3 toFrame:(Frame *)a4
+- (BOOL)_decodePlayFrame:(const PlayFrame *)frame toFrame:(Frame *)toFrame
 {
   p_state = &self->_state;
-  HSRecordingTypes::PlaybackDecoder::decodeFrame(&self->_state.play.playback, a3, a4);
+  HSRecordingTypes::PlaybackDecoder::decodeFrame(&self->_state.play.playback, frame, toFrame);
   status = p_state->play.playback.status;
   if (status)
   {
@@ -590,16 +590,16 @@ LABEL_12:
   return status == 0;
 }
 
-- (void)_playStateFrame:(const PlayFrame *)a3
+- (void)_playStateFrame:(const PlayFrame *)frame
 {
-  if (a3->var1 != 2)
+  if (frame->var1 != 2)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"HSPlaybackStage.mm" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"playFrame.type == Frame::Type::State"}];
   }
 
   HSRecordingTypes::StateFrame::StateFrame(v7, &self->super);
-  if (![(HSPlaybackStage *)self _decodePlayFrame:a3 toFrame:v7])
+  if (![(HSPlaybackStage *)self _decodePlayFrame:frame toFrame:v7])
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSPlaybackStage.mm", v9);
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -612,9 +612,9 @@ LABEL_12:
   std::__hash_table<std::__hash_value_type<std::string,HSStage * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,HSStage * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,HSStage * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,HSStage * {__strong}>>>::~__hash_table(&v8);
 }
 
-- (void)_playConsumeFrame:(const PlayFrame *)a3
+- (void)_playConsumeFrame:(const PlayFrame *)frame
 {
-  if (a3->var1 != 3)
+  if (frame->var1 != 3)
   {
     v7 = +[NSAssertionHandler currentHandler];
     [v7 handleFailureInMethod:a2 object:self file:@"HSPlaybackStage.mm" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"playFrame.type == Frame::Type::Consume"}];
@@ -625,7 +625,7 @@ LABEL_12:
   v12 = 0;
   v10 = 0;
   v8 = off_10A558;
-  if ([(HSPlaybackStage *)self _decodePlayFrame:a3 toFrame:&v8])
+  if ([(HSPlaybackStage *)self _decodePlayFrame:frame toFrame:&v8])
   {
     v5 = v12;
     if ([v5 conformsToProtocol:&OBJC_PROTOCOL___HSTimestampable])

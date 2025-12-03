@@ -1,23 +1,23 @@
 @interface SOSIntervalEvent
 - (BOOL)checkDate;
-- (SOSIntervalEvent)initWithDefaults:(id)a3 dateDescription:(id)a4 earliest:(double)a5 latest:(double)a6;
+- (SOSIntervalEvent)initWithDefaults:(id)defaults dateDescription:(id)description earliest:(double)earliest latest:(double)latest;
 - (void)followup;
 - (void)schedule;
 @end
 
 @implementation SOSIntervalEvent
 
-- (SOSIntervalEvent)initWithDefaults:(id)a3 dateDescription:(id)a4 earliest:(double)a5 latest:(double)a6
+- (SOSIntervalEvent)initWithDefaults:(id)defaults dateDescription:(id)description earliest:(double)earliest latest:(double)latest
 {
-  v11 = a3;
-  v12 = a4;
+  defaultsCopy = defaults;
+  descriptionCopy = description;
   v18.receiver = self;
   v18.super_class = SOSIntervalEvent;
   v13 = [(SOSIntervalEvent *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_defaults, a3);
+    objc_storeStrong(&v13->_defaults, defaults);
     if (!v14->_defaults)
     {
       v15 = objc_alloc_init(NSUserDefaults);
@@ -25,9 +25,9 @@
       v14->_defaults = v15;
     }
 
-    objc_storeStrong(&v14->_dateDescription, a4);
-    v14->_earliestDate = a5;
-    v14->_latestDate = a6;
+    objc_storeStrong(&v14->_dateDescription, description);
+    v14->_earliestDate = earliest;
+    v14->_latestDate = latest;
     [(SOSIntervalEvent *)v14 schedule];
   }
 
@@ -36,11 +36,11 @@
 
 - (void)schedule
 {
-  v3 = [(SOSIntervalEvent *)self getDate];
-  if (!v3)
+  getDate = [(SOSIntervalEvent *)self getDate];
+  if (!getDate)
   {
     [(SOSIntervalEvent *)self followup];
-    v3 = 0;
+    getDate = 0;
   }
 }
 
@@ -54,12 +54,12 @@
 
 - (BOOL)checkDate
 {
-  v2 = [(SOSIntervalEvent *)self getDate];
-  v3 = v2;
+  getDate = [(SOSIntervalEvent *)self getDate];
+  v3 = getDate;
   v5 = 0;
-  if (v2)
+  if (getDate)
   {
-    [v2 timeIntervalSinceNow];
+    [getDate timeIntervalSinceNow];
     if (v4 <= 0.0)
     {
       v5 = 1;

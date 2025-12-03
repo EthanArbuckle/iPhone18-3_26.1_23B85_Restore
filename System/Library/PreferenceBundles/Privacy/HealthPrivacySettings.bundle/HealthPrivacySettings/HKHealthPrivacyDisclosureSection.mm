@@ -1,11 +1,11 @@
 @interface HKHealthPrivacyDisclosureSection
 - (UIViewController)parentViewController;
-- (id)viewForFooter:(id)a3;
+- (id)viewForFooter:(id)footer;
 @end
 
 @implementation HKHealthPrivacyDisclosureSection
 
-- (id)viewForFooter:(id)a3
+- (id)viewForFooter:(id)footer
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
   v4 = [HKHealthPrivacyDisclosureView alloc];

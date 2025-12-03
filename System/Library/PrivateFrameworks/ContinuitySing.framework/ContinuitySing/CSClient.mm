@@ -1,5 +1,5 @@
 @interface CSClient
-- (CSClient)initWithHandshake:(id)a3;
+- (CSClient)initWithHandshake:(id)handshake;
 - (NSString)displayName;
 - (NSString)socialProfileIdentifier;
 - (id)description;
@@ -7,32 +7,32 @@
 
 @implementation CSClient
 
-- (CSClient)initWithHandshake:(id)a3
+- (CSClient)initWithHandshake:(id)handshake
 {
-  v4 = a3;
+  handshakeCopy = handshake;
   v19.receiver = self;
   v19.super_class = CSClient;
   v5 = [(CSClient *)&v19 init];
   if (v5)
   {
-    v6 = [v4 idsIdentifier];
-    v7 = [v6 copy];
+    idsIdentifier = [handshakeCopy idsIdentifier];
+    v7 = [idsIdentifier copy];
     v8 = *(v5 + 1);
     *(v5 + 1) = v7;
 
-    v9 = [v4 sessionPairingIdentifier];
-    v10 = [v9 copy];
+    sessionPairingIdentifier = [handshakeCopy sessionPairingIdentifier];
+    v10 = [sessionPairingIdentifier copy];
     v11 = *(v5 + 2);
     *(v5 + 2) = v10;
 
-    v12 = [v4 participantInfo];
-    v13 = [v12 copy];
+    participantInfo = [handshakeCopy participantInfo];
+    v13 = [participantInfo copy];
     v14 = *(v5 + 3);
     *(v5 + 3) = v13;
 
-    if (v4)
+    if (handshakeCopy)
     {
-      [v4 operatingSystemVersion];
+      [handshakeCopy operatingSystemVersion];
     }
 
     else
@@ -43,7 +43,7 @@
 
     *(v5 + 40) = v17;
     *(v5 + 7) = v18;
-    [v4 protocolVersion];
+    [handshakeCopy protocolVersion];
     *(v5 + 4) = v15;
   }
 
@@ -53,29 +53,29 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(CSClient *)self idsIdentifier];
-  v5 = [(CSClient *)self sessionPairingIdentifier];
-  v6 = [(CSClient *)self participantInfo];
+  idsIdentifier = [(CSClient *)self idsIdentifier];
+  sessionPairingIdentifier = [(CSClient *)self sessionPairingIdentifier];
+  participantInfo = [(CSClient *)self participantInfo];
   [(CSClient *)self protocolVersion];
-  v8 = [v3 initWithFormat:@"<CSClient idsDeviceIdentifier:%@ sessionPairingIdentifier:%@ participantInfo:%@ protocolVersion:%f>", v4, v5, v6, v7];
+  v8 = [v3 initWithFormat:@"<CSClient idsDeviceIdentifier:%@ sessionPairingIdentifier:%@ participantInfo:%@ protocolVersion:%f>", idsIdentifier, sessionPairingIdentifier, participantInfo, v7];
 
   return v8;
 }
 
 - (NSString)displayName
 {
-  v2 = [(CSClient *)self participantInfo];
-  v3 = [v2 displayName];
+  participantInfo = [(CSClient *)self participantInfo];
+  displayName = [participantInfo displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (NSString)socialProfileIdentifier
 {
-  v2 = [(CSClient *)self participantInfo];
-  v3 = [v2 socialProfileIdentifier];
+  participantInfo = [(CSClient *)self participantInfo];
+  socialProfileIdentifier = [participantInfo socialProfileIdentifier];
 
-  return v3;
+  return socialProfileIdentifier;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PEValuesCalculator
-+ (BOOL)shouldRunGeometricAutoCalculatorForSource:(id)a3;
++ (BOOL)shouldRunGeometricAutoCalculatorForSource:(id)source;
 - (BOOL)_geometricCurrentValuesCacheIsValid;
 - (BOOL)_imageCurrentValuesCacheIsValid;
 - (BOOL)hasImageValues;
@@ -8,28 +8,28 @@
 - (PEValuesCalculatorSettings)settingsDelegate;
 - (double)smartColorAutoSuggestion;
 - (double)smartToneAutoSuggestion;
-- (id)apertureValuesWithAccuracy:(int64_t)a3;
-- (id)autoCropValuesWithAccuracy:(int64_t)a3;
-- (id)autoPerspectiveValuesWithAccuracy:(int64_t)a3;
-- (id)portraitValuesWithAccuracy:(int64_t)a3;
+- (id)apertureValuesWithAccuracy:(int64_t)accuracy;
+- (id)autoCropValuesWithAccuracy:(int64_t)accuracy;
+- (id)autoPerspectiveValuesWithAccuracy:(int64_t)accuracy;
+- (id)portraitValuesWithAccuracy:(int64_t)accuracy;
 - (id)semanticStyleStatistics;
-- (id)smartColorStatisticsWithAccuracy:(int64_t)a3;
-- (id)smartToneStatisticsWithAccuracy:(int64_t)a3;
+- (id)smartColorStatisticsWithAccuracy:(int64_t)accuracy;
+- (id)smartToneStatisticsWithAccuracy:(int64_t)accuracy;
 - (void)_ensureCurrentGeometricValuesAreComputed;
 - (void)_ensureCurrentImageValuesAreComputed;
 - (void)_ensureInitialGeometricValuesAreComputed;
 - (void)_ensureInitialImageValuesAreComputed;
 - (void)_updateSettings;
-- (void)computeAutoEnhanceWithCompletionHandler:(id)a3;
+- (void)computeAutoEnhanceWithCompletionHandler:(id)handler;
 - (void)invalidate;
 - (void)precomputeGeometricValues;
-- (void)precomputeImageValuesWithOptionalCompletion:(id)a3;
-- (void)setCompositionController:(id)a3;
-- (void)setEditSource:(id)a3;
-- (void)setSettingsDelegate:(id)a3;
-- (void)setVideoFrameTime:(id *)a3;
-- (void)updateAdjustmentSemanticStyleStatistics:(id)a3;
-- (void)updateAdjustmentSmartToneStatistics:(id)a3 withAccuracy:(int64_t)a4;
+- (void)precomputeImageValuesWithOptionalCompletion:(id)completion;
+- (void)setCompositionController:(id)controller;
+- (void)setEditSource:(id)source;
+- (void)setSettingsDelegate:(id)delegate;
+- (void)setVideoFrameTime:(id *)time;
+- (void)updateAdjustmentSemanticStyleStatistics:(id)statistics;
+- (void)updateAdjustmentSmartToneStatistics:(id)statistics withAccuracy:(int64_t)accuracy;
 @end
 
 @implementation PEValuesCalculator
@@ -88,18 +88,18 @@
   }
 }
 
-- (void)computeAutoEnhanceWithCompletionHandler:(id)a3
+- (void)computeAutoEnhanceWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:839 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:839 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   [(PEValuesCalculator *)self precomputeImageValues];
-  v6 = [(PEValuesCalculator *)self compositionController];
-  v7 = [v6 copy];
+  compositionController = [(PEValuesCalculator *)self compositionController];
+  v7 = [compositionController copy];
 
   imageValuesComputationQueue = self->_imageValuesComputationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -107,10 +107,10 @@
   block[2] = __62__PEValuesCalculator_computeAutoEnhanceWithCompletionHandler___block_invoke;
   block[3] = &unk_279A30DF0;
   v13 = v7;
-  v14 = self;
-  v15 = v5;
+  selfCopy = self;
+  v15 = handlerCopy;
   v16 = a2;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = v7;
   dispatch_async(imageValuesComputationQueue, block);
 }
@@ -272,18 +272,18 @@ uint64_t __62__PEValuesCalculator_computeAutoEnhanceWithCompletionHandler___bloc
   currentImageValues = self->_currentImageValues;
   self->_currentImageValues = 0;
 
-  v4 = [(PEValuesCalculator *)self delegate];
-  [v4 editValuesCalculatorHasChangedImageValues:self];
+  delegate = [(PEValuesCalculator *)self delegate];
+  [delegate editValuesCalculatorHasChangedImageValues:self];
 }
 
-- (void)setVideoFrameTime:(id *)a3
+- (void)setVideoFrameTime:(id *)time
 {
   time1 = self->_videoFrameTime;
-  v6 = *a3;
+  v6 = *time;
   if (CMTimeCompare(&time1, &v6))
   {
-    v5 = *&a3->var0;
-    self->_videoFrameTime.epoch = a3->var3;
+    v5 = *&time->var0;
+    self->_videoFrameTime.epoch = time->var3;
     *&self->_videoFrameTime.value = v5;
     [(PEValuesCalculator *)self invalidate];
   }
@@ -367,20 +367,20 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v11 = [(PEValuesCalculator *)self currentEditSource];
-  if (!v11)
+  currentEditSource = [(PEValuesCalculator *)self currentEditSource];
+  if (!currentEditSource)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:674 description:@"Need an edit source to perform this operation"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:674 description:@"Need an edit source to perform this operation"];
   }
 
-  v12 = [(PEValuesCalculator *)self compositionController];
-  v13 = [v12 copy];
+  compositionController = [(PEValuesCalculator *)self compositionController];
+  v13 = [compositionController copy];
 
   if (!v13)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:676 description:@"Need a composition controller to perform this operation"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:676 description:@"Need a composition controller to perform this operation"];
   }
 
   objc_storeStrong(&self->_compositionControllerForCurrentValues, v13);
@@ -388,7 +388,7 @@ LABEL_19:
   v15 = self->_currentGeometricValues;
   self->_currentGeometricValues = v14;
 
-  if ([objc_opt_class() shouldRunGeometricAutoCalculatorForSource:v11])
+  if ([objc_opt_class() shouldRunGeometricAutoCalculatorForSource:currentEditSource])
   {
     if (self->_initialGeometricValues)
     {
@@ -410,9 +410,9 @@ LABEL_19:
     v23[2] = __47__PEValuesCalculator_precomputeGeometricValues__block_invoke_190;
     v23[3] = &unk_279A30D78;
     v24 = v13;
-    v25 = self;
+    selfCopy = self;
     v28 = v4;
-    v26 = v11;
+    v26 = currentEditSource;
     v27 = v16;
     v20 = v16;
     dispatch_group_async(computingGeometricValuesGroup, geometricValuesComputationQueue, v23);
@@ -750,10 +750,10 @@ void __47__PEValuesCalculator_precomputeGeometricValues__block_invoke_2(uint64_t
   }
 }
 
-- (void)precomputeImageValuesWithOptionalCompletion:(id)a3
+- (void)precomputeImageValuesWithOptionalCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   currentImageValues = self->_currentImageValues;
   if (currentImageValues && ![(PUPhotoEditImageValues *)currentImageValues isComplete])
   {
@@ -795,21 +795,21 @@ LABEL_10:
       _os_log_impl(&dword_25E6E9000, v14, OS_LOG_TYPE_DEFAULT, "skipping precomputeImageValuesWithOptionalCompletion; request pending? %@, cache valid? %@", buf, 0x16u);
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      dispatch_group_notify(self->_computingImageValuesGroup, self->_imageValuesComputationQueue, v5);
+      dispatch_group_notify(self->_computingImageValuesGroup, self->_imageValuesComputationQueue, completionCopy);
     }
 
     goto LABEL_22;
   }
 
-  v8 = [(PEValuesCalculator *)self compositionController];
-  v9 = [v8 copy];
+  compositionController = [(PEValuesCalculator *)self compositionController];
+  v9 = [compositionController copy];
 
   if (!v9)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:406 description:@"Need a composition controller to perform this operation"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PEValuesCalculator.m" lineNumber:406 description:@"Need a composition controller to perform this operation"];
   }
 
   objc_storeStrong(&self->_compositionControllerForCurrentValues, v9);
@@ -817,8 +817,8 @@ LABEL_10:
   v11 = self->_currentImageValues;
   self->_currentImageValues = v10;
 
-  v12 = [(PEValuesCalculator *)self delegate];
-  [v12 editValuesCalculatorHasChangedImageValues:self];
+  delegate = [(PEValuesCalculator *)self delegate];
+  [delegate editValuesCalculatorHasChangedImageValues:self];
 
   if (self->_initialImageValues)
   {
@@ -839,11 +839,11 @@ LABEL_10:
   v23[2] = __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___block_invoke;
   v23[3] = &unk_279A30D00;
   v24 = v9;
-  v25 = self;
+  selfCopy = self;
   v29 = a2;
   v26 = v10;
   v27 = v13;
-  v28 = v5;
+  v28 = completionCopy;
   v19 = v13;
   v20 = v10;
   v21 = v9;
@@ -1453,8 +1453,8 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
   }
 
   v3 = MEMORY[0x277D3AC20];
-  v4 = [(PEValuesCalculator *)self compositionController];
-  v5 = [v3 compositionController:v4 isGeometryEqualToCompositionController:self->_compositionControllerForCurrentValues];
+  compositionController = [(PEValuesCalculator *)self compositionController];
+  v5 = [v3 compositionController:compositionController isGeometryEqualToCompositionController:self->_compositionControllerForCurrentValues];
 
   return v5;
 }
@@ -1467,15 +1467,15 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
   }
 
   v3 = MEMORY[0x277D3AC20];
-  v4 = [(PEValuesCalculator *)self compositionController];
-  v5 = [v3 compositionController:v4 isGeometryEqualToCompositionController:self->_compositionControllerForCurrentValues];
+  compositionController = [(PEValuesCalculator *)self compositionController];
+  v5 = [v3 compositionController:compositionController isGeometryEqualToCompositionController:self->_compositionControllerForCurrentValues];
 
   return v5;
 }
 
-- (id)autoPerspectiveValuesWithAccuracy:(int64_t)a3
+- (id)autoPerspectiveValuesWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _geometricCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _geometricCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialGeometricValuesAreComputed];
     v4 = 32;
@@ -1487,14 +1487,14 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 16;
   }
 
-  v5 = [*(&self->super.isa + v4) autoPerspectiveValues];
+  autoPerspectiveValues = [*(&self->super.isa + v4) autoPerspectiveValues];
 
-  return v5;
+  return autoPerspectiveValues;
 }
 
-- (id)autoCropValuesWithAccuracy:(int64_t)a3
+- (id)autoCropValuesWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _geometricCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _geometricCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialGeometricValuesAreComputed];
     v4 = 32;
@@ -1506,16 +1506,16 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 16;
   }
 
-  v5 = [*(&self->super.isa + v4) autoCropValues];
+  autoCropValues = [*(&self->super.isa + v4) autoCropValues];
 
-  return v5;
+  return autoCropValues;
 }
 
-- (void)updateAdjustmentSemanticStyleStatistics:(id)a3
+- (void)updateAdjustmentSemanticStyleStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [(PEValuesCalculator *)self semanticStyleStatistics];
-  [v4 updateWithSemStyleInfo:v5];
+  statisticsCopy = statistics;
+  semanticStyleStatistics = [(PEValuesCalculator *)self semanticStyleStatistics];
+  [statisticsCopy updateWithSemStyleInfo:semanticStyleStatistics];
 }
 
 - (id)semanticStyleStatistics
@@ -1532,9 +1532,9 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v3 = 24;
   }
 
-  v4 = [*(&self->super.isa + v3) semanticStyleStatistics];
+  semanticStyleStatistics = [*(&self->super.isa + v3) semanticStyleStatistics];
 
-  return v4;
+  return semanticStyleStatistics;
 }
 
 - (double)smartColorAutoSuggestion
@@ -1555,9 +1555,9 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
   return result;
 }
 
-- (id)smartColorStatisticsWithAccuracy:(int64_t)a3
+- (id)smartColorStatisticsWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialImageValuesAreComputed];
     v4 = 24;
@@ -1569,21 +1569,21 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 8;
   }
 
-  v5 = [*(&self->super.isa + v4) smartColorStatistics];
+  smartColorStatistics = [*(&self->super.isa + v4) smartColorStatistics];
 
-  return v5;
+  return smartColorStatistics;
 }
 
-- (void)updateAdjustmentSmartToneStatistics:(id)a3 withAccuracy:(int64_t)a4
+- (void)updateAdjustmentSmartToneStatistics:(id)statistics withAccuracy:(int64_t)accuracy
 {
-  v6 = a3;
-  v7 = [(PEValuesCalculator *)self smartToneStatisticsWithAccuracy:a4];
-  [v6 setStatistics:v7];
+  statisticsCopy = statistics;
+  v7 = [(PEValuesCalculator *)self smartToneStatisticsWithAccuracy:accuracy];
+  [statisticsCopy setStatistics:v7];
 }
 
-- (id)smartToneStatisticsWithAccuracy:(int64_t)a3
+- (id)smartToneStatisticsWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialImageValuesAreComputed];
     v4 = 24;
@@ -1595,14 +1595,14 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 8;
   }
 
-  v5 = [*(&self->super.isa + v4) smartToneStatistics];
+  smartToneStatistics = [*(&self->super.isa + v4) smartToneStatistics];
 
-  return v5;
+  return smartToneStatistics;
 }
 
-- (id)apertureValuesWithAccuracy:(int64_t)a3
+- (id)apertureValuesWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialImageValuesAreComputed];
     v4 = 24;
@@ -1614,14 +1614,14 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 8;
   }
 
-  v5 = [*(&self->super.isa + v4) apertureValues];
+  apertureValues = [*(&self->super.isa + v4) apertureValues];
 
-  return v5;
+  return apertureValues;
 }
 
-- (id)portraitValuesWithAccuracy:(int64_t)a3
+- (id)portraitValuesWithAccuracy:(int64_t)accuracy
 {
-  if (a3 && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
+  if (accuracy && ![(PEValuesCalculator *)self _imageCurrentValuesCacheIsValid])
   {
     [(PEValuesCalculator *)self _ensureInitialImageValuesAreComputed];
     v4 = 24;
@@ -1633,19 +1633,19 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     v4 = 8;
   }
 
-  v5 = [*(&self->super.isa + v4) portraitValues];
+  portraitValues = [*(&self->super.isa + v4) portraitValues];
 
-  return v5;
+  return portraitValues;
 }
 
-- (void)setEditSource:(id)a3
+- (void)setEditSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   p_editSource = &self->_editSource;
-  if (self->_editSource != v5)
+  if (self->_editSource != sourceCopy)
   {
-    v13 = v5;
-    objc_storeStrong(p_editSource, a3);
+    v13 = sourceCopy;
+    objc_storeStrong(p_editSource, source);
     currentImageValues = self->_currentImageValues;
     self->_currentImageValues = 0;
 
@@ -1661,23 +1661,23 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     compositionControllerForCurrentValues = self->_compositionControllerForCurrentValues;
     self->_compositionControllerForCurrentValues = 0;
 
-    v12 = [(PEValuesCalculator *)self delegate];
-    [v12 editValuesCalculatorHasChangedImageValues:self];
+    delegate = [(PEValuesCalculator *)self delegate];
+    [delegate editValuesCalculatorHasChangedImageValues:self];
 
-    v5 = v13;
+    sourceCopy = v13;
   }
 
-  MEMORY[0x2821F96F8](p_editSource, v5);
+  MEMORY[0x2821F96F8](p_editSource, sourceCopy);
 }
 
-- (void)setCompositionController:(id)a3
+- (void)setCompositionController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_compositionController = &self->_compositionController;
-  if (self->_compositionController != v5)
+  if (self->_compositionController != controllerCopy)
   {
-    v13 = v5;
-    objc_storeStrong(p_compositionController, a3);
+    v13 = controllerCopy;
+    objc_storeStrong(p_compositionController, controller);
     currentImageValues = self->_currentImageValues;
     self->_currentImageValues = 0;
 
@@ -1693,18 +1693,18 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
     compositionControllerForCurrentValues = self->_compositionControllerForCurrentValues;
     self->_compositionControllerForCurrentValues = 0;
 
-    v12 = [(PEValuesCalculator *)self delegate];
-    [v12 editValuesCalculatorHasChangedImageValues:self];
+    delegate = [(PEValuesCalculator *)self delegate];
+    [delegate editValuesCalculatorHasChangedImageValues:self];
 
-    v5 = v13;
+    controllerCopy = v13;
   }
 
-  MEMORY[0x2821F96F8](p_compositionController, v5);
+  MEMORY[0x2821F96F8](p_compositionController, controllerCopy);
 }
 
-- (void)setSettingsDelegate:(id)a3
+- (void)setSettingsDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_settingsDelegate);
 
   v5 = obj;
@@ -1718,56 +1718,56 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
 
 - (void)_updateSettings
 {
-  v3 = [(PEValuesCalculator *)self settingsDelegate];
+  settingsDelegate = [(PEValuesCalculator *)self settingsDelegate];
 
-  if (v3)
+  if (settingsDelegate)
   {
-    v4 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditPortraitAutoCalc = [v4 enableEnterEditPortraitAutoCalc];
+    settingsDelegate2 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditPortraitAutoCalc = [settingsDelegate2 enableEnterEditPortraitAutoCalc];
 
-    v5 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditCropAutoCalc = [v5 enableEnterEditCropAutoCalc];
+    settingsDelegate3 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditCropAutoCalc = [settingsDelegate3 enableEnterEditCropAutoCalc];
 
-    v6 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditPerspectiveAutoCalc = [v6 enableEnterEditPerspectiveAutoCalc];
+    settingsDelegate4 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditPerspectiveAutoCalc = [settingsDelegate4 enableEnterEditPerspectiveAutoCalc];
 
-    v7 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditDepthEffectAutoCalc = [v7 enableEnterEditDepthEffectAutoCalc];
+    settingsDelegate5 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditDepthEffectAutoCalc = [settingsDelegate5 enableEnterEditDepthEffectAutoCalc];
 
-    v8 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditSmartToneAutoCalc = [v8 enableEnterEditSmartToneAutoCalc];
+    settingsDelegate6 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditSmartToneAutoCalc = [settingsDelegate6 enableEnterEditSmartToneAutoCalc];
 
-    v9 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditSmartColorAutoCalc = [v9 enableEnterEditSmartColorAutoCalc];
+    settingsDelegate7 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditSmartColorAutoCalc = [settingsDelegate7 enableEnterEditSmartColorAutoCalc];
 
-    v10 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.enableEnterEditSemanticStyleAutoCalc = [v10 enableEnterEditSemanticStyleAutoCalc];
+    settingsDelegate8 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.enableEnterEditSemanticStyleAutoCalc = [settingsDelegate8 enableEnterEditSemanticStyleAutoCalc];
 
-    v11 = [(PEValuesCalculator *)self settingsDelegate];
-    [v11 autoStraightenMaxAngle];
+    settingsDelegate9 = [(PEValuesCalculator *)self settingsDelegate];
+    [settingsDelegate9 autoStraightenMaxAngle];
     self->_settings.autoStraightenMaxAngle = v12;
 
-    v13 = [(PEValuesCalculator *)self settingsDelegate];
-    [v13 autoPerspectiveMaxYaw];
+    settingsDelegate10 = [(PEValuesCalculator *)self settingsDelegate];
+    [settingsDelegate10 autoPerspectiveMaxYaw];
     self->_settings.autoPerspectiveMaxYaw = v14;
 
-    v15 = [(PEValuesCalculator *)self settingsDelegate];
-    [v15 autoPerspectiveMaxPitch];
+    settingsDelegate11 = [(PEValuesCalculator *)self settingsDelegate];
+    [settingsDelegate11 autoPerspectiveMaxPitch];
     self->_settings.autoPerspectiveMaxPitch = v16;
 
-    v17 = [(PEValuesCalculator *)self settingsDelegate];
-    [v17 autoPerspectiveMaxAngle];
+    settingsDelegate12 = [(PEValuesCalculator *)self settingsDelegate];
+    [settingsDelegate12 autoPerspectiveMaxAngle];
     self->_settings.autoPerspectiveMaxAngle = v18;
 
-    v19 = [(PEValuesCalculator *)self settingsDelegate];
-    [v19 autoPerspectiveMaxFaceSize];
+    settingsDelegate13 = [(PEValuesCalculator *)self settingsDelegate];
+    [settingsDelegate13 autoPerspectiveMaxFaceSize];
     self->_settings.autoPerspectiveMaxFaceSize = v20;
 
-    v21 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.autoPerspectiveDisableOnPanos = [v21 autoPerspectiveDisableOnPanos];
+    settingsDelegate14 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.autoPerspectiveDisableOnPanos = [settingsDelegate14 autoPerspectiveDisableOnPanos];
 
-    v22 = [(PEValuesCalculator *)self settingsDelegate];
-    self->_settings.autoPerspectiveDisableOnFrontFacingCameraImages = [v22 autoPerspectiveDisableOnFrontFacingCameraImages];
+    settingsDelegate15 = [(PEValuesCalculator *)self settingsDelegate];
+    self->_settings.autoPerspectiveDisableOnFrontFacingCameraImages = [settingsDelegate15 autoPerspectiveDisableOnFrontFacingCameraImages];
   }
 
   else
@@ -1810,11 +1810,11 @@ void __66__PEValuesCalculator_precomputeImageValuesWithOptionalCompletion___bloc
   return v2;
 }
 
-+ (BOOL)shouldRunGeometricAutoCalculatorForSource:(id)a3
++ (BOOL)shouldRunGeometricAutoCalculatorForSource:(id)source
 {
-  if (a3)
+  if (source)
   {
-    v3 = a3;
+    sourceCopy = source;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 

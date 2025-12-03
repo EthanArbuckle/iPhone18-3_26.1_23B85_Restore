@@ -1,20 +1,20 @@
 @interface ICASSnapshotHealthPrivateUserData
-- (ICASSnapshotHealthPrivateUserData)initWithSnapshotHealthPrivateUserID:(id)a3;
+- (ICASSnapshotHealthPrivateUserData)initWithSnapshotHealthPrivateUserID:(id)d;
 - (id)toDict;
 @end
 
 @implementation ICASSnapshotHealthPrivateUserData
 
-- (ICASSnapshotHealthPrivateUserData)initWithSnapshotHealthPrivateUserID:(id)a3
+- (ICASSnapshotHealthPrivateUserData)initWithSnapshotHealthPrivateUserID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ICASSnapshotHealthPrivateUserData;
   v6 = [(ICASSnapshotHealthPrivateUserData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_snapshotHealthPrivateUserID, a3);
+    objc_storeStrong(&v6->_snapshotHealthPrivateUserID, d);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"snapshotHealthPrivateUserID";
-  v3 = [(ICASSnapshotHealthPrivateUserData *)self snapshotHealthPrivateUserID];
-  if (v3)
+  snapshotHealthPrivateUserID = [(ICASSnapshotHealthPrivateUserData *)self snapshotHealthPrivateUserID];
+  if (snapshotHealthPrivateUserID)
   {
-    v4 = [(ICASSnapshotHealthPrivateUserData *)self snapshotHealthPrivateUserID];
+    snapshotHealthPrivateUserID2 = [(ICASSnapshotHealthPrivateUserData *)self snapshotHealthPrivateUserID];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    snapshotHealthPrivateUserID2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = snapshotHealthPrivateUserID2;
+  v10[0] = snapshotHealthPrivateUserID2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

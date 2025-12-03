@@ -1,33 +1,33 @@
 @interface HAP2AccessoryServerMetadata
 + (id)new;
 - (HAP2AccessoryServerMetadata)init;
-- (HAP2AccessoryServerMetadata)initWithDeviceID:(id)a3 hasPairings:(BOOL)a4 protocolVersion:(id)a5 name:(id)a6 model:(id)a7 category:(unint64_t)a8 stateNumber:(unsigned __int16)a9 configNumber:(unsigned __int16)a10 setupHash:(id)a11;
+- (HAP2AccessoryServerMetadata)initWithDeviceID:(id)d hasPairings:(BOOL)pairings protocolVersion:(id)version name:(id)name model:(id)model category:(unint64_t)category stateNumber:(unsigned __int16)number configNumber:(unsigned __int16)self0 setupHash:(id)self1;
 @end
 
 @implementation HAP2AccessoryServerMetadata
 
-- (HAP2AccessoryServerMetadata)initWithDeviceID:(id)a3 hasPairings:(BOOL)a4 protocolVersion:(id)a5 name:(id)a6 model:(id)a7 category:(unint64_t)a8 stateNumber:(unsigned __int16)a9 configNumber:(unsigned __int16)a10 setupHash:(id)a11
+- (HAP2AccessoryServerMetadata)initWithDeviceID:(id)d hasPairings:(BOOL)pairings protocolVersion:(id)version name:(id)name model:(id)model category:(unint64_t)category stateNumber:(unsigned __int16)number configNumber:(unsigned __int16)self0 setupHash:(id)self1
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v25 = a7;
-  v19 = a11;
+  dCopy = d;
+  versionCopy = version;
+  nameCopy = name;
+  modelCopy = model;
+  hashCopy = hash;
   v26.receiver = self;
   v26.super_class = HAP2AccessoryServerMetadata;
   v20 = [(HAP2AccessoryServerMetadata *)&v26 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_deviceID, a3);
-    v21->_hasPairings = a4;
-    objc_storeStrong(&v21->_protocolVersion, a5);
-    objc_storeStrong(&v21->_name, a6);
-    objc_storeStrong(&v21->_model, a7);
-    v21->_category = a8;
-    v21->_stateNumber = a9;
-    v21->_configNumber = a10;
-    objc_storeStrong(&v21->_setupHash, a11);
+    objc_storeStrong(&v20->_deviceID, d);
+    v21->_hasPairings = pairings;
+    objc_storeStrong(&v21->_protocolVersion, version);
+    objc_storeStrong(&v21->_name, name);
+    objc_storeStrong(&v21->_model, model);
+    v21->_category = category;
+    v21->_stateNumber = number;
+    v21->_configNumber = configNumber;
+    objc_storeStrong(&v21->_setupHash, hash);
   }
 
   return v21;

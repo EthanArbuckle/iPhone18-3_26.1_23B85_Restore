@@ -1,5 +1,5 @@
 @interface ChargingStateProvider
-- (BOOL)isBatteryGaugingEnabledWithOverrideStateArray:(id)a3;
+- (BOOL)isBatteryGaugingEnabledWithOverrideStateArray:(id)array;
 - (ChargingStateProvider)init;
 - (ChargingStateProviderDelegate)delegate;
 - (id)chargingIconStateDictionary;
@@ -10,7 +10,7 @@
 - (void)chargingStateChanged;
 - (void)computeStates;
 - (void)dealloc;
-- (void)didUpdateEstimateFor:(int64_t)a3 newEstimate:(id)a4 error:(id)a5;
+- (void)didUpdateEstimateFor:(int64_t)for newEstimate:(id)estimate error:(id)error;
 - (void)lowPowerModeChanged;
 - (void)powerSourceChanged;
 - (void)refreshChargeLevel;
@@ -18,9 +18,9 @@
 - (void)refreshData;
 - (void)refreshLowPowerMode;
 - (void)refreshPowerSource;
-- (void)refreshTimeEstimateForTarget:(int64_t)a3 slowChargerSignal:(BOOL *)a4;
+- (void)refreshTimeEstimateForTarget:(int64_t)target slowChargerSignal:(BOOL *)signal;
 - (void)refreshTimeEstimates;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ChargingStateProvider
@@ -134,10 +134,10 @@
   [(ChargingStateProvider *)self computeStates];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
+  delegateCopy = delegate;
+  v5 = delegateCopy;
   if (self->_delegates)
   {
     queue = self->_queue;
@@ -146,7 +146,7 @@
     v7[2] = sub_39800;
     v7[3] = &unk_163EB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -210,9 +210,9 @@
 - (void)refreshLowPowerMode
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v3 isLowPowerModeEnabled];
 
-  [(ChargingStateProvider *)self setIsLowPowerModeEnabled:v4];
+  [(ChargingStateProvider *)self setIsLowPowerModeEnabled:isLowPowerModeEnabled];
 }
 
 - (void)powerSourceChanged
@@ -262,12 +262,12 @@
 
 - (void)refreshPowerSource
 {
-  v5 = [(ChargingStateProvider *)self chargingIconStateDictionary];
-  v3 = [v5 objectForKeyedSubscript:@"chargeStatus"];
+  chargingIconStateDictionary = [(ChargingStateProvider *)self chargingIconStateDictionary];
+  v3 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
 
   if (v3)
   {
-    v4 = [v5 objectForKeyedSubscript:@"chargeStatus"];
+    v4 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
     v3 = [v4 isEqualToString:@"Disconnected"] ^ 1;
   }
 
@@ -385,7 +385,7 @@
 
 - (void)refreshChargingState
 {
-  v3 = [(ChargingStateProvider *)self getChargingState];
+  getChargingState = [(ChargingStateProvider *)self getChargingState];
   if (+[PLBatteryUIUtilities inDemoMode])
   {
     v4 = [PLBatteryUIUtilities getDefaultValueForKey:@"chargingStatus"];
@@ -400,13 +400,13 @@ LABEL_11:
     if ([v4 isEqualToString:@"obc"])
     {
       v6 = 0;
-      v3 = 2;
+      getChargingState = 2;
     }
 
     else if ([v5 isEqualToString:@"cec"])
     {
       v6 = 0;
-      v3 = 7;
+      getChargingState = 7;
     }
 
     else
@@ -417,13 +417,13 @@ LABEL_11:
         {
           v6 = 0;
           v7 = 0;
-          v3 = 9;
+          getChargingState = 9;
         }
 
         else if ([v5 isEqualToString:@"limit"])
         {
           v7 = 0;
-          v3 = 8;
+          getChargingState = 8;
           v6 = 1;
         }
 
@@ -436,14 +436,14 @@ LABEL_11:
 
           v6 = 0;
           v7 = 0;
-          v3 = 10;
+          getChargingState = 10;
         }
 
         goto LABEL_10;
       }
 
       v6 = 0;
-      v3 = 3;
+      getChargingState = 3;
     }
 
     v7 = 1;
@@ -455,14 +455,14 @@ LABEL_10:
 
 LABEL_12:
 
-  [(ChargingStateProvider *)self setChargingState:v3];
+  [(ChargingStateProvider *)self setChargingState:getChargingState];
 }
 
 - (signed)getChargingState
 {
-  v3 = [(ChargingStateProvider *)self chargingIconStateDictionary];
-  v4 = [(ChargingStateProvider *)self isExternallyConnected];
-  if (v4)
+  chargingIconStateDictionary = [(ChargingStateProvider *)self chargingIconStateDictionary];
+  isExternallyConnected = [(ChargingStateProvider *)self isExternallyConnected];
+  if (isExternallyConnected)
   {
     v5 = 1;
   }
@@ -474,14 +474,14 @@ LABEL_12:
 
   [(ChargingStateProvider *)self setIsEoc:0];
   [(ChargingStateProvider *)self setIsPaused:0];
-  v6 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+  v6 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
 
   if (!v6)
   {
     goto LABEL_8;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+  v7 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
   v8 = [v7 isEqualToString:@"Disconnected"];
 
   if (v8)
@@ -489,26 +489,26 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+  v9 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
   v10 = [v9 isEqualToString:@"Charging Completed"];
 
   if (v10)
   {
     [(ChargingStateProvider *)self setIsEoc:1];
 LABEL_8:
-    v11 = v5;
+    chargingIntervalType = v5;
     goto LABEL_9;
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+  v13 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
   v14 = [v13 isEqualToString:@"Charging"];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+    v15 = [chargingIconStateDictionary objectForKeyedSubscript:@"chargeStatus"];
     -[ChargingStateProvider setIsPaused:](self, "setIsPaused:", [v15 isEqualToString:@"Charging On Hold"]);
 
-    v16 = [v3 objectForKeyedSubscript:@"holds"];
+    v16 = [chargingIconStateDictionary objectForKeyedSubscript:@"holds"];
     v17 = [(ChargingStateProvider *)self getMostApplicableState:v16 isPaused:[(ChargingStateProvider *)self isPaused]];
 
     if (v17)
@@ -517,63 +517,63 @@ LABEL_8:
       -[ChargingStateProvider setIsEoc:](self, "setIsEoc:", [v18 BOOLValue]);
 
       v19 = [v17 objectForKeyedSubscript:@"name"];
-      v11 = [v19 chargingIntervalType];
+      chargingIntervalType = [v19 chargingIntervalType];
 
       goto LABEL_9;
     }
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"overrides"];
+  v20 = [chargingIconStateDictionary objectForKeyedSubscript:@"overrides"];
   v21 = [(ChargingStateProvider *)self isBatteryGaugingEnabledWithOverrideStateArray:v20];
 
   if (v21)
   {
-    v11 = 10;
+    chargingIntervalType = 10;
   }
 
   else
   {
-    v11 = v5;
+    chargingIntervalType = v5;
   }
 
-  if ((v21 & 1) == 0 && ((v4 ^ 1) & 1) == 0)
+  if ((v21 & 1) == 0 && ((isExternallyConnected ^ 1) & 1) == 0)
   {
     if (![(ChargingStateProvider *)self isSlowCharger])
     {
       goto LABEL_8;
     }
 
-    v11 = v5;
+    chargingIntervalType = v5;
     if (![(ChargingStateProvider *)self isPaused])
     {
       if ([(ChargingStateProvider *)self isEoc])
       {
-        v11 = v5;
+        chargingIntervalType = v5;
       }
 
       else
       {
-        v11 = 9;
+        chargingIntervalType = 9;
       }
     }
   }
 
 LABEL_9:
 
-  return v11;
+  return chargingIntervalType;
 }
 
-- (BOOL)isBatteryGaugingEnabledWithOverrideStateArray:(id)a3
+- (BOOL)isBatteryGaugingEnabledWithOverrideStateArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -643,10 +643,10 @@ LABEL_14:
   return 0;
 }
 
-- (void)didUpdateEstimateFor:(int64_t)a3 newEstimate:(id)a4 error:(id)a5
+- (void)didUpdateEstimateFor:(int64_t)for newEstimate:(id)estimate error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  estimateCopy = estimate;
+  errorCopy = error;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -674,9 +674,9 @@ LABEL_14:
         block[2] = sub_3AD58;
         block[3] = &unk_164F88;
         block[4] = v14;
-        v20 = a3;
-        v18 = v8;
-        v19 = v9;
+        forCopy = for;
+        v18 = estimateCopy;
+        v19 = errorCopy;
         dispatch_async(queue, block);
 
         v13 = v13 + 1;
@@ -711,15 +711,15 @@ LABEL_14:
   [(ChargingStateProvider *)self setIsSlowCharger:v3];
 }
 
-- (void)refreshTimeEstimateForTarget:(int64_t)a3 slowChargerSignal:(BOOL *)a4
+- (void)refreshTimeEstimateForTarget:(int64_t)target slowChargerSignal:(BOOL *)signal
 {
-  v7 = [(ChargingStateProvider *)self chargeTimeEstimateClient];
+  chargeTimeEstimateClient = [(ChargingStateProvider *)self chargeTimeEstimateClient];
 
-  if (v7)
+  if (chargeTimeEstimateClient)
   {
-    v8 = [(ChargingStateProvider *)self chargeTimeEstimateClient];
+    chargeTimeEstimateClient2 = [(ChargingStateProvider *)self chargeTimeEstimateClient];
     v15 = 0;
-    v9 = [v8 estimateForTarget:a3 withError:&v15];
+    v9 = [chargeTimeEstimateClient2 estimateForTarget:target withError:&v15];
     v10 = v15;
 
     if (v10)
@@ -742,13 +742,13 @@ LABEL_14:
         sub_114698();
       }
 
-      *a4 |= [v9 additionalInformation] == &dword_4;
-      *a4 |= [v9 additionalInformation] == &dword_4 + 1;
+      *signal |= [v9 additionalInformation] == &dword_4;
+      *signal |= [v9 additionalInformation] == &dword_4 + 1;
       if ([v9 additionalInformation] == &dword_0 + 3 || objc_msgSend(v9, "additionalInformation") == &dword_4)
       {
         [v9 estimate];
         v14 = [NSNumber numberWithDouble:?];
-        if (a3)
+        if (target)
         {
           [(ChargingStateProvider *)self setTimeEstimateToLimit:v14];
         }
@@ -761,7 +761,7 @@ LABEL_14:
         goto LABEL_21;
       }
 
-      if (!a3)
+      if (!target)
       {
         goto LABEL_20;
       }
@@ -774,7 +774,7 @@ LABEL_14:
         sub_114710();
       }
 
-      if (!a3)
+      if (!target)
       {
 LABEL_20:
         [(ChargingStateProvider *)self setTimeEstimateTo80:0];
@@ -793,9 +793,9 @@ LABEL_21:
   v4 = NSStringFromClass(v3);
   v5 = [NSString stringWithFormat:@"<%@ %p> isLowPowerModeEnabled: %d, isExternallyConnected: %d, uisocLevel: %d, isEoc: %d, isPaused: %d, chargingState: %d", v4, self, [(ChargingStateProvider *)self isLowPowerModeEnabled], [(ChargingStateProvider *)self isExternallyConnected], [(ChargingStateProvider *)self uisocLevel], [(ChargingStateProvider *)self isEoc], [(ChargingStateProvider *)self isPaused], [(ChargingStateProvider *)self chargingState]];
 
-  v6 = [(ChargingStateProvider *)self timeEstimateTo80];
-  v7 = [(ChargingStateProvider *)self timeEstimateToLimit];
-  v8 = [v5 stringByAppendingFormat:@", timeEstimateTo80: %@, timeEstimateToLimit: %@", v6, v7];
+  timeEstimateTo80 = [(ChargingStateProvider *)self timeEstimateTo80];
+  timeEstimateToLimit = [(ChargingStateProvider *)self timeEstimateToLimit];
+  v8 = [v5 stringByAppendingFormat:@", timeEstimateTo80: %@, timeEstimateToLimit: %@", timeEstimateTo80, timeEstimateToLimit];
 
   return v5;
 }

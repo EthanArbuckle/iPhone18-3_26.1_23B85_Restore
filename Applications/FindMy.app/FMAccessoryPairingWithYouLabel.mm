@@ -1,7 +1,7 @@
 @interface FMAccessoryPairingWithYouLabel
 - (_TtC6FindMy30FMAccessoryPairingWithYouLabel)init;
-- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithCoder:(id)a3;
-- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithCoder:(id)coder;
+- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMAccessoryPairingWithYouLabel
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithCoder:(id)a3
+- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy30FMAccessoryPairingWithYouLabel_dotView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for FMAccessoryPairingWithYouIndicator()) init];
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithFrame:(CGRect)a3
+- (_TtC6FindMy30FMAccessoryPairingWithYouLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

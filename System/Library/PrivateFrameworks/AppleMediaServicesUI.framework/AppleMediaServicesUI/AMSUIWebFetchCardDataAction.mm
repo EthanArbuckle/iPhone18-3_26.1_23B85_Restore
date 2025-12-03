@@ -1,19 +1,19 @@
 @interface AMSUIWebFetchCardDataAction
-- (AMSUIWebFetchCardDataAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebFetchCardDataAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFetchCardDataAction
 
-- (AMSUIWebFetchCardDataAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchCardDataAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = AMSUIWebFetchCardDataAction;
-  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v15 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"merchantID"];
+    v8 = [objectCopy objectForKeyedSubscript:@"merchantID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
     merchantID = v7->_merchantID;
     v7->_merchantID = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"storeFrontCountryCode"];
+    v11 = [objectCopy objectForKeyedSubscript:@"storeFrontCountryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,56 +52,56 @@
   v39 = *MEMORY[0x1E69E9840];
   v33.receiver = self;
   v33.super_class = AMSUIWebFetchCardDataAction;
-  v3 = [(AMSUIWebAction *)&v33 runAction];
+  runAction = [(AMSUIWebAction *)&v33 runAction];
   v4 = AMSLogKey();
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     *buf = 138543618;
     v36 = v7;
     v37 = 2114;
     v38 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching card data...", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching card data...", buf, 0x16u);
   }
 
-  v8 = [(AMSUIWebFetchCardDataAction *)self merchantID];
-  if (v8)
+  merchantID = [(AMSUIWebFetchCardDataAction *)self merchantID];
+  if (merchantID)
   {
-    v9 = [MEMORY[0x1E698CAD0] promiseWithResult:v8];
+    valuePromise = [MEMORY[0x1E698CAD0] promiseWithResult:merchantID];
   }
 
   else
   {
-    v10 = [(AMSUIWebAction *)self context];
-    v11 = [v10 bag];
+    context = [(AMSUIWebAction *)self context];
+    v11 = [context bag];
     v12 = [v11 stringForKey:@"applepay-merchant-id"];
-    v9 = [v12 valuePromise];
+    valuePromise = [v12 valuePromise];
   }
 
-  v13 = [(AMSUIWebFetchCardDataAction *)self storeFrontCountryCode];
-  if (v13)
+  storeFrontCountryCode = [(AMSUIWebFetchCardDataAction *)self storeFrontCountryCode];
+  if (storeFrontCountryCode)
   {
-    v14 = [MEMORY[0x1E698CAD0] promiseWithResult:v13];
+    valuePromise2 = [MEMORY[0x1E698CAD0] promiseWithResult:storeFrontCountryCode];
   }
 
   else
   {
-    v15 = [(AMSUIWebAction *)self context];
-    v16 = [v15 bag];
+    context2 = [(AMSUIWebAction *)self context];
+    v16 = [context2 bag];
     v17 = [v16 stringForKey:@"countryCode"];
-    v14 = [v17 valuePromise];
+    valuePromise2 = [v17 valuePromise];
   }
 
   v18 = MEMORY[0x1E698CAD0];
-  v34[0] = v14;
-  v34[1] = v9;
+  v34[0] = valuePromise2;
+  v34[1] = valuePromise;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   v20 = [v18 promiseWithAll:v19];
 

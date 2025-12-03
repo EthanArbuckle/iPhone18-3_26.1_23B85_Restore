@@ -1,9 +1,9 @@
 @interface TVRootShowcaseCarouselContainerCell
 - (NSArray)preferredFocusEnvironments;
-- (id)carouselView:(id)a3 cellForItemAtIndex:(int64_t)a4;
-- (int64_t)indexForPreferredCenteredViewInCarouselView:(id)a3;
-- (void)carouselView:(id)a3 didCenterItemAtIndex:(int64_t)a4;
-- (void)carouselView:(id)a3 willDisplayCell:(id)a4 forItemAtIndex:(int64_t)a5;
+- (id)carouselView:(id)view cellForItemAtIndex:(int64_t)index;
+- (int64_t)indexForPreferredCenteredViewInCarouselView:(id)view;
+- (void)carouselView:(id)view didCenterItemAtIndex:(int64_t)index;
+- (void)carouselView:(id)view willDisplayCell:(id)cell forItemAtIndex:(int64_t)index;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -33,19 +33,19 @@
   v6 = type metadata accessor for TVRootShowcaseCarouselContainerCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVRootShowcaseCarouselContainerCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI35TVRootShowcaseCarouselContainerCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B806488();
 }
 
@@ -55,10 +55,10 @@
   v5.super_class = type metadata accessor for TVRootShowcaseCarouselContainerCell();
   v2 = v5.receiver;
   [(TVRootShowcaseCarouselContainerCell *)&v5 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
 
     v2 = v4;
   }
@@ -71,16 +71,16 @@
   }
 }
 
-- (id)carouselView:(id)a3 cellForItemAtIndex:(int64_t)a4
+- (id)carouselView:(id)view cellForItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_20B8087DC(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_20B8087DC(index);
 
   return v8;
 }
 
-- (int64_t)indexForPreferredCenteredViewInCarouselView:(id)a3
+- (int64_t)indexForPreferredCenteredViewInCarouselView:(id)view
 {
   if (*(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI35TVRootShowcaseCarouselContainerCell_preferredCenterIndex) == 1)
   {
@@ -93,19 +93,19 @@
   }
 }
 
-- (void)carouselView:(id)a3 didCenterItemAtIndex:(int64_t)a4
+- (void)carouselView:(id)view didCenterItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  sub_20B808D50(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_20B808D50(index);
 }
 
-- (void)carouselView:(id)a3 willDisplayCell:(id)a4 forItemAtIndex:(int64_t)a5
+- (void)carouselView:(id)view willDisplayCell:(id)cell forItemAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_20B809054(a5);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_20B809054(index);
 }
 
 @end

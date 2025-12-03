@@ -11,8 +11,8 @@
   if (!triageAction)
   {
     v4 = [MSRemoveFollowUpTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self followUp:{"actor"), 0, 0}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self followUp:{"actor"), 0, 0}];
     v7 = self->_triageAction;
     self->_triageAction = v6;
 
@@ -24,9 +24,9 @@
 
 - (BOOL)isPermitted
 {
-  v2 = [(MFTriageInteraction *)self messageListItemSelection];
-  v3 = [v2 messageListItems];
-  v4 = [v3 ef_any:&stru_100655590];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v4 = [messageListItems ef_any:&stru_100655590];
 
   return v4;
 }

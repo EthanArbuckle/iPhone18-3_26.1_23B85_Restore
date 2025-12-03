@@ -1,25 +1,25 @@
 @interface AKMainEventHandler_iOS
-- (AKMainEventHandler_iOS)initWithController:(id)a3;
-- (BOOL)_doubleTapRecognizerCanBeginAtPoint:(CGPoint)a3;
-- (BOOL)_shouldAllowTapAtLocationInWindow:(CGPoint)a3;
-- (BOOL)_tapRecognizerCanBeginAtPoint:(CGPoint)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)selectionInteractionShouldBegin:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5 orGestureRecognizer:(id)a6;
-- (void)applyToAllSelectedAnnotationsRotateEvent:(id)a3 orRecognizer:(id)a4;
-- (void)forwardRecognizerToMainHandleEvent:(id)a3;
+- (AKMainEventHandler_iOS)initWithController:(id)controller;
+- (BOOL)_doubleTapRecognizerCanBeginAtPoint:(CGPoint)point;
+- (BOOL)_shouldAllowTapAtLocationInWindow:(CGPoint)window;
+- (BOOL)_tapRecognizerCanBeginAtPoint:(CGPoint)point;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)selectionInteractionShouldBegin:(id)begin atPoint:(CGPoint)point forEvent:(id)event orGestureRecognizer:(id)recognizer;
+- (void)applyToAllSelectedAnnotationsRotateEvent:(id)event orRecognizer:(id)recognizer;
+- (void)forwardRecognizerToMainHandleEvent:(id)event;
 - (void)teardown;
 @end
 
 @implementation AKMainEventHandler_iOS
 
-- (AKMainEventHandler_iOS)initWithController:(id)a3
+- (AKMainEventHandler_iOS)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = AKMainEventHandler_iOS;
-  v5 = [(AKMainEventHandler *)&v17 initWithController:v4];
+  v5 = [(AKMainEventHandler *)&v17 initWithController:controllerCopy];
   if (v5)
   {
     v6 = [[AKTapGestureRecognizer alloc] initWithTarget:v5 action:sel_forwardRecognizerToMainHandleEvent_];
@@ -51,7 +51,7 @@
     rotationRecognizer = v5->_rotationRecognizer;
     v5->_rotationRecognizer = v14;
 
-    [(AKRotationGestureRecognizer *)v5->_rotationRecognizer setAnnotationController:v4];
+    [(AKRotationGestureRecognizer *)v5->_rotationRecognizer setAnnotationController:controllerCopy];
     [(AKRotationGestureRecognizer *)v5->_rotationRecognizer setDelegate:v5];
     [(UITapGestureRecognizer *)v5->_tapRecognizer requireGestureRecognizerToFail:v5->_doubleTapRecognizer];
     [(UITapGestureRecognizer *)v5->_tapRecognizer requireGestureRecognizerToFail:v5->_panRecognizer];
@@ -70,49 +70,49 @@
 
 - (void)teardown
 {
-  v3 = [(AKMainEventHandler_iOS *)self tapRecognizer];
-  v4 = [v3 view];
-  v5 = [(AKMainEventHandler_iOS *)self tapRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  tapRecognizer = [(AKMainEventHandler_iOS *)self tapRecognizer];
+  view = [tapRecognizer view];
+  tapRecognizer2 = [(AKMainEventHandler_iOS *)self tapRecognizer];
+  [view removeGestureRecognizer:tapRecognizer2];
 
-  v6 = [(AKMainEventHandler_iOS *)self tapRecognizer];
-  [v6 setDelegate:0];
+  tapRecognizer3 = [(AKMainEventHandler_iOS *)self tapRecognizer];
+  [tapRecognizer3 setDelegate:0];
 
   [(AKMainEventHandler_iOS *)self setTapRecognizer:0];
-  v7 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
-  v8 = [v7 view];
-  v9 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
-  [v8 removeGestureRecognizer:v9];
+  doubleTapRecognizer = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
+  view2 = [doubleTapRecognizer view];
+  doubleTapRecognizer2 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
+  [view2 removeGestureRecognizer:doubleTapRecognizer2];
 
-  v10 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
-  [v10 setDelegate:0];
+  doubleTapRecognizer3 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
+  [doubleTapRecognizer3 setDelegate:0];
 
   [(AKMainEventHandler_iOS *)self setDoubleTapRecognizer:0];
-  v11 = [(AKMainEventHandler_iOS *)self pressRecognizer];
-  v12 = [v11 view];
-  v13 = [(AKMainEventHandler_iOS *)self pressRecognizer];
-  [v12 removeGestureRecognizer:v13];
+  pressRecognizer = [(AKMainEventHandler_iOS *)self pressRecognizer];
+  view3 = [pressRecognizer view];
+  pressRecognizer2 = [(AKMainEventHandler_iOS *)self pressRecognizer];
+  [view3 removeGestureRecognizer:pressRecognizer2];
 
-  v14 = [(AKMainEventHandler_iOS *)self pressRecognizer];
-  [v14 setDelegate:0];
+  pressRecognizer3 = [(AKMainEventHandler_iOS *)self pressRecognizer];
+  [pressRecognizer3 setDelegate:0];
 
   [(AKMainEventHandler_iOS *)self setPressRecognizer:0];
-  v15 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
-  v16 = [v15 view];
-  v17 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
-  [v16 removeGestureRecognizer:v17];
+  rotationRecognizer = [(AKMainEventHandler_iOS *)self rotationRecognizer];
+  view4 = [rotationRecognizer view];
+  rotationRecognizer2 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
+  [view4 removeGestureRecognizer:rotationRecognizer2];
 
-  v18 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
-  [v18 setDelegate:0];
+  rotationRecognizer3 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
+  [rotationRecognizer3 setDelegate:0];
 
   [(AKMainEventHandler_iOS *)self setRotationRecognizer:0];
-  v19 = [(AKMainEventHandler_iOS *)self panRecognizer];
-  v20 = [v19 view];
-  v21 = [(AKMainEventHandler_iOS *)self panRecognizer];
-  [v20 removeGestureRecognizer:v21];
+  panRecognizer = [(AKMainEventHandler_iOS *)self panRecognizer];
+  view5 = [panRecognizer view];
+  panRecognizer2 = [(AKMainEventHandler_iOS *)self panRecognizer];
+  [view5 removeGestureRecognizer:panRecognizer2];
 
-  v22 = [(AKMainEventHandler_iOS *)self panRecognizer];
-  [v22 setDelegate:0];
+  panRecognizer3 = [(AKMainEventHandler_iOS *)self panRecognizer];
+  [panRecognizer3 setDelegate:0];
 
   [(AKMainEventHandler_iOS *)self setPanRecognizer:0];
   v23.receiver = self;
@@ -120,48 +120,48 @@
   [(AKMainEventHandler *)&v23 teardown];
 }
 
-- (void)forwardRecognizerToMainHandleEvent:(id)a3
+- (void)forwardRecognizerToMainHandleEvent:(id)event
 {
-  v8 = a3;
-  v4 = [(AKMainEventHandler_iOS *)self panRecognizer];
-  if (v4 != v8)
+  eventCopy = event;
+  panRecognizer = [(AKMainEventHandler_iOS *)self panRecognizer];
+  if (panRecognizer != eventCopy)
   {
 LABEL_2:
 
     goto LABEL_8;
   }
 
-  v5 = [(AKMainEventHandler_iOS *)self panRecognizer];
-  v6 = [v5 penGestureDetected];
+  panRecognizer2 = [(AKMainEventHandler_iOS *)self panRecognizer];
+  penGestureDetected = [panRecognizer2 penGestureDetected];
 
-  if (v6 && [v8 state] == 3)
+  if (penGestureDetected && [eventCopy state] == 3)
   {
-    v4 = [(AKMainEventHandler *)self controller];
-    v7 = [v4 delegate];
+    panRecognizer = [(AKMainEventHandler *)self controller];
+    delegate = [panRecognizer delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 penStrokeCompletedForAnnotationController:v4];
+      [delegate penStrokeCompletedForAnnotationController:panRecognizer];
     }
 
     goto LABEL_2;
   }
 
 LABEL_8:
-  [(AKMainEventHandler *)self mainHandleEvent:0 orRecognizer:v8];
+  [(AKMainEventHandler *)self mainHandleEvent:0 orRecognizer:eventCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AKMainEventHandler *)self controller];
-  [v7 locationInView:0];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  controller = [(AKMainEventHandler *)self controller];
+  [touchCopy locationInView:0];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(AKMainEventHandler_iOS *)self tapRecognizer];
+  tapRecognizer = [(AKMainEventHandler_iOS *)self tapRecognizer];
 
-  if (v13 == v6)
+  if (tapRecognizer == recognizerCopy)
   {
     v16 = [(AKMainEventHandler_iOS *)self _tapRecognizerCanBeginAtPoint:v10, v12];
 LABEL_8:
@@ -169,55 +169,55 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
+  doubleTapRecognizer = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
 
-  if (v14 == v6)
+  if (doubleTapRecognizer == recognizerCopy)
   {
     v16 = [(AKMainEventHandler_iOS *)self _doubleTapRecognizerCanBeginAtPoint:v10, v12];
     goto LABEL_8;
   }
 
-  v15 = ([v8 annotationEditingEnabled] & 1) != 0 || objc_msgSend(v8, "formFillingEnabled");
+  v15 = ([controller annotationEditingEnabled] & 1) != 0 || objc_msgSend(controller, "formFillingEnabled");
 LABEL_9:
 
   return v15;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(AKMainEventHandler *)self controller];
-  v6 = [v5 toolController];
-  v7 = [v6 toolMode];
+  beginCopy = begin;
+  controller = [(AKMainEventHandler *)self controller];
+  toolController = [controller toolController];
+  toolMode = [toolController toolMode];
 
-  if ([v5 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
-    LODWORD(v8) = 1;
+    LODWORD(pageModelController) = 1;
   }
 
   else
   {
-    LODWORD(v8) = [v5 formFillingEnabled];
+    LODWORD(pageModelController) = [controller formFillingEnabled];
   }
 
-  v9 = [(AKMainEventHandler_iOS *)self panRecognizer];
+  panRecognizer = [(AKMainEventHandler_iOS *)self panRecognizer];
 
-  if (v9 == v4)
+  if (panRecognizer == beginCopy)
   {
-    [v4 locationOfFirstTouchInView:0];
+    [beginCopy locationOfFirstTouchInView:0];
     v17 = v16;
     v19 = v18;
-    v20 = [v5 annotationEditingEnabled];
-    if (v7 == 4)
+    annotationEditingEnabled = [controller annotationEditingEnabled];
+    if (toolMode == 4)
     {
-      if ((v20 & 1) != 0 || [v5 formFillingEnabled])
+      if ((annotationEditingEnabled & 1) != 0 || [controller formFillingEnabled])
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 1;
         goto LABEL_22;
       }
 
-      if (!v8)
+      if (!pageModelController)
       {
         goto LABEL_39;
       }
@@ -225,128 +225,128 @@ LABEL_9:
 
     else
     {
-      if ((v20 & 1) == 0 && ![v5 formFillingEnabled])
+      if ((annotationEditingEnabled & 1) == 0 && ![controller formFillingEnabled])
       {
         goto LABEL_38;
       }
 
-      if ((v7 - 1) >= 2)
+      if ((toolMode - 1) >= 2)
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 0;
 LABEL_22:
-        if (![(AKMainEventHandler *)v21 hitTestAnnotationsIncludingPOI:1 ignoreIfDeselected:v22 atPointInWindow:0 outAnnotation:v17, v19])
+        if (![(AKMainEventHandler *)selfCopy2 hitTestAnnotationsIncludingPOI:1 ignoreIfDeselected:v22 atPointInWindow:0 outAnnotation:v17, v19])
         {
 LABEL_38:
-          LOBYTE(v8) = 0;
+          LOBYTE(pageModelController) = 0;
           goto LABEL_39;
         }
       }
     }
 
     [(AKMainEventHandler *)self setPanGestureStartPointInWindow:v17, v19];
-    LOBYTE(v8) = 1;
+    LOBYTE(pageModelController) = 1;
     goto LABEL_39;
   }
 
-  v10 = [(AKMainEventHandler_iOS *)self tapRecognizer];
+  tapRecognizer = [(AKMainEventHandler_iOS *)self tapRecognizer];
 
-  if (v10 == v4)
+  if (tapRecognizer == beginCopy)
   {
-    [v4 akLocationInWindow];
+    [beginCopy akLocationInWindow];
     v23 = [(AKMainEventHandler_iOS *)self _tapRecognizerCanBeginAtPoint:?];
 LABEL_33:
-    LOBYTE(v8) = v23;
+    LOBYTE(pageModelController) = v23;
     goto LABEL_39;
   }
 
-  v11 = [(AKMainEventHandler_iOS *)self rotationRecognizer];
-  v12 = v11;
-  if (v11 != v4)
+  rotationRecognizer = [(AKMainEventHandler_iOS *)self rotationRecognizer];
+  v12 = rotationRecognizer;
+  if (rotationRecognizer != beginCopy)
   {
 
     goto LABEL_8;
   }
 
-  if ([v5 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
 
 LABEL_29:
-    v25 = [v5 currentPageController];
-    v8 = [v25 pageModelController];
-    v15 = [v8 selectedAnnotations];
+    currentPageController = [controller currentPageController];
+    pageModelController = [currentPageController pageModelController];
+    selectedAnnotations = [pageModelController selectedAnnotations];
 
-    LOBYTE(v8) = [v15 count] != 0;
+    LOBYTE(pageModelController) = [selectedAnnotations count] != 0;
     goto LABEL_30;
   }
 
-  v24 = [v5 formFillingEnabled];
+  formFillingEnabled = [controller formFillingEnabled];
 
-  if (v24)
+  if (formFillingEnabled)
   {
     goto LABEL_29;
   }
 
 LABEL_8:
-  v13 = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
-  v14 = v13;
-  if (v13 != v4)
+  doubleTapRecognizer = [(AKMainEventHandler_iOS *)self doubleTapRecognizer];
+  v14 = doubleTapRecognizer;
+  if (doubleTapRecognizer != beginCopy)
   {
 
     goto LABEL_10;
   }
 
-  if ([v5 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
 
 LABEL_32:
-    [v4 akLocationInWindow];
+    [beginCopy akLocationInWindow];
     v23 = [(AKMainEventHandler_iOS *)self _doubleTapRecognizerCanBeginAtPoint:?];
     goto LABEL_33;
   }
 
-  v26 = [v5 formFillingEnabled];
+  formFillingEnabled2 = [controller formFillingEnabled];
 
-  if (v26)
+  if (formFillingEnabled2)
   {
     goto LABEL_32;
   }
 
 LABEL_10:
-  v15 = [(AKMainEventHandler_iOS *)self pressRecognizer];
-  if (v15 != v4)
+  selectedAnnotations = [(AKMainEventHandler_iOS *)self pressRecognizer];
+  if (selectedAnnotations != beginCopy)
   {
 LABEL_30:
 
     goto LABEL_39;
   }
 
-  if ([v5 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
 
     goto LABEL_37;
   }
 
-  v27 = [v5 formFillingEnabled];
+  formFillingEnabled3 = [controller formFillingEnabled];
 
-  if (v27)
+  if (formFillingEnabled3)
   {
 LABEL_37:
-    v28 = [(AKMainEventHandler_iOS *)self panRecognizer];
-    v29 = [v28 penGestureDetected];
+    panRecognizer2 = [(AKMainEventHandler_iOS *)self panRecognizer];
+    penGestureDetected = [panRecognizer2 penGestureDetected];
 
-    if (v29)
+    if (penGestureDetected)
     {
       goto LABEL_38;
     }
 
-    v31 = [v5 toolController];
-    if ([v31 toolMode] == 4)
+    toolController2 = [controller toolController];
+    if ([toolController2 toolMode] == 4)
     {
-      v32 = [v5 attributeController];
-      v33 = [v32 ink];
-      v34 = [v33 identifier];
-      v35 = [v34 isEqual:*MEMORY[0x277CD96C8]];
+      attributeController = [controller attributeController];
+      v33 = [attributeController ink];
+      identifier = [v33 identifier];
+      v35 = [identifier isEqual:*MEMORY[0x277CD96C8]];
 
       if (v35)
       {
@@ -358,11 +358,11 @@ LABEL_37:
     {
     }
 
-    [v4 akLocationInWindow];
+    [beginCopy akLocationInWindow];
     v42 = 0;
     v36 = [(AKMainEventHandler *)self hitTestAnnotationsIncludingPOI:0 ignoreIfDeselected:0 atPointInWindow:&v42 outAnnotation:?];
     v37 = v42;
-    LOBYTE(v8) = 0;
+    LOBYTE(pageModelController) = 0;
     if (!v36)
     {
 LABEL_53:
@@ -370,49 +370,49 @@ LABEL_53:
       goto LABEL_39;
     }
 
-    v38 = [v5 textEditorController];
-    v39 = [v38 annotation];
+    textEditorController = [controller textEditorController];
+    annotation = [textEditorController annotation];
 
-    v40 = [v5 modelController];
-    v41 = [v40 allSelectedAnnotations];
+    modelController = [controller modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
 
     if (v37)
     {
-      if ([v41 count] && (objc_msgSend(v41, "containsObject:", v37) & 1) != 0)
+      if ([allSelectedAnnotations count] && (objc_msgSend(allSelectedAnnotations, "containsObject:", v37) & 1) != 0)
       {
-        LOBYTE(v8) = 0;
+        LOBYTE(pageModelController) = 0;
 LABEL_52:
 
         goto LABEL_53;
       }
 
-      if (v39)
+      if (annotation)
       {
-        LODWORD(v8) = [v39 isEqual:v37] ^ 1;
+        LODWORD(pageModelController) = [annotation isEqual:v37] ^ 1;
         goto LABEL_52;
       }
     }
 
-    LOBYTE(v8) = 1;
+    LOBYTE(pageModelController) = 1;
     goto LABEL_52;
   }
 
 LABEL_39:
 
-  return v8;
+  return pageModelController;
 }
 
-- (BOOL)_tapRecognizerCanBeginAtPoint:(CGPoint)a3
+- (BOOL)_tapRecognizerCanBeginAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKMainEventHandler *)self controller];
-  if (([v6 annotationEditingEnabled] & 1) != 0 || objc_msgSend(v6, "formFillingEnabled"))
+  y = point.y;
+  x = point.x;
+  controller = [(AKMainEventHandler *)self controller];
+  if (([controller annotationEditingEnabled] & 1) != 0 || objc_msgSend(controller, "formFillingEnabled"))
   {
     isKindOfClass = [(AKMainEventHandler_iOS *)self _shouldAllowTapAtLocationInWindow:x, y];
   }
 
-  else if ([v6 allEditingDisabled])
+  else if ([controller allEditingDisabled])
   {
     isKindOfClass = 0;
   }
@@ -442,12 +442,12 @@ LABEL_39:
   return isKindOfClass & 1;
 }
 
-- (BOOL)_doubleTapRecognizerCanBeginAtPoint:(CGPoint)a3
+- (BOOL)_doubleTapRecognizerCanBeginAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKMainEventHandler *)self controller];
-  if (([v6 annotationEditingEnabled] & 1) != 0 || objc_msgSend(v6, "formFillingEnabled"))
+  y = point.y;
+  x = point.x;
+  controller = [(AKMainEventHandler *)self controller];
+  if (([controller annotationEditingEnabled] & 1) != 0 || objc_msgSend(controller, "formFillingEnabled"))
   {
     v11 = 0;
     v7 = [(AKMainEventHandler *)self hitTestAnnotationsIncludingPOI:0 ignoreIfDeselected:0 atPointInWindow:&v11 outAnnotation:x, y];
@@ -455,7 +455,7 @@ LABEL_39:
     v9 = 0;
     if (v7)
     {
-      v9 = [v6 canBeginEditingTextAnnotation:v8];
+      v9 = [controller canBeginEditingTextAnnotation:v8];
     }
   }
 
@@ -467,16 +467,16 @@ LABEL_39:
   return v9;
 }
 
-- (BOOL)_shouldAllowTapAtLocationInWindow:(CGPoint)a3
+- (BOOL)_shouldAllowTapAtLocationInWindow:(CGPoint)window
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AKMainEventHandler *)self controller];
-  v7 = [v6 currentPageController];
-  v8 = [v7 pageModelController];
-  v9 = [v8 selectedAnnotations];
+  y = window.y;
+  x = window.x;
+  controller = [(AKMainEventHandler *)self controller];
+  currentPageController = [controller currentPageController];
+  pageModelController = [currentPageController pageModelController];
+  selectedAnnotations = [pageModelController selectedAnnotations];
 
-  if ([v9 count])
+  if ([selectedAnnotations count])
   {
     v10 = 1;
   }
@@ -490,14 +490,14 @@ LABEL_39:
   return v10;
 }
 
-- (BOOL)selectionInteractionShouldBegin:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5 orGestureRecognizer:(id)a6
+- (BOOL)selectionInteractionShouldBegin:(id)begin atPoint:(CGPoint)point forEvent:(id)event orGestureRecognizer:(id)recognizer
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 view];
-  [v12 convertPoint:0 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  beginCopy = begin;
+  recognizerCopy = recognizer;
+  view = [beginCopy view];
+  [view convertPoint:0 toView:{x, y}];
   v14 = v13;
   v16 = v15;
 
@@ -507,7 +507,7 @@ LABEL_39:
 
   if (self)
   {
-    v18 = [v10 hasCurrentSelection] | !v17;
+    v18 = [beginCopy hasCurrentSelection] | !v17;
   }
 
   else
@@ -518,29 +518,29 @@ LABEL_39:
   return v18 & 1;
 }
 
-- (void)applyToAllSelectedAnnotationsRotateEvent:(id)a3 orRecognizer:(id)a4
+- (void)applyToAllSelectedAnnotationsRotateEvent:(id)event orRecognizer:(id)recognizer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
     [(AKMainEventHandler_iOS *)self setLastRotationAngleInRotationGesture:0.0];
   }
 
-  if ([v5 state] == 2)
+  if ([recognizerCopy state] == 2)
   {
-    v6 = [(AKMainEventHandler *)self controller];
-    v7 = [v6 currentPageController];
-    v8 = [v7 pageModelController];
-    v9 = [v8 selectedAnnotations];
+    controller = [(AKMainEventHandler *)self controller];
+    currentPageController = [controller currentPageController];
+    pageModelController = [currentPageController pageModelController];
+    selectedAnnotations = [pageModelController selectedAnnotations];
 
-    if (v9 && [v9 count])
+    if (selectedAnnotations && [selectedAnnotations count])
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v10 = v9;
+      v10 = selectedAnnotations;
       v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v11)
       {
@@ -558,7 +558,7 @@ LABEL_39:
             v15 = *(*(&v22 + 1) + 8 * i);
             if ([v15 conformsToAKRotatableAnnotationProtocol])
             {
-              [v5 rotation];
+              [recognizerCopy rotation];
               v17 = 6.28318531 - v16;
               [(AKMainEventHandler_iOS *)self lastRotationAngleInRotationGesture];
               v19 = v17 - v18;
@@ -574,18 +574,18 @@ LABEL_39:
       }
     }
 
-    [v5 rotation];
+    [recognizerCopy rotation];
     [(AKMainEventHandler_iOS *)self setLastRotationAngleInRotationGesture:6.28318531 - v21];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   panRecognizer = self->_panRecognizer;
   pressRecognizer = self->_pressRecognizer;
-  v12 = panRecognizer == v6 && pressRecognizer == v7 || panRecognizer == v7 && pressRecognizer == v6;
+  v12 = panRecognizer == recognizerCopy && pressRecognizer == gestureRecognizerCopy || panRecognizer == gestureRecognizerCopy && pressRecognizer == recognizerCopy;
 
   return v12;
 }

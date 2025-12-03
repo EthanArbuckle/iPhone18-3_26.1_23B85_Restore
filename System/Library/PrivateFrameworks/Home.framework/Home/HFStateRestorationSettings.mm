@@ -4,17 +4,17 @@
 - (NSString)selectedHomeAppTabIdentifier;
 - (NSUUID)selectedHomeIdentifier;
 - (NSUUID)selectedRoomIdentifierForSelectedHome;
-- (id)_homeAppPreferencesValueForKey:(id)a3 ofClass:(Class)a4;
-- (id)_roomKeyForHomeIdentifier:(id)a3;
-- (id)selectedRoomIdentifierForHomeIdentifier:(id)a3;
-- (void)_reallySetSelectedHomeIdentifier:(id)a3;
+- (id)_homeAppPreferencesValueForKey:(id)key ofClass:(Class)class;
+- (id)_roomKeyForHomeIdentifier:(id)identifier;
+- (id)selectedRoomIdentifierForHomeIdentifier:(id)identifier;
+- (void)_reallySetSelectedHomeIdentifier:(id)identifier;
 - (void)_selectedHomeDidChange;
-- (void)_setHomeAppPreferencesValue:(id)a3 forKey:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_setHomeAppPreferencesValue:(id)value forKey:(id)key;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)saveSelectedRoomIdentifier:(id)a3 forHomeIdentifier:(id)a4;
-- (void)setSelectedHomeIdentifier:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)saveSelectedRoomIdentifier:(id)identifier forHomeIdentifier:(id)homeIdentifier;
+- (void)setSelectedHomeIdentifier:(id)identifier;
 - (void)syncToNanoPrefs;
 @end
 
@@ -46,9 +46,9 @@ void __44__HFStateRestorationSettings_sharedInstance__block_invoke_2()
   v2 = [(HFStateRestorationSettings *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     objc_initWeak(&location, v2);
     v5 = MEMORY[0x277D85CD0];
@@ -94,18 +94,18 @@ void __34__HFStateRestorationSettings_init__block_invoke(uint64_t a1)
   [(HFStateRestorationSettings *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFStateRestorationSettings *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFStateRestorationSettings *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFStateRestorationSettings *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFStateRestorationSettings *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (NSUUID)selectedHomeIdentifier
@@ -125,13 +125,13 @@ void __34__HFStateRestorationSettings_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setSelectedHomeIdentifier:(id)a3
+- (void)setSelectedHomeIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (+[HFExecutionEnvironment isHomeApp](HFExecutionEnvironment, "isHomeApp") || +[HFExecutionEnvironment isWatchApp])
   {
-    [(HFStateRestorationSettings *)self _reallySetSelectedHomeIdentifier:v4];
+    [(HFStateRestorationSettings *)self _reallySetSelectedHomeIdentifier:identifierCopy];
   }
 
   else
@@ -139,9 +139,9 @@ void __34__HFStateRestorationSettings_init__block_invoke(uint64_t a1)
     v5 = HFLogForCategory(0x2DuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      v7 = [MEMORY[0x277CCACC8] callStackSymbols];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
       v8 = 138412290;
-      v9 = v7;
+      v9 = callStackSymbols;
       _os_log_fault_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_FAULT, "Error: non-Home process is trying set state restoration values %@", &v8, 0xCu);
     }
   }
@@ -149,19 +149,19 @@ void __34__HFStateRestorationSettings_init__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reallySetSelectedHomeIdentifier:(id)a3
+- (void)_reallySetSelectedHomeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [(HFStateRestorationSettings *)self serialQueue];
+  serialQueue = [(HFStateRestorationSettings *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_invoke;
   block[3] = &unk_277DF3A68;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -230,15 +230,15 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
 
 - (NSUUID)selectedRoomIdentifierForSelectedHome
 {
-  v3 = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
-  v4 = [(HFStateRestorationSettings *)self selectedRoomIdentifierForHomeIdentifier:v3];
+  selectedHomeIdentifier = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
+  v4 = [(HFStateRestorationSettings *)self selectedRoomIdentifierForHomeIdentifier:selectedHomeIdentifier];
 
   return v4;
 }
 
-- (id)selectedRoomIdentifierForHomeIdentifier:(id)a3
+- (id)selectedRoomIdentifierForHomeIdentifier:(id)identifier
 {
-  v4 = [(HFStateRestorationSettings *)self _roomKeyForHomeIdentifier:a3];
+  v4 = [(HFStateRestorationSettings *)self _roomKeyForHomeIdentifier:identifier];
   v5 = [(HFStateRestorationSettings *)self _homeAppPreferencesValueForKey:v4 ofClass:objc_opt_class()];
   if (v5)
   {
@@ -253,20 +253,20 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
   return v6;
 }
 
-- (void)saveSelectedRoomIdentifier:(id)a3 forHomeIdentifier:(id)a4
+- (void)saveSelectedRoomIdentifier:(id)identifier forHomeIdentifier:(id)homeIdentifier
 {
-  v6 = a3;
-  v8 = [(HFStateRestorationSettings *)self _roomKeyForHomeIdentifier:a4];
-  v7 = [v6 UUIDString];
+  identifierCopy = identifier;
+  v8 = [(HFStateRestorationSettings *)self _roomKeyForHomeIdentifier:homeIdentifier];
+  uUIDString = [identifierCopy UUIDString];
 
-  [(HFStateRestorationSettings *)self _setHomeAppPreferencesValue:v7 forKey:v8];
+  [(HFStateRestorationSettings *)self _setHomeAppPreferencesValue:uUIDString forKey:v8];
 }
 
-- (id)_roomKeyForHomeIdentifier:(id)a3
+- (id)_roomKeyForHomeIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"%@%@", v4, @"-selectedRoom"];
+  uUIDString = [identifier UUIDString];
+  v5 = [v3 stringWithFormat:@"%@%@", uUIDString, @"-selectedRoom"];
 
   return v5;
 }
@@ -284,10 +284,10 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
   v3 = HFLogForCategory(0x2DuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
-    v5 = [v4 UUIDString];
+    selectedHomeIdentifier = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
+    uUIDString = [selectedHomeIdentifier UUIDString];
     *buf = 138543362;
-    v13 = v5;
+    v13 = uUIDString;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFStateRestorationSettings Synchronizing prefs with selected home %{public}@", buf, 0xCu);
   }
 
@@ -301,9 +301,9 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_homeAppPreferencesValueForKey:(id)a3 ofClass:(Class)a4
+- (id)_homeAppPreferencesValueForKey:(id)key ofClass:(Class)class
 {
-  v4 = CFPreferencesCopyAppValue(a3, @"com.apple.Home");
+  v4 = CFPreferencesCopyAppValue(key, @"com.apple.Home");
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -319,34 +319,34 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
   return v5;
 }
 
-- (void)_setHomeAppPreferencesValue:(id)a3 forKey:(id)a4
+- (void)_setHomeAppPreferencesValue:(id)value forKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v7 = HFLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = keyCopy;
     v11 = 2114;
-    v12 = v5;
+    v12 = valueCopy;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Updating value for Home.app preference %{public}@ to: %{public}@", &v9, 0x16u);
   }
 
-  CFPreferencesSetAppValue(v6, v5, @"com.apple.Home");
+  CFPreferencesSetAppValue(keyCopy, valueCopy, @"com.apple.Home");
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_selectedHomeDidChange
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
+  selectedHomeIdentifier = [(HFStateRestorationSettings *)self selectedHomeIdentifier];
   v4 = HFLogForCategory(0x2DuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v3;
+    v18 = selectedHomeIdentifier;
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "HFStateRestorationSettings selectedHomeDidChange Notifying observers of new home ID %{public}@", buf, 0xCu);
   }
 
@@ -354,8 +354,8 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HFStateRestorationSettings *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers = [(HFStateRestorationSettings *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -367,20 +367,20 @@ void __63__HFStateRestorationSettings__reallySetSelectedHomeIdentifier___block_i
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 stateRestorationSettings:self selectedHomeIdentifierDidUpdateExternally:v3];
+          [v10 stateRestorationSettings:self selectedHomeIdentifierDidUpdateExternally:selectedHomeIdentifier];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

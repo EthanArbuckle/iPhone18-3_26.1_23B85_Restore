@@ -4,7 +4,7 @@
 - (id)_diagnosticProviders;
 - (id)gatherDiagnostics;
 - (void)_removeUserDefaultsData;
-- (void)_removeUserDefaultsDataIfNecessary:(id)a3;
+- (void)_removeUserDefaultsDataIfNecessary:(id)necessary;
 - (void)_setupAlarmKit;
 - (void)_setupAlarms;
 - (void)_setupAnalytics;
@@ -62,9 +62,9 @@ uint64_t __16__MTAgent_agent__block_invoke()
 - (void)initCommon
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   launchDate = self->_launchDate;
-  self->_launchDate = v3;
+  self->_launchDate = date;
 
   self->_isHorseman = MTIsHorseman();
   v5 = +[MTScheduler serialSchedulerWithName:priority:](MTScheduler, "serialSchedulerWithName:priority:", @"com.apple.MTAgent", +[MTScheduler defaultPriority]);
@@ -75,7 +75,7 @@ uint64_t __16__MTAgent_agent__block_invoke()
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ has launched", buf, 0xCu);
   }
 
@@ -256,7 +256,7 @@ uint64_t __21__MTAgent_initCommon__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ setting up activity coordinator", &v9, 0xCu);
   }
 
@@ -537,7 +537,7 @@ uint64_t __24__MTAgent_handleF5Reset__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ migration finished", buf, 0xCu);
   }
 
@@ -562,68 +562,68 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
 - (id)_diagnosticProviders
 {
   v3 = objc_opt_new();
-  v4 = [(MTAgent *)self systemStateListener];
+  systemStateListener = [(MTAgent *)self systemStateListener];
 
-  if (v4)
+  if (systemStateListener)
   {
-    v5 = [(MTAgent *)self systemStateListener];
-    [v3 addObject:v5];
+    systemStateListener2 = [(MTAgent *)self systemStateListener];
+    [v3 addObject:systemStateListener2];
   }
 
-  v6 = [(MTAgent *)self alarmServer];
+  alarmServer = [(MTAgent *)self alarmServer];
 
-  if (v6)
+  if (alarmServer)
   {
-    v7 = [(MTAgent *)self alarmServer];
-    [v3 addObject:v7];
+    alarmServer2 = [(MTAgent *)self alarmServer];
+    [v3 addObject:alarmServer2];
   }
 
-  v8 = [(MTAgent *)self alarmStorage];
+  alarmStorage = [(MTAgent *)self alarmStorage];
 
-  if (v8)
+  if (alarmStorage)
   {
-    v9 = [(MTAgent *)self alarmStorage];
-    [v3 addObject:v9];
+    alarmStorage2 = [(MTAgent *)self alarmStorage];
+    [v3 addObject:alarmStorage2];
   }
 
-  v10 = [(MTAgent *)self alarmScheduler];
+  alarmScheduler = [(MTAgent *)self alarmScheduler];
 
-  if (v10)
+  if (alarmScheduler)
   {
-    v11 = [(MTAgent *)self alarmScheduler];
-    [v3 addObject:v11];
+    alarmScheduler2 = [(MTAgent *)self alarmScheduler];
+    [v3 addObject:alarmScheduler2];
   }
 
-  v12 = [(MTAgent *)self timerServer];
+  timerServer = [(MTAgent *)self timerServer];
 
-  if (v12)
+  if (timerServer)
   {
-    v13 = [(MTAgent *)self timerServer];
-    [v3 addObject:v13];
+    timerServer2 = [(MTAgent *)self timerServer];
+    [v3 addObject:timerServer2];
   }
 
-  v14 = [(MTAgent *)self sessionServer];
+  sessionServer = [(MTAgent *)self sessionServer];
 
-  if (v14)
+  if (sessionServer)
   {
-    v15 = [(MTAgent *)self sessionServer];
-    [v3 addObject:v15];
+    sessionServer2 = [(MTAgent *)self sessionServer];
+    [v3 addObject:sessionServer2];
   }
 
-  v16 = [(MTAgent *)self timerStorage];
+  timerStorage = [(MTAgent *)self timerStorage];
 
-  if (v16)
+  if (timerStorage)
   {
-    v17 = [(MTAgent *)self timerStorage];
-    [v3 addObject:v17];
+    timerStorage2 = [(MTAgent *)self timerStorage];
+    [v3 addObject:timerStorage2];
   }
 
-  v18 = [(MTAgent *)self timerScheduler];
+  timerScheduler = [(MTAgent *)self timerScheduler];
 
-  if (v18)
+  if (timerScheduler)
   {
-    v19 = [(MTAgent *)self timerScheduler];
-    [v3 addObject:v19];
+    timerScheduler2 = [(MTAgent *)self timerScheduler];
+    [v3 addObject:timerScheduler2];
   }
 
   v20 = +[MTDeviceListener sharedDeviceListener];
@@ -639,12 +639,12 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
 
   if (MTShouldHandleForBedtime())
   {
-    v22 = [(MTAgent *)self sleepCoordinator];
+    sleepCoordinator = [(MTAgent *)self sleepCoordinator];
 
-    if (v22)
+    if (sleepCoordinator)
     {
-      v23 = [(MTAgent *)self sleepCoordinator];
-      [v3 addObject:v23];
+      sleepCoordinator2 = [(MTAgent *)self sleepCoordinator];
+      [v3 addObject:sleepCoordinator2];
     }
   }
 
@@ -694,9 +694,9 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
   v9 = MTLogForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(MTAgent *)self launchDate];
+    launchDate = [(MTAgent *)self launchDate];
     *buf = 138543362;
-    v28 = v10;
+    v28 = launchDate;
     _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "Launched: %{public}@", buf, 0xCu);
   }
 
@@ -704,8 +704,8 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(MTAgent *)self _diagnosticProviders];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  _diagnosticProviders = [(MTAgent *)self _diagnosticProviders];
+  v12 = [_diagnosticProviders countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -717,14 +717,14 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_diagnosticProviders);
         }
 
         [*(*(&v22 + 1) + 8 * v15++) printDiagnostics];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [_diagnosticProviders countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
@@ -772,15 +772,15 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MTAgent *)self launchDate];
-  [v3 setObject:v4 forKeyedSubscript:@"Launched"];
+  launchDate = [(MTAgent *)self launchDate];
+  [v3 setObject:launchDate forKeyedSubscript:@"Launched"];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MTAgent *)self _diagnosticProviders];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _diagnosticProviders = [(MTAgent *)self _diagnosticProviders];
+  v6 = [_diagnosticProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -791,18 +791,18 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_diagnosticProviders);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 gatherDiagnostics];
-          [v3 addEntriesFromDictionary:v11];
+          gatherDiagnostics = [v10 gatherDiagnostics];
+          [v3 addEntriesFromDictionary:gatherDiagnostics];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [_diagnosticProviders countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -813,26 +813,26 @@ uint64_t __32__MTAgent_handleMigrationFinish__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_removeUserDefaultsDataIfNecessary:(id)a3
+- (void)_removeUserDefaultsDataIfNecessary:(id)necessary
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (([a3 isEqualToString:@"com.apple.mobiletimer"] & 1) != 0 || !a3 && (+[MTApplicationWorkspaceObserver sharedWorkspaceObserver](MTApplicationWorkspaceObserver, "sharedWorkspaceObserver"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isApplicationInstalledForBundleIdentifier:", @"com.apple.mobiletimer"), v7, (v8 & 1) == 0))
+  if (([necessary isEqualToString:@"com.apple.mobiletimer"] & 1) != 0 || !necessary && (+[MTApplicationWorkspaceObserver sharedWorkspaceObserver](MTApplicationWorkspaceObserver, "sharedWorkspaceObserver"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isApplicationInstalledForBundleIdentifier:", @"com.apple.mobiletimer"), v7, (v8 & 1) == 0))
   {
     v5 = MTLogForCategory(4);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ removing user defaults", buf, 0xCu);
     }
 
-    v6 = [(MTAgent *)self serializer];
+    serializer = [(MTAgent *)self serializer];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __46__MTAgent__removeUserDefaultsDataIfNecessary___block_invoke;
     v10[3] = &unk_1E7B0C9D8;
     v10[4] = self;
-    [v6 performBlock:v10];
+    [serializer performBlock:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];

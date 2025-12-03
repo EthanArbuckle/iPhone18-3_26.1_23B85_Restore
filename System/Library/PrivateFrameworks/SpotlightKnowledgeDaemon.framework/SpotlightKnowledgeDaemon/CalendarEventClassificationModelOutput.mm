@@ -1,28 +1,28 @@
 @interface CalendarEventClassificationModelOutput
-- (CalendarEventClassificationModelOutput)initWithY:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (CalendarEventClassificationModelOutput)initWithY:(id)y;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CalendarEventClassificationModelOutput
 
-- (CalendarEventClassificationModelOutput)initWithY:(id)a3
+- (CalendarEventClassificationModelOutput)initWithY:(id)y
 {
-  v5 = a3;
+  yCopy = y;
   v9.receiver = self;
   v9.super_class = CalendarEventClassificationModelOutput;
   v6 = [(CalendarEventClassificationModelOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_y, a3);
+    objc_storeStrong(&v6->_y, y);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"y"])
+  if ([name isEqualToString:@"y"])
   {
     v4 = MEMORY[0x277CBFEF8];
     v5 = [(CalendarEventClassificationModelOutput *)self y];

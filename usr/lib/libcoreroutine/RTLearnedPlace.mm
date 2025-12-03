@@ -1,32 +1,32 @@
 @interface RTLearnedPlace
-+ (id)createWithLearnedLocationOfInterestMO:(id)a3;
-+ (id)createWithLearnedPlaceMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-+ (id)placeTypeSourceToString:(unint64_t)a3;
-+ (id)placeTypeToString:(unint64_t)a3;
-+ (unint64_t)placeTypeFromLocationOfInterestType:(int64_t)a3;
-+ (unint64_t)placeTypeFromType:(int64_t)a3;
-+ (unint64_t)placeTypeSourceFromTypeSource:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithLearnedLocationOfInterestMO:(id)o;
++ (id)createWithLearnedPlaceMO:(id)o;
++ (id)createWithManagedObject:(id)object;
++ (id)placeTypeSourceToString:(unint64_t)string;
++ (id)placeTypeToString:(unint64_t)string;
++ (unint64_t)placeTypeFromLocationOfInterestType:(int64_t)type;
++ (unint64_t)placeTypeFromType:(int64_t)type;
++ (unint64_t)placeTypeSourceFromTypeSource:(unint64_t)source;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RTLearnedPlace)initWithIdentifier:(id)a3 type:(unint64_t)a4 typeSource:(unint64_t)a5 mapItem:(id)a6 customLabel:(id)a7 creationDate:(id)a8 expirationDate:(id)a9;
-- (id)managedObjectWithContext:(id)a3;
+- (RTLearnedPlace)initWithIdentifier:(id)identifier type:(unint64_t)type typeSource:(unint64_t)source mapItem:(id)item customLabel:(id)label creationDate:(id)date expirationDate:(id)expirationDate;
+- (id)managedObjectWithContext:(id)context;
 - (unint64_t)hash;
-- (void)updateManagedObject:(id)a3;
+- (void)updateManagedObject:(id)object;
 @end
 
 @implementation RTLearnedPlace
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithLearnedPlaceMO:v3];
+      v4 = [objc_opt_class() createWithLearnedPlaceMO:objectCopy];
 LABEL_6:
       v5 = v4;
       goto LABEL_11;
@@ -35,7 +35,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [objc_opt_class() createWithLearnedLocationOfInterestMO:v3];
+      v4 = [objc_opt_class() createWithLearnedLocationOfInterestMO:objectCopy];
       goto LABEL_6;
     }
 
@@ -43,7 +43,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412802;
-      v9 = v3;
+      v9 = objectCopy;
       v10 = 2080;
       v11 = "+[RTLearnedPlace(RTCoreDataTransformable) createWithManagedObject:]";
       v12 = 1024;
@@ -58,14 +58,14 @@ LABEL_11:
   return v5;
 }
 
-+ (id)createWithLearnedPlaceMO:(id)a3
++ (id)createWithLearnedPlaceMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -74,16 +74,16 @@ LABEL_11:
     v19 = "Invalid parameter not satisfying: learnedPlaceMO";
     v20 = &v25;
 LABEL_20:
-    _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, v19, v20, 2u);
+    _os_log_error_impl(&dword_2304B3000, managedObjectContext2, OS_LOG_TYPE_ERROR, v19, v20, 2u);
     goto LABEL_15;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -94,14 +94,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 managedObjectContext];
-    if ((-[NSObject allowTombstones](v8, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
+    managedObjectContext2 = [v4 managedObjectContext];
+    if ((-[NSObject allowTombstones](managedObjectContext2, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
     {
 
       goto LABEL_7;
@@ -115,24 +115,24 @@ LABEL_15:
 
 LABEL_7:
   v22 = [RTLearnedPlace alloc];
-  v23 = [v4 identifier];
-  v9 = [v4 type];
-  v10 = [v9 unsignedIntegerValue];
-  v11 = [v4 typeSource];
-  v12 = [v11 unsignedIntegerValue];
+  identifier2 = [v4 identifier];
+  type = [v4 type];
+  unsignedIntegerValue = [type unsignedIntegerValue];
+  typeSource = [v4 typeSource];
+  unsignedIntegerValue2 = [typeSource unsignedIntegerValue];
   v13 = [MEMORY[0x277D011A0] createWithManagedObject:v4];
-  v14 = [v4 customLabel];
-  v15 = [v4 creationDate];
-  v16 = v15;
-  if (!v15)
+  customLabel = [v4 customLabel];
+  creationDate = [v4 creationDate];
+  distantPast = creationDate;
+  if (!creationDate)
   {
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v17 = [v4 expirationDate];
-  v18 = [(RTLearnedPlace *)v22 initWithIdentifier:v23 type:v10 typeSource:v12 mapItem:v13 customLabel:v14 creationDate:v16 expirationDate:v17];
+  expirationDate = [v4 expirationDate];
+  v18 = [(RTLearnedPlace *)v22 initWithIdentifier:identifier2 type:unsignedIntegerValue typeSource:unsignedIntegerValue2 mapItem:v13 customLabel:customLabel creationDate:distantPast expirationDate:expirationDate];
 
-  if (!v15)
+  if (!creationDate)
   {
   }
 
@@ -141,11 +141,11 @@ LABEL_16:
   return v18;
 }
 
-+ (id)createWithLearnedLocationOfInterestMO:(id)a3
++ (id)createWithLearnedLocationOfInterestMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -161,25 +161,25 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v5 = [v3 placeIdentifier];
+  placeIdentifier = [oCopy placeIdentifier];
 
-  if (v5)
+  if (placeIdentifier)
   {
     v6 = [RTLearnedPlace alloc];
-    v7 = [v4 placeIdentifier];
-    v24 = [v4 placeType];
-    v23 = [v24 unsignedIntegerValue];
-    v8 = [v4 placeTypeSource];
-    v9 = [v8 unsignedIntegerValue];
+    placeIdentifier2 = [v4 placeIdentifier];
+    placeType = [v4 placeType];
+    unsignedIntegerValue = [placeType unsignedIntegerValue];
+    placeTypeSource = [v4 placeTypeSource];
+    unsignedIntegerValue2 = [placeTypeSource unsignedIntegerValue];
     v10 = MEMORY[0x277D011A0];
-    v11 = [v4 mapItem];
-    v12 = [v10 createWithManagedObject:v11];
-    v13 = [v4 placeCustomLabel];
-    v14 = [v4 placeCreationDate];
-    v15 = [v4 placeExpirationDate];
+    mapItem = [v4 mapItem];
+    v12 = [v10 createWithManagedObject:mapItem];
+    placeCustomLabel = [v4 placeCustomLabel];
+    placeCreationDate = [v4 placeCreationDate];
+    placeExpirationDate = [v4 placeExpirationDate];
     v16 = v6;
-    v17 = v7;
-    v18 = [(RTLearnedPlace *)v16 initWithIdentifier:v7 type:v23 typeSource:v9 mapItem:v12 customLabel:v13 creationDate:v14 expirationDate:v15];
+    v17 = placeIdentifier2;
+    v18 = [(RTLearnedPlace *)v16 initWithIdentifier:placeIdentifier2 type:unsignedIntegerValue typeSource:unsignedIntegerValue2 mapItem:v12 customLabel:placeCustomLabel creationDate:placeCreationDate expirationDate:placeExpirationDate];
 
     goto LABEL_8;
   }
@@ -201,11 +201,11 @@ LABEL_8:
   return v18;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTLearnedPlaceMO managedObjectWithPlace:self inManagedObjectContext:a3];
+    v3 = [RTLearnedPlaceMO managedObjectWithPlace:self inManagedObjectContext:context];
   }
 
   else
@@ -223,18 +223,18 @@ LABEL_8:
   return v3;
 }
 
-- (void)updateManagedObject:(id)a3
+- (void)updateManagedObject:(id)object
 {
-  v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTLearnedPlaceMO managedObjectWithPlace:self managedObject:v6 inManagedObjectContext:v4];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
+  v5 = [RTLearnedPlaceMO managedObjectWithPlace:self managedObject:objectCopy inManagedObjectContext:managedObjectContext];
 }
 
-+ (unint64_t)placeTypeFromType:(int64_t)a3
++ (unint64_t)placeTypeFromType:(int64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -243,33 +243,33 @@ LABEL_8:
   }
 }
 
-+ (unint64_t)placeTypeSourceFromTypeSource:(unint64_t)a3
++ (unint64_t)placeTypeSourceFromTypeSource:(unint64_t)source
 {
-  if ((a3 & 0xE) != 0)
+  if ((source & 0xE) != 0)
   {
-    return ((a3 >> 2) & 0x1C | (2 * (a3 & 1))) + 1;
+    return ((source >> 2) & 0x1C | (2 * (source & 1))) + 1;
   }
 
   else
   {
-    return (a3 >> 2) & 0x1C | (2 * (a3 & 1));
+    return (source >> 2) & 0x1C | (2 * (source & 1));
   }
 }
 
-+ (id)placeTypeToString:(unint64_t)a3
++ (id)placeTypeToString:(unint64_t)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2788CDA08[a3];
+    return off_2788CDA08[string];
   }
 }
 
-+ (id)placeTypeSourceToString:(unint64_t)a3
++ (id)placeTypeSourceToString:(unint64_t)string
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [RTLearnedPlace isTypeSourceValid:?];
@@ -283,7 +283,7 @@ LABEL_8:
       v14 = v12;
       v15 = 2048;
       v17 = 2080;
-      v16 = a3;
+      stringCopy = string;
       v18 = "+[RTLearnedPlace placeTypeSourceToString:]";
       v19 = 1024;
       v20 = 67;
@@ -291,21 +291,21 @@ LABEL_8:
     }
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = v7;
-  if (!a3)
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = array;
+  if (!string)
   {
     v10 = @"Unknown";
     goto LABEL_19;
   }
 
-  if (a3)
+  if (string)
   {
-    [v7 addObject:@"Inferred"];
-    if ((a3 & 2) == 0)
+    [array addObject:@"Inferred"];
+    if ((string & 2) == 0)
     {
 LABEL_8:
-      if ((a3 & 4) == 0)
+      if ((string & 4) == 0)
       {
         goto LABEL_9;
       }
@@ -314,16 +314,16 @@ LABEL_8:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((string & 2) == 0)
   {
     goto LABEL_8;
   }
 
   [v8 addObject:@"MeCard"];
-  if ((a3 & 4) == 0)
+  if ((string & 4) == 0)
   {
 LABEL_9:
-    if ((a3 & 8) == 0)
+    if ((string & 8) == 0)
     {
       goto LABEL_10;
     }
@@ -333,10 +333,10 @@ LABEL_9:
 
 LABEL_16:
   [v8 addObject:@"User"];
-  if ((a3 & 8) == 0)
+  if ((string & 8) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x10) == 0)
+    if ((string & 0x10) == 0)
     {
       goto LABEL_11;
     }
@@ -346,7 +346,7 @@ LABEL_10:
 
 LABEL_17:
   [v8 addObject:@"Fallback"];
-  if ((a3 & 0x10) != 0)
+  if ((string & 0x10) != 0)
   {
 LABEL_18:
     v10 = @"Maps";
@@ -375,11 +375,11 @@ LABEL_21:
   return v9;
 }
 
-+ (unint64_t)placeTypeFromLocationOfInterestType:(int64_t)a3
++ (unint64_t)placeTypeFromLocationOfInterestType:(int64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -388,17 +388,17 @@ LABEL_21:
   }
 }
 
-- (RTLearnedPlace)initWithIdentifier:(id)a3 type:(unint64_t)a4 typeSource:(unint64_t)a5 mapItem:(id)a6 customLabel:(id)a7 creationDate:(id)a8 expirationDate:(id)a9
+- (RTLearnedPlace)initWithIdentifier:(id)identifier type:(unint64_t)type typeSource:(unint64_t)source mapItem:(id)item customLabel:(id)label creationDate:(id)date expirationDate:(id)expirationDate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (v15)
+  identifierCopy = identifier;
+  itemCopy = item;
+  labelCopy = label;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  if (identifierCopy)
   {
-    if (v18)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -414,7 +414,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: creationDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v19)
+    if (expirationDateCopy)
     {
       goto LABEL_4;
     }
@@ -432,45 +432,45 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v18)
+  if (!dateCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v19)
+  if (expirationDateCopy)
   {
 LABEL_4:
-    v20 = 0;
-    if (v15 && v18)
+    selfCopy = 0;
+    if (identifierCopy && dateCopy)
     {
       v34.receiver = self;
       v34.super_class = RTLearnedPlace;
       v21 = [(RTLearnedPlace *)&v34 init];
       if (v21)
       {
-        v22 = [v15 copy];
+        v22 = [identifierCopy copy];
         identifier = v21->_identifier;
         v21->_identifier = v22;
 
-        v21->_type = a4;
-        v21->_typeSource = a5;
-        objc_storeStrong(&v21->_mapItem, a6);
-        v24 = [v17 copy];
+        v21->_type = type;
+        v21->_typeSource = source;
+        objc_storeStrong(&v21->_mapItem, item);
+        v24 = [labelCopy copy];
         customLabel = v21->_customLabel;
         v21->_customLabel = v24;
 
-        v26 = [v18 copy];
+        v26 = [dateCopy copy];
         creationDate = v21->_creationDate;
         v21->_creationDate = v26;
 
-        v28 = [v19 copy];
+        v28 = [expirationDateCopy copy];
         expirationDate = v21->_expirationDate;
         v21->_expirationDate = v28;
       }
 
       self = v21;
-      v20 = self;
+      selfCopy = self;
     }
 
     goto LABEL_18;
@@ -487,77 +487,77 @@ LABEL_15:
     _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: expirationDate (in %s:%d)", buf, 0x12u);
   }
 
-  v20 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v20;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v15 = [(RTLearnedPlace *)self identifier];
-  v4 = [v15 UUIDString];
+  identifier = [(RTLearnedPlace *)self identifier];
+  uUIDString = [identifier UUIDString];
   v5 = [objc_opt_class() placeTypeToString:{-[RTLearnedPlace type](self, "type")}];
   v6 = [objc_opt_class() placeTypeSourceToString:{-[RTLearnedPlace typeSource](self, "typeSource")}];
-  v7 = [(RTLearnedPlace *)self mapItem];
-  v8 = [(RTLearnedPlace *)self customLabel];
-  v9 = [(RTLearnedPlace *)self creationDate];
-  v10 = [v9 stringFromDate];
-  v11 = [(RTLearnedPlace *)self expirationDate];
-  v12 = [v11 stringFromDate];
-  v13 = [v3 stringWithFormat:@"identifier, %@, type, %@, typeSource, %@, mapItem, %@, customLabel, %@, creationDate, %@, expirationDate, %@", v4, v5, v6, v7, v8, v10, v12];
+  mapItem = [(RTLearnedPlace *)self mapItem];
+  customLabel = [(RTLearnedPlace *)self customLabel];
+  creationDate = [(RTLearnedPlace *)self creationDate];
+  stringFromDate = [creationDate stringFromDate];
+  expirationDate = [(RTLearnedPlace *)self expirationDate];
+  stringFromDate2 = [expirationDate stringFromDate];
+  v13 = [v3 stringWithFormat:@"identifier, %@, type, %@, typeSource, %@, mapItem, %@, customLabel, %@, creationDate, %@, expirationDate, %@", uUIDString, v5, v6, mapItem, customLabel, stringFromDate, stringFromDate2];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v6)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
-        v9 = [(RTLearnedPlace *)self identifier];
-        if (v9 || ([(RTLearnedPlace *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLearnedPlace *)self identifier];
+        if (identifier || ([(RTLearnedPlace *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(RTLearnedPlace *)self identifier];
-          v10 = [(RTLearnedPlace *)v8 identifier];
-          v11 = [v4 isEqual:v10];
+          identifier2 = [(RTLearnedPlace *)self identifier];
+          identifier3 = [(RTLearnedPlace *)v8 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v9)
+          if (identifier)
           {
 LABEL_12:
 
-            v13 = [(RTLearnedPlace *)self expirationDate];
-            if (v13 || ([(RTLearnedPlace *)v8 expirationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+            expirationDate = [(RTLearnedPlace *)self expirationDate];
+            if (expirationDate || ([(RTLearnedPlace *)v8 expirationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(RTLearnedPlace *)self expirationDate];
-              v15 = [(RTLearnedPlace *)v8 expirationDate];
-              v16 = [v14 isEqual:v15];
+              expirationDate2 = [(RTLearnedPlace *)self expirationDate];
+              expirationDate3 = [(RTLearnedPlace *)v8 expirationDate];
+              v16 = [expirationDate2 isEqual:expirationDate3];
 
-              if (v13)
+              if (expirationDate)
               {
 LABEL_18:
 
-                v17 = [(RTLearnedPlace *)self creationDate];
-                if (v17 || ([(RTLearnedPlace *)v8 creationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+                creationDate = [(RTLearnedPlace *)self creationDate];
+                if (creationDate || ([(RTLearnedPlace *)v8 creationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v18 = [(RTLearnedPlace *)self creationDate];
-                  v19 = [(RTLearnedPlace *)v8 creationDate];
-                  v20 = [v18 isEqual:v19];
+                  creationDate2 = [(RTLearnedPlace *)self creationDate];
+                  creationDate3 = [(RTLearnedPlace *)v8 creationDate];
+                  v20 = [creationDate2 isEqual:creationDate3];
 
-                  if (v17)
+                  if (creationDate)
                   {
 LABEL_24:
 
@@ -603,12 +603,12 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(RTLearnedPlace *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(RTLearnedPlace *)self expirationDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RTLearnedPlace *)self creationDate];
-  v8 = [v7 hash];
+  identifier = [(RTLearnedPlace *)self identifier];
+  v4 = [identifier hash];
+  expirationDate = [(RTLearnedPlace *)self expirationDate];
+  v6 = [expirationDate hash] ^ v4;
+  creationDate = [(RTLearnedPlace *)self creationDate];
+  v8 = [creationDate hash];
 
   return v6 ^ v8;
 }

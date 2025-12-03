@@ -1,7 +1,7 @@
 @interface MSDManager
 + (id)sharedInstance;
 - (MSDManager)init;
-- (void)_clearCachedIconImage:(id)a3;
+- (void)_clearCachedIconImage:(id)image;
 - (void)_initializeBackgroundActivityTask;
 - (void)_initializeCoalescerObject;
 - (void)_markHomeKitInitialized;
@@ -11,28 +11,28 @@
 - (void)_scheduleRefreshTask;
 - (void)_setupMultiUser;
 - (void)_setupNotifications;
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4;
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 completion:(id)a5;
-- (void)getAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5;
-- (void)getCachedAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5;
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6;
-- (void)getDefaultMediaService:(id)a3 homeUserID:(id)a4 completion:(id)a5;
-- (void)getDefaultMediaServiceForAllUsers:(id)a3;
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4;
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4;
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5;
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5;
-- (void)getSupportedThirdPartyMediaServices:(id)a3;
-- (void)homeManager:(id)a3 didHomeKitSyncComplete:(id)a4;
-- (void)overrideAppleMusicSubscriptionStatus:(BOOL)a3 homeUserIDS:(id)a4 completion:(id)a5;
-- (void)profilesManager:(id)a3 didAddProfiles:(id)a4;
-- (void)profilesManager:(id)a3 didUpdateProfiles:(id)a4;
-- (void)removeMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6;
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)updateDefaultMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6;
-- (void)updateProperty:(id)a3 homeID:(id)a4 homeUserID:(id)a5 withOptions:(id)a6 completion:(id)a7;
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler;
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles completion:(id)completion;
+- (void)getAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion;
+- (void)getCachedAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion;
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion;
+- (void)getDefaultMediaService:(id)service homeUserID:(id)d completion:(id)completion;
+- (void)getDefaultMediaServiceForAllUsers:(id)users;
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion;
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion;
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion;
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion;
+- (void)getSupportedThirdPartyMediaServices:(id)services;
+- (void)homeManager:(id)manager didHomeKitSyncComplete:(id)complete;
+- (void)overrideAppleMusicSubscriptionStatus:(BOOL)status homeUserIDS:(id)s completion:(id)completion;
+- (void)profilesManager:(id)manager didAddProfiles:(id)profiles;
+- (void)profilesManager:(id)manager didUpdateProfiles:(id)profiles;
+- (void)removeMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion;
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)updateDefaultMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion;
+- (void)updateProperty:(id)property homeID:(id)d homeUserID:(id)iD withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation MSDManager
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000121E4;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059A70 != -1)
   {
     dispatch_once(&qword_100059A70, block);
@@ -125,25 +125,25 @@
 - (void)_setupMultiUser
 {
   v2 = +[MSDDataController sharedInstance];
-  v3 = [v2 homeManager];
+  homeManager = [v2 homeManager];
   v4 = +[CKContainer MSDCloudKitContainerID];
   v14 = v4;
   v5 = [NSArray arrayWithObjects:&v14 count:1];
-  [v3 registerToAcceptCloudSharesForContainers:v5];
+  [homeManager registerToAcceptCloudSharesForContainers:v5];
 
   if (+[MSDeviceInfo deviceCanManageMultiUser])
   {
     v6 = +[MSDDataController sharedInstance];
-    v7 = [v6 cloudManager];
+    cloudManager = [v6 cloudManager];
     v8 = +[CKContainer MSDCloudKitContainer];
-    v9 = [v8 privateCloudDatabase];
-    [v7 addSubscriptionForDatabase:v9];
+    privateCloudDatabase = [v8 privateCloudDatabase];
+    [cloudManager addSubscriptionForDatabase:privateCloudDatabase];
 
     v10 = +[MSDDataController sharedInstance];
-    v11 = [v10 cloudManager];
+    cloudManager2 = [v10 cloudManager];
     v12 = +[CKContainer MSDCloudKitContainer];
-    v13 = [v12 sharedCloudDatabase];
-    [v11 addSubscriptionForDatabase:v13];
+    sharedCloudDatabase = [v12 sharedCloudDatabase];
+    [cloudManager2 addSubscriptionForDatabase:sharedCloudDatabase];
   }
 }
 
@@ -228,9 +228,9 @@
 - (void)_savePublicDBInfoInDefaults
 {
   v2 = +[MSDPublicDBManager shared];
-  v3 = [v2 shouldUseCloudKit];
+  shouldUseCloudKit = [v2 shouldUseCloudKit];
 
-  if (v3)
+  if (shouldUseCloudKit)
   {
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
@@ -300,15 +300,15 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_clearCachedIconImage:(id)a3
+- (void)_clearCachedIconImage:(id)image
 {
-  v3 = a3;
-  v4 = [[MSDArtworkManager alloc] initWithServiceID:v3 remoteImageURL:0];
+  imageCopy = image;
+  v4 = [[MSDArtworkManager alloc] initWithServiceID:imageCopy remoteImageURL:0];
 
-  v5 = [(MSDArtworkManager *)v4 removeCachedIconImage];
+  removeCachedIconImage = [(MSDArtworkManager *)v4 removeCachedIconImage];
   v6 = sub_100030FE4();
   v7 = v6;
-  if (v5)
+  if (removeCachedIconImage)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -323,36 +323,36 @@
   }
 }
 
-- (void)getAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5
+- (void)getAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  servicesCopy = services;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v33 = v7;
+    v33 = servicesCopy;
     v34 = 2113;
-    v35 = v8;
+    v35 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "User is requesting available services for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x16u);
   }
 
-  if (v7 && v8)
+  if (servicesCopy && identifierCopy)
   {
     v11 = +[MSDDataController sharedInstance];
     v28[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-    v12 = [v7 UUIDString];
-    v29[0] = v12;
+    uUIDString = [servicesCopy UUIDString];
+    v29[0] = uUIDString;
     v28[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-    v13 = [v8 UUIDString];
-    v29[1] = v13;
+    uUIDString2 = [identifierCopy UUIDString];
+    v29[1] = uUIDString2;
     v14 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000138F8;
     v26[3] = &unk_100051558;
-    v27 = v9;
+    v27 = completionCopy;
     [v11 getAvailableServices:v14 completion:v26];
 
     v15 = v27;
@@ -367,14 +367,14 @@ LABEL_10:
     sub_100017E40(v16, v17, v18, v19, v20, v21, v22, v23);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v24 = MSErrorDomain;
     v30 = MSUserInfoErrorStringKey;
     v31 = @"Failed to fetch available services, NIL identifiers provided";
     v15 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v25 = [NSError errorWithDomain:v24 code:3 userInfo:v15];
-    (*(v9 + 2))(v9, 0, v25);
+    (*(completionCopy + 2))(completionCopy, 0, v25);
 
     goto LABEL_10;
   }
@@ -382,30 +382,30 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)getCachedAvailableServices:(id)a3 userIdentifier:(id)a4 completion:(id)a5
+- (void)getCachedAvailableServices:(id)services userIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  servicesCopy = services;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v28 = v7;
+    v28 = servicesCopy;
     v29 = 2113;
-    v30 = v8;
+    v30 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "User is requesting available services for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x16u);
   }
 
-  if (v7 && v8)
+  if (servicesCopy && identifierCopy)
   {
     v11 = +[MSDDataController sharedInstance];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100013C3C;
     v23[3] = &unk_100051558;
-    v24 = v9;
-    [v11 getCachedAvailableServices:v8 homeID:v7 completion:v23];
+    v24 = completionCopy;
+    [v11 getCachedAvailableServices:identifierCopy homeID:servicesCopy completion:v23];
 
     v12 = v24;
 LABEL_10:
@@ -419,14 +419,14 @@ LABEL_10:
     sub_100017E40(v13, v14, v15, v16, v17, v18, v19, v20);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v21 = MSErrorDomain;
     v25 = MSUserInfoErrorStringKey;
     v26 = @"Failed to fetch available services, NIL identifiers provided";
     v12 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v22 = [NSError errorWithDomain:v21 code:3 userInfo:v12];
-    (*(v9 + 2))(v9, 0, v22);
+    (*(completionCopy + 2))(completionCopy, 0, v22);
 
     goto LABEL_10;
   }
@@ -434,22 +434,22 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)addMediaService:(id)a3 usingSetupBundles:(id)a4 completion:(id)a5
+- (void)addMediaService:(id)service usingSetupBundles:(id)bundles completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_retainBlock(v10);
+  serviceCopy = service;
+  bundlesCopy = bundles;
+  completionCopy = completion;
+  v11 = objc_retainBlock(completionCopy);
   if (v11)
   {
-    if (v9 && [v9 count])
+    if (bundlesCopy && [bundlesCopy count])
     {
-      v12 = [v9 na_map:&stru_100051598];
+      v12 = [bundlesCopy na_map:&stru_100051598];
       v13 = sub_100030FE4();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138478083;
-        v31 = v8;
+        v31 = serviceCopy;
         v32 = 2113;
         v33 = v12;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "User is requesting to add %{private}@ to homes: %{private}@", buf, 0x16u);
@@ -465,8 +465,8 @@ LABEL_11:
       v15 = v14;
       v25 = v15;
       objc_copyWeak(&v29, buf);
-      v26 = v8;
-      v27 = v9;
+      v26 = serviceCopy;
+      v27 = bundlesCopy;
       [MSAuthTokenProvider fetchAuthTokensForMediaService:v26 networkActivity:0 completion:v24];
 
       objc_destroyWeak(&v29);
@@ -496,30 +496,30 @@ LABEL_11:
   }
 }
 
-- (void)removeMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)removeMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v14 = sub_100030FE4();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 serviceID];
+    serviceID = [serviceCopy serviceID];
     *buf = 138478339;
-    v48 = v15;
+    v48 = serviceID;
     v49 = 2113;
-    v50 = v11;
+    v50 = dCopy;
     v51 = 2113;
-    v52 = v12;
+    v52 = iDCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "User is requesting to remove %{private}@ for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x20u);
   }
 
-  if (([v10 isServiceRemovable] & 1) == 0)
+  if (([serviceCopy isServiceRemovable] & 1) == 0)
   {
-    v21 = [v10 serviceID];
-    v22 = [v21 UUIDString];
-    v20 = [NSString stringWithFormat:@"Removing service %@ is prohibited", v22];
+    serviceID2 = [serviceCopy serviceID];
+    uUIDString = [serviceID2 UUIDString];
+    v20 = [NSString stringWithFormat:@"Removing service %@ is prohibited", uUIDString];
 
     v23 = sub_100030FE4();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -529,36 +529,36 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
-    if (v13)
+    if (completionCopy)
     {
       v24 = MSErrorDomain;
       v45 = MSUserInfoErrorStringKey;
       v46 = v20;
       v25 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v26 = [NSError errorWithDomain:v24 code:1 userInfo:v25];
-      v13[2](v13, 0, v26);
+      completionCopy[2](completionCopy, 0, v26);
     }
 
     goto LABEL_15;
   }
 
-  if (v11 && v12)
+  if (dCopy && iDCopy)
   {
     v16 = +[MSDDataController sharedInstance];
     v41[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-    v17 = [v11 UUIDString];
-    v42[0] = v17;
+    uUIDString2 = [dCopy UUIDString];
+    v42[0] = uUIDString2;
     v41[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-    v18 = [v12 UUIDString];
-    v42[1] = v18;
+    uUIDString3 = [iDCopy UUIDString];
+    v42[1] = uUIDString3;
     v19 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:2];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100014940;
     v37[3] = &unk_1000515C0;
-    v38 = v10;
-    v39 = self;
-    v40 = v13;
+    v38 = serviceCopy;
+    selfCopy = self;
+    v40 = completionCopy;
     [v16 removeMediaService:v38 withUserInfo:v19 completion:v37];
 
     v20 = v38;
@@ -573,14 +573,14 @@ LABEL_15:
     sub_100018234(v27, v28, v29, v30, v31, v32, v33, v34);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v35 = MSErrorDomain;
     v43 = MSUserInfoErrorStringKey;
     v44 = @"Failed to remove service, NIL identifiers provided";
     v20 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     v36 = [NSError errorWithDomain:v35 code:3 userInfo:v20];
-    v13[2](v13, 0, v36);
+    completionCopy[2](completionCopy, 0, v36);
 
     goto LABEL_15;
   }
@@ -588,41 +588,41 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)updateDefaultMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)updateDefaultMediaService:(id)service homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v13 = sub_100030FE4();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 serviceID];
+    serviceID = [serviceCopy serviceID];
     *buf = 138478339;
-    v37 = v14;
+    v37 = serviceID;
     v38 = 2113;
-    v39 = v10;
+    v39 = dCopy;
     v40 = 2113;
-    v41 = v11;
+    v41 = iDCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "User is requesting to update default service %{private}@ for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x20u);
   }
 
-  if (v10 && v11)
+  if (dCopy && iDCopy)
   {
     v15 = +[MSDDataController sharedInstance];
     v32[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-    v16 = [v10 UUIDString];
-    v33[0] = v16;
+    uUIDString = [dCopy UUIDString];
+    v33[0] = uUIDString;
     v32[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-    v17 = [v11 UUIDString];
-    v33[1] = v17;
+    uUIDString2 = [iDCopy UUIDString];
+    v33[1] = uUIDString2;
     v18 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100014D68;
     v30[3] = &unk_100050CA0;
-    v31 = v12;
-    [v15 updateDefaultMediaService:v9 withUserInfo:v18 completion:v30];
+    v31 = completionCopy;
+    [v15 updateDefaultMediaService:serviceCopy withUserInfo:v18 completion:v30];
 
     v19 = v31;
 LABEL_10:
@@ -636,14 +636,14 @@ LABEL_10:
     sub_100018314(v20, v21, v22, v23, v24, v25, v26, v27);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v28 = MSErrorDomain;
     v34 = MSUserInfoErrorStringKey;
     v35 = @"Failed to update default service, NIL identifiers provided";
     v19 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v29 = [NSError errorWithDomain:v28 code:3 userInfo:v19];
-    (*(v12 + 2))(v12, 0, v29);
+    (*(completionCopy + 2))(completionCopy, 0, v29);
 
     goto LABEL_10;
   }
@@ -651,36 +651,36 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)getDefaultMediaService:(id)a3 homeUserID:(id)a4 completion:(id)a5
+- (void)getDefaultMediaService:(id)service homeUserID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  dCopy = d;
+  completionCopy = completion;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v33 = v7;
+    v33 = serviceCopy;
     v34 = 2113;
-    v35 = v8;
+    v35 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "User is requesting to fetch default service for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x16u);
   }
 
-  if (v7 && v8)
+  if (serviceCopy && dCopy)
   {
     v11 = +[MSDDataController sharedInstance];
     v28[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-    v12 = [v7 UUIDString];
-    v29[0] = v12;
+    uUIDString = [serviceCopy UUIDString];
+    v29[0] = uUIDString;
     v28[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-    v13 = [v8 UUIDString];
-    v29[1] = v13;
+    uUIDString2 = [dCopy UUIDString];
+    v29[1] = uUIDString2;
     v14 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000150A0;
     v26[3] = &unk_100051638;
-    v27 = v9;
+    v27 = completionCopy;
     [v11 getDefaultMediaService:v14 completion:v26];
 
     v15 = v27;
@@ -695,14 +695,14 @@ LABEL_10:
     sub_1000183F4(v16, v17, v18, v19, v20, v21, v22, v23);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v24 = MSErrorDomain;
     v30 = MSUserInfoErrorStringKey;
     v31 = @"Failed to fetch default service, NIL identifiers provided";
     v15 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v25 = [NSError errorWithDomain:v24 code:3 userInfo:v15];
-    (*(v9 + 2))(v9, 0, v25);
+    (*(completionCopy + 2))(completionCopy, 0, v25);
 
     goto LABEL_10;
   }
@@ -710,17 +710,17 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)updateProperty:(id)a3 homeID:(id)a4 homeUserID:(id)a5 withOptions:(id)a6 completion:(id)a7
+- (void)updateProperty:(id)property homeID:(id)d homeUserID:(id)iD withOptions:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v11)
+  propertyCopy = property;
+  dCopy = d;
+  iDCopy = iD;
+  optionsCopy = options;
+  completionCopy = completion;
+  v16 = completionCopy;
+  if (!propertyCopy)
   {
-    if (!v15)
+    if (!completionCopy)
     {
       goto LABEL_18;
     }
@@ -738,9 +738,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!optionsCopy)
   {
-    if (!v15)
+    if (!completionCopy)
     {
       goto LABEL_18;
     }
@@ -757,32 +757,32 @@ LABEL_16:
   v17 = sub_100030FE4();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v11 serviceID];
+    serviceID = [propertyCopy serviceID];
     *buf = 138478339;
-    v45 = v18;
+    v45 = serviceID;
     v46 = 2113;
-    v47 = v12;
+    v47 = dCopy;
     v48 = 2113;
-    v49 = v13;
+    v49 = iDCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "User is requesting to update property for %{private}@ for HomeID %{private}@ and HomeUserID %{private}@", buf, 0x20u);
   }
 
-  if (v12 && v13)
+  if (dCopy && iDCopy)
   {
     v19 = +[MSDDataController sharedInstance];
     v40[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-    v20 = [v12 UUIDString];
-    v41[0] = v20;
+    uUIDString = [dCopy UUIDString];
+    v41[0] = uUIDString;
     v40[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-    v21 = [v13 UUIDString];
-    v41[1] = v21;
+    uUIDString2 = [iDCopy UUIDString];
+    v41[1] = uUIDString2;
     v22 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_10001559C;
     v38[3] = &unk_100050CA0;
     v39 = v16;
-    [v19 updateProperty:v11 propertyInfo:v14 withUserInfo:v22 completion:v38];
+    [v19 updateProperty:propertyCopy propertyInfo:optionsCopy withUserInfo:v22 completion:v38];
 
     v23 = v39;
 LABEL_17:
@@ -810,30 +810,30 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)getServiceConfigurationInfo:(id)a3 serviceID:(id)a4 completion:(id)a5
+- (void)getServiceConfigurationInfo:(id)info serviceID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  dCopy = d;
+  completionCopy = completion;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v28 = v7;
+    v28 = infoCopy;
     v29 = 2112;
-    v30 = v8;
+    v30 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "User is requesting to fetch service info for %{private}@ and serviceID %@", buf, 0x16u);
   }
 
-  if (v7 && [v7 count])
+  if (infoCopy && [infoCopy count])
   {
     v11 = +[MSDDataController sharedInstance];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100015864;
     v23[3] = &unk_100051660;
-    v24 = v9;
-    [v11 getServiceConfigurationInfo:v7 serviceID:v8 completion:v23];
+    v24 = completionCopy;
+    [v11 getServiceConfigurationInfo:infoCopy serviceID:dCopy completion:v23];
 
     v12 = v24;
 LABEL_10:
@@ -847,14 +847,14 @@ LABEL_10:
     sub_1000185B4(v13, v14, v15, v16, v17, v18, v19, v20);
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v21 = MSErrorDomain;
     v25 = NSLocalizedDescriptionKey;
     v26 = @"Failed to fetch service config info for Nil homeUserID";
     v12 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v22 = [NSError errorWithDomain:v21 code:1 userInfo:v12];
-    (*(v9 + 2))(v9, 0, v22);
+    (*(completionCopy + 2))(completionCopy, 0, v22);
 
     goto LABEL_10;
   }
@@ -862,72 +862,72 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)getDefaultMediaServiceForAllUsers:(id)a3
+- (void)getDefaultMediaServiceForAllUsers:(id)users
 {
-  if (a3)
+  if (users)
   {
     v4 = MSErrorDomain;
     v8 = NSLocalizedDescriptionKey;
     v9 = @"Function called on unsupported platform";
-    v5 = a3;
+    usersCopy = users;
     v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     v7 = [NSError errorWithDomain:v4 code:11 userInfo:v6];
-    (*(a3 + 2))(v5, 0, v7);
+    (*(users + 2))(usersCopy, 0, v7);
   }
 }
 
-- (void)getPublicInfoForBundleID:(id)a3 completion:(id)a4
+- (void)getPublicInfoForBundleID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100015AD4;
     v7[3] = &unk_100051688;
-    v8 = v5;
-    v9 = v6;
+    v8 = dCopy;
+    v9 = completionCopy;
     [MSDPublicDBManager getPublicInfoForBundleID:v8 completion:v7];
   }
 }
 
-- (void)getCachedServiceInfo:(id)a3 homeUserID:(id)a4 endpointID:(id)a5 completion:(id)a6
+- (void)getCachedServiceInfo:(id)info homeUserID:(id)d endpointID:(id)iD completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
     v7 = MSErrorDomain;
     v11 = NSLocalizedDescriptionKey;
     v12 = @"Function called on unsupported platform";
-    v8 = a6;
+    completionCopy = completion;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v10 = [NSError errorWithDomain:v7 code:11 userInfo:v9];
-    (*(a6 + 2))(v8, 0, 0, v10);
+    (*(completion + 2))(completionCopy, 0, 0, v10);
   }
 }
 
-- (void)requestAuthRenewalForMediaService:(id)a3 homeUserID:(id)a4 parentNetworkActivity:(id)a5 completion:(id)a6
+- (void)requestAuthRenewalForMediaService:(id)service homeUserID:(id)d parentNetworkActivity:(id)activity completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
     v7 = MSErrorDomain;
     v11 = NSLocalizedDescriptionKey;
     v12 = @"Function called on unsupported platform";
-    v8 = a6;
+    completionCopy = completion;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v10 = [NSError errorWithDomain:v7 code:11 userInfo:v9];
-    (*(a6 + 2))(v8, 0, v10);
+    (*(completion + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)getResolvedServiceInfo:(id)a3 completion:(id)a4
+- (void)getResolvedServiceInfo:(id)info completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = MSErrorDomain;
-    if (v5)
+    if (infoCopy)
     {
       v12 = NSLocalizedDescriptionKey;
       v13 = @"Function called on unsupported platform";
@@ -946,85 +946,85 @@ LABEL_11:
     }
 
     v11 = [NSError errorWithDomain:v9 code:v10 userInfo:v8];
-    v6[2](v6, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (void)getResolvedServiceInfo:(id)a3 sharedUserID:(id)a4 completion:(id)a5
+- (void)getResolvedServiceInfo:(id)info sharedUserID:(id)d completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     v6 = MSErrorDomain;
     v10 = NSLocalizedDescriptionKey;
     v11 = @"Function called on unsupported platform";
-    v7 = a5;
+    completionCopy = completion;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v9 = [NSError errorWithDomain:v6 code:11 userInfo:v8];
-    (*(a5 + 2))(v7, 0, v9);
+    (*(completion + 2))(completionCopy, 0, v9);
   }
 }
 
-- (void)overrideAppleMusicSubscriptionStatus:(BOOL)a3 homeUserIDS:(id)a4 completion:(id)a5
+- (void)overrideAppleMusicSubscriptionStatus:(BOOL)status homeUserIDS:(id)s completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     v6 = MSErrorDomain;
     v10 = NSLocalizedDescriptionKey;
     v11 = @"Function called on unsupported platform";
-    v7 = a5;
+    completionCopy = completion;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v9 = [NSError errorWithDomain:v6 code:11 userInfo:v8];
-    (*(a5 + 2))(v7, v9);
+    (*(completion + 2))(completionCopy, v9);
   }
 }
 
-- (void)activeServiceApplicationInformationForSharedUserID:(id)a3 completionHandler:(id)a4
+- (void)activeServiceApplicationInformationForSharedUserID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = a3;
-    v8 = [[NSUUID alloc] initWithUUIDString:v7];
+    dCopy = d;
+    v8 = [[NSUUID alloc] initWithUUIDString:dCopy];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000161C0;
     v9[3] = &unk_1000516B0;
-    v10 = v6;
+    v10 = handlerCopy;
     [(MSDManager *)self getMediaServiceChoicesForSharedUser:v8 completion:v9];
   }
 }
 
-- (void)switchUserAccountInfo:(id)a3 homeID:(id)a4 homeUserID:(id)a5 completion:(id)a6
+- (void)switchUserAccountInfo:(id)info homeID:(id)d homeUserID:(id)iD completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v13 = sub_100030FE4();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v24 = v11;
+      v24 = iDCopy;
       v25 = 2112;
-      v26 = v10;
+      v26 = dCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = infoCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Switching account info for user - %@ in home - %@, %@", buf, 0x20u);
     }
 
-    if (v9 && v10 && v11)
+    if (infoCopy && dCopy && iDCopy)
     {
       v14 = +[MSDDataController sharedInstance];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000164B0;
       v18[3] = &unk_1000516D8;
-      v19 = v9;
-      v20 = v12;
-      [v14 switchUserAccountInfo:v19 homeID:v10 homeUserID:v11 completion:v18];
+      v19 = infoCopy;
+      v20 = completionCopy;
+      [v14 switchUserAccountInfo:v19 homeID:dCopy homeUserID:iDCopy completion:v18];
 
       v15 = v19;
     }
@@ -1036,50 +1036,50 @@ LABEL_11:
       v22 = @"Failed to switch user account info, Nil Attributes provided";
       v15 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v17 = [NSError errorWithDomain:v16 code:1 userInfo:v15];
-      (*(v12 + 2))(v12, v17);
+      (*(completionCopy + 2))(completionCopy, v17);
     }
   }
 }
 
-- (void)getSupportedThirdPartyMediaServices:(id)a3
+- (void)getSupportedThirdPartyMediaServices:(id)services
 {
-  if (a3)
+  if (services)
   {
     v4 = MSErrorDomain;
     v8 = NSLocalizedDescriptionKey;
     v9 = @"Function called on unsupported platform";
-    v5 = a3;
+    servicesCopy = services;
     v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     v7 = [NSError errorWithDomain:v4 code:11 userInfo:v6];
-    (*(a3 + 2))(v5, 0, v7);
+    (*(services + 2))(servicesCopy, 0, v7);
   }
 }
 
-- (void)getMediaServiceChoicesForSharedUser:(id)a3 completion:(id)a4
+- (void)getMediaServiceChoicesForSharedUser:(id)user completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v5 = MSErrorDomain;
     v9 = NSLocalizedDescriptionKey;
     v10 = @"Function called on unsupported platform";
-    v6 = a4;
+    completionCopy = completion;
     v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v8 = [NSError errorWithDomain:v5 code:11 userInfo:v7];
-    (*(a4 + 2))(v6, 0, v8);
+    (*(completion + 2))(completionCopy, 0, v8);
   }
 }
 
-- (void)profilesManager:(id)a3 didAddProfiles:(id)a4
+- (void)profilesManager:(id)manager didAddProfiles:(id)profiles
 {
-  v35 = a3;
-  v37 = a4;
+  managerCopy = manager;
+  profilesCopy = profiles;
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[MSDManager profilesManager:didAddProfiles:]";
     *&buf[12] = 2112;
-    *&buf[14] = v37;
+    *&buf[14] = profilesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s profile: %@", buf, 0x16u);
   }
 
@@ -1091,9 +1091,9 @@ LABEL_11:
   v62 = objc_opt_new();
   v36 = dispatch_semaphore_create(0);
   v6 = +[MSDPublicDBManager shared];
-  v7 = [v6 shouldUseCloudKit];
+  shouldUseCloudKit = [v6 shouldUseCloudKit];
 
-  if (v7)
+  if (shouldUseCloudKit)
   {
     v8 = sub_100030FE4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1143,7 +1143,7 @@ LABEL_11:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v37;
+    obj = profilesCopy;
     v40 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v40)
     {
@@ -1189,9 +1189,9 @@ LABEL_11:
                 }
 
                 v26 = *(*(&v42 + 1) + 8 * j);
-                v27 = [v26 serviceID];
-                v28 = [v20 serviceID];
-                v29 = [v27 isEqual:v28];
+                serviceID = [v26 serviceID];
+                serviceID2 = [v20 serviceID];
+                v29 = [serviceID isEqual:serviceID2];
 
                 if (v29)
                 {
@@ -1243,39 +1243,39 @@ LABEL_11:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)profilesManager:(id)a3 didUpdateProfiles:(id)a4
+- (void)profilesManager:(id)manager didUpdateProfiles:(id)profiles
 {
-  v5 = a4;
-  v6 = [v5 count];
+  profilesCopy = profiles;
+  v6 = [profilesCopy count];
   v7 = sub_100030FE4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v52 = "[MSDManager profilesManager:didUpdateProfiles:]";
     v53 = 2112;
-    v54 = v5;
+    v54 = profilesCopy;
     v55 = 2048;
     v56 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s profile: %@ activeProfilesOnDevice %lu", buf, 0x20u);
   }
 
   v8 = +[MSDDefaultsManager sharedManager];
-  v9 = [v8 profilesEverInstalled];
+  profilesEverInstalled = [v8 profilesEverInstalled];
 
-  v10 = sub_100030FE4();
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  currentHome = sub_100030FE4();
+  v11 = os_log_type_enabled(currentHome, OS_LOG_TYPE_DEFAULT);
+  if (profilesEverInstalled)
   {
     if (v11)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Developer profile loaded on device, checking service sanity", buf, 2u);
+      _os_log_impl(&_mh_execute_header, currentHome, OS_LOG_TYPE_DEFAULT, "Developer profile loaded on device, checking service sanity", buf, 2u);
     }
 
     v12 = +[MSDHomeManager sharedManager];
-    v10 = [v12 currentHome];
+    currentHome = [v12 currentHome];
 
-    if (!v10)
+    if (!currentHome)
     {
       v18 = sub_100030FE4();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1286,14 +1286,14 @@ LABEL_11:
       goto LABEL_23;
     }
 
-    v13 = [v10 currentUser];
-    v14 = [v13 uniqueIdentifier];
-    if (v14)
+    currentUser = [currentHome currentUser];
+    uniqueIdentifier = [currentUser uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v15 = v14;
-      v16 = [v10 uniqueIdentifier];
+      v15 = uniqueIdentifier;
+      uniqueIdentifier2 = [currentHome uniqueIdentifier];
 
-      if (v16)
+      if (uniqueIdentifier2)
       {
         v17 = +[MSDDefaultsManager sharedManager];
         v18 = [v17 objectForKeyInDefaultDomain:@"publicDBData"];
@@ -1305,7 +1305,7 @@ LABEL_11:
         v22 = [v21 na_map:&stru_100051760];
         v23 = [v22 mutableCopy];
 
-        v24 = [v5 na_map:&stru_1000517A0];
+        v24 = [profilesCopy na_map:&stru_1000517A0];
         [v23 removeObjectsInArray:v24];
         [v23 removeObjectsInArray:v19];
         if ([v23 count])
@@ -1314,14 +1314,14 @@ LABEL_11:
           v42 = v21;
           v43 = v19;
           v49[0] = kCKDatabaseAccessUserInfoHomeIDKey;
-          v25 = [v10 uniqueIdentifier];
-          v26 = [v25 UUIDString];
-          v50[0] = v26;
+          uniqueIdentifier3 = [currentHome uniqueIdentifier];
+          uUIDString = [uniqueIdentifier3 UUIDString];
+          v50[0] = uUIDString;
           v49[1] = kCKDatabaseAccessUserInfoHomeUserIDKey;
-          v27 = [v10 currentUser];
-          v28 = [v27 uniqueIdentifier];
-          v29 = [v28 UUIDString];
-          v50[1] = v29;
+          currentUser2 = [currentHome currentUser];
+          uniqueIdentifier4 = [currentUser2 uniqueIdentifier];
+          uUIDString2 = [uniqueIdentifier4 UUIDString];
+          v50[1] = uUIDString2;
           v40 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:2];
 
           v30 = sub_100030FE4();
@@ -1337,11 +1337,11 @@ LABEL_11:
           v44[1] = 3221225472;
           v44[2] = sub_10001759C;
           v44[3] = &unk_1000517F0;
-          v45 = v5;
+          v45 = profilesCopy;
           v21 = v42;
           v46 = v42;
           v47 = v23;
-          v48 = self;
+          selfCopy = self;
           v32 = v40;
           [v31 removeMediaServices:v47 withUserInfo:v40 completion:v44];
 
@@ -1380,15 +1380,15 @@ LABEL_23:
   if (v11)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Developer profile was not loaded on device, skipping service check", buf, 2u);
+    _os_log_impl(&_mh_execute_header, currentHome, OS_LOG_TYPE_DEFAULT, "Developer profile was not loaded on device, skipping service check", buf, 2u);
   }
 
 LABEL_24:
 }
 
-- (void)homeManager:(id)a3 didHomeKitSyncComplete:(id)a4
+- (void)homeManager:(id)manager didHomeKitSyncComplete:(id)complete
 {
-  v5 = [(MSDManager *)self startupQueue:a3];
+  v5 = [(MSDManager *)self startupQueue:manager];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000179C0;

@@ -1,10 +1,10 @@
 @interface MapsUIImageContactSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MapsUIImageContactSpec)init;
 - (double)size;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4;
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play;
 - (unint64_t)hash;
 @end
 
@@ -13,31 +13,31 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MapsUIImageContactSpec *)self contact];
-  v5 = [(MapsUIImageContactSpec *)self style];
+  contact = [(MapsUIImageContactSpec *)self contact];
+  style = [(MapsUIImageContactSpec *)self style];
   [(MapsUIImageContactSpec *)self size];
   v7 = v6;
-  v8 = [(MapsUIImageContactSpec *)self tintColor];
-  v9 = [NSString stringWithFormat:@"<%@: %p contact=%@ style=%lu size=%lu tintColor=%@ useAvatarImageRendered=%d>", v3, self, v4, v5, v7, v8, [(MapsUIImageContactSpec *)self useAvatarImageRendered]];
+  tintColor = [(MapsUIImageContactSpec *)self tintColor];
+  v9 = [NSString stringWithFormat:@"<%@: %p contact=%@ style=%lu size=%lu tintColor=%@ useAvatarImageRendered=%d>", v3, self, contact, style, v7, tintColor, [(MapsUIImageContactSpec *)self useAvatarImageRendered]];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MapsUIImageContactSpec *)self contact];
-    v7 = [v5 contact];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    contact = [(MapsUIImageContactSpec *)self contact];
+    contact2 = [v5 contact];
+    v8 = [contact isEqual:contact2];
 
     if (v8 && (v9 = -[MapsUIImageContactSpec style](self, "style"), v9 == [v5 style]) && (-[MapsUIImageContactSpec size](self, "size"), v11 = v10, objc_msgSend(v5, "size"), v11 == v12) && (-[MapsUIImageContactSpec tintColor](self, "tintColor"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "tintColor"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v13 == v14))
     {
-      v17 = [(MapsUIImageContactSpec *)self useAvatarImageRendered];
-      v15 = v17 ^ [v5 useAvatarImageRendered] ^ 1;
+      useAvatarImageRendered = [(MapsUIImageContactSpec *)self useAvatarImageRendered];
+      v15 = useAvatarImageRendered ^ [v5 useAvatarImageRendered] ^ 1;
     }
 
     else
@@ -56,40 +56,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MapsUIImageContactSpec *)self contact];
-  v4 = [v3 hash];
+  contact = [(MapsUIImageContactSpec *)self contact];
+  v4 = [contact hash];
   v5 = [NSNumber numberWithInteger:[(MapsUIImageContactSpec *)self style]];
   v6 = v4 ^ ([v5 hash] << 8);
   [(MapsUIImageContactSpec *)self size];
   v7 = [NSNumber numberWithDouble:?];
   v8 = v6 ^ ([v7 hash] << 16);
-  v9 = [(MapsUIImageContactSpec *)self tintColor];
-  v10 = v8 ^ [v9 hash];
+  tintColor = [(MapsUIImageContactSpec *)self tintColor];
+  v10 = v8 ^ [tintColor hash];
   v11 = [NSNumber numberWithBool:[(MapsUIImageContactSpec *)self useAvatarImageRendered]];
   v12 = v10 ^ ([v11 hash] << 24);
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(MapsUIImageContactSpec *)self contact];
-  [v4 setContact:v5];
+  contact = [(MapsUIImageContactSpec *)self contact];
+  [v4 setContact:contact];
 
   [v4 setStyle:{-[MapsUIImageContactSpec style](self, "style")}];
   [(MapsUIImageContactSpec *)self size];
   [v4 setSize:?];
-  v6 = [(MapsUIImageContactSpec *)self tintColor];
-  [v4 setTintColor:v6];
+  tintColor = [(MapsUIImageContactSpec *)self tintColor];
+  [v4 setTintColor:tintColor];
 
   [v4 setUseAvatarImageRendered:{-[MapsUIImageContactSpec useAvatarImageRendered](self, "useAvatarImageRendered")}];
   return v4;
 }
 
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play
 {
-  if ([(MapsUIImageContactSpec *)self useAvatarImageRendered:a4])
+  if ([(MapsUIImageContactSpec *)self useAvatarImageRendered:play])
   {
     [(MapsUIImageContactSpec *)self size];
     v6 = v5;
@@ -99,24 +99,24 @@
     [v9 screenScale];
     v11 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:0 rightToLeft:v6 style:v8, v10];
 
-    v12 = objc_alloc_init(CNAvatarImageRenderer);
-    v13 = [(MapsUIImageContactSpec *)self contact];
-    v20 = v13;
+    contact2 = objc_alloc_init(CNAvatarImageRenderer);
+    contact = [(MapsUIImageContactSpec *)self contact];
+    v20 = contact;
     v14 = [NSArray arrayWithObjects:&v20 count:1];
-    v15 = [v12 avatarImageForContacts:v14 scope:v11];
+    v15 = [contact2 avatarImageForContacts:v14 scope:v11];
   }
 
   else
   {
     v16 = [CNMonogrammer alloc];
-    v17 = [(MapsUIImageContactSpec *)self style];
+    style = [(MapsUIImageContactSpec *)self style];
     [(MapsUIImageContactSpec *)self size];
-    v11 = [v16 initWithStyle:v17 diameter:?];
-    v18 = [(MapsUIImageContactSpec *)self tintColor];
-    [v11 monogramsWithTint:v18];
+    v11 = [v16 initWithStyle:style diameter:?];
+    tintColor = [(MapsUIImageContactSpec *)self tintColor];
+    [v11 monogramsWithTint:tintColor];
 
-    v12 = [(MapsUIImageContactSpec *)self contact];
-    v15 = [v11 monogramForContact:v12];
+    contact2 = [(MapsUIImageContactSpec *)self contact];
+    v15 = [v11 monogramForContact:contact2];
   }
 
   return v15;

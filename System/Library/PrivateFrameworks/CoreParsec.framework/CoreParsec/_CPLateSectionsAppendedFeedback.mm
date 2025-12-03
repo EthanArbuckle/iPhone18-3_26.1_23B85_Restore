@@ -1,29 +1,29 @@
 @interface _CPLateSectionsAppendedFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPLateSectionsAppendedFeedback)init;
-- (_CPLateSectionsAppendedFeedback)initWithFacade:(id)a3;
-- (void)addSections:(id)a3;
-- (void)setSections:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPLateSectionsAppendedFeedback)initWithFacade:(id)facade;
+- (void)addSections:(id)sections;
+- (void)setSections:(id)sections;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPLateSectionsAppendedFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPLateSectionsAppendedFeedback *)self sections];
-      v7 = [v4 sections];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      sections = [(_CPLateSectionsAppendedFeedback *)self sections];
+      sections2 = [equalCopy sections];
+      v8 = sections2;
+      if ((sections != 0) != (sections2 == 0))
       {
-        v9 = [(_CPLateSectionsAppendedFeedback *)self sections];
-        if (!v9)
+        sections3 = [(_CPLateSectionsAppendedFeedback *)self sections];
+        if (!sections3)
         {
 
 LABEL_11:
@@ -31,10 +31,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPLateSectionsAppendedFeedback *)self sections];
-        v12 = [v4 sections];
-        v13 = [v11 isEqual:v12];
+        v10 = sections3;
+        sections4 = [(_CPLateSectionsAppendedFeedback *)self sections];
+        sections5 = [equalCopy sections];
+        v13 = [sections4 isEqual:sections5];
 
         if (v13)
         {
@@ -54,10 +54,10 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPLateSectionsAppendedFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -99,27 +99,27 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSections:(id)a3
+- (void)addSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!sections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sections;
-    self->_sections = v6;
+    self->_sections = array;
 
-    v4 = v8;
+    sectionsCopy = v8;
     sections = self->_sections;
   }
 
-  [(NSArray *)sections addObject:v4];
+  [(NSArray *)sections addObject:sectionsCopy];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sections mutableCopy];
   sections = self->_sections;
   self->_sections = v4;
 
@@ -140,18 +140,18 @@ LABEL_9:
   return v2;
 }
 
-- (_CPLateSectionsAppendedFeedback)initWithFacade:(id)a3
+- (_CPLateSectionsAppendedFeedback)initWithFacade:(id)facade
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v21.receiver = self;
   v21.super_class = _CPLateSectionsAppendedFeedback;
   v5 = [(_CPLateSectionsAppendedFeedback *)&v21 init];
   if (v5)
   {
-    -[_CPLateSectionsAppendedFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 sections];
-    if (v6)
+    -[_CPLateSectionsAppendedFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    sections = [facadeCopy sections];
+    if (sections)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -165,8 +165,8 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 sections];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    sections2 = [facadeCopy sections];
+    v9 = [sections2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -177,14 +177,14 @@ LABEL_9:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sections2);
           }
 
           v13 = [[_CPResultSectionForFeedback alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
           [v7 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v10 = [sections2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v10);

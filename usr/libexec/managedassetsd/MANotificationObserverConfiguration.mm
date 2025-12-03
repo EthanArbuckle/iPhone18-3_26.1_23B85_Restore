@@ -1,8 +1,8 @@
 @interface MANotificationObserverConfiguration
-+ (id)genPrefix:(id)a3 profile:(id)a4;
++ (id)genPrefix:(id)prefix profile:(id)profile;
 - (MANotificationObserverConfiguration)init;
-- (id)requireNotification:(unint64_t)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 groupPrefix:(id)a6;
-- (void)configNotificationFilter:(unint64_t)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 groupPrefix:(id)a6;
+- (id)requireNotification:(unint64_t)notification observerType:(unint64_t)type resourceNames:(id)names groupPrefix:(id)prefix;
+- (void)configNotificationFilter:(unint64_t)filter observerType:(unint64_t)type resourceNames:(id)names groupPrefix:(id)prefix;
 @end
 
 @implementation MANotificationObserverConfiguration
@@ -28,18 +28,18 @@
   return v3;
 }
 
-- (id)requireNotification:(unint64_t)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 groupPrefix:(id)a6
+- (id)requireNotification:(unint64_t)notification observerType:(unint64_t)type resourceNames:(id)names groupPrefix:(id)prefix
 {
-  v10 = a5;
-  v11 = a6;
+  namesCopy = names;
+  prefixCopy = prefix;
   v12 = +[NSMutableSet set];
-  if (!a4)
+  if (!type)
   {
     v13 = 8;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v13 = 16;
 LABEL_5:
@@ -48,13 +48,13 @@ LABEL_5:
     v20[1] = 3221225472;
     v20[2] = sub_100004550;
     v20[3] = &unk_100115EF8;
-    v21 = v11;
+    v21 = prefixCopy;
     v15 = v14;
     v22 = v15;
-    v24 = a3;
+    notificationCopy = notification;
     v16 = v12;
     v23 = v16;
-    [v10 enumerateObjectsUsingBlock:v20];
+    [namesCopy enumerateObjectsUsingBlock:v20];
     v17 = v23;
     v18 = v16;
 
@@ -67,18 +67,18 @@ LABEL_7:
   return v12;
 }
 
-- (void)configNotificationFilter:(unint64_t)a3 observerType:(unint64_t)a4 resourceNames:(id)a5 groupPrefix:(id)a6
+- (void)configNotificationFilter:(unint64_t)filter observerType:(unint64_t)type resourceNames:(id)names groupPrefix:(id)prefix
 {
-  v10 = a5;
-  v11 = a6;
-  if (!a4)
+  namesCopy = names;
+  prefixCopy = prefix;
+  if (!type)
   {
     v12 = 8;
     v13 = 24;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v12 = 16;
     v13 = 25;
@@ -89,29 +89,29 @@ LABEL_5:
     v16[1] = 3221225472;
     v16[2] = sub_100004760;
     v16[3] = &unk_100115F20;
-    v17 = v11;
+    v17 = prefixCopy;
     v18 = v14;
-    v19 = a3;
+    filterCopy = filter;
     v15 = v14;
-    [v10 enumerateObjectsUsingBlock:v16];
+    [namesCopy enumerateObjectsUsingBlock:v16];
   }
 }
 
-+ (id)genPrefix:(id)a3 profile:(id)a4
++ (id)genPrefix:(id)prefix profile:(id)profile
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  prefixCopy = prefix;
+  v6 = prefixCopy;
+  if (profile)
   {
-    v7 = [NSString stringWithFormat:@"%@#%@", a4, v5];
+    prefixCopy = [NSString stringWithFormat:@"%@#%@", profile, prefixCopy];
   }
 
   else
   {
-    v7 = v5;
+    prefixCopy = prefixCopy;
   }
 
-  v8 = v7;
+  v8 = prefixCopy;
 
   return v8;
 }

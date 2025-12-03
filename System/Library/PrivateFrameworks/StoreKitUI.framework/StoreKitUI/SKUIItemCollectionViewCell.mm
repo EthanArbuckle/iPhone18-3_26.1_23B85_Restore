@@ -1,12 +1,12 @@
 @interface SKUIItemCollectionViewCell
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCellLayoutNeedsLayout;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SKUIItemCollectionViewCell
@@ -29,9 +29,9 @@
   [(SKUIItemCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -46,11 +46,11 @@
 
   v15.receiver = self;
   v15.super_class = SKUIItemCollectionViewCell;
-  [(SKUICollectionViewCell *)&v15 applyLayoutAttributes:v4];
-  v13 = [(SKUIItemCollectionViewCell *)self layout];
-  v14 = [v4 backgroundColor];
+  [(SKUICollectionViewCell *)&v15 applyLayoutAttributes:attributesCopy];
+  layout = [(SKUIItemCollectionViewCell *)self layout];
+  backgroundColor = [attributesCopy backgroundColor];
 
-  [v13 setBackgroundColor:v14];
+  [layout setBackgroundColor:backgroundColor];
 }
 
 - (void)prepareForReuse
@@ -67,17 +67,17 @@
     }
   }
 
-  v11 = [(SKUIItemCollectionViewCell *)self layout];
-  [v11 prepareForReuse];
+  layout = [(SKUIItemCollectionViewCell *)self layout];
+  [layout prepareForReuse];
 
   v12.receiver = self;
   v12.super_class = SKUIItemCollectionViewCell;
   [(SKUIItemCollectionViewCell *)&v12 prepareForReuse];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -90,17 +90,17 @@
     }
   }
 
-  v13 = [(SKUIItemCollectionViewCell *)self layout];
-  [v13 setHighlighted:v3];
+  layout = [(SKUIItemCollectionViewCell *)self layout];
+  [layout setHighlighted:highlightedCopy];
 
   v14.receiver = self;
   v14.super_class = SKUIItemCollectionViewCell;
-  [(SKUICollectionViewCell *)&v14 setHighlighted:v3];
+  [(SKUICollectionViewCell *)&v14 setHighlighted:highlightedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -113,12 +113,12 @@
     }
   }
 
-  v13 = [(SKUIItemCollectionViewCell *)self layout];
-  [v13 setSelected:v3];
+  layout = [(SKUIItemCollectionViewCell *)self layout];
+  [layout setSelected:selectedCopy];
 
   v14.receiver = self;
   v14.super_class = SKUIItemCollectionViewCell;
-  [(SKUICollectionViewCell *)&v14 setSelected:v3];
+  [(SKUICollectionViewCell *)&v14 setSelected:selectedCopy];
 }
 
 - (void)layoutSubviews
@@ -140,19 +140,19 @@
   [(SKUICollectionViewCell *)&v12 layoutSubviews];
   if (self->_layoutNeedsLayout)
   {
-    v11 = [(SKUIItemCollectionViewCell *)self layout];
-    [v11 layoutSubviews];
+    layout = [(SKUIItemCollectionViewCell *)self layout];
+    [layout layoutSubviews];
   }
 
   self->_layoutNeedsLayout = 0;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -176,12 +176,12 @@
   [(SKUIItemCollectionViewCell *)&v19 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

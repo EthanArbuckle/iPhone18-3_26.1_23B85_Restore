@@ -1,27 +1,27 @@
 @interface BRCZoneHealthCheckOperation
-- (BOOL)shouldRetryForError:(id)a3;
-- (BRCZoneHealthCheckOperation)initWithSessionContext:(id)a3 changeToken:(id)a4 healthCheckUpdatesCallback:(id)a5;
-- (void)completedZoneHealthSyncDownWithRequestID:(unint64_t)a3 error:(id)a4;
+- (BOOL)shouldRetryForError:(id)error;
+- (BRCZoneHealthCheckOperation)initWithSessionContext:(id)context changeToken:(id)token healthCheckUpdatesCallback:(id)callback;
+- (void)completedZoneHealthSyncDownWithRequestID:(unint64_t)d error:(id)error;
 - (void)main;
-- (void)receivedUpdatedServerChangeToken:(id)a3 requestID:(unint64_t)a4;
+- (void)receivedUpdatedServerChangeToken:(id)token requestID:(unint64_t)d;
 @end
 
 @implementation BRCZoneHealthCheckOperation
 
-- (BRCZoneHealthCheckOperation)initWithSessionContext:(id)a3 changeToken:(id)a4 healthCheckUpdatesCallback:(id)a5
+- (BRCZoneHealthCheckOperation)initWithSessionContext:(id)context changeToken:(id)token healthCheckUpdatesCallback:(id)callback
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 syncContextProvider];
-  v13 = [v12 zoneHealthSyncContext];
+  tokenCopy = token;
+  callbackCopy = callback;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  zoneHealthSyncContext = [syncContextProvider zoneHealthSyncContext];
   v20.receiver = self;
   v20.super_class = BRCZoneHealthCheckOperation;
-  v14 = [(_BRCOperation *)&v20 initWithName:@"zone-health-check" syncContext:v13 sessionContext:v11];
+  v14 = [(_BRCOperation *)&v20 initWithName:@"zone-health-check" syncContext:zoneHealthSyncContext sessionContext:contextCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_changeToken, a4);
+    objc_storeStrong(&v14->_changeToken, token);
     v15 = objc_opt_new();
     recordsByID = v14->_recordsByID;
     v14->_recordsByID = v15;
@@ -30,16 +30,16 @@
     deletedRecordIds = v14->_deletedRecordIds;
     v14->_deletedRecordIds = v17;
 
-    objc_storeStrong(&v14->_healthCheckUpdatesCallback, a5);
+    objc_storeStrong(&v14->_healthCheckUpdatesCallback, callback);
   }
 
   return v14;
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  if ([v4 brc_isResetError])
+  errorCopy = error;
+  if ([errorCopy brc_isResetError])
   {
     v5 = 0;
   }
@@ -48,22 +48,22 @@
   {
     v7.receiver = self;
     v7.super_class = BRCZoneHealthCheckOperation;
-    v5 = [(_BRCOperation *)&v7 shouldRetryForError:v4];
+    v5 = [(_BRCOperation *)&v7 shouldRetryForError:errorCopy];
   }
 
   return v5;
 }
 
-- (void)receivedUpdatedServerChangeToken:(id)a3 requestID:(unint64_t)a4
+- (void)receivedUpdatedServerChangeToken:(id)token requestID:(unint64_t)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tokenCopy = token;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(NSMutableDictionary *)self->_recordsByID keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_recordsByID keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -75,37 +75,37 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v12 = objc_alloc(MEMORY[0x277CFAE60]);
-        v13 = [v11 recordName];
-        v14 = [v12 initWithAppLibraryName:v13];
+        recordName = [v11 recordName];
+        v14 = [v12 initWithAppLibraryName:recordName];
 
-        v15 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
-        v16 = [v15 getOrCreateAppLibraryAndPrivateZonesIfNecessary:v14];
+        zoneAppRetriever = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
+        v16 = [zoneAppRetriever getOrCreateAppLibraryAndPrivateZonesIfNecessary:v14];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
   }
 
-  v17 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __74__BRCZoneHealthCheckOperation_receivedUpdatedServerChangeToken_requestID___block_invoke;
   v21[3] = &unk_2785004C8;
   v21[4] = self;
-  v22 = v5;
-  v23 = a4;
-  v18 = v5;
-  [v17 performWithFlags:9 action:v21];
+  v22 = tokenCopy;
+  dCopy = d;
+  v18 = tokenCopy;
+  [clientReadWriteDatabaseFacade performWithFlags:9 action:v21];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -261,19 +261,19 @@ LABEL_19:
   return 1;
 }
 
-- (void)completedZoneHealthSyncDownWithRequestID:(unint64_t)a3 error:(id)a4
+- (void)completedZoneHealthSyncDownWithRequestID:(unint64_t)d error:(id)error
 {
-  v6 = a4;
-  v7 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  errorCopy = error;
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__BRCZoneHealthCheckOperation_completedZoneHealthSyncDownWithRequestID_error___block_invoke;
   v9[3] = &unk_2785004C8;
-  v10 = v6;
-  v11 = a3;
+  v10 = errorCopy;
+  dCopy = d;
   v9[4] = self;
-  v8 = v6;
-  [v7 performWithFlags:9 action:v9];
+  v8 = errorCopy;
+  [clientReadWriteDatabaseFacade performWithFlags:9 action:v9];
 
   [(_BRCOperation *)self completedWithResult:0 error:v8];
 }

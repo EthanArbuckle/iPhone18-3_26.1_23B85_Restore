@@ -1,34 +1,34 @@
 @interface WFActionDonationRecommender
 + (WFActionDonationRecommender)sharedRecommender;
-+ (id)donationsByRemovingDuplicatesFromDonations:(id)a3 excludingAppIdentifiers:(id)a4 includingSingleDonationPerApp:(BOOL)a5;
-+ (id)filterDonationsForTitleLength:(id)a3;
-+ (id)filteredActionDonations:(id)a3 byApplicationAppIdentifier:(id)a4;
-+ (id)getDonationsFromActionResponse:(id)a3;
++ (id)donationsByRemovingDuplicatesFromDonations:(id)donations excludingAppIdentifiers:(id)identifiers includingSingleDonationPerApp:(BOOL)app;
++ (id)filterDonationsForTitleLength:(id)length;
++ (id)filteredActionDonations:(id)donations byApplicationAppIdentifier:(id)identifier;
++ (id)getDonationsFromActionResponse:(id)response;
 - (NSArray)defaultRecommendations;
 - (NSSet)excludedAppBundleIdentifiers;
 - (WFActionDonationRecommender)init;
-- (void)_fetchDonationsWithLimit:(unint64_t)a3 applicationBundleIdentifier:(id)a4 includeSuggestedForAllApps:(BOOL)a5 completionHandler:(id)a6;
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4;
-- (void)cacheActionPredictionDonations:(id)a3 forApplicationBundleIdentifier:(id)a4 ballpark:(unint64_t)a5;
-- (void)cacheRecentDonations:(id)a3 forApplicationBundleIdentifier:(id)a4 ballpark:(unint64_t)a5;
-- (void)fetchDonationsWithLimit:(unint64_t)a3 applicationBundleIdentifier:(id)a4 includeSuggestedForAllApps:(BOOL)a5 completionHandler:(id)a6;
-- (void)fetchRecommendedDonationsForAppPredictionsWithCompletionHandler:(id)a3;
-- (void)fetchRecommendedDonationsForApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_fetchDonationsWithLimit:(unint64_t)limit applicationBundleIdentifier:(id)identifier includeSuggestedForAllApps:(BOOL)apps completionHandler:(id)handler;
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change;
+- (void)cacheActionPredictionDonations:(id)donations forApplicationBundleIdentifier:(id)identifier ballpark:(unint64_t)ballpark;
+- (void)cacheRecentDonations:(id)donations forApplicationBundleIdentifier:(id)identifier ballpark:(unint64_t)ballpark;
+- (void)fetchDonationsWithLimit:(unint64_t)limit applicationBundleIdentifier:(id)identifier includeSuggestedForAllApps:(BOOL)apps completionHandler:(id)handler;
+- (void)fetchRecommendedDonationsForAppPredictionsWithCompletionHandler:(id)handler;
+- (void)fetchRecommendedDonationsForApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation WFActionDonationRecommender
 
-- (void)fetchRecommendedDonationsForAppPredictionsWithCompletionHandler:(id)a3
+- (void)fetchRecommendedDonationsForAppPredictionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __95__WFActionDonationRecommender_fetchRecommendedDonationsForAppPredictionsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E8374130;
-  v7 = v4;
+  v7 = handlerCopy;
   v8 = 150;
   v6[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFActionDonationRecommender *)self fetchDonationsWithLimit:150 applicationBundleIdentifier:0 includeSuggestedForAllApps:1 completionHandler:v6];
 }
 
@@ -493,17 +493,17 @@ void __95__WFActionDonationRecommender_fetchRecommendedDonationsForAppPrediction
   }
 }
 
-- (void)fetchRecommendedDonationsForApplicationBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchRecommendedDonationsForApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFActionDonationRecommender.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionDonationRecommender.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  if (v7)
+  if (identifierCopy)
   {
     v9 = 30;
   }
@@ -513,11 +513,11 @@ void __95__WFActionDonationRecommender_fetchRecommendedDonationsForAppPrediction
     v9 = 150;
   }
 
-  v10 = [(WFActionDonationRecommender *)self excludedAppBundleIdentifiers];
-  v11 = v10;
-  if (v7 && [v10 containsObject:v7])
+  excludedAppBundleIdentifiers = [(WFActionDonationRecommender *)self excludedAppBundleIdentifiers];
+  v11 = excludedAppBundleIdentifiers;
+  if (identifierCopy && [excludedAppBundleIdentifiers containsObject:identifierCopy])
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -528,8 +528,8 @@ void __95__WFActionDonationRecommender_fetchRecommendedDonationsForAppPrediction
     v13[3] = &unk_1E8373FF0;
     v14 = v11;
     v17 = v9;
-    v15 = v7;
-    v16 = v8;
+    v15 = identifierCopy;
+    v16 = handlerCopy;
     [(WFActionDonationRecommender *)self fetchDonationsWithLimit:v9 applicationBundleIdentifier:v15 includeSuggestedForAllApps:0 completionHandler:v13];
   }
 }
@@ -687,12 +687,12 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchDonationsWithLimit:(unint64_t)a3 applicationBundleIdentifier:(id)a4 includeSuggestedForAllApps:(BOOL)a5 completionHandler:(id)a6
+- (void)_fetchDonationsWithLimit:(unint64_t)limit applicationBundleIdentifier:(id)identifier includeSuggestedForAllApps:(BOOL)apps completionHandler:(id)handler
 {
-  v7 = a5;
+  appsCopy = apps;
   v158 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v83 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v142 = 0;
   v143 = &v142;
   v144 = 0x3032000000;
@@ -721,37 +721,37 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
   v121 = &v120;
   v122 = 0x2020000000;
   v123 = 0;
-  v84 = a3;
+  limitCopy = limit;
   group = dispatch_group_create();
-  if (2 * a3 <= 0x32)
+  if (2 * limit <= 0x32)
   {
     v11 = 50;
   }
 
   else
   {
-    v11 = 2 * a3;
+    v11 = 2 * limit;
   }
 
-  v86 = self;
-  v87 = v10;
-  if (v10)
+  selfCopy = self;
+  v87 = identifierCopy;
+  if (identifierCopy)
   {
-    v12 = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    cachedDonationsPerApp = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
+    cachedDonationsForAllApps = [cachedDonationsPerApp objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v13 = [(WFActionDonationRecommender *)self cachedDonationsForAllApps];
+    cachedDonationsForAllApps = [(WFActionDonationRecommender *)self cachedDonationsForAllApps];
   }
 
-  v82 = v13;
-  if (v13 && [v13 isValidWithBallpark:v11])
+  v82 = cachedDonationsForAllApps;
+  if (cachedDonationsForAllApps && [cachedDonationsForAllApps isValidWithBallpark:v11])
   {
-    v14 = [v13 donations];
+    donations = [cachedDonationsForAllApps donations];
     v15 = v143[5];
-    v143[5] = v14;
+    v143[5] = donations;
 
     *(v121 + 24) = 1;
   }
@@ -767,7 +767,7 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
     if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = identifierCopy;
       _os_signpost_emit_with_name_impl(&dword_1CA256000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "FetchRecentDonations", "appIdentifier=%{signpost.telemetry:string1, Name=AppID}@", &buf, 0xCu);
     }
 
@@ -779,8 +779,8 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
     v117 = &v142;
     v118 = v17;
     v116 = &v120;
-    v113[4] = v86;
-    v114 = v10;
+    v113[4] = selfCopy;
+    v114 = identifierCopy;
     v119 = v11;
     v115 = group;
     [v20 fetchDonationsForApplicationBundleIdentifier:v114 limit:v11 filteringForTopLevel:0 filteringForIsEligibleForPrediction:1 filteringForRecent:1 completion:v113];
@@ -790,23 +790,23 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
   *(&buf + 1) = &buf;
   v156 = 0x2020000000;
   v157 = 0;
-  if (v10)
+  if (identifierCopy)
   {
-    v21 = [(WFActionDonationRecommender *)v86 cachedActionPredictionsPerApp];
-    v22 = [v21 objectForKeyedSubscript:v10];
+    cachedActionPredictionsPerApp = [(WFActionDonationRecommender *)selfCopy cachedActionPredictionsPerApp];
+    cachedActionPredictionsForAllApps = [cachedActionPredictionsPerApp objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v22 = [(WFActionDonationRecommender *)v86 cachedActionPredictionsForAllApps];
+    cachedActionPredictionsForAllApps = [(WFActionDonationRecommender *)selfCopy cachedActionPredictionsForAllApps];
   }
 
-  v81 = v22;
-  if (v22 && [v22 isValidWithBallpark:v84])
+  v81 = cachedActionPredictionsForAllApps;
+  if (cachedActionPredictionsForAllApps && [cachedActionPredictionsForAllApps isValidWithBallpark:limitCopy])
   {
-    v23 = [v22 donations];
+    donations2 = [cachedActionPredictionsForAllApps donations];
     v24 = v137[5];
-    v137[5] = v23;
+    v137[5] = donations2;
 
     *(*(&buf + 1) + 24) = 1;
   }
@@ -822,16 +822,16 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
     if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
     {
       *v151 = 134218242;
-      v152 = v84;
+      v152 = limitCopy;
       v153 = 2112;
-      v154 = v10;
+      v154 = identifierCopy;
       _os_signpost_emit_with_name_impl(&dword_1CA256000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v26, "FetchPredictedDonations", "limit=%{signpost.telemetry:number1, Name=Limit}lu appIdentifier=%{signpost.telemetry:string1, Name=AppID}@", v151, 0x16u);
     }
 
     v29 = objc_alloc_init(getATXActionPredictionClientClass());
-    if (v10)
+    if (identifierCopy)
     {
-      v150 = v10;
+      v150 = identifierCopy;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
     }
 
@@ -847,20 +847,20 @@ void __105__WFActionDonationRecommender_fetchRecommendedDonationsForApplicationB
     v110 = &v136;
     v111 = v26;
     p_buf = &buf;
-    v106[4] = v86;
-    v107 = v10;
-    v112 = v84;
+    v106[4] = selfCopy;
+    v107 = identifierCopy;
+    v112 = limitCopy;
     v108 = group;
-    [v29 getActionPredictionsForCandidateBundleIdentifiers:v30 candidateActionTypes:0 consumerType:8 consumerSubType:23 limit:v84 reply:v106];
+    [v29 getActionPredictionsForCandidateBundleIdentifiers:v30 candidateActionTypes:0 consumerType:8 consumerSubType:23 limit:limitCopy reply:v106];
   }
 
   v31 = MEMORY[0x1E695E0F0];
-  if (!v10)
+  if (!identifierCopy)
   {
     v40 = v131[5];
     v131[5] = MEMORY[0x1E695E0F0];
 
-    if (!v7)
+    if (!appsCopy)
     {
       goto LABEL_60;
     }
@@ -905,7 +905,7 @@ LABEL_47:
       goto LABEL_47;
     }
 
-    v52 = [(WFActionDonationRecommender *)v86 excludedAppBundleIdentifiers];
+    excludedAppBundleIdentifiers = [(WFActionDonationRecommender *)selfCopy excludedAppBundleIdentifiers];
     v102 = 0u;
     v103 = 0u;
     v100 = 0u;
@@ -925,7 +925,7 @@ LABEL_47:
           }
 
           v56 = *(*(&v100 + 1) + 8 * i);
-          if (([v52 containsObject:v56] & 1) == 0)
+          if (([excludedAppBundleIdentifiers containsObject:v56] & 1) == 0)
           {
             v57 = [v33 objectForKeyedSubscript:v56];
             v58 = VCActionDonationArrayFromINShortcutArray(v57, v56);
@@ -944,7 +944,7 @@ LABEL_47:
 
   v32 = +[WFDatabase defaultDatabase];
   v105 = 0;
-  v33 = [v32 shortcutSuggestionsForAppWithBundleIdentifier:v10 shortcutAvailability:0 error:&v105];
+  v33 = [v32 shortcutSuggestionsForAppWithBundleIdentifier:identifierCopy shortcutAvailability:0 error:&v105];
   v34 = v105;
 
   v35 = getWFActionDonationsLogObject();
@@ -982,7 +982,7 @@ LABEL_47:
     *v151 = 136315394;
     v152 = "[WFActionDonationRecommender _fetchDonationsWithLimit:applicationBundleIdentifier:includeSuggestedForAllApps:completionHandler:]";
     v153 = 2114;
-    v154 = v10;
+    v154 = identifierCopy;
     v37 = "%s for applicationBundleIdentifier: %{public}@";
     v38 = v36;
     v39 = OS_LOG_TYPE_DEBUG;
@@ -994,15 +994,15 @@ LABEL_40:
 
   if (v33)
   {
-    v52 = VCActionDonationArrayFromINShortcutArray(v33, v10);
+    excludedAppBundleIdentifiers = VCActionDonationArrayFromINShortcutArray(v33, identifierCopy);
   }
 
   else
   {
-    v52 = MEMORY[0x1E695E0F0];
+    excludedAppBundleIdentifiers = MEMORY[0x1E695E0F0];
   }
 
-  objc_storeStrong(v131 + 5, v52);
+  objc_storeStrong(v131 + 5, excludedAppBundleIdentifiers);
   if (v33)
   {
 LABEL_58:
@@ -1014,8 +1014,8 @@ LABEL_58:
 LABEL_59:
 
 LABEL_60:
-  v59 = [(WFActionDonationRecommender *)v86 defaultRecommendations];
-  v60 = [WFActionDonationRecommender filteredActionDonations:v59 byApplicationAppIdentifier:v87];
+  defaultRecommendations = [(WFActionDonationRecommender *)selfCopy defaultRecommendations];
+  v60 = [WFActionDonationRecommender filteredActionDonations:defaultRecommendations byApplicationAppIdentifier:v87];
 
   if ([v60 count])
   {
@@ -1053,8 +1053,8 @@ LABEL_60:
           }
 
           v69 = *(*(&v96 + 1) + 8 * j);
-          v70 = [v69 sourceAppIdentifier];
-          v71 = [v125[5] objectForKeyedSubscript:v70];
+          sourceAppIdentifier = [v69 sourceAppIdentifier];
+          v71 = [v125[5] objectForKeyedSubscript:sourceAppIdentifier];
           v72 = v71;
           if (v71)
           {
@@ -1070,7 +1070,7 @@ LABEL_60:
 
           v75 = [v74 arrayByAddingObject:v69];
 
-          [v125[5] setObject:v75 forKeyedSubscript:v70];
+          [v125[5] setObject:v75 forKeyedSubscript:sourceAppIdentifier];
         }
 
         v66 = [v65 countByEnumeratingWithState:&v96 objects:v148 count:16];
@@ -1084,21 +1084,21 @@ LABEL_60:
   aBlock[1] = 3221225472;
   aBlock[2] = __129__WFActionDonationRecommender__fetchDonationsWithLimit_applicationBundleIdentifier_includeSuggestedForAllApps_completionHandler___block_invoke_204;
   aBlock[3] = &unk_1E8373FC8;
-  v95 = v84;
-  aBlock[4] = v86;
+  v95 = limitCopy;
+  aBlock[4] = selfCopy;
   v91 = &v142;
   v92 = &v136;
   v93 = &v130;
   v76 = v87;
   v89 = v76;
-  v77 = v83;
+  v77 = handlerCopy;
   v90 = v77;
   v94 = &v124;
   v78 = _Block_copy(aBlock);
-  v79 = [(WFActionDonationRecommender *)v86 workQueue];
-  dispatch_group_notify(group, v79, v78);
+  workQueue = [(WFActionDonationRecommender *)selfCopy workQueue];
+  dispatch_group_notify(group, workQueue, v78);
 
-  [(WFActionDonationRecommender *)v86 setActiveFetchGroup:group];
+  [(WFActionDonationRecommender *)selfCopy setActiveFetchGroup:group];
   _Block_object_dispose(&buf, 8);
 
   _Block_object_dispose(&v120, 8);
@@ -1272,30 +1272,30 @@ uint64_t __129__WFActionDonationRecommender__fetchDonationsWithLimit_application
   return result;
 }
 
-- (void)fetchDonationsWithLimit:(unint64_t)a3 applicationBundleIdentifier:(id)a4 includeSuggestedForAllApps:(BOOL)a5 completionHandler:(id)a6
+- (void)fetchDonationsWithLimit:(unint64_t)limit applicationBundleIdentifier:(id)identifier includeSuggestedForAllApps:(BOOL)apps completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundleIdentifier_includeSuggestedForAllApps_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8373F50;
   aBlock[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = a3;
-  v12 = v11;
-  v13 = v10;
+  v18 = identifierCopy;
+  appsCopy = apps;
+  v19 = handlerCopy;
+  limitCopy = limit;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
   v14 = _Block_copy(aBlock);
-  v15 = [(WFActionDonationRecommender *)self workQueue];
+  workQueue = [(WFActionDonationRecommender *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundleIdentifier_includeSuggestedForAllApps_completionHandler___block_invoke_2;
   block[3] = &unk_1E837E1F8;
   block[4] = self;
   block[5] = v14;
-  dispatch_async(v15, block);
+  dispatch_async(workQueue, block);
 }
 
 void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundleIdentifier_includeSuggestedForAllApps_completionHandler___block_invoke_2(uint64_t a1)
@@ -1328,16 +1328,16 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
   return defaultRecommendations;
 }
 
-- (void)cacheActionPredictionDonations:(id)a3 forApplicationBundleIdentifier:(id)a4 ballpark:(unint64_t)a5
+- (void)cacheActionPredictionDonations:(id)donations forApplicationBundleIdentifier:(id)identifier ballpark:(unint64_t)ballpark
 {
-  v11 = a4;
-  v8 = a3;
-  v9 = [[WFCachedDonations alloc] initWithDonations:v8 ballpark:a5];
+  identifierCopy = identifier;
+  donationsCopy = donations;
+  v9 = [[WFCachedDonations alloc] initWithDonations:donationsCopy ballpark:ballpark];
 
-  if (v11)
+  if (identifierCopy)
   {
-    v10 = [(WFActionDonationRecommender *)self cachedActionPredictionsPerApp];
-    [v10 setObject:v9 forKeyedSubscript:v11];
+    cachedActionPredictionsPerApp = [(WFActionDonationRecommender *)self cachedActionPredictionsPerApp];
+    [cachedActionPredictionsPerApp setObject:v9 forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -1346,16 +1346,16 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
   }
 }
 
-- (void)cacheRecentDonations:(id)a3 forApplicationBundleIdentifier:(id)a4 ballpark:(unint64_t)a5
+- (void)cacheRecentDonations:(id)donations forApplicationBundleIdentifier:(id)identifier ballpark:(unint64_t)ballpark
 {
-  v11 = a4;
-  v8 = a3;
-  v9 = [[WFCachedDonations alloc] initWithDonations:v8 ballpark:a5];
+  identifierCopy = identifier;
+  donationsCopy = donations;
+  v9 = [[WFCachedDonations alloc] initWithDonations:donationsCopy ballpark:ballpark];
 
-  if (v11)
+  if (identifierCopy)
   {
-    v10 = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
-    [v10 setObject:v9 forKeyedSubscript:v11];
+    cachedDonationsPerApp = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
+    [cachedDonationsPerApp setObject:v9 forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -1385,17 +1385,17 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
   return excludedAppBundleIdentifiers;
 }
 
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change
 {
-  if (!a4)
+  if (!change)
   {
     [(WFActionDonationRecommender *)self setCachedDonationsForAllApps:0];
-    v6 = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
-    [v6 removeAllObjects];
+    cachedDonationsPerApp = [(WFActionDonationRecommender *)self cachedDonationsPerApp];
+    [cachedDonationsPerApp removeAllObjects];
 
     [(WFActionDonationRecommender *)self setCachedActionPredictionsForAllApps:0];
-    v7 = [(WFActionDonationRecommender *)self cachedActionPredictionsPerApp];
-    [v7 removeAllObjects];
+    cachedActionPredictionsPerApp = [(WFActionDonationRecommender *)self cachedActionPredictionsPerApp];
+    [cachedActionPredictionsPerApp removeAllObjects];
   }
 }
 
@@ -1419,8 +1419,8 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
     workQueue = v2->_workQueue;
     v2->_workQueue = v8;
 
-    v10 = [MEMORY[0x1E6996CA8] sharedContext];
-    [v10 addApplicationStateObserver:v2 forEvent:0];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+    [mEMORY[0x1E6996CA8] addApplicationStateObserver:v2 forEvent:0];
 
     v11 = v2;
   }
@@ -1428,23 +1428,23 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
   return v2;
 }
 
-+ (id)getDonationsFromActionResponse:(id)a3
++ (id)getDonationsFromActionResponse:(id)response
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v35 = v3;
-  v5 = [v3 actions];
-  v6 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v35 = responseCopy;
+  actions = [responseCopy actions];
+  v6 = [actions countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v39;
-    v36 = v5;
+    v36 = actions;
     do
     {
       v9 = 0;
@@ -1452,33 +1452,33 @@ void __128__WFActionDonationRecommender_fetchDonationsWithLimit_applicationBundl
       {
         if (*v39 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v38 + 1) + 8 * v9);
-        v11 = [v10 actionUUID];
-        v12 = [v11 UUIDString];
-        v13 = v12;
-        if (v12)
+        actionUUID = [v10 actionUUID];
+        uUIDString = [actionUUID UUIDString];
+        v13 = uUIDString;
+        if (uUIDString)
         {
-          v14 = v12;
+          uUIDString2 = uUIDString;
         }
 
         else
         {
-          v15 = [MEMORY[0x1E696AFB0] UUID];
-          v14 = [v15 UUIDString];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString2 = [uUID UUIDString];
         }
 
-        v16 = [v10 userActivity];
+        userActivity = [v10 userActivity];
 
-        if (v16)
+        if (userActivity)
         {
           v17 = objc_alloc(MEMORY[0x1E69E0930]);
-          v18 = [v10 userActivity];
-          v19 = [v10 bundleId];
-          v20 = [MEMORY[0x1E695DF00] date];
-          v21 = [v17 initWithUserActivity:v18 identifier:v14 sourceAppIdentifier:v19 date:v20];
+          userActivity2 = [v10 userActivity];
+          bundleId = [v10 bundleId];
+          date = [MEMORY[0x1E695DF00] date];
+          v21 = [v17 initWithUserActivity:userActivity2 identifier:uUIDString2 sourceAppIdentifier:bundleId date:date];
 
           if (v21)
           {
@@ -1490,24 +1490,24 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v22 = [v10 intent];
-        if (v22)
+        intent = [v10 intent];
+        if (intent)
         {
-          v23 = v22;
-          v24 = [v10 heuristic];
-          v25 = [v24 length];
+          v23 = intent;
+          heuristic = [v10 heuristic];
+          v25 = [heuristic length];
 
           if (!v25)
           {
-            v26 = [v10 intent];
-            v21 = VCIntentsForAllPossibleParameterCombinationsOfIntent(v26);
+            intent2 = [v10 intent];
+            v21 = VCIntentsForAllPossibleParameterCombinationsOfIntent(intent2);
 
-            v37 = [v21 firstObject];
-            v27 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v37 response:0];
+            firstObject = [v21 firstObject];
+            v27 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:firstObject response:0];
             v28 = objc_alloc(MEMORY[0x1E69E0920]);
             [v10 bundleId];
             v30 = v29 = v4;
-            v31 = [v28 initWithIdentifier:v14 sourceAppIdentifier:v30 interaction:v27];
+            v31 = [v28 initWithIdentifier:uUIDString2 sourceAppIdentifier:v30 interaction:v27];
 
             v4 = v29;
             if (v31)
@@ -1515,7 +1515,7 @@ LABEL_12:
               [v29 addObject:v31];
             }
 
-            v5 = v36;
+            actions = v36;
             goto LABEL_12;
           }
         }
@@ -1526,7 +1526,7 @@ LABEL_13:
       }
 
       while (v7 != v9);
-      v32 = [v5 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v32 = [actions countByEnumeratingWithState:&v38 objects:v42 count:16];
       v7 = v32;
     }
 
@@ -1538,12 +1538,12 @@ LABEL_13:
   return v4;
 }
 
-+ (id)filterDonationsForTitleLength:(id)a3
++ (id)filterDonationsForTitleLength:(id)length
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  lengthCopy = length;
   v5 = [v3 predicateWithBlock:&__block_literal_global_239];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [lengthCopy filteredArrayUsingPredicate:v5];
 
   return v6;
 }
@@ -1556,26 +1556,26 @@ BOOL __61__WFActionDonationRecommender_filterDonationsForTitleLength___block_inv
   return v3;
 }
 
-+ (id)filteredActionDonations:(id)a3 byApplicationAppIdentifier:(id)a4
++ (id)filteredActionDonations:(id)donations byApplicationAppIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  donationsCopy = donations;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
     v8 = MEMORY[0x1E696AE18];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__WFActionDonationRecommender_filteredActionDonations_byApplicationAppIdentifier___block_invoke;
     v12[3] = &unk_1E8374158;
-    v13 = v6;
+    v13 = identifierCopy;
     v9 = [v8 predicateWithBlock:v12];
-    v10 = [v5 filteredArrayUsingPredicate:v9];
+    v10 = [donationsCopy filteredArrayUsingPredicate:v9];
   }
 
   else
   {
-    v10 = v5;
+    v10 = donationsCopy;
   }
 
   return v10;
@@ -1589,12 +1589,12 @@ uint64_t __82__WFActionDonationRecommender_filteredActionDonations_byApplication
   return v4;
 }
 
-+ (id)donationsByRemovingDuplicatesFromDonations:(id)a3 excludingAppIdentifiers:(id)a4 includingSingleDonationPerApp:(BOOL)a5
++ (id)donationsByRemovingDuplicatesFromDonations:(id)donations excludingAppIdentifiers:(id)identifiers includingSingleDonationPerApp:(BOOL)app
 {
-  v5 = a5;
+  appCopy = app;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v29 = a4;
+  donationsCopy = donations;
+  identifiersCopy = identifiers;
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1602,13 +1602,13 @@ uint64_t __82__WFActionDonationRecommender_filteredActionDonations_byApplication
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v7;
+  v9 = donationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v31;
-    v28 = !v5;
+    v28 = !appCopy;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -1619,18 +1619,18 @@ uint64_t __82__WFActionDonationRecommender_filteredActionDonations_byApplication
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 sourceAppIdentifierForDisplay];
-        if (!v15)
+        sourceAppIdentifierForDisplay = [v14 sourceAppIdentifierForDisplay];
+        if (!sourceAppIdentifierForDisplay)
         {
-          v16 = getWFActionDonationsLogObject();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          uniqueProperty = getWFActionDonationsLogObject();
+          if (os_log_type_enabled(uniqueProperty, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v14 fullDescription];
+            fullDescription = [v14 fullDescription];
             *buf = 136315394;
             v35 = "+[WFActionDonationRecommender donationsByRemovingDuplicatesFromDonations:excludingAppIdentifiers:includingSingleDonationPerApp:]";
             v36 = 2112;
-            v37 = v23;
-            _os_log_impl(&dword_1CA256000, v16, OS_LOG_TYPE_ERROR, "%s Skipping donation with unexpected nil sourceAppIdentifier. Donation: %@", buf, 0x16u);
+            v37 = fullDescription;
+            _os_log_impl(&dword_1CA256000, uniqueProperty, OS_LOG_TYPE_ERROR, "%s Skipping donation with unexpected nil sourceAppIdentifier. Donation: %@", buf, 0x16u);
           }
 
 LABEL_15:
@@ -1638,32 +1638,32 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v16 = [v14 uniqueProperty];
-        if ([v8 containsObject:v16])
+        uniqueProperty = [v14 uniqueProperty];
+        if ([v8 containsObject:uniqueProperty])
         {
           goto LABEL_15;
         }
 
-        v17 = [v14 sourceAppIdentifierForDisplay];
-        v18 = [v29 containsObject:v17];
+        sourceAppIdentifierForDisplay2 = [v14 sourceAppIdentifierForDisplay];
+        v18 = [identifiersCopy containsObject:sourceAppIdentifierForDisplay2];
         if (((v18 | v28) & 1) == 0)
         {
-          LOBYTE(v18) = [v27 containsObject:v15];
+          LOBYTE(v18) = [v27 containsObject:sourceAppIdentifierForDisplay];
         }
 
         v19 = v18;
 
         if ((v19 & 1) == 0)
         {
-          v20 = [v14 title];
-          v21 = [v20 length];
+          title = [v14 title];
+          v21 = [title length];
 
           if (v21)
           {
-            v22 = [v14 uniqueProperty];
-            [v8 addObject:v22];
+            uniqueProperty2 = [v14 uniqueProperty];
+            [v8 addObject:uniqueProperty2];
 
-            [v27 addObject:v15];
+            [v27 addObject:sourceAppIdentifierForDisplay];
             [v26 addObject:v14];
           }
         }

@@ -1,6 +1,6 @@
 @interface AXBHoverTextManager
 + (void)initializeMonitor;
-- (void)setHoverTextEnabled:(BOOL)a3 isTyping:(BOOL)a4;
+- (void)setHoverTextEnabled:(BOOL)enabled isTyping:(BOOL)typing;
 - (void)updateHoverTextSettings;
 - (void)updateHoverTypingSettings;
 @end
@@ -37,10 +37,10 @@ void __40__AXBHoverTextManager_initializeMonitor__block_invoke()
   }
 }
 
-- (void)setHoverTextEnabled:(BOOL)a3 isTyping:(BOOL)a4
+- (void)setHoverTextEnabled:(BOOL)enabled isTyping:(BOOL)typing
 {
-  v4 = a4;
-  v5 = a3;
+  typingCopy = typing;
+  enabledCopy = enabled;
   v28 = *MEMORY[0x29EDCA608];
   v6 = _os_feature_enabled_impl();
   v7 = HTLogCommon();
@@ -50,7 +50,7 @@ void __40__AXBHoverTextManager_initializeMonitor__block_invoke()
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"disable";
-      if (v5)
+      if (enabledCopy)
       {
         v9 = @"enable";
       }
@@ -58,7 +58,7 @@ void __40__AXBHoverTextManager_initializeMonitor__block_invoke()
       *buf = 138412546;
       *&buf[4] = v9;
       *&buf[12] = 1024;
-      *&buf[14] = v4;
+      *&buf[14] = typingCopy;
       _os_log_impl(&dword_29BBBD000, v8, OS_LOG_TYPE_DEFAULT, "HoverText monitor asked to %@ HoverText. isTyping = %i", buf, 0x12u);
     }
 
@@ -86,9 +86,9 @@ void __40__AXBHoverTextManager_initializeMonitor__block_invoke()
 
     v11 = v10();
     v8 = v11;
-    if (v5)
+    if (enabledCopy)
     {
-      if (v4)
+      if (typingCopy)
       {
         v20 = 0;
         v12 = [v11 startHoverTextTypingAndReturnError:&v20];
@@ -103,7 +103,7 @@ void __40__AXBHoverTextManager_initializeMonitor__block_invoke()
       }
     }
 
-    else if (v4)
+    else if (typingCopy)
     {
       v18 = 0;
       v12 = [v11 stopHoverTextTypingAndReturnError:&v18];

@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer
-- (PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -9,17 +9,17 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  [v3 setShowOnlyFromMyMac:{objc_msgSend(v3, "showOnlyFromMyMac") ^ 1}];
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setShowOnlyFromMyMac:{objc_msgSend(currentContentFilterState, "showOnlyFromMyMac") ^ 1}];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-    if ([v3 showOnlyFromMyMac])
+    currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+    if ([currentContentFilterState showOnlyFromMyMac])
     {
       v4 = @"DISABLE_SHOW_ONLY_FROM_MY_MAC_FILTER_SHORTCUT";
     }
@@ -42,17 +42,17 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:18];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:18];
 
   return v3;
 }
 
-- (PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleShowOnlyFromMyMacFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleShowOnlyFromMyMacFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleShowOnlyFromMyMacFilter" viewModel:model];
 }
 
 @end

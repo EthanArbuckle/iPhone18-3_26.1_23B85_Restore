@@ -4,12 +4,12 @@
 - (NPSDomainAccessor)systemPrefsDomainAccessor;
 - (id)_onTapGroup;
 - (id)specifiers;
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5;
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion;
 - (void)dealloc;
 - (void)handleDidUnpair;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
-- (void)setBacklightExtendValue:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
+- (void)setBacklightExtendValue:(int64_t)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CSLPRFWakeScreenSettingsViewController
@@ -36,21 +36,21 @@
     v9 = +[PDRRegistry sharedInstance];
     [v9 addDelegate:v2];
 
-    v10 = [(CSLPRFWakeScreenSettingsViewController *)v2 systemPrefsDomainAccessor];
-    [(CSLPRFWakeScreenSettingsViewController *)v2 _synchronizeDomainWithAccessor:v10 keys:0 withCompletion:0];
+    systemPrefsDomainAccessor = [(CSLPRFWakeScreenSettingsViewController *)v2 systemPrefsDomainAccessor];
+    [(CSLPRFWakeScreenSettingsViewController *)v2 _synchronizeDomainWithAccessor:systemPrefsDomainAccessor keys:0 withCompletion:0];
   }
 
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSLPRFWakeScreenSettingsViewController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CSLPRFWakeScreenSettingsViewController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"SHORT_WAKE_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"SHORT_WAKE_ID"];
 
   if (v11)
   {
@@ -60,8 +60,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [v9 identifier];
-  v14 = [v13 isEqualToString:@"LONG_WAKE_ID"];
+  identifier2 = [v9 identifier];
+  v14 = [identifier2 isEqualToString:@"LONG_WAKE_ID"];
 
   if (v14)
   {
@@ -72,7 +72,7 @@ LABEL_5:
 LABEL_6:
   v15.receiver = self;
   v15.super_class = CSLPRFWakeScreenSettingsViewController;
-  [(CSLPRFWakeScreenSettingsViewController *)&v15 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(CSLPRFWakeScreenSettingsViewController *)&v15 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (void)dealloc
@@ -106,19 +106,19 @@ LABEL_6:
   return systemPrefsDomainAccessor;
 }
 
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessorCopy = accessor;
+  keysCopy = keys;
+  completionCopy = completion;
   v11 = cslprf_sessions_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 domain];
+    domain = [accessorCopy domain];
     *buf = 138412546;
-    v22 = v12;
+    v22 = domain;
     v23 = 2112;
-    v24 = v9;
+    v24 = keysCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "synchronizing %@ %@", buf, 0x16u);
   }
 
@@ -128,11 +128,11 @@ LABEL_6:
   v16[2] = sub_1738;
   v16[3] = &unk_8278;
   objc_copyWeak(&v20, buf);
-  v13 = v8;
+  v13 = accessorCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = keysCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v19 = v15;
   [v13 synchronizeWithCompletionHandler:v16];
 
@@ -143,8 +143,8 @@ LABEL_6:
 - (id)specifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CSLPRFWakeScreenSettingsViewController *)self _onTapGroup];
-  [v3 addObjectsFromArray:v4];
+  _onTapGroup = [(CSLPRFWakeScreenSettingsViewController *)self _onTapGroup];
+  [v3 addObjectsFromArray:_onTapGroup];
 
   v5 = [v3 copy];
   v6 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
@@ -153,10 +153,10 @@ LABEL_6:
   return v3;
 }
 
-- (void)setBacklightExtendValue:(int64_t)a3
+- (void)setBacklightExtendValue:(int64_t)value
 {
   v10 = [(CSLPRFWakeScreenSettingsViewController *)self specifierForID:@"ON_TAP_GROUP_ID"];
-  if (a3 >= 16)
+  if (value >= 16)
   {
     v5 = @"LONG_WAKE_ID";
   }
@@ -169,19 +169,19 @@ LABEL_6:
   v6 = [(CSLPRFWakeScreenSettingsViewController *)self specifierForID:v5];
   [v10 setProperty:v6 forKey:PSRadioGroupCheckedSpecifierKey];
   [(CSLPRFWakeScreenSettingsViewController *)self reloadSpecifier:v10 animated:0];
-  v7 = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
-  [v7 setInteger:a3 forKey:@"AutoScreenOffSeconds"];
+  systemPrefsDomainAccessor = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
+  [systemPrefsDomainAccessor setInteger:value forKey:@"AutoScreenOffSeconds"];
 
-  v8 = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
+  systemPrefsDomainAccessor2 = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
   v9 = [NSSet setWithObject:@"AutoScreenOffSeconds"];
-  [(CSLPRFWakeScreenSettingsViewController *)self _synchronizeDomainWithAccessor:v8 keys:v9 withCompletion:0];
+  [(CSLPRFWakeScreenSettingsViewController *)self _synchronizeDomainWithAccessor:systemPrefsDomainAccessor2 keys:v9 withCompletion:0];
 }
 
 - (BOOL)isWakeSetToShort
 {
   v5 = 0;
-  v2 = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
-  v3 = [v2 integerForKey:@"AutoScreenOffSeconds" keyExistsAndHasValidFormat:&v5];
+  systemPrefsDomainAccessor = [(CSLPRFWakeScreenSettingsViewController *)self systemPrefsDomainAccessor];
+  v3 = [systemPrefsDomainAccessor integerForKey:@"AutoScreenOffSeconds" keyExistsAndHasValidFormat:&v5];
 
   return v3 < 16 || (v5 & 1) == 0;
 }
@@ -227,10 +227,10 @@ LABEL_6:
   return v16;
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v7 = a4;
-  if ([a5 containsObject:PDRDevicePropertyKeyIsPaired] && (objc_msgSend(v7, "isPaired") & 1) == 0)
+  changedCopy = changed;
+  if ([properties containsObject:PDRDevicePropertyKeyIsPaired] && (objc_msgSend(changedCopy, "isPaired") & 1) == 0)
   {
     [(CSLPRFWakeScreenSettingsViewController *)self handleDidUnpair];
   }

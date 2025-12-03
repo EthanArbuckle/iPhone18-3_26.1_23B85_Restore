@@ -1,17 +1,17 @@
 @interface MSDDefaultsInfo
-- (MSDDefaultsInfo)initWithCoder:(id)a3;
-- (MSDDefaultsInfo)initWithService:(id)a3 homeID:(id)a4 homeUserID:(id)a5;
+- (MSDDefaultsInfo)initWithCoder:(id)coder;
+- (MSDDefaultsInfo)initWithService:(id)service homeID:(id)d homeUserID:(id)iD;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDDefaultsInfo
 
-- (MSDDefaultsInfo)initWithService:(id)a3 homeID:(id)a4 homeUserID:(id)a5
+- (MSDDefaultsInfo)initWithService:(id)service homeID:(id)d homeUserID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = MSDDefaultsInfo;
   v12 = [(MSDDefaultsInfo *)&v16 init];
@@ -22,11 +22,11 @@
   }
 
   v14 = 0;
-  if (v9 && v11)
+  if (serviceCopy && iDCopy)
   {
-    objc_storeStrong(&v12->_service, a3);
-    objc_storeStrong(p_isa + 5, a4);
-    objc_storeStrong(p_isa + 6, a5);
+    objc_storeStrong(&v12->_service, service);
+    objc_storeStrong(p_isa + 5, d);
+    objc_storeStrong(p_isa + 6, iD);
 LABEL_5:
     v14 = p_isa;
   }
@@ -52,22 +52,22 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   service = self->_service;
-  v5 = a3;
-  [v5 encodeObject:service forKey:@"kMediaServiceEncodeKey"];
-  [v5 encodeObject:self->_homeID forKey:@"kHomeIDEncodeKey"];
-  [v5 encodeObject:self->_homeUserID forKey:@"kHomeUserIDEncodeKey"];
-  [v5 encodeObject:self->_recordName forKey:@"kRecordNameEncodeKey"];
-  [v5 encodeObject:self->_recordType forKey:@"kRecordTypeEncodeKey"];
-  [v5 encodeObject:self->_recordZoneName forKey:@"kRecordZoneNameEncodeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:service forKey:@"kMediaServiceEncodeKey"];
+  [coderCopy encodeObject:self->_homeID forKey:@"kHomeIDEncodeKey"];
+  [coderCopy encodeObject:self->_homeUserID forKey:@"kHomeUserIDEncodeKey"];
+  [coderCopy encodeObject:self->_recordName forKey:@"kRecordNameEncodeKey"];
+  [coderCopy encodeObject:self->_recordType forKey:@"kRecordTypeEncodeKey"];
+  [coderCopy encodeObject:self->_recordZoneName forKey:@"kRecordZoneNameEncodeKey"];
 }
 
-- (MSDDefaultsInfo)initWithCoder:(id)a3
+- (MSDDefaultsInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMediaServiceEncodeKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMediaServiceEncodeKey"];
   service = self->_service;
   self->_service = v5;
 
@@ -76,11 +76,11 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kHomeIDEncodeKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kHomeIDEncodeKey"];
   homeID = self->_homeID;
   self->_homeID = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kHomeUserIDEncodeKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kHomeUserIDEncodeKey"];
   homeUserID = self->_homeUserID;
   self->_homeUserID = v9;
 
@@ -89,30 +89,30 @@ LABEL_5:
     v11 = [(MSDDefaultsInfo *)self initWithService:self->_service homeID:self->_homeID homeUserID:?];
     if (v11)
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRecordNameEncodeKey"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRecordNameEncodeKey"];
       recordName = v11->_recordName;
       v11->_recordName = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRecordTypeEncodeKey"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRecordTypeEncodeKey"];
       recordType = v11->_recordType;
       v11->_recordType = v14;
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRecordZoneNameEncodeKey"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRecordZoneNameEncodeKey"];
       recordZoneName = v11->_recordZoneName;
       v11->_recordZoneName = v16;
     }
 
     self = v11;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_6:
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

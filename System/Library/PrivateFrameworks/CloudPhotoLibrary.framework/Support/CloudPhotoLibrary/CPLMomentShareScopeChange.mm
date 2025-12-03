@@ -1,26 +1,26 @@
 @interface CPLMomentShareScopeChange
-- (id)_libraryStateFromRootRecord:(id)a3;
-- (id)rootRecordUsingTempCKAssetURL:(id)a3 inZone:(id)a4;
-- (void)updateCKShare:(id)a3;
-- (void)updateWithCKShare:(id)a3 currentUserID:(id)a4;
-- (void)updateWithRootCKRecord:(id)a3;
+- (id)_libraryStateFromRootRecord:(id)record;
+- (id)rootRecordUsingTempCKAssetURL:(id)l inZone:(id)zone;
+- (void)updateCKShare:(id)share;
+- (void)updateWithCKShare:(id)share currentUserID:(id)d;
+- (void)updateWithRootCKRecord:(id)record;
 @end
 
 @implementation CPLMomentShareScopeChange
 
-- (void)updateWithCKShare:(id)a3 currentUserID:(id)a4
+- (void)updateWithCKShare:(id)share currentUserID:(id)d
 {
-  v6 = a3;
+  shareCopy = share;
   v10.receiver = self;
   v10.super_class = CPLMomentShareScopeChange;
-  [(CPLMomentShareScopeChange *)&v10 updateWithCKShare:v6 currentUserID:a4];
-  v7 = [v6 objectForKey:CKShareThumbnailImageDataKey];
+  [(CPLMomentShareScopeChange *)&v10 updateWithCKShare:shareCopy currentUserID:d];
+  v7 = [shareCopy objectForKey:CKShareThumbnailImageDataKey];
   if (v7)
   {
     [(CPLMomentShareScopeChange *)self setThumbnailImageData:v7];
   }
 
-  v8 = [v6 objectForKeyedSubscript:CKShareTypeKey];
+  v8 = [shareCopy objectForKeyedSubscript:CKShareTypeKey];
   v9 = [v8 isEqualToString:@"photos_links"];
 
   if (v9)
@@ -29,17 +29,17 @@
   }
 }
 
-- (id)rootRecordUsingTempCKAssetURL:(id)a3 inZone:(id)a4
+- (id)rootRecordUsingTempCKAssetURL:(id)l inZone:(id)zone
 {
-  v6 = a3;
-  v7 = [a4 zoneID];
-  v8 = [[CKRecordID alloc] initWithRecordName:@"cmm-root" zoneID:v7];
+  lCopy = l;
+  zoneID = [zone zoneID];
+  v8 = [[CKRecordID alloc] initWithRecordName:@"cmm-root" zoneID:zoneID];
   v9 = [[CKRecord alloc] initWithRecordType:@"CMMRoot" recordID:v8];
-  v10 = [(CPLMomentShareScopeChange *)self creationDate];
-  v11 = v10;
-  if (v10)
+  creationDate = [(CPLMomentShareScopeChange *)self creationDate];
+  v11 = creationDate;
+  if (creationDate)
   {
-    v12 = v10;
+    v12 = creationDate;
   }
 
   else
@@ -50,16 +50,16 @@
   v13 = v12;
 
   [v9 setObject:v13 forKey:@"createDate"];
-  v14 = [(CPLMomentShareScopeChange *)self startDate];
-  if (v14)
+  startDate = [(CPLMomentShareScopeChange *)self startDate];
+  if (startDate)
   {
-    [v9 setObject:v14 forKey:@"startDate"];
+    [v9 setObject:startDate forKey:@"startDate"];
   }
 
-  v15 = [(CPLMomentShareScopeChange *)self endDate];
-  if (v15)
+  endDate = [(CPLMomentShareScopeChange *)self endDate];
+  if (endDate)
   {
-    [v9 setObject:v15 forKey:@"endDate"];
+    [v9 setObject:endDate forKey:@"endDate"];
   }
 
   v16 = [NSNumber numberWithInteger:[(CPLMomentShareScopeChange *)self promisedAssetCount]];
@@ -71,11 +71,11 @@
   v18 = [NSNumber numberWithInteger:[(CPLMomentShareScopeChange *)self promisedVideosCount]];
   [v9 setObject:v18 forKey:@"videosCount"];
 
-  v19 = [(CPLMomentShareScopeChange *)self originatingScopeIdentifier];
-  if (v19)
+  originatingScopeIdentifier = [(CPLMomentShareScopeChange *)self originatingScopeIdentifier];
+  if (originatingScopeIdentifier)
   {
-    v20 = v19;
-    v21 = [v19 rangeOfString:@"#_"];
+    v20 = originatingScopeIdentifier;
+    v21 = [originatingScopeIdentifier rangeOfString:@"#_"];
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v22 = [v20 substringToIndex:v21];
@@ -86,15 +86,15 @@
     [v9 cpl_setLegacyEncryptedObject:v20 forKey:@"originatingZoneName"];
   }
 
-  v23 = [(CPLMomentShareScopeChange *)self previewImageData];
-  if (v23)
+  previewImageData = [(CPLMomentShareScopeChange *)self previewImageData];
+  if (previewImageData)
   {
     v31 = v8;
-    v24 = v7;
-    v25 = v6;
-    v26 = [v6 URLByAppendingPathComponent:@"preview.data" isDirectory:0];
+    v24 = zoneID;
+    v25 = lCopy;
+    v26 = [lCopy URLByAppendingPathComponent:@"preview.data" isDirectory:0];
     v32 = 0;
-    v27 = [v23 writeToURL:v26 options:1 error:&v32];
+    v27 = [previewImageData writeToURL:v26 options:1 error:&v32];
     v28 = v32;
     if (v27)
     {
@@ -109,8 +109,8 @@
       {
 LABEL_19:
 
-        v6 = v25;
-        v7 = v24;
+        lCopy = v25;
+        zoneID = v24;
         v8 = v31;
         goto LABEL_20;
       }
@@ -134,29 +134,29 @@ LABEL_20:
   return v9;
 }
 
-- (void)updateCKShare:(id)a3
+- (void)updateCKShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v8.receiver = self;
   v8.super_class = CPLMomentShareScopeChange;
-  [(CPLMomentShareScopeChange *)&v8 updateCKShare:v4];
-  v5 = [(CPLMomentShareScopeChange *)self share];
-  v6 = v5;
-  if (v5)
+  [(CPLMomentShareScopeChange *)&v8 updateCKShare:shareCopy];
+  share = [(CPLMomentShareScopeChange *)self share];
+  v6 = share;
+  if (share)
   {
-    [v4 setAllowsAnonymousPublicAccess:{(objc_msgSend(v5, "publicPermission") & 0xFFFFFFFFFFFFFFFELL) == 2}];
+    [shareCopy setAllowsAnonymousPublicAccess:{(objc_msgSend(share, "publicPermission") & 0xFFFFFFFFFFFFFFFELL) == 2}];
   }
 
-  v7 = [(CPLMomentShareScopeChange *)self thumbnailImageData];
-  [v4 setObject:v7 forKey:CKShareThumbnailImageDataKey];
+  thumbnailImageData = [(CPLMomentShareScopeChange *)self thumbnailImageData];
+  [shareCopy setObject:thumbnailImageData forKey:CKShareThumbnailImageDataKey];
 }
 
-- (id)_libraryStateFromRootRecord:(id)a3
+- (id)_libraryStateFromRootRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_alloc_init(CPLLibraryState);
-  v5 = [v3 pluginFields];
-  v6 = [v5 objectForKey:@"expiryDate"];
+  pluginFields = [recordCopy pluginFields];
+  v6 = [pluginFields objectForKey:@"expiryDate"];
 
   if (v6)
   {
@@ -165,7 +165,7 @@ LABEL_20:
       v7 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v3 recordID];
+        recordID = [recordCopy recordID];
         sub_100059FB8();
         v14 = v6;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Got expiryDate from %@ to %@", &v12, 0x16u);
@@ -180,9 +180,9 @@ LABEL_20:
     v9 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v3 recordID];
+      recordID2 = [recordCopy recordID];
       v12 = 138412290;
-      v13 = v10;
+      v13 = recordID2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "No expiry date found in %@", &v12, 0xCu);
     }
   }
@@ -190,28 +190,28 @@ LABEL_20:
   return v4;
 }
 
-- (void)updateWithRootCKRecord:(id)a3
+- (void)updateWithRootCKRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v32.receiver = self;
   v32.super_class = CPLMomentShareScopeChange;
-  [(CPLMomentShareScopeChange *)&v32 updateWithRootCKRecord:v5];
-  v6 = [(CPLMomentShareScopeChange *)self _libraryStateFromRootRecord:v5];
+  [(CPLMomentShareScopeChange *)&v32 updateWithRootCKRecord:recordCopy];
+  v6 = [(CPLMomentShareScopeChange *)self _libraryStateFromRootRecord:recordCopy];
   [(CPLMomentShareScopeChange *)self setLibraryState:v6];
-  [v5 objectForKey:@"createDate"];
+  [recordCopy objectForKey:@"createDate"];
   objc_claimAutoreleasedReturnValue();
   [sub_100059FA8() setCreationDate:?];
 
-  [v5 objectForKey:@"startDate"];
+  [recordCopy objectForKey:@"startDate"];
   objc_claimAutoreleasedReturnValue();
   [sub_100059FA8() setStartDate:?];
 
-  [v5 objectForKey:@"endDate"];
+  [recordCopy objectForKey:@"endDate"];
   objc_claimAutoreleasedReturnValue();
   [sub_100059FA8() setEndDate:?];
 
-  v7 = [v5 pluginFields];
-  v8 = [v7 objectForKey:@"expiryDate"];
+  pluginFields = [recordCopy pluginFields];
+  v8 = [pluginFields objectForKey:@"expiryDate"];
 
   if (v8)
   {
@@ -228,27 +228,27 @@ LABEL_20:
     }
   }
 
-  v10 = [v5 objectForKey:@"assetCount"];
+  v10 = [recordCopy objectForKey:@"assetCount"];
   -[CPLMomentShareScopeChange setPromisedAssetCount:](self, "setPromisedAssetCount:", [v10 integerValue]);
-  v11 = [v5 objectForKey:@"photosCount"];
+  v11 = [recordCopy objectForKey:@"photosCount"];
   -[CPLMomentShareScopeChange setPromisedPhotosCount:](self, "setPromisedPhotosCount:", [v11 integerValue]);
-  v12 = [v5 objectForKey:@"videosCount"];
+  v12 = [recordCopy objectForKey:@"videosCount"];
   -[CPLMomentShareScopeChange setPromisedVideosCount:](self, "setPromisedVideosCount:", [v12 integerValue]);
-  v13 = [v5 cpl_legacyDecryptedObjectForKey:@"originatingZoneName" validateClass:objc_opt_class()];
+  v13 = [recordCopy cpl_legacyDecryptedObjectForKey:@"originatingZoneName" validateClass:objc_opt_class()];
   if (v13)
   {
     [(CPLMomentShareScopeChange *)self setOriginatingScopeIdentifier:v13];
   }
 
-  v14 = [v5 objectForKey:@"previewData"];
-  v15 = [v14 fileURL];
-  if (v15)
+  v14 = [recordCopy objectForKey:@"previewData"];
+  fileURL = [v14 fileURL];
+  if (fileURL)
   {
-    v30 = v15;
+    v30 = fileURL;
     +[NSFileManager defaultManager];
     v16 = v29 = v14;
     [v30 path];
-    v28 = v5;
+    v28 = recordCopy;
     v17 = v13;
     v18 = v12;
     v19 = v11;
@@ -263,10 +263,10 @@ LABEL_20:
     v11 = v19;
     v12 = v18;
     v13 = v17;
-    v5 = v28;
+    recordCopy = v28;
 
     v14 = v29;
-    v15 = v30;
+    fileURL = v30;
     if (v24)
     {
       v31 = 0;
@@ -294,7 +294,7 @@ LABEL_20:
       }
 
       v14 = v29;
-      v15 = v30;
+      fileURL = v30;
     }
   }
 }

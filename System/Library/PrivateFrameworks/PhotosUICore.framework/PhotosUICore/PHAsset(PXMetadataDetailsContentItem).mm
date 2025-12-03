@@ -48,38 +48,38 @@
 
 - (id)px_semanticStylePreset
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 semanticStylePreset];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  semanticStylePreset = [photosInfoPanelExtendedProperties semanticStylePreset];
 
-  return v2;
+  return semanticStylePreset;
 }
 
 - (uint64_t)px_isHEVC
 {
-  v1 = [a1 px_codec];
+  px_codec = [self px_codec];
   v2 = PXStringForOSType(0x68766331u);
-  v3 = [v1 isEqualToString:v2];
+  v3 = [px_codec isEqualToString:v2];
 
   return v3;
 }
 
 - (uint64_t)px_isH264
 {
-  v1 = [a1 px_codec];
+  px_codec = [self px_codec];
   v2 = PXStringForOSType(0x61766331u);
-  v3 = [v1 isEqualToString:v2];
+  v3 = [px_codec isEqualToString:v2];
 
   return v3;
 }
 
 - (uint64_t)px_isProResRAW
 {
-  result = [a1 px_isExtendedPropertiesProcessed];
+  result = [self px_isExtendedPropertiesProcessed];
   if (result)
   {
     v3 = MEMORY[0x1E69BE350];
-    v4 = [a1 px_codec];
-    v5 = [v3 isProResRAWFourCharCodecName:v4];
+    px_codec = [self px_codec];
+    v5 = [v3 isProResRAWFourCharCodecName:px_codec];
 
     return v5;
   }
@@ -89,40 +89,40 @@
 
 - (uint64_t)px_isFrontRear
 {
-  v1 = [a1 cameraCaptureDeviceProperties];
-  v2 = [v1 isFrontRear];
+  cameraCaptureDeviceProperties = [self cameraCaptureDeviceProperties];
+  isFrontRear = [cameraCaptureDeviceProperties isFrontRear];
 
-  return v2;
+  return isFrontRear;
 }
 
 - (uint64_t)px_isSelfie
 {
-  v1 = [a1 cameraCaptureDeviceProperties];
-  v2 = [v1 isSelfie];
+  cameraCaptureDeviceProperties = [self cameraCaptureDeviceProperties];
+  isSelfie = [cameraCaptureDeviceProperties isSelfie];
 
-  return v2;
+  return isSelfie;
 }
 
 - (uint64_t)px_reverseLocationDataIsValid
 {
-  v1 = [a1 photosOneUpProperties];
-  v2 = [v1 reverseLocationDataIsValid];
+  photosOneUpProperties = [self photosOneUpProperties];
+  reverseLocationDataIsValid = [photosOneUpProperties reverseLocationDataIsValid];
 
-  return v2;
+  return reverseLocationDataIsValid;
 }
 
 - (uint64_t)px_canUseLocation
 {
-  v2 = [a1 location];
+  location = [self location];
 
-  if (!v2)
+  if (!location)
   {
     return 0;
   }
 
   v3 = MEMORY[0x1E69BE520];
-  v4 = [a1 location];
-  [v4 coordinate];
+  location2 = [self location];
+  [location2 coordinate];
   v5 = [v3 canUseCoordinate:?];
 
   return v5;
@@ -130,153 +130,153 @@
 
 - (uint64_t)px_audioTrackFormat
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 trackFormat];
-  v3 = [v2 unsignedIntValue];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  trackFormat = [photosInfoPanelExtendedProperties trackFormat];
+  unsignedIntValue = [trackFormat unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (id)px_whiteBalance
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 whiteBalance];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  whiteBalance = [photosInfoPanelExtendedProperties whiteBalance];
 
-  return v2;
+  return whiteBalance;
 }
 
 - (id)px_shutterSpeed
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 shutterSpeed];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  shutterSpeed = [photosInfoPanelExtendedProperties shutterSpeed];
 
-  return v2;
+  return shutterSpeed;
 }
 
 - (id)px_meteringMode
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 meteringMode];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  meteringMode = [photosInfoPanelExtendedProperties meteringMode];
 
-  return v2;
+  return meteringMode;
 }
 
 - (id)px_formattedCameraModel
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 formattedCameraModel];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  formattedCameraModel = [photosInfoPanelExtendedProperties formattedCameraModel];
 
-  return v2;
+  return formattedCameraModel;
 }
 
 - (id)px_model
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 cameraModel];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  cameraModel = [photosInfoPanelExtendedProperties cameraModel];
 
-  return v2;
+  return cameraModel;
 }
 
 - (id)px_make
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 cameraMake];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  cameraMake = [photosInfoPanelExtendedProperties cameraMake];
 
-  return v2;
+  return cameraMake;
 }
 
 - (id)px_lensModel
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 lensModel];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  lensModel = [photosInfoPanelExtendedProperties lensModel];
 
-  return v2;
+  return lensModel;
 }
 
 - (id)px_ISORating
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 iso];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  v2 = [photosInfoPanelExtendedProperties iso];
 
   return v2;
 }
 
 - (id)px_digitalZoomRatio
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 digitalZoomRatio];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  digitalZoomRatio = [photosInfoPanelExtendedProperties digitalZoomRatio];
 
-  return v2;
+  return digitalZoomRatio;
 }
 
 - (id)px_focalLengthIn35mm
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 focalLengthIn35mm];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  focalLengthIn35mm = [photosInfoPanelExtendedProperties focalLengthIn35mm];
 
-  return v2;
+  return focalLengthIn35mm;
 }
 
 - (id)px_focalLength
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 focalLength];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  focalLength = [photosInfoPanelExtendedProperties focalLength];
 
-  return v2;
+  return focalLength;
 }
 
 - (id)px_flash
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 flashFired];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  flashFired = [photosInfoPanelExtendedProperties flashFired];
 
-  return v2;
+  return flashFired;
 }
 
 - (id)px_exposureBias
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 exposureBias];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  exposureBias = [photosInfoPanelExtendedProperties exposureBias];
 
-  return v2;
+  return exposureBias;
 }
 
 - (id)px_aperture
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 aperture];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  aperture = [photosInfoPanelExtendedProperties aperture];
 
-  return v2;
+  return aperture;
 }
 
 - (id)px_codec
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 codec];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  codec = [photosInfoPanelExtendedProperties codec];
 
-  return v2;
+  return codec;
 }
 
 - (id)px_sampleRate
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 sampleRate];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  sampleRate = [photosInfoPanelExtendedProperties sampleRate];
 
-  return v2;
+  return sampleRate;
 }
 
 - (id)px_bitRate
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 bitrate];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  bitrate = [photosInfoPanelExtendedProperties bitrate];
 
-  return v2;
+  return bitrate;
 }
 
 - (id)px_FPS
 {
-  v1 = [a1 photosInfoPanelExtendedProperties];
-  v2 = [v1 fps];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  v2 = [photosInfoPanelExtendedProperties fps];
 
   return v2;
 }
@@ -284,17 +284,17 @@
 - (uint64_t)px_duration
 {
   v1 = MEMORY[0x1E696AD98];
-  [a1 duration];
+  [self duration];
 
   return [v1 numberWithDouble:?];
 }
 
 - (uint64_t)px_supportsImageProperties
 {
-  result = [a1 mediaType];
+  result = [self mediaType];
   if (result != 1)
   {
-    return [a1 mediaType] == 2;
+    return [self mediaType] == 2;
   }
 
   return result;
@@ -302,81 +302,81 @@
 
 - (uint64_t)px_resolution
 {
-  v2 = [a1 _px_currentRAWResource];
-  v3 = v2;
-  if (v2)
+  _px_currentRAWResource = [self _px_currentRAWResource];
+  v3 = _px_currentRAWResource;
+  if (_px_currentRAWResource)
   {
-    v4 = [v2 pixelWidth];
-    v5 = v3;
+    pixelWidth = [_px_currentRAWResource pixelWidth];
+    selfCopy = v3;
   }
 
   else
   {
-    v4 = [a1 pixelWidth];
-    v5 = a1;
+    pixelWidth = [self pixelWidth];
+    selfCopy = self;
   }
 
-  [v5 pixelHeight];
+  [selfCopy pixelHeight];
 
-  return v4;
+  return pixelWidth;
 }
 
 - (uint64_t)px_fetchCloudLocalState
 {
-  v1 = [a1 cloudLocalStateProperties];
-  v2 = [v1 assetCloudLocalState];
+  cloudLocalStateProperties = [self cloudLocalStateProperties];
+  assetCloudLocalState = [cloudLocalStateProperties assetCloudLocalState];
 
-  return v2;
+  return assetCloudLocalState;
 }
 
 - (id)px_originalTimeZone
 {
   v4 = 0;
-  v1 = [a1 originalCreationDateWithTimeZone:&v4];
-  v2 = v4;
-  if (!v2)
+  v1 = [self originalCreationDateWithTimeZone:&v4];
+  localTimeZone = v4;
+  if (!localTimeZone)
   {
-    v2 = [MEMORY[0x1E695DFE8] localTimeZone];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
   }
 
-  return v2;
+  return localTimeZone;
 }
 
 - (id)px_timeZone
 {
-  v1 = [a1 originalMetadataProperties];
-  v2 = [v1 timeZone];
-  v3 = v2;
-  if (v2)
+  originalMetadataProperties = [self originalMetadataProperties];
+  timeZone = [originalMetadataProperties timeZone];
+  v3 = timeZone;
+  if (timeZone)
   {
-    v4 = v2;
+    localTimeZone = timeZone;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFE8] localTimeZone];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
   }
 
-  v5 = v4;
+  v5 = localTimeZone;
 
   return v5;
 }
 
 - (id)px_filesize
 {
-  v2 = [a1 _px_currentRAWResource];
-  v3 = v2;
-  if (v2)
+  _px_currentRAWResource = [self _px_currentRAWResource];
+  v3 = _px_currentRAWResource;
+  if (_px_currentRAWResource)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v2, "fileSize")}];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(_px_currentRAWResource, "fileSize")}];
   }
 
   else
   {
-    [a1 fetchPropertySetsIfNeeded];
+    [self fetchPropertySetsIfNeeded];
     v5 = MEMORY[0x1E696AD98];
-    v6 = [a1 originalMetadataProperties];
-    v4 = [v5 numberWithUnsignedLong:{objc_msgSend(v6, "originalFilesize")}];
+    originalMetadataProperties = [self originalMetadataProperties];
+    v4 = [v5 numberWithUnsignedLong:{objc_msgSend(originalMetadataProperties, "originalFilesize")}];
   }
 
   return v4;
@@ -384,61 +384,61 @@
 
 - (id)px_filename
 {
-  v2 = [a1 _px_currentRAWResource];
-  v3 = v2;
-  if (!v2)
+  selfCopy = [self _px_currentRAWResource];
+  v3 = selfCopy;
+  if (!selfCopy)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  v4 = [v2 originalFilename];
+  originalFilename = [selfCopy originalFilename];
 
-  return v4;
+  return originalFilename;
 }
 
 - (BOOL)px_isExtendedPropertiesProcessed
 {
-  [a1 fetchPropertySetsIfNeeded];
-  v2 = [a1 photosInfoPanelExtendedProperties];
-  v3 = v2 != 0;
+  [self fetchPropertySetsIfNeeded];
+  photosInfoPanelExtendedProperties = [self photosInfoPanelExtendedProperties];
+  v3 = photosInfoPanelExtendedProperties != 0;
 
   return v3;
 }
 
 - (id)px_assetDescription
 {
-  v1 = [a1 descriptionProperties];
-  v2 = [v1 assetDescription];
+  descriptionProperties = [self descriptionProperties];
+  assetDescription = [descriptionProperties assetDescription];
 
-  return v2;
+  return assetDescription;
 }
 
 - (id)px_title
 {
-  v1 = [a1 descriptionProperties];
-  v2 = [v1 title];
+  descriptionProperties = [self descriptionProperties];
+  title = [descriptionProperties title];
 
-  return v2;
+  return title;
 }
 
 - (unint64_t)px_originalFileType
 {
-  v2 = [a1 px_originalType];
+  px_originalType = [self px_originalType];
 
-  return [PXMetadataUtilities fileTypeForItem:a1 type:v2];
+  return [PXMetadataUtilities fileTypeForItem:self type:px_originalType];
 }
 
 - (unint64_t)px_fileType
 {
-  v2 = [a1 px_type];
+  px_type = [self px_type];
 
-  return [PXMetadataUtilities fileTypeForItem:a1 type:v2];
+  return [PXMetadataUtilities fileTypeForItem:self type:px_type];
 }
 
 - (uint64_t)px_originalType
 {
   v1 = MEMORY[0x1E69C08F0];
-  v2 = [MEMORY[0x1E6978630] originalUniformTypeIdentifierForAsset:a1];
+  v2 = [MEMORY[0x1E6978630] originalUniformTypeIdentifierForAsset:self];
   v3 = [v1 typeWithIdentifier:v2];
 
   if ([v3 conformsToType:*MEMORY[0x1E6982E58]])
@@ -448,8 +448,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69C08F0] avifType];
-    v6 = [v3 conformsToType:v5];
+    avifType = [MEMORY[0x1E69C08F0] avifType];
+    v6 = [v3 conformsToType:avifType];
 
     if (v6)
     {
@@ -488,8 +488,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-      v8 = [v3 conformsToType:v7];
+      adobePhotoshopType = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+      v8 = [v3 conformsToType:adobePhotoshopType];
 
       if (v8)
       {
@@ -498,8 +498,8 @@
 
       else
       {
-        v9 = [MEMORY[0x1E69C08F0] jpeg2000Type];
-        v10 = [v3 conformsToType:v9];
+        jpeg2000Type = [MEMORY[0x1E69C08F0] jpeg2000Type];
+        v10 = [v3 conformsToType:jpeg2000Type];
 
         if (v10)
         {
@@ -529,58 +529,58 @@
 
 - (uint64_t)px_type
 {
-  v2 = [a1 RAWBadgeAttributes];
-  v3 = [a1 isJPEG];
+  rAWBadgeAttributes = [self RAWBadgeAttributes];
+  isJPEG = [self isJPEG];
   result = 0;
-  if ((v3 & 1) == 0 && v2 != 2)
+  if ((isJPEG & 1) == 0 && rAWBadgeAttributes != 2)
   {
-    if ([a1 isHEIF])
+    if ([self isHEIF])
     {
       return 1;
     }
 
     else
     {
-      v5 = [a1 isRAW];
+      isRAW = [self isRAW];
       result = 2;
-      if ((v5 & 1) == 0 && v2 != 1)
+      if ((isRAW & 1) == 0 && rAWBadgeAttributes != 1)
       {
-        if ([a1 isAnimatedGIF])
+        if ([self isAnimatedGIF])
         {
           return 3;
         }
 
-        else if ([a1 isPNG])
+        else if ([self isPNG])
         {
           return 4;
         }
 
-        else if ([a1 isTIFF])
+        else if ([self isTIFF])
         {
           return 5;
         }
 
-        else if ([a1 isPDF])
+        else if ([self isPDF])
         {
           return 6;
         }
 
-        else if ([a1 isPSD])
+        else if ([self isPSD])
         {
           return 7;
         }
 
-        else if ([a1 isJPEG2000])
+        else if ([self isJPEG2000])
         {
           return 8;
         }
 
-        else if ([a1 isAudio])
+        else if ([self isAudio])
         {
           return 9;
         }
 
-        else if ([a1 isVideo])
+        else if ([self isVideo])
         {
           return 10;
         }
@@ -599,12 +599,12 @@
 - (id)_px_currentRAWResource
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a1 ipx_isRAWOnTop])
+  if ([self ipx_isRAWOnTop])
   {
-    v2 = objc_getAssociatedObject(a1, _px_currentRAWResource_PXSelectionProviderContentItemCurrentRawResourceKey);
+    v2 = objc_getAssociatedObject(self, _px_currentRAWResource_PXSelectionProviderContentItemCurrentRawResourceKey);
     if (!v2)
     {
-      [MEMORY[0x1E69786D8] assetResourcesForAsset:a1];
+      [MEMORY[0x1E69786D8] assetResourcesForAsset:self];
       v8 = 0u;
       v9 = 0u;
       v10 = 0u;
@@ -626,7 +626,7 @@
             if ([v6 type] == 4)
             {
               v2 = v6;
-              objc_setAssociatedObject(a1, _px_currentRAWResource_PXSelectionProviderContentItemCurrentRawResourceKey, v2, 1);
+              objc_setAssociatedObject(self, _px_currentRAWResource_PXSelectionProviderContentItemCurrentRawResourceKey, v2, 1);
               goto LABEL_14;
             }
           }

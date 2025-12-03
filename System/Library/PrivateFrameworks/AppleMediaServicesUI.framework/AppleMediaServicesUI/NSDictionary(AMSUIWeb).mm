@@ -6,10 +6,10 @@
 
 - (id)ams_JSONStringWithError:()AMSUIWeb
 {
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:a1])
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:self])
   {
     v12 = 0;
-    v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a1 options:0 error:&v12];
+    v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self options:0 error:&v12];
     v6 = v12;
     if (v5)
     {

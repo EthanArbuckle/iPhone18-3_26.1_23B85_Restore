@@ -1,21 +1,21 @@
 @interface _BCTransactionProxy
 - (BCSceneControlling)destinationSceneController;
-- (_BCTransactionProxy)initWithTransaction:(id)a3;
+- (_BCTransactionProxy)initWithTransaction:(id)transaction;
 - (void)dealloc;
 @end
 
 @implementation _BCTransactionProxy
 
-- (_BCTransactionProxy)initWithTransaction:(id)a3
+- (_BCTransactionProxy)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = _BCTransactionProxy;
   v6 = [(_BCTransactionProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
   }
 
   return v7;
@@ -31,19 +31,19 @@
 
 - (BCSceneControlling)destinationSceneController
 {
-  v3 = [(_BCTransactionProxy *)self targetSceneController];
-  v4 = v3;
-  if (v3)
+  targetSceneController = [(_BCTransactionProxy *)self targetSceneController];
+  v4 = targetSceneController;
+  if (targetSceneController)
   {
-    v5 = v3;
+    originatingSceneController = targetSceneController;
   }
 
   else
   {
-    v5 = [(_BCTransactionProxy *)self originatingSceneController];
+    originatingSceneController = [(_BCTransactionProxy *)self originatingSceneController];
   }
 
-  v6 = v5;
+  v6 = originatingSceneController;
 
   return v6;
 }

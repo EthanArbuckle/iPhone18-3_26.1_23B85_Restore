@@ -1,38 +1,38 @@
 @interface HDMobilityNotificationManager
-- (HDMobilityNotificationManager)initWithProfile:(id)a3 walkingSteadinessAvailabilityManager:(id)a4;
-- (void)_queue_showNotificationForLocalSteadinessEvent:(id)a3 completion:(id)a4;
-- (void)daemonReady:(id)a3;
+- (HDMobilityNotificationManager)initWithProfile:(id)profile walkingSteadinessAvailabilityManager:(id)manager;
+- (void)_queue_showNotificationForLocalSteadinessEvent:(id)event completion:(id)completion;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDMobilityNotificationManager
 
-- (HDMobilityNotificationManager)initWithProfile:(id)a3 walkingSteadinessAvailabilityManager:(id)a4
+- (HDMobilityNotificationManager)initWithProfile:(id)profile walkingSteadinessAvailabilityManager:(id)manager
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = HDMobilityNotificationManager;
   v8 = [(HDMobilityNotificationManager *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
+    objc_storeWeak(&v8->_profile, profileCopy);
     v10 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
     v9->_queue = v10;
 
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
-    v13 = [WeakRetained daemon];
-    [v13 registerForDaemonReady:v9];
+    daemon = [WeakRetained daemon];
+    [daemon registerForDaemonReady:v9];
 
     v14 = objc_alloc_init(MEMORY[0x277D11AB0]);
     analyticsManager = v9->_analyticsManager;
     v9->_analyticsManager = v14;
 
-    v16 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v7 healthDataSource:v6 countryCodeSource:0];
+    v16 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:managerCopy healthDataSource:profileCopy countryCodeSource:0];
     walkingSteadinessFeatureStatusManager = v9->_walkingSteadinessFeatureStatusManager;
     v9->_walkingSteadinessFeatureStatusManager = v16;
 
@@ -68,9 +68,9 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v7 = HKMobilityWalkingSteadinessEventType();
-  [v6 removeObserver:self forDataType:v7];
+  [dataManager removeObserver:self forDataType:v7];
 
   v9.receiver = self;
   v9.super_class = HDMobilityNotificationManager;
@@ -78,7 +78,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v12 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -92,22 +92,22 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v8 = HKMobilityWalkingSteadinessEventType();
-  [v7 addObserver:self forDataType:v8];
+  [dataManager addObserver:self forDataType:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v6 = [addedCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
     v8 = v6;
@@ -121,17 +121,17 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(addedCopy);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 _source];
-        v14 = [v13 _isLocalDevice];
+        _source = [v12 _source];
+        _isLocalDevice = [_source _isLocalDevice];
 
         _HKInitializeLogging();
         v15 = *v10;
         v16 = os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT);
-        if (v14)
+        if (_isLocalDevice)
         {
           if (v16)
           {
@@ -162,7 +162,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v8 = [addedCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v8);
@@ -210,29 +210,29 @@ void __53__HDMobilityNotificationManager_samplesAdded_anchor___block_invoke_2(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_showNotificationForLocalSteadinessEvent:(id)a3 completion:(id)a4
+- (void)_queue_showNotificationForLocalSteadinessEvent:(id)event completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v8)
+  if (!completionCopy)
   {
     [HDMobilityNotificationManager _queue_showNotificationForLocalSteadinessEvent:a2 completion:self];
   }
 
-  v9 = [v7 _source];
-  v10 = [v9 _isLocalDevice];
+  _source = [eventCopy _source];
+  _isLocalDevice = [_source _isLocalDevice];
 
-  if ((v10 & 1) == 0)
+  if ((_isLocalDevice & 1) == 0)
   {
     [HDMobilityNotificationManager _queue_showNotificationForLocalSteadinessEvent:a2 completion:self];
   }
 
-  v11 = [v7 categoryType];
-  v12 = [v11 code];
+  categoryType = [eventCopy categoryType];
+  code = [categoryType code];
 
-  if (v12 != 250)
+  if (code != 250)
   {
     [HDMobilityNotificationManager _queue_showNotificationForLocalSteadinessEvent:a2 completion:self];
   }
@@ -245,11 +245,11 @@ void __53__HDMobilityNotificationManager_samplesAdded_anchor___block_invoke_2(ui
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = eventCopy;
     _os_log_impl(&dword_251962000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] showing notification for event: %@", buf, 0x16u);
   }
 
-  v15 = [v7 value];
+  value = [eventCopy value];
   v16 = HKMobilityNotificationCategoryForWalkingSteadinessEventValue();
   if (v16)
   {
@@ -259,7 +259,7 @@ void __53__HDMobilityNotificationManager_samplesAdded_anchor___block_invoke_2(ui
     v31 = __Block_byref_object_copy_;
     v32 = __Block_byref_object_dispose_;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v33 = [WeakRetained notificationManager];
+    notificationManager = [WeakRetained notificationManager];
 
     v28[0] = 0;
     v28[1] = v28;
@@ -275,9 +275,9 @@ void __53__HDMobilityNotificationManager_samplesAdded_anchor___block_invoke_2(ui
     v21[4] = self;
     v22 = v16;
     v25 = buf;
-    v24 = v8;
-    v27 = v15;
-    v23 = v7;
+    v24 = completionCopy;
+    v27 = value;
+    v23 = eventCopy;
     v26 = v28;
     [v18 removeDeliveredNotificationsWithCategoryIdentifier:v22 completionHandler:v21];
 
@@ -287,8 +287,8 @@ void __53__HDMobilityNotificationManager_samplesAdded_anchor___block_invoke_2(ui
 
   else
   {
-    v19 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unknown notification category for walking steadiness event value: %ld", v15}];
-    (*(v8 + 2))(v8, 0, v19);
+    v19 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Unknown notification category for walking steadiness event value: %ld", value}];
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   v20 = *MEMORY[0x277D85DE8];

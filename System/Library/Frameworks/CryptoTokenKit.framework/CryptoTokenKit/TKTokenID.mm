@@ -1,33 +1,33 @@
 @interface TKTokenID
-+ (id)encodedCertificateID:(id)a3;
-+ (id)encodedKeyID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)encodedCertificateID:(id)d;
++ (id)encodedKeyID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSString)classID;
 - (NSString)instanceID;
-- (TKTokenID)initWithClassID:(id)a3 instanceID:(id)a4;
-- (TKTokenID)initWithCoder:(id)a3;
-- (TKTokenID)initWithTokenID:(id)a3;
-- (id)decodedCertificateID:(id)a3 error:(id *)a4;
-- (id)decodedKeyID:(id)a3 error:(id *)a4;
-- (id)decodedObjectID:(id)a3 isCertificate:(BOOL *)a4 error:(id *)a5;
+- (TKTokenID)initWithClassID:(id)d instanceID:(id)iD;
+- (TKTokenID)initWithCoder:(id)coder;
+- (TKTokenID)initWithTokenID:(id)d;
+- (id)decodedCertificateID:(id)d error:(id *)error;
+- (id)decodedKeyID:(id)d error:(id *)error;
+- (id)decodedObjectID:(id)d isCertificate:(BOOL *)certificate error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TKTokenID
 
 - (NSString)classID
 {
-  v2 = [(TKTokenID *)self stringRepresentation];
-  v3 = [v2 componentsSeparatedByString:@":"];
-  v4 = [v3 firstObject];
+  stringRepresentation = [(TKTokenID *)self stringRepresentation];
+  v3 = [stringRepresentation componentsSeparatedByString:@":"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (TKTokenID)initWithTokenID:(id)a3
+- (TKTokenID)initWithTokenID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -36,14 +36,14 @@
     v5 = [(TKTokenID *)&v10 init];
     if (v5)
     {
-      if ([v4 hasSuffix:@":"])
+      if ([dCopy hasSuffix:@":"])
       {
-        v6 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 1}];
+        v6 = [dCopy substringToIndex:{objc_msgSend(dCopy, "length") - 1}];
       }
 
       else
       {
-        v6 = v4;
+        v6 = dCopy;
       }
 
       stringRepresentation = v5->_stringRepresentation;
@@ -51,70 +51,70 @@
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (TKTokenID)initWithClassID:(id)a3 instanceID:(id)a4
+- (TKTokenID)initWithClassID:(id)d instanceID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  dCopy = d;
+  iDCopy = iD;
+  if ([iDCopy length])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v6, v7];
+    iDCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", dCopy, iDCopy];
   }
 
   else
   {
-    v8 = v6;
+    iDCopy = dCopy;
   }
 
-  v9 = v8;
-  v10 = [(TKTokenID *)self initWithTokenID:v8];
+  v9 = iDCopy;
+  v10 = [(TKTokenID *)self initWithTokenID:iDCopy];
 
   return v10;
 }
 
-- (TKTokenID)initWithCoder:(id)a3
+- (TKTokenID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenID"];
 
   v6 = [(TKTokenID *)self initWithTokenID:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TKTokenID *)self stringRepresentation];
-  [v4 encodeObject:v5 forKey:@"tokenID"];
+  coderCopy = coder;
+  stringRepresentation = [(TKTokenID *)self stringRepresentation];
+  [coderCopy encodeObject:stringRepresentation forKey:@"tokenID"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TKTokenID *)self stringRepresentation];
-  v3 = [v2 hash];
+  stringRepresentation = [(TKTokenID *)self stringRepresentation];
+  v3 = [stringRepresentation hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TKTokenID *)self stringRepresentation];
-    v6 = [v4 stringRepresentation];
-    v7 = [v5 isEqualToString:v6];
+    stringRepresentation = [(TKTokenID *)self stringRepresentation];
+    stringRepresentation2 = [equalCopy stringRepresentation];
+    v7 = [stringRepresentation isEqualToString:stringRepresentation2];
   }
 
   else
@@ -127,8 +127,8 @@
 
 - (NSString)instanceID
 {
-  v2 = [(TKTokenID *)self stringRepresentation];
-  v3 = [v2 componentsSeparatedByString:@":"];
+  stringRepresentation = [(TKTokenID *)self stringRepresentation];
+  v3 = [stringRepresentation componentsSeparatedByString:@":"];
 
   if ([v3 count] < 2)
   {
@@ -143,51 +143,51 @@
   return v4;
 }
 
-+ (id)encodedKeyID:(id)a3
++ (id)encodedKeyID:(id)d
 {
-  v3 = a3;
-  v4 = [[TKBERTLVRecord alloc] initWithPropertyList:v3];
+  dCopy = d;
+  v4 = [[TKBERTLVRecord alloc] initWithPropertyList:dCopy];
   if (!v4)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"failed to serialize objectID '%@'", v3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"failed to serialize objectID '%@'", dCopy}];
   }
 
-  v5 = [(TKTLVRecord *)v4 data];
+  data = [(TKTLVRecord *)v4 data];
 
-  return v5;
+  return data;
 }
 
-+ (id)encodedCertificateID:(id)a3
++ (id)encodedCertificateID:(id)d
 {
-  v3 = [a1 encodedKeyID:a3];
+  v3 = [self encodedKeyID:d];
   v4 = [[TKBERTLVRecord alloc] initWithTag:0x5FC8C6BFE112 value:v3];
-  v5 = [(TKTLVRecord *)v4 data];
+  data = [(TKTLVRecord *)v4 data];
 
-  return v5;
+  return data;
 }
 
-- (id)decodedObjectID:(id)a3 isCertificate:(BOOL *)a4 error:(id *)a5
+- (id)decodedObjectID:(id)d isCertificate:(BOOL *)certificate error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v8];
+  dCopy = d;
+  v9 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:dCopy];
   if ([v9 tag] != 0x5FC8C6BFE112)
   {
-    v13 = [v9 propertyList];
-    if (v13)
+    propertyList = [v9 propertyList];
+    if (propertyList)
     {
-      v11 = v13;
+      v11 = propertyList;
       v12 = 0;
     }
 
     else
     {
-      v14 = [(TKTokenID *)self stringRepresentation];
-      v15 = [v14 isEqualToString:*MEMORY[0x1E697AEE0]];
+      stringRepresentation = [(TKTokenID *)self stringRepresentation];
+      v15 = [stringRepresentation isEqualToString:*MEMORY[0x1E697AEE0]];
 
       if (v15)
       {
-        v16 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v8 error:0];
+        v16 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dCopy error:0];
         v11 = [v16 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
       }
 
@@ -197,13 +197,13 @@
       }
 
       v12 = 0;
-      if (a5 && !v11)
+      if (error && !v11)
       {
         v17 = MEMORY[0x1E696ABC0];
         v22 = *MEMORY[0x1E696A578];
         v23[0] = @"corrupted objectID detected";
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        *a5 = [v17 errorWithDomain:@"CryptoTokenKit" code:-3 userInfo:v18];
+        *error = [v17 errorWithDomain:@"CryptoTokenKit" code:-3 userInfo:v18];
 
         v12 = 0;
         v11 = 0;
@@ -213,14 +213,14 @@
     goto LABEL_12;
   }
 
-  v10 = [v9 value];
-  v11 = [(TKTokenID *)self decodedObjectID:v10 isCertificate:a4 error:a5];
+  value = [v9 value];
+  v11 = [(TKTokenID *)self decodedObjectID:value isCertificate:certificate error:error];
 
   if (v11)
   {
     v12 = 1;
 LABEL_12:
-    *a4 = v12;
+    *certificate = v12;
   }
 
   v19 = v11;
@@ -229,21 +229,21 @@ LABEL_12:
   return v11;
 }
 
-- (id)decodedKeyID:(id)a3 error:(id *)a4
+- (id)decodedKeyID:(id)d error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v5 = [(TKTokenID *)self decodedObjectID:a3 isCertificate:&v10 error:a4];
+  v5 = [(TKTokenID *)self decodedObjectID:d isCertificate:&v10 error:error];
   if (v5 && v10 == 1)
   {
 
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A278];
       v12[0] = @"Expecting key, but provided certificate objectID";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      *a4 = [v6 errorWithDomain:@"CryptoTokenKit" code:-6 userInfo:v7];
+      *error = [v6 errorWithDomain:@"CryptoTokenKit" code:-6 userInfo:v7];
     }
 
     v5 = 0;
@@ -254,10 +254,10 @@ LABEL_12:
   return v5;
 }
 
-- (id)decodedCertificateID:(id)a3 error:(id *)a4
+- (id)decodedCertificateID:(id)d error:(id *)error
 {
   v6 = 0;
-  v4 = [(TKTokenID *)self decodedObjectID:a3 isCertificate:&v6 error:a4];
+  v4 = [(TKTokenID *)self decodedObjectID:d isCertificate:&v6 error:error];
 
   return v4;
 }

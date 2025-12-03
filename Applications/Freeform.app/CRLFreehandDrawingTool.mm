@@ -1,37 +1,37 @@
 @interface CRLFreehandDrawingTool
-+ (id)closestDrawingLayout:(id)a3 toPoint:(CGPoint)a4 returningDistance:(double *)a5;
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3;
-- (BOOL)selectInsideClosestDrawing:(id)a3 toPoint:(CGPoint)a4;
-- (CRLFreehandDrawingTool)initWithInteractiveCanvasController:(id)a3;
++ (id)closestDrawingLayout:(id)layout toPoint:(CGPoint)point returningDistance:(double *)distance;
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success;
+- (BOOL)selectInsideClosestDrawing:(id)drawing toPoint:(CGPoint)point;
+- (CRLFreehandDrawingTool)initWithInteractiveCanvasController:(id)controller;
 - (CRLInteractiveCanvasController)icc;
-- (id)possibleFreehandDrawingLayoutsInParentContainerAtPoint:(CGPoint)a3;
+- (id)possibleFreehandDrawingLayoutsInParentContainerAtPoint:(CGPoint)point;
 - (unint64_t)type;
-- (void)convertToScratchOutOfStrokes:(id)a3;
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5;
+- (void)convertToScratchOutOfStrokes:(id)strokes;
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint;
 @end
 
 @implementation CRLFreehandDrawingTool
 
-- (CRLFreehandDrawingTool)initWithInteractiveCanvasController:(id)a3
+- (CRLFreehandDrawingTool)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLFreehandDrawingTool;
   v5 = [(CRLFreehandDrawingTool *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)performActionWithInputPoint:(id)a3 isInitialPoint:(BOOL)a4 isFinalPoint:(BOOL)a5
+- (void)performActionWithInputPoint:(id)point isInitialPoint:(BOOL)initialPoint isFinalPoint:(BOOL)finalPoint
 {
-  v5 = a4;
-  v7 = a3;
-  if (v5)
+  initialPointCopy = initialPoint;
+  pointCopy = point;
+  if (initialPointCopy)
   {
     if (self->_isCurrentlyTracking || self->_isPerformingActions)
     {
@@ -64,13 +64,13 @@
     }
 
     *&self->_isPerformingActions = 257;
-    self->_firstInputType = [v7 inputType];
+    self->_firstInputType = [pointCopy inputType];
   }
 
-  self->_currentInputType = [v7 inputType];
+  self->_currentInputType = [pointCopy inputType];
 }
 
-- (BOOL)finalizeAndResetWithSuccess:(BOOL)a3
+- (BOOL)finalizeAndResetWithSuccess:(BOOL)success
 {
   self->_isPerformingActions = 0;
   firstInputType = self->_firstInputType;
@@ -91,10 +91,10 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v8 = [WeakRetained freehandDrawingToolkit];
-  [v8 beginDrawingModeIfNeededForTouchType:v6];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+  [freehandDrawingToolkit beginDrawingModeIfNeededForTouchType:v6];
 
-  return a3;
+  return success;
 }
 
 - (unint64_t)type
@@ -156,7 +156,7 @@
   objc_exception_throw(v17);
 }
 
-- (void)convertToScratchOutOfStrokes:(id)a3
+- (void)convertToScratchOutOfStrokes:(id)strokes
 {
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -195,16 +195,16 @@
   return WeakRetained;
 }
 
-+ (id)closestDrawingLayout:(id)a3 toPoint:(CGPoint)a4 returningDistance:(double *)a5
++ (id)closestDrawingLayout:(id)layout toPoint:(CGPoint)point returningDistance:(double *)distance
 {
-  y = a4.y;
-  v24 = *&a4.x;
-  v6 = a3;
+  y = point.y;
+  v24 = *&point.x;
+  layoutCopy = layout;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v7 = [layoutCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -218,7 +218,7 @@
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(layoutCopy);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
@@ -246,11 +246,11 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [layoutCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v8);
-    if (a5)
+    if (distance)
     {
       goto LABEL_14;
     }
@@ -260,51 +260,51 @@
   {
     v9 = 0;
     v11 = 1.79769313e308;
-    if (a5)
+    if (distance)
     {
 LABEL_14:
-      *a5 = v11;
+      *distance = v11;
     }
   }
 
   return v9;
 }
 
-- (id)possibleFreehandDrawingLayoutsInParentContainerAtPoint:(CGPoint)a3
+- (id)possibleFreehandDrawingLayoutsInParentContainerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   v6 = [WeakRetained parentForFreehandDrawingLayoutsAtPoint:{x, y}];
 
-  v7 = [v6 children];
-  v8 = [CRLFreehandDrawingLayout freehandDrawingLayoutsToInteractWithFromLayouts:v7];
+  children = [v6 children];
+  v8 = [CRLFreehandDrawingLayout freehandDrawingLayoutsToInteractWithFromLayouts:children];
 
   return v8;
 }
 
-- (BOOL)selectInsideClosestDrawing:(id)a3 toPoint:(CGPoint)a4
+- (BOOL)selectInsideClosestDrawing:(id)drawing toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [objc_opt_class() closestDrawingLayout:v7 toPoint:0 returningDistance:{x, y}];
+  y = point.y;
+  x = point.x;
+  drawingCopy = drawing;
+  v8 = [objc_opt_class() closestDrawingLayout:drawingCopy toPoint:0 returningDistance:{x, y}];
 
   v9 = objc_loadWeakRetained(&self->_icc);
   v10 = v9;
   if (v8)
   {
-    v11 = [v9 selectionModelTranslator];
-    v12 = [v8 freehandInfo];
-    v13 = [v11 selectionPathForNothingSelectedInsideGroup:v12];
+    selectionModelTranslator = [v9 selectionModelTranslator];
+    freehandInfo = [v8 freehandInfo];
+    v13 = [selectionModelTranslator selectionPathForNothingSelectedInsideGroup:freehandInfo];
     [v10 setSelectionPath:v13 withSelectionFlags:0];
   }
 
   else
   {
-    v11 = [v9 canvasEditor];
-    v12 = [v11 selectionPathWithInfo:0];
-    [v10 setSelectionPath:v12 withSelectionFlags:0];
+    selectionModelTranslator = [v9 canvasEditor];
+    freehandInfo = [selectionModelTranslator selectionPathWithInfo:0];
+    [v10 setSelectionPath:freehandInfo withSelectionFlags:0];
     v13 = v10;
   }
 

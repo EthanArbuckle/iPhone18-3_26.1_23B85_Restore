@@ -1,20 +1,20 @@
 @interface NMSWindowData
-- (BOOL)_openDBForceRecreate:(BOOL)a3;
-- (BOOL)_syncTransaction:(BOOL)a3 block:(id)a4;
+- (BOOL)_openDBForceRecreate:(BOOL)recreate;
+- (BOOL)_syncTransaction:(BOOL)transaction block:(id)block;
 - (NMSWindowData)init;
-- (NMSWindowData)initWithPath:(id)a3 logFacility:(__CFString *)a4;
-- (NMSWindowData)initWithSharedDBForServiceName:(id)a3;
+- (NMSWindowData)initWithPath:(id)path logFacility:(__CFString *)facility;
+- (NMSWindowData)initWithSharedDBForServiceName:(id)name;
 - (NSArray)expiredMessageIDs;
 - (NSDate)dateOfNextMessageExpiry;
 - (int)_getSchemaVersion;
 - (unint64_t)countOfAllMessagesInFlight;
 - (unint64_t)lengthOfAllMessagesInFlight;
-- (unint64_t)removeAndReturnLengthOfMessageWithID:(id)a3;
-- (unint64_t)removeAndReturnLengthOfMessagesWithIDs:(id)a3;
+- (unint64_t)removeAndReturnLengthOfMessageWithID:(id)d;
+- (unint64_t)removeAndReturnLengthOfMessagesWithIDs:(id)ds;
 - (void)_ensureSchema;
 - (void)_prepareStatements;
-- (void)_withDB:(id)a3;
-- (void)addMessageWithID:(id)a3 ofLength:(unint64_t)a4 timeoutTime:(double)a5;
+- (void)_withDB:(id)b;
+- (void)addMessageWithID:(id)d ofLength:(unint64_t)length timeoutTime:(double)time;
 - (void)dealloc;
 @end
 
@@ -116,8 +116,8 @@ uint64_t __40__NMSWindowData_dateOfNextMessageExpiry__block_invoke(uint64_t a1)
   v4 = NSTemporaryDirectory();
   v13[0] = v4;
   v5 = objc_opt_new();
-  v6 = [v5 UUIDString];
-  v13[1] = v6;
+  uUIDString = [v5 UUIDString];
+  v13[1] = uUIDString;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v8 = [v3 pathWithComponents:v7];
   v9 = [v8 stringByAppendingPathExtension:@"sqlitedb"];
@@ -127,28 +127,28 @@ uint64_t __40__NMSWindowData_dateOfNextMessageExpiry__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (NMSWindowData)initWithPath:(id)a3 logFacility:(__CFString *)a4
+- (NMSWindowData)initWithPath:(id)path logFacility:(__CFString *)facility
 {
-  v6 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = NMSWindowData;
   v7 = [(NMSWindowData *)&v17 init];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"NMSWindow<%p> sync queue", v7];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     syncQ = v7->_syncQ;
     v7->_syncQ = v11;
 
-    v13 = [v6 copy];
+    v13 = [pathCopy copy];
     path = v7->_path;
     v7->_path = v13;
 
-    if (a4)
+    if (facility)
     {
-      v7->_loggingFacility = CFStringCreateCopy(*MEMORY[0x1E695E480], a4);
+      v7->_loggingFacility = CFStringCreateCopy(*MEMORY[0x1E695E480], facility);
     }
 
     if ([(NMSWindowData *)v7 _openDBForceRecreate:0])
@@ -180,9 +180,9 @@ uint64_t __40__NMSWindowData_dateOfNextMessageExpiry__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (NMSWindowData)initWithSharedDBForServiceName:(id)a3
+- (NMSWindowData)initWithSharedDBForServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = NMSWindowData;
   v5 = [(NMSWindowData *)&v10 init];
@@ -193,7 +193,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [_SYSharedServiceDB sharedInstanceForServiceName:v4];
+  v6 = [_SYSharedServiceDB sharedInstanceForServiceName:nameCopy];
   sharedDB = v5->_sharedDB;
   v5->_sharedDB = v6;
 
@@ -265,13 +265,13 @@ uint64_t __24__NMSWindowData_dealloc__block_invoke(uint64_t a1)
   return sqlite3_finalize(v2);
 }
 
-- (void)_withDB:(id)a3
+- (void)_withDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   sharedDB = self->_sharedDB;
   if (sharedDB)
   {
-    [(_SYSharedServiceDB *)sharedDB withDBRef:v4];
+    [(_SYSharedServiceDB *)sharedDB withDBRef:bCopy];
   }
 
   else
@@ -282,26 +282,26 @@ uint64_t __24__NMSWindowData_dealloc__block_invoke(uint64_t a1)
     v7[2] = __25__NMSWindowData__withDB___block_invoke;
     v7[3] = &unk_1E86CAAB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = bCopy;
     dispatch_sync(syncQ, v7);
   }
 }
 
-- (BOOL)_syncTransaction:(BOOL)a3 block:(id)a4
+- (BOOL)_syncTransaction:(BOOL)transaction block:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  transactionCopy = transaction;
+  blockCopy = block;
   sharedDB = self->_sharedDB;
   if (sharedDB)
   {
-    if (v4)
+    if (transactionCopy)
     {
-      v8 = [(_SYSharedServiceDB *)sharedDB inExclusiveTransaction:v6];
+      v8 = [(_SYSharedServiceDB *)sharedDB inExclusiveTransaction:blockCopy];
     }
 
     else
     {
-      v8 = [(_SYSharedServiceDB *)sharedDB inTransaction:v6];
+      v8 = [(_SYSharedServiceDB *)sharedDB inTransaction:blockCopy];
     }
 
     v10 = v8;
@@ -318,10 +318,10 @@ uint64_t __24__NMSWindowData_dealloc__block_invoke(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __40__NMSWindowData__syncTransaction_block___block_invoke;
     v12[3] = &unk_1E86CAAE0;
-    v15 = v4;
+    v15 = transactionCopy;
     v12[4] = self;
     v14 = &v16;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(syncQ, v12);
     v10 = *(v17 + 24);
 
@@ -452,14 +452,14 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_openDBForceRecreate:(BOOL)a3
+- (BOOL)_openDBForceRecreate:(BOOL)recreate
 {
-  v3 = a3;
+  recreateCopy = recreate;
   v35[3] = *MEMORY[0x1E69E9840];
   v33 = 1;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   p_path = &self->_path;
-  v7 = [v5 fileExistsAtPath:self->_path isDirectory:&v33];
+  v7 = [defaultManager fileExistsAtPath:self->_path isDirectory:&v33];
 
   if (v7)
   {
@@ -473,10 +473,10 @@ LABEL_9:
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v10 = *p_path;
     v32 = 0;
-    v11 = [v9 removeItemAtPath:v10 error:&v32];
+    v11 = [defaultManager2 removeItemAtPath:v10 error:&v32];
     v12 = v32;
 
     if (!v11)
@@ -510,10 +510,10 @@ LABEL_9:
   v34[2] = *MEMORY[0x1E696A370];
   v35[2] = &unk_1F5AE2698;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:3];
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
   v16 = *p_path;
   v31 = 0;
-  v17 = [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:v14 error:&v31];
+  v17 = [defaultManager3 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:v14 error:&v31];
   v18 = v31;
 
   if ((v17 & 1) == 0)
@@ -533,11 +533,11 @@ LABEL_9:
 
 LABEL_15:
   v12 = [*p_path stringByAppendingPathComponent:@"meta.db"];
-  if (v3)
+  if (recreateCopy)
   {
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
     v30 = 0;
-    v21 = [v20 removeItemAtPath:v12 error:&v30];
+    v21 = [defaultManager4 removeItemAtPath:v12 error:&v30];
     v22 = v30;
 
     if ((v21 & 1) == 0)
@@ -578,7 +578,7 @@ LABEL_15:
       self->_db = 0;
     }
 
-    if (!v3)
+    if (!recreateCopy)
     {
       v25 = [(NMSWindowData *)self _openDBForceRecreate:1];
       goto LABEL_45;
@@ -832,18 +832,18 @@ uint64_t __34__NMSWindowData_removeAllMessages__block_invoke(int a1, sqlite3 *a2
   return 1;
 }
 
-- (void)addMessageWithID:(id)a3 ofLength:(unint64_t)a4 timeoutTime:(double)a5
+- (void)addMessageWithID:(id)d ofLength:(unint64_t)length timeoutTime:(double)time
 {
-  v8 = a3;
+  dCopy = d;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__NMSWindowData_addMessageWithID_ofLength_timeoutTime___block_invoke;
   v10[3] = &unk_1E86CAB48;
-  v12 = a5;
+  timeCopy = time;
   v10[4] = self;
-  v11 = v8;
-  v13 = a4;
-  v9 = v8;
+  v11 = dCopy;
+  lengthCopy = length;
+  v9 = dCopy;
   [(NMSWindowData *)self _withDB:v10];
 }
 
@@ -873,9 +873,9 @@ uint64_t __55__NMSWindowData_addMessageWithID_ofLength_timeoutTime___block_invok
   return sqlite3_clear_bindings(*(*(a1 + 32) + 48));
 }
 
-- (unint64_t)removeAndReturnLengthOfMessageWithID:(id)a3
+- (unint64_t)removeAndReturnLengthOfMessageWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -885,7 +885,7 @@ uint64_t __55__NMSWindowData_addMessageWithID_ofLength_timeoutTime___block_invok
   v8[2] = __54__NMSWindowData_removeAndReturnLengthOfMessageWithID___block_invoke;
   v8[3] = &unk_1E86CAB70;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   v10 = &v11;
   [(NMSWindowData *)self _syncTransaction:1 block:v8];
@@ -945,9 +945,9 @@ uint64_t __54__NMSWindowData_removeAndReturnLengthOfMessageWithID___block_invoke
   return 1;
 }
 
-- (unint64_t)removeAndReturnLengthOfMessagesWithIDs:(id)a3
+- (unint64_t)removeAndReturnLengthOfMessagesWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -956,7 +956,7 @@ uint64_t __54__NMSWindowData_removeAndReturnLengthOfMessageWithID___block_invoke
   v8[1] = 3221225472;
   v8[2] = __56__NMSWindowData_removeAndReturnLengthOfMessagesWithIDs___block_invoke;
   v8[3] = &unk_1E86CAB98;
-  v5 = v4;
+  v5 = dsCopy;
   v9 = v5;
   v10 = &v11;
   [(NMSWindowData *)self _syncTransaction:1 block:v8];

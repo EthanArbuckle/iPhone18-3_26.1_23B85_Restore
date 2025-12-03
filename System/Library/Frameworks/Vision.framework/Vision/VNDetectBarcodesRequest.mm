@@ -1,8 +1,8 @@
 @interface VNDetectBarcodesRequest
 + (NSArray)availableLocateModes;
 + (NSArray)supportedSymbologies;
-+ (__CFString)MRCSymbologyForBarcodeSymbology:(id)a3;
-+ (id)ACBSBarcodeTypeForBarcodeSymbology:(id)a3;
++ (__CFString)MRCSymbologyForBarcodeSymbology:(id)symbology;
++ (id)ACBSBarcodeTypeForBarcodeSymbology:(id)symbology;
 + (id)_allBarcodeSymbologiesRev1;
 + (id)_allBarcodeSymbologiesRev2;
 + (id)_allBarcodeSymbologiesRev2Private;
@@ -26,9 +26,9 @@
 + (id)_ourMRCSymbologyToBarcodeSymbologyMapRev4Private;
 + (id)availableLocateModesRev1;
 + (id)availableLocateModesRev2;
-+ (id)barcodeSymbologyForACBSBarcodeType:(id)a3;
-+ (id)barcodeSymbologyForMRCSymbology:(__CFString *)a3;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)barcodeSymbologyForACBSBarcodeType:(id)type;
++ (id)barcodeSymbologyForMRCSymbology:(__CFString *)symbology;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
 + (id)supportedSymbologiesRev1;
 + (id)supportedSymbologiesRev2;
@@ -37,85 +37,85 @@
 + (id)supportedSymbologiesRev3Private;
 + (id)supportedSymbologiesRev4;
 + (id)supportedSymbologiesRev4Private;
-- (ACBSConfig)_createACBSConfigAndReturnError:(id *)a3;
-- (BOOL)_getCornerPointsFromCodeLocationPoints:(id)a3 bottomLeft:(CGPoint *)a4 topLeft:(CGPoint *)a5 topRight:(CGPoint *)a6 bottomRight:(CGPoint *)a7;
+- (ACBSConfig)_createACBSConfigAndReturnError:(id *)error;
+- (BOOL)_getCornerPointsFromCodeLocationPoints:(id)points bottomLeft:(CGPoint *)left topLeft:(CGPoint *)topLeft topRight:(CGPoint *)right bottomRight:(CGPoint *)bottomRight;
 - (BOOL)coalesceCompositeSymbologies;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)stopAtFirstPyramidWith2DCode;
 - (BOOL)useMLDetector;
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)warmUpSession:(id)session error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSArray)supportedSymbologiesAndReturnError:(NSError *)error;
 - (NSArray)symbologies;
 - (NSString)locateMode;
-- (id)_barcodesDetectedInImageBuffer:(id)a3 usingACBSConfig:(ACBSConfig *)a4 originatingRequestSpecifier:(id)a5 error:(id *)a6;
-- (id)_createMRCDecoderOptionsForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)_machineReadableCodesDetectedInImageBuffer:(id)a3 originatingRequestSpecifier:(id)a4 inContext:(id)a5 mrcDetector:(id)a6 error:(id *)a7;
-- (id)_newVNBarcodeSymbologyAztecDescriptorForACBSBarcodeInfo:(id)a3;
-- (id)_newVNBarcodeSymbologyAztecDescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4;
-- (id)_newVNBarcodeSymbologyPDF417DescriptorForACBSBarcodeInfo:(id)a3;
-- (id)_newVNBarcodeSymbologyPDF417DescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4;
-- (id)_newVNBarcodeSymbologyQRDescriptorForACBSBarcodeInfo:(id)a3;
-- (id)_newVNBarcodeSymbologyQRDescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)availableLocateModesAndReturnError:(id *)a3;
-- (id)newBarcodeObservationForACBSBarcodeInfo:(id)a3 imageWidth:(unint64_t)a4 imageHeight:(unint64_t)a5 roiCroppingPixelRect:(CGRect)a6 originatingRequestSpecifier:(id)a7 error:(id *)a8;
-- (id)newBarcodeObservationForMRCDescriptor:(__MRCDescriptor *)a3 roiCroppingPixelRect:(CGRect)a4 originatingRequestSpecifier:(id)a5 error:(id *)a6;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
+- (id)_barcodesDetectedInImageBuffer:(id)buffer usingACBSConfig:(ACBSConfig *)config originatingRequestSpecifier:(id)specifier error:(id *)error;
+- (id)_createMRCDecoderOptionsForRevision:(unint64_t)revision error:(id *)error;
+- (id)_machineReadableCodesDetectedInImageBuffer:(id)buffer originatingRequestSpecifier:(id)specifier inContext:(id)context mrcDetector:(id)detector error:(id *)error;
+- (id)_newVNBarcodeSymbologyAztecDescriptorForACBSBarcodeInfo:(id)info;
+- (id)_newVNBarcodeSymbologyAztecDescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error;
+- (id)_newVNBarcodeSymbologyPDF417DescriptorForACBSBarcodeInfo:(id)info;
+- (id)_newVNBarcodeSymbologyPDF417DescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error;
+- (id)_newVNBarcodeSymbologyQRDescriptorForACBSBarcodeInfo:(id)info;
+- (id)_newVNBarcodeSymbologyQRDescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)availableLocateModesAndReturnError:(id *)error;
+- (id)newBarcodeObservationForACBSBarcodeInfo:(id)info imageWidth:(unint64_t)width imageHeight:(unint64_t)height roiCroppingPixelRect:(CGRect)rect originatingRequestSpecifier:(id)specifier error:(id *)error;
+- (id)newBarcodeObservationForMRCDescriptor:(__MRCDescriptor *)descriptor roiCroppingPixelRect:(CGRect)rect originatingRequestSpecifier:(id)specifier error:(id *)error;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
 - (int)_ACBarcodeRecognizerLocateMode;
 - (int64_t)_MRCLocateMode;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision;
 - (void)setCoalesceCompositeSymbologies:(BOOL)coalesceCompositeSymbologies;
-- (void)setLocateMode:(id)a3;
-- (void)setStopAtFirstPyramidWith2DCode:(BOOL)a3;
+- (void)setLocateMode:(id)mode;
+- (void)setStopAtFirstPyramidWith2DCode:(BOOL)code;
 - (void)setSymbologies:(NSArray *)symbologies;
-- (void)setUseMLDetector:(BOOL)a3;
+- (void)setUseMLDetector:(BOOL)detector;
 @end
 
 @implementation VNDetectBarcodesRequest
 
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision
 {
   v5.receiver = self;
   v5.super_class = VNDetectBarcodesRequest;
-  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:a3];
-  v4 = [(VNRequest *)self configuration];
-  [v4 setDefaultSymbologiesForRevision:{-[VNRequest resolvedRevision](self, "resolvedRevision")}];
+  [(VNRequest *)&v5 resolvedRevisionDidChangeFromRevision:revision];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setDefaultSymbologiesForRevision:{-[VNRequest resolvedRevision](self, "resolvedRevision")}];
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v7.receiver = self;
     v7.super_class = VNDetectBarcodesRequest;
-    [(VNImageBasedRequest *)&v7 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v7 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VNDetectBarcodesRequest *)v4 symbologies];
-      [(VNDetectBarcodesRequest *)self setSymbologies:v5];
+      symbologies = [(VNDetectBarcodesRequest *)requestCopy symbologies];
+      [(VNDetectBarcodesRequest *)self setSymbologies:symbologies];
 
-      v6 = [(VNDetectBarcodesRequest *)v4 locateMode];
-      [(VNDetectBarcodesRequest *)self setLocateMode:v6];
+      locateMode = [(VNDetectBarcodesRequest *)requestCopy locateMode];
+      [(VNDetectBarcodesRequest *)self setLocateMode:locateMode];
 
-      [(VNDetectBarcodesRequest *)self setStopAtFirstPyramidWith2DCode:[(VNDetectBarcodesRequest *)v4 stopAtFirstPyramidWith2DCode]];
-      [(VNDetectBarcodesRequest *)self setUseMLDetector:[(VNDetectBarcodesRequest *)v4 useMLDetector]];
+      [(VNDetectBarcodesRequest *)self setStopAtFirstPyramidWith2DCode:[(VNDetectBarcodesRequest *)requestCopy stopAtFirstPyramidWith2DCode]];
+      [(VNDetectBarcodesRequest *)self setUseMLDetector:[(VNDetectBarcodesRequest *)requestCopy useMLDetector]];
     }
   }
 }
 
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4
+- (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = VNDetectBarcodesRequest;
-  if ([(VNRequest *)&v16 warmUpSession:v6 error:a4])
+  if ([(VNRequest *)&v16 warmUpSession:sessionCopy error:error])
   {
-    v7 = [(VNRequest *)self resolvedRevision];
-    v8 = [(VNDetectBarcodesRequest *)self applicableDetectorTypeForRevision:v7 error:a4];
+    resolvedRevision = [(VNRequest *)self resolvedRevision];
+    v8 = [(VNDetectBarcodesRequest *)self applicableDetectorTypeForRevision:resolvedRevision error:error];
     v9 = v8;
     if (v8)
     {
@@ -128,12 +128,12 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v10 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:v7 session:v6];
-      v11 = [v6 detectorOfType:v9 configuredWithOptions:v10 error:a4];
+      v10 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:resolvedRevision session:sessionCopy];
+      v11 = [sessionCopy detectorOfType:v9 configuredWithOptions:v10 error:error];
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 warmUpSession:v6 withOptions:v10 error:a4];
+        v13 = [v11 warmUpSession:sessionCopy withOptions:v10 error:error];
 
         if (v13)
         {
@@ -156,17 +156,17 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNDetectBarcodesRequest *)self locateMode];
-  v6 = [v4 locateMode];
+  configurationCopy = configuration;
+  locateMode = [(VNDetectBarcodesRequest *)self locateMode];
+  locateMode2 = [configurationCopy locateMode];
 
-  if (v5 == v6 && (v7 = -[VNDetectBarcodesRequest stopAtFirstPyramidWith2DCode](self, "stopAtFirstPyramidWith2DCode"), v7 == [v4 stopAtFirstPyramidWith2DCode]) && (v8 = -[VNDetectBarcodesRequest useMLDetector](self, "useMLDetector"), v8 == objc_msgSend(v4, "useMLDetector")) && (v9 = -[VNDetectBarcodesRequest coalesceCompositeSymbologies](self, "coalesceCompositeSymbologies"), v9 == objc_msgSend(v4, "coalesceCompositeSymbologies")) && (-[VNDetectBarcodesRequest symbologies](self, "symbologies"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "symbologies"), v11 = objc_claimAutoreleasedReturnValue(), v12 = VisionCoreEquivalentOrNilUnorderedArrays(), v11, v10, (v12 & 1) != 0))
+  if (locateMode == locateMode2 && (v7 = -[VNDetectBarcodesRequest stopAtFirstPyramidWith2DCode](self, "stopAtFirstPyramidWith2DCode"), v7 == [configurationCopy stopAtFirstPyramidWith2DCode]) && (v8 = -[VNDetectBarcodesRequest useMLDetector](self, "useMLDetector"), v8 == objc_msgSend(configurationCopy, "useMLDetector")) && (v9 = -[VNDetectBarcodesRequest coalesceCompositeSymbologies](self, "coalesceCompositeSymbologies"), v9 == objc_msgSend(configurationCopy, "coalesceCompositeSymbologies")) && (-[VNDetectBarcodesRequest symbologies](self, "symbologies"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(configurationCopy, "symbologies"), v11 = objc_claimAutoreleasedReturnValue(), v12 = VisionCoreEquivalentOrNilUnorderedArrays(), v11, v10, (v12 & 1) != 0))
   {
     v15.receiver = self;
     v15.super_class = VNDetectBarcodesRequest;
-    v13 = [(VNImageBasedRequest *)&v15 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v13 = [(VNImageBasedRequest *)&v15 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -177,16 +177,16 @@ LABEL_11:
   return v13;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 > 3737841663)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision > 3737841663)
   {
-    if ((v5 - 3737841665) < 2)
+    if ((resolvedRevision - 3737841665) < 2)
     {
 LABEL_6:
-      v6 = [(VNDetectBarcodesRequest *)self _createMRCDecoderOptionsForRevision:v5 error:a3];
+      v6 = [(VNDetectBarcodesRequest *)self _createMRCDecoderOptionsForRevision:resolvedRevision error:error];
       if (v6)
       {
         v7 = MRCContextCopySupportedComputeDevicesForDecoderUsingOptions();
@@ -201,13 +201,13 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        if (a3)
+        if (error)
         {
           v11 = objc_alloc(MEMORY[0x1E696AEC0]);
           v12 = CFErrorCopyDescription(0);
           v13 = [v11 initWithFormat:@"No compute devices found: %@", v12];
 
-          *a3 = [VNError errorForDataUnavailableWithLocalizedDescription:v13];
+          *error = [VNError errorForDataUnavailableWithLocalizedDescription:v13];
         }
 
         CFRelease(0);
@@ -217,7 +217,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    if (v5 != 3737841664)
+    if (resolvedRevision != 3737841664)
     {
       goto LABEL_11;
     }
@@ -231,21 +231,21 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if ((v5 - 1) < 2)
+  if ((resolvedRevision - 1) < 2)
   {
     goto LABEL_10;
   }
 
-  if ((v5 - 3) < 2)
+  if ((resolvedRevision - 3) < 2)
   {
     goto LABEL_6;
   }
 
 LABEL_11:
-  if (a3)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:v5 ofRequest:self];
-    *a3 = v9 = 0;
+    [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
+    *error = v9 = 0;
   }
 
   else
@@ -261,61 +261,61 @@ LABEL_18:
 - (void)setCoalesceCompositeSymbologies:(BOOL)coalesceCompositeSymbologies
 {
   v3 = coalesceCompositeSymbologies;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setCoalesceCompositeSymbologies:v3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setCoalesceCompositeSymbologies:v3];
 }
 
 - (BOOL)coalesceCompositeSymbologies
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 coalesceCompositeSymbologies];
+  configuration = [(VNRequest *)self configuration];
+  coalesceCompositeSymbologies = [configuration coalesceCompositeSymbologies];
 
-  return v3;
+  return coalesceCompositeSymbologies;
 }
 
-- (void)setUseMLDetector:(BOOL)a3
+- (void)setUseMLDetector:(BOOL)detector
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUseMLDetector:v3];
+  detectorCopy = detector;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUseMLDetector:detectorCopy];
 }
 
 - (BOOL)useMLDetector
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 useMLDetector];
+  configuration = [(VNRequest *)self configuration];
+  useMLDetector = [configuration useMLDetector];
 
-  return v3;
+  return useMLDetector;
 }
 
-- (void)setStopAtFirstPyramidWith2DCode:(BOOL)a3
+- (void)setStopAtFirstPyramidWith2DCode:(BOOL)code
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setStopAtFirstPyramidWith2DCode:v3];
+  codeCopy = code;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setStopAtFirstPyramidWith2DCode:codeCopy];
 }
 
 - (BOOL)stopAtFirstPyramidWith2DCode
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 stopAtFirstPyramidWith2DCode];
+  configuration = [(VNRequest *)self configuration];
+  stopAtFirstPyramidWith2DCode = [configuration stopAtFirstPyramidWith2DCode];
 
-  return v3;
+  return stopAtFirstPyramidWith2DCode;
 }
 
-- (void)setLocateMode:(id)a3
+- (void)setLocateMode:(id)mode
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setLocateMode:v5];
+  modeCopy = mode;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setLocateMode:modeCopy];
 }
 
 - (NSString)locateMode
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 locateMode];
+  configuration = [(VNRequest *)self configuration];
+  locateMode = [configuration locateMode];
 
-  return v3;
+  return locateMode;
 }
 
 - (void)setSymbologies:(NSArray *)symbologies
@@ -323,17 +323,17 @@ LABEL_18:
   v5 = symbologies;
   if ([(NSArray *)v5 count])
   {
-    v4 = [(VNRequest *)self configuration];
-    [v4 setSymbologies:v5];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setSymbologies:v5];
   }
 }
 
 - (NSArray)supportedSymbologiesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self revision];
-  if (v5 <= 3)
+  revision = [(VNRequest *)self revision];
+  if (revision <= 3)
   {
-    switch(v5)
+    switch(revision)
     {
       case 1:
         v6 = +[VNDetectBarcodesRequest supportedSymbologiesRev1];
@@ -347,15 +347,15 @@ LABEL_18:
     }
   }
 
-  else if (v5 > 3737841664)
+  else if (revision > 3737841664)
   {
-    if (v5 == 3737841665)
+    if (revision == 3737841665)
     {
       v6 = +[VNDetectBarcodesRequest supportedSymbologiesRev3Private];
       goto LABEL_20;
     }
 
-    if (v5 == 3737841666)
+    if (revision == 3737841666)
     {
       v6 = +[VNDetectBarcodesRequest supportedSymbologiesRev4Private];
       goto LABEL_20;
@@ -364,13 +364,13 @@ LABEL_18:
 
   else
   {
-    if (v5 == 4)
+    if (revision == 4)
     {
       v6 = +[VNDetectBarcodesRequest supportedSymbologiesRev4];
       goto LABEL_20;
     }
 
-    if (v5 == 3737841664)
+    if (revision == 3737841664)
     {
       v6 = +[VNDetectBarcodesRequest supportedSymbologiesRev2Private];
       goto LABEL_20;
@@ -397,28 +397,28 @@ LABEL_20:
 
 - (NSArray)symbologies
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 symbologies];
+  configuration = [(VNRequest *)self configuration];
+  symbologies = [configuration symbologies];
 
-  return v3;
+  return symbologies;
 }
 
-- (id)availableLocateModesAndReturnError:(id *)a3
+- (id)availableLocateModesAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self revision];
-  if (v5 - 2 >= 3 && v5 - 3737841664u >= 3)
+  revision = [(VNRequest *)self revision];
+  if (revision - 2 >= 3 && revision - 3737841664u >= 3)
   {
-    if (v5 == 1)
+    if (revision == 1)
     {
       v7 = +[VNDetectBarcodesRequest availableLocateModesRev1];
     }
 
-    else if (a3)
+    else if (error)
     {
       v9 = [VNError errorForUnsupportedRevision:[(VNRequest *)self revision] ofRequest:self];
       v10 = v9;
       v7 = 0;
-      *a3 = v9;
+      *error = v9;
     }
 
     else
@@ -435,13 +435,13 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
-  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:a5])
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
+  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:error])
   {
-    v10 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:a3 error:a5];
+    v10 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:revision error:error];
     if (!v10)
     {
       v15 = 0;
@@ -450,14 +450,14 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (a3 - 2 >= 3 && a3 - 3737841664u >= 3)
+    if (revision - 2 >= 3 && revision - 3737841664u >= 3)
     {
-      if (a3 == 1)
+      if (revision == 1)
       {
-        v16 = [(VNDetectBarcodesRequest *)self _createACBSConfigAndReturnError:a5];
+        v16 = [(VNDetectBarcodesRequest *)self _createACBSConfigAndReturnError:error];
         if (v16)
         {
-          v14 = [(VNDetectBarcodesRequest *)self _barcodesDetectedInImageBuffer:v9 usingACBSConfig:v16 originatingRequestSpecifier:v10 error:a5];
+          v14 = [(VNDetectBarcodesRequest *)self _barcodesDetectedInImageBuffer:v9 usingACBSConfig:v16 originatingRequestSpecifier:v10 error:error];
           ACBSConfigFree();
           if (v14)
           {
@@ -480,28 +480,28 @@ LABEL_22:
         }
       }
 
-      else if (a5)
+      else if (error)
       {
-        [VNError errorForUnsupportedRevision:a3 ofRequest:self];
+        [VNError errorForUnsupportedRevision:revision ofRequest:self];
         v14 = 0;
-        *a5 = v15 = 0;
+        *error = v15 = 0;
         goto LABEL_22;
       }
     }
 
     else
     {
-      v11 = [v8 session];
-      v12 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:v11];
-      v13 = [v11 detectorOfType:@"VNMRCDetectorType" configuredWithOptions:v12 error:a5];
+      session = [contextCopy session];
+      v12 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
+      v13 = [session detectorOfType:@"VNMRCDetectorType" configuredWithOptions:v12 error:error];
 
       if (v13)
       {
-        v14 = [(VNDetectBarcodesRequest *)self _machineReadableCodesDetectedInImageBuffer:v9 originatingRequestSpecifier:v10 inContext:v8 mrcDetector:v13 error:a5];
+        v14 = [(VNDetectBarcodesRequest *)self _machineReadableCodesDetectedInImageBuffer:v9 originatingRequestSpecifier:v10 inContext:contextCopy mrcDetector:v13 error:error];
 
         if (v14)
         {
-          if (a3 - 3737841664u >= 3 && a3 - 2 > 2 || [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeAtLeastVersion:393216])
+          if (revision - 3737841664u >= 3 && revision - 2 > 2 || [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeAtLeastVersion:393216])
           {
             goto LABEL_21;
           }
@@ -523,9 +523,9 @@ LABEL_24:
   return v15;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 2 < 3 || a3 - 3737841664u < 3)
+  if (revision - 2 < 3 || revision - 3737841664u < 3)
   {
     v4 = @"VNMRCDetectorType";
 LABEL_4:
@@ -533,16 +533,16 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = &stru_1F1976900;
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -555,47 +555,47 @@ LABEL_5:
   return v4;
 }
 
-- (id)_barcodesDetectedInImageBuffer:(id)a3 usingACBSConfig:(ACBSConfig *)a4 originatingRequestSpecifier:(id)a5 error:(id *)a6
+- (id)_barcodesDetectedInImageBuffer:(id)buffer usingACBSConfig:(ACBSConfig *)config originatingRequestSpecifier:(id)specifier error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v40 = a5;
-  v10 = [v9 width];
-  v11 = [v9 height];
+  bufferCopy = buffer;
+  specifierCopy = specifier;
+  width = [bufferCopy width];
+  height = [bufferCopy height];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __108__VNDetectBarcodesRequest__barcodesDetectedInImageBuffer_usingACBSConfig_originatingRequestSpecifier_error___block_invoke;
   v46[3] = &unk_1E77B6810;
   v46[4] = self;
-  if (![VNValidationUtilities validateNonZeroImageWidth:v10 height:v11 componentNameProvidingBlock:v46 error:a6])
+  if (![VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v46 error:error])
   {
     v20 = 0;
     goto LABEL_27;
   }
 
-  [(VNImageBasedRequest *)self regionOfInterestPixelRectForWidth:v10 height:v11];
+  [(VNImageBasedRequest *)self regionOfInterestPixelRectForWidth:width height:height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v45 = 0;
-  v20 = [v9 croppedBufferWithWidth:v16 height:v18 format:875704422 cropRect:0 options:a6 error:&v45 pixelBufferRepsCacheKey:?];
+  v20 = [bufferCopy croppedBufferWithWidth:v16 height:v18 format:875704422 cropRect:0 options:error error:&v45 pixelBufferRepsCacheKey:?];
   v37 = v45;
   if (v20)
   {
-    v38 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [v38 addPointer:v37];
-    v39 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [v39 addPointer:v9];
-    [v9 orientation];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [weakObjectsPointerArray addPointer:v37];
+    weakObjectsPointerArray2 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [weakObjectsPointerArray2 addPointer:bufferCopy];
+    [bufferCopy orientation];
     v21 = ACBSCreateFrameInfoBySearchingForBarcodesInCVPixelBuffer();
     v22 = v21 != 0;
     v36 = v21;
-    if (a6 && !v21)
+    if (error && !v21)
     {
       [VNError errorWithCode:9 message:@"failed to analyze image"];
       v36 = 0;
-      *a6 = v22 = 0;
+      *error = v22 = 0;
     }
 
     CVPixelBufferRelease(v20);
@@ -609,9 +609,9 @@ LABEL_25:
 
     v23 = *MEMORY[0x1E69C6980];
     v24 = [v36 objectForKeyedSubscript:*MEMORY[0x1E69C6980]];
-    v25 = [v24 integerValue];
+    integerValue = [v24 integerValue];
 
-    if (v25)
+    if (integerValue)
     {
       v26 = [v36 objectForKeyedSubscript:v23];
       [(VNRequest *)self recordWarning:v23 value:v26];
@@ -642,7 +642,7 @@ LABEL_25:
                 objc_enumerationMutation(obj);
               }
 
-              v32 = [(VNDetectBarcodesRequest *)self newBarcodeObservationForACBSBarcodeInfo:*(*(&v41 + 1) + 8 * i) imageWidth:v10 imageHeight:v11 roiCroppingPixelRect:v40 originatingRequestSpecifier:a6 error:v13, v15, v17, v19];
+              v32 = [(VNDetectBarcodesRequest *)self newBarcodeObservationForACBSBarcodeInfo:*(*(&v41 + 1) + 8 * i) imageWidth:width imageHeight:height roiCroppingPixelRect:specifierCopy originatingRequestSpecifier:error error:v13, v15, v17, v19];
               v33 = v32;
               if (!v32)
               {
@@ -651,8 +651,8 @@ LABEL_25:
                 goto LABEL_23;
               }
 
-              [v32 setRequestImageBuffers:v39];
-              [v33 setRequestImageBuffersCacheKeys:v38];
+              [v32 setRequestImageBuffers:weakObjectsPointerArray2];
+              [v33 setRequestImageBuffersCacheKeys:weakObjectsPointerArray];
               [v28 addObject:v33];
             }
 
@@ -694,23 +694,23 @@ NSString *__108__VNDetectBarcodesRequest__barcodesDetectedInImageBuffer_usingACB
   return NSStringFromClass(v0);
 }
 
-- (id)newBarcodeObservationForACBSBarcodeInfo:(id)a3 imageWidth:(unint64_t)a4 imageHeight:(unint64_t)a5 roiCroppingPixelRect:(CGRect)a6 originatingRequestSpecifier:(id)a7 error:(id *)a8
+- (id)newBarcodeObservationForACBSBarcodeInfo:(id)info imageWidth:(unint64_t)width imageHeight:(unint64_t)height roiCroppingPixelRect:(CGRect)rect originatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  height = a6.size.height;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a3;
-  v17 = a7;
-  v18 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69C69A8]];
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
+  specifierCopy = specifier;
+  v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69C69A8]];
   if (v18)
   {
     v19 = [VNDetectBarcodesRequest barcodeSymbologyForACBSBarcodeType:v18];
     if (!v19)
     {
-      if (a8)
+      if (error)
       {
         v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown barcode type of '%@'", v18];
-        *a8 = [VNError errorForInternalErrorWithLocalizedDescription:v31];
+        *error = [VNError errorForInternalErrorWithLocalizedDescription:v31];
       }
 
       v24 = 0;
@@ -721,7 +721,7 @@ NSString *__108__VNDetectBarcodesRequest__barcodesDetectedInImageBuffer_usingACB
     v21 = NSSelectorFromString(v20);
     if (v21 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v22 = ([(VNDetectBarcodesRequest *)self methodForSelector:v21])(self, v21, v16);
+      v22 = ([(VNDetectBarcodesRequest *)self methodForSelector:v21])(self, v21, infoCopy);
       if (v22)
       {
 LABEL_11:
@@ -730,24 +730,24 @@ LABEL_11:
         v36 = v35;
         v33 = v35;
         v34 = v35;
-        v25 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69C6990]];
+        v25 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69C6990]];
         v26 = [(VNDetectBarcodesRequest *)self _getCornerPointsFromCodeLocationPoints:v25 bottomLeft:&v36 topLeft:&v35 topRight:&v34 bottomRight:&v33];
 
         if (v26)
         {
-          *&v36 = (x + *&v36) / a4;
-          *(&v36 + 1) = (y + height - *(&v36 + 1)) / a5;
-          *&v35 = (x + *&v35) / a4;
-          *(&v35 + 1) = (y + height - *(&v35 + 1)) / a5;
-          *&v34 = (x + *&v34) / a4;
-          *(&v34 + 1) = (y + height - *(&v34 + 1)) / a5;
-          *&v33 = (x + *&v33) / a4;
-          *(&v33 + 1) = (y + height - *(&v33 + 1)) / a5;
+          *&v36 = (x + *&v36) / width;
+          *(&v36 + 1) = (y + height - *(&v36 + 1)) / height;
+          *&v35 = (x + *&v35) / width;
+          *(&v35 + 1) = (y + height - *(&v35 + 1)) / height;
+          *&v34 = (x + *&v34) / width;
+          *(&v34 + 1) = (y + height - *(&v34 + 1)) / height;
+          *&v33 = (x + *&v33) / width;
+          *(&v33 + 1) = (y + height - *(&v33 + 1)) / height;
           v27 = [VNBarcodeObservation alloc];
-          v24 = [(VNBarcodeObservation *)v27 initWithOriginatingRequestSpecifier:v17 symbology:v19 descriptor:v22 topLeft:v36 topRight:v33 bottomRight:v34 bottomLeft:v35];
+          v24 = [(VNBarcodeObservation *)v27 initWithOriginatingRequestSpecifier:specifierCopy symbology:v19 descriptor:v22 topLeft:v36 topRight:v33 bottomRight:v34 bottomLeft:v35];
           if (v24)
           {
-            v28 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69C69B0]];
+            v28 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69C69B0]];
             v29 = v28;
             if (v28)
             {
@@ -755,20 +755,20 @@ LABEL_11:
               [(VNObservation *)v24 setConfidence:?];
             }
 
-            [(VNBarcodeObservation *)v24 setACBSBarcodeInfo:v16];
+            [(VNBarcodeObservation *)v24 setACBSBarcodeInfo:infoCopy];
             v30 = v24;
           }
 
-          else if (a8)
+          else if (error)
           {
-            *a8 = +[VNError errorForMemoryAllocationFailure];
+            *error = +[VNError errorForMemoryAllocationFailure];
           }
         }
 
-        else if (a8)
+        else if (error)
         {
           [VNError errorForInternalErrorWithLocalizedDescription:@"barcode location is not available"];
-          *a8 = v24 = 0;
+          *error = v24 = 0;
         }
 
         else
@@ -794,10 +794,10 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  if (a8)
+  if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"barcode type is not available"];
-    *a8 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else
@@ -810,23 +810,23 @@ LABEL_28:
   return v24;
 }
 
-- (BOOL)_getCornerPointsFromCodeLocationPoints:(id)a3 bottomLeft:(CGPoint *)a4 topLeft:(CGPoint *)a5 topRight:(CGPoint *)a6 bottomRight:(CGPoint *)a7
+- (BOOL)_getCornerPointsFromCodeLocationPoints:(id)points bottomLeft:(CGPoint *)left topLeft:(CGPoint *)topLeft topRight:(CGPoint *)right bottomRight:(CGPoint *)bottomRight
 {
-  v11 = a3;
-  v12 = v11;
-  if (v11 && [v11 count] == 4)
+  pointsCopy = points;
+  v12 = pointsCopy;
+  if (pointsCopy && [pointsCopy count] == 4)
   {
     v13 = [v12 objectAtIndexedSubscript:0];
-    if (CGPointMakeWithDictionaryRepresentation(v13, a4))
+    if (CGPointMakeWithDictionaryRepresentation(v13, left))
     {
       v14 = [v12 objectAtIndexedSubscript:1];
-      if (CGPointMakeWithDictionaryRepresentation(v14, a5))
+      if (CGPointMakeWithDictionaryRepresentation(v14, topLeft))
       {
         v15 = [v12 objectAtIndexedSubscript:2];
-        if (CGPointMakeWithDictionaryRepresentation(v15, a6))
+        if (CGPointMakeWithDictionaryRepresentation(v15, right))
         {
           v16 = [v12 objectAtIndexedSubscript:3];
-          v17 = CGPointMakeWithDictionaryRepresentation(v16, a7);
+          v17 = CGPointMakeWithDictionaryRepresentation(v16, bottomRight);
         }
 
         else
@@ -855,15 +855,15 @@ LABEL_28:
   return v17;
 }
 
-- (id)_machineReadableCodesDetectedInImageBuffer:(id)a3 originatingRequestSpecifier:(id)a4 inContext:(id)a5 mrcDetector:(id)a6 error:(id *)a7
+- (id)_machineReadableCodesDetectedInImageBuffer:(id)buffer originatingRequestSpecifier:(id)specifier inContext:(id)context mrcDetector:(id)detector error:(id *)error
 {
   v87[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v78 = a4;
-  v77 = a5;
-  v76 = a6;
-  v13 = [(VNDetectBarcodesRequest *)self _createMRCDecoderOptionsForRevision:[(VNRequest *)self revision] error:a7];
-  if (!v13 || (v14 = [v12 width], v15 = objc_msgSend(v12, "height"), v84[0] = MEMORY[0x1E69E9820], v84[1] = 3221225472, v84[2] = __126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuffer_originatingRequestSpecifier_inContext_mrcDetector_error___block_invoke, v84[3] = &unk_1E77B6810, v84[4] = self, !+[VNValidationUtilities validateNonZeroImageWidth:height:componentNameProvidingBlock:error:](VNValidationUtilities, "validateNonZeroImageWidth:height:componentNameProvidingBlock:error:", v14, v15, v84, a7)))
+  bufferCopy = buffer;
+  specifierCopy = specifier;
+  contextCopy = context;
+  detectorCopy = detector;
+  v13 = [(VNDetectBarcodesRequest *)self _createMRCDecoderOptionsForRevision:[(VNRequest *)self revision] error:error];
+  if (!v13 || (v14 = [bufferCopy width], v15 = objc_msgSend(bufferCopy, "height"), v84[0] = MEMORY[0x1E69E9820], v84[1] = 3221225472, v84[2] = __126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuffer_originatingRequestSpecifier_inContext_mrcDetector_error___block_invoke, v84[3] = &unk_1E77B6810, v84[4] = self, !+[VNValidationUtilities validateNonZeroImageWidth:height:componentNameProvidingBlock:error:](VNValidationUtilities, "validateNonZeroImageWidth:height:componentNameProvidingBlock:error:", v14, v15, v84, error)))
   {
     v30 = 0;
     goto LABEL_53;
@@ -884,16 +884,16 @@ LABEL_28:
     v24 = v17;
   }
 
-  v25 = [(VNRequest *)self maximumProcessingDimensionOnTheLongSide];
+  maximumProcessingDimensionOnTheLongSide = [(VNRequest *)self maximumProcessingDimensionOnTheLongSide];
   v26 = 1.0;
-  if (v25)
+  if (maximumProcessingDimensionOnTheLongSide)
   {
-    v27 = v25;
+    v27 = maximumProcessingDimensionOnTheLongSide;
     height = v23;
     width = v22;
     x = v19;
     y = v21;
-    if (v24 > v25)
+    if (v24 > maximumProcessingDimensionOnTheLongSide)
     {
       v26 = v27 / v24;
       v89.origin.x = v19 * (v27 / v24);
@@ -917,25 +917,25 @@ LABEL_28:
   }
 
   v83 = 0;
-  v31 = [v12 croppedBufferWithWidth:width height:height format:875704422 cropRect:0 options:a7 error:&v83 pixelBufferRepsCacheKey:{v19, v21, v22, v23}];
+  v31 = [bufferCopy croppedBufferWithWidth:width height:height format:875704422 cropRect:0 options:error error:&v83 pixelBufferRepsCacheKey:{v19, v21, v22, v23}];
   v74 = v83;
   pixelBuffer = v31;
   if (v31)
   {
-    v69 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [v69 addPointer:v74];
-    v68 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [v68 addPointer:v12];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [weakObjectsPointerArray addPointer:v74];
+    weakObjectsPointerArray2 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [weakObjectsPointerArray2 addPointer:bufferCopy];
     v70 = objc_alloc_init(MEMORY[0x1E695DF70]);
     CVPixelBufferGetWidth(v31);
     CVPixelBufferGetHeight(v31);
     cf = MRCSampleCreateWithCVPixelBuffer();
     if (!cf)
     {
-      if (a7)
+      if (error)
       {
         [VNError errorForDataUnavailableWithLocalizedDescription:@"Failed to create MRCSample"];
-        *a7 = v30 = 0;
+        *error = v30 = 0;
 LABEL_51:
 
         CVPixelBufferRelease(pixelBuffer);
@@ -947,20 +947,20 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v65 = [v77 session];
+    session = [contextCopy session];
     v32 = 0x1E695D000;
     if ([(VNDetectBarcodesRequest *)self useSegmentationPregating]&& ![(VNDetectBarcodesRequest *)self useMLDetector])
     {
       v33 = [VNImageRequestHandler alloc];
-      v75 = [(VNImageRequestHandler *)v33 initWithCVPixelBuffer:pixelBuffer options:MEMORY[0x1E695E0F8] session:v65];
+      v75 = [(VNImageRequestHandler *)v33 initWithCVPixelBuffer:pixelBuffer options:MEMORY[0x1E695E0F8] session:session];
       v64 = objc_alloc_init(VNRecognizeDocumentElementsRequest);
       [(VNImageBasedRequest *)v64 applyConfigurationOfRequest:self];
       [(VNRequest *)v64 setRevision:1];
-      v34 = [(VNRecognizeDocumentElementsRequest *)v64 machineReadableCodeElements];
-      [v34 setRecognize:1];
+      machineReadableCodeElements = [(VNRecognizeDocumentElementsRequest *)v64 machineReadableCodeElements];
+      [machineReadableCodeElements setRecognize:1];
 
-      v35 = [(VNRecognizeDocumentElementsRequest *)v64 machineReadableCodeElements];
-      [v35 setGenerateSegmentationMask:1];
+      machineReadableCodeElements2 = [(VNRecognizeDocumentElementsRequest *)v64 machineReadableCodeElements];
+      [machineReadableCodeElements2 setGenerateSegmentationMask:1];
 
       v87[0] = v64;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:1];
@@ -968,22 +968,22 @@ LABEL_50:
 
       if (v37)
       {
-        v38 = [(VNRequest *)v64 results];
-        v62 = [v38 firstObject];
+        results = [(VNRequest *)v64 results];
+        firstObject = [results firstObject];
 
-        v39 = [v62 segmentationMask];
-        texture = CVPixelBufferRetain([v39 pixelBuffer]);
+        segmentationMask = [firstObject segmentationMask];
+        texture = CVPixelBufferRetain([segmentationMask pixelBuffer]);
 
         v81 = 0u;
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v40 = [v62 labels];
-        v41 = [v40 countByEnumeratingWithState:&v79 objects:v86 count:16];
+        labels = [firstObject labels];
+        v41 = [labels countByEnumeratingWithState:&v79 objects:v86 count:16];
         if (v41)
         {
           v42 = *v80;
-          obj = v40;
+          obj = labels;
           while (2)
           {
             for (i = 0; i != v41; ++i)
@@ -994,16 +994,16 @@ LABEL_50:
               }
 
               v44 = *(*(&v79 + 1) + 8 * i);
-              v45 = [v44 identifier];
-              if ([v45 isEqualToString:@"VNRecognizeDocumentElementIdentifierAppCode"])
+              identifier = [v44 identifier];
+              if ([identifier isEqualToString:@"VNRecognizeDocumentElementIdentifierAppCode"])
               {
 
 LABEL_32:
                 goto LABEL_33;
               }
 
-              v46 = [v44 identifier];
-              v47 = [v46 isEqualToString:@"VNRecognizeDocumentElementIdentifierQRCode"];
+              identifier2 = [v44 identifier];
+              v47 = [identifier2 isEqualToString:@"VNRecognizeDocumentElementIdentifierQRCode"];
 
               if (v47)
               {
@@ -1011,7 +1011,7 @@ LABEL_32:
               }
             }
 
-            v40 = obj;
+            labels = obj;
             v41 = [obj countByEnumeratingWithState:&v79 objects:v86 count:16];
             if (v41)
             {
@@ -1037,8 +1037,8 @@ LABEL_33:
       texture = 0;
     }
 
-    v75 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:[(VNRequest *)self resolvedRevision] session:v65];
-    v85 = v12;
+    v75 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:[(VNRequest *)self resolvedRevision] session:session];
+    v85 = bufferCopy;
     v49 = [*(v32 + 3784) arrayWithObjects:&v85 count:1];
     [(VNImageRequestHandler *)v75 setObject:v49 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
@@ -1058,9 +1058,9 @@ LABEL_33:
       [(VNImageRequestHandler *)v75 setObject:v51 forKeyedSubscript:@"VNMRCDetectorProcessOption_MaxDimensionSideScale"];
     }
 
-    v52 = [v77 qosClass];
+    qosClass = [contextCopy qosClass];
     [(VNImageBasedRequest *)self regionOfInterest];
-    v53 = [v76 processUsingQualityOfServiceClass:v52 options:v75 regionOfInterest:self warningRecorder:a7 error:0 progressHandler:?];
+    v53 = [detectorCopy processUsingQualityOfServiceClass:qosClass options:v75 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
     v48 = v53;
     if (v53 && [(VNRecognizeDocumentElementsRequest *)v53 count])
     {
@@ -1080,16 +1080,16 @@ LABEL_45:
           v56 = 0;
           while (1)
           {
-            v57 = [(VNDetectBarcodesRequest *)self newBarcodeObservationForMRCDescriptor:MRCDecoderResultGetDescriptorAtIndex() roiCroppingPixelRect:v78 originatingRequestSpecifier:a7 error:x, y, width, height];
-            v58 = v57;
-            v59 = v57 != 0;
-            if (!v57)
+            height = [(VNDetectBarcodesRequest *)self newBarcodeObservationForMRCDescriptor:MRCDecoderResultGetDescriptorAtIndex() roiCroppingPixelRect:specifierCopy originatingRequestSpecifier:error error:x, y, width, height];
+            v58 = height;
+            v59 = height != 0;
+            if (!height)
             {
               break;
             }
 
-            [v57 setRequestImageBuffers:v68];
-            [v58 setRequestImageBuffersCacheKeys:v69];
+            [height setRequestImageBuffers:weakObjectsPointerArray2];
+            [v58 setRequestImageBuffersCacheKeys:weakObjectsPointerArray];
             [v70 addObject:v58];
 
             if (DescriptorCount == ++v56)
@@ -1142,11 +1142,11 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
   return NSStringFromClass(v0);
 }
 
-- (id)newBarcodeObservationForMRCDescriptor:(__MRCDescriptor *)a3 roiCroppingPixelRect:(CGRect)a4 originatingRequestSpecifier:(id)a5 error:(id *)a6
+- (id)newBarcodeObservationForMRCDescriptor:(__MRCDescriptor *)descriptor roiCroppingPixelRect:(CGRect)rect originatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  specifierCopy = specifier;
   v12 = MRCDescriptorCopyAttribute();
   if (v12)
   {
@@ -1154,10 +1154,10 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
     CFRelease(v12);
     if (!v13)
     {
-      if (a6)
+      if (error)
       {
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown barcode type of '%@'", v12];
-        *a6 = [VNError errorForInternalErrorWithLocalizedDescription:v25];
+        *error = [VNError errorForInternalErrorWithLocalizedDescription:v25];
       }
 
       v17 = 0;
@@ -1168,7 +1168,7 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
     v15 = NSSelectorFromString(v14);
     if (v15 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v16 = ([(VNDetectBarcodesRequest *)self methodForSelector:v15])(self, v15, a3, a6);
+      v16 = ([(VNDetectBarcodesRequest *)self methodForSelector:v15])(self, v15, descriptor, error);
     }
 
     else
@@ -1197,10 +1197,10 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
         v24 = 1;
       }
 
-      else if (a6)
+      else if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"invalid barcode location information"];
-        *a6 = v24 = 0;
+        *error = v24 = 0;
       }
 
       else
@@ -1220,7 +1220,7 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
         v33.x = v33.x / width;
         v33.y = (height - v33.y) / height;
         v26 = [VNBarcodeObservation alloc];
-        v17 = [(VNBarcodeObservation *)v26 initWithOriginatingRequestSpecifier:v11 symbology:v13 descriptor:v16 mrcDescriptor:a3 topLeft:point.x topRight:point.y bottomRight:v33.x bottomLeft:v33.y, v34.x, v34.y, v35.x, v35.y];
+        v17 = [(VNBarcodeObservation *)v26 initWithOriginatingRequestSpecifier:specifierCopy symbology:v13 descriptor:v16 mrcDescriptor:descriptor topLeft:point.x topRight:point.y bottomRight:v33.x bottomLeft:v33.y, v34.x, v34.y, v35.x, v35.y];
         if (v17)
         {
           v27 = MRCDescriptorCopyAttribute();
@@ -1237,19 +1237,19 @@ NSString *__126__VNDetectBarcodesRequest__machineReadableCodesDetectedInImageBuf
           v30 = v17;
         }
 
-        else if (a6)
+        else if (error)
         {
-          *a6 = +[VNError errorForMemoryAllocationFailure];
+          *error = +[VNError errorForMemoryAllocationFailure];
         }
 
         goto LABEL_30;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"barcode location is not available"];
-      *a6 = v17 = 0;
+      *error = v17 = 0;
 LABEL_30:
 
 LABEL_31:
@@ -1260,10 +1260,10 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  if (a6)
+  if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"barcode type is not available"];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -1276,16 +1276,16 @@ LABEL_32:
   return v17;
 }
 
-- (id)_createMRCDecoderOptionsForRevision:(unint64_t)a3 error:(id *)a4
+- (id)_createMRCDecoderOptionsForRevision:(unint64_t)revision error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_43;
     }
 
@@ -1302,25 +1302,25 @@ LABEL_32:
     [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69C67B0]];
   }
 
-  v26 = [(VNDetectBarcodesRequest *)self symbologies];
-  if (!v26 || ![v26 count])
+  symbologies = [(VNDetectBarcodesRequest *)self symbologies];
+  if (!symbologies || ![symbologies count])
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [VNError errorWithCode:5 message:@"barcode detection requires at least one element in the symbologies property"];
+      *error = [VNError errorWithCode:5 message:@"barcode detection requires at least one element in the symbologies property"];
     }
 
     goto LABEL_41;
   }
 
-  v24 = a4;
-  v10 = [v26 count];
+  errorCopy = error;
+  v10 = [symbologies count];
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], v10, MEMORY[0x1E695E9C0]);
   if (!Mutable)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = +[VNError errorForMemoryAllocationFailure];
+      *error = +[VNError errorForMemoryAllocationFailure];
     }
 
 LABEL_41:
@@ -1334,7 +1334,7 @@ LABEL_42:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v26;
+  obj = symbologies;
   v12 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
@@ -1349,9 +1349,9 @@ LABEL_42:
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        if (a3 > 3737841663)
+        if (revision > 3737841663)
         {
-          switch(a3)
+          switch(revision)
           {
             case 0xDECAF000uLL:
               v16 = +[VNDetectBarcodesRequest _ourBarcodeSymbologyToMRCSymbologyMapPrivate];
@@ -1372,7 +1372,7 @@ LABEL_42:
 
         else
         {
-          switch(a3)
+          switch(revision)
           {
             case 2uLL:
               v16 = +[VNDetectBarcodesRequest _ourBarcodeSymbologyToMRCSymbologyMap];
@@ -1396,10 +1396,10 @@ LABEL_42:
         if (!v18)
         {
 LABEL_36:
-          if (v24)
+          if (errorCopy)
           {
             v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ is not a supported barcode symbology", v15];
-            *v24 = [VNError errorWithCode:5 message:v21];
+            *errorCopy = [VNError errorWithCode:5 message:v21];
           }
 
           CFRelease(Mutable);
@@ -1425,11 +1425,11 @@ LABEL_36:
   [v8 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69C67B8]];
 
   v20 = 0x20000;
-  if (a3 <= 3737841664)
+  if (revision <= 3737841664)
   {
-    if (a3 != 3)
+    if (revision != 3)
     {
-      if (a3 != 4)
+      if (revision != 4)
       {
         goto LABEL_50;
       }
@@ -1442,12 +1442,12 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if (a3 == 3737841665)
+  if (revision == 3737841665)
   {
     goto LABEL_49;
   }
 
-  if (a3 == 3737841666)
+  if (revision == 3737841666)
   {
 LABEL_48:
     v20 = 0x40000;
@@ -1464,19 +1464,19 @@ LABEL_43:
 
 - (int64_t)_MRCLocateMode
 {
-  v3 = [(VNDetectBarcodesRequest *)self locateMode];
-  if (!v3)
+  locateMode = [(VNDetectBarcodesRequest *)self locateMode];
+  if (!locateMode)
   {
-    v4 = [(VNRequest *)self detectionLevel];
-    if (v4 > 2)
+    detectionLevel = [(VNRequest *)self detectionLevel];
+    if (detectionLevel > 2)
     {
-      v3 = 0;
+      locateMode = 0;
 LABEL_9:
       v5 = 9;
       goto LABEL_10;
     }
 
-    v3 = off_1E77B39E8[v4];
+    locateMode = off_1E77B39E8[detectionLevel];
   }
 
   if ([VNDetectBarcodesRequest _MRCLocateMode]::onceToken != -1)
@@ -1485,7 +1485,7 @@ LABEL_9:
   }
 
   value = 0;
-  if (!NSMapMember([VNDetectBarcodesRequest _MRCLocateMode]::mapTable, v3, 0, &value))
+  if (!NSMapMember([VNDetectBarcodesRequest _MRCLocateMode]::mapTable, locateMode, 0, &value))
   {
     goto LABEL_9;
   }
@@ -1522,16 +1522,16 @@ void __41__VNDetectBarcodesRequest__MRCLocateMode__block_invoke()
   NSMapInsertKnownAbsent(v2, @"VNDetectBarcodesLocateModeRegularIntervalVertical", 0x12);
 }
 
-- (ACBSConfig)_createACBSConfigAndReturnError:(id *)a3
+- (ACBSConfig)_createACBSConfigAndReturnError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = ACBSConfigCreate();
   if (!v5)
   {
-    if (a3)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a3 = v6 = 0;
+      *error = v6 = 0;
       return v6;
     }
 
@@ -1543,12 +1543,12 @@ void __41__VNDetectBarcodesRequest__MRCLocateMode__block_invoke()
   ACBSConfigSetLocateMode();
   ACBSConfigSetMaxQRModuleSamples();
   ACBSConfigSetFailedLocationsEnabled();
-  v19 = [(VNDetectBarcodesRequest *)self symbologies];
-  if (!v19 || ![v19 count])
+  symbologies = [(VNDetectBarcodesRequest *)self symbologies];
+  if (!symbologies || ![symbologies count])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [VNError errorWithCode:5 message:@"barcode detection requires at least one element in the symbologies property"];
+      *error = [VNError errorWithCode:5 message:@"barcode detection requires at least one element in the symbologies property"];
     }
 
 LABEL_21:
@@ -1556,14 +1556,14 @@ LABEL_21:
     return 0;
   }
 
-  v17 = self;
-  v18 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
+  selfCopy = self;
+  errorCopy = error;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(symbologies, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v19;
+  v8 = symbologies;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1584,10 +1584,10 @@ LABEL_21:
 
         if (!v14)
         {
-          if (v18)
+          if (errorCopy)
           {
             v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ is not a supported barcode symbology", v12];
-            *v18 = [VNError errorWithCode:5 message:v15];
+            *errorCopy = [VNError errorWithCode:5 message:v15];
           }
 
           goto LABEL_21;
@@ -1610,7 +1610,7 @@ LABEL_21:
   }
 
   ACBSConfigSetSymbologiesEnabled();
-  [(VNDetectBarcodesRequest *)v17 stopAtFirstPyramidWith2DCode];
+  [(VNDetectBarcodesRequest *)selfCopy stopAtFirstPyramidWith2DCode];
   ACBSConfigSetStopsAtFirstPyramidWith2DCode();
 
   return v6;
@@ -1618,19 +1618,19 @@ LABEL_21:
 
 - (int)_ACBarcodeRecognizerLocateMode
 {
-  v3 = [(VNDetectBarcodesRequest *)self locateMode];
-  if (!v3)
+  locateMode = [(VNDetectBarcodesRequest *)self locateMode];
+  if (!locateMode)
   {
-    v4 = [(VNRequest *)self detectionLevel];
-    if (v4 > 2)
+    detectionLevel = [(VNRequest *)self detectionLevel];
+    if (detectionLevel > 2)
     {
-      v3 = 0;
+      locateMode = 0;
 LABEL_9:
       v5 = 9;
       goto LABEL_10;
     }
 
-    v3 = off_1E77B39E8[v4];
+    locateMode = off_1E77B39E8[detectionLevel];
   }
 
   if ([VNDetectBarcodesRequest _ACBarcodeRecognizerLocateMode]::onceToken != -1)
@@ -1639,7 +1639,7 @@ LABEL_9:
   }
 
   value = 0;
-  if (!NSMapMember([VNDetectBarcodesRequest _ACBarcodeRecognizerLocateMode]::mapTable, v3, 0, &value))
+  if (!NSMapMember([VNDetectBarcodesRequest _ACBarcodeRecognizerLocateMode]::mapTable, locateMode, 0, &value))
   {
     goto LABEL_9;
   }
@@ -1677,7 +1677,7 @@ void __57__VNDetectBarcodesRequest__ACBarcodeRecognizerLocateMode__block_invoke(
   NSMapInsertKnownAbsent(v2, @"VNDetectBarcodesLocateModeRegularIntervalVertical", 0x12);
 }
 
-- (id)_newVNBarcodeSymbologyPDF417DescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4
+- (id)_newVNBarcodeSymbologyPDF417DescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error
 {
   v5 = MRCDescriptorCopyAttribute();
   if (v5)
@@ -1709,7 +1709,7 @@ LABEL_17:
           return v14;
         }
 
-        if (a4)
+        if (error)
         {
           v15 = [VNError errorWithCode:17 message:@"ColumnCount data is missing"];
           goto LABEL_15;
@@ -1720,7 +1720,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1730,7 +1730,7 @@ LABEL_16:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1740,21 +1740,21 @@ LABEL_16:
 
 LABEL_15:
     v14 = 0;
-    *a4 = v15;
+    *error = v15;
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   [VNError errorWithCode:17 message:@"Payload data is missing"];
-  *a4 = v14 = 0;
+  *error = v14 = 0;
   return v14;
 }
 
-- (id)_newVNBarcodeSymbologyAztecDescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4
+- (id)_newVNBarcodeSymbologyAztecDescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error
 {
   v5 = MRCDescriptorCopyAttribute();
   if (v5)
@@ -1786,7 +1786,7 @@ LABEL_17:
           return v14;
         }
 
-        if (a4)
+        if (error)
         {
           v15 = [VNError errorWithCode:17 message:@"CodewordCount data is missing"];
           goto LABEL_15;
@@ -1797,7 +1797,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1807,7 +1807,7 @@ LABEL_16:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1817,21 +1817,21 @@ LABEL_16:
 
 LABEL_15:
     v14 = 0;
-    *a4 = v15;
+    *error = v15;
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   [VNError errorWithCode:17 message:@"Payload data is missing"];
-  *a4 = v14 = 0;
+  *error = v14 = 0;
   return v14;
 }
 
-- (id)_newVNBarcodeSymbologyQRDescriptorForMRCDescriptor:(__MRCDescriptor *)a3 error:(id *)a4
+- (id)_newVNBarcodeSymbologyQRDescriptorForMRCDescriptor:(__MRCDescriptor *)descriptor error:(id *)error
 {
   v5 = MRCDescriptorCopyAttribute();
   if (v5)
@@ -1868,31 +1868,31 @@ LABEL_20:
             return v10;
           }
 
-          if (a4)
+          if (error)
           {
             v9 = [VNError errorWithCode:17 message:@"QRMaskPattern data is missing"];
             goto LABEL_18;
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v9 = [VNError errorWithCode:17 message:@"QRSymbolVersion data is missing"];
           goto LABEL_18;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v9 = [VNError errorWithCode:2 message:@"QRErrorCorrectionLevel data is invalid"];
 LABEL_18:
         v10 = 0;
-        *a4 = v9;
+        *error = v9;
         goto LABEL_20;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v9 = [VNError errorWithCode:17 message:@"QRErrorCorrectionLevel data is missing"];
       goto LABEL_18;
@@ -1902,24 +1902,24 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   [VNError errorWithCode:17 message:@"Payload data is missing"];
-  *a4 = v10 = 0;
+  *error = v10 = 0;
   return v10;
 }
 
-- (id)_newVNBarcodeSymbologyPDF417DescriptorForACBSBarcodeInfo:(id)a3
+- (id)_newVNBarcodeSymbologyPDF417DescriptorForACBSBarcodeInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C6998]];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:*MEMORY[0x1E69C6998]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKey:*MEMORY[0x1E69C6960]];
+    v5 = [infoCopy objectForKey:*MEMORY[0x1E69C6960]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1931,7 +1931,7 @@ LABEL_18:
 
       else
       {
-        v7 = [v6 BOOLValue];
+        bOOLValue = [v6 BOOLValue];
         v8 = [v5 objectForKey:*MEMORY[0x1E69C6968]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1940,7 +1940,7 @@ LABEL_18:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [objc_alloc(MEMORY[0x1E695F668]) initWithPayload:v4 isCompact:v7 rowCount:objc_msgSend(v8 columnCount:{"integerValue"), objc_msgSend(v9, "integerValue")}];
+            v10 = [objc_alloc(MEMORY[0x1E695F668]) initWithPayload:v4 isCompact:bOOLValue rowCount:objc_msgSend(v8 columnCount:{"integerValue"), objc_msgSend(v9, "integerValue")}];
           }
 
           else
@@ -1970,14 +1970,14 @@ LABEL_18:
   return v10;
 }
 
-- (id)_newVNBarcodeSymbologyAztecDescriptorForACBSBarcodeInfo:(id)a3
+- (id)_newVNBarcodeSymbologyAztecDescriptorForACBSBarcodeInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C6998]];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:*MEMORY[0x1E69C6998]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKey:*MEMORY[0x1E69C6960]];
+    v5 = [infoCopy objectForKey:*MEMORY[0x1E69C6960]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2028,14 +2028,14 @@ LABEL_18:
   return v9;
 }
 
-- (id)_newVNBarcodeSymbologyQRDescriptorForACBSBarcodeInfo:(id)a3
+- (id)_newVNBarcodeSymbologyQRDescriptorForACBSBarcodeInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C6998]];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:*MEMORY[0x1E69C6998]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKey:*MEMORY[0x1E69C6960]];
+    v5 = [infoCopy objectForKey:*MEMORY[0x1E69C6960]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3294,25 +3294,25 @@ void __67__VNDetectBarcodesRequest__ourACBSBarcodeTypeToBarcodeSymbologyMap__blo
   +[VNDetectBarcodesRequest _ourACBSBarcodeTypeToBarcodeSymbologyMap]::ourACBSBarcodeTypeToBarcodeSymbologyMap = v8;
 }
 
-+ (id)barcodeSymbologyForMRCSymbology:(__CFString *)a3
++ (id)barcodeSymbologyForMRCSymbology:(__CFString *)symbology
 {
-  v3 = a3;
-  if (a3)
+  symbologyCopy = symbology;
+  if (symbology)
   {
     v4 = +[VNDetectBarcodesRequest _ourMRCSymbologyToBarcodeSymbologyMapRev4Private];
-    v3 = [v4 objectForKeyedSubscript:v3];
+    symbologyCopy = [v4 objectForKeyedSubscript:symbologyCopy];
   }
 
-  return v3;
+  return symbologyCopy;
 }
 
-+ (__CFString)MRCSymbologyForBarcodeSymbology:(id)a3
++ (__CFString)MRCSymbologyForBarcodeSymbology:(id)symbology
 {
-  v3 = a3;
-  if (v3)
+  symbologyCopy = symbology;
+  if (symbologyCopy)
   {
     v4 = +[VNDetectBarcodesRequest _ourBarcodeSymbologyToMRCSymbologyMapRev4Private];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:symbologyCopy];
   }
 
   else
@@ -3323,13 +3323,13 @@ void __67__VNDetectBarcodesRequest__ourACBSBarcodeTypeToBarcodeSymbologyMap__blo
   return v5;
 }
 
-+ (id)barcodeSymbologyForACBSBarcodeType:(id)a3
++ (id)barcodeSymbologyForACBSBarcodeType:(id)type
 {
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     v4 = +[VNDetectBarcodesRequest _ourACBSBarcodeTypeToBarcodeSymbologyMap];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -3340,13 +3340,13 @@ void __67__VNDetectBarcodesRequest__ourACBSBarcodeTypeToBarcodeSymbologyMap__blo
   return v5;
 }
 
-+ (id)ACBSBarcodeTypeForBarcodeSymbology:(id)a3
++ (id)ACBSBarcodeTypeForBarcodeSymbology:(id)symbology
 {
-  v3 = a3;
-  if (v3)
+  symbologyCopy = symbology;
+  if (symbologyCopy)
   {
     v4 = +[VNDetectBarcodesRequest _ourBarcodeSymbologyToACBSBarcodeTypeMap];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:symbologyCopy];
   }
 
   else
@@ -3357,16 +3357,16 @@ void __67__VNDetectBarcodesRequest__ourACBSBarcodeTypeToBarcodeSymbologyMap__blo
   return v5;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u > 2)
+  if (revision - 3737841664u > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77B39D0[a3 - 3737841664u];
+    return off_1E77B39D0[revision - 3737841664u];
   }
 }
 

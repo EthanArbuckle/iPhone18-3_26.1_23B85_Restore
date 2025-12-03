@@ -1,26 +1,26 @@
 @interface HUNamedWallpaperCollectionViewController
-- (HUNamedWallpaperCollectionViewController)initWithCollectionType:(int64_t)a3 horizontalInset:(double)a4 delegate:(id)a5;
+- (HUNamedWallpaperCollectionViewController)initWithCollectionType:(int64_t)type horizontalInset:(double)inset delegate:(id)delegate;
 - (HUNamedWallpaperCollectionViewControllerDelegate)delegate;
 - (UIEdgeInsets)edgeInsets;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation HUNamedWallpaperCollectionViewController
 
-- (HUNamedWallpaperCollectionViewController)initWithCollectionType:(int64_t)a3 horizontalInset:(double)a4 delegate:(id)a5
+- (HUNamedWallpaperCollectionViewController)initWithCollectionType:(int64_t)type horizontalInset:(double)inset delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v9 = objc_alloc_init(MEMORY[0x277D752F0]);
   [v9 setScrollDirection:1];
   [v9 setMinimumLineSpacing:8.0];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v15 = v12 / v14;
 
   [v9 setItemSize:ceil(v15 * 200.0)];
@@ -30,29 +30,29 @@
   v17 = v16;
   if (v16)
   {
-    v16->_collectionType = a3;
-    objc_storeWeak(&v16->_delegate, v8);
+    v16->_collectionType = type;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v17->_edgeInsets.top = 0.0;
-    v17->_edgeInsets.left = a4;
+    v17->_edgeInsets.left = inset;
     v17->_edgeInsets.bottom = 0.0;
-    v17->_edgeInsets.right = a4;
-    v18 = [MEMORY[0x277D14D18] sharedInstance];
-    v19 = [v18 allNamedWallpapersForWallpaperCollectionType:a3];
+    v17->_edgeInsets.right = inset;
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    v19 = [mEMORY[0x277D14D18] allNamedWallpapersForWallpaperCollectionType:type];
     wallpapers = v17->_wallpapers;
     v17->_wallpapers = v19;
 
-    v21 = [MEMORY[0x277D14D18] sharedInstance];
-    v22 = [v21 allNamedWallpaperThumbnailsForWallpaperCollectionType:a3];
+    mEMORY[0x277D14D18]2 = [MEMORY[0x277D14D18] sharedInstance];
+    v22 = [mEMORY[0x277D14D18]2 allNamedWallpaperThumbnailsForWallpaperCollectionType:type];
     wallpaperThumbnails = v17->_wallpaperThumbnails;
     v17->_wallpaperThumbnails = v22;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     wallpaperThumbnailCache = v17->_wallpaperThumbnailCache;
-    v17->_wallpaperThumbnailCache = v24;
+    v17->_wallpaperThumbnailCache = dictionary;
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     wallpaperImageCache = v17->_wallpaperImageCache;
-    v17->_wallpaperImageCache = v26;
+    v17->_wallpaperImageCache = dictionary2;
 
     [(HUNamedWallpaperCollectionViewController *)v17 setPreferredContentSize:0.0, 232.0];
   }
@@ -65,58 +65,58 @@
   v12.receiver = self;
   v12.super_class = HUNamedWallpaperCollectionViewController;
   [(HUNamedWallpaperCollectionViewController *)&v12 viewDidLoad];
-  v3 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
+  collectionView = [(HUNamedWallpaperCollectionViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v6];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v6];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
-  [v8 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView2 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:clearColor];
 
-  v9 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
-  [v9 setShowsVerticalScrollIndicator:0];
+  collectionView3 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
+  [collectionView3 setShowsVerticalScrollIndicator:0];
 
-  v10 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
-  [v10 setAlwaysBounceVertical:0];
+  collectionView4 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
+  [collectionView4 setAlwaysBounceVertical:0];
 
-  v11 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
-  [v11 setContentInset:{16.0, 16.0, 16.0, 16.0}];
+  collectionView5 = [(HUNamedWallpaperCollectionViewController *)self collectionView];
+  [collectionView5 setContentInset:{16.0, 16.0, 16.0, 16.0}];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnails:a3];
+  v4 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnails:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnails];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  pathCopy = path;
+  viewCopy = view;
+  wallpaperThumbnails = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnails];
+  v9 = [wallpaperThumbnails objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v10 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnailCache];
-  v11 = [v9 assetIdentifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  wallpaperThumbnailCache = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnailCache];
+  assetIdentifier = [v9 assetIdentifier];
+  v12 = [wallpaperThumbnailCache objectForKeyedSubscript:assetIdentifier];
 
   if (!v12)
   {
-    v13 = [MEMORY[0x277D14D18] sharedInstance];
-    v12 = [v13 wallpaperImageForWallpaper:v9 variant:0];
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    v12 = [mEMORY[0x277D14D18] wallpaperImageForWallpaper:v9 variant:0];
 
-    v14 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnailCache];
-    v15 = [v9 assetIdentifier];
-    [v14 setObject:v12 forKeyedSubscript:v15];
+    wallpaperThumbnailCache2 = [(HUNamedWallpaperCollectionViewController *)self wallpaperThumbnailCache];
+    assetIdentifier2 = [v9 assetIdentifier];
+    [wallpaperThumbnailCache2 setObject:v12 forKeyedSubscript:assetIdentifier2];
   }
 
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [v7 dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:v6];
+  v18 = [viewCopy dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:pathCopy];
 
   [v18 setImage:v12];
   [v18 setContentMode:{2 * (objc_msgSend(v9, "type") != 2)}];
@@ -124,27 +124,27 @@
   return v18;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [(HUNamedWallpaperCollectionViewController *)self wallpapers];
-  v8 = [v6 item];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  wallpapers = [(HUNamedWallpaperCollectionViewController *)self wallpapers];
+  item = [pathCopy item];
 
-  v14 = [v7 objectAtIndexedSubscript:v8];
+  v14 = [wallpapers objectAtIndexedSubscript:item];
 
-  v9 = [(HUNamedWallpaperCollectionViewController *)self wallpaperImageCache];
-  v10 = [v14 assetIdentifier];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  wallpaperImageCache = [(HUNamedWallpaperCollectionViewController *)self wallpaperImageCache];
+  assetIdentifier = [v14 assetIdentifier];
+  v11 = [wallpaperImageCache objectForKeyedSubscript:assetIdentifier];
 
   if (!v11)
   {
-    v12 = [MEMORY[0x277D14D18] sharedInstance];
-    v11 = [v12 wallpaperImageForWallpaper:v14 variant:0];
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    v11 = [mEMORY[0x277D14D18] wallpaperImageForWallpaper:v14 variant:0];
   }
 
-  v13 = [(HUNamedWallpaperCollectionViewController *)self delegate];
-  [v13 namedWallpaperController:self didChooseWallpaper:v14 image:v11];
+  delegate = [(HUNamedWallpaperCollectionViewController *)self delegate];
+  [delegate namedWallpaperController:self didChooseWallpaper:v14 image:v11];
 }
 
 - (HUNamedWallpaperCollectionViewControllerDelegate)delegate

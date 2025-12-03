@@ -1,54 +1,54 @@
 @interface WFTimeInterval
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSDateComponentsFormatter)timeIntervalFormatter;
 - (NSString)absoluteTimeString;
-- (WFTimeInterval)initWithCoder:(id)a3;
-- (WFTimeInterval)initWithTimeInterval:(double)a3 allowedUnits:(unint64_t)a4 unitsStyle:(int64_t)a5 zeroFormattingBehavior:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFTimeInterval)initWithCoder:(id)coder;
+- (WFTimeInterval)initWithTimeInterval:(double)interval allowedUnits:(unint64_t)units unitsStyle:(int64_t)style zeroFormattingBehavior:(unint64_t)behavior;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)wfSerializedRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFTimeInterval
 
-- (WFTimeInterval)initWithCoder:(id)a3
+- (WFTimeInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeInterval"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowedUnits"];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowedUnits"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unitsStyle"];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unitsStyle"];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zeroFormattingBehavior"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zeroFormattingBehavior"];
 
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v12 unsignedIntegerValue];
 
-  return [(WFTimeInterval *)self initWithTimeInterval:v9 allowedUnits:v11 unitsStyle:v13 zeroFormattingBehavior:v7];
+  return [(WFTimeInterval *)self initWithTimeInterval:unsignedIntegerValue allowedUnits:unsignedIntegerValue2 unitsStyle:unsignedIntegerValue3 zeroFormattingBehavior:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   timeInterval = self->_timeInterval;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithDouble:timeInterval];
-  [v6 encodeObject:v7 forKey:@"timeInterval"];
+  [coderCopy encodeObject:v7 forKey:@"timeInterval"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_allowedUnits];
-  [v6 encodeObject:v8 forKey:@"allowedUnits"];
+  [coderCopy encodeObject:v8 forKey:@"allowedUnits"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:self->_unitsStyle];
-  [v6 encodeObject:v9 forKey:@"unitsStyle"];
+  [coderCopy encodeObject:v9 forKey:@"unitsStyle"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_zeroFormattingBehavior];
-  [v6 encodeObject:v10 forKey:@"zeroFormattingBehavior"];
+  [coderCopy encodeObject:v10 forKey:@"zeroFormattingBehavior"];
 }
 
 - (id)wfSerializedRepresentation
@@ -76,9 +76,9 @@
 
 - (NSString)absoluteTimeString
 {
-  v3 = [(WFTimeInterval *)self timeIntervalFormatter];
+  timeIntervalFormatter = [(WFTimeInterval *)self timeIntervalFormatter];
   [(WFTimeInterval *)self timeInterval];
-  v4 = [v3 stringFromTimeInterval:?];
+  v4 = [timeIntervalFormatter stringFromTimeInterval:?];
 
   return v4;
 }
@@ -101,14 +101,14 @@
   return timeIntervalFormatter;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  compareCopy = compare;
   [(WFTimeInterval *)self timeInterval];
   v6 = [v4 numberWithDouble:?];
   v7 = MEMORY[0x277CCABB0];
-  [v5 timeInterval];
+  [compareCopy timeInterval];
   v9 = v8;
 
   v10 = [v7 numberWithDouble:v9];
@@ -117,10 +117,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -132,7 +132,7 @@
     {
       [(WFTimeInterval *)self timeInterval];
       v6 = v5;
-      [(WFTimeInterval *)v4 timeInterval];
+      [(WFTimeInterval *)equalCopy timeInterval];
       v8 = v6 == v7;
     }
 
@@ -145,56 +145,56 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(WFTimeInterval *)self timeInterval];
   v6 = v5;
-  v7 = [(WFTimeInterval *)self allowedUnits];
-  v8 = [(WFTimeInterval *)self unitsStyle];
-  v9 = [(WFTimeInterval *)self zeroFormattingBehavior];
+  allowedUnits = [(WFTimeInterval *)self allowedUnits];
+  unitsStyle = [(WFTimeInterval *)self unitsStyle];
+  zeroFormattingBehavior = [(WFTimeInterval *)self zeroFormattingBehavior];
 
-  return [v4 initWithTimeInterval:v7 allowedUnits:v8 unitsStyle:v9 zeroFormattingBehavior:v6];
+  return [v4 initWithTimeInterval:allowedUnits allowedUnits:unitsStyle unitsStyle:zeroFormattingBehavior zeroFormattingBehavior:v6];
 }
 
-- (WFTimeInterval)initWithTimeInterval:(double)a3 allowedUnits:(unint64_t)a4 unitsStyle:(int64_t)a5 zeroFormattingBehavior:(unint64_t)a6
+- (WFTimeInterval)initWithTimeInterval:(double)interval allowedUnits:(unint64_t)units unitsStyle:(int64_t)style zeroFormattingBehavior:(unint64_t)behavior
 {
   v10 = [(WFTimeInterval *)self init];
   v11 = v10;
   if (v10)
   {
-    v10->_timeInterval = a3;
-    v12 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10->_timeInterval = interval;
+    v12 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     v11->_hash = [v12 hash];
 
-    v11->_allowedUnits = a4;
-    v11->_unitsStyle = a5;
-    v11->_zeroFormattingBehavior = a6;
+    v11->_allowedUnits = units;
+    v11->_unitsStyle = style;
+    v11->_zeroFormattingBehavior = behavior;
     v13 = v11;
   }
 
   return v11;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.timeinterval"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.timeinterval"];
 
   v6 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"timeInterval"];
   [v6 doubleValue];
   v8 = v7;
 
   v9 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"allowedUnits"];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v11 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"unitsStyle"];
-  v12 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
   v13 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"zeroFormattingBehavior"];
-  v14 = [v13 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v13 unsignedIntegerValue];
 
-  v15 = [[a1 alloc] initWithTimeInterval:v10 allowedUnits:v12 unitsStyle:v14 zeroFormattingBehavior:v8];
+  v15 = [[self alloc] initWithTimeInterval:unsignedIntegerValue allowedUnits:unsignedIntegerValue2 unitsStyle:unsignedIntegerValue3 zeroFormattingBehavior:v8];
 
   return v15;
 }

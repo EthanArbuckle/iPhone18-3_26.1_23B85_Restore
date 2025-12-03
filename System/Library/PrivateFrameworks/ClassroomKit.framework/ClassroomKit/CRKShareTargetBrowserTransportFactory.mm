@@ -1,17 +1,17 @@
 @interface CRKShareTargetBrowserTransportFactory
 - (id)makeInstructordTransportProvider;
 - (id)makeStudentdTransportProvider;
-- (void)makeInstructordTransportWithCompletion:(id)a3;
-- (void)makeStudentdTransportWithCompletion:(id)a3;
+- (void)makeInstructordTransportWithCompletion:(id)completion;
+- (void)makeStudentdTransportWithCompletion:(id)completion;
 @end
 
 @implementation CRKShareTargetBrowserTransportFactory
 
-- (void)makeStudentdTransportWithCompletion:(id)a3
+- (void)makeStudentdTransportWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKShareTargetBrowserTransportFactory *)self makeStudentdTransportProvider];
-  [v5 fetchTransportWithCompletion:v4];
+  completionCopy = completion;
+  makeStudentdTransportProvider = [(CRKShareTargetBrowserTransportFactory *)self makeStudentdTransportProvider];
+  [makeStudentdTransportProvider fetchTransportWithCompletion:completionCopy];
 }
 
 - (id)makeStudentdTransportProvider
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (void)makeInstructordTransportWithCompletion:(id)a3
+- (void)makeInstructordTransportWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKShareTargetBrowserTransportFactory *)self makeInstructordTransportProvider];
-  [v5 fetchTransportWithCompletion:v4];
+  completionCopy = completion;
+  makeInstructordTransportProvider = [(CRKShareTargetBrowserTransportFactory *)self makeInstructordTransportProvider];
+  [makeInstructordTransportProvider fetchTransportWithCompletion:completionCopy];
 }
 
 - (id)makeInstructordTransportProvider

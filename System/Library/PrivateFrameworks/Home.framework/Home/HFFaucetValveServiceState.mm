@@ -1,8 +1,8 @@
 @interface HFFaucetValveServiceState
 + (id)optionalCharacteristicTypes;
 + (id)requiredCharacteristicTypes;
-+ (unint64_t)_typeForSystemActiveState:(BOOL)a3 heaterCoolerActiveState:(id)a4 usageState:(int64_t)a5 currentHeaterCoolerState:(id)a6;
-- (HFFaucetValveServiceState)initWithBatchReadResponse:(id)a3;
++ (unint64_t)_typeForSystemActiveState:(BOOL)state heaterCoolerActiveState:(id)activeState usageState:(int64_t)usageState currentHeaterCoolerState:(id)coolerState;
+- (HFFaucetValveServiceState)initWithBatchReadResponse:(id)response;
 - (id)stateTypeIdentifier;
 - (int64_t)primaryState;
 - (int64_t)priority;
@@ -62,14 +62,14 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)_typeForSystemActiveState:(BOOL)a3 heaterCoolerActiveState:(id)a4 usageState:(int64_t)a5 currentHeaterCoolerState:(id)a6
++ (unint64_t)_typeForSystemActiveState:(BOOL)state heaterCoolerActiveState:(id)activeState usageState:(int64_t)usageState currentHeaterCoolerState:(id)coolerState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (a5 == 1)
+  stateCopy = state;
+  activeStateCopy = activeState;
+  coolerStateCopy = coolerState;
+  if (usageState == 1)
   {
-    if (v9)
+    if (stateCopy)
     {
       v6 = 5;
     }
@@ -80,16 +80,16 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
     }
   }
 
-  else if (!a5)
+  else if (!usageState)
   {
-    if (v9)
+    if (stateCopy)
     {
       v6 = 3;
     }
 
-    else if (v10 && [v10 BOOLValue])
+    else if (activeStateCopy && [activeStateCopy BOOLValue])
     {
-      if (v11 && [v11 unsignedIntegerValue] == 2)
+      if (coolerStateCopy && [coolerStateCopy unsignedIntegerValue] == 2)
       {
         v6 = 1;
       }
@@ -109,11 +109,11 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
   return v6;
 }
 
-- (HFFaucetValveServiceState)initWithBatchReadResponse:(id)a3
+- (HFFaucetValveServiceState)initWithBatchReadResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 allServices];
-  v6 = [v5 na_any:&__block_literal_global_121_2];
+  responseCopy = response;
+  allServices = [responseCopy allServices];
+  v6 = [allServices na_any:&__block_literal_global_121_2];
 
   v7 = MEMORY[0x277CD0F38];
   if (v6)
@@ -123,10 +123,10 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
 
   v8 = *MEMORY[0x277CCF748];
   v9 = [MEMORY[0x277CBEB98] setWithObject:*v7];
-  v10 = [v4 responseForCharacteristicType:v8 inServicesOfTypes:v9];
+  v10 = [responseCopy responseForCharacteristicType:v8 inServicesOfTypes:v9];
   v11 = [v10 valueWithExpectedClass:objc_opt_class()];
 
-  v12 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF908]];
+  v12 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF908]];
   v13 = [v12 valueWithExpectedClass:objc_opt_class()];
 
   if (v11)
@@ -141,7 +141,7 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
 
   if (v14)
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -152,7 +152,7 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
     }
 
     v16 = qword_280E02698;
-    v17 = [v4 responseForCharacteristicType:v8 inServicesOfTypes:v16];
+    v17 = [responseCopy responseForCharacteristicType:v8 inServicesOfTypes:v16];
     v18 = [v17 valueWithExpectedClass:objc_opt_class()];
 
     v19 = *MEMORY[0x277CCF810];
@@ -162,7 +162,7 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
     }
 
     v20 = qword_280E026A8;
-    v21 = [v4 responseForCharacteristicType:v19 inServicesOfTypes:v20];
+    v21 = [responseCopy responseForCharacteristicType:v19 inServicesOfTypes:v20];
     v22 = [v21 valueWithExpectedClass:objc_opt_class()];
 
     v25.receiver = self;
@@ -175,10 +175,10 @@ void __56__HFFaucetValveServiceState_optionalCharacteristicTypes__block_invoke_2
 
     self = v23;
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 uint64_t __55__HFFaucetValveServiceState_initWithBatchReadResponse___block_invoke(uint64_t a1, void *a2)
@@ -217,22 +217,22 @@ void __55__HFFaucetValveServiceState_initWithBatchReadResponse___block_invoke_5(
 
 - (id)stateTypeIdentifier
 {
-  v2 = [(HFFaucetValveServiceState *)self type];
-  if (v2 - 1 > 4)
+  type = [(HFFaucetValveServiceState *)self type];
+  if (type - 1 > 4)
   {
     return @"Off";
   }
 
   else
   {
-    return off_277DFEB90[v2 - 1];
+    return off_277DFEB90[type - 1];
   }
 }
 
 - (int64_t)primaryState
 {
-  v2 = [(HFFaucetValveServiceState *)self type];
-  if (v2 == 3 || v2 == 0)
+  type = [(HFFaucetValveServiceState *)self type];
+  if (type == 3 || type == 0)
   {
     return 1;
   }

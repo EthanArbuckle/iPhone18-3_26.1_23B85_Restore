@@ -1,10 +1,10 @@
 @interface DownloadButton
-- (_TtC23ShelfKitCollectionViews14DownloadButton)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews14DownloadButton)initWithCoder:(id)coder;
 @end
 
 @implementation DownloadButton
 
-- (_TtC23ShelfKitCollectionViews14DownloadButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews14DownloadButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14DownloadButton_episodeCellState) = 2;
   *(&self->super.super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14DownloadButton_presenter) = 0;

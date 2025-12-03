@@ -13,33 +13,33 @@
 - (id)bls_loggingString
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 startDate];
-  v4 = [v3 bls_loggingString];
-  [a1 duration];
-  v6 = [v2 stringWithFormat:@"%@ -> %.3fs duration", v4, v5];
+  startDate = [self startDate];
+  bls_loggingString = [startDate bls_loggingString];
+  [self duration];
+  v6 = [v2 stringWithFormat:@"%@ -> %.3fs duration", bls_loggingString, v5];
 
   return v6;
 }
 
 - (uint64_t)bls_machContinuousStartTime
 {
-  v1 = [a1 startDate];
-  v2 = [v1 bls_machContinuousTime];
+  startDate = [self startDate];
+  bls_machContinuousTime = [startDate bls_machContinuousTime];
 
-  return v2;
+  return bls_machContinuousTime;
 }
 
 - (uint64_t)bls_machContinuousEndTime
 {
-  v1 = [a1 endDate];
-  v2 = [v1 bls_machContinuousTime];
+  endDate = [self endDate];
+  bls_machContinuousTime = [endDate bls_machContinuousTime];
 
-  return v2;
+  return bls_machContinuousTime;
 }
 
 - (unint64_t)bls_machDuration
 {
-  [a1 duration];
+  [self duration];
   v2 = v1;
   if (BLSMachTimeFromNSTimeInterval_onceToken != -1)
   {
@@ -57,7 +57,7 @@
   BSTimeDifferenceFromMachTimeToMachTime();
   v5 = v4;
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v3];
-  v7 = [a1 initWithStartDate:v6 duration:v5];
+  v7 = [self initWithStartDate:v6 duration:v5];
 
   return v7;
 }
@@ -75,11 +75,11 @@ LABEL_5:
 
   [v8 timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [a1 startDate];
-  [v12 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v14 = v13;
 
-  [a1 duration];
+  [self duration];
   v16 = v14 - a2 - v11;
   if (v16 > 0.0)
   {
@@ -110,10 +110,10 @@ LABEL_9:
 - (id)bls_shortLoggingString
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 startDate];
-  v4 = [v3 bls_shortLoggingString];
-  [a1 duration];
-  v6 = [v2 stringWithFormat:@"%@->%.3fs", v4, v5];
+  startDate = [self startDate];
+  bls_shortLoggingString = [startDate bls_shortLoggingString];
+  [self duration];
+  v6 = [v2 stringWithFormat:@"%@->%.3fs", bls_shortLoggingString, v5];
 
   return v6;
 }

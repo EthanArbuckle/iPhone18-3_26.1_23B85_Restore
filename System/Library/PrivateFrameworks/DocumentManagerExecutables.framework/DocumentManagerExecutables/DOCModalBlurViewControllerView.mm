@@ -1,14 +1,14 @@
 @interface DOCModalBlurViewControllerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCModalBlurViewControllerView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -20,7 +20,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   v9 = DOCModalBlurViewControllerView._shouldAnimateProperty(withKey:)(v8);
@@ -28,23 +28,23 @@
   return v9;
 }
 
-- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCModalBlurViewControllerView();
   return [(DOCModalBlurViewControllerView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables30DOCModalBlurViewControllerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCModalBlurViewControllerView();
-  v4 = a3;
-  v5 = [(DOCModalBlurViewControllerView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DOCModalBlurViewControllerView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

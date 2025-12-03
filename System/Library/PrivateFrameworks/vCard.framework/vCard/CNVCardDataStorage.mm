@@ -1,58 +1,58 @@
 @interface CNVCardDataStorage
-+ (id)storageWithData:(id)a3;
-- (CNVCardDataStorage)initWithData:(id)a3;
++ (id)storageWithData:(id)data;
+- (CNVCardDataStorage)initWithData:(id)data;
 - (id)insertionMarker;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
-- (void)appendString:(id)a3 usingEncoding:(unint64_t)a4;
-- (void)insertString:(id)a3 atMarker:(id)a4;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
+- (void)appendString:(id)string usingEncoding:(unint64_t)encoding;
+- (void)insertString:(id)string atMarker:(id)marker;
 @end
 
 @implementation CNVCardDataStorage
 
-+ (id)storageWithData:(id)a3
++ (id)storageWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-- (CNVCardDataStorage)initWithData:(id)a3
+- (CNVCardDataStorage)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [(CNVCardDataStorage *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    [(CNVCardDataStorage *)self appendString:v4 usingEncoding:4];
+    [(CNVCardDataStorage *)self appendString:stringCopy usingEncoding:4];
   }
 }
 
-- (void)appendString:(id)a3 usingEncoding:(unint64_t)a4
+- (void)appendString:(id)string usingEncoding:(unint64_t)encoding
 {
   data = self->_data;
-  v5 = [a3 dataUsingEncoding:a4];
+  v5 = [string dataUsingEncoding:encoding];
   [(NSMutableData *)data appendData:v5];
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(CNVCardDataStorage *)self appendString:v6];
 }
@@ -65,14 +65,14 @@
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-- (void)insertString:(id)a3 atMarker:(id)a4
+- (void)insertString:(id)string atMarker:(id)marker
 {
-  v8 = a3;
-  v6 = a4;
+  stringCopy = string;
+  markerCopy = marker;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
-    v7 = [v8 dataUsingEncoding:4];
-    -[NSMutableData replaceBytesInRange:withBytes:length:](self->_data, "replaceBytesInRange:withBytes:length:", [v6 unsignedIntegerValue], 0, objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"));
+    v7 = [stringCopy dataUsingEncoding:4];
+    -[NSMutableData replaceBytesInRange:withBytes:length:](self->_data, "replaceBytesInRange:withBytes:length:", [markerCopy unsignedIntegerValue], 0, objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"));
   }
 }
 

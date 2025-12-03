@@ -1,10 +1,10 @@
 @interface MUPlaceActionDispatcher
 - (MUPlaceActionManager)actionManager;
 - (_TtC6MapsUI23MUPlaceActionDispatcher)init;
-- (_TtC6MapsUI23MUPlaceActionDispatcher)initWithActionManager:(id)a3;
+- (_TtC6MapsUI23MUPlaceActionDispatcher)initWithActionManager:(id)manager;
 - (_TtP6MapsUI31MUPlaceActionDispatcherDelegate_)delegate;
-- (void)performActionFor:(id)a3 environment:(id)a4 completion:(id)a5;
-- (void)setActionManager:(id)a3;
+- (void)performActionFor:(id)for environment:(id)environment completion:(id)completion;
+- (void)setActionManager:(id)manager;
 @end
 
 @implementation MUPlaceActionDispatcher
@@ -16,13 +16,13 @@
   return *(self + v3);
 }
 
-- (void)setActionManager:(id)a3
+- (void)setActionManager:(id)manager
 {
   v5 = OBJC_IVAR____TtC6MapsUI23MUPlaceActionDispatcher_actionManager;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = manager;
+  managerCopy = manager;
 }
 
 - (_TtP6MapsUI31MUPlaceActionDispatcherDelegate_)delegate
@@ -33,14 +33,14 @@
   return Strong;
 }
 
-- (_TtC6MapsUI23MUPlaceActionDispatcher)initWithActionManager:(id)a3
+- (_TtC6MapsUI23MUPlaceActionDispatcher)initWithActionManager:(id)manager
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____TtC6MapsUI23MUPlaceActionDispatcher_actionManager) = a3;
+  *(self + OBJC_IVAR____TtC6MapsUI23MUPlaceActionDispatcher_actionManager) = manager;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  managerCopy = manager;
   return [(MUPlaceActionDispatcher *)&v8 init];
 }
 
@@ -51,9 +51,9 @@
   return result;
 }
 
-- (void)performActionFor:(id)a3 environment:(id)a4 completion:(id)a5
+- (void)performActionFor:(id)for environment:(id)environment completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -66,10 +66,10 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v12 = a4;
-  v11 = self;
-  sub_1C5643490(v10, v12, v8, v9);
+  forCopy = for;
+  environmentCopy = environment;
+  selfCopy = self;
+  sub_1C5643490(forCopy, environmentCopy, v8, v9);
 
   sub_1C5632FA8(v8);
 }

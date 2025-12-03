@@ -1,14 +1,14 @@
 @interface STUsageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STUsageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUsageCell" hasInstanceVariable:@"_itemNameLabel" withType:"UILabel"];
-  [v3 validateClass:@"STUsageCell" hasInstanceVariable:@"_usageLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUsageCell" hasInstanceVariable:@"_itemNameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STUsageCell" hasInstanceVariable:@"_usageLabel" withType:"UILabel"];
 }
 
 @end

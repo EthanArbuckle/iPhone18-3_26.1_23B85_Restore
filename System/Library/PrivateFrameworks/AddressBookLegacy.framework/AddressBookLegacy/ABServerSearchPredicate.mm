@@ -1,34 +1,34 @@
 @interface ABServerSearchPredicate
-- (ABServerSearchPredicate)initWithSearchString:(id)a3 source:(void *)a4 account:(id)a5 includeSourceInResults:(BOOL)a6 includePhotosInResults:(BOOL)a7;
+- (ABServerSearchPredicate)initWithSearchString:(id)string source:(void *)source account:(id)account includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults;
 - (DADConnection)connection;
-- (int)_errorForDAStatusCode:(int64_t)a3;
+- (int)_errorForDAStatusCode:(int64_t)code;
 - (void)_searchQueryIsDone;
 - (void)dealloc;
 - (void)runPredicate;
-- (void)runPredicateWithDelegate:(id)a3;
-- (void)searchQuery:(id)a3 finishedWithError:(id)a4;
-- (void)searchQuery:(id)a3 returnedResults:(id)a4;
-- (void)setConnection:(id)a3;
-- (void)setSource:(void *)a3;
+- (void)runPredicateWithDelegate:(id)delegate;
+- (void)searchQuery:(id)query finishedWithError:(id)error;
+- (void)searchQuery:(id)query returnedResults:(id)results;
+- (void)setConnection:(id)connection;
+- (void)setSource:(void *)source;
 @end
 
 @implementation ABServerSearchPredicate
 
-- (ABServerSearchPredicate)initWithSearchString:(id)a3 source:(void *)a4 account:(id)a5 includeSourceInResults:(BOOL)a6 includePhotosInResults:(BOOL)a7
+- (ABServerSearchPredicate)initWithSearchString:(id)string source:(void *)source account:(id)account includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults
 {
-  v7 = a7;
-  v8 = a6;
+  inResultsCopy = inResults;
+  resultsCopy = results;
   v15.receiver = self;
   v15.super_class = ABServerSearchPredicate;
   v12 = [(ABPredicate *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(ABServerSearchPredicate *)v12 setSearchString:a3];
-    [(ABServerSearchPredicate *)v13 setSource:a4];
-    [(ABServerSearchPredicate *)v13 setAccountIdentifier:a5];
-    [(ABServerSearchPredicate *)v13 setIncludeSourceInResults:v8];
-    [(ABServerSearchPredicate *)v13 setIncludePhotosInResults:v7];
+    [(ABServerSearchPredicate *)v12 setSearchString:string];
+    [(ABServerSearchPredicate *)v13 setSource:source];
+    [(ABServerSearchPredicate *)v13 setAccountIdentifier:account];
+    [(ABServerSearchPredicate *)v13 setIncludeSourceInResults:resultsCopy];
+    [(ABServerSearchPredicate *)v13 setIncludePhotosInResults:inResultsCopy];
   }
 
   return v13;
@@ -47,27 +47,27 @@
   [(ABPredicate *)&v4 dealloc];
 }
 
-- (void)setSource:(void *)a3
+- (void)setSource:(void *)source
 {
   source = self->_source;
-  if (source != a3)
+  if (source != source)
   {
     if (source)
     {
       CFRelease(source);
     }
 
-    self->_source = CFRetain(a3);
+    self->_source = CFRetain(source);
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
   connection = self->_connection;
-  if (connection != a3)
+  if (connection != connection)
   {
 
-    self->_connection = a3;
+    self->_connection = connection;
   }
 }
 
@@ -89,10 +89,10 @@
   {
     if ([(ABServerSearchPredicate *)self source])
     {
-      v3 = [(ABServerSearchPredicate *)self source];
-      v4 = ABRecordCopyValue(v3, kABSourceExternalIdentifierProperty);
-      v5 = [(ABServerSearchPredicate *)self source];
-      v6 = ABRecordCopyValue(v5, kABSourceExternalModificationTagProperty);
+      source = [(ABServerSearchPredicate *)self source];
+      v4 = ABRecordCopyValue(source, kABSourceExternalIdentifierProperty);
+      source2 = [(ABServerSearchPredicate *)self source];
+      v6 = ABRecordCopyValue(source2, kABSourceExternalModificationTagProperty);
     }
 
     else
@@ -117,16 +117,16 @@
   }
 }
 
-- (void)runPredicateWithDelegate:(id)a3
+- (void)runPredicateWithDelegate:(id)delegate
 {
-  [(ABServerSearchPredicate *)self setDelegate:a3];
+  [(ABServerSearchPredicate *)self setDelegate:delegate];
 
   [(ABServerSearchPredicate *)self runPredicate];
 }
 
-- (int)_errorForDAStatusCode:(int64_t)a3
+- (int)_errorForDAStatusCode:(int64_t)code
 {
-  if (a3)
+  if (code)
   {
     v3 = -2;
   }
@@ -136,7 +136,7 @@
     v3 = -1;
   }
 
-  if (a3 == 2)
+  if (code == 2)
   {
     return 0;
   }
@@ -158,7 +158,7 @@
   }
 }
 
-- (void)searchQuery:(id)a3 returnedResults:(id)a4
+- (void)searchQuery:(id)query returnedResults:(id)results
 {
   v17 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -171,7 +171,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [results countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -181,7 +181,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(results);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -212,7 +212,7 @@
         }
       }
 
-      v6 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [results countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -226,20 +226,20 @@ LABEL_18:
   objc_sync_exit(self);
 }
 
-- (void)searchQuery:(id)a3 finishedWithError:(id)a4
+- (void)searchQuery:(id)query finishedWithError:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = [a4 code];
+    code = [error code];
   }
 
   else
   {
-    v5 = 2;
+    code = 2;
   }
 
   objc_sync_enter(self);
-  self->_error = [(ABServerSearchPredicate *)self _errorForDAStatusCode:v5];
+  self->_error = [(ABServerSearchPredicate *)self _errorForDAStatusCode:code];
   [(ABServerSearchPredicate *)self _searchQueryIsDone];
 
   objc_sync_exit(self);

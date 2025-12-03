@@ -1,36 +1,36 @@
 @interface CNAutocompleteLocalContactsFetcher
-- (BOOL)doesMatchInfo:(id)a3 matchProperties:(id)a4;
-- (id)autocompleteResultsForProperties:(id)a3 contactPredicate:(id)a4 contactStore:(id)a5 resultFactory:(id)a6 error:(id *)a7;
-- (id)autocompleteResultsForProperties:(id)a3 fetchResults:(id)a4 resultFactory:(id)a5 contactStore:(id)a6;
-- (id)contactsForPredicate:(id)a3 properties:(id)a4 contactStore:(id)a5 error:(id *)a6;
-- (id)keysToFetchForProperties:(id)a3;
-- (id)resultsForSearchString:(id)a3 terms:(id)a4 properties:(id)a5 contactStore:(id)a6 error:(id *)a7;
-- (id)transformWithProperties:(id)a3 factory:(id)a4;
+- (BOOL)doesMatchInfo:(id)info matchProperties:(id)properties;
+- (id)autocompleteResultsForProperties:(id)properties contactPredicate:(id)predicate contactStore:(id)store resultFactory:(id)factory error:(id *)error;
+- (id)autocompleteResultsForProperties:(id)properties fetchResults:(id)results resultFactory:(id)factory contactStore:(id)store;
+- (id)contactsForPredicate:(id)predicate properties:(id)properties contactStore:(id)store error:(id *)error;
+- (id)keysToFetchForProperties:(id)properties;
+- (id)resultsForSearchString:(id)string terms:(id)terms properties:(id)properties contactStore:(id)store error:(id *)error;
+- (id)transformWithProperties:(id)properties factory:(id)factory;
 @end
 
 @implementation CNAutocompleteLocalContactsFetcher
 
-- (id)autocompleteResultsForProperties:(id)a3 fetchResults:(id)a4 resultFactory:(id)a5 contactStore:(id)a6
+- (id)autocompleteResultsForProperties:(id)properties fetchResults:(id)results resultFactory:(id)factory contactStore:(id)store
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a4 _cn_filter:&__block_literal_global_9];
-  v14 = [(CNAutocompleteLocalContactsFetcher *)self transformWithProperties:v12 factory:v11];
+  storeCopy = store;
+  factoryCopy = factory;
+  propertiesCopy = properties;
+  v13 = [results _cn_filter:&__block_literal_global_9];
+  v14 = [(CNAutocompleteLocalContactsFetcher *)self transformWithProperties:propertiesCopy factory:factoryCopy];
 
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fetchResults_resultFactory_contactStore___block_invoke;
   v24 = &unk_2781C4380;
-  v25 = v10;
+  v25 = storeCopy;
   v26 = v14;
-  v15 = v10;
+  v15 = storeCopy;
   v16 = v14;
   v17 = [v13 _cn_map:&v21];
   v18 = [v17 _cn_filter:{*MEMORY[0x277CFBD18], v21, v22, v23, v24}];
-  v19 = [v18 _cn_flatten];
+  _cn_flatten = [v18 _cn_flatten];
 
-  return v19;
+  return _cn_flatten;
 }
 
 id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fetchResults_resultFactory_contactStore___block_invoke(uint64_t a1, void *a2)
@@ -101,16 +101,16 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
   return v11;
 }
 
-- (id)transformWithProperties:(id)a3 factory:(id)a4
+- (id)transformWithProperties:(id)properties factory:(id)factory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [CNAutocompleteLocalContactResultTransformBuilder localContactBuilderWithResultFactory:a4];
+  propertiesCopy = properties;
+  v6 = [CNAutocompleteLocalContactResultTransformBuilder localContactBuilderWithResultFactory:factory];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = propertiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -134,23 +134,23 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
     while (v9);
   }
 
-  v12 = [v6 build];
+  build = [v6 build];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return build;
 }
 
-- (id)autocompleteResultsForProperties:(id)a3 contactPredicate:(id)a4 contactStore:(id)a5 resultFactory:(id)a6 error:(id *)a7
+- (id)autocompleteResultsForProperties:(id)properties contactPredicate:(id)predicate contactStore:(id)store resultFactory:(id)factory error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(CNAutocompleteLocalContactsFetcher *)self contactsForPredicate:a4 properties:v12 contactStore:v13 error:a7];
+  propertiesCopy = properties;
+  storeCopy = store;
+  factoryCopy = factory;
+  v15 = [(CNAutocompleteLocalContactsFetcher *)self contactsForPredicate:predicate properties:propertiesCopy contactStore:storeCopy error:error];
   if (v15)
   {
-    v16 = [(CNAutocompleteLocalContactsFetcher *)self autocompleteResultsForProperties:v12 fetchResults:v15 resultFactory:v14 contactStore:v13];
+    v16 = [(CNAutocompleteLocalContactsFetcher *)self autocompleteResultsForProperties:propertiesCopy fetchResults:v15 resultFactory:factoryCopy contactStore:storeCopy];
   }
 
   else
@@ -158,9 +158,9 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
     v17 = CNALoggingContextDebug();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      if (a7)
+      if (error)
       {
-        v18 = *a7;
+        v18 = *error;
       }
 
       else
@@ -181,50 +181,50 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
   return v16;
 }
 
-- (id)contactsForPredicate:(id)a3 properties:(id)a4 contactStore:(id)a5 error:(id *)a6
+- (id)contactsForPredicate:(id)predicate properties:(id)properties contactStore:(id)store error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(CNAutocompleteLocalContactsFetcher *)self keysToFetchForProperties:a4];
-  v13 = [v10 unifiedContactsMatchingPredicate:v11 keysToFetch:v12 error:a6];
+  storeCopy = store;
+  predicateCopy = predicate;
+  v12 = [(CNAutocompleteLocalContactsFetcher *)self keysToFetchForProperties:properties];
+  v13 = [storeCopy unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v12 error:error];
 
   return v13;
 }
 
-- (id)keysToFetchForProperties:(id)a3
+- (id)keysToFetchForProperties:(id)properties
 {
   v3 = MEMORY[0x277CBEB58];
   v4 = MEMORY[0x277CBDA78];
-  v5 = a3;
+  propertiesCopy = properties;
   v6 = [v4 descriptorForRequiredKeysForStyle:0];
   v7 = [v3 setWithObject:v6];
 
-  [v7 addObjectsFromArray:v5];
+  [v7 addObjectsFromArray:propertiesCopy];
   [v7 addObject:*MEMORY[0x277CBD048]];
   v8 = +[CNAutocompleteNameComponents contactKeys];
   [v7 addObjectsFromArray:v8];
 
-  v9 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
-- (id)resultsForSearchString:(id)a3 terms:(id)a4 properties:(id)a5 contactStore:(id)a6 error:(id *)a7
+- (id)resultsForSearchString:(id)string terms:(id)terms properties:(id)properties contactStore:(id)store error:(id *)error
 {
   v39[11] = *MEMORY[0x277D85DE8];
   v11 = MEMORY[0x277CBDA70];
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  storeCopy = store;
+  propertiesCopy = properties;
+  stringCopy = string;
   v15 = [v11 alloc];
-  v16 = [(CNAutocompleteLocalContactsFetcher *)self keysToFetchForProperties:v13];
+  v16 = [(CNAutocompleteLocalContactsFetcher *)self keysToFetchForProperties:propertiesCopy];
   v17 = [v15 initWithKeysToFetch:v16];
 
-  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingFullTextSearch:v14 containerIdentifiers:0 groupIdentifiers:0];
+  v18 = [MEMORY[0x277CBDA58] predicateForContactsMatchingFullTextSearch:stringCopy containerIdentifiers:0 groupIdentifiers:0];
 
   [v17 setPredicate:v18];
   [v17 setUnifyResults:0];
-  v19 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = *MEMORY[0x277CBD058];
   v39[0] = *MEMORY[0x277CBD000];
   v39[1] = v20;
@@ -242,7 +242,7 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
   v39[9] = v24;
   v39[10] = *MEMORY[0x277CBD070];
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:11];
-  v26 = [MEMORY[0x277CBEB98] setWithArray:v13];
+  v26 = [MEMORY[0x277CBEB98] setWithArray:propertiesCopy];
 
   v27 = [v26 setByAddingObjectsFromArray:v25];
 
@@ -254,11 +254,11 @@ id __111__CNAutocompleteLocalContactsFetcher_autocompleteResultsForProperties_fe
   v35[4] = self;
   v36 = v27;
   v37 = v28;
-  v29 = v19;
+  v29 = array;
   v38 = v29;
   v30 = v28;
   v31 = v27;
-  LODWORD(v26) = [v12 enumerateContactsAndMatchInfoWithFetchRequest:v17 error:a7 usingBlock:v35];
+  LODWORD(v26) = [storeCopy enumerateContactsAndMatchInfoWithFetchRequest:v17 error:error usingBlock:v35];
 
   v32 = 0;
   if (v26)
@@ -282,23 +282,23 @@ void __97__CNAutocompleteLocalContactsFetcher_resultsForSearchString_terms_prope
   }
 }
 
-- (BOOL)doesMatchInfo:(id)a3 matchProperties:(id)a4
+- (BOOL)doesMatchInfo:(id)info matchProperties:(id)properties
 {
-  v5 = a4;
-  v6 = a3;
-  LOBYTE(a3) = [v6 matchedNameProperty];
-  v7 = [v6 matchedProperties];
+  propertiesCopy = properties;
+  infoCopy = info;
+  LOBYTE(info) = [infoCopy matchedNameProperty];
+  matchedProperties = [infoCopy matchedProperties];
 
-  v8 = [v7 allKeys];
+  allKeys = [matchedProperties allKeys];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__CNAutocompleteLocalContactsFetcher_doesMatchInfo_matchProperties___block_invoke;
   v12[3] = &unk_2781C3FD8;
-  v13 = v5;
-  v9 = v5;
-  v10 = [v8 _cn_any:v12];
+  v13 = propertiesCopy;
+  v9 = propertiesCopy;
+  v10 = [allKeys _cn_any:v12];
 
-  return a3 | v10;
+  return info | v10;
 }
 
 @end

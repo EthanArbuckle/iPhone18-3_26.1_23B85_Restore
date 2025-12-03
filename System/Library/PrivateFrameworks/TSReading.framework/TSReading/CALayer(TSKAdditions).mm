@@ -8,9 +8,9 @@
 
 - (uint64_t)makeStretchableLayerWithImage:()TSKAdditions leftCap:rightCap:topCap:bottomCap:
 {
-  [a1 makeStretchableLayerWithoutImage:? leftCap:? rightCap:? topCap:? bottomCap:?];
+  [self makeStretchableLayerWithoutImage:? leftCap:? rightCap:? topCap:? bottomCap:?];
 
-  return [a1 setContents:a3];
+  return [self setContents:a3];
 }
 
 - (uint64_t)makeStretchableLayerWithoutImage:()TSKAdditions leftCap:rightCap:topCap:bottomCap:
@@ -19,18 +19,18 @@
   Height = CGImageGetHeight(image);
   v15 = a7 / Height;
   v16 = (Height - (a6 + a7)) / Height;
-  [a1 setContentsGravity:*MEMORY[0x277CDA700]];
+  [self setContentsGravity:*MEMORY[0x277CDA700]];
 
-  return [a1 setContentsCenter:{a4 / Width, v15, (Width - (a4 + a5)) / Width, v16}];
+  return [self setContentsCenter:{a4 / Width, v15, (Width - (a4 + a5)) / Width, v16}];
 }
 
 - (uint64_t)makeStretchableLayerWithUIImage:()TSKAdditions leftCap:rightCap:topCap:bottomCap:
 {
   [a7 scale];
   v14 = v13;
-  [a1 makeStretchableLayerWithImage:objc_msgSend(a7 leftCap:"CGImage") rightCap:v14 * a2 topCap:v14 * a3 bottomCap:{v14 * a4, v14 * a5}];
+  [self makeStretchableLayerWithImage:objc_msgSend(a7 leftCap:"CGImage") rightCap:v14 * a2 topCap:v14 * a3 bottomCap:{v14 * a4, v14 * a5}];
 
-  return [a1 setContentsScale:v14];
+  return [self setContentsScale:v14];
 }
 
 @end

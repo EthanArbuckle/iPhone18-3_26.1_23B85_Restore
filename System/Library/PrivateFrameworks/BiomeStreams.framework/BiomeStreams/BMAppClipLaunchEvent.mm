@@ -1,9 +1,9 @@
 @interface BMAppClipLaunchEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMAppClipLaunchEvent)initWithProto:(id)a3;
-- (BMAppClipLaunchEvent)initWithProtoData:(id)a3;
-- (BMAppClipLaunchEvent)initWithURLHash:(id)a3 clipBundleID:(id)a4 appBundleID:(id)a5 webAppBundleID:(id)a6 launchReason:(id)a7 fullURL:(id)a8 referrerURL:(id)a9 referrerBundleID:(id)a10;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMAppClipLaunchEvent)initWithProto:(id)proto;
+- (BMAppClipLaunchEvent)initWithProtoData:(id)data;
+- (BMAppClipLaunchEvent)initWithURLHash:(id)hash clipBundleID:(id)d appBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(id)reason fullURL:(id)l referrerURL:(id)rL referrerBundleID:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,50 +12,50 @@
 
 @implementation BMAppClipLaunchEvent
 
-- (BMAppClipLaunchEvent)initWithURLHash:(id)a3 clipBundleID:(id)a4 appBundleID:(id)a5 webAppBundleID:(id)a6 launchReason:(id)a7 fullURL:(id)a8 referrerURL:(id)a9 referrerBundleID:(id)a10
+- (BMAppClipLaunchEvent)initWithURLHash:(id)hash clipBundleID:(id)d appBundleID:(id)iD webAppBundleID:(id)bundleID launchReason:(id)reason fullURL:(id)l referrerURL:(id)rL referrerBundleID:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  hashCopy = hash;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  reasonCopy = reason;
+  lCopy = l;
+  rLCopy = rL;
+  referrerBundleIDCopy = referrerBundleID;
   v42.receiver = self;
   v42.super_class = BMAppClipLaunchEvent;
   v24 = [(BMEventBase *)&v42 init];
   if (v24)
   {
-    v25 = [v16 copy];
+    v25 = [hashCopy copy];
     URLHash = v24->_URLHash;
     v24->_URLHash = v25;
 
-    v27 = [v17 copy];
+    v27 = [dCopy copy];
     clipBundleID = v24->_clipBundleID;
     v24->_clipBundleID = v27;
 
-    v29 = [v18 copy];
+    v29 = [iDCopy copy];
     appBundleID = v24->_appBundleID;
     v24->_appBundleID = v29;
 
-    v31 = [v19 copy];
+    v31 = [bundleIDCopy copy];
     webAppBundleID = v24->_webAppBundleID;
     v24->_webAppBundleID = v31;
 
-    v33 = [v20 copy];
+    v33 = [reasonCopy copy];
     launchReason = v24->_launchReason;
     v24->_launchReason = v33;
 
-    v35 = [v21 copy];
+    v35 = [lCopy copy];
     fullURL = v24->_fullURL;
     v24->_fullURL = v35;
 
-    v37 = [v22 copy];
+    v37 = [rLCopy copy];
     referrerURL = v24->_referrerURL;
     v24->_referrerURL = v37;
 
-    v39 = [v23 copy];
+    v39 = [referrerBundleIDCopy copy];
     referrerBundleID = v24->_referrerBundleID;
     v24->_referrerBundleID = v39;
   }
@@ -67,23 +67,23 @@
 {
   v14 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(BMAppClipLaunchEvent *)self URLHash];
-  v5 = [(BMAppClipLaunchEvent *)self clipBundleID];
-  v6 = [(BMAppClipLaunchEvent *)self appBundleID];
-  v7 = [(BMAppClipLaunchEvent *)self webAppBundleID];
-  v8 = [(BMAppClipLaunchEvent *)self launchReason];
-  v9 = [(BMAppClipLaunchEvent *)self fullURL];
-  v10 = [(BMAppClipLaunchEvent *)self referrerURL];
-  v11 = [(BMAppClipLaunchEvent *)self referrerBundleID];
-  v12 = [v14 stringWithFormat:@"<%@ %p> URLHash: %@, clipBundleID: %@, appBundleID: %@, webAppBundleID: %@, launchReason: %@, fullURL: %@, referrerURL: %@, referrerBundleID: %@", v3, self, v4, v5, v6, v7, v8, v9, v10, v11];
+  uRLHash = [(BMAppClipLaunchEvent *)self URLHash];
+  clipBundleID = [(BMAppClipLaunchEvent *)self clipBundleID];
+  appBundleID = [(BMAppClipLaunchEvent *)self appBundleID];
+  webAppBundleID = [(BMAppClipLaunchEvent *)self webAppBundleID];
+  launchReason = [(BMAppClipLaunchEvent *)self launchReason];
+  fullURL = [(BMAppClipLaunchEvent *)self fullURL];
+  referrerURL = [(BMAppClipLaunchEvent *)self referrerURL];
+  referrerBundleID = [(BMAppClipLaunchEvent *)self referrerBundleID];
+  v12 = [v14 stringWithFormat:@"<%@ %p> URLHash: %@, clipBundleID: %@, appBundleID: %@, webAppBundleID: %@, launchReason: %@, fullURL: %@, referrerURL: %@, referrerBundleID: %@", v3, self, uRLHash, clipBundleID, appBundleID, webAppBundleID, launchReason, fullURL, referrerURL, referrerBundleID];
 
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 != 1)
+  dataCopy = data;
+  if (version != 1)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -92,26 +92,26 @@
     }
   }
 
-  v8 = [[a1 alloc] initWithProtoData:v6];
+  v8 = [[self alloc] initWithProtoData:dataCopy];
 
   return v8;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMAppClipLaunchEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMAppClipLaunchEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMAppClipLaunchEvent)initWithProto:(id)a3
+- (BMAppClipLaunchEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -127,192 +127,192 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v19 = [v5 uRLHash];
-  v18 = [v5 clipBundleID];
-  v6 = [v5 appBundleID];
-  v17 = [v5 webAppBundleID];
-  v16 = [v5 launchReason];
+  v5 = protoCopy;
+  uRLHash = [v5 uRLHash];
+  clipBundleID = [v5 clipBundleID];
+  appBundleID = [v5 appBundleID];
+  webAppBundleID = [v5 webAppBundleID];
+  launchReason = [v5 launchReason];
   v7 = MEMORY[0x1E695DFF8];
-  v20 = [v5 fullURL];
-  v15 = [v7 URLWithString:v20];
+  fullURL = [v5 fullURL];
+  v15 = [v7 URLWithString:fullURL];
   v8 = MEMORY[0x1E695DFF8];
-  v9 = [v5 referrerURL];
-  v10 = [v8 URLWithString:v9];
-  v11 = [v5 referrerBundleID];
+  referrerURL = [v5 referrerURL];
+  v10 = [v8 URLWithString:referrerURL];
+  referrerBundleID = [v5 referrerBundleID];
 
-  self = [(BMAppClipLaunchEvent *)self initWithURLHash:v19 clipBundleID:v18 appBundleID:v6 webAppBundleID:v17 launchReason:v16 fullURL:v15 referrerURL:v10 referrerBundleID:v11];
-  v12 = self;
+  self = [(BMAppClipLaunchEvent *)self initWithURLHash:uRLHash clipBundleID:clipBundleID appBundleID:appBundleID webAppBundleID:webAppBundleID launchReason:launchReason fullURL:v15 referrerURL:v10 referrerBundleID:referrerBundleID];
+  selfCopy = self;
 LABEL_8:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BMAppClipLaunchEvent)initWithProtoData:(id)a3
+- (BMAppClipLaunchEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBAppClipLaunchEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBAppClipLaunchEvent alloc] initWithData:dataCopy];
 
     self = [(BMAppClipLaunchEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMAppClipLaunchEvent *)self URLHash];
-  [v3 setURLHash:v4];
+  uRLHash = [(BMAppClipLaunchEvent *)self URLHash];
+  [v3 setURLHash:uRLHash];
 
-  v5 = [(BMAppClipLaunchEvent *)self clipBundleID];
-  [v3 setClipBundleID:v5];
+  clipBundleID = [(BMAppClipLaunchEvent *)self clipBundleID];
+  [v3 setClipBundleID:clipBundleID];
 
-  v6 = [(BMAppClipLaunchEvent *)self appBundleID];
-  [v3 setAppBundleID:v6];
+  appBundleID = [(BMAppClipLaunchEvent *)self appBundleID];
+  [v3 setAppBundleID:appBundleID];
 
-  v7 = [(BMAppClipLaunchEvent *)self webAppBundleID];
-  [v3 setWebAppBundleID:v7];
+  webAppBundleID = [(BMAppClipLaunchEvent *)self webAppBundleID];
+  [v3 setWebAppBundleID:webAppBundleID];
 
-  v8 = [(BMAppClipLaunchEvent *)self launchReason];
-  [v3 setLaunchReason:v8];
+  launchReason = [(BMAppClipLaunchEvent *)self launchReason];
+  [v3 setLaunchReason:launchReason];
 
-  v9 = [(BMAppClipLaunchEvent *)self fullURL];
-  v10 = [v9 absoluteString];
-  [v3 setFullURL:v10];
+  fullURL = [(BMAppClipLaunchEvent *)self fullURL];
+  absoluteString = [fullURL absoluteString];
+  [v3 setFullURL:absoluteString];
 
-  v11 = [(BMAppClipLaunchEvent *)self referrerURL];
-  v12 = [v11 absoluteString];
-  [v3 setReferrerURL:v12];
+  referrerURL = [(BMAppClipLaunchEvent *)self referrerURL];
+  absoluteString2 = [referrerURL absoluteString];
+  [v3 setReferrerURL:absoluteString2];
 
-  v13 = [(BMAppClipLaunchEvent *)self referrerBundleID];
-  [v3 setReferrerBundleID:v13];
+  referrerBundleID = [(BMAppClipLaunchEvent *)self referrerBundleID];
+  [v3 setReferrerBundleID:referrerBundleID];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(BMAppClipLaunchEvent *)self URLHash];
-  v4 = [v3 hash];
-  v5 = [(BMAppClipLaunchEvent *)self appBundleID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(BMAppClipLaunchEvent *)self clipBundleID];
-  v8 = [v7 hash];
-  v9 = [(BMAppClipLaunchEvent *)self webAppBundleID];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(BMAppClipLaunchEvent *)self launchReason];
-  v12 = [v11 hash];
-  v13 = [(BMAppClipLaunchEvent *)self fullURL];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(BMAppClipLaunchEvent *)self referrerURL];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(BMAppClipLaunchEvent *)self referrerBundleID];
-  v18 = [v17 hash];
+  uRLHash = [(BMAppClipLaunchEvent *)self URLHash];
+  v4 = [uRLHash hash];
+  appBundleID = [(BMAppClipLaunchEvent *)self appBundleID];
+  v6 = [appBundleID hash] ^ v4;
+  clipBundleID = [(BMAppClipLaunchEvent *)self clipBundleID];
+  v8 = [clipBundleID hash];
+  webAppBundleID = [(BMAppClipLaunchEvent *)self webAppBundleID];
+  v10 = v6 ^ v8 ^ [webAppBundleID hash];
+  launchReason = [(BMAppClipLaunchEvent *)self launchReason];
+  v12 = [launchReason hash];
+  fullURL = [(BMAppClipLaunchEvent *)self fullURL];
+  v14 = v12 ^ [fullURL hash];
+  referrerURL = [(BMAppClipLaunchEvent *)self referrerURL];
+  v16 = v10 ^ v14 ^ [referrerURL hash];
+  referrerBundleID = [(BMAppClipLaunchEvent *)self referrerBundleID];
+  v18 = [referrerBundleID hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(BMAppClipLaunchEvent *)self URLHash];
-    if (v7 || ([v6 URLHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    uRLHash = [(BMAppClipLaunchEvent *)self URLHash];
+    if (uRLHash || ([v6 URLHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(BMAppClipLaunchEvent *)self URLHash];
-      v9 = [v6 URLHash];
-      v34 = [v8 isEqual:v9];
+      uRLHash2 = [(BMAppClipLaunchEvent *)self URLHash];
+      uRLHash3 = [v6 URLHash];
+      v34 = [uRLHash2 isEqual:uRLHash3];
 
-      if (v7)
+      if (uRLHash)
       {
 LABEL_9:
 
-        v11 = [(BMAppClipLaunchEvent *)self appBundleID];
-        if (v11 || ([v6 appBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        appBundleID = [(BMAppClipLaunchEvent *)self appBundleID];
+        if (appBundleID || ([v6 appBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v7 = [(BMAppClipLaunchEvent *)self appBundleID];
-          v12 = [v6 appBundleID];
-          v33 = [v7 isEqual:v12];
+          uRLHash = [(BMAppClipLaunchEvent *)self appBundleID];
+          appBundleID2 = [v6 appBundleID];
+          v33 = [uRLHash isEqual:appBundleID2];
 
-          if (v11)
+          if (appBundleID)
           {
 LABEL_15:
 
-            v13 = [(BMAppClipLaunchEvent *)self clipBundleID];
-            if (v13 || ([v6 clipBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+            clipBundleID = [(BMAppClipLaunchEvent *)self clipBundleID];
+            if (clipBundleID || ([v6 clipBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v7 = [(BMAppClipLaunchEvent *)self clipBundleID];
-              v14 = [v6 clipBundleID];
-              HIDWORD(v32) = [v7 isEqual:v14];
+              uRLHash = [(BMAppClipLaunchEvent *)self clipBundleID];
+              clipBundleID2 = [v6 clipBundleID];
+              HIDWORD(v32) = [uRLHash isEqual:clipBundleID2];
 
-              if (v13)
+              if (clipBundleID)
               {
 LABEL_21:
 
-                v15 = [(BMAppClipLaunchEvent *)self webAppBundleID];
-                if (v15 || ([v6 webAppBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                webAppBundleID = [(BMAppClipLaunchEvent *)self webAppBundleID];
+                if (webAppBundleID || ([v6 webAppBundleID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v7 = [(BMAppClipLaunchEvent *)self webAppBundleID];
-                  v16 = [v6 webAppBundleID];
-                  LODWORD(v32) = [v7 isEqual:v16];
+                  uRLHash = [(BMAppClipLaunchEvent *)self webAppBundleID];
+                  webAppBundleID2 = [v6 webAppBundleID];
+                  LODWORD(v32) = [uRLHash isEqual:webAppBundleID2];
 
-                  if (v15)
+                  if (webAppBundleID)
                   {
 LABEL_27:
 
-                    v17 = [(BMAppClipLaunchEvent *)self launchReason];
-                    if (v17 || ([v6 launchReason], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                    launchReason = [(BMAppClipLaunchEvent *)self launchReason];
+                    if (launchReason || ([v6 launchReason], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                     {
-                      v7 = [(BMAppClipLaunchEvent *)self launchReason];
-                      v18 = [v6 launchReason];
-                      v19 = [v7 isEqual:v18];
+                      uRLHash = [(BMAppClipLaunchEvent *)self launchReason];
+                      launchReason2 = [v6 launchReason];
+                      v19 = [uRLHash isEqual:launchReason2];
 
-                      if (v17)
+                      if (launchReason)
                       {
 LABEL_33:
 
-                        v20 = [(BMAppClipLaunchEvent *)self fullURL];
-                        if (v20 || ([v6 fullURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+                        fullURL = [(BMAppClipLaunchEvent *)self fullURL];
+                        if (fullURL || ([v6 fullURL], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
                         {
-                          v7 = [(BMAppClipLaunchEvent *)self fullURL];
-                          v21 = [v6 fullURL];
-                          v22 = [v7 isEqual:v21];
+                          uRLHash = [(BMAppClipLaunchEvent *)self fullURL];
+                          fullURL2 = [v6 fullURL];
+                          v22 = [uRLHash isEqual:fullURL2];
 
-                          if (v20)
+                          if (fullURL)
                           {
 LABEL_39:
 
-                            v23 = [(BMAppClipLaunchEvent *)self referrerURL];
-                            if (v23 || ([v6 referrerURL], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                            referrerURL = [(BMAppClipLaunchEvent *)self referrerURL];
+                            if (referrerURL || ([v6 referrerURL], (uRLHash = objc_claimAutoreleasedReturnValue()) != 0))
                             {
-                              v24 = [(BMAppClipLaunchEvent *)self referrerURL];
-                              v25 = [v6 referrerURL];
-                              v26 = [v24 isEqual:v25];
+                              referrerURL2 = [(BMAppClipLaunchEvent *)self referrerURL];
+                              referrerURL3 = [v6 referrerURL];
+                              v26 = [referrerURL2 isEqual:referrerURL3];
 
-                              if (v23)
+                              if (referrerURL)
                               {
 LABEL_45:
 
-                                v27 = [(BMAppClipLaunchEvent *)self referrerBundleID];
-                                if (v27 || ([v6 referrerBundleID], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                                referrerBundleID = [(BMAppClipLaunchEvent *)self referrerBundleID];
+                                if (referrerBundleID || ([v6 referrerBundleID], (uRLHash = objc_claimAutoreleasedReturnValue()) != 0))
                                 {
-                                  v28 = [(BMAppClipLaunchEvent *)self referrerBundleID];
-                                  v29 = [v6 referrerBundleID];
-                                  v30 = [v28 isEqual:v29];
+                                  referrerBundleID2 = [(BMAppClipLaunchEvent *)self referrerBundleID];
+                                  referrerBundleID3 = [v6 referrerBundleID];
+                                  v30 = [referrerBundleID2 isEqual:referrerBundleID3];
 
-                                  if (v27)
+                                  if (referrerBundleID)
                                   {
 LABEL_51:
 

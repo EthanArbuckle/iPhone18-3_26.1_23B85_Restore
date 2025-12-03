@@ -11,16 +11,16 @@
 - (shared_ptr<PKCField>)_field;
 - (unsigned)categoryBitMask;
 - (void)dealloc;
-- (void)setCategoryBitMask:(unsigned int)a3;
+- (void)setCategoryBitMask:(unsigned int)mask;
 - (void)setDirection:(PKPhysicsField *)self;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFalloff:(float)a3;
-- (void)setMinimumRadius:(float)a3;
-- (void)setOverride:(BOOL)a3;
-- (void)setRegion:(id)a3;
-- (void)setRepresentedObject:(id)a3;
-- (void)setStrength:(float)a3;
-- (void)set_field:(shared_ptr<PKCField>)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFalloff:(float)falloff;
+- (void)setMinimumRadius:(float)radius;
+- (void)setOverride:(BOOL)override;
+- (void)setRegion:(id)region;
+- (void)setRepresentedObject:(id)object;
+- (void)setStrength:(float)strength;
+- (void)set_field:(shared_ptr<PKCField>)set_field;
 @end
 
 @implementation PKPhysicsField
@@ -74,10 +74,10 @@
   return result;
 }
 
-- (void)set_field:(shared_ptr<PKCField>)a3
+- (void)set_field:(shared_ptr<PKCField>)set_field
 {
-  ptr = *a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
+  ptr = *set_field.__ptr_;
+  v5 = *(set_field.__ptr_ + 1);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);
@@ -100,10 +100,10 @@
   }
 }
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  v6 = a3;
-  objc_storeStrong(&self->_region, a3);
+  regionCopy = region;
+  objc_storeStrong(&self->_region, region);
   ptr = self->_field.__ptr_;
   if (ptr)
   {
@@ -111,13 +111,13 @@
   }
 }
 
-- (void)setRepresentedObject:(id)a3
+- (void)setRepresentedObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    setRepresentedObjectOnField(ptr, v5);
+    setRepresentedObjectOnField(ptr, objectCopy);
   }
 }
 
@@ -147,12 +147,12 @@
   }
 }
 
-- (void)setStrength:(float)a3
+- (void)setStrength:(float)strength
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 49) = a3;
+    *(ptr + 49) = strength;
   }
 }
 
@@ -167,7 +167,7 @@
 
 - (double)direction
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (v1)
   {
     v2 = *(v1 + 224);
@@ -195,12 +195,12 @@
   }
 }
 
-- (void)setFalloff:(float)a3
+- (void)setFalloff:(float)falloff
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 51) = a3;
+    *(ptr + 51) = falloff;
   }
 }
 
@@ -215,12 +215,12 @@
   return ptr & 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 244) = a3;
+    *(ptr + 244) = enabled;
   }
 }
 
@@ -238,12 +238,12 @@
   }
 }
 
-- (void)setCategoryBitMask:(unsigned int)a3
+- (void)setCategoryBitMask:(unsigned int)mask
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 60) = a3;
+    *(ptr + 60) = mask;
   }
 }
 
@@ -258,12 +258,12 @@
   return ptr & 1;
 }
 
-- (void)setOverride:(BOOL)a3
+- (void)setOverride:(BOOL)override
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 200) = a3;
+    *(ptr + 200) = override;
   }
 }
 
@@ -279,12 +279,12 @@
   return v3 / PKGet_INV_PTM_RATIO();
 }
 
-- (void)setMinimumRadius:(float)a3
+- (void)setMinimumRadius:(float)radius
 {
   ptr = self->_field.__ptr_;
   if (ptr)
   {
-    *(ptr + 52) = PKGet_INV_PTM_RATIO() * a3;
+    *(ptr + 52) = PKGet_INV_PTM_RATIO() * radius;
   }
 }
 

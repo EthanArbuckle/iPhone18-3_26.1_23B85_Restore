@@ -1,9 +1,9 @@
 @interface GTProcessInfo
 - (GTProcessInfo)init;
-- (GTProcessInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTProcessInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTProcessInfo
@@ -15,40 +15,40 @@
   v2 = [(GTProcessInfo *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v2->_processName;
-    v2->_processName = v4;
+    v2->_processName = processName;
 
-    v6 = [v3 environment];
+    environment = [processInfo environment];
     environment = v2->_environment;
-    v2->_environment = v6;
+    v2->_environment = environment;
 
-    v8 = [v3 arguments];
+    arguments = [processInfo arguments];
     arguments = v2->_arguments;
-    v2->_arguments = v8;
+    v2->_arguments = arguments;
 
-    v2->_processIdentifier = [v3 processIdentifier];
+    v2->_processIdentifier = [processInfo processIdentifier];
     v2->_ppid = getppid();
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleIdentifier = v2->_bundleIdentifier;
-    v2->_bundleIdentifier = v11;
+    v2->_bundleIdentifier = bundleIdentifier;
   }
 
   return v2;
 }
 
-- (GTProcessInfo)initWithCoder:(id)a3
+- (GTProcessInfo)initWithCoder:(id)coder
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = GTProcessInfo;
   v5 = [(GTProcessInfo *)&v44 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processName"];
     processName = v5->_processName;
     v5->_processName = v6;
 
@@ -62,7 +62,7 @@
       }
     }
 
-    v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
     arguments = v5->_arguments;
     v5->_arguments = v9;
 
@@ -122,7 +122,7 @@ LABEL_18:
     }
 
     v18 = objc_opt_class();
-    v19 = [v4 decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"environment"];
+    v19 = [coderCopy decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"environment"];
     environment = v5->_environment;
     v5->_environment = v19;
 
@@ -193,7 +193,7 @@ LABEL_33:
 LABEL_34:
     }
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v31;
 
@@ -207,27 +207,27 @@ LABEL_34:
       }
     }
 
-    v5->_processIdentifier = [v4 decodeInt32ForKey:{@"processIdentifier", v36}];
-    v5->_ppid = [v4 decodeInt32ForKey:@"ppid"];
+    v5->_processIdentifier = [coderCopy decodeInt32ForKey:{@"processIdentifier", v36}];
+    v5->_ppid = [coderCopy decodeInt32ForKey:@"ppid"];
   }
 
   v34 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   processName = self->_processName;
-  v5 = a3;
-  [v5 encodeObject:processName forKey:@"processName"];
-  [v5 encodeObject:self->_arguments forKey:@"arguments"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeInt32:self->_processIdentifier forKey:@"processIdentifier"];
-  [v5 encodeInt32:self->_ppid forKey:@"ppid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:processName forKey:@"processName"];
+  [coderCopy encodeObject:self->_arguments forKey:@"arguments"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeInt32:self->_processIdentifier forKey:@"processIdentifier"];
+  [coderCopy encodeInt32:self->_ppid forKey:@"ppid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(GTProcessInfo);
   [(GTProcessInfo *)v4 setProcessName:self->_processName];

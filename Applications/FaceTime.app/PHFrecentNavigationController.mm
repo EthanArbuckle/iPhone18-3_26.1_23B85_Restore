@@ -13,31 +13,31 @@
   if (![(PHFrecentNavigationController *)self needsSplitView])
   {
     [(PHFrecentNavigationController *)self _setClipUnderlapWhileTransitioning:1];
-    v3 = [(PHFrecentNavigationController *)self navigationBar];
-    [v3 setBarStyle:1];
+    navigationBar = [(PHFrecentNavigationController *)self navigationBar];
+    [navigationBar setBarStyle:1];
 
-    v4 = [(PHFrecentNavigationController *)self navigationBar];
-    [v4 setTranslucent:1];
+    navigationBar2 = [(PHFrecentNavigationController *)self navigationBar];
+    [navigationBar2 setTranslucent:1];
 
-    v5 = [(PHFrecentNavigationController *)self navigationBar];
-    [v5 _setHidesShadow:1];
+    navigationBar3 = [(PHFrecentNavigationController *)self navigationBar];
+    [navigationBar3 _setHidesShadow:1];
 
     v6 = objc_alloc_init(UIImage);
-    v7 = [(PHFrecentNavigationController *)self navigationBar];
-    [v7 setBackgroundImage:v6 forBarPosition:0 barMetrics:0];
+    navigationBar4 = [(PHFrecentNavigationController *)self navigationBar];
+    [navigationBar4 setBackgroundImage:v6 forBarPosition:0 barMetrics:0];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v8 = [UIBlurEffect effectWithStyle:2];
       v16[0] = v8;
-      v9 = [UIApp rootViewController];
-      v10 = [v9 backdropView];
-      v11 = [v10 captureGroup];
-      v12 = [UIVisualEffect _effectCopyingFromCaptureGroup:v11];
+      rootViewController = [UIApp rootViewController];
+      backdropView = [rootViewController backdropView];
+      captureGroup = [backdropView captureGroup];
+      v12 = [UIVisualEffect _effectCopyingFromCaptureGroup:captureGroup];
       v16[1] = v12;
       v13 = [NSArray arrayWithObjects:v16 count:2];
-      v14 = [(PHFrecentNavigationController *)self navigationBar];
-      [v14 setBackgroundEffects:v13];
+      navigationBar5 = [(PHFrecentNavigationController *)self navigationBar];
+      [navigationBar5 setBackgroundEffects:v13];
     }
   }
 }

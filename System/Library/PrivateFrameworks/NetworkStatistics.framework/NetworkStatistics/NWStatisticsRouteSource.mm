@@ -1,8 +1,8 @@
 @interface NWStatisticsRouteSource
-- (NWStatisticsRouteSource)initWithManager:(id)a3 destination:(const sockaddr *)a4 mask:(const sockaddr *)a5 interface:(unsigned int)a6;
+- (NWStatisticsRouteSource)initWithManager:(id)manager destination:(const sockaddr *)destination mask:(const sockaddr *)mask interface:(unsigned int)interface;
 - (id)_currentSnapshot;
 - (id)description;
-- (int)handleDescriptor:(void *)a3 length:(unint64_t)a4 events:(unint64_t)a5;
+- (int)handleDescriptor:(void *)descriptor length:(unint64_t)length events:(unint64_t)events;
 @end
 
 @implementation NWStatisticsRouteSource
@@ -14,20 +14,20 @@
   return v2;
 }
 
-- (int)handleDescriptor:(void *)a3 length:(unint64_t)a4 events:(unint64_t)a5
+- (int)handleDescriptor:(void *)descriptor length:(unint64_t)length events:(unint64_t)events
 {
-  if (a4 < 0x78)
+  if (length < 0x78)
   {
     return 1;
   }
 
   p_descriptor = &self->_descriptor;
-  if (!memcmp(&self->_descriptor, a3, 0x78uLL))
+  if (!memcmp(&self->_descriptor, descriptor, 0x78uLL))
   {
-    v15 = [(NWStatisticsSource *)self manager];
-    v16 = [v15 mgrflags];
+    manager = [(NWStatisticsSource *)self manager];
+    mgrflags = [manager mgrflags];
 
-    if ((v16 & 4) != 0)
+    if ((mgrflags & 4) != 0)
     {
       return 1;
     }
@@ -40,17 +40,17 @@
 
   else
   {
-    v9 = *a3;
-    v10 = *(a3 + 1);
-    v11 = *(a3 + 3);
-    *&p_descriptor->dst.sa.sa_data[6] = *(a3 + 2);
+    v9 = *descriptor;
+    v10 = *(descriptor + 1);
+    v11 = *(descriptor + 3);
+    *&p_descriptor->dst.sa.sa_data[6] = *(descriptor + 2);
     *(&p_descriptor->dst.sa + 24) = v11;
     *&p_descriptor->id = v9;
     *&p_descriptor->gateway_id = v10;
-    v12 = *(a3 + 4);
-    v13 = *(a3 + 5);
-    v14 = *(a3 + 6);
-    *&p_descriptor->flags = *(a3 + 14);
+    v12 = *(descriptor + 4);
+    v13 = *(descriptor + 5);
+    v14 = *(descriptor + 6);
+    *&p_descriptor->flags = *(descriptor + 14);
     p_descriptor->gateway.v4 = v13;
     *(&p_descriptor->gateway.sa + 1) = v14;
     *&p_descriptor->mask.sa.sa_data[10] = v12;
@@ -113,13 +113,13 @@
   return v8;
 }
 
-- (NWStatisticsRouteSource)initWithManager:(id)a3 destination:(const sockaddr *)a4 mask:(const sockaddr *)a5 interface:(unsigned int)a6
+- (NWStatisticsRouteSource)initWithManager:(id)manager destination:(const sockaddr *)destination mask:(const sockaddr *)mask interface:(unsigned int)interface
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  managerCopy = manager;
   v30.receiver = self;
   v30.super_class = NWStatisticsRouteSource;
-  v11 = [(NWStatisticsSource *)&v30 initWithManager:v10 source:0 provider:1];
+  v11 = [(NWStatisticsSource *)&v30 initWithManager:managerCopy source:0 provider:1];
   if (!v11)
   {
     goto LABEL_5;
@@ -131,15 +131,15 @@
   v49 = 0u;
   v47 = 0u;
   LODWORD(v48) = 1;
-  if (a4->sa_len > 0x1CuLL)
+  if (destination->sa_len > 0x1CuLL)
   {
     goto LABEL_5;
   }
 
   __memcpy_chk();
-  if (a5)
+  if (mask)
   {
-    if (a5->sa_len > 0x1CuLL)
+    if (mask->sa_len > 0x1CuLL)
     {
 LABEL_5:
       v12 = 0;
@@ -149,8 +149,8 @@ LABEL_5:
     __memcpy_chk();
   }
 
-  v52 = a6;
-  v13 = [v10 addSource:v11 request:&v47 length:84];
+  interfaceCopy = interface;
+  v13 = [managerCopy addSource:v11 request:&v47 length:84];
   v14 = NStatGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -164,7 +164,7 @@ LABEL_5:
       v15 = "Failed to create";
     }
 
-    sa_family = a4->sa_family;
+    sa_family = destination->sa_family;
     v17 = "Unknown-protocol";
     if (sa_family == 30)
     {
@@ -181,10 +181,10 @@ LABEL_5:
       v18 = v17;
     }
 
-    sa_len = a4->sa_len;
-    if (a5)
+    sa_len = destination->sa_len;
+    if (mask)
     {
-      v20 = a5->sa_len;
+      v20 = mask->sa_len;
     }
 
     else
@@ -193,7 +193,7 @@ LABEL_5:
     }
 
     *buf = 134219778;
-    v32 = v10;
+    v32 = managerCopy;
     v33 = 2080;
     v34 = v15;
     v35 = 2080;
@@ -201,20 +201,20 @@ LABEL_5:
     v37 = 1040;
     v38 = sa_len;
     v39 = 2096;
-    v40 = a4;
+    destinationCopy = destination;
     v41 = 1024;
-    v42 = a6;
+    interfaceCopy2 = interface;
     v43 = 1040;
     v44 = v20;
     v45 = 2096;
-    v46 = a5;
+    maskCopy = mask;
     _os_log_impl(&dword_25BA3A000, v14, OS_LOG_TYPE_INFO, "Manager %p: %s %s route source to %{network:sockaddr}.*P  interface index %d, mask  %{network:sockaddr}.*P", buf, 0x46u);
   }
 
-  if (([v10 mgrflags] & 0x80) != 0)
+  if (([managerCopy mgrflags] & 0x80) != 0)
   {
-    a4->sa_family;
-    NStatMgrTraceF(v10, "%s Manager %p: %s %s route source to %N on interface %I index %d, mask %N", v21, v22, v23, v24, v25, v26, "[NWStatisticsRouteSource initWithManager:destination:mask:interface:]");
+    destination->sa_family;
+    NStatMgrTraceF(managerCopy, "%s Manager %p: %s %s route source to %N on interface %I index %d, mask %N", v21, v22, v23, v24, v25, v26, "[NWStatisticsRouteSource initWithManager:destination:mask:interface:]");
   }
 
   if (v13)

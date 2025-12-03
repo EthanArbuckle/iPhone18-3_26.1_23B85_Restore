@@ -1,9 +1,9 @@
 @interface MPCFairPlayPerformanceController
 + (MPCFairPlayPerformanceController)shared;
-- (void)accountManager:(id)a3 didChangeAccounts:(id)a4;
-- (void)database:(id)a3 didFinishImportRequest:(id)a4 result:(id)a5;
-- (void)registerEngine:(id)a3;
-- (void)unregisterEngine:(id)a3;
+- (void)accountManager:(id)manager didChangeAccounts:(id)accounts;
+- (void)database:(id)database didFinishImportRequest:(id)request result:(id)result;
+- (void)registerEngine:(id)engine;
+- (void)unregisterEngine:(id)engine;
 @end
 
 @implementation MPCFairPlayPerformanceController
@@ -15,36 +15,36 @@
   return v2;
 }
 
-- (void)registerEngine:(id)a3
+- (void)registerEngine:(id)engine
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5C67F88(v4);
+  engineCopy = engine;
+  selfCopy = self;
+  sub_1C5C67F88(engineCopy);
 }
 
-- (void)unregisterEngine:(id)a3
+- (void)unregisterEngine:(id)engine
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C5D306B0(v4);
+  engineCopy = engine;
+  selfCopy = self;
+  sub_1C5D306B0(engineCopy);
 }
 
-- (void)accountManager:(id)a3 didChangeAccounts:(id)a4
+- (void)accountManager:(id)manager didChangeAccounts:(id)accounts
 {
   sub_1C5C64D74(0, &unk_1EC1A8BB0);
   sub_1C6016B10();
-  v6 = a3;
-  v7 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1C5D32ACC();
 }
 
-- (void)database:(id)a3 didFinishImportRequest:(id)a4 result:(id)a5
+- (void)database:(id)database didFinishImportRequest:(id)request result:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = self;
-  sub_1C5D3520C(v12, v11, v10);
+  databaseCopy = database;
+  requestCopy = request;
+  resultCopy = result;
+  selfCopy = self;
+  sub_1C5D3520C(selfCopy, v11, resultCopy);
 }
 
 @end

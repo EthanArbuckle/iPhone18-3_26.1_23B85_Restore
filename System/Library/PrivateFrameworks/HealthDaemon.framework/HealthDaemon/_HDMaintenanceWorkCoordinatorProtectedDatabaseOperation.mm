@@ -1,5 +1,5 @@
 @interface _HDMaintenanceWorkCoordinatorProtectedDatabaseOperation
-- (_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation)initWithName:(id)a3 database:(id)a4 operationBlock:(id)a5 canceledBlock:(id)a6;
+- (_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation)initWithName:(id)name database:(id)database operationBlock:(id)block canceledBlock:(id)canceledBlock;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
@@ -7,30 +7,30 @@
 
 @implementation _HDMaintenanceWorkCoordinatorProtectedDatabaseOperation
 
-- (_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation)initWithName:(id)a3 database:(id)a4 operationBlock:(id)a5 canceledBlock:(id)a6
+- (_HDMaintenanceWorkCoordinatorProtectedDatabaseOperation)initWithName:(id)name database:(id)database operationBlock:(id)block canceledBlock:(id)canceledBlock
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  databaseCopy = database;
+  blockCopy = block;
+  canceledBlockCopy = canceledBlock;
   v27.receiver = self;
   v27.super_class = _HDMaintenanceWorkCoordinatorProtectedDatabaseOperation;
-  v14 = [(HDMaintenanceOperation *)&v27 initWithName:v10];
+  v14 = [(HDMaintenanceOperation *)&v27 initWithName:nameCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_database, a4);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_database, database);
+    v16 = [blockCopy copy];
     operationBlock = v15->_operationBlock;
     v15->_operationBlock = v16;
 
-    v18 = _Block_copy(v13);
+    v18 = _Block_copy(canceledBlockCopy);
     canceledBlock = v15->_canceledBlock;
     v15->_canceledBlock = v18;
 
     v26 = 0;
-    v20 = [v11 takeAccessibilityAssertionWithOwnerIdentifier:v10 timeout:&v26 error:600.0];
+    v20 = [databaseCopy takeAccessibilityAssertionWithOwnerIdentifier:nameCopy timeout:&v26 error:600.0];
     v21 = v26;
     accessibilityAssertion = v15->_accessibilityAssertion;
     v15->_accessibilityAssertion = v20;
@@ -126,7 +126,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543618;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v10;
       _os_log_fault_impl(&dword_228986000, v11, OS_LOG_TYPE_FAULT, "%{public}@ Error performing initial transaction context: %{public}@", buf, 0x16u);

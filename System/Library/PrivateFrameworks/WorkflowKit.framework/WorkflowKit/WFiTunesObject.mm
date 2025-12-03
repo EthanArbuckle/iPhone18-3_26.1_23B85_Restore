@@ -1,38 +1,38 @@
 @interface WFiTunesObject
-+ (Class)classForParsingJSONDictionary:(id)a3;
++ (Class)classForParsingJSONDictionary:(id)dictionary;
 + (id)JSONKeyPathsByPropertyKey;
 + (id)allowedSecureCodingClassesByPropertyKey;
 + (id)releaseDateJSONTransformer;
-- (WFiTunesObject)initWithName:(id)a3 identifier:(id)a4 kind:(id)a5;
+- (WFiTunesObject)initWithName:(id)name identifier:(id)identifier kind:(id)kind;
 @end
 
 @implementation WFiTunesObject
 
-- (WFiTunesObject)initWithName:(id)a3 identifier:(id)a4 kind:(id)a5
+- (WFiTunesObject)initWithName:(id)name identifier:(id)identifier kind:(id)kind
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  kindCopy = kind;
   v15.receiver = self;
   v15.super_class = WFiTunesObject;
   v11 = [(MTLModel *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(WFiTunesObject *)v11 setName:v8];
-    [(WFiTunesObject *)v12 setIdentifier:v9];
-    [(WFiTunesObject *)v12 setKind:v10];
+    [(WFiTunesObject *)v11 setName:nameCopy];
+    [(WFiTunesObject *)v12 setIdentifier:identifierCopy];
+    [(WFiTunesObject *)v12 setKind:kindCopy];
     v13 = v12;
   }
 
   return v12;
 }
 
-+ (Class)classForParsingJSONDictionary:(id)a3
++ (Class)classForParsingJSONDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"wrapperType"];
-  v6 = [v4 objectForKeyedSubscript:@"kind"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"wrapperType"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
   if ([v5 isEqualToString:@"artist"])
   {
     goto LABEL_10;
@@ -40,10 +40,10 @@
 
   if ([v6 isEqualToString:@"podcast"])
   {
-    [v4 objectForKeyedSubscript:@"intent"];
+    [dictionaryCopy objectForKeyedSubscript:@"intent"];
 
 LABEL_10:
-    v8 = objc_opt_class();
+    selfCopy = objc_opt_class();
     goto LABEL_11;
   }
 
@@ -67,16 +67,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"trackId"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"trackId"];
 
   if (v7)
   {
     goto LABEL_10;
   }
 
-  v8 = a1;
+  selfCopy = self;
 LABEL_11:
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
@@ -249,7 +249,7 @@ LABEL_7:
 + (id)allowedSecureCodingClassesByPropertyKey
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFiTunesObject;
   v2 = objc_msgSendSuper2(&v7, sel_allowedSecureCodingClassesByPropertyKey);
   v3 = [v2 mutableCopy];

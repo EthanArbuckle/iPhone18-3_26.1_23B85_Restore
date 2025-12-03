@@ -1,18 +1,18 @@
 @interface PHSearchEntityChangeRequest
-+ (id)changeRequestForSearchRanking:(id)a3;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (PHSearchEntityChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHSearchEntityChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setRankingScore:(double)a3;
-- (void)setSynonyms:(id)a3;
++ (id)changeRequestForSearchRanking:(id)ranking;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (PHSearchEntityChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHSearchEntityChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setRankingScore:(double)score;
+- (void)setSynonyms:(id)synonyms;
 @end
 
 @implementation PHSearchEntityChangeRequest
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
-  v6 = [MEMORY[0x1E69BE780] newNodeContainerWithNode:{a3, a4, a5}];
+  v6 = [MEMORY[0x1E69BE780] newNodeContainerWithNode:{object, library, error}];
   v7 = v6;
   if (self->_didSetRankingScore)
   {
@@ -27,17 +27,17 @@
   return 1;
 }
 
-- (PHSearchEntityChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHSearchEntityChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v24.receiver = self;
   v24.super_class = PHSearchEntityChangeRequest;
   v11 = [(PHChangeRequest *)&v24 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
@@ -47,9 +47,9 @@
     v21[3] = &unk_1E75AAEB0;
     v14 = v11;
     v22 = v14;
-    v23 = v9;
+    v23 = requestCopy;
     v15 = _Block_copy(v21);
-    v16 = xpc_dictionary_get_value(v8, "rankingScoreKey");
+    v16 = xpc_dictionary_get_value(dictCopy, "rankingScoreKey");
     v17 = v16;
     if (v16)
     {
@@ -81,11 +81,11 @@ uint64_t __75__PHSearchEntityChangeRequest_initWithXPCDict_request_clientAuthori
   return [v2 recordUpdateRequest:v3];
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   if (self->_didSetRankingScore)
   {
@@ -98,16 +98,16 @@ uint64_t __75__PHSearchEntityChangeRequest_initWithXPCDict_request_clientAuthori
   }
 }
 
-- (PHSearchEntityChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHSearchEntityChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHSearchEntityChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -115,29 +115,29 @@ uint64_t __75__PHSearchEntityChangeRequest_initWithXPCDict_request_clientAuthori
   return v8;
 }
 
-- (void)setSynonyms:(id)a3
+- (void)setSynonyms:(id)synonyms
 {
-  objc_storeStrong(&self->_synonyms, a3);
+  objc_storeStrong(&self->_synonyms, synonyms);
   self->_didSetSynonyms = 1;
 
   [(PHChangeRequest *)self didMutate];
 }
 
-- (void)setRankingScore:(double)a3
+- (void)setRankingScore:(double)score
 {
-  self->_rankingScore = a3;
+  self->_rankingScore = score;
   self->_didSetRankingScore = 1;
   [(PHChangeRequest *)self didMutate];
 }
 
-+ (id)changeRequestForSearchRanking:(id)a3
++ (id)changeRequestForSearchRanking:(id)ranking
 {
-  v3 = a3;
+  rankingCopy = ranking;
   v4 = [PHSearchEntityChangeRequest alloc];
-  v5 = [v3 uuid];
-  v6 = [v3 objectID];
+  uuid = [rankingCopy uuid];
+  objectID = [rankingCopy objectID];
 
-  v7 = [(PHSearchEntityChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+  v7 = [(PHSearchEntityChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
   return v7;
 }

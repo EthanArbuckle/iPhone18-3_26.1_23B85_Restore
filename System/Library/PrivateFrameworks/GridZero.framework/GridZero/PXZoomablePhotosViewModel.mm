@@ -12,19 +12,19 @@
 - (PXSimpleIndexPath)sectionIndexPath;
 - (PXZoomablePhotosUserDefaults)userDefaults;
 - (PXZoomablePhotosViewModel)init;
-- (PXZoomablePhotosViewModel)initWithDataSourceManager:(id)a3 selectionManager:(id)a4 mediaProvider:(id)a5 specManager:(id)a6 loadingStatusManager:(id)a7 badgesModifier:(id)a8 preferredAssetCropDelegate:(id)a9 preferredColumnCountsDelegate:(id)a10 inlinePlaybackController:(id)a11 sectionIndex:(int64_t)a12 headersEnabled:(BOOL)a13;
+- (PXZoomablePhotosViewModel)initWithDataSourceManager:(id)manager selectionManager:(id)selectionManager mediaProvider:(id)provider specManager:(id)specManager loadingStatusManager:(id)statusManager badgesModifier:(id)modifier preferredAssetCropDelegate:(id)delegate preferredColumnCountsDelegate:(id)self0 inlinePlaybackController:(id)self1 sectionIndex:(int64_t)self2 headersEnabled:(BOOL)self3;
 - (PXZoomablePhotosViewModelGeometryDelegate)geometryDelegate;
 - (_NSRange)denseColumnsIndexRange;
-- (double)_columnIndexForItemWidth:(double)a3;
-- (double)_columnWidthForDesiredColumnIndex:(double)a3;
-- (int64_t)_clampColumnIndexToValidIndex:(int64_t)a3;
-- (int64_t)_closestColumnIndexForAnimatedValue:(double)a3;
-- (int64_t)_closestColumnIndexForColumnWidth:(double)a3;
+- (double)_columnIndexForItemWidth:(double)width;
+- (double)_columnWidthForDesiredColumnIndex:(double)index;
+- (int64_t)_clampColumnIndexToValidIndex:(int64_t)index;
+- (int64_t)_closestColumnIndexForAnimatedValue:(double)value;
+- (int64_t)_closestColumnIndexForColumnWidth:(double)width;
 - (int64_t)_maxColumnsForIndividualItems;
-- (int64_t)_nextColumnIndexForInitialColumnWidth:(double)a3 currentColumnWidth:(double)a4 velocity:(double)a5;
-- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)a3;
+- (int64_t)_nextColumnIndexForInitialColumnWidth:(double)width currentColumnWidth:(double)columnWidth velocity:(double)velocity;
+- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)columns;
 - (int64_t)defaultColumnIndex;
-- (int64_t)denseZoomLevelForZoomState:(id *)a3;
+- (int64_t)denseZoomLevelForZoomState:(id *)state;
 - (void)_handleSpecChange;
 - (void)_invalidateAllowedColumns;
 - (void)_invalidateMiniModeAnimator;
@@ -41,64 +41,64 @@
 - (void)_updateZoomState;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performInitialChanges:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performInitialChanges:(id)changes;
 - (void)resetColumns;
 - (void)resetToInitialState;
 - (void)saveCurrentZoomLevelAsUserPreferredIfPossible;
-- (void)setAllowedColumns:(id)a3;
-- (void)setAllowsCaptionsInSquare:(BOOL)a3;
-- (void)setAlwaysShowTopBadges:(BOOL)a3;
-- (void)setAspectFit:(BOOL)a3;
-- (void)setCaptionsVisible:(BOOL)a3;
-- (void)setDraggedAssetReferences:(id)a3;
-- (void)setDropTargetAssetReference:(id)a3;
-- (void)setEffectProvider:(id)a3;
-- (void)setEnableCornerRadiusMaskingWhenAlignedWithEdge:(BOOL)a3;
-- (void)setEnablePinchEffect:(BOOL)a3;
-- (void)setFaceModeEnabled:(BOOL)a3;
-- (void)setHasInlineHeadersContent:(BOOL)a3;
-- (void)setHidesDurationLabelBadge:(BOOL)a3;
-- (void)setInteractiveZoomColumnIndex:(double)a3 withAnchorAssetReference:(id)a4;
-- (void)setIsDisplayingIndividualItems:(BOOL)a3;
-- (void)setIsInSelectMode:(BOOL)a3;
-- (void)setIsInteractiveZooming:(BOOL)a3;
-- (void)setIsInteractiveZoomingAllowed:(BOOL)a3;
-- (void)setIsPinching:(BOOL)a3;
-- (void)setLayoutExtendsContentBelowBounds:(BOOL)a3;
-- (void)setLowMemoryMode:(BOOL)a3;
-- (void)setMiniModeAnchorAssetReference:(id)a3;
-- (void)setPinchState:(id *)a3 withAnchorAssetReference:(id)a4;
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3;
-- (void)setShouldHideSurroundingContent:(BOOL)a3;
-- (void)setShowSensitiveWarningBadges:(BOOL)a3;
-- (void)setUseLowMemoryDecode:(BOOL)a3;
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3;
-- (void)setViewMode:(unint64_t)a3;
-- (void)setViewModeInteractionProgress:(double)a3;
-- (void)setWantsDimmedSelectionStyle:(BOOL)a3;
-- (void)setWantsFileSizeBadge:(BOOL)a3;
-- (void)setWantsNumberedSelectionStyle:(BOOL)a3;
-- (void)setWantsOverBackgroundFloatingHeaderAppearance:(BOOL)a3;
-- (void)setZoomState:(id *)a3;
-- (void)zoomInToIndividualItemsWithAnchorAssetReference:(id)a3 animated:(BOOL)a4;
-- (void)zoomInToLastRememberedWithAnchorAssetReference:(id)a3 animated:(BOOL)a4;
-- (void)zoomToColumnIndex:(int64_t)a3 withAnchorAssetReference:(id)a4 animated:(BOOL)a5;
+- (void)setAllowedColumns:(id)columns;
+- (void)setAllowsCaptionsInSquare:(BOOL)square;
+- (void)setAlwaysShowTopBadges:(BOOL)badges;
+- (void)setAspectFit:(BOOL)fit;
+- (void)setCaptionsVisible:(BOOL)visible;
+- (void)setDraggedAssetReferences:(id)references;
+- (void)setDropTargetAssetReference:(id)reference;
+- (void)setEffectProvider:(id)provider;
+- (void)setEnableCornerRadiusMaskingWhenAlignedWithEdge:(BOOL)edge;
+- (void)setEnablePinchEffect:(BOOL)effect;
+- (void)setFaceModeEnabled:(BOOL)enabled;
+- (void)setHasInlineHeadersContent:(BOOL)content;
+- (void)setHidesDurationLabelBadge:(BOOL)badge;
+- (void)setInteractiveZoomColumnIndex:(double)index withAnchorAssetReference:(id)reference;
+- (void)setIsDisplayingIndividualItems:(BOOL)items;
+- (void)setIsInSelectMode:(BOOL)mode;
+- (void)setIsInteractiveZooming:(BOOL)zooming;
+- (void)setIsInteractiveZoomingAllowed:(BOOL)allowed;
+- (void)setIsPinching:(BOOL)pinching;
+- (void)setLayoutExtendsContentBelowBounds:(BOOL)bounds;
+- (void)setLowMemoryMode:(BOOL)mode;
+- (void)setMiniModeAnchorAssetReference:(id)reference;
+- (void)setPinchState:(id *)state withAnchorAssetReference:(id)reference;
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path;
+- (void)setShouldHideSurroundingContent:(BOOL)content;
+- (void)setShowSensitiveWarningBadges:(BOOL)badges;
+- (void)setUseLowMemoryDecode:(BOOL)decode;
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled;
+- (void)setViewMode:(unint64_t)mode;
+- (void)setViewModeInteractionProgress:(double)progress;
+- (void)setWantsDimmedSelectionStyle:(BOOL)style;
+- (void)setWantsFileSizeBadge:(BOOL)badge;
+- (void)setWantsNumberedSelectionStyle:(BOOL)style;
+- (void)setWantsOverBackgroundFloatingHeaderAppearance:(BOOL)appearance;
+- (void)setZoomState:(id *)state;
+- (void)zoomInToIndividualItemsWithAnchorAssetReference:(id)reference animated:(BOOL)animated;
+- (void)zoomInToLastRememberedWithAnchorAssetReference:(id)reference animated:(BOOL)animated;
+- (void)zoomToColumnIndex:(int64_t)index withAnchorAssetReference:(id)reference animated:(BOOL)animated;
 @end
 
 @implementation PXZoomablePhotosViewModel
 
 - (void)_invalidateAllowedColumns
 {
-  v2 = [(PXZoomablePhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAllowedColumns];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAllowedColumns];
 }
 
 - (void)_invalidateZoomState
 {
-  v2 = [(PXZoomablePhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateZoomState];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateZoomState];
 }
 
 - (void)didPerformChanges
@@ -106,18 +106,18 @@
   v4.receiver = self;
   v4.super_class = PXZoomablePhotosViewModel;
   [(PXZoomablePhotosViewModel *)&v4 didPerformChanges];
-  v3 = [(PXZoomablePhotosViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateAllowedColumns
 {
   v57 = *MEMORY[0x277D85DE8];
-  v2 = [(PXZoomablePhotosViewModel *)self specManager];
-  v33 = [v2 extendedTraitCollection];
+  specManager = [(PXZoomablePhotosViewModel *)self specManager];
+  extendedTraitCollection = [specManager extendedTraitCollection];
 
-  v3 = [(PXZoomablePhotosViewModel *)self preferredColumnCountsDelegate];
-  v32 = [v3 preferredColumnCounts:v33];
+  preferredColumnCountsDelegate = [(PXZoomablePhotosViewModel *)self preferredColumnCountsDelegate];
+  v32 = [preferredColumnCountsDelegate preferredColumnCounts:extendedTraitCollection];
 
   v4 = v32;
   if (v32)
@@ -127,16 +127,16 @@
 
   else
   {
-    v5 = [(PXZoomablePhotosViewModel *)self specManager];
-    v37 = [v5 spec];
+    specManager2 = [(PXZoomablePhotosViewModel *)self specManager];
+    spec = [specManager2 spec];
 
-    v31 = [v37 supportedColumns];
-    v36 = [v37 minimumAssetsRequiredByColumn];
-    [v33 layoutReferenceSize];
-    v6 = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
-    v29 = [v6 dataSource];
+    supportedColumns = [spec supportedColumns];
+    minimumAssetsRequiredByColumn = [spec minimumAssetsRequiredByColumn];
+    [extendedTraitCollection layoutReferenceSize];
+    assetsDataSourceManager = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
+    dataSource = [assetsDataSourceManager dataSource];
 
-    if ([v29 numberOfSections] < 1 || (v7 = objc_msgSend(v29, "numberOfSections"), -[PXZoomablePhotosViewModel sectionIndexPath](self, "sectionIndexPath"), v7 <= v54))
+    if ([dataSource numberOfSections] < 1 || (v7 = objc_msgSend(dataSource, "numberOfSections"), -[PXZoomablePhotosViewModel sectionIndexPath](self, "sectionIndexPath"), v7 <= v54))
     {
       v8 = 0;
     }
@@ -144,14 +144,14 @@
     else
     {
       [(PXZoomablePhotosViewModel *)self sectionIndexPath];
-      v8 = [v29 numberOfItemsInSection:v53];
+      v8 = [dataSource numberOfItemsInSection:v53];
     }
 
-    v9 = [(PXZoomablePhotosViewModel *)self allowDenseLevels];
-    v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v31, "count")}];
+    allowDenseLevels = [(PXZoomablePhotosViewModel *)self allowDenseLevels];
+    v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(supportedColumns, "count")}];
     if (PXSizeIsEmpty())
     {
-      [v35 addObjectsFromArray:v31];
+      [v35 addObjectsFromArray:supportedColumns];
     }
 
     else
@@ -160,7 +160,7 @@
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v10 = v31;
+      v10 = supportedColumns;
       v11 = [v10 countByEnumeratingWithState:&v49 objects:v56 count:16];
       if (v11)
       {
@@ -176,14 +176,14 @@
             }
 
             v15 = *(*(&v49 + 1) + 8 * i);
-            v16 = [v15 integerValue];
-            v17 = v16 <= [v37 maxColumnsForIndividualItems] || v9;
+            integerValue = [v15 integerValue];
+            v17 = integerValue <= [spec maxColumnsForIndividualItems] || allowDenseLevels;
             if (v17 == 1)
             {
-              v18 = [v36 objectAtIndexedSubscript:v12];
-              v19 = [v18 integerValue];
+              v18 = [minimumAssetsRequiredByColumn objectAtIndexedSubscript:v12];
+              integerValue2 = [v18 integerValue];
 
-              if (v8 >= v19)
+              if (v8 >= integerValue2)
               {
                 [v35 addObject:v15];
               }
@@ -201,19 +201,19 @@
 
     if (![v35 count])
     {
-      v20 = [v31 firstObject];
-      [v35 addObject:v20];
+      firstObject = [supportedColumns firstObject];
+      [v35 addObject:firstObject];
     }
 
-    v21 = [(PXZoomablePhotosViewModel *)self allowedColumns];
+    allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
 
-    if (v21)
+    if (allowedColumns)
     {
-      v22 = [(PXZoomablePhotosViewModel *)self allowedColumns];
+      allowedColumns2 = [(PXZoomablePhotosViewModel *)self allowedColumns];
       [(PXZoomablePhotosViewModel *)self zoomState];
-      v23 = [v22 objectAtIndexedSubscript:v48];
+      v23 = [allowedColumns2 objectAtIndexedSubscript:v48];
 
-      v24 = [v23 integerValue];
+      integerValue3 = [v23 integerValue];
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -262,7 +262,7 @@ LABEL_36:
       v40[0] = 0;
       v40[1] = v40;
       v40[2] = 0x2020000000;
-      *&v40[3] = 1.0 / v24;
+      *&v40[3] = 1.0 / integerValue3;
       if ((v26 & 1) == 0)
       {
         v39[0] = MEMORY[0x277D85DD0];
@@ -315,9 +315,9 @@ LABEL_36:
   }
 
   v2 = +[PXZoomablePhotosSettings sharedInstance];
-  v3 = [v2 enableDenseLevelsInSelectMode];
+  enableDenseLevelsInSelectMode = [v2 enableDenseLevelsInSelectMode];
 
-  return v3;
+  return enableDenseLevelsInSelectMode;
 }
 
 - (void)_updateAlphaAnimator
@@ -325,14 +325,14 @@ LABEL_36:
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
-  v3 = [(PXZoomablePhotosViewModel *)self aspectFit];
-  v4 = 0;
-  if (v3)
+  aspectFit = [(PXZoomablePhotosViewModel *)self aspectFit];
+  _maxColumnsForIndividualItems = 0;
+  if (aspectFit)
   {
-    v4 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+    _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
   }
 
-  v7[3] = v4;
+  v7[3] = _maxColumnsForIndividualItems;
   alphaAnimator = self->_alphaAnimator;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -365,11 +365,11 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke(uint64_t a1,
 
 - (int64_t)_maxColumnsForIndividualItems
 {
-  v2 = [(PXZoomablePhotosViewModel *)self specManager];
-  v3 = [v2 spec];
-  v4 = [v3 maxColumnsForIndividualItems];
+  specManager = [(PXZoomablePhotosViewModel *)self specManager];
+  spec = [specManager spec];
+  maxColumnsForIndividualItems = [spec maxColumnsForIndividualItems];
 
-  return v4;
+  return maxColumnsForIndividualItems;
 }
 
 - (void)_updateZoomState
@@ -389,8 +389,8 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke(uint64_t a1,
   v131 = 0;
   v136 = self->_columnWidthAnimator;
   v134 = self->_alphaAnimator;
-  v3 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v133 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  allowedColumnWidths = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
   if (self->_pendingZoomColumnIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -407,16 +407,16 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke(uint64_t a1,
   [(PXZoomablePhotosViewModel *)self pinchState];
   normalizedColumnWidthWhenPinchStarted = self->_normalizedColumnWidthWhenPinchStarted;
   v6 = *(&v161 + 1);
-  if (*(&v161 + 1) >= [v3 count])
+  if (*(&v161 + 1) >= [allowedColumns count])
   {
-    v6 = [v3 count] - 1;
+    v6 = [allowedColumns count] - 1;
   }
 
-  v7 = [(PXZoomablePhotosAlphaAnimator *)v134 allowedColumns];
-  v8 = v7;
-  if (v7 != v3)
+  allowedColumns2 = [(PXZoomablePhotosAlphaAnimator *)v134 allowedColumns];
+  v8 = allowedColumns2;
+  if (allowedColumns2 != allowedColumns)
   {
-    v9 = [v7 isEqual:v3];
+    v9 = [allowedColumns2 isEqual:allowedColumns];
 
     if (v9)
     {
@@ -427,14 +427,14 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke(uint64_t a1,
     v152[1] = 3221225472;
     v152[2] = __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke;
     v152[3] = &unk_278298750;
-    v153 = v3;
+    v153 = allowedColumns;
     [(PXZoomablePhotosAlphaAnimator *)v134 performChangesWithAnimation:0 changeBlock:v152];
     v8 = v153;
   }
 
 LABEL_9:
   v10 = v161;
-  v11 = [v3 objectAtIndexedSubscript:v6];
+  v11 = [allowedColumns objectAtIndexedSubscript:v6];
   LOBYTE(v10) = v10 == [v11 integerValue];
 
   if ((v10 & 1) == 0)
@@ -443,7 +443,7 @@ LABEL_9:
     v149[1] = 3221225472;
     v149[2] = __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_2;
     v149[3] = &unk_278298778;
-    v150 = v133;
+    v150 = allowedColumnWidths;
     v151 = v6;
     [(PXNumberAnimator *)v136 performChangesWithoutAnimation:v149];
     v148[0] = MEMORY[0x277D85DD0];
@@ -454,9 +454,9 @@ LABEL_9:
     [(PXZoomablePhotosAlphaAnimator *)v134 performChangesWithAnimation:0 changeBlock:v148];
   }
 
-  v12 = [(PXZoomablePhotosViewModel *)self isPinching];
-  v13 = [(PXZoomablePhotosViewModel *)self isInteractiveZooming];
-  if ((v12 || v13 || self->_animatePendingZoom) && (!-[PXZoomablePhotosViewModel hasContentToZoom](self, "hasContentToZoom") || [v3 count] <= 1))
+  isPinching = [(PXZoomablePhotosViewModel *)self isPinching];
+  isInteractiveZooming = [(PXZoomablePhotosViewModel *)self isInteractiveZooming];
+  if ((isPinching || isInteractiveZooming || self->_animatePendingZoom) && (!-[PXZoomablePhotosViewModel hasContentToZoom](self, "hasContentToZoom") || [allowedColumns count] <= 1))
   {
     if (![(PXZoomablePhotosViewModel *)self hasContentToZoom])
     {
@@ -465,9 +465,9 @@ LABEL_9:
       {
         animatePendingZoom = self->_animatePendingZoom;
         LODWORD(buf) = 67109632;
-        DWORD1(buf) = v12;
+        DWORD1(buf) = isPinching;
         WORD4(buf) = 1024;
-        *(&buf + 10) = v13;
+        *(&buf + 10) = isInteractiveZooming;
         HIWORD(buf) = 1024;
         LODWORD(v167) = animatePendingZoom;
         _os_log_fault_impl(&dword_21ABF3000, v17, OS_LOG_TYPE_FAULT, "Has no content to zoom, but pinching:%d interactiveZooming:%d animatePendingZoom:%d", &buf, 0x14u);
@@ -484,13 +484,13 @@ LABEL_9:
 
     LOBYTE(v132) = 0;
     v15 = 0;
-    v12 = 0;
+    isPinching = 0;
     v16 = 0;
     goto LABEL_26;
   }
 
-  v132 = v12 || v13;
-  if (v13)
+  v132 = isPinching || isInteractiveZooming;
+  if (isInteractiveZooming)
   {
     v15 = 1;
     v16 = 1;
@@ -500,7 +500,7 @@ LABEL_9:
   if (self->_wasInteractiveZooming)
   {
     v16 = 0;
-    v15 = v12 || v13;
+    v15 = isPinching || isInteractiveZooming;
 LABEL_26:
     [(PXZoomablePhotosViewModel *)self interactiveZoomColumnIndex];
     [(PXZoomablePhotosViewModel *)self _columnWidthForDesiredColumnIndex:?];
@@ -510,7 +510,7 @@ LABEL_26:
       v20 = *(&v154 + 1);
       v21 = *&v154;
       v22 = 0.5;
-      if (v12)
+      if (isPinching)
       {
         v14 = *(&v154 + 1);
       }
@@ -520,7 +520,7 @@ LABEL_26:
         v14 = 0.5;
       }
 
-      if (v12)
+      if (isPinching)
       {
         v22 = *&v154;
       }
@@ -540,7 +540,7 @@ LABEL_26:
         [(PXNumberAnimator *)v136 performChangesUsingSpringAnimationWithStiffness:v147 dampingRatio:v31 initialVelocity:v32 changes:0.0];
         LOBYTE(v16) = 1;
 LABEL_44:
-        self->_wasPinching = v12;
+        self->_wasPinching = isPinching;
         self->_wasInteractiveZooming = v16;
         v129 = 1;
 LABEL_57:
@@ -549,7 +549,7 @@ LABEL_57:
         goto LABEL_58;
       }
 
-      if (v12)
+      if (isPinching)
       {
         goto LABEL_35;
       }
@@ -566,14 +566,14 @@ LABEL_57:
   {
     LOBYTE(v16) = 0;
     LOBYTE(v132) = 1;
-    if (v12)
+    if (isPinching)
     {
       v20 = *(&v154 + 1);
       v21 = *&v154;
 LABEL_35:
       [v135 pinchSmoothingDuration];
       v24 = v23;
-      LOBYTE(v12) = 1;
+      LOBYTE(isPinching) = 1;
 LABEL_40:
       v26 = log10(fabs(v18) * 1000.0 + 1.0);
       PXFloatSign();
@@ -598,7 +598,7 @@ LABEL_40:
 LABEL_39:
     [v135 sliderSmoothingDuration];
     v24 = v25;
-    LOBYTE(v12) = 0;
+    LOBYTE(isPinching) = 0;
     v20 = 0.5;
     v21 = 0.5;
     goto LABEL_40;
@@ -623,7 +623,7 @@ LABEL_46:
       if (v38 != v37)
       {
 LABEL_56:
-        v45 = [v3 objectAtIndexedSubscript:v38];
+        v45 = [allowedColumns objectAtIndexedSubscript:v38];
         [v45 doubleValue];
         v47 = v46;
 
@@ -684,7 +684,7 @@ LABEL_52:
 
   else
   {
-    v117 = [v3 objectAtIndexedSubscript:{v4, *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348]}];
+    v117 = [allowedColumns objectAtIndexedSubscript:{v4, *(MEMORY[0x277CBF348] + 8), *MEMORY[0x277CBF348]}];
     [v117 doubleValue];
     v119 = v118;
 
@@ -731,16 +731,16 @@ LABEL_58:
   v62 = v61;
   v63 = v58 * ((v56 + -1.0) / 1000.0);
   v64 = [(PXZoomablePhotosViewModel *)self _closestColumnIndexForColumnWidth:v63];
-  v65 = [v3 objectAtIndexedSubscript:v64];
-  v125 = [v65 integerValue];
+  v65 = [allowedColumns objectAtIndexedSubscript:v64];
+  integerValue = [v65 integerValue];
 
   [(PXNumberAnimator *)v136 presentationValue];
-  v66 = [v133 firstObject];
-  [v66 doubleValue];
+  firstObject = [allowedColumnWidths firstObject];
+  [firstObject doubleValue];
   v68 = v67;
 
-  v69 = [v133 lastObject];
-  [v69 doubleValue];
+  lastObject = [allowedColumnWidths lastObject];
+  [lastObject doubleValue];
   v71 = v70;
 
   log10(fabs(v68) * 1000.0 + 1.0);
@@ -761,12 +761,12 @@ LABEL_58:
   v79 = v78;
   if (v54)
   {
-    v80 = 1;
+    isAnimating = 1;
   }
 
   else
   {
-    v80 = [(PXNumberAnimator *)v136 isAnimating];
+    isAnimating = [(PXNumberAnimator *)v136 isAnimating];
   }
 
   v141[0] = MEMORY[0x277D85DD0];
@@ -776,7 +776,7 @@ LABEL_58:
   v141[4] = v77;
   v141[5] = v79;
   v142 = v132;
-  [(PXZoomablePhotosAlphaAnimator *)v134 performChangesWithAnimation:v80 changeBlock:v141, v125];
+  [(PXZoomablePhotosAlphaAnimator *)v134 performChangesWithAnimation:isAnimating changeBlock:v141, integerValue];
   v81 = v75 * ((v73 + -1.0) / 1000.0);
   [(PXZoomablePhotosViewModel *)self _columnIndexForItemWidth:v81];
   v83 = v82;
@@ -785,7 +785,7 @@ LABEL_58:
     [(PXZoomablePhotosAlphaAnimator *)self->_alphaAnimator presentationColumnIndex];
   }
 
-  v84 = [v3 count];
+  v84 = [allowedColumns count];
   v85 = vcvtmd_s64_f64(v83);
   if (v84 - 1 < v85)
   {
@@ -810,19 +810,19 @@ LABEL_58:
   v92 = 1.0;
   if ([(PXZoomablePhotosViewModel *)self hasInlineHeadersContent])
   {
-    v93 = [v3 objectAtIndexedSubscript:v87];
-    v94 = [v93 integerValue];
+    v93 = [allowedColumns objectAtIndexedSubscript:v87];
+    integerValue2 = [v93 integerValue];
 
-    v95 = [v3 objectAtIndexedSubscript:v91];
-    v96 = [v95 integerValue];
+    v95 = [allowedColumns objectAtIndexedSubscript:v91];
+    integerValue3 = [v95 integerValue];
 
-    v97 = [(PXZoomablePhotosViewModel *)self specManager];
-    v98 = [v97 spec];
-    v99 = [v98 maxColumnsForStickyHeaderDisplay];
+    specManager = [(PXZoomablePhotosViewModel *)self specManager];
+    spec = [specManager spec];
+    maxColumnsForStickyHeaderDisplay = [spec maxColumnsForStickyHeaderDisplay];
 
-    if (v96 > v99)
+    if (integerValue3 > maxColumnsForStickyHeaderDisplay)
     {
-      if (v94 <= v99)
+      if (integerValue2 <= maxColumnsForStickyHeaderDisplay)
       {
         v92 = 1.0 - v90;
       }
@@ -836,7 +836,7 @@ LABEL_58:
 
   if ((v129 & 1) != 0 || [(PXNumberAnimator *)v136 isAnimating])
   {
-    v100 = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
+    assetsDataSourceManager = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
 LABEL_76:
     if (!self->_pauseToken)
     {
@@ -851,7 +851,7 @@ LABEL_76:
       v140[2] = __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_60;
       v140[3] = &unk_2782987E0;
       v140[4] = &buf;
-      [v100 performChanges:v140];
+      [assetsDataSourceManager performChanges:v140];
       objc_storeStrong(&self->_pauseToken, *(*(&buf + 1) + 40));
       _Block_object_dispose(&buf, 8);
     }
@@ -860,9 +860,9 @@ LABEL_76:
     goto LABEL_79;
   }
 
-  v111 = [(PXZoomablePhotosAlphaAnimator *)v134 isAnimating];
-  v100 = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
-  if (v111)
+  isAnimating2 = [(PXZoomablePhotosAlphaAnimator *)v134 isAnimating];
+  assetsDataSourceManager = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
+  if (isAnimating2)
   {
     goto LABEL_76;
   }
@@ -879,8 +879,8 @@ LABEL_76:
     block[1] = 3221225472;
     block[2] = __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_2_64;
     block[3] = &unk_278298598;
-    v100 = v100;
-    v138 = v100;
+    assetsDataSourceManager = assetsDataSourceManager;
+    v138 = assetsDataSourceManager;
     v139 = v113;
     v116 = v113;
     dispatch_after(v115, MEMORY[0x277D85CD0], block);
@@ -903,13 +903,13 @@ LABEL_79:
 
   [(PXNumberAnimator *)v136 approximateVelocity];
   v108 = v107;
-  v109 = [v3 objectAtIndexedSubscript:v64];
-  v110 = [v109 integerValue];
+  v109 = [allowedColumns objectAtIndexedSubscript:v64];
+  integerValue4 = [v109 integerValue];
 
   buf = v128;
   v167 = v81 / (1.0 / v126);
   v168 = v108;
-  v169 = v110;
+  v169 = integerValue4;
   v170 = v64;
   v171 = v81;
   v172 = v101;
@@ -987,8 +987,8 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_6(uint64_t a
 
 - (void)_invalidateShouldHideSurroundingContent
 {
-  v2 = [(PXZoomablePhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldHideSurroundingContent];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldHideSurroundingContent];
 }
 
 - (void)_updateShouldHideSurroundingContent
@@ -1024,28 +1024,28 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_6(uint64_t a
 
 - (void)resetColumns
 {
-  v3 = [(PXZoomablePhotosViewModel *)self userDefaults];
-  v4 = [v3 preferredIndividualItemsColumnsNumber];
-  v5 = [v4 integerValue];
+  userDefaults = [(PXZoomablePhotosViewModel *)self userDefaults];
+  preferredIndividualItemsColumnsNumber = [userDefaults preferredIndividualItemsColumnsNumber];
+  integerValue = [preferredIndividualItemsColumnsNumber integerValue];
 
-  if (!v5)
+  if (!integerValue)
   {
-    v6 = [(PXZoomablePhotosViewModel *)self specManager];
-    v7 = [v6 spec];
-    v5 = [v7 initialNumberOfColumns];
+    specManager = [(PXZoomablePhotosViewModel *)self specManager];
+    spec = [specManager spec];
+    integerValue = [spec initialNumberOfColumns];
   }
 
-  v8 = [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:v5];
+  v8 = [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:integerValue];
 
   [(PXZoomablePhotosViewModel *)self zoomToColumnIndex:v8 withAnchorAssetReference:0 animated:0];
 }
 
 - (PXZoomablePhotosUserDefaults)userDefaults
 {
-  v2 = [(PXZoomablePhotosViewModel *)self specManager];
-  v3 = [v2 userDefaults];
+  specManager = [(PXZoomablePhotosViewModel *)self specManager];
+  userDefaults = [specManager userDefaults];
 
-  return v3;
+  return userDefaults;
 }
 
 void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_5(uint64_t a1, void *a2)
@@ -1086,23 +1086,23 @@ uint64_t __46__PXZoomablePhotosViewModel__handleSpecChange__block_invoke(uint64_
 {
   [(PXZoomablePhotosViewModel *)self zoomState];
   v3 = v8;
-  v4 = [(PXZoomablePhotosViewModel *)self specManager];
-  v5 = [v4 spec];
+  specManager = [(PXZoomablePhotosViewModel *)self specManager];
+  spec = [specManager spec];
 
-  if (v3 >= 2 && v3 <= [v5 maxColumnsForIndividualItems] && (objc_msgSend(v5, "userInterfaceIdiom") != 1 || objc_msgSend(v5, "layoutOrientation") != 2))
+  if (v3 >= 2 && v3 <= [spec maxColumnsForIndividualItems] && (objc_msgSend(spec, "userInterfaceIdiom") != 1 || objc_msgSend(spec, "layoutOrientation") != 2))
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
-    v7 = [(PXZoomablePhotosViewModel *)self userDefaults];
-    [v7 setPreferredIndividualItemsColumnsNumber:v6];
+    userDefaults = [(PXZoomablePhotosViewModel *)self userDefaults];
+    [userDefaults setPreferredIndividualItemsColumnsNumber:v6];
   }
 }
 
 - (PXSelectionSnapshot)selectionSnapshot
 {
-  v2 = [(PXZoomablePhotosViewModel *)self selectionManager];
-  v3 = [v2 selectionSnapshot];
+  selectionManager = [(PXZoomablePhotosViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  return v3;
+  return selectionSnapshot;
 }
 
 - (PXZoomablePhotosViewModelGeometryDelegate)geometryDelegate
@@ -1129,20 +1129,20 @@ uint64_t __46__PXZoomablePhotosViewModel__handleSpecChange__block_invoke(uint64_
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (PXZoomablePhotosViewModelSpecManagerObserverContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  v10 = observableCopy;
+  if (PXZoomablePhotosViewModelSpecManagerObserverContext != context)
   {
-    if (PXZoomablePhotosViewModelNumberAnimatorObserverContext != a5)
+    if (PXZoomablePhotosViewModelNumberAnimatorObserverContext != context)
     {
-      if (PXZoomablePhotosViewModelAlphaAnimatorObserverContext != a5)
+      if (PXZoomablePhotosViewModelAlphaAnimatorObserverContext != context)
       {
-        if (PXZoomablePhotosViewModelDataSourceManagerObserverContext == a5)
+        if (PXZoomablePhotosViewModelDataSourceManagerObserverContext == context)
         {
-          if ((v6 & 1) == 0)
+          if ((changeCopy & 1) == 0)
           {
             goto LABEL_30;
           }
@@ -1157,26 +1157,26 @@ uint64_t __46__PXZoomablePhotosViewModel__handleSpecChange__block_invoke(uint64_
 
         else
         {
-          if (PXZoomablePhotosViewModelSelectionObserverContext != a5)
+          if (PXZoomablePhotosViewModelSelectionObserverContext != context)
           {
-            if (PXZoomablePhotosViewModelInlineHeadersDataSourceManagerObserverContext != a5)
+            if (PXZoomablePhotosViewModelInlineHeadersDataSourceManagerObserverContext != context)
             {
-              v25 = [MEMORY[0x277CCA890] currentHandler];
-              [v25 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1256 description:@"Code which should be unreachable has been reached"];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1256 description:@"Code which should be unreachable has been reached"];
 
               abort();
             }
 
-            if (v6)
+            if (changeCopy)
             {
-              v11 = [(PXZoomableInlineHeadersDataSourceManager *)self->_inlineHeadersDataSourceManager yearsDataSource];
-              -[PXZoomablePhotosViewModel setHasInlineHeadersContent:](self, "setHasInlineHeadersContent:", [v11 numberOfSections] > 0);
+              yearsDataSource = [(PXZoomableInlineHeadersDataSourceManager *)self->_inlineHeadersDataSourceManager yearsDataSource];
+              -[PXZoomablePhotosViewModel setHasInlineHeadersContent:](self, "setHasInlineHeadersContent:", [yearsDataSource numberOfSections] > 0);
             }
 
             goto LABEL_30;
           }
 
-          if ((v6 & 1) == 0)
+          if ((changeCopy & 1) == 0)
           {
             goto LABEL_30;
           }
@@ -1193,12 +1193,12 @@ uint64_t __46__PXZoomablePhotosViewModel__handleSpecChange__block_invoke(uint64_
         goto LABEL_30;
       }
 
-      if ((v6 & 6) == 0)
+      if ((changeCopy & 6) == 0)
       {
         goto LABEL_30;
       }
 
-      v12 = v9;
+      v12 = observableCopy;
       if (v12)
       {
         objc_opt_class();
@@ -1207,19 +1207,19 @@ uint64_t __46__PXZoomablePhotosViewModel__handleSpecChange__block_invoke(uint64_
           goto LABEL_20;
         }
 
-        v20 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v23 = objc_opt_class();
         v22 = NSStringFromClass(v23);
-        v24 = [v12 px_descriptionForAssertionMessage];
-        [v20 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1231 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v22, v24}];
+        px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1231 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v22, px_descriptionForAssertionMessage}];
       }
 
       else
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        [v20 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1231 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v22}];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1231 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v22}];
       }
 
 LABEL_20:
@@ -1241,12 +1241,12 @@ LABEL_24:
       goto LABEL_30;
     }
 
-    if ((v6 & 6) == 0)
+    if ((changeCopy & 6) == 0)
     {
       goto LABEL_30;
     }
 
-    v12 = v9;
+    v12 = observableCopy;
     if (v12)
     {
       objc_opt_class();
@@ -1255,19 +1255,19 @@ LABEL_24:
         goto LABEL_14;
       }
 
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v18 = objc_opt_class();
       v17 = NSStringFromClass(v18);
-      v19 = [v12 px_descriptionForAssertionMessage];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1222 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, v19}];
+      px_descriptionForAssertionMessage2 = [v12 px_descriptionForAssertionMessage];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1222 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"observable", v17, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1222 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:1222 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"observable", v17}];
     }
 
 LABEL_14:
@@ -1285,7 +1285,7 @@ LABEL_14:
     goto LABEL_23;
   }
 
-  if (v6)
+  if (changeCopy)
   {
     [(PXZoomablePhotosViewModel *)self _handleSpecChange];
   }
@@ -1295,14 +1295,14 @@ LABEL_30:
 
 - (void)_updateMiniModeAnimator
 {
-  v3 = [(PXZoomablePhotosViewModel *)self miniModeAnimator];
+  miniModeAnimator = [(PXZoomablePhotosViewModel *)self miniModeAnimator];
   isPerformingInitialChanges = self->_isPerformingInitialChanges;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__PXZoomablePhotosViewModel__updateMiniModeAnimator__block_invoke;
   v5[3] = &unk_278298808;
   v5[4] = self;
-  [v3 performAnimated:!isPerformingInitialChanges changes:v5];
+  [miniModeAnimator performAnimated:!isPerformingInitialChanges changes:v5];
 }
 
 void __52__PXZoomablePhotosViewModel__updateMiniModeAnimator__block_invoke(uint64_t a1, void *a2)
@@ -1327,8 +1327,8 @@ void __52__PXZoomablePhotosViewModel__updateMiniModeAnimator__block_invoke(uint6
 
 - (void)_invalidateMiniModeAnimator
 {
-  v2 = [(PXZoomablePhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMiniModeAnimator];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMiniModeAnimator];
 }
 
 void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_55(uint64_t a1, void *a2)
@@ -1401,8 +1401,8 @@ void __45__PXZoomablePhotosViewModel__updateZoomState__block_invoke_2_64(uint64_
 
 - (void)_invalidatePinchVelocity
 {
-  v2 = [(PXZoomablePhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePinchVelocity];
+  updater = [(PXZoomablePhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePinchVelocity];
 }
 
 uint64_t __50__PXZoomablePhotosViewModel__updateAllowedColumns__block_invoke(void *a1, void *a2, uint64_t a3)
@@ -1423,8 +1423,8 @@ uint64_t __50__PXZoomablePhotosViewModel__updateAllowedColumns__block_invoke(voi
 - (void)resetToInitialState
 {
   [(PXZoomablePhotosViewModel *)self zoomInToIndividualItemsWithAnchorAssetReference:0 animated:0];
-  v3 = [(PXZoomablePhotosViewModel *)self geometryDelegate];
-  [v3 zoomablePhotosViewModelResetToInitialState:self];
+  geometryDelegate = [(PXZoomablePhotosViewModel *)self geometryDelegate];
+  [geometryDelegate zoomablePhotosViewModelResetToInitialState:self];
 }
 
 - (BOOL)isResetToInitialState
@@ -1440,34 +1440,34 @@ uint64_t __50__PXZoomablePhotosViewModel__updateAllowedColumns__block_invoke(voi
     v3 = 0;
   }
 
-  v4 = [(PXZoomablePhotosViewModel *)self geometryDelegate];
-  v5 = v4;
-  v6 = v4 == 0 && v3;
-  if (v4 && v3)
+  geometryDelegate = [(PXZoomablePhotosViewModel *)self geometryDelegate];
+  v5 = geometryDelegate;
+  v6 = geometryDelegate == 0 && v3;
+  if (geometryDelegate && v3)
   {
-    v6 = [v4 zoomablePhotosViewModelIsResetToInitialState:self];
+    v6 = [geometryDelegate zoomablePhotosViewModelIsResetToInitialState:self];
   }
 
   return v6;
 }
 
-- (void)setEnableCornerRadiusMaskingWhenAlignedWithEdge:(BOOL)a3
+- (void)setEnableCornerRadiusMaskingWhenAlignedWithEdge:(BOOL)edge
 {
-  if (self->_enableCornerRadiusMaskingWhenAlignedWithEdge != a3)
+  if (self->_enableCornerRadiusMaskingWhenAlignedWithEdge != edge)
   {
-    self->_enableCornerRadiusMaskingWhenAlignedWithEdge = a3;
+    self->_enableCornerRadiusMaskingWhenAlignedWithEdge = edge;
     [(PXZoomablePhotosViewModel *)self signalChange:0x20000000];
   }
 }
 
-- (void)setSectionIndexPath:(PXSimpleIndexPath *)a3
+- (void)setSectionIndexPath:(PXSimpleIndexPath *)path
 {
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->_sectionIndexPath.dataSourceIdentifier, *&a3->dataSourceIdentifier), vceqq_s64(*&self->_sectionIndexPath.item, *&a3->item)))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->_sectionIndexPath.dataSourceIdentifier, *&path->dataSourceIdentifier), vceqq_s64(*&self->_sectionIndexPath.item, *&path->item)))) & 1) == 0)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
-    v4 = *&a3->item;
-    v6 = *&a3->dataSourceIdentifier;
+    v4 = *&path->item;
+    v6 = *&path->dataSourceIdentifier;
     v7 = v4;
     v5[2] = __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke;
     v5[3] = &unk_2782986B0;
@@ -1489,45 +1489,45 @@ uint64_t __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke(uint
   return [v4 _invalidateInlineHeadersDataSourceManager];
 }
 
-- (void)setUseLowMemoryDecode:(BOOL)a3
+- (void)setUseLowMemoryDecode:(BOOL)decode
 {
-  if (self->_useLowMemoryDecode != a3)
+  if (self->_useLowMemoryDecode != decode)
   {
-    self->_useLowMemoryDecode = a3;
+    self->_useLowMemoryDecode = decode;
     [(PXZoomablePhotosViewModel *)self signalChange:0x100000];
   }
 }
 
-- (void)setFaceModeEnabled:(BOOL)a3
+- (void)setFaceModeEnabled:(BOOL)enabled
 {
-  if (self->_faceModeEnabled != a3)
+  if (self->_faceModeEnabled != enabled)
   {
-    self->_faceModeEnabled = a3;
+    self->_faceModeEnabled = enabled;
     [(PXZoomablePhotosViewModel *)self signalChange:0x80000];
   }
 }
 
-- (void)setShowSensitiveWarningBadges:(BOOL)a3
+- (void)setShowSensitiveWarningBadges:(BOOL)badges
 {
-  if (self->_showSensitiveWarningBadges != a3)
+  if (self->_showSensitiveWarningBadges != badges)
   {
-    self->_showSensitiveWarningBadges = a3;
+    self->_showSensitiveWarningBadges = badges;
     [(PXZoomablePhotosViewModel *)self signalChange:0x4000000];
   }
 }
 
-- (void)setAlwaysShowTopBadges:(BOOL)a3
+- (void)setAlwaysShowTopBadges:(BOOL)badges
 {
-  if (self->_alwaysShowTopBadges != a3)
+  if (self->_alwaysShowTopBadges != badges)
   {
-    self->_alwaysShowTopBadges = a3;
+    self->_alwaysShowTopBadges = badges;
     [(PXZoomablePhotosViewModel *)self signalChange:0x40000];
   }
 }
 
-- (void)setEffectProvider:(id)a3
+- (void)setEffectProvider:(id)provider
 {
-  aBlock = a3;
+  aBlock = provider;
   v4 = _Block_copy(self->_effectProvider);
   v5 = _Block_copy(aBlock);
   v6 = v5;
@@ -1550,9 +1550,9 @@ uint64_t __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke(uint
   }
 }
 
-- (void)setHasInlineHeadersContent:(BOOL)a3
+- (void)setHasInlineHeadersContent:(BOOL)content
 {
-  if (self->_hasInlineHeadersContent != a3)
+  if (self->_hasInlineHeadersContent != content)
   {
     v7 = v3;
     v8 = v4;
@@ -1561,136 +1561,136 @@ uint64_t __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke(uint
     v5[2] = __56__PXZoomablePhotosViewModel_setHasInlineHeadersContent___block_invoke;
     v5[3] = &unk_278298688;
     v5[4] = self;
-    v6 = a3;
+    contentCopy = content;
     [(PXZoomablePhotosViewModel *)self performChanges:v5];
   }
 }
 
-- (void)setShouldHideSurroundingContent:(BOOL)a3
+- (void)setShouldHideSurroundingContent:(BOOL)content
 {
-  if (self->_shouldHideSurroundingContent != a3)
+  if (self->_shouldHideSurroundingContent != content)
   {
-    self->_shouldHideSurroundingContent = a3;
+    self->_shouldHideSurroundingContent = content;
     [(PXZoomablePhotosViewModel *)self signalChange:0x4000];
   }
 }
 
-- (void)setLayoutExtendsContentBelowBounds:(BOOL)a3
+- (void)setLayoutExtendsContentBelowBounds:(BOOL)bounds
 {
-  if (self->_layoutExtendsContentBelowBounds != a3)
+  if (self->_layoutExtendsContentBelowBounds != bounds)
   {
-    self->_layoutExtendsContentBelowBounds = a3;
+    self->_layoutExtendsContentBelowBounds = bounds;
     [(PXZoomablePhotosViewModel *)self _invalidateShouldHideSurroundingContent];
   }
 }
 
-- (void)setWantsOverBackgroundFloatingHeaderAppearance:(BOOL)a3
+- (void)setWantsOverBackgroundFloatingHeaderAppearance:(BOOL)appearance
 {
-  if (self->_wantsOverBackgroundFloatingHeaderAppearance != a3)
+  if (self->_wantsOverBackgroundFloatingHeaderAppearance != appearance)
   {
-    self->_wantsOverBackgroundFloatingHeaderAppearance = a3;
+    self->_wantsOverBackgroundFloatingHeaderAppearance = appearance;
     [(PXZoomablePhotosViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setInteractiveZoomColumnIndex:(double)a3 withAnchorAssetReference:(id)a4
+- (void)setInteractiveZoomColumnIndex:(double)index withAnchorAssetReference:(id)reference
 {
-  v7 = a4;
-  if (self->_interactiveZoomColumnIndex != a3 || self->_anchorAssetReference != v7)
+  referenceCopy = reference;
+  if (self->_interactiveZoomColumnIndex != index || self->_anchorAssetReference != referenceCopy)
   {
-    self->_interactiveZoomColumnIndex = a3;
-    v8 = v7;
-    objc_storeStrong(&self->_anchorAssetReference, a4);
+    self->_interactiveZoomColumnIndex = index;
+    v8 = referenceCopy;
+    objc_storeStrong(&self->_anchorAssetReference, reference);
     [(PXZoomablePhotosViewModel *)self _invalidateZoomState];
-    v7 = v8;
+    referenceCopy = v8;
   }
 }
 
-- (void)setIsInteractiveZoomingAllowed:(BOOL)a3
+- (void)setIsInteractiveZoomingAllowed:(BOOL)allowed
 {
-  if (self->_isInteractiveZoomingAllowed != a3)
+  if (self->_isInteractiveZoomingAllowed != allowed)
   {
-    self->_isInteractiveZoomingAllowed = a3;
+    self->_isInteractiveZoomingAllowed = allowed;
     [(PXZoomablePhotosViewModel *)self signalChange:0x1000000];
   }
 }
 
-- (void)setIsInteractiveZooming:(BOOL)a3
+- (void)setIsInteractiveZooming:(BOOL)zooming
 {
-  if (self->_isInteractiveZooming != a3)
+  if (self->_isInteractiveZooming != zooming)
   {
-    self->_isInteractiveZooming = a3;
+    self->_isInteractiveZooming = zooming;
     [(PXZoomablePhotosViewModel *)self _invalidateZoomState];
   }
 }
 
-- (void)setWantsFileSizeBadge:(BOOL)a3
+- (void)setWantsFileSizeBadge:(BOOL)badge
 {
-  if (self->_wantsFileSizeBadge != a3)
+  if (self->_wantsFileSizeBadge != badge)
   {
-    self->_wantsFileSizeBadge = a3;
+    self->_wantsFileSizeBadge = badge;
     [(PXZoomablePhotosViewModel *)self signalChange:0x10000];
   }
 }
 
-- (void)setWantsNumberedSelectionStyle:(BOOL)a3
+- (void)setWantsNumberedSelectionStyle:(BOOL)style
 {
-  if (self->_wantsNumberedSelectionStyle != a3)
+  if (self->_wantsNumberedSelectionStyle != style)
   {
-    self->_wantsNumberedSelectionStyle = a3;
+    self->_wantsNumberedSelectionStyle = style;
     [(PXZoomablePhotosViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setWantsDimmedSelectionStyle:(BOOL)a3
+- (void)setWantsDimmedSelectionStyle:(BOOL)style
 {
-  if (self->_wantsDimmedSelectionStyle != a3)
+  if (self->_wantsDimmedSelectionStyle != style)
   {
-    self->_wantsDimmedSelectionStyle = a3;
+    self->_wantsDimmedSelectionStyle = style;
     [(PXZoomablePhotosViewModel *)self signalChange:0x2000];
   }
 }
 
-- (void)setAllowsCaptionsInSquare:(BOOL)a3
+- (void)setAllowsCaptionsInSquare:(BOOL)square
 {
-  if (self->_allowsCaptionsInSquare != a3)
+  if (self->_allowsCaptionsInSquare != square)
   {
-    self->_allowsCaptionsInSquare = a3;
+    self->_allowsCaptionsInSquare = square;
     [(PXZoomablePhotosViewModel *)self signalChange:0x20000];
   }
 }
 
-- (void)setCaptionsVisible:(BOOL)a3
+- (void)setCaptionsVisible:(BOOL)visible
 {
-  if (self->_captionsVisible != a3)
+  if (self->_captionsVisible != visible)
   {
-    self->_captionsVisible = a3;
+    self->_captionsVisible = visible;
     [(PXZoomablePhotosViewModel *)self signalChange:16];
   }
 }
 
-- (void)setAspectFit:(BOOL)a3
+- (void)setAspectFit:(BOOL)fit
 {
-  if (self->_aspectFit != a3)
+  if (self->_aspectFit != fit)
   {
-    self->_aspectFit = a3;
+    self->_aspectFit = fit;
     [(PXZoomablePhotosViewModel *)self _invalidateAlphaAnimator];
 
     [(PXZoomablePhotosViewModel *)self signalChange:2];
   }
 }
 
-- (void)setZoomState:(id *)a3
+- (void)setZoomState:(id *)state
 {
-  v5 = *&a3->var1;
-  v4 = *&a3->var3;
-  self->_zoomState.normalizedScaleCenter = a3->var0;
+  v5 = *&state->var1;
+  v4 = *&state->var3;
+  self->_zoomState.normalizedScaleCenter = state->var0;
   *&self->_zoomState.scale = v5;
   *&self->_zoomState.columns = v4;
-  v7 = *&a3->var10;
-  v6 = *&a3->var12;
-  v8 = *&a3->var5;
-  self->_zoomState.stickyHeaderOpacity = a3->var14;
+  v7 = *&state->var10;
+  v6 = *&state->var12;
+  v8 = *&state->var5;
+  self->_zoomState.stickyHeaderOpacity = state->var14;
   *&self->_zoomState.fromColumnIndex = v7;
   *&self->_zoomState.interactiveProgress = v6;
   *&self->_zoomState.normalizedColumnWidth = v8;
@@ -1700,22 +1700,22 @@ uint64_t __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke(uint
   [(PXZoomablePhotosViewModel *)self signalChange:1];
 }
 
-- (void)setAllowedColumns:(id)a3
+- (void)setAllowedColumns:(id)columns
 {
-  v5 = a3;
+  columnsCopy = columns;
   v6 = self->_allowedColumns;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == columnsCopy)
   {
     goto LABEL_4;
   }
 
-  v8 = [(NSArray *)v6 isEqual:v5];
+  v8 = [(NSArray *)v6 isEqual:columnsCopy];
 
   if ((v8 & 1) == 0)
   {
-    objc_storeStrong(&self->_allowedColumns, a3);
-    v9 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+    objc_storeStrong(&self->_allowedColumns, columns);
+    _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v15 = 0;
     v16 = &v15;
@@ -1727,10 +1727,10 @@ uint64_t __49__PXZoomablePhotosViewModel_setSectionIndexPath___block_invoke(uint
     v11[2] = __47__PXZoomablePhotosViewModel_setAllowedColumns___block_invoke;
     v11[3] = &unk_278298660;
     v13 = &v15;
-    v14 = v9;
+    v14 = _maxColumnsForIndividualItems;
     v7 = v10;
     v12 = v7;
-    [(NSArray *)v5 enumerateObjectsUsingBlock:v11];
+    [(NSArray *)columnsCopy enumerateObjectsUsingBlock:v11];
     self->_denseColumnsIndexRange = v16[2];
     objc_storeStrong(&self->_allowedColumnWidths, v10);
     [(PXZoomablePhotosViewModel *)self _invalidateZoomState];
@@ -1784,7 +1784,7 @@ LABEL_11:
   [v11 addObject:v12];
 }
 
-- (double)_columnIndexForItemWidth:(double)a3
+- (double)_columnIndexForItemWidth:(double)width
 {
   v17 = 0;
   v18 = &v17;
@@ -1794,15 +1794,15 @@ LABEL_11:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  allowedColumnWidths = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__PXZoomablePhotosViewModel__columnIndexForItemWidth___block_invoke;
   v12[3] = &unk_278298638;
-  *&v12[6] = a3;
+  *&v12[6] = width;
   v12[4] = &v17;
   v12[5] = &v13;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [allowedColumnWidths enumerateObjectsUsingBlock:v12];
   v5 = v14[3];
   v6 = v18[3];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1819,10 +1819,10 @@ LABEL_11:
 
   else
   {
-    v8 = [v4 objectAtIndexedSubscript:?];
+    v8 = [allowedColumnWidths objectAtIndexedSubscript:?];
     [v8 doubleValue];
 
-    v9 = [v4 objectAtIndexedSubscript:v14[3]];
+    v9 = [allowedColumnWidths objectAtIndexedSubscript:v14[3]];
     [v9 doubleValue];
 
     PXClamp();
@@ -1855,19 +1855,19 @@ uint64_t __54__PXZoomablePhotosViewModel__columnIndexForItemWidth___block_invoke
   return result;
 }
 
-- (double)_columnWidthForDesiredColumnIndex:(double)a3
+- (double)_columnWidthForDesiredColumnIndex:(double)index
 {
-  v5 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v6 = [v5 count] - 1;
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  v6 = [allowedColumns count] - 1;
 
-  v7 = vcvtmd_s64_f64(a3);
+  v7 = vcvtmd_s64_f64(index);
   if (v6 < v7)
   {
     v7 = v6;
   }
 
   v8 = v7 & ~(v7 >> 63);
-  v9 = vcvtpd_s64_f64(a3);
+  v9 = vcvtpd_s64_f64(index);
   if (v6 < v9)
   {
     v9 = v6;
@@ -1876,31 +1876,31 @@ uint64_t __54__PXZoomablePhotosViewModel__columnIndexForItemWidth___block_invoke
   v10 = v9 & ~(v9 >> 63);
   PXFloatProgressBetween();
   PXClamp();
-  v11 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
-  v12 = [v11 objectAtIndexedSubscript:v8];
+  allowedColumnWidths = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  v12 = [allowedColumnWidths objectAtIndexedSubscript:v8];
   [v12 doubleValue];
 
-  v13 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
-  v14 = [v13 objectAtIndexedSubscript:v10];
+  allowedColumnWidths2 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  v14 = [allowedColumnWidths2 objectAtIndexedSubscript:v10];
   [v14 doubleValue];
 
   PXFloatByLinearlyInterpolatingFloats();
   return result;
 }
 
-- (int64_t)_closestColumnIndexForColumnWidth:(double)a3
+- (int64_t)_closestColumnIndexForColumnWidth:(double)width
 {
-  v6 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v7 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
-  v8 = [v6 lastObject];
-  v9 = [v8 integerValue];
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  allowedColumnWidths = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  lastObject = [allowedColumns lastObject];
+  integerValue = [lastObject integerValue];
 
   if (![(PXZoomablePhotosViewModel *)self allowDenseLevels])
   {
-    v10 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
-    if (v9 >= v10)
+    _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+    if (integerValue >= _maxColumnsForIndividualItems)
     {
-      v9 = v10;
+      integerValue = _maxColumnsForIndividualItems;
     }
   }
 
@@ -1916,18 +1916,18 @@ uint64_t __54__PXZoomablePhotosViewModel__columnIndexForItemWidth___block_invoke
   v17[1] = 3221225472;
   v17[2] = __63__PXZoomablePhotosViewModel__closestColumnIndexForColumnWidth___block_invoke;
   v17[3] = &unk_278298610;
-  v11 = v6;
-  v22 = a3;
+  v11 = allowedColumns;
+  widthCopy = width;
   v18 = v11;
   v19 = v23;
   v20 = &v24;
-  v21 = v9;
-  [v7 enumerateObjectsUsingBlock:v17];
+  v21 = integerValue;
+  [allowedColumnWidths enumerateObjectsUsingBlock:v17];
   v12 = v25[3];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:481 description:@"Unable to find number of columns"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:481 description:@"Unable to find number of columns"];
 
     v12 = v25[3];
     if ((v12 & 0x8000000000000000) != 0)
@@ -1939,8 +1939,8 @@ uint64_t __54__PXZoomablePhotosViewModel__columnIndexForItemWidth___block_invoke
   else if ((v12 & 0x8000000000000000) != 0)
   {
 LABEL_9:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:482 description:@"Invalid column index"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:482 description:@"Invalid column index"];
 
     goto LABEL_7;
   }
@@ -1978,19 +1978,19 @@ void __63__PXZoomablePhotosViewModel__closestColumnIndexForColumnWidth___block_i
   }
 }
 
-- (int64_t)_closestColumnIndexForAnimatedValue:(double)a3
+- (int64_t)_closestColumnIndexForAnimatedValue:(double)value
 {
-  v6 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v7 = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
-  v8 = [v6 lastObject];
-  v9 = [v8 integerValue];
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  allowedColumnWidths = [(PXZoomablePhotosViewModel *)self allowedColumnWidths];
+  lastObject = [allowedColumns lastObject];
+  integerValue = [lastObject integerValue];
 
   if (![(PXZoomablePhotosViewModel *)self allowDenseLevels])
   {
-    v10 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
-    if (v9 >= v10)
+    _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+    if (integerValue >= _maxColumnsForIndividualItems)
     {
-      v9 = v10;
+      integerValue = _maxColumnsForIndividualItems;
     }
   }
 
@@ -2006,18 +2006,18 @@ void __63__PXZoomablePhotosViewModel__closestColumnIndexForColumnWidth___block_i
   v17[1] = 3221225472;
   v17[2] = __65__PXZoomablePhotosViewModel__closestColumnIndexForAnimatedValue___block_invoke;
   v17[3] = &unk_278298610;
-  v11 = v6;
-  v22 = a3;
+  v11 = allowedColumns;
+  valueCopy = value;
   v18 = v11;
   v19 = v23;
   v20 = &v24;
-  v21 = v9;
-  [v7 enumerateObjectsUsingBlock:v17];
+  v21 = integerValue;
+  [allowedColumnWidths enumerateObjectsUsingBlock:v17];
   v12 = v25[3];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:457 description:@"Unable to find number of columns"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:457 description:@"Unable to find number of columns"];
 
     v12 = v25[3];
     if ((v12 & 0x8000000000000000) != 0)
@@ -2029,8 +2029,8 @@ void __63__PXZoomablePhotosViewModel__closestColumnIndexForColumnWidth___block_i
   else if ((v12 & 0x8000000000000000) != 0)
   {
 LABEL_9:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:458 description:@"Invalid column index"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:458 description:@"Invalid column index"];
 
     goto LABEL_7;
   }
@@ -2070,13 +2070,13 @@ void __65__PXZoomablePhotosViewModel__closestColumnIndexForAnimatedValue___block
   }
 }
 
-- (int64_t)_nextColumnIndexForInitialColumnWidth:(double)a3 currentColumnWidth:(double)a4 velocity:(double)a5
+- (int64_t)_nextColumnIndexForInitialColumnWidth:(double)width currentColumnWidth:(double)columnWidth velocity:(double)velocity
 {
   v8 = [(PXZoomablePhotosViewModel *)self _closestColumnIndexForColumnWidth:?];
   PXFloatSign();
   v10 = v9;
   PXFloatSign();
-  if (v10 == v11 || fabs(a4 / a3 + -1.0) > 0.1 && v10 == 0.0)
+  if (v10 == v11 || fabs(columnWidth / width + -1.0) > 0.1 && v10 == 0.0)
   {
     v8 = llround(v8 - v11);
   }
@@ -2084,11 +2084,11 @@ void __65__PXZoomablePhotosViewModel__closestColumnIndexForAnimatedValue___block
   return [(PXZoomablePhotosViewModel *)self _clampColumnIndexToValidIndex:v8];
 }
 
-- (int64_t)_clampColumnIndexToValidIndex:(int64_t)a3
+- (int64_t)_clampColumnIndexToValidIndex:(int64_t)index
 {
-  v3 = a3 & ~(a3 >> 63);
-  v4 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v5 = [v4 count] - 1;
+  v3 = index & ~(index >> 63);
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  v5 = [allowedColumns count] - 1;
 
   if (v3 >= v5)
   {
@@ -2103,38 +2103,38 @@ void __65__PXZoomablePhotosViewModel__closestColumnIndexForAnimatedValue___block
 
 - (int64_t)defaultColumnIndex
 {
-  v3 = [(PXZoomablePhotosViewModel *)self userDefaults];
-  v4 = [v3 preferredIndividualItemsColumnsNumber];
-  v5 = [v4 integerValue];
+  userDefaults = [(PXZoomablePhotosViewModel *)self userDefaults];
+  preferredIndividualItemsColumnsNumber = [userDefaults preferredIndividualItemsColumnsNumber];
+  integerValue = [preferredIndividualItemsColumnsNumber integerValue];
 
-  if (!v5)
+  if (!integerValue)
   {
-    v6 = [(PXZoomablePhotosViewModel *)self specManager];
-    v7 = [v6 spec];
-    v5 = [v7 defaultNumberOfColumns];
+    specManager = [(PXZoomablePhotosViewModel *)self specManager];
+    spec = [specManager spec];
+    integerValue = [spec defaultNumberOfColumns];
   }
 
-  return [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:v5];
+  return [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:integerValue];
 }
 
-- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)a3
+- (int64_t)bestColumnIndexForPreferredNumberOfColumns:(int64_t)columns
 {
-  v5 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-  v6 = [(PXZoomablePhotosViewModel *)self specManager];
-  v7 = [v6 spec];
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  specManager = [(PXZoomablePhotosViewModel *)self specManager];
+  spec = [specManager spec];
 
-  v8 = [v7 bestColumnIndexForPreferredNumberOfColumns:a3 allowedColumns:v5];
+  v8 = [spec bestColumnIndexForPreferredNumberOfColumns:columns allowedColumns:allowedColumns];
   return v8;
 }
 
-- (void)zoomInToIndividualItemsWithAnchorAssetReference:(id)a3 animated:(BOOL)a4
+- (void)zoomInToIndividualItemsWithAnchorAssetReference:(id)reference animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  referenceCopy = reference;
   if (![(PXZoomablePhotosViewModel *)self isDisplayingIndividualItems])
   {
-    v7 = [(PXZoomablePhotosViewModel *)self defaultColumnIndex];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+    defaultColumnIndex = [(PXZoomablePhotosViewModel *)self defaultColumnIndex];
+    if (defaultColumnIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = PXAssertGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2146,86 +2146,86 @@ void __65__PXZoomablePhotosViewModel__closestColumnIndexForAnimatedValue___block
 
     else
     {
-      [(PXZoomablePhotosViewModel *)self zoomToColumnIndex:v7 withAnchorAssetReference:v6 animated:v4];
+      [(PXZoomablePhotosViewModel *)self zoomToColumnIndex:defaultColumnIndex withAnchorAssetReference:referenceCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)zoomInToLastRememberedWithAnchorAssetReference:(id)a3 animated:(BOOL)a4
+- (void)zoomInToLastRememberedWithAnchorAssetReference:(id)reference animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  referenceCopy = reference;
   [(PXZoomablePhotosViewModel *)self zoomState];
   v7 = [(PXZoomablePhotosViewModel *)self _clampColumnIndexToValidIndex:v21 - 1];
   if (v21 != v7)
   {
     v8 = v7;
     v9 = +[PXZoomablePhotosSettings sharedInstance];
-    v10 = [v9 tapsZoomsToLastIndividualDensity];
+    tapsZoomsToLastIndividualDensity = [v9 tapsZoomsToLastIndividualDensity];
 
-    if (v10)
+    if (tapsZoomsToLastIndividualDensity)
     {
-      v11 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-      v12 = [v11 objectAtIndexedSubscript:v21];
-      v13 = [v12 integerValue];
+      allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
+      v12 = [allowedColumns objectAtIndexedSubscript:v21];
+      integerValue = [v12 integerValue];
 
-      v14 = [(PXZoomablePhotosViewModel *)self allowedColumns];
-      v15 = [v14 objectAtIndexedSubscript:v8];
-      v16 = [v15 integerValue];
+      allowedColumns2 = [(PXZoomablePhotosViewModel *)self allowedColumns];
+      v15 = [allowedColumns2 objectAtIndexedSubscript:v8];
+      integerValue2 = [v15 integerValue];
 
-      v17 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
-      if (v13 > v17 && v16 <= v17)
+      _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+      if (integerValue > _maxColumnsForIndividualItems && integerValue2 <= _maxColumnsForIndividualItems)
       {
-        v18 = [(PXZoomablePhotosViewModel *)self userDefaults];
-        v19 = [v18 preferredIndividualItemsColumnsNumber];
-        v20 = [v19 integerValue];
+        userDefaults = [(PXZoomablePhotosViewModel *)self userDefaults];
+        preferredIndividualItemsColumnsNumber = [userDefaults preferredIndividualItemsColumnsNumber];
+        integerValue3 = [preferredIndividualItemsColumnsNumber integerValue];
 
-        if (v20)
+        if (integerValue3)
         {
-          v8 = [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:v20];
+          v8 = [(PXZoomablePhotosViewModel *)self bestColumnIndexForPreferredNumberOfColumns:integerValue3];
         }
       }
     }
 
-    [(PXZoomablePhotosViewModel *)self zoomToColumnIndex:v8 withAnchorAssetReference:v6 animated:v4];
+    [(PXZoomablePhotosViewModel *)self zoomToColumnIndex:v8 withAnchorAssetReference:referenceCopy animated:animatedCopy];
   }
 }
 
-- (void)zoomToColumnIndex:(int64_t)a3 withAnchorAssetReference:(id)a4 animated:(BOOL)a5
+- (void)zoomToColumnIndex:(int64_t)index withAnchorAssetReference:(id)reference animated:(BOOL)animated
 {
-  v9 = a4;
+  referenceCopy = reference;
   if (![(PXZoomablePhotosViewModel *)self isPinching]&& ![(PXZoomablePhotosViewModel *)self isInteractiveZooming])
   {
-    self->_pendingZoomColumnIndex = [(PXZoomablePhotosViewModel *)self _clampColumnIndexToValidIndex:a3];
-    objc_storeStrong(&self->_anchorAssetReference, a4);
-    self->_animatePendingZoom = a5;
+    self->_pendingZoomColumnIndex = [(PXZoomablePhotosViewModel *)self _clampColumnIndexToValidIndex:index];
+    objc_storeStrong(&self->_anchorAssetReference, reference);
+    self->_animatePendingZoom = animated;
     [(PXZoomablePhotosViewModel *)self _invalidateZoomState];
   }
 }
 
-- (int64_t)denseZoomLevelForZoomState:(id *)a3
+- (int64_t)denseZoomLevelForZoomState:(id *)state
 {
-  v5 = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
-  if (a3->var3 <= v5)
+  _maxColumnsForIndividualItems = [(PXZoomablePhotosViewModel *)self _maxColumnsForIndividualItems];
+  if (state->var3 <= _maxColumnsForIndividualItems)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = _maxColumnsForIndividualItems;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(PXZoomablePhotosViewModel *)self allowedColumns];
+  allowedColumns = [(PXZoomablePhotosViewModel *)self allowedColumns];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invoke;
   v10[3] = &unk_2782985E8;
   v10[4] = &v11;
   v10[5] = v6;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [allowedColumns enumerateObjectsUsingBlock:v10];
 
-  v8 = a3->var4 - v12[3];
+  v8 = state->var4 - v12[3];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
@@ -2250,24 +2250,24 @@ uint64_t __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invo
   return result;
 }
 
-- (void)setIsDisplayingIndividualItems:(BOOL)a3
+- (void)setIsDisplayingIndividualItems:(BOOL)items
 {
-  if (self->_isDisplayingIndividualItems != a3)
+  if (self->_isDisplayingIndividualItems != items)
   {
-    self->_isDisplayingIndividualItems = a3;
+    self->_isDisplayingIndividualItems = items;
     [(PXZoomablePhotosViewModel *)self signalChange:0x2000000];
   }
 }
 
-- (void)setMiniModeAnchorAssetReference:(id)a3
+- (void)setMiniModeAnchorAssetReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   miniModeAnchorAssetReference = self->_miniModeAnchorAssetReference;
-  if (miniModeAnchorAssetReference != v4)
+  if (miniModeAnchorAssetReference != referenceCopy)
   {
-    v8 = v4;
-    miniModeAnchorAssetReference = [miniModeAnchorAssetReference isEqual:v4];
-    v4 = v8;
+    v8 = referenceCopy;
+    miniModeAnchorAssetReference = [miniModeAnchorAssetReference isEqual:referenceCopy];
+    referenceCopy = v8;
     if ((miniModeAnchorAssetReference & 1) == 0)
     {
       v6 = [v8 copy];
@@ -2275,106 +2275,106 @@ uint64_t __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invo
       self->_miniModeAnchorAssetReference = v6;
 
       miniModeAnchorAssetReference = [(PXZoomablePhotosViewModel *)self signalChange:0x800000];
-      v4 = v8;
+      referenceCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](miniModeAnchorAssetReference, v4);
+  MEMORY[0x2821F96F8](miniModeAnchorAssetReference, referenceCopy);
 }
 
-- (void)setViewModeInteractionProgress:(double)a3
+- (void)setViewModeInteractionProgress:(double)progress
 {
-  if (self->_viewModeInteractionProgress != a3)
+  if (self->_viewModeInteractionProgress != progress)
   {
-    self->_viewModeInteractionProgress = a3;
+    self->_viewModeInteractionProgress = progress;
     [(PXZoomablePhotosViewModel *)self signalChange:0x400000];
 
     [(PXZoomablePhotosViewModel *)self _invalidateMiniModeAnimator];
   }
 }
 
-- (void)setViewMode:(unint64_t)a3
+- (void)setViewMode:(unint64_t)mode
 {
-  if (self->_viewMode != a3)
+  if (self->_viewMode != mode)
   {
-    self->_viewMode = a3;
+    self->_viewMode = mode;
     [(PXZoomablePhotosViewModel *)self signalChange:0x200000];
 
     [(PXZoomablePhotosViewModel *)self _invalidateMiniModeAnimator];
   }
 }
 
-- (void)setPinchState:(id *)a3 withAnchorAssetReference:(id)a4
+- (void)setPinchState:(id *)state withAnchorAssetReference:(id)reference
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = v7;
+  referenceCopy = reference;
+  v8 = referenceCopy;
   p_pinchState = &self->_pinchState;
-  var4 = a3->var4;
-  v11 = self->_pinchState.normalizedPosition.x == a3->var2.x && self->_pinchState.normalizedPosition.y == a3->var2.y;
-  if (!v11 || (p_pinchState->normalizedInitialPosition.x == a3->var0.x ? (v12 = self->_pinchState.normalizedInitialPosition.y == a3->var0.y) : (v12 = 0), v12 ? (v13 = self->_pinchState.scale == var4) : (v13 = 0), v13 ? (v14 = self->_pinchState.initialScale == a3->var3) : (v14 = 0), v14 ? (v15 = self->_pinchState.scaleVelocity == a3->var5) : (v15 = 0), v15 ? (v16 = self->_pinchState.events == a3->var6) : (v16 = 0), v16 ? (v17 = self->_pinchState.lastEventTime == a3->var7) : (v17 = 0), !v17 || self->_anchorAssetReference != v7))
+  var4 = state->var4;
+  v11 = self->_pinchState.normalizedPosition.x == state->var2.x && self->_pinchState.normalizedPosition.y == state->var2.y;
+  if (!v11 || (p_pinchState->normalizedInitialPosition.x == state->var0.x ? (v12 = self->_pinchState.normalizedInitialPosition.y == state->var0.y) : (v12 = 0), v12 ? (v13 = self->_pinchState.scale == var4) : (v13 = 0), v13 ? (v14 = self->_pinchState.initialScale == state->var3) : (v14 = 0), v14 ? (v15 = self->_pinchState.scaleVelocity == state->var5) : (v15 = 0), v15 ? (v16 = self->_pinchState.events == state->var6) : (v16 = 0), v16 ? (v17 = self->_pinchState.lastEventTime == state->var7) : (v17 = 0), !v17 || self->_anchorAssetReference != referenceCopy))
   {
     if ((*&var4 <= -1 || ((*&var4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 >= 0x3FF) && (*&var4 - 1) >= 0xFFFFFFFFFFFFFLL)
     {
       v20 = PXAssertGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v26 = a3->var4;
+        v26 = state->var4;
         v28 = 134217984;
         v29 = v26;
         _os_log_error_impl(&dword_21ABF3000, v20, OS_LOG_TYPE_ERROR, "Invalid scale:%.3f", &v28, 0xCu);
       }
     }
 
-    if ((*&a3->var5 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&state->var5 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       v21 = PXAssertGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        var5 = a3->var5;
+        var5 = state->var5;
         v28 = 134217984;
         v29 = var5;
         _os_log_error_impl(&dword_21ABF3000, v21, OS_LOG_TYPE_ERROR, "Invalid scaleVelocity:%.3f", &v28, 0xCu);
       }
     }
 
-    p_pinchState->normalizedInitialPosition = a3->var0;
-    v22 = *&a3->var1;
-    v23 = *&a3->var2.y;
-    v24 = *&a3->var6;
-    *&self->_pinchState.scale = *&a3->var4;
+    p_pinchState->normalizedInitialPosition = state->var0;
+    v22 = *&state->var1;
+    v23 = *&state->var2.y;
+    v24 = *&state->var6;
+    *&self->_pinchState.scale = *&state->var4;
     *&self->_pinchState.events = v24;
     *&self->_pinchState.normalizedInitialPinchDistance = v22;
     *&self->_pinchState.normalizedPosition.y = v23;
-    objc_storeStrong(&self->_anchorAssetReference, a4);
-    v25 = self;
+    objc_storeStrong(&self->_anchorAssetReference, reference);
+    selfCopy = self;
     if (kdebug_is_enabled())
     {
       kdebug_trace();
     }
 
-    [(PXZoomablePhotosViewModel *)v25 _invalidatePinchVelocity];
-    [(PXZoomablePhotosViewModel *)v25 _invalidateZoomState];
-    [(PXZoomablePhotosViewModel *)v25 signalChange:256];
+    [(PXZoomablePhotosViewModel *)selfCopy _invalidatePinchVelocity];
+    [(PXZoomablePhotosViewModel *)selfCopy _invalidateZoomState];
+    [(PXZoomablePhotosViewModel *)selfCopy signalChange:256];
   }
 }
 
-- (void)setEnablePinchEffect:(BOOL)a3
+- (void)setEnablePinchEffect:(BOOL)effect
 {
-  if (self->_enablePinchEffect != a3)
+  if (self->_enablePinchEffect != effect)
   {
-    self->_enablePinchEffect = a3;
+    self->_enablePinchEffect = effect;
     [(PXZoomablePhotosViewModel *)self signalChange:0x10000000];
   }
 }
 
-- (void)setIsPinching:(BOOL)a3
+- (void)setIsPinching:(BOOL)pinching
 {
-  if (self->_isPinching != a3)
+  if (self->_isPinching != pinching)
   {
     v8 = v3;
-    self->_isPinching = a3;
-    if (a3)
+    self->_isPinching = pinching;
+    if (pinching)
     {
       self->_normalizedColumnWidthWhenPinchStarted = self->_zoomState.normalizedColumnWidth;
       self->_pinchLastDate = 0.0;
@@ -2389,11 +2389,11 @@ uint64_t __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invo
   }
 }
 
-- (void)setIsInSelectMode:(BOOL)a3
+- (void)setIsInSelectMode:(BOOL)mode
 {
-  if (self->_isInSelectMode != a3)
+  if (self->_isInSelectMode != mode)
   {
-    self->_isInSelectMode = a3;
+    self->_isInSelectMode = mode;
     [(PXZoomablePhotosViewModel *)self signalChange:32];
     [(PXZoomablePhotosViewModel *)self _invalidateAllowedColumns];
 
@@ -2401,12 +2401,12 @@ uint64_t __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invo
   }
 }
 
-- (void)setDropTargetAssetReference:(id)a3
+- (void)setDropTargetAssetReference:(id)reference
 {
-  v8 = a3;
+  referenceCopy = reference;
   v5 = self->_dropTargetAssetReference;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == referenceCopy)
   {
   }
 
@@ -2416,90 +2416,90 @@ uint64_t __56__PXZoomablePhotosViewModel_denseZoomLevelForZoomState___block_invo
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_dropTargetAssetReference, a3);
+      objc_storeStrong(&self->_dropTargetAssetReference, reference);
       [(PXZoomablePhotosViewModel *)self signalChange:2048];
     }
   }
 }
 
-- (void)setDraggedAssetReferences:(id)a3
+- (void)setDraggedAssetReferences:(id)references
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_draggedAssetReferences != v4)
+  referencesCopy = references;
+  v5 = referencesCopy;
+  if (self->_draggedAssetReferences != referencesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = referencesCopy;
+    referencesCopy = [referencesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((referencesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       draggedAssetReferences = self->_draggedAssetReferences;
       self->_draggedAssetReferences = v6;
 
-      v4 = [(PXZoomablePhotosViewModel *)self signalChange:1024];
+      referencesCopy = [(PXZoomablePhotosViewModel *)self signalChange:1024];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](referencesCopy, v5);
 }
 
-- (void)setHidesDurationLabelBadge:(BOOL)a3
+- (void)setHidesDurationLabelBadge:(BOOL)badge
 {
-  if (self->_hidesDurationLabelBadge != a3)
+  if (self->_hidesDurationLabelBadge != badge)
   {
-    self->_hidesDurationLabelBadge = a3;
+    self->_hidesDurationLabelBadge = badge;
     [(PXZoomablePhotosViewModel *)self signalChange:512];
   }
 }
 
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled
 {
-  if (self->_viewBasedDecorationsEnabled != a3)
+  if (self->_viewBasedDecorationsEnabled != enabled)
   {
-    self->_viewBasedDecorationsEnabled = a3;
+    self->_viewBasedDecorationsEnabled = enabled;
     [(PXZoomablePhotosViewModel *)self signalChange:512];
   }
 }
 
-- (void)setLowMemoryMode:(BOOL)a3
+- (void)setLowMemoryMode:(BOOL)mode
 {
-  if (self->_lowMemoryMode != a3)
+  if (self->_lowMemoryMode != mode)
   {
-    self->_lowMemoryMode = a3;
+    self->_lowMemoryMode = mode;
   }
 }
 
 - (BOOL)hasContentToZoom
 {
-  v2 = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
-  v3 = [v2 dataSource];
-  v4 = [v3 containsAnyItems];
+  assetsDataSourceManager = [(PXZoomablePhotosViewModel *)self assetsDataSourceManager];
+  dataSource = [assetsDataSourceManager dataSource];
+  containsAnyItems = [dataSource containsAnyItems];
 
-  return v4;
+  return containsAnyItems;
 }
 
-- (void)performInitialChanges:(id)a3
+- (void)performInitialChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingInitialChanges = self->_isPerformingInitialChanges;
   self->_isPerformingInitialChanges = 1;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__PXZoomablePhotosViewModel_performInitialChanges___block_invoke;
   v7[3] = &unk_2782985C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   [(PXZoomablePhotosViewModel *)self performChanges:v7];
   self->_isPerformingInitialChanges = isPerformingInitialChanges;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXZoomablePhotosViewModel;
-  [(PXZoomablePhotosViewModel *)&v3 performChanges:a3];
+  [(PXZoomablePhotosViewModel *)&v3 performChanges:changes];
 }
 
 - (NSString)description
@@ -2544,38 +2544,38 @@ void __36__PXZoomablePhotosViewModel_dealloc__block_invoke(uint64_t a1)
   [v1 performChanges:v2];
 }
 
-- (PXZoomablePhotosViewModel)initWithDataSourceManager:(id)a3 selectionManager:(id)a4 mediaProvider:(id)a5 specManager:(id)a6 loadingStatusManager:(id)a7 badgesModifier:(id)a8 preferredAssetCropDelegate:(id)a9 preferredColumnCountsDelegate:(id)a10 inlinePlaybackController:(id)a11 sectionIndex:(int64_t)a12 headersEnabled:(BOOL)a13
+- (PXZoomablePhotosViewModel)initWithDataSourceManager:(id)manager selectionManager:(id)selectionManager mediaProvider:(id)provider specManager:(id)specManager loadingStatusManager:(id)statusManager badgesModifier:(id)modifier preferredAssetCropDelegate:(id)delegate preferredColumnCountsDelegate:(id)self0 inlinePlaybackController:(id)self1 sectionIndex:(int64_t)self2 headersEnabled:(BOOL)self3
 {
-  v48 = a3;
-  v46 = a4;
-  v45 = a5;
-  v43 = a6;
-  v47 = a6;
-  v44 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  managerCopy = manager;
+  selectionManagerCopy = selectionManager;
+  providerCopy = provider;
+  specManagerCopy = specManager;
+  specManagerCopy2 = specManager;
+  statusManagerCopy = statusManager;
+  modifierCopy = modifier;
+  delegateCopy = delegate;
+  countsDelegateCopy = countsDelegate;
+  controllerCopy = controller;
   v51.receiver = self;
   v51.super_class = PXZoomablePhotosViewModel;
   v24 = [(PXZoomablePhotosViewModel *)&v51 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_assetsDataSourceManager, a3);
-    objc_storeStrong(&v25->_selectionManager, a4);
-    objc_storeStrong(&v25->_mediaProvider, a5);
-    objc_storeWeak(&v25->_preferredAssetCropDelegate, v21);
-    objc_storeWeak(&v25->_preferredColumnCountsDelegate, v22);
-    objc_storeWeak(&v25->_inlinePlaybackController, v23);
-    v26 = [(PXAssetsDataSourceManager *)v25->_assetsDataSourceManager dataSource];
-    v25->_sectionIndexPath.dataSourceIdentifier = [v26 identifier];
-    v25->_sectionIndexPath.section = a12;
+    objc_storeStrong(&v24->_assetsDataSourceManager, manager);
+    objc_storeStrong(&v25->_selectionManager, selectionManager);
+    objc_storeStrong(&v25->_mediaProvider, provider);
+    objc_storeWeak(&v25->_preferredAssetCropDelegate, delegateCopy);
+    objc_storeWeak(&v25->_preferredColumnCountsDelegate, countsDelegateCopy);
+    objc_storeWeak(&v25->_inlinePlaybackController, controllerCopy);
+    dataSource = [(PXAssetsDataSourceManager *)v25->_assetsDataSourceManager dataSource];
+    v25->_sectionIndexPath.dataSourceIdentifier = [dataSource identifier];
+    v25->_sectionIndexPath.section = index;
     v27.f64[0] = NAN;
     v27.f64[1] = NAN;
     *&v25->_sectionIndexPath.item = vnegq_f64(v27);
 
-    v25->_headersEnabled = a13;
+    v25->_headersEnabled = enabled;
     v25->_enablePinchEffect = 1;
     v28 = [objc_alloc(MEMORY[0x277D3CE28]) initWithTarget:v25];
     updater = v25->_updater;
@@ -2589,10 +2589,10 @@ void __36__PXZoomablePhotosViewModel_dealloc__block_invoke(uint64_t a1)
     [(PXUpdater *)v25->_updater addUpdateSelector:sel__updateShouldHideSurroundingContent];
     [(PXUpdater *)v25->_updater addUpdateSelector:sel__updateMiniModeAnimator];
     [(PXUpdater *)v25->_updater addUpdateSelector:sel__updateInlineHeadersDataSourceManager];
-    objc_storeStrong(&v25->_specManager, v43);
-    [v47 registerChangeObserver:v25 context:PXZoomablePhotosViewModelSpecManagerObserverContext];
-    objc_storeStrong(&v25->_loadingStatusManager, a7);
-    v30 = _Block_copy(v20);
+    objc_storeStrong(&v25->_specManager, specManagerCopy);
+    [specManagerCopy2 registerChangeObserver:v25 context:PXZoomablePhotosViewModelSpecManagerObserverContext];
+    objc_storeStrong(&v25->_loadingStatusManager, statusManager);
+    v30 = _Block_copy(modifierCopy);
     badgesModifier = v25->_badgesModifier;
     v25->_badgesModifier = v30;
 
@@ -2628,7 +2628,7 @@ void __36__PXZoomablePhotosViewModel_dealloc__block_invoke(uint64_t a1)
     v41 = v25;
     v50 = v41;
     [(PXZoomablePhotosViewModel *)v41 performChanges:v49];
-    [v48 registerChangeObserver:v41 context:PXZoomablePhotosViewModelDataSourceManagerObserverContext];
+    [managerCopy registerChangeObserver:v41 context:PXZoomablePhotosViewModelDataSourceManagerObserverContext];
     [(PXSectionedSelectionManager *)v25->_selectionManager registerChangeObserver:v41 context:PXZoomablePhotosViewModelSelectionObserverContext];
     v41->_useLowMemoryDecode = 0;
   }
@@ -2648,8 +2648,8 @@ uint64_t __244__PXZoomablePhotosViewModel_initWithDataSourceManager_selectionMan
 
 - (PXZoomablePhotosViewModel)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:85 description:{@"%s is not available as initializer", "-[PXZoomablePhotosViewModel init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosViewModel.m" lineNumber:85 description:{@"%s is not available as initializer", "-[PXZoomablePhotosViewModel init]"}];
 
   abort();
 }

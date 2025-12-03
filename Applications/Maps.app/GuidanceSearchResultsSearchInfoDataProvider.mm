@@ -1,43 +1,43 @@
 @interface GuidanceSearchResultsSearchInfoDataProvider
 - (BOOL)hasValidSearchResults;
 - (GEOFeatureStyleAttributes)styleAttributes;
-- (GuidanceSearchResultsSearchInfoDataProvider)initWithSearchInfo:(id)a3 error:(id)a4;
+- (GuidanceSearchResultsSearchInfoDataProvider)initWithSearchInfo:(id)info error:(id)error;
 - (NSString)subtitle;
 - (NSString)title;
-- (void)loadSearchResultsWithRouteInfo:(id)a3 completion:(id)a4;
+- (void)loadSearchResultsWithRouteInfo:(id)info completion:(id)completion;
 @end
 
 @implementation GuidanceSearchResultsSearchInfoDataProvider
 
-- (void)loadSearchResultsWithRouteInfo:(id)a3 completion:(id)a4
+- (void)loadSearchResultsWithRouteInfo:(id)info completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = sub_100067540();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+    searchInfo = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
     *buf = 138412290;
-    v27 = v7;
+    v27 = searchInfo;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "SAR: Loading search results: %@", buf, 0xCu);
   }
 
-  v8 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v9 = [v8 clientResolvedResult];
+  searchInfo2 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  clientResolvedResult = [searchInfo2 clientResolvedResult];
 
-  v10 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v11 = v10;
-  if (!v9)
+  searchInfo3 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  v11 = searchInfo3;
+  if (!clientResolvedResult)
   {
-    v17 = [v10 results];
+    results = [searchInfo3 results];
     v18 = [NSPredicate predicateWithFormat:@"mapItem != nil"];
-    v12 = [v17 filteredArrayUsingPredicate:v18];
+    clientResolvedResult2 = [results filteredArrayUsingPredicate:v18];
 
-    [v12 valueForKeyPath:@"mapItem"];
+    [clientResolvedResult2 valueForKeyPath:@"mapItem"];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100BB17B0;
     v22 = block[3] = &unk_101661090;
-    v23 = v5;
+    v23 = completionCopy;
     v13 = v22;
     dispatch_async(&_dispatch_main_q, block);
 
@@ -47,34 +47,34 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [v10 clientResolvedResult];
+  clientResolvedResult2 = [searchInfo3 clientResolvedResult];
 
   v13 = objc_alloc_init(ClientTypeResolver);
-  v14 = [v12 itemType];
-  if (v14 <= 6)
+  itemType = [clientResolvedResult2 itemType];
+  if (itemType <= 6)
   {
-    if (((1 << v14) & 0x39) != 0)
+    if (((1 << itemType) & 0x39) != 0)
     {
       v15 = sub_100067540();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v12 itemType];
+        itemType2 = [clientResolvedResult2 itemType];
         *buf = 67109120;
-        LODWORD(v27) = v16;
+        LODWORD(v27) = itemType2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "SAR: Unhandled client resolved type: %d", buf, 8u);
       }
     }
 
     else
     {
-      v19 = [(ClientTypeResolver *)v13 personalizedItemSource];
-      v20 = [v12 itemType];
+      personalizedItemSource = [(ClientTypeResolver *)v13 personalizedItemSource];
+      itemType3 = [clientResolvedResult2 itemType];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100BB14F8;
       v24[3] = &unk_10164C6E8;
-      v25 = v5;
-      [v19 addressOrLOIWithType:v20 completion:v24];
+      v25 = completionCopy;
+      [personalizedItemSource addressOrLOIWithType:itemType3 completion:v24];
 
       v15 = v25;
     }
@@ -87,71 +87,71 @@ LABEL_11:
 
 - (BOOL)hasValidSearchResults
 {
-  v3 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v4 = [v3 clientResolvedResult];
+  searchInfo = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  clientResolvedResult = [searchInfo clientResolvedResult];
 
-  if (v4)
+  if (clientResolvedResult)
   {
     return 1;
   }
 
-  v6 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v7 = [v6 results];
-  v5 = [v7 count] != 0;
+  searchInfo2 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  results = [searchInfo2 results];
+  v5 = [results count] != 0;
 
   return v5;
 }
 
 - (GEOFeatureStyleAttributes)styleAttributes
 {
-  v2 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v3 = [v2 searchFieldItem];
-  v4 = [v3 currentCategory];
-  v5 = [v4 styleAttributes];
+  searchInfo = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  searchFieldItem = [searchInfo searchFieldItem];
+  currentCategory = [searchFieldItem currentCategory];
+  styleAttributes = [currentCategory styleAttributes];
 
-  return v5;
+  return styleAttributes;
 }
 
 - (NSString)subtitle
 {
-  v2 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v3 = [v2 subHeaderDisplayName];
+  searchInfo = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  subHeaderDisplayName = [searchInfo subHeaderDisplayName];
 
-  return v3;
+  return subHeaderDisplayName;
 }
 
 - (NSString)title
 {
-  v3 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-  v4 = [v3 searchText];
-  v5 = v4;
-  if (v4)
+  searchInfo = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+  searchText = [searchInfo searchText];
+  v5 = searchText;
+  if (searchText)
   {
-    v6 = v4;
+    title = searchText;
   }
 
   else
   {
-    v7 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
-    v8 = [v7 searchFieldItem];
-    v6 = [v8 title];
+    searchInfo2 = [(GuidanceSearchResultsSearchInfoDataProvider *)self searchInfo];
+    searchFieldItem = [searchInfo2 searchFieldItem];
+    title = [searchFieldItem title];
   }
 
-  return v6;
+  return title;
 }
 
-- (GuidanceSearchResultsSearchInfoDataProvider)initWithSearchInfo:(id)a3 error:(id)a4
+- (GuidanceSearchResultsSearchInfoDataProvider)initWithSearchInfo:(id)info error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = GuidanceSearchResultsSearchInfoDataProvider;
   v9 = [(GuidanceSearchResultsSearchInfoDataProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_searchInfo, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_searchInfo, info);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;

@@ -3,10 +3,10 @@
 - (CGSize)fallbackTargetSizeIfRequestedSizeNotLocallyAvailable;
 - (NSString)description;
 - (PHImageRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setAllowSecondaryDegradedImage:(BOOL)allowSecondaryDegradedImage;
-- (void)setOpportunisticDegradedImagesToReturn:(int64_t)a3;
-- (void)setVideoFrameTime:(id *)a3;
+- (void)setOpportunisticDegradedImagesToReturn:(int64_t)return;
+- (void)setVideoFrameTime:(id *)time;
 @end
 
 @implementation PHImageRequestOptions
@@ -80,22 +80,22 @@ uint64_t __29__PHImageRequestOptions_init__block_invoke()
   return result;
 }
 
-- (void)setVideoFrameTime:(id *)a3
+- (void)setVideoFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_videoFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_videoFrameTime.epoch = time->var3;
   *&self->_videoFrameTime.value = v3;
 }
 
-- (void)setOpportunisticDegradedImagesToReturn:(int64_t)a3
+- (void)setOpportunisticDegradedImagesToReturn:(int64_t)return
 {
-  if (!a3)
+  if (!return)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PHImageManager.m" lineNumber:479 description:@"opportunisticDegradedImagesToReturn cannot be zero."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageManager.m" lineNumber:479 description:@"opportunisticDegradedImagesToReturn cannot be zero."];
   }
 
-  self->_opportunisticDegradedImagesToReturn = a3;
+  self->_opportunisticDegradedImagesToReturn = return;
 }
 
 - (void)setAllowSecondaryDegradedImage:(BOOL)allowSecondaryDegradedImage
@@ -113,8 +113,8 @@ uint64_t __29__PHImageRequestOptions_init__block_invoke()
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"version="];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"version="];
   if ([(PHImageRequestOptions *)self version]== PHImageRequestOptionsVersionOriginal)
   {
     v4 = @"orig";
@@ -140,7 +140,7 @@ uint64_t __29__PHImageRequestOptions_init__block_invoke()
     v4 = @"curr";
   }
 
-  [v3 appendString:v4];
+  [string appendString:v4];
 LABEL_10:
   [(PHImageRequestOptions *)self normalizedCropRect];
   if (!CGRectEqualToRect(v21, *MEMORY[0x1E695F058]))
@@ -152,7 +152,7 @@ LABEL_10:
     [(PHImageRequestOptions *)self normalizedCropRect];
     v10 = v9;
     [(PHImageRequestOptions *)self normalizedCropRect];
-    [v3 appendFormat:@", cropRect={%0.3lf, %0.3lf, %0.3lfx%0.3lf}", v6, v8, v10, v11];
+    [string appendFormat:@", cropRect={%0.3lf, %0.3lf, %0.3lfx%0.3lf}", v6, v8, v10, v11];
   }
 
   if ([(PHImageRequestOptions *)self resizeMode]== PHImageRequestOptionsResizeModeFast)
@@ -170,9 +170,9 @@ LABEL_10:
     v12 = @", resize=exact";
   }
 
-  [v3 appendString:v12];
+  [string appendString:v12];
 LABEL_17:
-  [v3 appendString:{@", delivery="}];
+  [string appendString:{@", delivery="}];
   if ([(PHImageRequestOptions *)self deliveryMode])
   {
     if ([(PHImageRequestOptions *)self deliveryMode]== PHImageRequestOptionsDeliveryModeHighQualityFormat)
@@ -203,88 +203,88 @@ LABEL_17:
     goto LABEL_32;
   }
 
-  [v3 appendString:@"ask+"];
+  [string appendString:@"ask+"];
   if (([(PHImageRequestOptions *)self opportunisticDegradedImagesToReturn]& 1) != 0)
   {
-    [v3 appendString:@"[fst"];
+    [string appendString:@"[fst"];
     if ([(PHImageRequestOptions *)self useAsyncForFastOpportunisticResult])
     {
-      [v3 appendString:@"-async"];
+      [string appendString:@"-async"];
     }
 
-    [v3 appendString:@"]"];
+    [string appendString:@"]"];
   }
 
   if (([(PHImageRequestOptions *)self opportunisticDegradedImagesToReturn]& 2) != 0)
   {
     v13 = @"[int]";
 LABEL_32:
-    [v3 appendString:v13];
+    [string appendString:v13];
   }
 
 LABEL_33:
-  [v3 appendString:{@", loading=img"}];
+  [string appendString:{@", loading=img"}];
   if (([(PHImageRequestOptions *)self loadingMode]& 1) != 0)
   {
-    [v3 appendString:@"+data"];
+    [string appendString:@"+data"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x10000) != 0)
   {
-    [v3 appendString:@"+URL"];
+    [string appendString:@"+URL"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x40000) != 0)
   {
-    [v3 appendString:@"+BGRA"];
+    [string appendString:@"+BGRA"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x80000) != 0)
   {
-    [v3 appendString:@"+hipriodec"];
+    [string appendString:@"+hipriodec"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x100000) != 0)
   {
-    [v3 appendString:@"+nofallback"];
+    [string appendString:@"+nofallback"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x200000) != 0)
   {
-    [v3 appendString:@"+swjpeg"];
+    [string appendString:@"+swjpeg"];
   }
 
   if (([(PHImageRequestOptions *)self loadingMode]& 0x400000) != 0)
   {
-    [v3 appendString:@"+lowmemdec"];
+    [string appendString:@"+lowmemdec"];
   }
 
   if ([(PHImageRequestOptions *)self isNetworkAccessAllowed])
   {
-    [v3 appendString:@"+network"];
+    [string appendString:@"+network"];
   }
 
-  v14 = [(PHImageRequestOptions *)self downloadIntent];
-  if (v14)
+  downloadIntent = [(PHImageRequestOptions *)self downloadIntent];
+  if (downloadIntent)
   {
-    v15 = _PHDownloadIntentName(v14);
+    v15 = _PHDownloadIntentName(downloadIntent);
     v16 = _PHDownloadPriorityName([(PHImageRequestOptions *)self downloadPriority]);
-    [v3 appendFormat:@"+downloadIntent:%@+downloadPriority:%@", v15, v16];
+    [string appendFormat:@"+downloadIntent:%@+downloadPriority:%@", v15, v16];
   }
 
   if (self->_videoFrameTime.flags)
   {
     time = self->_videoFrameTime;
     v17 = CMTimeCopyDescription(0, &time);
-    [v3 appendFormat:@"+videoFrameTime:%@", v17];
+    [string appendFormat:@"+videoFrameTime:%@", v17];
   }
 
-  return v3;
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setVersion:{-[PHImageRequestOptions version](self, "version")}];
   [v4 setDeliveryMode:{-[PHImageRequestOptions deliveryMode](self, "deliveryMode")}];
   [v4 setLoadingMode:{-[PHImageRequestOptions loadingMode](self, "loadingMode")}];
@@ -293,15 +293,15 @@ LABEL_33:
   [v4 setNormalizedCropRect:?];
   [v4 setNetworkAccessAllowed:{-[PHImageRequestOptions isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
   [v4 setSynchronous:{-[PHImageRequestOptions isSynchronous](self, "isSynchronous")}];
-  v5 = [(PHImageRequestOptions *)self progressHandler];
-  [v4 setProgressHandler:v5];
+  progressHandler = [(PHImageRequestOptions *)self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
   [v4 setAllowPlaceholder:{-[PHImageRequestOptions allowPlaceholder](self, "allowPlaceholder")}];
-  v6 = [(PHImageRequestOptions *)self resultHandlerQueue];
-  [v4 setResultHandlerQueue:v6];
+  resultHandlerQueue = [(PHImageRequestOptions *)self resultHandlerQueue];
+  [v4 setResultHandlerQueue:resultHandlerQueue];
 
-  v7 = [(PHImageRequestOptions *)self cachingCompleteHandler];
-  [v4 setCachingCompleteHandler:v7];
+  cachingCompleteHandler = [(PHImageRequestOptions *)self cachingCompleteHandler];
+  [v4 setCachingCompleteHandler:cachingCompleteHandler];
 
   [v4 setOnlyUseFetchedAssetPropertiesDuringChoosing:{-[PHImageRequestOptions onlyUseFetchedAssetPropertiesDuringChoosing](self, "onlyUseFetchedAssetPropertiesDuringChoosing")}];
   [v4 setIncludeHDRGainMap:{-[PHImageRequestOptions includeHDRGainMap](self, "includeHDRGainMap")}];
@@ -320,8 +320,8 @@ LABEL_33:
   [(PHImageRequestOptions *)self videoFrameTime];
   [v4 setVideoFrameTime:v10];
   [v4 setChooseAlchemist:{-[PHImageRequestOptions chooseAlchemist](self, "chooseAlchemist")}];
-  v8 = [(PHImageRequestOptions *)self contextualVideoThumbnailIdentifier];
-  [v4 setContextualVideoThumbnailIdentifier:v8];
+  contextualVideoThumbnailIdentifier = [(PHImageRequestOptions *)self contextualVideoThumbnailIdentifier];
+  [v4 setContextualVideoThumbnailIdentifier:contextualVideoThumbnailIdentifier];
 
   [v4 setOpportunisticDegradedImagesToReturn:{-[PHImageRequestOptions opportunisticDegradedImagesToReturn](self, "opportunisticDegradedImagesToReturn")}];
   [v4 setUseAsyncForFastOpportunisticResult:{-[PHImageRequestOptions useAsyncForFastOpportunisticResult](self, "useAsyncForFastOpportunisticResult")}];

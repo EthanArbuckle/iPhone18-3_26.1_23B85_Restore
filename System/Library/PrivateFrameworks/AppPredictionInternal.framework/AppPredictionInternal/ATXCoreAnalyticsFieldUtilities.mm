@@ -1,6 +1,6 @@
 @interface ATXCoreAnalyticsFieldUtilities
 + (id)_getSalt;
-+ (id)hashBoundString:(id)a3 hashSpaceSize:(unint64_t)a4;
++ (id)hashBoundString:(id)string hashSpaceSize:(unint64_t)size;
 @end
 
 @implementation ATXCoreAnalyticsFieldUtilities
@@ -9,26 +9,26 @@
 {
   v2 = objc_alloc(MEMORY[0x277CBEBD0]);
   v3 = [v2 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  v4 = [v3 stringForKey:@"coreAnalyticsFieldHashSaltKey"];
-  if (!v4)
+  uUIDString = [v3 stringForKey:@"coreAnalyticsFieldHashSaltKey"];
+  if (!uUIDString)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [v3 setObject:v4 forKey:@"coreAnalyticsFieldHashSaltKey"];
+    [v3 setObject:uUIDString forKey:@"coreAnalyticsFieldHashSaltKey"];
   }
 
-  return v4;
+  return uUIDString;
 }
 
-+ (id)hashBoundString:(id)a3 hashSpaceSize:(unint64_t)a4
++ (id)hashBoundString:(id)string hashSpaceSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [a1 _getSalt];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, v6];
+  stringCopy = string;
+  _getSalt = [self _getSalt];
+  stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", _getSalt, stringCopy];
 
-  v9 = [v8 hash];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v9 % a4];
+  v9 = [stringCopy hash];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v9 % size];
 
   return v10;
 }

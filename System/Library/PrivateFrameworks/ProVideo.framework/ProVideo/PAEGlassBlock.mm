@@ -1,19 +1,19 @@
 @interface PAEGlassBlock
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEGlassBlock)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEGlassBlock)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEGlassBlock
 
-- (PAEGlassBlock)initWithAPIManager:(id)a3
+- (PAEGlassBlock)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGlassBlock;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -51,7 +51,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
@@ -60,22 +60,22 @@
     __asm { FMOV            V0.2D, #0.5 }
 
     v30 = _Q0;
-    [v9 getXValue:&v30 YValue:&v30 + 8 fromParm:1 atFxTime:a5->var0.var1];
-    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v30 withImage:a4];
+    [v9 getXValue:&v30 YValue:&v30 + 8 fromParm:1 atFxTime:info->var0.var1];
+    [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v30 withImage:input];
     v30 = v20;
     v29 = 0.0;
-    [v10 getFloatValue:&v29 fromParm:2 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v29 fromParm:2 atFxTime:info->var0.var1];
     v29 = 1.0 / v29;
     v28 = 30.0;
-    [v10 getFloatValue:&v28 fromParm:3 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v28 fromParm:3 atFxTime:info->var0.var1];
     v27 = 0;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    if (a3)
+    if (output)
     {
-      [a3 imageInfo];
+      [output imageInfo];
       v16 = v28;
       if (*(&v25 + 1))
       {
@@ -91,23 +91,23 @@
 
     __sincos_stret(v16);
     v22 = 0.0;
-    [v10 getFloatValue:&v22 fromParm:4 atFxTime:a5->var0.var1];
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
+    [v10 getFloatValue:&v22 fromParm:4 atFxTime:info->var0.var1];
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
     v22 = v21 * v22;
     v17 = [objc_alloc(NSClassFromString(&cfstr_Fxhostcapabili.isa)) initWithAPIManager:self->super.super._apiManager];
-    if (a5->var2)
+    if (info->var2)
     {
       [v17 upscalesFields];
     }
 
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         v18 = HGObject::operator new(0x1B0uLL);
@@ -121,15 +121,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

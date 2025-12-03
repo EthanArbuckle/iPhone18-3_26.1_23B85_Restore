@@ -1,18 +1,18 @@
 @interface UIPreviewParameters
 - ($1AB5FA073B851C12C2339EC22442E995)_placeholderContentSize3D;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIBezierPath)effectiveShadowPath;
 - (UIBezierPath)visiblePath;
 - (UIColor)_effectiveBackgroundColor;
 - (UIEdgeInsets)_textPathInsets;
 - (UIPreviewParameters)init;
 - (UIPreviewParameters)initWithTextLineRects:(NSArray *)textLineRects;
-- (id)_initWithMode:(int64_t)a3 visiblePath:(id)a4 backgroundColor:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithMode:(int64_t)mode visiblePath:(id)path backgroundColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setTextPathCornerRadius:(double)a3;
-- (void)_setTextPathInsets:(UIEdgeInsets)a3;
+- (void)_setTextPathCornerRadius:(double)radius;
+- (void)_setTextPathInsets:(UIEdgeInsets)insets;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 @end
 
@@ -26,7 +26,7 @@
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v3;
 
-    v5 = self;
+    selfCopy = self;
   }
 
   return self;
@@ -74,8 +74,8 @@
   v5 = textLineRects;
   if (!v5)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIPreviewParameters.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"textLineRects != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPreviewParameters.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"textLineRects != nil"}];
   }
 
   objc_opt_class();
@@ -101,8 +101,8 @@
 
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v11 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v11 handleFailureInMethod:a2 object:self file:@"UIPreviewParameters.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"[supposedValue isKindOfClass:valueClass]"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIPreviewParameters.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"[supposedValue isKindOfClass:valueClass]"}];
         }
 
         ++v10;
@@ -132,22 +132,22 @@
   return v12;
 }
 
-- (id)_initWithMode:(int64_t)a3 visiblePath:(id)a4 backgroundColor:(id)a5
+- (id)_initWithMode:(int64_t)mode visiblePath:(id)path backgroundColor:(id)color
 {
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  colorCopy = color;
   v10 = [(UIPreviewParameters *)self init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [pathCopy copy];
     visiblePath = v10->_visiblePath;
     v10->_visiblePath = v11;
 
-    v13 = [v9 copy];
+    v13 = [colorCopy copy];
     backgroundColor = v10->_backgroundColor;
     v10->_backgroundColor = v13;
 
-    v10->_previewMode = a3;
+    v10->_previewMode = mode;
     v10->_isUsingCustomBackgroundColor = 1;
     v15 = v10;
   }
@@ -176,31 +176,31 @@
   self->_backgroundColor = v7;
 }
 
-- (void)_setTextPathInsets:(UIEdgeInsets)a3
+- (void)_setTextPathInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_textPathInsets.top), vceqq_f64(v4, *&self->_textPathInsets.bottom)))) & 1) == 0)
   {
-    self->_textPathInsets = a3;
+    self->_textPathInsets = insets;
     visiblePath = self->_visiblePath;
     self->_visiblePath = 0;
   }
 }
 
-- (void)_setTextPathCornerRadius:(double)a3
+- (void)_setTextPathCornerRadius:(double)radius
 {
-  if (self->_textPathCornerRadius != a3)
+  if (self->_textPathCornerRadius != radius)
   {
-    self->_textPathCornerRadius = a3;
+    self->_textPathCornerRadius = radius;
     visiblePath = self->_visiblePath;
     self->_visiblePath = 0;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSArray *)self->_textLineRects copy];
@@ -237,10 +237,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UIPreviewParameters *)self visiblePath];
-  v4 = [v3 hash];
-  v5 = [(UIPreviewParameters *)self backgroundColor];
-  v6 = [v5 hash] ^ v4;
+  visiblePath = [(UIPreviewParameters *)self visiblePath];
+  v4 = [visiblePath hash];
+  backgroundColor = [(UIPreviewParameters *)self backgroundColor];
+  v6 = [backgroundColor hash] ^ v4;
   v7 = v6 ^ [(UIPreviewParameters *)self _previewMode];
   v8 = v7 ^ [(UIPreviewParameters *)self appliesShadow];
   [(UIPreviewParameters *)self _textPathCornerRadius];
@@ -253,8 +253,8 @@
   v16 = v15;
   [(UIPreviewParameters *)self _textPathInsets];
   v18 = v16 ^ v17;
-  v19 = [(UIPreviewParameters *)self shadowPath];
-  v20 = v14 ^ v18 ^ [v19 hash];
+  shadowPath = [(UIPreviewParameters *)self shadowPath];
+  v20 = v14 ^ v18 ^ [shadowPath hash];
   [(UIPreviewParameters *)self _placeholderContentSize3D];
   v22 = v21;
   [(UIPreviewParameters *)self _placeholderContentSize3D];
@@ -265,17 +265,17 @@
   return v20 ^ v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UIPreviewParameters *)self visiblePath];
-    v7 = [v5 visiblePath];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    visiblePath = [(UIPreviewParameters *)self visiblePath];
+    visiblePath2 = [v5 visiblePath];
+    v8 = visiblePath;
+    v9 = visiblePath2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -291,10 +291,10 @@
       }
     }
 
-    v13 = [(UIPreviewParameters *)self backgroundColor];
-    v14 = [v5 backgroundColor];
-    v15 = v13;
-    v16 = v14;
+    backgroundColor = [(UIPreviewParameters *)self backgroundColor];
+    backgroundColor2 = [v5 backgroundColor];
+    v15 = backgroundColor;
+    v16 = backgroundColor2;
     v17 = v16;
     if (v15 == v16)
     {
@@ -311,8 +311,8 @@
     }
 
     v19 = v11 & v18;
-    v20 = [(UIPreviewParameters *)self _previewMode];
-    if (v20 == [v5 _previewMode])
+    _previewMode = [(UIPreviewParameters *)self _previewMode];
+    if (_previewMode == [v5 _previewMode])
     {
       v21 = v19;
     }
@@ -322,8 +322,8 @@
       v21 = 0;
     }
 
-    v22 = [(UIPreviewParameters *)self appliesShadow];
-    v23 = v21 & ~(v22 ^ [v5 appliesShadow]);
+    appliesShadow = [(UIPreviewParameters *)self appliesShadow];
+    v23 = v21 & ~(appliesShadow ^ [v5 appliesShadow]);
     [(UIPreviewParameters *)self _textPathInsets];
     v25 = v24;
     v27 = v26;
@@ -360,10 +360,10 @@
       v41 = 0;
     }
 
-    v42 = [(UIPreviewParameters *)self shadowPath];
-    v43 = [v5 shadowPath];
-    v44 = v42;
-    v45 = v43;
+    shadowPath = [(UIPreviewParameters *)self shadowPath];
+    shadowPath2 = [v5 shadowPath];
+    v44 = shadowPath;
+    v45 = shadowPath2;
     v46 = v45;
     if (v44 == v45)
     {
@@ -379,8 +379,8 @@
       }
     }
 
-    v48 = [(UIPreviewParameters *)self hidesSourceViewDuringDropAnimation];
-    v49 = v41 & v47 & (v48 ^ [v5 hidesSourceViewDuringDropAnimation] ^ 1);
+    hidesSourceViewDuringDropAnimation = [(UIPreviewParameters *)self hidesSourceViewDuringDropAnimation];
+    v49 = v41 & v47 & (hidesSourceViewDuringDropAnimation ^ [v5 hidesSourceViewDuringDropAnimation] ^ 1);
     [(UIPreviewParameters *)self _placeholderContentSize3D];
     v51 = v50;
     v53 = v52;
@@ -392,12 +392,12 @@
       v58 = v55 == v57;
     }
 
-    v60 = [(UIPreviewParameters *)self _isHiddenDuringDrag];
-    v61 = v49 & v58 & (v60 ^ [v5 _isHiddenDuringDrag] ^ 1);
-    v62 = [(UIPreviewParameters *)self _overrideBackgroundColor];
-    v63 = [v5 backgroundColor];
-    v64 = v62;
-    v65 = v63;
+    _isHiddenDuringDrag = [(UIPreviewParameters *)self _isHiddenDuringDrag];
+    v61 = v49 & v58 & (_isHiddenDuringDrag ^ [v5 _isHiddenDuringDrag] ^ 1);
+    _overrideBackgroundColor = [(UIPreviewParameters *)self _overrideBackgroundColor];
+    backgroundColor3 = [v5 backgroundColor];
+    v64 = _overrideBackgroundColor;
+    v65 = backgroundColor3;
     v66 = v65;
     if (v64 == v65)
     {
@@ -414,10 +414,10 @@
     }
 
     v68 = v61 & v67;
-    v69 = [(UIPreviewParameters *)self _overrideCornerRadii];
-    v70 = [v5 _overrideCornerRadii];
-    v71 = v69;
-    v72 = v70;
+    _overrideCornerRadii = [(UIPreviewParameters *)self _overrideCornerRadii];
+    _overrideCornerRadii2 = [v5 _overrideCornerRadii];
+    v71 = _overrideCornerRadii;
+    v72 = _overrideCornerRadii2;
     v73 = v72;
     if (v71 == v72)
     {
@@ -448,23 +448,23 @@
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(UIPreviewParameters *)self backgroundColor];
-  v6 = [v3 stringWithFormat:@"<%@: %p backgroundColor = %@", v4, self, v5];;
+  backgroundColor = [(UIPreviewParameters *)self backgroundColor];
+  v6 = [v3 stringWithFormat:@"<%@: %p backgroundColor = %@", v4, self, backgroundColor];;
 
-  v7 = [(UIPreviewParameters *)self visiblePath];
+  visiblePath = [(UIPreviewParameters *)self visiblePath];
 
-  if (v7)
+  if (visiblePath)
   {
-    v8 = [(UIPreviewParameters *)self visiblePath];
-    [v6 appendFormat:@"; visiblePath = %@", v8];
+    visiblePath2 = [(UIPreviewParameters *)self visiblePath];
+    [v6 appendFormat:@"; visiblePath = %@", visiblePath2];
   }
 
-  v9 = [(UIPreviewParameters *)self shadowPath];
+  shadowPath = [(UIPreviewParameters *)self shadowPath];
 
-  if (v9)
+  if (shadowPath)
   {
-    v10 = [(UIPreviewParameters *)self shadowPath];
-    [v6 appendFormat:@"; shadowPath = %@", v10];
+    shadowPath2 = [(UIPreviewParameters *)self shadowPath];
+    [v6 appendFormat:@"; shadowPath = %@", shadowPath2];
   }
 
   [v6 appendString:@">"];

@@ -1,53 +1,53 @@
 @interface CKFaceTimeUtilities
-+ (BOOL)isFaceTimeAudioAvailable:(id)a3;
-+ (BOOL)isFaceTimeVideoAvailable:(id)a3;
++ (BOOL)isFaceTimeAudioAvailable:(id)available;
++ (BOOL)isFaceTimeVideoAvailable:(id)available;
 + (BOOL)isGroupFaceTimeSupported;
-+ (BOOL)isModernScreenSharingAvailable:(id)a3;
-+ (BOOL)isModernScreenSharingAvailableForEntity:(id)a3 capabilities:(id)a4;
-+ (void)queryModernScreenSharingCapabilities:(id)a3 completion:(id)a4;
-+ (void)showCallControlsForConversation:(id)a3;
++ (BOOL)isModernScreenSharingAvailable:(id)available;
++ (BOOL)isModernScreenSharingAvailableForEntity:(id)entity capabilities:(id)capabilities;
++ (void)queryModernScreenSharingCapabilities:(id)capabilities completion:(id)completion;
++ (void)showCallControlsForConversation:(id)conversation;
 @end
 
 @implementation CKFaceTimeUtilities
 
-+ (BOOL)isFaceTimeVideoAvailable:(id)a3
++ (BOOL)isFaceTimeVideoAvailable:(id)available
 {
-  v4 = a3;
-  if ([v4 isGroupConversation])
+  availableCopy = available;
+  if ([availableCopy isGroupConversation])
   {
-    if (![a1 isGroupFaceTimeSupported])
+    if (![self isGroupFaceTimeSupported])
     {
-      v7 = 0;
+      faceTimeAvailable = 0;
       goto LABEL_9;
     }
 
-    v5 = [v4 recipients];
-    v6 = [v5 count];
-    v7 = v6 <= +[CKFaceTimeUtilities faceTimeMaxParticipants];
+    recipients = [availableCopy recipients];
+    v6 = [recipients count];
+    faceTimeAvailable = v6 <= +[CKFaceTimeUtilities faceTimeMaxParticipants];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E699BE70] sharedInstance];
-    if ([v5 faceTimeSupported])
+    recipients = [MEMORY[0x1E699BE70] sharedInstance];
+    if ([recipients faceTimeSupported])
     {
-      v8 = [MEMORY[0x1E699BE70] sharedInstance];
-      v7 = [v8 faceTimeAvailable];
+      mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+      faceTimeAvailable = [mEMORY[0x1E699BE70] faceTimeAvailable];
     }
 
     else
     {
-      v7 = 0;
+      faceTimeAvailable = 0;
     }
   }
 
 LABEL_9:
-  v9 = [MEMORY[0x1E699BE68] sharedInstance];
-  v10 = [v9 availabilityForListenerID:CKFaceTimeServiceAvailabilityKey forService:0];
+  mEMORY[0x1E699BE68] = [MEMORY[0x1E699BE68] sharedInstance];
+  v10 = [mEMORY[0x1E699BE68] availabilityForListenerID:CKFaceTimeServiceAvailabilityKey forService:0];
 
   if (v10)
   {
-    v11 = v7;
+    v11 = faceTimeAvailable;
   }
 
   else
@@ -58,32 +58,32 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)isFaceTimeAudioAvailable:(id)a3
++ (BOOL)isFaceTimeAudioAvailable:(id)available
 {
-  v4 = a3;
-  if ([v4 isGroupConversation])
+  availableCopy = available;
+  if ([availableCopy isGroupConversation])
   {
-    if (![a1 isGroupFaceTimeSupported])
+    if (![self isGroupFaceTimeSupported])
     {
       LOBYTE(v7) = 0;
       goto LABEL_12;
     }
 
-    v5 = [v4 recipients];
-    v6 = [v5 count];
+    recipients = [availableCopy recipients];
+    v6 = [recipients count];
     LOBYTE(v7) = v6 <= +[CKFaceTimeUtilities faceTimeMaxParticipants];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E699BE70] sharedInstance];
-    if ([v5 faceTimeSupported])
+    recipients = [MEMORY[0x1E699BE70] sharedInstance];
+    if ([recipients faceTimeSupported])
     {
-      v8 = [MEMORY[0x1E699BE70] sharedInstance];
-      if ([v8 callingSupported])
+      mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+      if ([mEMORY[0x1E699BE70] callingSupported])
       {
-        v9 = [MEMORY[0x1E699BE70] sharedInstance];
-        v7 = [v9 faceTimeBlocked] ^ 1;
+        mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+        v7 = [mEMORY[0x1E699BE70]2 faceTimeBlocked] ^ 1;
       }
 
       else
@@ -99,8 +99,8 @@ LABEL_9:
   }
 
 LABEL_12:
-  v10 = [MEMORY[0x1E699BE68] sharedInstance];
-  v11 = [v10 availabilityForListenerID:CKFaceTimeServiceAvailabilityKey forService:2];
+  mEMORY[0x1E699BE68] = [MEMORY[0x1E699BE68] sharedInstance];
+  v11 = [mEMORY[0x1E699BE68] availabilityForListenerID:CKFaceTimeServiceAvailabilityKey forService:2];
 
   if (v11)
   {
@@ -117,14 +117,14 @@ LABEL_12:
 
 + (BOOL)isGroupFaceTimeSupported
 {
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  if ([v2 faceTimeSupported])
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  if ([mEMORY[0x1E699BE70] faceTimeSupported])
   {
-    v3 = [MEMORY[0x1E699BE70] sharedInstance];
-    if ([v3 multiwayAvailable])
+    mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+    if ([mEMORY[0x1E699BE70]2 multiwayAvailable])
     {
-      v4 = [MEMORY[0x1E699BE70] sharedInstance];
-      v5 = [v4 isGreenTea] ^ 1;
+      mEMORY[0x1E699BE70]3 = [MEMORY[0x1E699BE70] sharedInstance];
+      v5 = [mEMORY[0x1E699BE70]3 isGreenTea] ^ 1;
     }
 
     else
@@ -141,15 +141,15 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)isModernScreenSharingAvailable:(id)a3
++ (BOOL)isModernScreenSharingAvailable:(id)available
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isModernScreenSharingEnabled];
+  availableCopy = available;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernScreenSharingEnabled = [mEMORY[0x1E69A8070] isModernScreenSharingEnabled];
 
-  if (v5)
+  if (isModernScreenSharingEnabled)
   {
-    if ([v3 isGroupConversation])
+    if ([availableCopy isGroupConversation])
     {
       v6 = IMLogHandleForCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -164,10 +164,10 @@ LABEL_7:
 
     else
     {
-      v11 = [MEMORY[0x1E699BE70] sharedInstance];
-      v12 = [v11 isGreenTea];
+      mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+      isGreenTea = [mEMORY[0x1E699BE70] isGreenTea];
 
-      if (v12)
+      if (isGreenTea)
       {
         v6 = IMLogHandleForCategory();
         if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -181,10 +181,10 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v13 = [v3 chat];
-      v14 = [v13 isSMS];
+      chat = [availableCopy chat];
+      isSMS = [chat isSMS];
 
-      if (!v14)
+      if (!isSMS)
       {
         v9 = 1;
         goto LABEL_9;
@@ -221,9 +221,9 @@ LABEL_9:
   return v9;
 }
 
-+ (void)showCallControlsForConversation:(id)a3
++ (void)showCallControlsForConversation:(id)conversation
 {
-  if ([MEMORY[0x1E69A5B78] conversationIsVideoCall:a3])
+  if ([MEMORY[0x1E69A5B78] conversationIsVideoCall:conversation])
   {
     [MEMORY[0x1E695DFF8] faceTimeShowInCallUIURL];
   }
@@ -236,9 +236,9 @@ LABEL_9:
   TUOpenURL();
 }
 
-+ (void)queryModernScreenSharingCapabilities:(id)a3 completion:(id)a4
++ (void)queryModernScreenSharingCapabilities:(id)capabilities completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E69A80B0];
   v7 = *MEMORY[0x1E69A47F0];
   v8 = CKFaceTimeServiceAvailabilityKey;
@@ -246,9 +246,9 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __71__CKFaceTimeUtilities_queryModernScreenSharingCapabilities_completion___block_invoke;
   v10[3] = &unk_1E72F7FA0;
-  v11 = v5;
-  v9 = v5;
-  [v6 currentRemoteDevicesForDestinations:a3 service:v7 listenerID:v8 queue:MEMORY[0x1E69E96A0] completionBlock:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v6 currentRemoteDevicesForDestinations:capabilities service:v7 listenerID:v8 queue:MEMORY[0x1E69E96A0] completionBlock:v10];
 }
 
 void __71__CKFaceTimeUtilities_queryModernScreenSharingCapabilities_completion___block_invoke(uint64_t a1, void *a2)
@@ -306,24 +306,24 @@ void __71__CKFaceTimeUtilities_queryModernScreenSharingCapabilities_completion__
   }
 }
 
-+ (BOOL)isModernScreenSharingAvailableForEntity:(id)a3 capabilities:(id)a4
++ (BOOL)isModernScreenSharingAvailableForEntity:(id)entity capabilities:(id)capabilities
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 IDSCanonicalAddress];
+  capabilitiesCopy = capabilities;
+  iDSCanonicalAddress = [entity IDSCanonicalAddress];
   v7 = IMLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = iDSCanonicalAddress;
     _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Checking modern screen sharing for recipient %@...", &v12, 0xCu);
   }
 
-  v8 = [v5 objectForKey:v6];
+  v8 = [capabilitiesCopy objectForKey:iDSCanonicalAddress];
 
   if (v8)
   {
-    v9 = [v5 objectForKey:v6];
+    v9 = [capabilitiesCopy objectForKey:iDSCanonicalAddress];
     LODWORD(v8) = [v9 BOOLValue];
   }
 

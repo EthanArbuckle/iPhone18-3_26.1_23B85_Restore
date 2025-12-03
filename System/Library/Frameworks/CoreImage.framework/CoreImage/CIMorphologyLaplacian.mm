@@ -25,16 +25,16 @@
       [(CIFilter *)v6 setValue:self->super.inputImage forKey:@"inputImage"];
       *&v7 = v5;
       -[CIFilter setValue:forKey:](v6, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v7], @"inputRadius");
-      v8 = [(CIFilter *)v6 outputImage];
+      outputImage = [(CIFilter *)v6 outputImage];
       *&v9 = -v5;
       -[CIFilter setValue:forKey:](v6, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v9], @"inputRadius");
-      v10 = [(CIFilter *)v6 outputImage];
+      outputImage2 = [(CIFilter *)v6 outputImage];
       [(CIFilter *)v6 setValue:0 forKey:@"inputImage"];
       v11 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_laplacian];
       [(CIImage *)self->super.inputImage extent];
       v16[0] = self->super.inputImage;
-      v16[1] = v10;
-      v16[2] = v8;
+      v16[1] = outputImage2;
+      v16[2] = outputImage;
       return -[CIColorKernel applyWithExtent:arguments:](v11, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3], v12, v13, v14, v15);
     }
   }

@@ -1,124 +1,124 @@
 @interface CTStewieSatSmsMessageIncoming
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieSatSmsMessageIncoming)initWithCoder:(id)a3;
-- (CTStewieSatSmsMessageIncoming)initWithContext:(id)a3 timestamp:(id)a4 pendingTotalCount:(int64_t)a5 pendingCount:(int64_t)a6 sourcePhoneNumber:(id)a7 codecID:(int64_t)a8 textPayload:(id)a9 uniqueID:(id)a10 error:(id *)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieSatSmsMessageIncoming)initWithCoder:(id)coder;
+- (CTStewieSatSmsMessageIncoming)initWithContext:(id)context timestamp:(id)timestamp pendingTotalCount:(int64_t)count pendingCount:(int64_t)pendingCount sourcePhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload uniqueID:(id)self0 error:(id *)self1;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieSatSmsMessageIncoming
 
-- (CTStewieSatSmsMessageIncoming)initWithContext:(id)a3 timestamp:(id)a4 pendingTotalCount:(int64_t)a5 pendingCount:(int64_t)a6 sourcePhoneNumber:(id)a7 codecID:(int64_t)a8 textPayload:(id)a9 uniqueID:(id)a10 error:(id *)a11
+- (CTStewieSatSmsMessageIncoming)initWithContext:(id)context timestamp:(id)timestamp pendingTotalCount:(int64_t)count pendingCount:(int64_t)pendingCount sourcePhoneNumber:(id)number codecID:(int64_t)d textPayload:(id)payload uniqueID:(id)self0 error:(id *)self1
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v46 = a7;
-  v49 = a9;
-  v48 = a10;
-  v44 = v16;
-  v45 = v17;
-  if (v16)
+  contextCopy = context;
+  timestampCopy = timestamp;
+  numberCopy = number;
+  payloadCopy = payload;
+  iDCopy = iD;
+  v44 = contextCopy;
+  v45 = timestampCopy;
+  if (contextCopy)
   {
-    if (v17)
+    if (timestampCopy)
     {
-      v18 = self;
-      if (a6 < 0)
+      selfCopy4 = self;
+      if (pendingCount < 0)
       {
-        v19 = v46;
-        if (a11)
+        v19 = numberCopy;
+        if (error)
         {
           v26 = MEMORY[0x1E696ABC0];
           v63 = *MEMORY[0x1E696A578];
           v64 = @"Invalid pendingCount";
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-          *a11 = [v26 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v27];
+          *error = [v26 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v27];
         }
 
         goto LABEL_36;
       }
 
-      v19 = v46;
-      if (a5 < 0)
+      v19 = numberCopy;
+      if (count < 0)
       {
-        if (a11)
+        if (error)
         {
           v31 = MEMORY[0x1E696ABC0];
           v61 = *MEMORY[0x1E696A578];
           v62 = @"Invalid pendingTotalCount";
           v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-          *a11 = [v31 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v32];
+          *error = [v31 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v32];
         }
 
         goto LABEL_36;
       }
 
-      if (!v46 || ![v46 length])
+      if (!numberCopy || ![numberCopy length])
       {
-        if (a11)
+        if (error)
         {
           v29 = MEMORY[0x1E696ABC0];
           v59 = *MEMORY[0x1E696A578];
           v60 = @"sourcePhoneNumber is missing";
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-          *a11 = [v29 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v30];
+          *error = [v29 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v30];
         }
 
         goto LABEL_36;
       }
 
       {
-        if (a11)
+        if (error)
         {
           v33 = MEMORY[0x1E696ABC0];
           v57 = *MEMORY[0x1E696A578];
           v58 = @"sourcePhoneNumber is invalid";
           v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-          *a11 = [v33 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v34];
+          *error = [v33 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v34];
         }
 
         goto LABEL_36;
       }
 
-      if (a8 >= 0x10)
+      if (d >= 0x10)
       {
-        if (a11)
+        if (error)
         {
           v20 = MEMORY[0x1E696ABC0];
           v55 = *MEMORY[0x1E696A578];
           v56 = @"Invalid codecID";
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-          *a11 = [v20 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v21];
+          *error = [v20 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v21];
         }
 
         goto LABEL_36;
       }
 
-      if (!v49 || ![v49 length])
+      if (!payloadCopy || ![payloadCopy length])
       {
-        if (a11)
+        if (error)
         {
           v37 = MEMORY[0x1E696ABC0];
           v53 = *MEMORY[0x1E696A578];
           v54 = @"textPayload is missing";
           v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-          *a11 = [v37 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v38];
+          *error = [v37 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v38];
         }
 
         goto LABEL_36;
       }
 
-      if (!v48 || ![v48 length])
+      if (!iDCopy || ![iDCopy length])
       {
-        if (a11)
+        if (error)
         {
           v39 = MEMORY[0x1E696ABC0];
           v51 = *MEMORY[0x1E696A578];
           v52 = @"uniqueID is missing";
           v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-          *a11 = [v39 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v40];
+          *error = [v39 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v40];
         }
 
         goto LABEL_36;
@@ -130,60 +130,60 @@
       v36 = v35;
       if (v35)
       {
-        objc_storeStrong(&v35->_context, a3);
-        objc_storeStrong(&v36->_timestamp, a4);
-        v36->_pendingTotalCount = a5;
-        v36->_pendingCount = a6;
-        objc_storeStrong(&v36->_sourcePhoneNumber, a7);
-        v36->_codecID = a8;
-        objc_storeStrong(&v36->_textPayload, a9);
-        objc_storeStrong(&v36->_uniqueID, a10);
-        v18 = v36;
-        v28 = v18;
+        objc_storeStrong(&v35->_context, context);
+        objc_storeStrong(&v36->_timestamp, timestamp);
+        v36->_pendingTotalCount = count;
+        v36->_pendingCount = pendingCount;
+        objc_storeStrong(&v36->_sourcePhoneNumber, number);
+        v36->_codecID = d;
+        objc_storeStrong(&v36->_textPayload, payload);
+        objc_storeStrong(&v36->_uniqueID, iD);
+        selfCopy4 = v36;
+        v28 = selfCopy4;
         goto LABEL_37;
       }
 
-      v18 = 0;
+      selfCopy4 = 0;
 LABEL_36:
       v28 = 0;
       goto LABEL_37;
     }
 
-    v18 = self;
-    if (a11)
+    selfCopy4 = self;
+    if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
       v65 = *MEMORY[0x1E696A578];
       v66 = @"timestamp is missing";
-      v19 = v46;
+      v19 = numberCopy;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-      *a11 = [v24 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v25];
+      *error = [v24 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v25];
 
       goto LABEL_36;
     }
 
     v28 = 0;
-    v19 = v46;
+    v19 = numberCopy;
   }
 
   else
   {
-    if (a11)
+    if (error)
     {
       v22 = MEMORY[0x1E696ABC0];
       v67 = *MEMORY[0x1E696A578];
       v68[0] = @"Context is missing";
-      v19 = v46;
-      v18 = self;
+      v19 = numberCopy;
+      selfCopy4 = self;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-      *a11 = [v22 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v23];
+      *error = [v22 errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:v23];
 
       goto LABEL_36;
     }
 
     v28 = 0;
-    v19 = v46;
-    v18 = self;
+    v19 = numberCopy;
+    selfCopy4 = self;
   }
 
 LABEL_37:
@@ -195,39 +195,39 @@ LABEL_37:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTStewieSatSmsMessageIncoming *)self context];
-  [v3 appendFormat:@", context=%@", v4];
+  context = [(CTStewieSatSmsMessageIncoming *)self context];
+  [v3 appendFormat:@", context=%@", context];
 
-  v5 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
-  [v3 appendFormat:@", timestamp=%@", v5];
+  timestamp = [(CTStewieSatSmsMessageIncoming *)self timestamp];
+  [v3 appendFormat:@", timestamp=%@", timestamp];
 
   [v3 appendFormat:@", pendingTotalCount=%ld", -[CTStewieSatSmsMessageIncoming pendingTotalCount](self, "pendingTotalCount")];
   [v3 appendFormat:@", pendingCount=%ld", -[CTStewieSatSmsMessageIncoming pendingCount](self, "pendingCount")];
-  v6 = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
-  [v3 appendFormat:@", sourcePhoneNumber=%@", v6];
+  sourcePhoneNumber = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
+  [v3 appendFormat:@", sourcePhoneNumber=%@", sourcePhoneNumber];
 
   [v3 appendFormat:@", codecID=%ld", -[CTStewieSatSmsMessageIncoming codecID](self, "codecID")];
-  v7 = [(CTStewieSatSmsMessageIncoming *)self textPayload];
-  [v3 appendFormat:@", textPayload size=%lu", objc_msgSend(v7, "length")];
+  textPayload = [(CTStewieSatSmsMessageIncoming *)self textPayload];
+  [v3 appendFormat:@", textPayload size=%lu", objc_msgSend(textPayload, "length")];
 
-  v8 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
-  [v3 appendFormat:@", uniqueID=%@", v8];
+  uniqueID = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
+  [v3 appendFormat:@", uniqueID=%@", uniqueID];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v7 = a3;
-  v8 = [(CTStewieSatSmsMessageIncoming *)self context];
-  v9 = [v7 context];
-  if (v8 != v9)
+  otherCopy = other;
+  context = [(CTStewieSatSmsMessageIncoming *)self context];
+  context2 = [otherCopy context];
+  if (context != context2)
   {
-    v3 = [(CTStewieSatSmsMessageIncoming *)self context];
-    v4 = [v7 context];
-    if (![v3 isEqual:v4])
+    context3 = [(CTStewieSatSmsMessageIncoming *)self context];
+    context4 = [otherCopy context];
+    if (![context3 isEqual:context4])
     {
       v10 = 0;
 LABEL_15:
@@ -236,13 +236,13 @@ LABEL_15:
     }
   }
 
-  v11 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
-  v12 = [v7 timestamp];
-  if (v11 != v12)
+  timestamp = [(CTStewieSatSmsMessageIncoming *)self timestamp];
+  timestamp2 = [otherCopy timestamp];
+  if (timestamp != timestamp2)
   {
-    v34 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
-    v5 = [v7 timestamp];
-    if (![v34 isEqual:v5])
+    timestamp3 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
+    timestamp4 = [otherCopy timestamp];
+    if (![timestamp3 isEqual:timestamp4])
     {
       v10 = 0;
 LABEL_13:
@@ -251,11 +251,11 @@ LABEL_13:
     }
   }
 
-  v13 = [(CTStewieSatSmsMessageIncoming *)self pendingTotalCount];
-  if (v13 != [v7 pendingTotalCount] || (v14 = -[CTStewieSatSmsMessageIncoming pendingCount](self, "pendingCount"), v14 != objc_msgSend(v7, "pendingCount")))
+  pendingTotalCount = [(CTStewieSatSmsMessageIncoming *)self pendingTotalCount];
+  if (pendingTotalCount != [otherCopy pendingTotalCount] || (v14 = -[CTStewieSatSmsMessageIncoming pendingCount](self, "pendingCount"), v14 != objc_msgSend(otherCopy, "pendingCount")))
   {
     v10 = 0;
-    if (v11 == v12)
+    if (timestamp == timestamp2)
     {
       goto LABEL_14;
     }
@@ -263,25 +263,25 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v33 = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
-  [v7 sourcePhoneNumber];
-  v32 = v31 = v5;
-  if (v33 == v32 || (-[CTStewieSatSmsMessageIncoming sourcePhoneNumber](self, "sourcePhoneNumber"), v30 = objc_claimAutoreleasedReturnValue(), [v7 sourcePhoneNumber], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "isEqual:")))
+  sourcePhoneNumber = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
+  [otherCopy sourcePhoneNumber];
+  v32 = v31 = timestamp4;
+  if (sourcePhoneNumber == v32 || (-[CTStewieSatSmsMessageIncoming sourcePhoneNumber](self, "sourcePhoneNumber"), v30 = objc_claimAutoreleasedReturnValue(), [otherCopy sourcePhoneNumber], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "isEqual:")))
   {
-    v18 = [(CTStewieSatSmsMessageIncoming *)self codecID];
-    if (v18 != [v7 codecID])
+    codecID = [(CTStewieSatSmsMessageIncoming *)self codecID];
+    if (codecID != [otherCopy codecID])
     {
       v10 = 0;
       goto LABEL_28;
     }
 
-    v19 = [(CTStewieSatSmsMessageIncoming *)self textPayload];
-    v28 = [v7 textPayload];
-    if (v19 == v28 || (-[CTStewieSatSmsMessageIncoming textPayload](self, "textPayload"), v27 = objc_claimAutoreleasedReturnValue(), [v7 textPayload], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "isEqual:")))
+    textPayload = [(CTStewieSatSmsMessageIncoming *)self textPayload];
+    textPayload2 = [otherCopy textPayload];
+    if (textPayload == textPayload2 || (-[CTStewieSatSmsMessageIncoming textPayload](self, "textPayload"), v27 = objc_claimAutoreleasedReturnValue(), [otherCopy textPayload], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "isEqual:")))
     {
-      v26 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
-      v21 = [v7 uniqueID];
-      if (v26 == v21)
+      uniqueID = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
+      uniqueID2 = [otherCopy uniqueID];
+      if (uniqueID == uniqueID2)
       {
 
         v10 = 1;
@@ -289,14 +289,14 @@ LABEL_13:
 
       else
       {
-        v23 = v21;
-        v24 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
-        v22 = [v7 uniqueID];
-        v10 = [v24 isEqual:v22];
+        v23 = uniqueID2;
+        uniqueID3 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
+        uniqueID4 = [otherCopy uniqueID];
+        v10 = [uniqueID3 isEqual:uniqueID4];
       }
 
-      v20 = v28;
-      if (v19 == v28)
+      v20 = textPayload2;
+      if (textPayload == textPayload2)
       {
         goto LABEL_27;
       }
@@ -305,14 +305,14 @@ LABEL_13:
     else
     {
       v10 = 0;
-      v20 = v28;
+      v20 = textPayload2;
     }
 
 LABEL_27:
 LABEL_28:
     v16 = v32;
-    v15 = v33;
-    if (v33 == v32)
+    v15 = sourcePhoneNumber;
+    if (sourcePhoneNumber == v32)
     {
       goto LABEL_30;
     }
@@ -322,19 +322,19 @@ LABEL_28:
 
   v10 = 0;
   v16 = v32;
-  v15 = v33;
+  v15 = sourcePhoneNumber;
 LABEL_29:
 
 LABEL_30:
-  v5 = v31;
-  if (v11 != v12)
+  timestamp4 = v31;
+  if (timestamp != timestamp2)
   {
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  if (v8 != v9)
+  if (context != context2)
   {
     goto LABEL_15;
   }
@@ -344,10 +344,10 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -355,74 +355,74 @@ LABEL_16:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsMessageIncoming *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieSatSmsMessageIncoming *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTStewieSatSmsMessageIncoming *)self context];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  context = [(CTStewieSatSmsMessageIncoming *)self context];
+  v7 = [context copyWithZone:zone];
   [v5 setContext:v7];
 
-  v8 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
-  v9 = [v8 copyWithZone:a3];
+  timestamp = [(CTStewieSatSmsMessageIncoming *)self timestamp];
+  v9 = [timestamp copyWithZone:zone];
   [v5 setTimestamp:v9];
 
   [v5 setPendingTotalCount:{-[CTStewieSatSmsMessageIncoming pendingTotalCount](self, "pendingTotalCount")}];
   [v5 setPendingCount:{-[CTStewieSatSmsMessageIncoming pendingCount](self, "pendingCount")}];
-  v10 = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
-  v11 = [v10 copyWithZone:a3];
+  sourcePhoneNumber = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
+  v11 = [sourcePhoneNumber copyWithZone:zone];
   [v5 setSourcePhoneNumber:v11];
 
   [v5 setCodecID:{-[CTStewieSatSmsMessageIncoming codecID](self, "codecID")}];
-  v12 = [(CTStewieSatSmsMessageIncoming *)self textPayload];
-  v13 = [v12 copyWithZone:a3];
+  textPayload = [(CTStewieSatSmsMessageIncoming *)self textPayload];
+  v13 = [textPayload copyWithZone:zone];
   [v5 setTextPayload:v13];
 
-  v14 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
-  v15 = [v14 copyWithZone:a3];
+  uniqueID = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
+  v15 = [uniqueID copyWithZone:zone];
   [v5 setUniqueID:v15];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(CTStewieSatSmsMessageIncoming *)self context];
-  [v9 encodeObject:v4 forKey:@"context"];
+  coderCopy = coder;
+  context = [(CTStewieSatSmsMessageIncoming *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 
-  v5 = [(CTStewieSatSmsMessageIncoming *)self timestamp];
-  [v9 encodeObject:v5 forKey:@"timestamp"];
+  timestamp = [(CTStewieSatSmsMessageIncoming *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  [v9 encodeInteger:-[CTStewieSatSmsMessageIncoming pendingTotalCount](self forKey:{"pendingTotalCount"), @"pendingTotalCount"}];
-  [v9 encodeInteger:-[CTStewieSatSmsMessageIncoming pendingCount](self forKey:{"pendingCount"), @"pendingCount"}];
-  v6 = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
-  [v9 encodeObject:v6 forKey:@"phoneNumber"];
+  [coderCopy encodeInteger:-[CTStewieSatSmsMessageIncoming pendingTotalCount](self forKey:{"pendingTotalCount"), @"pendingTotalCount"}];
+  [coderCopy encodeInteger:-[CTStewieSatSmsMessageIncoming pendingCount](self forKey:{"pendingCount"), @"pendingCount"}];
+  sourcePhoneNumber = [(CTStewieSatSmsMessageIncoming *)self sourcePhoneNumber];
+  [coderCopy encodeObject:sourcePhoneNumber forKey:@"phoneNumber"];
 
-  [v9 encodeInteger:-[CTStewieSatSmsMessageIncoming codecID](self forKey:{"codecID"), @"codecID"}];
-  v7 = [(CTStewieSatSmsMessageIncoming *)self textPayload];
-  [v9 encodeObject:v7 forKey:@"textPayload"];
+  [coderCopy encodeInteger:-[CTStewieSatSmsMessageIncoming codecID](self forKey:{"codecID"), @"codecID"}];
+  textPayload = [(CTStewieSatSmsMessageIncoming *)self textPayload];
+  [coderCopy encodeObject:textPayload forKey:@"textPayload"];
 
-  v8 = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
-  [v9 encodeObject:v8 forKey:@"uniqueID"];
+  uniqueID = [(CTStewieSatSmsMessageIncoming *)self uniqueID];
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
 }
 
-- (CTStewieSatSmsMessageIncoming)initWithCoder:(id)a3
+- (CTStewieSatSmsMessageIncoming)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
-  v7 = [v4 decodeIntegerForKey:@"pendingTotalCount"];
-  v8 = [v4 decodeIntegerForKey:@"pendingCount"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-  v10 = [v4 decodeIntegerForKey:@"codecID"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textPayload"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  v7 = [coderCopy decodeIntegerForKey:@"pendingTotalCount"];
+  v8 = [coderCopy decodeIntegerForKey:@"pendingCount"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+  v10 = [coderCopy decodeIntegerForKey:@"codecID"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textPayload"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
   v13 = [(CTStewieSatSmsMessageIncoming *)self initWithContext:v5 timestamp:v6 pendingTotalCount:v7 pendingCount:v8 sourcePhoneNumber:v9 codecID:v10 textPayload:v11 uniqueID:v12 error:0];
 
   return v13;

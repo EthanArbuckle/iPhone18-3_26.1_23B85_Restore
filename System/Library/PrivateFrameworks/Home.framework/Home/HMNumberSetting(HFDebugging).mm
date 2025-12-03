@@ -7,19 +7,19 @@
 - (id)hf_stateDumpBuilderWithContext:()HFDebugging
 {
   v4 = [a3 copyWithOutputStyle:1];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &off_282591FC8;
   v5 = objc_msgSendSuper2(&v10, sel_hf_stateDumpBuilderWithContext_, v4);
   if ([v4 detailLevel] == 2)
   {
-    v6 = [a1 minimumValue];
-    [v5 setObject:v6 forKeyedSubscript:@"min"];
+    minimumValue = [self minimumValue];
+    [v5 setObject:minimumValue forKeyedSubscript:@"min"];
 
-    v7 = [a1 maximumValue];
-    [v5 setObject:v7 forKeyedSubscript:@"max"];
+    maximumValue = [self maximumValue];
+    [v5 setObject:maximumValue forKeyedSubscript:@"max"];
 
-    v8 = [a1 stepValue];
-    [v5 setObject:v8 forKeyedSubscript:@"step"];
+    stepValue = [self stepValue];
+    [v5 setObject:stepValue forKeyedSubscript:@"step"];
   }
 
   return v5;

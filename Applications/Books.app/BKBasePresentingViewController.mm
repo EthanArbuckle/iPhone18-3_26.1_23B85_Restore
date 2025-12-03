@@ -1,19 +1,19 @@
 @interface BKBasePresentingViewController
-+ (id)_lastOpenedBookWithKey:(id)a3;
-+ (id)_successfullyOpenedBookWithKey:(id)a3 successKey:(id)a4 deleteOnFailure:(BOOL)a5;
-+ (id)animatorForAsset:(id)a3 isCurrentBook:(BOOL)a4 opening:(BOOL)a5 largeCover:(BOOL)a6 skipZoom:(BOOL)a7;
-+ (id)defaultAnimatorForOpening:(BOOL)a3 skipReveal:(BOOL)a4;
-+ (id)futureViewControllerWithAssetIdentifier:(id)a3 libraryAssetProvider:(id)a4 options:(id)a5;
++ (id)_lastOpenedBookWithKey:(id)key;
++ (id)_successfullyOpenedBookWithKey:(id)key successKey:(id)successKey deleteOnFailure:(BOOL)failure;
++ (id)animatorForAsset:(id)asset isCurrentBook:(BOOL)book opening:(BOOL)opening largeCover:(BOOL)cover skipZoom:(BOOL)zoom;
++ (id)defaultAnimatorForOpening:(BOOL)opening skipReveal:(BOOL)reveal;
++ (id)futureViewControllerWithAssetIdentifier:(id)identifier libraryAssetProvider:(id)provider options:(id)options;
 + (id)holdAnimationAssertion;
-+ (void)_markBookAsCurrent:(id)a3;
++ (void)_markBookAsCurrent:(id)current;
 + (void)clearLastKnownSuccessfullyOpenBookID;
 + (void)clearLastKnownSuccessfullyOpenedCurrentBookID;
 + (void)initialize;
-+ (void)markCarPlayBackgroundBookAsCurrent:(id)a3;
-+ (void)startingOpenOfMinifedCurrentBook:(id)a3;
++ (void)markCarPlayBackgroundBookAsCurrent:(id)current;
++ (void)startingOpenOfMinifedCurrentBook:(id)book;
 - (BKAssetPresentingViewControllerHoldAnimationAssertion)holdAnimationAssertion;
-- (BKBasePresentingViewController)initWithAssetIdentifier:(id)a3 assetViewController:(id)a4 helper:(id)a5 libraryAssetProvider:(id)a6;
-- (BKBasePresentingViewController)initWithAssetIdentifier:(id)a3 placeholderViewController:(id)a4 holdAnimationAssertion:(id)a5 libraryAssetProvider:(id)a6;
+- (BKBasePresentingViewController)initWithAssetIdentifier:(id)identifier assetViewController:(id)controller helper:(id)helper libraryAssetProvider:(id)provider;
+- (BKBasePresentingViewController)initWithAssetIdentifier:(id)identifier placeholderViewController:(id)controller holdAnimationAssertion:(id)assertion libraryAssetProvider:(id)provider;
 - (BKContentOpenAnimating)assetPresenterAnimator;
 - (BKLibraryAssetProvider)libraryAssetProvider;
 - (BKMinifiedPresenting)minifiedPresenter;
@@ -21,140 +21,140 @@
 - (BOOL)_isHostedInAuxiliaryScene;
 - (BOOL)_shouldTrackReadingSession;
 - (BOOL)assetPresenterKeepOpenWithoutBundle;
-- (BOOL)assetViewController:(id)a3 requestClose:(BOOL)a4 finishedConsuming:(BOOL)a5 error:(id)a6 withErrorBlock:(id)a7;
-- (BOOL)assetViewController:(id)a3 requestOpenURL:(id)a4 likelyUserInitiated:(BOOL)a5;
-- (BOOL)assetViewControllerIsCurrentBook:(id)a3;
-- (BOOL)assetViewControllerIsPresentingSupplementalContent:(id)a3;
-- (BOOL)canUpdateLibraryBarButtonItem:(id)a3 withOldString:(id)a4;
-- (BOOL)needTOCEntriesForOrdinal:(int64_t)a3;
-- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)a3;
+- (BOOL)assetViewController:(id)controller requestClose:(BOOL)close finishedConsuming:(BOOL)consuming error:(id)error withErrorBlock:(id)block;
+- (BOOL)assetViewController:(id)controller requestOpenURL:(id)l likelyUserInitiated:(BOOL)initiated;
+- (BOOL)assetViewControllerIsCurrentBook:(id)book;
+- (BOOL)assetViewControllerIsPresentingSupplementalContent:(id)content;
+- (BOOL)canUpdateLibraryBarButtonItem:(id)item withOldString:(id)string;
+- (BOOL)needTOCEntriesForOrdinal:(int64_t)ordinal;
+- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal;
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)readingStatisticsEnabled;
 - (BOOL)shouldCloseDueToAssetDeletion;
 - (CGRect)liveResizeViewOriginalFrame;
 - (NSString)assetPresenterAssetID;
 - (NSString)assetPresenterPermanentOrTemporaryAssetID;
-- (double)_transitionDurationForLiveResizeOfViewController:(id)a3;
+- (double)_transitionDurationForLiveResizeOfViewController:(id)controller;
 - (id)_buyButton;
 - (id)_closeBarButtonTitle;
 - (id)_fetchSampleProfileFuture;
 - (id)_newBarButtonItemWithBuyButton;
 - (id)_sceneControllerCurrentlyHostingAssetPresenter;
-- (id)analyticsAssetPropertyProviderForAssetViewController:(id)a3 fromSourceView:(id)a4;
-- (id)analyticsContentDataForAssetViewController:(id)a3 contentSubType:(id)a4 tracker:(id)a5;
+- (id)analyticsAssetPropertyProviderForAssetViewController:(id)controller fromSourceView:(id)view;
+- (id)analyticsContentDataForAssetViewController:(id)controller contentSubType:(id)type tracker:(id)tracker;
 - (id)assetPresenterCoverAnimationSource;
 - (id)assetPresenterCoverImage;
 - (id)assetPresenterCoverShadowImage;
-- (id)assetViewControllerBuyButtonItem:(id)a3 isSample:(BOOL)a4 isPreorder:(BOOL)a5 storeID:(id)a6;
-- (id)assetViewControllerMinifiedBarButtonItem:(id)a3;
+- (id)assetViewControllerBuyButtonItem:(id)item isSample:(BOOL)sample isPreorder:(BOOL)preorder storeID:(id)d;
+- (id)assetViewControllerMinifiedBarButtonItem:(id)item;
 - (id)backItemForCoverView;
 - (id)bc_childCardPresentingViewController;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)childViewControllerForStatusBarHidden;
 - (id)childViewControllerForStatusBarStyle;
-- (id)contextMenuWithAssetViewController:(id)a3 sourceView:(id)a4;
-- (id)dataModelWithSourceView:(id)a3;
-- (id)libraryButtonItemForViewController:(id)a3 selector:(SEL)a4;
+- (id)contextMenuWithAssetViewController:(id)controller sourceView:(id)view;
+- (id)dataModelWithSourceView:(id)view;
+- (id)libraryButtonItemForViewController:(id)controller selector:(SEL)selector;
 - (id)traitCollection;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_applicationWillResignActiveNotification:(id)a3;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_applicationWillResignActiveNotification:(id)notification;
 - (void)_assetPresenterDidEnterBackground;
 - (void)_assetPresenterWillEnterForeground;
-- (void)_beginReadingSessionForEventType:(unint64_t)a3;
+- (void)_beginReadingSessionForEventType:(unint64_t)type;
 - (void)_cancelInteractionTimerIfNeeded;
 - (void)_cancelSuccessfullyOpenedTimerIfNeeded;
-- (void)_clearCacheForBook:(id)a3;
+- (void)_clearCacheForBook:(id)book;
 - (void)_clearLiveResizeViews;
-- (void)_commonInitWithIdentifier:(id)a3 libraryAssetProvider:(id)a4;
-- (void)_configureBuyButton:(id)a3;
-- (void)_configureBuyButtonForPricing:(id)a3 profile:(id)a4;
+- (void)_commonInitWithIdentifier:(id)identifier libraryAssetProvider:(id)provider;
+- (void)_configureBuyButton:(id)button;
+- (void)_configureBuyButtonForPricing:(id)pricing profile:(id)profile;
 - (void)_confirmBookSuccessfullyOpened;
-- (void)_didEnterFullScreen:(id)a3;
-- (void)_didExitFullScreen:(id)a3;
-- (void)_didOpenBookAnimated:(BOOL)a3;
-- (void)_downloadStatusNotification:(id)a3;
-- (void)_endReadingSessionForEventType:(unint64_t)a3 withCompletion:(id)a4;
-- (void)_fetchProfileForStoreID:(id)a3 completion:(id)a4;
+- (void)_didEnterFullScreen:(id)screen;
+- (void)_didExitFullScreen:(id)screen;
+- (void)_didOpenBookAnimated:(BOOL)animated;
+- (void)_downloadStatusNotification:(id)notification;
+- (void)_endReadingSessionForEventType:(unint64_t)type withCompletion:(id)completion;
+- (void)_fetchProfileForStoreID:(id)d completion:(id)completion;
 - (void)_finalizeAssetVCState;
-- (void)_handleClosingCleanup:(BOOL)a3;
-- (void)_libraryOwnershipNotification:(id)a3;
+- (void)_handleClosingCleanup:(BOOL)cleanup;
+- (void)_libraryOwnershipNotification:(id)notification;
 - (void)_loadAssetVC;
-- (void)_loadWithAssetViewController:(id)a3 helper:(id)a4;
-- (void)_maybeUpdateSuccessfullyOpenedCurrentBook:(id)a3;
+- (void)_loadWithAssetViewController:(id)controller helper:(id)helper;
+- (void)_maybeUpdateSuccessfullyOpenedCurrentBook:(id)book;
 - (void)_refreshReadingState;
-- (void)_reloadAssetCloseViewController:(BOOL)a3;
+- (void)_reloadAssetCloseViewController:(BOOL)controller;
 - (void)_sendDeferredURLOpenRequests;
 - (void)_startBookSuccessfullyOpenedTimer;
 - (void)_startInteractionTimer;
-- (void)_updateAssetStateAndDownloadStatus:(id)a3;
+- (void)_updateAssetStateAndDownloadStatus:(id)status;
 - (void)_updateBuyButtonProgressIfNeeded;
-- (void)_updateLastOpenBookWithAssetID:(id)a3;
-- (void)_updateLibraryAssetFromMetadataWithURL:(id)a3 completion:(id)a4;
-- (void)_waitForOngoingMigrationAttemptToFinish:(id)a3 completion:(id)a4;
-- (void)_willEnterFullScreen:(id)a3;
-- (void)_willExitFullScreen:(id)a3;
-- (void)_willOpenBookAnimated:(BOOL)a3;
-- (void)addTOCEntries:(id)a3 ordinal:(int64_t)a4 completion:(id)a5;
-- (void)addTextNodeCharacterCounts:(id)a3 ordinal:(int64_t)a4 completion:(id)a5;
-- (void)assetPresenterDismissalDidEnd:(BOOL)a3;
-- (void)assetPresenterJumpToBeginningAnimated:(BOOL)a3;
-- (void)assetPresenterOpenToLocation:(id)a3 animated:(BOOL)a4;
+- (void)_updateLastOpenBookWithAssetID:(id)d;
+- (void)_updateLibraryAssetFromMetadataWithURL:(id)l completion:(id)completion;
+- (void)_waitForOngoingMigrationAttemptToFinish:(id)finish completion:(id)completion;
+- (void)_willEnterFullScreen:(id)screen;
+- (void)_willExitFullScreen:(id)screen;
+- (void)_willOpenBookAnimated:(BOOL)animated;
+- (void)addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion;
+- (void)assetPresenterDismissalDidEnd:(BOOL)end;
+- (void)assetPresenterJumpToBeginningAnimated:(BOOL)animated;
+- (void)assetPresenterOpenToLocation:(id)location animated:(BOOL)animated;
 - (void)assetPresenterPrepareForDismissal;
 - (void)assetPresenterPrepareForTermination;
 - (void)assetPresenterUpdateCloseTypeState;
 - (void)assetPresenterUpdateToolbars;
-- (void)assetViewController:(id)a3 assetPropertyChanged:(id)a4;
-- (void)assetViewController:(id)a3 attemptClose:(BOOL)a4;
-- (void)assetViewController:(id)a3 cancelledClose:(BOOL)a4;
-- (void)assetViewController:(id)a3 didShowContentWithCFIs:(id)a4;
-- (void)assetViewController:(id)a3 handleFamilyChangeError:(id)a4;
-- (void)assetViewController:(id)a3 openSupplementalAssetWithIdentifier:(id)a4;
-- (void)assetViewController:(id)a3 presentModalViewController:(id)a4 animated:(BOOL)a5;
-- (void)assetViewController:(id)a3 presentTranslationForText:(id)a4 fromRect:(CGRect)a5 onClose:(id)a6;
-- (void)assetViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)assetViewController:(id)a3 setFinishedAndCloseForAssetID:(id)a4;
-- (void)assetViewController:(id)a3 updateBuyButton:(id)a4 setIsDark:(BOOL)a5;
-- (void)assetViewController:(id)a3 willClose:(BOOL)a4;
-- (void)assetViewController:(id)a3 willHideContentWithCFIs:(id)a4;
-- (void)assetViewController:(id)a3 willOpen:(BOOL)a4;
-- (void)assetViewControllerPaginationCompletedForBook:(id)a3;
-- (void)assetViewControllerSignificantReadingLocationChange:(id)a3;
-- (void)ba_setAnalyticsTracker:(id)a3;
+- (void)assetViewController:(id)controller assetPropertyChanged:(id)changed;
+- (void)assetViewController:(id)controller attemptClose:(BOOL)close;
+- (void)assetViewController:(id)controller cancelledClose:(BOOL)close;
+- (void)assetViewController:(id)controller didShowContentWithCFIs:(id)is;
+- (void)assetViewController:(id)controller handleFamilyChangeError:(id)error;
+- (void)assetViewController:(id)controller openSupplementalAssetWithIdentifier:(id)identifier;
+- (void)assetViewController:(id)controller presentModalViewController:(id)viewController animated:(BOOL)animated;
+- (void)assetViewController:(id)controller presentTranslationForText:(id)text fromRect:(CGRect)rect onClose:(id)close;
+- (void)assetViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)assetViewController:(id)controller setFinishedAndCloseForAssetID:(id)d;
+- (void)assetViewController:(id)controller updateBuyButton:(id)button setIsDark:(BOOL)dark;
+- (void)assetViewController:(id)controller willClose:(BOOL)close;
+- (void)assetViewController:(id)controller willHideContentWithCFIs:(id)is;
+- (void)assetViewController:(id)controller willOpen:(BOOL)open;
+- (void)assetViewControllerPaginationCompletedForBook:(id)book;
+- (void)assetViewControllerSignificantReadingLocationChange:(id)change;
+- (void)ba_setAnalyticsTracker:(id)tracker;
 - (void)bkaxSetUpAccessibilityForPresentedBook;
 - (void)dealloc;
-- (void)didFinishUpdateForAssetViewController:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)dismissLibraryBookCoverViewController:(id)a3 animated:(BOOL)a4;
-- (void)im_dismissAnimated:(BOOL)a3 immediate:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)readingStatisticsDidChangeOnController:(id)a3 changes:(id)a4;
+- (void)didFinishUpdateForAssetViewController:(id)controller;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)dismissLibraryBookCoverViewController:(id)controller animated:(BOOL)animated;
+- (void)im_dismissAnimated:(BOOL)animated immediate:(BOOL)immediate;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)readingStatisticsDidChangeOnController:(id)controller changes:(id)changes;
 - (void)removeFromParentViewController;
-- (void)requestToBuy:(id)a3;
-- (void)setAssetViewController:(id)a3;
-- (void)setFinishedForAssetID:(id)a3;
-- (void)setProgressStatus:(id)a3;
-- (void)timeTracker:(id)a3 didPromoteAsset:(id)a4 deletedFromWantToRead:(BOOL)a5;
+- (void)requestToBuy:(id)buy;
+- (void)setAssetViewController:(id)controller;
+- (void)setFinishedForAssetID:(id)d;
+- (void)setProgressStatus:(id)status;
+- (void)timeTracker:(id)tracker didPromoteAsset:(id)asset deletedFromWantToRead:(BOOL)read;
 - (void)transitionContextNeedsSetup;
-- (void)transitionContextWillCompleteTransitionInContainerView:(id)a3;
-- (void)updatePromotionStateWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)transitionContextWillCompleteTransitionInContainerView:(id)view;
+- (void)updatePromotionStateWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillMoveToWindow:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillMoveToWindow:(id)window;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willAddViewToHierarchy;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation BKBasePresentingViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"BKMainViewControllerSuccessfullyOpenedBook", &stru_100A30A68, @"BKMainViewControllerLastBook", &__kCFBooleanTrue, @"kSuccessfullyOpenedCurrentBook", &stru_100A30A68, @"kLastCurrentBookKey", 0}];
     v2 = +[NSUserDefaults standardUserDefaults];
@@ -178,20 +178,20 @@
   }
 
   objc_opt_class();
-  v3 = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
+  _sceneControllerCurrentlyHostingAssetPresenter = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
   v4 = BUDynamicCast();
 
-  v5 = [v4 rootBarCoordinator];
+  rootBarCoordinator = [v4 rootBarCoordinator];
 
-  if (v5)
+  if (rootBarCoordinator)
   {
     goto LABEL_3;
   }
 
   v7 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
-  v8 = [v7 currentSceneController];
-  v9 = [v8 bk_window];
-  [v9 bounds];
+  currentSceneController = [v7 currentSceneController];
+  bk_window = [currentSceneController bk_window];
+  [bk_window bounds];
   v11 = v10;
   v12 = +[UIScreen mainScreen];
   [v12 bounds];
@@ -226,70 +226,70 @@ LABEL_11:
 
 - (BOOL)shouldCloseDueToAssetDeletion
 {
-  v2 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldCloseDueToAssetDeletion];
+    shouldCloseDueToAssetDeletion = [assetViewController shouldCloseDueToAssetDeletion];
   }
 
   else
   {
-    v3 = 1;
+    shouldCloseDueToAssetDeletion = 1;
   }
 
-  return v3;
+  return shouldCloseDueToAssetDeletion;
 }
 
-- (BKBasePresentingViewController)initWithAssetIdentifier:(id)a3 assetViewController:(id)a4 helper:(id)a5 libraryAssetProvider:(id)a6
+- (BKBasePresentingViewController)initWithAssetIdentifier:(id)identifier assetViewController:(id)controller helper:(id)helper libraryAssetProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  helperCopy = helper;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = BKBasePresentingViewController;
   v14 = [(BKBasePresentingViewController *)&v18 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    [(BKBasePresentingViewController *)v14 setAssetViewController:v11];
-    [(BKBasePresentingViewController *)v15 setAssetHelper:v12];
-    v16 = [(BKBasePresentingViewController *)v15 assetViewController];
-    [v16 setAssetViewControllerDelegate:v15];
+    [(BKBasePresentingViewController *)v14 setAssetViewController:controllerCopy];
+    [(BKBasePresentingViewController *)v15 setAssetHelper:helperCopy];
+    assetViewController = [(BKBasePresentingViewController *)v15 assetViewController];
+    [assetViewController setAssetViewControllerDelegate:v15];
 
-    [(BKBasePresentingViewController *)v15 _commonInitWithIdentifier:v10 libraryAssetProvider:v13];
+    [(BKBasePresentingViewController *)v15 _commonInitWithIdentifier:identifierCopy libraryAssetProvider:providerCopy];
   }
 
   return v15;
 }
 
-- (BKBasePresentingViewController)initWithAssetIdentifier:(id)a3 placeholderViewController:(id)a4 holdAnimationAssertion:(id)a5 libraryAssetProvider:(id)a6
+- (BKBasePresentingViewController)initWithAssetIdentifier:(id)identifier placeholderViewController:(id)controller holdAnimationAssertion:(id)assertion libraryAssetProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  assertionCopy = assertion;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = BKBasePresentingViewController;
   v14 = [(BKBasePresentingViewController *)&v18 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    [(BKBasePresentingViewController *)v14 setPlaceholderViewController:v11];
+    [(BKBasePresentingViewController *)v14 setPlaceholderViewController:controllerCopy];
     objc_opt_class();
     v16 = BUDynamicCast();
     [(BKBasePresentingViewController *)v15 setHoldAnimationAssertion:v16];
 
-    [(BKBasePresentingViewController *)v15 _commonInitWithIdentifier:v10 libraryAssetProvider:v13];
+    [(BKBasePresentingViewController *)v15 _commonInitWithIdentifier:identifierCopy libraryAssetProvider:providerCopy];
   }
 
   return v15;
 }
 
-- (void)_commonInitWithIdentifier:(id)a3 libraryAssetProvider:(id)a4
+- (void)_commonInitWithIdentifier:(id)identifier libraryAssetProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 addObserver:self selector:"_applicationDidBecomeActiveNotification:" name:UIApplicationDidBecomeActiveNotification object:0];
   [v8 addObserver:self selector:"_applicationWillResignActiveNotification:" name:UIApplicationWillResignActiveNotification object:0];
@@ -301,11 +301,11 @@ LABEL_11:
   v11 = +[BCBookReadingTimeTracker sharedInstance];
   [v11 addPromotionObserver:self];
 
-  v12 = [v6 copy];
+  v12 = [identifierCopy copy];
   assetIdentifier = self->_assetIdentifier;
   self->_assetIdentifier = v12;
 
-  [(BKBasePresentingViewController *)self setLibraryAssetProvider:v7];
+  [(BKBasePresentingViewController *)self setLibraryAssetProvider:providerCopy];
   v14 = objc_opt_new();
   sampleProfileFuture = self->_sampleProfileFuture;
   self->_sampleProfileFuture = v14;
@@ -318,28 +318,28 @@ LABEL_11:
   [(BKBasePresentingViewController *)self setDefinesPresentationContext:1];
   [(BKBasePresentingViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
   objc_opt_class();
-  v17 = [(BKBasePresentingViewController *)self assetHelper];
+  assetHelper = [(BKBasePresentingViewController *)self assetHelper];
   v18 = BUDynamicCast();
 
   if (v18)
   {
-    v19 = [v18 mAsset];
+    mAsset = [v18 mAsset];
     v20 = [BAAppAnalyticsAdditionalData alloc];
-    v21 = [v19 supportsUnifiedProductPage];
-    v22 = [v19 editionKind];
-    v23 = [v20 initWithSupportsUnifiedProductPage:v21 editionKind:v22];
+    supportsUnifiedProductPage = [mAsset supportsUnifiedProductPage];
+    editionKind = [mAsset editionKind];
+    v23 = [v20 initWithSupportsUnifiedProductPage:supportsUnifiedProductPage editionKind:editionKind];
     [(BKBasePresentingViewController *)self setAppAnalyticsAdditionalData:v23];
   }
 
   objc_initWeak(&location, self);
   v24 = [BKFrontmostAssetTracker alloc];
-  v25 = [v6 permanentOrTemporaryAssetID];
+  permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
   v30 = _NSConcreteStackBlock;
   v31 = 3221225472;
   v32 = sub_10005DA08;
   v33 = &unk_100A03B10;
   objc_copyWeak(&v34, &location);
-  v26 = [(BKFrontmostAssetTracker *)v24 initWithAssetID:v25 window:0 onFrontmostChanged:&v30];
+  v26 = [(BKFrontmostAssetTracker *)v24 initWithAssetID:permanentOrTemporaryAssetID window:0 onFrontmostChanged:&v30];
   frontmostTracker = self->_frontmostTracker;
   self->_frontmostTracker = v26;
 
@@ -363,17 +363,17 @@ LABEL_11:
   self->_readingStatisticsController = 0;
 
   [(BKBasePresentingViewController *)self setProgressStatus:0];
-  v5 = [(BKBasePresentingViewController *)self sampleProfileFuture];
-  [v5 cancel];
+  sampleProfileFuture = [(BKBasePresentingViewController *)self sampleProfileFuture];
+  [sampleProfileFuture cancel];
 
   [(BKBasePresentingViewController *)self _finalizeAssetVCState];
-  v6 = [(BKBasePresentingViewController *)self filePresenter];
-  [v6 deactivate];
+  filePresenter = [(BKBasePresentingViewController *)self filePresenter];
+  [filePresenter deactivate];
 
   [(BKBasePresentingViewController *)self setFilePresenter:0];
-  v7 = [(BKBasePresentingViewController *)self buyButtonItem];
-  v8 = [v7 customView];
-  v9 = [v8 viewWithTag:7];
+  buyButtonItem = [(BKBasePresentingViewController *)self buyButtonItem];
+  customView = [buyButtonItem customView];
+  v9 = [customView viewWithTag:7];
 
   [v9 removeTarget:self action:"requestToBuy:" forControlEvents:64];
   v10.receiver = self;
@@ -384,15 +384,15 @@ LABEL_11:
 - (BOOL)_isAudiobook
 {
   v3 = +[AEAudiobookPlugin associatedAssetType];
-  v4 = [(BKBasePresentingViewController *)self assetViewController];
-  v5 = [v4 asset];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  asset = [assetViewController asset];
 
-  if (v5)
+  if (asset)
   {
-    v6 = [v5 assetType];
-    v7 = [v6 lowercaseString];
-    v8 = [v3 lowercaseString];
-    LOBYTE(v9) = [v7 isEqualToString:v8];
+    assetType = [asset assetType];
+    lowercaseString = [assetType lowercaseString];
+    lowercaseString2 = [v3 lowercaseString];
+    LOBYTE(assetIdentifier) = [lowercaseString isEqualToString:lowercaseString2];
 
 LABEL_3:
     goto LABEL_8;
@@ -400,34 +400,34 @@ LABEL_3:
 
   if (!+[NSThread isMainThread])
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(assetIdentifier) = 0;
     goto LABEL_8;
   }
 
-  v9 = [(BKBasePresentingViewController *)self assetIdentifier];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
 
-  if (v9)
+  if (assetIdentifier)
   {
-    v9 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-    v10 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v6 = [v9 libraryAssetOnMainQueueWithAssetIdentifier:v10];
+    assetIdentifier = [(BKBasePresentingViewController *)self libraryAssetProvider];
+    assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+    assetType = [assetIdentifier libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier2];
 
-    LOBYTE(v9) = [v6 isAudiobook];
+    LOBYTE(assetIdentifier) = [assetType isAudiobook];
     goto LABEL_3;
   }
 
 LABEL_8:
 
-  return v9;
+  return assetIdentifier;
 }
 
 - (BOOL)_shouldTrackReadingSession
 {
   if ([(BKBasePresentingViewController *)self successfullyOpened])
   {
-    v3 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v4 = [v3 permanentAssetID];
-    if ([v4 length] && !-[BKBasePresentingViewController _isAudiobook](self, "_isAudiobook"))
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
+    if ([permanentAssetID length] && !-[BKBasePresentingViewController _isAudiobook](self, "_isAudiobook"))
     {
       v5 = ![(BKBasePresentingViewController *)self isSupplementalContent];
     }
@@ -454,39 +454,39 @@ LABEL_8:
   [(BKBasePresentingViewController *)self _finalizeAssetVCState];
 }
 
-- (void)_clearCacheForBook:(id)a3
+- (void)_clearCacheForBook:(id)book
 {
-  v4 = a3;
-  v5 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v6 = [v5 permanentAssetID];
-  v7 = v6;
-  if (v6)
+  bookCopy = book;
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
+  v7 = permanentAssetID;
+  if (permanentAssetID)
   {
-    v8 = v6;
+    assetID = permanentAssetID;
   }
 
   else
   {
-    v9 = [(BKBasePresentingViewController *)self assetViewController];
-    v10 = [v9 asset];
-    v8 = [v10 assetID];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+    asset = [assetViewController asset];
+    assetID = [asset assetID];
   }
 
-  if ([v8 length])
+  if ([assetID length])
   {
     v11 = dispatch_time(0, 1000000000);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10005DF28;
     v14[3] = &unk_100A03788;
-    v15 = v8;
-    v16 = v4;
+    v15 = assetID;
+    v16 = bookCopy;
     dispatch_after(v11, &_dispatch_main_q, v14);
   }
 
   else
   {
-    v12 = objc_retainBlock(v4);
+    v12 = objc_retainBlock(bookCopy);
     v13 = v12;
     if (v12)
     {
@@ -497,9 +497,9 @@ LABEL_8:
 
 - (void)_finalizeAssetVCState
 {
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
 
-  if (v3)
+  if (assetViewController)
   {
     if ([(BKBasePresentingViewController *)self assetState]< 3)
     {
@@ -508,11 +508,11 @@ LABEL_8:
         [(BKBasePresentingViewController *)self _updateLastOpenBookWithAssetID:0];
       }
 
-      v4 = [(BKBasePresentingViewController *)self assetViewController];
-      [v4 saveStateClosing:1];
+      assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+      [assetViewController2 saveStateClosing:1];
 
-      v5 = [(BKBasePresentingViewController *)self assetViewController];
-      [v5 close:0];
+      assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
+      [assetViewController3 close:0];
 
       [(BKBasePresentingViewController *)self setAssetState:3];
       [(BCReadingStatisticsController *)self->_readingStatisticsController removeObserver:self];
@@ -520,30 +520,30 @@ LABEL_8:
       self->_readingStatisticsController = 0;
     }
 
-    v7 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v16 = [v7 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
     if ([(BKBasePresentingViewController *)self assetState]<= 3)
     {
-      v8 = [(BKBasePresentingViewController *)self minifiedPresenter];
-      [v8 minifiedPresenterDidCloseAssetID:v16 finishedConsuming:{-[BKBasePresentingViewController finishedConsuming](self, "finishedConsuming")}];
+      minifiedPresenter = [(BKBasePresentingViewController *)self minifiedPresenter];
+      [minifiedPresenter minifiedPresenterDidCloseAssetID:permanentAssetID finishedConsuming:{-[BKBasePresentingViewController finishedConsuming](self, "finishedConsuming")}];
 
-      v9 = [(BKBasePresentingViewController *)self assetViewController];
+      assetViewController4 = [(BKBasePresentingViewController *)self assetViewController];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [(BKBasePresentingViewController *)self assetViewController];
-        [v11 assetViewControllerDidCloseAnimated:0];
+        assetViewController5 = [(BKBasePresentingViewController *)self assetViewController];
+        [assetViewController5 assetViewControllerDidCloseAnimated:0];
       }
 
       [(BKBasePresentingViewController *)self setAssetState:4];
       [(BKBasePresentingViewController *)self _clearCacheForBook:0];
-      v12 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-      v13 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-      v14 = [(BKBasePresentingViewController *)self assetIdentifier];
-      v15 = [v13 libraryAssetOnMainQueueWithAssetIdentifier:v14];
-      [v12 didCloseLibraryAsset:v15];
+      libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
+      libraryAssetProvider2 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+      assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+      v15 = [libraryAssetProvider2 libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier2];
+      [libraryAssetProvider didCloseLibraryAsset:v15];
     }
 
     [(BKBasePresentingViewController *)self setSampleToPurchasedMonitor:0];
@@ -556,70 +556,70 @@ LABEL_8:
   v28.receiver = self;
   v28.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v28 viewDidLoad];
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
 
-  if (!v3)
+  if (!assetViewController)
   {
-    v4 = [(BKBasePresentingViewController *)self view];
-    [v4 setOpaque:0];
+    view = [(BKBasePresentingViewController *)self view];
+    [view setOpaque:0];
   }
 
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
 
-  if (v5)
+  if (assetViewController2)
   {
-    v6 = [(BKBasePresentingViewController *)self transitioningViewController];
-    v7 = [(BKBasePresentingViewController *)self assetViewController];
+    transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+    assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
 LABEL_7:
-    v9 = v7;
-    [v6 setContentViewController:v7];
+    v9 = assetViewController3;
+    [transitioningViewController setContentViewController:assetViewController3];
 
     goto LABEL_8;
   }
 
-  v8 = [(BKBasePresentingViewController *)self placeholderViewController];
+  placeholderViewController = [(BKBasePresentingViewController *)self placeholderViewController];
 
-  if (v8)
+  if (placeholderViewController)
   {
-    v6 = [(BKBasePresentingViewController *)self transitioningViewController];
-    v7 = [(BKBasePresentingViewController *)self placeholderViewController];
+    transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+    assetViewController3 = [(BKBasePresentingViewController *)self placeholderViewController];
     goto LABEL_7;
   }
 
 LABEL_8:
-  v10 = [(BKBasePresentingViewController *)self transitioningViewController];
-  v11 = [v10 view];
-  [v11 setAutoresizingMask:18];
+  transitioningViewController2 = [(BKBasePresentingViewController *)self transitioningViewController];
+  view2 = [transitioningViewController2 view];
+  [view2 setAutoresizingMask:18];
 
-  v12 = [(BKBasePresentingViewController *)self transitioningViewController];
-  [(BKBasePresentingViewController *)self addChildViewController:v12];
+  transitioningViewController3 = [(BKBasePresentingViewController *)self transitioningViewController];
+  [(BKBasePresentingViewController *)self addChildViewController:transitioningViewController3];
 
-  v13 = [(BKBasePresentingViewController *)self view];
-  v14 = [(BKBasePresentingViewController *)self transitioningViewController];
-  v15 = [v14 view];
-  [v13 addSubview:v15];
+  view3 = [(BKBasePresentingViewController *)self view];
+  transitioningViewController4 = [(BKBasePresentingViewController *)self transitioningViewController];
+  view4 = [transitioningViewController4 view];
+  [view3 addSubview:view4];
 
-  v16 = [(BKBasePresentingViewController *)self view];
-  [v16 bounds];
+  view5 = [(BKBasePresentingViewController *)self view];
+  [view5 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(BKBasePresentingViewController *)self transitioningViewController];
-  v26 = [v25 view];
-  [v26 setFrame:{v18, v20, v22, v24}];
+  transitioningViewController5 = [(BKBasePresentingViewController *)self transitioningViewController];
+  view6 = [transitioningViewController5 view];
+  [view6 setFrame:{v18, v20, v22, v24}];
 
-  v27 = [(BKBasePresentingViewController *)self transitioningViewController];
-  [v27 didMoveToParentViewController:self];
+  transitioningViewController6 = [(BKBasePresentingViewController *)self transitioningViewController];
+  [transitioningViewController6 didMoveToParentViewController:self];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = BKBasePresentingViewController;
-  v4 = a3;
-  [(BKBasePresentingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(BKBasePresentingViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -628,76 +628,76 @@ LABEL_8:
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v2 = [(BKBasePresentingViewController *)self transitioningViewController];
-  v3 = [v2 childViewControllerForStatusBarStyle];
+  transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+  childViewControllerForStatusBarStyle = [transitioningViewController childViewControllerForStatusBarStyle];
 
-  return v3;
+  return childViewControllerForStatusBarStyle;
 }
 
 - (id)childViewControllerForStatusBarHidden
 {
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
-  v4 = [v3 contentOpenAnimator];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  contentOpenAnimator = [assetViewController contentOpenAnimator];
   v5 = BUProtocolCast();
 
-  v6 = [(BKBasePresentingViewController *)self assetViewController];
-  v7 = 0;
-  if (v6 && !v5)
+  assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+  childViewControllerForStatusBarHidden = 0;
+  if (assetViewController2 && !v5)
   {
-    v8 = [(BKBasePresentingViewController *)self transitioningViewController];
-    v7 = [v8 childViewControllerForStatusBarHidden];
+    transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+    childViewControllerForStatusBarHidden = [transitioningViewController childViewControllerForStatusBarHidden];
   }
 
-  return v7;
+  return childViewControllerForStatusBarHidden;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(BKBasePresentingViewController *)self assetViewController];
-  v3 = [v2 contentOpenAnimator];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  contentOpenAnimator = [assetViewController contentOpenAnimator];
   v4 = BUProtocolCast();
 
-  LOBYTE(v2) = [v4 statusBarHidden];
-  return v2;
+  LOBYTE(assetViewController) = [v4 statusBarHidden];
+  return assetViewController;
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(BKBasePresentingViewController *)self transitioningViewController];
-  v3 = [v2 childViewControllerForHomeIndicatorAutoHidden];
+  transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+  childViewControllerForHomeIndicatorAutoHidden = [transitioningViewController childViewControllerForHomeIndicatorAutoHidden];
 
-  return v3;
+  return childViewControllerForHomeIndicatorAutoHidden;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_100ACC420 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_100ACC420 == context)
   {
     if ([(BKBasePresentingViewController *)self autoDownload]&& [(BKLibraryDownloadStatus *)self->_progressStatus state]== 4)
     {
-      v13 = [(BKBasePresentingViewController *)self downloadProgressBlock];
-      if (v13)
+      downloadProgressBlock = [(BKBasePresentingViewController *)self downloadProgressBlock];
+      if (downloadProgressBlock)
       {
         [(BKLibraryDownloadStatus *)self->_progressStatus progressValue];
-        v13[2](v13, 0);
+        downloadProgressBlock[2](downloadProgressBlock, 0);
       }
     }
 
     [(BKBasePresentingViewController *)self _updateBuyButtonProgressIfNeeded];
   }
 
-  else if (off_100ACC428 == a6)
+  else if (off_100ACC428 == context)
   {
     objc_opt_class();
     v14 = BUDynamicCast();
-    v15 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v16 = [v15 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
-    v17 = [v14 assetID];
-    v18 = [v17 isEqualToString:v16];
+    assetID = [v14 assetID];
+    v18 = [assetID isEqualToString:permanentAssetID];
 
     if (v18)
     {
@@ -710,16 +710,16 @@ LABEL_8:
   {
     v19.receiver = self;
     v19.super_class = BKBasePresentingViewController;
-    [(BKBasePresentingViewController *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKBasePresentingViewController *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setProgressStatus:(id)a3
+- (void)setProgressStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   progressStatus = self->_progressStatus;
-  v8 = v5;
-  if (progressStatus != v5)
+  v8 = statusCopy;
+  if (progressStatus != statusCopy)
   {
     if (progressStatus)
     {
@@ -727,7 +727,7 @@ LABEL_8:
       [(BKLibraryDownloadStatus *)self->_progressStatus removeObserver:self forKeyPath:@"state" context:off_100ACC428];
     }
 
-    objc_storeStrong(&self->_progressStatus, a3);
+    objc_storeStrong(&self->_progressStatus, status);
     [(BKBasePresentingViewController *)self _updateBuyButtonProgressIfNeeded];
     v7 = self->_progressStatus;
     if (v7)
@@ -738,24 +738,24 @@ LABEL_8:
   }
 }
 
-- (void)_updateLibraryAssetFromMetadataWithURL:(id)a3 completion:(id)a4
+- (void)_updateLibraryAssetFromMetadataWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKBasePresentingViewController *)self assetViewController];
+  lCopy = l;
+  completionCopy = completion;
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(BKBasePresentingViewController *)self assetViewController];
-    v10 = [v9 pageCountIncludingUpsell];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    pageCountIncludingUpsell = [assetViewController2 pageCountIncludingUpsell];
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    pageCountIncludingUpsell = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   objc_initWeak(&location, self);
-  v11 = [NSFileAccessIntent readingIntentWithURL:v6 options:1];
+  v11 = [NSFileAccessIntent readingIntentWithURL:lCopy options:1];
   v12 = [v11 URL];
   v13 = v12 == 0;
 
@@ -767,7 +767,7 @@ LABEL_8:
       sub_1007892FC();
     }
 
-    v18 = objc_retainBlock(v7);
+    v18 = objc_retainBlock(completionCopy);
     v19 = v18;
     if (v18)
     {
@@ -786,10 +786,10 @@ LABEL_8:
     v20[2] = sub_10005EB40;
     v20[3] = &unk_100A03B38;
     objc_copyWeak(v24, &location);
-    v21 = v6;
-    v22 = self;
-    v24[1] = v10;
-    v23 = v7;
+    v21 = lCopy;
+    selfCopy = self;
+    v24[1] = pageCountIncludingUpsell;
+    v23 = completionCopy;
     [v14 coordinateAccessWithIntents:v15 queue:v16 byAccessor:v20];
 
     objc_destroyWeak(v24);
@@ -798,9 +798,9 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)_willOpenBookAnimated:(BOOL)a3
+- (void)_willOpenBookAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!self->_deferredURLOpenRequests)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
@@ -808,26 +808,26 @@ LABEL_8:
     self->_deferredURLOpenRequests = v5;
   }
 
-  v7 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v32 = [v7 permanentOrTemporaryAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
 
   v8 = +[BEDocumentExternalLoadApprovalCache sharedInstance];
-  [v8 removeCachedDisapprovalForBookID:v32];
+  [v8 removeCachedDisapprovalForBookID:permanentOrTemporaryAssetID];
 
-  v9 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-  v10 = [v9 uiChildContext];
+  libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
+  uiChildContext = [libraryAssetProvider uiChildContext];
 
-  v11 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-  v12 = [v11 libraryMutableAssetWithPermanentOrTemporaryAssetID:v32 inManagedObjectContext:v10];
+  libraryAssetProvider2 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+  v12 = [libraryAssetProvider2 libraryMutableAssetWithPermanentOrTemporaryAssetID:permanentOrTemporaryAssetID inManagedObjectContext:uiChildContext];
 
-  [v10 refreshObject:v12 mergeChanges:1];
+  [uiChildContext refreshObject:v12 mergeChanges:1];
   v13 = +[BKUserActivityManager sharedInstance];
   [v13 startReadingAsset:v12];
 
   [(BKBasePresentingViewController *)self subscribeToFullScreenEvents];
   objc_opt_class();
-  v14 = [(BKBasePresentingViewController *)self openOptions];
-  v15 = [v14 objectForKeyedSubscript:@"BKAssetPresentingOpenLocationKey"];
+  openOptions = [(BKBasePresentingViewController *)self openOptions];
+  v15 = [openOptions objectForKeyedSubscript:@"BKAssetPresentingOpenLocationKey"];
   v16 = BUDynamicCast();
 
   [(BKBasePresentingViewController *)self setAssetState:1];
@@ -835,68 +835,68 @@ LABEL_8:
   v17 = [[BKAssetPresentingFilePresenter alloc] initWithViewController:self];
   [(BKBasePresentingViewController *)self setFilePresenter:v17];
 
-  if ([v32 length])
+  if ([permanentOrTemporaryAssetID length])
   {
     [(BKBasePresentingViewController *)self _trackProgressForLibraryAsset:v12];
   }
 
-  v18 = [(BKBasePresentingViewController *)self assetViewController];
-  v19 = [v18 assetViewControllerDelegate];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewControllerDelegate = [assetViewController assetViewControllerDelegate];
 
-  if (!v19)
+  if (!assetViewControllerDelegate)
   {
-    v20 = [(BKBasePresentingViewController *)self assetViewController];
-    [v20 setAssetViewControllerDelegate:self];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController2 setAssetViewControllerDelegate:self];
   }
 
-  v21 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
     objc_opt_class();
-    v23 = [(BKBasePresentingViewController *)self openOptions];
-    v24 = [v23 objectForKeyedSubscript:AEHelperNumberIsPreorderKey];
+    openOptions2 = [(BKBasePresentingViewController *)self openOptions];
+    v24 = [openOptions2 objectForKeyedSubscript:AEHelperNumberIsPreorderKey];
     v25 = BUDynamicCast();
 
-    v26 = [(BKBasePresentingViewController *)self assetViewController];
-    [v26 setAssetIsPreordered:v25];
+    assetViewController4 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController4 setAssetIsPreordered:v25];
   }
 
-  v27 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController5 = [(BKBasePresentingViewController *)self assetViewController];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(BKBasePresentingViewController *)self assetViewController];
-    [v29 assetViewControllerWillOpen];
+    assetViewController6 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController6 assetViewControllerWillOpen];
   }
 
-  v30 = [(BKBasePresentingViewController *)self assetViewController];
-  v31 = v30;
+  assetViewController7 = [(BKBasePresentingViewController *)self assetViewController];
+  v31 = assetViewController7;
   if (v16)
   {
-    [v30 openToLocation:v16 animated:v3];
+    [assetViewController7 openToLocation:v16 animated:animatedCopy];
   }
 
   else
   {
-    [v30 open:v3];
+    [assetViewController7 open:animatedCopy];
   }
 }
 
-- (void)transitionContextWillCompleteTransitionInContainerView:(id)a3
+- (void)transitionContextWillCompleteTransitionInContainerView:(id)view
 {
-  v29 = a3;
-  v4 = [(BKBasePresentingViewController *)self assetViewController];
-  v5 = [v4 view];
-  [v5 bounds];
+  viewCopy = view;
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  view = [assetViewController view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [v29 bounds];
+  [viewCopy bounds];
   v32.origin.x = v7;
   v32.origin.y = v9;
   v32.size.width = v11;
@@ -904,72 +904,72 @@ LABEL_8:
   if (!CGRectEqualToRect(v31, v32))
   {
     v14 = objc_alloc_init(IMViewControllerNullAnimationTransitionCoordinator);
-    [v14 setContainerView:v29];
-    v15 = [(BKBasePresentingViewController *)self assetViewController];
-    [v29 bounds];
-    [v15 viewWillTransitionToSize:v14 withTransitionCoordinator:{v16, v17}];
+    [v14 setContainerView:viewCopy];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [viewCopy bounds];
+    [assetViewController2 viewWillTransitionToSize:v14 withTransitionCoordinator:{v16, v17}];
 
-    [v29 bounds];
+    [viewCopy bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(BKBasePresentingViewController *)self assetViewController];
-    v27 = [v26 view];
-    [v27 setFrame:{v19, v21, v23, v25}];
+    assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
+    view2 = [assetViewController3 view];
+    [view2 setFrame:{v19, v21, v23, v25}];
 
     [v14 _runAlongsideAnimations];
     [v14 _runAlongsideCompletionsAfterCommit];
   }
 
-  v28 = [(BKBasePresentingViewController *)self assetViewController];
-  [v28 assetViewControllerUpdateToolbarsAfterOpenAnimation];
+  assetViewController4 = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController4 assetViewControllerUpdateToolbarsAfterOpenAnimation];
 }
 
 - (void)transitionContextNeedsSetup
 {
-  v2 = [(BKBasePresentingViewController *)self assetViewController];
-  [v2 assetViewControllerUpdateToolbarsForOpenAnimation];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController assetViewControllerUpdateToolbarsForOpenAnimation];
 }
 
 - (void)willAddViewToHierarchy
 {
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
-    [v5 assetViewControllerWillAddView];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController2 assetViewControllerWillAddView];
   }
 }
 
-- (void)_didOpenBookAnimated:(BOOL)a3
+- (void)_didOpenBookAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v6 = [v5 permanentAssetID];
+  animatedCopy = animated;
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  v7 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+  libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
   v8 = +[NSDate date];
-  [v7 updateLibraryAssetWithID:v6 withLastOpenDate:v8 completion:0];
+  [libraryAssetProvider updateLibraryAssetWithID:permanentAssetID withLastOpenDate:v8 completion:0];
 
   [(BKBasePresentingViewController *)self setAssetState:2];
-  v9 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   LOBYTE(v8) = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v10 = [(BKBasePresentingViewController *)self assetViewController];
-    [v10 assetViewControllerDidOpenAnimated:v3];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController2 assetViewControllerDidOpenAnimated:animatedCopy];
   }
 
-  v11 = [(BKBasePresentingViewController *)self minifiedPresenter];
-  [v11 minifiedPresenterDidOpenAssetID:v6];
+  minifiedPresenter = [(BKBasePresentingViewController *)self minifiedPresenter];
+  [minifiedPresenter minifiedPresenterDidOpenAssetID:permanentAssetID];
 
   [(BKBasePresentingViewController *)self setNeedsWhitePointAdaptivityStyleUpdate];
-  v12 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-  v13 = [v12 libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:v6];
+  libraryAssetProvider2 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+  v13 = [libraryAssetProvider2 libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:permanentAssetID];
 
   if ([v13 isSample])
   {
@@ -980,7 +980,7 @@ LABEL_8:
     v27[2] = sub_10005F7A0;
     v27[3] = &unk_100A03B60;
     objc_copyWeak(&v28, &location);
-    v15 = [(BKSampleToPurchaseMonitor *)v14 initWithAssetID:v6 notify:v27];
+    v15 = [(BKSampleToPurchaseMonitor *)v14 initWithAssetID:permanentAssetID notify:v27];
     [(BKBasePresentingViewController *)self setSampleToPurchasedMonitor:v15];
 
     objc_destroyWeak(&v28);
@@ -999,25 +999,25 @@ LABEL_8:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  v16 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
   v17 = BUProtocolCast();
 
   if (v17)
   {
-    v18 = [(BKBasePresentingViewController *)self upSellData];
+    upSellData = [(BKBasePresentingViewController *)self upSellData];
 
-    if (v18)
+    if (upSellData)
     {
-      v19 = [(BKBasePresentingViewController *)self upSellData];
-      [v17 setUpSellData:v19];
+      upSellData2 = [(BKBasePresentingViewController *)self upSellData];
+      [v17 setUpSellData:upSellData2];
     }
 
-    v20 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
+    appAnalyticsAdditionalData = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
 
-    if (v20)
+    if (appAnalyticsAdditionalData)
     {
-      v21 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
-      [v17 setAppAnalyticsAdditionalData:v21];
+      appAnalyticsAdditionalData2 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
+      [v17 setAppAnalyticsAdditionalData:appAnalyticsAdditionalData2];
     }
   }
 
@@ -1037,37 +1037,37 @@ LABEL_8:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v18 viewWillAppear:?];
-  v5 = [(BKBasePresentingViewController *)self ba_analyticsTracker];
+  ba_analyticsTracker = [(BKBasePresentingViewController *)self ba_analyticsTracker];
 
-  if (!v5)
+  if (!ba_analyticsTracker)
   {
     v6 = [(BKBasePresentingViewController *)self ba_setupNewAnalyticsTrackerWithName:@"ContentReading"];
   }
 
-  v7 = [(BKBasePresentingViewController *)self bc_windowForViewController];
-  v8 = [v7 rootViewController];
+  bc_windowForViewController = [(BKBasePresentingViewController *)self bc_windowForViewController];
+  rootViewController = [bc_windowForViewController rootViewController];
 
-  if (([v8 isPerformingModalTransition] & 1) == 0)
+  if (([rootViewController isPerformingModalTransition] & 1) == 0)
   {
-    v9 = [(BKBasePresentingViewController *)self navigationController];
-    -[BKBasePresentingViewController setShouldRestoreNavBar:](self, "setShouldRestoreNavBar:", [v9 isNavigationBarHidden] ^ 1);
+    navigationController = [(BKBasePresentingViewController *)self navigationController];
+    -[BKBasePresentingViewController setShouldRestoreNavBar:](self, "setShouldRestoreNavBar:", [navigationController isNavigationBarHidden] ^ 1);
   }
 
   if ([(BKBasePresentingViewController *)self stateShouldOpen])
   {
-    v10 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
 
-    if (v10)
+    if (assetViewController)
     {
       [(BKBasePresentingViewController *)self _startBookSuccessfullyOpenedTimer];
-      v11 = [(BKBasePresentingViewController *)self assetViewController];
-      v12 = [v11 asset];
-      v13 = [v12 url];
+      assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+      asset = [assetViewController2 asset];
+      v13 = [asset url];
 
       if (v13)
       {
@@ -1077,7 +1077,7 @@ LABEL_8:
         v14[2] = sub_10005FB24;
         v14[3] = &unk_100A03BB0;
         objc_copyWeak(&v15, &location);
-        v16 = a3;
+        appearCopy = appear;
         [(BKBasePresentingViewController *)self _updateLibraryAssetFromMetadataWithURL:v13 completion:v14];
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -1086,11 +1086,11 @@ LABEL_8:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = BCCurrentBookLiveResizeLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1100,8 +1100,8 @@ LABEL_8:
     *v21 = width;
     *&v21[1] = height;
     v12 = [NSValue valueWithBytes:v21 objCType:"{CGSize=dd}"];
-    v13 = [(BKBasePresentingViewController *)self view];
-    [v13 bounds];
+    view = [(BKBasePresentingViewController *)self view];
+    [view bounds];
     v20[0] = v14;
     v20[1] = v15;
     v16 = [NSValue valueWithBytes:v20 objCType:"{CGSize=dd}"];
@@ -1120,7 +1120,7 @@ LABEL_8:
 
   v19.receiver = self;
   v19.super_class = BKBasePresentingViewController;
-  [(BKBasePresentingViewController *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BKBasePresentingViewController *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(BKBasePresentingViewController *)self setStateFlags:[(BKBasePresentingViewController *)self stateFlags]| 0x40];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -1136,21 +1136,21 @@ LABEL_8:
   v17[4] = self;
   *&v17[5] = width;
   *&v17[6] = height;
-  [v7 animateAlongsideTransition:v18 completion:v17];
+  [coordinatorCopy animateAlongsideTransition:v18 completion:v17];
 }
 
-- (void)_waitForOngoingMigrationAttemptToFinish:(id)a3 completion:(id)a4
+- (void)_waitForOngoingMigrationAttemptToFinish:(id)finish completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  finishCopy = finish;
+  completionCopy = completion;
   if (!+[NSThread isMainThread])
   {
     sub_10078959C();
   }
 
-  if ([v5 isSupplementalContent])
+  if ([finishCopy isSupplementalContent])
   {
-    v7 = [v5 contentType] == 3;
+    v7 = [finishCopy contentType] == 3;
   }
 
   else
@@ -1158,9 +1158,9 @@ LABEL_8:
     v7 = 0;
   }
 
-  if ([v5 isStore] && !v7 || (objc_msgSend(v5, "permlink"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if ([finishCopy isStore] && !v7 || (objc_msgSend(finishCopy, "permlink"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -1174,15 +1174,15 @@ LABEL_8:
     v11 = +[BKAppDelegate delegate];
     v10 = BUDynamicCast();
 
-    v12 = [v10 ubiquitousDocumentsController];
-    v13 = [v5 assetID];
-    v14 = [v5 temporaryAssetID];
+    ubiquitousDocumentsController = [v10 ubiquitousDocumentsController];
+    assetID = [finishCopy assetID];
+    temporaryAssetID = [finishCopy temporaryAssetID];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000603BC;
     v15[3] = &unk_100A03920;
-    v16 = v6;
-    [v12 waitForOngoingMigrationAttemptToFinishWithAssetID:v13 temporaryAssetID:v14 completion:v15];
+    v16 = completionCopy;
+    [ubiquitousDocumentsController waitForOngoingMigrationAttemptToFinishWithAssetID:assetID temporaryAssetID:temporaryAssetID completion:v15];
   }
 }
 
@@ -1191,51 +1191,51 @@ LABEL_8:
   v3 = sub_10005D1D8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v5 = [v4 permanentOrTemporaryAssetID];
-    v6 = [(BKBasePresentingViewController *)self loadAssetBlock];
-    v7 = objc_retainBlock(v6);
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
+    loadAssetBlock = [(BKBasePresentingViewController *)self loadAssetBlock];
+    v7 = objc_retainBlock(loadAssetBlock);
     *buf = 141558530;
     v15 = 1752392040;
     v16 = 2112;
-    v17 = v5;
+    v17 = permanentOrTemporaryAssetID;
     v18 = 2112;
     v19 = v7;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] _loadAssetVC - localAssetBlock=%@", buf, 0x20u);
   }
 
-  v8 = [(BKBasePresentingViewController *)self loadAssetBlock];
+  loadAssetBlock2 = [(BKBasePresentingViewController *)self loadAssetBlock];
 
-  if (v8)
+  if (loadAssetBlock2)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100060650;
     v13[3] = &unk_100A03C00;
     v13[4] = self;
-    v9 = objc_retainBlock(v13);
-    v10 = [(BKBasePresentingViewController *)self loadAssetBlock];
-    (v10)[2](v10, v9);
+    assetIdentifier2 = objc_retainBlock(v13);
+    loadAssetBlock3 = [(BKBasePresentingViewController *)self loadAssetBlock];
+    (loadAssetBlock3)[2](loadAssetBlock3, assetIdentifier2);
   }
 
   else
   {
-    v9 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v10 = [(BKBasePresentingViewController *)self openOptions];
+    assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+    loadAssetBlock3 = [(BKBasePresentingViewController *)self openOptions];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100060698;
     v12[3] = &unk_100A03C00;
     v12[4] = self;
-    v11 = [BKAssetLookup assetLookupWithIdentifier:v9 options:v10 completion:v12];
+    v11 = [BKAssetLookup assetLookupWithIdentifier:assetIdentifier2 options:loadAssetBlock3 completion:v12];
     [(BKBasePresentingViewController *)self setAssetLookup:v11];
   }
 }
 
-- (void)_loadWithAssetViewController:(id)a3 helper:(id)a4
+- (void)_loadWithAssetViewController:(id)controller helper:(id)helper
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  helperCopy = helper;
   if (!+[NSThread isMainThread])
   {
     sub_1007895D8();
@@ -1244,45 +1244,45 @@ LABEL_8:
   v8 = sub_10005D1D8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v10 = [v9 permanentOrTemporaryAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
     *buf = 141558786;
     v39 = 1752392040;
     v40 = 2112;
-    v41 = v10;
+    v41 = permanentOrTemporaryAssetID;
     v42 = 2112;
-    v43 = v6;
+    v43 = controllerCopy;
     v44 = 2112;
-    v45 = v7;
+    v45 = helperCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] _loadWithAssetViewController - assetVC=%@, helper=%@", buf, 0x2Au);
   }
 
-  if (v6 && v7)
+  if (controllerCopy && helperCopy)
   {
-    v11 = [(BKBasePresentingViewController *)self placeholderViewController];
+    placeholderViewController = [(BKBasePresentingViewController *)self placeholderViewController];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(BKBasePresentingViewController *)self placeholderViewController];
-      v13 = [v12 coverAnimationHostTopViewsToFadeOut];
+      placeholderViewController2 = [(BKBasePresentingViewController *)self placeholderViewController];
+      coverAnimationHostTopViewsToFadeOut = [placeholderViewController2 coverAnimationHostTopViewsToFadeOut];
     }
 
     else
     {
-      v13 = 0;
+      coverAnimationHostTopViewsToFadeOut = 0;
     }
 
-    v15 = [(BKBasePresentingViewController *)self placeholderViewController];
-    v16 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v17 = [v16 permanentOrTemporaryAssetID];
-    v18 = [v15 coverAnimationHostSourceForItem:v17];
+    placeholderViewController3 = [(BKBasePresentingViewController *)self placeholderViewController];
+    assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentOrTemporaryAssetID2 = [assetIdentifier2 permanentOrTemporaryAssetID];
+    v18 = [placeholderViewController3 coverAnimationHostSourceForItem:permanentOrTemporaryAssetID2];
 
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100060AB0;
     v34[3] = &unk_100A03C78;
     v34[4] = self;
-    v35 = v6;
-    v36 = v7;
+    v35 = controllerCopy;
+    v36 = helperCopy;
     v19 = v18;
     v37 = v19;
     v32[0] = _NSConcreteStackBlock;
@@ -1297,22 +1297,22 @@ LABEL_8:
     v29[1] = 3221225472;
     v29[2] = sub_1000610CC;
     v29[3] = &unk_100A03788;
-    v14 = v13;
-    v30 = v14;
+    presentingViewController = coverAnimationHostTopViewsToFadeOut;
+    v30 = presentingViewController;
     v22 = v21;
     v31 = v22;
     v23 = objc_retainBlock(v29);
-    v24 = [(BKBasePresentingViewController *)self holdAnimationAssertion];
-    v25 = v24;
-    if (v24)
+    holdAnimationAssertion = [(BKBasePresentingViewController *)self holdAnimationAssertion];
+    v25 = holdAnimationAssertion;
+    if (holdAnimationAssertion)
     {
-      v26 = [v24 future];
+      future = [holdAnimationAssertion future];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100061300;
       v27[3] = &unk_100A03CC8;
       v28 = v23;
-      [v26 get:v27];
+      [future get:v27];
     }
 
     else
@@ -1323,14 +1323,14 @@ LABEL_8:
 
   else
   {
-    v14 = [(BKBasePresentingViewController *)self presentingViewController];
-    [v14 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(BKBasePresentingViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v50.receiver = self;
   v50.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v50 viewDidAppear:?];
@@ -1342,8 +1342,8 @@ LABEL_8:
     v48[2] = 0x3032000000;
     v48[3] = sub_1000272E4;
     v48[4] = sub_1000275B8;
-    v5 = self;
-    v49 = v5;
+    selfCopy = self;
+    v49 = selfCopy;
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_100061944;
@@ -1357,38 +1357,38 @@ LABEL_8:
     v6 = objc_retainBlock(v47);
     v45 = v6;
     v7 = objc_retainBlock(v44);
-    v8 = [(BKBasePresentingViewController *)v5 libraryAssetProvider];
-    v9 = [(BKBasePresentingViewController *)v5 assetIdentifier];
-    v10 = [v8 libraryAssetOnMainQueueWithAssetIdentifier:v9];
+    libraryAssetProvider = [(BKBasePresentingViewController *)selfCopy libraryAssetProvider];
+    assetIdentifier = [(BKBasePresentingViewController *)selfCopy assetIdentifier];
+    v10 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier];
 
     v11 = sub_10005D1D8();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BKBasePresentingViewController *)v5 assetIdentifier];
+      assetIdentifier2 = [(BKBasePresentingViewController *)selfCopy assetIdentifier];
       *buf = 141558530;
       v52 = 1752392040;
       v53 = 2112;
-      v54 = v12;
+      v54 = assetIdentifier2;
       v55 = 2112;
       v56 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] libraryAsset: %@", buf, 0x20u);
     }
 
-    v13 = [(BKBasePresentingViewController *)v5 parentViewController];
+    parentViewController = [(BKBasePresentingViewController *)selfCopy parentViewController];
 
-    if (v13)
+    if (parentViewController)
     {
-      [(BKBasePresentingViewController *)v5 setStateShouldOpen:0];
+      [(BKBasePresentingViewController *)selfCopy setStateShouldOpen:0];
     }
 
-    v14 = [(BKBasePresentingViewController *)v5 assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)selfCopy assetViewController];
 
-    if (v14)
+    if (assetViewController)
     {
-      [(BKBasePresentingViewController *)v5 _didOpenBookAnimated:v3];
+      [(BKBasePresentingViewController *)selfCopy _didOpenBookAnimated:appearCopy];
     }
 
-    else if (-[BKBasePresentingViewController autoOpen](v5, "autoOpen") && (([v10 isLocal] & 1) != 0 || objc_msgSend(v10, "streamable")))
+    else if (-[BKBasePresentingViewController autoOpen](selfCopy, "autoOpen") && (([v10 isLocal] & 1) != 0 || objc_msgSend(v10, "streamable")))
     {
       if ([v10 isLocal])
       {
@@ -1403,31 +1403,31 @@ LABEL_8:
       (v25[2])(v25, v10);
     }
 
-    else if ([(BKBasePresentingViewController *)v5 autoDownload])
+    else if ([(BKBasePresentingViewController *)selfCopy autoDownload])
     {
-      objc_initWeak(&location, v5);
-      [(BKBasePresentingViewController *)v5 setStateFlags:[(BKBasePresentingViewController *)v5 stateFlags]| 8];
-      v26 = [(BKBasePresentingViewController *)v5 assetIdentifier];
-      v27 = [v26 permanentOrTemporaryAssetID];
+      objc_initWeak(&location, selfCopy);
+      [(BKBasePresentingViewController *)selfCopy setStateFlags:[(BKBasePresentingViewController *)selfCopy stateFlags]| 8];
+      assetIdentifier3 = [(BKBasePresentingViewController *)selfCopy assetIdentifier];
+      permanentOrTemporaryAssetID = [assetIdentifier3 permanentOrTemporaryAssetID];
 
       v28 = +[BKLibraryAssetStatusController sharedController];
-      v29 = [v28 statusForAssetID:v27];
-      [(BKBasePresentingViewController *)v5 setProgressStatus:v29];
+      v29 = [v28 statusForAssetID:permanentOrTemporaryAssetID];
+      [(BKBasePresentingViewController *)selfCopy setProgressStatus:v29];
 
-      v30 = [(BKBasePresentingViewController *)v5 progressStatus];
+      progressStatus = [(BKBasePresentingViewController *)selfCopy progressStatus];
       v31 = 0.0;
-      if ([v30 state] == 4)
+      if ([progressStatus state] == 4)
       {
-        v32 = [(BKBasePresentingViewController *)v5 progressStatus];
-        [v32 progressValue];
+        progressStatus2 = [(BKBasePresentingViewController *)selfCopy progressStatus];
+        [progressStatus2 progressValue];
         v31 = v33;
       }
 
-      v34 = [(BKBasePresentingViewController *)v5 downloadProgressBlock];
-      v35 = v34;
-      if (v34)
+      downloadProgressBlock = [(BKBasePresentingViewController *)selfCopy downloadProgressBlock];
+      v35 = downloadProgressBlock;
+      if (downloadProgressBlock)
       {
-        (*(v34 + 16))(v34, 0, v31);
+        (*(downloadProgressBlock + 16))(downloadProgressBlock, 0, v31);
       }
 
       v36 = sub_10005D1D8();
@@ -1436,34 +1436,34 @@ LABEL_8:
         *buf = 141558274;
         v52 = 1752392040;
         v53 = 2112;
-        v54 = v27;
+        v54 = permanentOrTemporaryAssetID;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] Attempt to resolve to local", buf, 0x16u);
       }
 
-      v37 = [(BKBasePresentingViewController *)v5 libraryAssetProvider];
+      libraryAssetProvider2 = [(BKBasePresentingViewController *)selfCopy libraryAssetProvider];
       v39[0] = _NSConcreteStackBlock;
       v39[1] = 3221225472;
       v39[2] = sub_1000622C4;
       v39[3] = &unk_100A03DB8;
-      v38 = v27;
+      v38 = permanentOrTemporaryAssetID;
       v40 = v38;
       objc_copyWeak(&v42, &location);
       v41 = v7;
-      [v37 resolveToLocalAssetWithAssetID:v38 completion:v39];
+      [libraryAssetProvider2 resolveToLocalAssetWithAssetID:v38 completion:v39];
 
       objc_destroyWeak(&v42);
       objc_destroyWeak(&location);
     }
 
     v15 = +[UIDevice currentDevice];
-    v16 = [v15 orientation];
+    orientation = [v15 orientation];
 
-    v17 = [(BKBasePresentingViewController *)v5 bc_windowForViewController];
-    v18 = [v17 windowScene];
-    v19 = [v18 interfaceOrientation];
+    bc_windowForViewController = [(BKBasePresentingViewController *)selfCopy bc_windowForViewController];
+    windowScene = [bc_windowForViewController windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
     v20 = isPhone();
-    if ((v16 - 3) < 2)
+    if ((orientation - 3) < 2)
     {
       v21 = v20;
     }
@@ -1473,26 +1473,26 @@ LABEL_8:
       v21 = 0;
     }
 
-    if (v21 == 1 && (v19 - 1) <= 1)
+    if (v21 == 1 && (interfaceOrientation - 1) <= 1)
     {
       +[UIViewController attemptRotationToDeviceOrientation];
     }
 
     v22 = +[BKAppDelegate sceneManager];
-    v23 = [v22 primarySceneController];
-    v24 = [v23 primaryScenePresenting];
+    primarySceneController = [v22 primarySceneController];
+    primaryScenePresenting = [primarySceneController primaryScenePresenting];
 
-    [v24 presenterDidStartReadingExperienceWithAssetPresenter:v5];
+    [primaryScenePresenting presenterDidStartReadingExperienceWithAssetPresenter:selfCopy];
     _Block_object_dispose(v48, 8);
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v5 willMoveToParentViewController:?];
-  [(BKBasePresentingViewController *)self setStateShouldClose:a3 == 0];
+  [(BKBasePresentingViewController *)self setStateShouldClose:controller == 0];
 }
 
 - (BKMinifiedPresenting)minifiedPresenter
@@ -1510,45 +1510,45 @@ LABEL_8:
   return v5;
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = BKBasePresentingViewController;
-  [(BKBasePresentingViewController *)&v4 didMoveToParentViewController:a3];
+  [(BKBasePresentingViewController *)&v4 didMoveToParentViewController:controller];
   [(BKBasePresentingViewController *)self setStateShouldClose:0];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = BKBasePresentingViewController;
-  [(BKBasePresentingViewController *)&v12 viewWillMoveToWindow:v4];
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  [(BKBasePresentingViewController *)&v12 viewWillMoveToWindow:windowCopy];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
 
-  if (v4 && v5)
+  if (windowCopy && assetViewController)
   {
-    v6 = [(BKBasePresentingViewController *)self assetViewController];
-    v7 = [v6 asset];
-    v8 = [v7 displayTitle];
-    v9 = [v4 windowScene];
-    [v9 setTitle:v8];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    asset = [assetViewController2 asset];
+    displayTitle = [asset displayTitle];
+    windowScene = [windowCopy windowScene];
+    [windowScene setTitle:displayTitle];
 
     v10 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
     [v10 updateAllAssetPresenterCloseStateTypes];
   }
 
-  v11 = [(BKBasePresentingViewController *)self frontmostTracker];
-  [v11 setWindow:v4];
+  frontmostTracker = [(BKBasePresentingViewController *)self frontmostTracker];
+  [frontmostTracker setWindow:windowCopy];
 }
 
-- (void)_handleClosingCleanup:(BOOL)a3
+- (void)_handleClosingCleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(BKBasePresentingViewController *)self unsubscribeFromFullScreenEvents];
-  v5 = [(BKBasePresentingViewController *)self sessionID];
+  sessionID = [(BKBasePresentingViewController *)self sessionID];
 
-  if (v5)
+  if (sessionID)
   {
     v6 = BCBookPromotionLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1563,14 +1563,14 @@ LABEL_8:
   [(BKBasePresentingViewController *)self setAssetState:3];
   if (([(BKBasePresentingViewController *)self stateFlags]& 0x100) == 0)
   {
-    v7 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
     v8 = BUProtocolCast();
 
     [v8 saveStateClosing:1];
   }
 
-  v9 = [(BKBasePresentingViewController *)self assetViewController];
-  [v9 close:v3];
+  assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController2 close:cleanupCopy];
 
   if (![(BKBasePresentingViewController *)self willTerminate])
   {
@@ -1582,32 +1582,32 @@ LABEL_8:
   self->_readingStatisticsController = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v9 viewWillDisappear:?];
   [(BKBasePresentingViewController *)self unsubscribeToLiveResize];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 keyWindow];
-  v7 = [v6 rootViewController];
+  keyWindow = [v5 keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  if (-[BKBasePresentingViewController shouldRestoreNavBar](self, "shouldRestoreNavBar") && ([v7 isPerformingModalTransition] & 1) == 0)
+  if (-[BKBasePresentingViewController shouldRestoreNavBar](self, "shouldRestoreNavBar") && ([rootViewController isPerformingModalTransition] & 1) == 0)
   {
-    v8 = [(BKBasePresentingViewController *)self navigationController];
-    [v8 setNavigationBarHidden:0 animated:0];
+    navigationController = [(BKBasePresentingViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:0 animated:0];
   }
 
   if ([(BKBasePresentingViewController *)self stateShouldClose]&& !+[BKUIPFeatures useUIPFluidBookOpenTransition])
   {
-    [(BKBasePresentingViewController *)self _handleClosingCleanup:v3];
+    [(BKBasePresentingViewController *)self _handleClosingCleanup:disappearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v30.receiver = self;
   v30.super_class = BKBasePresentingViewController;
   [(BKBasePresentingViewController *)&v30 viewDidDisappear:?];
@@ -1615,47 +1615,47 @@ LABEL_8:
   {
     if (+[BKUIPFeatures useUIPFluidBookOpenTransition])
     {
-      [(BKBasePresentingViewController *)self _handleClosingCleanup:v3];
+      [(BKBasePresentingViewController *)self _handleClosingCleanup:disappearCopy];
     }
 
-    v5 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v6 = [v5 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
     v7 = +[BCProgressKitController sharedController];
-    [v7 didCloseBookWithAssetID:v6 completion:0];
+    [v7 didCloseBookWithAssetID:permanentAssetID completion:0];
 
     objc_opt_class();
-    v8 = [(BKBasePresentingViewController *)self openOptions];
-    v9 = [v8 objectForKeyedSubscript:@"BKBookPresentingSecure"];
+    openOptions = [(BKBasePresentingViewController *)self openOptions];
+    v9 = [openOptions objectForKeyedSubscript:@"BKBookPresentingSecure"];
     v10 = BUDynamicCast();
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
-      v12 = [(BKBasePresentingViewController *)self assetViewController];
-      v13 = [v12 asset];
-      v14 = [v13 url];
+      assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+      asset = [assetViewController asset];
+      v14 = [asset url];
 
       [v14 stopAccessingSecurityScopedResource];
     }
 
-    v15 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(BKBasePresentingViewController *)self assetViewController];
-      [v17 assetViewControllerDidCloseAnimated:v3];
+      assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
+      [assetViewController3 assetViewControllerDidCloseAnimated:disappearCopy];
     }
 
     v18 = +[BKUserActivityManager sharedInstance];
     [v18 stopReadingCurrentAsset];
 
-    v19 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-    v20 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-    v21 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v22 = [v20 libraryAssetOnMainQueueWithAssetIdentifier:v21];
-    [v19 didCloseLibraryAsset:v22];
+    libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
+    libraryAssetProvider2 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+    assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+    v22 = [libraryAssetProvider2 libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier2];
+    [libraryAssetProvider didCloseLibraryAsset:v22];
 
     if (([(BKBasePresentingViewController *)self stateFlags]& 0x80) != 0)
     {
@@ -1664,11 +1664,11 @@ LABEL_8:
       [(BKBasePresentingViewController *)self setStateFlags:[(BKBasePresentingViewController *)self stateFlags]| 0xFFFFFFFFFFFFFF7FLL];
     }
 
-    v23 = [(BKBasePresentingViewController *)self minifiedPresenter];
-    [v23 minifiedPresenterUpdateCurrentBookWithCompletion:0];
+    minifiedPresenter = [(BKBasePresentingViewController *)self minifiedPresenter];
+    [minifiedPresenter minifiedPresenterUpdateCurrentBookWithCompletion:0];
 
-    v24 = [(BKBasePresentingViewController *)self minifiedPresenter];
-    [v24 minifiedPresenterDidCloseAssetID:v6 finishedConsuming:{-[BKBasePresentingViewController finishedConsuming](self, "finishedConsuming")}];
+    minifiedPresenter2 = [(BKBasePresentingViewController *)self minifiedPresenter];
+    [minifiedPresenter2 minifiedPresenterDidCloseAssetID:permanentAssetID finishedConsuming:{-[BKBasePresentingViewController finishedConsuming](self, "finishedConsuming")}];
 
     [(BKBasePresentingViewController *)self setAssetState:4];
     [(BKBasePresentingViewController *)self _clearCacheForBook:0];
@@ -1678,56 +1678,56 @@ LABEL_8:
     [(BKBasePresentingViewController *)self setUpSellData:0];
     [(BKBasePresentingViewController *)self setAppAnalyticsAdditionalData:0];
     [(BKBasePresentingViewController *)self setStateShouldOpen:1];
-    v26 = [(BKBasePresentingViewController *)self assetViewController];
-    [v26 setAssetViewControllerDelegate:0];
+    assetViewController4 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController4 setAssetViewControllerDelegate:0];
   }
 
   v27 = +[BKAppDelegate sceneManager];
-  v28 = [v27 primarySceneController];
-  v29 = [v28 primaryScenePresenting];
+  primarySceneController = [v27 primarySceneController];
+  primaryScenePresenting = [primarySceneController primaryScenePresenting];
 
-  [v29 presenterDidEndReadingExperienceWithAssetPresenter:self];
+  [primaryScenePresenting presenterDidEndReadingExperienceWithAssetPresenter:self];
 }
 
-- (void)setAssetViewController:(id)a3
+- (void)setAssetViewController:(id)controller
 {
-  objc_storeStrong(&self->_assetViewController, a3);
-  v5 = a3;
-  v6 = [(BKBasePresentingViewController *)self ba_analyticsTracker];
-  [(AEAssetViewController *)self->_assetViewController ba_setAnalyticsTracker:v6];
+  objc_storeStrong(&self->_assetViewController, controller);
+  controllerCopy = controller;
+  ba_analyticsTracker = [(BKBasePresentingViewController *)self ba_analyticsTracker];
+  [(AEAssetViewController *)self->_assetViewController ba_setAnalyticsTracker:ba_analyticsTracker];
 }
 
-- (void)ba_setAnalyticsTracker:(id)a3
+- (void)ba_setAnalyticsTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = BKBasePresentingViewController;
-  v4 = a3;
-  [(BKBasePresentingViewController *)&v6 ba_setAnalyticsTracker:v4];
+  trackerCopy = tracker;
+  [(BKBasePresentingViewController *)&v6 ba_setAnalyticsTracker:trackerCopy];
   v5 = [(BKBasePresentingViewController *)self assetViewController:v6.receiver];
-  [v5 ba_setAnalyticsTracker:v4];
+  [v5 ba_setAnalyticsTracker:trackerCopy];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___BCOrientationControlling];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  v4 = [assetViewController conformsToProtocol:&OBJC_PROTOCOL___BCOrientationControlling];
 
   if (v4)
   {
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
 LABEL_5:
-    v8 = v5;
-    v9 = [v5 supportedInterfaceOrientations];
+    v8 = assetViewController2;
+    supportedInterfaceOrientations = [assetViewController2 supportedInterfaceOrientations];
 
-    return v9;
+    return supportedInterfaceOrientations;
   }
 
-  v6 = [(BKBasePresentingViewController *)self childModalViewController];
-  v7 = [v6 conformsToProtocol:&OBJC_PROTOCOL___BCOrientationControlling];
+  childModalViewController = [(BKBasePresentingViewController *)self childModalViewController];
+  v7 = [childModalViewController conformsToProtocol:&OBJC_PROTOCOL___BCOrientationControlling];
 
   if (v7)
   {
-    v5 = [(BKBasePresentingViewController *)self childModalViewController];
+    assetViewController2 = [(BKBasePresentingViewController *)self childModalViewController];
     goto LABEL_5;
   }
 
@@ -1736,25 +1736,25 @@ LABEL_5:
   return [(BKBasePresentingViewController *)&v11 supportedInterfaceOrientations];
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   [(BKBasePresentingViewController *)self setIsResigningActive:0];
-  v4 = [(BKBasePresentingViewController *)self filePresenter];
-  [v4 activate];
+  filePresenter = [(BKBasePresentingViewController *)self filePresenter];
+  [filePresenter activate];
 }
 
-- (void)_applicationWillResignActiveNotification:(id)a3
+- (void)_applicationWillResignActiveNotification:(id)notification
 {
   [(BKBasePresentingViewController *)self setIsResigningActive:1];
-  v4 = [(BKBasePresentingViewController *)self filePresenter];
-  [v4 deactivate];
+  filePresenter = [(BKBasePresentingViewController *)self filePresenter];
+  [filePresenter deactivate];
 
-  v5 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v7 = [v5 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  [BKLibraryIndexer establishBackgroundTaskForProgressUpdateOfAsset:v7];
-  v6 = [(BKBasePresentingViewController *)self assetViewController];
-  [v6 saveStateClosing:0 suspending:1];
+  [BKLibraryIndexer establishBackgroundTaskForProgressUpdateOfAsset:permanentAssetID];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController saveStateClosing:0 suspending:1];
 }
 
 - (void)assetPresenterPrepareForTermination
@@ -1773,30 +1773,30 @@ LABEL_5:
 - (void)_startInteractionTimer
 {
   v3 = +[BCJSConfiguration sharedInstance];
-  v4 = [v3 timeThresholdForOpenEvent];
-  v5 = [v4 longLongValue];
+  timeThresholdForOpenEvent = [v3 timeThresholdForOpenEvent];
+  longLongValue = [timeThresholdForOpenEvent longLongValue];
 
-  v6 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v7 = [v6 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  v8 = [(BKBasePresentingViewController *)self sessionID];
-  if (v8)
+  sessionID = [(BKBasePresentingViewController *)self sessionID];
+  if (sessionID)
   {
-    v9 = v8;
-    v10 = [(BKBasePresentingViewController *)self _shouldTrackReadingSession];
+    v9 = sessionID;
+    _shouldTrackReadingSession = [(BKBasePresentingViewController *)self _shouldTrackReadingSession];
 
-    if (v10)
+    if (_shouldTrackReadingSession)
     {
-      v11 = [(BKBasePresentingViewController *)self confirmActiveTimer];
+      confirmActiveTimer = [(BKBasePresentingViewController *)self confirmActiveTimer];
 
-      if (!v11)
+      if (!confirmActiveTimer)
       {
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_100063200;
         v13[3] = &unk_100A03DE0;
-        v14 = v7;
-        v12 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v13 block:v5];
+        v14 = permanentAssetID;
+        v12 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v13 block:longLongValue];
         [(BKBasePresentingViewController *)self setConfirmActiveTimer:v12];
       }
     }
@@ -1805,8 +1805,8 @@ LABEL_5:
 
 - (void)_cancelInteractionTimerIfNeeded
 {
-  v3 = [(BKBasePresentingViewController *)self confirmActiveTimer];
-  [v3 invalidate];
+  confirmActiveTimer = [(BKBasePresentingViewController *)self confirmActiveTimer];
+  [confirmActiveTimer invalidate];
 
   [(BKBasePresentingViewController *)self setConfirmActiveTimer:0];
 }
@@ -1815,13 +1815,13 @@ LABEL_5:
 {
   [(BKBasePresentingViewController *)self assetPresenterUpdateCloseTypeState];
   [(BKBasePresentingViewController *)self _refreshReadingState];
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
-    [v5 assetViewControllerWillEnterForeground];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController2 assetViewControllerWillEnterForeground];
   }
 
   if ([(BKBasePresentingViewController *)self successfullyOpened])
@@ -1839,9 +1839,9 @@ LABEL_5:
 
   else
   {
-    v7 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
 
-    if (v7)
+    if (assetViewController3)
     {
       v8 = BCCurrentBookLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1850,9 +1850,9 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Book entered foreground with no current reading session yet.", buf, 2u);
       }
 
-      v9 = [(BKBasePresentingViewController *)self sessionID];
+      sessionID = [(BKBasePresentingViewController *)self sessionID];
 
-      if (v9)
+      if (sessionID)
       {
         sub_1007897A0();
       }
@@ -1878,21 +1878,21 @@ LABEL_5:
     [(BKBasePresentingViewController *)self _endReadingSessionForEventType:3 withCompletion:0];
   }
 
-  v4 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(BKBasePresentingViewController *)self assetViewController];
-    [v6 assetViewControllerDidEnterBackground];
+    assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController2 assetViewControllerDidEnterBackground];
   }
 }
 
 - (void)_refreshReadingState
 {
-  v3 = [(BKBasePresentingViewController *)self assetViewController];
-  v4 = [v3 asset];
-  v5 = [v4 url];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  asset = [assetViewController asset];
+  v5 = [asset url];
 
   if (v5)
   {
@@ -1913,32 +1913,32 @@ LABEL_5:
   }
 }
 
-+ (id)animatorForAsset:(id)a3 isCurrentBook:(BOOL)a4 opening:(BOOL)a5 largeCover:(BOOL)a6 skipZoom:(BOOL)a7
++ (id)animatorForAsset:(id)asset isCurrentBook:(BOOL)book opening:(BOOL)opening largeCover:(BOOL)cover skipZoom:(BOOL)zoom
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = [a3 assetType];
+  zoomCopy = zoom;
+  coverCopy = cover;
+  openingCopy = opening;
+  assetType = [asset assetType];
   v11 = +[AEAudiobookPlugin associatedAssetType];
-  v12 = [v10 isEqualToString:v11];
+  v12 = [assetType isEqualToString:v11];
 
   if (v12)
   {
-    if (v9 && v8)
+    if (openingCopy && coverCopy)
     {
       v13 = [(BKBookOpenAnimator *)[BKAudiobookSlideOpenAnimator alloc] initOpening:1];
     }
 
     else
     {
-      v13 = [(BKBookOpenAnimator *)[BKAudiobookOpenAnimator alloc] initOpening:v9];
+      v13 = [(BKBookOpenAnimator *)[BKAudiobookOpenAnimator alloc] initOpening:openingCopy];
       [v13 setUseLegacyTiming:0];
     }
   }
 
   else
   {
-    v13 = [[BKBookBloomOpenAnimator alloc] initOpening:v9];
+    v13 = [[BKBookBloomOpenAnimator alloc] initOpening:openingCopy];
     objc_opt_class();
     v14 = BUDynamicCast();
     [v14 setUseShadowEffects:1];
@@ -1946,69 +1946,69 @@ LABEL_5:
 
   objc_opt_class();
   v15 = BUDynamicCast();
-  [v15 setSkipZoomPhase:v7];
+  [v15 setSkipZoomPhase:zoomCopy];
 
   return v13;
 }
 
-+ (id)defaultAnimatorForOpening:(BOOL)a3 skipReveal:(BOOL)a4
++ (id)defaultAnimatorForOpening:(BOOL)opening skipReveal:(BOOL)reveal
 {
-  v4 = a4;
-  v5 = [[BKBookBloomOpenAnimator alloc] initOpening:a3];
-  [v5 setSkipReveal:v4];
+  revealCopy = reveal;
+  v5 = [[BKBookBloomOpenAnimator alloc] initOpening:opening];
+  [v5 setSkipReveal:revealCopy];
   [v5 setUseShadowEffects:1];
 
   return v5;
 }
 
-- (void)_reloadAssetCloseViewController:(BOOL)a3
+- (void)_reloadAssetCloseViewController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v5 = [BKSnapshotViewController alloc];
-  v6 = [(BKBasePresentingViewController *)self assetViewController];
-  v7 = [(BKSnapshotViewController *)v5 initWithViewController:v6];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  v7 = [(BKSnapshotViewController *)v5 initWithViewController:assetViewController];
 
   v8 = sub_10005D1D8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v10 = [v9 permanentOrTemporaryAssetID];
-    v11 = [NSNumber numberWithBool:v3];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
+    v11 = [NSNumber numberWithBool:controllerCopy];
     *buf = 141558530;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v10;
+    v24 = permanentOrTemporaryAssetID;
     v25 = 2112;
     v26 = v11;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{mask.hash}@] _reloadAssetCloseViewController close:%@", buf, 0x20u);
   }
 
-  v12 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(BKBasePresentingViewController *)self assetViewController];
-    [v14 assetViewControllerPrepareForReload];
+    assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController3 assetViewControllerPrepareForReload];
   }
 
-  if (v3)
+  if (controllerCopy)
   {
-    v15 = [(BKBasePresentingViewController *)self assetViewController];
-    [v15 close:0];
+    assetViewController4 = [(BKBasePresentingViewController *)self assetViewController];
+    [assetViewController4 close:0];
 
-    v16 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController5 = [(BKBasePresentingViewController *)self assetViewController];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(BKBasePresentingViewController *)self assetViewController];
-      [v18 assetViewControllerDidCloseAnimated:0];
+      assetViewController6 = [(BKBasePresentingViewController *)self assetViewController];
+      [assetViewController6 assetViewControllerDidCloseAnimated:0];
     }
   }
 
-  v19 = [(BKBasePresentingViewController *)self transitioningViewController];
-  [v19 setContentViewController:v7];
+  transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+  [transitioningViewController setContentViewController:v7];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -2018,63 +2018,63 @@ LABEL_5:
   [(BKBasePresentingViewController *)self _clearCacheForBook:v20];
 }
 
-- (void)dismissLibraryBookCoverViewController:(id)a3 animated:(BOOL)a4
+- (void)dismissLibraryBookCoverViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
-  v6 = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
-  [v7 handleCloseAssetForSceneController:v6 assetPresentingViewController:self animated:v4];
+  _sceneControllerCurrentlyHostingAssetPresenter = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
+  [v7 handleCloseAssetForSceneController:_sceneControllerCurrentlyHostingAssetPresenter assetPresentingViewController:self animated:animatedCopy];
 }
 
-- (void)assetViewController:(id)a3 willOpen:(BOOL)a4
+- (void)assetViewController:(id)controller willOpen:(BOOL)open
 {
-  v12 = a3;
-  v5 = [(BKBasePresentingViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  controllerCopy = controller;
+  viewIfLoaded = [(BKBasePresentingViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v12 asset];
-    v8 = [v7 displayTitle];
-    v9 = [(BKBasePresentingViewController *)self viewIfLoaded];
-    v10 = [v9 window];
-    v11 = [v10 windowScene];
-    [v11 setTitle:v8];
+    asset = [controllerCopy asset];
+    displayTitle = [asset displayTitle];
+    viewIfLoaded2 = [(BKBasePresentingViewController *)self viewIfLoaded];
+    window2 = [viewIfLoaded2 window];
+    windowScene = [window2 windowScene];
+    [windowScene setTitle:displayTitle];
   }
 }
 
-- (void)assetViewController:(id)a3 willClose:(BOOL)a4
+- (void)assetViewController:(id)controller willClose:(BOOL)close
 {
-  v5 = [(BKBasePresentingViewController *)self assetIdentifier:a3];
-  v15 = [v5 permanentAssetID];
+  v5 = [(BKBasePresentingViewController *)self assetIdentifier:controller];
+  permanentAssetID = [v5 permanentAssetID];
 
-  if ([v15 length])
+  if ([permanentAssetID length])
   {
-    v6 = [NSSet setWithObject:v15];
+    v6 = [NSSet setWithObject:permanentAssetID];
     objc_opt_class();
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 delegate];
+    delegate = [v7 delegate];
     v9 = BUDynamicCast();
 
-    v10 = [v9 libraryAssetIsNewManager];
-    v11 = [v6 allObjects];
-    [v10 resetIsNewForAssetIDs:v11];
+    libraryAssetIsNewManager = [v9 libraryAssetIsNewManager];
+    allObjects = [v6 allObjects];
+    [libraryAssetIsNewManager resetIsNewForAssetIDs:allObjects];
 
-    v12 = [v9 libraryAssetIsNewManager];
-    v13 = [v6 allObjects];
-    [v12 resetProgressHighWaterMarkForAssetIDs:v13];
+    libraryAssetIsNewManager2 = [v9 libraryAssetIsNewManager];
+    allObjects2 = [v6 allObjects];
+    [libraryAssetIsNewManager2 resetProgressHighWaterMarkForAssetIDs:allObjects2];
   }
 
-  v14 = [(BKBasePresentingViewController *)self minifiedPresenter];
-  [v14 minifiedPresenterWillCloseAsset];
+  minifiedPresenter = [(BKBasePresentingViewController *)self minifiedPresenter];
+  [minifiedPresenter minifiedPresenterWillCloseAsset];
 }
 
-- (double)_transitionDurationForLiveResizeOfViewController:(id)a3
+- (double)_transitionDurationForLiveResizeOfViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    if ([v3 animateLiveResizeTransitions])
+    if ([controllerCopy animateLiveResizeTransitions])
     {
       v4 = 0.2;
     }
@@ -2095,8 +2095,8 @@ LABEL_5:
 
 - (void)_clearLiveResizeViews
 {
-  v3 = [(BKBasePresentingViewController *)self liveResizeWrapperView];
-  [v3 removeFromSuperview];
+  liveResizeWrapperView = [(BKBasePresentingViewController *)self liveResizeWrapperView];
+  [liveResizeWrapperView removeFromSuperview];
 
   [(BKBasePresentingViewController *)self setLiveResizeWrapperView:0];
   [(BKBasePresentingViewController *)self setScrimLiveResizeView:0];
@@ -2105,31 +2105,31 @@ LABEL_5:
   [(BKBasePresentingViewController *)self setOverlayView:0];
 }
 
-- (void)assetViewController:(id)a3 attemptClose:(BOOL)a4
+- (void)assetViewController:(id)controller attemptClose:(BOOL)close
 {
-  v5 = [BKAppDelegate sceneManager:a3];
-  v6 = [v5 primarySceneController];
-  v7 = [v6 primaryScenePresenting];
+  v5 = [BKAppDelegate sceneManager:controller];
+  primarySceneController = [v5 primarySceneController];
+  primaryScenePresenting = [primarySceneController primaryScenePresenting];
 
-  [v7 presenterUpdateReadingNowAssetVisibility:0 assetPresenter:self];
+  [primaryScenePresenting presenterUpdateReadingNowAssetVisibility:0 assetPresenter:self];
 }
 
-- (void)assetViewController:(id)a3 cancelledClose:(BOOL)a4
+- (void)assetViewController:(id)controller cancelledClose:(BOOL)close
 {
-  v5 = [BKAppDelegate sceneManager:a3];
-  v6 = [v5 primarySceneController];
-  v7 = [v6 primaryScenePresenting];
+  v5 = [BKAppDelegate sceneManager:controller];
+  primarySceneController = [v5 primarySceneController];
+  primaryScenePresenting = [primarySceneController primaryScenePresenting];
 
-  [v7 presenterUpdateReadingNowAssetVisibility:1 assetPresenter:self];
+  [primaryScenePresenting presenterUpdateReadingNowAssetVisibility:1 assetPresenter:self];
 }
 
-- (void)didFinishUpdateForAssetViewController:(id)a3
+- (void)didFinishUpdateForAssetViewController:(id)controller
 {
   if ([(BKBasePresentingViewController *)self inLiveResize]|| ![(BKBasePresentingViewController *)self scrimAppliedForLiveResize])
   {
-    v12 = [(BKBasePresentingViewController *)self transitioningViewController];
-    v11 = [v12 view];
-    [v11 setAlpha:1.0];
+    transitioningViewController = [(BKBasePresentingViewController *)self transitioningViewController];
+    view = [transitioningViewController view];
+    [view setAlpha:1.0];
   }
 
   else
@@ -2141,21 +2141,21 @@ LABEL_5:
       sub_100789894(self);
     }
 
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
-    [(BKBasePresentingViewController *)self _transitionDurationForLiveResizeOfViewController:v5];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+    [(BKBasePresentingViewController *)self _transitionDurationForLiveResizeOfViewController:assetViewController];
     if (v6 == 0.0 || (v7 = v6, [(BKBasePresentingViewController *)self enteringFullScreen]) || [(BKBasePresentingViewController *)self exitingFullScreen])
     {
-      v8 = [(BKBasePresentingViewController *)self liveResizeWrapperView];
-      [v8 setAlpha:0.0];
+      liveResizeWrapperView = [(BKBasePresentingViewController *)self liveResizeWrapperView];
+      [liveResizeWrapperView setAlpha:0.0];
 
-      v9 = [(BKBasePresentingViewController *)self transitioningViewController];
-      v10 = [v9 view];
-      [v10 setAlpha:1.0];
+      transitioningViewController2 = [(BKBasePresentingViewController *)self transitioningViewController];
+      view2 = [transitioningViewController2 view];
+      [view2 setAlpha:1.0];
 
       [(BKBasePresentingViewController *)self _clearLiveResizeViews];
       if (objc_opt_respondsToSelector())
       {
-        [v5 assetViewControllerDidFinishUpdateForLiveResize];
+        [assetViewController assetViewControllerDidFinishUpdateForLiveResize];
       }
     }
 
@@ -2171,20 +2171,20 @@ LABEL_5:
       v13[2] = sub_100064AE0;
       v13[3] = &unk_100A03E30;
       v13[4] = self;
-      v14 = v5;
+      v14 = assetViewController;
       [UIView animateWithDuration:v15 animations:v13 completion:v7];
     }
   }
 }
 
-- (BOOL)assetViewControllerIsCurrentBook:(id)a3
+- (BOOL)assetViewControllerIsCurrentBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v4 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
-  v5 = [v3 asset];
+  asset = [bookCopy asset];
 
-  v6 = [v5 assetID];
-  v7 = [v6 isEqualToString:v4];
+  assetID = [asset assetID];
+  v7 = [assetID isEqualToString:v4];
 
   return v7;
 }
@@ -2200,9 +2200,9 @@ LABEL_5:
 - (BOOL)_isHostedInAuxiliaryScene
 {
   v3 = +[BKAppDelegate sceneManager];
-  v4 = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
-  v5 = [v3 primarySceneController];
-  v6 = v4 != v5;
+  _sceneControllerCurrentlyHostingAssetPresenter = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
+  primarySceneController = [v3 primarySceneController];
+  v6 = _sceneControllerCurrentlyHostingAssetPresenter != primarySceneController;
 
   return v6;
 }
@@ -2224,47 +2224,47 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)assetViewController:(id)a3 requestOpenURL:(id)a4 likelyUserInitiated:(BOOL)a5
+- (BOOL)assetViewController:(id)controller requestOpenURL:(id)l likelyUserInitiated:(BOOL)initiated
 {
-  v5 = a5;
+  initiatedCopy = initiated;
   deferredURLOpenRequests = self->_deferredURLOpenRequests;
   if (deferredURLOpenRequests)
   {
-    v7 = a4;
-    v8 = [NSNumber numberWithBool:v5];
-    [(NSMutableDictionary *)deferredURLOpenRequests setObject:v8 forKey:v7];
+    lCopy = l;
+    v8 = [NSNumber numberWithBool:initiatedCopy];
+    [(NSMutableDictionary *)deferredURLOpenRequests setObject:v8 forKey:lCopy];
   }
 
   else
   {
-    v10 = a4;
+    lCopy2 = l;
     v8 = +[BKAppDelegate sceneManager];
-    v7 = [v8 sceneControllerForViewController:self];
-    v11 = [NSNumber numberWithBool:v5];
-    v12 = [v7 newShowURLTransaction];
-    [v8 handleApplicationURL:v10 sourceApplication:@"__self__" annotation:0 likelyUserInitiated:v11 transaction:v12];
+    lCopy = [v8 sceneControllerForViewController:self];
+    v11 = [NSNumber numberWithBool:initiatedCopy];
+    newShowURLTransaction = [lCopy newShowURLTransaction];
+    [v8 handleApplicationURL:lCopy2 sourceApplication:@"__self__" annotation:0 likelyUserInitiated:v11 transaction:newShowURLTransaction];
   }
 
   return 1;
 }
 
-- (BOOL)assetViewController:(id)a3 requestClose:(BOOL)a4 finishedConsuming:(BOOL)a5 error:(id)a6 withErrorBlock:(id)a7
+- (BOOL)assetViewController:(id)controller requestClose:(BOOL)close finishedConsuming:(BOOL)consuming error:(id)error withErrorBlock:(id)block
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (v13)
+  consumingCopy = consuming;
+  closeCopy = close;
+  controllerCopy = controller;
+  errorCopy = error;
+  blockCopy = block;
+  if (errorCopy)
   {
     [(BKBasePresentingViewController *)self setStateFlags:[(BKBasePresentingViewController *)self stateFlags]| 0x80];
   }
 
-  [(BKBasePresentingViewController *)self setFinishedConsuming:v9];
-  if ([v12 conformsToProtocol:&OBJC_PROTOCOL___AEAssetViewController])
+  [(BKBasePresentingViewController *)self setFinishedConsuming:consumingCopy];
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___AEAssetViewController])
   {
     [(BKBasePresentingViewController *)self setStateFlags:[(BKBasePresentingViewController *)self stateFlags]| 0x100];
-    [v12 saveStateClosing:1];
+    [controllerCopy saveStateClosing:1];
   }
 
   if (([(BKBasePresentingViewController *)self stateFlags]& 1) != 0)
@@ -2273,21 +2273,21 @@ LABEL_5:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v22 = 134217984;
-      v23 = [(BKBasePresentingViewController *)self stateFlags];
+      stateFlags = [(BKBasePresentingViewController *)self stateFlags];
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Asset requested to close but delaying it due to state: %ld", &v22, 0xCu);
     }
 
     [(BKBasePresentingViewController *)self setStateFlags:[(BKBasePresentingViewController *)self stateFlags]| 2];
-    [(BKBasePresentingViewController *)self setErrorCloseBlock:v14];
+    [(BKBasePresentingViewController *)self setErrorCloseBlock:blockCopy];
   }
 
   else
   {
     v15 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
-    v16 = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
-    if (v16)
+    _sceneControllerCurrentlyHostingAssetPresenter = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
+    if (_sceneControllerCurrentlyHostingAssetPresenter)
     {
-      [v15 handleCloseAssetForSceneController:v16 assetPresentingViewController:self animated:v10];
+      [v15 handleCloseAssetForSceneController:_sceneControllerCurrentlyHostingAssetPresenter assetPresentingViewController:self animated:closeCopy];
     }
 
     else
@@ -2300,7 +2300,7 @@ LABEL_5:
       }
     }
 
-    v19 = objc_retainBlock(v14);
+    v19 = objc_retainBlock(blockCopy);
     v20 = v19;
     if (v19)
     {
@@ -2311,26 +2311,26 @@ LABEL_5:
   return 1;
 }
 
-- (void)requestToBuy:(id)a3
+- (void)requestToBuy:(id)buy
 {
-  v4 = [(BKBasePresentingViewController *)self _buyButton];
-  [v4 setDisableInteraction:1];
-  [v4 setModeState:2];
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  _buyButton = [(BKBasePresentingViewController *)self _buyButton];
+  [_buyButton setDisableInteraction:1];
+  [_buyButton setModeState:2];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100065150;
   v7[3] = &unk_100A034F8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [(BKBasePresentingViewController *)self assetViewControllerRequestToBuy:v5 completion:v7];
+  v8 = _buyButton;
+  selfCopy = self;
+  v6 = _buyButton;
+  [(BKBasePresentingViewController *)self assetViewControllerRequestToBuy:assetViewController completion:v7];
 }
 
-- (void)assetViewController:(id)a3 handleFamilyChangeError:(id)a4
+- (void)assetViewController:(id)controller handleFamilyChangeError:(id)error
 {
-  v6 = a4;
-  v7 = [BKAppDelegate sceneControllerForViewController:a3];
+  errorCopy = error;
+  v7 = [BKAppDelegate sceneControllerForViewController:controller];
   v11 = v7;
   if (!v7)
   {
@@ -2338,59 +2338,59 @@ LABEL_5:
     v7 = 0;
   }
 
-  v8 = [v7 newShowAssetTransaction];
+  newShowAssetTransaction = [v7 newShowAssetTransaction];
   v9 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
-  v10 = [(BKBasePresentingViewController *)self assetIdentifier];
-  [v9 handleFamilyChangeErrorWithTransaction:v8 error:v6 assetIdentifier:v10];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  [v9 handleFamilyChangeErrorWithTransaction:newShowAssetTransaction error:errorCopy assetIdentifier:assetIdentifier];
 }
 
-- (void)assetViewControllerSignificantReadingLocationChange:(id)a3
+- (void)assetViewControllerSignificantReadingLocationChange:(id)change
 {
-  [a3 saveStateClosing:0];
-  v4 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v13 = [v4 permanentAssetID];
+  [change saveStateClosing:0];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  if ([v13 length])
+  if ([permanentAssetID length])
   {
-    v5 = [NSSet setWithObject:v13];
+    v5 = [NSSet setWithObject:permanentAssetID];
     objc_opt_class();
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 delegate];
+    delegate = [v6 delegate];
     v8 = BUDynamicCast();
 
-    v9 = [v8 libraryAssetIsNewManager];
-    v10 = [v5 allObjects];
-    [v9 resetIsNewForAssetIDs:v10];
+    libraryAssetIsNewManager = [v8 libraryAssetIsNewManager];
+    allObjects = [v5 allObjects];
+    [libraryAssetIsNewManager resetIsNewForAssetIDs:allObjects];
 
-    v11 = [v8 libraryAssetIsNewManager];
-    v12 = [v5 allObjects];
-    [v11 resetProgressHighWaterMarkForAssetIDs:v12];
+    libraryAssetIsNewManager2 = [v8 libraryAssetIsNewManager];
+    allObjects2 = [v5 allObjects];
+    [libraryAssetIsNewManager2 resetProgressHighWaterMarkForAssetIDs:allObjects2];
   }
 }
 
-- (void)assetViewController:(id)a3 assetPropertyChanged:(id)a4
+- (void)assetViewController:(id)controller assetPropertyChanged:(id)changed
 {
-  if ([BKLibraryAsset hasBookReachedReadThreshold:a4])
+  if ([BKLibraryAsset hasBookReachedReadThreshold:changed])
   {
     if (([(BKBasePresentingViewController *)self stateFlags]& 0x10) == 0)
     {
-      v5 = [(BKBasePresentingViewController *)self libraryAssetProvider];
+      libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_1000655D8;
       v6[3] = &unk_100A03EA8;
       v6[4] = self;
-      [v5 performBlockOnWorkerQueue:v6];
+      [libraryAssetProvider performBlockOnWorkerQueue:v6];
     }
   }
 }
 
-- (id)assetViewControllerMinifiedBarButtonItem:(id)a3
+- (id)assetViewControllerMinifiedBarButtonItem:(id)item
 {
-  v3 = [(BKBasePresentingViewController *)self minifiedPresenter];
-  v4 = [v3 minifiedPresenterBarButtonItem];
+  minifiedPresenter = [(BKBasePresentingViewController *)self minifiedPresenter];
+  minifiedPresenterBarButtonItem = [minifiedPresenter minifiedPresenterBarButtonItem];
 
-  return v4;
+  return minifiedPresenterBarButtonItem;
 }
 
 - (id)_fetchSampleProfileFuture
@@ -2400,31 +2400,31 @@ LABEL_5:
     sub_1007899B8();
   }
 
-  v3 = [(BKBasePresentingViewController *)self sampleProfileFuture];
+  sampleProfileFuture = [(BKBasePresentingViewController *)self sampleProfileFuture];
   if (![(BKBasePresentingViewController *)self didFetchProfile])
   {
     [(BKBasePresentingViewController *)self setDidFetchProfile:1];
-    v4 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v5 = [v4 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000657E4;
     v7[3] = &unk_100A03E58;
-    v8 = v3;
-    [(BKBasePresentingViewController *)self _fetchProfileForStoreID:v5 completion:v7];
+    v8 = sampleProfileFuture;
+    [(BKBasePresentingViewController *)self _fetchProfileForStoreID:permanentAssetID completion:v7];
   }
 
-  return v3;
+  return sampleProfileFuture;
 }
 
-- (void)assetViewController:(id)a3 updateBuyButton:(id)a4 setIsDark:(BOOL)a5
+- (void)assetViewController:(id)controller updateBuyButton:(id)button setIsDark:(BOOL)dark
 {
-  v5 = a5;
-  v7 = a4;
-  [v7 setStyle:2];
+  darkCopy = dark;
+  buttonCopy = button;
+  [buttonCopy setStyle:2];
   objc_opt_class();
-  v8 = [v7 customView];
+  customView = [buttonCopy customView];
   v9 = BUDynamicCast();
 
   if (v9)
@@ -2439,11 +2439,11 @@ LABEL_5:
       v10 = 2;
     }
 
-    v11 = +[BCBuyButtonColorProvider colorsForButtonState:isDark:isEnabled:](BCBuyButtonColorProvider, "colorsForButtonState:isDark:isEnabled:", v10, v5, [v9 isEnabled]);
-    v12 = [v11 backgroundColor];
-    [v7 setTintColor:v12];
+    v11 = +[BCBuyButtonColorProvider colorsForButtonState:isDark:isEnabled:](BCBuyButtonColorProvider, "colorsForButtonState:isDark:isEnabled:", v10, darkCopy, [v9 isEnabled]);
+    backgroundColor = [v11 backgroundColor];
+    [buttonCopy setTintColor:backgroundColor];
 
-    if (v5)
+    if (darkCopy)
     {
       v13 = 2;
     }
@@ -2455,8 +2455,8 @@ LABEL_5:
 
     [v9 setOverrideUserInterfaceStyle:v13];
     [(BKBasePresentingViewController *)self _configureBuyButton:v9];
-    v14 = [v11 foregroundColor];
-    [v9 setTitleColor:v14 forState:0];
+    foregroundColor = [v11 foregroundColor];
+    [v9 setTitleColor:foregroundColor forState:0];
   }
 
   else
@@ -2469,204 +2469,204 @@ LABEL_5:
   }
 }
 
-- (id)assetViewControllerBuyButtonItem:(id)a3 isSample:(BOOL)a4 isPreorder:(BOOL)a5 storeID:(id)a6
+- (id)assetViewControllerBuyButtonItem:(id)item isSample:(BOOL)sample isPreorder:(BOOL)preorder storeID:(id)d
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  v13 = 0;
-  if (v8 && !a5)
+  sampleCopy = sample;
+  itemCopy = item;
+  dCopy = d;
+  v12 = dCopy;
+  buyButtonItem2 = 0;
+  if (sampleCopy && !preorder)
   {
-    if ([v11 length])
+    if ([dCopy length])
     {
-      v14 = [(BKBasePresentingViewController *)self buyButtonItem];
+      buyButtonItem = [(BKBasePresentingViewController *)self buyButtonItem];
 
-      if (!v14)
+      if (!buyButtonItem)
       {
-        v15 = [(BKBasePresentingViewController *)self _newBarButtonItemWithBuyButton];
-        [(BKBasePresentingViewController *)self setBuyButtonItem:v15];
+        _newBarButtonItemWithBuyButton = [(BKBasePresentingViewController *)self _newBarButtonItemWithBuyButton];
+        [(BKBasePresentingViewController *)self setBuyButtonItem:_newBarButtonItemWithBuyButton];
 
-        v16 = [(BKBasePresentingViewController *)self _buyButton];
-        [v16 setIsPreorder:0];
-        [v16 setModeState:0];
-        [v16 addTarget:self action:"requestToBuy:" forControlEvents:64];
+        _buyButton = [(BKBasePresentingViewController *)self _buyButton];
+        [_buyButton setIsPreorder:0];
+        [_buyButton setModeState:0];
+        [_buyButton addTarget:self action:"requestToBuy:" forControlEvents:64];
         [(BKBasePresentingViewController *)self setStoreID:v12];
         objc_initWeak(&location, self);
-        v17 = [(BKBasePresentingViewController *)self sampleProfileFuture];
+        sampleProfileFuture = [(BKBasePresentingViewController *)self sampleProfileFuture];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100065C20;
         v21[3] = &unk_100A03ED0;
         objc_copyWeak(&v23, &location);
-        v18 = v16;
+        v18 = _buyButton;
         v22 = v18;
-        [v17 get:v21];
+        [sampleProfileFuture get:v21];
 
-        v19 = [(BKBasePresentingViewController *)self _fetchSampleProfileFuture];
+        _fetchSampleProfileFuture = [(BKBasePresentingViewController *)self _fetchSampleProfileFuture];
         objc_destroyWeak(&v23);
         objc_destroyWeak(&location);
       }
 
-      v13 = [(BKBasePresentingViewController *)self buyButtonItem];
+      buyButtonItem2 = [(BKBasePresentingViewController *)self buyButtonItem];
     }
 
     else
     {
-      v13 = 0;
+      buyButtonItem2 = 0;
     }
   }
 
-  return v13;
+  return buyButtonItem2;
 }
 
-- (void)assetViewController:(id)a3 didShowContentWithCFIs:(id)a4
+- (void)assetViewController:(id)controller didShowContentWithCFIs:(id)is
 {
-  v5 = a4;
-  v6 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  [v6 cfisDidAppear:v5];
+  isCopy = is;
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  [readingStatisticsController cfisDidAppear:isCopy];
 }
 
-- (void)assetViewController:(id)a3 willHideContentWithCFIs:(id)a4
+- (void)assetViewController:(id)controller willHideContentWithCFIs:(id)is
 {
-  v5 = a4;
-  v6 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  [v6 cfisWillDisappear:v5];
+  isCopy = is;
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  [readingStatisticsController cfisWillDisappear:isCopy];
 }
 
-- (void)setFinishedForAssetID:(id)a3
+- (void)setFinishedForAssetID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = +[BKAppDelegate delegate];
-    v6 = [v5 serviceCenter];
-    v7 = [v6 readingActivityService];
+    serviceCenter = [v5 serviceCenter];
+    readingActivityService = [serviceCenter readingActivityService];
 
     [(BKBasePresentingViewController *)self libraryAssetProvider];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100065F18;
     v11 = v10[3] = &unk_100A03EF8;
-    v12 = v4;
-    v13 = v7;
-    v14 = self;
-    v8 = v7;
+    v12 = dCopy;
+    v13 = readingActivityService;
+    selfCopy = self;
+    v8 = readingActivityService;
     v9 = v11;
     [v9 performBlockOnWorkerQueue:v10];
   }
 }
 
-- (void)assetViewController:(id)a3 setFinishedAndCloseForAssetID:(id)a4
+- (void)assetViewController:(id)controller setFinishedAndCloseForAssetID:(id)d
 {
-  v6 = a3;
-  [(BKBasePresentingViewController *)self setFinishedForAssetID:a4];
-  if (a4)
+  controllerCopy = controller;
+  [(BKBasePresentingViewController *)self setFinishedForAssetID:d];
+  if (d)
   {
-    [(BKBasePresentingViewController *)self assetViewController:v6 requestClose:1 error:0];
+    [(BKBasePresentingViewController *)self assetViewController:controllerCopy requestClose:1 error:0];
   }
 }
 
-- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)a3
+- (BOOL)needTextNodeCharacterCountsForOrdinal:(int64_t)ordinal
 {
-  v4 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  LOBYTE(a3) = [v4 needTextNodeCharacterCountsForOrdinal:a3];
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  LOBYTE(ordinal) = [readingStatisticsController needTextNodeCharacterCountsForOrdinal:ordinal];
 
-  return a3;
+  return ordinal;
 }
 
-- (void)addTextNodeCharacterCounts:(id)a3 ordinal:(int64_t)a4 completion:(id)a5
+- (void)addTextNodeCharacterCounts:(id)counts ordinal:(int64_t)ordinal completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  [v10 addTextNodeCharacterCounts:v9 ordinal:a4 completion:v8];
+  completionCopy = completion;
+  countsCopy = counts;
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  [readingStatisticsController addTextNodeCharacterCounts:countsCopy ordinal:ordinal completion:completionCopy];
 }
 
-- (BOOL)needTOCEntriesForOrdinal:(int64_t)a3
+- (BOOL)needTOCEntriesForOrdinal:(int64_t)ordinal
 {
-  v4 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  LOBYTE(a3) = [v4 needTOCEntriesForOrdinal:a3];
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  LOBYTE(ordinal) = [readingStatisticsController needTOCEntriesForOrdinal:ordinal];
 
-  return a3;
+  return ordinal;
 }
 
-- (void)addTOCEntries:(id)a3 ordinal:(int64_t)a4 completion:(id)a5
+- (void)addTOCEntries:(id)entries ordinal:(int64_t)ordinal completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  [v10 addTOCEntries:v9 ordinal:a4 completion:v8];
+  completionCopy = completion;
+  entriesCopy = entries;
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  [readingStatisticsController addTOCEntries:entriesCopy ordinal:ordinal completion:completionCopy];
 
   [(BKBasePresentingViewController *)self setNeedToRebuildContextTree:1];
 }
 
-- (void)assetViewControllerPaginationCompletedForBook:(id)a3
+- (void)assetViewControllerPaginationCompletedForBook:(id)book
 {
-  v4 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v5 = [v4 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
   v6 = +[BCProgressKitController sharedController];
-  if (![v6 isTrackingAssetID:v5])
+  if (![v6 isTrackingAssetID:permanentAssetID])
   {
     goto LABEL_4;
   }
 
-  v7 = [(BKBasePresentingViewController *)self needToRebuildContextTree];
+  needToRebuildContextTree = [(BKBasePresentingViewController *)self needToRebuildContextTree];
 
-  if (v7)
+  if (needToRebuildContextTree)
   {
     [(BKBasePresentingViewController *)self setNeedToRebuildContextTree:0];
-    v8 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
     v9 = BUProtocolCast();
 
-    v10 = [(BKBasePresentingViewController *)self readingStatisticsController];
+    readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100066588;
     v11[3] = &unk_100A03418;
     v12 = v9;
     v6 = v9;
-    [v10 tocCFIMapWithCompletion:v11];
+    [readingStatisticsController tocCFIMapWithCompletion:v11];
 
 LABEL_4:
   }
 }
 
-- (void)assetViewController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)assetViewController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v12 = +[BKAppDelegate sceneManager];
-  v13 = [v12 sceneControllerForViewController:v11];
+  v13 = [v12 sceneControllerForViewController:controllerCopy];
 
-  [v13 presentViewController:v10 animated:v6 completion:v9];
+  [v13 presentViewController:viewControllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)assetViewController:(id)a3 presentModalViewController:(id)a4 animated:(BOOL)a5
+- (void)assetViewController:(id)controller presentModalViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v9 = +[BKAppDelegate sceneManager];
-  v10 = [v9 sceneControllerForViewController:v8];
+  v10 = [v9 sceneControllerForViewController:controllerCopy];
 
-  [v10 presentModalViewController:v7 animated:v5];
+  [v10 presentModalViewController:viewControllerCopy animated:animatedCopy];
 }
 
-- (id)libraryButtonItemForViewController:(id)a3 selector:(SEL)a4
+- (id)libraryButtonItemForViewController:(id)controller selector:(SEL)selector
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
-  v8 = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
-  if ([v7 closeTypeForSceneController:v8] == 3)
+  _sceneControllerCurrentlyHostingAssetPresenter = [(BKBasePresentingViewController *)self _sceneControllerCurrentlyHostingAssetPresenter];
+  if ([v7 closeTypeForSceneController:_sceneControllerCurrentlyHostingAssetPresenter] == 3)
   {
-    v9 = [(BKBasePresentingViewController *)self _closeBarButtonTitle];
-    if ([v9 length])
+    _closeBarButtonTitle = [(BKBasePresentingViewController *)self _closeBarButtonTitle];
+    if ([_closeBarButtonTitle length])
     {
-      v10 = [[UIBarButtonItem alloc] initWithTitle:v9 style:2 target:v6 action:a4];
+      v10 = [[UIBarButtonItem alloc] initWithTitle:_closeBarButtonTitle style:2 target:controllerCopy action:selector];
     }
 
     else
@@ -2677,12 +2677,12 @@ LABEL_4:
 
   else
   {
-    v9 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:3 scale:17.0];
+    _closeBarButtonTitle = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:3 scale:17.0];
     v11 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:2 scale:17.0];
     v12 = [UIImage systemImageNamed:@"chevron.backward"];
-    v13 = [v12 imageWithConfiguration:v9];
+    v13 = [v12 imageWithConfiguration:_closeBarButtonTitle];
     v14 = [v12 imageWithConfiguration:v11];
-    v10 = [[UIBarButtonItem alloc] initWithImage:v13 landscapeImagePhone:v14 style:0 target:v6 action:a4];
+    v10 = [[UIBarButtonItem alloc] initWithImage:v13 landscapeImagePhone:v14 style:0 target:controllerCopy action:selector];
     [v10 setLargeContentSizeImageInsets:{42.0, 0.0, 0.0, 0.0}];
     [v10 setWidth:32.0];
   }
@@ -2690,45 +2690,45 @@ LABEL_4:
   return v10;
 }
 
-- (BOOL)canUpdateLibraryBarButtonItem:(id)a3 withOldString:(id)a4
+- (BOOL)canUpdateLibraryBarButtonItem:(id)item withOldString:(id)string
 {
-  if (!a3 || !a4)
+  if (!item || !string)
   {
-    return (a3 != 0) ^ (a4 != 0);
+    return (item != 0) ^ (string != 0);
   }
 
-  v5 = a4;
-  v6 = [a3 title];
-  v7 = [v5 isEqualToString:v6];
+  stringCopy = string;
+  title = [item title];
+  v7 = [stringCopy isEqualToString:title];
 
   return v7 ^ 1;
 }
 
 - (BOOL)readingStatisticsEnabled
 {
-  v2 = [(BKBasePresentingViewController *)self readingStatisticsController];
-  v3 = v2 != 0;
+  readingStatisticsController = [(BKBasePresentingViewController *)self readingStatisticsController];
+  v3 = readingStatisticsController != 0;
 
   return v3;
 }
 
-- (id)contextMenuWithAssetViewController:(id)a3 sourceView:(id)a4
+- (id)contextMenuWithAssetViewController:(id)controller sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100066BC4;
   v16 = &unk_100A03F20;
   objc_copyWeak(&v19, &location);
-  v17 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = viewCopy;
   v18 = v8;
   v9 = [UIDeferredMenuElement elementWithUncachedProvider:&v13];
   v21 = v9;
-  v10 = [NSArray arrayWithObjects:&v21 count:1, v13, v14, v15, v16, v17];
-  v11 = [UIMenu menuWithTitle:&stru_100A30A68 children:v10];
+  selfCopy = [NSArray arrayWithObjects:&v21 count:1, v13, v14, v15, v16, selfCopy];
+  v11 = [UIMenu menuWithTitle:&stru_100A30A68 children:selfCopy];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -2736,99 +2736,99 @@ LABEL_4:
   return v11;
 }
 
-- (id)analyticsAssetPropertyProviderForAssetViewController:(id)a3 fromSourceView:(id)a4
+- (id)analyticsAssetPropertyProviderForAssetViewController:(id)controller fromSourceView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = +[BKContextMenuProvider sharedProvider];
-  v7 = [(BKBasePresentingViewController *)self dataModelWithSourceView:v5];
+  v7 = [(BKBasePresentingViewController *)self dataModelWithSourceView:viewCopy];
 
   v8 = [v6 analyticsAssetPropertyProviderForDataModel:v7];
 
   return v8;
 }
 
-- (id)dataModelWithSourceView:(id)a3
+- (id)dataModelWithSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [BSUIContextActionDataAssetModel alloc];
-  v6 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v7 = [v6 permanentOrTemporaryAssetID];
-  v8 = [v5 initWithAdamID:v7];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
+  v8 = [v5 initWithAdamID:permanentOrTemporaryAssetID];
 
-  v9 = [[BSUIContextActionDataModel alloc] initWithAssetModel:v8 sourceView:v4];
+  v9 = [[BSUIContextActionDataModel alloc] initWithAssetModel:v8 sourceView:viewCopy];
 
   return v9;
 }
 
-- (void)assetViewController:(id)a3 openSupplementalAssetWithIdentifier:(id)a4
+- (void)assetViewController:(id)controller openSupplementalAssetWithIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[BKLibraryManager defaultManager];
-  v7 = [v6 libraryAssetOnMainQueueWithAssetIdentifier:v5];
+  v7 = [v6 libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
   v8 = objc_opt_new();
   v9 = +[BKAppDelegate sceneManager];
   v10 = [v9 sceneControllerForViewController:self];
-  v11 = [v10 newShowAssetTransaction];
+  newShowAssetTransaction = [v10 newShowAssetTransaction];
   v12 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100066F60;
   v17[3] = &unk_100A03F70;
-  v18 = v11;
+  v18 = newShowAssetTransaction;
   v19 = v8;
   v20 = v7;
-  v21 = self;
-  v22 = v5;
-  v13 = v5;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v13 = identifierCopy;
   v14 = v7;
   v15 = v8;
-  v16 = v11;
+  v16 = newShowAssetTransaction;
   [v12 preflightShowAssetWithTransaction:v16 assetIdentifier:v13 completion:v17];
 }
 
-- (BOOL)assetViewControllerIsPresentingSupplementalContent:(id)a3
+- (BOOL)assetViewControllerIsPresentingSupplementalContent:(id)content
 {
-  v3 = [(BKBasePresentingViewController *)self bc_contextualPresentedViewController];
+  bc_contextualPresentedViewController = [(BKBasePresentingViewController *)self bc_contextualPresentedViewController];
   objc_opt_class();
   v4 = BUDynamicCast();
-  v5 = [v4 isSupplementalContent];
+  isSupplementalContent = [v4 isSupplementalContent];
 
-  return v5;
+  return isSupplementalContent;
 }
 
-- (void)readingStatisticsDidChangeOnController:(id)a3 changes:(id)a4
+- (void)readingStatisticsDidChangeOnController:(id)controller changes:(id)changes
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  changesCopy = changes;
   v7 = BCReadingStatisticsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134218242;
-    v9 = v5;
+    v9 = controllerCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = changesCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Reading statistics changed on controller %p changes=%@", &v8, 0x16u);
   }
 }
 
-- (void)timeTracker:(id)a3 didPromoteAsset:(id)a4 deletedFromWantToRead:(BOOL)a5
+- (void)timeTracker:(id)tracker didPromoteAsset:(id)asset deletedFromWantToRead:(BOOL)read
 {
-  v5 = a5;
-  [(BKBasePresentingViewController *)BKAssetPresentingViewController _markBookAsCurrent:a4];
-  if (v5)
+  readCopy = read;
+  [(BKBasePresentingViewController *)BKAssetPresentingViewController _markBookAsCurrent:asset];
+  if (readCopy)
   {
-    v7 = [(BKBasePresentingViewController *)self ba_effectiveAnalyticsTracker];
-    v8 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-    v9 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v10 = [v8 libraryAssetOnMainQueueWithAssetIdentifier:v9];
+    ba_effectiveAnalyticsTracker = [(BKBasePresentingViewController *)self ba_effectiveAnalyticsTracker];
+    libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    v10 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier];
 
-    if (v10 && v7)
+    if (v10 && ba_effectiveAnalyticsTracker)
     {
       v11 = +[BAUtilities contentTypeFromAssetType:](BAUtilities, "contentTypeFromAssetType:", [v10 contentType]);
       v12 = +[BAEventReporter sharedReporter];
-      v13 = [v10 assetID];
-      [v12 emitRemoveFromWantListEventWithTracker:v7 contentID:v13 contentType:v11];
+      assetID = [v10 assetID];
+      [v12 emitRemoveFromWantListEventWithTracker:ba_effectiveAnalyticsTracker contentID:assetID contentType:v11];
     }
   }
 
@@ -2866,24 +2866,24 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Book was confirmed successfully open.", buf, 2u);
   }
 
-  v4 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v5 = [v4 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  [(BKBasePresentingViewController *)self _updateLastOpenBookWithAssetID:v5];
-  [(BKBasePresentingViewController *)self _maybeUpdateSuccessfullyOpenedCurrentBook:v5];
+  [(BKBasePresentingViewController *)self _updateLastOpenBookWithAssetID:permanentAssetID];
+  [(BKBasePresentingViewController *)self _maybeUpdateSuccessfullyOpenedCurrentBook:permanentAssetID];
   [(BKBasePresentingViewController *)self setSuccessfullyOpened:1];
   if (![(BKBasePresentingViewController *)self isSupplementalContent])
   {
     v6 = +[BKLastOpenBookManager sharedInstance];
-    [v6 updateSuccessfullyOpenedBookForAssetID:v5 successfullyOpenedBook:1];
+    [v6 updateSuccessfullyOpenedBookForAssetID:permanentAssetID successfullyOpenedBook:1];
   }
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 applicationState];
+  applicationState = [v7 applicationState];
 
   v9 = BCCurrentBookLog();
   v10 = v9;
-  if (v8 == 2)
+  if (applicationState == 2)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -2913,8 +2913,8 @@ LABEL_4:
   }
 
   v4 = +[BCJSConfiguration sharedInstance];
-  v5 = [v4 timeThresholdForOpenEvent];
-  v6 = [v5 longLongValue];
+  timeThresholdForOpenEvent = [v4 timeThresholdForOpenEvent];
+  longLongValue = [timeThresholdForOpenEvent longLongValue];
 
   objc_initWeak(buf, self);
   [(BKBasePresentingViewController *)self _cancelSuccessfullyOpenedTimerIfNeeded];
@@ -2923,7 +2923,7 @@ LABEL_4:
   v8[2] = sub_1000678C8;
   v8[3] = &unk_100A03FB8;
   objc_copyWeak(&v9, buf);
-  v7 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v8 block:v6];
+  v7 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v8 block:longLongValue];
   [(BKBasePresentingViewController *)self setSuccessfullyOpenedTimer:v7];
 
   objc_destroyWeak(&v9);
@@ -2932,14 +2932,14 @@ LABEL_4:
 
 - (void)_cancelSuccessfullyOpenedTimerIfNeeded
 {
-  v3 = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
-  if (v3)
+  successfullyOpenedTimer = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
+  if (successfullyOpenedTimer)
   {
-    v4 = v3;
-    v5 = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
-    v6 = [v5 isValid];
+    v4 = successfullyOpenedTimer;
+    successfullyOpenedTimer2 = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
+    isValid = [successfullyOpenedTimer2 isValid];
 
-    if (v6)
+    if (isValid)
     {
       v7 = BCCurrentBookLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2948,22 +2948,22 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Cancelling successfully opened timer", v9, 2u);
       }
 
-      v8 = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
-      [v8 invalidate];
+      successfullyOpenedTimer3 = [(BKBasePresentingViewController *)self successfullyOpenedTimer];
+      [successfullyOpenedTimer3 invalidate];
 
       [(BKBasePresentingViewController *)self setSuccessfullyOpenedTimer:0];
     }
   }
 }
 
-+ (void)startingOpenOfMinifedCurrentBook:(id)a3
++ (void)startingOpenOfMinifedCurrentBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v4 = BCCurrentBookLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = bookCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Starting open of book as minified & current %@.", &v7, 0xCu);
   }
 
@@ -2974,44 +2974,44 @@ LABEL_4:
   [v6 synchronize];
 }
 
-+ (void)_markBookAsCurrent:(id)a3
++ (void)_markBookAsCurrent:(id)current
 {
-  v3 = a3;
+  currentCopy = current;
   v4 = BCCurrentBookLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = currentCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Marking book as current %@.", &v6, 0xCu);
   }
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setObject:v3 forKey:@"kLastCurrentBookKey"];
+  [v5 setObject:currentCopy forKey:@"kLastCurrentBookKey"];
   [v5 setBool:1 forKey:@"kSuccessfullyOpenedCurrentBook"];
   [v5 synchronize];
 }
 
-+ (void)markCarPlayBackgroundBookAsCurrent:(id)a3
++ (void)markCarPlayBackgroundBookAsCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setObject:v4 forKey:@"BKMainViewControllerLastBook"];
+  [v5 setObject:currentCopy forKey:@"BKMainViewControllerLastBook"];
   [v5 setBool:1 forKey:@"BKMainViewControllerSuccessfullyOpenedBook"];
-  [a1 _markBookAsCurrent:v4];
+  [self _markBookAsCurrent:currentCopy];
 }
 
-- (void)_maybeUpdateSuccessfullyOpenedCurrentBook:(id)a3
+- (void)_maybeUpdateSuccessfullyOpenedCurrentBook:(id)book
 {
-  v3 = a3;
+  bookCopy = book;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 stringForKey:@"kLastCurrentBookKey"];
-  if ([v5 isEqualToString:v3])
+  if ([v5 isEqualToString:bookCopy])
   {
     v6 = BCCurrentBookLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = bookCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Current book successfully opened %@.", &v7, 0xCu);
     }
 
@@ -3020,13 +3020,13 @@ LABEL_4:
   }
 }
 
-- (void)_updateLastOpenBookWithAssetID:(id)a3
+- (void)_updateLastOpenBookWithAssetID:(id)d
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  dCopy = d;
+  v9 = dCopy;
+  if (dCopy)
   {
-    v5 = 0;
+    permanentAssetID = 0;
   }
 
   else
@@ -3036,13 +3036,13 @@ LABEL_4:
       goto LABEL_11;
     }
 
-    v7 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v5 = [v7 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
-    v4 = 0;
+    dCopy = 0;
   }
 
-  if ([v4 length] && !-[BKBasePresentingViewController isSupplementalContent](self, "isSupplementalContent"))
+  if ([dCopy length] && !-[BKBasePresentingViewController isSupplementalContent](self, "isSupplementalContent"))
   {
     v6 = v9;
   }
@@ -3053,16 +3053,16 @@ LABEL_4:
   }
 
   v8 = +[BKLastOpenBookManager sharedInstance];
-  [v8 updateLastOpenBookByRemovingAssetID:v5 addingAssetID:v6];
+  [v8 updateLastOpenBookByRemovingAssetID:permanentAssetID addingAssetID:v6];
 
 LABEL_11:
 }
 
-+ (id)_lastOpenedBookWithKey:(id)a3
++ (id)_lastOpenedBookWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   v6 = BCCurrentBookLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -3070,16 +3070,16 @@ LABEL_11:
     v8 = 138412546;
     v9 = v5;
     v10 = 2112;
-    v11 = v3;
+    v11 = keyCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Last known assetID: %@ (for key %@)", &v8, 0x16u);
   }
 
   return v5;
 }
 
-+ (id)_successfullyOpenedBookWithKey:(id)a3 successKey:(id)a4 deleteOnFailure:(BOOL)a5
++ (id)_successfullyOpenedBookWithKey:(id)key successKey:(id)successKey deleteOnFailure:(BOOL)failure
 {
-  v5 = [a1 _lastOpenedBookWithKey:{a3, a4, a5}];
+  v5 = [self _lastOpenedBookWithKey:{key, successKey, failure}];
   if ([v5 length])
   {
     v6 = +[BKLastOpenBookManager sharedInstance];
@@ -3124,20 +3124,20 @@ LABEL_11:
   [v4 removeObjectForKey:@"kLastCurrentBookKey"];
 }
 
-+ (id)futureViewControllerWithAssetIdentifier:(id)a3 libraryAssetProvider:(id)a4 options:(id)a5
++ (id)futureViewControllerWithAssetIdentifier:(id)identifier libraryAssetProvider:(id)provider options:(id)options
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000682A4;
   v17[3] = &unk_100A03FE0;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  optionsCopy = options;
   v7 = objc_opt_new();
   v21 = v7;
-  v8 = v20;
-  v9 = v19;
-  v10 = v18;
+  v8 = optionsCopy;
+  v9 = providerCopy;
+  v10 = identifierCopy;
   [BKAssetLookup assetLookupWithIdentifier:v10 options:v8 completion:v17];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -3153,33 +3153,33 @@ LABEL_11:
 
 - (NSString)assetPresenterAssetID
 {
-  v2 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v3 = [v2 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  return v3;
+  return permanentAssetID;
 }
 
 - (NSString)assetPresenterPermanentOrTemporaryAssetID
 {
-  v2 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v3 = [v2 permanentOrTemporaryAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
 
-  return v3;
+  return permanentOrTemporaryAssetID;
 }
 
-- (void)assetPresenterOpenToLocation:(id)a3 animated:(BOOL)a4
+- (void)assetPresenterOpenToLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKBasePresentingViewController *)self assetViewController];
-  [v7 openToLocation:v6 animated:v4];
+  animatedCopy = animated;
+  locationCopy = location;
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController openToLocation:locationCopy animated:animatedCopy];
 }
 
-- (void)assetPresenterJumpToBeginningAnimated:(BOOL)a3
+- (void)assetPresenterJumpToBeginningAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(BKBasePresentingViewController *)self assetViewController];
-  [v4 jumpToBeginningAnimated:v3];
+  animatedCopy = animated;
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController jumpToBeginningAnimated:animatedCopy];
 }
 
 - (void)assetPresenterPrepareForDismissal
@@ -3190,17 +3190,17 @@ LABEL_11:
   [(BKBasePresentingViewController *)self _cancelSuccessfullyOpenedTimerIfNeeded];
 }
 
-- (void)assetPresenterDismissalDidEnd:(BOOL)a3
+- (void)assetPresenterDismissalDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   [(BKBasePresentingViewController *)self setStateDismissInProgress:0];
   [(BKBasePresentingViewController *)self setStateShouldClose:0];
-  if (v3)
+  if (endCopy)
   {
     [(BKBasePresentingViewController *)self _finalizeAssetVCState];
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
 
-    if (v5)
+    if (assetViewController)
     {
       v6 = [(BKBasePresentingViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
       [v6 updateAllAssetPresenterCloseStateTypes];
@@ -3210,8 +3210,8 @@ LABEL_11:
 
 - (void)assetPresenterUpdateToolbars
 {
-  v2 = [(BKBasePresentingViewController *)self assetViewController];
-  [v2 assetViewControllerUpdateToolbars];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController assetViewControllerUpdateToolbars];
 }
 
 - (BOOL)assetPresenterKeepOpenWithoutBundle
@@ -3231,8 +3231,8 @@ LABEL_11:
 
 - (id)assetPresenterCoverAnimationSource
 {
-  v2 = [(BKBasePresentingViewController *)self openOptions];
-  v3 = [v2 objectForKeyedSubscript:@"BKBookPresentingCoverAnimationSource"];
+  openOptions = [(BKBasePresentingViewController *)self openOptions];
+  v3 = [openOptions objectForKeyedSubscript:@"BKBookPresentingCoverAnimationSource"];
   v4 = BUProtocolCast();
 
   return v4;
@@ -3241,8 +3241,8 @@ LABEL_11:
 - (id)assetPresenterCoverImage
 {
   objc_opt_class();
-  v3 = [(BKBasePresentingViewController *)self openOptions];
-  v4 = [v3 objectForKeyedSubscript:@"BKBookPresentingCoverImage"];
+  openOptions = [(BKBasePresentingViewController *)self openOptions];
+  v4 = [openOptions objectForKeyedSubscript:@"BKBookPresentingCoverImage"];
   v5 = BUDynamicCast();
 
   return v5;
@@ -3251,14 +3251,14 @@ LABEL_11:
 - (id)assetPresenterCoverShadowImage
 {
   objc_opt_class();
-  v3 = [(BKBasePresentingViewController *)self openOptions];
-  v4 = [v3 objectForKeyedSubscript:@"BKBookPresentingCoverShadowImage"];
+  openOptions = [(BKBasePresentingViewController *)self openOptions];
+  v4 = [openOptions objectForKeyedSubscript:@"BKBookPresentingCoverShadowImage"];
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-- (void)im_dismissAnimated:(BOOL)a3 immediate:(BOOL)a4
+- (void)im_dismissAnimated:(BOOL)animated immediate:(BOOL)immediate
 {
   if (([(BKBasePresentingViewController *)self stateFlags]& 1) != 0 || [(BKBasePresentingViewController *)self stateShouldClose])
   {
@@ -3266,7 +3266,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v27 = [(BKBasePresentingViewController *)self stateFlags];
+      stateFlags = [(BKBasePresentingViewController *)self stateFlags];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Ignored dismiss of asset due to state: %ld", buf, 0xCu);
     }
   }
@@ -3274,15 +3274,15 @@ LABEL_11:
   else
   {
     [(BKBasePresentingViewController *)self setAutoOpen:0];
-    v8 = [(BKBasePresentingViewController *)self assetLookup];
-    [v8 cancel];
+    assetLookup = [(BKBasePresentingViewController *)self assetLookup];
+    [assetLookup cancel];
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100068B50;
     v23[3] = &unk_100A04030;
-    v24 = a3;
-    v25 = a4;
+    animatedCopy = animated;
+    immediateCopy = immediate;
     v23[4] = self;
     v9 = objc_retainBlock(v23);
     objc_initWeak(buf, self);
@@ -3309,7 +3309,7 @@ LABEL_11:
     v15[2] = sub_100068CD8;
     v15[3] = &unk_100A04110;
     v15[4] = self;
-    v18 = a4;
+    immediateCopy2 = immediate;
     v13 = v10;
     v16 = v13;
     v14 = v11;
@@ -3321,9 +3321,9 @@ LABEL_11:
   }
 }
 
-- (void)updatePromotionStateWithCompletion:(id)a3
+- (void)updatePromotionStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BKBasePresentingViewController *)self _shouldTrackReadingSession])
   {
     v5 = BCBookPromotionLog();
@@ -3339,17 +3339,17 @@ LABEL_11:
   v7[2] = sub_100069284;
   v7[3] = &unk_100A04160;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(BKBasePresentingViewController *)self _endReadingSessionForEventType:2 withCompletion:v7];
 }
 
 - (id)_buyButton
 {
   objc_opt_class();
-  v3 = [(BKBasePresentingViewController *)self buyButtonItem];
-  v4 = [v3 customView];
-  v5 = [v4 viewWithTag:7];
+  buyButtonItem = [(BKBasePresentingViewController *)self buyButtonItem];
+  customView = [buyButtonItem customView];
+  v5 = [customView viewWithTag:7];
   v6 = BUDynamicCast();
 
   return v6;
@@ -3385,10 +3385,10 @@ LABEL_11:
   }
 }
 
-- (void)_configureBuyButton:(id)a3
+- (void)_configureBuyButton:(id)button
 {
-  v3 = a3;
-  if ([v3 isPreorder])
+  buttonCopy = button;
+  if ([buttonCopy isPreorder])
   {
     v4 = 4;
   }
@@ -3398,32 +3398,32 @@ LABEL_11:
     v4 = 2;
   }
 
-  v10 = +[BCBuyButtonColorProvider colorsForButtonState:isDark:isEnabled:](BCBuyButtonColorProvider, "colorsForButtonState:isDark:isEnabled:", v4, [v3 overrideUserInterfaceStyle] == 2, objc_msgSend(v3, "isEnabled"));
-  v5 = [v10 foregroundColor];
-  [v3 setTitleColor:v5 forState:0];
+  v10 = +[BCBuyButtonColorProvider colorsForButtonState:isDark:isEnabled:](BCBuyButtonColorProvider, "colorsForButtonState:isDark:isEnabled:", v4, [buttonCopy overrideUserInterfaceStyle] == 2, objc_msgSend(buttonCopy, "isEnabled"));
+  foregroundColor = [v10 foregroundColor];
+  [buttonCopy setTitleColor:foregroundColor forState:0];
 
-  v6 = [v10 foregroundColor];
-  v7 = [v6 colorWithAlphaComponent:0.25];
-  [v3 setTitleColor:v7 forState:1];
+  foregroundColor2 = [v10 foregroundColor];
+  v7 = [foregroundColor2 colorWithAlphaComponent:0.25];
+  [buttonCopy setTitleColor:v7 forState:1];
 
-  v8 = [v10 foregroundColor];
-  v9 = [v8 colorWithAlphaComponent:0.25];
-  [v3 setTitleColor:v9 forState:2];
+  foregroundColor3 = [v10 foregroundColor];
+  v9 = [foregroundColor3 colorWithAlphaComponent:0.25];
+  [buttonCopy setTitleColor:v9 forState:2];
 }
 
 - (id)_newBarButtonItemWithBuyButton
 {
   v3 = [[IMButtonAndRadialProgress alloc] initWithFrame:{0.0, 0.0, 54.0, 26.0}];
   [(BKBasePresentingViewController *)self _configureBuyButton:v3];
-  v4 = [v3 titleLabel];
+  titleLabel = [v3 titleLabel];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-  [v4 setFont:v5];
+  [titleLabel setFont:v5];
 
-  v6 = [v3 titleLabel];
-  [v6 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [v3 titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v7 = [v3 titleLabel];
-  [v7 setMinimumScaleFactor:0.5];
+  titleLabel3 = [v3 titleLabel];
+  [titleLabel3 setMinimumScaleFactor:0.5];
 
   [v3 setTag:7];
   v8 = [[UIBarButtonItem alloc] initWithCustomView:v3];
@@ -3436,31 +3436,31 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = BKBasePresentingViewController;
-  v3 = [(BKBasePresentingViewController *)&v6 traitCollection];
-  v4 = [(BKBasePresentingViewController *)self im_traitCollectionAdjustedForMedusaLevels:v3];
+  traitCollection = [(BKBasePresentingViewController *)&v6 traitCollection];
+  v4 = [(BKBasePresentingViewController *)self im_traitCollectionAdjustedForMedusaLevels:traitCollection];
 
   return v4;
 }
 
-- (void)_configureBuyButtonForPricing:(id)a3 profile:(id)a4
+- (void)_configureBuyButtonForPricing:(id)pricing profile:(id)profile
 {
-  v14 = a3;
-  v6 = a4;
+  pricingCopy = pricing;
+  profileCopy = profile;
   if (!+[NSThread isMainThread])
   {
     sub_100789AA4();
   }
 
-  v7 = [v6 actionTextWithType:0];
-  [v14 setTitle:v7 forState:0];
-  if ([v6 isPreorder])
+  v7 = [profileCopy actionTextWithType:0];
+  [pricingCopy setTitle:v7 forState:0];
+  if ([profileCopy isPreorder])
   {
-    [v14 setIsPreorder:1];
-    [(BKBasePresentingViewController *)self _configureBuyButton:v14];
+    [pricingCopy setIsPreorder:1];
+    [(BKBasePresentingViewController *)self _configureBuyButton:pricingCopy];
   }
 
-  v8 = [v6 buyParameters];
-  v9 = [v8 length];
+  buyParameters = [profileCopy buyParameters];
+  v9 = [buyParameters length];
 
   if (!v9)
   {
@@ -3476,9 +3476,9 @@ LABEL_11:
   else
   {
     v12 = +[BURestrictionsProvider sharedInstance];
-    v13 = [v12 isBookStoreAllowed];
+    isBookStoreAllowed = [v12 isBookStoreAllowed];
 
-    if (v13)
+    if (isBookStoreAllowed)
     {
       v11 = 1;
       goto LABEL_12;
@@ -3487,34 +3487,34 @@ LABEL_11:
 
   v11 = 3;
 LABEL_12:
-  [v14 setModeState:v11];
+  [pricingCopy setModeState:v11];
 }
 
-- (void)_fetchProfileForStoreID:(id)a3 completion:(id)a4
+- (void)_fetchProfileForStoreID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = +[AEUserPublishing sharedInstance];
-  v14 = v5;
+  v14 = dCopy;
   v8 = [NSArray arrayWithObjects:&v14 count:1];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100069D7C;
   v11[3] = &unk_100A04188;
-  v12 = v5;
-  v13 = v6;
-  v9 = v5;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = dCopy;
+  v10 = completionCopy;
   [v7 productProfilesForStoreIDs:v8 completion:v11];
 }
 
-- (void)_downloadStatusNotification:(id)a3
+- (void)_downloadStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v18 = v4;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:BKLibraryDownloadStatusKey];
+  v18 = notificationCopy;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:BKLibraryDownloadStatusKey];
   v7 = BUDynamicCast();
 
   v26 = 0u;
@@ -3537,18 +3537,18 @@ LABEL_12:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 assetID];
-        v15 = [(BKBasePresentingViewController *)self assetIdentifier];
-        v16 = [v15 permanentOrTemporaryAssetID];
+        assetID = [v13 assetID];
+        assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+        permanentOrTemporaryAssetID = [assetIdentifier permanentOrTemporaryAssetID];
 
-        if ([v16 isEqualToString:v14])
+        if ([permanentOrTemporaryAssetID isEqualToString:assetID])
         {
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_10006A1A4;
           v21[3] = &unk_100A03A30;
           v21[4] = self;
-          v22 = v16;
+          v22 = permanentOrTemporaryAssetID;
           v23 = v13;
           v17 = objc_retainBlock(v21);
           if (v17)
@@ -3578,9 +3578,9 @@ LABEL_12:
   }
 }
 
-- (void)_libraryOwnershipNotification:(id)a3
+- (void)_libraryOwnershipNotification:(id)notification
 {
-  [a3 userInfo];
+  [notification userInfo];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -3602,10 +3602,10 @@ LABEL_12:
         }
 
         v10 = [*(*(&v16 + 1) + 8 * i) objectForKeyedSubscript:v8];
-        v11 = [(BKBasePresentingViewController *)self assetIdentifier];
-        v12 = [v11 permanentAssetID];
+        assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+        permanentAssetID = [assetIdentifier permanentAssetID];
 
-        if ([v10 isEqualToString:v12])
+        if ([v10 isEqualToString:permanentAssetID])
         {
           if (self->_progressStatus)
           {
@@ -3636,10 +3636,10 @@ LABEL_12:
   }
 }
 
-- (void)_updateAssetStateAndDownloadStatus:(id)a3
+- (void)_updateAssetStateAndDownloadStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  statusCopy = status;
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -3648,8 +3648,8 @@ LABEL_12:
     v7[1] = 3221225472;
     v7[2] = sub_10006A4D8;
     v7[3] = &unk_100A03440;
-    v8 = v4;
-    v9 = self;
+    v8 = statusCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v7);
   }
 }
@@ -3679,8 +3679,8 @@ LABEL_12:
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_deferredURLOpenRequests objectForKeyedSubscript:v8];
-        v10 = [v3 newShowURLTransaction];
-        [v13 handleApplicationURL:v8 sourceApplication:@"__self__" annotation:0 likelyUserInitiated:v9 transaction:v10];
+        newShowURLTransaction = [v3 newShowURLTransaction];
+        [v13 handleApplicationURL:v8 sourceApplication:@"__self__" annotation:0 likelyUserInitiated:v9 transaction:newShowURLTransaction];
       }
 
       v5 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -3693,21 +3693,21 @@ LABEL_12:
   self->_deferredURLOpenRequests = 0;
 }
 
-- (id)analyticsContentDataForAssetViewController:(id)a3 contentSubType:(id)a4 tracker:(id)a5
+- (id)analyticsContentDataForAssetViewController:(id)controller contentSubType:(id)type tracker:(id)tracker
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(BKBasePresentingViewController *)self libraryAssetProvider];
-  v10 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v11 = [v9 libraryAssetOnMainQueueWithAssetIdentifier:v10];
+  typeCopy = type;
+  trackerCopy = tracker;
+  libraryAssetProvider = [(BKBasePresentingViewController *)self libraryAssetProvider];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  v11 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetIdentifier:assetIdentifier];
 
   if (v11)
   {
-    v41 = v7;
-    v12 = [v11 contentType];
-    v38 = [BAUtilities contentTypeFromAssetType:v12];
-    v13 = [v11 storeID];
-    v14 = [v13 length];
+    v41 = typeCopy;
+    contentType = [v11 contentType];
+    v38 = [BAUtilities contentTypeFromAssetType:contentType];
+    storeID = [v11 storeID];
+    v14 = [storeID length];
     v15 = 1;
     if (!v14)
     {
@@ -3716,20 +3716,20 @@ LABEL_12:
 
     v37 = v15;
 
-    v16 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v17 = [v16 permanentAssetID];
+    assetIdentifier2 = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier2 permanentAssetID];
 
-    v40 = [v8 contentPrivateIDForContentID:v17];
-    v39 = [v8 contentUserIDForContentID:v17];
+    v40 = [trackerCopy contentPrivateIDForContentID:permanentAssetID];
+    v39 = [trackerCopy contentUserIDForContentID:permanentAssetID];
     v18 = +[BAEventReporter sharedReporter];
-    v36 = [v18 seriesTypeForContentID:v17];
+    v36 = [v18 seriesTypeForContentID:permanentAssetID];
 
     if ([v11 isAudiobook])
     {
-      v19 = [v11 hasRACSupport];
-      v20 = [v19 BOOLValue];
+      hasRACSupport = [v11 hasRACSupport];
+      bOOLValue = [hasRACSupport BOOLValue];
       v21 = 1;
-      if (!v20)
+      if (!bOOLValue)
       {
         v21 = 2;
       }
@@ -3742,24 +3742,24 @@ LABEL_12:
       v35 = 0;
     }
 
-    v23 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
-    if (v23 && (v24 = v23, v25 = _os_feature_enabled_impl(), v24, v25))
+    appAnalyticsAdditionalData = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
+    if (appAnalyticsAdditionalData && (v24 = appAnalyticsAdditionalData, v25 = _os_feature_enabled_impl(), v24, v25))
     {
-      v26 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
-      v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v26 supportsUnifiedProductPage]);
+      appAnalyticsAdditionalData2 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
+      v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [appAnalyticsAdditionalData2 supportsUnifiedProductPage]);
 
-      v28 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
-      v29 = [v28 editionKind];
+      appAnalyticsAdditionalData3 = [(BKBasePresentingViewController *)self appAnalyticsAdditionalData];
+      editionKind = [appAnalyticsAdditionalData3 editionKind];
     }
 
     else
     {
       v27 = 0;
-      v29 = 0;
+      editionKind = 0;
     }
 
     v30 = [BAContentData alloc];
-    if (v12 == 3)
+    if (contentType == 3)
     {
       v31 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v11 pageCount]);
     }
@@ -3769,15 +3769,15 @@ LABEL_12:
       v31 = 0;
     }
 
-    v32 = [v11 supplementalContentAssets];
-    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
-    v22 = [v30 initWithContentID:v17 contentType:v38 contentPrivateID:v40 contentUserID:v39 contentAcquisitionType:v37 contentSubType:v41 contentLength:v31 supplementalContentCount:v33 seriesType:v36 productionType:v35 isUnified:v27 contentKind:v29];
+    supplementalContentAssets = [v11 supplementalContentAssets];
+    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supplementalContentAssets count]);
+    v22 = [v30 initWithContentID:permanentAssetID contentType:v38 contentPrivateID:v40 contentUserID:v39 contentAcquisitionType:v37 contentSubType:v41 contentLength:v31 supplementalContentCount:v33 seriesType:v36 productionType:v35 isUnified:v27 contentKind:editionKind];
 
-    if (v12 == 3)
+    if (contentType == 3)
     {
     }
 
-    v7 = v41;
+    typeCopy = v41;
   }
 
   else
@@ -3788,48 +3788,48 @@ LABEL_12:
   return v22;
 }
 
-- (void)assetViewController:(id)a3 presentTranslationForText:(id)a4 fromRect:(CGRect)a5 onClose:(id)a6
+- (void)assetViewController:(id)controller presentTranslationForText:(id)text fromRect:(CGRect)rect onClose:(id)close
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  closeCopy = close;
+  textCopy = text;
+  controllerCopy = controller;
   v16 = objc_alloc_init(LTUITranslationViewController);
-  v17 = [[NSAttributedString alloc] initWithString:v14];
+  v17 = [[NSAttributedString alloc] initWithString:textCopy];
 
   [v16 setText:v17];
   [v16 setIsSourceEditable:0];
-  [v16 setOverrideUserInterfaceStyle:{objc_msgSend(v15, "preferredUserInterfaceStyle")}];
+  [v16 setOverrideUserInterfaceStyle:{objc_msgSend(controllerCopy, "preferredUserInterfaceStyle")}];
   [v16 setModalPresentationStyle:7];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10006AD4C;
   v21[3] = &unk_100A03920;
-  v22 = v13;
-  v18 = v13;
+  v22 = closeCopy;
+  v18 = closeCopy;
   [v16 setDismissCompletionHandler:v21];
-  v19 = [v16 popoverPresentationController];
-  v20 = [v15 view];
-  [v19 setSourceView:v20];
+  popoverPresentationController = [v16 popoverPresentationController];
+  view = [controllerCopy view];
+  [popoverPresentationController setSourceView:view];
 
-  [v19 setSourceRect:{x, y, width, height}];
-  [v19 setPermittedArrowDirections:15];
-  [v19 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v15];
-  [(BKBasePresentingViewController *)self assetViewController:v15 presentViewController:v16 animated:1 completion:0];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
+  [popoverPresentationController setPermittedArrowDirections:15];
+  [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:controllerCopy];
+  [(BKBasePresentingViewController *)self assetViewController:controllerCopy presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)_beginReadingSessionForEventType:(unint64_t)a3
+- (void)_beginReadingSessionForEventType:(unint64_t)type
 {
-  v5 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v6 = [v5 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  if ((a3 | 4) == 4)
+  if ((type | 4) == 4)
   {
-    v7 = [(BKBasePresentingViewController *)self sessionID];
-    if (v7)
+    sessionID = [(BKBasePresentingViewController *)self sessionID];
+    if (sessionID)
     {
     }
 
@@ -3842,12 +3842,12 @@ LABEL_12:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v6;
+        v16 = permanentAssetID;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Starting reading session for book with assetID: %@", &v15, 0xCu);
       }
 
-      v11 = [(BKBasePresentingViewController *)self assetViewController];
-      if ([v11 readerType] == 6)
+      assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+      if ([assetViewController readerType] == 6)
       {
         v12 = 2;
       }
@@ -3858,8 +3858,8 @@ LABEL_12:
       }
 
       v13 = +[BCBookReadingTimeTracker sharedInstance];
-      v14 = [(BKBasePresentingViewController *)self sessionID];
-      [v13 trackReadingSessionBeganWithAssetID:v6 sessionID:v14 trackerEventType:a3 readingFeatureFlags:v12 completion:0];
+      sessionID2 = [(BKBasePresentingViewController *)self sessionID];
+      [v13 trackReadingSessionBeganWithAssetID:permanentAssetID sessionID:sessionID2 trackerEventType:type readingFeatureFlags:v12 completion:0];
     }
   }
 
@@ -3873,24 +3873,24 @@ LABEL_12:
   }
 }
 
-- (void)_endReadingSessionForEventType:(unint64_t)a3 withCompletion:(id)a4
+- (void)_endReadingSessionForEventType:(unint64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v8 = [v7 permanentAssetID];
+  completionCopy = completion;
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  if (v8 && ([(BKBasePresentingViewController *)self sessionID], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, v11 = [(BKBasePresentingViewController *)self _shouldTrackReadingSession], v10, v11))
+  if (permanentAssetID && ([(BKBasePresentingViewController *)self sessionID], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, v11 = [(BKBasePresentingViewController *)self _shouldTrackReadingSession], v10, v11))
   {
     v12 = BCCurrentBookLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v8;
+      v22 = permanentAssetID;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Ending reading session for book with assetID: %@", buf, 0xCu);
     }
 
-    v13 = [(BKBasePresentingViewController *)self assetViewController];
-    if ([v13 readerType] == 6)
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+    if ([assetViewController readerType] == 6)
     {
       v14 = 2;
     }
@@ -3901,43 +3901,43 @@ LABEL_12:
     }
 
     v15 = +[BCBookReadingTimeTracker sharedInstance];
-    v16 = [(BKBasePresentingViewController *)self sessionID];
+    sessionID = [(BKBasePresentingViewController *)self sessionID];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10006B1A8;
     v19[3] = &unk_100A041B0;
-    v20 = v6;
-    [v15 trackReadingSessionEndedWithAssetID:v8 sessionID:v16 trackerEventType:a3 readingFeatureFlags:v14 completion:v19];
+    v20 = completionCopy;
+    [v15 trackReadingSessionEndedWithAssetID:permanentAssetID sessionID:sessionID trackerEventType:type readingFeatureFlags:v14 completion:v19];
 
     [(BKBasePresentingViewController *)self setSessionID:0];
   }
 
   else
   {
-    v17 = objc_retainBlock(v6);
+    v17 = objc_retainBlock(completionCopy);
     if (v17)
     {
       v18 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
-      v17[2](v17, [v8 isEqualToString:v18]);
+      v17[2](v17, [permanentAssetID isEqualToString:v18]);
     }
   }
 }
 
 - (void)assetPresenterUpdateCloseTypeState
 {
-  v2 = [(BKBasePresentingViewController *)self assetViewController];
-  [v2 assetViewControllerUpdateCloseStateTypeIfNeeded];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
+  [assetViewController assetViewControllerUpdateCloseStateTypeIfNeeded];
 }
 
 - (id)bc_childCardPresentingViewController
 {
-  v2 = [(BKBasePresentingViewController *)self presentedViewController];
+  presentedViewController = [(BKBasePresentingViewController *)self presentedViewController];
   v3 = BUProtocolCast();
 
   return v3;
 }
 
-- (void)_willEnterFullScreen:(id)a3
+- (void)_willEnterFullScreen:(id)screen
 {
   v4 = BCCurrentBookLiveResizeLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3946,14 +3946,14 @@ LABEL_12:
   }
 
   [(BKBasePresentingViewController *)self setEnteringFullScreen:1];
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 assetViewControllerWillEnterFullScreen];
+    [assetViewController assetViewControllerWillEnterFullScreen];
   }
 }
 
-- (void)_didEnterFullScreen:(id)a3
+- (void)_didEnterFullScreen:(id)screen
 {
   v4 = BCCurrentBookLiveResizeLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3966,14 +3966,14 @@ LABEL_12:
   v5 = +[UIMenuSystem mainSystem];
   [v5 setNeedsRebuild];
 
-  v6 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 assetViewControllerDidEnterFullScreen];
+    [assetViewController assetViewControllerDidEnterFullScreen];
   }
 }
 
-- (void)_willExitFullScreen:(id)a3
+- (void)_willExitFullScreen:(id)screen
 {
   v4 = BCCurrentBookLiveResizeLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -3982,14 +3982,14 @@ LABEL_12:
   }
 
   [(BKBasePresentingViewController *)self setExitingFullScreen:1];
-  v5 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 assetViewControllerWillExitFullScreen];
+    [assetViewController assetViewControllerWillExitFullScreen];
   }
 }
 
-- (void)_didExitFullScreen:(id)a3
+- (void)_didExitFullScreen:(id)screen
 {
   v4 = BCCurrentBookLiveResizeLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -4002,50 +4002,50 @@ LABEL_12:
   v5 = +[UIMenuSystem mainSystem];
   [v5 setNeedsRebuild];
 
-  v6 = [(BKBasePresentingViewController *)self assetViewController];
+  assetViewController = [(BKBasePresentingViewController *)self assetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v6 assetViewControllerDidExitFullScreen];
+    [assetViewController assetViewControllerDidExitFullScreen];
   }
 }
 
 - (void)bkaxSetUpAccessibilityForPresentedBook
 {
-  v13 = [(BKBasePresentingViewController *)self view];
+  view = [(BKBasePresentingViewController *)self view];
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v4 = [v3 isEqualToString:@"UITransitionView"];
 
   if (v4)
   {
-    v5 = v13;
+    superview2 = view;
 LABEL_6:
     v11 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
-    [v5 setAccessibilityIdentifier:v11];
+    [superview2 setAccessibilityIdentifier:v11];
 
-    v12 = v5;
+    v12 = superview2;
   }
 
   else
   {
-    v6 = v13;
+    v6 = view;
     while (1)
     {
       v14 = v6;
-      v7 = [v6 superview];
+      superview = [v6 superview];
 
-      if (!v7)
+      if (!superview)
       {
         break;
       }
 
-      v5 = [v14 superview];
+      superview2 = [v14 superview];
 
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       v10 = [v9 isEqualToString:@"UITransitionView"];
 
-      v6 = v5;
+      v6 = superview2;
       if (v10)
       {
         goto LABEL_6;

@@ -1,13 +1,13 @@
 @interface _UIMainMenuHostAction
-- (void)performActionFromConnection:(id)a3;
+- (void)performActionFromConnection:(id)connection;
 @end
 
 @implementation _UIMainMenuHostAction
 
-- (void)performActionFromConnection:(id)a3
+- (void)performActionFromConnection:(id)connection
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UISceneMainMenuActions.m" lineNumber:71 description:@"Subclasses must override"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneMainMenuActions.m" lineNumber:71 description:@"Subclasses must override"];
 }
 
 @end

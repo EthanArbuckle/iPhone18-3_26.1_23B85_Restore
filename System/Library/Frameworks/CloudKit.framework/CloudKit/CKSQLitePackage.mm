@@ -1,16 +1,16 @@
 @interface CKSQLitePackage
-+ (id)existingPackageInDatabase:(id)a3 packageInfo:(id)a4 error:(id *)a5;
-+ (id)newPackageInDatabase:(id)a3 error:(id *)a4;
-- (id)addSection:(id)a3;
++ (id)existingPackageInDatabase:(id)database packageInfo:(id)info error:(id *)error;
++ (id)newPackageInDatabase:(id)database error:(id *)error;
+- (id)addSection:(id)section;
 - (id)description;
 - (id)itemEnumerator;
 - (id)prepareForSectionPlanning;
-- (id)sectionAtIndex:(unint64_t)a3 error:(id *)a4;
+- (id)sectionAtIndex:(unint64_t)index error:(id *)error;
 - (id)sectionEnumerator;
-- (id)setAssetTransferOptions:(id)a3;
-- (id)setBoundaryKey:(id)a3;
-- (id)setPackageReference:(id)a3;
-- (id)setSignature:(id)a3 verificationKey:(id)a4;
+- (id)setAssetTransferOptions:(id)options;
+- (id)setBoundaryKey:(id)key;
+- (id)setPackageReference:(id)reference;
+- (id)setSignature:(id)signature verificationKey:(id)key;
 - (id)signature;
 - (id)verificationKey;
 - (void)createTables;
@@ -18,30 +18,30 @@
 
 @implementation CKSQLitePackage
 
-+ (id)newPackageInDatabase:(id)a3 error:(id *)a4
++ (id)newPackageInDatabase:(id)database error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_db(v6, v7, v8);
-  v11 = objc_msgSend_tableGroupInDatabase_withName_options_error_(CKSQLitePackage, v10, v9, @"Package", 0x100000, a4);
+  databaseCopy = database;
+  v9 = objc_msgSend_db(databaseCopy, v7, v8);
+  v11 = objc_msgSend_tableGroupInDatabase_withName_options_error_(CKSQLitePackage, v10, v9, @"Package", 0x100000, error);
   v14 = v11;
   if (v11)
   {
     v15 = objc_msgSend_packageID(v11, v12, v13);
-    v17 = objc_msgSend_packageInfoForNewPackageWithID_error_(v6, v16, v15, a4);
+    v17 = objc_msgSend_packageInfoForNewPackageWithID_error_(databaseCopy, v16, v15, error);
 
     if (v17)
     {
-      sub_188521138(v14, v6, v17);
+      sub_188521138(v14, databaseCopy, v17);
     }
 
     else
     {
 
-      if (a4 && objc_msgSend_CKIsUniqueConstraintError_(MEMORY[0x1E696ABC0], v18, *a4))
+      if (error && objc_msgSend_CKIsUniqueConstraintError_(MEMORY[0x1E696ABC0], v18, *error))
       {
-        *a4 = 0;
-        v14 = objc_msgSend_newPackageInDatabase_error_(a1, v19, v6, a4);
+        *error = 0;
+        v14 = objc_msgSend_newPackageInDatabase_error_(self, v19, databaseCopy, error);
       }
 
       else
@@ -59,9 +59,9 @@
   v20 = ck_log_facility_package;
   if (os_log_type_enabled(ck_log_facility_package, OS_LOG_TYPE_DEBUG))
   {
-    if (a4)
+    if (error)
     {
-      v23 = *a4;
+      v23 = *error;
     }
 
     else
@@ -80,21 +80,21 @@
   return v14;
 }
 
-+ (id)existingPackageInDatabase:(id)a3 packageInfo:(id)a4 error:(id *)a5
++ (id)existingPackageInDatabase:(id)database packageInfo:(id)info error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_db(v7, v9, v10);
-  v14 = objc_msgSend_packageID(v8, v12, v13);
-  v16 = objc_msgSend_tableGroupInDatabase_withID_error_(CKSQLitePackage, v15, v11, v14, a5);
+  databaseCopy = database;
+  infoCopy = info;
+  v11 = objc_msgSend_db(databaseCopy, v9, v10);
+  v14 = objc_msgSend_packageID(infoCopy, v12, v13);
+  v16 = objc_msgSend_tableGroupInDatabase_withID_error_(CKSQLitePackage, v15, v11, v14, error);
   v18 = v16;
-  if (a5 && !v16 && !*a5)
+  if (error && !v16 && !*error)
   {
-    *a5 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v17, @"CKInternalErrorDomain", 12, @"No package with ID %@", v14);
+    *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v17, @"CKInternalErrorDomain", 12, @"No package with ID %@", v14);
   }
 
-  sub_188521138(v18, v7, v8);
+  sub_188521138(v18, databaseCopy, infoCopy);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -103,9 +103,9 @@
   v19 = ck_log_facility_package;
   if (os_log_type_enabled(ck_log_facility_package, OS_LOG_TYPE_DEBUG))
   {
-    if (a5)
+    if (error)
     {
-      v22 = *a5;
+      v22 = *error;
     }
 
     else
@@ -155,12 +155,12 @@
   objc_msgSend_addTable_(self, v12, self->_sections);
 }
 
-- (id)setPackageReference:(id)a3
+- (id)setPackageReference:(id)reference
 {
   packageInfo = self->_packageInfo;
-  v5 = a3;
+  referenceCopy = reference;
   v8 = objc_msgSend_packageReference(packageInfo, v6, v7);
-  objc_msgSend_setPackageReference_(self->_packageInfo, v9, v5);
+  objc_msgSend_setPackageReference_(self->_packageInfo, v9, referenceCopy);
 
   v12 = objc_msgSend_updatePackageReference_(self->_packageDB, v10, self->_packageInfo);
   if (v12)
@@ -171,12 +171,12 @@
   return v12;
 }
 
-- (id)setAssetTransferOptions:(id)a3
+- (id)setAssetTransferOptions:(id)options
 {
   packageInfo = self->_packageInfo;
-  v5 = a3;
+  optionsCopy = options;
   v8 = objc_msgSend_assetTransferOptions(packageInfo, v6, v7);
-  objc_msgSend_setAssetTransferOptions_(self->_packageInfo, v9, v5);
+  objc_msgSend_setAssetTransferOptions_(self->_packageInfo, v9, optionsCopy);
 
   v12 = objc_msgSend_updateAssetTransferOptions_(self->_packageDB, v10, self->_packageInfo);
   if (v12)
@@ -187,12 +187,12 @@
   return v12;
 }
 
-- (id)setBoundaryKey:(id)a3
+- (id)setBoundaryKey:(id)key
 {
   packageInfo = self->_packageInfo;
-  v5 = a3;
+  keyCopy = key;
   v8 = objc_msgSend_boundaryKey(packageInfo, v6, v7);
-  objc_msgSend_setBoundaryKey_(self->_packageInfo, v9, v5);
+  objc_msgSend_setBoundaryKey_(self->_packageInfo, v9, keyCopy);
 
   v12 = objc_msgSend_updateBoundaryKey_(self->_packageDB, v10, self->_packageInfo);
   if (v12)
@@ -203,16 +203,16 @@
   return v12;
 }
 
-- (id)setSignature:(id)a3 verificationKey:(id)a4
+- (id)setSignature:(id)signature verificationKey:(id)key
 {
   packageInfo = self->_packageInfo;
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  signatureCopy = signature;
   v11 = objc_msgSend_signature(packageInfo, v9, v10);
   v14 = objc_msgSend_verificationKey(self->_packageInfo, v12, v13);
-  objc_msgSend_setSignature_(self->_packageInfo, v15, v8);
+  objc_msgSend_setSignature_(self->_packageInfo, v15, signatureCopy);
 
-  objc_msgSend_setVerificationKey_(self->_packageInfo, v16, v7);
+  objc_msgSend_setVerificationKey_(self->_packageInfo, v16, keyCopy);
   v19 = objc_msgSend_updateSignatureAndVerificationKey_(self->_packageDB, v17, self->_packageInfo);
   if (v19)
   {
@@ -283,9 +283,9 @@
   return v5;
 }
 
-- (id)sectionAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)sectionAtIndex:(unint64_t)index error:(id *)error
 {
-  v5 = objc_msgSend_entryWithIndex_error_(self->_sections, a2, a3, a4);
+  v5 = objc_msgSend_entryWithIndex_error_(self->_sections, a2, index, error);
   objc_msgSend_setPackage_(v5, v6, self);
 
   return v5;
@@ -307,16 +307,16 @@
   return v4;
 }
 
-- (id)addSection:(id)a3
+- (id)addSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_188521F34;
   v9[3] = &unk_1E70BC178;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = sectionCopy;
+  v5 = sectionCopy;
   v7 = objc_msgSend_performInTransaction_(self, v6, v9);
 
   return v7;

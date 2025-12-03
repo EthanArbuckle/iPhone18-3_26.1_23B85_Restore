@@ -1,15 +1,15 @@
 @interface KSAboutKeyboardPrivacyController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (KSAboutKeyboardPrivacyController)initWithGroupSpecifier:(id)a3 asHeader:(BOOL)a4 inListController:(id)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (KSAboutKeyboardPrivacyController)initWithGroupSpecifier:(id)specifier asHeader:(BOOL)header inListController:(id)controller;
 - (void)aboutDonePressed;
-- (void)addPrivacyLinkViewIfNecessaryToHeaderView:(id)a3 forSection:(int64_t)a4;
+- (void)addPrivacyLinkViewIfNecessaryToHeaderView:(id)view forSection:(int64_t)section;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation KSAboutKeyboardPrivacyController
 
-- (KSAboutKeyboardPrivacyController)initWithGroupSpecifier:(id)a3 asHeader:(BOOL)a4 inListController:(id)a5
+- (KSAboutKeyboardPrivacyController)initWithGroupSpecifier:(id)specifier asHeader:(BOOL)header inListController:(id)controller
 {
   v11.receiver = self;
   v11.super_class = KSAboutKeyboardPrivacyController;
@@ -17,9 +17,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_listController = a5;
-    v8->_asHeader = a4;
-    [(KSAboutKeyboardPrivacyController *)v8 setSpecifier:a3];
+    v8->_listController = controller;
+    v8->_asHeader = header;
+    [(KSAboutKeyboardPrivacyController *)v8 setSpecifier:specifier];
   }
 
   return v9;
@@ -34,38 +34,38 @@
   [(KSAboutKeyboardPrivacyController *)&v3 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  self->_specifier = a3;
+  self->_specifier = specifier;
   v5 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"APP_KEYBOARDS_INFO", &stru_28679E3A8, @"Keyboard"}];
   v6 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"APP_KEYBOARDS_INFO_LINK", &stru_28679E3A8, @"Keyboard"}];
-  v7 = [(KSAboutKeyboardPrivacyController *)self asHeader];
+  asHeader = [(KSAboutKeyboardPrivacyController *)self asHeader];
   v8 = MEMORY[0x277D3FFA8];
-  if (!v7)
+  if (!asHeader)
   {
     v8 = MEMORY[0x277D3FF88];
   }
 
   v9 = *v8;
-  v10 = [(KSAboutKeyboardPrivacyController *)self specifier];
+  specifier = [(KSAboutKeyboardPrivacyController *)self specifier];
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v5, v6];
 
-  [(PSSpecifier *)v10 setProperty:v11 forKey:v9];
+  [(PSSpecifier *)specifier setProperty:v11 forKey:v9];
 }
 
-- (void)addPrivacyLinkViewIfNecessaryToHeaderView:(id)a3 forSection:(int64_t)a4
+- (void)addPrivacyLinkViewIfNecessaryToHeaderView:(id)view forSection:(int64_t)section
 {
   if ([(KSAboutKeyboardPrivacyController *)self specifier])
   {
     v7 = [(PSListController *)[(KSAboutKeyboardPrivacyController *)self listController] indexPathForSpecifier:[(KSAboutKeyboardPrivacyController *)self specifier]];
-    v8 = -[KSAboutKeyboardPrivacyController asHeader](self, "asHeader") ? [a3 detailTextLabel] : objc_msgSend(a3, "textLabel");
+    v8 = -[KSAboutKeyboardPrivacyController asHeader](self, "asHeader") ? [view detailTextLabel] : objc_msgSend(view, "textLabel");
     v9 = v8;
-    if ([v7 section] == a4)
+    if ([v7 section] == section)
     {
-      v10 = [(UITextView *)self->_infoTextView superview];
-      if (v10 != [a3 contentView])
+      superview = [(UITextView *)self->_infoTextView superview];
+      if (superview != [view contentView])
       {
-        [a3 layoutIfNeeded];
+        [view layoutIfNeeded];
         [v9 setHidden:1];
         [(UITextView *)self->_infoTextView removeFromSuperview];
 
@@ -80,10 +80,10 @@
         [(UITextView *)self->_infoTextView setTextContainerInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
         [(NSTextContainer *)[(UITextView *)self->_infoTextView textContainer] setLineFragmentPadding:0.0];
         [(UITextView *)self->_infoTextView setContentInsetAdjustmentBehavior:3];
-        [objc_msgSend(a3 "contentView")];
+        [objc_msgSend(view "contentView")];
         v12 = [objc_msgSend(v9 "attributedText")];
-        v13 = [v9 text];
-        v14 = [v13 rangeOfString:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"APP_KEYBOARDS_INFO_LINK", &stru_28679E3A8, @"Keyboard"}];
+        text = [v9 text];
+        v14 = [text rangeOfString:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"APP_KEYBOARDS_INFO_LINK", &stru_28679E3A8, @"Keyboard"}];
         v16 = v15;
         [v12 addAttribute:*MEMORY[0x277D740C0] value:objc_msgSend(MEMORY[0x277D75348] range:{"systemBlueColor"), v14, v15}];
         [v12 addAttribute:*MEMORY[0x277D740E8] value:objc_msgSend(MEMORY[0x277CBEBC0] range:{"URLWithString:", &stru_28679E3A8), v14, v16}];
@@ -99,7 +99,7 @@
         v25 = v24;
         if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
         {
-          [objc_msgSend(a3 "textLabel")];
+          [objc_msgSend(view "textLabel")];
           MaxX = CGRectGetMaxX(v30);
           [(UITextView *)self->_infoTextView frame];
           v18 = MaxX - v27;
@@ -115,20 +115,20 @@
 
 - (void)aboutDonePressed
 {
-  v2 = [(KSAboutKeyboardPrivacyController *)self listController];
+  listController = [(KSAboutKeyboardPrivacyController *)self listController];
 
-  [(PSListController *)v2 dismissViewControllerAnimated:1 completion:0];
+  [(PSListController *)listController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = [(KSAboutKeyboardPrivacyController *)self specifier:a3];
+  v7 = [(KSAboutKeyboardPrivacyController *)self specifier:view];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277D75D28]);
     [v8 setTitle:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ABOUT_APP_KEYBOARDS_TITLE", &stru_28679E3A8, @"Keyboard"}];
-    v9 = [v8 navigationItem];
-    [v9 setRightBarButtonItem:{objc_msgSend(objc_alloc(MEMORY[0x277D751E0]), "initWithBarButtonSystemItem:target:action:", 0, self, sel_aboutDonePressed)}];
+    navigationItem = [v8 navigationItem];
+    [navigationItem setRightBarButtonItem:{objc_msgSend(objc_alloc(MEMORY[0x277D751E0]), "initWithBarButtonSystemItem:target:action:", 0, self, sel_aboutDonePressed)}];
     v10 = objc_alloc(MEMORY[0x277D75C40]);
     v11 = [v10 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [v11 setText:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ABOUT_APP_KEYBOARDS_INFO_TEXT", &stru_28679E3A8, @"Keyboard"}];

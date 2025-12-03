@@ -1,63 +1,63 @@
 @interface VUIMediaEntityFetchRequest
-+ (VUIMediaEntityFetchRequest)mediaEntityFetchRequestWithIdentifier:(id)a3;
++ (VUIMediaEntityFetchRequest)mediaEntityFetchRequestWithIdentifier:(id)identifier;
 + (id)_any4KResolutionPredicate;
 + (id)_anyHDRColorCapabilityPredicate;
-+ (id)_episodesFetchRequestWithSeasonIdentifier:(id)a3 showIdentifier:(id)a4;
-+ (id)_finalizedSortDescriptorFromSortDescriptor:(id)a3 mediaEntityKind:(id)a4;
-+ (id)_finalizedSortDescriptorsFromSortDescriptors:(id)a3 mediaEntityKind:(id)a4;
++ (id)_episodesFetchRequestWithSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier;
++ (id)_finalizedSortDescriptorFromSortDescriptor:(id)descriptor mediaEntityKind:(id)kind;
++ (id)_finalizedSortDescriptorsFromSortDescriptors:(id)descriptors mediaEntityKind:(id)kind;
 + (id)_includeSortIndexesOptions;
 + (id)_minimalMovieRentalsPropertiesFetchRequest;
 + (id)_minimalMoviesPropertiesFetchRequest;
-+ (id)_minimalPropertiesFetchRequestWithType:(id)a3;
++ (id)_minimalPropertiesFetchRequestWithType:(id)type;
 + (id)_minimalShowsPropertiesFetchRequest;
-+ (id)_seasonsFetchRequestWithSeasonIdentifier:(id)a3;
-+ (id)_seasonsFetchRequestWithShowIdentifier:(id)a3;
++ (id)_seasonsFetchRequestWithSeasonIdentifier:(id)identifier;
++ (id)_seasonsFetchRequestWithShowIdentifier:(id)identifier;
 + (id)homeVideosFetchRequest;
 - (BOOL)_isItemsFetch;
 - (BOOL)_isSeasonsFetch;
 - (BOOL)_isShowsFetch;
 - (BOOL)_shouldGenerateGroupingSortIndexes;
 - (BOOL)_shouldGenerateSortIndexes;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)identifier;
 - (VUIMediaEntityFetchRequest)init;
-- (VUIMediaEntityFetchRequest)initWithMediaEntityType:(id)a3;
-- (VUIMediaEntityFetchRequest)initWithMediaEntityTypes:(id)a3;
+- (VUIMediaEntityFetchRequest)initWithMediaEntityType:(id)type;
+- (VUIMediaEntityFetchRequest)initWithMediaEntityTypes:(id)types;
 - (_NSRange)range;
-- (id)_manualSortDescriptorsWithMediaEntityKind:(id)a3 propertiesRequiredForSort:(id *)a4;
-- (id)_sortIndexPropertyKeyWithMediaEntityKind:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_manualSortDescriptorsWithMediaEntityKind:(id)kind propertiesRequiredForSort:(id *)sort;
+- (id)_sortIndexPropertyKeyWithMediaEntityKind:(id)kind;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_addPredicate:(id)a3;
+- (void)_addPredicate:(id)predicate;
 - (void)add4KResolutionPredicate;
-- (void)addAdamIdPredicate:(id)a3;
-- (void)addAdamIdsPredicate:(id)a3;
-- (void)addDownloadStatePredicateForStates:(unint64_t)a3;
+- (void)addAdamIdPredicate:(id)predicate;
+- (void)addAdamIdsPredicate:(id)predicate;
+- (void)addDownloadStatePredicateForStates:(unint64_t)states;
 - (void)addGroupingSortIndexesOption;
 - (void)addHDRColorCapabilityOr4KResolutionPredicate;
 - (void)addHDRColorCapabilityPredicate;
 - (void)addHasItemsOption;
 - (void)addIsLocalOrHasExpiredDownloadPredicate;
 - (void)addIsLocalPredicate;
-- (void)addRecentlyAddedSortDescriptorWithLimit:(unint64_t)a3;
+- (void)addRecentlyAddedSortDescriptorWithLimit:(unint64_t)limit;
 - (void)addSortIndexesOption;
-- (void)setGroupingKeyPath:(id)a3;
-- (void)setGroupingSortComparator:(id)a3;
-- (void)setOptions:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)setProperties:(id)a3;
-- (void)setSortDescriptors:(id)a3;
+- (void)setGroupingKeyPath:(id)path;
+- (void)setGroupingSortComparator:(id)comparator;
+- (void)setOptions:(id)options;
+- (void)setPredicate:(id)predicate;
+- (void)setProperties:(id)properties;
+- (void)setSortDescriptors:(id)descriptors;
 @end
 
 @implementation VUIMediaEntityFetchRequest
 
-+ (VUIMediaEntityFetchRequest)mediaEntityFetchRequestWithIdentifier:(id)a3
++ (VUIMediaEntityFetchRequest)mediaEntityFetchRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F5E8A360])
+  identifierCopy = identifier;
+  if ([identifierCopy conformsToProtocol:&unk_1F5E8A360])
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   else
@@ -67,10 +67,10 @@
   }
 
   v6 = [VUIMediaEntityFetchRequest alloc];
-  v7 = [v5 mediaEntityType];
-  v8 = [(VUIMediaEntityFetchRequest *)v6 initWithMediaEntityType:v7];
+  mediaEntityType = [v5 mediaEntityType];
+  v8 = [(VUIMediaEntityFetchRequest *)v6 initWithMediaEntityType:mediaEntityType];
 
-  v9 = [a1 _identifierPredicateWithIdentifier:v4];
+  v9 = [self _identifierPredicateWithIdentifier:identifierCopy];
   [(VUIMediaEntityFetchRequest *)v8 setPredicate:v9];
   v10 = VUIMediaEntityFetchRequestAllPropertiesSet();
   [(VUIMediaEntityFetchRequest *)v8 setProperties:v10];
@@ -81,15 +81,15 @@
 + (id)homeVideosFetchRequest
 {
   v3 = +[VUIMediaEntityType homeVideo];
-  v4 = [a1 _minimalPropertiesFetchRequestWithType:v3];
+  v4 = [self _minimalPropertiesFetchRequestWithType:v3];
 
   return v4;
 }
 
 - (void)addSortIndexesOption
 {
-  v3 = [(VUIMediaEntityFetchRequest *)self options];
-  v4 = [v3 mutableCopy];
+  options = [(VUIMediaEntityFetchRequest *)self options];
+  v4 = [options mutableCopy];
 
   [v4 setObject:MEMORY[0x1E695E118] forKey:@"IncludeSortIndexes"];
   [(VUIMediaEntityFetchRequest *)self setOptions:v4];
@@ -97,8 +97,8 @@
 
 - (void)addGroupingSortIndexesOption
 {
-  v3 = [(VUIMediaEntityFetchRequest *)self options];
-  v4 = [v3 mutableCopy];
+  options = [(VUIMediaEntityFetchRequest *)self options];
+  v4 = [options mutableCopy];
 
   [v4 setObject:MEMORY[0x1E695E118] forKey:@"IncludeGroupingSortIndexes"];
   [(VUIMediaEntityFetchRequest *)self setOptions:v4];
@@ -106,8 +106,8 @@
 
 - (void)addHasItemsOption
 {
-  v3 = [(VUIMediaEntityFetchRequest *)self options];
-  v5 = [v3 mutableCopy];
+  options = [(VUIMediaEntityFetchRequest *)self options];
+  v5 = [options mutableCopy];
 
   v4 = v5;
   if (!v5)
@@ -120,76 +120,76 @@
   [(VUIMediaEntityFetchRequest *)self setOptions:v6];
 }
 
-- (void)addRecentlyAddedSortDescriptorWithLimit:(unint64_t)a3
+- (void)addRecentlyAddedSortDescriptorWithLimit:(unint64_t)limit
 {
-  v5 = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
-  v6 = [v5 allObjects];
-  v7 = [v6 firstObject];
-  v8 = [v7 subtype];
+  mediaEntityTypes = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
+  allObjects = [mediaEntityTypes allObjects];
+  firstObject = [allObjects firstObject];
+  subtype = [firstObject subtype];
 
-  if (v8 == 1)
+  if (subtype == 1)
   {
-    v9 = [objc_opt_class() _addedToDateSortDescriptor];
+    _addedToDateSortDescriptor = [objc_opt_class() _addedToDateSortDescriptor];
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!subtype)
   {
-    v9 = [objc_opt_class() _addedDateSortDescriptor];
+    _addedToDateSortDescriptor = [objc_opt_class() _addedDateSortDescriptor];
 LABEL_5:
-    v12 = v9;
+    v12 = _addedToDateSortDescriptor;
     goto LABEL_7;
   }
 
   v12 = 0;
 LABEL_7:
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v12, 0}];
-  v11 = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
-  if (v11)
+  sortDescriptors = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
+  if (sortDescriptors)
   {
-    [v10 addObjectsFromArray:v11];
+    [v10 addObjectsFromArray:sortDescriptors];
   }
 
   [(VUIMediaEntityFetchRequest *)self setSortDescriptors:v10];
-  [(VUIMediaEntityFetchRequest *)self setRange:0, a3];
+  [(VUIMediaEntityFetchRequest *)self setRange:0, limit];
 }
 
 - (void)addHDRColorCapabilityPredicate
 {
-  v3 = [objc_opt_class() _anyHDRColorCapabilityPredicate];
-  [(VUIMediaEntityFetchRequest *)self _addPredicate:v3];
+  _anyHDRColorCapabilityPredicate = [objc_opt_class() _anyHDRColorCapabilityPredicate];
+  [(VUIMediaEntityFetchRequest *)self _addPredicate:_anyHDRColorCapabilityPredicate];
 }
 
 - (void)add4KResolutionPredicate
 {
-  v3 = [objc_opt_class() _any4KResolutionPredicate];
-  [(VUIMediaEntityFetchRequest *)self _addPredicate:v3];
+  _any4KResolutionPredicate = [objc_opt_class() _any4KResolutionPredicate];
+  [(VUIMediaEntityFetchRequest *)self _addPredicate:_any4KResolutionPredicate];
 }
 
 - (void)addHDRColorCapabilityOr4KResolutionPredicate
 {
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [objc_opt_class() _anyHDRColorCapabilityPredicate];
-  [v6 addObject:v3];
-  v4 = [objc_opt_class() _any4KResolutionPredicate];
-  [v6 addObject:v4];
+  _anyHDRColorCapabilityPredicate = [objc_opt_class() _anyHDRColorCapabilityPredicate];
+  [v6 addObject:_anyHDRColorCapabilityPredicate];
+  _any4KResolutionPredicate = [objc_opt_class() _any4KResolutionPredicate];
+  [v6 addObject:_any4KResolutionPredicate];
   v5 = [objc_opt_class() _predicateWithSubpredicates:v6 compoundPredicateType:2];
   [(VUIMediaEntityFetchRequest *)self _addPredicate:v5];
 }
 
 - (void)addIsLocalPredicate
 {
-  v3 = [objc_opt_class() _isLocalPredicate];
-  [(VUIMediaEntityFetchRequest *)self _addPredicate:v3];
+  _isLocalPredicate = [objc_opt_class() _isLocalPredicate];
+  [(VUIMediaEntityFetchRequest *)self _addPredicate:_isLocalPredicate];
 }
 
 - (void)addIsLocalOrHasExpiredDownloadPredicate
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() _isLocalPredicate];
+  _isLocalPredicate = [objc_opt_class() _isLocalPredicate];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NIL AND %K == NO AND %K == NO", @"downloadExpirationDate", @"markedAsDeleted", @"isLocal"];
   v5 = objc_opt_class();
-  v8[0] = v3;
+  v8[0] = _isLocalPredicate;
   v8[1] = v4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v7 = [v5 _predicateWithSubpredicates:v6 compoundPredicateType:2];
@@ -197,12 +197,12 @@ LABEL_7:
   [(VUIMediaEntityFetchRequest *)self _addPredicate:v7];
 }
 
-- (void)addDownloadStatePredicateForStates:(unint64_t)a3
+- (void)addDownloadStatePredicateForStates:(unint64_t)states
 {
   v48[2] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = v5;
-  if (a3)
+  if (states)
   {
     v36 = v5;
     v7 = MEMORY[0x1E69D4BF0];
@@ -225,14 +225,14 @@ LABEL_7:
       sDownloadManager = v12;
     }
 
-    v35 = a3;
+    statesCopy = states;
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v15 = [sDownloadManager downloads];
-    v16 = [v15 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    downloads = [sDownloadManager downloads];
+    v16 = [downloads countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v16)
     {
       v17 = v16;
@@ -245,10 +245,10 @@ LABEL_7:
         {
           if (*v42 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(downloads);
           }
 
-          v21 = [*(*(&v41 + 1) + 8 * v20) valueForProperty:{v19, v35}];
+          v21 = [*(*(&v41 + 1) + 8 * v20) valueForProperty:{v19, statesCopy}];
           if (v21)
           {
             [v14 addObject:v21];
@@ -258,7 +258,7 @@ LABEL_7:
         }
 
         while (v17 != v20);
-        v17 = [v15 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v17 = [downloads countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v17);
@@ -269,9 +269,9 @@ LABEL_7:
     v37 = 0u;
     v38 = 0u;
     v22 = +[VUIDownloadManager sharedInstance];
-    v23 = [v22 downloads];
+    downloads2 = [v22 downloads];
 
-    v24 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    v24 = [downloads2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v24)
     {
       v25 = v24;
@@ -284,11 +284,11 @@ LABEL_7:
         {
           if (*v38 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(downloads2);
           }
 
-          v29 = [*(*(&v37 + 1) + 8 * v28) mediaItem];
-          v30 = [v29 mediaItemMetadataForProperty:v27];
+          mediaItem = [*(*(&v37 + 1) + 8 * v28) mediaItem];
+          v30 = [mediaItem mediaItemMetadataForProperty:v27];
 
           if (v30)
           {
@@ -300,7 +300,7 @@ LABEL_7:
         }
 
         while (v25 != v28);
-        v25 = [v23 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v25 = [downloads2 countByEnumeratingWithState:&v37 objects:v45 count:16];
       }
 
       while (v25);
@@ -310,49 +310,49 @@ LABEL_7:
     v6 = v36;
     [v36 addObject:v32];
 
-    LOBYTE(a3) = v35;
+    LOBYTE(states) = statesCopy;
   }
 
-  if ((a3 & 2) != 0)
+  if ((states & 2) != 0)
   {
-    v33 = [objc_opt_class() _isLocalPredicate];
-    [v6 addObject:v33];
+    _isLocalPredicate = [objc_opt_class() _isLocalPredicate];
+    [v6 addObject:_isLocalPredicate];
   }
 
   v34 = [objc_opt_class() _predicateWithSubpredicates:v6 compoundPredicateType:2];
   [(VUIMediaEntityFetchRequest *)self _addPredicate:v34];
 }
 
-- (void)addAdamIdPredicate:(id)a3
+- (void)addAdamIdPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _isEqualPredicateWithAdamId:v4];
+  predicateCopy = predicate;
+  v5 = [objc_opt_class() _isEqualPredicateWithAdamId:predicateCopy];
 
   [(VUIMediaEntityFetchRequest *)self _addPredicate:v5];
 }
 
-- (void)addAdamIdsPredicate:(id)a3
+- (void)addAdamIdsPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _isInPredicateWithAdamId:v4];
+  predicateCopy = predicate;
+  v5 = [objc_opt_class() _isInPredicateWithAdamId:predicateCopy];
 
   [(VUIMediaEntityFetchRequest *)self _addPredicate:v5];
 }
 
-+ (id)_minimalPropertiesFetchRequestWithType:(id)a3
++ (id)_minimalPropertiesFetchRequestWithType:(id)type
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[VUIMediaEntityFetchRequest alloc] initWithMediaEntityType:v4];
+  typeCopy = type;
+  v5 = [[VUIMediaEntityFetchRequest alloc] initWithMediaEntityType:typeCopy];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [a1 _includeSortIndexesOptions];
-  [(VUIMediaEntityFetchRequest *)v5 setOptions:v7];
+  _includeSortIndexesOptions = [self _includeSortIndexesOptions];
+  [(VUIMediaEntityFetchRequest *)v5 setOptions:_includeSortIndexesOptions];
 
-  v8 = [a1 _predicateWithSubpredicates:v6 compoundPredicateType:1];
+  v8 = [self _predicateWithSubpredicates:v6 compoundPredicateType:1];
   [(VUIMediaEntityFetchRequest *)v5 setPredicate:v8];
-  v9 = [a1 _titleSortDescriptor];
-  v13[0] = v9;
+  _titleSortDescriptor = [self _titleSortDescriptor];
+  v13[0] = _titleSortDescriptor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [(VUIMediaEntityFetchRequest *)v5 setSortDescriptors:v10];
 
@@ -365,7 +365,7 @@ LABEL_7:
 + (id)_minimalMoviesPropertiesFetchRequest
 {
   v3 = +[VUIMediaEntityType movie];
-  v4 = [a1 _minimalPropertiesFetchRequestWithType:v3];
+  v4 = [self _minimalPropertiesFetchRequestWithType:v3];
 
   v5 = VUIMediaEntityFetchRequestMinimalMoviesPropertiesSet();
   [v4 setProperties:v5];
@@ -376,7 +376,7 @@ LABEL_7:
 + (id)_minimalMovieRentalsPropertiesFetchRequest
 {
   v3 = +[VUIMediaEntityType movieRental];
-  v4 = [a1 _minimalPropertiesFetchRequestWithType:v3];
+  v4 = [self _minimalPropertiesFetchRequestWithType:v3];
 
   v5 = VUIMediaEntityFetchRequestMinimalMovieRentalsPropertiesSet();
   [v4 setProperties:v5];
@@ -387,7 +387,7 @@ LABEL_7:
 + (id)_minimalShowsPropertiesFetchRequest
 {
   v3 = +[VUIMediaEntityType show];
-  v4 = [a1 _minimalPropertiesFetchRequestWithType:v3];
+  v4 = [self _minimalPropertiesFetchRequestWithType:v3];
 
   v5 = VUIMediaEntityFetchRequestMinimalShowPropertiesSet();
   [v4 setProperties:v5];
@@ -395,27 +395,27 @@ LABEL_7:
   return v4;
 }
 
-+ (id)_seasonsFetchRequestWithShowIdentifier:(id)a3
++ (id)_seasonsFetchRequestWithShowIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [VUIMediaEntityFetchRequest alloc];
   v6 = +[VUIMediaEntityType season];
   v7 = [(VUIMediaEntityFetchRequest *)v5 initWithMediaEntityType:v6];
 
-  if (v4)
+  if (identifierCopy)
   {
-    v8 = [a1 _showIdentifierPredicateWithIdentifier:v4];
+    v8 = [self _showIdentifierPredicateWithIdentifier:identifierCopy];
     [(VUIMediaEntityFetchRequest *)v7 setPredicate:v8];
   }
 
-  v9 = [a1 _includeSortIndexesOptions];
-  [(VUIMediaEntityFetchRequest *)v7 setOptions:v9];
+  _includeSortIndexesOptions = [self _includeSortIndexesOptions];
+  [(VUIMediaEntityFetchRequest *)v7 setOptions:_includeSortIndexesOptions];
 
-  v10 = [a1 _titleSortDescriptor];
-  v11 = [a1 _seasonNumberSortDescriptor];
-  v15[0] = v11;
-  v15[1] = v10;
+  _titleSortDescriptor = [self _titleSortDescriptor];
+  _seasonNumberSortDescriptor = [self _seasonNumberSortDescriptor];
+  v15[0] = _seasonNumberSortDescriptor;
+  v15[1] = _titleSortDescriptor;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   [(VUIMediaEntityFetchRequest *)v7 setSortDescriptors:v12];
   v13 = VUIMediaEntityFetchRequestAllPropertiesSet();
@@ -424,16 +424,16 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_seasonsFetchRequestWithSeasonIdentifier:(id)a3
++ (id)_seasonsFetchRequestWithSeasonIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [VUIMediaEntityFetchRequest alloc];
   v6 = +[VUIMediaEntityType season];
   v7 = [(VUIMediaEntityFetchRequest *)v5 initWithMediaEntityType:v6];
 
-  if (v4)
+  if (identifierCopy)
   {
-    v8 = [a1 _identifierPredicateWithIdentifier:v4];
+    v8 = [self _identifierPredicateWithIdentifier:identifierCopy];
     [(VUIMediaEntityFetchRequest *)v7 setPredicate:v8];
   }
 
@@ -443,25 +443,25 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_episodesFetchRequestWithSeasonIdentifier:(id)a3 showIdentifier:(id)a4
++ (id)_episodesFetchRequestWithSeasonIdentifier:(id)identifier showIdentifier:(id)showIdentifier
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  showIdentifierCopy = showIdentifier;
   v8 = [VUIMediaEntityFetchRequest alloc];
   v9 = +[VUIMediaEntityType episode];
   v10 = [(VUIMediaEntityFetchRequest *)v8 initWithMediaEntityType:v9];
 
-  v11 = [a1 _titleSortDescriptor];
+  _titleSortDescriptor = [self _titleSortDescriptor];
   v12 = VUIMediaEntityFetchRequestMinimalEpisodePropertiesSet();
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6)
+  if (identifierCopy)
   {
-    v14 = [a1 _seasonIdentifierPredicateWithIdentifier:v6];
+    v14 = [self _seasonIdentifierPredicateWithIdentifier:identifierCopy];
     [v13 addObject:v14];
-    v15 = [a1 _episodeNumberSortDescriptor];
-    v29[0] = v15;
-    v29[1] = v11;
+    _episodeNumberSortDescriptor = [self _episodeNumberSortDescriptor];
+    v29[0] = _episodeNumberSortDescriptor;
+    v29[1] = _titleSortDescriptor;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
 
 LABEL_3:
@@ -470,37 +470,37 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!showIdentifierCopy)
   {
-    v27 = v11;
+    v27 = _titleSortDescriptor;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     goto LABEL_3;
   }
 
-  v25 = [a1 _showIdentifierPredicateWithIdentifier:v7];
+  v25 = [self _showIdentifierPredicateWithIdentifier:showIdentifierCopy];
   [v13 addObject:v25];
-  v24 = [a1 _episodeNumberSortDescriptor];
-  v23 = [a1 _fractionalEpisodeNumberSortDescriptor];
-  v28[0] = v23;
-  v28[1] = v24;
-  v28[2] = v11;
+  _episodeNumberSortDescriptor2 = [self _episodeNumberSortDescriptor];
+  _fractionalEpisodeNumberSortDescriptor = [self _fractionalEpisodeNumberSortDescriptor];
+  v28[0] = _fractionalEpisodeNumberSortDescriptor;
+  v28[1] = _episodeNumberSortDescriptor2;
+  v28[2] = _titleSortDescriptor;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   v17 = @"seasonIdentifier";
   v19 = [MEMORY[0x1E695DFD8] setWithObjects:{@"seasonTitle", @"seasonIdentifier", 0}];
-  v26 = v7;
+  v26 = showIdentifierCopy;
   v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   [v20 unionSet:v12];
   [v20 unionSet:v19];
 
   v18 = &__block_literal_global_37;
   v12 = v20;
-  v7 = v26;
+  showIdentifierCopy = v26;
 LABEL_6:
   [(VUIMediaEntityFetchRequest *)v10 setSortDescriptors:v16];
   [(VUIMediaEntityFetchRequest *)v10 setGroupingKeyPath:v17];
   [(VUIMediaEntityFetchRequest *)v10 setGroupingSortComparator:v18];
   [(VUIMediaEntityFetchRequest *)v10 setProperties:v12];
-  v21 = [a1 _predicateWithSubpredicates:v13 compoundPredicateType:1];
+  v21 = [self _predicateWithSubpredicates:v13 compoundPredicateType:1];
   [(VUIMediaEntityFetchRequest *)v10 setPredicate:v21];
 
   return v10;
@@ -570,17 +570,17 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   return v5;
 }
 
-- (void)_addPredicate:(id)a3
+- (void)_addPredicate:(id)predicate
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  predicateCopy = predicate;
   v8 = objc_alloc_init(v4);
-  [v8 addObject:v5];
+  [v8 addObject:predicateCopy];
 
-  v6 = [(VUIMediaEntityFetchRequest *)self predicate];
-  if (v6)
+  predicate = [(VUIMediaEntityFetchRequest *)self predicate];
+  if (predicate)
   {
-    [v8 addObject:v6];
+    [v8 addObject:predicate];
   }
 
   v7 = [objc_opt_class() _predicateWithSubpredicates:v8 compoundPredicateType:1];
@@ -597,23 +597,23 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   return v2;
 }
 
-- (VUIMediaEntityFetchRequest)initWithMediaEntityType:(id)a3
+- (VUIMediaEntityFetchRequest)initWithMediaEntityType:(id)type
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:type];
   v5 = [(VUIMediaEntityFetchRequest *)self initWithMediaEntityTypes:v4];
 
   return v5;
 }
 
-- (VUIMediaEntityFetchRequest)initWithMediaEntityTypes:(id)a3
+- (VUIMediaEntityFetchRequest)initWithMediaEntityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v12.receiver = self;
   v12.super_class = VUIMediaEntityFetchRequest;
   v5 = [(VUIMediaEntityFetchRequest *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     mediaEntityTypes = v5->_mediaEntityTypes;
     v5->_mediaEntityTypes = v6;
 
@@ -641,10 +641,10 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_identifier;
-    self->_identifier = v5;
+    self->_identifier = uUIDString;
 
     identifier = self->_identifier;
   }
@@ -652,19 +652,19 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   return identifier;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v9 = a3;
-  v4 = v9;
-  if ((VUIMediaEntityFetchRequestIsAllPropertiesSet(v9) & 1) == 0)
+  propertiesCopy = properties;
+  v4 = propertiesCopy;
+  if ((VUIMediaEntityFetchRequestIsAllPropertiesSet(propertiesCopy) & 1) == 0)
   {
     v5 = objc_alloc(MEMORY[0x1E695DFA8]);
     v6 = VUIMediaEntityFetchRequestRequiredProperties();
     v4 = [v5 initWithSet:v6];
 
-    if (v9)
+    if (propertiesCopy)
     {
-      [v4 unionSet:v9];
+      [v4 unionSet:propertiesCopy];
     }
   }
 
@@ -675,56 +675,56 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  v4 = [a3 copy];
+  v4 = [predicate copy];
   predicate = self->_predicate;
   self->_predicate = v4;
 
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v4 = [a3 copy];
+  v4 = [descriptors copy];
   sortDescriptors = self->_sortDescriptors;
   self->_sortDescriptors = v4;
 
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (void)setGroupingKeyPath:(id)a3
+- (void)setGroupingKeyPath:(id)path
 {
-  v4 = [a3 copy];
+  v4 = [path copy];
   groupingKeyPath = self->_groupingKeyPath;
   self->_groupingKeyPath = v4;
 
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (void)setGroupingSortComparator:(id)a3
+- (void)setGroupingSortComparator:(id)comparator
 {
-  v4 = [a3 copy];
+  v4 = [comparator copy];
   groupingSortComparator = self->_groupingSortComparator;
   self->_groupingSortComparator = v4;
 
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   options = self->_options;
   self->_options = v4;
 
   [(VUIMediaEntityFetchRequest *)self _didUpdateRequestProperties];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VUIMediaEntityFetchRequest alloc] initWithMediaEntityTypes:self->_mediaEntityTypes];
-  v5 = [(VUIMediaEntityFetchRequest *)self identifier];
-  v6 = [v5 copy];
+  identifier = [(VUIMediaEntityFetchRequest *)self identifier];
+  v6 = [identifier copy];
   identifier = v4->_identifier;
   v4->_identifier = v6;
 
@@ -765,28 +765,28 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMediaEntityFetchRequest *)self identifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", v6];
+  identifier = [(VUIMediaEntityFetchRequest *)self identifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"identifier", identifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntityTypes", v9];
+  mediaEntityTypes = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"mediaEntityTypes", mediaEntityTypes];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(VUIMediaEntityFetchRequest *)self predicate];
-  v13 = [v11 stringWithFormat:@"%@=%@", @"predicate", v12];
+  predicate = [(VUIMediaEntityFetchRequest *)self predicate];
+  v13 = [v11 stringWithFormat:@"%@=%@", @"predicate", predicate];
   [v3 addObject:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
-  v16 = [v14 stringWithFormat:@"%@=%@", @"sortDescriptors", v15];
+  sortDescriptors = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
+  v16 = [v14 stringWithFormat:@"%@=%@", @"sortDescriptors", sortDescriptors];
   [v3 addObject:v16];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [(VUIMediaEntityFetchRequest *)self properties];
-  v19 = [v17 stringWithFormat:@"%@=%@", @"properties", v18];
+  properties = [(VUIMediaEntityFetchRequest *)self properties];
+  v19 = [v17 stringWithFormat:@"%@=%@", @"properties", properties];
   [v3 addObject:v19];
 
   v20 = MEMORY[0x1E696AEC0];
@@ -799,18 +799,18 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   [v3 addObject:v26];
 
   v27 = MEMORY[0x1E696AEC0];
-  v28 = [(VUIMediaEntityFetchRequest *)self groupingKeyPath];
-  v29 = [v27 stringWithFormat:@"%@=%@", @"groupingKeyPath", v28];
+  groupingKeyPath = [(VUIMediaEntityFetchRequest *)self groupingKeyPath];
+  v29 = [v27 stringWithFormat:@"%@=%@", @"groupingKeyPath", groupingKeyPath];
   [v3 addObject:v29];
 
   v30 = MEMORY[0x1E696AEC0];
-  v31 = [(VUIMediaEntityFetchRequest *)self groupingSortComparator];
-  v32 = [v30 stringWithFormat:@"%@=%@", @"groupingSortComparator", v31];
+  groupingSortComparator = [(VUIMediaEntityFetchRequest *)self groupingSortComparator];
+  v32 = [v30 stringWithFormat:@"%@=%@", @"groupingSortComparator", groupingSortComparator];
   [v3 addObject:v32];
 
   v33 = MEMORY[0x1E696AEC0];
-  v34 = [(VUIMediaEntityFetchRequest *)self options];
-  v35 = [v33 stringWithFormat:@"%@=%@", @"options", v34];
+  options = [(VUIMediaEntityFetchRequest *)self options];
+  v35 = [v33 stringWithFormat:@"%@=%@", @"options", options];
   [v3 addObject:v35];
 
   v36 = MEMORY[0x1E696AEC0];
@@ -822,28 +822,28 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
 
 - (unint64_t)hash
 {
-  v2 = [(VUIMediaEntityFetchRequest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(VUIMediaEntityFetchRequest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMediaEntityFetchRequest *)self identifier];
-    v8 = [(VUIMediaEntityFetchRequest *)v6 identifier];
-    v9 = v7;
-    v10 = v8;
+    identifier = [(VUIMediaEntityFetchRequest *)self identifier];
+    identifier2 = [(VUIMediaEntityFetchRequest *)v6 identifier];
+    v9 = identifier;
+    v10 = identifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -875,8 +875,8 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  mediaEntityTypes = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
+  v3 = [mediaEntityTypes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -886,7 +886,7 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaEntityTypes);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) subtype])
@@ -896,7 +896,7 @@ uint64_t __96__VUIMediaEntityFetchRequest_Factory___episodesFetchRequestWithSeas
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [mediaEntityTypes countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -913,78 +913,78 @@ LABEL_11:
 
 - (BOOL)_isShowsFetch
 {
-  v2 = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
+  mediaEntityTypes = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
   v3 = +[VUIMediaEntityType show];
-  v4 = [v2 containsObject:v3];
+  v4 = [mediaEntityTypes containsObject:v3];
 
   return v4;
 }
 
 - (BOOL)_isSeasonsFetch
 {
-  v2 = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
+  mediaEntityTypes = [(VUIMediaEntityFetchRequest *)self mediaEntityTypes];
   v3 = +[VUIMediaEntityType season];
-  v4 = [v2 containsObject:v3];
+  v4 = [mediaEntityTypes containsObject:v3];
 
   return v4;
 }
 
-- (id)_sortIndexPropertyKeyWithMediaEntityKind:(id)a3
+- (id)_sortIndexPropertyKeyWithMediaEntityKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   if ([(VUIMediaEntityFetchRequest *)self _shouldGenerateSortIndexes])
   {
-    v5 = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (v6)
+    sortDescriptors = [(VUIMediaEntityFetchRequest *)self sortDescriptors];
+    firstObject = [sortDescriptors firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 key];
-      v9 = [v4 propertyDescriptorForName:v8];
+      v8 = [firstObject key];
+      v9 = [kindCopy propertyDescriptorForName:v8];
       if ([v9 propertyType] == 4)
       {
-        v10 = [v9 sortAsName];
-        if (!v10)
+        sortAsName = [v9 sortAsName];
+        if (!sortAsName)
         {
-          v10 = [v9 name];
+          sortAsName = [v9 name];
         }
       }
 
       else
       {
-        v10 = 0;
+        sortAsName = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      sortAsName = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    sortAsName = 0;
   }
 
-  return v10;
+  return sortAsName;
 }
 
 - (BOOL)_shouldGenerateSortIndexes
 {
-  v2 = [(VUIMediaEntityFetchRequest *)self options];
-  v3 = [v2 vui_BOOLForKey:@"IncludeSortIndexes" defaultValue:0];
+  options = [(VUIMediaEntityFetchRequest *)self options];
+  v3 = [options vui_BOOLForKey:@"IncludeSortIndexes" defaultValue:0];
 
   return v3;
 }
 
 - (BOOL)_shouldGenerateGroupingSortIndexes
 {
-  v3 = [(VUIMediaEntityFetchRequest *)self groupingKeyPath];
-  if (v3)
+  groupingKeyPath = [(VUIMediaEntityFetchRequest *)self groupingKeyPath];
+  if (groupingKeyPath)
   {
-    v4 = [(VUIMediaEntityFetchRequest *)self options];
-    v5 = [v4 vui_BOOLForKey:@"IncludeGroupingSortIndexes" defaultValue:0];
+    options = [(VUIMediaEntityFetchRequest *)self options];
+    v5 = [options vui_BOOLForKey:@"IncludeGroupingSortIndexes" defaultValue:0];
   }
 
   else
@@ -995,10 +995,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_manualSortDescriptorsWithMediaEntityKind:(id)a3 propertiesRequiredForSort:(id *)a4
+- (id)_manualSortDescriptorsWithMediaEntityKind:(id)kind propertiesRequiredForSort:(id *)sort
 {
   v28 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  kindCopy = kind;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   [(VUIMediaEntityFetchRequest *)self sortDescriptors];
@@ -1023,15 +1023,15 @@ LABEL_11:
 
         v11 = *(*(&v23 + 1) + 8 * i);
         v12 = [v11 key];
-        v13 = [v22 sortingPropertyDescriptorForName:v12];
+        v13 = [kindCopy sortingPropertyDescriptorForName:v12];
         if (!v13)
         {
           [MEMORY[0x1E695DF30] raise:v20 format:{@"Unknown key for sort descriptor! %@", v12}];
         }
 
-        v14 = [v13 name];
-        v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:v14 ascending:{objc_msgSend(v11, "ascending")}];
-        [v6 addObject:v14];
+        name = [v13 name];
+        v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:name ascending:{objc_msgSend(v11, "ascending")}];
+        [v6 addObject:name];
         [v5 addObject:v15];
       }
 
@@ -1041,23 +1041,23 @@ LABEL_11:
     while (v8);
   }
 
-  if (a4)
+  if (sort)
   {
     v16 = v6;
-    *a4 = v6;
+    *sort = v6;
   }
 
-  v17 = [objc_opt_class() _finalizedSortDescriptorsFromSortDescriptors:v5 mediaEntityKind:v22];
+  v17 = [objc_opt_class() _finalizedSortDescriptorsFromSortDescriptors:v5 mediaEntityKind:kindCopy];
 
   return v17;
 }
 
-+ (id)_finalizedSortDescriptorsFromSortDescriptors:(id)a3 mediaEntityKind:(id)a4
++ (id)_finalizedSortDescriptorsFromSortDescriptors:(id)descriptors mediaEntityKind:(id)kind
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  descriptorsCopy = descriptors;
+  kindCopy = kind;
+  if ([descriptorsCopy count])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -1071,7 +1071,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = descriptorsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1086,7 +1086,7 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 _finalizedSortDescriptorFromSortDescriptor:*(*(&v16 + 1) + 8 * i) mediaEntityKind:{v7, v16}];
+        v14 = [self _finalizedSortDescriptorFromSortDescriptor:*(*(&v16 + 1) + 8 * i) mediaEntityKind:{kindCopy, v16}];
         [v8 addObject:v14];
       }
 
@@ -1099,17 +1099,17 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_finalizedSortDescriptorFromSortDescriptor:(id)a3 mediaEntityKind:(id)a4
++ (id)_finalizedSortDescriptorFromSortDescriptor:(id)descriptor mediaEntityKind:(id)kind
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 key];
+  descriptorCopy = descriptor;
+  kindCopy = kind;
+  v7 = [descriptorCopy key];
   if (v7)
   {
-    v8 = [v6 propertyDescriptorForName:v7];
+    v8 = [kindCopy propertyDescriptorForName:v7];
     if ([v8 propertyType] == 4)
     {
-      v9 = [objc_alloc(MEMORY[0x1E69DF7A0]) initWithKey:v7 ascending:{objc_msgSend(v5, "ascending")}];
+      v9 = [objc_alloc(MEMORY[0x1E69DF7A0]) initWithKey:v7 ascending:{objc_msgSend(descriptorCopy, "ascending")}];
 
       if (v9)
       {
@@ -1122,7 +1122,7 @@ LABEL_11:
     }
   }
 
-  v9 = v5;
+  v9 = descriptorCopy;
 LABEL_7:
 
   return v9;

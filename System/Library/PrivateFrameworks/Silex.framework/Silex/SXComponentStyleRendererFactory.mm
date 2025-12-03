@@ -1,43 +1,43 @@
 @interface SXComponentStyleRendererFactory
-- (SXComponentStyleRendererFactory)initWithImageFillViewFactory:(id)a3 videoFillViewFactory:(id)a4 gradientFactory:(id)a5 repeatableImageFillViewFactory:(id)a6 viewport:(id)a7;
-- (id)componentStyleRendererForComponentStyle:(id)a3;
+- (SXComponentStyleRendererFactory)initWithImageFillViewFactory:(id)factory videoFillViewFactory:(id)viewFactory gradientFactory:(id)gradientFactory repeatableImageFillViewFactory:(id)fillViewFactory viewport:(id)viewport;
+- (id)componentStyleRendererForComponentStyle:(id)style;
 @end
 
 @implementation SXComponentStyleRendererFactory
 
-- (SXComponentStyleRendererFactory)initWithImageFillViewFactory:(id)a3 videoFillViewFactory:(id)a4 gradientFactory:(id)a5 repeatableImageFillViewFactory:(id)a6 viewport:(id)a7
+- (SXComponentStyleRendererFactory)initWithImageFillViewFactory:(id)factory videoFillViewFactory:(id)viewFactory gradientFactory:(id)gradientFactory repeatableImageFillViewFactory:(id)fillViewFactory viewport:(id)viewport
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  factoryCopy = factory;
+  viewFactoryCopy = viewFactory;
+  gradientFactoryCopy = gradientFactory;
+  fillViewFactoryCopy = fillViewFactory;
+  viewportCopy = viewport;
   v21.receiver = self;
   v21.super_class = SXComponentStyleRendererFactory;
   v17 = [(SXComponentStyleRendererFactory *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_imageFillViewFactory, a3);
-    objc_storeStrong(&v18->_videoFillViewFactory, a4);
-    objc_storeStrong(&v18->_gradientFactory, a5);
-    objc_storeStrong(&v18->_repeatableImageFillViewFactory, a6);
-    objc_storeStrong(&v18->_viewport, a7);
+    objc_storeStrong(&v17->_imageFillViewFactory, factory);
+    objc_storeStrong(&v18->_videoFillViewFactory, viewFactory);
+    objc_storeStrong(&v18->_gradientFactory, gradientFactory);
+    objc_storeStrong(&v18->_repeatableImageFillViewFactory, fillViewFactory);
+    objc_storeStrong(&v18->_viewport, viewport);
   }
 
   return v18;
 }
 
-- (id)componentStyleRendererForComponentStyle:(id)a3
+- (id)componentStyleRendererForComponentStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [SXComponentStyleRenderer alloc];
-  v6 = [(SXComponentStyleRendererFactory *)self viewport];
-  v7 = [(SXComponentStyleRendererFactory *)self imageFillViewFactory];
-  v8 = [(SXComponentStyleRendererFactory *)self videoFillViewFactory];
-  v9 = [(SXComponentStyleRendererFactory *)self gradientFactory];
-  v10 = [(SXComponentStyleRendererFactory *)self repeatableImageFillViewFactory];
-  v11 = [(SXComponentStyleRenderer *)v5 initWithComponentStyle:v4 viewport:v6 imageFillViewFactory:v7 videoFillViewFactory:v8 gradientViewFactory:v9 repeatableImageFillViewFactory:v10];
+  viewport = [(SXComponentStyleRendererFactory *)self viewport];
+  imageFillViewFactory = [(SXComponentStyleRendererFactory *)self imageFillViewFactory];
+  videoFillViewFactory = [(SXComponentStyleRendererFactory *)self videoFillViewFactory];
+  gradientFactory = [(SXComponentStyleRendererFactory *)self gradientFactory];
+  repeatableImageFillViewFactory = [(SXComponentStyleRendererFactory *)self repeatableImageFillViewFactory];
+  v11 = [(SXComponentStyleRenderer *)v5 initWithComponentStyle:styleCopy viewport:viewport imageFillViewFactory:imageFillViewFactory videoFillViewFactory:videoFillViewFactory gradientViewFactory:gradientFactory repeatableImageFillViewFactory:repeatableImageFillViewFactory];
 
   return v11;
 }

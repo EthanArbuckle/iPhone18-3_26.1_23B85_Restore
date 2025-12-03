@@ -1,20 +1,20 @@
 @interface CSXPCEventListener
 + (void)disable;
 + (void)initialize;
-- (BOOL)handleMessage:(id)a3 connection:(id)a4;
+- (BOOL)handleMessage:(id)message connection:(id)connection;
 - (CSXPCEventListener)init;
 - (id)description;
 - (int)docUnderstandingJobCount;
 - (int)embeddingsJobCount;
-- (int)jobCountWithTaskName:(id)a3;
+- (int)jobCountWithTaskName:(id)name;
 - (int)keyphrasesJobCount;
 - (int)priorityJobCount;
 - (int)suggestedEventsJobCount;
 - (void)launchQueryUpdatesTasks;
-- (void)lostConnection:(id)a3 error:(id)a4;
-- (void)runJobWithTaskName:(id)a3;
-- (void)startWithEventListeners:(id)a3;
-- (void)updatePathSet:(id)a3 withFilesAtPath:(id)a4 shouldRemove:(BOOL)a5;
+- (void)lostConnection:(id)connection error:(id)error;
+- (void)runJobWithTaskName:(id)name;
+- (void)startWithEventListeners:(id)listeners;
+- (void)updatePathSet:(id)set withFilesAtPath:(id)path shouldRemove:(BOOL)remove;
 @end
 
 @implementation CSXPCEventListener
@@ -28,7 +28,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     +[CSEventListenerTasksManager sharedInstance];
 
@@ -52,18 +52,18 @@
   [v2 launchQueryUpdatesTasks];
 }
 
-- (void)updatePathSet:(id)a3 withFilesAtPath:(id)a4 shouldRemove:(BOOL)a5
+- (void)updatePathSet:(id)set withFilesAtPath:(id)path shouldRemove:(BOOL)remove
 {
-  v5 = a5;
+  removeCopy = remove;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  setCopy = set;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 1;
-  v20 = a4;
+  pathCopy = path;
   v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:? isDirectory:?];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = *MEMORY[0x277CBE8A8];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE8E8], *MEMORY[0x277CBE8A8], 0}];
   v28[0] = MEMORY[0x277D85DD0];
@@ -71,7 +71,7 @@
   v28[2] = __65__CSXPCEventListener_updatePathSet_withFilesAtPath_shouldRemove___block_invoke;
   v28[3] = &unk_27893D8D8;
   v28[4] = &v29;
-  v21 = [v8 enumeratorAtURL:v22 includingPropertiesForKeys:v10 options:4 errorHandler:v28];
+  v21 = [defaultManager enumeratorAtURL:v22 includingPropertiesForKeys:v10 options:4 errorHandler:v28];
 
   if (*(v30 + 24) == 1)
   {
@@ -100,16 +100,16 @@
           v16 = v23;
           if ([v16 BOOLValue])
           {
-            v17 = [v15 URLByDeletingLastPathComponent];
-            v18 = [v17 path];
-            if (v5)
+            uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
+            path = [uRLByDeletingLastPathComponent path];
+            if (removeCopy)
             {
-              [v7 removeObject:v18];
+              [setCopy removeObject:path];
             }
 
             else
             {
-              [v7 addObject:v18];
+              [setCopy addObject:path];
             }
           }
 
@@ -139,17 +139,17 @@ BOOL __65__CSXPCEventListener_updatePathSet_withFilesAtPath_shouldRemove___block
   return a3 != 0;
 }
 
-- (void)startWithEventListeners:(id)a3
+- (void)startWithEventListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__CSXPCEventListener_startWithEventListeners___block_invoke;
   v7[3] = &unk_27893D900;
-  v8 = v4;
-  v9 = self;
+  v8 = listenersCopy;
+  selfCopy = self;
   v5 = startWithEventListeners__onceToken;
-  v6 = v4;
+  v6 = listenersCopy;
   if (v5 != -1)
   {
     dispatch_once(&startWithEventListeners__onceToken, v7);
@@ -631,10 +631,10 @@ id __46__CSXPCEventListener_startWithEventListeners___block_invoke_42()
   return v2;
 }
 
-- (BOOL)handleMessage:(id)a3 connection:(id)a4
+- (BOOL)handleMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = [[CSEventMessage alloc] initWithMessage:v5];
+  messageCopy = message;
+  v6 = [[CSEventMessage alloc] initWithMessage:messageCopy];
   v7 = v6;
   if (v6 && (v6->_event - 1) < 4)
   {
@@ -645,7 +645,7 @@ id __46__CSXPCEventListener_startWithEventListeners___block_invoke_42()
     v11[3] = &unk_27893D928;
     v11[4] = self;
     v12 = v6;
-    v13 = v5;
+    v13 = messageCopy;
     dispatch_async(queue, v11);
 
     v9 = 1;
@@ -660,7 +660,7 @@ id __46__CSXPCEventListener_startWithEventListeners___block_invoke_42()
   return v9;
 }
 
-- (void)lostConnection:(id)a3 error:(id)a4
+- (void)lostConnection:(id)connection error:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -669,7 +669,7 @@ id __46__CSXPCEventListener_startWithEventListeners___block_invoke_42()
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_231B25000, v5, OS_LOG_TYPE_DEFAULT, "### lost connection - %@", &v7, 0xCu);
     }
   }
@@ -712,9 +712,9 @@ void __42__CSXPCEventListener_handleDeviceUnlocked__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (int)jobCountWithTaskName:(id)a3
+- (int)jobCountWithTaskName:(id)name
 {
-  v17 = a3;
+  nameCopy = name;
   v3 = 0;
   v4 = 0;
   do
@@ -731,10 +731,10 @@ void __42__CSXPCEventListener_handleDeviceUnlocked__block_invoke_2(uint64_t a1, 
         if (([(CSEventListenerManager *)v9 throttled]& 1) != 0)
         {
           v10 = [v6[3] objectAtIndexedSubscript:v7];
-          v11 = [(CSEmbeddingsUpdater *)v10 activityJournal];
-          v12 = [(CSEmbeddingsUpdater *)v11 asyncIndexProcessors];
-          v13 = [v12 taskName];
-          v14 = [v13 isEqualToString:v17];
+          activityJournal = [(CSEmbeddingsUpdater *)v10 activityJournal];
+          asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+          taskName = [asyncIndexProcessors taskName];
+          v14 = [taskName isEqualToString:nameCopy];
 
           v3 += v14 & 1;
         }
@@ -757,15 +757,15 @@ void __42__CSXPCEventListener_handleDeviceUnlocked__block_invoke_2(uint64_t a1, 
   return v3;
 }
 
-- (void)runJobWithTaskName:(id)a3
+- (void)runJobWithTaskName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__CSXPCEventListener_runJobWithTaskName___block_invoke;
   block[3] = &unk_27893D970;
-  v6 = v3;
-  v4 = v3;
+  v6 = nameCopy;
+  v4 = nameCopy;
   dispatch_apply(8uLL, 0, block);
 }
 
@@ -853,11 +853,11 @@ LABEL_14:
         if (([(CSEventListenerManager *)v8 throttled]& 1) != 0)
         {
           v9 = [v5[3] objectAtIndexedSubscript:v6];
-          v10 = [(CSEmbeddingsUpdater *)v9 activityJournal];
-          v11 = [(CSEmbeddingsUpdater *)v10 asyncIndexProcessors];
-          v12 = [v11 eventType];
+          activityJournal = [(CSEmbeddingsUpdater *)v9 activityJournal];
+          asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+          eventType = [asyncIndexProcessors eventType];
 
-          if (v12 == 2)
+          if (eventType == 2)
           {
             ++v2;
           }
@@ -965,11 +965,11 @@ LABEL_14:
         if (([(CSEventListenerManager *)v8 throttled]& 1) != 0)
         {
           v9 = [v5[3] objectAtIndexedSubscript:v6];
-          v10 = [(CSEmbeddingsUpdater *)v9 activityJournal];
-          v11 = [(CSEmbeddingsUpdater *)v10 asyncIndexProcessors];
-          v12 = [v11 eventType];
+          activityJournal = [(CSEmbeddingsUpdater *)v9 activityJournal];
+          asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+          eventType = [asyncIndexProcessors eventType];
 
-          if (v12 == 3)
+          if (eventType == 3)
           {
             ++v2;
           }
@@ -1073,15 +1073,15 @@ LABEL_14:
       do
       {
         v7 = [v5[3] objectAtIndexedSubscript:v6];
-        v8 = [(CSEmbeddingsUpdater *)v7 activityJournal];
-        v9 = [(CSEmbeddingsUpdater *)v8 asyncIndexProcessors];
-        v10 = [v9 eventType];
+        activityJournal = [(CSEmbeddingsUpdater *)v7 activityJournal];
+        asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+        eventType = [asyncIndexProcessors eventType];
 
         v11 = [v5[3] objectAtIndexedSubscript:v6];
-        v12 = [(CSEventListenerManager *)v11 throttled];
-        if (v10 == 7)
+        throttled = [(CSEventListenerManager *)v11 throttled];
+        if (eventType == 7)
         {
-          v13 = v12;
+          v13 = throttled;
         }
 
         else
@@ -1113,15 +1113,15 @@ LABEL_14:
       do
       {
         v7 = [v5[3] objectAtIndexedSubscript:v6];
-        v8 = [(CSEmbeddingsUpdater *)v7 activityJournal];
-        v9 = [(CSEmbeddingsUpdater *)v8 asyncIndexProcessors];
-        v10 = [v9 eventType];
+        activityJournal = [(CSEmbeddingsUpdater *)v7 activityJournal];
+        asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+        eventType = [asyncIndexProcessors eventType];
 
         v11 = [v5[3] objectAtIndexedSubscript:v6];
-        v12 = [(CSEventListenerManager *)v11 throttled];
-        if (v10 == 6)
+        throttled = [(CSEventListenerManager *)v11 throttled];
+        if (eventType == 6)
         {
-          v13 = v12;
+          v13 = throttled;
         }
 
         else
@@ -1226,11 +1226,11 @@ LABEL_13:
         if (([(CSEventListenerManager *)v8 throttled]& 1) != 0)
         {
           v9 = [v5[3] objectAtIndexedSubscript:v6];
-          v10 = [(CSEmbeddingsUpdater *)v9 activityJournal];
-          v11 = [(CSEmbeddingsUpdater *)v10 asyncIndexProcessors];
-          v12 = [v11 eventType];
+          activityJournal = [(CSEmbeddingsUpdater *)v9 activityJournal];
+          asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+          eventType = [asyncIndexProcessors eventType];
 
-          if (v12 == 1)
+          if (eventType == 1)
           {
             ++v2;
           }

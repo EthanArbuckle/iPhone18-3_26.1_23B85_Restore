@@ -1,24 +1,24 @@
 @interface AASetupAssistantService
 + (id)urlConfiguration;
 - (AASetupAssistantService)init;
-- (AASetupAssistantService)initWithAccount:(id)a3;
-- (AASetupAssistantService)initWithAppleID:(id)a3 password:(id)a4;
+- (AASetupAssistantService)initWithAccount:(id)account;
+- (AASetupAssistantService)initWithAppleID:(id)d password:(id)password;
 - (id)_signingSession;
-- (void)_doHSADeviceProvisioningSynchronizationWithDSID:(id)a3 data:(id)a4;
-- (void)_doHSADeviceProvisioningWithDSID:(id)a3 data:(id)a4;
-- (void)_doHSADeviceReprovisioningWithDSID:(id)a3;
-- (void)authenticateWithHandler:(id)a3;
-- (void)createAppleIDWithParameters:(id)a3 handler:(id)a4;
-- (void)createAppleIDWithParameters:(id)a3 handlerWithResponse:(id)a4;
+- (void)_doHSADeviceProvisioningSynchronizationWithDSID:(id)d data:(id)data;
+- (void)_doHSADeviceProvisioningWithDSID:(id)d data:(id)data;
+- (void)_doHSADeviceReprovisioningWithDSID:(id)d;
+- (void)authenticateWithHandler:(id)handler;
+- (void)createAppleIDWithParameters:(id)parameters handler:(id)handler;
+- (void)createAppleIDWithParameters:(id)parameters handlerWithResponse:(id)response;
 - (void)dealloc;
-- (void)downloadURLConfiguration:(id)a3;
-- (void)loginDelegatesWithParameters:(id)a3 completion:(id)a4;
-- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)a3;
-- (void)setupDelegateAccountsWithParameters:(id)a3 handler:(id)a4;
-- (void)shouldPresentUpgradeFlowWithCompletion:(id)a3;
-- (void)updateAppleIDWithParameters:(id)a3 handler:(id)a4;
-- (void)upgradeiCloudTermsIfNecessaryWithCustomHeaders:(id)a3 handler:(id)a4;
-- (void)upgradeiCloudTermsIfNecessaryWithHandler:(id)a3;
+- (void)downloadURLConfiguration:(id)configuration;
+- (void)loginDelegatesWithParameters:(id)parameters completion:(id)completion;
+- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)storage;
+- (void)setupDelegateAccountsWithParameters:(id)parameters handler:(id)handler;
+- (void)shouldPresentUpgradeFlowWithCompletion:(id)completion;
+- (void)updateAppleIDWithParameters:(id)parameters handler:(id)handler;
+- (void)upgradeiCloudTermsIfNecessaryWithCustomHeaders:(id)headers handler:(id)handler;
+- (void)upgradeiCloudTermsIfNecessaryWithHandler:(id)handler;
 @end
 
 @implementation AASetupAssistantService
@@ -65,18 +65,18 @@
   return v2;
 }
 
-- (AASetupAssistantService)initWithAppleID:(id)a3 password:(id)a4
+- (AASetupAssistantService)initWithAppleID:(id)d password:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  passwordCopy = password;
   v8 = [(AASetupAssistantService *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     appleID = v8->_appleID;
     v8->_appleID = v9;
 
-    v11 = [v7 copy];
+    v11 = [passwordCopy copy];
     password = v8->_password;
     v8->_password = v11;
   }
@@ -84,22 +84,22 @@
   return v8;
 }
 
-- (AASetupAssistantService)initWithAccount:(id)a3
+- (AASetupAssistantService)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(AASetupAssistantService *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [v5 username];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_account, account);
+    username = [accountCopy username];
+    v9 = [username copy];
     appleID = v7->_appleID;
     v7->_appleID = v9;
 
-    v11 = [(ACAccount *)v7->_account credential];
-    v12 = [v11 password];
-    v13 = [v12 copy];
+    credential = [(ACAccount *)v7->_account credential];
+    password = [credential password];
+    v13 = [password copy];
     password = v7->_password;
     v7->_password = v13;
   }
@@ -120,67 +120,67 @@
   [(AASetupAssistantService *)&v4 dealloc];
 }
 
-- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)a3
+- (void)setCookieStorage:(OpaqueCFHTTPCookieStorage *)storage
 {
   cookieStorage = self->_cookieStorage;
-  if (cookieStorage != a3)
+  if (cookieStorage != storage)
   {
     if (cookieStorage)
     {
       CFRelease(cookieStorage);
     }
 
-    self->_cookieStorage = a3;
-    if (a3)
+    self->_cookieStorage = storage;
+    if (storage)
     {
 
-      CFRetain(a3);
+      CFRetain(storage);
     }
   }
 }
 
-- (void)downloadURLConfiguration:(id)a3
+- (void)downloadURLConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = dispatch_queue_create("urlConfigurationQueue", 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_15C8;
   block[3] = &unk_14598;
-  v7 = v3;
-  v5 = v3;
+  v7 = configurationCopy;
+  v5 = configurationCopy;
   dispatch_async(v4, block);
 }
 
-- (void)authenticateWithHandler:(id)a3
+- (void)authenticateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_queue_create("authenticationRequestQueue", 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_16E4;
   v7[3] = &unk_145C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)createAppleIDWithParameters:(id)a3 handler:(id)a4
+- (void)createAppleIDWithParameters:(id)parameters handler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_19E8;
   v7[3] = &unk_14610;
-  v8 = a4;
-  v6 = v8;
-  [(AASetupAssistantService *)self createAppleIDWithParameters:a3 handlerWithResponse:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(AASetupAssistantService *)self createAppleIDWithParameters:parameters handlerWithResponse:v7];
 }
 
-- (void)createAppleIDWithParameters:(id)a3 handlerWithResponse:(id)a4
+- (void)createAppleIDWithParameters:(id)parameters handlerWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  responseCopy = response;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,18 +193,18 @@
   block[1] = 3221225472;
   block[2] = sub_1B24;
   block[3] = &unk_14638;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = parametersCopy;
+  selfCopy = self;
+  v15 = responseCopy;
+  v10 = responseCopy;
+  v11 = parametersCopy;
   dispatch_async(v9, block);
 }
 
-- (void)updateAppleIDWithParameters:(id)a3 handler:(id)a4
+- (void)updateAppleIDWithParameters:(id)parameters handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,18 +217,18 @@
   block[1] = 3221225472;
   block[2] = sub_20A4;
   block[3] = &unk_14638;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = parametersCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = parametersCopy;
   dispatch_async(v9, block);
 }
 
-- (void)setupDelegateAccountsWithParameters:(id)a3 handler:(id)a4
+- (void)setupDelegateAccountsWithParameters:(id)parameters handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -241,18 +241,18 @@
   block[1] = 3221225472;
   block[2] = sub_25DC;
   block[3] = &unk_14638;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = parametersCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = parametersCopy;
   dispatch_async(v9, block);
 }
 
-- (void)loginDelegatesWithParameters:(id)a3 completion:(id)a4
+- (void)loginDelegatesWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v8 = _AALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,29 +265,29 @@
   block[1] = 3221225472;
   block[2] = sub_2B08;
   block[3] = &unk_14638;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = parametersCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = parametersCopy;
   dispatch_async(v9, block);
 }
 
-- (void)upgradeiCloudTermsIfNecessaryWithHandler:(id)a3
+- (void)upgradeiCloudTermsIfNecessaryWithHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_2F94;
   v5[3] = &unk_14660;
-  v6 = a3;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   [(AASetupAssistantService *)self upgradeiCloudTermsIfNecessaryWithCustomHeaders:0 handler:v5];
 }
 
-- (void)upgradeiCloudTermsIfNecessaryWithCustomHeaders:(id)a3 handler:(id)a4
+- (void)upgradeiCloudTermsIfNecessaryWithCustomHeaders:(id)headers handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  headersCopy = headers;
+  handlerCopy = handler;
   if (self->_account)
   {
     v8 = dispatch_queue_create("upgradeTermsQueue", 0);
@@ -296,8 +296,8 @@
     block[2] = sub_3114;
     block[3] = &unk_14638;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = headersCopy;
+    v13 = handlerCopy;
     dispatch_async(v8, block);
   }
 
@@ -311,13 +311,13 @@
     }
 
     v8 = [NSError errorWithDomain:@"com.apple.appleaccount" code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
   }
 }
 
-- (void)shouldPresentUpgradeFlowWithCompletion:(id)a3
+- (void)shouldPresentUpgradeFlowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -326,11 +326,11 @@
   }
 
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [(AASetupAssistantService *)self appleID];
-  [v6 setValue:v7 forKey:@"apple-id"];
+  appleID = [(AASetupAssistantService *)self appleID];
+  [v6 setValue:appleID forKey:@"apple-id"];
 
-  v8 = [(AASetupAssistantService *)self password];
-  [v6 setValue:v8 forKey:@"password"];
+  password = [(AASetupAssistantService *)self password];
+  [v6 setValue:password forKey:@"password"];
 
   v9 = +[AADeviceInfo appleIDClientIdentifier];
   [v6 setValue:v9 forKey:@"client-id"];
@@ -347,8 +347,8 @@
   v13[1] = 3221225472;
   v13[2] = sub_35AC;
   v13[3] = &unk_145E8;
-  v14 = v4;
-  v12 = v4;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v10 performRequestWithHandler:v13];
 }
 
@@ -384,11 +384,11 @@ LABEL_7:
     self->_signingSessionCreationDate = v8;
 
     v10 = +[AASetupAssistantService urlConfiguration];
-    v11 = [v10 signingSessionCertURL];
+    signingSessionCertURL = [v10 signingSessionCertURL];
     v12 = +[AASetupAssistantService urlConfiguration];
-    v13 = [v12 signingSessionURL];
+    signingSessionURL = [v12 signingSessionURL];
     v22 = 0;
-    v14 = [AASigningSession establishedSessionWithCertURL:v11 sessionURL:v13 error:&v22];
+    v14 = [AASigningSession establishedSessionWithCertURL:signingSessionCertURL sessionURL:signingSessionURL error:&v22];
     v15 = v22;
     v16 = self->_signingSession;
     self->_signingSession = v14;
@@ -419,14 +419,14 @@ LABEL_7:
   return v20;
 }
 
-- (void)_doHSADeviceProvisioningWithDSID:(id)a3 data:(id)a4
+- (void)_doHSADeviceProvisioningWithDSID:(id)d data:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AADeviceProvisioningSession alloc] initWithDSID:v7];
+  dataCopy = data;
+  dCopy = d;
+  v8 = [[AADeviceProvisioningSession alloc] initWithDSID:dCopy];
 
   [v8 setCookieStorageRef:self->_cookieStorage];
-  v9 = [v8 provisionDeviceWithData:v6];
+  v9 = [v8 provisionDeviceWithData:dataCopy];
 
   v10 = _AALogSystem();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -451,14 +451,14 @@ LABEL_6:
   }
 }
 
-- (void)_doHSADeviceProvisioningSynchronizationWithDSID:(id)a3 data:(id)a4
+- (void)_doHSADeviceProvisioningSynchronizationWithDSID:(id)d data:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AADeviceProvisioningSession alloc] initWithDSID:v7];
+  dataCopy = data;
+  dCopy = d;
+  v8 = [[AADeviceProvisioningSession alloc] initWithDSID:dCopy];
 
   [v8 setCookieStorageRef:self->_cookieStorage];
-  v9 = [v8 synchronizeProvisioningWithData:v6];
+  v9 = [v8 synchronizeProvisioningWithData:dataCopy];
 
   v10 = _AALogSystem();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -483,15 +483,15 @@ LABEL_6:
   }
 }
 
-- (void)_doHSADeviceReprovisioningWithDSID:(id)a3
+- (void)_doHSADeviceReprovisioningWithDSID:(id)d
 {
-  v3 = a3;
-  v4 = [[AADeviceProvisioningSession alloc] initWithDSID:v3];
+  dCopy = d;
+  v4 = [[AADeviceProvisioningSession alloc] initWithDSID:dCopy];
 
-  v5 = [v4 eraseProvisioning];
-  if (v5)
+  eraseProvisioning = [v4 eraseProvisioning];
+  if (eraseProvisioning)
   {
-    v6 = v5;
+    v6 = eraseProvisioning;
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {

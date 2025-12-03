@@ -1,62 +1,62 @@
 @interface SFMediaOffer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMediaOffer)initWithCoder:(id)a3;
-- (SFMediaOffer)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMediaOffer)initWithCoder:(id)coder;
+- (SFMediaOffer)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMediaOffer
 
-- (SFMediaOffer)initWithProtobuf:(id)a3
+- (SFMediaOffer)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v20.receiver = self;
   v20.super_class = SFMediaOffer;
   v5 = [(SFMediaOffer *)&v20 init];
   if (v5)
   {
-    v6 = [v4 actionItem];
+    actionItem = [protobufCopy actionItem];
 
-    if (v6)
+    if (actionItem)
     {
       v7 = [SFActionItem alloc];
-      v8 = [v4 actionItem];
-      v9 = [(SFActionItem *)v7 initWithProtobuf:v8];
+      actionItem2 = [protobufCopy actionItem];
+      v9 = [(SFActionItem *)v7 initWithProtobuf:actionItem2];
       [(SFMediaOffer *)v5 setActionItem:v9];
     }
 
-    v10 = [v4 sublabel];
+    sublabel = [protobufCopy sublabel];
 
-    if (v10)
+    if (sublabel)
     {
-      v11 = [v4 sublabel];
-      [(SFMediaOffer *)v5 setSublabel:v11];
+      sublabel2 = [protobufCopy sublabel];
+      [(SFMediaOffer *)v5 setSublabel:sublabel2];
     }
 
-    v12 = [v4 offerIdentifier];
+    offerIdentifier = [protobufCopy offerIdentifier];
 
-    if (v12)
+    if (offerIdentifier)
     {
-      v13 = [v4 offerIdentifier];
-      [(SFMediaOffer *)v5 setOfferIdentifier:v13];
+      offerIdentifier2 = [protobufCopy offerIdentifier];
+      [(SFMediaOffer *)v5 setOfferIdentifier:offerIdentifier2];
     }
 
-    if ([v4 isEnabled])
+    if ([protobufCopy isEnabled])
     {
-      -[SFMediaOffer setIsEnabled:](v5, "setIsEnabled:", [v4 isEnabled]);
+      -[SFMediaOffer setIsEnabled:](v5, "setIsEnabled:", [protobufCopy isEnabled]);
     }
 
-    v14 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v14)
+    if (image)
     {
       v15 = [SFImage alloc];
-      v16 = [v4 image];
-      v17 = [(SFImage *)v15 initWithProtobuf:v16];
+      image2 = [protobufCopy image];
+      v17 = [(SFImage *)v15 initWithProtobuf:image2];
       [(SFMediaOffer *)v5 setImage:v17];
     }
 
@@ -71,39 +71,39 @@
   v14.receiver = self;
   v14.super_class = SFMediaOffer;
   v3 = [(SFActionItem *)&v14 hash];
-  v4 = [(SFMediaOffer *)self actionItem];
-  v5 = [v4 hash];
-  v6 = [(SFMediaOffer *)self sublabel];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFMediaOffer *)self offerIdentifier];
-  v9 = v7 ^ [v8 hash];
+  actionItem = [(SFMediaOffer *)self actionItem];
+  v5 = [actionItem hash];
+  sublabel = [(SFMediaOffer *)self sublabel];
+  v7 = v5 ^ [sublabel hash];
+  offerIdentifier = [(SFMediaOffer *)self offerIdentifier];
+  v9 = v7 ^ [offerIdentifier hash];
   v10 = v9 ^ [(SFMediaOffer *)self isEnabled];
-  v11 = [(SFMediaOffer *)self image];
-  v12 = v10 ^ [v11 hash];
+  image = [(SFMediaOffer *)self image];
+  v12 = v10 ^ [image hash];
 
   return v12 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFMediaOffer *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFMediaOffer *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v44.receiver = self;
       v44.super_class = SFMediaOffer;
-      if ([(SFActionItem *)&v44 isEqual:v5])
+      if ([(SFActionItem *)&v44 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFMediaOffer *)self actionItem];
-        v8 = [(SFMediaOffer *)v6 actionItem];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        actionItem = [(SFMediaOffer *)self actionItem];
+        actionItem2 = [(SFMediaOffer *)v6 actionItem];
+        if ((actionItem != 0) == (actionItem2 == 0))
         {
           v11 = 0;
 LABEL_40:
@@ -111,69 +111,69 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        v9 = [(SFMediaOffer *)self actionItem];
-        if (v9)
+        actionItem3 = [(SFMediaOffer *)self actionItem];
+        if (actionItem3)
         {
-          v10 = [(SFMediaOffer *)self actionItem];
-          v3 = [(SFMediaOffer *)v6 actionItem];
-          if (![v10 isEqual:v3])
+          actionItem4 = [(SFMediaOffer *)self actionItem];
+          actionItem5 = [(SFMediaOffer *)v6 actionItem];
+          if (![actionItem4 isEqual:actionItem5])
           {
             v11 = 0;
             goto LABEL_38;
           }
 
-          v43 = v10;
+          v43 = actionItem4;
         }
 
-        v12 = [(SFMediaOffer *)self sublabel];
-        v13 = [(SFMediaOffer *)v6 sublabel];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        sublabel = [(SFMediaOffer *)self sublabel];
+        sublabel2 = [(SFMediaOffer *)v6 sublabel];
+        v14 = sublabel2;
+        if ((sublabel != 0) == (sublabel2 == 0))
         {
 
           v11 = 0;
           goto LABEL_37;
         }
 
-        v15 = [(SFMediaOffer *)self sublabel];
-        if (v15)
+        sublabel3 = [(SFMediaOffer *)self sublabel];
+        if (sublabel3)
         {
-          v36 = v9;
+          v36 = actionItem3;
           v16 = v14;
-          v17 = v12;
-          v18 = [(SFMediaOffer *)self sublabel];
-          v38 = [(SFMediaOffer *)v6 sublabel];
-          v39 = v18;
-          if (![v18 isEqual:?])
+          v17 = sublabel;
+          sublabel4 = [(SFMediaOffer *)self sublabel];
+          sublabel5 = [(SFMediaOffer *)v6 sublabel];
+          v39 = sublabel4;
+          if (![sublabel4 isEqual:?])
           {
             v11 = 0;
-            v12 = v17;
+            sublabel = v17;
             v14 = v16;
-            v9 = v36;
+            actionItem3 = v36;
             goto LABEL_35;
           }
 
-          v40 = v3;
-          v42 = v15;
-          v12 = v17;
+          v40 = actionItem5;
+          v42 = sublabel3;
+          sublabel = v17;
           v14 = v16;
-          v9 = v36;
+          actionItem3 = v36;
         }
 
         else
         {
-          v40 = v3;
+          v40 = actionItem5;
           v42 = 0;
         }
 
-        v19 = [(SFMediaOffer *)self offerIdentifier];
-        v20 = [(SFMediaOffer *)v6 offerIdentifier];
-        if ((v19 != 0) == (v20 == 0))
+        offerIdentifier = [(SFMediaOffer *)self offerIdentifier];
+        offerIdentifier2 = [(SFMediaOffer *)v6 offerIdentifier];
+        if ((offerIdentifier != 0) == (offerIdentifier2 == 0))
         {
 
           v11 = 0;
-          v3 = v40;
-          v15 = v42;
+          actionItem5 = v40;
+          sublabel3 = v42;
           if (!v42)
           {
             goto LABEL_36;
@@ -182,30 +182,30 @@ LABEL_40:
           goto LABEL_35;
         }
 
-        v34 = v20;
-        v35 = v19;
+        v34 = offerIdentifier2;
+        v35 = offerIdentifier;
         [(SFMediaOffer *)self offerIdentifier];
-        v37 = v15 = v42;
+        v37 = sublabel3 = v42;
         if (v37)
         {
-          v21 = [(SFMediaOffer *)self offerIdentifier];
-          v32 = [(SFMediaOffer *)v6 offerIdentifier];
-          v33 = v21;
-          v22 = [v21 isEqual:?];
-          v3 = v40;
+          offerIdentifier3 = [(SFMediaOffer *)self offerIdentifier];
+          offerIdentifier4 = [(SFMediaOffer *)v6 offerIdentifier];
+          v33 = offerIdentifier3;
+          v22 = [offerIdentifier3 isEqual:?];
+          actionItem5 = v40;
           if (!v22)
           {
             v11 = 0;
 LABEL_33:
 
 LABEL_34:
-            if (!v15)
+            if (!sublabel3)
             {
 LABEL_36:
 
 LABEL_37:
-              v10 = v43;
-              if (!v9)
+              actionItem4 = v43;
+              if (!actionItem3)
               {
 LABEL_39:
 
@@ -225,25 +225,25 @@ LABEL_35:
 
         else
         {
-          v3 = v40;
+          actionItem5 = v40;
         }
 
-        v23 = [(SFMediaOffer *)self isEnabled];
-        if (v23 == [(SFMediaOffer *)v6 isEnabled])
+        isEnabled = [(SFMediaOffer *)self isEnabled];
+        if (isEnabled == [(SFMediaOffer *)v6 isEnabled])
         {
-          v24 = [(SFMediaOffer *)self image];
-          v25 = [(SFMediaOffer *)v6 image];
-          if ((v24 != 0) != (v25 == 0))
+          image = [(SFMediaOffer *)self image];
+          image2 = [(SFMediaOffer *)v6 image];
+          if ((image != 0) != (image2 == 0))
           {
-            v31 = v25;
-            v41 = v24;
-            v26 = [(SFMediaOffer *)self image];
-            if (v26)
+            v31 = image2;
+            v41 = image;
+            image3 = [(SFMediaOffer *)self image];
+            if (image3)
             {
-              v30 = v26;
-              v29 = [(SFMediaOffer *)self image];
-              v27 = [(SFMediaOffer *)v6 image];
-              v11 = [v29 isEqual:v27];
+              v30 = image3;
+              image4 = [(SFMediaOffer *)self image];
+              image5 = [(SFMediaOffer *)v6 image];
+              v11 = [image4 isEqual:image5];
             }
 
             else
@@ -253,7 +253,7 @@ LABEL_35:
             }
 
 LABEL_32:
-            v15 = v42;
+            sublabel3 = v42;
             if (!v37)
             {
               goto LABEL_34;
@@ -276,26 +276,26 @@ LABEL_41:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = SFMediaOffer;
-  v4 = [(SFActionItem *)&v14 copyWithZone:a3];
-  v5 = [(SFMediaOffer *)self actionItem];
-  v6 = [v5 copy];
+  v4 = [(SFActionItem *)&v14 copyWithZone:zone];
+  actionItem = [(SFMediaOffer *)self actionItem];
+  v6 = [actionItem copy];
   [v4 setActionItem:v6];
 
-  v7 = [(SFMediaOffer *)self sublabel];
-  v8 = [v7 copy];
+  sublabel = [(SFMediaOffer *)self sublabel];
+  v8 = [sublabel copy];
   [v4 setSublabel:v8];
 
-  v9 = [(SFMediaOffer *)self offerIdentifier];
-  v10 = [v9 copy];
+  offerIdentifier = [(SFMediaOffer *)self offerIdentifier];
+  v10 = [offerIdentifier copy];
   [v4 setOfferIdentifier:v10];
 
   [v4 setIsEnabled:{-[SFMediaOffer isEnabled](self, "isEnabled")}];
-  v11 = [(SFMediaOffer *)self image];
-  v12 = [v11 copy];
+  image = [(SFMediaOffer *)self image];
+  v12 = [image copy];
   [v4 setImage:v12];
 
   return v4;
@@ -304,31 +304,31 @@ LABEL_41:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMediaOffer alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaOffer *)v2 jsonData];
+  jsonData = [(_SFPBMediaOffer *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMediaOffer alloc] initWithFacade:self];
-  v3 = [(_SFPBMediaOffer *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMediaOffer *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMediaOffer alloc] initWithFacade:self];
-  v5 = [(_SFPBMediaOffer *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMediaOffer *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMediaOffer)initWithCoder:(id)a3
+- (SFMediaOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMediaOffer alloc] initWithData:v5];
   v7 = [(SFMediaOffer *)self initWithProtobuf:v6];

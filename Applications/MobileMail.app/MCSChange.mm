@@ -1,12 +1,12 @@
 @interface MCSChange
-- (id)applyPendingChangeToObjects:(id)a3;
+- (id)applyPendingChangeToObjects:(id)objects;
 @end
 
 @implementation MCSChange
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   [(MCSChange *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MCSChange applyPendingChangeToObjects:]", "MCSChange.m", 17, "0");
 }

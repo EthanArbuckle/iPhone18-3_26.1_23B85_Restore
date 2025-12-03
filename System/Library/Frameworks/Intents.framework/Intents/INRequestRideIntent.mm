@@ -9,42 +9,42 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDropOffLocation:(id)a3;
-- (void)setPartySize:(id)a3;
-- (void)setPaymentMethod:(id)a3;
-- (void)setPickupLocation:(id)a3;
-- (void)setRideOptionName:(id)a3;
-- (void)setScheduledPickupTime:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDropOffLocation:(id)location;
+- (void)setPartySize:(id)size;
+- (void)setPaymentMethod:(id)method;
+- (void)setPickupLocation:(id)location;
+- (void)setRideOptionName:(id)name;
+- (void)setScheduledPickupTime:(id)time;
 @end
 
 @implementation INRequestRideIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INRequestRideIntent *)self _typedBackingStore];
-  v19 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 pickupLocation];
-  v10 = INIntentSlotValueRedactedLocationFromLocation(v9, a3, v19);
+  idCopy = id;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v19 = idCopy;
+  v8 = [_typedBackingStore copy];
+  pickupLocation = [_typedBackingStore pickupLocation];
+  v10 = INIntentSlotValueRedactedLocationFromLocation(pickupLocation, options, v19);
   [v8 setPickupLocation:v10];
 
-  v11 = [v7 dropOffLocation];
-  v12 = INIntentSlotValueRedactedLocationFromLocation(v11, a3, v19);
+  dropOffLocation = [_typedBackingStore dropOffLocation];
+  v12 = INIntentSlotValueRedactedLocationFromLocation(dropOffLocation, options, v19);
   [v8 setDropOffLocation:v12];
 
-  v13 = [v7 partySize];
-  v14 = INIntentSlotValueRedactedIntegerFromInteger(v13, a3);
+  partySize = [_typedBackingStore partySize];
+  v14 = INIntentSlotValueRedactedIntegerFromInteger(partySize, options);
   [v8 setPartySize:v14];
 
-  v15 = [v7 paymentMethod];
-  v16 = INIntentSlotValueRedactedPaymentMethodFromPaymentMethod(v15, a3, v19);
+  paymentMethod = [_typedBackingStore paymentMethod];
+  v16 = INIntentSlotValueRedactedPaymentMethodFromPaymentMethod(paymentMethod, options, v19);
   [v8 setPaymentMethod:v16];
 
-  v17 = [v7 scheduledPickupTime];
-  v18 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v17, a3);
+  scheduledPickupTime = [_typedBackingStore scheduledPickupTime];
+  v18 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(scheduledPickupTime, options);
 
   [v8 setScheduledPickupTime:v18];
   [(INIntent *)self setBackingStore:v8];
@@ -54,71 +54,71 @@
 {
   v22[6] = *MEMORY[0x1E69E9840];
   v21[0] = @"pickupLocation";
-  v3 = [(INRequestRideIntent *)self pickupLocation];
-  v4 = v3;
-  if (!v3)
+  pickupLocation = [(INRequestRideIntent *)self pickupLocation];
+  v4 = pickupLocation;
+  if (!pickupLocation)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    pickupLocation = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v3;
-  v22[0] = v3;
+  v20 = pickupLocation;
+  v22[0] = pickupLocation;
   v21[1] = @"dropOffLocation";
-  v5 = [(INRequestRideIntent *)self dropOffLocation];
-  v6 = v5;
-  if (!v5)
+  dropOffLocation = [(INRequestRideIntent *)self dropOffLocation];
+  v6 = dropOffLocation;
+  if (!dropOffLocation)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    dropOffLocation = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v5;
-  v22[1] = v5;
+  v19 = dropOffLocation;
+  v22[1] = dropOffLocation;
   v21[2] = @"rideOptionName";
-  v7 = [(INRequestRideIntent *)self rideOptionName];
-  v8 = v7;
-  if (!v7)
+  rideOptionName = [(INRequestRideIntent *)self rideOptionName];
+  v8 = rideOptionName;
+  if (!rideOptionName)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    rideOptionName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[2] = v7;
+  v22[2] = rideOptionName;
   v21[3] = @"partySize";
-  v9 = [(INRequestRideIntent *)self partySize];
-  v10 = v9;
-  if (!v9)
+  partySize = [(INRequestRideIntent *)self partySize];
+  null = partySize;
+  if (!partySize)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[3] = v10;
+  v22[3] = null;
   v21[4] = @"paymentMethod";
-  v11 = [(INRequestRideIntent *)self paymentMethod];
-  v12 = v11;
-  if (!v11)
+  paymentMethod = [(INRequestRideIntent *)self paymentMethod];
+  null2 = paymentMethod;
+  if (!paymentMethod)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[4] = v12;
+  v22[4] = null2;
   v21[5] = @"scheduledPickupTime";
-  v13 = [(INRequestRideIntent *)self scheduledPickupTime];
-  v14 = v13;
-  if (!v13)
+  scheduledPickupTime = [(INRequestRideIntent *)self scheduledPickupTime];
+  null3 = scheduledPickupTime;
+  if (!scheduledPickupTime)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[5] = v14;
+  v22[5] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:6];
-  if (!v13)
+  if (!scheduledPickupTime)
   {
   }
 
-  if (!v11)
+  if (!paymentMethod)
   {
   }
 
-  if (!v9)
+  if (!partySize)
   {
   }
 
@@ -139,110 +139,110 @@
   return v15;
 }
 
-- (void)setScheduledPickupTime:(id)a3
+- (void)setScheduledPickupTime:(id)time
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  timeCopy = time;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(timeCopy);
 
-  [v6 setScheduledPickupTime:v5];
+  [_typedBackingStore setScheduledPickupTime:v5];
 }
 
 - (INDateComponentsRange)scheduledPickupTime
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 scheduledPickupTime];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  scheduledPickupTime = [_typedBackingStore scheduledPickupTime];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(scheduledPickupTime);
 
   return v4;
 }
 
-- (void)setPaymentMethod:(id)a3
+- (void)setPaymentMethod:(id)method
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToPaymentMethod(v4);
+  methodCopy = method;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToPaymentMethod(methodCopy);
 
-  [v6 setPaymentMethod:v5];
+  [_typedBackingStore setPaymentMethod:v5];
 }
 
 - (INPaymentMethod)paymentMethod
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 paymentMethod];
-  v4 = INIntentSlotValueTransformFromPaymentMethod(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  paymentMethod = [_typedBackingStore paymentMethod];
+  v4 = INIntentSlotValueTransformFromPaymentMethod(paymentMethod);
 
   return v4;
 }
 
-- (void)setPartySize:(id)a3
+- (void)setPartySize:(id)size
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToInteger(v4);
+  sizeCopy = size;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToInteger(sizeCopy);
 
-  [v6 setPartySize:v5];
+  [_typedBackingStore setPartySize:v5];
 }
 
 - (NSNumber)partySize
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 partySize];
-  v4 = INIntentSlotValueTransformFromInteger(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  partySize = [_typedBackingStore partySize];
+  v4 = INIntentSlotValueTransformFromInteger(partySize);
 
   return v4;
 }
 
-- (void)setRideOptionName:(id)a3
+- (void)setRideOptionName:(id)name
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setRideOptionName:v5];
+  [_typedBackingStore setRideOptionName:v5];
 }
 
 - (INSpeakableString)rideOptionName
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 rideOptionName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  rideOptionName = [_typedBackingStore rideOptionName];
+  v4 = INIntentSlotValueTransformFromDataString(rideOptionName);
 
   return v4;
 }
 
-- (void)setDropOffLocation:(id)a3
+- (void)setDropOffLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setDropOffLocation:v5];
+  [_typedBackingStore setDropOffLocation:v5];
 }
 
 - (CLPlacemark)dropOffLocation
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 dropOffLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  dropOffLocation = [_typedBackingStore dropOffLocation];
+  v4 = INIntentSlotValueTransformFromLocation(dropOffLocation);
 
   return v4;
 }
 
-- (void)setPickupLocation:(id)a3
+- (void)setPickupLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INRequestRideIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setPickupLocation:v5];
+  [_typedBackingStore setPickupLocation:v5];
 }
 
 - (CLPlacemark)pickupLocation
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 pickupLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  pickupLocation = [_typedBackingStore pickupLocation];
+  v4 = INIntentSlotValueTransformFromLocation(pickupLocation);
 
   return v4;
 }
@@ -272,28 +272,28 @@
   return v21;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INRequestRideIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INRequestRideIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INRequestRideIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

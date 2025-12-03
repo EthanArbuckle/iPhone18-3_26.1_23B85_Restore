@@ -1,40 +1,40 @@
 @interface _TVRUIUpNextItem
-+ (id)itemWithUpNextInfo:(id)a3;
++ (id)itemWithUpNextInfo:(id)info;
 + (id)moreItem;
-- (BOOL)isEqual:(id)a3;
-- (_TVRUIUpNextItem)initWithUpNextInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_TVRUIUpNextItem)initWithUpNextInfo:(id)info;
 - (unint64_t)hash;
 @end
 
 @implementation _TVRUIUpNextItem
 
-- (_TVRUIUpNextItem)initWithUpNextInfo:(id)a3
+- (_TVRUIUpNextItem)initWithUpNextInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = _TVRUIUpNextItem;
   v6 = [(_TVRUIUpNextItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_upNextInfo, a3);
-    v7->_isMoreItem = v5 == 0;
+    objc_storeStrong(&v6->_upNextInfo, info);
+    v7->_isMoreItem = infoCopy == 0;
   }
 
   return v7;
 }
 
-+ (id)itemWithUpNextInfo:(id)a3
++ (id)itemWithUpNextInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUpNextInfo:v4];
+  infoCopy = info;
+  v5 = [[self alloc] initWithUpNextInfo:infoCopy];
 
   return v5;
 }
 
 + (id)moreItem
 {
-  v2 = [[a1 alloc] initWithUpNextInfo:0];
+  v2 = [[self alloc] initWithUpNextInfo:0];
 
   return v2;
 }
@@ -46,21 +46,21 @@
     return 1;
   }
 
-  v4 = [(_TVRUIUpNextItem *)self upNextInfo];
-  v5 = [v4 mediaInfo];
-  v6 = [v5 identifier];
-  v7 = [v6 hash];
+  upNextInfo = [(_TVRUIUpNextItem *)self upNextInfo];
+  mediaInfo = [upNextInfo mediaInfo];
+  identifier = [mediaInfo identifier];
+  v7 = [identifier hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,13 +71,13 @@
 
       else
       {
-        v8 = [(_TVRUIUpNextItem *)self upNextInfo];
-        v9 = [v8 mediaInfo];
-        v10 = [v9 identifier];
-        v11 = [v6 upNextInfo];
-        v12 = [v11 mediaInfo];
-        v13 = [v12 identifier];
-        v7 = [v10 isEqualToString:v13];
+        upNextInfo = [(_TVRUIUpNextItem *)self upNextInfo];
+        mediaInfo = [upNextInfo mediaInfo];
+        identifier = [mediaInfo identifier];
+        upNextInfo2 = [v6 upNextInfo];
+        mediaInfo2 = [upNextInfo2 mediaInfo];
+        identifier2 = [mediaInfo2 identifier];
+        v7 = [identifier isEqualToString:identifier2];
       }
     }
 

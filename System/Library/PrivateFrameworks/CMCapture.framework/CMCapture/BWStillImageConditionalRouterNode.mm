@@ -1,16 +1,16 @@
 @interface BWStillImageConditionalRouterNode
 + (void)initialize;
-- (BWStillImageConditionalRouterNode)initWithRoutingConfiguration:(id)a3;
+- (BWStillImageConditionalRouterNode)initWithRoutingConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageConditionalRouterNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -19,14 +19,14 @@
   }
 }
 
-- (BWStillImageConditionalRouterNode)initWithRoutingConfiguration:(id)a3
+- (BWStillImageConditionalRouterNode)initWithRoutingConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = BWStillImageConditionalRouterNode;
-  v4 = -[BWFanOutNode initWithFanOutCount:mediaType:](&v6, sel_initWithFanOutCount_mediaType_, [a3 numberOfOutputs], 1986618469);
+  v4 = -[BWFanOutNode initWithFanOutCount:mediaType:](&v6, sel_initWithFanOutCount_mediaType_, [configuration numberOfOutputs], 1986618469);
   if (v4)
   {
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
   }
 
   return v4;
@@ -39,16 +39,16 @@
   [(BWFanOutNode *)&v3 dealloc];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if ([(BWStillImageConditionalRouterConfiguration *)self->_configuration shouldEmitNodeErrorDecisionProvider])
   {
     v16 = 0;
-    v7 = [(BWStillImageConditionalRouterConfiguration *)self->_configuration shouldEmitNodeErrorDecisionProvider];
-    if (v7[2](v7, a3, &v16))
+    shouldEmitNodeErrorDecisionProvider = [(BWStillImageConditionalRouterConfiguration *)self->_configuration shouldEmitNodeErrorDecisionProvider];
+    if (shouldEmitNodeErrorDecisionProvider[2](shouldEmitNodeErrorDecisionProvider, error, &v16))
     {
-      v8 = [(BWNode *)self outputs];
-      v9 = [(NSArray *)v8 objectAtIndexedSubscript:v16];
+      outputs = [(BWNode *)self outputs];
+      v9 = [(NSArray *)outputs objectAtIndexedSubscript:v16];
       if (dword_1EB58E380)
       {
         v15 = 0;
@@ -58,7 +58,7 @@
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [v9 emitNodeError:{a3, v11, v12}];
+      [v9 emitNodeError:{error, v11, v12}];
     }
   }
 
@@ -66,18 +66,18 @@
   {
     v13.receiver = self;
     v13.super_class = BWStillImageConditionalRouterNode;
-    [(BWFanOutNode *)&v13 handleNodeError:a3 forInput:a4];
+    [(BWFanOutNode *)&v13 handleNodeError:error forInput:input];
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v14 = 0;
-  v6 = [(BWStillImageConditionalRouterConfiguration *)self->_configuration shouldEmitSampleBufferDecisionProvider:a3];
-  if (v6[2](v6, a3, &v14))
+  v6 = [(BWStillImageConditionalRouterConfiguration *)self->_configuration shouldEmitSampleBufferDecisionProvider:buffer];
+  if (v6[2](v6, buffer, &v14))
   {
-    v7 = [(BWNode *)self outputs];
-    v8 = [(NSArray *)v7 objectAtIndexedSubscript:v14];
+    outputs = [(BWNode *)self outputs];
+    v8 = [(NSArray *)outputs objectAtIndexedSubscript:v14];
     if (dword_1EB58E380)
     {
       v13 = 0;
@@ -87,7 +87,7 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [v8 emitSampleBuffer:{a3, v10, v11}];
+    [v8 emitSampleBuffer:{buffer, v10, v11}];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface ISTagIcon
-- (ISTagIcon)initWithCoder:(id)a3;
-- (ISTagIcon)initWithTag:(id)a3 tagClass:(id)a4 baseType:(id)a5;
+- (ISTagIcon)initWithCoder:(id)coder;
+- (ISTagIcon)initWithTag:(id)tag tagClass:(id)class baseType:(id)type;
 - (id)_fallbackKey;
 - (id)description;
 - (id)makeResourceProvider;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)makeResourceProvider;
 @end
 
 @implementation ISTagIcon
 
-- (ISTagIcon)initWithTag:(id)a3 tagClass:(id)a4 baseType:(id)a5
+- (ISTagIcon)initWithTag:(id)tag tagClass:(id)class baseType:(id)type
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = &stru_1F1A4DB80;
-  if (a3)
+  classCopy = class;
+  typeCopy = type;
+  tagCopy = &stru_1F1A4DB80;
+  if (tag)
   {
-    v10 = a3;
+    tagCopy = tag;
   }
 
-  v11 = v10;
+  v11 = tagCopy;
   v12 = MEMORY[0x1E696AFB0];
-  v13 = [(__CFString *)v11 stringByAppendingString:v8];
+  v13 = [(__CFString *)v11 stringByAppendingString:classCopy];
   v14 = v13;
-  if (v9)
+  if (typeCopy)
   {
-    v15 = [v13 stringByAppendingString:v9];
+    v15 = [v13 stringByAppendingString:typeCopy];
     v16 = [v12 _IF_UUIDWithString:v15];
   }
 
@@ -44,11 +44,11 @@
     tag = v17->_tag;
     v17->_tag = v18;
 
-    v20 = [v8 copy];
+    v20 = [classCopy copy];
     tagClass = v17->_tagClass;
     v17->_tagClass = v20;
 
-    v22 = [v9 copy];
+    v22 = [typeCopy copy];
     baseType = v17->_baseType;
     v17->_baseType = v22;
   }
@@ -56,23 +56,23 @@
   return v17;
 }
 
-- (ISTagIcon)initWithCoder:(id)a3
+- (ISTagIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ISTagIcon;
-  v5 = [(ISConcreteIcon *)&v13 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v5->_tag;
     v5->_tag = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tagClass"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tagClass"];
     tagClass = v5->_tagClass;
     v5->_tagClass = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseType"];
     baseType = v5->_baseType;
     v5->_baseType = v10;
   }
@@ -80,21 +80,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ISTagIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_tag forKey:{@"tag", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_tagClass forKey:@"tagClass"];
-  [v4 encodeObject:self->_baseType forKey:@"baseType"];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_tag forKey:{@"tag", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_tagClass forKey:@"tagClass"];
+  [coderCopy encodeObject:self->_baseType forKey:@"baseType"];
 }
 
 - (id)makeResourceProvider
 {
   v3 = [MEMORY[0x1E69636B0] typeRecordWithTag:self->_tag ofClass:self->_tagClass conformingToIdentifier:self->_baseType];
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
   if (-[NSString isEqualToString:](self->_tagClass, "isEqualToString:", *MEMORY[0x1E6963708]) || ([v3 conformsToTypeIdentifier:*MEMORY[0x1E69637D0]] & 1) != 0 || (objc_msgSend(v3, "conformsToTypeIdentifier:", @"com.apple.sidebar-document-type") & 1) != 0)
   {
     v5 = 0;
@@ -102,7 +102,7 @@
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x1E6963638]) initWithTypeIdentifier:v4];
+    v13 = [objc_alloc(MEMORY[0x1E6963638]) initWithTypeIdentifier:identifier];
     [v13 setBundleClassMask:2052];
     v16 = 0;
     v5 = [objc_alloc(MEMORY[0x1E6963630]) initWithConfiguration:v13 error:&v16];
@@ -119,16 +119,16 @@
 
   if ([(NSString *)self->_tagClass isEqualToString:*MEMORY[0x1E6963710]])
   {
-    v6 = self->_tag;
+    _IS_primaryFilenameExtension = self->_tag;
   }
 
   else
   {
-    v6 = [v3 _IS_primaryFilenameExtension];
+    _IS_primaryFilenameExtension = [v3 _IS_primaryFilenameExtension];
   }
 
-  v7 = v6;
-  v8 = [(ISBindableIcon *)self resourceProviderWithClaim:v5 typeRecord:v3 fileExtension:v6];
+  v7 = _IS_primaryFilenameExtension;
+  v8 = [(ISBindableIcon *)self resourceProviderWithClaim:v5 typeRecord:v3 fileExtension:_IS_primaryFilenameExtension];
   v9 = v8;
   if (v5 && ([v8 isCompositedDocument] & 1) == 0)
   {
@@ -140,8 +140,8 @@
     v10 = [ISIcon templateTypeForTag:self->_tag tagClass:self->_tagClass];
     if (!v10)
     {
-      v11 = [v3 identifier];
-      v10 = [ISIcon templateTypeForType:v11];
+      identifier2 = [v3 identifier];
+      v10 = [ISIcon templateTypeForType:identifier2];
     }
   }
 
@@ -167,24 +167,24 @@
 
   if (v3)
   {
-    v4 = [(ISTagIcon *)self tag];
+    _fallbackKey = [(ISTagIcon *)self tag];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = ISTagIcon;
-    v4 = [(ISConcreteIcon *)&v6 _fallbackKey];
+    _fallbackKey = [(ISConcreteIcon *)&v6 _fallbackKey];
   }
 
-  return v4;
+  return _fallbackKey;
 }
 
 - (void)makeResourceProvider
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1A77B8000, a2, OS_LOG_TYPE_DEBUG, "Claim not found with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,6 +1,6 @@
 @interface NTForYouRequest
 - (NTForYouRequest)init;
-- (NTForYouRequest)initWithForYouTodaySectionSpecificConfig:(id)a3 appConfiguration:(id)a4 topStoriesChannelID:(id)a5 localNewsTagID:(id)a6 hiddenFeedIDs:(id)a7 allowPaidBundleFeed:(BOOL)a8 mutedTagIDs:(id)a9 purchasedTagIDs:(id)a10 rankedAllSubscribedTagIDs:(id)a11 bundleSubscriptionProvider:(id)a12 throttlingIdentifier:(id)a13;
+- (NTForYouRequest)initWithForYouTodaySectionSpecificConfig:(id)config appConfiguration:(id)configuration topStoriesChannelID:(id)d localNewsTagID:(id)iD hiddenFeedIDs:(id)ds allowPaidBundleFeed:(BOOL)feed mutedTagIDs:(id)iDs purchasedTagIDs:(id)self0 rankedAllSubscribedTagIDs:(id)self1 bundleSubscriptionProvider:(id)self2 throttlingIdentifier:(id)self3;
 @end
 
 @implementation NTForYouRequest
@@ -31,28 +31,28 @@
   objc_exception_throw(v6);
 }
 
-- (NTForYouRequest)initWithForYouTodaySectionSpecificConfig:(id)a3 appConfiguration:(id)a4 topStoriesChannelID:(id)a5 localNewsTagID:(id)a6 hiddenFeedIDs:(id)a7 allowPaidBundleFeed:(BOOL)a8 mutedTagIDs:(id)a9 purchasedTagIDs:(id)a10 rankedAllSubscribedTagIDs:(id)a11 bundleSubscriptionProvider:(id)a12 throttlingIdentifier:(id)a13
+- (NTForYouRequest)initWithForYouTodaySectionSpecificConfig:(id)config appConfiguration:(id)configuration topStoriesChannelID:(id)d localNewsTagID:(id)iD hiddenFeedIDs:(id)ds allowPaidBundleFeed:(BOOL)feed mutedTagIDs:(id)iDs purchasedTagIDs:(id)self0 rankedAllSubscribedTagIDs:(id)self1 bundleSubscriptionProvider:(id)self2 throttlingIdentifier:(id)self3
 {
-  v17 = a3;
-  v49 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configCopy = config;
+  configurationCopy = configuration;
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  tagIDsCopy = tagIDs;
+  subscribedTagIDsCopy = subscribedTagIDs;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  if (!configCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouRequest initWithForYouTodaySectionSpecificConfig:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:throttlingIdentifier:];
-    if (v20)
+    if (dsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v20)
+  else if (dsCopy)
   {
     goto LABEL_6;
   }
@@ -63,16 +63,16 @@
   }
 
 LABEL_6:
-  if (!v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!iDsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouRequest initWithForYouTodaySectionSpecificConfig:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:throttlingIdentifier:];
-    if (v22)
+    if (tagIDsCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v22)
+  else if (tagIDsCopy)
   {
     goto LABEL_11;
   }
@@ -83,16 +83,16 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!subscribedTagIDsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTForYouRequest initWithForYouTodaySectionSpecificConfig:appConfiguration:topStoriesChannelID:localNewsTagID:hiddenFeedIDs:allowPaidBundleFeed:mutedTagIDs:purchasedTagIDs:rankedAllSubscribedTagIDs:bundleSubscriptionProvider:throttlingIdentifier:];
-    if (v25)
+    if (identifierCopy)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v25)
+  else if (identifierCopy)
   {
     goto LABEL_16;
   }
@@ -108,63 +108,63 @@ LABEL_16:
   v26 = [(NTForYouRequest *)&v50 init];
   if (v26)
   {
-    v48 = v24;
-    v27 = [v18 copy];
+    v48 = providerCopy;
+    v27 = [dCopy copy];
     topStoriesChannelID = v26->_topStoriesChannelID;
     v26->_topStoriesChannelID = v27;
 
-    v29 = [v19 copy];
+    v29 = [iDCopy copy];
     localNewsTagID = v26->_localNewsTagID;
     v26->_localNewsTagID = v29;
 
-    v31 = [v20 copy];
+    v31 = [dsCopy copy];
     hiddenFeedIDs = v26->_hiddenFeedIDs;
     v26->_hiddenFeedIDs = v31;
 
-    v26->_allowPaidBundleFeed = a8;
-    v33 = [v21 copy];
+    v26->_allowPaidBundleFeed = feed;
+    v33 = [iDsCopy copy];
     mutedTagIDs = v26->_mutedTagIDs;
     v26->_mutedTagIDs = v33;
 
-    v35 = [v22 copy];
+    v35 = [tagIDsCopy copy];
     purchasedTagIDs = v26->_purchasedTagIDs;
     v26->_purchasedTagIDs = v35;
 
-    v37 = [v23 fc_subarrayWithMaxCount:{objc_msgSend(v17, "subscriptionsFetchCount")}];
+    v37 = [subscribedTagIDsCopy fc_subarrayWithMaxCount:{objc_msgSend(configCopy, "subscriptionsFetchCount")}];
     rankedSubscribedTagIDs = v26->_rankedSubscribedTagIDs;
     v26->_rankedSubscribedTagIDs = v37;
 
-    objc_storeStrong(&v26->_bundleSubscriptionProvider, a12);
-    v26->_cutoffTime = [v17 cutoffTime];
-    v26->_headlinesPerFeedFetchCount = [v17 headlinesPerFeedFetchCount];
-    v26->_feedMaxCount = [v17 feedMaxCount];
-    v26->_feedItemMaxCount = [v17 feedItemMaxCount];
-    v26->_subscriptionsMinCount = [v17 subscriptionsMinCount];
-    v39 = [v17 fetchingBin];
-    v40 = v39 == 1;
-    if (v39 == 2)
+    objc_storeStrong(&v26->_bundleSubscriptionProvider, provider);
+    v26->_cutoffTime = [configCopy cutoffTime];
+    v26->_headlinesPerFeedFetchCount = [configCopy headlinesPerFeedFetchCount];
+    v26->_feedMaxCount = [configCopy feedMaxCount];
+    v26->_feedItemMaxCount = [configCopy feedItemMaxCount];
+    v26->_subscriptionsMinCount = [configCopy subscriptionsMinCount];
+    fetchingBin = [configCopy fetchingBin];
+    v40 = fetchingBin == 1;
+    if (fetchingBin == 2)
     {
       v40 = 2;
     }
 
     v26->_fetchingBin = v40;
-    v41 = [v25 copy];
+    v41 = [identifierCopy copy];
     throttlingIdentifier = v26->_throttlingIdentifier;
     v26->_throttlingIdentifier = v41;
 
-    v43 = [v49 widgetForYouBackgroundMinimumUpdateInterval];
-    if ([v17 hasMinimumUpdateInterval])
+    widgetForYouBackgroundMinimumUpdateInterval = [configurationCopy widgetForYouBackgroundMinimumUpdateInterval];
+    if ([configCopy hasMinimumUpdateInterval])
     {
-      v44 = [v17 minimumUpdateInterval];
+      minimumUpdateInterval = [configCopy minimumUpdateInterval];
     }
 
     else
     {
-      v44 = v43;
+      minimumUpdateInterval = widgetForYouBackgroundMinimumUpdateInterval;
     }
 
-    v26->_minimumUpdateInterval = v44;
-    v24 = v48;
+    v26->_minimumUpdateInterval = minimumUpdateInterval;
+    providerCopy = v48;
   }
 
   return v26;

@@ -9,40 +9,40 @@
 
 - (unsigned)messageID
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKey:@"NMSContext"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKey:@"NMSContext"];
 
-  LOWORD(v2) = [v3 messageID];
-  return v2;
+  LOWORD(userInfo) = [v3 messageID];
+  return userInfo;
 }
 
 - (NSDate)messageSent
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKey:@"NMSContext"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKey:@"NMSContext"];
 
-  v4 = [v3 date];
+  date = [v3 date];
 
-  return v4;
+  return date;
 }
 
 - (NSDictionary)persistentUserInfo
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKey:@"NMSContext"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKey:@"NMSContext"];
 
-  v4 = [v3 userInfo];
+  userInfo2 = [v3 userInfo];
 
-  return v4;
+  return userInfo2;
 }
 
 - (BOOL)isFromRequest
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKey:@"NMSContext"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKey:@"NMSContext"];
 
-  LOBYTE(v2) = [v3 isFromRequest];
-  return v2;
+  LOBYTE(userInfo) = [v3 isFromRequest];
+  return userInfo;
 }
 
 @end

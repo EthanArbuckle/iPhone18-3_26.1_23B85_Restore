@@ -1,18 +1,18 @@
 @interface SRCompactTextRequestSiriSuggestionsButton
-- (SRCompactTextRequestSiriSuggestionsButton)initWithFrame:(CGRect)a3;
+- (SRCompactTextRequestSiriSuggestionsButton)initWithFrame:(CGRect)frame;
 - (SRCompactTextRequestSiriSuggestionsButtonDelegate)delegate;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_setUpIcons;
 - (void)layoutSubviews;
 @end
 
 @implementation SRCompactTextRequestSiriSuggestionsButton
 
-- (SRCompactTextRequestSiriSuggestionsButton)initWithFrame:(CGRect)a3
+- (SRCompactTextRequestSiriSuggestionsButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SRCompactTextRequestSiriSuggestionsButton;
-  v3 = [(SRCompactTextRequestSiriSuggestionsButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRCompactTextRequestSiriSuggestionsButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -58,7 +58,7 @@
   [(BSUICAPackageView *)iconsView setFrame:0.0, 0.0, v5];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
   suggestionsEnabled = self->_suggestionsEnabled;
   self->_suggestionsEnabled = !suggestionsEnabled;
@@ -74,8 +74,8 @@
 
   [(BSUICAPackageView *)self->_iconsView setState:v5 animated:1 transitionSpeed:0 completion:1.0];
   [(SRCompactTextRequestSiriSuggestionsButton *)self setSelected:self->_suggestionsEnabled];
-  v6 = [(SRCompactTextRequestSiriSuggestionsButton *)self delegate];
-  [v6 textRequestSuggestionsButton:self didEnableSuggestions:self->_suggestionsEnabled];
+  delegate = [(SRCompactTextRequestSiriSuggestionsButton *)self delegate];
+  [delegate textRequestSuggestionsButton:self didEnableSuggestions:self->_suggestionsEnabled];
 }
 
 - (SRCompactTextRequestSiriSuggestionsButtonDelegate)delegate

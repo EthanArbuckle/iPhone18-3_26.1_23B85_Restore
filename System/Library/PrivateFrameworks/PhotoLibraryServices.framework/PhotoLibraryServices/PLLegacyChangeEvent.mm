@@ -1,18 +1,18 @@
 @interface PLLegacyChangeEvent
-+ (BOOL)isEmptyEvent:(id)a3;
-+ (id)_descriptionForEvent:(id)a3;
-+ (id)_descriptionForEvent:(id)a3 withPersistentStoreCoordinator:(id)a4;
-+ (id)localChangeEventFromChangeHubEvent:(id)a3 withLibraryBundle:(id)a4;
++ (BOOL)isEmptyEvent:(id)event;
++ (id)_descriptionForEvent:(id)event;
++ (id)_descriptionForEvent:(id)event withPersistentStoreCoordinator:(id)coordinator;
++ (id)localChangeEventFromChangeHubEvent:(id)event withLibraryBundle:(id)bundle;
 @end
 
 @implementation PLLegacyChangeEvent
 
-+ (BOOL)isEmptyEvent:(id)a3
++ (BOOL)isEmptyEvent:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && xpc_dictionary_get_count(v3))
+  eventCopy = event;
+  v4 = eventCopy;
+  if (eventCopy && xpc_dictionary_get_count(eventCopy))
   {
     if (xpc_dictionary_get_uint64(v4, "eventKind") == 1)
     {
@@ -104,26 +104,26 @@ LABEL_26:
   return v7;
 }
 
-+ (id)_descriptionForEvent:(id)a3 withPersistentStoreCoordinator:(id)a4
++ (id)_descriptionForEvent:(id)event withPersistentStoreCoordinator:(id)coordinator
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  eventCopy = event;
+  coordinatorCopy = coordinator;
+  if (!eventCopy)
   {
     v21 = @"<empty>";
     goto LABEL_37;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = v6;
-  uint64 = xpc_dictionary_get_uint64(v6, "eventKind");
+  array = [MEMORY[0x1E695DF70] array];
+  v10 = eventCopy;
+  uint64 = xpc_dictionary_get_uint64(eventCopy, "eventKind");
   xdict = v10;
   if (uint64 != 5)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"index: #%llu", xpc_dictionary_get_uint64(v10, "eventIndex")];
-    [v9 addObject:v22];
+    [array addObject:v22];
 
     if (xpc_dictionary_get_uuid(v10, "eventUUID"))
     {
@@ -149,41 +149,41 @@ LABEL_26:
     }
 
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"origin: %@", v13];
-    [v9 addObject:v27];
+    [array addObject:v27];
 
     switch(uint64)
     {
       case 4u:
-        [v9 addObject:@"kind: GetPendingEvents"];
-        v6 = xdict;
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"last index: %llu", xpc_dictionary_get_uint64(xdict, "eventLastIndex")];
-        [v9 addObject:v20];
+        [array addObject:@"kind: GetPendingEvents"];
+        eventCopy = xdict;
+        uint64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"last index: %llu", xpc_dictionary_get_uint64(xdict, "eventLastIndex")];
+        [array addObject:uint64];
         break;
       case 3u:
-        [v9 addObject:@"kind: SetConnectionUUID"];
-        v6 = xdict;
+        [array addObject:@"kind: SetConnectionUUID"];
+        eventCopy = xdict;
         v63 = xpc_dictionary_get_value(xdict, "eventUUID");
-        v20 = v63;
+        uint64 = v63;
         if (v63)
         {
           memset(out, 0, 37);
           bytes = xpc_uuid_get_bytes(v63);
           uuid_unparse(bytes, out);
           v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UUID: %s", out];
-          [v9 addObject:v65];
+          [array addObject:v65];
         }
 
         break;
       case 1u:
         v71 = v13;
         v72 = v8;
-        [v9 addObject:@"kind: ContextDidSave"];
-        v6 = xdict;
+        [array addObject:@"kind: ContextDidSave"];
+        eventCopy = xdict;
         v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"change source: %lld", xpc_dictionary_get_int64(xdict, "changeSource")];
-        [v9 addObject:v28];
+        [array addObject:v28];
 
         v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sync change marker: %d", xpc_dictionary_get_BOOL(xdict, "syncChangeMarker")];
-        [v9 addObject:v29];
+        [array addObject:v29];
 
         v30 = xpc_dictionary_get_value(xdict, [*MEMORY[0x1E695D320] UTF8String]);
         v31 = v30;
@@ -191,13 +191,13 @@ LABEL_26:
         {
           v32 = MEMORY[0x1E696AEC0];
           count = xpc_array_get_count(v30);
-          v34 = _descriptionOfManagedObjectIDArray(v31, 0, 0, v7);
+          v34 = _descriptionOfManagedObjectIDArray(v31, 0, 0, coordinatorCopy);
           v35 = [v32 stringWithFormat:@"%lu inserts: {%@}", count, v34];
-          [v9 addObject:v35];
+          [array addObject:v35];
         }
 
         v70 = v31;
-        v74 = v9;
+        v74 = array;
         v36 = xpc_dictionary_get_value(xdict, [*MEMORY[0x1E695D4C8] UTF8String]);
         v37 = v36;
         if (v36)
@@ -206,7 +206,7 @@ LABEL_26:
           v39 = xpc_array_get_count(v36);
           v40 = xpc_dictionary_get_value(xdict, "PLUpdatedAttributesKey");
           v41 = xpc_dictionary_get_value(xdict, "PLUpdatedRelationshipsKey");
-          v42 = _descriptionOfManagedObjectIDArray(v37, v40, v41, v7);
+          v42 = _descriptionOfManagedObjectIDArray(v37, v40, v41, coordinatorCopy);
           v43 = [v38 stringWithFormat:@"%lu updates: {%@}", v39, v42];
           [v74 addObject:v43];
         }
@@ -218,13 +218,13 @@ LABEL_26:
         {
           v46 = MEMORY[0x1E696AEC0];
           v47 = xpc_array_get_count(v44);
-          v48 = _descriptionOfManagedObjectIDArray(v45, 0, 0, v7);
+          v48 = _descriptionOfManagedObjectIDArray(v45, 0, 0, coordinatorCopy);
           v49 = [v46 stringWithFormat:@"%lu deletes: {%@}", v47, v48];
           [v74 addObject:v49];
         }
 
         v68 = v45;
-        v73 = v7;
+        v73 = coordinatorCopy;
         v81 = 0u;
         v82 = 0u;
         v79 = 0u;
@@ -245,7 +245,7 @@ LABEL_26:
               }
 
               v55 = *(*(&v79 + 1) + 8 * i);
-              v56 = xpc_dictionary_get_value(v6, [v55 UTF8String]);
+              v56 = xpc_dictionary_get_value(eventCopy, [v55 UTF8String]);
               v57 = v56;
               if (v56)
               {
@@ -255,14 +255,14 @@ LABEL_26:
                 v76[2] = __75__PLLegacyChangeEvent__descriptionForEvent_withPersistentStoreCoordinator___block_invoke_2;
                 v76[3] = &unk_1E7570AE0;
                 v76[4] = v55;
-                v77 = v6;
+                v77 = eventCopy;
                 v78 = v58;
                 v59 = v58;
                 xpc_array_apply(v57, v76);
                 v60 = MEMORY[0x1E696AEC0];
                 v67 = xpc_array_get_count(v57);
                 v61 = v60;
-                v6 = xdict;
+                eventCopy = xdict;
                 v62 = [v61 stringWithFormat:@"%lu %@: {%@}", v67, v55, v59];
                 [v74 addObject:v62];
               }
@@ -274,58 +274,58 @@ LABEL_26:
           while (v52);
         }
 
-        v9 = v74;
-        [PLDelayedFiledSystemDeletions appendDescriptionForEvent:v6 toComponents:v74];
+        array = v74;
+        [PLDelayedFiledSystemDeletions appendDescriptionForEvent:eventCopy toComponents:v74];
 
         v8 = v72;
-        v7 = v73;
+        coordinatorCopy = v73;
         v13 = v71;
-        v20 = v70;
+        uint64 = v70;
         break;
       default:
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"kind: invalid (%lu)", uint64];
-        [v9 addObject:v20];
-        v6 = xdict;
+        uint64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"kind: invalid (%lu)", uint64];
+        [array addObject:uint64];
+        eventCopy = xdict;
         break;
     }
 
     goto LABEL_35;
   }
 
-  [v9 addObject:@"kind: PendingEvents"];
+  [array addObject:@"kind: PendingEvents"];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"last index: %llu", xpc_dictionary_get_uint64(v10, "eventLastIndex")];
-  [v9 addObject:v12];
+  [array addObject:v12];
 
   v13 = xpc_dictionary_get_value(v10, "events");
   if (v13)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     applier[0] = MEMORY[0x1E69E9820];
     applier[1] = 3221225472;
     applier[2] = __75__PLLegacyChangeEvent__descriptionForEvent_withPersistentStoreCoordinator___block_invoke;
     applier[3] = &unk_1E7570198;
-    v84 = v14;
-    v86 = a1;
-    v85 = v7;
-    v15 = v14;
+    v84 = array2;
+    selfCopy = self;
+    v85 = coordinatorCopy;
+    v15 = array2;
     xpc_array_apply(v13, applier);
     v16 = MEMORY[0x1E696AEC0];
     v17 = xpc_array_get_count(v13);
     v18 = [(_xpc_connection_s *)v15 componentsJoinedByString:@"\n"];
     v19 = [v16 stringWithFormat:@"events: %zu (\n%@\n)", v17, v18];
-    [v9 addObject:v19];
+    [array addObject:v19];
 
-    v6 = xdict;
-    v20 = v84;
+    eventCopy = xdict;
+    uint64 = v84;
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  v6 = v10;
+  eventCopy = v10;
 LABEL_36:
 
-  v21 = [v9 componentsJoinedByString:{@", "}];
+  v21 = [array componentsJoinedByString:{@", "}];
 
   objc_autoreleasePoolPop(v8);
 LABEL_37:
@@ -378,33 +378,33 @@ uint64_t __75__PLLegacyChangeEvent__descriptionForEvent_withPersistentStoreCoord
   return 1;
 }
 
-+ (id)_descriptionForEvent:(id)a3
++ (id)_descriptionForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v6 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-  v7 = [v5 bundleForLibraryURL:v6];
+  systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+  v7 = [v5 bundleForLibraryURL:systemLibraryURL];
 
-  v8 = [v7 persistentContainer];
-  v9 = [v8 sharedPersistentStoreCoordinatorWithError:0];
+  persistentContainer = [v7 persistentContainer];
+  v9 = [persistentContainer sharedPersistentStoreCoordinatorWithError:0];
 
-  v10 = [a1 _descriptionForEvent:v4 withPersistentStoreCoordinator:v9];
+  v10 = [self _descriptionForEvent:eventCopy withPersistentStoreCoordinator:v9];
 
   return v10;
 }
 
-+ (id)localChangeEventFromChangeHubEvent:(id)a3 withLibraryBundle:(id)a4
++ (id)localChangeEventFromChangeHubEvent:(id)event withLibraryBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  bundleCopy = bundle;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__PLLegacyChangeEvent_localChangeEventFromChangeHubEvent_withLibraryBundle___block_invoke;
   v11[3] = &unk_1E7570160;
-  v12 = v6;
-  v13 = v5;
-  v7 = v5;
-  v8 = v6;
+  v12 = bundleCopy;
+  v13 = eventCopy;
+  v7 = eventCopy;
+  v8 = bundleCopy;
   v9 = [PLLocalChangeEventBuilder localEventWithBuilderBlock:v11];
 
   return v9;

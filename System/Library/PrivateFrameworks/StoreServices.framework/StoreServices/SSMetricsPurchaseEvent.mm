@@ -3,10 +3,10 @@
 - (double)requestStartTime;
 - (double)responseEndTime;
 - (double)responseStartTime;
-- (void)addFieldsFromPurchaseResponse:(id)a3;
-- (void)setRequestStartTime:(double)a3;
-- (void)setResponseEndTime:(double)a3;
-- (void)setResponseStartTime:(double)a3;
+- (void)addFieldsFromPurchaseResponse:(id)response;
+- (void)setRequestStartTime:(double)time;
+- (void)setResponseEndTime:(double)time;
+- (void)setResponseStartTime:(double)time;
 @end
 
 @implementation SSMetricsPurchaseEvent
@@ -25,29 +25,29 @@
   return v3;
 }
 
-- (void)addFieldsFromPurchaseResponse:(id)a3
+- (void)addFieldsFromPurchaseResponse:(id)response
 {
-  v8 = a3;
-  v4 = [v8 responseMetrics];
+  responseCopy = response;
+  responseMetrics = [responseCopy responseMetrics];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SSMetricsMutableEvent *)self addPropertiesWithDictionary:v4];
+    [(SSMetricsMutableEvent *)self addPropertiesWithDictionary:responseMetrics];
   }
 
-  [v8 requestStartTime];
+  [responseCopy requestStartTime];
   if (v5 > 2.22044605e-16)
   {
     [(SSMetricsPurchaseEvent *)self setRequestStartTime:?];
   }
 
-  [v8 responseEndTime];
+  [responseCopy responseEndTime];
   if (v6 > 2.22044605e-16)
   {
     [(SSMetricsPurchaseEvent *)self setResponseEndTime:?];
   }
 
-  [v8 responseStartTime];
+  [responseCopy responseStartTime];
   if (v7 > 2.22044605e-16)
   {
     [(SSMetricsPurchaseEvent *)self setResponseStartTime:?];
@@ -81,9 +81,9 @@
   return v5;
 }
 
-- (void)setRequestStartTime:(double)a3
+- (void)setRequestStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -97,9 +97,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requestStartTime"];
 }
 
-- (void)setResponseEndTime:(double)a3
+- (void)setResponseEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -113,9 +113,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseEndTime"];
 }
 
-- (void)setResponseStartTime:(double)a3
+- (void)setResponseStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }

@@ -1,32 +1,32 @@
 @interface HMMTRWiFiScanResult
-- (HMMTRWiFiScanResult)initWithMTRNetworkCommissioningClusterWiFiInterfaceScanResult:(id)a3;
+- (HMMTRWiFiScanResult)initWithMTRNetworkCommissioningClusterWiFiInterfaceScanResult:(id)result;
 @end
 
 @implementation HMMTRWiFiScanResult
 
-- (HMMTRWiFiScanResult)initWithMTRNetworkCommissioningClusterWiFiInterfaceScanResult:(id)a3
+- (HMMTRWiFiScanResult)initWithMTRNetworkCommissioningClusterWiFiInterfaceScanResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = HMMTRWiFiScanResult;
   v5 = [(HMMTRWiFiScanResult *)&v15 init];
   if (v5)
   {
-    v6 = [v4 ssid];
+    ssid = [resultCopy ssid];
     ssid = v5->_ssid;
-    v5->_ssid = v6;
+    v5->_ssid = ssid;
 
-    v8 = [v4 rssi];
+    rssi = [resultCopy rssi];
     rssi = v5->_rssi;
-    v5->_rssi = v8;
+    v5->_rssi = rssi;
 
-    v10 = [v4 security];
+    security = [resultCopy security];
     security = v5->_security;
-    v5->_security = v10;
+    v5->_security = security;
 
-    v12 = [v4 wiFiBand];
+    wiFiBand = [resultCopy wiFiBand];
     band = v5->_band;
-    v5->_band = v12;
+    v5->_band = wiFiBand;
   }
 
   return v5;

@@ -1,21 +1,21 @@
 @interface CPSPointsOfInterestTableView
-- (CPSPointsOfInterestTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)accessoryViewAtEdge:(int64_t)a3;
+- (CPSPointsOfInterestTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)accessoryViewAtEdge:(int64_t)edge;
 - (id)visibleCells;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
 @end
 
 @implementation CPSPointsOfInterestTableView
 
-- (CPSPointsOfInterestTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (CPSPointsOfInterestTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  v10 = a3;
+  frameCopy = frame;
   v8 = a2;
-  v7 = a4;
+  styleCopy = style;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = CPSPointsOfInterestTableView;
-  v9 = [(CPSPointsOfInterestTableView *)&v6 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(CPSPointsOfInterestTableView *)&v6 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v9, v9);
   if (v9)
   {
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = a4;
-  v34.receiver = v37;
+  objc_storeStrong(location, view);
+  edgeCopy = edge;
+  v34.receiver = selfCopy;
   v34.super_class = CPSPointsOfInterestTableView;
   [(CPSPointsOfInterestTableView *)&v34 setAccessoryView:location[0] atEdge:4];
   if (location[0])
@@ -47,62 +47,62 @@
     v29 = 0;
     if (_UISolariumEnabled())
     {
-      v32 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
       v31 = 1;
-      v25 = v32;
+      v25 = clearColor;
     }
 
     else
     {
-      v30 = [MEMORY[0x277D75348] tableBackgroundColor];
+      tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
       v29 = 1;
-      v25 = v30;
+      v25 = tableBackgroundColor;
     }
 
     [v33 setBackgroundColor:v25];
     if (v29)
     {
-      MEMORY[0x277D82BD8](v30);
+      MEMORY[0x277D82BD8](tableBackgroundColor);
     }
 
     if (v31)
     {
-      MEMORY[0x277D82BD8](v32);
+      MEMORY[0x277D82BD8](clearColor);
     }
 
     [location[0] insertSubview:v33 atIndex:0];
     v9 = location[0];
-    v22 = [v33 topAnchor];
-    v21 = [location[0] topAnchor];
-    v20 = [v22 constraintEqualToAnchor:?];
+    topAnchor = [v33 topAnchor];
+    topAnchor2 = [location[0] topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:?];
     v39[0] = v20;
-    v19 = [v33 leftAnchor];
-    v18 = [location[0] leftAnchor];
-    v17 = [v19 constraintEqualToAnchor:?];
+    leftAnchor = [v33 leftAnchor];
+    leftAnchor2 = [location[0] leftAnchor];
+    v17 = [leftAnchor constraintEqualToAnchor:?];
     v39[1] = v17;
-    v16 = [v33 rightAnchor];
-    v15 = [location[0] rightAnchor];
-    v14 = [v16 constraintEqualToAnchor:?];
+    rightAnchor = [v33 rightAnchor];
+    rightAnchor2 = [location[0] rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:?];
     v39[2] = v14;
-    v13 = [v33 bottomAnchor];
-    v12 = [location[0] bottomAnchor];
-    v11 = [v13 constraintEqualToAnchor:?];
+    bottomAnchor = [v33 bottomAnchor];
+    bottomAnchor2 = [location[0] bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:?];
     v39[3] = v11;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
     [v9 addConstraints:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](bottomAnchor);
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](rightAnchor2);
+    MEMORY[0x277D82BD8](rightAnchor);
     MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](leftAnchor2);
+    MEMORY[0x277D82BD8](leftAnchor);
     MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
     memset(__b, 0, sizeof(__b));
     obj = [location[0] _CPS_recursiveSubviewsWithClass:objc_opt_class()];
     v24 = [obj countByEnumeratingWithState:__b objects:v38 count:16];
@@ -141,11 +141,11 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)accessoryViewAtEdge:(int64_t)a3
+- (id)accessoryViewAtEdge:(int64_t)edge
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  edgeCopy = edge;
   v4.receiver = self;
   v4.super_class = CPSPointsOfInterestTableView;
   return [(CPSPointsOfInterestTableView *)&v4 accessoryViewAtEdge:4];
@@ -153,7 +153,7 @@
 
 - (id)visibleCells
 {
-  v35 = self;
+  selfCopy = self;
   v34[1] = a2;
   v33.receiver = self;
   v33.super_class = CPSPointsOfInterestTableView;
@@ -162,12 +162,12 @@
   {
     v30 = 0u;
     v31 = 0u;
-    [(CPSPointsOfInterestTableView *)v35 frame];
+    [(CPSPointsOfInterestTableView *)selfCopy frame];
     v26 = v2;
     v27 = v3;
     v28 = v4;
     v29 = v5;
-    [(CPSPointsOfInterestTableView *)v35 _sectionContentInset];
+    [(CPSPointsOfInterestTableView *)selfCopy _sectionContentInset];
     v25[9] = v6;
     v25[10] = v7;
     v25[11] = v8;
@@ -176,10 +176,10 @@
     *(&v30 + 1) = v10;
     *&v31 = v11;
     *(&v31 + 1) = v12;
-    [(CPSPointsOfInterestTableView *)v35 contentOffset];
+    [(CPSPointsOfInterestTableView *)selfCopy contentOffset];
     v25[3] = v13;
     v25[4] = v14;
-    [(CPSPointsOfInterestTableView *)v35 contentOffset];
+    [(CPSPointsOfInterestTableView *)selfCopy contentOffset];
     v25[1] = v15;
     v25[2] = v16;
     CGRectMake_6();

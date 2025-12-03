@@ -7,11 +7,11 @@
 
 + (double)idealSearchPlatterWidth
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 interfaceOrientation];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  interfaceOrientation = [mEMORY[0x1E69DC668] interfaceOrientation];
 
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v6 = v5;
   v8 = v7;
 
@@ -25,7 +25,7 @@
     v9 = v6;
   }
 
-  v10 = "SpringBoard";
+  currentDevice = "SpringBoard";
   if (_os_feature_enabled_impl())
   {
     v11 = 500.0;
@@ -46,8 +46,8 @@
     v12 = 556.0;
   }
 
-  v13 = __sb__runningInSpringBoard();
-  if (v13)
+  mainScreen2 = __sb__runningInSpringBoard();
+  if (mainScreen2)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -59,8 +59,8 @@
 
   else
   {
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v10 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       v14 = 0;
       v15 = 1;
@@ -68,7 +68,7 @@
     }
   }
 
-  v15 = v13 ^ 1;
+  v15 = mainScreen2 ^ 1;
   v16 = __sb__runningInSpringBoard();
   if (v16)
   {
@@ -77,8 +77,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 _referenceBounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -110,10 +110,10 @@ LABEL_20:
 
   else
   {
-    v20 = [MEMORY[0x1E69DC938] currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v21 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v11 = v12;
     }
@@ -138,7 +138,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  if ((v3 - 1) >= 2)
+  if ((interfaceOrientation - 1) >= 2)
   {
     v18 = v8;
   }
@@ -159,8 +159,8 @@ LABEL_26:
 
 - (SBUISearchUtilities)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBUISearchUtilities.m" lineNumber:34 description:@"Do not instantiate this class"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBUISearchUtilities.m" lineNumber:34 description:@"Do not instantiate this class"];
 
   v6.receiver = self;
   v6.super_class = SBUISearchUtilities;

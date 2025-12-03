@@ -1,21 +1,21 @@
 @interface _ANEOutputSetEnqueue
-- (id)initOutputSetWithProcedureIndex:(unsigned int)a3 setIndex:(unsigned int)a4 signalValue:(unint64_t)a5 signalNotRequired:(BOOL)a6 isOpenLoop:(BOOL)a7;
+- (id)initOutputSetWithProcedureIndex:(unsigned int)index setIndex:(unsigned int)setIndex signalValue:(unint64_t)value signalNotRequired:(BOOL)required isOpenLoop:(BOOL)loop;
 @end
 
 @implementation _ANEOutputSetEnqueue
 
-- (id)initOutputSetWithProcedureIndex:(unsigned int)a3 setIndex:(unsigned int)a4 signalValue:(unint64_t)a5 signalNotRequired:(BOOL)a6 isOpenLoop:(BOOL)a7
+- (id)initOutputSetWithProcedureIndex:(unsigned int)index setIndex:(unsigned int)setIndex signalValue:(unint64_t)value signalNotRequired:(BOOL)required isOpenLoop:(BOOL)loop
 {
   v13.receiver = self;
   v13.super_class = _ANEOutputSetEnqueue;
   result = [(_ANEOutputSetEnqueue *)&v13 init];
   if (result)
   {
-    *(result + 3) = a3;
-    *(result + 4) = a4;
-    *(result + 3) = a5;
-    *(result + 8) = a6;
-    *(result + 9) = a7;
+    *(result + 3) = index;
+    *(result + 4) = setIndex;
+    *(result + 3) = value;
+    *(result + 8) = required;
+    *(result + 9) = loop;
   }
 
   return result;

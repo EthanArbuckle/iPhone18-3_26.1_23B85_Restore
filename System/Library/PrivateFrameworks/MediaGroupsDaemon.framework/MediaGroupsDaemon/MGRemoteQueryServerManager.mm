@@ -1,32 +1,32 @@
 @interface MGRemoteQueryServerManager
 - (BOOL)_shouldRunServer;
 - (MGInternalQueryRunner)queryRunner;
-- (MGRemoteQueryServerManager)initWithQueryRunner:(id)a3;
+- (MGRemoteQueryServerManager)initWithQueryRunner:(id)runner;
 - (NSString)description;
 - (void)_setupQuery;
 - (void)_startServer;
 - (void)_stopServer;
 - (void)_updateState;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)serverInvalidated:(id)a3 withError:(id)a4;
-- (void)setHaveGroupsToAdvertise:(BOOL)a3;
-- (void)setHavePermissiveACL:(BOOL)a3;
-- (void)setHomeHash:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)serverInvalidated:(id)invalidated withError:(id)error;
+- (void)setHaveGroupsToAdvertise:(BOOL)advertise;
+- (void)setHavePermissiveACL:(BOOL)l;
+- (void)setHomeHash:(id)hash;
 @end
 
 @implementation MGRemoteQueryServerManager
 
-- (MGRemoteQueryServerManager)initWithQueryRunner:(id)a3
+- (MGRemoteQueryServerManager)initWithQueryRunner:(id)runner
 {
-  v4 = a3;
+  runnerCopy = runner;
   v17.receiver = self;
   v17.super_class = MGRemoteQueryServerManager;
   v5 = [(MGRemoteQueryServerManager *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_queryRunner, v4);
+    objc_storeWeak(&v5->_queryRunner, runnerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.MediaGroups.RemoteQuery.Server", v7);
     dispatchQueue = v6->_dispatchQueue;
@@ -41,13 +41,13 @@
     v6->_airplayDefaults = v11;
 
     [(NSUserDefaults *)v6->_airplayDefaults addObserver:v6 forKeyPath:@"accessControlLevel" options:4 context:0];
-    v13 = [(MGRemoteQueryServerManager *)v6 dispatchQueue];
+    dispatchQueue = [(MGRemoteQueryServerManager *)v6 dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke;
     block[3] = &unk_27989ED90;
     v16 = v6;
-    dispatch_async(v13, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return v6;
@@ -63,14 +63,14 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
 
 - (void)dealloc
 {
-  v3 = [(MGRemoteQueryServerManager *)self airplayDefaults];
-  [v3 removeObserver:self forKeyPath:@"accessControlLevel" context:0];
+  airplayDefaults = [(MGRemoteQueryServerManager *)self airplayDefaults];
+  [airplayDefaults removeObserver:self forKeyPath:@"accessControlLevel" context:0];
 
-  v4 = [(MGRemoteQueryServerManager *)self query];
-  if (v4)
+  query = [(MGRemoteQueryServerManager *)self query];
+  if (query)
   {
-    v5 = [(MGRemoteQueryServerManager *)self queryRunner];
-    [v5 stopOutstandingQuery:v4];
+    queryRunner = [(MGRemoteQueryServerManager *)self queryRunner];
+    [queryRunner stopOutstandingQuery:query];
   }
 
   v6.receiver = self;
@@ -83,12 +83,12 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryServerManager *)self havePermissiveACL];
-  v7 = [(MGRemoteQueryServerManager *)self haveGroupsToAdvertise];
-  v8 = [(MGRemoteQueryServerManager *)self homeHash];
-  v9 = [(MGRemoteQueryServerManager *)self server];
+  havePermissiveACL = [(MGRemoteQueryServerManager *)self havePermissiveACL];
+  haveGroupsToAdvertise = [(MGRemoteQueryServerManager *)self haveGroupsToAdvertise];
+  homeHash = [(MGRemoteQueryServerManager *)self homeHash];
+  server = [(MGRemoteQueryServerManager *)self server];
   v10 = 78;
-  if (v7)
+  if (haveGroupsToAdvertise)
   {
     v11 = 89;
   }
@@ -98,27 +98,27 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
     v11 = 78;
   }
 
-  if (v6)
+  if (havePermissiveACL)
   {
     v10 = 89;
   }
 
-  v12 = [v3 stringWithFormat:@"<%@: %p, ACL(%c), Groups(%c), _homeHash = %@, _server = %@>", v5, self, v10, v11, v8, v9];
+  v12 = [v3 stringWithFormat:@"<%@: %p, ACL(%c), Groups(%c), _homeHash = %@, _server = %@>", v5, self, v10, v11, homeHash, server];
 
   return v12;
 }
 
 - (void)_updateState
 {
-  v3 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServerManager *)self server];
+  server = [(MGRemoteQueryServerManager *)self server];
 
-  v5 = [(MGRemoteQueryServerManager *)self _shouldRunServer];
-  if (v4 || !v5)
+  _shouldRunServer = [(MGRemoteQueryServerManager *)self _shouldRunServer];
+  if (server || !_shouldRunServer)
   {
-    if (v4 != 0 && !v5)
+    if (server != 0 && !_shouldRunServer)
     {
 
       [(MGRemoteQueryServerManager *)self _stopServer];
@@ -135,13 +135,13 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
 - (BOOL)_shouldRunServer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if ([(MGRemoteQueryServerManager *)self havePermissiveACL]&& [(MGRemoteQueryServerManager *)self haveGroupsToAdvertise])
   {
-    v4 = [(MGRemoteQueryServerManager *)self homeHash];
-    v5 = [v4 length] != 0;
+    homeHash = [(MGRemoteQueryServerManager *)self homeHash];
+    v5 = [homeHash length] != 0;
   }
 
   else
@@ -182,9 +182,9 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
       v11 = 78;
     }
 
-    v12 = [(MGRemoteQueryServerManager *)self homeHash];
+    homeHash2 = [(MGRemoteQueryServerManager *)self homeHash];
     v14 = 134219008;
-    if ([v12 length])
+    if ([homeHash2 length])
     {
       v13 = 89;
     }
@@ -194,7 +194,7 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
       v13 = 78;
     }
 
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
     v17 = v9;
     v18 = 1024;
@@ -213,21 +213,21 @@ uint64_t __50__MGRemoteQueryServerManager_initWithQueryRunner___block_invoke(uin
 - (void)_startServer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServerManager *)self server];
+  server = [(MGRemoteQueryServerManager *)self server];
 
-  if (v4)
+  if (server)
   {
     v5 = MGLogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MGRemoteQueryServerManager *)self server];
+      server2 = [(MGRemoteQueryServerManager *)self server];
       v12 = 134218240;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2048;
-      v15 = v6;
+      v15 = server2;
       _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p server already started, running %p", &v12, 0x16u);
 LABEL_6:
     }
@@ -236,19 +236,19 @@ LABEL_6:
   else
   {
     v7 = [MGRemoteQueryServer alloc];
-    v8 = [(MGRemoteQueryServerManager *)self homeHash];
-    v9 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-    v10 = [(MGRemoteQueryServer *)v7 initWithHomeHash:v8 delegate:self dispatchQueue:v9];
+    homeHash = [(MGRemoteQueryServerManager *)self homeHash];
+    dispatchQueue2 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+    v10 = [(MGRemoteQueryServer *)v7 initWithHomeHash:homeHash delegate:self dispatchQueue:dispatchQueue2];
     [(MGRemoteQueryServerManager *)self setServer:v10];
 
     v5 = MGLogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MGRemoteQueryServerManager *)self server];
+      server2 = [(MGRemoteQueryServerManager *)self server];
       v12 = 134218240;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2048;
-      v15 = v6;
+      v15 = server2;
       _os_log_impl(&dword_25863A000, v5, OS_LOG_TYPE_DEFAULT, "%p started server %p", &v12, 0x16u);
       goto LABEL_6;
     }
@@ -260,20 +260,20 @@ LABEL_6:
 - (void)_stopServer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServerManager *)self server];
+  server = [(MGRemoteQueryServerManager *)self server];
   v5 = MGLogForCategory(5);
   v6 = v5;
-  if (v4)
+  if (server)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2048;
-      v11 = v4;
+      v11 = server;
       _os_log_impl(&dword_25863A000, v6, OS_LOG_TYPE_DEFAULT, "%p stopping server %p", &v8, 0x16u);
     }
 
@@ -285,7 +285,7 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_25863A000, v6, OS_LOG_TYPE_ERROR, "%p server already stopped", &v8, 0xCu);
     }
   }
@@ -296,22 +296,22 @@ LABEL_6:
 - (void)_setupQuery
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServerManager *)self query];
+  query = [(MGRemoteQueryServerManager *)self query];
 
-  if (v4)
+  if (query)
   {
     v5 = MGLogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MGRemoteQueryServerManager *)self query];
-      v7 = [v6 identifier];
+      query2 = [(MGRemoteQueryServerManager *)self query];
+      identifier = [query2 identifier];
       *buf = 134218242;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = v7;
+      v29 = identifier;
       _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p server monitoring query already running %@", buf, 0x16u);
     }
   }
@@ -319,17 +319,17 @@ LABEL_6:
   else
   {
     v8 = MEMORY[0x277CCA920];
-    v9 = [MEMORY[0x277D27470] predicateForCurrentDevice];
-    v25[0] = v9;
+    predicateForCurrentDevice = [MEMORY[0x277D27470] predicateForCurrentDevice];
+    v25[0] = predicateForCurrentDevice;
     v10 = MEMORY[0x277CCA920];
-    v11 = [MEMORY[0x277D27440] rq_predicateForHaveCurrentHome];
-    v24[0] = v11;
-    v12 = [MEMORY[0x277D27440] rq_predicateForLocal];
-    v24[1] = v12;
+    rq_predicateForHaveCurrentHome = [MEMORY[0x277D27440] rq_predicateForHaveCurrentHome];
+    v24[0] = rq_predicateForHaveCurrentHome;
+    rq_predicateForLocal = [MEMORY[0x277D27440] rq_predicateForLocal];
+    v24[1] = rq_predicateForLocal;
     v13 = [MEMORY[0x277CCAC30] predicateWithValue:0];
     v24[2] = v13;
-    v14 = [MEMORY[0x277D27440] rq_predicateForInCurrentHome];
-    v24[3] = v14;
+    rq_predicateForInCurrentHome = [MEMORY[0x277D27440] rq_predicateForInCurrentHome];
+    v24[3] = rq_predicateForInCurrentHome;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
     v16 = [v10 andPredicateWithSubpredicates:v15];
     v25[1] = v16;
@@ -343,13 +343,13 @@ LABEL_6:
     v22[3] = &unk_27989F060;
     objc_copyWeak(&v23, buf);
     v18 = MEMORY[0x259C85F90](v22);
-    v19 = [(MGRemoteQueryServerManager *)self queryRunner];
+    queryRunner = [(MGRemoteQueryServerManager *)self queryRunner];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __41__MGRemoteQueryServerManager__setupQuery__block_invoke_19;
     v21[3] = &unk_27989F0D8;
     v21[4] = self;
-    [v19 startOutstandingQueryWithPredicate:v5 handler:v18 completion:v21];
+    [queryRunner startOutstandingQueryWithPredicate:v5 handler:v18 completion:v21];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -505,55 +505,55 @@ uint64_t __41__MGRemoteQueryServerManager__setupQuery__block_invoke_2_20(uint64_
   return result;
 }
 
-- (void)setHavePermissiveACL:(BOOL)a3
+- (void)setHavePermissiveACL:(BOOL)l
 {
-  v3 = a3;
-  v5 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  lCopy = l;
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if (self->_havePermissiveACL != v3)
+  if (self->_havePermissiveACL != lCopy)
   {
-    self->_havePermissiveACL = v3;
-    v6 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+    self->_havePermissiveACL = lCopy;
+    dispatchQueue2 = [(MGRemoteQueryServerManager *)self dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__MGRemoteQueryServerManager_setHavePermissiveACL___block_invoke;
     block[3] = &unk_27989ED90;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(dispatchQueue2, block);
   }
 }
 
-- (void)setHaveGroupsToAdvertise:(BOOL)a3
+- (void)setHaveGroupsToAdvertise:(BOOL)advertise
 {
-  v3 = a3;
-  v5 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  advertiseCopy = advertise;
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if (self->_haveGroupsToAdvertise != v3)
+  if (self->_haveGroupsToAdvertise != advertiseCopy)
   {
-    self->_haveGroupsToAdvertise = v3;
-    v6 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+    self->_haveGroupsToAdvertise = advertiseCopy;
+    dispatchQueue2 = [(MGRemoteQueryServerManager *)self dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__MGRemoteQueryServerManager_setHaveGroupsToAdvertise___block_invoke;
     block[3] = &unk_27989ED90;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(dispatchQueue2, block);
   }
 }
 
-- (void)setHomeHash:(id)a3
+- (void)setHomeHash:(id)hash
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServerManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  hashCopy = hash;
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  if (self->_homeHash != v4)
+  if (self->_homeHash != hashCopy)
   {
-    v6 = [(MGRemoteQueryServerManager *)self homeHash];
-    v7 = [v6 isEqual:v4];
+    homeHash = [(MGRemoteQueryServerManager *)self homeHash];
+    v7 = [homeHash isEqual:hashCopy];
 
     if ((v7 & 1) == 0)
     {
@@ -561,45 +561,45 @@ uint64_t __41__MGRemoteQueryServerManager__setupQuery__block_invoke_2_20(uint64_
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v4;
+        v17 = hashCopy;
         _os_log_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEFAULT, "%p home hash changing %@", buf, 0x16u);
       }
 
       [(MGRemoteQueryServerManager *)self _stopServer];
-      v9 = [(NSString *)v4 copy];
+      v9 = [(NSString *)hashCopy copy];
       homeHash = self->_homeHash;
       self->_homeHash = v9;
 
-      v11 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+      dispatchQueue2 = [(MGRemoteQueryServerManager *)self dispatchQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __42__MGRemoteQueryServerManager_setHomeHash___block_invoke;
       block[3] = &unk_27989ED90;
       block[4] = self;
-      dispatch_async(v11, block);
+      dispatch_async(dispatchQueue2, block);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverInvalidated:(id)a3 withError:(id)a4
+- (void)serverInvalidated:(id)invalidated withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  invalidatedCopy = invalidated;
+  errorCopy = error;
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__MGRemoteQueryServerManager_serverInvalidated_withError___block_invoke;
   block[3] = &unk_27989F010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = invalidatedCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = invalidatedCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __58__MGRemoteQueryServerManager_serverInvalidated_withError___block_invoke(uint64_t a1)
@@ -646,18 +646,18 @@ void __58__MGRemoteQueryServerManager_serverInvalidated_withError___block_invoke
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = [(MGRemoteQueryServerManager *)self dispatchQueue];
+  pathCopy = path;
+  dispatchQueue = [(MGRemoteQueryServerManager *)self dispatchQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__MGRemoteQueryServerManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v10[3] = &unk_27989EE80;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  v11 = pathCopy;
+  selfCopy = self;
+  v9 = pathCopy;
+  dispatch_async(dispatchQueue, v10);
 }
 
 void __77__MGRemoteQueryServerManager_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)

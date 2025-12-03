@@ -1,14 +1,14 @@
 @interface GEOVectorTileAccessibility
-- (void)enumerateVisibleBuildingsUsingBlock:(id)a3;
-- (void)enumerateVisibleRoadsUsingBlock:(id)a3;
+- (void)enumerateVisibleBuildingsUsingBlock:(id)block;
+- (void)enumerateVisibleRoadsUsingBlock:(id)block;
 @end
 
 @implementation GEOVectorTileAccessibility
 
-- (void)enumerateVisibleBuildingsUsingBlock:(id)a3
+- (void)enumerateVisibleBuildingsUsingBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy = block;
+  if (blockCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -35,7 +35,7 @@
         v6 = [v4 objectAtIndexedSubscript:v5];
         if (v6)
         {
-          v3[2](v3, v6);
+          blockCopy[2](blockCopy, v6);
         }
 
         ++v5;
@@ -62,13 +62,13 @@ uint64_t __66__GEOVectorTileAccessibility_enumerateVisibleBuildingsUsingBlock___
   return result;
 }
 
-- (void)enumerateVisibleRoadsUsingBlock:(id)a3
+- (void)enumerateVisibleRoadsUsingBlock:(id)block
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  blockCopy = block;
+  v4 = blockCopy;
+  if (blockCopy)
   {
-    v5 = v3;
+    v5 = blockCopy;
     AXPerformSafeBlock();
   }
 }

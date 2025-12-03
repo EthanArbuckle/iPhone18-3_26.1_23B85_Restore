@@ -1,20 +1,20 @@
 @interface HMDMatterCommandActionUtilities
-+ (id)commandsInMemoryRepresentation:(id)a3;
-+ (id)commandsInStoreRepresentation:(id)a3;
++ (id)commandsInMemoryRepresentation:(id)representation;
++ (id)commandsInStoreRepresentation:(id)representation;
 @end
 
 @implementation HMDMatterCommandActionUtilities
 
-+ (id)commandsInMemoryRepresentation:(id)a3
++ (id)commandsInMemoryRepresentation:(id)representation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  representationCopy = representation;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = representationCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -49,12 +49,12 @@
           [v11 setObject:v16 forKey:v8];
 
           v17 = [v11 copy];
-          [v4 addObject:v17];
+          [array addObject:v17];
         }
 
         else
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -64,7 +64,7 @@
     while (v6);
   }
 
-  v18 = [v4 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
@@ -127,16 +127,16 @@ void __66__HMDMatterCommandActionUtilities_commandsInMemoryRepresentation___bloc
   [v32 replaceObjectAtIndex:v35 withObject:v33];
 }
 
-+ (id)commandsInStoreRepresentation:(id)a3
++ (id)commandsInStoreRepresentation:(id)representation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  representationCopy = representation;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = representationCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -171,12 +171,12 @@ void __66__HMDMatterCommandActionUtilities_commandsInMemoryRepresentation___bloc
           [v11 setObject:v16 forKey:v8];
 
           v17 = [v11 copy];
-          [v4 addObject:v17];
+          [array addObject:v17];
         }
 
         else
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -186,7 +186,7 @@ void __66__HMDMatterCommandActionUtilities_commandsInMemoryRepresentation___bloc
     while (v6);
   }
 
-  v18 = [v4 copy];
+  v18 = [array copy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;

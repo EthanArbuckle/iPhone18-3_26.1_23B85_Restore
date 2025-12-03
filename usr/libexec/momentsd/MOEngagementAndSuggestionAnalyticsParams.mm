@@ -1,40 +1,40 @@
 @interface MOEngagementAndSuggestionAnalyticsParams
-+ (BOOL)isEventBundleSubType:(unint64_t)a3 mappedToAnalyticsSuggestionType:(unint64_t)a4;
++ (BOOL)isEventBundleSubType:(unint64_t)type mappedToAnalyticsSuggestionType:(unint64_t)suggestionType;
 + (id)WeeklyRotationMetricsAggregationWindowMap;
 + (id)aggregatedEngagementAnalyticsAddressMap;
 + (id)allMetricsAggregationWindowMap;
-+ (id)analyticsDeviceTypeToBMDeviceType:(unint64_t)a3;
++ (id)analyticsDeviceTypeToBMDeviceType:(unint64_t)type;
 + (id)defaultMetricsAggregationWindowMap;
-+ (id)eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:(unint64_t)a3;
-+ (id)updateOnboardingStatusDictionaryKeys:(id)a3;
-+ (unint64_t)getCharacterCountBin:(float)a3;
++ (id)eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:(unint64_t)category;
++ (id)updateOnboardingStatusDictionaryKeys:(id)keys;
++ (unint64_t)getCharacterCountBin:(float)bin;
 @end
 
 @implementation MOEngagementAndSuggestionAnalyticsParams
 
-+ (BOOL)isEventBundleSubType:(unint64_t)a3 mappedToAnalyticsSuggestionType:(unint64_t)a4
++ (BOOL)isEventBundleSubType:(unint64_t)type mappedToAnalyticsSuggestionType:(unint64_t)suggestionType
 {
   LOBYTE(v4) = 1;
-  switch(a4)
+  switch(suggestionType)
   {
     case 1uLL:
       return v4 & 1;
     case 2uLL:
-      v5 = a3 - 101;
-      v6 = a3 - 101 >= 6;
+      v5 = type - 101;
+      v6 = type - 101 >= 6;
       v7 = 47;
       goto LABEL_9;
     case 3uLL:
-      LOBYTE(v4) = a3 == 105;
+      LOBYTE(v4) = type == 105;
       return v4 & 1;
     case 4uLL:
-      v5 = a3 + 55;
-      v6 = a3 - 201 >= 5;
+      v5 = type + 55;
+      v6 = type - 201 >= 5;
       v7 = 23;
       goto LABEL_9;
     case 5uLL:
-      v5 = a3 + 52;
-      v6 = a3 - 204 >= 5;
+      v5 = type + 52;
+      v6 = type - 204 >= 5;
       v7 = 29;
 LABEL_9:
       v4 = v7 >> v5;
@@ -45,33 +45,33 @@ LABEL_9:
 
       return v4 & 1;
     case 6uLL:
-      v9 = a3 - 301;
+      v9 = type - 301;
       goto LABEL_21;
     case 7uLL:
-      v10 = a3 - 401;
+      v10 = type - 401;
       goto LABEL_16;
     case 8uLL:
-      v8 = a3 - 407 >= 4;
+      v8 = type - 407 >= 4;
       goto LABEL_22;
     case 9uLL:
-      v9 = a3 - 501;
+      v9 = type - 501;
 LABEL_21:
       v8 = v9 >= 3;
       goto LABEL_22;
     case 0xAuLL:
-      v8 = a3 - 601 >= 0x11;
+      v8 = type - 601 >= 0x11;
       goto LABEL_22;
     case 0xBuLL:
-      LOBYTE(v4) = a3 - 701 < 9 || a3 == 504;
+      LOBYTE(v4) = type - 701 < 9 || type == 504;
       return v4 & 1;
     case 0xCuLL:
-      v8 = a3 - 801 >= 2;
+      v8 = type - 801 >= 2;
       goto LABEL_22;
     case 0xDuLL:
-      v8 = a3 - 901 >= 0xA;
+      v8 = type - 901 >= 0xA;
       goto LABEL_22;
     case 0xEuLL:
-      v10 = a3 - 1001;
+      v10 = type - 1001;
 LABEL_16:
       v8 = v10 >= 6;
 LABEL_22:
@@ -85,20 +85,20 @@ LABEL_22:
   return v4 & 1;
 }
 
-+ (id)analyticsDeviceTypeToBMDeviceType:(unint64_t)a3
++ (id)analyticsDeviceTypeToBMDeviceType:(unint64_t)type
 {
-  if (a3 - 1 > 6)
+  if (type - 1 > 6)
   {
     return &__NSArray0__struct;
   }
 
   else
   {
-    return off_10033D450[a3 - 1];
+    return off_10033D450[type - 1];
   }
 }
 
-+ (id)updateOnboardingStatusDictionaryKeys:(id)a3
++ (id)updateOnboardingStatusDictionaryKeys:(id)keys
 {
   v12[0] = @"onboardingStatus";
   v12[1] = @"onboardingDurationBin";
@@ -136,7 +136,7 @@ LABEL_22:
   v12[17] = @"journalIsInstalled";
   v13[16] = @"journalConfigLockJournal";
   v13[17] = @"journalIsInstalled";
-  v3 = a3;
+  keysCopy = keys;
   [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:18];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -145,7 +145,7 @@ LABEL_22:
   v4 = objc_opt_new();
   v11 = v4;
   v5 = v10;
-  [v3 enumerateKeysAndObjectsUsingBlock:v9];
+  [keysCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = v11;
   v7 = v4;
@@ -209,34 +209,34 @@ void __81__MOEngagementAndSuggestionAnalyticsParams_updateOnboardingStatusDictio
   return v2;
 }
 
-+ (id)eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:(unint64_t)a3
++ (id)eventBundleVisibilityCategoryForUIForAnalyticsSuggestionUIVisibilityCategory:(unint64_t)category
 {
-  if (a3 - 1 > 5)
+  if (category - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_10033D488[a3 - 1];
+    return off_10033D488[category - 1];
   }
 }
 
-+ (unint64_t)getCharacterCountBin:(float)a3
++ (unint64_t)getCharacterCountBin:(float)bin
 {
-  if (a3 == 0.0)
+  if (bin == 0.0)
   {
     return 1;
   }
 
-  if (a3 > 0.0 && a3 <= 10.0)
+  if (bin > 0.0 && bin <= 10.0)
   {
     return 2;
   }
 
-  if (a3 <= 10.0 || a3 > 200.0)
+  if (bin <= 10.0 || bin > 200.0)
   {
-    return 4 * (a3 > 200.0);
+    return 4 * (bin > 200.0);
   }
 
   else

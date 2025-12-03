@@ -10,33 +10,33 @@
   v9.receiver = self;
   v9.super_class = SBHLibraryWaveZoomSettings;
   [(SBHIconZoomSettings *)&v9 setDefaultValues];
-  v3 = [(SBHIconAnimationSettings *)self centralAnimationSettings];
-  [v3 setCurve:196608];
+  centralAnimationSettings = [(SBHIconAnimationSettings *)self centralAnimationSettings];
+  [centralAnimationSettings setCurve:196608];
 
   [(SBHLibraryWaveZoomSettings *)self setInterPodWaveDelay:0.02];
   [(SBHIconZoomSettings *)self setLabelAlphaWithZoom:1];
   [(SBHLibraryWaveZoomSettings *)self setSearchScale:0.945];
-  v4 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
-  [v4 setAnimationType:1];
+  podFadeSettings = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
+  [podFadeSettings setAnimationType:1];
 
-  v5 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
-  [v5 setMass:1.0];
+  podFadeSettings2 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
+  [podFadeSettings2 setMass:1.0];
 
-  v6 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
-  [v6 setStiffness:885.288];
+  podFadeSettings3 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
+  [podFadeSettings3 setStiffness:885.288];
 
-  v7 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
-  [v7 setDamping:59.5076];
+  podFadeSettings4 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
+  [podFadeSettings4 setDamping:59.5076];
 
-  v8 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
-  [v8 setCurve:196608];
+  podFadeSettings5 = [(SBHLibraryWaveZoomSettings *)self podFadeSettings];
+  [podFadeSettings5 setCurve:196608];
 }
 
 + (id)settingsControllerModule
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = &OBJC_METACLASS___SBHLibraryWaveZoomSettings;
   v3 = objc_msgSendSuper2(&v30, sel_settingsControllerModule);
   v29 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];
@@ -63,8 +63,8 @@
 
   v17 = MEMORY[0x1E69C6638];
   v18 = MEMORY[0x1E69C65E8];
-  v19 = [MEMORY[0x1E69C6640] action];
-  v20 = [v18 rowWithTitle:@"Restore Defaults" action:v19];
+  action = [MEMORY[0x1E69C6640] action];
+  v20 = [v18 rowWithTitle:@"Restore Defaults" action:action];
   v32[0] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v22 = [v17 sectionWithRows:v21];

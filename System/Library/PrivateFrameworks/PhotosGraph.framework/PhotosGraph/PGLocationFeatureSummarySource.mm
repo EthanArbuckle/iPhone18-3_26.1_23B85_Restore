@@ -1,29 +1,29 @@
 @interface PGLocationFeatureSummarySource
-- (PGLocationFeatureSummarySource)initWithLoggingConnection:(id)a3 titleGenerationContext:(id)a4 graph:(id)a5;
-- (id)summarizedAreaNodesForMomentNode:(id)a3 momentAddressNodesAsSet:(id)a4;
-- (id)summarizedCityOrCountyNodesForMomentNode:(id)a3 momentAddressNodesAsSet:(id)a4;
-- (id)summarizedDistrictNodesForMomentNode:(id)a3 momentAddressNodes:(id)a4 momentCityNodes:(id)a5;
-- (id)summarizedFeaturesForMomentNodes:(id)a3;
-- (id)summarizedHomeWorkNodesForMomentNode:(id)a3 momentAddressNodes:(id)a4;
+- (PGLocationFeatureSummarySource)initWithLoggingConnection:(id)connection titleGenerationContext:(id)context graph:(id)graph;
+- (id)summarizedAreaNodesForMomentNode:(id)node momentAddressNodesAsSet:(id)set;
+- (id)summarizedCityOrCountyNodesForMomentNode:(id)node momentAddressNodesAsSet:(id)set;
+- (id)summarizedDistrictNodesForMomentNode:(id)node momentAddressNodes:(id)nodes momentCityNodes:(id)cityNodes;
+- (id)summarizedFeaturesForMomentNodes:(id)nodes;
+- (id)summarizedHomeWorkNodesForMomentNode:(id)node momentAddressNodes:(id)nodes;
 @end
 
 @implementation PGLocationFeatureSummarySource
 
-- (id)summarizedCityOrCountyNodesForMomentNode:(id)a3 momentAddressNodesAsSet:(id)a4
+- (id)summarizedCityOrCountyNodesForMomentNode:(id)node momentAddressNodesAsSet:(id)set
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v35 = self;
-  v8 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-  v9 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:v7 locationHelper:v8];
-  v29 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  nodeCopy = node;
+  setCopy = set;
+  selfCopy = self;
+  locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+  v9 = [[PGIncompleteLocationResolver alloc] initWithAddressNodes:setCopy locationHelper:locationHelper];
+  v29 = [MEMORY[0x277CBEB98] setWithObject:nodeCopy];
   v30 = v9;
-  v31 = v8;
-  v32 = v7;
+  v31 = locationHelper;
+  v32 = setCopy;
   v10 = [PGLocationTitleUtility commonCityTitleComponentsFromMomentNodes:"commonCityTitleComponentsFromMomentNodes:addressNodes:incompleteLocationResolver:locationHelper:" addressNodes:? incompleteLocationResolver:? locationHelper:?];
-  v33 = v6;
-  v36 = [v6 collection];
+  v33 = nodeCopy;
+  collection = [nodeCopy collection];
   v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v38 = 0u;
   v39 = 0u;
@@ -45,21 +45,21 @@
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v15 addressNodes];
-        v17 = [v16 count];
+        addressNodes = [v15 addressNodes];
+        v17 = [addressNodes count];
 
         if (v17)
         {
           v18 = [PGGraphAddressNodeCollection alloc];
-          v19 = [v15 addressNodes];
-          v20 = [(MAElementCollection *)v18 initWithSet:v19 graph:v35->_graph];
+          addressNodes2 = [v15 addressNodes];
+          v20 = [(MAElementCollection *)v18 initWithSet:addressNodes2 graph:selfCopy->_graph];
 
-          v21 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:v36 toNodes:v20];
-          v22 = [v15 node];
-          v23 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:v22];
+          v21 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:collection toNodes:v20];
+          node = [v15 node];
+          v23 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:node];
           v24 = [PGLocationSummarizedFeature alloc];
-          v25 = [v21 universalDateIntervals];
-          v26 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:](v24, "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:", v23, v25, [v21 numberOfAssets], 1, v22);
+          universalDateIntervals = [v21 universalDateIntervals];
+          v26 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:](v24, "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:", v23, universalDateIntervals, [v21 numberOfAssets], 1, node);
 
           [v37 addObject:v26];
         }
@@ -76,13 +76,13 @@
   return v37;
 }
 
-- (id)summarizedDistrictNodesForMomentNode:(id)a3 momentAddressNodes:(id)a4 momentCityNodes:(id)a5
+- (id)summarizedDistrictNodesForMomentNode:(id)node momentAddressNodes:(id)nodes momentCityNodes:(id)cityNodes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-  if ([v10 count] == 1 && -[MAElementCollection containsCollection:](self->_supersetCityNodes, "containsCollection:", v10))
+  nodeCopy = node;
+  nodesCopy = nodes;
+  cityNodesCopy = cityNodes;
+  locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+  if ([cityNodesCopy count] == 1 && -[MAElementCollection containsCollection:](self->_supersetCityNodes, "containsCollection:", cityNodesCopy))
   {
     v29 = 0;
     v30 = &v29;
@@ -93,12 +93,12 @@
     v25[1] = 3221225472;
     v25[2] = __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_momentAddressNodes_momentCityNodes___block_invoke;
     v25[3] = &unk_27887F6F0;
-    v13 = v11;
+    v13 = locationHelper;
     v26 = v13;
     v28 = &v29;
     v14 = v12;
     v27 = v14;
-    [v9 enumerateIdentifiersAsCollectionsWithBlock:v25];
+    [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v25];
     if (*(v30 + 24))
     {
       v15 = [(MAElementCollection *)[PGGraphLocationDistrictNodeCollection alloc] initWithGraph:self->_graph elementIdentifiers:v14];
@@ -108,7 +108,7 @@
       v21[2] = __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_momentAddressNodes_momentCityNodes___block_invoke_2;
       v21[3] = &unk_27887F718;
       v22 = v13;
-      v23 = v8;
+      v23 = nodeCopy;
       v17 = v16;
       v24 = v17;
       [(MAElementCollection *)v15 enumerateIdentifiersAsCollectionsWithBlock:v21];
@@ -168,21 +168,21 @@ void __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_
   [*(a1 + 48) addObject:v11];
 }
 
-- (id)summarizedAreaNodesForMomentNode:(id)a3 momentAddressNodesAsSet:(id)a4
+- (id)summarizedAreaNodesForMomentNode:(id)node momentAddressNodesAsSet:(id)set
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  nodeCopy = node;
+  setCopy = set;
+  v8 = [MEMORY[0x277CBEB98] setWithObject:nodeCopy];
   v9 = [PGLocationTitleUtility containsAmusementParkPOIFromMomentNodes:v8];
-  v34 = self;
-  v10 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+  selfCopy = self;
+  locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
   v30 = v8;
-  v31 = v7;
-  v11 = [PGLocationTitleUtility commonAOIComponentsForMomentNodes:v8 addressNodes:v7 aoiDisplayType:3 containsAmusementParkPOI:v9 locationHelper:v10];
+  v31 = setCopy;
+  v11 = [PGLocationTitleUtility commonAOIComponentsForMomentNodes:v8 addressNodes:setCopy aoiDisplayType:3 containsAmusementParkPOI:v9 locationHelper:locationHelper];
 
-  v32 = v6;
-  v35 = [v6 collection];
+  v32 = nodeCopy;
+  collection = [nodeCopy collection];
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v37 = 0u;
   v38 = 0u;
@@ -204,21 +204,21 @@ void __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_
         }
 
         v16 = *(*(&v37 + 1) + 8 * i);
-        v17 = [v16 addressNodes];
-        v18 = [v17 count];
+        addressNodes = [v16 addressNodes];
+        v18 = [addressNodes count];
 
         if (v18)
         {
           v19 = [PGGraphAddressNodeCollection alloc];
-          v20 = [v16 addressNodes];
-          v21 = [(MAElementCollection *)v19 initWithSet:v20 graph:v34->_graph];
+          addressNodes2 = [v16 addressNodes];
+          v21 = [(MAElementCollection *)v19 initWithSet:addressNodes2 graph:selfCopy->_graph];
 
-          v22 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:v35 toNodes:v21];
-          v23 = [v16 node];
-          v24 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:v23];
+          v22 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:collection toNodes:v21];
+          node = [v16 node];
+          v24 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:node];
           v25 = [PGLocationSummarizedFeature alloc];
-          v26 = [v22 universalDateIntervals];
-          v27 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:](v25, "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:", v24, v26, [v22 numberOfAssets], 1, v23);
+          universalDateIntervals = [v22 universalDateIntervals];
+          v27 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:](v25, "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:", v24, universalDateIntervals, [v22 numberOfAssets], 1, node);
 
           [v36 addObject:v27];
         }
@@ -235,15 +235,15 @@ void __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_
   return v36;
 }
 
-- (id)summarizedHomeWorkNodesForMomentNode:(id)a3 momentAddressNodes:(id)a4
+- (id)summarizedHomeWorkNodesForMomentNode:(id)node momentAddressNodes:(id)nodes
 {
   v41 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v6 = a4;
-  v31 = self;
-  v7 = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
-  v29 = v6;
-  v8 = [PGLocationTitleUtility peopleLocationTitleComponentsFromAddressNodes:v6 peopleDisplayType:1 serviceManager:v7];
+  nodeCopy = node;
+  nodesCopy = nodes;
+  selfCopy = self;
+  serviceManager = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
+  v29 = nodesCopy;
+  v8 = [PGLocationTitleUtility peopleLocationTitleComponentsFromAddressNodes:nodesCopy peopleDisplayType:1 serviceManager:serviceManager];
 
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v36 = 0u;
@@ -269,25 +269,25 @@ void __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_
         }
 
         v13 = *(*(&v36 + 1) + 8 * v12);
-        v14 = [v13 addressNodes];
-        v15 = [v14 count];
+        addressNodes = [v13 addressNodes];
+        v15 = [addressNodes count];
 
         if (v15 == 1)
         {
-          v16 = [v13 node];
-          v17 = [v13 addressNodes];
-          v18 = [v17 anyObject];
+          node = [v13 node];
+          addressNodes2 = [v13 addressNodes];
+          anyObject = [addressNodes2 anyObject];
 
-          v19 = [v18 collection];
-          v20 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:v33 toNodes:v19];
+          collection = [anyObject collection];
+          v20 = [(PGGraphEdgeCollection *)PGGraphAddressEdgeCollection edgesFromNodes:nodeCopy toNodes:collection];
 
-          v21 = [v20 universalDateIntervals];
-          v22 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:v18];
-          v23 = [v13 edge];
-          v24 = [(PGTitleGenerationContext *)v31->_titleGenerationContext serviceManager];
-          v25 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:v16 peopleAddressEdge:v23 titleComponent:v13 insertLineBreak:0 allowFamilyHome:0 serviceManager:v24];
+          universalDateIntervals = [v20 universalDateIntervals];
+          v22 = [PGLocationSummarizedFeature summarizedFeatureSubtypeForLocationNode:anyObject];
+          edge = [v13 edge];
+          serviceManager2 = [(PGTitleGenerationContext *)selfCopy->_titleGenerationContext serviceManager];
+          v25 = [PGPeopleTitleUtility beautifiedLocationStringWithPersonNode:node peopleAddressEdge:edge titleComponent:v13 insertLineBreak:0 allowFamilyHome:0 serviceManager:serviceManager2];
 
-          v26 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:personNode:locationName:]([PGLocationSummarizedFeature alloc], "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:personNode:locationName:", v22, v21, [v20 numberOfAssets], 1, v18, v16, v25);
+          v26 = -[PGLocationSummarizedFeature initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:personNode:locationName:]([PGLocationSummarizedFeature alloc], "initWithSubtype:intervalsPresent:numberOfAssets:isMandatoryForKeyAsset:locationNode:personNode:locationName:", v22, universalDateIntervals, [v20 numberOfAssets], 1, anyObject, node, v25);
           [v32 addObject:v26];
 
           v11 = v30;
@@ -309,26 +309,26 @@ void __106__PGLocationFeatureSummarySource_summarizedDistrictNodesForMomentNode_
   return v32;
 }
 
-- (id)summarizedFeaturesForMomentNodes:(id)a3
+- (id)summarizedFeaturesForMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
-    v5 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-    v6 = [v5 addressNodesByMomentNode];
+    locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+    addressNodesByMomentNode = [locationHelper addressNodesByMomentNode];
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __67__PGLocationFeatureSummarySource_summarizedFeaturesForMomentNodes___block_invoke;
     v14[3] = &unk_27887F6C8;
-    v15 = v6;
-    v16 = self;
+    v15 = addressNodesByMomentNode;
+    selfCopy = self;
     v8 = v7;
     v17 = v8;
-    v18 = v5;
-    v9 = v5;
-    v10 = v6;
-    [v4 enumerateIdentifiersAsCollectionsWithBlock:v14];
+    v18 = locationHelper;
+    v9 = locationHelper;
+    v10 = addressNodesByMomentNode;
+    [nodesCopy enumerateIdentifiersAsCollectionsWithBlock:v14];
     v11 = v18;
     v12 = v8;
   }
@@ -404,23 +404,23 @@ void __67__PGLocationFeatureSummarySource_summarizedFeaturesForMomentNodes___blo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (PGLocationFeatureSummarySource)initWithLoggingConnection:(id)a3 titleGenerationContext:(id)a4 graph:(id)a5
+- (PGLocationFeatureSummarySource)initWithLoggingConnection:(id)connection titleGenerationContext:(id)context graph:(id)graph
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  contextCopy = context;
+  graphCopy = graph;
   v17.receiver = self;
   v17.super_class = PGLocationFeatureSummarySource;
   v12 = [(PGLocationFeatureSummarySource *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_loggingConnection, a3);
-    objc_storeStrong(&v13->_titleGenerationContext, a4);
-    objc_storeStrong(&v13->_graph, a5);
-    v14 = [(PGGraph *)v13->_graph supersetCityNodes];
+    objc_storeStrong(&v12->_loggingConnection, connection);
+    objc_storeStrong(&v13->_titleGenerationContext, context);
+    objc_storeStrong(&v13->_graph, graph);
+    supersetCityNodes = [(PGGraph *)v13->_graph supersetCityNodes];
     supersetCityNodes = v13->_supersetCityNodes;
-    v13->_supersetCityNodes = v14;
+    v13->_supersetCityNodes = supersetCityNodes;
   }
 
   return v13;

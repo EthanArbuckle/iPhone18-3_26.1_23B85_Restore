@@ -1,51 +1,51 @@
 @interface VisionSignalGradingVisionGradeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPopularityEntries:(id)a3;
-- (void)addVisionGrades:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPopularityEntries:(id)entries;
+- (void)addVisionGrades:(id)grades;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VisionSignalGradingVisionGradeEvent
 
-- (void)addVisionGrades:(id)a3
+- (void)addVisionGrades:(id)grades
 {
-  v4 = a3;
+  gradesCopy = grades;
   visionGrades = self->_visionGrades;
-  v8 = v4;
+  v8 = gradesCopy;
   if (!visionGrades)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_visionGrades;
     self->_visionGrades = v6;
 
-    v4 = v8;
+    gradesCopy = v8;
     visionGrades = self->_visionGrades;
   }
 
-  [(NSMutableArray *)visionGrades addObject:v4];
+  [(NSMutableArray *)visionGrades addObject:gradesCopy];
 }
 
-- (void)addPopularityEntries:(id)a3
+- (void)addPopularityEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   popularityEntries = self->_popularityEntries;
-  v8 = v4;
+  v8 = entriesCopy;
   if (!popularityEntries)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_popularityEntries;
     self->_popularityEntries = v6;
 
-    v4 = v8;
+    entriesCopy = v8;
     popularityEntries = self->_popularityEntries;
   }
 
-  [(NSMutableArray *)popularityEntries addObject:v4];
+  [(NSMutableArray *)popularityEntries addObject:entriesCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v8.receiver = self;
   v8.super_class = VisionSignalGradingVisionGradeEvent;
   v4 = [(VisionSignalGradingVisionGradeEvent *)&v8 description];
-  v5 = [(VisionSignalGradingVisionGradeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VisionSignalGradingVisionGradeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -63,7 +63,7 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_visionGrades count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_visionGrades, "count")}];
@@ -86,8 +86,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -96,7 +96,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"visionGrades"];
+    [dictionary setObject:v4 forKey:@"visionGrades"];
   }
 
   if ([(NSMutableArray *)self->_popularityEntries count])
@@ -121,8 +121,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -131,18 +131,18 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"popularityEntries"];
+    [dictionary setObject:v11 forKey:@"popularityEntries"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -210,44 +210,44 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(VisionSignalGradingVisionGradeEvent *)self visionGradesCount])
   {
-    [v12 clearVisionGrades];
-    v4 = [(VisionSignalGradingVisionGradeEvent *)self visionGradesCount];
-    if (v4)
+    [toCopy clearVisionGrades];
+    visionGradesCount = [(VisionSignalGradingVisionGradeEvent *)self visionGradesCount];
+    if (visionGradesCount)
     {
-      v5 = v4;
+      v5 = visionGradesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VisionSignalGradingVisionGradeEvent *)self visionGradesAtIndex:i];
-        [v12 addVisionGrades:v7];
+        [toCopy addVisionGrades:v7];
       }
     }
   }
 
   if ([(VisionSignalGradingVisionGradeEvent *)self popularityEntriesCount])
   {
-    [v12 clearPopularityEntries];
-    v8 = [(VisionSignalGradingVisionGradeEvent *)self popularityEntriesCount];
-    if (v8)
+    [toCopy clearPopularityEntries];
+    popularityEntriesCount = [(VisionSignalGradingVisionGradeEvent *)self popularityEntriesCount];
+    if (popularityEntriesCount)
     {
-      v9 = v8;
+      v9 = popularityEntriesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(VisionSignalGradingVisionGradeEvent *)self popularityEntriesAtIndex:j];
-        [v12 addPopularityEntries:v11];
+        [toCopy addPopularityEntries:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -268,7 +268,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addVisionGrades:v11];
 
         ++v10;
@@ -301,7 +301,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addPopularityEntries:v17];
 
         ++v16;
@@ -318,13 +318,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((visionGrades = self->_visionGrades, !(visionGrades | v4[2])) || -[NSMutableArray isEqual:](visionGrades, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((visionGrades = self->_visionGrades, !(visionGrades | equalCopy[2])) || -[NSMutableArray isEqual:](visionGrades, "isEqual:")))
   {
     popularityEntries = self->_popularityEntries;
-    if (popularityEntries | v4[1])
+    if (popularityEntries | equalCopy[1])
     {
       v7 = [(NSMutableArray *)popularityEntries isEqual:?];
     }
@@ -343,15 +343,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -381,7 +381,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

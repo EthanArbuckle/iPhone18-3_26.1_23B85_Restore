@@ -1,17 +1,17 @@
 @interface NNCompanionSyncSessionManager
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
 - (NNCompanionSyncSessionManagerDelegate)delegate;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation NNCompanionSyncSessionManager
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  changesCopy = changes;
   v9 = NNSetupCompanionSyncLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -19,8 +19,8 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Asked to enqueue some changes!", buf, 2u);
   }
 
-  v10 = [(NNCompanionSyncSessionManager *)self delegate];
-  v11 = [v10 companionSyncSessionManagerWantsHeadlineData:self];
+  delegate = [(NNCompanionSyncSessionManager *)self delegate];
+  v11 = [delegate companionSyncSessionManagerWantsHeadlineData:self];
 
   v27 = 0;
   v12 = [NSPropertyListSerialization propertyListWithData:v11 options:0 format:0 error:&v27];
@@ -36,14 +36,14 @@
     goto LABEL_21;
   }
 
-  v14 = [(NNCompanionSyncSessionManager *)self syncingData];
+  syncingData = [(NNCompanionSyncSessionManager *)self syncingData];
 
-  if (v14)
+  if (syncingData)
   {
     v15 = NNSetupCompanionSyncLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_100009134(v7, v15);
+      sub_100009134(sessionCopy, v15);
     }
   }
 
@@ -77,7 +77,7 @@
   if (isKindOfClass & v17)
   {
     v21 = [[NNHeadlineResultChange alloc] initWithHeadlineResult:v12];
-    v22 = v8[2](v8, v21);
+    v22 = changesCopy[2](changesCopy, v21);
     v23 = NNSetupCompanionSyncLog();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
     if (!v22)
@@ -116,17 +116,17 @@ LABEL_27:
   return v25;
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
-  v7 = a4;
-  v17 = a5;
+  changesCopy = changes;
+  completionCopy = completion;
   v8 = NNSetupCompanionSyncLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v24 = [v7 count];
+    v24 = [changesCopy count];
     v25 = 2112;
-    v26 = v7;
+    v26 = changesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Asked to apply %ld changes! %@", buf, 0x16u);
   }
 
@@ -134,7 +134,7 @@ LABEL_27:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = changesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -164,8 +164,8 @@ LABEL_27:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [(NNCompanionSyncSessionManager *)self delegate];
-            [v16 companionSyncSessionManagerWantsHeadlineUpdate:self];
+            delegate = [(NNCompanionSyncSessionManager *)self delegate];
+            [delegate companionSyncSessionManagerWantsHeadlineUpdate:self];
           }
         }
       }
@@ -176,20 +176,20 @@ LABEL_27:
     while (v11);
   }
 
-  v17[2](v17, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = NNSetupCompanionSyncLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (errorCopy)
   {
     if (v7)
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = errorCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Sync Session ended with error: %@", &v11, 0xCu);
     }
   }
@@ -202,22 +202,22 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Sync Session has finished", &v11, 2u);
     }
 
-    v8 = [(NNCompanionSyncSessionManager *)self syncingData];
+    syncingData = [(NNCompanionSyncSessionManager *)self syncingData];
 
-    if (v8)
+    if (syncingData)
     {
-      v9 = [(NNCompanionSyncSessionManager *)self delegate];
-      v10 = [(NNCompanionSyncSessionManager *)self syncingData];
-      [v9 companionSyncSessionManager:self didSyncHeadlineData:v10];
+      delegate = [(NNCompanionSyncSessionManager *)self delegate];
+      syncingData2 = [(NNCompanionSyncSessionManager *)self syncingData];
+      [delegate companionSyncSessionManager:self didSyncHeadlineData:syncingData2];
     }
 
     else
     {
-      v9 = NNSetupCompanionSyncLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+      delegate = NNSetupCompanionSyncLog();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
       {
         LOWORD(v11) = 0;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Sync Session finished without tracking any data. Repeat sync?", &v11, 2u);
+        _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, "Sync Session finished without tracking any data. Repeat sync?", &v11, 2u);
       }
     }
 
@@ -225,7 +225,7 @@ LABEL_27:
   }
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
   v4 = NNSetupCompanionSyncLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

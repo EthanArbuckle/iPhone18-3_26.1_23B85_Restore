@@ -1,22 +1,22 @@
 @interface ShortcutsRowCellProvider
-- (ShortcutsRowCellProvider)initWithCollectionView:(id)a3;
+- (ShortcutsRowCellProvider)initWithCollectionView:(id)view;
 - (ShortcutsRowCellProviderDelegate)delegate;
 - (UICollectionView)collectionView;
 - (id)_collectionViewLayout;
-- (id)_modelAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
+- (id)_modelAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
 - (void)_buildModels;
-- (void)_captureTapActionWithModel:(id)a3;
-- (void)_updateContentAnimated:(BOOL)a3;
+- (void)_captureTapActionWithModel:(id)model;
+- (void)_updateContentAnimated:(BOOL)animated;
 - (void)_updateHeightConstraint;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)fetchMissingImages;
-- (void)setFavoritesDataProvider:(id)a3;
-- (void)setSuggestionsDataProvider:(id)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setFavoritesDataProvider:(id)provider;
+- (void)setSuggestionsDataProvider:(id)provider;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation ShortcutsRowCellProvider
@@ -35,24 +35,24 @@
   return WeakRetained;
 }
 
-- (void)_captureTapActionWithModel:(id)a3
+- (void)_captureTapActionWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   [GEOAPPortal captureUserAction:2007 target:8 value:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
+    v3 = modelCopy;
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
-      v4 = [v3 entry];
-      [HomeAnalyticsManager captureTapActionWithFavorite:v4];
+      entry = [v3 entry];
+      [HomeAnalyticsManager captureTapActionWithFavorite:entry];
     }
 
     else
     {
-      v4 = [v3 entryLegacy];
-      [HomeAnalyticsManager captureTapActionWithEntry:v4];
+      entry = [v3 entryLegacy];
+      [HomeAnalyticsManager captureTapActionWithEntry:entry];
     }
   }
 
@@ -66,9 +66,9 @@
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:{a5, a4}];
+  v5 = [view cellForItemAtIndexPath:{path, configuration}];
   if (v5)
   {
     v6 = objc_alloc_init(UIPreviewParameters);
@@ -87,16 +87,16 @@
   return v8;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = [a4 firstObject];
-  v7 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:v6];
+  firstObject = [paths firstObject];
+  v7 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:firstObject];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
-    v9 = 0;
+    entry = 0;
     v11 = 0;
     if (objc_opt_isKindOfClass())
     {
@@ -109,10 +109,10 @@
   v8 = v7;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v9 = [v8 entry];
-    v10 = [v9 isShortcutForSetup];
+    entry = [v8 entry];
+    isShortcutForSetup = [entry isShortcutForSetup];
 
-    if (v10)
+    if (isShortcutForSetup)
     {
       goto LABEL_8;
     }
@@ -123,14 +123,14 @@ LABEL_6:
     v13[2] = sub_100BA22F8;
     v13[3] = &unk_10163C1A0;
     v13[4] = self;
-    v9 = v9;
-    v14 = v9;
+    entry = entry;
+    v14 = entry;
     v11 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
 
     goto LABEL_9;
   }
 
-  v9 = 0;
+  entry = 0;
 LABEL_8:
   v11 = 0;
 LABEL_9:
@@ -138,27 +138,27 @@ LABEL_9:
   return v11;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    delegate2 = v7;
     v9 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
-    v10 = [(ShortcutsRowCellProvider *)self delegate];
+    delegate = [(ShortcutsRowCellProvider *)self delegate];
     if (v9)
     {
-      v11 = [v8 entry];
-      [v10 shortcutsRowCellProvider:self openFavorite:v11];
+      entry = [delegate2 entry];
+      [delegate shortcutsRowCellProvider:self openFavorite:entry];
     }
 
     else
     {
-      v11 = [v8 entryLegacy];
-      [v10 shortcutsRowCellProvider:self openShortcut:v11];
+      entry = [delegate2 entryLegacy];
+      [delegate shortcutsRowCellProvider:self openShortcut:entry];
     }
   }
 
@@ -170,56 +170,56 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v8 = [(ShortcutsRowCellProvider *)self delegate];
-    [v8 shortcutsRowCellProviderAddNewShortcut:self];
+    delegate2 = [(ShortcutsRowCellProvider *)self delegate];
+    [delegate2 shortcutsRowCellProviderAddNewShortcut:self];
   }
 
 LABEL_9:
-  [v14 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   [(ShortcutsRowCellProvider *)self _captureTapActionWithModel:v7];
   v12 = +[NSDate date];
   lastCellTappedTimestamp = self->_lastCellTappedTimestamp;
   self->_lastCellTappedTimestamp = v12;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v12 model];
-    [v8 fetchImageIfMissing];
+    model = [cellCopy model];
+    [model fetchImageIfMissing];
   }
 
   [(NSDate *)self->_lastCellTappedTimestamp timeIntervalSinceNow];
   if (v9 < -1.0)
   {
-    v10 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:v7];
+    v10 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
       {
-        v11 = [v10 entry];
-        [HomeAnalyticsManager captureDisplayActionWithFavorite:v11];
+        entry = [v10 entry];
+        [HomeAnalyticsManager captureDisplayActionWithFavorite:entry];
       }
 
       else
       {
-        v11 = [v10 entryLegacy];
-        [HomeAnalyticsManager captureDisplayActionWithEntry:v11];
+        entry = [v10 entryLegacy];
+        [HomeAnalyticsManager captureDisplayActionWithEntry:entry];
       }
     }
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -231,12 +231,12 @@ LABEL_9:
   v18 = 3221225472;
   v19 = sub_100BA2A9C;
   v20 = &unk_10163C150;
-  v12 = v10;
+  v12 = identifierCopy;
   v21 = v12;
   v22 = &v23;
   [(NSArray *)cellModels enumerateObjectsUsingBlock:&v17];
   v13 = [ShortcutsRowCollectionViewCell cellReuseIdentifier:v17];
-  v14 = [v8 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v9];
+  v14 = [viewCopy dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
   v15 = [(ShortcutsRowCellProvider *)self _modelAtIndexPath:v24[5]];
   [v14 setModel:v15];
 
@@ -246,17 +246,17 @@ LABEL_9:
   return v14;
 }
 
-- (id)_modelAtIndexPath:(id)a3
+- (id)_modelAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (([v4 row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(v4, "row"), v5 >= -[NSArray count](self->_cellModels, "count")))
+  pathCopy = path;
+  if (([pathCopy row] & 0x8000000000000000) != 0 || (v5 = objc_msgSend(pathCopy, "row"), v5 >= -[NSArray count](self->_cellModels, "count")))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_cellModels, "objectAtIndexedSubscript:", [v4 row]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_cellModels, "objectAtIndexedSubscript:", [pathCopy row]);
   }
 
   return v6;
@@ -350,22 +350,22 @@ LABEL_9:
   self->_cellModels = v21;
 }
 
-- (void)_updateContentAnimated:(BOOL)a3
+- (void)_updateContentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v5 = [(MapsFavoritesManager *)self->_favoritesDataProvider shortcutsForMapsHome];
-    v6 = [v5 isEqual:self->_shortcuts];
+    shortcutsForMapsHome = [(MapsFavoritesManager *)self->_favoritesDataProvider shortcutsForMapsHome];
+    v6 = [shortcutsForMapsHome isEqual:self->_shortcuts];
 
     if (v6)
     {
       return;
     }
 
-    v7 = [(MapsFavoritesManager *)self->_favoritesDataProvider shortcutsForMapsHome];
+    shortcutsForMapsHome2 = [(MapsFavoritesManager *)self->_favoritesDataProvider shortcutsForMapsHome];
     shortcuts = self->_shortcuts;
-    self->_shortcuts = v7;
+    self->_shortcuts = shortcutsForMapsHome2;
 
     v9 = self->_cellModels;
     [(ShortcutsRowCellProvider *)self _buildModels];
@@ -378,22 +378,22 @@ LABEL_9:
     v20[2] = sub_100BA30C8;
     v20[3] = &unk_101661B98;
     objc_copyWeak(&v21, &location);
-    [(UICollectionViewDiffableDataSource *)diffableDataSource applySnapshot:v10 animatingDifferences:v3 completion:v20];
+    [(UICollectionViewDiffableDataSource *)diffableDataSource applySnapshot:v10 animatingDifferences:animatedCopy completion:v20];
   }
 
   else
   {
-    v13 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider shortcuts];
-    v14 = [v13 isEqual:self->_shortcuts];
+    shortcuts = [(SuggestionsDataProvider *)self->_suggestionsDataProvider shortcuts];
+    v14 = [shortcuts isEqual:self->_shortcuts];
 
     if (v14)
     {
       return;
     }
 
-    v15 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider shortcuts];
+    shortcuts2 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider shortcuts];
     shortcutsLegacy = self->_shortcutsLegacy;
-    self->_shortcutsLegacy = v15;
+    self->_shortcutsLegacy = shortcuts2;
 
     v9 = self->_cellModels;
     [(ShortcutsRowCellProvider *)self _buildModels];
@@ -406,7 +406,7 @@ LABEL_9:
     v18[2] = sub_100BA3108;
     v18[3] = &unk_101661B98;
     objc_copyWeak(&v19, &location);
-    [(UICollectionViewDiffableDataSource *)v17 applySnapshot:v10 animatingDifferences:v3 completion:v18];
+    [(UICollectionViewDiffableDataSource *)v17 applySnapshot:v10 animatingDifferences:animatedCopy completion:v18];
   }
 
   objc_destroyWeak(v12 + 4);
@@ -445,8 +445,8 @@ LABEL_9:
 {
   [ShortcutsRowCollectionViewCell cellSizeWithTraitCollection:self->_traitCollection];
   v4 = v3;
-  v5 = [(UITraitCollection *)self->_traitCollection preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [(UITraitCollection *)self->_traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v7 = v4 + v4;
   if (!IsAccessibilityCategory)
@@ -493,73 +493,73 @@ LABEL_9:
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_traitCollection != v5)
+  collectionCopy = collection;
+  v6 = collectionCopy;
+  if (self->_traitCollection != collectionCopy)
   {
-    v8 = v5;
-    v7 = [(UITraitCollection *)v5 isEqual:?];
+    v8 = collectionCopy;
+    v7 = [(UITraitCollection *)collectionCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_traitCollection, a3);
+      objc_storeStrong(&self->_traitCollection, collection);
       [(ShortcutsRowCellProvider *)self _updateHeightConstraint];
       v6 = v8;
     }
   }
 }
 
-- (void)setSuggestionsDataProvider:(id)a3
+- (void)setSuggestionsDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   suggestionsDataProvider = self->_suggestionsDataProvider;
-  if (suggestionsDataProvider != v5)
+  if (suggestionsDataProvider != providerCopy)
   {
-    v9 = v5;
-    v7 = [(SuggestionsDataProvider *)suggestionsDataProvider observers];
-    [v7 unregisterObserver:self];
+    v9 = providerCopy;
+    observers = [(SuggestionsDataProvider *)suggestionsDataProvider observers];
+    [observers unregisterObserver:self];
 
-    objc_storeStrong(&self->_suggestionsDataProvider, a3);
-    v8 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider observers];
-    [v8 registerObserver:self];
+    objc_storeStrong(&self->_suggestionsDataProvider, provider);
+    observers2 = [(SuggestionsDataProvider *)self->_suggestionsDataProvider observers];
+    [observers2 registerObserver:self];
 
     [(ShortcutsRowCellProvider *)self _updateContentAnimated:0];
-    v5 = v9;
+    providerCopy = v9;
   }
 }
 
-- (void)setFavoritesDataProvider:(id)a3
+- (void)setFavoritesDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   favoritesDataProvider = self->_favoritesDataProvider;
-  if (favoritesDataProvider != v5)
+  if (favoritesDataProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(MapsFavoritesManager *)favoritesDataProvider unregisterObserver:self];
-    objc_storeStrong(&self->_favoritesDataProvider, a3);
+    objc_storeStrong(&self->_favoritesDataProvider, provider);
     [(MapsFavoritesManager *)self->_favoritesDataProvider registerObserver:self];
     [(ShortcutsRowCellProvider *)self _updateContentAnimated:0];
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
-- (ShortcutsRowCellProvider)initWithCollectionView:(id)a3
+- (ShortcutsRowCellProvider)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v31.receiver = self;
   v31.super_class = ShortcutsRowCellProvider;
   v5 = [(ShortcutsRowCellProvider *)&v31 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_collectionView, v4);
-    [v4 setDelegate:v6];
+    v7 = objc_storeWeak(&v5->_collectionView, viewCopy);
+    [viewCopy setDelegate:v6];
 
-    v8 = [(ShortcutsRowCellProvider *)v6 _collectionViewLayout];
+    _collectionViewLayout = [(ShortcutsRowCellProvider *)v6 _collectionViewLayout];
     WeakRetained = objc_loadWeakRetained(&v6->_collectionView);
-    [WeakRetained setCollectionViewLayout:v8];
+    [WeakRetained setCollectionViewLayout:_collectionViewLayout];
 
     v10 = objc_loadWeakRetained(&v6->_collectionView);
     v11 = objc_opt_class();
@@ -574,8 +574,8 @@ LABEL_9:
     v6->_diffableDataSource = v16;
 
     v18 = objc_loadWeakRetained(&v6->_collectionView);
-    v19 = [v18 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:0.0];
+    heightAnchor = [v18 heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:0.0];
     heightConstraint = v6->_heightConstraint;
     v6->_heightConstraint = v20;
 

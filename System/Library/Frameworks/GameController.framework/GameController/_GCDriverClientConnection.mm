@@ -1,26 +1,26 @@
 @interface _GCDriverClientConnection
-- (_GCDriverClientConnection)initWithConnection:(id)a3 fromProcess:(id)a4;
+- (_GCDriverClientConnection)initWithConnection:(id)connection fromProcess:(id)process;
 - (_GCDriverServerInterface)exportedObject;
-- (id)connectToDeviceService:(id)a3 withClient:(id)a4;
-- (void)connectToDeviceService:(id)a3 withClient:(id)a4 reply:(id)a5;
-- (void)setExportedObject:(id)a3;
+- (id)connectToDeviceService:(id)service withClient:(id)client;
+- (void)connectToDeviceService:(id)service withClient:(id)client reply:(id)reply;
+- (void)setExportedObject:(id)object;
 @end
 
 @implementation _GCDriverClientConnection
 
-- (_GCDriverClientConnection)initWithConnection:(id)a3 fromProcess:(id)a4
+- (_GCDriverClientConnection)initWithConnection:(id)connection fromProcess:(id)process
 {
-  v6 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = _GCDriverClientConnection;
-  v7 = [(_GCIPCRemoteIncomingConnection *)&v11 initWithConnection:v6 fromProcess:a4];
+  v7 = [(_GCIPCRemoteIncomingConnection *)&v11 initWithConnection:connectionCopy fromProcess:process];
   if (v7)
   {
     v8 = GCDriverServerInterface();
-    [v6 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = GCDriverClientInterface();
-    [v6 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
   }
 
   return v7;
@@ -28,35 +28,35 @@
 
 - (_GCDriverServerInterface)exportedObject
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  objectCopy = object;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:objectCopy];
 }
 
-- (void)connectToDeviceService:(id)a3 withClient:(id)a4 reply:(id)a5
+- (void)connectToDeviceService:(id)service withClient:(id)client reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GCIPCRemoteIncomingConnection *)self remoteProxy];
-  ConnectToDriverService(v10, v11, v9, v8);
+  replyCopy = reply;
+  clientCopy = client;
+  serviceCopy = service;
+  remoteProxy = [(GCIPCRemoteIncomingConnection *)self remoteProxy];
+  ConnectToDriverService(serviceCopy, remoteProxy, clientCopy, replyCopy);
 }
 
-- (id)connectToDeviceService:(id)a3 withClient:(id)a4
+- (id)connectToDeviceService:(id)service withClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  clientCopy = client;
   v8 = [objc_alloc(MEMORY[0x1E69A06F8]) initOnQueue:0 withOptions:0];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = NSStringFromProtocol(v6);
+  v10 = NSStringFromProtocol(serviceCopy);
   v11 = [v9 stringWithFormat:@"Connect to '%@'.", v10];
   [v8 setLabel:v11];
 
@@ -65,9 +65,9 @@
   v21[2] = __63___GCDriverClientConnection_connectToDeviceService_withClient___block_invoke;
   v21[3] = &unk_1E8419E80;
   v21[4] = self;
-  v12 = v6;
+  v12 = serviceCopy;
   v22 = v12;
-  v13 = v7;
+  v13 = clientCopy;
   v23 = v13;
   [v8 setSyncBlock:v21];
   v18[0] = MEMORY[0x1E69E9820];
@@ -80,9 +80,9 @@
   v14 = v13;
   v15 = v12;
   [v8 setAsyncBlock:v18];
-  v16 = [v8 activate];
+  activate = [v8 activate];
 
-  return v16;
+  return activate;
 }
 
 @end

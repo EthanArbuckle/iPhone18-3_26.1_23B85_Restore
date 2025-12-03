@@ -1,24 +1,24 @@
 @interface ProductionProfileExtension
 - (_TtC19HealthBalanceDaemon26ProductionProfileExtension)init;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
 @end
 
 @implementation ProductionProfileExtension
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
   v4 = *MEMORY[0x277CCC0F0];
   v5 = sub_22892F0C8();
   v7 = v6;
   if (v5 == sub_22892F0C8() && v7 == v8)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     v10 = sub_22892F818();
-    v11 = self;
+    selfCopy2 = self;
 
     if ((v10 & 1) == 0)
     {

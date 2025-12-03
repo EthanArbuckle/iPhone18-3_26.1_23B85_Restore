@@ -1,13 +1,13 @@
 @interface IRFrame
-- (IRFrame)initWithTimings:(const unsigned int *)a3 count:(unint64_t)a4 timestamp:(unint64_t)a5;
-- (unsigned)timeIntervalAtIndex:(unint64_t)a3;
+- (IRFrame)initWithTimings:(const unsigned int *)timings count:(unint64_t)count timestamp:(unint64_t)timestamp;
+- (unsigned)timeIntervalAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getTimings:(unsigned int *)a3 range:(_NSRange)a4;
+- (void)getTimings:(unsigned int *)timings range:(_NSRange)range;
 @end
 
 @implementation IRFrame
 
-- (IRFrame)initWithTimings:(const unsigned int *)a3 count:(unint64_t)a4 timestamp:(unint64_t)a5
+- (IRFrame)initWithTimings:(const unsigned int *)timings count:(unint64_t)count timestamp:(unint64_t)timestamp
 {
   v12.receiver = self;
   v12.super_class = IRFrame;
@@ -15,13 +15,13 @@
   v9 = v8;
   if (v8)
   {
-    v8->_count = a4;
-    v10 = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
+    v8->_count = count;
+    v10 = malloc_type_calloc(count, 4uLL, 0x100004052888210uLL);
     v9->_timings = v10;
     if (v10)
     {
-      memcpy(v10, a3, 4 * a4);
-      v9->_timestamp = a5;
+      memcpy(v10, timings, 4 * count);
+      v9->_timestamp = timestamp;
     }
 
     else
@@ -47,21 +47,21 @@
   [(IRFrame *)&v4 dealloc];
 }
 
-- (unsigned)timeIntervalAtIndex:(unint64_t)a3
+- (unsigned)timeIntervalAtIndex:(unint64_t)index
 {
-  if ([(IRFrame *)self count]<= a3)
+  if ([(IRFrame *)self count]<= index)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:{@"invalid index %lu", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:{@"invalid index %lu", index}];
   }
 
-  return self->_timings[a3];
+  return self->_timings[index];
 }
 
-- (void)getTimings:(unsigned int *)a3 range:(_NSRange)a4
+- (void)getTimings:(unsigned int *)timings range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > [(IRFrame *)self count])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(IRFrame *)self count])
   {
     v10.location = location;
     v10.length = length;
@@ -70,7 +70,7 @@
 
   v8 = &self->_timings[location];
 
-  memcpy(a3, v8, 4 * length);
+  memcpy(timings, v8, 4 * length);
 }
 
 @end

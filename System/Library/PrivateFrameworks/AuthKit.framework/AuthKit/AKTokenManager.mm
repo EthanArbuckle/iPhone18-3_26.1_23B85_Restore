@@ -1,14 +1,14 @@
 @interface AKTokenManager
 + (AKTokenManager)sharedInstance;
 - (AKTokenManager)init;
-- (BOOL)_deleteTokenWithIdentifer:(id)a3 altDSID:(id)a4 account:(id)a5 credential:(id)a6 error:(id *)a7;
-- (BOOL)deleteTokenFromCacheWithIdentifer:(id)a3 altDSID:(id)a4 error:(id *)a5;
-- (BOOL)synchronizeTokensForAllAccounts:(id *)a3;
-- (BOOL)synchronizeTokensForAltDSID:(id)a3 account:(id)a4 error:(id *)a5;
-- (BOOL)updateToken:(id)a3 identifier:(id)a4 altDSID:(id)a5 account:(id)a6 credential:(id)a7 error:(id *)a8;
-- (id)synchronizedCredentialForAccount:(id)a3;
-- (id)tokenWithIdentifier:(id)a3 altDSID:(id)a4 forAccount:(id)a5 error:(id *)a6;
-- (id)tokenWithIdentifier:(id)a3 altDSID:(id)a4 forAccount:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7;
+- (BOOL)_deleteTokenWithIdentifer:(id)identifer altDSID:(id)d account:(id)account credential:(id)credential error:(id *)error;
+- (BOOL)deleteTokenFromCacheWithIdentifer:(id)identifer altDSID:(id)d error:(id *)error;
+- (BOOL)synchronizeTokensForAllAccounts:(id *)accounts;
+- (BOOL)synchronizeTokensForAltDSID:(id)d account:(id)account error:(id *)error;
+- (BOOL)updateToken:(id)token identifier:(id)identifier altDSID:(id)d account:(id)account credential:(id)credential error:(id *)error;
+- (id)synchronizedCredentialForAccount:(id)account;
+- (id)tokenWithIdentifier:(id)identifier altDSID:(id)d forAccount:(id)account error:(id *)error;
+- (id)tokenWithIdentifier:(id)identifier altDSID:(id)d forAccount:(id)account shouldSync:(BOOL)sync error:(id *)error;
 @end
 
 @implementation AKTokenManager
@@ -64,21 +64,21 @@
   return v11;
 }
 
-- (BOOL)updateToken:(id)a3 identifier:(id)a4 altDSID:(id)a5 account:(id)a6 credential:(id)a7 error:(id *)a8
+- (BOOL)updateToken:(id)token identifier:(id)identifier altDSID:(id)d account:(id)account credential:(id)credential error:(id *)error
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, identifier);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
+  objc_storeStrong(&v45, d);
   v44 = 0;
-  objc_storeStrong(&v44, a6);
+  objc_storeStrong(&v44, account);
   v43 = 0;
-  objc_storeStrong(&v43, a7);
-  v42 = a8;
+  objc_storeStrong(&v43, credential);
+  errorCopy = error;
   v41 = _AKLogSystem();
   v40 = 2;
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -94,7 +94,7 @@
   {
     if (location[0])
     {
-      queue = v48->_tokenManagerQueue;
+      queue = selfCopy->_tokenManagerQueue;
       v21 = _NSConcreteStackBlock;
       v22 = -1073741824;
       v23 = 0;
@@ -103,12 +103,12 @@
       v26 = _objc_retain(v46);
       v27 = _objc_retain(v45);
       v28 = _objc_retain(location[0]);
-      v29 = _objc_retain(v48);
-      v31[1] = v42;
+      v29 = _objc_retain(selfCopy);
+      v31[1] = errorCopy;
       v30 = _objc_retain(v44);
       v31[0] = _objc_retain(v43);
       dispatch_sync(queue, &v21);
-      v49 = v42 == 0;
+      v49 = errorCopy == 0;
       v35 = 1;
       objc_storeStrong(v31, 0);
       objc_storeStrong(&v30, 0);
@@ -131,7 +131,7 @@
       }
 
       objc_storeStrong(&v34, 0);
-      v49 = [(AKTokenManager *)v48 _deleteTokenWithIdentifer:v46 altDSID:v45 account:v44 credential:v43 error:v42];
+      v49 = [(AKTokenManager *)selfCopy _deleteTokenWithIdentifer:v46 altDSID:v45 account:v44 credential:v43 error:errorCopy];
       v35 = 1;
     }
   }
@@ -161,31 +161,31 @@
   return v49 & 1;
 }
 
-- (BOOL)deleteTokenFromCacheWithIdentifer:(id)a3 altDSID:(id)a4 error:(id *)a5
+- (BOOL)deleteTokenFromCacheWithIdentifer:(id)identifer altDSID:(id)d error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifer);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = [(AKTokenManager *)v11 _deleteTokenWithIdentifer:location[0] altDSID:v9 account:0 credential:0 error:a5];
+  objc_storeStrong(&v9, d);
+  v8 = [(AKTokenManager *)selfCopy _deleteTokenWithIdentifer:location[0] altDSID:v9 account:0 credential:0 error:error];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v8;
 }
 
-- (id)tokenWithIdentifier:(id)a3 altDSID:(id)a4 forAccount:(id)a5 error:(id *)a6
+- (id)tokenWithIdentifier:(id)identifier altDSID:(id)d forAccount:(id)account error:(id *)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, d);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v10 = [(AKTokenManager *)v14 tokenWithIdentifier:location[0] altDSID:v12 forAccount:v11 shouldSync:0 error:a6];
+  objc_storeStrong(&v11, account);
+  v10 = [(AKTokenManager *)selfCopy tokenWithIdentifier:location[0] altDSID:v12 forAccount:v11 shouldSync:0 error:error];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -193,18 +193,18 @@
   return v10;
 }
 
-- (id)tokenWithIdentifier:(id)a3 altDSID:(id)a4 forAccount:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7
+- (id)tokenWithIdentifier:(id)identifier altDSID:(id)d forAccount:(id)account shouldSync:(BOOL)sync error:(id *)error
 {
-  v88 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v86 = 0;
-  objc_storeStrong(&v86, a4);
+  objc_storeStrong(&v86, d);
   v85 = 0;
-  objc_storeStrong(&v85, a5);
-  v84 = a6;
-  v83 = a7;
+  objc_storeStrong(&v85, account);
+  syncCopy = sync;
+  errorCopy = error;
   v82 = _AKLogSystem();
   v81 = 2;
   if (os_log_type_enabled(v82, OS_LOG_TYPE_DEBUG))
@@ -272,7 +272,7 @@
       v35 = 0x20000000;
       v36 = 32;
       v37 = 0;
-      queue = v88->_tokenManagerQueue;
+      queue = selfCopy->_tokenManagerQueue;
       v24 = _NSConcreteStackBlock;
       v25 = -1073741824;
       v26 = 0;
@@ -281,16 +281,16 @@
       v29 = _objc_retain(location[0]);
       v30 = _objc_retain(v86);
       v32[1] = v65;
-      v31 = _objc_retain(v88);
+      v31 = _objc_retain(selfCopy);
       v32[2] = &v46;
       v32[3] = v42;
       v32[4] = v59;
-      v32[8] = v83;
+      v32[8] = errorCopy;
       v32[5] = v38;
       v32[0] = _objc_retain(v85);
       v32[6] = v53;
       v32[7] = v34;
-      v33 = v84;
+      v33 = syncCopy;
       dispatch_sync(queue, &v24);
       v89 = _objc_retain(v47[5]);
       v76 = 1;
@@ -324,11 +324,11 @@
       }
 
       objc_storeStrong(&v75, 0);
-      if (v83)
+      if (errorCopy)
       {
         v12 = [NSError ak_errorWithCode:-7025];
         v8 = v12;
-        *v83 = v12;
+        *errorCopy = v12;
       }
 
       v89 = 0;
@@ -349,11 +349,11 @@
     }
 
     objc_storeStrong(&v79, 0);
-    if (v83)
+    if (errorCopy)
     {
       v15 = [NSError ak_errorWithCode:-7009];
       v7 = v15;
-      *v83 = v15;
+      *errorCopy = v15;
     }
 
     v89 = 0;
@@ -368,21 +368,21 @@
   return v9;
 }
 
-- (BOOL)synchronizeTokensForAltDSID:(id)a3 account:(id)a4 error:(id *)a5
+- (BOOL)synchronizeTokensForAltDSID:(id)d account:(id)account error:(id *)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v5 = [(AKTokenManager *)v14 tokenWithIdentifier:ACContinuationTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:a5];
-  v6 = [(AKTokenManager *)v14 tokenWithIdentifier:ACPasswordResetTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:a5];
-  v7 = [(AKTokenManager *)v14 tokenWithIdentifier:ACHeartbeatTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:a5];
+  objc_storeStrong(&v12, account);
+  v5 = [(AKTokenManager *)selfCopy tokenWithIdentifier:ACContinuationTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:error];
+  v6 = [(AKTokenManager *)selfCopy tokenWithIdentifier:ACPasswordResetTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:error];
+  v7 = [(AKTokenManager *)selfCopy tokenWithIdentifier:ACHeartbeatTokenKey altDSID:location[0] forAccount:v12 shouldSync:1 error:error];
   v11 = 0;
-  if (a5)
+  if (error)
   {
-    v11 = *a5 != 0;
+    v11 = *error != 0;
   }
 
   objc_storeStrong(&v12, 0);
@@ -390,11 +390,11 @@
   return !v11;
 }
 
-- (BOOL)synchronizeTokensForAllAccounts:(id *)a3
+- (BOOL)synchronizeTokensForAllAccounts:(id *)accounts
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  accountsCopy = accounts;
   v18 = +[AKAccountManager sharedInstance];
   v17 = [v18 allAuthKitAccountsWithError:0];
   memset(__b, 0, sizeof(__b));
@@ -417,14 +417,14 @@
       location = [v18 altDSIDForAccount:v16];
       if ([location length])
       {
-        v13 = [(AKTokenManager *)v21 synchronizeTokensForAltDSID:location account:v16 error:v19];
+        v13 = [(AKTokenManager *)selfCopy synchronizeTokensForAltDSID:location account:v16 error:accountsCopy];
         if ((v13 & 1) == 0)
         {
           oslog = _AKLogSystem();
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
           {
             log = oslog;
-            sub_1000194D4(v22, *v19);
+            sub_1000194D4(v22, *accountsCopy);
             _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "AKTokenManager sync hit an error: %@.", v22, 0xCu);
           }
 
@@ -448,9 +448,9 @@
 
   _objc_release(obj);
   v4 = 0;
-  if (v19)
+  if (accountsCopy)
   {
-    v4 = *v19 != 0;
+    v4 = *accountsCopy != 0;
   }
 
   objc_storeStrong(&v17, 0);
@@ -458,19 +458,19 @@
   return !v4;
 }
 
-- (BOOL)_deleteTokenWithIdentifer:(id)a3 altDSID:(id)a4 account:(id)a5 credential:(id)a6 error:(id *)a7
+- (BOOL)_deleteTokenWithIdentifer:(id)identifer altDSID:(id)d account:(id)account credential:(id)credential error:(id *)error
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifer);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, d);
   v42 = 0;
-  objc_storeStrong(&v42, a5);
+  objc_storeStrong(&v42, account);
   v41 = 0;
-  objc_storeStrong(&v41, a6);
-  v40 = a7;
+  objc_storeStrong(&v41, credential);
+  errorCopy = error;
   v39 = _AKLogSystem();
   v38 = 2;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -491,7 +491,7 @@
     v30 = sub_100003CF4;
     v31 = sub_100011380;
     v32 = _objc_retain(v42);
-    queue = v45->_tokenManagerQueue;
+    queue = selfCopy->_tokenManagerQueue;
     v18 = _NSConcreteStackBlock;
     v19 = -1073741824;
     v20 = 0;
@@ -499,17 +499,17 @@
     v22 = &unk_100324820;
     v23 = _objc_retain(location[0]);
     v24 = _objc_retain(v43);
-    v25 = _objc_retain(v45);
-    v26[2] = v40;
+    v25 = _objc_retain(selfCopy);
+    v26[2] = errorCopy;
     v26[1] = v27;
     v26[0] = _objc_retain(v41);
     dispatch_sync(queue, &v18);
-    if (v40)
+    if (errorCopy)
     {
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000194D4(v47, *v40);
+        sub_1000194D4(v47, *errorCopy);
         _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "AKTokenManager: error deleting token: %@", v47, 0xCu);
       }
 
@@ -556,12 +556,12 @@
   return v46 & 1;
 }
 
-- (id)synchronizedCredentialForAccount:(id)a3
+- (id)synchronizedCredentialForAccount:(id)account
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v27 = _AKLogSystem();
   v26 = 2;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -579,35 +579,35 @@
   objc_storeStrong(&v24, v22);
   v23 = v11;
   v12 = +[AKFeatureManager sharedManager];
-  v13 = [v12 isTokenCacheEnabled];
+  isTokenCacheEnabled = [v12 isTokenCacheEnabled];
   _objc_release(v12);
-  if ((v13 & 1) != 0 && v23)
+  if ((isTokenCacheEnabled & 1) != 0 && v23)
   {
     v21 = 0;
     v20 = [location[0] accountPropertyForKey:AKAltDSID];
     v18 = v21;
-    v9 = [(AKTokenManager *)v29 tokenWithIdentifier:ACContinuationTokenKey altDSID:v20 forAccount:location[0] error:&v18];
+    v9 = [(AKTokenManager *)selfCopy tokenWithIdentifier:ACContinuationTokenKey altDSID:v20 forAccount:location[0] error:&v18];
     objc_storeStrong(&v21, v18);
     v19 = v9;
     objc_storeStrong(&v21, 0);
     v16 = v21;
-    v10 = [(AKTokenManager *)v29 tokenWithIdentifier:ACPasswordResetTokenKey altDSID:v20 forAccount:location[0] error:&v16];
+    v10 = [(AKTokenManager *)selfCopy tokenWithIdentifier:ACPasswordResetTokenKey altDSID:v20 forAccount:location[0] error:&v16];
     objc_storeStrong(&v21, v16);
     v17 = v10;
     if (v19)
     {
       v7 = v23;
-      v8 = [v19 stringValue];
+      stringValue = [v19 stringValue];
       [v7 setCredentialItem:? forKey:?];
-      _objc_release(v8);
+      _objc_release(stringValue);
     }
 
     if (v17)
     {
       v5 = v23;
-      v6 = [v17 stringValue];
+      stringValue2 = [v17 stringValue];
       [v5 setCredentialItem:? forKey:?];
-      _objc_release(v6);
+      _objc_release(stringValue2);
     }
 
     objc_storeStrong(&v17, 0);

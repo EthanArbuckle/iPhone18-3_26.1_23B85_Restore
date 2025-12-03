@@ -1,18 +1,18 @@
 @interface SBShelfBackgroundView
 - (CGRect)extendedBlurRect;
-- (SBShelfBackgroundView)initWithFrame:(CGRect)a3;
+- (SBShelfBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setExtendedBlurRect:(CGRect)a3;
+- (void)setExtendedBlurRect:(CGRect)rect;
 @end
 
 @implementation SBShelfBackgroundView
 
-- (SBShelfBackgroundView)initWithFrame:(CGRect)a3
+- (SBShelfBackgroundView)initWithFrame:(CGRect)frame
 {
   v27[3] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = SBShelfBackgroundView;
-  v3 = [(SBShelfBackgroundView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBShelfBackgroundView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277D26718];
@@ -39,8 +39,8 @@
     v3->_backgroundMaskInnerRectangleView = v15;
 
     v17 = v3->_backgroundMaskInnerRectangleView;
-    v18 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v17 setBackgroundColor:v18];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v17 setBackgroundColor:blackColor];
 
     [(UIView *)v3->_backgroundMaskView addSubview:v3->_backgroundMaskInnerRectangleView];
     v19 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA580]];
@@ -56,25 +56,25 @@
     [v22 setValue:@"low" forKey:*MEMORY[0x277CDA4B8]];
     [v22 setValue:@"low" forKey:*MEMORY[0x277CDA4E8]];
     [v22 setValue:&unk_28336F8E0 forKey:*MEMORY[0x277CDA4F0]];
-    v23 = [(UIView *)v3->_backgroundMaskInnerRectangleView layer];
+    layer = [(UIView *)v3->_backgroundMaskInnerRectangleView layer];
     v27[0] = v19;
     v27[1] = v21;
     v27[2] = v22;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
-    [v23 setFilters:v24];
+    [layer setFilters:v24];
   }
 
   return v3;
 }
 
-- (void)setExtendedBlurRect:(CGRect)a3
+- (void)setExtendedBlurRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_extendedBlurRect = &self->_extendedBlurRect;
-  if (!CGRectEqualToRect(a3, self->_extendedBlurRect))
+  if (!CGRectEqualToRect(rect, self->_extendedBlurRect))
   {
     p_extendedBlurRect->origin.x = x;
     p_extendedBlurRect->origin.y = y;

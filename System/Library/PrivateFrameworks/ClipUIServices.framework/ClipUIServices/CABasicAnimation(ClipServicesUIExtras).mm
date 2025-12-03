@@ -23,7 +23,7 @@
   }
 
   [v16 setFillMode:*v17];
-  [v16 setBeginTime:CACurrentMediaTime() + a1];
+  [v16 setBeginTime:CACurrentMediaTime() + self];
   [v16 setDuration:a2];
 
   return v16;

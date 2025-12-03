@@ -1,7 +1,7 @@
 @interface MTL4StitchedFunctionDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4StitchedFunctionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,19 +22,19 @@
   [(MTL4FunctionDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MTL4StitchedFunctionDescriptor;
   v5 = [(MTL4FunctionDescriptor *)&v7 copyWithZone:?];
-  v5[2] = [(MTLFunctionStitchingGraph *)self->_functionGraph copyWithZone:a3];
-  v5[3] = [(NSArray *)self->_functionDescriptors copyWithZone:a3];
+  v5[2] = [(MTLFunctionStitchingGraph *)self->_functionGraph copyWithZone:zone];
+  v5[3] = [(NSArray *)self->_functionDescriptors copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -44,17 +44,17 @@
     v12 = v3;
     v13 = v4;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v11.receiver = self;
       v11.super_class = MTL4StitchedFunctionDescriptor;
-      v8 = [(MTL4FunctionDescriptor *)&v11 isEqual:a3];
+      v8 = [(MTL4FunctionDescriptor *)&v11 isEqual:equal];
       if (v8)
       {
         functionGraph = self->_functionGraph;
-        if (functionGraph == *(a3 + 2) || (v8 = [(MTLFunctionStitchingGraph *)functionGraph isEqual:?]) != 0)
+        if (functionGraph == *(equal + 2) || (v8 = [(MTLFunctionStitchingGraph *)functionGraph isEqual:?]) != 0)
         {
-          LOBYTE(v8) = MTLCompareArray(self->_functionDescriptors, *(a3 + 3), 1, 0);
+          LOBYTE(v8) = MTLCompareArray(self->_functionDescriptors, *(equal + 3), 1, 0);
         }
       }
     }

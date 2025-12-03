@@ -1,12 +1,12 @@
 @interface HMMTRWeekDaySchedule
-+ (id)HMDaysOfTheWeekToString:(unint64_t)a3;
-+ (id)dateWithHour:(unint64_t)a3 andMinute:(unint64_t)a4;
-+ (void)appendDayToString:(id)a3 daysString:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HMMTRWeekDaySchedule)initWithDaysMask:(id)a3 startHour:(id)a4 startMinute:(id)a5 endHour:(id)a6 endMinute:(id)a7 status:(id)a8;
-- (HMMTRWeekDaySchedule)initWithMTRSchedule:(id)a3;
-- (id)convertToMTRScheduleAtScheduleIndex:(int64_t)a3 forUserAtUserIndex:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)HMDaysOfTheWeekToString:(unint64_t)string;
++ (id)dateWithHour:(unint64_t)hour andMinute:(unint64_t)minute;
++ (void)appendDayToString:(id)string daysString:(id)daysString;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRWeekDaySchedule)initWithDaysMask:(id)mask startHour:(id)hour startMinute:(id)minute endHour:(id)endHour endMinute:(id)endMinute status:(id)status;
+- (HMMTRWeekDaySchedule)initWithMTRSchedule:(id)schedule;
+- (id)convertToMTRScheduleAtScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -32,53 +32,53 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HMMTRWeekDaySchedule);
-  v5 = [(HMMTRWeekDaySchedule *)self daysMask];
-  [(HMMTRWeekDaySchedule *)v4 setDaysMask:v5];
+  daysMask = [(HMMTRWeekDaySchedule *)self daysMask];
+  [(HMMTRWeekDaySchedule *)v4 setDaysMask:daysMask];
 
-  v6 = [(HMMTRWeekDaySchedule *)self startHour];
-  [(HMMTRWeekDaySchedule *)v4 setStartHour:v6];
+  startHour = [(HMMTRWeekDaySchedule *)self startHour];
+  [(HMMTRWeekDaySchedule *)v4 setStartHour:startHour];
 
-  v7 = [(HMMTRWeekDaySchedule *)self startMinute];
-  [(HMMTRWeekDaySchedule *)v4 setStartMinute:v7];
+  startMinute = [(HMMTRWeekDaySchedule *)self startMinute];
+  [(HMMTRWeekDaySchedule *)v4 setStartMinute:startMinute];
 
-  v8 = [(HMMTRWeekDaySchedule *)self endHour];
-  [(HMMTRWeekDaySchedule *)v4 setEndHour:v8];
+  endHour = [(HMMTRWeekDaySchedule *)self endHour];
+  [(HMMTRWeekDaySchedule *)v4 setEndHour:endHour];
 
-  v9 = [(HMMTRWeekDaySchedule *)self endMinute];
-  [(HMMTRWeekDaySchedule *)v4 setEndMinute:v9];
+  endMinute = [(HMMTRWeekDaySchedule *)self endMinute];
+  [(HMMTRWeekDaySchedule *)v4 setEndMinute:endMinute];
 
-  v10 = [(HMMTRWeekDaySchedule *)self status];
-  [(HMMTRWeekDaySchedule *)v4 setStatus:v10];
+  status = [(HMMTRWeekDaySchedule *)self status];
+  [(HMMTRWeekDaySchedule *)v4 setStatus:status];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMMTRWeekDaySchedule *)self daysMask];
-  v4 = [v3 hash];
-  v5 = [(HMMTRWeekDaySchedule *)self startHour];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMMTRWeekDaySchedule *)self startMinute];
-  v8 = [v7 hash];
-  v9 = [(HMMTRWeekDaySchedule *)self endHour];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HMMTRWeekDaySchedule *)self endMinute];
-  v12 = [v11 hash];
+  daysMask = [(HMMTRWeekDaySchedule *)self daysMask];
+  v4 = [daysMask hash];
+  startHour = [(HMMTRWeekDaySchedule *)self startHour];
+  v6 = [startHour hash] ^ v4;
+  startMinute = [(HMMTRWeekDaySchedule *)self startMinute];
+  v8 = [startMinute hash];
+  endHour = [(HMMTRWeekDaySchedule *)self endHour];
+  v10 = v6 ^ v8 ^ [endHour hash];
+  endMinute = [(HMMTRWeekDaySchedule *)self endMinute];
+  v12 = [endMinute hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -92,8 +92,8 @@
     goto LABEL_10;
   }
 
-  v7 = [(HMMTRWeekDaySchedule *)self daysMask];
-  v8 = [v6 daysMask];
+  daysMask = [(HMMTRWeekDaySchedule *)self daysMask];
+  daysMask2 = [v6 daysMask];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -101,8 +101,8 @@
     goto LABEL_10;
   }
 
-  v10 = [(HMMTRWeekDaySchedule *)self startHour];
-  v11 = [v6 startHour];
+  startHour = [(HMMTRWeekDaySchedule *)self startHour];
+  startHour2 = [v6 startHour];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -110,8 +110,8 @@
     goto LABEL_10;
   }
 
-  v13 = [(HMMTRWeekDaySchedule *)self endHour];
-  v14 = [v6 endHour];
+  endHour = [(HMMTRWeekDaySchedule *)self endHour];
+  endHour2 = [v6 endHour];
   v15 = HMFEqualObjects();
 
   if (!v15)
@@ -119,14 +119,14 @@
     goto LABEL_10;
   }
 
-  v16 = [(HMMTRWeekDaySchedule *)self endMinute];
-  v17 = [v6 endMinute];
+  endMinute = [(HMMTRWeekDaySchedule *)self endMinute];
+  endMinute2 = [v6 endMinute];
   v18 = HMFEqualObjects();
 
   if (v18)
   {
-    v19 = [(HMMTRWeekDaySchedule *)self startMinute];
-    v20 = [v6 startMinute];
+    startMinute = [(HMMTRWeekDaySchedule *)self startMinute];
+    startMinute2 = [v6 startMinute];
     v21 = HMFEqualObjects();
   }
 
@@ -139,83 +139,83 @@ LABEL_10:
   return v21;
 }
 
-- (id)convertToMTRScheduleAtScheduleIndex:(int64_t)a3 forUserAtUserIndex:(int64_t)a4
+- (id)convertToMTRScheduleAtScheduleIndex:(int64_t)index forUserAtUserIndex:(int64_t)userIndex
 {
   v7 = objc_alloc_init(MEMORY[0x277CD53F0]);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [v7 setWeekDayIndex:v8];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:userIndex];
   [v7 setUserIndex:v9];
 
-  v10 = [(HMMTRWeekDaySchedule *)self daysMask];
-  [v7 setDaysMask:v10];
+  daysMask = [(HMMTRWeekDaySchedule *)self daysMask];
+  [v7 setDaysMask:daysMask];
 
-  v11 = [(HMMTRWeekDaySchedule *)self startHour];
-  [v7 setStartHour:v11];
+  startHour = [(HMMTRWeekDaySchedule *)self startHour];
+  [v7 setStartHour:startHour];
 
-  v12 = [(HMMTRWeekDaySchedule *)self startMinute];
-  [v7 setStartMinute:v12];
+  startMinute = [(HMMTRWeekDaySchedule *)self startMinute];
+  [v7 setStartMinute:startMinute];
 
-  v13 = [(HMMTRWeekDaySchedule *)self endHour];
-  [v7 setEndHour:v13];
+  endHour = [(HMMTRWeekDaySchedule *)self endHour];
+  [v7 setEndHour:endHour];
 
-  v14 = [(HMMTRWeekDaySchedule *)self endMinute];
-  [v7 setEndMinute:v14];
+  endMinute = [(HMMTRWeekDaySchedule *)self endMinute];
+  [v7 setEndMinute:endMinute];
 
   return v7;
 }
 
-- (HMMTRWeekDaySchedule)initWithMTRSchedule:(id)a3
+- (HMMTRWeekDaySchedule)initWithMTRSchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = [v4 daysMask];
-  v6 = [v4 startHour];
-  v7 = [v4 startMinute];
-  v8 = [v4 endHour];
-  v9 = [v4 endMinute];
-  v10 = [v4 status];
+  scheduleCopy = schedule;
+  daysMask = [scheduleCopy daysMask];
+  startHour = [scheduleCopy startHour];
+  startMinute = [scheduleCopy startMinute];
+  endHour = [scheduleCopy endHour];
+  endMinute = [scheduleCopy endMinute];
+  status = [scheduleCopy status];
 
-  v11 = [(HMMTRWeekDaySchedule *)self initWithDaysMask:v5 startHour:v6 startMinute:v7 endHour:v8 endMinute:v9 status:v10];
+  v11 = [(HMMTRWeekDaySchedule *)self initWithDaysMask:daysMask startHour:startHour startMinute:startMinute endHour:endHour endMinute:endMinute status:status];
   return v11;
 }
 
-- (HMMTRWeekDaySchedule)initWithDaysMask:(id)a3 startHour:(id)a4 startMinute:(id)a5 endHour:(id)a6 endMinute:(id)a7 status:(id)a8
+- (HMMTRWeekDaySchedule)initWithDaysMask:(id)mask startHour:(id)hour startMinute:(id)minute endHour:(id)endHour endMinute:(id)endMinute status:(id)status
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  maskCopy = mask;
+  hourCopy = hour;
+  minuteCopy = minute;
+  endHourCopy = endHour;
+  endMinuteCopy = endMinute;
+  statusCopy = status;
   v24.receiver = self;
   v24.super_class = HMMTRWeekDaySchedule;
   v18 = [(HMMTRWeekDaySchedule *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_daysMask, a3);
-    objc_storeStrong(&v19->_startHour, a4);
-    objc_storeStrong(&v19->_startMinute, a5);
-    objc_storeStrong(&v19->_endHour, a6);
-    objc_storeStrong(&v19->_endMinute, a7);
-    objc_storeStrong(&v19->_status, a8);
+    objc_storeStrong(&v18->_daysMask, mask);
+    objc_storeStrong(&v19->_startHour, hour);
+    objc_storeStrong(&v19->_startMinute, minute);
+    objc_storeStrong(&v19->_endHour, endHour);
+    objc_storeStrong(&v19->_endMinute, endMinute);
+    objc_storeStrong(&v19->_status, status);
   }
 
   return v19;
 }
 
-+ (id)HMDaysOfTheWeekToString:(unint64_t)a3
++ (id)HMDaysOfTheWeekToString:(unint64_t)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [@"<" mutableCopy];
-  if (v3)
+  if (stringCopy)
   {
     [objc_opt_class() appendDayToString:@"Sun" daysString:v4];
-    if ((v3 & 2) == 0)
+    if ((stringCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((stringCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -224,16 +224,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((stringCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [objc_opt_class() appendDayToString:@"Mon" daysString:v4];
-  if ((v3 & 4) == 0)
+  if ((stringCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((stringCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -243,10 +243,10 @@ LABEL_4:
 
 LABEL_14:
   [objc_opt_class() appendDayToString:@"Tue" daysString:v4];
-  if ((v3 & 8) == 0)
+  if ((stringCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((stringCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -256,10 +256,10 @@ LABEL_5:
 
 LABEL_15:
   [objc_opt_class() appendDayToString:@"Wed" daysString:v4];
-  if ((v3 & 0x10) == 0)
+  if ((stringCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x20) == 0)
+    if ((stringCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -269,10 +269,10 @@ LABEL_6:
 
 LABEL_16:
   [objc_opt_class() appendDayToString:@"Thu" daysString:v4];
-  if ((v3 & 0x20) == 0)
+  if ((stringCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x40) == 0)
+    if ((stringCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -282,7 +282,7 @@ LABEL_7:
 
 LABEL_17:
   [objc_opt_class() appendDayToString:@"Fri" daysString:v4];
-  if ((v3 & 0x40) != 0)
+  if ((stringCopy & 0x40) != 0)
   {
 LABEL_8:
     [objc_opt_class() appendDayToString:@"Sat" daysString:v4];
@@ -295,26 +295,26 @@ LABEL_9:
   return v5;
 }
 
-+ (void)appendDayToString:(id)a3 daysString:(id)a4
++ (void)appendDayToString:(id)string daysString:(id)daysString
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v5 length] >= 2)
+  stringCopy = string;
+  daysStringCopy = daysString;
+  if ([daysStringCopy length] >= 2)
   {
-    [v5 appendString:{@", "}];
+    [daysStringCopy appendString:{@", "}];
   }
 
-  [v5 appendString:v6];
+  [daysStringCopy appendString:stringCopy];
 }
 
-+ (id)dateWithHour:(unint64_t)a3 andMinute:(unint64_t)a4
++ (id)dateWithHour:(unint64_t)hour andMinute:(unint64_t)minute
 {
   v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v6 components:28 fromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [v6 components:28 fromDate:date];
 
-  [v8 setHour:a3];
-  [v8 setMinute:a4];
+  [v8 setHour:hour];
+  [v8 setMinute:minute];
   [v8 setSecond:0];
   v9 = [v6 dateFromComponents:v8];
 

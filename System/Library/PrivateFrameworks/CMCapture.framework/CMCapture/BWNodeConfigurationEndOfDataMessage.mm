@@ -1,10 +1,10 @@
 @interface BWNodeConfigurationEndOfDataMessage
-+ (id)newMessageWithConfigurationID:(int64_t)a3;
++ (id)newMessageWithConfigurationID:(int64_t)d;
 @end
 
 @implementation BWNodeConfigurationEndOfDataMessage
 
-+ (id)newMessageWithConfigurationID:(int64_t)a3
++ (id)newMessageWithConfigurationID:(int64_t)d
 {
   result = [BWNodeConfigurationEndOfDataMessage alloc];
   if (result)
@@ -15,7 +15,7 @@
     if (result)
     {
       *(result + 1) = 0x900000001;
-      *(result + 2) = a3;
+      *(result + 2) = d;
     }
   }
 

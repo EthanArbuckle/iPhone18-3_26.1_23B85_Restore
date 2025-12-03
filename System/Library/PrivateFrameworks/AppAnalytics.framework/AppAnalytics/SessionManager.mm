@@ -1,12 +1,12 @@
 @interface SessionManager
-- (void)flushWithCallbackQueue:(id)a3 completion:(id)a4;
+- (void)flushWithCallbackQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation SessionManager
 
-- (void)flushWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)flushWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -28,10 +28,10 @@
   swift_weakInit();
   v14 = swift_allocObject();
   v14[2] = v12;
-  v14[3] = a3;
+  v14[3] = queue;
   v14[4] = v9;
   v14[5] = v8;
-  v15 = a3;
+  queueCopy = queue;
 
   sub_1B698BF94(v9);
   sub_1B69877A4(v11, sub_1B6A0BE34, v14);

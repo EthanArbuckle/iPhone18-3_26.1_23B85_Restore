@@ -1,32 +1,32 @@
 @interface SBBackgroundActivityAssertionServiceManager
-- (BOOL)_verifyCoordinatorEntitlementForBackgroundActivityIdentifiers:(id)a3 onConnection:(id)a4;
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_verifyCoordinatorEntitlementForBackgroundActivityIdentifiers:(id)identifiers onConnection:(id)connection;
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SBBackgroundActivityAssertionServiceManager)init;
 - (SBBackgroundActivityAssertionServiceManagerDelegate)delegate;
-- (id)_internalQueue_backgroundActivityIdentifiersAddedByAddingAssertionData:(id)a3;
-- (id)_internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:(id)a3;
-- (id)_internalQueue_coordinatorClientForBackgroundActivityIdentifiers:(id)a3;
-- (id)_internalQueue_coordinatorClientForConnection:(id)a3;
-- (id)_internalQueue_coordinatorClientMatchingBackgroundActivityIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)statusStringForBackgroundActivityWithIdentifier:(id)a3 activeAttributions:(id)a4;
+- (id)_internalQueue_backgroundActivityIdentifiersAddedByAddingAssertionData:(id)data;
+- (id)_internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:(id)data;
+- (id)_internalQueue_coordinatorClientForBackgroundActivityIdentifiers:(id)identifiers;
+- (id)_internalQueue_coordinatorClientForConnection:(id)connection;
+- (id)_internalQueue_coordinatorClientMatchingBackgroundActivityIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)statusStringForBackgroundActivityWithIdentifier:(id)identifier activeAttributions:(id)attributions;
 - (id)succinctDescription;
-- (void)_internalQueue_deactivateBackgroundActivityAssertionsWithIdentifiers:(id)a3 forClientConnection:(id)a4;
-- (void)_internalQueue_invalidateBackgroundActivityAssertions:(id)a3;
-- (void)_internalQueue_publishAttributionsForAddingAssertionData:(id)a3;
-- (void)_internalQueue_publishAttributionsForRemovingAssertionData:(id)a3;
-- (void)_invalidateAssertionsWithIdentifiers:(id)a3 forClientConnection:(id)a4;
+- (void)_internalQueue_deactivateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers forClientConnection:(id)connection;
+- (void)_internalQueue_invalidateBackgroundActivityAssertions:(id)assertions;
+- (void)_internalQueue_publishAttributionsForAddingAssertionData:(id)data;
+- (void)_internalQueue_publishAttributionsForRemovingAssertionData:(id)data;
+- (void)_invalidateAssertionsWithIdentifiers:(id)identifiers forClientConnection:(id)connection;
 - (void)_notifyDelegateAboutStatusStringChange;
-- (void)activateBackgroundActivityAssertions:(id)a3 reply:(id)a4;
-- (void)deactivateBackgroundActivityAssertionsWithIdentifiers:(id)a3;
+- (void)activateBackgroundActivityAssertions:(id)assertions reply:(id)reply;
+- (void)deactivateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)invalidateBackgroundActivityAssertions:(id)a3;
-- (void)invalidateBackgroundActivityAssertionsForAttributions:(id)a3;
-- (void)setRegisteredBackgroundActivityIdentifiers:(id)a3 reply:(id)a4;
-- (void)setStatusString:(id)a3 forAssertionWithIdentifier:(id)a4;
-- (void)unregisterCoordinatorRegistrationForBackgroundActivityIdentifiers:(id)a3;
+- (void)invalidateBackgroundActivityAssertions:(id)assertions;
+- (void)invalidateBackgroundActivityAssertionsForAttributions:(id)attributions;
+- (void)setRegisteredBackgroundActivityIdentifiers:(id)identifiers reply:(id)reply;
+- (void)setStatusString:(id)string forAssertionWithIdentifier:(id)identifier;
+- (void)unregisterCoordinatorRegistrationForBackgroundActivityIdentifiers:(id)identifiers;
 @end
 
 @implementation SBBackgroundActivityAssertionServiceManager
@@ -38,17 +38,17 @@
   v3 = [(SBBackgroundActivityAssertionServiceManager *)&v29 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     assertionsByIdentifierByClientConnection = v3->_assertionsByIdentifierByClientConnection;
-    v3->_assertionsByIdentifierByClientConnection = v4;
+    v3->_assertionsByIdentifierByClientConnection = strongToStrongObjectsMapTable;
 
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     assertionsByBackgroundActivityIdentifier = v3->_assertionsByBackgroundActivityIdentifier;
-    v3->_assertionsByBackgroundActivityIdentifier = v6;
+    v3->_assertionsByBackgroundActivityIdentifier = strongToStrongObjectsMapTable2;
 
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     attributionsByAssertion = v3->_attributionsByAssertion;
-    v3->_attributionsByAssertion = v8;
+    v3->_attributionsByAssertion = strongToStrongObjectsMapTable3;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     coordinatorConnectionsByBackgroundActivity = v3->_coordinatorConnectionsByBackgroundActivity;
@@ -76,14 +76,14 @@
     v26 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v27, &location);
     v20 = BSLogAddStateCaptureBlockWithTitle();
-    v21 = [SBApp systemStatusServer];
-    if (!v21)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v3 file:@"SBBackgroundActivityAssertionServiceManager.m" lineNumber:95 description:@"SBBackgroundActivityAssertionServiceManager is being created before the system status server"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"SBBackgroundActivityAssertionServiceManager.m" lineNumber:95 description:@"SBBackgroundActivityAssertionServiceManager is being created before the system status server"];
     }
 
-    v22 = [objc_alloc(MEMORY[0x277D6B910]) initWithServerHandle:v21];
+    v22 = [objc_alloc(MEMORY[0x277D6B910]) initWithServerHandle:systemStatusServer];
     publisher = v3->_publisher;
     v3->_publisher = v22;
 
@@ -110,15 +110,15 @@ id __51__SBBackgroundActivityAssertionServiceManager_init__block_invoke(uint64_t
   [(SBBackgroundActivityAssertionServiceManager *)&v3 dealloc];
 }
 
-- (void)_internalQueue_invalidateBackgroundActivityAssertions:(id)a3
+- (void)_internalQueue_invalidateBackgroundActivityAssertions:(id)assertions
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionsCopy = assertions;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v27 = v4;
-  v31 = [v4 mutableCopy];
+  v27 = assertionsCopy;
+  v31 = [assertionsCopy mutableCopy];
   v34 = [MEMORY[0x277CBEB58] set];
-  v35 = self;
+  selfCopy = self;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -139,7 +139,7 @@ LABEL_3:
 
       v32 = *(*(&v44 + 1) + 8 * v5);
       v33 = v5;
-      v6 = [(NSMapTable *)v35->_assertionsByIdentifierByClientConnection objectForKey:?];
+      v6 = [(NSMapTable *)selfCopy->_assertionsByIdentifierByClientConnection objectForKey:?];
       v7 = [v31 count];
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v40 = 0u;
@@ -162,14 +162,14 @@ LABEL_3:
             }
 
             v14 = *(*(&v40 + 1) + 8 * i);
-            v15 = [v14 uniqueIdentifier];
-            v16 = [v6 objectForKey:v15];
+            uniqueIdentifier = [v14 uniqueIdentifier];
+            v16 = [v6 objectForKey:uniqueIdentifier];
 
             if (v16)
             {
               [v8 addObject:v14];
-              [v6 removeObjectForKey:v15];
-              v17 = [(SBBackgroundActivityAssertionServiceManager *)v35 _internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:v14];
+              [v6 removeObjectForKey:uniqueIdentifier];
+              v17 = [(SBBackgroundActivityAssertionServiceManager *)selfCopy _internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:v14];
               [v34 unionSet:v17];
               v18 = [v8 count];
 
@@ -216,8 +216,8 @@ LABEL_17:
                 objc_enumerationMutation(v20);
               }
 
-              v25 = [*(*(&v36 + 1) + 8 * j) uniqueIdentifier];
-              [v19 addObject:v25];
+              uniqueIdentifier2 = [*(*(&v36 + 1) + 8 * j) uniqueIdentifier];
+              [v19 addObject:uniqueIdentifier2];
             }
 
             v22 = [v20 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -226,7 +226,7 @@ LABEL_17:
           while (v22);
         }
 
-        [(SBBackgroundActivityAssertionServiceManager *)v35 _invalidateAssertionsWithIdentifiers:v19 forClientConnection:v32];
+        [(SBBackgroundActivityAssertionServiceManager *)selfCopy _invalidateAssertionsWithIdentifiers:v19 forClientConnection:v32];
       }
 
       v26 = [v9 count];
@@ -251,10 +251,10 @@ LABEL_17:
   }
 }
 
-- (void)invalidateBackgroundActivityAssertions:(id)a3
+- (void)invalidateBackgroundActivityAssertions:(id)assertions
 {
-  v4 = a3;
-  if ([v4 count])
+  assertionsCopy = assertions;
+  if ([assertionsCopy count])
   {
     internalQueue = self->_internalQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -262,15 +262,15 @@ LABEL_17:
     v6[2] = __86__SBBackgroundActivityAssertionServiceManager_invalidateBackgroundActivityAssertions___block_invoke;
     v6[3] = &unk_2783A92D8;
     v6[4] = self;
-    v7 = v4;
+    v7 = assertionsCopy;
     dispatch_async(internalQueue, v6);
   }
 }
 
-- (void)invalidateBackgroundActivityAssertionsForAttributions:(id)a3
+- (void)invalidateBackgroundActivityAssertionsForAttributions:(id)attributions
 {
-  v4 = a3;
-  if ([v4 count])
+  attributionsCopy = attributions;
+  if ([attributionsCopy count])
   {
     internalQueue = self->_internalQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -278,7 +278,7 @@ LABEL_17:
     v6[2] = __101__SBBackgroundActivityAssertionServiceManager_invalidateBackgroundActivityAssertionsForAttributions___block_invoke;
     v6[3] = &unk_2783A92D8;
     v6[4] = self;
-    v7 = v4;
+    v7 = attributionsCopy;
     dispatch_async(internalQueue, v6);
   }
 }
@@ -318,10 +318,10 @@ void __101__SBBackgroundActivityAssertionServiceManager_invalidateBackgroundActi
   }
 }
 
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  sceneCopy = scene;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -332,11 +332,11 @@ void __101__SBBackgroundActivityAssertionServiceManager_invalidateBackgroundActi
   v12[2] = __104__SBBackgroundActivityAssertionServiceManager_handleTapForBackgroundActivityWithIdentifier_windowScene___block_invoke;
   v12[3] = &unk_2783AED90;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = sceneCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = sceneCopy;
+  v10 = identifierCopy;
   dispatch_sync(internalQueue, v12);
   LOBYTE(internalQueue) = *(v17 + 24);
 
@@ -394,13 +394,13 @@ void __104__SBBackgroundActivityAssertionServiceManager_handleTapForBackgroundAc
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_xpcListener == a3)
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (self->_xpcListener == listener)
   {
-    v9 = [v6 valueForEntitlement:@"com.apple.springboard.statusbarstyleoverrides"];
+    v9 = [connectionCopy valueForEntitlement:@"com.apple.springboard.statusbarstyleoverrides"];
     if (v9 && (objc_opt_respondsToSelector() & 1) != 0 && [v9 BOOLValue])
     {
       internalQueue = self->_internalQueue;
@@ -575,23 +575,23 @@ LABEL_20:
   }
 }
 
-- (void)activateBackgroundActivityAssertions:(id)a3 reply:(id)a4
+- (void)activateBackgroundActivityAssertions:(id)assertions reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
+  assertionsCopy = assertions;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__SBBackgroundActivityAssertionServiceManager_activateBackgroundActivityAssertions_reply___block_invoke;
   v13[3] = &unk_2783A8EB0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = v8;
+  v14 = currentConnection;
+  v15 = assertionsCopy;
+  v16 = replyCopy;
+  v10 = replyCopy;
+  v11 = assertionsCopy;
+  v12 = currentConnection;
   dispatch_async(internalQueue, v13);
 }
 
@@ -800,40 +800,40 @@ LABEL_26:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)deactivateBackgroundActivityAssertionsWithIdentifiers:(id)a3
+- (void)deactivateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
+  identifiersCopy = identifiers;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__SBBackgroundActivityAssertionServiceManager_deactivateBackgroundActivityAssertionsWithIdentifiers___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = identifiersCopy;
+  v11 = currentConnection;
+  v7 = currentConnection;
+  v8 = identifiersCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)setStatusString:(id)a3 forAssertionWithIdentifier:(id)a4
+- (void)setStatusString:(id)string forAssertionWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
+  stringCopy = string;
+  identifierCopy = identifier;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__SBBackgroundActivityAssertionServiceManager_setStatusString_forAssertionWithIdentifier___block_invoke;
   v13[3] = &unk_2783A9BD8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v7;
-  v16 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = v8;
+  v14 = currentConnection;
+  v15 = identifierCopy;
+  v16 = stringCopy;
+  v10 = stringCopy;
+  v11 = identifierCopy;
+  v12 = currentConnection;
   dispatch_async(internalQueue, v13);
 }
 
@@ -861,10 +861,10 @@ void __90__SBBackgroundActivityAssertionServiceManager_setStatusString_forAssert
   }
 }
 
-- (id)statusStringForBackgroundActivityWithIdentifier:(id)a3 activeAttributions:(id)a4
+- (id)statusStringForBackgroundActivityWithIdentifier:(id)identifier activeAttributions:(id)attributions
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  attributionsCopy = attributions;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -877,11 +877,11 @@ void __90__SBBackgroundActivityAssertionServiceManager_setStatusString_forAssert
   v13[2] = __114__SBBackgroundActivityAssertionServiceManager_statusStringForBackgroundActivityWithIdentifier_activeAttributions___block_invoke;
   v13[3] = &unk_2783AED90;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = attributionsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = attributionsCopy;
+  v10 = identifierCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -945,32 +945,32 @@ void __114__SBBackgroundActivityAssertionServiceManager_statusStringForBackgroun
 
 - (id)succinctDescription
 {
-  v2 = [(SBBackgroundActivityAssertionServiceManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBBackgroundActivityAssertionServiceManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBBackgroundActivityAssertionServiceManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBBackgroundActivityAssertionServiceManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBBackgroundActivityAssertionServiceManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBBackgroundActivityAssertionServiceManager *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__SBBackgroundActivityAssertionServiceManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -1005,20 +1005,20 @@ void __85__SBBackgroundActivityAssertionServiceManager_descriptionBuilderWithMul
   [v7 appendArraySection:v9 withName:v10 skipIfEmpty:0];
 }
 
-- (BOOL)_verifyCoordinatorEntitlementForBackgroundActivityIdentifiers:(id)a3 onConnection:(id)a4
+- (BOOL)_verifyCoordinatorEntitlementForBackgroundActivityIdentifiers:(id)identifiers onConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [a4 valueForEntitlement:@"com.apple.springboard.statusbarstyleoverrides.coordinator"];
+  identifiersCopy = identifiers;
+  v6 = [connection valueForEntitlement:@"com.apple.springboard.statusbarstyleoverrides.coordinator"];
   if (v6)
   {
     [MEMORY[0x277D75128] _statusBarStyleOverridesForArray:v6];
     v7 = STUIBackgroundActivityIdentifiersForStyleOverrides();
-    if ([v5 isSubsetOfSet:v7])
+    if ([identifiersCopy isSubsetOfSet:v7])
     {
       v8 = 1;
     }
 
-    else if ([v5 count])
+    else if ([identifiersCopy count])
     {
       v8 = 0;
     }
@@ -1037,10 +1037,10 @@ void __85__SBBackgroundActivityAssertionServiceManager_descriptionBuilderWithMul
   return v8;
 }
 
-- (id)_internalQueue_coordinatorClientForBackgroundActivityIdentifiers:(id)a3
+- (id)_internalQueue_coordinatorClientForBackgroundActivityIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_internalQueue);
   v15 = 0u;
   v16 = 0u;
@@ -1061,7 +1061,7 @@ void __85__SBBackgroundActivityAssertionServiceManager_descriptionBuilderWithMul
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 registeredBackgroundActivityIdentifiers];
+        registeredBackgroundActivityIdentifiers = [v9 registeredBackgroundActivityIdentifiers];
         v11 = BSEqualSets();
 
         if (v11)
@@ -1086,10 +1086,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_internalQueue_coordinatorClientMatchingBackgroundActivityIdentifier:(id)a3
+- (id)_internalQueue_coordinatorClientMatchingBackgroundActivityIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
   v15 = 0u;
   v16 = 0u;
@@ -1110,8 +1110,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 registeredBackgroundActivityIdentifiers];
-        v11 = [v10 containsObject:v4];
+        registeredBackgroundActivityIdentifiers = [v9 registeredBackgroundActivityIdentifiers];
+        v11 = [registeredBackgroundActivityIdentifiers containsObject:identifierCopy];
 
         if (v11)
         {
@@ -1135,10 +1135,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_internalQueue_coordinatorClientForConnection:(id)a3
+- (id)_internalQueue_coordinatorClientForConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_internalQueue);
   v14 = 0u;
   v15 = 0u;
@@ -1159,9 +1159,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 connection];
+        connection = [v9 connection];
 
-        if (v10 == v4)
+        if (connection == connectionCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -1183,23 +1183,23 @@ LABEL_11:
   return v6;
 }
 
-- (void)setRegisteredBackgroundActivityIdentifiers:(id)a3 reply:(id)a4
+- (void)setRegisteredBackgroundActivityIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __96__SBBackgroundActivityAssertionServiceManager_setRegisteredBackgroundActivityIdentifiers_reply___block_invoke;
   v13[3] = &unk_2783A8EB0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
+  v14 = identifiersCopy;
+  v15 = currentConnection;
+  v16 = replyCopy;
+  v10 = replyCopy;
+  v11 = currentConnection;
+  v12 = identifiersCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -1303,17 +1303,17 @@ LABEL_18:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)unregisterCoordinatorRegistrationForBackgroundActivityIdentifiers:(id)a3
+- (void)unregisterCoordinatorRegistrationForBackgroundActivityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorRegistrationForBackgroundActivityIdentifiers___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1323,14 +1323,14 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
   [*(*(a1 + 32) + 80) removeObject:v2];
 }
 
-- (void)_internalQueue_deactivateBackgroundActivityAssertionsWithIdentifiers:(id)a3 forClientConnection:(id)a4
+- (void)_internalQueue_deactivateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers forClientConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_internalQueue);
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [(NSMapTable *)self->_assertionsByIdentifierByClientConnection objectForKey:v7];
+  v9 = [(NSMapTable *)self->_assertionsByIdentifierByClientConnection objectForKey:connectionCopy];
   v10 = [v9 count];
   v11 = SBLogStatusBarish();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1338,26 +1338,26 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
     *buf = 67109378;
     *&buf[4] = v10;
     *&buf[8] = 2114;
-    *&buf[10] = v6;
+    *&buf[10] = identifiersCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to deactivate assertions (count: %d) %{public}@", buf, 0x12u);
   }
 
   if (v10)
   {
     memset(buf, 0, sizeof(buf));
-    if (v7)
+    if (connectionCopy)
     {
-      [v7 auditToken];
+      [connectionCopy auditToken];
     }
 
-    v21 = v7;
+    v21 = connectionCopy;
     v23 = BSPIDForAuditToken();
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v22 = v6;
-    v12 = v6;
+    v22 = identifiersCopy;
+    v12 = identifiersCopy;
     v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v13)
     {
@@ -1398,61 +1398,61 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
       while (v14);
     }
 
-    v7 = v21;
-    v6 = v22;
+    connectionCopy = v21;
+    identifiersCopy = v22;
   }
 }
 
-- (id)_internalQueue_backgroundActivityIdentifiersAddedByAddingAssertionData:(id)a3
+- (id)_internalQueue_backgroundActivityIdentifiersAddedByAddingAssertionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = SBAddBackgroundActivityAssertionDataByIdentifier(v4, self->_assertionsByBackgroundActivityIdentifier);
-  v6 = [v4 isExclusive];
+  v5 = SBAddBackgroundActivityAssertionDataByIdentifier(dataCopy, self->_assertionsByBackgroundActivityIdentifier);
+  isExclusive = [dataCopy isExclusive];
   v7 = 48;
-  if (v6)
+  if (isExclusive)
   {
     v7 = 56;
   }
 
   [*(&self->super.isa + v7) unionSet:v5];
-  [(SBBackgroundActivityAssertionServiceManager *)self _internalQueue_publishAttributionsForAddingAssertionData:v4];
+  [(SBBackgroundActivityAssertionServiceManager *)self _internalQueue_publishAttributionsForAddingAssertionData:dataCopy];
 
   return v5;
 }
 
-- (id)_internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:(id)a3
+- (id)_internalQueue_backgroundActivityIdentifiersRemovedByRemovingAssertionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = SBRemoveBackgroundActivityAssertionDataByIdentifier(v4, self->_assertionsByBackgroundActivityIdentifier);
-  v6 = [v4 isExclusive];
+  v5 = SBRemoveBackgroundActivityAssertionDataByIdentifier(dataCopy, self->_assertionsByBackgroundActivityIdentifier);
+  isExclusive = [dataCopy isExclusive];
   v7 = 48;
-  if (v6)
+  if (isExclusive)
   {
     v7 = 56;
   }
 
   [*(&self->super.isa + v7) minusSet:v5];
-  [(SBBackgroundActivityAssertionServiceManager *)self _internalQueue_publishAttributionsForRemovingAssertionData:v4];
+  [(SBBackgroundActivityAssertionServiceManager *)self _internalQueue_publishAttributionsForRemovingAssertionData:dataCopy];
 
   return v5;
 }
 
-- (void)_internalQueue_publishAttributionsForAddingAssertionData:(id)a3
+- (void)_internalQueue_publishAttributionsForAddingAssertionData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = [v4 pid];
+  v5 = [dataCopy pid];
   v6 = [MEMORY[0x277CF0CD0] processHandleForPID:v5];
-  v7 = [v6 auditToken];
+  auditToken = [v6 auditToken];
 
   v28 = 0u;
   v29 = 0u;
-  if (v7)
+  if (auditToken)
   {
-    [v7 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -1463,13 +1463,13 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
   v27[0] = v28;
   v27[1] = v29;
   v8 = [MEMORY[0x277D6B8E8] attributionWithAuditToken:{v27, self}];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v4 backgroundActivityIdentifiers];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  backgroundActivityIdentifiers = [dataCopy backgroundActivityIdentifiers];
+  v11 = [backgroundActivityIdentifiers countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1480,26 +1480,26 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(backgroundActivityIdentifiers);
         }
 
-        v15 = [objc_alloc(MEMORY[0x277D6B900]) initWithBackgroundActivityIdentifier:*(*(&v23 + 1) + 8 * i) activityAttribution:v8 showsWhenForeground:{objc_msgSend(v4, "showsWhenForeground")}];
-        [v9 addObject:v15];
+        v15 = [objc_alloc(MEMORY[0x277D6B900]) initWithBackgroundActivityIdentifier:*(*(&v23 + 1) + 8 * i) activityAttribution:v8 showsWhenForeground:{objc_msgSend(dataCopy, "showsWhenForeground")}];
+        [array addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v30 count:16];
+      v12 = [backgroundActivityIdentifiers countByEnumeratingWithState:&v23 objects:v30 count:16];
     }
 
     while (v12);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    v16 = [*(v19 + 72) objectForKey:v4];
+    v16 = [*(v19 + 72) objectForKey:dataCopy];
     if (!v16)
     {
       v16 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:0 capacity:1];
-      [*(v19 + 72) setObject:v16 forKey:v4];
+      [*(v19 + 72) setObject:v16 forKey:dataCopy];
     }
 
     v17 = *(v19 + 88);
@@ -1507,7 +1507,7 @@ void __113__SBBackgroundActivityAssertionServiceManager_unregisterCoordinatorReg
     v20[1] = 3221225472;
     v20[2] = __104__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAttributionsForAddingAssertionData___block_invoke;
     v20[3] = &unk_2783B0ED8;
-    v21 = v9;
+    v21 = array;
     v22 = v16;
     v18 = v16;
     [v17 updateVolatileData:v20 completion:0];
@@ -1549,23 +1549,23 @@ void __104__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAt
   }
 }
 
-- (void)_internalQueue_publishAttributionsForRemovingAssertionData:(id)a3
+- (void)_internalQueue_publishAttributionsForRemovingAssertionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = [(NSMapTable *)self->_attributionsByAssertion objectForKey:v4];
-  v6 = [v5 allObjects];
+  v5 = [(NSMapTable *)self->_attributionsByAssertion objectForKey:dataCopy];
+  allObjects = [v5 allObjects];
 
-  if ([v6 count])
+  if ([allObjects count])
   {
     publisher = self->_publisher;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __106__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAttributionsForRemovingAssertionData___block_invoke;
     v9[3] = &unk_2783B0F00;
-    v10 = v6;
+    v10 = allObjects;
     [(STBackgroundActivitiesStatusDomainPublisher *)publisher updateVolatileData:v9 completion:0];
-    [(NSMapTable *)self->_attributionsByAssertion removeObjectForKey:v4];
+    [(NSMapTable *)self->_attributionsByAssertion removeObjectForKey:dataCopy];
     v8 = v10;
   }
 
@@ -1574,7 +1574,7 @@ void __104__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAt
     v8 = SBLogStatusBarish();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SBBackgroundActivityAssertionServiceManager *)v4 _internalQueue_publishAttributionsForRemovingAssertionData:v8];
+      [(SBBackgroundActivityAssertionServiceManager *)dataCopy _internalQueue_publishAttributionsForRemovingAssertionData:v8];
     }
   }
 }
@@ -1614,17 +1614,17 @@ void __106__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAt
   }
 }
 
-- (void)_invalidateAssertionsWithIdentifiers:(id)a3 forClientConnection:(id)a4
+- (void)_invalidateAssertionsWithIdentifiers:(id)identifiers forClientConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  identifiersCopy = identifiers;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   v14 = 0u;
   v15 = 0u;
-  if (v6)
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   v8 = BSPIDForAuditToken();
@@ -1634,7 +1634,7 @@ void __106__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAt
     *buf = 67240450;
     v17 = v8;
     v18 = 2114;
-    v19 = v5;
+    v19 = identifiersCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Invalidating client (%{public}d) style override assertions with identifiers: %{public}@", buf, 0x12u);
   }
 
@@ -1645,7 +1645,7 @@ void __106__SBBackgroundActivityAssertionServiceManager__internalQueue_publishAt
   v13 = v7;
   v10 = v7;
   v11 = [v10 remoteObjectProxyWithErrorHandler:v12];
-  [v11 invalidateBackgroundActivityAssertionsWithIdentifiers:v5];
+  [v11 invalidateBackgroundActivityAssertionsWithIdentifiers:identifiersCopy];
 }
 
 void __104__SBBackgroundActivityAssertionServiceManager__invalidateAssertionsWithIdentifiers_forClientConnection___block_invoke(uint64_t a1, void *a2)

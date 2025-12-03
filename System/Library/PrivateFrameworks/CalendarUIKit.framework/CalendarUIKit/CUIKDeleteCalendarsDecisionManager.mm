@@ -4,64 +4,64 @@
 + (id)_deleteAndNotifyButtonText;
 + (id)_deleteButtonText;
 + (id)_removeButtonText;
-+ (id)_shouldDeleteCalendarContainingMeetingsWithTitle:(id)a3 isDualType:(BOOL)a4 hasInvitations:(BOOL)a5;
-+ (id)_shouldDeleteSharedToMeCalendarWithTitle:(id)a3;
-+ (id)_shouldDeleteSubscribedCalendarWithTitle:(id)a3 canBeJunk:(BOOL)a4;
-+ (id)_thisCalendarCantBeDeletedPlural:(BOOL)a3;
++ (id)_shouldDeleteCalendarContainingMeetingsWithTitle:(id)title isDualType:(BOOL)type hasInvitations:(BOOL)invitations;
++ (id)_shouldDeleteSharedToMeCalendarWithTitle:(id)title;
++ (id)_shouldDeleteSubscribedCalendarWithTitle:(id)title canBeJunk:(BOOL)junk;
++ (id)_thisCalendarCantBeDeletedPlural:(BOOL)plural;
 + (id)_unsubscribeAndReportJunkButtonText;
 + (id)_unsubscribeButtonText;
-+ (id)_yesNoConfirmationWithPrompt:(id)a3 dialog:(id)a4 yesText:(id)a5;
-- (BOOL)_validateDeletableWithError:(id *)a3;
-- (BOOL)selectConfirmationOptionAtIndex:(int64_t)a3;
-- (CUIKDeleteCalendarsDecisionManager)initWithCalendars:(id)a3;
++ (id)_yesNoConfirmationWithPrompt:(id)prompt dialog:(id)dialog yesText:(id)text;
+- (BOOL)_validateDeletableWithError:(id *)error;
+- (BOOL)selectConfirmationOptionAtIndex:(int64_t)index;
+- (CUIKDeleteCalendarsDecisionManager)initWithCalendars:(id)calendars;
 - (unint64_t)commitDecision;
-- (void)_addConfirmation:(id)a3;
+- (void)_addConfirmation:(id)confirmation;
 - (void)_process;
-- (void)_rejectDeleteCalendarFromUnwriteableAccountPlural:(BOOL)a3;
-- (void)_rejectRemainingCalendarCannotBeDefaultSchedulingCalendarPlural:(BOOL)a3;
+- (void)_rejectDeleteCalendarFromUnwriteableAccountPlural:(BOOL)plural;
+- (void)_rejectRemainingCalendarCannotBeDefaultSchedulingCalendarPlural:(BOOL)plural;
 - (void)perform;
 @end
 
 @implementation CUIKDeleteCalendarsDecisionManager
 
-- (CUIKDeleteCalendarsDecisionManager)initWithCalendars:(id)a3
+- (CUIKDeleteCalendarsDecisionManager)initWithCalendars:(id)calendars
 {
-  v5 = a3;
+  calendarsCopy = calendars;
   v9.receiver = self;
   v9.super_class = CUIKDeleteCalendarsDecisionManager;
   v6 = [(CUIKDeleteCalendarsDecisionManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendars, a3);
+    objc_storeStrong(&v6->_calendars, calendars);
     [(CUIKDeleteCalendarsDecisionManager *)v7 _process];
   }
 
   return v7;
 }
 
-- (BOOL)selectConfirmationOptionAtIndex:(int64_t)a3
+- (BOOL)selectConfirmationOptionAtIndex:(int64_t)index
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableArray *)self->_confirmations firstObject];
-  if (!v5)
+  firstObject = [(NSMutableArray *)self->_confirmations firstObject];
+  if (!firstObject)
   {
     goto LABEL_12;
   }
 
   [(NSMutableArray *)self->_confirmations removeObjectAtIndex:0];
-  v6 = [v5 type];
-  if (!v6)
+  type = [firstObject type];
+  if (!type)
   {
     v7 = 1;
 LABEL_8:
-    self->_canceled = v7 == a3;
+    self->_canceled = v7 == index;
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    if (a3 == 1)
+    if (index == 1)
     {
       self->_reportSpam = 1;
     }
@@ -71,14 +71,14 @@ LABEL_8:
   }
 
 LABEL_9:
-  v8 = [(CUIKDeleteCalendarsDecisionManager *)self nextConfirmation];
-  if (v8 || self->_canceled)
+  nextConfirmation = [(CUIKDeleteCalendarsDecisionManager *)self nextConfirmation];
+  if (nextConfirmation || self->_canceled)
   {
   }
 
   else if (self->_reportSpam)
   {
-    v22 = v5;
+    v22 = firstObject;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -101,17 +101,17 @@ LABEL_9:
           v16 = *(*(&v23 + 1) + 8 * i);
           if ([v16 isSubscribed] && (objc_msgSend(v16, "isHolidayCalendar") & 1) == 0)
           {
-            v17 = [MEMORY[0x1E6992F00] defaultProvider];
-            v18 = [v16 subcalAccountID];
-            v19 = [v17 accountWithIdentifier:v18];
+            defaultProvider = [MEMORY[0x1E6992F00] defaultProvider];
+            subcalAccountID = [v16 subcalAccountID];
+            v19 = [defaultProvider accountWithIdentifier:subcalAccountID];
 
-            v20 = [v19 parentAccount];
-            LOBYTE(v18) = [v20 calIsiCloudCalDAVAccount];
+            parentAccount = [v19 parentAccount];
+            LOBYTE(subcalAccountID) = [parentAccount calIsiCloudCalDAVAccount];
 
-            if ((v18 & 1) == 0)
+            if ((subcalAccountID & 1) == 0)
             {
-              v21 = [v16 subcalURL];
-              [CUIKSubscribedCalendarUtilities reportLocalSubscribedCalendarAsJunkWithoutRemoval:v21];
+              subcalURL = [v16 subcalURL];
+              [CUIKSubscribedCalendarUtilities reportLocalSubscribedCalendarAsJunkWithoutRemoval:subcalURL];
             }
 
             [v16 setIsSubscribedCalendarJunk:1];
@@ -124,7 +124,7 @@ LABEL_9:
       while (v13);
     }
 
-    v5 = v22;
+    firstObject = v22;
   }
 
 LABEL_12:
@@ -136,9 +136,9 @@ LABEL_12:
 - (void)perform
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v4 = 138543362;
-  v5 = v3;
+  v5 = localizedDescription;
   _os_log_error_impl(&dword_1CAB19000, a2, OS_LOG_TYPE_ERROR, "Failed to delete calendars: %{public}@", &v4, 0xCu);
 }
 
@@ -149,8 +149,8 @@ LABEL_12:
     return 4;
   }
 
-  v3 = [(CUIKDeleteCalendarsDecisionManager *)self nextConfirmation];
-  v2 = v3 == 0;
+  nextConfirmation = [(CUIKDeleteCalendarsDecisionManager *)self nextConfirmation];
+  v2 = nextConfirmation == 0;
 
   return v2;
 }
@@ -189,7 +189,7 @@ LABEL_12:
   }
 
   v27 = v3;
-  v28 = self;
+  selfCopy = self;
   v29 = v6;
   v33 = 0u;
   v34 = 0u;
@@ -225,21 +225,21 @@ LABEL_12:
 
         else
         {
-          v18 = [v17 deletionWarningsMask];
-          if ((v18 & 0x10) != 0)
+          deletionWarningsMask = [v17 deletionWarningsMask];
+          if ((deletionWarningsMask & 0x10) != 0)
           {
             v30 = 1;
           }
 
           else
           {
-            v11 |= (v18 & 2) >> 1;
-            if ((v18 & 2) != 0)
+            v11 |= (deletionWarningsMask & 2) >> 1;
+            if ((deletionWarningsMask & 2) != 0)
             {
-              v12 = (v18 & 8) != 0;
+              v12 = (deletionWarningsMask & 8) != 0;
             }
 
-            v13 |= (v18 >> 2) & 1;
+            v13 |= (deletionWarningsMask >> 2) & 1;
           }
         }
       }
@@ -262,8 +262,8 @@ LABEL_12:
 
   if (v27 > 1)
   {
-    v19 = 0;
-    v20 = v28;
+    title = 0;
+    v20 = selfCopy;
     v6 = v29;
     if ((v14 & 1) == 0)
     {
@@ -273,59 +273,59 @@ LABEL_12:
     goto LABEL_26;
   }
 
-  v20 = v28;
-  v21 = [(NSArray *)v28->_calendars firstObject];
-  v19 = [v21 title];
+  v20 = selfCopy;
+  firstObject = [(NSArray *)selfCopy->_calendars firstObject];
+  title = [firstObject title];
 
   v6 = v29;
   if (v14)
   {
 LABEL_26:
-    v22 = [objc_opt_class() _shouldDeleteSubscribedCalendarWithTitle:v19 canBeJunk:v10 & 1];
+    v22 = [objc_opt_class() _shouldDeleteSubscribedCalendarWithTitle:title canBeJunk:v10 & 1];
     [(CUIKDeleteCalendarsDecisionManager *)v20 _addConfirmation:v22];
   }
 
 LABEL_27:
   if (v30)
   {
-    v23 = [objc_opt_class() _shouldDeleteSharedToMeCalendarWithTitle:v19];
+    v23 = [objc_opt_class() _shouldDeleteSharedToMeCalendarWithTitle:title];
     [(CUIKDeleteCalendarsDecisionManager *)v20 _addConfirmation:v23];
   }
 
   if (v11)
   {
-    v24 = [objc_opt_class() _shouldDeleteCalendarContainingMeetingsWithTitle:v19 isDualType:v12 hasInvitations:v13 & 1];
+    v24 = [objc_opt_class() _shouldDeleteCalendarContainingMeetingsWithTitle:title isDualType:v12 hasInvitations:v13 & 1];
     [(CUIKDeleteCalendarsDecisionManager *)v20 _addConfirmation:v24];
   }
 
 LABEL_32:
 }
 
-- (void)_addConfirmation:(id)a3
+- (void)_addConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   confirmations = self->_confirmations;
-  v8 = v4;
+  v8 = confirmationCopy;
   if (!confirmations)
   {
     v6 = objc_opt_new();
     v7 = self->_confirmations;
     self->_confirmations = v6;
 
-    v4 = v8;
+    confirmationCopy = v8;
     confirmations = self->_confirmations;
   }
 
-  [(NSMutableArray *)confirmations addObject:v4];
+  [(NSMutableArray *)confirmations addObject:confirmationCopy];
 }
 
-- (BOOL)_validateDeletableWithError:(id *)a3
+- (BOOL)_validateDeletableWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [(NSArray *)self->_calendars firstObject];
-  v6 = [v5 eventStore];
-  v7 = [v6 _allCalendars];
-  v8 = [v7 mutableCopy];
+  firstObject = [(NSArray *)self->_calendars firstObject];
+  eventStore = [firstObject eventStore];
+  _allCalendars = [eventStore _allCalendars];
+  v8 = [_allCalendars mutableCopy];
 
   v27 = 0u;
   v28 = 0u;
@@ -374,7 +374,7 @@ LABEL_32:
           objc_enumerationMutation(v14);
         }
 
-        if (![*(*(&v21 + 1) + 8 * j) _validateDeletableWithAllKnownCalendars:v8 error:{a3, v21}])
+        if (![*(*(&v21 + 1) + 8 * j) _validateDeletableWithAllKnownCalendars:v8 error:{error, v21}])
         {
           v19 = 0;
           goto LABEL_18;
@@ -453,12 +453,12 @@ LABEL_18:
   return v3;
 }
 
-+ (id)_thisCalendarCantBeDeletedPlural:(BOOL)a3
++ (id)_thisCalendarCantBeDeletedPlural:(BOOL)plural
 {
-  v3 = a3;
+  pluralCopy = plural;
   v4 = CUIKBundle();
   v5 = v4;
-  if (v3)
+  if (pluralCopy)
   {
     v6 = @"A selected calendar can't be deleted.";
   }
@@ -473,14 +473,14 @@ LABEL_18:
   return v7;
 }
 
-- (void)_rejectRemainingCalendarCannotBeDefaultSchedulingCalendarPlural:(BOOL)a3
+- (void)_rejectRemainingCalendarCannotBeDefaultSchedulingCalendarPlural:(BOOL)plural
 {
-  v3 = a3;
+  pluralCopy = plural;
   v5 = CUIKBundle();
   v6 = [v5 localizedStringForKey:@"If you perform this deletion value:then the only remaining calendar will become the default calendar from the server because it is used for incoming events table:{and the remaining calendar doesn’t support that. If you would like to delete this calendar, you must first make another calendar.", &stru_1F4AA8958, 0}];
 
   self->_rejectionReason = 1;
-  v7 = [objc_opt_class() _thisCalendarCantBeDeletedPlural:v3];
+  v7 = [objc_opt_class() _thisCalendarCantBeDeletedPlural:pluralCopy];
   rejectionTitle = self->_rejectionTitle;
   self->_rejectionTitle = v7;
 
@@ -488,14 +488,14 @@ LABEL_18:
   self->_rejectionDetails = v6;
 }
 
-- (void)_rejectDeleteCalendarFromUnwriteableAccountPlural:(BOOL)a3
+- (void)_rejectDeleteCalendarFromUnwriteableAccountPlural:(BOOL)plural
 {
-  v3 = a3;
+  pluralCopy = plural;
   v5 = CUIKBundle();
   v6 = [v5 localizedStringForKey:@"You can’t delete calendars from an account with read-only privileges." value:&stru_1F4AA8958 table:0];
 
   self->_rejectionReason = 2;
-  v7 = [objc_opt_class() _thisCalendarCantBeDeletedPlural:v3];
+  v7 = [objc_opt_class() _thisCalendarCantBeDeletedPlural:pluralCopy];
   rejectionTitle = self->_rejectionTitle;
   self->_rejectionTitle = v7;
 
@@ -503,115 +503,115 @@ LABEL_18:
   self->_rejectionDetails = v6;
 }
 
-+ (id)_yesNoConfirmationWithPrompt:(id)a3 dialog:(id)a4 yesText:(id)a5
++ (id)_yesNoConfirmationWithPrompt:(id)prompt dialog:(id)dialog yesText:(id)text
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  textCopy = text;
+  dialogCopy = dialog;
+  promptCopy = prompt;
   v11 = [CUIKDeleteCalendarsConfirmationInfo alloc];
-  v16[0] = v8;
-  v12 = [a1 _cancelButtonText];
-  v16[1] = v12;
+  v16[0] = textCopy;
+  _cancelButtonText = [self _cancelButtonText];
+  v16[1] = _cancelButtonText;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
 
-  v14 = [(CUIKDeleteCalendarsConfirmationInfo *)v11 initWithType:0 prompt:v10 dialog:v9 options:v13];
+  v14 = [(CUIKDeleteCalendarsConfirmationInfo *)v11 initWithType:0 prompt:promptCopy dialog:dialogCopy options:v13];
 
   return v14;
 }
 
-+ (id)_shouldDeleteSubscribedCalendarWithTitle:(id)a3 canBeJunk:(BOOL)a4
++ (id)_shouldDeleteSubscribedCalendarWithTitle:(id)title canBeJunk:(BOOL)junk
 {
-  v4 = a4;
+  junkCopy = junk;
   v20[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  titleCopy = title;
   v7 = CUIKBundle();
   v8 = v7;
-  if (v6)
+  if (titleCopy)
   {
     v9 = [v7 localizedStringForKey:@"Are you sure you want to unsubscribe from the calendar “%@”?" value:&stru_1F4AA8958 table:0];
 
-    v10 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v9, v6];
+    titleCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v9, titleCopy];
     v8 = v9;
   }
 
   else
   {
-    v10 = [v7 localizedStringForKey:@"You are unsubscribing from a subscribed calendar." value:&stru_1F4AA8958 table:0];
+    titleCopy = [v7 localizedStringForKey:@"You are unsubscribing from a subscribed calendar." value:&stru_1F4AA8958 table:0];
   }
 
   v11 = CUIKBundle();
   v12 = [v11 localizedStringForKey:@"If you unsubscribe from this calendar value:all events associated with the calendar will also be deleted." table:{&stru_1F4AA8958, 0}];
 
-  if (v4)
+  if (junkCopy)
   {
     v13 = [CUIKDeleteCalendarsConfirmationInfo alloc];
-    v14 = [a1 _unsubscribeButtonText];
-    v20[0] = v14;
-    v15 = [a1 _unsubscribeAndReportJunkButtonText];
-    v20[1] = v15;
-    v16 = [a1 _cancelButtonText];
-    v20[2] = v16;
+    _unsubscribeButtonText = [self _unsubscribeButtonText];
+    v20[0] = _unsubscribeButtonText;
+    _unsubscribeAndReportJunkButtonText = [self _unsubscribeAndReportJunkButtonText];
+    v20[1] = _unsubscribeAndReportJunkButtonText;
+    _cancelButtonText = [self _cancelButtonText];
+    v20[2] = _cancelButtonText;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-    v18 = [(CUIKDeleteCalendarsConfirmationInfo *)v13 initWithType:1 prompt:v10 dialog:v12 options:v17];
+    v18 = [(CUIKDeleteCalendarsConfirmationInfo *)v13 initWithType:1 prompt:titleCopy dialog:v12 options:v17];
   }
 
   else
   {
-    v14 = [a1 _unsubscribeButtonText];
-    v18 = [a1 _yesNoConfirmationWithPrompt:v10 dialog:v12 yesText:v14];
+    _unsubscribeButtonText = [self _unsubscribeButtonText];
+    v18 = [self _yesNoConfirmationWithPrompt:titleCopy dialog:v12 yesText:_unsubscribeButtonText];
   }
 
   return v18;
 }
 
-+ (id)_shouldDeleteSharedToMeCalendarWithTitle:(id)a3
++ (id)_shouldDeleteSharedToMeCalendarWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = CUIKBundle();
   v6 = v5;
-  if (v4)
+  if (titleCopy)
   {
     v7 = [v5 localizedStringForKey:@"Are you sure you want to remove the calendar “%@”?" value:&stru_1F4AA8958 table:0];
 
-    v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v7, v4];
+    titleCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v7, titleCopy];
     v6 = v7;
   }
 
   else
   {
-    v8 = [v5 localizedStringForKey:@"You are removing a shared calendar." value:&stru_1F4AA8958 table:0];
+    titleCopy = [v5 localizedStringForKey:@"You are removing a shared calendar." value:&stru_1F4AA8958 table:0];
   }
 
   v9 = CUIKBundle();
   v10 = [v9 localizedStringForKey:@"If you remove this calendar value:your view of the calendar will be removed. Events associated with the calendar will not be deleted for other users." table:{&stru_1F4AA8958, 0}];
 
-  v11 = [a1 _removeButtonText];
-  v12 = [a1 _yesNoConfirmationWithPrompt:v8 dialog:v10 yesText:v11];
+  _removeButtonText = [self _removeButtonText];
+  v12 = [self _yesNoConfirmationWithPrompt:titleCopy dialog:v10 yesText:_removeButtonText];
 
   return v12;
 }
 
-+ (id)_shouldDeleteCalendarContainingMeetingsWithTitle:(id)a3 isDualType:(BOOL)a4 hasInvitations:(BOOL)a5
++ (id)_shouldDeleteCalendarContainingMeetingsWithTitle:(id)title isDualType:(BOOL)type hasInvitations:(BOOL)invitations
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  invitationsCopy = invitations;
+  typeCopy = type;
+  titleCopy = title;
   v9 = CUIKBundle();
   v10 = v9;
-  if (v5)
+  if (invitationsCopy)
   {
-    if (v8)
+    if (titleCopy)
     {
       v11 = [v9 localizedStringForKey:@"Are you sure you want to delete the calendar “%@” which contains invitations and meetings?" value:&stru_1F4AA8958 table:0];
 
-      v12 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v11, v8];
+      titleCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v11, titleCopy];
       v10 = v11;
     }
 
     else
     {
-      v12 = [v9 localizedStringForKey:@"You are deleting a calendar that contains invitations and meetings." value:&stru_1F4AA8958 table:0];
+      titleCopy = [v9 localizedStringForKey:@"You are deleting a calendar that contains invitations and meetings." value:&stru_1F4AA8958 table:0];
     }
 
     v14 = @"Deleting this calendar will delete all events on the calendar. Invitees of events you proposed will be notified that events have been canceled, and organizers of events you’ve accepted will be notified that you’ve declined the events. You can’t undo this action.";
@@ -620,24 +620,24 @@ LABEL_18:
 
   else
   {
-    if (v8)
+    if (titleCopy)
     {
       v13 = [v9 localizedStringForKey:@"Are you sure you want to delete the calendar “%@”?" value:&stru_1F4AA8958 table:0];
 
-      v12 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v13, v8];
+      titleCopy = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v13, titleCopy];
       v10 = v13;
     }
 
     else
     {
-      v12 = [v9 localizedStringForKey:@"You are deleting a calendar that contains events." value:&stru_1F4AA8958 table:0];
+      titleCopy = [v9 localizedStringForKey:@"You are deleting a calendar that contains events." value:&stru_1F4AA8958 table:0];
     }
 
     v14 = @"If you delete this calendar, all events associated with the calendar will also be deleted.";
     v15 = @"If you delete this calendar, all events associated with the calendar will also be deleted. All reminders in the calendar will persist in Reminders.";
   }
 
-  if (v6)
+  if (typeCopy)
   {
     v16 = v15;
   }
@@ -650,8 +650,8 @@ LABEL_18:
   v17 = CUIKBundle();
   v18 = [v17 localizedStringForKey:v16 value:&stru_1F4AA8958 table:0];
 
-  v19 = [a1 _deleteButtonText];
-  v20 = [a1 _yesNoConfirmationWithPrompt:v12 dialog:v18 yesText:v19];
+  _deleteButtonText = [self _deleteButtonText];
+  v20 = [self _yesNoConfirmationWithPrompt:titleCopy dialog:v18 yesText:_deleteButtonText];
 
   return v20;
 }

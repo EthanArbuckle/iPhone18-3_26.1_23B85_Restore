@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_ResetRevGeoAndShiftedLocation
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetRevGeoAndShiftedLocation
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v72[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K != nil", @"shiftedLocationData"];
   v71[0] = @"reverseLocationDataIsValid";
   v71[1] = @"shiftedLocationIsValid";
@@ -17,7 +17,7 @@
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:2];
   v10 = +[PLAdditionalAssetAttributes entityName];
   v35 = 0;
-  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:v7 error:&v35];
+  v11 = [PLModelMigrator executeBatchUpdateWithEntityName:v10 predicate:v8 propertiesToUpdate:v9 managedObjectContext:contextCopy error:&v35];
 
   v12 = v35;
   if (v11)
@@ -27,9 +27,9 @@
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v69 = 0u;
         v70 = 0u;
@@ -93,10 +93,10 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v19 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v20 = PLMigrationGetLog();
@@ -104,9 +104,9 @@
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v22)
+      if (logger2)
       {
         v69 = 0u;
         v70 = 0u;

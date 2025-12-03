@@ -1,27 +1,27 @@
 @interface HMDAccessoryBrowserInjectedSettingsDevice
 - (HMDAccessoryBrowserInjectedSettingsDevice)init;
-- (id)createAuthServerWithDelegate:(id)a3;
+- (id)createAuthServerWithDelegate:(id)delegate;
 - (id)createBtleAccessoryBrowser;
 - (id)createCHIPAccessoryBrowser;
-- (id)createHap2AccessoryBrowserWithStorage:(id)a3;
+- (id)createHap2AccessoryBrowserWithStorage:(id)storage;
 - (id)createIpAccessoryBrowser;
 @end
 
 @implementation HMDAccessoryBrowserInjectedSettingsDevice
 
-- (id)createAuthServerWithDelegate:(id)a3
+- (id)createAuthServerWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[HMDAuthServer alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[HMDAuthServer alloc] initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-- (id)createHap2AccessoryBrowserWithStorage:(id)a3
+- (id)createHap2AccessoryBrowserWithStorage:(id)storage
 {
   v4 = MEMORY[0x277CFEA28];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithQueue:self->_queue storage:v5];
+  storageCopy = storage;
+  v6 = [[v4 alloc] initWithQueue:self->_queue storage:storageCopy];
 
   return v6;
 }
@@ -62,9 +62,9 @@
   if (v2)
   {
     v3 = HMDispatchQueueNameString();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
   }

@@ -1,37 +1,37 @@
 @interface BCCloudChangeTokenController
-- (BCCloudChangeTokenController)initWithMOC:(id)a3 zoneName:(id)a4 cloudKitController:(id)a5;
+- (BCCloudChangeTokenController)initWithMOC:(id)c zoneName:(id)name cloudKitController:(id)controller;
 - (BCCloudKitController)cloudKitController;
 - (NSManagedObjectContext)moc;
-- (void)deleteCloudDataWithCompletion:(id)a3;
-- (void)serverChangeTokenWithCompletion:(id)a3;
-- (void)setEnableCloudSync:(BOOL)a3;
-- (void)storeServerChangeToken:(id)a3 completion:(id)a4;
-- (void)updateSaltVersionIdentifier:(id)a3 completion:(id)a4;
-- (void)zoneNeedsUpdate:(id)a3 completion:(id)a4;
+- (void)deleteCloudDataWithCompletion:(id)completion;
+- (void)serverChangeTokenWithCompletion:(id)completion;
+- (void)setEnableCloudSync:(BOOL)sync;
+- (void)storeServerChangeToken:(id)token completion:(id)completion;
+- (void)updateSaltVersionIdentifier:(id)identifier completion:(id)completion;
+- (void)zoneNeedsUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation BCCloudChangeTokenController
 
-- (BCCloudChangeTokenController)initWithMOC:(id)a3 zoneName:(id)a4 cloudKitController:(id)a5
+- (BCCloudChangeTokenController)initWithMOC:(id)c zoneName:(id)name cloudKitController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cCopy = c;
+  nameCopy = name;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = BCCloudChangeTokenController;
   v11 = [(BCCloudChangeTokenController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_moc, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_moc, cCopy);
+    v13 = [nameCopy copy];
     zoneName = v12->_zoneName;
     v12->_zoneName = v13;
 
-    v15 = objc_storeWeak(&v12->_cloudKitController, v10);
-    v16 = [v10 didChangeContainer];
+    v15 = objc_storeWeak(&v12->_cloudKitController, controllerCopy);
+    didChangeContainer = [controllerCopy didChangeContainer];
 
-    if (v16)
+    if (didChangeContainer)
     {
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
@@ -45,19 +45,19 @@
   return v12;
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v5 = +[BULogUtilities shared];
-  v6 = [v5 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v5 verboseLoggingEnabled];
 
-  if (v6)
+  if (verboseLoggingEnabled)
   {
     v7 = sub_10000DB80();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v3)
+      if (syncCopy)
       {
         v8 = @"YES";
       }
@@ -68,101 +68,101 @@
     }
   }
 
-  if (self->_enableCloudSync != v3)
+  if (self->_enableCloudSync != syncCopy)
   {
-    self->_enableCloudSync = v3;
-    if (v3)
+    self->_enableCloudSync = syncCopy;
+    if (syncCopy)
     {
       v9 = [CKRecordZoneID alloc];
-      v10 = [(BCCloudChangeTokenController *)self zoneName];
-      v11 = [v9 initWithZoneName:v10 ownerName:CKCurrentUserDefaultName];
+      zoneName = [(BCCloudChangeTokenController *)self zoneName];
+      cloudKitController2 = [v9 initWithZoneName:zoneName ownerName:CKCurrentUserDefaultName];
 
-      v12 = [(BCCloudChangeTokenController *)self cloudKitController];
-      v13 = [v12 privateCloudDatabaseController];
-      [v13 registerServerChangeTokenStore:self forZoneID:v11];
+      cloudKitController = [(BCCloudChangeTokenController *)self cloudKitController];
+      privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
+      [privateCloudDatabaseController registerServerChangeTokenStore:self forZoneID:cloudKitController2];
     }
 
     else
     {
-      v11 = [(BCCloudChangeTokenController *)self cloudKitController];
-      v12 = [v11 privateCloudDatabaseController];
-      [v12 unregisterServerChangeTokenStore:self];
+      cloudKitController2 = [(BCCloudChangeTokenController *)self cloudKitController];
+      cloudKitController = [cloudKitController2 privateCloudDatabaseController];
+      [cloudKitController unregisterServerChangeTokenStore:self];
     }
   }
 }
 
-- (void)zoneNeedsUpdate:(id)a3 completion:(id)a4
+- (void)zoneNeedsUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   [(BCCloudChangeTokenController *)self moc];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100058DC8;
   v11[3] = &unk_100240488;
   v11[4] = self;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = updateCopy;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = updateCopy;
   [v9 performBlock:v11];
 }
 
-- (void)updateSaltVersionIdentifier:(id)a3 completion:(id)a4
+- (void)updateSaltVersionIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(BCCloudChangeTokenController *)self moc];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005921C;
   v11[3] = &unk_100240488;
   v11[4] = self;
-  v13 = v12 = v6;
-  v14 = v7;
-  v8 = v7;
+  v13 = v12 = identifierCopy;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = identifierCopy;
   [v9 performBlock:v11];
 }
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BCCloudChangeTokenController *)self moc];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000596EC;
   v8 = v7[3] = &unk_1002404D8;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = v8;
   [v6 performBlock:v7];
 }
 
-- (void)storeServerChangeToken:(id)a3 completion:(id)a4
+- (void)storeServerChangeToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   if ([(BCCloudChangeTokenController *)self enableCloudSync])
   {
     v8 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v6 encodeWithCoder:v8];
+    [tokenCopy encodeWithCoder:v8];
     [v8 finishEncoding];
-    v9 = [v8 encodedData];
+    encodedData = [v8 encodedData];
     v10 = [(BCCloudChangeTokenController *)self moc];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100059B6C;
     v18[3] = &unk_100241648;
     v18[4] = self;
-    v19 = v6;
+    v19 = tokenCopy;
     v20 = v10;
-    v21 = v9;
-    v22 = v7;
-    v11 = v9;
+    v21 = encodedData;
+    v22 = completionCopy;
+    v11 = encodedData;
     v12 = v10;
     [v12 performBlock:v18];
   }
@@ -170,23 +170,23 @@
   else
   {
     v13 = +[BULogUtilities shared];
-    v14 = [v13 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v13 verboseLoggingEnabled];
 
-    if (v14)
+    if (verboseLoggingEnabled)
     {
       v15 = sub_10000DB80();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(BCCloudChangeTokenController *)self zoneName];
+        zoneName = [(BCCloudChangeTokenController *)self zoneName];
         *buf = 138412546;
-        v24 = v16;
+        v24 = zoneName;
         v25 = 2112;
-        v26 = v6;
+        v26 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "\\BCCloudChangeTokenController - #recordChange zone: %@ NOT storing server change token: %@\\"", buf, 0x16u);
       }
     }
 
-    v17 = objc_retainBlock(v7);
+    v17 = objc_retainBlock(completionCopy);
     v8 = v17;
     if (v17)
     {
@@ -195,16 +195,16 @@
   }
 }
 
-- (void)serverChangeTokenWithCompletion:(id)a3
+- (void)serverChangeTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(BCCloudChangeTokenController *)self moc];
   v6 = sub_100002660();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(BCCloudChangeTokenController *)self zoneName];
+    zoneName = [(BCCloudChangeTokenController *)self zoneName];
     *buf = 138412290;
-    v15 = v7;
+    v15 = zoneName;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "BCCloudChangeTokenController - serverChangeTokenWithCompletion: %@", buf, 0xCu);
   }
 
@@ -213,9 +213,9 @@
   v10[2] = sub_100059EFC;
   v10[3] = &unk_1002404D8;
   v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
   v9 = v5;
   [v9 performBlock:v10];
 }

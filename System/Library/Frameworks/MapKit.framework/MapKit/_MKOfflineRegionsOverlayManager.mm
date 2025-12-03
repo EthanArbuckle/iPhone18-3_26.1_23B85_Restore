@@ -1,16 +1,16 @@
 @interface _MKOfflineRegionsOverlayManager
 - (MKMapView)mapView;
-- (_MKOfflineRegionsOverlayManager)initWithMapView:(id)a3;
-- (id)annotationsInMapRect:(id)a3;
+- (_MKOfflineRegionsOverlayManager)initWithMapView:(id)view;
+- (id)annotationsInMapRect:(id)rect;
 - (id)clusterStyleAttributes;
-- (id)createDrawableForOverlay:(id)a3;
-- (void)_fetchFullyLoadedSubscriptionsForState:(id)a3 completionHandler:(id)a4;
-- (void)_setOverlay:(id)a3 customFeatures:(id)a4;
+- (id)createDrawableForOverlay:(id)overlay;
+- (void)_fetchFullyLoadedSubscriptionsForState:(id)state completionHandler:(id)handler;
+- (void)_setOverlay:(id)overlay customFeatures:(id)features;
 - (void)_update;
 - (void)dealloc;
-- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5;
-- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5;
-- (void)setVisibility:(int64_t)a3;
+- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale;
+- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale;
+- (void)setVisibility:(int64_t)visibility;
 @end
 
 @implementation _MKOfflineRegionsOverlayManager
@@ -40,10 +40,10 @@
   return WeakRetained;
 }
 
-- (id)annotationsInMapRect:(id)a3
+- (id)annotationsInMapRect:(id)rect
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -68,7 +68,7 @@
         GEOMapPointForCoordinate();
         if (GEOMapRectContainsPoint())
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -78,74 +78,74 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5
+- (void)getClusterImageTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale
 {
   v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v8 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v10 setLocale:v8];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v10 setLocale:autoupdatingCurrentLocale];
 
   [v10 setNumberStyle:1];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  *a4 = [v10 stringFromNumber:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+  *text = [v10 stringFromNumber:v9];
 
-  *a5 = @"und";
+  *locale = @"und";
 }
 
-- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)a3 text:(id *)a4 locale:(id *)a5
+- (void)getClusterAnnotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale
 {
-  if (a3)
+  if (count)
   {
-    v7 = a3;
+    countCopy = count;
     v8 = MEMORY[0x1E696AEC0];
     v9 = _MKLocalizedStringFromThisBundleFromTable(@"OFFLINE_REGION_CLUSTER_TITLE", @"Offline");
-    *a4 = [v8 localizedStringWithFormat:v9, (v7 - 1)];
+    *text = [v8 localizedStringWithFormat:v9, (countCopy - 1)];
 
-    *a5 = @"und";
+    *locale = @"und";
   }
 }
 
-- (id)createDrawableForOverlay:(id)a3
+- (id)createDrawableForOverlay:(id)overlay
 {
-  v3 = a3;
-  v4 = [[_MKMaskingPolygonOverlayRenderer alloc] initWithMultiPolygon:v3];
+  overlayCopy = overlay;
+  v4 = [[_MKMaskingPolygonOverlayRenderer alloc] initWithMultiPolygon:overlayCopy];
 
   [(_MKMaskingPolygonOverlayRenderer *)v4 setStyle:1];
 
   return v4;
 }
 
-- (void)setVisibility:(int64_t)a3
+- (void)setVisibility:(int64_t)visibility
 {
-  if (self->_visibility != a3)
+  if (self->_visibility != visibility)
   {
-    self->_visibility = a3;
+    self->_visibility = visibility;
     [(_MKOfflineRegionsOverlayManager *)self _update];
   }
 }
 
-- (void)_setOverlay:(id)a3 customFeatures:(id)a4
+- (void)_setOverlay:(id)overlay customFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
+  overlayCopy = overlay;
+  featuresCopy = features;
   dispatch_assert_queue_V2(self->_queue);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62___MKOfflineRegionsOverlayManager__setOverlay_customFeatures___block_invoke;
   block[3] = &unk_1E76CCC28;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = overlayCopy;
+  v12 = featuresCopy;
+  v8 = featuresCopy;
+  v9 = overlayCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_fetchFullyLoadedSubscriptionsForState:(id)a3 completionHandler:(id)a4
+- (void)_fetchFullyLoadedSubscriptionsForState:(id)state completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   subscriptionsManager = self->_subscriptionsManager;
   if (!subscriptionsManager)
   {
@@ -162,8 +162,8 @@
   v11[2] = __92___MKOfflineRegionsOverlayManager__fetchFullyLoadedSubscriptionsForState_completionHandler___block_invoke;
   v11[3] = &unk_1E76CA920;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(GEOMapDataSubscriptionManager *)subscriptionsManager fetchAllSubscriptionsWithCallbackQueue:queue completionHandler:v11];
 }
 
@@ -191,20 +191,20 @@
   [(_MKOfflineRegionsOverlayManager *)&v6 dealloc];
 }
 
-- (_MKOfflineRegionsOverlayManager)initWithMapView:(id)a3
+- (_MKOfflineRegionsOverlayManager)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = _MKOfflineRegionsOverlayManager;
   v5 = [(_MKOfflineRegionsOverlayManager *)&v28 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mapView, v4);
-    v7 = [MEMORY[0x1E69A1B68] currentProcessAuditToken];
-    v8 = [v7 offlineCohortId];
+    objc_storeWeak(&v5->_mapView, viewCopy);
+    currentProcessAuditToken = [MEMORY[0x1E69A1B68] currentProcessAuditToken];
+    offlineCohortId = [currentProcessAuditToken offlineCohortId];
     offlineCohortId = v6->_offlineCohortId;
-    v6->_offlineCohortId = v8;
+    v6->_offlineCohortId = offlineCohortId;
 
     v10 = geo_dispatch_queue_create_with_workloop_qos();
     queue = v6->_queue;
@@ -215,8 +215,8 @@
     customFeatureDataSourceObservers = v6->_customFeatureDataSourceObservers;
     v6->_customFeatureDataSourceObservers = v13;
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v6 selector:sel__update name:*MEMORY[0x1E69A16A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__update name:*MEMORY[0x1E69A16A8] object:0];
 
     objc_initWeak(&location, v6);
     v16 = *MEMORY[0x1E69A1658];

@@ -1,36 +1,36 @@
 @interface CSPresentation
-+ (CSPresentation)presentationWithCoordinateSpace:(id)a3;
++ (CSPresentation)presentationWithCoordinateSpace:(id)space;
 + (id)presentation;
-+ (id)presentationForProvider:(id)a3;
-- (BOOL)intersectsCoordinateSpace:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
++ (id)presentationForProvider:(id)provider;
+- (BOOL)intersectsCoordinateSpace:(id)space;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 - (CSPresentation)init;
 - (UICoordinateSpace)coordinateSpace;
-- (UIEdgeInsets)suggestedInsetsForPreferredContentFrame:(CGRect)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)firstRegionIntersectingCoordinateSpace:(id)a3;
-- (id)firstRegionIntersectingCoordinateSpace:(id)a3 excludingRegionsWithRole:(int64_t)a4;
-- (id)presentationForRole:(int64_t)a3;
-- (id)regionsIntersectingCoordinateSpace:(id)a3;
+- (UIEdgeInsets)suggestedInsetsForPreferredContentFrame:(CGRect)frame;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)firstRegionIntersectingCoordinateSpace:(id)space;
+- (id)firstRegionIntersectingCoordinateSpace:(id)space excludingRegionsWithRole:(int64_t)role;
+- (id)presentationForRole:(int64_t)role;
+- (id)regionsIntersectingCoordinateSpace:(id)space;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)addRegion:(id)a3;
-- (void)addRegions:(id)a3;
-- (void)unionPresentation:(id)a3;
+- (void)addRegion:(id)region;
+- (void)addRegions:(id)regions;
+- (void)unionPresentation:(id)presentation;
 @end
 
 @implementation CSPresentation
 
 + (id)presentation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -42,9 +42,9 @@
   v2 = [(CSPresentation *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     regions = v2->_regions;
-    v2->_regions = v3;
+    v2->_regions = array;
   }
 
   return v2;
@@ -57,36 +57,36 @@
   return WeakRetained;
 }
 
-+ (CSPresentation)presentationWithCoordinateSpace:(id)a3
++ (CSPresentation)presentationWithCoordinateSpace:(id)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v4 = +[CSPresentation presentation];
-  [v4 setCoordinateSpace:v3];
+  [v4 setCoordinateSpace:spaceCopy];
 
   return v4;
 }
 
-+ (id)presentationForProvider:(id)a3
++ (id)presentationForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 presentationCoordinateSpace];
-  v6 = [a1 presentationWithCoordinateSpace:v5];
+  providerCopy = provider;
+  presentationCoordinateSpace = [providerCopy presentationCoordinateSpace];
+  v6 = [self presentationWithCoordinateSpace:presentationCoordinateSpace];
 
-  [v6 unionPresentation:v4];
-  v7 = [v4 coverSheetIdentifier];
+  [v6 unionPresentation:providerCopy];
+  coverSheetIdentifier = [providerCopy coverSheetIdentifier];
 
-  [v6 setIdentifier:v7];
+  [v6 setIdentifier:coverSheetIdentifier];
 
   return v6;
 }
 
-- (void)addRegion:(id)a3
+- (void)addRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    v4 = a3;
-    v5 = [(CSPresentation *)self coordinateSpace];
-    v7 = [v4 regionForCoordinateSpace:v5];
+    regionCopy = region;
+    coordinateSpace = [(CSPresentation *)self coordinateSpace];
+    v7 = [regionCopy regionForCoordinateSpace:coordinateSpace];
 
     v6 = v7;
     if (v7)
@@ -97,15 +97,15 @@
   }
 }
 
-- (void)addRegions:(id)a3
+- (void)addRegions:(id)regions
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionsCopy = regions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [regionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -117,69 +117,69 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(regionsCopy);
         }
 
         [(CSPresentation *)self addRegion:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [regionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)unionPresentation:(id)a3
+- (void)unionPresentation:(id)presentation
 {
-  v4 = [a3 presentationRegions];
-  [(CSPresentation *)self addRegions:v4];
+  presentationRegions = [presentation presentationRegions];
+  [(CSPresentation *)self addRegions:presentationRegions];
 }
 
-- (id)presentationForRole:(int64_t)a3
+- (id)presentationForRole:(int64_t)role
 {
-  v5 = [(CSPresentation *)self coordinateSpace];
-  v6 = [CSPresentation presentationWithCoordinateSpace:v5];
+  coordinateSpace = [(CSPresentation *)self coordinateSpace];
+  v6 = [CSPresentation presentationWithCoordinateSpace:coordinateSpace];
 
-  v7 = [(CSPresentation *)self identifier];
-  [v6 setIdentifier:v7];
+  identifier = [(CSPresentation *)self identifier];
+  [v6 setIdentifier:identifier];
 
-  if (a3)
+  if (role)
   {
-    v8 = [(CSPresentation *)self regions];
+    regions = [(CSPresentation *)self regions];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __38__CSPresentation_presentationForRole___block_invoke;
     v11[3] = &__block_descriptor_40_e18_B16__0__CSRegion_8l;
-    v11[4] = a3;
-    v9 = [v8 bs_filter:v11];
+    v11[4] = role;
+    v9 = [regions bs_filter:v11];
     [v6 addRegions:v9];
   }
 
   return v6;
 }
 
-- (BOOL)intersectsCoordinateSpace:(id)a3
+- (BOOL)intersectsCoordinateSpace:(id)space
 {
-  v3 = [(CSPresentation *)self firstRegionIntersectingCoordinateSpace:a3];
+  v3 = [(CSPresentation *)self firstRegionIntersectingCoordinateSpace:space];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)firstRegionIntersectingCoordinateSpace:(id)a3
+- (id)firstRegionIntersectingCoordinateSpace:(id)space
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  spaceCopy = space;
+  if (spaceCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(CSPresentation *)self regions];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    regions = [(CSPresentation *)self regions];
+    v6 = [regions countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -189,18 +189,18 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(regions);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if ([v9 isHidden] & 1) == 0 && (objc_msgSend(v9, "intersectsCoordinateSpace:", v4))
+          if ([v9 isHidden] & 1) == 0 && (objc_msgSend(v9, "intersectsCoordinateSpace:", spaceCopy))
           {
             v6 = v9;
             goto LABEL_14;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [regions countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -221,18 +221,18 @@ LABEL_14:
   return v6;
 }
 
-- (id)firstRegionIntersectingCoordinateSpace:(id)a3 excludingRegionsWithRole:(int64_t)a4
+- (id)firstRegionIntersectingCoordinateSpace:(id)space excludingRegionsWithRole:(int64_t)role
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  spaceCopy = space;
+  if (spaceCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(CSPresentation *)self regions];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    regions = [(CSPresentation *)self regions];
+    v8 = [regions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -243,18 +243,18 @@ LABEL_14:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(regions);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 isHidden] & 1) == 0 && objc_msgSend(v12, "role") != a4 && (objc_msgSend(v12, "intersectsCoordinateSpace:", v6))
+          if ([v12 isHidden] & 1) == 0 && objc_msgSend(v12, "role") != role && (objc_msgSend(v12, "intersectsCoordinateSpace:", spaceCopy))
           {
             v13 = v12;
             goto LABEL_15;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [regions countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -276,19 +276,19 @@ LABEL_15:
   return v13;
 }
 
-- (id)regionsIntersectingCoordinateSpace:(id)a3
+- (id)regionsIntersectingCoordinateSpace:(id)space
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  spaceCopy = space;
+  if (spaceCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(CSPresentation *)self regions];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    regions = [(CSPresentation *)self regions];
+    v7 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -299,18 +299,18 @@ LABEL_15:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(regions);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if (([v11 isHidden] & 1) == 0 && objc_msgSend(v11, "intersectsCoordinateSpace:", v4))
+          if (([v11 isHidden] & 1) == 0 && objc_msgSend(v11, "intersectsCoordinateSpace:", spaceCopy))
           {
             v12 = [v11 copy];
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -319,20 +319,20 @@ LABEL_15:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (UIEdgeInsets)suggestedInsetsForPreferredContentFrame:(CGRect)a3
+- (UIEdgeInsets)suggestedInsetsForPreferredContentFrame:(CGRect)frame
 {
   v61 = *MEMORY[0x277D85DE8];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __58__CSPresentation_suggestedInsetsForPreferredContentFrame___block_invoke;
   v57[3] = &__block_descriptor_64_e39_B40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-  v58 = a3;
+  frameCopy = frame;
   v4 = MEMORY[0x223D698D0](v57, a2);
   v5 = [(CSPresentation *)self presentationForRole:2];
   x = *MEMORY[0x277CBF398];
@@ -343,8 +343,8 @@ LABEL_15:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v10 = [v5 regions];
-  v11 = [v10 countByEnumeratingWithState:&v53 objects:v60 count:16];
+  regions = [v5 regions];
+  v11 = [regions countByEnumeratingWithState:&v53 objects:v60 count:16];
   v46 = height;
   v47 = width;
   v44 = x;
@@ -359,7 +359,7 @@ LABEL_15:
       {
         if (*v54 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(regions);
         }
 
         v15 = *(*(&v53 + 1) + 8 * i);
@@ -386,7 +386,7 @@ LABEL_15:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v53 objects:v60 count:16];
+      v12 = [regions countByEnumeratingWithState:&v53 objects:v60 count:16];
     }
 
     while (v12);
@@ -411,8 +411,8 @@ LABEL_15:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v25 = [v24 regions];
-  v26 = [v25 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  regions2 = [v24 regions];
+  v26 = [regions2 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v26)
   {
     v27 = v26;
@@ -427,7 +427,7 @@ LABEL_15:
       {
         if (*v50 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(regions2);
         }
 
         [*(*(&v49 + 1) + 8 * j) extent];
@@ -453,7 +453,7 @@ LABEL_15:
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v49 objects:v59 count:16];
+      v27 = [regions2 countByEnumeratingWithState:&v49 objects:v59 count:16];
     }
 
     while (v27);
@@ -510,19 +510,19 @@ BOOL __58__CSPresentation_suggestedInsetsForPreferredContentFrame___block_invoke
   return MaxX >= CGRectGetMinX(a1[1]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if ([(CSPresentation *)v4 isMemberOfClass:objc_opt_class()]&& (identifier = self->_identifier, [(CSPresentation *)v4 identifier], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(identifier) = [(NSString *)identifier isEqualToString:v6], v6, identifier))
+  else if ([(CSPresentation *)equalCopy isMemberOfClass:objc_opt_class()]&& (identifier = self->_identifier, [(CSPresentation *)equalCopy identifier], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(identifier) = [(NSString *)identifier isEqualToString:v6], v6, identifier))
   {
     regions = self->_regions;
-    v8 = [(CSPresentation *)v4 regions];
-    v9 = [(NSMutableArray *)regions isEqualToArray:v8];
+    regions = [(CSPresentation *)equalCopy regions];
+    v9 = [(NSMutableArray *)regions isEqualToArray:regions];
   }
 
   else
@@ -533,13 +533,13 @@ BOOL __58__CSPresentation_suggestedInsetsForPreferredContentFrame___block_invoke
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(CSPresentation *)self coordinateSpace];
-  v5 = [CSPresentation presentationWithCoordinateSpace:v4];
+  coordinateSpace = [(CSPresentation *)self coordinateSpace];
+  v5 = [CSPresentation presentationWithCoordinateSpace:coordinateSpace];
 
-  v6 = [(CSPresentation *)self identifier];
-  [v5 setIdentifier:v6];
+  identifier = [(CSPresentation *)self identifier];
+  [v5 setIdentifier:identifier];
 
   [v5 unionPresentation:self];
   return v5;
@@ -547,10 +547,10 @@ BOOL __58__CSPresentation_suggestedInsetsForPreferredContentFrame___block_invoke
 
 - (id)succinctDescription
 {
-  v2 = [(CSPresentation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSPresentation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -562,30 +562,30 @@ BOOL __58__CSPresentation_suggestedInsetsForPreferredContentFrame___block_invoke
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSPresentation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSPresentation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CSPresentation *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CSPresentation *)self succinctDescriptionBuilder];
   if ([(NSMutableArray *)self->_regions count])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke;
     v7[3] = &unk_27838B838;
-    v8 = v5;
-    v9 = self;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+    v8 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v7];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -615,13 +615,13 @@ void __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke(u
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertPoint:v7 toCoordinateSpace:{x, y}];
+  [WeakRetained convertPoint:spaceCopy toCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -632,13 +632,13 @@ void __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke(u
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertPoint:v7 fromCoordinateSpace:{x, y}];
+  [WeakRetained convertPoint:spaceCopy fromCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -649,15 +649,15 @@ void __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke(u
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertRect:v9 toCoordinateSpace:{x, y, width, height}];
+  [WeakRetained convertRect:spaceCopy toCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -674,15 +674,15 @@ void __56__CSPresentation_descriptionBuilderWithMultilinePrefix___block_invoke(u
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertRect:v9 fromCoordinateSpace:{x, y, width, height}];
+  [WeakRetained convertRect:spaceCopy fromCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;

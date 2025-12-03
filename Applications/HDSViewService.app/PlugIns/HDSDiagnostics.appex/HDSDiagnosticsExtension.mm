@@ -2,9 +2,9 @@
 + (id)cacheDirectory;
 + (id)productionCacheDirectory;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)cleanupDiagnostics;
-- (void)teardownWithParameters:(id)a3;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation HDSDiagnosticsExtension
@@ -22,9 +22,9 @@
   v2 = +[NSFileManager defaultManager];
   v3 = +[HDSDiagnosticsExtension appGroupIdentifier];
   v4 = [v2 containerURLForSecurityApplicationGroupIdentifier:v3];
-  v5 = [v4 path];
+  path = [v4 path];
 
-  v6 = [NSString stringWithFormat:@"%@%@", v5, @"/Library/Caches"];
+  v6 = [NSString stringWithFormat:@"%@%@", path, @"/Library/Caches"];
 
   return v6;
 }
@@ -109,10 +109,10 @@ LABEL_26:
           objc_enumerationMutation(v13);
         }
 
-        v15 = [*(*(&v37 + 1) + 8 * i) path];
-        if ([v15 containsString:@"HomePod"] && objc_msgSend(v15, "containsString:", @"sysdiagnose") && objc_msgSend(v15, "containsString:", @".tar.gz"))
+        path = [*(*(&v37 + 1) + 8 * i) path];
+        if ([path containsString:@"HomePod"] && objc_msgSend(path, "containsString:", @"sysdiagnose") && objc_msgSend(path, "containsString:", @".tar.gz"))
         {
-          v16 = [v15 stringByReplacingOccurrencesOfString:@".tar.gz" withString:&stru_100004228];
+          v16 = [path stringByReplacingOccurrencesOfString:@".tar.gz" withString:&stru_100004228];
           v17 = [v16 componentsSeparatedByString:@"_"];
           if ([v17 count] >= 3)
           {
@@ -127,7 +127,7 @@ LABEL_26:
             {
               v32 = v21;
 
-              v22 = v15;
+              v22 = path;
               v33 = v22;
               v8 = v32;
             }
@@ -177,7 +177,7 @@ LABEL_35:
   return v25;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = sub_100001164();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -187,19 +187,19 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  v5 = [(HDSDiagnosticsExtension *)self attachmentList];
+  attachmentList = [(HDSDiagnosticsExtension *)self attachmentList];
   v6 = sub_100001164();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = attachmentList;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attachment List  %@", &v8, 0xCu);
   }
 
-  return v5;
+  return attachmentList;
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
   v4 = sub_100001164();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -257,19 +257,19 @@ LABEL_35:
                 objc_enumerationMutation(v4);
               }
 
-              v11 = [*(*(&v20 + 1) + 8 * i) path];
-              if ([v11 containsString:@"HomePod"] && objc_msgSend(v11, "containsString:", @"sysdiagnose") && objc_msgSend(v11, "containsString:", @".tar.gz"))
+              path = [*(*(&v20 + 1) + 8 * i) path];
+              if ([path containsString:@"HomePod"] && objc_msgSend(path, "containsString:", @"sysdiagnose") && objc_msgSend(path, "containsString:", @".tar.gz"))
               {
                 v12 = sub_100001164();
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v27 = v11;
+                  v27 = path;
                   _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Removing %@", buf, 0xCu);
                 }
 
                 v19 = 0;
-                [v18 removeItemAtPath:v11 error:&v19];
+                [v18 removeItemAtPath:path error:&v19];
                 v13 = v19;
                 if (v13)
                 {

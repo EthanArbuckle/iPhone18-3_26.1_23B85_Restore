@@ -3,24 +3,24 @@
 - (BOOL)_determineSelfIntersecting;
 - (CGFloat)locationAtPointIndex:(NSUInteger)index;
 - (CLLocationCoordinate2D)coordinate;
-- (MKMultiPoint)initWithCoder:(id)a3;
+- (MKMultiPoint)initWithCoder:(id)coder;
 - (NSArray)locationsAtPointIndexes:(NSIndexSet *)indexes;
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4;
-- (void)_assignPoints:(id *)a3 count:(unint64_t)a4;
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error;
+- (void)_assignPoints:(id *)points count:(unint64_t)count;
 - (void)_calculateBounds;
-- (void)_setCoordinates:(const CLLocationCoordinate2D *)a3 elevations:(const double *)a4 count:(unint64_t)a5;
-- (void)_setPoints:(id *)a3 count:(unint64_t)a4;
-- (void)_wrapAroundTheDateline:(const CLLocationCoordinate2D *)a3 elevations:(const double *)a4 count:(unint64_t)a5;
+- (void)_setCoordinates:(const CLLocationCoordinate2D *)coordinates elevations:(const double *)elevations count:(unint64_t)count;
+- (void)_setPoints:(id *)points count:(unint64_t)count;
+- (void)_wrapAroundTheDateline:(const CLLocationCoordinate2D *)dateline elevations:(const double *)elevations count:(unint64_t)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getCoordinates:(CLLocationCoordinate2D *)coords range:(NSRange)range;
 @end
 
 @implementation MKMultiPoint
 
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = MKMultiPoint;
   v7 = [(MKMultiPoint *)&v15 init];
@@ -32,12 +32,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v13 = @"MultiPoint object must be a dictionary";
 LABEL_10:
       _errorWithReason(v13);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_14;
     }
 
@@ -46,12 +46,12 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"type"];
+  v8 = [objectCopy objectForKeyedSubscript:@"type"];
   v9 = _geoJSONGeometryType(v8);
 
   if (v9 != 2)
   {
-    if (a4)
+    if (error)
     {
       v13 = @"Input is not a MultiPoint GeoJSON object";
       goto LABEL_10;
@@ -60,8 +60,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"coordinates"];
-  VerticesFromGeoJSON = _createVerticesFromGeoJSON(v10, a4);
+  v10 = [objectCopy objectForKeyedSubscript:@"coordinates"];
+  VerticesFromGeoJSON = _createVerticesFromGeoJSON(v10, error);
   if (VerticesFromGeoJSON)
   {
     -[MKMultiPoint _assignPoints:count:](v7, "_assignPoints:count:", VerticesFromGeoJSON, [v10 count]);
@@ -98,14 +98,14 @@ LABEL_14:
   v9 = 0.0;
   for (i = 1; ; ++i)
   {
-    v11 = [(NSIndexSet *)v4 lastIndex];
-    v12 = self->_pointCount - 1;
-    if (v11 < v12)
+    lastIndex = [(NSIndexSet *)v4 lastIndex];
+    lastIndex2 = self->_pointCount - 1;
+    if (lastIndex < lastIndex2)
     {
-      v12 = [(NSIndexSet *)v4 lastIndex];
+      lastIndex2 = [(NSIndexSet *)v4 lastIndex];
     }
 
-    if (i > v12)
+    if (i > lastIndex2)
     {
       break;
     }
@@ -161,18 +161,18 @@ LABEL_14:
 
 - (BOOL)_determineSelfIntersecting
 {
-  v3 = [(MKMultiPoint *)self points];
-  v4 = [(MKMultiPoint *)self pointCount];
-  if (v4 < 3)
+  points = [(MKMultiPoint *)self points];
+  pointCount = [(MKMultiPoint *)self pointCount];
+  if (pointCount < 3)
   {
     return 0;
   }
 
-  v6 = v4;
+  v6 = pointCount;
   __p = 0;
   v21 = 0;
   v22 = 0;
-  std::vector<gm::Matrix<double,2,1>>::reserve(&__p, v4);
+  std::vector<gm::Matrix<double,2,1>>::reserve(&__p, pointCount);
   v7 = 0;
   v8 = v21;
   v9 = v22;
@@ -209,7 +209,7 @@ LABEL_14:
       }
 
       v15 = (16 * v12);
-      *v15 = v3[v7];
+      *v15 = points[v7];
       v10 = (v15 + 1);
       if (v11 != v8)
       {
@@ -236,7 +236,7 @@ LABEL_14:
 
     else
     {
-      *v8 = v3[v7];
+      *v8 = points[v7];
       v10 = v8 + 16;
     }
 
@@ -297,50 +297,50 @@ uint64_t __32__MKMultiPoint__mapPointsLength__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MKMultiPoint;
-  [(MKShape *)&v7 encodeWithCoder:v4];
+  [(MKShape *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_pointCount];
-  [v4 encodeObject:v5 forKey:@"MKMultiPointPointCount"];
+  [coderCopy encodeObject:v5 forKey:@"MKMultiPointPointCount"];
 
   pointCount = self->_pointCount;
   if (pointCount)
   {
-    [v4 encodeBytes:self->_points length:16 * pointCount forKey:@"MKMultiPointPoints"];
+    [coderCopy encodeBytes:self->_points length:16 * pointCount forKey:@"MKMultiPointPoints"];
   }
 }
 
-- (MKMultiPoint)initWithCoder:(id)a3
+- (MKMultiPoint)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MKMultiPoint;
-  v5 = [(MKShape *)&v16 initWithCoder:v4];
+  v5 = [(MKShape *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPointPointCount"];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKMultiPointPointCount"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
     v15 = 0;
-    v8 = v4;
-    v9 = [v4 decodeBytesForKey:@"MKMultiPointPoints" returnedLength:&v15];
-    if (!v9 || v7 != v15 >> 4)
+    v8 = coderCopy;
+    v9 = [coderCopy decodeBytesForKey:@"MKMultiPointPoints" returnedLength:&v15];
+    if (!v9 || unsignedIntegerValue != v15 >> 4)
     {
       v11 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E695E618];
       v18[0] = @"points bytes were not the expected length";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:{1, v15}];
       v13 = [v11 errorWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v12];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
 
       v10 = 0;
       goto LABEL_7;
     }
 
-    [(MKMultiPoint *)v5 _setPoints:v9 count:v7];
+    [(MKMultiPoint *)v5 _setPoints:v9 count:unsignedIntegerValue];
   }
 
   v10 = v5;
@@ -390,16 +390,16 @@ LABEL_7:
   }
 }
 
-- (void)_assignPoints:(id *)a3 count:(unint64_t)a4
+- (void)_assignPoints:(id *)points count:(unint64_t)count
 {
-  self->_points = a3;
-  self->_pointCount = a4;
+  self->_points = points;
+  self->_pointCount = count;
   [(MKMultiPoint *)self _calculateBounds];
 
   [(MKMultiPoint *)self _pointsDidChange];
 }
 
-- (void)_setPoints:(id *)a3 count:(unint64_t)a4
+- (void)_setPoints:(id *)points count:(unint64_t)count
 {
   points = self->_points;
   if (points)
@@ -408,21 +408,21 @@ LABEL_7:
     self->_points = 0;
   }
 
-  if (a4 >> 60)
+  if (count >> 60)
     v9 = {;
     objc_exception_throw(v9);
   }
 
-  v8 = malloc_type_malloc(16 * a4, 0x1000040451B5BE8uLL);
+  v8 = malloc_type_malloc(16 * count, 0x1000040451B5BE8uLL);
   self->_points = v8;
-  memcpy(v8, a3, 16 * a4);
-  self->_pointCount = a4;
+  memcpy(v8, points, 16 * count);
+  self->_pointCount = count;
   [(MKMultiPoint *)self _calculateBounds];
 
   [(MKMultiPoint *)self _pointsDidChange];
 }
 
-- (void)_setCoordinates:(const CLLocationCoordinate2D *)a3 elevations:(const double *)a4 count:(unint64_t)a5
+- (void)_setCoordinates:(const CLLocationCoordinate2D *)coordinates elevations:(const double *)elevations count:(unint64_t)count
 {
   points = self->_points;
   if (points)
@@ -438,16 +438,16 @@ LABEL_7:
     self->_elevations = 0;
   }
 
-  self->_pointCount = a5;
-  if (a5)
+  self->_pointCount = count;
+  if (count)
   {
-    self->_points = malloc_type_malloc(16 * a5, 0x1000040451B5BE8uLL);
-    if (a4)
+    self->_points = malloc_type_malloc(16 * count, 0x1000040451B5BE8uLL);
+    if (elevations)
     {
-      self->_elevations = malloc_type_malloc(8 * a5, 0x100004000313F17uLL);
+      self->_elevations = malloc_type_malloc(8 * count, 0x100004000313F17uLL);
     }
 
-    [(MKMultiPoint *)self _wrapAroundTheDateline:a3 elevations:a4 count:a5];
+    [(MKMultiPoint *)self _wrapAroundTheDateline:coordinates elevations:elevations count:count];
   }
 
   else
@@ -461,15 +461,15 @@ LABEL_7:
   [(MKMultiPoint *)self _pointsDidChange];
 }
 
-- (void)_wrapAroundTheDateline:(const CLLocationCoordinate2D *)a3 elevations:(const double *)a4 count:(unint64_t)a5
+- (void)_wrapAroundTheDateline:(const CLLocationCoordinate2D *)dateline elevations:(const double *)elevations count:(unint64_t)count
 {
-  if (a5)
+  if (count)
   {
     v9 = 0;
-    p_longitude = &a3->longitude;
+    p_longitude = &dateline->longitude;
     p_var1 = &self->_points->var1;
     v12 = 0.0;
-    v13 = &a3->longitude;
+    v13 = &dateline->longitude;
     do
     {
       v14 = *p_longitude;
@@ -488,21 +488,21 @@ LABEL_7:
 
       *(p_var1 - 1) = v12 + MKTilePointForCoordinate(*(p_longitude - 1), v14, 21.0);
       *p_var1 = v15;
-      if (a4)
+      if (elevations)
       {
         elevations = self->_elevations;
         if (elevations)
         {
-          elevations[v9] = a4[v9];
+          elevations[v9] = elevations[v9];
         }
       }
 
-      v13 = &a3[v9++].longitude;
+      v13 = &dateline[v9++].longitude;
       p_var1 += 2;
       p_longitude += 2;
     }
 
-    while (a5 != v9);
+    while (count != v9);
   }
 }
 

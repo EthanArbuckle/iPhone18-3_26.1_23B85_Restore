@@ -1,96 +1,96 @@
 @interface OAVShape
-+ (id)managerWithShape:(_xmlNode *)a3 state:(id)a4;
-+ (id)readFromShape:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5;
-+ (unsigned)typeWithShape:(_xmlNode *)a3 state:(id)a4;
-+ (void)readBoundsAndGeometryOfPolylineFromManager:(id)a3 toShape:(id)a4 state:(id)a5;
++ (id)managerWithShape:(_xmlNode *)shape state:(id)state;
++ (id)readFromShape:(_xmlNode *)shape inNamespace:(id)namespace state:(id)state;
++ (unsigned)typeWithShape:(_xmlNode *)shape state:(id)state;
++ (void)readBoundsAndGeometryOfPolylineFromManager:(id)manager toShape:(id)shape state:(id)state;
 @end
 
 @implementation OAVShape
 
-+ (unsigned)typeWithShape:(_xmlNode *)a3 state:(id)a4
++ (unsigned)typeWithShape:(_xmlNode *)shape state:(id)state
 {
-  v5 = a4;
-  if (xmlStrEqual(a3->name, "shape"))
+  stateCopy = state;
+  if (xmlStrEqual(shape->name, "shape"))
   {
-    v6 = CXDefaultStringAttribute(a3, CXNoNamespace, "type", 0);
+    v6 = CXDefaultStringAttribute(shape, CXNoNamespace, "type", 0);
     v7 = v6;
     if (v6)
     {
       v8 = [v6 substringFromIndex:1];
 
-      v9 = [v5 shapeTypeForId:v8];
-      v10 = v9;
+      v9 = [stateCopy shapeTypeForId:v8];
+      intValue = v9;
       if (!v9)
       {
         if ([v8 hasPrefix:@"_x0000_t"])
         {
           v11 = [v8 substringFromIndex:{objc_msgSend(@"_x0000_t", "length")}];
-          v10 = [v11 intValue];
+          intValue = [v11 intValue];
         }
 
         else
         {
-          v10 = 0;
+          intValue = 0;
         }
       }
     }
 
     else
     {
-      v10 = 0;
+      intValue = 0;
       v8 = 0;
     }
   }
 
-  else if (xmlStrEqual(a3->name, "line"))
+  else if (xmlStrEqual(shape->name, "line"))
   {
-    v10 = 20;
+    intValue = 20;
   }
 
-  else if (xmlStrEqual(a3->name, "polyline"))
+  else if (xmlStrEqual(shape->name, "polyline"))
   {
-    v10 = 0;
+    intValue = 0;
   }
 
-  else if (xmlStrEqual(a3->name, "rect"))
+  else if (xmlStrEqual(shape->name, "rect"))
   {
-    v10 = 1;
+    intValue = 1;
   }
 
-  else if (xmlStrEqual(a3->name, "roundrect"))
+  else if (xmlStrEqual(shape->name, "roundrect"))
   {
-    v10 = 2;
+    intValue = 2;
   }
 
-  else if (xmlStrEqual(a3->name, "oval"))
+  else if (xmlStrEqual(shape->name, "oval"))
   {
-    v10 = 3;
+    intValue = 3;
   }
 
   else
   {
-    v10 = 0;
+    intValue = 0;
   }
 
-  return v10;
+  return intValue;
 }
 
-+ (id)managerWithShape:(_xmlNode *)a3 state:(id)a4
++ (id)managerWithShape:(_xmlNode *)shape state:(id)state
 {
-  v6 = a4;
-  v7 = [a1 typeWithShape:a3 state:v6];
+  stateCopy = state;
+  v7 = [self typeWithShape:shape state:stateCopy];
   v8 = [OAVShapeManager alloc];
-  v9 = [v6 packagePart];
-  v10 = [(OAVShapeManager *)v8 initWithShape:a3 type:v7 packagePart:v9 state:v6];
+  packagePart = [stateCopy packagePart];
+  v10 = [(OAVShapeManager *)v8 initWithShape:shape type:v7 packagePart:packagePart state:stateCopy];
 
   return v10;
 }
 
-+ (void)readBoundsAndGeometryOfPolylineFromManager:(id)a3 toShape:(id)a4 state:(id)a5
++ (void)readBoundsAndGeometryOfPolylineFromManager:(id)manager toShape:(id)shape state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (xmlStrEqual(*(*([v6 shape] + 40) + 16), "group"))
+  managerCopy = manager;
+  shapeCopy = shape;
+  if (xmlStrEqual(*(*([managerCopy shape] + 40) + 16), "group"))
   {
     v8 = 1.0;
   }
@@ -100,8 +100,8 @@
     v8 = 20.0;
   }
 
-  v9 = [v6 points];
-  v10 = OAVReadLengthArray(v9);
+  points = [managerCopy points];
+  v10 = OAVReadLengthArray(points);
   v11 = [v10 count];
   if (v11 >= 2)
   {
@@ -110,12 +110,12 @@
     width = *(MEMORY[0x277CBF398] + 16);
     height = *(MEMORY[0x277CBF398] + 24);
     v16 = objc_alloc_init(OADCustomShapeGeometry);
-    [v7 setGeometry:v16];
+    [shapeCopy setGeometry:v16];
     [(OADShapeGeometry *)v16 setIsEscher:1];
     v17 = objc_alloc_init(OADPath);
     [(OADCustomShapeGeometry *)v16 addPath:v17];
-    v30 = v9;
-    v31 = v7;
+    v30 = points;
+    v31 = shapeCopy;
     v18 = 0;
     v19 = v11 >> 1;
     v20 = 1;
@@ -151,20 +151,20 @@
 
     while (v19 != v18);
     v35.origin.x = TSUMultiplyRectScalar(x, y, width, height, v8);
-    v9 = v30;
-    v7 = v31;
+    points = v30;
+    shapeCopy = v31;
     OCChRectI4WithCGRect(v35, v32);
     [(OADCustomShapeGeometry *)v16 setGeometryCoordSpace:v32];
-    v28 = [v31 drawableProperties];
-    v29 = [v28 orientedBounds];
-    [v29 setBounds:{x, y, width, height}];
+    drawableProperties = [v31 drawableProperties];
+    orientedBounds = [drawableProperties orientedBounds];
+    [orientedBounds setBounds:{x, y, width, height}];
   }
 }
 
-+ (id)readFromShape:(_xmlNode *)a3 inNamespace:(id)a4 state:(id)a5
++ (id)readFromShape:(_xmlNode *)shape inNamespace:(id)namespace state:(id)state
 {
-  v7 = a5;
-  v8 = [a1 managerWithShape:a3 state:v7];
+  stateCopy = state;
+  v8 = [self managerWithShape:shape state:stateCopy];
   if ([v8 isImage])
   {
     v9 = objc_alloc_init(OADImage);
@@ -180,25 +180,25 @@
   }
 
   v11 = v9;
-  v12 = [v8 isPolyline];
-  [OAVDrawable readFromDrawable:a3 toDrawable:v11 state:v7];
-  v13 = [(OADGraphic *)v11 graphicProperties];
-  v14 = [v8 isWordArt];
-  v15 = [OAVFill readFromManager:v8 state:v7];
-  [v13 setFill:v15];
+  isPolyline = [v8 isPolyline];
+  [OAVDrawable readFromDrawable:shape toDrawable:v11 state:stateCopy];
+  graphicProperties = [(OADGraphic *)v11 graphicProperties];
+  isWordArt = [v8 isWordArt];
+  v15 = [OAVFill readFromManager:v8 state:stateCopy];
+  [graphicProperties setFill:v15];
 
-  if (v14)
+  if (isWordArt)
   {
-    [OAVWordArt readFromManager:v8 toShape:v10 state:v7];
+    [OAVWordArt readFromManager:v8 toShape:v10 state:stateCopy];
   }
 
   else
   {
     if (v10)
     {
-      if (v12)
+      if (isPolyline)
       {
-        [a1 readBoundsAndGeometryOfPolylineFromManager:v8 toShape:v10 state:v7];
+        [self readBoundsAndGeometryOfPolylineFromManager:v8 toShape:v10 state:stateCopy];
       }
 
       else
@@ -207,22 +207,22 @@
         [(OADImage *)v10 setGeometry:v16];
       }
 
-      [OAVTextBodyProperties readFromManager:v8 toShape:v10 state:v7];
+      [OAVTextBodyProperties readFromManager:v8 toShape:v10 state:stateCopy];
     }
 
     v17 = [OAVStroke readFromManager:v8];
-    [v13 setStroke:v17];
+    [graphicProperties setStroke:v17];
 
     v18 = [OAVShadow readFromManager:v8];
-    [v13 setEffects:v18];
+    [graphicProperties setEffects:v18];
 
     if (v21)
     {
-      [OAVImage readFromManager:v8 toImage:v21 state:v7];
+      [OAVImage readFromManager:v8 toImage:v21 state:stateCopy];
     }
   }
 
-  [objc_msgSend(v7 "client")];
+  [objc_msgSend(stateCopy "client")];
   v19 = v11;
 
   return v11;

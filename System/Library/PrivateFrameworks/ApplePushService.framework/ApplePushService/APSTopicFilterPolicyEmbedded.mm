@@ -1,9 +1,9 @@
 @interface APSTopicFilterPolicyEmbedded
-- (APSTopicFilterPolicyEmbedded)initWithDelegate:(id)a3 ultraConstrainedProvider:(id)a4;
+- (APSTopicFilterPolicyEmbedded)initWithDelegate:(id)delegate ultraConstrainedProvider:(id)provider;
 - (APSUltraConstrainedProvider)ultraConstrainedProvider;
-- (id)initShouldDowngradeWhenLocked:(BOOL)a3 systemMonitor:(id)a4 ultraConstrainedProvider:(id)a5 withDelegate:(id)a6;
-- (id)topicChosenByPolicyFromTopics:(id)a3;
-- (int64_t)filterChosenByPolicyForTopic:(id)a3;
+- (id)initShouldDowngradeWhenLocked:(BOOL)locked systemMonitor:(id)monitor ultraConstrainedProvider:(id)provider withDelegate:(id)delegate;
+- (id)topicChosenByPolicyFromTopics:(id)topics;
+- (int64_t)filterChosenByPolicyForTopic:(id)topic;
 - (void)dealloc;
 - (void)logFilterPolicyInformation;
 - (void)systemDidLock;
@@ -49,7 +49,7 @@
       v7 = @"NO";
     }
 
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v4;
     v12 = 2112;
@@ -60,36 +60,36 @@
   }
 }
 
-- (id)initShouldDowngradeWhenLocked:(BOOL)a3 systemMonitor:(id)a4 ultraConstrainedProvider:(id)a5 withDelegate:(id)a6
+- (id)initShouldDowngradeWhenLocked:(BOOL)locked systemMonitor:(id)monitor ultraConstrainedProvider:(id)provider withDelegate:(id)delegate
 {
-  v9 = a3;
-  v11 = a4;
-  v12 = a5;
+  lockedCopy = locked;
+  monitorCopy = monitor;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = APSTopicFilterPolicyEmbedded;
-  v13 = [(APSTopicFilterPolicy *)&v16 initWithDelegate:a6];
+  v13 = [(APSTopicFilterPolicy *)&v16 initWithDelegate:delegate];
   p_isa = &v13->super.super.isa;
   if (v13)
   {
-    v13->_downgradeWhenLocked = v9;
-    if (v9)
+    v13->_downgradeWhenLocked = lockedCopy;
+    if (lockedCopy)
     {
-      objc_storeStrong(&v13->_systemMonitor, a4);
-      [v11 addListener:p_isa];
+      objc_storeStrong(&v13->_systemMonitor, monitor);
+      [monitorCopy addListener:p_isa];
     }
 
-    objc_storeWeak(p_isa + 4, v12);
+    objc_storeWeak(p_isa + 4, providerCopy);
   }
 
   return p_isa;
 }
 
-- (APSTopicFilterPolicyEmbedded)initWithDelegate:(id)a3 ultraConstrainedProvider:(id)a4
+- (APSTopicFilterPolicyEmbedded)initWithDelegate:(id)delegate ultraConstrainedProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v8 = +[APSSystemMonitor sharedInstance];
-  v9 = [(APSTopicFilterPolicyEmbedded *)self initShouldDowngradeWhenLocked:0 systemMonitor:v8 ultraConstrainedProvider:v6 withDelegate:v7];
+  v9 = [(APSTopicFilterPolicyEmbedded *)self initShouldDowngradeWhenLocked:0 systemMonitor:v8 ultraConstrainedProvider:providerCopy withDelegate:delegateCopy];
 
   return v9;
 }
@@ -102,20 +102,20 @@
   [(APSTopicFilterPolicyEmbedded *)&v3 dealloc];
 }
 
-- (int64_t)filterChosenByPolicyForTopic:(id)a3
+- (int64_t)filterChosenByPolicyForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   if (!self->_downgradeWhenLocked)
   {
     goto LABEL_8;
   }
 
-  if (!-[APSSystemMonitor isSystemLocked](self->_systemMonitor, "isSystemLocked") || ([v4 attributes], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isPushWakeEnabled"), v5, (v6 & 1) != 0))
+  if (!-[APSSystemMonitor isSystemLocked](self->_systemMonitor, "isSystemLocked") || ([topicCopy attributes], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isPushWakeEnabled"), v5, (v6 & 1) != 0))
   {
-    v7 = [v4 attributes];
-    v8 = [v7 isPushWakeEnabled];
+    attributes = [topicCopy attributes];
+    isPushWakeEnabled = [attributes isPushWakeEnabled];
 
-    if (v8)
+    if (isPushWakeEnabled)
     {
       v9 = +[APSLog topicManager];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -130,23 +130,23 @@ LABEL_8:
       WeakRetained = objc_loadWeakRetained(&self->_ultraConstrainedProvider);
       if ([WeakRetained isConnectedOnUltraConstrainedInterface])
       {
-        v11 = [v4 attributes];
-        v12 = [v11 isUltraConstrainedEnabled];
+        attributes2 = [topicCopy attributes];
+        isUltraConstrainedEnabled = [attributes2 isUltraConstrainedEnabled];
 
-        if ((v12 & 1) == 0)
+        if ((isUltraConstrainedEnabled & 1) == 0)
         {
-          v13 = +[APSLog topicManager];
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          attributes3 = +[APSLog topicManager];
+          if (os_log_type_enabled(attributes3, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v4 topicName];
+            topicName = [topicCopy topicName];
             v21 = 138412546;
-            v22 = self;
+            selfCopy2 = self;
             v23 = 2112;
-            v24 = v14;
-            _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ downgrading %@ to ignored, not eligible for requested ultra constrained filter", &v21, 0x16u);
+            v24 = topicName;
+            _os_log_impl(&_mh_execute_header, attributes3, OS_LOG_TYPE_DEFAULT, "%@ downgrading %@ to ignored, not eligible for requested ultra constrained filter", &v21, 0x16u);
           }
 
-          v15 = 3;
+          filter = 3;
           goto LABEL_20;
         }
       }
@@ -156,9 +156,9 @@ LABEL_8:
       }
 
       v16 = objc_loadWeakRetained(&self->_ultraConstrainedProvider);
-      v17 = [v16 isConnectedOnUltraConstrainedInterface];
+      isConnectedOnUltraConstrainedInterface = [v16 isConnectedOnUltraConstrainedInterface];
 
-      if (v17)
+      if (isConnectedOnUltraConstrainedInterface)
       {
         v18 = +[APSLog topicManager];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -168,36 +168,36 @@ LABEL_8:
       }
     }
 
-    v13 = [v4 attributes];
-    v15 = [v13 filter];
+    attributes3 = [topicCopy attributes];
+    filter = [attributes3 filter];
     goto LABEL_20;
   }
 
-  v13 = +[APSLog topicManager];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  attributes3 = +[APSLog topicManager];
+  if (os_log_type_enabled(attributes3, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v4 topicName];
+    topicName2 = [topicCopy topicName];
     v21 = 138412546;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v20;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ downgrading %@ to non-waking, not eligible for requested filter", &v21, 0x16u);
+    v24 = topicName2;
+    _os_log_impl(&_mh_execute_header, attributes3, OS_LOG_TYPE_DEFAULT, "%@ downgrading %@ to non-waking, not eligible for requested filter", &v21, 0x16u);
   }
 
-  v15 = 4;
+  filter = 4;
 LABEL_20:
 
-  return v15;
+  return filter;
 }
 
-- (id)topicChosenByPolicyFromTopics:(id)a3
+- (id)topicChosenByPolicyFromTopics:(id)topics
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  topicsCopy = topics;
+  v5 = [topicsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -210,7 +210,7 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(topicsCopy);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
@@ -230,7 +230,7 @@ LABEL_3:
 
       if (v6 == ++v10)
       {
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [topicsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         v14 = v8;
         if (v6)
         {

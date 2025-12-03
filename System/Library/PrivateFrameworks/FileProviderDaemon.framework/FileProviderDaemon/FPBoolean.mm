@@ -1,28 +1,28 @@
 @interface FPBoolean
-- (BOOL)isEqual:(id)a3;
-- (FPBoolean)initWithBool:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (FPBoolean)initWithBool:(BOOL)bool;
 @end
 
 @implementation FPBoolean
 
-- (FPBoolean)initWithBool:(BOOL)a3
+- (FPBoolean)initWithBool:(BOOL)bool
 {
   v5.receiver = self;
   v5.super_class = FPBoolean;
   result = [(FPBoolean *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = bool;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == v4[8];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == equalCopy[8];
 
   return v5;
 }

@@ -1,42 +1,42 @@
 @interface _UINavigationBarTitleControl
-+ (id)titleMenuSuggestedActionsWithDocumentFileURL:(id)a3;
++ (id)titleMenuSuggestedActionsWithDocumentFileURL:(id)l;
 - (BOOL)hasBaseline;
-- (BOOL)setTitleAttributes:(id)a3 titleMenuProvider:(id)a4 documentProperties:(id)a5 titleView:(id)a6 attributedTitle:(id)a7;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (CGSize)availableSizeForAdaptor:(id)a3 proposedSize:(CGSize)result;
+- (BOOL)setTitleAttributes:(id)attributes titleMenuProvider:(id)provider documentProperties:(id)properties titleView:(id)view attributedTitle:(id)title;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (CGSize)availableSizeForAdaptor:(id)adaptor proposedSize:(CGSize)result;
 - (UIEdgeInsets)menuAlignmentInsets;
 - (UILabel)titleLabel;
-- (_UINavigationBarTitleControl)initWithFrame:(CGRect)a3;
+- (_UINavigationBarTitleControl)initWithFrame:(CGRect)frame;
 - (double)trailingPadding;
-- (id)_backgroundViewConstraintsForIdiom:(int64_t)a3;
+- (id)_backgroundViewConstraintsForIdiom:(int64_t)idiom;
 - (id)_baselineView;
-- (id)_contextMenuInteraction:(id)a3 overrideSuggestedActionsForConfiguration:(id)a4;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction overrideSuggestedActionsForConfiguration:(id)configuration;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_debugInfo;
 - (id)_preferredSender;
 - (id)_preview;
-- (id)_setAttributedTitle:(id *)a1;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)pointerShapeInContainer:(id)a3;
-- (uint64_t)_setTitleView:(uint64_t)a1;
+- (id)_setAttributedTitle:(id *)title;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)pointerShapeInContainer:(id)container;
+- (uint64_t)_setTitleView:(uint64_t)view;
 - (void)_cleanupWrapperView;
 - (void)_ensureNecessaryViews;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_resetTitleViewConstraints;
 - (void)_updateContentAlpha;
 - (void)_updateInlineTitleView;
 - (void)_updateInteractions;
 - (void)didMoveToWindow;
 - (void)invalidateIntrinsicContentSize;
-- (void)setDocumentProperties:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAttributes:(id)a3;
-- (void)setTitleLayoutGuide:(id)a3;
-- (void)setTitleMenuProvider:(id)a3;
-- (void)setTitleViewCompressionResistancePriority:(float)a3;
+- (void)setDocumentProperties:(id)properties;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title;
+- (void)setTitleAttributes:(id)attributes;
+- (void)setTitleLayoutGuide:(id)guide;
+- (void)setTitleMenuProvider:(id)provider;
+- (void)setTitleViewCompressionResistancePriority:(float)priority;
 - (void)updateConstraints;
 @end
 
@@ -44,9 +44,9 @@
 
 - (void)_updateContentAlpha
 {
-  v3 = [(_UINavigationBarTitleControl *)self isInteractive];
+  isInteractive = [(_UINavigationBarTitleControl *)self isInteractive];
   contentAlpha = 1.0;
-  if (v3)
+  if (isInteractive)
   {
     contentAlpha = self->_contentAlpha;
   }
@@ -60,32 +60,32 @@
 
 - (id)_baselineView
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_titleView)
   {
     inlineTitleView = self->_inlineTitleView;
     if (!inlineTitleView)
     {
       [(_UINavigationBarTitleControl *)self _ensureNecessaryViews];
-      inlineTitleView = v2->_inlineTitleView;
+      inlineTitleView = selfCopy->_inlineTitleView;
     }
 
     if (inlineTitleView)
     {
-      v2 = inlineTitleView;
+      selfCopy = inlineTitleView;
     }
   }
 
-  v4 = v2;
+  v4 = selfCopy;
 
   return v4;
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(UIView *)self setNeedsUpdateConstraints];
@@ -96,15 +96,15 @@
 {
   if (_UISMCBarsEnabled() & 1) != 0 || ([(UIView *)self window], (v3 = objc_claimAutoreleasedReturnValue()) != 0) && (v4 = v3, v5 = _UIBarsUseDynamicType(), v4, (v5))
   {
-    v6 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
   }
 
   else
   {
-    v6 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:@"UICTContentSizeCategoryL"];
+    traitCollection = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:@"UICTContentSizeCategoryL"];
   }
 
-  v16 = v6;
+  v16 = traitCollection;
   v7 = *off_1E70EC918;
   v8 = [(NSDictionary *)self->_titleAttributes objectForKeyedSubscript:*off_1E70EC918];
   v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v16];
@@ -163,11 +163,11 @@
       v16 = self->_visualProvider;
       if (v16)
       {
-        v17 = [(_UINavigationBarTitleControlVisualProvider *)v16 chevronImage];
-        v18 = v17;
-        if (v17)
+        chevronImage = [(_UINavigationBarTitleControlVisualProvider *)v16 chevronImage];
+        v18 = chevronImage;
+        if (chevronImage)
         {
-          v19 = v17;
+          v19 = chevronImage;
         }
 
         else
@@ -177,8 +177,8 @@
 
         [(UIImageView *)self->_chevron setImage:v19];
 
-        v20 = [(_UINavigationBarTitleControlVisualProvider *)self->_visualProvider chevronSymbolConfiguration];
-        [(UIImageView *)self->_chevron setPreferredSymbolConfiguration:v20];
+        chevronSymbolConfiguration = [(_UINavigationBarTitleControlVisualProvider *)self->_visualProvider chevronSymbolConfiguration];
+        [(UIImageView *)self->_chevron setPreferredSymbolConfiguration:chevronSymbolConfiguration];
       }
 
       else
@@ -227,23 +227,23 @@
 
     [(UILayoutGuide *)self->_chevronGuide setIdentifier:@"TitleChevronGuide"];
     [(UIView *)self addLayoutGuide:self->_chevronGuide];
-    v31 = [(UILayoutGuide *)self->_chevronGuide widthAnchor];
-    v32 = [v31 constraintEqualToConstant:0.0];
+    widthAnchor = [(UILayoutGuide *)self->_chevronGuide widthAnchor];
+    v32 = [widthAnchor constraintEqualToConstant:0.0];
 
     LODWORD(v33) = 1130430464;
     [v32 setPriority:v33];
     v56 = MEMORY[0x1E69977A0];
-    v59 = [(UILayoutGuide *)self->_chevronGuide trailingAnchor];
-    v58 = [(UIView *)self trailingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    trailingAnchor = [(UILayoutGuide *)self->_chevronGuide trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v61[0] = v57;
-    v34 = [(UILayoutGuide *)self->_chevronGuide topAnchor];
-    v35 = [(UIView *)self topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    topAnchor = [(UILayoutGuide *)self->_chevronGuide topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v61[1] = v36;
-    v37 = [(UILayoutGuide *)self->_chevronGuide bottomAnchor];
-    v38 = [(UIView *)self bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    bottomAnchor = [(UILayoutGuide *)self->_chevronGuide bottomAnchor];
+    bottomAnchor2 = [(UIView *)self bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v61[2] = v39;
     v61[3] = v32;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:4];
@@ -383,8 +383,8 @@ LABEL_41:
     backgroundViewConstraints = self->_backgroundViewConstraints;
     if (!backgroundViewConstraints)
     {
-      v8 = [(UIView *)self traitCollection];
-      v9 = -[_UINavigationBarTitleControl _backgroundViewConstraintsForIdiom:](self, "_backgroundViewConstraintsForIdiom:", [v8 userInterfaceIdiom]);
+      traitCollection = [(UIView *)self traitCollection];
+      v9 = -[_UINavigationBarTitleControl _backgroundViewConstraintsForIdiom:](self, "_backgroundViewConstraintsForIdiom:", [traitCollection userInterfaceIdiom]);
       v10 = self->_backgroundViewConstraints;
       self->_backgroundViewConstraints = v9;
 
@@ -414,23 +414,23 @@ LABEL_41:
       }
 
       v15 = titleView;
-      v16 = [(UIView *)v15 leadingAnchor];
-      v52 = [(UIView *)self leadingAnchor];
-      v54 = v16;
-      v51 = [v16 constraintEqualToAnchor:v52];
+      leadingAnchor = [(UIView *)v15 leadingAnchor];
+      leadingAnchor2 = [(UIView *)self leadingAnchor];
+      v54 = leadingAnchor;
+      v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v61[0] = v51;
-      v17 = [(UIView *)v15 trailingAnchor];
-      v49 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
-      v50 = v17;
-      v48 = [v17 constraintEqualToAnchor:v49];
+      trailingAnchor = [(UIView *)v15 trailingAnchor];
+      leadingAnchor3 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
+      leadingAnchor5 = trailingAnchor;
+      v48 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
       v61[1] = v48;
-      v18 = [(UIView *)v15 topAnchor];
-      v19 = [(UIView *)self topAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
-      v61[2] = v20;
-      v21 = [(UIView *)v15 bottomAnchor];
-      v22 = [(UIView *)self bottomAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      topAnchor = [(UIView *)v15 topAnchor];
+      topAnchor2 = [(UIView *)self topAnchor];
+      bottomAnchor3 = [topAnchor constraintEqualToAnchor:topAnchor2];
+      v61[2] = bottomAnchor3;
+      bottomAnchor = [(UIView *)v15 bottomAnchor];
+      bottomAnchor2 = [(UIView *)self bottomAnchor];
+      v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v61[3] = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:4];
       v25 = *p_titleConstraints;
@@ -449,25 +449,25 @@ LABEL_41:
     titleConstraints = self->_inlineTitleConstraints;
     if (!titleConstraints)
     {
-      v27 = [(UIView *)inlineTitleView leadingAnchor];
-      v52 = [(UIView *)self leadingAnchor];
-      v54 = v27;
-      v15 = [v27 constraintEqualToAnchor:v52];
+      leadingAnchor4 = [(UIView *)inlineTitleView leadingAnchor];
+      leadingAnchor2 = [(UIView *)self leadingAnchor];
+      v54 = leadingAnchor4;
+      v15 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor2];
       v60[0] = v15;
-      v28 = [(UIView *)self->_inlineTitleView trailingAnchor];
-      v50 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
-      v51 = v28;
-      v49 = [v28 constraintEqualToAnchor:v50];
-      v60[1] = v49;
-      v29 = [(UIView *)self->_inlineTitleView topAnchor];
-      v18 = [(UIView *)self topAnchor];
-      v48 = v29;
-      v19 = [v29 constraintEqualToAnchor:v18];
-      v60[2] = v19;
-      v20 = [(UIView *)self->_inlineTitleView bottomAnchor];
-      v21 = [(UIView *)self bottomAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
-      v60[3] = v22;
+      trailingAnchor2 = [(UIView *)self->_inlineTitleView trailingAnchor];
+      leadingAnchor5 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
+      v51 = trailingAnchor2;
+      leadingAnchor3 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor5];
+      v60[1] = leadingAnchor3;
+      topAnchor3 = [(UIView *)self->_inlineTitleView topAnchor];
+      topAnchor = [(UIView *)self topAnchor];
+      v48 = topAnchor3;
+      topAnchor2 = [topAnchor3 constraintEqualToAnchor:topAnchor];
+      v60[2] = topAnchor2;
+      bottomAnchor3 = [(UIView *)self->_inlineTitleView bottomAnchor];
+      bottomAnchor = [(UIView *)self bottomAnchor];
+      bottomAnchor2 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor];
+      v60[3] = bottomAnchor2;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:4];
       v23 = *p_titleConstraints;
       *p_titleConstraints = v30;
@@ -486,8 +486,8 @@ LABEL_21:
   {
     if (!chevronConstraints)
     {
-      v33 = [(UIView *)chevron leadingAnchor];
-      v34 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
+      leadingAnchor6 = [(UIView *)chevron leadingAnchor];
+      leadingAnchor7 = [(UILayoutGuide *)self->_chevronGuide leadingAnchor];
       visualProvider = self->_visualProvider;
       if (visualProvider)
       {
@@ -499,17 +499,17 @@ LABEL_21:
         v36 = 6.0;
       }
 
-      v38 = [v33 constraintEqualToAnchor:v34 constant:v36];
+      v38 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:v36];
       v59[0] = v38;
       [(UILayoutGuide *)self->_chevronGuide trailingAnchor];
-      v39 = v55 = v33;
+      v39 = v55 = leadingAnchor6;
       [(UIView *)self->_chevron trailingAnchor];
-      v40 = v53 = v34;
+      v40 = v53 = leadingAnchor7;
       v41 = [v39 constraintEqualToAnchor:v40];
       v59[1] = v41;
-      v42 = [(UILayoutGuide *)self->_chevronGuide centerYAnchor];
-      v43 = [(UIView *)self->_chevron centerYAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      centerYAnchor = [(UILayoutGuide *)self->_chevronGuide centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_chevron centerYAnchor];
+      v44 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v59[2] = v44;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:3];
       v46 = self->_chevronConstraints;
@@ -528,8 +528,8 @@ LABEL_21:
     self->_chevronConstraints = 0;
   }
 
-  v47 = [(UIView *)self superview];
-  [(NSLayoutConstraint *)self->_sosConstraint setActive:v47 != 0];
+  superview = [(UIView *)self superview];
+  [(NSLayoutConstraint *)self->_sosConstraint setActive:superview != 0];
 
   *&self->_titleControlFlags &= ~4u;
   v56.receiver = self;
@@ -537,12 +537,12 @@ LABEL_21:
   [(UIView *)&v56 updateConstraints];
 }
 
-- (_UINavigationBarTitleControl)initWithFrame:(CGRect)a3
+- (_UINavigationBarTitleControl)initWithFrame:(CGRect)frame
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = _UINavigationBarTitleControl;
-  v3 = [(UIControl *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v8[0] = objc_opt_class();
@@ -556,13 +556,13 @@ LABEL_21:
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NSAttributedString *)self->_attributedTitle string];
-  v6 = v4;
+  titleCopy = title;
+  string = [(NSAttributedString *)self->_attributedTitle string];
+  v6 = titleCopy;
   v11 = v6;
-  if (v5 == v6)
+  if (string == v6)
   {
 
 LABEL_10:
@@ -570,7 +570,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !string)
   {
 
     v9 = v11;
@@ -589,7 +589,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(NSAttributedString *)v5 isEqual:v6];
+  v7 = [(NSAttributedString *)string isEqual:v6];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -600,11 +600,11 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)setTitleAttributes:(id)a3
+- (void)setTitleAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = self->_titleAttributes;
-  v6 = v4;
+  v6 = attributesCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -633,12 +633,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_setAttributedTitle:(id *)a1
+- (id)_setAttributedTitle:(id *)title
 {
   v4 = a2;
-  if (a1)
+  if (title)
   {
-    v5 = a1[69];
+    v5 = title[69];
     v6 = v4;
     v7 = v6;
     if (v5 == v6)
@@ -651,10 +651,10 @@ LABEL_9:
       {
 
 LABEL_10:
-        objc_storeStrong(a1 + 69, a2);
-        [a1 invalidateIntrinsicContentSize];
-        [a1 setNeedsUpdateConstraints];
-        a1 = 1;
+        objc_storeStrong(title + 69, a2);
+        [title invalidateIntrinsicContentSize];
+        [title setNeedsUpdateConstraints];
+        title = 1;
         goto LABEL_11;
       }
 
@@ -666,50 +666,50 @@ LABEL_10:
       }
     }
 
-    a1 = 0;
+    title = 0;
   }
 
 LABEL_11:
 
-  return a1;
+  return title;
 }
 
-- (uint64_t)_setTitleView:(uint64_t)a1
+- (uint64_t)_setTitleView:(uint64_t)view
 {
   v4 = a2;
-  if (a1)
+  if (view)
   {
-    v5 = *(a1 + 568);
-    if (v5 == v4 && (!*(a1 + 472) || ([v5 isDescendantOfView:?] & 1) != 0))
+    v5 = *(view + 568);
+    if (v5 == v4 && (!*(view + 472) || ([v5 isDescendantOfView:?] & 1) != 0))
     {
-      a1 = 0;
+      view = 0;
     }
 
     else
     {
-      [a1 _resetTitleViewConstraints];
-      [a1 _cleanupWrapperView];
-      [*(a1 + 568) removeFromSuperview];
-      objc_storeStrong((a1 + 568), a2);
-      [a1 setNeedsUpdateConstraints];
-      [a1 invalidateIntrinsicContentSize];
+      [view _resetTitleViewConstraints];
+      [view _cleanupWrapperView];
+      [*(view + 568) removeFromSuperview];
+      objc_storeStrong((view + 568), a2);
+      [view setNeedsUpdateConstraints];
+      [view invalidateIntrinsicContentSize];
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
-        [a1 _ensureNecessaryViews];
+        [view _ensureNecessaryViews];
       }
 
-      a1 = 1;
+      view = 1;
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (void)setTitleViewCompressionResistancePriority:(float)a3
+- (void)setTitleViewCompressionResistancePriority:(float)priority
 {
-  if (self->_titleViewCompressionResistancePriority != a3)
+  if (self->_titleViewCompressionResistancePriority != priority)
   {
-    self->_titleViewCompressionResistancePriority = a3;
+    self->_titleViewCompressionResistancePriority = priority;
     [(UIView *)self setNeedsUpdateConstraints];
   }
 }
@@ -738,15 +738,15 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)setTitleAttributes:(id)a3 titleMenuProvider:(id)a4 documentProperties:(id)a5 titleView:(id)a6 attributedTitle:(id)a7
+- (BOOL)setTitleAttributes:(id)attributes titleMenuProvider:(id)provider documentProperties:(id)properties titleView:(id)view attributedTitle:(id)title
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  attributesCopy = attributes;
+  providerCopy = provider;
+  propertiesCopy = properties;
+  viewCopy = view;
+  titleCopy = title;
   titleAttributes = self->_titleAttributes;
-  v18 = v12;
+  v18 = attributesCopy;
   v19 = titleAttributes;
   v20 = v19;
   if (v19 == v18)
@@ -773,13 +773,13 @@ LABEL_9:
   [(_UINavigationBarTitleControl *)self setTitleAttributes:v18];
   v22 = 1;
 LABEL_10:
-  v23 = _Block_copy(v13);
+  v23 = _Block_copy(providerCopy);
   titleMenuProvider = self->_titleMenuProvider;
   self->_titleMenuProvider = v23;
 
-  v25 = [(_UINavigationBarTitleControl *)self documentProperties];
-  v26 = v14;
-  v27 = v25;
+  documentProperties = [(_UINavigationBarTitleControl *)self documentProperties];
+  v26 = propertiesCopy;
+  v27 = documentProperties;
   v28 = v27;
   if (v27 == v26)
   {
@@ -806,26 +806,26 @@ LABEL_10:
   }
 
 LABEL_18:
-  v30 = v22 | [(_UINavigationBarTitleControl *)self _setTitleView:v15];
-  v31 = [(_UINavigationBarTitleControl *)&self->super.super.super.super.isa _setAttributedTitle:v16];
+  v30 = v22 | [(_UINavigationBarTitleControl *)self _setTitleView:viewCopy];
+  v31 = [(_UINavigationBarTitleControl *)&self->super.super.super.super.isa _setAttributedTitle:titleCopy];
 
   return v30 | v31;
 }
 
 - (BOOL)hasBaseline
 {
-  v2 = self;
-  v3 = [(_UINavigationBarTitleControl *)self _baselineView];
-  LOBYTE(v2) = v3 != v2;
+  selfCopy = self;
+  _baselineView = [(_UINavigationBarTitleControl *)self _baselineView];
+  LOBYTE(selfCopy) = _baselineView != selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (double)trailingPadding
 {
-  v2 = [(_UINavigationBarTitleControl *)self isInteractive];
+  isInteractive = [(_UINavigationBarTitleControl *)self isInteractive];
   result = 0.0;
-  if (v2)
+  if (isInteractive)
   {
     return 16.0;
   }
@@ -841,11 +841,11 @@ LABEL_18:
   [(_UINavigationBarTitleControl *)self _invalidateSceneDraggingBehavior];
 }
 
-- (void)setTitleMenuProvider:(id)a3
+- (void)setTitleMenuProvider:(id)provider
 {
-  if (self->_titleMenuProvider != a3)
+  if (self->_titleMenuProvider != provider)
   {
-    v4 = [a3 copy];
+    v4 = [provider copy];
     titleMenuProvider = self->_titleMenuProvider;
     self->_titleMenuProvider = v4;
 
@@ -855,36 +855,36 @@ LABEL_18:
   }
 }
 
-- (void)setDocumentProperties:(id)a3
+- (void)setDocumentProperties:(id)properties
 {
-  v5 = a3;
-  if (self->_documentProperties != v5)
+  propertiesCopy = properties;
+  if (self->_documentProperties != propertiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_documentProperties, a3);
+    v6 = propertiesCopy;
+    objc_storeStrong(&self->_documentProperties, properties);
     [(_UINavigationBarTitleControl *)self _updateInteractions];
     [(UIView *)self setNeedsUpdateConstraints];
-    v5 = v6;
+    propertiesCopy = v6;
   }
 }
 
-- (void)setTitleLayoutGuide:(id)a3
+- (void)setTitleLayoutGuide:(id)guide
 {
-  v11 = a3;
-  if (self->_titleLayoutGuide != v11)
+  guideCopy = guide;
+  if (self->_titleLayoutGuide != guideCopy)
   {
     [(NSLayoutConstraint *)self->_sosConstraint setActive:0];
     sosConstraint = self->_sosConstraint;
     self->_sosConstraint = 0;
 
-    objc_storeStrong(&self->_titleLayoutGuide, a3);
+    objc_storeStrong(&self->_titleLayoutGuide, guide);
     if (self->_titleLayoutGuide)
     {
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
-        v6 = [(UIView *)self heightAnchor];
-        v7 = [(UILayoutGuide *)self->_titleLayoutGuide heightAnchor];
-        v8 = [v6 constraintEqualToAnchor:v7];
+        heightAnchor = [(UIView *)self heightAnchor];
+        heightAnchor2 = [(UILayoutGuide *)self->_titleLayoutGuide heightAnchor];
+        v8 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v9 = self->_sosConstraint;
         self->_sosConstraint = v8;
 
@@ -915,10 +915,10 @@ LABEL_18:
   self->_wrapperView = 0;
 }
 
-- (id)_backgroundViewConstraintsForIdiom:(int64_t)a3
+- (id)_backgroundViewConstraintsForIdiom:(int64_t)idiom
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  if (a3 == 6)
+  if (idiom == 6)
   {
     visualProvider = self->_visualProvider;
     if (visualProvider)
@@ -934,55 +934,55 @@ LABEL_18:
       v8 = 0.0;
     }
 
-    v19 = [(UIView *)self->_backgroundView leadingAnchor];
-    v23 = [(UIView *)self leadingAnchor];
-    v22 = [v19 constraintEqualToAnchor:v6 constant:?];
+    leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:v6 constant:?];
     v25[0] = v22;
-    v9 = [(UIView *)self->_backgroundView trailingAnchor];
-    v10 = [(UILayoutGuide *)self->_chevronGuide trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:v8];
+    trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(UILayoutGuide *)self->_chevronGuide trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v8];
     v25[1] = v11;
-    v12 = [(UIView *)self->_backgroundView heightAnchor];
-    v13 = [v12 constraintEqualToConstant:44.0];
-    v25[2] = v13;
-    v14 = [(UIView *)self->_backgroundView centerYAnchor];
-    v15 = [(UIView *)self centerYAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
-    v25[3] = v16;
+    heightAnchor = [(UIView *)self->_backgroundView heightAnchor];
+    topAnchor = [heightAnchor constraintEqualToConstant:44.0];
+    v25[2] = topAnchor;
+    centerYAnchor = [(UIView *)self->_backgroundView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self centerYAnchor];
+    bottomAnchor = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    v25[3] = bottomAnchor;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   }
 
   else
   {
-    v21 = [(UIView *)self->_backgroundView leadingAnchor];
-    v23 = [(UIView *)self leadingAnchor];
-    v22 = [v21 constraintEqualToAnchor:?];
+    leadingAnchor3 = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v22 = [leadingAnchor3 constraintEqualToAnchor:?];
     v24[0] = v22;
-    v9 = [(UIView *)self->_backgroundView trailingAnchor];
-    v10 = [(UIView *)self trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[1] = v11;
-    v12 = [(UIView *)self->_backgroundView topAnchor];
-    v13 = [(UIView *)self topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
-    v24[2] = v14;
-    v15 = [(UIView *)self->_backgroundView bottomAnchor];
-    v16 = [(UIView *)self bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    heightAnchor = [(UIView *)self->_backgroundView topAnchor];
+    topAnchor = [(UIView *)self topAnchor];
+    centerYAnchor = [heightAnchor constraintEqualToAnchor:topAnchor];
+    v24[2] = centerYAnchor;
+    centerYAnchor2 = [(UIView *)self->_backgroundView bottomAnchor];
+    bottomAnchor = [(UIView *)self bottomAnchor];
+    v17 = [centerYAnchor2 constraintEqualToAnchor:bottomAnchor];
     v24[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
 
-    v19 = v21;
+    leadingAnchor = leadingAnchor3;
   }
 
   return v18;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleControl;
-  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:a3];
+  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:view];
   if (_UISMCBarsEnabled())
   {
     [(_UINavigationBarTitleControl *)self invalidateIntrinsicContentSize];
@@ -994,37 +994,37 @@ LABEL_18:
   v5.receiver = self;
   v5.super_class = _UINavigationBarTitleControl;
   [(UIView *)&v5 invalidateIntrinsicContentSize];
-  v3 = [(_UINavigationBarTitleControl *)self intrinsicContentSizeInvalidationHandler];
-  v4 = [(_UINavigationBarTitleControl *)self intrinsicContentSizeInvalidationHandler];
+  intrinsicContentSizeInvalidationHandler = [(_UINavigationBarTitleControl *)self intrinsicContentSizeInvalidationHandler];
+  intrinsicContentSizeInvalidationHandler2 = [(_UINavigationBarTitleControl *)self intrinsicContentSizeInvalidationHandler];
 
-  if (v4)
+  if (intrinsicContentSizeInvalidationHandler2)
   {
-    v3[2](v3);
+    intrinsicContentSizeInvalidationHandler[2](intrinsicContentSizeInvalidationHandler);
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v19.receiver = self;
   v19.super_class = _UINavigationBarTitleControl;
-  [(UIControl *)&v19 setHighlighted:a3];
-  v4 = [(UIControl *)self _hasActiveMenuPresentation];
+  [(UIControl *)&v19 setHighlighted:highlighted];
+  _hasActiveMenuPresentation = [(UIControl *)self _hasActiveMenuPresentation];
   visualProvider = self->_visualProvider;
-  if (v4)
+  if (_hasActiveMenuPresentation)
   {
     if (visualProvider)
     {
       backgroundView = self->_backgroundView;
       inlineTitleView = self->_inlineTitleView;
       chevron = self->_chevron;
-      v9 = [(_UINavigationBarTitleControl *)self isInteractive];
+      isInteractive = [(_UINavigationBarTitleControl *)self isInteractive];
       v10 = visualProvider;
       v11 = backgroundView;
       v12 = inlineTitleView;
       v13 = chevron;
       v14 = 1;
 LABEL_6:
-      [(_UINavigationBarTitleControlVisualProvider *)v10 titleControlDidUpdateBackground:v11 inlineTitle:v12 chevron:v13 interactive:v9 highlighted:v14];
+      [(_UINavigationBarTitleControlVisualProvider *)v10 titleControlDidUpdateBackground:v11 inlineTitle:v12 chevron:v13 interactive:isInteractive highlighted:v14];
       return;
     }
 
@@ -1038,7 +1038,7 @@ LABEL_6:
       v15 = self->_backgroundView;
       v16 = self->_inlineTitleView;
       v17 = self->_chevron;
-      v9 = [(_UINavigationBarTitleControl *)self isInteractive];
+      isInteractive = [(_UINavigationBarTitleControl *)self isInteractive];
       v10 = visualProvider;
       v11 = v15;
       v12 = v16;
@@ -1055,7 +1055,7 @@ LABEL_6:
 
 - (id)_debugInfo
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   titleView = self->_titleView;
   if (!titleView)
   {
@@ -1064,23 +1064,23 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    v6 = [(NSAttributedString *)self->_attributedTitle string];
-    [v3 appendFormat:@"title='%@' (v=%p, c=%p) attributes=%p compressionResistance=%f", v6, self->_inlineTitleView, self->_inlineTitleConstraints, self->_titleAttributes, self->_titleViewCompressionResistancePriority];
+    string2 = [(NSAttributedString *)self->_attributedTitle string];
+    [string appendFormat:@"title='%@' (v=%p, c=%p) attributes=%p compressionResistance=%f", string2, self->_inlineTitleView, self->_inlineTitleConstraints, self->_titleAttributes, self->_titleViewCompressionResistancePriority];
     goto LABEL_8;
   }
 
   wrapperView = self->_wrapperView;
   if (wrapperView)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"w=%p c=", self->_wrapperView];
+    string2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"w=%p c=", self->_wrapperView];
   }
 
   else
   {
-    v6 = &stru_1EFB14550;
+    string2 = &stru_1EFB14550;
   }
 
-  [v3 appendFormat:@"titleView=%p (%@%p) compressionResistance=%f", titleView, v6, self->_titleConstraints, self->_titleViewCompressionResistancePriority];
+  [string appendFormat:@"titleView=%p (%@%p) compressionResistance=%f", titleView, string2, self->_titleConstraints, self->_titleViewCompressionResistancePriority];
   if (wrapperView)
   {
 LABEL_8:
@@ -1089,30 +1089,30 @@ LABEL_8:
 LABEL_9:
   if (self->_chevron)
   {
-    [v3 appendFormat:@" chevron=%p (%p)", self->_chevron, self->_chevronConstraints];
+    [string appendFormat:@" chevron=%p (%p)", self->_chevron, self->_chevronConstraints];
   }
 
   titleMenuProvider = self->_titleMenuProvider;
   if (titleMenuProvider)
   {
     v8 = _Block_copy(titleMenuProvider);
-    [v3 appendFormat:@" titleMenuProvider=%p", v8];
+    [string appendFormat:@" titleMenuProvider=%p", v8];
   }
 
   if (self->_documentProperties)
   {
-    [v3 appendFormat:@" documentProperties=%p", self->_documentProperties];
+    [string appendFormat:@" documentProperties=%p", self->_documentProperties];
   }
 
-  return v3;
+  return string;
 }
 
-- (CGSize)availableSizeForAdaptor:(id)a3 proposedSize:(CGSize)result
+- (CGSize)availableSizeForAdaptor:(id)adaptor proposedSize:(CGSize)result
 {
   titleLayoutGuide = self->_titleLayoutGuide;
   if (titleLayoutGuide)
   {
-    [(UILayoutGuide *)titleLayoutGuide layoutFrame:a3];
+    [(UILayoutGuide *)titleLayoutGuide layoutFrame:adaptor];
     v7 = v6;
     height = v8;
     [(UILayoutGuide *)self->_chevronGuide layoutFrame];
@@ -1129,10 +1129,10 @@ LABEL_9:
   return result;
 }
 
-+ (id)titleMenuSuggestedActionsWithDocumentFileURL:(id)a3
++ (id)titleMenuSuggestedActionsWithDocumentFileURL:(id)l
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v15 = [_UIReturnToDocumentAction actionWithFileURL:a3];
+  v15 = [_UIReturnToDocumentAction actionWithFileURL:l];
   v18[0] = v15;
   v3 = 0x1E70E9000;
   v14 = [UICommand _defaultCommandForAction:sel_duplicate_];
@@ -1146,8 +1146,8 @@ LABEL_9:
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
   v8 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.document" children:v7];
   v18[1] = v8;
-  v9 = [UIApp _supportsPrintCommand];
-  if (v9)
+  _supportsPrintCommand = [UIApp _supportsPrintCommand];
+  if (_supportsPrintCommand)
   {
     v3 = [UICommand _defaultCommandForAction:sel_print_];
     v16 = v3;
@@ -1163,24 +1163,24 @@ LABEL_9:
   v18[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
 
-  if (v9)
+  if (_supportsPrintCommand)
   {
   }
 
   return v12;
 }
 
-- (id)_contextMenuInteraction:(id)a3 overrideSuggestedActionsForConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction overrideSuggestedActionsForConfiguration:(id)configuration
 {
-  v4 = [(UIDocumentProperties *)self->_documentProperties _representedURL:a3];
+  v4 = [(UIDocumentProperties *)self->_documentProperties _representedURL:interaction];
   v5 = [_UINavigationBarTitleControl titleMenuSuggestedActionsWithDocumentFileURL:v4];
 
   return v5;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = _Block_copy(self->_titleMenuProvider);
   v7 = self->_documentProperties;
   if (v6 | v7)
@@ -1191,15 +1191,15 @@ LABEL_9:
     v16 = &unk_1E71063C8;
     v20 = v6;
     v17 = v7;
-    v18 = self;
-    v19 = v5;
+    selfCopy = self;
+    v19 = interactionCopy;
     v8 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:&v13];
     [v8 setPreferredMenuElementOrder:{2, v13, v14, v15, v16}];
-    v9 = [(UIView *)self nextResponder];
-    v10 = _UITreeFindFirstAncestorMatchingCondition(v9, sel_nextResponder, &__block_literal_global_185);
+    nextResponder = [(UIView *)self nextResponder];
+    v10 = _UITreeFindFirstAncestorMatchingCondition(nextResponder, sel_nextResponder, &__block_literal_global_185);
 
-    v11 = [v10 topViewController];
-    [v8 setFirstResponderTarget:v11];
+    topViewController = [v10 topViewController];
+    [v8 setFirstResponderTarget:topViewController];
   }
 
   else
@@ -1210,13 +1210,13 @@ LABEL_9:
   return v8;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   visualProvider = self->_visualProvider;
   if (visualProvider)
   {
-    [(_UINavigationBarTitleControlVisualProvider *)visualProvider menuAttachmentPointForConfiguration:v4];
+    [(_UINavigationBarTitleControlVisualProvider *)visualProvider menuAttachmentPointForConfiguration:configurationCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -1246,9 +1246,9 @@ LABEL_9:
     v24 = v16 + v19;
     v26 = v17 - (v21 + v25);
     v28 = v18 - (v19 + v27);
-    v29 = [(UIView *)self _window];
-    [(UIView *)self convertRect:v29 toView:v23, v24, v26, v28];
-    v7 = v22 + _UIControlMenuAttachmentPointForRectInContainer(v29, v30, v31, v32, v33);
+    _window = [(UIView *)self _window];
+    [(UIView *)self convertRect:_window toView:v23, v24, v26, v28];
+    v7 = v22 + _UIControlMenuAttachmentPointForRectInContainer(_window, v30, v31, v32, v33);
     v9 = v20 + v34;
   }
 
@@ -1259,11 +1259,11 @@ LABEL_9:
   return result;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = _UINavigationBarTitleControl;
-  v5 = [(UIControl *)&v8 _contextMenuInteraction:a3 styleForMenuWithConfiguration:a4];
+  v5 = [(UIControl *)&v8 _contextMenuInteraction:interaction styleForMenuWithConfiguration:configuration];
   [v5 setInputViewVisibility:1];
   visualProvider = self->_visualProvider;
   if (visualProvider)
@@ -1283,10 +1283,10 @@ LABEL_9:
   }
 
   v4 = titleView;
-  v5 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
   v6 = 0;
-  if (v5 && v4)
+  if (window && v4)
   {
     v7 = objc_opt_new();
     v8 = +[UIColor clearColor];
@@ -1298,9 +1298,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if ([(_UINavigationBarTitleControl *)self _inactiveForPointer])
   {
     v7 = 0;
@@ -1317,13 +1317,13 @@ LABEL_9:
     v16 = v12;
     if (isKindOfClass)
     {
-      [v6 createRegionFromRect:self targetView:@"com.apple.UIKit._UINavigationBarTitleControl" identifier:0 selected:{v9, v10, v11, v12}];
+      [interactionCopy createRegionFromRect:self targetView:@"com.apple.UIKit._UINavigationBarTitleControl" identifier:0 selected:{v9, v10, v11, v12}];
     }
 
     else
     {
-      v17 = [v6 view];
-      [(UIView *)self convertRect:v17 toView:v13, v14, v15, v16];
+      view = [interactionCopy view];
+      [(UIView *)self convertRect:view toView:v13, v14, v15, v16];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -1337,12 +1337,12 @@ LABEL_9:
   return v7;
 }
 
-- (id)pointerShapeInContainer:(id)a3
+- (id)pointerShapeInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   if (self->_visualProvider && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(_UINavigationBarTitleControlVisualProvider *)self->_visualProvider pointerShapeInContainer:v4];
+    v5 = [(_UINavigationBarTitleControlVisualProvider *)self->_visualProvider pointerShapeInContainer:containerCopy];
     goto LABEL_21;
   }
 
@@ -1411,12 +1411,12 @@ LABEL_10:
   v50.size.height = height;
   v25 = CGRectGetWidth(v50);
   v26 = +[_UIPointerSettingsDomain rootSettings];
-  v27 = [v26 navigationAndToolbarSettings];
+  navigationAndToolbarSettings = [v26 navigationAndToolbarSettings];
 
-  [v27 titleControlPadding];
+  [navigationAndToolbarSettings titleControlPadding];
   v29 = MinX - v28;
   v30 = v25 + v28 + v28;
-  [v27 buttonMinimumHeight];
+  [navigationAndToolbarSettings buttonMinimumHeight];
   v32 = v7 - (v31 - v9) * 0.5;
   if (v9 < v31)
   {
@@ -1424,7 +1424,7 @@ LABEL_10:
     v7 = v32;
   }
 
-  [v27 buttonMinimumWidth];
+  [navigationAndToolbarSettings buttonMinimumWidth];
   if (v30 >= v33)
   {
     v34 = v30;
@@ -1445,12 +1445,12 @@ LABEL_10:
     v35 = v29 - (v33 - v30) * 0.5;
   }
 
-  [(UIView *)self convertRect:v4 toView:v35, v7, v34, v9];
+  [(UIView *)self convertRect:containerCopy toView:v35, v7, v34, v9];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  [v27 buttonCornerRadius];
+  [navigationAndToolbarSettings buttonCornerRadius];
   v5 = [UIPointerShape shapeWithRoundedRect:v37 cornerRadius:v39, v41, v43, v44];
 
 LABEL_21:
@@ -1458,15 +1458,15 @@ LABEL_21:
   return v5;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(UIView *)self center];
-    v7 = [v5 createPreviewTargetForView:self center:?];
+    v7 = [interactionCopy createPreviewTargetForView:self center:?];
     v8 = [[UITargetedPreview alloc] initWithView:self parameters:v6 target:v7];
   }
 
@@ -1475,9 +1475,9 @@ LABEL_21:
     v8 = [[UITargetedPreview alloc] initWithView:self parameters:v6];
   }
 
-  v9 = [(UITargetedPreview *)v8 target];
-  v10 = [v9 container];
-  v11 = [(_UINavigationBarTitleControl *)self pointerShapeInContainer:v10];
+  target = [(UITargetedPreview *)v8 target];
+  container = [target container];
+  v11 = [(_UINavigationBarTitleControl *)self pointerShapeInContainer:container];
 
   v12 = [(UIPointerEffect *)UIPointerHighlightEffect effectWithPreview:v8];
   v13 = [UIPointerStyle styleWithEffect:v12 shape:v11];
@@ -1487,8 +1487,8 @@ LABEL_21:
 
 - (id)_preferredSender
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     do
     {
@@ -1498,15 +1498,15 @@ LABEL_21:
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (UIEdgeInsets)menuAlignmentInsets

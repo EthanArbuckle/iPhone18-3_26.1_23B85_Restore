@@ -1,12 +1,12 @@
 @interface PXCPLCloudQuotaSource
 + (id)_placement;
 - (PXCPLCloudQuotaSource)init;
-- (void)_handleInAppMessage:(id)a3;
-- (void)currentInAppMessageDidChange:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_handleInAppMessage:(id)message;
+- (void)currentInAppMessageDidChange:(id)change;
+- (void)setActionTitle:(id)title;
+- (void)setState:(int64_t)state;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXCPLCloudQuotaSource
@@ -21,7 +21,7 @@
     return v2;
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -44,7 +44,7 @@
   _Block_object_dispose(&v21, 8);
   if (v4)
   {
-    [v3 addObserver:v2 selector:sel_currentInAppMessageDidChange_ name:*v4 object:0];
+    [defaultCenter addObserver:v2 selector:sel_currentInAppMessageDidChange_ name:*v4 object:0];
 
     v21 = 0;
     v22 = &v21;
@@ -64,26 +64,26 @@
 
     v8 = v7;
     _Block_object_dispose(&v21, 8);
-    v9 = [v7 shared];
+    shared = [v7 shared];
     v10 = *MEMORY[0x1E69BFF18];
-    v11 = [objc_opt_class() _placement];
-    [v9 observeUpdatesForBundleID:v10 placement:v11];
+    _placement = [objc_opt_class() _placement];
+    [shared observeUpdatesForBundleID:v10 placement:_placement];
 
     return v2;
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQCurrentInAppMessageChangedNotification(void)"];
-  [v13 handleFailureInFunction:v14 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:26 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v14 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:26 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (void)currentInAppMessageDidChange:(id)a3
+- (void)currentInAppMessageDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -100,33 +100,33 @@
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v8 = [v5 objectForKeyedSubscript:*v6];
+    v8 = [userInfo objectForKeyedSubscript:*v6];
 
     [(PXCPLCloudQuotaSource *)self _handleInAppMessage:v8];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQInAppMessageKey(void)"];
-    [v9 handleFailureInFunction:v10 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:28 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)_handleInAppMessage:(id)a3
+- (void)_handleInAppMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 reason];
-  PXCPLCloudQuotaStateForReason(v5);
+  messageCopy = message;
+  reason = [messageCopy reason];
+  PXCPLCloudQuotaStateForReason(reason);
   v7 = v6;
   if (v6)
   {
-    v8 = [v4 title];
-    if ([v8 length])
+    title = [messageCopy title];
+    if ([title length])
     {
-      v9 = v8;
+      v9 = title;
     }
 
     else
@@ -134,10 +134,10 @@
       v9 = 0;
     }
 
-    v13 = [v4 subTitle];
-    if ([v13 length])
+    subTitle = [messageCopy subTitle];
+    if ([subTitle length])
     {
-      v12 = v13;
+      v12 = subTitle;
     }
 
     else
@@ -145,13 +145,13 @@
       v12 = 0;
     }
 
-    v14 = [v4 actions];
-    v11 = [v14 firstObject];
+    actions = [messageCopy actions];
+    firstObject = [actions firstObject];
 
-    v15 = [v11 title];
-    if ([v15 length])
+    title2 = [firstObject title];
+    if ([title2 length])
     {
-      v10 = v15;
+      v10 = title2;
     }
 
     else
@@ -163,7 +163,7 @@
   else
   {
     v10 = 0;
-    v11 = 0;
+    firstObject = 0;
     v12 = 0;
     v9 = 0;
   }
@@ -176,9 +176,9 @@
   v21 = v9;
   v22 = v12;
   v23 = v10;
-  v24 = v5;
+  v24 = reason;
   v25 = v7;
-  v16 = v5;
+  v16 = reason;
   v17 = v10;
   v18 = v12;
   v19 = v9;
@@ -267,78 +267,78 @@ LABEL_14:
   }
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = titleCopy;
   actionTitle = self->_actionTitle;
-  if (actionTitle != v9)
+  if (actionTitle != titleCopy)
   {
-    v6 = [(NSString *)actionTitle isEqualToString:v9];
-    v4 = v9;
+    v6 = [(NSString *)actionTitle isEqualToString:titleCopy];
+    v4 = titleCopy;
     if (!v6)
     {
-      v7 = [(NSString *)v9 copy];
+      v7 = [(NSString *)titleCopy copy];
       v8 = self->_actionTitle;
       self->_actionTitle = v7;
 
       [(PXCPLCloudQuotaSource *)self signalChange:8];
-      v4 = v9;
+      v4 = titleCopy;
     }
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v9 = a3;
+  subtitleCopy = subtitle;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = subtitleCopy;
   subtitle = self->_subtitle;
-  if (subtitle != v9)
+  if (subtitle != subtitleCopy)
   {
-    v6 = [(NSString *)subtitle isEqualToString:v9];
-    v4 = v9;
+    v6 = [(NSString *)subtitle isEqualToString:subtitleCopy];
+    v4 = subtitleCopy;
     if (!v6)
     {
-      v7 = [(NSString *)v9 copy];
+      v7 = [(NSString *)subtitleCopy copy];
       v8 = self->_subtitle;
       self->_subtitle = v7;
 
       [(PXCPLCloudQuotaSource *)self signalChange:4];
-      v4 = v9;
+      v4 = subtitleCopy;
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = v9;
+  v4 = titleCopy;
   title = self->_title;
-  if (title != v9)
+  if (title != titleCopy)
   {
-    v6 = [(NSString *)title isEqualToString:v9];
-    v4 = v9;
+    v6 = [(NSString *)title isEqualToString:titleCopy];
+    v4 = titleCopy;
     if (!v6)
     {
-      v7 = [(NSString *)v9 copy];
+      v7 = [(NSString *)titleCopy copy];
       v8 = self->_title;
       self->_title = v7;
 
       [(PXCPLCloudQuotaSource *)self signalChange:2];
-      v4 = v9;
+      v4 = titleCopy;
     }
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
 
     [(PXCPLCloudQuotaSource *)self signalChange:1];
   }
@@ -369,9 +369,9 @@ LABEL_14:
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQUIMessagePlacementInApp(void)"];
-    [v6 handleFailureInFunction:v7 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"PXCPLCloudQuotaSourceUtilities.h" lineNumber:30 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

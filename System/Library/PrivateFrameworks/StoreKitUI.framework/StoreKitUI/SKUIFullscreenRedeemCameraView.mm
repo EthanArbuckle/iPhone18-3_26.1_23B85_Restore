@@ -1,28 +1,28 @@
 @interface SKUIFullscreenRedeemCameraView
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SKUIFullscreenRedeemCameraView)initWithClientContext:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SKUIFullscreenRedeemCameraView)initWithClientContext:(id)context;
 - (SKUIRedeemCameraViewDelegate)delegate;
-- (id)_newTextFieldWithClientContext:(id)a3;
+- (id)_newTextFieldWithClientContext:(id)context;
 - (void)_pauseRedeemer;
 - (void)_resumeRedeemer;
 - (void)dealloc;
-- (void)keyboardDidHide:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardDidHide:(id)hide;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setText:(id)text;
 - (void)start;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)textFieldTextDidChange:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)textFieldTextDidChange:(id)change;
 @end
 
 @implementation SKUIFullscreenRedeemCameraView
 
-- (SKUIFullscreenRedeemCameraView)initWithClientContext:(id)a3
+- (SKUIFullscreenRedeemCameraView)initWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIFullscreenRedeemCameraView initWithClientContext:];
@@ -38,14 +38,14 @@
     v5->_textFieldSafeAreaBackdrop = v6;
 
     [(SKUIFullscreenRedeemCameraView *)v5 addSubview:v5->_textFieldSafeAreaBackdrop];
-    v8 = [(SKUIFullscreenRedeemCameraView *)v5 _newTextFieldWithClientContext:v4];
+    v8 = [(SKUIFullscreenRedeemCameraView *)v5 _newTextFieldWithClientContext:contextCopy];
     textField = v5->_textField;
     v5->_textField = v8;
 
     [(SKUIRedeemTextField *)v5->_textField setDelegate:v5];
     v10 = v5->_textField;
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIRedeemTextField *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIRedeemTextField *)v10 setBackgroundColor:clearColor];
 
     [(SKUIRedeemTextField *)v5->_textField setOpaque:0];
     [(SKUIFullscreenRedeemCameraView *)v5 addSubview:v5->_textField];
@@ -61,12 +61,12 @@
 
     [(UIView *)v5->_overlay setAlpha:0.0];
     [(UIView *)v5->_overlay addGestureRecognizer:v12];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v5 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v17 addObserver:v5 selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
-    [v17 addObserver:v5 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
-    [v17 addObserver:v5 selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
-    [v17 addObserver:v5 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v5 selector:sel_keyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+    [defaultCenter addObserver:v5 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v5 selector:sel_keyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+    [defaultCenter addObserver:v5 selector:sel_textFieldTextDidChange_ name:*MEMORY[0x277D770B0] object:v5->_textField];
     v5->_enabled = 1;
   }
 
@@ -75,12 +75,12 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770B0] object:0];
   [(SKUIRedeemTextField *)self->_textField setDelegate:0];
 
   v4.receiver = self;
@@ -88,22 +88,22 @@
   [(SKUIFullscreenRedeemCameraView *)&v4 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   textField = self->_textField;
-  v5 = a3;
-  [(SKUIRedeemTextField *)textField setText:v5];
+  textCopy = text;
+  [(SKUIRedeemTextField *)textField setText:textCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:v5];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:textCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     textField = self->_textField;
-    if (a3)
+    if (enabled)
     {
       [MEMORY[0x277D75348] blackColor];
     }
@@ -175,20 +175,20 @@
   [(_UIBackdropView *)v15 setFrame:0.0, v17, v18, v16];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0;
   v14 = 0.0;
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 getValue:&v15];
 
-  v6 = [v4 objectForKey:*MEMORY[0x277D76B70]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
   [v6 getValue:&v13];
 
-  v7 = [v4 objectForKey:*MEMORY[0x277D76B78]];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
   [v7 getValue:&v14];
 
   [(SKUIFullscreenRedeemCameraView *)self convertRect:0 fromView:v15, v16];
@@ -219,20 +219,20 @@ uint64_t __51__SKUIFullscreenRedeemCameraView_keyboardWillShow___block_invoke(ui
   return [v6 setFrame:{0.0, v7}];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0;
   v14 = 0.0;
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [hide userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 getValue:&v15];
 
-  v6 = [v4 objectForKey:*MEMORY[0x277D76B70]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
   [v6 getValue:&v13];
 
-  v7 = [v4 objectForKey:*MEMORY[0x277D76B78]];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
   [v7 getValue:&v14];
 
   [(SKUIFullscreenRedeemCameraView *)self convertRect:0 fromView:v15, v16];
@@ -265,29 +265,29 @@ uint64_t __51__SKUIFullscreenRedeemCameraView_keyboardWillHide___block_invoke(ui
   return [v8 setFrame:{0.0, v9}];
 }
 
-- (void)keyboardDidHide:(id)a3
+- (void)keyboardDidHide:(id)hide
 {
   v3 = *(MEMORY[0x277CBF3A0] + 16);
   self->_keyboardRect.origin = *MEMORY[0x277CBF3A0];
   self->_keyboardRect.size = v3;
 }
 
-- (void)textFieldTextDidChange:(id)a3
+- (void)textFieldTextDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(SKUIRedeemTextField *)self->_textField text];
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:v4];
+  text = [(SKUIRedeemTextField *)self->_textField text];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidChange:text];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   [(SKUIFullscreenRedeemCameraView *)self insertSubview:self->_overlay belowSubview:self->_textField];
   overlay = self->_overlay;
   [(SKUIFullscreenRedeemCameraView *)self bounds];
   [(UIView *)overlay setFrame:?];
   v5 = self->_overlay;
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v5 setBackgroundColor:blackColor];
 
   [(UIView *)self->_overlay setAlpha:0.0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -299,17 +299,17 @@ uint64_t __51__SKUIFullscreenRedeemCameraView_keyboardWillHide___block_invoke(ui
   [(SKUIFullscreenRedeemCameraView *)self _pauseRedeemer];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v4 text];
+  text = [returnCopy text];
 
-  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:v6];
+  [WeakRetained SKUIRedeemCameraView:self textFieldDidRedeem:text];
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -330,18 +330,18 @@ uint64_t __51__SKUIFullscreenRedeemCameraView_keyboardWillHide___block_invoke(ui
   }
 }
 
-- (id)_newTextFieldWithClientContext:(id)a3
+- (id)_newTextFieldWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[SKUIRedeemTextField alloc] initWithFrame:0.0, 0.0, 1.0, 44.0];
   [(SKUIRedeemTextField *)v5 setSuppressBorder:1];
   [(SKUIRedeemTextField *)v5 setAutocorrectionType:1];
   [(SKUIRedeemTextField *)v5 setAutocapitalizationType:3];
   v6 = [MEMORY[0x277D74300] systemFontOfSize:16.0];
   [(SKUIRedeemTextField *)v5 setFont:v6];
-  if (v4)
+  if (contextCopy)
   {
-    [v4 localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
+    [contextCopy localizedStringForKey:@"CAMERA_REDEEM_ENTER_CODE" inTable:@"Redeem"];
   }
 
   else
@@ -351,11 +351,11 @@ uint64_t __51__SKUIFullscreenRedeemCameraView_keyboardWillHide___block_invoke(ui
   v7 = ;
   v8 = objc_alloc(MEMORY[0x277CBEAC0]);
   v9 = *MEMORY[0x277D740A8];
-  v10 = [(SKUIFullscreenRedeemCameraView *)self tintColor];
-  v11 = v10;
-  if (v10)
+  tintColor = [(SKUIFullscreenRedeemCameraView *)self tintColor];
+  v11 = tintColor;
+  if (tintColor)
   {
-    v12 = [v8 initWithObjectsAndKeys:{v6, v9, v10, *MEMORY[0x277D740C0], 0}];
+    v12 = [v8 initWithObjectsAndKeys:{v6, v9, tintColor, *MEMORY[0x277D740C0], 0}];
   }
 
   else

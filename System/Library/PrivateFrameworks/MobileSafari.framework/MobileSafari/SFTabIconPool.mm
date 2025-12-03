@@ -1,29 +1,29 @@
 @interface SFTabIconPool
 - (SFTabIconPool)init;
-- (SFTabIconPool)initWithSiteMetadataManager:(id)a3;
+- (SFTabIconPool)initWithSiteMetadataManager:(id)manager;
 - (id)existingIconProvider;
 - (id)extensionIconProvider;
-- (id)makeRegistrationForIdentifier:(id)a3;
+- (id)makeRegistrationForIdentifier:(id)identifier;
 - (id)urlProvider;
-- (void)iconDidChangeForIdentifier:(id)a3;
-- (void)setExistingIconProvider:(id)a3;
-- (void)setExtensionIconProvider:(id)a3;
-- (void)setUrlProvider:(id)a3;
+- (void)iconDidChangeForIdentifier:(id)identifier;
+- (void)setExistingIconProvider:(id)provider;
+- (void)setExtensionIconProvider:(id)provider;
+- (void)setUrlProvider:(id)provider;
 @end
 
 @implementation SFTabIconPool
 
-- (SFTabIconPool)initWithSiteMetadataManager:(id)a3
+- (SFTabIconPool)initWithSiteMetadataManager:(id)manager
 {
-  v3 = a3;
-  v4 = sub_18B7B0E34(v3);
+  managerCopy = manager;
+  v4 = sub_18B7B0E34(managerCopy);
 
   return v4;
 }
 
-- (void)setExistingIconProvider:(id)a3
+- (void)setExistingIconProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___SFTabIconPool_wrapped);
@@ -31,9 +31,9 @@
   *(v6 + 24) = v5;
 }
 
-- (void)setUrlProvider:(id)a3
+- (void)setUrlProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___SFTabIconPool_wrapped);
@@ -41,9 +41,9 @@
   *(v6 + 56) = v5;
 }
 
-- (void)setExtensionIconProvider:(id)a3
+- (void)setExtensionIconProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___SFTabIconPool_wrapped);
@@ -51,14 +51,14 @@
   *(v6 + 40) = v5;
 }
 
-- (void)iconDidChangeForIdentifier:(id)a3
+- (void)iconDidChangeForIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   sub_18BC1E1A8();
   sub_18B80F8C4(v7);
   if (sub_18B80FBA8(v7))
@@ -118,14 +118,14 @@
   return v4;
 }
 
-- (id)makeRegistrationForIdentifier:(id)a3
+- (id)makeRegistrationForIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_18B9991F4(v7);
 
   (*(v5 + 8))(v7, v4);

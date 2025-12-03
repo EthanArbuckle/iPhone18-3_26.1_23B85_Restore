@@ -1,14 +1,14 @@
 @interface NUChannelElementFormat
-- (BOOL)canSpecializeFormat:(id)a3;
-- (BOOL)isCompatibleWithChannelFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)canSpecializeFormat:(id)format;
+- (BOOL)isCompatibleWithChannelFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (BOOL)isGeneric;
 - (NUChannelElementFormat)init;
-- (NUChannelElementFormat)initWithRepresentedFormat:(id)a3;
+- (NUChannelElementFormat)initWithRepresentedFormat:(id)format;
 - (id)debugDescription;
 - (id)description;
-- (id)specializedWithFormat:(id)a3;
-- (id)subchannelFormatForKey:(id)a3;
+- (id)specializedWithFormat:(id)format;
+- (id)subchannelFormatForKey:(id)key;
 - (id)subchannelKeys;
 - (unint64_t)hash;
 @end
@@ -19,8 +19,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelElementFormat *)self representedFormat];
-  v6 = [v5 description];
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v6 = [representedFormat description];
   v7 = [v3 stringWithFormat:@"<%@:%p element:%@>", v4, self, v6];
 
   return v7;
@@ -29,76 +29,76 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelElementFormat *)self representedFormat];
-  v4 = [v3 description];
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v4 = [representedFormat description];
   v5 = [v2 stringWithFormat:@"{%@}", v4];
 
   return v5;
 }
 
-- (id)subchannelFormatForKey:(id)a3
+- (id)subchannelFormatForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NUChannelElementFormat *)self representedFormat];
-  v6 = [v5 subchannelFormatForKey:v4];
+  keyCopy = key;
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v6 = [representedFormat subchannelFormatForKey:keyCopy];
 
   return v6;
 }
 
 - (id)subchannelKeys
 {
-  v2 = [(NUChannelElementFormat *)self representedFormat];
-  v3 = [v2 subchannelKeys];
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  subchannelKeys = [representedFormat subchannelKeys];
 
-  return v3;
+  return subchannelKeys;
 }
 
-- (id)specializedWithFormat:(id)a3
+- (id)specializedWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(NUChannelElementFormat *)self representedFormat];
-  v6 = [v5 specializedWithFormat:v4];
+  formatCopy = format;
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v6 = [representedFormat specializedWithFormat:formatCopy];
 
   v7 = [[NUChannelElementFormat alloc] initWithRepresentedFormat:v6];
 
   return v7;
 }
 
-- (BOOL)canSpecializeFormat:(id)a3
+- (BOOL)canSpecializeFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(NUChannelElementFormat *)self representedFormat];
-  v6 = [v5 canSpecializeFormat:v4];
+  formatCopy = format;
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v6 = [representedFormat canSpecializeFormat:formatCopy];
 
   return v6;
 }
 
 - (BOOL)isGeneric
 {
-  v2 = [(NUChannelElementFormat *)self representedFormat];
-  v3 = [v2 isGeneric];
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  isGeneric = [representedFormat isGeneric];
 
-  return v3;
+  return isGeneric;
 }
 
-- (BOOL)isCompatibleWithChannelFormat:(id)a3
+- (BOOL)isCompatibleWithChannelFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(NUChannelElementFormat *)self representedFormat];
-  v6 = [v5 isCompatibleWithChannelFormat:v4];
+  formatCopy = format;
+  representedFormat = [(NUChannelElementFormat *)self representedFormat];
+  v6 = [representedFormat isCompatibleWithChannelFormat:formatCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 representedFormat];
-    v6 = [(NUChannelElementFormat *)self representedFormat];
-    v7 = [v5 isEqualToChannelFormat:v6];
+    representedFormat = [formatCopy representedFormat];
+    representedFormat2 = [(NUChannelElementFormat *)self representedFormat];
+    v7 = [representedFormat isEqualToChannelFormat:representedFormat2];
   }
 
   else
@@ -117,11 +117,11 @@
   return (0xDB57D8CCADLL * [(NUChannelFormat *)self->_representedFormat hash]) ^ v3;
 }
 
-- (NUChannelElementFormat)initWithRepresentedFormat:(id)a3
+- (NUChannelElementFormat)initWithRepresentedFormat:(id)format
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v9 = NUAssertLogger_4187();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -142,8 +142,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -154,8 +154,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -164,7 +164,7 @@
     _NUAssertFailHandler("[NUChannelElementFormat initWithRepresentedFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1842, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "representedFormat != nil");
   }
 
-  v5 = v4;
+  v5 = formatCopy;
   v25.receiver = self;
   v25.super_class = NUChannelElementFormat;
   v6 = [(NUChannelElementFormat *)&v25 init];
@@ -220,8 +220,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -237,8 +237,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

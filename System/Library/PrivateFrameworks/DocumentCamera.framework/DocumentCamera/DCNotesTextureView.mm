@@ -1,17 +1,17 @@
 @interface DCNotesTextureView
 - (CGSize)phase;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation DCNotesTextureView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v6 = [MEMORY[0x277D75348] colorWithPatternImage:v4];
+  imageCopy = image;
+  v6 = [MEMORY[0x277D75348] colorWithPatternImage:imageCopy];
   [(DCNotesTextureView *)self setBackgroundColor:v6];
   image = self->_image;
-  self->_image = v4;
+  self->_image = imageCopy;
 }
 
 - (CGSize)phase

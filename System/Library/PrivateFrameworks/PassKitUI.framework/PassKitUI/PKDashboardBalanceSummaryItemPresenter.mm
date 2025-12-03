@@ -1,41 +1,41 @@
 @interface PKDashboardBalanceSummaryItemPresenter
-- (BOOL)_statementIsFromMonthPriorToSummaryForItem:(id)a3;
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)_statementIsFromMonthPriorToSummaryForItem:(id)item;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardBalanceSummaryItemPresenter)init;
 - (id)_createPreviewController;
-- (id)_formattedCurrencyAmountWithPlusIfNeeded:(id)a3;
-- (id)_readableFileTypeForFormat:(id)a3 feature:(unint64_t)a4;
+- (id)_formattedCurrencyAmountWithPlusIfNeeded:(id)needed;
+- (id)_readableFileTypeForFormat:(id)format feature:(unint64_t)feature;
 - (id)_spinnerAccessory;
-- (id)_statementCellTitleForItem:(id)a3;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)_statementCellTitleForItem:(id)item;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)provideDataForItem:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)provideDataForItem:(id)item;
 - (id)statementIcon;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 forSizing:(BOOL)a7;
-- (void)_configureCellForReuse:(id)a3;
-- (void)_configureDailyCashCell:(id)a3 forItem:(id)a4;
-- (void)_configureExportStatementDataCell:(id)a3 forItem:(id)a4;
-- (void)_configureInstallmentBalanceCell:(id)a3 forItem:(id)a4;
-- (void)_configureInterestCell:(id)a3 forItem:(id)a4;
-- (void)_configureMergeBalanceCell:(id)a3 forItem:(id)a4;
-- (void)_configureMergeNoticeCell:(id)a3 forItem:(id)a4;
-- (void)_configureMonthlySpendLimitCell:(id)a3 forItem:(id)a4;
-- (void)_configurePaymentsAndCreditsCell:(id)a3 forItem:(id)a4;
-- (void)_configurePriorStatementBalanceCell:(id)a3 forItem:(id)a4;
-- (void)_configureRewardsSummaryCell:(id)a3 forItem:(id)a4;
-- (void)_configureSpendingCell:(id)a3 forItem:(id)a4;
-- (void)_configureStatementBalanceCell:(id)a3 forItem:(id)a4;
-- (void)_configureStatementCell:(id)a3 forItem:(id)a4;
-- (void)_configureStatementDownloadCell:(id)a3 forItem:(id)a4;
-- (void)_configureTotalBalanceCell:(id)a3 forItem:(id)a4;
-- (void)_configureTransactionLimitCell:(id)a3 forItem:(id)a4;
-- (void)_downloadAndPresentStatementForItem:(id)a3 inCollectionView:(id)a4;
-- (void)_downloadExportedStatementDataForItem:(id)a3 withFileFormat:(id)a4 atIndexPath:(id)a5 inCollectionView:(id)a6;
-- (void)_selectFileFormatForExportedStatementDataForItem:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path forSizing:(BOOL)sizing;
+- (void)_configureCellForReuse:(id)reuse;
+- (void)_configureDailyCashCell:(id)cell forItem:(id)item;
+- (void)_configureExportStatementDataCell:(id)cell forItem:(id)item;
+- (void)_configureInstallmentBalanceCell:(id)cell forItem:(id)item;
+- (void)_configureInterestCell:(id)cell forItem:(id)item;
+- (void)_configureMergeBalanceCell:(id)cell forItem:(id)item;
+- (void)_configureMergeNoticeCell:(id)cell forItem:(id)item;
+- (void)_configureMonthlySpendLimitCell:(id)cell forItem:(id)item;
+- (void)_configurePaymentsAndCreditsCell:(id)cell forItem:(id)item;
+- (void)_configurePriorStatementBalanceCell:(id)cell forItem:(id)item;
+- (void)_configureRewardsSummaryCell:(id)cell forItem:(id)item;
+- (void)_configureSpendingCell:(id)cell forItem:(id)item;
+- (void)_configureStatementBalanceCell:(id)cell forItem:(id)item;
+- (void)_configureStatementCell:(id)cell forItem:(id)item;
+- (void)_configureStatementDownloadCell:(id)cell forItem:(id)item;
+- (void)_configureTotalBalanceCell:(id)cell forItem:(id)item;
+- (void)_configureTransactionLimitCell:(id)cell forItem:(id)item;
+- (void)_downloadAndPresentStatementForItem:(id)item inCollectionView:(id)view;
+- (void)_downloadExportedStatementDataForItem:(id)item withFileFormat:(id)format atIndexPath:(id)path inCollectionView:(id)view;
+- (void)_selectFileFormatForExportedStatementDataForItem:(id)item atIndexPath:(id)path inCollectionView:(id)view;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardBalanceSummaryItemPresenter
@@ -88,120 +88,120 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 type];
-  if (v11 > 0x14)
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type > 0x14)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = off_1E8013628[v11];
+    v12 = off_1E8013628[type];
   }
 
-  v13 = [v9 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v8];
-  [(PKDashboardBalanceSummaryItemPresenter *)self _configureCell:v13 forItem:v10 inCollectionView:v9 forIndexPath:v8 forSizing:0];
+  v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
+  [(PKDashboardBalanceSummaryItemPresenter *)self _configureCell:v13 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy forSizing:0];
 
   return v13;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v42 = v11;
-  v15 = [v42 transactionGroup];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  controllerCopy = controller;
+  v42 = itemCopy;
+  transactionGroup = [v42 transactionGroup];
 
-  if (v15)
+  if (transactionGroup)
   {
     v16 = [PKTransactionHistoryViewController alloc];
-    v17 = [v42 transactionGroup];
-    v18 = [v42 transactionSourceCollection];
-    v19 = [v42 familyCollection];
-    v20 = [v42 account];
-    v21 = [v42 accountUserCollection];
-    v22 = [v42 physicalCards];
-    v23 = [(PKTransactionHistoryViewController *)v16 initWithTransactionGroup:v17 transactionSourceCollection:v18 familyCollection:v19 account:v20 accountUserCollection:v21 physicalCards:v22 fetcher:0 detailViewStyle:0];
+    transactionGroup2 = [v42 transactionGroup];
+    transactionSourceCollection = [v42 transactionSourceCollection];
+    familyCollection = [v42 familyCollection];
+    account = [v42 account];
+    accountUserCollection = [v42 accountUserCollection];
+    physicalCards = [v42 physicalCards];
+    v23 = [(PKTransactionHistoryViewController *)v16 initWithTransactionGroup:transactionGroup2 transactionSourceCollection:transactionSourceCollection familyCollection:familyCollection account:account accountUserCollection:accountUserCollection physicalCards:physicalCards fetcher:0 detailViewStyle:0];
 
-    if ([v14 pk_settings_useStateDrivenNavigation])
+    if ([controllerCopy pk_settings_useStateDrivenNavigation])
     {
-      [v14 pk_settings_pushViewController:v23];
+      [controllerCopy pk_settings_pushViewController:v23];
     }
 
     else
     {
-      [v14 pushViewController:v23 animated:1];
+      [controllerCopy pushViewController:v23 animated:1];
     }
   }
 
   else if ([v42 type] == 2 || !objc_msgSend(v42, "type"))
   {
-    v40 = v13;
-    v41 = v12;
+    v40 = pathCopy;
+    v41 = viewCopy;
     v24 = v42;
     v38 = [PKCreditBalanceDetailsViewController alloc];
-    v39 = self;
+    selfCopy = self;
     cellStyle = self->_cellStyle;
-    v36 = [v24 transactionSourceCollection];
-    v25 = [v24 familyCollection];
-    v26 = [v24 webService];
-    v27 = [v24 account];
-    v28 = [v24 accountUserCollection];
-    v29 = [v24 physicalCards];
-    v30 = [v24 statement];
-    v31 = [v24 statements];
-    v32 = v26;
-    v33 = [(PKCreditBalanceDetailsViewController *)v38 initWithStyle:cellStyle transactionSourceCollection:v36 familyCollection:v25 webService:v26 account:v27 accountUserCollection:v28 physicalCards:v29 statement:v30 previousStatements:v31];
+    transactionSourceCollection2 = [v24 transactionSourceCollection];
+    familyCollection2 = [v24 familyCollection];
+    webService = [v24 webService];
+    account2 = [v24 account];
+    accountUserCollection2 = [v24 accountUserCollection];
+    physicalCards2 = [v24 physicalCards];
+    statement = [v24 statement];
+    statements = [v24 statements];
+    v32 = webService;
+    v33 = [(PKCreditBalanceDetailsViewController *)v38 initWithStyle:cellStyle transactionSourceCollection:transactionSourceCollection2 familyCollection:familyCollection2 webService:webService account:account2 accountUserCollection:accountUserCollection2 physicalCards:physicalCards2 statement:statement previousStatements:statements];
 
-    if ([v14 pk_settings_useStateDrivenNavigation])
+    if ([controllerCopy pk_settings_useStateDrivenNavigation])
     {
-      [v14 pk_settings_pushViewController:v33];
+      [controllerCopy pk_settings_pushViewController:v33];
     }
 
     else
     {
-      [v14 pushViewController:v33 animated:1];
+      [controllerCopy pushViewController:v33 animated:1];
     }
 
-    if (v39->_cellStyle == 1)
+    if (selfCopy->_cellStyle == 1)
     {
-      v34 = [(PKCreditBalanceDetailsViewController *)v33 navigationItem];
-      v35 = [(PKDashboardBalanceSummaryItemPresenter *)v39 _statementCellTitleForItem:v24];
-      [v34 setTitle:v35];
+      navigationItem = [(PKCreditBalanceDetailsViewController *)v33 navigationItem];
+      v35 = [(PKDashboardBalanceSummaryItemPresenter *)selfCopy _statementCellTitleForItem:v24];
+      [navigationItem setTitle:v35];
     }
 
-    v13 = v40;
-    v12 = v41;
+    pathCopy = v40;
+    viewCopy = v41;
   }
 
   else if ([v42 type] == 6)
   {
-    [(PKDashboardBalanceSummaryItemPresenter *)self _downloadAndPresentStatementForItem:v42 inCollectionView:v12];
+    [(PKDashboardBalanceSummaryItemPresenter *)self _downloadAndPresentStatementForItem:v42 inCollectionView:viewCopy];
   }
 
   else if ([v42 type] == 7)
   {
-    [(PKDashboardBalanceSummaryItemPresenter *)self _selectFileFormatForExportedStatementDataForItem:v42 atIndexPath:v13 inCollectionView:v12];
+    [(PKDashboardBalanceSummaryItemPresenter *)self _selectFileFormatForExportedStatementDataForItem:v42 atIndexPath:pathCopy inCollectionView:viewCopy];
   }
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 type] == 2 && (v13 = self->_sampleTransactionCell) != 0)
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  if ([itemCopy type] == 2 && (v13 = self->_sampleTransactionCell) != 0)
   {
     v14 = v13;
-    [(PKDashboardBalanceSummaryItemPresenter *)self _configureCell:v13 forItem:v10 inCollectionView:v11 forIndexPath:v12 forSizing:1];
-    [(PKPaymentTransactionCollectionViewCell *)v14 sizeThatFits:a5, 3.40282347e38];
+    [(PKDashboardBalanceSummaryItemPresenter *)self _configureCell:v13 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy forSizing:1];
+    [(PKPaymentTransactionCollectionViewCell *)v14 sizeThatFits:width, 3.40282347e38];
     v16 = v15;
     v18 = v17;
   }
@@ -219,17 +219,17 @@
   return result;
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  if ([v6 type] == 6)
+  itemCopy = item;
+  if ([itemCopy type] == 6)
   {
     v7 = 88;
   }
 
   else
   {
-    if ([v6 type] != 7)
+    if ([itemCopy type] != 7)
     {
       v8 = 1;
       goto LABEL_7;
@@ -244,21 +244,21 @@ LABEL_7:
   return v8 & 1;
 }
 
-- (id)_formattedCurrencyAmountWithPlusIfNeeded:(id)a3
+- (id)_formattedCurrencyAmountWithPlusIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = [v3 formattedStringValue];
-  v5 = [v3 amount];
+  neededCopy = needed;
+  formattedStringValue = [neededCopy formattedStringValue];
+  amount = [neededCopy amount];
 
-  LODWORD(v3) = [v5 pk_isNegativeNumber];
-  if (v3)
+  LODWORD(neededCopy) = [amount pk_isNegativeNumber];
+  if (neededCopy)
   {
-    v6 = v4;
+    v6 = formattedStringValue;
   }
 
   else
   {
-    v6 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v4);
+    v6 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
   }
 
   v7 = v6;
@@ -266,254 +266,254 @@ LABEL_7:
   return v7;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 forSizing:(BOOL)a7
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path forSizing:(BOOL)sizing
 {
-  v12 = a3;
-  v9 = a4;
-  switch([v9 type])
+  cellCopy = cell;
+  itemCopy = item;
+  switch([itemCopy type])
   {
     case 0:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementBalanceCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementBalanceCell:cellCopy forItem:itemCopy];
       break;
     case 1:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configurePriorStatementBalanceCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configurePriorStatementBalanceCell:cellCopy forItem:itemCopy];
       break;
     case 2:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementCell:cellCopy forItem:itemCopy];
       break;
     case 3:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureSpendingCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureSpendingCell:cellCopy forItem:itemCopy];
       break;
     case 4:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureInterestCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureInterestCell:cellCopy forItem:itemCopy];
       break;
     case 5:
     case 8:
     case 9:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configurePaymentsAndCreditsCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configurePaymentsAndCreditsCell:cellCopy forItem:itemCopy];
       break;
     case 6:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementDownloadCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureStatementDownloadCell:cellCopy forItem:itemCopy];
       break;
     case 7:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureExportStatementDataCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureExportStatementDataCell:cellCopy forItem:itemCopy];
       break;
     case 10:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureDailyCashCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureDailyCashCell:cellCopy forItem:itemCopy];
       break;
     case 11:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureInstallmentBalanceCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureInstallmentBalanceCell:cellCopy forItem:itemCopy];
       break;
     case 12:
     case 13:
     case 14:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureTotalBalanceCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureTotalBalanceCell:cellCopy forItem:itemCopy];
       break;
     case 15:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureTransactionLimitCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureTransactionLimitCell:cellCopy forItem:itemCopy];
       break;
     case 16:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMonthlySpendLimitCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMonthlySpendLimitCell:cellCopy forItem:itemCopy];
       break;
     case 17:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMergeNoticeCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMergeNoticeCell:cellCopy forItem:itemCopy];
       break;
     case 18:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMergeBalanceCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureMergeBalanceCell:cellCopy forItem:itemCopy];
       break;
     case 19:
     case 20:
-      [(PKDashboardBalanceSummaryItemPresenter *)self _configureRewardsSummaryCell:v12 forItem:v9];
+      [(PKDashboardBalanceSummaryItemPresenter *)self _configureRewardsSummaryCell:cellCopy forItem:itemCopy];
       break;
     default:
       break;
   }
 
-  v10 = [v9 type];
-  if (v10 > 0x14)
+  type = [itemCopy type];
+  if (type > 0x14)
   {
     v11 = MEMORY[0x1E69B9D90];
   }
 
   else
   {
-    v11 = qword_1E80136D0[v10];
+    v11 = qword_1E80136D0[type];
   }
 
-  [v12 setAccessibilityIdentifier:*v11];
+  [cellCopy setAccessibilityIdentifier:*v11];
 }
 
-- (void)_configureStatementCell:(id)a3 forItem:(id)a4
+- (void)_configureStatementCell:(id)cell forItem:(id)item
 {
-  v36 = a3;
-  v6 = a4;
-  v7 = [v6 statement];
-  v8 = [v36 transactionView];
-  v9 = [v7 totalBalance];
-  if (v9)
+  cellCopy = cell;
+  itemCopy = item;
+  statement = [itemCopy statement];
+  transactionView = [cellCopy transactionView];
+  totalBalance = [statement totalBalance];
+  if (totalBalance)
   {
-    v10 = v9;
+    statementBalance = totalBalance;
   }
 
   else
   {
-    v10 = [v7 statementBalance];
-    if (!v10)
+    statementBalance = [statement statementBalance];
+    if (!statementBalance)
     {
-      v11 = 0;
+      currencyCode = 0;
       goto LABEL_7;
     }
   }
 
-  v11 = [v7 currencyCode];
+  currencyCode = [statement currencyCode];
 
-  if (v11)
+  if (currencyCode)
   {
-    v12 = [v7 currencyCode];
-    v11 = PKCurrencyAmountCreate(v10, v12);
+    currencyCode2 = [statement currencyCode];
+    currencyCode = PKCurrencyAmountCreate(statementBalance, currencyCode2);
   }
 
 LABEL_7:
-  v35 = v6;
-  v13 = [(PKDashboardBalanceSummaryItemPresenter *)self _statementCellTitleForItem:v6];
-  [v8 setPrimaryString:v13];
+  v35 = itemCopy;
+  v13 = [(PKDashboardBalanceSummaryItemPresenter *)self _statementCellTitleForItem:itemCopy];
+  [transactionView setPrimaryString:v13];
   formatterMonthAndDay = self->_formatterMonthAndDay;
-  v15 = [v7 openingDate];
-  v16 = [(NSDateFormatter *)formatterMonthAndDay stringFromDate:v15];
+  openingDate = [statement openingDate];
+  v16 = [(NSDateFormatter *)formatterMonthAndDay stringFromDate:openingDate];
 
   formatterMonthDayYear = self->_formatterMonthDayYear;
-  v18 = [v7 closingDate];
-  v19 = [(NSDateFormatter *)formatterMonthDayYear stringFromDate:v18];
+  closingDate = [statement closingDate];
+  v19 = [(NSDateFormatter *)formatterMonthDayYear stringFromDate:closingDate];
 
   v20 = PKLocalizedFeatureString();
-  v21 = [v20 pk_uppercaseFirstStringForPreferredLocale];
+  pk_uppercaseFirstStringForPreferredLocale = [v20 pk_uppercaseFirstStringForPreferredLocale];
 
-  [v8 setSecondaryString:v21];
-  if (v11)
+  [transactionView setSecondaryString:pk_uppercaseFirstStringForPreferredLocale];
+  if (currencyCode)
   {
     v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-    [v11 formattedStringValue];
-    v34 = v8;
-    v23 = v21;
-    v24 = v7;
+    [currencyCode formattedStringValue];
+    v34 = transactionView;
+    v23 = pk_uppercaseFirstStringForPreferredLocale;
+    v24 = statement;
     v25 = v19;
-    v26 = self;
+    selfCopy = self;
     v27 = v16;
-    v28 = v10;
-    v29 = v11;
+    v28 = statementBalance;
+    v29 = currencyCode;
     v31 = v30 = v13;
     v32 = [v22 initWithString:v31 attributes:0];
 
     v13 = v30;
-    v11 = v29;
-    v10 = v28;
+    currencyCode = v29;
+    statementBalance = v28;
     v16 = v27;
-    self = v26;
+    self = selfCopy;
     v19 = v25;
-    v7 = v24;
-    v21 = v23;
-    v8 = v34;
+    statement = v24;
+    pk_uppercaseFirstStringForPreferredLocale = v23;
+    transactionView = v34;
     [v34 setTransactionValueAttributedText:v32];
   }
 
   else
   {
-    [v8 setTransactionValueAttributedText:0];
+    [transactionView setTransactionValueAttributedText:0];
   }
 
-  [v8 setTertiaryString:0];
-  v33 = [(PKDashboardBalanceSummaryItemPresenter *)self statementIcon];
-  [v8 setPrimaryImage:v33];
+  [transactionView setTertiaryString:0];
+  statementIcon = [(PKDashboardBalanceSummaryItemPresenter *)self statementIcon];
+  [transactionView setPrimaryImage:statementIcon];
 
-  [v8 setShowsDisclosureView:1];
-  [v36 setWantsListBehavior:1];
+  [transactionView setShowsDisclosureView:1];
+  [cellCopy setWantsListBehavior:1];
 }
 
-- (void)_configurePriorStatementBalanceCell:(id)a3 forItem:(id)a4
+- (void)_configurePriorStatementBalanceCell:(id)cell forItem:(id)item
 {
-  v39 = a4;
-  v6 = a3;
-  v7 = [v39 statement];
-  v8 = [v39 summary];
-  v9 = [v39 mergeSummaryAccountDetails];
-  v10 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  if (v9)
+  itemCopy = item;
+  cellCopy = cell;
+  statement = [itemCopy statement];
+  summary = [itemCopy summary];
+  mergeSummaryAccountDetails = [itemCopy mergeSummaryAccountDetails];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  if (mergeSummaryAccountDetails)
   {
-    v11 = [v39 account];
-    v12 = [v11 creditDetails];
-    v13 = [v12 currencyCode];
+    account = [itemCopy account];
+    creditDetails = [account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
-    v14 = [v9 statementBalance];
+    statementBalance = [mergeSummaryAccountDetails statementBalance];
 
-    v15 = 0;
-    if (v14 && v13)
+    currencyCode2 = 0;
+    if (statementBalance && currencyCode)
     {
-      v16 = [v9 statementBalance];
-      v15 = PKCurrencyAmountMake();
+      statementBalance2 = [mergeSummaryAccountDetails statementBalance];
+      currencyCode2 = PKCurrencyAmountMake();
     }
 
-    v17 = [v15 formattedStringValue];
-    [v10 setSecondaryText:v17];
+    formattedStringValue = [currencyCode2 formattedStringValue];
+    [valueCellConfiguration setSecondaryText:formattedStringValue];
   }
 
   else
   {
-    if (v8 && ![(PKDashboardBalanceSummaryItemPresenter *)self _statementIsFromMonthPriorToSummaryForItem:v39])
+    if (summary && ![(PKDashboardBalanceSummaryItemPresenter *)self _statementIsFromMonthPriorToSummaryForItem:itemCopy])
     {
       v22 = PKLocalizedFeatureString();
-      [v10 setSecondaryText:v22];
+      [valueCellConfiguration setSecondaryText:v22];
 
 LABEL_15:
-      v23 = [v8 balanceSummary];
-      v24 = [v23 openingDate];
-      v25 = [v23 closingDate];
+      balanceSummary = [summary balanceSummary];
+      openingDate = [balanceSummary openingDate];
+      closingDate = [balanceSummary closingDate];
 
       goto LABEL_18;
     }
 
-    v18 = [v7 statementBalance];
-    if (v18)
+    statementBalance3 = [statement statementBalance];
+    if (statementBalance3)
     {
-      v19 = v18;
-      v15 = [v7 currencyCode];
+      v19 = statementBalance3;
+      currencyCode2 = [statement currencyCode];
 
-      if (v15)
+      if (currencyCode2)
       {
-        v20 = [v7 statementBalance];
-        v21 = [v7 currencyCode];
-        v15 = PKCurrencyAmountCreate(v20, v21);
+        statementBalance4 = [statement statementBalance];
+        currencyCode3 = [statement currencyCode];
+        currencyCode2 = PKCurrencyAmountCreate(statementBalance4, currencyCode3);
       }
     }
 
     else
     {
-      v15 = 0;
+      currencyCode2 = 0;
     }
 
-    v13 = [v15 formattedStringValue];
-    [v10 setSecondaryText:v13];
+    currencyCode = [currencyCode2 formattedStringValue];
+    [valueCellConfiguration setSecondaryText:currencyCode];
   }
 
-  if (v8)
+  if (summary)
   {
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!statement)
   {
     goto LABEL_19;
   }
 
-  v24 = [v7 openingDate];
-  v25 = [v7 closingDate];
+  openingDate = [statement openingDate];
+  closingDate = [statement closingDate];
 LABEL_18:
 
 LABEL_19:
-  if (v9)
+  if (mergeSummaryAccountDetails)
   {
-    v26 = [v9 ownerAltDSID];
-    v27 = [v39 accountUserCollection];
-    v28 = [v27 accountUserWithAltDSID:v26];
+    ownerAltDSID = [mergeSummaryAccountDetails ownerAltDSID];
+    accountUserCollection = [itemCopy accountUserCollection];
+    v28 = [accountUserCollection accountUserWithAltDSID:ownerAltDSID];
 
     if ([v28 isCurrentUser])
     {
@@ -522,22 +522,22 @@ LABEL_19:
 
     else
     {
-      v30 = [v39 familyCollection];
-      v31 = [v30 familyMemberForAltDSID:v26];
+      familyCollection = [itemCopy familyCollection];
+      v31 = [familyCollection familyMemberForAltDSID:ownerAltDSID];
 
       v32 = MEMORY[0x1E69B8740];
-      v33 = [v28 nameComponents];
-      [v32 contactForFamilyMember:v31 nameComponents:v33 imageData:0];
-      v38 = v8;
-      v34 = v7;
-      v36 = v35 = v6;
+      nameComponents = [v28 nameComponents];
+      [v32 contactForFamilyMember:v31 nameComponents:nameComponents imageData:0];
+      v38 = summary;
+      v34 = statement;
+      v36 = v35 = cellCopy;
 
-      v37 = [v36 givenName];
+      givenName = [v36 givenName];
       v29 = PKLocalizedFeatureString();
 
-      v6 = v35;
-      v7 = v34;
-      v8 = v38;
+      cellCopy = v35;
+      statement = v34;
+      summary = v38;
     }
   }
 
@@ -546,83 +546,83 @@ LABEL_19:
     v29 = PKLocalizedFeatureString();
   }
 
-  [v10 setText:{v29, v37}];
-  [v6 setContentConfiguration:v10];
+  [valueCellConfiguration setText:{v29, givenName}];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureStatementBalanceCell:(id)a3 forItem:(id)a4
+- (void)_configureStatementBalanceCell:(id)cell forItem:(id)item
 {
-  v55 = a4;
-  v6 = a3;
-  v7 = [v55 statement];
-  v8 = [v55 summary];
-  v9 = [v55 mergeSummaryAccountDetails];
-  v10 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  if (v9)
+  itemCopy = item;
+  cellCopy = cell;
+  statement = [itemCopy statement];
+  summary = [itemCopy summary];
+  mergeSummaryAccountDetails = [itemCopy mergeSummaryAccountDetails];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  if (mergeSummaryAccountDetails)
   {
-    v11 = [v55 account];
-    v12 = [v11 creditDetails];
-    v13 = [v12 currencyCode];
+    account = [itemCopy account];
+    creditDetails = [account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
-    v14 = [v9 statementBalance];
+    statementBalance = [mergeSummaryAccountDetails statementBalance];
 
-    v15 = 0;
-    if (v14 && v13)
+    statementBalance3 = 0;
+    if (statementBalance && currencyCode)
     {
-      v16 = [v9 statementBalance];
-      v15 = PKCurrencyAmountMake();
+      statementBalance2 = [mergeSummaryAccountDetails statementBalance];
+      statementBalance3 = PKCurrencyAmountMake();
     }
 
-    v17 = [v15 formattedStringValue];
-    [v10 setSecondaryText:v17];
+    formattedStringValue = [statementBalance3 formattedStringValue];
+    [valueCellConfiguration setSecondaryText:formattedStringValue];
   }
 
   else
   {
-    if (v8 && ![(PKDashboardBalanceSummaryItemPresenter *)self _statementIsFromMonthPriorToSummaryForItem:v55])
+    if (summary && ![(PKDashboardBalanceSummaryItemPresenter *)self _statementIsFromMonthPriorToSummaryForItem:itemCopy])
     {
-      v15 = PKLocalizedFeatureString();
-      [v10 setSecondaryText:v15];
+      statementBalance3 = PKLocalizedFeatureString();
+      [valueCellConfiguration setSecondaryText:statementBalance3];
       goto LABEL_15;
     }
 
-    v15 = [v7 statementBalance];
-    if (v15)
+    statementBalance3 = [statement statementBalance];
+    if (statementBalance3)
     {
-      v18 = [v7 currencyCode];
+      currencyCode2 = [statement currencyCode];
 
-      if (v18)
+      if (currencyCode2)
       {
-        v19 = [v7 statementBalance];
-        v20 = [v7 currencyCode];
-        v15 = PKCurrencyAmountCreate(v19, v20);
+        statementBalance4 = [statement statementBalance];
+        currencyCode3 = [statement currencyCode];
+        statementBalance3 = PKCurrencyAmountCreate(statementBalance4, currencyCode3);
       }
 
       else
       {
-        v15 = 0;
+        statementBalance3 = 0;
       }
     }
 
-    v13 = [v15 formattedStringValue];
-    [v10 setSecondaryText:v13];
+    currencyCode = [statementBalance3 formattedStringValue];
+    [valueCellConfiguration setSecondaryText:currencyCode];
   }
 
 LABEL_15:
-  v21 = [v55 mergeDate];
-  v22 = [v55 account];
-  v23 = [v22 creditDetails];
-  v54 = [v23 productTimeZone];
+  mergeDate = [itemCopy mergeDate];
+  account2 = [itemCopy account];
+  creditDetails2 = [account2 creditDetails];
+  productTimeZone = [creditDetails2 productTimeZone];
 
-  if (v8)
+  if (summary)
   {
-    v24 = [v8 balanceSummary];
-    v25 = [v24 openingDate];
-    v26 = [v24 closingDate];
+    balanceSummary = [summary balanceSummary];
+    openingDate = [balanceSummary openingDate];
+    closingDate = [balanceSummary closingDate];
 
 LABEL_17:
     v27 = 1;
-    if (!v25)
+    if (!openingDate)
     {
       goto LABEL_34;
     }
@@ -630,47 +630,47 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (!v7)
+  if (!statement)
   {
-    v25 = 0;
-    v26 = 0;
-    if (!v21)
+    openingDate = 0;
+    closingDate = 0;
+    if (!mergeDate)
     {
       goto LABEL_34;
     }
 
-    v43 = v54;
-    if (!v54)
+    v43 = productTimeZone;
+    if (!productTimeZone)
     {
 LABEL_35:
       v38 = PKLocalizedFeatureString();
       goto LABEL_36;
     }
 
-    v25 = PKStartOfMonthWithTimeZone();
-    v26 = PKEndOfMonthWithTimeZone();
+    openingDate = PKStartOfMonthWithTimeZone();
+    closingDate = PKEndOfMonthWithTimeZone();
     goto LABEL_17;
   }
 
-  v25 = [v7 openingDate];
-  v26 = [v7 closingDate];
+  openingDate = [statement openingDate];
+  closingDate = [statement closingDate];
   v27 = 0;
-  if (!v25)
+  if (!openingDate)
   {
 LABEL_34:
-    v43 = v54;
+    v43 = productTimeZone;
     goto LABEL_35;
   }
 
 LABEL_21:
-  if (!v26)
+  if (!closingDate)
   {
     goto LABEL_34;
   }
 
-  v52 = v21;
-  [v26 timeIntervalSinceDate:v25];
-  v29 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v25 sinceDate:v28 * 0.5];
+  v52 = mergeDate;
+  [closingDate timeIntervalSinceDate:openingDate];
+  v29 = [MEMORY[0x1E695DF00] dateWithTimeInterval:openingDate sinceDate:v28 * 0.5];
   v30 = objc_alloc_init(MEMORY[0x1E695DF10]);
   v31 = v30;
   if (v27)
@@ -678,7 +678,7 @@ LABEL_21:
     [v30 setMonth:-1];
   }
 
-  v53 = v6;
+  v53 = cellCopy;
   v32 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
   v50 = v31;
   v51 = v29;
@@ -686,12 +686,12 @@ LABEL_21:
   v33 = [v32 components:8 fromDate:?];
   [v33 month];
 
-  if (v9)
+  if (mergeSummaryAccountDetails)
   {
-    v48 = v9;
-    v34 = [v9 ownerAltDSID];
-    v35 = [v55 accountUserCollection];
-    v36 = [v35 accountUserWithAltDSID:v34];
+    v48 = mergeSummaryAccountDetails;
+    ownerAltDSID = [mergeSummaryAccountDetails ownerAltDSID];
+    accountUserCollection = [itemCopy accountUserCollection];
+    v36 = [accountUserCollection accountUserWithAltDSID:ownerAltDSID];
 
     if ([v36 isCurrentUser])
     {
@@ -701,75 +701,75 @@ LABEL_21:
 
     else
     {
-      [v55 familyCollection];
-      v39 = v46 = v8;
-      v37 = [v39 familyMemberForAltDSID:v34];
+      [itemCopy familyCollection];
+      v39 = v46 = summary;
+      v37 = [v39 familyMemberForAltDSID:ownerAltDSID];
 
       v40 = MEMORY[0x1E69B8740];
       [v36 nameComponents];
-      v41 = v47 = v7;
+      v41 = v47 = statement;
       v45 = [v40 contactForFamilyMember:v37 nameComponents:v41 imageData:0];
 
       v42 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
-      v44 = [v45 givenName];
+      givenName = [v45 givenName];
       v38 = PKLocalizedFeatureString();
 
-      v8 = v46;
-      v7 = v47;
+      summary = v46;
+      statement = v47;
     }
 
-    v9 = v48;
+    mergeSummaryAccountDetails = v48;
   }
 
   else
   {
-    v34 = PKGregorianMonthSpecificLocalizedStringKeyForKey();
+    ownerAltDSID = PKGregorianMonthSpecificLocalizedStringKeyForKey();
     v38 = PKLocalizedFeatureString();
   }
 
-  v21 = v52;
-  v6 = v53;
-  v43 = v54;
+  mergeDate = v52;
+  cellCopy = v53;
+  v43 = productTimeZone;
 LABEL_36:
-  [v10 setText:{v38, v44}];
-  [v6 setContentConfiguration:v10];
+  [valueCellConfiguration setText:{v38, givenName}];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureSpendingCell:(id)a3 forItem:(id)a4
+- (void)_configureSpendingCell:(id)cell forItem:(id)item
 {
-  v22 = a4;
-  v5 = a3;
-  v6 = [v22 summary];
-  v7 = [v22 statement];
-  v8 = v7;
-  if (v6)
+  itemCopy = item;
+  cellCopy = cell;
+  summary = [itemCopy summary];
+  statement = [itemCopy statement];
+  v8 = statement;
+  if (summary)
   {
-    v9 = [v6 balanceSummary];
-    v10 = [v9 purchases];
+    balanceSummary = [summary balanceSummary];
+    purchases = [balanceSummary purchases];
 
-    v11 = [v6 balanceSummary];
-    v12 = [v11 pendingPurchases];
+    balanceSummary2 = [summary balanceSummary];
+    pendingPurchases = [balanceSummary2 pendingPurchases];
 
     v13 = 0;
-    if (v10 && v12)
+    if (purchases && pendingPurchases)
     {
-      v14 = [(NSDecimalNumber *)v10 decimalNumberByAdding:v12];
-      v15 = [v22 account];
-      v16 = [v15 creditDetails];
-      v17 = [v16 currencyCode];
-      v13 = PKCurrencyAmountCreate(v14, v17);
+      v14 = [(NSDecimalNumber *)purchases decimalNumberByAdding:pendingPurchases];
+      account = [itemCopy account];
+      creditDetails = [account creditDetails];
+      currencyCode = [creditDetails currencyCode];
+      v13 = PKCurrencyAmountCreate(v14, currencyCode);
     }
 
     goto LABEL_7;
   }
 
-  v18 = [v7 purchases];
+  purchases2 = [statement purchases];
 
-  if (v18)
+  if (purchases2)
   {
-    v10 = [v8 purchases];
-    v12 = [v8 currencyCode];
-    v13 = PKCurrencyAmountCreate(v10, v12);
+    purchases = [v8 purchases];
+    pendingPurchases = [v8 currencyCode];
+    v13 = PKCurrencyAmountCreate(purchases, pendingPurchases);
 LABEL_7:
 
     goto LABEL_8;
@@ -777,102 +777,102 @@ LABEL_7:
 
   v13 = 0;
 LABEL_8:
-  v19 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v20 = PKLocalizedFeatureString();
-  [v19 setText:v20];
+  [valueCellConfiguration setText:v20];
 
-  v21 = [v13 formattedStringValue];
-  [v19 setSecondaryText:v21];
+  formattedStringValue = [v13 formattedStringValue];
+  [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-  [v5 setContentConfiguration:v19];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureInterestCell:(id)a3 forItem:(id)a4
+- (void)_configureInterestCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v23 = [v5 summary];
-  v7 = [v5 statement];
-  v8 = [v23 balanceSummary];
-  v9 = [v5 account];
+  itemCopy = item;
+  cellCopy = cell;
+  summary = [itemCopy summary];
+  statement = [itemCopy statement];
+  balanceSummary = [summary balanceSummary];
+  account = [itemCopy account];
 
-  v10 = [v9 creditDetails];
-  v11 = [v10 currencyCode];
+  creditDetails = [account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  if (v23 && ([v8 interestCharged], v12 = objc_claimAutoreleasedReturnValue(), v12, v12) && v11)
+  if (summary && ([balanceSummary interestCharged], v12 = objc_claimAutoreleasedReturnValue(), v12, v12) && currencyCode)
   {
-    v13 = [v8 interestCharged];
+    interestCharged = [balanceSummary interestCharged];
   }
 
   else
   {
-    v14 = [v7 interestCharged];
-    if (v14)
+    interestCharged2 = [statement interestCharged];
+    if (interestCharged2)
     {
-      v15 = v14;
-      v16 = [v7 currencyCode];
+      v15 = interestCharged2;
+      currencyCode2 = [statement currencyCode];
 
-      if (v16)
+      if (currencyCode2)
       {
-        v17 = [v7 interestCharged];
-        v18 = [v7 currencyCode];
-        v19 = PKCurrencyAmountCreate(v17, v18);
+        interestCharged3 = [statement interestCharged];
+        currencyCode3 = [statement currencyCode];
+        v19 = PKCurrencyAmountCreate(interestCharged3, currencyCode3);
 
         goto LABEL_10;
       }
     }
 
-    v13 = [MEMORY[0x1E696AB90] zero];
+    interestCharged = [MEMORY[0x1E696AB90] zero];
   }
 
-  v17 = v13;
-  v19 = PKCurrencyAmountCreate(v13, v11);
+  interestCharged3 = interestCharged;
+  v19 = PKCurrencyAmountCreate(interestCharged, currencyCode);
 LABEL_10:
 
-  v20 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v21 = PKLocalizedFeatureString();
-  [v20 setText:v21];
+  [valueCellConfiguration setText:v21];
 
-  v22 = [v19 formattedStringValue];
-  [v20 setSecondaryText:v22];
+  formattedStringValue = [v19 formattedStringValue];
+  [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-  [v6 setContentConfiguration:v20];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configurePaymentsAndCreditsCell:(id)a3 forItem:(id)a4
+- (void)_configurePaymentsAndCreditsCell:(id)cell forItem:(id)item
 {
-  v21 = a4;
-  v6 = a3;
-  v7 = [v21 summary];
-  v8 = [v21 statement];
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  cellCopy = cell;
+  summary = [itemCopy summary];
+  statement = [itemCopy statement];
+  v9 = statement;
+  if (summary)
   {
-    v10 = [v21 account];
-    v11 = [v10 creditDetails];
-    v12 = [v11 currencyCode];
+    account = [itemCopy account];
+    creditDetails = [account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
-    v13 = [v21 type];
-    switch(v13)
+    type = [itemCopy type];
+    switch(type)
     {
       case 5:
-        v14 = [v7 balanceSummary];
-        v15 = [v14 paymentsAndCredits];
+        balanceSummary = [summary balanceSummary];
+        paymentsAndCredits = [balanceSummary paymentsAndCredits];
         goto LABEL_14;
       case 8:
-        v14 = [v7 balanceSummary];
-        v15 = [v14 credits];
+        balanceSummary = [summary balanceSummary];
+        paymentsAndCredits = [balanceSummary credits];
         goto LABEL_14;
       case 9:
-        v14 = [v7 balanceSummary];
-        v15 = [v14 payments];
+        balanceSummary = [summary balanceSummary];
+        paymentsAndCredits = [balanceSummary payments];
 LABEL_14:
 
         goto LABEL_15;
     }
 
 LABEL_11:
-    v15 = 0;
+    paymentsAndCredits = 0;
     v17 = 0;
     v18 = 0;
 LABEL_18:
@@ -880,26 +880,26 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (statement)
   {
-    v12 = [v8 currencyCode];
-    v16 = [v21 type];
-    switch(v16)
+    currencyCode = [statement currencyCode];
+    type2 = [itemCopy type];
+    switch(type2)
     {
       case 5:
-        v15 = [v9 paymentsAndCredits];
+        paymentsAndCredits = [v9 paymentsAndCredits];
         goto LABEL_15;
       case 8:
-        v15 = [v9 credits];
+        paymentsAndCredits = [v9 credits];
         goto LABEL_15;
       case 9:
-        v15 = [v9 payments];
+        paymentsAndCredits = [v9 payments];
 LABEL_15:
         v17 = PKLocalizedFeatureString();
         v18 = 0;
-        if (v15 && v12)
+        if (paymentsAndCredits && currencyCode)
         {
-          v18 = PKCurrencyAmountCreate(v15, v12);
+          v18 = PKCurrencyAmountCreate(paymentsAndCredits, currencyCode);
         }
 
         goto LABEL_18;
@@ -911,148 +911,148 @@ LABEL_15:
   v17 = 0;
   v18 = 0;
 LABEL_19:
-  v19 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v19 setText:v17];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration setText:v17];
   v20 = [(PKDashboardBalanceSummaryItemPresenter *)self _formattedCurrencyAmountWithPlusIfNeeded:v18];
-  [v19 setSecondaryText:v20];
+  [valueCellConfiguration setSecondaryText:v20];
 
-  [v6 setContentConfiguration:v19];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureInstallmentBalanceCell:(id)a3 forItem:(id)a4
+- (void)_configureInstallmentBalanceCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v18 = [v5 summary];
-  v7 = [v18 installmentBalance];
-  v8 = v7;
-  if (v7)
+  itemCopy = item;
+  cellCopy = cell;
+  summary = [itemCopy summary];
+  installmentBalance = [summary installmentBalance];
+  v8 = installmentBalance;
+  if (installmentBalance)
   {
-    v9 = v7;
+    zero = installmentBalance;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v10 = v9;
+  v10 = zero;
 
-  v11 = [v5 account];
+  account = [itemCopy account];
 
-  v12 = [v11 creditDetails];
-  v13 = [v12 currencyCode];
-  v14 = PKCurrencyAmountCreate(v10, v13);
+  creditDetails = [account creditDetails];
+  currencyCode = [creditDetails currencyCode];
+  v14 = PKCurrencyAmountCreate(v10, currencyCode);
 
-  v15 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v16 = PKLocalizedFeatureString();
-  [v15 setText:v16];
+  [valueCellConfiguration setText:v16];
 
-  v17 = [v14 formattedStringValue];
-  [v15 setSecondaryText:v17];
+  formattedStringValue = [v14 formattedStringValue];
+  [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-  [v6 setContentConfiguration:v15];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureTransactionLimitCell:(id)a3 forItem:(id)a4
+- (void)_configureTransactionLimitCell:(id)cell forItem:(id)item
 {
-  v19 = a3;
-  v5 = a4;
-  v6 = [v5 accountUserCollection];
-  v7 = [v6 currentAccountUser];
-  v8 = [v7 preferences];
-  v9 = [v8 transactionSpendLimitAmount];
+  cellCopy = cell;
+  itemCopy = item;
+  accountUserCollection = [itemCopy accountUserCollection];
+  currentAccountUser = [accountUserCollection currentAccountUser];
+  preferences = [currentAccountUser preferences];
+  transactionSpendLimitAmount = [preferences transactionSpendLimitAmount];
 
-  v10 = [v5 account];
+  account = [itemCopy account];
 
-  v11 = [v10 creditDetails];
-  v12 = [v11 currencyCode];
+  creditDetails = [account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  if (v9)
+  if (transactionSpendLimitAmount)
   {
-    if (v12)
+    if (currencyCode)
     {
-      v13 = [MEMORY[0x1E696AB90] notANumber];
-      v14 = [v9 isEqualToNumber:v13];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v14 = [transactionSpendLimitAmount isEqualToNumber:notANumber];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+        valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
         v16 = PKLocalizedFeatureString();
-        [v15 setText:v16];
+        [valueCellConfiguration setText:v16];
 
         v17 = PKCurrencyAmountMake();
-        v18 = [v17 formattedStringValue];
-        [v15 setSecondaryText:v18];
+        formattedStringValue = [v17 formattedStringValue];
+        [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-        [v19 setContentConfiguration:v15];
+        [cellCopy setContentConfiguration:valueCellConfiguration];
       }
     }
   }
 }
 
-- (void)_configureMonthlySpendLimitCell:(id)a3 forItem:(id)a4
+- (void)_configureMonthlySpendLimitCell:(id)cell forItem:(id)item
 {
-  v19 = a3;
-  v5 = a4;
-  v6 = [v5 accountUserCollection];
-  v7 = [v6 currentAccountUser];
-  v8 = [v7 preferences];
-  v9 = [v8 monthlySpendLimitAmount];
+  cellCopy = cell;
+  itemCopy = item;
+  accountUserCollection = [itemCopy accountUserCollection];
+  currentAccountUser = [accountUserCollection currentAccountUser];
+  preferences = [currentAccountUser preferences];
+  monthlySpendLimitAmount = [preferences monthlySpendLimitAmount];
 
-  v10 = [v5 account];
+  account = [itemCopy account];
 
-  v11 = [v10 creditDetails];
-  v12 = [v11 currencyCode];
+  creditDetails = [account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  if (v9)
+  if (monthlySpendLimitAmount)
   {
-    if (v12)
+    if (currencyCode)
     {
-      v13 = [MEMORY[0x1E696AB90] notANumber];
-      v14 = [v9 isEqualToNumber:v13];
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v14 = [monthlySpendLimitAmount isEqualToNumber:notANumber];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+        valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
         v16 = PKLocalizedFeatureString();
-        [v15 setText:v16];
+        [valueCellConfiguration setText:v16];
 
         v17 = PKCurrencyAmountMake();
-        v18 = [v17 formattedStringValue];
-        [v15 setSecondaryText:v18];
+        formattedStringValue = [v17 formattedStringValue];
+        [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-        [v19 setContentConfiguration:v15];
+        [cellCopy setContentConfiguration:valueCellConfiguration];
       }
     }
   }
 }
 
-- (void)_configureMergeBalanceCell:(id)a3 forItem:(id)a4
+- (void)_configureMergeBalanceCell:(id)cell forItem:(id)item
 {
-  v29 = a3;
-  v5 = a4;
-  v28 = [v5 account];
-  [v28 feature];
-  v6 = [v5 mergeSummaryAccountDetails];
-  v7 = [v5 mergeDate];
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  if (v6)
+  cellCopy = cell;
+  itemCopy = item;
+  account = [itemCopy account];
+  [account feature];
+  mergeSummaryAccountDetails = [itemCopy mergeSummaryAccountDetails];
+  mergeDate = [itemCopy mergeDate];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  if (mergeSummaryAccountDetails)
   {
-    v27 = v7;
-    v9 = [v6 currentBalance];
-    v10 = [v28 creditDetails];
-    v11 = [v10 currencyCode];
+    v27 = mergeDate;
+    currentBalance = [mergeSummaryAccountDetails currentBalance];
+    creditDetails = [account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
-    v12 = [v6 ownerAltDSID];
-    v13 = [v5 accountUserCollection];
-    v14 = [v13 accountUserWithAltDSID:v12];
+    ownerAltDSID = [mergeSummaryAccountDetails ownerAltDSID];
+    accountUserCollection = [itemCopy accountUserCollection];
+    v14 = [accountUserCollection accountUserWithAltDSID:ownerAltDSID];
 
-    if (v9 && v11)
+    if (currentBalance && currencyCode)
     {
       v15 = PKCurrencyAmountMake();
-      v16 = [v15 formattedStringValue];
-      [v8 setSecondaryText:v16];
+      formattedStringValue = [v15 formattedStringValue];
+      [valueCellConfiguration setSecondaryText:formattedStringValue];
     }
 
     if ([v14 isCurrentUser])
@@ -1062,75 +1062,75 @@ LABEL_19:
 
     else
     {
-      v20 = [v5 familyCollection];
-      v21 = [v20 familyMemberForAltDSID:v12];
+      familyCollection = [itemCopy familyCollection];
+      v21 = [familyCollection familyMemberForAltDSID:ownerAltDSID];
 
       v22 = MEMORY[0x1E69B8740];
-      v23 = [v14 nameComponents];
-      [v22 contactForFamilyMember:v21 nameComponents:v23 imageData:0];
-      v24 = v26 = v11;
+      nameComponents = [v14 nameComponents];
+      [v22 contactForFamilyMember:v21 nameComponents:nameComponents imageData:0];
+      v24 = v26 = currencyCode;
 
-      v25 = [v24 givenName];
+      givenName = [v24 givenName];
       v17 = PKLocalizedFeatureString();
 
-      v11 = v26;
+      currencyCode = v26;
     }
 
-    v7 = v27;
-    [v8 setText:{v17, v25}];
-    [v29 setContentConfiguration:v8];
+    mergeDate = v27;
+    [valueCellConfiguration setText:{v17, givenName}];
+    [cellCopy setContentConfiguration:valueCellConfiguration];
   }
 
   else
   {
-    if (!v7)
+    if (!mergeDate)
     {
       goto LABEL_12;
     }
 
-    v9 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+    currentBalance = [MEMORY[0x1E69DCC28] valueCellConfiguration];
     v18 = PKLocalizedFeatureString();
-    [v9 setText:v18];
+    [currentBalance setText:v18];
 
-    v19 = [MEMORY[0x1E696AB78] localizedStringFromDate:v7 dateStyle:2 timeStyle:0];
-    [v9 setSecondaryText:v19];
+    v19 = [MEMORY[0x1E696AB78] localizedStringFromDate:mergeDate dateStyle:2 timeStyle:0];
+    [currentBalance setSecondaryText:v19];
 
-    [v29 setContentConfiguration:v9];
+    [cellCopy setContentConfiguration:currentBalance];
   }
 
 LABEL_12:
 }
 
-- (void)_configureMergeNoticeCell:(id)a3 forItem:(id)a4
+- (void)_configureMergeNoticeCell:(id)cell forItem:(id)item
 {
   v4 = MEMORY[0x1E69DCC28];
-  v5 = a3;
-  v10 = [v4 subtitleCellConfiguration];
+  cellCopy = cell;
+  subtitleCellConfiguration = [v4 subtitleCellConfiguration];
   v6 = PKLocalizedFeatureString();
-  [v10 setText:v6];
+  [subtitleCellConfiguration setText:v6];
 
   v7 = PKLocalizedFeatureString();
-  [v10 setSecondaryText:v7];
+  [subtitleCellConfiguration setSecondaryText:v7];
 
-  v8 = [v10 textProperties];
-  [v8 setNumberOfLines:0];
-  v9 = [v10 secondaryTextProperties];
-  [v9 setNumberOfLines:0];
-  [v5 setContentConfiguration:v10];
+  textProperties = [subtitleCellConfiguration textProperties];
+  [textProperties setNumberOfLines:0];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setNumberOfLines:0];
+  [cellCopy setContentConfiguration:subtitleCellConfiguration];
 }
 
-- (void)_configureTotalBalanceCell:(id)a3 forItem:(id)a4
+- (void)_configureTotalBalanceCell:(id)cell forItem:(id)item
 {
-  v26 = a4;
-  v6 = a3;
-  v7 = [v26 account];
-  [v7 feature];
+  itemCopy = item;
+  cellCopy = cell;
+  account = [itemCopy account];
+  [account feature];
 
-  v8 = [v26 account];
-  v9 = [v8 creditDetails];
+  account2 = [itemCopy account];
+  creditDetails = [account2 creditDetails];
 
-  v10 = [v9 accountSummary];
-  if (!v10)
+  accountSummary = [creditDetails accountSummary];
+  if (!accountSummary)
   {
     v16 = 0;
     v17 = 0;
@@ -1138,44 +1138,44 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v11 = [v26 account];
-  v12 = [v11 creditDetails];
-  v13 = [v12 currencyCode];
+  account3 = [itemCopy account];
+  creditDetails2 = [account3 creditDetails];
+  currencyCode = [creditDetails2 currencyCode];
 
-  v14 = [v26 type];
-  switch(v14)
+  type = [itemCopy type];
+  switch(type)
   {
     case 12:
-      v15 = [v10 creditLimit];
+      creditLimit = [accountSummary creditLimit];
       goto LABEL_11;
     case 13:
-      v19 = [v9 totalBalance];
-      v20 = [v19 amount];
-      v21 = [MEMORY[0x1E696AB90] zero];
-      v22 = [v20 compare:v21];
+      totalBalance = [creditDetails totalBalance];
+      amount = [totalBalance amount];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v22 = [amount compare:zero];
 
       v16 = v22 == -1;
       if (v22 == -1)
       {
-        v23 = [v19 negativeValue];
+        negativeValue = [totalBalance negativeValue];
 
-        v19 = v23;
+        totalBalance = negativeValue;
       }
 
-      v15 = [v19 amount];
+      creditLimit = [totalBalance amount];
       v17 = PKLocalizedFeatureString();
 
       goto LABEL_12;
     case 14:
-      v15 = [v10 availableCredit];
+      creditLimit = [accountSummary availableCredit];
 LABEL_11:
       v17 = PKLocalizedFeatureString();
       v16 = 0;
 LABEL_12:
       v18 = 0;
-      if (v15 && v13)
+      if (creditLimit && currencyCode)
       {
-        v18 = PKCurrencyAmountCreate(v15, v13);
+        v18 = PKCurrencyAmountCreate(creditLimit, currencyCode);
       }
 
       goto LABEL_16;
@@ -1184,12 +1184,12 @@ LABEL_12:
   v18 = 0;
   v16 = 0;
   v17 = 0;
-  v15 = 0;
+  creditLimit = 0;
 LABEL_16:
 
 LABEL_17:
-  v24 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v24 setText:v17];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration setText:v17];
   if (v16)
   {
     [(PKDashboardBalanceSummaryItemPresenter *)self _formattedCurrencyAmountWithPlusIfNeeded:v18];
@@ -1200,70 +1200,70 @@ LABEL_17:
     [v18 formattedStringValue];
   }
   v25 = ;
-  [v24 setSecondaryText:v25];
+  [valueCellConfiguration setSecondaryText:v25];
 
-  [v6 setContentConfiguration:v24];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureDailyCashCell:(id)a3 forItem:(id)a4
+- (void)_configureDailyCashCell:(id)cell forItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v24 = [v6 summary];
-  v8 = [v6 statement];
-  v9 = [v24 balanceSummary];
-  v10 = [v6 account];
+  itemCopy = item;
+  cellCopy = cell;
+  summary = [itemCopy summary];
+  statement = [itemCopy statement];
+  balanceSummary = [summary balanceSummary];
+  account = [itemCopy account];
 
-  v11 = [v10 creditDetails];
-  v12 = [v11 currencyCode];
+  creditDetails = [account creditDetails];
+  currencyCode = [creditDetails currencyCode];
 
-  if (v24 && ([v9 rewardsEarned], v13 = objc_claimAutoreleasedReturnValue(), v13, v13) && v12)
+  if (summary && ([balanceSummary rewardsEarned], v13 = objc_claimAutoreleasedReturnValue(), v13, v13) && currencyCode)
   {
-    v14 = [v9 rewardsEarned];
+    rewardsEarned = [balanceSummary rewardsEarned];
   }
 
   else
   {
-    v15 = [v8 rewardsEarned];
-    if (v15)
+    rewardsEarned2 = [statement rewardsEarned];
+    if (rewardsEarned2)
     {
-      v16 = v15;
-      v17 = [v8 currencyCode];
+      v16 = rewardsEarned2;
+      currencyCode2 = [statement currencyCode];
 
-      if (v17)
+      if (currencyCode2)
       {
-        v18 = [v8 rewardsEarned];
-        v19 = [v8 currencyCode];
-        v20 = PKCurrencyAmountCreate(v18, v19);
+        rewardsEarned3 = [statement rewardsEarned];
+        currencyCode3 = [statement currencyCode];
+        v20 = PKCurrencyAmountCreate(rewardsEarned3, currencyCode3);
 
         goto LABEL_10;
       }
     }
 
-    v14 = [MEMORY[0x1E696AB90] zero];
+    rewardsEarned = [MEMORY[0x1E696AB90] zero];
   }
 
-  v18 = v14;
-  v20 = PKCurrencyAmountCreate(v14, v12);
+  rewardsEarned3 = rewardsEarned;
+  v20 = PKCurrencyAmountCreate(rewardsEarned, currencyCode);
 LABEL_10:
 
-  v21 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
   v22 = PKLocalizedFeatureString();
-  [v21 setText:v22];
+  [valueCellConfiguration setText:v22];
 
   v23 = [(PKDashboardBalanceSummaryItemPresenter *)self _formattedCurrencyAmountWithPlusIfNeeded:v20];
-  [v21 setSecondaryText:v23];
-  [v7 setContentConfiguration:v21];
+  [valueCellConfiguration setSecondaryText:v23];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureRewardsSummaryCell:(id)a3 forItem:(id)a4
+- (void)_configureRewardsSummaryCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = [v5 rewardsCurrencyAmount];
-  v7 = [v5 type];
+  itemCopy = item;
+  cellCopy = cell;
+  rewardsCurrencyAmount = [itemCopy rewardsCurrencyAmount];
+  type = [itemCopy type];
 
-  if (v7 == 19 || v7 == 20)
+  if (type == 19 || type == 20)
   {
     v8 = PKLocalizedFeatureString();
   }
@@ -1273,23 +1273,23 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [v9 setText:v8];
-  v10 = [v11 formattedStringValue];
-  [v9 setSecondaryText:v10];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [valueCellConfiguration setText:v8];
+  formattedStringValue = [rewardsCurrencyAmount formattedStringValue];
+  [valueCellConfiguration setSecondaryText:formattedStringValue];
 
-  [v6 setContentConfiguration:v9];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
 }
 
-- (void)_configureExportStatementDataCell:(id)a3 forItem:(id)a4
+- (void)_configureExportStatementDataCell:(id)cell forItem:(id)item
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellCopy = cell;
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   v7 = PKLocalizedFeatureString();
-  [v6 setText:v7];
+  [cellConfiguration setText:v7];
 
-  v8 = [v6 textProperties];
+  textProperties = [cellConfiguration textProperties];
   if (self->_exportingPDF)
   {
     [MEMORY[0x1E69DC888] placeholderTextColor];
@@ -1300,20 +1300,20 @@ LABEL_10:
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
   v9 = ;
-  [v8 setColor:v9];
+  [textProperties setColor:v9];
 
-  [v5 setContentConfiguration:v6];
+  [cellCopy setContentConfiguration:cellConfiguration];
   if (self->_exportingPDF)
   {
-    v10 = [(PKDashboardBalanceSummaryItemPresenter *)self _spinnerAccessory];
-    v12[0] = v10;
+    _spinnerAccessory = [(PKDashboardBalanceSummaryItemPresenter *)self _spinnerAccessory];
+    v12[0] = _spinnerAccessory;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v5 setAccessories:v11];
+    [cellCopy setAccessories:v11];
   }
 
   else
   {
-    [v5 setAccessories:MEMORY[0x1E695E0F0]];
+    [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
   }
 }
 
@@ -1326,40 +1326,40 @@ LABEL_10:
   return v3;
 }
 
-- (void)_selectFileFormatForExportedStatementDataForItem:(id)a3 atIndexPath:(id)a4 inCollectionView:(id)a5
+- (void)_selectFileFormatForExportedStatementDataForItem:(id)item atIndexPath:(id)path inCollectionView:(id)view
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
+  itemCopy = item;
+  pathCopy = path;
+  viewCopy = view;
   if (PKStoreDemoModeEnabled())
   {
     v10 = PKUIStoreDemoGatewayViewController();
-    v11 = [v9 pkui_viewControllerFromResponderChain];
-    [v11 presentViewController:v10 animated:1 completion:0];
+    pkui_viewControllerFromResponderChain = [viewCopy pkui_viewControllerFromResponderChain];
+    [pkui_viewControllerFromResponderChain presentViewController:v10 animated:1 completion:0];
   }
 
   else
   {
-    v12 = [v8 account];
-    v13 = [v12 feature];
-    v14 = [v12 exportTransactionDataFeatureDescriptor];
-    v15 = [v14 supportedFileFormatsForTransactionData];
+    account = [itemCopy account];
+    feature = [account feature];
+    exportTransactionDataFeatureDescriptor = [account exportTransactionDataFeatureDescriptor];
+    supportedFileFormatsForTransactionData = [exportTransactionDataFeatureDescriptor supportedFileFormatsForTransactionData];
 
-    v16 = [v15 count];
+    v16 = [supportedFileFormatsForTransactionData count];
     if (v16 < 2)
     {
       if (v16 == 1)
       {
-        v34 = [v15 firstObject];
-        [(PKDashboardBalanceSummaryItemPresenter *)self _downloadExportedStatementDataForItem:v8 withFileFormat:v34 atIndexPath:v39 inCollectionView:v9];
+        firstObject = [supportedFileFormatsForTransactionData firstObject];
+        [(PKDashboardBalanceSummaryItemPresenter *)self _downloadExportedStatementDataForItem:itemCopy withFileFormat:firstObject atIndexPath:pathCopy inCollectionView:viewCopy];
       }
     }
 
     else
     {
-      v36 = v12;
-      v38 = v8;
+      v36 = account;
+      v38 = itemCopy;
       v17 = MEMORY[0x1E69DC650];
       v18 = PKLocalizedFeatureString();
       v37 = [v17 alertControllerWithTitle:v18 message:0 preferredStyle:0];
@@ -1368,8 +1368,8 @@ LABEL_10:
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v35 = v15;
-      v19 = v15;
+      v35 = supportedFileFormatsForTransactionData;
+      v19 = supportedFileFormatsForTransactionData;
       v20 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v20)
       {
@@ -1385,7 +1385,7 @@ LABEL_10:
             }
 
             v24 = *(*(&v45 + 1) + 8 * i);
-            v25 = [(PKDashboardBalanceSummaryItemPresenter *)self _readableFileTypeForFormat:v24 feature:v13];
+            v25 = [(PKDashboardBalanceSummaryItemPresenter *)self _readableFileTypeForFormat:v24 feature:feature];
             if (v25)
             {
               v26 = MEMORY[0x1E69DC648];
@@ -1396,8 +1396,8 @@ LABEL_10:
               v40[4] = self;
               v41 = v38;
               v42 = v24;
-              v43 = v39;
-              v44 = v9;
+              v43 = pathCopy;
+              v44 = viewCopy;
               v27 = [v26 actionWithTitle:v25 style:0 handler:v40];
               [v37 addAction:v27];
             }
@@ -1414,32 +1414,32 @@ LABEL_10:
       v30 = [v28 actionWithTitle:v29 style:1 handler:0];
       [v37 addAction:v30];
 
-      v31 = [v37 popoverPresentationController];
-      v32 = [v9 cellForItemAtIndexPath:v39];
-      [v31 setSourceView:v32];
+      popoverPresentationController = [v37 popoverPresentationController];
+      v32 = [viewCopy cellForItemAtIndexPath:pathCopy];
+      [popoverPresentationController setSourceView:v32];
 
-      v33 = [v9 pkui_viewControllerFromResponderChain];
-      [v33 presentViewController:v37 animated:1 completion:0];
+      pkui_viewControllerFromResponderChain2 = [viewCopy pkui_viewControllerFromResponderChain];
+      [pkui_viewControllerFromResponderChain2 presentViewController:v37 animated:1 completion:0];
 
-      v8 = v38;
-      v15 = v35;
-      v12 = v36;
+      itemCopy = v38;
+      supportedFileFormatsForTransactionData = v35;
+      account = v36;
     }
   }
 }
 
-- (id)_readableFileTypeForFormat:(id)a3 feature:(unint64_t)a4
+- (id)_readableFileTypeForFormat:(id)format feature:(unint64_t)feature
 {
-  v4 = [a3 uppercaseString];
-  v5 = v4;
-  if (v4 == @"CSV")
+  uppercaseString = [format uppercaseString];
+  v5 = uppercaseString;
+  if (uppercaseString == @"CSV")
   {
     goto LABEL_4;
   }
 
-  if (v4)
+  if (uppercaseString)
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"CSV"];
+    v6 = [(__CFString *)uppercaseString isEqualToString:@"CSV"];
 
     if (v6 & 1) != 0 || (v9 = v5, v9 == @"OFX") || (v10 = v9, v11 = [(__CFString *)v9 isEqualToString:@"OFX"], v10, (v11) || (v12 = v10, v12 == @"QFX") || (v13 = v12, v14 = [(__CFString *)v12 isEqualToString:@"QFX"], v13, (v14) || (v15 = v13, v15 == @"QIF") || (v16 = v15, v17 = [(__CFString *)v15 isEqualToString:@"QIF"], v16, (v17) || (v18 = v16, v18 == @"QBO") || (v19 = v18, v20 = [(__CFString *)v18 isEqualToString:@"QBO"], v19, (v20) || (v21 = v19, v21 == @"XLS") || (v22 = v21, v23 = [(__CFString *)v21 isEqualToString:@"XLS"], v22, (v23) || (v24 = v22, v24 == @"XLSX") || (v25 = v24, v26 = [(__CFString *)v24 isEqualToString:@"XLSX"], v25, (v26) || (v27 = v25, v27 == @"PDF") || (v7 = v27, v28 = [(__CFString *)v27 isEqualToString:@"PDF"], v7, v28))
     {
@@ -1456,36 +1456,36 @@ LABEL_4:
   return v7;
 }
 
-- (void)_downloadExportedStatementDataForItem:(id)a3 withFileFormat:(id)a4 atIndexPath:(id)a5 inCollectionView:(id)a6
+- (void)_downloadExportedStatementDataForItem:(id)item withFileFormat:(id)format atIndexPath:(id)path inCollectionView:(id)view
 {
-  v10 = a3;
-  v34 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 account];
-  v14 = [v13 feature];
-  v37 = [v10 statement];
-  v15 = [v37 accountIdentifier];
-  v16 = v15;
-  v36 = v13;
-  if (v15)
+  itemCopy = item;
+  formatCopy = format;
+  pathCopy = path;
+  viewCopy = view;
+  account = [itemCopy account];
+  feature = [account feature];
+  statement = [itemCopy statement];
+  accountIdentifier = [statement accountIdentifier];
+  v16 = accountIdentifier;
+  v36 = account;
+  if (accountIdentifier)
   {
-    v17 = v15;
+    accountIdentifier2 = accountIdentifier;
   }
 
   else
   {
-    v17 = [v13 accountIdentifier];
+    accountIdentifier2 = [account accountIdentifier];
   }
 
-  v35 = v17;
+  v35 = accountIdentifier2;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __124__PKDashboardBalanceSummaryItemPresenter__downloadExportedStatementDataForItem_withFileFormat_atIndexPath_inCollectionView___block_invoke;
   aBlock[3] = &unk_1E8013540;
-  v55 = v14;
-  v18 = v12;
+  v55 = feature;
+  v18 = viewCopy;
   v54 = v18;
   v19 = _Block_copy(aBlock);
   exportedStatementDataItem = self->_exportedStatementDataItem;
@@ -1506,14 +1506,14 @@ LABEL_4:
   v49 = 0x3032000000;
   v50 = __Block_byref_object_copy__3;
   v51 = __Block_byref_object_dispose__3;
-  v52 = [v18 cellForItemAtIndexPath:v11];
-  [(PKDashboardBalanceSummaryItemPresenter *)self updateCell:v48[5] forItem:v10 inCollectionView:v18 atIndexPath:v11];
+  v52 = [v18 cellForItemAtIndexPath:pathCopy];
+  [(PKDashboardBalanceSummaryItemPresenter *)self updateCell:v48[5] forItem:itemCopy inCollectionView:v18 atIndexPath:pathCopy];
   objc_initWeak(&location, self);
-  v24 = [MEMORY[0x1E69B8400] sharedInstance];
-  v25 = [v37 openingDate];
-  v26 = [v37 closingDate];
-  v27 = [v36 creditDetails];
-  v28 = [v27 productTimeZone];
+  mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+  openingDate = [statement openingDate];
+  closingDate = [statement closingDate];
+  creditDetails = [v36 creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __124__PKDashboardBalanceSummaryItemPresenter__downloadExportedStatementDataForItem_withFileFormat_atIndexPath_inCollectionView___block_invoke_204;
@@ -1522,15 +1522,15 @@ LABEL_4:
   v44 = &v47;
   v29 = v18;
   v39 = v29;
-  v30 = v11;
+  v30 = pathCopy;
   v40 = v30;
-  v33 = v10;
+  v33 = itemCopy;
   v41 = v33;
   v31 = v19;
   v43 = v31;
-  v32 = v34;
+  v32 = formatCopy;
   v42 = v32;
-  [v24 exportTransactionDataForAccountIdentifier:v35 withFileFormat:v32 beginDate:v25 endDate:v26 productTimeZone:v28 completion:v38];
+  [mEMORY[0x1E69B8400] exportTransactionDataForAccountIdentifier:v35 withFileFormat:v32 beginDate:openingDate endDate:closingDate productTimeZone:productTimeZone completion:v38];
 
   objc_destroyWeak(&v45);
   objc_destroyWeak(&location);
@@ -1729,15 +1729,15 @@ void __124__PKDashboardBalanceSummaryItemPresenter__downloadExportedStatementDat
   }
 }
 
-- (void)_configureStatementDownloadCell:(id)a3 forItem:(id)a4
+- (void)_configureStatementDownloadCell:(id)cell forItem:(id)item
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellCopy = cell;
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   v7 = PKLocalizedFeatureString();
-  [v6 setText:v7];
+  [cellConfiguration setText:v7];
 
-  v8 = [v6 textProperties];
+  textProperties = [cellConfiguration textProperties];
   if (self->_downloadingPDF)
   {
     [MEMORY[0x1E69DC888] placeholderTextColor];
@@ -1748,85 +1748,85 @@ void __124__PKDashboardBalanceSummaryItemPresenter__downloadExportedStatementDat
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
   v9 = ;
-  [v8 setColor:v9];
+  [textProperties setColor:v9];
 
-  [v5 setContentConfiguration:v6];
+  [cellCopy setContentConfiguration:cellConfiguration];
   if (self->_downloadingPDF)
   {
-    v10 = [(PKDashboardBalanceSummaryItemPresenter *)self _spinnerAccessory];
-    v12[0] = v10;
+    _spinnerAccessory = [(PKDashboardBalanceSummaryItemPresenter *)self _spinnerAccessory];
+    v12[0] = _spinnerAccessory;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v5 setAccessories:v11];
+    [cellCopy setAccessories:v11];
   }
 }
 
-- (void)_downloadAndPresentStatementForItem:(id)a3 inCollectionView:(id)a4
+- (void)_downloadAndPresentStatementForItem:(id)item inCollectionView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  viewCopy = view;
   if (PKStoreDemoModeEnabled())
   {
     v8 = PKUIStoreDemoGatewayViewController();
-    v9 = [v7 pkui_viewControllerFromResponderChain];
-    [v9 presentViewController:v8 animated:1 completion:0];
+    pkui_viewControllerFromResponderChain = [viewCopy pkui_viewControllerFromResponderChain];
+    [pkui_viewControllerFromResponderChain presentViewController:v8 animated:1 completion:0];
   }
 
   else
   {
-    v10 = [v6 account];
-    v11 = [v10 feature];
+    account = [itemCopy account];
+    feature = [account feature];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementForItem_inCollectionView___block_invoke;
     aBlock[3] = &unk_1E8013540;
-    v34 = v11;
-    v12 = v7;
+    v34 = feature;
+    v12 = viewCopy;
     v33 = v12;
     v13 = _Block_copy(aBlock);
-    v14 = [v6 webService];
-    v15 = [v6 account];
-    v16 = [v6 statement];
-    v17 = [v16 accountIdentifier];
-    v18 = v17;
-    if (v17)
+    webService = [itemCopy webService];
+    account2 = [itemCopy account];
+    statement = [itemCopy statement];
+    accountIdentifier = [statement accountIdentifier];
+    v18 = accountIdentifier;
+    if (accountIdentifier)
     {
-      v19 = v17;
+      accountIdentifier2 = accountIdentifier;
     }
 
     else
     {
-      v19 = [v15 accountIdentifier];
+      accountIdentifier2 = [account2 accountIdentifier];
     }
 
-    v20 = v19;
+    v20 = accountIdentifier2;
 
     if (self->_pdfData && self->_pdfItem)
     {
-      v21 = [v12 pkui_viewControllerFromResponderChain];
-      v22 = [v21 navigationController];
-      v23 = [(PKDashboardBalanceSummaryItemPresenter *)self _createPreviewController];
-      [v22 presentViewController:v23 animated:1 completion:0];
+      pkui_viewControllerFromResponderChain2 = [v12 pkui_viewControllerFromResponderChain];
+      navigationController = [pkui_viewControllerFromResponderChain2 navigationController];
+      _createPreviewController = [(PKDashboardBalanceSummaryItemPresenter *)self _createPreviewController];
+      [navigationController presentViewController:_createPreviewController animated:1 completion:0];
     }
 
     else
     {
       self->_downloadingPDF = 1;
       [v12 reloadData];
-      v21 = objc_alloc_init(MEMORY[0x1E69B84A0]);
-      [v21 setAccountIdentifier:v20];
-      [v16 identifier];
+      pkui_viewControllerFromResponderChain2 = objc_alloc_init(MEMORY[0x1E69B84A0]);
+      [pkui_viewControllerFromResponderChain2 setAccountIdentifier:v20];
+      [statement identifier];
       v28 = v12;
-      v24 = v14;
+      v24 = webService;
       v26 = v25 = v13;
-      [v21 setDocumentIdentifier:v26];
+      [pkui_viewControllerFromResponderChain2 setDocumentIdentifier:v26];
 
-      v27 = [v15 accountBaseURL];
-      [v21 setBaseURL:v27];
+      accountBaseURL = [account2 accountBaseURL];
+      [pkui_viewControllerFromResponderChain2 setBaseURL:accountBaseURL];
 
       v13 = v25;
-      v14 = v24;
-      [v21 setAction:1];
+      webService = v24;
+      [pkui_viewControllerFromResponderChain2 setAction:1];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementForItem_inCollectionView___block_invoke_2;
@@ -1834,7 +1834,7 @@ void __124__PKDashboardBalanceSummaryItemPresenter__downloadExportedStatementDat
       v29[4] = self;
       v30 = v28;
       v31 = v13;
-      [v24 accountDocumentActionWithRequest:v21 completion:v29];
+      [v24 accountDocumentActionWithRequest:pkui_viewControllerFromResponderChain2 completion:v29];
     }
   }
 }
@@ -1962,52 +1962,52 @@ void __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementFo
   return statementIcon;
 }
 
-- (id)_statementCellTitleForItem:(id)a3
+- (id)_statementCellTitleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 statement];
-  v6 = [v5 openingDate];
-  v7 = [v5 closingDate];
+  itemCopy = item;
+  statement = [itemCopy statement];
+  openingDate = [statement openingDate];
+  closingDate = [statement closingDate];
   v8 = PKDatesMidpoint();
 
-  v9 = [v4 account];
+  account = [itemCopy account];
 
-  v10 = [v9 creditDetails];
-  v11 = [v10 productTimeZone];
+  creditDetails = [account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
 
-  [(NSDateFormatter *)self->_formatterMonthYear setTimeZone:v11];
-  [(NSDateFormatter *)self->_formatterMonthAndDay setTimeZone:v11];
-  [(NSDateFormatter *)self->_formatterMonthDayYear setTimeZone:v11];
+  [(NSDateFormatter *)self->_formatterMonthYear setTimeZone:productTimeZone];
+  [(NSDateFormatter *)self->_formatterMonthAndDay setTimeZone:productTimeZone];
+  [(NSDateFormatter *)self->_formatterMonthDayYear setTimeZone:productTimeZone];
   v12 = [(NSDateFormatter *)self->_formatterMonthYear stringFromDate:v8];
-  v13 = [v12 pk_uppercaseFirstStringForPreferredLocale];
+  pk_uppercaseFirstStringForPreferredLocale = [v12 pk_uppercaseFirstStringForPreferredLocale];
 
-  return v13;
+  return pk_uppercaseFirstStringForPreferredLocale;
 }
 
-- (BOOL)_statementIsFromMonthPriorToSummaryForItem:(id)a3
+- (BOOL)_statementIsFromMonthPriorToSummaryForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 statement];
-  v5 = [v3 summary];
-  v6 = [v5 balanceSummary];
+  itemCopy = item;
+  statement = [itemCopy statement];
+  summary = [itemCopy summary];
+  balanceSummary = [summary balanceSummary];
 
-  v7 = [v6 openingDate];
-  v8 = [v6 closingDate];
+  openingDate = [balanceSummary openingDate];
+  closingDate = [balanceSummary closingDate];
   v9 = PKDatesMidpoint();
 
-  v10 = [v4 openingDate];
-  v11 = [v4 closingDate];
+  openingDate2 = [statement openingDate];
+  closingDate2 = [statement closingDate];
   v12 = PKDatesMidpoint();
 
   v13 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v13 setMonth:-1];
   v14 = objc_alloc(MEMORY[0x1E695DEE8]);
   v15 = [v14 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v16 = [v3 account];
+  account = [itemCopy account];
 
-  v17 = [v16 creditDetails];
-  v18 = [v17 productTimeZone];
-  [v15 setTimeZone:v18];
+  creditDetails = [account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
+  [v15 setTimeZone:productTimeZone];
 
   v19 = [v15 dateByAddingComponents:v13 toDate:v9 options:0];
   v20 = [v15 component:8 fromDate:v19];
@@ -2016,13 +2016,13 @@ void __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementFo
   return v20;
 }
 
-- (void)_configureCellForReuse:(id)a3
+- (void)_configureCellForReuse:(id)reuse
 {
-  v3 = a3;
-  [v3 setWantsDefaultHighlightBehavior:0];
-  [v3 setWantsCustomAppearance:1];
-  v4 = [objc_opt_class() defaultBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  reuseCopy = reuse;
+  [reuseCopy setWantsDefaultHighlightBehavior:0];
+  [reuseCopy setWantsCustomAppearance:1];
+  defaultBackgroundColor = [objc_opt_class() defaultBackgroundColor];
+  [reuseCopy setBackgroundColor:defaultBackgroundColor];
 }
 
 - (id)_createPreviewController
@@ -2034,7 +2034,7 @@ void __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementFo
   return v3;
 }
 
-- (id)provideDataForItem:(id)a3
+- (id)provideDataForItem:(id)item
 {
   pdfData = self->_pdfData;
   if (!pdfData)
@@ -2045,7 +2045,7 @@ void __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementFo
   return pdfData;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   pdfItem = self->_pdfItem;
   if (!pdfItem)
@@ -2056,17 +2056,17 @@ void __95__PKDashboardBalanceSummaryItemPresenter__downloadAndPresentStatementFo
   return pdfItem;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKPaymentTransactionCollectionViewCell alloc];

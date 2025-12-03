@@ -1,50 +1,50 @@
 @interface AKDeviceSafetyRestrictionState
-- (AKDeviceSafetyRestrictionState)initWithCoder:(id)a3;
-- (AKDeviceSafetyRestrictionState)initWithDeviceMID:(id)a3 serialNumber:(id)a4 restrictionReason:(int64_t)a5;
-- (AKDeviceSafetyRestrictionState)initWithResponse:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AKDeviceSafetyRestrictionState)initWithCoder:(id)coder;
+- (AKDeviceSafetyRestrictionState)initWithDeviceMID:(id)d serialNumber:(id)number restrictionReason:(int64_t)reason;
+- (AKDeviceSafetyRestrictionState)initWithResponse:(id)response error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKDeviceSafetyRestrictionState
 
-- (AKDeviceSafetyRestrictionState)initWithDeviceMID:(id)a3 serialNumber:(id)a4 restrictionReason:(int64_t)a5
+- (AKDeviceSafetyRestrictionState)initWithDeviceMID:(id)d serialNumber:(id)number restrictionReason:(int64_t)reason
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = a5;
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, number);
+  reasonCopy = reason;
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = AKDeviceSafetyRestrictionState;
   v10 = [(AKDeviceSafetyRestrictionState *)&v11 init];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    objc_storeStrong(&v15->_machineId, location[0]);
-    objc_storeStrong(&v15->_serialNumber, v13);
-    v15->_reason = v12;
+    objc_storeStrong(&selfCopy->_machineId, location[0]);
+    objc_storeStrong(&selfCopy->_serialNumber, v13);
+    selfCopy->_reason = reasonCopy;
   }
 
-  v7 = MEMORY[0x1E69E5928](v15);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKDeviceSafetyRestrictionState)initWithResponse:(id)a3 error:(id *)a4
+- (AKDeviceSafetyRestrictionState)initWithResponse:(id)response error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, response);
+  errorCopy = error;
   v19 = objc_opt_class();
   v20 = [location[0] objectForKeyedSubscript:AKDeviceInfoKey];
   v31 = _AKSafeCast_2(v19, v20);
@@ -83,10 +83,10 @@
         v21 = 1;
       }
 
-      v6 = v34;
-      v34 = 0;
-      v34 = [v6 initWithDeviceMID:v27 serialNumber:v26 restrictionReason:v21];
-      v35 = MEMORY[0x1E69E5928](v34);
+      v6 = selfCopy;
+      selfCopy = 0;
+      selfCopy = [v6 initWithDeviceMID:v27 serialNumber:v26 restrictionReason:v21];
+      v35 = MEMORY[0x1E69E5928](selfCopy);
       v28 = 1;
       objc_storeStrong(&v22, 0);
     }
@@ -104,11 +104,11 @@
       }
 
       objc_storeStrong(&v25, 0);
-      if (v32)
+      if (errorCopy)
       {
         v10 = [MEMORY[0x1E696ABC0] ak_deviceListErrorWithCode:-14005];
         v5 = v10;
-        *v32 = v10;
+        *errorCopy = v10;
       }
 
       v35 = 0;
@@ -130,11 +130,11 @@
     }
 
     objc_storeStrong(&v30, 0);
-    if (v32)
+    if (errorCopy)
     {
       v17 = [MEMORY[0x1E696ABC0] ak_deviceListErrorWithCode:-14005];
       v4 = v17;
-      *v32 = v17;
+      *errorCopy = v17;
     }
 
     v35 = 0;
@@ -143,46 +143,46 @@
 
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v34, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x1E69E9840];
   return v35;
 }
 
-- (AKDeviceSafetyRestrictionState)initWithCoder:(id)a3
+- (AKDeviceSafetyRestrictionState)initWithCoder:(id)coder
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"machineId"];
   v7 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
   v6 = [location[0] decodeIntegerForKey:@"reason"];
-  v3 = v10;
-  v10 = 0;
-  v10 = [(AKDeviceSafetyRestrictionState *)v3 initWithDeviceMID:v8 serialNumber:v7 restrictionReason:v6];
-  v5 = MEMORY[0x1E69E5928](v10);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKDeviceSafetyRestrictionState *)v3 initWithDeviceMID:v8 serialNumber:v7 restrictionReason:v6];
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  v4 = [(AKDeviceSafetyRestrictionState *)v8 machineId];
+  machineId = [(AKDeviceSafetyRestrictionState *)selfCopy machineId];
   [v3 encodeObject:? forKey:?];
-  MEMORY[0x1E69E5920](v4);
+  MEMORY[0x1E69E5920](machineId);
   v5 = location[0];
-  v6 = [(AKDeviceSafetyRestrictionState *)v8 serialNumber];
+  serialNumber = [(AKDeviceSafetyRestrictionState *)selfCopy serialNumber];
   [v5 encodeObject:? forKey:?];
-  MEMORY[0x1E69E5920](v6);
-  [location[0] encodeInteger:-[AKDeviceSafetyRestrictionState reason](v8 forKey:{"reason"), @"reason"}];
+  MEMORY[0x1E69E5920](serialNumber);
+  [location[0] encodeInteger:-[AKDeviceSafetyRestrictionState reason](selfCopy forKey:{"reason"), @"reason"}];
   objc_storeStrong(location, 0);
 }
 

@@ -1,16 +1,16 @@
 @interface SBHLibraryCategoryIdentifier
-+ (id)categoryWithLocalizedDisplayName:(id)a3 categoryID:(unint64_t)a4 categoryIndex:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCategoryIdentifier:(id)a3;
++ (id)categoryWithLocalizedDisplayName:(id)name categoryID:(unint64_t)d categoryIndex:(int64_t)index;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCategoryIdentifier:(id)identifier;
 - (NSString)localizedDisplayName;
-- (SBHLibraryCategoryIdentifier)initWithCoder:(id)a3;
-- (SBHLibraryCategoryIdentifier)initWithPredictionCategoryID:(unint64_t)a3 categoryIndex:(unint64_t)a4 localizedDisplayName:(id)a5 localizedDisplayNameKey:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBHLibraryCategoryIdentifier)initWithCoder:(id)coder;
+- (SBHLibraryCategoryIdentifier)initWithPredictionCategoryID:(unint64_t)d categoryIndex:(unint64_t)index localizedDisplayName:(id)name localizedDisplayNameKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHLibraryCategoryIdentifier
@@ -20,11 +20,11 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [MEMORY[0x1E698E6B8] builder];
-    v5 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
-    v6 = [v4 appendObject:v5];
-    v7 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayNameKey];
-    v8 = [v6 appendObject:v7];
+    builder = [MEMORY[0x1E698E6B8] builder];
+    localizedDisplayName = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
+    v6 = [builder appendObject:localizedDisplayName];
+    localizedDisplayNameKey = [(SBHLibraryCategoryIdentifier *)self localizedDisplayNameKey];
+    v8 = [v6 appendObject:localizedDisplayNameKey];
     v9 = [v8 appendUnsignedInteger:{-[SBHLibraryCategoryIdentifier predictionCategoryID](self, "predictionCategoryID")}];
     self->_hash = [v9 hash];
 
@@ -38,8 +38,8 @@
 {
   if (self->_localizedDisplayNameKey)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 localizedStringForKey:self->_localizedDisplayNameKey value:self->_localizedDisplayNameKey table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v4 = [mainBundle localizedStringForKey:self->_localizedDisplayNameKey value:self->_localizedDisplayNameKey table:@"SpringBoard"];
   }
 
   else
@@ -50,23 +50,23 @@
   return v4;
 }
 
-- (SBHLibraryCategoryIdentifier)initWithPredictionCategoryID:(unint64_t)a3 categoryIndex:(unint64_t)a4 localizedDisplayName:(id)a5 localizedDisplayNameKey:(id)a6
+- (SBHLibraryCategoryIdentifier)initWithPredictionCategoryID:(unint64_t)d categoryIndex:(unint64_t)index localizedDisplayName:(id)name localizedDisplayNameKey:(id)key
 {
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = SBHLibraryCategoryIdentifier;
   v12 = [(SBHLibraryCategoryIdentifier *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_predictionCategoryID = a3;
-    v12->_predictionCategoryIndex = a4;
-    v14 = [v10 copy];
+    v12->_predictionCategoryID = d;
+    v12->_predictionCategoryIndex = index;
+    v14 = [nameCopy copy];
     localizedDisplayName = v13->_localizedDisplayName;
     v13->_localizedDisplayName = v14;
 
-    v16 = [v11 copy];
+    v16 = [keyCopy copy];
     localizedDisplayNameKey = v13->_localizedDisplayNameKey;
     v13->_localizedDisplayNameKey = v16;
   }
@@ -74,24 +74,24 @@
   return v13;
 }
 
-+ (id)categoryWithLocalizedDisplayName:(id)a3 categoryID:(unint64_t)a4 categoryIndex:(int64_t)a5
++ (id)categoryWithLocalizedDisplayName:(id)name categoryID:(unint64_t)d categoryIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithPredictionCategoryID:a4 categoryIndex:a5 localizedDisplayName:v8 localizedDisplayNameKey:0];
+  nameCopy = name;
+  v9 = [[self alloc] initWithPredictionCategoryID:d categoryIndex:index localizedDisplayName:nameCopy localizedDisplayNameKey:0];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -114,20 +114,20 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToCategoryIdentifier:(id)a3
+- (BOOL)isEqualToCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self == identifierCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (v6 = [(SBHLibraryCategoryIdentifier *)self predictionCategoryID], v6 == [(SBHLibraryCategoryIdentifier *)v5 predictionCategoryID]))
+  else if (identifierCopy && (v6 = [(SBHLibraryCategoryIdentifier *)self predictionCategoryID], v6 == [(SBHLibraryCategoryIdentifier *)v5 predictionCategoryID]))
   {
-    v7 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
-    v8 = [(SBHLibraryCategoryIdentifier *)v5 localizedDisplayName];
-    v9 = [v7 isEqualToString:v8];
+    localizedDisplayName = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
+    localizedDisplayName2 = [(SBHLibraryCategoryIdentifier *)v5 localizedDisplayName];
+    v9 = [localizedDisplayName isEqualToString:localizedDisplayName2];
   }
 
   else
@@ -138,7 +138,7 @@ LABEL_7:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithPredictionCategoryID:self->_predictionCategoryID localizedDisplayNameKey:self->_localizedDisplayNameKey];
   v4[5] = self->_predictionCategoryIndex;
@@ -153,54 +153,54 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v8 = a3;
+  coderCopy = coder;
   v5 = [v4 numberWithUnsignedInteger:{-[SBHLibraryCategoryIdentifier predictionCategoryIndex](self, "predictionCategoryIndex")}];
-  [v8 encodeObject:v5 forKey:@"predictionCategoryIndexNumber"];
+  [coderCopy encodeObject:v5 forKey:@"predictionCategoryIndexNumber"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SBHLibraryCategoryIdentifier predictionCategoryID](self, "predictionCategoryID")}];
-  [v8 encodeObject:v6 forKey:@"predictionCategoryIDNumber"];
+  [coderCopy encodeObject:v6 forKey:@"predictionCategoryIDNumber"];
 
-  v7 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
-  [v8 encodeObject:v7 forKey:@"localizedDisplayName"];
+  localizedDisplayName = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
+  [coderCopy encodeObject:localizedDisplayName forKey:@"localizedDisplayName"];
 
-  [v8 encodeObject:self->_localizedDisplayNameKey forKey:@"localizedDisplayNameKey"];
+  [coderCopy encodeObject:self->_localizedDisplayNameKey forKey:@"localizedDisplayNameKey"];
 }
 
-- (SBHLibraryCategoryIdentifier)initWithCoder:(id)a3
+- (SBHLibraryCategoryIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionCategoryIDNumber"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionCategoryIDNumber"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionCategoryIndexNumber"];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionCategoryIndexNumber"];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"localizedDisplayName"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"localizedDisplayName"];
 
   v11 = objc_opt_self();
-  v12 = [v4 decodeObjectOfClass:v11 forKey:@"localizedDisplayNameKey"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"localizedDisplayNameKey"];
 
-  v13 = [(SBHLibraryCategoryIdentifier *)self initWithPredictionCategoryID:v6 categoryIndex:v8 localizedDisplayName:v10 localizedDisplayNameKey:v12];
+  v13 = [(SBHLibraryCategoryIdentifier *)self initWithPredictionCategoryID:unsignedIntegerValue categoryIndex:unsignedIntegerValue2 localizedDisplayName:v10 localizedDisplayNameKey:v12];
   return v13;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHLibraryCategoryIdentifier *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHLibraryCategoryIdentifier *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
-  [v4 appendString:v5 withName:@"localizedDisplayName"];
+  localizedDisplayName = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
+  [v4 appendString:localizedDisplayName withName:@"localizedDisplayName"];
 
   v6 = [v4 appendUnsignedInteger:self->_predictionCategoryID withName:@"predictionCategoryID"];
   predictionCategoryIndex = self->_predictionCategoryIndex;
@@ -214,13 +214,13 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v3 = [(SBHLibraryCategoryIdentifier *)self succinctDescriptionBuilder];
-  v4 = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
-  [v3 appendString:v4 withName:@"localizedDisplayName"];
+  succinctDescriptionBuilder = [(SBHLibraryCategoryIdentifier *)self succinctDescriptionBuilder];
+  localizedDisplayName = [(SBHLibraryCategoryIdentifier *)self localizedDisplayName];
+  [succinctDescriptionBuilder appendString:localizedDisplayName withName:@"localizedDisplayName"];
 
-  v5 = [v3 build];
+  build = [succinctDescriptionBuilder build];
 
-  return v5;
+  return build;
 }
 
 @end

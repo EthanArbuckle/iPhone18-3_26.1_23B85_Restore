@@ -1,11 +1,11 @@
 @interface TestFlightExtensionSyncActivityManager.Delegate
 - (_TtCC9appstored38TestFlightExtensionSyncActivityManagerP33_7B68A6CA0C2D7084A2592258C0EEA6498Delegate)init;
-- (void)testFlightServiceHost:(id)a3 didUpdateExtensionStatus:(int64_t)a4;
+- (void)testFlightServiceHost:(id)host didUpdateExtensionStatus:(int64_t)status;
 @end
 
 @implementation TestFlightExtensionSyncActivityManager.Delegate
 
-- (void)testFlightServiceHost:(id)a3 didUpdateExtensionStatus:(int64_t)a4
+- (void)testFlightServiceHost:(id)host didUpdateExtensionStatus:(int64_t)status
 {
   v4 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v4 - 8);

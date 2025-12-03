@@ -1,27 +1,27 @@
 @interface EQKitVShift
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitVShift)initWithBox:(id)a3 offset:(double)a4;
+- (EQKitVShift)initWithBox:(id)box offset:(double)offset;
 - (id)containedBoxes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitVShift
 
-- (EQKitVShift)initWithBox:(id)a3 offset:(double)a4
+- (EQKitVShift)initWithBox:(id)box offset:(double)offset
 {
-  v7 = a3;
+  boxCopy = box;
   v11.receiver = self;
   v11.super_class = EQKitVShift;
   v8 = [(EQKitVShift *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_box, a3);
-    v9->_offset = a4;
+    objc_storeStrong(&v8->_box, box);
+    v9->_offset = offset;
   }
 
   return v9;
@@ -45,37 +45,37 @@
   return CGRectOffset(*&v3, 0.0, v7);
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = EQKitVShift;
-  [(EQKitBox *)&v8 renderIntoContext:v7 offset:x, y];
-  [(EQKitBox *)self->_box renderIntoContext:v7 offset:x, y - self->_offset];
+  [(EQKitBox *)&v8 renderIntoContext:contextCopy offset:x, y];
+  [(EQKitBox *)self->_box renderIntoContext:contextCopy offset:x, y - self->_offset];
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  v6 = a4;
-  if (v6 != self)
+  descendantCopy = descendant;
+  if (descendantCopy != self)
   {
-    if (![(EQKitBox *)self->_box p_getTransform:a3 fromDescendant:v6])
+    if (![(EQKitBox *)self->_box p_getTransform:transform fromDescendant:descendantCopy])
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    v7 = *&a3->c;
-    *&v11.a = *&a3->a;
+    v7 = *&transform->c;
+    *&v11.a = *&transform->a;
     *&v11.c = v7;
-    *&v11.tx = *&a3->tx;
+    *&v11.tx = *&transform->tx;
     CGAffineTransformTranslate(&v12, &v11, 0.0, -self->_offset);
     v8 = *&v12.c;
-    *&a3->a = *&v12.a;
-    *&a3->c = v8;
-    *&a3->tx = *&v12.tx;
+    *&transform->a = *&v12.a;
+    *&transform->c = v8;
+    *&transform->tx = *&v12.tx;
   }
 
   v9 = 1;
@@ -84,9 +84,9 @@ LABEL_6:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(EQKitVShift *)self box];
   [(EQKitVShift *)self offset];
   v6 = [v4 initWithBox:v5 offset:?];
@@ -94,17 +94,17 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(EQKitVShift *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitVShift *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(EQKitVShift *)self offset];
     v7 = v6;
     [(EQKitVShift *)v5 offset];

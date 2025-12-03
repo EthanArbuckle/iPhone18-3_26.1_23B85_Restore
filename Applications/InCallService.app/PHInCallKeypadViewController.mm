@@ -1,21 +1,21 @@
 @interface PHInCallKeypadViewController
-- (PHInCallKeypadViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHInCallKeypadViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)handleNumberPadCharacter:(char)a3;
-- (void)handleNumberPadKeyCommand:(id)a3;
+- (void)handleNumberPadCharacter:(char)character;
+- (void)handleNumberPadKeyCommand:(id)command;
 - (void)loadView;
-- (void)updateKeypadButtonBackgroundMaterial:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateKeypadButtonBackgroundMaterial:(id)material;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHInCallKeypadViewController
 
-- (PHInCallKeypadViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHInCallKeypadViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = PHInCallKeypadViewController;
-  v4 = [(PHInCallKeypadViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(PHInCallKeypadViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[PHNumberPadKeyCommandHandler alloc] initWithViewController:v4 selector:"handleNumberPadKeyCommand:"];
@@ -38,21 +38,21 @@
   [(PHInCallKeypadViewController *)&v3 dealloc];
 }
 
-- (void)updateKeypadButtonBackgroundMaterial:(id)a3
+- (void)updateKeypadButtonBackgroundMaterial:(id)material
 {
-  v4 = a3;
-  v5 = [(PHInCallKeypadViewController *)self keypad];
+  materialCopy = material;
+  keypad = [(PHInCallKeypadViewController *)self keypad];
 
-  if (v5)
+  if (keypad)
   {
-    v6 = [(PHInCallKeypadViewController *)self keypad];
-    v7 = [v6 buttons];
+    keypad2 = [(PHInCallKeypadViewController *)self keypad];
+    buttons = [keypad2 buttons];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v7;
+    v8 = buttons;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -68,7 +68,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v13 + 1) + 8 * v12) updateBackgroundMaterial:{v4, v13}];
+          [*(*(&v13 + 1) + 8 * v12) updateBackgroundMaterial:{materialCopy, v13}];
           v12 = v12 + 1;
         }
 
@@ -113,15 +113,15 @@
 
         v12 = *(*(&v62 + 1) + 8 * i);
         v13 = objc_alloc(*v6);
-        v14 = [v12 intValue];
-        v15 = [(PHInCallKeypadViewController *)self traitCollection];
-        v16 = [v13 initForCharacter:v14 style:{objc_msgSend(v15, "userInterfaceStyle")}];
+        intValue = [v12 intValue];
+        traitCollection = [(PHInCallKeypadViewController *)self traitCollection];
+        v16 = [v13 initForCharacter:intValue style:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-        v17 = [v16 layer];
-        [v17 setAllowsGroupBlending:0];
+        layer = [v16 layer];
+        [layer setAllowsGroupBlending:0];
 
-        v18 = [v16 layer];
-        [v18 setAllowsGroupOpacity:0];
+        layer2 = [v16 layer];
+        [layer2 setAllowsGroupOpacity:0];
 
         [v4 addObject:v16];
       }
@@ -141,11 +141,11 @@
 
     [(TPDialerNumberPad *)self->_keypad setPlaysSounds:1];
     [(TPDialerNumberPad *)self->_keypad setDelegate:self];
-    v22 = [(TPDialerNumberPad *)self->_keypad layer];
-    [v22 setAllowsGroupBlending:0];
+    layer3 = [(TPDialerNumberPad *)self->_keypad layer];
+    [layer3 setAllowsGroupBlending:0];
 
-    v23 = [(TPDialerNumberPad *)self->_keypad layer];
-    [v23 setAllowsGroupOpacity:0];
+    layer4 = [(TPDialerNumberPad *)self->_keypad layer];
+    [layer4 setAllowsGroupOpacity:0];
 
     keypad = self->_keypad;
   }
@@ -180,11 +180,11 @@
   [(PHTransformableView *)v27 setContentCompressionResistancePriority:0 forAxis:v33];
   LODWORD(v34) = 1148846080;
   [(PHTransformableView *)v27 setContentCompressionResistancePriority:1 forAxis:v34];
-  v35 = [(PHTransformableView *)v27 layer];
-  [v35 setAllowsGroupBlending:0];
+  layer5 = [(PHTransformableView *)v27 layer];
+  [layer5 setAllowsGroupBlending:0];
 
-  v36 = [(PHTransformableView *)v27 layer];
-  [v36 setAllowsGroupOpacity:0];
+  layer6 = [(PHTransformableView *)v27 layer];
+  [layer6 setAllowsGroupOpacity:0];
 
   [(PHInCallKeypadViewController *)self setView:v27];
   v37 = +[PHInCallUtilities sharedInstance];
@@ -202,9 +202,9 @@
   {
   }
 
-  v39 = [(PHInCallKeypadViewController *)self captureView];
+  captureView = [(PHInCallKeypadViewController *)self captureView];
 
-  if (!v39)
+  if (!captureView)
   {
     v57 = v27;
     v40 = [_UIVisualEffectBackdropView alloc];
@@ -212,19 +212,19 @@
     v41 = [v40 initWithFrame:?];
     [(PHInCallKeypadViewController *)self setCaptureView:v41];
 
-    v42 = [(PHInCallKeypadViewController *)self captureView];
-    [v42 setAutoresizingMask:18];
+    captureView2 = [(PHInCallKeypadViewController *)self captureView];
+    [captureView2 setAutoresizingMask:18];
 
     v43 = self->_keypad;
-    v44 = [(PHInCallKeypadViewController *)self captureView];
-    [(TPDialerNumberPad *)v43 insertSubview:v44 atIndex:0];
+    captureView3 = [(PHInCallKeypadViewController *)self captureView];
+    [(TPDialerNumberPad *)v43 insertSubview:captureView3 atIndex:0];
 
-    v45 = [(PHInCallKeypadViewController *)self captureView];
-    [v45 setRenderMode:1];
+    captureView4 = [(PHInCallKeypadViewController *)self captureView];
+    [captureView4 setRenderMode:1];
 
-    v46 = [(PHInCallKeypadViewController *)self captureView];
-    v47 = [v46 captureGroup];
-    [v47 setGroupName:@"InCallKeypadButtonsCaptureGroup"];
+    captureView5 = [(PHInCallKeypadViewController *)self captureView];
+    captureGroup = [captureView5 captureGroup];
+    [captureGroup setGroupName:@"InCallKeypadButtonsCaptureGroup"];
 
     v60 = 0u;
     v61 = 0u;
@@ -246,12 +246,12 @@
           }
 
           v53 = *(*(&v58 + 1) + 8 * j);
-          v54 = [v53 backDropVisualEffectView];
-          [v54 _setGroupName:@"InCallKeypadButtonsCaptureGroup"];
+          backDropVisualEffectView = [v53 backDropVisualEffectView];
+          [backDropVisualEffectView _setGroupName:@"InCallKeypadButtonsCaptureGroup"];
 
-          v55 = [(PHInCallKeypadViewController *)self captureView];
-          v56 = [v53 backDropVisualEffectView];
-          [v56 _setCaptureView:v55];
+          captureView6 = [(PHInCallKeypadViewController *)self captureView];
+          backDropVisualEffectView2 = [v53 backDropVisualEffectView];
+          [backDropVisualEffectView2 _setCaptureView:captureView6];
         }
 
         v50 = [v48 countByEnumeratingWithState:&v58 objects:v66 count:16];
@@ -266,43 +266,43 @@
 LABEL_28:
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PHInCallKeypadViewController;
-  [(PHInCallKeypadViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(PHInCallKeypadViewController *)self keypadWillDismissHandler];
+  [(PHInCallKeypadViewController *)&v6 viewWillDisappear:disappear];
+  keypadWillDismissHandler = [(PHInCallKeypadViewController *)self keypadWillDismissHandler];
 
-  if (v4)
+  if (keypadWillDismissHandler)
   {
-    v5 = [(PHInCallKeypadViewController *)self keypadWillDismissHandler];
-    v5[2]();
+    keypadWillDismissHandler2 = [(PHInCallKeypadViewController *)self keypadWillDismissHandler];
+    keypadWillDismissHandler2[2]();
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PHInCallKeypadViewController;
-  [(PHInCallKeypadViewController *)&v4 viewDidAppear:a3];
+  [(PHInCallKeypadViewController *)&v4 viewDidAppear:appear];
   [(PHInCallKeypadViewController *)self becomeFirstResponder];
 }
 
-- (void)handleNumberPadKeyCommand:(id)a3
+- (void)handleNumberPadKeyCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(PHInCallKeypadViewController *)self numberPadKeyCommandHandler];
+  commandCopy = command;
+  numberPadKeyCommandHandler = [(PHInCallKeypadViewController *)self numberPadKeyCommandHandler];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C96A0;
   v6[3] = &unk_100358EE8;
   v6[4] = self;
-  [v5 handleKeyCommand:v4 receivedCharacterBlock:v6 receivedSpecialCharacterBlock:0];
+  [numberPadKeyCommandHandler handleKeyCommand:commandCopy receivedCharacterBlock:v6 receivedSpecialCharacterBlock:0];
 }
 
-- (void)handleNumberPadCharacter:(char)a3
+- (void)handleNumberPadCharacter:(char)character
 {
-  v3 = a3;
+  characterCopy = character;
   v4 = +[TUCallCenter sharedInstance];
   v5 = [v4 displayedCallFromCalls:0];
 
@@ -315,12 +315,12 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Will play DTMF tone due to phonePad keyDown event, and a supporting displayedCall", buf, 2u);
     }
 
-    [v5 playDTMFToneForKey:v3];
+    [v5 playDTMFToneForKey:characterCopy];
   }
 
   v7 = +[NSNotificationCenter defaultCenter];
-  v8 = [NSString stringWithFormat:@"%c", v3];
-  [v7 postNotificationName:@"PHInCallKeypadDataSourceChangedNotification" object:v8 userInfo:0];
+  characterCopy = [NSString stringWithFormat:@"%c", characterCopy];
+  [v7 postNotificationName:@"PHInCallKeypadDataSourceChangedNotification" object:characterCopy userInfo:0];
 }
 
 @end

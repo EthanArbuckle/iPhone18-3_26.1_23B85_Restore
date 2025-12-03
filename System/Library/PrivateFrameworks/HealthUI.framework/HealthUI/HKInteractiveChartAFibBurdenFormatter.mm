@@ -1,36 +1,36 @@
 @interface HKInteractiveChartAFibBurdenFormatter
-- (HKInteractiveChartAFibBurdenFormatter)initWithStatisticsType:(int64_t)a3;
-- (id)_formattedDataWithLessThan:(double)a3;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (HKInteractiveChartAFibBurdenFormatter)initWithStatisticsType:(int64_t)type;
+- (id)_formattedDataWithLessThan:(double)than;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartAFibBurdenFormatter
 
-- (HKInteractiveChartAFibBurdenFormatter)initWithStatisticsType:(int64_t)a3
+- (HKInteractiveChartAFibBurdenFormatter)initWithStatisticsType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = HKInteractiveChartAFibBurdenFormatter;
   result = [(HKInteractiveChartAFibBurdenFormatter *)&v5 init];
   if (result)
   {
-    result->_statisticsType = a3;
+    result->_statisticsType = type;
   }
 
   return result;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!dataCopy || ![dataCopy count])
   {
     v20 = MEMORY[0x1E695E0F0];
     goto LABEL_20;
   }
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -38,7 +38,7 @@
   {
     v27.receiver = self;
     v27.super_class = HKInteractiveChartAFibBurdenFormatter;
-    v19 = [(HKInteractiveChartGenericStatFormatter *)&v27 formattedSelectedRangeLabelDataWithChartData:v7 context:a4];
+    v19 = [(HKInteractiveChartGenericStatFormatter *)&v27 formattedSelectedRangeLabelDataWithChartData:v7 context:context];
     goto LABEL_17;
   }
 
@@ -94,36 +94,36 @@ LABEL_17:
   [(HKInteractiveChartGenericStatFormatter *)self setOverrideStatFormatterItemOptions:&unk_1F4381258];
   v22.receiver = self;
   v22.super_class = HKInteractiveChartAFibBurdenFormatter;
-  v20 = [(HKInteractiveChartGenericStatFormatter *)&v22 formattedSelectedRangeLabelDataWithChartData:v10 context:a4];
+  v20 = [(HKInteractiveChartGenericStatFormatter *)&v22 formattedSelectedRangeLabelDataWithChartData:v10 context:context];
   [(HKInteractiveChartAFibBurdenFormatter *)self statisticsType];
 LABEL_20:
 
   return v20;
 }
 
-- (id)_formattedDataWithLessThan:(double)a3
+- (id)_formattedDataWithLessThan:(double)than
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-  [v5 setFirstWeekday:2];
-  v6 = [[HKDateCache alloc] initWithCalendar:v5];
-  v7 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v8 = [v7 presentation];
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v10 = [v8 adjustedValueForDaemonValue:v9];
+  hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+  [hk_gregorianCalendar setFirstWeekday:2];
+  v6 = [[HKDateCache alloc] initWithCalendar:hk_gregorianCalendar];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  presentation = [displayType presentation];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:than];
+  v10 = [presentation adjustedValueForDaemonValue:v9];
 
-  v11 = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
-  v12 = [v11 effectiveVisibleRangeActive];
-  v13 = [v12 endDate];
+  chartRangeProvider = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
+  effectiveVisibleRangeActive = [chartRangeProvider effectiveVisibleRangeActive];
+  endDate = [effectiveVisibleRangeActive endDate];
 
-  v14 = [[HKAFibBurdenDataProviderCurrentValue alloc] initWithMaxValue:v10 date:v13];
-  v15 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v16 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v17 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v18 = [(HKInteractiveChartDataFormatter *)self minorFont];
-  v19 = [(HKAFibBurdenDataProviderCurrentValue *)v14 attributedStringWithDisplayType:v15 unitController:v16 valueFont:v17 unitFont:v18 dateCache:v6];
+  v14 = [[HKAFibBurdenDataProviderCurrentValue alloc] initWithMaxValue:v10 date:endDate];
+  displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+  v19 = [(HKAFibBurdenDataProviderCurrentValue *)v14 attributedStringWithDisplayType:displayType2 unitController:unitController valueFont:majorFont unitFont:minorFont dateCache:v6];
 
-  if (a3 <= 0.02)
+  if (than <= 0.02)
   {
     v20 = 0;
   }

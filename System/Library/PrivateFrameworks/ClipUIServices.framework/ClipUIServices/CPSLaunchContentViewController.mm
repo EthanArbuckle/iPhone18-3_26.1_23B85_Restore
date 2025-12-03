@@ -1,23 +1,23 @@
 @interface CPSLaunchContentViewController
 - (BOOL)_userNotificationAuthorizationDenied;
 - (BOOL)shouldRequestLocationConfirmationPermission;
-- (CPSLaunchContentViewController)initWithCoder:(id)a3;
-- (CPSLaunchContentViewController)initWithMetadata:(id)a3;
-- (CPSLaunchContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CPSLaunchContentViewController)initWithURL:(id)a3;
-- (CPSLaunchContentViewController)initWithURL:(id)a3 displayMode:(unint64_t)a4;
+- (CPSLaunchContentViewController)initWithCoder:(id)coder;
+- (CPSLaunchContentViewController)initWithMetadata:(id)metadata;
+- (CPSLaunchContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CPSLaunchContentViewController)initWithURL:(id)l;
+- (CPSLaunchContentViewController)initWithURL:(id)l displayMode:(unint64_t)mode;
 - (CPSLaunchContentViewControllerDelegate)delegate;
-- (id)_reasonStringForError:(id)a3;
+- (id)_reasonStringForError:(id)error;
 - (id)_setUpOpenButtonIfNeeded;
 - (void)_createClipSourceVibrantLabelIfNeeded;
-- (void)_dismissCardWithClipDidOpen:(BOOL)a3 andPerformBlockToLaunchApp:(id)a4;
-- (void)_dismissCardWithClipDidOpen:(BOOL)a3 completion:(id)a4;
-- (void)_dismissWithClipDidOpen:(BOOL)a3 completion:(id)a4;
+- (void)_dismissCardWithClipDidOpen:(BOOL)open andPerformBlockToLaunchApp:(id)app;
+- (void)_dismissCardWithClipDidOpen:(BOOL)open completion:(id)completion;
+- (void)_dismissWithClipDidOpen:(BOOL)open completion:(id)completion;
 - (void)_identifyCardBackgroundViewIfNeeded;
-- (void)_openAppClip:(id)a3;
-- (void)_openNonAppClipURL:(id)a3;
+- (void)_openAppClip:(id)clip;
+- (void)_openNonAppClipURL:(id)l;
 - (void)_sendAnalyticsIfNeeded;
-- (void)_setHeroImage:(id)a3;
+- (void)_setHeroImage:(id)image;
 - (void)_updateCloseButtonConstraints;
 - (void)_updateContent;
 - (void)_updateCornerRadiusForButtons;
@@ -26,36 +26,36 @@
 - (void)createNetworkPathMonitor;
 - (void)determineClipCompatibility;
 - (void)disableOpenButton;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)enableOpenButton;
 - (void)handlePolicyRecovery;
 - (void)loadView;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)logDismissalFromCloseButton:(BOOL)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)logDismissalFromCloseButton:(BOOL)button;
 - (void)openAppStore;
-- (void)permissionsViewControllerDidFinish:(id)a3;
+- (void)permissionsViewControllerDidFinish:(id)finish;
 - (void)playSoundAndHaptic;
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4;
-- (void)proxy:(id)a3 didRetrieveApplicationIcon:(id)a4;
-- (void)proxy:(id)a3 didRetrieveHeroImage:(id)a4;
-- (void)proxyDidInstallApplicationPlaceholder:(id)a3;
-- (void)proxyDidUpdateMetadata:(id)a3;
-- (void)proxyRemoteServiceDidCrash:(id)a3;
-- (void)setUnavailableViewHidden:(BOOL)a3;
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error;
+- (void)proxy:(id)proxy didRetrieveApplicationIcon:(id)icon;
+- (void)proxy:(id)proxy didRetrieveHeroImage:(id)image;
+- (void)proxyDidInstallApplicationPlaceholder:(id)placeholder;
+- (void)proxyDidUpdateMetadata:(id)metadata;
+- (void)proxyRemoteServiceDidCrash:(id)crash;
+- (void)setUnavailableViewHidden:(BOOL)hidden;
 - (void)setUpClipInformationContainerView;
 - (void)setUpHeroSection;
 - (void)setUpInformationSection;
-- (void)showUnavailableViewWithReason:(id)a3;
+- (void)showUnavailableViewWithReason:(id)reason;
 - (void)signInToAppStore;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateOpenButton;
-- (void)updatePreferredContentSizeForCardWidth:(double)a3;
+- (void)updatePreferredContentSizeForCardWidth:(double)width;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CPSLaunchContentViewController
@@ -66,12 +66,12 @@
   [(CPSLaunchContentViewController *)self setView:?];
 }
 
-- (CPSLaunchContentViewController)initWithURL:(id)a3
+- (CPSLaunchContentViewController)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4 && (v9.receiver = self, v9.super_class = CPSLaunchContentViewController, (self = [(CPSLaunchContentViewController *)&v9 initWithNibName:0 bundle:0]) != 0))
+  lCopy = l;
+  if (lCopy && (v9.receiver = self, v9.super_class = CPSLaunchContentViewController, (self = [(CPSLaunchContentViewController *)&v9 initWithNibName:0 bundle:0]) != 0))
   {
-    v5 = [objc_alloc(MEMORY[0x277CFA6D8]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x277CFA6D8]) initWithURL:lCopy];
     sessionProxy = self->_sessionProxy;
     self->_sessionProxy = v5;
 
@@ -79,25 +79,25 @@
     [(CPSSessionProxy *)self->_sessionProxy connectToService];
     self->_shouldPlaySoundAndHaptic = 1;
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (CPSLaunchContentViewController)initWithURL:(id)a3 displayMode:(unint64_t)a4
+- (CPSLaunchContentViewController)initWithURL:(id)l displayMode:(unint64_t)mode
 {
-  v5 = [(CPSLaunchContentViewController *)self initWithURL:a3];
+  v5 = [(CPSLaunchContentViewController *)self initWithURL:l];
   v6 = v5;
   if (v5)
   {
-    v5->_displayMode = a4;
-    if (a4 == 1)
+    v5->_displayMode = mode;
+    if (mode == 1)
     {
       v5->_shouldPlaySoundAndHaptic = 0;
     }
@@ -108,15 +108,15 @@
   return v6;
 }
 
-- (CPSLaunchContentViewController)initWithMetadata:(id)a3
+- (CPSLaunchContentViewController)initWithMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [v5 clipURL];
-  v7 = [(CPSLaunchContentViewController *)self initWithURL:v6];
+  metadataCopy = metadata;
+  clipURL = [metadataCopy clipURL];
+  v7 = [(CPSLaunchContentViewController *)self initWithURL:clipURL];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_clipMetadata, a3);
+    objc_storeStrong(&v7->_clipMetadata, metadata);
     [(CPSSessionProxy *)v7->_sessionProxy prewarmClip];
     v8 = v7;
   }
@@ -124,17 +124,17 @@
   return v7;
 }
 
-- (CPSLaunchContentViewController)initWithCoder:(id)a3
+- (CPSLaunchContentViewController)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"-initWithCoder: is not supported." userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (CPSLaunchContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CPSLaunchContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"-initWithNibName:bundle: is not supported." userInfo:0];
   objc_exception_throw(v7);
 }
@@ -149,20 +149,20 @@
   [(CPSLaunchContentViewController *)self setUpInformationSection];
   [(CPSLaunchContentViewController *)self _updateContent];
   v3 = MEMORY[0x277D75C80];
-  v4 = [(CPSLaunchContentViewController *)self traitCollection];
-  v5 = [v4 cps_invocationCardPreferredContentSizeCategory];
-  v6 = [v3 traitCollectionWithPreferredContentSizeCategory:v5];
-  v7 = [(CPSLaunchContentViewController *)self view];
-  [v7 _setLocalOverrideTraitCollection:v6];
+  traitCollection = [(CPSLaunchContentViewController *)self traitCollection];
+  cps_invocationCardPreferredContentSizeCategory = [traitCollection cps_invocationCardPreferredContentSizeCategory];
+  v6 = [v3 traitCollectionWithPreferredContentSizeCategory:cps_invocationCardPreferredContentSizeCategory];
+  view = [(CPSLaunchContentViewController *)self view];
+  [view _setLocalOverrideTraitCollection:v6];
 
   [(CPSLaunchContentViewController *)self createNetworkPathMonitor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CPSLaunchContentViewController;
-  [(CPSLaunchContentViewController *)&v4 viewWillAppear:a3];
+  [(CPSLaunchContentViewController *)&v4 viewWillAppear:appear];
   [(CPSLaunchContentViewController *)self _identifyCardBackgroundViewIfNeeded];
   if (self->_shouldPlaySoundAndHaptic)
   {
@@ -171,11 +171,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CPSLaunchContentViewController;
-  [(CPSLaunchContentViewController *)&v6 viewDidAppear:a3];
+  [(CPSLaunchContentViewController *)&v6 viewDidAppear:appear];
   delayedPermissionViewUnhideBlock = self->_delayedPermissionViewUnhideBlock;
   if (delayedPermissionViewUnhideBlock)
   {
@@ -189,7 +189,7 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 1024;
   v6 = a2;
   _os_log_error_impl(&dword_24374B000, log, OS_LOG_TYPE_ERROR, "Error creating system sound ID for audio URL: %@ status: (%d)", &v3, 0x12u);
@@ -200,8 +200,8 @@
   v5.receiver = self;
   v5.super_class = CPSLaunchContentViewController;
   [(CPSLaunchContentViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(CPSLaunchContentViewController *)self view];
-  [v3 frame];
+  view = [(CPSLaunchContentViewController *)self view];
+  [view frame];
   [(CPSLaunchContentViewController *)self updatePreferredContentSizeForCardWidth:CGRectGetWidth(v6)];
 
   v4[0] = MEMORY[0x277D85DD0];
@@ -274,10 +274,10 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(CPSLaunchContentViewController *)self navigationController];
-    v4 = [v3 view];
+    navigationController = [(CPSLaunchContentViewController *)self navigationController];
+    view = [navigationController view];
 
-    v5 = v4;
+    v5 = view;
     while (v5)
     {
       obj = [v5 superview];
@@ -297,18 +297,18 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
 - (void)updateViewConstraints
 {
   [(NSLayoutConstraint *)self->_heroContainerAspectRatioConstraint setActive:0];
-  v3 = [(CPSLaunchContentViewController *)self traitCollection];
-  v4 = [v3 verticalSizeClass];
+  traitCollection = [(CPSLaunchContentViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  v5 = [(UIView *)self->_heroContainerView widthAnchor];
-  v6 = [(UIView *)self->_heroContainerView heightAnchor];
+  widthAnchor = [(UIView *)self->_heroContainerView widthAnchor];
+  heightAnchor = [(UIView *)self->_heroContainerView heightAnchor];
   v7 = 1.5;
-  if (v4 == 1)
+  if (verticalSizeClass == 1)
   {
     v7 = 2.0;
   }
 
-  v8 = [v5 constraintEqualToAnchor:v6 multiplier:v7];
+  v8 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:v7];
   heroContainerAspectRatioConstraint = self->_heroContainerAspectRatioConstraint;
   self->_heroContainerAspectRatioConstraint = v8;
 
@@ -319,67 +319,67 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   [(CPSLaunchContentViewController *)&v10 updateViewConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v25.receiver = self;
   v25.super_class = CPSLaunchContentViewController;
-  [(CPSLaunchContentViewController *)&v25 traitCollectionDidChange:v4];
-  v5 = [(CPSLaunchContentViewController *)self view];
-  v6 = [(CPSLaunchContentViewController *)self traitCollection];
-  v7 = [v6 cps_invocationCardPreferredContentSizeCategory];
+  [(CPSLaunchContentViewController *)&v25 traitCollectionDidChange:changeCopy];
+  view = [(CPSLaunchContentViewController *)self view];
+  traitCollection = [(CPSLaunchContentViewController *)self traitCollection];
+  cps_invocationCardPreferredContentSizeCategory = [traitCollection cps_invocationCardPreferredContentSizeCategory];
 
-  v8 = [v4 cps_invocationCardPreferredContentSizeCategory];
-  v9 = [v7 isEqualToString:v8];
+  cps_invocationCardPreferredContentSizeCategory2 = [changeCopy cps_invocationCardPreferredContentSizeCategory];
+  v9 = [cps_invocationCardPreferredContentSizeCategory isEqualToString:cps_invocationCardPreferredContentSizeCategory2];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v7];
-    [v5 _setLocalOverrideTraitCollection:v10];
+    v10 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:cps_invocationCardPreferredContentSizeCategory];
+    [view _setLocalOverrideTraitCollection:v10];
   }
 
   if (self->_displayMode == 1)
   {
-    v11 = [(CPSLaunchContentViewController *)self traitCollection];
-    v12 = [v11 preferredContentSizeCategory];
-    v13 = [v4 preferredContentSizeCategory];
-    v14 = [v12 isEqualToString:v13];
+    traitCollection2 = [(CPSLaunchContentViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v14 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(CPSLaunchContentViewController *)self traitCollection];
-      v16 = [v15 preferredContentSizeCategory];
-      v17 = inlineCardButtonFont(v16);
-      v18 = [(CPSVibrantButton *)self->_openVibrantButton uiButton];
-      v19 = [v18 titleLabel];
-      [v19 setFont:v17];
+      traitCollection3 = [(CPSLaunchContentViewController *)self traitCollection];
+      preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+      v17 = inlineCardButtonFont(preferredContentSizeCategory3);
+      uiButton = [(CPSVibrantButton *)self->_openVibrantButton uiButton];
+      titleLabel = [uiButton titleLabel];
+      [titleLabel setFont:v17];
 
-      v20 = [(CPSLaunchContentViewController *)self traitCollection];
-      v21 = [v20 preferredContentSizeCategory];
-      v22 = inlineCardButtonFont(v21);
-      v23 = [(CPSVibrantButton *)self->_closeButton uiButton];
-      v24 = [v23 titleLabel];
-      [v24 setFont:v22];
+      traitCollection4 = [(CPSLaunchContentViewController *)self traitCollection];
+      preferredContentSizeCategory4 = [traitCollection4 preferredContentSizeCategory];
+      v22 = inlineCardButtonFont(preferredContentSizeCategory4);
+      uiButton2 = [(CPSVibrantButton *)self->_closeButton uiButton];
+      titleLabel2 = [uiButton2 titleLabel];
+      [titleLabel2 setFont:v22];
     }
   }
 
-  [v5 setNeedsUpdateConstraints];
+  [view setNeedsUpdateConstraints];
 }
 
 - (void)setUpHeroSection
 {
   v48[7] = *MEMORY[0x277D85DE8];
-  v46 = [(CPSLaunchContentViewController *)self view];
-  [v46 setAccessibilityIdentifier:@"AppClipCard"];
+  view = [(CPSLaunchContentViewController *)self view];
+  [view setAccessibilityIdentifier:@"AppClipCard"];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   heroContainerView = self->_heroContainerView;
   self->_heroContainerView = v3;
 
   [(UIView *)self->_heroContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v46 addSubview:self->_heroContainerView];
+  [view addSubview:self->_heroContainerView];
   v5 = MEMORY[0x277D755E8];
-  v6 = [MEMORY[0x277D75348] systemFillColor];
-  v7 = [v5 cps_imageViewWithImage:0 tintColor:0 backgroundColor:v6];
+  systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+  v7 = [v5 cps_imageViewWithImage:0 tintColor:0 backgroundColor:systemFillColor];
   heroImageView = self->_heroImageView;
   self->_heroImageView = v7;
 
@@ -387,33 +387,33 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   [(UIImageView *)self->_heroImageView setAccessibilityIgnoresInvertColors:1];
   [(UIView *)self->_heroContainerView addSubview:self->_heroImageView];
   v9 = MEMORY[0x277CCAAD0];
-  v45 = [(UIView *)self->_heroContainerView topAnchor];
-  v40 = [v46 topAnchor];
-  v39 = [v45 constraintEqualToAnchor:?];
+  topAnchor = [(UIView *)self->_heroContainerView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:?];
   v48[0] = v39;
-  v44 = [(UIView *)self->_heroContainerView leadingAnchor];
-  v38 = [v46 leadingAnchor];
-  v37 = [v44 constraintEqualToAnchor:?];
+  leadingAnchor = [(UIView *)self->_heroContainerView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:?];
   v48[1] = v37;
-  v43 = [(UIView *)self->_heroContainerView trailingAnchor];
-  v36 = [v46 trailingAnchor];
-  v35 = [v43 constraintEqualToAnchor:?];
+  trailingAnchor = [(UIView *)self->_heroContainerView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:?];
   v48[2] = v35;
-  v42 = [(UIImageView *)self->_heroImageView topAnchor];
-  v34 = [(UIView *)self->_heroContainerView topAnchor];
-  v33 = [v42 constraintEqualToAnchor:?];
+  topAnchor3 = [(UIImageView *)self->_heroImageView topAnchor];
+  topAnchor4 = [(UIView *)self->_heroContainerView topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:?];
   v48[3] = v33;
-  v41 = [(UIImageView *)self->_heroImageView bottomAnchor];
-  v32 = [(UIView *)self->_heroContainerView bottomAnchor];
-  v31 = [v41 constraintEqualToAnchor:?];
+  bottomAnchor = [(UIImageView *)self->_heroImageView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_heroContainerView bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:?];
   v48[4] = v31;
-  v10 = [(UIImageView *)self->_heroImageView leadingAnchor];
-  v11 = [(UIView *)self->_heroContainerView leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor3 = [(UIImageView *)self->_heroImageView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_heroContainerView leadingAnchor];
+  v12 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v48[5] = v12;
-  v13 = [(UIImageView *)self->_heroImageView trailingAnchor];
-  v14 = [(UIView *)self->_heroContainerView trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor3 = [(UIImageView *)self->_heroImageView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_heroContainerView trailingAnchor];
+  v15 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v48[6] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:7];
   [v9 activateConstraints:v16];
@@ -425,19 +425,19 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
     self->_closeButton = v17;
 
     [(CPSVibrantButton *)self->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(CPSVibrantButton *)self->_closeButton uiButton];
-    [v19 addTarget:self action:sel_dismiss_ forControlEvents:64];
+    uiButton = [(CPSVibrantButton *)self->_closeButton uiButton];
+    [uiButton addTarget:self action:sel_dismiss_ forControlEvents:64];
 
     [(UIView *)self->_heroContainerView addSubview:self->_closeButton];
-    v20 = [(UIView *)self->_heroContainerView trailingAnchor];
-    v21 = [(CPSVibrantButton *)self->_closeButton trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:16.0];
+    trailingAnchor5 = [(UIView *)self->_heroContainerView trailingAnchor];
+    trailingAnchor6 = [(CPSVibrantButton *)self->_closeButton trailingAnchor];
+    v22 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:16.0];
     closeButtonXConstraint = self->_closeButtonXConstraint;
     self->_closeButtonXConstraint = v22;
 
-    v24 = [(CPSVibrantButton *)self->_closeButton topAnchor];
-    v25 = [(UIView *)self->_heroContainerView topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:16.0];
+    topAnchor5 = [(CPSVibrantButton *)self->_closeButton topAnchor];
+    topAnchor6 = [(UIView *)self->_heroContainerView topAnchor];
+    v26 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:16.0];
     closeButtonYConstraint = self->_closeButtonYConstraint;
     self->_closeButtonYConstraint = v26;
 
@@ -453,24 +453,24 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
 - (void)setUpInformationSection
 {
   v110[26] = *MEMORY[0x277D85DE8];
-  v106 = [(CPSLaunchContentViewController *)self view];
+  view = [(CPSLaunchContentViewController *)self view];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   informationContainerView = self->_informationContainerView;
   self->_informationContainerView = v3;
 
   [(UIView *)self->_informationContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v106 addSubview:self->_informationContainerView];
+  [view addSubview:self->_informationContainerView];
   v5 = MEMORY[0x277D755E8];
-  v6 = [MEMORY[0x277D75348] systemWhiteColor];
-  v7 = [v5 cps_imageViewWithImage:0 tintColor:0 backgroundColor:v6];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v7 = [v5 cps_imageViewWithImage:0 tintColor:0 backgroundColor:systemWhiteColor];
   heroMirrorImageView = self->_heroMirrorImageView;
   self->_heroMirrorImageView = v7;
 
   [(UIImageView *)self->_heroMirrorImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   CGAffineTransformMakeScale(&v109, 1.0, -1.0);
-  v9 = [(UIImageView *)self->_heroMirrorImageView layer];
+  layer = [(UIImageView *)self->_heroMirrorImageView layer];
   v108 = v109;
-  [v9 setAffineTransform:&v108];
+  [layer setAffineTransform:&v108];
 
   [(UIImageView *)self->_heroMirrorImageView setAccessibilityIgnoresInvertColors:1];
   [(UIView *)self->_informationContainerView addSubview:self->_heroMirrorImageView];
@@ -480,21 +480,21 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
 
   [v104 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_informationContainerView addSubview:v104];
-  v105 = [v104 contentView];
+  contentView = [v104 contentView];
   v107 = objc_alloc_init(MEMORY[0x277D759D8]);
   [v107 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v107 setContentInsetAdjustmentBehavior:2];
-  [v105 addSubview:v107];
+  [contentView addSubview:v107];
   v12 = objc_alloc_init(CPSAppClipUnavailableView);
   unavailableView = self->_unavailableView;
   self->_unavailableView = v12;
 
-  v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(CPSAppClipUnavailableView *)self->_unavailableView setBackgroundColor:v14];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(CPSAppClipUnavailableView *)self->_unavailableView setBackgroundColor:systemBackgroundColor];
 
   [(CPSAppClipUnavailableView *)self->_unavailableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CPSAppClipUnavailableView *)self->_unavailableView setHidden:1];
-  [v105 addSubview:self->_unavailableView];
+  [contentView addSubview:self->_unavailableView];
   v15 = objc_alloc_init(MEMORY[0x277D75A68]);
   informationContentView = self->_informationContentView;
   self->_informationContentView = v15;
@@ -516,9 +516,9 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   [(CPSPermissionView *)self->_permissionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CPSPermissionView *)self->_permissionView setHidden:1];
   [(UIStackView *)self->_informationContentView addArrangedSubview:self->_permissionView];
-  v19 = [MEMORY[0x277D75D18] cps_vibrantSeparator];
+  cps_vibrantSeparator = [MEMORY[0x277D75D18] cps_vibrantSeparator];
   separatorView = self->_separatorView;
-  self->_separatorView = v19;
+  self->_separatorView = cps_vibrantSeparator;
 
   [(UIView *)self->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_informationContentView addArrangedSubview:self->_separatorView];
@@ -532,112 +532,112 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   [(CPSAppMetadataView *)self->_appMetadataView setUserInteractionEnabled:0];
   [(UIStackView *)self->_informationContentView addArrangedSubview:self->_appMetadataView];
   [(UIStackView *)self->_informationContentView cps_addArrangedSpacerWithHeight:24.0];
-  v23 = [v107 heightAnchor];
-  v24 = [(UIStackView *)self->_informationContentView heightAnchor];
-  v103 = [v23 constraintEqualToAnchor:v24];
+  heightAnchor = [v107 heightAnchor];
+  heightAnchor2 = [(UIStackView *)self->_informationContentView heightAnchor];
+  v103 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v25) = 1132068864;
   [v103 setPriority:v25];
   v26 = MEMORY[0x277CCAAD0];
-  v102 = [(UIView *)self->_informationContainerView topAnchor];
-  v79 = [(UIView *)self->_heroContainerView bottomAnchor];
-  v78 = [v102 constraintEqualToAnchor:?];
+  topAnchor = [(UIView *)self->_informationContainerView topAnchor];
+  bottomAnchor = [(UIView *)self->_heroContainerView bottomAnchor];
+  v78 = [topAnchor constraintEqualToAnchor:?];
   v110[0] = v78;
-  v101 = [(UIView *)self->_informationContainerView leadingAnchor];
-  v77 = [v106 leadingAnchor];
-  v76 = [v101 constraintEqualToAnchor:?];
+  leadingAnchor = [(UIView *)self->_informationContainerView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v76 = [leadingAnchor constraintEqualToAnchor:?];
   v110[1] = v76;
-  v100 = [(UIView *)self->_informationContainerView trailingAnchor];
-  v75 = [v106 trailingAnchor];
-  v74 = [v100 constraintEqualToAnchor:?];
+  trailingAnchor = [(UIView *)self->_informationContainerView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v74 = [trailingAnchor constraintEqualToAnchor:?];
   v110[2] = v74;
-  v99 = [(UIView *)self->_informationContainerView bottomAnchor];
-  v73 = [v106 bottomAnchor];
-  v72 = [v99 constraintEqualToAnchor:?];
+  bottomAnchor2 = [(UIView *)self->_informationContainerView bottomAnchor];
+  bottomAnchor3 = [view bottomAnchor];
+  v72 = [bottomAnchor2 constraintEqualToAnchor:?];
   v110[3] = v72;
-  v98 = [(CPSAppClipUnavailableView *)self->_unavailableView topAnchor];
-  v71 = [(UIView *)self->_heroContainerView bottomAnchor];
-  v70 = [v98 constraintEqualToAnchor:?];
+  topAnchor2 = [(CPSAppClipUnavailableView *)self->_unavailableView topAnchor];
+  bottomAnchor4 = [(UIView *)self->_heroContainerView bottomAnchor];
+  v70 = [topAnchor2 constraintEqualToAnchor:?];
   v110[4] = v70;
-  v97 = [(CPSAppClipUnavailableView *)self->_unavailableView leadingAnchor];
-  v69 = [v106 leadingAnchor];
-  v68 = [v97 constraintEqualToAnchor:?];
+  leadingAnchor3 = [(CPSAppClipUnavailableView *)self->_unavailableView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v68 = [leadingAnchor3 constraintEqualToAnchor:?];
   v110[5] = v68;
-  v96 = [(CPSAppClipUnavailableView *)self->_unavailableView trailingAnchor];
-  v67 = [v106 trailingAnchor];
-  v66 = [v96 constraintEqualToAnchor:?];
+  trailingAnchor3 = [(CPSAppClipUnavailableView *)self->_unavailableView trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v66 = [trailingAnchor3 constraintEqualToAnchor:?];
   v110[6] = v66;
-  v95 = [(CPSAppClipUnavailableView *)self->_unavailableView bottomAnchor];
-  v65 = [v106 bottomAnchor];
-  v64 = [v95 constraintEqualToAnchor:?];
+  bottomAnchor5 = [(CPSAppClipUnavailableView *)self->_unavailableView bottomAnchor];
+  bottomAnchor6 = [view bottomAnchor];
+  v64 = [bottomAnchor5 constraintEqualToAnchor:?];
   v110[7] = v64;
-  v94 = [(UIImageView *)self->_heroMirrorImageView topAnchor];
-  v63 = [(UIView *)self->_informationContainerView topAnchor];
-  v62 = [v94 constraintEqualToAnchor:?];
+  topAnchor3 = [(UIImageView *)self->_heroMirrorImageView topAnchor];
+  topAnchor4 = [(UIView *)self->_informationContainerView topAnchor];
+  v62 = [topAnchor3 constraintEqualToAnchor:?];
   v110[8] = v62;
-  v93 = [(UIImageView *)self->_heroMirrorImageView leadingAnchor];
-  v61 = [(UIImageView *)self->_heroImageView leadingAnchor];
-  v60 = [v93 constraintEqualToAnchor:?];
+  leadingAnchor5 = [(UIImageView *)self->_heroMirrorImageView leadingAnchor];
+  leadingAnchor6 = [(UIImageView *)self->_heroImageView leadingAnchor];
+  v60 = [leadingAnchor5 constraintEqualToAnchor:?];
   v110[9] = v60;
-  v92 = [(UIImageView *)self->_heroMirrorImageView trailingAnchor];
-  v59 = [(UIImageView *)self->_heroImageView trailingAnchor];
-  v58 = [v92 constraintEqualToAnchor:?];
+  trailingAnchor5 = [(UIImageView *)self->_heroMirrorImageView trailingAnchor];
+  trailingAnchor6 = [(UIImageView *)self->_heroImageView trailingAnchor];
+  v58 = [trailingAnchor5 constraintEqualToAnchor:?];
   v110[10] = v58;
-  v91 = [(UIImageView *)self->_heroMirrorImageView heightAnchor];
-  v57 = [(UIImageView *)self->_heroImageView heightAnchor];
-  v56 = [v91 constraintEqualToAnchor:?];
+  heightAnchor3 = [(UIImageView *)self->_heroMirrorImageView heightAnchor];
+  heightAnchor4 = [(UIImageView *)self->_heroImageView heightAnchor];
+  v56 = [heightAnchor3 constraintEqualToAnchor:?];
   v110[11] = v56;
-  v90 = [v104 topAnchor];
-  v55 = [(UIView *)self->_informationContainerView topAnchor];
-  v54 = [v90 constraintEqualToAnchor:?];
+  topAnchor5 = [v104 topAnchor];
+  topAnchor6 = [(UIView *)self->_informationContainerView topAnchor];
+  v54 = [topAnchor5 constraintEqualToAnchor:?];
   v110[12] = v54;
-  v89 = [v104 leadingAnchor];
-  v53 = [(UIView *)self->_informationContainerView leadingAnchor];
-  v52 = [v89 constraintEqualToAnchor:?];
+  leadingAnchor7 = [v104 leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_informationContainerView leadingAnchor];
+  v52 = [leadingAnchor7 constraintEqualToAnchor:?];
   v110[13] = v52;
-  v88 = [v104 trailingAnchor];
-  v51 = [(UIView *)self->_informationContainerView trailingAnchor];
-  v50 = [v88 constraintEqualToAnchor:?];
+  trailingAnchor7 = [v104 trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_informationContainerView trailingAnchor];
+  v50 = [trailingAnchor7 constraintEqualToAnchor:?];
   v110[14] = v50;
-  v87 = [v104 bottomAnchor];
-  v49 = [(UIView *)self->_informationContainerView bottomAnchor];
-  v48 = [v87 constraintEqualToAnchor:?];
+  bottomAnchor7 = [v104 bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_informationContainerView bottomAnchor];
+  v48 = [bottomAnchor7 constraintEqualToAnchor:?];
   v110[15] = v48;
-  v86 = [v107 topAnchor];
-  v47 = [v105 topAnchor];
-  v46 = [v86 constraintEqualToAnchor:?];
+  topAnchor7 = [v107 topAnchor];
+  topAnchor8 = [contentView topAnchor];
+  v46 = [topAnchor7 constraintEqualToAnchor:?];
   v110[16] = v46;
-  v85 = [v107 leadingAnchor];
-  v45 = [v105 leadingAnchor];
-  v44 = [v85 constraintEqualToAnchor:?];
+  leadingAnchor9 = [v107 leadingAnchor];
+  leadingAnchor10 = [contentView leadingAnchor];
+  v44 = [leadingAnchor9 constraintEqualToAnchor:?];
   v110[17] = v44;
-  v84 = [v105 trailingAnchor];
-  v43 = [v107 trailingAnchor];
-  v42 = [v84 constraintEqualToAnchor:?];
+  trailingAnchor9 = [contentView trailingAnchor];
+  trailingAnchor10 = [v107 trailingAnchor];
+  v42 = [trailingAnchor9 constraintEqualToAnchor:?];
   v110[18] = v42;
-  v83 = [v105 bottomAnchor];
-  v41 = [v107 bottomAnchor];
-  v40 = [v83 constraintEqualToAnchor:?];
+  bottomAnchor9 = [contentView bottomAnchor];
+  bottomAnchor10 = [v107 bottomAnchor];
+  v40 = [bottomAnchor9 constraintEqualToAnchor:?];
   v110[19] = v40;
-  v82 = [(UIStackView *)self->_informationContentView topAnchor];
-  v39 = [v107 topAnchor];
-  v38 = [v82 constraintEqualToAnchor:?];
+  topAnchor9 = [(UIStackView *)self->_informationContentView topAnchor];
+  topAnchor10 = [v107 topAnchor];
+  v38 = [topAnchor9 constraintEqualToAnchor:?];
   v110[20] = v38;
-  v81 = [(UIStackView *)self->_informationContentView leadingAnchor];
-  v37 = [v107 leadingAnchor];
-  v36 = [v81 constraintEqualToAnchor:?];
+  leadingAnchor11 = [(UIStackView *)self->_informationContentView leadingAnchor];
+  leadingAnchor12 = [v107 leadingAnchor];
+  v36 = [leadingAnchor11 constraintEqualToAnchor:?];
   v110[21] = v36;
-  v80 = [(UIStackView *)self->_informationContentView trailingAnchor];
-  v27 = [v107 trailingAnchor];
-  v28 = [v80 constraintEqualToAnchor:v27];
+  trailingAnchor11 = [(UIStackView *)self->_informationContentView trailingAnchor];
+  trailingAnchor12 = [v107 trailingAnchor];
+  v28 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v110[22] = v28;
-  v29 = [(UIStackView *)self->_informationContentView bottomAnchor];
-  v30 = [v107 bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor11 = [(UIStackView *)self->_informationContentView bottomAnchor];
+  bottomAnchor12 = [v107 bottomAnchor];
+  v31 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
   v110[23] = v31;
-  v32 = [v107 widthAnchor];
-  v33 = [(UIStackView *)self->_informationContentView widthAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  widthAnchor = [v107 widthAnchor];
+  widthAnchor2 = [(UIStackView *)self->_informationContentView widthAnchor];
+  v34 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v110[24] = v34;
   v110[25] = v103;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:26];
@@ -666,19 +666,19 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
       openVibrantButton = self->_openVibrantButton;
       self->_openVibrantButton = v6;
 
-      v8 = [(CPSVibrantButton *)self->_openVibrantButton uiButton];
+      uiButton = [(CPSVibrantButton *)self->_openVibrantButton uiButton];
       v9 = self->_openButton;
-      self->_openButton = v8;
+      self->_openButton = uiButton;
 
-      v10 = [(CPSLaunchContentViewController *)self traitCollection];
-      v11 = [v10 preferredContentSizeCategory];
-      v12 = inlineCardButtonFont(v11);
-      v13 = [(UIButton *)self->_openButton titleLabel];
-      [v13 setFont:v12];
+      traitCollection = [(CPSLaunchContentViewController *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      v12 = inlineCardButtonFont(preferredContentSizeCategory);
+      titleLabel = [(UIButton *)self->_openButton titleLabel];
+      [titleLabel setFont:v12];
 
       v14 = self->_openButton;
-      v15 = [MEMORY[0x277D75348] systemBlueColor];
-      [(UIButton *)v14 setTitleColor:v15 forState:0];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      [(UIButton *)v14 setTitleColor:systemBlueColor forState:0];
 
       [(CPSVibrantButton *)self->_openVibrantButton setTranslatesAutoresizingMaskIntoConstraints:0];
       [(CPSVibrantButton *)self->_openVibrantButton setAdjustFontSizeToFitWidth:1];
@@ -687,14 +687,14 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
     else
     {
       v16 = [CPSButton alloc];
-      v17 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       v18 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
-      v19 = [(CPSButton *)v16 initWithTitle:0 enabledTitleColor:v17 disabledTitleColor:v18 backgroundColor:v5 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
+      v19 = [(CPSButton *)v16 initWithTitle:0 enabledTitleColor:whiteColor disabledTitleColor:v18 backgroundColor:v5 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
       v20 = self->_openButton;
       self->_openButton = v19;
 
-      v21 = [(UIButton *)self->_openButton titleLabel];
-      [v21 setAdjustsFontForContentSizeCategory:1];
+      titleLabel2 = [(UIButton *)self->_openButton titleLabel];
+      [titleLabel2 setAdjustsFontForContentSizeCategory:1];
     }
 
     [(UIButton *)self->_openButton setContentEdgeInsets:12.0, 18.0, 12.0, 18.0];
@@ -750,53 +750,53 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel setNumberOfLines:2];
   [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [v89 addSubview:self->_clipDescriptionVibrantLabel];
-  v88 = [(CPSLaunchContentViewController *)self _setUpOpenButtonIfNeeded];
+  _setUpOpenButtonIfNeeded = [(CPSLaunchContentViewController *)self _setUpOpenButtonIfNeeded];
   [(UIView *)self->_clipInformationContainerView addSubview:?];
-  v12 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel topAnchor];
-  v13 = [v89 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [(CPSVibrantLabel *)self->_clipNameVibrantLabel topAnchor];
+  topAnchor2 = [v89 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   clipNameVibrantLabelTopAnchor = self->_clipNameVibrantLabelTopAnchor;
   self->_clipNameVibrantLabelTopAnchor = v14;
 
   v16 = MEMORY[0x277CCAAD0];
-  v86 = [v89 topAnchor];
-  v72 = [(UIView *)self->_clipInformationContainerView topAnchor];
-  v70 = [v86 constraintGreaterThanOrEqualToAnchor:?];
+  topAnchor3 = [v89 topAnchor];
+  topAnchor4 = [(UIView *)self->_clipInformationContainerView topAnchor];
+  v70 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:?];
   v92[0] = v70;
-  v84 = [v89 leadingAnchor];
-  v68 = [(UIView *)self->_clipInformationContainerView leadingAnchor];
-  v17 = [v84 constraintEqualToAnchor:?];
+  leadingAnchor = [v89 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_clipInformationContainerView leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:?];
   v18 = self->_clipNameVibrantLabelTopAnchor;
   v66 = v17;
   v92[1] = v17;
   v92[2] = v18;
-  v82 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel leadingAnchor];
-  v64 = [v89 leadingAnchor];
-  v62 = [v82 constraintEqualToAnchor:?];
+  leadingAnchor3 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel leadingAnchor];
+  leadingAnchor4 = [v89 leadingAnchor];
+  v62 = [leadingAnchor3 constraintEqualToAnchor:?];
   v92[3] = v62;
-  v80 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel trailingAnchor];
-  v60 = [v89 trailingAnchor];
-  v58 = [v80 constraintEqualToAnchor:?];
+  trailingAnchor = [(CPSVibrantLabel *)self->_clipNameVibrantLabel trailingAnchor];
+  trailingAnchor2 = [v89 trailingAnchor];
+  v58 = [trailingAnchor constraintEqualToAnchor:?];
   v92[4] = v58;
-  v78 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel topAnchor];
-  v56 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel bottomAnchor];
-  v54 = [v78 constraintEqualToAnchor:2.0 constant:?];
+  topAnchor5 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel topAnchor];
+  bottomAnchor = [(CPSVibrantLabel *)self->_clipNameVibrantLabel bottomAnchor];
+  v54 = [topAnchor5 constraintEqualToAnchor:2.0 constant:?];
   v92[5] = v54;
-  v76 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel leadingAnchor];
-  v52 = [v89 leadingAnchor];
-  v50 = [v76 constraintEqualToAnchor:?];
+  leadingAnchor5 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel leadingAnchor];
+  leadingAnchor6 = [v89 leadingAnchor];
+  v50 = [leadingAnchor5 constraintEqualToAnchor:?];
   v92[6] = v50;
-  v74 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel trailingAnchor];
-  v48 = [v89 trailingAnchor];
-  v19 = [v74 constraintEqualToAnchor:?];
+  trailingAnchor3 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel trailingAnchor];
+  trailingAnchor4 = [v89 trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:?];
   v92[7] = v19;
-  v20 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel bottomAnchor];
-  v21 = [v89 bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor2 = [(CPSVibrantLabel *)self->_clipDescriptionVibrantLabel bottomAnchor];
+  bottomAnchor3 = [v89 bottomAnchor];
+  v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v92[8] = v22;
-  v23 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
-  v24 = [v88 bottomAnchor];
-  v25 = [v23 constraintGreaterThanOrEqualToAnchor:v24];
+  bottomAnchor4 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
+  bottomAnchor5 = [_setUpOpenButtonIfNeeded bottomAnchor];
+  v25 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor5];
   v92[9] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:10];
   [v16 activateConstraints:v26];
@@ -809,60 +809,60 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
     self->_closeButton = v27;
 
     [(CPSVibrantButton *)self->_closeButton setAdjustFontSizeToFitWidth:1];
-    v87 = [(CPSVibrantButton *)self->_closeButton uiButton];
-    v29 = [(CPSLaunchContentViewController *)self traitCollection];
-    v30 = [v29 preferredContentSizeCategory];
-    v31 = inlineCardButtonFont(v30);
-    v32 = [v87 titleLabel];
-    [v32 setFont:v31];
+    uiButton = [(CPSVibrantButton *)self->_closeButton uiButton];
+    traitCollection = [(CPSLaunchContentViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v31 = inlineCardButtonFont(preferredContentSizeCategory);
+    titleLabel = [uiButton titleLabel];
+    [titleLabel setFont:v31];
 
-    [v87 setAccessibilityIdentifier:@"ViewInSafariButton"];
-    v33 = [MEMORY[0x277D75348] systemBlueColor];
-    [v87 setTitleColor:v33 forState:0];
+    [uiButton setAccessibilityIdentifier:@"ViewInSafariButton"];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [uiButton setTitleColor:systemBlueColor forState:0];
 
     v34 = _CPSLocalizedString();
-    [v87 setTitle:v34 forState:0];
+    [uiButton setTitle:v34 forState:0];
 
     [(CPSVibrantButton *)self->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v87 setContentEdgeInsets:{12.0, 18.0, 12.0, 18.0}];
-    [v87 addTarget:self action:sel_dismiss_ forControlEvents:64];
+    [uiButton setContentEdgeInsets:{12.0, 18.0, 12.0, 18.0}];
+    [uiButton addTarget:self action:sel_dismiss_ forControlEvents:64];
     [(UIView *)self->_clipInformationContainerView addSubview:self->_closeButton];
     v35 = MEMORY[0x277CCAAD0];
-    v85 = [(CPSVibrantButton *)self->_closeButton leadingAnchor];
-    v65 = [(UIView *)self->_clipInformationContainerView leadingAnchor];
-    v73 = [v85 constraintEqualToAnchor:?];
-    v90[0] = v73;
-    v83 = [(CPSVibrantButton *)self->_closeButton topAnchor];
-    v63 = [v88 topAnchor];
-    v71 = [v83 constraintEqualToAnchor:?];
-    v90[1] = v71;
-    v81 = [(CPSVibrantButton *)self->_closeButton bottomAnchor];
-    v61 = [v88 bottomAnchor];
-    v69 = [v81 constraintEqualToAnchor:?];
-    v90[2] = v69;
-    v79 = [(CPSVibrantButton *)self->_closeButton widthAnchor];
-    v59 = [(UIView *)self->_clipInformationContainerView widthAnchor];
-    v57 = [v79 constraintEqualToAnchor:0.5 multiplier:-8.0 constant:?];
-    v90[3] = v57;
-    v77 = [v88 widthAnchor];
-    v55 = [(UIView *)self->_clipInformationContainerView widthAnchor];
-    v67 = [v77 constraintEqualToAnchor:0.5 multiplier:-8.0 constant:?];
-    v90[4] = v67;
-    v75 = [v88 topAnchor];
-    v53 = [v89 bottomAnchor];
-    v36 = [v75 constraintGreaterThanOrEqualToAnchor:16.0 constant:?];
+    leadingAnchor7 = [(CPSVibrantButton *)self->_closeButton leadingAnchor];
+    leadingAnchor8 = [(UIView *)self->_clipInformationContainerView leadingAnchor];
+    centerYAnchor = [leadingAnchor7 constraintEqualToAnchor:?];
+    v90[0] = centerYAnchor;
+    topAnchor6 = [(CPSVibrantButton *)self->_closeButton topAnchor];
+    topAnchor7 = [_setUpOpenButtonIfNeeded topAnchor];
+    leadingAnchor9 = [topAnchor6 constraintEqualToAnchor:?];
+    v90[1] = leadingAnchor9;
+    bottomAnchor6 = [(CPSVibrantButton *)self->_closeButton bottomAnchor];
+    bottomAnchor7 = [_setUpOpenButtonIfNeeded bottomAnchor];
+    trailingAnchor9 = [bottomAnchor6 constraintEqualToAnchor:?];
+    v90[2] = trailingAnchor9;
+    widthAnchor = [(CPSVibrantButton *)self->_closeButton widthAnchor];
+    widthAnchor2 = [(UIView *)self->_clipInformationContainerView widthAnchor];
+    widthAnchor5 = [widthAnchor constraintEqualToAnchor:0.5 multiplier:-8.0 constant:?];
+    v90[3] = widthAnchor5;
+    widthAnchor3 = [_setUpOpenButtonIfNeeded widthAnchor];
+    widthAnchor4 = [(UIView *)self->_clipInformationContainerView widthAnchor];
+    bottomAnchor11 = [widthAnchor3 constraintEqualToAnchor:0.5 multiplier:-8.0 constant:?];
+    v90[4] = bottomAnchor11;
+    topAnchor8 = [_setUpOpenButtonIfNeeded topAnchor];
+    bottomAnchor8 = [v89 bottomAnchor];
+    v36 = [topAnchor8 constraintGreaterThanOrEqualToAnchor:16.0 constant:?];
     v90[5] = v36;
-    v51 = [v88 trailingAnchor];
-    v49 = [(UIView *)self->_clipInformationContainerView trailingAnchor];
-    v37 = [v51 constraintEqualToAnchor:?];
+    trailingAnchor5 = [_setUpOpenButtonIfNeeded trailingAnchor];
+    trailingAnchor6 = [(UIView *)self->_clipInformationContainerView trailingAnchor];
+    v37 = [trailingAnchor5 constraintEqualToAnchor:?];
     v90[6] = v37;
-    v38 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
-    v39 = [v88 bottomAnchor];
-    v40 = [v38 constraintGreaterThanOrEqualToAnchor:v39];
+    bottomAnchor9 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
+    bottomAnchor10 = [_setUpOpenButtonIfNeeded bottomAnchor];
+    v40 = [bottomAnchor9 constraintGreaterThanOrEqualToAnchor:bottomAnchor10];
     v90[7] = v40;
-    v41 = [v89 trailingAnchor];
-    v42 = [(UIView *)self->_clipInformationContainerView trailingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    trailingAnchor7 = [v89 trailingAnchor];
+    trailingAnchor8 = [(UIView *)self->_clipInformationContainerView trailingAnchor];
+    v43 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v90[8] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:9];
     [v35 activateConstraints:v44];
@@ -871,32 +871,32 @@ uint64_t __55__CPSLaunchContentViewController_viewDidLayoutSubviews__block_invok
   else
   {
     v45 = MEMORY[0x277CCAAD0];
-    v87 = [v88 topAnchor];
-    v85 = [(UIView *)self->_clipInformationContainerView topAnchor];
-    v65 = [v87 constraintGreaterThanOrEqualToAnchor:?];
-    v91[0] = v65;
-    v73 = [v88 centerYAnchor];
-    v83 = [v89 centerYAnchor];
-    v63 = [v73 constraintEqualToAnchor:?];
-    v91[1] = v63;
-    v71 = [v88 leadingAnchor];
-    v81 = [v89 trailingAnchor];
-    v61 = [v71 constraintEqualToAnchor:16.0 constant:?];
-    v91[2] = v61;
-    v69 = [v88 trailingAnchor];
-    v79 = [(UIView *)self->_clipInformationContainerView trailingAnchor];
-    v59 = [v69 constraintEqualToAnchor:?];
-    v91[3] = v59;
-    v57 = [v88 widthAnchor];
-    v46 = [v57 constraintGreaterThanOrEqualToConstant:100.0];
+    uiButton = [_setUpOpenButtonIfNeeded topAnchor];
+    leadingAnchor7 = [(UIView *)self->_clipInformationContainerView topAnchor];
+    leadingAnchor8 = [uiButton constraintGreaterThanOrEqualToAnchor:?];
+    v91[0] = leadingAnchor8;
+    centerYAnchor = [_setUpOpenButtonIfNeeded centerYAnchor];
+    topAnchor6 = [v89 centerYAnchor];
+    topAnchor7 = [centerYAnchor constraintEqualToAnchor:?];
+    v91[1] = topAnchor7;
+    leadingAnchor9 = [_setUpOpenButtonIfNeeded leadingAnchor];
+    bottomAnchor6 = [v89 trailingAnchor];
+    bottomAnchor7 = [leadingAnchor9 constraintEqualToAnchor:16.0 constant:?];
+    v91[2] = bottomAnchor7;
+    trailingAnchor9 = [_setUpOpenButtonIfNeeded trailingAnchor];
+    widthAnchor = [(UIView *)self->_clipInformationContainerView trailingAnchor];
+    widthAnchor2 = [trailingAnchor9 constraintEqualToAnchor:?];
+    v91[3] = widthAnchor2;
+    widthAnchor5 = [_setUpOpenButtonIfNeeded widthAnchor];
+    v46 = [widthAnchor5 constraintGreaterThanOrEqualToConstant:100.0];
     LODWORD(v47) = 1144750080;
-    v77 = v46;
-    v55 = [v46 cps_setPriority:v47];
-    v91[4] = v55;
-    v67 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
-    v75 = [v89 bottomAnchor];
-    v53 = [v67 constraintGreaterThanOrEqualToAnchor:?];
-    v91[5] = v53;
+    widthAnchor3 = v46;
+    widthAnchor4 = [v46 cps_setPriority:v47];
+    v91[4] = widthAnchor4;
+    bottomAnchor11 = [(UIView *)self->_clipInformationContainerView bottomAnchor];
+    topAnchor8 = [v89 bottomAnchor];
+    bottomAnchor8 = [bottomAnchor11 constraintGreaterThanOrEqualToAnchor:?];
+    v91[5] = bottomAnchor8;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:6];
     [v45 activateConstraints:v36];
   }
@@ -1084,14 +1084,14 @@ void __57__CPSLaunchContentViewController_configurePermissionView__block_invoke_
 
   v4 = v3;
   _Block_object_dispose(&v13, 8);
-  v5 = [v3 currentNotificationSettingsCenter];
-  v6 = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
-  v7 = [v5 notificationSourceWithIdentifier:v6];
-  v8 = [v7 sourceSettings];
-  v9 = [v8 notificationSettings];
-  v10 = [v9 authorizationStatus];
+  currentNotificationSettingsCenter = [v3 currentNotificationSettingsCenter];
+  clipBundleID = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
+  v7 = [currentNotificationSettingsCenter notificationSourceWithIdentifier:clipBundleID];
+  sourceSettings = [v7 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
+  authorizationStatus = [notificationSettings authorizationStatus];
 
-  return v10 == 1;
+  return authorizationStatus == 1;
 }
 
 - (void)enableOpenButton
@@ -1100,7 +1100,7 @@ void __57__CPSLaunchContentViewController_configurePermissionView__block_invoke_
   [(UIButton *)self->_openButton setAccessibilityIdentifier:@"OpenButton"];
   if (!self->_displayMode)
   {
-    v3 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
     [(UIButton *)self->_openButton setBackgroundColor:?];
   }
 }
@@ -1115,25 +1115,25 @@ void __57__CPSLaunchContentViewController_configurePermissionView__block_invoke_
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [(CPSLaunchContentViewController *)self shouldRequestLocationConfirmationPermission];
+  shouldRequestLocationConfirmationPermission = [(CPSLaunchContentViewController *)self shouldRequestLocationConfirmationPermission];
   permissionsViewController = self->_permissionsViewController;
-  v6 = [(CPSLaunchContentViewController *)self navigationController];
-  v7 = [v6 topViewController];
-  LOBYTE(permissionsViewController) = [(CPSPermissionsViewController *)permissionsViewController isEqual:v7];
+  navigationController = [(CPSLaunchContentViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  LOBYTE(permissionsViewController) = [(CPSPermissionsViewController *)permissionsViewController isEqual:topViewController];
 
-  if (!v4 && (permissionsViewController & 1) != 0)
+  if (!shouldRequestLocationConfirmationPermission && (permissionsViewController & 1) != 0)
   {
-    v8 = [(CPSLaunchContentViewController *)self navigationController];
-    v9 = [v8 popViewControllerAnimated:0];
+    navigationController2 = [(CPSLaunchContentViewController *)self navigationController];
+    v9 = [navigationController2 popViewControllerAnimated:0];
   }
 
   permissionView = self->_permissionView;
-  v11 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
-  [(CPSPermissionView *)permissionView configureWithAppName:v11 requestsNotificationPermission:[(CPSClipMetadata *)self->_clipMetadata clipRequestsNotificationPermission] requestsLocationConfirmationPermission:v4];
+  fullAppName = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+  [(CPSPermissionView *)permissionView configureWithAppName:fullAppName requestsNotificationPermission:[(CPSClipMetadata *)self->_clipMetadata clipRequestsNotificationPermission] requestsLocationConfirmationPermission:shouldRequestLocationConfirmationPermission];
 
-  if (!v4)
+  if (!shouldRequestLocationConfirmationPermission)
   {
     [(CPSPermissionView *)self->_permissionView setLocationConfirmationPermissionEnabled:0];
     v12 = self->_permissionsViewController;
@@ -1146,19 +1146,19 @@ void __57__CPSLaunchContentViewController_configurePermissionView__block_invoke_
 {
   if (!self->_didSendAnalytics)
   {
-    v11 = [(CPSSessionProxy *)self->_sessionProxy metadata];
-    v3 = [v11 clipBundleID];
-    v4 = [v11 itemID];
-    if ([v3 length] && objc_msgSend(v4, "intValue"))
+    metadata = [(CPSSessionProxy *)self->_sessionProxy metadata];
+    clipBundleID = [metadata clipBundleID];
+    itemID = [metadata itemID];
+    if ([clipBundleID length] && objc_msgSend(itemID, "intValue"))
     {
       self->_didSendAnalytics = 1;
-      v5 = [MEMORY[0x277CFA680] sharedLogger];
-      v6 = [(CPSSessionProxy *)self->_sessionProxy sourceBundleID];
-      v7 = [(CPSSessionProxy *)self->_sessionProxy referrerBundleID];
-      v8 = [(CPSSessionProxy *)self->_sessionProxy launchReason];
-      v9 = [v11 clipRequestURL];
+      mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+      sourceBundleID = [(CPSSessionProxy *)self->_sessionProxy sourceBundleID];
+      referrerBundleID = [(CPSSessionProxy *)self->_sessionProxy referrerBundleID];
+      launchReason = [(CPSSessionProxy *)self->_sessionProxy launchReason];
+      clipRequestURL = [metadata clipRequestURL];
       LOBYTE(v10) = self->_displayMode == 1;
-      [v5 didPresentInvocationCardForClip:v3 adamID:v4 sourceBundleIdentifier:v6 referrerBundleIdentifier:v7 event:v8 url:v9 didShowCardInline:v10];
+      [mEMORY[0x277CFA680] didPresentInvocationCardForClip:clipBundleID adamID:itemID sourceBundleIdentifier:sourceBundleID referrerBundleIdentifier:referrerBundleID event:launchReason url:clipRequestURL didShowCardInline:v10];
     }
   }
 }
@@ -1166,33 +1166,33 @@ void __57__CPSLaunchContentViewController_configurePermissionView__block_invoke_
 - (void)_updateContent
 {
   [(CPSLaunchContentViewController *)self _updateHeroImageIfNeeded];
-  v23 = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
-  if (v23)
+  invocationPolicy = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
+  if (invocationPolicy)
   {
-    v3 = [(CPSSessionProxy *)self->_sessionProxy launchReason];
+    launchReason = [(CPSSessionProxy *)self->_sessionProxy launchReason];
     if (([(CPSClipMetadata *)self->_clipMetadata isPhysicalInvocationAllowed]& 1) != 0)
     {
       v4 = 0;
     }
 
-    else if ([v3 isEqualToString:*MEMORY[0x277CFA670]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CFA660]))
+    else if ([launchReason isEqualToString:*MEMORY[0x277CFA670]] & 1) != 0 || (objc_msgSend(launchReason, "isEqualToString:", *MEMORY[0x277CFA660]))
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isEqualToString:*MEMORY[0x277CFA668]];
+      v4 = [launchReason isEqualToString:*MEMORY[0x277CFA668]];
     }
 
-    if ([v23 isEligible])
+    if ([invocationPolicy isEligible])
     {
       if (v4)
       {
 LABEL_10:
-        v5 = [MEMORY[0x277CFA680] sharedLogger];
-        v6 = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
-        [v5 recordDidShowErrorWithBundleID:v6 place:@"card" errorCode:{objc_msgSend(v23, "reason")}];
+        mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+        clipBundleID = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
+        [mEMORY[0x277CFA680] recordDidShowErrorWithBundleID:clipBundleID place:@"card" errorCode:{objc_msgSend(invocationPolicy, "reason")}];
 
         if (v4)
         {
@@ -1201,16 +1201,16 @@ LABEL_10:
 
         else
         {
-          [v23 localizedMessageForClipMetadata:self->_clipMetadata];
+          [invocationPolicy localizedMessageForClipMetadata:self->_clipMetadata];
         }
         v22 = ;
         [(CPSLaunchContentViewController *)self showUnavailableViewWithReason:v22];
-        v20 = v22;
+        view = v22;
         goto LABEL_35;
       }
     }
 
-    else if (v4 & 1 | (([v23 isRecoverable] & 1) == 0))
+    else if (v4 & 1 | (([invocationPolicy isRecoverable] & 1) == 0))
     {
       goto LABEL_10;
     }
@@ -1218,22 +1218,22 @@ LABEL_10:
     [(CPSLaunchContentViewController *)self setUnavailableViewHidden:1];
   }
 
-  v3 = [(CPSClipMetadata *)self->_clipMetadata fullAppIconURL];
-  if ([v3 cps_isFileURL])
+  launchReason = [(CPSClipMetadata *)self->_clipMetadata fullAppIconURL];
+  if ([launchReason cps_isFileURL])
   {
     v7 = objc_alloc(MEMORY[0x277D755B8]);
-    v8 = [v3 path];
-    v9 = [v7 initWithContentsOfFile:v8];
+    path = [launchReason path];
+    v9 = [v7 initWithContentsOfFile:path];
     [(CPSAppMetadataView *)self->_appMetadataView setAppIcon:v9];
   }
 
   [(CPSLaunchContentViewController *)self _createClipSourceVibrantLabelIfNeeded];
-  v10 = [(CPSClipMetadata *)self->_clipMetadata clipName];
-  v11 = v10;
+  clipName = [(CPSClipMetadata *)self->_clipMetadata clipName];
+  v11 = clipName;
   v12 = *MEMORY[0x277CFA678];
-  if (v10)
+  if (clipName)
   {
-    v13 = v10;
+    v13 = clipName;
   }
 
   else
@@ -1244,11 +1244,11 @@ LABEL_10:
   [(CPSVibrantLabel *)self->_clipNameVibrantLabel setText:v13];
 
   [(CPSVibrantLabel *)self->_clipNameVibrantLabel layoutIfNeeded];
-  v14 = [(CPSClipMetadata *)self->_clipMetadata clipCaption];
-  v15 = v14;
-  if (v14)
+  clipCaption = [(CPSClipMetadata *)self->_clipMetadata clipCaption];
+  v15 = clipCaption;
+  if (clipCaption)
   {
-    v16 = v14;
+    v16 = clipCaption;
   }
 
   else
@@ -1267,15 +1267,15 @@ LABEL_10:
   }
 
   [(CPSAppMetadataView *)self->_appMetadataView updateWithMetadata:self->_clipMetadata];
-  v18 = [(CPSClipMetadata *)self->_clipMetadata hasAppMetadata];
-  if ((v18 & 1) != 0 || ([(CPSClipMetadata *)self->_clipMetadata fullAppStoreURL], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  hasAppMetadata = [(CPSClipMetadata *)self->_clipMetadata hasAppMetadata];
+  if ((hasAppMetadata & 1) != 0 || ([(CPSClipMetadata *)self->_clipMetadata fullAppStoreURL], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v19 = [(CPSClipMetadata *)self->_clipMetadata fullAppOnly];
-    if ((v18 & 1) == 0)
+    fullAppOnly = [(CPSClipMetadata *)self->_clipMetadata fullAppOnly];
+    if ((hasAppMetadata & 1) == 0)
     {
     }
 
-    if ((v19 & 1) == 0)
+    if ((fullAppOnly & 1) == 0)
     {
       [(CPSAppMetadataView *)self->_appMetadataView setUserInteractionEnabled:1];
     }
@@ -1283,8 +1283,8 @@ LABEL_10:
 
   [(CPSAppMetadataView *)self->_appMetadataView layoutIfNeeded];
   [(CPSLaunchContentViewController *)self determineClipCompatibility];
-  v20 = [(CPSLaunchContentViewController *)self view];
-  [v20 bounds];
+  view = [(CPSLaunchContentViewController *)self view];
+  [view bounds];
   [(CPSLaunchContentViewController *)self updatePreferredContentSizeForCardWidth:v21];
 LABEL_35:
 }
@@ -1313,16 +1313,16 @@ LABEL_35:
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
       [v7 deactivateConstraints:v8];
 
-      v9 = [(CPSVibrantLabel *)self->_clipNameVibrantLabel topAnchor];
-      v10 = [(CPSVibrantLabel *)self->_clipSourceVibrantLabel bottomAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10 constant:2.0];
+      topAnchor = [(CPSVibrantLabel *)self->_clipNameVibrantLabel topAnchor];
+      bottomAnchor = [(CPSVibrantLabel *)self->_clipSourceVibrantLabel bottomAnchor];
+      v11 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:2.0];
       clipNameVibrantLabelTopAnchor = self->_clipNameVibrantLabelTopAnchor;
       self->_clipNameVibrantLabelTopAnchor = v11;
 
       v13 = MEMORY[0x277CCAAD0];
-      v14 = [(CPSVibrantLabel *)self->_clipSourceVibrantLabel topAnchor];
-      v15 = [(UIView *)self->_clipNameAndDescriptionContainer topAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      topAnchor2 = [(CPSVibrantLabel *)self->_clipSourceVibrantLabel topAnchor];
+      topAnchor3 = [(UIView *)self->_clipNameAndDescriptionContainer topAnchor];
+      v16 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
       v17 = self->_clipNameVibrantLabelTopAnchor;
       v19[0] = v16;
       v19[1] = v17;
@@ -1340,16 +1340,16 @@ LABEL_35:
     clipMetadata = self->_clipMetadata;
     if (displayMode == 1)
     {
-      v5 = [(CPSClipMetadata *)clipMetadata clipAction];
-      if (v5 <= 2)
+      clipAction = [(CPSClipMetadata *)clipMetadata clipAction];
+      if (clipAction <= 2)
       {
-        v5 = _CPSLocalizedString();
+        clipAction = _CPSLocalizedString();
       }
     }
 
     else
     {
-      v5 = [(CPSClipMetadata *)clipMetadata clipOpenButtonTitle];
+      clipAction = [(CPSClipMetadata *)clipMetadata clipOpenButtonTitle];
     }
 
     v6 = MEMORY[0x277D75D18];
@@ -1357,8 +1357,8 @@ LABEL_35:
     v13 = 3221225472;
     v14 = __50__CPSLaunchContentViewController_updateOpenButton__block_invoke;
     v15 = &unk_278DD2670;
-    v16 = self;
-    v7 = v5;
+    selfCopy = self;
+    v7 = clipAction;
     v17 = v7;
     [v6 performWithoutAnimation:&v12];
     v8 = self->_uiMock_openButtonEnabled;
@@ -1376,15 +1376,15 @@ LABEL_35:
       }
     }
 
-    v10 = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
-    if (!v10)
+    invocationPolicy = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
+    if (!invocationPolicy)
     {
       goto LABEL_19;
     }
 
     [(CPSLaunchContentViewController *)self disableOpenButton];
     [(UIButton *)self->_openButton removeTarget:self action:0 forControlEvents:0x2000];
-    if ([v10 isEligible])
+    if ([invocationPolicy isEligible])
     {
       if (([(CPSClipMetadata *)self->_clipMetadata hasFullAppInstalledOnSystem]& 1) == 0 && !self->_didInstallApplicationPlaceholder && ![(CPSClipMetadata *)self->_clipMetadata fullAppOnly])
       {
@@ -1397,7 +1397,7 @@ LABEL_35:
 
     else
     {
-      if (![v10 isRecoverable])
+      if (![invocationPolicy isRecoverable])
       {
 LABEL_19:
 
@@ -1408,7 +1408,7 @@ LABEL_19:
       v11 = &selRef_handlePolicyRecovery;
     }
 
-    [(UIButton *)self->_openButton addTarget:self action:*v11 forControlEvents:0x2000, v12, v13, v14, v15, v16];
+    [(UIButton *)self->_openButton addTarget:self action:*v11 forControlEvents:0x2000, v12, v13, v14, v15, selfCopy];
     goto LABEL_19;
   }
 }
@@ -1427,31 +1427,31 @@ uint64_t __50__CPSLaunchContentViewController_updateOpenButton__block_invoke(uin
 {
   if (([(CPSClipMetadata *)self->_clipMetadata clipIncompatibleWithCurrentDevice]& 1) != 0 || [(CPSClipMetadata *)self->_clipMetadata deviceCapabilitiesDontMatch])
   {
-    v3 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+    fullAppName = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
 
-    if (v3)
+    if (fullAppName)
     {
-      v4 = [(CPSClipMetadata *)self->_clipMetadata clipIncompatibleWithCurrentDevice];
+      clipIncompatibleWithCurrentDevice = [(CPSClipMetadata *)self->_clipMetadata clipIncompatibleWithCurrentDevice];
       v5 = MEMORY[0x277CCACA8];
-      if (v4)
+      if (clipIncompatibleWithCurrentDevice)
       {
         v6 = _CPSLocalizedString();
-        v7 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+        fullAppName2 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
         [MEMORY[0x277CFA6E0] oppositeDeviceFamilyName];
       }
 
       else
       {
         v6 = _CPSLocalizedString();
-        v7 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+        fullAppName2 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
         [MEMORY[0x277CFA6E0] localizedDeviceName];
       }
       v8 = ;
-      v11 = [v5 stringWithFormat:v6, v7, v8];
+      v11 = [v5 stringWithFormat:v6, fullAppName2, v8];
 
-      v9 = [MEMORY[0x277CFA680] sharedLogger];
-      v10 = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
-      [v9 recordDidShowErrorWithBundleID:v10 place:@"card" errorCode:1001];
+      mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+      clipBundleID = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
+      [mEMORY[0x277CFA680] recordDidShowErrorWithBundleID:clipBundleID place:@"card" errorCode:1001];
 
       [(CPSLaunchContentViewController *)self showUnavailableViewWithReason:v11];
     }
@@ -1481,18 +1481,18 @@ uint64_t __50__CPSLaunchContentViewController_updateOpenButton__block_invoke(uin
   v5 = objc_alloc_init(v3);
   [v5 setAllowServerDialogs:1];
   v6 = objc_alloc(MEMORY[0x277CEE878]);
-  v7 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v8 = [v7 ams_activeiTunesAccount];
-  v9 = [v6 initWithAccount:v8 presentingViewController:self options:v5];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  v9 = [v6 initWithAccount:ams_activeiTunesAccount presentingViewController:self options:v5];
 
   [(CPSLaunchContentViewController *)self disableOpenButton];
-  v10 = [v9 performAuthentication];
+  performAuthentication = [v9 performAuthentication];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__CPSLaunchContentViewController_signInToAppStore__block_invoke;
   v11[3] = &unk_278DD2698;
   v11[4] = self;
-  [v10 addFinishBlock:v11];
+  [performAuthentication addFinishBlock:v11];
 }
 
 void __50__CPSLaunchContentViewController_signInToAppStore__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1531,16 +1531,16 @@ uint64_t __50__CPSLaunchContentViewController_signInToAppStore__block_invoke_2(u
 
 - (void)handlePolicyRecovery
 {
-  v3 = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
-  v4 = [v3 localizedTitle];
-  v5 = [v3 localizedMessageForClipMetadata:self->_clipMetadata];
-  v6 = [v3 reason];
-  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:v4 message:v5 preferredStyle:1];
+  invocationPolicy = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
+  localizedTitle = [invocationPolicy localizedTitle];
+  v5 = [invocationPolicy localizedMessageForClipMetadata:self->_clipMetadata];
+  reason = [invocationPolicy reason];
+  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:localizedTitle message:v5 preferredStyle:1];
   v8 = MEMORY[0x277D750F8];
   v9 = _CPSLocalizedString();
   v10 = [v8 actionWithTitle:v9 style:1 handler:0];
 
-  if (v6 == 1)
+  if (reason == 1)
   {
     v11 = MEMORY[0x277D750F8];
     v12 = _CPSLocalizedString();
@@ -1616,13 +1616,13 @@ uint64_t __54__CPSLaunchContentViewController_handlePolicyRecovery__block_invoke
   return result;
 }
 
-- (void)setUnavailableViewHidden:(BOOL)a3
+- (void)setUnavailableViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(CPSAppClipUnavailableView *)self->_unavailableView isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(CPSAppClipUnavailableView *)self->_unavailableView isHidden]!= hidden)
   {
-    [(CPSAppClipUnavailableView *)self->_unavailableView setHidden:v3];
-    v5 = v3 ^ 1;
+    [(CPSAppClipUnavailableView *)self->_unavailableView setHidden:hiddenCopy];
+    v5 = hiddenCopy ^ 1;
     [(UIStackView *)self->_informationContentView setHidden:v5];
     if ((v5 & 1) == 0)
     {
@@ -1633,16 +1633,16 @@ uint64_t __54__CPSLaunchContentViewController_handlePolicyRecovery__block_invoke
   }
 }
 
-- (void)showUnavailableViewWithReason:(id)a3
+- (void)showUnavailableViewWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(CPSLaunchContentViewController *)self setUnavailableViewHidden:0];
-  [(CPSAppClipUnavailableView *)self->_unavailableView setReasonString:v4];
-  v5 = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
-  if ([v5 reason] == 14)
+  [(CPSAppClipUnavailableView *)self->_unavailableView setReasonString:reasonCopy];
+  invocationPolicy = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
+  if ([invocationPolicy reason] == 14)
   {
-    v6 = [(CPSSessionProxy *)self->_sessionProxy launchReason];
-    v7 = [v6 isEqualToString:*MEMORY[0x277CFA660]];
+    launchReason = [(CPSSessionProxy *)self->_sessionProxy launchReason];
+    v7 = [launchReason isEqualToString:*MEMORY[0x277CFA660]];
 
     if ((v7 & 1) == 0)
     {
@@ -1679,13 +1679,13 @@ void __64__CPSLaunchContentViewController_showUnavailableViewWithReason___block_
   }
 }
 
-- (void)_setHeroImage:(id)a3
+- (void)_setHeroImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   [(UIImageView *)self->_heroImageView setImage:?];
   [(UIImageView *)self->_heroImageView setAccessibilityIdentifier:@"HeroImage"];
-  [(UIImageView *)self->_heroMirrorImageView setImage:v5];
-  if (v5)
+  [(UIImageView *)self->_heroMirrorImageView setImage:imageCopy];
+  if (imageCopy)
   {
     [MEMORY[0x277D75348] clearColor];
   }
@@ -1697,23 +1697,23 @@ void __64__CPSLaunchContentViewController_showUnavailableViewWithReason___block_
   v4 = ;
   [(CPSAppClipUnavailableView *)self->_unavailableView setBackgroundColor:v4];
 
-  [(CPSPermissionsViewController *)self->_permissionsViewController setBackgroundImage:v5];
+  [(CPSPermissionsViewController *)self->_permissionsViewController setBackgroundImage:imageCopy];
 }
 
-- (void)_openAppClip:(id)a3
+- (void)_openAppClip:(id)clip
 {
   if ([(CPSClipMetadata *)self->_clipMetadata fullAppOnly]&& ([(CPSClipMetadata *)self->_clipMetadata hasFullAppInstalledOnSystem]& 1) == 0)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = _CPSLocalizedString();
-    v10 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
-    v7 = [v8 stringWithFormat:v9, v10];
+    fullAppName = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+    v7 = [v8 stringWithFormat:v9, fullAppName];
 
     v11 = MEMORY[0x277CCACA8];
     v12 = _CPSLocalizedString();
-    v13 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
-    v14 = [MEMORY[0x277CFA6E0] localizedDeviceName];
-    v15 = [v11 stringWithFormat:v12, v13, v14];
+    fullAppName2 = [(CPSClipMetadata *)self->_clipMetadata fullAppName];
+    localizedDeviceName = [MEMORY[0x277CFA6E0] localizedDeviceName];
+    v15 = [v11 stringWithFormat:v12, fullAppName2, localizedDeviceName];
 
     v16 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v15 preferredStyle:1];
     v17 = MEMORY[0x277D750F8];
@@ -1780,29 +1780,29 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
 
 - (void)openAppStore
 {
-  v3 = [(CPSClipMetadata *)self->_clipMetadata fullAppStoreURL];
+  fullAppStoreURL = [(CPSClipMetadata *)self->_clipMetadata fullAppStoreURL];
   [(CPSLaunchContentViewController *)self _openNonAppClipURL:?];
 }
 
-- (void)_openNonAppClipURL:(id)a3
+- (void)_openNonAppClipURL:(id)l
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0AC58]];
+  lCopy = l;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0AC58]];
   v25 = *MEMORY[0x277D76690];
-  v6 = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
-  v7 = v6;
-  if (!v6)
+  clipBundleID = [(CPSClipMetadata *)self->_clipMetadata clipBundleID];
+  fullAppBundleID = clipBundleID;
+  if (!clipBundleID)
   {
-    v7 = [(CPSClipMetadata *)self->_clipMetadata fullAppBundleID];
+    fullAppBundleID = [(CPSClipMetadata *)self->_clipMetadata fullAppBundleID];
   }
 
-  v26[0] = v7;
+  v26[0] = fullAppBundleID;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x277D0AC38]];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x277D0AC38]];
 
-  if (!v6)
+  if (!clipBundleID)
   {
   }
 
@@ -1827,28 +1827,28 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
     _Block_object_dispose(&v21, 8);
     if (!v9)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getCCUIAppLaunchOriginControlCenter()"];
-      [v15 handleFailureInFunction:v16 file:@"CPSLaunchContentViewController.mm" lineNumber:44 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v16 file:@"CPSLaunchContentViewController.mm" lineNumber:44 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
-    [v5 setObject:*v9 forKeyedSubscript:*MEMORY[0x277D0AC28]];
+    [dictionary setObject:*v9 forKeyedSubscript:*MEMORY[0x277D0AC28]];
   }
 
-  v10 = [MEMORY[0x277CFA680] sharedLogger];
-  v11 = [(CPSSessionProxy *)self->_sessionProxy metadata];
-  v12 = [v11 clipBundleID];
-  [v10 didCancelInterstitialForClip:v12 withEvent:3 didShowCardInline:self->_displayMode == 1];
+  mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+  metadata = [(CPSSessionProxy *)self->_sessionProxy metadata];
+  clipBundleID2 = [metadata clipBundleID];
+  [mEMORY[0x277CFA680] didCancelInterstitialForClip:clipBundleID2 withEvent:3 didShowCardInline:self->_displayMode == 1];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __53__CPSLaunchContentViewController__openNonAppClipURL___block_invoke;
   v17[3] = &unk_278DD2670;
-  v13 = v4;
+  v13 = lCopy;
   v18 = v13;
-  v14 = v5;
+  v14 = dictionary;
   v19 = v14;
   [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:0 andPerformBlockToLaunchApp:v17];
 }
@@ -1865,19 +1865,19 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
   return [v3 locationServiceEnabled];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = CPSLaunchContentViewController;
-  [(CPSLaunchContentViewController *)&v4 touchesEnded:a3 withEvent:a4];
+  [(CPSLaunchContentViewController *)&v4 touchesEnded:ended withEvent:event];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v6 = a3;
-  v4 = [(CPSVibrantButton *)self->_closeButton uiButton];
+  dismissCopy = dismiss;
+  uiButton = [(CPSVibrantButton *)self->_closeButton uiButton];
 
-  if (v4 == v6)
+  if (uiButton == dismissCopy)
   {
     [(CPSLaunchContentViewController *)self logDismissalFromCloseButton:1];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1890,16 +1890,16 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
   [(CPSLaunchContentViewController *)self _dismissWithClipDidOpen:0 completion:0];
 }
 
-- (void)logDismissalFromCloseButton:(BOOL)a3
+- (void)logDismissalFromCloseButton:(BOOL)button
 {
-  v3 = a3;
-  v10 = [MEMORY[0x277CFA680] sharedLogger];
-  v5 = [(CPSSessionProxy *)self->_sessionProxy metadata];
-  v6 = [v5 clipBundleID];
-  v7 = v6;
-  if (v6)
+  buttonCopy = button;
+  mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+  metadata = [(CPSSessionProxy *)self->_sessionProxy metadata];
+  clipBundleID = [metadata clipBundleID];
+  v7 = clipBundleID;
+  if (clipBundleID)
   {
-    v8 = v6;
+    v8 = clipBundleID;
   }
 
   else
@@ -1907,7 +1907,7 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
     v8 = &stru_285684560;
   }
 
-  if (v3)
+  if (buttonCopy)
   {
     v9 = 2;
   }
@@ -1917,19 +1917,19 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
     v9 = 1;
   }
 
-  [v10 didCancelInterstitialForClip:v8 withEvent:v9 didShowCardInline:self->_displayMode == 1];
+  [mEMORY[0x277CFA680] didCancelInterstitialForClip:v8 withEvent:v9 didShowCardInline:self->_displayMode == 1];
 }
 
-- (void)_dismissWithClipDidOpen:(BOOL)a3 completion:(id)a4
+- (void)_dismissWithClipDidOpen:(BOOL)open completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  v8 = [v7 isMainThread];
+  openCopy = open;
+  completionCopy = completion;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v8)
+  if (isMainThread)
   {
-    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:v4 completion:v6];
+    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:openCopy completion:completionCopy];
   }
 
   else
@@ -1939,17 +1939,17 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
     block[2] = __69__CPSLaunchContentViewController__dismissWithClipDidOpen_completion___block_invoke;
     block[3] = &unk_278DD2738;
     block[4] = self;
-    v11 = v4;
-    v10 = v6;
+    v11 = openCopy;
+    v10 = completionCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)_dismissCardWithClipDidOpen:(BOOL)a3 completion:(id)a4
+- (void)_dismissCardWithClipDidOpen:(BOOL)open completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   self->_dismissalInProgress = 1;
-  if (!a3)
+  if (!open)
   {
     [(CPSLaunchContentViewController *)self cancelSession];
   }
@@ -1959,8 +1959,8 @@ uint64_t __47__CPSLaunchContentViewController__openAppClip___block_invoke_2(uint
   v10[2] = __73__CPSLaunchContentViewController__dismissCardWithClipDidOpen_completion___block_invoke;
   v10[3] = &unk_278DD2738;
   v10[4] = self;
-  v12 = a3;
-  v7 = v6;
+  openCopy = open;
+  v7 = completionCopy;
   v11 = v7;
   v8 = MEMORY[0x245D3DDC0](v10);
   v9 = v8;
@@ -1990,48 +1990,48 @@ void __73__CPSLaunchContentViewController__dismissCardWithClipDidOpen_completion
   }
 }
 
-- (void)_dismissCardWithClipDidOpen:(BOOL)a3 andPerformBlockToLaunchApp:(id)a4
+- (void)_dismissCardWithClipDidOpen:(BOOL)open andPerformBlockToLaunchApp:(id)app
 {
-  v4 = a3;
-  v6 = a4;
+  openCopy = open;
+  appCopy = app;
   if ([(CPSLaunchContentViewController *)self _canLaunchAppSimultaneouslyWithInvocationCardDismissal])
   {
-    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:v4 completion:0];
-    v6[2]();
+    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:openCopy completion:0];
+    appCopy[2]();
   }
 
   else
   {
-    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:v4 completion:v6];
+    [(CPSLaunchContentViewController *)self _dismissCardWithClipDidOpen:openCopy completion:appCopy];
   }
 }
 
 - (void)_updateHeroImageIfNeeded
 {
-  v3 = [(CPSLaunchContentViewController *)self _heroImage];
+  _heroImage = [(CPSLaunchContentViewController *)self _heroImage];
 
-  if (v3)
+  if (_heroImage)
   {
     return;
   }
 
-  v11 = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
-  v4 = [v11 canShowHeroImage];
+  invocationPolicy = [(CPSClipMetadata *)self->_clipMetadata invocationPolicy];
+  canShowHeroImage = [invocationPolicy canShowHeroImage];
 
-  if (v4)
+  if (canShowHeroImage)
   {
-    v5 = [(CPSSessionProxy *)self->_sessionProxy heroImageFileURL];
-    if (v5)
+    heroImageFileURL = [(CPSSessionProxy *)self->_sessionProxy heroImageFileURL];
+    if (heroImageFileURL)
     {
       v6 = MEMORY[0x277D755B8];
-      v12 = v5;
-      v7 = [v5 path];
-      v8 = [v6 imageWithContentsOfFile:v7];
+      clipHeroImageURL = heroImageFileURL;
+      path = [heroImageFileURL path];
+      path2 = [v6 imageWithContentsOfFile:path];
 
-      v5 = v12;
-      if (v8)
+      heroImageFileURL = clipHeroImageURL;
+      if (path2)
       {
-        [(CPSLaunchContentViewController *)self _setHeroImage:v8];
+        [(CPSLaunchContentViewController *)self _setHeroImage:path2];
 LABEL_10:
 
         goto LABEL_11;
@@ -2039,12 +2039,12 @@ LABEL_10:
     }
   }
 
-  v12 = [(CPSClipMetadata *)self->_clipMetadata clipHeroImageURL];
-  if ([v12 cps_isFileURL] && (-[CPSClipMetadata isDeveloperOverride](self->_clipMetadata, "isDeveloperOverride") & 1) == 0)
+  clipHeroImageURL = [(CPSClipMetadata *)self->_clipMetadata clipHeroImageURL];
+  if ([clipHeroImageURL cps_isFileURL] && (-[CPSClipMetadata isDeveloperOverride](self->_clipMetadata, "isDeveloperOverride") & 1) == 0)
   {
     v9 = objc_alloc(MEMORY[0x277D755B8]);
-    v8 = [v12 path];
-    v10 = [v9 initWithContentsOfFile:v8];
+    path2 = [clipHeroImageURL path];
+    v10 = [v9 initWithContentsOfFile:path2];
     [(CPSLaunchContentViewController *)self _setHeroImage:v10];
 
     goto LABEL_10;
@@ -2053,9 +2053,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)_reasonStringForError:(id)a3
+- (id)_reasonStringForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   status = nw_path_get_status(self->_networkPath);
   v6 = MEMORY[0x277CFA658];
   if (status != nw_path_status_unsatisfied)
@@ -2063,32 +2063,32 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v7 = [v4 domain];
-  if (([v7 isEqualToString:*v6] & 1) == 0)
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:*v6] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  if ([v4 code] != 10)
+  if ([errorCopy code] != 10)
   {
-    v12 = [v4 code];
+    code = [errorCopy code];
 
-    if (v12 == 2)
+    if (code == 2)
     {
       goto LABEL_14;
     }
 
 LABEL_6:
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:*v6])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:*v6])
     {
-      v9 = [v4 code];
+      code2 = [errorCopy code];
 
-      if (v9 == 10)
+      if (code2 == 10)
       {
 LABEL_12:
-        v11 = _CPSLocalizedString();
+        localizedDescription2 = _CPSLocalizedString();
         goto LABEL_15;
       }
     }
@@ -2097,11 +2097,11 @@ LABEL_12:
     {
     }
 
-    v10 = [v4 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
 
-    if (v10)
+    if (localizedDescription)
     {
-      v11 = [v4 localizedDescription];
+      localizedDescription2 = [errorCopy localizedDescription];
       goto LABEL_15;
     }
 
@@ -2109,9 +2109,9 @@ LABEL_12:
   }
 
 LABEL_14:
-  v11 = cps_networkUnavailableErrorLocalizedDescription();
+  localizedDescription2 = cps_networkUnavailableErrorLocalizedDescription();
 LABEL_15:
-  v13 = v11;
+  v13 = localizedDescription2;
 
   return v13;
 }
@@ -2171,49 +2171,49 @@ void __58__CPSLaunchContentViewController_createNetworkPathMonitor__block_invoke
   }
 }
 
-- (void)permissionsViewControllerDidFinish:(id)a3
+- (void)permissionsViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  if (self->_permissionsViewController == v4)
+  finishCopy = finish;
+  if (self->_permissionsViewController == finishCopy)
   {
-    v10 = v4;
-    v5 = [(CPSLaunchContentViewController *)self navigationController];
-    v6 = [v5 topViewController];
+    v10 = finishCopy;
+    navigationController = [(CPSLaunchContentViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
     permissionsViewController = self->_permissionsViewController;
 
-    v4 = v10;
-    if (v6 == permissionsViewController)
+    finishCopy = v10;
+    if (topViewController == permissionsViewController)
     {
       [(CPSPermissionView *)self->_permissionView setNotificationPermissionEnabled:[(CPSPermissionsViewController *)v10 notificationPermissionEnabled]];
       [(CPSPermissionView *)self->_permissionView setLocationConfirmationPermissionEnabled:[(CPSPermissionsViewController *)v10 locationConfirmationPermissionEnabled]];
-      v8 = [(CPSLaunchContentViewController *)self navigationController];
-      v9 = [v8 popViewControllerAnimated:1];
+      navigationController2 = [(CPSLaunchContentViewController *)self navigationController];
+      v9 = [navigationController2 popViewControllerAnimated:1];
 
-      v4 = v10;
+      finishCopy = v10;
     }
   }
 }
 
-- (void)updatePreferredContentSizeForCardWidth:(double)a3
+- (void)updatePreferredContentSizeForCardWidth:(double)width
 {
-  v5 = [(CPSLaunchContentViewController *)self view];
+  view = [(CPSLaunchContentViewController *)self view];
   LODWORD(v6) = 1148846080;
   LODWORD(v7) = 1112014848;
-  v8 = v5;
-  [v5 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
+  v8 = view;
+  [view systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
   [(CPSLaunchContentViewController *)self setPreferredContentSize:?];
 }
 
-- (void)proxyDidUpdateMetadata:(id)a3
+- (void)proxyDidUpdateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__CPSLaunchContentViewController_proxyDidUpdateMetadata___block_invoke;
   v6[3] = &unk_278DD2670;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = metadataCopy;
+  v5 = metadataCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2235,15 +2235,15 @@ uint64_t __57__CPSLaunchContentViewController_proxyDidUpdateMetadata___block_inv
   return [v5 _updateContent];
 }
 
-- (void)proxyDidInstallApplicationPlaceholder:(id)a3
+- (void)proxyDidInstallApplicationPlaceholder:(id)placeholder
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placeholderCopy = placeholder;
   v5 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = v4;
+    v10 = placeholderCopy;
     _os_log_impl(&dword_24374B000, v5, OS_LOG_TYPE_DEFAULT, "CPSLaunchContentViewController: Did install placeholder for proxy (%p)", buf, 0xCu);
   }
 
@@ -2252,8 +2252,8 @@ uint64_t __57__CPSLaunchContentViewController_proxyDidUpdateMetadata___block_inv
   v7[2] = __72__CPSLaunchContentViewController_proxyDidInstallApplicationPlaceholder___block_invoke;
   v7[3] = &unk_278DD2670;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = placeholderCopy;
+  v6 = placeholderCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -2273,16 +2273,16 @@ void __72__CPSLaunchContentViewController_proxyDidInstallApplicationPlaceholder_
   }
 }
 
-- (void)proxy:(id)a3 didRetrieveApplicationIcon:(id)a4
+- (void)proxy:(id)proxy didRetrieveApplicationIcon:(id)icon
 {
-  v5 = a4;
+  iconCopy = icon;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CPSLaunchContentViewController_proxy_didRetrieveApplicationIcon___block_invoke;
   v7[3] = &unk_278DD2670;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = iconCopy;
+  v6 = iconCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -2307,7 +2307,7 @@ void __67__CPSLaunchContentViewController_proxy_didRetrieveApplicationIcon___blo
   }
 }
 
-- (void)proxy:(id)a3 didRetrieveHeroImage:(id)a4
+- (void)proxy:(id)proxy didRetrieveHeroImage:(id)image
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2317,26 +2317,26 @@ void __67__CPSLaunchContentViewController_proxy_didRetrieveApplicationIcon___blo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)proxyRemoteServiceDidCrash:(id)a3
+- (void)proxyRemoteServiceDidCrash:(id)crash
 {
-  v3 = a3;
+  crashCopy = crash;
   v4 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CPSLaunchContentViewController *)v3 proxyRemoteServiceDidCrash:v4];
+    [(CPSLaunchContentViewController *)crashCopy proxyRemoteServiceDidCrash:v4];
   }
 }
 
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  errorCopy = error;
   v8 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = [v7 cps_privacyPreservingDescription];
-    [(CPSLaunchContentViewController *)v6 proxy:v9 didFinishLoadingWithError:buf, v8];
+    cps_privacyPreservingDescription = [errorCopy cps_privacyPreservingDescription];
+    [(CPSLaunchContentViewController *)proxyCopy proxy:cps_privacyPreservingDescription didFinishLoadingWithError:buf, v8];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -2344,10 +2344,10 @@ void __67__CPSLaunchContentViewController_proxy_didRetrieveApplicationIcon___blo
   block[2] = __66__CPSLaunchContentViewController_proxy_didFinishLoadingWithError___block_invoke;
   block[3] = &unk_278DD2788;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = errorCopy;
+  v14 = proxyCopy;
+  v10 = proxyCopy;
+  v11 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

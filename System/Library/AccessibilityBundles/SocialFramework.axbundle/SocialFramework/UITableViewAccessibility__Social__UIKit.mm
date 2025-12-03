@@ -9,11 +9,11 @@
   v3 = MEMORY[0x29EDB8DE8];
   v12.receiver = self;
   v12.super_class = UITableViewAccessibility__Social__UIKit;
-  v4 = [(UITableViewAccessibility__Social__UIKit *)&v12 _accessibilitySupplementaryFooterViews];
-  v5 = [v3 arrayWithArray:v4];
+  _accessibilitySupplementaryFooterViews = [(UITableViewAccessibility__Social__UIKit *)&v12 _accessibilitySupplementaryFooterViews];
+  v5 = [v3 arrayWithArray:_accessibilitySupplementaryFooterViews];
 
-  v6 = [(UITableViewAccessibility__Social__UIKit *)self accessibilityIdentifier];
-  v7 = [v6 isEqualToString:@"SLFacebookLoginInfoTableView"];
+  accessibilityIdentifier = [(UITableViewAccessibility__Social__UIKit *)self accessibilityIdentifier];
+  v7 = [accessibilityIdentifier isEqualToString:@"SLFacebookLoginInfoTableView"];
 
   if (v7)
   {

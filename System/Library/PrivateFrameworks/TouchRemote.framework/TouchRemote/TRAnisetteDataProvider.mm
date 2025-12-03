@@ -1,32 +1,32 @@
 @interface TRAnisetteDataProvider
-- (TRAnisetteDataProvider)initWithSession:(id)a3;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (TRAnisetteDataProvider)initWithSession:(id)session;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation TRAnisetteDataProvider
 
-- (TRAnisetteDataProvider)initWithSession:(id)a3
+- (TRAnisetteDataProvider)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = TRAnisetteDataProvider;
   v6 = [(TRAnisetteDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -44,8 +44,8 @@
   v10[1] = 3221225472;
   v10[2] = __58__TRAnisetteDataProvider_provisionAnisetteWithCompletion___block_invoke;
   v10[3] = &unk_279DCF318;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(TRSession *)session sendRequest:v6 withResponseHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -76,11 +76,11 @@ void __58__TRAnisetteDataProvider_provisionAnisetteWithCompletion___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (_TRLogEnabled == 1)
   {
     v8 = TRLogHandle();
@@ -93,14 +93,14 @@ void __58__TRAnisetteDataProvider_provisionAnisetteWithCompletion___block_invoke
   }
 
   v9 = objc_alloc_init(TRSyncAnisetteDataRequest);
-  [(TRSyncAnisetteDataRequest *)v9 setSimData:v6];
+  [(TRSyncAnisetteDataRequest *)v9 setSimData:dataCopy];
   session = self->_session;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__TRAnisetteDataProvider_syncAnisetteWithSIMData_completion___block_invoke;
   v13[3] = &unk_279DCF318;
-  v14 = v7;
-  v11 = v7;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [(TRSession *)session sendRequest:v9 withResponseHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -131,10 +131,10 @@ void __61__TRAnisetteDataProvider_syncAnisetteWithSIMData_completion___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -152,8 +152,8 @@ void __61__TRAnisetteDataProvider_syncAnisetteWithSIMData_completion___block_inv
   v10[1] = 3221225472;
   v10[2] = __54__TRAnisetteDataProvider_eraseAnisetteWithCompletion___block_invoke;
   v10[3] = &unk_279DCF318;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(TRSession *)session sendRequest:v6 withResponseHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -273,11 +273,11 @@ void __82__TRAnisetteDataProvider_fetchAnisetteDataAndProvisionIfNecessary_withC
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (_TRLogEnabled == 1)
   {
     v8 = TRLogHandle();
@@ -290,14 +290,14 @@ void __82__TRAnisetteDataProvider_fetchAnisetteDataAndProvisionIfNecessary_withC
   }
 
   v9 = objc_alloc_init(TRLegacyAnisetteDataRequest);
-  [(TRLegacyAnisetteDataRequest *)v9 setDsid:v6];
+  [(TRLegacyAnisetteDataRequest *)v9 setDsid:dCopy];
   session = self->_session;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__TRAnisetteDataProvider_legacyAnisetteDataForDSID_withCompletion___block_invoke;
   v13[3] = &unk_279DCF318;
-  v14 = v7;
-  v11 = v7;
+  v14 = completionCopy;
+  v11 = completionCopy;
   [(TRSession *)session sendRequest:v9 withResponseHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];

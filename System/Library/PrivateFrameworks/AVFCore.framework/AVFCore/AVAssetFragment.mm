@@ -1,15 +1,15 @@
 @interface AVAssetFragment
-+ (id)fragmentWithSequenceNumber:(int64_t)a3;
++ (id)fragmentWithSequenceNumber:(int64_t)number;
 - (AVAssetFragment)init;
-- (AVAssetFragment)initWithSequenceNumber:(int64_t)a3;
+- (AVAssetFragment)initWithSequenceNumber:(int64_t)number;
 - (void)dealloc;
 @end
 
 @implementation AVAssetFragment
 
-+ (id)fragmentWithSequenceNumber:(int64_t)a3
++ (id)fragmentWithSequenceNumber:(int64_t)number
 {
-  v3 = [[a1 alloc] initWithSequenceNumber:a3];
+  v3 = [[self alloc] initWithSequenceNumber:number];
 
   return v3;
 }
@@ -23,7 +23,7 @@
   objc_exception_throw(v12);
 }
 
-- (AVAssetFragment)initWithSequenceNumber:(int64_t)a3
+- (AVAssetFragment)initWithSequenceNumber:(int64_t)number
 {
   v7.receiver = self;
   v7.super_class = AVAssetFragment;
@@ -34,7 +34,7 @@
     v4->_internal = v5;
     if (v5)
     {
-      v5->_sequenceNumber = a3;
+      v5->_sequenceNumber = number;
     }
 
     else

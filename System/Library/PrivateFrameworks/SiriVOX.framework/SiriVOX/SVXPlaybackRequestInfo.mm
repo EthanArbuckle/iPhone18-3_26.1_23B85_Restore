@@ -18,8 +18,8 @@
 
   else
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     finish = v6;
   }
 

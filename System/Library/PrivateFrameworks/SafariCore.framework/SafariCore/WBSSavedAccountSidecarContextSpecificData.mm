@@ -1,43 +1,43 @@
 @interface WBSSavedAccountSidecarContextSpecificData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)lastUsedDateAcrossAllSites;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSSavedAccountSidecarContextSpecificData)initWithDictionaryRepresentation:(id)a3;
-- (WBSSavedAccountSidecarContextSpecificData)initWithLastUsedDate:(id)a3;
-- (void)setLastUsedDate:(id)a3 forSite:(id)a4;
+- (WBSSavedAccountSidecarContextSpecificData)initWithDictionaryRepresentation:(id)representation;
+- (WBSSavedAccountSidecarContextSpecificData)initWithLastUsedDate:(id)date;
+- (void)setLastUsedDate:(id)date forSite:(id)site;
 @end
 
 @implementation WBSSavedAccountSidecarContextSpecificData
 
-- (WBSSavedAccountSidecarContextSpecificData)initWithLastUsedDate:(id)a3
+- (WBSSavedAccountSidecarContextSpecificData)initWithLastUsedDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = WBSSavedAccountSidecarContextSpecificData;
   v6 = [(WBSSavedAccountSidecarContextSpecificData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lastUsedDate, a3);
+    objc_storeStrong(&v6->_lastUsedDate, date);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WBSSavedAccountSidecarContextSpecificData)initWithDictionaryRepresentation:(id)a3
+- (WBSSavedAccountSidecarContextSpecificData)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = WBSSavedAccountSidecarContextSpecificData;
   v5 = [(WBSSavedAccountSidecarContextSpecificData *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [representationCopy copy];
     originalKeychainDictionary = v5->_originalKeychainDictionary;
     v5->_originalKeychainDictionary = v6;
 
-    v8 = [v4 safari_numberForKey:@"lUsed"];
+    v8 = [representationCopy safari_numberForKey:@"lUsed"];
     v9 = v8;
     if (v8)
     {
@@ -48,7 +48,7 @@
       v5->_lastUsedDate = v11;
     }
 
-    v13 = [v4 safari_dictionaryForKey:@"slUsed"];
+    v13 = [representationCopy safari_dictionaryForKey:@"slUsed"];
     v14 = [v13 safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_65];
     v15 = [v14 mutableCopy];
     sitesToLastUsedDates = v5->_sitesToLastUsedDates;
@@ -79,10 +79,10 @@ id __78__WBSSavedAccountSidecarContextSpecificData_initWithDictionaryRepresentat
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -92,7 +92,7 @@ id __78__WBSSavedAccountSidecarContextSpecificData_initWithDictionaryRepresentat
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (WBSIsEqual(self->_lastUsedDate, v5[3]))
       {
         v6 = WBSIsEqual(self->_sitesToLastUsedDates, v5[2]);
@@ -113,27 +113,27 @@ id __78__WBSSavedAccountSidecarContextSpecificData_initWithDictionaryRepresentat
   return v6;
 }
 
-- (void)setLastUsedDate:(id)a3 forSite:(id)a4
+- (void)setLastUsedDate:(id)date forSite:(id)site
 {
-  v10 = a3;
-  v6 = a4;
+  dateCopy = date;
+  siteCopy = site;
   sitesToLastUsedDates = self->_sitesToLastUsedDates;
   if (!sitesToLastUsedDates)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_sitesToLastUsedDates;
-    self->_sitesToLastUsedDates = v8;
+    self->_sitesToLastUsedDates = dictionary;
 
     sitesToLastUsedDates = self->_sitesToLastUsedDates;
   }
 
-  [(NSMutableDictionary *)sitesToLastUsedDates setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)sitesToLastUsedDates setObject:dateCopy forKeyedSubscript:siteCopy];
 }
 
 - (NSDate)lastUsedDateAcrossAllSites
 {
-  v3 = [(NSMutableDictionary *)self->_sitesToLastUsedDates allValues];
-  v4 = [v3 safari_reduceObjectsWithInitialValue:self->_lastUsedDate usingBlock:&__block_literal_global_10_2];
+  allValues = [(NSMutableDictionary *)self->_sitesToLastUsedDates allValues];
+  v4 = [allValues safari_reduceObjectsWithInitialValue:self->_lastUsedDate usingBlock:&__block_literal_global_10_2];
 
   return v4;
 }

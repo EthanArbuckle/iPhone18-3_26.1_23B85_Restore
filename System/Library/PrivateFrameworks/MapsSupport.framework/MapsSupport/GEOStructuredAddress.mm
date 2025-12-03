@@ -1,56 +1,56 @@
 @interface GEOStructuredAddress
-- (id)initWithRTAddress:(id)a3;
+- (id)initWithRTAddress:(id)address;
 @end
 
 @implementation GEOStructuredAddress
 
-- (id)initWithRTAddress:(id)a3
+- (id)initWithRTAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v21.receiver = self;
   v21.super_class = GEOStructuredAddress;
   v5 = [(GEOStructuredAddress *)&v21 init];
   if (v5)
   {
-    v6 = [v4 administrativeArea];
-    [(GEOStructuredAddress *)v5 setAdministrativeArea:v6];
+    administrativeArea = [addressCopy administrativeArea];
+    [(GEOStructuredAddress *)v5 setAdministrativeArea:administrativeArea];
 
-    v7 = [v4 administrativeAreaCode];
-    [(GEOStructuredAddress *)v5 setAdministrativeAreaCode:v7];
+    administrativeAreaCode = [addressCopy administrativeAreaCode];
+    [(GEOStructuredAddress *)v5 setAdministrativeAreaCode:administrativeAreaCode];
 
-    v8 = [v4 areasOfInterest];
-    v9 = [v8 mutableCopy];
+    areasOfInterest = [addressCopy areasOfInterest];
+    v9 = [areasOfInterest mutableCopy];
     [(GEOStructuredAddress *)v5 setAreaOfInterests:v9];
 
-    v10 = [v4 countryCode];
-    [(GEOStructuredAddress *)v5 setCountryCode:v10];
+    countryCode = [addressCopy countryCode];
+    [(GEOStructuredAddress *)v5 setCountryCode:countryCode];
 
-    v11 = [v4 country];
-    [(GEOStructuredAddress *)v5 setCountry:v11];
+    country = [addressCopy country];
+    [(GEOStructuredAddress *)v5 setCountry:country];
 
-    v12 = [v4 inlandWater];
-    [(GEOStructuredAddress *)v5 setInlandWater:v12];
+    inlandWater = [addressCopy inlandWater];
+    [(GEOStructuredAddress *)v5 setInlandWater:inlandWater];
 
-    v13 = [v4 locality];
-    [(GEOStructuredAddress *)v5 setLocality:v13];
+    locality = [addressCopy locality];
+    [(GEOStructuredAddress *)v5 setLocality:locality];
 
-    v14 = [v4 ocean];
-    [(GEOStructuredAddress *)v5 setOcean:v14];
+    ocean = [addressCopy ocean];
+    [(GEOStructuredAddress *)v5 setOcean:ocean];
 
-    v15 = [v4 postalCode];
-    [(GEOStructuredAddress *)v5 setPostCode:v15];
+    postalCode = [addressCopy postalCode];
+    [(GEOStructuredAddress *)v5 setPostCode:postalCode];
 
-    v16 = [v4 subAdministrativeArea];
-    [(GEOStructuredAddress *)v5 setSubAdministrativeArea:v16];
+    subAdministrativeArea = [addressCopy subAdministrativeArea];
+    [(GEOStructuredAddress *)v5 setSubAdministrativeArea:subAdministrativeArea];
 
-    v17 = [v4 subThoroughfare];
-    [(GEOStructuredAddress *)v5 setSubThoroughfare:v17];
+    subThoroughfare = [addressCopy subThoroughfare];
+    [(GEOStructuredAddress *)v5 setSubThoroughfare:subThoroughfare];
 
-    v18 = [v4 subLocality];
-    [(GEOStructuredAddress *)v5 setSubLocality:v18];
+    subLocality = [addressCopy subLocality];
+    [(GEOStructuredAddress *)v5 setSubLocality:subLocality];
 
-    v19 = [v4 thoroughfare];
-    [(GEOStructuredAddress *)v5 setThoroughfare:v19];
+    thoroughfare = [addressCopy thoroughfare];
+    [(GEOStructuredAddress *)v5 setThoroughfare:thoroughfare];
   }
 
   return v5;

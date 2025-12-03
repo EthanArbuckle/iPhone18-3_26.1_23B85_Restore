@@ -1,14 +1,14 @@
 @interface WiFiTrustCertificateViewController
-- (WiFiTrustCertificateViewController)initWithCertificateChain:(id)a3;
+- (WiFiTrustCertificateViewController)initWithCertificateChain:(id)chain;
 - (void)loadView;
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4;
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code;
 @end
 
 @implementation WiFiTrustCertificateViewController
 
-- (WiFiTrustCertificateViewController)initWithCertificateChain:(id)a3
+- (WiFiTrustCertificateViewController)initWithCertificateChain:(id)chain
 {
-  v4 = a3;
+  chainCopy = chain;
   v20.receiver = self;
   v20.super_class = WiFiTrustCertificateViewController;
   v5 = [(WiFiTrustCertificateViewController *)&v20 init];
@@ -21,7 +21,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v6 = v4;
+  v6 = chainCopy;
   v7 = WFCreateSecTrustFromCertificateChain___eapLibraryPointer;
   if (!WFCreateSecTrustFromCertificateChain___eapLibraryPointer)
   {
@@ -34,8 +34,8 @@ LABEL_21:
     WFCreateSecTrustFromCertificateChain___eapSecPolicyCopy = dlsym(v7, "EAPSecPolicyCopy");
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v10 = [v6 count];
   if (v10)
   {
@@ -48,7 +48,7 @@ LABEL_21:
       if (v14)
       {
         v15 = v14;
-        [v8 addObject:v14];
+        [array addObject:v14];
         CFRelease(v15);
       }
 
@@ -58,7 +58,7 @@ LABEL_21:
         (WFCreateSecTrustFromCertificateChain___eapSecPolicyCopy)(&cf);
         if (cf)
         {
-          [v9 addObject:?];
+          [array2 addObject:?];
           CFRelease(cf);
         }
       }
@@ -69,10 +69,10 @@ LABEL_21:
     while (v11 != v12);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
     cf = 0;
-    if (SecTrustCreateWithCertificates(v8, v9, &cf))
+    if (SecTrustCreateWithCertificates(array, array2, &cf))
     {
       v16 = 0;
     }
@@ -112,25 +112,25 @@ LABEL_22:
   v15.super_class = WiFiTrustCertificateViewController;
   [(WiFiTrustCertificateViewController *)&v15 loadView];
   [(WiFiTrustCertificateViewController *)self addChildViewController:self->_trustViewController];
-  v3 = [(WiFiTrustCertificateViewController *)self view];
-  v4 = [(TrustCertificateViewController *)self->_trustViewController view];
-  [v3 addSubview:v4];
+  view = [(WiFiTrustCertificateViewController *)self view];
+  view2 = [(TrustCertificateViewController *)self->_trustViewController view];
+  [view addSubview:view2];
 
-  v5 = [(WiFiTrustCertificateViewController *)self view];
-  [v5 frame];
+  view3 = [(WiFiTrustCertificateViewController *)self view];
+  [view3 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(TrustCertificateViewController *)self->_trustViewController view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view4 = [(TrustCertificateViewController *)self->_trustViewController view];
+  [view4 setFrame:{v7, v9, v11, v13}];
 }
 
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code
 {
-  NSLog(&cfstr_SReturncodeD.isa, a2, a3, "[WiFiTrustCertificateViewController trustCertificateViewController:finishedWithReturnCode:]", a4);
-  v6 = [(WiFiTrustCertificateViewController *)self handler];
-  v6[2](v6, a4 == 1);
+  NSLog(&cfstr_SReturncodeD.isa, a2, controller, "[WiFiTrustCertificateViewController trustCertificateViewController:finishedWithReturnCode:]", code);
+  handler = [(WiFiTrustCertificateViewController *)self handler];
+  handler[2](handler, code == 1);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CAMDrawerNightModeButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityExpandedStatus;
@@ -7,14 +7,14 @@
 
 @implementation CAMDrawerNightModeButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
-  [v3 validateClass:@"CAMDrawerNightModeButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
-  [v3 validateClass:@"CAMDrawerNightModeButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMDrawerNightModeButton" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"CAMControlDrawerExpandableButton" hasMethod:@"isExpanded" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"CAMControlDrawerCustomButton" conformsToProtocol:@"CAMControlDrawerExpandableButton"];
+  [validationsCopy validateClass:@"CAMDrawerNightModeButton" isKindOfClass:@"CAMControlDrawerCustomButton"];
+  [validationsCopy validateClass:@"CAMDrawerNightModeButton" hasInstanceMethod:@"isOn" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMDrawerNightModeButton" hasInstanceMethod:@"isDisabled" withFullSignature:{"B", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -36,7 +36,7 @@
   {
     v6.receiver = self;
     v6.super_class = CAMDrawerNightModeButtonAccessibility;
-    v3 = [(CAMDrawerNightModeButtonAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(CAMDrawerNightModeButtonAccessibility *)&v6 accessibilityValue];
   }
 
   else
@@ -51,10 +51,10 @@
       v4 = @"off.state";
     }
 
-    v3 = accessibilityCameraUILocalizedString(v4);
+    accessibilityValue = accessibilityCameraUILocalizedString(v4);
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
@@ -63,15 +63,15 @@
   {
     v5.receiver = self;
     v5.super_class = CAMDrawerNightModeButtonAccessibility;
-    v3 = [(CAMDrawerNightModeButtonAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(CAMDrawerNightModeButtonAccessibility *)&v5 accessibilityHint];
   }
 
   else
   {
-    v3 = accessibilityCameraUILocalizedString(@"auto");
+    accessibilityHint = accessibilityCameraUILocalizedString(@"auto");
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

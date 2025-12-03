@@ -1,7 +1,7 @@
 @interface NEFilterExtensionProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation NEFilterExtensionProviderHostContext
@@ -44,12 +44,12 @@ uint64_t __73__NEFilterExtensionProviderHostContext__extensionAuxiliaryVendorPro
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v8 startFilterWithOptions:v7 completionHandler:v6];
+  handlerCopy = handler;
+  optionsCopy = options;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext startFilterWithOptions:optionsCopy completionHandler:handlerCopy];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface UGCRatingsForm
-+ (id)addRatingFormWithPlaceQuestionnaire:(id)a3;
-+ (id)editRatingFormWithPlaceQuestionnaire:(id)a3 existingScorecard:(id)a4;
++ (id)addRatingFormWithPlaceQuestionnaire:(id)questionnaire;
++ (id)editRatingFormWithPlaceQuestionnaire:(id)questionnaire existingScorecard:(id)scorecard;
 + (id)emptyRatingForm;
 - (BOOL)_isCompleteForDelete;
 - (BOOL)_isCompleteForEdit;
@@ -9,15 +9,15 @@
 - (BOOL)isEmpty;
 - (BOOL)passesMinimumRequirementsToBeSubmittable;
 - (NSArray)allRatingCategories;
-- (UGCRatingsForm)initWithActionType:(int64_t)a3 overallCategory:(id)a4 categoryList:(id)a5 versionNumber:(id)a6;
-- (id)categoryForKey:(id)a3;
+- (UGCRatingsForm)initWithActionType:(int64_t)type overallCategory:(id)category categoryList:(id)list versionNumber:(id)number;
+- (id)categoryForKey:(id)key;
 - (int64_t)actionType;
-- (void)_fillInScorecard:(id)a3 hasBeenEdited:(BOOL *)a4;
-- (void)_fillScorecardUpdateWithAddType:(id)a3;
-- (void)_fillScorecardUpdateWithDeleteType:(id)a3;
-- (void)_fillScorecardUpdateWithEditType:(id)a3;
+- (void)_fillInScorecard:(id)scorecard hasBeenEdited:(BOOL *)edited;
+- (void)_fillScorecardUpdateWithAddType:(id)type;
+- (void)_fillScorecardUpdateWithDeleteType:(id)type;
+- (void)_fillScorecardUpdateWithEditType:(id)type;
 - (void)_startObservingRatingCategories;
-- (void)fillSubmissionFields:(id)a3;
+- (void)fillSubmissionFields:(id)fields;
 @end
 
 @implementation UGCRatingsForm
@@ -41,8 +41,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(UGCRatingsForm *)self allRatingCategories];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self allRatingCategories];
+  v3 = [allRatingCategories countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -52,7 +52,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isEdited])
@@ -62,7 +62,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allRatingCategories countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -83,8 +83,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UGCRatingsForm *)self allRatingCategories];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self allRatingCategories];
+  v3 = [allRatingCategories countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -95,7 +95,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) currentState])
@@ -105,7 +105,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allRatingCategories countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -121,33 +121,33 @@ LABEL_11:
   return v7;
 }
 
-- (void)_fillScorecardUpdateWithAddType:(id)a3
+- (void)_fillScorecardUpdateWithAddType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(GEORPScorecard);
-  [v4 setScorecard:v5];
+  [typeCopy setScorecard:v5];
 
   v7 = 0;
-  v6 = [v4 scorecard];
-  [(UGCRatingsForm *)self _fillInScorecard:v6 hasBeenEdited:&v7];
+  scorecard = [typeCopy scorecard];
+  [(UGCRatingsForm *)self _fillInScorecard:scorecard hasBeenEdited:&v7];
 
   if ((v7 & 1) == 0)
   {
-    [v4 setScorecard:0];
+    [typeCopy setScorecard:0];
   }
 
-  [v4 setAction:1];
+  [typeCopy setAction:1];
 }
 
-- (void)_fillScorecardUpdateWithEditType:(id)a3
+- (void)_fillScorecardUpdateWithEditType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(GEORPScorecard);
-  [v4 setScorecard:v5];
+  [typeCopy setScorecard:v5];
 
   v8 = 0;
-  v6 = [v4 scorecard];
-  [(UGCRatingsForm *)self _fillInScorecard:v6 hasBeenEdited:&v8];
+  scorecard = [typeCopy scorecard];
+  [(UGCRatingsForm *)self _fillInScorecard:scorecard hasBeenEdited:&v8];
 
   if (v8)
   {
@@ -159,26 +159,26 @@ LABEL_11:
     v7 = 3;
   }
 
-  [v4 setAction:v7];
+  [typeCopy setAction:v7];
 }
 
-- (void)_fillScorecardUpdateWithDeleteType:(id)a3
+- (void)_fillScorecardUpdateWithDeleteType:(id)type
 {
-  v3 = a3;
-  [v3 setAction:2];
-  [v3 setScorecard:0];
+  typeCopy = type;
+  [typeCopy setAction:2];
+  [typeCopy setScorecard:0];
 }
 
-- (void)_fillInScorecard:(id)a3 hasBeenEdited:(BOOL *)a4
+- (void)_fillInScorecard:(id)scorecard hasBeenEdited:(BOOL *)edited
 {
-  v6 = a3;
-  [v6 setVersion:self->_questionnaireVersion];
+  scorecardCopy = scorecard;
+  [scorecardCopy setVersion:self->_questionnaireVersion];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(UGCRatingsForm *)self allRatingCategories];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self allRatingCategories];
+  v8 = [allRatingCategories countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -190,7 +190,7 @@ LABEL_11:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -198,20 +198,20 @@ LABEL_11:
         {
           if ([v13 currentState])
           {
-            [v6 setRecommended:{objc_msgSend(v13, "currentState") == 2}];
+            [scorecardCopy setRecommended:{objc_msgSend(v13, "currentState") == 2}];
           }
         }
 
         else
         {
-          v14 = [v13 geoCategoryRating];
-          [v6 addCategoryRatings:v14];
+          geoCategoryRating = [v13 geoCategoryRating];
+          [scorecardCopy addCategoryRatings:geoCategoryRating];
         }
 
         v10 |= [v13 isEdited];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allRatingCategories countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -222,30 +222,30 @@ LABEL_11:
     LOBYTE(v10) = 0;
   }
 
-  *a4 = v10 & 1;
+  *edited = v10 & 1;
 }
 
-- (void)fillSubmissionFields:(id)a3
+- (void)fillSubmissionFields:(id)fields
 {
-  v6 = [a3 poiEnrichment];
-  v4 = [v6 scorecardUpdate];
-  if (!v4)
+  poiEnrichment = [fields poiEnrichment];
+  scorecardUpdate = [poiEnrichment scorecardUpdate];
+  if (!scorecardUpdate)
   {
-    v4 = objc_alloc_init(GEORPScorecardUpdate);
-    [v6 setScorecardUpdate:v4];
+    scorecardUpdate = objc_alloc_init(GEORPScorecardUpdate);
+    [poiEnrichment setScorecardUpdate:scorecardUpdate];
   }
 
-  v5 = [(UGCRatingsForm *)self actionType];
-  switch(v5)
+  actionType = [(UGCRatingsForm *)self actionType];
+  switch(actionType)
   {
     case 2:
-      [(UGCRatingsForm *)self _fillScorecardUpdateWithDeleteType:v4];
+      [(UGCRatingsForm *)self _fillScorecardUpdateWithDeleteType:scorecardUpdate];
       break;
     case 1:
-      [(UGCRatingsForm *)self _fillScorecardUpdateWithEditType:v4];
+      [(UGCRatingsForm *)self _fillScorecardUpdateWithEditType:scorecardUpdate];
       break;
     case 0:
-      [(UGCRatingsForm *)self _fillScorecardUpdateWithAddType:v4];
+      [(UGCRatingsForm *)self _fillScorecardUpdateWithAddType:scorecardUpdate];
       break;
   }
 }
@@ -262,26 +262,26 @@ LABEL_11:
 
 - (BOOL)_isCompleteForEdit
 {
-  v3 = [(UGCRatingsForm *)self isEdited];
-  if (v3)
+  isEdited = [(UGCRatingsForm *)self isEdited];
+  if (isEdited)
   {
 
-    LOBYTE(v3) = [(UGCRatingsForm *)self _isCompleteForAdd];
+    LOBYTE(isEdited) = [(UGCRatingsForm *)self _isCompleteForAdd];
   }
 
-  return v3;
+  return isEdited;
 }
 
 - (BOOL)_isCompleteForDelete
 {
-  v3 = [(UGCRatingsForm *)self isEdited];
-  if (v3)
+  isEdited = [(UGCRatingsForm *)self isEdited];
+  if (isEdited)
   {
 
-    LOBYTE(v3) = [(UGCRatingsForm *)self isEmpty];
+    LOBYTE(isEdited) = [(UGCRatingsForm *)self isEmpty];
   }
 
-  return v3;
+  return isEdited;
 }
 
 - (BOOL)isComplete
@@ -291,8 +291,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UGCRatingsForm *)self actionType];
-  switch(v3)
+  actionType = [(UGCRatingsForm *)self actionType];
+  switch(actionType)
   {
     case 2:
 
@@ -308,15 +308,15 @@ LABEL_11:
   }
 }
 
-- (id)categoryForKey:(id)a3
+- (id)categoryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UGCRatingsForm *)self allRatingCategories];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self allRatingCategories];
+  v6 = [allRatingCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -326,12 +326,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [v9 key];
-        v11 = [v10 isEqualToString:v4];
+        v11 = [v10 isEqualToString:keyCopy];
 
         if (v11)
         {
@@ -340,7 +340,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allRatingCategories countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -371,8 +371,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UGCRatingsForm *)self allRatingCategories];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allRatingCategories = [(UGCRatingsForm *)self allRatingCategories];
+  v4 = [allRatingCategories countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -384,7 +384,7 @@ LABEL_11:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allRatingCategories);
         }
 
         [*(*(&v8 + 1) + 8 * v7) addObserver:self];
@@ -392,28 +392,28 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allRatingCategories countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (UGCRatingsForm)initWithActionType:(int64_t)a3 overallCategory:(id)a4 categoryList:(id)a5 versionNumber:(id)a6
+- (UGCRatingsForm)initWithActionType:(int64_t)type overallCategory:(id)category categoryList:(id)list versionNumber:(id)number
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  categoryCopy = category;
+  listCopy = list;
+  numberCopy = number;
   v17.receiver = self;
   v17.super_class = UGCRatingsForm;
   v14 = [(UGCForm *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_actionType = a3;
-    objc_storeStrong(&v14->_overallCategory, a4);
-    objc_storeStrong(&v15->_categoryList, a5);
-    objc_storeStrong(&v15->_questionnaireVersion, a6);
+    v14->_actionType = type;
+    objc_storeStrong(&v14->_overallCategory, category);
+    objc_storeStrong(&v15->_categoryList, list);
+    objc_storeStrong(&v15->_questionnaireVersion, number);
     [(UGCRatingsForm *)v15 _startObservingRatingCategories];
   }
 
@@ -430,38 +430,38 @@ LABEL_11:
   return v5;
 }
 
-+ (id)editRatingFormWithPlaceQuestionnaire:(id)a3 existingScorecard:(id)a4
++ (id)editRatingFormWithPlaceQuestionnaire:(id)questionnaire existingScorecard:(id)scorecard
 {
-  v6 = a4;
-  if (v6)
+  scorecardCopy = scorecard;
+  if (scorecardCopy)
   {
-    v7 = [UGCRatingCategory overallRatingCategoryFromScorecard:v6];
-    v8 = [UGCRatingCategory ratingCategoryListForScorecard:v6];
+    v7 = [UGCRatingCategory overallRatingCategoryFromScorecard:scorecardCopy];
+    v8 = [UGCRatingCategory ratingCategoryListForScorecard:scorecardCopy];
     v9 = [UGCRatingsForm alloc];
-    v10 = [v6 version];
-    v11 = [(UGCRatingsForm *)v9 initWithActionType:1 overallCategory:v7 categoryList:v8 versionNumber:v10];
+    version = [scorecardCopy version];
+    v11 = [(UGCRatingsForm *)v9 initWithActionType:1 overallCategory:v7 categoryList:v8 versionNumber:version];
   }
 
   else
   {
-    v11 = [a1 addRatingFormWithPlaceQuestionnaire:a3];
+    v11 = [self addRatingFormWithPlaceQuestionnaire:questionnaire];
   }
 
   return v11;
 }
 
-+ (id)addRatingFormWithPlaceQuestionnaire:(id)a3
++ (id)addRatingFormWithPlaceQuestionnaire:(id)questionnaire
 {
-  v3 = a3;
-  if ([v3 canCollectRatings])
+  questionnaireCopy = questionnaire;
+  if ([questionnaireCopy canCollectRatings])
   {
     v4 = [UGCRatingCategory overallRatingCategoryWithInitialState:0];
-    v5 = [v3 ratingCategories];
-    v6 = [UGCRatingCategory ratingCategoryListForQuestionnaireCategories:v5];
+    ratingCategories = [questionnaireCopy ratingCategories];
+    v6 = [UGCRatingCategory ratingCategoryListForQuestionnaireCategories:ratingCategories];
 
     v7 = [UGCRatingsForm alloc];
-    v8 = [v3 version];
-    v9 = [(UGCRatingsForm *)v7 initWithActionType:0 overallCategory:v4 categoryList:v6 versionNumber:v8];
+    version = [questionnaireCopy version];
+    v9 = [(UGCRatingsForm *)v7 initWithActionType:0 overallCategory:v4 categoryList:v6 versionNumber:version];
   }
 
   else

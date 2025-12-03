@@ -1,12 +1,12 @@
 @interface INPerson
-+ (id)tu_personMatchingHandle:(id)a3 contactsDataSource:(id)a4 isoCountryCodes:(id)a5;
++ (id)tu_personMatchingHandle:(id)handle contactsDataSource:(id)source isoCountryCodes:(id)codes;
 - (BOOL)usesScoreBasedEncoding;
 - (id)extractRecommendation;
 - (id)tu_allContactIdentifiers;
-- (id)tu_contactsMatchingIdentifiers:(id)a3 contactsDataSource:(id)a4 identifierToContactCache:(id)a5;
-- (id)tu_handlesMatchingPersonWithContactsDataSource:(id)a3 identifierToContactCache:(id)a4;
+- (id)tu_contactsMatchingIdentifiers:(id)identifiers contactsDataSource:(id)source identifierToContactCache:(id)cache;
+- (id)tu_handlesMatchingPersonWithContactsDataSource:(id)source identifierToContactCache:(id)cache;
 - (id)tu_matchingINPersonHandlesByContactIdentifier;
-- (id)tu_personWithFormattedHandleForISOCountryCodes:(id)a3;
+- (id)tu_personWithFormattedHandleForISOCountryCodes:(id)codes;
 @end
 
 @implementation INPerson
@@ -14,21 +14,21 @@
 - (id)tu_allContactIdentifiers
 {
   v3 = objc_alloc_init(NSMutableOrderedSet);
-  v4 = [(INPerson *)self contactIdentifier];
-  v5 = [v4 length];
+  contactIdentifier = [(INPerson *)self contactIdentifier];
+  v5 = [contactIdentifier length];
 
   if (v5)
   {
-    v6 = [(INPerson *)self contactIdentifier];
-    [v3 addObject:v6];
+    contactIdentifier2 = [(INPerson *)self contactIdentifier];
+    [v3 addObject:contactIdentifier2];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(INPerson *)self siriMatches];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  siriMatches = [(INPerson *)self siriMatches];
+  v8 = [siriMatches countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -39,29 +39,29 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(siriMatches);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 contactIdentifier];
-        v14 = [v13 length];
+        contactIdentifier3 = [v12 contactIdentifier];
+        v14 = [contactIdentifier3 length];
 
         if (v14)
         {
-          v15 = [v12 contactIdentifier];
-          [v3 addObject:v15];
+          contactIdentifier4 = [v12 contactIdentifier];
+          [v3 addObject:contactIdentifier4];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [siriMatches countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  v16 = [v3 array];
+  array = [v3 array];
 
-  return v16;
+  return array;
 }
 
 - (id)tu_matchingINPersonHandlesByContactIdentifier
@@ -71,8 +71,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(INPerson *)self siriMatches];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  siriMatches = [(INPerson *)self siriMatches];
+  v5 = [siriMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -83,36 +83,36 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(siriMatches);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 contactIdentifier];
-        if ([v10 length])
+        contactIdentifier = [v9 contactIdentifier];
+        if ([contactIdentifier length])
         {
-          v11 = [v9 personHandle];
+          personHandle = [v9 personHandle];
 
-          if (!v11)
+          if (!personHandle)
           {
             continue;
           }
 
-          v12 = [v9 contactIdentifier];
-          v10 = [v3 objectForKeyedSubscript:v12];
+          contactIdentifier2 = [v9 contactIdentifier];
+          contactIdentifier = [v3 objectForKeyedSubscript:contactIdentifier2];
 
-          if (!v10)
+          if (!contactIdentifier)
           {
-            v10 = objc_alloc_init(NSMutableArray);
-            v13 = [v9 contactIdentifier];
-            [v3 setObject:v10 forKeyedSubscript:v13];
+            contactIdentifier = objc_alloc_init(NSMutableArray);
+            contactIdentifier3 = [v9 contactIdentifier];
+            [v3 setObject:contactIdentifier forKeyedSubscript:contactIdentifier3];
           }
 
-          v14 = [v9 personHandle];
-          [v10 addObject:v14];
+          personHandle2 = [v9 personHandle];
+          [contactIdentifier addObject:personHandle2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [siriMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -123,30 +123,30 @@
   return v15;
 }
 
-- (id)tu_personWithFormattedHandleForISOCountryCodes:(id)a3
+- (id)tu_personWithFormattedHandleForISOCountryCodes:(id)codes
 {
-  v4 = a3;
-  v5 = [(INPerson *)self personHandle];
-  v6 = [v5 value];
-  if ([v5 type] == 2 || !objc_msgSend(v5, "type") && objc_msgSend(v6, "_appearsToBePhoneNumber"))
+  codesCopy = codes;
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
+  if ([personHandle type] == 2 || !objc_msgSend(personHandle, "type") && objc_msgSend(value, "_appearsToBePhoneNumber"))
   {
-    v7 = [v4 firstObject];
-    v8 = [CNPhoneNumber phoneNumberWithDigits:v6 countryCode:v7];
-    v9 = [v8 formattedStringValue];
+    firstObject = [codesCopy firstObject];
+    v8 = [CNPhoneNumber phoneNumberWithDigits:value countryCode:firstObject];
+    formattedStringValue = [v8 formattedStringValue];
 
-    [v5 setValue:v9 forKey:@"value"];
+    [personHandle setValue:formattedStringValue forKey:@"value"];
   }
 
   v10 = [(INPerson *)self mutableCopy];
-  [v10 setPersonHandle:v5];
+  [v10 setPersonHandle:personHandle];
 
   return v10;
 }
 
-- (id)tu_handlesMatchingPersonWithContactsDataSource:(id)a3 identifierToContactCache:(id)a4
+- (id)tu_handlesMatchingPersonWithContactsDataSource:(id)source identifierToContactCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  cacheCopy = cache;
   v8 = IntentHandlerDefaultLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -159,9 +159,9 @@
   }
 
   v12 = objc_alloc_init(NSMutableArray);
-  v13 = [(INPerson *)self personHandle];
-  v14 = [v13 value];
-  v15 = [v14 length];
+  personHandle = [(INPerson *)self personHandle];
+  value = [personHandle value];
+  v15 = [value length];
 
   if (v15)
   {
@@ -171,14 +171,14 @@
 
   else
   {
-    v52 = [(INPerson *)self tu_allContactIdentifiers];
-    v53 = v7;
-    v54 = v6;
+    tu_allContactIdentifiers = [(INPerson *)self tu_allContactIdentifiers];
+    v53 = cacheCopy;
+    v54 = sourceCopy;
     v17 = [INPerson tu_contactsMatchingIdentifiers:"tu_contactsMatchingIdentifiers:contactsDataSource:identifierToContactCache:" contactsDataSource:? identifierToContactCache:?];
-    v18 = [(INPerson *)self personHandle];
-    v19 = [v18 type];
+    personHandle2 = [(INPerson *)self personHandle];
+    type = [personHandle2 type];
 
-    v20 = v19 < 3;
+    v20 = type < 3;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
@@ -187,10 +187,10 @@
     v61 = [obj countByEnumeratingWithState:&v70 objects:v77 count:16];
     if (v61)
     {
-      v60 = v20 & (3u >> (v19 & 7));
-      v59 = v20 & (v19 ^ 1);
+      v60 = v20 & (3u >> (type & 7));
+      v59 = v20 & (type ^ 1);
       v58 = *v71;
-      v55 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v61; i = i + 1)
@@ -203,10 +203,10 @@
           v22 = *(*(&v70 + 1) + 8 * i);
           if (v59)
           {
-            v23 = [(INPerson *)self personHandle];
-            v24 = [v23 label];
+            personHandle3 = [(INPerson *)self personHandle];
+            label = [personHandle3 label];
             v57 = v22;
-            v25 = [v22 tu_phoneNumbersMatchingPersonHandleLabel:v24];
+            v25 = [v22 tu_phoneNumbersMatchingPersonHandleLabel:label];
 
             v68 = 0u;
             v69 = 0u;
@@ -229,9 +229,9 @@
 
                   v31 = *(*(&v66 + 1) + 8 * j);
                   v32 = [TUHandle alloc];
-                  v33 = [v31 value];
-                  v34 = [v33 stringValue];
-                  v35 = [v32 initWithType:2 value:v34];
+                  value2 = [v31 value];
+                  stringValue = [value2 stringValue];
+                  v35 = [v32 initWithType:2 value:stringValue];
 
                   [v12 addObject:v35];
                 }
@@ -242,15 +242,15 @@
               while (v28);
             }
 
-            self = v55;
+            self = selfCopy;
             v22 = v57;
           }
 
           if (v60)
           {
-            v36 = [(INPerson *)self personHandle];
-            v37 = [v36 label];
-            v38 = [v22 tu_emailAddressesMatchingPersonHandleLabel:v37];
+            personHandle4 = [(INPerson *)self personHandle];
+            label2 = [personHandle4 label];
+            v38 = [v22 tu_emailAddressesMatchingPersonHandleLabel:label2];
 
             v64 = 0u;
             v65 = 0u;
@@ -273,8 +273,8 @@
 
                   v44 = *(*(&v62 + 1) + 8 * k);
                   v45 = [TUHandle alloc];
-                  v46 = [v44 value];
-                  v47 = [v45 initWithType:3 value:v46];
+                  value3 = [v44 value];
+                  v47 = [v45 initWithType:3 value:value3];
 
                   [v12 addObject:v47];
                 }
@@ -293,9 +293,9 @@
       while (v61);
     }
 
-    v7 = v53;
-    v6 = v54;
-    v16 = v52;
+    cacheCopy = v53;
+    sourceCopy = v54;
+    v16 = tu_allContactIdentifiers;
   }
 
   v48 = IntentHandlerDefaultLog();
@@ -311,14 +311,14 @@
   return v50;
 }
 
-- (id)tu_contactsMatchingIdentifiers:(id)a3 contactsDataSource:(id)a4 identifierToContactCache:(id)a5
+- (id)tu_contactsMatchingIdentifiers:(id)identifiers contactsDataSource:(id)source identifierToContactCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  identifiersCopy = identifiers;
+  sourceCopy = source;
+  cacheCopy = cache;
+  if ([identifiersCopy count])
   {
-    v52 = v8;
+    v52 = sourceCopy;
     v10 = IntentHandlerDefaultLog();
     v11 = os_signpost_id_generate(v10);
 
@@ -339,8 +339,8 @@
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v51 = v7;
-    v16 = v7;
+    v51 = identifiersCopy;
+    v16 = identifiersCopy;
     v17 = [v16 countByEnumeratingWithState:&v58 objects:v66 count:16];
     if (v17)
     {
@@ -356,7 +356,7 @@
           }
 
           v21 = *(*(&v58 + 1) + 8 * i);
-          v22 = [v9 objectForKey:v21];
+          v22 = [cacheCopy objectForKey:v21];
           if (v22)
           {
             v23 = v15;
@@ -378,7 +378,7 @@
       while (v18);
     }
 
-    v8 = v52;
+    sourceCopy = v52;
     if ([v14 count])
     {
       v25 = IntentHandlerDefaultLog();
@@ -426,8 +426,8 @@
             }
 
             v41 = *(*(&v53 + 1) + 8 * j);
-            v42 = [v41 identifier];
-            [v9 setObject:v41 forKey:v42];
+            identifier = [v41 identifier];
+            [cacheCopy setObject:v41 forKey:identifier];
 
             [v15 addObject:v41];
           }
@@ -438,7 +438,7 @@
         while (v38);
       }
 
-      v8 = v52;
+      sourceCopy = v52;
     }
 
     v43 = IntentHandlerDefaultLog();
@@ -450,7 +450,7 @@
     }
 
     v45 = [v15 copy];
-    v7 = v51;
+    identifiersCopy = v51;
   }
 
   else
@@ -461,11 +461,11 @@
   return v45;
 }
 
-+ (id)tu_personMatchingHandle:(id)a3 contactsDataSource:(id)a4 isoCountryCodes:(id)a5
++ (id)tu_personMatchingHandle:(id)handle contactsDataSource:(id)source isoCountryCodes:(id)codes
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  sourceCopy = source;
+  codesCopy = codes;
   v10 = IntentHandlerDefaultLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -482,36 +482,36 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v63 = v7;
+    v63 = handleCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Looking up contact in the contact store matching handle: %@", buf, 0xCu);
   }
 
-  v16 = [v7 type];
-  if (v16 == 1)
+  type = [handleCopy type];
+  if (type == 1)
   {
-    v19 = [v7 value];
-    v20 = [v19 _appearsToBePhoneNumber];
+    value = [handleCopy value];
+    _appearsToBePhoneNumber = [value _appearsToBePhoneNumber];
 
-    if (!v20)
+    if (!_appearsToBePhoneNumber)
     {
-      v46 = [v7 value];
-      v47 = [v46 _appearsToBeEmail];
+      value2 = [handleCopy value];
+      _appearsToBeEmail = [value2 _appearsToBeEmail];
 
-      if (!v47)
+      if (!_appearsToBeEmail)
       {
         goto LABEL_33;
       }
 
 LABEL_9:
-      v17 = [v7 value];
-      v18 = [CNContact predicateForContactsMatchingEmailAddress:v17];
+      value3 = [handleCopy value];
+      v18 = [CNContact predicateForContactsMatchingEmailAddress:value3];
       goto LABEL_12;
     }
   }
 
-  else if (v16 != 2)
+  else if (type != 2)
   {
-    if (v16 != 3)
+    if (type != 3)
     {
       goto LABEL_33;
     }
@@ -519,8 +519,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v17 = [v7 value];
-  v21 = [CNPhoneNumber phoneNumberWithStringValue:v17];
+  value3 = [handleCopy value];
+  v21 = [CNPhoneNumber phoneNumberWithStringValue:value3];
   v18 = [CNContact predicateForContactsMatchingPhoneNumber:v21];
 
 LABEL_12:
@@ -532,10 +532,10 @@ LABEL_12:
     v61[2] = v22;
     v23 = [NSArray arrayWithObjects:v61 count:3];
 
-    v59 = v8;
+    v59 = sourceCopy;
     v60 = 0;
     v58 = v23;
-    v24 = [v8 unifiedContactsMatchingPredicate:v18 keysToFetch:v23 error:&v60];
+    v24 = [sourceCopy unifiedContactsMatchingPredicate:v18 keysToFetch:v23 error:&v60];
     v25 = v60;
     if (v25)
     {
@@ -552,29 +552,29 @@ LABEL_12:
       {
 LABEL_25:
         spid = v11;
-        v35 = [v24 firstObject];
-        v36 = v35;
+        firstObject = [v24 firstObject];
+        v36 = firstObject;
         v57 = v25;
-        if (v35)
+        if (firstObject)
         {
-          v37 = v9;
-          v38 = [v35 tu_personHandleMatchingHandle:v7 isoCountryCodes:v9];
+          v37 = codesCopy;
+          v38 = [firstObject tu_personHandleMatchingHandle:handleCopy isoCountryCodes:codesCopy];
           v39 = [NSPersonNameComponents componentsForContact:v36];
         }
 
         else
         {
           v40 = [INPersonHandle alloc];
-          v37 = v9;
-          v38 = [v40 tu_initUnlabledPersonHandleWithTUHandle:v7 isoCountryCodes:v9];
+          v37 = codesCopy;
+          v38 = [v40 tu_initUnlabledPersonHandleWithTUHandle:handleCopy isoCountryCodes:codesCopy];
 
           v39 = 0;
         }
 
         v41 = [INPerson alloc];
-        v42 = [v36 identifier];
+        identifier = [v36 identifier];
         LOBYTE(v55) = 0;
-        v43 = [v41 initWithPersonHandle:v38 nameComponents:v39 displayName:0 image:0 contactIdentifier:v42 customIdentifier:0 isMe:v55];
+        v43 = [v41 initWithPersonHandle:v38 nameComponents:v39 displayName:0 image:0 contactIdentifier:identifier customIdentifier:0 isMe:v55];
 
         v44 = IntentHandlerDefaultLog();
         v45 = v44;
@@ -584,8 +584,8 @@ LABEL_25:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v45, OS_SIGNPOST_INTERVAL_END, spid, "personMatchingHandle", "", buf, 2u);
         }
 
-        v8 = v59;
-        v9 = v37;
+        sourceCopy = v59;
+        codesCopy = v37;
         goto LABEL_36;
       }
 
@@ -617,7 +617,7 @@ LABEL_33:
   v18 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    sub_10002F368(v7, v18, v48, v49, v50, v51, v52, v53);
+    sub_10002F368(handleCopy, v18, v48, v49, v50, v51, v52, v53);
   }
 
   v43 = 0;
@@ -628,13 +628,13 @@ LABEL_36:
 
 - (BOOL)usesScoreBasedEncoding
 {
-  v3 = [(INPerson *)self scoredAlternatives];
-  if ([v3 count])
+  scoredAlternatives = [(INPerson *)self scoredAlternatives];
+  if ([scoredAlternatives count])
   {
-    v4 = [(INPerson *)self scoredAlternatives];
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 score];
-    v7 = v6 != 0;
+    scoredAlternatives2 = [(INPerson *)self scoredAlternatives];
+    v5 = [scoredAlternatives2 objectAtIndexedSubscript:0];
+    score = [v5 score];
+    v7 = score != 0;
   }
 
   else
@@ -655,8 +655,8 @@ LABEL_36:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v5 = [(INPerson *)self scoredAlternatives];
-    v6 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    scoredAlternatives = [(INPerson *)self scoredAlternatives];
+    v6 = [scoredAlternatives countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v6)
     {
       v7 = v6;
@@ -667,22 +667,22 @@ LABEL_36:
         {
           if (*v41 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(scoredAlternatives);
           }
 
           v10 = *(*(&v40 + 1) + 8 * i);
-          v11 = [v10 person];
-          v12 = [v11 contactIdentifier];
+          person = [v10 person];
+          contactIdentifier = [person contactIdentifier];
 
-          if ([v12 length])
+          if ([contactIdentifier length])
           {
-            [v4 addObject:v12];
-            v13 = [v3 valueForKey:v12];
-            v14 = [v10 score];
-            v15 = v14;
-            if (v14)
+            [v4 addObject:contactIdentifier];
+            v13 = [v3 valueForKey:contactIdentifier];
+            score = [v10 score];
+            v15 = score;
+            if (score)
             {
-              v16 = v14;
+              v16 = score;
             }
 
             else
@@ -694,28 +694,28 @@ LABEL_36:
 
             if (!v13 || [v17 compare:v13] == 1)
             {
-              [v3 setValue:v17 forKey:v12];
+              [v3 setValue:v17 forKey:contactIdentifier];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v7 = [scoredAlternatives countByEnumeratingWithState:&v40 objects:v46 count:16];
       }
 
       while (v7);
     }
 
     v18 = [v3 copy];
-    v19 = [v4 array];
+    array = [v4 array];
 
-    if ([v19 count])
+    if ([array count])
     {
       if ([v18 count] == 1)
       {
-        v20 = [v18 allValues];
-        v21 = [v20 firstObject];
+        allValues = [v18 allValues];
+        firstObject = [allValues firstObject];
 
-        [v21 floatValue];
+        [firstObject floatValue];
         if (v22 >= 0.7)
         {
           v23 = 1;
@@ -741,33 +741,33 @@ LABEL_36:
 
   else
   {
-    v24 = [(INPerson *)self contactIdentifier];
-    v25 = [v24 length];
+    contactIdentifier2 = [(INPerson *)self contactIdentifier];
+    v25 = [contactIdentifier2 length];
 
     if (v25)
     {
-      v26 = [(INPerson *)self contactIdentifier];
-      v45 = v26;
+      contactIdentifier3 = [(INPerson *)self contactIdentifier];
+      v45 = contactIdentifier3;
       v23 = 1;
-      v19 = [NSArray arrayWithObjects:&v45 count:1];
+      array = [NSArray arrayWithObjects:&v45 count:1];
 
       goto LABEL_31;
     }
 
-    v27 = [(INPerson *)self siriMatches];
-    if ([v27 count] == 1)
+    siriMatches = [(INPerson *)self siriMatches];
+    if ([siriMatches count] == 1)
     {
-      v28 = [(INPerson *)self siriMatches];
-      v29 = [v28 firstObject];
-      v30 = [v29 contactIdentifier];
+      siriMatches2 = [(INPerson *)self siriMatches];
+      firstObject2 = [siriMatches2 firstObject];
+      contactIdentifier4 = [firstObject2 contactIdentifier];
 
-      if (v30)
+      if (contactIdentifier4)
       {
-        v31 = [(INPerson *)self siriMatches];
-        v32 = [v31 firstObject];
-        v33 = [v32 contactIdentifier];
-        v44 = v33;
-        v19 = [NSArray arrayWithObjects:&v44 count:1];
+        siriMatches3 = [(INPerson *)self siriMatches];
+        firstObject3 = [siriMatches3 firstObject];
+        contactIdentifier5 = [firstObject3 contactIdentifier];
+        v44 = contactIdentifier5;
+        array = [NSArray arrayWithObjects:&v44 count:1];
 
         v23 = 2;
         goto LABEL_31;
@@ -778,27 +778,27 @@ LABEL_36:
     {
     }
 
-    v36 = [(INPerson *)self siriMatches];
-    v37 = [v36 count];
+    siriMatches4 = [(INPerson *)self siriMatches];
+    v37 = [siriMatches4 count];
 
     if (v37 < 2)
     {
       v23 = 0;
-      v19 = &__NSArray0__struct;
+      array = &__NSArray0__struct;
     }
 
     else
     {
-      v38 = [(INPerson *)self siriMatches];
+      siriMatches5 = [(INPerson *)self siriMatches];
       v39 = NSStringFromSelector("contactIdentifier");
-      v19 = [v38 valueForKey:v39];
+      array = [siriMatches5 valueForKey:v39];
 
       v23 = 3;
     }
   }
 
 LABEL_31:
-  v34 = [[SiriMatchRecommendation alloc] initWithType:v23 contactIdentifiers:v19];
+  v34 = [[SiriMatchRecommendation alloc] initWithType:v23 contactIdentifiers:array];
 
   return v34;
 }

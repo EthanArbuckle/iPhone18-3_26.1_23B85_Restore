@@ -1,24 +1,24 @@
 @interface PKStoreProductViewPresenter
-- (PKStoreProductViewPresenter)initWithProductDelegate:(id)a3;
+- (PKStoreProductViewPresenter)initWithProductDelegate:(id)delegate;
 - (void)dealloc;
-- (void)loadProductForItemIdentifier:(id)a3 customProductPageIdentifier:(id)a4;
-- (void)presentStoreViewWithBlock:(id)a3;
-- (void)productViewControllerDidFinish:(id)a3;
-- (void)setSuppressingFooter:(BOOL)a3;
+- (void)loadProductForItemIdentifier:(id)identifier customProductPageIdentifier:(id)pageIdentifier;
+- (void)presentStoreViewWithBlock:(id)block;
+- (void)productViewControllerDidFinish:(id)finish;
+- (void)setSuppressingFooter:(BOOL)footer;
 @end
 
 @implementation PKStoreProductViewPresenter
 
-- (PKStoreProductViewPresenter)initWithProductDelegate:(id)a3
+- (PKStoreProductViewPresenter)initWithProductDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = PKStoreProductViewPresenter;
   v5 = [(PKStoreProductViewPresenter *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_productDelegate, v4);
+    objc_storeWeak(&v5->_productDelegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x1E697BAA0]);
     productViewController = v6->_productViewController;
     v6->_productViewController = v7;
@@ -41,10 +41,10 @@
   [(PKStoreProductViewPresenter *)&v3 dealloc];
 }
 
-- (void)loadProductForItemIdentifier:(id)a3 customProductPageIdentifier:(id)a4
+- (void)loadProductForItemIdentifier:(id)identifier customProductPageIdentifier:(id)pageIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pageIdentifierCopy = pageIdentifier;
   if (!self->_productViewController)
   {
     v8 = PKLogFacilityTypeGetObject();
@@ -57,8 +57,8 @@
 
   objc_initWeak(buf, self);
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v9 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697BB38]];
-  [v9 safelySetObject:v7 forKey:*MEMORY[0x1E697BB30]];
+  [v9 setObject:identifierCopy forKeyedSubscript:*MEMORY[0x1E697BB38]];
+  [v9 safelySetObject:pageIdentifierCopy forKey:*MEMORY[0x1E697BB30]];
   productViewController = self->_productViewController;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -115,9 +115,9 @@ void __88__PKStoreProductViewPresenter_loadProductForItemIdentifier_customProduc
   }
 }
 
-- (void)presentStoreViewWithBlock:(id)a3
+- (void)presentStoreViewWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_productViewController;
   v6 = v5;
   if (v5)
@@ -133,7 +133,7 @@ void __88__PKStoreProductViewPresenter_loadProductForItemIdentifier_customProduc
     v9[3] = &unk_1E8010A10;
     v9[4] = self;
     v10 = v6;
-    v4[2](v4, v10, v9);
+    blockCopy[2](blockCopy, v10, v9);
   }
 
   else
@@ -165,12 +165,12 @@ uint64_t __57__PKStoreProductViewPresenter_presentStoreViewWithBlock___block_inv
   return result;
 }
 
-- (void)setSuppressingFooter:(BOOL)a3
+- (void)setSuppressingFooter:(BOOL)footer
 {
-  if (self->_suppressingFooter != a3)
+  if (self->_suppressingFooter != footer)
   {
-    self->_suppressingFooter = a3;
-    if (a3)
+    self->_suppressingFooter = footer;
+    if (footer)
     {
       +[PKPassGroupsViewController beginSuppressingFooter];
     }
@@ -182,22 +182,22 @@ uint64_t __57__PKStoreProductViewPresenter_presentStoreViewWithBlock___block_inv
   }
 }
 
-- (void)productViewControllerDidFinish:(id)a3
+- (void)productViewControllerDidFinish:(id)finish
 {
-  v8 = a3;
-  [v8 setDelegate:0];
+  finishCopy = finish;
+  [finishCopy setDelegate:0];
   WeakRetained = objc_loadWeakRetained(&self->_productDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_productDelegate);
-    [v6 productViewControllerDidFinish:v8];
+    [v6 productViewControllerDidFinish:finishCopy];
   }
 
   else
   {
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    [finishCopy dismissViewControllerAnimated:1 completion:0];
   }
 
   [(PKStoreProductViewPresenter *)self setSuppressingFooter:0];

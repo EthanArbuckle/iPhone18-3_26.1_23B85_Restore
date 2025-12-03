@@ -1,11 +1,11 @@
 @interface MaintenanceAgent
 - (_TtC21contactsdonationagent16MaintenanceAgent)init;
-- (id)extensionIdentifiers:(id *)a3;
+- (id)extensionIdentifiers:(id *)identifiers;
 @end
 
 @implementation MaintenanceAgent
 
-- (id)extensionIdentifiers:(id *)a3
+- (id)extensionIdentifiers:(id *)identifiers
 {
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
 

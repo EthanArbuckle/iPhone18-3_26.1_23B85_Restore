@@ -1,7 +1,7 @@
 @interface ATXSecureCodedTuple
 + (id)allowedClassNames;
-- (ATXSecureCodedTuple)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXSecureCodedTuple)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSecureCodedTuple
@@ -15,49 +15,49 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  v4 = [(_PASTuple2 *)self first];
-  [v14 encodeObject:v4 forKey:@"first"];
+  coderCopy = coder;
+  first = [(_PASTuple2 *)self first];
+  [coderCopy encodeObject:first forKey:@"first"];
 
-  v5 = [(_PASTuple2 *)self first];
+  first2 = [(_PASTuple2 *)self first];
 
-  if (v5)
+  if (first2)
   {
-    v6 = [(_PASTuple2 *)self first];
+    first3 = [(_PASTuple2 *)self first];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
 
-    [v14 encodeObject:v8 forKey:@"firstCls"];
+    [coderCopy encodeObject:v8 forKey:@"firstCls"];
   }
 
-  v9 = [(_PASTuple2 *)self second];
-  [v14 encodeObject:v9 forKey:@"second"];
+  second = [(_PASTuple2 *)self second];
+  [coderCopy encodeObject:second forKey:@"second"];
 
-  v10 = [(_PASTuple2 *)self second];
+  second2 = [(_PASTuple2 *)self second];
 
-  if (v10)
+  if (second2)
   {
-    v11 = [(_PASTuple2 *)self second];
+    second3 = [(_PASTuple2 *)self second];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
 
-    [v14 encodeObject:v13 forKey:@"secondCls"];
+    [coderCopy encodeObject:v13 forKey:@"secondCls"];
   }
 }
 
-- (ATXSecureCodedTuple)initWithCoder:(id)a3
+- (ATXSecureCodedTuple)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"firstCls" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"firstCls" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (!v9)
+  if (!error)
   {
     if (v8 && ([objc_opt_class() allowedClassNames], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v8), v11, v12))
     {
@@ -66,11 +66,11 @@
       {
         v14 = MEMORY[0x277D42620];
         v15 = __atxlog_handle_default();
-        v13 = [v14 robustDecodeObjectOfClass:v13 forKey:@"first" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v15];
+        v13 = [v14 robustDecodeObjectOfClass:v13 forKey:@"first" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v15];
 
-        if (!v13 || ([v4 error], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+        if (!v13 || ([coderCopy error], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
         {
-          v10 = 0;
+          selfCopy = 0;
 LABEL_22:
 
           goto LABEL_23;
@@ -86,13 +86,13 @@ LABEL_22:
     v17 = MEMORY[0x277D42620];
     v18 = objc_opt_class();
     v19 = __atxlog_handle_default();
-    v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"secondCls" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v19];
+    v20 = [v17 robustDecodeObjectOfClass:v18 forKey:@"secondCls" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v19];
 
-    v21 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v21)
+    if (error2)
     {
-      v10 = 0;
+      selfCopy = 0;
 LABEL_21:
 
       goto LABEL_22;
@@ -105,11 +105,11 @@ LABEL_21:
       {
         v25 = MEMORY[0x277D42620];
         v26 = __atxlog_handle_default();
-        v24 = [v25 robustDecodeObjectOfClass:v24 forKey:@"second" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v26];
+        v24 = [v25 robustDecodeObjectOfClass:v24 forKey:@"second" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXSecureCodedTuple" errorCode:-1 logHandle:v26];
 
-        if (!v24 || ([v4 error], v27 = objc_claimAutoreleasedReturnValue(), v27, v27))
+        if (!v24 || ([coderCopy error], v27 = objc_claimAutoreleasedReturnValue(), v27, v27))
         {
-          v10 = 0;
+          selfCopy = 0;
 LABEL_20:
 
           goto LABEL_21;
@@ -123,14 +123,14 @@ LABEL_20:
     }
 
     self = [(_PASTuple2 *)self initWithFirst:v13 second:v24];
-    v10 = self;
+    selfCopy = self;
     goto LABEL_20;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_23:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

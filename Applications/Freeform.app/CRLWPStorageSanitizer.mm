@@ -1,26 +1,26 @@
 @interface CRLWPStorageSanitizer
-+ (id)filterMarkAttributes:(id)a3;
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5;
++ (id)filterMarkAttributes:(id)attributes;
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters;
 @end
 
 @implementation CRLWPStorageSanitizer
 
-+ (id)filterText:(id)a3 removingAttachments:(BOOL)a4 removingControlCharacters:(BOOL)a5
++ (id)filterText:(id)text removingAttachments:(BOOL)attachments removingControlCharacters:(BOOL)characters
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  charactersCopy = characters;
+  attachmentsCopy = attachments;
+  textCopy = text;
   if (qword_101A34A68 != -1)
   {
     sub_1013471AC();
   }
 
   v53 = qword_101A34A48;
-  if (!v6 || !v5)
+  if (!attachmentsCopy || !charactersCopy)
   {
-    if (v6 || v5)
+    if (attachmentsCopy || charactersCopy)
     {
-      if (!v6 || v5)
+      if (!attachmentsCopy || charactersCopy)
       {
         goto LABEL_12;
       }
@@ -44,7 +44,7 @@
   v53 = v9;
 LABEL_12:
   v10 = objc_opt_class();
-  v11 = sub_100014370(v10, v7);
+  v11 = sub_100014370(v10, textCopy);
   v12 = v11;
   if (v11)
   {
@@ -54,7 +54,7 @@ LABEL_12:
   else
   {
     v13 = objc_opt_class();
-    sub_100014370(v13, v7);
+    sub_100014370(v13, textCopy);
   }
   v14 = ;
   if (!v14)
@@ -86,7 +86,7 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:103 isFatal:0 description:"invalid nil value for '%{public}s'", "theStr"];
   }
 
-  v18 = v7;
+  v18 = textCopy;
   v52 = v18;
   v19 = 0;
   while ([v14 length])
@@ -103,10 +103,10 @@ LABEL_12:
       {
         v20 = [v52 mutableCopy];
 
-        v21 = [v20 mutableString];
+        mutableString = [v20 mutableString];
 
         v18 = v20;
-        v14 = v21;
+        v14 = mutableString;
       }
 
       else
@@ -202,10 +202,10 @@ LABEL_12:
         {
           v42 = [v52 mutableCopy];
 
-          v43 = [v42 mutableString];
+          mutableString2 = [v42 mutableString];
 
           v18 = v42;
-          v14 = v43;
+          v14 = mutableString2;
         }
 
         else
@@ -231,8 +231,8 @@ LABEL_65:
 
   if (v51)
   {
-    v45 = [v18 string];
-    v46 = [v14 isEqualToString:v45];
+    string = [v18 string];
+    v46 = [v14 isEqualToString:string];
 
     if ((v46 & 1) == 0)
     {
@@ -267,14 +267,14 @@ LABEL_65:
   return v18;
 }
 
-+ (id)filterMarkAttributes:(id)a3
++ (id)filterMarkAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, attributesCopy);
   v6 = [v5 mutableCopy];
 
-  v7 = v3;
+  v7 = attributesCopy;
   if ([v6 length])
   {
     v8 = [v6 attributesAtIndex:0 effectiveRange:0];

@@ -1,8 +1,8 @@
 @interface NSSQLBatchOperationRequestContext
 - (uint64_t)createDropTemporaryTablesForBatchOperationTriggers;
-- (uint64_t)createObjectIDCaptureStatementsForDrop:(uint64_t)a1;
+- (uint64_t)createObjectIDCaptureStatementsForDrop:(uint64_t)drop;
 - (uint64_t)createTemporaryTablesForBatchOperationTriggers;
-- (void)createTriggerForUpdateOnEntity:(void *)a3 onAttributes:(char)a4 forDrop:;
+- (void)createTriggerForUpdateOnEntity:(void *)entity onAttributes:(char)attributes forDrop:;
 - (void)dealloc;
 @end
 
@@ -16,15 +16,15 @@
   [(NSSQLStoreRequestContext *)&v3 dealloc];
 }
 
-- (uint64_t)createObjectIDCaptureStatementsForDrop:(uint64_t)a1
+- (uint64_t)createObjectIDCaptureStatementsForDrop:(uint64_t)drop
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!drop)
   {
     goto LABEL_24;
   }
 
-  v4 = [a1 persistentStoreRequest];
+  persistentStoreRequest = [drop persistentStoreRequest];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -33,26 +33,26 @@
     {
       if ((a2 & 1) == 0)
       {
-        objc_setProperty_nonatomic(a1, v10, @"TEMP_CDBATCHUPDATEOBJECTIDS", 88);
+        objc_setProperty_nonatomic(drop, v10, @"TEMP_CDBATCHUPDATEOBJECTIDS", 88);
       }
 
-      v11 = _sqlCoreLookupSQLEntityForEntityDescription(*(a1 + 8), [v4 entity]);
-      v12 = [v11 model];
-      if (!v12 || !*(v12 + 60) || [*(a1 + 32) _allowAncillaryEntities])
+      v11 = _sqlCoreLookupSQLEntityForEntityDescription(*(drop + 8), [persistentStoreRequest entity]);
+      model = [v11 model];
+      if (!model || !*(model + 60) || [*(drop + 32) _allowAncillaryEntities])
       {
         v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
         if (a2)
         {
-          v14 = [(NSSQLBatchOperationRequestContext *)a1 createDropTemporaryTablesForBatchOperationTriggers];
+          createDropTemporaryTablesForBatchOperationTriggers = [(NSSQLBatchOperationRequestContext *)drop createDropTemporaryTablesForBatchOperationTriggers];
         }
 
         else
         {
-          v14 = [(NSSQLBatchOperationRequestContext *)a1 createTemporaryTablesForBatchOperationTriggers];
+          createDropTemporaryTablesForBatchOperationTriggers = [(NSSQLBatchOperationRequestContext *)drop createTemporaryTablesForBatchOperationTriggers];
         }
 
-        [v13 addObjectsFromArray:v14];
-        [v13 addObjectsFromArray:{-[NSSQLBatchOperationRequestContext createTriggerForUpdateOnEntity:onAttributes:forDrop:](a1, v11, objc_msgSend(objc_msgSend(v4, "propertiesToUpdate"), "allKeys"), a2)}];
+        [v13 addObjectsFromArray:createDropTemporaryTablesForBatchOperationTriggers];
+        [v13 addObjectsFromArray:{-[NSSQLBatchOperationRequestContext createTriggerForUpdateOnEntity:onAttributes:forDrop:](drop, v11, objc_msgSend(objc_msgSend(persistentStoreRequest, "propertiesToUpdate"), "allKeys"), a2)}];
         goto LABEL_34;
       }
     }
@@ -63,7 +63,7 @@
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v4;
+        *&buf[4] = persistentStoreRequest;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Unexpected batch operation: %@\n", buf, 0xCu);
       }
 
@@ -71,7 +71,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v4;
+        *&buf[4] = persistentStoreRequest;
         _os_log_fault_impl(&dword_18565F000, v16, OS_LOG_TYPE_FAULT, "CoreData: Unexpected batch operation: %@", buf, 0xCu);
       }
     }
@@ -81,12 +81,12 @@
 
   if ((a2 & 1) == 0)
   {
-    objc_setProperty_nonatomic(a1, v5, @"TEMP_CDBATCHINSERTOBJECTIDS", 88);
+    objc_setProperty_nonatomic(drop, v5, @"TEMP_CDBATCHINSERTOBJECTIDS", 88);
   }
 
-  v6 = _sqlCoreLookupSQLEntityForEntityDescription(*(a1 + 8), [v4 entity]);
-  v7 = [v6 model];
-  if (v7 && *(v7 + 60) && ![*(a1 + 32) _allowAncillaryEntities])
+  v6 = _sqlCoreLookupSQLEntityForEntityDescription(*(drop + 8), [persistentStoreRequest entity]);
+  model2 = [v6 model];
+  if (model2 && *(model2 + 60) && ![*(drop + 32) _allowAncillaryEntities])
   {
 LABEL_23:
     v13 = MEMORY[0x1E695E0F0];
@@ -105,16 +105,16 @@ LABEL_24:
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
   if (a2)
   {
-    v9 = [(NSSQLBatchOperationRequestContext *)a1 createDropTemporaryTablesForBatchOperationTriggers];
+    createDropTemporaryTablesForBatchOperationTriggers2 = [(NSSQLBatchOperationRequestContext *)drop createDropTemporaryTablesForBatchOperationTriggers];
   }
 
   else
   {
-    v9 = [(NSSQLBatchOperationRequestContext *)a1 createTemporaryTablesForBatchOperationTriggers];
+    createDropTemporaryTablesForBatchOperationTriggers2 = [(NSSQLBatchOperationRequestContext *)drop createTemporaryTablesForBatchOperationTriggers];
   }
 
-  [v8 addObjectsFromArray:v9];
-  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_%@_%@_%@", @"INSERT", *(a1 + 88), objc_msgSend(v6, "name")];
+  [v8 addObjectsFromArray:createDropTemporaryTablesForBatchOperationTriggers2];
+  v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_%@_%@_%@", @"INSERT", *(drop + 88), objc_msgSend(v6, "name")];
   if (a2)
   {
     v18 = [NSSQLiteStatement alloc];
@@ -123,7 +123,7 @@ LABEL_24:
 
   else
   {
-    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE) SELECT %@, %@, %ld;", *(a1 + 88), @"NEW.Z_ENT", @"NEW.Z_PK", 0];
+    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE) SELECT %@, %@, %ld;", *(drop + 88), @"NEW.Z_ENT", @"NEW.Z_PK", 0];
     v21 = [NSSQLiteStatement alloc];
     v19 = -[NSSQLiteStatement initWithEntity:sqlString:](v21, "initWithEntity:sqlString:", v6, [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TEMPORARY TRIGGER IF NOT EXISTS %@ AFTER %@ ON %@ FOR EACH ROW BEGIN %@ END", v17, @"INSERT", objc_msgSend(v6, "tableName"), v20]);
   }
@@ -132,7 +132,7 @@ LABEL_24:
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:1];
 
   [v8 addObjectsFromArray:v22];
-  [v8 addObjectsFromArray:{-[NSSQLBatchOperationRequestContext createTriggerForUpdateOnEntity:onAttributes:forDrop:](a1, v6, objc_msgSend(objc_msgSend(objc_msgSend(v6, "entityDescription"), "attributesByName"), "allValues"), a2)}];
+  [v8 addObjectsFromArray:{-[NSSQLBatchOperationRequestContext createTriggerForUpdateOnEntity:onAttributes:forDrop:](drop, v6, objc_msgSend(objc_msgSend(objc_msgSend(v6, "entityDescription"), "attributesByName"), "allValues"), a2)}];
   v23 = MEMORY[0x1E695DEC8];
   v24 = *MEMORY[0x1E69E9840];
 
@@ -143,7 +143,7 @@ LABEL_24:
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v2 = [NSSQLiteStatement alloc];
-  v3 = -[NSSQLiteStatement initWithEntity:sqlString:](v2, "initWithEntity:sqlString:", 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TEMP TABLE IF NOT EXISTS %@ (ENTITYID INTEGER, PRIMEKEY INTEGER, TYPE INTEGER, ATTRIBUTENAME VARCHAR)", *(a1 + 88)]);
+  v3 = -[NSSQLiteStatement initWithEntity:sqlString:](v2, "initWithEntity:sqlString:", 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TEMP TABLE IF NOT EXISTS %@ (ENTITYID INTEGER, PRIMEKEY INTEGER, TYPE INTEGER, ATTRIBUTENAME VARCHAR)", *(self + 88)]);
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
@@ -153,26 +153,26 @@ LABEL_24:
 
 - (uint64_t)createDropTemporaryTablesForBatchOperationTriggers
 {
-  v1 = a1;
+  selfCopy = self;
   v4[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
   }
 
-  v4[0] = -[NSSQLiteAdapter newDropTableStatementForTableNamed:]([a1 adapter], v1[11]);
+  v4[0] = -[NSSQLiteAdapter newDropTableStatementForTableNamed:]([self adapter], selfCopy[11]);
   result = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
   v3 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)createTriggerForUpdateOnEntity:(void *)a3 onAttributes:(char)a4 forDrop:
+- (void)createTriggerForUpdateOnEntity:(void *)entity onAttributes:(char)attributes forDrop:
 {
   v55 = *MEMORY[0x1E69E9840];
-  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a3, "count") + 1}];
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_UPDATE_%@_%@", *(a1 + 88), objc_msgSend(a2, "name")];
-  v41 = a4;
-  if (a4)
+  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entity, "count") + 1}];
+  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_UPDATE_%@_%@", *(self + 88), objc_msgSend(a2, "name")];
+  attributesCopy = attributes;
+  if (attributes)
   {
     v9 = [NSSQLiteStatement alloc];
     v10 = -[NSSQLiteStatement initWithEntity:sqlString:](v9, "initWithEntity:sqlString:", a2, [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TRIGGER IF EXISTS %@", v8]);
@@ -180,19 +180,19 @@ LABEL_24:
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE) SELECT OLD.Z_ENT, OLD.Z_PK, %ld;", *(a1 + 88), 1];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE) SELECT OLD.Z_ENT, OLD.Z_PK, %ld;", *(self + 88), 1];
     v12 = [NSSQLiteStatement alloc];
     v10 = -[NSSQLiteStatement initWithEntity:sqlString:](v12, "initWithEntity:sqlString:", a2, [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TEMPORARY TRIGGER IF NOT EXISTS %@ AFTER UPDATE ON %@ FOR EACH ROW BEGIN %@ END", v8, objc_msgSend(a2, "tableName"), v11]);
   }
 
   [v42 addObject:v10];
 
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(entity, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v14 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  v14 = [entity countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v14)
   {
     v15 = v14;
@@ -203,7 +203,7 @@ LABEL_24:
       {
         if (*v50 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(entity);
         }
 
         v18 = *(*(&v49 + 1) + 8 * i);
@@ -219,7 +219,7 @@ LABEL_24:
         }
       }
 
-      v15 = [a3 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v15 = [entity countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v15);
@@ -235,7 +235,7 @@ LABEL_24:
     v20 = v19;
     v21 = *v46;
     v39 = v13;
-    v40 = a1;
+    selfCopy = self;
     v38 = *v46;
     do
     {
@@ -251,10 +251,10 @@ LABEL_24:
         v23 = *(*(&v45 + 1) + 8 * v22);
         if (([v23 isTransient] & 1) == 0)
         {
-          v24 = [v23 _qualifiedName];
+          _qualifiedName = [v23 _qualifiedName];
           if (a2)
           {
-            v25 = [a2[5] objectForKey:v24];
+            v25 = [a2[5] objectForKey:_qualifiedName];
           }
 
           else
@@ -262,12 +262,12 @@ LABEL_24:
             v25 = 0;
           }
 
-          v26 = [v25 columnName];
-          if (v26)
+          columnName = [v25 columnName];
+          if (columnName)
           {
-            v27 = v26;
-            v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_UPDATE_%@_%@_%@", *(a1 + 88), objc_msgSend(a2, "name"), objc_msgSend(v23, "name")];
-            if (v41)
+            v27 = columnName;
+            v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ZQ_UPDATE_%@_%@_%@", *(self + 88), objc_msgSend(a2, "name"), objc_msgSend(v23, "name")];
+            if (attributesCopy)
             {
               v29 = [NSSQLiteStatement alloc];
               v30 = -[NSSQLiteStatement initWithEntity:sqlString:](v29, "initWithEntity:sqlString:", a2, [MEMORY[0x1E696AEC0] stringWithFormat:@"DROP TRIGGER IF EXISTS %@", v28]);
@@ -275,7 +275,7 @@ LABEL_24:
 
             else
             {
-              v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE, ATTRIBUTENAME) SELECT OLD.Z_ENT, OLD.Z_PK, %ld, '%@';", *(a1 + 88), 1, objc_msgSend(v23, "name")];
+              v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT INTO %@ (ENTITYID, PRIMEKEY, TYPE, ATTRIBUTENAME) SELECT OLD.Z_ENT, OLD.Z_PK, %ld, '%@';", *(self + 88), 1, objc_msgSend(v23, "name")];
               v34 = [NSSQLiteStatement alloc];
               v30 = -[NSSQLiteStatement initWithEntity:sqlString:](v34, "initWithEntity:sqlString:", a2, [MEMORY[0x1E696AEC0] stringWithFormat:@"CREATE TEMPORARY TRIGGER IF NOT EXISTS %@ AFTER UPDATE ON %@ FOR EACH ROW WHEN OLD.%@ IS NOT NEW.%@ BEGIN %@ END", v28, objc_msgSend(a2, "tableName"), v27, v27, v33]);
             }
@@ -283,7 +283,7 @@ LABEL_24:
             [v42 addObject:v30];
 
             v13 = v39;
-            a1 = v40;
+            self = selfCopy;
             v20 = v43;
             v21 = v38;
           }

@@ -1,35 +1,35 @@
 @interface FPErrorRedactionHelper
-- (FPErrorRedactionHelper)initWithError:(id)a3 depth:(unint64_t)a4;
-- (id)parseErrorIntoStringRedacted:(BOOL)a3;
+- (FPErrorRedactionHelper)initWithError:(id)error depth:(unint64_t)depth;
+- (id)parseErrorIntoStringRedacted:(BOOL)redacted;
 @end
 
 @implementation FPErrorRedactionHelper
 
-- (FPErrorRedactionHelper)initWithError:(id)a3 depth:(unint64_t)a4
+- (FPErrorRedactionHelper)initWithError:(id)error depth:(unint64_t)depth
 {
-  objc_storeStrong(&self->_error, a3);
-  self->_depth = a4;
+  objc_storeStrong(&self->_error, error);
+  self->_depth = depth;
   return self;
 }
 
-- (id)parseErrorIntoStringRedacted:(BOOL)a3
+- (id)parseErrorIntoStringRedacted:(BOOL)redacted
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = [(NSError *)self->_error domain];
-  if ([v6 isEqualToString:@"NSFileProviderErrorDomain"])
+  redactedCopy = redacted;
+  string = [MEMORY[0x1E696AD60] string];
+  domain = [(NSError *)self->_error domain];
+  if ([domain isEqualToString:@"NSFileProviderErrorDomain"])
   {
     v7 = @"FP";
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x1E696A250]])
+  else if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
     v7 = @"Cocoa";
   }
 
   else
   {
-    if (![v6 isEqualToString:*MEMORY[0x1E696A798]])
+    if (![domain isEqualToString:*MEMORY[0x1E696A798]])
     {
       goto LABEL_8;
     }
@@ -37,69 +37,69 @@
     v7 = @"POSIX";
   }
 
-  v6 = v7;
+  domain = v7;
 LABEL_8:
-  [v5 appendFormat:@"NSError: %@ %li ", v6, -[NSError code](self->_error, "code")];
-  v8 = [(NSError *)self->_error userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+  [string appendFormat:@"NSError: %@ %li ", domain, -[NSError code](self->_error, "code")];
+  userInfo = [(NSError *)self->_error userInfo];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
   if (v9)
   {
-    v10 = v9;
+    localizedDescription = v9;
     goto LABEL_11;
   }
 
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695E620]];
-  if (v10)
+  localizedDescription = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695E620]];
+  if (localizedDescription)
   {
 LABEL_11:
-    if (![v10 hasPrefix:@"Error Domain="])
+    if (![localizedDescription hasPrefix:@"Error Domain="])
     {
       goto LABEL_15;
     }
   }
 
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
 
   if (v11)
   {
-    v10 = v11;
+    localizedDescription = v11;
   }
 
   else
   {
-    v10 = [(NSError *)self->_error localizedDescription];
-    if (!v10)
+    localizedDescription = [(NSError *)self->_error localizedDescription];
+    if (!localizedDescription)
     {
       goto LABEL_19;
     }
   }
 
 LABEL_15:
-  if (v3)
+  if (redactedCopy)
   {
     v12 = @"<private>";
   }
 
   else
   {
-    v26 = v10;
+    v26 = localizedDescription;
     v12 = @"%@";
   }
 
-  [v5 appendFormat:v12, v26];
+  [string appendFormat:v12, v26];
 LABEL_19:
-  if (!v8)
+  if (!userInfo)
   {
     goto LABEL_40;
   }
 
   if (self->_depth > 1)
   {
-    [v5 appendString:@" UserInfo={(omitted)}"];
+    [string appendString:@" UserInfo={(omitted)}"];
     goto LABEL_40;
   }
 
-  [v5 appendString:@" UserInfo={"];
+  [string appendString:@" UserInfo={"];
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -115,11 +115,11 @@ LABEL_19:
   v27[2] = __55__FPErrorRedactionHelper_parseErrorIntoStringRedacted___block_invoke;
   v27[3] = &unk_1E793ECF8;
   v29 = &v36;
-  v31 = v3;
-  v13 = v5;
+  v31 = redactedCopy;
+  v13 = string;
   v28 = v13;
   v30 = &v32;
-  [v8 enumerateKeysAndObjectsUsingBlock:v27];
+  [userInfo enumerateKeysAndObjectsUsingBlock:v27];
   if (v33[3])
   {
     if (![v13 hasSuffix:{@", "}])
@@ -154,7 +154,7 @@ LABEL_27:
       v21 = [FPErrorRedactionHelper alloc];
       v22 = [(FPErrorRedactionHelper *)v21 initWithError:v37[5] depth:self->_depth + 1];
       v23 = v22;
-      if (v3)
+      if (redactedCopy)
       {
         [(FPErrorRedactionHelper *)v22 redactedDescription];
       }
@@ -169,7 +169,7 @@ LABEL_27:
       goto LABEL_36;
     }
 
-    if (!v3)
+    if (!redactedCopy)
     {
       v23 = [v37[5] description];
       [v13 appendFormat:@"Underlying={%@}", v23];
@@ -192,7 +192,7 @@ LABEL_37:
 
 LABEL_40:
 
-  return v5;
+  return string;
 }
 
 void __55__FPErrorRedactionHelper_parseErrorIntoStringRedacted___block_invoke(uint64_t a1, void *a2, void *a3)

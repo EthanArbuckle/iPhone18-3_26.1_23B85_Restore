@@ -1,15 +1,15 @@
 @interface InCallBannerHostViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation InCallBannerHostViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.InCallBannerHostViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationKit.InCallBannerHostViewController" hasInstanceMethod:@"menuPresented" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.InCallBannerHostViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationKit.InCallBannerHostViewController" hasInstanceMethod:@"menuPresented" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

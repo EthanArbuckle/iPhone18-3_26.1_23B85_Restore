@@ -1,17 +1,17 @@
 @interface FMRemoteUIAlertServiceViewController
-- (_TtC21FindMyRemoteUIService36FMRemoteUIAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC21FindMyRemoteUIService36FMRemoteUIAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation FMRemoteUIAlertServiceViewController
 
-- (_TtC21FindMyRemoteUIService36FMRemoteUIAlertServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21FindMyRemoteUIService36FMRemoteUIAlertServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -23,13 +23,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100057908(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100057908(v5, v7, bundle);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -42,23 +42,23 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_100058028(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100058028(context, v6, v7);
   sub_10000A788(v6);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100059D1C;
   }
 
-  v7 = a3;
-  v8 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100059954(v6);
   sub_10000A788(v6);
 }
@@ -74,7 +74,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058964();
 }
 

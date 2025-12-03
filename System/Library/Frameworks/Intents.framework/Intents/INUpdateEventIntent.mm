@@ -1,7 +1,7 @@
 @interface INUpdateEventIntent
 - (CLPlacemark)setLocation;
 - (INDateComponentsRange)setDateTimeRange;
-- (INUpdateEventIntent)initWithTargetEventIdentifier:(id)a3 setTitle:(id)a4 setDateTimeRange:(id)a5 setLocation:(id)a6 addParticipants:(id)a7 removeParticipants:(id)a8 updateAllOccurrences:(id)a9 removeLocation:(id)a10;
+- (INUpdateEventIntent)initWithTargetEventIdentifier:(id)identifier setTitle:(id)title setDateTimeRange:(id)range setLocation:(id)location addParticipants:(id)participants removeParticipants:(id)removeParticipants updateAllOccurrences:(id)occurrences removeLocation:(id)self0;
 - (NSArray)addParticipants;
 - (NSArray)removeParticipants;
 - (NSNumber)removeLocation;
@@ -11,36 +11,36 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAddParticipants:(id)a3;
-- (void)setRemoveLocation:(id)a3;
-- (void)setRemoveParticipants:(id)a3;
-- (void)setSetDateTimeRange:(id)a3;
-- (void)setSetLocation:(id)a3;
-- (void)setSetTitle:(id)a3;
-- (void)setTargetEventIdentifier:(id)a3;
-- (void)setUpdateAllOccurrences:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAddParticipants:(id)participants;
+- (void)setRemoveLocation:(id)location;
+- (void)setRemoveParticipants:(id)participants;
+- (void)setSetDateTimeRange:(id)range;
+- (void)setSetLocation:(id)location;
+- (void)setSetTitle:(id)title;
+- (void)setTargetEventIdentifier:(id)identifier;
+- (void)setUpdateAllOccurrences:(id)occurrences;
 @end
 
 @implementation INUpdateEventIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v15 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 setLocation];
-  v10 = INIntentSlotValueRedactedLocationFromLocation(v9, a3, v15);
+  idCopy = id;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  v15 = idCopy;
+  v8 = [_typedBackingStore copy];
+  setLocation = [_typedBackingStore setLocation];
+  v10 = INIntentSlotValueRedactedLocationFromLocation(setLocation, options, v15);
   [v8 setSetLocation:v10];
 
-  v11 = [v7 addParticipants];
-  v12 = INIntentSlotValueRedactedContactsFromContacts(v11, a3, v15);
+  addParticipants = [_typedBackingStore addParticipants];
+  v12 = INIntentSlotValueRedactedContactsFromContacts(addParticipants, options, v15);
 
   [v8 setAddParticipants:v12];
-  v13 = [v7 removeParticipants];
-  v14 = INIntentSlotValueRedactedContactsFromContacts(v13, a3, v15);
+  removeParticipants = [_typedBackingStore removeParticipants];
+  v14 = INIntentSlotValueRedactedContactsFromContacts(removeParticipants, options, v15);
 
   [v8 setRemoveParticipants:v14];
   [(INIntent *)self setBackingStore:v8];
@@ -50,93 +50,93 @@
 {
   v29[8] = *MEMORY[0x1E69E9840];
   v28[0] = @"targetEventIdentifier";
-  v3 = [(INUpdateEventIntent *)self targetEventIdentifier];
-  v4 = v3;
-  if (!v3)
+  targetEventIdentifier = [(INUpdateEventIntent *)self targetEventIdentifier];
+  v4 = targetEventIdentifier;
+  if (!targetEventIdentifier)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    targetEventIdentifier = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v3;
-  v29[0] = v3;
+  v25 = targetEventIdentifier;
+  v29[0] = targetEventIdentifier;
   v28[1] = @"setTitle";
-  v5 = [(INUpdateEventIntent *)self setTitle];
-  v6 = v5;
-  if (!v5)
+  setTitle = [(INUpdateEventIntent *)self setTitle];
+  v6 = setTitle;
+  if (!setTitle)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    setTitle = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v5;
-  v29[1] = v5;
+  v24 = setTitle;
+  v29[1] = setTitle;
   v28[2] = @"setDateTimeRange";
-  v7 = [(INUpdateEventIntent *)self setDateTimeRange];
-  v8 = v7;
-  if (!v7)
+  setDateTimeRange = [(INUpdateEventIntent *)self setDateTimeRange];
+  v8 = setDateTimeRange;
+  if (!setDateTimeRange)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    setDateTimeRange = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v7;
-  v29[2] = v7;
+  v23 = setDateTimeRange;
+  v29[2] = setDateTimeRange;
   v28[3] = @"setLocation";
-  v9 = [(INUpdateEventIntent *)self setLocation];
-  v10 = v9;
-  if (!v9)
+  setLocation = [(INUpdateEventIntent *)self setLocation];
+  v10 = setLocation;
+  if (!setLocation)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    setLocation = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v9;
-  v29[3] = v9;
+  v22 = setLocation;
+  v29[3] = setLocation;
   v28[4] = @"addParticipants";
-  v11 = [(INUpdateEventIntent *)self addParticipants];
-  v12 = v11;
-  if (!v11)
+  addParticipants = [(INUpdateEventIntent *)self addParticipants];
+  v12 = addParticipants;
+  if (!addParticipants)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    addParticipants = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = v4;
-  v21 = v11;
-  v29[4] = v11;
+  v21 = addParticipants;
+  v29[4] = addParticipants;
   v28[5] = @"removeParticipants";
-  v13 = [(INUpdateEventIntent *)self removeParticipants];
-  v14 = v13;
-  if (!v13)
+  removeParticipants = [(INUpdateEventIntent *)self removeParticipants];
+  null = removeParticipants;
+  if (!removeParticipants)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v14;
+  v29[5] = null;
   v28[6] = @"updateAllOccurrences";
-  v15 = [(INUpdateEventIntent *)self updateAllOccurrences];
-  v16 = v15;
-  if (!v15)
+  updateAllOccurrences = [(INUpdateEventIntent *)self updateAllOccurrences];
+  null2 = updateAllOccurrences;
+  if (!updateAllOccurrences)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v16;
+  v29[6] = null2;
   v28[7] = @"removeLocation";
-  v17 = [(INUpdateEventIntent *)self removeLocation];
-  v18 = v17;
-  if (!v17)
+  removeLocation = [(INUpdateEventIntent *)self removeLocation];
+  null3 = removeLocation;
+  if (!removeLocation)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[7] = v18;
+  v29[7] = null3;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:8];
-  if (!v17)
+  if (!removeLocation)
   {
   }
 
-  if (!v15)
+  if (!updateAllOccurrences)
   {
   }
 
-  if (!v13)
+  if (!removeParticipants)
   {
   }
 
@@ -165,29 +165,29 @@
   return v26;
 }
 
-- (void)setRemoveLocation:(id)a3
+- (void)setRemoveLocation:(id)location
 {
-  v5 = a3;
-  v4 = [(INUpdateEventIntent *)self _typedBackingStore];
-  if (v5)
+  locationCopy = location;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  if (locationCopy)
   {
-    [v4 setRemoveLocation:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setRemoveLocation:{objc_msgSend(locationCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasRemoveLocation:0];
+    [_typedBackingStore setHasRemoveLocation:0];
   }
 }
 
 - (NSNumber)removeLocation
 {
-  v3 = [(INUpdateEventIntent *)self _typedBackingStore];
-  if ([v3 hasRemoveLocation])
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasRemoveLocation])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INUpdateEventIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "removeLocation")}];
+    _typedBackingStore2 = [(INUpdateEventIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "removeLocation")}];
   }
 
   else
@@ -198,29 +198,29 @@
   return v6;
 }
 
-- (void)setUpdateAllOccurrences:(id)a3
+- (void)setUpdateAllOccurrences:(id)occurrences
 {
-  v5 = a3;
-  v4 = [(INUpdateEventIntent *)self _typedBackingStore];
-  if (v5)
+  occurrencesCopy = occurrences;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  if (occurrencesCopy)
   {
-    [v4 setUpdateAllOccurrences:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setUpdateAllOccurrences:{objc_msgSend(occurrencesCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasUpdateAllOccurrences:0];
+    [_typedBackingStore setHasUpdateAllOccurrences:0];
   }
 }
 
 - (NSNumber)updateAllOccurrences
 {
-  v3 = [(INUpdateEventIntent *)self _typedBackingStore];
-  if ([v3 hasUpdateAllOccurrences])
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasUpdateAllOccurrences])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INUpdateEventIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "updateAllOccurrences")}];
+    _typedBackingStore2 = [(INUpdateEventIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "updateAllOccurrences")}];
   }
 
   else
@@ -231,161 +231,161 @@
   return v6;
 }
 
-- (void)setRemoveParticipants:(id)a3
+- (void)setRemoveParticipants:(id)participants
 {
-  v4 = a3;
-  v6 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  participantsCopy = participants;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(participantsCopy);
 
-  [v6 setRemoveParticipants:v5];
+  [_typedBackingStore setRemoveParticipants:v5];
 }
 
 - (NSArray)removeParticipants
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 removeParticipants];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  removeParticipants = [_typedBackingStore removeParticipants];
+  v4 = INIntentSlotValueTransformFromContacts(removeParticipants);
 
   return v4;
 }
 
-- (void)setAddParticipants:(id)a3
+- (void)setAddParticipants:(id)participants
 {
-  v4 = a3;
-  v6 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  participantsCopy = participants;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(participantsCopy);
 
-  [v6 setAddParticipants:v5];
+  [_typedBackingStore setAddParticipants:v5];
 }
 
 - (NSArray)addParticipants
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 addParticipants];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  addParticipants = [_typedBackingStore addParticipants];
+  v4 = INIntentSlotValueTransformFromContacts(addParticipants);
 
   return v4;
 }
 
-- (void)setSetLocation:(id)a3
+- (void)setSetLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setSetLocation:v5];
+  [_typedBackingStore setSetLocation:v5];
 }
 
 - (CLPlacemark)setLocation
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 setLocation];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  setLocation = [_typedBackingStore setLocation];
+  v4 = INIntentSlotValueTransformFromLocation(setLocation);
 
   return v4;
 }
 
-- (void)setSetDateTimeRange:(id)a3
+- (void)setSetDateTimeRange:(id)range
 {
-  v4 = a3;
-  v6 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRangeValue(v4);
+  rangeCopy = range;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRangeValue(rangeCopy);
 
-  [v6 setSetDateTimeRange:v5];
+  [_typedBackingStore setSetDateTimeRange:v5];
 }
 
 - (INDateComponentsRange)setDateTimeRange
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 setDateTimeRange];
-  v4 = INIntentSlotValueTransformFromDateTimeRangeValue(v3);
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  setDateTimeRange = [_typedBackingStore setDateTimeRange];
+  v4 = INIntentSlotValueTransformFromDateTimeRangeValue(setDateTimeRange);
 
   return v4;
 }
 
-- (void)setSetTitle:(id)a3
+- (void)setSetTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(INUpdateEventIntent *)self _typedBackingStore];
-  [v5 setSetTitle:v4];
+  titleCopy = title;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  [_typedBackingStore setSetTitle:titleCopy];
 }
 
 - (NSString)setTitle
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 setTitle];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  setTitle = [_typedBackingStore setTitle];
+  v4 = [setTitle copy];
 
   return v4;
 }
 
-- (void)setTargetEventIdentifier:(id)a3
+- (void)setTargetEventIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INUpdateEventIntent *)self _typedBackingStore];
-  [v5 setTargetEventIdentifier:v4];
+  identifierCopy = identifier;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  [_typedBackingStore setTargetEventIdentifier:identifierCopy];
 }
 
 - (NSString)targetEventIdentifier
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 targetEventIdentifier];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  targetEventIdentifier = [_typedBackingStore targetEventIdentifier];
+  v4 = [targetEventIdentifier copy];
 
   return v4;
 }
 
-- (INUpdateEventIntent)initWithTargetEventIdentifier:(id)a3 setTitle:(id)a4 setDateTimeRange:(id)a5 setLocation:(id)a6 addParticipants:(id)a7 removeParticipants:(id)a8 updateAllOccurrences:(id)a9 removeLocation:(id)a10
+- (INUpdateEventIntent)initWithTargetEventIdentifier:(id)identifier setTitle:(id)title setDateTimeRange:(id)range setLocation:(id)location addParticipants:(id)participants removeParticipants:(id)removeParticipants updateAllOccurrences:(id)occurrences removeLocation:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  identifierCopy = identifier;
+  titleCopy = title;
+  rangeCopy = range;
+  locationCopy = location;
+  participantsCopy = participants;
+  removeParticipantsCopy = removeParticipants;
+  occurrencesCopy = occurrences;
+  removeLocationCopy = removeLocation;
   v27.receiver = self;
   v27.super_class = INUpdateEventIntent;
   v24 = [(INIntent *)&v27 init];
   v25 = v24;
   if (v24)
   {
-    [(INUpdateEventIntent *)v24 setTargetEventIdentifier:v16];
-    [(INUpdateEventIntent *)v25 setSetTitle:v17];
-    [(INUpdateEventIntent *)v25 setSetDateTimeRange:v18];
-    [(INUpdateEventIntent *)v25 setSetLocation:v19];
-    [(INUpdateEventIntent *)v25 setAddParticipants:v20];
-    [(INUpdateEventIntent *)v25 setRemoveParticipants:v21];
-    [(INUpdateEventIntent *)v25 setUpdateAllOccurrences:v22];
-    [(INUpdateEventIntent *)v25 setRemoveLocation:v23];
+    [(INUpdateEventIntent *)v24 setTargetEventIdentifier:identifierCopy];
+    [(INUpdateEventIntent *)v25 setSetTitle:titleCopy];
+    [(INUpdateEventIntent *)v25 setSetDateTimeRange:rangeCopy];
+    [(INUpdateEventIntent *)v25 setSetLocation:locationCopy];
+    [(INUpdateEventIntent *)v25 setAddParticipants:participantsCopy];
+    [(INUpdateEventIntent *)v25 setRemoveParticipants:removeParticipantsCopy];
+    [(INUpdateEventIntent *)v25 setUpdateAllOccurrences:occurrencesCopy];
+    [(INUpdateEventIntent *)v25 setRemoveLocation:removeLocationCopy];
   }
 
   return v25;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INUpdateEventIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INUpdateEventIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INUpdateEventIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

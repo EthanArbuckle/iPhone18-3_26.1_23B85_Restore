@@ -7,64 +7,64 @@
 - (void)getMusicPlaybackContextWithOptions:()MPCAdditions completion:
 {
   v5 = a4;
-  v6 = [a1 mediaQuery];
-  v7 = v6;
-  if (v6)
+  mediaQuery = [self mediaQuery];
+  v7 = mediaQuery;
+  if (mediaQuery)
   {
-    v8 = [v6 mediaLibrary];
-    v9 = [v8 userIdentity];
+    mediaLibrary = [mediaQuery mediaLibrary];
+    userIdentity = [mediaLibrary userIdentity];
 
-    v10 = [a1 userIdentity];
-    v11 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-    v12 = [v9 isEqualToIdentity:v10 inStore:v11];
+    userIdentity2 = [self userIdentity];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    v12 = [userIdentity isEqualToIdentity:userIdentity2 inStore:defaultIdentityStore];
 
     if (v12)
     {
       v13 = objc_alloc_init(MEMORY[0x1E69706C8]);
       [v13 setLegacyMediaQuery:v7];
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [a1 featureName];
-      v16 = [v14 stringWithFormat:@"RemotePlaybackQueue-%@", v15];
+      featureName = [self featureName];
+      v16 = [v14 stringWithFormat:@"RemotePlaybackQueue-%@", featureName];
       [v13 setLabel:v16];
 
       v17 = objc_alloc_init(MPCModelPlaybackContext);
-      v18 = [a1 privateListeningOverride];
-      [(MPCModelPlaybackContext *)v17 setPrivateListeningOverride:v18];
+      privateListeningOverride = [self privateListeningOverride];
+      [(MPCModelPlaybackContext *)v17 setPrivateListeningOverride:privateListeningOverride];
 
-      v19 = [a1 siriReferenceIdentifier];
-      [(MPCModelPlaybackContext *)v17 setSiriReferenceIdentifier:v19];
+      siriReferenceIdentifier = [self siriReferenceIdentifier];
+      [(MPCModelPlaybackContext *)v17 setSiriReferenceIdentifier:siriReferenceIdentifier];
 
-      [(MPCModelPlaybackContext *)v17 setUserIdentity:v10];
+      [(MPCModelPlaybackContext *)v17 setUserIdentity:userIdentity2];
       [(MPCModelPlaybackContext *)v17 setRequest:v13];
-      v38 = [a1 firstItem];
-      if (v38)
+      firstItem = [self firstItem];
+      if (firstItem)
       {
         v37 = v13;
-        v20 = [v7 mediaLibrary];
-        v21 = [v20 uniqueIdentifier];
+        mediaLibrary2 = [v7 mediaLibrary];
+        uniqueIdentifier = [mediaLibrary2 uniqueIdentifier];
 
-        v22 = [v38 persistentID];
+        persistentID = [firstItem persistentID];
         if ([v7 isPlaylistItemsQuery])
         {
-          v22 = [v7 _playlistItemPersistentIDForItemPersistentID:v22];
+          persistentID = [v7 _playlistItemPersistentIDForItemPersistentID:persistentID];
         }
 
         v23 = objc_alloc(MEMORY[0x1E6970550]);
-        v24 = [MEMORY[0x1E6970778] identityKind];
+        identityKind = [MEMORY[0x1E6970778] identityKind];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __100__MPLocalMediaQueryRemotePlaybackQueue_MPCAdditions__getMusicPlaybackContextWithOptions_completion___block_invoke;
         v39[3] = &unk_1E8237900;
-        v40 = v21;
-        v41 = v22;
-        v25 = v21;
-        v26 = [v23 initWithSource:@"MRQueue-MediaQuery" modelKind:v24 block:v39];
+        v40 = uniqueIdentifier;
+        v41 = persistentID;
+        v25 = uniqueIdentifier;
+        v26 = [v23 initWithSource:@"MRQueue-MediaQuery" modelKind:identityKind block:v39];
         [(MPCModelPlaybackContext *)v17 setStartItemIdentifiers:v26];
 
         v13 = v37;
       }
 
-      if ([a1 isRequestingImmediatePlayback])
+      if ([self isRequestingImmediatePlayback])
       {
         v27 = 20;
       }
@@ -75,46 +75,46 @@
       }
 
       [(MPCModelPlaybackContext *)v17 setActionAfterQueueLoad:v27];
-      -[MPCModelPlaybackContext setShuffleType:](v17, "setShuffleType:", [a1 shuffleType]);
-      -[MPCModelPlaybackContext setRepeatType:](v17, "setRepeatType:", [a1 repeatType]);
-      v28 = [a1 mediaRemoteOptions];
-      v29 = [v28 objectForKeyedSubscript:*MEMORY[0x1E69B11E8]];
+      -[MPCModelPlaybackContext setShuffleType:](v17, "setShuffleType:", [self shuffleType]);
+      -[MPCModelPlaybackContext setRepeatType:](v17, "setRepeatType:", [self repeatType]);
+      mediaRemoteOptions = [self mediaRemoteOptions];
+      v29 = [mediaRemoteOptions objectForKeyedSubscript:*MEMORY[0x1E69B11E8]];
 
       if (v29)
       {
         -[MPCModelPlaybackContext setQueueEndAction:](v17, "setQueueEndAction:", [v29 integerValue]);
       }
 
-      v30 = [a1 siriRecommendationIdentifier];
-      v31 = [v30 dataUsingEncoding:4];
+      siriRecommendationIdentifier = [self siriRecommendationIdentifier];
+      v31 = [siriRecommendationIdentifier dataUsingEncoding:4];
       [(MPCModelPlaybackContext *)v17 setPlayActivityRecommendationData:v31];
 
-      v32 = [a1 siriAssetInfo];
-      [(MPCModelPlaybackContext *)v17 setSiriAssetInfo:v32];
+      siriAssetInfo = [self siriAssetInfo];
+      [(MPCModelPlaybackContext *)v17 setSiriAssetInfo:siriAssetInfo];
 
-      v33 = [a1 featureName];
-      [(MPCModelPlaybackContext *)v17 setPlayActivityFeatureName:v33];
+      featureName2 = [self featureName];
+      [(MPCModelPlaybackContext *)v17 setPlayActivityFeatureName:featureName2];
 
-      v34 = [a1 queueGroupingID];
-      [(MPCModelPlaybackContext *)v17 setPlayActivityQueueGroupingID:v34];
+      queueGroupingID = [self queueGroupingID];
+      [(MPCModelPlaybackContext *)v17 setPlayActivityQueueGroupingID:queueGroupingID];
 
-      v35 = [a1 siriWHAMetricsInfo];
-      [(MPCModelPlaybackContext *)v17 setSiriWHAMetricsInfo:v35];
+      siriWHAMetricsInfo = [self siriWHAMetricsInfo];
+      [(MPCModelPlaybackContext *)v17 setSiriWHAMetricsInfo:siriWHAMetricsInfo];
 
       v5[2](v5, v17, 0);
     }
 
     else
     {
-      v36 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:68 debugDescription:{@"MPMediaQuery's userIdentity does not match MPRemotePlaybackQueue's userIdentity. queryIdentity=%@ playbackQueueIdentity=%@", v9, v10}];
+      v36 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:68 debugDescription:{@"MPMediaQuery's userIdentity does not match MPRemotePlaybackQueue's userIdentity. queryIdentity=%@ playbackQueueIdentity=%@", userIdentity, userIdentity2}];
       (v5)[2](v5, 0, v36);
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:3000 debugDescription:@"MPLocalMediaQueryRemotePlaybackQueue has nil mediaQuery"];
-    (v5)[2](v5, 0, v9);
+    userIdentity = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:3000 debugDescription:@"MPLocalMediaQueryRemotePlaybackQueue has nil mediaQuery"];
+    (v5)[2](v5, 0, userIdentity);
   }
 }
 

@@ -1,32 +1,32 @@
 @interface HSArtworkRequest
-+ (id)requestWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 size:(CGSize)a5;
-- (HSArtworkRequest)initWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 size:(CGSize)a5;
++ (id)requestWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD size:(CGSize)size;
+- (HSArtworkRequest)initWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD size:(CGSize)size;
 @end
 
 @implementation HSArtworkRequest
 
-- (HSArtworkRequest)initWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 size:(CGSize)a5
+- (HSArtworkRequest)initWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/items/%llu/extra_data/artwork", *&a3, a4];
+  height = size.height;
+  width = size.width;
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"databases/%u/items/%llu/extra_data/artwork", *&d, iD];
   v9 = [(HSRequest *)self initWithAction:v8];
 
   if (v9 && (width != 0.0 || height != 0.0))
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", width];
-    [(HSRequest *)v9 setValue:v10 forArgument:@"mw"];
+    width = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", width];
+    [(HSRequest *)v9 setValue:width forArgument:@"mw"];
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", height];
-    [(HSRequest *)v9 setValue:v11 forArgument:@"mh"];
+    height = [MEMORY[0x277CCACA8] stringWithFormat:@"%u", height];
+    [(HSRequest *)v9 setValue:height forArgument:@"mh"];
   }
 
   return v9;
 }
 
-+ (id)requestWithDatabaseID:(unsigned int)a3 itemID:(unint64_t)a4 size:(CGSize)a5
++ (id)requestWithDatabaseID:(unsigned int)d itemID:(unint64_t)iD size:(CGSize)size
 {
-  v5 = [[HSArtworkRequest alloc] initWithDatabaseID:*&a3 itemID:a4 size:a5.width, a5.height];
+  v5 = [[HSArtworkRequest alloc] initWithDatabaseID:*&d itemID:iD size:size.width, size.height];
 
   return v5;
 }

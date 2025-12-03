@@ -1,18 +1,18 @@
 @interface PKPaymentCredentialMetadata
-+ (Class)classForValueType:(id)a3;
-+ (id)paymentCredentialMetadataWithConfiguration:(id)a3;
-- (BOOL)_isEqualToMetadata:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentCredentialMetadata)initWithConfiguration:(id)a3;
++ (Class)classForValueType:(id)type;
++ (id)paymentCredentialMetadataWithConfiguration:(id)configuration;
+- (BOOL)_isEqualToMetadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentCredentialMetadata)initWithConfiguration:(id)configuration;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentCredentialMetadata
 
-+ (Class)classForValueType:(id)a3
++ (Class)classForValueType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"text"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"date") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"currency"))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:@"text"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"date") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"currency"))
   {
     v4 = objc_opt_class();
   }
@@ -27,15 +27,15 @@
   return v4;
 }
 
-+ (id)paymentCredentialMetadataWithConfiguration:(id)a3
++ (id)paymentCredentialMetadataWithConfiguration:(id)configuration
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"valueType"];
+  configurationCopy = configuration;
+  v4 = [configurationCopy objectForKey:@"valueType"];
   v5 = [objc_opt_class() classForValueType:v4];
   if (v5)
   {
-    v6 = [[v5 alloc] initWithConfiguration:v3];
+    v6 = [[v5 alloc] initWithConfiguration:configurationCopy];
   }
 
   else
@@ -54,19 +54,19 @@
   return v6;
 }
 
-- (PKPaymentCredentialMetadata)initWithConfiguration:(id)a3
+- (PKPaymentCredentialMetadata)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = PKPaymentCredentialMetadata;
   v5 = [(PKPaymentCredentialMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"localizedDisplayName"];
+    v6 = [configurationCopy objectForKey:@"localizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v6;
 
-    v8 = [v4 objectForKey:@"value"];
+    v8 = [configurationCopy objectForKey:@"value"];
     value = v5->_value;
     v5->_value = v8;
 
@@ -87,10 +87,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -98,16 +98,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadata *)self _isEqualToMetadata:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentCredentialMetadata *)self _isEqualToMetadata:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToMetadata:(id)a3
+- (BOOL)_isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4[1];
+  metadataCopy = metadata;
+  v5 = metadataCopy[1];
   v6 = self->_localizedDisplayName;
   v7 = v5;
   v8 = v7;
@@ -115,7 +115,7 @@
   {
 
 LABEL_10:
-    v12 = v4[2];
+    v12 = metadataCopy[2];
     v6 = self->_value;
     v13 = v12;
     v8 = v13;
@@ -168,10 +168,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_localizedDisplayName];
-  [v3 safelyAddObject:self->_value];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_localizedDisplayName];
+  [array safelyAddObject:self->_value];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

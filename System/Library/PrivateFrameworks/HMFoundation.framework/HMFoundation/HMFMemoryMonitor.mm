@@ -1,9 +1,9 @@
 @interface HMFMemoryMonitor
 + (HMFMemoryMonitor)memoryMonitor;
 - (HMFMemoryMonitor)init;
-- (void)addObserver:(id)a3 debounceInterval:(double)a4 events:(id)a5;
+- (void)addObserver:(id)observer debounceInterval:(double)interval events:(id)events;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)start;
 - (void)stop;
 @end
@@ -52,9 +52,9 @@ uint64_t __33__HMFMemoryMonitor_memoryMonitor__block_invoke()
     memoryPressureSource = v3->_memoryPressureSource;
     v3->_memoryPressureSource = v9;
 
-    v11 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     memoryObservancesByObserver = v3->_memoryObservancesByObserver;
-    v3->_memoryObservancesByObserver = v11;
+    v3->_memoryObservancesByObserver = weakToStrongObjectsMapTable;
   }
 
   return v3;
@@ -72,24 +72,24 @@ uint64_t __33__HMFMemoryMonitor_memoryMonitor__block_invoke()
   [(HMFMemoryMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3 debounceInterval:(double)a4 events:(id)a5
+- (void)addObserver:(id)observer debounceInterval:(double)interval events:(id)events
 {
-  v11 = a3;
-  v8 = a5;
+  observerCopy = observer;
+  eventsCopy = events;
   os_unfair_lock_lock_with_options();
-  v9 = [[HMFMemoryObservance alloc] initWithDebounceInterval:v8 events:a4];
-  v10 = [(HMFMemoryMonitor *)self memoryObservancesByObserver];
-  [v10 setObject:v9 forKey:v11];
+  v9 = [[HMFMemoryObservance alloc] initWithDebounceInterval:eventsCopy events:interval];
+  memoryObservancesByObserver = [(HMFMemoryMonitor *)self memoryObservancesByObserver];
+  [memoryObservancesByObserver setObject:v9 forKey:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMFMemoryMonitor *)self memoryObservancesByObserver];
-  [v4 removeObjectForKey:v5];
+  memoryObservancesByObserver = [(HMFMemoryMonitor *)self memoryObservancesByObserver];
+  [memoryObservancesByObserver removeObjectForKey:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -101,13 +101,13 @@ uint64_t __33__HMFMemoryMonitor_memoryMonitor__block_invoke()
   {
     [(HMFMemoryMonitor *)self setMonitoring:1];
     objc_initWeak(&location, self);
-    v3 = [(HMFMemoryMonitor *)self memoryPressureSource];
+    memoryPressureSource = [(HMFMemoryMonitor *)self memoryPressureSource];
     v5 = MEMORY[0x277D85DD0];
     v6 = 3221225472;
     v7 = __25__HMFMemoryMonitor_start__block_invoke;
     v8 = &unk_2786E6CA8;
     objc_copyWeak(&v9, &location);
-    dispatch_source_set_event_handler(v3, &v5);
+    dispatch_source_set_event_handler(memoryPressureSource, &v5);
 
     v4 = [(HMFMemoryMonitor *)self memoryPressureSource:v5];
     dispatch_resume(v4);
@@ -285,8 +285,8 @@ LABEL_36:
   if ([(HMFMemoryMonitor *)self isMonitoring])
   {
     [(HMFMemoryMonitor *)self setMonitoring:0];
-    v3 = [(HMFMemoryMonitor *)self memoryPressureSource];
-    dispatch_suspend(v3);
+    memoryPressureSource = [(HMFMemoryMonitor *)self memoryPressureSource];
+    dispatch_suspend(memoryPressureSource);
   }
 
   os_unfair_lock_unlock(&self->_lock);

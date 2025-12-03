@@ -1,13 +1,13 @@
 @interface DTXPCServiceController
 + (id)sharedInstance;
 - (DTXPCServiceController)init;
-- (int)_configureInstance:(id)a3 identifier:(id)a4 servicePid:(int)a5 environment:(id)a6 arguments:(id)a7 options:(id)a8;
-- (void)_matchRemove:(id)a3;
-- (void)_registryModify:(BOOL)a3 identifier:(id)a4 parent:(int)a5 client:(id)a6 block:(id)a7;
-- (void)registerClient:(id)a3 forXPCService:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)releaseAssertionsMadeByClient:(id)a3;
-- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)a3 programPath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8;
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4 parent:(int)a5;
+- (int)_configureInstance:(id)instance identifier:(id)identifier servicePid:(int)pid environment:(id)environment arguments:(id)arguments options:(id)options;
+- (void)_matchRemove:(id)remove;
+- (void)_registryModify:(BOOL)modify identifier:(id)identifier parent:(int)parent client:(id)client block:(id)block;
+- (void)registerClient:(id)client forXPCService:(id)service environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler;
+- (void)releaseAssertionsMadeByClient:(id)client;
+- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)specifier programPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler;
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier parent:(int)parent;
 @end
 
 @implementation DTXPCServiceController
@@ -47,56 +47,56 @@
   return v2;
 }
 
-- (void)releaseAssertionsMadeByClient:(id)a3
+- (void)releaseAssertionsMadeByClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   if (sub_100007DE4() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
     v7 = objc_opt_class();
     v8 = 2112;
-    v9 = v3;
+    v9 = clientCopy;
     v4 = v7;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%@ releasing active assertions taken on behalf of client %@", &v6, 0x16u);
   }
 
-  if (v3)
+  if (clientCopy)
   {
     v5 = +[DTAssertionManager sharedInstance];
-    [v5 removeClaimsHeldByClient:v3];
+    [v5 removeClaimsHeldByClient:clientCopy];
   }
 }
 
-- (void)registerClient:(id)a3 forXPCService:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8
+- (void)registerClient:(id)client forXPCService:(id)service environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler
 {
-  v111 = a3;
-  v112 = a4;
-  v107 = a5;
-  v108 = a6;
-  v13 = a7;
-  v14 = a8;
-  if (v14)
+  clientCopy = client;
+  serviceCopy = service;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v106 = v14;
-    v15 = v112;
+    v106 = handlerCopy;
+    v15 = serviceCopy;
     v101 = sub_100007DE4();
-    v16 = [v13 objectForKeyedSubscript:@"KillExisting"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"KillExisting"];
     v97 = [v16 isEqualToNumber:&__kCFBooleanFalse];
 
-    v17 = [v13 objectForKeyedSubscript:@"RequestingPid"];
-    v109 = [v17 intValue];
+    v17 = [optionsCopy objectForKeyedSubscript:@"RequestingPid"];
+    intValue = [v17 intValue];
 
-    v18 = [v13 objectForKeyedSubscript:@"OnceOnly"];
-    v100 = [v18 BOOLValue];
+    v18 = [optionsCopy objectForKeyedSubscript:@"OnceOnly"];
+    bOOLValue = [v18 BOOLValue];
 
-    v19 = [v13 objectForKeyedSubscript:@"EnableExtension"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"EnableExtension"];
     v102 = [v19 isEqualToNumber:&__kCFBooleanTrue];
 
-    v20 = [v13 objectForKeyedSubscript:@"DisableMemoryLimits"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"DisableMemoryLimits"];
     v96 = [v20 isEqualToNumber:&__kCFBooleanTrue];
 
-    v105 = [v13 objectForKeyedSubscript:@"AppExtensionHoldBundleID"];
-    v110 = [v13 objectForKeyedSubscript:@"AppExtensionHoldURL"];
+    v105 = [optionsCopy objectForKeyedSubscript:@"AppExtensionHoldBundleID"];
+    v110 = [optionsCopy objectForKeyedSubscript:@"AppExtensionHoldURL"];
     if (!v102)
     {
       v103 = 0;
@@ -162,9 +162,9 @@
         v158 = 0u;
         v155 = 0u;
         v156 = 0u;
-        v24 = [v92 builtInPlugInsURL];
-        v25 = [v24 relativePath];
-        v26 = [v92 URLsForResourcesWithExtension:@"appex" subdirectory:v25];
+        builtInPlugInsURL = [v92 builtInPlugInsURL];
+        relativePath = [builtInPlugInsURL relativePath];
+        v26 = [v92 URLsForResourcesWithExtension:@"appex" subdirectory:relativePath];
 
         v27 = [v26 countByEnumeratingWithState:&v155 objects:v190 count:16];
         if (v27)
@@ -181,8 +181,8 @@ LABEL_24:
 
             v30 = *(*(&v155 + 1) + 8 * v29);
             v31 = [NSBundle bundleWithURL:v30];
-            v32 = [v31 bundleIdentifier];
-            v33 = [v32 isEqualToString:v15];
+            bundleIdentifier = [v31 bundleIdentifier];
+            v33 = [bundleIdentifier isEqualToString:v15];
 
             if (v33)
             {
@@ -272,12 +272,12 @@ LABEL_43:
 LABEL_44:
     v36 = [v15 containsString:@"LaunchDaemons"];
     v37 = [v15 containsString:@"LaunchAgents"];
-    v38 = [v15 pathExtension];
-    v39 = [v38 isEqualToString:@"plist"];
+    pathExtension = [v15 pathExtension];
+    v39 = [pathExtension isEqualToString:@"plist"];
 
     if (!v39)
     {
-      v99 = 0;
+      firstObject = 0;
       v45 = 0;
       goto LABEL_53;
     }
@@ -297,7 +297,7 @@ LABEL_102:
         goto LABEL_104;
       }
 
-      v109 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
       v44 = [NSDictionary dictionaryWithContentsOfFile:v15];
       v45 = [v44 objectForKeyedSubscript:@"Label"];
 
@@ -305,13 +305,13 @@ LABEL_102:
       v87 = v86;
       if (v86)
       {
-        v99 = v86;
+        firstObject = v86;
       }
 
       else
       {
         v88 = [v44 objectForKeyedSubscript:@"ProgramArguments"];
-        v99 = [v88 firstObject];
+        firstObject = [v88 firstObject];
       }
 
       if (!v45)
@@ -323,7 +323,7 @@ LABEL_102:
         v91 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v90];
         v106[2](v106, 0, 0, 0xFFFFFFFFLL, 0xFFFFFFFFLL, v91);
 
-        v15 = v99;
+        v15 = firstObject;
         goto LABEL_104;
       }
 
@@ -336,16 +336,16 @@ LABEL_53:
         v187 = v72;
         v73 = [NSDictionary dictionaryWithObjects:&v187 forKeys:&v186 count:1];
         v74 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v73];
-        v106[2](v106, v15, 0, v109, 0xFFFFFFFFLL, v74);
+        v106[2](v106, v15, 0, intValue, 0xFFFFFFFFLL, v74);
 
         v44 = v45;
 LABEL_104:
 
-        v14 = v106;
+        handlerCopy = v106;
         goto LABEL_105;
       }
 
-      if (v109 == -1)
+      if (intValue == -1)
       {
         v46 = 3;
       }
@@ -355,7 +355,7 @@ LABEL_104:
         v46 = 1;
       }
 
-      v95 = v13;
+      v95 = optionsCopy;
       if (sub_100007DE4() && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
         *buf = 67109634;
@@ -363,7 +363,7 @@ LABEL_104:
         *&buf[8] = 2112;
         *&buf[10] = v15;
         *&buf[18] = 1024;
-        *&buf[20] = v109 & ~(v109 >> 31);
+        *&buf[20] = intValue & ~(intValue >> 31);
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "DTXPCServiceController: calling xpc_service_create: serviceType=%d, identifier=%@, pid %d", buf, 0x18u);
       }
 
@@ -391,8 +391,8 @@ LABEL_104:
       block[4] = self;
       v15 = v15;
       v141 = v15;
-      v148 = v109;
-      v48 = v111;
+      v148 = intValue;
+      v48 = clientCopy;
       v142 = v48;
       v145 = &v172;
       v150 = 1;
@@ -405,17 +405,17 @@ LABEL_104:
       v146 = buf;
       v149 = v46;
       v147 = &v176;
-      v153 = v100;
+      v153 = bOOLValue;
       dispatch_sync(guard, block);
       if (*(v173 + 24) == 1)
       {
         v170 = NSLocalizedDescriptionKey;
-        [NSString stringWithFormat:@"XPC service name %@ already under observation for pid: %d", v15, v109];
-        v50 = v13 = v95;
+        [NSString stringWithFormat:@"XPC service name %@ already under observation for pid: %d", v15, intValue];
+        v50 = optionsCopy = v95;
         v171 = v50;
         v51 = [NSDictionary dictionaryWithObjects:&v171 forKeys:&v170 count:1];
         v52 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v51];
-        v49[2](v49, v15, 0, v109, 0xFFFFFFFFLL, v52);
+        v49[2](v49, v15, 0, intValue, 0xFFFFFFFFLL, v52);
 
 LABEL_98:
         _Block_object_dispose(&v172, 8);
@@ -425,7 +425,7 @@ LABEL_98:
         goto LABEL_104;
       }
 
-      v13 = v95;
+      optionsCopy = v95;
       if (!*(*&buf[8] + 40) && !v177[5])
       {
         v168 = NSLocalizedDescriptionKey;
@@ -433,13 +433,13 @@ LABEL_98:
         v169 = v50;
         v51 = [NSDictionary dictionaryWithObjects:&v169 forKeys:&v168 count:1];
         v83 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v51];
-        v49[2](v49, v15, 0, v109, 0xFFFFFFFFLL, v83);
+        v49[2](v49, v15, 0, intValue, 0xFFFFFFFFLL, v83);
 
         goto LABEL_98;
       }
 
       v50 = objc_retainBlock(v49);
-      if (v100)
+      if (bOOLValue)
       {
         v135[0] = _NSConcreteStackBlock;
         v135[1] = 3221225472;
@@ -449,7 +449,7 @@ LABEL_98:
         v135[4] = self;
         v136 = v48;
         v137 = v15;
-        v139 = v109;
+        v139 = intValue;
         v55 = objc_retainBlock(v135);
 
         v50 = v55;
@@ -459,22 +459,22 @@ LABEL_98:
       {
         v162 = NSLocalizedDescriptionKey;
         v75 = v15;
-        v51 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Unable to register for xpc-based launch: %s (parent: %d)", [v15 UTF8String], v109);
+        v51 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Unable to register for xpc-based launch: %s (parent: %d)", [v15 UTF8String], intValue);
         v163 = v51;
         v76 = [NSDictionary dictionaryWithObjects:&v163 forKeys:&v162 count:1];
         v77 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v76];
-        (*(v50 + 2))(v50, v15, 0, v109, 0xFFFFFFFFLL, v77);
+        (*(v50 + 2))(v50, v15, 0, intValue, 0xFFFFFFFFLL, v77);
 
         goto LABEL_98;
       }
 
-      if (!((v109 > 0) | v97 & 1))
+      if (!((intValue > 0) | v97 & 1))
       {
         v130[0] = _NSConcreteStackBlock;
         v130[1] = 3221225472;
         v131 = sub_100009B8C;
         v132 = &unk_10001D488;
-        v133 = v99;
+        v133 = firstObject;
         v134 = v15;
         v56 = v130;
         v161 = 0;
@@ -515,12 +515,12 @@ LABEL_98:
       v128 = v96;
       v63 = v48;
       v121 = v63;
-      v122 = self;
-      v123 = v107;
-      v124 = v108;
+      selfCopy = self;
+      v123 = environmentCopy;
+      v124 = argumentsCopy;
       v50 = v50;
       v125 = v50;
-      v126 = v109;
+      v126 = intValue;
       v129 = v97 ^ 1;
       xpc_service_set_attach_handler();
       if (v103)
@@ -569,11 +569,11 @@ LABEL_96:
         }
 
         v166 = NSLocalizedDescriptionKey;
-        v69 = [NSString stringWithFormat:@"Unable to launch: %@ (parent: %d) Error: %s", v62, v109, xpc_strerror()];
+        v69 = [NSString stringWithFormat:@"Unable to launch: %@ (parent: %d) Error: %s", v62, intValue, xpc_strerror()];
         v167 = v69;
         v70 = [NSDictionary dictionaryWithObjects:&v167 forKeys:&v166 count:1];
         v71 = [NSError errorWithDomain:@"DTXPCServiceController" code:3 userInfo:v70];
-        (*(v50 + 2))(v50, v62, 0, v109, 0xFFFFFFFFLL, v71);
+        (*(v50 + 2))(v50, v62, 0, intValue, 0xFFFFFFFFLL, v71);
       }
 
       else
@@ -602,7 +602,7 @@ LABEL_96:
         v113[3] = &unk_10001D550;
         v82 = v81;
         v114 = v82;
-        [(DTXPCServiceController *)self _registryModify:1 identifier:v80 parent:v109 client:v63 block:v113];
+        [(DTXPCServiceController *)self _registryModify:1 identifier:v80 parent:intValue client:v63 block:v113];
 
         v69 = v116;
       }
@@ -645,21 +645,21 @@ LABEL_101:
 LABEL_105:
 }
 
-- (int)_configureInstance:(id)a3 identifier:(id)a4 servicePid:(int)a5 environment:(id)a6 arguments:(id)a7 options:(id)a8
+- (int)_configureInstance:(id)instance identifier:(id)identifier servicePid:(int)pid environment:(id)environment arguments:(id)arguments options:(id)options
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a8;
+  instanceCopy = instance;
+  environmentCopy = environment;
+  optionsCopy = options;
   v13 = sub_100007DE4();
-  v14 = [v12 objectForKeyedSubscript:@"StartSuspendedKey"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"StartSuspendedKey"];
   v15 = [v14 isEqualToNumber:&__kCFBooleanFalse];
 
-  ShouldCaptureOutputWithOptions = DTProcessShouldCaptureOutputWithOptions(v12);
-  v17 = [v12 objectForKeyedSubscript:@"DisableMemoryLimits"];
+  ShouldCaptureOutputWithOptions = DTProcessShouldCaptureOutputWithOptions(optionsCopy);
+  v17 = [optionsCopy objectForKeyedSubscript:@"DisableMemoryLimits"];
   v18 = [v17 isEqualToNumber:&__kCFBooleanTrue];
 
-  v19 = [v12 objectForKeyedSubscript:@"EnableMTE"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"EnableMTE"];
+  bOOLValue = [v19 BOOLValue];
 
   if (v13 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -667,7 +667,7 @@ LABEL_105:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "xpc_service_instance_is_configurable(): true", buf, 2u);
   }
 
-  if ([v11 count])
+  if ([environmentCopy count])
   {
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
@@ -675,7 +675,7 @@ LABEL_105:
     v29[3] = &unk_10001D578;
     v30 = xpc_dictionary_create(0, 0, 0);
     v21 = v30;
-    [v11 enumerateKeysAndObjectsUsingBlock:v29];
+    [environmentCopy enumerateKeysAndObjectsUsingBlock:v29];
     xpc_service_instance_set_environment();
   }
 
@@ -721,12 +721,12 @@ LABEL_17:
     xpc_service_instance_set_jetsam_properties();
   }
 
-  if (v20)
+  if (bOOLValue)
   {
     xpc_service_instance_set_use_sec_transition_shims();
   }
 
-  v23 = [v12 objectForKeyedSubscript:@"CPUType"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"CPUType"];
   v24 = v23;
   if (v23)
   {
@@ -734,81 +734,81 @@ LABEL_17:
   }
 
   xpc_service_instance_set_binpref();
-  v25 = [v12 objectForKeyedSubscript:@"CPUSubType"];
+  v25 = [optionsCopy objectForKeyedSubscript:@"CPUSubType"];
   v26 = v25;
   if (v25)
   {
-    v27 = [v25 intValue];
+    intValue = [v25 intValue];
   }
 
   else
   {
-    v27 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
   }
 
-  xpc_service_instance_set_archpref_shim(v10, v27);
+  xpc_service_instance_set_archpref_shim(instanceCopy, intValue);
 
   return v22;
 }
 
-- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)a3 programPath:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7 handler:(id)a8
+- (void)requestDebugLaunchOfDaemonWithSpecifier:(id)specifier programPath:(id)path environment:(id)environment arguments:(id)arguments options:(id)options handler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  specifierCopy = specifier;
+  pathCopy = path;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
+  optionsCopy = options;
+  handlerCopy = handler;
   sub_100007DE4();
-  [v13 UTF8String];
+  [specifierCopy UTF8String];
   v19 = xpc_service_create_from_specifier();
   if (v19)
   {
-    v23 = v17;
-    v24 = v13;
-    v25 = v15;
-    v26 = v16;
-    v29 = v18;
-    v27 = v14;
+    v23 = optionsCopy;
+    v24 = specifierCopy;
+    v25 = environmentCopy;
+    v26 = argumentsCopy;
+    v29 = handlerCopy;
+    v27 = pathCopy;
     v28 = v19;
     xpc_service_set_attach_handler();
     xpc_service_kickstart_with_flags();
 
-    v20 = v23;
+    specifierCopy = v23;
   }
 
   else
   {
     v30 = NSLocalizedDescriptionKey;
-    v20 = [NSString stringWithFormat:@"Unable to find service with specifier '%@'.", v13];
-    v31 = v20;
+    specifierCopy = [NSString stringWithFormat:@"Unable to find service with specifier '%@'.", specifierCopy];
+    v31 = specifierCopy;
     v21 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v22 = [NSError errorWithDomain:@"DTXPCServiceController" code:1 userInfo:v21];
-    (*(v18 + 2))(v18, v13, 0, 0, 0xFFFFFFFFLL, v22);
+    (*(handlerCopy + 2))(handlerCopy, specifierCopy, 0, 0, 0xFFFFFFFFLL, v22);
   }
 }
 
-- (void)_registryModify:(BOOL)a3 identifier:(id)a4 parent:(int)a5 client:(id)a6 block:(id)a7
+- (void)_registryModify:(BOOL)modify identifier:(id)identifier parent:(int)parent client:(id)client block:(id)block
 {
-  v10 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  modifyCopy = modify;
+  identifierCopy = identifier;
+  clientCopy = client;
+  blockCopy = block;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000B4F4;
   v20[3] = &unk_10001D5F0;
   v20[4] = self;
-  v15 = v13;
+  v15 = clientCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = identifierCopy;
   v22 = v16;
-  v24 = a5;
-  v17 = v14;
+  parentCopy = parent;
+  v17 = blockCopy;
   v23 = v17;
   v18 = objc_retainBlock(v20);
   v19 = v18;
-  if (v10)
+  if (modifyCopy)
   {
     dispatch_sync(self->_guard, v18);
   }
@@ -819,34 +819,34 @@ LABEL_17:
   }
 }
 
-- (void)_matchRemove:(id)a3
+- (void)_matchRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   registrationDictsByPid = self->_registrationDictsByPid;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B7D0;
   v7[3] = &unk_10001D640;
-  v8 = v4;
-  v6 = v4;
+  v8 = removeCopy;
+  v6 = removeCopy;
   [(NSMutableDictionary *)registrationDictsByPid enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4 parent:(int)a5
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier parent:(int)parent
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   guard = self->_guard;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000BB70;
   v13[3] = &unk_10001D668;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = clientCopy;
+  v15 = identifierCopy;
+  parentCopy = parent;
+  v11 = identifierCopy;
+  v12 = clientCopy;
   dispatch_sync(guard, v13);
 }
 

@@ -1,20 +1,20 @@
 @interface HPCUIAdaptiveVolumeDetailController
-- (_TtC20HeadphoneCommonUIKit35HPCUIAdaptiveVolumeDetailController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20HeadphoneCommonUIKit35HPCUIAdaptiveVolumeDetailController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (void)viewDidLoad;
 @end
 
 @implementation HPCUIAdaptiveVolumeDetailController
 
-- (_TtC20HeadphoneCommonUIKit35HPCUIAdaptiveVolumeDetailController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20HeadphoneCommonUIKit35HPCUIAdaptiveVolumeDetailController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     v6 = sub_1AC3B7EF4();
     v7 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v8 = v6;
     v9 = v7;
   }
@@ -25,7 +25,7 @@
     v9 = 0;
   }
 
-  return HPCUIAdaptiveVolumeDetailController.init(nibName:bundle:)(v8, v9, a4);
+  return HPCUIAdaptiveVolumeDetailController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 - (void)viewDidLoad

@@ -1,7 +1,7 @@
 @interface ICRemoveMediaDRMOperation
-- (ICRemoveMediaDRMOperation)initWithFilePath:(id)a3 sinfs:(id)a4;
+- (ICRemoveMediaDRMOperation)initWithFilePath:(id)path sinfs:(id)sinfs;
 - (void)execute;
-- (void)removeDRMWithCompletionHandler:(id)a3;
+- (void)removeDRMWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICRemoveMediaDRMOperation
@@ -17,7 +17,7 @@
     [v3 setObject:sinfs forKey:*MEMORY[0x1E6993BC0]];
   }
 
-  v6 = [MEMORY[0x1E6993BC8] fileProcessor];
+  fileProcessor = [MEMORY[0x1E6993BC8] fileProcessor];
   mediaFilePath = self->_mediaFilePath;
   v13[4] = self;
   v14 = 0;
@@ -25,7 +25,7 @@
   v13[1] = 3221225472;
   v13[2] = __36__ICRemoveMediaDRMOperation_execute__block_invoke;
   v13[3] = &unk_1E7BF6560;
-  v8 = [v6 processPurchasedItem:mediaFilePath withAttributes:v4 resultInfo:&v14 progressBlock:v13];
+  v8 = [fileProcessor processPurchasedItem:mediaFilePath withAttributes:v4 resultInfo:&v14 progressBlock:v13];
   v9 = v14;
 
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -54,31 +54,31 @@ void __36__ICRemoveMediaDRMOperation_execute__block_invoke(uint64_t a1, float a2
   [v3 setCompletedUnitCount:100 * a2];
 }
 
-- (void)removeDRMWithCompletionHandler:(id)a3
+- (void)removeDRMWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__ICRemoveMediaDRMOperation_removeDRMWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICRemoveMediaDRMOperation)initWithFilePath:(id)a3 sinfs:(id)a4
+- (ICRemoveMediaDRMOperation)initWithFilePath:(id)path sinfs:(id)sinfs
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  sinfsCopy = sinfs;
   v12.receiver = self;
   v12.super_class = ICRemoveMediaDRMOperation;
   v9 = [(ICRequestOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaFilePath, a3);
-    objc_storeStrong(&v10->_sinfs, a4);
+    objc_storeStrong(&v9->_mediaFilePath, path);
+    objc_storeStrong(&v10->_sinfs, sinfs);
   }
 
   return v10;

@@ -1,9 +1,9 @@
 @interface _TSF_TSDIOKServiceMatcher
-- (BOOL)startNotificationsWithMatchingDictionary:(id)a3;
+- (BOOL)startNotificationsWithMatchingDictionary:(id)dictionary;
 - (_TSF_TSDIOKServiceMatcher)init;
 - (void)dealloc;
-- (void)handleServiceMatched:(id)a3;
-- (void)handleServiceTerminated:(id)a3;
+- (void)handleServiceMatched:(id)matched;
+- (void)handleServiceTerminated:(id)terminated;
 - (void)init;
 @end
 
@@ -54,17 +54,17 @@
   return v2;
 }
 
-- (BOOL)startNotificationsWithMatchingDictionary:(id)a3
+- (BOOL)startNotificationsWithMatchingDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"IOProviderClass"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"IOProviderClass"];
   identifier = self->_identifier;
   self->_identifier = v6;
 
@@ -122,7 +122,7 @@ LABEL_7:
 LABEL_8:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(NSString *)self->_identifier UTF8String];
+    uTF8String = [(NSString *)self->_identifier UTF8String];
     v19 = "failed";
     if (v17)
     {
@@ -130,7 +130,7 @@ LABEL_8:
     }
 
     *buf = 136315394;
-    v29 = v18;
+    v29 = uTF8String;
     v30 = 2080;
     v31 = v19;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDIOKServiceMatcher startNotificationsWithMatchingDictionary %s %s", buf, 0x16u);
@@ -156,25 +156,25 @@ LABEL_8:
   [(_TSF_TSDIOKServiceMatcher *)&v6 dealloc];
 }
 
-- (void)handleServiceMatched:(id)a3
+- (void)handleServiceMatched:(id)matched
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "entryID")}];
+  matchedCopy = matched;
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(matchedCopy, "entryID")}];
   if (([(NSMutableSet *)self->_matchedEntryIDs containsObject:v4]& 1) == 0)
   {
     [(NSMutableSet *)self->_matchedEntryIDs addObject:v4];
-    [(_TSF_TSDIOKServiceMatcher *)self serviceMatched:v5];
+    [(_TSF_TSDIOKServiceMatcher *)self serviceMatched:matchedCopy];
   }
 }
 
-- (void)handleServiceTerminated:(id)a3
+- (void)handleServiceTerminated:(id)terminated
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "entryID")}];
+  terminatedCopy = terminated;
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(terminatedCopy, "entryID")}];
   if ([(NSMutableSet *)self->_matchedEntryIDs containsObject:v4])
   {
     [(NSMutableSet *)self->_matchedEntryIDs removeObject:v4];
-    [(_TSF_TSDIOKServiceMatcher *)self serviceTerminated:v5];
+    [(_TSF_TSDIOKServiceMatcher *)self serviceTerminated:terminatedCopy];
   }
 }
 

@@ -1,50 +1,50 @@
 @interface CSDAnalyticsReporter
-+ (void)sendManualLaunchAttemptEventWithActivitySession:(id)a3;
-+ (void)sendManualLaunchNeededEventWithActivitySession:(id)a3;
-- (void)reportingController:(id)a3 pickedRoute:(id)a4 updatedByAnyTriggerForCall:(id)a5;
-- (void)reportingController:(id)a3 recordingEndedForSession:(id)a4;
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5;
++ (void)sendManualLaunchAttemptEventWithActivitySession:(id)session;
++ (void)sendManualLaunchNeededEventWithActivitySession:(id)session;
+- (void)reportingController:(id)controller pickedRoute:(id)route updatedByAnyTriggerForCall:(id)call;
+- (void)reportingController:(id)controller recordingEndedForSession:(id)session;
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count;
 @end
 
 @implementation CSDAnalyticsReporter
 
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1000366FC(v7, v8);
+  controllerCopy = controller;
+  callCopy = call;
+  selfCopy = self;
+  sub_1000366FC(controllerCopy, callCopy);
 }
 
-- (void)reportingController:(id)a3 recordingEndedForSession:(id)a4
+- (void)reportingController:(id)controller recordingEndedForSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100455B60(v8, v7);
+  controllerCopy = controller;
+  sessionCopy = session;
+  selfCopy = self;
+  sub_100455B60(selfCopy, sessionCopy);
 }
 
-+ (void)sendManualLaunchNeededEventWithActivitySession:(id)a3
++ (void)sendManualLaunchNeededEventWithActivitySession:(id)session
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_100455E14(v4);
+  sessionCopy = session;
+  sub_100455E14(sessionCopy);
 }
 
-+ (void)sendManualLaunchAttemptEventWithActivitySession:(id)a3
++ (void)sendManualLaunchAttemptEventWithActivitySession:(id)session
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_100456204(v4);
+  sessionCopy = session;
+  sub_100456204(sessionCopy);
 }
 
-- (void)reportingController:(id)a3 pickedRoute:(id)a4 updatedByAnyTriggerForCall:(id)a5
+- (void)reportingController:(id)controller pickedRoute:(id)route updatedByAnyTriggerForCall:(id)call
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100456CCC(v11, v9, v10);
+  controllerCopy = controller;
+  routeCopy = route;
+  callCopy = call;
+  selfCopy = self;
+  sub_100456CCC(selfCopy, routeCopy, callCopy);
 }
 
 @end

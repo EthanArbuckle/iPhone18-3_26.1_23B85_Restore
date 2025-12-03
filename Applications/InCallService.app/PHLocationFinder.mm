@@ -1,24 +1,24 @@
 @interface PHLocationFinder
-+ (void)findLocationWithBundle:(id)a3 completion:(id)a4;
-- (PHLocationFinder)initWithBundle:(id)a3;
++ (void)findLocationWithBundle:(id)bundle completion:(id)completion;
+- (PHLocationFinder)initWithBundle:(id)bundle;
 - (void)_timerFired;
 - (void)dealloc;
-- (void)setCompletionHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation PHLocationFinder
 
-- (PHLocationFinder)initWithBundle:(id)a3
+- (PHLocationFinder)initWithBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = PHLocationFinder;
   v5 = [(PHLocationFinder *)&v9 init];
   if (v5)
   {
-    v6 = [[CLLocationManager alloc] initWithEffectiveBundle:v4];
+    v6 = [[CLLocationManager alloc] initWithEffectiveBundle:bundleCopy];
     locationManager = v5->_locationManager;
     v5->_locationManager = v6;
 
@@ -38,25 +38,25 @@
   [(PHLocationFinder *)&v3 dealloc];
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   completionHandler = self->_completionHandler;
-  v8 = v4;
+  v8 = handlerCopy;
   if (completionHandler)
   {
     self->_completionHandler = 0;
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v6 = [v8 copy];
     v7 = self->_completionHandler;
     self->_completionHandler = v6;
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 }
 
@@ -104,15 +104,15 @@
 
 - (void)_timerFired
 {
-  v3 = [(CLLocationManager *)self->_locationManager location];
+  location = [(CLLocationManager *)self->_locationManager location];
   (*(self->_completionHandler + 2))();
   [(PHLocationFinder *)self stop];
 }
 
-+ (void)findLocationWithBundle:(id)a3 completion:(id)a4
++ (void)findLocationWithBundle:(id)bundle completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  completionCopy = completion;
   if (qword_1003B0D00 != -1)
   {
     sub_100254880();
@@ -123,13 +123,13 @@
   v17 = 0x3032000000;
   v18 = sub_10007393C;
   v19 = sub_10007394C;
-  v20 = [[PHLocationFinder alloc] initWithBundle:v5];
+  v20 = [[PHLocationFinder alloc] initWithBundle:bundleCopy];
   [qword_1003B0D08 addObject:v16[5]];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100073954;
   v12 = &unk_100357718;
-  v7 = v6;
+  v7 = completionCopy;
   v13 = v7;
   v14 = &v15;
   v8 = objc_retainBlock(&v9);

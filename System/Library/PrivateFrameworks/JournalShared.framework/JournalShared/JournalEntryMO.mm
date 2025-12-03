@@ -1,16 +1,16 @@
 @interface JournalEntryMO
-- (JournalEntryMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (JournalEntryMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)prepareForDeletion;
 - (void)willSave;
 @end
 
 @implementation JournalEntryMO
 
-- (JournalEntryMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (JournalEntryMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JournalEntryMO();
-  return [(JournalEntryMO *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(JournalEntryMO *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void)willSave
@@ -31,7 +31,7 @@
 
 - (void)prepareForDeletion
 {
-  v2 = self;
+  selfCopy = self;
   JournalEntryMO.prepareForDeletion()();
 }
 

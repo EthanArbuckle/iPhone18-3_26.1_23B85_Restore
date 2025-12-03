@@ -1,13 +1,13 @@
 @interface NARPBWorkspaceMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)syncId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NARPBWorkspaceMetadata
@@ -17,8 +17,8 @@
   v7.receiver = self;
   v7.super_class = NARPBWorkspaceMetadata;
   v3 = [(NARPBWorkspaceMetadata *)&v7 description];
-  v4 = [(NARPBWorkspaceMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NARPBWorkspaceMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,44 +41,44 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     sequenceNumber = self->_sequenceNumber;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_sequenceNumber;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_sequenceNumber;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_uUID)
   {
-    v5 = v4;
-    [v4 setUUID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setUUID:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -86,31 +86,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_uUID copyWithZone:a3];
+  v7 = [(NSString *)self->_uUID copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_sequenceNumber != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_sequenceNumber != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -118,7 +118,7 @@ LABEL_9:
   }
 
   uUID = self->_uUID;
-  if (uUID | *(v4 + 2))
+  if (uUID | *(equalCopy + 2))
   {
     v7 = [(NSString *)uUID isEqual:?];
   }
@@ -148,20 +148,20 @@ LABEL_10:
   return [(NSString *)self->_uUID hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
-    self->_sequenceNumber = v4[2];
+    self->_sequenceNumber = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NARPBWorkspaceMetadata *)self setUUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

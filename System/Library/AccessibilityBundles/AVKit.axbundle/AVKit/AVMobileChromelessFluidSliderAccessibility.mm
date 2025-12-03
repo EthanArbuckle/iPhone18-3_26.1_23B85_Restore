@@ -1,34 +1,34 @@
 @interface AVMobileChromelessFluidSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityAnnounceNewValue;
-- (void)_accessibilityBumpValue:(BOOL)a3;
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4;
-- (void)_sliderFluidInteractionWillEnd:(id)a3;
+- (void)_accessibilityBumpValue:(BOOL)value;
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location;
+- (void)_sliderFluidInteractionWillEnd:(id)end;
 @end
 
 @implementation AVMobileChromelessFluidSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileChromelessFluidSlider" isKindOfClass:@"UISlider"];
-  [v3 validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionWillContinue:withLocation:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"leadingTimeText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileGlassTimelineView" hasInstanceMethod:@"leadingTimeText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileGlassTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionWillEnd:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionDidEnd:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"usesVolumeStyle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVMediaTimelineControl"];
-  [v3 validateClass:@"AVMediaTimelineControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileChromelessFluidSlider" isKindOfClass:@"UISlider"];
+  [validationsCopy validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionWillContinue:withLocation:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"leadingTimeText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassTimelineView" hasInstanceMethod:@"leadingTimeText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionWillEnd:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"_sliderFluidInteractionDidEnd:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessFluidSlider" hasInstanceMethod:@"usesVolumeStyle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVMediaTimelineControl"];
+  [validationsCopy validateClass:@"AVMediaTimelineControl" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
   if (AXProcessIsPhotos())
   {
-    [v3 validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControl:didChangeValue:"];
-    [v3 validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControlWillBeginChanging:"];
-    [v3 validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControlDidEndChanging:"];
+    [validationsCopy validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControl:didChangeValue:"];
+    [validationsCopy validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControlWillBeginChanging:"];
+    [validationsCopy validateProtocol:@"AVMediaTimelineControlDelegate" hasRequiredInstanceMethod:@"mediaTimelineControlDidEndChanging:"];
   }
 }
 
@@ -79,7 +79,7 @@ LABEL_9:
     if ([v6 containsString:{@"−", v38, v39}])
     {
       v20 = [v6 componentsSeparatedByString:@"−"];
-      v21 = [v20 lastObject];
+      lastObject = [v20 lastObject];
       v22 = AXLocalizeDurationTime();
 
       v23 = MEMORY[0x29EDBA0F8];
@@ -125,28 +125,28 @@ LABEL_9:
   }
 
 LABEL_12:
-  v32 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-  v33 = [(__CFString *)v11 stringByTrimmingCharactersInSet:v32];
+  whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+  v33 = [(__CFString *)v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v34 = [v33 length];
 
   if (v34)
   {
-    v35 = v11;
+    accessibilityValue = v11;
   }
 
   else
   {
     v40.receiver = self;
     v40.super_class = AVMobileChromelessFluidSliderAccessibility;
-    v35 = [(AVMobileChromelessFluidSliderAccessibility *)&v40 accessibilityValue];
+    accessibilityValue = [(AVMobileChromelessFluidSliderAccessibility *)&v40 accessibilityValue];
   }
 
-  v36 = v35;
+  v36 = accessibilityValue;
 
   return v36;
 }
 
-- (void)_accessibilityBumpValue:(BOOL)a3
+- (void)_accessibilityBumpValue:(BOOL)value
 {
   MEMORY[0x29C2C6300](@"UISlider", a2);
   if (objc_opt_isKindOfClass())
@@ -215,23 +215,23 @@ uint64_t __70__AVMobileChromelessFluidSliderAccessibility__accessibilityBumpValu
 - (void)_accessibilityAnnounceNewValue
 {
   v2 = *MEMORY[0x29EDC7EA8];
-  v3 = [(AVMobileChromelessFluidSliderAccessibility *)self _accessibilityAXAttributedValue];
-  UIAccessibilityPostNotification(v2, v3);
+  _accessibilityAXAttributedValue = [(AVMobileChromelessFluidSliderAccessibility *)self _accessibilityAXAttributedValue];
+  UIAccessibilityPostNotification(v2, _accessibilityAXAttributedValue);
 }
 
-- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4
+- (void)_sliderFluidInteractionWillContinue:(id)continue withLocation:(CGPoint)location
 {
   v4.receiver = self;
   v4.super_class = AVMobileChromelessFluidSliderAccessibility;
-  [(AVMobileChromelessFluidSliderAccessibility *)&v4 _sliderFluidInteractionWillContinue:a3 withLocation:a4.x, a4.y];
+  [(AVMobileChromelessFluidSliderAccessibility *)&v4 _sliderFluidInteractionWillContinue:continue withLocation:location.x, location.y];
   AXPerformSafeBlock();
 }
 
-- (void)_sliderFluidInteractionWillEnd:(id)a3
+- (void)_sliderFluidInteractionWillEnd:(id)end
 {
   v3.receiver = self;
   v3.super_class = AVMobileChromelessFluidSliderAccessibility;
-  [(AVMobileChromelessFluidSliderAccessibility *)&v3 _sliderFluidInteractionWillEnd:a3];
+  [(AVMobileChromelessFluidSliderAccessibility *)&v3 _sliderFluidInteractionWillEnd:end];
   AXPerformSafeBlock();
 }
 

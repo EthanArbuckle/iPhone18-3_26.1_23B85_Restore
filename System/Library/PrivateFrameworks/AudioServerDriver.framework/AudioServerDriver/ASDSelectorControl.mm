@@ -1,32 +1,32 @@
 @interface ASDSelectorControl
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)setSelectedValues:(const unsigned int *)a3 withCount:(unint64_t)a4;
-- (BOOL)setSelectedValues:(id)a3;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (BOOL)setSelectedValues:(const unsigned int *)values withCount:(unint64_t)count;
+- (BOOL)setSelectedValues:(id)values;
 - (NSArray)selectedValues;
 - (id)driverClassName;
-- (id)nameForValue:(unsigned int)a3;
+- (id)nameForValue:(unsigned int)value;
 - (id)values;
-- (unint64_t)_indexOfValue:(unsigned int)a3;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (unsigned)kindForValue:(unsigned int)a3;
-- (unsigned)minDataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
+- (unint64_t)_indexOfValue:(unsigned int)value;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (unsigned)kindForValue:(unsigned int)value;
+- (unsigned)minDataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
 - (unsigned)selectedValue;
 - (void)_updateSelectedValue;
-- (void)addValue:(id)a3;
-- (void)removeValue:(id)a3;
+- (void)addValue:(id)value;
+- (void)removeValue:(id)value;
 @end
 
 @implementation ASDSelectorControl
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (a3)
+  if (property)
   {
-    mSelector = a3->mSelector;
+    mSelector = property->mSelector;
     v7 = 1;
-    if (a3->mSelector > 1935893352)
+    if (property->mSelector > 1935893352)
     {
       if (mSelector != 1935893353 && mSelector != 1935894894)
       {
@@ -61,14 +61,14 @@ LABEL_11:
   return v7;
 }
 
-- (unsigned)minDataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)minDataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1935893353)
+  if (property->mSelector == 1935893353)
   {
     return 4;
   }
@@ -80,15 +80,15 @@ LABEL_11:
   return [ASDObject minDataSizeForProperty:sel_minDataSizeForProperty_withQualifierSize_andQualifierData_ withQualifierSize:? andQualifierData:?];
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector > 1935893352)
+  mSelector = property->mSelector;
+  if (property->mSelector > 1935893352)
   {
     if (mSelector == 1935894894)
     {
@@ -185,7 +185,7 @@ uint64_t __77__ASDSelectorControl_dataSizeForProperty_withQualifierSize_andQuali
   return result;
 }
 
-- (unint64_t)_indexOfValue:(unsigned int)a3
+- (unint64_t)_indexOfValue:(unsigned int)value
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -210,7 +210,7 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      if ([*(*(&v13 + 1) + 8 * v9) value] == a3)
+      if ([*(*(&v13 + 1) + 8 * v9) value] == value)
       {
         break;
       }
@@ -239,16 +239,16 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  if (a3 && a6 && a7)
+  if (property && dataSize && andData)
   {
-    mSelector = a3->mSelector;
-    if (a3->mSelector > 1935893352)
+    mSelector = property->mSelector;
+    if (property->mSelector > 1935893352)
     {
       if (mSelector != 1935894894)
       {
@@ -263,8 +263,8 @@ LABEL_9:
           block[1] = 3221225472;
           block[2] = __93__ASDSelectorControl_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke;
           block[3] = &unk_278CE3E50;
-          block[6] = a7;
-          block[7] = a6;
+          block[6] = andData;
+          block[7] = dataSize;
           block[4] = self;
           block[5] = &v27;
           v11 = block;
@@ -279,9 +279,9 @@ LABEL_12:
         goto LABEL_23;
       }
 
-      if (a4 >= 4 && a5 && *a6 >= 8)
+      if (size >= 4 && data && *dataSize >= 8)
       {
-        v16 = *a5;
+        v16 = *data;
         v17 = self->_valueQueue;
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
@@ -290,7 +290,7 @@ LABEL_12:
         v24 = v16;
         v23[4] = self;
         v23[5] = &v31;
-        v23[6] = a7;
+        v23[6] = andData;
         dispatch_sync(v17, v23);
         v15 = 8;
         goto LABEL_22;
@@ -312,14 +312,14 @@ LABEL_12:
           v25[1] = 3221225472;
           v25[2] = __93__ASDSelectorControl_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke_2;
           v25[3] = &unk_278CE3E50;
-          v25[6] = a6;
-          v25[7] = a7;
+          v25[6] = dataSize;
+          v25[7] = andData;
           v25[4] = self;
           v25[5] = &v27;
           v11 = v25;
 LABEL_11:
           dispatch_sync(valueQueue, v11);
-          *a6 = 4 * *(v28 + 6);
+          *dataSize = 4 * *(v28 + 6);
           *(v32 + 24) = 1;
           _Block_object_dispose(&v27, 8);
           goto LABEL_23;
@@ -328,9 +328,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (self->_hasKindProperty && a4 >= 4 && a5 && *a6 >= 4)
+      if (self->_hasKindProperty && size >= 4 && data && *dataSize >= 4)
       {
-        v13 = *a5;
+        v13 = *data;
         v14 = self->_valueQueue;
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
@@ -339,11 +339,11 @@ LABEL_11:
         v22 = v13;
         v21[4] = self;
         v21[5] = &v31;
-        v21[6] = a7;
+        v21[6] = andData;
         dispatch_sync(v14, v21);
         v15 = 4;
 LABEL_22:
-        *a6 = v15;
+        *dataSize = v15;
       }
     }
   }
@@ -521,14 +521,14 @@ void __93__ASDSelectorControl_getProperty_withQualifierSize_qualifierData_dataSi
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1935893353)
+  if (settable->mSelector == 1935893353)
   {
 
     return [(ASDSelectorControl *)self isSettable];
@@ -594,17 +594,17 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addValue:(id)a3
+- (void)addValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   valueQueue = self->_valueQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ASDSelectorControl_addValue___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valueCopy;
+  v6 = valueCopy;
   dispatch_sync(valueQueue, v7);
 }
 
@@ -667,17 +667,17 @@ LABEL_14:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeValue:(id)a3
+- (void)removeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   valueQueue = self->_valueQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ASDSelectorControl_removeValue___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valueCopy;
+  v6 = valueCopy;
   dispatch_sync(valueQueue, v7);
 }
 
@@ -741,7 +741,7 @@ uint64_t __28__ASDSelectorControl_values__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)nameForValue:(unsigned int)a3
+- (id)nameForValue:(unsigned int)value
 {
   v8 = 0;
   v9 = &v8;
@@ -754,7 +754,7 @@ uint64_t __28__ASDSelectorControl_values__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__ASDSelectorControl_nameForValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v7 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(valueQueue, block);
@@ -776,7 +776,7 @@ void __35__ASDSelectorControl_nameForValue___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (unsigned)kindForValue:(unsigned int)a3
+- (unsigned)kindForValue:(unsigned int)value
 {
   v8 = 0;
   v9 = &v8;
@@ -787,7 +787,7 @@ void __35__ASDSelectorControl_nameForValue___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__ASDSelectorControl_kindForValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v7 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(valueQueue, block);
@@ -805,7 +805,7 @@ void __35__ASDSelectorControl_kindForValue___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)setSelectedValues:(const unsigned int *)a3 withCount:(unint64_t)a4
+- (BOOL)setSelectedValues:(const unsigned int *)values withCount:(unint64_t)count
 {
   v16 = 0;
   v17 = &v16;
@@ -822,8 +822,8 @@ void __35__ASDSelectorControl_kindForValue___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__ASDSelectorControl_setSelectedValues_withCount___block_invoke;
   block[3] = &unk_278CE4258;
-  block[7] = a4;
-  block[8] = a3;
+  block[7] = count;
+  block[8] = values;
   block[4] = self;
   block[5] = &v12;
   block[6] = &v16;
@@ -834,8 +834,8 @@ void __35__ASDSelectorControl_kindForValue___block_invoke(uint64_t a1)
     [(ASDSelectorControl *)self selectionDidChange:v17[5]];
     v10 = 0;
     v9 = 0x676C6F6273636369;
-    v7 = [(ASDObject *)self propertyChangedDelegate];
-    [v7 changedProperty:&v9 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v9 forObject:self];
 
     v6 = *(v13 + 24);
   }
@@ -969,11 +969,11 @@ void __50__ASDSelectorControl_setSelectedValues_withCount___block_invoke(uint64_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setSelectedValues:(id)a3
+- (BOOL)setSelectedValues:(id)values
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  valuesCopy = values;
+  v5 = [valuesCopy count];
   if (!v5)
   {
     v7 = 0;
@@ -987,13 +987,13 @@ LABEL_17:
   if (v6)
   {
     v7 = v6;
-    v8 = [v6 mutableBytes];
+    mutableBytes = [v6 mutableBytes];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v4;
-    v9 = v4;
+    v20 = valuesCopy;
+    v9 = valuesCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -1018,7 +1018,7 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 unsignedIntValue];
+          unsignedIntValue = [v15 unsignedIntValue];
         }
 
         else
@@ -1032,14 +1032,14 @@ LABEL_5:
             }
 
             v17 = 0;
-            v4 = v20;
+            valuesCopy = v20;
             goto LABEL_24;
           }
 
-          v16 = [v15 value];
+          unsignedIntValue = [v15 value];
         }
 
-        *(v8 + 4 * v12++) = v16;
+        *(mutableBytes + 4 * v12++) = unsignedIntValue;
         if (v11 == ++v14)
         {
           v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1053,7 +1053,7 @@ LABEL_5:
       }
     }
 
-    v4 = v20;
+    valuesCopy = v20;
     goto LABEL_17;
   }
 
@@ -1096,7 +1096,7 @@ LABEL_24:
   v9 = 3221225472;
   v10 = __36__ASDSelectorControl_selectedValues__block_invoke;
   v11 = &unk_278CE3E78;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   dispatch_sync(valueQueue, &v8);
@@ -1147,15 +1147,15 @@ void __36__ASDSelectorControl_selectedValues__block_invoke(uint64_t a1)
 
 - (id)driverClassName
 {
-  v2 = [(ASDControl *)self objectClass];
+  objectClass = [(ASDControl *)self objectClass];
   v3 = @"AudioSelectorControl";
   v4 = @"AudioDataSourceControl";
-  if (v2 != 1685287523)
+  if (objectClass != 1685287523)
   {
     v4 = @"AudioSelectorControl";
   }
 
-  if (v2 == 1751740518)
+  if (objectClass == 1751740518)
   {
     v5 = @"AudioHighPassFilterControl";
   }
@@ -1165,7 +1165,7 @@ void __36__ASDSelectorControl_selectedValues__block_invoke(uint64_t a1)
     v5 = v4;
   }
 
-  if (v2 == 1852601964)
+  if (objectClass == 1852601964)
   {
     v6 = @"AudioLineLevelControl";
   }
@@ -1175,17 +1175,17 @@ void __36__ASDSelectorControl_selectedValues__block_invoke(uint64_t a1)
     v6 = v5;
   }
 
-  if (v2 == 1684370292)
+  if (objectClass == 1684370292)
   {
     v3 = @"AudioDataDestinationControl";
   }
 
-  if (v2 == 1668047723)
+  if (objectClass == 1668047723)
   {
     v3 = @"AudioClockSourceControl";
   }
 
-  if (v2 <= 1685287522)
+  if (objectClass <= 1685287522)
   {
     return v3;
   }

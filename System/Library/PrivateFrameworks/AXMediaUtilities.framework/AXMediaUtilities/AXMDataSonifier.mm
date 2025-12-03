@@ -6,23 +6,23 @@
 - (BOOL)_playAudioPlayer;
 - (BOOL)_startAudioEngineIfNeeded;
 - (BOOL)containsMultipleSeries;
-- (BOOL)series:(id)a3 hasContinuousPitchDataForTimePosition:(double)a4;
-- (BOOL)shouldIncrementToPitch:(double)a3 by:(double)a4;
+- (BOOL)series:(id)series hasContinuousPitchDataForTimePosition:(double)position;
+- (BOOL)shouldIncrementToPitch:(double)pitch by:(double)by;
 - (BOOL)shouldPlayInStereo;
 - (double)currentContinuousPlaybackPosition;
 - (double)currentDiscretePlaybackPosition;
 - (double)currentPlaybackPosition;
-- (double)durationForDurationEncodingValue:(double)a3;
-- (double)frequencyForPitchEncodingValue:(double)a3;
-- (double)interpolatedPitchValueForNormalizedTimePosition:(double)a3 inSeries:(id)a4;
+- (double)durationForDurationEncodingValue:(double)value;
+- (double)frequencyForPitchEncodingValue:(double)value;
+- (double)interpolatedPitchValueForNormalizedTimePosition:(double)position inSeries:(id)series;
 - (double)masterVolume;
-- (double)normalizedTimeEncodingValueForValue:(id)a3;
+- (double)normalizedTimeEncodingValueForValue:(id)value;
 - (double)playbackDuration;
-- (double)timeOffsetForTimeEncodingValue:(id)a3;
-- (double)volumeForVolumeEncodingValue:(double)a3;
-- (id)_keyPitchesForContinuousSeries:(id)a3;
+- (double)timeOffsetForTimeEncodingValue:(id)value;
+- (double)volumeForVolumeEncodingValue:(double)value;
+- (id)_keyPitchesForContinuousSeries:(id)series;
 - (id)_newContinuousToneEnvelope;
-- (id)keyPitchForTime:(double)a3;
+- (id)keyPitchForTime:(double)time;
 - (void)_initializeAXMAudioDataSources;
 - (void)_initializeAudioChain;
 - (void)_initializeAudioPlayerNode;
@@ -31,15 +31,15 @@
 - (void)_initializeLiveToneDataSource;
 - (void)_initializePitchShifter;
 - (void)_initializeStereoPanner;
-- (void)_peakNormalizeBuffer:(void *)a3 length:(unint64_t)a4 level:(double)a5;
+- (void)_peakNormalizeBuffer:(void *)buffer length:(unint64_t)length level:(double)level;
 - (void)_regenerateTimeEncodingValuesForDataPoints;
-- (void)_renderContinuousAudioForMultiSeries:(id)a3;
-- (void)_renderDiscreteAudioForSeries:(id)a3;
-- (void)_renderSeries:(id)a3;
-- (void)_setPanning:(float)a3;
+- (void)_renderContinuousAudioForMultiSeries:(id)series;
+- (void)_renderDiscreteAudioForSeries:(id)series;
+- (void)_renderSeries:(id)series;
+- (void)_setPanning:(float)panning;
 - (void)_setupAudioPlayerBasedAudioChain;
 - (void)_setupFMBasedAudioChain;
-- (void)addPlaybackObserver:(id)a3;
+- (void)addPlaybackObserver:(id)observer;
 - (void)beginContinuousPlayback;
 - (void)beginLiveContinuousToneSession;
 - (void)beginScrubbing;
@@ -48,18 +48,18 @@
 - (void)endScrubbing;
 - (void)pause;
 - (void)play;
-- (void)playFrequencyAtTime:(double)a3;
-- (void)removePlaybackObserver:(id)a3;
+- (void)playFrequencyAtTime:(double)time;
+- (void)removePlaybackObserver:(id)observer;
 - (void)renderSonification;
-- (void)scrubToPlaybackFrame:(unint64_t)a3;
-- (void)setContinuousPlaybackPosition:(double)a3;
-- (void)setCurrentChartDescriptor:(id)a3;
-- (void)setCurrentSeriesIndex:(int64_t)a3;
-- (void)setDiscretePlaybackPosition:(double)a3;
-- (void)setLiveContinuousToneNormalizedFrequency:(double)a3;
-- (void)setMasterVolume:(double)a3;
-- (void)setMasterVolume:(double)a3 fadeDuration:(double)a4;
-- (void)setPlaybackPosition:(double)a3;
+- (void)scrubToPlaybackFrame:(unint64_t)frame;
+- (void)setContinuousPlaybackPosition:(double)position;
+- (void)setCurrentChartDescriptor:(id)descriptor;
+- (void)setCurrentSeriesIndex:(int64_t)index;
+- (void)setDiscretePlaybackPosition:(double)position;
+- (void)setLiveContinuousToneNormalizedFrequency:(double)frequency;
+- (void)setMasterVolume:(double)volume;
+- (void)setMasterVolume:(double)volume fadeDuration:(double)duration;
+- (void)setPlaybackPosition:(double)position;
 - (void)stopPlaying;
 - (void)stopScrubbing;
 @end
@@ -72,7 +72,7 @@
   block[1] = 3221225472;
   block[2] = __33__AXMDataSonifier_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[AXMDataSonifier sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[AXMDataSonifier sharedInstance]::onceToken, block);
@@ -100,9 +100,9 @@ void __33__AXMDataSonifier_sharedInstance__block_invoke(uint64_t a1)
   {
     *(v2 + 72) = xmmword_1AE451CE0;
     v2[56] = 1;
-    v4 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     v5 = *(v3 + 25);
-    *(v3 + 25) = v4;
+    *(v3 + 25) = weakObjectsPointerArray;
 
     v6 = [[AXMAudioDataSourceMixer alloc] initWithName:@"PlaybackMixer" sampleRate:0 circular:44100.0];
     v7 = *(v3 + 16);
@@ -200,29 +200,29 @@ void __33__AXMDataSonifier_sharedInstance__block_invoke(uint64_t a1)
   [(AXMDataSonifier *)self stopPlaying];
   [(AXMDataSonifier *)self playbackDuration];
   self->_playbackSampleCount = ((v3 + 200.0) * 44100.0 / 1000.0);
-  v4 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  [v4 setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  [playbackMixerDataSource setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
 
-  v5 = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
-  [v5 setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
+  playbackChartDataAudioDataSource = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
+  [playbackChartDataAudioDataSource setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
 
-  v6 = [(AXMDataSonifier *)self playbackTrendlineAudioDataSource];
-  [v6 setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
+  playbackTrendlineAudioDataSource = [(AXMDataSonifier *)self playbackTrendlineAudioDataSource];
+  [playbackTrendlineAudioDataSource setLength:{-[AXMDataSonifier playbackSampleCount](self, "playbackSampleCount")}];
 
-  v7 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-  [v7 setLength:88200];
+  scrubbingMixerDataSource = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+  [scrubbingMixerDataSource setLength:88200];
 
-  v8 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
-  [v8 setLength:88200];
+  scrubbingDiscreteAudioDataSource = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
+  [scrubbingDiscreteAudioDataSource setLength:88200];
 
-  v9 = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
-  [v9 setLength:88200];
+  scrubbingContinuousAudioDataSource = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
+  [scrubbingContinuousAudioDataSource setLength:88200];
 
-  v10 = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
-  [v10 setLength:88200];
+  scrubbingTrendlineAudioDataSource = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
+  [scrubbingTrendlineAudioDataSource setLength:88200];
 
-  v11 = [(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext];
-  v11[1] = *v11;
+  scrubbingDiscreteDataRenderingContext = [(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext];
+  scrubbingDiscreteDataRenderingContext[1] = *scrubbingDiscreteDataRenderingContext;
   std::vector<int>::resize([(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext], 0x15888uLL);
   v12 = *[(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext];
   v13 = *([(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext]+ 8) - v12;
@@ -235,8 +235,8 @@ void __33__AXMDataSonifier_sharedInstance__block_invoke(uint64_t a1)
 
 - (double)currentPlaybackPosition
 {
-  v3 = [(AXMDataSonifier *)self currentSeries];
-  if ([v3 isContinuous])
+  currentSeries = [(AXMDataSonifier *)self currentSeries];
+  if ([currentSeries isContinuous])
   {
     [(AXMDataSonifier *)self currentContinuousPlaybackPosition];
   }
@@ -253,17 +253,17 @@ void __33__AXMDataSonifier_sharedInstance__block_invoke(uint64_t a1)
 
 - (double)currentDiscretePlaybackPosition
 {
-  v3 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  v4 = [v3 length];
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  v4 = [playbackMixerDataSource length];
 
-  v5 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  v6 = [v5 currentSampleIndex];
+  playbackMixerDataSource2 = [(AXMDataSonifier *)self playbackMixerDataSource];
+  currentSampleIndex = [playbackMixerDataSource2 currentSampleIndex];
 
   v7 = 0.0;
-  if (v4 && v6 <= v4)
+  if (v4 && currentSampleIndex <= v4)
   {
-    v8 = [(AXMDataSonifier *)self playbackMixerDataSource];
-    v7 = [v8 currentSampleIndex] / v4;
+    playbackMixerDataSource3 = [(AXMDataSonifier *)self playbackMixerDataSource];
+    v7 = [playbackMixerDataSource3 currentSampleIndex] / v4;
   }
 
   return v7;
@@ -283,45 +283,45 @@ void __33__AXMDataSonifier_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMasterVolume:(double)a3
+- (void)setMasterVolume:(double)volume
 {
-  if (a3 > 1.0)
+  if (volume > 1.0)
   {
-    a3 = 1.0;
+    volume = 1.0;
   }
 
-  v4 = fmax(a3, 0.0);
-  v6 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  [v6 setLevel:v4];
+  v4 = fmax(volume, 0.0);
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  [playbackMixerDataSource setLevel:v4];
 
-  v7 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-  [v7 setLevel:v4];
+  scrubbingMixerDataSource = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+  [scrubbingMixerDataSource setLevel:v4];
 
-  v8 = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
-  [v8 setLevel:v4];
+  liveContinuousMixerDataSource = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
+  [liveContinuousMixerDataSource setLevel:v4];
 
-  v9 = [(AXMDataSonifier *)self player];
+  player = [(AXMDataSonifier *)self player];
   *&v4 = v4;
   LODWORD(v5) = LODWORD(v4);
-  [v9 setVolume:v5];
+  [player setVolume:v5];
 }
 
 - (double)masterVolume
 {
-  v2 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  [v2 level];
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  [playbackMixerDataSource level];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMasterVolume:(double)a3 fadeDuration:(double)a4
+- (void)setMasterVolume:(double)volume fadeDuration:(double)duration
 {
-  [AXMDataSonifier setMasterVolume:fadeDuration:]::fadeDuration = *&a4;
+  [AXMDataSonifier setMasterVolume:fadeDuration:]::fadeDuration = *&duration;
   [AXMDataSonifier setMasterVolume:fadeDuration:]::fadeStart = CFAbsoluteTimeGetCurrent();
   [(AXMDataSonifier *)self masterVolume];
   [AXMDataSonifier setMasterVolume:fadeDuration:]::startVolume = v6;
-  [AXMDataSonifier setMasterVolume:fadeDuration:]::targetVolume = *&a3;
+  [AXMDataSonifier setMasterVolume:fadeDuration:]::targetVolume = *&volume;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke;
@@ -363,12 +363,12 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
     [(AXMDataSonifier *)self _initializeAudioChain];
     self->_playing = 1;
     [(AXMDataSonifier *)self _startAudioEngineIfNeeded];
-    v3 = [(AXMDataSonifier *)self currentSeries];
-    if ([v3 isContinuous] && !-[AXMDataSonifier containsMultipleSeries](self, "containsMultipleSeries"))
+    currentSeries = [(AXMDataSonifier *)self currentSeries];
+    if ([currentSeries isContinuous] && !-[AXMDataSonifier containsMultipleSeries](self, "containsMultipleSeries"))
     {
-      v18 = [(AXMDataSonifier *)self _playAudioPlayer];
+      _playAudioPlayer = [(AXMDataSonifier *)self _playAudioPlayer];
 
-      if (v18)
+      if (_playAudioPlayer)
       {
         [(AXMDataSonifier *)self beginContinuousPlayback];
       }
@@ -384,10 +384,10 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
       v22 = 0uLL;
       v23 = 0uLL;
       v21 = 0uLL;
-      v4 = [(AXMDataSonifier *)self playbackObservers];
-      v5 = [v4 allObjects];
+      playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+      allObjects = [playbackObservers allObjects];
 
-      v6 = [v5 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v21 objects:v30 count:16];
       if (v6)
       {
         v7 = *v22;
@@ -398,7 +398,7 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
           {
             if (*v22 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allObjects);
             }
 
             v10 = *(*(&v21 + 1) + 8 * i);
@@ -415,7 +415,7 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v21 objects:v30 count:16];
+          v6 = [allObjects countByEnumeratingWithState:&v21 objects:v30 count:16];
         }
 
         while (v6);
@@ -428,10 +428,10 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
       v29 = 0uLL;
       v26 = 0uLL;
       v27 = 0uLL;
-      v11 = [(AXMDataSonifier *)self playbackObservers];
-      v5 = [v11 allObjects];
+      playbackObservers2 = [(AXMDataSonifier *)self playbackObservers];
+      allObjects = [playbackObservers2 allObjects];
 
-      v12 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v12)
       {
         v13 = *v27;
@@ -442,7 +442,7 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
           {
             if (*v27 != v13)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allObjects);
             }
 
             v16 = *(*(&v26 + 1) + 8 * j);
@@ -458,7 +458,7 @@ void __48__AXMDataSonifier_setMasterVolume_fadeDuration___block_invoke(uint64_t 
             }
           }
 
-          v12 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v12 = [allObjects countByEnumeratingWithState:&v26 objects:v31 count:16];
         }
 
         while (v12);
@@ -554,20 +554,20 @@ uint64_t __23__AXMDataSonifier_play__block_invoke_4(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
   [(AVAudioEngine *)self->_engine pause];
   *&self->_playing = 256;
-  v3 = [(AXMDataSonifier *)self playbackObserverUpdateTimer];
-  [v3 invalidate];
+  playbackObserverUpdateTimer = [(AXMDataSonifier *)self playbackObserverUpdateTimer];
+  [playbackObserverUpdateTimer invalidate];
 
-  v4 = [(AXMDataSonifier *)self keyPitchUpdateTimer];
-  [v4 invalidate];
+  keyPitchUpdateTimer = [(AXMDataSonifier *)self keyPitchUpdateTimer];
+  [keyPitchUpdateTimer invalidate];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXMDataSonifier *)self playbackObservers];
-  v6 = [v5 allObjects];
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  allObjects = [playbackObservers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -579,7 +579,7 @@ uint64_t __23__AXMDataSonifier_play__block_invoke_4(uint64_t a1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -598,7 +598,7 @@ uint64_t __23__AXMDataSonifier_play__block_invoke_4(uint64_t a1)
       }
 
       while (v7 != v10);
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -626,10 +626,10 @@ uint64_t __24__AXMDataSonifier_pause__block_invoke(uint64_t a1)
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(AXMDataSonifier *)self playbackObservers];
-    v5 = [v4 allObjects];
+    playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+    allObjects = [playbackObservers allObjects];
 
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -640,7 +640,7 @@ uint64_t __24__AXMDataSonifier_pause__block_invoke(uint64_t a1)
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -656,28 +656,28 @@ uint64_t __24__AXMDataSonifier_pause__block_invoke(uint64_t a1)
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
     }
 
-    v11 = [(AXMDataSonifier *)self playbackObserverUpdateTimer];
-    [v11 invalidate];
+    playbackObserverUpdateTimer = [(AXMDataSonifier *)self playbackObserverUpdateTimer];
+    [playbackObserverUpdateTimer invalidate];
   }
 
   else
   {
-    v11 = AXMediaLogCommon();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    playbackObserverUpdateTimer = AXMediaLogCommon();
+    if (os_log_type_enabled(playbackObserverUpdateTimer, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 0;
-      _os_log_impl(&dword_1AE37B000, v11, OS_LOG_TYPE_DEFAULT, "Error stopping audio playback", v13, 2u);
+      _os_log_impl(&dword_1AE37B000, playbackObserverUpdateTimer, OS_LOG_TYPE_DEFAULT, "Error stopping audio playback", v13, 2u);
     }
   }
 
-  v12 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  [v12 setCurrentSampleIndex:0];
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  [playbackMixerDataSource setCurrentSampleIndex:0];
 }
 
 uint64_t __30__AXMDataSonifier_stopPlaying__block_invoke(uint64_t a1)
@@ -700,11 +700,11 @@ uint64_t __30__AXMDataSonifier_stopPlaying__block_invoke(uint64_t a1)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [MEMORY[0x1E6958460] sharedInstance];
-  v3 = [v2 currentRoute];
-  v4 = [v3 outputs];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  currentRoute = [mEMORY[0x1E6958460] currentRoute];
+  outputs = [currentRoute outputs];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [outputs countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = *v18;
@@ -716,13 +716,13 @@ uint64_t __30__AXMDataSonifier_stopPlaying__block_invoke(uint64_t a1)
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 portType];
-        v12 = v11;
-        if (v11 == v7)
+        portType = [v10 portType];
+        v12 = portType;
+        if (portType == v7)
         {
 
 LABEL_15:
@@ -730,8 +730,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v13 = [v10 portType];
-        v14 = v13 == v8;
+        portType2 = [v10 portType];
+        v14 = portType2 == v8;
 
         if (v14)
         {
@@ -739,7 +739,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [outputs countByEnumeratingWithState:&v17 objects:v21 count:16];
       v15 = 0;
       if (v5)
       {
@@ -776,7 +776,7 @@ LABEL_16:
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__8;
     v19 = __Block_byref_object_dispose__8;
-    v20 = [v22[5] firstObject];
+    firstObject = [v22[5] firstObject];
     v14[0] = 0;
     v14[1] = v14;
     v14[2] = 0x2020000000;
@@ -787,8 +787,8 @@ LABEL_16:
     *&v4 = v4;
     [(AVAudioUnitTimePitch *)pitchShifter setPitch:v4];
     v5 = CACurrentMediaTime();
-    v6 = [(NSArray *)self->_keyPitches lastObject];
-    [v6 timeOffsetMS];
+    lastObject = [(NSArray *)self->_keyPitches lastObject];
+    [lastObject timeOffsetMS];
     v8 = v7;
 
     [(NSTimer *)self->_keyPitchUpdateTimer invalidate];
@@ -931,14 +931,14 @@ LABEL_10:
   userDefinedPlaybackDuration = self->_userDefinedPlaybackDuration;
   if (userDefinedPlaybackDuration <= 0.0)
   {
-    v4 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v5 = [v4 xAxis];
+    currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+    xAxis = [currentChartDescriptor xAxis];
 
-    v6 = [(AXMDataSonifier *)self currentSeries];
-    v7 = [v5 isCategoricalAxis];
-    if (v6)
+    currentSeries = [(AXMDataSonifier *)self currentSeries];
+    isCategoricalAxis = [xAxis isCategoricalAxis];
+    if (currentSeries)
     {
-      v8 = v7;
+      v8 = isCategoricalAxis;
     }
 
     else
@@ -948,12 +948,12 @@ LABEL_10:
 
     if (v8 == 1)
     {
-      v9 = [v6 dataPoints];
+      dataPoints = [currentSeries dataPoints];
       userDefinedPlaybackDuration = 10000.0;
-      if ([v9 count] * 800.0 <= 10000.0)
+      if ([dataPoints count] * 800.0 <= 10000.0)
       {
-        v10 = [v6 dataPoints];
-        userDefinedPlaybackDuration = [v10 count] * 800.0;
+        dataPoints2 = [currentSeries dataPoints];
+        userDefinedPlaybackDuration = [dataPoints2 count] * 800.0;
       }
     }
 
@@ -966,48 +966,48 @@ LABEL_10:
   return userDefinedPlaybackDuration;
 }
 
-- (void)addPlaybackObserver:(id)a3
+- (void)addPlaybackObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(AXMDataSonifier *)self playbackObservers];
-  [v4 addPointer:v5];
+  observerCopy = observer;
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  [playbackObservers addPointer:observerCopy];
 }
 
-- (void)removePlaybackObserver:(id)a3
+- (void)removePlaybackObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(AXMDataSonifier *)self playbackObservers];
-  v5 = [v4 allObjects];
-  v6 = [v5 indexOfObject:v8];
+  observerCopy = observer;
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  allObjects = [playbackObservers allObjects];
+  v6 = [allObjects indexOfObject:observerCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(AXMDataSonifier *)self playbackObservers];
-    [v7 removePointerAtIndex:v6];
+    playbackObservers2 = [(AXMDataSonifier *)self playbackObservers];
+    [playbackObservers2 removePointerAtIndex:v6];
   }
 }
 
-- (void)setPlaybackPosition:(double)a3
+- (void)setPlaybackPosition:(double)position
 {
-  v5 = [(AXMDataSonifier *)self currentSeries];
-  if ([v5 isContinuous])
+  currentSeries = [(AXMDataSonifier *)self currentSeries];
+  if ([currentSeries isContinuous])
   {
-    [(AXMDataSonifier *)self setContinuousPlaybackPosition:a3];
+    [(AXMDataSonifier *)self setContinuousPlaybackPosition:position];
   }
 
   else
   {
-    [(AXMDataSonifier *)self setDiscretePlaybackPosition:a3];
+    [(AXMDataSonifier *)self setDiscretePlaybackPosition:position];
   }
 }
 
-- (void)setDiscretePlaybackPosition:(double)a3
+- (void)setDiscretePlaybackPosition:(double)position
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (position >= 0.0 && position <= 1.0)
   {
-    v6 = [(AXMDataSonifier *)self playbackMixerDataSource];
-    v7 = ([v6 length] * a3);
+    playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+    v7 = ([playbackMixerDataSource length] * position);
 
     if ([(AXMDataSonifier *)self isScrubbing])
     {
@@ -1017,17 +1017,17 @@ LABEL_10:
 
     else
     {
-      v8 = [(AXMDataSonifier *)self playbackMixerDataSource];
-      [v8 setCurrentSampleIndex:v7];
+      playbackMixerDataSource2 = [(AXMDataSonifier *)self playbackMixerDataSource];
+      [playbackMixerDataSource2 setCurrentSampleIndex:v7];
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v9 = [(AXMDataSonifier *)self playbackObservers];
-      v10 = [v9 allObjects];
+      playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+      allObjects = [playbackObservers allObjects];
 
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         v12 = *v18;
@@ -1038,7 +1038,7 @@ LABEL_10:
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allObjects);
             }
 
             v15 = *(*(&v17 + 1) + 8 * i);
@@ -1049,12 +1049,12 @@ LABEL_10:
               v16[2] = __47__AXMDataSonifier_setDiscretePlaybackPosition___block_invoke;
               v16[3] = &unk_1E7A1E000;
               v16[4] = v15;
-              *&v16[5] = a3;
+              *&v16[5] = position;
               dispatch_async(v13, v16);
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v11);
@@ -1063,12 +1063,12 @@ LABEL_10:
   }
 }
 
-- (void)setContinuousPlaybackPosition:(double)a3
+- (void)setContinuousPlaybackPosition:(double)position
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (position >= 0.0 && position <= 1.0)
   {
-    v6 = self->audiographPlaybackDuration * a3;
+    v6 = self->audiographPlaybackDuration * position;
     if ([(AXMDataSonifier *)self isScrubbing])
     {
 
@@ -1077,17 +1077,17 @@ LABEL_10:
 
     else
     {
-      v7 = [(AXMDataSonifier *)self playbackMixerDataSource];
-      [v7 setCurrentSampleIndex:v6];
+      playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+      [playbackMixerDataSource setCurrentSampleIndex:v6];
 
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [(AXMDataSonifier *)self playbackObservers];
-      v9 = [v8 allObjects];
+      playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+      allObjects = [playbackObservers allObjects];
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         v11 = *v17;
@@ -1098,7 +1098,7 @@ LABEL_10:
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allObjects);
             }
 
             v14 = *(*(&v16 + 1) + 8 * i);
@@ -1109,12 +1109,12 @@ LABEL_10:
               v15[2] = __49__AXMDataSonifier_setContinuousPlaybackPosition___block_invoke;
               v15[3] = &unk_1E7A1E000;
               v15[4] = v14;
-              *&v15[5] = a3;
+              *&v15[5] = position;
               dispatch_async(v12, v15);
             }
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v10);
@@ -1131,45 +1131,45 @@ LABEL_10:
     [(AXMDataSonifier *)self renderSonification];
   }
 
-  v3 = [(AXMDataSonifier *)self trendlineFunction];
+  trendlineFunction = [(AXMDataSonifier *)self trendlineFunction];
 
-  v4 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
-  [v4 setLevel:dbl_1AE451D10[v3 == 0]];
+  scrubbingDiscreteAudioDataSource = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
+  [scrubbingDiscreteAudioDataSource setLevel:dbl_1AE451D10[trendlineFunction == 0]];
 
-  v5 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-  v6 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
-  [v5 addDataSource:v6];
-  v7 = v3 == 0;
+  scrubbingMixerDataSource = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+  scrubbingDiscreteAudioDataSource2 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
+  [scrubbingMixerDataSource addDataSource:scrubbingDiscreteAudioDataSource2];
+  v7 = trendlineFunction == 0;
 
-  v8 = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
-  [v8 setLevel:dbl_1AE451D20[v7]];
+  scrubbingContinuousAudioDataSource = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
+  [scrubbingContinuousAudioDataSource setLevel:dbl_1AE451D20[v7]];
 
   v9 = [AXMLiveContinuousSynth alloc];
-  v10 = [(AXMDataSonifier *)self _newContinuousToneEnvelope];
-  v11 = [(AXMSynth *)v9 initWithSampleRate:v10 envelope:44100.0];
+  _newContinuousToneEnvelope = [(AXMDataSonifier *)self _newContinuousToneEnvelope];
+  v11 = [(AXMSynth *)v9 initWithSampleRate:_newContinuousToneEnvelope envelope:44100.0];
   continuousScrubbingTone = self->_continuousScrubbingTone;
   self->_continuousScrubbingTone = v11;
 
-  v13 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-  v14 = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
-  [v13 addDataSource:v14];
+  scrubbingMixerDataSource2 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+  scrubbingContinuousAudioDataSource2 = [(AXMDataSonifier *)self scrubbingContinuousAudioDataSource];
+  [scrubbingMixerDataSource2 addDataSource:scrubbingContinuousAudioDataSource2];
 
-  v15 = [(AXMDataSonifier *)self trendlineFunction];
+  trendlineFunction2 = [(AXMDataSonifier *)self trendlineFunction];
 
-  if (v15)
+  if (trendlineFunction2)
   {
-    v16 = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
-    [v16 setLevel:0.354813389];
+    scrubbingTrendlineAudioDataSource = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
+    [scrubbingTrendlineAudioDataSource setLevel:0.354813389];
 
     v17 = [AXMLiveContinuousSynth alloc];
-    v18 = [(AXMDataSonifier *)self _newContinuousToneEnvelope];
-    v19 = [(AXMSynth *)v17 initWithSampleRate:v18 envelope:44100.0];
+    _newContinuousToneEnvelope2 = [(AXMDataSonifier *)self _newContinuousToneEnvelope];
+    v19 = [(AXMSynth *)v17 initWithSampleRate:_newContinuousToneEnvelope2 envelope:44100.0];
     trendlineScrubbingTone = self->_trendlineScrubbingTone;
     self->_trendlineScrubbingTone = v19;
 
-    v21 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-    v22 = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
-    [v21 addDataSource:v22];
+    scrubbingMixerDataSource3 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+    scrubbingTrendlineAudioDataSource2 = [(AXMDataSonifier *)self scrubbingTrendlineAudioDataSource];
+    [scrubbingMixerDataSource3 addDataSource:scrubbingTrendlineAudioDataSource2];
   }
 
   if ([(AXMDataSonifier *)self isPlaying])
@@ -1188,10 +1188,10 @@ LABEL_10:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = [(AXMDataSonifier *)self playbackObservers];
-  v24 = [v23 allObjects];
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  allObjects = [playbackObservers allObjects];
 
-  v25 = [v24 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v25 = [allObjects countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v25)
   {
     v26 = *v32;
@@ -1203,7 +1203,7 @@ LABEL_10:
       {
         if (*v32 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allObjects);
         }
 
         v29 = *(*(&v31 + 1) + 8 * v28);
@@ -1222,7 +1222,7 @@ LABEL_10:
       }
 
       while (v25 != v28);
-      v25 = [v24 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v25 = [allObjects countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v25);
@@ -1237,7 +1237,7 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
   return [v1 dataSonifierScrubbingDidBeginAtPosition:?];
 }
 
-- (id)keyPitchForTime:(double)a3
+- (id)keyPitchForTime:(double)time
 {
   v5 = [(NSArray *)self->_keyPitches count];
   if (v5 < 1)
@@ -1253,7 +1253,7 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
     {
       v8 = [(NSArray *)self->_keyPitches objectAtIndexedSubscript:(v7 + v5) >> 1];
       [v8 timeOffsetMS];
-      if (v9 <= a3)
+      if (v9 <= time)
       {
         v10 = v8;
 
@@ -1277,11 +1277,11 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
 {
   v20 = *MEMORY[0x1E69E9840];
   self->_isEndingScrubbing = 1;
-  v2 = [(AXMDataSonifier *)self continuousScrubbingTone];
-  [v2 startRelease];
+  continuousScrubbingTone = [(AXMDataSonifier *)self continuousScrubbingTone];
+  [continuousScrubbingTone startRelease];
 
-  v3 = [(AXMDataSonifier *)self trendlineScrubbingTone];
-  [v3 startRelease];
+  trendlineScrubbingTone = [(AXMDataSonifier *)self trendlineScrubbingTone];
+  [trendlineScrubbingTone startRelease];
 
   v4 = dispatch_time(0, 60000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -1294,10 +1294,10 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AXMDataSonifier *)self playbackObservers];
-  v6 = [v5 allObjects];
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  allObjects = [playbackObservers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -1309,7 +1309,7 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -1328,7 +1328,7 @@ uint64_t __33__AXMDataSonifier_beginScrubbing__block_invoke(uint64_t a1)
       }
 
       while (v7 != v10);
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
@@ -1345,8 +1345,8 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 
 - (void)stopScrubbing
 {
-  v3 = [(AXMDataSonifier *)self scrubbingMixerDataSource];
-  [v3 removeAllDataSources];
+  scrubbingMixerDataSource = [(AXMDataSonifier *)self scrubbingMixerDataSource];
+  [scrubbingMixerDataSource removeAllDataSources];
 
   self->_scrubbing = 0;
   continuousScrubbingTone = self->_continuousScrubbingTone;
@@ -1357,23 +1357,23 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   [(AXMDataSonifier *)self stopPlaying];
 }
 
-- (void)playFrequencyAtTime:(double)a3
+- (void)playFrequencyAtTime:(double)time
 {
-  if (vabdd_f64(self->_currentPlaybackTime, a3) >= 0.025)
+  if (vabdd_f64(self->_currentPlaybackTime, time) >= 0.025)
   {
-    self->_currentPlaybackTime = a3;
-    v11 = [(AXMDataSonifier *)self keyPitchForTime:a3];
+    self->_currentPlaybackTime = time;
+    v11 = [(AXMDataSonifier *)self keyPitchForTime:time];
     [(AXMDataSonifier *)self _startAudioEngineIfNeeded];
     [(AXMDataSonifier *)self _playAudioPlayer];
     pitchShifter = self->_pitchShifter;
     [v11 frequency];
     *&v6 = v6;
     [(AVAudioUnitTimePitch *)pitchShifter setPitch:v6];
-    v7 = [(NSArray *)self->_keyPitches lastObject];
-    [v7 timeOffsetMS];
+    lastObject = [(NSArray *)self->_keyPitches lastObject];
+    [lastObject timeOffsetMS];
     v9 = v8;
 
-    v10 = a3 / v9 * 2.0 + -1.0;
+    v10 = time / v9 * 2.0 + -1.0;
     *&v10 = v10;
     [(AXMDataSonifier *)self _setPanning:v10];
   }
@@ -1401,15 +1401,15 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   return 1;
 }
 
-- (void)scrubToPlaybackFrame:(unint64_t)a3
+- (void)scrubToPlaybackFrame:(unint64_t)frame
 {
   v119[1] = *MEMORY[0x1E69E9840];
-  v4 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  v95 = [v4 currentSampleIndex];
+  playbackMixerDataSource = [(AXMDataSonifier *)self playbackMixerDataSource];
+  currentSampleIndex = [playbackMixerDataSource currentSampleIndex];
 
   v5 = [(AXMDataSonifier *)self currentSeriesIndex]== 0;
-  v6 = [(AXMDataSonifier *)self currentChartDescriptor];
-  [v6 series];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  [currentChartDescriptor series];
   if (v5)
     v9 = {;
   }
@@ -1430,7 +1430,7 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   if (v99)
   {
     v98 = *v113;
-    v10 = a3;
+    frameCopy = frame;
     v94 = 1000.0;
     v93 = 0.01;
     do
@@ -1445,84 +1445,84 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
         v11 = *(*(&v112 + 1) + 8 * i);
         if ([v11 isContinuous])
         {
-          v12 = [(AXMDataSonifier *)self playbackMixerDataSource];
-          v13 = [v12 length];
+          playbackMixerDataSource2 = [(AXMDataSonifier *)self playbackMixerDataSource];
+          v13 = [playbackMixerDataSource2 length];
 
-          if ([(AXMDataSonifier *)self series:v11 hasContinuousPitchDataForTimePosition:v10 / v13])
+          if ([(AXMDataSonifier *)self series:v11 hasContinuousPitchDataForTimePosition:frameCopy / v13])
           {
-            v14 = [(AXMDataSonifier *)self continuousScrubbingTone];
-            [v14 setMuted:0];
+            continuousScrubbingTone = [(AXMDataSonifier *)self continuousScrubbingTone];
+            [continuousScrubbingTone setMuted:0];
 
-            [(AXMDataSonifier *)self interpolatedPitchValueForNormalizedTimePosition:v11 inSeries:v10 / v13];
+            [(AXMDataSonifier *)self interpolatedPitchValueForNormalizedTimePosition:v11 inSeries:frameCopy / v13];
             [(AXMDataSonifier *)self frequencyForPitchEncodingValue:?];
             v16 = v15;
-            v17 = [(AXMDataSonifier *)self continuousScrubbingTone];
-            [v17 setBaseFrequency:v16];
+            continuousScrubbingTone2 = [(AXMDataSonifier *)self continuousScrubbingTone];
+            [continuousScrubbingTone2 setBaseFrequency:v16];
           }
 
           else
           {
-            v17 = [(AXMDataSonifier *)self continuousScrubbingTone];
-            [v17 setMuted:1];
+            continuousScrubbingTone2 = [(AXMDataSonifier *)self continuousScrubbingTone];
+            [continuousScrubbingTone2 setMuted:1];
           }
         }
 
         else
         {
-          v18 = [(AXMDataSonifier *)self playbackMixerDataSource];
-          v19 = [v18 length];
+          playbackMixerDataSource3 = [(AXMDataSonifier *)self playbackMixerDataSource];
+          v19 = [playbackMixerDataSource3 length];
 
-          v20 = [(AXMDataSonifier *)self playbackMixerDataSource];
-          v21 = [v20 length];
-          if (v95 <= a3)
+          playbackMixerDataSource4 = [(AXMDataSonifier *)self playbackMixerDataSource];
+          v21 = [playbackMixerDataSource4 length];
+          if (currentSampleIndex <= frame)
           {
-            v22 = v95 / v19;
-            v23 = a3;
+            v22 = currentSampleIndex / v19;
+            frameCopy2 = frame;
           }
 
           else
           {
-            v22 = v10 / v19;
-            v23 = v95;
+            v22 = frameCopy / v19;
+            frameCopy2 = currentSampleIndex;
           }
 
-          v101 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v24 = 0;
-          v25 = v23 / v21;
+          v25 = frameCopy2 / v21;
           while (1)
           {
-            v26 = [v11 dataPoints];
-            v27 = v24 < [v26 count];
+            dataPoints = [v11 dataPoints];
+            v27 = v24 < [dataPoints count];
 
             if (!v27)
             {
               break;
             }
 
-            v28 = [v11 dataPoints];
-            v29 = [v28 objectAtIndexedSubscript:v24];
+            dataPoints2 = [v11 dataPoints];
+            v29 = [dataPoints2 objectAtIndexedSubscript:v24];
 
-            v30 = [v29 timeEncodingValue];
-            [(AXMDataSonifier *)self normalizedTimeEncodingValueForValue:v30];
+            timeEncodingValue = [v29 timeEncodingValue];
+            [(AXMDataSonifier *)self normalizedTimeEncodingValueForValue:timeEncodingValue];
             v32 = v31;
 
             if (v22 <= v32 && v32 < v25)
             {
               v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
-              [v101 addObject:v33];
+              [array addObject:v33];
             }
 
             ++v24;
           }
 
-          v34 = [(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext];
+          scrubbingDiscreteDataRenderingContext = [(AXMDataSonifier *)self scrubbingDiscreteDataRenderingContext];
           v110 = 0u;
           v111 = 0u;
           v108 = 0u;
           v109 = 0u;
-          v17 = v101;
+          continuousScrubbingTone2 = array;
           v35 = 0;
-          v36 = [v17 countByEnumeratingWithState:&v108 objects:v117 count:16];
+          v36 = [continuousScrubbingTone2 countByEnumeratingWithState:&v108 objects:v117 count:16];
           if (v36)
           {
             v37 = *v109;
@@ -1534,49 +1534,49 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
               {
                 if (*v109 != v37)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(continuousScrubbingTone2);
                 }
 
                 v40 = *(*(&v108 + 1) + 8 * v38);
-                v41 = [v11 dataPoints];
-                v42 = [v41 objectAtIndexedSubscript:{objc_msgSend(v40, "intValue")}];
+                dataPoints3 = [v11 dataPoints];
+                v42 = [dataPoints3 objectAtIndexedSubscript:{objc_msgSend(v40, "intValue")}];
 
-                v43 = [v42 pitchEncodingValue];
-                [v43 doubleValue];
+                pitchEncodingValue = [v42 pitchEncodingValue];
+                [pitchEncodingValue doubleValue];
                 [(AXMDataSonifier *)self frequencyForPitchEncodingValue:?];
                 v45 = v44;
 
-                v46 = [v42 durationEncodingValue];
-                [v46 doubleValue];
+                durationEncodingValue = [v42 durationEncodingValue];
+                [durationEncodingValue doubleValue];
                 [(AXMDataSonifier *)self durationForDurationEncodingValue:?];
                 v48 = v47;
 
-                v49 = [v42 volumeEncodingValue];
-                [v49 doubleValue];
+                volumeEncodingValue = [v42 volumeEncodingValue];
+                [volumeEncodingValue doubleValue];
                 [(AXMDataSonifier *)self volumeForVolumeEncodingValue:?];
                 v51 = v50;
 
                 v35 = [[AXMADSREnvelope alloc] initWithAttackDuration:20.0 attackLevel:v51 decayDuration:v48 / 5.0 sustainDuration:0.0 sustainLevel:0.0 releaseDuration:10.0];
                 v52 = [[AXMSinglePitchSynth alloc] initWithFrequency:v35 sampleRate:v45 envelope:44100.0];
-                [(AXMSinglePitchSynth *)v52 renderInBuffer:v34 atFrame:0];
+                [(AXMSinglePitchSynth *)v52 renderInBuffer:scrubbingDiscreteDataRenderingContext atFrame:0];
 
                 ++v38;
                 v39 = v35;
               }
 
               while (v36 != v38);
-              v36 = [v17 countByEnumeratingWithState:&v108 objects:v117 count:16];
+              v36 = [continuousScrubbingTone2 countByEnumeratingWithState:&v108 objects:v117 count:16];
             }
 
             while (v36);
           }
 
-          if ([v17 count])
+          if ([continuousScrubbingTone2 count])
           {
             [(AXMADSREnvelope *)v35 lengthMS];
             v54 = v53;
-            v55 = [v17 count];
-            v56 = [v17 count];
+            v55 = [continuousScrubbingTone2 count];
+            v56 = [continuousScrubbingTone2 count];
             v57 = ((v55 - 1) + v54 / v94 * 44100.0);
             v58 = v93 / vabdd_f64(v25, v22);
             if (v58 > 1.0)
@@ -1584,22 +1584,22 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
               v58 = 1.0;
             }
 
-            [(AXMDataSonifier *)self _peakNormalizeBuffer:v34 length:v57 level:v58 * (1.0 / v56)];
-            v59 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
-            v60 = [v59 currentSampleIndex];
+            [(AXMDataSonifier *)self _peakNormalizeBuffer:scrubbingDiscreteDataRenderingContext length:v57 level:v58 * (1.0 / v56)];
+            scrubbingDiscreteAudioDataSource = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
+            currentSampleIndex2 = [scrubbingDiscreteAudioDataSource currentSampleIndex];
 
-            v61 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
-            v62 = [v61 sampleBuffer];
+            scrubbingDiscreteAudioDataSource2 = [(AXMDataSonifier *)self scrubbingDiscreteAudioDataSource];
+            sampleBuffer = [scrubbingDiscreteAudioDataSource2 sampleBuffer];
 
             if (v57)
             {
               v63 = 0;
-              v64 = *v34;
-              v65 = *v62;
-              v66 = (v62[1] - *v62) >> 2;
+              v64 = *scrubbingDiscreteDataRenderingContext;
+              v65 = *sampleBuffer;
+              v66 = (sampleBuffer[1] - *sampleBuffer) >> 2;
               do
               {
-                *(v65 + 4 * ((v60 + 882 + v63) % v66)) += v64[v63];
+                *(v65 + 4 * ((currentSampleIndex2 + 882 + v63) % v66)) += v64[v63];
                 ++v63;
               }
 
@@ -1619,42 +1619,42 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
     while (v99);
   }
 
-  v67 = [(AXMDataSonifier *)self trendlineFunction];
-  v68 = v67 == 0;
+  trendlineFunction = [(AXMDataSonifier *)self trendlineFunction];
+  v68 = trendlineFunction == 0;
 
   if (!v68)
   {
-    v69 = [(AXMDataSonifier *)self playbackMixerDataSource];
-    v70 = [v69 length];
+    playbackMixerDataSource5 = [(AXMDataSonifier *)self playbackMixerDataSource];
+    v70 = [playbackMixerDataSource5 length];
 
-    v71 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v72 = [v71 timeAxisDescriptor];
+    currentChartDescriptor2 = [(AXMDataSonifier *)self currentChartDescriptor];
+    timeAxisDescriptor = [currentChartDescriptor2 timeAxisDescriptor];
 
-    [v72 lowerBound];
+    [timeAxisDescriptor lowerBound];
     v74 = v73;
-    [v72 upperBound];
-    [(AXMDataSonifier *)self valueFromNormalizedValue:a3 / v70 min:v74 max:v75];
+    [timeAxisDescriptor upperBound];
+    [(AXMDataSonifier *)self valueFromNormalizedValue:frame / v70 min:v74 max:v75];
     v77 = v76;
-    v78 = [(AXMDataSonifier *)self trendlineFunction];
-    v79 = v78[2](v77);
+    trendlineFunction2 = [(AXMDataSonifier *)self trendlineFunction];
+    v79 = trendlineFunction2[2](v77);
 
     [(AXMDataSonifier *)self frequencyForPitchEncodingValue:v79];
     v81 = v80;
-    v82 = [(AXMDataSonifier *)self trendlineScrubbingTone];
-    [v82 setBaseFrequency:v81];
+    trendlineScrubbingTone = [(AXMDataSonifier *)self trendlineScrubbingTone];
+    [trendlineScrubbingTone setBaseFrequency:v81];
   }
 
-  v83 = [(AXMDataSonifier *)self playbackMixerDataSource];
-  [v83 setCurrentSampleIndex:a3];
+  playbackMixerDataSource6 = [(AXMDataSonifier *)self playbackMixerDataSource];
+  [playbackMixerDataSource6 setCurrentSampleIndex:frame];
 
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v84 = [(AXMDataSonifier *)self playbackObservers];
-  v102 = [v84 allObjects];
+  playbackObservers = [(AXMDataSonifier *)self playbackObservers];
+  allObjects = [playbackObservers allObjects];
 
-  v85 = [v102 countByEnumeratingWithState:&v104 objects:v116 count:16];
+  v85 = [allObjects countByEnumeratingWithState:&v104 objects:v116 count:16];
   if (v85)
   {
     v86 = *v105;
@@ -1664,44 +1664,44 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
       {
         if (*v105 != v86)
         {
-          objc_enumerationMutation(v102);
+          objc_enumerationMutation(allObjects);
         }
 
         v88 = *(*(&v104 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          v89 = [(AXMDataSonifier *)self playbackMixerDataSource];
-          v90 = [v89 currentSampleIndex];
-          v91 = [(AXMDataSonifier *)self playbackMixerDataSource];
-          v92 = [v91 length];
+          playbackMixerDataSource7 = [(AXMDataSonifier *)self playbackMixerDataSource];
+          currentSampleIndex3 = [playbackMixerDataSource7 currentSampleIndex];
+          playbackMixerDataSource8 = [(AXMDataSonifier *)self playbackMixerDataSource];
+          v92 = [playbackMixerDataSource8 length];
 
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __40__AXMDataSonifier_scrubToPlaybackFrame___block_invoke;
           block[3] = &unk_1E7A1E000;
           block[4] = v88;
-          *&block[5] = v90 / v92;
+          *&block[5] = currentSampleIndex3 / v92;
           dispatch_async(MEMORY[0x1E69E96A0], block);
         }
       }
 
-      v85 = [v102 countByEnumeratingWithState:&v104 objects:v116 count:16];
+      v85 = [allObjects countByEnumeratingWithState:&v104 objects:v116 count:16];
     }
 
     while (v85);
   }
 }
 
-- (void)setCurrentChartDescriptor:(id)a3
+- (void)setCurrentChartDescriptor:(id)descriptor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  objc_storeStrong(&self->_currentChartDescriptor, a3);
+  descriptorCopy = descriptor;
+  objc_storeStrong(&self->_currentChartDescriptor, descriptor);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v18 series];
+  obj = [descriptorCopy series];
   v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
@@ -1720,8 +1720,8 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v8 dataPoints];
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        dataPoints = [v8 dataPoints];
+        v10 = [dataPoints countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = *v21;
@@ -1731,22 +1731,22 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(dataPoints);
               }
 
               v13 = *(*(&v20 + 1) + 8 * j);
-              v14 = [v13 zCategoryAxisValue];
-              v15 = v14 == 0;
+              zCategoryAxisValue = [v13 zCategoryAxisValue];
+              v15 = zCategoryAxisValue == 0;
 
               if (!v15)
               {
-                v16 = [(AXMDataSonifier *)self dataCategories];
-                v17 = [v13 zCategoryAxisValue];
-                [v16 addObject:v17];
+                dataCategories = [(AXMDataSonifier *)self dataCategories];
+                zCategoryAxisValue2 = [v13 zCategoryAxisValue];
+                [dataCategories addObject:zCategoryAxisValue2];
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v10 = [dataPoints countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v10);
@@ -1762,16 +1762,16 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   self->_needsRenderSonification = 1;
 }
 
-- (void)setCurrentSeriesIndex:(int64_t)a3
+- (void)setCurrentSeriesIndex:(int64_t)index
 {
   [(AXMDataSonifier *)self stopPlaying];
   [(AXMDataSonifier *)self stopScrubbing];
-  self->_currentSeriesIndex = a3;
-  if (a3)
+  self->_currentSeriesIndex = index;
+  if (index)
   {
-    v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v6 = [v5 series];
-    self->_currentSeriesIndex = a3 % ([v6 count] + 1);
+    currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+    series = [currentChartDescriptor series];
+    self->_currentSeriesIndex = index % ([series count] + 1);
   }
 
   [(AXMDataSonifier *)self renderSonification];
@@ -1781,9 +1781,9 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 {
   v20 = *MEMORY[0x1E69E9840];
   self->_needsRenderSonification = 0;
-  v3 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v4 = [v3 series];
-  v5 = [v4 count];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  series = [currentChartDescriptor series];
+  v5 = [series count];
 
   if (v5)
   {
@@ -1792,9 +1792,9 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
     [(AXMDataSonifier *)self _regenerateTimeEncodingValuesForDataPoints];
     if ([(AXMDataSonifier *)self currentSeriesIndex])
     {
-      v6 = [(AXMDataSonifier *)self currentChartDescriptor];
-      v7 = [v6 series];
-      v8 = [v7 objectAtIndexedSubscript:{-[AXMDataSonifier currentSeriesIndex](self, "currentSeriesIndex") - 1}];
+      currentChartDescriptor2 = [(AXMDataSonifier *)self currentChartDescriptor];
+      series2 = [currentChartDescriptor2 series];
+      v8 = [series2 objectAtIndexedSubscript:{-[AXMDataSonifier currentSeriesIndex](self, "currentSeriesIndex") - 1}];
 
       [(AXMDataSonifier *)self _renderSeries:v8];
     }
@@ -1805,10 +1805,10 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v10 = [(AXMDataSonifier *)self currentChartDescriptor];
-      v11 = [v10 series];
+      currentChartDescriptor3 = [(AXMDataSonifier *)self currentChartDescriptor];
+      series3 = [currentChartDescriptor3 series];
 
-      v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [series3 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v12)
       {
         v13 = *v16;
@@ -1819,14 +1819,14 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
           {
             if (*v16 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(series3);
             }
 
             [(AXMDataSonifier *)self _renderSeries:*(*(&v15 + 1) + 8 * v14++)];
           }
 
           while (v12 != v14);
-          v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v12 = [series3 countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v12);
@@ -1834,37 +1834,37 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
     }
 
     [(AXMDataSonifier *)self _initializeAudioChain];
-    v9 = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
-    [v9 normalizeAudio];
+    playbackChartDataAudioDataSource = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
+    [playbackChartDataAudioDataSource normalizeAudio];
   }
 
   else
   {
-    v9 = AXMediaLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    playbackChartDataAudioDataSource = AXMediaLogCommon();
+    if (os_log_type_enabled(playbackChartDataAudioDataSource, OS_LOG_TYPE_ERROR))
     {
-      [(AXMDataSonifier *)v9 renderSonification];
+      [(AXMDataSonifier *)playbackChartDataAudioDataSource renderSonification];
     }
   }
 }
 
-- (void)_renderSeries:(id)a3
+- (void)_renderSeries:(id)series
 {
-  v12 = a3;
-  if ([v12 isContinuous])
+  seriesCopy = series;
+  if ([seriesCopy isContinuous])
   {
-    v4 = [(AXMDataSonifier *)self _keyPitchesForContinuousSeries:v12];
+    v4 = [(AXMDataSonifier *)self _keyPitchesForContinuousSeries:seriesCopy];
     keyPitches = self->_keyPitches;
     self->_keyPitches = v4;
 
     if ([(NSArray *)self->_keyPitches count])
     {
-      v6 = [(NSArray *)self->_keyPitches firstObject];
-      [v6 timeOffsetMS];
+      firstObject = [(NSArray *)self->_keyPitches firstObject];
+      [firstObject timeOffsetMS];
       v8 = v7;
 
-      v9 = [(NSArray *)self->_keyPitches lastObject];
-      [v9 timeOffsetMS];
+      lastObject = [(NSArray *)self->_keyPitches lastObject];
+      [lastObject timeOffsetMS];
       v11 = v10;
 
       self->audiographPlaybackDuration = v11 - v8;
@@ -1872,74 +1872,74 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 
     if ([(AXMDataSonifier *)self containsMultipleSeries])
     {
-      [(AXMDataSonifier *)self _renderContinuousAudioForMultiSeries:v12];
+      [(AXMDataSonifier *)self _renderContinuousAudioForMultiSeries:seriesCopy];
     }
   }
 
   else
   {
-    [(AXMDataSonifier *)self _renderDiscreteAudioForSeries:v12];
+    [(AXMDataSonifier *)self _renderDiscreteAudioForSeries:seriesCopy];
   }
 }
 
-- (void)_renderDiscreteAudioForSeries:(id)a3
+- (void)_renderDiscreteAudioForSeries:(id)series
 {
-  v22 = a3;
+  seriesCopy = series;
   for (i = 0; ; ++i)
   {
-    v5 = [v22 dataPoints];
-    v6 = [v5 count];
+    dataPoints = [seriesCopy dataPoints];
+    v6 = [dataPoints count];
 
     if (i >= v6)
     {
       break;
     }
 
-    v7 = [v22 dataPoints];
-    v8 = [v7 objectAtIndexedSubscript:i];
+    dataPoints2 = [seriesCopy dataPoints];
+    v8 = [dataPoints2 objectAtIndexedSubscript:i];
 
     [v8 playbackTimeOffsetMS];
     v9 = [(AXMDataSonifier *)self sampleIndexForTimeOffset:?];
-    v10 = [v8 pitchEncodingValue];
-    [v10 doubleValue];
+    pitchEncodingValue = [v8 pitchEncodingValue];
+    [pitchEncodingValue doubleValue];
     [(AXMDataSonifier *)self frequencyForPitchEncodingValue:?];
     v12 = v11;
 
-    v13 = [v8 durationEncodingValue];
-    [v13 doubleValue];
+    durationEncodingValue = [v8 durationEncodingValue];
+    [durationEncodingValue doubleValue];
     [(AXMDataSonifier *)self durationForDurationEncodingValue:?];
     v15 = v14;
 
-    v16 = [v8 volumeEncodingValue];
-    [v16 doubleValue];
+    volumeEncodingValue = [v8 volumeEncodingValue];
+    [volumeEncodingValue doubleValue];
     [(AXMDataSonifier *)self volumeForVolumeEncodingValue:?];
     v18 = v17;
 
     v19 = [[AXMADSREnvelope alloc] initWithAttackDuration:20.0 attackLevel:v18 decayDuration:v15 / 5.0 sustainDuration:20.0 sustainLevel:0.3 releaseDuration:10.0];
     v20 = [[AXMSinglePitchSynth alloc] initWithFrequency:v19 sampleRate:v12 envelope:44100.0];
-    v21 = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
-    -[AXMSinglePitchSynth renderInBuffer:atFrame:](v20, "renderInBuffer:atFrame:", [v21 sampleBuffer], v9);
+    playbackChartDataAudioDataSource = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
+    -[AXMSinglePitchSynth renderInBuffer:atFrame:](v20, "renderInBuffer:atFrame:", [playbackChartDataAudioDataSource sampleBuffer], v9);
   }
 }
 
-- (id)_keyPitchesForContinuousSeries:(id)a3
+- (id)_keyPitchesForContinuousSeries:(id)series
 {
-  v4 = a3;
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v6 = [v5 series];
-  v7 = [v6 indexOfObject:v4];
+  seriesCopy = series;
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  series = [currentChartDescriptor series];
+  v7 = [series indexOfObject:seriesCopy];
 
-  if ([v4 isContinuous])
+  if ([seriesCopy isContinuous])
   {
-    v8 = [v4 dataPoints];
-    v9 = [v8 count];
+    dataPoints = [seriesCopy dataPoints];
+    v9 = [dataPoints count];
 
-    v10 = 0;
+    array = 0;
     if (v9 && v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [v4 dataPoints];
-      v12 = [v11 objectAtIndexedSubscript:0];
+      array = [MEMORY[0x1E695DF70] array];
+      dataPoints2 = [seriesCopy dataPoints];
+      v12 = [dataPoints2 objectAtIndexedSubscript:0];
       [v12 playbackTimeOffsetMS];
       v14 = v13;
 
@@ -1947,33 +1947,33 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
       *&self->maxFrequency = xmmword_1AE451D30;
       while (1)
       {
-        v16 = [v4 dataPoints];
-        v17 = [v16 count];
+        dataPoints3 = [seriesCopy dataPoints];
+        v17 = [dataPoints3 count];
 
         if (v15 >= v17)
         {
           break;
         }
 
-        v18 = [v4 dataPoints];
-        v19 = [v18 objectAtIndexedSubscript:v15];
+        dataPoints4 = [seriesCopy dataPoints];
+        v19 = [dataPoints4 objectAtIndexedSubscript:v15];
 
         [v19 playbackTimeOffsetMS];
         v21 = v20;
-        v22 = [v19 pitchEncodingValue];
-        [v22 doubleValue];
+        pitchEncodingValue = [v19 pitchEncodingValue];
+        [pitchEncodingValue doubleValue];
         [(AXMDataSonifier *)self frequencyForPitchEncodingValue:?];
         v24 = v23;
 
-        v25 = [v19 volumeEncodingValue];
-        [v25 doubleValue];
+        volumeEncodingValue = [v19 volumeEncodingValue];
+        [volumeEncodingValue doubleValue];
         [(AXMDataSonifier *)self volumeForVolumeEncodingValue:?];
         v27 = v26;
 
         v28 = [[KeyPitch alloc] initWithFrequency:v24 volume:v27 timeOffset:v21 - v14];
-        if (![v10 count] || (objc_msgSend(v10, "lastObject"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "timeOffsetMS"), v31 = v30, -[KeyPitch timeOffsetMS](v28, "timeOffsetMS"), v33 = v32, v29, v31 < v33))
+        if (![array count] || (objc_msgSend(array, "lastObject"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "timeOffsetMS"), v31 = v30, -[KeyPitch timeOffsetMS](v28, "timeOffsetMS"), v33 = v32, v29, v31 < v33))
         {
-          [v10 addObject:v28];
+          [array addObject:v28];
           v34 = fmin(self->minFrequency, v24);
           self->maxFrequency = fmax(self->maxFrequency, v24);
           self->minFrequency = v34;
@@ -1986,28 +1986,28 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
-  return v10;
+  return array;
 }
 
-- (void)_renderContinuousAudioForMultiSeries:(id)a3
+- (void)_renderContinuousAudioForMultiSeries:(id)series
 {
-  v4 = [a3 dataPoints];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  dataPoints = [series dataPoints];
+  v5 = [dataPoints objectAtIndexedSubscript:0];
   [v5 playbackTimeOffsetMS];
   v7 = v6;
 
   v8 = [(AXMDataSonifier *)self sampleIndexForTimeOffset:v7];
   v9 = [AXMADSREnvelope alloc];
-  v10 = [(NSArray *)self->_keyPitches lastObject];
-  [v10 timeOffsetMS];
+  lastObject = [(NSArray *)self->_keyPitches lastObject];
+  [lastObject timeOffsetMS];
   v14 = [(AXMADSREnvelope *)v9 initWithAttackDuration:30.0 attackLevel:0.8 decayDuration:0.0 sustainDuration:v11 sustainLevel:0.8 releaseDuration:75.0];
 
   v12 = [[AXMContinuousSynth alloc] initWithSampleRate:v14 envelope:self->_keyPitches keyPitches:44100.0];
-  v13 = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
-  -[AXMContinuousSynth renderInBuffer:atFrame:](v12, "renderInBuffer:atFrame:", [v13 sampleBuffer], v8);
+  playbackChartDataAudioDataSource = [(AXMDataSonifier *)self playbackChartDataAudioDataSource];
+  -[AXMContinuousSynth renderInBuffer:atFrame:](v12, "renderInBuffer:atFrame:", [playbackChartDataAudioDataSource sampleBuffer], v8);
 }
 
 - (void)_initializeAudioChain
@@ -2026,9 +2026,9 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
     [(AXMDataSonifier *)self _setupAudioPlayerBasedAudioChain];
   }
 
-  v4 = [(AVAudioEngine *)self->_engine mainMixerNode];
+  mainMixerNode = [(AVAudioEngine *)self->_engine mainMixerNode];
   LODWORD(v5) = 1.0;
-  [v4 setOutputVolume:v5];
+  [mainMixerNode setOutputVolume:v5];
 
   maximumToneVolume = self->_maximumToneVolume;
   fadeDuration = self->_fadeDuration;
@@ -2038,8 +2038,8 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 
 - (void)_setupAudioPlayerBasedAudioChain
 {
-  v6 = [(AXMDataSonifier *)self currentSeries];
-  if (v6 && (-[AXMDataSonifier currentSeries](self, "currentSeries"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 isContinuous], v3, v6, (v4 & 1) == 0))
+  currentSeries = [(AXMDataSonifier *)self currentSeries];
+  if (currentSeries && (-[AXMDataSonifier currentSeries](self, "currentSeries"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 isContinuous], v3, currentSeries, (v4 & 1) == 0))
   {
 
     [(AXMDataSonifier *)self _setupFMBasedAudioChain];
@@ -2049,11 +2049,11 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   {
     [(AXMDataSonifier *)self _initializePitchShifter];
     [(AXMDataSonifier *)self _initializeAudioPlayerNode];
-    v7 = [(AVAudioEngine *)self->_engine mainMixerNode];
+    mainMixerNode = [(AVAudioEngine *)self->_engine mainMixerNode];
     v5 = [objc_alloc(MEMORY[0x1E6958418]) initStandardFormatWithSampleRate:2 channels:44100.0];
     [(AVAudioEngine *)self->_engine connect:self->_player to:self->_pitchShifter fromBus:0 toBus:0 format:v5];
     [(AVAudioEngine *)self->_engine connect:self->_pitchShifter to:self->_stereoPanner fromBus:0 toBus:0 format:v5];
-    -[AVAudioEngine connect:to:fromBus:toBus:format:](self->_engine, "connect:to:fromBus:toBus:format:", self->_stereoPanner, v7, 0, [v7 nextAvailableInputBus], v5);
+    -[AVAudioEngine connect:to:fromBus:toBus:format:](self->_engine, "connect:to:fromBus:toBus:format:", self->_stereoPanner, mainMixerNode, 0, [mainMixerNode nextAvailableInputBus], v5);
   }
 }
 
@@ -2061,11 +2061,11 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
 {
   [(AXMDataSonifier *)self _initializeAudioSourceNode];
   [(AXMDataSonifier *)self _initializeLimiter];
-  v4 = [(AVAudioEngine *)self->_engine mainMixerNode];
+  mainMixerNode = [(AVAudioEngine *)self->_engine mainMixerNode];
   v3 = [objc_alloc(MEMORY[0x1E6958418]) initStandardFormatWithSampleRate:2 channels:44100.0];
   [(AVAudioEngine *)self->_engine connect:self->_audioSourceNode to:self->_stereoPanner fromBus:0 toBus:0 format:v3];
   [(AVAudioEngine *)self->_engine connect:self->_stereoPanner to:self->_limiter fromBus:0 toBus:0 format:v3];
-  -[AVAudioEngine connect:to:fromBus:toBus:format:](self->_engine, "connect:to:fromBus:toBus:format:", self->_limiter, v4, 0, [v4 nextAvailableInputBus], v3);
+  -[AVAudioEngine connect:to:fromBus:toBus:format:](self->_engine, "connect:to:fromBus:toBus:format:", self->_limiter, mainMixerNode, 0, [mainMixerNode nextAvailableInputBus], v3);
 }
 
 - (void)_initializeAudioPlayerNode
@@ -2082,8 +2082,8 @@ uint64_t __31__AXMDataSonifier_endScrubbing__block_invoke_2(uint64_t a1)
   v9 = [v7 initForReading:v8 error:0];
 
   v10 = objc_alloc(MEMORY[0x1E6958440]);
-  v11 = [v9 processingFormat];
-  v12 = [v10 initWithPCMFormat:v11 frameCapacity:objc_msgSend(v9, "length")];
+  processingFormat = [v9 processingFormat];
+  v12 = [v10 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(v9, "length")];
   buffer = self->buffer;
   self->buffer = v12;
 
@@ -2361,14 +2361,14 @@ void __45__AXMDataSonifier__initializeAudioSourceNode__block_invoke_2(uint64_t a
   [(AVAudioEngine *)engine attachNode:v6];
 }
 
-- (void)_setPanning:(float)a3
+- (void)_setPanning:(float)panning
 {
   stereoPanner = self->_stereoPanner;
-  v5 = [(AXMDataSonifier *)self shouldPlayInStereo];
+  shouldPlayInStereo = [(AXMDataSonifier *)self shouldPlayInStereo];
   v6 = 0.0;
-  if (v5)
+  if (shouldPlayInStereo)
   {
-    *&v6 = a3;
+    *&v6 = panning;
   }
 
   [(AVAudioEnvironmentNode *)stereoPanner setPan:v6];
@@ -2387,49 +2387,49 @@ void __45__AXMDataSonifier__initializeAudioSourceNode__block_invoke_2(uint64_t a
   [(AVAudioEngine *)self->_engine attachNode:self->_limiter];
 }
 
-- (double)normalizedTimeEncodingValueForValue:(id)a3
+- (double)normalizedTimeEncodingValueForValue:(id)value
 {
-  v4 = a3;
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v6 = [v5 timeNumericAxisDescriptor];
+  valueCopy = value;
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  timeNumericAxisDescriptor = [currentChartDescriptor timeNumericAxisDescriptor];
 
-  if (v6)
+  if (timeNumericAxisDescriptor)
   {
-    v7 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v8 = [v7 timeNumericAxisDescriptor];
+    currentChartDescriptor2 = [(AXMDataSonifier *)self currentChartDescriptor];
+    timeNumericAxisDescriptor2 = [currentChartDescriptor2 timeNumericAxisDescriptor];
 
-    [v4 number];
+    [valueCopy number];
     v10 = v9;
-    [v8 lowerBound];
+    [timeNumericAxisDescriptor2 lowerBound];
     v12 = v11;
-    [v8 upperBound];
+    [timeNumericAxisDescriptor2 upperBound];
     [(AXMDataSonifier *)self normalizedValueForValue:v10 min:v12 max:v13];
     v15 = v14;
   }
 
   else
   {
-    v17 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v18 = [v17 timeCategoricalAxisDescriptor];
+    currentChartDescriptor3 = [(AXMDataSonifier *)self currentChartDescriptor];
+    timeCategoricalAxisDescriptor = [currentChartDescriptor3 timeCategoricalAxisDescriptor];
 
-    if (!v18)
+    if (!timeCategoricalAxisDescriptor)
     {
       v15 = 0.0;
       goto LABEL_4;
     }
 
-    v19 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v8 = [v19 timeCategoricalAxisDescriptor];
+    currentChartDescriptor4 = [(AXMDataSonifier *)self currentChartDescriptor];
+    timeNumericAxisDescriptor2 = [currentChartDescriptor4 timeCategoricalAxisDescriptor];
 
-    v20 = [v8 categoryOrder];
-    v21 = [v4 category];
-    v22 = [v20 indexOfObject:v21];
+    categoryOrder = [timeNumericAxisDescriptor2 categoryOrder];
+    category = [valueCopy category];
+    v22 = [categoryOrder indexOfObject:category];
 
     v15 = 0.0;
     if (v22 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v23 = [v8 categoryOrder];
-      v15 = v22 / [v23 count];
+      categoryOrder2 = [timeNumericAxisDescriptor2 categoryOrder];
+      v15 = v22 / [categoryOrder2 count];
     }
   }
 
@@ -2437,41 +2437,41 @@ LABEL_4:
   return v15;
 }
 
-- (double)interpolatedPitchValueForNormalizedTimePosition:(double)a3 inSeries:(id)a4
+- (double)interpolatedPitchValueForNormalizedTimePosition:(double)position inSeries:(id)series
 {
-  v6 = a4;
-  v7 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v8 = [v7 timeAxisDescriptor];
+  seriesCopy = series;
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  timeAxisDescriptor = [currentChartDescriptor timeAxisDescriptor];
 
-  v9 = [v8 isCategoricalAxis];
-  if (v9)
+  isCategoricalAxis = [timeAxisDescriptor isCategoricalAxis];
+  if (isCategoricalAxis)
   {
-    v10 = [v6 dataPoints];
-    v11 = [v10 count];
+    dataPoints = [seriesCopy dataPoints];
+    v11 = [dataPoints count];
 
     v12 = 0.0;
   }
 
   else
   {
-    [v8 lowerBound];
+    [timeAxisDescriptor lowerBound];
     v12 = v13;
-    [v8 upperBound];
+    [timeAxisDescriptor upperBound];
     v11 = v14;
   }
 
-  [(AXMDataSonifier *)self valueFromNormalizedValue:a3 min:v12 max:v11];
+  [(AXMDataSonifier *)self valueFromNormalizedValue:position min:v12 max:v11];
   v16 = v15;
-  v17 = [v6 dataPoints];
+  dataPoints2 = [seriesCopy dataPoints];
   for (i = 1; ; ++i)
   {
-    if (i >= [v17 count])
+    if (i >= [dataPoints2 count])
     {
       v24 = 0.0;
       goto LABEL_14;
     }
 
-    if ((v9 & 1) == 0)
+    if ((isCategoricalAxis & 1) == 0)
     {
       break;
     }
@@ -2488,9 +2488,9 @@ LABEL_10:
     ;
   }
 
-  v20 = [v17 objectAtIndexedSubscript:i];
-  v21 = [v20 timeEncodingValue];
-  [v21 number];
+  v20 = [dataPoints2 objectAtIndexedSubscript:i];
+  timeEncodingValue = [v20 timeEncodingValue];
+  [timeEncodingValue number];
   v23 = v22;
 
   if (v23 <= v16)
@@ -2499,25 +2499,25 @@ LABEL_10:
   }
 
   v25 = i - 1;
-  v27 = [v17 objectAtIndexedSubscript:i - 1];
-  v28 = [v27 timeEncodingValue];
-  [v28 number];
+  v27 = [dataPoints2 objectAtIndexedSubscript:i - 1];
+  timeEncodingValue2 = [v27 timeEncodingValue];
+  [timeEncodingValue2 number];
   v26 = v29;
 
-  v30 = [v17 objectAtIndexedSubscript:i];
-  v31 = [v30 timeEncodingValue];
-  [v31 number];
+  v30 = [dataPoints2 objectAtIndexedSubscript:i];
+  timeEncodingValue3 = [v30 timeEncodingValue];
+  [timeEncodingValue3 number];
   v19 = v32;
 
 LABEL_13:
-  v33 = [v17 objectAtIndexedSubscript:v25];
-  v34 = [v33 pitchEncodingValue];
-  [v34 doubleValue];
+  v33 = [dataPoints2 objectAtIndexedSubscript:v25];
+  pitchEncodingValue = [v33 pitchEncodingValue];
+  [pitchEncodingValue doubleValue];
   v36 = v35;
 
-  v37 = [v17 objectAtIndexedSubscript:i];
-  v38 = [v37 pitchEncodingValue];
-  [v38 doubleValue];
+  v37 = [dataPoints2 objectAtIndexedSubscript:i];
+  pitchEncodingValue2 = [v37 pitchEncodingValue];
+  [pitchEncodingValue2 doubleValue];
   v40 = v39;
 
   v24 = v36 + (v16 - v26) / (v19 - v26) * (v40 - v36);
@@ -2526,10 +2526,10 @@ LABEL_14:
   return v24;
 }
 
-- (double)timeOffsetForTimeEncodingValue:(id)a3
+- (double)timeOffsetForTimeEncodingValue:(id)value
 {
-  v4 = a3;
-  [(AXMDataSonifier *)self normalizedTimeEncodingValueForValue:v4];
+  valueCopy = value;
+  [(AXMDataSonifier *)self normalizedTimeEncodingValueForValue:valueCopy];
   v6 = v5;
   [(AXMDataSonifier *)self playbackDuration];
   v8 = v6 * v7;
@@ -2537,19 +2537,19 @@ LABEL_14:
   return v8;
 }
 
-- (double)frequencyForPitchEncodingValue:(double)a3
+- (double)frequencyForPitchEncodingValue:(double)value
 {
   [(AXMDataSonifier *)self minimumPlaybackFrequency];
   v6 = log2(v5);
   [(AXMDataSonifier *)self maximumPlaybackFrequency];
   v8 = log2(v7);
-  v9 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v10 = [v9 pitchAxisDescriptor];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  pitchAxisDescriptor = [currentChartDescriptor pitchAxisDescriptor];
 
-  [v10 lowerBound];
+  [pitchAxisDescriptor lowerBound];
   v12 = v11;
-  [v10 upperBound];
-  [(AXMDataSonifier *)self normalizedValueForValue:a3 min:v12 max:v13];
+  [pitchAxisDescriptor upperBound];
+  [(AXMDataSonifier *)self normalizedValueForValue:value min:v12 max:v13];
   v15 = exp2(v6 + v14 * (v8 - v6));
   [(AXMDataSonifier *)self minimumPlaybackFrequency];
   v17 = v16;
@@ -2559,21 +2559,21 @@ LABEL_14:
   return v19;
 }
 
-- (double)volumeForVolumeEncodingValue:(double)a3
+- (double)volumeForVolumeEncodingValue:(double)value
 {
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v6 = [v5 volumeAxisDescriptor];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  volumeAxisDescriptor = [currentChartDescriptor volumeAxisDescriptor];
 
-  if (v6)
+  if (volumeAxisDescriptor)
   {
     [(AXMDataSonifier *)self maximumToneVolume];
     v8 = v7;
     [(AXMDataSonifier *)self minimumToneVolume];
     v10 = v9;
-    [v6 lowerBound];
+    [volumeAxisDescriptor lowerBound];
     v12 = v11;
-    [v6 upperBound];
-    [(AXMDataSonifier *)self normalizedValueForValue:a3 min:v12 max:v13];
+    [volumeAxisDescriptor upperBound];
+    [(AXMDataSonifier *)self normalizedValueForValue:value min:v12 max:v13];
     v15 = v14;
     [(AXMDataSonifier *)self minimumToneVolume];
     v17 = v16;
@@ -2591,15 +2591,15 @@ LABEL_14:
   return v21;
 }
 
-- (double)durationForDurationEncodingValue:(double)a3
+- (double)durationForDurationEncodingValue:(double)value
 {
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v6 = [v5 durationAxisDescriptor];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  durationAxisDescriptor = [currentChartDescriptor durationAxisDescriptor];
 
-  [v6 lowerBound];
+  [durationAxisDescriptor lowerBound];
   v8 = v7;
-  [v6 upperBound];
-  [(AXMDataSonifier *)self normalizedValueForValue:a3 min:v8 max:v9];
+  [durationAxisDescriptor upperBound];
+  [(AXMDataSonifier *)self normalizedValueForValue:value min:v8 max:v9];
   v11 = v10;
   [(AXMDataSonifier *)self maximumDiscreteToneLength];
   v13 = v12;
@@ -2615,29 +2615,29 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)series:(id)a3 hasContinuousPitchDataForTimePosition:(double)a4
+- (BOOL)series:(id)series hasContinuousPitchDataForTimePosition:(double)position
 {
-  v6 = a3;
-  v7 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v8 = [v7 timeAxisDescriptor];
+  seriesCopy = series;
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  timeAxisDescriptor = [currentChartDescriptor timeAxisDescriptor];
 
-  if ([v8 isCategoricalAxis])
+  if ([timeAxisDescriptor isCategoricalAxis])
   {
     v9 = 1;
   }
 
   else
   {
-    [v8 lowerBound];
+    [timeAxisDescriptor lowerBound];
     v11 = v10;
-    [v8 upperBound];
-    [(AXMDataSonifier *)self valueFromNormalizedValue:a4 min:v11 max:v12];
+    [timeAxisDescriptor upperBound];
+    [(AXMDataSonifier *)self valueFromNormalizedValue:position min:v11 max:v12];
     v14 = v13;
-    if ([v6 isContinuous])
+    if ([seriesCopy isContinuous])
     {
-      [v6 minimumDataValueOnTimeAxis];
+      [seriesCopy minimumDataValueOnTimeAxis];
       v16 = v15;
-      [v6 maximumDataValueOnTimeAxis];
+      [seriesCopy maximumDataValueOnTimeAxis];
       v9 = v14 <= v17 && v16 <= v14;
     }
 
@@ -2670,27 +2670,27 @@ LABEL_14:
 
 - (void)endLiveContinuousToneSession
 {
-  v3 = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
-  [v3 removeAllDataSources];
+  liveContinuousMixerDataSource = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
+  [liveContinuousMixerDataSource removeAllDataSources];
 
   self->_isInLiveContinuousToneSession = 0;
 
   [(AXMDataSonifier *)self stopPlaying];
 }
 
-- (void)setLiveContinuousToneNormalizedFrequency:(double)a3
+- (void)setLiveContinuousToneNormalizedFrequency:(double)frequency
 {
-  [(AXMDataSonifier *)self _centsForNormalizedFrequency:a3];
+  [(AXMDataSonifier *)self _centsForNormalizedFrequency:frequency];
   *&v4 = v4;
   pitchShifter = self->_pitchShifter;
 
   [(AVAudioUnitTimePitch *)pitchShifter setPitch:v4];
 }
 
-- (void)_peakNormalizeBuffer:(void *)a3 length:(unint64_t)a4 level:(double)a5
+- (void)_peakNormalizeBuffer:(void *)buffer length:(unint64_t)length level:(double)level
 {
-  v5 = *a3;
-  v6 = *(a3 + 1) - *a3;
+  v5 = *buffer;
+  v6 = *(buffer + 1) - *buffer;
   if (v6)
   {
     v7 = 0;
@@ -2700,7 +2700,7 @@ LABEL_14:
       v8 = 1;
     }
 
-    v9 = *a3;
+    v9 = *buffer;
     v10 = v8;
     do
     {
@@ -2717,7 +2717,7 @@ LABEL_14:
     while (v10);
     do
     {
-      *v5 = ((*v5 / (v7 / 32500.0)) * a5);
+      *v5 = ((*v5 / (v7 / 32500.0)) * level);
       ++v5;
       --v8;
     }
@@ -2736,24 +2736,24 @@ LABEL_14:
 - (void)_regenerateTimeEncodingValuesForDataPoints
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v4 = [v3 timeCategoricalAxisDescriptor];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  timeCategoricalAxisDescriptor = [currentChartDescriptor timeCategoricalAxisDescriptor];
 
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v37 = [v5 timeNumericAxisDescriptor];
+  currentChartDescriptor2 = [(AXMDataSonifier *)self currentChartDescriptor];
+  timeNumericAxisDescriptor = [currentChartDescriptor2 timeNumericAxisDescriptor];
 
-  v6 = [v4 categoryOrder];
-  v7 = [v6 count];
+  categoryOrder = [timeCategoricalAxisDescriptor categoryOrder];
+  v7 = [categoryOrder count];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v9 = [v8 series];
+  currentChartDescriptor3 = [(AXMDataSonifier *)self currentChartDescriptor];
+  series = [currentChartDescriptor3 series];
 
-  obj = v9;
-  v34 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  obj = series;
+  v34 = [series countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v34)
   {
     v33 = *v43;
@@ -2772,8 +2772,8 @@ LABEL_14:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v36 = [v11 dataPoints];
-        v12 = [v36 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        dataPoints = [v11 dataPoints];
+        v12 = [dataPoints countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v12)
         {
           v13 = *v39;
@@ -2783,16 +2783,16 @@ LABEL_14:
             {
               if (*v39 != v13)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(dataPoints);
               }
 
               v15 = *(*(&v38 + 1) + 8 * j);
-              if (v4)
+              if (timeCategoricalAxisDescriptor)
               {
-                v16 = [v4 categoryOrder];
-                v17 = [v15 timeEncodingValue];
-                v18 = [v17 category];
-                v19 = [v16 indexOfObject:v18];
+                categoryOrder2 = [timeCategoricalAxisDescriptor categoryOrder];
+                timeEncodingValue = [v15 timeEncodingValue];
+                category = [timeEncodingValue category];
+                v19 = [categoryOrder2 indexOfObject:category];
 
                 if (v19 != 0x7FFFFFFFFFFFFFFFLL)
                 {
@@ -2805,13 +2805,13 @@ LABEL_14:
 
               else
               {
-                v23 = [*(*(&v38 + 1) + 8 * j) timeEncodingValue];
-                [v23 number];
+                timeEncodingValue2 = [*(*(&v38 + 1) + 8 * j) timeEncodingValue];
+                [timeEncodingValue2 number];
                 v25 = v24;
 
-                [v37 lowerBound];
+                [timeNumericAxisDescriptor lowerBound];
                 v27 = v26;
-                [v37 upperBound];
+                [timeNumericAxisDescriptor upperBound];
                 [(AXMDataSonifier *)self normalizedValueForValue:v25 min:v27 max:v28];
                 v30 = v29;
                 [(AXMDataSonifier *)self playbackDuration];
@@ -2819,7 +2819,7 @@ LABEL_14:
               }
             }
 
-            v12 = [v36 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v12 = [dataPoints countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v12);
@@ -2876,11 +2876,11 @@ LABEL_9:
 - (void)_initializeLiveToneDataSource
 {
   [(AXMDataSonifier *)self stopPlaying];
-  v3 = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
-  [v3 setLength:88200];
+  liveContinuousMixerDataSource = [(AXMDataSonifier *)self liveContinuousMixerDataSource];
+  [liveContinuousMixerDataSource setLength:88200];
 
-  v4 = [(AXMDataSonifier *)self liveContinuousAudioDataSource];
-  [v4 setLength:88200];
+  liveContinuousAudioDataSource = [(AXMDataSonifier *)self liveContinuousAudioDataSource];
+  [liveContinuousAudioDataSource setLength:88200];
 }
 
 - (AXMDataSeriesDescriptor)currentSeries
@@ -2890,38 +2890,38 @@ LABEL_9:
     goto LABEL_2;
   }
 
-  v4 = [(AXMDataSonifier *)self currentSeriesIndex];
-  v5 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v6 = [v5 series];
-  v7 = [v6 count];
+  currentSeriesIndex = [(AXMDataSonifier *)self currentSeriesIndex];
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  series = [currentChartDescriptor series];
+  v7 = [series count];
 
-  if (v4 >= v7)
+  if (currentSeriesIndex >= v7)
   {
-    v11 = [(AXMDataSonifier *)self currentSeriesIndex];
-    v12 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v13 = [v12 series];
-    v14 = [v13 count];
+    currentSeriesIndex2 = [(AXMDataSonifier *)self currentSeriesIndex];
+    currentChartDescriptor2 = [(AXMDataSonifier *)self currentChartDescriptor];
+    series2 = [currentChartDescriptor2 series];
+    v14 = [series2 count];
 
-    if (v11 != v14)
+    if (currentSeriesIndex2 != v14)
     {
 LABEL_2:
       v3 = 0;
       goto LABEL_8;
     }
 
-    v8 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v9 = [v8 series];
-    v10 = [v9 lastObject];
+    currentChartDescriptor3 = [(AXMDataSonifier *)self currentChartDescriptor];
+    series3 = [currentChartDescriptor3 series];
+    lastObject = [series3 lastObject];
   }
 
   else
   {
-    v8 = [(AXMDataSonifier *)self currentChartDescriptor];
-    v9 = [v8 series];
-    v10 = [v9 objectAtIndexedSubscript:{-[AXMDataSonifier currentSeriesIndex](self, "currentSeriesIndex")}];
+    currentChartDescriptor3 = [(AXMDataSonifier *)self currentChartDescriptor];
+    series3 = [currentChartDescriptor3 series];
+    lastObject = [series3 objectAtIndexedSubscript:{-[AXMDataSonifier currentSeriesIndex](self, "currentSeriesIndex")}];
   }
 
-  v3 = v10;
+  v3 = lastObject;
 
 LABEL_8:
 
@@ -2930,25 +2930,25 @@ LABEL_8:
 
 - (BOOL)containsMultipleSeries
 {
-  v2 = [(AXMDataSonifier *)self currentChartDescriptor];
-  v3 = [v2 series];
-  v4 = [v3 count] > 1;
+  currentChartDescriptor = [(AXMDataSonifier *)self currentChartDescriptor];
+  series = [currentChartDescriptor series];
+  v4 = [series count] > 1;
 
   return v4;
 }
 
-- (BOOL)shouldIncrementToPitch:(double)a3 by:(double)a4
+- (BOOL)shouldIncrementToPitch:(double)pitch by:(double)by
 {
   [(AVAudioUnitTimePitch *)self->_pitchShifter pitch];
-  v7 = v6 + a4;
-  if (a4 >= 0.0)
+  v7 = v6 + by;
+  if (by >= 0.0)
   {
-    return v7 < a3 + a4;
+    return v7 < pitch + by;
   }
 
   else
   {
-    return v7 > a3 + a4;
+    return v7 > pitch + by;
   }
 }
 

@@ -1,18 +1,18 @@
 @interface SLMessageComposeViewControllerDelegateAdapter
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation SLMessageComposeViewControllerDelegateAdapter
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v8 = a3;
-  v6 = [(SLMessageComposeViewControllerDelegateAdapter *)self resultHandler];
+  controllerCopy = controller;
+  resultHandler = [(SLMessageComposeViewControllerDelegateAdapter *)self resultHandler];
 
-  if (v6)
+  if (resultHandler)
   {
-    v7 = [(SLMessageComposeViewControllerDelegateAdapter *)self resultHandler];
-    (v7)[2](v7, v8, a4);
+    resultHandler2 = [(SLMessageComposeViewControllerDelegateAdapter *)self resultHandler];
+    (resultHandler2)[2](resultHandler2, controllerCopy, result);
   }
 }
 

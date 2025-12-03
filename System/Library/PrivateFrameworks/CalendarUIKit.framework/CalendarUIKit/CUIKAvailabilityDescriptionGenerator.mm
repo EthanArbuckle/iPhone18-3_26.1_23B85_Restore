@@ -1,11 +1,11 @@
 @interface CUIKAvailabilityDescriptionGenerator
 + (id)allInviteesCanAttendString;
-+ (id)attendeeProposedANewTime:(id)a3 attendeeName:(id)a4;
++ (id)attendeeProposedANewTime:(id)time attendeeName:(id)name;
 + (id)failedString;
 + (id)proposeANewTimePlaceholderString;
 + (id)showMoreString;
 + (id)someInviteesCanAttendString;
-+ (id)timeRangeStringWithStartDate:(id)a3 withEndDate:(id)a4;
++ (id)timeRangeStringWithStartDate:(id)date withEndDate:(id)endDate;
 + (id)waitingForAvailabilityQueryString;
 + (id)youProposedString;
 @end
@@ -46,7 +46,7 @@
 
 + (id)youProposedString
 {
-  v2 = CalSystemSolariumEnabled(a1, a2);
+  v2 = CalSystemSolariumEnabled(self, a2);
   v3 = CUIKBundle();
   v4 = v3;
   if (v2)
@@ -80,26 +80,26 @@
   return v3;
 }
 
-+ (id)attendeeProposedANewTime:(id)a3 attendeeName:(id)a4
++ (id)attendeeProposedANewTime:(id)time attendeeName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  timeCopy = time;
   v7 = +[CUIKDateDescriptionGenerator sharedGenerator];
-  v8 = [v7 dateStringForDate:v6 allDay:0 standalone:0 shortFormat:0];
+  v8 = [v7 dateStringForDate:timeCopy allDay:0 standalone:0 shortFormat:0];
 
   v9 = MEMORY[0x1E696AEC0];
   v10 = CUIKBundle();
   v11 = [v10 localizedStringForKey:@"%@ proposed %@." value:&stru_1F4AA8958 table:0];
-  v12 = [v9 localizedStringWithFormat:v11, v5, v8];
+  v12 = [v9 localizedStringWithFormat:v11, nameCopy, v8];
 
   return v12;
 }
 
-+ (id)timeRangeStringWithStartDate:(id)a3 withEndDate:(id)a4
++ (id)timeRangeStringWithStartDate:(id)date withEndDate:(id)endDate
 {
-  v5 = a4;
-  v6 = [a3 timeStringAlwaysIncludeMinutes:1];
-  v7 = [v5 timeStringAlwaysIncludeMinutes:1];
+  endDateCopy = endDate;
+  v6 = [date timeStringAlwaysIncludeMinutes:1];
+  v7 = [endDateCopy timeStringAlwaysIncludeMinutes:1];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v6, v7];
 

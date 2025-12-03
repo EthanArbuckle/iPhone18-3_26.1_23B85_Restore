@@ -1,45 +1,45 @@
 @interface UITableViewSection
-+ (id)sectionWithRows:(id)a3;
-- (UITableViewSection)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)sectionWithRows:(id)rows;
+- (UITableViewSection)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITableViewSection
 
-+ (id)sectionWithRows:(id)a3
++ (id)sectionWithRows:(id)rows
 {
-  v3 = a3;
+  rowsCopy = rows;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setRows:v3];
+  [v4 setRows:rowsCopy];
 
   return v4;
 }
 
-- (UITableViewSection)initWithCoder:(id)a3
+- (UITableViewSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = UITableViewSection;
   v5 = [(UITableViewSection *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UITableSectionHeaderView"];
+    v6 = [coderCopy decodeObjectForKey:@"UITableSectionHeaderView"];
     headerView = v5->_headerView;
     v5->_headerView = v6;
 
-    v8 = [v4 decodeObjectForKey:@"UITableSectionHeaderTitle"];
+    v8 = [coderCopy decodeObjectForKey:@"UITableSectionHeaderTitle"];
     headerTitle = v5->_headerTitle;
     v5->_headerTitle = v8;
 
-    v10 = [v4 decodeObjectForKey:@"UITableSectionFooterView"];
+    v10 = [coderCopy decodeObjectForKey:@"UITableSectionFooterView"];
     footerView = v5->_footerView;
     v5->_footerView = v10;
 
-    v12 = [v4 decodeObjectForKey:@"UITableSectionFooterTitle"];
+    v12 = [coderCopy decodeObjectForKey:@"UITableSectionFooterTitle"];
     footerTitle = v5->_footerTitle;
     v5->_footerTitle = v12;
 
-    v14 = [v4 decodeObjectForKey:@"UITableSectionRows"];
+    v14 = [coderCopy decodeObjectForKey:@"UITableSectionRows"];
     rows = v5->_rows;
     v5->_rows = v14;
   }
@@ -47,13 +47,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = v4;
+  coderCopy = coder;
+  v7 = coderCopy;
   if (*&self->_headerTitle != 0)
   {
-    [v4 encodeObject:? forKey:?];
+    [coderCopy encodeObject:? forKey:?];
   }
 
   if (self->_footerView || self->_footerTitle)

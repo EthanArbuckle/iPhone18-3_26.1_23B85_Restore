@@ -1,34 +1,34 @@
 @interface CRLSwatchRenderingOperation
-- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)a3;
+- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)image;
 - (CGRect)swatchFrame;
 - (CGSize)imageSize;
-- (CRLSwatchRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 swatchFrame:(CGRect)a5 editingCoordinator:(id)a6;
+- (CRLSwatchRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame editingCoordinator:(id)coordinator;
 - (CRLSwatchRenderingOperationDelegate)delegate;
 - (UIEdgeInsets)swatchEdgeInsets;
 - (void)cancel;
 - (void)dealloc;
-- (void)deliverCGImage:(CGImage *)a3;
+- (void)deliverCGImage:(CGImage *)image;
 - (void)deliverSwatch;
 - (void)doWorkWithReadLock;
 - (void)main;
-- (void)p_deliverResultOnMainThread:(id)a3;
+- (void)p_deliverResultOnMainThread:(id)thread;
 - (void)p_didFinishRendering;
-- (void)p_showSwatchInViewAnimated:(BOOL)a3;
-- (void)provideSwatchForLaterDelivery:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)p_showSwatchInViewAnimated:(BOOL)animated;
+- (void)provideSwatchForLaterDelivery:(id)delivery;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CRLSwatchRenderingOperation
 
-- (CRLSwatchRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 swatchFrame:(CGRect)a5 editingCoordinator:(id)a6
+- (CRLSwatchRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame editingCoordinator:(id)coordinator
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3.height;
-  v13 = a3.width;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = size.height;
+  v13 = size.width;
+  coordinatorCopy = coordinator;
   v19.receiver = self;
   v19.super_class = CRLSwatchRenderingOperation;
   v16 = [(CRLSwatchRenderingOperation *)&v19 init];
@@ -37,12 +37,12 @@
   {
     v16->_imageSize.width = v13;
     v16->_imageSize.height = v12;
-    v16->_imageScale = a4;
+    v16->_imageScale = scale;
     v16->_swatchFrame.origin.x = x;
     v16->_swatchFrame.origin.y = y;
     v16->_swatchFrame.size.width = width;
     v16->_swatchFrame.size.height = height;
-    objc_storeStrong(&v16->_editingCoordinator, a6);
+    objc_storeStrong(&v16->_editingCoordinator, coordinator);
     v17->_deliversImageAutomatically = 1;
   }
 
@@ -57,18 +57,18 @@
   [(CRLSwatchRenderingOperation *)&v3 dealloc];
 }
 
-- (void)p_showSwatchInViewAnimated:(BOOL)a3
+- (void)p_showSwatchInViewAnimated:(BOOL)animated
 {
   if (self->_view)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if (([(CRLSwatchRenderingOperation *)self isCancelled]& 1) == 0)
     {
-      v5 = [(UIView *)self->_view layer];
-      v6 = v5;
-      if (v3)
+      layer = [(UIView *)self->_view layer];
+      v6 = layer;
+      if (animatedCopy)
       {
-        v7 = [v5 valueForKey:@"CRLSwatchRenderingOperationLayerKey"];
+        v7 = [layer valueForKey:@"CRLSwatchRenderingOperationLayerKey"];
         if (!v7 || (v8 = v7, [v6 valueForKey:@"CRLSwatchRenderingOperationLayerKey"], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 == self))
         {
           [v6 crl_addSpringScaleInAnimationWithDelay:0.05];
@@ -83,10 +83,10 @@
   }
 }
 
-- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)a3
+- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v7 = sub_10011ECB4();
   v11 = sub_10011FFD8(v7, v8, v9, v10, self->_imageScale);
   v13 = v12;
@@ -109,18 +109,18 @@
   return Image;
 }
 
-- (void)p_deliverResultOnMainThread:(id)a3
+- (void)p_deliverResultOnMainThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   view = self->_view;
   if (view)
   {
-    v15 = v4;
-    v6 = [(UIView *)view layer];
+    v15 = threadCopy;
+    layer = [(UIView *)view layer];
     v7 = objc_getAssociatedObject(self->_view, "CRLSwatchRenderingOperationTargetIndexPathKey");
-    v8 = [(CRLSwatchRenderingOperation *)self targetIndexPath];
-    v9 = v8;
-    if (!v8 || [v8 isEqual:v7])
+    targetIndexPath = [(CRLSwatchRenderingOperation *)self targetIndexPath];
+    v9 = targetIndexPath;
+    if (!targetIndexPath || [targetIndexPath isEqual:v7])
     {
       v10 = objc_opt_class();
       v11 = sub_100014370(v10, self->_view);
@@ -150,50 +150,50 @@
 
       else
       {
-        [v6 setContentsScale:self->_imageScale];
-        [v6 setContents:{objc_msgSend(v15, "foreground")}];
+        [layer setContentsScale:self->_imageScale];
+        [layer setContents:{objc_msgSend(v15, "foreground")}];
       }
 
-      [v6 setShouldRasterize:1];
-      [v6 setRasterizationScale:self->_imageScale];
+      [layer setShouldRasterize:1];
+      [layer setRasterizationScale:self->_imageScale];
       [(CRLSwatchRenderingOperation *)self p_showSwatchInViewAnimated:!self->_suppressesAnimation];
     }
 
     [(CRLSwatchRenderingOperation *)self setTargetIndexPath:0];
     [(CRLSwatchRenderingOperation *)self p_didFinishRendering];
 
-    v4 = v15;
+    threadCopy = v15;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_renderForWideGamut = 1;
   if (objc_opt_respondsToSelector())
   {
-    self->_renderForWideGamut = [v4 shouldRenderUsingWideGamutForSwatchRenderingOperation:self];
+    self->_renderForWideGamut = [delegateCopy shouldRenderUsingWideGamutForSwatchRenderingOperation:self];
   }
 }
 
 - (void)p_didFinishRendering
 {
-  v3 = [(CRLSwatchRenderingOperation *)self delegate];
+  delegate = [(CRLSwatchRenderingOperation *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRLSwatchRenderingOperation *)self delegate];
-    [v5 swatchRenderingOperation:self didFinishRenderingForView:self->_view];
+    delegate2 = [(CRLSwatchRenderingOperation *)self delegate];
+    [delegate2 swatchRenderingOperation:self didFinishRenderingForView:self->_view];
   }
 }
 
-- (void)deliverCGImage:(CGImage *)a3
+- (void)deliverCGImage:(CGImage *)image
 {
   if ([(CRLSwatchRenderingOperation *)self needsPressedStateBackground])
   {
-    v5 = [(CRLSwatchRenderingOperation *)self p_newSwatchPressedStateBackgroundFromCGImage:a3];
+    v5 = [(CRLSwatchRenderingOperation *)self p_newSwatchPressedStateBackgroundFromCGImage:image];
   }
 
   else
@@ -201,13 +201,13 @@
     v5 = 0;
   }
 
-  v6 = [CRLSwatchRenderingResult renderingResultWithForeground:a3 background:v5];
+  v6 = [CRLSwatchRenderingResult renderingResultWithForeground:image background:v5];
   if (v5)
   {
     CGImageRelease(v5);
   }
 
-  self->_deliveredImage = CGImageRetain(a3);
+  self->_deliveredImage = CGImageRetain(image);
   if (+[NSThread isMainThread])
   {
     [(CRLSwatchRenderingOperation *)self p_deliverResultOnMainThread:v6];
@@ -230,9 +230,9 @@
   }
 }
 
-- (void)provideSwatchForLaterDelivery:(id)a3
+- (void)provideSwatchForLaterDelivery:(id)delivery
 {
-  v4 = a3;
+  deliveryCopy = delivery;
   if (self->_swatch)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -263,7 +263,7 @@
   }
 
   swatch = self->_swatch;
-  self->_swatch = v4;
+  self->_swatch = deliveryCopy;
 }
 
 - (UIEdgeInsets)swatchEdgeInsets

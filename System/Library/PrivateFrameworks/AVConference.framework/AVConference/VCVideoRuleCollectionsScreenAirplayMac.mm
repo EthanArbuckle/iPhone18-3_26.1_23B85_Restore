@@ -2,7 +2,7 @@
 - (BOOL)setupH264Rules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (VCVideoRuleCollectionsScreenAirplayMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsScreenAirplayMac)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
 - (void)setupH264Rules;
 - (void)setupHEVCRules;
@@ -10,7 +10,7 @@
 
 @implementation VCVideoRuleCollectionsScreenAirplayMac
 
-- (VCVideoRuleCollectionsScreenAirplayMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsScreenAirplayMac)initWithHardwareSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsScreenAirplayMac *)v4 initSupportedPayloads];
     if (![(VCVideoRuleCollectionsScreenAirplayMac *)v5 setupRules]|| ([(VCHardwareSettingsMacProtocol *)v5->_hardwareSettings isPixelFormatAvailable]& 1) == 0)
     {
@@ -51,14 +51,14 @@
 
 - (BOOL)setupRules
 {
-  v3 = [(VCVideoRuleCollectionsScreenAirplayMac *)self setupH264Rules];
-  if (v3)
+  setupH264Rules = [(VCVideoRuleCollectionsScreenAirplayMac *)self setupH264Rules];
+  if (setupH264Rules)
   {
 
-    LOBYTE(v3) = [(VCVideoRuleCollectionsScreenAirplayMac *)self setupHEVCRules];
+    LOBYTE(setupH264Rules) = [(VCVideoRuleCollectionsScreenAirplayMac *)self setupHEVCRules];
   }
 
-  return v3;
+  return setupH264Rules;
 }
 
 - (BOOL)setupH264Rules

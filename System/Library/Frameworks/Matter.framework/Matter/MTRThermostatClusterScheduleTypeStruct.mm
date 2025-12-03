@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterScheduleTypeStruct
 - (MTRThermostatClusterScheduleTypeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterScheduleTypeStruct);
-  v5 = [(MTRThermostatClusterScheduleTypeStruct *)self systemMode];
-  [(MTRThermostatClusterScheduleTypeStruct *)v4 setSystemMode:v5];
+  systemMode = [(MTRThermostatClusterScheduleTypeStruct *)self systemMode];
+  [(MTRThermostatClusterScheduleTypeStruct *)v4 setSystemMode:systemMode];
 
-  v6 = [(MTRThermostatClusterScheduleTypeStruct *)self numberOfSchedules];
-  [(MTRThermostatClusterScheduleTypeStruct *)v4 setNumberOfSchedules:v6];
+  numberOfSchedules = [(MTRThermostatClusterScheduleTypeStruct *)self numberOfSchedules];
+  [(MTRThermostatClusterScheduleTypeStruct *)v4 setNumberOfSchedules:numberOfSchedules];
 
-  v7 = [(MTRThermostatClusterScheduleTypeStruct *)self scheduleTypeFeatures];
-  [(MTRThermostatClusterScheduleTypeStruct *)v4 setScheduleTypeFeatures:v7];
+  scheduleTypeFeatures = [(MTRThermostatClusterScheduleTypeStruct *)self scheduleTypeFeatures];
+  [(MTRThermostatClusterScheduleTypeStruct *)v4 setScheduleTypeFeatures:scheduleTypeFeatures];
 
   return v4;
 }

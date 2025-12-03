@@ -6,10 +6,10 @@
 
 - (id)hexStringWithSpaces:()HexString
 {
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = [a1 bytes];
-  v7 = [a1 length];
-  if (v6)
+  string = [MEMORY[0x277CCAB68] string];
+  bytes = [self bytes];
+  v7 = [self length];
+  if (bytes)
   {
     v8 = v7;
     if (v7)
@@ -27,14 +27,14 @@
           v10 = @"%02X";
         }
 
-        [v5 appendFormat:v10, *(v6 + v9++)];
+        [string appendFormat:v10, *(bytes + v9++)];
       }
 
       while (v8 != v9);
     }
   }
 
-  return v5;
+  return string;
 }
 
 @end

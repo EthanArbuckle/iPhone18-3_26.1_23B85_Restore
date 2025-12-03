@@ -1,43 +1,43 @@
 @interface ATXAction
-+ (BOOL)_isTVIntent:(id)a3 bundleId:(id)a4;
-+ (id)_extractValueInKeyValueBlob:(id)a3 withKey:(id)a4;
-+ (id)actionFromProactiveSuggestion:(id)a3;
-+ (id)atx_doNotDisturbForCurrentLocationActionWithTitle:(id)a3 subtitle:(id)a4 heuristicName:(id)a5;
-+ (id)atx_doNotDisturbForEventActionWithTitle:(id)a3 subtitle:(id)a4 eventTitle:(id)a5 eventIdentifier:(id)a6 eventUniqueID:(id)a7 heuristicName:(id)a8;
-+ (id)atx_sendMessageActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 text:(id)a7 contactIdentifier:(id)a8 conversationIdentifier:(id)a9 eventIdentifier:(id)a10 heuristicName:(id)a11;
-+ (id)atx_setAirplaneModeActionWithTitle:(id)a3 subtitle:(id)a4;
-+ (id)atx_setAlarmActionWithTitle:(id)a3 subtitle:(id)a4 eventIdentifier:(id)a5 eventTitle:(id)a6 alarmDate:(id)a7 heuristicName:(id)a8;
-+ (id)atx_showCheckInActionWithTeamId:(id)a3 userActivityString:(id)a4 subtitle:(id)a5 overrideBundleId:(id)a6 suggestedEventUniqueKey:(id)a7 heuristicName:(id)a8 criteria:(id)a9;
-+ (id)atx_startAudioCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10;
-+ (id)atx_startCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10 mediaType:(id)a11;
-+ (id)atx_startVideoCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10;
-+ (id)atx_updateAlarmActionWithTitle:(id)a3 subtitle:(id)a4 alarmID:(id)a5 alarmTitle:(id)a6 heuristicName:(id)a7;
-+ (id)atx_userActivityActionWithBestAppSuggestion:(id)a3 title:(id)a4 subtitle:(id)a5 bundleID:(id)a6 activityType:(id)a7 heuristicName:(id)a8;
-+ (id)atx_userActivityActionWithTitle:(id)a3 subtitle:(id)a4 bundleID:(id)a5 activityType:(id)a6 urlString:(id)a7 userInfo:(id)a8 heuristicName:(id)a9;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-+ (id)getActionKeyForBundleId:(id)a3 actionType:(id)a4;
-+ (id)getDateFromUserActivityString:(id)a3 forActionKey:(id)a4;
-+ (id)unarchivedActionFromData:(id)a3;
-+ (id)webUrlParsedForUserActivityWithUrlString:(id)a3;
-+ (unint64_t)_userActivityHashForUserInfoDict:(id)a3 activityType:(id)a4 webpageURL:(id)a5;
-- (ATXAction)actionWithRouteInfo:(id)a3;
-- (ATXAction)initWithActivityProxy:(id)a3 activity:(id)a4 activityString:(id)a5 itemIdentifier:(id)a6 contentAttributeSet:(id)a7 intent:(id)a8 menuItemPath:(id)a9 actionUUID:(id)a10 bundleId:(id)a11 type:(unint64_t)a12 heuristic:(id)a13 heuristicMetadata:(id)a14 criteria:(id)a15 isFutureMedia:(BOOL)a16 routeInfo:(id)a17 title:(id)a18 subtitle:(id)a19 languageCode:(id)a20 cachedHash:(id)a21 toolInvocationID:(id)a22 encodedToolInvocation:(id)a23 parameterKeysForToolInvocation:(id)a24;
-- (ATXAction)initWithCoder:(id)a3;
-- (ATXAction)initWithIntent:(id)a3 actionUUID:(id)a4 bundleId:(id)a5 heuristic:(id)a6 heuristicMetadata:(id)a7 criteria:(id)a8 isFutureMedia:(BOOL)a9 title:(id)a10 subtitle:(id)a11;
-- (ATXAction)initWithNSUserActivity:(id)a3 actionUUID:(id)a4 bundleId:(id)a5 contentAttributeSet:(id)a6 itemIdentifier:(id)a7 heuristic:(id)a8 heuristicMetadata:(id)a9 criteria:(id)a10 isFutureMedia:(BOOL)a11 title:(id)a12 subtitle:(id)a13;
-- (ATXAction)initWithProto:(id)a3;
-- (ATXAction)initWithProtoData:(id)a3;
++ (BOOL)_isTVIntent:(id)intent bundleId:(id)id;
++ (id)_extractValueInKeyValueBlob:(id)blob withKey:(id)key;
++ (id)actionFromProactiveSuggestion:(id)suggestion;
++ (id)atx_doNotDisturbForCurrentLocationActionWithTitle:(id)title subtitle:(id)subtitle heuristicName:(id)name;
++ (id)atx_doNotDisturbForEventActionWithTitle:(id)title subtitle:(id)subtitle eventTitle:(id)eventTitle eventIdentifier:(id)identifier eventUniqueID:(id)d heuristicName:(id)name;
++ (id)atx_sendMessageActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle text:(id)text contactIdentifier:(id)identifier conversationIdentifier:(id)conversationIdentifier eventIdentifier:(id)self0 heuristicName:(id)self1;
++ (id)atx_setAirplaneModeActionWithTitle:(id)title subtitle:(id)subtitle;
++ (id)atx_setAlarmActionWithTitle:(id)title subtitle:(id)subtitle eventIdentifier:(id)identifier eventTitle:(id)eventTitle alarmDate:(id)date heuristicName:(id)name;
++ (id)atx_showCheckInActionWithTeamId:(id)id userActivityString:(id)string subtitle:(id)subtitle overrideBundleId:(id)bundleId suggestedEventUniqueKey:(id)key heuristicName:(id)name criteria:(id)criteria;
++ (id)atx_startAudioCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0;
++ (id)atx_startCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0 mediaType:(id)self1;
++ (id)atx_startVideoCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0;
++ (id)atx_updateAlarmActionWithTitle:(id)title subtitle:(id)subtitle alarmID:(id)d alarmTitle:(id)alarmTitle heuristicName:(id)name;
++ (id)atx_userActivityActionWithBestAppSuggestion:(id)suggestion title:(id)title subtitle:(id)subtitle bundleID:(id)d activityType:(id)type heuristicName:(id)name;
++ (id)atx_userActivityActionWithTitle:(id)title subtitle:(id)subtitle bundleID:(id)d activityType:(id)type urlString:(id)string userInfo:(id)info heuristicName:(id)name;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
++ (id)getActionKeyForBundleId:(id)id actionType:(id)type;
++ (id)getDateFromUserActivityString:(id)string forActionKey:(id)key;
++ (id)unarchivedActionFromData:(id)data;
++ (id)webUrlParsedForUserActivityWithUrlString:(id)string;
++ (unint64_t)_userActivityHashForUserInfoDict:(id)dict activityType:(id)type webpageURL:(id)l;
+- (ATXAction)actionWithRouteInfo:(id)info;
+- (ATXAction)initWithActivityProxy:(id)proxy activity:(id)activity activityString:(id)string itemIdentifier:(id)identifier contentAttributeSet:(id)set intent:(id)intent menuItemPath:(id)path actionUUID:(id)self0 bundleId:(id)self1 type:(unint64_t)self2 heuristic:(id)self3 heuristicMetadata:(id)self4 criteria:(id)self5 isFutureMedia:(BOOL)self6 routeInfo:(id)self7 title:(id)self8 subtitle:(id)self9 languageCode:(id)code cachedHash:(id)hash toolInvocationID:(id)iD encodedToolInvocation:(id)invocation parameterKeysForToolInvocation:(id)toolInvocation;
+- (ATXAction)initWithCoder:(id)coder;
+- (ATXAction)initWithIntent:(id)intent actionUUID:(id)d bundleId:(id)id heuristic:(id)heuristic heuristicMetadata:(id)metadata criteria:(id)criteria isFutureMedia:(BOOL)media title:(id)self0 subtitle:(id)self1;
+- (ATXAction)initWithNSUserActivity:(id)activity actionUUID:(id)d bundleId:(id)id contentAttributeSet:(id)set itemIdentifier:(id)identifier heuristic:(id)heuristic heuristicMetadata:(id)metadata criteria:(id)self0 isFutureMedia:(BOOL)self1 title:(id)self2 subtitle:(id)self3;
+- (ATXAction)initWithProto:(id)proto;
+- (ATXAction)initWithProtoData:(id)data;
 - (ATXActionCriteria)criteria;
-- (BOOL)_shouldUseCachedTitle:(id)a3 cachedLanguageCode:(id)a4;
+- (BOOL)_shouldUseCachedTitle:(id)title cachedLanguageCode:(id)code;
 - (BOOL)hasActionTitle;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAction:(id)action;
 - (BOOL)isTVAction;
 - (BOOL)isTVWhiteListedLongFormMedia;
 - (NSString)description;
 - (NSUserActivity)userActivity;
 - (id)_bundleIdForDisplay;
-- (id)_initWithCoder:(id)a3;
+- (id)_initWithCoder:(id)coder;
 - (id)_spotlightContentType;
 - (id)actionDescription;
 - (id)actionKey;
@@ -45,12 +45,12 @@
 - (id)actionTitle;
 - (id)archivedDataForAction;
 - (id)canonicalIdentifier;
-- (id)copyWithParameterAllowList:(id)a3 metadataProvider:(id)a4;
+- (id)copyWithParameterAllowList:(id)list metadataProvider:(id)provider;
 - (id)dateForAction;
 - (id)encodeAsProto;
-- (id)initFromBestAppSuggestion:(id)a3 activity:(id)a4 actionUUID:(id)a5 bundleId:(id)a6 contentAttributeSet:(id)a7 itemIdentifier:(id)a8 heuristic:(id)a9 heuristicMetadata:(id)a10 criteria:(id)a11 isFutureMedia:(BOOL)a12 title:(id)a13 subtitle:(id)a14;
+- (id)initFromBestAppSuggestion:(id)suggestion activity:(id)activity actionUUID:(id)d bundleId:(id)id contentAttributeSet:(id)set itemIdentifier:(id)identifier heuristic:(id)heuristic heuristicMetadata:(id)self0 criteria:(id)self1 isFutureMedia:(BOOL)self2 title:(id)self3 subtitle:(id)self4;
 - (id)json;
-- (id)obfuscatedJsonWithMapping:(id)a3;
+- (id)obfuscatedJsonWithMapping:(id)mapping;
 - (id)predictionTypeStringForPET;
 - (id)proto;
 - (id)slotSet;
@@ -58,19 +58,19 @@
 - (id)userActivityWebpageURL;
 - (unint64_t)_hash;
 - (unint64_t)hash;
-- (unint64_t)hashSlotSetWithNonNilParameters:(id)a3;
+- (unint64_t)hashSlotSetWithNonNilParameters:(id)parameters;
 - (unint64_t)paramHash;
 - (unint64_t)userActivityHash;
 - (void)_spotlightContentType;
 - (void)actionKey;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateCachedHash;
 - (void)proto;
-- (void)setHeuristic:(id)a3;
-- (void)setLaunchIdForIntent:(id)a3;
+- (void)setHeuristic:(id)heuristic;
+- (void)setLaunchIdForIntent:(id)intent;
 - (void)setSubtitleForSerializationToCache;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)setTitleForSerializationToCache;
 @end
 
@@ -78,31 +78,31 @@
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedHash = v2->_cachedHash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedHash = selfCopy->_cachedHash;
   if (cachedHash)
   {
-    v4 = [(NSNumber *)cachedHash unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)cachedHash unsignedIntegerValue];
   }
 
   else
   {
-    v4 = [(ATXAction *)v2 _hash];
-    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v4];
-    v6 = v2->_cachedHash;
-    v2->_cachedHash = v5;
+    unsignedIntegerValue = [(ATXAction *)selfCopy _hash];
+    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:unsignedIntegerValue];
+    v6 = selfCopy->_cachedHash;
+    selfCopy->_cachedHash = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E698B000] sharedInstance];
-  [v3 unregisterObserver:self];
+  mEMORY[0x1E698B000] = [MEMORY[0x1E698B000] sharedInstance];
+  [mEMORY[0x1E698B000] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATXAction;
@@ -125,9 +125,9 @@
     _os_log_impl(&dword_1BF549000, v3, OS_LOG_TYPE_DEFAULT, "%@ - Setting subtitle for serialization for language code: %@.", &v9, 0x16u);
   }
 
-  v7 = [(ATXAction *)self actionSubtitle];
+  actionSubtitle = [(ATXAction *)self actionSubtitle];
   subtitle = self->_subtitle;
-  self->_subtitle = v7;
+  self->_subtitle = actionSubtitle;
 
   [(ATXAction *)self invalidateCachedHash];
 }
@@ -144,47 +144,47 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXAction *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXAction *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
 {
   v56 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(ATXAction *)self bundleId];
-  [v3 setBundleId:v4];
+  bundleId = [(ATXAction *)self bundleId];
+  [v3 setBundleId:bundleId];
 
   [v3 setActionType:{-[ATXAction actionType](self, "actionType")}];
-  v5 = [(ATXAction *)self heuristic];
-  [v3 setHeuristic:v5];
+  heuristic = [(ATXAction *)self heuristic];
+  [v3 setHeuristic:heuristic];
 
   [v3 setIsFutureMedia:{-[ATXAction isFutureMedia](self, "isFutureMedia")}];
-  v6 = [(ATXAction *)self _title];
-  [v3 setTitle:v6];
+  _title = [(ATXAction *)self _title];
+  [v3 setTitle:_title];
 
-  v7 = [(ATXAction *)self _subtitle];
-  [v3 setSubtitle:v7];
+  _subtitle = [(ATXAction *)self _subtitle];
+  [v3 setSubtitle:_subtitle];
 
   [v3 setUserActivityHash:{-[ATXAction userActivityHash](self, "userActivityHash")}];
-  v8 = [(ATXAction *)self userActivityString];
-  [v3 setActivityString:v8];
+  userActivityString = [(ATXAction *)self userActivityString];
+  [v3 setActivityString:userActivityString];
 
-  v9 = [(ATXAction *)self itemIdentifier];
-  [v3 setItemIdentifier:v9];
+  itemIdentifier = [(ATXAction *)self itemIdentifier];
+  [v3 setItemIdentifier:itemIdentifier];
 
-  v10 = [(ATXAction *)self actionUUID];
-  v11 = [v10 UUIDString];
-  [v3 setUuid:v11];
+  actionUUID = [(ATXAction *)self actionUUID];
+  uUIDString = [actionUUID UUIDString];
+  [v3 setUuid:uUIDString];
 
   [v3 setLanguageCode:self->_languageCode];
-  v12 = [(ATXAVRouteInfo *)self->_routeInfo proto];
-  [v3 setRouteInfo:v12];
+  proto = [(ATXAVRouteInfo *)self->_routeInfo proto];
+  [v3 setRouteInfo:proto];
 
-  v13 = [(ATXActionCriteria *)self->_criteria proto];
-  [v3 setCriteria:v13];
+  proto2 = [(ATXActionCriteria *)self->_criteria proto];
+  [v3 setCriteria:proto2];
 
   [v3 setCachedHash:{-[ATXAction hash](self, "hash")}];
   if (self->_contentAttributeSet)
@@ -221,31 +221,31 @@
     [v3 setHeuristicMetadatas:v21];
   }
 
-  v22 = [(ATXLazyIntent *)self->_lazyIntent intentData];
+  intentData = [(ATXLazyIntent *)self->_lazyIntent intentData];
 
-  if (v22)
+  if (intentData)
   {
-    v23 = [(ATXLazyIntent *)self->_lazyIntent intentData];
-    [v3 setIntent:v23];
+    intentData2 = [(ATXLazyIntent *)self->_lazyIntent intentData];
+    [v3 setIntent:intentData2];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v40 = [(ATXAction *)self intent];
+  intent = [(ATXAction *)self intent];
 
-  if (v40)
+  if (intent)
   {
     v41 = objc_autoreleasePoolPush();
     v42 = MEMORY[0x1E696ACC8];
-    v43 = [(ATXAction *)self intent];
+    intent2 = [(ATXAction *)self intent];
     v51 = 0;
-    v44 = [v42 archivedDataWithRootObject:v43 requiringSecureCoding:1 error:&v51];
-    v23 = v51;
+    v44 = [v42 archivedDataWithRootObject:intent2 requiringSecureCoding:1 error:&v51];
+    intentData2 = v51;
     [v3 setIntent:v44];
 
     objc_autoreleasePoolPop(v41);
-    if (v23)
+    if (intentData2)
     {
       v45 = __atxlog_handle_default();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
@@ -258,15 +258,15 @@ LABEL_11:
   }
 
 LABEL_12:
-  v24 = [(ATXAction *)self userActivityProxy];
+  userActivityProxy = [(ATXAction *)self userActivityProxy];
 
-  if (v24)
+  if (userActivityProxy)
   {
     v25 = objc_autoreleasePoolPush();
     v26 = MEMORY[0x1E696ACC8];
-    v27 = [(ATXAction *)self userActivityProxy];
+    userActivityProxy2 = [(ATXAction *)self userActivityProxy];
     v50 = 0;
-    v28 = [v26 archivedDataWithRootObject:v27 requiringSecureCoding:1 error:&v50];
+    v28 = [v26 archivedDataWithRootObject:userActivityProxy2 requiringSecureCoding:1 error:&v50];
     v29 = v50;
     [v3 setUserActivityProxy:v28];
 
@@ -332,53 +332,53 @@ LABEL_12:
 
 - (unint64_t)userActivityHash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((v2->_actionType | 4) == 5 && !v2->_userActivityHash)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((selfCopy->_actionType | 4) == 5 && !selfCopy->_userActivityHash)
   {
-    v3 = [(ATXAction *)v2 userActivity];
-    v4 = v3;
-    if (v3)
+    userActivity = [(ATXAction *)selfCopy userActivity];
+    v4 = userActivity;
+    if (userActivity)
     {
-      v5 = [v3 userInfo];
-      v6 = [v4 activityType];
-      v7 = [v4 webpageURL];
-      v2->_userActivityHash = [ATXAction _userActivityHashForUserInfoDict:v5 activityType:v6 webpageURL:v7];
+      userInfo = [userActivity userInfo];
+      activityType = [v4 activityType];
+      webpageURL = [v4 webpageURL];
+      selfCopy->_userActivityHash = [ATXAction _userActivityHashForUserInfoDict:userInfo activityType:activityType webpageURL:webpageURL];
     }
 
     else
     {
-      v2->_userActivityHash = -1;
+      selfCopy->_userActivityHash = -1;
     }
   }
 
-  userActivityHash = v2->_userActivityHash;
-  objc_sync_exit(v2);
+  userActivityHash = selfCopy->_userActivityHash;
+  objc_sync_exit(selfCopy);
 
   return userActivityHash;
 }
 
 - (unint64_t)_hash
 {
-  v2 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
-  v3 = [(ATXAction *)self userActivityHash];
-  v4 = v2->_actionType - v3 + 32 * v3;
-  v5 = [(NSString *)v2->_bundleId hash]- v4 + 32 * v4;
-  v6 = [(NSString *)v2->_heuristic hash];
-  v7 = v2->_isFutureMedia - (v6 - v5 + 32 * v5) + 32 * (v6 - v5 + 32 * v5);
-  if ([(ATXAction *)v2 isHeuristic])
+  userActivityHash = [(ATXAction *)self userActivityHash];
+  v4 = selfCopy->_actionType - userActivityHash + 32 * userActivityHash;
+  v5 = [(NSString *)selfCopy->_bundleId hash]- v4 + 32 * v4;
+  v6 = [(NSString *)selfCopy->_heuristic hash];
+  v7 = selfCopy->_isFutureMedia - (v6 - v5 + 32 * v5) + 32 * (v6 - v5 + 32 * v5);
+  if ([(ATXAction *)selfCopy isHeuristic])
   {
-    v8 = [(NSString *)v2->_title hash]- v7 + 32 * v7;
-    v7 = [(NSString *)v2->_subtitle hash]- v8 + 32 * v8;
+    v8 = [(NSString *)selfCopy->_title hash]- v7 + 32 * v7;
+    v7 = [(NSString *)selfCopy->_subtitle hash]- v8 + 32 * v8;
   }
 
-  v9 = [(ATXAction *)v2 intent];
-  v10 = v9;
-  actionType = v2->_actionType;
+  intent = [(ATXAction *)selfCopy intent];
+  v10 = intent;
+  actionType = selfCopy->_actionType;
   if (!actionType)
   {
-    if (!v9)
+    if (!intent)
     {
       goto LABEL_53;
     }
@@ -386,19 +386,19 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (actionType == 2 && v9)
+  if (actionType == 2 && intent)
   {
 LABEL_8:
-    v12 = [v9 atx_nonNilParameters];
-    v48 = v2;
-    v7 = [(ATXAction *)v2 hashSlotSetWithNonNilParameters:v12]- v7 + 32 * v7;
+    atx_nonNilParameters = [intent atx_nonNilParameters];
+    v48 = selfCopy;
+    v7 = [(ATXAction *)selfCopy hashSlotSetWithNonNilParameters:atx_nonNilParameters]- v7 + 32 * v7;
     v47 = v10;
-    v13 = [v10 atx_nonNilParametersByName];
-    v14 = [v12 allObjects];
-    v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+    atx_nonNilParametersByName = [v10 atx_nonNilParametersByName];
+    allObjects = [atx_nonNilParameters allObjects];
+    v15 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v50 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
-    v16 = v12;
+    v16 = atx_nonNilParameters;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -410,7 +410,7 @@ LABEL_8:
       v18 = v17;
       v19 = *v61;
       v20 = v50;
-      v49 = v13;
+      v49 = atx_nonNilParametersByName;
       do
       {
         for (i = 0; i != v18; ++i)
@@ -424,19 +424,19 @@ LABEL_8:
           if (!v16 || [v16 containsObject:*(*(&v60 + 1) + 8 * i)])
           {
             v23 = [v22 hash];
-            v24 = [v13 objectForKeyedSubscript:v22];
+            v24 = [atx_nonNilParametersByName objectForKeyedSubscript:v22];
             v25 = v24;
             if (v24)
             {
-              v26 = v24;
+              null = v24;
             }
 
             else
             {
-              v26 = [MEMORY[0x1E695DFB0] null];
+              null = [MEMORY[0x1E695DFB0] null];
             }
 
-            v27 = v26;
+            v27 = null;
             v7 = v23 - v7 + 32 * v7;
 
             [v20 addObject:v27];
@@ -452,8 +452,8 @@ LABEL_8:
 
               else
               {
-                v29 = [v27 location];
-                v30 = [v29 atx_locationHashWithLevel:17];
+                location = [v27 location];
+                v30 = [location atx_locationHashWithLevel:17];
                 v7 = 31 * (31 * v7 + HIDWORD(v30)) + v30;
               }
             }
@@ -491,7 +491,7 @@ LABEL_8:
                   while (v33);
                 }
 
-                v13 = v49;
+                atx_nonNilParametersByName = v49;
                 v20 = v50;
               }
 
@@ -515,22 +515,22 @@ LABEL_8:
     }
 
     v10 = v47;
-    v2 = v48;
+    selfCopy = v48;
     actionType = v48->_actionType;
   }
 
   if (actionType == 6)
   {
-    v36 = [(ATXAction *)v2 menuItemPath];
+    menuItemPath = [(ATXAction *)selfCopy menuItemPath];
 
-    if (v36)
+    if (menuItemPath)
     {
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v37 = [(ATXAction *)v2 menuItemPath];
-      v38 = [v37 countByEnumeratingWithState:&v52 objects:v64 count:16];
+      menuItemPath2 = [(ATXAction *)selfCopy menuItemPath];
+      v38 = [menuItemPath2 countByEnumeratingWithState:&v52 objects:v64 count:16];
       if (v38)
       {
         v39 = v38;
@@ -541,31 +541,31 @@ LABEL_8:
           {
             if (*v53 != v40)
             {
-              objc_enumerationMutation(v37);
+              objc_enumerationMutation(menuItemPath2);
             }
 
             v7 = [*(*(&v52 + 1) + 8 * k) hash] - v7 + 32 * v7;
           }
 
-          v39 = [v37 countByEnumeratingWithState:&v52 objects:v64 count:16];
+          v39 = [menuItemPath2 countByEnumeratingWithState:&v52 objects:v64 count:16];
         }
 
         while (v39);
       }
     }
 
-    actionType = v2->_actionType;
+    actionType = selfCopy->_actionType;
   }
 
   if (actionType == 7)
   {
-    v42 = [(ATXAction *)v2 encodedToolInvocation];
+    encodedToolInvocation = [(ATXAction *)selfCopy encodedToolInvocation];
 
-    if (v42)
+    if (encodedToolInvocation)
     {
       v43 = MEMORY[0x1E69C5B68];
-      v44 = [(ATXAction *)v2 encodedToolInvocation];
-      v45 = [v43 canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:v44];
+      encodedToolInvocation2 = [(ATXAction *)selfCopy encodedToolInvocation];
+      v45 = [v43 canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:encodedToolInvocation2];
       v7 = [v45 hash] - v7 + 32 * v7;
     }
   }
@@ -577,8 +577,8 @@ LABEL_53:
 
 - (unint64_t)paramHash
 {
-  v3 = [(ATXAction *)self slotSet];
-  v4 = [[ATXSlotResolutionParameters alloc] initWithAction:self slots:v3];
+  slotSet = [(ATXAction *)self slotSet];
+  v4 = [[ATXSlotResolutionParameters alloc] initWithAction:self slots:slotSet];
   v5 = [(ATXSlotResolutionParameters *)v4 hash];
 
   return v5;
@@ -595,14 +595,14 @@ LABEL_53:
 
   if ([(ATXAction *)self actionType]== 1 || [(ATXAction *)self actionType]== 5)
   {
-    v5 = [(ATXAction *)self userActivity];
-    v6 = [v5 activityType];
+    userActivity = [(ATXAction *)self userActivity];
+    activityType = [userActivity activityType];
 
-    if (v6)
+    if (activityType)
     {
-      v7 = [(ATXAction *)self userActivity];
-      v8 = [v7 activityType];
-      v9 = [ATXAction getNSUATypefromActivityType:v8];
+      userActivity2 = [(ATXAction *)self userActivity];
+      activityType2 = [userActivity2 activityType];
+      _className = [ATXAction getNSUATypefromActivityType:activityType2];
 
 LABEL_10:
       goto LABEL_11;
@@ -611,36 +611,36 @@ LABEL_10:
 
   if (![(ATXAction *)self actionType]|| [(ATXAction *)self actionType]== 2)
   {
-    v7 = [(ATXAction *)self intent];
-    v9 = [v7 _className];
+    userActivity2 = [(ATXAction *)self intent];
+    _className = [userActivity2 _className];
     goto LABEL_10;
   }
 
   if ([(ATXAction *)self actionType]== 6)
   {
-    v9 = @"RunIntelligenceCommand";
+    _className = @"RunIntelligenceCommand";
     goto LABEL_11;
   }
 
   if ([(ATXAction *)self actionType]== 7)
   {
-    v9 = [(ATXAction *)self toolInvocationID];
+    _className = [(ATXAction *)self toolInvocationID];
 LABEL_11:
-    v10 = [(ATXAction *)self bundleId];
+    bundleId = [(ATXAction *)self bundleId];
 
-    if (v10)
+    if (bundleId)
     {
-      if (v9)
+      if (_className)
       {
-        v11 = [(ATXAction *)self bundleId];
-        v3 = [ATXAction getActionKeyForBundleId:v11 actionType:v9];
+        bundleId2 = [(ATXAction *)self bundleId];
+        v3 = [ATXAction getActionKeyForBundleId:bundleId2 actionType:_className];
 
 LABEL_20:
         goto LABEL_21;
       }
 
-      v9 = __atxlog_handle_default();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      _className = __atxlog_handle_default();
+      if (os_log_type_enabled(_className, OS_LOG_TYPE_FAULT))
       {
         [ATXAction actionKey];
       }
@@ -675,66 +675,66 @@ LABEL_21:
     case 7uLL:
       v8 = [ATXSlotSet alloc];
       v9 = MEMORY[0x1E695DFD8];
-      v10 = [(ATXAction *)self parameterKeysForToolInvocation];
-      v11 = [v9 setWithArray:v10];
-      v7 = [(ATXSlotSet *)v8 initWithParameters:v11];
+      parameterKeysForToolInvocation = [(ATXAction *)self parameterKeysForToolInvocation];
+      v11 = [v9 setWithArray:parameterKeysForToolInvocation];
+      initWithOpaqueParameters = [(ATXSlotSet *)v8 initWithParameters:v11];
 
       break;
     case 2uLL:
 LABEL_4:
       v4 = [ATXSlotSet alloc];
-      v5 = [(ATXAction *)self intent];
-      v6 = [v5 atx_nonNilParameters];
-      v7 = [(ATXSlotSet *)v4 initWithParameters:v6];
+      intent = [(ATXAction *)self intent];
+      atx_nonNilParameters = [intent atx_nonNilParameters];
+      initWithOpaqueParameters = [(ATXSlotSet *)v4 initWithParameters:atx_nonNilParameters];
 
       break;
     default:
-      v7 = [[ATXSlotSet alloc] initWithOpaqueParameters];
+      initWithOpaqueParameters = [[ATXSlotSet alloc] initWithOpaqueParameters];
       break;
   }
 
-  return v7;
+  return initWithOpaqueParameters;
 }
 
 - (id)userActivityWebpageURL
 {
   if ((self->_actionType | 4) == 5)
   {
-    v2 = [(ATXAction *)self userActivity];
-    v3 = [v2 webpageURL];
+    userActivity = [(ATXAction *)self userActivity];
+    webpageURL = [userActivity webpageURL];
   }
 
   else
   {
-    v3 = 0;
+    webpageURL = 0;
   }
 
-  return v3;
+  return webpageURL;
 }
 
 - (NSUserActivity)userActivity
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  userActivity = v2->_userActivity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userActivity = selfCopy->_userActivity;
   if (!userActivity)
   {
     v4 = objc_autoreleasePoolPush();
-    if (([(ATXAction *)v2 actionType]== 1 || [(ATXAction *)v2 actionType]== 5) && v2->_userActivityString)
+    if (([(ATXAction *)selfCopy actionType]== 1 || [(ATXAction *)selfCopy actionType]== 5) && selfCopy->_userActivityString)
     {
-      v5 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityStrings:v2->_userActivityString secondaryString:0 optionalData:0];
-      v6 = v2->_userActivity;
-      v2->_userActivity = v5;
+      v5 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityStrings:selfCopy->_userActivityString secondaryString:0 optionalData:0];
+      v6 = selfCopy->_userActivity;
+      selfCopy->_userActivity = v5;
 
-      [(NSUserActivity *)v2->_userActivity setContentAttributeSet:v2->_contentAttributeSet];
+      [(NSUserActivity *)selfCopy->_userActivity setContentAttributeSet:selfCopy->_contentAttributeSet];
     }
 
     objc_autoreleasePoolPop(v4);
-    userActivity = v2->_userActivity;
+    userActivity = selfCopy->_userActivity;
   }
 
   v7 = userActivity;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -749,11 +749,11 @@ LABEL_4:
       if (!actionType)
       {
 LABEL_6:
-        v4 = [(ATXAction *)self intent];
-        v5 = [v4 _hasTitle];
+        intent = [(ATXAction *)self intent];
+        _hasTitle = [intent _hasTitle];
 LABEL_13:
 
-        return v5;
+        return _hasTitle;
       }
 
       if (actionType != 1)
@@ -767,11 +767,11 @@ LABEL_15:
         reportInvalidActionTypeAndCrash(actionType);
       }
 
-      v4 = [(ATXAction *)self userActivity];
-      v6 = [v4 title];
+      intent = [(ATXAction *)self userActivity];
+      title = [intent title];
 LABEL_12:
-      v7 = v6;
-      v5 = [v6 length] != 0;
+      v7 = title;
+      _hasTitle = [title length] != 0;
 
       goto LABEL_13;
     }
@@ -783,8 +783,8 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v4 = [(ATXAction *)self userActivityProxy];
-      v6 = [v4 activityTitle];
+      intent = [(ATXAction *)self userActivityProxy];
+      title = [intent activityTitle];
       goto LABEL_12;
     }
   }
@@ -792,38 +792,38 @@ LABEL_12:
   return 1;
 }
 
-- (ATXAction)initWithIntent:(id)a3 actionUUID:(id)a4 bundleId:(id)a5 heuristic:(id)a6 heuristicMetadata:(id)a7 criteria:(id)a8 isFutureMedia:(BOOL)a9 title:(id)a10 subtitle:(id)a11
+- (ATXAction)initWithIntent:(id)intent actionUUID:(id)d bundleId:(id)id heuristic:(id)heuristic heuristicMetadata:(id)metadata criteria:(id)criteria isFutureMedia:(BOOL)media title:(id)self0 subtitle:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [[ATXLazyIntent alloc] initWithIntent:v24];
-  v26 = [v24 _type] == 2;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  criteriaCopy = criteria;
+  metadataCopy = metadata;
+  heuristicCopy = heuristic;
+  idCopy = id;
+  dCopy = d;
+  intentCopy = intent;
+  v25 = [[ATXLazyIntent alloc] initWithIntent:intentCopy];
+  v26 = [intentCopy _type] == 2;
 
-  LOBYTE(v29) = a9;
-  v27 = [(ATXAction *)self initWithActivityProxy:0 activity:0 activityString:0 itemIdentifier:0 contentAttributeSet:0 intent:v25 menuItemPath:0 actionUUID:v23 bundleId:v22 type:2 * v26 heuristic:v21 heuristicMetadata:v20 criteria:v19 isFutureMedia:v29 routeInfo:0 title:v18 subtitle:v17 languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
+  LOBYTE(v29) = media;
+  v27 = [(ATXAction *)self initWithActivityProxy:0 activity:0 activityString:0 itemIdentifier:0 contentAttributeSet:0 intent:v25 menuItemPath:0 actionUUID:dCopy bundleId:idCopy type:2 * v26 heuristic:heuristicCopy heuristicMetadata:metadataCopy criteria:criteriaCopy isFutureMedia:v29 routeInfo:0 title:titleCopy subtitle:subtitleCopy languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
 
   return v27;
 }
 
-- (ATXAction)initWithNSUserActivity:(id)a3 actionUUID:(id)a4 bundleId:(id)a5 contentAttributeSet:(id)a6 itemIdentifier:(id)a7 heuristic:(id)a8 heuristicMetadata:(id)a9 criteria:(id)a10 isFutureMedia:(BOOL)a11 title:(id)a12 subtitle:(id)a13
+- (ATXAction)initWithNSUserActivity:(id)activity actionUUID:(id)d bundleId:(id)id contentAttributeSet:(id)set itemIdentifier:(id)identifier heuristic:(id)heuristic heuristicMetadata:(id)metadata criteria:(id)self0 isFutureMedia:(BOOL)self1 title:(id)self2 subtitle:(id)self3
 {
   v48 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v33 = a4;
-  v34 = a5;
-  v19 = a6;
-  v35 = a7;
-  v36 = a8;
-  v37 = a9;
-  v20 = a10;
-  v21 = a12;
-  v22 = a13;
+  activityCopy = activity;
+  dCopy = d;
+  idCopy = id;
+  setCopy = set;
+  identifierCopy = identifier;
+  heuristicCopy = heuristic;
+  metadataCopy = metadata;
+  criteriaCopy = criteria;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -838,16 +838,16 @@ LABEL_12:
   v40 = &v41;
   v24 = v23;
   v39 = v24;
-  [v18 _createUserActivityStringsWithOptions:0 completionHandler:v38];
+  [activityCopy _createUserActivityStringsWithOptions:0 completionHandler:v38];
   if ([MEMORY[0x1E69C5D10] waitForSemaphore:v24 timeoutSeconds:1.0] == 1)
   {
     __atxlog_handle_default();
-    v26 = v25 = self;
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    contentAttributeSet = selfCopy2 = self;
+    if (os_log_type_enabled(contentAttributeSet, OS_LOG_TYPE_ERROR))
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      [ATXAction initWithNSUserActivity:v28 actionUUID:buf bundleId:v26 contentAttributeSet:? itemIdentifier:? heuristic:? heuristicMetadata:? criteria:? isFutureMedia:? title:? subtitle:?];
+      [ATXAction initWithNSUserActivity:v28 actionUUID:buf bundleId:contentAttributeSet contentAttributeSet:? itemIdentifier:? heuristic:? heuristicMetadata:? criteria:? isFutureMedia:? title:? subtitle:?];
     }
 
     v29 = 0;
@@ -857,20 +857,20 @@ LABEL_5:
   }
 
   v29 = v42[5];
-  v25 = self;
+  selfCopy2 = self;
   if (v29)
   {
-    v26 = v19;
-    if (!v19)
+    contentAttributeSet = setCopy;
+    if (!setCopy)
     {
-      v26 = [v18 contentAttributeSet];
-      v25 = self;
+      contentAttributeSet = [activityCopy contentAttributeSet];
+      selfCopy2 = self;
     }
 
-    LOBYTE(v31) = a11;
-    v25 = [(ATXAction *)v25 initWithActivityProxy:0 activity:v18 activityString:v29 itemIdentifier:v35 contentAttributeSet:v26 intent:0 menuItemPath:0 actionUUID:v33 bundleId:v34 type:1 heuristic:v36 heuristicMetadata:v37 criteria:v20 isFutureMedia:v31 routeInfo:0 title:v21 subtitle:v22 languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
-    v29 = v25;
-    if (!v19)
+    LOBYTE(v31) = media;
+    selfCopy2 = [(ATXAction *)selfCopy2 initWithActivityProxy:0 activity:activityCopy activityString:v29 itemIdentifier:identifierCopy contentAttributeSet:contentAttributeSet intent:0 menuItemPath:0 actionUUID:dCopy bundleId:idCopy type:1 heuristic:heuristicCopy heuristicMetadata:metadataCopy criteria:criteriaCopy isFutureMedia:v31 routeInfo:0 title:titleCopy subtitle:subtitleCopy languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
+    v29 = selfCopy2;
+    if (!setCopy)
     {
       goto LABEL_5;
     }
@@ -893,26 +893,26 @@ void __157__ATXAction_initWithNSUserActivity_actionUUID_bundleId_contentAttribut
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)initFromBestAppSuggestion:(id)a3 activity:(id)a4 actionUUID:(id)a5 bundleId:(id)a6 contentAttributeSet:(id)a7 itemIdentifier:(id)a8 heuristic:(id)a9 heuristicMetadata:(id)a10 criteria:(id)a11 isFutureMedia:(BOOL)a12 title:(id)a13 subtitle:(id)a14
+- (id)initFromBestAppSuggestion:(id)suggestion activity:(id)activity actionUUID:(id)d bundleId:(id)id contentAttributeSet:(id)set itemIdentifier:(id)identifier heuristic:(id)heuristic heuristicMetadata:(id)self0 criteria:(id)self1 isFutureMedia:(BOOL)self2 title:(id)self3 subtitle:(id)self4
 {
-  v38 = a3;
-  v19 = a4;
-  v37 = a5;
-  v41 = a6;
-  v20 = a7;
-  v40 = a8;
-  v39 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a13;
-  v24 = a14;
+  suggestionCopy = suggestion;
+  activityCopy = activity;
+  dCopy = d;
+  idCopy = id;
+  setCopy = set;
+  identifierCopy = identifier;
+  heuristicCopy = heuristic;
+  metadataCopy = metadata;
+  criteriaCopy = criteria;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__2;
   v49 = __Block_byref_object_dispose__2;
   v50 = 0;
-  if (v19)
+  if (activityCopy)
   {
     v25 = dispatch_semaphore_create(0);
     v42[0] = MEMORY[0x1E69E9820];
@@ -922,15 +922,15 @@ void __157__ATXAction_initWithNSUserActivity_actionUUID_bundleId_contentAttribut
     v44 = &v45;
     v26 = v25;
     v43 = v26;
-    [v19 _createUserActivityStringsWithOptions:0 completionHandler:v42];
+    [activityCopy _createUserActivityStringsWithOptions:0 completionHandler:v42];
     v27 = [MEMORY[0x1E69C5D10] waitForSemaphore:v26 timeoutSeconds:1.0];
 
-    v29 = v37;
-    v28 = v38;
+    v29 = dCopy;
+    v28 = suggestionCopy;
     if (v27 == 1)
     {
       v30 = 0;
-      v31 = self;
+      selfCopy = self;
       goto LABEL_11;
     }
 
@@ -940,23 +940,23 @@ void __157__ATXAction_initWithNSUserActivity_actionUUID_bundleId_contentAttribut
   else
   {
     v32 = 0;
-    v29 = v37;
-    v28 = v38;
+    v29 = dCopy;
+    v28 = suggestionCopy;
   }
 
-  v33 = v20;
-  if (!v20)
+  contentAttributeSet = setCopy;
+  if (!setCopy)
   {
-    v33 = [v19 contentAttributeSet];
+    contentAttributeSet = [activityCopy contentAttributeSet];
   }
 
-  LOBYTE(v35) = a12;
-  v31 = [(ATXAction *)self initWithActivityProxy:v28 activity:v19 activityString:v32 itemIdentifier:v40 contentAttributeSet:v33 intent:0 menuItemPath:0 actionUUID:v29 bundleId:v41 type:5 heuristic:v39 heuristicMetadata:v21 criteria:v22 isFutureMedia:v35 routeInfo:0 title:v23 subtitle:v24 languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
-  if (!v20)
+  LOBYTE(v35) = media;
+  selfCopy = [(ATXAction *)self initWithActivityProxy:v28 activity:activityCopy activityString:v32 itemIdentifier:identifierCopy contentAttributeSet:contentAttributeSet intent:0 menuItemPath:0 actionUUID:v29 bundleId:idCopy type:5 heuristic:heuristicCopy heuristicMetadata:metadataCopy criteria:criteriaCopy isFutureMedia:v35 routeInfo:0 title:titleCopy subtitle:subtitleCopy languageCode:0 cachedHash:0 toolInvocationID:0 encodedToolInvocation:0 parameterKeysForToolInvocation:0];
+  if (!setCopy)
   {
   }
 
-  v30 = v31;
+  v30 = selfCopy;
 LABEL_11:
   _Block_object_dispose(&v45, 8);
 
@@ -970,51 +970,51 @@ void __169__ATXAction_initFromBestAppSuggestion_activity_actionUUID_bundleId_con
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (ATXAction)initWithActivityProxy:(id)a3 activity:(id)a4 activityString:(id)a5 itemIdentifier:(id)a6 contentAttributeSet:(id)a7 intent:(id)a8 menuItemPath:(id)a9 actionUUID:(id)a10 bundleId:(id)a11 type:(unint64_t)a12 heuristic:(id)a13 heuristicMetadata:(id)a14 criteria:(id)a15 isFutureMedia:(BOOL)a16 routeInfo:(id)a17 title:(id)a18 subtitle:(id)a19 languageCode:(id)a20 cachedHash:(id)a21 toolInvocationID:(id)a22 encodedToolInvocation:(id)a23 parameterKeysForToolInvocation:(id)a24
+- (ATXAction)initWithActivityProxy:(id)proxy activity:(id)activity activityString:(id)string itemIdentifier:(id)identifier contentAttributeSet:(id)set intent:(id)intent menuItemPath:(id)path actionUUID:(id)self0 bundleId:(id)self1 type:(unint64_t)self2 heuristic:(id)self3 heuristicMetadata:(id)self4 criteria:(id)self5 isFutureMedia:(BOOL)self6 routeInfo:(id)self7 title:(id)self8 subtitle:(id)self9 languageCode:(id)code cachedHash:(id)hash toolInvocationID:(id)iD encodedToolInvocation:(id)invocation parameterKeysForToolInvocation:(id)toolInvocation
 {
-  v81 = a3;
-  v75 = a4;
-  v60 = a5;
-  v28 = a5;
-  v61 = a6;
-  v74 = a6;
-  v80 = a7;
-  v62 = a8;
-  v29 = a8;
-  v30 = a9;
-  v73 = a10;
-  v31 = a11;
-  v69 = a13;
-  v68 = a14;
-  v65 = a15;
-  v63 = a17;
-  v71 = a18;
-  v70 = a19;
-  v78 = a20;
-  v67 = a21;
-  v82 = a22;
-  v66 = a23;
-  v77 = a24;
-  v72 = v31;
-  if (!v31)
+  proxyCopy = proxy;
+  activityCopy = activity;
+  stringCopy = string;
+  stringCopy2 = string;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  setCopy = set;
+  intentCopy = intent;
+  intentCopy2 = intent;
+  pathCopy = path;
+  dCopy = d;
+  idCopy = id;
+  heuristicCopy = heuristic;
+  metadataCopy = metadata;
+  criteriaCopy = criteria;
+  infoCopy = info;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  codeCopy = code;
+  hashCopy = hash;
+  iDCopy = iD;
+  invocationCopy = invocation;
+  toolInvocationCopy = toolInvocation;
+  v72 = idCopy;
+  if (!idCopy)
   {
     [ATXAction initWithActivityProxy:activity:activityString:itemIdentifier:contentAttributeSet:intent:menuItemPath:actionUUID:bundleId:type:heuristic:heuristicMetadata:criteria:isFutureMedia:routeInfo:title:subtitle:languageCode:cachedHash:toolInvocationID:encodedToolInvocation:parameterKeysForToolInvocation:];
   }
 
-  v32 = (v28 | v29) != 0;
-  v33 = v81;
-  v34 = v29;
-  v64 = v29;
-  if (v30 || v81 || v28 | v29 || v82)
+  v32 = (stringCopy2 | intentCopy2) != 0;
+  v33 = proxyCopy;
+  v34 = intentCopy2;
+  v64 = intentCopy2;
+  if (pathCopy || proxyCopy || stringCopy2 | intentCopy2 || iDCopy)
   {
-    v36 = v68;
-    v35 = v69;
-    v37 = v65;
-    v38 = v63;
-    v39 = self;
-    if (v81)
+    v36 = metadataCopy;
+    v35 = heuristicCopy;
+    v37 = criteriaCopy;
+    v38 = infoCopy;
+    selfCopy2 = self;
+    if (proxyCopy)
     {
-      if (v30 | v82)
+      if (pathCopy | iDCopy)
       {
         v32 = 1;
       }
@@ -1030,9 +1030,9 @@ LABEL_41:
       goto LABEL_28;
     }
 
-    if (v82)
+    if (iDCopy)
     {
-      if (((v30 == 0) & ~v32) != 0)
+      if (((pathCopy == 0) & ~v32) != 0)
       {
         goto LABEL_28;
       }
@@ -1044,19 +1044,19 @@ LABEL_41:
 
   else
   {
-    v40 = v29;
-    v39 = self;
+    v40 = intentCopy2;
+    selfCopy2 = self;
     [ATXAction initWithActivityProxy:activity:activityString:itemIdentifier:contentAttributeSet:intent:menuItemPath:actionUUID:bundleId:type:heuristic:heuristicMetadata:criteria:isFutureMedia:routeInfo:title:subtitle:languageCode:cachedHash:toolInvocationID:encodedToolInvocation:parameterKeysForToolInvocation:];
     v34 = v40;
-    v36 = v68;
-    v35 = v69;
-    v37 = v65;
-    v38 = v63;
+    v36 = metadataCopy;
+    v35 = heuristicCopy;
+    v37 = criteriaCopy;
+    v38 = infoCopy;
   }
 
   if (v34)
   {
-    v41 = (v28 | v30) == 0;
+    v41 = (stringCopy2 | pathCopy) == 0;
   }
 
   else
@@ -1065,9 +1065,9 @@ LABEL_41:
   }
 
   v42 = !v41;
-  if (v30)
+  if (pathCopy)
   {
-    v43 = v28 == 0;
+    v43 = stringCopy2 == 0;
   }
 
   else
@@ -1082,24 +1082,24 @@ LABEL_41:
   }
 
 LABEL_28:
-  if (a12 >= 8)
+  if (type >= 8)
   {
     [ATXAction initWithActivityProxy:activity:activityString:itemIdentifier:contentAttributeSet:intent:menuItemPath:actionUUID:bundleId:type:heuristic:heuristicMetadata:criteria:isFutureMedia:routeInfo:title:subtitle:languageCode:cachedHash:toolInvocationID:encodedToolInvocation:parameterKeysForToolInvocation:];
   }
 
-  v83.receiver = v39;
+  v83.receiver = selfCopy2;
   v83.super_class = ATXAction;
   v44 = [(ATXAction *)&v83 init];
   v45 = v44;
   if (v44)
   {
-    objc_storeStrong(&v44->_userActivityProxy, a3);
-    objc_storeStrong(&v45->_userActivity, a4);
-    objc_storeStrong(&v45->_userActivityString, v60);
-    objc_storeStrong(&v45->_itemIdentifier, v61);
-    if (v80)
+    objc_storeStrong(&v44->_userActivityProxy, proxy);
+    objc_storeStrong(&v45->_userActivity, activity);
+    objc_storeStrong(&v45->_userActivityString, stringCopy);
+    objc_storeStrong(&v45->_itemIdentifier, identifierCopy);
+    if (setCopy)
     {
-      v46 = v80;
+      v46 = setCopy;
     }
 
     else
@@ -1110,20 +1110,20 @@ LABEL_28:
     contentAttributeSet = v45->_contentAttributeSet;
     v45->_contentAttributeSet = v46;
 
-    objc_storeStrong(&v45->_lazyIntent, v62);
-    objc_storeStrong(&v45->_actionUUID, a10);
-    objc_storeStrong(&v45->_bundleId, a11);
-    v45->_actionType = a12;
-    objc_storeStrong(&v45->_heuristic, a13);
-    objc_storeStrong(&v45->_heuristicMetadata, a14);
-    objc_storeStrong(&v45->_criteria, a15);
-    v45->_isFutureMedia = a16;
-    objc_storeStrong(&v45->_routeInfo, a17);
-    objc_storeStrong(&v45->_title, a18);
-    objc_storeStrong(&v45->_subtitle, a19);
-    if (v78)
+    objc_storeStrong(&v45->_lazyIntent, intentCopy);
+    objc_storeStrong(&v45->_actionUUID, d);
+    objc_storeStrong(&v45->_bundleId, id);
+    v45->_actionType = type;
+    objc_storeStrong(&v45->_heuristic, heuristic);
+    objc_storeStrong(&v45->_heuristicMetadata, metadata);
+    objc_storeStrong(&v45->_criteria, criteria);
+    v45->_isFutureMedia = media;
+    objc_storeStrong(&v45->_routeInfo, info);
+    objc_storeStrong(&v45->_title, title);
+    objc_storeStrong(&v45->_subtitle, subtitle);
+    if (codeCopy)
     {
-      v48 = v78;
+      v48 = codeCopy;
       languageCode = v45->_languageCode;
       v45->_languageCode = v48;
     }
@@ -1131,69 +1131,69 @@ LABEL_28:
     else
     {
       languageCode = [MEMORY[0x1E695DF58] currentLocale];
-      v50 = [languageCode localeIdentifier];
+      localeIdentifier = [languageCode localeIdentifier];
       v51 = v45->_languageCode;
-      v45->_languageCode = v50;
+      v45->_languageCode = localeIdentifier;
     }
 
-    v33 = v81;
+    v33 = proxyCopy;
 
     v45->_isTVWhiteListedLongFormMediaDoNotUseDirectly = 0;
-    objc_storeStrong(&v45->_cachedHash, a21);
-    v52 = [v30 copy];
+    objc_storeStrong(&v45->_cachedHash, hash);
+    v52 = [pathCopy copy];
     menuItemPath = v45->_menuItemPath;
     v45->_menuItemPath = v52;
 
-    objc_storeStrong(&v45->_toolInvocationID, a22);
-    objc_storeStrong(&v45->_encodedToolInvocation, a23);
-    v54 = [v77 copy];
+    objc_storeStrong(&v45->_toolInvocationID, iD);
+    objc_storeStrong(&v45->_encodedToolInvocation, invocation);
+    v54 = [toolInvocationCopy copy];
     parameterKeysForToolInvocation = v45->_parameterKeysForToolInvocation;
     v45->_parameterKeysForToolInvocation = v54;
 
     [(ATXLazyIntent *)v45->_lazyIntent setDelegate:v45];
-    v56 = [MEMORY[0x1E698B000] sharedInstance];
-    [v56 registerObserver:v45];
+    mEMORY[0x1E698B000] = [MEMORY[0x1E698B000] sharedInstance];
+    [mEMORY[0x1E698B000] registerObserver:v45];
 
     if ([(ATXLazyIntent *)v45->_lazyIntent isDeserialized])
     {
-      v57 = [(ATXLazyIntent *)v45->_lazyIntent intent];
-      [(ATXAction *)v45 setLaunchIdForIntent:v57];
+      intent = [(ATXLazyIntent *)v45->_lazyIntent intent];
+      [(ATXAction *)v45 setLaunchIdForIntent:intent];
     }
   }
 
   return v45;
 }
 
-- (ATXAction)actionWithRouteInfo:(id)a3
+- (ATXAction)actionWithRouteInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v4 = a3;
+    infoCopy = info;
     v5 = [ATXAction alloc];
     LOBYTE(v8) = self->_isFutureMedia;
-    v6 = [(ATXAction *)v5 initWithActivityProxy:0 activity:self->_userActivity activityString:self->_userActivityString itemIdentifier:self->_itemIdentifier contentAttributeSet:self->_contentAttributeSet intent:self->_lazyIntent menuItemPath:self->_menuItemPath actionUUID:self->_actionUUID bundleId:self->_bundleId type:self->_actionType heuristic:self->_heuristic heuristicMetadata:self->_heuristicMetadata criteria:self->_criteria isFutureMedia:v8 routeInfo:v4 title:self->_title subtitle:self->_subtitle languageCode:self->_languageCode cachedHash:self->_cachedHash toolInvocationID:self->_toolInvocationID encodedToolInvocation:self->_encodedToolInvocation parameterKeysForToolInvocation:self->_parameterKeysForToolInvocation];
+    selfCopy = [(ATXAction *)v5 initWithActivityProxy:0 activity:self->_userActivity activityString:self->_userActivityString itemIdentifier:self->_itemIdentifier contentAttributeSet:self->_contentAttributeSet intent:self->_lazyIntent menuItemPath:self->_menuItemPath actionUUID:self->_actionUUID bundleId:self->_bundleId type:self->_actionType heuristic:self->_heuristic heuristicMetadata:self->_heuristicMetadata criteria:self->_criteria isFutureMedia:v8 routeInfo:infoCopy title:self->_title subtitle:self->_subtitle languageCode:self->_languageCode cachedHash:self->_cachedHash toolInvocationID:self->_toolInvocationID encodedToolInvocation:self->_encodedToolInvocation parameterKeysForToolInvocation:self->_parameterKeysForToolInvocation];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (BOOL)isTVWhiteListedLongFormMedia
 {
-  v3 = [(ATXAction *)self intent];
-  if ([ATXAction _isTVIntent:v3 bundleId:self->_bundleId])
+  intent = [(ATXAction *)self intent];
+  if ([ATXAction _isTVIntent:intent bundleId:self->_bundleId])
   {
-    v4 = v3;
-    v5 = [v4 proxiedBundleIdentifier];
-    if (v5)
+    v4 = intent;
+    proxiedBundleIdentifier = [v4 proxiedBundleIdentifier];
+    if (proxiedBundleIdentifier)
     {
-      v6 = v5;
-      v7 = [v4 proxiedBundleIdentifier];
-      v8 = [ATXAVRoutingUtils isTVExperienceAppWithBundleId:v7];
+      v6 = proxiedBundleIdentifier;
+      proxiedBundleIdentifier2 = [v4 proxiedBundleIdentifier];
+      v8 = [ATXAVRoutingUtils isTVExperienceAppWithBundleId:proxiedBundleIdentifier2];
 
       if (v8)
       {
@@ -1207,38 +1207,38 @@ LABEL_28:
   return isTVWhiteListedLongFormMediaDoNotUseDirectly;
 }
 
-+ (BOOL)_isTVIntent:(id)a3 bundleId:(id)a4
++ (BOOL)_isTVIntent:(id)intent bundleId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [ATXAVRoutingUtils isTVAppWithBundleId:v6];
+  intentCopy = intent;
+  idCopy = id;
+  v7 = intentCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [ATXAVRoutingUtils isTVAppWithBundleId:idCopy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAction *)self isEqualToAction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAction *)self isEqualToAction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAction:(id)a3
+- (BOOL)isEqualToAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_bundleId;
   v6 = v5;
-  if (v5 == v4[11])
+  if (v5 == actionCopy[11])
   {
   }
 
@@ -1254,7 +1254,7 @@ LABEL_28:
 
   p_actionType = &self->_actionType;
   actionType = self->_actionType;
-  if (actionType != v4[12])
+  if (actionType != actionCopy[12])
   {
     goto LABEL_38;
   }
@@ -1281,9 +1281,9 @@ LABEL_19:
         goto LABEL_38;
       }
 
-      v20 = [(ATXAction *)self encodedToolInvocation];
-      v21 = [v4 encodedToolInvocation];
-      v22 = [v20 isEqualToData:v21];
+      encodedToolInvocation = [(ATXAction *)self encodedToolInvocation];
+      encodedToolInvocation2 = [actionCopy encodedToolInvocation];
+      v22 = [encodedToolInvocation isEqualToData:encodedToolInvocation2];
     }
 
     else
@@ -1293,9 +1293,9 @@ LABEL_19:
         goto LABEL_22;
       }
 
-      v20 = [(ATXAction *)self menuItemPath];
-      v21 = [v4 menuItemPath];
-      v22 = [v20 isEqualToArray:v21];
+      encodedToolInvocation = [(ATXAction *)self menuItemPath];
+      encodedToolInvocation2 = [actionCopy menuItemPath];
+      v22 = [encodedToolInvocation isEqualToArray:encodedToolInvocation2];
     }
 
     v31 = v22;
@@ -1316,22 +1316,22 @@ LABEL_19:
   if (!actionType)
   {
 LABEL_11:
-    v10 = [(ATXAction *)self intent];
-    v11 = [v10 _className];
-    v12 = [v4 intent];
-    v13 = [v12 _className];
-    v14 = [v11 isEqual:v13];
+    intent = [(ATXAction *)self intent];
+    _className = [intent _className];
+    intent2 = [actionCopy intent];
+    _className2 = [intent2 _className];
+    v14 = [_className isEqual:_className2];
 
     if (!v14)
     {
       goto LABEL_38;
     }
 
-    v15 = [(ATXAction *)self intent];
-    v16 = [v15 atx_nonNilParametersByName];
-    v17 = [v4 intent];
-    v18 = [v17 atx_nonNilParametersByName];
-    v19 = [v16 atx_isFuzzyMatch:v18];
+    intent3 = [(ATXAction *)self intent];
+    atx_nonNilParametersByName = [intent3 atx_nonNilParametersByName];
+    intent4 = [actionCopy intent];
+    atx_nonNilParametersByName2 = [intent4 atx_nonNilParametersByName];
+    v19 = [atx_nonNilParametersByName atx_isFuzzyMatch:atx_nonNilParametersByName2];
 
     if ((v19 & 1) == 0)
     {
@@ -1352,8 +1352,8 @@ LABEL_11:
   }
 
 LABEL_22:
-  v30 = [(ATXAction *)self userActivityHash];
-  if (v30 != [v4 userActivityHash])
+  userActivityHash = [(ATXAction *)self userActivityHash];
+  if (userActivityHash != [actionCopy userActivityHash])
   {
     goto LABEL_38;
   }
@@ -1361,7 +1361,7 @@ LABEL_22:
 LABEL_26:
   v32 = self->_heuristic;
   v33 = v32;
-  if (v32 == v4[15])
+  if (v32 == actionCopy[15])
   {
   }
 
@@ -1375,13 +1375,13 @@ LABEL_26:
     }
   }
 
-  if (self->_isFutureMedia == *(v4 + 73))
+  if (self->_isFutureMedia == *(actionCopy + 73))
   {
     if ([(ATXAction *)self isHeuristic])
     {
       v35 = self->_title;
       v36 = v35;
-      if (v35 == v4[4])
+      if (v35 == actionCopy[4])
       {
       }
 
@@ -1397,7 +1397,7 @@ LABEL_26:
 
       v38 = self->_subtitle;
       v39 = v38;
-      if (v38 == v4[5])
+      if (v38 == actionCopy[5])
       {
       }
 
@@ -1425,12 +1425,12 @@ LABEL_39:
 
 - (id)canonicalIdentifier
 {
-  v3 = [(ATXAction *)self actionKey];
-  v4 = v3;
+  actionKey = [(ATXAction *)self actionKey];
+  v4 = actionKey;
   v5 = @"nilActionKey";
-  if (v3)
+  if (actionKey)
   {
-    v5 = v3;
+    v5 = actionKey;
   }
 
   v6 = v5;
@@ -1440,20 +1440,20 @@ LABEL_39:
   return v7;
 }
 
-- (ATXAction)initWithProto:(id)a3
+- (ATXAction)initWithProto:(id)proto
 {
   v88 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 intent];
-      if (v6)
+      v5 = protoCopy;
+      intent = [v5 intent];
+      if (intent)
       {
-        v7 = [[ATXLazyIntent alloc] initWithIntentData:v6];
+        v7 = [[ATXLazyIntent alloc] initWithIntentData:intent];
       }
 
       else
@@ -1461,17 +1461,17 @@ LABEL_39:
         v7 = 0;
       }
 
-      v9 = [v5 userActivityProxy];
-      v10 = [v9 length];
+      userActivityProxy = [v5 userActivityProxy];
+      v10 = [userActivityProxy length];
 
       if (v10)
       {
         v11 = objc_autoreleasePoolPush();
         v12 = MEMORY[0x1E696ACD0];
         v13 = objc_opt_class();
-        v14 = [v5 userActivityProxy];
+        userActivityProxy2 = [v5 userActivityProxy];
         v86 = 0;
-        v10 = [v12 unarchivedObjectOfClass:v13 fromData:v14 error:&v86];
+        v10 = [v12 unarchivedObjectOfClass:v13 fromData:userActivityProxy2 error:&v86];
         v15 = v86;
 
         objc_autoreleasePoolPop(v11);
@@ -1487,46 +1487,46 @@ LABEL_39:
 
       if ([v5 menuItemPathComponentsCount])
       {
-        v17 = [v5 menuItemPathComponents];
+        menuItemPathComponents = [v5 menuItemPathComponents];
       }
 
       else
       {
-        v17 = 0;
+        menuItemPathComponents = 0;
       }
 
-      v18 = [v5 toolInvocationID];
-      if (v10 | v7 || (([v5 activityString], v19 = objc_claimAutoreleasedReturnValue(), (v20 = v19 | v17) != 0) ? (v21 = v19) : (v21 = 0), (v21, v20) || v18))
+      toolInvocationID = [v5 toolInvocationID];
+      if (v10 | v7 || (([v5 activityString], v19 = objc_claimAutoreleasedReturnValue(), (v20 = v19 | menuItemPathComponents) != 0) ? (v21 = v19) : (v21 = 0), (v21, v20) || toolInvocationID))
       {
-        v8 = [v5 bundleId];
+        selfCopy = [v5 bundleId];
 
-        if (v8)
+        if (selfCopy)
         {
-          v8 = [v5 uuid];
+          selfCopy = [v5 uuid];
 
-          if (v8)
+          if (selfCopy)
           {
-            v80 = v17;
+            v80 = menuItemPathComponents;
             v22 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v23 = [v5 uuid];
-            v24 = [v22 initWithUUIDString:v23];
+            uuid = [v5 uuid];
+            v24 = [v22 initWithUUIDString:uuid];
 
             v79 = v24;
             if (v24)
             {
-              v25 = [v5 contentAttributeSet];
-              v26 = [v25 length];
+              contentAttributeSet = [v5 contentAttributeSet];
+              v26 = [contentAttributeSet length];
 
-              v77 = v18;
+              v77 = toolInvocationID;
               v78 = v7;
               if (v26)
               {
                 v27 = objc_autoreleasePoolPush();
                 v28 = MEMORY[0x1E696ACD0];
                 v29 = objc_opt_class();
-                v30 = [v5 contentAttributeSet];
+                contentAttributeSet2 = [v5 contentAttributeSet];
                 v85 = 0;
-                v76 = [v28 unarchivedObjectOfClass:v29 fromData:v30 error:&v85];
+                v76 = [v28 unarchivedObjectOfClass:v29 fromData:contentAttributeSet2 error:&v85];
                 v31 = v85;
 
                 objc_autoreleasePoolPop(v27);
@@ -1545,23 +1545,23 @@ LABEL_39:
                 v76 = 0;
               }
 
-              v71 = v6;
-              v33 = [v5 heuristicMetadatas];
-              v34 = [v33 count];
+              v71 = intent;
+              heuristicMetadatas = [v5 heuristicMetadatas];
+              v34 = [heuristicMetadatas count];
 
               v70 = v10;
               if (v34)
               {
                 v35 = objc_alloc(MEMORY[0x1E695DF90]);
-                v36 = [v5 heuristicMetadatas];
-                v37 = [v35 initWithCapacity:{objc_msgSend(v36, "count")}];
+                heuristicMetadatas2 = [v5 heuristicMetadatas];
+                v37 = [v35 initWithCapacity:{objc_msgSend(heuristicMetadatas2, "count")}];
 
                 v83 = 0u;
                 v84 = 0u;
                 v81 = 0u;
                 v82 = 0u;
-                v38 = [v5 heuristicMetadatas];
-                v39 = [v38 countByEnumeratingWithState:&v81 objects:v87 count:16];
+                heuristicMetadatas3 = [v5 heuristicMetadatas];
+                v39 = [heuristicMetadatas3 countByEnumeratingWithState:&v81 objects:v87 count:16];
                 if (v39)
                 {
                   v40 = v39;
@@ -1572,7 +1572,7 @@ LABEL_39:
                     {
                       if (*v82 != v41)
                       {
-                        objc_enumerationMutation(v38);
+                        objc_enumerationMutation(heuristicMetadatas3);
                       }
 
                       v43 = *(*(&v81 + 1) + 8 * i);
@@ -1580,13 +1580,13 @@ LABEL_39:
 
                       if (v44)
                       {
-                        v45 = [v43 value];
+                        value = [v43 value];
                         v46 = [v43 key];
-                        [v37 setObject:v45 forKeyedSubscript:v46];
+                        [v37 setObject:value forKeyedSubscript:v46];
                       }
                     }
 
-                    v40 = [v38 countByEnumeratingWithState:&v81 objects:v87 count:16];
+                    v40 = [heuristicMetadatas3 countByEnumeratingWithState:&v81 objects:v87 count:16];
                   }
 
                   while (v40);
@@ -1598,13 +1598,13 @@ LABEL_39:
                 v37 = 0;
               }
 
-              v47 = [v5 predictableParameterCombinations];
-              v48 = [v47 count];
+              predictableParameterCombinations = [v5 predictableParameterCombinations];
+              v48 = [predictableParameterCombinations count];
 
               if (v48)
               {
-                v49 = [v5 predictableParameterCombinations];
-                v50 = [v49 _pas_mappedArrayWithTransform:&__block_literal_global_20];
+                predictableParameterCombinations2 = [v5 predictableParameterCombinations];
+                v50 = [predictableParameterCombinations2 _pas_mappedArrayWithTransform:&__block_literal_global_20];
               }
 
               else
@@ -1623,28 +1623,28 @@ LABEL_39:
                 v75 = 0;
               }
 
-              v74 = [v5 encodedToolInvocation];
-              v51 = [v5 parameterKeysForToolInvocations];
-              v73 = [v51 copy];
+              encodedToolInvocation = [v5 encodedToolInvocation];
+              parameterKeysForToolInvocations = [v5 parameterKeysForToolInvocations];
+              v73 = [parameterKeysForToolInvocations copy];
 
-              v68 = [v5 activityString];
-              v66 = [v5 itemIdentifier];
-              v72 = [v5 bundleId];
-              v65 = [v5 actionType];
-              v63 = [v5 heuristic];
+              activityString = [v5 activityString];
+              itemIdentifier = [v5 itemIdentifier];
+              bundleId = [v5 bundleId];
+              actionType = [v5 actionType];
+              heuristic = [v5 heuristic];
               v52 = [ATXActionCriteria alloc];
-              v67 = [v5 criteria];
-              v61 = [(ATXActionCriteria *)v52 initWithProto:v67];
-              v62 = [v5 isFutureMedia];
+              criteria = [v5 criteria];
+              v61 = [(ATXActionCriteria *)v52 initWithProto:criteria];
+              isFutureMedia = [v5 isFutureMedia];
               v53 = [ATXAVRouteInfo alloc];
-              v64 = [v5 routeInfo];
-              v60 = [(ATXAVRouteInfo *)v53 initWithProto:v64];
-              v54 = [v5 title];
-              v55 = [v5 subtitle];
-              v56 = [v5 languageCode];
-              LOBYTE(v59) = v62;
+              routeInfo = [v5 routeInfo];
+              v60 = [(ATXAVRouteInfo *)v53 initWithProto:routeInfo];
+              title = [v5 title];
+              subtitle = [v5 subtitle];
+              languageCode = [v5 languageCode];
+              LOBYTE(v59) = isFutureMedia;
               v10 = v70;
-              v57 = [(ATXAction *)self initWithActivityProxy:v70 activity:0 activityString:v68 itemIdentifier:v66 contentAttributeSet:v76 intent:v78 menuItemPath:v80 actionUUID:v79 bundleId:v72 type:v65 heuristic:v63 heuristicMetadata:v37 criteria:v61 isFutureMedia:v59 routeInfo:v60 title:v54 subtitle:v55 languageCode:v56 cachedHash:v75 toolInvocationID:v77 encodedToolInvocation:v74 parameterKeysForToolInvocation:v73];
+              v57 = [(ATXAction *)self initWithActivityProxy:v70 activity:0 activityString:activityString itemIdentifier:itemIdentifier contentAttributeSet:v76 intent:v78 menuItemPath:v80 actionUUID:v79 bundleId:bundleId type:actionType heuristic:heuristic heuristicMetadata:v37 criteria:v61 isFutureMedia:v59 routeInfo:v60 title:title subtitle:subtitle languageCode:languageCode cachedHash:v75 toolInvocationID:v77 encodedToolInvocation:encodedToolInvocation parameterKeysForToolInvocation:v73];
 
               if (v57)
               {
@@ -1654,25 +1654,25 @@ LABEL_39:
 
               self = v57;
 
-              v8 = self;
-              v6 = v71;
-              v18 = v77;
+              selfCopy = self;
+              intent = v71;
+              toolInvocationID = v77;
               v7 = v78;
             }
 
             else
             {
-              v8 = 0;
+              selfCopy = 0;
             }
 
-            v17 = v80;
+            menuItemPathComponents = v80;
           }
         }
       }
 
       else
       {
-        v8 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -1684,16 +1684,16 @@ LABEL_39:
         [(ATXAction *)self initWithProto:v5];
       }
 
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 ATXActionPredictableParameters *__27__ATXAction_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -1719,40 +1719,40 @@ ATXActionPredictableParameters *__27__ATXAction_initWithProto___block_invoke(uin
   return v8;
 }
 
-- (void)setLaunchIdForIntent:(id)a3
+- (void)setLaunchIdForIntent:(id)intent
 {
-  v4 = a3;
-  if (v4)
+  intentCopy = intent;
+  if (intentCopy)
   {
-    v6 = v4;
-    v5 = [v4 launchId];
+    v6 = intentCopy;
+    launchId = [intentCopy launchId];
 
-    v4 = v6;
-    if (!v5)
+    intentCopy = v6;
+    if (!launchId)
     {
       [v6 _setLaunchId:self->_bundleId];
-      v4 = v6;
+      intentCopy = v6;
     }
   }
 }
 
-- (ATXAction)initWithProtoData:(id)a3
+- (ATXAction)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBAction alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBAction alloc] initWithData:dataCopy];
 
     self = [(ATXAction *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 void __18__ATXAction_proto__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1779,16 +1779,16 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   return v3;
 }
 
-- (unint64_t)hashSlotSetWithNonNilParameters:(id)a3
+- (unint64_t)hashSlotSetWithNonNilParameters:(id)parameters
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  parametersCopy = parameters;
+  v4 = [parametersCopy count];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = parametersCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1827,23 +1827,23 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   return v10;
 }
 
-+ (unint64_t)_userActivityHashForUserInfoDict:(id)a3 activityType:(id)a4 webpageURL:(id)a5
++ (unint64_t)_userActivityHashForUserInfoDict:(id)dict activityType:(id)type webpageURL:(id)l
 {
   v77 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictCopy = dict;
+  typeCopy = type;
+  lCopy = l;
   context = objc_autoreleasePoolPush();
   *md = 0u;
   v76 = 0u;
   v10 = objc_opt_new();
-  [v10 addObject:v8];
-  v50 = v9;
-  v11 = [v9 absoluteString];
-  v12 = v11;
-  if (v11)
+  [v10 addObject:typeCopy];
+  v50 = lCopy;
+  absoluteString = [lCopy absoluteString];
+  v12 = absoluteString;
+  if (absoluteString)
   {
-    v13 = v11;
+    v13 = absoluteString;
   }
 
   else
@@ -1859,7 +1859,7 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v15 = v7;
+  v15 = dictCopy;
   v16 = [v15 countByEnumeratingWithState:&v65 objects:v74 count:16];
   if (v16)
   {
@@ -1931,7 +1931,7 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   if ([v54 count])
   {
     v47 = v22;
-    v48 = v8;
+    v48 = typeCopy;
     v52 = objc_opt_new();
     v57 = 0u;
     v58 = 0u;
@@ -1993,7 +1993,7 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
     [v10 addObject:v52];
 
     v22 = v47;
-    v8 = v48;
+    typeCopy = v48;
   }
 
   v55 = 0;
@@ -2033,8 +2033,8 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   v3 = objc_opt_new();
   [v3 appendFormat:@"bundleId: %@\n", self->_bundleId];
   [v3 appendFormat:@"actionType: %lu\n", self->_actionType];
-  v4 = [(NSUUID *)self->_actionUUID UUIDString];
-  [v3 appendFormat:@"actionUUID: %@\n", v4];
+  uUIDString = [(NSUUID *)self->_actionUUID UUIDString];
+  [v3 appendFormat:@"actionUUID: %@\n", uUIDString];
 
   [v3 appendFormat:@"heuristic: %@\n", self->_heuristic];
   [v3 appendFormat:@"itemIdentifier: %@\n", self->_itemIdentifier];
@@ -2052,14 +2052,14 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
   [v3 appendFormat:@"criteria: %@\n", self->_criteria];
   if (ATXDetailedActionLoggingEnabled())
   {
-    v6 = [(ATXAction *)self actionTitle];
-    [v3 appendFormat:@"actionTitle: %@\n", v6];
+    actionTitle = [(ATXAction *)self actionTitle];
+    [v3 appendFormat:@"actionTitle: %@\n", actionTitle];
 
-    v7 = [(ATXAction *)self actionSubtitle];
-    [v3 appendFormat:@"actionSubtitle: %@\n", v7];
+    actionSubtitle = [(ATXAction *)self actionSubtitle];
+    [v3 appendFormat:@"actionSubtitle: %@\n", actionSubtitle];
 
-    v8 = [(ATXAction *)self actionDescription];
-    [v3 appendFormat:@"actionDescription: %@\n", v8];
+    actionDescription = [(ATXAction *)self actionDescription];
+    [v3 appendFormat:@"actionDescription: %@\n", actionDescription];
   }
 
   v9 = [v3 copy];
@@ -2084,8 +2084,8 @@ ATXPBPredictableParameters *__18__ATXAction_proto__block_invoke_125(uint64_t a1,
     }
 
 LABEL_10:
-    v5 = [(ATXAction *)self intent];
-    v4 = [v5 description];
+    intent = [(ATXAction *)self intent];
+    v4 = [intent description];
 LABEL_11:
 
     goto LABEL_12;
@@ -2099,9 +2099,9 @@ LABEL_11:
   if (actionType == 1)
   {
 LABEL_7:
-    v5 = [(ATXAction *)self userActivity];
-    v6 = [v5 userInfo];
-    v7 = [v6 description];
+    intent = [(ATXAction *)self userActivity];
+    userInfo = [intent userInfo];
+    v7 = [userInfo description];
     userActivityString = v7;
     if (!v7)
     {
@@ -2118,16 +2118,16 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)_shouldUseCachedTitle:(id)a3 cachedLanguageCode:(id)a4
+- (BOOL)_shouldUseCachedTitle:(id)title cachedLanguageCode:(id)code
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a3 length])
+  codeCopy = code;
+  if ([title length])
   {
-    v7 = [MEMORY[0x1E695DF58] currentLocale];
-    v8 = [v7 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v9 = [v8 isEqualToString:v6];
+    v9 = [localeIdentifier isEqualToString:codeCopy];
     if (v9)
     {
       v10 = __atxlog_handle_default();
@@ -2138,7 +2138,7 @@ LABEL_12:
         v15 = 138412546;
         v16 = v12;
         v17 = 2112;
-        v18 = v6;
+        v18 = codeCopy;
         _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "%@ - Using cached title because there is a matching cached languageCode: %@.", &v15, 0x16u);
       }
     }
@@ -2178,9 +2178,9 @@ LABEL_12:
     _os_log_impl(&dword_1BF549000, v3, OS_LOG_TYPE_DEFAULT, "%@ - Setting title for serialization for language code: %@.", &v9, 0x16u);
   }
 
-  v7 = [(ATXAction *)self actionTitle];
+  actionTitle = [(ATXAction *)self actionTitle];
   title = self->_title;
-  self->_title = v7;
+  self->_title = actionTitle;
 
   [(ATXAction *)self invalidateCachedHash];
 }
@@ -2198,12 +2198,12 @@ LABEL_12:
     switch(actionType)
     {
       case 5:
-        v5 = [(ATXAction *)self userActivityProxy];
-        v6 = [v5 activityTitle];
+        userActivityProxy = [(ATXAction *)self userActivityProxy];
+        activityTitle = [userActivityProxy activityTitle];
         goto LABEL_15;
       case 6:
-        v5 = [(ATXAction *)self menuItemPath];
-        v6 = [v5 lastObject];
+        userActivityProxy = [(ATXAction *)self menuItemPath];
+        activityTitle = [userActivityProxy lastObject];
         goto LABEL_15;
       case 7:
 LABEL_2:
@@ -2218,8 +2218,8 @@ LABEL_2:
   {
     if (actionType == 1)
     {
-      v5 = [(ATXAction *)self userActivity];
-      v6 = [v5 title];
+      userActivityProxy = [(ATXAction *)self userActivity];
+      activityTitle = [userActivityProxy title];
       goto LABEL_15;
     }
 
@@ -2230,10 +2230,10 @@ LABEL_11:
     }
   }
 
-  v5 = [(ATXAction *)self intent];
-  v6 = [v5 atx_titleWithEfficientLocalization];
+  userActivityProxy = [(ATXAction *)self intent];
+  activityTitle = [userActivityProxy atx_titleWithEfficientLocalization];
 LABEL_15:
-  v3 = v6;
+  v3 = activityTitle;
 
 LABEL_16:
 
@@ -2253,8 +2253,8 @@ LABEL_16:
     if (!actionType)
     {
 LABEL_7:
-      v5 = [(ATXAction *)self intent];
-      v6 = [v5 atx_subtitleWithEfficientLocalization];
+      intent = [(ATXAction *)self intent];
+      atx_subtitleWithEfficientLocalization = [intent atx_subtitleWithEfficientLocalization];
 LABEL_15:
 
       goto LABEL_16;
@@ -2272,16 +2272,16 @@ LABEL_20:
     }
 
 LABEL_11:
-    v3 = [(CSSearchableItemAttributeSet *)self->_contentAttributeSet contentDescription];
+    contentDescription = [(CSSearchableItemAttributeSet *)self->_contentAttributeSet contentDescription];
     goto LABEL_12;
   }
 
   if (actionType == 7)
   {
 LABEL_2:
-    v3 = self->_subtitle;
+    contentDescription = self->_subtitle;
 LABEL_12:
-    v6 = v3;
+    atx_subtitleWithEfficientLocalization = contentDescription;
     goto LABEL_16;
   }
 
@@ -2295,35 +2295,35 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v7 = [(ATXAction *)self menuItemPath];
-  v8 = [v7 count];
+  menuItemPath = [(ATXAction *)self menuItemPath];
+  v8 = [menuItemPath count];
 
   if (v8)
   {
-    v5 = [(ATXAction *)self menuItemPath];
-    v9 = [(ATXAction *)self menuItemPath];
-    v10 = [v5 subarrayWithRange:{0, objc_msgSend(v9, "count") - 1}];
-    v6 = [v10 componentsJoinedByString:@" > "];
+    intent = [(ATXAction *)self menuItemPath];
+    menuItemPath2 = [(ATXAction *)self menuItemPath];
+    v10 = [intent subarrayWithRange:{0, objc_msgSend(menuItemPath2, "count") - 1}];
+    atx_subtitleWithEfficientLocalization = [v10 componentsJoinedByString:@" > "];
 
     goto LABEL_15;
   }
 
-  v6 = &stru_1F3E050C8;
+  atx_subtitleWithEfficientLocalization = &stru_1F3E050C8;
 LABEL_16:
 
-  return v6;
+  return atx_subtitleWithEfficientLocalization;
 }
 
-+ (id)getActionKeyForBundleId:(id)a3 actionType:(id)a4
++ (id)getActionKeyForBundleId:(id)id actionType:(id)type
 {
   v5 = MEMORY[0x1E696AD60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithCapacity:{objc_msgSend(v6, "length") + objc_msgSend(v7, "length") + objc_msgSend(@":", "length")}];
-  [v8 appendString:v7];
+  typeCopy = type;
+  idCopy = id;
+  v8 = [[v5 alloc] initWithCapacity:{objc_msgSend(typeCopy, "length") + objc_msgSend(idCopy, "length") + objc_msgSend(@":", "length")}];
+  [v8 appendString:idCopy];
 
   [v8 appendString:@":"];
-  [v8 appendString:v6];
+  [v8 appendString:typeCopy];
 
   return v8;
 }
@@ -2332,10 +2332,10 @@ LABEL_16:
 {
   if (self->_userActivityString)
   {
-    v3 = [(ATXAction *)self actionKey];
-    if (v3)
+    actionKey = [(ATXAction *)self actionKey];
+    if (actionKey)
     {
-      v4 = [ATXAction getDateFromUserActivityString:self->_userActivityString forActionKey:v3];
+      v4 = [ATXAction getDateFromUserActivityString:self->_userActivityString forActionKey:actionKey];
     }
 
     else
@@ -2381,12 +2381,12 @@ LABEL_16:
   return v4;
 }
 
-+ (id)unarchivedActionFromData:(id)a3
++ (id)unarchivedActionFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
   v11 = 0;
-  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v11];
+  v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v11];
   v6 = v11;
   objc_autoreleasePoolPop(v4);
   if (v5)
@@ -2422,12 +2422,12 @@ LABEL_16:
   return v9;
 }
 
-+ (id)getDateFromUserActivityString:(id)a3 forActionKey:(id)a4
++ (id)getDateFromUserActivityString:(id)string forActionKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  stringCopy = string;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (!stringCopy)
   {
     +[ATXAction getDateFromUserActivityString:forActionKey:];
     if (v8)
@@ -2440,19 +2440,19 @@ LABEL_29:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!keyCopy)
   {
     goto LABEL_29;
   }
 
 LABEL_3:
-  if (![v6 containsString:@"{"] || !objc_msgSend(v6, "containsString:", @"}"))
+  if (![stringCopy containsString:@"{"] || !objc_msgSend(stringCopy, "containsString:", @"}"))
   {
     goto LABEL_15;
   }
 
   v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"{}"];
-  v10 = [v6 componentsSeparatedByCharactersInSet:v9];
+  v10 = [stringCopy componentsSeparatedByCharactersInSet:v9];
 
   if ([v10 count] <= 1)
   {
@@ -2477,7 +2477,7 @@ LABEL_15:
 
   if ([v8 isEqualToString:@"com.apple.news:NSUA_com.apple.news.articleViewing"])
   {
-    v13 = [a1 _extractValueInKeyValueBlob:v11 withKey:@"contentURL"];
+    v13 = [self _extractValueInKeyValueBlob:v11 withKey:@"contentURL"];
     if (v13)
     {
       v23 = 0;
@@ -2513,7 +2513,7 @@ LABEL_16:
 
   v21 = @"com.apple.calendarUIKit.userActivity.date";
 LABEL_24:
-  v22 = [a1 _extractValueInKeyValueBlob:v11 withKey:v21];
+  v22 = [self _extractValueInKeyValueBlob:v11 withKey:v21];
   v13 = v22;
   if (!v22)
   {
@@ -2530,15 +2530,15 @@ LABEL_17:
   return v17;
 }
 
-+ (id)_extractValueInKeyValueBlob:(id)a3 withKey:(id)a4
++ (id)_extractValueInKeyValueBlob:(id)blob withKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  keyCopy = key;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [a3 componentsSeparatedByString:{@", '", 0}];
+  v6 = [blob componentsSeparatedByString:{@", '", 0}];
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -2560,12 +2560,12 @@ LABEL_17:
           if ([v12 count] == 2)
           {
             v13 = [v12 objectAtIndexedSubscript:0];
-            v14 = [v13 isEqualToString:v5];
+            v14 = [v13 isEqualToString:keyCopy];
 
             if (v14)
             {
               v16 = [v12 objectAtIndexedSubscript:1];
-              v15 = [v16 stringByRemovingPercentEncoding];
+              stringByRemovingPercentEncoding = [v16 stringByRemovingPercentEncoding];
 
               goto LABEL_14;
             }
@@ -2583,88 +2583,88 @@ LABEL_17:
     }
   }
 
-  v15 = 0;
+  stringByRemovingPercentEncoding = 0;
 LABEL_14:
 
-  return v15;
+  return stringByRemovingPercentEncoding;
 }
 
-- (id)copyWithParameterAllowList:(id)a3 metadataProvider:(id)a4
+- (id)copyWithParameterAllowList:(id)list metadataProvider:(id)provider
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  providerCopy = provider;
   actionType = self->_actionType;
   v9 = actionType > 6 || ((1 << actionType) & 0x62) == 0;
-  v65 = v6;
-  if (!v9 || v6 == 0 || actionType == 7)
+  v65 = listCopy;
+  if (!v9 || listCopy == 0 || actionType == 7)
   {
-    v12 = self;
+    selfCopy4 = self;
   }
 
   else
   {
-    v14 = [(ATXAction *)self intent];
+    intent = [(ATXAction *)self intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v16 = [(ATXAction *)self intent];
-    v17 = v16;
+    intent2 = [(ATXAction *)self intent];
+    v17 = intent2;
     if (isKindOfClass)
     {
-      v18 = [v16 atx_nonNilParameters];
-      v19 = [v18 mutableCopy];
+      atx_nonNilParameters = [intent2 atx_nonNilParameters];
+      v19 = [atx_nonNilParameters mutableCopy];
 
-      [v19 minusSet:v6];
-      v20 = [v17 launchId];
+      [v19 minusSet:listCopy];
+      launchId = [v17 launchId];
 
-      if (v20)
+      if (launchId)
       {
-        if (!v7)
+        if (!providerCopy)
         {
-          v7 = objc_alloc_init(MEMORY[0x1E69ACF60]);
+          providerCopy = objc_alloc_init(MEMORY[0x1E69ACF60]);
         }
 
-        v21 = [v17 launchId];
-        v22 = [v17 appIntentIdentifier];
+        launchId2 = [v17 launchId];
+        appIntentIdentifier = [v17 appIntentIdentifier];
         v76 = 0;
-        v23 = [v7 actionForBundleIdentifier:v21 andActionIdentifier:v22 error:&v76];
+        v23 = [providerCopy actionForBundleIdentifier:launchId2 andActionIdentifier:appIntentIdentifier error:&v76];
         v24 = v76;
 
         if (v23)
         {
-          v25 = self;
-          v26 = [v19 allObjects];
+          selfCopy2 = self;
+          allObjects = [v19 allObjects];
           v74[0] = MEMORY[0x1E69E9820];
           v74[1] = 3221225472;
           v74[2] = __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_invoke;
           v74[3] = &unk_1E80C1BD0;
           v75 = v23;
-          v27 = [v26 _pas_filteredArrayWithTest:v74];
+          v27 = [allObjects _pas_filteredArrayWithTest:v74];
 
           if ([v27 count])
           {
-            v28 = [v17 serializedParameters];
-            v60 = v7;
-            v29 = [v28 mutableCopy];
+            serializedParameters = [v17 serializedParameters];
+            v60 = providerCopy;
+            v29 = [serializedParameters mutableCopy];
 
             [v29 removeObjectsForKeys:v27];
             v30 = objc_alloc(MEMORY[0x1E696E730]);
-            v31 = [v17 launchId];
-            v32 = [v17 appIntentIdentifier];
-            v33 = [v30 initWithAppBundleIdentifier:v31 appIntentIdentifier:v32 serializedParameters:v29];
+            launchId3 = [v17 launchId];
+            appIntentIdentifier2 = [v17 appIntentIdentifier];
+            v33 = [v30 initWithAppBundleIdentifier:launchId3 appIntentIdentifier:appIntentIdentifier2 serializedParameters:v29];
 
-            v34 = v25->_title;
+            v34 = selfCopy2->_title;
             v35 = [ATXAction alloc];
-            LOBYTE(v59) = v25->_isFutureMedia;
-            v12 = [(ATXAction *)v35 initWithIntent:v33 actionUUID:v25->_actionUUID bundleId:v25->_bundleId heuristic:v25->_heuristic heuristicMetadata:v25->_heuristicMetadata criteria:0 isFutureMedia:v59 title:v34 subtitle:v25->_subtitle];
+            LOBYTE(v59) = selfCopy2->_isFutureMedia;
+            selfCopy4 = [(ATXAction *)v35 initWithIntent:v33 actionUUID:selfCopy2->_actionUUID bundleId:selfCopy2->_bundleId heuristic:selfCopy2->_heuristic heuristicMetadata:selfCopy2->_heuristicMetadata criteria:0 isFutureMedia:v59 title:v34 subtitle:selfCopy2->_subtitle];
 
-            v7 = v60;
+            providerCopy = v60;
           }
 
           else
           {
-            v12 = v25;
+            selfCopy4 = selfCopy2;
           }
         }
 
@@ -2676,7 +2676,7 @@ LABEL_14:
             [ATXAction copyWithParameterAllowList:metadataProvider:];
           }
 
-          v12 = self;
+          selfCopy4 = self;
         }
       }
 
@@ -2688,20 +2688,20 @@ LABEL_14:
           [ATXAction copyWithParameterAllowList:metadataProvider:];
         }
 
-        v12 = self;
+        selfCopy4 = self;
       }
     }
 
     else
     {
-      v36 = [v16 _emptyCopy];
+      _emptyCopy = [intent2 _emptyCopy];
 
-      v62 = self;
-      v37 = [(ATXAction *)self intent];
-      v38 = [v37 atx_nonNilParameters];
-      v39 = [v38 mutableCopy];
+      selfCopy5 = self;
+      intent3 = [(ATXAction *)self intent];
+      atx_nonNilParameters2 = [intent3 atx_nonNilParameters];
+      v39 = [atx_nonNilParameters2 mutableCopy];
 
-      [v39 intersectSet:v6];
+      [v39 intersectSet:listCopy];
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
@@ -2722,8 +2722,8 @@ LABEL_14:
             }
 
             v45 = *(*(&v70 + 1) + 8 * i);
-            v46 = [v37 atx_parameterValueForKey:v45];
-            [v36 setValue:v46 forKey:v45];
+            v46 = [intent3 atx_parameterValueForKey:v45];
+            [_emptyCopy setValue:v46 forKey:v45];
           }
 
           v42 = [v40 countByEnumeratingWithState:&v70 objects:v78 count:16];
@@ -2735,17 +2735,17 @@ LABEL_14:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ([v65 containsObject:@"buckets"] & 1) == 0)
       {
-        v61 = v7;
+        v61 = providerCopy;
         v63 = objc_opt_new();
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v47 = [(ATXAction *)v62 intent];
-        v48 = [v47 buckets];
+        intent4 = [(ATXAction *)selfCopy5 intent];
+        buckets = [intent4 buckets];
 
-        obj = v48;
-        v49 = [v48 countByEnumeratingWithState:&v66 objects:v77 count:16];
+        obj = buckets;
+        v49 = [buckets countByEnumeratingWithState:&v66 objects:v77 count:16];
         if (v49)
         {
           v50 = v49;
@@ -2776,17 +2776,17 @@ LABEL_14:
           while (v50);
         }
 
-        [v36 setValue:v63 forKey:@"buckets"];
-        v7 = v61;
+        [_emptyCopy setValue:v63 forKey:@"buckets"];
+        providerCopy = v61;
       }
 
       v56 = [ATXAction alloc];
-      LOBYTE(v59) = v62->_isFutureMedia;
-      v12 = [(ATXAction *)v56 initWithIntent:v36 actionUUID:v62->_actionUUID bundleId:v62->_bundleId heuristic:v62->_heuristic heuristicMetadata:v62->_heuristicMetadata criteria:0 isFutureMedia:v59 title:0 subtitle:0];
+      LOBYTE(v59) = selfCopy5->_isFutureMedia;
+      selfCopy4 = [(ATXAction *)v56 initWithIntent:_emptyCopy actionUUID:selfCopy5->_actionUUID bundleId:selfCopy5->_bundleId heuristic:selfCopy5->_heuristic heuristicMetadata:selfCopy5->_heuristicMetadata criteria:0 isFutureMedia:v59 title:0 subtitle:0];
     }
   }
 
-  return v12;
+  return selfCopy4;
 }
 
 uint64_t __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_invoke(uint64_t a1, void *a2)
@@ -2820,59 +2820,59 @@ uint64_t __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_inv
   v20[0] = self->_bundleId;
   v19[0] = @"bundleId";
   v19[1] = @"description";
-  v3 = [(ATXAction *)self actionDescription];
-  v4 = v3;
-  if (!v3)
+  actionDescription = [(ATXAction *)self actionDescription];
+  v4 = actionDescription;
+  if (!actionDescription)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    actionDescription = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v3;
-  v20[1] = v3;
+  v17 = actionDescription;
+  v20[1] = actionDescription;
   v19[2] = @"type";
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_actionType];
   v20[2] = v18;
   v19[3] = @"heuristic";
   heuristic = self->_heuristic;
-  v6 = heuristic;
+  null = heuristic;
   if (!heuristic)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v6;
-  v20[3] = v6;
+  v16 = null;
+  v20[3] = null;
   v19[4] = @"criteria";
-  v7 = [(ATXAction *)self criteria];
-  v8 = [v7 json];
-  v20[4] = v8;
+  criteria = [(ATXAction *)self criteria];
+  json = [criteria json];
+  v20[4] = json;
   v19[5] = @"actionUUID";
-  v9 = [(NSUUID *)self->_actionUUID UUIDString];
-  v20[5] = v9;
+  uUIDString = [(NSUUID *)self->_actionUUID UUIDString];
+  v20[5] = uUIDString;
   v19[6] = @"actionTitle";
-  v10 = [(ATXAction *)self actionTitle];
-  v11 = v10;
-  if (!v10)
+  actionTitle = [(ATXAction *)self actionTitle];
+  null2 = actionTitle;
+  if (!actionTitle)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[6] = v11;
+  v20[6] = null2;
   v19[7] = @"actionSubtitle";
-  v12 = [(ATXAction *)self actionSubtitle];
-  v13 = v12;
-  if (!v12)
+  actionSubtitle = [(ATXAction *)self actionSubtitle];
+  null3 = actionSubtitle;
+  if (!actionSubtitle)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20[7] = v13;
+  v20[7] = null3;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:8];
-  if (!v12)
+  if (!actionSubtitle)
   {
   }
 
-  if (!v10)
+  if (!actionTitle)
   {
   }
 
@@ -2887,32 +2887,32 @@ uint64_t __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_inv
   return v14;
 }
 
-- (id)obfuscatedJsonWithMapping:(id)a3
+- (id)obfuscatedJsonWithMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"criteria", @"actionUUID", @"actionType", @"heuristic", 0}];
   v6 = [(ATXAction *)self copyWithParameterWhitelist:v5];
-  v7 = [v6 json];
-  v8 = [v7 mutableCopy];
+  json = [v6 json];
+  v8 = [json mutableCopy];
 
   [v8 removeObjectForKey:@"bundleId"];
   [v8 removeObjectForKey:@"description"];
-  v9 = [(ATXAction *)self intent];
+  intent = [(ATXAction *)self intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(ATXAction *)self intent];
-    v12 = [v11 conversationIdentifier];
+    intent2 = [(ATXAction *)self intent];
+    conversationIdentifier = [intent2 conversationIdentifier];
 
-    if (v12)
+    if (conversationIdentifier)
     {
-      v13 = [v4 objectForKeyedSubscript:v12];
+      v13 = [mappingCopy objectForKeyedSubscript:conversationIdentifier];
       if (!v13)
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
-        [v4 setObject:v13 forKeyedSubscript:v12];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(mappingCopy, "count")}];
+        [mappingCopy setObject:v13 forKeyedSubscript:conversationIdentifier];
       }
 
       [v8 setObject:v13 forKeyedSubscript:@"obfuscatedConversationIdentifier"];
@@ -2938,18 +2938,18 @@ uint64_t __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_inv
   return v3;
 }
 
-- (void)setHeuristic:(id)a3
+- (void)setHeuristic:(id)heuristic
 {
-  v4 = [a3 copy];
+  v4 = [heuristic copy];
   heuristic = self->_heuristic;
   self->_heuristic = v4;
 
   MEMORY[0x1EEE66BB8](v4, heuristic);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
@@ -2978,23 +2978,23 @@ uint64_t __57__ATXAction_copyWithParameterAllowList_metadataProvider___block_inv
 
 - (id)_bundleIdForDisplay
 {
-  v3 = [(ATXAction *)self bundleId];
-  v4 = [(ATXAction *)self intent];
+  bundleId = [(ATXAction *)self bundleId];
+  intent = [(ATXAction *)self intent];
 
-  if (v4)
+  if (intent)
   {
-    v5 = [(ATXAction *)self intent];
-    v6 = [v5 _intents_bundleIdForDisplay];
+    intent2 = [(ATXAction *)self intent];
+    _intents_bundleIdForDisplay = [intent2 _intents_bundleIdForDisplay];
 LABEL_7:
-    v9 = v6;
-    if (v6)
+    v9 = _intents_bundleIdForDisplay;
+    if (_intents_bundleIdForDisplay)
     {
-      v10 = v6;
+      v10 = _intents_bundleIdForDisplay;
     }
 
     else
     {
-      v10 = v3;
+      v10 = bundleId;
     }
 
     v11 = v10;
@@ -3002,24 +3002,24 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v7 = [(ATXAction *)self userActivity];
-  if (v7)
+  userActivity = [(ATXAction *)self userActivity];
+  if (userActivity)
   {
 
 LABEL_6:
-    v5 = [(ATXAction *)self bundleId];
-    v6 = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity();
+    intent2 = [(ATXAction *)self bundleId];
+    _intents_bundleIdForDisplay = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity();
     goto LABEL_7;
   }
 
-  v8 = [(ATXAction *)self userActivityProxy];
+  userActivityProxy = [(ATXAction *)self userActivityProxy];
 
-  if (v8)
+  if (userActivityProxy)
   {
     goto LABEL_6;
   }
 
-  v11 = v3;
+  v11 = bundleId;
 LABEL_11:
 
   return v11;
@@ -3027,8 +3027,8 @@ LABEL_11:
 
 - (id)_spotlightContentType
 {
-  v3 = [(ATXAction *)self intent];
-  if (!v3)
+  intent = [(ATXAction *)self intent];
+  if (!intent)
   {
     if (!self->_userActivityString && !self->_userActivityProxy)
     {
@@ -3071,8 +3071,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v10 = [(ATXAction *)self routeInfo];
-  if (v10 && (v11 = v10, -[ATXAction routeInfo](self, "routeInfo"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isExternalRoute], v12, v11, (v13 & 1) != 0))
+  routeInfo = [(ATXAction *)self routeInfo];
+  if (routeInfo && (v11 = routeInfo, -[ATXAction routeInfo](self, "routeInfo"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isExternalRoute], v12, v11, (v13 & 1) != 0))
   {
     v4 = MEMORY[0x1E696E5A0];
   }
@@ -3089,26 +3089,26 @@ LABEL_22:
   return v14;
 }
 
-+ (id)actionFromProactiveSuggestion:(id)a3
++ (id)actionFromProactiveSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableType];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v5 == 2)
+  if (executableType == 2)
   {
-    v6 = [v3 executableSpecification];
-    v7 = [v6 executableClassString];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableClassString = [executableSpecification2 executableClassString];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 isEqualToString:v9];
+    v10 = [executableClassString isEqualToString:v9];
 
     if (v10)
     {
-      v11 = [v3 executableSpecification];
-      v12 = [v11 executableObject];
+      executableSpecification3 = [suggestionCopy executableSpecification];
+      executableObject = [executableSpecification3 executableObject];
 
-      if (v12)
+      if (executableObject)
       {
         goto LABEL_11;
       }
@@ -3128,29 +3128,29 @@ LABEL_22:
         +[ATXAction actionFromProactiveSuggestion:];
       }
 
-      v12 = 0;
+      executableObject = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    executableObject = 0;
   }
 
 LABEL_11:
 
-  return v12;
+  return executableObject;
 }
 
 - (id)underlyingInteraction
 {
-  v3 = [(ATXAction *)self intent];
+  intent = [(ATXAction *)self intent];
 
-  if (v3)
+  if (intent)
   {
     v4 = objc_alloc(MEMORY[0x1E696E8B8]);
-    v5 = [(ATXAction *)self intent];
-    v6 = [v4 initWithIntent:v5 response:0];
+    intent2 = [(ATXAction *)self intent];
+    v6 = [v4 initWithIntent:intent2 response:0];
   }
 
   else
@@ -3161,70 +3161,70 @@ LABEL_11:
   return v6;
 }
 
-- (id)_initWithCoder:(id)a3
+- (id)_initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"heuristicMetadata"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"heuristicMetadata"];
 
   v64[0] = 0;
   v9 = objc_opt_class();
-  v10 = _decodeTopLevelObjectOrFail(v4, v9, @"INIntent", 0, v64);
+  v10 = _decodeTopLevelObjectOrFail(coderCopy, v9, @"INIntent", 0, v64);
   v11 = v10;
   if (v64[0])
   {
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v64[0] = 0;
     v13 = objc_opt_class();
-    v14 = _decodeTopLevelObjectOrFail(v4, v13, @"userActivityProxy", 0, v64);
+    v14 = _decodeTopLevelObjectOrFail(coderCopy, v13, @"userActivityProxy", 0, v64);
     v15 = v14;
     if (v64[0])
     {
 
-      v12 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       v64[0] = 0;
       v16 = objc_opt_class();
-      v17 = _decodeTopLevelObjectOrFail(v4, v16, @"userActivityStr", 0, v64);
+      v17 = _decodeTopLevelObjectOrFail(coderCopy, v16, @"userActivityStr", 0, v64);
       v18 = v17;
       if (v64[0])
       {
 
-        v12 = 0;
+        selfCopy = 0;
       }
 
       else
       {
         v64[0] = 0;
         v19 = objc_opt_class();
-        v20 = _decodeTopLevelObjectOrFail(v4, v19, @"itemIdentifier", 0, v64);
+        v20 = _decodeTopLevelObjectOrFail(coderCopy, v19, @"itemIdentifier", 0, v64);
         v21 = v20;
         if (v64[0])
         {
 
-          v12 = 0;
+          selfCopy = 0;
         }
 
         else
         {
           v64[0] = 0;
           v22 = objc_opt_class();
-          v23 = _decodeTopLevelObjectOrFail(v4, v22, @"contentAttributeSet", 0, v64);
+          v23 = _decodeTopLevelObjectOrFail(coderCopy, v22, @"contentAttributeSet", 0, v64);
           v24 = v23;
           if (v64[0])
           {
 
-            v12 = 0;
+            selfCopy = 0;
           }
 
           else
@@ -3241,11 +3241,11 @@ LABEL_11:
 
             v64[0] = 0;
             v25 = objc_opt_class();
-            v26 = _decodeArrayOrFail(v4, v25, @"menuItemPath", v64);
+            v26 = _decodeArrayOrFail(coderCopy, v25, @"menuItemPath", v64);
             if (v64[0])
             {
 
-              v12 = 0;
+              selfCopy = 0;
             }
 
             else
@@ -3253,11 +3253,11 @@ LABEL_11:
               v62 = v26;
               v64[0] = 0;
               v27 = objc_opt_class();
-              v28 = _decodeTopLevelObjectOrFail(v4, v27, @"actionUUID", 1, v64);
+              v28 = _decodeTopLevelObjectOrFail(coderCopy, v27, @"actionUUID", 1, v64);
               if (v64[0])
               {
 
-                v12 = 0;
+                selfCopy = 0;
               }
 
               else
@@ -3265,24 +3265,24 @@ LABEL_11:
                 v61 = v28;
                 v64[0] = 0;
                 v29 = objc_opt_class();
-                v30 = _decodeTopLevelObjectOrFail(v4, v29, @"bundleId", 1, v64);
+                v30 = _decodeTopLevelObjectOrFail(coderCopy, v29, @"bundleId", 1, v64);
                 if (v64[0])
                 {
 
-                  v12 = 0;
+                  selfCopy = 0;
                 }
 
                 else
                 {
                   v60 = v30;
-                  v31 = [v4 decodeIntegerForKey:@"actionType"];
+                  v31 = [coderCopy decodeIntegerForKey:@"actionType"];
                   v64[0] = 0;
                   v32 = objc_opt_class();
-                  v33 = _decodeTopLevelObjectOrFail(v4, v32, @"heuristic", 0, v64);
+                  v33 = _decodeTopLevelObjectOrFail(coderCopy, v32, @"heuristic", 0, v64);
                   if (v64[0])
                   {
 
-                    v12 = 0;
+                    selfCopy = 0;
                   }
 
                   else
@@ -3290,24 +3290,24 @@ LABEL_11:
                     v59 = v33;
                     v64[0] = 0;
                     v34 = objc_opt_class();
-                    v35 = _decodeTopLevelObjectOrFail(v4, v34, @"criteria", 0, v64);
+                    v35 = _decodeTopLevelObjectOrFail(coderCopy, v34, @"criteria", 0, v64);
                     if (v64[0])
                     {
 
-                      v12 = 0;
+                      selfCopy = 0;
                     }
 
                     else
                     {
                       v58 = v35;
-                      v56 = [v4 decodeBoolForKey:@"isFutureMedia"];
+                      v56 = [coderCopy decodeBoolForKey:@"isFutureMedia"];
                       v64[0] = 0;
                       v36 = objc_opt_class();
-                      v37 = _decodeTopLevelObjectOrFail(v4, v36, @"routeInfo", 0, v64);
+                      v37 = _decodeTopLevelObjectOrFail(coderCopy, v36, @"routeInfo", 0, v64);
                       if (v64[0])
                       {
 
-                        v12 = 0;
+                        selfCopy = 0;
                       }
 
                       else
@@ -3315,11 +3315,11 @@ LABEL_11:
                         v57 = v37;
                         v64[0] = 0;
                         v38 = objc_opt_class();
-                        v39 = _decodeTopLevelObjectOrFail(v4, v38, @"title", 0, v64);
+                        v39 = _decodeTopLevelObjectOrFail(coderCopy, v38, @"title", 0, v64);
                         if (v64[0])
                         {
 
-                          v12 = 0;
+                          selfCopy = 0;
                         }
 
                         else
@@ -3327,11 +3327,11 @@ LABEL_11:
                           v55 = v39;
                           v64[0] = 0;
                           v40 = objc_opt_class();
-                          v41 = _decodeTopLevelObjectOrFail(v4, v40, @"subtitle", 0, v64);
+                          v41 = _decodeTopLevelObjectOrFail(coderCopy, v40, @"subtitle", 0, v64);
                           if (v64[0])
                           {
 
-                            v12 = 0;
+                            selfCopy = 0;
                           }
 
                           else
@@ -3339,11 +3339,11 @@ LABEL_11:
                             v54 = v41;
                             v64[0] = 0;
                             v42 = objc_opt_class();
-                            v43 = _decodeTopLevelObjectOrFail(v4, v42, @"languageCode", 0, v64);
+                            v43 = _decodeTopLevelObjectOrFail(coderCopy, v42, @"languageCode", 0, v64);
                             if (v64[0])
                             {
 
-                              v12 = 0;
+                              selfCopy = 0;
                             }
 
                             else
@@ -3351,34 +3351,34 @@ LABEL_11:
                               v53 = v43;
                               v64[0] = 0;
                               v44 = objc_opt_class();
-                              v52 = _decodeTopLevelObjectOrFail(v4, v44, @"toolInvocationID", 0, v64);
+                              v52 = _decodeTopLevelObjectOrFail(coderCopy, v44, @"toolInvocationID", 0, v64);
                               if (v64[0])
                               {
 
-                                v12 = 0;
+                                selfCopy = 0;
                               }
 
                               else
                               {
                                 v64[0] = 0;
                                 v45 = objc_opt_class();
-                                v51 = _decodeTopLevelObjectOrFail(v4, v45, @"encodedToolInvocation", 0, v64);
+                                v51 = _decodeTopLevelObjectOrFail(coderCopy, v45, @"encodedToolInvocation", 0, v64);
                                 if (v64[0])
                                 {
 
-                                  v12 = 0;
+                                  selfCopy = 0;
                                 }
 
                                 else
                                 {
                                   v64[0] = 0;
                                   v46 = objc_opt_class();
-                                  v47 = _decodeArrayOrFail(v4, v46, @"parameterKeysForToolInvocation", v64);
+                                  v47 = _decodeArrayOrFail(coderCopy, v46, @"parameterKeysForToolInvocation", v64);
                                   v48 = v47;
                                   if (v64[0])
                                   {
 
-                                    v12 = 0;
+                                    selfCopy = 0;
                                   }
 
                                   else
@@ -3386,7 +3386,7 @@ LABEL_11:
                                     LOBYTE(v50) = v56;
                                     self = [(ATXAction *)self initWithActivityProxy:v15 activity:0 activityString:v18 itemIdentifier:v21 contentAttributeSet:v24 intent:v63 menuItemPath:v62 actionUUID:v61 bundleId:v60 type:v31 heuristic:v59 heuristicMetadata:v8 criteria:v58 isFutureMedia:v50 routeInfo:v57 title:v55 subtitle:v54 languageCode:v53 cachedHash:0 toolInvocationID:v52 encodedToolInvocation:v51 parameterKeysForToolInvocation:v47];
 
-                                    v12 = self;
+                                    selfCopy = self;
                                   }
                                 }
                               }
@@ -3409,20 +3409,20 @@ LABEL_11:
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXAction *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXAction *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXAction)initWithCoder:(id)a3
+- (ATXAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
   if (v5)
   {
     v6 = [(ATXAction *)self initWithProtoData:v5];
@@ -3430,7 +3430,7 @@ LABEL_11:
 
   else
   {
-    v6 = [(ATXAction *)self _initWithCoder:v4];
+    v6 = [(ATXAction *)self _initWithCoder:coderCopy];
   }
 
   v7 = v6;
@@ -3440,19 +3440,19 @@ LABEL_11:
 
 - (BOOL)isTVAction
 {
-  v2 = self;
-  v3 = [(ATXAction *)self intent];
-  LOBYTE(v2) = [ATXAction _isTVIntent:v3 bundleId:v2->_bundleId];
+  selfCopy = self;
+  intent = [(ATXAction *)self intent];
+  LOBYTE(selfCopy) = [ATXAction _isTVIntent:intent bundleId:selfCopy->_bundleId];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -3463,11 +3463,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)atx_doNotDisturbForCurrentLocationActionWithTitle:(id)a3 subtitle:(id)a4 heuristicName:(id)a5
++ (id)atx_doNotDisturbForCurrentLocationActionWithTitle:(id)title subtitle:(id)subtitle heuristicName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
   v10 = initializeDNDToggleDoNotDisturbIntent();
   v11 = v10;
   if (v10)
@@ -3479,7 +3479,7 @@ LABEL_11:
     v13 = [ATXAction alloc];
     v14 = objc_opt_new();
     LOBYTE(v17) = 0;
-    v15 = [(ATXAction *)v13 initWithIntent:v11 actionUUID:v14 bundleId:@"com.apple.Preferences" heuristic:v9 heuristicMetadata:0 criteria:0 isFutureMedia:v17 title:v7 subtitle:v8];
+    v15 = [(ATXAction *)v13 initWithIntent:v11 actionUUID:v14 bundleId:@"com.apple.Preferences" heuristic:nameCopy heuristicMetadata:0 criteria:0 isFutureMedia:v17 title:titleCopy subtitle:subtitleCopy];
   }
 
   else
@@ -3490,27 +3490,27 @@ LABEL_11:
   return v15;
 }
 
-+ (id)atx_doNotDisturbForEventActionWithTitle:(id)a3 subtitle:(id)a4 eventTitle:(id)a5 eventIdentifier:(id)a6 eventUniqueID:(id)a7 heuristicName:(id)a8
++ (id)atx_doNotDisturbForEventActionWithTitle:(id)title subtitle:(id)subtitle eventTitle:(id)eventTitle eventIdentifier:(id)identifier eventUniqueID:(id)d heuristicName:(id)name
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  eventTitleCopy = eventTitle;
+  identifierCopy = identifier;
+  dCopy = d;
+  nameCopy = name;
   v19 = initializeDNDToggleDoNotDisturbIntent();
   v20 = v19;
   if (v19)
   {
     [v19 setValue:&unk_1F3E60468 forKey:@"state"];
-    v21 = [objc_alloc(MEMORY[0x1E696E910]) initWithIdentifier:v17 displayString:v15];
+    v21 = [objc_alloc(MEMORY[0x1E696E910]) initWithIdentifier:dCopy displayString:eventTitleCopy];
     [v20 setValue:v21 forKey:@"event"];
 
-    if (v16)
+    if (identifierCopy)
     {
       v28 = @"eventIdentifier";
-      v29[0] = v16;
+      v29[0] = identifierCopy;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     }
 
@@ -3522,7 +3522,7 @@ LABEL_11:
     v24 = [ATXAction alloc];
     v25 = objc_opt_new();
     LOBYTE(v27) = 0;
-    v23 = [(ATXAction *)v24 initWithIntent:v20 actionUUID:v25 bundleId:@"com.apple.Preferences" heuristic:v18 heuristicMetadata:v22 criteria:0 isFutureMedia:v27 title:v13 subtitle:v14];
+    v23 = [(ATXAction *)v24 initWithIntent:v20 actionUUID:v25 bundleId:@"com.apple.Preferences" heuristic:nameCopy heuristicMetadata:v22 criteria:0 isFutureMedia:v27 title:titleCopy subtitle:subtitleCopy];
   }
 
   else
@@ -3533,36 +3533,36 @@ LABEL_11:
   return v23;
 }
 
-+ (id)atx_startCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10 mediaType:(id)a11
++ (id)atx_startCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0 mediaType:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = v25;
-  if (!v25)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  handleCopy = handle;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  eventIdentifierCopy = eventIdentifier;
+  heuristicNameCopy = heuristicName;
+  typeCopy = type;
+  v26 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_5;
   }
 
-  v27 = [v25 integerValue];
-  if (v27)
+  integerValue = [typeCopy integerValue];
+  if (integerValue)
   {
-    if (v27 == 2)
+    if (integerValue == 2)
     {
-      v28 = [a1 atx_startVideoCallActionWithTitle:v17 subtitle:v18 recipientName:v19 recipientHandle:v20 callService:v21 contactIdentifier:v22 eventIdentifier:v23 heuristicName:v24];
+      v28 = [self atx_startVideoCallActionWithTitle:titleCopy subtitle:subtitleCopy recipientName:nameCopy recipientHandle:handleCopy callService:serviceCopy contactIdentifier:identifierCopy eventIdentifier:eventIdentifierCopy heuristicName:heuristicNameCopy];
       goto LABEL_7;
     }
 
-    if (v27 == 1)
+    if (integerValue == 1)
     {
 LABEL_5:
-      v28 = [a1 atx_startAudioCallActionWithTitle:v17 subtitle:v18 recipientName:v19 recipientHandle:v20 callService:v21 contactIdentifier:v22 eventIdentifier:v23 heuristicName:v24];
+      v28 = [self atx_startAudioCallActionWithTitle:titleCopy subtitle:subtitleCopy recipientName:nameCopy recipientHandle:handleCopy callService:serviceCopy contactIdentifier:identifierCopy eventIdentifier:eventIdentifierCopy heuristicName:heuristicNameCopy];
 LABEL_7:
       v29 = v28;
       goto LABEL_13;
@@ -3590,15 +3590,15 @@ LABEL_13:
   return v29;
 }
 
-+ (id)atx_startVideoCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10
++ (id)atx_startVideoCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = personFromCallRecipient(a8, a6, a5);
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  serviceCopy = service;
+  eventIdentifierCopy = eventIdentifier;
+  heuristicNameCopy = heuristicName;
+  v20 = personFromCallRecipient(identifier, handle, name);
   v21 = objc_alloc(MEMORY[0x1E696EA60]);
   v33[0] = v20;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
@@ -3610,15 +3610,15 @@ LABEL_13:
     +[ATXAction(Factory) atx_startVideoCallActionWithTitle:subtitle:recipientName:recipientHandle:callService:contactIdentifier:eventIdentifier:heuristicName:];
   }
 
-  if ([v17 isEqualToString:@"facetime"])
+  if ([serviceCopy isEqualToString:@"facetime"])
   {
     [v23 _setLaunchId:@"com.apple.InCallService"];
     [v23 _setExtensionBundleId:@"com.apple.TelephonyUtilities.PhoneIntentHandler"];
     [v23 setPreferredCallProvider:2];
-    if (v18)
+    if (eventIdentifierCopy)
     {
       v31 = @"eventIdentifier";
-      v32 = v18;
+      v32 = eventIdentifierCopy;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     }
 
@@ -3630,7 +3630,7 @@ LABEL_13:
     v27 = [ATXAction alloc];
     v28 = objc_opt_new();
     LOBYTE(v30) = 0;
-    v26 = [(ATXAction *)v27 initWithIntent:v23 actionUUID:v28 bundleId:@"com.apple.InCallService" heuristic:v19 heuristicMetadata:v25 criteria:0 isFutureMedia:v30 title:v15 subtitle:v16];
+    v26 = [(ATXAction *)v27 initWithIntent:v23 actionUUID:v28 bundleId:@"com.apple.InCallService" heuristic:heuristicNameCopy heuristicMetadata:v25 criteria:0 isFutureMedia:v30 title:titleCopy subtitle:subtitleCopy];
   }
 
   else
@@ -3647,10 +3647,10 @@ LABEL_13:
   return v26;
 }
 
-+ (id)atx_setAirplaneModeActionWithTitle:(id)a3 subtitle:(id)a4
++ (id)atx_setAirplaneModeActionWithTitle:(id)title subtitle:(id)subtitle
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v7 = objc_autoreleasePoolPush();
   v8 = loadIntentWithBundleIdAndName(@"com.apple.ActionKit.BundledIntentHandler", @"WFSetAirplaneModeIntent");
   v9 = v8;
@@ -3678,7 +3678,7 @@ LABEL_13:
     v14 = [ATXAction alloc];
     v15 = objc_opt_new();
     LOBYTE(v18) = 0;
-    v16 = [(ATXAction *)v14 initWithIntent:v9 actionUUID:v15 bundleId:@"com.apple.Preferences" heuristic:@"enableAirplaneMode" heuristicMetadata:0 criteria:0 isFutureMedia:v18 title:v5 subtitle:v6];
+    v16 = [(ATXAction *)v14 initWithIntent:v9 actionUUID:v15 bundleId:@"com.apple.Preferences" heuristic:@"enableAirplaneMode" heuristicMetadata:0 criteria:0 isFutureMedia:v18 title:titleCopy subtitle:subtitleCopy];
   }
 
   else
@@ -3691,15 +3691,15 @@ LABEL_13:
   return v16;
 }
 
-+ (id)atx_startAudioCallActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 callService:(id)a7 contactIdentifier:(id)a8 eventIdentifier:(id)a9 heuristicName:(id)a10
++ (id)atx_startAudioCallActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle callService:(id)service contactIdentifier:(id)identifier eventIdentifier:(id)eventIdentifier heuristicName:(id)self0
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
-  v20 = personFromCallRecipient(a8, a6, a5);
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  serviceCopy = service;
+  eventIdentifierCopy = eventIdentifier;
+  heuristicNameCopy = heuristicName;
+  v20 = personFromCallRecipient(identifier, handle, name);
   v21 = objc_alloc(MEMORY[0x1E696EA60]);
   v34[0] = v20;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
@@ -3711,7 +3711,7 @@ LABEL_13:
     +[ATXAction(Factory) atx_startVideoCallActionWithTitle:subtitle:recipientName:recipientHandle:callService:contactIdentifier:eventIdentifier:heuristicName:];
   }
 
-  if ([v17 isEqualToString:@"phone"])
+  if ([serviceCopy isEqualToString:@"phone"])
   {
     v25 = 1;
 LABEL_7:
@@ -3719,10 +3719,10 @@ LABEL_7:
     [v23 _setExtensionBundleId:@"com.apple.TelephonyUtilities.PhoneIntentHandler"];
     [v23 setPreferredCallProvider:v25];
     [v23 setTTYType:1];
-    if (v18)
+    if (eventIdentifierCopy)
     {
       v32 = @"eventIdentifier";
-      v33 = v18;
+      v33 = eventIdentifierCopy;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     }
 
@@ -3734,12 +3734,12 @@ LABEL_7:
     v27 = [ATXAction alloc];
     v28 = objc_opt_new();
     LOBYTE(v31) = 0;
-    v29 = [(ATXAction *)v27 initWithIntent:v23 actionUUID:v28 bundleId:@"com.apple.InCallService" heuristic:v19 heuristicMetadata:v26 criteria:0 isFutureMedia:v31 title:v15 subtitle:v16];
+    v29 = [(ATXAction *)v27 initWithIntent:v23 actionUUID:v28 bundleId:@"com.apple.InCallService" heuristic:heuristicNameCopy heuristicMetadata:v26 criteria:0 isFutureMedia:v31 title:titleCopy subtitle:subtitleCopy];
 
     goto LABEL_14;
   }
 
-  if ([v17 isEqualToString:@"facetime"])
+  if ([serviceCopy isEqualToString:@"facetime"])
   {
     v25 = 2;
     goto LABEL_7;
@@ -3757,31 +3757,31 @@ LABEL_14:
   return v29;
 }
 
-+ (id)atx_sendMessageActionWithTitle:(id)a3 subtitle:(id)a4 recipientName:(id)a5 recipientHandle:(id)a6 text:(id)a7 contactIdentifier:(id)a8 conversationIdentifier:(id)a9 eventIdentifier:(id)a10 heuristicName:(id)a11
++ (id)atx_sendMessageActionWithTitle:(id)title subtitle:(id)subtitle recipientName:(id)name recipientHandle:(id)handle text:(id)text contactIdentifier:(id)identifier conversationIdentifier:(id)conversationIdentifier eventIdentifier:(id)self0 heuristicName:(id)self1
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v35 = a10;
+  eventIdentifierCopy = eventIdentifier;
   v17 = MEMORY[0x1E696E948];
-  v37 = a11;
-  v36 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[v17 alloc] initWithValue:v20 type:0];
-  v25 = [objc_alloc(MEMORY[0x1E696E940]) initWithPersonHandle:v24 nameComponents:0 displayName:v21 image:0 contactIdentifier:v18 customIdentifier:v20];
+  heuristicNameCopy = heuristicName;
+  conversationIdentifierCopy = conversationIdentifier;
+  identifierCopy = identifier;
+  textCopy = text;
+  handleCopy = handle;
+  nameCopy = name;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v24 = [[v17 alloc] initWithValue:handleCopy type:0];
+  v25 = [objc_alloc(MEMORY[0x1E696E940]) initWithPersonHandle:v24 nameComponents:0 displayName:nameCopy image:0 contactIdentifier:identifierCopy customIdentifier:handleCopy];
 
   v26 = objc_alloc(MEMORY[0x1E696E9E8]);
   v40[0] = v25;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-  v28 = [v26 initWithRecipients:v27 outgoingMessageType:0 content:v19 speakableGroupName:0 conversationIdentifier:v36 serviceName:0 sender:0 attachments:0];
+  v28 = [v26 initWithRecipients:v27 outgoingMessageType:0 content:textCopy speakableGroupName:0 conversationIdentifier:conversationIdentifierCopy serviceName:0 sender:0 attachments:0];
 
-  if (v35)
+  if (eventIdentifierCopy)
   {
     v38 = @"eventIdentifier";
-    v39 = v35;
+    v39 = eventIdentifierCopy;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
   }
 
@@ -3793,26 +3793,26 @@ LABEL_14:
   v30 = [ATXAction alloc];
   v31 = objc_opt_new();
   LOBYTE(v34) = 0;
-  v32 = [(ATXAction *)v30 initWithIntent:v28 actionUUID:v31 bundleId:@"com.apple.MobileSMS" heuristic:v37 heuristicMetadata:v29 criteria:0 isFutureMedia:v34 title:v23 subtitle:v22];
+  v32 = [(ATXAction *)v30 initWithIntent:v28 actionUUID:v31 bundleId:@"com.apple.MobileSMS" heuristic:heuristicNameCopy heuristicMetadata:v29 criteria:0 isFutureMedia:v34 title:titleCopy subtitle:subtitleCopy];
 
   return v32;
 }
 
-+ (id)atx_userActivityActionWithBestAppSuggestion:(id)a3 title:(id)a4 subtitle:(id)a5 bundleID:(id)a6 activityType:(id)a7 heuristicName:(id)a8
++ (id)atx_userActivityActionWithBestAppSuggestion:(id)suggestion title:(id)title subtitle:(id)subtitle bundleID:(id)d activityType:(id)type heuristicName:(id)name
 {
-  v12 = a5;
+  subtitleCopy = subtitle;
   v13 = MEMORY[0x1E69DF010];
-  v14 = a8;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[v13 alloc] initWithSuggestion:v17];
+  nameCopy = name;
+  dCopy = d;
+  titleCopy = title;
+  suggestionCopy = suggestion;
+  v18 = [[v13 alloc] initWithSuggestion:suggestionCopy];
 
-  if ([v12 length])
+  if ([subtitleCopy length])
   {
     v19 = objc_alloc(MEMORY[0x1E6964E90]);
     v20 = [v19 initWithContentType:*MEMORY[0x1E6982D50]];
-    [v20 setContentDescription:v12];
+    [v20 setContentDescription:subtitleCopy];
   }
 
   else
@@ -3830,29 +3830,29 @@ LABEL_14:
   v22 = [ATXAction alloc];
   v23 = objc_opt_new();
   LOBYTE(v26) = 0;
-  v24 = [(ATXAction *)v22 initFromBestAppSuggestion:v18 activity:0 actionUUID:v23 bundleId:v15 contentAttributeSet:v20 itemIdentifier:0 heuristic:v14 heuristicMetadata:0 criteria:0 isFutureMedia:v26 title:v16 subtitle:v12];
+  v24 = [(ATXAction *)v22 initFromBestAppSuggestion:v18 activity:0 actionUUID:v23 bundleId:dCopy contentAttributeSet:v20 itemIdentifier:0 heuristic:nameCopy heuristicMetadata:0 criteria:0 isFutureMedia:v26 title:titleCopy subtitle:subtitleCopy];
 
   return v24;
 }
 
-+ (id)webUrlParsedForUserActivityWithUrlString:(id)a3
++ (id)webUrlParsedForUserActivityWithUrlString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v4 = 0;
     goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
   if (v4 && (v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v4 resolvingAgainstBaseURL:1]) != 0)
   {
     v6 = v5;
-    v7 = [v5 scheme];
-    v8 = [v7 lowercaseString];
+    scheme = [v5 scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if ([v8 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"https"))
+    if ([lowercaseString isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"https"))
     {
 
 LABEL_10:
@@ -3865,7 +3865,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v8;
+      v13 = lowercaseString;
       _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "Unsupported NSUA URL scheme: %@", &v12, 0xCu);
     }
   }
@@ -3876,7 +3876,7 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = stringCopy;
       _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "Invalid URL: '%@'", &v12, 0xCu);
     }
   }
@@ -3887,25 +3887,25 @@ LABEL_15:
   return v9;
 }
 
-+ (id)atx_userActivityActionWithTitle:(id)a3 subtitle:(id)a4 bundleID:(id)a5 activityType:(id)a6 urlString:(id)a7 userInfo:(id)a8 heuristicName:(id)a9
++ (id)atx_userActivityActionWithTitle:(id)title subtitle:(id)subtitle bundleID:(id)d activityType:(id)type urlString:(id)string userInfo:(id)info heuristicName:(id)name
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  dCopy = d;
+  typeCopy = type;
+  stringCopy = string;
+  infoCopy = info;
+  nameCopy = name;
   context = objc_autoreleasePoolPush();
-  v22 = [a1 webUrlParsedForUserActivityWithUrlString:v19];
-  v39 = v18;
-  v23 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:v18];
-  v40 = v15;
-  [v23 setTitle:v15];
-  if (v20)
+  v22 = [self webUrlParsedForUserActivityWithUrlString:stringCopy];
+  v39 = typeCopy;
+  v23 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:typeCopy];
+  v40 = titleCopy;
+  [v23 setTitle:titleCopy];
+  if (infoCopy)
   {
-    [v23 setUserInfo:v20];
+    [v23 setUserInfo:infoCopy];
   }
 
   if (v22)
@@ -3913,33 +3913,33 @@ LABEL_15:
     [v23 setWebpageURL:v22];
   }
 
-  v24 = [v22 host];
-  v25 = [v24 isEqualToString:@"trackingshipment.apple.com"];
+  host = [v22 host];
+  v25 = [host isEqualToString:@"trackingshipment.apple.com"];
 
   if ([v22 atx_isOpenableFaceTimeURL])
   {
 
-    v17 = @"com.apple.InCallService";
+    dCopy = @"com.apple.InCallService";
   }
 
-  if (v22 && !(v25 & 1 | (([(__CFString *)v17 isEqualToString:@"com.apple.mobilesafari"]& 1) == 0)))
+  if (v22 && !(v25 & 1 | (([(__CFString *)dCopy isEqualToString:@"com.apple.mobilesafari"]& 1) == 0)))
   {
-    v28 = [v22 _lp_simplifiedDisplayString];
+    _lp_simplifiedDisplayString = [v22 _lp_simplifiedDisplayString];
     v42 = @"contentDescription";
-    v43[0] = v28;
+    v43[0] = _lp_simplifiedDisplayString;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
     [v23 _setContentAttributes:v29];
 
     v30 = objc_alloc(MEMORY[0x1E6964E90]);
     v27 = [v30 initWithContentType:*MEMORY[0x1E6982D50]];
-    [v27 setContentDescription:v28];
+    [v27 setContentDescription:_lp_simplifiedDisplayString];
   }
 
-  else if ([v16 length])
+  else if ([subtitleCopy length])
   {
     v26 = objc_alloc(MEMORY[0x1E6964E90]);
     v27 = [v26 initWithContentType:*MEMORY[0x1E6982D50]];
-    [v27 setContentDescription:v16];
+    [v27 setContentDescription:subtitleCopy];
   }
 
   else
@@ -3954,24 +3954,24 @@ LABEL_15:
     v27 = 0;
   }
 
-  v32 = v16;
+  v32 = subtitleCopy;
   v33 = [ATXAction alloc];
   v34 = objc_opt_new();
   LOBYTE(v37) = 0;
-  v35 = [(ATXAction *)v33 initWithNSUserActivity:v23 actionUUID:v34 bundleId:v17 contentAttributeSet:v27 itemIdentifier:0 heuristic:v21 heuristicMetadata:0 criteria:0 isFutureMedia:v37 title:0 subtitle:0];
+  v35 = [(ATXAction *)v33 initWithNSUserActivity:v23 actionUUID:v34 bundleId:dCopy contentAttributeSet:v27 itemIdentifier:0 heuristic:nameCopy heuristicMetadata:0 criteria:0 isFutureMedia:v37 title:0 subtitle:0];
 
   objc_autoreleasePoolPop(context);
 
   return v35;
 }
 
-+ (id)atx_updateAlarmActionWithTitle:(id)a3 subtitle:(id)a4 alarmID:(id)a5 alarmTitle:(id)a6 heuristicName:(id)a7
++ (id)atx_updateAlarmActionWithTitle:(id)title subtitle:(id)subtitle alarmID:(id)d alarmTitle:(id)alarmTitle heuristicName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  dCopy = d;
+  alarmTitleCopy = alarmTitle;
+  nameCopy = name;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2050000000;
@@ -3992,14 +3992,14 @@ LABEL_15:
   _Block_object_dispose(&v31, 8);
   if (!v18)
   {
-    [ATXAction(Factory) atx_updateAlarmActionWithTitle:a2 subtitle:a1 alarmID:? alarmTitle:? heuristicName:?];
+    [ATXAction(Factory) atx_updateAlarmActionWithTitle:a2 subtitle:self alarmID:? alarmTitle:? heuristicName:?];
   }
 
   v20 = objc_opt_new();
   [v20 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
   [v20 _setLaunchId:@"com.apple.mobiletimer"];
   [v20 _setNanoLaunchId:@"com.apple.NanoAlarm"];
-  v21 = [objc_alloc(MEMORY[0x1E696E910]) initWithIdentifier:v15 displayString:v16];
+  v21 = [objc_alloc(MEMORY[0x1E696E910]) initWithIdentifier:dCopy displayString:alarmTitleCopy];
   [v20 setAlarmID:v21];
 
   v22 = INIntentWithTypedIntent();
@@ -4011,7 +4011,7 @@ LABEL_15:
       v23 = [ATXAction alloc];
       v24 = objc_opt_new();
       LOBYTE(v29) = 0;
-      v25 = [(ATXAction *)v23 initWithIntent:v22 actionUUID:v24 bundleId:@"com.apple.mobiletimer" heuristic:v17 heuristicMetadata:0 criteria:0 isFutureMedia:v29 title:v13 subtitle:v14];
+      v25 = [(ATXAction *)v23 initWithIntent:v22 actionUUID:v24 bundleId:@"com.apple.mobiletimer" heuristic:nameCopy heuristicMetadata:0 criteria:0 isFutureMedia:v29 title:titleCopy subtitle:subtitleCopy];
 
       goto LABEL_15;
     }
@@ -4040,22 +4040,22 @@ LABEL_15:
   return v25;
 }
 
-+ (id)atx_setAlarmActionWithTitle:(id)a3 subtitle:(id)a4 eventIdentifier:(id)a5 eventTitle:(id)a6 alarmDate:(id)a7 heuristicName:(id)a8
++ (id)atx_setAlarmActionWithTitle:(id)title subtitle:(id)subtitle eventIdentifier:(id)identifier eventTitle:(id)eventTitle alarmDate:(id)date heuristicName:(id)name
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v40 = a4;
-  v41 = a5;
-  v43 = a6;
-  v44 = a7;
-  v42 = a8;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  identifierCopy = identifier;
+  eventTitleCopy = eventTitle;
+  dateCopy = date;
+  nameCopy = name;
   context = objc_autoreleasePoolPush();
   v15 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v16 = [v15 components:96 fromDate:v44];
-  v17 = [v16 hour];
-  v18 = [v16 minute];
+  v16 = [v15 components:96 fromDate:dateCopy];
+  hour = [v16 hour];
+  minute = [v16 minute];
   v19 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
-  v20 = [v15 dateBySettingHour:v17 minute:v18 second:0 ofDate:v19 options:0];
+  v20 = [v15 dateBySettingHour:hour minute:minute second:0 ofDate:v19 options:0];
 
   v21 = [MEMORY[0x1E696AB78] localizedStringFromDate:v20 dateStyle:0 timeStyle:1];
   v22 = MEMORY[0x1E696AEC0];
@@ -4081,7 +4081,7 @@ LABEL_15:
   _Block_object_dispose(&v46, 8);
   if (!v25)
   {
-    [ATXAction(Factory) atx_setAlarmActionWithTitle:a2 subtitle:a1 eventIdentifier:? eventTitle:? alarmDate:? heuristicName:?];
+    [ATXAction(Factory) atx_setAlarmActionWithTitle:a2 subtitle:self eventIdentifier:? eventTitle:? alarmDate:? heuristicName:?];
   }
 
   v27 = objc_opt_new();
@@ -4089,7 +4089,7 @@ LABEL_15:
   [v27 _setLaunchId:@"com.apple.mobiletimer"];
   [v27 _setNanoLaunchId:@"com.apple.NanoAlarm"];
   [v27 setRequiresAppLaunch:1];
-  [v27 setLabel:v43];
+  [v27 setLabel:eventTitleCopy];
   v28 = [objc_alloc(MEMORY[0x1E696E910]) initWithIdentifier:v24 displayString:v21];
   [v27 setTime:v28];
 
@@ -4099,10 +4099,10 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v41)
+      if (identifierCopy)
       {
         v50 = @"eventIdentifier";
-        v51[0] = v41;
+        v51[0] = identifierCopy;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
       }
 
@@ -4114,7 +4114,7 @@ LABEL_15:
       v34 = [ATXAction alloc];
       v35 = objc_opt_new();
       LOBYTE(v37) = 0;
-      v33 = [(ATXAction *)v34 initWithIntent:v29 actionUUID:v35 bundleId:@"com.apple.mobiletimer" heuristic:v42 heuristicMetadata:v30 criteria:0 isFutureMedia:v37 title:v39 subtitle:v40];
+      v33 = [(ATXAction *)v34 initWithIntent:v29 actionUUID:v35 bundleId:@"com.apple.mobiletimer" heuristic:nameCopy heuristicMetadata:v30 criteria:0 isFutureMedia:v37 title:titleCopy subtitle:subtitleCopy];
 
       goto LABEL_18;
     }
@@ -4145,17 +4145,17 @@ LABEL_18:
   return v33;
 }
 
-+ (id)atx_showCheckInActionWithTeamId:(id)a3 userActivityString:(id)a4 subtitle:(id)a5 overrideBundleId:(id)a6 suggestedEventUniqueKey:(id)a7 heuristicName:(id)a8 criteria:(id)a9
++ (id)atx_showCheckInActionWithTeamId:(id)id userActivityString:(id)string subtitle:(id)subtitle overrideBundleId:(id)bundleId suggestedEventUniqueKey:(id)key heuristicName:(id)name criteria:(id)criteria
 {
   v68 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (![v14 length])
+  idCopy = id;
+  stringCopy = string;
+  subtitleCopy = subtitle;
+  bundleIdCopy = bundleId;
+  keyCopy = key;
+  nameCopy = name;
+  criteriaCopy = criteria;
+  if (![idCopy length])
   {
     v24 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -4166,7 +4166,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if (![v15 length])
+  if (![stringCopy length])
   {
     v24 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -4177,7 +4177,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if (![v16 length])
+  if (![subtitleCopy length])
   {
     v24 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -4190,7 +4190,7 @@ LABEL_15:
     goto LABEL_36;
   }
 
-  v21 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityStrings:v15 secondaryString:0 optionalData:0];
+  v21 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityStrings:stringCopy secondaryString:0 optionalData:0];
   v61 = v21;
   if (!v21)
   {
@@ -4206,49 +4206,49 @@ LABEL_15:
   }
 
   v22 = v21;
-  v57 = v19;
-  v58 = v20;
-  v59 = v16;
-  v60 = v18;
-  if (v17)
+  v57 = nameCopy;
+  v58 = criteriaCopy;
+  v59 = subtitleCopy;
+  v60 = keyCopy;
+  if (bundleIdCopy)
   {
     v23 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v67 = v17;
+      v67 = bundleIdCopy;
       _os_log_impl(&dword_1BF549000, v23, OS_LOG_TYPE_INFO, "atx_showCheckInAction: Using fallback bundle. Override bundle is: %@", buf, 0xCu);
     }
 
     v24 = v22;
-    v25 = v17;
+    v25 = bundleIdCopy;
     goto LABEL_30;
   }
 
-  v28 = [v21 activityType];
+  activityType = [v21 activityType];
   v29 = _LSCopyAdvertisementStringForTeamIdentifierAndActivityType();
 
   v30 = v29;
   v55 = [MEMORY[0x1E69635F8] applicationRecordsForUserActivityType:v29 limit:1 error:0];
-  v31 = [v55 firstObject];
-  v32 = [v31 applicationState];
-  v54 = v31;
-  if (([v32 isInstalled] & 1) == 0)
+  firstObject = [v55 firstObject];
+  applicationState = [firstObject applicationState];
+  v54 = firstObject;
+  if (([applicationState isInstalled] & 1) == 0)
   {
 
     goto LABEL_25;
   }
 
-  v33 = [v31 bundleIdentifier];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
-  if (!v33)
+  if (!bundleIdentifier)
   {
 LABEL_25:
-    v38 = [v22 webpageURL];
+    webpageURL = [v22 webpageURL];
 
     v39 = __atxlog_handle_heuristic();
     v40 = v39;
-    if (!v38)
+    if (!webpageURL)
     {
       if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
       {
@@ -4257,29 +4257,29 @@ LABEL_25:
 
       v24 = 0;
       v26 = 0;
-      v20 = v58;
+      criteriaCopy = v58;
       v27 = v30;
       goto LABEL_34;
     }
 
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
-      v41 = [v22 activityType];
+      activityType2 = [v22 activityType];
       *buf = 138412290;
-      v67 = v41;
+      v67 = activityType2;
       _os_log_impl(&dword_1BF549000, v40, OS_LOG_TYPE_INFO, "atx_showCheckInAction: Could not find an installed app to handle activityType='%@'. Using webpageURL to handle in Safari.", buf, 0xCu);
     }
 
     v42 = objc_alloc(MEMORY[0x1E69636A8]);
     v43 = v22;
     v24 = [v42 initWithActivityType:*MEMORY[0x1E696AA68]];
-    v44 = [v43 title];
-    [v24 setTitle:v44];
+    title = [v43 title];
+    [v24 setTitle:title];
 
-    v45 = [v43 webpageURL];
-    [v24 setWebpageURL:v45];
+    webpageURL2 = [v43 webpageURL];
+    [v24 setWebpageURL:webpageURL2];
 
-    v37 = @"com.apple.mobilesafari";
+    bundleIdentifier2 = @"com.apple.mobilesafari";
     v36 = v54;
     goto LABEL_29;
   }
@@ -4287,29 +4287,29 @@ LABEL_25:
   v34 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
-    v35 = [v22 activityType];
+    activityType3 = [v22 activityType];
     *buf = 138412290;
-    v67 = v35;
+    v67 = activityType3;
     _os_log_impl(&dword_1BF549000, v34, OS_LOG_TYPE_INFO, "atx_showCheckInAction: Found an installed app that can handle activityType='%@'", buf, 0xCu);
   }
 
   v24 = v22;
   v36 = v54;
-  v37 = [v54 bundleIdentifier];
+  bundleIdentifier2 = [v54 bundleIdentifier];
 LABEL_29:
 
-  v25 = v37;
-  v16 = v59;
+  v25 = bundleIdentifier2;
+  subtitleCopy = v59;
 LABEL_30:
-  v56 = v17;
+  v56 = bundleIdCopy;
   v64 = @"contentDescription";
-  v65 = v16;
+  v65 = subtitleCopy;
   v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
   [v24 _setContentAttributes:v46];
 
   v47 = objc_alloc(MEMORY[0x1E6964E90]);
   v48 = [v47 initWithContentType:*MEMORY[0x1E6982D50]];
-  [v48 setContentDescription:v16];
+  [v48 setContentDescription:subtitleCopy];
   if (v60)
   {
     v62 = @"uniqueKey";
@@ -4325,15 +4325,15 @@ LABEL_30:
   v50 = [ATXAction alloc];
   v51 = objc_opt_new();
   LOBYTE(v53) = 0;
-  v20 = v58;
+  criteriaCopy = v58;
   v26 = [(ATXAction *)v50 initWithNSUserActivity:v24 actionUUID:v51 bundleId:v25 contentAttributeSet:v48 itemIdentifier:0 heuristic:v57 heuristicMetadata:v49 criteria:v58 isFutureMedia:v53 title:0 subtitle:0];
 
   v27 = v25;
-  v19 = v57;
-  v18 = v60;
-  v17 = v56;
+  nameCopy = v57;
+  keyCopy = v60;
+  bundleIdCopy = v56;
 LABEL_34:
-  v16 = v59;
+  subtitleCopy = v59;
 LABEL_35:
 
 LABEL_36:

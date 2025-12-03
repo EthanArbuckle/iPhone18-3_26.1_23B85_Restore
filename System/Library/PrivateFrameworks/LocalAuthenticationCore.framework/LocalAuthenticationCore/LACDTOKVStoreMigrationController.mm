@@ -1,24 +1,24 @@
 @interface LACDTOKVStoreMigrationController
-- (LACDTOKVStoreMigrationController)initWithKVStore:(id)a3 defaults:(id)a4 workQueue:(id)a5;
-- (void)_migrateStrictModeKeyIfNeededWithCompletion:(id)a3;
+- (LACDTOKVStoreMigrationController)initWithKVStore:(id)store defaults:(id)defaults workQueue:(id)queue;
+- (void)_migrateStrictModeKeyIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOKVStoreMigrationController
 
-- (LACDTOKVStoreMigrationController)initWithKVStore:(id)a3 defaults:(id)a4 workQueue:(id)a5
+- (LACDTOKVStoreMigrationController)initWithKVStore:(id)store defaults:(id)defaults workQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  defaultsCopy = defaults;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = LACDTOKVStoreMigrationController;
   v12 = [(LACDTOKVStoreMigrationController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_defaults, a4);
-    objc_storeStrong(&v13->_workQueue, a5);
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_defaults, defaults);
+    objc_storeStrong(&v13->_workQueue, queue);
   }
 
   return v13;
@@ -61,12 +61,12 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_migrateStrictModeKeyIfNeededWithCompletion:(id)a3
+- (void)_migrateStrictModeKeyIfNeededWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LACGlobalDomainDTO *)self->_defaults isDTOStrictModeEnabled];
-  if (v5)
+  completionCopy = completion;
+  isDTOStrictModeEnabled = [(LACGlobalDomainDTO *)self->_defaults isDTOStrictModeEnabled];
+  if (isDTOStrictModeEnabled)
   {
     v6 = LACLogDTOStorage();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -77,7 +77,7 @@ LABEL_8:
       _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "Migration of key: '%{public}@' will start", buf, 0xCu);
     }
 
-    if ([v5 BOOLValue])
+    if ([isDTOStrictModeEnabled BOOLValue])
     {
       objc_initWeak(buf, self);
       store = self->_store;
@@ -86,7 +86,7 @@ LABEL_8:
       v10[2] = __80__LACDTOKVStoreMigrationController__migrateStrictModeKeyIfNeededWithCompletion___block_invoke;
       v10[3] = &unk_1E7A959C0;
       objc_copyWeak(&v12, buf);
-      v11 = v4;
+      v11 = completionCopy;
       [(LACDTOKVStore *)store valueForKey:0 completion:v10];
 
       objc_destroyWeak(&v12);
@@ -96,13 +96,13 @@ LABEL_8:
     else
     {
       [(LACGlobalDomainDTO *)self->_defaults setIsDTOStrictModeEnabled:0];
-      (*(v4 + 2))(v4, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v9 = *MEMORY[0x1E69E9840];

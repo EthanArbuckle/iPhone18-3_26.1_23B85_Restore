@@ -1,32 +1,32 @@
 @interface AVTAvatarPoseAnimationController
-- (AVTAvatarPoseAnimationController)initWithAvatar:(id)a3 animationKeys:(id)a4;
-- (void)removeAnimationWithBlendOutDuration:(double)a3;
+- (AVTAvatarPoseAnimationController)initWithAvatar:(id)avatar animationKeys:(id)keys;
+- (void)removeAnimationWithBlendOutDuration:(double)duration;
 @end
 
 @implementation AVTAvatarPoseAnimationController
 
-- (AVTAvatarPoseAnimationController)initWithAvatar:(id)a3 animationKeys:(id)a4
+- (AVTAvatarPoseAnimationController)initWithAvatar:(id)avatar animationKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  avatarCopy = avatar;
+  keysCopy = keys;
   v11.receiver = self;
   v11.super_class = AVTAvatarPoseAnimationController;
   v8 = [(AVTAvatarPoseAnimationController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_avatar, v6);
-    objc_storeStrong(&v9->_animationKeys, a4);
+    objc_storeWeak(&v8->_avatar, avatarCopy);
+    objc_storeStrong(&v9->_animationKeys, keys);
   }
 
   return v9;
 }
 
-- (void)removeAnimationWithBlendOutDuration:(double)a3
+- (void)removeAnimationWithBlendOutDuration:(double)duration
 {
   v20 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_avatar);
-  v6 = [WeakRetained avatarNode];
+  avatarNode = [WeakRetained avatarNode];
 
   v17 = 0u;
   v18 = 0u;
@@ -38,7 +38,7 @@
   {
     v10 = v8;
     v11 = *v16;
-    v12 = a3;
+    durationCopy = duration;
     do
     {
       v13 = 0;
@@ -49,8 +49,8 @@
           objc_enumerationMutation(v7);
         }
 
-        *&v9 = v12;
-        [v6 removeAnimationForKey:*(*(&v15 + 1) + 8 * v13++) blendOutDuration:{v9, v15}];
+        *&v9 = durationCopy;
+        [avatarNode removeAnimationForKey:*(*(&v15 + 1) + 8 * v13++) blendOutDuration:{v9, v15}];
       }
 
       while (v10 != v13);

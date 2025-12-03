@@ -1,28 +1,28 @@
 @interface _ComposeFormattingColorPickerDelegate
-- (void)colorPicker:(id)a3 didChangeSelectedColor:(id)a4;
-- (void)colorPickerDidCancel:(id)a3;
+- (void)colorPicker:(id)picker didChangeSelectedColor:(id)color;
+- (void)colorPickerDidCancel:(id)cancel;
 @end
 
 @implementation _ComposeFormattingColorPickerDelegate
 
-- (void)colorPicker:(id)a3 didChangeSelectedColor:(id)a4
+- (void)colorPicker:(id)picker didChangeSelectedColor:(id)color
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](picker);
+  MEMORY[0x1E69E5928](color);
   MEMORY[0x1E69E5928](self);
-  sub_1BE928894(a3, a4);
+  sub_1BE928894(picker, color);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](color);
+  MEMORY[0x1E69E5920](picker);
 }
 
-- (void)colorPickerDidCancel:(id)a3
+- (void)colorPickerDidCancel:(id)cancel
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](cancel);
   MEMORY[0x1E69E5928](self);
-  sub_1BE928A58(a3);
+  sub_1BE928A58(cancel);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](cancel);
 }
 
 @end

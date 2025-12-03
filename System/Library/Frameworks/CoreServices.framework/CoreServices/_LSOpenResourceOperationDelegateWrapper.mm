@@ -1,62 +1,62 @@
 @interface _LSOpenResourceOperationDelegateWrapper
-- (_LSOpenResourceOperationDelegateWrapper)initWithOperation:(id)a3 wrappedDelegate:(id)a4;
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4;
-- (void)openResourceOperation:(id)a3 didFinishCopyingResource:(id)a4;
-- (void)openResourceOperationDidComplete:(id)a3;
+- (_LSOpenResourceOperationDelegateWrapper)initWithOperation:(id)operation wrappedDelegate:(id)delegate;
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error;
+- (void)openResourceOperation:(id)operation didFinishCopyingResource:(id)resource;
+- (void)openResourceOperationDidComplete:(id)complete;
 @end
 
 @implementation _LSOpenResourceOperationDelegateWrapper
 
-- (_LSOpenResourceOperationDelegateWrapper)initWithOperation:(id)a3 wrappedDelegate:(id)a4
+- (_LSOpenResourceOperationDelegateWrapper)initWithOperation:(id)operation wrappedDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _LSOpenResourceOperationDelegateWrapper;
   v8 = [(_LSOpenResourceOperationDelegateWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_operation, v6);
-    objc_storeStrong(&v9->_delegate, a4);
+    objc_storeWeak(&v8->_operation, operationCopy);
+    objc_storeStrong(&v9->_delegate, delegate);
   }
 
   return v9;
 }
 
-- (void)openResourceOperation:(id)a3 didFinishCopyingResource:(id)a4
+- (void)openResourceOperation:(id)operation didFinishCopyingResource:(id)resource
 {
-  v8 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  resourceCopy = resource;
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_operation);
-    [(LSOpenResourceOperationDelegate *)self->_delegate openResourceOperation:WeakRetained didFinishCopyingResource:v6];
+    [(LSOpenResourceOperationDelegate *)self->_delegate openResourceOperation:WeakRetained didFinishCopyingResource:resourceCopy];
   }
 }
 
-- (void)openResourceOperationDidComplete:(id)a3
+- (void)openResourceOperationDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   if (self->_delegate)
   {
-    v7 = v4;
+    v7 = completeCopy;
     v5 = objc_opt_respondsToSelector();
-    v4 = v7;
+    completeCopy = v7;
     if (v5)
     {
       WeakRetained = objc_loadWeakRetained(&self->_operation);
       [(LSOpenResourceOperationDelegate *)self->_delegate openResourceOperationDidComplete:WeakRetained];
 
-      v4 = v7;
+      completeCopy = v7;
     }
   }
 }
 
-- (void)openResourceOperation:(id)a3 didFailWithError:(id)a4
+- (void)openResourceOperation:(id)operation didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  errorCopy = error;
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_operation);
@@ -66,7 +66,7 @@
       [_LSOpenResourceOperationDelegateWrapper openResourceOperation:didFailWithError:];
     }
 
-    [(LSOpenResourceOperationDelegate *)self->_delegate openResourceOperation:WeakRetained didFailWithError:v7];
+    [(LSOpenResourceOperationDelegate *)self->_delegate openResourceOperation:WeakRetained didFailWithError:errorCopy];
   }
 }
 

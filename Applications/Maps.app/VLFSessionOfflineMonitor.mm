@@ -1,7 +1,7 @@
 @interface VLFSessionOfflineMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionOfflineMonitor)initWithObserver:(id)a3;
+- (VLFSessionOfflineMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)updateState;
 @end
@@ -45,21 +45,21 @@
 
   v9 = v8;
   v10 = +[MapsOfflineUIHelper sharedHelper];
-  v11 = [v10 isUsingOfflineMaps];
-  v12 = [(VLFSessionMonitor *)self state];
+  isUsingOfflineMaps = [v10 isUsingOfflineMaps];
+  state = [(VLFSessionMonitor *)self state];
   v13 = @"Hide";
-  if (v12 == 1)
+  if (state == 1)
   {
     v13 = @"EnablePuck";
   }
 
-  if (v12 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
 
   v14 = @"not offline";
-  if (v11)
+  if (isUsingOfflineMaps)
   {
     v14 = @"offline";
   }
@@ -72,7 +72,7 @@
 - (void)updateState
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
   if (qword_10195E0F8 != -1)
   {
@@ -81,7 +81,7 @@
 
   v5 = qword_10195E0F0;
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isUsingOfflineMaps)
   {
     if (v6)
     {
@@ -107,11 +107,11 @@
   [(VLFSessionMonitor *)self setState:v7];
 }
 
-- (VLFSessionOfflineMonitor)initWithObserver:(id)a3
+- (VLFSessionOfflineMonitor)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = VLFSessionOfflineMonitor;
-  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:observer];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];

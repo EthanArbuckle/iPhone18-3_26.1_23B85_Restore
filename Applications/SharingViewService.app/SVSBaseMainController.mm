@@ -1,13 +1,13 @@
 @interface SVSBaseMainController
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SVSBaseMainController
 
-- (void)dismiss:(int)a3
+- (void)dismiss:(int)dismiss
 {
   v3 = [NSException exceptionWithName:@"SubclassUnimplementedException" reason:@"dismiss must be overridden by a subclasses." userInfo:0];
   [v3 raise];
@@ -20,14 +20,14 @@
     LogPrintF();
   }
 
-  v3 = [(SVSBaseMainController *)self _remoteViewControllerProxy];
-  [v3 setAllowsBanners:1];
-  [v3 setDesiredHardwareButtonEvents:{-[SVSBaseMainController desiredHomeButtonEvents](self, "desiredHomeButtonEvents")}];
+  _remoteViewControllerProxy = [(SVSBaseMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:{-[SVSBaseMainController desiredHomeButtonEvents](self, "desiredHomeButtonEvents")}];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF128 <= 30 && (dword_1001BF128 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -44,22 +44,22 @@
 
   v8.receiver = self;
   v8.super_class = SVSBaseMainController;
-  [(SVSBaseMainController *)&v8 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (dword_1001BF128 <= 30 && (dword_1001BF128 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v8 = [v6 userInfo];
-  objc_storeStrong(&self->_userInfo, v8);
-  v9 = [v6 xpcEndpoint];
-  if (v9 && CFDictionaryGetInt64())
+  userInfo = [contextCopy userInfo];
+  objc_storeStrong(&self->_userInfo, userInfo);
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  if (xpcEndpoint && CFDictionaryGetInt64())
   {
     v10 = objc_alloc_init(SFProxCardSessionServer);
     objc_storeStrong(&self->_proxCardSessionServer, v10);
@@ -71,7 +71,7 @@
     }
 
     v12 = objc_alloc_init(NSXPCListenerEndpoint);
-    [v12 _setEndpoint:v9];
+    [v12 _setEndpoint:xpcEndpoint];
     [v10 setXpcEndpoint:v12];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -82,9 +82,9 @@
     [v10 activateWithCompletion:v13];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

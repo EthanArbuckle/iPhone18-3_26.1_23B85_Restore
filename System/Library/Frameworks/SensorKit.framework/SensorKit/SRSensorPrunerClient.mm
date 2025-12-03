@@ -1,19 +1,19 @@
 @interface SRSensorPrunerClient
-+ (id)prunerClientWithPruner:(id)a3;
-- (SRSensorPrunerClient)initWithPruner:(id)a3;
-- (void)resetDatastoreFiles:(id)a3;
++ (id)prunerClientWithPruner:(id)pruner;
+- (SRSensorPrunerClient)initWithPruner:(id)pruner;
+- (void)resetDatastoreFiles:(id)files;
 @end
 
 @implementation SRSensorPrunerClient
 
-+ (id)prunerClientWithPruner:(id)a3
++ (id)prunerClientWithPruner:(id)pruner
 {
-  v3 = [[a1 alloc] initWithPruner:a3];
+  v3 = [[self alloc] initWithPruner:pruner];
 
   return v3;
 }
 
-- (SRSensorPrunerClient)initWithPruner:(id)a3
+- (SRSensorPrunerClient)initWithPruner:(id)pruner
 {
   v7.receiver = self;
   v7.super_class = SRSensorPrunerClient;
@@ -21,17 +21,17 @@
   v5 = v4;
   if (v4)
   {
-    [(SRSensorPrunerClient *)v4 setPruner:a3];
+    [(SRSensorPrunerClient *)v4 setPruner:pruner];
   }
 
   return v5;
 }
 
-- (void)resetDatastoreFiles:(id)a3
+- (void)resetDatastoreFiles:(id)files
 {
-  v4 = [(SRSensorPrunerClient *)self pruner];
+  pruner = [(SRSensorPrunerClient *)self pruner];
 
-  [(SRSensorPruner *)v4 resetDatastoreFiles:a3];
+  [(SRSensorPruner *)pruner resetDatastoreFiles:files];
 }
 
 @end

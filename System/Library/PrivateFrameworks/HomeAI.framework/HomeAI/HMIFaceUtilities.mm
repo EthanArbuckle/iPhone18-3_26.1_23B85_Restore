@@ -1,31 +1,31 @@
 @interface HMIFaceUtilities
-+ (BOOL)isValidFaceCrop:(id)a3;
-+ (BOOL)saveFaceClassifications:(id)a3 videoId:(id)a4 fragmentId:(unint64_t)a5 frameId:(id)a6 baseURL:(id)a7 error:(id *)a8;
-+ (BOOL)serializeJSONObject:(id)a3 url:(id)a4 error:(id *)a5;
-+ (CGRect)absoluteFaceBoxFromPhotosFaceCropImageData:(id)a3;
-+ (CGRect)faceBoundingBoxFromPhotosFaceCropData:(id)a3;
-+ (CGSize)faceCropDimensionsFromFaceCrop:(id)a3 error:(id *)a4;
-+ (id)croppedJpegDataFromFaceCrop:(id)a3;
-+ (id)faceObservationFromFaceprint:(id)a3;
-+ (id)faceObservationFromTorsoprint:(id)a3;
-+ (id)faceObservationsFromFaceprintsForClustering:(id)a3;
++ (BOOL)isValidFaceCrop:(id)crop;
++ (BOOL)saveFaceClassifications:(id)classifications videoId:(id)id fragmentId:(unint64_t)fragmentId frameId:(id)frameId baseURL:(id)l error:(id *)error;
++ (BOOL)serializeJSONObject:(id)object url:(id)url error:(id *)error;
++ (CGRect)absoluteFaceBoxFromPhotosFaceCropImageData:(id)data;
++ (CGRect)faceBoundingBoxFromPhotosFaceCropData:(id)data;
++ (CGSize)faceCropDimensionsFromFaceCrop:(id)crop error:(id *)error;
++ (id)croppedJpegDataFromFaceCrop:(id)crop;
++ (id)faceObservationFromFaceprint:(id)faceprint;
++ (id)faceObservationFromTorsoprint:(id)torsoprint;
++ (id)faceObservationsFromFaceprintsForClustering:(id)clustering;
 + (id)imageCreationOptions;
-+ (id)mergedPersonEventsFromEvents:(id)a3;
-+ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)a3;
++ (id)mergedPersonEventsFromEvents:(id)events;
++ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)data;
 @end
 
 @implementation HMIFaceUtilities
 
-+ (id)faceObservationsFromFaceprintsForClustering:(id)a3
++ (id)faceObservationsFromFaceprintsForClustering:(id)clustering
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  clusteringCopy = clustering;
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = clusteringCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -46,15 +46,15 @@
         v10 = *(*(&v20 + 1) + 8 * v9);
         v11 = [MEMORY[0x277CE2CD0] faceObservationWithRequestRevision:2 boundingBox:0.0 andAlignedBoundingBox:{0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0}];
         v12 = objc_alloc(MEMORY[0x277CE2CE0]);
-        v13 = [v10 data];
-        v14 = [v13 bytes];
+        data = [v10 data];
+        bytes = [data bytes];
         v15 = +[HMIFaceUtilities faceprintDefaultRevision];
         LODWORD(v16) = 1.0;
-        v17 = [v12 initWithData:v14 elementCount:128 elementType:1 lengthInBytes:512 confidence:v15 requestRevision:v16];
+        v17 = [v12 initWithData:bytes elementCount:128 elementType:1 lengthInBytes:512 confidence:v15 requestRevision:v16];
 
         [v11 setFaceprint:v17];
         [v11 setFaceId:v7++];
-        [v4 addObject:v11];
+        [array addObject:v11];
 
         ++v9;
       }
@@ -66,19 +66,19 @@
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)faceObservationFromTorsoprint:(id)a3
++ (id)faceObservationFromTorsoprint:(id)torsoprint
 {
   v3 = MEMORY[0x277CE2CE0];
-  v4 = a3;
+  torsoprintCopy = torsoprint;
   v5 = [v3 alloc];
-  v6 = [v4 data];
+  data = [torsoprintCopy data];
 
-  v7 = [v6 bytes];
+  bytes = [data bytes];
   LODWORD(v8) = 1.0;
-  v9 = [v5 initWithData:v7 elementCount:128 elementType:1 lengthInBytes:512 confidence:3 requestRevision:v8];
+  v9 = [v5 initWithData:bytes elementCount:128 elementType:1 lengthInBytes:512 confidence:3 requestRevision:v8];
 
   v10 = [MEMORY[0x277CE2CD0] faceObservationWithRequestRevision:3 boundingBox:0.0 andAlignedBoundingBox:{0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0}];
   [v10 setFaceprint:v9];
@@ -86,30 +86,30 @@
   return v10;
 }
 
-+ (id)faceObservationFromFaceprint:(id)a3
++ (id)faceObservationFromFaceprint:(id)faceprint
 {
   v3 = MEMORY[0x277CE2CD0];
-  v4 = a3;
+  faceprintCopy = faceprint;
   v5 = [v3 faceObservationWithRequestRevision:2 boundingBox:0.0 andAlignedBoundingBox:{0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0}];
   v6 = objc_alloc(MEMORY[0x277CE2CE0]);
-  v7 = [v4 data];
+  data = [faceprintCopy data];
 
-  v8 = [v7 bytes];
+  bytes = [data bytes];
   v9 = +[HMIFaceUtilities faceprintDefaultRevision];
   LODWORD(v10) = 1.0;
-  v11 = [v6 initWithData:v8 elementCount:128 elementType:1 lengthInBytes:512 confidence:v9 requestRevision:v10];
+  v11 = [v6 initWithData:bytes elementCount:128 elementType:1 lengthInBytes:512 confidence:v9 requestRevision:v10];
 
   [v5 setFaceprint:v11];
 
   return v5;
 }
 
-+ (id)croppedJpegDataFromFaceCrop:(id)a3
++ (id)croppedJpegDataFromFaceCrop:(id)crop
 {
-  v3 = a3;
+  cropCopy = crop;
   v4 = objc_alloc_init(HMIFaceprinter);
   v10 = 0;
-  v5 = [(HMIFaceprinter *)v4 createFacePixelBufferFromFaceCrop:v3 error:&v10];
+  v5 = [(HMIFaceprinter *)v4 createFacePixelBufferFromFaceCrop:cropCopy error:&v10];
 
   if (v5)
   {
@@ -127,44 +127,44 @@
   return v8;
 }
 
-+ (id)mergedPersonEventsFromEvents:(id)a3
++ (id)mergedPersonEventsFromEvents:(id)events
 {
-  v3 = a3;
-  v4 = [v3 allObjects];
-  v5 = [v4 na_filter:&__block_literal_global_22];
+  eventsCopy = events;
+  allObjects = [eventsCopy allObjects];
+  v5 = [allObjects na_filter:&__block_literal_global_22];
 
-  v6 = [v3 allObjects];
-  v49 = [v6 na_filter:&__block_literal_global_172];
+  allObjects2 = [eventsCopy allObjects];
+  v49 = [allObjects2 na_filter:&__block_literal_global_172];
 
-  v7 = [v3 allObjects];
-  v8 = [v7 na_filter:&__block_literal_global_175];
+  allObjects3 = [eventsCopy allObjects];
+  v8 = [allObjects3 na_filter:&__block_literal_global_175];
 
-  v9 = [v3 na_filter:&__block_literal_global_178];
+  v9 = [eventsCopy na_filter:&__block_literal_global_178];
 
   v52 = [v9 mutableCopy];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
   v85[2] = __49__HMIFaceUtilities_mergedPersonEventsFromEvents___block_invoke_5;
   v85[3] = &unk_278753B00;
-  v12 = v11;
+  v12 = dictionary;
   v86 = v12;
   v13 = v8;
   v87 = v13;
-  v14 = v10;
+  v14 = array;
   v88 = v14;
   [v5 enumerateObjectsUsingBlock:v85];
   v15 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v5, "count")}];
   v16 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v13, "count")}];
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v18 = [v14 sortedArrayUsingComparator:?];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __49__HMIFaceUtilities_mergedPersonEventsFromEvents___block_invoke_7;
   v81[3] = &unk_278754770;
   v82 = v16;
-  v19 = v17;
+  v19 = dictionary2;
   v83 = v19;
   v20 = v13;
   v84 = v20;
@@ -198,8 +198,8 @@
   v75 = v14;
   v50 = v14;
   [v24 enumerateIndexesUsingBlock:v71];
-  v27 = [MEMORY[0x277CBEB38] dictionary];
-  v28 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   v29 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v26, "count")}];
   v30 = [v50 sortedArrayUsingComparator:&__block_literal_global_2];
   v65[0] = MEMORY[0x277D85DD0];
@@ -209,11 +209,11 @@
   v31 = v24;
   v66 = v31;
   v67 = v29;
-  v32 = v27;
+  v32 = dictionary3;
   v68 = v32;
   v33 = v26;
   v69 = v33;
-  v34 = v28;
+  v34 = dictionary4;
   v70 = v34;
   v35 = v29;
   [v30 na_each:v65];
@@ -532,27 +532,27 @@ LABEL_13:
 LABEL_15:
 }
 
-+ (BOOL)saveFaceClassifications:(id)a3 videoId:(id)a4 fragmentId:(unint64_t)a5 frameId:(id)a6 baseURL:(id)a7 error:(id *)a8
++ (BOOL)saveFaceClassifications:(id)classifications videoId:(id)id fragmentId:(unint64_t)fragmentId frameId:(id)frameId baseURL:(id)l error:(id *)error
 {
   v100 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v78 = a4;
-  v77 = a6;
-  v13 = a7;
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v13 path];
+  classificationsCopy = classifications;
+  idCopy = id;
+  frameIdCopy = frameId;
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
   v92 = 0;
-  LOBYTE(a4) = [v14 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v92];
+  LOBYTE(id) = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v92];
   v16 = v92;
 
-  if (a4)
+  if (id)
   {
-    v65 = a8;
+    errorCopy = error;
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    obj = v12;
+    obj = classificationsCopy;
     v70 = [obj countByEnumeratingWithState:&v88 objects:v99 count:16];
     if (!v70)
     {
@@ -561,8 +561,8 @@ LABEL_15:
     }
 
     v68 = *v89;
-    v69 = v13;
-    v67 = v12;
+    v69 = lCopy;
+    v67 = classificationsCopy;
 LABEL_4:
     v17 = 0;
     v18 = v16;
@@ -578,49 +578,49 @@ LABEL_4:
       v98[0] = @"0.1";
       v97[0] = @"version";
       v97[1] = @"personUUID";
-      v82 = [v19 personUUID];
-      if (v82)
+      personUUID = [v19 personUUID];
+      if (personUUID)
       {
-        v74 = [v19 personUUID];
-        v20 = [v74 UUIDString];
-        v72 = v20;
+        personUUID2 = [v19 personUUID];
+        uUIDString = [personUUID2 UUIDString];
+        v72 = uUIDString;
       }
 
       else
       {
-        v20 = [MEMORY[0x277CBEB68] null];
-        v76 = v20;
+        uUIDString = [MEMORY[0x277CBEB68] null];
+        v76 = uUIDString;
       }
 
-      v98[1] = v20;
+      v98[1] = uUIDString;
       v97[2] = @"sourceUUID";
-      v21 = [v19 sourceUUID];
+      sourceUUID = [v19 sourceUUID];
       v80 = v17;
-      if (v21)
+      if (sourceUUID)
       {
-        v75 = [v19 sourceUUID];
-        v22 = [v75 UUIDString];
-        v73 = v22;
+        sourceUUID2 = [v19 sourceUUID];
+        uUIDString2 = [sourceUUID2 UUIDString];
+        v73 = uUIDString2;
         v23 = v79;
       }
 
       else
       {
-        v22 = [MEMORY[0x277CBEB68] null];
-        v23 = v22;
+        uUIDString2 = [MEMORY[0x277CBEB68] null];
+        v23 = uUIDString2;
       }
 
-      v98[2] = v22;
+      v98[2] = uUIDString2;
       v97[3] = @"faceCropUUID";
-      v24 = [v19 faceCrop];
-      v25 = [v24 UUID];
-      v26 = [v25 UUIDString];
-      v98[3] = v26;
+      faceCrop = [v19 faceCrop];
+      uUID = [faceCrop UUID];
+      uUIDString3 = [uUID UUIDString];
+      v98[3] = uUIDString3;
       v97[4] = @"faceprintUUID";
-      v27 = [v19 faceprint];
-      v28 = [v27 UUID];
-      v29 = [v28 UUIDString];
-      v98[4] = v29;
+      faceprint = [v19 faceprint];
+      uUID2 = [faceprint UUID];
+      uUIDString4 = [uUID2 UUIDString];
+      v98[4] = uUIDString4;
       v97[5] = @"confidence";
       v30 = MEMORY[0x277CCABB0];
       v85 = v19;
@@ -630,35 +630,35 @@ LABEL_4:
       v86 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:6];
 
       v32 = v23;
-      if (v21)
+      if (sourceUUID)
       {
 
-        v32 = v75;
+        v32 = sourceUUID2;
       }
 
       v79 = v23;
 
       v33 = v76;
-      if (v82)
+      if (personUUID)
       {
 
-        v33 = v74;
+        v33 = personUUID2;
       }
 
       v83 = MEMORY[0x277CCACA8];
-      v81 = [v77 intValue];
-      v34 = [v19 UUID];
-      v35 = v34 ? @"known" : @"unknown";
-      v36 = [v19 faceCrop];
-      v37 = [v36 UUID];
-      v38 = [v37 UUIDString];
-      v39 = [v38 substringToIndex:8];
-      v40 = [v19 sourceUUID];
-      v41 = [v40 UUIDString];
-      v42 = [v41 substringToIndex:8];
-      v43 = [v83 stringWithFormat:@"%@-%03lu-%03u-%@-%@-%@", v78, a5, v81, v35, v39, v42];
+      intValue = [frameIdCopy intValue];
+      uUID3 = [v19 UUID];
+      v35 = uUID3 ? @"known" : @"unknown";
+      faceCrop2 = [v19 faceCrop];
+      uUID4 = [faceCrop2 UUID];
+      uUIDString5 = [uUID4 UUIDString];
+      v39 = [uUIDString5 substringToIndex:8];
+      sourceUUID3 = [v19 sourceUUID];
+      uUIDString6 = [sourceUUID3 UUIDString];
+      v42 = [uUIDString6 substringToIndex:8];
+      v43 = [v83 stringWithFormat:@"%@-%03lu-%03u-%@-%@-%@", idCopy, fragmentId, intValue, v35, v39, v42];
 
-      v13 = v69;
+      lCopy = v69;
       v44 = [v69 URLByAppendingPathComponent:v43];
       v45 = [v44 URLByAppendingPathExtension:@"json"];
       v87 = v84;
@@ -671,19 +671,19 @@ LABEL_4:
         break;
       }
 
-      v47 = [v85 faceCrop];
-      v48 = [v47 dataRepresentation];
+      faceCrop3 = [v85 faceCrop];
+      dataRepresentation = [faceCrop3 dataRepresentation];
       v49 = [v44 URLByAppendingPathExtension:@"jpg"];
-      v50 = [v48 writeToURL:v49 atomically:0];
+      v50 = [dataRepresentation writeToURL:v49 atomically:0];
 
-      v12 = v67;
+      classificationsCopy = v67;
       if ((v50 & 1) == 0)
       {
         v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error saving face crop image to disk for face classification:%@", v85];
         v61 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000 description:v60];
-        v62 = v65;
+        v62 = errorCopy;
         v46 = v86;
-        if (!v65)
+        if (!errorCopy)
         {
           goto LABEL_33;
         }
@@ -727,9 +727,9 @@ LABEL_33:
 
     v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error saving metadata to disk for face classification:%@", v85];
     v61 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000 description:v60 underlyingError:v16];
-    v12 = v67;
-    v62 = v65;
-    if (v65)
+    classificationsCopy = v67;
+    v62 = errorCopy;
+    if (errorCopy)
     {
       goto LABEL_32;
     }
@@ -738,16 +738,16 @@ LABEL_33:
   }
 
   v55 = MEMORY[0x277CCACA8];
-  v56 = [v13 path];
-  v57 = [v55 stringWithFormat:@"Error creating directory:%@ to save face classifications", v56];
+  path2 = [lCopy path];
+  v57 = [v55 stringWithFormat:@"Error creating directory:%@ to save face classifications", path2];
 
   obj = v57;
   v58 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1000 description:v57 underlyingError:v16];
   v46 = v58;
-  if (a8)
+  if (error)
   {
     v59 = v58;
-    *a8 = v46;
+    *error = v46;
   }
 
   HMIErrorLogC(v46);
@@ -759,26 +759,26 @@ LABEL_35:
   return v54;
 }
 
-+ (BOOL)serializeJSONObject:(id)a3 url:(id)a4 error:(id *)a5
++ (BOOL)serializeJSONObject:(id)object url:(id)url error:(id *)error
 {
-  v7 = a4;
+  urlCopy = url;
   v18 = 0;
-  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:3 error:&v18];
+  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:object options:3 error:&v18];
   v9 = v18;
   v10 = v9;
   if (v8)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
     v17 = v10;
-    v12 = [v11 writeToURL:v7 atomically:1 encoding:4 error:&v17];
+    v12 = [v11 writeToURL:urlCopy atomically:1 encoding:4 error:&v17];
     v13 = v17;
 
     if ((v12 & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v14 = v13;
-        *a5 = v13;
+        *error = v13;
       }
 
       HMIErrorLogC(v13);
@@ -789,10 +789,10 @@ LABEL_35:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v15 = v9;
-      *a5 = v10;
+      *error = v10;
     }
 
     HMIErrorLogC(v10);
@@ -802,15 +802,15 @@ LABEL_35:
   return v12;
 }
 
-+ (CGRect)faceBoundingBoxFromPhotosFaceCropData:(id)a3
++ (CGRect)faceBoundingBoxFromPhotosFaceCropData:(id)data
 {
-  v3 = a3;
-  [objc_opt_class() absoluteFaceBoxFromPhotosFaceCropImageData:v3];
+  dataCopy = data;
+  [objc_opt_class() absoluteFaceBoxFromPhotosFaceCropImageData:dataCopy];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [objc_opt_class() faceCropDimensionsFromFaceCrop:v3 error:0];
+  [objc_opt_class() faceCropDimensionsFromFaceCrop:dataCopy error:0];
   v13 = v12;
   v15 = v14;
 
@@ -858,11 +858,11 @@ LABEL_35:
   }
 }
 
-+ (BOOL)isValidFaceCrop:(id)a3
++ (BOOL)isValidFaceCrop:(id)crop
 {
-  v5 = a3;
+  cropCopy = crop;
   v6 = objc_autoreleasePoolPush();
-  v7 = [a1 newDictionaryPopulatedWithFaceCropDataFromImageData:v5];
+  v7 = [self newDictionaryPopulatedWithFaceCropDataFromImageData:cropCopy];
   v8 = v7;
   if (v7)
   {
@@ -904,11 +904,11 @@ LABEL_13:
   return v13;
 }
 
-+ (CGRect)absoluteFaceBoxFromPhotosFaceCropImageData:(id)a3
++ (CGRect)absoluteFaceBoxFromPhotosFaceCropImageData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() newDictionaryPopulatedWithFaceCropDataFromImageData:v3];
+  dataCopy = data;
+  v4 = [objc_opt_class() newDictionaryPopulatedWithFaceCropDataFromImageData:dataCopy];
   v5 = v4;
   if (v4)
   {
@@ -982,18 +982,18 @@ LABEL_13:
   return result;
 }
 
-+ (CGSize)faceCropDimensionsFromFaceCrop:(id)a3 error:(id *)a4
++ (CGSize)faceCropDimensionsFromFaceCrop:(id)crop error:(id *)error
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  cropCopy = crop;
   v6 = objc_autoreleasePoolPush();
-  if (([a1 isValidFaceCrop:v5] & 1) == 0)
+  if (([self isValidFaceCrop:cropCopy] & 1) == 0)
   {
     v13 = @"the supplied data is not a facecrop";
     goto LABEL_7;
   }
 
-  v7 = CGImageSourceCreateWithData(v5, [a1 imageCreationOptions]);
+  v7 = CGImageSourceCreateWithData(cropCopy, [self imageCreationOptions]);
   v8 = v7;
   if (!v7)
   {
@@ -1054,14 +1054,14 @@ void __40__HMIFaceUtilities_imageCreationOptions__block_invoke()
   imageCreationOptions_kImageCreationOptions = v2;
 }
 
-+ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)a3
++ (id)newDictionaryPopulatedWithFaceCropDataFromImageData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
-  if (v3)
+  if (dataCopy)
   {
-    v5 = CGImageSourceCreateWithData(v3, 0);
+    v5 = CGImageSourceCreateWithData(dataCopy, 0);
     v6 = v5;
     if (!v5)
     {

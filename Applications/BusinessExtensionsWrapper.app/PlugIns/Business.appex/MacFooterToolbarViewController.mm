@@ -1,6 +1,6 @@
 @interface MacFooterToolbarViewController
 - (NSArray)keyCommands;
-- (_TtC8Business30MacFooterToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Business30MacFooterToolbarViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissButtonTapped;
 - (void)leftButtonTapped;
 - (void)rightButtonTapped;
@@ -11,13 +11,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A57DC();
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000A6360();
 
   if (v3)
@@ -42,7 +42,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -56,7 +56,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 16);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -70,13 +70,13 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 24);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC8Business30MacFooterToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Business30MacFooterToolbarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

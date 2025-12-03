@@ -1,5 +1,5 @@
 @interface SSToolResultBuilder
-- (SSToolResultBuilder)initWithResult:(id)a3;
+- (SSToolResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildSecondaryCommand;
@@ -9,29 +9,29 @@
 
 @implementation SSToolResultBuilder
 
-- (SSToolResultBuilder)initWithResult:(id)a3
+- (SSToolResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = SSToolResultBuilder;
-  v5 = [(SSShortcutResultBuilder *)&v14 initWithResult:v4];
+  v5 = [(SSShortcutResultBuilder *)&v14 initWithResult:resultCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SSResultBuilder *)v5 result];
-    v8 = [v7 valueForAttribute:*MEMORY[0x1E69642B8] withType:objc_opt_class()];
+    result = [(SSResultBuilder *)v5 result];
+    v8 = [result valueForAttribute:*MEMORY[0x1E69642B8] withType:objc_opt_class()];
     [(SSToolResultBuilder *)v6 setToolIdentifier:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6964DE8] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6964DE8] withType:objc_opt_class()];
     [(SSToolResultBuilder *)v6 setToolInvocationData:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E6964AF8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E6964AF8] withType:objc_opt_class()];
     [(SSToolResultBuilder *)v6 setToolIconData:v10];
 
-    v11 = [v4 valueForAttribute:@"SSToolParameterizedTitle" withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:@"SSToolParameterizedTitle" withType:objc_opt_class()];
     [(SSToolResultBuilder *)v6 setParameterizedTitle:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x1E6964B00] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B00] withType:objc_opt_class()];
     [(SSToolResultBuilder *)v6 setToolType:v12];
   }
 
@@ -40,21 +40,21 @@
 
 - (id)buildTitle
 {
-  v3 = [(SSToolResultBuilder *)self parameterizedTitle];
-  v4 = v3;
-  if (v3)
+  parameterizedTitle = [(SSToolResultBuilder *)self parameterizedTitle];
+  v4 = parameterizedTitle;
+  if (parameterizedTitle)
   {
-    v5 = v3;
+    buildTitle = parameterizedTitle;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SSToolResultBuilder;
-    v5 = [(SSShortcutResultBuilder *)&v8 buildTitle];
+    buildTitle = [(SSShortcutResultBuilder *)&v8 buildTitle];
   }
 
-  v6 = v5;
+  v6 = buildTitle;
 
   return v6;
 }
@@ -62,11 +62,11 @@
 - (id)buildDescriptions
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self relatedAppBundleIdentifier];
-  v4 = SSAppNameForBundleId(v3);
+  relatedAppBundleIdentifier = [(SSResultBuilder *)self relatedAppBundleIdentifier];
+  v4 = SSAppNameForBundleId(relatedAppBundleIdentifier);
 
-  v5 = [(SSToolResultBuilder *)self parameterizedTitle];
-  if (v5 || ![v4 length])
+  parameterizedTitle = [(SSToolResultBuilder *)self parameterizedTitle];
+  if (parameterizedTitle || ![v4 length])
   {
     v6 = 0;
   }
@@ -87,28 +87,28 @@
 {
   v11.receiver = self;
   v11.super_class = SSToolResultBuilder;
-  v3 = [(SSShortcutResultBuilder *)&v11 buildStandardThumbnail];
-  v4 = [(SSToolResultBuilder *)self toolIconData];
+  buildStandardThumbnail = [(SSShortcutResultBuilder *)&v11 buildStandardThumbnail];
+  toolIconData = [(SSToolResultBuilder *)self toolIconData];
 
-  if (v4)
+  if (toolIconData)
   {
-    v5 = objc_opt_new();
-    v6 = [(SSToolResultBuilder *)self toolIconData];
-    [v5 setImageData:v6];
+    buildStandardThumbnail2 = objc_opt_new();
+    toolIconData2 = [(SSToolResultBuilder *)self toolIconData];
+    [buildStandardThumbnail2 setImageData:toolIconData2];
 
     goto LABEL_8;
   }
 
-  v7 = [(SSToolResultBuilder *)self toolType];
-  if ([v7 isEqualToString:@"shortcutTool"])
+  toolType = [(SSToolResultBuilder *)self toolType];
+  if ([toolType isEqualToString:@"shortcutTool"])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v5 = objc_opt_new();
-      [v5 setBundleIdentifier:@"com.apple.shortcuts"];
+      buildStandardThumbnail2 = objc_opt_new();
+      [buildStandardThumbnail2 setBundleIdentifier:@"com.apple.shortcuts"];
       goto LABEL_8;
     }
   }
@@ -119,20 +119,20 @@
 
   v10.receiver = self;
   v10.super_class = SSToolResultBuilder;
-  v5 = [(SSShortcutResultBuilder *)&v10 buildStandardThumbnail];
+  buildStandardThumbnail2 = [(SSShortcutResultBuilder *)&v10 buildStandardThumbnail];
 LABEL_8:
 
-  return v5;
+  return buildStandardThumbnail2;
 }
 
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSToolResultBuilder *)self toolIdentifier];
-  [v3 setToolIdentifier:v4];
+  toolIdentifier = [(SSToolResultBuilder *)self toolIdentifier];
+  [v3 setToolIdentifier:toolIdentifier];
 
-  v5 = [(SSToolResultBuilder *)self toolInvocationData];
-  [v3 setToolInvocationData:v5];
+  toolInvocationData = [(SSToolResultBuilder *)self toolInvocationData];
+  [v3 setToolInvocationData:toolInvocationData];
 
   return v3;
 }
@@ -140,11 +140,11 @@ LABEL_8:
 - (id)buildSecondaryCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSToolResultBuilder *)self toolIdentifier];
-  [v3 setToolIdentifier:v4];
+  toolIdentifier = [(SSToolResultBuilder *)self toolIdentifier];
+  [v3 setToolIdentifier:toolIdentifier];
 
-  v5 = [(SSToolResultBuilder *)self toolInvocationData];
-  [v3 setToolInvocationData:v5];
+  toolInvocationData = [(SSToolResultBuilder *)self toolInvocationData];
+  [v3 setToolInvocationData:toolInvocationData];
 
   [v3 setCommandDetail:@"skipExecution"];
 

@@ -30,7 +30,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_275A3DA84();
   MEMORY[0x277C860D0](0xD000000000000016, 0x8000000275A3EDD0);
   sub_275A3D794();

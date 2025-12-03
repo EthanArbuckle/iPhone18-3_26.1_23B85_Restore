@@ -1,10 +1,10 @@
 @interface AMAmbientIlluminationTrigger
 - (AMAmbientIlluminationTrigger)init;
-- (AMAmbientIlluminationTrigger)initWithBrightnessSystemClient:(id)a3;
+- (AMAmbientIlluminationTrigger)initWithBrightnessSystemClient:(id)client;
 - (AMAmbientIlluminationTriggerDelegate)delegate;
 - (double)_effectiveDeactivationThresholdLux;
 - (void)_evaluateTrigger;
-- (void)_setTriggered:(BOOL)a3;
+- (void)_setTriggered:(BOOL)triggered;
 @end
 
 @implementation AMAmbientIlluminationTrigger
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (AMAmbientIlluminationTrigger)initWithBrightnessSystemClient:(id)a3
+- (AMAmbientIlluminationTrigger)initWithBrightnessSystemClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = AMAmbientIlluminationTrigger;
   v6 = [(AMAmbientIlluminationTrigger *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_brightnessSystemClient, a3);
+    objc_storeStrong(&v6->_brightnessSystemClient, client);
     objc_initWeak(&location, v7);
     brightnessSystemClient = v7->_brightnessSystemClient;
     v12 = MEMORY[0x277D85DD0];
@@ -96,12 +96,12 @@ uint64_t __63__AMAmbientIlluminationTrigger_initWithBrightnessSystemClient___blo
   return [v1 _setAmbientLux:?];
 }
 
-- (void)_setTriggered:(BOOL)a3
+- (void)_setTriggered:(BOOL)triggered
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_triggered != a3)
+  if (self->_triggered != triggered)
   {
-    self->_triggered = a3;
+    self->_triggered = triggered;
     v4 = AMLogRedMode();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -120,8 +120,8 @@ uint64_t __63__AMAmbientIlluminationTrigger_initWithBrightnessSystemClient___blo
       _os_log_impl(&dword_23EE48000, v4, OS_LOG_TYPE_DEFAULT, "ambient illumination trigger triggered: %{BOOL}u [ ambient lux: %f  on threshold: %f  off threshold: %f ]", v11, 0x26u);
     }
 
-    v9 = [(AMAmbientIlluminationTrigger *)self delegate];
-    [v9 ambientIlluminationTrigger:self didUpdateTriggered:self->_triggered];
+    delegate = [(AMAmbientIlluminationTrigger *)self delegate];
+    [delegate ambientIlluminationTrigger:self didUpdateTriggered:self->_triggered];
   }
 
   v10 = *MEMORY[0x277D85DE8];

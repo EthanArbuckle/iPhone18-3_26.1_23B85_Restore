@@ -1,15 +1,15 @@
 @interface DIAttachedDeviceInfo
-+ (id)DI1URLWithData:(id)a3 error:(id *)a4;
++ (id)DI1URLWithData:(id)data error:(id *)error;
 + (id)copyAllMountPoints;
-+ (id)newDI1DevicesArrayWithError:(id *)a3;
-+ (id)newDI2DevicesArrayWithError:(id *)a3;
-+ (id)newDevicesArrayWithError:(id *)a3;
-+ (id)newEntityDictWithIOMedia:(id)a3 mountPoints:(id)a4;
-- (BOOL)fillDI1InfoWithDevice:(id)a3 error:(id *)a4;
-- (BOOL)fillDI2InfoWithDevice:(id)a3 error:(id *)a4;
-- (BOOL)setDI2PIDWithDevice:(id)a3 error:(id *)a4;
-- (DIAttachedDeviceInfo)initWithBSDName:(id)a3 error:(id *)a4;
-- (DIAttachedDeviceInfo)initWithDevice:(id)a3 error:(id *)a4;
++ (id)newDI1DevicesArrayWithError:(id *)error;
++ (id)newDI2DevicesArrayWithError:(id *)error;
++ (id)newDevicesArrayWithError:(id *)error;
++ (id)newEntityDictWithIOMedia:(id)media mountPoints:(id)points;
+- (BOOL)fillDI1InfoWithDevice:(id)device error:(id *)error;
+- (BOOL)fillDI2InfoWithDevice:(id)device error:(id *)error;
+- (BOOL)setDI2PIDWithDevice:(id)device error:(id *)error;
+- (DIAttachedDeviceInfo)initWithBSDName:(id)name error:(id *)error;
+- (DIAttachedDeviceInfo)initWithDevice:(id)device error:(id *)error;
 - (id)copyEntitiesList;
 - (id)description;
 - (id)toDictionary;
@@ -17,9 +17,9 @@
 
 @implementation DIAttachedDeviceInfo
 
-- (DIAttachedDeviceInfo)initWithDevice:(id)a3 error:(id *)a4
+- (DIAttachedDeviceInfo)initWithDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = DIAttachedDeviceInfo;
   v7 = [(DIAttachedDeviceInfo *)&v20 init];
@@ -28,7 +28,7 @@
     goto LABEL_8;
   }
 
-  v8 = [v6 copyIOMediaWithError:a4];
+  v8 = [deviceCopy copyIOMediaWithError:error];
   ioMedia = v7->_ioMedia;
   v7->_ioMedia = v8;
 
@@ -48,25 +48,25 @@ LABEL_13:
   blockSize = v7->_blockSize;
   v7->_blockSize = v13;
 
-  v15 = [(DIIOMedia *)v7->_ioMedia BSDName];
+  bSDName = [(DIIOMedia *)v7->_ioMedia BSDName];
   BSDName = v7->_BSDName;
-  v7->_BSDName = v15;
+  v7->_BSDName = bSDName;
 
   if (!v7->_mediaSize || !v7->_blockSize || !v7->_BSDName)
   {
-    v17 = [DIError nilWithEnumValue:153 verboseInfo:@"Basic information about the IOMedia device is missing" error:a4];
+    v17 = [DIError nilWithEnumValue:153 verboseInfo:@"Basic information about the IOMedia device is missing" error:error];
     goto LABEL_10;
   }
 
-  if (![v6 diskImageDevice])
+  if (![deviceCopy diskImageDevice])
   {
-    if (!IOObjectConformsTo([v6 ioObj], "IOHDIXHDDriveNub"))
+    if (!IOObjectConformsTo([deviceCopy ioObj], "IOHDIXHDDriveNub"))
     {
-      v17 = [DIError nilWithEnumValue:157 description:@"Device is not a disk image" error:a4];
+      v17 = [DIError nilWithEnumValue:157 description:@"Device is not a disk image" error:error];
       goto LABEL_10;
     }
 
-    if ([(DIAttachedDeviceInfo *)v7 fillDI1InfoWithDevice:v6 error:a4])
+    if ([(DIAttachedDeviceInfo *)v7 fillDI1InfoWithDevice:deviceCopy error:error])
     {
       goto LABEL_8;
     }
@@ -74,7 +74,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (![(DIAttachedDeviceInfo *)v7 fillDI2InfoWithDevice:v6 error:a4])
+  if (![(DIAttachedDeviceInfo *)v7 fillDI2InfoWithDevice:deviceCopy error:error])
   {
     goto LABEL_13;
   }
@@ -88,10 +88,10 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)fillDI2InfoWithDevice:(id)a3 error:(id *)a4
+- (BOOL)fillDI2InfoWithDevice:(id)device error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 copyPropertyWithClass:objc_opt_class() key:@"DiskImageURL"];
+  deviceCopy = device;
+  v7 = [deviceCopy copyPropertyWithClass:objc_opt_class() key:@"DiskImageURL"];
   v8 = v7;
   if (v7)
   {
@@ -103,7 +103,7 @@ LABEL_14:
 
   if (self->_imageURL)
   {
-    v10 = [v6 copyPropertyWithClass:objc_opt_class() key:@"ShadowURL"];
+    v10 = [deviceCopy copyPropertyWithClass:objc_opt_class() key:@"ShadowURL"];
     v11 = v10;
     if (v10)
     {
@@ -113,7 +113,7 @@ LABEL_14:
     shadowURL = self->_shadowURL;
     self->_shadowURL = v10;
 
-    v13 = [v6 copyPropertyWithClass:objc_opt_class() key:@"CacheURL"];
+    v13 = [deviceCopy copyPropertyWithClass:objc_opt_class() key:@"CacheURL"];
     v14 = v13;
     if (v13)
     {
@@ -123,26 +123,26 @@ LABEL_14:
     cacheURL = self->_cacheURL;
     self->_cacheURL = v13;
 
-    v16 = [v6 copyPropertyWithClass:objc_opt_class() key:@"InstanceID"];
+    v16 = [deviceCopy copyPropertyWithClass:objc_opt_class() key:@"InstanceID"];
     instanceId = self->_instanceId;
     self->_instanceId = v16;
 
     self->_frameworkNum = 2;
-    v18 = [(DIAttachedDeviceInfo *)self setDI2PIDWithDevice:v6 error:a4]|| [DIError failWithEnumValue:153 verboseInfo:@"Failed to get Daemon PID" error:a4];
+    v18 = [(DIAttachedDeviceInfo *)self setDI2PIDWithDevice:deviceCopy error:error]|| [DIError failWithEnumValue:153 verboseInfo:@"Failed to get Daemon PID" error:error];
   }
 
   else
   {
-    v18 = [DIError failWithEnumValue:153 verboseInfo:@"Invalid or missing image URL key" error:a4];
+    v18 = [DIError failWithEnumValue:153 verboseInfo:@"Invalid or missing image URL key" error:error];
   }
 
   return v18;
 }
 
-- (BOOL)setDI2PIDWithDevice:(id)a3 error:(id *)a4
+- (BOOL)setDI2PIDWithDevice:(id)device error:(id *)error
 {
   v18 = -1;
-  v5 = [a3 newIteratorWithOptions:0 error:a4];
+  v5 = [device newIteratorWithOptions:0 error:error];
   v6 = [[DIIOObject alloc] initWithIteratorNext:v5];
   if (v6)
   {
@@ -169,8 +169,8 @@ LABEL_14:
 
     v11 = v8;
     v12 = [MEMORY[0x277CCAC80] scannerWithString:v8];
-    v13 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v14 = [v12 scanUpToCharactersFromSet:v13 intoString:0];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    v14 = [v12 scanUpToCharactersFromSet:decimalDigitCharacterSet intoString:0];
 
     if (v14 && [v12 scanInteger:&v18])
     {
@@ -196,11 +196,11 @@ LABEL_6:
   return v10;
 }
 
-+ (id)DI1URLWithData:(id)a3 error:(id *)a4
++ (id)DI1URLWithData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6 encoding:4];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy encoding:4];
 
   if (v7)
   {
@@ -208,9 +208,9 @@ LABEL_6:
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 scheme];
+      scheme = [v8 scheme];
 
-      if (v10)
+      if (scheme)
       {
         goto LABEL_8;
       }
@@ -232,28 +232,28 @@ LABEL_6:
     v12 = @"Invalid path property (not UTF8)";
   }
 
-  v9 = [DIError nilWithEnumValue:153 verboseInfo:v12 error:a4];
+  v9 = [DIError nilWithEnumValue:153 verboseInfo:v12 error:error];
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)fillDI1InfoWithDevice:(id)a3 error:(id *)a4
+- (BOOL)fillDI1InfoWithDevice:(id)device error:(id *)error
 {
-  v6 = [a3 copyParentWithError:a4];
+  v6 = [device copyParentWithError:error];
   if (v6)
   {
     v7 = [v6 copyPropertyWithClass:objc_opt_class() key:@"image-path"];
     if (v7)
     {
-      v8 = [DIAttachedDeviceInfo DI1URLWithData:v7 error:a4];
+      v8 = [DIAttachedDeviceInfo DI1URLWithData:v7 error:error];
       imageURL = self->_imageURL;
       self->_imageURL = v8;
 
       if (self->_imageURL)
       {
         v10 = [v6 copyPropertyWithClass:objc_opt_class() key:@"shadow-path"];
-        if (v10 && ([DIAttachedDeviceInfo DI1URLWithData:v10 error:a4], v11 = objc_claimAutoreleasedReturnValue(), shadowURL = self->_shadowURL, self->_shadowURL = v11, shadowURL, !self->_shadowURL))
+        if (v10 && ([DIAttachedDeviceInfo DI1URLWithData:v10 error:error], v11 = objc_claimAutoreleasedReturnValue(), shadowURL = self->_shadowURL, self->_shadowURL = v11, shadowURL, !self->_shadowURL))
         {
           v13 = 0;
         }
@@ -283,7 +283,7 @@ LABEL_8:
 
     else
     {
-      v13 = [DIError failWithEnumValue:153 verboseInfo:@"Missing image path property" error:a4];
+      v13 = [DIError failWithEnumValue:153 verboseInfo:@"Missing image path property" error:error];
     }
   }
 
@@ -295,42 +295,42 @@ LABEL_8:
   return v13;
 }
 
-- (DIAttachedDeviceInfo)initWithBSDName:(id)a3 error:(id *)a4
+- (DIAttachedDeviceInfo)initWithBSDName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [[DIIOMedia alloc] initWithDevName:v6 error:a4];
+  nameCopy = name;
+  v7 = [[DIIOMedia alloc] initWithDevName:nameCopy error:error];
 
   if (v7)
   {
-    v8 = [(DIIOMedia *)v7 copyBlockDeviceWithError:a4];
+    v8 = [(DIIOMedia *)v7 copyBlockDeviceWithError:error];
     if (v8)
     {
-      self = [(DIAttachedDeviceInfo *)self initWithDevice:v8 error:a4];
-      v9 = self;
+      self = [(DIAttachedDeviceInfo *)self initWithDevice:v8 error:error];
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-+ (id)newDI1DevicesArrayWithError:(id *)a3
++ (id)newDI1DevicesArrayWithError:(id *)error
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [[DIIOObject alloc] initWithClassName:@"IOHDIXController" error:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [(DIIOObject *)v5 newIteratorWithOptions:0 error:a3];
+    v7 = [(DIIOObject *)v5 newIteratorWithOptions:0 error:error];
     if (v7)
     {
       v8 = [[DIIOObject alloc] initWithIteratorNext:v7];
@@ -341,18 +341,18 @@ LABEL_8:
         {
           if ([v7 startedOver])
           {
-            [v4 removeAllObjects];
+            [array removeAllObjects];
             [v7 setStartedOver:0];
           }
 
-          v10 = [(DIIOObject *)v9 ioObjectWithClassName:@"IOHDIXHDDriveNub" iterateParent:0 error:a3];
+          v10 = [(DIIOObject *)v9 ioObjectWithClassName:@"IOHDIXHDDriveNub" iterateParent:0 error:error];
           if (v10)
           {
             v11 = [(DIIOObject *)[DIBlockDevice alloc] initWithDIIOObject:v10];
             v12 = [[DIAttachedDeviceInfo alloc] initWithDevice:v11 error:0];
             if (v12)
             {
-              [v4 addObject:v12];
+              [array addObject:v12];
             }
           }
 
@@ -363,7 +363,7 @@ LABEL_8:
         while (v13);
       }
 
-      v14 = v4;
+      v14 = array;
     }
 
     else
@@ -374,20 +374,20 @@ LABEL_8:
 
   else
   {
-    v14 = v4;
+    v14 = array;
   }
 
   return v14;
 }
 
-+ (id)newDI2DevicesArrayWithError:(id *)a3
++ (id)newDI2DevicesArrayWithError:(id *)error
 {
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [DIIOObject copyDiskImagesControllerWithError:a3];
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [DIIOObject copyDiskImagesControllerWithError:error];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 newIteratorWithOptions:0 error:a3];
+    v7 = [v5 newIteratorWithOptions:0 error:error];
     if (v7)
     {
       v8 = [(DIIOObject *)[DIBlockDevice alloc] initWithIteratorNext:v7];
@@ -398,7 +398,7 @@ LABEL_8:
         {
           if ([v7 startedOver])
           {
-            [v4 removeAllObjects];
+            [array removeAllObjects];
             [v7 setStartedOver:0];
           }
 
@@ -407,7 +407,7 @@ LABEL_8:
             v10 = [[DIAttachedDeviceInfo alloc] initWithDevice:v9 error:0];
             if (v10)
             {
-              [v4 addObject:v10];
+              [array addObject:v10];
             }
           }
 
@@ -419,7 +419,7 @@ LABEL_8:
         while (v11);
       }
 
-      v12 = v4;
+      v12 = array;
     }
 
     else
@@ -436,12 +436,12 @@ LABEL_8:
   return v12;
 }
 
-+ (id)newDevicesArrayWithError:(id *)a3
++ (id)newDevicesArrayWithError:(id *)error
 {
-  v5 = [a1 newDI2DevicesArrayWithError:?];
+  v5 = [self newDI2DevicesArrayWithError:?];
   if (v5)
   {
-    v6 = [a1 newDI1DevicesArrayWithError:a3];
+    v6 = [self newDI1DevicesArrayWithError:error];
     if (v6)
     {
       v7 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
@@ -465,9 +465,9 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DIAttachedDeviceInfo *)self BSDName];
-  v5 = [(DIAttachedDeviceInfo *)self imageURL];
-  v6 = [v3 stringWithFormat:@"Attached disk image device info: BSD Name [%@], image URL [%@]", v4, v5];
+  bSDName = [(DIAttachedDeviceInfo *)self BSDName];
+  imageURL = [(DIAttachedDeviceInfo *)self imageURL];
+  v6 = [v3 stringWithFormat:@"Attached disk image device info: BSD Name [%@], image URL [%@]", bSDName, imageURL];
 
   return v6;
 }
@@ -475,7 +475,7 @@ LABEL_8:
 + (id)copyAllMountPoints
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0;
   v3 = getmntinfo_r_np(&v16, 2);
   if (v3)
@@ -502,8 +502,8 @@ LABEL_8:
 
           if (!v8)
           {
-            v9 = [v6 lastPathComponent];
-            [v2 setObject:v7 forKeyedSubscript:v9];
+            lastPathComponent = [v6 lastPathComponent];
+            [dictionary setObject:v7 forKeyedSubscript:lastPathComponent];
           }
         }
 
@@ -553,28 +553,28 @@ LABEL_8:
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v2;
+  return dictionary;
 }
 
-+ (id)newEntityDictWithIOMedia:(id)a3 mountPoints:(id)a4
++ (id)newEntityDictWithIOMedia:(id)media mountPoints:(id)points
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 BSDName];
-  v8 = v7;
-  if (v7)
+  mediaCopy = media;
+  pointsCopy = points;
+  bSDName = [mediaCopy BSDName];
+  v8 = bSDName;
+  if (bSDName)
   {
     v9 = MEMORY[0x277CBEB38];
     v16 = @"BSD Name";
-    v17[0] = v7;
+    v17[0] = bSDName;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v11 = [v9 dictionaryWithDictionary:v10];
 
-    v12 = [v6 objectForKeyedSubscript:v8];
+    v12 = [pointsCopy objectForKeyedSubscript:v8];
     [v11 setObject:v12 forKeyedSubscript:@"Mount Point"];
 
-    v13 = [v5 copyPropertyWithClass:objc_opt_class() key:@"Content"];
+    v13 = [mediaCopy copyPropertyWithClass:objc_opt_class() key:@"Content"];
     [v11 setObject:v13 forKeyedSubscript:@"Content"];
   }
 
@@ -589,18 +589,18 @@ LABEL_8:
 
 - (id)copyEntitiesList
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[DIAttachedDeviceInfo copyAllMountPoints];
-  v5 = [(DIAttachedDeviceInfo *)self ioMedia];
-  v6 = [DIAttachedDeviceInfo newEntityDictWithIOMedia:v5 mountPoints:v4];
+  ioMedia = [(DIAttachedDeviceInfo *)self ioMedia];
+  v6 = [DIAttachedDeviceInfo newEntityDictWithIOMedia:ioMedia mountPoints:v4];
 
   if (v6)
   {
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
-  v7 = [(DIAttachedDeviceInfo *)self ioMedia];
-  v8 = [v7 newIteratorWithOptions:1 error:0];
+  ioMedia2 = [(DIAttachedDeviceInfo *)self ioMedia];
+  v8 = [ioMedia2 newIteratorWithOptions:1 error:0];
 
   if (v8)
   {
@@ -612,7 +612,7 @@ LABEL_8:
       {
         if ([v8 startedOver])
         {
-          [v3 removeAllObjects];
+          [array removeAllObjects];
           [v8 setStartedOver:0];
         }
 
@@ -621,7 +621,7 @@ LABEL_8:
           v11 = [DIAttachedDeviceInfo newEntityDictWithIOMedia:v10 mountPoints:v4];
           if (v11)
           {
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -634,7 +634,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (id)toDictionary
@@ -642,54 +642,54 @@ LABEL_8:
   v25[7] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
   v24[0] = @"BSD Name";
-  v23 = [(DIAttachedDeviceInfo *)self BSDName];
-  v25[0] = v23;
+  bSDName = [(DIAttachedDeviceInfo *)self BSDName];
+  v25[0] = bSDName;
   v24[1] = @"DiskImages Framework";
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DIAttachedDeviceInfo frameworkNum](self, "frameworkNum")}];
   v25[1] = v4;
   v24[2] = @"DiskImageURL";
-  v5 = [(DIAttachedDeviceInfo *)self imageURL];
-  v6 = [v5 description];
+  imageURL = [(DIAttachedDeviceInfo *)self imageURL];
+  v6 = [imageURL description];
   v25[2] = v6;
   v24[3] = @"Size";
-  v7 = [(DIAttachedDeviceInfo *)self mediaSize];
-  v25[3] = v7;
+  mediaSize = [(DIAttachedDeviceInfo *)self mediaSize];
+  v25[3] = mediaSize;
   v24[4] = @"Preferred Block Size";
-  v8 = [(DIAttachedDeviceInfo *)self blockSize];
-  v25[4] = v8;
+  blockSize = [(DIAttachedDeviceInfo *)self blockSize];
+  v25[4] = blockSize;
   v24[5] = @"System Entities";
-  v9 = [(DIAttachedDeviceInfo *)self copyEntitiesList];
-  v25[5] = v9;
+  copyEntitiesList = [(DIAttachedDeviceInfo *)self copyEntitiesList];
+  v25[5] = copyEntitiesList;
   v24[6] = @"Daemon PID";
   v10 = [(DIAttachedDeviceInfo *)self pid];
   v25[6] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:7];
   v12 = [v3 dictionaryWithDictionary:v11];
 
-  v13 = [(DIAttachedDeviceInfo *)self shadowURL];
+  shadowURL = [(DIAttachedDeviceInfo *)self shadowURL];
 
-  if (v13)
+  if (shadowURL)
   {
-    v14 = [(DIAttachedDeviceInfo *)self shadowURL];
-    v15 = [v14 description];
+    shadowURL2 = [(DIAttachedDeviceInfo *)self shadowURL];
+    v15 = [shadowURL2 description];
     [v12 setObject:v15 forKeyedSubscript:@"ShadowURL"];
   }
 
-  v16 = [(DIAttachedDeviceInfo *)self cacheURL];
+  cacheURL = [(DIAttachedDeviceInfo *)self cacheURL];
 
-  if (v16)
+  if (cacheURL)
   {
-    v17 = [(DIAttachedDeviceInfo *)self cacheURL];
-    v18 = [v17 description];
+    cacheURL2 = [(DIAttachedDeviceInfo *)self cacheURL];
+    v18 = [cacheURL2 description];
     [v12 setObject:v18 forKeyedSubscript:@"CacheURL"];
   }
 
-  v19 = [(DIAttachedDeviceInfo *)self instanceId];
+  instanceId = [(DIAttachedDeviceInfo *)self instanceId];
 
-  if (v19)
+  if (instanceId)
   {
-    v20 = [(DIAttachedDeviceInfo *)self instanceId];
-    [v12 setObject:v20 forKeyedSubscript:@"InstanceID"];
+    instanceId2 = [(DIAttachedDeviceInfo *)self instanceId];
+    [v12 setObject:instanceId2 forKeyedSubscript:@"InstanceID"];
   }
 
   v21 = *MEMORY[0x277D85DE8];

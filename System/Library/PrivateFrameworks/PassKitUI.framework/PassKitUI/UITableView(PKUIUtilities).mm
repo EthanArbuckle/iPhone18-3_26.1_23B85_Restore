@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __75__UITableView_PKUIUtilities__pkui_groupedStyleDefaultRoundedCornerBehavior__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pkui_groupedStyleDefaultRoundedCornerBehavior_onceToken != -1)
   {
     dispatch_once(&pkui_groupedStyleDefaultRoundedCornerBehavior_onceToken, block);
@@ -36,15 +36,15 @@
 
 - (uint64_t)pkui_setupForReadableContentGuide
 {
-  result = [a1 pkui_userInterfaceIdiomSupportsLargeLayouts];
+  result = [self pkui_userInterfaceIdiomSupportsLargeLayouts];
   if (result)
   {
-    result = [a1 style];
+    result = [self style];
     if ((result - 1) <= 1)
     {
-      [a1 _setSectionContentInsetFollowsLayoutMargins:1];
+      [self _setSectionContentInsetFollowsLayoutMargins:1];
 
-      return [a1 setCellLayoutMarginsFollowReadableWidth:1];
+      return [self setCellLayoutMarginsFollowReadableWidth:1];
     }
   }
 

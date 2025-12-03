@@ -1,20 +1,20 @@
 @interface SiriGKAlternateResultsPod
-- (SiriGKAlternateResultsPod)initWithPod:(id)a3;
+- (SiriGKAlternateResultsPod)initWithPod:(id)pod;
 - (UIEdgeInsets)headerInsets;
 @end
 
 @implementation SiriGKAlternateResultsPod
 
-- (SiriGKAlternateResultsPod)initWithPod:(id)a3
+- (SiriGKAlternateResultsPod)initWithPod:(id)pod
 {
-  v4 = a3;
+  podCopy = pod;
   v28.receiver = self;
   v28.super_class = SiriGKAlternateResultsPod;
   v5 = [(SiriGKAlternateResultsPod *)&v28 init];
   if (v5)
   {
-    v6 = [v4 alternateResults];
-    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    alternateResults = [podCopy alternateResults];
+    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [alternateResults count]);
     viewArray = v5->_viewArray;
     v5->_viewArray = v7;
 
@@ -22,8 +22,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = [v4 alternateResults];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    alternateResults2 = [podCopy alternateResults];
+    v10 = [alternateResults2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -35,7 +35,7 @@
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(alternateResults2);
           }
 
           v14 = [[SiriGKAlternateResultView alloc] initWithAlternateResult:*(*(&v24 + 1) + 8 * v13)];
@@ -48,18 +48,18 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v11 = [alternateResults2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v11);
     }
 
     v15 = [SiriUIPlatterSectionHeaderView alloc];
-    v16 = [v4 title];
+    title = [podCopy title];
     v17 = [NSLocale alloc];
     v18 = AFUIGetLanguageCode();
     v19 = [v17 initWithLocaleIdentifier:v18];
-    v20 = [v16 uppercaseStringWithLocale:v19];
+    v20 = [title uppercaseStringWithLocale:v19];
     v21 = [v15 initWithText:v20];
     headerView = v5->_headerView;
     v5->_headerView = v21;

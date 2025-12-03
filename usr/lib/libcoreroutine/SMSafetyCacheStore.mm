@@ -1,48 +1,48 @@
 @interface SMSafetyCacheStore
-- (SMSafetyCacheStore)initWithPersistenceManager:(id)a3 timerManager:(id)a4;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRequestFromStoredLocationOptions:(id)a3;
-- (void)_fetchLastLocationWithHandler:(id)a3;
-- (void)_fetchStoredLocationsWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_flushCachedLocationsWithHandler:(id)a3;
+- (SMSafetyCacheStore)initWithPersistenceManager:(id)manager timerManager:(id)timerManager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (id)fetchRequestFromStoredLocationOptions:(id)options;
+- (void)_fetchLastLocationWithHandler:(id)handler;
+- (void)_fetchStoredLocationsWithContext:(id)context handler:(id)handler;
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)_flushCachedLocationsWithHandler:(id)handler;
 - (void)_invalidateFlushTimer;
 - (void)_startFlushTimer;
-- (void)_storeLocations:(id)a3 handler:(id)a4;
-- (void)enumerateStoredLocationsWithContext:(id)a3 usingBlock:(id)a4;
-- (void)fetchInitiatorContactsWithHandler:(id)a3;
-- (void)fetchLastLocationWithHandler:(id)a3;
-- (void)fetchMetricsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchReceiverContactsWithHandler:(id)a3;
-- (void)fetchStoredLocationsCountFromDate:(id)a3 toDate:(id)a4 uncertainty:(double)a5 limit:(unint64_t)a6 handler:(id)a7;
-- (void)fetchStoredLocationsWithContext:(id)a3 handler:(id)a4;
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)logStoreWithHandler:(id)a3;
-- (void)removeInitiatorContact:(id)a3 handler:(id)a4;
-- (void)removeLocationsPredating:(id)a3 handler:(id)a4;
-- (void)removeReceiverContact:(id)a3 handler:(id)a4;
-- (void)storeInitiatorContact:(id)a3 handler:(id)a4;
-- (void)storeLocations:(id)a3 handler:(id)a4;
-- (void)storeReceiverContact:(id)a3 handler:(id)a4;
-- (void)updateInitiatorContact:(id)a3 handler:(id)a4;
-- (void)updateReceiverContact:(id)a3 handler:(id)a4;
+- (void)_storeLocations:(id)locations handler:(id)handler;
+- (void)enumerateStoredLocationsWithContext:(id)context usingBlock:(id)block;
+- (void)fetchInitiatorContactsWithHandler:(id)handler;
+- (void)fetchLastLocationWithHandler:(id)handler;
+- (void)fetchMetricsWithOptions:(id)options handler:(id)handler;
+- (void)fetchReceiverContactsWithHandler:(id)handler;
+- (void)fetchStoredLocationsCountFromDate:(id)date toDate:(id)toDate uncertainty:(double)uncertainty limit:(unint64_t)limit handler:(id)handler;
+- (void)fetchStoredLocationsWithContext:(id)context handler:(id)handler;
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)logStoreWithHandler:(id)handler;
+- (void)removeInitiatorContact:(id)contact handler:(id)handler;
+- (void)removeLocationsPredating:(id)predating handler:(id)handler;
+- (void)removeReceiverContact:(id)contact handler:(id)handler;
+- (void)storeInitiatorContact:(id)contact handler:(id)handler;
+- (void)storeLocations:(id)locations handler:(id)handler;
+- (void)storeReceiverContact:(id)contact handler:(id)handler;
+- (void)updateInitiatorContact:(id)contact handler:(id)handler;
+- (void)updateReceiverContact:(id)contact handler:(id)handler;
 @end
 
 @implementation SMSafetyCacheStore
 
-- (SMSafetyCacheStore)initWithPersistenceManager:(id)a3 timerManager:(id)a4
+- (SMSafetyCacheStore)initWithPersistenceManager:(id)manager timerManager:(id)timerManager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  managerCopy = manager;
+  timerManagerCopy = timerManager;
+  v8 = timerManagerCopy;
+  if (!managerCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -53,7 +53,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!timerManagerCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -68,39 +68,39 @@ LABEL_12:
 
   v17.receiver = self;
   v17.super_class = SMSafetyCacheStore;
-  v9 = [(RTStore *)&v17 initWithPersistenceManager:v6];
+  v9 = [(RTStore *)&v17 initWithPersistenceManager:managerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timerManager, a4);
+    objc_storeStrong(&v9->_timerManager, timerManager);
     v11 = objc_opt_new();
     locations = v10->_locations;
     v10->_locations = v11;
   }
 
   self = v10;
-  v13 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)storeInitiatorContact:(id)a3 handler:(id)a4
+- (void)storeInitiatorContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__SMSafetyCacheStore_storeInitiatorContact_handler___block_invoke;
   v12[3] = &unk_2788C4C20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = contactCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __52__SMSafetyCacheStore_storeInitiatorContact_handler___block_invoke(uint64_t a1)
@@ -123,22 +123,22 @@ void __52__SMSafetyCacheStore_storeInitiatorContact_handler___block_invoke(uint6
   [v4 storeWritableObjects:v5 handler:*(a1 + 48)];
 }
 
-- (void)updateInitiatorContact:(id)a3 handler:(id)a4
+- (void)updateInitiatorContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__SMSafetyCacheStore_updateInitiatorContact_handler___block_invoke;
   v12[3] = &unk_2788C4C20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = contactCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __53__SMSafetyCacheStore_updateInitiatorContact_handler___block_invoke(uint64_t a1)
@@ -161,22 +161,22 @@ void __53__SMSafetyCacheStore_updateInitiatorContact_handler___block_invoke(uint
   [v4 updateWritableObjects:v5 handler:*(a1 + 48)];
 }
 
-- (void)storeReceiverContact:(id)a3 handler:(id)a4
+- (void)storeReceiverContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__SMSafetyCacheStore_storeReceiverContact_handler___block_invoke;
   v12[3] = &unk_2788C4C20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = contactCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __51__SMSafetyCacheStore_storeReceiverContact_handler___block_invoke(uint64_t a1)
@@ -199,22 +199,22 @@ void __51__SMSafetyCacheStore_storeReceiverContact_handler___block_invoke(uint64
   [v4 storeWritableObjects:v5 handler:*(a1 + 48)];
 }
 
-- (void)updateReceiverContact:(id)a3 handler:(id)a4
+- (void)updateReceiverContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__SMSafetyCacheStore_updateReceiverContact_handler___block_invoke;
   v12[3] = &unk_2788C4C20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = contactCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __52__SMSafetyCacheStore_updateReceiverContact_handler___block_invoke(uint64_t a1)
@@ -237,19 +237,19 @@ void __52__SMSafetyCacheStore_updateReceiverContact_handler___block_invoke(uint6
   [v4 updateWritableObjects:v5 handler:*(a1 + 48)];
 }
 
-- (void)fetchInitiatorContactsWithHandler:(id)a3
+- (void)fetchInitiatorContactsWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SMSafetyCacheStore_fetchInitiatorContactsWithHandler___block_invoke;
   block[3] = &unk_2788CBC00;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__SMSafetyCacheStore_fetchInitiatorContactsWithHandler___block_invoke(uint64_t a1)
@@ -388,19 +388,19 @@ void __56__SMSafetyCacheStore_fetchInitiatorContactsWithHandler___block_invoke_2
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchReceiverContactsWithHandler:(id)a3
+- (void)fetchReceiverContactsWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SMSafetyCacheStore_fetchReceiverContactsWithHandler___block_invoke;
   block[3] = &unk_2788CBC00;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__SMSafetyCacheStore_fetchReceiverContactsWithHandler___block_invoke(uint64_t a1)
@@ -539,22 +539,22 @@ void __55__SMSafetyCacheStore_fetchReceiverContactsWithHandler___block_invoke_27
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeInitiatorContact:(id)a3 handler:(id)a4
+- (void)removeInitiatorContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__SMSafetyCacheStore_removeInitiatorContact_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v15 = v8;
+  v15 = handlerCopy;
   v16 = a2;
-  v13 = v7;
-  v14 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v13 = contactCopy;
+  selfCopy = self;
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __53__SMSafetyCacheStore_removeInitiatorContact_handler___block_invoke(uint64_t a1)
@@ -645,22 +645,22 @@ void __53__SMSafetyCacheStore_removeInitiatorContact_handler___block_invoke_2(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeReceiverContact:(id)a3 handler:(id)a4
+- (void)removeReceiverContact:(id)contact handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  contactCopy = contact;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__SMSafetyCacheStore_removeReceiverContact_handler___block_invoke;
   v12[3] = &unk_2788C6940;
-  v15 = v8;
+  v15 = handlerCopy;
   v16 = a2;
-  v13 = v7;
-  v14 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v13 = contactCopy;
+  selfCopy = self;
+  v10 = handlerCopy;
+  v11 = contactCopy;
+  dispatch_async(queue, v12);
 }
 
 void __52__SMSafetyCacheStore_removeReceiverContact_handler___block_invoke(uint64_t a1)
@@ -751,18 +751,18 @@ void __52__SMSafetyCacheStore_removeReceiverContact_handler___block_invoke_2(uin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)logStoreWithHandler:(id)a3
+- (void)logStoreWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SMSafetyCacheStore_logStoreWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __42__SMSafetyCacheStore_logStoreWithHandler___block_invoke(uint64_t a1)
@@ -1038,12 +1038,12 @@ uint64_t __42__SMSafetyCacheStore_logStoreWithHandler___block_invoke_49(uint64_t
   return result;
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (!a5)
+  optionsCopy = options;
+  v9 = optionsCopy;
+  if (!error)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1055,7 +1055,7 @@ uint64_t __42__SMSafetyCacheStore_logStoreWithHandler___block_invoke_49(uint64_t
     goto LABEL_8;
   }
 
-  if (v8)
+  if (optionsCopy)
   {
     v10 = objc_opt_class();
     if (v10 != objc_opt_class())
@@ -1073,7 +1073,7 @@ uint64_t __42__SMSafetyCacheStore_logStoreWithHandler___block_invoke_49(uint64_t
       v18 = [v15 errorWithDomain:v16 code:7 userInfo:v17];
 
       v19 = v18;
-      *a5 = v18;
+      *error = v18;
 
 LABEL_8:
       v21 = 0;
@@ -1081,7 +1081,7 @@ LABEL_8:
     }
 
     v21 = [(SMSafetyCacheStore *)self fetchRequestFromStoredLocationOptions:v9];
-    [v21 setFetchOffset:a4];
+    [v21 setFetchOffset:offset];
   }
 
   else
@@ -1094,7 +1094,7 @@ LABEL_8:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v21 = 0;
+    *error = v21 = 0;
   }
 
 LABEL_13:
@@ -1108,19 +1108,19 @@ LABEL_13:
   {
     objc_initWeak(&location, self);
     timerManager = self->_timerManager;
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v8 = MEMORY[0x277D85DD0];
     v9 = 3221225472;
     v10 = __38__SMSafetyCacheStore__startFlushTimer__block_invoke;
     v11 = &unk_2788D2FA0;
-    v12 = self;
+    selfCopy = self;
     v13[1] = a2;
     objc_copyWeak(v13, &location);
-    v6 = [(RTTimerManager *)timerManager timerWithIdentifier:@"com.apple.routined.SafetyCache.flushTimer" queue:v5 handler:&v8];
+    v6 = [(RTTimerManager *)timerManager timerWithIdentifier:@"com.apple.routined.SafetyCache.flushTimer" queue:queue handler:&v8];
     flushTimer = self->_flushTimer;
     self->_flushTimer = v6;
 
-    [(RTTimer *)self->_flushTimer fireAfterDelay:75.0 interval:75.0 leeway:15.0, v8, v9, v10, v11, v12];
+    [(RTTimer *)self->_flushTimer fireAfterDelay:75.0 interval:75.0 leeway:15.0, v8, v9, v10, v11, selfCopy];
     [(RTTimer *)self->_flushTimer resume];
     objc_destroyWeak(v13);
     objc_destroyWeak(&location);
@@ -1203,10 +1203,10 @@ void __43__SMSafetyCacheStore__flushCachedLocations__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_flushCachedLocationsWithHandler:(id)a3
+- (void)_flushCachedLocationsWithHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if ([(NSMutableArray *)self->_locations count])
   {
     v6 = [(NSMutableArray *)self->_locations copy];
@@ -1220,8 +1220,8 @@ void __43__SMSafetyCacheStore__flushCachedLocations__block_invoke(uint64_t a1, v
         NSStringFromSelector(a2);
         v10 = v21 = a2;
         v11 = [v6 count];
-        v12 = [v6 firstObject];
-        v13 = [v6 lastObject];
+        firstObject = [v6 firstObject];
+        lastObject = [v6 lastObject];
         *buf = 138413315;
         v31 = v9;
         v32 = 2112;
@@ -1229,9 +1229,9 @@ void __43__SMSafetyCacheStore__flushCachedLocations__block_invoke(uint64_t a1, v
         v34 = 2048;
         v35 = v11;
         v36 = 2117;
-        v37 = v12;
+        v37 = firstObject;
         v38 = 2117;
-        v39 = v13;
+        v39 = lastObject;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, flushing %lu locations to cache, first, %{sensitive}@, last, %{sensitive}@", buf, 0x34u);
 
         a2 = v21;
@@ -1280,13 +1280,13 @@ void __43__SMSafetyCacheStore__flushCachedLocations__block_invoke(uint64_t a1, v
     v22[3] = &unk_2788C56C0;
     v22[4] = self;
     v24 = a2;
-    v23 = v5;
+    v23 = handlerCopy;
     [(RTStore *)self storeWritableObjects:v14 handler:v22];
   }
 
-  else if (v5)
+  else if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1319,35 +1319,35 @@ void __55__SMSafetyCacheStore__flushCachedLocationsWithHandler___block_invoke(ui
   }
 }
 
-- (void)storeLocations:(id)a3 handler:(id)a4
+- (void)storeLocations:(id)locations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  locationsCopy = locations;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SMSafetyCacheStore_storeLocations_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = locationsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)enumerateStoredLocationsWithContext:(id)a3 usingBlock:(id)a4
+- (void)enumerateStoredLocationsWithContext:(id)context usingBlock:(id)block
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  blockCopy = block;
+  if (blockCopy)
   {
     v46 = 0;
-    if (v7)
+    if (contextCopy)
     {
       v9 = dispatch_semaphore_create(0);
-      v10 = [(RTNotifier *)self queue];
+      queue = [(RTNotifier *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __69__SMSafetyCacheStore_enumerateStoredLocationsWithContext_usingBlock___block_invoke;
@@ -1356,7 +1356,7 @@ void __55__SMSafetyCacheStore__flushCachedLocationsWithHandler___block_invoke(ui
       v45 = a2;
       v11 = v9;
       v44 = v11;
-      dispatch_async(v10, block);
+      dispatch_async(queue, block);
 
       v12 = v11;
       v13 = [MEMORY[0x277CBEAA8] now];
@@ -1369,12 +1369,12 @@ void __55__SMSafetyCacheStore__flushCachedLocationsWithHandler___block_invoke(ui
         v16 = v15;
         v17 = objc_opt_new();
         v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_223];
-        v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v20 = [v19 filteredArrayUsingPredicate:v18];
-        v21 = [v20 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+        firstObject = [v20 firstObject];
 
         v38 = v17;
-        [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+        [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
         v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
         {
@@ -1409,21 +1409,21 @@ void __55__SMSafetyCacheStore__flushCachedLocationsWithHandler___block_invoke(ui
       v33 = v27;
       if (v25)
       {
-        v34 = [v7 options];
-        v35 = [(SMSafetyCacheStore *)self fetchRequestFromStoredLocationOptions:v34];
+        options = [contextCopy options];
+        v35 = [(SMSafetyCacheStore *)self fetchRequestFromStoredLocationOptions:options];
 
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __69__SMSafetyCacheStore_enumerateStoredLocationsWithContext_usingBlock___block_invoke_63;
         aBlock[3] = &unk_2788CCC20;
-        v42 = v8;
+        v42 = blockCopy;
         v36 = _Block_copy(aBlock);
         [(RTStore *)self enumerateType:objc_opt_class() fetchRequest:v35 enumerationBlock:v36];
       }
 
       else
       {
-        (*(v8 + 2))(v8, MEMORY[0x277CBEBF8], v33, &v46);
+        (*(blockCopy + 2))(blockCopy, MEMORY[0x277CBEBF8], v33, &v46);
       }
     }
 
@@ -1447,7 +1447,7 @@ void __55__SMSafetyCacheStore__flushCachedLocationsWithHandler___block_invoke(ui
         _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      (*(v8 + 2))(v8, MEMORY[0x277CBEBF8], v12, &v46);
+      (*(blockCopy + 2))(blockCopy, MEMORY[0x277CBEBF8], v12, &v46);
     }
   }
 
@@ -1544,33 +1544,33 @@ void __69__SMSafetyCacheStore_enumerateStoredLocationsWithContext_usingBlock___b
   }
 }
 
-- (void)fetchLastLocationWithHandler:(id)a3
+- (void)fetchLastLocationWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SMSafetyCacheStore_fetchLastLocationWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchLastLocationWithHandler:(id)a3
+- (void)_fetchLastLocationWithHandler:(id)handler
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__SMSafetyCacheStore__fetchLastLocationWithHandler___block_invoke;
     aBlock[3] = &unk_2788CB7D8;
     v22 = a2;
-    v7 = v5;
+    v7 = handlerCopy;
     v21 = v7;
     v8 = _Block_copy(aBlock);
     v17[0] = MEMORY[0x277D85DD0];
@@ -1705,38 +1705,38 @@ void __52__SMSafetyCacheStore__fetchLastLocationWithHandler___block_invoke_2(uin
   [v1 _performBlock:v2 contextType:1 errorHandler:v3];
 }
 
-- (void)fetchStoredLocationsWithContext:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsWithContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMSafetyCacheStore_fetchStoredLocationsWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredLocationsWithContext:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsWithContext:(id)context handler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
-    v20 = v7;
-    v21 = self;
+    v20 = contextCopy;
+    selfCopy = self;
     v23 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v22 = v9;
     v10 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x277D85DD0];
@@ -1923,29 +1923,29 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
   [v1 _performBlock:v2 contextType:1 errorHandler:v3];
 }
 
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMSafetyCacheStore_fetchStoredLocationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1958,32 +1958,32 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D01318]) initWithEnumerationOptions:v6];
-  [(SMSafetyCacheStore *)self _fetchStoredLocationsWithContext:v9 handler:v7];
+  v9 = [objc_alloc(MEMORY[0x277D01318]) initWithEnumerationOptions:optionsCopy];
+  [(SMSafetyCacheStore *)self _fetchStoredLocationsWithContext:v9 handler:handlerCopy];
 }
 
-- (void)removeLocationsPredating:(id)a3 handler:(id)a4
+- (void)removeLocationsPredating:(id)predating handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  predatingCopy = predating;
+  if (predatingCopy)
   {
     v7 = MEMORY[0x277CCAC30];
-    v8 = a4;
-    v9 = [v7 predicateWithFormat:@"%K < %@", @"timestamp", v6];
-    [(NSMutableArray *)self->_locations filterUsingPredicate:v9];
+    handlerCopy = handler;
+    predatingCopy = [v7 predicateWithFormat:@"%K < %@", @"timestamp", predatingCopy];
+    [(NSMutableArray *)self->_locations filterUsingPredicate:predatingCopy];
     v17 = @"date";
     v16 = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
     v18 = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v11 purgeLimit:50 handler:v8];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v11 purgeLimit:50 handler:handlerCopy];
   }
 
   else
   {
-    v12 = a4;
+    handlerCopy2 = handler;
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1998,13 +1998,13 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
     v15 = *MEMORY[0x277D01448];
     v19 = *MEMORY[0x277CCA450];
     v20 = @"requires a valid date.";
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-    v11 = [v14 errorWithDomain:v15 code:7 userInfo:v9];
-    v12[2](v12, v11);
+    predatingCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
+    v11 = [v14 errorWithDomain:v15 code:7 userInfo:predatingCopy];
+    handlerCopy2[2](handlerCopy2, v11);
   }
 }
 
-- (void)fetchMetricsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchMetricsWithOptions:(id)options handler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
@@ -2012,13 +2012,13 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
   v11 = *MEMORY[0x277CCA450];
   v12[0] = @"fetchMetricsWithOptions:handler: not supported";
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
+  handlerCopy = handler;
   v9 = [v7 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v10 = [v5 errorWithDomain:v6 code:7 userInfo:v9];
-  (*(a4 + 2))(v8, 0, v10);
+  (*(handler + 2))(handlerCopy, 0, v10);
 }
 
-- (void)fetchStoredLocationsCountFromDate:(id)a3 toDate:(id)a4 uncertainty:(double)a5 limit:(unint64_t)a6 handler:(id)a7
+- (void)fetchStoredLocationsCountFromDate:(id)date toDate:(id)toDate uncertainty:(double)uncertainty limit:(unint64_t)limit handler:(id)handler
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCA9B8];
@@ -2026,17 +2026,17 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
   v14 = *MEMORY[0x277CCA450];
   v15[0] = @"fetchStoredLocationsCountFromDate:toDate:uncertainty:limit:handler: not supported";
   v10 = MEMORY[0x277CBEAC0];
-  v11 = a7;
+  handlerCopy = handler;
   v12 = [v10 dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v13 = [v8 errorWithDomain:v9 code:7 userInfo:v12];
-  (*(a7 + 2))(v11, 0, v13);
+  (*(handler + 2))(handlerCopy, 0, v13);
 }
 
-- (void)_storeLocations:(id)a3 handler:(id)a4
+- (void)_storeLocations:(id)locations handler:(id)handler
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   if ([(RTService *)self isShuttingDown])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -2045,23 +2045,23 @@ void __63__SMSafetyCacheStore__fetchStoredLocationsWithContext_handler___block_i
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v34 = [v7 count];
+        v34 = [locationsCopy count];
         _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "Ignoring %lu locations for storage, shutdown in progress", buf, 0xCu);
       }
     }
 
 LABEL_19:
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     goto LABEL_21;
   }
 
-  if ([v7 count])
+  if ([locationsCopy count])
   {
-    [(NSMutableArray *)self->_locations addObjectsFromArray:v7];
+    [(NSMutableArray *)self->_locations addObjectsFromArray:locationsCopy];
     if ([(NSMutableArray *)self->_locations count])
     {
       if (!self->_flushTransaction)
@@ -2102,9 +2102,9 @@ LABEL_19:
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
         v25 = NSStringFromSelector(a2);
-        v26 = [v7 count];
-        v27 = [v7 firstObject];
-        v28 = [v7 lastObject];
+        v26 = [locationsCopy count];
+        firstObject = [locationsCopy firstObject];
+        lastObject = [locationsCopy lastObject];
         v29 = [(NSMutableArray *)self->_locations count];
         *buf = 138413571;
         v34 = v24;
@@ -2113,9 +2113,9 @@ LABEL_19:
         v37 = 2048;
         v38 = v26;
         v39 = 2117;
-        v40 = v27;
+        v40 = firstObject;
         v41 = 2117;
-        v42 = v28;
+        v42 = lastObject;
         v43 = 2048;
         v44 = v29;
         _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "%@, %@, added %lu locations to cache, first, %{sensitive}@, last, %{sensitive}@, total, %lu", buf, 0x3Eu);
@@ -2131,7 +2131,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277D01448];
@@ -2139,56 +2139,56 @@ LABEL_19:
     v46[0] = @"requires valid locations.";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
-    (v8)[2](v8, v22);
+    (handlerCopy)[2](handlerCopy, v22);
   }
 
 LABEL_21:
 }
 
-- (id)fetchRequestFromStoredLocationOptions:(id)a3
+- (id)fetchRequestFromStoredLocationOptions:(id)options
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     v4 = +[SMInitiatorLocationMO fetchRequest];
     [v4 setReturnsObjectsAsFaults:0];
-    v5 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(v3, "ascending")}];
+    v5 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(optionsCopy, "ascending")}];
     v61[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
     [v4 setSortDescriptors:v6];
 
-    v7 = [v3 dateInterval];
-    v8 = [v7 startDate];
-    v9 = v8;
-    if (v8)
+    dateInterval = [optionsCopy dateInterval];
+    startDate = [dateInterval startDate];
+    v9 = startDate;
+    if (startDate)
     {
-      v10 = v8;
+      distantPast = startDate;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    log = v10;
+    log = distantPast;
 
-    v11 = [v3 dateInterval];
-    v12 = [v11 endDate];
-    v13 = v12;
-    if (v12)
+    dateInterval2 = [optionsCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    v13 = endDate;
+    if (endDate)
     {
-      v14 = v12;
+      distantFuture = endDate;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
-    v15 = v14;
+    v15 = distantFuture;
 
-    [v3 horizontalAccuracy];
+    [optionsCopy horizontalAccuracy];
     if (v16 == 0.0)
     {
       v18 = 1.79769313e308;
@@ -2196,17 +2196,17 @@ LABEL_21:
 
     else
     {
-      [v3 horizontalAccuracy];
+      [optionsCopy horizontalAccuracy];
       v18 = v17;
     }
 
-    if ([v3 batchSize])
+    if ([optionsCopy batchSize])
     {
-      v19 = [v3 batchSize];
+      batchSize = [optionsCopy batchSize];
       v20 = 3600;
-      if (v19 < 0xE10)
+      if (batchSize < 0xE10)
       {
-        v20 = v19;
+        v20 = batchSize;
       }
     }
 
@@ -2216,7 +2216,7 @@ LABEL_21:
     }
 
     v55 = v20;
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = MEMORY[0x277CCA920];
     v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ <= %K", log, @"date"];
     v60[0] = v23;
@@ -2230,21 +2230,21 @@ LABEL_21:
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:3];
     v29 = [v22 andPredicateWithSubpredicates:v28];
 
-    v30 = v21;
+    v30 = array;
     v54 = v29;
-    [v21 addObject:v29];
-    v31 = [v3 boundingBoxLocation];
+    [array addObject:v29];
+    boundingBoxLocation = [optionsCopy boundingBoxLocation];
 
-    if (v31)
+    if (boundingBoxLocation)
     {
       *buf = 0;
-      v32 = [v3 boundingBoxLocation];
-      [v32 coordinate];
-      [v3 boundingBoxLocation];
-      v33 = v53 = v21;
+      boundingBoxLocation2 = [optionsCopy boundingBoxLocation];
+      [boundingBoxLocation2 coordinate];
+      [optionsCopy boundingBoxLocation];
+      v33 = v53 = array;
       [v33 coordinate];
-      v34 = [v3 boundingBoxLocation];
-      [v34 horizontalAccuracy];
+      boundingBoxLocation3 = [optionsCopy boundingBoxLocation];
+      [boundingBoxLocation3 horizontalAccuracy];
       RTCommonCalculateBoundingBox();
 
       v50 = MEMORY[0x277CCA920];

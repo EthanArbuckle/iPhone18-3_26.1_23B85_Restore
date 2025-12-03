@@ -1,58 +1,58 @@
 @interface CKStaticImageStackView
-- (CKStaticImageStackView)initWithFrame:(CGRect)a3 mediaObjects:(id)a4;
+- (CKStaticImageStackView)initWithFrame:(CGRect)frame mediaObjects:(id)objects;
 - (Class)_PFMessageStackLayoutFrameSolverClass;
-- (void)_mediaObjectPreviewDidChange:(id)a3;
+- (void)_mediaObjectPreviewDidChange:(id)change;
 - (void)_updatePreviews;
 - (void)layoutSubviews;
-- (void)setStackCornerRadius:(double)a3;
+- (void)setStackCornerRadius:(double)radius;
 @end
 
 @implementation CKStaticImageStackView
 
-- (CKStaticImageStackView)initWithFrame:(CGRect)a3 mediaObjects:(id)a4
+- (CKStaticImageStackView)initWithFrame:(CGRect)frame mediaObjects:(id)objects
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  objectsCopy = objects;
   v21.receiver = self;
   v21.super_class = CKStaticImageStackView;
-  v10 = [(CKStaticImageStackView *)&v21 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(CKStaticImageStackView *)&v21 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(CKStaticImageStackView *)v10 setMediaObjects:v9];
+    [(CKStaticImageStackView *)height setMediaObjects:objectsCopy];
     v11->_stackCornerRadius = 20.0;
     v12 = objc_alloc_init([(CKStaticImageStackView *)v11 _PFMessageStackLayoutFrameSolverClass]);
     [(CKStaticImageStackView *)v11 setFrameSolver:v12];
     v13 = objc_opt_new();
-    if ([v9 count])
+    if ([objectsCopy count])
     {
       v14 = 0;
       v15 = *MEMORY[0x1E6979DF0];
       v16 = *MEMORY[0x1E69796E8];
       do
       {
-        v17 = [MEMORY[0x1E6979398] layer];
-        [v17 setContentsGravity:v15];
-        [v17 setAnchorPoint:{0.5, 0.5}];
-        [v17 setMasksToBounds:1];
-        [v17 setCornerCurve:v16];
-        v18 = [(CKStaticImageStackView *)v11 layer];
-        [v18 addSublayer:v17];
+        layer = [MEMORY[0x1E6979398] layer];
+        [layer setContentsGravity:v15];
+        [layer setAnchorPoint:{0.5, 0.5}];
+        [layer setMasksToBounds:1];
+        [layer setCornerCurve:v16];
+        layer2 = [(CKStaticImageStackView *)v11 layer];
+        [layer2 addSublayer:layer];
 
-        [v13 addObject:v17];
+        [v13 addObject:layer];
         ++v14;
       }
 
-      while ([v9 count] > v14);
+      while ([objectsCopy count] > v14);
     }
 
     [(CKStaticImageStackView *)v11 setImageLayers:v13];
     [(CKStaticImageStackView *)v11 _updatePreviews];
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v11 selector:sel__mediaObjectPreviewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__mediaObjectPreviewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
   }
 
   return v11;
@@ -65,28 +65,28 @@
   _os_log_error_impl(&dword_19020E000, log, OS_LOG_TYPE_ERROR, "%s would have attempted divide by zero because size.height was 0.", buf, 0xCu);
 }
 
-- (void)setStackCornerRadius:(double)a3
+- (void)setStackCornerRadius:(double)radius
 {
-  if (self->_stackCornerRadius != a3)
+  if (self->_stackCornerRadius != radius)
   {
-    self->_stackCornerRadius = a3;
+    self->_stackCornerRadius = radius;
     [(CKStaticImageStackView *)self setNeedsLayout];
   }
 }
 
-- (void)_mediaObjectPreviewDidChange:(id)a3
+- (void)_mediaObjectPreviewDidChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v4 object];
+  object2 = [changeCopy object];
   if (isKindOfClass)
   {
-    v8 = [(CKStaticImageStackView *)self mediaObjects];
-    v9 = [v8 containsObject:v7];
+    mediaObjects = [(CKStaticImageStackView *)self mediaObjects];
+    v9 = [mediaObjects containsObject:object2];
 
     if (v9)
     {
@@ -126,19 +126,19 @@
 
 - (void)_updatePreviews
 {
-  v3 = [(CKStaticImageStackView *)self mediaObjects];
-  v4 = [v3 count];
+  mediaObjects = [(CKStaticImageStackView *)self mediaObjects];
+  v4 = [mediaObjects count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(CKStaticImageStackView *)self mediaObjects];
-      v7 = [v6 objectAtIndexedSubscript:v5];
+      mediaObjects2 = [(CKStaticImageStackView *)self mediaObjects];
+      v7 = [mediaObjects2 objectAtIndexedSubscript:v5];
 
-      v8 = [(CKStaticImageStackView *)self imageLayers];
-      v9 = [v8 objectAtIndexedSubscript:v5];
+      imageLayers = [(CKStaticImageStackView *)self imageLayers];
+      v9 = [imageLayers objectAtIndexedSubscript:v5];
 
       v10 = +[CKUIBehavior sharedBehaviors];
       [v10 previewMaxWidth];
@@ -151,8 +151,8 @@
       }
 
       ++v5;
-      v12 = [(CKStaticImageStackView *)self mediaObjects];
-      v13 = [v12 count];
+      mediaObjects3 = [(CKStaticImageStackView *)self mediaObjects];
+      v13 = [mediaObjects3 count];
     }
 
     while (v13 > v5);

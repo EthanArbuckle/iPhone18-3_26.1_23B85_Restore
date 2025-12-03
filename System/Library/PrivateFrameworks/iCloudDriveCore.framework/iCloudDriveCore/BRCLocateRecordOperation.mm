@@ -1,18 +1,18 @@
 @interface BRCLocateRecordOperation
 - (id)createActivity;
-- (void)_performAfterLocatingRecord:(id)a3;
-- (void)addLocateRecordCompletionBlock:(id)a3;
-- (void)cancelToBeReplacedByOperation:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)itemMarkedForOOBSync:(id)a3;
+- (void)_performAfterLocatingRecord:(id)record;
+- (void)addLocateRecordCompletionBlock:(id)block;
+- (void)cancelToBeReplacedByOperation:(id)operation;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)itemMarkedForOOBSync:(id)sync;
 - (void)main;
 @end
 
 @implementation BRCLocateRecordOperation
 
-- (void)itemMarkedForOOBSync:(id)a3
+- (void)itemMarkedForOOBSync:(id)sync
 {
-  if ([a3 isEqualToItemID:self->_itemID])
+  if ([sync isEqualToItemID:self->_itemID])
   {
     self->_itemMarkedForOOBSyncWhileRunning = 1;
   }
@@ -25,41 +25,41 @@
   return v2;
 }
 
-- (void)_performAfterLocatingRecord:(id)a3
+- (void)_performAfterLocatingRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(BRCServerZone *)self->_serverZone clientZone];
-  v6 = [v5 fetchRecordSubResourcesWithParentOperation:self pendingChangesStream:0 contentRecordsFetchedInline:1 sessionContext:self->super._sessionContext];
+  recordCopy = record;
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  v6 = [clientZone fetchRecordSubResourcesWithParentOperation:self pendingChangesStream:0 contentRecordsFetchedInline:1 sessionContext:self->super._sessionContext];
 
   v7 = [MEMORY[0x277CBEB18] arrayWithObject:self->_recordID];
-  v8 = [(CKRecordID *)self->_recordID recordName];
-  v9 = [v8 hasPrefix:@"documentStructure/"];
+  recordName = [(CKRecordID *)self->_recordID recordName];
+  v9 = [recordName hasPrefix:@"documentStructure/"];
 
   if (v9)
   {
-    v10 = [(BRCItemID *)self->_itemID itemIDString];
-    v11 = [@"documentContent/" stringByAppendingString:v10];
+    itemIDString = [(BRCItemID *)self->_itemID itemIDString];
+    v11 = [@"documentContent/" stringByAppendingString:itemIDString];
 
     v12 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v13 = [(CKRecordID *)self->_recordID zoneID];
-    v14 = [v12 initWithRecordName:v11 zoneID:v13];
+    zoneID = [(CKRecordID *)self->_recordID zoneID];
+    v14 = [v12 initWithRecordName:v11 zoneID:zoneID];
     [v7 addObject:v14];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v15 = [(CKRecordID *)self->_recordID recordName];
-  v16 = [v15 hasPrefix:@"documentContent/"];
+  recordName2 = [(CKRecordID *)self->_recordID recordName];
+  v16 = [recordName2 hasPrefix:@"documentContent/"];
 
   if (v16)
   {
-    v17 = [(BRCItemID *)self->_itemID itemIDString];
-    v11 = [@"documentStructure/" stringByAppendingString:v17];
+    itemIDString2 = [(BRCItemID *)self->_itemID itemIDString];
+    v11 = [@"documentStructure/" stringByAppendingString:itemIDString2];
 
     v18 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v19 = [(CKRecordID *)self->_recordID zoneID];
-    v20 = [v18 initWithRecordName:v11 zoneID:v19];
+    zoneID2 = [(CKRecordID *)self->_recordID zoneID];
+    v20 = [v18 initWithRecordName:v11 zoneID:zoneID2];
     structureRecordID = self->_structureRecordID;
     self->_structureRecordID = v20;
 
@@ -71,9 +71,9 @@ LABEL_6:
   if (![(BRCItemID *)self->_itemID isDocumentsFolder]&& [(BRCItemID *)self->_itemID isNonDesktopRoot])
   {
     v22 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v23 = [(BRCItemID *)self->_itemID itemIDString];
-    v24 = [(CKRecordID *)self->_recordID zoneID];
-    v25 = [v22 initWithRecordName:v23 zoneID:v24];
+    itemIDString3 = [(BRCItemID *)self->_itemID itemIDString];
+    zoneID3 = [(CKRecordID *)self->_recordID zoneID];
+    v25 = [v22 initWithRecordName:itemIDString3 zoneID:zoneID3];
     [v7 addObject:v25];
   }
 
@@ -82,8 +82,8 @@ LABEL_6:
   v27 = [MEMORY[0x277CBC5A0] desiredKeysWithMask:185];
   [v26 setDesiredKeys:v27];
 
-  v28 = [v6 callbackQueue];
-  [v26 setCallbackQueue:v28];
+  callbackQueue = [v6 callbackQueue];
+  [v26 setCallbackQueue:callbackQueue];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -96,13 +96,13 @@ LABEL_6:
   v33 = 3221225472;
   v34 = __56__BRCLocateRecordOperation__performAfterLocatingRecord___block_invoke_6;
   v35 = &unk_278503E90;
-  v36 = self;
+  selfCopy = self;
   v37 = v29;
-  v38 = v4;
-  v30 = v4;
+  v38 = recordCopy;
+  v30 = recordCopy;
   v31 = v29;
   [v26 setFetchRecordsCompletionBlock:&v32];
-  [(_BRCOperation *)self addSubOperation:v26, v32, v33, v34, v35, v36];
+  [(_BRCOperation *)self addSubOperation:v26, v32, v33, v34, v35, selfCopy];
 }
 
 void __56__BRCLocateRecordOperation__performAfterLocatingRecord___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -304,8 +304,8 @@ LABEL_16:
 - (void)main
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 576);
-  v8 = [*(a1 + 552) mangledID];
+  v1 = *(self + 576);
+  mangledID = [*(self + 552) mangledID];
   OUTLINED_FUNCTION_2_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);
 
@@ -436,14 +436,14 @@ void __32__BRCLocateRecordOperation_main__block_invoke_2(uint64_t a1, void *a2)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v48.receiver = self;
   v48.super_class = BRCLocateRecordOperation;
-  [(_BRCOperation *)&v48 finishWithResult:v6 error:v7];
-  if (!v7 && [(_BRCOperation *)self nonDiscretionary])
+  [(_BRCOperation *)&v48 finishWithResult:resultCopy error:errorCopy];
+  if (!errorCopy && [(_BRCOperation *)self nonDiscretionary])
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -454,26 +454,26 @@ void __32__BRCLocateRecordOperation_main__block_invoke_2(uint64_t a1, void *a2)
 
     [(_BRCOperation *)self executionTimeInSec];
     v10 = [AppTelemetryTimeSeriesEvent newQBSOperationPrformanceEventWithTime:@"BRCLocateRecordOperation" type:self->_recordsFetched recordsFetched:self->_recordsFetchedTotalMetadataSize recordsFetchedTotalMetadataSize:self->_xattrsFetchedTotalSize xattrsFetchedTotalSize:?];
-    v11 = [(BRCSessionContext *)self->super._sessionContext analyticsReporter];
-    [v11 postReportForDefaultSubCategoryWithCategory:11 telemetryTimeEvent:v10];
+    analyticsReporter = [(BRCSessionContext *)self->super._sessionContext analyticsReporter];
+    [analyticsReporter postReportForDefaultSubCategoryWithCategory:11 telemetryTimeEvent:v10];
   }
 
-  v12 = [v6 isEqual:MEMORY[0x277CBEC38]];
-  v13 = self;
-  objc_sync_enter(v13);
-  v13->_exists = v12;
-  v14 = v13->_locateRecordCompletionBlocks;
-  locateRecordCompletionBlocks = v13->_locateRecordCompletionBlocks;
-  v13->_locateRecordCompletionBlocks = 0;
+  v12 = [resultCopy isEqual:MEMORY[0x277CBEC38]];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_exists = v12;
+  v14 = selfCopy->_locateRecordCompletionBlocks;
+  locateRecordCompletionBlocks = selfCopy->_locateRecordCompletionBlocks;
+  selfCopy->_locateRecordCompletionBlocks = 0;
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
   if ([(NSMutableArray *)v14 count])
   {
-    if (!v7 && (v12 & 1) == 0)
+    if (!errorCopy && (v12 & 1) == 0)
     {
       v16 = MEMORY[0x277CCA9B8];
-      v17 = [(CKRecordID *)v13->_recordID recordName];
-      v7 = [v16 brc_errorItemNotFound:v17];
+      recordName = [(CKRecordID *)selfCopy->_recordID recordName];
+      errorCopy = [v16 brc_errorItemNotFound:recordName];
     }
 
     v46[0] = MEMORY[0x277D85DD0];
@@ -482,53 +482,53 @@ void __32__BRCLocateRecordOperation_main__block_invoke_2(uint64_t a1, void *a2)
     v46[3] = &unk_278502540;
     v47 = v14;
     v18 = MEMORY[0x22AA4A310](v46);
-    v19 = v13->super._sessionContext;
+    v19 = selfCopy->super._sessionContext;
     v20 = v19;
-    if (v7)
+    if (errorCopy)
     {
-      v21 = [(BRCSessionContext *)v19 clientReadWriteDatabaseFacade];
-      v22 = [v21 workloop];
+      clientReadWriteDatabaseFacade = [(BRCSessionContext *)v19 clientReadWriteDatabaseFacade];
+      workloop = [clientReadWriteDatabaseFacade workloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51__BRCLocateRecordOperation_finishWithResult_error___block_invoke_2;
       block[3] = &unk_278504F60;
       v44 = v18;
       v45 = v12;
-      v43 = v7;
+      v43 = errorCopy;
       v23 = v18;
-      dispatch_async(v22, block);
+      dispatch_async(workloop, block);
 
       v24 = v44;
     }
 
     else
     {
-      v25 = [(BRCServerZone *)v13->_serverZone clientZone];
-      v35 = v6;
-      v26 = v13->_itemID;
+      clientZone = [(BRCServerZone *)selfCopy->_serverZone clientZone];
+      v35 = resultCopy;
+      v26 = selfCopy->_itemID;
       v27 = [BRCItemGlobalID alloc];
-      v28 = [v25 dbRowID];
-      v29 = [(BRCItemGlobalID *)v27 initWithZoneRowID:v28 itemID:v26];
+      dbRowID = [clientZone dbRowID];
+      v29 = [(BRCItemGlobalID *)v27 initWithZoneRowID:dbRowID itemID:v26];
 
-      v30 = [(BRCSessionContext *)v20 clientReadWriteDatabaseFacade];
-      v31 = [v30 workloop];
+      clientReadWriteDatabaseFacade2 = [(BRCSessionContext *)v20 clientReadWriteDatabaseFacade];
+      workloop2 = [clientReadWriteDatabaseFacade2 workloop];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __51__BRCLocateRecordOperation_finishWithResult_error___block_invoke_3;
       v36[3] = &unk_2785011B8;
-      v36[4] = v13;
+      v36[4] = selfCopy;
       v37 = v20;
       v38 = v29;
-      v40 = v25;
+      v40 = clientZone;
       v41 = v18;
       v39 = v26;
       v32 = v18;
-      v24 = v25;
+      v24 = clientZone;
       v33 = v26;
       v34 = v29;
-      dispatch_async(v31, v36);
+      dispatch_async(workloop2, v36);
 
-      v6 = v35;
+      resultCopy = v35;
     }
   }
 }
@@ -659,25 +659,25 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)addLocateRecordCompletionBlock:(id)a3
+- (void)addLocateRecordCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  locateRecordCompletionBlocks = v5->_locateRecordCompletionBlocks;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  locateRecordCompletionBlocks = selfCopy->_locateRecordCompletionBlocks;
   if (locateRecordCompletionBlocks)
   {
-    v7 = MEMORY[0x22AA4A310](v4);
+    v7 = MEMORY[0x22AA4A310](blockCopy);
     [(NSMutableArray *)locateRecordCompletionBlocks addObject:v7];
   }
 
   else
   {
-    v8 = [(_BRCOperation *)v5 error];
-    v9 = v8;
-    if (v8)
+    error = [(_BRCOperation *)selfCopy error];
+    v9 = error;
+    if (error)
     {
-      v10 = v8;
+      v10 = error;
     }
 
     else
@@ -687,35 +687,35 @@ LABEL_22:
 
     v11 = v10;
 
-    v12 = [(_BRCOperation *)v5 callbackQueue];
+    callbackQueue = [(_BRCOperation *)selfCopy callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__BRCLocateRecordOperation_addLocateRecordCompletionBlock___block_invoke;
     block[3] = &unk_2784FFBF0;
     v14 = v11;
-    v15 = v4;
-    block[4] = v5;
+    v15 = blockCopy;
+    block[4] = selfCopy;
     v7 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(callbackQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)cancelToBeReplacedByOperation:(id)a3
+- (void)cancelToBeReplacedByOperation:(id)operation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(BRCLocateRecordOperation *)v5 dependencies];
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    dependencies = [(BRCLocateRecordOperation *)selfCopy dependencies];
+    v7 = [dependencies countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
       v8 = *v22;
@@ -725,23 +725,23 @@ LABEL_22:
         {
           if (*v22 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dependencies);
           }
 
-          [v4 addDependency:*(*(&v21 + 1) + 8 * i)];
+          [operationCopy addDependency:*(*(&v21 + 1) + 8 * i)];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v7 = [dependencies countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v7);
     }
 
-    v10 = v5->_locateRecordCompletionBlocks;
-    locateRecordCompletionBlocks = v5->_locateRecordCompletionBlocks;
-    v5->_locateRecordCompletionBlocks = 0;
+    v10 = selfCopy->_locateRecordCompletionBlocks;
+    locateRecordCompletionBlocks = selfCopy->_locateRecordCompletionBlocks;
+    selfCopy->_locateRecordCompletionBlocks = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -760,7 +760,7 @@ LABEL_22:
             objc_enumerationMutation(v12);
           }
 
-          [v4 addLocateRecordCompletionBlock:{*(*(&v17 + 1) + 8 * j), v17}];
+          [operationCopy addLocateRecordCompletionBlock:{*(*(&v17 + 1) + 8 * j), v17}];
         }
 
         v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -769,10 +769,10 @@ LABEL_22:
       while (v13);
     }
 
-    [(_BRCOperation *)v5 cancel];
-    if ([(_BRCOperation *)v5 isExecuting])
+    [(_BRCOperation *)selfCopy cancel];
+    if ([(_BRCOperation *)selfCopy isExecuting])
     {
-      [v4 addDependency:v5];
+      [operationCopy addDependency:selfCopy];
     }
   }
 

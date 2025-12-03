@@ -2,13 +2,13 @@
 + (void)initialize;
 - (MKMigrator)init;
 - (MKMigratorDelegate)delegate;
-- (void)addError:(id)a3;
+- (void)addError:(id)error;
 - (void)import;
 - (void)migratorDidMeasureImport;
 - (void)migratorDidResetImport;
 - (void)migratorWillMeasureImport;
 - (void)sendAnalytics;
-- (void)setType:(int64_t)a3;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation MKMigrator
@@ -18,7 +18,7 @@
   v8[13] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v7[0] = &unk_286AACEC0;
     v7[1] = &unk_286AACEF0;
@@ -69,9 +69,9 @@
   return v2;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  self->_type = a3;
+  self->_type = type;
   v4 = importContentTypes;
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v8 = [v4 objectForKeyedSubscript:v5];
@@ -116,16 +116,16 @@
   self->_importTime = 0;
 }
 
-- (void)addError:(id)a3
+- (void)addError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = a3;
-    v6 = [v5 domain];
-    v7 = [v5 code];
+    errorCopy = error;
+    domain = [errorCopy domain];
+    code = [errorCopy code];
 
-    v8 = [v4 stringWithFormat:@"%@.%ld", v6, v7];
+    v8 = [v4 stringWithFormat:@"%@.%ld", domain, code];
 
     [(NSMutableSet *)self->_importErrors addObject:v8];
   }

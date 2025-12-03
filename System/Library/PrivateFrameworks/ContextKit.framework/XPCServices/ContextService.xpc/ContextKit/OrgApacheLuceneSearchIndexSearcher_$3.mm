@@ -1,25 +1,25 @@
 @interface OrgApacheLuceneSearchIndexSearcher_$3
-- (OrgApacheLuceneSearchIndexSearcher_$3)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDoc:(id)a4;
-- (id)reduceWithJavaUtilCollection:(id)a3;
+- (OrgApacheLuceneSearchIndexSearcher_$3)initWithInt:(int)int withOrgApacheLuceneSearchScoreDoc:(id)doc;
+- (id)reduceWithJavaUtilCollection:(id)collection;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchIndexSearcher_$3
 
-- (id)reduceWithJavaUtilCollection:(id)a3
+- (id)reduceWithJavaUtilCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
 LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v5 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [a3 size], OrgApacheLuceneSearchTopDocs_class_());
+  v5 = +[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", [collection size], OrgApacheLuceneSearchTopDocs_class_());
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [collection countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -33,7 +33,7 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v10);
@@ -49,7 +49,7 @@ LABEL_11:
       }
 
       while (v7 != v10);
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [collection countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -58,10 +58,10 @@ LABEL_11:
   return OrgApacheLuceneSearchTopDocs_mergeWithInt_withOrgApacheLuceneSearchTopDocsArray_(self->val$cappedNumHits_, v5);
 }
 
-- (OrgApacheLuceneSearchIndexSearcher_$3)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDoc:(id)a4
+- (OrgApacheLuceneSearchIndexSearcher_$3)initWithInt:(int)int withOrgApacheLuceneSearchScoreDoc:(id)doc
 {
-  self->val$cappedNumHits_ = a3;
-  JreStrongAssign(&self->val$after_, a4);
+  self->val$cappedNumHits_ = int;
+  JreStrongAssign(&self->val$after_, doc);
   return self;
 }
 

@@ -1,11 +1,11 @@
 @interface NSString
-- (BOOL)isValidAssetHandle:(BOOL *)a3;
+- (BOOL)isValidAssetHandle:(BOOL *)handle;
 - (BOOL)isValidMetaDataString;
 @end
 
 @implementation NSString
 
-- (BOOL)isValidAssetHandle:(BOOL *)a3
+- (BOOL)isValidAssetHandle:(BOOL *)handle
 {
   if ([(NSString *)self length]== 36)
   {
@@ -21,9 +21,9 @@
       return 0;
     }
 
-    if (a3)
+    if (handle)
     {
-      *a3 = 1;
+      *handle = 1;
     }
 
     v8 = +[NSUUID UUID];

@@ -1,6 +1,6 @@
 @interface SearchUIFindMyCardSectionView
 - (id)setupContentView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIFindMyCardSectionView
@@ -25,7 +25,7 @@
 
   v4 = v3;
   _Block_object_dispose(&v18, 8);
-  v5 = [v3 spotlightWidget];
+  spotlightWidget = [v3 spotlightWidget];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -45,60 +45,60 @@
   v7 = v6;
   _Block_object_dispose(&v18, 8);
   v8 = objc_opt_new();
-  v9 = [v8 view];
-  [v9 setMinimumLayoutSize:{0.0, 200.0}];
+  view = [v8 view];
+  [view setMinimumLayoutSize:{0.0, 200.0}];
 
-  v10 = [v8 view];
-  [v10 setMaximumLayoutSize:{1.79769313e308, 200.0}];
+  view2 = [v8 view];
+  [view2 setMaximumLayoutSize:{1.79769313e308, 200.0}];
 
-  [v8 setViewOptions:v5];
+  [v8 setViewOptions:spotlightWidget];
   [(SearchUIFindMyCardSectionView *)self setViewController:v8];
-  v11 = [v8 view];
+  view3 = [v8 view];
 
-  return v11;
+  return view3;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = SearchUIFindMyCardSectionView;
-  [(SearchUICardSectionView *)&v21 updateWithRowModel:v4];
-  v5 = [(SearchUIFindMyCardSectionView *)self contact];
-  v6 = [v5 identifier];
+  [(SearchUICardSectionView *)&v21 updateWithRowModel:modelCopy];
+  contact = [(SearchUIFindMyCardSectionView *)self contact];
+  identifier = [contact identifier];
 
-  v7 = [(SearchUICardSectionView *)self section];
-  v8 = [v7 person];
-  v9 = [v8 contactIdentifier];
+  section = [(SearchUICardSectionView *)self section];
+  person = [section person];
+  contactIdentifier = [person contactIdentifier];
 
-  if (([v6 isEqual:v9] & 1) == 0)
+  if (([identifier isEqual:contactIdentifier] & 1) == 0)
   {
-    v10 = [(SearchUIFindMyCardSectionView *)self locationLabel];
-    [v10 setText:0];
+    locationLabel = [(SearchUIFindMyCardSectionView *)self locationLabel];
+    [locationLabel setText:0];
 
-    v11 = [(SearchUIFindMyCardSectionView *)self timeLabel];
-    [v11 setText:0];
+    timeLabel = [(SearchUIFindMyCardSectionView *)self timeLabel];
+    [timeLabel setText:0];
 
-    v12 = [(SearchUIFindMyCardSectionView *)self locationLabel];
-    [v12 setAlpha:0.0];
+    locationLabel2 = [(SearchUIFindMyCardSectionView *)self locationLabel];
+    [locationLabel2 setAlpha:0.0];
 
-    v13 = [(SearchUIFindMyCardSectionView *)self timeLabel];
-    [v13 setAlpha:0.0];
+    timeLabel2 = [(SearchUIFindMyCardSectionView *)self timeLabel];
+    [timeLabel2 setAlpha:0.0];
 
-    v14 = [(SearchUIFindMyCardSectionView *)self viewController];
-    [v14 stopObserving];
+    viewController = [(SearchUIFindMyCardSectionView *)self viewController];
+    [viewController stopObserving];
 
     objc_initWeak(&location, self);
     v15 = +[SearchUIContactCache sharedCache];
-    v22[0] = v9;
+    v22[0] = contactIdentifier;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __52__SearchUIFindMyCardSectionView_updateWithRowModel___block_invoke;
     v17[3] = &unk_1E85B3268;
     v17[4] = self;
-    v18 = v4;
+    v18 = modelCopy;
     objc_copyWeak(&v19, &location);
     [v15 fetchContactsForIdentifiers:v16 completionHandler:v17];
 

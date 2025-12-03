@@ -1,8 +1,8 @@
 @interface MCDRadioMusicKitTableViewController
 - (MCDRadioMusicKitTableViewController)init;
 - (id)_contentManager;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5;
-- (void)playbackManagerShouldShowNowPlaying:(id)a3;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path;
+- (void)playbackManagerShouldShowNowPlaying:(id)playing;
 - (void)viewDidLoad;
 @end
 
@@ -30,77 +30,77 @@
   v12.super_class = MCDRadioMusicKitTableViewController;
   [(MCDContentItemTableViewController *)&v12 viewDidLoad];
   objc_initWeak(&location, self);
-  v3 = [(MCDRadioMusicKitTableViewController *)self recentlyPlayedObserver];
+  recentlyPlayedObserver = [(MCDRadioMusicKitTableViewController *)self recentlyPlayedObserver];
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_1000DBBD0;
   v9 = &unk_101097D20;
   objc_copyWeak(&v10, &location);
-  [v3 registerHandler:&v6];
+  [recentlyPlayedObserver registerHandler:&v6];
 
   v4 = [(MCDRadioMusicKitTableViewController *)self tableView:v6];
   [v4 setSeparatorStyle:1];
 
-  v5 = [(MCDFuseTableViewController *)self contentManager];
-  [v5 setTableCellConfigurationBlock:&stru_101097D60];
+  contentManager = [(MCDFuseTableViewController *)self contentManager];
+  [contentManager setTableCellConfigurationBlock:&stru_101097D60];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 hasLoadedValueForKey:MPModelStoreBrowseSectionRelationshipRadioStation])
+  managerCopy = manager;
+  itemCopy = item;
+  pathCopy = path;
+  if ([itemCopy hasLoadedValueForKey:MPModelStoreBrowseSectionRelationshipRadioStation])
   {
     v10 = 0;
     goto LABEL_31;
   }
 
-  v11 = [v8 loadAdditionalContentURL];
-  if (v11)
+  loadAdditionalContentURL = [itemCopy loadAdditionalContentURL];
+  if (loadAdditionalContentURL)
   {
   }
 
-  else if ([v8 sectionType] == 8 || objc_msgSend(v8, "sectionType") == 11)
+  else if ([itemCopy sectionType] == 8 || objc_msgSend(itemCopy, "sectionType") == 11)
   {
     v10 = objc_opt_new();
     v13 = objc_opt_new();
-    v22 = [v7 contentResults];
-    v23 = v22;
-    if (v22)
+    contentResults = [managerCopy contentResults];
+    v23 = contentResults;
+    if (contentResults)
     {
-      v24 = v22;
+      results = contentResults;
     }
 
     else
     {
-      v25 = [v7 lastReceivedResponse];
-      v24 = [v25 results];
+      lastReceivedResponse = [managerCopy lastReceivedResponse];
+      results = [lastReceivedResponse results];
     }
 
-    v26 = [v24 numberOfSections];
-    if (v26 <= [v9 section])
+    numberOfSections = [results numberOfSections];
+    if (numberOfSections <= [pathCopy section])
     {
       v28 = MCDMusicGeneralLogging();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        sub_100DEEB3C(v9, v24, v28);
+        sub_100DEEB3C(pathCopy, results, v28);
       }
     }
 
     else
     {
-      v27 = [v24 sectionAtIndex:{objc_msgSend(v9, "section")}];
+      v27 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
       [v13 appendSection:v27];
 
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v28 = [v24 itemsInSectionAtIndex:{objc_msgSend(v9, "section", 0)}];
+      v28 = [results itemsInSectionAtIndex:{objc_msgSend(pathCopy, "section", 0)}];
       v29 = [v28 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v29)
       {
@@ -129,45 +129,45 @@
     goto LABEL_29;
   }
 
-  v10 = [[MCDContentItemMusicKitTableViewController alloc] initWithSectionItem:v8 radioDomain:1];
-  v12 = [v8 loadAdditionalContentURL];
+  v10 = [[MCDContentItemMusicKitTableViewController alloc] initWithSectionItem:itemCopy radioDomain:1];
+  loadAdditionalContentURL2 = [itemCopy loadAdditionalContentURL];
 
-  if (!v12)
+  if (!loadAdditionalContentURL2)
   {
     v13 = objc_opt_new();
-    [v13 appendSection:v8];
-    v14 = [v7 contentResults];
+    [v13 appendSection:itemCopy];
+    contentResults2 = [managerCopy contentResults];
 
-    if (v14)
+    if (contentResults2)
     {
-      v15 = [v7 contentResults];
-      v16 = [v15 firstSection];
+      contentResults3 = [managerCopy contentResults];
+      firstSection = [contentResults3 firstSection];
 
-      v17 = [v7 contentResults];
-      v18 = v17;
-      if (v16 == v8)
+      contentResults4 = [managerCopy contentResults];
+      lastReceivedResponse2 = contentResults4;
+      if (firstSection == itemCopy)
       {
-        v20 = [v17 itemsInSectionAtIndex:{objc_msgSend(v9, "row")}];
-        [v13 appendItems:v20];
+        results2 = [contentResults4 itemsInSectionAtIndex:{objc_msgSend(pathCopy, "row")}];
+        [v13 appendItems:results2];
       }
 
       else
       {
-        v19 = [v17 itemsInSectionAtIndex:0];
+        v19 = [contentResults4 itemsInSectionAtIndex:0];
 
-        v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v9, "row")}];
-        v21 = [v20 itemsInSectionAtIndex:0];
+        results2 = [v19 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+        v21 = [results2 itemsInSectionAtIndex:0];
         [v13 appendItems:v21];
 
-        v18 = v19;
+        lastReceivedResponse2 = v19;
       }
     }
 
     else
     {
-      v18 = [v7 lastReceivedResponse];
-      v20 = [v18 results];
-      v33 = [v20 itemsInSectionAtIndex:{objc_msgSend(v9, "section")}];
+      lastReceivedResponse2 = [managerCopy lastReceivedResponse];
+      results2 = [lastReceivedResponse2 results];
+      v33 = [results2 itemsInSectionAtIndex:{objc_msgSend(pathCopy, "section")}];
       [v13 appendItems:v33];
     }
 
@@ -175,38 +175,38 @@
 LABEL_29:
   }
 
-  v34 = [v8 title];
-  [(MCDContentItemMusicKitTableViewController *)v10 setTitle:v34];
+  title = [itemCopy title];
+  [(MCDContentItemMusicKitTableViewController *)v10 setTitle:title];
 
 LABEL_31:
 
   return v10;
 }
 
-- (void)playbackManagerShouldShowNowPlaying:(id)a3
+- (void)playbackManagerShouldShowNowPlaying:(id)playing
 {
-  v4 = [(MCDFuseTableViewController *)self contentManager];
-  v5 = [v4 shouldPushNowPlayingOnNextPlaybackManagerCall];
+  contentManager = [(MCDFuseTableViewController *)self contentManager];
+  shouldPushNowPlayingOnNextPlaybackManagerCall = [contentManager shouldPushNowPlayingOnNextPlaybackManagerCall];
 
-  if (v5)
+  if (shouldPushNowPlayingOnNextPlaybackManagerCall)
   {
-    v6 = [(MCDRadioMusicKitTableViewController *)self navigationController];
-    [v6 MCD_pushNowPlayingViewControllerAnimated:1 fromViewController:self];
+    navigationController = [(MCDRadioMusicKitTableViewController *)self navigationController];
+    [navigationController MCD_pushNowPlayingViewControllerAnimated:1 fromViewController:self];
   }
 
-  v7 = [(MCDFuseTableViewController *)self contentManager];
-  [v7 clearActivityIndicatorForSelectedIndexPath];
+  contentManager2 = [(MCDFuseTableViewController *)self contentManager];
+  [contentManager2 clearActivityIndicatorForSelectedIndexPath];
 }
 
 - (id)_contentManager
 {
   v3 = [MCDRadioMusicKitContentManager alloc];
   v4 = objc_opt_new();
-  v5 = [(MCDFuseTableViewController *)self playbackManager];
-  v6 = [(MCDRadioMusicKitTableViewController *)self traitCollection];
-  v7 = [v6 shouldLimitMusicLists];
-  v8 = [(MCDContentItemTableViewController *)self contentResults];
-  v9 = [(MCDFuseContentManager *)v3 initWithDataSource:v4 delegate:self viewController:self playbackManager:v5 limitedUI:v7 contentResults:v8];
+  playbackManager = [(MCDFuseTableViewController *)self playbackManager];
+  traitCollection = [(MCDRadioMusicKitTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
+  contentResults = [(MCDContentItemTableViewController *)self contentResults];
+  v9 = [(MCDFuseContentManager *)v3 initWithDataSource:v4 delegate:self viewController:self playbackManager:playbackManager limitedUI:shouldLimitMusicLists contentResults:contentResults];
 
   return v9;
 }

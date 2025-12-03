@@ -1,31 +1,31 @@
 @interface HUUpgradeMultiUserDevicesViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUpgradeMultiUserDevicesViewController)initWithUpgradeRequirements:(unint64_t)a3 home:(id)a4;
-- (void)_continueButtonTapped:(id)a3;
+- (HUUpgradeMultiUserDevicesViewController)initWithUpgradeRequirements:(unint64_t)requirements home:(id)home;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUUpgradeMultiUserDevicesViewController
 
-- (HUUpgradeMultiUserDevicesViewController)initWithUpgradeRequirements:(unint64_t)a3 home:(id)a4
+- (HUUpgradeMultiUserDevicesViewController)initWithUpgradeRequirements:(unint64_t)requirements home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v8 = _HULocalizedStringWithDefaultValue(@"HUUpgradeMultiUserDevices_Title", @"HUUpgradeMultiUserDevices_Title", 1);
-  if (([v7 hf_currentUserIsOwner] & 1) != 0 || objc_msgSend(v7, "hf_currentUserIsAdministrator"))
+  if (([homeCopy hf_currentUserIsOwner] & 1) != 0 || objc_msgSend(homeCopy, "hf_currentUserIsAdministrator"))
   {
     v9 = 0;
-    if (a3 > 1)
+    if (requirements > 1)
     {
-      if (a3 == 2)
+      if (requirements == 2)
       {
         v10 = @"HUUpgradeMultiUserDevices_AppleTVOnly_Detail";
       }
 
       else
       {
-        if (a3 != 3)
+        if (requirements != 3)
         {
           goto LABEL_14;
         }
@@ -36,14 +36,14 @@
 
     else
     {
-      if (!a3)
+      if (!requirements)
       {
         NSLog(&cfstr_WeShouldNotBeC_0.isa);
         v9 = 0;
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (requirements != 1)
       {
         goto LABEL_14;
       }
@@ -66,13 +66,13 @@ LABEL_14:
 
   if (v12)
   {
-    objc_storeStrong(&v12->_home, a4);
+    objc_storeStrong(&v12->_home, home);
   }
 
   return v12;
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -82,11 +82,11 @@ LABEL_14:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "[HUUpgradeMultiUserDevicesViewController-_continueButtonTapped] User tapped button", v7, 2u);
   }
 
-  v5 = [(HUUpgradeMultiUserDevicesViewController *)self delegate];
+  delegate = [(HUUpgradeMultiUserDevicesViewController *)self delegate];
   v8 = @"HUUpgradeMultiUserDevicesOnboardingKey_UserInput";
   v9[0] = &unk_2824927E0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v5 viewController:self didFinishWithConfigurationResults:v6];
+  [delegate viewController:self didFinishWithConfigurationResults:v6];
 }
 
 - (void)viewDidLoad
@@ -94,9 +94,9 @@ LABEL_14:
   v16.receiver = self;
   v16.super_class = HUUpgradeMultiUserDevicesViewController;
   [(HUImageOBWelcomeController *)&v16 viewDidLoad];
-  v3 = [(HUUpgradeMultiUserDevicesViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_2824932D8];
+  headerView = [(HUUpgradeMultiUserDevicesViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824932D8];
 
   v5 = _HULocalizedStringWithDefaultValue(@"HUUpgradeMultiUserDevices_ContinueButton", @"HUUpgradeMultiUserDevices_ContinueButton", 1);
   if ([(HUUpgradeMultiUserDevicesViewController *)self isFinalStep])
@@ -106,24 +106,24 @@ LABEL_14:
     v5 = v6;
   }
 
-  v7 = [MEMORY[0x277D37618] boldButton];
-  [(HUUpgradeMultiUserDevicesViewController *)self setContinueButton:v7];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUUpgradeMultiUserDevicesViewController *)self setContinueButton:boldButton];
 
-  v8 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  continueButton = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
+  [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
-  [v9 setTitle:v5 forState:0];
+  continueButton2 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
+  [continueButton2 setTitle:v5 forState:0];
 
-  v10 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
-  [v10 setAccessibilityIdentifier:@"Home.OnboardingView.UpgradeMultiUser.ContinueButton"];
+  continueButton3 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
+  [continueButton3 setAccessibilityIdentifier:@"Home.OnboardingView.UpgradeMultiUser.ContinueButton"];
 
-  v11 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
-  [v11 addTarget:self action:sel__continueButtonTapped_ forControlEvents:64];
+  continueButton4 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
+  [continueButton4 addTarget:self action:sel__continueButtonTapped_ forControlEvents:64];
 
-  v12 = [(HUUpgradeMultiUserDevicesViewController *)self buttonTray];
-  v13 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
-  [v12 addButton:v13];
+  buttonTray = [(HUUpgradeMultiUserDevicesViewController *)self buttonTray];
+  continueButton5 = [(HUUpgradeMultiUserDevicesViewController *)self continueButton];
+  [buttonTray addButton:continueButton5];
 
   [(HUUpgradeMultiUserDevicesViewController *)self setModalInPresentation:1];
   v14 = HFLogForCategory();
@@ -134,11 +134,11 @@ LABEL_14:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUUpgradeMultiUserDevicesViewController;
-  [(HUUpgradeMultiUserDevicesViewController *)&v5 viewWillAppear:a3];
+  [(HUUpgradeMultiUserDevicesViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -147,11 +147,11 @@ LABEL_14:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUUpgradeMultiUserDevicesViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {

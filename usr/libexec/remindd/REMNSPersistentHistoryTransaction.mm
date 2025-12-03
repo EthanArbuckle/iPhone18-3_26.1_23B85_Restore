@@ -1,43 +1,43 @@
 @interface REMNSPersistentHistoryTransaction
-- (id)initWithPersistentHistoryTransaction:(id)a3;
+- (id)initWithPersistentHistoryTransaction:(id)transaction;
 @end
 
 @implementation REMNSPersistentHistoryTransaction
 
-- (id)initWithPersistentHistoryTransaction:(id)a3
+- (id)initWithPersistentHistoryTransaction:(id)transaction
 {
-  v4 = a3;
-  if (!v4)
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
-    v43 = 0;
+    selfCopy = 0;
     goto LABEL_34;
   }
 
   v5 = objc_alloc_init(_REMNSPersistentHistoryTransactionStorage);
   v6 = [REMNSPersistentHistoryToken alloc];
-  v7 = [v4 token];
-  v8 = [v6 initWithPersistentHistoryToken:v7];
+  token = [transactionCopy token];
+  v8 = [v6 initWithPersistentHistoryToken:token];
   [v5 setToken:v8];
 
   [v5 setChanges:0];
-  v9 = [v4 timestamp];
-  [v5 setTimestamp:v9];
+  timestamp = [transactionCopy timestamp];
+  [v5 setTimestamp:timestamp];
 
-  [v5 setTransactionNumber:{objc_msgSend(v4, "transactionNumber")}];
-  v10 = [v4 storeID];
-  [v5 setStoreID:v10];
+  [v5 setTransactionNumber:{objc_msgSend(transactionCopy, "transactionNumber")}];
+  storeID = [transactionCopy storeID];
+  [v5 setStoreID:storeID];
 
-  v11 = [v4 bundleID];
-  [v5 setBundleID:v11];
+  bundleID = [transactionCopy bundleID];
+  [v5 setBundleID:bundleID];
 
-  v12 = [v4 processID];
-  [v5 setProcessID:v12];
+  processID = [transactionCopy processID];
+  [v5 setProcessID:processID];
 
-  v13 = [v4 contextName];
-  [v5 setContextName:v13];
+  contextName = [transactionCopy contextName];
+  [v5 setContextName:contextName];
 
-  v14 = [v4 author];
-  [v5 setAuthor:v14];
+  author = [transactionCopy author];
+  [v5 setAuthor:author];
 
   v15 = [(REMNSPersistentHistoryTransaction *)self initWithStorage:v5];
   if (!v15)
@@ -48,17 +48,17 @@
   v16 = [REMChangeTracking entityNamesToIncludeFromTrackingWithOptionProvider:objc_opt_class()];
   v50 = [NSSet setWithArray:v16];
 
-  v17 = [v4 changes];
-  v18 = v17;
-  if (!v17)
+  changes = [transactionCopy changes];
+  v18 = changes;
+  if (!changes)
   {
     goto LABEL_29;
   }
 
   v49 = v15;
   v46 = v5;
-  v47 = v4;
-  v48 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
+  v47 = transactionCopy;
+  v48 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [changes count]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -83,17 +83,17 @@
       }
 
       v24 = *(*(&v51 + 1) + 8 * i);
-      v25 = [v24 changedObjectID];
-      v26 = [v25 entity];
+      changedObjectID = [v24 changedObjectID];
+      entity = [changedObjectID entity];
 
-      v27 = [v26 name];
-      if (v27 && (v28 = v27, [v26 name], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v50, "containsObject:", v29), v29, v28, (v30 & 1) != 0))
+      name = [entity name];
+      if (name && (v28 = name, [entity name], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v50, "containsObject:", v29), v29, v28, (v30 & 1) != 0))
       {
-        v31 = [v26 managedObjectClassName];
-        v32 = v31;
-        if (v31)
+        managedObjectClassName = [entity managedObjectClassName];
+        v32 = managedObjectClassName;
+        if (managedObjectClassName)
         {
-          v33 = NSClassFromString(v31);
+          v33 = NSClassFromString(managedObjectClassName);
         }
 
         else
@@ -104,23 +104,23 @@
         if (objc_opt_respondsToSelector() & 1) != 0 && (([(objc_class *)v33 methodForSelector:"conformsToREMChangeTrackingIdentifiable"])(v33, "conformsToREMChangeTrackingIdentifiable"))
         {
           v35 = [[REMNSPersistentHistoryChange alloc] initWithPersistentHistoryChange:v24];
-          v34 = v35;
+          name3 = v35;
           if (v35)
           {
             [v35 setInternal_ChangeTransaction:v49];
-            [v48 addObject:v34];
+            [v48 addObject:name3];
           }
         }
 
         else
         {
-          v34 = os_log_create("com.apple.reminderkit", "default");
-          if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+          name3 = os_log_create("com.apple.reminderkit", "default");
+          if (os_log_type_enabled(name3, OS_LOG_TYPE_INFO))
           {
-            v36 = [v26 name];
+            name2 = [entity name];
             *buf = 138543362;
-            v56 = v36;
-            _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Changed object does not conform to REMChangeTrackingIdentifiable is excluded from change tracking (%{public}@)", buf, 0xCu);
+            v56 = name2;
+            _os_log_impl(&_mh_execute_header, name3, OS_LOG_TYPE_INFO, "Changed object does not conform to REMChangeTrackingIdentifiable is excluded from change tracking (%{public}@)", buf, 0xCu);
           }
         }
       }
@@ -133,9 +133,9 @@
           goto LABEL_23;
         }
 
-        v34 = [v26 name];
+        name3 = [entity name];
         *buf = 138543362;
-        v56 = v34;
+        v56 = name3;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Not an REM change tracking allowlisted entity, excluding this entity from change tracking? (%{public}@)", buf, 0xCu);
       }
 
@@ -150,8 +150,8 @@ LABEL_25:
 
   v37 = [v48 count];
   v15 = v49;
-  v38 = [(REMNSPersistentHistoryTransaction *)v49 storage];
-  v39 = v38;
+  storage = [(REMNSPersistentHistoryTransaction *)v49 storage];
+  v39 = storage;
   if (v37)
   {
     v40 = v48;
@@ -162,18 +162,18 @@ LABEL_25:
     v40 = 0;
   }
 
-  [v38 setChanges:v40];
+  [storage setChanges:v40];
 
   v5 = v46;
-  v4 = v47;
+  transactionCopy = v47;
   v18 = v45;
 LABEL_29:
 
 LABEL_30:
-  v41 = [(REMNSPersistentHistoryTransaction *)v15 storage];
-  v42 = [v41 changes];
+  storage2 = [(REMNSPersistentHistoryTransaction *)v15 storage];
+  changes2 = [storage2 changes];
 
-  if (!v42)
+  if (!changes2)
   {
 
     v15 = 0;
@@ -181,10 +181,10 @@ LABEL_30:
 
   self = v15;
 
-  v43 = self;
+  selfCopy = self;
 LABEL_34:
 
-  return v43;
+  return selfCopy;
 }
 
 @end

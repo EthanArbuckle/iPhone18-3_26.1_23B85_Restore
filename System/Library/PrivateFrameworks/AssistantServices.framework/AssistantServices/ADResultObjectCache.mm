@@ -1,42 +1,42 @@
 @interface ADResultObjectCache
-- (BOOL)callIsPossibleForRequestId:(id)a3;
-- (BOOL)hasMissingRefContextsForId:(id)a3;
-- (BOOL)hasResultObjectsForRequestId:(id)a3;
+- (BOOL)callIsPossibleForRequestId:(id)id;
+- (BOOL)hasMissingRefContextsForId:(id)id;
+- (BOOL)hasResultObjectsForRequestId:(id)id;
 - (id)_missingReferenceFulfillmentContexts;
 - (id)_missingReferenceFulfillmentContextsByRequestId;
 - (id)_requestMap;
-- (id)commandsForReply:(id)a3 toCommand:(id)a4 missingReferences:(id *)a5;
-- (id)commandsForSuccessReplyToCommand:(id)a3;
-- (id)objectsForIds:(id)a3 missingReferences:(id *)a4;
-- (void)_addObjects:(id)a3 forRequestId:(id)a4 sessionRequestId:(id)a5;
-- (void)_removeMissingRefContextsForRequestId:(id)a3;
-- (void)_removeMissingReferenceContext:(id)a3;
-- (void)addMissingReferencesContext:(id)a3;
-- (void)addResultObjects:(id)a3 sessionRequestId:(id)a4;
-- (void)clearResultObjectsForAllRequestIdsExcept:(id)a3;
-- (void)clearResultObjectsForRequestId:(id)a3;
+- (id)commandsForReply:(id)reply toCommand:(id)command missingReferences:(id *)references;
+- (id)commandsForSuccessReplyToCommand:(id)command;
+- (id)objectsForIds:(id)ids missingReferences:(id *)references;
+- (void)_addObjects:(id)objects forRequestId:(id)id sessionRequestId:(id)requestId;
+- (void)_removeMissingRefContextsForRequestId:(id)id;
+- (void)_removeMissingReferenceContext:(id)context;
+- (void)addMissingReferencesContext:(id)context;
+- (void)addResultObjects:(id)objects sessionRequestId:(id)id;
+- (void)clearResultObjectsForAllRequestIdsExcept:(id)except;
+- (void)clearResultObjectsForRequestId:(id)id;
 @end
 
 @implementation ADResultObjectCache
 
-- (id)commandsForSuccessReplyToCommand:(id)a3
+- (id)commandsForSuccessReplyToCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 refId];
-  if (v5 && (v6 = v5, [v4 ad_callbacks], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  commandCopy = command;
+  refId = [commandCopy refId];
+  if (refId && (v6 = refId, [commandCopy ad_callbacks], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    [v4 ad_callbacks];
+    [commandCopy ad_callbacks];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v8 = v33 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
-    if (v9)
+    commandReferences = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    if (commandReferences)
     {
       v10 = *v31;
       while (2)
       {
-        for (i = 0; i != v9; i = i + 1)
+        for (i = 0; i != commandReferences; i = i + 1)
         {
           if (*v31 != v10)
           {
@@ -46,13 +46,13 @@
           v12 = *(*(&v30 + 1) + 8 * i);
           if (![v12 code])
           {
-            v9 = [v12 commandReferences];
+            commandReferences = [v12 commandReferences];
             goto LABEL_14;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
-        if (v9)
+        commandReferences = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        if (commandReferences)
         {
           continue;
         }
@@ -63,18 +63,18 @@
 
 LABEL_14:
 
-    if ([v9 count])
+    if ([commandReferences count])
     {
-      v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+      v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(commandReferences, "count")}];
       requestMap = self->_requestMap;
-      v16 = [v4 refId];
-      v17 = [(NSMutableDictionary *)requestMap objectForKey:v16];
+      refId2 = [commandCopy refId];
+      v17 = [(NSMutableDictionary *)requestMap objectForKey:refId2];
 
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v18 = v9;
+      v18 = commandReferences;
       v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v19)
       {
@@ -129,12 +129,12 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)callIsPossibleForRequestId:(id)a3
+- (BOOL)callIsPossibleForRequestId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = v4;
+    v5 = idCopy;
   }
 
   else
@@ -147,12 +147,12 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)hasResultObjectsForRequestId:(id)a3
+- (BOOL)hasResultObjectsForRequestId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = v4;
+    v5 = idCopy;
   }
 
   else
@@ -166,10 +166,10 @@ LABEL_14:
   return v7;
 }
 
-- (void)clearResultObjectsForAllRequestIdsExcept:(id)a3
+- (void)clearResultObjectsForAllRequestIdsExcept:(id)except
 {
-  v4 = a3;
-  if ([v4 count])
+  exceptCopy = except;
+  if ([exceptCopy count])
   {
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = objc_alloc_init(NSMutableSet);
@@ -177,7 +177,7 @@ LABEL_14:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v4;
+    v7 = exceptCopy;
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
@@ -210,7 +210,7 @@ LABEL_14:
       while (v9);
     }
 
-    if (v4)
+    if (exceptCopy)
     {
       goto LABEL_13;
     }
@@ -220,22 +220,22 @@ LABEL_14:
   {
     v6 = 0;
     v5 = 0;
-    if (v4)
+    if (exceptCopy)
     {
 LABEL_13:
-      v14 = [[NSSet alloc] initWithArray:v4];
+      v14 = [[NSSet alloc] initWithArray:exceptCopy];
       goto LABEL_16;
     }
   }
 
   v14 = 0;
 LABEL_16:
-  v15 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId allKeys];
+  allKeys = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId allKeys];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v16 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -246,7 +246,7 @@ LABEL_16:
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v23 + 1) + 8 * j);
@@ -256,7 +256,7 @@ LABEL_16:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v17);
@@ -286,30 +286,30 @@ LABEL_16:
   objc_storeStrong(&self->_requestsWithPhoneCall, v22);
 }
 
-- (void)_removeMissingReferenceContext:(id)a3
+- (void)_removeMissingReferenceContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 requestId];
-  v6 = v5;
+  contextCopy = context;
+  requestId = [contextCopy requestId];
+  v6 = requestId;
   v7 = @"com.apple.siri.nilRequestId";
-  if (v5)
+  if (requestId)
   {
-    v7 = v5;
+    v7 = requestId;
   }
 
   v8 = v7;
 
-  v10 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContexts allKeysForObject:v4];
+  v10 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContexts allKeysForObject:contextCopy];
   [(NSMutableDictionary *)self->_missingReferenceFulfillmentContexts removeObjectsForKeys:v10];
   v9 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId objectForKey:v8];
 
-  [v9 removeObject:v4];
+  [v9 removeObject:contextCopy];
 }
 
-- (void)_removeMissingRefContextsForRequestId:(id)a3
+- (void)_removeMissingRefContextsForRequestId:(id)id
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId objectForKey:v4];
+  idCopy = id;
+  v5 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId objectForKey:idCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -342,15 +342,15 @@ LABEL_16:
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_missingReferenceFulfillmentContextsByRequestId removeObjectForKey:idCopy];
 }
 
-- (void)clearResultObjectsForRequestId:(id)a3
+- (void)clearResultObjectsForRequestId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = v4;
+    v5 = idCopy;
   }
 
   else
@@ -370,15 +370,15 @@ LABEL_16:
   [(ADResultObjectCache *)self _removeMissingRefContextsForRequestId:v7];
 }
 
-- (id)objectsForIds:(id)a3 missingReferences:(id *)a4
+- (id)objectsForIds:(id)ids missingReferences:(id *)references
 {
-  v6 = a3;
+  idsCopy = ids;
   v7 = [(NSMutableDictionary *)self->_requestMap objectForKey:@"com.apple.siri.nilRequestId"];
   if (!v7)
   {
-    v12 = [v6 copy];
+    v12 = [idsCopy copy];
     v8 = 0;
-    if (!a4)
+    if (!references)
     {
       goto LABEL_20;
     }
@@ -386,14 +386,14 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v22 = a4;
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  referencesCopy = references;
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = v6;
-  v9 = v6;
+  v23 = idsCopy;
+  v9 = idsCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -410,7 +410,7 @@ LABEL_16:
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v7 objectForKey:{v15, v22}];
+        v16 = [v7 objectForKey:{v15, referencesCopy}];
         if (v16)
         {
           v17 = v8;
@@ -442,13 +442,13 @@ LABEL_16:
     v12 = 0;
   }
 
-  a4 = v22;
-  v6 = v23;
-  if (v22)
+  references = referencesCopy;
+  idsCopy = v23;
+  if (referencesCopy)
   {
 LABEL_19:
     v19 = v12;
-    *a4 = v12;
+    *references = v12;
   }
 
 LABEL_20:
@@ -457,26 +457,26 @@ LABEL_20:
   return v8;
 }
 
-- (id)commandsForReply:(id)a3 toCommand:(id)a4 missingReferences:(id *)a5
+- (id)commandsForReply:(id)reply toCommand:(id)command missingReferences:(id *)references
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  commandCopy = command;
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v75 = "[ADResultObjectCache commandsForReply:toCommand:missingReferences:]";
     v76 = 2112;
-    v77 = v7;
+    v77 = replyCopy;
     v78 = 2112;
-    v79 = v8;
+    v79 = commandCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s reply = %@, command = %@", buf, 0x20u);
   }
 
-  v10 = [v8 refId];
-  if (v10)
+  refId = [commandCopy refId];
+  if (refId)
   {
-    v11 = v10;
+    v11 = refId;
   }
 
   else
@@ -486,15 +486,15 @@ LABEL_20:
 
   v58 = v11;
   v12 = [(NSMutableDictionary *)self->_requestMap objectForKey:?];
-  v56 = v7;
-  if (v7)
+  v56 = replyCopy;
+  if (replyCopy)
   {
-    v13 = [v7 resultCallbackCode];
+    resultCallbackCode = [replyCopy resultCallbackCode];
   }
 
   else
   {
-    v13 = -1;
+    resultCallbackCode = -1;
   }
 
   v14 = AFSiriLogContextDaemon;
@@ -503,12 +503,12 @@ LABEL_20:
     *buf = 136315394;
     v75 = "[ADResultObjectCache commandsForReply:toCommand:missingReferences:]";
     v76 = 2048;
-    v77 = v13;
+    v77 = resultCallbackCode;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s replyCode = %ld", buf, 0x16u);
   }
 
-  v55 = v8;
-  [v8 ad_callbacks];
+  v55 = commandCopy;
+  [commandCopy ad_callbacks];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -529,15 +529,15 @@ LABEL_13:
       }
 
       v21 = *(*(&v67 + 1) + 8 * v20);
-      v22 = [v21 code];
-      if (v22 == v13)
+      code = [v21 code];
+      if (code == resultCallbackCode)
       {
         break;
       }
 
       if (!v18)
       {
-        if (v22 == -1)
+        if (code == -1)
         {
           v18 = v21;
         }
@@ -567,7 +567,7 @@ LABEL_13:
       goto LABEL_30;
     }
 
-    if (v13)
+    if (resultCallbackCode)
     {
 LABEL_26:
       v18 = v18;
@@ -581,7 +581,7 @@ LABEL_26:
     v18 = 0;
 LABEL_28:
 
-    if (v13)
+    if (resultCallbackCode)
     {
       goto LABEL_26;
     }
@@ -601,13 +601,13 @@ LABEL_30:
   }
 
   v53 = v15;
-  v25 = [v23 commandReferences];
-  v26 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v25, "count")}];
+  commandReferences = [v23 commandReferences];
+  v26 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(commandReferences, "count")}];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v25;
+  obj = commandReferences;
   v27 = [obj countByEnumeratingWithState:&v63 objects:v72 count:16];
   if (v27)
   {
@@ -657,12 +657,12 @@ LABEL_30:
   }
 
   v51 = v23;
-  v36 = [v23 commands];
+  commands = [v23 commands];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v37 = [v36 countByEnumeratingWithState:&v59 objects:v71 count:16];
+  v37 = [commands countByEnumeratingWithState:&v59 objects:v71 count:16];
   if (v37)
   {
     v38 = v37;
@@ -673,7 +673,7 @@ LABEL_30:
       {
         if (*v60 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(commands);
         }
 
         v41 = *(*(&v59 + 1) + 8 * j);
@@ -691,7 +691,7 @@ LABEL_30:
         [v26 addObject:v41];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v59 objects:v71 count:16];
+      v38 = [commands countByEnumeratingWithState:&v59 objects:v71 count:16];
     }
 
     while (v38);
@@ -725,10 +725,10 @@ LABEL_30:
     v46 = v12;
   }
 
-  if (a5)
+  if (references)
   {
     v48 = v29;
-    *a5 = v29;
+    *references = v29;
   }
 
   v49 = AFSiriLogContextDaemon;
@@ -744,24 +744,24 @@ LABEL_30:
   return v26;
 }
 
-- (void)addResultObjects:(id)a3 sessionRequestId:(id)a4
+- (void)addResultObjects:(id)objects sessionRequestId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 objects];
-  v8 = [v7 refId];
+  idCopy = id;
+  objectsCopy = objects;
+  objects = [objectsCopy objects];
+  refId = [objectsCopy refId];
 
-  [(ADResultObjectCache *)self _addObjects:v9 forRequestId:v8 sessionRequestId:v6];
+  [(ADResultObjectCache *)self _addObjects:objects forRequestId:refId sessionRequestId:idCopy];
 }
 
-- (void)_addObjects:(id)a3 forRequestId:(id)a4 sessionRequestId:(id)a5
+- (void)_addObjects:(id)objects forRequestId:(id)id sessionRequestId:(id)requestId
 {
-  v8 = a3;
-  v9 = a4;
-  v44 = a5;
-  if (v9)
+  objectsCopy = objects;
+  idCopy = id;
+  requestIdCopy = requestId;
+  if (idCopy)
   {
-    v10 = v9;
+    v10 = idCopy;
   }
 
   else
@@ -769,21 +769,21 @@ LABEL_30:
     v10 = @"com.apple.siri.nilRequestId";
   }
 
-  v11 = [(ADResultObjectCache *)self _requestMap];
+  _requestMap = [(ADResultObjectCache *)self _requestMap];
   v48 = v10;
-  v47 = [v11 objectForKey:v10];
+  v47 = [_requestMap objectForKey:v10];
   if (!v47)
   {
     v47 = objc_alloc_init(NSMutableDictionary);
-    [v11 setObject:? forKey:?];
+    [_requestMap setObject:? forKey:?];
   }
 
-  v43 = v11;
+  v43 = _requestMap;
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v8;
+  obj = objectsCopy;
   v12 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (v12)
   {
@@ -800,14 +800,14 @@ LABEL_30:
         }
 
         v16 = *(*(&v53 + 1) + 8 * i);
-        v17 = [v16 aceId];
-        if (v17)
+        aceId = [v16 aceId];
+        if (aceId)
         {
-          v18 = [v16 refId];
-          v19 = v18;
-          if (v18)
+          refId = [v16 refId];
+          v19 = refId;
+          if (refId)
           {
-            if ([v18 isEqualToString:v44])
+            if ([refId isEqualToString:requestIdCopy])
             {
               [v16 setRefId:v10];
               v20 = AFSiriLogContextDaemon;
@@ -818,13 +818,13 @@ LABEL_30:
                 v60 = 2112;
                 v61 = v10;
                 v62 = 2112;
-                v63 = v44;
+                v63 = requestIdCopy;
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s Setting refId to %@ from session request %@", buf, 0x20u);
               }
             }
           }
 
-          [v47 setObject:v16 forKey:v17];
+          [v47 setObject:v16 forKey:aceId];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -841,21 +841,21 @@ LABEL_30:
             [(NSMutableSet *)requestsWithPhoneCall addObject:v10];
           }
 
-          v24 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContexts objectForKey:v17];
-          v25 = [v24 requestId];
-          v26 = v25;
+          v24 = [(NSMutableDictionary *)self->_missingReferenceFulfillmentContexts objectForKey:aceId];
+          requestId = [v24 requestId];
+          v26 = requestId;
           v27 = @"com.apple.siri.nilRequestId";
-          if (v25)
+          if (requestId)
           {
-            v27 = v25;
+            v27 = requestId;
           }
 
           v28 = v27;
 
           if (v24 && [(__CFString *)v10 isEqualToString:v28])
           {
-            v29 = [v24 _mutableResolvedIds];
-            [v29 addObject:v17];
+            _mutableResolvedIds = [v24 _mutableResolvedIds];
+            [_mutableResolvedIds addObject:aceId];
 
             v30 = v45;
             if (!v45)
@@ -900,19 +900,19 @@ LABEL_30:
         }
 
         v36 = *(*(&v49 + 1) + 8 * j);
-        v37 = [v36 resolvedReferences];
-        v38 = [v37 count];
-        v39 = [v36 missingReferences];
-        v40 = [v39 count];
+        resolvedReferences = [v36 resolvedReferences];
+        v38 = [resolvedReferences count];
+        missingReferences = [v36 missingReferences];
+        v40 = [missingReferences count];
 
         if (v38 == v40)
         {
           [v36 setHasBeenFulfilled:1];
-          v41 = [v36 fulfillmentBlock];
-          v42 = v41;
-          if (v41)
+          fulfillmentBlock = [v36 fulfillmentBlock];
+          v42 = fulfillmentBlock;
+          if (fulfillmentBlock)
           {
-            (*(v41 + 16))(v41);
+            (*(fulfillmentBlock + 16))(fulfillmentBlock);
           }
 
           [(ADResultObjectCache *)self _removeMissingReferenceContext:v36];
@@ -926,26 +926,26 @@ LABEL_30:
   }
 }
 
-- (BOOL)hasMissingRefContextsForId:(id)a3
+- (BOOL)hasMissingRefContextsForId:(id)id
 {
-  v4 = a3;
-  v5 = [(ADResultObjectCache *)self _missingReferenceFulfillmentContextsByRequestId];
-  v6 = [v5 objectForKey:v4];
+  idCopy = id;
+  _missingReferenceFulfillmentContextsByRequestId = [(ADResultObjectCache *)self _missingReferenceFulfillmentContextsByRequestId];
+  v6 = [_missingReferenceFulfillmentContextsByRequestId objectForKey:idCopy];
 
-  LOBYTE(v4) = [v6 count] != 0;
-  return v4;
+  LOBYTE(idCopy) = [v6 count] != 0;
+  return idCopy;
 }
 
-- (void)addMissingReferencesContext:(id)a3
+- (void)addMissingReferencesContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ADResultObjectCache *)self _missingReferenceFulfillmentContexts];
+  contextCopy = context;
+  _missingReferenceFulfillmentContexts = [(ADResultObjectCache *)self _missingReferenceFulfillmentContexts];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 missingReferences];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  missingReferences = [contextCopy missingReferences];
+  v7 = [missingReferences countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -957,39 +957,39 @@ LABEL_30:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(missingReferences);
         }
 
-        [v5 setObject:v4 forKey:*(*(&v17 + 1) + 8 * v10)];
+        [_missingReferenceFulfillmentContexts setObject:contextCopy forKey:*(*(&v17 + 1) + 8 * v10)];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [missingReferences countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [v4 requestId];
-  v12 = v11;
+  requestId = [contextCopy requestId];
+  v12 = requestId;
   v13 = @"com.apple.siri.nilRequestId";
-  if (v11)
+  if (requestId)
   {
-    v13 = v11;
+    v13 = requestId;
   }
 
   v14 = v13;
 
-  v15 = [(ADResultObjectCache *)self _missingReferenceFulfillmentContextsByRequestId];
-  v16 = [v15 objectForKey:v14];
+  _missingReferenceFulfillmentContextsByRequestId = [(ADResultObjectCache *)self _missingReferenceFulfillmentContextsByRequestId];
+  v16 = [_missingReferenceFulfillmentContextsByRequestId objectForKey:v14];
   if (!v16)
   {
     v16 = objc_alloc_init(NSMutableSet);
-    [v15 setObject:v16 forKey:v14];
+    [_missingReferenceFulfillmentContextsByRequestId setObject:v16 forKey:v14];
   }
 
-  [v16 addObject:v4];
+  [v16 addObject:contextCopy];
 }
 
 - (id)_missingReferenceFulfillmentContextsByRequestId

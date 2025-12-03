@@ -1,23 +1,23 @@
 @interface HUCameraRecordingOptionsModuleController
-- (BOOL)hasNotificationSettingForItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUCameraRecordingOptionsModuleController)initWithModule:(id)a3;
-- (id)alertMessageForEventType:(unint64_t)a3;
-- (id)alertTitleForEventType:(unint64_t)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)displayAlertForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (BOOL)hasNotificationSettingForItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUCameraRecordingOptionsModuleController)initWithModule:(id)module;
+- (id)alertMessageForEventType:(unint64_t)type;
+- (id)alertTitleForEventType:(unint64_t)type;
+- (unint64_t)didSelectItem:(id)item;
+- (void)displayAlertForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUCameraRecordingOptionsModuleController
 
-- (HUCameraRecordingOptionsModuleController)initWithModule:(id)a3
+- (HUCameraRecordingOptionsModuleController)initWithModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = moduleCopy;
   if (!v6)
   {
     goto LABEL_7;
@@ -36,9 +36,9 @@
   v8 = v6;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
@@ -62,10 +62,10 @@ LABEL_7:
     v6 = v13;
     if (!v14)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
       v19 = NSStringFromProtocol(v11);
-      [v17 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
+      [currentHandler2 handleFailureInFunction:v18 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v19}];
 
       v6 = 0;
     }
@@ -78,14 +78,14 @@ LABEL_7:
   return v15;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -95,31 +95,31 @@ LABEL_7:
 
   v7 = v6;
 
-  if (([v7 isItemHeader:v4] & 1) == 0)
+  if (([v7 isItemHeader:itemCopy] & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [v7 smartDetectionModule];
-      v9 = [v8 anyMotionDetectedItem];
-      if ([v4 isEqual:v9])
+      smartDetectionModule = [v7 smartDetectionModule];
+      anyMotionDetectedItem = [smartDetectionModule anyMotionDetectedItem];
+      if ([itemCopy isEqual:anyMotionDetectedItem])
       {
 LABEL_9:
 
         goto LABEL_11;
       }
 
-      v10 = [v7 smartDetectionModule];
-      v11 = [v10 specificMotionDetectedItem];
-      if ([v4 isEqual:v11])
+      smartDetectionModule2 = [v7 smartDetectionModule];
+      specificMotionDetectedItem = [smartDetectionModule2 specificMotionDetectedItem];
+      if ([itemCopy isEqual:specificMotionDetectedItem])
       {
 
         goto LABEL_9;
       }
 
-      v12 = [v7 smartDetectionModule];
-      v13 = [v12 aClipIsRecordedItem];
-      [v4 isEqual:v13];
+      smartDetectionModule3 = [v7 smartDetectionModule];
+      aClipIsRecordedItem = [smartDetectionModule3 aClipIsRecordedItem];
+      [itemCopy isEqual:aClipIsRecordedItem];
     }
   }
 
@@ -129,26 +129,26 @@ LABEL_11:
   return v14;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = HUCameraRecordingOptionsModuleController;
-  [(HUItemModuleController *)&v29 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v29 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setValueColorFollowsTintColor:1];
+    [cellCopy setValueColorFollowsTintColor:1];
   }
 
-  v8 = [v7 latestResults];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  latestResults = [itemCopy latestResults];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
   if (v9)
   {
     objc_opt_class();
-    v10 = v6;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -161,19 +161,19 @@ LABEL_11:
 
     v12 = v11;
 
-    v13 = [v12 imageView];
-    [v13 setContentMode:5];
+    imageView = [v12 imageView];
+    [imageView setContentMode:5];
 
     [v12 setImageViewRecommendedSize:{50.0, 50.0}];
   }
 
-  v14 = [(HUItemModuleController *)self module];
-  v15 = [v14 isItemHeader:v7];
+  module = [(HUItemModuleController *)self module];
+  v15 = [module isItemHeader:itemCopy];
 
   if ((v15 & 1) == 0)
   {
     objc_opt_class();
-    v16 = v6;
+    v16 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -190,7 +190,7 @@ LABEL_11:
   }
 
   objc_opt_class();
-  v19 = v6;
+  v19 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -225,7 +225,7 @@ LABEL_11:
   if (v24)
   {
     objc_opt_class();
-    v25 = v7;
+    v25 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v26 = v25;
@@ -240,25 +240,25 @@ LABEL_11:
 
     if (v27)
     {
-      v28 = [MEMORY[0x277D75348] redColor];
-      [v24 setTintColor:v28];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [v24 setTintColor:redColor];
 
       [v24 setTextAlignment:4];
     }
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v12.receiver = self;
   v12.super_class = HUCameraRecordingOptionsModuleController;
-  v7 = a4;
-  v8 = a3;
-  [(HUItemModuleController *)&v12 updateCell:v8 forItem:v7 animated:v5];
-  v9 = [v7 latestResults];
+  itemCopy = item;
+  cellCopy = cell;
+  [(HUItemModuleController *)&v12 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  latestResults = [itemCopy latestResults];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   if ([v10 BOOLValue])
   {
     v11 = 3;
@@ -269,20 +269,20 @@ LABEL_11:
     v11 = 0;
   }
 
-  [v8 setAccessoryType:v11];
+  [cellCopy setAccessoryType:v11];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = [(HUItemModuleController *)self module];
+    module = [(HUItemModuleController *)self module];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = module;
     }
 
     else
@@ -314,17 +314,17 @@ LABEL_11:
 
     v18 = [HUViewControllerPresentationRequest requestWithViewController:v10];
     [v18 setPreferredPresentationType:0];
-    v19 = [(HUItemModuleController *)self host];
-    v20 = [v19 moduleController:self presentViewControllerForRequest:v18];
+    host = [(HUItemModuleController *)self host];
+    v20 = [host moduleController:self presentViewControllerForRequest:v18];
   }
 
-  v21 = [(HUItemModuleController *)self module];
+  module2 = [(HUItemModuleController *)self module];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(HUItemModuleController *)self module];
-    v24 = [v23 didSelectItem:v4];
+    module3 = [(HUItemModuleController *)self module];
+    v24 = [module3 didSelectItem:itemCopy];
   }
 
   return 0;
@@ -336,15 +336,15 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
   v1 = [v2 removeAllCameraRecordings];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v27 = a3;
+  onCopy = on;
+  cellCopy = cell;
   objc_opt_class();
-  v6 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = module;
   }
 
   else
@@ -354,37 +354,37 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
 
   v8 = v7;
 
-  v9 = [v27 item];
-  v10 = [v8 recordAudioItem];
-  v11 = [v9 isEqual:v10];
+  item = [cellCopy item];
+  recordAudioItem = [v8 recordAudioItem];
+  v11 = [item isEqual:recordAudioItem];
 
   if (v11)
   {
-    [v8 updateRecordAudioValue:v4];
+    [v8 updateRecordAudioValue:onCopy];
   }
 
   else
   {
-    if (v4 || ([v27 item], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[HUCameraRecordingOptionsModuleController hasNotificationSettingForItem:](self, "hasNotificationSettingForItem:", v12), v12, !v13))
+    if (onCopy || ([cellCopy item], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[HUCameraRecordingOptionsModuleController hasNotificationSettingForItem:](self, "hasNotificationSettingForItem:", v12), v12, !v13))
     {
-      v14 = [v8 smartDetectionModule];
-      v15 = [v27 item];
-      v16 = [v14 updateMotionDetectionSettingForItem:v15];
+      smartDetectionModule = [v8 smartDetectionModule];
+      item2 = [cellCopy item];
+      v16 = [smartDetectionModule updateMotionDetectionSettingForItem:item2];
     }
 
     else
     {
-      [v27 setOn:1 animated:1];
-      v14 = [v27 item];
-      [(HUCameraRecordingOptionsModuleController *)self displayAlertForItem:v14];
+      [cellCopy setOn:1 animated:1];
+      smartDetectionModule = [cellCopy item];
+      [(HUCameraRecordingOptionsModuleController *)self displayAlertForItem:smartDetectionModule];
     }
   }
 
   objc_opt_class();
-  v17 = [(HUItemModuleController *)self host];
+  host = [(HUItemModuleController *)self host];
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = host;
   }
 
   else
@@ -397,9 +397,9 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
   if (v19)
   {
     objc_opt_class();
-    v20 = [v27 item];
-    v21 = [v20 latestResults];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13F68]];
+    item3 = [cellCopy item];
+    latestResults = [item3 latestResults];
+    v22 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F68]];
     if (objc_opt_isKindOfClass())
     {
       v23 = v22;
@@ -413,19 +413,19 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
     v24 = v23;
 
     v25 = MEMORY[0x277D143D8];
-    v26 = [v27 item];
-    [v25 sendSwitchCellToggleEventForItem:v26 isOn:v4 title:v24 fromSourceViewController:v19];
+    item4 = [cellCopy item];
+    [v25 sendSwitchCellToggleEventForItem:item4 isOn:onCopy title:v24 fromSourceViewController:v19];
   }
 }
 
-- (BOOL)hasNotificationSettingForItem:(id)a3
+- (BOOL)hasNotificationSettingForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -436,9 +436,9 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
   v7 = v6;
 
   objc_opt_class();
-  v8 = [v4 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v9 = [v8 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+  v9 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -452,21 +452,21 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
   v11 = v10;
 
   v12 = MEMORY[0x277D144E0];
-  v13 = [v7 cameraProfiles];
-  v14 = [v12 configurationForCameraProfilesNotificationSettings:v13];
+  cameraProfiles = [v7 cameraProfiles];
+  v14 = [v12 configurationForCameraProfilesNotificationSettings:cameraProfiles];
 
-  v15 = [v14 eventTypes];
-  LOBYTE(v15) = ([v11 eventTypes] & v15) != 0;
+  eventTypes = [v14 eventTypes];
+  LOBYTE(eventTypes) = ([v11 eventTypes] & eventTypes) != 0;
 
-  return v15;
+  return eventTypes;
 }
 
-- (void)displayAlertForItem:(id)a3
+- (void)displayAlertForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:@"HUCameraSettingResultKey"];
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:@"HUCameraSettingResultKey"];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -479,9 +479,9 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
 
   v8 = v7;
 
-  v9 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v10 = [v9 home];
-  if ([v10 hf_currentUserIsOwner])
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  if ([home hf_currentUserIsOwner])
   {
     -[HUCameraRecordingOptionsModuleController alertMessageForEventType:](self, "alertMessageForEventType:", [v8 eventTypes]);
   }
@@ -502,11 +502,11 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
   v26 = 3221225472;
   v27 = __64__HUCameraRecordingOptionsModuleController_displayAlertForItem___block_invoke;
   v28 = &unk_277DBBD90;
-  v29 = self;
-  v30 = v4;
-  v17 = v4;
+  selfCopy = self;
+  v30 = itemCopy;
+  v17 = itemCopy;
   v18 = [v15 actionWithTitle:v16 style:0 handler:&v25];
-  [v14 addAction:{v18, v25, v26, v27, v28, v29}];
+  [v14 addAction:{v18, v25, v26, v27, v28, selfCopy}];
 
   v19 = MEMORY[0x277D750F8];
   v20 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
@@ -515,8 +515,8 @@ void __58__HUCameraRecordingOptionsModuleController_didSelectItem___block_invoke
 
   v22 = [HUViewControllerPresentationRequest requestWithViewController:v14];
   [v22 setPreferredPresentationType:0];
-  v23 = [(HUItemModuleController *)self host];
-  v24 = [v23 moduleController:self presentViewControllerForRequest:v22];
+  host = [(HUItemModuleController *)self host];
+  v24 = [host moduleController:self presentViewControllerForRequest:v22];
 }
 
 void __64__HUCameraRecordingOptionsModuleController_displayAlertForItem___block_invoke(uint64_t a1)
@@ -540,9 +540,9 @@ void __64__HUCameraRecordingOptionsModuleController_displayAlertForItem___block_
   v5 = [v6 updateMotionDetectionSettingForItem:*(a1 + 40)];
 }
 
-- (id)alertTitleForEventType:(unint64_t)a3
+- (id)alertTitleForEventType:(unint64_t)type
 {
-  v4 = __ROR8__(a3 - 2, 1);
+  v4 = __ROR8__(type - 2, 1);
   if (v4 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = _HULocalizedStringWithDefaultValue(off_277DBF260[v4], off_277DBF260[v4], 1);
@@ -556,9 +556,9 @@ void __64__HUCameraRecordingOptionsModuleController_displayAlertForItem___block_
   return v5;
 }
 
-- (id)alertMessageForEventType:(unint64_t)a3
+- (id)alertMessageForEventType:(unint64_t)type
 {
-  v4 = __ROR8__(a3 - 2, 1);
+  v4 = __ROR8__(type - 2, 1);
   if (v4 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = _HULocalizedStringWithDefaultValue(off_277DBF2A0[v4], off_277DBF2A0[v4], 1);

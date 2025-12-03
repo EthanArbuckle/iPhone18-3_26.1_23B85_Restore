@@ -6,14 +6,14 @@
 
 - (uint64_t)isEqualToInputDevice:()Equality
 {
-  result = [objc_msgSend(a1 "deviceName")];
+  result = [objc_msgSend(self "deviceName")];
   if (result)
   {
-    v6 = [a1 deviceType];
-    if (v6 == [a3 deviceType] && (v7 = objc_msgSend(a1, "deviceSubType"), v7 == objc_msgSend(a3, "deviceSubType")))
+    deviceType = [self deviceType];
+    if (deviceType == [a3 deviceType] && (v7 = objc_msgSend(self, "deviceSubType"), v7 == objc_msgSend(a3, "deviceSubType")))
     {
-      v8 = [a1 supportsHighQualityContentCapture];
-      return v8 ^ [a3 supportsHighQualityContentCapture] ^ 1;
+      supportsHighQualityContentCapture = [self supportsHighQualityContentCapture];
+      return supportsHighQualityContentCapture ^ [a3 supportsHighQualityContentCapture] ^ 1;
     }
 
     else

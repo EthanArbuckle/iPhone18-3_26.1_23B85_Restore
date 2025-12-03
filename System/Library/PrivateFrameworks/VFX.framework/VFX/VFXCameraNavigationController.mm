@@ -1,17 +1,17 @@
 @interface VFXCameraNavigationController
-- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__CFXNode *)a3 sphere:(CFXSphere *)a4;
+- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__CFXNode *)node sphere:(CFXSphere *)sphere;
 - (BOOL)_freeCameraActivated;
 - (BOOL)_pointOfViewUsesOrthographicProjection;
 - (BOOL)enableInertia;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)wantsRedraw;
-- (VFXCameraNavigationController)initWithView:(id)a3;
+- (VFXCameraNavigationController)initWithView:(id)view;
 - (__n128)_worldBoundingSphere;
-- (double)_defaultTargetForWorld:(void *)a3;
-- (float)_cappedTranslationDelta:(float)a3;
+- (double)_defaultTargetForWorld:(void *)world;
+- (float)_cappedTranslationDelta:(float)delta;
 - (float)_modeSensitivity;
-- (float)_orthographicZoomFactorForProposedZoomFactor:(float)a3;
+- (float)_orthographicZoomFactorForProposedZoomFactor:(float)factor;
 - (float)_pointOfViewOrthographicScale;
 - (float)_targetDistance;
 - (float)_translationCoef;
@@ -27,50 +27,50 @@
 - (void)__didChangePointOfView;
 - (void)__willChangePointOfView;
 - (void)_computeAutomaticTargetPointIfNeeded;
-- (void)_computeStickyAxisIfNeeded:(CGPoint)a3;
-- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)a3;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handlePan:(id)a3;
-- (void)_handlePinch:(id)a3;
-- (void)_handleRotation:(id)a3;
+- (void)_computeStickyAxisIfNeeded:(CGPoint)needed;
+- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)point;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handlePan:(id)pan;
+- (void)_handlePinch:(id)pinch;
+- (void)_handleRotation:(id)rotation;
 - (void)_installFreeViewCameraIfNeeded;
 - (void)_prepareFreeViewCamera;
 - (void)_resetFreeViewCamera;
-- (void)_setPointOfViewOrthographicScale:(float)a3;
+- (void)_setPointOfViewOrthographicScale:(float)scale;
 - (void)_setupUpVector;
-- (void)_startBrowsingIfNeeded:(CGPoint)a3;
+- (void)_startBrowsingIfNeeded:(CGPoint)needed;
 - (void)_stopInertia;
 - (void)_switchToFreeViewCamera;
-- (void)_translateToViewPoint:(CGPoint)a3;
+- (void)_translateToViewPoint:(CGPoint)point;
 - (void)_willBeginInteraction;
-- (void)beginGesture:(id)a3;
+- (void)beginGesture:(id)gesture;
 - (void)cameraDidChange;
-- (void)cameraRotationWillStartForController:(id)a3;
+- (void)cameraRotationWillStartForController:(id)controller;
 - (void)dealloc;
-- (void)focusNode:(id)a3;
-- (void)focusNodes:(id)a3;
-- (void)panWithGestureRecognizer:(id)a3;
-- (void)pinchWithGestureRecognizer:(id)a3;
-- (void)rotateOf:(float)a3;
-- (void)rotateWithGestureRecognizer:(id)a3;
-- (void)setAutomaticCameraTarget:(BOOL)a3;
+- (void)focusNode:(id)node;
+- (void)focusNodes:(id)nodes;
+- (void)panWithGestureRecognizer:(id)recognizer;
+- (void)pinchWithGestureRecognizer:(id)recognizer;
+- (void)rotateOf:(float)of;
+- (void)rotateWithGestureRecognizer:(id)recognizer;
+- (void)setAutomaticCameraTarget:(BOOL)target;
 - (void)setCameraTarget:(VFXCameraNavigationController *)self;
-- (void)setEnableFreeCamera:(BOOL)a3;
-- (void)setEnableInertia:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFriction:(float)a3;
-- (void)setGimbalLockMode:(BOOL)a3;
-- (void)setZoomFactor:(float)a3;
-- (void)translateByX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (void)viewWillDrawAtTime:(double)a3;
+- (void)setEnableFreeCamera:(BOOL)camera;
+- (void)setEnableInertia:(BOOL)inertia;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFriction:(float)friction;
+- (void)setGimbalLockMode:(BOOL)mode;
+- (void)setZoomFactor:(float)factor;
+- (void)translateByX:(float)x Y:(float)y Z:(float)z;
+- (void)viewWillDrawAtTime:(double)time;
 - (void)worldDidChange;
 - (void)worldWillChange;
-- (void)zoomBy:(float)a3 animate:(BOOL)a4;
+- (void)zoomBy:(float)by animate:(BOOL)animate;
 @end
 
 @implementation VFXCameraNavigationController
 
-- (VFXCameraNavigationController)initWithView:(id)a3
+- (VFXCameraNavigationController)initWithView:(id)view
 {
   v27.receiver = self;
   v27.super_class = VFXCameraNavigationController;
@@ -78,9 +78,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_view = a3;
+    v4->_view = view;
     v4->_cameraController = objc_alloc_init(VFXCameraController);
-    v9 = objc_msgSend_pointOfView(a3, v6, v7, v8);
+    v9 = objc_msgSend_pointOfView(view, v6, v7, v8);
     objc_msgSend_setPointOfView_(*(v5 + 480), v10, v9, v11);
     objc_msgSend_setInertiaEnabled_(*(v5 + 480), v12, 1, v13);
     objc_msgSend_setInteractionMode_(*(v5 + 480), v14, 1, v15);
@@ -110,11 +110,11 @@
   [(VFXCameraNavigationController *)&v4 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x1E69E9840];
-  self->_enabled = a3;
-  v5 = objc_msgSend_gestureRecognizers(self, a2, a3, v3);
+  self->_enabled = enabled;
+  v5 = objc_msgSend_gestureRecognizers(self, a2, enabled, v3);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -152,12 +152,12 @@
   return MEMORY[0x1EEE66B58](v4, sel_inertiaEnabled, v5, v6);
 }
 
-- (void)setEnableInertia:(BOOL)a3
+- (void)setEnableInertia:(BOOL)inertia
 {
-  v4 = a3;
-  v5 = objc_msgSend_cameraController(self, a2, a3, v3);
+  inertiaCopy = inertia;
+  v5 = objc_msgSend_cameraController(self, a2, inertia, v3);
 
-  objc_msgSend_setInertiaEnabled_(v5, v6, v4, v7);
+  objc_msgSend_setInertiaEnabled_(v5, v6, inertiaCopy, v7);
 }
 
 - (float)friction
@@ -168,26 +168,26 @@
   return result;
 }
 
-- (void)setFriction:(float)a3
+- (void)setFriction:(float)friction
 {
   v5 = objc_msgSend_cameraController(self, a2, v3, v4);
 
   MEMORY[0x1EEE66B58](v5, sel_setInertiaFriction_, v6, v7);
 }
 
-- (void)setAutomaticCameraTarget:(BOOL)a3
+- (void)setAutomaticCameraTarget:(BOOL)target
 {
-  if (self->_target.hasAutomatic != a3)
+  if (self->_target.hasAutomatic != target)
   {
-    self->_target.hasAutomatic = a3;
-    objc_msgSend_invalidateCameraTarget(self, a2, a3, v3);
+    self->_target.hasAutomatic = target;
+    objc_msgSend_invalidateCameraTarget(self, a2, target, v3);
   }
 }
 
 - (uint64_t)cameraTarget
 {
-  objc_msgSend__computeAutomaticTargetPointIfNeeded(a1, a2, a3, a4);
-  v8 = objc_msgSend_cameraController(a1, v5, v6, v7);
+  objc_msgSend__computeAutomaticTargetPointIfNeeded(self, a2, a3, a4);
+  v8 = objc_msgSend_cameraController(self, v5, v6, v7);
 
   return objc_msgSend_target(v8, v9, v10, v11);
 }
@@ -201,9 +201,9 @@
   objc_msgSend_setTarget_(v8, v9, v10, v11, v12);
 }
 
-- (void)setGimbalLockMode:(BOOL)a3
+- (void)setGimbalLockMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v4 = 1;
   }
@@ -213,7 +213,7 @@
     v4 = 3;
   }
 
-  v5 = objc_msgSend_cameraController(self, a2, a3, v3);
+  v5 = objc_msgSend_cameraController(self, a2, mode, v3);
 
   objc_msgSend_setInteractionMode_(v5, v6, v4, v7);
 }
@@ -243,17 +243,17 @@
   return !v18;
 }
 
-- (void)focusNode:(id)a3
+- (void)focusNode:(id)node
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v7[0] = a3;
+  v7[0] = node;
   v4 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], a2, v7, 1);
   objc_msgSend_focusNodes_(self, v5, v4, v6);
 }
 
-- (void)focusNodes:(id)a3
+- (void)focusNodes:(id)nodes
 {
-  if (a3)
+  if (nodes)
   {
     self->_didEverFocusNode = 1;
     objc_msgSend_setAutomaticCameraTarget_(self, a2, 0, v3);
@@ -263,7 +263,7 @@
     v20 = objc_msgSend_cameraController(self, v17, v18, v19);
     objc_msgSend_setAutomaticTarget_(v20, v21, 1, v22);
     v26 = objc_msgSend_cameraController(self, v23, v24, v25);
-    objc_msgSend_frameNodes_(v26, v27, a3, v28);
+    objc_msgSend_frameNodes_(v26, v27, nodes, v28);
     v32 = objc_msgSend_cameraController(self, v29, v30, v31);
     objc_msgSend_setAutomaticTarget_(v32, v33, v16, v34);
     if (objc_msgSend__pointOfViewUsesOrthographicProjection(self, v35, v36, v37))
@@ -294,12 +294,12 @@
   return v2;
 }
 
-- (void)setEnableFreeCamera:(BOOL)a3
+- (void)setEnableFreeCamera:(BOOL)camera
 {
-  self->_enableFreeCamera = a3;
-  if (!a3)
+  self->_enableFreeCamera = camera;
+  if (!camera)
   {
-    (MEMORY[0x1EEE66B58])(self, sel__resetFreeViewCamera, a3);
+    (MEMORY[0x1EEE66B58])(self, sel__resetFreeViewCamera, camera);
   }
 }
 
@@ -661,7 +661,7 @@ LABEL_43:
   }
 }
 
-- (float)_cappedTranslationDelta:(float)a3
+- (float)_cappedTranslationDelta:(float)delta
 {
   objc_msgSend__targetDistance(self, a2, v3, v4);
   if (v10 >= 10000000.0)
@@ -678,28 +678,28 @@ LABEL_43:
     objc_msgSend_worldFront(v35, v36, v37, v38);
     v40 = vmulq_f32(v47, v39);
     v41 = v40.f32[2] + vaddv_f32(*v40.f32);
-    if (v41 >= 0.0 && a3 < 0.0)
+    if (v41 >= 0.0 && delta < 0.0)
     {
-      v43 = 0.0;
+      deltaCopy = 0.0;
     }
 
     else
     {
-      v43 = a3;
+      deltaCopy = delta;
     }
 
-    if (v43 > 0.0 && v41 < 0.0)
+    if (deltaCopy > 0.0 && v41 < 0.0)
     {
       return 0.0;
     }
 
     else
     {
-      return v43;
+      return deltaCopy;
     }
   }
 
-  return a3;
+  return delta;
 }
 
 - (float)_translationCoef
@@ -732,7 +732,7 @@ LABEL_43:
   return result;
 }
 
-- (void)rotateOf:(float)a3
+- (void)rotateOf:(float)of
 {
   objc_msgSend_begin(VFXTransaction, a2, v3, v4);
   objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, 0.0);
@@ -748,23 +748,23 @@ LABEL_43:
   v21 = v17 * 0.5;
   v22 = v19 * 0.5;
   v26 = objc_msgSend_cameraController(self, v23, v24, v25);
-  *&v27 = a3;
+  *&v27 = of;
   objc_msgSend_rollBy_aroundScreenPoint_viewport_(v26, v28, v29, v30, v27, v21, v22, v18, v20);
 
   objc_msgSend_commit(VFXTransaction, v31, v32, v33);
 }
 
-- (void)zoomBy:(float)a3 animate:(BOOL)a4
+- (void)zoomBy:(float)by animate:(BOOL)animate
 {
-  v5 = a4;
-  if (objc_msgSend_pointOfView(self, a2, a4, v4))
+  animateCopy = animate;
+  if (objc_msgSend_pointOfView(self, a2, animate, v4))
   {
-    if (v5)
+    if (animateCopy)
     {
       objc_msgSend_begin(VFXTransaction, v8, v9, v10);
       objc_msgSend_setAnimationDuration_(VFXTransaction, v11, v12, v13, 0.3);
       v17 = objc_msgSend_cameraController(self, v14, v15, v16);
-      *&v18 = a3 * -100.0;
+      *&v18 = by * -100.0;
       objc_msgSend_translateInCameraSpaceByX_Y_Z_(v17, v19, v20, v21, 0.0, 0.0, v18);
 
       objc_msgSend_commit(VFXTransaction, v22, v23, v24);
@@ -774,7 +774,7 @@ LABEL_43:
     {
       v25 = objc_msgSend_cameraController(self, v8, v9, v10);
 
-      *&v29 = a3 * -100.0;
+      *&v29 = by * -100.0;
       objc_msgSend_translateInCameraSpaceByX_Y_Z_(v25, v26, v27, v28, 0.0, 0.0, v29);
     }
   }
@@ -799,7 +799,7 @@ LABEL_43:
   return objc_msgSend_pointOfView(v4, v5, v6, v7);
 }
 
-- (float)_orthographicZoomFactorForProposedZoomFactor:(float)a3
+- (float)_orthographicZoomFactorForProposedZoomFactor:(float)factor
 {
   objc_msgSend__orthographicScaleForZoomFactor_(self, a2, v3, v4);
   v8 = v7;
@@ -868,18 +868,18 @@ LABEL_43:
     }
   }
 
-  return a3;
+  return factor;
 }
 
-- (void)setZoomFactor:(float)a3
+- (void)setZoomFactor:(float)factor
 {
   objc_msgSend_zoomFactor(self, a2, v3, v4);
-  if (a3 > 0.0 && v10 != a3)
+  if (factor > 0.0 && v10 != factor)
   {
     v12 = objc_msgSend_pointOfView(self, v7, v8, v9);
     if (objc_msgSend__pointOfViewUsesOrthographicProjection(self, v13, v14, v15))
     {
-      *&v19 = a3;
+      *&v19 = factor;
       objc_msgSend__orthographicZoomFactorForProposedZoomFactor_(self, v16, v17, v18, v19);
       self->_orthographicZoomFactor = v20;
       objc_msgSend__orthographicScaleForZoomFactor_(self, v21, v22, v23);
@@ -890,7 +890,7 @@ LABEL_43:
     else
     {
       v26 = tan(self->_cameraOriginalFieldOfView * 0.5 / 180.0 * 3.14159265);
-      v30 = atan(v26 / a3);
+      v30 = atan(v26 / factor);
       *&v30 = v30 / 3.14159265 * 180.0 + v30 / 3.14159265 * 180.0;
       v31 = fmin(*&v30, 120.0);
       if (v31 < 1.0)
@@ -902,20 +902,20 @@ LABEL_43:
       v33 = objc_msgSend_camera(v12, v27, v28, v29);
       *&v34 = v32;
       objc_msgSend_setFieldOfView_(v33, v35, v36, v37, v34);
-      self->_fieldOfViewZoomFactor = a3;
+      self->_fieldOfViewZoomFactor = factor;
     }
   }
 }
 
-- (void)translateByX:(float)a3 Y:(float)a4 Z:(float)a5
+- (void)translateByX:(float)x Y:(float)y Z:(float)z
 {
-  v29 = *&a3;
+  v29 = *&x;
   if (objc_msgSend_pointOfView(self, a2, v5, v6))
   {
-    *&v12 = a5;
+    *&v12 = z;
     objc_msgSend__cappedTranslationDelta_(self, v9, v10, v11, v12);
     v13 = v29;
-    v13.f32[1] = a4;
+    v13.f32[1] = y;
     v13.i32[2] = v14;
     v30 = v13;
     objc_msgSend__translationCoef(self, v15, v16, v17);
@@ -928,9 +928,9 @@ LABEL_43:
   }
 }
 
-- (void)cameraRotationWillStartForController:(id)a3
+- (void)cameraRotationWillStartForController:(id)controller
 {
-  v5 = objc_msgSend_pointOfView(a3, a2, a3, v3);
+  v5 = objc_msgSend_pointOfView(controller, a2, controller, v3);
   if (objc_msgSend_authoringCameraType(v5, v6, v7, v8))
   {
 
@@ -966,7 +966,7 @@ LABEL_43:
   }
 }
 
-- (void)viewWillDrawAtTime:(double)a3
+- (void)viewWillDrawAtTime:(double)time
 {
   v7 = objc_msgSend_immediateMode(VFXTransaction, a2, v3, v4);
   objc_msgSend_setImmediateMode_(VFXTransaction, v8, 1, v9);
@@ -982,14 +982,14 @@ LABEL_43:
       v32 = v28;
       sub_1AF1CEA20(v28);
       v36 = objc_msgSend_cameraController(self, v33, v34, v35);
-      objc_msgSend_updateInertiaAtTime_(v36, v37, v38, v39, a3);
+      objc_msgSend_updateInertiaAtTime_(v36, v37, v38, v39, time);
       sub_1AF1CEA9C(v32);
     }
 
     else
     {
       v40 = objc_msgSend_cameraController(self, v29, v30, v31);
-      objc_msgSend_updateInertiaAtTime_(v40, v41, v42, v43, a3);
+      objc_msgSend_updateInertiaAtTime_(v40, v41, v42, v43, time);
     }
   }
 
@@ -1147,60 +1147,60 @@ LABEL_43:
   return objc_msgSend_arrayWithObjects_(MEMORY[0x1E695DEC8], v83, v6, v84, v12, v10, v11, v15, 0);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = objc_msgSend_enabled(self, a2, a3, a4);
+  v7 = objc_msgSend_enabled(self, a2, recognizer, gestureRecognizer);
   if (v7)
   {
     pressGesture = self->_pressGesture;
-    v9 = pressGesture == a3 || pressGesture == a4;
-    LOBYTE(v7) = v9 || (tapGesture = self->_tapGesture, panGesture = self->_panGesture, tapGesture == a3) && (panGesture == a4 || self->_pinchGesture == a4 || self->_rotateGesture == a4) || tapGesture == a4 && panGesture == a3 || tapGesture == a4 && self->_pinchGesture == a3;
+    v9 = pressGesture == recognizer || pressGesture == gestureRecognizer;
+    LOBYTE(v7) = v9 || (tapGesture = self->_tapGesture, panGesture = self->_panGesture, tapGesture == recognizer) && (panGesture == gestureRecognizer || self->_pinchGesture == gestureRecognizer || self->_rotateGesture == gestureRecognizer) || tapGesture == gestureRecognizer && panGesture == recognizer || tapGesture == gestureRecognizer && self->_pinchGesture == recognizer;
   }
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v8 = objc_msgSend_enabled(self, a2, a3, v3);
+  v8 = objc_msgSend_enabled(self, a2, begin, v3);
   if (v8)
   {
-    objc_msgSend_beginGesture_(self, v6, a3, v7);
+    objc_msgSend_beginGesture_(self, v6, begin, v7);
   }
 
   return v8;
 }
 
-- (void)_handlePinch:(id)a3
+- (void)_handlePinch:(id)pinch
 {
-  if (objc_msgSend_enabled(self, a2, a3, v3))
+  if (objc_msgSend_enabled(self, a2, pinch, v3))
   {
 
-    MEMORY[0x1EEE66B58](self, sel_pinchWithGestureRecognizer_, a3, v6);
+    MEMORY[0x1EEE66B58](self, sel_pinchWithGestureRecognizer_, pinch, v6);
   }
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  if (objc_msgSend_enabled(self, a2, a3, v3))
+  if (objc_msgSend_enabled(self, a2, pan, v3))
   {
 
-    MEMORY[0x1EEE66B58](self, sel_panWithGestureRecognizer_, a3, v6);
+    MEMORY[0x1EEE66B58](self, sel_panWithGestureRecognizer_, pan, v6);
   }
 }
 
-- (void)_handleRotation:(id)a3
+- (void)_handleRotation:(id)rotation
 {
-  if (objc_msgSend_enabled(self, a2, a3, v3))
+  if (objc_msgSend_enabled(self, a2, rotation, v3))
   {
 
-    MEMORY[0x1EEE66B58](self, sel_rotateWithGestureRecognizer_, a3, v6);
+    MEMORY[0x1EEE66B58](self, sel_rotateWithGestureRecognizer_, rotation, v6);
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
-  if (objc_msgSend_enabled(self, a2, a3, v3))
+  if (objc_msgSend_enabled(self, a2, tap, v3))
   {
     v8 = objc_msgSend_delegate(self, v5, v6, v7);
 
@@ -1208,20 +1208,20 @@ LABEL_43:
   }
 }
 
-- (void)beginGesture:(id)a3
+- (void)beginGesture:(id)gesture
 {
-  if (self->_autoSwitchToFreeCamera || !objc_msgSend_pointOfView(self, a2, a3, v3))
+  if (self->_autoSwitchToFreeCamera || !objc_msgSend_pointOfView(self, a2, gesture, v3))
   {
-    objc_msgSend__switchToFreeViewCamera(self, a2, a3, v3);
+    objc_msgSend__switchToFreeViewCamera(self, a2, gesture, v3);
   }
 
-  objc_msgSend__willBeginInteraction(self, a2, a3, v3);
+  objc_msgSend__willBeginInteraction(self, a2, gesture, v3);
   self->_isDraggingWithOneFinger = 0;
   self->_lastGestureFingerCount = 0;
-  if (objc_msgSend_numberOfTouches(a3, v6, v7, v8))
+  if (objc_msgSend_numberOfTouches(gesture, v6, v7, v8))
   {
     v12 = objc_msgSend_view(self, v9, v10, v11);
-    objc_msgSend_locationInView_(a3, v13, v12, v14);
+    objc_msgSend_locationInView_(gesture, v13, v12, v14);
     v16 = v15;
     v18 = v17;
   }
@@ -1269,12 +1269,12 @@ LABEL_13:
   }
 }
 
-- (void)rotateWithGestureRecognizer:(id)a3
+- (void)rotateWithGestureRecognizer:(id)recognizer
 {
-  objc_msgSend_rotation(a3, a2, a3, v3);
+  objc_msgSend_rotation(recognizer, a2, recognizer, v3);
   v7 = v6;
   objc_msgSend__stopInertia(self, v8, v9, v10);
-  if (objc_msgSend_state(a3, v11, v12, v13) == 1)
+  if (objc_msgSend_state(recognizer, v11, v12, v13) == 1)
   {
     objc_msgSend___willChangePointOfView(self, v14, v15, v16);
   }
@@ -1287,17 +1287,17 @@ LABEL_13:
   objc_msgSend_commit(VFXTransaction, v24, v25, v26);
   v27 = v7;
   self->_lastRotationAngle = v27;
-  if (objc_msgSend_state(a3, v28, v29, v30) == 4 || objc_msgSend_state(a3, v31, v32, v33) == 3)
+  if (objc_msgSend_state(recognizer, v28, v29, v30) == 4 || objc_msgSend_state(recognizer, v31, v32, v33) == 3)
   {
 
     objc_msgSend___didChangePointOfView(self, v31, v32, v33);
   }
 }
 
-- (void)pinchWithGestureRecognizer:(id)a3
+- (void)pinchWithGestureRecognizer:(id)recognizer
 {
-  objc_msgSend__stopInertia(self, a2, a3, v3);
-  if (objc_msgSend_state(a3, v6, v7, v8) == 1)
+  objc_msgSend__stopInertia(self, a2, recognizer, v3);
+  if (objc_msgSend_state(recognizer, v6, v7, v8) == 1)
   {
     objc_msgSend___willChangePointOfView(self, v9, v10, v11);
   }
@@ -1305,42 +1305,42 @@ LABEL_13:
   objc_msgSend_begin(VFXTransaction, v9, v10, v11);
   objc_msgSend_setAnimationDuration_(VFXTransaction, v12, v13, v14, 0.0);
   v15 = fmax(self->_initialZoom, 0.001);
-  objc_msgSend_scale(a3, v16, v17, v18);
+  objc_msgSend_scale(recognizer, v16, v17, v18);
   v20 = v19 * v15;
   *&v20 = v20;
   objc_msgSend_setZoomFactor_(self, v21, v22, v23, v20);
   objc_msgSend_commit(VFXTransaction, v24, v25, v26);
-  if (objc_msgSend_state(a3, v27, v28, v29) == 4 || objc_msgSend_state(a3, v30, v31, v32) == 3)
+  if (objc_msgSend_state(recognizer, v27, v28, v29) == 4 || objc_msgSend_state(recognizer, v30, v31, v32) == 3)
   {
 
     objc_msgSend___didChangePointOfView(self, v30, v31, v32);
   }
 }
 
-- (void)panWithGestureRecognizer:(id)a3
+- (void)panWithGestureRecognizer:(id)recognizer
 {
-  v6 = objc_msgSend_numberOfTouches(a3, a2, a3, v3);
+  v6 = objc_msgSend_numberOfTouches(recognizer, a2, recognizer, v3);
   if (self->_browseMode != 2)
   {
     v10 = v6;
     v11 = objc_msgSend_view(self, v7, v8, v9);
-    objc_msgSend_locationInView_(a3, v12, v11, v13);
+    objc_msgSend_locationInView_(recognizer, v12, v11, v13);
     v15 = v14;
     v17 = v16;
     objc_msgSend__stopInertia(self, v18, v19, v20);
-    if (objc_msgSend_state(a3, v21, v22, v23) == 1)
+    if (objc_msgSend_state(recognizer, v21, v22, v23) == 1)
     {
       objc_msgSend___willChangePointOfView(self, v24, v25, v26);
     }
 
     objc_msgSend_begin(VFXTransaction, v24, v25, v26);
     objc_msgSend_setAnimationDuration_(VFXTransaction, v27, v28, v29, 0.0);
-    if (objc_msgSend_state(a3, v30, v31, v32) == 3)
+    if (objc_msgSend_state(recognizer, v30, v31, v32) == 3)
     {
       if (self->_isDraggingWithOneFinger)
       {
         v36 = objc_msgSend_view(self, v33, v34, v35);
-        objc_msgSend_velocityInView_(a3, v37, v36, v38);
+        objc_msgSend_velocityInView_(recognizer, v37, v36, v38);
         v42 = objc_msgSend_view(self, v39, v40, v41);
         if (objc_msgSend_preferredFramesPerSecond(v42, v43, v44, v45))
         {
@@ -1367,7 +1367,7 @@ LABEL_13:
         case 3:
           if (self->_lastGestureFingerCount != 3)
           {
-            objc_msgSend_beginGesture_(self, v33, a3, v35);
+            objc_msgSend_beginGesture_(self, v33, recognizer, v35);
             self->_lastGestureFingerCount = 3;
           }
 
@@ -1384,7 +1384,7 @@ LABEL_13:
         case 2:
           if (self->_lastGestureFingerCount != 2)
           {
-            objc_msgSend_beginGesture_(self, v33, a3, v35);
+            objc_msgSend_beginGesture_(self, v33, recognizer, v35);
             self->_lastGestureFingerCount = 2;
           }
 
@@ -1409,7 +1409,7 @@ LABEL_13:
 
           else
           {
-            objc_msgSend_beginGesture_(self, v33, a3, v35);
+            objc_msgSend_beginGesture_(self, v33, recognizer, v35);
             v118 = objc_msgSend_cameraController(self, v115, v116, v117);
             v122 = objc_msgSend_view(self, v119, v120, v121);
             objc_msgSend_bounds(v122, v123, v124, v125);
@@ -1462,16 +1462,16 @@ LABEL_13:
 
 - (uint64_t)worldFront
 {
-  v4 = objc_msgSend_cameraController(a1, a2, a3, a4);
+  v4 = objc_msgSend_cameraController(self, a2, a3, a4);
   v8 = objc_msgSend_pointOfView(v4, v5, v6, v7);
 
   return objc_msgSend_worldFront(v8, v9, v10, v11);
 }
 
-- (void)_startBrowsingIfNeeded:(CGPoint)a3
+- (void)_startBrowsingIfNeeded:(CGPoint)needed
 {
-  y = a3.y;
-  x = a3.x;
+  y = needed.y;
+  x = needed.x;
   objc_msgSend_begin(VFXTransaction, a2, v3, v4);
   objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10, 0.0);
   v17 = objc_msgSend_pointOfView(self, v11, v12, v13);
@@ -1496,15 +1496,15 @@ LABEL_13:
   self->_orthographicZoomFactor = 1.0;
 }
 
-- (double)_defaultTargetForWorld:(void *)a3
+- (double)_defaultTargetForWorld:(void *)world
 {
-  v6 = objc_msgSend_pointOfView(a1, a2, a3, a4);
-  objc_msgSend_worldFront(a1, v7, v8, v9);
+  v6 = objc_msgSend_pointOfView(self, a2, world, a4);
+  objc_msgSend_worldFront(self, v7, v8, v9);
   v65 = v10;
   v14 = objc_msgSend_presentationObject(v6, v11, v12, v13);
   objc_msgSend_convertPosition_toNode_(v14, v15, 0, v16, 0.0);
   v66 = v17;
-  objc_msgSend__worldBoundingSphere(a1, v18, v19, v20);
+  objc_msgSend__worldBoundingSphere(self, v18, v19, v20);
   v62 = *v21.i64;
   v63 = vsubq_f32(v21, v66);
   v25 = objc_msgSend_camera(v6, v22, v23, v24);
@@ -1524,7 +1524,7 @@ LABEL_13:
   v39 = objc_msgSend_camera(v6, v31, v32, v33);
   objc_msgSend_zFar(v39, v40, v41, v42);
   *&v64 = vmlaq_n_f32(v66, v65, v43).u64[0];
-  v47 = objc_msgSend_rootNode(a3, v44, v45, v46);
+  v47 = objc_msgSend_rootNode(world, v44, v45, v46);
   v50 = objc_msgSend_hitTestWithSegmentFromPoint_toPoint_options_(v47, v48, 0, v49, *v66.i64, v64);
   if (objc_msgSend_count(v50, v51, v52, v53))
   {
@@ -1535,7 +1535,7 @@ LABEL_13:
 
   else
   {
-    objc_msgSend__targetDistance(a1, v54, v55, v56);
+    objc_msgSend__targetDistance(self, v54, v55, v56);
     *&result = vmlaq_n_f32(v66, v65, v61).u64[0];
   }
 
@@ -1544,8 +1544,8 @@ LABEL_13:
 
 - (uint64_t)cameraAutomaticTargetPoint
 {
-  objc_msgSend__computeAutomaticTargetPointIfNeeded(a1, a2, a3, a4);
-  v8 = objc_msgSend_cameraController(a1, v5, v6, v7);
+  objc_msgSend__computeAutomaticTargetPointIfNeeded(self, a2, a3, a4);
+  v8 = objc_msgSend_cameraController(self, v5, v6, v7);
 
   return objc_msgSend_target(v8, v9, v10, v11);
 }
@@ -1600,13 +1600,13 @@ LABEL_13:
 - (__n128)_worldBoundingSphere
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  if ((a1[5].i8[11] & 1) == 0)
+  if ((self[5].i8[11] & 1) == 0)
   {
-    v5 = objc_msgSend_view(a1, a2, a3, a4);
+    v5 = objc_msgSend_view(self, a2, a3, a4);
     v9 = objc_msgSend_world(v5, v6, v7, v8);
     if (objc_msgSend_rootNode(v9, v10, v11, v12))
     {
-      v16 = objc_msgSend_view(a1, v13, v14, v15);
+      v16 = objc_msgSend_view(self, v13, v14, v15);
       v20 = objc_msgSend_world(v16, v17, v18, v19);
       v32[0] = objc_msgSend_rootNode(v20, v21, v22, v23);
       v25 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v32, 1);
@@ -1614,32 +1614,32 @@ LABEL_13:
       v28.i32[0] = *"(knN";
       v30 = v29;
       v30.i32[3] = 1120403456;
-      a1[7] = vbslq_s8(vdupq_lane_s32(*&vmvnq_s8(vcgeq_f32(vdupq_laneq_s32(v29, 3), v28)), 0), v29, v30);
-      a1[5].i8[11] = 1;
+      self[7] = vbslq_s8(vdupq_lane_s32(*&vmvnq_s8(vcgeq_f32(vdupq_laneq_s32(v29, 3), v28)), 0), v29, v30);
+      self[5].i8[11] = 1;
     }
   }
 
-  return a1[7];
+  return self[7];
 }
 
-- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__CFXNode *)a3 sphere:(CFXSphere *)a4
+- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__CFXNode *)node sphere:(CFXSphere *)sphere
 {
-  *a4 = xmmword_1AFE21260;
+  *sphere = xmmword_1AFE21260;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1AF36D7D8;
   v6[3] = &unk_1E7A7D938;
-  v6[4] = a4;
-  sub_1AF1B94AC(a3, v6);
-  return *(a4 + 3) >= 0.0;
+  v6[4] = sphere;
+  sub_1AF1B94AC(node, v6);
+  return *(sphere + 3) >= 0.0;
 }
 
-- (void)_computeStickyAxisIfNeeded:(CGPoint)a3
+- (void)_computeStickyAxisIfNeeded:(CGPoint)needed
 {
   if (self->_stickyAxis.stickyMoveEnabled && !*&self->_anon_101[15])
   {
-    y = a3.y;
-    v4 = vcvt_f32_f64(vaddq_f64(a3, vcvtq_f64_f32(*&self->_anon_101[7])));
+    y = needed.y;
+    v4 = vcvt_f32_f64(vaddq_f64(needed, vcvtq_f64_f32(*&self->_anon_101[7])));
     *&self->_anon_101[7] = v4;
     if (vaddv_f32(vmul_f32(v4, v4)) > 1.0)
     {
@@ -1687,7 +1687,7 @@ LABEL_10:
   return result;
 }
 
-- (void)_setPointOfViewOrthographicScale:(float)a3
+- (void)_setPointOfViewOrthographicScale:(float)scale
 {
   v7 = objc_msgSend_cameraController(self, a2, v3, v4);
   v11 = objc_msgSend_pointOfView(v7, v8, v9, v10);
@@ -1697,7 +1697,7 @@ LABEL_10:
   v27 = objc_msgSend_light(v23, v24, v25, v26);
   if (v15 || (v15 = v27) != 0)
   {
-    *&v31 = a3;
+    *&v31 = scale;
 
     objc_msgSend_setOrthographicScale_(v15, v28, v29, v30, v31);
   }
@@ -1725,10 +1725,10 @@ LABEL_10:
   return v25;
 }
 
-- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)a3
+- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v6 = objc_msgSend_view(self, a2, v3, v4);
   objc_msgSend_bounds(v6, v7, v8, v9);
   v10.f64[0] = x;
@@ -1794,10 +1794,10 @@ LABEL_10:
   }
 }
 
-- (void)_translateToViewPoint:(CGPoint)a3
+- (void)_translateToViewPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v6 = objc_msgSend_view(self, a2, v3, v4);
   objc_msgSend_bounds(v6, v7, v8, v9);
   v11.f64[1] = v10;

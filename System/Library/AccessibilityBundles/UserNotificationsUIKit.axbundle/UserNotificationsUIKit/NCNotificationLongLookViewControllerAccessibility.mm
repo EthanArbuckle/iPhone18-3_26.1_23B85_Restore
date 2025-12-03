@@ -1,45 +1,45 @@
 @interface NCNotificationLongLookViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (Class)_axNotificationBannerWindowClass;
 - (Class)_axPagedScrollViewClass;
 - (Class)_ax_UIInteractiveHighlightContentViewClass;
 - (id)_axLongLookView;
-- (id)_axModalAncestorsForLongLookView:(id)a3;
+- (id)_axModalAncestorsForLongLookView:(id)view;
 @end
 
 @implementation NCNotificationLongLookViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SBFPagedScrollView"];
-    [v3 validateClass:@"SBBannerWindow"];
+    [validationsCopy validateClass:@"SBFPagedScrollView"];
+    [validationsCopy validateClass:@"SBBannerWindow"];
   }
 
-  [v3 validateClass:@"_UIInteractiveHighlightContentView"];
-  [v3 validateClass:@"NCNotificationLongLookViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"_UIInteractiveHighlightContentView"];
+  [validationsCopy validateClass:@"NCNotificationLongLookViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (id)_axLongLookView
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
+  view = [v2 view];
 
-  return v3;
+  return view;
 }
 
-- (id)_axModalAncestorsForLongLookView:(id)a3
+- (id)_axModalAncestorsForLongLookView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v6 = [v4 _accessibilityWindow];
+  _accessibilityWindow = [viewCopy _accessibilityWindow];
   [(NCNotificationLongLookViewControllerAccessibility *)self _axNotificationBannerWindowClass];
   if (objc_opt_isKindOfClass())
   {
-    [v5 addObject:v6];
+    [v5 addObject:_accessibilityWindow];
   }
 
   v12[0] = MEMORY[0x29EDCA5F8];
@@ -49,7 +49,7 @@
   v12[4] = self;
   v7 = v5;
   v13 = v7;
-  v8 = [v4 _accessibilityFindViewAncestor:v12 startWithSelf:1];
+  v8 = [viewCopy _accessibilityFindViewAncestor:v12 startWithSelf:1];
   v9 = v13;
   v10 = v7;
 

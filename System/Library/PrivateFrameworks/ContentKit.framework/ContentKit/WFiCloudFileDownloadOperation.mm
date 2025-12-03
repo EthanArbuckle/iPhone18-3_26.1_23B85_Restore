@@ -1,71 +1,71 @@
 @interface WFiCloudFileDownloadOperation
-- (WFiCloudFileDownloadOperation)initWithFileURL:(id)a3 retrieveFolderContents:(BOOL)a4 progress:(id)a5;
-- (void)downloadDirectoryAtURL:(id)a3 completionHandler:(id)a4;
-- (void)downloadItemAtFileURL:(id)a3 ofSize:(id)a4 fileIsUbiquitous:(BOOL)a5 completionHandler:(id)a6;
-- (void)finishRunningWithFiles:(id)a3 error:(id)a4;
-- (void)getFileInfoForURL:(id)a3 fileIsUbiquitous:(BOOL *)a4 fileIsDirectory:(BOOL *)a5 fileSize:(id *)a6 error:(id *)a7;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (WFiCloudFileDownloadOperation)initWithFileURL:(id)l retrieveFolderContents:(BOOL)contents progress:(id)progress;
+- (void)downloadDirectoryAtURL:(id)l completionHandler:(id)handler;
+- (void)downloadItemAtFileURL:(id)l ofSize:(id)size fileIsUbiquitous:(BOOL)ubiquitous completionHandler:(id)handler;
+- (void)finishRunningWithFiles:(id)files error:(id)error;
+- (void)getFileInfoForURL:(id)l fileIsUbiquitous:(BOOL *)ubiquitous fileIsDirectory:(BOOL *)directory fileSize:(id *)size error:(id *)error;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation WFiCloudFileDownloadOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
   [(WFiCloudFileDownloadOperation *)self willChangeValueForKey:@"isFinished"];
-  self->_finished = a3;
+  self->_finished = finished;
 
   [(WFiCloudFileDownloadOperation *)self didChangeValueForKey:@"isFinished"];
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
   [(WFiCloudFileDownloadOperation *)self willChangeValueForKey:@"isExecuting"];
-  self->_executing = a3;
+  self->_executing = executing;
 
   [(WFiCloudFileDownloadOperation *)self didChangeValueForKey:@"isExecuting"];
 }
 
-- (void)finishRunningWithFiles:(id)a3 error:(id)a4
+- (void)finishRunningWithFiles:(id)files error:(id)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!(v6 | v7))
+  filesCopy = files;
+  errorCopy = error;
+  if (!(filesCopy | errorCopy))
   {
-    v8 = [(WFiCloudFileDownloadOperation *)self fileURL];
+    fileURL = [(WFiCloudFileDownloadOperation *)self fileURL];
     v15[0] = *MEMORY[0x277CBE930];
     v9 = v15[0];
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v11 = [v8 resourceValuesForKeys:v10 error:0];
-    v7 = [v11 objectForKey:v9];
+    v11 = [fileURL resourceValuesForKeys:v10 error:0];
+    errorCopy = [v11 objectForKey:v9];
   }
 
   downloadError = self->_downloadError;
-  self->_downloadError = v7;
-  v13 = v7;
+  self->_downloadError = errorCopy;
+  v13 = errorCopy;
 
   downloadedFiles = self->_downloadedFiles;
-  self->_downloadedFiles = v6;
+  self->_downloadedFiles = filesCopy;
 
   [(WFiCloudFileDownloadOperation *)self setExecuting:0];
   [(WFiCloudFileDownloadOperation *)self setFinished:1];
 }
 
-- (void)downloadDirectoryAtURL:(id)a3 completionHandler:(id)a4
+- (void)downloadDirectoryAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 wf_fileSize];
+  handlerCopy = handler;
+  lCopy = l;
+  wf_fileSize = [lCopy wf_fileSize];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__WFiCloudFileDownloadOperation_downloadDirectoryAtURL_completionHandler___block_invoke;
   v10[3] = &unk_278348570;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(WFiCloudFileDownloadOperation *)self downloadItemAtFileURL:v7 ofSize:v8 fileIsUbiquitous:1 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(WFiCloudFileDownloadOperation *)self downloadItemAtFileURL:lCopy ofSize:wf_fileSize fileIsUbiquitous:1 completionHandler:v10];
 }
 
 void __74__WFiCloudFileDownloadOperation_downloadDirectoryAtURL_completionHandler___block_invoke(uint64_t a1)
@@ -178,18 +178,18 @@ uint64_t __74__WFiCloudFileDownloadOperation_downloadDirectoryAtURL_completionHa
   return v13 & 1;
 }
 
-- (void)downloadItemAtFileURL:(id)a3 ofSize:(id)a4 fileIsUbiquitous:(BOOL)a5 completionHandler:(id)a6
+- (void)downloadItemAtFileURL:(id)l ofSize:(id)size fileIsUbiquitous:(BOOL)ubiquitous completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(WFiCloudFileDownloadOperation *)self progress];
-  [v12 setTotalUnitCount:{objc_msgSend(v12, "totalUnitCount") + objc_msgSend(v9, "longLongValue")}];
+  sizeCopy = size;
+  handlerCopy = handler;
+  lCopy = l;
+  progress = [(WFiCloudFileDownloadOperation *)self progress];
+  [progress setTotalUnitCount:{objc_msgSend(progress, "totalUnitCount") + objc_msgSend(sizeCopy, "longLongValue")}];
 
-  v13 = [MEMORY[0x277CCA9E0] readingIntentWithURL:v11 options:0];
+  v13 = [MEMORY[0x277CCA9E0] readingIntentWithURL:lCopy options:0];
 
-  v14 = [(WFiCloudFileDownloadOperation *)self fileCoordinator];
+  fileCoordinator = [(WFiCloudFileDownloadOperation *)self fileCoordinator];
   v25[0] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v16 = objc_opt_new();
@@ -198,13 +198,13 @@ uint64_t __74__WFiCloudFileDownloadOperation_downloadDirectoryAtURL_completionHa
   v20[2] = __97__WFiCloudFileDownloadOperation_downloadItemAtFileURL_ofSize_fileIsUbiquitous_completionHandler___block_invoke;
   v20[3] = &unk_278345870;
   v21 = v13;
-  v22 = self;
-  v23 = v9;
-  v24 = v10;
-  v17 = v9;
-  v18 = v10;
+  selfCopy = self;
+  v23 = sizeCopy;
+  v24 = handlerCopy;
+  v17 = sizeCopy;
+  v18 = handlerCopy;
   v19 = v13;
-  [v14 coordinateAccessWithIntents:v15 queue:v16 byAccessor:v20];
+  [fileCoordinator coordinateAccessWithIntents:v15 queue:v16 byAccessor:v20];
 }
 
 void __97__WFiCloudFileDownloadOperation_downloadItemAtFileURL_ofSize_fileIsUbiquitous_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -227,19 +227,19 @@ void __97__WFiCloudFileDownloadOperation_downloadItemAtFileURL_ofSize_fileIsUbiq
   }
 }
 
-- (void)getFileInfoForURL:(id)a3 fileIsUbiquitous:(BOOL *)a4 fileIsDirectory:(BOOL *)a5 fileSize:(id *)a6 error:(id *)a7
+- (void)getFileInfoForURL:(id)l fileIsUbiquitous:(BOOL *)ubiquitous fileIsDirectory:(BOOL *)directory fileSize:(id *)size error:(id *)error
 {
-  v12 = a3;
-  v13 = [(WFiCloudFileDownloadOperation *)self fileCoordinator];
+  lCopy = l;
+  fileCoordinator = [(WFiCloudFileDownloadOperation *)self fileCoordinator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_fileIsDirectory_fileSize_error___block_invoke;
   v14[3] = &__block_descriptor_64_e15_v16__0__NSURL_8l;
-  v14[4] = a7;
-  v14[5] = a4;
-  v14[6] = a5;
-  v14[7] = a6;
-  [v13 coordinateReadingItemAtURL:v12 options:4 error:a7 byAccessor:v14];
+  v14[4] = error;
+  v14[5] = ubiquitous;
+  v14[6] = directory;
+  v14[7] = size;
+  [fileCoordinator coordinateReadingItemAtURL:lCopy options:4 error:error byAccessor:v14];
 }
 
 void __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_fileIsDirectory_fileSize_error___block_invoke(uint64_t a1, void *a2)
@@ -285,10 +285,10 @@ void __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_file
 {
   [(WFiCloudFileDownloadOperation *)self setExecuting:1];
   v17 = 0;
-  v3 = [(WFiCloudFileDownloadOperation *)self fileURL];
+  fileURL = [(WFiCloudFileDownloadOperation *)self fileURL];
   v16 = 0;
   v15 = 0;
-  [(WFiCloudFileDownloadOperation *)self getFileInfoForURL:v3 fileIsUbiquitous:&v17 + 1 fileIsDirectory:&v17 fileSize:&v16 error:&v15];
+  [(WFiCloudFileDownloadOperation *)self getFileInfoForURL:fileURL fileIsUbiquitous:&v17 + 1 fileIsDirectory:&v17 fileSize:&v16 error:&v15];
   v4 = v16;
   v5 = v15;
 
@@ -299,13 +299,13 @@ void __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_file
     {
       if ([(WFiCloudFileDownloadOperation *)self retrieveFolderContents])
       {
-        v7 = [(WFiCloudFileDownloadOperation *)self fileURL];
+        fileURL2 = [(WFiCloudFileDownloadOperation *)self fileURL];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __38__WFiCloudFileDownloadOperation_start__block_invoke;
         v14[3] = &unk_2783496F0;
         v14[4] = self;
-        [(WFiCloudFileDownloadOperation *)self downloadDirectoryAtURL:v7 completionHandler:v14];
+        [(WFiCloudFileDownloadOperation *)self downloadDirectoryAtURL:fileURL2 completionHandler:v14];
         goto LABEL_12;
       }
 
@@ -314,10 +314,10 @@ void __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_file
 
     if ((v6 & 1) != 0 && [(WFiCloudFileDownloadOperation *)self retrieveFolderContents])
     {
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      v9 = [(WFiCloudFileDownloadOperation *)self fileURL];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL3 = [(WFiCloudFileDownloadOperation *)self fileURL];
       v13 = 0;
-      v10 = [v8 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v13];
+      v10 = [defaultManager contentsOfDirectoryAtURL:fileURL3 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v13];
       v5 = v13;
       v11 = [v10 if_compactMap:&__block_literal_global_4419];
 
@@ -325,13 +325,13 @@ void __99__WFiCloudFileDownloadOperation_getFileInfoForURL_fileIsUbiquitous_file
       goto LABEL_13;
     }
 
-    v7 = [(WFiCloudFileDownloadOperation *)self fileURL];
+    fileURL2 = [(WFiCloudFileDownloadOperation *)self fileURL];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __38__WFiCloudFileDownloadOperation_start__block_invoke_3;
     v12[3] = &unk_278345828;
     v12[4] = self;
-    [(WFiCloudFileDownloadOperation *)self downloadItemAtFileURL:v7 ofSize:v4 fileIsUbiquitous:HIBYTE(v17) completionHandler:v12];
+    [(WFiCloudFileDownloadOperation *)self downloadItemAtFileURL:fileURL2 ofSize:v4 fileIsUbiquitous:HIBYTE(v17) completionHandler:v12];
 LABEL_12:
 
     v5 = 0;
@@ -364,14 +364,14 @@ void __38__WFiCloudFileDownloadOperation_start__block_invoke_3(uint64_t a1, void
   }
 }
 
-- (WFiCloudFileDownloadOperation)initWithFileURL:(id)a3 retrieveFolderContents:(BOOL)a4 progress:(id)a5
+- (WFiCloudFileDownloadOperation)initWithFileURL:(id)l retrieveFolderContents:(BOOL)contents progress:(id)progress
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  lCopy = l;
+  progressCopy = progress;
+  if (!lCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFiCloudFileDownloadOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFiCloudFileDownloadOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
   }
 
   v19.receiver = self;
@@ -380,13 +380,13 @@ void __38__WFiCloudFileDownloadOperation_start__block_invoke_3(uint64_t a1, void
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fileURL, a3);
+    objc_storeStrong(&v12->_fileURL, l);
     v14 = objc_opt_new();
     fileCoordinator = v13->_fileCoordinator;
     v13->_fileCoordinator = v14;
 
-    objc_storeStrong(&v13->_progress, a5);
-    v13->_retrieveFolderContents = a4;
+    objc_storeStrong(&v13->_progress, progress);
+    v13->_retrieveFolderContents = contents;
     v16 = v13;
   }
 

@@ -1,26 +1,26 @@
 @interface FUPlaneTrackerAnnotationLayer
-+ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5;
++ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage;
 - (CALayer)planeImageLayer;
 - (CLLocationCoordinate2D)currentLocation;
 - (CLLocationCoordinate2D)endLocation;
 - (CLLocationCoordinate2D)startLocation;
 - (FUPlaneTrackerAnnotationLayer)init;
-- (double)defaultHeadingForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5;
-- (void)setPlaneImage:(id)a3;
-- (void)updatePlaneStateForProgress:(double)a3;
+- (double)defaultHeadingForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage;
+- (void)setPlaneImage:(id)image;
+- (void)updatePlaneStateForProgress:(double)progress;
 @end
 
 @implementation FUPlaneTrackerAnnotationLayer
 
-- (void)setPlaneImage:(id)a3
+- (void)setPlaneImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   v6 = v5;
-  [v4 size];
+  [imageCopy size];
   v8 = v7;
-  v13 = [(FUPlaneTrackerAnnotationLayer *)self planeImageLayer];
-  [v13 setBounds:{0.0, 0.0, v6, v8}];
+  planeImageLayer = [(FUPlaneTrackerAnnotationLayer *)self planeImageLayer];
+  [planeImageLayer setBounds:{0.0, 0.0, v6, v8}];
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
   v15.size.width = v6;
@@ -30,15 +30,15 @@
   v16.origin.y = 0.0;
   v16.size.width = v6;
   v16.size.height = v8;
-  [v13 setPosition:{MidX, CGRectGetMidY(v16)}];
+  [planeImageLayer setPosition:{MidX, CGRectGetMidY(v16)}];
   v10 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [v10 setFrame:{0.0, 0.0, v6, v8}];
-  v11 = [v4 CGImage];
+  cGImage = [imageCopy CGImage];
 
-  [v10 setContents:v11];
-  [v13 setMask:v10];
-  v12 = [MEMORY[0x277D75348] whiteColor];
-  [v13 setBackgroundColor:{objc_msgSend(v12, "CGColor")}];
+  [v10 setContents:cGImage];
+  [planeImageLayer setMask:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [planeImageLayer setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
 
   [(FUPlaneTrackerAnnotationLayer *)self setBounds:0.0, 0.0, v6, v8];
 }
@@ -50,15 +50,15 @@
   v2 = [(FUPlaneTrackerAnnotationLayer *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CD9ED0] layer];
-    [(FUPlaneTrackerAnnotationLayer *)v2 setPlaneImageLayer:v3];
-    [(FUPlaneTrackerAnnotationLayer *)v2 addSublayer:v3];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [(FUPlaneTrackerAnnotationLayer *)v2 setPlaneImageLayer:layer];
+    [(FUPlaneTrackerAnnotationLayer *)v2 addSublayer:layer];
   }
 
   return v2;
 }
 
-- (void)updatePlaneStateForProgress:(double)a3
+- (void)updatePlaneStateForProgress:(double)progress
 {
   [(FUPlaneTrackerAnnotationLayer *)self setCurrentProgress:?];
   [MEMORY[0x277CD9FF0] begin];
@@ -68,21 +68,21 @@
   v7 = v6;
   v9 = v8;
   [(FUPlaneTrackerAnnotationLayer *)self endLocation];
-  [v5 geodesicLocationForStartPosition:v7 endPosition:v9 positionPercentage:{v10, v11, a3}];
+  [v5 geodesicLocationForStartPosition:v7 endPosition:v9 positionPercentage:{v10, v11, progress}];
   v13 = v12;
   v15 = v14;
-  v16 = [(FUPlaneTrackerAnnotationLayer *)self delegate];
-  [v16 setCoordinate:{v13, v15}];
+  delegate = [(FUPlaneTrackerAnnotationLayer *)self delegate];
+  [delegate setCoordinate:{v13, v15}];
 
   [(FUPlaneTrackerAnnotationLayer *)self startLocation];
   v18 = v17;
   v20 = v19;
   [(FUPlaneTrackerAnnotationLayer *)self endLocation];
-  [(FUPlaneTrackerAnnotationLayer *)self defaultHeadingForStartPosition:v18 endPosition:v20 positionPercentage:v21, v22, a3];
+  [(FUPlaneTrackerAnnotationLayer *)self defaultHeadingForStartPosition:v18 endPosition:v20 positionPercentage:v21, v22, progress];
   CGAffineTransformMakeRotation(&v26, v23 * -0.0174532925);
-  v24 = [(FUPlaneTrackerAnnotationLayer *)self planeImageLayer];
+  planeImageLayer = [(FUPlaneTrackerAnnotationLayer *)self planeImageLayer];
   v25 = v26;
-  [v24 setAffineTransform:&v25];
+  [planeImageLayer setAffineTransform:&v25];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -104,20 +104,20 @@
   return result;
 }
 
-+ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5
++ (CLLocationCoordinate2D)geodesicLocationForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage
 {
-  v6 = a4.latitude * 0.0174532925;
-  v7 = a3.longitude * 0.0174532925;
-  v8 = a4.longitude * 0.0174532925;
-  v27 = a4.longitude * 0.0174532925;
-  v9 = __sincos_stret(a3.latitude * 0.0174532925);
+  v6 = endPosition.latitude * 0.0174532925;
+  v7 = position.longitude * 0.0174532925;
+  v8 = endPosition.longitude * 0.0174532925;
+  v27 = endPosition.longitude * 0.0174532925;
+  v9 = __sincos_stret(position.latitude * 0.0174532925);
   v10 = __sincos_stret(v6);
   v11 = cos(v7 - v8);
   v12 = acos(v9.__cosval * v10.__cosval * v11 + v9.__sinval * v10.__sinval);
-  v13 = sin((1.0 - a5) * v12);
+  v13 = sin((1.0 - percentage) * v12);
   v14 = sin(v12);
   v15 = v13 / v14;
-  v16 = sin(v12 * a5) / v14;
+  v16 = sin(v12 * percentage) / v14;
   v17 = __sincos_stret(v7);
   v18 = __sincos_stret(v27);
   v19 = v18.__cosval * (v10.__cosval * v16) + v9.__cosval * v15 * v17.__cosval;
@@ -142,15 +142,15 @@
   return result;
 }
 
-- (double)defaultHeadingForStartPosition:(CLLocationCoordinate2D)a3 endPosition:(CLLocationCoordinate2D)a4 positionPercentage:(double)a5
+- (double)defaultHeadingForStartPosition:(CLLocationCoordinate2D)position endPosition:(CLLocationCoordinate2D)endPosition positionPercentage:(double)percentage
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3.longitude;
-  v8 = a3.latitude;
-  if (a5 <= 0.99)
+  longitude = endPosition.longitude;
+  latitude = endPosition.latitude;
+  v7 = position.longitude;
+  v8 = position.latitude;
+  if (percentage <= 0.99)
   {
-    v9 = a5 + 0.01;
+    v9 = percentage + 0.01;
   }
 
   else
@@ -158,17 +158,17 @@
     v9 = 1.0;
   }
 
-  if (a5 <= 0.99)
+  if (percentage <= 0.99)
   {
-    v10 = a5;
+    percentageCopy = percentage;
   }
 
   else
   {
-    v10 = 0.99;
+    percentageCopy = 0.99;
   }
 
-  [objc_opt_class() geodesicLocationForStartPosition:a3.latitude endPosition:a3.longitude positionPercentage:{a4.latitude, a4.longitude, v10}];
+  [objc_opt_class() geodesicLocationForStartPosition:position.latitude endPosition:position.longitude positionPercentage:{endPosition.latitude, endPosition.longitude, percentageCopy}];
   v11 = MKMapPointForCoordinate(v17);
   [objc_opt_class() geodesicLocationForStartPosition:v8 endPosition:v7 positionPercentage:{latitude, longitude, v9}];
   v12 = MKMapPointForCoordinate(v18);

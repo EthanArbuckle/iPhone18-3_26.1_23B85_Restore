@@ -1,8 +1,8 @@
 @interface ACDPairedDeviceAccountCache
 + (ACDPairedDeviceAccountCache)sharedInstance;
 - (ACDPairedDeviceAccountCache)init;
-- (void)_didFetchAccounts:(id)a3 error:(id)a4;
-- (void)accountsFromRemoteDeviceProxy:(id)a3 ignoreCache:(BOOL)a4 options:(id)a5 completion:(id)a6;
+- (void)_didFetchAccounts:(id)accounts error:(id)error;
+- (void)accountsFromRemoteDeviceProxy:(id)proxy ignoreCache:(BOOL)cache options:(id)options completion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -52,24 +52,24 @@ uint64_t __45__ACDPairedDeviceAccountCache_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)accountsFromRemoteDeviceProxy:(id)a3 ignoreCache:(BOOL)a4 options:(id)a5 completion:(id)a6
+- (void)accountsFromRemoteDeviceProxy:(id)proxy ignoreCache:(BOOL)cache options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  optionsCopy = options;
+  completionCopy = completion;
   synchronizationQueue = self->_synchronizationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__ACDPairedDeviceAccountCache_accountsFromRemoteDeviceProxy_ignoreCache_options_completion___block_invoke;
   block[3] = &unk_27848CE80;
-  v21 = a4;
+  cacheCopy = cache;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = proxyCopy;
+  v19 = optionsCopy;
+  v20 = completionCopy;
+  v14 = optionsCopy;
+  v15 = proxyCopy;
+  v16 = completionCopy;
   dispatch_async(synchronizationQueue, block);
 }
 
@@ -150,19 +150,19 @@ void __92__ACDPairedDeviceAccountCache_accountsFromRemoteDeviceProxy_ignoreCache
   [v6 _didFetchAccounts:v7 error:v5];
 }
 
-- (void)_didFetchAccounts:(id)a3 error:(id)a4
+- (void)_didFetchAccounts:(id)accounts error:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountsCopy = accounts;
+  errorCopy = error;
   v8 = _ACDLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(accountsCopy, "count")}];
     *buf = 138412546;
     *&buf[4] = v9;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = errorCopy;
     _os_log_impl(&dword_221D2F000, v8, OS_LOG_TYPE_DEFAULT, "fetched accounts.count %@ error %@", buf, 0x16u);
   }
 
@@ -178,7 +178,7 @@ void __92__ACDPairedDeviceAccountCache_accountsFromRemoteDeviceProxy_ignoreCache
   block[2] = __55__ACDPairedDeviceAccountCache__didFetchAccounts_error___block_invoke;
   block[3] = &unk_27848BF28;
   block[4] = self;
-  v11 = v6;
+  v11 = accountsCopy;
   v25 = v11;
   v26 = buf;
   dispatch_sync(synchronizationQueue, block);
@@ -213,7 +213,7 @@ void __92__ACDPairedDeviceAccountCache_accountsFromRemoteDeviceProxy_ignoreCache
         v18 = *(*(&v20 + 1) + 8 * v17);
         if (v18)
         {
-          (*(v18 + 16))(v18, v11, v7);
+          (*(v18 + 16))(v18, v11, errorCopy);
         }
 
         ++v17;

@@ -14,9 +14,9 @@
   }
 
   v5 = _MergedGlobals_642;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [v4 lowercaseString];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:lowercaseString];
 
   return v7;
 }

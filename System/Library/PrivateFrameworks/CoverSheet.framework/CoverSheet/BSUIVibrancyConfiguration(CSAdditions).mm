@@ -6,111 +6,111 @@
 
 - (id)cs_adjustedForReducedBacklight
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = +[CSLockScreenDomain rootSettings];
-  v3 = [v2 vibrancySettings];
+  vibrancySettings = [v2 vibrancySettings];
 
-  if (([v3 boostEnabled] & 1) == 0)
+  if (([vibrancySettings boostEnabled] & 1) == 0)
   {
-    v27 = v1;
+    v27 = selfCopy;
     goto LABEL_24;
   }
 
-  v4 = [v1 color];
-  if ([v1 backgroundType] == 1)
+  color = [selfCopy color];
+  if ([selfCopy backgroundType] == 1)
   {
-    v5 = [v1 copyWithWithBackgroundType:0];
+    v5 = [selfCopy copyWithWithBackgroundType:0];
 
-    v1 = v5;
+    selfCopy = v5;
   }
 
-  if (![v1 effectType])
+  if (![selfCopy effectType])
   {
-    [v3 naturalEffectTypeStrength];
-    v6 = [v4 colorWithAlphaComponent:{fmax(fmin(1.0 - v28, 1.0), 0.0)}];
-    v29 = [v1 copyWithEffectType:0 color:v6];
+    [vibrancySettings naturalEffectTypeStrength];
+    whiteColor = [color colorWithAlphaComponent:{fmax(fmin(1.0 - v28, 1.0), 0.0)}];
+    v29 = [selfCopy copyWithEffectType:0 color:whiteColor];
 LABEL_13:
-    v9 = v1;
-    v1 = v29;
+    v9 = selfCopy;
+    selfCopy = v29;
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if ([v1 effectType] == 1)
+  if ([selfCopy effectType] == 1)
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    v7 = [v1 backgroundType];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    backgroundType = [selfCopy backgroundType];
     v8 = 0.2;
-    if (v7)
+    if (backgroundType)
     {
       v8 = 0.0;
     }
 
     v9 = [MEMORY[0x277D75348] colorWithWhite:v8 alpha:1.0];
-    v10 = [v1 effectValues];
-    v11 = [v10 transformColor:v9 withVibrantMask:v6];
+    effectValues = [selfCopy effectValues];
+    v11 = [effectValues transformColor:v9 withVibrantMask:whiteColor];
 
     [v11 _luminanceDifferenceFromColor:v9];
     v13 = v12;
-    [v3 minimumLuminanceDifference];
+    [vibrancySettings minimumLuminanceDifference];
     if (v13 < v14)
     {
       v15 = v14;
-      v16 = [v4 colorWithAlphaComponent:0.0];
-      v17 = [v1 copyWithEffectType:1 color:v16];
+      v16 = [color colorWithAlphaComponent:0.0];
+      v17 = [selfCopy copyWithEffectType:1 color:v16];
 
-      v18 = [v17 effectValues];
-      v19 = [v18 transformColor:v9 withVibrantMask:v6];
+      effectValues2 = [v17 effectValues];
+      v19 = [effectValues2 transformColor:v9 withVibrantMask:whiteColor];
 
       [v19 _luminanceDifferenceFromColor:v9];
       if (v20 <= v15)
       {
         v24 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
-        v25 = v1;
+        v25 = selfCopy;
         v26 = 2;
       }
 
       else
       {
         BSUIVibrancyMapBias();
-        [v4 alphaComponent];
-        v21 = [v17 color];
-        [v21 alphaComponent];
+        [color alphaComponent];
+        color2 = [v17 color];
+        [color2 alphaComponent];
         BSFloatByLinearlyInterpolatingFloats();
         v23 = v22;
 
-        v24 = [v4 colorWithAlphaComponent:v23];
-        v25 = v1;
+        v24 = [color colorWithAlphaComponent:v23];
+        v25 = selfCopy;
         v26 = 1;
       }
 
       v31 = [v25 copyWithEffectType:v26 color:v24];
 
-      v1 = v31;
+      selfCopy = v31;
     }
 
     goto LABEL_21;
   }
 
-  if ([v1 effectType] != 3 || !objc_msgSend(MEMORY[0x277CF0DA0], "instancesRespondToSelector:", sel_copyWithLuminanceReduced_))
+  if ([selfCopy effectType] != 3 || !objc_msgSend(MEMORY[0x277CF0DA0], "instancesRespondToSelector:", sel_copyWithLuminanceReduced_))
   {
     goto LABEL_23;
   }
 
-  v30 = [v1 alternativeVibrancyEffectLUT];
-  v6 = [v30 copyWithLuminanceReduced:1];
+  alternativeVibrancyEffectLUT = [selfCopy alternativeVibrancyEffectLUT];
+  whiteColor = [alternativeVibrancyEffectLUT copyWithLuminanceReduced:1];
 
   if (objc_opt_respondsToSelector())
   {
-    v29 = [v1 copyWithAlternativeVibrancyEffectLUT:v6];
+    v29 = [selfCopy copyWithAlternativeVibrancyEffectLUT:whiteColor];
     goto LABEL_13;
   }
 
 LABEL_22:
 
 LABEL_23:
-  v27 = v1;
+  v27 = selfCopy;
 
 LABEL_24:
 

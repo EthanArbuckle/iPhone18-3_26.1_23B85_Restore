@@ -1,13 +1,13 @@
 @interface _UICompoundEffect
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 changedTraits:(id)a5 usage:(int64_t)a6;
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (_UICompoundEffect)initWithCoder:(id)a3;
-- (_UICompoundEffect)initWithEffects:(id)a3;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment changedTraits:(id)traits usage:(int64_t)usage;
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage;
+- (BOOL)isEqual:(id)equal;
+- (_UICompoundEffect)initWithCoder:(id)coder;
+- (_UICompoundEffect)initWithEffects:(id)effects;
 - (id)description;
 - (int64_t)_expectedUsage;
-- (void)_enumerateEffects:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateEffects:(id)effects;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICompoundEffect
@@ -29,18 +29,18 @@
   return v2;
 }
 
-- (_UICompoundEffect)initWithEffects:(id)a3
+- (_UICompoundEffect)initWithEffects:(id)effects
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  effectsCopy = effects;
   v18.receiver = self;
   v18.super_class = _UICompoundEffect;
   v5 = [(_UICompoundEffect *)&v18 init];
   if (v5)
   {
-    v17 = v4;
-    v6 = v4;
-    v7 = [MEMORY[0x1E695DF70] array];
+    v17 = effectsCopy;
+    v6 = effectsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -66,7 +66,7 @@
           v19[1] = 3221225472;
           v19[2] = ___UICompoundEffectFlatten_block_invoke;
           v19[3] = &unk_1E70F6C58;
-          v20 = v7;
+          v20 = array;
           [v13 _enumerateEffects:v19];
 
           ++v12;
@@ -79,25 +79,25 @@
       while (v10);
     }
 
-    v14 = [v7 copy];
+    v14 = [array copy];
     effects = v5->_effects;
     v5->_effects = v14;
 
-    v4 = v17;
+    effectsCopy = v17;
   }
 
   return v5;
 }
 
-- (_UICompoundEffect)initWithCoder:(id)a3
+- (_UICompoundEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _UICompoundEffect;
-  v5 = [(UIVisualEffect *)&v9 initWithCoder:v4];
+  v5 = [(UIVisualEffect *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"_UICompoundEffectSubEffects"];
+    v6 = [coderCopy decodeObjectForKey:@"_UICompoundEffectSubEffects"];
     effects = v5->_effects;
     v5->_effects = v6;
   }
@@ -105,22 +105,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICompoundEffect;
-  v4 = a3;
-  [(UIVisualEffect *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_effects forKey:{@"_UICompoundEffectSubEffects", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIVisualEffect *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_effects forKey:{@"_UICompoundEffectSubEffects", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[1] isEqualToArray:self->_effects];
+    v5 = [equalCopy[1] isEqualToArray:self->_effects];
   }
 
   else
@@ -131,10 +131,10 @@
   return v5;
 }
 
-- (void)_enumerateEffects:(id)a3
+- (void)_enumerateEffects:(id)effects
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  effectsCopy = effects;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
@@ -155,7 +155,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      effectsCopy[2](effectsCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -175,11 +175,11 @@ LABEL_3:
   }
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 changedTraits:(id)a5 usage:(int64_t)a6
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment changedTraits:(id)traits usage:(int64_t)usage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  environmentCopy = environment;
+  toEnvironmentCopy = toEnvironment;
+  traitsCopy = traits;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -188,13 +188,13 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = __96___UICompoundEffect__needsUpdateForTransitionFromEnvironment_toEnvironment_changedTraits_usage___block_invoke;
   v17[3] = &unk_1E70F6BE0;
-  v13 = v10;
+  v13 = environmentCopy;
   v18 = v13;
-  v14 = v11;
+  v14 = toEnvironmentCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = traitsCopy;
   v21 = &v23;
-  v22 = a6;
+  usageCopy = usage;
   v20 = v15;
   [(_UICompoundEffect *)self _enumerateEffects:v17];
   LOBYTE(self) = *(v24 + 24);
@@ -203,16 +203,16 @@ LABEL_3:
   return self;
 }
 
-- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)a3 toEnvironment:(id)a4 usage:(int64_t)a5
+- (BOOL)_needsUpdateForTransitionFromEnvironment:(id)environment toEnvironment:(id)toEnvironment usage:(int64_t)usage
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 traitCollection];
-  v11 = [v8 traitCollection];
-  v12 = [v10 changedTraitsFromTraitCollection:v11];
+  toEnvironmentCopy = toEnvironment;
+  environmentCopy = environment;
+  traitCollection = [environmentCopy traitCollection];
+  traitCollection2 = [toEnvironmentCopy traitCollection];
+  v12 = [traitCollection changedTraitsFromTraitCollection:traitCollection2];
 
-  LOBYTE(a5) = [(_UICompoundEffect *)self _needsUpdateForTransitionFromEnvironment:v9 toEnvironment:v8 changedTraits:v12 usage:a5];
-  return a5;
+  LOBYTE(usage) = [(_UICompoundEffect *)self _needsUpdateForTransitionFromEnvironment:environmentCopy toEnvironment:toEnvironmentCopy changedTraits:v12 usage:usage];
+  return usage;
 }
 
 - (id)description

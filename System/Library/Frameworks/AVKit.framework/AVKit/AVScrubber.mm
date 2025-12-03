@@ -1,19 +1,19 @@
 @interface AVScrubber
-- (AVScrubber)initWithFrame:(CGRect)a3;
+- (AVScrubber)initWithFrame:(CGRect)frame;
 - (AVScrubberDelegate)delegate;
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3;
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point;
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isCollapsedOrExcluded;
 - (BOOL)isTracking;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)contentOffsetFromValue;
 - (CGRect)hitRect;
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)extrinsicContentSize;
 - (CGSize)intrinsicContentSize;
 - (NSDirectionalEdgeInsets)hitRectInsets;
@@ -25,34 +25,34 @@
 - (UIView)loadedTrackOverlayView;
 - (double)normalizedScrollOffset;
 - (double)timeIntervalSinceTrackingEnded;
-- (float)_normalizeSliderValue:(float)a3;
+- (float)_normalizeSliderValue:(float)value;
 - (float)clampedEstimatedFrameRate;
 - (float)duration;
 - (float)normalizedPosition;
 - (float)valueFromScrollView;
 - (id)createThumbView;
-- (void)_layoutPhotosensitiveRegions:(float)a3;
-- (void)_layoutTimeLineMarkerViews:(float)a3;
+- (void)_layoutPhotosensitiveRegions:(float)regions;
+- (void)_layoutTimeLineMarkerViews:(float)views;
 - (void)_updateLayoutItem;
 - (void)_updateSlowKnobMovementDetected;
-- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)value;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)endOrCancelTracking;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutAttributesDidChange;
 - (void)layoutSubviews;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setCurrentThumbView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setInterstitialDisplayTimes:(id)a3;
-- (void)setLoadedTimeRanges:(id)a3;
-- (void)setPhotosensitiveDisplayTimes:(id)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setScrubberParentHeight:(double)a3;
-- (void)setShowsTimelineMarkers:(BOOL)a3;
-- (void)setValue:(float)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setCurrentThumbView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setIncluded:(BOOL)included;
+- (void)setInterstitialDisplayTimes:(id)times;
+- (void)setLoadedTimeRanges:(id)ranges;
+- (void)setPhotosensitiveDisplayTimes:(id)times;
+- (void)setRemoved:(BOOL)removed;
+- (void)setScrubberParentHeight:(double)height;
+- (void)setShowsTimelineMarkers:(BOOL)markers;
+- (void)setValue:(float)value;
 @end
 
 @implementation AVScrubber
@@ -93,18 +93,18 @@
   return result;
 }
 
-- (void)_layoutTimeLineMarkerViews:(float)a3
+- (void)_layoutTimeLineMarkerViews:(float)views
 {
   v61 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(AVScrubber *)self _minTrackView];
-  [v6 bounds];
+  _minTrackView = [(AVScrubber *)self _minTrackView];
+  [_minTrackView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(AVScrubber *)self _minTrackView];
-  [(AVScrubber *)self convertRect:v15 fromView:v8, v10, v12, v14];
+  _minTrackView2 = [(AVScrubber *)self _minTrackView];
+  [(AVScrubber *)self convertRect:_minTrackView2 fromView:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -114,8 +114,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v24 = [(AVScrubber *)self interstitialDisplayTimes];
-  v25 = [v24 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  interstitialDisplayTimes = [(AVScrubber *)self interstitialDisplayTimes];
+  v25 = [interstitialDisplayTimes countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v25)
   {
     v26 = v25;
@@ -127,7 +127,7 @@
       {
         if (*v56 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(interstitialDisplayTimes);
         }
 
         v29 = *(*(&v55 + 1) + 8 * v28);
@@ -153,7 +153,7 @@
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v26 = [interstitialDisplayTimes countByEnumeratingWithState:&v55 objects:v60 count:16];
     }
 
     while (v26);
@@ -163,8 +163,8 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v32 = [(AVScrubber *)self interstitialOverlayViews];
-  v33 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
+  interstitialOverlayViews = [(AVScrubber *)self interstitialOverlayViews];
+  v33 = [interstitialOverlayViews countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v33)
   {
     v34 = v33;
@@ -177,7 +177,7 @@
       {
         if (*v48 != v36)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(interstitialOverlayViews);
         }
 
         v38 = *(*(&v47 + 1) + 8 * v37);
@@ -185,7 +185,7 @@
         [v39 floatValue];
         v41 = v40;
         [(AVScrubber *)self minimumValue];
-        v43 = (v41 - v42) / a3;
+        v43 = (v41 - v42) / views;
 
         [(AVScrubber *)self bounds];
         [(AVScrubber *)self trackRectForBounds:?];
@@ -195,8 +195,8 @@
         v63.size.width = v21;
         v63.size.height = v23;
         MinY = CGRectGetMinY(v63);
-        v46 = [v38 layer];
-        [v46 setCornerRadius:2.5];
+        layer = [v38 layer];
+        [layer setCornerRadius:2.5];
 
         [v38 setFrame:{v44, MinY, 5.0, 5.0}];
         [(AVScrubber *)self insertSubview:v38 atIndex:0];
@@ -205,29 +205,29 @@
       }
 
       while (v34 != v37);
-      v34 = [v32 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      v34 = [interstitialOverlayViews countByEnumeratingWithState:&v47 objects:v59 count:16];
     }
 
     while (v34);
   }
 }
 
-- (void)_layoutPhotosensitiveRegions:(float)a3
+- (void)_layoutPhotosensitiveRegions:(float)regions
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = [(AVScrubber *)self photosensitiveDisplayTimes];
-  v5 = [v4 count];
+  photosensitiveDisplayTimes = [(AVScrubber *)self photosensitiveDisplayTimes];
+  v5 = [photosensitiveDisplayTimes count];
 
   if (v5)
   {
-    v6 = [(AVScrubber *)self _minTrackView];
-    [v6 bounds];
+    _minTrackView = [(AVScrubber *)self _minTrackView];
+    [_minTrackView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(AVScrubber *)self _minTrackView];
-    [(AVScrubber *)self convertRect:v15 fromView:v8, v10, v12, v14];
+    _minTrackView2 = [(AVScrubber *)self _minTrackView];
+    [(AVScrubber *)self convertRect:_minTrackView2 fromView:v8, v10, v12, v14];
     v58 = v17;
     v59 = v16;
     v56 = v19;
@@ -256,8 +256,8 @@
           }
 
           v23 = *(*(&v64 + 1) + 8 * i);
-          v24 = [(AVScrubber *)self photosensitiveDisplayTimes];
-          v25 = [v24 objectAtIndex:v21];
+          photosensitiveDisplayTimes2 = [(AVScrubber *)self photosensitiveDisplayTimes];
+          v25 = [photosensitiveDisplayTimes2 objectAtIndex:v21];
 
           v61 = v21;
           if (v25)
@@ -309,22 +309,22 @@
           v71.size.height = v56;
           v71.size.width = v57;
           MinY = CGRectGetMinY(v71);
-          v38 = [v23 layer];
-          [v38 setCornerRadius:2.5];
+          layer = [v23 layer];
+          [layer setCornerRadius:2.5];
 
-          v39 = [v25 colors];
+          colors = [v25 colors];
           v40 = MEMORY[0x1E69DC888];
-          v41 = [v39 objectAtIndexedSubscript:0];
+          v41 = [colors objectAtIndexedSubscript:0];
           [v41 doubleValue];
           v43 = v42;
-          v44 = [v39 objectAtIndexedSubscript:1];
+          v44 = [colors objectAtIndexedSubscript:1];
           [v44 doubleValue];
           v46 = v45;
-          [v39 objectAtIndexedSubscript:2];
+          [colors objectAtIndexedSubscript:2];
           v48 = v47 = v23;
           [v48 doubleValue];
           v50 = v49;
-          v51 = [v39 objectAtIndexedSubscript:3];
+          v51 = [colors objectAtIndexedSubscript:3];
           [v51 doubleValue];
           v53 = [v40 colorWithRed:v43 green:v46 blue:v50 alpha:v52];
           [v47 setBackgroundColor:v53];
@@ -342,7 +342,7 @@
   }
 }
 
-- (float)_normalizeSliderValue:(float)a3
+- (float)_normalizeSliderValue:(float)value
 {
   [(AVScrubber *)self maximumValue];
   v6 = v5;
@@ -352,7 +352,7 @@
   if (v8 > 0.0)
   {
     [(AVScrubber *)self minimumValue];
-    return (a3 - v10) / v8;
+    return (value - v10) / v8;
   }
 
   return result;
@@ -360,11 +360,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVScrubber *)self layoutAttributes];
+  layoutAttributes = [(AVScrubber *)self layoutAttributes];
   [(AVScrubber *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVScrubber *)self layoutAttributes];
+  layoutAttributes2 = [(AVScrubber *)self layoutAttributes];
   if ([(AVScrubber *)self isIncluded])
   {
     v5 = [(AVScrubber *)self isRemoved]^ 1;
@@ -375,13 +375,13 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVScrubber *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVScrubber isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVScrubber *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVScrubber isCollapsed](self, "isCollapsed")}];
 }
 
-- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)a3
+- (void)_updateSlowKnobMovementDetectedForTargetValue:(float)value
 {
   v66 = *MEMORY[0x1E69E9840];
   if (![(AVScrubber *)self slowKnobMovementDetected]&& !self->_didHaveLessThanFullScrubbingSpeedSinceTrackingBegin)
@@ -394,8 +394,8 @@
     [(AVScrubber *)self trackRectForBounds:?];
     Width = CGRectGetWidth(v67);
     objc_initWeak(&location, self);
-    v10 = [(AVScrubber *)self updateSlowKnobMovementDetectedTimer];
-    [v10 invalidate];
+    updateSlowKnobMovementDetectedTimer = [(AVScrubber *)self updateSlowKnobMovementDetectedTimer];
+    [updateSlowKnobMovementDetectedTimer invalidate];
 
     v11 = MEMORY[0x1E695DFF0];
     v61[0] = MEMORY[0x1E69E9820];
@@ -407,13 +407,13 @@
     [(AVScrubber *)self setUpdateSlowKnobMovementDetectedTimer:v12];
 
     Current = CFAbsoluteTimeGetCurrent();
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v15 = [(AVScrubber *)self previousScrubberVelocities];
-    v16 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    previousScrubberVelocities = [(AVScrubber *)self previousScrubberVelocities];
+    v16 = [previousScrubberVelocities countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (v16)
     {
       v17 = *v58;
@@ -423,25 +423,25 @@
         {
           if (*v58 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(previousScrubberVelocities);
           }
 
           v19 = *(*(&v57 + 1) + 8 * i);
           [v19 timestamp];
           if (Current - v20 > 1.5)
           {
-            [v14 addObject:v19];
+            [array addObject:v19];
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v57 objects:v65 count:16];
+        v16 = [previousScrubberVelocities countByEnumeratingWithState:&v57 objects:v65 count:16];
       }
 
       while (v16);
     }
 
-    v21 = [(AVScrubber *)self previousScrubberVelocities];
-    [v21 removeObjectsInArray:v14];
+    previousScrubberVelocities2 = [(AVScrubber *)self previousScrubberVelocities];
+    [previousScrubberVelocities2 removeObjectsInArray:array];
 
     previousValue = self->_previousValue;
     previousValueChangeTime = self->_previousValueChangeTime;
@@ -451,29 +451,29 @@
     {
       v26 = objc_alloc_init(AVScrubberVelocity);
       [(AVScrubberVelocity *)v26 setTimestamp:Current];
-      [(AVScrubberVelocity *)v26 setVelocity:(Width + -9.0) * ((a3 - previousValue) / v25) / (currentValueChangedTime - previousValueChangeTime)];
-      v27 = [(AVScrubber *)self previousScrubberVelocities];
-      [v27 addObject:v26];
+      [(AVScrubberVelocity *)v26 setVelocity:(Width + -9.0) * ((value - previousValue) / v25) / (currentValueChangedTime - previousValueChangeTime)];
+      previousScrubberVelocities3 = [(AVScrubber *)self previousScrubberVelocities];
+      [previousScrubberVelocities3 addObject:v26];
     }
 
     self->_previousValueChangeTime = self->_currentValueChangedTime;
     self->_currentValueChangedTime = Current;
-    self->_previousValue = a3;
+    self->_previousValue = value;
     if (Current - self->_trackingStartTime <= 1.0)
     {
       goto LABEL_40;
     }
 
-    v28 = [(AVScrubber *)self previousScrubberVelocities];
-    v29 = [v28 count] == 0;
+    previousScrubberVelocities4 = [(AVScrubber *)self previousScrubberVelocities];
+    v29 = [previousScrubberVelocities4 count] == 0;
 
     if (v29)
     {
       goto LABEL_40;
     }
 
-    v30 = [(AVScrubber *)self previousScrubberVelocities];
-    v31 = [v30 objectAtIndexedSubscript:0];
+    previousScrubberVelocities5 = [(AVScrubber *)self previousScrubberVelocities];
+    v31 = [previousScrubberVelocities5 objectAtIndexedSubscript:0];
     [v31 velocity];
     v33 = v32;
 
@@ -481,8 +481,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v34 = [(AVScrubber *)self previousScrubberVelocities];
-    v35 = [v34 countByEnumeratingWithState:&v53 objects:v64 count:16];
+    previousScrubberVelocities6 = [(AVScrubber *)self previousScrubberVelocities];
+    v35 = [previousScrubberVelocities6 countByEnumeratingWithState:&v53 objects:v64 count:16];
     if (v35)
     {
       v36 = 0;
@@ -498,7 +498,7 @@
         {
           if (*v54 != v38)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(previousScrubberVelocities6);
           }
 
           v43 = *(*(&v53 + 1) + 8 * v40);
@@ -522,7 +522,7 @@
         }
 
         while (v35 != v40);
-        v35 = [v34 countByEnumeratingWithState:&v53 objects:v64 count:16];
+        v35 = [previousScrubberVelocities6 countByEnumeratingWithState:&v53 objects:v64 count:16];
       }
 
       while (v35);
@@ -538,8 +538,8 @@
     }
 
     [(AVScrubber *)self setSlowKnobMovementDetected:1];
-    v52 = [(AVScrubber *)self delegate];
-    [v52 scrubberSlowKnobMovementDetected:self];
+    delegate = [(AVScrubber *)self delegate];
+    [delegate scrubberSlowKnobMovementDetected:self];
 
 LABEL_40:
     objc_destroyWeak(&v62);
@@ -560,10 +560,10 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   [(AVScrubber *)self _updateSlowKnobMovementDetectedForTargetValue:?];
 }
 
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVScrubber *)self scrubsWhenTappedAnywhere])
   {
     [(AVScrubber *)self hitRect];
@@ -577,13 +577,13 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
     v6 = 0;
   }
 
-  v7 = [(AVScrubber *)self currentThumbView];
-  [(AVScrubber *)self convertPoint:v7 toView:x, y];
+  currentThumbView = [(AVScrubber *)self currentThumbView];
+  [(AVScrubber *)self convertPoint:currentThumbView toView:x, y];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVScrubber *)self currentThumbView];
-  [v12 bounds];
+  currentThumbView2 = [(AVScrubber *)self currentThumbView];
+  [currentThumbView2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -600,9 +600,9 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   v37.size.height = v28;
   v35.x = v9;
   v35.y = v11;
-  LOBYTE(v12) = CGRectContainsPoint(v37, v35);
-  v29 = [(AVScrubber *)self _trackEnabled];
-  if ((v12 & 1) != 0 || v29)
+  LOBYTE(currentThumbView2) = CGRectContainsPoint(v37, v35);
+  _trackEnabled = [(AVScrubber *)self _trackEnabled];
+  if ((currentThumbView2 & 1) != 0 || _trackEnabled)
   {
     [(AVScrubber *)self maximumValue];
     v31 = v30;
@@ -625,11 +625,11 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
 
 - (CGPoint)contentOffsetFromValue
 {
-  v3 = [(AVScrubber *)self scrollView];
-  [v3 contentSize];
+  scrollView = [(AVScrubber *)self scrollView];
+  [scrollView contentSize];
   v5 = v4;
-  v6 = [(AVScrubber *)self scrollView];
-  [v6 bounds];
+  scrollView2 = [(AVScrubber *)self scrollView];
+  [scrollView2 bounds];
   v8 = v5 - v7;
 
   [(AVScrubber *)self normalizedPosition];
@@ -652,18 +652,18 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
 
 - (double)normalizedScrollOffset
 {
-  v3 = [(AVScrubber *)self scrollView];
-  [v3 contentSize];
+  scrollView = [(AVScrubber *)self scrollView];
+  [scrollView contentSize];
   v5 = v4;
-  v6 = [(AVScrubber *)self scrollView];
-  [v6 bounds];
+  scrollView2 = [(AVScrubber *)self scrollView];
+  [scrollView2 bounds];
   v8 = v5 - v7;
 
   v9 = 0.0;
   if (v8 > 0.0)
   {
-    v10 = [(AVScrubber *)self scrollView];
-    [v10 contentOffset];
+    scrollView3 = [(AVScrubber *)self scrollView];
+    [scrollView3 contentOffset];
     v9 = 1.0 - v11 / v8;
   }
 
@@ -696,10 +696,10 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   return v4 - v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVScrubber *)self hitRect];
   v10 = x;
   v11 = y;
@@ -747,14 +747,14 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   v67.receiver = self;
   v67.super_class = AVScrubber;
   [(AVScrubber *)&v67 layoutSubviews];
-  v3 = [(AVScrubber *)self _minTrackView];
-  [v3 bounds];
+  _minTrackView = [(AVScrubber *)self _minTrackView];
+  [_minTrackView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AVScrubber *)self _minTrackView];
-  [(AVScrubber *)self convertRect:v12 fromView:v5, v7, v9, v11];
+  _minTrackView2 = [(AVScrubber *)self _minTrackView];
+  [(AVScrubber *)self convertRect:_minTrackView2 fromView:v5, v7, v9, v11];
   v66 = v13;
   v15 = v14;
   v17 = v16;
@@ -764,12 +764,12 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   MinY = *(MEMORY[0x1E695F058] + 8);
   v23 = *(MEMORY[0x1E695F058] + 16);
   Height = *(MEMORY[0x1E695F058] + 24);
-  v24 = [(AVScrubber *)self loadedTimeRanges];
+  loadedTimeRanges = [(AVScrubber *)self loadedTimeRanges];
   [(AVScrubber *)self maximumValue];
   LODWORD(v5) = v25;
   [(AVScrubber *)self minimumValue];
   v27 = *&v5 - v26;
-  if (v27 <= 0.0 || ![v24 count])
+  if (v27 <= 0.0 || ![loadedTimeRanges count])
   {
     goto LABEL_12;
   }
@@ -778,7 +778,7 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   v29 = v28;
   [(AVScrubber *)self minimumValue];
   v31 = v30;
-  if ([v24 count] < 2)
+  if ([loadedTimeRanges count] < 2)
   {
     goto LABEL_11;
   }
@@ -787,7 +787,7 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
   v33 = (v29 - v31) / v27;
   while (1)
   {
-    v34 = [v24 objectAtIndexedSubscript:v32];
+    v34 = [loadedTimeRanges objectAtIndexedSubscript:v32];
     [v34 floatValue];
     if (v35 <= v33)
     {
@@ -796,13 +796,13 @@ void __60__AVScrubber__updateSlowKnobMovementDetectedForTargetValue___block_invo
 
     ++v32;
 LABEL_8:
-    if (v32 >= [v24 count] >> 1)
+    if (v32 >= [loadedTimeRanges count] >> 1)
     {
       goto LABEL_11;
     }
   }
 
-  v36 = [v24 objectAtIndexedSubscript:++v32];
+  v36 = [loadedTimeRanges objectAtIndexedSubscript:++v32];
   [v36 floatValue];
   v38 = v37;
 
@@ -811,7 +811,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v39 = [v24 objectAtIndexedSubscript:v32];
+  v39 = [loadedTimeRanges objectAtIndexedSubscript:v32];
   [v39 floatValue];
 
 LABEL_11:
@@ -841,51 +841,51 @@ LABEL_11:
   v72.size.height = v19;
   Height = CGRectGetHeight(v72);
 LABEL_12:
-  v42 = [(AVScrubber *)self loadedTrackOverlayView];
-  [v42 setFrame:{MaxX, MinY, v23, Height}];
+  loadedTrackOverlayView = [(AVScrubber *)self loadedTrackOverlayView];
+  [loadedTrackOverlayView setFrame:{MaxX, MinY, v23, Height}];
 
   *&v43 = v27;
   [(AVScrubber *)self _layoutTimeLineMarkerViews:v43];
   *&v44 = v27;
   [(AVScrubber *)self _layoutPhotosensitiveRegions:v44];
-  v45 = [(AVScrubber *)self currentThumbView];
-  [v45 setHidden:{-[AVScrubber isEnabled](self, "isEnabled") ^ 1}];
+  currentThumbView = [(AVScrubber *)self currentThumbView];
+  [currentThumbView setHidden:{-[AVScrubber isEnabled](self, "isEnabled") ^ 1}];
 
-  v46 = [(AVScrubber *)self _maxTrackView];
-  [v46 _cornerRadius];
+  _maxTrackView = [(AVScrubber *)self _maxTrackView];
+  [_maxTrackView _cornerRadius];
   v48 = v47;
 
   if (v48 == 0.0)
   {
-    v49 = [(AVScrubber *)self _minTrackView];
-    v50 = [v49 layer];
+    _minTrackView3 = [(AVScrubber *)self _minTrackView];
+    layer = [_minTrackView3 layer];
     v51 = *MEMORY[0x1E69796E0];
-    [v50 setCornerCurve:*MEMORY[0x1E69796E0]];
+    [layer setCornerCurve:*MEMORY[0x1E69796E0]];
 
-    v52 = [(AVScrubber *)self _minTrackView];
-    v53 = [v52 layer];
-    [v53 setCornerRadius:2.5];
+    _minTrackView4 = [(AVScrubber *)self _minTrackView];
+    layer2 = [_minTrackView4 layer];
+    [layer2 setCornerRadius:2.5];
 
-    v54 = [(AVScrubber *)self _minTrackView];
-    v55 = [v54 layer];
-    [v55 setMaskedCorners:5];
+    _minTrackView5 = [(AVScrubber *)self _minTrackView];
+    layer3 = [_minTrackView5 layer];
+    [layer3 setMaskedCorners:5];
 
-    v56 = [(AVScrubber *)self _maxTrackView];
-    v57 = [v56 layer];
-    [v57 setCornerCurve:v51];
+    _maxTrackView2 = [(AVScrubber *)self _maxTrackView];
+    layer4 = [_maxTrackView2 layer];
+    [layer4 setCornerCurve:v51];
 
-    v58 = [(AVScrubber *)self _maxTrackView];
-    v59 = [v58 layer];
-    [v59 setCornerRadius:2.5];
+    _maxTrackView3 = [(AVScrubber *)self _maxTrackView];
+    layer5 = [_maxTrackView3 layer];
+    [layer5 setCornerRadius:2.5];
 
-    v60 = [(AVScrubber *)self _maxTrackView];
-    v61 = [v60 layer];
-    [v61 setMaskedCorners:10];
+    _maxTrackView4 = [(AVScrubber *)self _maxTrackView];
+    layer6 = [_maxTrackView4 layer];
+    [layer6 setMaskedCorners:10];
 
-    v62 = [(AVScrubber *)self currentThumbView];
-    v63 = [(AVScrubber *)self loadedTrackOverlayView];
-    v64 = [(AVScrubber *)self interstitialOverlayViews];
-    [AVBackdropView configureSlider:self thumbView:v62 loadedTrackView:v63 withTimelineMarkers:v64];
+    currentThumbView2 = [(AVScrubber *)self currentThumbView];
+    loadedTrackOverlayView2 = [(AVScrubber *)self loadedTrackOverlayView];
+    interstitialOverlayViews = [(AVScrubber *)self interstitialOverlayViews];
+    [AVBackdropView configureSlider:self thumbView:currentThumbView2 loadedTrackView:loadedTrackOverlayView2 withTimelineMarkers:interstitialOverlayViews];
 
     [(UIView *)self avkit_makeSubtreeDisallowGroupBlending];
   }
@@ -898,9 +898,9 @@ LABEL_12:
   if (![(AVScrubber *)self isScrollScrubbing])
   {
     [(AVScrubber *)self updateScrollViewContentSizeAndOffsetIfNeeded];
-    v65 = [(AVScrubber *)self scrollView];
+    scrollView = [(AVScrubber *)self scrollView];
     [(AVScrubber *)self contentOffsetFromValue];
-    [v65 setContentOffset:?];
+    [scrollView setContentOffset:?];
   }
 }
 
@@ -922,11 +922,11 @@ LABEL_12:
   [(AVScrubber *)self setTimestampWhenTrackingEnded:CFAbsoluteTimeGetCurrent()];
   [(AVScrubber *)self setScrubbingSpeed:0];
   [(AVScrubber *)self setSlowKnobMovementDetected:0];
-  v3 = [(AVScrubber *)self previousScrubberVelocities];
-  [v3 removeAllObjects];
+  previousScrubberVelocities = [(AVScrubber *)self previousScrubberVelocities];
+  [previousScrubberVelocities removeAllObjects];
 
-  v4 = [(AVScrubber *)self updateSlowKnobMovementDetectedTimer];
-  [v4 invalidate];
+  updateSlowKnobMovementDetectedTimer = [(AVScrubber *)self updateSlowKnobMovementDetectedTimer];
+  [updateSlowKnobMovementDetectedTimer invalidate];
 
   [(AVScrubber *)self setUpdateSlowKnobMovementDetectedTimer:0];
   self->_trackingStartTime = NAN;
@@ -935,30 +935,30 @@ LABEL_12:
   self->_currentValueChangedTime = NAN;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AVScrubber;
-  [(AVScrubber *)&v4 cancelTrackingWithEvent:a3];
+  [(AVScrubber *)&v4 cancelTrackingWithEvent:event];
   [(AVScrubber *)self endOrCancelTracking];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(AVScrubber *)self setTracking:0, a4];
+  [(AVScrubber *)self setTracking:0, event];
   [(AVScrubber *)self setHighlighted:0];
 
   [(AVScrubber *)self endOrCancelTracking];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   if (![(AVScrubber *)self hasChangedLocationAtLeastOnce])
   {
-    [v5 locationInView:self];
+    [touchCopy locationInView:self];
     v37 = v36;
-    [v5 previousLocationInView:self];
+    [touchCopy previousLocationInView:self];
     [(AVScrubber *)self setHasChangedLocationAtLeastOnce:v37 - v38 != 0.0];
     goto LABEL_29;
   }
@@ -970,16 +970,16 @@ LABEL_12:
   [(AVScrubber *)self bounds];
   [(AVScrubber *)self trackRectForBounds:?];
   v10 = CGRectGetWidth(v64) + -9.0;
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v12 = v11;
   v14 = v13;
-  [v5 previousLocationInView:self];
+  [touchCopy previousLocationInView:self];
   v63 = v12;
   v16 = v12 - v15;
   [(AVScrubber *)self center];
   v18 = v14 - v17;
-  v19 = [(AVScrubber *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(AVScrubber *)self traitCollection];
+  [traitCollection displayScale];
   v21 = v20;
 
   [(AVScrubber *)self value];
@@ -987,10 +987,10 @@ LABEL_12:
   [(AVScrubber *)self minimumValue];
   v25 = v9;
   v26 = (v23 - v24) / v9;
-  v28 = [(AVScrubber *)self canChangeScrubbingSpeed];
+  canChangeScrubbingSpeed = [(AVScrubber *)self canChangeScrubbingSpeed];
   v29 = 1.0;
   v62 = v18;
-  if (v28)
+  if (canChangeScrubbingSpeed)
   {
     v30 = fabs(v18);
     if (v30 <= 196.0)
@@ -1043,8 +1043,8 @@ LABEL_16:
     if ([(AVScrubber *)self scrubbingSpeed]!= v35)
     {
       [(AVScrubber *)self setScrubbingSpeed:v35];
-      v40 = [(AVScrubber *)self feedbackGenerator];
-      [v40 selectionChanged];
+      feedbackGenerator = [(AVScrubber *)self feedbackGenerator];
+      [feedbackGenerator selectionChanged];
 
       self->_didHaveLessThanFullScrubbingSpeedSinceTrackingBegin |= v39;
     }
@@ -1086,11 +1086,11 @@ LABEL_19:
 
     else
     {
-      [v5 locationInView:self];
+      [touchCopy locationInView:self];
       v59 = v58;
       [(AVScrubber *)self bounds];
       [(AVScrubber *)self trackRectForBounds:?];
-      if (v59 <= CGRectGetMinX(v65) || ([v5 locationInView:self], v61 = v60, -[AVScrubber bounds](self, "bounds"), -[AVScrubber trackRectForBounds:](self, "trackRectForBounds:"), v61 >= CGRectGetMaxX(v66)))
+      if (v59 <= CGRectGetMinX(v65) || ([touchCopy locationInView:self], v61 = v60, -[AVScrubber bounds](self, "bounds"), -[AVScrubber trackRectForBounds:](self, "trackRectForBounds:"), v61 >= CGRectGetMaxX(v66)))
       {
         v42 = round(v26);
       }
@@ -1102,16 +1102,16 @@ LABEL_19:
   *&v45 = v44;
   [(AVScrubber *)self _updateSlowKnobMovementDetectedForTargetValue:v45];
   [(AVScrubber *)self setResolution:v41 / v34];
-  v46 = [(AVScrubber *)self window];
-  v47 = [v46 windowScene];
-  if (v47)
+  window = [(AVScrubber *)self window];
+  windowScene = [window windowScene];
+  if (windowScene)
   {
-    v48 = v47;
-    v49 = [(AVScrubber *)self window];
-    v50 = [v49 windowScene];
-    v51 = [v50 activationState];
+    v48 = windowScene;
+    window2 = [(AVScrubber *)self window];
+    windowScene2 = [window2 windowScene];
+    activationState = [windowScene2 activationState];
 
-    if (!v51)
+    if (!activationState)
     {
       *&v52 = v44;
       [(AVScrubber *)self setValue:v52];
@@ -1128,20 +1128,20 @@ LABEL_29:
   return 1;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   [(AVScrubber *)self setHasChangedLocationAtLeastOnce:0];
   [(AVScrubber *)self setShouldRecoverFromPrecisionScrubbingIfNeeded:0];
   [(AVScrubber *)self setScrubbingSpeed:0];
-  [v6 locationInView:self];
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
-  if ([v6 _isPointerTouch])
+  if ([touchCopy _isPointerTouch])
   {
-    v12 = [(AVScrubber *)self currentThumbView];
-    [v12 frame];
+    currentThumbView = [(AVScrubber *)self currentThumbView];
+    [currentThumbView frame];
     v28.x = v9;
     v28.y = v11;
     [(AVScrubber *)self setScrubsWhenTappedAnywhere:!CGRectContainsPoint(v29, v28)];
@@ -1155,8 +1155,8 @@ LABEL_29:
   v13 = [(AVScrubber *)self _shouldTrackTouchAtPoint:v9, v11];
   if (v13)
   {
-    v14 = [(AVScrubber *)self feedbackGenerator];
-    [v14 prepare];
+    feedbackGenerator = [(AVScrubber *)self feedbackGenerator];
+    [feedbackGenerator prepare];
 
     self->_trackingStartTime = CFAbsoluteTimeGetCurrent();
     self->_didHaveLessThanFullScrubbingSpeedSinceTrackingBegin = 0;
@@ -1220,12 +1220,12 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return [(AVScrubber *)&v4 isTracking]|| [(AVScrubber *)self isScrollScrubbing];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = AVScrubber;
   [(AVScrubber *)&v5 setEnabled:?];
-  if ([(AVScrubber *)self isTracking]&& !a3)
+  if ([(AVScrubber *)self isTracking]&& !enabled)
   {
     [(AVScrubber *)self setTracking:0];
     [(AVScrubber *)self setHighlighted:0];
@@ -1239,18 +1239,18 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
 {
   v5.receiver = self;
   v5.super_class = AVScrubber;
-  v3 = [(AVScrubber *)&v5 createThumbView];
-  [(AVScrubber *)self setCurrentThumbView:v3];
-  return v3;
+  createThumbView = [(AVScrubber *)&v5 createThumbView];
+  [(AVScrubber *)self setCurrentThumbView:createThumbView];
+  return createThumbView;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGRectGetHeight(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGRectGetHeight(bounds);
   UIRoundToViewScale();
   v8 = v7;
   v9 = x;
@@ -1261,14 +1261,14 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return CGRectInset(*&v9, 0.0, v8);
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = 9.0;
-  if (([(AVScrubber *)self isEnabled:a3.origin.x]& 1) == 0)
+  if (([(AVScrubber *)self isEnabled:bounds.origin.x]& 1) == 0)
   {
     v26.origin.x = x;
     v26.origin.y = y;
@@ -1299,9 +1299,9 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   v12 = v11;
   v14 = v13;
   v15 = *MEMORY[0x1E69796E0];
-  v16 = [(AVScrubber *)self currentThumbView];
-  v17 = [v16 layer];
-  [v17 setCornerCurve:v15];
+  currentThumbView = [(AVScrubber *)self currentThumbView];
+  layer = [currentThumbView layer];
+  [layer setCornerCurve:v15];
 
   v30.origin.x = v12;
   v30.origin.y = v14;
@@ -1310,9 +1310,9 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   CGRectGetHeight(v30);
   UIFloorToViewScale();
   v19 = v18;
-  v20 = [(AVScrubber *)self currentThumbView];
-  v21 = [v20 layer];
-  [v21 setCornerRadius:v19];
+  currentThumbView2 = [(AVScrubber *)self currentThumbView];
+  layer2 = [currentThumbView2 layer];
+  [layer2 setCornerRadius:v19];
 
   v22 = v12;
   v23 = v14;
@@ -1325,7 +1325,7 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return result;
 }
 
-- (CGRect)maximumValueImageRectForBounds:(CGRect)a3
+- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1338,7 +1338,7 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return result;
 }
 
-- (CGRect)minimumValueImageRectForBounds:(CGRect)a3
+- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -1351,7 +1351,7 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
   v5.receiver = self;
   v5.super_class = AVScrubber;
@@ -1359,17 +1359,17 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   if (![(AVScrubber *)self isScrollScrubbing])
   {
     [(AVScrubber *)self updateScrollViewContentSizeAndOffsetIfNeeded];
-    v4 = [(AVScrubber *)self scrollView];
+    scrollView = [(AVScrubber *)self scrollView];
     [(AVScrubber *)self contentOffsetFromValue];
-    [v4 setContentOffset:?];
+    [scrollView setContentOffset:?];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(AVScrubber *)self isCollapsedOrExcluded];
+  isCollapsedOrExcluded = [(AVScrubber *)self isCollapsedOrExcluded];
   [(AVScrubber *)self extrinsicContentSize];
-  if (v3)
+  if (isCollapsedOrExcluded)
   {
     v4 = 0.0;
   }
@@ -1379,10 +1379,10 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return result;
 }
 
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVScrubber *)self isTracking])
   {
     return 1;
@@ -1391,44 +1391,44 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return [(AVScrubber *)self _shouldTrackTouchAtPoint:x, y];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVScrubber *)self invalidateIntrinsicContentSize];
 
     [(AVScrubber *)self _updateLayoutItem];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVScrubber *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(AVScrubber *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVScrubber *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
@@ -1447,31 +1447,31 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVScrubber *)self layoutAttributes];
-  -[AVScrubber setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVScrubber *)self layoutAttributes];
+  -[AVScrubber setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setShowsTimelineMarkers:(BOOL)a3
+- (void)setShowsTimelineMarkers:(BOOL)markers
 {
-  if (self->_showsTimelineMarkers != a3)
+  if (self->_showsTimelineMarkers != markers)
   {
-    v3 = a3;
-    self->_showsTimelineMarkers = a3;
-    v5 = [(AVScrubber *)self interstitialOverlayViews];
-    v6 = [v5 count];
+    markersCopy = markers;
+    self->_showsTimelineMarkers = markers;
+    interstitialOverlayViews = [(AVScrubber *)self interstitialOverlayViews];
+    v6 = [interstitialOverlayViews count];
 
     if (v6)
     {
       v7 = 0;
       do
       {
-        v8 = [(AVScrubber *)self interstitialOverlayViews];
-        v9 = [v8 objectAtIndex:v7];
+        interstitialOverlayViews2 = [(AVScrubber *)self interstitialOverlayViews];
+        v9 = [interstitialOverlayViews2 objectAtIndex:v7];
 
-        [v9 setHidden:!v3];
+        [v9 setHidden:!markersCopy];
         ++v7;
-        v10 = [(AVScrubber *)self interstitialOverlayViews];
-        v11 = [v10 count];
+        interstitialOverlayViews3 = [(AVScrubber *)self interstitialOverlayViews];
+        v11 = [interstitialOverlayViews3 count];
       }
 
       while (v11 > v7);
@@ -1479,49 +1479,49 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   }
 }
 
-- (void)setInterstitialDisplayTimes:(id)a3
+- (void)setInterstitialDisplayTimes:(id)times
 {
-  v10 = a3;
-  if (self->_interstitialDisplayTimes != v10)
+  timesCopy = times;
+  if (self->_interstitialDisplayTimes != timesCopy)
   {
-    objc_storeStrong(&self->_interstitialDisplayTimes, a3);
-    v5 = [(AVScrubber *)self interstitialOverlayViews];
-    [v5 removeAllObjects];
+    objc_storeStrong(&self->_interstitialDisplayTimes, times);
+    interstitialOverlayViews = [(AVScrubber *)self interstitialOverlayViews];
+    [interstitialOverlayViews removeAllObjects];
 
-    if ([(NSArray *)v10 count])
+    if ([(NSArray *)timesCopy count])
     {
       v6 = 0;
       do
       {
         v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-        v8 = [MEMORY[0x1E69DC888] whiteColor];
-        [v7 setBackgroundColor:v8];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v7 setBackgroundColor:whiteColor];
 
         [v7 setUserInteractionEnabled:0];
-        v9 = [(AVScrubber *)self interstitialOverlayViews];
-        [v9 addObject:v7];
+        interstitialOverlayViews2 = [(AVScrubber *)self interstitialOverlayViews];
+        [interstitialOverlayViews2 addObject:v7];
 
         ++v6;
       }
 
-      while ([(NSArray *)v10 count]> v6);
+      while ([(NSArray *)timesCopy count]> v6);
     }
   }
 }
 
-- (void)setPhotosensitiveDisplayTimes:(id)a3
+- (void)setPhotosensitiveDisplayTimes:(id)times
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_photosensitiveDisplayTimes != v5)
+  timesCopy = times;
+  if (self->_photosensitiveDisplayTimes != timesCopy)
   {
-    objc_storeStrong(&self->_photosensitiveDisplayTimes, a3);
+    objc_storeStrong(&self->_photosensitiveDisplayTimes, times);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(AVScrubber *)self photosensitiveOverlayViews];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    photosensitiveOverlayViews = [(AVScrubber *)self photosensitiveOverlayViews];
+    v7 = [photosensitiveOverlayViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1533,28 +1533,28 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(photosensitiveOverlayViews);
           }
 
           [*(*(&v18 + 1) + 8 * v10++) removeFromSuperview];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [photosensitiveOverlayViews countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
     }
 
-    v11 = [(AVScrubber *)self photosensitiveOverlayViews];
-    [v11 removeAllObjects];
+    photosensitiveOverlayViews2 = [(AVScrubber *)self photosensitiveOverlayViews];
+    [photosensitiveOverlayViews2 removeAllObjects];
 
-    if ([(NSArray *)v5 count])
+    if ([(NSArray *)timesCopy count])
     {
       v12 = 0;
       do
       {
-        v13 = [(NSArray *)v5 objectAtIndex:v12];
+        v13 = [(NSArray *)timesCopy objectAtIndex:v12];
         [v13 risk];
         v15 = v14;
 
@@ -1562,14 +1562,14 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
         {
           v16 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
           [v16 setUserInteractionEnabled:0];
-          v17 = [(AVScrubber *)self photosensitiveOverlayViews];
-          [v17 addObject:v16];
+          photosensitiveOverlayViews3 = [(AVScrubber *)self photosensitiveOverlayViews];
+          [photosensitiveOverlayViews3 addObject:v16];
         }
 
         ++v12;
       }
 
-      while ([(NSArray *)v5 count]> v12);
+      while ([(NSArray *)timesCopy count]> v12);
     }
   }
 }
@@ -1581,30 +1581,30 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return Current - v4;
 }
 
-- (void)setCurrentThumbView:(id)a3
+- (void)setCurrentThumbView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_currentThumbView);
 
   if (WeakRetained != obj)
   {
     v5 = objc_storeWeak(&self->_currentThumbView, obj);
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [obj setBackgroundColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [obj setBackgroundColor:whiteColor];
   }
 }
 
 - (NSString)localizedScrubbingSpeedName
 {
-  v2 = [(AVScrubber *)self scrubbingSpeed];
-  if (v2 > 3)
+  scrubbingSpeed = [(AVScrubber *)self scrubbingSpeed];
+  if (scrubbingSpeed > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = AVLocalizedString(off_1E720A188[v2]);
+    v3 = AVLocalizedString(off_1E720A188[scrubbingSpeed]);
   }
 
   return v3;
@@ -1623,11 +1623,11 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return v3;
 }
 
-- (void)setLoadedTimeRanges:(id)a3
+- (void)setLoadedTimeRanges:(id)ranges
 {
-  if (self->_loadedTimeRanges != a3)
+  if (self->_loadedTimeRanges != ranges)
   {
-    v4 = [a3 copy];
+    v4 = [ranges copy];
     loadedTimeRanges = self->_loadedTimeRanges;
     self->_loadedTimeRanges = v4;
 
@@ -1640,9 +1640,9 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   previousScrubberVelocities = self->_previousScrubberVelocities;
   if (!previousScrubberVelocities)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_previousScrubberVelocities;
-    self->_previousScrubberVelocities = v4;
+    self->_previousScrubberVelocities = array;
 
     previousScrubberVelocities = self->_previousScrubberVelocities;
   }
@@ -1660,8 +1660,8 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
     self->_loadedTrackOverlayView = v4;
 
     v6 = self->_loadedTrackOverlayView;
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v6 setBackgroundColor:whiteColor];
 
     [(UIView *)self->_loadedTrackOverlayView setUserInteractionEnabled:0];
     loadedTrackOverlayView = self->_loadedTrackOverlayView;
@@ -1685,21 +1685,21 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
   return feedbackGenerator;
 }
 
-- (void)setScrubberParentHeight:(double)a3
+- (void)setScrubberParentHeight:(double)height
 {
   [(AVScrubber *)self newScrubberParentHeight];
-  if (v5 != a3)
+  if (v5 != height)
   {
 
-    [(AVScrubber *)self setNewScrubberParentHeight:a3];
+    [(AVScrubber *)self setNewScrubberParentHeight:height];
   }
 }
 
-- (AVScrubber)initWithFrame:(CGRect)a3
+- (AVScrubber)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = AVScrubber;
-  v3 = [(AVScrubber *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVScrubber *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1730,13 +1730,13 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setIncluded:[(AVScrubber *)v4 isIncluded]];
     [(AVLayoutItemAttributes *)v4->_layoutAttributes setHasFlexibleContentSize:1];
     v12 = v4->_layoutAttributes;
-    v13 = [(AVScrubber *)v4 accessibilityIdentifier];
-    [(AVLayoutItemAttributes *)v12 setAccessibilityIdentifier:v13];
+    accessibilityIdentifier = [(AVScrubber *)v4 accessibilityIdentifier];
+    [(AVLayoutItemAttributes *)v12 setAccessibilityIdentifier:accessibilityIdentifier];
 
-    v14 = [MEMORY[0x1E69DCAB8] avkit_flatWhiteResizableTemplateImage];
+    avkit_flatWhiteResizableTemplateImage = [MEMORY[0x1E69DCAB8] avkit_flatWhiteResizableTemplateImage];
     v15 = [(AVScrubber *)v4 minimumTrackImageForState:0];
 
-    if (v15 != v14)
+    if (v15 != avkit_flatWhiteResizableTemplateImage)
     {
       LODWORD(v16) = 1.0;
       [(AVScrubber *)v4 setContentHuggingPriority:0 forAxis:v16];
@@ -1746,9 +1746,9 @@ void __47__AVScrubber_beginTrackingWithTouch_withEvent___block_invoke_2(uint64_t
       [(AVScrubber *)v4 setContentCompressionResistancePriority:0 forAxis:v18];
       LODWORD(v19) = *"";
       [(AVScrubber *)v4 setContentCompressionResistancePriority:1 forAxis:v19];
-      [(AVScrubber *)v4 setMinimumTrackImage:v14 forState:0];
-      [(AVScrubber *)v4 setMaximumTrackImage:v14 forState:0];
-      [(AVScrubber *)v4 setThumbImage:v14 forState:0];
+      [(AVScrubber *)v4 setMinimumTrackImage:avkit_flatWhiteResizableTemplateImage forState:0];
+      [(AVScrubber *)v4 setMaximumTrackImage:avkit_flatWhiteResizableTemplateImage forState:0];
+      [(AVScrubber *)v4 setThumbImage:avkit_flatWhiteResizableTemplateImage forState:0];
     }
   }
 

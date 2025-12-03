@@ -1,17 +1,17 @@
 @interface MKAppImageManager
-+ (id)persistedCacheWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4 directoryName:(id)a5;
++ (id)persistedCacheWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity directoryName:(id)name;
 + (id)sharedCollectionCoverImageManager;
-+ (id)sharedImageManagerWithAuditToken:(id)a3;
++ (id)sharedImageManagerWithAuditToken:(id)token;
 + (id)sharedVisitedPlacesContainerImageManager;
-- (MKAppImageManager)initWithURLCache:(id)a3 auditToken:(id)a4;
-- (id)cachedImageAtURL:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_dispatchOnManThread:(id)a3;
-- (void)cancelLoadAppImageAtURL:(id)a3;
+- (MKAppImageManager)initWithURLCache:(id)cache auditToken:(id)token;
+- (id)cachedImageAtURL:(id)l;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_dispatchOnManThread:(id)thread;
+- (void)cancelLoadAppImageAtURL:(id)l;
 - (void)clearImageCache;
-- (void)loadAppImageAtURL:(id)a3 completionHandler:(id)a4;
+- (void)loadAppImageAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation MKAppImageManager
@@ -32,7 +32,7 @@ void __54__MKAppImageManager_sharedCollectionCoverImageManager__block_invoke(uin
   block[1] = 3221225472;
   block[2] = __54__MKAppImageManager_sharedCollectionCoverImageManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCollectionCoverImageManager_onceToken != -1)
   {
     dispatch_once(&sharedCollectionCoverImageManager_onceToken, block);
@@ -43,13 +43,13 @@ void __54__MKAppImageManager_sharedCollectionCoverImageManager__block_invoke(uin
   return v2;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10 || [v10 code] != -999)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (!errorCopy || [errorCopy code] != -999)
   {
     v45 = 0;
     v46 = &v45;
@@ -62,8 +62,8 @@ void __54__MKAppImageManager_sharedCollectionCoverImageManager__block_invoke(uin
     v40 = __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke;
     v41 = &unk_1E76C6CD0;
     v44 = &v45;
-    v42 = self;
-    v12 = v9;
+    selfCopy = self;
+    v12 = taskCopy;
     v43 = v12;
     geo_isolate_sync();
     v13 = v46[5];
@@ -72,26 +72,26 @@ void __54__MKAppImageManager_sharedCollectionCoverImageManager__block_invoke(uin
       if (v13)
       {
         v14 = MKGetAppImageManagerLog();
-        v15 = [v46[5] signpostID];
-        if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
+        signpostID = [v46[5] signpostID];
+        if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
         {
           *buf = 0;
-          _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v14, OS_SIGNPOST_INTERVAL_END, v15, "DownloadImage", &unk_1A30FEA0E, buf, 2u);
+          _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v14, OS_SIGNPOST_INTERVAL_END, signpostID, "DownloadImage", &unk_1A30FEA0E, buf, 2u);
         }
 
         iconCache = self->_iconCache;
-        v17 = [v46[5] urlString];
-        v18 = [(NSCache *)iconCache objectForKey:v17];
+        urlString = [v46[5] urlString];
+        v18 = [(NSCache *)iconCache objectForKey:urlString];
 
-        v19 = [v46[5] completionHandler];
+        completionHandler = [v46[5] completionHandler];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke_64;
         v33[3] = &unk_1E76CAA70;
-        v20 = v18;
-        v34 = v20;
-        v21 = v19;
-        v36 = v21;
+        completionHandler2 = v18;
+        v34 = completionHandler2;
+        data = completionHandler;
+        v36 = data;
         v35 = v11;
         [(MKAppImageManager *)self _dispatchOnManThread:v33];
         v31[12] = MEMORY[0x1E69E9820];
@@ -116,11 +116,11 @@ LABEL_20:
 
     else if (v13)
     {
-      v20 = [v13 completionHandler];
-      v21 = [v46[5] data];
-      if ([v21 length])
+      completionHandler2 = [v13 completionHandler];
+      data = [v46[5] data];
+      if ([data length])
       {
-        v22 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v21];
+        v22 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:data];
       }
 
       else
@@ -129,25 +129,25 @@ LABEL_20:
       }
 
       v23 = MKGetAppImageManagerLog();
-      v24 = [v46[5] signpostID];
-      if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+      signpostID2 = [v46[5] signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v23, OS_SIGNPOST_INTERVAL_END, v24, "DownloadImage", &unk_1A30FEA0E, buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v23, OS_SIGNPOST_INTERVAL_END, signpostID2, "DownloadImage", &unk_1A30FEA0E, buf, 2u);
       }
 
       if (v22)
       {
         v25 = self->_iconCache;
-        v26 = [v46[5] urlString];
-        [(NSCache *)v25 setObject:v22 forKey:v26];
+        urlString2 = [v46[5] urlString];
+        [(NSCache *)v25 setObject:v22 forKey:urlString2];
 
         v27 = v31;
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke_66;
         v31[3] = &unk_1E76CDA20;
-        v31[5] = v20;
+        v31[5] = completionHandler2;
         v31[4] = v22;
         [(MKAppImageManager *)self _dispatchOnManThread:v31];
       }
@@ -160,7 +160,7 @@ LABEL_20:
         v30[2] = __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke_2_67;
         v30[3] = &unk_1E76C6268;
         v30[6] = &v45;
-        v28 = v20;
+        v28 = completionHandler2;
         v30[4] = 0;
         v30[5] = v28;
         [(MKAppImageManager *)self _dispatchOnManThread:v30];
@@ -217,35 +217,35 @@ void __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke
   [v1 removeObjectForKey:v2];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v10 = a5;
-  v7 = [(NSMapTable *)self->_containers objectForKey:a4];
+  dataCopy = data;
+  v7 = [(NSMapTable *)self->_containers objectForKey:task];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 data];
-    [v9 appendData:v10];
+    data = [v7 data];
+    [data appendData:dataCopy];
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a6;
-  v7 = [a5 MIMEType];
-  v8 = [v7 containsString:@"image"];
+  handlerCopy = handler;
+  mIMEType = [response MIMEType];
+  v8 = [mIMEType containsString:@"image"];
 
-  v9[2](v9, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)_dispatchOnManThread:(id)a3
+- (void)_dispatchOnManThread:(id)thread
 {
-  v3 = a3;
-  if (v3)
+  threadCopy = thread;
+  if (threadCopy)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      v3[2](v3);
+      threadCopy[2](threadCopy);
     }
 
     else
@@ -254,7 +254,7 @@ void __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke
       block[1] = 3221225472;
       block[2] = __42__MKAppImageManager__dispatchOnManThread___block_invoke;
       block[3] = &unk_1E76CD4D0;
-      v5 = v3;
+      v5 = threadCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -266,9 +266,9 @@ void __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke
   }
 }
 
-- (void)cancelLoadAppImageAtURL:(id)a3
+- (void)cancelLoadAppImageAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -280,8 +280,8 @@ void __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke
   v30 = __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke;
   v31 = &unk_1E76C6CD0;
   v34 = &v35;
-  v32 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = lCopy;
   v33 = v5;
   geo_isolate_sync();
   v6 = v36[5];
@@ -298,24 +298,24 @@ void __58__MKAppImageManager_URLSession_task_didCompleteWithError___block_invoke
     v16 = 3221225472;
     v17 = __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_2;
     v18 = &unk_1E76C6B88;
-    v19 = self;
+    selfCopy2 = self;
     v20 = &v22;
     v21 = &v35;
     geo_isolate_sync();
     v7 = MKGetAppImageManagerLog();
-    v8 = [v23[5] signpostID];
-    if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+    signpostID = [v23[5] signpostID];
+    if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v7, OS_SIGNPOST_EVENT, v8, "DownloadCancelled", &unk_1A30FEA0E, buf, 2u);
+      _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v7, OS_SIGNPOST_EVENT, signpostID, "DownloadCancelled", &unk_1A30FEA0E, buf, 2u);
     }
 
-    v9 = [v23[5] completionHandler];
+    completionHandler = [v23[5] completionHandler];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_58;
     v12[3] = &unk_1E76CD4D0;
-    v10 = v9;
+    v10 = completionHandler;
     v13 = v10;
     [(MKAppImageManager *)self _dispatchOnManThread:v12];
     geo_isolate_sync();
@@ -353,32 +353,32 @@ void __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_3(uint64_t a
   [v1 removeObjectForKey:v2];
 }
 
-- (void)loadAppImageAtURL:(id)a3 completionHandler:(id)a4
+- (void)loadAppImageAtURL:(id)l completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 absoluteString];
-  v9 = [v8 length];
+  lCopy = l;
+  handlerCopy = handler;
+  absoluteString = [lCopy absoluteString];
+  v9 = [absoluteString length];
 
   if (v9)
   {
     iconCache = self->_iconCache;
-    v11 = [v6 absoluteString];
-    v12 = [(NSCache *)iconCache objectForKey:v11];
+    absoluteString2 = [lCopy absoluteString];
+    v12 = [(NSCache *)iconCache objectForKey:absoluteString2];
 
     if (v12)
     {
       v13 = MKGetAppImageManagerLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v6 absoluteString];
+        absoluteString3 = [lCopy absoluteString];
         *buf = 138412290;
-        v37 = v14;
+        v37 = absoluteString3;
         _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_DEBUG, "[✔]Returning Cached image for url: %@", buf, 0xCu);
       }
 
-      v7[2](v7, v12, 1, 1, 0);
+      handlerCopy[2](handlerCopy, v12, 1, 1, 0);
     }
 
     else
@@ -387,24 +387,24 @@ void __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_3(uint64_t a
       v16 = objc_alloc_init(MEMORY[0x1E695DF88]);
       [(_MKAppImageManagerContainer *)v15 setData:v16];
 
-      [(_MKAppImageManagerContainer *)v15 setCompletionHandler:v7];
-      v17 = [v6 absoluteString];
-      [(_MKAppImageManagerContainer *)v15 setUrlString:v17];
+      [(_MKAppImageManagerContainer *)v15 setCompletionHandler:handlerCopy];
+      absoluteString4 = [lCopy absoluteString];
+      [(_MKAppImageManagerContainer *)v15 setUrlString:absoluteString4];
 
       v18 = MKGetAppImageManagerLog();
       [(_MKAppImageManagerContainer *)v15 setSignpostID:os_signpost_id_generate(v18)];
 
-      v19 = [objc_alloc(MEMORY[0x1E696AF68]) initWithURL:v6 cachePolicy:0 timeoutInterval:5.0];
+      v19 = [objc_alloc(MEMORY[0x1E696AF68]) initWithURL:lCopy cachePolicy:0 timeoutInterval:5.0];
       v20 = [(NSURLSession *)self->_session dataTaskWithRequest:v19];
-      if (v20 && ([v6 absoluteString], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
+      if (v20 && ([lCopy absoluteString], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
       {
         v34 = v15;
         v35 = v20;
         geo_isolate_sync();
         v31 = MEMORY[0x1E69E9820];
-        v32 = self;
+        selfCopy = self;
         v22 = v35;
-        v33 = v6;
+        v33 = lCopy;
         geo_isolate_sync();
         v23 = MKGetAppImageManagerLog();
         v24 = [(_MKAppImageManagerContainer *)v34 signpostID:v31];
@@ -427,15 +427,15 @@ void __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_3(uint64_t a
         v27 = MKGetAppImageManagerLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v6 absoluteString];
+          absoluteString5 = [lCopy absoluteString];
           *buf = 138412546;
           v37 = v26;
           v38 = 2112;
-          v39 = v28;
+          v39 = absoluteString5;
           _os_log_impl(&dword_1A2EA0000, v27, OS_LOG_TYPE_ERROR, "[X] Error: %@ for Url: %@", buf, 0x16u);
         }
 
-        (v7)[2](v7, 0, 0, 0, v26);
+        (handlerCopy)[2](handlerCopy, 0, 0, 0, v26);
       }
 
       v12 = 0;
@@ -448,15 +448,15 @@ void __45__MKAppImageManager_cancelLoadAppImageAtURL___block_invoke_3(uint64_t a
     v29 = MKGetAppImageManagerLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v6 absoluteString];
+      absoluteString6 = [lCopy absoluteString];
       *buf = 138412546;
       v37 = v12;
       v38 = 2112;
-      v39 = v30;
+      v39 = absoluteString6;
       _os_log_impl(&dword_1A2EA0000, v29, OS_LOG_TYPE_ERROR, "[X] Error: %@ for Url: %@", buf, 0x16u);
     }
 
-    (v7)[2](v7, 0, 0, 0, v12);
+    (handlerCopy)[2](handlerCopy, 0, 0, 0, v12);
   }
 }
 
@@ -468,11 +468,11 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
   [v2 setObject:v1 forKey:v3];
 }
 
-- (id)cachedImageAtURL:(id)a3
+- (id)cachedImageAtURL:(id)l
 {
   iconCache = self->_iconCache;
-  v4 = [a3 absoluteString];
-  v5 = [(NSCache *)iconCache objectForKey:v4];
+  absoluteString = [l absoluteString];
+  v5 = [(NSCache *)iconCache objectForKey:absoluteString];
 
   return v5;
 }
@@ -489,10 +489,10 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
   [(NSCache *)self->_iconCache removeAllObjects];
 }
 
-- (MKAppImageManager)initWithURLCache:(id)a3 auditToken:(id)a4
+- (MKAppImageManager)initWithURLCache:(id)cache auditToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  tokenCopy = token;
   v25.receiver = self;
   v25.super_class = MKAppImageManager;
   v8 = [(MKAppImageManager *)&v25 init];
@@ -502,16 +502,16 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
     [v9 setName:@"com.apple.MapKit.AppImageManager.URLSession"];
     [v9 setQualityOfService:25];
     [v9 setMaxConcurrentOperationCount:2];
-    v10 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    v11 = v10;
-    if (v6)
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    v11 = defaultSessionConfiguration;
+    if (cacheCopy)
     {
-      [v10 setURLCache:v6];
+      [defaultSessionConfiguration setURLCache:cacheCopy];
     }
 
-    if (v7)
+    if (tokenCopy)
     {
-      [v11 geo_setApplicationAttribution:v7];
+      [v11 geo_setApplicationAttribution:tokenCopy];
     }
 
     v12 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v11 delegate:v8 delegateQueue:v9];
@@ -526,9 +526,9 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
     containersLock = v8->_containersLock;
     v8->_containersLock = v16;
 
-    v18 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     containers = v8->_containers;
-    v8->_containers = v18;
+    v8->_containers = strongToStrongObjectsMapTable;
 
     v20 = geo_isolater_create();
     urlConnectionsLock = v8->_urlConnectionsLock;
@@ -542,19 +542,19 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
   return v8;
 }
 
-+ (id)persistedCacheWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4 directoryName:(id)a5
++ (id)persistedCacheWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity directoryName:(id)name
 {
   v7 = MEMORY[0x1E696AC08];
-  v8 = a5;
-  v9 = [v7 defaultManager];
-  v10 = [v9 URLsForDirectory:13 inDomains:1];
-  v11 = [v10 firstObject];
+  nameCopy = name;
+  defaultManager = [v7 defaultManager];
+  v10 = [defaultManager URLsForDirectory:13 inDomains:1];
+  firstObject = [v10 firstObject];
 
-  v12 = [v11 URLByAppendingPathComponent:v8];
+  v12 = [firstObject URLByAppendingPathComponent:nameCopy];
 
   if (v12)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AF18]) initWithMemoryCapacity:a3 diskCapacity:a4 directoryURL:v12];
+    v13 = [objc_alloc(MEMORY[0x1E696AF18]) initWithMemoryCapacity:capacity diskCapacity:diskCapacity directoryURL:v12];
   }
 
   else
@@ -571,7 +571,7 @@ void __57__MKAppImageManager_loadAppImageAtURL_completionHandler___block_invoke_
   block[1] = 3221225472;
   block[2] = __61__MKAppImageManager_sharedVisitedPlacesContainerImageManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedVisitedPlacesContainerImageManager_onceToken != -1)
   {
     dispatch_once(&sharedVisitedPlacesContainerImageManager_onceToken, block);
@@ -592,16 +592,16 @@ void __61__MKAppImageManager_sharedVisitedPlacesContainerImageManager__block_inv
   sharedVisitedPlacesContainerImageManager___visitedPlacesContainerImageManager = v3;
 }
 
-+ (id)sharedImageManagerWithAuditToken:(id)a3
++ (id)sharedImageManagerWithAuditToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__MKAppImageManager_sharedImageManagerWithAuditToken___block_invoke;
   block[3] = &unk_1E76CDB38;
-  v10 = v3;
+  v10 = tokenCopy;
   v4 = sharedImageManagerWithAuditToken__onceToken;
-  v5 = v3;
+  v5 = tokenCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedImageManagerWithAuditToken__onceToken, block);

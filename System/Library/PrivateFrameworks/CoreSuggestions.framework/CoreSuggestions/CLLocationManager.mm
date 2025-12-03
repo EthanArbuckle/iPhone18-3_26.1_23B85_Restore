@@ -18,9 +18,9 @@
     abort();
   }
 
-  v3 = [(CLLocationManager *)self sg_init];
+  sg_init = [(CLLocationManager *)self sg_init];
 
-  return v3;
+  return sg_init;
 }
 
 + (void)sg_swizzle

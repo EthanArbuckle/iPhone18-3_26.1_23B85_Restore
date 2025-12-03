@@ -1,26 +1,26 @@
 @interface UITableViewHeaderFooterView
-+ (double)defaultFooterHeightForStyle:(int64_t)a3;
-+ (double)defaultHeaderHeightForStyle:(int64_t)a3;
-+ (id)_defaultFontForHeaderFooterView:(id)a3;
-+ (id)_defaultFontForTableViewStyle:(int64_t)a3 isSectionHeader:(BOOL)a4;
++ (double)defaultFooterHeightForStyle:(int64_t)style;
++ (double)defaultHeaderHeightForStyle:(int64_t)style;
++ (id)_defaultFontForHeaderFooterView:(id)view;
++ (id)_defaultFontForTableViewStyle:(int64_t)style isSectionHeader:(BOOL)header;
 + (id)_defaultPlainHeaderFooterFont;
-+ (id)_defaultTextColorForTableViewStyle:(int64_t)a3 isSectionHeader:(BOOL)a4;
-- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)a3;
++ (id)_defaultTextColorForTableViewStyle:(int64_t)style isSectionHeader:(BOOL)header;
+- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)view;
 - (BOOL)_isSourceListOrMacIdiom;
 - (BOOL)_useDetailText;
 - (BOOL)_usingBackgroundConfigurationOrDefaultBackgroundConfiguration;
 - (BOOL)isTransparentFocusItem;
 - (CGRect)_backgroundRect;
-- (CGRect)_backgroundRectForWidth:(double)a3;
+- (CGRect)_backgroundRectForWidth:(double)width;
 - (CGRect)_contentRect;
-- (CGRect)_contentRectForWidth:(double)a3;
+- (CGRect)_contentRectForWidth:(double)width;
 - (CGRect)_detailLabelFrame;
 - (CGRect)_labelFrame;
-- (CGSize)_detailTextSizeForWidth:(double)a3;
-- (CGSize)_sizeThatFits:(CGSize)a3 stripPaddingForAbuttingView:(BOOL)a4 isTopHeader:(BOOL)a5;
-- (CGSize)_textSizeForWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)_detailTextSizeForWidth:(double)width;
+- (CGSize)_sizeThatFits:(CGSize)fits stripPaddingForAbuttingView:(BOOL)view isTopHeader:(BOOL)header;
+- (CGSize)_textSizeForWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)text;
 - (UIBackgroundConfiguration)backgroundConfiguration;
 - (UICellConfigurationState)_configurationState;
@@ -33,7 +33,7 @@
 - (UITable)table;
 - (UITableView)tableView;
 - (UITableViewHeaderFooterView)initWithCoder:(NSCoder *)coder;
-- (UITableViewHeaderFooterView)initWithFrame:(CGRect)a3;
+- (UITableViewHeaderFooterView)initWithFrame:(CGRect)frame;
 - (UITableViewHeaderFooterView)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 - (UIViewConfigurationState)_bridgedConfigurationState;
 - (_UIBackgroundViewConfiguration)_backgroundViewConfiguration;
@@ -45,81 +45,81 @@
 - (id)_customViewForDefaultBackgroundAppearance;
 - (id)_defaultBackgroundConfiguration;
 - (id)_defaultTextColor;
-- (id)_label:(BOOL)a3;
+- (id)_label:(BOOL)_label;
 - (id)_table;
 - (id)contentConfiguration;
 - (unint64_t)_viewConfigurationState;
-- (void)_applyBackgroundViewConfiguration:(id)a3 withState:(id)a4;
-- (void)_applyContentViewConfiguration:(id)a3 withState:(id)a4 usingSPI:(BOOL)a5;
-- (void)_clearChangeHandlersForOldContentView:(id)a3;
+- (void)_applyBackgroundViewConfiguration:(id)configuration withState:(id)state;
+- (void)_applyContentViewConfiguration:(id)configuration withState:(id)state usingSPI:(BOOL)i;
+- (void)_clearChangeHandlersForOldContentView:(id)view;
 - (void)_configureDefaultContentViewLayoutMargins;
-- (void)_didUpdateFocusInContext:(id)a3;
-- (void)_didUpdateMetrics:(BOOL)a3;
+- (void)_didUpdateFocusInContext:(id)context;
+- (void)_didUpdateMetrics:(BOOL)metrics;
 - (void)_executeConfigurationUpdate;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_invalidateDetailLabelBackgroundColor;
 - (void)_invalidateLabelBackgroundColor;
 - (void)_layoutSystemBackgroundView;
-- (void)_notifyIsDisplaying:(BOOL)a3;
+- (void)_notifyIsDisplaying:(BOOL)displaying;
 - (void)_performConfigurationStateUpdate;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_prepareForConfigurationStateUpdate;
 - (void)_resetBackgroundViewConfiguration;
 - (void)_resetContentViews;
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3;
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3;
-- (void)_setBackgroundViewConfiguration:(id)a3;
-- (void)_setBackgroundViewConfigurationProvider:(id)a3;
-- (void)_setConstants:(id)a3;
-- (void)_setContentView:(id)a3 insertAtBack:(BOOL)a4;
-- (void)_setContentViewConfigurationProvider:(id)a3;
-- (void)_setInsetsContentViewsToSafeArea:(BOOL)a3;
-- (void)_setMarginWidth:(double)a3;
-- (void)_setMetricsAdapter:(id)a3;
-- (void)_setRightMarginWidth:(double)a3;
-- (void)_setStripPadding:(BOOL)a3;
-- (void)_setTableViewStyle:(int64_t)a3 updateFrame:(BOOL)a4;
-- (void)_setTopHeader:(BOOL)a3;
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets;
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled;
+- (void)_setBackgroundViewConfiguration:(id)configuration;
+- (void)_setBackgroundViewConfigurationProvider:(id)provider;
+- (void)_setConstants:(id)constants;
+- (void)_setContentView:(id)view insertAtBack:(BOOL)back;
+- (void)_setContentViewConfigurationProvider:(id)provider;
+- (void)_setInsetsContentViewsToSafeArea:(BOOL)area;
+- (void)_setMarginWidth:(double)width;
+- (void)_setMetricsAdapter:(id)adapter;
+- (void)_setRightMarginWidth:(double)width;
+- (void)_setStripPadding:(BOOL)padding;
+- (void)_setTableViewStyle:(int64_t)style updateFrame:(BOOL)frame;
+- (void)_setTopHeader:(BOOL)header;
 - (void)_setupBackgroundView;
-- (void)_setupChangeHandlersForNewContentView:(id)a3;
+- (void)_setupChangeHandlersForNewContentView:(id)view;
 - (void)_setupDefaultsIfNecessary;
 - (void)_setupLabelAppearance;
-- (void)_setupLabelForSourceList:(id)a3;
+- (void)_setupLabelForSourceList:(id)list;
 - (void)_tableViewDidUpdateMarginWidth;
 - (void)_updateBackgroundView;
-- (void)_updateBackgroundViewConfigurationForState:(id)a3;
-- (void)_updateConfigurationUsingState:(id)a3;
+- (void)_updateBackgroundViewConfigurationForState:(id)state;
+- (void)_updateConfigurationUsingState:(id)state;
 - (void)_updateConfigurationWithObservationTracking;
 - (void)_updateContentAndBackgroundView;
-- (void)_updateContentViewConfigurationForState:(id)a3;
+- (void)_updateContentViewConfigurationForState:(id)state;
 - (void)_updateDefaultBackgroundAppearance;
 - (void)_updateDetailLabelBackgroundColor;
 - (void)_updateDetailLabelBackgroundColorIfNeeded;
 - (void)_updateProperties;
-- (void)_willUpdateFocusInContext:(id)a3;
+- (void)_willUpdateFocusInContext:(id)context;
 - (void)didMoveToSuperview;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)setAutomaticallyUpdatesBackgroundConfiguration:(BOOL)automaticallyUpdatesBackgroundConfiguration;
 - (void)setAutomaticallyUpdatesContentConfiguration:(BOOL)automaticallyUpdatesContentConfiguration;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)setBackgroundConfiguration:(UIBackgroundConfiguration *)backgroundConfiguration;
 - (void)setBackgroundView:(UIView *)backgroundView;
 - (void)setConfigurationUpdateHandler:(UITableViewHeaderFooterViewConfigurationUpdateHandler)configurationUpdateHandler;
-- (void)setFloating:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setFloating:(BOOL)floating;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsUpdateConfiguration;
 - (void)setNeedsUpdateConstraints;
-- (void)setSectionHeader:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSectionHeader:(BOOL)header;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTintColor:(id)color;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UITableViewHeaderFooterView
@@ -128,8 +128,8 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(UITableViewHeaderFooterView *)self _customViewForDefaultBackgroundAppearance];
-    if (!v3)
+    _customViewForDefaultBackgroundAppearance = [(UITableViewHeaderFooterView *)self _customViewForDefaultBackgroundAppearance];
+    if (!_customViewForDefaultBackgroundAppearance)
     {
       if ((*&self->_headerFooterFlags & 0x41) == 0x40)
       {
@@ -149,8 +149,8 @@
 
   if (self)
   {
-    v3 = [(UITableViewHeaderFooterView *)self _customViewForDefaultBackgroundAppearance];
-    if (!v3)
+    _customViewForDefaultBackgroundAppearance = [(UITableViewHeaderFooterView *)self _customViewForDefaultBackgroundAppearance];
+    if (!_customViewForDefaultBackgroundAppearance)
     {
       tableViewStyle = self->_tableViewStyle;
       if (tableViewStyle == 2)
@@ -174,11 +174,11 @@ LABEL_15:
       v5 = v4;
       if ([(UITableViewHeaderFooterView *)self _tintColorAffectsBackgroundColor])
       {
-        v7 = [(UIView *)self _interactionTintColor];
-        if (v7)
+        _interactionTintColor = [(UIView *)self _interactionTintColor];
+        if (_interactionTintColor)
         {
-          v8 = v7;
-          [v5 setBackgroundColor:v7];
+          v8 = _interactionTintColor;
+          [v5 setBackgroundColor:_interactionTintColor];
         }
       }
 
@@ -187,7 +187,7 @@ LABEL_15:
 
 LABEL_8:
     v5 = +[UIBackgroundConfiguration clearConfiguration];
-    [v5 setCustomView:v3];
+    [v5 setCustomView:_customViewForDefaultBackgroundAppearance];
 LABEL_18:
 
     goto LABEL_19;
@@ -213,8 +213,8 @@ LABEL_19:
 - (UICellConfigurationState)_configurationState
 {
   v3 = [UIViewConfigurationState alloc];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [(UIViewConfigurationState *)v3 initWithTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [(UIViewConfigurationState *)v3 initWithTraitCollection:traitCollection];
 
   [(UIViewConfigurationState *)v5 setDisabled:[(UIView *)self isUserInteractionEnabled]^ 1];
   [(UIViewConfigurationState *)v5 setFocused:[(UIView *)self isFocused]];
@@ -232,21 +232,21 @@ LABEL_19:
     {
       if ([(UITableViewHeaderFooterView *)self _tintColorAffectsBackgroundColor])
       {
-        v8 = [(UIView *)self _interactionTintColor];
+        _interactionTintColor = [(UIView *)self _interactionTintColor];
         v3 = self->_backgroundView;
         v4 = v3;
-        if (v8)
+        if (_interactionTintColor)
         {
-          [(UIView *)v3 setBackgroundColor:v8];
+          [(UIView *)v3 setBackgroundColor:_interactionTintColor];
           [v4 applyBackgroundConfiguration:0];
         }
 
         else
         {
           [(UIView *)v3 setBackgroundColor:0];
-          v5 = [(UITableViewHeaderFooterView *)self _defaultBackgroundConfiguration];
-          v6 = [(UITableViewHeaderFooterView *)self configurationState];
-          v7 = [v5 updatedConfigurationForState:v6];
+          _defaultBackgroundConfiguration = [(UITableViewHeaderFooterView *)self _defaultBackgroundConfiguration];
+          configurationState = [(UITableViewHeaderFooterView *)self configurationState];
+          v7 = [_defaultBackgroundConfiguration updatedConfigurationForState:configurationState];
 
           [v4 applyBackgroundConfiguration:v7];
           v4 = v7;
@@ -267,24 +267,24 @@ LABEL_19:
 
 - (BOOL)_isSourceListOrMacIdiom
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v3 == 5;
+  return userInterfaceIdiom == 5;
 }
 
 - (UIEdgeInsets)_effectiveSafeAreaInsets
 {
-  v3 = [(UITableViewHeaderFooterView *)self _insetsContentViewsToSafeArea];
+  _insetsContentViewsToSafeArea = [(UITableViewHeaderFooterView *)self _insetsContentViewsToSafeArea];
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (v3)
+  if (_insetsContentViewsToSafeArea)
   {
-    v8 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v8)
+    if (superview)
     {
       [(UIView *)self safeAreaInsets];
       v6 = v9;
@@ -294,9 +294,9 @@ LABEL_19:
 
     else
     {
-      v12 = [(UITableViewHeaderFooterView *)self _table];
-      v13 = [v12 _scrollView];
-      [v13 safeAreaInsets];
+      _table = [(UITableViewHeaderFooterView *)self _table];
+      _scrollView = [_table _scrollView];
+      [_scrollView safeAreaInsets];
       v6 = v14 + 0.0;
       v4 = v15 + 0.0;
 
@@ -363,14 +363,14 @@ LABEL_19:
   {
     if ((*(&self->_headerFooterFlags + 1) & 0x38) == 0)
     {
-      v3 = [(UITableViewHeaderFooterView *)self _defaultBackgroundConfiguration];
+      _defaultBackgroundConfiguration = [(UITableViewHeaderFooterView *)self _defaultBackgroundConfiguration];
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __65__UITableViewHeaderFooterView__updateDefaultBackgroundAppearance__block_invoke;
       v5[3] = &unk_1E70F35B8;
       v5[4] = self;
-      v6 = v3;
-      v4 = v3;
+      v6 = _defaultBackgroundConfiguration;
+      v4 = _defaultBackgroundConfiguration;
       [UIView _performSystemAppearanceModifications:v5];
       *&self->_headerFooterFlags &= ~0x2000u;
     }
@@ -417,8 +417,8 @@ LABEL_11:
   {
     if (self->_constants)
     {
-      v3 = [(UITableViewHeaderFooterView *)self _table];
-      if (v3)
+      _table = [(UITableViewHeaderFooterView *)self _table];
+      if (_table)
       {
         headerFooterFlags = self->_headerFooterFlags;
 
@@ -465,11 +465,11 @@ LABEL_5:
 
 - (UITableView)tableView
 {
-  v2 = [(UITableViewHeaderFooterView *)self _table];
+  _table = [(UITableViewHeaderFooterView *)self _table];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _table;
   }
 
   else
@@ -500,8 +500,8 @@ LABEL_5:
 
 - (UIViewConfigurationState)_bridgedConfigurationState
 {
-  v2 = self;
-  result = [(UITableViewHeaderFooterView *)v2 _configurationState];
+  selfCopy = self;
+  result = [(UITableViewHeaderFooterView *)selfCopy _configurationState];
   if (result)
   {
     v4 = result;
@@ -678,15 +678,15 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
     headerFooterFlags = self->_headerFooterFlags;
     constants = self->_constants;
     tableViewStyle = self->_tableViewStyle;
-    v6 = [(UIView *)self isFocused];
+    isFocused = [(UIView *)self isFocused];
     if (*&headerFooterFlags)
     {
-      [(UITableConstants *)constants defaultHeaderTextColorForTableViewStyle:tableViewStyle focused:v6];
+      [(UITableConstants *)constants defaultHeaderTextColorForTableViewStyle:tableViewStyle focused:isFocused];
     }
 
     else
     {
-      [(UITableConstants *)constants defaultFooterTextColorForTableViewStyle:tableViewStyle focused:v6];
+      [(UITableConstants *)constants defaultFooterTextColorForTableViewStyle:tableViewStyle focused:isFocused];
     }
     v7 = ;
   }
@@ -701,11 +701,11 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
 
 - (void)invalidateIntrinsicContentSize
 {
-  v3 = [(UITableViewHeaderFooterView *)self _table];
-  v4 = v3;
-  if (v3)
+  _table = [(UITableViewHeaderFooterView *)self _table];
+  v4 = _table;
+  if (_table)
   {
-    [v3 _headerFooterDidInvalidateIntrinsicContentSize:self];
+    [_table _headerFooterDidInvalidateIntrinsicContentSize:self];
   }
 
   else
@@ -753,29 +753,29 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
 
 - (void)_updateConfigurationWithObservationTracking
 {
-  v2 = self;
+  selfCopy = self;
   sub_188CBFFA4();
 }
 
 - (void)_executeConfigurationUpdate
 {
-  if (a1)
+  if (self)
   {
-    v2 = _UISetCurrentFallbackEnvironment(a1);
-    v3 = [a1 configurationState];
+    v2 = _UISetCurrentFallbackEnvironment(self);
+    configurationState = [self configurationState];
     memset(__src, 0, sizeof(__src));
-    _UIBeginTrackingTraitUsage(a1, 0, __src);
-    [a1 _updateBackgroundViewConfigurationForState:v3];
-    [a1 _updateContentViewConfigurationForState:v3];
-    [a1 _updateConfigurationUsingState:v3];
-    [a1 _updateViewConfigurationsWithState:{objc_msgSend(a1, "_viewConfigurationState")}];
-    [a1 updateConfigurationUsingState:v3];
-    [a1 _bridgedUpdateConfigurationUsingState:v3];
-    v4 = [a1 configurationUpdateHandler];
-    v5 = v4;
-    if (v4)
+    _UIBeginTrackingTraitUsage(self, 0, __src);
+    [self _updateBackgroundViewConfigurationForState:configurationState];
+    [self _updateContentViewConfigurationForState:configurationState];
+    [self _updateConfigurationUsingState:configurationState];
+    [self _updateViewConfigurationsWithState:{objc_msgSend(self, "_viewConfigurationState")}];
+    [self updateConfigurationUsingState:configurationState];
+    [self _bridgedUpdateConfigurationUsingState:configurationState];
+    configurationUpdateHandler = [self configurationUpdateHandler];
+    v5 = configurationUpdateHandler;
+    if (configurationUpdateHandler)
     {
-      (*(v4 + 16))(v4, a1, v3);
+      (*(configurationUpdateHandler + 16))(configurationUpdateHandler, self, configurationState);
     }
 
     memcpy(v11, __src, sizeof(v11));
@@ -785,14 +785,14 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
     v7 = __dst[22] & ~*&__src[11];
     v8 = *&__src[11] & ~__dst[22];
     v9 = __dst[22] & *&__src[11];
-    v10 = [a1 methodForSelector:sel_updateConfigurationUsingState_];
+    v10 = [self methodForSelector:sel_updateConfigurationUsingState_];
     *&v11[0] = v7;
     *(&v11[0] + 1) = v8;
     *&v11[1] = v9;
-    [(UIView *)a1 _recordTraitUsage:v11 trackedStateDiff:v10 insideMethod:sel_setNeedsUpdateConfiguration withInvalidationAction:?];
+    [(UIView *)self _recordTraitUsage:v11 trackedStateDiff:v10 insideMethod:sel_setNeedsUpdateConfiguration withInvalidationAction:?];
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
-      [a1 _layoutSystemBackgroundView];
+      [self _layoutSystemBackgroundView];
     }
 
     _UIRestorePreviousFallbackEnvironment(v2);
@@ -820,10 +820,10 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
 
 - (unint64_t)_viewConfigurationState
 {
-  v2 = [(UITableViewHeaderFooterView *)self configurationState];
-  v3 = [v2 _viewConfigurationState];
+  configurationState = [(UITableViewHeaderFooterView *)self configurationState];
+  _viewConfigurationState = [configurationState _viewConfigurationState];
 
-  return v3;
+  return _viewConfigurationState;
 }
 
 - (void)didMoveToSuperview
@@ -859,10 +859,10 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
   label = self->_label;
   if (label)
   {
-    v5 = [(UIView *)label superview];
+    superview = [(UIView *)label superview];
     contentView = self->_contentView;
 
-    if (v5 != contentView)
+    if (superview != contentView)
     {
       [UIView setAnimationsEnabled:0];
       [(UIView *)self->_contentView addSubview:self->_label];
@@ -876,10 +876,10 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
   detailLabel = self->_detailLabel;
   if (detailLabel)
   {
-    v8 = [(UIView *)detailLabel superview];
+    superview2 = [(UIView *)detailLabel superview];
     v9 = self->_contentView;
 
-    if (v8 != v9)
+    if (superview2 != v9)
     {
       [UIView setAnimationsEnabled:0];
       [(UIView *)self->_contentView addSubview:self->_detailLabel];
@@ -945,15 +945,15 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
 {
   if ((*(&self->_headerFooterFlags + 1) & 0x80) != 0 && !self->_viewForContentConfiguration)
   {
-    v4 = [(UIView *)self->_contentView configuration];
+    configuration = [(UIView *)self->_contentView configuration];
   }
 
   else
   {
-    v4 = 0;
+    configuration = 0;
   }
 
-  return v4;
+  return configuration;
 }
 
 - (UITableViewHeaderFooterView)initWithReuseIdentifier:(NSString *)reuseIdentifier
@@ -979,12 +979,12 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
   return v6;
 }
 
-- (UITableViewHeaderFooterView)initWithFrame:(CGRect)a3
+- (UITableViewHeaderFooterView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (dyld_program_sdk_at_least())
   {
     v8 = [(UITableViewHeaderFooterView *)self initWithReuseIdentifier:0];
@@ -1000,11 +1000,11 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
   {
     v12.receiver = self;
     v12.super_class = UITableViewHeaderFooterView;
-    v10 = [(UIView *)&v12 initWithFrame:x, y, width, height];
-    v9 = v10;
-    if (v10)
+    height = [(UIView *)&v12 initWithFrame:x, y, width, height];
+    v9 = height;
+    if (height)
     {
-      UITableViewHeaderFooterViewCommonInit(v10, 0);
+      UITableViewHeaderFooterViewCommonInit(height, 0);
     }
   }
 
@@ -1088,47 +1088,47 @@ void __52__UITableViewHeaderFooterView__setupLabelAppearance__block_invoke(uint6
   return v5;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_systemBackgroundView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v14 encodeWithCoder:v4];
+  [(UIView *)&v14 encodeWithCoder:coderCopy];
   reuseIdentifier = self->_reuseIdentifier;
   if (reuseIdentifier)
   {
-    [v4 encodeObject:reuseIdentifier forKey:@"UIReuseIdentifier"];
+    [coderCopy encodeObject:reuseIdentifier forKey:@"UIReuseIdentifier"];
   }
 
-  [v4 encodeObject:self->_systemBackgroundView forKey:@"UISystemBackgroundView"];
+  [coderCopy encodeObject:self->_systemBackgroundView forKey:@"UISystemBackgroundView"];
   if ((*(&self->_headerFooterFlags + 1) & 0x80) != 0)
   {
-    v6 = [(UITableViewHeaderFooterView *)self contentConfiguration];
-    if (v6)
+    contentConfiguration = [(UITableViewHeaderFooterView *)self contentConfiguration];
+    if (contentConfiguration)
     {
-      v7 = v6;
+      _contentViewConfiguration = contentConfiguration;
     }
 
     else
     {
-      v7 = [(UITableViewHeaderFooterView *)self _contentViewConfiguration];
-      if (!v7)
+      _contentViewConfiguration = [(UITableViewHeaderFooterView *)self _contentViewConfiguration];
+      if (!_contentViewConfiguration)
       {
         v9 = 0;
 LABEL_11:
-        [v4 encodeObject:v9 forKey:@"UIContentConfigurationIdentifier"];
+        [coderCopy encodeObject:v9 forKey:@"UIContentConfigurationIdentifier"];
 
         goto LABEL_12;
       }
@@ -1136,7 +1136,7 @@ LABEL_11:
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 _wrappedConfigurationIdentifier];
+      [_contentViewConfiguration _wrappedConfigurationIdentifier];
     }
 
     else
@@ -1150,50 +1150,50 @@ LABEL_11:
   }
 
 LABEL_12:
-  [v4 encodeObject:self->_viewForContentConfiguration forKey:@"UIContentConfigurationView"];
+  [coderCopy encodeObject:self->_viewForContentConfiguration forKey:@"UIContentConfigurationView"];
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
-    [v4 encodeObject:backgroundView forKey:@"UIBackgroundView"];
+    [coderCopy encodeObject:backgroundView forKey:@"UIBackgroundView"];
   }
 
   contentView = self->_contentView;
   if (contentView)
   {
-    [v4 encodeObject:contentView forKey:@"UIContentView"];
+    [coderCopy encodeObject:contentView forKey:@"UIContentView"];
   }
 
   label = self->_label;
   if (label)
   {
-    [v4 encodeObject:label forKey:@"UILabel"];
+    [coderCopy encodeObject:label forKey:@"UILabel"];
   }
 
   detailLabel = self->_detailLabel;
   if (detailLabel)
   {
-    [v4 encodeObject:detailLabel forKey:@"UIDetailLabel"];
+    [coderCopy encodeObject:detailLabel forKey:@"UIDetailLabel"];
   }
 
-  [v4 encodeBool:(*&self->_headerFooterFlags >> 3) & 1 forKey:@"UIFloating"];
-  [v4 encodeInteger:self->_tableViewStyle forKey:@"UITableViewStyle"];
-  [v4 encodeBool:*&self->_headerFooterFlags & 1 forKey:@"UIIsHeader"];
-  [v4 encodeInteger:self->_textAlignment forKey:@"UITextAlignment"];
-  [v4 encodeDouble:@"UIMaxTitleWidth" forKey:self->_maxTitleWidth];
+  [coderCopy encodeBool:(*&self->_headerFooterFlags >> 3) & 1 forKey:@"UIFloating"];
+  [coderCopy encodeInteger:self->_tableViewStyle forKey:@"UITableViewStyle"];
+  [coderCopy encodeBool:*&self->_headerFooterFlags & 1 forKey:@"UIIsHeader"];
+  [coderCopy encodeInteger:self->_textAlignment forKey:@"UITextAlignment"];
+  [coderCopy encodeDouble:@"UIMaxTitleWidth" forKey:self->_maxTitleWidth];
 }
 
-- (void)_notifyIsDisplaying:(BOOL)a3
+- (void)_notifyIsDisplaying:(BOOL)displaying
 {
-  if (((((*&self->_headerFooterFlags & 0x200) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_headerFooterFlags & 0x200) == 0) ^ displaying) & 1) == 0)
   {
-    v3 = a3;
-    v5 = a3 ? 512 : 0;
+    displayingCopy = displaying;
+    v5 = displaying ? 512 : 0;
     self->_headerFooterFlags = (*&self->_headerFooterFlags & 0xFFFFFDFF | v5);
     if (objc_opt_respondsToSelector())
     {
       contentView = self->_contentView;
 
-      [(UIView *)contentView _containerViewIsHiddenForReuse:!v3];
+      [(UIView *)contentView _containerViewIsHiddenForReuse:!displayingCopy];
     }
   }
 }
@@ -1213,15 +1213,15 @@ LABEL_12:
   [(UITableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
 }
 
-- (void)_setContentView:(id)a3 insertAtBack:(BOOL)a4
+- (void)_setContentView:(id)view insertAtBack:(BOOL)back
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
+  backCopy = back;
+  viewCopy = view;
+  v8 = viewCopy;
   contentView = self->_contentView;
-  if (contentView != v7)
+  if (contentView != viewCopy)
   {
-    v10 = v7;
+    v10 = viewCopy;
     if (contentView)
     {
       [(UITableViewHeaderFooterView *)self _clearChangeHandlersForOldContentView:?];
@@ -1229,12 +1229,12 @@ LABEL_12:
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)v10 setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
     v8 = v10;
     if (v10)
     {
-      if (v4)
+      if (backCopy)
       {
         [(UIView *)self insertSubview:v10 atIndex:0];
       }
@@ -1251,28 +1251,28 @@ LABEL_12:
   }
 }
 
-- (void)_clearChangeHandlersForOldContentView:(id)a3
+- (void)_clearChangeHandlersForOldContentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v3 _setContainerBackgroundViewDidChangeHandler:0];
+    [viewCopy _setContainerBackgroundViewDidChangeHandler:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 _setDefaultListContentConfigurationProvider:0];
+    [viewCopy _setDefaultListContentConfigurationProvider:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 _containerViewIsHiddenForReuse:0];
+    [viewCopy _containerViewIsHiddenForReuse:0];
   }
 }
 
-- (void)_setupChangeHandlersForNewContentView:(id)a3
+- (void)_setupChangeHandlersForNewContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
@@ -1281,7 +1281,7 @@ LABEL_12:
     v7[2] = __69__UITableViewHeaderFooterView__setupChangeHandlersForNewContentView___block_invoke;
     v7[3] = &unk_1E70F5A28;
     objc_copyWeak(&v8, &location);
-    [v4 _setContainerBackgroundViewDidChangeHandler:v7];
+    [viewCopy _setContainerBackgroundViewDidChangeHandler:v7];
     if ([(UITableViewHeaderFooterView *)self _usingBackgroundConfigurationOrDefaultBackgroundConfiguration])
     {
       [(UITableViewHeaderFooterView *)self _updateDefaultBackgroundAppearance];
@@ -1299,14 +1299,14 @@ LABEL_12:
     v5[2] = __69__UITableViewHeaderFooterView__setupChangeHandlersForNewContentView___block_invoke_2;
     v5[3] = &unk_1E70FE380;
     objc_copyWeak(&v6, &location);
-    [v4 _setDefaultListContentConfigurationProvider:v5];
+    [viewCopy _setDefaultListContentConfigurationProvider:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 _containerViewIsHiddenForReuse:(*&self->_headerFooterFlags & 0x200) == 0];
+    [viewCopy _containerViewIsHiddenForReuse:(*&self->_headerFooterFlags & 0x200) == 0];
   }
 }
 
@@ -1349,8 +1349,8 @@ id __69__UITableViewHeaderFooterView__setupChangeHandlersForNewContentView___blo
     tableViewStyle = self->_tableViewStyle;
     if (tableViewStyle < 0)
     {
-      v4 = [(UITableViewHeaderFooterView *)self _table];
-      tableViewStyle = [v4 _tableStyle];
+      _table = [(UITableViewHeaderFooterView *)self _table];
+      tableViewStyle = [_table _tableStyle];
     }
 
     v5 = *&self->_headerFooterFlags & 0x41;
@@ -1386,64 +1386,64 @@ LABEL_16:
   return v6;
 }
 
-- (void)_applyContentViewConfiguration:(id)a3 withState:(id)a4 usingSPI:(BOOL)a5
+- (void)_applyContentViewConfiguration:(id)configuration withState:(id)state usingSPI:(BOOL)i
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  iCopy = i;
+  configurationCopy = configuration;
+  stateCopy = state;
+  configurationState = stateCopy;
   headerFooterFlags = self->_headerFooterFlags;
-  if (v9)
+  if (configurationCopy)
   {
     if ((*&headerFooterFlags & 0x10000) != 0 && !self->_contentViewConfigurationProvider)
     {
-      if (!v10)
+      if (!stateCopy)
       {
-        v11 = [(UITableViewHeaderFooterView *)self configurationState];
+        configurationState = [(UITableViewHeaderFooterView *)self configurationState];
       }
 
-      v37 = v11;
-      if (v5)
+      v37 = configurationState;
+      if (iCopy)
       {
-        v21 = [(UITableViewHeaderFooterView *)self _viewConfigurationState];
-        v22 = [(UIView *)self traitCollection];
-        v13 = [v9 updatedConfigurationForState:v21 traitCollection:v22];
+        _viewConfigurationState = [(UITableViewHeaderFooterView *)self _viewConfigurationState];
+        traitCollection = [(UIView *)self traitCollection];
+        v13 = [configurationCopy updatedConfigurationForState:_viewConfigurationState traitCollection:traitCollection];
       }
 
       else
       {
-        v13 = [v9 updatedConfigurationForState:v11];
+        v13 = [configurationCopy updatedConfigurationForState:configurationState];
       }
 
       if (!v13)
       {
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v34 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:661 description:{@"Updated configuration was nil for configuration: %@", v9}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:661 description:{@"Updated configuration was nil for configuration: %@", configurationCopy}];
       }
 
-      v11 = v37;
+      configurationState = v37;
     }
 
     else
     {
-      v13 = v9;
+      v13 = configurationCopy;
     }
 
-    v36 = v11;
+    v36 = configurationState;
     if ((*&headerFooterFlags & 0x8000) == 0)
     {
       *&self->_headerFooterFlags |= 0x8000u;
       [(UITableViewHeaderFooterView *)self _resetContentViews];
-      if (!v5)
+      if (!iCopy)
       {
 LABEL_44:
-        v29 = [v13 makeContentView];
-        objc_storeStrong(&self->_viewForContentConfiguration, v29);
+        makeContentView = [v13 makeContentView];
+        objc_storeStrong(&self->_viewForContentConfiguration, makeContentView);
         if (objc_opt_respondsToSelector())
         {
-          v31 = [(_UIContentViewInternal *)self->_viewForContentConfiguration _wrappedContentView];
+          _wrappedContentView = [(_UIContentViewInternal *)self->_viewForContentConfiguration _wrappedContentView];
 
-          v29 = v31;
+          makeContentView = _wrappedContentView;
         }
 
         goto LABEL_46;
@@ -1468,9 +1468,9 @@ LABEL_44:
     else
     {
       v35 = a2;
-      v20 = [v18 configuration];
+      configuration = [v18 configuration];
 
-      v18 = v20;
+      v18 = configuration;
       if (v18)
       {
         if (objc_opt_respondsToSelector())
@@ -1519,10 +1519,10 @@ LABEL_44:
     *&self->_headerFooterFlags |= 0x8000u;
     if (!v19)
     {
-      if (!v5)
+      if (!iCopy)
       {
-        v30 = [(_UIContentViewInternal *)self->_viewForContentConfiguration configuration];
-        UIContentConfigurationAlertForReplacedContentView(@"header/footer view", self, v30, v17, @"Use separate reuse identifiers for different types of header/footer views to avoid this.");
+        configuration2 = [(_UIContentViewInternal *)self->_viewForContentConfiguration configuration];
+        UIContentConfigurationAlertForReplacedContentView(@"header/footer view", self, configuration2, v17, @"Use separate reuse identifiers for different types of header/footer views to avoid this.");
 
         [(UITableViewHeaderFooterView *)self _resetContentViews];
         goto LABEL_44;
@@ -1530,26 +1530,26 @@ LABEL_44:
 
       [(UITableViewHeaderFooterView *)self _resetContentViews];
 LABEL_40:
-      v29 = [v13 createContentView];
+      makeContentView = [v13 createContentView];
 LABEL_46:
-      if (!v29)
+      if (!makeContentView)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:696 description:{@"Content configuration returned a nil content view: %@", v13}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:696 description:{@"Content configuration returned a nil content view: %@", v13}];
       }
 
-      if (([v29 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
+      if (([makeContentView translatesAutoresizingMaskIntoConstraints] & 1) == 0)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v33 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:697 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", v29}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:697 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", makeContentView}];
       }
 
-      [(UITableViewHeaderFooterView *)self _setContentView:v29 insertAtBack:0];
+      [(UITableViewHeaderFooterView *)self _setContentView:makeContentView insertAtBack:0];
 
       goto LABEL_51;
     }
 
-    if (v5)
+    if (iCopy)
     {
       contentView = self->_contentView;
     }
@@ -1571,7 +1571,7 @@ LABEL_46:
       goto LABEL_52;
     }
 
-    v36 = v10;
+    v36 = stateCopy;
     v14 = [_UITableViewHeaderFooterContentView alloc];
     [(UITableViewHeaderFooterView *)self _contentRect];
     v15 = [(_UITableViewHeaderFooterContentView *)v14 initWithFrame:?];
@@ -1584,7 +1584,7 @@ LABEL_46:
 
 LABEL_51:
 
-  v11 = v36;
+  configurationState = v36;
 LABEL_52:
 }
 
@@ -1621,16 +1621,16 @@ LABEL_52:
   *p_headerFooterFlags = (*&headerFooterFlags & 0xFFFEFFFF);
 }
 
-- (void)_setContentViewConfigurationProvider:(id)a3
+- (void)_setContentViewConfigurationProvider:(id)provider
 {
-  if (self->_contentViewConfigurationProvider != a3)
+  if (self->_contentViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       *&self->_headerFooterFlags &= ~0x10000u;
     }
 
-    v4 = [a3 copy];
+    v4 = [provider copy];
     contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
     self->_contentViewConfigurationProvider = v4;
 
@@ -1645,113 +1645,113 @@ LABEL_52:
   return v2;
 }
 
-- (void)_updateContentViewConfigurationForState:(id)a3
+- (void)_updateContentViewConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
   if (contentViewConfigurationProvider)
   {
-    v11 = v4;
-    v6 = contentViewConfigurationProvider[2](contentViewConfigurationProvider, [(UITableViewHeaderFooterView *)self _viewConfigurationState]);
-    [(UITableViewHeaderFooterView *)self _setContentViewConfiguration:v6];
+    v11 = stateCopy;
+    contentConfiguration = contentViewConfigurationProvider[2](contentViewConfigurationProvider, [(UITableViewHeaderFooterView *)self _viewConfigurationState]);
+    [(UITableViewHeaderFooterView *)self _setContentViewConfiguration:contentConfiguration];
 LABEL_3:
 
-    v4 = v11;
+    stateCopy = v11;
     goto LABEL_4;
   }
 
   if (*(&self->_headerFooterFlags + 2))
   {
-    v11 = v4;
+    v11 = stateCopy;
     if (self->_viewForContentConfiguration)
     {
-      v6 = [(UITableViewHeaderFooterView *)self contentConfiguration];
-      if (!v6)
+      contentConfiguration = [(UITableViewHeaderFooterView *)self contentConfiguration];
+      if (!contentConfiguration)
       {
         goto LABEL_3;
       }
 
-      v7 = self;
-      v8 = v6;
+      selfCopy2 = self;
+      v8 = contentConfiguration;
       v9 = v11;
       v10 = 0;
     }
 
     else
     {
-      v6 = [(UITableViewHeaderFooterView *)self _contentViewConfiguration];
-      if (!v6)
+      contentConfiguration = [(UITableViewHeaderFooterView *)self _contentViewConfiguration];
+      if (!contentConfiguration)
       {
         goto LABEL_3;
       }
 
-      v7 = self;
-      v8 = v6;
+      selfCopy2 = self;
+      v8 = contentConfiguration;
       v9 = v11;
       v10 = 1;
     }
 
-    [(UITableViewHeaderFooterView *)v7 _applyContentViewConfiguration:v8 withState:v9 usingSPI:v10];
+    [(UITableViewHeaderFooterView *)selfCopy2 _applyContentViewConfiguration:v8 withState:v9 usingSPI:v10];
     goto LABEL_3;
   }
 
 LABEL_4:
 }
 
-+ (id)_defaultFontForTableViewStyle:(int64_t)a3 isSectionHeader:(BOOL)a4
++ (id)_defaultFontForTableViewStyle:(int64_t)style isSectionHeader:(BOOL)header
 {
   v6 = +[UITraitCollection _fallbackTraitCollection];
   v7 = _UITableConstantsForTraitCollection(v6);
 
-  if (a4)
+  if (header)
   {
-    [v7 defaultHeaderFontForTableViewStyle:a3];
+    [v7 defaultHeaderFontForTableViewStyle:style];
   }
 
   else
   {
-    [v7 defaultFooterFontForTableViewStyle:a3];
+    [v7 defaultFooterFontForTableViewStyle:style];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)_defaultFontForHeaderFooterView:(id)a3
++ (id)_defaultFontForHeaderFooterView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 sectionHeader];
-  v5 = [v3 _constants];
-  v6 = [v3 tableView];
+  viewCopy = view;
+  sectionHeader = [viewCopy sectionHeader];
+  _constants = [viewCopy _constants];
+  tableView = [viewCopy tableView];
 
-  v7 = [v6 _tableStyle];
-  if (v4)
+  _tableStyle = [tableView _tableStyle];
+  if (sectionHeader)
   {
-    [v5 defaultHeaderFontForTableViewStyle:v7];
+    [_constants defaultHeaderFontForTableViewStyle:_tableStyle];
   }
 
   else
   {
-    [v5 defaultFooterFontForTableViewStyle:v7];
+    [_constants defaultFooterFontForTableViewStyle:_tableStyle];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)_defaultTextColorForTableViewStyle:(int64_t)a3 isSectionHeader:(BOOL)a4
++ (id)_defaultTextColorForTableViewStyle:(int64_t)style isSectionHeader:(BOOL)header
 {
   v6 = +[UITraitCollection _fallbackTraitCollection];
   v7 = _UITableConstantsForTraitCollection(v6);
 
-  if (a4)
+  if (header)
   {
-    [v7 defaultHeaderTextColorForTableViewStyle:a3 focused:0];
+    [v7 defaultHeaderTextColorForTableViewStyle:style focused:0];
   }
 
   else
   {
-    [v7 defaultFooterTextColorForTableViewStyle:a3 focused:0];
+    [v7 defaultFooterTextColorForTableViewStyle:style focused:0];
   }
   v8 = ;
 
@@ -1774,9 +1774,9 @@ LABEL_4:
   return v2;
 }
 
-+ (double)defaultHeaderHeightForStyle:(int64_t)a3
++ (double)defaultHeaderHeightForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     return 17.5;
   }
@@ -1785,8 +1785,8 @@ LABEL_4:
   result = 23.0;
   if (v4)
   {
-    v5 = [objc_opt_class() _defaultPlainHeaderFooterFont];
-    [v5 _scaledValueForValue:28.0];
+    _defaultPlainHeaderFooterFont = [objc_opt_class() _defaultPlainHeaderFooterFont];
+    [_defaultPlainHeaderFooterFont _scaledValueForValue:28.0];
     v7 = v6;
 
     return v7;
@@ -1795,9 +1795,9 @@ LABEL_4:
   return result;
 }
 
-+ (double)defaultFooterHeightForStyle:(int64_t)a3
++ (double)defaultFooterHeightForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     return 17.5;
   }
@@ -1806,8 +1806,8 @@ LABEL_4:
   result = 23.0;
   if (v4)
   {
-    v5 = [objc_opt_class() _defaultPlainHeaderFooterFont];
-    [v5 _scaledValueForValue:28.0];
+    _defaultPlainHeaderFooterFont = [objc_opt_class() _defaultPlainHeaderFooterFont];
+    [_defaultPlainHeaderFooterFont _scaledValueForValue:28.0];
     v7 = v6;
 
     return v7;
@@ -1816,9 +1816,9 @@ LABEL_4:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  self->_frame = a3;
+  self->_frame = frame;
   v4.receiver = self;
   v4.super_class = UITableViewHeaderFooterView;
   [(UIView *)&v4 setFrame:?];
@@ -1845,9 +1845,9 @@ void __40__UITableViewHeaderFooterView_setFrame___block_invoke()
   }
 }
 
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x40000;
   }
@@ -1861,12 +1861,12 @@ void __40__UITableViewHeaderFooterView_setFrame___block_invoke()
   [(UIView *)self->_contentView _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:?];
 }
 
-- (void)setSectionHeader:(BOOL)a3
+- (void)setSectionHeader:(BOOL)header
 {
-  v3 = a3;
+  headerCopy = header;
   headerFooterFlags = self->_headerFooterFlags;
-  self->_headerFooterFlags = (*&headerFooterFlags & 0xFFFFFFFE | a3);
-  if (dyld_program_sdk_at_least() & 1) != 0 || ((*&headerFooterFlags ^ v3))
+  self->_headerFooterFlags = (*&headerFooterFlags & 0xFFFFFFFE | header);
+  if (dyld_program_sdk_at_least() & 1) != 0 || ((*&headerFooterFlags ^ headerCopy))
   {
     *&self->_headerFooterFlags |= 0x40u;
 
@@ -1874,33 +1874,33 @@ void __40__UITableViewHeaderFooterView_setFrame___block_invoke()
   }
 }
 
-- (void)_setupLabelForSourceList:(id)a3
+- (void)_setupLabelForSourceList:(id)list
 {
-  v3 = a3;
-  [v3 setNumberOfLines:1];
-  [v3 setLineBreakMode:4];
-  [v3 setAllowsDefaultTighteningForTruncation:0];
-  [v3 setAdjustsFontSizeToFitWidth:0];
+  listCopy = list;
+  [listCopy setNumberOfLines:1];
+  [listCopy setLineBreakMode:4];
+  [listCopy setAllowsDefaultTighteningForTruncation:0];
+  [listCopy setAdjustsFontSizeToFitWidth:0];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(UILabel *)self->_label setTextAlignment:?];
   }
 }
 
-- (CGSize)_textSizeForWidth:(double)a3
+- (CGSize)_textSizeForWidth:(double)width
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [(UILabel *)self->_label text];
-  if ([v5 length])
+  text = [(UILabel *)self->_label text];
+  if ([text length])
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v7 = [(UILabel *)self->_label font];
-    [v7 pointSize];
+    font = [(UILabel *)self->_label font];
+    [font pointSize];
     v9 = v8;
 
     if (has_internal_diagnostics)
@@ -1919,15 +1919,15 @@ LABEL_4:
         label = self->_label;
         if (self->_tableViewStyle)
         {
-          [(UILabel *)label sizeThatFits:a3, 1.79769313e308];
+          [(UILabel *)label sizeThatFits:width, 1.79769313e308];
           v12 = v11;
           v14 = v13;
         }
 
         else
         {
-          v15 = [(UILabel *)label font];
-          [v5 _legacy_sizeWithFont:v15 forWidth:-[UILabel lineBreakMode](self->_label lineBreakMode:{"lineBreakMode"), a3}];
+          font2 = [(UILabel *)label font];
+          [text _legacy_sizeWithFont:font2 forWidth:-[UILabel lineBreakMode](self->_label lineBreakMode:{"lineBreakMode"), width}];
           v12 = v16;
           v14 = v17;
         }
@@ -1969,12 +1969,12 @@ LABEL_4:
   v12 = *MEMORY[0x1E695F060];
   v14 = *(MEMORY[0x1E695F060] + 8);
 LABEL_8:
-  v18 = [(UITableViewHeaderFooterView *)self _table];
-  v19 = v18;
-  if (v18)
+  _table = [(UITableViewHeaderFooterView *)self _table];
+  v19 = _table;
+  if (_table)
   {
-    v20 = [v18 _scrollView];
-    [v20 _currentScreenScale];
+    _scrollView = [_table _scrollView];
+    [_scrollView _currentScreenScale];
     v22 = v21;
   }
 
@@ -1991,23 +1991,23 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)_detailTextSizeForWidth:(double)a3
+- (CGSize)_detailTextSizeForWidth:(double)width
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [(UITableViewHeaderFooterView *)self _useDetailText];
+  _useDetailText = [(UITableViewHeaderFooterView *)self _useDetailText];
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
-  if (!v5)
+  if (!_useDetailText)
   {
     goto LABEL_12;
   }
 
-  v8 = [(UILabel *)self->_detailLabel text];
-  if ([v8 length])
+  text = [(UILabel *)self->_detailLabel text];
+  if ([text length])
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v10 = [(UILabel *)self->_detailLabel font];
-    [v10 pointSize];
+    font = [(UILabel *)self->_detailLabel font];
+    [font pointSize];
     v12 = v11;
 
     if (has_internal_diagnostics)
@@ -2027,15 +2027,15 @@ LABEL_5:
         detailLabel = self->_detailLabel;
         if (v13)
         {
-          [(UILabel *)detailLabel sizeThatFits:a3, 1.79769313e308];
+          [(UILabel *)detailLabel sizeThatFits:width, 1.79769313e308];
           v6 = v15;
           v7 = v16;
         }
 
         else
         {
-          v17 = [(UILabel *)detailLabel font];
-          [v8 _legacy_sizeWithFont:v17 constrainedToSize:-[UILabel lineBreakMode](self->_detailLabel lineBreakMode:{"lineBreakMode"), a3, 3.40282347e38}];
+          font2 = [(UILabel *)detailLabel font];
+          [text _legacy_sizeWithFont:font2 constrainedToSize:-[UILabel lineBreakMode](self->_detailLabel lineBreakMode:{"lineBreakMode"), width, 3.40282347e38}];
           v6 = v18;
           v7 = v19;
         }
@@ -2075,12 +2075,12 @@ LABEL_5:
   }
 
 LABEL_8:
-  v20 = [(UITableViewHeaderFooterView *)self _table];
-  v21 = v20;
-  if (v20)
+  _table = [(UITableViewHeaderFooterView *)self _table];
+  v21 = _table;
+  if (_table)
   {
-    v22 = [v20 _scrollView];
-    [v22 _currentScreenScale];
+    _scrollView = [_table _scrollView];
+    [_scrollView _currentScreenScale];
     v24 = v23;
   }
 
@@ -2196,7 +2196,7 @@ LABEL_9:
   }
 }
 
-- (id)_label:(BOOL)a3
+- (id)_label:(BOOL)_label
 {
   label = self->_label;
   if (label)
@@ -2206,7 +2206,7 @@ LABEL_9:
 
   else
   {
-    v5 = !a3;
+    v5 = !_label;
   }
 
   if (!v5)
@@ -2316,24 +2316,24 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
   label = self->_label;
   if (label)
   {
-    v4 = [(UILabel *)label text];
+    text = [(UILabel *)label text];
   }
 
   else
   {
-    v4 = &stru_1EFB14550;
+    text = &stru_1EFB14550;
   }
 
-  return v4;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
-  if (self->_label || [v5 length])
+  textCopy = text;
+  if (self->_label || [textCopy length])
   {
     v4 = [(UITableViewHeaderFooterView *)self _label:1];
-    [(UILabel *)self->_label setText:v5];
+    [(UILabel *)self->_label setText:textCopy];
     [(UIView *)self setNeedsLayout];
     [(UIView *)self setNeedsDisplay];
   }
@@ -2341,12 +2341,12 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
 
 - (CGRect)_labelFrame
 {
-  v3 = [(UILabel *)self->_label text];
-  v4 = [(UITableViewHeaderFooterView *)self _table];
+  text = [(UILabel *)self->_label text];
+  _table = [(UITableViewHeaderFooterView *)self _table];
   v5 = MEMORY[0x1E695F058];
   v6 = *MEMORY[0x1E695F058];
   rect_24 = *(MEMORY[0x1E695F058] + 8);
-  if (![v3 length])
+  if (![text length])
   {
     v19 = *(v5 + 16);
     v20 = *(v5 + 24);
@@ -2378,12 +2378,12 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
   rect = v8;
   if (!self->_tableViewStyle)
   {
-    [(UITableConstants *)self->_constants defaultPlainHeaderLabelYPositionForTableView:v4 headerBounds:*&self->_headerFooterFlags & 1 textRect:v8 isHeader:rect_16, v15, rect_8, v6, rect_24, v17, v18];
+    [(UITableConstants *)self->_constants defaultPlainHeaderLabelYPositionForTableView:_table headerBounds:*&self->_headerFooterFlags & 1 textRect:v8 isHeader:rect_16, v15, rect_8, v6, rect_24, v17, v18];
     rect_24 = v28;
     goto LABEL_18;
   }
 
-  v21 = [(UILabel *)self->_label font];
+  font = [(UILabel *)self->_label font];
   if (*&self->_headerFooterFlags)
   {
     if (v20 > 1.79769313e308)
@@ -2392,7 +2392,7 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
       v30 = 35.0;
       if (v29)
       {
-        [v21 _scaledValueForValue:35.0];
+        [font _scaledValueForValue:35.0];
       }
 
       rect_24 = rect_16 + v30;
@@ -2400,20 +2400,20 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
       goto LABEL_17;
     }
 
-    v50 = [(UITableViewHeaderFooterView *)self _useDetailText];
+    _useDetailText = [(UITableViewHeaderFooterView *)self _useDetailText];
     v51 = dyld_program_sdk_at_least();
-    if (v50)
+    if (_useDetailText)
     {
       if (v51)
       {
-        [v21 _scaledValueForValue:45.0];
+        [font _scaledValueForValue:45.0];
         v53 = v52;
         [(UILabel *)self->_label _firstLineBaselineOffsetFromBoundsTop];
         rect_24 = v53 - v54;
         headerFooterFlags = self->_headerFooterFlags;
         if ((*&headerFooterFlags & 0x10) != 0)
         {
-          [v21 _scaledValueForValue:10.0];
+          [font _scaledValueForValue:10.0];
         }
 
         else
@@ -2423,10 +2423,10 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
             goto LABEL_17;
           }
 
-          if (v4)
+          if (_table)
           {
-            v56 = [v4 _scrollView];
-            [v56 _currentScreenScale];
+            _scrollView = [_table _scrollView];
+            [_scrollView _currentScreenScale];
             rect_24 = rect_24 - UIPixelBoundaryOffset(0, 17.5, v57);
 
             goto LABEL_17;
@@ -2462,7 +2462,7 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
       v70 = 10.0;
       if (v51)
       {
-        [v21 _scaledValueForValue:10.0];
+        [font _scaledValueForValue:10.0];
         v70 = v71;
       }
 
@@ -2486,7 +2486,7 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
     v22 = 10.0;
     if (dyld_program_sdk_at_least())
     {
-      [v21 _scaledValueForValue:10.0];
+      [font _scaledValueForValue:10.0];
       v22 = v23;
     }
 
@@ -2508,8 +2508,8 @@ uint64_t __46__UITableViewHeaderFooterView_detailTextLabel__block_invoke(uint64_
 LABEL_17:
 
 LABEL_18:
-  v31 = [(UILabel *)self->_label font];
-  [v31 lineHeight];
+  font2 = [(UILabel *)self->_label font];
+  [font2 lineHeight];
   v33 = v32;
 
   v90.origin.x = v6;
@@ -2581,8 +2581,8 @@ LABEL_18:
     }
   }
 
-  v39 = [(UILabel *)self->_label attributedText];
-  v40 = [v39 _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:{+[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", -[UIView semanticContentAttribute](self, "semanticContentAttribute"))}];
+  attributedText = [(UILabel *)self->_label attributedText];
+  v40 = [attributedText _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:{+[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", -[UIView semanticContentAttribute](self, "semanticContentAttribute"))}];
 
   if (v40 == 2)
   {
@@ -2601,18 +2601,18 @@ LABEL_18:
       v6 = 0.0;
     }
 
-    v49 = [v4 _scrollView];
-    if ([v49 _shouldReverseLayoutDirection])
+    _scrollView2 = [_table _scrollView];
+    if ([_scrollView2 _shouldReverseLayoutDirection])
     {
     }
 
     else
     {
-      v58 = [v4 _isShowingIndex];
+      _isShowingIndex = [_table _isShowingIndex];
 
-      if (v58)
+      if (_isShowingIndex)
       {
-        [v4 _indexFrame];
+        [_table _indexFrame];
         v6 = v6 - CGRectGetWidth(v102);
       }
     }
@@ -2642,14 +2642,14 @@ LABEL_18:
 
     if (!v40)
     {
-      v42 = [v4 _scrollView];
-      if ([v42 _shouldReverseLayoutDirection])
+      _scrollView3 = [_table _scrollView];
+      if ([_scrollView3 _shouldReverseLayoutDirection])
       {
-        v43 = [v4 _isShowingIndex];
+        _isShowingIndex2 = [_table _isShowingIndex];
 
-        if (v43)
+        if (_isShowingIndex2)
         {
-          [v4 _indexFrame];
+          [_table _indexFrame];
           v6 = v83 + CGRectGetWidth(v100);
           goto LABEL_50;
         }
@@ -2679,10 +2679,10 @@ LABEL_50:
   v105.size.width = v59;
   v105.size.height = v60;
   v61 = CGRectGetMinY(v105);
-  if (v4)
+  if (_table)
   {
-    v62 = [v4 _scrollView];
-    [v62 _currentScreenScale];
+    _scrollView4 = [_table _scrollView];
+    [_scrollView4 _currentScreenScale];
     v64 = UIPixelBoundaryOffset(0, v61, v63);
   }
 
@@ -2705,7 +2705,7 @@ LABEL_50:
 
 - (CGRect)_detailLabelFrame
 {
-  v3 = [(UITableViewHeaderFooterView *)self _table];
+  _table = [(UITableViewHeaderFooterView *)self _table];
   [(UITableViewHeaderFooterView *)self _labelFrame];
   v5 = v4;
   v7 = v6;
@@ -2715,9 +2715,9 @@ LABEL_50:
   rect = v11;
   v13 = v12;
   v15 = v14;
-  if ([v3 _isShowingIndex])
+  if ([_table _isShowingIndex])
   {
-    [v3 _indexFrame];
+    [_table _indexFrame];
     v13 = v13 - CGRectGetWidth(v46);
   }
 
@@ -2767,7 +2767,7 @@ LABEL_50:
     v51.size.width = v13;
     v51.size.height = v15;
     v26 = CGRectGetMaxY(v51);
-    v27 = [(UILabel *)self->_label font];
+    font = [(UILabel *)self->_label font];
     v28 = dyld_program_sdk_at_least();
     v29 = 10.0;
     if (v28)
@@ -2775,7 +2775,7 @@ LABEL_50:
       v29 = 8.0;
     }
 
-    [v27 _scaledValueForValue:v29];
+    [font _scaledValueForValue:v29];
     v31 = v30;
     v52.origin.x = v5;
     v52.origin.y = v23;
@@ -2800,10 +2800,10 @@ LABEL_50:
   v54.size.width = v20;
   v54.size.height = v22;
   MinY = CGRectGetMinY(v54);
-  if (v3)
+  if (_table)
   {
-    v36 = [v3 _scrollView];
-    [v36 _currentScreenScale];
+    _scrollView = [_table _scrollView];
+    [_scrollView _currentScreenScale];
     v38 = UIPixelBoundaryOffset(0, MinY, v37);
   }
 
@@ -2835,22 +2835,22 @@ LABEL_50:
     return 0;
   }
 
-  v7 = [(UILabel *)self->_detailLabel text];
-  v6 = [v7 length] != 0;
+  text = [(UILabel *)self->_detailLabel text];
+  v6 = [text length] != 0;
 
   return v6;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 stripPaddingForAbuttingView:(BOOL)a4 isTopHeader:(BOOL)a5
+- (CGSize)_sizeThatFits:(CGSize)fits stripPaddingForAbuttingView:(BOOL)view isTopHeader:(BOOL)header
 {
-  v6 = a4;
-  width = a3.width;
+  viewCopy = view;
+  width = fits.width;
   p_label = &self->_label;
   label = self->_label;
   if (label)
   {
-    [(UIView *)label frame:a3.width];
-    if (CGRectGetWidth(v96) <= 0.0 || ([(UIView *)*p_label frame], a3.width = CGRectGetHeight(v97), a3.width <= 0.0))
+    [(UIView *)label frame:fits.width];
+    if (CGRectGetWidth(v96) <= 0.0 || ([(UIView *)*p_label frame], fits.width = CGRectGetHeight(v97), fits.width <= 0.0))
     {
       [(UIView *)self setNeedsLayout];
     }
@@ -2860,15 +2860,15 @@ LABEL_50:
   detailLabel = self->_detailLabel;
   if (detailLabel)
   {
-    [(UIView *)detailLabel frame:a3.width];
-    if (CGRectGetWidth(v98) <= 0.0 || ([(UIView *)*p_detailLabel frame], a3.width = CGRectGetHeight(v99), a3.width <= 0.0))
+    [(UIView *)detailLabel frame:fits.width];
+    if (CGRectGetWidth(v98) <= 0.0 || ([(UIView *)*p_detailLabel frame], fits.width = CGRectGetHeight(v99), fits.width <= 0.0))
     {
       [(UIView *)self setNeedsLayout];
     }
   }
 
-  [(UIView *)self layoutIfNeeded:a3.width];
-  v13 = [(UITableViewHeaderFooterView *)self _table];
+  [(UIView *)self layoutIfNeeded:fits.width];
+  _table = [(UITableViewHeaderFooterView *)self _table];
   [(UITableViewHeaderFooterView *)self _insetsToBounds];
   v16 = v14 + v15;
   if (width - (v14 + v15) <= self->_maxTitleWidth)
@@ -2884,10 +2884,10 @@ LABEL_50:
   [(UITableViewHeaderFooterView *)self _textSizeForWidth:maxTitleWidth];
   v19 = v18;
   v21 = v20;
-  v22 = [(UIView *)self traitCollection];
-  v23 = [v22 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v23 == 6)
+  if (userInterfaceIdiom == 6)
   {
     [(UITableConstants *)self->_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:self->_tableViewStyle isHeader:*&self->_headerFooterFlags & 1 isFirstSection:(*&self->_headerFooterFlags >> 5) & 1];
     v26 = v25 + v21 + v24;
@@ -2902,8 +2902,8 @@ LABEL_50:
     if (v30 || [(UITableViewHeaderFooterView *)self _isSourceListOrMacIdiom])
     {
       constants = self->_constants;
-      v32 = [(UITableViewHeaderFooterView *)self table];
-      [(UITableConstants *)constants defaultSectionHeaderHeightForTableView:v32];
+      table = [(UITableViewHeaderFooterView *)self table];
+      [(UITableConstants *)constants defaultSectionHeaderHeightForTableView:table];
       v26 = v33;
     }
 
@@ -2913,16 +2913,16 @@ LABEL_50:
       headerFooterFlags = self->_headerFooterFlags;
       if (v34 && (*&headerFooterFlags & 1) != 0)
       {
-        v36 = [(UILabel *)*p_label font];
-        [v36 _scaledValueForValue:45.0];
+        font = [(UILabel *)*p_label font];
+        [font _scaledValueForValue:45.0];
         v38 = v37;
-        v39 = [(UILabel *)*p_label font];
-        [v39 lineHeight];
+        font2 = [(UILabel *)*p_label font];
+        [font2 lineHeight];
         v41 = v21 + v38 - v40;
 
-        v42 = [(UITableViewHeaderFooterView *)self _useDetailText];
+        _useDetailText = [(UITableViewHeaderFooterView *)self _useDetailText];
         v43 = 10.0;
-        if (v42)
+        if (_useDetailText)
         {
           [(UITableViewHeaderFooterView *)self _detailTextSizeForWidth:maxTitleWidth];
           v45 = v41 + v44;
@@ -2933,10 +2933,10 @@ LABEL_50:
             v47 = 16.0;
           }
 
-          [v36 _scaledValueForValue:v47];
+          [font _scaledValueForValue:v47];
           v49 = v48;
-          v50 = [(UILabel *)*p_detailLabel font];
-          [v50 lineHeight];
+          font3 = [(UILabel *)*p_detailLabel font];
+          [font3 lineHeight];
           v41 = v45 + v49 - v51;
 
           v52 = dyld_program_sdk_at_least();
@@ -2947,19 +2947,19 @@ LABEL_50:
           }
         }
 
-        [v36 _scaledValueForValue:v43];
+        [font _scaledValueForValue:v43];
         v26 = v41 + v53;
-        if (v6)
+        if (viewCopy)
         {
           v26 = v26 + -10.0;
         }
 
-        else if (!a5)
+        else if (!header)
         {
-          if (v13)
+          if (_table)
           {
-            v73 = [v13 _scrollView];
-            [v73 _currentScreenScale];
+            _scrollView = [_table _scrollView];
+            [_scrollView _currentScreenScale];
             v26 = v26 - UIPixelBoundaryOffset(0, 17.5, v74);
           }
 
@@ -3000,11 +3000,11 @@ LABEL_50:
           }
 
           v66 = v63 + v65;
-          v67 = [(UILabel *)*p_label font];
-          [v67 lineHeight];
+          font4 = [(UILabel *)*p_label font];
+          [font4 lineHeight];
           v69 = v68;
-          v70 = [(UILabel *)*p_detailLabel font];
-          [v70 lineHeight];
+          font5 = [(UILabel *)*p_detailLabel font];
+          [font5 lineHeight];
           v72 = v66 - (v69 + v71);
         }
 
@@ -3017,17 +3017,17 @@ LABEL_50:
         }
 
         v26 = v21 + v72;
-        if (v6)
+        if (viewCopy)
         {
           v26 = v26 + -10.0;
         }
 
-        else if (!a5)
+        else if (!header)
         {
-          if (v13)
+          if (_table)
           {
-            v81 = [v13 _scrollView];
-            [v81 _currentScreenScale];
+            _scrollView2 = [_table _scrollView];
+            [_scrollView2 _currentScreenScale];
             v26 = v26 - UIPixelBoundaryOffset(0, 17.5, v82);
           }
 
@@ -3058,10 +3058,10 @@ LABEL_50:
           v54 = &self->_detailLabel;
         }
 
-        v55 = [(UILabel *)*v54 font];
-        [v55 _scaledValueForValue:20.0];
+        font6 = [(UILabel *)*v54 font];
+        [font6 _scaledValueForValue:20.0];
         v57 = v56;
-        [v55 _scaledValueForValue:10.0];
+        [font6 _scaledValueForValue:10.0];
         v59 = v58;
         [(UILabel *)*p_label _firstLineBaselineOffsetFromBoundsTop];
         v61 = v60;
@@ -3079,10 +3079,10 @@ LABEL_50:
     }
   }
 
-  if (v13)
+  if (_table)
   {
-    v86 = [v13 _scrollView];
-    [v86 _currentScreenScale];
+    _scrollView3 = [_table _scrollView];
+    [_scrollView3 _currentScreenScale];
     v88 = UIPixelBoundaryOffset(1, v26, v87);
   }
 
@@ -3099,10 +3099,10 @@ LABEL_50:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UITableViewHeaderFooterView *)self _performConfigurationStateUpdate];
   headerFooterFlags = self->_headerFooterFlags;
   if ((*&headerFooterFlags & 0x8000) != 0)
@@ -3144,15 +3144,15 @@ LABEL_50:
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v6.receiver = self;
   v6.super_class = UITableViewHeaderFooterView;
-  v4 = a3;
-  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:v4];
+  viewCopy = view;
+  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   contentView = self->_contentView;
 
-  if (contentView == v4)
+  if (contentView == viewCopy)
   {
     [(UITableViewHeaderFooterView *)self invalidateIntrinsicContentSize:v6.receiver];
   }
@@ -3181,11 +3181,11 @@ LABEL_50:
   [UITableViewHeaderFooterView _applyBackgroundViewConfiguration:"_applyBackgroundViewConfiguration:withState:" withState:?];
 }
 
-- (void)_setBackgroundViewConfiguration:(id)a3
+- (void)_setBackgroundViewConfiguration:(id)configuration
 {
   headerFooterFlags = self->_headerFooterFlags;
   v4 = (*&headerFooterFlags >> 13) & 1;
-  if (a3)
+  if (configuration)
   {
     v4 = 1;
   }
@@ -3204,47 +3204,47 @@ LABEL_50:
   [UITableViewHeaderFooterView _applyBackgroundViewConfiguration:"_applyBackgroundViewConfiguration:withState:" withState:?];
 }
 
-- (void)_applyBackgroundViewConfiguration:(id)a3 withState:(id)a4
+- (void)_applyBackgroundViewConfiguration:(id)configuration withState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  configurationCopy = configuration;
+  stateCopy = state;
+  configurationState = stateCopy;
   systemBackgroundView = self->_systemBackgroundView;
-  if (v7)
+  if (configurationCopy)
   {
     if ((*(&self->_headerFooterFlags + 2) & 2) != 0 && !self->_backgroundViewConfigurationProvider)
     {
-      if (!v8)
+      if (!stateCopy)
       {
-        v9 = [(UITableViewHeaderFooterView *)self configurationState];
+        configurationState = [(UITableViewHeaderFooterView *)self configurationState];
       }
 
-      v15 = v9;
-      v13 = [(_UISystemBackgroundView *)v7 _updatedConfigurationForState:v9];
+      v15 = configurationState;
+      v13 = [(_UISystemBackgroundView *)configurationCopy _updatedConfigurationForState:configurationState];
       if (!v13)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:1552 description:{@"Updated configuration was nil for configuration: %@", v7}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITableViewHeaderFooterView.m" lineNumber:1552 description:{@"Updated configuration was nil for configuration: %@", configurationCopy}];
       }
 
-      v7 = v13;
+      configurationCopy = v13;
     }
 
     else
     {
-      v15 = v8;
+      v15 = stateCopy;
     }
 
-    [(_UISystemBackgroundView *)v7 __setMaskedCorners:15];
+    [(_UISystemBackgroundView *)configurationCopy __setMaskedCorners:15];
     if (systemBackgroundView)
     {
-      [(_UISystemBackgroundView *)self->_systemBackgroundView setConfiguration:v7];
+      [(_UISystemBackgroundView *)self->_systemBackgroundView setConfiguration:configurationCopy];
     }
 
     else
     {
       [(UITableViewHeaderFooterView *)self _resetBackgroundViewsAndColor];
-      v11 = [[_UISystemBackgroundView alloc] initWithConfiguration:v7 containerView:self];
+      v11 = [[_UISystemBackgroundView alloc] initWithConfiguration:configurationCopy containerView:self];
       v12 = self->_systemBackgroundView;
       self->_systemBackgroundView = v11;
 
@@ -3256,7 +3256,7 @@ LABEL_50:
 
   else
   {
-    v15 = v8;
+    v15 = stateCopy;
     [0 __setMaskedCorners:15];
     if (!systemBackgroundView)
     {
@@ -3264,7 +3264,7 @@ LABEL_50:
     }
 
     [(UIView *)self->_systemBackgroundView removeFromSuperview];
-    v7 = self->_systemBackgroundView;
+    configurationCopy = self->_systemBackgroundView;
     self->_systemBackgroundView = 0;
   }
 
@@ -3273,11 +3273,11 @@ LABEL_12:
 
 - (UIBackgroundConfiguration)backgroundConfiguration
 {
-  v2 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = configuration;
   }
 
   else
@@ -3292,11 +3292,11 @@ LABEL_12:
 
 - (_UIBackgroundViewConfiguration)_backgroundViewConfiguration
 {
-  v2 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = configuration;
   }
 
   else
@@ -3342,11 +3342,11 @@ LABEL_12:
   *p_headerFooterFlags = (*&headerFooterFlags & 0xFFFDFFFF);
 }
 
-- (void)_setBackgroundViewConfigurationProvider:(id)a3
+- (void)_setBackgroundViewConfigurationProvider:(id)provider
 {
   headerFooterFlags = self->_headerFooterFlags;
   v4 = (*&headerFooterFlags >> 12) & 1;
-  if (a3)
+  if (provider)
   {
     v4 = 1;
   }
@@ -3363,15 +3363,15 @@ LABEL_12:
 
   v6 = v5 | *&headerFooterFlags & 0xFFFFEFFF;
   self->_headerFooterFlags = v6;
-  if (self->_backgroundViewConfigurationProvider != a3)
+  if (self->_backgroundViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       self->_headerFooterFlags = (v6 & 0xFFFDFFFF);
     }
 
-    v8 = a3;
-    v9 = [v8 copy];
+    providerCopy = provider;
+    v9 = [providerCopy copy];
     backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
     self->_backgroundViewConfigurationProvider = v9;
 
@@ -3405,27 +3405,27 @@ uint64_t __64__UITableViewHeaderFooterView__resetBackgroundViewConfiguration__bl
   return [v2 _setBackgroundViewConfiguration:0];
 }
 
-- (void)_updateBackgroundViewConfigurationForState:(id)a3
+- (void)_updateBackgroundViewConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
   if (backgroundViewConfigurationProvider)
   {
-    v7 = v4;
-    v6 = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, [(UITableViewHeaderFooterView *)self _viewConfigurationState]);
+    v7 = stateCopy;
+    configuration = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, [(UITableViewHeaderFooterView *)self _viewConfigurationState]);
 LABEL_3:
-    [(UITableViewHeaderFooterView *)self _applyBackgroundViewConfiguration:v6 withState:v7];
+    [(UITableViewHeaderFooterView *)self _applyBackgroundViewConfiguration:configuration withState:v7];
 LABEL_4:
 
-    v4 = v7;
+    stateCopy = v7;
     goto LABEL_5;
   }
 
   if ((*(&self->_headerFooterFlags + 2) & 2) != 0)
   {
-    v7 = v4;
-    v6 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
-    if (!v6)
+    v7 = stateCopy;
+    configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+    if (!configuration)
     {
       goto LABEL_4;
     }
@@ -3483,7 +3483,7 @@ LABEL_5:
   }
 }
 
-- (void)_updateConfigurationUsingState:(id)a3
+- (void)_updateConfigurationUsingState:(id)state
 {
   if (objc_opt_respondsToSelector())
   {
@@ -3544,7 +3544,7 @@ LABEL_5:
   }
 }
 
-- (CGRect)_backgroundRectForWidth:(double)a3
+- (CGRect)_backgroundRectForWidth:(double)width
 {
   [(UIView *)self bounds];
   v6 = v5;
@@ -3553,21 +3553,21 @@ LABEL_5:
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     [(UITableViewHeaderFooterView *)self _rightMarginWidth];
-    a3 = a3 - v11;
+    width = width - v11;
   }
 
   v12 = v6;
   v13 = v8;
-  v14 = a3;
+  widthCopy = width;
   v15 = v10;
   result.size.height = v15;
-  result.size.width = v14;
+  result.size.width = widthCopy;
   result.origin.y = v13;
   result.origin.x = v12;
   return result;
 }
 
-- (CGRect)_contentRectForWidth:(double)a3
+- (CGRect)_contentRectForWidth:(double)width
 {
   [(UITableViewHeaderFooterView *)self _backgroundRectForWidth:?];
   v62 = v5;
@@ -3581,15 +3581,15 @@ LABEL_5:
   v60 = v10;
   v61 = v11;
   v66 = v12;
-  v13 = [(UITableViewHeaderFooterView *)self _table];
-  [v13 _sectionContentInset];
+  _table = [(UITableViewHeaderFooterView *)self _table];
+  [_table _sectionContentInset];
   v15 = v14;
   v17 = v16;
-  v18 = [(UIView *)self _shouldReverseLayoutDirection];
-  [v13 _indexBarExtentFromEdge];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  [_table _indexBarExtentFromEdge];
   v20 = fmax(v15, v19);
   v21 = fmax(v17, v19);
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v21 = v17;
   }
@@ -3601,8 +3601,8 @@ LABEL_5:
 
   v51 = v20;
   v53 = v21;
-  v22 = [v13 _scrollView];
-  [v22 bounds];
+  _scrollView = [_table _scrollView];
+  [_scrollView bounds];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -3638,12 +3638,12 @@ LABEL_5:
   v56 = CGRectGetMinX(v71);
   v72.origin.x = v60;
   v72.origin.y = v66;
-  v72.size.width = a3;
+  v72.size.width = width;
   v72.size.height = v61;
   v57 = fmax(v54 - fmax(v56 - CGRectGetMinX(v72), 0.0), 0.0);
   v73.origin.x = v60;
   v73.origin.y = v66;
-  v73.size.width = a3;
+  v73.size.width = width;
   v73.size.height = v61;
   v37 = CGRectGetMaxX(v73);
   v74.origin.x = v63;
@@ -3651,7 +3651,7 @@ LABEL_5:
   v74.size.width = v64;
   v74.size.height = v50;
   v38 = v37 - CGRectGetMaxX(v74);
-  v39 = a3;
+  widthCopy = width;
   v78.size.height = v61;
   v40 = fmax(v59 - fmax(v38, 0.0), 0.0);
   v75.origin.x = v63 + v57;
@@ -3660,7 +3660,7 @@ LABEL_5:
   v75.size.height = v50;
   v78.origin.x = v60;
   v78.origin.y = v66;
-  v78.size.width = a3;
+  v78.size.width = width;
   v76 = CGRectIntersection(v75, v78);
   v41 = v76.origin.x;
   v42 = v76.origin.y;
@@ -3675,12 +3675,12 @@ LABEL_5:
 
   else
   {
-    v39 = v43;
+    widthCopy = v43;
   }
 
   v45 = v41;
   v46 = v42;
-  v47 = v39;
+  v47 = widthCopy;
   v48 = height;
   result.size.height = v48;
   result.size.width = v47;
@@ -3689,11 +3689,11 @@ LABEL_5:
   return result;
 }
 
-- (void)_setInsetsContentViewsToSafeArea:(BOOL)a3
+- (void)_setInsetsContentViewsToSafeArea:(BOOL)area
 {
-  if (((((*&self->_headerFooterFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_headerFooterFlags & 0x100) == 0) ^ area) & 1) == 0)
   {
-    if (a3)
+    if (area)
     {
       v3 = 256;
     }
@@ -3708,12 +3708,12 @@ LABEL_5:
   }
 }
 
-- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)a3
+- (void)_safeAreaInsetsDidChangeFromOldInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(UIView *)self safeAreaInsets];
   if (left != v9 || right != v8)
   {
@@ -3725,11 +3725,11 @@ LABEL_5:
   [(UIView *)&v11 _safeAreaInsetsDidChangeFromOldInsets:top, left, bottom, right];
 }
 
-- (void)_setMarginWidth:(double)a3
+- (void)_setMarginWidth:(double)width
 {
-  if (self->_leadingMarginWidth != a3)
+  if (self->_leadingMarginWidth != width)
   {
-    self->_leadingMarginWidth = a3;
+    self->_leadingMarginWidth = width;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -3745,11 +3745,11 @@ LABEL_5:
   return result;
 }
 
-- (void)_setRightMarginWidth:(double)a3
+- (void)_setRightMarginWidth:(double)width
 {
-  if (self->_trailingMarginWidth != a3)
+  if (self->_trailingMarginWidth != width)
   {
-    self->_trailingMarginWidth = a3;
+    self->_trailingMarginWidth = width;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -3767,8 +3767,8 @@ LABEL_5:
 
 - (UIEdgeInsets)_insetsToBounds
 {
-  v3 = [(UITableViewHeaderFooterView *)self _table];
-  if ([v3 _supplementarySectionHeadersHugContent] && (*&self->_headerFooterFlags & 1) != 0 || objc_msgSend(v3, "_supplementariesFollowSectionContentInsets"))
+  _table = [(UITableViewHeaderFooterView *)self _table];
+  if ([_table _supplementarySectionHeadersHugContent] && (*&self->_headerFooterFlags & 1) != 0 || objc_msgSend(_table, "_supplementariesFollowSectionContentInsets"))
   {
     [(UITableConstants *)self->_constants defaultHeaderFooterLayoutMarginsForTableViewStyle:[(UITableViewHeaderFooterView *)self tableViewStyle] isHeader:*&self->_headerFooterFlags & 1 isFirstSection:[(UITableViewHeaderFooterView *)self _isTopHeader]];
     v5 = v4;
@@ -3777,16 +3777,16 @@ LABEL_5:
 
   else
   {
-    v8 = [v3 _scrollView];
-    if (v8)
+    _scrollView = [_table _scrollView];
+    if (_scrollView)
     {
-      v9 = [v3 _scrollView];
-      v10 = [v9 _shouldReverseLayoutDirection];
+      _scrollView2 = [_table _scrollView];
+      _shouldReverseLayoutDirection = [_scrollView2 _shouldReverseLayoutDirection];
     }
 
     else
     {
-      v10 = 0;
+      _shouldReverseLayoutDirection = 0;
     }
 
     [(UITableViewHeaderFooterView *)self _marginWidth];
@@ -3801,7 +3801,7 @@ LABEL_5:
       v20 = v16;
       v21 = v17;
       v22 = v18;
-      if (v10)
+      if (_shouldReverseLayoutDirection)
       {
         MinX = CGRectGetMinX(*&v15);
         [(UIView *)self bounds];
@@ -3827,7 +3827,7 @@ LABEL_5:
       v25 = fmax(v7, v13);
     }
 
-    if (v10)
+    if (_shouldReverseLayoutDirection)
     {
       v5 = v25;
     }
@@ -3837,7 +3837,7 @@ LABEL_5:
       v5 = v7;
     }
 
-    if (!v10)
+    if (!_shouldReverseLayoutDirection)
     {
       v7 = v25;
     }
@@ -3882,9 +3882,9 @@ LABEL_5:
   return result;
 }
 
-- (void)_setTableViewStyle:(int64_t)a3 updateFrame:(BOOL)a4
+- (void)_setTableViewStyle:(int64_t)style updateFrame:(BOOL)frame
 {
-  if (self->_tableViewStyle == a3)
+  if (self->_tableViewStyle == style)
   {
     if (self->_systemBackgroundView)
     {
@@ -3894,8 +3894,8 @@ LABEL_5:
 
   else
   {
-    v5 = a4;
-    self->_tableViewStyle = a3;
+    frameCopy = frame;
+    self->_tableViewStyle = style;
     if (![(UITableViewHeaderFooterView *)self _usingBackgroundConfigurationOrDefaultBackgroundConfiguration])
     {
       [(UITableViewHeaderFooterView *)self _setupBackgroundView];
@@ -3903,7 +3903,7 @@ LABEL_5:
 
     [(UITableViewHeaderFooterView *)self _updateBackgroundView];
     [(UITableViewHeaderFooterView *)self _invalidateDetailLabelBackgroundColor];
-    if (v5)
+    if (frameCopy)
     {
       [(UITableViewHeaderFooterView *)self setFrame:self->_frame.origin.x, self->_frame.origin.y, self->_frame.size.width, self->_frame.size.height];
     }
@@ -3912,13 +3912,13 @@ LABEL_5:
   [(UITableViewHeaderFooterView *)self _updateDefaultBackgroundAppearance];
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  if (((((*&self->_headerFooterFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_headerFooterFlags & 8) == 0) ^ floating) & 1) == 0)
   {
-    v3 = a3;
+    floatingCopy = floating;
     [(UITableViewHeaderFooterView *)self _prepareForConfigurationStateUpdate];
-    if (v3)
+    if (floatingCopy)
     {
       v5 = 8;
     }
@@ -3938,25 +3938,25 @@ LABEL_5:
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIView *)self isUserInteractionEnabled];
-  if (v5 != v3)
+  enabledCopy = enabled;
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
+  if (isUserInteractionEnabled != enabledCopy)
   {
     [(UITableViewHeaderFooterView *)self _prepareForConfigurationStateUpdate];
   }
 
   v6.receiver = self;
   v6.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v6 setUserInteractionEnabled:v3];
-  if (v5 != [(UIView *)self isUserInteractionEnabled])
+  [(UIView *)&v6 setUserInteractionEnabled:enabledCopy];
+  if (isUserInteractionEnabled != [(UIView *)self isUserInteractionEnabled])
   {
     [(UITableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v3 = *(__UILogGetCategoryCachedImpl("TableView", &setBackgroundColor____s_category) + 8);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -3966,35 +3966,35 @@ LABEL_5:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     [(UITableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)a3
+- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)view
 {
   contentView = self->_contentView;
-  if (contentView != a3 || ![(UIView *)contentView _wantsAutolayout])
+  if (contentView != view || ![(UIView *)contentView _wantsAutolayout])
   {
     return 0;
   }
 
-  v5 = [(UIView *)self->_contentView subviews];
-  v6 = [v5 count] != 0;
+  subviews = [(UIView *)self->_contentView subviews];
+  v6 = [subviews count] != 0;
 
   return v6;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UITableViewHeaderFooterView *)self _performConfigurationStateUpdate];
   [(UITableViewHeaderFooterView *)self _contentRectForWidth:width];
   v11 = v10;
@@ -4004,7 +4004,7 @@ LABEL_5:
   [(UIView *)self->_contentView setFrame:?];
   if ((*(&self->_headerFooterFlags + 1) & 0x80) != 0 && [(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints])
   {
-    if (a5 >= 1000.0)
+    if (fittingPriority >= 1000.0)
     {
       v20 = height;
     }
@@ -4014,23 +4014,23 @@ LABEL_5:
       v20 = 1.79769313e308;
     }
 
-    *&v18 = a4;
-    *&v19 = a5;
+    *&v18 = priority;
+    *&v19 = fittingPriority;
     [(UIView *)self->_contentView systemLayoutSizeFittingSize:v15 withHorizontalFittingPriority:v20 verticalFittingPriority:v18, v19];
     v22 = v21;
     v24 = v23;
     v25 = self->_contentView;
-    if (a4 != 1000.0 && v22 > 2777777.0 || a5 != 1000.0 && v24 > 2777777.0)
+    if (priority != 1000.0 && v22 > 2777777.0 || fittingPriority != 1000.0 && v24 > 2777777.0)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _UIContentViewAssertValidFittingSize(UIView * _Nonnull __strong, CGSize, UILayoutPriority, UILayoutPriority)"}];
       v44.width = v22;
       v44.height = v24;
       v39 = NSStringFromCGSize(v44);
-      [v37 handleFailureInFunction:v38 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v39, v25}];
+      [currentHandler handleFailureInFunction:v38 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v39, v25}];
     }
 
-    if (a4 >= 1000.0)
+    if (priority >= 1000.0)
     {
       v26 = width;
     }
@@ -4040,7 +4040,7 @@ LABEL_5:
       v26 = v22;
     }
 
-    if (a5 >= 1000.0)
+    if (fittingPriority >= 1000.0)
     {
       v27 = height;
     }
@@ -4059,14 +4059,14 @@ LABEL_5:
     v40[1] = UITableViewHeaderFooterView;
     v36 = v40;
 LABEL_25:
-    *&v28 = a4;
-    *&v29 = a5;
+    *&v28 = priority;
+    *&v29 = fittingPriority;
     [(objc_super *)v36 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v28, v29];
     goto LABEL_27;
   }
 
-  v30 = [(UIView *)self->_contentView subviews];
-  v31 = [v30 count];
+  subviews = [(UIView *)self->_contentView subviews];
+  v31 = [subviews count];
 
   if (!v31)
   {
@@ -4092,8 +4092,8 @@ LABEL_25:
   v46.size.width = v15;
   v46.size.height = v17;
   v33 = CGRectGetWidth(v46);
-  *&v34 = a4;
-  *&v35 = a5;
+  *&v34 = priority;
+  *&v35 = fittingPriority;
 
   [(UIView *)contentView systemLayoutSizeFittingSize:v33 withHorizontalFittingPriority:height verticalFittingPriority:v34, v35];
 LABEL_27:
@@ -4119,8 +4119,8 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
 {
   [(UIView *)self->_contentView setNeedsUpdateConstraints];
   [(UIView *)self _setNeedsUpdateConstraints];
-  v3 = [(UIView *)self _layoutEngine];
-  if (v3)
+  _layoutEngine = [(UIView *)self _layoutEngine];
+  if (_layoutEngine)
   {
   }
 
@@ -4131,11 +4131,11 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
   }
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  v3 = a3;
+  constraintsCopy = constraints;
   v9 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!constraints)
   {
     if ([(UIView *)self translatesAutoresizingMaskIntoConstraints])
     {
@@ -4145,7 +4145,7 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v8 = self;
+          selfCopy = self;
           _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Changing the translatesAutoresizingMaskIntoConstraints property of a UITableViewHeaderFooterView that is managed by a UITableView is not supported, and will result in incorrect self-sizing. View: %@", buf, 0xCu);
         }
       }
@@ -4154,19 +4154,19 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
 
   v6.receiver = self;
   v6.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v6 setTranslatesAutoresizingMaskIntoConstraints:v3];
+  [(UIView *)&v6 setTranslatesAutoresizingMaskIntoConstraints:constraintsCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIView *)self _interactionTintColor];
+  colorCopy = color;
+  _interactionTintColor = [(UIView *)self _interactionTintColor];
   v7.receiver = self;
   v7.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v7 setTintColor:v4];
+  [(UIView *)&v7 setTintColor:colorCopy];
 
-  v6 = [(UIView *)self _interactionTintColor];
-  if (v5 != v6)
+  _interactionTintColor2 = [(UIView *)self _interactionTintColor];
+  if (_interactionTintColor != _interactionTintColor2)
   {
     [(UITableViewHeaderFooterView *)self _updateBackgroundView];
     [(UITableViewHeaderFooterView *)self _updateDefaultBackgroundAppearance];
@@ -4183,9 +4183,9 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
   }
 }
 
-- (void)_setStripPadding:(BOOL)a3
+- (void)_setStripPadding:(BOOL)padding
 {
-  if (a3)
+  if (padding)
   {
     v3 = 16;
   }
@@ -4198,9 +4198,9 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
   self->_headerFooterFlags = (*&self->_headerFooterFlags & 0xFFFFFFEF | v3);
 }
 
-- (void)_setTopHeader:(BOOL)a3
+- (void)_setTopHeader:(BOOL)header
 {
-  if (a3)
+  if (header)
   {
     v3 = 32;
   }
@@ -4215,31 +4215,31 @@ void __113__UITableViewHeaderFooterView_systemLayoutSizeFittingSize_withHorizont
 
 - (BOOL)isTransparentFocusItem
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 3)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v4 = 1;
+    isTransparentFocusItem = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UITableViewHeaderFooterView;
-    v4 = [(UIView *)&v6 isTransparentFocusItem];
+    isTransparentFocusItem = [(UIView *)&v6 isTransparentFocusItem];
   }
 
-  return v4;
+  return isTransparentFocusItem;
 }
 
-- (void)_willUpdateFocusInContext:(id)a3
+- (void)_willUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v8 _willUpdateFocusInContext:v4];
-  v5 = [v4 previouslyFocusedView];
-  v6 = v5;
-  if (v5 == self)
+  [(UIView *)&v8 _willUpdateFocusInContext:contextCopy];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v6 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
 
 LABEL_5:
@@ -4247,9 +4247,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v4 nextFocusedView];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v7 == self)
+  if (nextFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -4257,15 +4257,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_didUpdateFocusInContext:(id)a3
+- (void)_didUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = UITableViewHeaderFooterView;
-  [(UIView *)&v8 _didUpdateFocusInContext:v4];
-  v5 = [v4 previouslyFocusedView];
-  v6 = v5;
-  if (v5 == self)
+  [(UIView *)&v8 _didUpdateFocusInContext:contextCopy];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v6 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
 
 LABEL_5:
@@ -4273,9 +4273,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v4 nextFocusedView];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v7 == self)
+  if (nextFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -4283,25 +4283,25 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_setConstants:(id)a3
+- (void)_setConstants:(id)constants
 {
-  v4 = self->_constants != a3;
-  objc_storeStrong(&self->_constants, a3);
+  v4 = self->_constants != constants;
+  objc_storeStrong(&self->_constants, constants);
 
   [(UITableViewHeaderFooterView *)self _didUpdateMetrics:v4];
 }
 
-- (void)_setMetricsAdapter:(id)a3
+- (void)_setMetricsAdapter:(id)adapter
 {
-  v4 = self->_metricsAdapter != a3;
-  objc_storeStrong(&self->_metricsAdapter, a3);
+  v4 = self->_metricsAdapter != adapter;
+  objc_storeStrong(&self->_metricsAdapter, adapter);
 
   [(UITableViewHeaderFooterView *)self _didUpdateMetrics:v4];
 }
 
-- (void)_didUpdateMetrics:(BOOL)a3
+- (void)_didUpdateMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   if ([(UITableViewHeaderFooterView *)self _isSourceListOrMacIdiom])
   {
     *&self->_headerFooterFlags &= ~0x80u;
@@ -4313,7 +4313,7 @@ LABEL_6:
   }
 
   [(UITableViewHeaderFooterView *)self _setupDefaultsIfNecessary];
-  if (v3)
+  if (metricsCopy)
   {
     [(UITableViewHeaderFooterView *)self _updateDefaultBackgroundAppearance];
   }

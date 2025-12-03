@@ -4,24 +4,24 @@
 - (PUPhotoBrowserTitleViewControllerDelegate)delegate;
 - (void)_assertInsideChangeBlock;
 - (void)_assertInsideUpdate;
-- (void)_dateFormatterChanged:(id)a3;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (void)_dateFormatterChanged:(id)changed;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_invalidateDayAndTimeDescriptions;
 - (void)_invalidateGestureRecognizers;
 - (void)_invalidateLabels;
-- (void)_setDayDescription:(id)a3;
+- (void)_setDayDescription:(id)description;
 - (void)_setNeedsUpdate;
-- (void)_setTimeDescription:(id)a3;
+- (void)_setTimeDescription:(id)description;
 - (void)_updateDayAndTimeDescriptionsIfNeeded;
 - (void)_updateGestureRecognizersIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updateLabelsIfNeeded;
-- (void)performChanges:(id)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setGeoDescription:(id)a3;
-- (void)setTappable:(BOOL)a3;
-- (void)setUsingCompactTitleView:(BOOL)a3;
+- (void)performChanges:(id)changes;
+- (void)setCreationDate:(id)date;
+- (void)setDelegate:(id)delegate;
+- (void)setGeoDescription:(id)description;
+- (void)setTappable:(BOOL)tappable;
+- (void)setUsingCompactTitleView:(BOOL)view;
 @end
 
 @implementation PUPhotoBrowserTitleViewController
@@ -33,12 +33,12 @@
   return WeakRetained;
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3 && self->_delegateFlags.respondsToTapped)
+  if ([recognizer state] == 3 && self->_delegateFlags.respondsToTapped)
   {
-    v4 = [(PUPhotoBrowserTitleViewController *)self delegate];
-    [v4 photoBrowserTitleViewControllerTapped:self];
+    delegate = [(PUPhotoBrowserTitleViewController *)self delegate];
+    [delegate photoBrowserTitleViewControllerTapped:self];
   }
 }
 
@@ -47,11 +47,11 @@
   if ([(PUPhotoBrowserTitleViewController *)self _needsUpdateGestureRecognizers])
   {
     [(PUPhotoBrowserTitleViewController *)self _setNeedsUpdateGestureRecognizers:0];
-    v4 = [(PUPhotoBrowserTitleViewController *)self _tapGestureRecognizer];
+    _tapGestureRecognizer = [(PUPhotoBrowserTitleViewController *)self _tapGestureRecognizer];
     if ([(PUPhotoBrowserTitleViewController *)self isTappable])
     {
-      v3 = v4;
-      if (!v4)
+      v3 = _tapGestureRecognizer;
+      if (!_tapGestureRecognizer)
       {
         v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapGestureRecognizer_];
         [(UIView *)self->_view addGestureRecognizer:v5];
@@ -61,10 +61,10 @@
 
     else
     {
-      v3 = v4;
-      if (v4)
+      v3 = _tapGestureRecognizer;
+      if (_tapGestureRecognizer)
       {
-        [(UIView *)self->_view removeGestureRecognizer:v4];
+        [(UIView *)self->_view removeGestureRecognizer:_tapGestureRecognizer];
 
         v3 = 0;
       }
@@ -88,39 +88,39 @@
   {
     [(PUPhotoBrowserTitleViewController *)self _setNeedsUpdateLabels:0];
     v3 = +[PUInterfaceManager currentTheme];
-    v4 = [v3 photoBrowserPhotoPrimaryTitleFont];
-    v5 = [v3 photoBrowserPhotoSubtitleFont];
-    v6 = [(PUPhotoBrowserTitleViewController *)self geoDescription];
-    v7 = [(PUPhotoBrowserTitleViewController *)self _dayDescription];
-    v8 = [(PUPhotoBrowserTitleViewController *)self _timeDescription];
+    photoBrowserPhotoPrimaryTitleFont = [v3 photoBrowserPhotoPrimaryTitleFont];
+    photoBrowserPhotoSubtitleFont = [v3 photoBrowserPhotoSubtitleFont];
+    geoDescription = [(PUPhotoBrowserTitleViewController *)self geoDescription];
+    _dayDescription = [(PUPhotoBrowserTitleViewController *)self _dayDescription];
+    _timeDescription = [(PUPhotoBrowserTitleViewController *)self _timeDescription];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_invoke;
     aBlock[3] = &unk_1E7B7AA38;
-    v9 = v7;
+    v9 = _dayDescription;
     v34 = v9;
-    v10 = v8;
+    v10 = _timeDescription;
     v35 = v10;
     v11 = _Block_copy(aBlock);
     usingCompactTitleView = self->_usingCompactTitleView;
-    v13 = [v6 length];
-    v24 = v6;
+    v13 = [geoDescription length];
+    v24 = geoDescription;
     v25 = v9;
     if (usingCompactTitleView)
     {
       if (v13)
       {
-        v14 = v6;
+        v14 = geoDescription;
         v15 = 0;
       }
 
       else
       {
         v14 = v11[2](v11);
-        v17 = [v3 photoBrowserTimeTitleFont];
+        photoBrowserTimeTitleFont = [v3 photoBrowserTimeTitleFont];
 
         v15 = 0;
-        v4 = v17;
+        photoBrowserPhotoPrimaryTitleFont = photoBrowserTimeTitleFont;
       }
     }
 
@@ -128,7 +128,7 @@
     {
       if (v13)
       {
-        v14 = v6;
+        v14 = geoDescription;
         v16 = v11[2](v11);
       }
 
@@ -149,11 +149,11 @@
     v27 = v18;
     v28 = v14;
     v29 = v15;
-    v30 = v4;
-    v31 = v5;
-    v32 = self;
-    v19 = v5;
-    v20 = v4;
+    v30 = photoBrowserPhotoPrimaryTitleFont;
+    v31 = photoBrowserPhotoSubtitleFont;
+    selfCopy = self;
+    v19 = photoBrowserPhotoSubtitleFont;
+    v20 = photoBrowserPhotoPrimaryTitleFont;
     v21 = v15;
     v22 = v14;
     v23 = v18;
@@ -213,14 +213,14 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
   if ([(PUPhotoBrowserTitleViewController *)self _needsUpdateDayAndTimeDescriptions])
   {
     [(PUPhotoBrowserTitleViewController *)self _setNeedsUpdateDayAndTimeDescriptions:0];
-    v7 = [(PUPhotoBrowserTitleViewController *)self creationDate];
-    if (v7)
+    creationDate = [(PUPhotoBrowserTitleViewController *)self creationDate];
+    if (creationDate)
     {
-      v3 = [(PUPhotoBrowserTitleViewController *)self _dayFormatter];
-      v4 = [v3 stringFromDate:v7];
+      _dayFormatter = [(PUPhotoBrowserTitleViewController *)self _dayFormatter];
+      v4 = [_dayFormatter stringFromDate:creationDate];
 
-      v5 = [(PUPhotoBrowserTitleViewController *)self _timeFormatter];
-      v6 = [v5 stringFromDate:v7];
+      _timeFormatter = [(PUPhotoBrowserTitleViewController *)self _timeFormatter];
+      v6 = [_timeFormatter stringFromDate:creationDate];
     }
 
     else
@@ -245,8 +245,8 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
 {
   if (![(PUPhotoBrowserTitleViewController *)self _isUpdating]&& ![(PUPhotoBrowserTitleViewController *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:202 description:@"not within a change block or update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:202 description:@"not within a change block or update"];
   }
 }
 
@@ -264,34 +264,34 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
 {
   if ([(PUPhotoBrowserTitleViewController *)self _needsUpdate])
   {
-    v4 = [(PUPhotoBrowserTitleViewController *)self _isUpdating];
+    _isUpdating = [(PUPhotoBrowserTitleViewController *)self _isUpdating];
     [(PUPhotoBrowserTitleViewController *)self _setUpdating:1];
     [(PUPhotoBrowserTitleViewController *)self _updateDayAndTimeDescriptionsIfNeeded];
     [(PUPhotoBrowserTitleViewController *)self _updateLabelsIfNeeded];
     [(PUPhotoBrowserTitleViewController *)self _updateGestureRecognizersIfNeeded];
-    [(PUPhotoBrowserTitleViewController *)self _setUpdating:v4];
+    [(PUPhotoBrowserTitleViewController *)self _setUpdating:_isUpdating];
     if ([(PUPhotoBrowserTitleViewController *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:190 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:190 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v7 = a3;
-  if (!v7)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"nil != changeBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"nil != changeBlock"}];
   }
 
-  v5 = [(PUPhotoBrowserTitleViewController *)self _isPerformingChanges];
+  _isPerformingChanges = [(PUPhotoBrowserTitleViewController *)self _isPerformingChanges];
   [(PUPhotoBrowserTitleViewController *)self _setPerformingChanges:1];
-  v7[2]();
-  [(PUPhotoBrowserTitleViewController *)self _setPerformingChanges:v5];
-  if (!v5)
+  changesCopy[2]();
+  [(PUPhotoBrowserTitleViewController *)self _setPerformingChanges:_isPerformingChanges];
+  if (!_isPerformingChanges)
   {
     [(PUPhotoBrowserTitleViewController *)self _updateIfNeeded];
   }
@@ -301,8 +301,8 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
 {
   if (![(PUPhotoBrowserTitleViewController *)self _isUpdating])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:161 description:@"not withing update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:161 description:@"not withing update"];
   }
 }
 
@@ -310,12 +310,12 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
 {
   if (![(PUPhotoBrowserTitleViewController *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:156 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoBrowserTitleViewController.m" lineNumber:156 description:@"not within a change block"];
   }
 }
 
-- (void)_dateFormatterChanged:(id)a3
+- (void)_dateFormatterChanged:(id)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -325,110 +325,110 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
   [(PUPhotoBrowserTitleViewController *)self performChanges:v3];
 }
 
-- (void)_setTimeDescription:(id)a3
+- (void)_setTimeDescription:(id)description
 {
-  v7 = a3;
-  v5 = [(PUPhotoBrowserTitleViewController *)self _assertInsideUpdate];
-  v6 = v7;
-  if (self->__timeDescription != v7)
+  descriptionCopy = description;
+  _assertInsideUpdate = [(PUPhotoBrowserTitleViewController *)self _assertInsideUpdate];
+  v6 = descriptionCopy;
+  if (self->__timeDescription != descriptionCopy)
   {
-    v5 = [(NSString *)v7 isEqualToString:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideUpdate = [(NSString *)descriptionCopy isEqualToString:?];
+    v6 = descriptionCopy;
+    if ((_assertInsideUpdate & 1) == 0)
     {
-      objc_storeStrong(&self->__timeDescription, a3);
-      v5 = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
-      v6 = v7;
+      objc_storeStrong(&self->__timeDescription, description);
+      _assertInsideUpdate = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
+      v6 = descriptionCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideUpdate, v6);
 }
 
-- (void)_setDayDescription:(id)a3
+- (void)_setDayDescription:(id)description
 {
-  v7 = a3;
-  v5 = [(PUPhotoBrowserTitleViewController *)self _assertInsideUpdate];
-  v6 = v7;
-  if (self->__dayDescription != v7)
+  descriptionCopy = description;
+  _assertInsideUpdate = [(PUPhotoBrowserTitleViewController *)self _assertInsideUpdate];
+  v6 = descriptionCopy;
+  if (self->__dayDescription != descriptionCopy)
   {
-    v5 = [(NSString *)v7 isEqualToString:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideUpdate = [(NSString *)descriptionCopy isEqualToString:?];
+    v6 = descriptionCopy;
+    if ((_assertInsideUpdate & 1) == 0)
     {
-      objc_storeStrong(&self->__dayDescription, a3);
-      v5 = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
-      v6 = v7;
+      objc_storeStrong(&self->__dayDescription, description);
+      _assertInsideUpdate = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
+      v6 = descriptionCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideUpdate, v6);
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v7 = a3;
-  v5 = [(PUPhotoBrowserTitleViewController *)self _assertInsideChangeBlock];
-  v6 = v7;
-  if (self->_creationDate != v7)
+  dateCopy = date;
+  _assertInsideChangeBlock = [(PUPhotoBrowserTitleViewController *)self _assertInsideChangeBlock];
+  v6 = dateCopy;
+  if (self->_creationDate != dateCopy)
   {
-    v5 = [(NSDate *)v7 isEqual:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideChangeBlock = [(NSDate *)dateCopy isEqual:?];
+    v6 = dateCopy;
+    if ((_assertInsideChangeBlock & 1) == 0)
     {
-      objc_storeStrong(&self->_creationDate, a3);
-      v5 = [(PUPhotoBrowserTitleViewController *)self _invalidateDayAndTimeDescriptions];
-      v6 = v7;
+      objc_storeStrong(&self->_creationDate, date);
+      _assertInsideChangeBlock = [(PUPhotoBrowserTitleViewController *)self _invalidateDayAndTimeDescriptions];
+      v6 = dateCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideChangeBlock, v6);
 }
 
-- (void)setGeoDescription:(id)a3
+- (void)setGeoDescription:(id)description
 {
-  v7 = a3;
-  v5 = [(PUPhotoBrowserTitleViewController *)self _assertInsideChangeBlock];
-  v6 = v7;
-  if (self->_geoDescription != v7)
+  descriptionCopy = description;
+  _assertInsideChangeBlock = [(PUPhotoBrowserTitleViewController *)self _assertInsideChangeBlock];
+  v6 = descriptionCopy;
+  if (self->_geoDescription != descriptionCopy)
   {
-    v5 = [(NSString *)v7 isEqualToString:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideChangeBlock = [(NSString *)descriptionCopy isEqualToString:?];
+    v6 = descriptionCopy;
+    if ((_assertInsideChangeBlock & 1) == 0)
     {
-      objc_storeStrong(&self->_geoDescription, a3);
-      v5 = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
-      v6 = v7;
+      objc_storeStrong(&self->_geoDescription, description);
+      _assertInsideChangeBlock = [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
+      v6 = descriptionCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideChangeBlock, v6);
 }
 
-- (void)setUsingCompactTitleView:(BOOL)a3
+- (void)setUsingCompactTitleView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(PUPhotoBrowserTitleViewController *)self _assertInsideChangeBlock];
-  if (self->_usingCompactTitleView != v3)
+  if (self->_usingCompactTitleView != viewCopy)
   {
-    self->_usingCompactTitleView = v3;
+    self->_usingCompactTitleView = viewCopy;
 
     [(PUPhotoBrowserTitleViewController *)self _invalidateLabels];
   }
 }
 
-- (void)setTappable:(BOOL)a3
+- (void)setTappable:(BOOL)tappable
 {
-  if (self->_tappable != a3)
+  if (self->_tappable != tappable)
   {
-    self->_tappable = a3;
+    self->_tappable = tappable;
     [(PUPhotoBrowserTitleViewController *)self _invalidateGestureRecognizers];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -460,8 +460,8 @@ uint64_t __58__PUPhotoBrowserTitleViewController__updateLabelsIfNeeded__block_in
     v2->__timeFormatter = v8;
 
     [(PLDateRangeFormatter *)v2->__timeFormatter setUseLocalDates:1];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__dateFormatterChanged_ name:*MEMORY[0x1E69BE978] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__dateFormatterChanged_ name:*MEMORY[0x1E69BE978] object:0];
   }
 
   return v2;

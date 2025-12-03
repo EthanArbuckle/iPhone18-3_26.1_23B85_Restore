@@ -1,18 +1,18 @@
 @interface OrgApacheLuceneIndexOrdTermState
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3;
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneIndexOrdTermState
 
-- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)a3
+- (void)copyFromWithOrgApacheLuceneIndexTermState:(id)state
 {
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (state && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  self->ord_ = *(a3 + 1);
+  self->ord_ = *(state + 1);
 }
 
 @end

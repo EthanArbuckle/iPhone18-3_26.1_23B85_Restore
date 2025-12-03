@@ -1,15 +1,15 @@
 @interface NXSessionDaemon
 - (NSString)description;
 - (_TtC11NexusDaemon15NXSessionDaemon)init;
-- (void)sessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5;
-- (void)sessionStarted:(id)a3;
+- (void)sessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error;
+- (void)sessionStarted:(id)started;
 @end
 
 @implementation NXSessionDaemon
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_25C494B98();
   MEMORY[0x25F887A50](v3);
 
@@ -18,19 +18,19 @@
   return v4;
 }
 
-- (void)sessionStarted:(id)a3
+- (void)sessionStarted:(id)started
 {
-  v4 = a3;
-  v5 = self;
-  sub_25C49D6E0(v4);
+  startedCopy = started;
+  selfCopy = self;
+  sub_25C49D6E0(startedCopy);
 }
 
-- (void)sessionEnded:(id)a3 withReason:(unsigned int)a4 error:(id)a5
+- (void)sessionEnded:(id)ended withReason:(unsigned int)reason error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_25C49D9F0(v8, a4, a5);
+  endedCopy = ended;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25C49D9F0(endedCopy, reason, error);
 }
 
 - (_TtC11NexusDaemon15NXSessionDaemon)init

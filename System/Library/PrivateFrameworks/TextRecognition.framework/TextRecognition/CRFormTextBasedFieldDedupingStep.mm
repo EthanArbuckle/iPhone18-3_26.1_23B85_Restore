@@ -1,13 +1,13 @@
 @interface CRFormTextBasedFieldDedupingStep
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormTextBasedFieldDedupingStep
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  processCopy = process;
   v7 = CROSLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -20,7 +20,7 @@
   v31[1] = 3221225472;
   v31[2] = __76__CRFormTextBasedFieldDedupingStep_process_externalFields_document_options___block_invoke;
   v31[3] = &unk_1E7BC20E8;
-  v9 = v6;
+  v9 = processCopy;
   v32 = v9;
   v10 = v8;
   v33 = v10;

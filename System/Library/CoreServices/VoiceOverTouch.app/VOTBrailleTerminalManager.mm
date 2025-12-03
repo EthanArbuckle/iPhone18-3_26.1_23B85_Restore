@@ -7,15 +7,15 @@
 - (BOOL)handleReturn;
 - (BOOL)handleRightArrow;
 - (VOTBrailleTerminalManager)init;
-- (id)nameSearcherEntriesPassingSearchFrom:(id)a3;
+- (id)nameSearcherEntriesPassingSearchFrom:(id)from;
 - (unint64_t)_currentContext;
 - (void)_executeCommand;
 - (void)_refresh;
-- (void)commandInsertString:(id)a3;
+- (void)commandInsertString:(id)string;
 - (void)handleFirstElement;
 - (void)handleLastElement;
-- (void)replaceCommandRange:(_NSRange)a3 withString:(id)a4 cursor:(int64_t)a5;
-- (void)setState:(unint64_t)a3;
+- (void)replaceCommandRange:(_NSRange)range withString:(id)string cursor:(int64_t)cursor;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation VOTBrailleTerminalManager
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10011179C;
   block[3] = &unk_1001C78B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001FF058 != -1)
   {
     dispatch_once(&qword_1001FF058, block);
@@ -55,15 +55,15 @@
   return v3;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      v7 = [(VOTBrailleTerminalManager *)self outputManager];
-      [v7 deactivate];
+      outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+      [outputManager deactivate];
 
       [(VOTBrailleTerminalManager *)self setOutputManager:0];
       state = self->_state;
@@ -75,7 +75,7 @@
       [(VOTBrailleTerminalManager *)self setCursor:0];
     }
 
-    self->_state = a3;
+    self->_state = state;
 
     [(VOTBrailleTerminalManager *)self _refresh];
   }
@@ -84,21 +84,21 @@
 - (unint64_t)_currentContext
 {
   v2 = +[VOTWorkspace sharedWorkspace];
-  v3 = [v2 currentElement];
+  currentElement = [v2 currentElement];
 
-  v4 = [v3 application];
-  if ([v4 isSpringBoard])
+  application = [currentElement application];
+  if ([application isSpringBoard])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 immediateRemoteParent];
-    v7 = [v6 application];
-    v8 = [v7 isSpringBoard];
+    immediateRemoteParent = [currentElement immediateRemoteParent];
+    application2 = [immediateRemoteParent application];
+    isSpringBoard = [application2 isSpringBoard];
 
-    v5 = v8 ^ 1;
+    v5 = isSpringBoard ^ 1;
   }
 
   v9 = +[AXSpringBoardServer server];
@@ -106,7 +106,7 @@
 
   if ((v5 & 1) != 0 || (v11 = 0, v10))
   {
-    if ([v3 isInAppSwitcher])
+    if ([currentElement isInAppSwitcher])
     {
       v11 = 1;
     }
@@ -122,16 +122,16 @@
 
 - (BOOL)handleReturn
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state)
   {
-    if (v3 == 2)
+    if (state == 2)
     {
-      v4 = [(VOTBrailleTerminalManager *)self outputManager];
-      -[VOTBrailleTerminalManager setState:](self, "setState:", [v4 selectCurrentOutput]);
+      outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+      -[VOTBrailleTerminalManager setState:](self, "setState:", [outputManager selectCurrentOutput]);
     }
 
-    else if (v3 == 1)
+    else if (state == 1)
     {
       [(VOTBrailleTerminalManager *)self _executeCommand];
     }
@@ -142,9 +142,9 @@
   else
   {
     v7 = +[VOTBrailleManager manager];
-    v8 = [v7 hasActiveBrailleDisplay];
+    hasActiveBrailleDisplay = [v7 hasActiveBrailleDisplay];
 
-    if (v8)
+    if (hasActiveBrailleDisplay)
     {
       v5 = 1;
       [(VOTBrailleTerminalManager *)self setState:1];
@@ -161,16 +161,16 @@
 
 - (BOOL)handleLeftArrow
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 2)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 2)
   {
-    v4 = [(VOTBrailleTerminalManager *)self outputManager];
-    [v4 moveToPreviousOutput];
+    outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+    [outputManager moveToPreviousOutput];
 
     return 1;
   }
 
-  if (v3 == 1)
+  if (state == 1)
   {
     if ([(VOTBrailleTerminalManager *)self cursor]>= 1)
     {
@@ -185,22 +185,22 @@
 
 - (BOOL)handleRightArrow
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 2)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 2)
   {
-    v7 = [(VOTBrailleTerminalManager *)self outputManager];
-    [v7 moveToNextOutput];
+    outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+    [outputManager moveToNextOutput];
 
     return 1;
   }
 
-  if (v3 == 1)
+  if (state == 1)
   {
-    v4 = [(VOTBrailleTerminalManager *)self cursor];
-    v5 = [(VOTBrailleTerminalManager *)self commandLine];
-    v6 = [v5 length];
+    cursor = [(VOTBrailleTerminalManager *)self cursor];
+    commandLine = [(VOTBrailleTerminalManager *)self commandLine];
+    v6 = [commandLine length];
 
-    if (v4 < v6)
+    if (cursor < v6)
     {
       [(VOTBrailleTerminalManager *)self replaceCommandRange:0 withString:0 cursor:&stru_1001CBF90, [(VOTBrailleTerminalManager *)self cursor]+ 1];
     }
@@ -213,8 +213,8 @@
 
 - (BOOL)handleDelete
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 2)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 2)
   {
 
     return [(VOTBrailleTerminalManager *)self handleEscape];
@@ -222,7 +222,7 @@
 
   else
   {
-    if (v3 != 1)
+    if (state != 1)
     {
       return 0;
     }
@@ -239,8 +239,8 @@
 
 - (BOOL)handleForwardDelete
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 2)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 2)
   {
 
     return [(VOTBrailleTerminalManager *)self handleEscape];
@@ -248,16 +248,16 @@
 
   else
   {
-    if (v3 != 1)
+    if (state != 1)
     {
       return 0;
     }
 
-    v4 = [(VOTBrailleTerminalManager *)self cursor];
-    v5 = [(VOTBrailleTerminalManager *)self commandLine];
-    v6 = [v5 length];
+    cursor = [(VOTBrailleTerminalManager *)self cursor];
+    commandLine = [(VOTBrailleTerminalManager *)self commandLine];
+    v6 = [commandLine length];
 
-    if (v4 >= v6)
+    if (cursor >= v6)
     {
       return 1;
     }
@@ -270,14 +270,14 @@
 
 - (BOOL)handleEscape
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 1)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 1)
   {
     v4 = 0;
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (state == 2)
   {
     v4 = 1;
 LABEL_5:
@@ -290,17 +290,17 @@ LABEL_5:
 
 - (void)_refresh
 {
-  v3 = [(VOTBrailleTerminalManager *)self state];
-  if (v3 == 1)
+  state = [(VOTBrailleTerminalManager *)self state];
+  if (state == 1)
   {
     v5 = +[VOTBrailleManager manager];
-    v4 = [(VOTBrailleTerminalManager *)self commandLine];
-    [v5 refreshBrailleForTerminalCommand:v4 cursor:{-[VOTBrailleTerminalManager cursor](self, "cursor")}];
+    commandLine = [(VOTBrailleTerminalManager *)self commandLine];
+    [v5 refreshBrailleForTerminalCommand:commandLine cursor:{-[VOTBrailleTerminalManager cursor](self, "cursor")}];
   }
 
   else
   {
-    if (v3)
+    if (state)
     {
       return;
     }
@@ -310,59 +310,59 @@ LABEL_5:
   }
 }
 
-- (void)replaceCommandRange:(_NSRange)a3 withString:(id)a4 cursor:(int64_t)a5
+- (void)replaceCommandRange:(_NSRange)range withString:(id)string cursor:(int64_t)cursor
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if ([(VOTBrailleTerminalManager *)self state]== 1)
   {
-    v9 = [(VOTBrailleTerminalManager *)self commandLine];
-    v10 = [v9 stringByReplacingCharactersInRange:location withString:{length, v11}];
+    commandLine = [(VOTBrailleTerminalManager *)self commandLine];
+    v10 = [commandLine stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
     [(VOTBrailleTerminalManager *)self setCommandLine:v10];
 
-    [(VOTBrailleTerminalManager *)self setCursor:a5];
+    [(VOTBrailleTerminalManager *)self setCursor:cursor];
     [(VOTBrailleTerminalManager *)self _refresh];
   }
 }
 
-- (void)commandInsertString:(id)a3
+- (void)commandInsertString:(id)string
 {
-  v4 = a3;
-  -[VOTBrailleTerminalManager replaceCommandRange:withString:cursor:](self, "replaceCommandRange:withString:cursor:", -[VOTBrailleTerminalManager cursor](self, "cursor"), 0, v4, -[VOTBrailleTerminalManager cursor](self, "cursor") + [v4 length]);
+  stringCopy = string;
+  -[VOTBrailleTerminalManager replaceCommandRange:withString:cursor:](self, "replaceCommandRange:withString:cursor:", -[VOTBrailleTerminalManager cursor](self, "cursor"), 0, stringCopy, -[VOTBrailleTerminalManager cursor](self, "cursor") + [stringCopy length]);
 }
 
 - (void)_executeCommand
 {
   if ([(VOTBrailleTerminalManager *)self state]== 1)
   {
-    v3 = [(VOTBrailleTerminalManager *)self _currentContext];
-    if (v3 >= 2)
+    _currentContext = [(VOTBrailleTerminalManager *)self _currentContext];
+    if (_currentContext >= 2)
     {
-      if (v3 != 2)
+      if (_currentContext != 2)
       {
         return;
       }
 
-      v9 = [VOTSharedWorkspace currentElement];
-      v6 = [[VOTNameSearcherElementSource alloc] initWithElement:v9];
+      currentElement = [VOTSharedWorkspace currentElement];
+      v6 = [[VOTNameSearcherElementSource alloc] initWithElement:currentElement];
       v7 = [[VOTBrailleTerminalNameSearchOutputManager alloc] initWithItemSource:v6 filter:self];
       [(VOTBrailleTerminalManager *)self setOutputManager:v7];
 
-      v8 = [(VOTBrailleTerminalManager *)self outputManager];
-      [v8 activate];
+      outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+      [outputManager activate];
 
       [(VOTBrailleTerminalManager *)self setState:2];
     }
 
     else
     {
-      v9 = [[VOTNameSearcherAppSource alloc] initWithLaunchContext:v3 != 0];
-      v4 = [[VOTBrailleTerminalNameSearchOutputManager alloc] initWithItemSource:v9 filter:self];
+      currentElement = [[VOTNameSearcherAppSource alloc] initWithLaunchContext:_currentContext != 0];
+      v4 = [[VOTBrailleTerminalNameSearchOutputManager alloc] initWithItemSource:currentElement filter:self];
       [(VOTBrailleTerminalManager *)self setOutputManager:v4];
 
-      v5 = [(VOTBrailleTerminalManager *)self outputManager];
-      [v5 activate];
+      outputManager2 = [(VOTBrailleTerminalManager *)self outputManager];
+      [outputManager2 activate];
 
       [(VOTBrailleTerminalManager *)self setState:2];
     }
@@ -373,8 +373,8 @@ LABEL_5:
 {
   if ([(VOTBrailleTerminalManager *)self state]== 2)
   {
-    v3 = [(VOTBrailleTerminalManager *)self outputManager];
-    [v3 moveToFirstOutput];
+    outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+    [outputManager moveToFirstOutput];
   }
 }
 
@@ -382,27 +382,27 @@ LABEL_5:
 {
   if ([(VOTBrailleTerminalManager *)self state]== 2)
   {
-    v3 = [(VOTBrailleTerminalManager *)self outputManager];
-    [v3 moveToLastOutput];
+    outputManager = [(VOTBrailleTerminalManager *)self outputManager];
+    [outputManager moveToLastOutput];
   }
 }
 
-- (id)nameSearcherEntriesPassingSearchFrom:(id)a3
+- (id)nameSearcherEntriesPassingSearchFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(VOTBrailleTerminalManager *)self commandLine];
-  v6 = [v5 length];
+  fromCopy = from;
+  commandLine = [(VOTBrailleTerminalManager *)self commandLine];
+  v6 = [commandLine length];
 
   if (v6)
   {
     v26 = objc_opt_new();
-    v23 = v4;
+    v23 = fromCopy;
     v24 = objc_opt_new();
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v4;
+    obj = fromCopy;
     v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v7)
     {
@@ -418,18 +418,18 @@ LABEL_5:
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v11 name];
-          v13 = [v12 lowercaseString];
-          v14 = [(VOTBrailleTerminalManager *)self commandLine];
-          v15 = [v14 lowercaseString];
-          v16 = [v13 hasPrefix:v15];
+          name = [v11 name];
+          lowercaseString = [name lowercaseString];
+          commandLine2 = [(VOTBrailleTerminalManager *)self commandLine];
+          lowercaseString2 = [commandLine2 lowercaseString];
+          v16 = [lowercaseString hasPrefix:lowercaseString2];
 
           v17 = v26;
           if ((v16 & 1) == 0)
           {
-            v18 = [v11 name];
-            v19 = [(VOTBrailleTerminalManager *)self commandLine];
-            v20 = [v18 localizedCaseInsensitiveContainsString:v19];
+            name2 = [v11 name];
+            commandLine3 = [(VOTBrailleTerminalManager *)self commandLine];
+            v20 = [name2 localizedCaseInsensitiveContainsString:commandLine3];
 
             v17 = v24;
             if (!v20)
@@ -449,12 +449,12 @@ LABEL_5:
 
     v21 = [v26 arrayByAddingObjectsFromArray:v24];
 
-    v4 = v23;
+    fromCopy = v23;
   }
 
   else
   {
-    v21 = v4;
+    v21 = fromCopy;
   }
 
   return v21;

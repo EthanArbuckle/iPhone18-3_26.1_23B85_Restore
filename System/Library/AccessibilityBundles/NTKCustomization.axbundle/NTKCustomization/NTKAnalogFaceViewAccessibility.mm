@@ -1,18 +1,18 @@
 @interface NTKAnalogFaceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation NTKAnalogFaceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKAnalogFaceView" isKindOfClass:@"NTKFaceView"];
-  [v3 validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
-  [v3 validateClass:@"NTKAnalogFaceView" hasInstanceVariable:@"_complicationDisplayWrappers" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"NTKAnalogFaceView" hasInstanceMethod:@"_isComplicationSlotInsideDial:" withFullSignature:{"B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKAnalogFaceView" isKindOfClass:@"NTKFaceView"];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
+  [validationsCopy validateClass:@"NTKAnalogFaceView" hasInstanceVariable:@"_complicationDisplayWrappers" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"NTKAnalogFaceView" hasInstanceMethod:@"_isComplicationSlotInsideDial:" withFullSignature:{"B", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,11 +26,11 @@
   [v3 _accessibilitySetOverridesInvisibility:1];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v22 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v23 = [(NTKAnalogFaceViewAccessibility *)self safeDictionaryForKey:@"_complicationDisplayWrappers"];
   v39 = 0u;
   v40 = 0u;
@@ -61,7 +61,7 @@
         v29 = &unk_1C5F8;
         v31 = v10;
         v32 = &v33;
-        v30 = self;
+        selfCopy = self;
         AXPerformSafeBlock();
         v11 = *(v34 + 24);
         _Block_object_dispose(&v33, 8);
@@ -82,9 +82,9 @@
           v17 = v16;
           v19 = v18;
 
-          if ([v13 pointInside:v22 withEvent:{v17, v19}])
+          if ([v13 pointInside:eventCopy withEvent:{v17, v19}])
           {
-            v20 = [v13 _accessibilityHitTest:v22 withEvent:{v17, v19}];
+            v20 = [v13 _accessibilityHitTest:eventCopy withEvent:{v17, v19}];
 
             goto LABEL_15;
           }
@@ -103,7 +103,7 @@
 
   v25.receiver = self;
   v25.super_class = NTKAnalogFaceViewAccessibility;
-  v20 = [(NTKAnalogFaceViewAccessibility *)&v25 _accessibilityHitTest:v22 withEvent:x, y];
+  v20 = [(NTKAnalogFaceViewAccessibility *)&v25 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_15:
 
   return v20;

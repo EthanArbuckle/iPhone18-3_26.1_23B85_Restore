@@ -1,16 +1,16 @@
 @interface _UIWTCHighlightContainerView
-- (_UIWTCHighlightContainerView)initWithFrame:(CGRect)a3;
+- (_UIWTCHighlightContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation _UIWTCHighlightContainerView
 
-- (_UIWTCHighlightContainerView)initWithFrame:(CGRect)a3
+- (_UIWTCHighlightContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIWTCHighlightContainerView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_UITextSelectionRangeView alloc];
@@ -31,15 +31,15 @@
   v5.receiver = self;
   v5.super_class = _UIWTCHighlightContainerView;
   [(UIView *)&v5 layoutSubviews];
-  v3 = [(UIView *)self tintColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  tintColor = [(UIView *)self tintColor];
+  v4 = [tintColor colorWithAlphaComponent:0.2];
   [(_UITextSelectionRangeView *)self->_highlightSubview setSelectionColor:v4];
 }
 
 - (void)tintColorDidChange
 {
-  v4 = [(UIView *)self tintColor];
-  v3 = [v4 colorWithAlphaComponent:0.2];
+  tintColor = [(UIView *)self tintColor];
+  v3 = [tintColor colorWithAlphaComponent:0.2];
   [(_UITextSelectionRangeView *)self->_highlightSubview setSelectionColor:v3];
 }
 

@@ -1,42 +1,42 @@
 @interface DOCTransitionUtils
-+ (void)performZoomTransitionInContainer:(id)a3 withSourceView:(id)a4 destinationView:(id)a5 duration:(double)a6 alterativeView:(id)a7 thumbnail:(id)a8 thumbnailStyle:(unint64_t)a9 location:(CGRect)a10 presenting:(BOOL)a11 fadingSource:(BOOL)a12 completion:(id)a13;
++ (void)performZoomTransitionInContainer:(id)container withSourceView:(id)view destinationView:(id)destinationView duration:(double)duration alterativeView:(id)alterativeView thumbnail:(id)thumbnail thumbnailStyle:(unint64_t)style location:(CGRect)self0 presenting:(BOOL)self1 fadingSource:(BOOL)self2 completion:(id)self3;
 @end
 
 @implementation DOCTransitionUtils
 
-+ (void)performZoomTransitionInContainer:(id)a3 withSourceView:(id)a4 destinationView:(id)a5 duration:(double)a6 alterativeView:(id)a7 thumbnail:(id)a8 thumbnailStyle:(unint64_t)a9 location:(CGRect)a10 presenting:(BOOL)a11 fadingSource:(BOOL)a12 completion:(id)a13
++ (void)performZoomTransitionInContainer:(id)container withSourceView:(id)view destinationView:(id)destinationView duration:(double)duration alterativeView:(id)alterativeView thumbnail:(id)thumbnail thumbnailStyle:(unint64_t)style location:(CGRect)self0 presenting:(BOOL)self1 fadingSource:(BOOL)self2 completion:(id)self3
 {
-  height = a10.size.height;
-  width = a10.size.width;
-  y = a10.origin.y;
-  x = a10.origin.x;
-  v18 = a9;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a7;
-  v27 = a8;
-  v216 = a13;
-  if (!v27)
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
+  styleCopy = style;
+  containerCopy = container;
+  viewCopy = view;
+  destinationViewCopy = destinationView;
+  alterativeViewCopy = alterativeView;
+  thumbnailCopy = thumbnail;
+  completionCopy = completion;
+  if (!thumbnailCopy)
   {
-    [v23 center];
+    [containerCopy center];
     x = v28 + -20.0;
-    [v23 center];
+    [containerCopy center];
     y = v29 + -20.0;
     height = 40.0;
     width = 40.0;
   }
 
-  v30 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v27];
+  v30 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:thumbnailCopy];
   [v30 setContentMode:1];
   [v30 setFrame:{x, y, width, height}];
   [v30 setAccessibilityIgnoresInvertColors:1];
-  if (v18)
+  if (styleCopy)
   {
-    if ((v18 & 2) != 0)
+    if ((styleCopy & 2) != 0)
     {
-      v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v13 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v31 = 1.0 / v32;
     }
 
@@ -45,39 +45,39 @@
       v31 = 1.0;
     }
 
-    v33 = [v30 layer];
-    [v33 setBorderWidth:v31];
+    layer = [v30 layer];
+    [layer setBorderWidth:v31];
 
-    if ((v18 & 2) != 0)
+    if ((styleCopy & 2) != 0)
     {
     }
 
     [v30 frame];
     v36 = DOCScaledThumbnailCornerRadius(v34, v35);
-    v37 = [v30 layer];
-    [v37 setCornerRadius:v36];
+    layer2 = [v30 layer];
+    [layer2 setCornerRadius:v36];
 
     v38 = *MEMORY[0x1E69796E8];
-    v39 = [v30 layer];
-    [v39 setCornerCurve:v38];
+    layer3 = [v30 layer];
+    [layer3 setCornerCurve:v38];
 
     v40 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.121568627];
-    v41 = [v40 CGColor];
-    v42 = [v30 layer];
-    [v42 setBorderColor:v41];
+    cGColor = [v40 CGColor];
+    layer4 = [v30 layer];
+    [layer4 setBorderColor:cGColor];
 
     [v30 setClipsToBounds:1];
   }
 
-  [v23 addSubview:v30];
-  if (v26)
+  [containerCopy addSubview:v30];
+  if (alterativeViewCopy)
   {
-    v43 = [v26 snapshotViewAfterScreenUpdates:1];
-    [v26 bounds];
-    [v26 convertRect:v23 toView:?];
+    v43 = [alterativeViewCopy snapshotViewAfterScreenUpdates:1];
+    [alterativeViewCopy bounds];
+    [alterativeViewCopy convertRect:containerCopy toView:?];
     [v43 setFrame:?];
-    [v23 addSubview:v43];
-    [v26 setAlpha:0.0];
+    [containerCopy addSubview:v43];
+    [alterativeViewCopy setAlpha:0.0];
   }
 
   else
@@ -107,12 +107,12 @@
   *&v282.c = v44;
   v220 = v291;
   *&v282.tx = v291;
-  v45 = [v23 traitCollection];
-  [v45 displayScale];
+  traitCollection = [containerCopy traitCollection];
+  [traitCollection displayScale];
   v47 = v46;
 
-  v219 = v27;
-  if (a11)
+  v219 = thumbnailCopy;
+  if (presenting)
   {
     if (v43)
     {
@@ -134,7 +134,7 @@
       v70 = v69;
       v208 = v71;
       v214 = 0.0;
-      if (a12)
+      if (source)
       {
         v72 = 0.0;
       }
@@ -175,7 +175,7 @@
 
     else
     {
-      [v24 frame];
+      [viewCopy frame];
       v120 = v119;
       v122 = v121;
       v124 = v123;
@@ -184,7 +184,7 @@
       v129 = DOCAdaptSizeToRect(0, v120, v122, v124, v126, v127, v128, v47);
       v131 = v130;
       v133 = v132;
-      [v24 frame];
+      [viewCopy frame];
       v215 = v134;
       v210 = v135;
       [v30 frame];
@@ -193,7 +193,7 @@
       v70 = v140;
       v208 = v141;
       v214 = 0.0;
-      if (a12)
+      if (source)
       {
         v142 = 0.0;
       }
@@ -207,11 +207,11 @@
       v213 = v142;
       [v30 center];
       v144 = v143;
-      [v25 center];
+      [destinationViewCopy center];
       v146 = v144 - v145;
       [v30 center];
       v148 = v147;
-      [v25 center];
+      [destinationViewCopy center];
       *&v281.a = v289;
       *&v281.c = v222;
       *&v281.tx = v291;
@@ -221,13 +221,13 @@
       v280 = v288;
       CGAffineTransformScale(&v281, &v280, v70 / v131, v70 / v131);
       v288 = v281;
-      [v25 frame];
+      [destinationViewCopy frame];
       v209 = v131;
       v152 = v151 - v131;
       v83 = v139;
       v84 = v137;
       v153 = v152 * 0.5;
-      [v25 frame];
+      [destinationViewCopy frame];
       v280 = v288;
       CGAffineTransformTranslate(&v281, &v280, v153, (v154 - v133) * 0.5);
       v288 = v281;
@@ -260,7 +260,7 @@
       v83 = v107;
       v213 = 0.0;
       v211 = 1.0;
-      if (a12)
+      if (source)
       {
         v108 = 0.0;
       }
@@ -296,7 +296,7 @@
 
     else
     {
-      [v25 frame];
+      [destinationViewCopy frame];
       v156 = v155;
       v158 = v157;
       v160 = v159;
@@ -305,12 +305,12 @@
       v165 = DOCAdaptSizeToRect(0, v156, v158, v160, v162, v163, v164, v47);
       v70 = v166;
       v168 = v167;
-      [v25 frame];
+      [destinationViewCopy frame];
       v84 = v169;
       v83 = v170;
       v213 = 0.0;
       v211 = 1.0;
-      if (a12)
+      if (source)
       {
         v171 = 0.0;
       }
@@ -323,11 +323,11 @@
       v214 = v171;
       [v30 center];
       v173 = v172;
-      [v25 center];
+      [destinationViewCopy center];
       v175 = v173 - v174;
       [v30 center];
       v177 = v176;
-      [v25 center];
+      [destinationViewCopy center];
       *&v281.a = v289;
       *&v281.c = v222;
       *&v281.tx = v291;
@@ -335,9 +335,9 @@
       v280 = v287;
       CGAffineTransformScale(&v281, &v280, v90 / v70, v90 / v70);
       v287 = v281;
-      [v25 frame];
+      [destinationViewCopy frame];
       v180 = (v179 - v70) * 0.5;
-      [v25 frame];
+      [destinationViewCopy frame];
       v208 = v168;
       v280 = v287;
       CGAffineTransformTranslate(&v281, &v280, v180, (v181 - v168) * 0.5);
@@ -350,7 +350,7 @@
 
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   v183 = IsReduceMotionEnabled;
-  v217 = v26;
+  v217 = alterativeViewCopy;
   if (IsReduceMotionEnabled)
   {
     v284 = v225;
@@ -366,7 +366,7 @@
     v290 = v222;
     v291 = v220;
     v184 = v215;
-    if (a11)
+    if (presenting)
     {
       v282 = v283;
       v80 = v208;
@@ -403,19 +403,19 @@
   v260[1] = 3221225472;
   v260[2] = __179__DOCTransitionUtils_performZoomTransitionInContainer_withSourceView_destinationView_duration_alterativeView_thumbnail_thumbnailStyle_location_presenting_fadingSource_completion___block_invoke;
   v260[3] = &unk_1E87832C0;
-  v279 = a11;
+  presentingCopy = presenting;
   v187 = v30;
   v261 = v187;
-  v226 = v23;
+  v226 = containerCopy;
   v262 = v226;
   v266 = v184;
   v267 = v83;
   v268 = v70;
   v269 = v185;
-  v188 = v24;
+  v188 = viewCopy;
   v263 = v188;
   v270 = 0x3FF0000000000000;
-  v189 = v25;
+  v189 = destinationViewCopy;
   v264 = v189;
   v271 = v213;
   v272 = v211;
@@ -468,7 +468,7 @@
   v239 = v221;
   v199 = v217;
   v240 = v199;
-  v200 = v216;
+  v200 = completionCopy;
   v241 = v200;
   v201 = MEMORY[0x1E692E2E0](v235);
   v191[2](v191);
@@ -488,7 +488,7 @@
     v204 = &v228;
     v228 = v201;
     v205 = v201;
-    [v202 animateWithDuration:v229 animations:v227 completion:a6];
+    [v202 animateWithDuration:v229 animations:v227 completion:duration];
   }
 
   else
@@ -506,7 +506,7 @@
     v204 = &v232;
     v232 = v201;
     v206 = v201;
-    [v202 _animateUsingSpringWithDuration:0 delay:v233 options:v231 mass:a6 stiffness:0.0 damping:3.0 initialVelocity:1000.0 animations:500.0 completion:0.0];
+    [v202 _animateUsingSpringWithDuration:0 delay:v233 options:v231 mass:duration stiffness:0.0 damping:3.0 initialVelocity:1000.0 animations:500.0 completion:0.0];
   }
 }
 

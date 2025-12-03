@@ -4,32 +4,32 @@
 + (id)entryAggregateDefinitionAwdConnectedPower;
 + (id)entryAggregateDefinitionAwdVolte;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)submitConnectedPower:(id)a3 withAwdConn:(id)a4;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (double)getIntervalSinceLastUpdateWithEntryName:(id)a3;
-- (int)convertQualityWithLinkQuality:(double)a3;
-- (void)bbLTEWriteAggregatedTableWithRFLTEEntry:(id)a3 withPoint:(id)a4;
-- (void)finalizePeriodWithUpBytes:(unsigned int)a3 withDownBytes:(unsigned int)a4;
-- (void)finalizeTableWithEntry:(id)a3;
-- (void)handleAcountGroupCallback:(id)a3;
-- (void)handleBBLqmCellularActiveCallback:(id)a3;
-- (void)handleBBLqmCumulativeNetworkCallback:(id)a3;
-- (void)handleBBRailCallbackBBICE:(id)a3;
-- (void)handleBBRailCallbackBBProtocol:(id)a3;
-- (void)handleBBRailCallbackBBTx:(id)a3;
-- (void)handleBBRailCallbackLTESleep:(id)a3;
-- (void)handleBBRailCallbackOos:(id)a3;
-- (void)handleBBRailCallbackTxCdma2K:(id)a3;
-- (void)handleBBRailCallbackTxCdma:(id)a3;
-- (void)handleBBRailCallbackTxEvdo:(id)a3;
-- (void)handleBBRailCallbackTxGsm:(id)a3;
-- (void)handleBBRailCallbackTxLte:(id)a3;
-- (void)handleBBRailCallbackTxUtran:(id)a3;
-- (void)handleIceStatsCallback:(id)a3;
-- (void)handleRfLTE:(id)a3;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)submitConnectedPower:(id)power withAwdConn:(id)conn;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (double)getIntervalSinceLastUpdateWithEntryName:(id)name;
+- (int)convertQualityWithLinkQuality:(double)quality;
+- (void)bbLTEWriteAggregatedTableWithRFLTEEntry:(id)entry withPoint:(id)point;
+- (void)finalizePeriodWithUpBytes:(unsigned int)bytes withDownBytes:(unsigned int)downBytes;
+- (void)finalizeTableWithEntry:(id)entry;
+- (void)handleAcountGroupCallback:(id)callback;
+- (void)handleBBLqmCellularActiveCallback:(id)callback;
+- (void)handleBBLqmCumulativeNetworkCallback:(id)callback;
+- (void)handleBBRailCallbackBBICE:(id)e;
+- (void)handleBBRailCallbackBBProtocol:(id)protocol;
+- (void)handleBBRailCallbackBBTx:(id)tx;
+- (void)handleBBRailCallbackLTESleep:(id)sleep;
+- (void)handleBBRailCallbackOos:(id)oos;
+- (void)handleBBRailCallbackTxCdma2K:(id)k;
+- (void)handleBBRailCallbackTxCdma:(id)cdma;
+- (void)handleBBRailCallbackTxEvdo:(id)evdo;
+- (void)handleBBRailCallbackTxGsm:(id)gsm;
+- (void)handleBBRailCallbackTxLte:(id)lte;
+- (void)handleBBRailCallbackTxUtran:(id)utran;
+- (void)handleIceStatsCallback:(id)callback;
+- (void)handleRfLTE:(id)e;
 - (void)handleRfLTEOffline;
-- (void)handleTelephonyActiveCallback:(id)a3;
+- (void)handleTelephonyActiveCallback:(id)callback;
 - (void)resetAllBBLqmTables;
 - (void)resetBBLqmCounterTable;
 - (void)resetBBLqmTable;
@@ -40,26 +40,26 @@
 - (void)startBBLqm;
 - (void)startBBPower;
 - (void)startConnectedPower;
-- (void)startMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
 - (void)stopAppRrc;
 - (void)stopBBLqm;
 - (void)stopBBPower;
-- (void)stopMetricCollection:(id)a3;
-- (void)submitAppBB:(id)a3 withAwdConn:(id)a4;
-- (void)submitAppRrc:(id)a3 withAwdConn:(id)a4;
-- (void)submitBBLqm:(id)a3 withAwdConn:(id)a4;
+- (void)stopMetricCollection:(id)collection;
+- (void)submitAppBB:(id)b withAwdConn:(id)conn;
+- (void)submitAppRrc:(id)rrc withAwdConn:(id)conn;
+- (void)submitBBLqm:(id)lqm withAwdConn:(id)conn;
 - (void)updateCurrLqmState;
 @end
 
 @implementation PLAWDBB
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdBb;
   if (!plAwdBb)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDBB alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDBB alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdBb;
     plAwdBb = v5;
@@ -74,17 +74,17 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"awdBBLqm";
-  v3 = [a1 entryAggregateDefinitionAwdBBQlm];
-  v11[0] = v3;
+  entryAggregateDefinitionAwdBBQlm = [self entryAggregateDefinitionAwdBBQlm];
+  v11[0] = entryAggregateDefinitionAwdBBQlm;
   v10[1] = @"awdBBLqmCounter";
-  v4 = [a1 entryAggregateDefinitionAwdBBQlmCounter];
-  v11[1] = v4;
+  entryAggregateDefinitionAwdBBQlmCounter = [self entryAggregateDefinitionAwdBBQlmCounter];
+  v11[1] = entryAggregateDefinitionAwdBBQlmCounter;
   v10[2] = @"BBConnectedPower";
-  v5 = [a1 entryAggregateDefinitionAwdConnectedPower];
-  v11[2] = v5;
+  entryAggregateDefinitionAwdConnectedPower = [self entryAggregateDefinitionAwdConnectedPower];
+  v11[2] = entryAggregateDefinitionAwdConnectedPower;
   v10[3] = @"Volte";
-  v6 = [a1 entryAggregateDefinitionAwdVolte];
-  v11[3] = v6;
+  entryAggregateDefinitionAwdVolte = [self entryAggregateDefinitionAwdVolte];
+  v11[3] = entryAggregateDefinitionAwdVolte;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -92,22 +92,22 @@
   return v7;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 addObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 <= 2031629)
+  longValue = [collectionCopy longValue];
+  if (longValue <= 2031629)
   {
-    if (v6 == 2031628)
+    if (longValue == 2031628)
     {
 
       [(PLAWDBB *)self startAppRrc];
     }
 
-    else if (v6 == 2031629)
+    else if (longValue == 2031629)
     {
 
       [(PLAWDBB *)self startAppBB];
@@ -116,7 +116,7 @@
 
   else
   {
-    switch(v6)
+    switch(longValue)
     {
       case 2031630:
 
@@ -134,38 +134,38 @@
   }
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 removeObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 > 2031629)
+  longValue = [collectionCopy longValue];
+  if (longValue > 2031629)
   {
-    if (v6 == 2031630)
+    if (longValue == 2031630)
     {
       [(PLAWDBB *)self stopConnectedPower];
     }
 
-    else if (v6 == 2031631)
+    else if (longValue == 2031631)
     {
       [(PLAWDBB *)self stopBBLqm];
     }
   }
 
-  else if (v6 == 2031628)
+  else if (longValue == 2031628)
   {
     [(PLAWDBB *)self stopAppRrc];
   }
 
-  else if (v6 == 2031629)
+  else if (longValue == 2031629)
   {
     [(PLAWDBB *)self stopAppBB];
   }
 
-  v7 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v8 = [v7 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v8 = [runningMetrics2 count];
 
   if (!v8)
   {
@@ -174,22 +174,22 @@
   }
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 longValue];
+  serverCopy = server;
+  connCopy = conn;
+  longValue = [serverCopy longValue];
   v9 = 0;
-  if (v8 > 2031630)
+  if (longValue > 2031630)
   {
-    if ((v8 - 2031632) >= 2)
+    if ((longValue - 2031632) >= 2)
     {
-      if (v8 != 2031631)
+      if (longValue != 2031631)
       {
         goto LABEL_12;
       }
 
-      [(PLAWDBB *)self submitBBLqm:v6 withAwdConn:v7];
+      [(PLAWDBB *)self submitBBLqm:serverCopy withAwdConn:connCopy];
     }
 
 LABEL_11:
@@ -197,16 +197,16 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  switch(v8)
+  switch(longValue)
   {
     case 2031628:
-      [(PLAWDBB *)self submitAppRrc:v6 withAwdConn:v7];
+      [(PLAWDBB *)self submitAppRrc:serverCopy withAwdConn:connCopy];
       goto LABEL_11;
     case 2031629:
-      [(PLAWDBB *)self submitAppBB:v6 withAwdConn:v7];
+      [(PLAWDBB *)self submitAppBB:serverCopy withAwdConn:connCopy];
       goto LABEL_11;
     case 2031630:
-      v9 = [(PLAWDBB *)self submitConnectedPower:v6 withAwdConn:v7];
+      v9 = [(PLAWDBB *)self submitConnectedPower:serverCopy withAwdConn:connCopy];
       break;
   }
 
@@ -228,21 +228,21 @@ LABEL_12:
   v29[0] = v18;
   v28[1] = *MEMORY[0x277D3F540];
   v24[0] = @"BBLinkQuality";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v25[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v25[0] = commonTypeDict_IntegerFormat;
   v24[1] = @"BBLqmTx";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v25[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v25[1] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
   v24[2] = @"BBLqmRx";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v25[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v25[2] = commonTypeDict_IntegerFormat_aggregateFunction_sum2;
   v24[3] = @"BBLqmTime";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v25[3] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v25[3] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
   v29[1] = v8;
   v28[2] = *MEMORY[0x277D3F478];
@@ -279,13 +279,13 @@ LABEL_12:
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"BBLqmSwitchBucket";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v20[1] = @"BBLqmSwitchCounter";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -310,8 +310,8 @@ LABEL_12:
 - (void)startBBLqm
 {
   [(PLAWDBB *)self resetAllBBLqmTables];
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLAWDBB *)self setStartTimeBBLqm:v3];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLAWDBB *)self setStartTimeBBLqm:monotonicDate];
 
   [(PLAWDBB *)self setUpBytes:0];
   [(PLAWDBB *)self setDownBytes:0];
@@ -319,32 +319,32 @@ LABEL_12:
   [(PLAWDBB *)self setDownBytesLTE:0];
   v4 = [MEMORY[0x277D3F6C8] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F7B8]];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v6 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __21__PLAWDBB_startBBLqm__block_invoke;
   v15[3] = &unk_279A58F10;
   v15[4] = self;
-  v7 = [v5 initWithOperator:v6 forEntryKey:v4 withBlock:v15];
+  v7 = [v5 initWithOperator:operator forEntryKey:v4 withBlock:v15];
 
   [(PLAWDBB *)self setBbLqmCellularActiveCallback:v7];
   v8 = [MEMORY[0x277D3F6B0] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F7D0]];
   v9 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v10 = [(PLAWDAuxMetrics *)self operator];
+  operator2 = [(PLAWDAuxMetrics *)self operator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __21__PLAWDBB_startBBLqm__block_invoke_2;
   v14[3] = &unk_279A58F10;
   v14[4] = self;
-  v11 = [v9 initWithOperator:v10 forEntryKey:v8 withBlock:v14];
+  v11 = [v9 initWithOperator:operator2 forEntryKey:v8 withBlock:v14];
 
   [(PLAWDBB *)self setBbLqmCumulativeNetworkCallback:v11];
   [(PLAWDBB *)self updateCurrLqmState];
-  v12 = [(PLAWDBB *)self bbLqmCellularActiveCallback];
-  [v12 requestEntry];
+  bbLqmCellularActiveCallback = [(PLAWDBB *)self bbLqmCellularActiveCallback];
+  [bbLqmCellularActiveCallback requestEntry];
 
-  v13 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-  [v13 requestEntry];
+  bbLqmCumulativeNetworkCallback = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+  [bbLqmCumulativeNetworkCallback requestEntry];
 }
 
 uint64_t __21__PLAWDBB_startBBLqm__block_invoke(uint64_t result, uint64_t a2)
@@ -370,9 +370,9 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
 - (void)updateCurrLqmState
 {
   v7 = [MEMORY[0x277D3F6C8] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F7B8]];
-  v3 = [(PLAWDAuxMetrics *)self operator];
-  v4 = [v3 storage];
-  v5 = [v4 lastEntryForKey:v7];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  v5 = [storage lastEntryForKey:v7];
 
   if (v5)
   {
@@ -390,23 +390,23 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
   [(PLAWDBB *)self updateLQMTableWithQuality:[(PLAWDBB *)self newQuality] withTime:0.0 withRX:0.0 withTX:0.0];
 }
 
-- (void)finalizeTableWithEntry:(id)a3
+- (void)finalizeTableWithEntry:(id)entry
 {
   v5 = [MEMORY[0x277D3F6C8] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F7B8]];
   [(PLAWDBB *)self getIntervalSinceLastUpdateWithEntryName:v5];
   [(PLAWDBB *)self updateLQMTableWithQuality:[(PLAWDBB *)self newQuality] withTime:v4 withRX:0.0 withTX:0.0];
 }
 
-- (double)getIntervalSinceLastUpdateWithEntryName:(id)a3
+- (double)getIntervalSinceLastUpdateWithEntryName:(id)name
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self operator];
-  v6 = [v5 storage];
-  v7 = [v6 lastEntryForKey:v4];
+  nameCopy = name;
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  v7 = [storage lastEntryForKey:nameCopy];
 
-  v8 = [v7 entryDate];
-  v9 = [(PLAWDBB *)self startTimeBBLqm];
-  v10 = [v8 laterDate:v9];
+  entryDate = [v7 entryDate];
+  startTimeBBLqm = [(PLAWDBB *)self startTimeBBLqm];
+  v10 = [entryDate laterDate:startTimeBBLqm];
   [v10 timeIntervalSinceMonitonicNow];
   v12 = -v11;
 
@@ -420,43 +420,43 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
   [(PLAWDBB *)self setBbLqmCumulativeNetworkCallback:0];
 }
 
-- (void)submitBBLqm:(id)a3 withAwdConn:(id)a4
+- (void)submitBBLqm:(id)lqm withAwdConn:(id)conn
 {
   v94 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lqmCopy = lqm;
+  connCopy = conn;
   v8 = *MEMORY[0x277D3F5B8];
   v9 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"awdBBLqm"];
   [(PLAWDBB *)self finalizeTableWithEntry:v9];
-  v10 = [v7 newMetricContainerWithIdentifier:{objc_msgSend(v6, "unsignedIntValue")}];
+  v10 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(lqmCopy, "unsignedIntValue")}];
   v11 = v10;
   if (v10)
   {
     v72 = v8;
     v75 = v10;
-    v77 = v7;
-    v78 = v6;
-    v12 = [(PLAWDBB *)self bbLqmCellularActiveCallback];
-    [v12 requestEntry];
+    v77 = connCopy;
+    v78 = lqmCopy;
+    bbLqmCellularActiveCallback = [(PLAWDBB *)self bbLqmCellularActiveCallback];
+    [bbLqmCellularActiveCallback requestEntry];
 
-    v13 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-    [v13 requestEntry];
+    bbLqmCumulativeNetworkCallback = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+    [bbLqmCumulativeNetworkCallback requestEntry];
 
     sleep(5u);
     v79 = objc_opt_new();
     v82 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v15 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v14 timeIntervalSince1970];
     v17 = v16;
-    [v15 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v19 = v18 - v17;
 
-    v80 = self;
-    v20 = [(PLAWDAuxMetrics *)self operator];
-    v21 = [v20 storage];
+    selfCopy = self;
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
     v76 = v9;
-    v22 = [v21 aggregateEntriesForKey:v9 withBucketLength:86400.0 inTimeIntervalRange:{v17, v19}];
+    v22 = [storage aggregateEntriesForKey:v9 withBucketLength:86400.0 inTimeIntervalRange:{v17, v19}];
 
     v74 = v22;
     [MEMORY[0x277D3F190] summarizeAggregateEntries:v22];
@@ -508,10 +508,10 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
 
     [v79 setLQMBytes:v82];
     v37 = [(PLOperator *)PLAWDMetricsService entryKeyForType:v72 andName:@"awdBBLqmCounter"];
-    v38 = [(PLAWDAuxMetrics *)v80 operator];
-    v39 = [v38 storage];
+    operator2 = [(PLAWDAuxMetrics *)selfCopy operator];
+    storage2 = [operator2 storage];
     v73 = v37;
-    v40 = [v39 aggregateEntriesForKey:v37 withBucketLength:86400.0 inTimeIntervalRange:{v17, v19}];
+    v40 = [storage2 aggregateEntriesForKey:v37 withBucketLength:86400.0 inTimeIntervalRange:{v17, v19}];
 
     v71 = v40;
     v41 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v40];
@@ -620,11 +620,11 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
     [v79 setLQMBytes:v82];
     v11 = v75;
     [v75 setMetric:v79];
-    v7 = v77;
+    connCopy = v77;
     [v77 submitMetric:v75];
 
-    v6 = v78;
-    self = v80;
+    lqmCopy = v78;
+    self = selfCopy;
     v9 = v76;
   }
 
@@ -632,26 +632,26 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
   [(PLAWDBB *)self setDownBytes:0];
   [(PLAWDBB *)self setUpBytesLTE:0];
   [(PLAWDBB *)self setDownBytesLTE:0];
-  v68 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-  [v68 requestEntry];
+  bbLqmCumulativeNetworkCallback2 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+  [bbLqmCumulativeNetworkCallback2 requestEntry];
 
   [(PLAWDBB *)self resetAllBBLqmTables];
-  v69 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLAWDBB *)self setStartTimeBBLqm:v69];
+  monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLAWDBB *)self setStartTimeBBLqm:monotonicDate2];
 
   [(PLAWDBB *)self updateCurrLqmState];
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBBLqmCumulativeNetworkCallback:(id)a3
+- (void)handleBBLqmCumulativeNetworkCallback:(id)callback
 {
-  v51 = a3;
+  callbackCopy = callback;
   if (![(PLAWDBB *)self currQuality])
   {
     [(PLAWDBB *)self updateCurrLqmState];
   }
 
-  v4 = [v51 objectForKey:@"entry"];
+  v4 = [callbackCopy objectForKey:@"entry"];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v6 = [v4 objectForKeyedSubscript:@"Interface"];
   v7 = [v5 initWithFormat:@"%@", v6];
@@ -676,19 +676,19 @@ uint64_t __21__PLAWDBB_startBBLqm__block_invoke_2(uint64_t result, uint64_t a2)
       if ([(PLAWDBB *)self telActivityState]!= 3)
       {
 LABEL_9:
-        v18 = [(PLAWDBB *)self unhandledRFLTEEntries];
-        v19 = [v18 count];
+        unhandledRFLTEEntries = [(PLAWDBB *)self unhandledRFLTEEntries];
+        v19 = [unhandledRFLTEEntries count];
 
         if (v19)
         {
-          v20 = [MEMORY[0x277CBEAA8] monotonicDate];
-          [(PLAWDBB *)self setEndLTECall:v20];
+          monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+          [(PLAWDBB *)self setEndLTECall:monotonicDate];
 
-          v21 = [(PLAWDBB *)self endLTECall];
-          v22 = [(PLAWDBB *)self lteCallArray];
-          v23 = [(PLAWDBB *)self lteCallArray];
-          v24 = [v22 objectAtIndexedSubscript:{objc_msgSend(v23, "count") - 1}];
-          [v24 setEndDate:v21];
+          endLTECall = [(PLAWDBB *)self endLTECall];
+          lteCallArray = [(PLAWDBB *)self lteCallArray];
+          lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+          v24 = [lteCallArray objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
+          [v24 setEndDate:endLTECall];
 
           v25 = [v4 objectForKeyedSubscript:@"UpBytes"];
           [v25 doubleValue];
@@ -706,33 +706,33 @@ LABEL_9:
           [(PLAWDBB *)self setDownBytesLTE:v33];
 
           [(PLAWDBB *)self handleRfLTEOffline];
-          v34 = [MEMORY[0x277CBEAA8] monotonicDate];
-          [(PLAWDBB *)self setStartLTECall:v34];
+          monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+          [(PLAWDBB *)self setStartLTECall:monotonicDate2];
 
           v35 = objc_opt_new();
           [(PLAWDBB *)self setPoint:v35];
 
-          v36 = [(PLAWDBB *)self startLTECall];
-          v37 = [(PLAWDBB *)self point];
-          [v37 setStartDate:v36];
+          startLTECall = [(PLAWDBB *)self startLTECall];
+          point = [(PLAWDBB *)self point];
+          [point setStartDate:startLTECall];
 
-          v38 = [(PLAWDBB *)self point];
-          [v38 setEndDate:0];
+          point2 = [(PLAWDBB *)self point];
+          [point2 setEndDate:0];
 
-          v39 = [(PLAWDBB *)self lteCallArray];
-          v40 = [(PLAWDBB *)self point];
-          [v39 addObject:v40];
+          lteCallArray3 = [(PLAWDBB *)self lteCallArray];
+          point3 = [(PLAWDBB *)self point];
+          [lteCallArray3 addObject:point3];
         }
 
         if ([(PLAWDBB *)self upBytes]&& [(PLAWDBB *)self downBytes]&& [(PLAWDBB *)self currQuality])
         {
-          v41 = [(PLAWDBB *)self currQuality];
+          currQuality = [(PLAWDBB *)self currQuality];
           v42 = [v4 objectForKeyedSubscript:@"UpBytes"];
           [v42 doubleValue];
           v44 = v43 - [(PLAWDBB *)self upBytes];
           v45 = [v4 objectForKeyedSubscript:@"DownBytes"];
           [v45 doubleValue];
-          [(PLAWDBB *)self updateLQMTableWithQuality:v41 withTime:0.0 withRX:v44 withTX:v46 - [(PLAWDBB *)self downBytes]];
+          [(PLAWDBB *)self updateLQMTableWithQuality:currQuality withTime:0.0 withRX:v44 withTX:v46 - [(PLAWDBB *)self downBytes]];
         }
 
         v47 = [v4 objectForKeyedSubscript:@"UpBytes"];
@@ -765,9 +765,9 @@ LABEL_9:
 LABEL_16:
 }
 
-- (int)convertQualityWithLinkQuality:(double)a3
+- (int)convertQualityWithLinkQuality:(double)quality
 {
-  if (a3 >= 10.0)
+  if (quality >= 10.0)
   {
     v3 = 3;
   }
@@ -777,7 +777,7 @@ LABEL_16:
     v3 = 0;
   }
 
-  if (a3 < 50.0)
+  if (quality < 50.0)
   {
     v4 = v3;
   }
@@ -787,7 +787,7 @@ LABEL_16:
     v4 = 2;
   }
 
-  if (a3 < 100.0)
+  if (quality < 100.0)
   {
     return v4;
   }
@@ -798,13 +798,13 @@ LABEL_16:
   }
 }
 
-- (void)handleBBLqmCellularActiveCallback:(id)a3
+- (void)handleBBLqmCellularActiveCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
-  v5 = [(PLAWDAuxMetrics *)self operator];
-  v6 = [v5 storage];
-  v7 = [v4 entryKey];
-  v8 = [v6 entryForKey:v7 withID:{objc_msgSend(v4, "entryID") - 1}];
+  v4 = [callback objectForKey:@"entry"];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  storage = [operator storage];
+  entryKey = [v4 entryKey];
+  v8 = [storage entryForKey:entryKey withID:{objc_msgSend(v4, "entryID") - 1}];
 
   if (v4)
   {
@@ -812,12 +812,12 @@ LABEL_16:
     {
       v9 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"awdBBLqmCounter"];
       v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9];
-      v11 = [v4 entryDate];
-      [v11 timeIntervalSince1970];
+      entryDate = [v4 entryDate];
+      [entryDate timeIntervalSince1970];
       v13 = v12;
-      v14 = [v8 entryDate];
-      v15 = [(PLAWDBB *)self startTimeBBLqm];
-      v16 = [v14 laterDate:v15];
+      entryDate2 = [v8 entryDate];
+      startTimeBBLqm = [(PLAWDBB *)self startTimeBBLqm];
+      v16 = [entryDate2 laterDate:startTimeBBLqm];
       [v16 timeIntervalSince1970];
       v18 = v17;
 
@@ -844,9 +844,9 @@ LABEL_16:
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"type - %d curr - %d", -[PLAWDBB newQuality](self, "newQuality"), -[PLAWDBB currQuality](self, "currQuality")];;
           v22 = MEMORY[0x277D3F178];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-          v24 = [v23 lastPathComponent];
+          lastPathComponent = [v23 lastPathComponent];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBLqmCellularActiveCallback:]"];
-          [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:548];
+          [v22 logMessage:v21 fromFile:lastPathComponent fromFunction:v25 fromLineNumber:548];
 
           v26 = PLLogCommon();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -857,8 +857,8 @@ LABEL_16:
       }
 
       v27 = v13 - v18;
-      v28 = [(PLAWDBB *)self newQuality];
-      if (v28 != [(PLAWDBB *)self currQuality]&& [(PLAWDBB *)self newQuality]&& [(PLAWDBB *)self currQuality])
+      newQuality = [(PLAWDBB *)self newQuality];
+      if (newQuality != [(PLAWDBB *)self currQuality]&& [(PLAWDBB *)self newQuality]&& [(PLAWDBB *)self currQuality])
       {
         if (v27 >= 6.0)
         {
@@ -904,8 +904,8 @@ LABEL_16:
 
         [v10 setObject:v29 forKeyedSubscript:@"BBLqmSwitchBucket"];
         [v10 setObject:&unk_2870FF208 forKeyedSubscript:@"BBLqmSwitchCounter"];
-        v30 = [(PLAWDAuxMetrics *)self operator];
-        [v30 logEntry:v10];
+        operator2 = [(PLAWDAuxMetrics *)self operator];
+        [operator2 logEntry:v10];
       }
 
       [(PLAWDBB *)self updateLQMTableWithQuality:[(PLAWDBB *)self currQuality] withTime:v27 withRX:0.0 withTX:0.0];
@@ -915,8 +915,8 @@ LABEL_16:
         [(PLAWDBB *)self setDownBytes:0];
       }
 
-      v31 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-      [v31 requestEntry];
+      bbLqmCumulativeNetworkCallback = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+      [bbLqmCumulativeNetworkCallback requestEntry];
     }
 
     else
@@ -971,17 +971,17 @@ uint64_t __45__PLAWDBB_handleBBLqmCellularActiveCallback___block_invoke(uint64_t
   v27[0] = v16;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"BBLteThreshold";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v23[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v23[0] = commonTypeDict_IntegerFormat;
   v22[1] = @"BBLteType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v23[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v23[1] = commonTypeDict_IntegerFormat2;
   v22[2] = @"BBLteValue";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v23[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v23[2] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
   v27[1] = v8;
   v26[2] = *MEMORY[0x277D3F478];
@@ -1018,24 +1018,24 @@ uint64_t __45__PLAWDBB_handleBBLqmCellularActiveCallback___block_invoke(uint64_t
   [(PLAWDBB *)self resetBBVoLTETable];
   v6 = [MEMORY[0x277D3F680] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F700]];
   v7 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v8 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __22__PLAWDBB_startAppRrc__block_invoke;
   v15[3] = &unk_279A58F10;
   v15[4] = self;
-  v9 = [v7 initWithOperator:v8 forEntryKey:v6 withBlock:v15];
+  v9 = [v7 initWithOperator:operator forEntryKey:v6 withBlock:v15];
 
   [(PLAWDBB *)self setBbTelephonyActivityCallback:v9];
   v10 = [MEMORY[0x277D3F680] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F740]];
   v11 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v12 = [(PLAWDAuxMetrics *)self operator];
+  operator2 = [(PLAWDAuxMetrics *)self operator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __22__PLAWDBB_startAppRrc__block_invoke_2;
   v14[3] = &unk_279A58F10;
   v14[4] = self;
-  v13 = [v11 initWithOperator:v12 forEntryKey:v10 withBlock:v14];
+  v13 = [v11 initWithOperator:operator2 forEntryKey:v10 withBlock:v14];
 
   [(PLAWDBB *)self setBbRfLTECallback:v13];
 }
@@ -1067,34 +1067,34 @@ uint64_t __22__PLAWDBB_startAppRrc__block_invoke_2(uint64_t result, uint64_t a2)
   [(PLAWDBB *)self setBbRfLTECallback:0];
 }
 
-- (void)submitAppRrc:(id)a3 withAwdConn:(id)a4
+- (void)submitAppRrc:(id)rrc withAwdConn:(id)conn
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 newMetricContainerWithIdentifier:{objc_msgSend(a3, "unsignedIntValue")}];
+  connCopy = conn;
+  v7 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(rrc, "unsignedIntValue")}];
   v8 = v7;
   if (v7)
   {
     v57 = v7;
     v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-604800.0];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v9 timeIntervalSince1970];
     v12 = v11;
-    [v10 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v14 = v13 - v12;
 
     v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"Volte"];
-    v56 = self;
-    v16 = [(PLAWDAuxMetrics *)self operator];
-    v17 = [v16 storage];
+    selfCopy = self;
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
     v55 = v15;
-    v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
+    v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
 
     v54 = v18;
     v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
-    v58 = v6;
+    v58 = connCopy;
     v53 = objc_opt_new();
-    [v53 setTimestamp:{objc_msgSend(v6, "getAWDTimestamp")}];
+    [v53 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
     v52 = objc_opt_new();
     v20 = objc_opt_new();
     v21 = objc_opt_new();
@@ -1151,83 +1151,83 @@ uint64_t __22__PLAWDBB_startAppRrc__block_invoke_2(uint64_t result, uint64_t a2)
 
         v29 = *(*(&v59 + 1) + 8 * i);
         v30 = [v29 objectForKeyedSubscript:@"BBLteThreshold"];
-        v31 = [v30 intValue];
+        intValue = [v30 intValue];
 
-        if (v31 > 9999)
+        if (intValue > 9999)
         {
-          if (v31 == 10000)
+          if (intValue == 10000)
           {
             v46 = [v29 objectForKeyedSubscript:@"BBLteType"];
-            v33 = [v46 intValue];
+            intValue2 = [v46 intValue];
 
             v34 = [v29 objectForKeyedSubscript:@"BBLteValue"];
-            v35 = [v34 intValue];
+            intValue3 = [v34 intValue];
             v36 = [v29 objectForKeyedSubscript:@"BBLteType"];
-            v37 = [v36 intValue];
-            v38 = &v69 + 4 * v37 + 4;
+            intValue4 = [v36 intValue];
+            v38 = &v69 + 4 * intValue4 + 4;
             v39 = v65;
           }
 
           else
           {
-            if (v31 != 11000)
+            if (intValue != 11000)
             {
               continue;
             }
 
             v40 = [v29 objectForKeyedSubscript:@"BBLteType"];
-            v33 = [v40 intValue];
+            intValue2 = [v40 intValue];
 
             v34 = [v29 objectForKeyedSubscript:@"BBLteValue"];
-            v35 = [v34 intValue];
+            intValue3 = [v34 intValue];
             v36 = [v29 objectForKeyedSubscript:@"BBLteType"];
-            v37 = [v36 intValue];
-            v38 = &v67 + 4 * v37 + 4;
+            intValue4 = [v36 intValue];
+            v38 = &v67 + 4 * intValue4 + 4;
             v39 = v64;
           }
 
           goto LABEL_16;
         }
 
-        if (v31 != 200)
+        if (intValue != 200)
         {
-          if (v31 != 1000)
+          if (intValue != 1000)
           {
             continue;
           }
 
           v32 = [v29 objectForKeyedSubscript:@"BBLteType"];
-          v33 = [v32 intValue];
+          intValue2 = [v32 intValue];
 
           v34 = [v29 objectForKeyedSubscript:@"BBLteValue"];
-          v35 = [v34 intValue];
+          intValue3 = [v34 intValue];
           v36 = [v29 objectForKeyedSubscript:@"BBLteType"];
-          v37 = [v36 intValue];
-          v38 = &v72[4 * v37];
+          intValue4 = [v36 intValue];
+          v38 = &v72[4 * intValue4];
           v39 = v66;
 LABEL_16:
-          v44 = v39 + 4 * v37;
-          v45 = v33 <= 6;
+          v44 = v39 + 4 * intValue4;
+          v45 = intValue2 <= 6;
           goto LABEL_17;
         }
 
         v41 = [v29 objectForKeyedSubscript:@"BBLteType"];
-        v42 = [v41 intValue];
+        intValue5 = [v41 intValue];
 
         v34 = [v29 objectForKeyedSubscript:@"BBLteValue"];
-        v35 = [v34 intValue];
+        intValue3 = [v34 intValue];
         v36 = [v29 objectForKeyedSubscript:@"BBLteType"];
-        v43 = [v36 intValue];
-        v38 = &v75[4 * v43];
-        v44 = v68 + 4 * v43;
-        v45 = v42 <= 6;
+        intValue6 = [v36 intValue];
+        v38 = &v75[4 * intValue6];
+        v44 = v68 + 4 * intValue6;
+        v45 = intValue5 <= 6;
 LABEL_17:
         if (v45)
         {
           v38 = v44;
         }
 
-        *v38 += v35;
+        *v38 += intValue3;
       }
 
       v26 = [v24 countByEnumeratingWithState:&v59 objects:v63 count:16];
@@ -1254,9 +1254,9 @@ LABEL_23:
         [v53 addMetrics:v23];
         v8 = v57;
         [v57 setMetric:v53];
-        v6 = v58;
+        connCopy = v58;
         [v58 submitMetric:v57];
-        [(PLAWDBB *)v56 resetBBVoLTETable];
+        [(PLAWDBB *)selfCopy resetBBVoLTETable];
 
         break;
       }
@@ -1274,9 +1274,9 @@ LABEL_23:
   [(PLAWDAuxMetrics *)&v4 resetTableWithEntryKey:v3];
 }
 
-- (void)handleTelephonyActiveCallback:(id)a3
+- (void)handleTelephonyActiveCallback:(id)callback
 {
-  v21 = [a3 objectForKey:@"entry"];
+  v21 = [callback objectForKey:@"entry"];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v5 = [v21 objectForKeyedSubscript:@"callStatus"];
   v6 = [v4 initWithFormat:@"%@", v5];
@@ -1299,40 +1299,40 @@ LABEL_23:
     }
 
     [(PLAWDBB *)self setTelActivityState:1];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLAWDBB *)self setStartLTECall:v10];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLAWDBB *)self setStartLTECall:monotonicDate];
 
     v11 = objc_opt_new();
     [(PLAWDBB *)self setPoint:v11];
 
-    v12 = [(PLAWDBB *)self startLTECall];
-    v13 = [(PLAWDBB *)self point];
-    [v13 setStartDate:v12];
+    startLTECall = [(PLAWDBB *)self startLTECall];
+    point = [(PLAWDBB *)self point];
+    [point setStartDate:startLTECall];
 
-    v14 = [(PLAWDBB *)self point];
-    [v14 setEndDate:0];
+    point2 = [(PLAWDBB *)self point];
+    [point2 setEndDate:0];
 
-    v15 = [(PLAWDBB *)self lteCallArray];
-    v16 = [(PLAWDBB *)self point];
-    [v15 addObject:v16];
+    lteCallArray = [(PLAWDBB *)self lteCallArray];
+    point3 = [(PLAWDBB *)self point];
+    [lteCallArray addObject:point3];
     goto LABEL_10;
   }
 
   if ([v6 isEqualToString:@"Inactive"] && (-[PLAWDBB telActivityState](self, "telActivityState") == 1 || -[PLAWDBB telActivityState](self, "telActivityState") == 2))
   {
     [(PLAWDBB *)self setTelActivityState:3];
-    v17 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLAWDBB *)self setEndLTECall:v17];
+    monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLAWDBB *)self setEndLTECall:monotonicDate2];
 
-    v15 = [(PLAWDBB *)self endLTECall];
-    v16 = [(PLAWDBB *)self lteCallArray];
-    v18 = [(PLAWDBB *)self lteCallArray];
-    v19 = [v16 objectAtIndexedSubscript:{objc_msgSend(v18, "count") - 1}];
-    [v19 setEndDate:v15];
+    lteCallArray = [(PLAWDBB *)self endLTECall];
+    point3 = [(PLAWDBB *)self lteCallArray];
+    lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+    v19 = [point3 objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
+    [v19 setEndDate:lteCallArray];
 
 LABEL_10:
-    v20 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-    [v20 requestEntry];
+    bbLqmCumulativeNetworkCallback = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+    [bbLqmCumulativeNetworkCallback requestEntry];
   }
 
 LABEL_11:
@@ -1346,8 +1346,8 @@ LABEL_11:
   v4 = *MEMORY[0x277D3F740];
   while (1)
   {
-    v5 = [(PLAWDBB *)self unhandledRFLTEEntries];
-    v6 = [v5 count];
+    unhandledRFLTEEntries = [(PLAWDBB *)self unhandledRFLTEEntries];
+    v6 = [unhandledRFLTEEntries count];
 
     if (!v6)
     {
@@ -1355,94 +1355,94 @@ LABEL_11:
     }
 
     v7 = [MEMORY[0x277D3F680] entryKeyForType:v3 andName:v4];
-    v8 = [(PLAWDAuxMetrics *)self operator];
-    v9 = [v8 storage];
-    v10 = [(PLAWDBB *)self unhandledRFLTEEntries];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v9 entryForKey:v7 withID:{objc_msgSend(v11, "intValue")}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    unhandledRFLTEEntries2 = [(PLAWDBB *)self unhandledRFLTEEntries];
+    v11 = [unhandledRFLTEEntries2 objectAtIndexedSubscript:0];
+    v12 = [storage entryForKey:v7 withID:{objc_msgSend(v11, "intValue")}];
 
-    v13 = [(PLAWDBB *)self lteCallArray];
-    v14 = [(PLAWDBB *)self lteCallArray];
-    v15 = [v13 objectAtIndexedSubscript:{objc_msgSend(v14, "count") - 1}];
+    lteCallArray = [(PLAWDBB *)self lteCallArray];
+    lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+    v15 = [lteCallArray objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
     [(PLAWDBB *)self bbLTEWriteAggregatedTableWithRFLTEEntry:v12 withPoint:v15];
 
-    v16 = [(PLAWDBB *)self unhandledRFLTEEntries];
-    [v16 removeObjectAtIndex:0];
+    unhandledRFLTEEntries3 = [(PLAWDBB *)self unhandledRFLTEEntries];
+    [unhandledRFLTEEntries3 removeObjectAtIndex:0];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)handleRfLTE:(id)a3
+- (void)handleRfLTE:(id)e
 {
-  v30 = a3;
-  v4 = [v30 objectForKey:@"entry"];
+  eCopy = e;
+  v4 = [eCopy objectForKey:@"entry"];
   while (1)
   {
-    v5 = [(PLAWDBB *)self lteCallArray];
-    v6 = [v5 count];
+    lteCallArray = [(PLAWDBB *)self lteCallArray];
+    v6 = [lteCallArray count];
 
     if (!v6)
     {
       break;
     }
 
-    v7 = [(PLAWDBB *)self lteCallArray];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+    v8 = [lteCallArray2 objectAtIndexedSubscript:0];
 
-    v9 = [v4 entryDate];
-    v10 = [v8 startDate];
-    v11 = [v10 dateByAddingTimeInterval:10.0];
-    v12 = [v9 compare:v11];
+    entryDate = [v4 entryDate];
+    startDate = [v8 startDate];
+    v11 = [startDate dateByAddingTimeInterval:10.0];
+    v12 = [entryDate compare:v11];
 
     if (v12 == -1)
     {
       goto LABEL_14;
     }
 
-    v13 = [v8 endDate];
+    endDate = [v8 endDate];
 
-    if (!v13)
+    if (!endDate)
     {
-      v19 = [(PLAWDBB *)self currThreshold];
-      v20 = [v19 startDate];
-      v21 = [v20 dateByAddingTimeInterval:30.0];
-      v22 = [v4 entryDate];
-      v23 = [v21 compare:v22];
+      currThreshold = [(PLAWDBB *)self currThreshold];
+      startDate2 = [currThreshold startDate];
+      v21 = [startDate2 dateByAddingTimeInterval:30.0];
+      entryDate2 = [v4 entryDate];
+      v23 = [v21 compare:entryDate2];
 
       if (v23 == -1)
       {
-        v24 = [(PLAWDBB *)self currThreshold];
-        [(PLAWDBB *)self bbLTEWriteAggregatedTableWithRFLTEEntry:v4 withPoint:v24];
+        currThreshold2 = [(PLAWDBB *)self currThreshold];
+        [(PLAWDBB *)self bbLTEWriteAggregatedTableWithRFLTEEntry:v4 withPoint:currThreshold2];
       }
 
       else
       {
-        v24 = [(PLAWDBB *)self lock];
-        objc_sync_enter(v24);
-        v25 = [(PLAWDBB *)self unhandledRFLTEEntries];
-        v26 = [v25 count];
+        currThreshold2 = [(PLAWDBB *)self lock];
+        objc_sync_enter(currThreshold2);
+        unhandledRFLTEEntries = [(PLAWDBB *)self unhandledRFLTEEntries];
+        v26 = [unhandledRFLTEEntries count];
 
         if (!v26)
         {
-          v27 = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
-          [v27 requestEntry];
+          bbLqmCumulativeNetworkCallback = [(PLAWDBB *)self bbLqmCumulativeNetworkCallback];
+          [bbLqmCumulativeNetworkCallback requestEntry];
         }
 
-        v28 = [(PLAWDBB *)self unhandledRFLTEEntries];
+        unhandledRFLTEEntries2 = [(PLAWDBB *)self unhandledRFLTEEntries];
         v29 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "entryID")}];
-        [v28 addObject:v29];
+        [unhandledRFLTEEntries2 addObject:v29];
 
-        objc_sync_exit(v24);
+        objc_sync_exit(currThreshold2);
       }
 
       goto LABEL_14;
     }
 
-    v14 = [v4 entryDate];
-    v15 = [v8 endDate];
-    v16 = [v15 dateByAddingTimeInterval:10.0];
-    v17 = [v14 compare:v16];
+    entryDate3 = [v4 entryDate];
+    endDate2 = [v8 endDate];
+    v16 = [endDate2 dateByAddingTimeInterval:10.0];
+    v17 = [entryDate3 compare:v16];
 
     if (v17 != 1)
     {
@@ -1452,15 +1452,15 @@ LABEL_14:
       break;
     }
 
-    v18 = [(PLAWDBB *)self lteCallArray];
-    [v18 removeObjectAtIndex:0];
+    lteCallArray3 = [(PLAWDBB *)self lteCallArray];
+    [lteCallArray3 removeObjectAtIndex:0];
   }
 }
 
-- (void)bbLTEWriteAggregatedTableWithRFLTEEntry:(id)a3 withPoint:(id)a4
+- (void)bbLTEWriteAggregatedTableWithRFLTEEntry:(id)entry withPoint:(id)point
 {
-  v26 = a3;
-  v6 = a4;
+  entryCopy = entry;
+  pointCopy = point;
   v7 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"Volte"];
   v8 = 0;
   v9 = 0x277D3F000uLL;
@@ -1470,7 +1470,7 @@ LABEL_14:
   do
   {
     v13 = [objc_alloc(*(v9 + 400)) initWithEntryKey:v7];
-    v14 = [*(v10 + 2992) numberWithUnsignedInt:{objc_msgSend(v6, "threshold")}];
+    v14 = [*(v10 + 2992) numberWithUnsignedInt:{objc_msgSend(pointCopy, "threshold")}];
     [v13 setObject:v14 forKeyedSubscript:v11];
 
     v15 = [*(v10 + 2992) numberWithInt:v8];
@@ -1479,10 +1479,10 @@ LABEL_14:
     if (v8 <= 0xB && ((0xFBFu >> v8) & 1) != 0)
     {
       v16 = qword_25EE41410[v8];
-      [v26 objectForKeyedSubscript:off_279A59208[v8]];
+      [entryCopy objectForKeyedSubscript:off_279A59208[v8]];
       v17 = v7;
-      v18 = v6;
-      v19 = self;
+      v18 = pointCopy;
+      selfCopy = self;
       v20 = v12;
       v21 = v11;
       v23 = v22 = v9;
@@ -1492,14 +1492,14 @@ LABEL_14:
       v9 = v22;
       v11 = v21;
       v12 = v20;
-      self = v19;
-      v6 = v18;
+      self = selfCopy;
+      pointCopy = v18;
       v7 = v17;
       v10 = 0x277CCA000;
     }
 
-    v25 = [(PLAWDAuxMetrics *)self operator];
-    [v25 logEntry:v13];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    [operator logEntry:v13];
 
     ++v8;
   }
@@ -1507,21 +1507,21 @@ LABEL_14:
   while (v8 != 12);
 }
 
-- (void)finalizePeriodWithUpBytes:(unsigned int)a3 withDownBytes:(unsigned int)a4
+- (void)finalizePeriodWithUpBytes:(unsigned int)bytes withDownBytes:(unsigned int)downBytes
 {
-  v7 = [(PLAWDBB *)self endLTECall];
-  v8 = [(PLAWDBB *)self startLTECall];
-  [v7 timeIntervalSinceDate:v8];
+  endLTECall = [(PLAWDBB *)self endLTECall];
+  startLTECall = [(PLAWDBB *)self startLTECall];
+  [endLTECall timeIntervalSinceDate:startLTECall];
   v10 = v9;
 
-  v11 = vcvtd_n_s64_f64(a3 / v10, 3uLL) + vcvtd_n_s64_f64(a4 / v10, 3uLL);
+  v11 = vcvtd_n_s64_f64(bytes / v10, 3uLL) + vcvtd_n_s64_f64(downBytes / v10, 3uLL);
   if (v11 > 199)
   {
     if (v11 > 0x3E7)
     {
-      v16 = [(PLAWDBB *)self lteCallArray];
-      v12 = [(PLAWDBB *)self lteCallArray];
-      v13 = [v16 objectAtIndexedSubscript:{objc_msgSend(v12, "count") - 1}];
+      lteCallArray = [(PLAWDBB *)self lteCallArray];
+      lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+      v13 = [lteCallArray objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
       v14 = v13;
       if (v11 >> 4 > 0x270)
       {
@@ -1536,9 +1536,9 @@ LABEL_14:
 
     else
     {
-      v16 = [(PLAWDBB *)self lteCallArray];
-      v12 = [(PLAWDBB *)self lteCallArray];
-      v13 = [v16 objectAtIndexedSubscript:{objc_msgSend(v12, "count") - 1}];
+      lteCallArray = [(PLAWDBB *)self lteCallArray];
+      lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+      v13 = [lteCallArray objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
       v14 = v13;
       v15 = 1000;
     }
@@ -1546,9 +1546,9 @@ LABEL_14:
 
   else
   {
-    v16 = [(PLAWDBB *)self lteCallArray];
-    v12 = [(PLAWDBB *)self lteCallArray];
-    v13 = [v16 objectAtIndexedSubscript:{objc_msgSend(v12, "count") - 1}];
+    lteCallArray = [(PLAWDBB *)self lteCallArray];
+    lteCallArray2 = [(PLAWDBB *)self lteCallArray];
+    v13 = [lteCallArray objectAtIndexedSubscript:{objc_msgSend(lteCallArray2, "count") - 1}];
     v14 = v13;
     v15 = 200;
   }
@@ -1558,50 +1558,50 @@ LABEL_14:
 
 - (void)startAppBB
 {
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLAWDBB *)self setStartTimeAppBB:v3];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLAWDBB *)self setStartTimeAppBB:monotonicDate];
 }
 
-- (void)submitAppBB:(id)a3 withAwdConn:(id)a4
+- (void)submitAppBB:(id)b withAwdConn:(id)conn
 {
-  v21 = a4;
-  v6 = [v21 newMetricContainerWithIdentifier:{objc_msgSend(a3, "unsignedIntValue")}];
+  connCopy = conn;
+  v6 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(b, "unsignedIntValue")}];
   if (v6)
   {
     v7 = objc_opt_new();
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v10 = [(PLAWDAuxMetrics *)self operator];
-    v11 = [v10 defaultBoolForKey:@"simulatedMode"];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    v11 = [operator defaultBoolForKey:@"simulatedMode"];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CBEAA8] distantPast];
-      [(PLAWDBB *)self setStartTimeAppBB:v12];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      [(PLAWDBB *)self setStartTimeAppBB:distantPast];
     }
 
-    v13 = [v9 allKeys];
-    v14 = [v13 sortedArrayUsingSelector:sel_compare_];
-    v15 = [v14 reverseObjectEnumerator];
-    v16 = [v15 allObjects];
+    allKeys = [v9 allKeys];
+    v14 = [allKeys sortedArrayUsingSelector:sel_compare_];
+    reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
     for (i = 0; i != 10; ++i)
     {
-      if ([v16 count] <= i)
+      if ([allObjects count] <= i)
       {
         break;
       }
 
-      v18 = [v16 objectAtIndexedSubscript:i];
+      v18 = [allObjects objectAtIndexedSubscript:i];
       v19 = [v9 objectForKey:v18];
       [v8 addObject:v19];
     }
 
     [v7 setAppPowers:v8];
     [v6 setMetric:v7];
-    [v21 submitMetric:v6];
-    v20 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(PLAWDBB *)self setStartTimeAppBB:v20];
+    [connCopy submitMetric:v6];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(PLAWDBB *)self setStartTimeAppBB:monotonicDate];
   }
 }
 
@@ -1618,13 +1618,13 @@ LABEL_14:
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"RailIndex";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v20[1] = @"RailValue";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -1650,13 +1650,13 @@ LABEL_14:
 {
   [(PLAWDBB *)self resetConnectedPowerTable];
   v3 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v4 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__PLAWDBB_startConnectedPower__block_invoke;
   v6[3] = &unk_279A58F10;
   v6[4] = self;
-  v5 = [v3 initWithOperator:v4 forEntryKey:@"PLRail_EventNone_Rail" withBlock:v6];
+  v5 = [v3 initWithOperator:operator forEntryKey:@"PLRail_EventNone_Rail" withBlock:v6];
 
   [(PLAWDBB *)self setConnectedPowerRailCallback:v5];
 }
@@ -1671,24 +1671,24 @@ uint64_t __30__PLAWDBB_startConnectedPower__block_invoke(uint64_t result, uint64
   return result;
 }
 
-- (BOOL)submitConnectedPower:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitConnectedPower:(id)power withAwdConn:(id)conn
 {
   v69 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 newMetricContainerWithIdentifier:{objc_msgSend(a3, "unsignedIntValue")}];
+  connCopy = conn;
+  v7 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(power, "unsignedIntValue")}];
   if (v7)
   {
     v8 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v9 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v8 timeIntervalSince1970];
     v11 = v10;
-    [v9 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v13 = v12 - v11;
 
     v14 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"BBConnectedPower"];
-    v15 = [(PLAWDAuxMetrics *)self operator];
-    v16 = [v15 storage];
-    v17 = [v16 aggregateEntriesForKey:v14 withBucketLength:86400.0 inTimeIntervalRange:{v11, v13}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    v17 = [storage aggregateEntriesForKey:v14 withBucketLength:86400.0 inTimeIntervalRange:{v11, v13}];
 
     v18 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v17];
     v56 = objc_opt_new();
@@ -1696,9 +1696,9 @@ uint64_t __30__PLAWDBB_startConnectedPower__block_invoke(uint64_t result, uint64
     {
       v51 = v17;
       v52 = v14;
-      v53 = self;
+      selfCopy2 = self;
       v54 = v7;
-      v55 = v6;
+      v55 = connCopy;
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
@@ -1724,9 +1724,9 @@ uint64_t __30__PLAWDBB_startConnectedPower__block_invoke(uint64_t result, uint64
             v25 = objc_alloc(MEMORY[0x277CCACA8]);
             v26 = [v24 objectForKeyedSubscript:@"RailIndex"];
             v27 = [v25 initWithFormat:@"%@", v26];
-            v28 = [v27 intValue];
+            intValue = [v27 intValue];
 
-            if ((v28 & 0xFFFD) == 1 || v28 == 4 || v28 == 2)
+            if ((intValue & 0xFFFD) == 1 || intValue == 4 || intValue == 2)
             {
               v31 = [v24 objectForKeyedSubscript:@"RailValue"];
               [v31 doubleValue];
@@ -1752,9 +1752,9 @@ uint64_t __30__PLAWDBB_startConnectedPower__block_invoke(uint64_t result, uint64
 
       v51 = v17;
       v52 = v14;
-      v53 = self;
+      selfCopy2 = self;
       v54 = v7;
-      v55 = v6;
+      v55 = connCopy;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
@@ -1780,9 +1780,9 @@ uint64_t __30__PLAWDBB_startConnectedPower__block_invoke(uint64_t result, uint64
             v39 = objc_alloc(MEMORY[0x277CCACA8]);
             v40 = [v38 objectForKeyedSubscript:@"RailIndex"];
             v41 = [v39 initWithFormat:@"%@", v40];
-            v42 = [v41 intValue];
+            intValue2 = [v41 intValue];
 
-            if ((v42 & 0xFFFC) == 4)
+            if ((intValue2 & 0xFFFC) == 4)
             {
               v43 = [v38 objectForKeyedSubscript:@"RailValue"];
               [v43 doubleValue];
@@ -1804,9 +1804,9 @@ LABEL_34:
 
     v45 = v22;
     v7 = v54;
-    v6 = v55;
+    connCopy = v55;
     v14 = v52;
-    self = v53;
+    self = selfCopy2;
     v17 = v51;
 LABEL_35:
     v46 = objc_opt_new();
@@ -1815,11 +1815,11 @@ LABEL_35:
     [v46 setPowerConnectedMicroWatt:v45];
     v47 = objc_opt_new();
     [v47 addObject:v46];
-    [v56 setTimestamp:{objc_msgSend(v6, "getAWDTimestamp")}];
+    [v56 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
     [v56 setRATPowers:v47];
     [v7 setMetric:v56];
     [(PLAWDBB *)self resetConnectedPowerTable];
-    v33 = [v6 submitMetric:v7];
+    v33 = [connCopy submitMetric:v7];
 
     goto LABEL_36;
   }
@@ -1843,13 +1843,13 @@ LABEL_36:
 - (void)startBBPower
 {
   v3 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v4 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __23__PLAWDBB_startBBPower__block_invoke;
   v6[3] = &unk_279A58F10;
   v6[4] = self;
-  v5 = [v3 initWithOperator:v4 forEntryKey:@"PLRail_EventNone_Rail" withBlock:v6];
+  v5 = [v3 initWithOperator:operator forEntryKey:@"PLRail_EventNone_Rail" withBlock:v6];
 
   [(PLAWDBB *)self setBbProtocolRailCallback:v5];
 }
@@ -1872,9 +1872,9 @@ uint64_t __23__PLAWDBB_startBBPower__block_invoke(uint64_t result, uint64_t a2)
   [(PLAWDBB *)self setIceStatsEventCallback:0];
 }
 
-- (void)handleBBRailCallbackBBProtocol:(id)a3
+- (void)handleBBRailCallbackBBProtocol:(id)protocol
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [protocol objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -1893,9 +1893,9 @@ uint64_t __23__PLAWDBB_startBBPower__block_invoke(uint64_t result, uint64_t a2)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackBBProtocol:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackBBProtocol:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1281];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1281];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1913,9 +1913,9 @@ uint64_t __42__PLAWDBB_handleBBRailCallbackBBProtocol___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)handleBBRailCallbackLTESleep:(id)a3
+- (void)handleBBRailCallbackLTESleep:(id)sleep
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [sleep objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -1934,9 +1934,9 @@ uint64_t __42__PLAWDBB_handleBBRailCallbackBBProtocol___block_invoke(uint64_t a1
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackLTESleep:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackLTESleep:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1287];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1287];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1954,9 +1954,9 @@ uint64_t __40__PLAWDBB_handleBBRailCallbackLTESleep___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxLte:(id)a3
+- (void)handleBBRailCallbackTxLte:(id)lte
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [lte objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -1975,9 +1975,9 @@ uint64_t __40__PLAWDBB_handleBBRailCallbackLTESleep___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxLte:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxLte:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1293];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1293];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1995,9 +1995,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackTxLte___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxCdma:(id)a3
+- (void)handleBBRailCallbackTxCdma:(id)cdma
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [cdma objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2016,9 +2016,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackTxLte___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxCdma:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxCdma:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1299];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1299];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2036,9 +2036,9 @@ uint64_t __38__PLAWDBB_handleBBRailCallbackTxCdma___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxEvdo:(id)a3
+- (void)handleBBRailCallbackTxEvdo:(id)evdo
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [evdo objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2057,9 +2057,9 @@ uint64_t __38__PLAWDBB_handleBBRailCallbackTxCdma___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxEvdo:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxEvdo:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1305];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1305];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2077,9 +2077,9 @@ uint64_t __38__PLAWDBB_handleBBRailCallbackTxEvdo___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxCdma2K:(id)a3
+- (void)handleBBRailCallbackTxCdma2K:(id)k
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [k objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2098,9 +2098,9 @@ uint64_t __38__PLAWDBB_handleBBRailCallbackTxEvdo___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxCdma2K:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxCdma2K:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1311];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1311];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2118,9 +2118,9 @@ uint64_t __40__PLAWDBB_handleBBRailCallbackTxCdma2K___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxGsm:(id)a3
+- (void)handleBBRailCallbackTxGsm:(id)gsm
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [gsm objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2139,9 +2139,9 @@ uint64_t __40__PLAWDBB_handleBBRailCallbackTxCdma2K___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxGsm:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxGsm:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1317];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1317];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2159,9 +2159,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackTxGsm___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackTxUtran:(id)a3
+- (void)handleBBRailCallbackTxUtran:(id)utran
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [utran objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2180,9 +2180,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackTxGsm___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackTxUtran:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackTxUtran:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1323];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1323];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2200,9 +2200,9 @@ uint64_t __39__PLAWDBB_handleBBRailCallbackTxUtran___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackBBICE:(id)a3
+- (void)handleBBRailCallbackBBICE:(id)e
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [e objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2221,9 +2221,9 @@ uint64_t __39__PLAWDBB_handleBBRailCallbackTxUtran___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackBBICE:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackBBICE:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1329];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1329];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2241,9 +2241,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackBBICE___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackBBTx:(id)a3
+- (void)handleBBRailCallbackBBTx:(id)tx
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [tx objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2262,9 +2262,9 @@ uint64_t __37__PLAWDBB_handleBBRailCallbackBBICE___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackBBTx:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackBBTx:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1335];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1335];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2282,9 +2282,9 @@ uint64_t __36__PLAWDBB_handleBBRailCallbackBBTx___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBBRailCallbackOos:(id)a3
+- (void)handleBBRailCallbackOos:(id)oos
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [oos objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2303,9 +2303,9 @@ uint64_t __36__PLAWDBB_handleBBRailCallbackBBTx___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleBBRailCallbackOos:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleBBRailCallbackOos:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1341];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1341];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2323,9 +2323,9 @@ uint64_t __35__PLAWDBB_handleBBRailCallbackOos___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleAcountGroupCallback:(id)a3
+- (void)handleAcountGroupCallback:(id)callback
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [callback objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2344,9 +2344,9 @@ uint64_t __35__PLAWDBB_handleBBRailCallbackOos___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleAcountGroupCallback:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleAcountGroupCallback:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1347];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1347];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2364,9 +2364,9 @@ uint64_t __37__PLAWDBB_handleAcountGroupCallback___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleIceStatsCallback:(id)a3
+- (void)handleIceStatsCallback:(id)callback
 {
-  v3 = [a3 objectForKey:@"entry"];
+  v3 = [callback objectForKey:@"entry"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -2385,9 +2385,9 @@ uint64_t __37__PLAWDBB_handleAcountGroupCallback___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDBB handleIceStatsCallback:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDBB.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDBB handleIceStatsCallback:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1353];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1353];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))

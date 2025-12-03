@@ -1,18 +1,18 @@
 @interface PFAnalyticsEvent
 + (PFAnalyticsEvent)globalRetentionPolicy;
-+ (id)darkDownloadsChangeWithWasDark:(BOOL)a3 isDark:(BOOL)a4 reason:(unint64_t)a5 previousExit:(id)a6;
-+ (id)downloadedFileHasiPodLibraryURLWithDiscoveryPoint:(id)a3 path:(id)a4 source:(id)a5;
-+ (id)drmKeyRecoveredWithGenerator:(id)a3;
-+ (id)drmKeyRecoveredWithPayload:(id)a3;
-+ (id)episodeDurationComparisonWithEpisodeAdamId:(int64_t)a3 duration:(double)a4;
-+ (id)episodeDurationComparisonWithMapiProvidedDuration:(double)a3 playerItemDuration:(double)a4;
-+ (id)transcriptAlignmentFailedWithReason:(id)a3;
++ (id)darkDownloadsChangeWithWasDark:(BOOL)dark isDark:(BOOL)isDark reason:(unint64_t)reason previousExit:(id)exit;
++ (id)downloadedFileHasiPodLibraryURLWithDiscoveryPoint:(id)point path:(id)path source:(id)source;
++ (id)drmKeyRecoveredWithGenerator:(id)generator;
++ (id)drmKeyRecoveredWithPayload:(id)payload;
++ (id)episodeDurationComparisonWithEpisodeAdamId:(int64_t)id duration:(double)duration;
++ (id)episodeDurationComparisonWithMapiProvidedDuration:(double)duration playerItemDuration:(double)itemDuration;
++ (id)transcriptAlignmentFailedWithReason:(id)reason;
 - (NSString)description;
 - (PFAnalyticsEvent)init;
-- (PFAnalyticsEvent)initWithName:(id)a3 generator:(id)a4;
-- (PFAnalyticsEvent)initWithName:(id)a3 payload:(id)a4;
+- (PFAnalyticsEvent)initWithName:(id)name generator:(id)generator;
+- (PFAnalyticsEvent)initWithName:(id)name payload:(id)payload;
 - (id)payloadGenerator;
-- (void)setPayloadGenerator:(id)a3;
+- (void)setPayloadGenerator:(id)generator;
 @end
 
 @implementation PFAnalyticsEvent
@@ -50,9 +50,9 @@
   return v5;
 }
 
-- (void)setPayloadGenerator:(id)a3
+- (void)setPayloadGenerator:(id)generator
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(generator);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___PFAnalyticsEvent_payloadGenerator);
@@ -62,22 +62,22 @@
   v6[1] = v5;
 }
 
-- (PFAnalyticsEvent)initWithName:(id)a3 generator:(id)a4
+- (PFAnalyticsEvent)initWithName:(id)name generator:(id)generator
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(generator);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  *(self + OBJC_IVAR___PFAnalyticsEvent_name) = a3;
+  *(self + OBJC_IVAR___PFAnalyticsEvent_name) = name;
   v8 = (self + OBJC_IVAR___PFAnalyticsEvent_payloadGenerator);
   *v8 = sub_1D914DA28;
   v8[1] = v7;
   v11.receiver = self;
   v11.super_class = type metadata accessor for AnalyticsEvent();
-  v9 = a3;
+  nameCopy = name;
   return [(PFAnalyticsEvent *)&v11 init];
 }
 
-- (PFAnalyticsEvent)initWithName:(id)a3 payload:(id)a4
+- (PFAnalyticsEvent)initWithName:(id)name payload:(id)payload
 {
   sub_1D8D6F530();
   v6 = sub_1D917805C();
@@ -90,9 +90,9 @@
   v12[2] = sub_1D8D6F198;
   v12[3] = &block_descriptor_16_3;
   v8 = _Block_copy(v12);
-  v9 = a3;
+  nameCopy = name;
 
-  v10 = [(PFAnalyticsEvent *)self initWithName:v9 generator:v8];
+  v10 = [(PFAnalyticsEvent *)self initWithName:nameCopy generator:v8];
 
   _Block_release(v8);
   return v10;
@@ -100,7 +100,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D914D770();
 
   v3 = _sSS18PodcastsFoundationE18userDefaultsObjectSo8NSStringCSgyF_0();
@@ -115,9 +115,9 @@
   return result;
 }
 
-+ (id)drmKeyRecoveredWithGenerator:(id)a3
++ (id)drmKeyRecoveredWithGenerator:(id)generator
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(generator);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = type metadata accessor for AnalyticsEvent();
@@ -134,7 +134,7 @@
   return v9;
 }
 
-+ (id)drmKeyRecoveredWithPayload:(id)a3
++ (id)drmKeyRecoveredWithPayload:(id)payload
 {
   sub_1D8D6F530();
   v3 = sub_1D917805C();
@@ -155,11 +155,11 @@
   return v7;
 }
 
-+ (id)downloadedFileHasiPodLibraryURLWithDiscoveryPoint:(id)a3 path:(id)a4 source:(id)a5
++ (id)downloadedFileHasiPodLibraryURLWithDiscoveryPoint:(id)point path:(id)path source:(id)source
 {
   sub_1D917820C();
   sub_1D917820C();
-  if (a5)
+  if (source)
   {
     sub_1D917820C();
   }
@@ -169,21 +169,21 @@
   return v6;
 }
 
-+ (id)episodeDurationComparisonWithEpisodeAdamId:(int64_t)a3 duration:(double)a4
++ (id)episodeDurationComparisonWithEpisodeAdamId:(int64_t)id duration:(double)duration
 {
-  v4 = _s18PodcastsFoundation14AnalyticsEventC25episodeDurationComparison0E6AdamId8durationACs5Int64V_SdtFZ_0(a3, a4);
+  v4 = _s18PodcastsFoundation14AnalyticsEventC25episodeDurationComparison0E6AdamId8durationACs5Int64V_SdtFZ_0(id, duration);
 
   return v4;
 }
 
-+ (id)episodeDurationComparisonWithMapiProvidedDuration:(double)a3 playerItemDuration:(double)a4
++ (id)episodeDurationComparisonWithMapiProvidedDuration:(double)duration playerItemDuration:(double)itemDuration
 {
-  v4 = _s18PodcastsFoundation14AnalyticsEventC25episodeDurationComparison012mapiProvidedF0010playerItemF0ACSd_SdtFZ_0(a3, a4);
+  v4 = _s18PodcastsFoundation14AnalyticsEventC25episodeDurationComparison012mapiProvidedF0010playerItemF0ACSd_SdtFZ_0(duration, itemDuration);
 
   return v4;
 }
 
-+ (id)darkDownloadsChangeWithWasDark:(BOOL)a3 isDark:(BOOL)a4 reason:(unint64_t)a5 previousExit:(id)a6
++ (id)darkDownloadsChangeWithWasDark:(BOOL)dark isDark:(BOOL)isDark reason:(unint64_t)reason previousExit:(id)exit
 {
   v9 = sub_1D9176E3C();
   v10 = *(v9 - 8);
@@ -191,13 +191,13 @@
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v16 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D9176DFC();
-  v14 = _s18PodcastsFoundation14AnalyticsEventC19darkDownloadsChange7wasDark02isI06reason12previousExitACSb_SbSo06PFDarkG6ReasonV0B04DateVtFZ_0(a3, a4, a5);
+  v14 = _s18PodcastsFoundation14AnalyticsEventC19darkDownloadsChange7wasDark02isI06reason12previousExitACSb_SbSo06PFDarkG6ReasonV0B04DateVtFZ_0(dark, isDark, reason);
   (*(v10 + 8))(v13, v9);
 
   return v14;
 }
 
-+ (id)transcriptAlignmentFailedWithReason:(id)a3
++ (id)transcriptAlignmentFailedWithReason:(id)reason
 {
   sub_1D917820C();
   v3 = _s18PodcastsFoundation14AnalyticsEventC25transcriptAlignmentFailed6reasonACSS_tFZ_0();

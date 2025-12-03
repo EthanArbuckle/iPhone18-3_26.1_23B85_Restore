@@ -2,7 +2,7 @@
 - (NSString)localizedSuggestion;
 - (UIImage)iconImage;
 - (_TtC7SwiftUI21UIKitSearchSuggestion)init;
-- (void)setRepresentedObject:(id)a3;
+- (void)setRepresentedObject:(id)object;
 @end
 
 @implementation UIKitSearchSuggestion
@@ -12,8 +12,8 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI21UIKitSearchSuggestion_platformItem);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 string];
+    selfCopy = self;
+    string = [v2 string];
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
 
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (void)setRepresentedObject:(id)a3
+- (void)setRepresentedObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -42,7 +42,7 @@
 
 - (UIImage)iconImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitSearchSuggestion.iconImage.getter();
 
   return v3;

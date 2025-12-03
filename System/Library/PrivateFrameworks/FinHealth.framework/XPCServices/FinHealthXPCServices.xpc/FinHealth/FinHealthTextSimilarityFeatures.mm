@@ -2,11 +2,11 @@
 - (BOOL)_modelsLoaded;
 - (BOOL)isNLTaggerSchemeLemmaAvailable;
 - (FinHealthTextSimilarityFeatures)init;
-- (id)_tokenize:(id)a3 shouldLemmatize:(BOOL)a4;
-- (void)applyCategoryHeuristics:(id)a3 detailedCategory:(id)a4;
-- (void)applyTimingHeuristics:(id)a3 detailedCategory:(id)a4 dateHour:(id)a5;
-- (void)neighborsForText:(id)a3 completion:(id)a4;
-- (void)semanticTagsForMerchant:(id)a3 detailedCategory:(id)a4 dateHour:(id)a5 completion:(id)a6;
+- (id)_tokenize:(id)_tokenize shouldLemmatize:(BOOL)lemmatize;
+- (void)applyCategoryHeuristics:(id)heuristics detailedCategory:(id)category;
+- (void)applyTimingHeuristics:(id)heuristics detailedCategory:(id)category dateHour:(id)hour;
+- (void)neighborsForText:(id)text completion:(id)completion;
+- (void)semanticTagsForMerchant:(id)merchant detailedCategory:(id)category dateHour:(id)hour completion:(id)completion;
 @end
 
 @implementation FinHealthTextSimilarityFeatures
@@ -56,11 +56,11 @@
       v17 = FinHealthLogObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v11 localizedDescription];
+        localizedDescription = [v11 localizedDescription];
         *buf = 136315394;
         v43 = "[FinHealthTextSimilarityFeatures init]";
         v44 = 2112;
-        v45 = v18;
+        v45 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s: error: %@", buf, 0x16u);
       }
     }
@@ -72,9 +72,9 @@
     nlTagger = v2->_nlTagger;
     v2->_nlTagger = v21;
 
-    v23 = [NSString stringWithFormat:@"%@|%@|%@|%@|%@", boundaryPatternWhitespace, boundaryPatternLowerThenUpper, boundaryPatternUpperUpperThenLower, boundaryPatternDigitThenLetter, boundaryPatternLetterThenDigit];
+    boundaryPatternLetterThenDigit = [NSString stringWithFormat:@"%@|%@|%@|%@|%@", boundaryPatternWhitespace, boundaryPatternLowerThenUpper, boundaryPatternUpperUpperThenLower, boundaryPatternDigitThenLetter, boundaryPatternLetterThenDigit];
     v37 = v11;
-    v24 = [NSRegularExpression regularExpressionWithPattern:v23 options:0 error:&v37];
+    v24 = [NSRegularExpression regularExpressionWithPattern:boundaryPatternLetterThenDigit options:0 error:&v37];
     v25 = v37;
 
     boundaryRegex = v2->_boundaryRegex;
@@ -92,11 +92,11 @@
       v30 = FinHealthLogObject();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [v28 localizedDescription];
+        localizedDescription2 = [v28 localizedDescription];
         *buf = 136315394;
         v43 = "[FinHealthTextSimilarityFeatures init]";
         v44 = 2112;
-        v45 = v31;
+        v45 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%s: Regex creation error: %@", buf, 0x16u);
       }
     }
@@ -107,11 +107,11 @@
 
 - (BOOL)_modelsLoaded
 {
-  v3 = [(FinHealthTextSimilarityFeatures *)self nlEmbedding];
-  if (v3)
+  nlEmbedding = [(FinHealthTextSimilarityFeatures *)self nlEmbedding];
+  if (nlEmbedding)
   {
-    v4 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
-    v5 = v4 != 0;
+    nlTagger = [(FinHealthTextSimilarityFeatures *)self nlTagger];
+    v5 = nlTagger != 0;
   }
 
   else
@@ -130,11 +130,11 @@
   return v3;
 }
 
-- (void)neighborsForText:(id)a3 completion:(id)a4
+- (void)neighborsForText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  textCopy = text;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -150,51 +150,51 @@
       v11[2] = sub_10000FD4C;
       v11[3] = &unk_100020FA8;
       v11[4] = &v12;
-      [(NLEmbedding *)nlEmbedding enumerateNeighborsForString:v6 maximumCount:maximumNeighborCount distanceType:0 usingBlock:v11];
+      [(NLEmbedding *)nlEmbedding enumerateNeighborsForString:textCopy maximumCount:maximumNeighborCount distanceType:0 usingBlock:v11];
     }
 
     v9 = [NSArray arrayWithArray:v13[5]];
     v10 = [NSDictionary dictionaryWithObject:v9 forKey:FHSmartFeatureCompoundTypeRelatedMerchants];
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, v10);
 
     _Block_object_dispose(&v12, 8);
   }
 }
 
-- (id)_tokenize:(id)a3 shouldLemmatize:(BOOL)a4
+- (id)_tokenize:(id)_tokenize shouldLemmatize:(BOOL)lemmatize
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 length])
+  lemmatizeCopy = lemmatize;
+  _tokenizeCopy = _tokenize;
+  v7 = _tokenizeCopy;
+  if (_tokenizeCopy && [_tokenizeCopy length])
   {
     v8 = v7;
-    v9 = [(FinHealthTextSimilarityFeatures *)self specialCharsRegex];
+    specialCharsRegex = [(FinHealthTextSimilarityFeatures *)self specialCharsRegex];
 
-    if (v9)
+    if (specialCharsRegex)
     {
-      v10 = [(FinHealthTextSimilarityFeatures *)self specialCharsRegex];
-      v11 = [v10 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v8, "length"), @" "}];
+      specialCharsRegex2 = [(FinHealthTextSimilarityFeatures *)self specialCharsRegex];
+      v11 = [specialCharsRegex2 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v8, "length"), @" "}];
 
       v8 = v11;
     }
 
-    v12 = [v8 decomposedStringWithCompatibilityMapping];
+    decomposedStringWithCompatibilityMapping = [v8 decomposedStringWithCompatibilityMapping];
 
-    CFStringTransform(v12, 0, kCFStringTransformStripCombiningMarks, 0);
-    v13 = [(FinHealthTextSimilarityFeatures *)self boundaryRegex];
+    CFStringTransform(decomposedStringWithCompatibilityMapping, 0, kCFStringTransformStripCombiningMarks, 0);
+    boundaryRegex = [(FinHealthTextSimilarityFeatures *)self boundaryRegex];
 
-    if (v13)
+    if (boundaryRegex)
     {
-      v14 = [(FinHealthTextSimilarityFeatures *)self boundaryRegex];
-      v15 = [v14 stringByReplacingMatchesInString:v12 options:0 range:0 withTemplate:{-[__CFString length](v12, "length"), @"\n"}];
+      boundaryRegex2 = [(FinHealthTextSimilarityFeatures *)self boundaryRegex];
+      v15 = [boundaryRegex2 stringByReplacingMatchesInString:decomposedStringWithCompatibilityMapping options:0 range:0 withTemplate:{-[__CFString length](decomposedStringWithCompatibilityMapping, "length"), @"\n"}];
 
       v16 = [v15 componentsSeparatedByString:@"\n"];
     }
 
     else
     {
-      v16 = [(__CFString *)v12 componentsSeparatedByString:@" "];
+      v16 = [(__CFString *)decomposedStringWithCompatibilityMapping componentsSeparatedByString:@" "];
     }
 
     v18 = [NSPredicate predicateWithFormat:@"length > 0"];
@@ -202,16 +202,16 @@
 
     v20 = [v19 valueForKey:@"lowercaseString"];
 
-    v21 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
+    nlTagger = [(FinHealthTextSimilarityFeatures *)self nlTagger];
 
-    if (v21 && v4)
+    if (nlTagger && lemmatizeCopy)
     {
       v22 = objc_opt_new();
       v23 = [v20 componentsJoinedByString:@" "];
-      v24 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
-      [v24 setString:v23];
+      nlTagger2 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
+      [nlTagger2 setString:v23];
 
-      v25 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
+      nlTagger3 = [(FinHealthTextSimilarityFeatures *)self nlTagger];
       v26 = [v23 length];
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
@@ -221,7 +221,7 @@
       v27 = v22;
       v37 = v27;
       v28 = v23;
-      [v25 enumerateTagsInRange:0 unit:v26 scheme:0 options:NLTagSchemeLemma usingBlock:{0, v35}];
+      [nlTagger3 enumerateTagsInRange:0 unit:v26 scheme:0 options:NLTagSchemeLemma usingBlock:{0, v35}];
 
       v29 = v27;
       v20 = v29;
@@ -253,24 +253,24 @@
   return v17;
 }
 
-- (void)applyTimingHeuristics:(id)a3 detailedCategory:(id)a4 dateHour:(id)a5
+- (void)applyTimingHeuristics:(id)heuristics detailedCategory:(id)category dateHour:(id)hour
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  heuristicsCopy = heuristics;
+  categoryCopy = category;
+  hourCopy = hour;
+  v9 = hourCopy;
+  if (categoryCopy)
   {
-    if (v8)
+    if (hourCopy)
     {
-      v10 = [v8 integerValue];
-      if (([v7 containsString:@"dining"] & 1) != 0 || objc_msgSend(v7, "containsString:", @"restaurant"))
+      integerValue = [hourCopy integerValue];
+      if (([categoryCopy containsString:@"dining"] & 1) != 0 || objc_msgSend(categoryCopy, "containsString:", @"restaurant"))
       {
-        if ((v10 - 5) >= 6)
+        if ((integerValue - 5) >= 6)
         {
-          if ((v10 - 11) >= 4)
+          if ((integerValue - 11) >= 4)
           {
-            if ((v10 - 15) > 8)
+            if ((integerValue - 15) > 8)
             {
               goto LABEL_12;
             }
@@ -290,7 +290,7 @@
         }
 
         v12 = [NSDecimalNumber decimalNumberWithString:@"0.6"];
-        [v13 setValue:v12 forKey:v11];
+        [heuristicsCopy setValue:v12 forKey:v11];
       }
     }
   }
@@ -298,16 +298,16 @@
 LABEL_12:
 }
 
-- (void)applyCategoryHeuristics:(id)a3 detailedCategory:(id)a4
+- (void)applyCategoryHeuristics:(id)heuristics detailedCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v28 = self;
-  v8 = [(FinHealthTextSimilarityFeatures *)self categoriesExpansionDict];
-  v9 = v8;
-  if (v7 && v8)
+  heuristicsCopy = heuristics;
+  categoryCopy = category;
+  selfCopy = self;
+  categoriesExpansionDict = [(FinHealthTextSimilarityFeatures *)self categoriesExpansionDict];
+  v9 = categoriesExpansionDict;
+  if (categoryCopy && categoriesExpansionDict)
   {
-    v10 = [v7 isEqualToString:FHDetailedCategoryUndefined];
+    v10 = [categoryCopy isEqualToString:FHDetailedCategoryUndefined];
 
     if ((v10 & 1) == 0)
     {
@@ -315,17 +315,17 @@ LABEL_12:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v11 = [(FinHealthTextSimilarityFeatures *)v28 categoriesExpansionDict];
-      v12 = [v11 allKeys];
+      categoriesExpansionDict2 = [(FinHealthTextSimilarityFeatures *)selfCopy categoriesExpansionDict];
+      allKeys = [categoriesExpansionDict2 allKeys];
 
-      obj = v12;
-      v13 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      obj = allKeys;
+      v13 = [allKeys countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v13)
       {
         v14 = v13;
         v15 = *v36;
         v26 = *v36;
-        v27 = v7;
+        v27 = categoryCopy;
         do
         {
           v16 = 0;
@@ -338,14 +338,14 @@ LABEL_12:
             }
 
             v17 = *(*(&v35 + 1) + 8 * v16);
-            if ([v7 hasPrefix:v17])
+            if ([categoryCopy hasPrefix:v17])
             {
               v33 = 0u;
               v34 = 0u;
               v31 = 0u;
               v32 = 0u;
-              v18 = [(FinHealthTextSimilarityFeatures *)v28 categoriesExpansionDict];
-              v19 = [v18 valueForKey:v17];
+              categoriesExpansionDict3 = [(FinHealthTextSimilarityFeatures *)selfCopy categoriesExpansionDict];
+              v19 = [categoriesExpansionDict3 valueForKey:v17];
 
               v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
               if (v20)
@@ -363,7 +363,7 @@ LABEL_12:
 
                     v24 = *(*(&v31 + 1) + 8 * i);
                     v25 = [NSDecimalNumber decimalNumberWithString:@"0.55"];
-                    [v6 setValue:v25 forKey:v24];
+                    [heuristicsCopy setValue:v25 forKey:v24];
                   }
 
                   v21 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -373,7 +373,7 @@ LABEL_12:
               }
 
               v15 = v26;
-              v7 = v27;
+              categoryCopy = v27;
               v14 = v29;
             }
 
@@ -394,15 +394,15 @@ LABEL_12:
   }
 }
 
-- (void)semanticTagsForMerchant:(id)a3 detailedCategory:(id)a4 dateHour:(id)a5 completion:(id)a6
+- (void)semanticTagsForMerchant:(id)merchant detailedCategory:(id)category dateHour:(id)hour completion:(id)completion
 {
-  v42 = a3;
-  v44 = a4;
-  v43 = a5;
-  v10 = a6;
-  if (v10)
+  merchantCopy = merchant;
+  categoryCopy = category;
+  hourCopy = hour;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v41 = v10;
+    v41 = completionCopy;
     v54 = 0;
     v55 = &v54;
     v56 = 0x3032000000;
@@ -422,9 +422,9 @@ LABEL_12:
     v46 = objc_retainBlock(v53);
     v52 = v46;
     v45 = objc_retainBlock(v51);
-    if (v44 && ([v44 isEqualToString:FHDetailedCategoryUndefined] & 1) == 0)
+    if (categoryCopy && ([categoryCopy isEqualToString:FHDetailedCategoryUndefined] & 1) == 0)
     {
-      v11 = [v44 componentsSeparatedByString:@"."];
+      v11 = [categoryCopy componentsSeparatedByString:@"."];
       for (i = 0; [v11 count] > i; ++i)
       {
         v13 = objc_autoreleasePoolPush();
@@ -433,15 +433,15 @@ LABEL_12:
         v16 = [v11 subarrayWithRange:{0, i + 1}];
         v17 = [v16 componentsJoinedByString:@"."];
 
-        v18 = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
+        categoriesLocalizationDict = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
         v19 = 1.0 - (i / v14);
-        if (!v18)
+        if (!categoriesLocalizationDict)
         {
           goto LABEL_9;
         }
 
-        v20 = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
-        v21 = [v20 valueForKey:v17];
+        categoriesLocalizationDict2 = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
+        v21 = [categoriesLocalizationDict2 valueForKey:v17];
         v22 = v21 == 0;
 
         if (v22)
@@ -467,8 +467,8 @@ LABEL_9:
 
         else
         {
-          v23 = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
-          v24 = [v23 valueForKey:v17];
+          categoriesLocalizationDict3 = [(FinHealthTextSimilarityFeatures *)self categoriesLocalizationDict];
+          v24 = [categoriesLocalizationDict3 valueForKey:v17];
 
           (v46[2])(v46, v24, v19);
           (v45[2])(v45, v24, v19);
@@ -480,12 +480,12 @@ LABEL_9:
 
     if (includeExpandedCategoryTags == 1)
     {
-      [(FinHealthTextSimilarityFeatures *)self applyCategoryHeuristics:v55[5] detailedCategory:v44];
+      [(FinHealthTextSimilarityFeatures *)self applyCategoryHeuristics:v55[5] detailedCategory:categoryCopy];
     }
 
     if (includeTimeBasedTags == 1)
     {
-      [(FinHealthTextSimilarityFeatures *)self applyTimingHeuristics:v55[5] detailedCategory:v44 dateHour:v43];
+      [(FinHealthTextSimilarityFeatures *)self applyTimingHeuristics:v55[5] detailedCategory:categoryCopy dateHour:hourCopy];
     }
 
     v28 = objc_opt_new();
@@ -538,7 +538,7 @@ LABEL_9:
     v41[2](v41, v40);
 
     _Block_object_dispose(&v54, 8);
-    v10 = v41;
+    completionCopy = v41;
   }
 }
 

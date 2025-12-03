@@ -5,10 +5,10 @@
 - (id)deviceFoundHandler;
 - (id)deviceLostHandler;
 - (void)dealloc;
-- (void)setDeviceChangedHandler:(id)a3;
-- (void)setDeviceFoundHandler:(id)a3;
-- (void)setDeviceLostHandler:(id)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)setDeviceChangedHandler:(id)handler;
+- (void)setDeviceFoundHandler:(id)handler;
+- (void)setDeviceLostHandler:(id)handler;
+- (void)setDispatchQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
@@ -17,16 +17,16 @@
 
 - (void)stop
 {
-  v3 = [(HMDCompanionLinkClient *)self client];
-  [v3 invalidate];
+  client = [(HMDCompanionLinkClient *)self client];
+  [client invalidate];
 
   [(HMDCompanionLinkClient *)self setClient:0];
 }
 
 - (void)start
 {
-  v2 = [(HMDCompanionLinkClient *)self client];
-  [v2 activateWithCompletion:&__block_literal_global_236907];
+  client = [(HMDCompanionLinkClient *)self client];
+  [client activateWithCompletion:&__block_literal_global_236907];
 }
 
 void __31__HMDCompanionLinkClient_start__block_invoke(uint64_t a1, void *a2)
@@ -70,64 +70,64 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceLostHandler:(id)a3
+- (void)setDeviceLostHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDCompanionLinkClient *)self client];
-  [v5 setDeviceLostHandler:v4];
+  handlerCopy = handler;
+  client = [(HMDCompanionLinkClient *)self client];
+  [client setDeviceLostHandler:handlerCopy];
 }
 
 - (id)deviceLostHandler
 {
-  v2 = [(HMDCompanionLinkClient *)self client];
-  v3 = [v2 deviceLostHandler];
+  client = [(HMDCompanionLinkClient *)self client];
+  deviceLostHandler = [client deviceLostHandler];
 
-  return v3;
+  return deviceLostHandler;
 }
 
-- (void)setDeviceChangedHandler:(id)a3
+- (void)setDeviceChangedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDCompanionLinkClient *)self client];
-  [v5 setDeviceChangedHandler:v4];
+  handlerCopy = handler;
+  client = [(HMDCompanionLinkClient *)self client];
+  [client setDeviceChangedHandler:handlerCopy];
 }
 
 - (id)deviceChangedHandler
 {
-  v2 = [(HMDCompanionLinkClient *)self client];
-  v3 = [v2 deviceChangedHandler];
+  client = [(HMDCompanionLinkClient *)self client];
+  deviceChangedHandler = [client deviceChangedHandler];
 
-  return v3;
+  return deviceChangedHandler;
 }
 
-- (void)setDeviceFoundHandler:(id)a3
+- (void)setDeviceFoundHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDCompanionLinkClient *)self client];
-  [v5 setDeviceFoundHandler:v4];
+  handlerCopy = handler;
+  client = [(HMDCompanionLinkClient *)self client];
+  [client setDeviceFoundHandler:handlerCopy];
 }
 
 - (id)deviceFoundHandler
 {
-  v2 = [(HMDCompanionLinkClient *)self client];
-  v3 = [v2 deviceFoundHandler];
+  client = [(HMDCompanionLinkClient *)self client];
+  deviceFoundHandler = [client deviceFoundHandler];
 
-  return v3;
+  return deviceFoundHandler;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMDCompanionLinkClient *)self client];
-  [v5 setDispatchQueue:v4];
+  queueCopy = queue;
+  client = [(HMDCompanionLinkClient *)self client];
+  [client setDispatchQueue:queueCopy];
 }
 
 - (OS_dispatch_queue)dispatchQueue
 {
-  v2 = [(HMDCompanionLinkClient *)self client];
-  v3 = [v2 dispatchQueue];
+  client = [(HMDCompanionLinkClient *)self client];
+  dispatchQueue = [client dispatchQueue];
 
-  return v3;
+  return dispatchQueue;
 }
 
 - (RPCompanionLinkClient)client

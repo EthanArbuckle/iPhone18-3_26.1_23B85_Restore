@@ -4,20 +4,20 @@
 - (double)_sampleRate;
 - (float)audioLevel;
 - (id)_connectUnits;
-- (id)_setupAudioUnitsWithAudioFormat:(AudioStreamBasicDescription *)a3;
-- (id)_setupMixerUnitWithAudioFormat:(AudioStreamBasicDescription *)a3;
-- (id)_setupRioUnitWithAudioFormat:(AudioStreamBasicDescription *)a3;
+- (id)_setupAudioUnitsWithAudioFormat:(AudioStreamBasicDescription *)format;
+- (id)_setupMixerUnitWithAudioFormat:(AudioStreamBasicDescription *)format;
+- (id)_setupRioUnitWithAudioFormat:(AudioStreamBasicDescription *)format;
 - (id)_setupSession;
 - (id)combinedSessionTranscription;
-- (void)audioSessionWasInterrupted:(id)a3;
+- (void)audioSessionWasInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)setPersonalAudioMediaAccommodationsEnabled:(BOOL)a3;
-- (void)startListeningWithCompletion:(id)a3;
+- (void)setPersonalAudioMediaAccommodationsEnabled:(BOOL)enabled;
+- (void)startListeningWithCompletion:(id)completion;
 - (void)startLiveListenRewind;
-- (void)stopListeningWithCompletion:(id)a3;
+- (void)stopListeningWithCompletion:(id)completion;
 - (void)stopLiveListenRewind;
 - (void)transcriptionDidStart;
-- (void)transcriptionDidUpdate:(id)a3;
+- (void)transcriptionDidUpdate:(id)update;
 @end
 
 @implementation HULiveListenController
@@ -62,38 +62,38 @@ void __30__HULiveListenController_init__block_invoke_2(uint64_t a1)
         v2->_transcriber = v6;
       }
 
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       sessionTranscriptions = v2->_sessionTranscriptions;
-      v2->_sessionTranscriptions = v8;
+      v2->_sessionTranscriptions = array;
     }
 
-    v10 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
     v11 = MEMORY[0x1E69AE9C0];
     v37[0] = *MEMORY[0x1E69AE9C0];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-    [v10 setAttribute:v12 forKey:*MEMORY[0x1E69AECD8] error:0];
+    [mEMORY[0x1E69AED10] setAttribute:v12 forKey:*MEMORY[0x1E69AECD8] error:0];
 
     v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v14 = dispatch_queue_create("ha_livelisten_audiounits_queue", v13);
     audioUnitsQueue = v2->_audioUnitsQueue;
     v2->_audioUnitsQueue = v14;
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v2 selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x1E69580D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x1E69580D8] object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel_mediaServicesWereReset_ name:*MEMORY[0x1E6958128] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_mediaServicesWereReset_ name:*MEMORY[0x1E6958128] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v2 selector:sel_audioRouteDidChange_ name:*MEMORY[0x1E6958228] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_audioRouteDidChange_ name:*MEMORY[0x1E6958228] object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = *v11;
-    v21 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    [v19 addObserver:v2 selector:sel_audioRouteDidChange_ name:v20 object:v21];
+    mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    [defaultCenter4 addObserver:v2 selector:sel_audioRouteDidChange_ name:v20 object:mEMORY[0x1E69AED10]2];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v2 selector:sel_audioRouteDidChange_ name:@"com.apple.accessibility.hearingaid.audio.route.changed" object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v2 selector:sel_audioRouteDidChange_ name:@"com.apple.accessibility.hearingaid.audio.route.changed" object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, userChangedAudioRoute, @"AXSpringBoardUserChangedAudioRouteNotification", 0, 0);
@@ -139,8 +139,8 @@ void __30__HULiveListenController_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HULiveListenController;
@@ -169,10 +169,10 @@ uint64_t __49__HULiveListenController_mediaServicesWereReset___block_invoke(uint
   return result;
 }
 
-- (void)audioSessionWasInterrupted:(id)a3
+- (void)audioSessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v3 = v4;
+  interruptedCopy = interrupted;
+  v3 = interruptedCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -222,9 +222,9 @@ uint64_t __46__HULiveListenController_audioRouteDidChange___block_invoke(uint64_
   return result;
 }
 
-- (void)setPersonalAudioMediaAccommodationsEnabled:(BOOL)a3
+- (void)setPersonalAudioMediaAccommodationsEnabled:(BOOL)enabled
 {
-  if (self->_personalAudioMediaAccommodationsEnabled && !a3)
+  if (self->_personalAudioMediaAccommodationsEnabled && !enabled)
   {
     v5 = HCLogHearingAids();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -236,14 +236,14 @@ uint64_t __46__HULiveListenController_audioRouteDidChange___block_invoke(uint64_
     [(HULiveListenController *)self stopListeningWithCompletion:0];
   }
 
-  self->_personalAudioMediaAccommodationsEnabled = a3;
+  self->_personalAudioMediaAccommodationsEnabled = enabled;
 }
 
 - (float)audioLevel
 {
-  v3 = [(HULiveListenController *)self isListening];
+  isListening = [(HULiveListenController *)self isListening];
   result = 0.0;
-  if (v3)
+  if (isListening)
   {
     outValue = 0.0;
     AudioUnitGetParameter(self->_mixerUnit, 0x3E8u, 1u, 0, &outValue);
@@ -270,17 +270,17 @@ uint64_t __46__HULiveListenController_audioRouteDidChange___block_invoke(uint64_
   return result;
 }
 
-- (void)startListeningWithCompletion:(id)a3
+- (void)startListeningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   audioUnitsQueue = self->_audioUnitsQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__HULiveListenController_startListeningWithCompletion___block_invoke;
   v7[3] = &unk_1E85CA508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(audioUnitsQueue, v7);
 }
 
@@ -483,13 +483,13 @@ LABEL_19:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopListeningWithCompletion:(id)a3
+- (void)stopListeningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_waitingForAccessoryUpdate = 0;
   v5 = *&self->_noise;
   *&self->_noise = 3267887104;
-  v6 = [(HULiveListenController *)self isListening];
+  isListening = [(HULiveListenController *)self isListening];
   [(HULiveListenController *)self setIsListening:0];
   if (_os_feature_enabled_impl())
   {
@@ -499,18 +499,18 @@ LABEL_19:
 
     if ([(HULiveListenController *)self isPlayingBack])
     {
-      v8 = [(HULiveListenController *)self audioQueue];
-      [v8 stop];
+      audioQueue = [(HULiveListenController *)self audioQueue];
+      [audioQueue stop];
 
       [(HULiveListenController *)self setIsPlayingBack:0];
     }
 
     [(HULiveListenController *)self setTranscription:0];
-    v9 = [MEMORY[0x1E695DF70] array];
-    [(HULiveListenController *)self setSessionTranscriptions:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HULiveListenController *)self setSessionTranscriptions:array];
 
-    v10 = [(HULiveListenController *)self transcriber];
-    [v10 stopTranscribing];
+    transcriber = [(HULiveListenController *)self transcriber];
+    [transcriber stopTranscribing];
   }
 
   audioUnitsQueue = self->_audioUnitsQueue;
@@ -518,11 +518,11 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = __54__HULiveListenController_stopListeningWithCompletion___block_invoke;
   v13[3] = &unk_1E85CCF40;
-  v16 = v6;
+  v16 = isListening;
   v13[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v15 = vrev64_s32(v5);
-  v12 = v4;
+  v12 = completionCopy;
   dispatch_async(audioUnitsQueue, v13);
 }
 
@@ -665,8 +665,8 @@ LABEL_26:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(HULiveListenController *)self transcriber];
-    [v3 stopTranscribing];
+    transcriber = [(HULiveListenController *)self transcriber];
+    [transcriber stopTranscribing];
 
     [(HULiveListenController *)self setIsPlayingBack:1];
     [(HULiveListenController *)self _sampleRate];
@@ -680,16 +680,16 @@ LABEL_26:
     v13 = 3221225472;
     v14 = __47__HULiveListenController_startLiveListenRewind__block_invoke;
     v15 = &unk_1E85C9F38;
-    v16 = self;
+    selfCopy = self;
     v17 = v6;
     v9 = v6;
     dispatch_async(playbackQueue, &v12);
-    [(HULiveListenController *)self setTranscription:0, v12, v13, v14, v15, v16];
-    v10 = [MEMORY[0x1E695DF70] array];
-    [(HULiveListenController *)self setSessionTranscriptions:v10];
+    [(HULiveListenController *)self setTranscription:0, v12, v13, v14, v15, selfCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HULiveListenController *)self setSessionTranscriptions:array];
 
-    v11 = [(HULiveListenController *)self transcriber];
-    [v11 startTranscribing];
+    transcriber2 = [(HULiveListenController *)self transcriber];
+    [transcriber2 startTranscribing];
   }
 }
 
@@ -755,30 +755,30 @@ LABEL_3:
   if (_os_feature_enabled_impl())
   {
     [(HULiveListenController *)self setIsPlayingBack:0];
-    v3 = [(HULiveListenController *)self audioQueue];
-    [v3 stop];
+    audioQueue = [(HULiveListenController *)self audioQueue];
+    [audioQueue stop];
 
     AudioUnitSetParameter(self->_mixerUnit, 0, 2u, 0, 1.0, 0);
-    v4 = [(HULiveListenController *)self transcriber];
-    [v4 stopTranscribing];
+    transcriber = [(HULiveListenController *)self transcriber];
+    [transcriber stopTranscribing];
 
     [(HULiveListenController *)self setTranscription:0];
-    v5 = [MEMORY[0x1E695DF70] array];
-    [(HULiveListenController *)self setSessionTranscriptions:v5];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HULiveListenController *)self setSessionTranscriptions:array];
 
-    v6 = [(HULiveListenController *)self transcriber];
-    [v6 startTranscribing];
+    transcriber2 = [(HULiveListenController *)self transcriber];
+    [transcriber2 startTranscribing];
   }
 }
 
 - (id)combinedSessionTranscription
 {
-  v3 = [(HULiveListenController *)self sessionTranscriptions];
-  v4 = [(HULiveListenController *)self transcription];
-  v5 = v4;
-  if (v4)
+  sessionTranscriptions = [(HULiveListenController *)self sessionTranscriptions];
+  transcription = [(HULiveListenController *)self transcription];
+  v5 = transcription;
+  if (transcription)
   {
-    v6 = v4;
+    v6 = transcription;
   }
 
   else
@@ -786,7 +786,7 @@ LABEL_3:
     v6 = &stru_1F5614A78;
   }
 
-  v7 = [v3 arrayByAddingObject:v6];
+  v7 = [sessionTranscriptions arrayByAddingObject:v6];
   v8 = [v7 componentsJoinedByString:@"\n"];
 
   return v8;
@@ -798,9 +798,9 @@ LABEL_3:
   session = self->_session;
   if (!session)
   {
-    v4 = [MEMORY[0x1E6958460] auxiliarySession];
+    auxiliarySession = [MEMORY[0x1E6958460] auxiliarySession];
     v5 = self->_session;
-    self->_session = v4;
+    self->_session = auxiliarySession;
 
     v6 = HCLogHearingAids();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -868,32 +868,32 @@ LABEL_3:
   return v8;
 }
 
-- (id)_setupAudioUnitsWithAudioFormat:(AudioStreamBasicDescription *)a3
+- (id)_setupAudioUnitsWithAudioFormat:(AudioStreamBasicDescription *)format
 {
-  v5 = *&a3->mBytesPerPacket;
-  v10 = *&a3->mSampleRate;
+  v5 = *&format->mBytesPerPacket;
+  v10 = *&format->mSampleRate;
   v11 = v5;
-  v12 = *&a3->mBitsPerChannel;
-  v6 = [(HULiveListenController *)self _setupMixerUnitWithAudioFormat:&v10];
-  if (!v6)
+  v12 = *&format->mBitsPerChannel;
+  _connectUnits = [(HULiveListenController *)self _setupMixerUnitWithAudioFormat:&v10];
+  if (!_connectUnits)
   {
-    v7 = *&a3->mBytesPerPacket;
-    v10 = *&a3->mSampleRate;
+    v7 = *&format->mBytesPerPacket;
+    v10 = *&format->mSampleRate;
     v11 = v7;
-    v12 = *&a3->mBitsPerChannel;
-    v6 = [(HULiveListenController *)self _setupRioUnitWithAudioFormat:&v10];
-    if (!v6)
+    v12 = *&format->mBitsPerChannel;
+    _connectUnits = [(HULiveListenController *)self _setupRioUnitWithAudioFormat:&v10];
+    if (!_connectUnits)
     {
-      v6 = [(HULiveListenController *)self _connectUnits];
+      _connectUnits = [(HULiveListenController *)self _connectUnits];
     }
   }
 
-  v8 = v6;
+  v8 = _connectUnits;
 
   return v8;
 }
 
-- (id)_setupMixerUnitWithAudioFormat:(AudioStreamBasicDescription *)a3
+- (id)_setupMixerUnitWithAudioFormat:(AudioStreamBasicDescription *)format
 {
   v15 = 1;
   inData[0] = RenderAudio;
@@ -921,14 +921,14 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v6 = AudioUnitSetProperty(self->_mixerUnit, 8u, 1u, 0, a3, 0x28u);
+  v6 = AudioUnitSetProperty(self->_mixerUnit, 8u, 1u, 0, format, 0x28u);
   if (v6)
   {
     v7 = @"Couldn't set the mixer unit's input bus format";
     goto LABEL_17;
   }
 
-  v6 = AudioUnitSetProperty(self->_mixerUnit, 8u, 2u, 0, a3, 0x28u);
+  v6 = AudioUnitSetProperty(self->_mixerUnit, 8u, 2u, 0, format, 0x28u);
   if (v6)
   {
     v7 = @"Couldn't set the mixer unit's output bus format";
@@ -969,7 +969,7 @@ LABEL_18:
   return v11;
 }
 
-- (id)_setupRioUnitWithAudioFormat:(AudioStreamBasicDescription *)a3
+- (id)_setupRioUnitWithAudioFormat:(AudioStreamBasicDescription *)format
 {
   v24 = 1;
   *&inDesc.componentType = xmmword_1DA6876C0;
@@ -993,9 +993,9 @@ LABEL_15:
   session = self->_session;
   if (session)
   {
-    v13 = [MEMORY[0x1E6958460] sharedInstance];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
 
-    if (session != v13)
+    if (session != mEMORY[0x1E6958460])
     {
       inData = [(AVAudioSession *)self->_session opaqueSessionID];
       v14 = AudioUnitSetProperty(self->_rioUnit, 0x7E7u, 0, 0, &inData, 4u);
@@ -1033,7 +1033,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v17 = AudioUnitSetProperty(self->_rioUnit, 8u, 1u, 0, a3, 0x28u);
+  v17 = AudioUnitSetProperty(self->_rioUnit, 8u, 1u, 0, format, 0x28u);
   if (v17)
   {
     v7 = MEMORY[0x1E696ABC0];
@@ -1044,7 +1044,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v18 = AudioUnitSetProperty(self->_rioUnit, 8u, 2u, 1u, a3, 0x28u);
+  v18 = AudioUnitSetProperty(self->_rioUnit, 8u, 2u, 1u, format, 0x28u);
   if (v18)
   {
     v7 = MEMORY[0x1E696ABC0];
@@ -1095,8 +1095,8 @@ LABEL_6:
 
 - (double)_sampleRate
 {
-  v2 = [(HULiveListenController *)self session];
-  [v2 sampleRate];
+  session = [(HULiveListenController *)self session];
+  [session sampleRate];
   v4 = v3;
 
   result = 16000.0;
@@ -1112,26 +1112,26 @@ LABEL_6:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(HULiveListenController *)self transcription];
-    v4 = [v3 length];
+    transcription = [(HULiveListenController *)self transcription];
+    v4 = [transcription length];
 
     if (v4)
     {
-      v5 = [(HULiveListenController *)self sessionTranscriptions];
-      v6 = [(HULiveListenController *)self transcription];
-      [v5 addObject:v6];
+      sessionTranscriptions = [(HULiveListenController *)self sessionTranscriptions];
+      transcription2 = [(HULiveListenController *)self transcription];
+      [sessionTranscriptions addObject:transcription2];
     }
 
     [(HULiveListenController *)self setTranscription:&stru_1F5614A78];
   }
 }
 
-- (void)transcriptionDidUpdate:(id)a3
+- (void)transcriptionDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (_os_feature_enabled_impl())
   {
-    [(HULiveListenController *)self setTranscription:v4];
+    [(HULiveListenController *)self setTranscription:updateCopy];
   }
 }
 

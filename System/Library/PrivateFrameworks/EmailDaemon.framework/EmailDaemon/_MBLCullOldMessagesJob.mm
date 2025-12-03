@@ -1,22 +1,22 @@
 @interface _MBLCullOldMessagesJob
-- (id)initForMBLMailbox:(id)a3;
+- (id)initForMBLMailbox:(id)mailbox;
 - (void)run;
-- (void)setMessages:(id)a3;
+- (void)setMessages:(id)messages;
 @end
 
 @implementation _MBLCullOldMessagesJob
 
-- (void)setMessages:(id)a3
+- (void)setMessages:(id)messages
 {
-  v4 = a3;
-  if (self->_messages != v4)
+  messagesCopy = messages;
+  if (self->_messages != messagesCopy)
   {
-    v7 = v4;
-    v5 = [(NSMutableArray *)v4 mutableCopy];
+    v7 = messagesCopy;
+    v5 = [(NSMutableArray *)messagesCopy mutableCopy];
     messages = self->_messages;
     self->_messages = v5;
 
-    v4 = v7;
+    messagesCopy = v7;
   }
 }
 
@@ -49,11 +49,11 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 mailbox];
-        v12 = v11;
-        if (v11)
+        mailbox = [v10 mailbox];
+        v12 = mailbox;
+        if (mailbox)
         {
-          v13 = v11;
+          v13 = mailbox;
         }
 
         else
@@ -80,16 +80,16 @@
   [WeakRetained _removeNewMessages:v2];
 }
 
-- (id)initForMBLMailbox:(id)a3
+- (id)initForMBLMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v8.receiver = self;
   v8.super_class = _MBLCullOldMessagesJob;
   v5 = [(_MBLCullOldMessagesJob *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_messageBodyLoader, v4);
+    objc_storeWeak(&v5->_messageBodyLoader, mailboxCopy);
   }
 
   return v6;

@@ -1,30 +1,30 @@
 @interface COSAppInstallationController
-+ (void)getAppAvailabilityStatusWithBundleID:(id)a3 andStoreIdentifier:(id)a4 andCompletion:(id)a5;
++ (void)getAppAvailabilityStatusWithBundleID:(id)d andStoreIdentifier:(id)identifier andCompletion:(id)completion;
 - (BOOL)installInProgress;
 - (BOOL)isInstalled;
-- (COSAppInstallationController)initWithBundleID:(id)a3 andStoreIdentifier:(id)a4;
+- (COSAppInstallationController)initWithBundleID:(id)d andStoreIdentifier:(id)identifier;
 - (id)amsPromise;
 - (id)versionString;
 - (unint64_t)isAvailableInStore;
-- (void)_checkAwaitingInstallsWithUserInfo:(id)a3;
-- (void)_performAvailabilityCheck:(id)a3;
-- (void)_setAvailableInStoreResult:(BOOL)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)checkAvailabilityInStore:(id)a3;
+- (void)_checkAwaitingInstallsWithUserInfo:(id)info;
+- (void)_performAvailabilityCheck:(id)check;
+- (void)_setAvailableInStoreResult:(BOOL)result;
+- (void)applicationsDidInstall:(id)install;
+- (void)checkAvailabilityInStore:(id)store;
 - (void)dealloc;
-- (void)notifyObserversThatAppAvailabilityChanged:(BOOL)a3;
-- (void)notifyObserversThatControllerDidBeginInstallationWithSuccess:(BOOL)a3;
-- (void)notifyObserversThatControllerDidCompleteInstallationWithSuccess:(BOOL)a3;
+- (void)notifyObserversThatAppAvailabilityChanged:(BOOL)changed;
+- (void)notifyObserversThatControllerDidBeginInstallationWithSuccess:(BOOL)success;
+- (void)notifyObserversThatControllerDidCompleteInstallationWithSuccess:(BOOL)success;
 - (void)notifyObserversThatControllerDidInitiatePurchase;
 - (void)startInstalling;
 @end
 
 @implementation COSAppInstallationController
 
-- (COSAppInstallationController)initWithBundleID:(id)a3 andStoreIdentifier:(id)a4
+- (COSAppInstallationController)initWithBundleID:(id)d andStoreIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = COSAppInstallationController;
   v8 = [(COSAppInstallationController *)&v15 init];
@@ -34,8 +34,8 @@
     observers = v8->_observers;
     v8->_observers = v9;
 
-    objc_storeStrong(&v8->_storeIdentifier, a4);
-    v11 = [v6 copy];
+    objc_storeStrong(&v8->_storeIdentifier, identifier);
+    v11 = [dCopy copy];
     bundleIndentifier = v8->_bundleIndentifier;
     v8->_bundleIndentifier = v11;
 
@@ -82,8 +82,8 @@
       }
     }
 
-    v9 = [v5 applicationState];
-    v10 = [v9 isInstalled];
+    applicationState = [v5 applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
   else
@@ -95,10 +95,10 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "isInstalled requires a bundleID", buf, 2u);
     }
 
-    v10 = 0;
+    isInstalled = 0;
   }
 
-  return v10;
+  return isInstalled;
 }
 
 - (BOOL)installInProgress
@@ -111,22 +111,22 @@
 
     if (v4)
     {
-      v5 = [v2 appState];
-      if ([v5 isInstalled])
+      appState = [v2 appState];
+      if ([appState isInstalled])
       {
-        v6 = 0;
+        isValid = 0;
       }
 
       else
       {
-        v8 = [v2 appState];
-        v6 = [v8 isValid];
+        appState2 = [v2 appState];
+        isValid = [appState2 isValid];
       }
     }
 
     else
     {
-      v6 = 0;
+      isValid = 0;
     }
   }
 
@@ -142,7 +142,7 @@
     return 0;
   }
 
-  return v6;
+  return isValid;
 }
 
 - (id)versionString
@@ -168,7 +168,7 @@
       }
     }
 
-    v9 = [v5 shortVersionString];
+    shortVersionString = [v5 shortVersionString];
   }
 
   else
@@ -180,17 +180,17 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "versionString requires a bundleID", buf, 2u);
     }
 
-    v9 = 0;
+    shortVersionString = 0;
   }
 
-  return v9;
+  return shortVersionString;
 }
 
-- (void)_checkAwaitingInstallsWithUserInfo:(id)a3
+- (void)_checkAwaitingInstallsWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"bundleIDs"];
-  v6 = [v4 objectForKeyedSubscript:@"isPlaceholder"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"bundleIDs"];
+  v6 = [infoCopy objectForKeyedSubscript:@"isPlaceholder"];
   v7 = v6;
   if (v6 && ([v6 BOOLValue] & 1) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_13:
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, self, sub_1000843FC, @"com.apple.LaunchServices.applicationRegistered", 0, 1026);
     v6 = [NSString stringWithFormat:@"%@", self->_storeIdentifier];
-    v7 = [(COSAppInstallationController *)self amsPromise];
+    amsPromise = [(COSAppInstallationController *)self amsPromise];
     objc_initWeak(buf, self);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -267,18 +267,18 @@ LABEL_13:
     v10 = @"com.nike.nikeplus-gps";
     v8 = v6;
     v11 = v8;
-    [v7 addFinishBlock:v9];
+    [amsPromise addFinishBlock:v9];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_setAvailableInStoreResult:(BOOL)a3
+- (void)_setAvailableInStoreResult:(BOOL)result
 {
   availableInStoreResult = self->_availableInStoreResult;
-  self->_availableInStoreResult = a3;
-  if (availableInStoreResult != a3 || self->_needsAvailableInStoreCheck)
+  self->_availableInStoreResult = result;
+  if (availableInStoreResult != result || self->_needsAvailableInStoreCheck)
   {
     [(COSAppInstallationController *)self notifyObserversThatAppAvailabilityChanged:?];
   }
@@ -286,13 +286,13 @@ LABEL_13:
   self->_needsAvailableInStoreCheck = 0;
 }
 
-- (void)_performAvailabilityCheck:(id)a3
+- (void)_performAvailabilityCheck:(id)check
 {
-  v4 = a3;
-  v5 = v4;
+  checkCopy = check;
+  v5 = checkCopy;
   if (self->_storeIdentifier)
   {
-    v6 = [(COSAppInstallationController *)self amsPromise];
+    amsPromise = [(COSAppInstallationController *)self amsPromise];
     objc_initWeak(&location, self);
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -300,7 +300,7 @@ LABEL_13:
     v7[3] = &unk_10026A060;
     objc_copyWeak(&v9, &location);
     v8 = v5;
-    [v6 addFinishBlock:v7];
+    [amsPromise addFinishBlock:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -308,7 +308,7 @@ LABEL_13:
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(checkCopy + 2))(checkCopy, 0);
   }
 }
 
@@ -324,9 +324,9 @@ LABEL_13:
   v8 = [NSArray arrayWithObjects:&v11 count:1];
   [v6 setItemIdentifiers:v8];
 
-  v9 = [v6 perform];
+  perform = [v6 perform];
 
-  return v9;
+  return perform;
 }
 
 - (unint64_t)isAvailableInStore
@@ -345,43 +345,43 @@ LABEL_13:
   return 2;
 }
 
-- (void)checkAvailabilityInStore:(id)a3
+- (void)checkAvailabilityInStore:(id)store
 {
   if (self->_needsAvailableInStoreCheck)
   {
-    [(COSAppInstallationController *)self _performAvailabilityCheck:a3];
+    [(COSAppInstallationController *)self _performAvailabilityCheck:store];
   }
 
   else
   {
-    (*(a3 + 2))(a3, self->_availableInStoreResult);
+    (*(store + 2))(store, self->_availableInStoreResult);
   }
 }
 
-+ (void)getAppAvailabilityStatusWithBundleID:(id)a3 andStoreIdentifier:(id)a4 andCompletion:(id)a5
++ (void)getAppAvailabilityStatusWithBundleID:(id)d andStoreIdentifier:(id)identifier andCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[COSAppInstallationController alloc] initWithBundleID:v9 andStoreIdentifier:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  dCopy = d;
+  v10 = [[COSAppInstallationController alloc] initWithBundleID:dCopy andStoreIdentifier:identifierCopy];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100085264;
   v12[3] = &unk_100269B08;
-  v13 = v7;
-  v11 = v7;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(COSAppInstallationController *)v10 _performAvailabilityCheck:v12];
 }
 
-- (void)notifyObserversThatControllerDidCompleteInstallationWithSuccess:(BOOL)a3
+- (void)notifyObserversThatControllerDidCompleteInstallationWithSuccess:(BOOL)success
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000852F8;
   v3[3] = &unk_1002693C0;
   v3[4] = self;
-  v4 = a3;
+  successCopy = success;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
@@ -395,36 +395,36 @@ LABEL_13:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)notifyObserversThatControllerDidBeginInstallationWithSuccess:(BOOL)a3
+- (void)notifyObserversThatControllerDidBeginInstallationWithSuccess:(BOOL)success
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000855DC;
   v3[3] = &unk_1002693C0;
   v3[4] = self;
-  v4 = a3;
+  successCopy = success;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)notifyObserversThatAppAvailabilityChanged:(BOOL)a3
+- (void)notifyObserversThatAppAvailabilityChanged:(BOOL)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100085754;
   v3[3] = &unk_1002693C0;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -436,11 +436,11 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
-        v10 = [v9 isEqualToString:self->_bundleIndentifier];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * v8) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:self->_bundleIndentifier];
 
         if (v10)
         {
@@ -451,7 +451,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

@@ -1,16 +1,16 @@
 @interface VUIUpNextButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation VUIUpNextButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIUpNextButton" hasProperty:@"properties" withType:"@"];
-  [v3 validateClass:@"VUIUpNextButtonProperties" hasProperty:@"isWatchListed" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIUpNextButton" hasProperty:@"properties" withType:"@"];
+  [validationsCopy validateClass:@"VUIUpNextButtonProperties" hasProperty:@"isWatchListed" withType:"B"];
 }
 
 - (unint64_t)accessibilityTraits

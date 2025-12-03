@@ -1,70 +1,70 @@
 @interface SBHomeScreenOverlayController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)interceptDismissalGestureForOverlayController:(id)a3;
-- (BOOL)isEditingForHomeScreenOverlayViewController:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)interceptDismissalGestureForOverlayController:(id)controller;
+- (BOOL)isEditingForHomeScreenOverlayViewController:(id)controller;
 - (BOOL)isPresented;
-- (BOOL)showsAddWidgetButtonWhileEditingForHomeScreenOverlayViewController:(id)a3;
-- (BOOL)showsDoneButtonWhileEditingForHomeScreenOverlayViewController:(id)a3;
+- (BOOL)showsAddWidgetButtonWhileEditingForHomeScreenOverlayViewController:(id)controller;
+- (BOOL)showsDoneButtonWhileEditingForHomeScreenOverlayViewController:(id)controller;
 - (NSString)coverSheetIdentifier;
 - (SBFOverlayDismissalDelegate)dismissalDelegate;
-- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)a3;
-- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)a3 windowLevel:(double)a4 windowScene:(id)a5 traitsRole:(id)a6 zStackParticipantIdentifier:(int64_t)a7 screenEdgeSystemGestureType:(unint64_t)a8 indirectScreenEdgeSystemGestureType:(unint64_t)a9 scrunchSystemGestureType:(unint64_t)a10 secure:(BOOL)a11;
+- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)provider;
+- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)provider windowLevel:(double)level windowScene:(id)scene traitsRole:(id)role zStackParticipantIdentifier:(int64_t)identifier screenEdgeSystemGestureType:(unint64_t)type indirectScreenEdgeSystemGestureType:(unint64_t)gestureType scrunchSystemGestureType:(unint64_t)self0 secure:(BOOL)self1;
 - (SBHomeScreenOverlayControllerDelegate)delegate;
 - (UIViewController)activeSidebarViewController;
 - (UIViewController)existingAvocadoVC;
 - (double)_directionCoefficient;
 - (double)contentWidth;
-- (double)finalPresentationProgressForTranslation:(double)a3 velocity:(double)a4 initialPresentationProgress:(double)a5 fromLeading:(BOOL)a6;
+- (double)finalPresentationProgressForTranslation:(double)translation velocity:(double)velocity initialPresentationProgress:(double)progress fromLeading:(BOOL)leading;
 - (double)presentationProgress;
-- (double)presentationProgressForTranslation:(double)a3 initialPresentationProgress:(double)a4 fromLeading:(BOOL)a5;
+- (double)presentationProgressForTranslation:(double)translation initialPresentationProgress:(double)progress fromLeading:(BOOL)leading;
 - (id)_rootViewController;
-- (id)backgroundViewForEditingDoneButtonForHomeScreenOverlayViewController:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)backgroundViewForEditingDoneButtonForHomeScreenOverlayViewController:(id)controller;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)testScrollView;
 - (int64_t)idleTimerDuration;
 - (int64_t)participantState;
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4;
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type;
 - (void)_configureDismissGestureRecognizer;
-- (void)_dismissLevelAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)_dismissScrollGestureBegan:(id)a3;
-- (void)_dismissScrollGestureChanged:(id)a3;
-- (void)_dismissScrollGestureEndedOrCancelled:(id)a3;
-- (void)_enumerateHomeScreenOverlayObserversUsingBlock:(id)a3;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3;
-- (void)_setHidden:(BOOL)a3;
-- (void)_setHitTestingDisabled:(BOOL)a3;
-- (void)addHomeScreenOverlayObserver:(id)a3;
-- (void)addReasonToDisableDismissGestureRecognizer:(id)a3;
-- (void)animatePresentationProgress:(double)a3 withGestureLiftOffVelocity:(double)a4 completionHandler:(id)a5;
-- (void)cleanUpAfterSettingPresentationProgress:(double)a3;
+- (void)_dismissLevelAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)_dismissScrollGestureBegan:(id)began;
+- (void)_dismissScrollGestureChanged:(id)changed;
+- (void)_dismissScrollGestureEndedOrCancelled:(id)cancelled;
+- (void)_enumerateHomeScreenOverlayObserversUsingBlock:(id)block;
+- (void)_setDisplayLayoutElementActive:(BOOL)active;
+- (void)_setHidden:(BOOL)hidden;
+- (void)_setHitTestingDisabled:(BOOL)disabled;
+- (void)addHomeScreenOverlayObserver:(id)observer;
+- (void)addReasonToDisableDismissGestureRecognizer:(id)recognizer;
+- (void)animatePresentationProgress:(double)progress withGestureLiftOffVelocity:(double)velocity completionHandler:(id)handler;
+- (void)cleanUpAfterSettingPresentationProgress:(double)progress;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)dismissScrollGestureUpdated:(id)a3;
-- (void)dismissTapGestureUpdated:(id)a3;
-- (void)dismissUsingViewControllerTransitionCoordinator:(id)a3;
-- (void)homeScreenOverlayViewController:(id)a3 setSuppressesEditingStateForListView:(BOOL)a4;
-- (void)homeScreenOverlayViewWantsToEndEditing:(id)a3;
-- (void)homeScreenOverlayViewWantsWidgetEditingViewControllerPresented:(id)a3;
-- (void)prepareToSetPresentationProgress:(double)a3 fromPresentationProgress:(double)a4;
-- (void)removeReasonToDisableDismissGestureRecognizer:(id)a3;
-- (void)setPresentationProgress:(double)a3 fromLeading:(BOOL)a4 interactive:(BOOL)a5 animated:(BOOL)a6 completionHandler:(id)a7;
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)dismissScrollGestureUpdated:(id)updated;
+- (void)dismissTapGestureUpdated:(id)updated;
+- (void)dismissUsingViewControllerTransitionCoordinator:(id)coordinator;
+- (void)homeScreenOverlayViewController:(id)controller setSuppressesEditingStateForListView:(BOOL)view;
+- (void)homeScreenOverlayViewWantsToEndEditing:(id)editing;
+- (void)homeScreenOverlayViewWantsWidgetEditingViewControllerPresented:(id)presented;
+- (void)prepareToSetPresentationProgress:(double)progress fromPresentationProgress:(double)presentationProgress;
+- (void)removeReasonToDisableDismissGestureRecognizer:(id)recognizer;
+- (void)setPresentationProgress:(double)progress fromLeading:(BOOL)leading interactive:(BOOL)interactive animated:(BOOL)animated completionHandler:(id)handler;
 @end
 
 @implementation SBHomeScreenOverlayController
 
 - (void)_configureDismissGestureRecognizer
 {
-  v9 = [(SBHomeScreenOverlayController *)self _rootViewController];
+  _rootViewController = [(SBHomeScreenOverlayController *)self _rootViewController];
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_dismissTapGestureUpdated_];
   dismissTapGestureRecognizer = self->_dismissTapGestureRecognizer;
   self->_dismissTapGestureRecognizer = v3;
 
   [(UITapGestureRecognizer *)self->_dismissTapGestureRecognizer setDelegate:self];
-  v5 = [v9 view];
-  [v5 addGestureRecognizer:self->_dismissTapGestureRecognizer];
+  view = [_rootViewController view];
+  [view addGestureRecognizer:self->_dismissTapGestureRecognizer];
 
   v6 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_dismissScrollGestureUpdated_];
   dismissPanGestureRecognizer = self->_dismissPanGestureRecognizer;
@@ -73,8 +73,8 @@
   [(UIPanGestureRecognizer *)self->_dismissPanGestureRecognizer setAllowedScrollTypesMask:2];
   [(UIPanGestureRecognizer *)self->_dismissPanGestureRecognizer _setCanPanVertically:0];
   [(UIPanGestureRecognizer *)self->_dismissPanGestureRecognizer setDelegate:self];
-  v8 = [v9 view];
-  [v8 addGestureRecognizer:self->_dismissPanGestureRecognizer];
+  view2 = [_rootViewController view];
+  [view2 addGestureRecognizer:self->_dismissPanGestureRecognizer];
 }
 
 - (id)_rootViewController
@@ -82,21 +82,21 @@
   window = self->_window;
   if (window)
   {
-    v4 = [(SBFWindow *)window rootViewController];
+    rootViewController = [(SBFWindow *)window rootViewController];
   }
 
   else
   {
-    v4 = self->_overlayViewController;
+    rootViewController = self->_overlayViewController;
   }
 
-  return v4;
+  return rootViewController;
 }
 
 - (double)contentWidth
 {
-  v2 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  [v2 contentWidth];
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  [overlayViewController contentWidth];
   v4 = v3;
 
   return v4;
@@ -104,8 +104,8 @@
 
 - (double)presentationProgress
 {
-  v2 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  [v2 presentationProgress];
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  [overlayViewController presentationProgress];
   v4 = v3;
 
   return v4;
@@ -155,8 +155,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   if (v2)
@@ -177,28 +177,28 @@
   return BSFloatGreaterThanFloat();
 }
 
-- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)a3 windowLevel:(double)a4 windowScene:(id)a5 traitsRole:(id)a6 zStackParticipantIdentifier:(int64_t)a7 screenEdgeSystemGestureType:(unint64_t)a8 indirectScreenEdgeSystemGestureType:(unint64_t)a9 scrunchSystemGestureType:(unint64_t)a10 secure:(BOOL)a11
+- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)provider windowLevel:(double)level windowScene:(id)scene traitsRole:(id)role zStackParticipantIdentifier:(int64_t)identifier screenEdgeSystemGestureType:(unint64_t)type indirectScreenEdgeSystemGestureType:(unint64_t)gestureType scrunchSystemGestureType:(unint64_t)self0 secure:(BOOL)self1
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
+  providerCopy = provider;
+  sceneCopy = scene;
+  roleCopy = role;
   v50.receiver = self;
   v50.super_class = SBHomeScreenOverlayController;
   v21 = [(SBHomeScreenOverlayController *)&v50 init];
   if (v21)
   {
-    v22 = [[SBHomeScreenOverlayViewController alloc] initWithListLayoutProvider:v18];
+    v22 = [[SBHomeScreenOverlayViewController alloc] initWithListLayoutProvider:providerCopy];
     overlayViewController = v21->_overlayViewController;
     v21->_overlayViewController = v22;
 
     [(SBHomeScreenOverlayViewController *)v21->_overlayViewController setDelegate:v21];
-    v21->_screenEdgeSystemGestureType = a8;
-    v21->_indirectScreenEdgeSystemGestureType = a9;
-    v21->_scrunchSystemGestureType = a10;
+    v21->_screenEdgeSystemGestureType = type;
+    v21->_indirectScreenEdgeSystemGestureType = gestureType;
+    v21->_scrunchSystemGestureType = systemGestureType;
     if (SBHomeGestureEnabled())
     {
       v24 = objc_opt_class();
-      v25 = v19;
+      v25 = sceneCopy;
       if (v24)
       {
         if (objc_opt_isKindOfClass())
@@ -219,39 +219,39 @@
 
       v49 = v26;
 
-      v28 = [[SBBarSwipeAffordanceViewController alloc] initWithZStackParticipantIdentifier:a7 windowScene:v49];
+      v28 = [[SBBarSwipeAffordanceViewController alloc] initWithZStackParticipantIdentifier:identifier windowScene:v49];
       homeAffordanceViewController = v21->_homeAffordanceViewController;
       v21->_homeAffordanceViewController = v28;
 
       [(SBBarSwipeAffordanceViewController *)v21->_homeAffordanceViewController setSuppressAffordance:1];
       [(SBBarSwipeAffordanceViewController *)v21->_homeAffordanceViewController addChildViewController:v21->_overlayViewController];
-      v30 = [(SBHomeScreenOverlayViewController *)v21->_overlayViewController view];
-      v31 = [(SBBarSwipeAffordanceViewController *)v21->_homeAffordanceViewController view];
-      [v31 addSubview:v30];
+      view = [(SBHomeScreenOverlayViewController *)v21->_overlayViewController view];
+      view2 = [(SBBarSwipeAffordanceViewController *)v21->_homeAffordanceViewController view];
+      [view2 addSubview:view];
       [(SBHomeScreenOverlayViewController *)v21->_overlayViewController didMoveToParentViewController:v21->_homeAffordanceViewController];
-      [v31 setDelegate:v21];
-      [v31 addObserver:v21];
-      [v31 setColorBias:2];
-      [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 setDelegate:v21];
+      [view2 addObserver:v21];
+      [view2 setColorBias:2];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
       v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v33 = [v31 leadingAnchor];
-      v34 = [v30 leadingAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      leadingAnchor = [view2 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v32 addObject:v35];
 
-      v36 = [v31 trailingAnchor];
-      v37 = [v30 trailingAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      trailingAnchor = [view2 trailingAnchor];
+      trailingAnchor2 = [view trailingAnchor];
+      v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v32 addObject:v38];
 
-      v39 = [v31 topAnchor];
-      v40 = [v30 topAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      topAnchor = [view2 topAnchor];
+      topAnchor2 = [view topAnchor];
+      v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v32 addObject:v41];
 
-      v42 = [v31 bottomAnchor];
-      v43 = [v30 bottomAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      bottomAnchor = [view2 bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v32 addObject:v44];
 
       [MEMORY[0x277CCAAD0] activateConstraints:v32];
@@ -265,12 +265,12 @@
 
     v45 = objc_opt_self();
 
-    v46 = [[v45 alloc] initWithWindowScene:v19];
+    v46 = [[v45 alloc] initWithWindowScene:sceneCopy];
     window = v21->_window;
     v21->_window = v46;
 
-    [(SBFWindow *)v21->_window _setRoleHint:v20];
-    [(SBFWindow *)v21->_window setWindowLevel:a4];
+    [(SBFWindow *)v21->_window _setRoleHint:roleCopy];
+    [(SBFWindow *)v21->_window setWindowLevel:level];
     [(SBFWindow *)v21->_window setRootViewController:v27];
     [(SBHomeScreenOverlayController *)v21 _configureDismissGestureRecognizer];
     [(SBHomeScreenOverlayController *)v21 _setHidden:0];
@@ -279,15 +279,15 @@
   return v21;
 }
 
-- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)a3
+- (SBHomeScreenOverlayController)initWithListLayoutProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SBHomeScreenOverlayController;
   v5 = [(SBHomeScreenOverlayController *)&v9 init];
   if (v5)
   {
-    v6 = [[SBHomeScreenOverlayViewController alloc] initWithListLayoutProvider:v4];
+    v6 = [[SBHomeScreenOverlayViewController alloc] initWithListLayoutProvider:providerCopy];
     overlayViewController = v5->_overlayViewController;
     v5->_overlayViewController = v6;
 
@@ -310,22 +310,22 @@
 
 - (UIViewController)activeSidebarViewController
 {
-  v2 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController contentViewController];
-  v3 = [v2 avocadoViewController];
+  contentViewController = [(SBHomeScreenOverlayViewController *)self->_overlayViewController contentViewController];
+  avocadoViewController = [contentViewController avocadoViewController];
 
-  return v3;
+  return avocadoViewController;
 }
 
-- (void)animatePresentationProgress:(double)a3 withGestureLiftOffVelocity:(double)a4 completionHandler:(id)a5
+- (void)animatePresentationProgress:(double)progress withGestureLiftOffVelocity:(double)velocity completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   [(SBHomeScreenOverlayController *)self presentationProgress];
   v10 = v9;
   if (BSFloatEqualToFloat())
   {
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
@@ -336,25 +336,25 @@
     frameRateAssertion = self->_frameRateAssertion;
     self->_frameRateAssertion = 0;
 
-    [(SBHomeScreenOverlayController *)self prepareToSetPresentationProgress:a3 fromPresentationProgress:v10];
-    v12 = [(SBHomeScreenOverlayController *)self overlayViewController];
+    [(SBHomeScreenOverlayController *)self prepareToSetPresentationProgress:progress fromPresentationProgress:v10];
+    overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __106__SBHomeScreenOverlayController_animatePresentationProgress_withGestureLiftOffVelocity_completionHandler___block_invoke;
     v18[3] = &unk_2783B3D68;
     v18[4] = self;
-    v20 = a3;
-    v19 = v8;
-    [v12 animatePresentationProgress:v18 withGestureLiftOffVelocity:a3 completionHandler:a4];
+    progressCopy = progress;
+    v19 = handlerCopy;
+    [overlayViewController animatePresentationProgress:v18 withGestureLiftOffVelocity:progress completionHandler:velocity];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __106__SBHomeScreenOverlayController_animatePresentationProgress_withGestureLiftOffVelocity_completionHandler___block_invoke_2;
     v14[3] = &unk_2783C4210;
     v16 = v10;
-    v17 = a3;
+    progressCopy2 = progress;
     v14[4] = self;
-    v15 = v12;
-    v13 = v12;
+    v15 = overlayViewController;
+    v13 = overlayViewController;
     [(SBHomeScreenOverlayController *)self _enumerateHomeScreenOverlayObserversUsingBlock:v14];
   }
 }
@@ -388,28 +388,28 @@ void __106__SBHomeScreenOverlayController_animatePresentationProgress_withGestur
   [v6 overlayController:v4 didChangePresentationProgress:objc_msgSend(v5 newPresentationProgress:"isFromLeading") fromLeading:{v2, v3}];
 }
 
-- (void)setPresentationProgress:(double)a3 fromLeading:(BOOL)a4 interactive:(BOOL)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)setPresentationProgress:(double)progress fromLeading:(BOOL)leading interactive:(BOOL)interactive animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  [v13 presentationProgress];
+  animatedCopy = animated;
+  interactiveCopy = interactive;
+  leadingCopy = leading;
+  handlerCopy = handler;
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  [overlayViewController presentationProgress];
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v14 = [v13 contentViewController];
-    v15 = [v14 avocadoViewController];
-    if (v15)
+    contentViewController = [overlayViewController contentViewController];
+    avocadoViewController = [contentViewController avocadoViewController];
+    if (avocadoViewController)
     {
-      v16 = v15;
-      v17 = [v13 isFromLeading];
+      v16 = avocadoViewController;
+      isFromLeading = [overlayViewController isFromLeading];
 
-      if (v17 != v9)
+      if (isFromLeading != leadingCopy)
       {
-        if (v12)
+        if (handlerCopy)
         {
-          v12[2](v12, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_15;
@@ -426,23 +426,23 @@ void __106__SBHomeScreenOverlayController_animatePresentationProgress_withGestur
   v30[1] = 3221225472;
   v30[2] = __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeading_interactive_animated_completionHandler___block_invoke;
   v30[3] = &unk_2783A9F58;
-  v19 = v13;
+  v19 = overlayViewController;
   v31 = v19;
-  v32 = v9;
+  v32 = leadingCopy;
   [v18 _performWithoutRetargetingAnimations:v30];
   [(SBHomeScreenOverlayController *)self presentationProgress];
   v21 = v20;
   if (BSFloatEqualToFloat())
   {
-    if (v12)
+    if (handlerCopy)
     {
-      v12[2](v12, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
-    if (!self->_frameRateAssertion && v8)
+    if (!self->_frameRateAssertion && interactiveCopy)
     {
       v22 = objc_alloc(MEMORY[0x277D65E70]);
       v33 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
@@ -451,23 +451,23 @@ void __106__SBHomeScreenOverlayController_animatePresentationProgress_withGestur
       self->_frameRateAssertion = v23;
     }
 
-    [(SBHomeScreenOverlayController *)self prepareToSetPresentationProgress:a3 fromPresentationProgress:v21];
+    [(SBHomeScreenOverlayController *)self prepareToSetPresentationProgress:progress fromPresentationProgress:v21];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeading_interactive_animated_completionHandler___block_invoke_2;
     v27[3] = &unk_2783B3D68;
     v27[4] = self;
-    v29 = a3;
-    v28 = v12;
-    [v19 setPresentationProgress:v8 interactive:v7 animated:v27 completionHandler:a3];
+    progressCopy = progress;
+    v28 = handlerCopy;
+    [v19 setPresentationProgress:interactiveCopy interactive:animatedCopy animated:v27 completionHandler:progress];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeading_interactive_animated_completionHandler___block_invoke_3;
     v25[3] = &unk_2783C4238;
     v25[4] = self;
     *&v25[5] = v21;
-    *&v25[6] = a3;
-    v26 = v9;
+    *&v25[6] = progress;
+    v26 = leadingCopy;
     [(SBHomeScreenOverlayController *)self _enumerateHomeScreenOverlayObserversUsingBlock:v25];
   }
 
@@ -492,10 +492,10 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
   return result;
 }
 
-- (void)prepareToSetPresentationProgress:(double)a3 fromPresentationProgress:(double)a4
+- (void)prepareToSetPresentationProgress:(double)progress fromPresentationProgress:(double)presentationProgress
 {
-  [(SBHomeScreenOverlayController *)self _setDisplayLayoutElementActive:a3 >= 0.5];
-  if (a3 > 0.0)
+  [(SBHomeScreenOverlayController *)self _setDisplayLayoutElementActive:progress >= 0.5];
+  if (progress > 0.0)
   {
     [(SBHomeScreenOverlayController *)self _setHidden:0];
     [(SBHomeScreenOverlayController *)self _addSystemGestureRecognizer];
@@ -506,16 +506,16 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
     [(SBHomeScreenOverlayController *)self _removeSystemGestureRecognizer];
   }
 
-  [(SBHomeScreenOverlayController *)self setDismissing:a3 <= 0.0];
-  v19 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v6 = [(SBHomeScreenOverlayController *)self existingAvocadoVC];
-  v7 = [v19 contentViewController];
-  v8 = [v7 avocadoViewController];
+  [(SBHomeScreenOverlayController *)self setDismissing:progress <= 0.0];
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  existingAvocadoVC = [(SBHomeScreenOverlayController *)self existingAvocadoVC];
+  contentViewController = [overlayViewController contentViewController];
+  avocadoViewController = [contentViewController avocadoViewController];
 
-  v9 = [v19 _appearState];
-  if (v6)
+  _appearState = [overlayViewController _appearState];
+  if (existingAvocadoVC)
   {
-    v10 = v6 == v8;
+    v10 = existingAvocadoVC == avocadoViewController;
   }
 
   else
@@ -523,20 +523,20 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
     v10 = 1;
   }
 
-  v12 = !v10 && v9 == 2;
-  [(SBHomeScreenOverlayController *)self setExistingAvocadoVC:v8];
-  if (![v19 _appearState] || objc_msgSend(v19, "_appearState") == 1)
+  v12 = !v10 && _appearState == 2;
+  [(SBHomeScreenOverlayController *)self setExistingAvocadoVC:avocadoViewController];
+  if (![overlayViewController _appearState] || objc_msgSend(overlayViewController, "_appearState") == 1)
   {
     if (BSFloatIsZero())
     {
       if (![(SBHomeScreenOverlayController *)self isOverlayAppearing])
       {
-        v13 = [(SBHomeScreenOverlayController *)self overlayViewController];
-        v14 = [v13 _appearState];
+        overlayViewController2 = [(SBHomeScreenOverlayController *)self overlayViewController];
+        _appearState2 = [overlayViewController2 _appearState];
 
-        if (!v14)
+        if (!_appearState2)
         {
-          [v19 bs_beginAppearanceTransition:1 animated:1];
+          [overlayViewController bs_beginAppearanceTransition:1 animated:1];
           [(SBHomeScreenOverlayController *)self setOverlayAppearing:1];
         }
       }
@@ -544,8 +544,8 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
 
     if (BSFloatGreaterThanFloat() && [(SBHomeScreenOverlayController *)self isOverlayAppearing])
     {
-      v15 = [(SBHomeScreenOverlayController *)self overlayViewController];
-      [v15 bs_endAppearanceTransition:1];
+      overlayViewController3 = [(SBHomeScreenOverlayController *)self overlayViewController];
+      [overlayViewController3 bs_endAppearanceTransition:1];
 
       [(SBHomeScreenOverlayController *)self setOverlayAppearing:0];
     }
@@ -553,29 +553,29 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
 
   if (v12)
   {
-    v16 = [v8 view];
-    [v16 setNeedsLayout];
+    view = [avocadoViewController view];
+    [view setNeedsLayout];
 
-    v17 = [v8 view];
-    [v17 layoutIfNeeded];
+    view2 = [avocadoViewController view];
+    [view2 layoutIfNeeded];
   }
 
-  v18 = [(SBHomeScreenOverlayController *)self homeAffordanceViewController];
-  [v18 setWantsToBeActiveAffordance:a3 >= 1.0];
+  homeAffordanceViewController = [(SBHomeScreenOverlayController *)self homeAffordanceViewController];
+  [homeAffordanceViewController setWantsToBeActiveAffordance:progress >= 1.0];
 
   [(SBHomeScreenOverlayController *)self _setHitTestingDisabled:[(SBHomeScreenOverlayController *)self isDismissing]];
 }
 
-- (void)cleanUpAfterSettingPresentationProgress:(double)a3
+- (void)cleanUpAfterSettingPresentationProgress:(double)progress
 {
   if (BSFloatIsZero() && ![(SBHomeScreenOverlayController *)self isOverlayAppearing])
   {
-    v4 = [(SBHomeScreenOverlayController *)self overlayViewController];
-    [v4 bs_beginAppearanceTransition:0 animated:1];
+    overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+    [overlayViewController bs_beginAppearanceTransition:0 animated:1];
 
     [(SBHomeScreenOverlayController *)self _setHidden:1];
-    v5 = [(SBHomeScreenOverlayController *)self overlayViewController];
-    [v5 bs_endAppearanceTransition:0];
+    overlayViewController2 = [(SBHomeScreenOverlayController *)self overlayViewController];
+    [overlayViewController2 bs_endAppearanceTransition:0];
   }
 
   [(SBHomeScreenOverlayController *)self setExistingAvocadoVC:0];
@@ -587,7 +587,7 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
   }
 }
 
-- (double)presentationProgressForTranslation:(double)a3 initialPresentationProgress:(double)a4 fromLeading:(BOOL)a5
+- (double)presentationProgressForTranslation:(double)translation initialPresentationProgress:(double)progress fromLeading:(BOOL)leading
 {
   [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   [(SBHomeScreenOverlayController *)self contentWidth];
@@ -595,19 +595,19 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
   return result;
 }
 
-- (double)finalPresentationProgressForTranslation:(double)a3 velocity:(double)a4 initialPresentationProgress:(double)a5 fromLeading:(BOOL)a6
+- (double)finalPresentationProgressForTranslation:(double)translation velocity:(double)velocity initialPresentationProgress:(double)progress fromLeading:(BOOL)leading
 {
-  v6 = a6;
+  leadingCopy = leading;
   v11 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
-  v12 = a4 / 1000.0 * *MEMORY[0x277D76EC0] / (1.0 - *MEMORY[0x277D76EC0]) + a3;
+  v12 = velocity / 1000.0 * *MEMORY[0x277D76EC0] / (1.0 - *MEMORY[0x277D76EC0]) + translation;
   [(SBHomeScreenOverlayController *)self contentWidth];
   v14 = v12 / v13;
-  if (v11 == v6)
+  if (v11 == leadingCopy)
   {
     v14 = -v14;
   }
 
-  v15 = v14 + a5 <= 0.5;
+  v15 = v14 + progress <= 0.5;
   result = 0.0;
   if (!v15)
   {
@@ -617,42 +617,42 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
   return result;
 }
 
-- (void)addHomeScreenOverlayObserver:(id)a3
+- (void)addHomeScreenOverlayObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_dismissLevelAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)_dismissLevelAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = [(SBHomeScreenOverlayController *)self dismissalDelegate];
-  v7 = v6;
-  if (!v6 || ([v6 interceptDismissalGestureForOverlayController:self] & 1) == 0)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  dismissalDelegate = [(SBHomeScreenOverlayController *)self dismissalDelegate];
+  v7 = dismissalDelegate;
+  if (!dismissalDelegate || ([dismissalDelegate interceptDismissalGestureForOverlayController:self] & 1) == 0)
   {
-    [(SBHomeScreenOverlayController *)self dismissAnimated:v4 completionHandler:v8];
+    [(SBHomeScreenOverlayController *)self dismissAnimated:animatedCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v8 = [v7 isFromLeading];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  isFromLeading = [overlayViewController isFromLeading];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -660,17 +660,17 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
   v9[3] = &unk_2783C4260;
   v9[4] = self;
   [(SBHomeScreenOverlayController *)self _enumerateHomeScreenOverlayObserversUsingBlock:v9];
-  [(SBHomeScreenOverlayController *)self setPresentationProgress:v8 fromLeading:0 interactive:v4 animated:v6 completionHandler:0.0];
+  [(SBHomeScreenOverlayController *)self setPresentationProgress:isFromLeading fromLeading:0 interactive:animatedCopy animated:handlerCopy completionHandler:0.0];
 }
 
-- (void)dismissUsingViewControllerTransitionCoordinator:(id)a3
+- (void)dismissUsingViewControllerTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v6 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v7 = [v6 isFromLeading];
+  coordinatorCopy = coordinator;
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  overlayViewController2 = [(SBHomeScreenOverlayController *)self overlayViewController];
+  isFromLeading = [overlayViewController2 isFromLeading];
 
-  [v5 setFromLeading:v7];
+  [overlayViewController setFromLeading:isFromLeading];
   [(SBHomeScreenOverlayController *)self presentationProgress];
   v9 = v8;
   if ((BSFloatEqualToFloat() & 1) == 0)
@@ -680,7 +680,7 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
     v14[1] = 3221225472;
     v14[2] = __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitionCoordinator___block_invoke;
     v14[3] = &unk_2783A9488;
-    v15 = v5;
+    v15 = overlayViewController;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitionCoordinator___block_invoke_2;
@@ -688,8 +688,8 @@ uint64_t __108__SBHomeScreenOverlayController_setPresentationProgress_fromLeadin
     v10[4] = self;
     v11 = v15;
     v12 = v9;
-    v13 = v7;
-    [v4 animateAlongsideTransition:v14 completion:v10];
+    v13 = isFromLeading;
+    [coordinatorCopy animateAlongsideTransition:v14 completion:v10];
   }
 }
 
@@ -716,14 +716,14 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   return [v2 _enumerateHomeScreenOverlayObserversUsingBlock:v4];
 }
 
-- (void)addReasonToDisableDismissGestureRecognizer:(id)a3
+- (void)addReasonToDisableDismissGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  recognizerCopy = recognizer;
+  v10 = recognizerCopy;
+  if (!recognizerCopy)
   {
     [(SBHomeScreenOverlayController *)a2 addReasonToDisableDismissGestureRecognizer:?];
-    v5 = 0;
+    recognizerCopy = 0;
   }
 
   reasonsToDisablePanGestureRecognizer = self->_reasonsToDisablePanGestureRecognizer;
@@ -733,11 +733,11 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
     v8 = self->_reasonsToDisablePanGestureRecognizer;
     self->_reasonsToDisablePanGestureRecognizer = v7;
 
-    v5 = v10;
+    recognizerCopy = v10;
     reasonsToDisablePanGestureRecognizer = self->_reasonsToDisablePanGestureRecognizer;
   }
 
-  v9 = [v5 copy];
+  v9 = [recognizerCopy copy];
   [(NSCountedSet *)reasonsToDisablePanGestureRecognizer addObject:v9];
 
   if ([(NSCountedSet *)self->_reasonsToDisablePanGestureRecognizer count])
@@ -746,17 +746,17 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   }
 }
 
-- (void)removeReasonToDisableDismissGestureRecognizer:(id)a3
+- (void)removeReasonToDisableDismissGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  recognizerCopy = recognizer;
+  v7 = recognizerCopy;
+  if (!recognizerCopy)
   {
     [(SBHomeScreenOverlayController *)a2 removeReasonToDisableDismissGestureRecognizer:?];
-    v5 = 0;
+    recognizerCopy = 0;
   }
 
-  [(NSCountedSet *)self->_reasonsToDisablePanGestureRecognizer removeObject:v5];
+  [(NSCountedSet *)self->_reasonsToDisablePanGestureRecognizer removeObject:recognizerCopy];
   if (![(NSCountedSet *)self->_reasonsToDisablePanGestureRecognizer count])
   {
     reasonsToDisablePanGestureRecognizer = self->_reasonsToDisablePanGestureRecognizer;
@@ -766,10 +766,10 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   }
 }
 
-- (void)_enumerateHomeScreenOverlayObserversUsingBlock:(id)a3
+- (void)_enumerateHomeScreenOverlayObserversUsingBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -790,7 +790,7 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -801,20 +801,20 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   }
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3
+- (void)_setDisplayLayoutElementActive:(BOOL)active
 {
   displayLayoutAssertion = self->_displayLayoutAssertion;
-  if (a3)
+  if (active)
   {
     if (!displayLayoutAssertion)
     {
-      v5 = [(SBHomeScreenOverlayController *)self delegate];
-      if (v5)
+      delegate = [(SBHomeScreenOverlayController *)self delegate];
+      if (delegate)
       {
-        v6 = [(SBHomeScreenOverlayController *)self activeSidebarViewController];
-        if (v6)
+        activeSidebarViewController = [(SBHomeScreenOverlayController *)self activeSidebarViewController];
+        if (activeSidebarViewController)
         {
-          v7 = [v5 homeScreenOverlayController:self displayLayoutIdentifierForSidebarViewController:v6];
+          v7 = [delegate homeScreenOverlayController:self displayLayoutIdentifierForSidebarViewController:activeSidebarViewController];
         }
 
         else
@@ -845,14 +845,14 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
       }
 
       v13 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v9];
-      v14 = [(SBHomeScreenOverlayController *)self window];
-      [v14 level];
+      window = [(SBHomeScreenOverlayController *)self window];
+      [window level];
       [v13 setLevel:v15];
 
       [v13 setFillsDisplayBounds:1];
       [v13 setLayoutRole:3];
-      v16 = [MEMORY[0x277D0AAA0] sharedInstance];
-      v17 = [v16 addElement:v13];
+      mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
+      v17 = [mEMORY[0x277D0AAA0] addElement:v13];
       v18 = self->_displayLayoutAssertion;
       self->_displayLayoutAssertion = v17;
     }
@@ -866,70 +866,70 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   }
 }
 
-- (void)_setHitTestingDisabled:(BOOL)a3
+- (void)_setHitTestingDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   window = self->_window;
   if (window)
   {
-    v5 = window;
+    view = window;
   }
 
   else
   {
-    v5 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController view];
+    view = [(SBHomeScreenOverlayViewController *)self->_overlayViewController view];
   }
 
-  v6 = v5;
-  if (v3)
+  v6 = view;
+  if (disabledCopy)
   {
-    [(SBFWindow *)v5 endEditing:0];
-    v5 = v6;
+    [(SBFWindow *)view endEditing:0];
+    view = v6;
   }
 
-  [(SBFWindow *)v5 bs_setHitTestingDisabled:v3];
+  [(SBFWindow *)view bs_setHitTestingDisabled:disabledCopy];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   window = self->_window;
   if (window)
   {
-    v6 = window;
+    view = window;
   }
 
   else
   {
-    v6 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController view];
+    view = [(SBHomeScreenOverlayViewController *)self->_overlayViewController view];
   }
 
-  v7 = v6;
-  if ([(SBFWindow *)v6 isHidden]!= v3)
+  v7 = view;
+  if ([(SBFWindow *)view isHidden]!= hiddenCopy)
   {
-    [(SBFWindow *)v7 setHidden:v3];
+    [(SBFWindow *)v7 setHidden:hiddenCopy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__SBHomeScreenOverlayController__setHidden___block_invoke;
     v8[3] = &unk_2783C42D8;
     v8[4] = self;
-    v9 = v3;
+    v9 = hiddenCopy;
     [(SBHomeScreenOverlayController *)self _enumerateHomeScreenOverlayObserversUsingBlock:v8];
   }
 }
 
-- (void)dismissTapGestureUpdated:(id)a3
+- (void)dismissTapGestureUpdated:(id)updated
 {
-  v10 = a3;
-  if ([v10 state] == 3)
+  updatedCopy = updated;
+  if ([updatedCopy state] == 3)
   {
-    v4 = [(SBHomeScreenOverlayController *)self overlayViewController];
-    v5 = [v4 view];
-    [v10 locationInView:v5];
+    overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+    view = [overlayViewController view];
+    [updatedCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    [v4 contentRect];
+    [overlayViewController contentRect];
     v12.x = v7;
     v12.y = v9;
     if (!CGRectContainsPoint(v13, v12))
@@ -941,8 +941,8 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
 
 - (double)_directionCoefficient
 {
-  v2 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  if ([v2 isFromLeading])
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  if ([overlayViewController isFromLeading])
   {
     v3 = 1.0;
   }
@@ -955,37 +955,37 @@ uint64_t __81__SBHomeScreenOverlayController_dismissUsingViewControllerTransitio
   return v3;
 }
 
-- (void)dismissScrollGestureUpdated:(id)a3
+- (void)dismissScrollGestureUpdated:(id)updated
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  updatedCopy = updated;
+  state = [updatedCopy state];
+  if ((state - 3) < 3)
   {
-    [(SBHomeScreenOverlayController *)self _dismissScrollGestureEndedOrCancelled:v7];
+    [(SBHomeScreenOverlayController *)self _dismissScrollGestureEndedOrCancelled:updatedCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = updatedCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
 LABEL_7:
-    [(SBHomeScreenOverlayController *)self _dismissScrollGestureChanged:v7];
+    [(SBHomeScreenOverlayController *)self _dismissScrollGestureChanged:updatedCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = updatedCopy;
   if (v5)
   {
-    [(SBHomeScreenOverlayController *)self _dismissScrollGestureBegan:v7];
+    [(SBHomeScreenOverlayController *)self _dismissScrollGestureBegan:updatedCopy];
     goto LABEL_7;
   }
 
 LABEL_9:
 }
 
-- (void)_dismissScrollGestureBegan:(id)a3
+- (void)_dismissScrollGestureBegan:(id)began
 {
   [(SBHomeScreenOverlayController *)self setDismissing:0];
   v5[0] = MEMORY[0x277D85DD0];
@@ -998,69 +998,69 @@ LABEL_9:
   self->_initialPresentationProgress = v4;
 }
 
-- (void)_dismissScrollGestureChanged:(id)a3
+- (void)_dismissScrollGestureChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v6 = [v5 isFromLeading];
+  changedCopy = changed;
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  isFromLeading = [overlayViewController isFromLeading];
 
-  v7 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v8 = [v7 view];
-  [v4 translationInView:v8];
+  overlayViewController2 = [(SBHomeScreenOverlayController *)self overlayViewController];
+  view = [overlayViewController2 view];
+  [changedCopy translationInView:view];
   v10 = v9;
 
-  [(SBHomeScreenOverlayController *)self presentationProgressForTranslation:v6 initialPresentationProgress:v10 fromLeading:self->_initialPresentationProgress];
+  [(SBHomeScreenOverlayController *)self presentationProgressForTranslation:isFromLeading initialPresentationProgress:v10 fromLeading:self->_initialPresentationProgress];
 
-  [(SBHomeScreenOverlayController *)self setPresentationProgress:v6 fromLeading:1 interactive:1 animated:0 completionHandler:?];
+  [(SBHomeScreenOverlayController *)self setPresentationProgress:isFromLeading fromLeading:1 interactive:1 animated:0 completionHandler:?];
 }
 
-- (void)_dismissScrollGestureEndedOrCancelled:(id)a3
+- (void)_dismissScrollGestureEndedOrCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v6 = [v5 isFromLeading];
+  cancelledCopy = cancelled;
+  overlayViewController = [(SBHomeScreenOverlayController *)self overlayViewController];
+  isFromLeading = [overlayViewController isFromLeading];
 
-  v7 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v8 = [v7 view];
-  [v4 velocityInView:v8];
+  overlayViewController2 = [(SBHomeScreenOverlayController *)self overlayViewController];
+  view = [overlayViewController2 view];
+  [cancelledCopy velocityInView:view];
   v10 = v9;
 
-  v11 = [(SBHomeScreenOverlayController *)self overlayViewController];
-  v12 = [v11 view];
-  [v4 translationInView:v12];
+  overlayViewController3 = [(SBHomeScreenOverlayController *)self overlayViewController];
+  view2 = [overlayViewController3 view];
+  [cancelledCopy translationInView:view2];
   v14 = v13;
 
-  [(SBHomeScreenOverlayController *)self finalPresentationProgressForTranslation:v6 velocity:v14 initialPresentationProgress:v10 fromLeading:self->_initialPresentationProgress];
+  [(SBHomeScreenOverlayController *)self finalPresentationProgressForTranslation:isFromLeading velocity:v14 initialPresentationProgress:v10 fromLeading:self->_initialPresentationProgress];
 
   [SBHomeScreenOverlayController animatePresentationProgress:"animatePresentationProgress:withGestureLiftOffVelocity:completionHandler:" withGestureLiftOffVelocity:0 completionHandler:?];
 }
 
 - (id)testScrollView
 {
-  v2 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController contentViewController];
-  v3 = [v2 avocadoViewController];
+  contentViewController = [(SBHomeScreenOverlayViewController *)self->_overlayViewController contentViewController];
+  avocadoViewController = [contentViewController avocadoViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 _majorScrollView];
+    _majorScrollView = [avocadoViewController _majorScrollView];
   }
 
   else
   {
-    v4 = 0;
+    _majorScrollView = 0;
   }
 
-  return v4;
+  return _majorScrollView;
 }
 
-- (BOOL)interceptDismissalGestureForOverlayController:(id)a3
+- (BOOL)interceptDismissalGestureForOverlayController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_dismissalDelegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained interceptDismissalGestureForOverlayController:v4];
+    v7 = [WeakRetained interceptDismissalGestureForOverlayController:controllerCopy];
   }
 
   else
@@ -1071,43 +1071,43 @@ LABEL_9:
   return v7;
 }
 
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->super.isa + qword_21F8A8A98[a4 - 1]);
+    return *(&self->super.isa + qword_21F8A8A98[type - 1]);
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHomeScreenOverlayController *)self dismissTapGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  dismissTapGestureRecognizer = [(SBHomeScreenOverlayController *)self dismissTapGestureRecognizer];
 
-  if (v8 == v7)
+  if (dismissTapGestureRecognizer == recognizerCopy)
   {
-    v10 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController leadingSidebarViewController];
-    v11 = [v10 viewIfLoaded];
+    leadingSidebarViewController = [(SBHomeScreenOverlayViewController *)self->_overlayViewController leadingSidebarViewController];
+    viewIfLoaded = [leadingSidebarViewController viewIfLoaded];
 
-    v12 = [(SBHomeScreenOverlayViewController *)self->_overlayViewController trailingSidebarViewController];
-    v13 = [v12 viewIfLoaded];
+    trailingSidebarViewController = [(SBHomeScreenOverlayViewController *)self->_overlayViewController trailingSidebarViewController];
+    viewIfLoaded2 = [trailingSidebarViewController viewIfLoaded];
 
-    [v6 locationInView:v11];
+    [touchCopy locationInView:viewIfLoaded];
     v15 = v14;
     v17 = v16;
-    [v6 locationInView:v13];
+    [touchCopy locationInView:viewIfLoaded2];
     v19 = v18;
     v21 = v20;
     v9 = 0;
-    if (!v11 || ([v11 frame], v23.x = v15, v23.y = v17, !CGRectContainsPoint(v25, v23)))
+    if (!viewIfLoaded || ([viewIfLoaded frame], v23.x = v15, v23.y = v17, !CGRectContainsPoint(v25, v23)))
     {
-      if (!v13 || ([v13 frame], v24.x = v19, v24.y = v21, !CGRectContainsPoint(v26, v24)))
+      if (!viewIfLoaded2 || ([viewIfLoaded2 frame], v24.x = v19, v24.y = v21, !CGRectContainsPoint(v26, v24)))
       {
         v9 = 1;
       }
@@ -1122,23 +1122,23 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = [a3 type];
-  if (v4 == 27)
+  type = [event type];
+  if (type == 27)
   {
     v5 = 1;
     [(SBHomeScreenOverlayController *)self _dismissLevelAnimated:1 completionHandler:0];
     return v5;
   }
 
-  if (v4 == 25)
+  if (type == 25)
   {
     [(SBHomeScreenOverlayController *)self dismissAnimated:0 completionHandler:0];
     return 0;
   }
 
-  if (v4 != 12)
+  if (type != 12)
   {
     return 0;
   }
@@ -1148,86 +1148,86 @@ LABEL_9:
   return v5;
 }
 
-- (id)backgroundViewForEditingDoneButtonForHomeScreenOverlayViewController:(id)a3
+- (id)backgroundViewForEditingDoneButtonForHomeScreenOverlayViewController:(id)controller
 {
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  v5 = [v4 backgroundViewForEditingDoneButtonForHomeScreenOverlayController:self];
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  v5 = [delegate backgroundViewForEditingDoneButtonForHomeScreenOverlayController:self];
 
   return v5;
 }
 
-- (void)homeScreenOverlayViewWantsToEndEditing:(id)a3
+- (void)homeScreenOverlayViewWantsToEndEditing:(id)editing
 {
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  [v4 homeScreenOverlayWantsToEndEditing:self];
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  [delegate homeScreenOverlayWantsToEndEditing:self];
 }
 
-- (void)homeScreenOverlayViewWantsWidgetEditingViewControllerPresented:(id)a3
+- (void)homeScreenOverlayViewWantsWidgetEditingViewControllerPresented:(id)presented
 {
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  [v4 homeScreenOverlayWantsWidgetEditingViewControllerPresented:self];
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  [delegate homeScreenOverlayWantsWidgetEditingViewControllerPresented:self];
 }
 
-- (BOOL)showsAddWidgetButtonWhileEditingForHomeScreenOverlayViewController:(id)a3
+- (BOOL)showsAddWidgetButtonWhileEditingForHomeScreenOverlayViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  LOBYTE(v3) = [v4 showsAddWidgetButtonWhileEditingForHomeScreenOverlayController:v3];
+  selfCopy = self;
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  LOBYTE(selfCopy) = [delegate showsAddWidgetButtonWhileEditingForHomeScreenOverlayController:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)showsDoneButtonWhileEditingForHomeScreenOverlayViewController:(id)a3
+- (BOOL)showsDoneButtonWhileEditingForHomeScreenOverlayViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  LOBYTE(v3) = [v4 showsDoneButtonWhileEditingForHomeScreenOverlayController:v3];
+  selfCopy = self;
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  LOBYTE(selfCopy) = [delegate showsDoneButtonWhileEditingForHomeScreenOverlayController:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEditingForHomeScreenOverlayViewController:(id)a3
+- (BOOL)isEditingForHomeScreenOverlayViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(SBHomeScreenOverlayController *)self delegate];
-  LOBYTE(v3) = [v4 isEditingForHomeScreenOverlayController:v3];
+  selfCopy = self;
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  LOBYTE(selfCopy) = [delegate isEditingForHomeScreenOverlayController:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)homeScreenOverlayViewController:(id)a3 setSuppressesEditingStateForListView:(BOOL)a4
+- (void)homeScreenOverlayViewController:(id)controller setSuppressesEditingStateForListView:(BOOL)view
 {
-  v4 = a4;
-  v6 = [(SBHomeScreenOverlayController *)self delegate];
-  [v6 homeScreenOverlayController:self setSuppressesEditingStateForListView:v4];
+  viewCopy = view;
+  delegate = [(SBHomeScreenOverlayController *)self delegate];
+  [delegate homeScreenOverlayController:self setSuppressesEditingStateForListView:viewCopy];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBHomeScreenOverlayController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHomeScreenOverlayController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHomeScreenOverlayController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHomeScreenOverlayController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHomeScreenOverlayController *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHomeScreenOverlayController *)self succinctDescriptionBuilder];
   [(SBHomeScreenOverlayController *)self presentationProgress];
-  v5 = [v4 appendFloat:@"presentationProgress" withName:?];
-  v6 = [v4 appendBool:-[SBHomeScreenOverlayController isDismissing](self withName:{"isDismissing"), @"isDismissing"}];
+  v5 = [succinctDescriptionBuilder appendFloat:@"presentationProgress" withName:?];
+  v6 = [succinctDescriptionBuilder appendBool:-[SBHomeScreenOverlayController isDismissing](self withName:{"isDismissing"), @"isDismissing"}];
   [(SBFWindow *)self->_window level];
-  v7 = [v4 appendFloat:@"windowLevel" withName:?];
+  v7 = [succinctDescriptionBuilder appendFloat:@"windowLevel" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBFOverlayDismissalDelegate)dismissalDelegate

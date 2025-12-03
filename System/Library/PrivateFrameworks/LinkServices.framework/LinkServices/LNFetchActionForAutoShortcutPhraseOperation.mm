@@ -1,32 +1,32 @@
 @interface LNFetchActionForAutoShortcutPhraseOperation
-- (LNFetchActionForAutoShortcutPhraseOperation)initWithConnectionInterface:(id)a3 autoShortcutPhrase:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchActionForAutoShortcutPhraseOperation)initWithConnectionInterface:(id)interface autoShortcutPhrase:(id)phrase queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchActionForAutoShortcutPhraseOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchActionForAutoShortcutPhraseOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchActionForAutoShortcutPhraseOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchActionForAutoShortcutPhraseOperation *)self result];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    result = [(LNFetchActionForAutoShortcutPhraseOperation *)self result];
+    v7 = [(LNConnectionOperation *)self validatingResult:result error:errorCopy];
 
-    v8 = [(LNFetchActionForAutoShortcutPhraseOperation *)self completionHandler];
-    v9 = [(LNFetchActionForAutoShortcutPhraseOperation *)self result];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchActionForAutoShortcutPhraseOperation *)self completionHandler];
+    result2 = [(LNFetchActionForAutoShortcutPhraseOperation *)self result];
+    (completionHandler2)[2](completionHandler2, result2, v7);
 
     [(LNFetchActionForAutoShortcutPhraseOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchActionForAutoShortcutPhraseOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -38,19 +38,19 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNFetchActionForAutoShortcutPhraseOperation *)self autoShortcutPhrase];
+    autoShortcutPhrase = [(LNFetchActionForAutoShortcutPhraseOperation *)self autoShortcutPhrase];
     *buf = 138412290;
-    v11 = v4;
+    v11 = autoShortcutPhrase;
   }
 
-  v5 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v6 = [(LNFetchActionForAutoShortcutPhraseOperation *)self autoShortcutPhrase];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  autoShortcutPhrase2 = [(LNFetchActionForAutoShortcutPhraseOperation *)self autoShortcutPhrase];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__LNFetchActionForAutoShortcutPhraseOperation_start__block_invoke;
   v8[3] = &unk_1E74B1958;
   v8[4] = self;
-  [v5 fetchActionForAutoShortcutPhrase:v6 completionHandler:v8];
+  [connectionInterface fetchActionForAutoShortcutPhrase:autoShortcutPhrase2 completionHandler:v8];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -67,24 +67,24 @@ void __52__LNFetchActionForAutoShortcutPhraseOperation_start__block_invoke(uint6
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchActionForAutoShortcutPhraseOperation)initWithConnectionInterface:(id)a3 autoShortcutPhrase:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchActionForAutoShortcutPhraseOperation)initWithConnectionInterface:(id)interface autoShortcutPhrase:(id)phrase queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  interfaceCopy = interface;
+  phraseCopy = phrase;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v12)
+    if (phraseCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"autoShortcutPhrase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"autoShortcutPhrase"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -92,37 +92,37 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v12)
+  if (!phraseCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNFetchActionForAutoShortcutPhraseOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v26.receiver = self;
   v26.super_class = LNFetchActionForAutoShortcutPhraseOperation;
-  v16 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:v15 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_9185];
+  v16 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_9185];
 
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [phraseCopy copy];
     autoShortcutPhrase = v16->_autoShortcutPhrase;
     v16->_autoShortcutPhrase = v17;
 
-    v19 = [v14 copy];
+    v19 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v19;
 

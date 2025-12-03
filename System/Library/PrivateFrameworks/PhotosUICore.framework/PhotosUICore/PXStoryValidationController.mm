@@ -1,26 +1,26 @@
 @interface PXStoryValidationController
-+ (id)_validateTimeline:(id)a3 progress:(id)a4;
-- (PXStoryValidationController)initWithObservableModel:(id)a3;
-- (PXStoryValidationController)initWithViewModel:(id)a3;
++ (id)_validateTimeline:(id)timeline progress:(id)progress;
+- (PXStoryValidationController)initWithObservableModel:(id)model;
+- (PXStoryValidationController)initWithViewModel:(id)model;
 - (PXStoryViewModel)viewModel;
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
-- (void)_handleTimelineValidationError:(id)a3 progress:(id)a4;
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
+- (void)_handleTimelineValidationError:(id)error progress:(id)progress;
 - (void)_invalidateModel;
 - (void)_invalidateTimelineToValidate;
 - (void)_invalidateTimelineValidation;
 - (void)_updateModel;
 - (void)_updateTimelineToValidate;
 - (void)_updateTimelineValidation;
-- (void)configureUpdater:(id)a3;
+- (void)configureUpdater:(id)updater;
 - (void)dealloc;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsActive:(BOOL)a3;
-- (void)setModel:(id)a3;
-- (void)setTimelineToValidate:(id)a3;
-- (void)setTimelineValidationError:(id)a3;
-- (void)setTimelineValidationProgress:(id)a3;
+- (void)handleModelChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsActive:(BOOL)active;
+- (void)setModel:(id)model;
+- (void)setTimelineToValidate:(id)validate;
+- (void)setTimelineValidationError:(id)error;
+- (void)setTimelineValidationProgress:(id)progress;
 @end
 
 @implementation PXStoryValidationController
@@ -32,12 +32,12 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ModelObservationContext_38280 == a5)
+  observableCopy = observable;
+  if (ModelObservationContext_38280 == context)
   {
-    if ((a4 & 0x20000010) != 0)
+    if ((change & 0x20000010) != 0)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -52,17 +52,17 @@
   {
     v9.receiver = self;
     v9.super_class = PXStoryValidationController;
-    [(PXStoryController *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXStoryController *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = PXStoryValidationController;
   [(PXStoryController *)&v6 handleModelChange:?];
-  if ((v3 & 0x40) != 0)
+  if ((changeCopy & 0x40) != 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -73,43 +73,43 @@
   }
 }
 
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-  v5 = [(PXStoryValidationController *)self timelineValidationError];
-  [v4 setObject:v5 forKeyedSubscript:@"TimelineValidation"];
+  timelineValidationError = [(PXStoryValidationController *)self timelineValidationError];
+  [v4 setObject:timelineValidationError forKeyedSubscript:@"TimelineValidation"];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if ([(PXStoryValidationController *)self isActive])
   {
-    v6 = [(PXStoryValidationController *)self timelineToValidate];
+    timelineToValidate = [(PXStoryValidationController *)self timelineToValidate];
 
-    if (v6)
+    if (timelineToValidate)
     {
-      v7 = [(PXStoryValidationController *)self timelineValidationProgress];
+      timelineValidationProgress = [(PXStoryValidationController *)self timelineValidationProgress];
 
-      if (v7)
+      if (timelineValidationProgress)
       {
         v8 = @"Validating…";
       }
 
       else
       {
-        v9 = [(PXStoryValidationController *)self timelineValidationError];
+        timelineValidationError = [(PXStoryValidationController *)self timelineValidationError];
 
         v10 = objc_alloc(MEMORY[0x1E696AEC0]);
         v11 = v10;
-        if (v9)
+        if (timelineValidationError)
         {
-          v12 = [(PXStoryValidationController *)self timelineValidationError];
-          v13 = PXStoryErrorDetailsDescription(v12);
+          timelineValidationError2 = [(PXStoryValidationController *)self timelineValidationError];
+          v13 = PXStoryErrorDetailsDescription(timelineValidationError2);
           v8 = [v11 initWithFormat:@"❌ %@", v13];
         }
 
@@ -139,13 +139,13 @@
   return v14;
 }
 
-- (void)_handleTimelineValidationError:(id)a3 progress:(id)a4
+- (void)_handleTimelineValidationError:(id)error progress:(id)progress
 {
-  v6 = a3;
-  if (([a4 isCancelled] & 1) == 0)
+  errorCopy = error;
+  if (([progress isCancelled] & 1) == 0)
   {
     [(PXStoryValidationController *)self setTimelineValidationProgress:0];
-    [(PXStoryValidationController *)self setTimelineValidationError:v6];
+    [(PXStoryValidationController *)self setTimelineValidationError:errorCopy];
     [(PXStoryValidationController *)self setTimelineValidationCount:[(PXStoryValidationController *)self timelineValidationCount]+ 1];
   }
 }
@@ -154,22 +154,22 @@
 {
   if ([(PXStoryValidationController *)self isActive])
   {
-    v3 = [(PXStoryValidationController *)self timelineToValidate];
-    if (v3)
+    timelineToValidate = [(PXStoryValidationController *)self timelineToValidate];
+    if (timelineToValidate)
     {
       v4 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
       objc_initWeak(&location, self);
-      v5 = [(PXStoryValidationController *)self workQueue];
+      workQueue = [(PXStoryValidationController *)self workQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __56__PXStoryValidationController__updateTimelineValidation__block_invoke;
       block[3] = &unk_1E7748228;
       v6 = v4;
       v8 = v6;
-      v9 = v3;
-      v10 = self;
+      v9 = timelineToValidate;
+      selfCopy = self;
       objc_copyWeak(&v11, &location);
-      dispatch_async(v5, block);
+      dispatch_async(workQueue, block);
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -212,21 +212,21 @@ void __56__PXStoryValidationController__updateTimelineValidation__block_invoke_2
 
 - (void)_invalidateTimelineValidation
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimelineValidation];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimelineValidation];
 }
 
 - (void)_updateTimelineToValidate
 {
-  v6 = [(PXStoryValidationController *)self model];
+  model = [(PXStoryValidationController *)self model];
   v3 = +[PXStorySettings sharedInstance];
   if ([v3 validationShouldWaitForTimelineToBeReadyToPlay])
   {
-    v4 = [v6 timelineAttributes] & 3;
+    v4 = [model timelineAttributes] & 3;
 
     if (!v4)
     {
-      v5 = 0;
+      timeline = 0;
       goto LABEL_6;
     }
   }
@@ -235,108 +235,108 @@ void __56__PXStoryValidationController__updateTimelineValidation__block_invoke_2
   {
   }
 
-  v5 = [v6 timeline];
+  timeline = [model timeline];
 LABEL_6:
-  [(PXStoryValidationController *)self setTimelineToValidate:v5];
+  [(PXStoryValidationController *)self setTimelineToValidate:timeline];
 }
 
 - (void)_invalidateTimelineToValidate
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimelineToValidate];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimelineToValidate];
 }
 
 - (void)_updateModel
 {
-  v4 = [(PXStoryValidationController *)self viewModel];
-  v3 = [v4 mainModel];
-  [(PXStoryValidationController *)self setModel:v3];
+  viewModel = [(PXStoryValidationController *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [(PXStoryValidationController *)self setModel:mainModel];
 }
 
 - (void)_invalidateModel
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateModel];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateModel];
 }
 
-- (void)setTimelineValidationError:(id)a3
+- (void)setTimelineValidationError:(id)error
 {
-  v5 = a3;
-  if (self->_timelineValidationError != v5)
+  errorCopy = error;
+  if (self->_timelineValidationError != errorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_timelineValidationError, a3);
-    v6 = [(PXStoryValidationController *)self errorReporter];
-    [v6 setError:self->_timelineValidationError forComponent:@"TimelineValidation"];
+    v7 = errorCopy;
+    objc_storeStrong(&self->_timelineValidationError, error);
+    errorReporter = [(PXStoryValidationController *)self errorReporter];
+    [errorReporter setError:self->_timelineValidationError forComponent:@"TimelineValidation"];
 
-    v5 = v7;
+    errorCopy = v7;
   }
 }
 
-- (void)setTimelineValidationProgress:(id)a3
+- (void)setTimelineValidationProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   timelineValidationProgress = self->_timelineValidationProgress;
-  if (timelineValidationProgress != v5)
+  if (timelineValidationProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)timelineValidationProgress cancel];
-    objc_storeStrong(&self->_timelineValidationProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_timelineValidationProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setTimelineToValidate:(id)a3
+- (void)setTimelineToValidate:(id)validate
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_timelineToValidate != v5)
+  validateCopy = validate;
+  v6 = validateCopy;
+  if (self->_timelineToValidate != validateCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = validateCopy;
+    v7 = [(PXStoryTimeline *)validateCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_timelineToValidate, a3);
+      objc_storeStrong(&self->_timelineToValidate, validate);
       [(PXStoryValidationController *)self _invalidateTimelineValidation];
       v6 = v8;
     }
   }
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   model = self->_model;
-  if (model != v5)
+  if (model != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXStoryModel *)model unregisterChangeObserver:self context:ModelObservationContext_38280];
-    objc_storeStrong(&self->_model, a3);
+    objc_storeStrong(&self->_model, model);
     [(PXStoryModel *)self->_model registerChangeObserver:self context:ModelObservationContext_38280];
     [(PXStoryValidationController *)self _invalidateTimelineToValidate];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryValidationController *)self _invalidateTimelineValidation];
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryValidationController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateModel, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateTimelineToValidate];
-  [v3 addUpdateSelector:sel__updateTimelineValidation];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateModel, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateTimelineToValidate];
+  [updaterCopy addUpdateSelector:sel__updateTimelineValidation];
 }
 
 - (void)dealloc
@@ -347,37 +347,37 @@ LABEL_6:
   [(PXStoryValidationController *)&v3 dealloc];
 }
 
-- (PXStoryValidationController)initWithViewModel:(id)a3
+- (PXStoryValidationController)initWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v24.receiver = self;
   v24.super_class = PXStoryValidationController;
-  v5 = [(PXStoryController *)&v24 initWithObservableModel:v4];
+  v5 = [(PXStoryController *)&v24 initWithObservableModel:modelCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_viewModel, v4);
+    v7 = objc_storeWeak(&v5->_viewModel, modelCopy);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __49__PXStoryValidationController_initWithViewModel___block_invoke;
     v22[3] = &unk_1E774B048;
     v8 = v6;
     v23 = v8;
-    [v4 performChanges:v22];
+    [modelCopy performChanges:v22];
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, QOS_CLASS_UTILITY, 0);
-    v14 = dispatch_queue_create(v11, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     workQueue = v8->_workQueue;
     v8->_workQueue = v14;
 
     WeakRetained = objc_loadWeakRetained(&v6->_viewModel);
-    v17 = [WeakRetained errorReporter];
+    errorReporter = [WeakRetained errorReporter];
     errorReporter = v8->_errorReporter;
-    v8->_errorReporter = v17;
+    v8->_errorReporter = errorReporter;
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -390,20 +390,20 @@ LABEL_6:
   return v6;
 }
 
-- (PXStoryValidationController)initWithObservableModel:(id)a3
+- (PXStoryValidationController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryValidationController.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryValidationController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryValidationController.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryValidationController initWithObservableModel:]"}];
 
   abort();
 }
 
-+ (id)_validateTimeline:(id)a3 progress:(id)a4
++ (id)_validateTimeline:(id)timeline progress:(id)progress
 {
-  v4 = a3;
+  timelineCopy = timeline;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v4 size];
+  [timelineCopy size];
   PXRectWithOriginAndSize();
 }
 

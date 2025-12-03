@@ -1,13 +1,13 @@
 @interface PLModelMigrationActionStaged_FixupExistingCloudSharedAlbumInvitationRecord
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationActionStaged_FixupExistingCloudSharedAlbumInvitationRecord
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v54 = 0;
   v55 = &v54;
   v56 = 0x3032000000;
@@ -28,7 +28,7 @@
   [v9 setFetchBatchSize:100];
   v11 = v55 + 5;
   obj = v55[5];
-  v12 = [v6 executeFetchRequest:v9 error:&obj];
+  v12 = [contextCopy executeFetchRequest:v9 error:&obj];
   objc_storeStrong(v11, obj);
   if (v12)
   {
@@ -42,7 +42,7 @@
     v48 = &v50;
     v14 = v13;
     v46 = v14;
-    v15 = [v6 enumerateWithIncrementalSaveUsingObjects:v12 withBlock:v45];
+    v15 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v12 withBlock:v45];
     if (v15)
     {
       if (!v55[5])
@@ -54,8 +54,8 @@
 
         if (v17)
         {
-          v18 = [(PLModelMigrationActionCore *)self logger];
-          v19 = v18 == 0;
+          logger = [(PLModelMigrationActionCore *)self logger];
+          v19 = logger == 0;
 
           if (v19)
           {
@@ -137,8 +137,8 @@
 
     if (v25)
     {
-      v26 = [(PLModelMigrationActionCore *)self logger];
-      v27 = v26 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v27 = logger2 == 0;
 
       if (v27)
       {
@@ -213,9 +213,9 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v55[5];
+    *error = v55[5];
   }
 
   v41 = v51[3];

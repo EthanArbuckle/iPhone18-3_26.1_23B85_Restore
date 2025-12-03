@@ -1,20 +1,20 @@
 @interface _TVStackViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)contentSize;
 - (_TVStackViewFlowLayout)init;
-- (double)_computeShowcaseFactorForContentOffset:(CGPoint)a3;
-- (id)_oldLayoutAttributesForItemAtIndexPath:(id)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (double)_computeShowcaseFactorForContentOffset:(CGPoint)offset;
+- (id)_oldLayoutAttributesForItemAtIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)_prepareSectionMetrics;
 - (void)finalizeCollectionViewUpdates;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)setSupplementaryCellLayoutAttributes:(id)a3;
+- (void)setSupplementaryCellLayoutAttributes:(id)attributes;
 @end
 
 @implementation _TVStackViewFlowLayout
@@ -33,10 +33,10 @@
   return result;
 }
 
-- (void)setSupplementaryCellLayoutAttributes:(id)a3
+- (void)setSupplementaryCellLayoutAttributes:(id)attributes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [attributes copy];
   supplementaryCellLayoutAttributes = self->_supplementaryCellLayoutAttributes;
   self->_supplementaryCellLayoutAttributes = v4;
 
@@ -74,8 +74,8 @@
 
 - (void)prepareLayout
 {
-  v3 = [(_TVStackViewFlowLayout *)self collectionView];
-  obj = [v3 delegate];
+  collectionView = [(_TVStackViewFlowLayout *)self collectionView];
+  obj = [collectionView delegate];
 
   WeakRetained = objc_loadWeakRetained(&self->_stackViewDelegateFlowLayout);
   if (WeakRetained != obj)
@@ -94,20 +94,20 @@
   }
 
   showcaseFactor = self->_showcaseFactor;
-  v7 = [(_TVStackViewFlowLayout *)self collectionView];
-  [v7 contentOffset];
+  collectionView2 = [(_TVStackViewFlowLayout *)self collectionView];
+  [collectionView2 contentOffset];
   [(_TVStackViewFlowLayout *)self _computeShowcaseFactorForContentOffset:?];
   self->_showcaseFactor = v8;
 
   if (showcaseFactor != self->_showcaseFactor && self->_stackViewDelegateFlowLayoutFlags.hasShowcaseFactorDidChange)
   {
     v9 = objc_loadWeakRetained(&self->_stackViewDelegateFlowLayout);
-    v10 = [(_TVStackViewFlowLayout *)self collectionView];
-    [v9 collectionView:v10 showcaseFactorDidChangeForLayout:self];
+    collectionView3 = [(_TVStackViewFlowLayout *)self collectionView];
+    [v9 collectionView:collectionView3 showcaseFactorDidChangeForLayout:self];
   }
 
-  v11 = [(_TVStackViewFlowLayout *)self collectionView];
-  [v11 bounds];
+  collectionView4 = [(_TVStackViewFlowLayout *)self collectionView];
+  [collectionView4 bounds];
   Width = CGRectGetWidth(v19);
 
   if (self->_lastLayoutWidth != Width)
@@ -117,34 +117,34 @@
     self->_sectionCellLayoutAttributes = 0;
   }
 
-  v14 = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
+  sectionCellLayoutAttributes = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
 
-  if (!v14)
+  if (!sectionCellLayoutAttributes)
   {
-    v15 = [(_TVStackViewFlowLayout *)self onPrepareLayout];
+    onPrepareLayout = [(_TVStackViewFlowLayout *)self onPrepareLayout];
 
-    if (v15)
+    if (onPrepareLayout)
     {
-      v16 = [(_TVStackViewFlowLayout *)self onPrepareLayout];
-      (v16)[2](v16, self);
+      onPrepareLayout2 = [(_TVStackViewFlowLayout *)self onPrepareLayout];
+      (onPrepareLayout2)[2](onPrepareLayout2, self);
     }
 
     [(_TVStackViewFlowLayout *)self _prepareSectionMetrics];
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  [(_TVStackViewFlowLayout *)self _computeShowcaseFactorForContentOffset:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_TVStackViewFlowLayout *)self _computeShowcaseFactorForContentOffset:change.origin.x, change.origin.y, change.size.width, change.size.height];
   v5 = v4;
   [(_TVStackViewFlowLayout *)self showcaseFactor];
   return v5 != v6;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = change.origin.y;
+  x = change.origin.x;
   v6 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
   [(_TVStackViewFlowLayout *)self _computeShowcaseFactorForContentOffset:x, y];
   v8 = v7;
@@ -157,16 +157,16 @@
   return v6;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  if (([v4 invalidateEverything] & 1) != 0 || objc_msgSend(v4, "invalidateDataSourceCounts"))
+  contextCopy = context;
+  if (([contextCopy invalidateEverything] & 1) != 0 || objc_msgSend(contextCopy, "invalidateDataSourceCounts"))
   {
-    if ([v4 invalidateDataSourceCounts])
+    if ([contextCopy invalidateDataSourceCounts])
     {
-      v5 = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
+      sectionCellLayoutAttributes = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
       oldSectionCellLayoutAttributes = self->_oldSectionCellLayoutAttributes;
-      self->_oldSectionCellLayoutAttributes = v5;
+      self->_oldSectionCellLayoutAttributes = sectionCellLayoutAttributes;
     }
 
     [(_TVStackViewFlowLayout *)self setSectionCellLayoutAttributes:0];
@@ -175,7 +175,7 @@
     [(_TVStackViewFlowLayout *)self setSupplementaryCellLayoutAttributes:0];
   }
 
-  else if ([v4 invalidateSectionMetrics])
+  else if ([contextCopy invalidateSectionMetrics])
   {
     [(_TVStackViewFlowLayout *)self setSectionCellLayoutAttributes:0];
     [(_TVStackViewFlowLayout *)self setContentSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
@@ -183,33 +183,33 @@
 
   v7.receiver = self;
   v7.super_class = _TVStackViewFlowLayout;
-  [(_TVStackViewFlowLayout *)&v7 invalidateLayoutWithContext:v4];
+  [(_TVStackViewFlowLayout *)&v7 invalidateLayoutWithContext:contextCopy];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v43 = *MEMORY[0x277D85DE8];
-  if (CGRectGetMinY(a3) == 0.0)
+  if (CGRectGetMinY(rect) == 0.0)
   {
-    v8 = [(_TVStackViewFlowLayout *)self collectionView];
-    [v8 contentInset];
+    collectionView = [(_TVStackViewFlowLayout *)self collectionView];
+    [collectionView contentInset];
     v10 = v9;
 
     y = -v10;
     height = height + v10;
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [(_TVStackViewFlowLayout *)self supplementaryCellLayoutAttributes];
-  v13 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  supplementaryCellLayoutAttributes = [(_TVStackViewFlowLayout *)self supplementaryCellLayoutAttributes];
+  v13 = [supplementaryCellLayoutAttributes countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v13)
   {
     v14 = v13;
@@ -220,7 +220,7 @@
       {
         if (*v38 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(supplementaryCellLayoutAttributes);
         }
 
         v17 = *(*(&v37 + 1) + 8 * i);
@@ -235,11 +235,11 @@
         v45.size.height = height;
         if (CGRectIntersectsRect(v45, v47))
         {
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v14 = [supplementaryCellLayoutAttributes countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v14);
@@ -249,8 +249,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
-  v23 = [v22 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  sectionCellLayoutAttributes = [(_TVStackViewFlowLayout *)self sectionCellLayoutAttributes];
+  v23 = [sectionCellLayoutAttributes countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v23)
   {
     v24 = v23;
@@ -261,7 +261,7 @@
       {
         if (*v34 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(sectionCellLayoutAttributes);
         }
 
         v27 = *(*(&v33 + 1) + 8 * j);
@@ -276,25 +276,25 @@
         v46.size.height = height;
         if (CGRectIntersectsRect(v46, v48))
         {
-          [v11 addObject:v27];
+          [array addObject:v27];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v24 = [sectionCellLayoutAttributes countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v24);
   }
 
-  return v11;
+  return array;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 == [(_TVStackViewFlowLayout *)self supplementaryCellSection])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(_TVStackViewFlowLayout *)self supplementaryCellSection])
   {
     [(_TVStackViewFlowLayout *)self supplementaryCellLayoutAttributes];
   }
@@ -322,8 +322,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 indexPath];
-        v12 = [v11 isEqual:v4];
+        indexPath = [v10 indexPath];
+        v12 = [indexPath isEqual:pathCopy];
 
         if (v12)
         {
@@ -347,22 +347,22 @@ LABEL_14:
   return v7;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v39 = self;
+  updatesCopy = updates;
+  selfCopy = self;
   v45.receiver = self;
   v45.super_class = _TVStackViewFlowLayout;
-  [(_TVStackViewFlowLayout *)&v45 prepareForCollectionViewUpdates:v4];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
-  v6 = [MEMORY[0x277CCAB58] indexSet];
-  v40 = [MEMORY[0x277CBEB38] dictionary];
+  [(_TVStackViewFlowLayout *)&v45 prepareForCollectionViewUpdates:updatesCopy];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = v4;
+  v7 = updatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v8)
   {
@@ -381,19 +381,19 @@ LABEL_14:
         v12 = *(*(&v41 + 1) + 8 * v11);
         if (![v12 updateAction])
         {
-          v13 = [v12 indexPathAfterUpdate];
-          v14 = [v13 section];
-          v15 = v5;
+          indexPathAfterUpdate = [v12 indexPathAfterUpdate];
+          section = [indexPathAfterUpdate section];
+          v15 = indexSet;
           goto LABEL_10;
         }
 
         if ([v12 updateAction] == 1)
         {
-          v13 = [v12 indexPathBeforeUpdate];
-          v14 = [v13 section];
-          v15 = v6;
+          indexPathAfterUpdate = [v12 indexPathBeforeUpdate];
+          section = [indexPathAfterUpdate section];
+          v15 = indexSet2;
 LABEL_10:
-          [v15 addIndex:v14];
+          [v15 addIndex:section];
 LABEL_11:
 
           goto LABEL_12;
@@ -402,12 +402,12 @@ LABEL_11:
         if ([v12 updateAction] == 3)
         {
           v16 = MEMORY[0x277CCABB0];
-          v13 = [v12 indexPathBeforeUpdate];
-          v17 = [v16 numberWithInteger:{objc_msgSend(v13, "section")}];
+          indexPathAfterUpdate = [v12 indexPathBeforeUpdate];
+          v17 = [v16 numberWithInteger:{objc_msgSend(indexPathAfterUpdate, "section")}];
           v18 = MEMORY[0x277CCABB0];
-          v19 = [v12 indexPathAfterUpdate];
-          v20 = [v18 numberWithInteger:{objc_msgSend(v19, "section")}];
-          [v40 setObject:v17 forKeyedSubscript:v20];
+          indexPathAfterUpdate2 = [v12 indexPathAfterUpdate];
+          v20 = [v18 numberWithInteger:{objc_msgSend(indexPathAfterUpdate2, "section")}];
+          [dictionary setObject:v17 forKeyedSubscript:v20];
 
           goto LABEL_11;
         }
@@ -424,41 +424,41 @@ LABEL_12:
     while (v21);
   }
 
-  v22 = [objc_alloc(MEMORY[0x277D1B060]) initWithAddedIndexes:v5 removedIndexes:v6 movedIndexesByNewIndex:v40 updatedIndexesByNewIndex:0];
-  changeSet = v39->_changeSet;
-  v39->_changeSet = v22;
+  v22 = [objc_alloc(MEMORY[0x277D1B060]) initWithAddedIndexes:indexSet removedIndexes:indexSet2 movedIndexesByNewIndex:dictionary updatedIndexesByNewIndex:0];
+  changeSet = selfCopy->_changeSet;
+  selfCopy->_changeSet = v22;
 
-  v24 = [(_TVStackViewFlowLayout *)v39 collectionView];
-  [v24 contentOffset];
-  v39->_initialContentOffset.x = v25;
-  v39->_initialContentOffset.y = v26;
+  collectionView = [(_TVStackViewFlowLayout *)selfCopy collectionView];
+  [collectionView contentOffset];
+  selfCopy->_initialContentOffset.x = v25;
+  selfCopy->_initialContentOffset.y = v26;
 
-  v27 = [(_TVStackViewFlowLayout *)v39 collectionView];
-  v28 = [v27 dataSource];
-  v29 = [(_TVStackViewFlowLayout *)v39 collectionView];
-  v30 = [v28 numberOfSectionsInCollectionView:v29];
+  collectionView2 = [(_TVStackViewFlowLayout *)selfCopy collectionView];
+  dataSource = [collectionView2 dataSource];
+  collectionView3 = [(_TVStackViewFlowLayout *)selfCopy collectionView];
+  v30 = [dataSource numberOfSectionsInCollectionView:collectionView3];
 
-  v31 = [v5 count];
-  v39->_isFullReplace = v31 == v30 - 1;
+  v31 = [indexSet count];
+  selfCopy->_isFullReplace = v31 == v30 - 1;
   if (v31 != v30 - 1)
   {
-    v32 = [MEMORY[0x277CCAB58] indexSet];
-    v33 = [v5 lastIndex];
-    if (v33 != 0x7FFFFFFFFFFFFFFFLL && v33 == v30 - 2)
+    indexSet3 = [MEMORY[0x277CCAB58] indexSet];
+    lastIndex = [indexSet lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL && lastIndex == v30 - 2)
     {
       v34 = v30 - 3;
       do
       {
-        [v32 addIndex:v34 + 1];
-        v35 = [v5 indexLessThanIndex:v34 + 1];
+        [indexSet3 addIndex:v34 + 1];
+        v35 = [indexSet indexLessThanIndex:v34 + 1];
       }
 
       while (v35 != 0x7FFFFFFFFFFFFFFFLL && v34-- == v35);
     }
 
-    v37 = [v32 copy];
-    indexesAddedAtEnd = v39->_indexesAddedAtEnd;
-    v39->_indexesAddedAtEnd = v37;
+    v37 = [indexSet3 copy];
+    indexesAddedAtEnd = selfCopy->_indexesAddedAtEnd;
+    selfCopy->_indexesAddedAtEnd = v37;
   }
 }
 
@@ -478,28 +478,28 @@ LABEL_12:
   self->_indexesAddedAtEnd = 0;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[IKChangeSet oldIndexForNewIndex:](self->_changeSet, "oldIndexForNewIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[IKChangeSet oldIndexForNewIndex:](self->_changeSet, "oldIndexForNewIndex:", [pathCopy section]);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(_TVStackViewFlowLayout *)self layoutAttributesForItemAtIndexPath:v4];
+    v6 = [(_TVStackViewFlowLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
     v7 = [v6 copy];
 
     [v7 setAlpha:0.0];
-    if (!self->_isFullReplace && !-[NSIndexSet containsIndex:](self->_indexesAddedAtEnd, "containsIndex:", [v4 section]))
+    if (!self->_isFullReplace && !-[NSIndexSet containsIndex:](self->_indexesAddedAtEnd, "containsIndex:", [pathCopy section]))
     {
       [v7 frame];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(_TVStackViewFlowLayout *)self collectionView];
-      v17 = [v16 effectiveUserInterfaceLayoutDirection];
+      collectionView = [(_TVStackViewFlowLayout *)self collectionView];
+      effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
 
-      if (v17)
+      if (effectiveUserInterfaceLayoutDirection)
       {
         v18 = -1.0;
       }
@@ -509,12 +509,12 @@ LABEL_12:
         v18 = 1.0;
       }
 
-      v19 = [(_TVStackViewFlowLayout *)self collectionView];
-      [v19 bounds];
+      collectionView2 = [(_TVStackViewFlowLayout *)self collectionView];
+      [collectionView2 bounds];
       v21 = v9 + v18 * v20;
 
-      v22 = [(_TVStackViewFlowLayout *)self collectionView];
-      [v22 contentOffset];
+      collectionView3 = [(_TVStackViewFlowLayout *)self collectionView];
+      [collectionView3 contentOffset];
       v24 = v23;
 
       v25 = v11 - (v24 - self->_initialContentOffset.y);
@@ -542,7 +542,7 @@ LABEL_12:
       v29 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
     }
 
-    v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "section")}];
+    v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     [v7 frame];
     v32 = v31;
     [v7 frame];
@@ -564,14 +564,14 @@ LABEL_12:
   return v7;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[IKChangeSet newIndexForOldIndex:](self->_changeSet, "newIndexForOldIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[IKChangeSet newIndexForOldIndex:](self->_changeSet, "newIndexForOldIndex:", [pathCopy section]);
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(_TVStackViewFlowLayout *)self _oldLayoutAttributesForItemAtIndexPath:v4];
+    v6 = [(_TVStackViewFlowLayout *)self _oldLayoutAttributesForItemAtIndexPath:pathCopy];
     v7 = [v6 copy];
 
     [v7 setAlpha:0.0];
@@ -579,7 +579,7 @@ LABEL_12:
     {
       CGAffineTransformMakeScale(&v21, 1.0, 0.1);
       [v7 setTransform:&v21];
-      if (-[IKChangeSet oldIndexForNewIndex:](self->_changeSet, "oldIndexForNewIndex:", [v4 section]) != 0x7FFFFFFFFFFFFFFFLL)
+      if (-[IKChangeSet oldIndexForNewIndex:](self->_changeSet, "oldIndexForNewIndex:", [pathCopy section]) != 0x7FFFFFFFFFFFFFFFLL)
       {
         [v7 center];
         v9 = v8;
@@ -599,7 +599,7 @@ LABEL_12:
   v14 = TVMLKitLogObject;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "section")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = @"NA";
@@ -630,10 +630,10 @@ LABEL_12:
   return v7;
 }
 
-- (id)_oldLayoutAttributesForItemAtIndexPath:(id)a3
+- (id)_oldLayoutAttributesForItemAtIndexPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -653,8 +653,8 @@ LABEL_12:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 indexPath];
-        v11 = [v10 isEqual:v4];
+        indexPath = [v9 indexPath];
+        v11 = [indexPath isEqual:pathCopy];
 
         if (v11)
         {
@@ -681,12 +681,12 @@ LABEL_11:
 - (void)_prepareSectionMetrics
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVStackViewFlowLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
-  [v3 bounds];
+  collectionView = [(_TVStackViewFlowLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
+  [collectionView bounds];
   v32 = v5;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
-  if (v4 < 1)
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:numberOfSections];
+  if (numberOfSections < 1)
   {
     v9 = 0.0;
     v8 = 0.0;
@@ -705,8 +705,8 @@ LABEL_11:
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v10 = [(_TVStackViewFlowLayout *)self supplementaryCellLayoutAttributes];
-        v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        supplementaryCellLayoutAttributes = [(_TVStackViewFlowLayout *)self supplementaryCellLayoutAttributes];
+        v11 = [supplementaryCellLayoutAttributes countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v11)
         {
           v12 = v11;
@@ -717,7 +717,7 @@ LABEL_11:
             {
               if (*v34 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(supplementaryCellLayoutAttributes);
               }
 
               [*(*(&v33 + 1) + 8 * i) frame];
@@ -728,7 +728,7 @@ LABEL_11:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+            v12 = [supplementaryCellLayoutAttributes countByEnumeratingWithState:&v33 objects:v37 count:16];
           }
 
           while (v12);
@@ -738,20 +738,20 @@ LABEL_11:
       else
       {
         WeakRetained = objc_loadWeakRetained(&self->_stackViewDelegateFlowLayout);
-        [WeakRetained collectionView:v3 layout:self insetForSectionAtIndex:v7];
+        [WeakRetained collectionView:collectionView layout:self insetForSectionAtIndex:v7];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
 
         v25 = objc_loadWeakRetained(&self->_stackViewDelegateFlowLayout);
-        [v25 collectionView:v3 layout:self sizeForSectionAtIndex:v7];
+        [v25 collectionView:collectionView layout:self sizeForSectionAtIndex:v7];
         v27 = v26;
         v29 = v28;
 
         v30 = v24 + v20 + v27;
-        v10 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v7];
-        v31 = [(UICollectionViewLayoutAttributes *)_TVStackViewFlowLayoutAttributes layoutAttributesForCellWithIndexPath:v10];
+        supplementaryCellLayoutAttributes = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v7];
+        v31 = [(UICollectionViewLayoutAttributes *)_TVStackViewFlowLayoutAttributes layoutAttributesForCellWithIndexPath:supplementaryCellLayoutAttributes];
         [v31 setZIndex:1];
         [v31 setFrame:{floor((v32 - v30) * 0.5), v9 + v18, v27, v29}];
         [(_TVStackViewFlowLayout *)self showcaseFactor];
@@ -768,20 +768,20 @@ LABEL_11:
       ++v7;
     }
 
-    while (v7 != v4);
+    while (v7 != numberOfSections);
   }
 
   [(_TVStackViewFlowLayout *)self setContentSize:v8, v9];
   [(_TVStackViewFlowLayout *)self setSectionCellLayoutAttributes:v6];
 }
 
-- (double)_computeShowcaseFactorForContentOffset:(CGPoint)a3
+- (double)_computeShowcaseFactorForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
+  y = offset.y;
   [(_TVStackViewFlowLayout *)self showcaseHeight];
   v6 = v5;
-  v7 = [(_TVStackViewFlowLayout *)self collectionView];
-  [v7 contentInset];
+  collectionView = [(_TVStackViewFlowLayout *)self collectionView];
+  [collectionView contentInset];
   v9 = v8;
 
   result = 0.0;

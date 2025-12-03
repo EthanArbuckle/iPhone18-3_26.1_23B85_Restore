@@ -1,16 +1,16 @@
 @interface MPStoreItemImportTrackData
-+ (id)_importPropertiesDictFromImportMetadataDict:(id)a3;
-- (MPStoreItemImportTrackData)initWithImportElements:(id)a3;
-- (id)_associatedElementForPropertyDict:(id)a3;
++ (id)_importPropertiesDictFromImportMetadataDict:(id)dict;
+- (MPStoreItemImportTrackData)initWithImportElements:(id)elements;
+- (id)_associatedElementForPropertyDict:(id)dict;
 - (id)parsedStoreItemsImportProperties;
 @end
 
 @implementation MPStoreItemImportTrackData
 
-- (id)_associatedElementForPropertyDict:(id)a3
+- (id)_associatedElementForPropertyDict:(id)dict
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictCopy = dict;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -31,23 +31,23 @@
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:{&unk_1F15097F0, v22}];
-        v12 = [v11 longLongValue];
-        v13 = [v10 storeItemID];
+        v11 = [dictCopy objectForKeyedSubscript:{&unk_1F15097F0, v22}];
+        longLongValue = [v11 longLongValue];
+        storeItemID = [v10 storeItemID];
 
-        if (v12 != v13)
+        if (longLongValue != storeItemID)
         {
-          v14 = [v4 objectForKeyedSubscript:&unk_1F1509808];
-          v15 = [v14 longLongValue];
-          v16 = [v10 storeItemID];
+          v14 = [dictCopy objectForKeyedSubscript:&unk_1F1509808];
+          longLongValue2 = [v14 longLongValue];
+          storeItemID2 = [v10 storeItemID];
 
-          if (v15 != v16)
+          if (longLongValue2 != storeItemID2)
           {
-            v17 = [v4 objectForKeyedSubscript:&unk_1F1509820];
-            v18 = [v17 longLongValue];
-            v19 = [v10 storeItemID];
+            v17 = [dictCopy objectForKeyedSubscript:&unk_1F1509820];
+            longLongValue3 = [v17 longLongValue];
+            storeItemID3 = [v10 storeItemID];
 
-            if (v18 != v19)
+            if (longLongValue3 != storeItemID3)
             {
               continue;
             }
@@ -83,8 +83,8 @@ LABEL_14:
 {
   v11.receiver = self;
   v11.super_class = MPStoreItemImportTrackData;
-  v3 = [(ML3StoreItemTrackData *)&v11 parsedStoreItemsImportProperties];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  parsedStoreItemsImportProperties = [(ML3StoreItemTrackData *)&v11 parsedStoreItemsImportProperties];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(parsedStoreItemsImportProperties, "count")}];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_invoke;
@@ -92,7 +92,7 @@ LABEL_14:
   v9[4] = self;
   v5 = v4;
   v10 = v5;
-  [v3 enumerateObjectsUsingBlock:v9];
+  [parsedStoreItemsImportProperties enumerateObjectsUsingBlock:v9];
   v6 = v10;
   v7 = v5;
 
@@ -120,16 +120,16 @@ void __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_in
   [*(a1 + 40) addObject:v5];
 }
 
-- (MPStoreItemImportTrackData)initWithImportElements:(id)a3
+- (MPStoreItemImportTrackData)initWithImportElements:(id)elements
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  elementsCopy = elements;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = elementsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -145,14 +145,14 @@ void __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_in
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) storeItem];
-        if (!v12)
+        storeItem = [*(*(&v19 + 1) + 8 * v11) storeItem];
+        if (!storeItem)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v13 handleFailureInMethod:a2 object:self file:@"MPStoreItemImportTrackData.m" lineNumber:25 description:@"we should have a complete set of metadata here."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MPStoreItemImportTrackData.m" lineNumber:25 description:@"we should have a complete set of metadata here."];
         }
 
-        [v6 addObject:v12];
+        [v6 addObject:storeItem];
 
         ++v11;
       }
@@ -177,7 +177,7 @@ void __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_in
   return v14;
 }
 
-+ (id)_importPropertiesDictFromImportMetadataDict:(id)a3
++ (id)_importPropertiesDictFromImportMetadataDict:(id)dict
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13[0] = @"MPStoreItemLibraryImportMetadataKeyAlbumLikedState";
@@ -185,9 +185,9 @@ void __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_in
   v14[0] = &unk_1F15097C0;
   v14[1] = &unk_1F15097D8;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  dictCopy = dict;
   v5 = [v3 dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictCopy, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__MPStoreItemImportTrackData__importPropertiesDictFromImportMetadataDict___block_invoke;
@@ -195,7 +195,7 @@ void __62__MPStoreItemImportTrackData_parsedStoreItemsImportProperties__block_in
   v11[4] = v5;
   v7 = v6;
   v12 = v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v11];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;

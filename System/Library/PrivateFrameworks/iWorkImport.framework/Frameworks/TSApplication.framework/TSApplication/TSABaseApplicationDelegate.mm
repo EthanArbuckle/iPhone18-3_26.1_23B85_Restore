@@ -7,19 +7,19 @@
 - (BOOL)hasApplicationBadgeCount;
 - (TSABaseApplicationDelegate)init;
 - (TSADocumentRoot)documentRoot;
-- (id)existingNestedDocumentPathForPath:(id)a3;
-- (id)iCloudURLFromDocumentShareURLComponents:(id)a3;
+- (id)existingNestedDocumentPathForPath:(id)path;
+- (id)iCloudURLFromDocumentShareURLComponents:(id)components;
 - (void)createStringsProviders;
-- (void)persistenceError:(id)a3;
+- (void)persistenceError:(id)error;
 - (void)registerDrawableInfoClassMapping;
-- (void)setApplicationBadgeCount:(unint64_t)a3 forCategory:(id)a4;
+- (void)setApplicationBadgeCount:(unint64_t)count forCategory:(id)category;
 @end
 
 @implementation TSABaseApplicationDelegate
 
 + (TSABaseApplicationDelegate)sharedDelegate
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSABaseApplicationDelegate;
   v2 = objc_msgSendSuper2(&v4, sel_sharedDelegate);
 
@@ -76,18 +76,18 @@
   objc_exception_throw(v23);
 }
 
-- (void)persistenceError:(id)a3
+- (void)persistenceError:(id)error
 {
   v3 = MEMORY[0x277D81150];
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  errorCopy = error;
   v8 = objc_msgSend_stringWithUTF8String_(v4, v6, "[TSABaseApplicationDelegate persistenceError:]", v7);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSABaseApplicationDelegate.m", v10);
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v17 = objc_msgSend_domain(v5, v14, v15, v16);
-  v21 = objc_msgSend_code(v5, v18, v19, v20);
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v3, v22, v8, v11, 127, 0, "Got persistence error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v13, v17, v21, v5);
+  v17 = objc_msgSend_domain(errorCopy, v14, v15, v16);
+  v21 = objc_msgSend_code(errorCopy, v18, v19, v20);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v3, v22, v8, v11, 127, 0, "Got persistence error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", v13, v17, v21, errorCopy);
 
   v26 = MEMORY[0x277D81150];
 
@@ -96,7 +96,7 @@
 
 + (TSAApplicationPropertiesProvider)tsa_sharedPropertiesProvider
 {
-  v4 = objc_msgSend_sharedPropertiesProvider(a1, a2, v2, v3);
+  v4 = objc_msgSend_sharedPropertiesProvider(self, a2, v2, v3);
   v5 = objc_opt_class();
   if (v4)
   {
@@ -113,7 +113,7 @@
 
 + (TSAApplicationICloudPreferences)tsa_sharedICloudPreferences
 {
-  v4 = objc_msgSend_sharedICloudPreferences(a1, a2, v2, v3);
+  v4 = objc_msgSend_sharedICloudPreferences(self, a2, v2, v3);
   v5 = objc_opt_class();
   if (v4)
   {
@@ -145,23 +145,23 @@
   objc_msgSend_registerClassForUnarchiving_(v14, v15, v16, v17);
 }
 
-- (id)iCloudURLFromDocumentShareURLComponents:(id)a3
+- (id)iCloudURLFromDocumentShareURLComponents:(id)components
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  componentsCopy = components;
   v4 = objc_opt_class();
   v8 = objc_msgSend_tsa_sharedPropertiesProvider(v4, v5, v6, v7);
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v12 = objc_msgSend_queryItems(v3, v9, v10, v11);
+  v12 = objc_msgSend_queryItems(componentsCopy, v9, v10, v11);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v90, v94, 16);
   if (v14)
   {
     v18 = v14;
     v87 = v8;
-    v88 = v3;
+    v88 = componentsCopy;
     v89 = 0;
     v19 = 0;
     v20 = 0;
@@ -229,7 +229,7 @@
         objc_msgSend_setFragment_(v57, v65, v64, v66);
 
         v73 = objc_msgSend_array(MEMORY[0x277CBEB18], v67, v68, v69);
-        v3 = v88;
+        componentsCopy = v88;
         if (v89)
         {
           v74 = objc_alloc(MEMORY[0x277CCAD18]);
@@ -248,13 +248,13 @@
         goto LABEL_29;
       }
 
-      v3 = v88;
+      componentsCopy = v88;
     }
 
     else
     {
       v8 = v87;
-      v3 = v88;
+      componentsCopy = v88;
     }
   }
 
@@ -276,19 +276,19 @@ LABEL_29:
   return v85;
 }
 
-- (id)existingNestedDocumentPathForPath:(id)a3
+- (id)existingNestedDocumentPathForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
   v8 = objc_msgSend_tsa_sharedPropertiesProvider(v4, v5, v6, v7);
   v12 = objc_msgSend_tangierEditingFormatDocumentType(v8, v9, v10, v11);
-  v15 = objc_msgSend_tsu_pathConformsToUTI_(v3, v13, v12, v14);
+  v15 = objc_msgSend_tsu_pathConformsToUTI_(pathCopy, v13, v12, v14);
 
   if (v15)
   {
     v19 = objc_msgSend_compatibilityDelegate(v8, v16, v17, v18);
     v23 = objc_msgSend_nestedDocumentFilename(v19, v20, v21, v22);
-    v26 = objc_msgSend_stringByAppendingPathComponent_(v3, v24, v23, v25);
+    v26 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v24, v23, v25);
 
     v30 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v27, v28, v29);
     LOBYTE(v23) = objc_msgSend_fileExistsAtPath_(v30, v31, v26, v32);
@@ -305,10 +305,10 @@ LABEL_5:
   return v26;
 }
 
-- (void)setApplicationBadgeCount:(unint64_t)a3 forCategory:(id)a4
+- (void)setApplicationBadgeCount:(unint64_t)count forCategory:(id)category
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  categoryCopy = category;
   v9 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v6, v7, v8);
   v12 = objc_msgSend_objectForKey_(v9, v10, @"TSAApplicationBadgeDefaultsKey", v11);
   if (v12)
@@ -322,8 +322,8 @@ LABEL_5:
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v18, a3, v19);
-  objc_msgSend_setObject_forKeyedSubscript_(v17, v21, v20, v5);
+  v20 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v18, count, v19);
+  objc_msgSend_setObject_forKeyedSubscript_(v17, v21, v20, categoryCopy);
 
   objc_msgSend_setObject_forKey_(v9, v22, v17, @"TSAApplicationBadgeDefaultsKey");
   v41 = 0u;

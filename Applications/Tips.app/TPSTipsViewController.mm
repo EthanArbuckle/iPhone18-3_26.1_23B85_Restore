@@ -3,83 +3,83 @@
 - (BOOL)eligibleToPlayVideo;
 - (BOOL)isSearchViewControllerPresented;
 - (BOOL)updateBarButtonsForTip;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (TPSTipsViewControllerDelegate)delegate;
 - (id)_currentViewMethod;
-- (id)activityViewControllerForTip:(id)a3;
+- (id)activityViewControllerForTip:(id)tip;
 - (id)cellForCurrentTip;
 - (id)centerCell;
 - (id)centerCellIndexPath;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)createSearchController;
 - (id)searchBarNavButton;
-- (void)_adjustScrollViewPagingDecelerationForSize:(CGSize)a3;
-- (void)_delayedIncreaseCountViewForCurrentTip:(id)a3;
-- (void)_logTimeSpentBeforeCurrentTip:(id)a3;
-- (void)analyticsIncreaseCountViewForCurrentTipDelay:(id)a3;
+- (void)_adjustScrollViewPagingDecelerationForSize:(CGSize)size;
+- (void)_delayedIncreaseCountViewForCurrentTip:(id)tip;
+- (void)_logTimeSpentBeforeCurrentTip:(id)tip;
+- (void)analyticsIncreaseCountViewForCurrentTipDelay:(id)delay;
 - (void)applicationDidBecomeActive;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillTerminate;
 - (void)cancelAssetsPrefetch;
-- (void)cellContentLoaded:(id)a3;
+- (void)cellContentLoaded:(id)loaded;
 - (void)commonInit;
-- (void)contentLayoutChanged:(id)a3 userInfo:(id)a4;
+- (void)contentLayoutChanged:(id)changed userInfo:(id)info;
 - (void)continueVideoForCurrentTip;
 - (void)createViews;
 - (void)dealloc;
-- (void)ensureCurrentTipPositionWithViewSize:(CGSize)a3;
-- (void)initCellAppearanceWithTrait:(id)a3 size:(CGSize)a4;
-- (void)logAppIntent:(id)a3 actionDirection:(id)a4;
-- (void)networkStateDidChange:(BOOL)a3;
-- (void)pageControlLongPressedForHUD:(id)a3 withText:(id)a4;
-- (void)pageControlPageChanged:(id)a3;
+- (void)ensureCurrentTipPositionWithViewSize:(CGSize)size;
+- (void)initCellAppearanceWithTrait:(id)trait size:(CGSize)size;
+- (void)logAppIntent:(id)intent actionDirection:(id)direction;
+- (void)networkStateDidChange:(BOOL)change;
+- (void)pageControlLongPressedForHUD:(id)d withText:(id)text;
+- (void)pageControlPageChanged:(id)changed;
 - (void)playVideoIfNeeded;
 - (void)prefetchMediaPrefetchDelay;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)reconfigureAllCollectionViewItems;
 - (void)registerTraitChanges;
 - (void)removeErrorView;
 - (void)resetSearchController;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchWithSearchQuery:(id)a3;
-- (void)setAllowBookmarks:(BOOL)a3;
-- (void)setAllowPaging:(BOOL)a3;
-- (void)setCurrentTip:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setShouldDisplayNavigationTitle:(BOOL)a3;
-- (void)setShouldHoldOffVideo:(BOOL)a3;
-- (void)setTips:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchWithSearchQuery:(id)query;
+- (void)setAllowBookmarks:(BOOL)bookmarks;
+- (void)setAllowPaging:(BOOL)paging;
+- (void)setCurrentTip:(id)tip;
+- (void)setDelegate:(id)delegate;
+- (void)setShouldDisplayNavigationTitle:(BOOL)title;
+- (void)setShouldHoldOffVideo:(BOOL)video;
+- (void)setTips:(id)tips;
 - (void)setupSearch;
 - (void)setupSearchViewModel;
-- (void)shareCurrentTip:(id)a3;
-- (void)showErrorView:(id)a3;
+- (void)shareCurrentTip:(id)tip;
+- (void)showErrorView:(id)view;
 - (void)stopVideoForCurrentTip;
-- (void)tipCollectionViewCell:(id)a3 linkTappedForURL:(id)a4;
-- (void)tipCollectionViewCell:(id)a3 showSafariViewForURL:(id)a4;
-- (void)tipCollectionViewCell:(id)a3 showTryItModeForURL:(id)a4;
-- (void)tipCollectionViewCell:(id)a3 showUserGuideWithIdentifier:(id)a4 topicId:(id)a5;
-- (void)tipCollectionViewCell:(id)a3 showVideoForURL:(id)a4;
-- (void)tipCollectionViewCellContentLayoutChanged:(id)a3;
-- (void)tipCollectionViewCellHandleTripleTapInternalGesture:(id)a3;
-- (void)tipCollectionViewCellSharedTipTapped:(id)a3;
-- (void)toggleSavedTip:(id)a3;
-- (void)tryItViewControllerDidDismissWithTryItViewController:(id)a3;
+- (void)tipCollectionViewCell:(id)cell linkTappedForURL:(id)l;
+- (void)tipCollectionViewCell:(id)cell showSafariViewForURL:(id)l;
+- (void)tipCollectionViewCell:(id)cell showTryItModeForURL:(id)l;
+- (void)tipCollectionViewCell:(id)cell showUserGuideWithIdentifier:(id)identifier topicId:(id)id;
+- (void)tipCollectionViewCell:(id)cell showVideoForURL:(id)l;
+- (void)tipCollectionViewCellContentLayoutChanged:(id)changed;
+- (void)tipCollectionViewCellHandleTripleTapInternalGesture:(id)gesture;
+- (void)tipCollectionViewCellSharedTipTapped:(id)tapped;
+- (void)toggleSavedTip:(id)tip;
+- (void)tryItViewControllerDidDismissWithTryItViewController:(id)controller;
 - (void)updateBarMaterial;
-- (void)updateContentBackgroundWithTraitCollection:(id)a3;
+- (void)updateContentBackgroundWithTraitCollection:(id)collection;
 - (void)updateNavigationBarButtons;
-- (void)updateNavigationTitle:(id)a3;
-- (void)updatePageControlToTip:(id)a3;
+- (void)updateNavigationTitle:(id)title;
+- (void)updatePageControlToTip:(id)tip;
 - (void)updatePagingScrollState;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)updateSearchResultsPresentationIfNeeded;
-- (void)updateTipForCell:(id)a3 startVideo:(BOOL)a4;
+- (void)updateTipForCell:(id)cell startVideo:(BOOL)video;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TPSTipsViewController
@@ -136,8 +136,8 @@
   navigationTitleTextColor = self->_navigationTitleTextColor;
   self->_navigationTitleTextColor = v11;
 
-  v13 = [(TPSTipsViewController *)self navigationItem];
-  [v13 setLargeTitleDisplayMode:2];
+  navigationItem = [(TPSTipsViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   self->_currentPagingIndex = 0x7FFFFFFFFFFFFFFFLL;
   v14 = +[NSNotificationCenter defaultCenter];
@@ -146,23 +146,23 @@
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 addObserver:self selector:"applicationDidEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
 
-  v16 = [(TPSTipsViewController *)self view];
-  [v16 bounds];
+  view = [(TPSTipsViewController *)self view];
+  [view bounds];
   self->_viewSize.width = v17;
   self->_viewSize.height = v18;
 
   [(TPSTipsViewController *)self createViews];
   [(TPSTipsViewController *)self setupSearch];
-  v19 = [(TPSTipsViewController *)self view];
-  v20 = [v19 traitCollection];
-  [(TPSTipsViewController *)self updateContentBackgroundWithTraitCollection:v20];
+  view2 = [(TPSTipsViewController *)self view];
+  traitCollection = [view2 traitCollection];
+  [(TPSTipsViewController *)self updateContentBackgroundWithTraitCollection:traitCollection];
 
   [(TPSTipsViewController *)self registerTraitChanges];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -173,33 +173,33 @@
   }
 }
 
-- (void)setAllowBookmarks:(BOOL)a3
+- (void)setAllowBookmarks:(BOOL)bookmarks
 {
-  if (self->_allowBookmarks != a3)
+  if (self->_allowBookmarks != bookmarks)
   {
-    self->_allowBookmarks = a3;
+    self->_allowBookmarks = bookmarks;
     [(TPSTipsViewController *)self updateNavigationBarButtons];
   }
 }
 
-- (void)setTips:(id)a3
+- (void)setTips:(id)tips
 {
-  v5 = a3;
-  if (self->_tips != v5)
+  tipsCopy = tips;
+  if (self->_tips != tipsCopy)
   {
-    objc_storeStrong(&self->_tips, a3);
+    objc_storeStrong(&self->_tips, tips);
     v6 = [(NSArray *)self->_tips count];
-    v7 = [(TPSTipsViewController *)self pageControl];
-    [v7 setNumberOfPages:v6];
+    pageControl = [(TPSTipsViewController *)self pageControl];
+    [pageControl setNumberOfPages:v6];
 
-    v8 = [(TPSAppViewController *)self appController];
-    v9 = [v8 assetSizes];
-    v10 = [v9 tip];
+    appController = [(TPSAppViewController *)self appController];
+    assetSizes = [appController assetSizes];
+    v10 = [assetSizes tip];
 
-    v11 = [(TPSTipsViewController *)self tipSizes];
-    LOBYTE(v9) = [v11 isEqual:v10];
+    tipSizes = [(TPSTipsViewController *)self tipSizes];
+    LOBYTE(assetSizes) = [tipSizes isEqual:v10];
 
-    if ((v9 & 1) == 0)
+    if ((assetSizes & 1) == 0)
     {
       [(TPSTipsViewController *)self setTipSizes:v10];
       [(TPSTipCellAppearance *)self->_cellAppearance updateAppearanceWithSize:self->_viewSize.width, self->_viewSize.height];
@@ -223,7 +223,7 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = v5;
+    v15 = tipsCopy;
     v16 = [(NSArray *)v15 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v16)
     {
@@ -240,8 +240,8 @@
 
           v20 = *(*(&v38 + 1) + 8 * i);
           v21 = self->_tipsMap;
-          v22 = [v20 identifier];
-          [(NSMutableDictionary *)v21 setObject:v20 forKeyedSubscript:v22];
+          identifier = [v20 identifier];
+          [(NSMutableDictionary *)v21 setObject:v20 forKeyedSubscript:identifier];
         }
 
         v17 = [(NSArray *)v15 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -251,25 +251,25 @@
     }
 
     [(UICollectionView *)self->_collectionView reloadData];
-    v23 = [(TPSTipsViewController *)self currentTip];
-    v24 = [v23 identifier];
-    v25 = [(TPSTipsViewController *)self tipForTipID:v24];
+    currentTip = [(TPSTipsViewController *)self currentTip];
+    identifier2 = [currentTip identifier];
+    v25 = [(TPSTipsViewController *)self tipForTipID:identifier2];
 
     if (v25)
     {
-      v26 = [(TPSTipsViewController *)self view];
-      [v26 bounds];
+      view = [(TPSTipsViewController *)self view];
+      [view bounds];
       [(TPSTipsViewController *)self ensureCurrentTipPositionWithViewSize:v27, v28];
     }
 
     else
     {
-      v29 = [(TPSTipsViewController *)self currentTip];
-      v30 = [v29 identifier];
-      if (v30)
+      currentTip2 = [(TPSTipsViewController *)self currentTip];
+      identifier3 = [currentTip2 identifier];
+      if (identifier3)
       {
-        v31 = v30;
-        v32 = [(TPSTipsViewController *)self presentedViewController];
+        v31 = identifier3;
+        presentedViewController = [(TPSTipsViewController *)self presentedViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -300,24 +300,24 @@
   }
 }
 
-- (void)setShouldHoldOffVideo:(BOOL)a3
+- (void)setShouldHoldOffVideo:(BOOL)video
 {
-  if (self->_shouldHoldOffVideo != a3)
+  if (self->_shouldHoldOffVideo != video)
   {
-    self->_shouldHoldOffVideo = a3;
-    if (!a3)
+    self->_shouldHoldOffVideo = video;
+    if (!video)
     {
       [(TPSTipsViewController *)self playVideoIfNeeded];
     }
   }
 }
 
-- (void)setShouldDisplayNavigationTitle:(BOOL)a3
+- (void)setShouldDisplayNavigationTitle:(BOOL)title
 {
-  if (self->_shouldDisplayNavigationTitle != a3)
+  if (self->_shouldDisplayNavigationTitle != title)
   {
-    self->_shouldDisplayNavigationTitle = a3;
-    if (a3 && (titleText = self->_titleText) != 0)
+    self->_shouldDisplayNavigationTitle = title;
+    if (title && (titleText = self->_titleText) != 0)
     {
       v6 = titleText;
     }
@@ -332,22 +332,22 @@
   }
 }
 
-- (void)setAllowPaging:(BOOL)a3
+- (void)setAllowPaging:(BOOL)paging
 {
-  if (self->_allowPaging != a3)
+  if (self->_allowPaging != paging)
   {
-    self->_allowPaging = a3;
+    self->_allowPaging = paging;
     [(TPSTipsViewController *)self updatePagingScrollState];
   }
 }
 
 - (void)updatePagingScrollState
 {
-  v4 = [(TPSTipsViewController *)self allowPaging];
-  if (v4)
+  allowPaging = [(TPSTipsViewController *)self allowPaging];
+  if (allowPaging)
   {
-    v2 = [(TPSTipsViewController *)self pageControl];
-    v5 = [v2 numberOfPages] < 2;
+    pageControl = [(TPSTipsViewController *)self pageControl];
+    v5 = [pageControl numberOfPages] < 2;
   }
 
   else
@@ -355,24 +355,24 @@
     v5 = 1;
   }
 
-  v6 = [(TPSTipsViewController *)self pageControl];
-  [v6 setHidden:v5];
+  pageControl2 = [(TPSTipsViewController *)self pageControl];
+  [pageControl2 setHidden:v5];
 
-  if (v4)
+  if (allowPaging)
   {
   }
 
-  v7 = [(TPSTipsViewController *)self allowPaging];
-  v8 = [(TPSTipsViewController *)self collectionView];
-  [v8 setScrollEnabled:v7];
+  allowPaging2 = [(TPSTipsViewController *)self allowPaging];
+  collectionView = [(TPSTipsViewController *)self collectionView];
+  [collectionView setScrollEnabled:allowPaging2];
 }
 
 - (BOOL)updateBarButtonsForTip
 {
-  v3 = [(TPSTipsViewController *)self currentTip];
-  v4 = [v3 identifier];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  identifier = [currentTip identifier];
 
-  if (v4 && (-[TPSTipsViewController savedTipsManager](self, "savedTipsManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isSavedWithTipIdentifier:v4], v5, v6))
+  if (identifier && (-[TPSTipsViewController savedTipsManager](self, "savedTipsManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isSavedWithTipIdentifier:identifier], v5, v6))
   {
     v7 = [@"bookmark" stringByAppendingString:@".fill"];
   }
@@ -383,14 +383,14 @@
   }
 
   v8 = [UIImage _systemImageNamed:v7];
-  v9 = [(TPSTipsViewController *)self saveBarButton];
-  v10 = [v9 image];
-  if ([v10 isEqual:v8])
+  saveBarButton = [(TPSTipsViewController *)self saveBarButton];
+  image = [saveBarButton image];
+  if ([image isEqual:v8])
   {
-    v11 = [(TPSTipsViewController *)self saveBarButton];
-    v12 = [v11 isEnabled];
+    saveBarButton2 = [(TPSTipsViewController *)self saveBarButton];
+    isEnabled = [saveBarButton2 isEnabled];
 
-    if ((v4 != 0) == v12)
+    if ((identifier != 0) == isEnabled)
     {
       v13 = 0;
       goto LABEL_12;
@@ -401,36 +401,36 @@
   {
   }
 
-  v14 = [(TPSTipsViewController *)self saveBarButton];
+  saveBarButton3 = [(TPSTipsViewController *)self saveBarButton];
 
-  if (!v14)
+  if (!saveBarButton3)
   {
     v15 = [[UIBarButtonItem alloc] initWithImage:v8 style:0 target:self action:"toggleSavedTip:"];
     [(TPSTipsViewController *)self setSaveBarButton:v15];
   }
 
-  v16 = [(TPSTipsViewController *)self saveBarButton];
-  [v16 setImage:v8];
+  saveBarButton4 = [(TPSTipsViewController *)self saveBarButton];
+  [saveBarButton4 setImage:v8];
 
-  v17 = [(TPSTipsViewController *)self saveBarButton];
-  [v17 setEnabled:v4 != 0];
+  saveBarButton5 = [(TPSTipsViewController *)self saveBarButton];
+  [saveBarButton5 setEnabled:identifier != 0];
 
   v13 = 1;
 LABEL_12:
-  v18 = [(TPSTipsViewController *)self shareBarButton];
-  if (!v18 || (v19 = v18, -[TPSTipsViewController shareBarButton](self, "shareBarButton"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEnabled], v20, v19, (v4 != 0) != v21))
+  shareBarButton = [(TPSTipsViewController *)self shareBarButton];
+  if (!shareBarButton || (v19 = shareBarButton, -[TPSTipsViewController shareBarButton](self, "shareBarButton"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 isEnabled], v20, v19, (identifier != 0) != v21))
   {
-    v22 = [(TPSTipsViewController *)self shareBarButton];
+    shareBarButton2 = [(TPSTipsViewController *)self shareBarButton];
 
-    if (!v22)
+    if (!shareBarButton2)
     {
       v23 = [UIImage _systemImageNamed:@"square.and.arrow.up"];
       v24 = [[UIBarButtonItem alloc] initWithImage:v23 style:0 target:self action:"shareCurrentTip:"];
       [(TPSTipsViewController *)self setShareBarButton:v24];
     }
 
-    v25 = [(TPSTipsViewController *)self shareBarButton];
-    [v25 setEnabled:v4 != 0];
+    shareBarButton3 = [(TPSTipsViewController *)self shareBarButton];
+    [shareBarButton3 setEnabled:identifier != 0];
 
     v13 = 1;
   }
@@ -438,36 +438,36 @@ LABEL_12:
   return v13;
 }
 
-- (void)toggleSavedTip:(id)a3
+- (void)toggleSavedTip:(id)tip
 {
-  v4 = [(TPSTipsViewController *)self savedTipsManager];
-  v5 = [(TPSTipsViewController *)self currentTip];
-  v6 = [v5 correlationID];
-  v7 = [(TPSTipsViewController *)self currentTip];
-  v8 = [v7 identifier];
-  [v4 toggleSavedTipWithCorrelationId:v6 tipIdentifier:v8];
+  savedTipsManager = [(TPSTipsViewController *)self savedTipsManager];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  correlationID = [currentTip correlationID];
+  currentTip2 = [(TPSTipsViewController *)self currentTip];
+  identifier = [currentTip2 identifier];
+  [savedTipsManager toggleSavedTipWithCorrelationId:correlationID tipIdentifier:identifier];
 
   [(TPSTipsViewController *)self updateBarButtonsForTip];
-  v9 = [(TPSAppViewController *)self appController];
-  [v9 updateSavedTipsContent];
+  appController = [(TPSAppViewController *)self appController];
+  [appController updateSavedTipsContent];
 
-  v19 = [(TPSTipsViewController *)self currentTip];
-  v10 = [v19 identifier];
-  v11 = [(TPSTipsViewController *)self savedTipsManager];
-  v12 = [(TPSTipsViewController *)self currentTip];
-  v13 = [v12 identifier];
-  v14 = [v11 isSavedWithTipIdentifier:v13];
-  v15 = [(TPSTipsViewController *)self currentTip];
-  v16 = [v15 correlationID];
-  v17 = [(TPSTipsViewController *)self collectionID];
-  v18 = [TPSAnalyticsEventTipSaved eventWithTipID:v10 saved:v14 correlationID:v16 collectionID:v17];
+  currentTip3 = [(TPSTipsViewController *)self currentTip];
+  identifier2 = [currentTip3 identifier];
+  savedTipsManager2 = [(TPSTipsViewController *)self savedTipsManager];
+  currentTip4 = [(TPSTipsViewController *)self currentTip];
+  identifier3 = [currentTip4 identifier];
+  v14 = [savedTipsManager2 isSavedWithTipIdentifier:identifier3];
+  currentTip5 = [(TPSTipsViewController *)self currentTip];
+  correlationID2 = [currentTip5 correlationID];
+  collectionID = [(TPSTipsViewController *)self collectionID];
+  v18 = [TPSAnalyticsEventTipSaved eventWithTipID:identifier2 saved:v14 correlationID:correlationID2 collectionID:collectionID];
   [v18 log];
 }
 
 - (BOOL)canSearch
 {
-  v2 = [(TPSTipsViewController *)self searchController];
-  v3 = v2 != 0;
+  searchController = [(TPSTipsViewController *)self searchController];
+  v3 = searchController != 0;
 
   return v3;
 }
@@ -484,12 +484,12 @@ LABEL_12:
 {
   if (self->_delegateShouldShowSearch && (-[TPSTipsViewController delegate](self, "delegate"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 tipsViewControllerShouldShowSearch:self], v3, v4))
   {
-    v5 = [(TPSTipsViewController *)self searchController];
+    searchController = [(TPSTipsViewController *)self searchController];
 
-    if (!v5)
+    if (!searchController)
     {
-      v6 = [(TPSTipsViewController *)self createSearchController];
-      [(TPSTipsViewController *)self setSearchController:v6];
+      createSearchController = [(TPSTipsViewController *)self createSearchController];
+      [(TPSTipsViewController *)self setSearchController:createSearchController];
     }
   }
 
@@ -497,15 +497,15 @@ LABEL_12:
   {
     [(TPSTipsViewController *)self dismissPresentedSearchResultsViewController:0];
     [(TPSTipsViewController *)self setSearchResultsNavigationController:0];
-    v7 = [(TPSTipsViewController *)self searchController];
-    [v7 setActive:0];
+    searchController2 = [(TPSTipsViewController *)self searchController];
+    [searchController2 setActive:0];
 
     [(TPSTipsViewController *)self setSearchController:0];
   }
 
-  v8 = [(TPSTipsViewController *)self searchController];
-  v9 = [(TPSTipsViewController *)self navigationItem];
-  [v9 setSearchController:v8];
+  searchController3 = [(TPSTipsViewController *)self searchController];
+  navigationItem = [(TPSTipsViewController *)self navigationItem];
+  [navigationItem setSearchController:searchController3];
 
   [(TPSTipsViewController *)self updateNavigationBarButtons];
 }
@@ -517,20 +517,20 @@ LABEL_12:
   [v3 setObscuresBackgroundDuringPresentation:0];
   [v3 setHidesNavigationBarDuringPresentation:0];
   [v3 setModalPresentationStyle:4];
-  v4 = [v3 searchBar];
-  [v4 setDelegate:self];
-  [v4 setAutocorrectionType:1];
-  [v4 setAutocapitalizationType:0];
+  searchBar = [v3 searchBar];
+  [searchBar setDelegate:self];
+  [searchBar setAutocorrectionType:1];
+  [searchBar setAutocapitalizationType:0];
 
   return v3;
 }
 
 - (void)updateSearchResultsPresentationIfNeeded
 {
-  v3 = [(TPSTipsViewController *)self searchResultViewModel];
-  v4 = [v3 hasStartedSearch];
+  searchResultViewModel = [(TPSTipsViewController *)self searchResultViewModel];
+  hasStartedSearch = [searchResultViewModel hasStartedSearch];
 
-  if (v4)
+  if (hasStartedSearch)
   {
 
     [(TPSTipsViewController *)self presentSearchResultsViewController:1];
@@ -545,24 +545,24 @@ LABEL_12:
 
 - (BOOL)isSearchViewControllerPresented
 {
-  v3 = [(TPSTipsViewController *)self navigationController];
-  v4 = [v3 presentedViewController];
+  navigationController = [(TPSTipsViewController *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
 
-  v5 = [(TPSTipsViewController *)self searchResultsNavigationController];
+  searchResultsNavigationController = [(TPSTipsViewController *)self searchResultsNavigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 topViewController];
+    topViewController = [presentedViewController topViewController];
 
-    v8 = [(TPSTipsViewController *)self searchResultsNavigationController];
-    v9 = [v8 topViewController];
+    searchResultsNavigationController2 = [(TPSTipsViewController *)self searchResultsNavigationController];
+    topViewController2 = [searchResultsNavigationController2 topViewController];
 
     objc_opt_class();
     v10 = objc_opt_isKindOfClass();
 
-    v4 = v7;
+    presentedViewController = topViewController;
   }
 
   else
@@ -573,20 +573,20 @@ LABEL_12:
   return v10 & 1;
 }
 
-- (void)searchWithSearchQuery:(id)a3
+- (void)searchWithSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 searchTerm];
-  v6 = [(TPSTipsViewController *)self searchController];
-  v7 = [v6 searchBar];
-  [v7 setText:v5];
+  queryCopy = query;
+  searchTerm = [queryCopy searchTerm];
+  searchController = [(TPSTipsViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setText:searchTerm];
 
-  v8 = [(TPSTipsViewController *)self searchController];
-  v9 = [v8 searchBar];
-  [v9 becomeFirstResponder];
+  searchController2 = [(TPSTipsViewController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 becomeFirstResponder];
 
-  v10 = [(TPSTipsViewController *)self searchResultViewModel];
-  [v10 setSearchQuery:v4];
+  searchResultViewModel = [(TPSTipsViewController *)self searchResultViewModel];
+  [searchResultViewModel setSearchQuery:queryCopy];
 }
 
 - (void)createViews
@@ -611,36 +611,36 @@ LABEL_12:
     [(UICollectionView *)self->_collectionView setContentInsetAdjustmentBehavior:2];
     [(UICollectionView *)self->_collectionView setPagingEnabled:1];
     [(TPSTipsViewController *)self _adjustScrollViewPagingDecelerationForSize:self->_viewSize.width, self->_viewSize.height];
-    v7 = [(TPSTipsViewController *)self view];
-    [v7 addSubview:self->_collectionView];
+    view = [(TPSTipsViewController *)self view];
+    [view addSubview:self->_collectionView];
 
     [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:kTPSTipCellIdentifierKey];
     [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:kTPSIntroTipCellIdentifierKey];
     [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:kTPSOutroTipCellIdentifierKey];
     [(UICollectionView *)self->_collectionView setDelegate:self];
     [(UICollectionView *)self->_collectionView setDataSource:self];
-    v8 = [(UICollectionView *)self->_collectionView leadingAnchor];
-    v9 = [(TPSTipsViewController *)self view];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    leadingAnchor = [(UICollectionView *)self->_collectionView leadingAnchor];
+    view2 = [(TPSTipsViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v11 setActive:1];
 
-    v12 = [(UICollectionView *)self->_collectionView trailingAnchor];
-    v13 = [(TPSTipsViewController *)self view];
-    v14 = [v13 trailingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UICollectionView *)self->_collectionView trailingAnchor];
+    view3 = [(TPSTipsViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v15 setActive:1];
 
-    v16 = [(UICollectionView *)self->_collectionView topAnchor];
-    v17 = [(TPSTipsViewController *)self view];
-    v18 = [v17 topAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    topAnchor = [(UICollectionView *)self->_collectionView topAnchor];
+    view4 = [(TPSTipsViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v19 setActive:1];
 
-    v20 = [(UICollectionView *)self->_collectionView bottomAnchor];
-    v21 = [(TPSTipsViewController *)self view];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UICollectionView *)self->_collectionView bottomAnchor];
+    view5 = [(TPSTipsViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v23 setActive:1];
 
     [(TPSKVOManager *)self->_KVOManager addKVOObject:self->_collectionView forKeyPath:@"contentSize" options:3 context:"contentLayoutChanged:userInfo:"];
@@ -663,33 +663,33 @@ LABEL_12:
     [(TPSPageControl *)self->_pageControl setPageIndicatorTintColor:v27];
 
     [(TPSPageControl *)self->_pageControl addTarget:self action:"pageControlPageChanged:" forControlEvents:4096];
-    v28 = [(TPSTipsViewController *)self view];
-    [v28 addSubview:self->_pageControl];
+    view6 = [(TPSTipsViewController *)self view];
+    [view6 addSubview:self->_pageControl];
 
-    v29 = [(TPSPageControl *)self->_pageControl widthAnchor];
-    v30 = [(TPSTipsViewController *)self view];
-    v31 = [v30 widthAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31 constant:-20.0];
+    widthAnchor = [(TPSPageControl *)self->_pageControl widthAnchor];
+    view7 = [(TPSTipsViewController *)self view];
+    widthAnchor2 = [view7 widthAnchor];
+    v32 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-20.0];
 
     LODWORD(v33) = 1144750080;
     [v32 setPriority:v33];
     [v32 setActive:1];
     [(TPSPageControl *)self->_pageControl sizeForNumberOfPages:8];
     v35 = v34;
-    v36 = [(TPSPageControl *)self->_pageControl widthAnchor];
-    v37 = [v36 constraintLessThanOrEqualToConstant:v35];
+    widthAnchor3 = [(TPSPageControl *)self->_pageControl widthAnchor];
+    v37 = [widthAnchor3 constraintLessThanOrEqualToConstant:v35];
     [v37 setActive:1];
 
-    v38 = [(TPSPageControl *)self->_pageControl centerXAnchor];
-    v39 = [(TPSTipsViewController *)self view];
-    v40 = [v39 centerXAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    centerXAnchor = [(TPSPageControl *)self->_pageControl centerXAnchor];
+    view8 = [(TPSTipsViewController *)self view];
+    centerXAnchor2 = [view8 centerXAnchor];
+    v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v41 setActive:1];
 
-    v42 = [(TPSPageControl *)self->_pageControl bottomAnchor];
-    v43 = [(TPSTipsViewController *)self view];
-    v44 = [v43 bottomAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44 constant:0.0];
+    bottomAnchor3 = [(TPSPageControl *)self->_pageControl bottomAnchor];
+    view9 = [(TPSTipsViewController *)self view];
+    bottomAnchor4 = [view9 bottomAnchor];
+    v45 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
     pageControlBottomConstraint = self->_pageControlBottomConstraint;
     self->_pageControlBottomConstraint = v45;
 
@@ -699,13 +699,13 @@ LABEL_12:
   [(TPSTipsViewController *)self updatePagingScrollState];
 }
 
-- (void)updateNavigationTitle:(id)a3
+- (void)updateNavigationTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   if ([(TPSTipsViewController *)self shouldDisplayNavigationTitle])
   {
-    v4 = v8;
-    if (v8)
+    v4 = titleCopy;
+    if (titleCopy)
     {
       goto LABEL_7;
     }
@@ -713,28 +713,28 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v5 = [(__CFString *)v8 length];
-  v4 = v8;
-  if (!v8 || v5)
+  v5 = [(__CFString *)titleCopy length];
+  v4 = titleCopy;
+  if (!titleCopy || v5)
   {
 LABEL_6:
 
-    v8 = &stru_1000A4A50;
+    titleCopy = &stru_1000A4A50;
   }
 
 LABEL_7:
-  v6 = [(TPSTipsViewController *)self title];
-  v7 = [v6 isEqualToString:v8];
+  title = [(TPSTipsViewController *)self title];
+  v7 = [title isEqualToString:titleCopy];
 
   if ((v7 & 1) == 0)
   {
-    [(TPSTipsViewController *)self setTitle:v8];
+    [(TPSTipsViewController *)self setTitle:titleCopy];
   }
 }
 
-- (void)updateContentBackgroundWithTraitCollection:(id)a3
+- (void)updateContentBackgroundWithTraitCollection:(id)collection
 {
-  if ([a3 userInterfaceStyle] == 1)
+  if ([collection userInterfaceStyle] == 1)
   {
     +[UIColor whiteColor];
   }
@@ -744,12 +744,12 @@ LABEL_7:
     +[UIColor blackColor];
   }
   v6 = ;
-  v4 = [(TPSTipsViewController *)self traitCollection];
-  [(TPSTipCellAppearance *)self->_cellAppearance setTraitCollection:v4];
+  traitCollection = [(TPSTipsViewController *)self traitCollection];
+  [(TPSTipCellAppearance *)self->_cellAppearance setTraitCollection:traitCollection];
 
   [(UICollectionView *)self->_collectionView setBackgroundColor:v6];
-  v5 = [(TPSTipsViewController *)self view];
-  [v5 setBackgroundColor:v6];
+  view = [(TPSTipsViewController *)self view];
+  [view setBackgroundColor:v6];
 }
 
 - (id)cellForCurrentTip
@@ -759,44 +759,44 @@ LABEL_7:
   {
     if (self->_isSharedVariant)
     {
-      v4 = [(TPSTipsViewController *)self centerCell];
+      centerCell = [(TPSTipsViewController *)self centerCell];
     }
 
     else
     {
-      v4 = 0;
+      centerCell = 0;
     }
   }
 
   else
   {
     v5 = [NSIndexPath indexPathForRow:v3 inSection:0];
-    v4 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v5];
+    centerCell = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v5];
   }
 
-  return v4;
+  return centerCell;
 }
 
-- (void)updateTipForCell:(id)a3 startVideo:(BOOL)a4
+- (void)updateTipForCell:(id)cell startVideo:(BOOL)video
 {
-  v4 = a4;
-  v7 = a3;
+  videoCopy = video;
+  cellCopy = cell;
   if (([(UICollectionView *)self->_collectionView isHidden]& 1) != 0)
   {
 LABEL_8:
-    v6 = v7;
+    v6 = cellCopy;
     goto LABEL_9;
   }
 
-  v6 = v7;
-  if (v7 || ([(TPSTipsViewController *)self cellForCurrentTip], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  v6 = cellCopy;
+  if (cellCopy || ([(TPSTipsViewController *)self cellForCurrentTip], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
+    cellCopy = v6;
     [v6 updateImageView];
-    [v7 updateContentLabel];
-    if (v4 && [(TPSAppViewController *)self viewWillAppear]&& ![(TPSTipsViewController *)self shouldHoldOffVideo])
+    [cellCopy updateContentLabel];
+    if (videoCopy && [(TPSAppViewController *)self viewWillAppear]&& ![(TPSTipsViewController *)self shouldHoldOffVideo])
     {
-      [v7 playVideo];
+      [cellCopy playVideo];
     }
 
     goto LABEL_8;
@@ -820,40 +820,40 @@ LABEL_9:
   return v5;
 }
 
-- (void)setCurrentTip:(id)a3
+- (void)setCurrentTip:(id)tip
 {
-  v5 = a3;
-  if (self->_currentTip != v5)
+  tipCopy = tip;
+  if (self->_currentTip != tipCopy)
   {
     v6 = +[TPSLogger default];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10006A0CC(v5, v6);
+      sub_10006A0CC(tipCopy, v6);
     }
 
-    objc_storeStrong(&self->_currentTip, a3);
+    objc_storeStrong(&self->_currentTip, tip);
     if (self->_currentTip)
     {
       [(TPSTipsViewController *)self updateTipForCell:0 startVideo:1];
-      v7 = [(TPSTip *)self->_currentTip identifier];
+      identifier = [(TPSTip *)self->_currentTip identifier];
 
-      if (v7)
+      if (identifier)
       {
         self->_canIncreaseViewCount = 1;
-        v8 = [(TPSTipsViewController *)self _currentViewMethod];
-        [(TPSTipsViewController *)self analyticsIncreaseCountViewForCurrentTipDelay:v8];
+        _currentViewMethod = [(TPSTipsViewController *)self _currentViewMethod];
+        [(TPSTipsViewController *)self analyticsIncreaseCountViewForCurrentTipDelay:_currentViewMethod];
       }
 
-      v9 = [(TPSTipsViewController *)self centerCell];
-      v10 = [v9 tip];
+      centerCell = [(TPSTipsViewController *)self centerCell];
+      v10 = [centerCell tip];
       v11 = v10;
       if (v10 == self->_currentTip)
       {
-        v12 = [v9 contentFinishedLoading];
+        contentFinishedLoading = [centerCell contentFinishedLoading];
 
-        if (v12)
+        if (contentFinishedLoading)
         {
-          [(TPSTipsViewController *)self cellContentLoaded:v9];
+          [(TPSTipsViewController *)self cellContentLoaded:centerCell];
         }
       }
 
@@ -864,19 +864,19 @@ LABEL_9:
       [(TPSTipsViewController *)self _logTimeSpentBeforeCurrentTip:self->_currentTip];
     }
 
-    [(TPSTipsViewController *)self updatePageControlToTip:v5];
+    [(TPSTipsViewController *)self updatePageControlToTip:tipCopy];
     if (self->_delegateCurrentTipUpdated)
     {
-      v13 = [(TPSTipsViewController *)self delegate];
-      [v13 tipsViewControllerCurrentTipUpdated:self];
+      delegate = [(TPSTipsViewController *)self delegate];
+      [delegate tipsViewControllerCurrentTipUpdated:self];
     }
   }
 }
 
-- (void)_adjustScrollViewPagingDecelerationForSize:(CGSize)a3
+- (void)_adjustScrollViewPagingDecelerationForSize:(CGSize)size
 {
-  width = a3.width;
-  v5 = [UIScreen mainScreen:a3.width];
+  width = size.width;
+  v5 = [UIScreen mainScreen:size.width];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
@@ -908,9 +908,9 @@ LABEL_9:
   [(UICollectionView *)collectionView _setPagingFriction:v12];
 }
 
-- (void)analyticsIncreaseCountViewForCurrentTipDelay:(id)a3
+- (void)analyticsIncreaseCountViewForCurrentTipDelay:(id)delay
 {
-  v4 = [TPSViewSourceProxy proxyWithViewMethod:a3];
+  v4 = [TPSViewSourceProxy proxyWithViewMethod:delay];
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_delayedIncreaseCountViewForCurrentTip:" object:?];
   if (self->_canIncreaseViewCount)
   {
@@ -918,74 +918,74 @@ LABEL_9:
   }
 }
 
-- (void)_delayedIncreaseCountViewForCurrentTip:(id)a3
+- (void)_delayedIncreaseCountViewForCurrentTip:(id)tip
 {
-  v4 = a3;
+  tipCopy = tip;
   if (self->_currentTip && self->_canIncreaseViewCount)
   {
-    v25 = v4;
-    v5 = [(TPSTipsViewController *)self currentSwipeEvent];
+    v25 = tipCopy;
+    currentSwipeEvent = [(TPSTipsViewController *)self currentSwipeEvent];
 
     [(TPSTip *)self->_currentTip identifier];
-    if (v5)
+    if (currentSwipeEvent)
       v6 = {;
-      v7 = [(TPSTipsViewController *)self currentSwipeEvent];
-      [v7 setContentID:v6];
+      currentSwipeEvent2 = [(TPSTipsViewController *)self currentSwipeEvent];
+      [currentSwipeEvent2 setContentID:v6];
 
-      v8 = [(TPSTipsViewController *)self collectionID];
-      v9 = [(TPSTipsViewController *)self currentSwipeEvent];
-      [v9 setCollectionID:v8];
+      collectionID = [(TPSTipsViewController *)self collectionID];
+      currentSwipeEvent3 = [(TPSTipsViewController *)self currentSwipeEvent];
+      [currentSwipeEvent3 setCollectionID:collectionID];
 
-      v10 = [(TPSTip *)self->_currentTip correlationID];
-      v11 = [(TPSTipsViewController *)self currentSwipeEvent];
-      [v11 setCorrelationID:v10];
+      correlationID = [(TPSTip *)self->_currentTip correlationID];
+      currentSwipeEvent4 = [(TPSTipsViewController *)self currentSwipeEvent];
+      [currentSwipeEvent4 setCorrelationID:correlationID];
 
-      v12 = [(TPSTip *)self->_currentTip clientConditionID];
-      v13 = [(TPSTipsViewController *)self currentSwipeEvent];
-      [v13 setClientConditionID:v12];
+      clientConditionID = [(TPSTip *)self->_currentTip clientConditionID];
+      currentSwipeEvent5 = [(TPSTipsViewController *)self currentSwipeEvent];
+      [currentSwipeEvent5 setClientConditionID:clientConditionID];
 
-      v14 = [(TPSTipsViewController *)self currentSwipeEvent];
-      [v14 log];
+      currentSwipeEvent6 = [(TPSTipsViewController *)self currentSwipeEvent];
+      [currentSwipeEvent6 log];
 
       [(TPSTipsViewController *)self setCurrentSwipeEvent:0];
     }
 
     else
       v24 = {;
-      v15 = [(TPSTipsViewController *)self collectionID];
-      v16 = [(TPSTip *)self->_currentTip correlationID];
-      v17 = [(TPSTip *)self->_currentTip clientConditionID];
-      v18 = [v25 viewMethod];
-      v19 = [(TPSTipsViewController *)self traitCollection];
-      v20 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:v19];
-      v21 = [TPSAnalyticsEventContentViewed eventWithContentID:v24 collectionID:v15 correlationID:v16 clientConditionID:v17 viewMethod:v18 viewMode:v20];
+      collectionID2 = [(TPSTipsViewController *)self collectionID];
+      correlationID2 = [(TPSTip *)self->_currentTip correlationID];
+      clientConditionID2 = [(TPSTip *)self->_currentTip clientConditionID];
+      viewMethod = [v25 viewMethod];
+      traitCollection = [(TPSTipsViewController *)self traitCollection];
+      v20 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:traitCollection];
+      v21 = [TPSAnalyticsEventContentViewed eventWithContentID:v24 collectionID:collectionID2 correlationID:correlationID2 clientConditionID:clientConditionID2 viewMethod:viewMethod viewMode:v20];
       [v21 log];
     }
 
-    v22 = [(TPSAppViewController *)self appController];
-    v23 = [(TPSTip *)self->_currentTip identifier];
-    [v22 tipViewed:v23 collectionIdentifier:self->_collectionID];
+    appController = [(TPSAppViewController *)self appController];
+    identifier = [(TPSTip *)self->_currentTip identifier];
+    [appController tipViewed:identifier collectionIdentifier:self->_collectionID];
 
     +[TPSAnalyticsSessionController incrementTipsViewedCount];
     self->_canIncreaseViewCount = 0;
-    v4 = v25;
+    tipCopy = v25;
   }
 }
 
-- (void)networkStateDidChange:(BOOL)a3
+- (void)networkStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = TPSTipsViewController;
   [(TPSViewController *)&v14 networkStateDidChange:?];
-  if (v3)
+  if (changeCopy)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(UICollectionView *)self->_collectionView visibleCells];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+    v6 = [visibleCells countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -997,7 +997,7 @@ LABEL_9:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(visibleCells);
           }
 
           [*(*(&v10 + 1) + 8 * v9) loadContentIfNeeded];
@@ -1005,7 +1005,7 @@ LABEL_9:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [visibleCells countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v7);
@@ -1013,15 +1013,15 @@ LABEL_9:
   }
 }
 
-- (void)updatePageControlToTip:(id)a3
+- (void)updatePageControlToTip:(id)tip
 {
-  v4 = a3;
-  if (!v4)
+  tipCopy = tip;
+  if (!tipCopy)
   {
-    v4 = self->_currentTip;
+    tipCopy = self->_currentTip;
   }
 
-  v10 = v4;
+  v10 = tipCopy;
   [(TPSTipsViewController *)self updateNavigationTitle:self->_titleText];
   if ([(NSArray *)self->_tips count])
   {
@@ -1053,26 +1053,26 @@ LABEL_9:
   }
 
   self->_currentPagingIndex = v7;
-  v8 = [(TPSTipsViewController *)self pageControl];
-  [v8 setCurrentPage:v7];
+  pageControl = [(TPSTipsViewController *)self pageControl];
+  [pageControl setCurrentPage:v7];
 
-  v9 = [(TPSTipsViewController *)self pageControl];
-  [v9 setNeedsLayout];
+  pageControl2 = [(TPSTipsViewController *)self pageControl];
+  [pageControl2 setNeedsLayout];
 
   [(TPSTipsViewController *)self updateNavigationBarButtons];
 LABEL_12:
 }
 
-- (void)contentLayoutChanged:(id)a3 userInfo:(id)a4
+- (void)contentLayoutChanged:(id)changed userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-  v7 = [v5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+  v7 = [infoCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
   if (v6 != v7)
   {
-    v8 = [(TPSTipsViewController *)self scrolledDeferredAction];
-    [v8 scheduleNextRunLoop];
+    scrolledDeferredAction = [(TPSTipsViewController *)self scrolledDeferredAction];
+    [scrolledDeferredAction scheduleNextRunLoop];
   }
 }
 
@@ -1093,10 +1093,10 @@ LABEL_12:
 {
   if ([(TPSTipsViewController *)self eligibleToPlayVideo])
   {
-    v3 = [(TPSTipsViewController *)self cellForCurrentTip];
-    if (([v3 videoHasFinished] & 1) == 0)
+    cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+    if (([cellForCurrentTip videoHasFinished] & 1) == 0)
     {
-      [v3 continuePlayVideo];
+      [cellForCurrentTip continuePlayVideo];
     }
   }
 }
@@ -1105,23 +1105,23 @@ LABEL_12:
 {
   if ([(TPSTipsViewController *)self eligibleToPlayVideo])
   {
-    v3 = [(TPSTipsViewController *)self cellForCurrentTip];
-    [v3 continuePlayVideo];
+    cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+    [cellForCurrentTip continuePlayVideo];
   }
 }
 
 - (void)stopVideoForCurrentTip
 {
-  v2 = [(TPSTipsViewController *)self cellForCurrentTip];
-  [v2 stopVideoPlayer];
+  cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+  [cellForCurrentTip stopVideoPlayer];
 }
 
 - (void)reconfigureAllCollectionViewItems
 {
-  v3 = [(TPSTipsViewController *)self tips];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  tips = [(TPSTipsViewController *)self tips];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [tips count]);
 
-  v5 = [(TPSTipsViewController *)self tips];
+  tips2 = [(TPSTipsViewController *)self tips];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000DB10;
@@ -1129,7 +1129,7 @@ LABEL_12:
   v10[4] = self;
   v6 = v4;
   v11 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [tips2 enumerateObjectsUsingBlock:v10];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1141,23 +1141,23 @@ LABEL_12:
   [UIView performWithoutAnimation:v8];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = TPSTipsViewController;
-  [(TPSTipsViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(TPSTipsViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(TPSAppViewController *)self supportedInterfaceOrientations]!= 2)
   {
     self->_viewSize.width = width;
     self->_viewSize.height = height;
     [(TPSTipCellAppearance *)self->_cellAppearance updateAppearanceWithSize:width, height];
-    v8 = [(TPSTipsViewController *)self cellForCurrentTip];
-    [v8 updateHeroHeightConstraint];
-    [v8 setContentFinishedLoading:0];
-    [v8 setHasNotifiedDelegateContentLoaded:0];
+    cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+    [cellForCurrentTip updateHeroHeightConstraint];
+    [cellForCurrentTip setContentFinishedLoading:0];
+    [cellForCurrentTip setHasNotifiedDelegateContentLoaded:0];
     objc_initWeak(&location, self);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -1174,19 +1174,19 @@ LABEL_12:
     v9[4] = self;
     v10[1] = *&width;
     v10[2] = *&height;
-    [v7 animateAlongsideTransition:v11 completion:v9];
+    [coordinatorCopy animateAlongsideTransition:v11 completion:v9];
     objc_destroyWeak(v10);
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)ensureCurrentTipPositionWithViewSize:(CGSize)a3
+- (void)ensureCurrentTipPositionWithViewSize:(CGSize)size
 {
   if (!self->_scrollingTipContent)
   {
-    width = a3.width;
-    if ([(NSArray *)self->_tips count:a3.width])
+    width = size.width;
+    if ([(NSArray *)self->_tips count:size.width])
     {
       v13 = 0;
       v14 = &v13;
@@ -1212,8 +1212,8 @@ LABEL_12:
           [(UICollectionView *)self->_collectionView scrollToItemAtIndexPath:v10 atScrollPosition:16 animated:0];
           self->_scrollingTipContent = 0;
           self->_animatingTipsScroll = 0;
-          v11 = [(TPSTipsViewController *)self delegate];
-          -[TPSTipsViewController updateTipForCell:startVideo:](self, "updateTipForCell:startVideo:", 0, [v11 tipsViewControllerShouldStartVideo:self]);
+          delegate = [(TPSTipsViewController *)self delegate];
+          -[TPSTipsViewController updateTipForCell:startVideo:](self, "updateTipForCell:startVideo:", 0, [delegate tipsViewControllerShouldStartVideo:self]);
 
           [(TPSTipsViewController *)self updatePageControlToTip:0];
         }
@@ -1224,11 +1224,11 @@ LABEL_12:
   }
 }
 
-- (void)showErrorView:(id)a3
+- (void)showErrorView:(id)view
 {
   v4.receiver = self;
   v4.super_class = TPSTipsViewController;
-  [(TPSViewController *)&v4 showErrorView:a3];
+  [(TPSViewController *)&v4 showErrorView:view];
   [(UICollectionView *)self->_collectionView setHidden:1];
   [(TPSTipsViewController *)self updateNavigationTitle:&stru_1000A4A50];
   [(TPSTipsViewController *)self updateNavigationBarButtons];
@@ -1247,13 +1247,13 @@ LABEL_12:
 - (void)applicationDidBecomeActive
 {
   self->_canIncreaseViewCount = [(TPSAppViewController *)self viewWillAppear];
-  v3 = [(TPSTipsViewController *)self _currentViewMethod];
-  [(TPSTipsViewController *)self analyticsIncreaseCountViewForCurrentTipDelay:v3];
+  _currentViewMethod = [(TPSTipsViewController *)self _currentViewMethod];
+  [(TPSTipsViewController *)self analyticsIncreaseCountViewForCurrentTipDelay:_currentViewMethod];
 
   [(TPSTipsViewController *)self _logTimeSpentBeforeCurrentTip:self->_currentTip];
   [(TPSTipsViewController *)self updateTipForCell:0 startVideo:1];
-  v4 = [(TPSTipsViewController *)self cellForCurrentTip];
-  [v4 loadBodyContentIfNeeded];
+  cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+  [cellForCurrentTip loadBodyContentIfNeeded];
 }
 
 - (void)applicationDidEnterBackground
@@ -1264,12 +1264,12 @@ LABEL_12:
 
   if (([(UICollectionView *)self->_collectionView isHidden]& 1) == 0)
   {
-    v4 = [(TPSTipsViewController *)self cellForCurrentTip];
-    [v4 scrubVideoToFirstFrame];
+    cellForCurrentTip = [(TPSTipsViewController *)self cellForCurrentTip];
+    [cellForCurrentTip scrubVideoToFirstFrame];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 cancelReplayButtonTimer];
+      [cellForCurrentTip cancelReplayButtonTimer];
     }
   }
 
@@ -1278,40 +1278,40 @@ LABEL_12:
 
 - (void)applicationWillTerminate
 {
-  v2 = [(TPSTipsViewController *)self tryItViewController];
-  [v2 logEndSession];
+  tryItViewController = [(TPSTipsViewController *)self tryItViewController];
+  [tryItViewController logEndSession];
 }
 
-- (void)pageControlPageChanged:(id)a3
+- (void)pageControlPageChanged:(id)changed
 {
   self->_canIncreaseViewCount = 1;
-  v4 = [a3 currentPage];
-  v5 = [(TPSTip *)self->_currentTip identifier];
-  v6 = [(TPSTipsViewController *)self collectionID];
-  v7 = [(TPSTip *)self->_currentTip correlationID];
-  v8 = [(TPSTip *)self->_currentTip clientConditionID];
+  currentPage = [changed currentPage];
+  identifier = [(TPSTip *)self->_currentTip identifier];
+  collectionID = [(TPSTipsViewController *)self collectionID];
+  correlationID = [(TPSTip *)self->_currentTip correlationID];
+  clientConditionID = [(TPSTip *)self->_currentTip clientConditionID];
   v9 = TPSAnalyticsViewMethodSwipe;
-  v10 = [(TPSTipsViewController *)self traitCollection];
-  v11 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:v10];
-  v12 = [TPSAnalyticsEventContentViewed eventWithContentID:v5 collectionID:v6 correlationID:v7 clientConditionID:v8 viewMethod:v9 viewMode:v11];
+  traitCollection = [(TPSTipsViewController *)self traitCollection];
+  v11 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:traitCollection];
+  v12 = [TPSAnalyticsEventContentViewed eventWithContentID:identifier collectionID:collectionID correlationID:correlationID clientConditionID:clientConditionID viewMethod:v9 viewMode:v11];
   [(TPSTipsViewController *)self setCurrentSwipeEvent:v12];
 
-  v13 = [(TPSTipsViewController *)self tips];
-  v14 = [v13 objectAtIndexedSubscript:v4];
+  tips = [(TPSTipsViewController *)self tips];
+  v14 = [tips objectAtIndexedSubscript:currentPage];
   [(TPSTipsViewController *)self setCurrentTip:v14];
 
-  v16 = [(TPSTipsViewController *)self collectionView];
-  v15 = [NSIndexPath indexPathForRow:v4 inSection:0];
-  [v16 scrollToItemAtIndexPath:v15 atScrollPosition:16 animated:0];
+  collectionView = [(TPSTipsViewController *)self collectionView];
+  v15 = [NSIndexPath indexPathForRow:currentPage inSection:0];
+  [collectionView scrollToItemAtIndexPath:v15 atScrollPosition:16 animated:0];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   self->_scrollingTipContent = 0;
   self->_animatingTipsScroll = 0;
-  v4 = [(TPSTipsViewController *)self tips];
-  v5 = [(TPSTipsViewController *)self currentTip];
-  v6 = [v4 indexOfObject:v5];
+  tips = [(TPSTipsViewController *)self tips];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  v6 = [tips indexOfObject:currentTip];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1319,8 +1319,8 @@ LABEL_12:
     v8 = [NSIndexPath indexPathForRow:v6 inSection:0];
     v9 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v8];
 
-    v10 = [(TPSTipsViewController *)self currentTip];
-    [v9 setTip:v10 withCellAppearance:self->_cellAppearance];
+    currentTip2 = [(TPSTipsViewController *)self currentTip];
+    [v9 setTip:currentTip2 withCellAppearance:self->_cellAppearance];
 
     if (![(TPSTipsViewController *)self shouldHoldOffVideo])
     {
@@ -1328,32 +1328,32 @@ LABEL_12:
     }
   }
 
-  v11 = [(TPSTipsViewController *)self currentTip];
-  [(TPSTipsViewController *)self updatePageControlToTip:v11];
+  currentTip3 = [(TPSTipsViewController *)self currentTip];
+  [(TPSTipsViewController *)self updatePageControlToTip:currentTip3];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   self->_scrollingTipContent = 1;
   self->_animatingTipsScroll = 0;
-  v11 = [(TPSTip *)self->_currentTip identifier];
-  v4 = [(TPSTipsViewController *)self collectionID];
-  v5 = [(TPSTip *)self->_currentTip correlationID];
-  v6 = [(TPSTip *)self->_currentTip clientConditionID];
+  identifier = [(TPSTip *)self->_currentTip identifier];
+  collectionID = [(TPSTipsViewController *)self collectionID];
+  correlationID = [(TPSTip *)self->_currentTip correlationID];
+  clientConditionID = [(TPSTip *)self->_currentTip clientConditionID];
   v7 = TPSAnalyticsViewMethodSwipe;
-  v8 = [(TPSTipsViewController *)self traitCollection];
-  v9 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:v8];
-  v10 = [TPSAnalyticsEventContentViewed eventWithContentID:v11 collectionID:v4 correlationID:v5 clientConditionID:v6 viewMethod:v7 viewMode:v9];
+  traitCollection = [(TPSTipsViewController *)self traitCollection];
+  v9 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:traitCollection];
+  v10 = [TPSAnalyticsEventContentViewed eventWithContentID:identifier collectionID:collectionID correlationID:correlationID clientConditionID:clientConditionID viewMethod:v7 viewMode:v9];
   [(TPSTipsViewController *)self setCurrentSwipeEvent:v10];
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(UICollectionView *)self->_collectionView visibleCells:a3];
+  v4 = [(UICollectionView *)self->_collectionView visibleCells:decelerating];
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1370,9 +1370,9 @@ LABEL_12:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v9 tip];
-        v11 = [(TPSTipsViewController *)self currentTip];
+        currentTip = [(TPSTipsViewController *)self currentTip];
 
-        if (v10 != v11)
+        if (v10 != currentTip)
         {
           [(TPSTipsViewController *)self updateTipForCell:v9 startVideo:0];
         }
@@ -1384,39 +1384,39 @@ LABEL_12:
     while (v6);
   }
 
-  v12 = [(TPSTipsViewController *)self centerCell];
-  v13 = [v12 tip];
+  centerCell = [(TPSTipsViewController *)self centerCell];
+  v13 = [centerCell tip];
   [(TPSTipsViewController *)self updatePageControlToTip:v13];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v8 = [(TPSTipsViewController *)self centerCell];
-  v4 = [(TPSTipsViewController *)self currentTip];
-  v5 = [v8 tip];
+  centerCell = [(TPSTipsViewController *)self centerCell];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  v5 = [centerCell tip];
 
-  if (v4 != v5)
+  if (currentTip != v5)
   {
-    v6 = [v8 tip];
+    v6 = [centerCell tip];
     [(TPSTipsViewController *)self setCurrentTip:v6];
   }
 
-  v7 = [(TPSTipsViewController *)self currentTip];
-  [(TPSTipsViewController *)self updatePageControlToTip:v7];
+  currentTip2 = [(TPSTipsViewController *)self currentTip];
+  [(TPSTipsViewController *)self updatePageControlToTip:currentTip2];
 
   self->_scrollingTipContent = 0;
 }
 
 - (void)updateBarMaterial
 {
-  v3 = [(TPSTipsViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(TPSTipsViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = v4;
+  v5 = visibleCells;
   v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v6)
   {
@@ -1434,10 +1434,10 @@ LABEL_12:
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v12 contentScrollView];
-        [v13 adjustedContentInset];
+        contentScrollView = [v12 contentScrollView];
+        [contentScrollView adjustedContentInset];
         v15 = v14;
-        [v13 contentOffset];
+        [contentScrollView contentOffset];
         v17 = v15 + v16;
         if (v15 + v16 < 0.0)
         {
@@ -1457,11 +1457,11 @@ LABEL_12:
 
         else
         {
-          [v13 contentSize];
+          [contentScrollView contentSize];
           v22 = v21;
           v24 = v23;
           [v12 bottomPadding];
-          [(TPSPageControl *)self->_pageControl convertRect:v13 fromView:CGRectZero.origin.x, y, v22, v24 + v25];
+          [(TPSPageControl *)self->_pageControl convertRect:contentScrollView fromView:CGRectZero.origin.x, y, v22, v24 + v25];
           v27 = v26;
           v29 = v28;
           v31 = v30;
@@ -1486,17 +1486,17 @@ LABEL_12:
     v10 = 0.0;
   }
 
-  v32 = [(TPSTipsViewController *)self navigationItem];
-  [v32 _manualScrollEdgeAppearanceProgress];
+  navigationItem = [(TPSTipsViewController *)self navigationItem];
+  [navigationItem _manualScrollEdgeAppearanceProgress];
   v34 = v33;
 
   if (v34 != v10)
   {
-    v35 = [(TPSTipsViewController *)self navigationItem];
-    [v35 _setManualScrollEdgeAppearanceProgress:v10];
+    navigationItem2 = [(TPSTipsViewController *)self navigationItem];
+    [navigationItem2 _setManualScrollEdgeAppearanceProgress:v10];
 
-    v36 = [(TPSTipsViewController *)self navigationItem];
-    [v36 _setManualScrollEdgeAppearanceEnabled:1];
+    navigationItem3 = [(TPSTipsViewController *)self navigationItem];
+    [navigationItem3 _setManualScrollEdgeAppearanceEnabled:1];
   }
 
   [(TPSPageControl *)self->_pageControl setBackgroundStyle:v6, v37];
@@ -1513,73 +1513,73 @@ LABEL_12:
         return;
       }
 
-      v11 = +[NSMutableArray array];
-      v3 = [(TPSTipsViewController *)self saveBarButton];
+      navigationItem4 = +[NSMutableArray array];
+      saveBarButton = [(TPSTipsViewController *)self saveBarButton];
 
-      if (v3)
+      if (saveBarButton)
       {
-        v4 = [(TPSTipsViewController *)self saveBarButton];
-        [v11 addObject:v4];
+        saveBarButton2 = [(TPSTipsViewController *)self saveBarButton];
+        [navigationItem4 addObject:saveBarButton2];
       }
 
-      v5 = [(TPSTipsViewController *)self shareBarButton];
+      shareBarButton = [(TPSTipsViewController *)self shareBarButton];
 
-      if (v5)
+      if (shareBarButton)
       {
-        v6 = [(TPSTipsViewController *)self shareBarButton];
-        [v11 addObject:v6];
+        shareBarButton2 = [(TPSTipsViewController *)self shareBarButton];
+        [navigationItem4 addObject:shareBarButton2];
       }
 
-      v7 = [(TPSTipsViewController *)self navigationItem];
-      [v7 setRightBarButtonItems:v11];
+      navigationItem = [(TPSTipsViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItems:navigationItem4];
 
-      v8 = [(TPSTipsViewController *)self navigationItem];
-      [v8 setHidesSearchBarWhenScrolling:0];
+      navigationItem2 = [(TPSTipsViewController *)self navigationItem];
+      [navigationItem2 setHidesSearchBarWhenScrolling:0];
     }
 
     else
     {
-      v9 = [(TPSTipsViewController *)self navigationItem];
-      v10 = [v9 rightBarButtonItem];
+      navigationItem3 = [(TPSTipsViewController *)self navigationItem];
+      rightBarButtonItem = [navigationItem3 rightBarButtonItem];
 
-      if (!v10)
+      if (!rightBarButtonItem)
       {
         return;
       }
 
-      v11 = [(TPSTipsViewController *)self navigationItem];
-      [v11 setRightBarButtonItem:0];
+      navigationItem4 = [(TPSTipsViewController *)self navigationItem];
+      [navigationItem4 setRightBarButtonItem:0];
     }
   }
 }
 
 - (id)searchBarNavButton
 {
-  v3 = [(TPSTipsViewController *)self searchController];
+  searchController = [(TPSTipsViewController *)self searchController];
 
-  if (v3)
+  if (searchController)
   {
-    v4 = [(TPSTipsViewController *)self searchBarButton];
+    searchBarButton = [(TPSTipsViewController *)self searchBarButton];
 
-    if (!v4)
+    if (!searchBarButton)
     {
       v5 = [UIBarButtonItem alloc];
-      v6 = [(TPSTipsViewController *)self searchController];
-      v7 = [v6 searchBar];
-      v8 = [v5 initWithCustomView:v7];
+      searchController2 = [(TPSTipsViewController *)self searchController];
+      searchBar = [searchController2 searchBar];
+      v8 = [v5 initWithCustomView:searchBar];
       [(TPSTipsViewController *)self setSearchBarButton:v8];
     }
 
-    v9 = [(TPSTipsViewController *)self searchBarButton];
+    searchBarButton2 = [(TPSTipsViewController *)self searchBarButton];
   }
 
   else
   {
     [(TPSTipsViewController *)self setSearchBarButton:0];
-    v9 = 0;
+    searchBarButton2 = 0;
   }
 
-  return v9;
+  return searchBarButton2;
 }
 
 - (id)centerCellIndexPath
@@ -1599,40 +1599,40 @@ LABEL_12:
 
 - (id)centerCell
 {
-  v3 = [(TPSTipsViewController *)self centerCellIndexPath];
+  centerCellIndexPath = [(TPSTipsViewController *)self centerCellIndexPath];
   collectionView = self->_collectionView;
-  if (v3)
+  if (centerCellIndexPath)
   {
-    v5 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v3];
+    lastObject = [(UICollectionView *)collectionView cellForItemAtIndexPath:centerCellIndexPath];
   }
 
   else
   {
-    v6 = [(UICollectionView *)collectionView visibleCells];
-    v5 = [v6 lastObject];
+    visibleCells = [(UICollectionView *)collectionView visibleCells];
+    lastObject = [visibleCells lastObject];
   }
 
-  return v5;
+  return lastObject;
 }
 
-- (id)activityViewControllerForTip:(id)a3
+- (id)activityViewControllerForTip:(id)tip
 {
-  v4 = a3;
-  if (v4)
+  tipCopy = tip;
+  if (tipCopy)
   {
     v5 = [&__NSArray0__struct mutableCopy];
-    v6 = [[TPSTextActivityItemSource alloc] initWithTip:v4];
+    v6 = [[TPSTextActivityItemSource alloc] initWithTip:tipCopy];
     [v5 addObject:v6];
-    v7 = [v4 webURLPath];
+    webURLPath = [tipCopy webURLPath];
 
-    if (v7)
+    if (webURLPath)
     {
       v8 = [TPSURLActivityItemSource alloc];
-      v9 = [(TPSAppViewController *)self appController];
-      v10 = [(TPSURLActivityItemSource *)v8 initWithTip:v4 appController:v9];
+      appController = [(TPSAppViewController *)self appController];
+      v10 = [(TPSURLActivityItemSource *)v8 initWithTip:tipCopy appController:appController];
 
-      v11 = [(TPSTipsViewController *)self traitCollection];
-      -[TPSURLActivityItemSource setUserInterfaceStyle:](v10, "setUserInterfaceStyle:", [v11 userInterfaceStyle]);
+      traitCollection = [(TPSTipsViewController *)self traitCollection];
+      -[TPSURLActivityItemSource setUserInterfaceStyle:](v10, "setUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
       [v5 addObject:v10];
     }
@@ -1657,15 +1657,15 @@ LABEL_12:
   return v12;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_tips, "objectAtIndexedSubscript:", [v7 row]);
-  v9 = [(TPSTipsViewController *)self currentTip];
-  v10 = [v9 identifier];
-  v11 = [v8 identifier];
-  v12 = [v10 isEqualToString:v11];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_tips, "objectAtIndexedSubscript:", [pathCopy row]);
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  identifier = [currentTip identifier];
+  identifier2 = [v8 identifier];
+  v12 = [identifier isEqualToString:identifier2];
 
   if ([v8 isIntro])
   {
@@ -1674,26 +1674,26 @@ LABEL_12:
 
   else
   {
-    v14 = [v8 isOutro];
+    isOutro = [v8 isOutro];
     v13 = &kTPSTipCellIdentifierKey;
-    if (v14)
+    if (isOutro)
     {
       v13 = &kTPSOutroTipCellIdentifierKey;
     }
   }
 
-  v15 = [v6 dequeueReusableCellWithReuseIdentifier:*v13 forIndexPath:v7];
-  v16 = [(TPSTipsViewController *)self view];
-  v17 = [v16 backgroundColor];
-  v18 = [v15 contentScrollView];
-  [v18 setBackgroundColor:v17];
+  v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:*v13 forIndexPath:pathCopy];
+  view = [(TPSTipsViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  contentScrollView = [v15 contentScrollView];
+  [contentScrollView setBackgroundColor:backgroundColor];
 
   [v15 setDelegate:self];
-  v19 = [(TPSAppViewController *)self appController];
-  [v15 setAppController:v19];
+  appController = [(TPSAppViewController *)self appController];
+  [v15 setAppController:appController];
 
-  v20 = [(TPSTipsViewController *)self view];
-  [v20 safeAreaInsets];
+  view2 = [(TPSTipsViewController *)self view];
+  [view2 safeAreaInsets];
   [v15 setContentSafeAreaInsets:?];
 
   [v15 setAdditionalBottomOffset:self->_toolbarHeight];
@@ -1701,16 +1701,16 @@ LABEL_12:
   [v15 setTip:v8 withCellAppearance:self->_cellAppearance];
   if (v12 && ([(UICollectionView *)self->_collectionView isHidden]& 1) == 0 && !self->_animatingTipsScroll)
   {
-    v21 = [(TPSAppViewController *)self appController];
-    if ([v21 appInBackground])
+    appController2 = [(TPSAppViewController *)self appController];
+    if ([appController2 appInBackground])
     {
     }
 
     else
     {
-      v22 = [(TPSAppViewController *)self viewWillAppear];
+      viewWillAppear = [(TPSAppViewController *)self viewWillAppear];
 
-      if (v22)
+      if (viewWillAppear)
       {
         [(TPSTipsViewController *)self updateTipForCell:v15 startVideo:[(TPSAppViewController *)self viewWillAppear]];
       }
@@ -1720,9 +1720,9 @@ LABEL_12:
   return v15;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [(UICollectionView *)self->_collectionView bounds:a3];
+  [(UICollectionView *)self->_collectionView bounds:view];
   v6 = v5;
   v8 = v7;
   result.height = v8;
@@ -1730,34 +1730,34 @@ LABEL_12:
   return result;
 }
 
-- (void)initCellAppearanceWithTrait:(id)a3 size:(CGSize)a4
+- (void)initCellAppearanceWithTrait:(id)trait size:(CGSize)size
 {
   if (!self->_cellAppearance)
   {
-    height = a4.height;
-    width = a4.width;
-    v7 = a3;
-    v8 = [[TPSTipCellAppearance alloc] initAppearanceWithTraits:v7 size:width, height];
+    height = size.height;
+    width = size.width;
+    traitCopy = trait;
+    height = [[TPSTipCellAppearance alloc] initAppearanceWithTraits:traitCopy size:width, height];
     cellAppearance = self->_cellAppearance;
-    self->_cellAppearance = v8;
+    self->_cellAppearance = height;
 
-    v10 = [(TPSTipsViewController *)self view];
-    [v10 safeAreaInsets];
+    view = [(TPSTipsViewController *)self view];
+    [view safeAreaInsets];
     [(TPSTipCellAppearance *)self->_cellAppearance setTopSafeAreaHeight:?];
 
-    v11 = [v7 userInterfaceStyle];
+    userInterfaceStyle = [traitCopy userInterfaceStyle];
     v12 = self->_cellAppearance;
 
-    [(TPSTipCellAppearance *)v12 setUserInterfaceStyle:v11];
+    [(TPSTipCellAppearance *)v12 setUserInterfaceStyle:userInterfaceStyle];
   }
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(UICollectionView *)self->_collectionView traitCollection];
-  v4 = [(TPSTipsViewController *)self view];
-  [v4 bounds];
-  [(TPSTipsViewController *)self initCellAppearanceWithTrait:v3 size:v5, v6];
+  traitCollection = [(UICollectionView *)self->_collectionView traitCollection];
+  view = [(TPSTipsViewController *)self view];
+  [view bounds];
+  [(TPSTipsViewController *)self initCellAppearanceWithTrait:traitCollection size:v5, v6];
 
   v7.receiver = self;
   v7.super_class = TPSTipsViewController;
@@ -1771,8 +1771,8 @@ LABEL_12:
   [(TPSTipsViewController *)&v34 viewDidLayoutSubviews];
   if ([(TPSAppViewController *)self viewWillAppear])
   {
-    v3 = [(TPSTipsViewController *)self view];
-    [v3 bounds];
+    view = [(TPSTipsViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
 
@@ -1791,8 +1791,8 @@ LABEL_12:
     }
 
     [(TPSTipsViewController *)self ensureCurrentTipPositionWithViewSize:width, height];
-    v12 = [(TPSTipsViewController *)self view];
-    [v12 safeAreaInsets];
+    view2 = [(TPSTipsViewController *)self view];
+    [view2 safeAreaInsets];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -1808,19 +1808,19 @@ LABEL_12:
       v21 = -v18;
     }
 
-    v22 = [(TPSTipsViewController *)self pageControlBottomConstraint];
-    [v22 setConstant:v21];
+    pageControlBottomConstraint = [(TPSTipsViewController *)self pageControlBottomConstraint];
+    [pageControlBottomConstraint setConstant:v21];
 
-    v23 = [(TPSTipsViewController *)self pageControl];
-    [v23 bounds];
+    pageControl = [(TPSTipsViewController *)self pageControl];
+    [pageControl bounds];
     self->_toolbarHeight = CGRectGetHeight(v36);
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = [(UICollectionView *)self->_collectionView visibleCells];
-    v25 = [v24 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+    v25 = [visibleCells countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v25)
     {
       v26 = v25;
@@ -1831,7 +1831,7 @@ LABEL_12:
         {
           if (*v31 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(visibleCells);
           }
 
           v29 = *(*(&v30 + 1) + 8 * i);
@@ -1839,7 +1839,7 @@ LABEL_12:
           [v29 setContentSafeAreaInsets:{v14, v16, v18, v20}];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v26 = [visibleCells countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v26);
@@ -1859,63 +1859,63 @@ LABEL_12:
   v4 = [(TPSTipsViewController *)self registerForTraitChanges:v3 withHandler:v5];
 }
 
-- (void)_logTimeSpentBeforeCurrentTip:(id)a3
+- (void)_logTimeSpentBeforeCurrentTip:(id)tip
 {
-  v13 = a3;
+  tipCopy = tip;
   previousTipTimeSpentEvent = self->_previousTipTimeSpentEvent;
   if (previousTipTimeSpentEvent)
   {
-    v5 = [(TPSAnalyticsEventTipTimeSpent *)previousTipTimeSpentEvent date];
+    date = [(TPSAnalyticsEventTipTimeSpent *)previousTipTimeSpentEvent date];
 
-    if (v5)
+    if (date)
     {
       v6 = +[NSDate date];
-      v7 = [(TPSAnalyticsEventTipTimeSpent *)self->_previousTipTimeSpentEvent date];
-      [v6 timeIntervalSinceDate:v7];
+      date2 = [(TPSAnalyticsEventTipTimeSpent *)self->_previousTipTimeSpentEvent date];
+      [v6 timeIntervalSinceDate:date2];
       [(TPSAnalyticsEventTipTimeSpent *)self->_previousTipTimeSpentEvent setTimeSpent:?];
 
       [(TPSAnalyticsEventTipTimeSpent *)self->_previousTipTimeSpentEvent log];
     }
   }
 
-  if (v13)
+  if (tipCopy)
   {
-    v8 = [v13 identifier];
+    identifier = [tipCopy identifier];
     collectionID = self->_collectionID;
-    v10 = [v13 correlationID];
-    v11 = [TPSAnalyticsEventTipTimeSpent eventWithTipID:v8 collectionID:collectionID correlationID:v10];
+    correlationID = [tipCopy correlationID];
+    v11 = [TPSAnalyticsEventTipTimeSpent eventWithTipID:identifier collectionID:collectionID correlationID:correlationID];
     v12 = self->_previousTipTimeSpentEvent;
     self->_previousTipTimeSpentEvent = v11;
   }
 
   else
   {
-    v8 = self->_previousTipTimeSpentEvent;
+    identifier = self->_previousTipTimeSpentEvent;
     self->_previousTipTimeSpentEvent = 0;
   }
 }
 
-- (void)logAppIntent:(id)a3 actionDirection:(id)a4
+- (void)logAppIntent:(id)intent actionDirection:(id)direction
 {
   currentTip = self->_currentTip;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TPSTip *)currentTip identifier];
-  v8 = [TPSAnalyticsEventLinkAction eventWithTipID:v9 actionName:v7 actionDirection:v6];
+  directionCopy = direction;
+  intentCopy = intent;
+  identifier = [(TPSTip *)currentTip identifier];
+  v8 = [TPSAnalyticsEventLinkAction eventWithTipID:identifier actionName:intentCopy actionDirection:directionCopy];
 
   [v8 log];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v7 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v7 length])
+  if ([text length])
   {
-    v5 = [TPSAppSearchQuery queryWithSearchTerm:v7 origin:0];
-    v6 = [(TPSTipsViewController *)self searchResultViewModel];
-    [v6 setSearchQuery:v5];
+    v5 = [TPSAppSearchQuery queryWithSearchTerm:text origin:0];
+    searchResultViewModel = [(TPSTipsViewController *)self searchResultViewModel];
+    [searchResultViewModel setSearchQuery:v5];
   }
 
   else
@@ -1924,30 +1924,30 @@ LABEL_12:
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
-  v5 = [(TPSTipsViewController *)self searchResultsNavigationController];
+  presentedViewController = [dismiss presentedViewController];
+  searchResultsNavigationController = [(TPSTipsViewController *)self searchResultsNavigationController];
 
-  if (v4 == v5)
+  if (presentedViewController == searchResultsNavigationController)
   {
 
     [(TPSTipsViewController *)self dismissSearch];
   }
 }
 
-- (void)tipCollectionViewCellContentLayoutChanged:(id)a3
+- (void)tipCollectionViewCellContentLayoutChanged:(id)changed
 {
-  v3 = [(TPSTipsViewController *)self scrolledDeferredAction];
-  [v3 scheduleNextRunLoop];
+  scrolledDeferredAction = [(TPSTipsViewController *)self scrolledDeferredAction];
+  [scrolledDeferredAction scheduleNextRunLoop];
 }
 
-- (void)cellContentLoaded:(id)a3
+- (void)cellContentLoaded:(id)loaded
 {
-  v4 = [a3 tip];
-  v5 = [(TPSTipsViewController *)self currentTip];
+  v4 = [loaded tip];
+  currentTip = [(TPSTipsViewController *)self currentTip];
 
-  if (v4 == v5)
+  if (v4 == currentTip)
   {
     [(TPSTipsViewController *)self cancelAssetsPrefetch];
 
@@ -1958,50 +1958,50 @@ LABEL_12:
 - (void)cancelAssetsPrefetch
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"prefetchMediaPrefetchDelay" object:0];
-  v3 = [(TPSTipsViewController *)self assetPrefetchingManager];
-  [v3 cancel];
+  assetPrefetchingManager = [(TPSTipsViewController *)self assetPrefetchingManager];
+  [assetPrefetchingManager cancel];
 }
 
 - (void)prefetchMediaPrefetchDelay
 {
-  v3 = [(TPSTipsViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle] == 2;
+  traitCollection = [(TPSTipsViewController *)self traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == 2;
 
-  v7 = [(TPSTipsViewController *)self assetPrefetchingManager];
+  assetPrefetchingManager = [(TPSTipsViewController *)self assetPrefetchingManager];
   currentTip = self->_currentTip;
-  v6 = [(TPSTipsViewController *)self tips];
-  [v7 prefetchAssetsFromTip:currentTip tips:v6 assetUserInterfaceStyle:v4];
+  tips = [(TPSTipsViewController *)self tips];
+  [assetPrefetchingManager prefetchAssetsFromTip:currentTip tips:tips assetUserInterfaceStyle:v4];
 }
 
-- (void)tipCollectionViewCell:(id)a3 showSafariViewForURL:(id)a4
+- (void)tipCollectionViewCell:(id)cell showSafariViewForURL:(id)l
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  cellCopy = cell;
+  lCopy = l;
+  if (lCopy)
   {
-    v7 = [(TPSTipsViewController *)self delegate];
+    delegate = [(TPSTipsViewController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TPSTipsViewController *)self delegate];
-      [v9 tipsViewController:self shouldDisplayURL:v6];
+      delegate2 = [(TPSTipsViewController *)self delegate];
+      [delegate2 tipsViewController:self shouldDisplayURL:lCopy];
     }
   }
 }
 
-- (void)tipCollectionViewCell:(id)a3 showTryItModeForURL:(id)a4
+- (void)tipCollectionViewCell:(id)cell showTryItModeForURL:(id)l
 {
-  if (a4 && self->_currentTip)
+  if (l && self->_currentTip)
   {
-    v5 = a4;
+    lCopy = l;
     v6 = [TryItViewController alloc];
-    v7 = [(TPSTipsViewController *)self currentTip];
-    v8 = [v7 identifier];
-    v9 = [(TPSTipsViewController *)self collectionID];
-    v10 = [(TPSTipsViewController *)self currentTip];
-    v11 = [v10 correlationID];
-    v12 = [v6 initWithLessonURL:v5 tipID:v8 collectionID:v9 correlationID:v11];
+    currentTip = [(TPSTipsViewController *)self currentTip];
+    identifier = [currentTip identifier];
+    collectionID = [(TPSTipsViewController *)self collectionID];
+    currentTip2 = [(TPSTipsViewController *)self currentTip];
+    correlationID = [currentTip2 correlationID];
+    v12 = [v6 initWithLessonURL:lCopy tipID:identifier collectionID:collectionID correlationID:correlationID];
 
     [(TPSTipsViewController *)self setTryItViewController:v12];
     if (+[TPSCommonDefines isPhoneUI])
@@ -2014,29 +2014,29 @@ LABEL_12:
       v13 = 2;
     }
 
-    v14 = [(TPSTipsViewController *)self tryItViewController];
-    [v14 setModalPresentationStyle:v13];
+    tryItViewController = [(TPSTipsViewController *)self tryItViewController];
+    [tryItViewController setModalPresentationStyle:v13];
 
-    v15 = [(TPSTipsViewController *)self tryItViewController];
-    [v15 setModalInPresentation:1];
+    tryItViewController2 = [(TPSTipsViewController *)self tryItViewController];
+    [tryItViewController2 setModalInPresentation:1];
 
-    v16 = [(TPSTipsViewController *)self tryItViewController];
-    [(TPSTipsViewController *)self presentViewController:v16 animated:1 completion:0];
+    tryItViewController3 = [(TPSTipsViewController *)self tryItViewController];
+    [(TPSTipsViewController *)self presentViewController:tryItViewController3 animated:1 completion:0];
 
-    v17 = [(TPSTipsViewController *)self tryItViewController];
-    [v17 setDelegate:self];
+    tryItViewController4 = [(TPSTipsViewController *)self tryItViewController];
+    [tryItViewController4 setDelegate:self];
 
     [(TPSTipsViewController *)self stopVideoForCurrentTip];
   }
 }
 
-- (void)tipCollectionViewCell:(id)a3 showVideoForURL:(id)a4
+- (void)tipCollectionViewCell:(id)cell showVideoForURL:(id)l
 {
-  if (a4)
+  if (l)
   {
-    v5 = a4;
+    lCopy = l;
     v6 = objc_alloc_init(AVPlayerViewController);
-    v7 = [AVPlayer playerWithURL:v5];
+    v7 = [AVPlayer playerWithURL:lCopy];
 
     [v6 setPlayer:v7];
     v9[0] = _NSConcreteStackBlock;
@@ -2049,67 +2049,67 @@ LABEL_12:
   }
 }
 
-- (void)tipCollectionViewCell:(id)a3 showUserGuideWithIdentifier:(id)a4 topicId:(id)a5
+- (void)tipCollectionViewCell:(id)cell showUserGuideWithIdentifier:(id)identifier topicId:(id)id
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(TPSTipsViewController *)self delegate];
+  identifierCopy = identifier;
+  idCopy = id;
+  delegate = [(TPSTipsViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TPSTipsViewController *)self delegate];
-    [v10 tipsViewController:self loadMainUserGuideWithIdentifier:v11 topicId:v7];
+    delegate2 = [(TPSTipsViewController *)self delegate];
+    [delegate2 tipsViewController:self loadMainUserGuideWithIdentifier:identifierCopy topicId:idCopy];
   }
 }
 
-- (void)tipCollectionViewCell:(id)a3 linkTappedForURL:(id)a4
+- (void)tipCollectionViewCell:(id)cell linkTappedForURL:(id)l
 {
-  v13 = a3;
-  v6 = a4;
+  cellCopy = cell;
+  lCopy = l;
   if (self->_isSharedVariant)
   {
     [(TPSTipsViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
-  if (v6)
+  if (lCopy)
   {
     currentTip = self->_currentTip;
     if (currentTip)
     {
-      v8 = [(TPSTip *)currentTip identifier];
+      identifier = [(TPSTip *)currentTip identifier];
       collectionID = self->_collectionID;
-      v10 = [(TPSTip *)self->_currentTip correlationID];
-      v11 = [(TPSTip *)self->_currentTip clientConditionID];
-      v12 = [TPSAnalyticsEventContentLinkTapped eventWithContentID:v8 collectionID:collectionID correlationID:v10 clientConditionID:v11 url:v6];
+      correlationID = [(TPSTip *)self->_currentTip correlationID];
+      clientConditionID = [(TPSTip *)self->_currentTip clientConditionID];
+      v12 = [TPSAnalyticsEventContentLinkTapped eventWithContentID:identifier collectionID:collectionID correlationID:correlationID clientConditionID:clientConditionID url:lCopy];
       [v12 log];
     }
   }
 }
 
-- (void)tipCollectionViewCellHandleTripleTapInternalGesture:(id)a3
+- (void)tipCollectionViewCellHandleTripleTapInternalGesture:(id)gesture
 {
-  v5 = [(TPSAppViewController *)self appController];
-  v4 = [(TPSTipsViewController *)self currentTip];
-  [v5 overrideWidgetWithTip:v4];
+  appController = [(TPSAppViewController *)self appController];
+  currentTip = [(TPSTipsViewController *)self currentTip];
+  [appController overrideWidgetWithTip:currentTip];
 }
 
-- (void)tipCollectionViewCellSharedTipTapped:(id)a3
+- (void)tipCollectionViewCellSharedTipTapped:(id)tapped
 {
-  v4 = [(TPSAppViewController *)self appController];
-  v5 = [(TPSTip *)self->_currentTip correlationID];
-  v13 = [v4 tipForCorrelationIdentifier:v5];
+  appController = [(TPSAppViewController *)self appController];
+  correlationID = [(TPSTip *)self->_currentTip correlationID];
+  v13 = [appController tipForCorrelationIdentifier:correlationID];
 
   v6 = v13;
   if (v13)
   {
-    v7 = [(TPSAppViewController *)self appController];
-    v8 = [v13 identifier];
-    v9 = [v7 collectionIdentifierForTipIdentifier:v8];
+    appController2 = [(TPSAppViewController *)self appController];
+    identifier = [v13 identifier];
+    v9 = [appController2 collectionIdentifierForTipIdentifier:identifier];
     if (v9)
     {
       v10 = v9;
-      v11 = [(TPSTipsViewController *)self delegate];
+      delegate = [(TPSTipsViewController *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       v6 = v13;
@@ -2118,9 +2118,9 @@ LABEL_12:
         goto LABEL_6;
       }
 
-      v7 = [(TPSTipsViewController *)self delegate];
-      v8 = [v13 identifier];
-      [v7 tipsViewController:self showSharedTipWithTipIdentifier:v8];
+      appController2 = [(TPSTipsViewController *)self delegate];
+      identifier = [v13 identifier];
+      [appController2 tipsViewController:self showSharedTipWithTipIdentifier:identifier];
     }
 
     v6 = v13;
@@ -2129,17 +2129,17 @@ LABEL_12:
 LABEL_6:
 }
 
-- (void)pageControlLongPressedForHUD:(id)a3 withText:(id)a4
+- (void)pageControlLongPressedForHUD:(id)d withText:(id)text
 {
-  v6 = a4;
-  if ([v6 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = [[UIAccessibilityHUDItem alloc] initWithTitle:v6 image:0 imageInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+    v5 = [[UIAccessibilityHUDItem alloc] initWithTitle:textCopy image:0 imageInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
     [(TPSTipsViewController *)self _showAccessibilityHUDItem:v5];
   }
 }
 
-- (void)tryItViewControllerDidDismissWithTryItViewController:(id)a3
+- (void)tryItViewControllerDidDismissWithTryItViewController:(id)controller
 {
   [(TPSTipsViewController *)self setTryItViewController:0];
 
@@ -2155,15 +2155,15 @@ LABEL_6:
 
 - (void)setupSearchViewModel
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001EA20();
 }
 
-- (void)shareCurrentTip:(id)a3
+- (void)shareCurrentTip:(id)tip
 {
-  if (a3)
+  if (tip)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -2172,7 +2172,7 @@ LABEL_6:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10003C0C8();

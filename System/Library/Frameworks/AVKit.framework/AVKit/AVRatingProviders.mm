@@ -1,37 +1,37 @@
 @interface AVRatingProviders
-+ (id)ratingProvidersWithName:(id)a3;
++ (id)ratingProvidersWithName:(id)name;
 + (id)shared;
-- (AVRatingProviders)initWithFileURL:(id)a3;
-- (id)_movieMapForRating:(id)a3;
-- (id)_tvShowsMapForRating:(id)a3;
-- (id)findRatingString:(id)a3 domain:(int64_t)a4 country:(id)a5 shouldPreferTVDomain:(BOOL)a6;
+- (AVRatingProviders)initWithFileURL:(id)l;
+- (id)_movieMapForRating:(id)rating;
+- (id)_tvShowsMapForRating:(id)rating;
+- (id)findRatingString:(id)string domain:(int64_t)domain country:(id)country shouldPreferTVDomain:(BOOL)vDomain;
 - (void)_loadRatingMapsIfNeeded;
 - (void)_loadRatingsMaps;
 @end
 
 @implementation AVRatingProviders
 
-- (id)findRatingString:(id)a3 domain:(int64_t)a4 country:(id)a5 shouldPreferTVDomain:(BOOL)a6
+- (id)findRatingString:(id)string domain:(int64_t)domain country:(id)country shouldPreferTVDomain:(BOOL)vDomain
 {
-  v6 = a6;
+  vDomainCopy = vDomain;
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [(AVRatingProviders *)self _movieMapForRating:v10];
-  v13 = [(AVRatingProviders *)self _tvShowsMapForRating:v10];
+  stringCopy = string;
+  countryCopy = country;
+  v12 = [(AVRatingProviders *)self _movieMapForRating:stringCopy];
+  v13 = [(AVRatingProviders *)self _tvShowsMapForRating:stringCopy];
   if (v12 | v13)
   {
-    v41 = v10;
+    v41 = stringCopy;
     v14 = +[AVMediaContentRating contentRestrictionsCountryCode];
-    v15 = [MEMORY[0x1E695DF58] systemLocale];
-    v16 = [v15 countryCode];
+    systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+    countryCode = [systemLocale countryCode];
 
     v17 = &stru_1EFED57D8;
-    v39 = v16;
-    v40 = v11;
-    if (v11)
+    v39 = countryCode;
+    v40 = countryCopy;
+    if (countryCopy)
     {
-      v18 = v11;
+      v18 = countryCopy;
     }
 
     else
@@ -51,9 +51,9 @@
 
     v47[0] = v18;
     v47[1] = v19;
-    if (v16)
+    if (countryCode)
     {
-      v17 = v16;
+      v17 = countryCode;
     }
 
     v47[2] = v17;
@@ -80,7 +80,7 @@
           v25 = *(*(&v42 + 1) + 8 * i);
           if ([v25 length])
           {
-            v26 = _bestMatch(v12, v13, v25, a4, v6);
+            v26 = _bestMatch(v12, v13, v25, domain, vDomainCopy);
             if (v26)
             {
               v30 = v26;
@@ -112,26 +112,26 @@
       v28 = MEMORY[0x1E695E0F8];
     }
 
-    v29 = [v28 allKeys];
-    v30 = [v27 setWithArray:v29];
+    allKeys = [v28 allKeys];
+    v30 = [v27 setWithArray:allKeys];
 
     if (v13)
     {
-      v31 = [v13 allKeys];
-      [v30 addObjectsFromArray:v31];
+      allKeys2 = [v13 allKeys];
+      [v30 addObjectsFromArray:allKeys2];
     }
 
     [v30 removeObject:@"ratingString"];
-    v32 = [v30 allObjects];
-    v33 = [v32 mutableCopy];
+    allObjects = [v30 allObjects];
+    v33 = [allObjects mutableCopy];
 
     [v33 sortUsingSelector:sel_compare_];
-    v34 = [v33 firstObject];
-    v35 = _bestMatch(v12, v13, v34, a4, v6);
+    firstObject = [v33 firstObject];
+    v35 = _bestMatch(v12, v13, firstObject, domain, vDomainCopy);
 
 LABEL_33:
-    v11 = v40;
-    v10 = v41;
+    countryCopy = v40;
+    stringCopy = v41;
   }
 
   else
@@ -140,12 +140,12 @@ LABEL_33:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v36 = @"Unknown";
-      if (a4 == 1)
+      if (domain == 1)
       {
         v36 = @"Movies";
       }
 
-      if (a4 == 2)
+      if (domain == 2)
       {
         v36 = @"TVShows";
       }
@@ -154,11 +154,11 @@ LABEL_33:
       *buf = 136315906;
       v49 = "[AVRatingProviders findRatingString:domain:country:shouldPreferTVDomain:]";
       v50 = 2114;
-      v51 = v10;
+      v51 = stringCopy;
       v52 = 2114;
       v53 = v37;
       v54 = 2114;
-      v55 = v11;
+      v55 = countryCopy;
       _os_log_impl(&dword_18B49C000, v14, OS_LOG_TYPE_DEFAULT, "%s * There is no rating that matches '%{public}@' (%{public}@, %{public}@)", buf, 0x2Au);
     }
 
@@ -168,26 +168,26 @@ LABEL_33:
   return v35;
 }
 
-- (id)_tvShowsMapForRating:(id)a3
+- (id)_tvShowsMapForRating:(id)rating
 {
-  v4 = a3;
+  ratingCopy = rating;
   [(AVRatingProviders *)self _loadRatingMapsIfNeeded];
-  v5 = [(AVRatingProviders *)self mapForTVShows];
-  v6 = _KeyForRating(v4);
+  mapForTVShows = [(AVRatingProviders *)self mapForTVShows];
+  v6 = _KeyForRating(ratingCopy);
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [mapForTVShows objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (id)_movieMapForRating:(id)a3
+- (id)_movieMapForRating:(id)rating
 {
-  v4 = a3;
+  ratingCopy = rating;
   [(AVRatingProviders *)self _loadRatingMapsIfNeeded];
-  v5 = [(AVRatingProviders *)self mapForMovies];
-  v6 = _KeyForRating(v4);
+  mapForMovies = [(AVRatingProviders *)self mapForMovies];
+  v6 = _KeyForRating(ratingCopy);
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [mapForMovies objectForKeyedSubscript:v6];
 
   return v7;
 }
@@ -203,20 +203,20 @@ LABEL_33:
 - (void)_loadRatingsMaps
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:@"Movies" forKeyedSubscript:@"domain"];
-  [v4 setObject:@"TVShows" forKeyedSubscript:@"domain"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"Movies" forKeyedSubscript:@"domain"];
+  [dictionary2 setObject:@"TVShows" forKeyedSubscript:@"domain"];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v27 = self;
-  v5 = [(AVRatingProviders *)self plist];
-  v6 = [v5 allKeys];
+  selfCopy = self;
+  plist = [(AVRatingProviders *)self plist];
+  allKeys = [plist allKeys];
 
-  obj = v6;
-  v28 = [v6 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  obj = allKeys;
+  v28 = [allKeys countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v28)
   {
     v26 = *v38;
@@ -231,8 +231,8 @@ LABEL_33:
         }
 
         v8 = *(*(&v37 + 1) + 8 * v7);
-        v9 = [(AVRatingProviders *)v27 plist];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        plist2 = [(AVRatingProviders *)selfCopy plist];
+        v10 = [plist2 objectForKeyedSubscript:v8];
 
         v11 = [v10 objectForKeyedSubscript:@"ratingMovies"];
         v33 = 0u;
@@ -254,7 +254,7 @@ LABEL_33:
                 objc_enumerationMutation(v11);
               }
 
-              _MakeReverseDictionaryForRatingDictionary(v8, *(*(&v33 + 1) + 8 * v15++), v3);
+              _MakeReverseDictionaryForRatingDictionary(v8, *(*(&v33 + 1) + 8 * v15++), dictionary);
             }
 
             while (v13 != v15);
@@ -284,7 +284,7 @@ LABEL_33:
                 objc_enumerationMutation(v16);
               }
 
-              _MakeReverseDictionaryForRatingDictionary(v8, *(*(&v29 + 1) + 8 * v20++), v4);
+              _MakeReverseDictionaryForRatingDictionary(v8, *(*(&v29 + 1) + 8 * v20++), dictionary2);
             }
 
             while (v18 != v20);
@@ -304,19 +304,19 @@ LABEL_33:
     while (v28);
   }
 
-  v21 = [v3 copy];
-  mapForMovies = v27->_mapForMovies;
-  v27->_mapForMovies = v21;
+  v21 = [dictionary copy];
+  mapForMovies = selfCopy->_mapForMovies;
+  selfCopy->_mapForMovies = v21;
 
-  v23 = [v4 copy];
-  mapForTVShows = v27->_mapForTVShows;
-  v27->_mapForTVShows = v23;
+  v23 = [dictionary2 copy];
+  mapForTVShows = selfCopy->_mapForTVShows;
+  selfCopy->_mapForTVShows = v23;
 }
 
-- (AVRatingProviders)initWithFileURL:(id)a3
+- (AVRatingProviders)initWithFileURL:(id)l
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v34.receiver = self;
   v34.super_class = AVRatingProviders;
   v5 = [(AVRatingProviders *)&v34 init];
@@ -325,7 +325,7 @@ LABEL_33:
     goto LABEL_24;
   }
 
-  if (!v4)
+  if (!lCopy)
   {
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -335,9 +335,9 @@ LABEL_33:
     }
   }
 
-  v7 = [v4 path];
+  path = [lCopy path];
   v33 = 0;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v7];
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path];
   if (v8)
   {
     v9 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:&v33];
@@ -364,16 +364,16 @@ LABEL_33:
   v12 = v33;
   if (!v11)
   {
-    v13 = _AVLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    allKeys = _AVLog();
+    if (os_log_type_enabled(allKeys, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v36 = "[AVRatingProviders initWithFileURL:]";
       v37 = 2114;
-      v38 = v4;
+      v38 = lCopy;
       v39 = 2114;
       v40 = v12;
-      _os_log_impl(&dword_18B49C000, v13, OS_LOG_TYPE_DEFAULT, "%s Failed to read %{public}@: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_18B49C000, allKeys, OS_LOG_TYPE_DEFAULT, "%s Failed to read %{public}@: %{public}@", buf, 0x20u);
     }
 
     goto LABEL_44;
@@ -381,8 +381,8 @@ LABEL_33:
 
   if (MGGetBoolAnswer())
   {
-    v13 = [(NSDictionary *)v11 allKeys];
-    if (!-[NSObject count](v13, "count") || (-[NSObject objectAtIndexedSubscript:](v13, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v14, v15 != 2))
+    allKeys = [(NSDictionary *)v11 allKeys];
+    if (!-[NSObject count](allKeys, "count") || (-[NSObject objectAtIndexedSubscript:](allKeys, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v14, v15 != 2))
     {
       v17 = _AVLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -395,7 +395,7 @@ LABEL_33:
       goto LABEL_43;
     }
 
-    v16 = [v13 objectAtIndexedSubscript:0];
+    v16 = [allKeys objectAtIndexedSubscript:0];
     v17 = [(NSDictionary *)v11 objectForKeyedSubscript:v16];
 
     objc_opt_class();
@@ -412,18 +412,18 @@ LABEL_33:
         if (isKindOfClass)
         {
           v21 = [v17 objectForKeyedSubscript:@"ratingMovies"];
-          v22 = [v21 firstObject];
+          firstObject = [v21 firstObject];
           objc_opt_class();
           v23 = objc_opt_isKindOfClass();
 
           if (v23)
           {
-            v24 = [v21 firstObject];
-            v25 = [v24 objectForKeyedSubscript:@"rank"];
+            firstObject2 = [v21 firstObject];
+            v25 = [firstObject2 objectForKeyedSubscript:@"rank"];
             if (v25)
             {
               v26 = v25;
-              v27 = [v24 objectForKeyedSubscript:@"rating"];
+              v27 = [firstObject2 objectForKeyedSubscript:@"rating"];
 
               if (v27)
               {
@@ -443,12 +443,12 @@ LABEL_33:
 
           else
           {
-            v24 = _AVLog();
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+            firstObject2 = _AVLog();
+            if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315138;
               v36 = "[AVRatingProviders initWithFileURL:]";
-              _os_log_impl(&dword_18B49C000, v24, OS_LOG_TYPE_DEFAULT, "%s error: expect ratingMovies elements to be dictionaries", buf, 0xCu);
+              _os_log_impl(&dword_18B49C000, firstObject2, OS_LOG_TYPE_DEFAULT, "%s error: expect ratingMovies elements to be dictionaries", buf, 0xCu);
             }
           }
 
@@ -519,7 +519,7 @@ LABEL_45:
   block[1] = 3221225472;
   block[2] = __27__AVRatingProviders_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken_19954 != -1)
   {
     dispatch_once(&shared_onceToken_19954, block);
@@ -539,13 +539,13 @@ uint64_t __27__AVRatingProviders_shared__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)ratingProvidersWithName:(id)a3
++ (id)ratingProvidersWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = AVBundle();
-  v6 = [v5 URLForResource:v4 withExtension:0];
+  v6 = [v5 URLForResource:nameCopy withExtension:0];
 
-  v7 = [[a1 alloc] initWithFileURL:v6];
+  v7 = [[self alloc] initWithFileURL:v6];
 
   return v7;
 }

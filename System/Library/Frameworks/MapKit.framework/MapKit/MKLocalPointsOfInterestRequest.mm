@@ -1,11 +1,11 @@
 @interface MKLocalPointsOfInterestRequest
-- (BOOL)_isValidCoordinateRegion:(id *)a3;
+- (BOOL)_isValidCoordinateRegion:(id *)region;
 - (CLLocationCoordinate2D)coordinate;
 - (MKCoordinateRegion)region;
 - (MKLocalPointsOfInterestRequest)initWithCenterCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius;
 - (MKLocalPointsOfInterestRequest)initWithCoordinateRegion:(MKCoordinateRegion)region;
-- (double)_deriveRadiusFromCoordinateRegion:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_deriveRadiusFromCoordinateRegion:(id *)region;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MKLocalPointsOfInterestRequest
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (double)_deriveRadiusFromCoordinateRegion:(id *)a3
+- (double)_deriveRadiusFromCoordinateRegion:(id *)region
 {
   GEOMapRectForCoordinateRegion();
   v7 = v5 <= v6;
@@ -65,7 +65,7 @@
   return MKMetersBetweenMapPoints(*&v3, *&v12) * 0.5;
 }
 
-- (BOOL)_isValidCoordinateRegion:(id *)a3
+- (BOOL)_isValidCoordinateRegion:(id *)region
 {
   result = 0;
   if (fabs(v4) <= 180.0)
@@ -76,11 +76,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(MKLocalPointsOfInterestRequest *)self _createdFromRegion];
-  v6 = [objc_opt_class() allocWithZone:a3];
-  if (v5)
+  _createdFromRegion = [(MKLocalPointsOfInterestRequest *)self _createdFromRegion];
+  v6 = [objc_opt_class() allocWithZone:zone];
+  if (_createdFromRegion)
   {
     v7 = [v6 initWithCoordinateRegion:{self->_region.center.latitude, self->_region.center.longitude, self->_region.span.latitudeDelta, self->_region.span.longitudeDelta}];
   }

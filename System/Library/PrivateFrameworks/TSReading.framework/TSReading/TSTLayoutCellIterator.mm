@@ -1,45 +1,45 @@
 @interface TSTLayoutCellIterator
-- (TSTLayoutCellIterator)initWithLayout:(id)a3;
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(id)a4;
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(id)a4 flags:(unint64_t)a5;
-- (TSTLayoutCellIterator)initWithMasterLayout:(id)a3;
-- (TSTLayoutCellIterator)initWithMasterLayout:(id)a3 range:(id)a4 flags:(unint64_t)a5;
+- (TSTLayoutCellIterator)initWithLayout:(id)layout;
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(id)range;
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(id)range flags:(unint64_t)flags;
+- (TSTLayoutCellIterator)initWithMasterLayout:(id)layout;
+- (TSTLayoutCellIterator)initWithMasterLayout:(id)layout range:(id)range flags:(unint64_t)flags;
 - (void)dealloc;
 @end
 
 @implementation TSTLayoutCellIterator
 
-- (TSTLayoutCellIterator)initWithLayout:(id)a3
+- (TSTLayoutCellIterator)initWithLayout:(id)layout
 {
-  v4 = [a3 masterLayout];
+  masterLayout = [layout masterLayout];
 
-  return [(TSTLayoutCellIterator *)self initWithMasterLayout:v4];
+  return [(TSTLayoutCellIterator *)self initWithMasterLayout:masterLayout];
 }
 
-- (TSTLayoutCellIterator)initWithMasterLayout:(id)a3
+- (TSTLayoutCellIterator)initWithMasterLayout:(id)layout
 {
-  Range = TSTMasterLayoutGetRange(a3);
+  Range = TSTMasterLayoutGetRange(layout);
 
-  return [(TSTLayoutCellIterator *)self initWithMasterLayout:a3 range:Range];
+  return [(TSTLayoutCellIterator *)self initWithMasterLayout:layout range:Range];
 }
 
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(id)a4
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(id)range
 {
-  v6 = [a3 masterLayout];
+  masterLayout = [layout masterLayout];
 
-  return [(TSTLayoutCellIterator *)self initWithMasterLayout:v6 range:a4];
+  return [(TSTLayoutCellIterator *)self initWithMasterLayout:masterLayout range:range];
 }
 
-- (TSTLayoutCellIterator)initWithLayout:(id)a3 range:(id)a4 flags:(unint64_t)a5
+- (TSTLayoutCellIterator)initWithLayout:(id)layout range:(id)range flags:(unint64_t)flags
 {
-  v8 = [a3 masterLayout];
+  masterLayout = [layout masterLayout];
 
-  return [(TSTLayoutCellIterator *)self initWithMasterLayout:v8 range:a4 flags:a5];
+  return [(TSTLayoutCellIterator *)self initWithMasterLayout:masterLayout range:range flags:flags];
 }
 
-- (TSTLayoutCellIterator)initWithMasterLayout:(id)a3 range:(id)a4 flags:(unint64_t)a5
+- (TSTLayoutCellIterator)initWithMasterLayout:(id)layout range:(id)range flags:(unint64_t)flags
 {
-  Range = TSTMasterLayoutGetRange(a3);
+  Range = TSTMasterLayoutGetRange(layout);
   v10 = 0;
   v11 = 16711680;
   v12 = 0xFFFFLL;
@@ -71,7 +71,7 @@
   v10 = 0;
   v11 = 16711680;
   v12 = 0xFFFFLL;
-  if (a4.var0.var0 == 0xFFFF)
+  if (range.var0.var0 == 0xFFFF)
   {
 LABEL_23:
     v13 = 0;
@@ -79,20 +79,20 @@ LABEL_23:
   }
 
   v13 = 0;
-  if ((*&a4 & 0xFF0000) != 0xFF0000)
+  if ((*&range & 0xFF0000) != 0xFF0000)
   {
     v10 = 0;
     v11 = 16711680;
     v12 = 0xFFFFLL;
-    if (HIWORD(*&a4))
+    if (HIWORD(*&range))
     {
       v13 = 0;
-      if ((*&a4 & 0xFFFF00000000) != 0)
+      if ((*&range & 0xFFFF00000000) != 0)
       {
         v12 = 0;
-        if (BYTE2(Range) <= a4.var0.var1)
+        if (BYTE2(Range) <= range.var0.var1)
         {
-          var1 = a4.var0.var1;
+          var1 = range.var0.var1;
         }
 
         else
@@ -100,9 +100,9 @@ LABEL_23:
           var1 = BYTE2(Range);
         }
 
-        if (Range <= a4.var0.var0)
+        if (Range <= range.var0.var0)
         {
-          var0 = a4.var0.var0;
+          var0 = range.var0.var0;
         }
 
         else
@@ -110,9 +110,9 @@ LABEL_23:
           var0 = Range;
         }
 
-        if ((BYTE4(Range) + BYTE2(Range) - 1) >= (LOBYTE(a4.var1.var0) + a4.var0.var1 - 1))
+        if ((BYTE4(Range) + BYTE2(Range) - 1) >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
         {
-          v16 = (LOBYTE(a4.var1.var0) + a4.var0.var1 - 1);
+          v16 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
         }
 
         else
@@ -120,7 +120,7 @@ LABEL_23:
           v16 = (BYTE4(Range) + BYTE2(Range) - 1);
         }
 
-        v17 = (a4.var0.var0 + a4.var1.var1 - 1);
+        v17 = (range.var0.var0 + range.var1.var1 - 1);
         if ((Range + HIWORD(Range) - 1) < v17)
         {
           v17 = (Range + HIWORD(Range) - 1);
@@ -149,8 +149,8 @@ LABEL_24:
   v19 = v10 | v13;
   v20 = v18 | v19;
   v21 = ~(v18 | v19);
-  self->mNumberOfLayoutColumns = TSTMasterLayoutGetTableNumberOfColumns(a3);
-  v22 = [objc_msgSend(a3 "tableModel")];
+  self->mNumberOfLayoutColumns = TSTMasterLayoutGetTableNumberOfColumns(layout);
+  v22 = [objc_msgSend(layout "tableModel")];
   LOBYTE(v23) = 0;
   LOBYTE(v24) = -1;
   v25 = -1;
@@ -270,17 +270,17 @@ LABEL_48:
   v25 = v20;
   v28 = HIWORD(v20);
 LABEL_49:
-  v38 = -[TSTCellIterator initWithTableModel:region:flags:](self, "initWithTableModel:region:flags:", [a3 tableModel], +[TSTCellRegion regionFromRange:](TSTCellRegion, "regionFromRange:", v26), a5 | 0x48);
+  v38 = -[TSTCellIterator initWithTableModel:region:flags:](self, "initWithTableModel:region:flags:", [layout tableModel], +[TSTCellRegion regionFromRange:](TSTCellRegion, "regionFromRange:", v26), flags | 0x48);
   if (v38)
   {
-    v38->mMasterLayout = a3;
+    v38->mMasterLayout = layout;
     v38->mLayoutRange.origin.row = v25;
     v38->mLayoutRange.origin.column = v24;
     v38->mLayoutRange.origin.reserved = v23;
     v38->mLayoutRange.size.numberOfColumns = v27;
     v38->mLayoutRange.size.numberOfRows = v28;
     v39 = v24 + v27 - 1;
-    if ((a5 & 4) == 0)
+    if ((flags & 4) == 0)
     {
       v39 = v24;
     }
@@ -288,8 +288,8 @@ LABEL_49:
     v38->mLayoutCellID = (v25 | (v39 << 16));
     v38->mModelIteratorData.mCellID = 0xFFFFFF;
     v38->mLayoutCell = objc_alloc_init(TSTCell);
-    v38->mNumberOfRows = [objc_msgSend(a3 "tableModel")];
-    v38->mNumberOfColumns = [objc_msgSend(a3 "tableModel")];
+    v38->mNumberOfRows = [objc_msgSend(layout "tableModel")];
+    v38->mNumberOfColumns = [objc_msgSend(layout "tableModel")];
   }
 
   return v38;

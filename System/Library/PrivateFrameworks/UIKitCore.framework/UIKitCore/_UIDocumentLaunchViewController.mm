@@ -1,85 +1,85 @@
 @interface _UIDocumentLaunchViewController
 - (BOOL)_isParentViewControllerDisappearedOrAppearing;
 - (UIEdgeInsets)_minimumLayoutMarginsForView;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_dismissBrowserViewController;
-- (void)_firstResponderDidChange:(id)a3;
-- (void)_prepareDocumentAnimationInfoWithCompletion:(uint64_t *)a1;
+- (void)_firstResponderDidChange:(id)change;
+- (void)_prepareDocumentAnimationInfoWithCompletion:(uint64_t *)completion;
 - (void)_presentBrowserViewController;
-- (void)_updateParentNavigationBarVisibility:(void *)a1;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
-- (void)browserPresentationControllerDidInvalidateSheetDetentValues:(id)a3;
-- (void)browserPresentationControllerDidInvalidateUntransformedFrame:(id)a3;
-- (void)browserPresentationControllerDismissalTransitionDidEnd:(id)a3;
-- (void)browserPresentationControllerDismissalTransitionWillBegin:(id)a3;
-- (void)browserPresentationControllerPerformLayout:(id)a3;
-- (void)browserPresentationControllerPresentationTransitionDidEnd:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)initWithConfiguration:(void *)a1;
+- (void)_updateParentNavigationBarVisibility:(void *)visibility;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
+- (void)browserPresentationControllerDidInvalidateSheetDetentValues:(id)values;
+- (void)browserPresentationControllerDidInvalidateUntransformedFrame:(id)frame;
+- (void)browserPresentationControllerDismissalTransitionDidEnd:(id)end;
+- (void)browserPresentationControllerDismissalTransitionWillBegin:(id)begin;
+- (void)browserPresentationControllerPerformLayout:(id)layout;
+- (void)browserPresentationControllerPresentationTransitionDidEnd:(id)end;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)initWithConfiguration:(void *)configuration;
 - (void)loadView;
-- (void)setConfiguration:(uint64_t)a1;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)setConfiguration:(uint64_t)configuration;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation _UIDocumentLaunchViewController
 
-- (void)initWithConfiguration:(void *)a1
+- (void)initWithConfiguration:(void *)configuration
 {
-  v2 = a1;
-  if (a1)
+  configurationCopy = configuration;
+  if (configuration)
   {
     if (!a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_initWithConfiguration_ object:v2 file:@"_UIDocumentLaunchViewController.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithConfiguration_ object:configurationCopy file:@"_UIDocumentLaunchViewController.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
     }
 
-    v7.receiver = v2;
+    v7.receiver = configurationCopy;
     v7.super_class = _UIDocumentLaunchViewController;
     v4 = objc_msgSendSuper2(&v7, sel_init);
-    v2 = v4;
+    configurationCopy = v4;
     if (v4)
     {
       [(_UIDocumentLaunchViewController *)v4 setConfiguration:a2];
-      [v2 setDefinesPresentationContext:1];
+      [configurationCopy setDefinesPresentationContext:1];
     }
   }
 
-  return v2;
+  return configurationCopy;
 }
 
-- (void)setConfiguration:(uint64_t)a1
+- (void)setConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     v2 = obj;
     if (!obj)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:sel_setConfiguration_ object:a1 file:@"_UIDocumentLaunchViewController.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setConfiguration_ object:configuration file:@"_UIDocumentLaunchViewController.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"configuration != nil"}];
     }
 
-    objc_storeStrong((a1 + 1120), v2);
-    *(a1 + 1112) |= 0x10u;
-    v4 = [a1 view];
-    [v4 setNeedsLayout];
+    objc_storeStrong((configuration + 1120), v2);
+    *(configuration + 1112) |= 0x10u;
+    view = [configuration view];
+    [view setNeedsLayout];
 
     if (v2)
     {
-      v5 = *(a1 + 1112);
+      v5 = *(configuration + 1112);
       if (*(v2 + 8) == 1)
       {
         if (*(v2 + 48))
         {
-          v2 = *(a1 + 1112) & ((*(v2 + 48) & 8) != 0);
+          v2 = *(configuration + 1112) & ((*(v2 + 48) & 8) != 0);
         }
 
         else
@@ -96,47 +96,47 @@
 
     else
     {
-      v5 = *(a1 + 1112);
+      v5 = *(configuration + 1112);
     }
 
-    v6 = [a1 view];
-    [v6 setUserInteractionEnabled:v2];
+    view2 = [configuration view];
+    [view2 setUserInteractionEnabled:v2];
 
-    v17 = [a1 parentViewController];
-    v7 = [a1 view];
-    v8 = [v7 superview];
-    v9 = [v17 view];
+    parentViewController = [configuration parentViewController];
+    view3 = [configuration view];
+    superview = [view3 superview];
+    view4 = [parentViewController view];
 
-    if (v8 != v9)
+    if (superview != view4)
     {
-      v10 = [v17 view];
-      v11 = [a1 view];
-      v12 = [v17 view];
-      v13 = [(UIView *)v12 _backing_clientLayer];
-      if (v10)
+      view5 = [parentViewController view];
+      view6 = [configuration view];
+      view7 = [parentViewController view];
+      _backing_clientLayer = [(UIView *)view7 _backing_clientLayer];
+      if (view5)
       {
-        [(UIView *)v10 _backing_addPrivateSubview:v11 positioned:-2 relativeTo:v13];
+        [(UIView *)view5 _backing_addPrivateSubview:view6 positioned:-2 relativeTo:_backing_clientLayer];
       }
     }
 
     if ((v5 & 1) != v2)
     {
-      *(a1 + 1112) = *(a1 + 1112) & 0xFE | v2;
-      v14 = [a1 _window];
-      if (v14)
+      *(configuration + 1112) = *(configuration + 1112) & 0xFE | v2;
+      _window = [configuration _window];
+      if (_window)
       {
-        v15 = *(a1 + 1112);
+        v15 = *(configuration + 1112);
 
         if ((v15 & 8) == 0)
         {
           if (v2)
           {
-            [(_UIDocumentLaunchViewController *)a1 _presentBrowserViewController];
+            [(_UIDocumentLaunchViewController *)configuration _presentBrowserViewController];
           }
 
           else
           {
-            [(_UIDocumentLaunchViewController *)a1 _dismissBrowserViewController];
+            [(_UIDocumentLaunchViewController *)configuration _dismissBrowserViewController];
           }
         }
       }
@@ -146,40 +146,40 @@
 
 - (void)_presentBrowserViewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1040);
-    v3 = *(a1 + 1120);
+    v2 = *(self + 1040);
+    v3 = *(self + 1120);
     if (v3)
     {
       v3 = v3[9];
     }
 
     v4 = v3;
-    v5 = [v4 presentationController];
-    v6 = [v5 delegate];
-    [v2 setDelegate:v6];
+    presentationController = [v4 presentationController];
+    delegate = [presentationController delegate];
+    [v2 setDelegate:delegate];
 
-    [v4 _setOverrideTransitioningDelegate:a1];
+    [v4 _setOverrideTransitioningDelegate:self];
     [v4 _setOverrideUseCustomPresentation:1];
-    v7 = [v4 presentationController];
+    presentationController2 = [v4 presentationController];
 
-    if (v7 != v2)
+    if (presentationController2 != v2)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      v10 = [v4 presentationController];
-      [v9 handleFailureInMethod:sel__presentBrowserViewController object:a1 file:@"_UIDocumentLaunchViewController.m" lineNumber:520 description:{@"Attempted to present browser view controller with an unexpected presentation controller: %@", v10}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      presentationController3 = [v4 presentationController];
+      [currentHandler handleFailureInMethod:sel__presentBrowserViewController object:self file:@"_UIDocumentLaunchViewController.m" lineNumber:520 description:{@"Attempted to present browser view controller with an unexpected presentation controller: %@", presentationController3}];
     }
 
-    v8 = _UIDocumentUnavailableBrowserViewController(*(a1 + 1120));
+    v8 = _UIDocumentUnavailableBrowserViewController(*(self + 1120));
     [v8 _prepareForPresentingInUIPDocumentLanding];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64___UIDocumentLaunchViewController__presentBrowserViewController__block_invoke;
     v11[3] = &unk_1E70F3590;
-    v11[4] = a1;
+    v11[4] = self;
     [UIView performWithoutAnimation:v11];
-    [*(a1 + 1032) presentViewController:v4 animated:1 completion:0];
+    [*(self + 1032) presentViewController:v4 animated:1 completion:0];
     v11[5] = MEMORY[0x1E69E9820];
     v11[6] = 3221225472;
     v11[7] = ___uip_documentBrowser_sendAnalyticsEvent_block_invoke;
@@ -191,38 +191,38 @@
 
 - (void)_dismissBrowserViewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1120);
+    v2 = *(self + 1120);
     if (v2)
     {
       v2 = v2[9];
     }
 
     v3 = v2;
-    v4 = [v3 presentingViewController];
+    presentingViewController = [v3 presentingViewController];
 
-    if (v4)
+    if (presentingViewController)
     {
-      v5 = *(a1 + 1032);
+      v5 = *(self + 1032);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __64___UIDocumentLaunchViewController__dismissBrowserViewController__block_invoke;
       v9[3] = &unk_1E70F3590;
       v10 = v5;
       v6 = v5;
-      [(_UIDocumentLaunchViewController *)a1 _prepareDocumentAnimationInfoWithCompletion:v9];
+      [(_UIDocumentLaunchViewController *)self _prepareDocumentAnimationInfoWithCompletion:v9];
     }
 
     else
     {
       [v3 _cancelDelayedPresentation:0];
-      isParentViewControllerDisappearedOr = [(_UIDocumentLaunchViewController *)a1 _isParentViewControllerDisappearedOrAppearing];
+      isParentViewControllerDisappearedOr = [(_UIDocumentLaunchViewController *)self _isParentViewControllerDisappearedOrAppearing];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __64___UIDocumentLaunchViewController__dismissBrowserViewController__block_invoke_3;
       v8[3] = &unk_1E70F3590;
-      v8[4] = a1;
+      v8[4] = self;
       [UIView conditionallyAnimate:!isParentViewControllerDisappearedOr withAnimation:&__block_literal_global_599 layout:v8 completion:0];
     }
 
@@ -235,25 +235,25 @@
   }
 }
 
-- (void)browserPresentationControllerDidInvalidateSheetDetentValues:(id)a3
+- (void)browserPresentationControllerDidInvalidateSheetDetentValues:(id)values
 {
-  v3 = [(UIViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)browserPresentationControllerDidInvalidateUntransformedFrame:(id)a3
+- (void)browserPresentationControllerDidInvalidateUntransformedFrame:(id)frame
 {
-  v3 = [(UIViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)browserPresentationControllerPerformLayout:(id)a3
+- (void)browserPresentationControllerPerformLayout:(id)layout
 {
-  v3 = [(UIViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(UIViewController *)self view];
+  [view layoutIfNeeded];
 }
 
-- (void)browserPresentationControllerPresentationTransitionDidEnd:(id)a3
+- (void)browserPresentationControllerPresentationTransitionDidEnd:(id)end
 {
   *&self->_flags &= ~8u;
   [(UIView *)self->_animationInteractionView setHidden:1];
@@ -276,7 +276,7 @@
   }
 }
 
-- (void)browserPresentationControllerDismissalTransitionWillBegin:(id)a3
+- (void)browserPresentationControllerDismissalTransitionWillBegin:(id)begin
 {
   v12 = *MEMORY[0x1E69E9840];
   *&self->_flags |= 8u;
@@ -309,11 +309,11 @@
   else
   {
 
-    [a3 _sendWillDismiss];
+    [begin _sendWillDismiss];
   }
 }
 
-- (void)browserPresentationControllerDismissalTransitionDidEnd:(id)a3
+- (void)browserPresentationControllerDismissalTransitionDidEnd:(id)end
 {
   *&self->_flags &= ~8u;
   [(UIView *)self->_animationInteractionView setHidden:1];
@@ -334,11 +334,11 @@
   {
     *&self->_flags &= 0xFAu;
 
-    [a3 _sendDidDismiss];
+    [end _sendDidDismiss];
   }
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   configuration = self->_configuration;
   if (configuration)
@@ -348,7 +348,7 @@
 
   v8 = configuration;
 
-  if (v8 == a3)
+  if (v8 == controller)
   {
     v9 = self->_browserPresentationController;
   }
@@ -361,7 +361,7 @@
   return v9;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   configuration = self->_configuration;
   if (configuration)
@@ -371,21 +371,21 @@
 
   v8 = configuration;
 
-  if (v8 == a3)
+  if (v8 == controller)
   {
     *&self->_flags |= 2u;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   configuration = self->_configuration;
   if (configuration)
@@ -395,21 +395,21 @@
 
   v6 = configuration;
 
-  if (v6 == a3)
+  if (v6 == controller)
   {
     *&self->_flags &= ~2u;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v5 = [(_UIDocumentLaunchViewController *)self interruptibleAnimatorForTransition:?];
   objc_initWeak(&location, self);
@@ -418,7 +418,7 @@
   v11 = __53___UIDocumentLaunchViewController_animateTransition___block_invoke;
   v12 = &unk_1E7101A88;
   objc_copyWeak(&v15, &location);
-  v13 = a3;
+  transitionCopy = transition;
   v6 = v5;
   v14 = v6;
   v7 = _Block_copy(&v9);
@@ -438,12 +438,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_prepareDocumentAnimationInfoWithCompletion:(uint64_t *)a1
+- (void)_prepareDocumentAnimationInfoWithCompletion:(uint64_t *)completion
 {
-  if (a1)
+  if (completion)
   {
-    v4 = _UIDocumentUnavailableBrowserViewController(a1[140]);
-    v5 = a1[140];
+    v4 = _UIDocumentUnavailableBrowserViewController(completion[140]);
+    v5 = completion[140];
     if (v5)
     {
       v5 = v5[5];
@@ -466,7 +466,7 @@
       goto LABEL_13;
     }
 
-    v9 = a1[140];
+    v9 = completion[140];
     if (v9)
     {
       v9 = v9[13];
@@ -474,7 +474,7 @@
 
     v10 = v9;
 
-    v11 = a1[140];
+    v11 = completion[140];
     if (v11)
     {
       v12 = (*(v11 + 48) >> 2) & 1;
@@ -493,7 +493,7 @@ LABEL_13:
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, completion);
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __79___UIDocumentLaunchViewController__prepareDocumentAnimationInfoWithCompletion___block_invoke;
@@ -507,14 +507,14 @@ LABEL_13:
   }
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   v5 = self->_transitionAnimator;
   if (!v5)
   {
     v6 = [[UISpringTimingParameters alloc] initWithDampingRatio:1.0 response:0.4];
     v7 = [UIViewPropertyAnimator alloc];
-    [(_UIDocumentLaunchViewController *)self transitionDuration:a3];
+    [(_UIDocumentLaunchViewController *)self transitionDuration:transition];
     v5 = [(UIViewPropertyAnimator *)v7 initWithDuration:v6 timingParameters:?];
     transitionAnimator = self->_transitionAnimator;
     self->_transitionAnimator = v5;
@@ -523,11 +523,11 @@ LABEL_13:
   return v5;
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   if ((*&self->_flags & 2) == 0)
   {
-    [(UIView *)self->_backgroundView setAlpha:a3, 0.0];
+    [(UIView *)self->_backgroundView setAlpha:ended, 0.0];
     [(UIView *)self->_contentContainerView setAlpha:0.0];
   }
 
@@ -541,29 +541,29 @@ LABEL_13:
   self->_transitionAnimator = 0;
 }
 
-- (void)_updateParentNavigationBarVisibility:(void *)a1
+- (void)_updateParentNavigationBarVisibility:(void *)visibility
 {
-  if (!a1)
+  if (!visibility)
   {
     return;
   }
 
-  v7 = [a1 parentViewController];
-  v3 = [v7 navigationController];
-  if (v3)
+  parentViewController = [visibility parentViewController];
+  navigationController = [parentViewController navigationController];
+  if (navigationController)
   {
 
 LABEL_5:
-    v6 = [v7 navigationItem];
-    [v6 _setPreferredNavigationBarVisibility:a2];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem _setPreferredNavigationBarVisibility:a2];
 
     goto LABEL_6;
   }
 
-  v4 = [v7 navigationItem];
-  v5 = [v4 _preferredNavigationBarVisibility];
+  navigationItem2 = [parentViewController navigationItem];
+  _preferredNavigationBarVisibility = [navigationItem2 _preferredNavigationBarVisibility];
 
-  if (v5)
+  if (_preferredNavigationBarVisibility)
   {
     goto LABEL_5;
   }
@@ -573,15 +573,15 @@ LABEL_6:
 
 - (BOOL)_isParentViewControllerDisappearedOrAppearing
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 parentViewController];
-  if (v1)
+  parentViewController = [self parentViewController];
+  if (parentViewController)
   {
-    v2 = (v1[376] & 2) == 0;
+    v2 = (parentViewController[376] & 2) == 0;
   }
 
   else
@@ -592,17 +592,17 @@ LABEL_6:
   return v2;
 }
 
-- (void)_firstResponderDidChange:(id)a3
+- (void)_firstResponderDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"UIWindowFirstResponderUserInfoKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"UIWindowFirstResponderUserInfoKey"];
 
-  v6 = [(UIViewController *)self parentViewController];
-  v7 = [v6 childModalViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
+  childModalViewController = [parentViewController childModalViewController];
 
   if (v5)
   {
-    v8 = v7 == 0;
+    v8 = childModalViewController == 0;
   }
 
   else
@@ -640,7 +640,7 @@ LABEL_8:
     v11[2] = __60___UIDocumentLaunchViewController__firstResponderDidChange___block_invoke;
     v11[3] = &unk_1E70F35B8;
     v12 = v5;
-    v13 = v7;
+    v13 = childModalViewController;
     dispatch_async(MEMORY[0x1E69E96A0], v11);
 
     goto LABEL_9;
@@ -654,35 +654,35 @@ LABEL_10:
   v3 = objc_alloc_init(_UIDocumentLaunchView);
   [(UIViewController *)self setView:v3];
 
-  v4 = [(UIViewController *)self traitOverrides];
-  [v4 setUserInterfaceLevel:0];
+  traitOverrides = [(UIViewController *)self traitOverrides];
+  [traitOverrides setUserInterfaceLevel:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
 
   v6 = [_UISystemBackgroundView alloc];
   v7 = +[UIBackgroundConfiguration clearConfiguration];
-  v8 = [(UIViewController *)self view];
-  v9 = [(_UISystemBackgroundView *)v6 initWithConfiguration:v7 containerView:v8];
+  view = [(UIViewController *)self view];
+  v9 = [(_UISystemBackgroundView *)v6 initWithConfiguration:v7 containerView:view];
 
   [(UIView *)v9 setAlpha:0.0];
   [(UIView *)v9 setAutoresizingMask:18];
-  v10 = [(UIViewController *)self view];
-  [v10 insertSubview:v9 atIndex:0];
+  view2 = [(UIViewController *)self view];
+  [view2 insertSubview:v9 atIndex:0];
 
   backgroundView = self->_backgroundView;
   self->_backgroundView = v9;
   v58 = v9;
 
   v12 = [_UITouchPassthroughView alloc];
-  v13 = [(UIViewController *)self view];
-  [v13 bounds];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
   v14 = [(UIView *)v12 initWithFrame:?];
 
   [(UIView *)v14 setAlpha:0.0];
   [(UIView *)v14 setAutoresizingMask:18];
-  v15 = [(UIViewController *)self view];
-  [v15 addSubview:v14];
+  view4 = [(UIViewController *)self view];
+  [view4 addSubview:v14];
 
   contentContainerView = self->_contentContainerView;
   self->_contentContainerView = v14;
@@ -728,11 +728,11 @@ LABEL_10:
   v37 = v36;
   v39 = v38;
   v41 = v40;
-  v42 = [(UIViewController *)v33 view];
-  [v42 setFrame:{v35, v37, v39, v41}];
+  view5 = [(UIViewController *)v33 view];
+  [view5 setFrame:{v35, v37, v39, v41}];
 
-  v43 = [(UIViewController *)v33 view];
-  [(UIView *)v17 addSubview:v43];
+  view6 = [(UIViewController *)v33 view];
+  [(UIView *)v17 addSubview:view6];
 
   [(UIViewController *)self addChildViewController:v33];
   [(UIViewController *)v33 didMoveToParentViewController:self];
@@ -741,21 +741,21 @@ LABEL_10:
   v45 = v33;
 
   v46 = [UIView alloc];
-  v47 = [(UIViewController *)self view];
-  [v47 bounds];
+  view7 = [(UIViewController *)self view];
+  [view7 bounds];
   v48 = [(UIView *)v46 initWithFrame:?];
 
   [(UIView *)v48 setAutoresizingMask:18];
-  v49 = [(UIView *)v48 layer];
-  [v49 setHitTestsAsOpaque:1];
+  layer = [(UIView *)v48 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(UIView *)v48 setHidden:1];
   animationInteractionView = self->_animationInteractionView;
   self->_animationInteractionView = v48;
   v51 = v48;
 
-  v52 = [(UIViewController *)self view];
-  [v52 addSubview:v51];
+  view8 = [(UIViewController *)self view];
+  [view8 addSubview:v51];
 
   v53 = [_UIDocumentUnavailableBrowserPresentationController alloc];
   configuration = self->_configuration;
@@ -834,7 +834,7 @@ LABEL_10:
   v165 = &unk_1E7124F90;
   objc_copyWeak(v168, &location);
   v16 = v14;
-  v166 = self;
+  selfCopy = self;
   v167 = v16;
   v17 = _Block_copy(&v162);
   v146[0] = MEMORY[0x1E69E9820];
@@ -855,13 +855,13 @@ LABEL_10:
   }
 
   v19 = primaryMenu;
-  v20 = [(UIMenu *)v19 children];
+  children = [(UIMenu *)v19 children];
   v145[0] = MEMORY[0x1E69E9820];
   v145[1] = 3221225472;
   v145[2] = __64___UIDocumentLaunchViewController__updateTitleViewConfiguration__block_invoke_6;
   v145[3] = &__block_descriptor_40_e38___UIMenuElement_16__0__UIMenuElement_8lu32l8;
   v145[4] = v146;
-  v141 = [v20 bs_map:v145];
+  v141 = [children bs_map:v145];
 
   v133 = v16;
   if (v7)
@@ -875,13 +875,13 @@ LABEL_10:
   }
 
   v22 = secondaryMenu;
-  v23 = [(UIMenu *)v22 children];
+  children2 = [(UIMenu *)v22 children];
   v144[0] = MEMORY[0x1E69E9820];
   v144[1] = 3221225472;
   v144[2] = __64___UIDocumentLaunchViewController__updateTitleViewConfiguration__block_invoke_7;
   v144[3] = &__block_descriptor_40_e38___UIMenuElement_16__0__UIMenuElement_8lu32l8;
   v144[4] = v146;
-  v139 = [v23 bs_map:v144];
+  v139 = [children2 bs_map:v144];
 
   if (v7)
   {
@@ -1111,9 +1111,9 @@ LABEL_68:
   }
 
   v62 = v61;
-  v63 = [(_UIDocumentUnavailableConfiguration *)v62 _hasBackgroundFill];
+  _hasBackgroundFill = [(_UIDocumentUnavailableConfiguration *)v62 _hasBackgroundFill];
 
-  if (v63)
+  if (_hasBackgroundFill)
   {
     v64 = *(&self->super.super.super.isa + v3[775]);
     if (v64)
@@ -1139,36 +1139,36 @@ LABEL_68:
     [(UIView *)v60 setBackgroundColor:v68];
   }
 
-  v69 = [(UIViewController *)self view];
-  [(_UISystemBackgroundView *)v60 frameInContainerView:v69];
+  view = [(UIViewController *)self view];
+  [(_UISystemBackgroundView *)v60 frameInContainerView:view];
   [(_UISystemBackgroundView *)v60 setFrame:?];
 
-  v70 = [(UIViewController *)self view];
-  [v70 bounds];
+  view2 = [(UIViewController *)self view];
+  [view2 bounds];
   v72 = v71;
   v74 = v73;
   v76 = v75;
   v78 = v77;
 
-  v79 = [(UIViewController *)self view];
-  [v79 layoutMargins];
+  view3 = [(UIViewController *)self view];
+  [view3 layoutMargins];
   v81 = v80;
   v83 = v82;
   v128 = v85;
   v129 = v84;
 
-  v86 = [(UIViewController *)self view];
-  [v86 safeAreaInsets];
+  view4 = [(UIViewController *)self view];
+  [view4 safeAreaInsets];
   v132 = v88;
   v134 = v87;
   v136 = v89;
   v131 = v90;
 
-  v91 = [(UIViewController *)self traitCollection];
-  v92 = [v91 horizontalSizeClass];
+  traitCollection = [(UIViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v93 = [(UIViewController *)self traitCollection];
-  v94 = [v93 verticalSizeClass];
+  traitCollection2 = [(UIViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
 
   v95 = _UIDocumentUnavailableBrowserViewController(*(&self->super.super.super.isa + v3[775]));
   [v95 defaultDocumentAspectRatio];
@@ -1183,7 +1183,7 @@ LABEL_68:
   recta = v78;
   v169.size.height = v78;
   Width = CGRectGetWidth(v169);
-  if (v92 == 1)
+  if (horizontalSizeClass == 1)
   {
     v100 = 36.0;
   }
@@ -1193,7 +1193,7 @@ LABEL_68:
     v100 = 72.0;
   }
 
-  if (v92 == 1)
+  if (horizontalSizeClass == 1)
   {
     v101 = 36.0;
   }
@@ -1205,7 +1205,7 @@ LABEL_68:
 
   v102 = Width - v83 - v128 - (v100 + v100);
   v103 = v102;
-  if (v92 != 1)
+  if (horizontalSizeClass != 1)
   {
     v104 = v97 * 200.0 + 600.0;
     if (v97 <= 0.0)
@@ -1229,18 +1229,18 @@ LABEL_68:
   v170.origin.y = v142;
   v170.size.height = recta;
   v105 = CGRectGetHeight(v170) - v81 - v129 - (v101 + v101);
-  v106 = [(UIViewController *)self view];
-  [v106 _currentScreenScale];
+  view5 = [(UIViewController *)self view];
+  [view5 _currentScreenScale];
   v108 = UIRectRoundToScale(v83 + v100 + (v102 - v103) * 0.5, v81 + v101, v103, v105, v107);
   v110 = v109;
   v112 = v111;
   v114 = v113;
 
-  v115 = [(_UIDocumentUnavailableBrowserPresentationController *)*(&self->super.super.super.isa + v4[778]) smallestDetentValue];
-  v130 = v115;
-  if (v94 == 2)
+  smallestDetentValue = [(_UIDocumentUnavailableBrowserPresentationController *)*(&self->super.super.super.isa + v4[778]) smallestDetentValue];
+  v130 = smallestDetentValue;
+  if (verticalSizeClass == 2)
   {
-    v116 = v115;
+    v116 = smallestDetentValue;
     v171.origin.x = v98;
     v171.size.width = v140;
     v171.origin.y = v142;
@@ -1291,7 +1291,7 @@ LABEL_68:
   v163 = *(v6 + 235);
   v164 = __54___UIDocumentLaunchViewController__layoutContentViews__block_invoke;
   v165 = &__block_descriptor_104_e27_v24__0__UIView_8__UIView_16l;
-  v166 = v134;
+  selfCopy = v134;
   v167 = v132;
   v168[0] = v136;
   v168[1] = v131;
@@ -1338,8 +1338,8 @@ LABEL_68:
   v4.receiver = self;
   v4.super_class = _UIDocumentLaunchViewController;
   [(UIViewController *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(UIViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(UIViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -1348,34 +1348,34 @@ LABEL_68:
   v6.super_class = _UIDocumentLaunchViewController;
   [(UIViewController *)&v6 viewSafeAreaInsetsDidChange];
   v3 = self->_pageContainerView;
-  v4 = [(UIView *)v3 _safeAreaInsetsFrozen];
+  _safeAreaInsetsFrozen = [(UIView *)v3 _safeAreaInsetsFrozen];
   [(UIView *)v3 _setSafeAreaInsetsFrozen:0];
-  v5 = [(UIViewController *)self view];
-  [v5 safeAreaInsets];
+  view = [(UIViewController *)self view];
+  [view safeAreaInsets];
   [(UIView *)v3 setSafeAreaInsets:?];
 
-  [(UIView *)v3 _setSafeAreaInsetsFrozen:v4];
+  [(UIView *)v3 _setSafeAreaInsetsFrozen:_safeAreaInsetsFrozen];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = _UIDocumentLaunchViewController;
   [(UIViewController *)&v6 willMoveToParentViewController:?];
-  v5 = [(UIViewController *)self parentViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
 
-  if (v5 != a3)
+  if (parentViewController != controller)
   {
     [(_UIDocumentLaunchViewController *)self _updateParentNavigationBarVisibility:?];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = _UIDocumentLaunchViewController;
   [(UIViewController *)&v9 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     configuration = self->_configuration;
     if (configuration)
@@ -1384,9 +1384,9 @@ LABEL_68:
     }
 
     v6 = configuration;
-    v7 = [(_UIDocumentUnavailableConfiguration *)v6 _overrideTransitioningDelegate];
+    _overrideTransitioningDelegate = [(_UIDocumentUnavailableConfiguration *)v6 _overrideTransitioningDelegate];
 
-    if (v7 == self)
+    if (_overrideTransitioningDelegate == self)
     {
       [(_UIDocumentUnavailableConfiguration *)v6 _setOverrideTransitioningDelegate:0];
       [(_UIDocumentUnavailableConfiguration *)v6 _setOverrideUseCustomPresentation:0];
@@ -1398,12 +1398,12 @@ LABEL_68:
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = _UIDocumentLaunchViewController;
-  [(UIViewController *)&v9 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if ((*&self->_flags & 1) != 0 && a3 && (*&self->_flags & 8) == 0)
+  [(UIViewController *)&v9 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if ((*&self->_flags & 1) != 0 && window && (*&self->_flags & 8) == 0)
   {
     configuration = self->_configuration;
     if (configuration)
@@ -1412,9 +1412,9 @@ LABEL_68:
     }
 
     v7 = configuration;
-    v8 = [(_UIDocumentUnavailableConfiguration *)v7 presentingViewController];
+    presentingViewController = [(_UIDocumentUnavailableConfiguration *)v7 presentingViewController];
 
-    if (!v8)
+    if (!presentingViewController)
     {
       [(_UIDocumentLaunchViewController *)self _presentBrowserViewController];
     }

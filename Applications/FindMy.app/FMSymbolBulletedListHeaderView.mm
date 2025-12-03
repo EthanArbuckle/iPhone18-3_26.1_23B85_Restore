@@ -2,24 +2,24 @@
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (NSLayoutYAxisAnchor)lastBaselineAnchor;
 - (_TtC6FindMy30FMSymbolBulletedListHeaderView)init;
-- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithCoder:(id)a3;
-- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithCoder:(id)coder;
+- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMSymbolBulletedListHeaderView
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy30FMSymbolBulletedListHeaderView_titleLabel) firstBaselineAnchor];
+  firstBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy30FMSymbolBulletedListHeaderView_titleLabel) firstBaselineAnchor];
 
-  return v2;
+  return firstBaselineAnchor;
 }
 
 - (NSLayoutYAxisAnchor)lastBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy30FMSymbolBulletedListHeaderView_separatorView) bottomAnchor];
+  bottomAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy30FMSymbolBulletedListHeaderView_separatorView) bottomAnchor];
 
-  return v2;
+  return bottomAnchor;
 }
 
 - (_TtC6FindMy30FMSymbolBulletedListHeaderView)init
@@ -37,7 +37,7 @@
   return v5;
 }
 
-- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithCoder:(id)a3
+- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy30FMSymbolBulletedListHeaderView_titleLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy30FMSymbolBulletedListHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

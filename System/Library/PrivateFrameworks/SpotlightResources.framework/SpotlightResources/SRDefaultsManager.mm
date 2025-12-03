@@ -1,49 +1,49 @@
 @interface SRDefaultsManager
 + (id)defaultProperties;
-+ (id)defaultValueWithKey:(id)a3;
++ (id)defaultValueWithKey:(id)key;
 + (id)sharedDefaultsManager;
 + (id)userDefaults;
 + (int64_t)version;
 + (void)removeDefaults;
-+ (void)removeKey:(id)a3;
-+ (void)setDefaultWithKey:(id)a3 value:(id)a4;
-+ (void)setVersionWithValue:(int64_t)a3;
-- (BOOL)didFetchForLanguage:(id)a3;
++ (void)removeKey:(id)key;
++ (void)setDefaultWithKey:(id)key value:(id)value;
++ (void)setVersionWithValue:(int64_t)value;
+- (BOOL)didFetchForLanguage:(id)language;
 - (SRDefaultsManager)init;
 - (id)allLoadedAssets;
 - (id)assertionsDump;
 - (id)assetConfigDump;
-- (id)assetsFromResourcePath:(id)a3 deliveryType:(id)a4 assetType:(id)a5 language:(id)a6 force:(BOOL)a7;
+- (id)assetsFromResourcePath:(id)path deliveryType:(id)type assetType:(id)assetType language:(id)language force:(BOOL)force;
 - (id)currentAssetTypes;
 - (id)currentNamespaceDescription;
 - (id)currentNamespaces;
-- (id)currentNamespacesForClient:(id)a3;
+- (id)currentNamespacesForClient:(id)client;
 - (id)fetchedLanguages;
-- (id)loadOTAAssetsForLanguage:(id)a3 updateCache:(BOOL)a4 assetTypes:(id)a5 force:(BOOL)a6;
-- (id)parametersOfNamespaceWithName:(id)a3;
-- (id)parametersOfNamespaceWithName:(id)a3 client:(id)a4;
+- (id)loadOTAAssetsForLanguage:(id)language updateCache:(BOOL)cache assetTypes:(id)types force:(BOOL)force;
+- (id)parametersOfNamespaceWithName:(id)name;
+- (id)parametersOfNamespaceWithName:(id)name client:(id)client;
 - (id)resourceBundle;
 - (id)trialConfigDump;
-- (void)_loadAssets:(id)a3 shouldUpdate:(BOOL)a4;
-- (void)_unloadAssetsForLocale:(id)a3;
-- (void)addFetchForLanguage:(id)a3;
+- (void)_loadAssets:(id)assets shouldUpdate:(BOOL)update;
+- (void)_unloadAssetsForLocale:(id)locale;
+- (void)addFetchForLanguage:(id)language;
 - (void)dealloc;
-- (void)didUpdateAssetsWithType:(id)a3;
-- (void)didUpdateTrialNamespace:(id)a3;
-- (void)loadDefaultsFromDefaultAssets:(id)a3;
-- (void)loadFactorsAtPath:(id)a3 namespaceId:(id)a4;
-- (void)loadSystemAssetsForLanguage:(id)a3 assetTypes:(id)a4;
-- (void)loadTestAssetsForLanguage:(id)a3 assetTypes:(id)a4;
-- (void)notifyObserversWithLanguage:(id)a3 bundleVersions:(id)a4 reloadFromCache:(BOOL)a5 force:(BOOL)a6;
-- (void)refreshCacheForLanguages:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)registerDelegate:(id)a3;
-- (void)removeFetchForLanguage:(id)a3;
-- (void)requestAssetsForLanguages:(id)a3 removeExisting:(BOOL)a4 force:(BOOL)a5;
+- (void)didUpdateAssetsWithType:(id)type;
+- (void)didUpdateTrialNamespace:(id)namespace;
+- (void)loadDefaultsFromDefaultAssets:(id)assets;
+- (void)loadFactorsAtPath:(id)path namespaceId:(id)id;
+- (void)loadSystemAssetsForLanguage:(id)language assetTypes:(id)types;
+- (void)loadTestAssetsForLanguage:(id)language assetTypes:(id)types;
+- (void)notifyObserversWithLanguage:(id)language bundleVersions:(id)versions reloadFromCache:(BOOL)cache force:(BOOL)force;
+- (void)refreshCacheForLanguages:(id)languages force:(BOOL)force completion:(id)completion;
+- (void)registerDelegate:(id)delegate;
+- (void)removeFetchForLanguage:(id)language;
+- (void)requestAssetsForLanguages:(id)languages removeExisting:(BOOL)existing force:(BOOL)force;
 - (void)requestCatalogUpdate;
-- (void)unloadDefaultsForLocale:(id)a3;
-- (void)unregisterDelegate:(id)a3;
-- (void)updateFetchedLanguages:(id)a3;
-- (void)updateParameter:(id)a3 inNamespace:(id)a4 withValue:(id)a5;
+- (void)unloadDefaultsForLocale:(id)locale;
+- (void)unregisterDelegate:(id)delegate;
+- (void)updateFetchedLanguages:(id)languages;
+- (void)updateParameter:(id)parameter inNamespace:(id)namespace withValue:(id)value;
 @end
 
 @implementation SRDefaultsManager
@@ -93,9 +93,9 @@
     v2->_fetchedLanguages = v13;
 
     v2->_fetchedRoot = 0;
-    v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v2->_delegates;
-    v2->_delegates = v15;
+    v2->_delegates = weakObjectsHashTable;
 
     v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     cachedOTALanguages = v2->_cachedOTALanguages;
@@ -128,8 +128,8 @@
     notifyQueueNonBlocking = v2->_notifyQueueNonBlocking;
     v2->_notifyQueueNonBlocking = v31;
 
-    v33 = [MEMORY[0x1E6999960] sharedInstance];
-    [v33 registerDelegate:v2];
+    mEMORY[0x1E6999960] = [MEMORY[0x1E6999960] sharedInstance];
+    [mEMORY[0x1E6999960] registerDelegate:v2];
 
     v34 = [SRDefaultsManager defaultValueWithKey:@"IgnoreOTAEmbeddings"];
     v2->_ignoreOTAEmbeddings = [v34 BOOLValue];
@@ -138,30 +138,30 @@
     v2->_sandboxExtensionHandlers = 0;
 
     SRIsRunningInServer();
-    v36 = [(SRDefaultsManager *)v2 resourceBundle];
-    v37 = [v36 pathForResource:@"RequiredAssets_root" ofType:@"bundle"];
-    v38 = [MEMORY[0x1E696AC08] defaultManager];
-    v39 = [v38 fileExistsAtPath:v37];
+    resourceBundle = [(SRDefaultsManager *)v2 resourceBundle];
+    v37 = [resourceBundle pathForResource:@"RequiredAssets_root" ofType:@"bundle"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v39 = [defaultManager fileExistsAtPath:v37];
 
     if (v39)
     {
       v40 = SRLogCategoryAssets();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [v37 UTF8String];
+        uTF8String = [v37 UTF8String];
         *buf = 136315138;
-        v52 = v41;
+        v52 = uTF8String;
         _os_log_impl(&dword_1AE58E000, v40, OS_LOG_TYPE_DEFAULT, "Loading RequiredAssets_root at path <%s>", buf, 0xCu);
       }
 
       v42 = [(SRDefaultsManager *)v2 assetsFromResourcePath:v37 deliveryType:@"Required" assetType:0 language:@"root" force:0];
       [(SRDefaultsManager *)v2 loadDefaultsFromDefaultAssets:v42];
-      v43 = [(SRAssetConfiguration *)v2->_assetConfig assetTypes];
-      v44 = [MEMORY[0x1E6999960] sharedInstance];
+      assetTypes = [(SRAssetConfiguration *)v2->_assetConfig assetTypes];
+      mEMORY[0x1E6999960]2 = [MEMORY[0x1E6999960] sharedInstance];
       v45 = objc_alloc(MEMORY[0x1E695DFD8]);
-      v46 = [v43 allKeys];
-      v47 = [v45 initWithArray:v46];
-      [v44 setAssetTypesForDelegates:v47];
+      allKeys = [assetTypes allKeys];
+      v47 = [v45 initWithArray:allKeys];
+      [mEMORY[0x1E6999960]2 setAssetTypesForDelegates:v47];
     }
   }
 
@@ -178,9 +178,9 @@ uint64_t __42__SRDefaultsManager_sharedDefaultsManager__block_invoke()
 
 + (id)defaultProperties
 {
-  v2 = [objc_opt_class() userDefaults];
-  v3 = [v2 dictionaryRepresentation];
-  v4 = [v3 objectForKey:@"Defaults"];
+  userDefaults = [objc_opt_class() userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
+  v4 = [dictionaryRepresentation objectForKey:@"Defaults"];
 
   return v4;
 }
@@ -221,14 +221,14 @@ uint64_t __42__SRDefaultsManager_sharedDefaultsManager__block_invoke()
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__SRDefaultsManager_currentNamespaceDescription__block_invoke;
   v6[3] = &unk_1E7A2B280;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(defaultsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -335,14 +335,14 @@ void __48__SRDefaultsManager_currentNamespaceDescription__block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__SRDefaultsManager_currentAssetTypes__block_invoke;
   v6[3] = &unk_1E7A2B258;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(defaultsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -358,14 +358,14 @@ void __48__SRDefaultsManager_currentNamespaceDescription__block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__SRDefaultsManager_currentNamespaces__block_invoke;
   v6[3] = &unk_1E7A2B258;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(defaultsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -392,16 +392,16 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)setDefaultWithKey:(id)a3 value:(id)a4
++ (void)setDefaultWithKey:(id)key value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = [objc_opt_class() userDefaults];
-  v7 = [objc_opt_class() defaultProperties];
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  userDefaults = [objc_opt_class() userDefaults];
+  defaultProperties = [objc_opt_class() defaultProperties];
+  if (defaultProperties)
   {
-    v8 = [objc_opt_class() defaultProperties];
-    v9 = [v8 mutableCopy];
+    defaultProperties2 = [objc_opt_class() defaultProperties];
+    v9 = [defaultProperties2 mutableCopy];
   }
 
   else
@@ -409,15 +409,15 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v9 setObject:v5 forKey:v6];
-  [v10 setObject:v9 forKey:@"Defaults"];
+  [v9 setObject:valueCopy forKey:keyCopy];
+  [userDefaults setObject:v9 forKey:@"Defaults"];
 }
 
-+ (id)defaultValueWithKey:(id)a3
++ (id)defaultValueWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultProperties];
-  if (!v4)
+  keyCopy = key;
+  defaultProperties = [objc_opt_class() defaultProperties];
+  if (!defaultProperties)
   {
     v5 = SRLogCategoryAssets();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -427,37 +427,37 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [v4 objectForKey:v3];
+  v6 = [defaultProperties objectForKey:keyCopy];
 
   return v6;
 }
 
-+ (void)removeKey:(id)a3
++ (void)removeKey:(id)key
 {
-  v3 = a3;
-  v6 = [objc_opt_class() userDefaults];
-  v4 = [objc_opt_class() defaultProperties];
-  v5 = [v4 mutableCopy];
+  keyCopy = key;
+  userDefaults = [objc_opt_class() userDefaults];
+  defaultProperties = [objc_opt_class() defaultProperties];
+  v5 = [defaultProperties mutableCopy];
 
-  [v5 removeObjectForKey:v3];
-  [v6 setObject:v5 forKey:@"Defaults"];
+  [v5 removeObjectForKey:keyCopy];
+  [userDefaults setObject:v5 forKey:@"Defaults"];
 }
 
 + (void)removeDefaults
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = +[SRDefaultsManager identifier];
-  [v2 removePersistentDomainForName:v3];
+  [standardUserDefaults removePersistentDomainForName:v3];
 
   v4 = MEMORY[0x1E695E000];
 
   [v4 resetStandardUserDefaults];
 }
 
-+ (void)setVersionWithValue:(int64_t)a3
++ (void)setVersionWithValue:(int64_t)value
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   [v4 setDefaultWithKey:@"Version" value:v5];
 }
 
@@ -467,21 +467,21 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)loadDefaultsFromDefaultAssets:(id)a3
+- (void)loadDefaultsFromDefaultAssets:(id)assets
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -520,10 +520,10 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
   v19[5] = v20;
   v19[8] = &v26;
   v19[9] = v24;
-  [v4 enumerateObjectsUsingBlock:v19];
+  [assetsCopy enumerateObjectsUsingBlock:v19];
   if (v33[3])
   {
-    v5 = [(SRDefaultsManager *)self defaultsQueue];
+    defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__SRDefaultsManager_loadDefaultsFromDefaultAssets___block_invoke_418;
@@ -532,7 +532,7 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
     block[5] = v22;
     block[6] = v20;
     block[7] = v24;
-    dispatch_sync(v5, block);
+    dispatch_sync(defaultsQueue, block);
 
     v16 = 0u;
     v17 = 0u;
@@ -553,9 +553,9 @@ uint64_t __38__SRDefaultsManager_currentAssetTypes__block_invoke(uint64_t a1)
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 contentType];
+          contentType = [v10 contentType];
           v12 = [v10 pathWithName:@"factors.mdplist"];
-          [(SRDefaultsManager *)self loadFactorsAtPath:v12 namespaceId:v11];
+          [(SRDefaultsManager *)self loadFactorsAtPath:v12 namespaceId:contentType];
         }
 
         v7 = [v6 countByEnumeratingWithState:&v14 objects:v36 count:16];
@@ -1211,19 +1211,19 @@ uint64_t __51__SRDefaultsManager_loadDefaultsFromDefaultAssets___block_invoke_41
   return [v2 _loadAssets:v3 shouldUpdate:1];
 }
 
-- (void)_loadAssets:(id)a3 shouldUpdate:(BOOL)a4
+- (void)_loadAssets:(id)assets shouldUpdate:(BOOL)update
 {
-  v6 = a3;
-  v7 = [(SRDefaultsManager *)self defaultsQueue];
-  dispatch_assert_queue_V2(v7);
+  assetsCopy = assets;
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
+  dispatch_assert_queue_V2(defaultsQueue);
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__SRDefaultsManager__loadAssets_shouldUpdate___block_invoke;
   v8[3] = &unk_1E7A2B230;
   v8[4] = self;
-  v9 = a4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  updateCopy = update;
+  [assetsCopy enumerateObjectsUsingBlock:v8];
 }
 
 void __46__SRDefaultsManager__loadAssets_shouldUpdate___block_invoke(uint64_t a1, void *a2)
@@ -1387,22 +1387,22 @@ LABEL_25:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_unloadAssetsForLocale:(id)a3
+- (void)_unloadAssetsForLocale:(id)locale
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
-  dispatch_assert_queue_V2(v5);
+  localeCopy = locale;
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
+  dispatch_assert_queue_V2(defaultsQueue);
 
-  v6 = languageCodeForLocale(v4);
+  v6 = languageCodeForLocale(localeCopy);
   if (([v6 isEqualToString:@"root"] & 1) == 0)
   {
     v7 = SRLogCategoryAssets();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 localeIdentifier];
+      localeIdentifier = [localeCopy localeIdentifier];
       v19 = 136315138;
-      v20 = [v8 UTF8String];
+      uTF8String = [localeIdentifier UTF8String];
       _os_log_impl(&dword_1AE58E000, v7, OS_LOG_TYPE_DEFAULT, "(_unloadAssetsForLocale) unloading assets for locale: %s", &v19, 0xCu);
     }
 
@@ -1421,9 +1421,9 @@ LABEL_25:
         v16 = ++sSafetyUnloadAssetSignpostID;
         if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
         {
-          v17 = [v6 UTF8String];
+          uTF8String2 = [v6 UTF8String];
           v19 = 136315138;
-          v20 = v17;
+          uTF8String = uTF8String2;
           _os_signpost_emit_with_name_impl(&dword_1AE58E000, v14, OS_SIGNPOST_EVENT, v16, "SRSafetyUnload", "loc:%s", &v19, 0xCu);
         }
       }
@@ -1435,25 +1435,25 @@ LABEL_25:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)currentNamespacesForClient:(id)a3
+- (id)currentNamespacesForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SRDefaultsManager_currentNamespacesForClient___block_invoke;
   block[3] = &unk_1E7A2B2A8;
   block[4] = self;
-  v10 = v4;
+  v10 = clientCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = clientCopy;
+  dispatch_sync(defaultsQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1509,14 +1509,14 @@ void __48__SRDefaultsManager_currentNamespacesForClient___block_invoke(void *a1)
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__SRDefaultsManager_fetchedLanguages__block_invoke;
   v6[3] = &unk_1E7A2B258;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(defaultsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1539,18 +1539,18 @@ void __37__SRDefaultsManager_fetchedLanguages__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateFetchedLanguages:(id)a3
+- (void)updateFetchedLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  languagesCopy = languages;
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SRDefaultsManager_updateFetchedLanguages___block_invoke;
   v7[3] = &unk_1E7A2AFF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = languagesCopy;
+  v6 = languagesCopy;
+  dispatch_sync(defaultsQueue, v7);
 }
 
 void __44__SRDefaultsManager_updateFetchedLanguages___block_invoke(uint64_t a1)
@@ -1580,18 +1580,18 @@ void __44__SRDefaultsManager_updateFetchedLanguages___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFetchForLanguage:(id)a3
+- (void)addFetchForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  languageCopy = language;
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__SRDefaultsManager_addFetchForLanguage___block_invoke;
   v7[3] = &unk_1E7A2AFF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = languageCopy;
+  selfCopy = self;
+  v6 = languageCopy;
+  dispatch_sync(defaultsQueue, v7);
 }
 
 uint64_t __41__SRDefaultsManager_addFetchForLanguage___block_invoke(uint64_t a1)
@@ -1622,18 +1622,18 @@ uint64_t __41__SRDefaultsManager_addFetchForLanguage___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeFetchForLanguage:(id)a3
+- (void)removeFetchForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  languageCopy = language;
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SRDefaultsManager_removeFetchForLanguage___block_invoke;
   v7[3] = &unk_1E7A2AFF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = languageCopy;
+  selfCopy = self;
+  v6 = languageCopy;
+  dispatch_sync(defaultsQueue, v7);
 }
 
 uint64_t __44__SRDefaultsManager_removeFetchForLanguage___block_invoke(uint64_t a1)
@@ -1664,27 +1664,27 @@ uint64_t __44__SRDefaultsManager_removeFetchForLanguage___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)didFetchForLanguage:(id)a3
+- (BOOL)didFetchForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__SRDefaultsManager_didFetchForLanguage___block_invoke;
   block[3] = &unk_1E7A2B2D0;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v9 = languageCopy;
+  v6 = languageCopy;
+  dispatch_sync(defaultsQueue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(languageCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return languageCopy;
 }
 
 void __41__SRDefaultsManager_didFetchForLanguage___block_invoke(uint64_t a1)
@@ -1739,20 +1739,20 @@ LABEL_13:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)assetsFromResourcePath:(id)a3 deliveryType:(id)a4 assetType:(id)a5 language:(id)a6 force:(BOOL)a7
+- (id)assetsFromResourcePath:(id)path deliveryType:(id)type assetType:(id)assetType language:(id)language force:(BOOL)force
 {
-  v7 = a7;
+  forceCopy = force;
   v101 = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v70 = a4;
-  v72 = a5;
-  v66 = a6;
-  LODWORD(a5) = SRIsRunningInServer();
+  pathCopy = path;
+  typeCopy = type;
+  assetTypeCopy = assetType;
+  languageCopy = language;
+  LODWORD(assetType) = SRIsRunningInServer();
   v12 = SRLogCategoryAssets();
-  v65 = a5 ^ 1;
+  v65 = assetType ^ 1;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    if (v7)
+    if (forceCopy)
     {
       v57 = @"Force-";
     }
@@ -1762,19 +1762,19 @@ LABEL_13:
       v57 = &stru_1F2422260;
     }
 
-    v58 = [v72 assetType];
+    assetType = [assetTypeCopy assetType];
     *v96 = 67110402;
     *&v96[4] = v65;
     *v97 = 2112;
     *&v97[2] = v57;
     *&v97[10] = 2112;
-    *&v97[12] = v58;
+    *&v97[12] = assetType;
     *&v97[20] = 2112;
-    *&v97[22] = v70;
+    *&v97[22] = typeCopy;
     *&v97[30] = 2112;
-    v98 = v66;
+    v98 = languageCopy;
     v99 = 2112;
-    v100 = v69;
+    v100 = pathCopy;
     _os_log_debug_impl(&dword_1AE58E000, v12, OS_LOG_TYPE_DEBUG, "[%d] %@Loading (%@, %@, %@) assets at %@", v96, 0x3Au);
   }
 
@@ -1784,16 +1784,16 @@ LABEL_13:
   *&v97[16] = __Block_byref_object_copy__0;
   *&v97[24] = __Block_byref_object_dispose__0;
   v87 = 0;
-  v13 = getMobileAssetPropertiesFromPath(v69, &v87);
+  v13 = getMobileAssetPropertiesFromPath(pathCopy, &v87);
   v14 = v87;
   v98 = v13;
-  if (!v70 || ([v70 isEqualToString:@"Required"] & 1) != 0 || (objc_msgSend(v70, "hasSuffix:", @"Test") & 1) != 0)
+  if (!typeCopy || ([typeCopy isEqualToString:@"Required"] & 1) != 0 || (objc_msgSend(typeCopy, "hasSuffix:", @"Test") & 1) != 0)
   {
     goto LABEL_16;
   }
 
-  v15 = [v14 domain];
-  if (![v15 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [v14 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A250]])
   {
     goto LABEL_15;
   }
@@ -1818,21 +1818,21 @@ LABEL_13:
       sandboxExtensionHandlers = self->_sandboxExtensionHandlers;
     }
 
-    v21 = [v72 assetType];
-    v22 = [(NSMutableDictionary *)sandboxExtensionHandlers objectForKeyedSubscript:v21];
+    assetType2 = [assetTypeCopy assetType];
+    v22 = [(NSMutableDictionary *)sandboxExtensionHandlers objectForKeyedSubscript:assetType2];
     v23 = v22 == 0;
 
     if (v23)
     {
       v24 = [SRMASandboxExtensionHandler alloc];
-      v25 = [v72 assetType];
-      v26 = [(SRMASandboxExtensionHandler *)v24 initWithAssetType:v25];
+      assetType3 = [assetTypeCopy assetType];
+      v26 = [(SRMASandboxExtensionHandler *)v24 initWithAssetType:assetType3];
       v27 = self->_sandboxExtensionHandlers;
-      v28 = [v72 assetType];
-      [(NSMutableDictionary *)v27 setObject:v26 forKeyedSubscript:v28];
+      assetType4 = [assetTypeCopy assetType];
+      [(NSMutableDictionary *)v27 setObject:v26 forKeyedSubscript:assetType4];
     }
 
-    if (!v7)
+    if (!forceCopy)
     {
       objc_initWeak(&buf, self);
       v78[0] = MEMORY[0x1E69E9820];
@@ -1841,14 +1841,14 @@ LABEL_13:
       v78[3] = &unk_1E7A2B320;
       objc_copyWeak(&v83, &buf);
       v82 = v96;
-      v79 = v69;
-      v80 = v66;
-      v60 = v72;
+      v79 = pathCopy;
+      v80 = languageCopy;
+      v60 = assetTypeCopy;
       v81 = v60;
       v61 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v78);
       v62 = self->_sandboxExtensionHandlers;
-      v63 = [v60 assetType];
-      v64 = [(NSMutableDictionary *)v62 objectForKeyedSubscript:v63];
+      assetType5 = [v60 assetType];
+      v64 = [(NSMutableDictionary *)v62 objectForKeyedSubscript:assetType5];
       [v64 executeBlock:v61 wait:0];
 
       objc_destroyWeak(&v83);
@@ -1862,14 +1862,14 @@ LABEL_13:
     block[2] = __82__SRDefaultsManager_assetsFromResourcePath_deliveryType_assetType_language_force___block_invoke;
     block[3] = &unk_1E7A2B258;
     v86 = v96;
-    v85 = v69;
+    v85 = pathCopy;
     v29 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
     v30 = self->_sandboxExtensionHandlers;
-    v31 = [v72 assetType];
-    v32 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:v31];
+    assetType6 = [assetTypeCopy assetType];
+    v32 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:assetType6];
     [v32 executeBlock:v29 wait:1];
 
-    v15 = v85;
+    domain = v85;
 LABEL_15:
   }
 
@@ -1898,19 +1898,19 @@ LABEL_16:
 
           v39 = *(*(&v74 + 1) + 8 * i);
           v40 = [v39 objectForKeyedSubscript:@"ContentType"];
-          if (!v72 || ([v72 deliveryTypeMap], v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "objectForKeyedSubscript:", v40), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "containsObject:", v70), v42, v41, (v43 & 1) != 0))
+          if (!assetTypeCopy || ([assetTypeCopy deliveryTypeMap], v41 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v41, "objectForKeyedSubscript:", v40), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "containsObject:", typeCopy), v42, v41, (v43 & 1) != 0))
           {
             v44 = [v39 objectForKeyedSubscript:@"ContentPath"];
             v45 = [v39 objectForKeyedSubscript:@"Locale"];
-            v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/AssetData/%@", v69, v44];
-            v47 = [MEMORY[0x1E696AC08] defaultManager];
+            v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/AssetData/%@", pathCopy, v44];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
             v73 = v14;
-            v48 = [v47 contentsOfDirectoryAtPath:v46 error:&v73];
+            v48 = [defaultManager contentsOfDirectoryAtPath:v46 error:&v73];
             v49 = v73;
 
             if (!v49)
             {
-              v50 = [SRAsset assetWithLocaleIdentifier:v45 contentType:v40 deliveryType:deliveryTypeID(v70) resourceRoot:v46 pathNames:v48];
+              v50 = [SRAsset assetWithLocaleIdentifier:v45 contentType:v40 deliveryType:deliveryTypeID(typeCopy) resourceRoot:v46 pathNames:v48];
               if (v50)
               {
                 [v67 addObject:v50];
@@ -1931,15 +1931,15 @@ LABEL_16:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       v52 = [v67 count];
-      v53 = [v72 assetType];
+      assetType7 = [assetTypeCopy assetType];
       LODWORD(buf) = 67109890;
       HIDWORD(buf) = v65;
       v89 = 2048;
       v90 = v52;
       v91 = 2112;
-      v92 = v53;
+      v92 = assetType7;
       v93 = 2112;
-      v94 = v70;
+      v94 = typeCopy;
       _os_log_impl(&dword_1AE58E000, v51, OS_LOG_TYPE_DEFAULT, "[%d] Loading %ld assets for (%@, %@)", &buf, 0x26u);
     }
   }
@@ -1949,13 +1949,13 @@ LABEL_16:
     v54 = SRLogCategoryAssets();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
-      v59 = [v72 assetType];
+      assetType8 = [assetTypeCopy assetType];
       LODWORD(buf) = 67109634;
       HIDWORD(buf) = v65;
       v89 = 2112;
-      v90 = v59;
+      v90 = assetType8;
       v91 = 2112;
-      v92 = v70;
+      v92 = typeCopy;
       _os_log_error_impl(&dword_1AE58E000, v54, OS_LOG_TYPE_ERROR, "[%d] Error loading (%@, %@) assets", &buf, 0x1Cu);
     }
 
@@ -2045,31 +2045,31 @@ void __82__SRDefaultsManager_assetsFromResourcePath_deliveryType_assetType_langu
   [WeakRetained notifyObserversWithLanguage:*(a1 + 32) bundleVersions:*(a1 + 40) reloadFromCache:0 force:0];
 }
 
-- (void)requestAssetsForLanguages:(id)a3 removeExisting:(BOOL)a4 force:(BOOL)a5
+- (void)requestAssetsForLanguages:(id)languages removeExisting:(BOOL)existing force:(BOOL)force
 {
-  v5 = a5;
-  v8 = a3;
+  forceCopy = force;
+  languagesCopy = languages;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__0;
   v24[4] = __Block_byref_object_dispose__0;
-  v25 = [(SRDefaultsManager *)self currentAssetTypes];
+  currentAssetTypes = [(SRDefaultsManager *)self currentAssetTypes];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__SRDefaultsManager_requestAssetsForLanguages_removeExisting_force___block_invoke;
   block[3] = &unk_1E7A2B348;
   block[4] = v24;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
-  v10 = [(SRDefaultsManager *)self ddsQueue];
-  if (v5)
+  ddsQueue = [(SRDefaultsManager *)self ddsQueue];
+  if (forceCopy)
   {
-    dispatch_sync(v10, v9);
+    dispatch_sync(ddsQueue, v9);
   }
 
   else
   {
-    dispatch_async(v10, v9);
+    dispatch_async(ddsQueue, v9);
   }
 
   v11 = objc_autoreleasePoolPush();
@@ -2080,21 +2080,21 @@ void __82__SRDefaultsManager_assetsFromResourcePath_deliveryType_assetType_langu
   v15[3] = &unk_1E7A2B460;
   objc_copyWeak(&v19, &location);
   v18 = v24;
-  v20 = a4;
-  v12 = v8;
-  v21 = v5;
+  existingCopy = existing;
+  v12 = languagesCopy;
+  v21 = forceCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v15);
-  v14 = [(SRDefaultsManager *)self ddsQueue];
-  if (v5)
+  ddsQueue2 = [(SRDefaultsManager *)self ddsQueue];
+  if (forceCopy)
   {
-    dispatch_sync(v14, v13);
+    dispatch_sync(ddsQueue2, v13);
   }
 
   else
   {
-    dispatch_async(v14, v13);
+    dispatch_async(ddsQueue2, v13);
   }
 
   objc_destroyWeak(&v19);
@@ -2899,18 +2899,18 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadSystemAssetsForLanguage:(id)a3 assetTypes:(id)a4
+- (void)loadSystemAssetsForLanguage:(id)language assetTypes:(id)types
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"root"] & 1) == 0 && -[SRLanguageConfiguration isSupportedLanguage:deliveryType:](self->_langConfig, "isSupportedLanguage:deliveryType:", v6, @"Required"))
+  languageCopy = language;
+  typesCopy = types;
+  if (([languageCopy isEqualToString:@"root"] & 1) == 0 && -[SRLanguageConfiguration isSupportedLanguage:deliveryType:](self->_langConfig, "isSupportedLanguage:deliveryType:", languageCopy, @"Required"))
   {
-    v8 = [(SRDefaultsManager *)self resourceBundle];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RequiredAssets_%@", v6];
-    v10 = [v8 pathForResource:v9 ofType:@"bundle"];
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    v12 = [v11 fileExistsAtPath:v10];
+    resourceBundle = [(SRDefaultsManager *)self resourceBundle];
+    languageCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"RequiredAssets_%@", languageCopy];
+    v10 = [resourceBundle pathForResource:languageCopy ofType:@"bundle"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v12 = [defaultManager fileExistsAtPath:v10];
 
     v13 = SRLogCategoryAssets();
     v14 = v13;
@@ -2919,16 +2919,16 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
-        v22 = [v9 UTF8String];
+        uTF8String = [languageCopy UTF8String];
         v23 = 2080;
-        v24 = [v10 UTF8String];
+        uTF8String2 = [v10 UTF8String];
         _os_log_impl(&dword_1AE58E000, v14, OS_LOG_TYPE_DEFAULT, "Loading %s at path <%s>", buf, 0x16u);
       }
 
-      v15 = [v7 objectForKeyedSubscript:@"com.apple.MobileAsset.SpotlightResources"];
-      v16 = [(SRDefaultsManager *)self assetsFromResourcePath:v10 deliveryType:@"Required" assetType:v15 language:v6 force:0];
+      v15 = [typesCopy objectForKeyedSubscript:@"com.apple.MobileAsset.SpotlightResources"];
+      v16 = [(SRDefaultsManager *)self assetsFromResourcePath:v10 deliveryType:@"Required" assetType:v15 language:languageCopy force:0];
 
-      v17 = [(SRDefaultsManager *)self defaultsQueue];
+      defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __60__SRDefaultsManager_loadSystemAssetsForLanguage_assetTypes___block_invoke;
@@ -2936,32 +2936,32 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
       block[4] = self;
       v20 = v16;
       v14 = v16;
-      dispatch_sync(v17, block);
+      dispatch_sync(defaultsQueue, block);
     }
 
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [SRDefaultsManager loadSystemAssetsForLanguage:v9 assetTypes:v10];
+      [SRDefaultsManager loadSystemAssetsForLanguage:languageCopy assetTypes:v10];
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadTestAssetsForLanguage:(id)a3 assetTypes:(id)a4
+- (void)loadTestAssetsForLanguage:(id)language assetTypes:(id)types
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  languageCopy = language;
+  typesCopy = types;
   if (sHasTestAssets == 1 && (SRIgnoreOTAAssets() & 1) == 0)
   {
-    v42 = [(SRDefaultsManager *)self resourceBundle];
+    resourceBundle = [(SRDefaultsManager *)self resourceBundle];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v36 = v6;
-    obj = [v6 allValues];
+    v36 = typesCopy;
+    obj = [typesCopy allValues];
     v7 = [obj countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v7)
     {
@@ -2981,8 +2981,8 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
           }
 
           v12 = *(*(&v51 + 1) + 8 * v11);
-          v13 = [v12 assetType];
-          v14 = [v13 isEqualToString:@"com.apple.MobileAsset.SpotlightResources"];
+          assetType = [v12 assetType];
+          v14 = [assetType isEqualToString:@"com.apple.MobileAsset.SpotlightResources"];
 
           if (v14)
           {
@@ -2992,31 +2992,31 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
             v47 = 0u;
             v48 = 0u;
             v41 = v12;
-            v15 = [v12 deliveryTypes];
-            v16 = [v15 countByEnumeratingWithState:&v47 objects:v59 count:16];
+            deliveryTypes = [v12 deliveryTypes];
+            v16 = [deliveryTypes countByEnumeratingWithState:&v47 objects:v59 count:16];
             if (v16)
             {
               v17 = v16;
               v18 = *v48;
-              v43 = v15;
+              v43 = deliveryTypes;
               do
               {
                 for (i = 0; i != v17; ++i)
                 {
                   if (*v48 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(deliveryTypes);
                   }
 
                   v20 = *(*(&v47 + 1) + 8 * i);
-                  if ([v20 hasSuffix:v10] && -[SRLanguageConfiguration isSupportedLanguage:deliveryType:](self->_langConfig, "isSupportedLanguage:deliveryType:", v5, v20))
+                  if ([v20 hasSuffix:v10] && -[SRLanguageConfiguration isSupportedLanguage:deliveryType:](self->_langConfig, "isSupportedLanguage:deliveryType:", languageCopy, v20))
                   {
                     v21 = v10;
-                    v22 = v5;
-                    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Assets_%@", v20, v5];
-                    v24 = [v42 pathForResource:v23 ofType:@"bundle"];
-                    v25 = [MEMORY[0x1E696AC08] defaultManager];
-                    v26 = [v25 fileExistsAtPath:v24];
+                    v22 = languageCopy;
+                    languageCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Assets_%@", v20, languageCopy];
+                    v24 = [resourceBundle pathForResource:languageCopy ofType:@"bundle"];
+                    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+                    v26 = [defaultManager fileExistsAtPath:v24];
 
                     v27 = SRLogCategoryAssets();
                     v28 = v27;
@@ -3024,17 +3024,17 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
                     {
                       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                       {
-                        v29 = [v23 UTF8String];
-                        v30 = [v24 UTF8String];
+                        uTF8String = [languageCopy UTF8String];
+                        uTF8String2 = [v24 UTF8String];
                         *buf = 136315394;
-                        v56 = v29;
+                        v56 = uTF8String;
                         v57 = 2080;
-                        v58 = v30;
+                        v58 = uTF8String2;
                         _os_log_impl(&dword_1AE58E000, v28, OS_LOG_TYPE_DEFAULT, "Loading %s at path <%s>", buf, 0x16u);
                       }
 
                       v31 = [(SRDefaultsManager *)self assetsFromResourcePath:v24 deliveryType:v20 assetType:v41 language:v22 force:0];
-                      v32 = [(SRDefaultsManager *)self defaultsQueue];
+                      defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
                       block[0] = MEMORY[0x1E69E9820];
                       block[1] = 3221225472;
                       block[2] = __58__SRDefaultsManager_loadTestAssetsForLanguage_assetTypes___block_invoke;
@@ -3042,27 +3042,27 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
                       block[4] = self;
                       v46 = v31;
                       v28 = v31;
-                      dispatch_sync(v32, block);
+                      dispatch_sync(defaultsQueue, block);
                     }
 
                     else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                     {
-                      v33 = [v23 UTF8String];
-                      v34 = [v24 UTF8String];
+                      uTF8String3 = [languageCopy UTF8String];
+                      uTF8String4 = [v24 UTF8String];
                       *buf = 136315394;
-                      v56 = v33;
+                      v56 = uTF8String3;
                       v57 = 2080;
-                      v58 = v34;
+                      v58 = uTF8String4;
                       _os_log_error_impl(&dword_1AE58E000, v28, OS_LOG_TYPE_ERROR, "%s does not exist at path <%s>", buf, 0x16u);
                     }
 
                     v10 = v21;
-                    v5 = v22;
-                    v15 = v43;
+                    languageCopy = v22;
+                    deliveryTypes = v43;
                   }
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v47 objects:v59 count:16];
+                v17 = [deliveryTypes countByEnumeratingWithState:&v47 objects:v59 count:16];
               }
 
               while (v17);
@@ -3083,19 +3083,19 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
       while (v8);
     }
 
-    v6 = v36;
+    typesCopy = v36;
   }
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (id)loadOTAAssetsForLanguage:(id)a3 updateCache:(BOOL)a4 assetTypes:(id)a5 force:(BOOL)a6
+- (id)loadOTAAssetsForLanguage:(id)language updateCache:(BOOL)cache assetTypes:(id)types force:(BOOL)force
 {
-  v6 = a6;
-  v8 = a4;
+  forceCopy = force;
+  cacheCopy = cache;
   v78 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  languageCopy = language;
+  typesCopy = types;
   if ((SRIgnoreOTAAssets() & 1) != 0 || sHasTestAssets == 1)
   {
     v12 = SRLogCategoryAssets();
@@ -3114,17 +3114,17 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
     v15 = SRLogCategoryAssets();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v35 = [v11 allKeys];
+      allKeys = [typesCopy allKeys];
       *buf = 134219010;
       *&buf[4] = v14;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = languageCopy;
       *&buf[22] = 1024;
-      *v77 = v8;
+      *v77 = cacheCopy;
       *&v77[4] = 1024;
-      *&v77[6] = v6;
+      *&v77[6] = forceCopy;
       *&v77[10] = 2112;
-      *&v77[12] = v35;
+      *&v77[12] = allKeys;
       _os_log_debug_impl(&dword_1AE58E000, v15, OS_LOG_TYPE_DEBUG, "loadOTA[%llu] (%@, %d, %d, %@)", buf, 0x2Cu);
     }
 
@@ -3147,25 +3147,25 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
     v67 = 0;
     if (SRIsRunningInServer())
     {
-      v16 = [(SRDefaultsManager *)self ddsQueue];
+      ddsQueue = [(SRDefaultsManager *)self ddsQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes_force___block_invoke_504;
       block[3] = &unk_1E7A2B690;
       objc_copyWeak(v48, &location);
-      v17 = v10;
-      v49 = v8;
+      v17 = languageCopy;
+      v49 = cacheCopy;
       v42 = v17;
       v48[1] = v14;
-      v18 = v11;
-      v50 = v6;
+      v18 = typesCopy;
+      v50 = forceCopy;
       v45 = &v69;
       v46 = buf;
       v47 = &v64;
       v43 = v18;
-      v44 = self;
+      selfCopy = self;
       v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
-      dispatch_sync(v16, v19);
+      dispatch_sync(ddsQueue, v19);
 
       objc_destroyWeak(v48);
     }
@@ -3177,46 +3177,46 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
       v62[2] = __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes_force___block_invoke;
       v62[3] = &unk_1E7A2AFF0;
       v62[4] = self;
-      v20 = v11;
+      v20 = typesCopy;
       v63 = v20;
       if (loadOTAAssetsForLanguage_updateCache_assetTypes_force__onceToken != -1)
       {
         dispatch_once(&loadOTAAssetsForLanguage_updateCache_assetTypes_force__onceToken, v62);
       }
 
-      v75 = v10;
+      v75 = languageCopy;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
-      v22 = [v20 allKeys];
-      v23 = assetBundleCacheQuery(v21, v22, sHasTestAssets);
+      allKeys2 = [v20 allKeys];
+      v23 = assetBundleCacheQuery(v21, allKeys2, sHasTestAssets);
 
-      v24 = [(SRDefaultsManager *)self ddsQueue];
+      ddsQueue2 = [(SRDefaultsManager *)self ddsQueue];
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes_force___block_invoke_494;
       v51[3] = &unk_1E7A2B5C8;
       objc_copyWeak(v59, &location);
-      v25 = v10;
-      v60 = v8;
+      v25 = languageCopy;
+      v60 = cacheCopy;
       v59[1] = v14;
       v52 = v25;
       v53 = v23;
       v26 = v20;
-      v61 = v6;
+      v61 = forceCopy;
       v56 = &v69;
       v57 = buf;
       v58 = &v64;
       v54 = v26;
-      v55 = self;
+      selfCopy2 = self;
       v27 = v23;
       v28 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v51);
-      dispatch_sync(v24, v28);
+      dispatch_sync(ddsQueue2, v28);
 
       objc_destroyWeak(v59);
     }
 
     if ([*(*&buf[8] + 40) count])
     {
-      v29 = [(SRDefaultsManager *)self defaultsQueue];
+      defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes_force___block_invoke_510;
@@ -3225,22 +3225,22 @@ void __41__SRDefaultsManager_requestCatalogUpdate__block_invoke(uint64_t a1, uin
       v40[5] = buf;
       v40[6] = v14;
       v30 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v40);
-      dispatch_sync(v29, v30);
+      dispatch_sync(defaultsQueue, v30);
     }
 
-    if (v6 && *(v65 + 24) == 1)
+    if (forceCopy && *(v65 + 24) == 1)
     {
-      v31 = [(SRDefaultsManager *)self notifyQueue];
+      notifyQueue = [(SRDefaultsManager *)self notifyQueue];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes_force___block_invoke_511;
       v36[3] = &unk_1E7A2B550;
       v39 = v14;
       v36[4] = self;
-      v37 = v10;
+      v37 = languageCopy;
       v38 = &v69;
       v32 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v36);
-      dispatch_sync(v31, v32);
+      dispatch_sync(notifyQueue, v32);
     }
 
     v13 = v70[5];
@@ -4406,50 +4406,50 @@ uint64_t __75__SRDefaultsManager_loadOTAAssetsForLanguage_updateCache_assetTypes
   return [*(a1 + 32) notifyObserversWithLanguage:*(a1 + 40) bundleVersions:*(*(*(a1 + 48) + 8) + 40) reloadFromCache:0 force:1];
 }
 
-- (void)unloadDefaultsForLocale:(id)a3
+- (void)unloadDefaultsForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = languageCodeForLocale(v4);
+  localeCopy = locale;
+  v5 = languageCodeForLocale(localeCopy);
   [(SRDefaultsManager *)self removeFetchForLanguage:v5];
-  v6 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__SRDefaultsManager_unloadDefaultsForLocale___block_invoke;
   v8[3] = &unk_1E7A2AFF0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = localeCopy;
+  v7 = localeCopy;
+  dispatch_sync(defaultsQueue, v8);
 }
 
-- (void)loadFactorsAtPath:(id)a3 namespaceId:(id)a4
+- (void)loadFactorsAtPath:(id)path namespaceId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  idCopy = id;
   v8 = SRLogCategoryTrial();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SRDefaultsManager loadFactorsAtPath:namespaceId:];
   }
 
-  v9 = [PlistReader plistReaderWithResourcePath:v6];
+  v9 = [PlistReader plistReaderWithResourcePath:pathCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 plist];
-    v12 = v11;
-    if (v11 && [v11 count])
+    plist = [v9 plist];
+    v12 = plist;
+    if (plist && [plist count])
     {
-      v13 = [(SRDefaultsManager *)self defaultsQueue];
+      defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __51__SRDefaultsManager_loadFactorsAtPath_namespaceId___block_invoke;
       v14[3] = &unk_1E7A2B6E0;
-      v15 = v6;
+      v15 = pathCopy;
       v16 = v12;
-      v17 = self;
-      v18 = v7;
-      dispatch_sync(v13, v14);
+      selfCopy = self;
+      v18 = idCopy;
+      dispatch_sync(defaultsQueue, v14);
     }
   }
 }
@@ -4938,25 +4938,25 @@ LABEL_117:
   v82 = *MEMORY[0x1E69E9840];
 }
 
-- (id)parametersOfNamespaceWithName:(id)a3
+- (id)parametersOfNamespaceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__SRDefaultsManager_parametersOfNamespaceWithName___block_invoke;
   block[3] = &unk_1E7A2B2A8;
   block[4] = self;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = nameCopy;
+  dispatch_sync(defaultsQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -5030,28 +5030,28 @@ void __51__SRDefaultsManager_parametersOfNamespaceWithName___block_invoke(void *
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)parametersOfNamespaceWithName:(id)a3 client:(id)a4
+- (id)parametersOfNamespaceWithName:(id)name client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  clientCopy = client;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__0;
   v21 = __Block_byref_object_dispose__0;
   v22 = 0;
-  v8 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__SRDefaultsManager_parametersOfNamespaceWithName_client___block_invoke;
   v13[3] = &unk_1E7A2B708;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = clientCopy;
+  v15 = nameCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v13);
+  v9 = nameCopy;
+  v10 = clientCopy;
+  dispatch_sync(defaultsQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -5388,39 +5388,39 @@ void __55__SRDefaultsManager_assetBundleForLocale_client_force___block_invoke(ui
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SRDefaultsManager *)self delegatesQueue];
+  delegateCopy = delegate;
+  delegatesQueue = [(SRDefaultsManager *)self delegatesQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__SRDefaultsManager_registerDelegate___block_invoke;
   v7[3] = &unk_1E7A2AFF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(delegatesQueue, v7);
 }
 
-- (void)unregisterDelegate:(id)a3
+- (void)unregisterDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [(SRDefaultsManager *)self delegatesQueue];
+  delegatesQueue = [(SRDefaultsManager *)self delegatesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__SRDefaultsManager_unregisterDelegate___block_invoke;
   block[3] = &unk_1E7A2B2A8;
   block[4] = self;
-  v6 = v4;
+  v6 = delegateCopy;
   v8 = v6;
   v9 = &v10;
-  dispatch_sync(v5, block);
+  dispatch_sync(delegatesQueue, block);
 
   [(SRDefaultsManager *)self updateFetchedLanguages:v11[5]];
   _Block_object_dispose(&v10, 8);
@@ -5472,15 +5472,15 @@ void __40__SRDefaultsManager_unregisterDelegate___block_invoke(void *a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyObserversWithLanguage:(id)a3 bundleVersions:(id)a4 reloadFromCache:(BOOL)a5 force:(BOOL)a6
+- (void)notifyObserversWithLanguage:(id)language bundleVersions:(id)versions reloadFromCache:(BOOL)cache force:(BOOL)force
 {
-  v6 = a6;
+  forceCopy = force;
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v23 = a4;
-  if (v23)
+  languageCopy = language;
+  versionsCopy = versions;
+  if (versionsCopy)
   {
-    if (v6)
+    if (forceCopy)
     {
       location = 0;
       p_location = &location;
@@ -5488,14 +5488,14 @@ void __40__SRDefaultsManager_unregisterDelegate___block_invoke(void *a1)
       v37 = __Block_byref_object_copy__0;
       v38 = __Block_byref_object_dispose__0;
       v39 = 0;
-      v11 = [(SRDefaultsManager *)self delegatesQueue];
+      delegatesQueue = [(SRDefaultsManager *)self delegatesQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __86__SRDefaultsManager_notifyObserversWithLanguage_bundleVersions_reloadFromCache_force___block_invoke;
       block[3] = &unk_1E7A2B258;
       block[4] = self;
       block[5] = &location;
-      dispatch_sync(v11, block);
+      dispatch_sync(delegatesQueue, block);
 
       v31 = 0u;
       v32 = 0u;
@@ -5517,9 +5517,9 @@ void __40__SRDefaultsManager_unregisterDelegate___block_invoke(void *a1)
             }
 
             v16 = *(*(&v29 + 1) + 8 * v15);
-            if (([v10 isEqualToString:@"root"] & 1) != 0 || (objc_msgSend(v16, "locale"), v17 = objc_claimAutoreleasedReturnValue(), languageCodeForLocale(v17), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v10, "isEqualToString:", v18), v18, v17, v19))
+            if (([languageCopy isEqualToString:@"root"] & 1) != 0 || (objc_msgSend(v16, "locale"), v17 = objc_claimAutoreleasedReturnValue(), languageCodeForLocale(v17), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(languageCopy, "isEqualToString:", v18), v18, v17, v19))
             {
-              [v16 didUpdateDefaultsWithBundleVersions:v23 trial:0];
+              [v16 didUpdateDefaultsWithBundleVersions:versionsCopy trial:0];
             }
 
             ++v15;
@@ -5538,17 +5538,17 @@ void __40__SRDefaultsManager_unregisterDelegate___block_invoke(void *a1)
     else
     {
       objc_initWeak(&location, self);
-      v20 = [(SRDefaultsManager *)self notifyQueueNonBlocking];
+      notifyQueueNonBlocking = [(SRDefaultsManager *)self notifyQueueNonBlocking];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __86__SRDefaultsManager_notifyObserversWithLanguage_bundleVersions_reloadFromCache_force___block_invoke_2;
       v24[3] = &unk_1E7A2B758;
       objc_copyWeak(&v27, &location);
-      v28 = a5;
-      v25 = v10;
-      v26 = v23;
+      cacheCopy = cache;
+      v25 = languageCopy;
+      v26 = versionsCopy;
       v21 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v24);
-      dispatch_async(v20, v21);
+      dispatch_async(notifyQueueNonBlocking, v21);
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(&location);
@@ -5667,31 +5667,31 @@ void __86__SRDefaultsManager_notifyObserversWithLanguage_bundleVersions_reloadFr
   *(v3 + 40) = v2;
 }
 
-- (void)didUpdateAssetsWithType:(id)a3
+- (void)didUpdateAssetsWithType:(id)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = SRLogCategoryAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v25 = [v4 UTF8String];
+    uTF8String = [typeCopy UTF8String];
     _os_log_impl(&dword_1AE58E000, v5, OS_LOG_TYPE_DEFAULT, "Got updated assets from DDS for %s", buf, 0xCu);
   }
 
-  v6 = [(SRDefaultsManager *)self currentAssetTypes];
+  currentAssetTypes = [(SRDefaultsManager *)self currentAssetTypes];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [v6 objectForKeyedSubscript:v4];
-  [v7 setObject:v8 forKeyedSubscript:v4];
+  v8 = [currentAssetTypes objectForKeyedSubscript:typeCopy];
+  [v7 setObject:v8 forKeyedSubscript:typeCopy];
 
-  v9 = [(SRDefaultsManager *)self fetchedLanguages];
-  v10 = [v9 allObjects];
+  fetchedLanguages = [(SRDefaultsManager *)self fetchedLanguages];
+  allObjects = [fetchedLanguages allObjects];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = v10;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -5726,25 +5726,25 @@ void __86__SRDefaultsManager_notifyObserversWithLanguage_bundleVersions_reloadFr
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateParameter:(id)a3 inNamespace:(id)a4 withValue:(id)a5
+- (void)updateParameter:(id)parameter inNamespace:(id)namespace withValue:(id)value
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parameterCopy = parameter;
+  namespaceCopy = namespace;
+  valueCopy = value;
   parameters = self->_parameters;
   if (parameters)
   {
-    v12 = [(NSMutableDictionary *)parameters objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)parameters objectForKeyedSubscript:namespaceCopy];
 
     if (v12)
     {
-      v13 = [v10 copy];
-      v14 = [(NSMutableDictionary *)self->_parameters objectForKeyedSubscript:v9];
-      v15 = [v14 objectForKeyedSubscript:v8];
+      v13 = [valueCopy copy];
+      v14 = [(NSMutableDictionary *)self->_parameters objectForKeyedSubscript:namespaceCopy];
+      v15 = [v14 objectForKeyedSubscript:parameterCopy];
 
-      v16 = [(NSMutableDictionary *)self->_parameters objectForKeyedSubscript:v9];
-      [v16 setObject:v13 forKeyedSubscript:v8];
+      v16 = [(NSMutableDictionary *)self->_parameters objectForKeyedSubscript:namespaceCopy];
+      [v16 setObject:v13 forKeyedSubscript:parameterCopy];
 
       if (v15)
       {
@@ -5756,16 +5756,16 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v18 = +[SRParameter typeStringFromParameterType:](SRParameter, "typeStringFromParameterType:", [v10 type]);
-        v19 = [v13 value];
+        v18 = +[SRParameter typeStringFromParameterType:](SRParameter, "typeStringFromParameterType:", [valueCopy type]);
+        value = [v13 value];
         v23 = 138413058;
-        v24 = v8;
+        v24 = parameterCopy;
         v25 = 2112;
         v26 = v18;
         v27 = 2112;
-        v28 = v9;
+        v28 = namespaceCopy;
         v29 = 2112;
-        v30 = v19;
+        v30 = value;
         v20 = "Updating parameter %@ of type %@ in namespace %@ to value %@";
       }
 
@@ -5774,7 +5774,7 @@ LABEL_13:
         trialConfig = self->_trialConfig;
         if (trialConfig)
         {
-          [(SRTrialConfiguration *)trialConfig setParameterName:v8 namespaceId:v9];
+          [(SRTrialConfiguration *)trialConfig setParameterName:parameterCopy namespaceId:namespaceCopy];
         }
 
         v17 = SRLogCategoryTrial();
@@ -5783,16 +5783,16 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v18 = +[SRParameter typeStringFromParameterType:](SRParameter, "typeStringFromParameterType:", [v10 type]);
-        v19 = [v13 value];
+        v18 = +[SRParameter typeStringFromParameterType:](SRParameter, "typeStringFromParameterType:", [valueCopy type]);
+        value = [v13 value];
         v23 = 138413058;
-        v24 = v8;
+        v24 = parameterCopy;
         v25 = 2112;
         v26 = v18;
         v27 = 2112;
-        v28 = v19;
+        v28 = value;
         v29 = 2112;
-        v30 = v9;
+        v30 = namespaceCopy;
         v20 = "Adding parameter %@ of type %@ and value %@ to namespace %@";
       }
 
@@ -5822,15 +5822,15 @@ LABEL_14:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateTrialNamespace:(id)a3
+- (void)didUpdateTrialNamespace:(id)namespace
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namespaceCopy = namespace;
   trialConfig = self->_trialConfig;
   if (trialConfig)
   {
-    v26 = v4;
-    v6 = [(SRTrialConfiguration *)trialConfig clientsForNamespace:v4];
+    v26 = namespaceCopy;
+    v6 = [(SRTrialConfiguration *)trialConfig clientsForNamespace:namespaceCopy];
     v7 = [MEMORY[0x1E695DFA8] set];
     v34 = 0u;
     v35 = 0u;
@@ -5878,14 +5878,14 @@ LABEL_14:
     v42 = __Block_byref_object_copy__0;
     v43 = __Block_byref_object_dispose__0;
     v44 = 0;
-    v14 = [(SRDefaultsManager *)self delegatesQueue];
+    delegatesQueue = [(SRDefaultsManager *)self delegatesQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__SRDefaultsManager_didUpdateTrialNamespace___block_invoke;
     block[3] = &unk_1E7A2B258;
     block[4] = self;
     block[5] = buf;
-    dispatch_sync(v14, block);
+    dispatch_sync(delegatesQueue, block);
 
     v29 = 0u;
     v30 = 0u;
@@ -5909,16 +5909,16 @@ LABEL_14:
           v20 = SRLogCategoryTrial();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v19 client];
+            client = [v19 client];
             *v36 = 138412546;
             v37 = v19;
             v38 = 2112;
-            v39 = v24;
+            v39 = client;
             _os_log_debug_impl(&dword_1AE58E000, v20, OS_LOG_TYPE_DEBUG, "Delegate %@ with client %@", v36, 0x16u);
           }
 
-          v21 = [v19 client];
-          v22 = [v7 containsObject:v21];
+          client2 = [v19 client];
+          v22 = [v7 containsObject:client2];
 
           if (v22)
           {
@@ -5943,7 +5943,7 @@ LABEL_14:
     }
 
     _Block_object_dispose(buf, 8);
-    v4 = v26;
+    namespaceCopy = v26;
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -5961,8 +5961,8 @@ uint64_t __45__SRDefaultsManager_didUpdateTrialNamespace___block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6999960] sharedInstance];
-  [v3 unregisterDelegate:self];
+  mEMORY[0x1E6999960] = [MEMORY[0x1E6999960] sharedInstance];
+  [mEMORY[0x1E6999960] unregisterDelegate:self];
 
   v4.receiver = self;
   v4.super_class = SRDefaultsManager;
@@ -5977,17 +5977,17 @@ uint64_t __45__SRDefaultsManager_didUpdateTrialNamespace___block_invoke(uint64_t
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
   v14 = 0;
-  v3 = [(SRDefaultsManager *)self currentAssetTypes];
-  v4 = [v3 allValues];
+  currentAssetTypes = [(SRDefaultsManager *)self currentAssetTypes];
+  allValues = [currentAssetTypes allValues];
 
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__SRDefaultsManager_assetConfigDump__block_invoke;
   v8[3] = &unk_1E7A2B258;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(defaultsQueue, v8);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -6013,18 +6013,18 @@ uint64_t __36__SRDefaultsManager_assetConfigDump__block_invoke(uint64_t a1)
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v3 = [(SRDefaultsManager *)self currentAssetTypes];
-  v4 = [v3 allValues];
+  currentAssetTypes = [(SRDefaultsManager *)self currentAssetTypes];
+  allValues = [currentAssetTypes allValues];
 
-  v5 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __35__SRDefaultsManager_assertionsDump__block_invoke;
   v9[3] = &unk_1E7A2B280;
-  v10 = v4;
+  v10 = allValues;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, v9);
+  v6 = allValues;
+  dispatch_sync(defaultsQueue, v9);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -6090,14 +6090,14 @@ void __35__SRDefaultsManager_assertionsDump__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SRDefaultsManager *)self defaultsQueue];
+  defaultsQueue = [(SRDefaultsManager *)self defaultsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__SRDefaultsManager_trialConfigDump__block_invoke;
   v6[3] = &unk_1E7A2B280;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(defaultsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -6124,8 +6124,8 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
 - (id)allLoadedAssets
 {
   v71 = *MEMORY[0x1E69E9840];
-  v50 = [MEMORY[0x1E695DF90] dictionary];
-  v34 = self;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  selfCopy = self;
   assets = self->_assets;
   if (assets)
   {
@@ -6148,10 +6148,10 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
           }
 
           v5 = *(*(&v63 + 1) + 8 * i);
-          v6 = [(NSMutableDictionary *)v34->_assets objectForKeyedSubscript:v5];
-          v7 = [MEMORY[0x1E695DF90] dictionary];
+          v6 = [(NSMutableDictionary *)selfCopy->_assets objectForKeyedSubscript:v5];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           v49 = v5;
-          [v50 setObject:v7 forKeyedSubscript:v5];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v5];
 
           if (v6)
           {
@@ -6178,10 +6178,10 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
 
                   v10 = *(*(&v59 + 1) + 8 * j);
                   v11 = [v8 objectForKeyedSubscript:v10];
-                  v12 = [MEMORY[0x1E695DF90] dictionary];
-                  v13 = [v50 objectForKeyedSubscript:v49];
+                  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+                  v13 = [dictionary objectForKeyedSubscript:v49];
                   v48 = v10;
-                  [v13 setObject:v12 forKeyedSubscript:v10];
+                  [v13 setObject:dictionary3 forKeyedSubscript:v10];
 
                   if (v11)
                   {
@@ -6209,18 +6209,18 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
                           v46 = v14;
                           v15 = *(*(&v55 + 1) + 8 * v14);
                           v16 = [v45 objectForKeyedSubscript:v15];
-                          v17 = [MEMORY[0x1E695DF90] dictionary];
-                          v18 = [v50 objectForKeyedSubscript:v49];
+                          dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+                          v18 = [dictionary objectForKeyedSubscript:v49];
                           v19 = [v18 objectForKeyedSubscript:v48];
-                          [v19 setObject:v17 forKeyedSubscript:v15];
+                          [v19 setObject:dictionary4 forKeyedSubscript:v15];
 
-                          v20 = [v16 contentNames];
+                          contentNames = [v16 contentNames];
                           v51 = 0u;
                           v52 = 0u;
                           v53 = 0u;
                           v54 = 0u;
-                          v47 = v20;
-                          v21 = [v20 countByEnumeratingWithState:&v51 objects:v67 count:16];
+                          v47 = contentNames;
+                          v21 = [contentNames countByEnumeratingWithState:&v51 objects:v67 count:16];
                           if (v21)
                           {
                             v22 = v21;
@@ -6236,7 +6236,7 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
 
                                 v25 = *(*(&v51 + 1) + 8 * k);
                                 v26 = [v16 pathWithName:v25];
-                                v27 = [v50 objectForKeyedSubscript:v49];
+                                v27 = [dictionary objectForKeyedSubscript:v49];
                                 v28 = [v27 objectForKeyedSubscript:v48];
                                 v29 = [v28 objectForKeyedSubscript:v15];
                                 [v29 setObject:v26 forKeyedSubscript:v25];
@@ -6284,15 +6284,15 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v50;
+  return dictionary;
 }
 
-- (void)refreshCacheForLanguages:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)refreshCacheForLanguages:(id)languages force:(BOOL)force completion:(id)completion
 {
-  v6 = a4;
+  forceCopy = force;
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  languagesCopy = languages;
+  completionCopy = completion;
   if (SRIsRunningInServer())
   {
     v10 = SRLogCategoryAssets();
@@ -6314,22 +6314,22 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [(SRDefaultsManager *)self currentAssetTypes];
-    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v8];
+    currentAssetTypes = [(SRDefaultsManager *)self currentAssetTypes];
+    v12 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:languagesCopy];
     objc_initWeak(&location, self);
     v13 = sIndex++;
     v14 = SRLogCategoryAssets();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v19 = [v11 allKeys];
+      allKeys = [currentAssetTypes allKeys];
       *buf = 134218754;
       v29 = v13;
       v30 = 2112;
-      v31 = v8;
+      v31 = languagesCopy;
       v32 = 1024;
-      v33 = v6;
+      v33 = forceCopy;
       v34 = 2112;
-      v35 = v19;
+      v35 = allKeys;
       _os_log_debug_impl(&dword_1AE58E000, v14, OS_LOG_TYPE_DEBUG, "refreshCache[%llu] (%@, %d, %@)", buf, 0x26u);
     }
 
@@ -6338,23 +6338,23 @@ void *__36__SRDefaultsManager_trialConfigDump__block_invoke(uint64_t a1)
     block[2] = __63__SRDefaultsManager_refreshCacheForLanguages_force_completion___block_invoke;
     block[3] = &unk_1E7A2B848;
     objc_copyWeak(&v25, &location);
-    v21 = v8;
+    v21 = languagesCopy;
     v15 = v12;
     v22 = v15;
-    v10 = v11;
+    v10 = currentAssetTypes;
     v23 = v10;
-    v26 = v6;
-    v24 = v9;
+    v26 = forceCopy;
+    v24 = completionCopy;
     v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
-    v17 = [(SRDefaultsManager *)self ddsQueue];
-    if (v6)
+    ddsQueue = [(SRDefaultsManager *)self ddsQueue];
+    if (forceCopy)
     {
-      dispatch_sync(v17, v16);
+      dispatch_sync(ddsQueue, v16);
     }
 
     else
     {
-      dispatch_async(v17, v16);
+      dispatch_async(ddsQueue, v16);
     }
 
     objc_destroyWeak(&v25);

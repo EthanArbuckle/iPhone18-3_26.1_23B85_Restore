@@ -56,21 +56,21 @@ uint64_t __37__ISGenericFolderIcon_sharedInstance__block_invoke()
 - (id)makeResourceProvider
 {
   v3 = +[ISDefaults sharedInstance];
-  v4 = [v3 isSolariumEnabled];
+  isSolariumEnabled = [v3 isSolariumEnabled];
 
-  if (v4)
+  if (isSolariumEnabled)
   {
     v7.receiver = self;
     v7.super_class = ISGenericFolderIcon;
-    v5 = [(ISTypeIcon *)&v7 makeResourceProvider];
+    makeResourceProvider = [(ISTypeIcon *)&v7 makeResourceProvider];
   }
 
   else
   {
-    v5 = [(ISGenericFolderIcon *)self resourceProvider];
+    makeResourceProvider = [(ISGenericFolderIcon *)self resourceProvider];
   }
 
-  return v5;
+  return makeResourceProvider;
 }
 
 @end

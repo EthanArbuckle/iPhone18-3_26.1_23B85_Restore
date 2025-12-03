@@ -1,37 +1,37 @@
 @interface TSTTableTileRowInfo
-+ (id)rowInfoFromArchive:(const void *)a3 fileFormatVersion:(unint64_t)a4;
-+ (id)rowInfoWithTileRowIndex:(unsigned int)a3 wideOffsets:(BOOL)a4;
-- (BOOL)_quickValidateBuffer:(TSTTableTileRowBuffer *)a3;
++ (id)rowInfoFromArchive:(const void *)archive fileFormatVersion:(unint64_t)version;
++ (id)rowInfoWithTileRowIndex:(unsigned int)index wideOffsets:(BOOL)offsets;
+- (BOOL)_quickValidateBuffer:(TSTTableTileRowBuffer *)buffer;
 - (BOOL)quickValidate;
-- (BOOL)searchCellStorageRefAtColumnIndex:(unsigned __int16)a3 searchMask:(unint64_t)a4;
-- (BOOL)validateWithResult:(id *)a3;
-- (TSTCellStorage)cellStorageRefAtIndex:(unsigned __int16)a3;
-- (TSTCellStorage)p_preBNCStorageRefAtIndex:(unsigned __int16)a3;
-- (TSTTableTileRowInfo)initWithTileRowIndex:(unsigned int)a3 wideOffsets:(BOOL)a4;
+- (BOOL)searchCellStorageRefAtColumnIndex:(unsigned __int16)index searchMask:(unint64_t)mask;
+- (BOOL)validateWithResult:(id *)result;
+- (TSTCellStorage)cellStorageRefAtIndex:(unsigned __int16)index;
+- (TSTCellStorage)p_preBNCStorageRefAtIndex:(unsigned __int16)index;
+- (TSTTableTileRowInfo)initWithTileRowIndex:(unsigned int)index wideOffsets:(BOOL)offsets;
 - (id)description;
-- (id)initFromArchive:(const void *)a3 fileFormatVersion:(unint64_t)a4;
+- (id)initFromArchive:(const void *)archive fileFormatVersion:(unint64_t)version;
 - (id)p_emptyCell;
-- (int64_t)setCell:(id)a3 atIndex:(unsigned __int16)a4;
+- (int64_t)setCell:(id)cell atIndex:(unsigned __int16)index;
 - (unint64_t)archivingCompatibilityVersion;
-- (unint64_t)removeColumnsAtIndex:(unsigned __int16)a3 count:(unsigned int)a4;
+- (unint64_t)removeColumnsAtIndex:(unsigned __int16)index count:(unsigned int)count;
 - (unsigned)_archivedColumnCount;
-- (unsigned)cellIndexAtOrAfterIndex:(unsigned __int16)a3;
-- (unsigned)cellIndexAtOrBeforeIndex:(unsigned __int16)a3;
-- (vector<TSTCell)accumulateCurrentCellsConcurrentlyAtColumns:(TSTTableTileRowInfo *)self usingCellCreationBlock:(SEL)a3;
-- (void)_insertCell:(id)a3 atIndex:(unsigned __int16)a4;
-- (void)_removeCellAtIndex:(unsigned __int16)a3;
-- (void)_replaceCellAtIndex:(unsigned __int16)a3 withCell:(id)a4;
+- (unsigned)cellIndexAtOrAfterIndex:(unsigned __int16)index;
+- (unsigned)cellIndexAtOrBeforeIndex:(unsigned __int16)index;
+- (vector<TSTCell)accumulateCurrentCellsConcurrentlyAtColumns:(TSTTableTileRowInfo *)self usingCellCreationBlock:(SEL)block;
+- (void)_insertCell:(id)cell atIndex:(unsigned __int16)index;
+- (void)_removeCellAtIndex:(unsigned __int16)index;
+- (void)_replaceCellAtIndex:(unsigned __int16)index withCell:(id)cell;
 - (void)convertToWideOffsets;
 - (void)dealloc;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)enumerateStoragesInColumnRange:(_NSRange)a3 getPreBNC:(BOOL)a4 withBlock:(id)a5;
-- (void)insertColumnsAtIndex:(unsigned __int16)a3 count:(unsigned int)a4;
-- (void)moveColumnsFromIndex:(unsigned __int16)a3 toIndex:(unsigned __int16)a4 count:(unsigned int)a5;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)enumerateStoragesInColumnRange:(_NSRange)range getPreBNC:(BOOL)c withBlock:(id)block;
+- (void)insertColumnsAtIndex:(unsigned __int16)index count:(unsigned int)count;
+- (void)moveColumnsFromIndex:(unsigned __int16)index toIndex:(unsigned __int16)toIndex count:(unsigned int)count;
 @end
 
 @implementation TSTTableTileRowInfo
 
-- (vector<TSTCell)accumulateCurrentCellsConcurrentlyAtColumns:(TSTTableTileRowInfo *)self usingCellCreationBlock:(SEL)a3
+- (vector<TSTCell)accumulateCurrentCellsConcurrentlyAtColumns:(TSTTableTileRowInfo *)self usingCellCreationBlock:(SEL)block
 {
   v17 = a5;
   retstr->var0 = 0;
@@ -59,32 +59,32 @@
   return result;
 }
 
-+ (id)rowInfoWithTileRowIndex:(unsigned int)a3 wideOffsets:(BOOL)a4
++ (id)rowInfoWithTileRowIndex:(unsigned int)index wideOffsets:(BOOL)offsets
 {
-  v4 = a4;
-  v5 = *&a3;
-  v6 = [a1 alloc];
-  v9 = objc_msgSend_initWithTileRowIndex_wideOffsets_(v6, v7, v5, v4, v8);
+  offsetsCopy = offsets;
+  v5 = *&index;
+  v6 = [self alloc];
+  v9 = objc_msgSend_initWithTileRowIndex_wideOffsets_(v6, v7, v5, offsetsCopy, v8);
 
   return v9;
 }
 
-- (TSTTableTileRowInfo)initWithTileRowIndex:(unsigned int)a3 wideOffsets:(BOOL)a4
+- (TSTTableTileRowInfo)initWithTileRowIndex:(unsigned int)index wideOffsets:(BOOL)offsets
 {
-  v4 = a4;
+  offsetsCopy = offsets;
   v7.receiver = self;
   v7.super_class = TSTTableTileRowInfo;
   result = [(TSTTableTileRowInfo *)&v7 init];
   if (result)
   {
-    result->_tileRowIndex = a3;
+    result->_tileRowIndex = index;
     *&result->_currentData._private.cellData = 0u;
     *&result->_currentData._private.allocatedCellBufferSize = 0u;
     *(&result->_currentData._private.offsets + 7) = 0;
     *&result->_preBNCData._private.cellData = 0u;
     *&result->_preBNCData._private.allocatedCellBufferSize = 0u;
     *(&result->_preBNCData._private.offsets + 7) = 0;
-    if (v4)
+    if (offsetsCopy)
     {
       result->_currentData._private.wideOffsets = 1;
     }
@@ -106,15 +106,15 @@
   [(TSTTableTileRowInfo *)&v3 dealloc];
 }
 
-+ (id)rowInfoFromArchive:(const void *)a3 fileFormatVersion:(unint64_t)a4
++ (id)rowInfoFromArchive:(const void *)archive fileFormatVersion:(unint64_t)version
 {
-  v6 = [a1 alloc];
-  v9 = objc_msgSend_initFromArchive_fileFormatVersion_(v6, v7, a3, a4, v8);
+  v6 = [self alloc];
+  v9 = objc_msgSend_initFromArchive_fileFormatVersion_(v6, v7, archive, version, v8);
 
   return v9;
 }
 
-- (id)initFromArchive:(const void *)a3 fileFormatVersion:(unint64_t)a4
+- (id)initFromArchive:(const void *)archive fileFormatVersion:(unint64_t)version
 {
   v57.receiver = self;
   v57.super_class = TSTTableTileRowInfo;
@@ -125,24 +125,24 @@
     return v8;
   }
 
-  v6->_tileRowIndex = *(a3 + 14);
-  v6->_cellCount = *(a3 + 15);
+  v6->_tileRowIndex = *(archive + 14);
+  v6->_cellCount = *(archive + 15);
   p_cellCount = &v6->_cellCount;
   v6->_unfairLock._os_unfair_lock_opaque = 0;
   __dmb(0xBu);
   v6->_storageVersion = 1;
-  v10 = *(a3 + 4);
+  v10 = *(archive + 4);
   if ((v10 & 0x40) != 0)
   {
-    v6->_storageVersion = *(a3 + 16);
+    v6->_storageVersion = *(archive + 16);
   }
 
   if ((v10 & 4) != 0)
   {
-    sub_221139174(&v6->_currentData, *(a3 + 68) & ((v10 & 0x80) >> 7), *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL, v7);
+    sub_221139174(&v6->_currentData, *(archive + 68) & ((v10 & 0x80) >> 7), *(archive + 5) & 0xFFFFFFFFFFFFFFFELL, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL, v7);
   }
 
-  if (a4 > 0x3000200000009)
+  if (version > 0x3000200000009)
   {
     *(v8 + 79) = 0;
     *(v8 + 48) = 0u;
@@ -151,7 +151,7 @@
 
   else
   {
-    sub_221139174(v8 + 48, 0, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL, v7);
+    sub_221139174(v8 + 48, 0, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL, v7);
   }
 
   sub_2211392B0(v8);
@@ -290,8 +290,8 @@ LABEL_39:
   emptyCellForPreBNC = self->_emptyCellForPreBNC;
   if (!emptyCellForPreBNC)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     emptyCellForPreBNC = self->_emptyCellForPreBNC;
     if (!emptyCellForPreBNC)
     {
@@ -304,7 +304,7 @@ LABEL_39:
       emptyCellForPreBNC = self->_emptyCellForPreBNC;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   return emptyCellForPreBNC;
@@ -321,15 +321,15 @@ LABEL_39:
   return cellCount;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v10 = a4;
+  archiverCopy = archiver;
   wideOffsets = self->_currentData._private.wideOffsets;
-  v12 = *(a3 + 4);
-  *(a3 + 14) = self->_tileRowIndex;
+  v12 = *(archive + 4);
+  *(archive + 14) = self->_tileRowIndex;
   cellCount = self->_cellCount;
-  *(a3 + 4) = v12 | 0x30;
-  *(a3 + 15) = cellCount;
+  *(archive + 4) = v12 | 0x30;
+  *(archive + 15) = cellCount;
   if (!cellCount)
   {
     v14 = MEMORY[0x277D81150];
@@ -357,12 +357,12 @@ LABEL_39:
 
   else
   {
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v10, v26, 0xA000000000003, @"TSTExpandedTables", v27);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v26, 0xA000000000003, @"TSTExpandedTables", v27);
   }
 
   cellData = self->_currentData._private.cellData;
   cellBufferSize = self->_currentData._private.cellBufferSize;
-  *(a3 + 4) |= 4u;
+  *(archive + 4) |= 4u;
   sub_22113C508(__p, cellData, cellBufferSize);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (SHIBYTE(v82) < 0)
@@ -378,7 +378,7 @@ LABEL_39:
   }
 
   v32 = 2 * v28;
-  *(a3 + 4) |= 8u;
+  *(archive + 4) |= 8u;
   sub_22113C508(__p, offsets, v32);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (SHIBYTE(v82) < 0)
@@ -393,10 +393,10 @@ LABEL_39:
   else if (wideOffsets)
   {
 LABEL_14:
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v10, v33, 0xA000000000003, @"TSTExpandedTables", v36);
-    v37 = *(a3 + 4);
-    *(a3 + 68) = 1;
-    *(a3 + 4) = v37 | 0x81;
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v33, 0xA000000000003, @"TSTExpandedTables", v36);
+    v37 = *(archive + 4);
+    *(archive + 68) = 1;
+    *(archive + 4) = v37 | 0x81;
     HIBYTE(v82) = 4;
     strcpy(__p, "🤠");
     google::protobuf::internal::ArenaStringPtr::Set();
@@ -405,7 +405,7 @@ LABEL_14:
       operator delete(__p[0]);
     }
 
-    *(a3 + 4) |= 2u;
+    *(archive + 4) |= 2u;
     HIBYTE(v82) = 4;
     strcpy(__p, "🤠");
     google::protobuf::internal::ArenaStringPtr::Set();
@@ -516,7 +516,7 @@ LABEL_14:
   }
 
   v63 = self->_preBNCData._private.cellBufferSize;
-  *(a3 + 4) |= 1u;
+  *(archive + 4) |= 1u;
   sub_22113C508(__p, v41, v63);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (SHIBYTE(v82) < 0)
@@ -525,7 +525,7 @@ LABEL_14:
   }
 
   v64 = self->_preBNCData._private.offsets;
-  *(a3 + 4) |= 2u;
+  *(archive + 4) |= 2u;
   sub_22113C508(__p, v64, v32);
   google::protobuf::internal::ArenaStringPtr::Set();
 LABEL_39:
@@ -546,8 +546,8 @@ LABEL_39:
     storageVersion = self->_storageVersion;
   }
 
-  *(a3 + 4) |= 0x40u;
-  *(a3 + 16) = storageVersion;
+  *(archive + 4) |= 0x40u;
+  *(archive + 16) = storageVersion;
 }
 
 - (unint64_t)archivingCompatibilityVersion
@@ -573,19 +573,19 @@ LABEL_39:
   }
 }
 
-- (unsigned)cellIndexAtOrAfterIndex:(unsigned __int16)a3
+- (unsigned)cellIndexAtOrAfterIndex:(unsigned __int16)index
 {
   if (!self->_cellCount)
   {
     return 0x7FFF;
   }
 
-  v3 = a3;
+  indexCopy = index;
   v5 = sub_221138A3C(self);
   v6 = 0x7FFF;
-  if (v5 >= v3)
+  if (v5 >= indexCopy)
   {
-    v6 = v3;
+    v6 = indexCopy;
     while (v6 == 0x7FFF || self->_currentData._private.offsetBufferCount <= v6 || self->_currentData._private.offsets[v6] == -1)
     {
       if (v5 < ++v6)
@@ -598,36 +598,36 @@ LABEL_39:
   return v6;
 }
 
-- (unsigned)cellIndexAtOrBeforeIndex:(unsigned __int16)a3
+- (unsigned)cellIndexAtOrBeforeIndex:(unsigned __int16)index
 {
   v3 = 0x7FFF;
   if (self->_cellCount)
   {
     v4 = 0;
-    while ((a3 - v4) == 0x7FFF || self->_currentData._private.offsetBufferCount <= (a3 - v4) || self->_currentData._private.offsets[(a3 - v4)] == -1)
+    while ((index - v4) == 0x7FFF || self->_currentData._private.offsetBufferCount <= (index - v4) || self->_currentData._private.offsets[(index - v4)] == -1)
     {
-      if (a3 < ++v4)
+      if (index < ++v4)
       {
         return 0x7FFF;
       }
     }
 
-    return a3 - v4;
+    return index - v4;
   }
 
   return v3;
 }
 
-- (void)_replaceCellAtIndex:(unsigned __int16)a3 withCell:(id)a4
+- (void)_replaceCellAtIndex:(unsigned __int16)index withCell:(id)cell
 {
-  v4 = a3;
-  v24 = a4;
+  indexCopy = index;
+  cellCopy = cell;
   v6 = sub_221138A3C(self);
-  v9 = sub_2211438C8(v24);
+  v9 = sub_2211438C8(cellCopy);
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v4 != 0x7FFF && self->_currentData._private.offsetBufferCount > v4)
+  if (indexCopy != 0x7FFF && self->_currentData._private.offsetBufferCount > indexCopy)
   {
-    v11 = self->_currentData._private.offsets[v4];
+    v11 = self->_currentData._private.offsets[indexCopy];
     if (v11 != 0xFFFF)
     {
       if (self->_currentData._private.wideOffsets)
@@ -637,12 +637,12 @@ LABEL_39:
 
       else
       {
-        v10 = self->_currentData._private.offsets[v4];
+        v10 = self->_currentData._private.offsets[indexCopy];
       }
     }
   }
 
-  v15 = sub_2216F6A80(&self->_currentData, v4, v6, v7, v8);
+  v15 = sub_2216F6A80(&self->_currentData, indexCopy, v6, v7, v8);
   v16 = v9 - v15;
   if (v16)
   {
@@ -652,10 +652,10 @@ LABEL_39:
     }
 
     v23 = v10;
-    if (v6 > v4)
+    if (v6 > indexCopy)
     {
       sub_22113C758(&self->_currentData._private.cellData, (v15 + v10), v16, v13, v14);
-      v17 = v4 + 1;
+      v17 = indexCopy + 1;
       do
       {
         if (v17 != 0x7FFF)
@@ -718,15 +718,15 @@ LABEL_39:
     }
   }
 
-  sub_221143B30(v24, &self->_currentData._private.cellData[v10]);
+  sub_221143B30(cellCopy, &self->_currentData._private.cellData[v10]);
   sub_221138D14(&self->_preBNCData);
 }
 
-- (void)_insertCell:(id)a3 atIndex:(unsigned __int16)a4
+- (void)_insertCell:(id)cell atIndex:(unsigned __int16)index
 {
-  v4 = a4;
-  v25 = a3;
-  if (v4 != 0x7FFF && self->_currentData._private.offsetBufferCount > v4 && self->_currentData._private.offsets[v4] != -1)
+  indexCopy = index;
+  cellCopy = cell;
+  if (indexCopy != 0x7FFF && self->_currentData._private.offsetBufferCount > indexCopy && self->_currentData._private.offsets[indexCopy] != -1)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableTileRowInfo _insertCell:atIndex:]", v7, v8);
@@ -738,23 +738,23 @@ LABEL_39:
 
   v20 = sub_221138A3C(self);
   cellCount = self->_cellCount;
-  v22 = sub_2211438C8(v25);
-  v23 = sub_221139F78(&self->_currentData, v4, v20, cellCount, v22);
-  sub_221143B30(v25, v23);
+  v22 = sub_2211438C8(cellCopy);
+  v23 = sub_221139F78(&self->_currentData, indexCopy, v20, cellCount, v22);
+  sub_221143B30(cellCopy, v23);
   sub_221138D14(&self->_preBNCData);
   ++self->_cellCount;
-  if (!self->_maxColumnIndexIsValidPrivate || (maxColumnIndexPrivate = self->_maxColumnIndexPrivate, maxColumnIndexPrivate == 0x7FFF) || maxColumnIndexPrivate <= v4)
+  if (!self->_maxColumnIndexIsValidPrivate || (maxColumnIndexPrivate = self->_maxColumnIndexPrivate, maxColumnIndexPrivate == 0x7FFF) || maxColumnIndexPrivate <= indexCopy)
   {
-    self->_maxColumnIndexPrivate = v4;
+    self->_maxColumnIndexPrivate = indexCopy;
     self->_maxColumnIndexIsValidPrivate = 1;
   }
 }
 
-- (int64_t)setCell:(id)a3 atIndex:(unsigned __int16)a4
+- (int64_t)setCell:(id)cell atIndex:(unsigned __int16)index
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
+  indexCopy = index;
+  cellCopy = cell;
+  v10 = cellCopy;
   if (self->_storageVersion != 5)
   {
     TSUSetCrashReporterInfo();
@@ -767,25 +767,25 @@ LABEL_39:
     abort();
   }
 
-  if (v4 == 0x7FFF || self->_currentData._private.offsetBufferCount <= v4)
+  if (indexCopy == 0x7FFF || self->_currentData._private.offsetBufferCount <= indexCopy)
   {
-    if (!v6)
+    if (!cellCopy)
     {
       goto LABEL_11;
     }
 
 LABEL_10:
-    objc_msgSend__insertCell_atIndex_(self, v7, v6, v4, v9);
+    objc_msgSend__insertCell_atIndex_(self, v7, cellCopy, indexCopy, v9);
     v12 = 1;
     goto LABEL_12;
   }
 
-  v11 = self->_currentData._private.offsets[v4];
-  if (v6)
+  v11 = self->_currentData._private.offsets[indexCopy];
+  if (cellCopy)
   {
     if (v11 != 0xFFFF)
     {
-      objc_msgSend__replaceCellAtIndex_withCell_(self, v7, v4, v6, v9);
+      objc_msgSend__replaceCellAtIndex_withCell_(self, v7, indexCopy, cellCopy, v9);
 LABEL_11:
       v12 = 0;
       goto LABEL_12;
@@ -799,14 +799,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  objc_msgSend__removeCellAtIndex_(self, v7, v4, v8, v9);
+  objc_msgSend__removeCellAtIndex_(self, v7, indexCopy, v8, v9);
   v12 = -1;
 LABEL_12:
 
   return v12;
 }
 
-- (void)insertColumnsAtIndex:(unsigned __int16)a3 count:(unsigned int)a4
+- (void)insertColumnsAtIndex:(unsigned __int16)index count:(unsigned int)count
 {
   if (self->_storageVersion != 5)
   {
@@ -820,13 +820,13 @@ LABEL_12:
     abort();
   }
 
-  v4 = a4;
-  v5 = a3;
+  countCopy = count;
+  indexCopy = index;
   v7 = sub_221138A3C(self);
-  if (v7 != 0x7FFF && v7 >= v5)
+  if (v7 != 0x7FFF && v7 >= indexCopy)
   {
-    v8 = v4;
-    v9 = (v4 + v5);
+    v8 = countCopy;
+    v9 = (countCopy + indexCopy);
     v10 = v7 + 1;
     do
     {
@@ -901,14 +901,14 @@ LABEL_12:
       v10 = v11;
     }
 
-    while (v11 > v5);
+    while (v11 > indexCopy);
     sub_221138D14(&self->_preBNCData);
 
     sub_2211392B0(self);
   }
 }
 
-- (unint64_t)removeColumnsAtIndex:(unsigned __int16)a3 count:(unsigned int)a4
+- (unint64_t)removeColumnsAtIndex:(unsigned __int16)index count:(unsigned int)count
 {
   if (self->_storageVersion != 5)
   {
@@ -922,22 +922,22 @@ LABEL_12:
     abort();
   }
 
-  v4 = a4;
-  v5 = a3;
+  countCopy = count;
+  indexCopy = index;
   v9 = sub_221138A3C(self);
   result = 0;
-  if (v9 != 0x7FFF && v9 >= v5)
+  if (v9 != 0x7FFF && v9 >= indexCopy)
   {
     cellCount = self->_cellCount;
-    if (v4)
+    if (countCopy)
     {
-      sub_2216F6C34(self, v5, v5 + v4, v7, v8);
+      sub_2216F6C34(self, indexCopy, indexCopy + countCopy, v7, v8);
     }
 
     do
     {
       offsetBufferCount = self->_currentData._private.offsetBufferCount;
-      if ((v5 + v4) == 0x7FFF || offsetBufferCount <= (v5 + v4))
+      if ((indexCopy + countCopy) == 0x7FFF || offsetBufferCount <= (indexCopy + countCopy))
       {
         wideOffsets = self->_currentData._private.wideOffsets;
         v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -945,11 +945,11 @@ LABEL_12:
 
       else
       {
-        v13 = self->_currentData._private.offsets[(v5 + v4)];
+        v13 = self->_currentData._private.offsets[(indexCopy + countCopy)];
         v14 = 4 * v13;
         if (!self->_currentData._private.wideOffsets)
         {
-          v14 = self->_currentData._private.offsets[(v5 + v4)];
+          v14 = self->_currentData._private.offsets[(indexCopy + countCopy)];
         }
 
         wideOffsets = self->_currentData._private.wideOffsets;
@@ -964,16 +964,16 @@ LABEL_12:
         }
       }
 
-      if (v5 >= 0xFFu && !wideOffsets)
+      if (indexCopy >= 0xFFu && !wideOffsets)
       {
         sub_22113A218(&self->_currentData);
         offsetBufferCount = self->_currentData._private.offsetBufferCount;
         wideOffsets = 1;
       }
 
-      if (offsetBufferCount <= v5)
+      if (offsetBufferCount <= indexCopy)
       {
-        sub_221139CC8(&self->_currentData._private.cellData, v5);
+        sub_221139CC8(&self->_currentData._private.cellData, indexCopy);
       }
 
       v17 = v16 >> 2;
@@ -987,11 +987,11 @@ LABEL_12:
         LOWORD(v17) = -1;
       }
 
-      self->_currentData._private.offsets[v5] = v17;
-      LOWORD(v5) = v5 + 1;
+      self->_currentData._private.offsets[indexCopy] = v17;
+      LOWORD(indexCopy) = indexCopy + 1;
     }
 
-    while (v9 >= v5);
+    while (v9 >= indexCopy);
     sub_221138D14(&self->_preBNCData);
     sub_2211392B0(self);
     return cellCount - self->_cellCount;
@@ -1000,24 +1000,24 @@ LABEL_12:
   return result;
 }
 
-- (void)moveColumnsFromIndex:(unsigned __int16)a3 toIndex:(unsigned __int16)a4 count:(unsigned int)a5
+- (void)moveColumnsFromIndex:(unsigned __int16)index toIndex:(unsigned __int16)toIndex count:(unsigned int)count
 {
-  v6 = a4;
-  v7 = a3;
-  v98 = a4;
-  if (a4 > a3)
+  toIndexCopy = toIndex;
+  indexCopy = index;
+  toIndexCopy2 = toIndex;
+  if (toIndex > index)
   {
-    if (a3 + a5 > a4)
+    if (index + count > toIndex)
     {
       v9 = MEMORY[0x277D81150];
-      v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableTileRowInfo moveColumnsFromIndex:toIndex:count:]", a4, *&a5);
+      v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableTileRowInfo moveColumnsFromIndex:toIndex:count:]", toIndex, *&count);
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableTileRowInfo.mm", v12, v13);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v15, v10, v14, 1356, 0, "Move column ranges cannot overlap!");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
     }
 
-    v98 = v6 - a5;
+    toIndexCopy2 = toIndexCopy - count;
   }
 
   if (!self->_cellCount)
@@ -1026,12 +1026,12 @@ LABEL_12:
   }
 
   v20 = sub_221138A3C(self);
-  if (v20 < v6 && v20 < v7)
+  if (v20 < toIndexCopy && v20 < indexCopy)
   {
     return;
   }
 
-  v94 = a5;
+  countCopy = count;
   v101 = 0;
   *__dst = 0u;
   v100 = 0u;
@@ -1043,12 +1043,12 @@ LABEL_12:
 
   if (v20 != 0x7FFF)
   {
-    v26 = v7 + a5;
+    v26 = indexCopy + count;
     offsetBufferCount = self->_currentData._private.offsetBufferCount;
-    if (v7 != 0x7FFF && offsetBufferCount > v7)
+    if (indexCopy != 0x7FFF && offsetBufferCount > indexCopy)
     {
       offsets = self->_currentData._private.offsets;
-      v29 = offsets[v7];
+      v29 = offsets[indexCopy];
       if (v29 != 0xFFFF)
       {
 LABEL_23:
@@ -1062,7 +1062,7 @@ LABEL_23:
           v34 = v29;
         }
 
-        if (v26 == 0x7FFF || offsetBufferCount <= v26 || (v35 = offsets[(v7 + a5)], v35 == 0xFFFF))
+        if (v26 == 0x7FFF || offsetBufferCount <= v26 || (v35 = offsets[(indexCopy + count)], v35 == 0xFFFF))
         {
           if (v20 <= v26)
           {
@@ -1072,7 +1072,7 @@ LABEL_40:
 
           else
           {
-            v37 = (v7 + a5);
+            v37 = (indexCopy + count);
             v38 = v20 - v37;
             v39 = v37 + 1;
             while (1)
@@ -1112,7 +1112,7 @@ LABEL_40:
 
         else
         {
-          cellBufferSize = offsets[(v7 + a5)];
+          cellBufferSize = offsets[(indexCopy + count)];
         }
 
         v42 = cellBufferSize - v34;
@@ -1120,15 +1120,15 @@ LABEL_40:
         {
           sub_221139394(__dst, cellBufferSize - v34, v22, v23, v24);
           memcpy(__dst[0], &self->_currentData._private.cellData[v34], v42);
-          if (a5)
+          if (count)
           {
             v43 = 0;
             do
             {
               v44 = 0x7FFFFFFFFFFFFFFFLL;
-              if ((v43 + v7) != 0x7FFF && self->_currentData._private.offsetBufferCount > (v43 + v7))
+              if ((v43 + indexCopy) != 0x7FFF && self->_currentData._private.offsetBufferCount > (v43 + indexCopy))
               {
-                v45 = self->_currentData._private.offsets[(v43 + v7)];
+                v45 = self->_currentData._private.offsets[(v43 + indexCopy)];
                 if (v45 != 0xFFFF)
                 {
                   if (self->_currentData._private.wideOffsets)
@@ -1166,7 +1166,7 @@ LABEL_40:
               *(*(&v100 + 1) + 2 * v43++) = v47;
             }
 
-            while (a5 != v43);
+            while (count != v43);
           }
         }
 
@@ -1175,10 +1175,10 @@ LABEL_40:
     }
 
     v30 = (v26 - 1);
-    if (v30 > v7)
+    if (v30 > indexCopy)
     {
-      v31 = v30 - v7;
-      v32 = v7 + 1;
+      v31 = v30 - indexCopy;
+      v32 = indexCopy + 1;
       do
       {
         if (v32 != 0x7FFF && v32 < offsetBufferCount)
@@ -1199,8 +1199,8 @@ LABEL_40:
   }
 
 LABEL_63:
-  objc_msgSend_removeColumnsAtIndex_count_(self, v21, v7, a5, v24);
-  objc_msgSend_insertColumnsAtIndex_count_(self, v48, v98, a5, v49);
+  objc_msgSend_removeColumnsAtIndex_count_(self, v21, indexCopy, count, v24);
+  objc_msgSend_insertColumnsAtIndex_count_(self, v48, toIndexCopy2, count, v49);
   v53 = __dst[1];
   if (__dst[1])
   {
@@ -1230,12 +1230,12 @@ LABEL_70:
       LOWORD(v55) = 0x7FFF;
     }
 
-    v57 = sub_22113C5B8(&self->_currentData, v98, v55, v53);
+    v57 = sub_22113C5B8(&self->_currentData, toIndexCopy2, v55, v53);
     sub_22113C758(&self->_currentData._private.cellData, v57, v53, v58, v59);
     v95 = v53;
     memcpy(&self->_currentData._private.cellData[v57], __dst[0], v53);
-    v63 = a5;
-    if (a5)
+    countCopy2 = count;
+    if (count)
     {
       v64 = 0;
       v97 = 0;
@@ -1244,8 +1244,8 @@ LABEL_70:
       v96 = BYTE2(v101);
       do
       {
-        v67 = v98 + v64;
-        if ((v98 + v64) != 0x7FFF && self->_currentData._private.offsetBufferCount > v67 && self->_currentData._private.offsets[(v98 + v64)] != -1)
+        v67 = toIndexCopy2 + v64;
+        if ((toIndexCopy2 + v64) != 0x7FFF && self->_currentData._private.offsetBufferCount > v67 && self->_currentData._private.offsets[(toIndexCopy2 + v64)] != -1)
         {
           v68 = MEMORY[0x277D81150];
           v69 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v60, "NSUInteger _applyMovingCellBuffer(TSTTableTileRowBuffer *, TSTTableTileRowBuffer *, TSUColumnIndex, TSUColumnRowCount)", v61, v62);
@@ -1271,7 +1271,7 @@ LABEL_70:
             }
 
             v81 = self->_currentData._private.wideOffsets;
-            if ((v98 + v64) >= 0xFFu && !self->_currentData._private.wideOffsets)
+            if ((toIndexCopy2 + v64) >= 0xFFu && !self->_currentData._private.wideOffsets)
             {
               sub_22113A218(&self->_currentData);
               v81 = 1;
@@ -1279,7 +1279,7 @@ LABEL_70:
 
             if (self->_currentData._private.offsetBufferCount <= v67)
             {
-              sub_221139CC8(&self->_currentData._private.cellData, (v98 + v64));
+              sub_221139CC8(&self->_currentData._private.cellData, (toIndexCopy2 + v64));
             }
 
             v82 = (v80 + v57) >> 2;
@@ -1298,7 +1298,7 @@ LABEL_70:
               v83 = v82;
             }
 
-            self->_currentData._private.offsets[(v98 + v64)] = v83;
+            self->_currentData._private.offsets[(toIndexCopy2 + v64)] = v83;
             ++v97;
           }
         }
@@ -1306,7 +1306,7 @@ LABEL_70:
         ++v64;
       }
 
-      while (v63 != v64);
+      while (countCopy2 != v64);
     }
 
     else
@@ -1318,7 +1318,7 @@ LABEL_70:
     if (self->_currentData._private.offsetBufferCount)
     {
       v85 = (v84 - 1) + 1;
-      v86 = v94;
+      v86 = countCopy;
       while (1)
       {
         v87 = v85--;
@@ -1338,10 +1338,10 @@ LABEL_70:
     else
     {
       LOWORD(v85) = 0x7FFF;
-      v86 = v94;
+      v86 = countCopy;
     }
 
-    for (i = v98 + v86; i <= v85; ++i)
+    for (i = toIndexCopy2 + v86; i <= v85; ++i)
     {
       if (i != 0x7FFF)
       {
@@ -1400,12 +1400,12 @@ LABEL_70:
   sub_2211392B0(self);
 }
 
-- (void)enumerateStoragesInColumnRange:(_NSRange)a3 getPreBNC:(BOOL)a4 withBlock:(id)a5
+- (void)enumerateStoragesInColumnRange:(_NSRange)range getPreBNC:(BOOL)c withBlock:(id)block
 {
-  v5 = a4;
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
+  cCopy = c;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v10 = sub_221138A3C(self);
   if (v10 >= (location + length - 1))
   {
@@ -1418,7 +1418,7 @@ LABEL_70:
   }
 
   v12 = 8;
-  if (v5)
+  if (cCopy)
   {
     v12 = 48;
   }
@@ -1452,7 +1452,7 @@ LABEL_70:
       }
 
       v16 = 0;
-      v9[2](v9, v14 + v15, location, &v16);
+      blockCopy[2](blockCopy, v14 + v15, location, &v16);
       if (v11 <= location)
       {
         break;
@@ -1467,12 +1467,12 @@ LABEL_70:
 LABEL_17:
 }
 
-- (BOOL)searchCellStorageRefAtColumnIndex:(unsigned __int16)a3 searchMask:(unint64_t)a4
+- (BOOL)searchCellStorageRefAtColumnIndex:(unsigned __int16)index searchMask:(unint64_t)mask
 {
-  v6 = objc_msgSend_cellStorageRefAtIndex_(self, a2, a3, a4, v4);
+  v6 = objc_msgSend_cellStorageRefAtIndex_(self, a2, index, mask, v4);
   if (v6)
   {
-    LOBYTE(v6) = !a4 || (a4 & 0x3EFF800) != 0 && ((v11 = v6, (a4 & 0x400000) != 0) && ((sub_22113C374(v6, v7, v8, v9, v10), sub_22113C374(v11, v12, v13, v14, v15), v11[1]) || (sub_22114503C(v11, 0x400, v16, v17, v18) & 1) != 0 || (sub_22114503C(v11, 0x200, v19, v20, v21) & 1) != 0) || (a4 & 0x800) != 0 && (sub_22114503C(v11, 0x20, v8, v9, v10) & 1) != 0 || (a4 & 0x1000) != 0 && (v11[10] & 8) != 0 || (a4 & 0x2000) != 0 && (sub_22114503C(v11, 0x80, v8, v9, v10) & 1) != 0 || (a4 & 0x4000) != 0 && (v11[4] & 2) != 0 || (a4 & 0x8000) != 0 && (sub_22113C374(v11, v7, v8, v9, v10), (*(v11 + 9) & 0x7E0) != 0) || (a4 & 0x10000) != 0 && (sub_22114503C(v11, 0x800, v8, v9, v10) & 1) != 0 || (a4 & 0x20000) != 0 && (sub_22114503C(v11, 0x200, v8, v9, v10) & 1) != 0 || (a4 & 0x800000) != 0 && (sub_22114503C(v11, 0x400, v8, v9, v10) & 1) != 0 || (a4 & 0x40000) != 0 && (sub_22114503C(v11, 0x100000, v8, v9, v10) & 1) != 0 || (a4 & 0x1000000) != 0 && (v11[5] & 2) != 0 || (a4 & 0x80000) != 0 && (sub_22114503C(v11, 0x10, v8, v9, v10) & 1) != 0 || (a4 & 0x200000) != 0 && (sub_22114503C(v11, 0x40, v8, v9, v10) & 1) != 0 || (a4 & 0x2000000) != 0 && (sub_22113C374(v11, v7, v8, v9, v10), (v11[1] & 0xF7) != 0));
+    LOBYTE(v6) = !mask || (mask & 0x3EFF800) != 0 && ((v11 = v6, (mask & 0x400000) != 0) && ((sub_22113C374(v6, v7, v8, v9, v10), sub_22113C374(v11, v12, v13, v14, v15), v11[1]) || (sub_22114503C(v11, 0x400, v16, v17, v18) & 1) != 0 || (sub_22114503C(v11, 0x200, v19, v20, v21) & 1) != 0) || (mask & 0x800) != 0 && (sub_22114503C(v11, 0x20, v8, v9, v10) & 1) != 0 || (mask & 0x1000) != 0 && (v11[10] & 8) != 0 || (mask & 0x2000) != 0 && (sub_22114503C(v11, 0x80, v8, v9, v10) & 1) != 0 || (mask & 0x4000) != 0 && (v11[4] & 2) != 0 || (mask & 0x8000) != 0 && (sub_22113C374(v11, v7, v8, v9, v10), (*(v11 + 9) & 0x7E0) != 0) || (mask & 0x10000) != 0 && (sub_22114503C(v11, 0x800, v8, v9, v10) & 1) != 0 || (mask & 0x20000) != 0 && (sub_22114503C(v11, 0x200, v8, v9, v10) & 1) != 0 || (mask & 0x800000) != 0 && (sub_22114503C(v11, 0x400, v8, v9, v10) & 1) != 0 || (mask & 0x40000) != 0 && (sub_22114503C(v11, 0x100000, v8, v9, v10) & 1) != 0 || (mask & 0x1000000) != 0 && (v11[5] & 2) != 0 || (mask & 0x80000) != 0 && (sub_22114503C(v11, 0x10, v8, v9, v10) & 1) != 0 || (mask & 0x200000) != 0 && (sub_22114503C(v11, 0x40, v8, v9, v10) & 1) != 0 || (mask & 0x2000000) != 0 && (sub_22113C374(v11, v7, v8, v9, v10), (v11[1] & 0xF7) != 0));
   }
 
   return v6;
@@ -1488,14 +1488,14 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)validateWithResult:(id *)a3
+- (BOOL)validateWithResult:(id *)result
 {
   cellData = self->_currentData._private.cellData;
   p_currentData = &self->_currentData;
-  if (a3)
+  if (result)
   {
     v6 = MEMORY[0x277CCAB68];
-    v7 = objc_msgSend_description(self, a2, a3, v3, v4);
+    v7 = objc_msgSend_description(self, a2, result, v3, v4);
     v11 = objc_msgSend_stringWithString_(v6, v8, v7, v9, v10);
 
     v12 = v11;
@@ -1706,7 +1706,7 @@ LABEL_44:
           }
 
           v216 = v155;
-          v156 = sub_221395B64(&v155[v98], a2, a3, v3, v4);
+          v156 = sub_221395B64(&v155[v98], a2, result, v3, v4);
           if (v98 + v156 > self->_preBNCData._private.cellBufferSize)
           {
             v157 = MEMORY[0x277D81150];
@@ -1773,7 +1773,7 @@ LABEL_55:
   }
 
   objc_msgSend_appendString_(v220, a2, @"\n", v3, v4);
-  if (a3)
+  if (result)
   {
     if (v16)
     {
@@ -1785,7 +1785,7 @@ LABEL_55:
       v211 = objc_msgSend_copy(v220, v207, v208, v209, v210);
     }
 
-    *a3 = v211;
+    *result = v211;
   }
 
   return v16 & 1;
@@ -1801,14 +1801,14 @@ LABEL_55:
   return v9;
 }
 
-- (TSTCellStorage)cellStorageRefAtIndex:(unsigned __int16)a3
+- (TSTCellStorage)cellStorageRefAtIndex:(unsigned __int16)index
 {
-  if (a3 == 0x7FFF || self->_currentData._private.offsetBufferCount <= a3)
+  if (index == 0x7FFF || self->_currentData._private.offsetBufferCount <= index)
   {
     return 0;
   }
 
-  v4 = self->_currentData._private.offsets[a3];
+  v4 = self->_currentData._private.offsets[index];
   if (v4 == 0xFFFF)
   {
     return 0;
@@ -1822,19 +1822,19 @@ LABEL_55:
   return &self->_currentData._private.cellData[v4];
 }
 
-- (TSTCellStorage)p_preBNCStorageRefAtIndex:(unsigned __int16)a3
+- (TSTCellStorage)p_preBNCStorageRefAtIndex:(unsigned __int16)index
 {
   if (!self->_cellCount)
   {
     return 0;
   }
 
-  if (a3 == 0x7FFF || self->_preBNCData._private.offsetBufferCount <= a3)
+  if (index == 0x7FFF || self->_preBNCData._private.offsetBufferCount <= index)
   {
     return 0;
   }
 
-  v4 = self->_preBNCData._private.offsets[a3];
+  v4 = self->_preBNCData._private.offsets[index];
   if (v4 == 0xFFFF)
   {
     return 0;
@@ -1848,13 +1848,13 @@ LABEL_55:
   return &self->_preBNCData._private.cellData[v4];
 }
 
-- (void)_removeCellAtIndex:(unsigned __int16)a3
+- (void)_removeCellAtIndex:(unsigned __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   v5 = sub_221138A3C(self);
-  if (v3 != 0x7FFF && self->_currentData._private.offsetBufferCount > v3)
+  if (indexCopy != 0x7FFF && self->_currentData._private.offsetBufferCount > indexCopy)
   {
-    v9 = self->_currentData._private.offsets[v3];
+    v9 = self->_currentData._private.offsets[indexCopy];
     if (v9 != 0xFFFF)
     {
       v12 = v5;
@@ -1865,25 +1865,25 @@ LABEL_55:
 
       else
       {
-        v13 = self->_currentData._private.offsets[v3];
+        v13 = self->_currentData._private.offsets[indexCopy];
       }
 
-      v17 = sub_2216F6A80(&self->_currentData, v3, v5, v6, v7);
-      if (v3 >= 0xFF && !self->_currentData._private.wideOffsets)
+      v17 = sub_2216F6A80(&self->_currentData, indexCopy, v5, v6, v7);
+      if (indexCopy >= 0xFF && !self->_currentData._private.wideOffsets)
       {
         sub_22113A218(&self->_currentData);
       }
 
-      if (self->_currentData._private.offsetBufferCount <= v3)
+      if (self->_currentData._private.offsetBufferCount <= indexCopy)
       {
-        sub_221139CC8(&self->_currentData._private.cellData, v3);
+        sub_221139CC8(&self->_currentData._private.cellData, indexCopy);
       }
 
-      self->_currentData._private.offsets[v3] = -1;
-      if (v12 > v3)
+      self->_currentData._private.offsets[indexCopy] = -1;
+      if (v12 > indexCopy)
       {
         sub_22113C758(&self->_currentData._private.cellData, (v13 + v17), -v17, v15, v16);
-        v18 = v3 + 1;
+        v18 = indexCopy + 1;
         do
         {
           if (v18 != 0x7FFF)
@@ -1948,7 +1948,7 @@ LABEL_55:
   if (self->_maxColumnIndexIsValidPrivate)
   {
     maxColumnIndexPrivate = self->_maxColumnIndexPrivate;
-    if (maxColumnIndexPrivate == 0x7FFF || maxColumnIndexPrivate <= v3)
+    if (maxColumnIndexPrivate == 0x7FFF || maxColumnIndexPrivate <= indexCopy)
     {
       self->_maxColumnIndexPrivate = 0x7FFF;
       self->_maxColumnIndexIsValidPrivate = 0;
@@ -1956,16 +1956,16 @@ LABEL_55:
   }
 }
 
-- (BOOL)_quickValidateBuffer:(TSTTableTileRowBuffer *)a3
+- (BOOL)_quickValidateBuffer:(TSTTableTileRowBuffer *)buffer
 {
-  offsetBufferCount = a3->_private.offsetBufferCount;
-  if (a3->_private.offsetBufferCount)
+  offsetBufferCount = buffer->_private.offsetBufferCount;
+  if (buffer->_private.offsetBufferCount)
   {
     v6 = (offsetBufferCount - 1) + 1;
     while (1)
     {
       v7 = v6--;
-      if (v7 != 0x8000 && offsetBufferCount > v6 && a3->_private.offsets[v6] != -1)
+      if (v7 != 0x8000 && offsetBufferCount > v6 && buffer->_private.offsets[v6] != -1)
       {
         break;
       }
@@ -1984,7 +1984,7 @@ LABEL_7:
   }
 
   v8 = 0;
-  cellBufferSize = a3->_private.cellBufferSize;
+  cellBufferSize = buffer->_private.cellBufferSize;
   while (1)
   {
     if (v8 == 0x7FFF)
@@ -1997,13 +1997,13 @@ LABEL_7:
       goto LABEL_22;
     }
 
-    v10 = a3->_private.offsets[v8];
+    v10 = buffer->_private.offsets[v8];
     if (v10 == 0xFFFF)
     {
       goto LABEL_22;
     }
 
-    if (a3->_private.wideOffsets)
+    if (buffer->_private.wideOffsets)
     {
       v10 *= 4;
     }
@@ -2022,19 +2022,19 @@ LABEL_7:
       goto LABEL_27;
     }
 
-    if (!a3->_private.cellData)
+    if (!buffer->_private.cellData)
     {
       v12 = 12;
       goto LABEL_21;
     }
 
-    v11 = a3->_private.cellData[v10];
+    v11 = buffer->_private.cellData[v10];
     if ((v11 - 6) <= 0xFAu)
     {
       break;
     }
 
-    if (a3->_private.cellData[v10] == 1)
+    if (buffer->_private.cellData[v10] == 1)
     {
       v12 = 8;
     }

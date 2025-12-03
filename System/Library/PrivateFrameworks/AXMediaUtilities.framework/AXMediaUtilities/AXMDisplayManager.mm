@@ -1,19 +1,19 @@
 @interface AXMDisplayManager
 - (AXMDisplay)coreAnimationMainDisplay;
 - (AXMDisplay)frontBoardMainDisplay;
-- (AXMDisplayManager)initWithCompletion:(id)a3;
+- (AXMDisplayManager)initWithCompletion:(id)completion;
 - (NSString)description;
 - (double)mobileGestaltOrientation;
 - (id)_displayPropertiesFromMobileGestalt;
 - (id)initAndWaitForMainDisplayConfiguration;
-- (int64_t)_discreteOrientationForOrientation:(double)a3;
-- (void)_updateDisplay:(id)a3 withCADisplay:(id)a4;
-- (void)_updateDisplay:(id)a3 withConfiguration:(id)a4;
-- (void)_updateDisplayPropertiesWithConfiguration:(id)a3;
+- (int64_t)_discreteOrientationForOrientation:(double)orientation;
+- (void)_updateDisplay:(id)display withCADisplay:(id)aDisplay;
+- (void)_updateDisplay:(id)display withConfiguration:(id)configuration;
+- (void)_updateDisplayPropertiesWithConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 - (void)initAndWaitForMainDisplayConfiguration;
 @end
 
@@ -49,9 +49,9 @@ void __45__AXMDisplayManager_coreAnimationMainDisplay__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (AXMDisplayManager)initWithCompletion:(id)a3
+- (AXMDisplayManager)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   v31.receiver = self;
   v31.super_class = AXMDisplayManager;
@@ -99,8 +99,8 @@ void __45__AXMDisplayManager_coreAnimationMainDisplay__block_invoke(uint64_t a1)
     v7->_queue_CoreAnimationMainDisplay = v13;
 
     v15 = v7->_queue_CoreAnimationMainDisplay;
-    v16 = [MEMORY[0x1E6979328] mainDisplay];
-    [(AXMDisplayManager *)v7 _updateDisplay:v15 withCADisplay:v16];
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    [(AXMDisplayManager *)v7 _updateDisplay:v15 withCADisplay:mainDisplay];
   }
 
   v17 = dispatch_get_global_queue(21, 0);
@@ -110,8 +110,8 @@ void __45__AXMDisplayManager_coreAnimationMainDisplay__block_invoke(uint64_t a1)
   v23[3] = &unk_1E7A1C678;
   v18 = v7;
   v24 = v18;
-  v25 = v4;
-  v19 = v4;
+  v25 = completionCopy;
+  v19 = completionCopy;
   dispatch_group_notify(v5, v17, v23);
 
   v20 = v25;
@@ -211,18 +211,18 @@ uint64_t __40__AXMDisplayManager_initWithCompletion___block_invoke_3(uint64_t a1
 {
   v3 = MEMORY[0x1E696AEC0];
   initialized = self->_initialized;
-  v5 = [(AXMDisplayManager *)self frontBoardMainDisplay];
-  v6 = [(AXMDisplayManager *)self coreAnimationMainDisplay];
-  v7 = [(AXMDisplayManager *)self _displayPropertiesFromMobileGestalt];
-  v8 = [v3 stringWithFormat:@"AXMDisplayManager:<%p> Initialized %ld\n\tFrontbaord Main:%@\n\tCADisplay Main:%@\n\tStatic (gestalt) props: %@", self, initialized, v5, v6, v7];
+  frontBoardMainDisplay = [(AXMDisplayManager *)self frontBoardMainDisplay];
+  coreAnimationMainDisplay = [(AXMDisplayManager *)self coreAnimationMainDisplay];
+  _displayPropertiesFromMobileGestalt = [(AXMDisplayManager *)self _displayPropertiesFromMobileGestalt];
+  v8 = [v3 stringWithFormat:@"AXMDisplayManager:<%p> Initialized %ld\n\tFrontbaord Main:%@\n\tCADisplay Main:%@\n\tStatic (gestalt) props: %@", self, initialized, frontBoardMainDisplay, coreAnimationMainDisplay, _displayPropertiesFromMobileGestalt];
 
   return v8;
 }
 
 - (void)dealloc
 {
-  v3 = [(AXMDisplayManager *)self displayMonitor];
-  [v3 removeObserver:self];
+  displayMonitor = [(AXMDisplayManager *)self displayMonitor];
+  [displayMonitor removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXMDisplayManager;
@@ -302,7 +302,7 @@ void __42__AXMDisplayManager_frontBoardMainDisplay__block_invoke(uint64_t a1)
 
 - (id)_displayPropertiesFromMobileGestalt
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = MGCopyAnswer();
   if (!v3)
   {
@@ -316,7 +316,7 @@ void __42__AXMDisplayManager_frontBoardMainDisplay__block_invoke(uint64_t a1)
   v5 = [v3 objectForKeyedSubscript:@"main-screen-scale"];
   if (v5)
   {
-    [v2 setObject:v5 forKeyedSubscript:@"scale"];
+    [dictionary setObject:v5 forKeyedSubscript:@"scale"];
   }
 
   else
@@ -332,7 +332,7 @@ void __42__AXMDisplayManager_frontBoardMainDisplay__block_invoke(uint64_t a1)
 
   if (v7)
   {
-    [v2 setObject:v7 forKeyedSubscript:@"orientation"];
+    [dictionary setObject:v7 forKeyedSubscript:@"orientation"];
   }
 
   else
@@ -345,25 +345,25 @@ void __42__AXMDisplayManager_frontBoardMainDisplay__block_invoke(uint64_t a1)
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:MGGetBoolAnswer()];
-  [v2 setObject:v9 forKeyedSubscript:@"supportsDeepColor"];
+  [dictionary setObject:v9 forKeyedSubscript:@"supportsDeepColor"];
 
-  return v2;
+  return dictionary;
 }
 
-- (void)_updateDisplay:(id)a3 withCADisplay:(id)a4
+- (void)_updateDisplay:(id)display withCADisplay:(id)aDisplay
 {
-  v6 = a3;
-  v7 = a4;
+  displayCopy = display;
+  aDisplayCopy = aDisplay;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__AXMDisplayManager__updateDisplay_withCADisplay___block_invoke;
   block[3] = &unk_1E7A1D5C8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = displayCopy;
+  v13 = aDisplayCopy;
+  selfCopy = self;
+  v9 = aDisplayCopy;
+  v10 = displayCopy;
   dispatch_sync(queue, block);
 }
 
@@ -417,24 +417,24 @@ void __50__AXMDisplayManager__updateDisplay_withCADisplay___block_invoke(id *a1)
   }
 }
 
-- (int64_t)_discreteOrientationForOrientation:(double)a3
+- (int64_t)_discreteOrientationForOrientation:(double)orientation
 {
-  if (AXMFloatApproxEqual(a3, 0.0))
+  if (AXMFloatApproxEqual(orientation, 0.0))
   {
     return 1;
   }
 
-  if (AXMFloatApproxEqual(a3, 1.57079633))
+  if (AXMFloatApproxEqual(orientation, 1.57079633))
   {
     return 3;
   }
 
-  if (AXMFloatApproxEqual(a3, 3.14159265))
+  if (AXMFloatApproxEqual(orientation, 3.14159265))
   {
     return 2;
   }
 
-  if (!AXMFloatApproxEqual(a3, 4.71238898))
+  if (!AXMFloatApproxEqual(orientation, 4.71238898))
   {
     v5 = AXLogDisplay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -448,20 +448,20 @@ void __50__AXMDisplayManager__updateDisplay_withCADisplay___block_invoke(id *a1)
   return 4;
 }
 
-- (void)_updateDisplay:(id)a3 withConfiguration:(id)a4
+- (void)_updateDisplay:(id)display withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  displayCopy = display;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AXMDisplayManager__updateDisplay_withConfiguration___block_invoke;
   block[3] = &unk_1E7A1D5C8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = displayCopy;
+  v13 = configurationCopy;
+  selfCopy = self;
+  v9 = configurationCopy;
+  v10 = displayCopy;
   dispatch_sync(queue, block);
 }
 
@@ -493,20 +493,20 @@ void __54__AXMDisplayManager__updateDisplay_withConfiguration___block_invoke(id 
   }
 }
 
-- (void)_updateDisplayPropertiesWithConfiguration:(id)a3
+- (void)_updateDisplayPropertiesWithConfiguration:(id)configuration
 {
-  [(AXMDisplayManager *)self _updateDisplay:self->_queue_FrontBoardMainDisplay withConfiguration:a3];
+  [(AXMDisplayManager *)self _updateDisplay:self->_queue_FrontBoardMainDisplay withConfiguration:configuration];
   queue_CoreAnimationMainDisplay = self->_queue_CoreAnimationMainDisplay;
-  v5 = [MEMORY[0x1E6979328] mainDisplay];
-  [(AXMDisplayManager *)self _updateDisplay:queue_CoreAnimationMainDisplay withCADisplay:v5];
+  mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+  [(AXMDisplayManager *)self _updateDisplay:queue_CoreAnimationMainDisplay withCADisplay:mainDisplay];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"AXMDisplayManagerMainDisplayWasUpdatedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AXMDisplayManagerMainDisplayWasUpdatedNotification" object:self];
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v6 = a5;
+  configurationCopy = configuration;
   v7 = AXLogDisplay();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -514,15 +514,15 @@ void __54__AXMDisplayManager__updateDisplay_withConfiguration___block_invoke(id 
     _os_log_impl(&dword_1AE37B000, v7, OS_LOG_TYPE_DEFAULT, "connected new display. Updating AXMDisplay properties", v8, 2u);
   }
 
-  if ([v6 isMainDisplay])
+  if ([configurationCopy isMainDisplay])
   {
-    [(AXMDisplayManager *)self _updateDisplayPropertiesWithConfiguration:v6];
+    [(AXMDisplayManager *)self _updateDisplayPropertiesWithConfiguration:configurationCopy];
   }
 }
 
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v6 = a5;
+  configurationCopy = configuration;
   v7 = AXLogDisplay();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -530,13 +530,13 @@ void __54__AXMDisplayManager__updateDisplay_withConfiguration___block_invoke(id 
     _os_log_impl(&dword_1AE37B000, v7, OS_LOG_TYPE_DEFAULT, "display config changed. Updating AXMDisplay properties", v8, 2u);
   }
 
-  if ([v6 isMainDisplay])
+  if ([configurationCopy isMainDisplay])
   {
-    [(AXMDisplayManager *)self _updateDisplayPropertiesWithConfiguration:v6];
+    [(AXMDisplayManager *)self _updateDisplayPropertiesWithConfiguration:configurationCopy];
   }
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
   v4 = AXLogDisplay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -550,7 +550,7 @@ void __54__AXMDisplayManager__updateDisplay_withConfiguration___block_invoke(id 
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1AE37B000, a2, OS_LOG_TYPE_DEBUG, "AXMDisplayManager initialized: %@", &v2, 0xCu);
 }
 

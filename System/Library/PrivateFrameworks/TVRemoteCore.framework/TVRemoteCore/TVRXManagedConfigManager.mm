@@ -1,11 +1,11 @@
 @interface TVRXManagedConfigManager
 + (id)sharedInstance;
-- (BOOL)allowedDeviceWithName:(id)a3;
+- (BOOL)allowedDeviceWithName:(id)name;
 - (BOOL)isManagedConfigProfileInstalled;
 - (TVRXManagedConfigManager)init;
-- (id)_convertMACAddressesToData:(id)a3;
+- (id)_convertMACAddressesToData:(id)data;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
 - (void)refreshState;
 @end
 
@@ -44,8 +44,8 @@ uint64_t __42__TVRXManagedConfigManager_sharedInstance__block_invoke()
       _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Adding MCProfileConnection observer", v6, 2u);
     }
 
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 registerObserver:v2];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v2];
   }
 
   return v2;
@@ -60,8 +60,8 @@ uint64_t __42__TVRXManagedConfigManager_sharedInstance__block_invoke()
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Removing MCProfileConnection observer", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v5.receiver = self;
   v5.super_class = TVRXManagedConfigManager;
@@ -71,8 +71,8 @@ uint64_t __42__TVRXManagedConfigManager_sharedInstance__block_invoke()
 - (BOOL)isManagedConfigProfileInstalled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ManagedConfigProfileInstalledKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ManagedConfigProfileInstalledKey"];
 
   v4 = _TVRCMDMLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -86,29 +86,29 @@ uint64_t __42__TVRXManagedConfigManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (BOOL)allowedDeviceWithName:(id)a3
+- (BOOL)allowedDeviceWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   if ([(TVRXManagedConfigManager *)self isManagedConfigProfileInstalled])
   {
-    v5 = [(TVRXManagedConfigManager *)self allowedDeviceNames];
-    v6 = [v5 count];
+    allowedDeviceNames = [(TVRXManagedConfigManager *)self allowedDeviceNames];
+    v6 = [allowedDeviceNames count];
 
     if (v6)
     {
       v7 = _TVRCMDMLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(TVRXManagedConfigManager *)self allowedDeviceNames];
+        allowedDeviceNames2 = [(TVRXManagedConfigManager *)self allowedDeviceNames];
         *buf = 138543362;
-        v20 = v8;
+        v20 = allowedDeviceNames2;
         _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "MDM profile contains allowed devices: %{public}@", buf, 0xCu);
       }
 
-      v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", v4];
-      v10 = [(TVRXManagedConfigManager *)self allowedDeviceNames];
-      v11 = [v10 filteredSetUsingPredicate:v9];
+      nameCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", nameCopy];
+      allowedDeviceNames3 = [(TVRXManagedConfigManager *)self allowedDeviceNames];
+      v11 = [allowedDeviceNames3 filteredSetUsingPredicate:nameCopy];
 
       v12 = [v11 count];
       v13 = v12 != 0;
@@ -119,7 +119,7 @@ uint64_t __42__TVRXManagedConfigManager_sharedInstance__block_invoke()
         if (v15)
         {
           *buf = 138543362;
-          v20 = v4;
+          v20 = nameCopy;
           v16 = "[%{public}@] is allowed";
 LABEL_13:
           _os_log_impl(&dword_26CF7F000, v14, OS_LOG_TYPE_DEFAULT, v16, buf, 0xCu);
@@ -129,7 +129,7 @@ LABEL_13:
       else if (v15)
       {
         *buf = 138543362;
-        v20 = v4;
+        v20 = nameCopy;
         v16 = "[%{public}@] is NOT allowed";
         goto LABEL_13;
       }
@@ -138,10 +138,10 @@ LABEL_13:
     }
   }
 
-  v9 = _TVRCMDMLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  nameCopy = _TVRCMDMLog();
+  if (os_log_type_enabled(nameCopy, OS_LOG_TYPE_DEBUG))
   {
-    [TVRXManagedConfigManager allowedDeviceWithName:v9];
+    [TVRXManagedConfigManager allowedDeviceWithName:nameCopy];
   }
 
   v13 = 1;
@@ -161,8 +161,8 @@ LABEL_15:
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Refreshing state", &v23, 2u);
   }
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveValuesForUnionSetting:*MEMORY[0x277D26088]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveValuesForUnionSetting:*MEMORY[0x277D26088]];
 
   v6 = [v5 count];
   p_super = _TVRCMDMLog();
@@ -187,8 +187,8 @@ LABEL_15:
     _os_log_impl(&dword_26CF7F000, p_super, OS_LOG_TYPE_DEFAULT, "MDM profile does not contain MCFeatureTVRemoteAllowedTVs", &v23, 2u);
   }
 
-  v10 = [MEMORY[0x277D262A0] sharedConnection];
-  v11 = [v10 effectiveValuesForUnionSetting:*MEMORY[0x277D26080]];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v11 = [mEMORY[0x277D262A0]2 effectiveValuesForUnionSetting:*MEMORY[0x277D26080]];
 
   v12 = [v11 count];
   v13 = _TVRCMDMLog();
@@ -214,11 +214,11 @@ LABEL_16:
       _os_log_impl(&dword_26CF7F000, v18, OS_LOG_TYPE_DEFAULT, "Device is managed, posting TVRXManagedConfigManagerTVRemoteAllowedTVAdded", &v23, 2u);
     }
 
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v19 setBool:1 forKey:@"ManagedConfigProfileInstalledKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:1 forKey:@"ManagedConfigProfileInstalledKey"];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
     goto LABEL_19;
   }
 
@@ -243,14 +243,14 @@ LABEL_16:
     _os_log_impl(&dword_26CF7F000, v22, OS_LOG_TYPE_DEFAULT, "Device is not mananged", &v23, 2u);
   }
 
-  v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v20 removeObjectForKey:@"ManagedConfigProfileInstalledKey"];
+  defaultCenter = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [defaultCenter removeObjectForKey:@"ManagedConfigProfileInstalledKey"];
 LABEL_19:
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = _TVRCMDMLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -262,16 +262,16 @@ LABEL_19:
   [(TVRXManagedConfigManager *)self refreshState];
 }
 
-- (id)_convertMACAddressesToData:(id)a3
+- (id)_convertMACAddressesToData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = dataCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v6)
   {

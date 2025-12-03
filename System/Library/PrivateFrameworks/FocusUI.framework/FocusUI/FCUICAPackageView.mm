@@ -1,60 +1,60 @@
 @interface FCUICAPackageView
-+ (id)packageViewForActivity:(id)a3;
-- (BOOL)setState:(id)a3 onLayer:(id)a4 animated:(BOOL)a5 transitionSpeed:(double)a6 completion:(id)a7;
++ (id)packageViewForActivity:(id)activity;
+- (BOOL)setState:(id)state onLayer:(id)layer animated:(BOOL)animated transitionSpeed:(double)speed completion:(id)completion;
 - (CAStateControllerDelegate)stateControllerDelegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUICAPackageView)initWithPackageName:(id)a3 inBundle:(id)a4;
-- (FCUICAPackageView)initWithURL:(id)a3;
-- (void)_setPendingCompletion:(id)a3 fromState:(id)a4 toState:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUICAPackageView)initWithPackageName:(id)name inBundle:(id)bundle;
+- (FCUICAPackageView)initWithURL:(id)l;
+- (void)_setPendingCompletion:(id)completion fromState:(id)state toState:(id)toState;
 - (void)layoutSubviews;
-- (void)stateController:(id)a3 didSetStateOfLayer:(id)a4;
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5;
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5;
-- (void)updateStateWithName:(id)a3 updateHandler:(id)a4;
+- (void)stateController:(id)controller didSetStateOfLayer:(id)layer;
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed;
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed;
+- (void)updateStateWithName:(id)name updateHandler:(id)handler;
 @end
 
 @implementation FCUICAPackageView
 
-- (FCUICAPackageView)initWithPackageName:(id)a3 inBundle:(id)a4
+- (FCUICAPackageView)initWithPackageName:(id)name inBundle:(id)bundle
 {
-  v5 = [a4 URLForResource:a3 withExtension:@"ca"];
+  v5 = [bundle URLForResource:name withExtension:@"ca"];
   v6 = [(FCUICAPackageView *)self initWithURL:v5];
 
   return v6;
 }
 
-- (FCUICAPackageView)initWithURL:(id)a3
+- (FCUICAPackageView)initWithURL:(id)l
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = *MEMORY[0x277CDA7F8];
   v34 = 0;
-  v6 = [MEMORY[0x277CD9F28] packageWithContentsOfURL:v4 type:v5 options:0 error:&v34];
+  v6 = [MEMORY[0x277CD9F28] packageWithContentsOfURL:lCopy type:v5 options:0 error:&v34];
   v7 = v34;
-  v8 = [v6 rootLayer];
-  [v8 frame];
+  rootLayer = [v6 rootLayer];
+  [rootLayer frame];
   v33.receiver = self;
   v33.super_class = FCUICAPackageView;
   v9 = [(FCUICAPackageView *)&v33 initWithFrame:?];
   v10 = v9;
   if (v9)
   {
-    v28 = v4;
-    objc_storeStrong(&v9->_rootLayer, v8);
-    v27 = v8;
-    [v8 frame];
+    v28 = lCopy;
+    objc_storeStrong(&v9->_rootLayer, rootLayer);
+    v27 = rootLayer;
+    [rootLayer frame];
     v10->_originalSize.width = v11;
     v10->_originalSize.height = v12;
     -[CALayer setGeometryFlipped:](v10->_rootLayer, "setGeometryFlipped:", [v6 isGeometryFlipped]);
-    v13 = [(FCUICAPackageView *)v10 layer];
-    [v13 addSublayer:v10->_rootLayer];
+    layer = [(FCUICAPackageView *)v10 layer];
+    [layer addSublayer:v10->_rootLayer];
 
-    v14 = [v6 publishedObjectNames];
+    publishedObjectNames = [v6 publishedObjectNames];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    v15 = [publishedObjectNames countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v15)
     {
       v16 = v15;
@@ -66,7 +66,7 @@
         {
           if (*v30 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(publishedObjectNames);
           }
 
           v20 = *(*(&v29 + 1) + 8 * i);
@@ -75,14 +75,14 @@
           {
             if (!v17)
             {
-              v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v14, "count")}];
+              v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(publishedObjectNames, "count")}];
             }
 
             [v17 setObject:v21 forKey:v20];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v16 = [publishedObjectNames countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v16);
@@ -102,17 +102,17 @@
     v10->_stateController = v24;
 
     [(CAStateController *)v10->_stateController setDelegate:v10];
-    v4 = v28;
-    v8 = v27;
+    lCopy = v28;
+    rootLayer = v27;
   }
 
   return v10;
 }
 
-+ (id)packageViewForActivity:(id)a3
++ (id)packageViewForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = FCUIPackageNameForActivity(v3);
+  activityCopy = activity;
+  v4 = FCUIPackageNameForActivity(activityCopy);
   if ([v4 length])
   {
     v5 = [FCUICAPackageView alloc];
@@ -123,7 +123,7 @@
     v9[1] = 3221225472;
     v9[2] = __44__FCUICAPackageView_packageViewForActivity___block_invoke;
     v9[3] = &unk_27901A840;
-    v10 = v3;
+    v10 = activityCopy;
     [(FCUICAPackageView *)v7 updateStateWithName:@"ON" updateHandler:v9];
     [(FCUICAPackageView *)v7 setUserInteractionEnabled:0];
   }
@@ -200,42 +200,42 @@ id __44__FCUICAPackageView_packageViewForActivity___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (BOOL)setState:(id)a3 onLayer:(id)a4 animated:(BOOL)a5 transitionSpeed:(double)a6 completion:(id)a7
+- (BOOL)setState:(id)state onLayer:(id)layer animated:(BOOL)animated transitionSpeed:(double)speed completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [v13 stateWithName:v12];
+  animatedCopy = animated;
+  stateCopy = state;
+  layerCopy = layer;
+  completionCopy = completion;
+  v15 = [layerCopy stateWithName:stateCopy];
   if (v15)
   {
-    if (v9)
+    if (animatedCopy)
     {
-      if (v14)
+      if (completionCopy)
       {
-        v17 = [(CAStateController *)self->_stateController stateOfLayer:v13];
-        v18 = [v17 name];
-        [(FCUICAPackageView *)self _setPendingCompletion:v14 fromState:v18 toState:v12];
+        v17 = [(CAStateController *)self->_stateController stateOfLayer:layerCopy];
+        name = [v17 name];
+        [(FCUICAPackageView *)self _setPendingCompletion:completionCopy fromState:name toState:stateCopy];
       }
 
-      *&v16 = a6;
-      [(CAStateController *)self->_stateController setState:v15 ofLayer:v13 transitionSpeed:v16];
+      *&v16 = speed;
+      [(CAStateController *)self->_stateController setState:v15 ofLayer:layerCopy transitionSpeed:v16];
     }
 
     else
     {
       [(FCUICAPackageView *)self _clearPendingCompletion];
-      [(CAStateController *)self->_stateController setState:v15 ofLayer:v13];
-      if (v14)
+      [(CAStateController *)self->_stateController setState:v15 ofLayer:layerCopy];
+      if (completionCopy)
       {
-        v14[2](v14, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   return v15 != 0;
@@ -248,12 +248,12 @@ id __44__FCUICAPackageView_packageViewForActivity___block_invoke(uint64_t a1, vo
   return WeakRetained;
 }
 
-- (void)updateStateWithName:(id)a3 updateHandler:(id)a4
+- (void)updateStateWithName:(id)name updateHandler:(id)handler
 {
   rootLayer = self->_rootLayer;
-  v7 = a4;
-  v10 = [(CALayer *)rootLayer stateWithName:a3];
-  v8 = v7[2](v7, v10);
+  handlerCopy = handler;
+  v10 = [(CALayer *)rootLayer stateWithName:name];
+  v8 = handlerCopy[2](handlerCopy, v10);
 
   if (v10)
   {
@@ -272,7 +272,7 @@ id __44__FCUICAPackageView_packageViewForActivity___block_invoke(uint64_t a1, vo
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_originalSize.width;
   height = self->_originalSize.height;
@@ -303,39 +303,39 @@ id __44__FCUICAPackageView_packageViewForActivity___block_invoke(uint64_t a1, vo
   [(CALayer *)rootLayer setTransform:&v7];
 }
 
-- (void)stateController:(id)a3 didSetStateOfLayer:(id)a4
+- (void)stateController:(id)controller didSetStateOfLayer:(id)layer
 {
-  v8 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  layerCopy = layer;
   WeakRetained = objc_loadWeakRetained(&self->_stateControllerDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained stateController:v8 didSetStateOfLayer:v6];
+    [WeakRetained stateController:controllerCopy didSetStateOfLayer:layerCopy];
   }
 }
 
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed
 {
-  v11 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_stateControllerDelegate);
   if (objc_opt_respondsToSelector())
   {
-    *&v10 = a5;
-    [WeakRetained stateController:v11 transitionDidStart:v8 speed:v10];
+    *&v10 = speed;
+    [WeakRetained stateController:controllerCopy transitionDidStart:startCopy speed:v10];
   }
 }
 
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed
 {
-  v5 = a5;
-  v16 = a3;
-  v8 = a4;
-  v9 = v8;
+  completedCopy = completed;
+  controllerCopy = controller;
+  stopCopy = stop;
+  v9 = stopCopy;
   if (self->_pendingCompletion)
   {
-    v10 = [v8 toState];
-    v11 = [v10 isEqualToString:self->_pendingCompletionToState];
+    toState = [stopCopy toState];
+    v11 = [toState isEqualToString:self->_pendingCompletionToState];
 
     if (v11)
     {
@@ -354,30 +354,30 @@ id __44__FCUICAPackageView_packageViewForActivity___block_invoke(uint64_t a1, vo
   WeakRetained = objc_loadWeakRetained(&self->_stateControllerDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained stateController:v16 transitionDidStop:v9 completed:v5];
+    [WeakRetained stateController:controllerCopy transitionDidStop:v9 completed:completedCopy];
   }
 }
 
-- (void)_setPendingCompletion:(id)a3 fromState:(id)a4 toState:(id)a5
+- (void)_setPendingCompletion:(id)completion fromState:(id)state toState:(id)toState
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  stateCopy = state;
+  toStateCopy = toState;
   pendingCompletion = self->_pendingCompletion;
   if (pendingCompletion)
   {
     pendingCompletion[2](pendingCompletion, 0);
   }
 
-  v11 = [v17 copy];
+  v11 = [completionCopy copy];
   v12 = self->_pendingCompletion;
   self->_pendingCompletion = v11;
 
-  v13 = [v8 copy];
+  v13 = [stateCopy copy];
   pendingCompletionFromState = self->_pendingCompletionFromState;
   self->_pendingCompletionFromState = v13;
 
-  v15 = [v9 copy];
+  v15 = [toStateCopy copy];
   pendingCompletionToState = self->_pendingCompletionToState;
   self->_pendingCompletionToState = v15;
 }

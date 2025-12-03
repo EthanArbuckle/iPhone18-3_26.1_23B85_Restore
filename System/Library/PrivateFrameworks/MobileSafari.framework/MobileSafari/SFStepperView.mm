@@ -1,28 +1,28 @@
 @interface SFStepperView
 + (id)_buttonsFont;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (SFStepperView)initWithCoder:(id)a3;
-- (SFStepperView)initWithFrame:(CGRect)a3 includingResetButton:(BOOL)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (SFStepperView)initWithCoder:(id)coder;
+- (SFStepperView)initWithFrame:(CGRect)frame includingResetButton:(BOOL)button;
 - (void)layoutSubviews;
-- (void)setLongestTitle:(id)a3 forButton:(id)a4;
+- (void)setLongestTitle:(id)title forButton:(id)button;
 @end
 
 @implementation SFStepperView
 
-- (SFStepperView)initWithCoder:(id)a3
+- (SFStepperView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFStepperView;
-  return [(SFStepperView *)&v4 initWithCoder:a3];
+  return [(SFStepperView *)&v4 initWithCoder:coder];
 }
 
-- (SFStepperView)initWithFrame:(CGRect)a3 includingResetButton:(BOOL)a4
+- (SFStepperView)initWithFrame:(CGRect)frame includingResetButton:(BOOL)button
 {
-  v4 = a4;
+  buttonCopy = button;
   v141[3] = *MEMORY[0x1E69E9840];
   v136.receiver = self;
   v136.super_class = SFStepperView;
-  v5 = [(SFStepperView *)&v136 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SFStepperView *)&v136 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -30,8 +30,8 @@
     v5->_controlsContainer = v6;
 
     [(UIView *)v5->_controlsContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)v5->_controlsContainer setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)v5->_controlsContainer setBackgroundColor:systemBackgroundColor];
 
     [(UIView *)v5->_controlsContainer setLayoutMargins:12.0, 20.0, 12.0, 20.0];
     [(SFStepperView *)v5 addSubview:v5->_controlsContainer];
@@ -41,7 +41,7 @@
     v5->_decrementButton = v9;
 
     [(UIView *)v5->_controlsContainer addSubview:v5->_decrementButton];
-    if (v4)
+    if (buttonCopy)
     {
       v12 = [_SFDimmingButton buttonWithType:1];
       resetButton = v5->_resetButton;
@@ -68,15 +68,15 @@
     [(UIView *)v5->_controlsContainer addSubview:v5->_doneButton];
     v20 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [MEMORY[0x1E69DC888] separatorColor];
-    [v20 setBackgroundColor:v21];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [v20 setBackgroundColor:separatorColor];
 
     v129 = v20;
     [(UIView *)v5->_controlsContainer addSubview:v20];
-    v22 = [objc_opt_class() _buttonsFont];
-    v130 = v4;
+    _buttonsFont = [objc_opt_class() _buttonsFont];
+    v130 = buttonCopy;
     v125 = &v5->_decrementButton;
-    if (v4)
+    if (buttonCopy)
     {
       v141[0] = v5->_incrementButton;
       v141[1] = v5->_resetButton;
@@ -117,11 +117,11 @@
           v31 = *(*(&v132 + 1) + 8 * i);
           [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v31 setTapTargetSideMargin:&unk_1EFF74300];
-          v32 = [MEMORY[0x1E69DC888] labelColor];
-          [v31 setTintColor:v32];
+          labelColor = [MEMORY[0x1E69DC888] labelColor];
+          [v31 setTintColor:labelColor];
 
-          v33 = [v31 titleLabel];
-          [v33 setFont:v22];
+          titleLabel = [v31 titleLabel];
+          [titleLabel setFont:_buttonsFont];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v132 objects:v139 count:16];
@@ -130,15 +130,15 @@
       while (v28);
     }
 
-    v34 = [(UIView *)v5->_controlsContainer layoutMarginsGuide];
-    v128 = [(SFStepperView *)v5 safeAreaLayoutGuide];
+    layoutMarginsGuide = [(UIView *)v5->_controlsContainer layoutMarginsGuide];
+    safeAreaLayoutGuide = [(SFStepperView *)v5 safeAreaLayoutGuide];
     v95 = MEMORY[0x1E696ACD8];
-    v35 = [*v125 leadingAnchor];
-    v120 = [v34 leadingAnchor];
-    v122 = v35;
-    v118 = [v35 constraintEqualToAnchor:?];
+    leadingAnchor = [*v125 leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v122 = leadingAnchor;
+    v118 = [leadingAnchor constraintEqualToAnchor:?];
     v138[0] = v118;
-    v36 = [(_SFDimmingButton *)v5->_incrementButton leadingAnchor];
+    leadingAnchor3 = [(_SFDimmingButton *)v5->_incrementButton leadingAnchor];
     v37 = 4.0;
     p_resetButton = &v5->_decrementButton;
     if (v130)
@@ -147,93 +147,93 @@
       v37 = 2.0;
     }
 
-    v116 = [*p_resetButton trailingAnchor];
-    v114 = [v36 constraintEqualToSystemSpacingAfterAnchor:v116 multiplier:v37];
-    v115 = v36;
+    trailingAnchor = [*p_resetButton trailingAnchor];
+    v114 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:v37];
+    v115 = leadingAnchor3;
     v138[1] = v114;
-    v113 = [v129 leadingAnchor];
-    v112 = [(_SFDimmingButton *)v5->_incrementButton trailingAnchor];
-    v111 = [v113 constraintEqualToSystemSpacingAfterAnchor:v112 multiplier:2.0];
+    leadingAnchor4 = [v129 leadingAnchor];
+    trailingAnchor2 = [(_SFDimmingButton *)v5->_incrementButton trailingAnchor];
+    v111 = [leadingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:2.0];
     v138[2] = v111;
-    v110 = [(_SFDimmingButton *)v5->_doneButton leadingAnchor];
-    v109 = [v129 trailingAnchor];
-    v108 = [v110 constraintEqualToSystemSpacingAfterAnchor:v109 multiplier:2.0];
+    leadingAnchor5 = [(_SFDimmingButton *)v5->_doneButton leadingAnchor];
+    trailingAnchor3 = [v129 trailingAnchor];
+    v108 = [leadingAnchor5 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:2.0];
     v138[3] = v108;
-    v107 = [(_SFDimmingButton *)v5->_doneButton trailingAnchor];
-    v106 = [v34 trailingAnchor];
-    v105 = [v107 constraintEqualToAnchor:v106];
+    trailingAnchor4 = [(_SFDimmingButton *)v5->_doneButton trailingAnchor];
+    trailingAnchor5 = [layoutMarginsGuide trailingAnchor];
+    v105 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v138[4] = v105;
-    v104 = [*v125 topAnchor];
-    v103 = [v34 topAnchor];
-    v102 = [v104 constraintGreaterThanOrEqualToAnchor:v103];
+    topAnchor = [*v125 topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v102 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v138[5] = v102;
-    v101 = [*v125 centerYAnchor];
-    v100 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
-    v99 = [v101 constraintEqualToAnchor:v100];
+    centerYAnchor = [*v125 centerYAnchor];
+    centerYAnchor2 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
+    v99 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v138[6] = v99;
-    v98 = [*v125 bottomAnchor];
-    v97 = [v34 bottomAnchor];
-    v96 = [v98 constraintLessThanOrEqualToAnchor:v97];
+    bottomAnchor = [*v125 bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v96 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v138[7] = v96;
-    v94 = [(_SFDimmingButton *)v5->_incrementButton topAnchor];
-    v93 = [v34 topAnchor];
-    v92 = [v94 constraintGreaterThanOrEqualToAnchor:v93];
+    topAnchor3 = [(_SFDimmingButton *)v5->_incrementButton topAnchor];
+    topAnchor4 = [layoutMarginsGuide topAnchor];
+    v92 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
     v138[8] = v92;
-    v91 = [(_SFDimmingButton *)v5->_incrementButton centerYAnchor];
-    v90 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90];
+    centerYAnchor3 = [(_SFDimmingButton *)v5->_incrementButton centerYAnchor];
+    centerYAnchor4 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
+    v89 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v138[9] = v89;
-    v88 = [(_SFDimmingButton *)v5->_incrementButton bottomAnchor];
-    v87 = [v34 bottomAnchor];
-    v86 = [v88 constraintLessThanOrEqualToAnchor:v87];
+    bottomAnchor3 = [(_SFDimmingButton *)v5->_incrementButton bottomAnchor];
+    bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+    v86 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
     v138[10] = v86;
-    v85 = [v129 topAnchor];
-    v84 = [(UIView *)v5->_controlsContainer topAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    topAnchor5 = [v129 topAnchor];
+    topAnchor6 = [(UIView *)v5->_controlsContainer topAnchor];
+    v83 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v138[11] = v83;
-    v82 = [v129 bottomAnchor];
-    v81 = [(UIView *)v5->_controlsContainer bottomAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    bottomAnchor5 = [v129 bottomAnchor];
+    bottomAnchor6 = [(UIView *)v5->_controlsContainer bottomAnchor];
+    v80 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v138[12] = v80;
-    v79 = [v129 widthAnchor];
-    v78 = [v79 constraintEqualToConstant:_SFOnePixel()];
+    widthAnchor = [v129 widthAnchor];
+    v78 = [widthAnchor constraintEqualToConstant:_SFOnePixel()];
     v138[13] = v78;
-    v77 = [(_SFDimmingButton *)v5->_doneButton topAnchor];
-    v76 = [v34 topAnchor];
-    v75 = [v77 constraintGreaterThanOrEqualToAnchor:v76];
+    topAnchor7 = [(_SFDimmingButton *)v5->_doneButton topAnchor];
+    topAnchor8 = [layoutMarginsGuide topAnchor];
+    v75 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8];
     v138[14] = v75;
-    v74 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
-    v73 = [v34 centerYAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    centerYAnchor5 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
+    centerYAnchor6 = [layoutMarginsGuide centerYAnchor];
+    v72 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v138[15] = v72;
-    v71 = [(_SFDimmingButton *)v5->_doneButton bottomAnchor];
-    v70 = [v34 bottomAnchor];
-    v69 = [v71 constraintLessThanOrEqualToAnchor:v70];
+    bottomAnchor7 = [(_SFDimmingButton *)v5->_doneButton bottomAnchor];
+    bottomAnchor8 = [layoutMarginsGuide bottomAnchor];
+    v69 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
     v138[16] = v69;
-    v68 = [(UIView *)v5->_controlsContainer centerXAnchor];
-    v67 = [(SFStepperView *)v5 centerXAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    centerXAnchor = [(UIView *)v5->_controlsContainer centerXAnchor];
+    centerXAnchor2 = [(SFStepperView *)v5 centerXAnchor];
+    v66 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v138[17] = v66;
-    v65 = [(UIView *)v5->_controlsContainer leadingAnchor];
-    v64 = [v128 leadingAnchor];
-    v63 = [v65 constraintGreaterThanOrEqualToAnchor:v64];
+    leadingAnchor6 = [(UIView *)v5->_controlsContainer leadingAnchor];
+    leadingAnchor7 = [safeAreaLayoutGuide leadingAnchor];
+    v63 = [leadingAnchor6 constraintGreaterThanOrEqualToAnchor:leadingAnchor7];
     v138[18] = v63;
-    v62 = [(UIView *)v5->_controlsContainer trailingAnchor];
-    v61 = [v128 trailingAnchor];
-    v60 = [v62 constraintLessThanOrEqualToAnchor:v61];
+    trailingAnchor6 = [(UIView *)v5->_controlsContainer trailingAnchor];
+    trailingAnchor7 = [safeAreaLayoutGuide trailingAnchor];
+    v60 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7];
     v138[19] = v60;
-    v59 = [(UIView *)v5->_controlsContainer bottomAnchor];
-    v58 = [v128 bottomAnchor];
-    v57 = [v59 constraintLessThanOrEqualToAnchor:v58];
+    bottomAnchor9 = [(UIView *)v5->_controlsContainer bottomAnchor];
+    bottomAnchor10 = [safeAreaLayoutGuide bottomAnchor];
+    v57 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10];
     v138[20] = v57;
-    v56 = [(SFStepperView *)v5 bottomAnchor];
+    bottomAnchor11 = [(SFStepperView *)v5 bottomAnchor];
     [(UIView *)v5->_controlsContainer bottomAnchor];
-    v39 = v127 = v34;
-    v40 = [v56 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v39 multiplier:1.0];
+    v39 = v127 = layoutMarginsGuide;
+    v40 = [bottomAnchor11 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v39 multiplier:1.0];
     v138[21] = v40;
-    v41 = [(UIView *)v5->_controlsContainer bottomAnchor];
-    v42 = [(SFStepperView *)v5 bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    bottomAnchor12 = [(UIView *)v5->_controlsContainer bottomAnchor];
+    bottomAnchor13 = [(SFStepperView *)v5 bottomAnchor];
+    v43 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
     LODWORD(v44) = 1112014848;
     v45 = [v43 sf_withPriority:v44];
     v138[22] = v45;
@@ -243,21 +243,21 @@
     if (v130)
     {
       v121 = MEMORY[0x1E696ACD8];
-      v131 = [(_SFDimmingButton *)v5->_resetButton leadingAnchor];
-      v126 = [*v125 trailingAnchor];
-      v124 = [v131 constraintEqualToSystemSpacingAfterAnchor:v126 multiplier:2.0];
+      leadingAnchor8 = [(_SFDimmingButton *)v5->_resetButton leadingAnchor];
+      trailingAnchor8 = [*v125 trailingAnchor];
+      v124 = [leadingAnchor8 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor8 multiplier:2.0];
       v137[0] = v124;
-      v123 = [(_SFDimmingButton *)v5->_resetButton topAnchor];
-      v119 = [v127 topAnchor];
-      v117 = [v123 constraintGreaterThanOrEqualToAnchor:v119];
+      topAnchor9 = [(_SFDimmingButton *)v5->_resetButton topAnchor];
+      topAnchor10 = [v127 topAnchor];
+      v117 = [topAnchor9 constraintGreaterThanOrEqualToAnchor:topAnchor10];
       v137[1] = v117;
-      v47 = [(_SFDimmingButton *)v5->_resetButton centerYAnchor];
-      v48 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
-      v49 = [v47 constraintEqualToAnchor:v48];
+      centerYAnchor7 = [(_SFDimmingButton *)v5->_resetButton centerYAnchor];
+      centerYAnchor8 = [(_SFDimmingButton *)v5->_doneButton centerYAnchor];
+      v49 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
       v137[2] = v49;
-      v50 = [(_SFDimmingButton *)v5->_resetButton bottomAnchor];
-      v51 = [v127 bottomAnchor];
-      v52 = [v50 constraintLessThanOrEqualToAnchor:v51];
+      bottomAnchor14 = [(_SFDimmingButton *)v5->_resetButton bottomAnchor];
+      bottomAnchor15 = [v127 bottomAnchor];
+      v52 = [bottomAnchor14 constraintLessThanOrEqualToAnchor:bottomAnchor15];
       v137[3] = v52;
       v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v137 count:4];
       [v121 activateConstraints:v53];
@@ -283,8 +283,8 @@
 {
   [(UIView *)self->_controlsContainer bounds];
   v3 = CGRectGetHeight(v14) * 0.5;
-  v4 = [(UIView *)self->_controlsContainer layer];
-  [v4 setCornerRadius:v3];
+  layer = [(UIView *)self->_controlsContainer layer];
+  [layer setCornerRadius:v3];
 
   [(MTShadowView *)self->_shadowView maskCornerRadius];
   if (v5 != v3)
@@ -314,68 +314,68 @@
   [(MTShadowView *)self->_shadowView setFrame:?];
 }
 
-- (void)setLongestTitle:(id)a3 forButton:(id)a4
+- (void)setLongestTitle:(id)title forButton:(id)button
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_buttonToLongestStringMap objectForKey:v7];
-  if ([v6 length] && !v8)
+  titleCopy = title;
+  buttonCopy = button;
+  v8 = [(NSMapTable *)self->_buttonToLongestStringMap objectForKey:buttonCopy];
+  if ([titleCopy length] && !v8)
   {
-    v27 = v6;
+    v27 = titleCopy;
     if (!self->_buttonToLongestStringMap)
     {
-      v9 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+      weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
       buttonToLongestStringMap = self->_buttonToLongestStringMap;
-      self->_buttonToLongestStringMap = v9;
+      self->_buttonToLongestStringMap = weakToWeakObjectsMapTable;
     }
 
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [v7 titleLabel];
-    v12 = [v11 font];
-    [v8 setFont:v12];
+    titleLabel = [buttonCopy titleLabel];
+    font = [titleLabel font];
+    [v8 setFont:font];
 
     [v8 setHidden:1];
     [(UIView *)self->_controlsContainer addSubview:v8];
     v21 = MEMORY[0x1E696ACD8];
-    v26 = [v8 leadingAnchor];
-    v25 = [v7 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [buttonCopy leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[0] = v24;
-    v23 = [v8 topAnchor];
-    v22 = [v7 topAnchor];
-    v20 = [v23 constraintEqualToAnchor:v22];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [buttonCopy topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[1] = v20;
-    v13 = [v8 widthAnchor];
-    v14 = [v7 widthAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    widthAnchor = [v8 widthAnchor];
+    widthAnchor2 = [buttonCopy widthAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v28[2] = v15;
-    v16 = [v8 heightAnchor];
-    v17 = [v7 heightAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    heightAnchor = [v8 heightAnchor];
+    heightAnchor2 = [buttonCopy heightAnchor];
+    v18 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v28[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [v21 activateConstraints:v19];
 
-    [(NSMapTable *)self->_buttonToLongestStringMap setObject:v8 forKey:v7];
-    v6 = v27;
+    [(NSMapTable *)self->_buttonToLongestStringMap setObject:v8 forKey:buttonCopy];
+    titleCopy = v27;
   }
 
-  [v8 setText:v6];
+  [v8 setText:titleCopy];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   controlsContainer = self->_controlsContainer;
-  v8 = a4;
-  [(SFStepperView *)v6 convertPoint:controlsContainer toView:x, y];
-  LOBYTE(v6) = [(UIView *)controlsContainer pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(SFStepperView *)selfCopy convertPoint:controlsContainer toView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)controlsContainer pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 @end

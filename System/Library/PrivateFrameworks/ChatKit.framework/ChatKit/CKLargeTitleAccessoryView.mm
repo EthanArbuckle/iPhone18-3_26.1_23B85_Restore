@@ -1,9 +1,9 @@
 @interface CKLargeTitleAccessoryView
 + (id)newComposeButton;
 + (id)newOptionsButton;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setAccessoryButtons:(id)a3;
+- (void)setAccessoryButtons:(id)buttons;
 @end
 
 @implementation CKLargeTitleAccessoryView
@@ -60,7 +60,7 @@
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
@@ -114,10 +114,10 @@
   return result;
 }
 
-- (void)setAccessoryButtons:(id)a3
+- (void)setAccessoryButtons:(id)buttons
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonsCopy = buttons;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -148,7 +148,7 @@
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [buttonsCopy copy];
   accessoryButtons = self->_accessoryButtons;
   self->_accessoryButtons = v10;
 
@@ -156,7 +156,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v4;
+  v12 = buttonsCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -186,20 +186,20 @@
 + (id)newComposeButton
 {
   v2 = [MEMORY[0x1E69DC738] buttonWithType:0];
-  v3 = [v2 imageView];
-  [v3 setContentMode:4];
+  imageView = [v2 imageView];
+  [imageView setContentMode:4];
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 newComposeImage];
-  [v2 setImage:v5 forState:0];
+  newComposeImage = [v4 newComposeImage];
+  [v2 setImage:newComposeImage forState:0];
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 theme];
-  v8 = [v7 appTintColor];
-  [v2 setBackgroundColor:v8];
+  theme = [v6 theme];
+  appTintColor = [theme appTintColor];
+  [v2 setBackgroundColor:appTintColor];
 
-  v9 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [v2 setTintColor:v9];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [v2 setTintColor:systemWhiteColor];
 
   [v2 setAccessibilityIdentifier:@"composeButton"];
   [v2 setTitle:0 forState:0];
@@ -216,8 +216,8 @@
   }
 
   v11 = round(v10 * 15.0) / v10;
-  v12 = [v2 layer];
-  [v12 setCornerRadius:v11];
+  layer = [v2 layer];
+  [layer setCornerRadius:v11];
 
   [v2 setShowsLargeContentViewer:1];
   v13 = CKFrameworkBundle();
@@ -234,20 +234,20 @@
 + (id)newOptionsButton
 {
   v2 = [MEMORY[0x1E69DC738] buttonWithType:0];
-  v3 = [v2 imageView];
-  [v3 setContentMode:4];
+  imageView = [v2 imageView];
+  [imageView setContentMode:4];
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 optionsImage];
-  [v2 setImage:v5 forState:0];
+  optionsImage = [v4 optionsImage];
+  [v2 setImage:optionsImage forState:0];
 
-  v6 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-  [v2 setBackgroundColor:v6];
+  secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+  [v2 setBackgroundColor:secondarySystemFillColor];
 
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 theme];
-  v9 = [v8 appTintColor];
-  [v2 setTintColor:v9];
+  theme = [v7 theme];
+  appTintColor = [theme appTintColor];
+  [v2 setTintColor:appTintColor];
 
   [v2 setAccessibilityIdentifier:@"optionsButton"];
   [v2 setTitle:0 forState:0];
@@ -264,8 +264,8 @@
   }
 
   v11 = round(v10 * 15.0) / v10;
-  v12 = [v2 layer];
-  [v12 setCornerRadius:v11];
+  layer = [v2 layer];
+  [layer setCornerRadius:v11];
 
   [v2 setShowsLargeContentViewer:1];
   v13 = CKFrameworkBundle();

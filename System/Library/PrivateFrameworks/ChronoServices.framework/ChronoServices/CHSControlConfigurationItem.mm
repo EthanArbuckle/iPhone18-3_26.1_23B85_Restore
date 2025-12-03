@@ -1,11 +1,11 @@
 @interface CHSControlConfigurationItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSControlConfigurationItem)init;
-- (CHSControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 location:(int64_t)a5;
+- (CHSControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity location:(int64_t)location;
 - (NSString)description;
 - (NSString)uniqueIdentifier;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSControlConfigurationItem
@@ -20,21 +20,21 @@
   return v4;
 }
 
-- (CHSControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 location:(int64_t)a5
+- (CHSControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity location:(int64_t)location
 {
   v7 = sub_195FA08B8();
   v9 = v8;
-  v10 = a4;
-  v11 = sub_195F306D0(v7, v9, v10, a5);
+  identityCopy = identity;
+  v11 = sub_195F306D0(v7, v9, identityCopy, location);
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSControlConfigurationItem.isEqual(_:)(v8);
@@ -54,7 +54,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHSControlConfigurationItem.hash.getter();
 
   return v3;
@@ -62,7 +62,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CHSControlConfigurationItem.description.getter();
 
   v3 = sub_195FA0888();
@@ -77,11 +77,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CHSControlConfigurationItem.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CHSControlConfigurationItem.encode(with:)(coderCopy);
 }
 
 @end

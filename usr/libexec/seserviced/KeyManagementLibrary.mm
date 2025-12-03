@@ -1,16 +1,16 @@
 @interface KeyManagementLibrary
 + (id)sharedLibrary;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (KeyManagementLibrary)init;
 - (unsigned)numberOfPairingSessionsQueued;
-- (void)addNewSession:(id)a3 firstInQueue:(BOOL *)a4;
-- (void)clientAppIsBackGrounded:(id)a3;
-- (void)clientAppIsForeGrounded:(id)a3;
-- (void)clientAppIsSuspended:(id)a3;
+- (void)addNewSession:(id)session firstInQueue:(BOOL *)queue;
+- (void)clientAppIsBackGrounded:(id)grounded;
+- (void)clientAppIsForeGrounded:(id)grounded;
+- (void)clientAppIsSuspended:(id)suspended;
 - (void)handleFirstUnlock;
-- (void)removeSession:(id)a3 withError:(id)a4;
+- (void)removeSession:(id)session withError:(id)error;
 - (void)startNextSession;
-- (void)startServiceWithMachName:(id)a3;
+- (void)startServiceWithMachName:(id)name;
 - (void)stopService;
 @end
 
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)startServiceWithMachName:(id)a3
+- (void)startServiceWithMachName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(KeyManagementLibrary *)self isRunning])
   {
     v5 = KmlLogger();
@@ -80,7 +80,7 @@ LABEL_6:
   {
     kmlMainQueue = self->_kmlMainQueue;
     os_state_add_handler();
-    v10 = [[NSXPCListener alloc] initWithMachServiceName:v4];
+    v10 = [[NSXPCListener alloc] initWithMachServiceName:nameCopy];
     kmlListener = self->_kmlListener;
     self->_kmlListener = v10;
 
@@ -99,7 +99,7 @@ LABEL_6:
       v16 = 1024;
       v17 = 93;
       v18 = 2112;
-      v19 = v4;
+      v19 = nameCopy;
       v6 = "%s : %i : Service %@ running";
       v7 = v5;
       v8 = 28;
@@ -168,17 +168,17 @@ LABEL_6:
   }
 }
 
-- (void)addNewSession:(id)a3 firstInQueue:(BOOL *)a4
+- (void)addNewSession:(id)session firstInQueue:(BOOL *)queue
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = self->_sessions;
   objc_sync_enter(v7);
-  if (a4)
+  if (queue)
   {
-    *a4 = [(NSMutableArray *)self->_sessions count]== 0;
+    *queue = [(NSMutableArray *)self->_sessions count]== 0;
   }
 
-  [(NSMutableArray *)self->_sessions addObject:v6];
+  [(NSMutableArray *)self->_sessions addObject:sessionCopy];
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -202,11 +202,11 @@ LABEL_6:
   dispatch_async(kmlMainQueue, block);
 }
 
-- (void)removeSession:(id)a3 withError:(id)a4
+- (void)removeSession:(id)session withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  sessionCopy = session;
+  errorCopy = error;
+  v8 = sessionCopy;
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -219,10 +219,10 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
-  [(KmlSession *)v8 stopWithError:v7];
+  [(KmlSession *)v8 stopWithError:errorCopy];
   v10 = sub_1003CD780(&v8->super.isa);
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"ProxyObjects"];
+  userInfo = [v10 userInfo];
+  v12 = [userInfo objectForKeyedSubscript:@"ProxyObjects"];
   [v12 removeObject:v8];
   v13 = self->_sessions;
   objc_sync_enter(v13);
@@ -301,13 +301,13 @@ LABEL_2:
     v4 = KmlLogger();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(KmlSession *)self->_currentSession clientName];
+      clientName = [(KmlSession *)self->_currentSession clientName];
       v9 = 136315650;
       v10 = "[KeyManagementLibrary startNextSession]";
       v11 = 1024;
       v12 = 177;
       v13 = 2112;
-      v14 = v5;
+      v14 = clientName;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s : %i : Session (by %@) already in progress", &v9, 0x1Cu);
     }
 
@@ -418,12 +418,12 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   memset(buffer, 0, 255);
-  proc_name([v7 processIdentifier], buffer, 0xFEu);
+  proc_name([connectionCopy processIdentifier], buffer, 0xFEu);
   v8 = [NSString stringWithUTF8String:buffer];
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -449,7 +449,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s : %i : New client request from :%@", buf, 0x1Cu);
   }
 
-  v11 = sub_1003CDAD0([KmlEntitlementChecker alloc], v7);
+  v11 = sub_1003CDAD0([KmlEntitlementChecker alloc], connectionCopy);
   if ((sub_1003AE7DC(v11) & 1) == 0)
   {
     v12 = KmlLogger();
@@ -466,9 +466,9 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!sub_10038ABD8(self->_appObserver, v7))
+  if (!sub_10038ABD8(self->_appObserver, connectionCopy))
   {
-    v17 = sub_10038AE84(self->_appObserver, v7);
+    v17 = sub_10038AE84(self->_appObserver, connectionCopy);
     if (v17 == 4279897)
     {
       v21 = 1;
@@ -478,11 +478,11 @@ LABEL_25:
       v12 = objc_opt_new();
       sub_1003B5EC8(v12, self->_kmlMainQueue);
       v23 = +[KmlManagerInterface interface];
-      [v7 setExportedInterface:v23];
+      [connectionCopy setExportedInterface:v23];
 
-      [v7 setExportedObject:v12];
+      [connectionCopy setExportedObject:v12];
       v24 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___KmlManagerCallbacks];
-      [v7 setRemoteObjectInterface:v24];
+      [connectionCopy setRemoteObjectInterface:v24];
 
       v25 = +[NSMutableSet set];
       v26 = [NSMutableDictionary dictionaryWithObject:v25 forKey:@"ProxyObjects"];
@@ -495,25 +495,25 @@ LABEL_25:
       v28 = [NSNumber numberWithBool:v21];
       [v26 setObject:v28 forKeyedSubscript:@"ClientIsDaemon"];
 
-      [v7 setUserInfo:v26];
+      [connectionCopy setUserInfo:v26];
       objc_initWeak(buf, self);
-      objc_initWeak(&location, v7);
+      objc_initWeak(&location, connectionCopy);
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10037DF38;
       v33[3] = &unk_1004D1EA0;
       objc_copyWeak(&v34, &location);
       objc_copyWeak(&v35, buf);
-      [v7 setInvalidationHandler:v33];
+      [connectionCopy setInvalidationHandler:v33];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_10037DF98;
       v30[3] = &unk_1004D1EA0;
       objc_copyWeak(&v31, &location);
       objc_copyWeak(&v32, buf);
-      [v7 setInterruptionHandler:v30];
-      sub_10038A4C0(self->_appObserver, v7);
-      [v7 resume];
+      [connectionCopy setInterruptionHandler:v30];
+      sub_10038A4C0(self->_appObserver, connectionCopy);
+      [connectionCopy resume];
       objc_destroyWeak(&v32);
       objc_destroyWeak(&v31);
       objc_destroyWeak(&v35);
@@ -601,14 +601,14 @@ LABEL_26:
   return v16;
 }
 
-- (void)clientAppIsSuspended:(id)a3
+- (void)clientAppIsSuspended:(id)suspended
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  suspendedCopy = suspended;
+  v5 = suspendedCopy;
+  if (suspendedCopy)
   {
     memset(buffer, 0, 255);
-    proc_name([v4 processIdentifier], buffer, 0xFEu);
+    proc_name([suspendedCopy processIdentifier], buffer, 0xFEu);
     v6 = KmlLogger();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -658,19 +658,19 @@ LABEL_26:
   }
 }
 
-- (void)clientAppIsBackGrounded:(id)a3
+- (void)clientAppIsBackGrounded:(id)grounded
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groundedCopy = grounded;
+  v5 = groundedCopy;
+  if (groundedCopy)
   {
     kmlMainQueue = self->_kmlMainQueue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10037D9BC;
     v8[3] = &unk_1004C22F0;
-    v9 = v4;
-    v10 = self;
+    v9 = groundedCopy;
+    selfCopy = self;
     dispatch_async(kmlMainQueue, v8);
     v7 = v9;
   }
@@ -689,19 +689,19 @@ LABEL_26:
   }
 }
 
-- (void)clientAppIsForeGrounded:(id)a3
+- (void)clientAppIsForeGrounded:(id)grounded
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groundedCopy = grounded;
+  v5 = groundedCopy;
+  if (groundedCopy)
   {
     kmlMainQueue = self->_kmlMainQueue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10037DCB4;
     v8[3] = &unk_1004C22F0;
-    v9 = v4;
-    v10 = self;
+    v9 = groundedCopy;
+    selfCopy = self;
     dispatch_async(kmlMainQueue, v8);
     v7 = v9;
   }

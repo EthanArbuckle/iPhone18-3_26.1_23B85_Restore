@@ -1,11 +1,11 @@
 @interface ADSpeechLog
-+ (id)buffersFromSpeechLogAtURL:(id)a3 isNarrowBand:(BOOL *)a4;
++ (id)buffersFromSpeechLogAtURL:(id)l isNarrowBand:(BOOL *)band;
 - (ADSpeechLog)init;
 - (id)_dateFormatter;
 - (id)_nowString;
-- (void)appendSpeechPacket:(id)a3;
-- (void)appendSpeechPackets:(id)a3;
-- (void)beginNewSpeechLogWithFormat:(id)a3;
+- (void)appendSpeechPacket:(id)packet;
+- (void)appendSpeechPackets:(id)packets;
+- (void)beginNewSpeechLogWithFormat:(id)format;
 - (void)cancelCurrentSpeechLog;
 - (void)endSpeechLog;
 @end
@@ -34,14 +34,14 @@
   dispatch_async(logQueue, block);
 }
 
-- (void)appendSpeechPackets:(id)a3
+- (void)appendSpeechPackets:(id)packets
 {
-  v4 = a3;
+  packetsCopy = packets;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [packetsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,7 +53,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(packetsCopy);
         }
 
         [(ADSpeechLog *)self appendSpeechPacket:*(*(&v9 + 1) + 8 * v8)];
@@ -61,18 +61,18 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [packetsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)appendSpeechPacket:(id)a3
+- (void)appendSpeechPacket:(id)packet
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  packetCopy = packet;
+  v5 = packetCopy;
+  if (packetCopy)
   {
     logQueue = self->_logQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -80,30 +80,30 @@
     v7[2] = sub_1001A2000;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = packetCopy;
     dispatch_async(logQueue, v7);
   }
 }
 
-- (void)beginNewSpeechLogWithFormat:(id)a3
+- (void)beginNewSpeechLogWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   logQueue = self->_logQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A2154;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = formatCopy;
+  v6 = formatCopy;
   dispatch_async(logQueue, v7);
 }
 
 - (id)_nowString
 {
-  v2 = [(ADSpeechLog *)self _dateFormatter];
+  _dateFormatter = [(ADSpeechLog *)self _dateFormatter];
   v3 = +[NSDate date];
-  v4 = [v2 stringFromDate:v3];
+  v4 = [_dateFormatter stringFromDate:v3];
 
   return v4;
 }
@@ -136,9 +136,9 @@
   if (v2)
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 fileLoggingIsEnabled];
+    fileLoggingIsEnabled = [v3 fileLoggingIsEnabled];
 
-    if (!v4)
+    if (!fileLoggingIsEnabled)
     {
       v8 = 0;
       goto LABEL_6;
@@ -158,37 +158,37 @@ LABEL_6:
   return v8;
 }
 
-+ (id)buffersFromSpeechLogAtURL:(id)a3 isNarrowBand:(BOOL *)a4
++ (id)buffersFromSpeechLogAtURL:(id)l isNarrowBand:(BOOL *)band
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  lCopy = l;
+  v6 = lCopy;
+  if (!lCopy)
   {
 LABEL_21:
     v12 = 0;
     goto LABEL_26;
   }
 
-  if (a4)
+  if (band)
   {
-    v7 = [v5 path];
-    v8 = [v7 lastPathComponent];
+    path = [lCopy path];
+    lastPathComponent = [path lastPathComponent];
 
-    if ([v8 containsString:@"Speex_NB"])
+    if ([lastPathComponent containsString:@"Speex_NB"])
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v8 containsString:@"8000Hz"];
+      v9 = [lastPathComponent containsString:@"8000Hz"];
     }
 
-    *a4 = v9;
+    *band = v9;
   }
 
-  v10 = [v6 path];
-  v11 = open([v10 fileSystemRepresentation], 0);
+  path2 = [v6 path];
+  v11 = open([path2 fileSystemRepresentation], 0);
 
   if (v11 < 0)
   {

@@ -1,27 +1,27 @@
 @interface SmallLockupView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)lockupTapGestureRecognized;
 @end
 
 @implementation SmallLockupView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = type metadata accessor for SmallLockupLayout.Metrics();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = self;
+  selfCopy = self;
 
   sub_100709E58(v9);
-  [(SmallLockupView *)v10 layoutMargins];
-  v13 = sub_100508464(v9, v10, width, height, v11, v12);
+  [(SmallLockupView *)selfCopy layoutMargins];
+  v13 = sub_100508464(v9, selfCopy, width, height, v11, v12);
   v15 = v14;
 
   (*(v7 + 8))(v9, v6);
@@ -38,10 +38,10 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v15 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_100709E58(v6);
-  [(SmallLockupView *)v7 layoutMargins];
-  v10 = sub_100508464(v6, v7, 0.0, 0.0, v8, v9);
+  [(SmallLockupView *)selfCopy layoutMargins];
+  v10 = sub_100508464(v6, selfCopy, 0.0, 0.0, v8, v9);
   v12 = v11;
   (*(v4 + 8))(v6, v3, v10);
 
@@ -61,37 +61,37 @@
   sub_10070A300(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10070AD88(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10070AD88(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v7 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15SmallLockupView_lockupTapGestureRecognizer);
   if (!v7)
   {
-    v14 = a3;
-    v15 = a4;
-    v16 = self;
+    recognizerCopy = recognizer;
+    gestureRecognizerCopy = gestureRecognizer;
+    selfCopy = self;
     goto LABEL_5;
   }
 
   sub_100005744(0, &unk_100993110);
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
+  recognizerCopy2 = recognizer;
+  gestureRecognizerCopy2 = gestureRecognizer;
+  selfCopy2 = self;
   v11 = v7;
   v12 = static NSObject.== infix(_:_:)();
 
@@ -114,7 +114,7 @@ LABEL_6:
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15SmallLockupView_lockupTapBlock);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 

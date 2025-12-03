@@ -1,16 +1,16 @@
 @interface WCM_CtrXPCClient
 - (BOOL)getListenCoexLoadChange;
 - (BOOL)getRCU2Status;
-- (BOOL)storeListenCoexLoadChange:(BOOL)a3;
-- (BOOL)storeRCU2Status:(BOOL)a3;
+- (BOOL)storeListenCoexLoadChange:(BOOL)change;
+- (BOOL)storeRCU2Status:(BOOL)status;
 - (BOOL)threadCOEXStatus;
 - (WCM_CtrXPCClient)init;
-- (void)HandleThreadStart:(id)a3;
-- (void)HandleThreadStop:(id)a3;
+- (void)HandleThreadStart:(id)start;
+- (void)HandleThreadStop:(id)stop;
 - (void)RCU2Init;
-- (void)setCellScanFreqTable:(id)a3;
+- (void)setCellScanFreqTable:(id)table;
 - (void)updateCellScanFreqTable;
-- (void)updateWiFiChannel:(int64_t)a3;
+- (void)updateWiFiChannel:(int64_t)channel;
 @end
 
 @implementation WCM_CtrXPCClient
@@ -18,8 +18,8 @@
 - (BOOL)getRCU2Status
 {
   v2 = +[WCM_PolicyManager singleton];
-  v3 = [v2 activeCoexFeatures];
-  v4 = [v3 containsObject:@"RCU2SupportIntegrated"];
+  activeCoexFeatures = [v2 activeCoexFeatures];
+  v4 = [activeCoexFeatures containsObject:@"RCU2SupportIntegrated"];
 
   if (v4)
   {
@@ -75,15 +75,15 @@ LABEL_14:
   return 0;
 }
 
-- (void)setCellScanFreqTable:(id)a3
+- (void)setCellScanFreqTable:(id)table
 {
-  v14 = a3;
+  tableCopy = table;
   v4 = objc_alloc_init(NSMutableString);
   v5 = objc_alloc_init(NSMutableString);
-  if (v14)
+  if (tableCopy)
   {
-    [WCM_Logging logLevel:2 message:@"RCU2 Controller - setCellScanFreqTable: %@ ", v14];
-    v6 = [v14 count];
+    [WCM_Logging logLevel:2 message:@"RCU2 Controller - setCellScanFreqTable: %@ ", tableCopy];
+    v6 = [tableCopy count];
     [v4 appendFormat:@"%02X", v6];
     if (v6)
     {
@@ -91,15 +91,15 @@ LABEL_14:
       v8 = v6;
       do
       {
-        v9 = [v14 objectAtIndex:v7];
+        v9 = [tableCopy objectAtIndex:v7];
         v10 = [v9 objectAtIndex:0];
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
 
         v12 = [v9 objectAtIndex:1];
         LOWORD(v10) = [v12 integerValue];
 
-        [v4 appendFormat:@"%02X", HIBYTE(v11)];
-        [v4 appendFormat:@"%02X", v11];
+        [v4 appendFormat:@"%02X", HIBYTE(integerValue)];
+        [v4 appendFormat:@"%02X", integerValue];
         [v5 appendFormat:@"%02X", BYTE1(v10)];
         [v5 appendFormat:@"%02X", v10];
 
@@ -122,9 +122,9 @@ LABEL_14:
   if (!cellScanFreqTableStr)
   {
     v4 = +[WCM_PolicyManager singleton];
-    v5 = [v4 platformManager];
-    v6 = [v5 wcmCellularScanProtectionCellFrequenciesforBT];
-    [(WCM_CtrXPCClient *)self setCellScanFreqTable:v6];
+    platformManager = [v4 platformManager];
+    wcmCellularScanProtectionCellFrequenciesforBT = [platformManager wcmCellularScanProtectionCellFrequenciesforBT];
+    [(WCM_CtrXPCClient *)self setCellScanFreqTable:wcmCellularScanProtectionCellFrequenciesforBT];
 
     cellScanFreqTableStr = self->cellScanFreqTableStr;
   }
@@ -163,17 +163,17 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)storeRCU2Status:(BOOL)a3
+- (BOOL)storeRCU2Status:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = +[WCM_PolicyManager singleton];
-  v5 = [v4 activeCoexFeatures];
-  v6 = [v5 containsObject:@"RCU2SupportIntegrated"];
+  activeCoexFeatures = [v4 activeCoexFeatures];
+  v6 = [activeCoexFeatures containsObject:@"RCU2SupportIntegrated"];
 
   if (v6)
   {
     [WCM_Logging logLevel:4 message:@" RCU2: In storeRCU2Status.."];
-    if (v3)
+    if (statusCopy)
     {
       v7 = off_1002B7790;
     }
@@ -183,7 +183,7 @@ LABEL_14:
       v7 = off_1002B7798;
     }
 
-    if (v3)
+    if (statusCopy)
     {
       v8 = @" RCU2: In storeRCU2Status.. - Writing value TRUE";
     }
@@ -262,11 +262,11 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)storeListenCoexLoadChange:(BOOL)a3
+- (BOOL)storeListenCoexLoadChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   [WCM_Logging logLevel:4 message:@" RCU2: In storeListenCoexLoadChange.."];
-  if (v3)
+  if (changeCopy)
   {
     v4 = off_1002B77A8;
   }
@@ -276,7 +276,7 @@ LABEL_11:
     v4 = &off_1002B77B0;
   }
 
-  if (v3)
+  if (changeCopy)
   {
     v5 = @" RCU2: In storeListenCoexLoadChange.. - Writing value TRUE";
   }
@@ -304,10 +304,10 @@ LABEL_11:
   return 1;
 }
 
-- (void)updateWiFiChannel:(int64_t)a3
+- (void)updateWiFiChannel:(int64_t)channel
 {
   wifiChannelLoad = self->wifiChannelLoad;
-  if (wifiChannelLoad == a3)
+  if (wifiChannelLoad == channel)
   {
 
     [WCM_Logging logLevel:2 message:@"RCU2 Controller No Change in WiFi Channel - Not Updating"];
@@ -315,22 +315,22 @@ LABEL_11:
 
   else
   {
-    [WCM_Logging logLevel:2 message:@"RCU2 Controller WiFi channel changed from %ld to %ld", wifiChannelLoad, a3];
-    self->wifiChannelLoad = a3;
+    [WCM_Logging logLevel:2 message:@"RCU2 Controller WiFi channel changed from %ld to %ld", wifiChannelLoad, channel];
+    self->wifiChannelLoad = channel;
     btWirelessLoad = self->btWirelessLoad;
     wifiBandLoad = self->wifiBandLoad;
     AWDLRealTimeModeEnabled = self->AWDLRealTimeModeEnabled;
 
-    [(WCM_CtrXPCClient *)self sendFullWirelessLoad:btWirelessLoad wifiBandInfo:wifiBandLoad AWDLRealTimeModeInfo:AWDLRealTimeModeEnabled wifiChannelInfo:a3];
+    [(WCM_CtrXPCClient *)self sendFullWirelessLoad:btWirelessLoad wifiBandInfo:wifiBandLoad AWDLRealTimeModeInfo:AWDLRealTimeModeEnabled wifiChannelInfo:channel];
   }
 }
 
-- (void)HandleThreadStart:(id)a3
+- (void)HandleThreadStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   self->threadRadioUp = 1;
-  v10 = v4;
-  v5 = xpc_dictionary_get_value(v4, "kMessageArgs");
+  v10 = startCopy;
+  v5 = xpc_dictionary_get_value(startCopy, "kMessageArgs");
   v6 = xpc_dictionary_get_BOOL(v5, "kWCMThreadListenCoexLoadChange");
   self->threadListenCoexLoadChange = v6;
   [WCM_Logging logLevel:2 message:@"RCU2 Controller - Threadradio started - enabling sending messages - Current value = %d ListenCoexLoadChange = %d", self->threadRadioUp, v6];
@@ -358,10 +358,10 @@ LABEL_11:
   _objc_release_x1(v3, CtrClientPtr);
 }
 
-- (void)HandleThreadStop:(id)a3
+- (void)HandleThreadStop:(id)stop
 {
-  v7 = a3;
-  v4 = xpc_dictionary_get_value(v7, "kMessageArgs");
+  stopCopy = stop;
+  v4 = xpc_dictionary_get_value(stopCopy, "kMessageArgs");
   self->threadListenCoexLoadChange = xpc_dictionary_get_BOOL(v4, "kWCMThreadListenCoexLoadChange");
   self->threadRadioUp = 0;
   [(WCM_CtrXPCClient *)self storeRCU2Status:0];

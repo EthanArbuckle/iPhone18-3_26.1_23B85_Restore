@@ -1,6 +1,6 @@
 @interface CFXCameraControlsViewController
 - (CFXCameraControlsViewController)init;
-- (CFXCameraControlsViewController)initWithDelegate:(id)a3 captureMode:(int64_t)a4;
+- (CFXCameraControlsViewController)initWithDelegate:(id)delegate captureMode:(int64_t)mode;
 - (CFXCameraControlsViewControllerDelegate)delegate;
 - (NSLayoutConstraint)appStripBackgroundContainerViewBottomConstraint;
 - (NSLayoutConstraint)appStripBackgroundContainerViewHeightConstraint;
@@ -21,18 +21,18 @@
 - (UIView)shutterButtonContainerPad;
 - (double)CFX_smallPhoneDockHeightAdjustment;
 - (void)configureUIForOrientation;
-- (void)effectsButtonTapped:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setShutterButtonAlpha:(double)a3;
-- (void)setShutterButtonEnabled:(BOOL)a3;
-- (void)shutterButtonTapped:(id)a3;
-- (void)switchCameraButtonTapped:(id)a3;
-- (void)updateUIForDockMagnify:(BOOL)a3 dockHeightDelta:(double)a4;
-- (void)updateUIForVideoRecording:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)effectsButtonTapped:(id)tapped;
+- (void)setBackgroundColor:(id)color;
+- (void)setShutterButtonAlpha:(double)alpha;
+- (void)setShutterButtonEnabled:(BOOL)enabled;
+- (void)shutterButtonTapped:(id)tapped;
+- (void)switchCameraButtonTapped:(id)tapped;
+- (void)updateUIForDockMagnify:(BOOL)magnify dockHeightDelta:(double)delta;
+- (void)updateUIForVideoRecording:(BOOL)recording;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -43,23 +43,23 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = MEMORY[0x277D75AC8];
-  v6 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v7 = [v5 storyboardWithName:v4 bundle:v6];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+  v7 = [v5 storyboardWithName:v4 bundle:jfxBundle];
 
   v8 = [v7 instantiateViewControllerWithIdentifier:v4];
 
   return v8;
 }
 
-- (CFXCameraControlsViewController)initWithDelegate:(id)a3 captureMode:(int64_t)a4
+- (CFXCameraControlsViewController)initWithDelegate:(id)delegate captureMode:(int64_t)mode
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = [(CFXCameraControlsViewController *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_captureMode = a4;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_captureMode = mode;
   }
 
   return v8;
@@ -70,87 +70,87 @@
   v51.receiver = self;
   v51.super_class = CFXCameraControlsViewController;
   [(CFXCameraControlsViewController *)&v51 viewDidLoad];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  LODWORD(v5) = CFXCaptureCapabilitiesIsCTMSupported();
+  LODWORD(currentDevice) = CFXCaptureCapabilitiesIsCTMSupported();
   v7 = objc_alloc(MEMORY[0x277CF7E88]);
-  if (v5)
+  if (currentDevice)
   {
-    v8 = [v7 initForOverContent];
-    [(CFXCameraControlsViewController *)self setEffectButton:v8];
+    initForOverContent = [v7 initForOverContent];
+    [(CFXCameraControlsViewController *)self setEffectButton:initForOverContent];
   }
 
   else
   {
-    v9 = [v7 initWithLayoutStyle:v6];
+    v9 = [v7 initWithLayoutStyle:cam_initialLayoutStyle];
     [(CFXCameraControlsViewController *)self setEffectButton:v9];
 
-    v10 = [(CFXCameraControlsViewController *)self effectButton];
-    [v10 setTappableEdgeInsets:{20.0, 20.0, 20.0, 20.0}];
+    effectButton = [(CFXCameraControlsViewController *)self effectButton];
+    [effectButton setTappableEdgeInsets:{20.0, 20.0, 20.0, 20.0}];
 
-    v8 = [(CFXCameraControlsViewController *)self effectButton];
-    [v8 setFrame:{0.0, 0.0, 60.0, 60.0}];
+    initForOverContent = [(CFXCameraControlsViewController *)self effectButton];
+    [initForOverContent setFrame:{0.0, 0.0, 60.0, 60.0}];
   }
 
-  v11 = [(CFXCameraControlsViewController *)self effectButton];
-  [v11 setActive:1];
+  effectButton2 = [(CFXCameraControlsViewController *)self effectButton];
+  [effectButton2 setActive:1];
 
-  v12 = [(CFXCameraControlsViewController *)self effectButton];
-  [v12 addTarget:self action:sel_effectsButtonTapped_ forControlEvents:64];
+  effectButton3 = [(CFXCameraControlsViewController *)self effectButton];
+  [effectButton3 addTarget:self action:sel_effectsButtonTapped_ forControlEvents:64];
 
-  v13 = [(CFXCameraControlsViewController *)self effectButton];
-  [v13 setExclusiveTouch:1];
+  effectButton4 = [(CFXCameraControlsViewController *)self effectButton];
+  [effectButton4 setExclusiveTouch:1];
 
-  v14 = [MEMORY[0x277CF7EF0] shutterButton];
-  [(CFXCameraControlsViewController *)self setShutterButton:v14];
+  shutterButton = [MEMORY[0x277CF7EF0] shutterButton];
+  [(CFXCameraControlsViewController *)self setShutterButton:shutterButton];
 
-  v15 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v15 setFrame:{0.0, 0.0, 80.0, 80.0}];
+  shutterButton2 = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton2 setFrame:{0.0, 0.0, 80.0, 80.0}];
 
-  v16 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v16 addTarget:self action:sel_shutterButtonTapped_ forControlEvents:64];
+  shutterButton3 = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton3 addTarget:self action:sel_shutterButtonTapped_ forControlEvents:64];
 
-  v17 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v17 setExclusiveTouch:1];
+  shutterButton4 = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton4 setExclusiveTouch:1];
 
   if ((CFXCaptureCapabilitiesIsCTMSupported() & 1) != 0 || ([MEMORY[0x277D75418] currentDevice], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "userInterfaceIdiom"), v18, v19 == 1))
   {
-    v20 = [MEMORY[0x277CF7EA8] flipButtonOverContent];
-    [(CFXCameraControlsViewController *)self setFlipButton:v20];
+    flipButtonOverContent = [MEMORY[0x277CF7EA8] flipButtonOverContent];
+    [(CFXCameraControlsViewController *)self setFlipButton:flipButtonOverContent];
   }
 
   else
   {
-    v21 = [MEMORY[0x277CF7EA8] flipButtonWithLayoutStyle:v6];
+    v21 = [MEMORY[0x277CF7EA8] flipButtonWithLayoutStyle:cam_initialLayoutStyle];
     [(CFXCameraControlsViewController *)self setFlipButton:v21];
 
-    v20 = [(CFXCameraControlsViewController *)self flipButton];
-    [v20 setFrame:{0.0, 0.0, 60.0, 60.0}];
+    flipButtonOverContent = [(CFXCameraControlsViewController *)self flipButton];
+    [flipButtonOverContent setFrame:{0.0, 0.0, 60.0, 60.0}];
   }
 
-  v22 = [(CFXCameraControlsViewController *)self flipButton];
-  [v22 addTarget:self action:sel_switchCameraButtonTapped_ forControlEvents:64];
+  flipButton = [(CFXCameraControlsViewController *)self flipButton];
+  [flipButton addTarget:self action:sel_switchCameraButtonTapped_ forControlEvents:64];
 
-  v23 = [(CFXCameraControlsViewController *)self flipButton];
+  flipButton2 = [(CFXCameraControlsViewController *)self flipButton];
   v24 = 1;
-  [v23 setExclusiveTouch:1];
+  [flipButton2 setExclusiveTouch:1];
 
-  v25 = [MEMORY[0x277D75418] currentDevice];
-  v26 = [v25 userInterfaceIdiom];
-  if (v26)
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
+  if (userInterfaceIdiom)
   {
     v27 = 0;
   }
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     if (v28 <= 811)
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v24 = v29 < 812;
       v27 = 1;
     }
@@ -162,50 +162,50 @@
     }
   }
 
-  v30 = [(CFXCameraControlsViewController *)self bottomBlackView];
-  [v30 setHidden:v24];
+  bottomBlackView = [(CFXCameraControlsViewController *)self bottomBlackView];
+  [bottomBlackView setHidden:v24];
 
   if (v27)
   {
   }
 
-  if (!v26)
+  if (!userInterfaceIdiom)
   {
   }
 
   v31 = objc_alloc_init(MEMORY[0x277CF7E68]);
   [(CFXCameraControlsViewController *)self setBottomBar:v31];
 
-  v32 = [MEMORY[0x277D75418] currentDevice];
-  v33 = [v32 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice3 userInterfaceIdiom];
 
-  if (v33)
+  if (userInterfaceIdiom2)
   {
-    v34 = [(CFXCameraControlsViewController *)self view];
-    v35 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v34 addSubview:v35];
+    view = [(CFXCameraControlsViewController *)self view];
+    bottomBar = [(CFXCameraControlsViewController *)self bottomBar];
+    [view addSubview:bottomBar];
 
-    v36 = [(CFXCameraControlsViewController *)self delegate];
-    v37 = [v36 doneButtonForCameraControlsViewController:self];
-    v38 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v38 setDoneButton:v37];
+    delegate = [(CFXCameraControlsViewController *)self delegate];
+    v37 = [delegate doneButtonForCameraControlsViewController:self];
+    bottomBar2 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar2 setDoneButton:v37];
 
-    v39 = [(CFXCameraControlsViewController *)self delegate];
-    v40 = [v39 flashButtonForCameraControlsViewController:self];
-    v41 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v41 setFlashButton:v40];
+    delegate2 = [(CFXCameraControlsViewController *)self delegate];
+    v40 = [delegate2 flashButtonForCameraControlsViewController:self];
+    bottomBar3 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar3 setFlashButton:v40];
 
-    v42 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v42 setBackgroundStyle:1];
+    bottomBar4 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar4 setBackgroundStyle:1];
   }
 
   else
   {
     if (isStreamingMode([(CFXCameraControlsViewController *)self captureMode]))
     {
-      v42 = [(CFXCameraControlsViewController *)self backgroundView];
-      v43 = [(CFXCameraControlsViewController *)self bottomBar];
-      [v42 addSubview:v43];
+      bottomBar4 = [(CFXCameraControlsViewController *)self backgroundView];
+      bottomBar5 = [(CFXCameraControlsViewController *)self bottomBar];
+      [bottomBar4 addSubview:bottomBar5];
     }
 
     else
@@ -215,75 +215,75 @@
         goto LABEL_25;
       }
 
-      v42 = [(CFXCameraControlsViewController *)self delegate];
-      v43 = [(CFXCameraControlsViewController *)self bottomBar];
-      [v42 insertCamBottomBar:v43];
+      bottomBar4 = [(CFXCameraControlsViewController *)self delegate];
+      bottomBar5 = [(CFXCameraControlsViewController *)self bottomBar];
+      [bottomBar4 insertCamBottomBar:bottomBar5];
     }
   }
 
 LABEL_25:
-  v44 = [(CFXCameraControlsViewController *)self bottomBar];
-  [v44 setLayoutStyle:v6];
+  bottomBar6 = [(CFXCameraControlsViewController *)self bottomBar];
+  [bottomBar6 setLayoutStyle:cam_initialLayoutStyle];
 
   if ((CFXCaptureCapabilitiesIsCTMSupported() & 1) == 0)
   {
-    v45 = [(CFXCameraControlsViewController *)self effectButton];
-    v46 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v46 setCreativeCameraButton:v45];
+    effectButton5 = [(CFXCameraControlsViewController *)self effectButton];
+    bottomBar7 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar7 setCreativeCameraButton:effectButton5];
 
-    v47 = [(CFXCameraControlsViewController *)self shutterButton];
-    v48 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v48 setShutterButton:v47];
+    shutterButton5 = [(CFXCameraControlsViewController *)self shutterButton];
+    bottomBar8 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar8 setShutterButton:shutterButton5];
 
-    v49 = [(CFXCameraControlsViewController *)self flipButton];
-    v50 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v50 setFlipButton:v49];
+    flipButton3 = [(CFXCameraControlsViewController *)self flipButton];
+    bottomBar9 = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar9 setFlipButton:flipButton3];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CFXCameraControlsViewController;
-  [(CFXCameraControlsViewController *)&v10 viewWillAppear:a3];
+  [(CFXCameraControlsViewController *)&v10 viewWillAppear:appear];
   v4 = [(CFXCameraControlsViewController *)self captureMode]== 2;
-  v5 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v5 setMode:v4 animated:0];
+  shutterButton = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton setMode:v4 animated:0];
 
   v6 = [CFXFeedbackController alloc];
-  v7 = [(CFXCameraControlsViewController *)self shutterButton];
-  v8 = [(CFXFeedbackController *)v6 initWithShutterButton:v7];
+  shutterButton2 = [(CFXCameraControlsViewController *)self shutterButton];
+  v8 = [(CFXFeedbackController *)v6 initWithShutterButton:shutterButton2];
   [(CFXCameraControlsViewController *)self setFeedbackController:v8];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_JFX_orientationMonitorInterfaceOrientationNotification_ name:@"kJFXOrientationMonitorInterfaceOrientationNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_JFX_orientationMonitorInterfaceOrientationNotification_ name:@"kJFXOrientationMonitorInterfaceOrientationNotification" object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = CFXCameraControlsViewController;
-  [(CFXCameraControlsViewController *)&v16 viewDidAppear:a3];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  if ([v5 userInterfaceIdiom])
+  [(CFXCameraControlsViewController *)&v16 viewDidAppear:appear];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v6 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
+    appStripBackgroundView = [(CFXCameraControlsViewController *)self appStripBackgroundView];
 
-    if (!v6)
+    if (!appStripBackgroundView)
     {
       v7 = objc_alloc_init(MEMORY[0x277D75D18]);
       [(CFXCameraControlsViewController *)self setAppStripBackgroundView:v7];
 
-      v8 = [(CFXCameraControlsViewController *)self captureMode];
-      if (v8)
+      captureMode = [(CFXCameraControlsViewController *)self captureMode];
+      if (captureMode)
       {
-        v6 = [(CFXCameraControlsViewController *)self bottomBar];
-        v3 = [v6 backgroundView];
-        [v3 backgroundColor];
+        appStripBackgroundView = [(CFXCameraControlsViewController *)self bottomBar];
+        backgroundView = [appStripBackgroundView backgroundView];
+        [backgroundView backgroundColor];
       }
 
       else
@@ -291,19 +291,19 @@ LABEL_25:
         [MEMORY[0x277D75348] blackColor];
       }
       v9 = ;
-      v10 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
-      [v10 setBackgroundColor:v9];
+      appStripBackgroundView2 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
+      [appStripBackgroundView2 setBackgroundColor:v9];
 
-      if (v8)
+      if (captureMode)
       {
 
-        v9 = v6;
+        v9 = appStripBackgroundView;
       }
 
       if (CFXCaptureCapabilitiesIsCTMSupported())
       {
-        v11 = [(CFXCameraControlsViewController *)self delegate];
-        if ([v11 needsBlackBackgroundForCTMControls])
+        delegate = [(CFXCameraControlsViewController *)self delegate];
+        if ([delegate needsBlackBackgroundForCTMControls])
         {
           [MEMORY[0x277D75348] blackColor];
         }
@@ -313,26 +313,26 @@ LABEL_25:
           [MEMORY[0x277D75348] clearColor];
         }
         v12 = ;
-        v13 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
-        [v13 setBackgroundColor:v12];
+        appStripBackgroundView3 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
+        [appStripBackgroundView3 setBackgroundColor:v12];
       }
 
-      v14 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerView];
-      v15 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
-      [v14 addSubview:v15];
+      appStripBackgroundContainerView = [(CFXCameraControlsViewController *)self appStripBackgroundContainerView];
+      appStripBackgroundView4 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
+      [appStripBackgroundContainerView addSubview:appStripBackgroundView4];
 
       [(CFXCameraControlsViewController *)self configureUIForOrientation];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CFXCameraControlsViewController;
-  [(CFXCameraControlsViewController *)&v5 viewDidDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"kJFXOrientationMonitorInterfaceOrientationNotification" object:0];
+  [(CFXCameraControlsViewController *)&v5 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"kJFXOrientationMonitorInterfaceOrientationNotification" object:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -347,10 +347,10 @@ LABEL_25:
 {
   if ([(CFXCameraControlsViewController *)self captureMode]!= 1)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v4)
+    if (!userInterfaceIdiom)
     {
       v5 = +[JFXOrientationMonitor keyWindow];
       [v5 bounds];
@@ -367,8 +367,8 @@ LABEL_25:
       v22 = v21;
       if (CFXCaptureCapabilitiesIsCTMSupported())
       {
-        v23 = [(CFXCameraControlsViewController *)self delegate];
-        [v23 bottomBarCTMControlsFrameForWindowOrientation:v14 bounds:{v7, v9, v11, v13}];
+        delegate = [(CFXCameraControlsViewController *)self delegate];
+        [delegate bottomBarCTMControlsFrameForWindowOrientation:v14 bounds:{v7, v9, v11, v13}];
         v16 = v24;
         v18 = v25;
         v20 = v26;
@@ -377,21 +377,21 @@ LABEL_25:
 
       [(CFXCameraControlsViewController *)self CFX_smallPhoneDockHeightAdjustment];
       v29 = v28;
-      v30 = [(CFXCameraControlsViewController *)self bottomBar];
-      [v30 frame];
+      bottomBar = [(CFXCameraControlsViewController *)self bottomBar];
+      [bottomBar frame];
       Width = CGRectGetWidth(v66);
 
-      v32 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
       v33 = 0.0;
-      if (![v32 userInterfaceIdiom])
+      if (![currentDevice2 userInterfaceIdiom])
       {
-        v34 = [MEMORY[0x277D759A0] mainScreen];
-        [v34 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v33 = v29;
         if (v35 != 568)
         {
-          v36 = [MEMORY[0x277D759A0] mainScreen];
-          [v36 bounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 bounds];
           if (v37 == 568)
           {
             v33 = v29;
@@ -411,11 +411,11 @@ LABEL_25:
       v67.size.width = v20;
       v67.size.height = v22;
       Height = CGRectGetHeight(v67);
-      v40 = [MEMORY[0x277D75418] currentDevice];
-      if (![v40 userInterfaceIdiom])
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      if (![currentDevice3 userInterfaceIdiom])
       {
-        v41 = [MEMORY[0x277D759A0] mainScreen];
-        [v41 bounds];
+        mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen3 bounds];
         if (v42 == 568)
         {
           Height = Height - v29;
@@ -423,8 +423,8 @@ LABEL_25:
 
         else
         {
-          v43 = [MEMORY[0x277D759A0] mainScreen];
-          [v43 bounds];
+          mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen4 bounds];
           if (v44 == 568)
           {
             Height = Height - v29;
@@ -443,8 +443,8 @@ LABEL_25:
         v46 = 0.0;
       }
 
-      v47 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTopConstraint];
-      v49 = v47;
+      appStripBackgroundContainerViewTopConstraint = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTopConstraint];
+      v49 = appStripBackgroundContainerViewTopConstraint;
       if (v38 >= 2)
       {
         *&v48 = 250.0;
@@ -465,39 +465,39 @@ LABEL_25:
         v50 = 250.0;
       }
 
-      [v47 setPriority:v48];
+      [appStripBackgroundContainerViewTopConstraint setPriority:v48];
 
-      v51 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewHeightConstraint];
+      appStripBackgroundContainerViewHeightConstraint = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewHeightConstraint];
       *&v52 = v50;
-      [v51 setPriority:v52];
+      [appStripBackgroundContainerViewHeightConstraint setPriority:v52];
 
       if (v14 == 1)
       {
         v45 = -Height;
       }
 
-      v53 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewBottomConstraint];
-      [v53 setConstant:v45];
+      appStripBackgroundContainerViewBottomConstraint = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewBottomConstraint];
+      [appStripBackgroundContainerViewBottomConstraint setConstant:v45];
 
-      v54 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
-      [v54 setConstant:0.0];
+      appStripBackgroundContainerViewLeadingConstraint = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
+      [appStripBackgroundContainerViewLeadingConstraint setConstant:0.0];
 
-      v55 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
-      [v55 setConstant:0.0];
+      appStripBackgroundContainerViewTrailingConstraint = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
+      [appStripBackgroundContainerViewTrailingConstraint setConstant:0.0];
 
       if (CFXCaptureCapabilitiesIsCTMSupported())
       {
-        v56 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
-        [v56 setActive:0];
+        appStripBackgroundContainerViewLeadingConstraint2 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
+        [appStripBackgroundContainerViewLeadingConstraint2 setActive:0];
 
-        v57 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
-        [v57 setActive:0];
+        appStripBackgroundContainerViewTrailingConstraint2 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
+        [appStripBackgroundContainerViewTrailingConstraint2 setActive:0];
       }
 
       if (v38 > 1)
       {
-        v62 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewHeightConstraint];
-        [v62 setConstant:v33];
+        appStripBackgroundContainerViewHeightConstraint2 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewHeightConstraint];
+        [appStripBackgroundContainerViewHeightConstraint2 setConstant:v33];
 
         if ([(CFXCameraControlsViewController *)self dockIsMagnified])
         {
@@ -510,25 +510,25 @@ LABEL_25:
 
       else
       {
-        v58 = [(CFXCameraControlsViewController *)self bottomBar];
-        [v58 frame];
+        bottomBar2 = [(CFXCameraControlsViewController *)self bottomBar];
+        [bottomBar2 frame];
         v33 = CGRectGetWidth(v68);
 
         if (v14 == 4)
         {
-          v59 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
-          v60 = v59;
+          appStripBackgroundContainerViewLeadingConstraint3 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewLeadingConstraint];
+          v60 = appStripBackgroundContainerViewLeadingConstraint3;
           v61 = Height;
         }
 
         else
         {
-          v59 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
-          v60 = v59;
+          appStripBackgroundContainerViewLeadingConstraint3 = [(CFXCameraControlsViewController *)self appStripBackgroundContainerViewTrailingConstraint];
+          v60 = appStripBackgroundContainerViewLeadingConstraint3;
           v61 = -Height;
         }
 
-        [v59 setConstant:v61];
+        [appStripBackgroundContainerViewLeadingConstraint3 setConstant:v61];
 
         v46 = 0.0;
         if ([(CFXCameraControlsViewController *)self dockIsMagnified])
@@ -551,8 +551,8 @@ LABEL_25:
         }
       }
 
-      v64 = [(CFXCameraControlsViewController *)self appStripBackgroundView];
-      [v64 setFrame:{v63, v46, v29, v33}];
+      appStripBackgroundView = [(CFXCameraControlsViewController *)self appStripBackgroundView];
+      [appStripBackgroundView setFrame:{v63, v46, v29, v33}];
     }
   }
 }
@@ -560,101 +560,101 @@ LABEL_25:
 - (UIColor)backgroundColor
 {
   [(CFXCameraControlsViewController *)self loadViewIfNeeded];
-  v3 = [(CFXCameraControlsViewController *)self backgroundView];
-  v4 = [v3 backgroundColor];
+  backgroundView = [(CFXCameraControlsViewController *)self backgroundView];
+  backgroundColor = [backgroundView backgroundColor];
 
-  return v4;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   [(CFXCameraControlsViewController *)self loadViewIfNeeded];
   if (isStreamingMode(-[CFXCameraControlsViewController captureMode](self, "captureMode")) || ([MEMORY[0x277D75418] currentDevice], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "userInterfaceIdiom"), v4, v5 == 1))
   {
-    v6 = [(CFXCameraControlsViewController *)self backgroundView];
-    [v6 setBackgroundColor:v7];
+    backgroundView = [(CFXCameraControlsViewController *)self backgroundView];
+    [backgroundView setBackgroundColor:colorCopy];
   }
 }
 
-- (void)updateUIForVideoRecording:(BOOL)a3
+- (void)updateUIForVideoRecording:(BOOL)recording
 {
-  v3 = a3;
-  v5 = !a3;
-  v6 = [(CFXCameraControlsViewController *)self effectButton];
-  [v6 setAlpha:v5];
+  recordingCopy = recording;
+  v5 = !recording;
+  effectButton = [(CFXCameraControlsViewController *)self effectButton];
+  [effectButton setAlpha:v5];
 
-  v7 = [(CFXCameraControlsViewController *)self flipButton];
-  [v7 setAlpha:v5];
+  flipButton = [(CFXCameraControlsViewController *)self flipButton];
+  [flipButton setAlpha:v5];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v9)
+  if (!userInterfaceIdiom)
   {
-    v10 = [(CFXCameraControlsViewController *)self bottomBar];
-    [v10 setBackgroundStyle:v3];
+    bottomBar = [(CFXCameraControlsViewController *)self bottomBar];
+    [bottomBar setBackgroundStyle:recordingCopy];
   }
 }
 
-- (void)updateUIForDockMagnify:(BOOL)a3 dockHeightDelta:(double)a4
+- (void)updateUIForDockMagnify:(BOOL)magnify dockHeightDelta:(double)delta
 {
-  [(CFXCameraControlsViewController *)self setDockIsMagnified:a3];
-  [(CFXCameraControlsViewController *)self setDockMagnifiedHeightDelta:a4];
+  [(CFXCameraControlsViewController *)self setDockIsMagnified:magnify];
+  [(CFXCameraControlsViewController *)self setDockMagnifiedHeightDelta:delta];
   [(CFXCameraControlsViewController *)self configureUIForOrientation];
-  v6 = [(CFXCameraControlsViewController *)self backgroundView];
-  [v6 layoutIfNeeded];
+  backgroundView = [(CFXCameraControlsViewController *)self backgroundView];
+  [backgroundView layoutIfNeeded];
 }
 
-- (void)setShutterButtonEnabled:(BOOL)a3
+- (void)setShutterButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  shutterButton = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton setEnabled:enabledCopy];
 }
 
-- (void)setShutterButtonAlpha:(double)a3
+- (void)setShutterButtonAlpha:(double)alpha
 {
-  v4 = [(CFXCameraControlsViewController *)self shutterButton];
-  [v4 setAlpha:a3];
+  shutterButton = [(CFXCameraControlsViewController *)self shutterButton];
+  [shutterButton setAlpha:alpha];
 }
 
-- (void)effectsButtonTapped:(id)a3
+- (void)effectsButtonTapped:(id)tapped
 {
-  v4 = [(CFXCameraControlsViewController *)self effectButton];
-  [v4 setActive:0];
+  effectButton = [(CFXCameraControlsViewController *)self effectButton];
+  [effectButton setActive:0];
 
-  v5 = [(CFXCameraControlsViewController *)self delegate];
+  delegate = [(CFXCameraControlsViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(CFXCameraControlsViewController *)self delegate];
-    [v6 cameraControlsViewControllerEffectsButtonWasTapped:self];
+    delegate2 = [(CFXCameraControlsViewController *)self delegate];
+    [delegate2 cameraControlsViewControllerEffectsButtonWasTapped:self];
   }
 }
 
-- (void)shutterButtonTapped:(id)a3
+- (void)shutterButtonTapped:(id)tapped
 {
   if (![(CFXCameraControlsViewController *)self captureMode])
   {
     [(CFXCameraControlsViewController *)self setShutterButtonEnabled:0];
   }
 
-  v4 = [(CFXCameraControlsViewController *)self delegate];
+  delegate = [(CFXCameraControlsViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CFXCameraControlsViewController *)self delegate];
-    [v5 cameraControlsViewControllerShutterButtonWasTapped:self];
+    delegate2 = [(CFXCameraControlsViewController *)self delegate];
+    [delegate2 cameraControlsViewControllerShutterButtonWasTapped:self];
 
     if ([(CFXCameraControlsViewController *)self captureMode]== 2)
     {
-      v6 = [(CFXCameraControlsViewController *)self shutterButton];
-      v7 = [v6 mode];
+      shutterButton = [(CFXCameraControlsViewController *)self shutterButton];
+      mode = [shutterButton mode];
 
-      v8 = [(CFXCameraControlsViewController *)self shutterButton];
-      v10 = v8;
-      if (v7 == 6)
+      shutterButton2 = [(CFXCameraControlsViewController *)self shutterButton];
+      v10 = shutterButton2;
+      if (mode == 6)
       {
         v9 = 1;
       }
@@ -664,19 +664,19 @@ LABEL_25:
         v9 = 6;
       }
 
-      [v8 setMode:v9 animated:1];
+      [shutterButton2 setMode:v9 animated:1];
     }
   }
 }
 
-- (void)switchCameraButtonTapped:(id)a3
+- (void)switchCameraButtonTapped:(id)tapped
 {
-  v4 = [(CFXCameraControlsViewController *)self delegate];
+  delegate = [(CFXCameraControlsViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CFXCameraControlsViewController *)self delegate];
-    [v5 cameraControlsViewControllerSwitchCameraButtonWasTapped:self];
+    delegate2 = [(CFXCameraControlsViewController *)self delegate];
+    [delegate2 cameraControlsViewControllerSwitchCameraButtonWasTapped:self];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface StateOfMindHorizontalCollectionViewCell
-- (_TtC9MomentsUI39StateOfMindHorizontalCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI39StateOfMindHorizontalCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation StateOfMindHorizontalCollectionViewCell
 
-- (_TtC9MomentsUI39StateOfMindHorizontalCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI39StateOfMindHorizontalCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI39StateOfMindHorizontalCollectionViewCell_stateOfMindView;
   if (one-time initialization token for empty != -1)

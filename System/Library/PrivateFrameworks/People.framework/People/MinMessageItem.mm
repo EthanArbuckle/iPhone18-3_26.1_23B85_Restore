@@ -1,22 +1,22 @@
 @interface MinMessageItem
-- (MinMessageItem)initWith:(id)a3 andText:(id)a4;
+- (MinMessageItem)initWith:(id)with andText:(id)text;
 @end
 
 @implementation MinMessageItem
 
-- (MinMessageItem)initWith:(id)a3 andText:(id)a4
+- (MinMessageItem)initWith:(id)with andText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = MinMessageItem;
   v8 = [(MinMessageItem *)&v13 init];
   text = v8->_text;
-  v8->_text = v7;
-  v10 = v7;
+  v8->_text = textCopy;
+  v10 = textCopy;
 
   date = v8->_date;
-  v8->_date = v6;
+  v8->_date = withCopy;
 
   return v8;
 }

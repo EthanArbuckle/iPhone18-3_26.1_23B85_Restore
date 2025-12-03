@@ -2,9 +2,9 @@
 - (SPUISearchModelZKW)init;
 - (void)_refreshRequested;
 - (void)dealloc;
-- (void)didReceiveResponse:(id)a3;
-- (void)refreshUpdatingQueryId:(BOOL)a3 withQueryContext:(id)a4;
-- (void)updateWithQueryContext:(id)a3;
+- (void)didReceiveResponse:(id)response;
+- (void)refreshUpdatingQueryId:(BOOL)id withQueryContext:(id)context;
+- (void)updateWithQueryContext:(id)context;
 @end
 
 @implementation SPUISearchModelZKW
@@ -28,26 +28,26 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SPUISearchModelZKW;
   [(SPUISearchModelZKW *)&v5 dealloc];
 }
 
-- (void)refreshUpdatingQueryId:(BOOL)a3 withQueryContext:(id)a4
+- (void)refreshUpdatingQueryId:(BOOL)id withQueryContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = MEMORY[0x277D4C898];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__SPUISearchModelZKW_refreshUpdatingQueryId_withQueryContext___block_invoke;
   v9[3] = &unk_279D070E0;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = contextCopy;
+  idCopy = id;
+  v8 = contextCopy;
   [v7 dispatchMainIfNecessary:v9];
 }
 
@@ -112,15 +112,15 @@ void __62__SPUISearchModelZKW_refreshUpdatingQueryId_withQueryContext___block_in
   [(SPUISearchModelZKW *)self refreshUpdatingQueryId:1 withQueryContext:0];
 }
 
-- (void)updateWithQueryContext:(id)a3
+- (void)updateWithQueryContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (!contextCopy)
   {
     v5 = objc_opt_new();
-    v6 = [(SPUISearchModel *)self delegate];
-    [v5 setDeviceAuthenticationState:{objc_msgSend(v6, "currentDeviceAuthenticationState")}];
+    delegate = [(SPUISearchModel *)self delegate];
+    [v5 setDeviceAuthenticationState:{objc_msgSend(delegate, "currentDeviceAuthenticationState")}];
   }
 
   v7 = MEMORY[0x277D65D40];
@@ -138,17 +138,17 @@ void __62__SPUISearchModelZKW_refreshUpdatingQueryId_withQueryContext___block_in
   }
 
   self->_shouldCacheResults = 1;
-  v9 = [(SPUISearchModelZKW *)self session];
-  v10 = [v9 queryTaskWithContext:v5];
+  session = [(SPUISearchModelZKW *)self session];
+  v10 = [session queryTaskWithContext:v5];
   [(SPUISearchModel *)self setQueryTask:v10];
 
   [(SPUISearchModel *)self setLastResponse:0];
   self->_newQuery = 1;
-  v11 = [(SPUISearchModel *)self queryTask];
-  [v11 setDelegate:self];
+  queryTask = [(SPUISearchModel *)self queryTask];
+  [queryTask setDelegate:self];
 
-  v12 = [(SPUISearchModel *)self queryTask];
-  [v12 start];
+  queryTask2 = [(SPUISearchModel *)self queryTask];
+  [queryTask2 start];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -171,10 +171,10 @@ void __45__SPUISearchModelZKW_updateWithQueryContext___block_invoke(uint64_t a1)
   [v4 addObserver:*(a1 + 32) selector:sel__refreshRequested name:*MEMORY[0x277D65C08] object:0];
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 state] == 2 && -[SPUISearchModelZKW ignoreNextPartialUpdate](self, "ignoreNextPartialUpdate"))
+  responseCopy = response;
+  if ([responseCopy state] == 2 && -[SPUISearchModelZKW ignoreNextPartialUpdate](self, "ignoreNextPartialUpdate"))
   {
     [(SPUISearchModelZKW *)self setIgnoreNextPartialUpdate:0];
     [(SPUISearchModel *)self setQueryPartiallyComplete:1];
@@ -199,7 +199,7 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = SPUISearchModelZKW;
-    [(SPUISearchModel *)&v9 didReceiveResponse:v4];
+    [(SPUISearchModel *)&v9 didReceiveResponse:responseCopy];
     v8 = MEMORY[0x277D65D40];
     v6 = *MEMORY[0x277D65D40];
     if (!*MEMORY[0x277D65D40])

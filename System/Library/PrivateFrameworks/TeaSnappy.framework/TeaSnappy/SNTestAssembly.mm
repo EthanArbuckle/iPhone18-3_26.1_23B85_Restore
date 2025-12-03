@@ -1,24 +1,24 @@
 @interface SNTestAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SNTestAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_287E95D30 factory:&__block_literal_global];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_287E95D30 factory:&__block_literal_global];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_49];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_49];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_79];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_79];
 
-  v11 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v10 = [v11 registerProtocol:&unk_287E960E0 factory:&__block_literal_global_81];
+  v10 = [privateContainer registerProtocol:&unk_287E960E0 factory:&__block_literal_global_81];
 }
 
 id __33__SNTestAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

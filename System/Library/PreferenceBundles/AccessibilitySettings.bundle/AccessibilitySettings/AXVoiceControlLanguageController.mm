@@ -1,7 +1,7 @@
 @interface AXVoiceControlLanguageController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceControlLanguageController
@@ -18,11 +18,11 @@
     v12 = 3221225472;
     v13 = __46__AXVoiceControlLanguageController_specifiers__block_invoke;
     v14 = &unk_259038;
-    v15 = self;
+    selfCopy = self;
     v7 = v5;
     v16 = v7;
     [v6 enumerateObjectsUsingBlock:&v11];
-    [v7 sortUsingComparator:{&__block_literal_global_69, v11, v12, v13, v14, v15}];
+    [v7 sortUsingComparator:{&__block_literal_global_69, v11, v12, v13, v14, selfCopy}];
     if (v6)
     {
       CFRelease(v6);
@@ -60,13 +60,13 @@ int64_t __46__AXVoiceControlLanguageController_specifiers__block_invoke_2(id a1,
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AXVoiceControlLanguageController;
-  v4 = [(AXVoiceControlLanguageController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:@"vcLanguage"];
+  v4 = [(AXVoiceControlLanguageController *)&v9 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:@"vcLanguage"];
 
   v7 = VSPreferencesCopySpokenLanguageIdentifier();
   [v4 setChecked:{objc_msgSend(v6, "isEqualToString:", v7)}];
@@ -78,27 +78,27 @@ int64_t __46__AXVoiceControlLanguageController_specifiers__block_invoke_2(id a1,
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = AXVoiceControlLanguageController;
-  [(AXVoiceControlLanguageController *)&v25 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AXVoiceControlLanguageController *)&v25 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v24.receiver = self;
   v24.super_class = AXVoiceControlLanguageController;
-  v19 = v7;
-  v18 = [(AXVoiceControlLanguageController *)&v24 tableView:v6 cellForRowAtIndexPath:v7];
-  v8 = [v18 specifier];
-  v9 = [v8 propertyForKey:@"vcLanguage"];
+  v19 = pathCopy;
+  v18 = [(AXVoiceControlLanguageController *)&v24 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v18 specifier];
+  v9 = [specifier propertyForKey:@"vcLanguage"];
 
   VSPreferencesSetSpokenLanguageIdentifier();
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v6 visibleCells];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v11 = [visibleCells countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -109,16 +109,16 @@ int64_t __46__AXVoiceControlLanguageController_specifiers__block_invoke_2(id a1,
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(visibleCells);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 specifier];
-        v17 = [v16 propertyForKey:@"vcLanguage"];
+        specifier2 = [v15 specifier];
+        v17 = [specifier2 propertyForKey:@"vcLanguage"];
         [v15 setChecked:{objc_msgSend(v9, "isEqualToString:", v17)}];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v12 = [visibleCells countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v12);

@@ -1,59 +1,59 @@
 @interface SPAccessoryPairingConfiguration
-- (SPAccessoryPairingConfiguration)initWithCoder:(id)a3;
-- (SPAccessoryPairingConfiguration)initWithName:(id)a3 roleId:(int64_t)a4 roleEmoji:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPAccessoryPairingConfiguration)initWithCoder:(id)coder;
+- (SPAccessoryPairingConfiguration)initWithName:(id)name roleId:(int64_t)id roleEmoji:(id)emoji;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPAccessoryPairingConfiguration
 
-- (SPAccessoryPairingConfiguration)initWithName:(id)a3 roleId:(int64_t)a4 roleEmoji:(id)a5
+- (SPAccessoryPairingConfiguration)initWithName:(id)name roleId:(int64_t)id roleEmoji:(id)emoji
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  emojiCopy = emoji;
   v14.receiver = self;
   v14.super_class = SPAccessoryPairingConfiguration;
   v11 = [(SPAccessoryPairingConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v12->_roleId = a4;
-    objc_storeStrong(&v12->_roleEmoji, a5);
+    objc_storeStrong(&v11->_name, name);
+    v12->_roleId = id;
+    objc_storeStrong(&v12->_roleEmoji, emoji);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPAccessoryPairingConfiguration alloc];
-  v5 = [(SPAccessoryPairingConfiguration *)self name];
-  v6 = [(SPAccessoryPairingConfiguration *)self roleId];
-  v7 = [(SPAccessoryPairingConfiguration *)self roleEmoji];
-  v8 = [(SPAccessoryPairingConfiguration *)v4 initWithName:v5 roleId:v6 roleEmoji:v7];
+  name = [(SPAccessoryPairingConfiguration *)self name];
+  roleId = [(SPAccessoryPairingConfiguration *)self roleId];
+  roleEmoji = [(SPAccessoryPairingConfiguration *)self roleEmoji];
+  v8 = [(SPAccessoryPairingConfiguration *)v4 initWithName:name roleId:roleId roleEmoji:roleEmoji];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInteger:self->_roleId forKey:@"roleId"];
-  [v5 encodeObject:self->_roleEmoji forKey:@"roleEmoji"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInteger:self->_roleId forKey:@"roleId"];
+  [coderCopy encodeObject:self->_roleEmoji forKey:@"roleEmoji"];
 }
 
-- (SPAccessoryPairingConfiguration)initWithCoder:(id)a3
+- (SPAccessoryPairingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
-  self->_roleId = [v4 decodeIntegerForKey:@"roleId"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roleEmoji"];
+  self->_roleId = [coderCopy decodeIntegerForKey:@"roleId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roleEmoji"];
 
   roleEmoji = self->_roleEmoji;
   self->_roleEmoji = v7;

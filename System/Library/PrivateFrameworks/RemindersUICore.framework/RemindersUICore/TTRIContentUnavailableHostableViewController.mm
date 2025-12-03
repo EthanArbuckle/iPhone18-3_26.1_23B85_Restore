@@ -3,76 +3,76 @@
 - (TTRIContentUnavailableConfigurationState)ttr_contentUnavailableConfigurationState;
 - (id)_contentUnavailableConfiguration;
 - (id)_contentUnavailableConfigurationState;
-- (void)_setContentUnavailableConfiguration:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)ttr_setContentUnavailableConfiguration:(id)a3;
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_setContentUnavailableConfiguration:(id)configuration;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)ttr_setContentUnavailableConfiguration:(id)configuration;
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state;
 @end
 
 @implementation TTRIContentUnavailableHostableViewController
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [a3 asTTRI];
-  [(TTRIContentUnavailableHostableViewController *)self ttr_updateContentUnavailableConfigurationUsingState:v4];
+  asTTRI = [state asTTRI];
+  [(TTRIContentUnavailableHostableViewController *)self ttr_updateContentUnavailableConfigurationUsingState:asTTRI];
 }
 
-- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)ttr_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [a3 asUIKit];
+  asUIKit = [state asUIKit];
   v5.receiver = self;
   v5.super_class = TTRIContentUnavailableHostableViewController;
-  [(TTRIContentUnavailableHostableViewController *)&v5 _updateContentUnavailableConfigurationUsingState:v4];
+  [(TTRIContentUnavailableHostableViewController *)&v5 _updateContentUnavailableConfigurationUsingState:asUIKit];
 }
 
 - (id)_contentUnavailableConfigurationState
 {
-  v2 = [(TTRIContentUnavailableHostableViewController *)self ttr_contentUnavailableConfigurationState];
-  v3 = [v2 asUIKit];
+  ttr_contentUnavailableConfigurationState = [(TTRIContentUnavailableHostableViewController *)self ttr_contentUnavailableConfigurationState];
+  asUIKit = [ttr_contentUnavailableConfigurationState asUIKit];
 
-  return v3;
+  return asUIKit;
 }
 
 - (TTRIContentUnavailableConfigurationState)ttr_contentUnavailableConfigurationState
 {
   v5.receiver = self;
   v5.super_class = TTRIContentUnavailableHostableViewController;
-  v2 = [(TTRIContentUnavailableHostableViewController *)&v5 _contentUnavailableConfigurationState];
-  v3 = [v2 asTTRI];
+  _contentUnavailableConfigurationState = [(TTRIContentUnavailableHostableViewController *)&v5 _contentUnavailableConfigurationState];
+  asTTRI = [_contentUnavailableConfigurationState asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
-- (void)_setContentUnavailableConfiguration:(id)a3
+- (void)_setContentUnavailableConfiguration:(id)configuration
 {
-  v4 = [a3 asTTRI];
-  [(TTRIContentUnavailableHostableViewController *)self ttr_setContentUnavailableConfiguration:v4];
+  asTTRI = [configuration asTTRI];
+  [(TTRIContentUnavailableHostableViewController *)self ttr_setContentUnavailableConfiguration:asTTRI];
 }
 
-- (void)ttr_setContentUnavailableConfiguration:(id)a3
+- (void)ttr_setContentUnavailableConfiguration:(id)configuration
 {
-  v4 = [a3 asUIKit];
+  asUIKit = [configuration asUIKit];
   v5.receiver = self;
   v5.super_class = TTRIContentUnavailableHostableViewController;
-  [(TTRIContentUnavailableHostableViewController *)&v5 _setContentUnavailableConfiguration:v4];
+  [(TTRIContentUnavailableHostableViewController *)&v5 _setContentUnavailableConfiguration:asUIKit];
 }
 
 - (id)_contentUnavailableConfiguration
 {
-  v2 = [(TTRIContentUnavailableHostableViewController *)self ttr_contentUnavailableConfiguration];
-  v3 = [v2 asUIKit];
+  ttr_contentUnavailableConfiguration = [(TTRIContentUnavailableHostableViewController *)self ttr_contentUnavailableConfiguration];
+  asUIKit = [ttr_contentUnavailableConfiguration asUIKit];
 
-  return v3;
+  return asUIKit;
 }
 
 - (TTRIContentUnavailableConfiguration)ttr_contentUnavailableConfiguration
 {
   v5.receiver = self;
   v5.super_class = TTRIContentUnavailableHostableViewController;
-  v2 = [(TTRIContentUnavailableHostableViewController *)&v5 _contentUnavailableConfiguration];
-  v3 = [v2 asTTRI];
+  _contentUnavailableConfiguration = [(TTRIContentUnavailableHostableViewController *)&v5 _contentUnavailableConfiguration];
+  asTTRI = [_contentUnavailableConfiguration asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
 @end

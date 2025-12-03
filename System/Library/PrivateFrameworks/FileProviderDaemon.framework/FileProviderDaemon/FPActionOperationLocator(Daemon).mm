@@ -13,54 +13,54 @@
 - (id)materializedURLWithExtensionManager:()Daemon
 {
   v4 = a3;
-  if ([a1 isExternalURL])
+  if ([self isExternalURL])
   {
-    v5 = [a1 asURL];
+    asURL = [self asURL];
   }
 
   else
   {
-    v6 = [a1 asFPItem];
-    v7 = [v6 itemID];
-    v8 = [v4 domainFromItemID:v7 reason:0];
+    asFPItem = [self asFPItem];
+    itemID = [asFPItem itemID];
+    v8 = [v4 domainFromItemID:itemID reason:0];
 
-    v5 = [a1 materializedURLWithDomain:v8];
+    asURL = [self materializedURLWithDomain:v8];
   }
 
-  return v5;
+  return asURL;
 }
 
 - (id)materializedURLWithDomain:()Daemon
 {
   v4 = a3;
-  if ([a1 isExternalURL])
+  if ([self isExternalURL])
   {
-    v5 = [a1 asURL];
+    asURL = [self asURL];
   }
 
   else
   {
-    v6 = [a1 asFPItem];
-    v7 = [v6 itemID];
-    v5 = [v4 materializedURLForItemID:v7];
+    asFPItem = [self asFPItem];
+    itemID = [asFPItem itemID];
+    asURL = [v4 materializedURLForItemID:itemID];
 
-    [v6 setFileURL:v5];
+    [asFPItem setFileURL:asURL];
   }
 
-  return v5;
+  return asURL;
 }
 
 - (uint64_t)willRequireDownloadForSourceItem:()Daemon extensionManager:
 {
   v6 = a3;
   v7 = a4;
-  if (v6 && [a1 isFolder] && (objc_msgSend(a1, "isExternalURL") & 1) == 0 && objc_msgSend(a1, "isProviderItem"))
+  if (v6 && [self isFolder] && (objc_msgSend(self, "isExternalURL") & 1) == 0 && objc_msgSend(self, "isProviderItem"))
   {
-    v8 = [a1 asFPItem];
-    v9 = [v8 itemID];
-    v10 = [v7 domainFromItemID:v9 reason:0];
+    asFPItem = [self asFPItem];
+    itemID = [asFPItem itemID];
+    v10 = [v7 domainFromItemID:itemID reason:0];
 
-    if ([v10 isUsingFPFS] && (objc_msgSend(v8, "isDownloaded") & 1) == 0)
+    if ([v10 isUsingFPFS] && (objc_msgSend(asFPItem, "isDownloaded") & 1) == 0)
     {
       if (([v6 isExternalURL] & 1) != 0 || !objc_msgSend(v6, "isProviderItem"))
       {
@@ -69,13 +69,13 @@
 
       else
       {
-        v13 = [v6 asFPItem];
-        v14 = [a1 asFPItem];
-        v15 = [v13 providerDomainID];
-        v16 = [v14 providerDomainID];
-        v17 = [v15 isEqualToString:v16];
+        asFPItem2 = [v6 asFPItem];
+        asFPItem3 = [self asFPItem];
+        providerDomainID = [asFPItem2 providerDomainID];
+        providerDomainID2 = [asFPItem3 providerDomainID];
+        v17 = [providerDomainID isEqualToString:providerDomainID2];
 
-        v11 = v17 ^ 1 | [v13 isDownloaded];
+        v11 = v17 ^ 1 | [asFPItem2 isDownloaded];
       }
     }
 
@@ -97,18 +97,18 @@
 {
   v10 = a3;
   v11 = a6;
-  if (([a1 isExternalURL] & 1) == 0)
+  if (([self isExternalURL] & 1) == 0)
   {
-    v13 = [a1 asFPItem];
-    v14 = [v13 itemID];
-    v15 = [v11 domainFromItemID:v14 reason:0];
+    asFPItem = [self asFPItem];
+    itemID = [asFPItem itemID];
+    v15 = [v11 domainFromItemID:itemID reason:0];
 
-    v16 = [v15 isUsingFPFS];
+    isUsingFPFS = [v15 isUsingFPFS];
     if (a4)
     {
-      if (!v16 || ([v13 isRecursivelyDownloaded] & 1) == 0)
+      if (!isUsingFPFS || ([asFPItem isRecursivelyDownloaded] & 1) == 0)
       {
-        if ([a1 isFolder])
+        if ([self isFolder])
         {
           v12 = 2;
         }
@@ -121,10 +121,10 @@
 LABEL_12:
         if (([v10 isExternalURL] & 1) == 0 && (a5 & 1) == 0)
         {
-          v17 = [v10 asFPItem];
-          v18 = [v13 providerDomainID];
-          v19 = [v17 providerDomainID];
-          v20 = [v18 isEqualToString:v19];
+          asFPItem2 = [v10 asFPItem];
+          providerDomainID = [asFPItem providerDomainID];
+          providerDomainID2 = [asFPItem2 providerDomainID];
+          v20 = [providerDomainID isEqualToString:providerDomainID2];
 
           if (v20)
           {
@@ -136,7 +136,7 @@ LABEL_12:
       }
     }
 
-    else if (([v13 isDownloaded] & 1) == 0)
+    else if (([asFPItem isDownloaded] & 1) == 0)
     {
       v12 = 1;
       goto LABEL_12;
@@ -156,13 +156,13 @@ LABEL_18:
 
 - (uint64_t)isDownloaded
 {
-  if ([a1 isExternalURL])
+  if ([self isExternalURL])
   {
     return 0;
   }
 
-  v3 = [a1 asFPItem];
-  v2 = [v3 isDownloaded] ^ 1;
+  asFPItem = [self asFPItem];
+  v2 = [asFPItem isDownloaded] ^ 1;
 
   return v2;
 }

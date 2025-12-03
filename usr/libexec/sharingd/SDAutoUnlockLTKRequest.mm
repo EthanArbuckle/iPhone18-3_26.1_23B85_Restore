@@ -1,22 +1,22 @@
 @interface SDAutoUnlockLTKRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCheckViewState:(BOOL)a3;
-- (void)setHasNeedsLTK:(BOOL)a3;
-- (void)setHasRemoteNeedsLTK:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCheckViewState:(BOOL)state;
+- (void)setHasNeedsLTK:(BOOL)k;
+- (void)setHasRemoteNeedsLTK:(BOOL)k;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockLTKRequest
 
-- (void)setHasCheckViewState:(BOOL)a3
+- (void)setHasCheckViewState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNeedsLTK:(BOOL)a3
+- (void)setHasNeedsLTK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRemoteNeedsLTK:(BOOL)a3
+- (void)setHasRemoteNeedsLTK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockLTKRequest;
   v3 = [(SDAutoUnlockLTKRequest *)&v7 description];
-  v4 = [(SDAutoUnlockLTKRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockLTKRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -127,9 +127,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -177,64 +177,64 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_version;
-    *(v4 + 48) |= 1u;
+    toCopy[10] = self->_version;
+    *(toCopy + 48) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_localID)
   {
-    [v4 setLocalID:?];
-    v4 = v6;
+    [toCopy setLocalID:?];
+    toCopy = v6;
   }
 
   if (self->_ltk)
   {
     [v6 setLtk:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ltkID)
   {
     [v6 setLtkID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 44) = self->_checkViewState;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 44) = self->_checkViewState;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_remoteDeviceID)
   {
     [v6 setRemoteDeviceID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 45) = self->_needsLTK;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 45) = self->_needsLTK;
+    *(toCopy + 48) |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(v4 + 46) = self->_remoteNeedsLTK;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 46) = self->_remoteNeedsLTK;
+    *(toCopy + 48) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -242,15 +242,15 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_localID copyWithZone:a3];
+  v7 = [(NSString *)self->_localID copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSData *)self->_ltk copyWithZone:a3];
+  v9 = [(NSData *)self->_ltk copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(NSData *)self->_ltkID copyWithZone:a3];
+  v11 = [(NSData *)self->_ltkID copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
@@ -260,7 +260,7 @@
     *(v6 + 48) |= 2u;
   }
 
-  v13 = [(NSString *)self->_remoteDeviceID copyWithZone:a3];
+  v13 = [(NSString *)self->_remoteDeviceID copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
@@ -281,36 +281,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_version != *(v4 + 10))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_version != *(equalCopy + 10))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_38;
   }
 
   localID = self->_localID;
-  if (localID | *(v4 + 1) && ![(NSString *)localID isEqual:?])
+  if (localID | *(equalCopy + 1) && ![(NSString *)localID isEqual:?])
   {
     goto LABEL_38;
   }
 
   ltk = self->_ltk;
-  if (ltk | *(v4 + 2))
+  if (ltk | *(equalCopy + 2))
   {
     if (![(NSData *)ltk isEqual:?])
     {
@@ -319,7 +319,7 @@
   }
 
   ltkID = self->_ltkID;
-  if (ltkID | *(v4 + 3))
+  if (ltkID | *(equalCopy + 3))
   {
     if (![(NSData *)ltkID isEqual:?])
     {
@@ -328,36 +328,36 @@
   }
 
   has = self->_has;
-  v10 = *(v4 + 48);
+  v10 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0)
+    if ((*(equalCopy + 48) & 2) == 0)
     {
       goto LABEL_38;
     }
 
-    v13 = *(v4 + 44);
+    v13 = *(equalCopy + 44);
     if (self->_checkViewState)
     {
-      if ((*(v4 + 44) & 1) == 0)
+      if ((*(equalCopy + 44) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 44))
+    else if (*(equalCopy + 44))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   remoteDeviceID = self->_remoteDeviceID;
-  if (remoteDeviceID | *(v4 + 4))
+  if (remoteDeviceID | *(equalCopy + 4))
   {
     if (![(NSString *)remoteDeviceID isEqual:?])
     {
@@ -369,45 +369,45 @@
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0)
+    if ((*(equalCopy + 48) & 4) == 0)
     {
       goto LABEL_38;
     }
 
-    v14 = *(v4 + 45);
+    v14 = *(equalCopy + 45);
     if (self->_needsLTK)
     {
-      if ((*(v4 + 45) & 1) == 0)
+      if ((*(equalCopy + 45) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 45))
+    else if (*(equalCopy + 45))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_38;
   }
 
-  v12 = (*(v4 + 48) & 8) == 0;
+  v12 = (*(equalCopy + 48) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) != 0)
+    if ((*(equalCopy + 48) & 8) != 0)
     {
       if (self->_remoteNeedsLTK)
       {
-        if (*(v4 + 46))
+        if (*(equalCopy + 46))
         {
           goto LABEL_40;
         }
       }
 
-      else if (!*(v4 + 46))
+      else if (!*(equalCopy + 46))
       {
 LABEL_40:
         v12 = 1;
@@ -474,57 +474,57 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 48))
+  fromCopy = from;
+  if (*(fromCopy + 48))
   {
-    self->_version = *(v4 + 10);
+    self->_version = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SDAutoUnlockLTKRequest *)self setLocalID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDAutoUnlockLTKRequest *)self setLtk:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SDAutoUnlockLTKRequest *)self setLtkID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 48) & 2) != 0)
+  if ((*(fromCopy + 48) & 2) != 0)
   {
-    self->_checkViewState = *(v4 + 44);
+    self->_checkViewState = *(fromCopy + 44);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SDAutoUnlockLTKRequest *)self setRemoteDeviceID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) != 0)
   {
-    self->_needsLTK = *(v4 + 45);
+    self->_needsLTK = *(fromCopy + 45);
     *&self->_has |= 4u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_remoteNeedsLTK = *(v4 + 46);
+    self->_remoteNeedsLTK = *(fromCopy + 46);
     *&self->_has |= 8u;
   }
 }

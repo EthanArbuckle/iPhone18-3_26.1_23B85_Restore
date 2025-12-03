@@ -1,35 +1,35 @@
 @interface VCPLibraryProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7;
++ (id)taskWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
 - (BOOL)isCancelled;
-- (VCPLibraryProcessingTask)initWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7;
-- (id)createTaskBacklogForPhotoLibrary:(id)a3 withDatabase:(id)a4;
+- (VCPLibraryProcessingTask)initWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (id)createTaskBacklogForPhotoLibrary:(id)library withDatabase:(id)database;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPLibraryProcessingTask
 
-- (VCPLibraryProcessingTask)initWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7
+- (VCPLibraryProcessingTask)initWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  librariesCopy = libraries;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v29.receiver = self;
   v29.super_class = VCPLibraryProcessingTask;
   v18 = [(VCPLibraryProcessingTask *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_photoLibraries, a3);
-    v20 = objc_retainBlock(v15);
+    objc_storeStrong(&v18->_photoLibraries, libraries);
+    v20 = objc_retainBlock(handlerCopy);
     progressHandler = v19->_progressHandler;
     v19->_progressHandler = v20;
 
-    if (v16)
+    if (completionHandlerCopy)
     {
-      v22 = v16;
+      v22 = completionHandlerCopy;
     }
 
     else
@@ -41,9 +41,9 @@
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v23;
 
-    if (v17)
+    if (blockCopy)
     {
-      v25 = v17;
+      v25 = blockCopy;
     }
 
     else
@@ -55,20 +55,20 @@
     cancelBlock = v19->_cancelBlock;
     v19->_cancelBlock = v26;
 
-    objc_storeStrong(&v19->_options, a4);
+    objc_storeStrong(&v19->_options, options);
   }
 
   return v19;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andOptions:(id)a4 andProgressHandler:(id)a5 andCompletionHandler:(id)a6 andCancelBlock:(id)a7
++ (id)taskWithPhotoLibraries:(id)libraries andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v11 andOptions:v12 andProgressHandler:v13 andCompletionHandler:v14 andCancelBlock:v15];
+  librariesCopy = libraries;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v16 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andOptions:optionsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy andCancelBlock:blockCopy];
 
   return v16;
 }
@@ -101,60 +101,60 @@
   return v3 & 1;
 }
 
-- (id)createTaskBacklogForPhotoLibrary:(id)a3 withDatabase:(id)a4
+- (id)createTaskBacklogForPhotoLibrary:(id)library withDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  databaseCopy = database;
   v8 = +[NSMutableArray array];
-  if (_os_feature_enabled_impl() || [v7 exists])
+  if (_os_feature_enabled_impl() || [databaseCopy exists])
   {
-    v9 = [VCPBackgroundProcessingMetrics sharedMetricsWithPhotoLibrary:v6];
+    v9 = [VCPBackgroundProcessingMetrics sharedMetricsWithPhotoLibrary:libraryCopy];
     [v9 loadMetrics];
 
-    v10 = [VCPAssetMaintenanceTask taskWithPhotoLibrary:v6];
+    v10 = [VCPAssetMaintenanceTask taskWithPhotoLibrary:libraryCopy];
     [v8 addObject:v10];
   }
 
-  if ([v6 vcp_anyAssetsForTaskID:1])
+  if ([libraryCopy vcp_anyAssetsForTaskID:1])
   {
     if (_os_feature_enabled_impl())
     {
-      v11 = [MADFullAnalysisResultsSynchronizationTask taskWithPhotoLibrary:v6];
+      v11 = [MADFullAnalysisResultsSynchronizationTask taskWithPhotoLibrary:libraryCopy];
       [v8 addObject:v11];
 
-      v12 = [VCPUnifiedFullAnalysisTask taskWithPhotoLibrary:v6 options:self->_options];
+      v12 = [VCPUnifiedFullAnalysisTask taskWithPhotoLibrary:libraryCopy options:self->_options];
       [v8 addObject:v12];
 
       v13 = [(NSDictionary *)self->_options objectForKeyedSubscript:VCPTurboProcessing_ImageOnlyKey];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
         goto LABEL_13;
       }
 
-      v15 = [VCPResumePausedAnalysisTask taskWithPhotoLibrary:v6];
+      v15 = [VCPResumePausedAnalysisTask taskWithPhotoLibrary:libraryCopy];
       [v8 addObject:v15];
 
-      v16 = [VCPFailedAssetAnalysisTask taskWithPhotoLibrary:v6 options:self->_options];
+      v16 = [VCPFailedAssetAnalysisTask taskWithPhotoLibrary:libraryCopy options:self->_options];
       [v8 addObject:v16];
 
-      v17 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:v6 mediaType:2];
+      v17 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:libraryCopy mediaType:2];
       [v8 addObject:v17];
     }
 
     else
     {
-      v19 = [VCPResumePausedAnalysisTask taskWithPhotoLibrary:v6];
+      v19 = [VCPResumePausedAnalysisTask taskWithPhotoLibrary:libraryCopy];
       [v8 addObject:v19];
 
-      v20 = [VCPFailedAssetAnalysisTask taskWithPhotoLibrary:v6 options:self->_options];
+      v20 = [VCPFailedAssetAnalysisTask taskWithPhotoLibrary:libraryCopy options:self->_options];
       [v8 addObject:v20];
 
-      v21 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:v6 mediaType:1];
+      v21 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:libraryCopy mediaType:1];
       [v8 addObject:v21];
 
-      v17 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:v6 mediaType:2];
+      v17 = [VCPMediaTypeAnalysisTask taskWithPhotoLibrary:libraryCopy mediaType:2];
       [v8 addObject:v17];
     }
   }

@@ -22,27 +22,27 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 stui_doubleHeightStatusStringMapping];
-  [v7 setObject:v9 forKey:v6];
+  stui_doubleHeightStatusStringMapping = [self stui_doubleHeightStatusStringMapping];
+  [stui_doubleHeightStatusStringMapping setObject:v9 forKey:v6];
   v8 = STUIStyleOverrideForBackgroundActivityIdentifier(v6);
 
   if (v8)
   {
-    [a1 postDoubleHeightStatusString:v9 forStyle:{objc_msgSend(MEMORY[0x277D75A78], "_defaultStyleForRequestedStyle:styleOverrides:activeStyleOverride:", 0, v8, 0)}];
+    [self postDoubleHeightStatusString:v9 forStyle:{objc_msgSend(MEMORY[0x277D75A78], "_defaultStyleForRequestedStyle:styleOverrides:activeStyleOverride:", 0, v8, 0)}];
   }
 }
 
 + (id)stui_getDoubleHeightStatusStringBackgroundActivityWithIdentifier:()STUI
 {
   v4 = a3;
-  v5 = [a1 stui_doubleHeightStatusStringMapping];
-  v6 = [v5 objectForKey:v4];
+  stui_doubleHeightStatusStringMapping = [self stui_doubleHeightStatusStringMapping];
+  v6 = [stui_doubleHeightStatusStringMapping objectForKey:v4];
   if (!v6)
   {
     v7 = STUIStyleOverrideForBackgroundActivityIdentifier(v4);
     if (v7)
     {
-      v6 = [a1 getDoubleHeightStatusStringForStyle:{objc_msgSend(MEMORY[0x277D75A78], "_defaultStyleForRequestedStyle:styleOverrides:activeStyleOverride:", 0, v7, 0)}];
+      v6 = [self getDoubleHeightStatusStringForStyle:{objc_msgSend(MEMORY[0x277D75A78], "_defaultStyleForRequestedStyle:styleOverrides:activeStyleOverride:", 0, v7, 0)}];
     }
 
     else

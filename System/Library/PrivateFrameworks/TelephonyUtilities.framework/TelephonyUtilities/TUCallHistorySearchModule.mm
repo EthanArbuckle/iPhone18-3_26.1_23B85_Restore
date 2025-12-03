@@ -1,22 +1,22 @@
 @interface TUCallHistorySearchModule
 - (TUSearchController)searchController;
 - (TUSearchResults)searchResults;
-- (void)searchForString:(id)a3 completion:(id)a4;
+- (void)searchForString:(id)string completion:(id)completion;
 @end
 
 @implementation TUCallHistorySearchModule
 
-- (void)searchForString:(id)a3 completion:(id)a4
+- (void)searchForString:(id)string completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  completionCopy = completion;
   [(TUCallHistorySearchModule *)self setSearchComplete:0];
-  v8 = [v6 length];
+  v8 = [stringCopy length];
   if (v8 && ([(TUCallHistorySearchModule *)self previousSearchString], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(TUCallHistorySearchModule *)self previousSearchString];
-    v11 = [v6 rangeOfString:v10];
+    previousSearchString = [(TUCallHistorySearchModule *)self previousSearchString];
+    v11 = [stringCopy rangeOfString:previousSearchString];
 
     v12 = v11 != 0;
   }
@@ -26,29 +26,29 @@
     v12 = 1;
   }
 
-  [(TUCallHistorySearchModule *)self setPreviousSearchString:v6];
-  v13 = [(TUCallHistorySearchModule *)self currentResultsList];
+  [(TUCallHistorySearchModule *)self setPreviousSearchString:stringCopy];
+  currentResultsList = [(TUCallHistorySearchModule *)self currentResultsList];
 
   v14 = 0x1E695D000uLL;
-  v49 = v6;
-  v50 = self;
-  v48 = v7;
-  if (!v13 || v12)
+  v49 = stringCopy;
+  selfCopy = self;
+  v48 = completionCopy;
+  if (!currentResultsList || v12)
   {
-    [(TUCallHistorySearchModule *)self setCurrentResultsList:0, v7, v6];
+    [(TUCallHistorySearchModule *)self setCurrentResultsList:0, completionCopy, stringCopy];
     v15 = +[TUCallHistoryController sharedController];
-    v16 = [v15 recentCalls];
+    recentCalls = [v15 recentCalls];
 
-    if (v16)
+    if (recentCalls)
     {
-      v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v16, "count")}];
+      v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(recentCalls, "count")}];
       [(TUCallHistorySearchModule *)self setCurrentResultsList:v17];
 
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v18 = v16;
+      v18 = recentCalls;
       v19 = [v18 countByEnumeratingWithState:&v56 objects:v61 count:16];
       if (v19)
       {
@@ -64,11 +64,11 @@
             }
 
             v23 = [[TUProxyRecentCall alloc] initWithRecentCall:*(*(&v56 + 1) + 8 * i)];
-            v24 = [(TUCallHistorySearchModule *)v50 searchController];
-            [(TUProxyRecentCall *)v23 setSearchController:v24];
+            searchController = [(TUCallHistorySearchModule *)selfCopy searchController];
+            [(TUProxyRecentCall *)v23 setSearchController:searchController];
 
-            v25 = [(TUCallHistorySearchModule *)v50 currentResultsList];
-            [v25 addObject:v23];
+            currentResultsList2 = [(TUCallHistorySearchModule *)selfCopy currentResultsList];
+            [currentResultsList2 addObject:v23];
           }
 
           v20 = [v18 countByEnumeratingWithState:&v56 objects:v61 count:16];
@@ -77,9 +77,9 @@
         while (v20);
       }
 
-      v6 = v49;
-      self = v50;
-      v7 = v48;
+      stringCopy = v49;
+      self = selfCopy;
+      completionCopy = v48;
       v14 = 0x1E695D000;
     }
 
@@ -94,18 +94,18 @@
   {
     if (!gPhoneSeparatorCharacterSet)
     {
-      v27 = [MEMORY[0x1E696AB08] phoneNumberSeparatorCharacterSet];
+      phoneNumberSeparatorCharacterSet = [MEMORY[0x1E696AB08] phoneNumberSeparatorCharacterSet];
       v28 = gPhoneSeparatorCharacterSet;
-      gPhoneSeparatorCharacterSet = v27;
+      gPhoneSeparatorCharacterSet = phoneNumberSeparatorCharacterSet;
     }
 
-    v29 = [v6 componentsSeparatedByCharactersInSet:{v48, v49}];
+    v29 = [stringCopy componentsSeparatedByCharactersInSet:{v48, v49}];
     v30 = [v29 componentsJoinedByString:&stru_1F098C218];
-    v31 = [v30 lowercaseString];
+    lowercaseString = [v30 lowercaseString];
 
     v32 = *(v14 + 3952);
-    v33 = [(TUCallHistorySearchModule *)self currentResultsList];
-    v34 = [v32 arrayWithCapacity:{objc_msgSend(v33, "count")}];
+    currentResultsList3 = [(TUCallHistorySearchModule *)self currentResultsList];
+    v34 = [v32 arrayWithCapacity:{objc_msgSend(currentResultsList3, "count")}];
 
     v54 = 0u;
     v55 = 0u;
@@ -127,26 +127,26 @@
           }
 
           v39 = *(*(&v52 + 1) + 8 * j);
-          v40 = [v39 callerId];
-          v41 = [v40 componentsSeparatedByCharactersInSet:gPhoneSeparatorCharacterSet];
+          callerId = [v39 callerId];
+          v41 = [callerId componentsSeparatedByCharactersInSet:gPhoneSeparatorCharacterSet];
           v42 = [v41 componentsJoinedByString:&stru_1F098C218];
-          v43 = [v42 lowercaseString];
+          lowercaseString2 = [v42 lowercaseString];
 
-          if ([v43 containsString:v31])
+          if ([lowercaseString2 containsString:lowercaseString])
           {
             [v34 addObject:v39];
           }
 
           else
           {
-            v44 = [v39 backingContact];
+            backingContact = [v39 backingContact];
 
-            if (v44)
+            if (backingContact)
             {
-              v45 = [v39 displayName];
-              v46 = [v45 lowercaseString];
+              displayName = [v39 displayName];
+              lowercaseString3 = [displayName lowercaseString];
 
-              if ([v46 containsString:v31])
+              if ([lowercaseString3 containsString:lowercaseString])
               {
                 [v34 addObject:v39];
               }
@@ -160,17 +160,17 @@
       while (v36);
     }
 
-    self = v50;
-    [(TUCallHistorySearchModule *)v50 setCurrentResultsList:v34];
+    self = selfCopy;
+    [(TUCallHistorySearchModule *)selfCopy setCurrentResultsList:v34];
 
-    v7 = v48;
-    v6 = v49;
+    completionCopy = v48;
+    stringCopy = v49;
   }
 
   [(TUCallHistorySearchModule *)self setSearchComplete:1, v48, v49];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, self, 1);
+    completionCopy[2](completionCopy, self, 1);
   }
 
   v47 = *MEMORY[0x1E69E9840];
@@ -179,19 +179,19 @@
 - (TUSearchResults)searchResults
 {
   v3 = objc_alloc_init(TUSearchResults);
-  v4 = [(TUCallHistorySearchModule *)self searchController];
-  [(TUSearchResults *)v3 setSearchController:v4];
+  searchController = [(TUCallHistorySearchModule *)self searchController];
+  [(TUSearchResults *)v3 setSearchController:searchController];
 
-  v5 = [(TUCallHistorySearchModule *)self currentResultsList];
-  v6 = [v5 count];
+  currentResultsList = [(TUCallHistorySearchModule *)self currentResultsList];
+  v6 = [currentResultsList count];
 
   if (v6)
   {
     v7 = [TUResultGroup alloc];
     v8 = TUBundle();
     v9 = [v8 localizedStringForKey:@"RECENTS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v10 = [(TUCallHistorySearchModule *)self currentResultsList];
-    v11 = [(TUResultGroup *)v7 initWithTitle:v9 results:v10];
+    currentResultsList2 = [(TUCallHistorySearchModule *)self currentResultsList];
+    v11 = [(TUResultGroup *)v7 initWithTitle:v9 results:currentResultsList2];
     [(TUSearchResults *)v3 addResultGroup:v11];
   }
 

@@ -1,35 +1,35 @@
 @interface ICMachineDataProvisionOperation
-- (void)_finishWithError:(id)a3;
+- (void)_finishWithError:(id)error;
 - (void)execute;
 @end
 
 @implementation ICMachineDataProvisionOperation
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(ICMachineDataOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(ICMachineDataOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(ICMachineDataOperation *)self completionHandler];
-    (v5)[2](v5, 0, v6);
+    completionHandler2 = [(ICMachineDataOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, 0, errorCopy);
   }
 
-  [(ICAsyncOperation *)self finishWithError:v6];
+  [(ICAsyncOperation *)self finishWithError:errorCopy];
 }
 
 - (void)execute
 {
-  v3 = [(ICMachineDataOperation *)self requestContext];
-  v4 = [v3 identityStore];
-  v5 = [v3 identity];
+  requestContext = [(ICMachineDataOperation *)self requestContext];
+  identityStore = [requestContext identityStore];
+  identity = [requestContext identity];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__ICMachineDataProvisionOperation_execute__block_invoke;
   v6[3] = &unk_1E7BF7B20;
   v6[4] = self;
-  [v4 getPropertiesForUserIdentity:v5 completionHandler:v6];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v6];
 }
 
 void __42__ICMachineDataProvisionOperation_execute__block_invoke(uint64_t a1, void *a2, void *a3)

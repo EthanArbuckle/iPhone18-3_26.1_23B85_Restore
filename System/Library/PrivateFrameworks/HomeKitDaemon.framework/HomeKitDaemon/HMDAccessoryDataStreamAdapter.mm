@@ -1,25 +1,25 @@
 @interface HMDAccessoryDataStreamAdapter
 + (id)logCategory;
-- (BOOL)_handleFrame:(id)a3;
+- (BOOL)_handleFrame:(id)frame;
 - (BOOL)isBulkSendActive;
 - (BOOL)isSessionOpenInProgress;
-- (HMDAccessoryDataStreamAdapter)initWithAccessory:(id)a3 workQueue:(id)a4 fileType:(id)a5 metadata:(id)a6 reason:(id)a7;
+- (HMDAccessoryDataStreamAdapter)initWithAccessory:(id)accessory workQueue:(id)queue fileType:(id)type metadata:(id)metadata reason:(id)reason;
 - (HMDAccessoryDataStreamAdapterDelegate)delegate;
 - (HMDHAPAccessory)accessory;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (void)_bulkSendDidComplete;
 - (void)_bulkSendDidFail;
-- (void)_callPendingOpenSessionCallbackWithResult:(id)a3 error:(id)a4;
+- (void)_callPendingOpenSessionCallbackWithResult:(id)result error:(id)error;
 - (void)_handleAccessoryDidClose;
 - (void)_openSession;
 - (void)_setUpTransport;
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4;
-- (void)accessoryDidStartListening:(id)a3;
-- (void)callPendingOpenSessionCallbackWithResult:(id)a3 error:(id)a4;
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error;
+- (void)accessoryDidStartListening:(id)listening;
+- (void)callPendingOpenSessionCallbackWithResult:(id)result error:(id)error;
 - (void)dealloc;
 - (void)readData;
-- (void)setUpWithCallback:(id)a3;
+- (void)setUpWithCallback:(id)callback;
 - (void)shutDown;
 @end
 
@@ -41,24 +41,24 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryDataStreamAdapter *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDAccessoryDataStreamAdapter *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  accessoryCopy = accessory;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__HMDAccessoryDataStreamAdapter_accessory_didCloseDataStreamWithError___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __71__HMDAccessoryDataStreamAdapter_accessory_didCloseDataStreamWithError___block_invoke(uint64_t a1)
@@ -110,18 +110,18 @@ void __71__HMDAccessoryDataStreamAdapter_accessory_didCloseDataStreamWithError__
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidStartListening:(id)a3
+- (void)accessoryDidStartListening:(id)listening
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  listeningCopy = listening;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMDAccessoryDataStreamAdapter_accessoryDidStartListening___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = listeningCopy;
+  v6 = listeningCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __60__HMDAccessoryDataStreamAdapter_accessoryDidStartListening___block_invoke(uint64_t a1)
@@ -193,68 +193,68 @@ void __60__HMDAccessoryDataStreamAdapter_accessoryDidStartListening___block_invo
 
 - (void)_bulkSendDidComplete
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDAccessoryDataStreamAdapter *)self isBulkSendActive])
   {
     [(HMDAccessoryDataStreamAdapter *)self setDidBulkSendComplete:1];
   }
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self delegate];
-  [v4 dataStreamAdapterDidCompleteDataRead:self];
+  delegate = [(HMDAccessoryDataStreamAdapter *)self delegate];
+  [delegate dataStreamAdapterDidCompleteDataRead:self];
 }
 
 - (void)_bulkSendDidFail
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDAccessoryDataStreamAdapter *)self isBulkSendActive])
   {
     [(HMDAccessoryDataStreamAdapter *)self setDidBulkSendFail:1];
   }
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self delegate];
-  [v4 dataStreamAdapterDidFailDataRead:self];
+  delegate = [(HMDAccessoryDataStreamAdapter *)self delegate];
+  [delegate dataStreamAdapterDidFailDataRead:self];
 }
 
-- (BOOL)_handleFrame:(id)a3
+- (BOOL)_handleFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  frameCopy = frame;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryDataStreamAdapter *)self delegate];
-  LOBYTE(self) = [v6 dataStreamAdapter:self didReceiveData:v4];
+  delegate = [(HMDAccessoryDataStreamAdapter *)self delegate];
+  LOBYTE(self) = [delegate dataStreamAdapter:self didReceiveData:frameCopy];
 
   return self;
 }
 
 - (BOOL)isSessionOpenInProgress
 {
-  v2 = self;
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)v2 pendingOpenSessionCallback];
-  LOBYTE(v2) = v4 != 0;
+  pendingOpenSessionCallback = [(HMDAccessoryDataStreamAdapter *)selfCopy pendingOpenSessionCallback];
+  LOBYTE(selfCopy) = pendingOpenSessionCallback != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_handleAccessoryDidClose
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self accessory];
+  accessory = [(HMDAccessoryDataStreamAdapter *)self accessory];
   v5 = HAPStringFromAccessoryServerSession();
-  [v4 deregisterFromSessionRestore:v5];
+  [accessory deregisterFromSessionRestore:v5];
 
-  v6 = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
+  pendingOpenSessionCallback = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
 
-  if (v6)
+  if (pendingOpenSessionCallback)
   {
     [(HMDAccessoryDataStreamAdapter *)self setTransportReady:0];
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
@@ -268,28 +268,28 @@ void __60__HMDAccessoryDataStreamAdapter_accessoryDidStartListening___block_invo
   }
 }
 
-- (void)_callPendingOpenSessionCallbackWithResult:(id)a3 error:(id)a4
+- (void)_callPendingOpenSessionCallbackWithResult:(id)result error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  resultCopy = result;
+  errorCopy = error;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v6 session];
-  [(HMDAccessoryDataStreamAdapter *)self setCurrentBulkSendSession:v9];
+  session = [resultCopy session];
+  [(HMDAccessoryDataStreamAdapter *)self setCurrentBulkSendSession:session];
 
-  v10 = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
+  pendingOpenSessionCallback = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
   [(HMDAccessoryDataStreamAdapter *)self setPendingOpenSessionCallback:0];
-  if (!v7)
+  if (!errorCopy)
   {
-    v11 = [(HMDAccessoryDataStreamAdapter *)self accessory];
+    accessory = [(HMDAccessoryDataStreamAdapter *)self accessory];
     v12 = HAPStringFromAccessoryServerSession();
-    [v11 registerForSessionRestore:v12];
+    [accessory registerForSessionRestore:v12];
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -297,33 +297,33 @@ void __60__HMDAccessoryDataStreamAdapter_accessoryDidStartListening___block_invo
     v18 = 138543874;
     v19 = v16;
     v20 = 2112;
-    v21 = v6;
+    v21 = resultCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = errorCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Calling pending callback with result: %@ error: %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  (v10)[2](v10, v6, v7);
+  (pendingOpenSessionCallback)[2](pendingOpenSessionCallback, resultCopy, errorCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callPendingOpenSessionCallbackWithResult:(id)a3 error:(id)a4
+- (void)callPendingOpenSessionCallbackWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  resultCopy = result;
+  errorCopy = error;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMDAccessoryDataStreamAdapter_callPendingOpenSessionCallbackWithResult_error___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = resultCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = resultCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __80__HMDAccessoryDataStreamAdapter_callPendingOpenSessionCallbackWithResult_error___block_invoke(uint64_t a1)
@@ -361,21 +361,21 @@ void __80__HMDAccessoryDataStreamAdapter_callPendingOpenSessionCallbackWithResul
 
 - (void)_openSession
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   objc_initWeak(&location, self);
-  v4 = [(HMDAccessoryDataStreamAdapter *)self accessory];
-  v5 = [(HMDAccessoryDataStreamAdapter *)self fileType];
-  v6 = [(HMDAccessoryDataStreamAdapter *)self reason];
-  v7 = [(HMDAccessoryDataStreamAdapter *)self metadata];
-  v8 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  accessory = [(HMDAccessoryDataStreamAdapter *)self accessory];
+  fileType = [(HMDAccessoryDataStreamAdapter *)self fileType];
+  reason = [(HMDAccessoryDataStreamAdapter *)self reason];
+  metadata = [(HMDAccessoryDataStreamAdapter *)self metadata];
+  workQueue2 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__HMDAccessoryDataStreamAdapter__openSession__block_invoke;
   v9[3] = &unk_278672FB8;
   objc_copyWeak(&v10, &location);
-  [v4 openBulkSendSessionForFileType:v5 reason:v6 metadata:v7 queue:v8 callback:v9];
+  [accessory openBulkSendSessionForFileType:fileType reason:reason metadata:metadata queue:workQueue2 callback:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -392,11 +392,11 @@ void __45__HMDAccessoryDataStreamAdapter__openSession__block_invoke(uint64_t a1,
 - (void)_setUpTransport
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -407,9 +407,9 @@ void __45__HMDAccessoryDataStreamAdapter__openSession__block_invoke(uint64_t a1,
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDAccessoryDataStreamAdapter *)v5 accessory];
-  v9 = [(HMDAccessoryDataStreamAdapter *)v5 fileType];
-  [v8 addDataStreamBulkSendListener:v5 fileType:v9];
+  accessory = [(HMDAccessoryDataStreamAdapter *)selfCopy accessory];
+  fileType = [(HMDAccessoryDataStreamAdapter *)selfCopy fileType];
+  [accessory addDataStreamBulkSendListener:selfCopy fileType:fileType];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -417,40 +417,40 @@ void __45__HMDAccessoryDataStreamAdapter__openSession__block_invoke(uint64_t a1,
 - (void)readData
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
+  currentBulkSendSession = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
 
-  if (v4)
+  if (currentBulkSendSession)
   {
-    v5 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
+    currentBulkSendSession2 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__HMDAccessoryDataStreamAdapter_readData__block_invoke;
     v12[3] = &unk_278689230;
     v12[4] = self;
-    [v5 read:v12];
+    [currentBulkSendSession2 read:v12];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDAccessoryDataStreamAdapter *)v7 accessory];
+      accessory = [(HMDAccessoryDataStreamAdapter *)selfCopy accessory];
       *buf = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = accessory;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_ERROR, "%{public}@Read data failed with no bulkSend session present for accessory:%@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDAccessoryDataStreamAdapter *)v7 _bulkSendDidFail];
+    [(HMDAccessoryDataStreamAdapter *)selfCopy _bulkSendDidFail];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -543,19 +543,19 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpWithCallback:(id)a3
+- (void)setUpWithCallback:(id)callback
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  callbackCopy = callback;
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
+  pendingOpenSessionCallback = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
 
-  if (v6)
+  if (pendingOpenSessionCallback)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -567,13 +567,13 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
-    v4[2](v4, 0, v11);
+    callbackCopy[2](callbackCopy, 0, v11);
   }
 
   else
   {
     [(HMDAccessoryDataStreamAdapter *)self _setUpTransport];
-    [(HMDAccessoryDataStreamAdapter *)self setPendingOpenSessionCallback:v4];
+    [(HMDAccessoryDataStreamAdapter *)self setPendingOpenSessionCallback:callbackCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -581,11 +581,11 @@ LABEL_6:
 
 - (BOOL)isBulkSendActive
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
-  if (v4 && ![(HMDAccessoryDataStreamAdapter *)self didBulkSendFail])
+  currentBulkSendSession = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
+  if (currentBulkSendSession && ![(HMDAccessoryDataStreamAdapter *)self didBulkSendFail])
   {
     v5 = ![(HMDAccessoryDataStreamAdapter *)self didBulkSendComplete];
   }
@@ -602,7 +602,7 @@ LABEL_6:
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -613,7 +613,7 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMDAccessoryDataStreamAdapter;
   [(HMDAccessoryDataStreamAdapter *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
@@ -621,17 +621,17 @@ LABEL_6:
 
 - (void)shutDown
 {
-  v3 = [(HMDAccessoryDataStreamAdapter *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDataStreamAdapter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
+  currentBulkSendSession = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
 
-  if (v4)
+  if (currentBulkSendSession)
   {
-    v5 = [(HMDAccessoryDataStreamAdapter *)self didBulkSendComplete];
-    v6 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
-    v7 = v6;
-    if (v5)
+    didBulkSendComplete = [(HMDAccessoryDataStreamAdapter *)self didBulkSendComplete];
+    currentBulkSendSession2 = [(HMDAccessoryDataStreamAdapter *)self currentBulkSendSession];
+    v7 = currentBulkSendSession2;
+    if (didBulkSendComplete)
     {
       v8 = 0;
     }
@@ -641,25 +641,25 @@ LABEL_6:
       v8 = 5;
     }
 
-    [v6 cancelWithReason:v8];
+    [currentBulkSendSession2 cancelWithReason:v8];
 
     [(HMDAccessoryDataStreamAdapter *)self setCurrentBulkSendSession:0];
   }
 
-  v9 = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
+  pendingOpenSessionCallback = [(HMDAccessoryDataStreamAdapter *)self pendingOpenSessionCallback];
 
-  if (v9)
+  if (pendingOpenSessionCallback)
   {
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
     [(HMDAccessoryDataStreamAdapter *)self _callPendingOpenSessionCallbackWithResult:0 error:v10];
   }
 
-  v12 = [(HMDAccessoryDataStreamAdapter *)self accessory];
-  if (v12)
+  accessory = [(HMDAccessoryDataStreamAdapter *)self accessory];
+  if (accessory)
   {
-    [v12 removeDataStreamBulkSendListener:self];
+    [accessory removeDataStreamBulkSendListener:self];
     v11 = HAPStringFromAccessoryServerSession();
-    [v12 deregisterFromSessionRestore:v11];
+    [accessory deregisterFromSessionRestore:v11];
   }
 
   [(HMDAccessoryDataStreamAdapter *)self setTransportReady:0];
@@ -669,8 +669,8 @@ LABEL_6:
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAccessoryDataStreamAdapter *)self fileType];
-  v5 = [v3 initWithName:@"Diagnostics DataStream File Type" value:v4];
+  fileType = [(HMDAccessoryDataStreamAdapter *)self fileType];
+  v5 = [v3 initWithName:@"Diagnostics DataStream File Type" value:fileType];
   v18[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDAccessoryDataStreamAdapter *)self transportReady];
@@ -694,24 +694,24 @@ LABEL_6:
   return v15;
 }
 
-- (HMDAccessoryDataStreamAdapter)initWithAccessory:(id)a3 workQueue:(id)a4 fileType:(id)a5 metadata:(id)a6 reason:(id)a7
+- (HMDAccessoryDataStreamAdapter)initWithAccessory:(id)accessory workQueue:(id)queue fileType:(id)type metadata:(id)metadata reason:(id)reason
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  typeCopy = type;
+  metadataCopy = metadata;
+  reasonCopy = reason;
   v20.receiver = self;
   v20.super_class = HMDAccessoryDataStreamAdapter;
   v17 = [(HMDAccessoryDataStreamAdapter *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_accessory, v12);
-    objc_storeStrong(&v18->_workQueue, a4);
-    objc_storeStrong(&v18->_fileType, a5);
-    objc_storeStrong(&v18->_reason, a7);
-    objc_storeStrong(&v18->_metadata, a6);
+    objc_storeWeak(&v17->_accessory, accessoryCopy);
+    objc_storeStrong(&v18->_workQueue, queue);
+    objc_storeStrong(&v18->_fileType, type);
+    objc_storeStrong(&v18->_reason, reason);
+    objc_storeStrong(&v18->_metadata, metadata);
   }
 
   return v18;

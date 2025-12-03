@@ -1,12 +1,12 @@
 @interface CSDMockCall
 + (id)mockCall;
-+ (id)mockCallFromBlock:(id)a3;
-+ (id)mockCallWithNotificationCenter:(id)a3 fromBlock:(id)a4;
++ (id)mockCallFromBlock:(id)block;
++ (id)mockCallWithNotificationCenter:(id)center fromBlock:(id)block;
 - (TUCallDisplayContext)displayContext;
-- (void)answerWithRequest:(id)a3;
-- (void)dialWithRequest:(id)a3 displayContext:(id)a4;
-- (void)setMockCallStatus:(int)a3;
-- (void)updateWithCall:(id)a3;
+- (void)answerWithRequest:(id)request;
+- (void)dialWithRequest:(id)request displayContext:(id)context;
+- (void)setMockCallStatus:(int)status;
+- (void)updateWithCall:(id)call;
 @end
 
 @implementation CSDMockCall
@@ -14,104 +14,104 @@
 + (id)mockCall
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [a1 mockCallWithNotificationCenter:v3 fromBlock:0];
+  v4 = [self mockCallWithNotificationCenter:v3 fromBlock:0];
 
   return v4;
 }
 
-+ (id)mockCallFromBlock:(id)a3
++ (id)mockCallFromBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [a1 mockCallWithNotificationCenter:v5 fromBlock:v4];
+  v6 = [self mockCallWithNotificationCenter:v5 fromBlock:blockCopy];
 
   return v6;
 }
 
-+ (id)mockCallWithNotificationCenter:(id)a3 fromBlock:(id)a4
++ (id)mockCallWithNotificationCenter:(id)center fromBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithNotificationCenter:v7];
+  blockCopy = block;
+  centerCopy = center;
+  v8 = [[self alloc] initWithNotificationCenter:centerCopy];
 
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   return v8;
 }
 
-- (void)updateWithCall:(id)a3
+- (void)updateWithCall:(id)call
 {
   v18.receiver = self;
   v18.super_class = CSDMockCall;
-  v4 = a3;
-  [(CSDMockCall *)&v18 updateWithCall:v4];
-  v5 = [v4 provider];
-  [(CSDMockCall *)self setMockProvider:v5];
+  callCopy = call;
+  [(CSDMockCall *)&v18 updateWithCall:callCopy];
+  provider = [callCopy provider];
+  [(CSDMockCall *)self setMockProvider:provider];
 
-  v6 = [v4 handle];
-  [(CSDMockCall *)self setMockHandle:v6];
+  handle = [callCopy handle];
+  [(CSDMockCall *)self setMockHandle:handle];
 
-  -[CSDMockCall setMockCallStatus:](self, "setMockCallStatus:", [v4 callStatus]);
-  -[CSDCall setTransitionStatus:](self, "setTransitionStatus:", [v4 transitionStatus]);
-  -[CSDCall setDisconnectedReason:](self, "setDisconnectedReason:", [v4 disconnectedReason]);
-  v7 = [v4 uniqueProxyIdentifier];
-  [(CSDMockCall *)self setMockUniqueProxyIdentifier:v7];
+  -[CSDMockCall setMockCallStatus:](self, "setMockCallStatus:", [callCopy callStatus]);
+  -[CSDCall setTransitionStatus:](self, "setTransitionStatus:", [callCopy transitionStatus]);
+  -[CSDCall setDisconnectedReason:](self, "setDisconnectedReason:", [callCopy disconnectedReason]);
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  [(CSDMockCall *)self setMockUniqueProxyIdentifier:uniqueProxyIdentifier];
 
-  v8 = [v4 callUUID];
-  [(CSDMockCall *)self setMockCallUUID:v8];
+  callUUID = [callCopy callUUID];
+  [(CSDMockCall *)self setMockCallUUID:callUUID];
 
-  -[CSDMockCall setMockHostedOnCurrentDevice:](self, "setMockHostedOnCurrentDevice:", [v4 isHostedOnCurrentDevice]);
-  -[CSDMockCall setMockScreening:](self, "setMockScreening:", [v4 isScreening]);
-  -[CSDMockCall setMockWasScreened:](self, "setMockWasScreened:", [v4 wasScreened]);
-  -[CSDMockCall setMockScreeningAnnouncementHasFinished:](self, "setMockScreeningAnnouncementHasFinished:", [v4 screeningAnnouncementHasFinished]);
-  -[CSDMockCall setEndpointOnCurrentDevice:](self, "setEndpointOnCurrentDevice:", [v4 isEndpointOnCurrentDevice]);
-  v9 = [v4 callerNameFromNetwork];
-  [(CSDMockCall *)self setMockCallerNameFromNetwork:v9];
+  -[CSDMockCall setMockHostedOnCurrentDevice:](self, "setMockHostedOnCurrentDevice:", [callCopy isHostedOnCurrentDevice]);
+  -[CSDMockCall setMockScreening:](self, "setMockScreening:", [callCopy isScreening]);
+  -[CSDMockCall setMockWasScreened:](self, "setMockWasScreened:", [callCopy wasScreened]);
+  -[CSDMockCall setMockScreeningAnnouncementHasFinished:](self, "setMockScreeningAnnouncementHasFinished:", [callCopy screeningAnnouncementHasFinished]);
+  -[CSDMockCall setEndpointOnCurrentDevice:](self, "setEndpointOnCurrentDevice:", [callCopy isEndpointOnCurrentDevice]);
+  callerNameFromNetwork = [callCopy callerNameFromNetwork];
+  [(CSDMockCall *)self setMockCallerNameFromNetwork:callerNameFromNetwork];
 
-  v10 = [v4 sourceIdentifier];
-  [(CSDMockCall *)self setSourceIdentifier:v10];
+  sourceIdentifier = [callCopy sourceIdentifier];
+  [(CSDMockCall *)self setSourceIdentifier:sourceIdentifier];
 
-  -[CSDMockCall setMockUsingBaseband:](self, "setMockUsingBaseband:", [v4 isUsingBaseband]);
-  -[CSDMockCall setMockVoicemail:](self, "setMockVoicemail:", [v4 isVoicemail]);
-  v11 = [v4 contactIdentifiers];
-  [(CSDMockCall *)self setMockContactIdentifiers:v11];
+  -[CSDMockCall setMockUsingBaseband:](self, "setMockUsingBaseband:", [callCopy isUsingBaseband]);
+  -[CSDMockCall setMockVoicemail:](self, "setMockVoicemail:", [callCopy isVoicemail]);
+  contactIdentifiers = [callCopy contactIdentifiers];
+  [(CSDMockCall *)self setMockContactIdentifiers:contactIdentifiers];
 
-  -[CSDMockCall setMockNeedsManualInCallSounds:](self, "setMockNeedsManualInCallSounds:", [v4 needsManualInCallSounds]);
-  -[CSDMockCall setMockPrefersExclusiveAccessToCellularNetwork:](self, "setMockPrefersExclusiveAccessToCellularNetwork:", [v4 prefersExclusiveAccessToCellularNetwork]);
-  -[CSDMockCall setMockTTYType:](self, "setMockTTYType:", [v4 ttyType]);
-  -[CSDMockCall setMockSupportsTTYWithVoice:](self, "setMockSupportsTTYWithVoice:", [v4 supportsTTYWithVoice]);
-  -[CSDMockCall setMockIsThirdPartyVideo:](self, "setMockIsThirdPartyVideo:", [v4 isThirdPartyVideo]);
-  -[CSDMockCall setMockVideoStreamToken:](self, "setMockVideoStreamToken:", [v4 videoStreamToken]);
-  -[CSDMockCall setMockConversation:](self, "setMockConversation:", [v4 isConversation]);
-  -[CSDMockCall setMockFailureExpected:](self, "setMockFailureExpected:", [v4 isFailureExpected]);
-  -[CSDMockCall setMockSupportsEmergencyFallback:](self, "setMockSupportsEmergencyFallback:", [v4 supportsEmergencyFallback]);
-  -[CSDMockCall setMockSharingScreen:](self, "setMockSharingScreen:", [v4 isSharingScreen]);
-  v12 = [v4 screenShareAttributes];
-  [(CSDMockCall *)self setMockScreenShareAttributes:v12];
+  -[CSDMockCall setMockNeedsManualInCallSounds:](self, "setMockNeedsManualInCallSounds:", [callCopy needsManualInCallSounds]);
+  -[CSDMockCall setMockPrefersExclusiveAccessToCellularNetwork:](self, "setMockPrefersExclusiveAccessToCellularNetwork:", [callCopy prefersExclusiveAccessToCellularNetwork]);
+  -[CSDMockCall setMockTTYType:](self, "setMockTTYType:", [callCopy ttyType]);
+  -[CSDMockCall setMockSupportsTTYWithVoice:](self, "setMockSupportsTTYWithVoice:", [callCopy supportsTTYWithVoice]);
+  -[CSDMockCall setMockIsThirdPartyVideo:](self, "setMockIsThirdPartyVideo:", [callCopy isThirdPartyVideo]);
+  -[CSDMockCall setMockVideoStreamToken:](self, "setMockVideoStreamToken:", [callCopy videoStreamToken]);
+  -[CSDMockCall setMockConversation:](self, "setMockConversation:", [callCopy isConversation]);
+  -[CSDMockCall setMockFailureExpected:](self, "setMockFailureExpected:", [callCopy isFailureExpected]);
+  -[CSDMockCall setMockSupportsEmergencyFallback:](self, "setMockSupportsEmergencyFallback:", [callCopy supportsEmergencyFallback]);
+  -[CSDMockCall setMockSharingScreen:](self, "setMockSharingScreen:", [callCopy isSharingScreen]);
+  screenShareAttributes = [callCopy screenShareAttributes];
+  [(CSDMockCall *)self setMockScreenShareAttributes:screenShareAttributes];
 
-  -[CSDMockCall setMockHasBeenRedirected:](self, "setMockHasBeenRedirected:", [v4 hasBeenRedirected]);
-  -[CSDMockCall setMockShouldSuppressRingtone:](self, "setMockShouldSuppressRingtone:", [v4 shouldSuppressRingtone]);
-  v13 = [v4 blockedByExtension];
-  [(CSDMockCall *)self setMockBlockedByExtension:v13];
+  -[CSDMockCall setMockHasBeenRedirected:](self, "setMockHasBeenRedirected:", [callCopy hasBeenRedirected]);
+  -[CSDMockCall setMockShouldSuppressRingtone:](self, "setMockShouldSuppressRingtone:", [callCopy shouldSuppressRingtone]);
+  blockedByExtension = [callCopy blockedByExtension];
+  [(CSDMockCall *)self setMockBlockedByExtension:blockedByExtension];
 
-  v14 = [v4 callDirectoryIdentityExtension];
-  [(CSDMockCall *)self setMockCallDirectoryIdentityExtension:v14];
+  callDirectoryIdentityExtension = [callCopy callDirectoryIdentityExtension];
+  [(CSDMockCall *)self setMockCallDirectoryIdentityExtension:callDirectoryIdentityExtension];
 
-  -[CSDMockCall setMockFilteredOutReason:](self, "setMockFilteredOutReason:", [v4 filteredOutReason]);
-  -[CSDMockCall setMockMixesVoiceWithMedia:](self, "setMockMixesVoiceWithMedia:", [v4 mixesVoiceWithMedia]);
-  -[CSDMockCall setMockNearbyMode:](self, "setMockNearbyMode:", [v4 nearbyMode]);
-  v15 = [v4 recordingSession];
-  [(CSDMockCall *)self setMockRecordingSession:v15];
+  -[CSDMockCall setMockFilteredOutReason:](self, "setMockFilteredOutReason:", [callCopy filteredOutReason]);
+  -[CSDMockCall setMockMixesVoiceWithMedia:](self, "setMockMixesVoiceWithMedia:", [callCopy mixesVoiceWithMedia]);
+  -[CSDMockCall setMockNearbyMode:](self, "setMockNearbyMode:", [callCopy nearbyMode]);
+  recordingSession = [callCopy recordingSession];
+  [(CSDMockCall *)self setMockRecordingSession:recordingSession];
 
-  v16 = [v4 translationSession];
-  [(CSDMockCall *)self setMockTranslationSession:v16];
+  translationSession = [callCopy translationSession];
+  [(CSDMockCall *)self setMockTranslationSession:translationSession];
 
-  v17 = [v4 smartHoldingSession];
+  smartHoldingSession = [callCopy smartHoldingSession];
 
-  [(CSDMockCall *)self setMockSmartHoldingSession:v17];
+  [(CSDMockCall *)self setMockSmartHoldingSession:smartHoldingSession];
   [(CSDCall *)self propertiesChanged];
 }
 
@@ -120,27 +120,27 @@
   mockDisplayContext = self->_mockDisplayContext;
   if (mockDisplayContext)
   {
-    v3 = mockDisplayContext;
+    displayContext = mockDisplayContext;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CSDMockCall;
-    v3 = [(CSDCall *)&v5 displayContext];
+    displayContext = [(CSDCall *)&v5 displayContext];
   }
 
-  return v3;
+  return displayContext;
 }
 
-- (void)setMockCallStatus:(int)a3
+- (void)setMockCallStatus:(int)status
 {
-  self->_mockCallStatus = a3;
-  if (a3 == 1)
+  self->_mockCallStatus = status;
+  if (status == 1)
   {
-    v4 = [(CSDMockCall *)self dateConnected];
+    dateConnected = [(CSDMockCall *)self dateConnected];
 
-    if (!v4)
+    if (!dateConnected)
     {
       v5 = +[NSDate date];
       [(CSDMockCall *)self setMockDateConnected:v5];
@@ -148,11 +148,11 @@
   }
 }
 
-- (void)answerWithRequest:(id)a3
+- (void)answerWithRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = CSDMockCall;
-  [(CSDMockCall *)&v6 answerWithRequest:a3];
+  [(CSDMockCall *)&v6 answerWithRequest:request];
   [(CSDMockCall *)self setMockCallStatus:1];
   v4 = +[NSDate date];
   [(CSDCall *)self setDateStartedConnecting:v4];
@@ -163,23 +163,23 @@
   [(CSDCall *)self propertiesChanged];
 }
 
-- (void)dialWithRequest:(id)a3 displayContext:(id)a4
+- (void)dialWithRequest:(id)request displayContext:(id)context
 {
   v11.receiver = self;
   v11.super_class = CSDMockCall;
-  v6 = a3;
-  [(CSDCall *)&v11 dialWithRequest:v6 displayContext:a4];
+  requestCopy = request;
+  [(CSDCall *)&v11 dialWithRequest:requestCopy displayContext:context];
   [(CSDMockCall *)self setMockCallStatus:1, v11.receiver, v11.super_class];
-  v7 = [v6 provider];
-  [(CSDMockCall *)self setMockProvider:v7];
+  provider = [requestCopy provider];
+  [(CSDMockCall *)self setMockProvider:provider];
 
-  v8 = [v6 handle];
-  [(CSDMockCall *)self setMockHandle:v8];
+  handle = [requestCopy handle];
+  [(CSDMockCall *)self setMockHandle:handle];
 
-  -[CSDMockCall setMockHostedOnCurrentDevice:](self, "setMockHostedOnCurrentDevice:", [v6 hostOnCurrentDevice]);
-  v9 = [v6 endpointOnCurrentDevice];
+  -[CSDMockCall setMockHostedOnCurrentDevice:](self, "setMockHostedOnCurrentDevice:", [requestCopy hostOnCurrentDevice]);
+  endpointOnCurrentDevice = [requestCopy endpointOnCurrentDevice];
 
-  [(CSDMockCall *)self setMockEndpointOnCurrentDevice:v9];
+  [(CSDMockCall *)self setMockEndpointOnCurrentDevice:endpointOnCurrentDevice];
   v10 = +[NSDate date];
   [(CSDCall *)self setDateStartedConnecting:v10];
 

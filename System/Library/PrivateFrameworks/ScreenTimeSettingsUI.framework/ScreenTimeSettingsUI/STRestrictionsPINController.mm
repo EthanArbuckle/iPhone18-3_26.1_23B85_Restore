@@ -1,29 +1,29 @@
 @interface STRestrictionsPINController
-- (BOOL)validatePIN:(id)a3;
+- (BOOL)validatePIN:(id)n;
 - (id)pinInstructionsPrompt;
-- (void)_setOptionsTitle:(id)a3 optionsHandler:(id)a4;
-- (void)recoveryAuthenticationFailed:(id)a3;
-- (void)recoveryAuthenticationSucceededForPasscode:(id)a3;
-- (void)setPIN:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_setOptionsTitle:(id)title optionsHandler:(id)handler;
+- (void)recoveryAuthenticationFailed:(id)failed;
+- (void)recoveryAuthenticationSucceededForPasscode:(id)passcode;
+- (void)setPIN:(id)n;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STRestrictionsPINController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(STRestrictionsPINController *)self specifier];
-  v6 = [v5 objectForKeyedSubscript:@"PreventDismissalWhenDone"];
+  appearCopy = appear;
+  specifier = [(STRestrictionsPINController *)self specifier];
+  v6 = [specifier objectForKeyedSubscript:@"PreventDismissalWhenDone"];
   -[DevicePINController setShouldDismissWhenDone:](self, "setShouldDismissWhenDone:", [v6 BOOLValue] ^ 1);
 
-  v7 = [v5 objectForKeyedSubscript:@"PINOptionsTitle"];
-  v8 = [v5 objectForKeyedSubscript:@"PINOptionsHandler"];
+  v7 = [specifier objectForKeyedSubscript:@"PINOptionsTitle"];
+  v8 = [specifier objectForKeyedSubscript:@"PINOptionsHandler"];
   v9 = v8;
   if (v7 && v8)
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 integerForKey:@"PasscodeRecoveryAttempts"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults integerForKey:@"PasscodeRecoveryAttempts"];
 
     if ([(DevicePINController *)self isBlocked]&& v11 >= 1)
     {
@@ -40,8 +40,8 @@
       v22 = v7;
       v23 = v9;
       v17 = [v16 timerWithTimeInterval:0 repeats:v21 block:v15];
-      v18 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v18 addTimer:v17 forMode:*MEMORY[0x277CBE640]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop addTimer:v17 forMode:*MEMORY[0x277CBE640]];
     }
 
     else
@@ -58,7 +58,7 @@
 
   v19.receiver = self;
   v19.super_class = STRestrictionsPINController;
-  [(DevicePINController *)&v19 viewWillAppear:v3];
+  [(DevicePINController *)&v19 viewWillAppear:appearCopy];
 }
 
 void __46__STRestrictionsPINController_viewWillAppear___block_invoke(uint64_t a1)
@@ -69,19 +69,19 @@ void __46__STRestrictionsPINController_viewWillAppear___block_invoke(uint64_t a1
   [v2 slideToNewPasscodeField:objc_msgSend(*(a1 + 32) requiresKeyboard:"simplePIN") numericOnly:objc_msgSend(*(a1 + 32) transition:"requiresKeyboard") showsOptionsButton:{objc_msgSend(*(a1 + 32), "isNumericPIN"), 0, 1}];
 }
 
-- (void)_setOptionsTitle:(id)a3 optionsHandler:(id)a4
+- (void)_setOptionsTitle:(id)title optionsHandler:(id)handler
 {
-  v6 = a4;
-  [(DevicePINController *)self setPasscodeOptionsTitle:a3];
-  v7 = self;
+  handlerCopy = handler;
+  [(DevicePINController *)self setPasscodeOptionsTitle:title];
+  selfCopy = self;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__STRestrictionsPINController__setOptionsTitle_optionsHandler___block_invoke;
   v10[3] = &unk_279B7DDE8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v7;
-  v9 = v6;
+  v11 = selfCopy;
+  v12 = handlerCopy;
+  v8 = selfCopy;
+  v9 = handlerCopy;
   [(DevicePINController *)v8 setPasscodeOptionsHandler:v10];
 }
 
@@ -92,68 +92,68 @@ void __46__STRestrictionsPINController_viewWillAppear___block_invoke(uint64_t a1
   {
     v5 = v4;
     v6 = +[STScreenTimeSettingsUIBundle bundle];
-    v7 = [v6 localizedStringForKey:v5 value:&stru_28766E5A8 table:0];
+    pinInstructionsPrompt = [v6 localizedStringForKey:v5 value:&stru_28766E5A8 table:0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = STRestrictionsPINController;
-    v7 = [(PSRestrictionsPINController *)&v9 pinInstructionsPrompt];
+    pinInstructionsPrompt = [(PSRestrictionsPINController *)&v9 pinInstructionsPrompt];
   }
 
-  return v7;
+  return pinInstructionsPrompt;
 }
 
-- (BOOL)validatePIN:(id)a3
+- (BOOL)validatePIN:(id)n
 {
-  v4 = a3;
-  v5 = [(DevicePINController *)self pinDelegate];
-  v6 = [v5 validatePIN:v4 forPINController:self];
+  nCopy = n;
+  pinDelegate = [(DevicePINController *)self pinDelegate];
+  v6 = [pinDelegate validatePIN:nCopy forPINController:self];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 setInteger:0 forKey:@"PasscodeRecoveryAttempts"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:0 forKey:@"PasscodeRecoveryAttempts"];
   }
 
   return v6;
 }
 
-- (void)setPIN:(id)a3
+- (void)setPIN:(id)n
 {
-  v7 = a3;
-  v4 = [(DevicePINController *)self pinDelegate];
+  nCopy = n;
+  pinDelegate = [(DevicePINController *)self pinDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DevicePINController *)self pinDelegate];
-    [v6 setPIN:v7 forPINController:self];
+    pinDelegate2 = [(DevicePINController *)self pinDelegate];
+    [pinDelegate2 setPIN:nCopy forPINController:self];
   }
 }
 
-- (void)recoveryAuthenticationSucceededForPasscode:(id)a3
+- (void)recoveryAuthenticationSucceededForPasscode:(id)passcode
 {
-  v5 = a3;
+  passcodeCopy = passcode;
   if ([(DevicePINController *)self isBlocked])
   {
-    [(DevicePINController *)self attemptValidationWithPIN:v5];
-    v4 = [(PSDetailController *)self pane];
-    [v4 showError:0 error:0 isBlocked:0 animate:0];
+    [(DevicePINController *)self attemptValidationWithPIN:passcodeCopy];
+    pane = [(PSDetailController *)self pane];
+    [pane showError:0 error:0 isBlocked:0 animate:0];
   }
 
-  [(DevicePINController *)self pinEntered:v5];
+  [(DevicePINController *)self pinEntered:passcodeCopy];
 }
 
-- (void)recoveryAuthenticationFailed:(id)a3
+- (void)recoveryAuthenticationFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 integerForKey:@"PasscodeRecoveryAttempts"];
+  failedCopy = failed;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults integerForKey:@"PasscodeRecoveryAttempts"];
   if ([(DevicePINController *)self isBlocked])
   {
-    [v5 setInteger:++v6 forKey:@"PasscodeRecoveryAttempts"];
+    [standardUserDefaults setInteger:++v6 forKey:@"PasscodeRecoveryAttempts"];
   }
 
   else
@@ -163,7 +163,7 @@ void __46__STRestrictionsPINController_viewWillAppear___block_invoke(uint64_t a1
 
   if (v6 >= 1)
   {
-    [v4 setHidden:1];
+    [failedCopy setHidden:1];
     [(DevicePINController *)self unblockTime];
     v8 = v7;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -173,10 +173,10 @@ void __46__STRestrictionsPINController_viewWillAppear___block_invoke(uint64_t a1
     v14[1] = 3221225472;
     v14[2] = __60__STRestrictionsPINController_recoveryAuthenticationFailed___block_invoke;
     v14[3] = &unk_279B7DE10;
-    v15 = v4;
+    v15 = failedCopy;
     v12 = [v11 timerWithTimeInterval:0 repeats:v14 block:v10];
-    v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v13 addTimer:v12 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:v12 forMode:*MEMORY[0x277CBE640]];
   }
 }
 

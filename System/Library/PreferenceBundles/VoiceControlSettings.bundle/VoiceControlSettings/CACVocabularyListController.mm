@@ -1,17 +1,17 @@
 @interface CACVocabularyListController
 - (Class)detailViewControllerClass;
 - (NSArray)items;
-- (id)_detailTextForSpecifier:(id)a3;
-- (id)detailTextForItem:(id)a3;
+- (id)_detailTextForSpecifier:(id)specifier;
+- (id)detailTextForItem:(id)item;
 - (id)specifiers;
-- (id)textForItem:(id)a3;
-- (void)_handleDoneButtonTapped:(id)a3;
-- (void)_handleEditButtonTapped:(id)a3;
+- (id)textForItem:(id)item;
+- (void)_handleDoneButtonTapped:(id)tapped;
+- (void)_handleEditButtonTapped:(id)tapped;
 - (void)_updateEditButton;
 - (void)addButtonTapped;
-- (void)deleteItem:(id)a3;
+- (void)deleteItem:(id)item;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -24,14 +24,14 @@
   [(CACVocabularyListController *)&v7 viewDidLoad];
   [(CACVocabularyListController *)self _updateEditButton];
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"_addButtonTapped:"];
-  v4 = [(CACVocabularyListController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(CACVocabularyListController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
-  v5 = [(CACVocabularyListController *)self table];
-  [v5 setCountStringInsignificantRowCount:9];
+  table = [(CACVocabularyListController *)self table];
+  [table setCountStringInsignificantRowCount:9];
 
-  v6 = [(CACVocabularyListController *)self table];
-  [v6 setIndexHidden:0 animated:0];
+  table2 = [(CACVocabularyListController *)self table];
+  [table2 setIndexHidden:0 animated:0];
 }
 
 - (void)_updateEditButton
@@ -43,14 +43,14 @@
 
   [v4 setUsesGroupingSeparator:1];
   v6 = +[CACVocabularyImportExportUtilities maximumNumberOfAllowedEntries];
-  v7 = [(CACVocabularyListController *)self items];
-  v8 = [v7 count];
+  items = [(CACVocabularyListController *)self items];
+  v8 = [items count];
 
   if (v8 <= v6)
   {
     v16 = settingsLocString(@"VOCABULARY_COUNT_UNDER_LIMIT", @"CommandAndControlSettings");
-    v17 = [(CACVocabularyListController *)self items];
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 count]);
+    items2 = [(CACVocabularyListController *)self items];
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [items2 count]);
     v19 = [v4 stringFromNumber:v18];
     v20 = [NSNumber numberWithUnsignedInteger:v6];
     v21 = [v4 stringFromNumber:v20];
@@ -62,8 +62,8 @@
   else
   {
     v9 = settingsLocString(@"VOCABULARY_COUNT_OVER_LIMIT", @"CommandAndControlSettings");
-    v10 = [(CACVocabularyListController *)self items];
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 count]);
+    items3 = [(CACVocabularyListController *)self items];
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [items3 count]);
     v12 = [v4 stringFromNumber:v11];
     v13 = [NSNumber numberWithUnsignedInteger:v6];
     v14 = [v4 stringFromNumber:v13];
@@ -85,8 +85,8 @@
 
   else
   {
-    v26 = [(CACVocabularyListController *)self items];
-    v27 = [v26 count];
+    items4 = [(CACVocabularyListController *)self items];
+    v27 = [items4 count];
 
     if (!v27)
     {
@@ -114,13 +114,13 @@ LABEL_9:
   {
     v20 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(CACVocabularyListController *)self items];
+    items = [(CACVocabularyListController *)self items];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_59AC;
     v28[3] = &unk_28EC0;
     v28[4] = self;
-    v6 = [v5 sortedArrayUsingComparator:v28];
+    v6 = [items sortedArrayUsingComparator:v28];
 
     v26 = 0u;
     v27 = 0u;
@@ -146,8 +146,8 @@ LABEL_9:
 
           v11 = *(*(&v24 + 1) + 8 * v10);
           v12 = +[CACPreferences sharedPreferences];
-          v13 = [v12 bestLocaleIdentifier];
-          v14 = [v13 hasPrefix:@"en"];
+          bestLocaleIdentifier = [v12 bestLocaleIdentifier];
+          v14 = [bestLocaleIdentifier hasPrefix:@"en"];
 
           v15 = [(CACVocabularyListController *)self textForItem:v11];
           if (v14)
@@ -186,9 +186,9 @@ LABEL_9:
   return v3;
 }
 
-- (id)_detailTextForSpecifier:(id)a3
+- (id)_detailTextForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"CACVocabularyListItem"];
+  v4 = [specifier propertyForKey:@"CACVocabularyListItem"];
   v5 = [(CACVocabularyListController *)self detailTextForItem:v4];
 
   return v5;
@@ -202,34 +202,34 @@ LABEL_9:
   [(CACVocabularyListController *)self _updateEditButton];
 }
 
-- (void)_handleDoneButtonTapped:(id)a3
+- (void)_handleDoneButtonTapped:(id)tapped
 {
   [(CACVocabularyListController *)self setEditing:0 animated:1];
 
   [(CACVocabularyListController *)self _updateEditButton];
 }
 
-- (void)_handleEditButtonTapped:(id)a3
+- (void)_handleEditButtonTapped:(id)tapped
 {
   [(CACVocabularyListController *)self setEditing:1 animated:1];
 
   [(CACVocabularyListController *)self _updateEditButton];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v9 = [(CACVocabularyListController *)self specifierAtIndexPath:v8];
+    v9 = [(CACVocabularyListController *)self specifierAtIndexPath:pathCopy];
     v10 = [v9 propertyForKey:@"CACVocabularyListItem"];
     [(CACVocabularyListController *)self deleteItem:v10];
     [(CACVocabularyListController *)self removeSpecifier:v9 animated:1];
   }
 
-  v11 = [(CACVocabularyListController *)self items];
-  v12 = [v11 count];
+  items = [(CACVocabularyListController *)self items];
+  v12 = [items count];
 
   if (!v12)
   {
@@ -246,7 +246,7 @@ LABEL_9:
   return 0;
 }
 
-- (id)textForItem:(id)a3
+- (id)textForItem:(id)item
 {
   sub_5C74();
   objc_opt_class();
@@ -255,7 +255,7 @@ LABEL_9:
   return &stru_29500;
 }
 
-- (id)detailTextForItem:(id)a3
+- (id)detailTextForItem:(id)item
 {
   sub_5C74();
   objc_opt_class();
@@ -273,7 +273,7 @@ LABEL_9:
   return 0;
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
   sub_5C74();
   objc_opt_class();

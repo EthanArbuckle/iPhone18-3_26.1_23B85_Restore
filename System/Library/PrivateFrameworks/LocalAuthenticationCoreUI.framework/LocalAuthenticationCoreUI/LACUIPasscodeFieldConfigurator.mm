@@ -1,22 +1,22 @@
 @interface LACUIPasscodeFieldConfigurator
 - (int64_t)textAlignment;
-- (void)configureDotView:(id)a3 atIndex:(int64_t)a4 forField:(id)a5;
+- (void)configureDotView:(id)view atIndex:(int64_t)index forField:(id)field;
 @end
 
 @implementation LACUIPasscodeFieldConfigurator
 
-- (void)configureDotView:(id)a3 atIndex:(int64_t)a4 forField:(id)a5
+- (void)configureDotView:(id)view atIndex:(int64_t)index forField:(id)field
 {
-  v7 = a3;
-  v8 = [a5 text];
-  if ([v8 length] <= a4)
+  viewCopy = view;
+  text = [field text];
+  if ([text length] <= index)
   {
-    [v7 showEmpty];
+    [viewCopy showEmpty];
   }
 
   else
   {
-    [v7 showConcealed];
+    [viewCopy showConcealed];
   }
 }
 

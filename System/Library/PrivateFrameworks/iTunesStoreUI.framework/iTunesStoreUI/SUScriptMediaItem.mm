@@ -1,17 +1,17 @@
 @interface SUScriptMediaItem
-+ (id)copyScriptMediaTypesForNativeMediaTypes:(unint64_t)a3;
-+ (id)scriptMediaTypeForNativeMediaType:(unint64_t)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
-+ (unint64_t)nativeMediaTypesForScriptMediaTypes:(id)a3;
++ (id)copyScriptMediaTypesForNativeMediaTypes:(unint64_t)types;
++ (id)scriptMediaTypeForNativeMediaType:(unint64_t)type;
++ (id)webScriptNameForSelector:(SEL)selector;
++ (unint64_t)nativeMediaTypesForScriptMediaTypes:(id)types;
 + (void)initialize;
 - (MPMediaItem)nativeItem;
-- (id)imageURLWithWidth:(id)a3 height:(id)a4;
-- (id)valueForProperty:(id)a3;
+- (id)imageURLWithWidth:(id)width height:(id)height;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation SUScriptMediaItem
 
-+ (id)copyScriptMediaTypesForNativeMediaTypes:(unint64_t)a3
++ (id)copyScriptMediaTypesForNativeMediaTypes:(unint64_t)types
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = &off_1E8165D40;
@@ -19,12 +19,12 @@
   while (1)
   {
     v7 = *(v5 - 1);
-    if (v7 == a3)
+    if (v7 == types)
     {
       break;
     }
 
-    if ((v7 & a3) != 0)
+    if ((v7 & types) != 0)
     {
       [v4 addObject:*v5];
     }
@@ -41,14 +41,14 @@
   return v4;
 }
 
-+ (unint64_t)nativeMediaTypesForScriptMediaTypes:(id)a3
++ (unint64_t)nativeMediaTypesForScriptMediaTypes:(id)types
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [types countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v4)
   {
     return 0;
@@ -63,7 +63,7 @@
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(types);
       }
 
       v9 = *(*(&v13 + 1) + 8 * i);
@@ -83,18 +83,18 @@ LABEL_11:
       ;
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [types countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-+ (id)scriptMediaTypeForNativeMediaType:(unint64_t)a3
++ (id)scriptMediaTypeForNativeMediaType:(unint64_t)type
 {
   v3 = &off_1E8165D40;
   v4 = 10;
-  while (*(v3 - 1) != a3)
+  while (*(v3 - 1) != type)
   {
     v3 += 2;
     if (!--v4)
@@ -108,12 +108,12 @@ LABEL_11:
 
 - (MPMediaItem)nativeItem
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 object];
+  return [(SUScriptNativeObject *)nativeObject object];
 }
 
-- (id)imageURLWithWidth:(id)a3 height:(id)a4
+- (id)imageURLWithWidth:(id)width height:(id)height
 {
   v8 = 0;
   v9 = &v8;
@@ -134,15 +134,15 @@ LABEL_11:
   v4 = v9[5];
   if (v4)
   {
-    v5 = v4;
+    null = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6 = v5;
+  v6 = null;
   _Block_object_dispose(&v8, 8);
   return v6;
 }
@@ -179,7 +179,7 @@ uint64_t __46__SUScriptMediaItem_imageURLWithWidth_height___block_invoke(uint64_
   return result;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   v7 = 0;
   v8 = &v7;
@@ -209,14 +209,14 @@ uint64_t __46__SUScriptMediaItem_imageURLWithWidth_height___block_invoke(uint64_
     v4 = v8;
   }
 
-  v5 = v4[5];
-  if (!v5)
+  null = v4[5];
+  if (!null)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   _Block_object_dispose(&v7, 8);
-  return v5;
+  return null;
 }
 
 id __38__SUScriptMediaItem_valueForProperty___block_invoke(uint64_t a1)
@@ -226,14 +226,14 @@ id __38__SUScriptMediaItem_valueForProperty___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_29, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_29, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaItem;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -241,7 +241,7 @@ id __38__SUScriptMediaItem_valueForProperty___block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_29 = sel_imageURLWithWidth_height_;
     *algn_1EBF3B048 = @"imageURLForSize";

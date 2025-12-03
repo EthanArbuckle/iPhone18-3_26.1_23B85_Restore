@@ -1,28 +1,28 @@
 @interface RTBluePOIQuery
-- (BOOL)isEqual:(id)a3;
-- (RTBluePOIQuery)initWithCoder:(id)a3;
-- (RTBluePOIQuery)initWithDictionary:(id)a3;
-- (RTBluePOIQuery)initWithFirstJSONDictionary:(id)a3;
-- (RTBluePOIQuery)initWithIdentifier:(id)a3 accessPoints:(id)a4 locations:(id)a5 referenceLocation:(id)a6 settledState:(unint64_t)a7 selectedToLabel:(BOOL)a8 date:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (RTBluePOIQuery)initWithCoder:(id)coder;
+- (RTBluePOIQuery)initWithDictionary:(id)dictionary;
+- (RTBluePOIQuery)initWithFirstJSONDictionary:(id)dictionary;
+- (RTBluePOIQuery)initWithIdentifier:(id)identifier accessPoints:(id)points locations:(id)locations referenceLocation:(id)location settledState:(unint64_t)state selectedToLabel:(BOOL)label date:(id)date;
 - (id)description;
 - (id)getCLLocations;
 - (id)outputToDictionary;
 - (id)outputToFirstJSONDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTBluePOIQuery
 
-- (RTBluePOIQuery)initWithIdentifier:(id)a3 accessPoints:(id)a4 locations:(id)a5 referenceLocation:(id)a6 settledState:(unint64_t)a7 selectedToLabel:(BOOL)a8 date:(id)a9
+- (RTBluePOIQuery)initWithIdentifier:(id)identifier accessPoints:(id)points locations:(id)locations referenceLocation:(id)location settledState:(unint64_t)state selectedToLabel:(BOOL)label date:(id)date
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = v19;
-  if (!v15)
+  identifierCopy = identifier;
+  pointsCopy = points;
+  locationsCopy = locations;
+  locationCopy = location;
+  dateCopy = date;
+  v20 = dateCopy;
+  if (!identifierCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -37,7 +37,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a7 >= 3)
+  if (state >= 3)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -71,34 +71,34 @@ LABEL_14:
   v21 = [(RTBluePOIQuery *)&v36 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [pointsCopy copy];
     accessPoints = v21->_accessPoints;
     v21->_accessPoints = v24;
 
-    v26 = [v17 copy];
+    v26 = [locationsCopy copy];
     locations = v21->_locations;
     v21->_locations = v26;
 
-    v28 = [v18 copy];
+    v28 = [locationCopy copy];
     referenceLocation = v21->_referenceLocation;
     v21->_referenceLocation = v28;
 
-    v21->_settledState = a7;
-    v21->_selectedToLabel = a8;
+    v21->_settledState = state;
+    v21->_selectedToLabel = label;
     v30 = [v20 copy];
     date = v21->_date;
     v21->_date = v30;
   }
 
   self = v21;
-  v32 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v32;
+  return selfCopy;
 }
 
 - (id)description
@@ -119,8 +119,8 @@ LABEL_15:
     v9 = @"NO";
   }
 
-  v10 = [(NSDate *)self->_date stringFromDate];
-  v11 = [v3 stringWithFormat:@"identifier, %@, number of access points, %lu, number of locations, %lu, referenceLocation, %@, settled state, %@, selected to label, %@, date, %@", identifier, v5, v6, referenceLocation, v8, v9, v10];
+  stringFromDate = [(NSDate *)self->_date stringFromDate];
+  v11 = [v3 stringWithFormat:@"identifier, %@, number of access points, %lu, number of locations, %lu, referenceLocation, %@, settled state, %@, selected to label, %@, date, %@", identifier, v5, v6, referenceLocation, v8, v9, stringFromDate];
 
   return v11;
 }
@@ -163,59 +163,59 @@ LABEL_15:
   return v3;
 }
 
-- (RTBluePOIQuery)initWithCoder:(id)a3
+- (RTBluePOIQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"accessPoints"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"accessPoints"];
 
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"locations"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"locations"];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settledState"];
-  v16 = [v15 unsignedIntegerValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceLocation"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settledState"];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedToLabel"];
-  v18 = [v17 BOOLValue];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedToLabel"];
+  bOOLValue = [v17 BOOLValue];
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
-  v20 = [(RTBluePOIQuery *)self initWithIdentifier:v5 accessPoints:v9 locations:v13 referenceLocation:v14 settledState:v16 selectedToLabel:v18 date:v19];
+  v20 = [(RTBluePOIQuery *)self initWithIdentifier:v5 accessPoints:v9 locations:v13 referenceLocation:v14 settledState:unsignedIntegerValue selectedToLabel:bOOLValue date:v19];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"identifier"];
-  [v7 encodeObject:self->_accessPoints forKey:@"accessPoints"];
-  [v7 encodeObject:self->_locations forKey:@"locations"];
-  [v7 encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_accessPoints forKey:@"accessPoints"];
+  [coderCopy encodeObject:self->_locations forKey:@"locations"];
+  [coderCopy encodeObject:self->_referenceLocation forKey:@"referenceLocation"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_settledState];
-  [v7 encodeObject:v5 forKey:@"settledState"];
+  [coderCopy encodeObject:v5 forKey:@"settledState"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_selectedToLabel];
-  [v7 encodeObject:v6 forKey:@"selectedToLabel"];
+  [coderCopy encodeObject:v6 forKey:@"selectedToLabel"];
 
-  [v7 encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
-- (RTBluePOIQuery)initWithDictionary:(id)a3
+- (RTBluePOIQuery)initWithDictionary:(id)dictionary
 {
   v75 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v51 = [v3 valueForKey:@"identifier"];
+  dictionaryCopy = dictionary;
+  v51 = [dictionaryCopy valueForKey:@"identifier"];
   v52 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v51];
-  v53 = v3;
-  v4 = [v3 valueForKey:@"locations"];
-  v5 = [MEMORY[0x277CBEB18] array];
+  v53 = dictionaryCopy;
+  v4 = [dictionaryCopy valueForKey:@"locations"];
+  array = [MEMORY[0x277CBEB18] array];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
@@ -223,7 +223,7 @@ LABEL_15:
   v6 = v4;
   v7 = [v6 countByEnumeratingWithState:&v63 objects:v74 count:16];
   v8 = 0x277D01000uLL;
-  v54 = v5;
+  v54 = array;
   v56 = v6;
   if (v7)
   {
@@ -243,7 +243,7 @@ LABEL_15:
         v13 = [objc_alloc(MEMORY[0x277D01160]) initWithDictionary:v12];
         if (v13)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -263,7 +263,7 @@ LABEL_15:
             _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@, %@, unable to instantiate location from dictionary, %@", buf, 0x20u);
 
             v6 = v56;
-            v5 = v54;
+            array = v54;
           }
         }
 
@@ -278,7 +278,7 @@ LABEL_15:
   }
 
   v18 = [v53 valueForKey:@"accessPoints"];
-  v19 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -304,7 +304,7 @@ LABEL_15:
         v26 = [objc_alloc(MEMORY[0x277D01430]) initWithDictionary:v25];
         if (v26)
         {
-          [v19 addObject:v26];
+          [array2 addObject:v26];
         }
 
         else
@@ -375,11 +375,11 @@ LABEL_15:
       v42 = MEMORY[0x277CBEAA8];
       [v39 doubleValue];
       v43 = [v42 dateWithTimeIntervalSince1970:?];
-      v44 = [v37 unsignedIntegerValue];
-      v45 = [v38 BOOLValue];
-      v46 = v44;
+      unsignedIntegerValue = [v37 unsignedIntegerValue];
+      bOOLValue = [v38 BOOLValue];
+      v46 = unsignedIntegerValue;
       v34 = v52;
-      v41 = [(RTBluePOIQuery *)self initWithIdentifier:v52 accessPoints:v19 locations:v54 referenceLocation:v33 settledState:v46 selectedToLabel:v45 date:v43];
+      v41 = [(RTBluePOIQuery *)self initWithIdentifier:v52 accessPoints:array2 locations:v54 referenceLocation:v33 settledState:v46 selectedToLabel:bOOLValue date:v43];
 
       v31 = v53;
       self = v41;
@@ -394,15 +394,15 @@ LABEL_15:
   return v41;
 }
 
-- (RTBluePOIQuery)initWithFirstJSONDictionary:(id)a3
+- (RTBluePOIQuery)initWithFirstJSONDictionary:(id)dictionary
 {
   v72 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v47 = [v3 valueForKey:@"identifier"];
+  dictionaryCopy = dictionary;
+  v47 = [dictionaryCopy valueForKey:@"identifier"];
   v46 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v47];
-  v48 = v3;
-  v4 = [v3 valueForKey:@"locations"];
-  v5 = [MEMORY[0x277CBEB18] array];
+  v48 = dictionaryCopy;
+  v4 = [dictionaryCopy valueForKey:@"locations"];
+  array = [MEMORY[0x277CBEB18] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -410,7 +410,7 @@ LABEL_15:
   v6 = v4;
   v7 = [v6 countByEnumeratingWithState:&v58 objects:v71 count:16];
   v8 = 0x277D01000uLL;
-  v50 = v5;
+  v50 = array;
   v51 = v6;
   if (v7)
   {
@@ -430,7 +430,7 @@ LABEL_15:
         v13 = [objc_alloc(*(v8 + 352)) initWithFirstJSONDictionary:v12];
         if (v13)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -449,7 +449,7 @@ LABEL_15:
             v70 = v12;
             _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@, %@, unable to instantiate location from dictionary, %@", buf, 0x20u);
 
-            v5 = v50;
+            array = v50;
             v6 = v51;
           }
 
@@ -467,7 +467,7 @@ LABEL_15:
   }
 
   v18 = [v48 valueForKey:@"scans"];
-  v19 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -493,7 +493,7 @@ LABEL_15:
         v26 = [objc_alloc(MEMORY[0x277D01430]) initWithFirstJSONDictionary:v25];
         if (v26)
         {
-          [v19 addObject:v26];
+          [array2 addObject:v26];
         }
 
         else
@@ -566,7 +566,7 @@ LABEL_15:
       v40 = MEMORY[0x277CBEAA8];
       [v37 doubleValue];
       v41 = [v40 dateWithTimeIntervalSince1970:?];
-      v39 = [(RTBluePOIQuery *)self initWithIdentifier:v46 accessPoints:v19 locations:v50 referenceLocation:v35 settledState:0 selectedToLabel:1 date:v41];
+      v39 = [(RTBluePOIQuery *)self initWithIdentifier:v46 accessPoints:array2 locations:v50 referenceLocation:v35 settledState:0 selectedToLabel:1 date:v41];
 
       self = v39;
     }
@@ -584,20 +584,20 @@ LABEL_15:
 {
   v44 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(RTBluePOIQuery *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"identifier"];
+  identifier = [(RTBluePOIQuery *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"identifier"];
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [(RTBluePOIQuery *)self accessPoints];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  accessPoints = [(RTBluePOIQuery *)self accessPoints];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(accessPoints, "count")}];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v9 = [(RTBluePOIQuery *)self accessPoints];
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  accessPoints2 = [(RTBluePOIQuery *)self accessPoints];
+  v10 = [accessPoints2 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v10)
   {
     v11 = v10;
@@ -608,14 +608,14 @@ LABEL_15:
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accessPoints2);
         }
 
-        v14 = [*(*(&v38 + 1) + 8 * i) outputToDictionary];
-        [v8 addObject:v14];
+        outputToDictionary = [*(*(&v38 + 1) + 8 * i) outputToDictionary];
+        [v8 addObject:outputToDictionary];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v11 = [accessPoints2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v11);
@@ -623,15 +623,15 @@ LABEL_15:
 
   [v3 setObject:v8 forKey:@"accessPoints"];
   v15 = MEMORY[0x277CBEB18];
-  v16 = [(RTBluePOIQuery *)self locations];
-  v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+  locations = [(RTBluePOIQuery *)self locations];
+  v17 = [v15 arrayWithCapacity:{objc_msgSend(locations, "count")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = [(RTBluePOIQuery *)self locations];
-  v19 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  locations2 = [(RTBluePOIQuery *)self locations];
+  v19 = [locations2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v19)
   {
     v20 = v19;
@@ -642,22 +642,22 @@ LABEL_15:
       {
         if (*v35 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(locations2);
         }
 
         v23 = [*(*(&v34 + 1) + 8 * j) outputToDictionaryReadableDate:1];
         [v17 addObject:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v20 = [locations2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v20);
   }
 
   [v3 setObject:v17 forKey:@"locations"];
-  v24 = [(RTBluePOIQuery *)self referenceLocation];
-  v25 = [v24 outputToDictionaryReadableDate:1];
+  referenceLocation = [(RTBluePOIQuery *)self referenceLocation];
+  v25 = [referenceLocation outputToDictionaryReadableDate:1];
   [v3 setObject:v25 forKey:@"referenceLocation"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTBluePOIQuery settledState](self, "settledState")}];
@@ -667,14 +667,14 @@ LABEL_15:
   [v3 setObject:v27 forKey:@"selectedToLabel"];
 
   v28 = MEMORY[0x277CCABB0];
-  v29 = [(RTBluePOIQuery *)self date];
-  [v29 timeIntervalSince1970];
+  date = [(RTBluePOIQuery *)self date];
+  [date timeIntervalSince1970];
   v30 = [v28 numberWithDouble:?];
   [v3 setObject:v30 forKey:@"date"];
 
-  v31 = [(RTBluePOIQuery *)self date];
-  v32 = [v31 getFormattedDateString];
-  [v3 setObject:v32 forKey:@"dateAsString"];
+  date2 = [(RTBluePOIQuery *)self date];
+  getFormattedDateString = [date2 getFormattedDateString];
+  [v3 setObject:getFormattedDateString forKey:@"dateAsString"];
 
   return v3;
 }
@@ -683,20 +683,20 @@ LABEL_15:
 {
   v47 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(RTBluePOIQuery *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"identifier"];
+  identifier = [(RTBluePOIQuery *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"identifier"];
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [(RTBluePOIQuery *)self accessPoints];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  accessPoints = [(RTBluePOIQuery *)self accessPoints];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(accessPoints, "count")}];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = [(RTBluePOIQuery *)self accessPoints];
-  v10 = [v9 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  accessPoints2 = [(RTBluePOIQuery *)self accessPoints];
+  v10 = [accessPoints2 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v10)
   {
     v11 = v10;
@@ -707,14 +707,14 @@ LABEL_15:
       {
         if (*v42 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accessPoints2);
         }
 
-        v14 = [*(*(&v41 + 1) + 8 * i) outputToFirstJSONDictionary];
-        [v8 addObject:v14];
+        outputToFirstJSONDictionary = [*(*(&v41 + 1) + 8 * i) outputToFirstJSONDictionary];
+        [v8 addObject:outputToFirstJSONDictionary];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v11 = [accessPoints2 countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v11);
@@ -722,15 +722,15 @@ LABEL_15:
 
   [v3 setObject:v8 forKey:@"scans"];
   v15 = MEMORY[0x277CBEB18];
-  v16 = [(RTBluePOIQuery *)self locations];
-  v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+  locations = [(RTBluePOIQuery *)self locations];
+  v17 = [v15 arrayWithCapacity:{objc_msgSend(locations, "count")}];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v18 = [(RTBluePOIQuery *)self locations];
-  v19 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
+  locations2 = [(RTBluePOIQuery *)self locations];
+  v19 = [locations2 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v19)
   {
     v20 = v19;
@@ -741,14 +741,14 @@ LABEL_15:
       {
         if (*v38 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(locations2);
         }
 
-        v23 = [*(*(&v37 + 1) + 8 * j) outputToFirstJSONDictionary];
-        [v17 addObject:v23];
+        outputToFirstJSONDictionary2 = [*(*(&v37 + 1) + 8 * j) outputToFirstJSONDictionary];
+        [v17 addObject:outputToFirstJSONDictionary2];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v20 = [locations2 countByEnumeratingWithState:&v37 objects:v45 count:16];
     }
 
     while (v20);
@@ -756,26 +756,26 @@ LABEL_15:
 
   [v3 setObject:v17 forKey:@"locations"];
   v24 = MEMORY[0x277CCABB0];
-  v25 = [(RTBluePOIQuery *)self referenceLocation];
-  [v25 latitude];
+  referenceLocation = [(RTBluePOIQuery *)self referenceLocation];
+  [referenceLocation latitude];
   v26 = [v24 numberWithDouble:?];
   [v3 setObject:v26 forKey:*MEMORY[0x277D01490]];
 
   v27 = MEMORY[0x277CCABB0];
-  v28 = [(RTBluePOIQuery *)self referenceLocation];
-  [v28 longitude];
+  referenceLocation2 = [(RTBluePOIQuery *)self referenceLocation];
+  [referenceLocation2 longitude];
   v29 = [v27 numberWithDouble:?];
   [v3 setObject:v29 forKey:*MEMORY[0x277D01498]];
 
   v30 = MEMORY[0x277CCABB0];
-  v31 = [(RTBluePOIQuery *)self referenceLocation];
-  [v31 horizontalUncertainty];
+  referenceLocation3 = [(RTBluePOIQuery *)self referenceLocation];
+  [referenceLocation3 horizontalUncertainty];
   v32 = [v30 numberWithDouble:?];
   [v3 setObject:v32 forKey:@"range"];
 
   v33 = MEMORY[0x277CCABB0];
-  v34 = [(RTBluePOIQuery *)self date];
-  [v34 timeIntervalSince1970];
+  date = [(RTBluePOIQuery *)self date];
+  [date timeIntervalSince1970];
   v35 = [v33 numberWithDouble:?];
   [v3 setObject:v35 forKey:@"time"];
 
@@ -797,10 +797,10 @@ LABEL_15:
   return v8 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v47 = 1;
   }
@@ -810,48 +810,48 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTBluePOIQuery *)self accessPoints];
-      v7 = [v6 count];
-      v8 = [(RTBluePOIQuery *)v5 accessPoints];
-      v9 = [v8 count];
+      v5 = equalCopy;
+      accessPoints = [(RTBluePOIQuery *)self accessPoints];
+      v7 = [accessPoints count];
+      accessPoints2 = [(RTBluePOIQuery *)v5 accessPoints];
+      v9 = [accessPoints2 count];
 
       if (v7 != v9)
       {
         goto LABEL_22;
       }
 
-      v10 = [(RTBluePOIQuery *)self accessPoints];
-      if (v10)
+      accessPoints3 = [(RTBluePOIQuery *)self accessPoints];
+      if (accessPoints3)
       {
-        v11 = v10;
-        v12 = [(RTBluePOIQuery *)v5 accessPoints];
+        v11 = accessPoints3;
+        accessPoints4 = [(RTBluePOIQuery *)v5 accessPoints];
 
-        if (v12)
+        if (accessPoints4)
         {
-          v13 = [(RTBluePOIQuery *)self accessPoints];
-          v14 = [v13 count];
+          accessPoints5 = [(RTBluePOIQuery *)self accessPoints];
+          v14 = [accessPoints5 count];
 
           if (v14)
           {
             v15 = 0;
             do
             {
-              v16 = [(RTBluePOIQuery *)self accessPoints];
-              v17 = [v16 objectAtIndexedSubscript:v15];
+              accessPoints6 = [(RTBluePOIQuery *)self accessPoints];
+              v17 = [accessPoints6 objectAtIndexedSubscript:v15];
 
-              v18 = [(RTBluePOIQuery *)v5 accessPoints];
-              v19 = [v18 objectAtIndexedSubscript:v15];
+              accessPoints7 = [(RTBluePOIQuery *)v5 accessPoints];
+              v19 = [accessPoints7 objectAtIndexedSubscript:v15];
 
-              LOBYTE(v18) = [v17 isEqual:v19];
-              if ((v18 & 1) == 0)
+              LOBYTE(accessPoints7) = [v17 isEqual:v19];
+              if ((accessPoints7 & 1) == 0)
               {
                 goto LABEL_22;
               }
 
               ++v15;
-              v20 = [(RTBluePOIQuery *)self accessPoints];
-              v21 = [v20 count];
+              accessPoints8 = [(RTBluePOIQuery *)self accessPoints];
+              v21 = [accessPoints8 count];
             }
 
             while (v15 < v21);
@@ -859,10 +859,10 @@ LABEL_15:
         }
       }
 
-      v22 = [(RTBluePOIQuery *)self locations];
-      v23 = [v22 count];
-      v24 = [(RTBluePOIQuery *)v5 locations];
-      v25 = [v24 count];
+      locations = [(RTBluePOIQuery *)self locations];
+      v23 = [locations count];
+      locations2 = [(RTBluePOIQuery *)v5 locations];
+      v25 = [locations2 count];
 
       if (v23 != v25)
       {
@@ -873,37 +873,37 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v26 = [(RTBluePOIQuery *)self locations];
-      if (v26)
+      locations3 = [(RTBluePOIQuery *)self locations];
+      if (locations3)
       {
-        v27 = v26;
-        v28 = [(RTBluePOIQuery *)v5 locations];
+        v27 = locations3;
+        locations4 = [(RTBluePOIQuery *)v5 locations];
 
-        if (v28)
+        if (locations4)
         {
-          v29 = [(RTBluePOIQuery *)self locations];
-          v30 = [v29 count];
+          locations5 = [(RTBluePOIQuery *)self locations];
+          v30 = [locations5 count];
 
           if (v30)
           {
             v31 = 0;
             do
             {
-              v32 = [(RTBluePOIQuery *)self locations];
-              v33 = [v32 objectAtIndexedSubscript:v31];
+              locations6 = [(RTBluePOIQuery *)self locations];
+              v33 = [locations6 objectAtIndexedSubscript:v31];
 
-              v34 = [(RTBluePOIQuery *)v5 locations];
-              v35 = [v34 objectAtIndexedSubscript:v31];
+              locations7 = [(RTBluePOIQuery *)v5 locations];
+              v35 = [locations7 objectAtIndexedSubscript:v31];
 
-              LOBYTE(v34) = [v33 isEqual:v35];
-              if ((v34 & 1) == 0)
+              LOBYTE(locations7) = [v33 isEqual:v35];
+              if ((locations7 & 1) == 0)
               {
                 goto LABEL_22;
               }
 
               ++v31;
-              v36 = [(RTBluePOIQuery *)self locations];
-              v37 = [v36 count];
+              locations8 = [(RTBluePOIQuery *)self locations];
+              v37 = [locations8 count];
             }
 
             while (v31 < v37);
@@ -911,15 +911,15 @@ LABEL_23:
         }
       }
 
-      v38 = [(RTBluePOIQuery *)self identifier];
-      v39 = [(RTBluePOIQuery *)v5 identifier];
-      v40 = [v38 isEqual:v39];
+      identifier = [(RTBluePOIQuery *)self identifier];
+      identifier2 = [(RTBluePOIQuery *)v5 identifier];
+      v40 = [identifier isEqual:identifier2];
 
-      v41 = [(RTBluePOIQuery *)self settledState];
-      v42 = [(RTBluePOIQuery *)v5 settledState];
-      v43 = [(RTBluePOIQuery *)self referenceLocation];
-      v44 = [(RTBluePOIQuery *)v5 referenceLocation];
-      v45 = [v43 isEqual:v44];
+      settledState = [(RTBluePOIQuery *)self settledState];
+      settledState2 = [(RTBluePOIQuery *)v5 settledState];
+      referenceLocation = [(RTBluePOIQuery *)self referenceLocation];
+      referenceLocation2 = [(RTBluePOIQuery *)v5 referenceLocation];
+      v45 = [referenceLocation isEqual:referenceLocation2];
 
       if ([(RTBluePOIQuery *)self selectedToLabel]&& [(RTBluePOIQuery *)v5 selectedToLabel])
       {
@@ -936,29 +936,29 @@ LABEL_23:
         v46 = ![(RTBluePOIQuery *)v5 selectedToLabel];
       }
 
-      v49 = [(RTBluePOIQuery *)self date];
-      if (v49 || ([(RTBluePOIQuery *)v5 date], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
+      date = [(RTBluePOIQuery *)self date];
+      if (date || ([(RTBluePOIQuery *)v5 date], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         [(RTBluePOIQuery *)self date];
         v60 = v46;
         v51 = v50 = v45;
         [(RTBluePOIQuery *)v5 date];
-        v52 = v42;
-        v53 = v41;
+        v52 = settledState2;
+        v53 = settledState;
         v55 = v54 = v40;
         v56 = [v51 isEqualToDate:v55];
 
         v40 = v54;
-        v41 = v53;
-        v42 = v52;
+        settledState = v53;
+        settledState2 = v52;
 
         v45 = v50;
         LOBYTE(v46) = v60;
-        if (v49)
+        if (date)
         {
 LABEL_34:
 
-          if (v41 == v42)
+          if (settledState == settledState2)
           {
             v57 = v40;
           }

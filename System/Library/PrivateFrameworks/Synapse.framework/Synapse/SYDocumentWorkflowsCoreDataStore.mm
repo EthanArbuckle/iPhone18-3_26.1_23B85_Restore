@@ -1,11 +1,11 @@
 @interface SYDocumentWorkflowsCoreDataStore
-+ (BOOL)removePersistentStoreWithError:(id *)a3;
++ (BOOL)removePersistentStoreWithError:(id *)error;
 + (id)_persistentStoreDirURL;
-- (BOOL)_saveContext:(id)a3 error:(id *)a4;
-- (BOOL)saveUserActivity:(id)a3 forRelatedUniqueIdentifier:(id)a4 sourceBundleIdentifier:(id)a5 error:(id *)a6;
+- (BOOL)_saveContext:(id)context error:(id *)error;
+- (BOOL)saveUserActivity:(id)activity forRelatedUniqueIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier error:(id *)error;
 - (NSPersistentContainer)persistentContainer;
-- (id)_fetchRecordWithRelatedUniqueIdentifier:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)a3 error:(id *)a4;
+- (id)_fetchRecordWithRelatedUniqueIdentifier:(id)identifier context:(id)context error:(id *)error;
+- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)identifier error:(id *)error;
 - (void)persistentContainer;
 @end
 
@@ -13,49 +13,49 @@
 
 + (id)_persistentStoreDirURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLsForDirectory:14 inDomains:1];
-  v4 = [v3 firstObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLsForDirectory:14 inDomains:1];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.synapse"];
+  v5 = [firstObject URLByAppendingPathComponent:@"com.apple.synapse"];
 
   return v5;
 }
 
-+ (BOOL)removePersistentStoreWithError:(id *)a3
++ (BOOL)removePersistentStoreWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [a1 _persistentStoreDirURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _persistentStoreDirURL = [self _persistentStoreDirURL];
   v7 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v19 = v6;
+    v19 = _persistentStoreDirURL;
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "Remove to persistent store directory at: %{private}@", buf, 0xCu);
   }
 
-  v8 = [v6 path];
-  v9 = [v5 fileExistsAtPath:v8];
+  path = [_persistentStoreDirURL path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
     v17 = 0;
-    v10 = [v5 removeItemAtURL:v6 error:&v17];
+    v10 = [defaultManager removeItemAtURL:_persistentStoreDirURL error:&v17];
     v11 = v17;
     if ((v10 & 1) == 0)
     {
       v12 = os_log_create("com.apple.synapse", "DocumentWorkflows");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(SYDocumentWorkflowsCoreDataStore *)v6 removePersistentStoreWithError:v11, v12];
+        [(SYDocumentWorkflowsCoreDataStore *)_persistentStoreDirURL removePersistentStoreWithError:v11, v12];
       }
     }
 
-    if (a3)
+    if (error)
     {
       v13 = v11;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
@@ -65,13 +65,13 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v19 = v6;
+      v19 = _persistentStoreDirURL;
       _os_log_impl(&dword_225901000, v14, OS_LOG_TYPE_DEFAULT, "Unable to find persistent store directory at: %{private}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = 0;
+      *error = 0;
     }
 
     v10 = 1;
@@ -84,28 +84,28 @@
 - (NSPersistentContainer)persistentContainer
 {
   v50 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_persistentContainer)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_persistentContainer)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(SYDocumentWorkflowsCoreDataStore *)v2 modelURL];
-    v5 = [v4 path];
-    v6 = [v3 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    modelURL = [(SYDocumentWorkflowsCoreDataStore *)selfCopy modelURL];
+    path = [modelURL path];
+    v6 = [defaultManager fileExistsAtPath:path];
 
     if ((v6 & 1) == 0)
     {
       v7 = os_log_create("com.apple.synapse", "DocumentWorkflows");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
-        v8 = [(SYDocumentWorkflowsCoreDataStore *)v2 modelURL];
-        [(SYDocumentWorkflowsCoreDataStore *)v8 persistentContainer];
+        modelURL2 = [(SYDocumentWorkflowsCoreDataStore *)selfCopy modelURL];
+        [(SYDocumentWorkflowsCoreDataStore *)modelURL2 persistentContainer];
       }
     }
 
     v9 = objc_alloc(MEMORY[0x277CBE450]);
-    v10 = [(SYDocumentWorkflowsCoreDataStore *)v2 modelURL];
-    v39 = [v9 initWithContentsOfURL:v10];
+    modelURL3 = [(SYDocumentWorkflowsCoreDataStore *)selfCopy modelURL];
+    v39 = [v9 initWithContentsOfURL:modelURL3];
 
     v11 = [MEMORY[0x277CBE4A0] persistentContainerWithName:@"SYDocumentWorkflowsModel" managedObjectModel:v39];
     if (!v11)
@@ -117,12 +117,12 @@
       }
     }
 
-    v13 = [objc_opt_class() _persistentStoreDirURL];
-    v14 = [v13 path];
-    v15 = [v3 fileExistsAtPath:v14];
+    _persistentStoreDirURL = [objc_opt_class() _persistentStoreDirURL];
+    path2 = [_persistentStoreDirURL path];
+    v15 = [defaultManager fileExistsAtPath:path2];
 
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v17 = [v16 BOOLForKey:@"SYPersistentStoreDirIsClean"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v17 = [standardUserDefaults BOOLForKey:@"SYPersistentStoreDirIsClean"];
     v18 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -137,7 +137,7 @@
     v42[1] = 3221225472;
     v42[2] = __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke;
     v42[3] = &unk_27856C6F0;
-    v19 = v16;
+    v19 = standardUserDefaults;
     v43 = v19;
     v20 = MEMORY[0x22AA6A360](v42);
     v21 = v20;
@@ -189,7 +189,7 @@
     }
 
     v40 = 0;
-    v28 = [v3 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v40];
+    v28 = [defaultManager createDirectoryAtURL:_persistentStoreDirURL withIntermediateDirectories:1 attributes:0 error:&v40];
     v29 = v40;
     if ((v28 & 1) == 0)
     {
@@ -200,21 +200,21 @@
       }
     }
 
-    v31 = [v13 URLByAppendingPathComponent:@"SYDocumentWorkflowsModel.sqlite"];
+    v31 = [_persistentStoreDirURL URLByAppendingPathComponent:@"SYDocumentWorkflowsModel.sqlite"];
     v32 = [objc_alloc(MEMORY[0x277CBE4E0]) initWithURL:v31];
     v44 = v32;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
     [(NSPersistentContainer *)v11 setPersistentStoreDescriptions:v33];
 
     [(NSPersistentContainer *)v11 loadPersistentStoresWithCompletionHandler:&__block_literal_global_15];
-    persistentContainer = v2->_persistentContainer;
-    v2->_persistentContainer = v11;
+    persistentContainer = selfCopy->_persistentContainer;
+    selfCopy->_persistentContainer = v11;
     v35 = v11;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v36 = v2->_persistentContainer;
+  v36 = selfCopy->_persistentContainer;
   v37 = *MEMORY[0x277D85DE8];
 
   return v36;
@@ -233,30 +233,30 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
   }
 }
 
-- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)a3 error:(id *)a4
+- (id)fetchUserActivityWithRelatedUniqueIdentifier:(id)identifier error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = identifierCopy;
     _os_log_impl(&dword_225901000, v7, OS_LOG_TYPE_DEFAULT, "Fetching userActivity with relatedUniqueIdentifier: %@", buf, 0xCu);
   }
 
-  v8 = [(SYDocumentWorkflowsCoreDataStore *)self persistentContainer];
-  v9 = [v8 newBackgroundContext];
+  persistentContainer = [(SYDocumentWorkflowsCoreDataStore *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
   v18 = 0;
-  v10 = [(SYDocumentWorkflowsCoreDataStore *)self _fetchRecordWithRelatedUniqueIdentifier:v6 context:v9 error:&v18];
+  v10 = [(SYDocumentWorkflowsCoreDataStore *)self _fetchRecordWithRelatedUniqueIdentifier:identifierCopy context:newBackgroundContext error:&v18];
   v11 = v18;
 
   if (v10)
   {
-    v12 = [v10 userActivityData];
-    if (v12)
+    userActivityData = [v10 userActivityData];
+    if (userActivityData)
     {
-      v13 = [objc_alloc(MEMORY[0x277CC1EF0]) _initWithUserActivityData:v12];
+      v13 = [objc_alloc(MEMORY[0x277CC1EF0]) _initWithUserActivityData:userActivityData];
     }
 
     else
@@ -265,7 +265,7 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v6;
+        v20 = identifierCopy;
         _os_log_impl(&dword_225901000, v15, OS_LOG_TYPE_DEFAULT, "Found nil user activity data for id: %@", buf, 0xCu);
       }
 
@@ -273,11 +273,11 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = v11;
     v13 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -290,35 +290,35 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
   return v13;
 }
 
-- (BOOL)saveUserActivity:(id)a3 forRelatedUniqueIdentifier:(id)a4 sourceBundleIdentifier:(id)a5 error:(id *)a6
+- (BOOL)saveUserActivity:(id)activity forRelatedUniqueIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v13 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v33 = v10;
+    v33 = activityCopy;
     v34 = 2112;
-    v35 = v11;
+    v35 = identifierCopy;
     v36 = 2112;
-    v37 = v12;
+    v37 = bundleIdentifierCopy;
     _os_log_impl(&dword_225901000, v13, OS_LOG_TYPE_DEFAULT, "Saving userActivity: %@, relatedUniqueIdentifier: %@, sourceBundleIdentifier: %@", buf, 0x20u);
   }
 
   v31 = 0;
-  v14 = [v10 _createUserActivityDataWithSaving:0 options:0 error:&v31];
+  v14 = [activityCopy _createUserActivityDataWithSaving:0 options:0 error:&v31];
   v15 = v31;
   if (v14)
   {
-    v29 = a6;
-    v16 = [(SYDocumentWorkflowsCoreDataStore *)self persistentContainer];
-    v17 = [v16 newBackgroundContext];
+    errorCopy = error;
+    persistentContainer = [(SYDocumentWorkflowsCoreDataStore *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v30 = 0;
-    v18 = [(SYDocumentWorkflowsCoreDataStore *)self _fetchRecordWithRelatedUniqueIdentifier:v11 context:v17 error:&v30];
+    v18 = [(SYDocumentWorkflowsCoreDataStore *)self _fetchRecordWithRelatedUniqueIdentifier:identifierCopy context:newBackgroundContext error:&v30];
     v19 = v30;
     v20 = v19;
     if (v18 || !v19)
@@ -329,14 +329,14 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v33 = v11;
+          v33 = identifierCopy;
           v34 = 2112;
-          v35 = v17;
+          v35 = newBackgroundContext;
           _os_log_impl(&dword_225901000, v25, OS_LOG_TYPE_DEFAULT, "Creating new record with relatedUniqueIdentifier: %@, context: %@", buf, 0x16u);
         }
 
-        v18 = [[SYUserActivityRecord alloc] initWithContext:v17];
-        [v18 setRelatedUniqueIdentifier:v11];
+        v18 = [[SYUserActivityRecord alloc] initWithContext:newBackgroundContext];
+        [v18 setRelatedUniqueIdentifier:identifierCopy];
       }
 
       if (v18 && !v20)
@@ -345,23 +345,23 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v33 = v11;
+          v33 = identifierCopy;
           v34 = 2112;
-          v35 = v17;
+          v35 = newBackgroundContext;
           _os_log_impl(&dword_225901000, v26, OS_LOG_TYPE_DEFAULT, "Found existing record with relatedUniqueIdentifier: %@, context: %@", buf, 0x16u);
         }
       }
 
-      [v18 setSourceBundleIdentifier:v12];
+      [v18 setSourceBundleIdentifier:bundleIdentifierCopy];
       [v18 setUserActivityData:v14];
-      v22 = [(SYDocumentWorkflowsCoreDataStore *)self _saveContext:v17 error:v29];
+      v22 = [(SYDocumentWorkflowsCoreDataStore *)self _saveContext:newBackgroundContext error:errorCopy];
     }
 
-    else if (v29)
+    else if (errorCopy)
     {
       v21 = v19;
       v22 = 0;
-      *v29 = v20;
+      *errorCopy = v20;
     }
 
     else
@@ -378,11 +378,11 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
       [SYDocumentWorkflowsCoreDataStore saveUserActivity:forRelatedUniqueIdentifier:sourceBundleIdentifier:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v24 = v15;
       v22 = 0;
-      *a6 = v15;
+      *error = v15;
     }
 
     else
@@ -395,32 +395,32 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
   return v22;
 }
 
-- (id)_fetchRecordWithRelatedUniqueIdentifier:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_fetchRecordWithRelatedUniqueIdentifier:(id)identifier context:(id)context error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v9 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v7;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = contextCopy;
     _os_log_impl(&dword_225901000, v9, OS_LOG_TYPE_DEFAULT, "Fetching record with relatedUniqueIdentifier: %@, context: %@", buf, 0x16u);
   }
 
   v10 = +[SYUserActivityRecord createFetchRequest];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"relatedUniqueIdentifier == %@", v7];
-  [v10 setPredicate:v11];
+  identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"relatedUniqueIdentifier == %@", identifierCopy];
+  [v10 setPredicate:identifierCopy];
 
   [v10 setFetchLimit:1];
   v19 = 0;
-  v12 = [v8 executeFetchRequest:v10 error:&v19];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v19];
   v13 = v19;
   if (v12)
   {
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
@@ -429,48 +429,48 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = v7;
+      v21 = identifierCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = contextCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_error_impl(&dword_225901000, v15, OS_LOG_TYPE_ERROR, "Unable to fetch record with id: %@, context: %@, error: %@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v13;
-      v14 = 0;
-      *a5 = v13;
+      firstObject = 0;
+      *error = v13;
     }
 
     else
     {
-      v14 = 0;
+      firstObject = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-- (BOOL)_saveContext:(id)a3 error:(id *)a4
+- (BOOL)_saveContext:(id)context error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = contextCopy;
     _os_log_impl(&dword_225901000, v6, OS_LOG_TYPE_DEFAULT, "Saving context: %@", buf, 0xCu);
   }
 
-  if ([v5 hasChanges])
+  if ([contextCopy hasChanges])
   {
     v14 = 0;
-    v7 = [v5 save:&v14];
+    v7 = [contextCopy save:&v14];
     v8 = v14;
     v9 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     v10 = v9;
@@ -479,7 +479,7 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = contextCopy;
         _os_log_impl(&dword_225901000, v10, OS_LOG_TYPE_DEFAULT, "Context saved: %@", buf, 0xCu);
       }
     }
@@ -491,10 +491,10 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
         [SYDocumentWorkflowsCoreDataStore _saveContext:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v11 = v8;
-        *a4 = v8;
+        *error = v8;
       }
     }
   }
@@ -505,7 +505,7 @@ void __55__SYDocumentWorkflowsCoreDataStore_persistentContainer__block_invoke_22
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v5;
+      v16 = contextCopy;
       _os_log_impl(&dword_225901000, v8, OS_LOG_TYPE_DEFAULT, "Context has no changes: %@", buf, 0xCu);
     }
 

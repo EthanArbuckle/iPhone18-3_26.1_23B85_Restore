@@ -1,31 +1,31 @@
 @interface NPKBiometricPassPreflightManager
-- (NPKBiometricPassPreflightManager)initWithDataSource:(id)a3;
+- (NPKBiometricPassPreflightManager)initWithDataSource:(id)source;
 - (NPKBiometricPassPreflightManagerDataSource)dataSource;
-- (void)preflightStatusForType:(unint64_t)a3 pairedDeviceMinOSVersion:(id)a4 completion:(id)a5;
+- (void)preflightStatusForType:(unint64_t)type pairedDeviceMinOSVersion:(id)version completion:(id)completion;
 @end
 
 @implementation NPKBiometricPassPreflightManager
 
-- (NPKBiometricPassPreflightManager)initWithDataSource:(id)a3
+- (NPKBiometricPassPreflightManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = NPKBiometricPassPreflightManager;
   v5 = [(NPKBiometricPassPreflightManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;
 }
 
-- (void)preflightStatusForType:(unint64_t)a3 pairedDeviceMinOSVersion:(id)a4 completion:(id)a5
+- (void)preflightStatusForType:(unint64_t)type pairedDeviceMinOSVersion:(id)version completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -34,35 +34,35 @@
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = NSStringFromNPKIDVRemoteDeviceCredentialType(a3);
+      v13 = NSStringFromNPKIDVRemoteDeviceCredentialType(type);
       *buf = 138412290;
       v30 = v13;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Start credential Preflight Status ForType:%@ minOSVersion", buf, 0xCu);
     }
   }
 
-  if (!v8)
+  if (!versionCopy)
   {
     goto LABEL_8;
   }
 
-  v14 = [(NPKBiometricPassPreflightManager *)self dataSource];
-  v15 = [v14 biometricPassPreflightManagerPairedDeviceOSVersion:self];
+  dataSource = [(NPKBiometricPassPreflightManager *)self dataSource];
+  v15 = [dataSource biometricPassPreflightManagerPairedDeviceOSVersion:self];
 
   if (PKVersionCheck())
   {
 
 LABEL_8:
-    if (a3 == 1 && (NPKPairedOrPairingDeviceSupportsCredentialType(129) & 1) != 0)
+    if (type == 1 && (NPKPairedOrPairingDeviceSupportsCredentialType(129) & 1) != 0)
     {
-      v16 = [(NPKBiometricPassPreflightManager *)self dataSource];
+      dataSource2 = [(NPKBiometricPassPreflightManager *)self dataSource];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __95__NPKBiometricPassPreflightManager_preflightStatusForType_pairedDeviceMinOSVersion_completion___block_invoke;
       v26[3] = &unk_27994B240;
       v28 = 1;
-      v27 = v9;
-      [v16 biometricPassPreflightManager:self provisionedCredentialCountsForType:1 completion:v26];
+      v27 = completionCopy;
+      [dataSource2 biometricPassPreflightManager:self provisionedCredentialCountsForType:1 completion:v26];
 
       v15 = v27;
     }
@@ -77,7 +77,7 @@ LABEL_8:
         v19 = pk_Payment_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = NSStringFromNPKIDVRemoteDeviceCredentialType(a3);
+          v20 = NSStringFromNPKIDVRemoteDeviceCredentialType(type);
           *buf = 138412290;
           v30 = v20;
           _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Warning: NPKIDVRemoteDeviceService: Paired device doesn't support credential type:%@", buf, 0xCu);
@@ -85,7 +85,7 @@ LABEL_8:
       }
 
       v15 = NPKIDVRemoteDeviceSessionError(-1000, 0);
-      (*(v9 + 2))(v9, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
 
     goto LABEL_21;
@@ -102,13 +102,13 @@ LABEL_8:
       *buf = 138412546;
       v30 = v15;
       v31 = 2112;
-      v32 = v8;
+      v32 = versionCopy;
       _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Warning: NPKIDVRemoteDeviceService: Paired device with OSVersion:%@ doesn't fulfill minOSVersion:%@", buf, 0x16u);
     }
   }
 
   v24 = NPKIDVRemoteDeviceSessionError(-1000, 0);
-  (*(v9 + 2))(v9, 0, v24);
+  (*(completionCopy + 2))(completionCopy, 0, v24);
 
 LABEL_21:
   v25 = *MEMORY[0x277D85DE8];

@@ -2,27 +2,27 @@
 + (BOOL)isRaiseGestureEnabled;
 + (BOOL)isRaiseGestureSupported;
 - (BOOL)isRecognized;
-- (CKRaiseGesture)initWithTarget:(id)a3 action:(SEL)a4;
+- (CKRaiseGesture)initWithTarget:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)target;
 - (void)dealloc;
-- (void)proximityStateDidChange:(id)a3;
-- (void)setAction:(SEL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGestureState:(int64_t)a3;
-- (void)setProximityMonitoringEnabled:(BOOL)a3;
-- (void)setProximityState:(BOOL)a3;
+- (void)proximityStateDidChange:(id)change;
+- (void)setAction:(SEL)action;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGestureState:(int64_t)state;
+- (void)setProximityMonitoringEnabled:(BOOL)enabled;
+- (void)setProximityState:(BOOL)state;
 @end
 
 @implementation CKRaiseGesture
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CMGestureManager *)self->_gestureManager setGestureHandler:0];
-  v4 = [(CMGestureManager *)self->_gestureManager gestureHandler];
+  gestureHandler = [(CMGestureManager *)self->_gestureManager gestureHandler];
   proximityToken = self->proximityToken;
   if (proximityToken)
   {
@@ -36,13 +36,13 @@
 
 + (BOOL)isRaiseGestureEnabled
 {
-  v2 = [a1 isRaiseGestureSupported];
-  if (v2)
+  isRaiseGestureSupported = [self isRaiseGestureSupported];
+  if (isRaiseGestureSupported)
   {
-    LOBYTE(v2) = CKRaiseToListenEnabled() != 0;
+    LOBYTE(isRaiseGestureSupported) = CKRaiseToListenEnabled() != 0;
   }
 
-  return v2;
+  return isRaiseGestureSupported;
 }
 
 + (BOOL)isRaiseGestureSupported
@@ -69,27 +69,27 @@ void __41__CKRaiseGesture_isRaiseGestureSupported__block_invoke()
   }
 }
 
-- (CKRaiseGesture)initWithTarget:(id)a3 action:(SEL)a4
+- (CKRaiseGesture)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = CKRaiseGesture;
   v7 = [(CKRaiseGesture *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(CKRaiseGesture *)v7 setTarget:v6];
-    [(CKRaiseGesture *)v8 setAction:a4];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v8 selector:sel_proximityStateDidChange_ name:*MEMORY[0x1E69DDCC0] object:0];
+    [(CKRaiseGesture *)v7 setTarget:targetCopy];
+    [(CKRaiseGesture *)v8 setAction:action];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_proximityStateDidChange_ name:*MEMORY[0x1E69DDCC0] object:0];
   }
 
   return v8;
 }
 
-- (void)setProximityMonitoringEnabled:(BOOL)a3
+- (void)setProximityMonitoringEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v25 = *MEMORY[0x1E69E9840];
   if (setProximityMonitoringEnabled__once != -1)
   {
@@ -116,7 +116,7 @@ void __41__CKRaiseGesture_isRaiseGestureSupported__block_invoke()
       *buf = 136315650;
       v22 = v7;
       v21 = 2112;
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"YES";
       }
@@ -143,14 +143,14 @@ void __41__CKRaiseGesture_isRaiseGestureSupported__block_invoke()
       v15 = __48__CKRaiseGesture_setProximityMonitoringEnabled___block_invoke_2;
       v16 = &unk_1E72F4A50;
       objc_copyWeak(&v18, buf);
-      v17 = self;
+      selfCopy = self;
       notify_register_dispatch("com.apple.backboard.proximity.changed", &self->proximityToken, MEMORY[0x1E69E96A0], &v13);
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(buf);
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       v9 = 3;
     }
@@ -167,7 +167,7 @@ void __41__CKRaiseGesture_isRaiseGestureSupported__block_invoke()
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = @"NO";
-        if (v3)
+        if (enabledCopy)
         {
           v11 = @"YES";
         }
@@ -179,8 +179,8 @@ void __41__CKRaiseGesture_isRaiseGestureSupported__block_invoke()
     }
   }
 
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  [v12 setProximityMonitoringEnabled:v3];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  [currentDevice setProximityMonitoringEnabled:enabledCopy];
 }
 
 void __48__CKRaiseGesture_setProximityMonitoringEnabled___block_invoke()
@@ -229,20 +229,20 @@ void __48__CKRaiseGesture_setProximityMonitoringEnabled___block_invoke_2(uint64_
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (enabledCopy)
         {
           v6 = @"YES";
         }
@@ -253,7 +253,7 @@ void __48__CKRaiseGesture_setProximityMonitoringEnabled___block_invoke_2(uint64_
       }
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       v7 = MEMORY[0x193AF5EC0](@"CMGestureManager", @"CoreMotion");
       IMCMGestureManager = v7;
@@ -265,16 +265,16 @@ void __48__CKRaiseGesture_setProximityMonitoringEnabled___block_invoke_2(uint64_
         v13 = 0x3032000000;
         v14 = __Block_byref_object_copy__44;
         v15 = __Block_byref_object_dispose__44;
-        v9 = self;
-        v16 = v9;
+        selfCopy = self;
+        v16 = selfCopy;
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __29__CKRaiseGesture_setEnabled___block_invoke;
         v11[3] = &unk_1E72F4A78;
-        v11[4] = v9;
+        v11[4] = selfCopy;
         v11[5] = &buf;
         [v8 setGestureHandler:v11];
-        [(CKRaiseGesture *)v9 setGestureManager:v8];
+        [(CKRaiseGesture *)selfCopy setGestureManager:v8];
         _Block_object_dispose(&buf, 8);
       }
     }
@@ -354,10 +354,10 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
   return [(CKRaiseGesture *)self proximityState];
 }
 
-- (void)setGestureState:(int64_t)a3
+- (void)setGestureState:(int64_t)state
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_gestureState != a3)
+  if (self->_gestureState != state)
   {
     if (IMOSLoggingEnabled())
     {
@@ -365,54 +365,54 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v13 = 134217984;
-        v14 = a3;
+        stateCopy = state;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Gesture state changed to %ld", &v13, 0xCu);
       }
     }
 
-    v6 = [(CKRaiseGesture *)self isRecognized];
-    self->_gestureState = a3;
-    if (v6 != [(CKRaiseGesture *)self isRecognized])
+    isRecognized = [(CKRaiseGesture *)self isRecognized];
+    self->_gestureState = state;
+    if (isRecognized != [(CKRaiseGesture *)self isRecognized])
     {
       if (IMOSLoggingEnabled())
       {
         v7 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [(CKRaiseGesture *)self isRecognized];
+          isRecognized2 = [(CKRaiseGesture *)self isRecognized];
           v9 = @"NO";
-          if (v8)
+          if (isRecognized2)
           {
             v9 = @"YES";
           }
 
           v13 = 138412290;
-          v14 = v9;
+          stateCopy = v9;
           _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Gesture state changed, recognized changed to %@", &v13, 0xCu);
         }
       }
 
-      v10 = [MEMORY[0x1E69DC668] sharedApplication];
-      v11 = [(CKRaiseGesture *)self action];
-      v12 = [(CKRaiseGesture *)self target];
-      [v10 sendAction:v11 to:v12 from:self forEvent:0];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      action = [(CKRaiseGesture *)self action];
+      target = [(CKRaiseGesture *)self target];
+      [mEMORY[0x1E69DC668] sendAction:action to:target from:self forEvent:0];
     }
   }
 }
 
-- (void)setProximityState:(BOOL)a3
+- (void)setProximityState:(BOOL)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_proximityState != a3)
+  if (self->_proximityState != state)
   {
-    v3 = a3;
+    stateCopy = state;
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = @"NO";
-        if (v3)
+        if (stateCopy)
         {
           v6 = @"YES";
         }
@@ -423,18 +423,18 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
       }
     }
 
-    v7 = [(CKRaiseGesture *)self isRecognized];
-    self->_proximityState = v3;
-    if (v7 != [(CKRaiseGesture *)self isRecognized])
+    isRecognized = [(CKRaiseGesture *)self isRecognized];
+    self->_proximityState = stateCopy;
+    if (isRecognized != [(CKRaiseGesture *)self isRecognized])
     {
       if (IMOSLoggingEnabled())
       {
         v8 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [(CKRaiseGesture *)self isRecognized];
+          isRecognized2 = [(CKRaiseGesture *)self isRecognized];
           v10 = @"NO";
-          if (v9)
+          if (isRecognized2)
           {
             v10 = @"YES";
           }
@@ -445,29 +445,29 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
         }
       }
 
-      v11 = [MEMORY[0x1E69DC668] sharedApplication];
-      v12 = [(CKRaiseGesture *)self action];
-      v13 = [(CKRaiseGesture *)self target];
-      [v11 sendAction:v12 to:v13 from:self forEvent:0];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      action = [(CKRaiseGesture *)self action];
+      target = [(CKRaiseGesture *)self target];
+      [mEMORY[0x1E69DC668] sendAction:action to:target from:self forEvent:0];
     }
   }
 }
 
-- (void)proximityStateDidChange:(id)a3
+- (void)proximityStateDidChange:(id)change
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 proximityState];
+  changeCopy = change;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  proximityState = [currentDevice proximityState];
 
-  [(CKRaiseGesture *)self setProximityState:v6];
+  [(CKRaiseGesture *)self setProximityState:proximityState];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v6)
+      if (proximityState)
       {
         v8 = @"YES";
       }
@@ -480,7 +480,7 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
     }
   }
 
-  if ((v6 & 1) == 0)
+  if ((proximityState & 1) == 0)
   {
     [(CKRaiseGesture *)self setGestureState:0];
     [(CKRaiseGesture *)self setProximityMonitoringEnabled:0];
@@ -507,19 +507,19 @@ void __29__CKRaiseGesture_setEnabled___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

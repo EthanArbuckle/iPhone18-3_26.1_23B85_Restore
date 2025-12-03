@@ -1,29 +1,29 @@
 @interface HDSourceOrderManager
-- (BOOL)_updateOrderedSourceIDsForWrappedSource:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:;
-- (BOOL)_updateSourceOrder:(uint64_t)a1 type:(void *)a2 syncIdentity:(void *)a3 transactionCache:(uint64_t)a4 transaction:(void *)a5 error:(uint64_t)a6;
-- (BOOL)addOrderedSource:(id)a3 objectTypes:(id)a4 error:(id *)a5;
-- (BOOL)createSourceOrdersWithCodables:(id)a3 error:(id *)a4;
-- (BOOL)resetCacheWithError:(id *)a3;
-- (BOOL)updateOrderedSources:(id)a3 forObjectType:(id)a4 error:(id *)a5;
-- (HDSourceOrderManager)initWithProfile:(id)a3;
-- (char)_sourceOrderForCodableSourceOrder:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:;
-- (id)_sourceCacheItemForObjectType:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:;
-- (id)orderedSourceIDsForObjectType:(id)a3 error:(id *)a4;
-- (id)orderedSourceIDsWithUnorderedIDs:(id)a3 objectType:(id)a4 error:(id *)a5;
-- (id)orderedSourcesForObjectType:(id)a3 error:(id *)a4;
+- (BOOL)_updateOrderedSourceIDsForWrappedSource:(void *)source transactionCache:(void *)cache transaction:(uint64_t)transaction error:;
+- (BOOL)_updateSourceOrder:(uint64_t)order type:(void *)type syncIdentity:(void *)identity transactionCache:(uint64_t)cache transaction:(void *)transaction error:(uint64_t)error;
+- (BOOL)addOrderedSource:(id)source objectTypes:(id)types error:(id *)error;
+- (BOOL)createSourceOrdersWithCodables:(id)codables error:(id *)error;
+- (BOOL)resetCacheWithError:(id *)error;
+- (BOOL)updateOrderedSources:(id)sources forObjectType:(id)type error:(id *)error;
+- (HDSourceOrderManager)initWithProfile:(id)profile;
+- (char)_sourceOrderForCodableSourceOrder:(void *)order transactionCache:(void *)cache transaction:(uint64_t)transaction error:;
+- (id)_sourceCacheItemForObjectType:(void *)type transactionCache:(void *)cache transaction:(uint64_t)transaction error:;
+- (id)orderedSourceIDsForObjectType:(id)type error:(id *)error;
+- (id)orderedSourceIDsWithUnorderedIDs:(id)ds objectType:(id)type error:(id *)error;
+- (id)orderedSourcesForObjectType:(id)type error:(id *)error;
 - (uint64_t)_mergedSourceOrderForExistingOrder:incomingOrder:existingSyncIdentity:incomingSyncIdentity:;
-- (void)_mergedSourceOrderForExistingOrder:(void *)a3 incomingOrder:(void *)a4 existingSyncIdentity:(void *)a5 incomingSyncIdentity:(void *)a6;
+- (void)_mergedSourceOrderForExistingOrder:(void *)order incomingOrder:(void *)incomingOrder existingSyncIdentity:(void *)identity incomingSyncIdentity:(void *)syncIdentity;
 @end
 
 @implementation HDSourceOrderManager
 
-- (HDSourceOrderManager)initWithProfile:(id)a3
+- (HDSourceOrderManager)initWithProfile:(id)profile
 {
-  v5 = a3;
-  if (!v5)
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSourceOrderManager.mm" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSourceOrderManager.mm" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
   }
 
   v15.receiver = self;
@@ -32,7 +32,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_profile, v5);
+    objc_storeWeak(&v6->_profile, profileCopy);
     v8 = [HDDatabaseValueCache alloc];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -44,35 +44,35 @@
   return v7;
 }
 
-- (BOOL)resetCacheWithError:(id *)a3
+- (BOOL)resetCacheWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
+  database = [WeakRetained database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__HDSourceOrderManager_resetCacheWithError___block_invoke;
   v8[3] = &unk_27861CA78;
   v8[4] = self;
-  LOBYTE(a3) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:v6 error:a3 block:v8];
+  LOBYTE(error) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:database error:error block:v8];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)createSourceOrdersWithCodables:(id)a3 error:(id *)a4
+- (BOOL)createSourceOrdersWithCodables:(id)codables error:(id *)error
 {
-  v6 = a3;
+  codablesCopy = codables;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HDSourceOrderManager_createSourceOrdersWithCodables_error___block_invoke;
   v11[3] = &unk_27861CD40;
   v11[4] = self;
-  v9 = v6;
+  v9 = codablesCopy;
   v12 = v9;
-  LOBYTE(a4) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v11];
+  LOBYTE(error) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a4;
+  return error;
 }
 
 uint64_t __61__HDSourceOrderManager_createSourceOrdersWithCodables_error___block_invoke(uint64_t a1, void *a2)
@@ -302,9 +302,9 @@ LABEL_22:
   return result;
 }
 
-- (id)orderedSourcesForObjectType:(id)a3 error:(id *)a4
+- (id)orderedSourcesForObjectType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   if (self)
   {
     v17 = 0;
@@ -314,15 +314,15 @@ LABEL_22:
     v21 = __Block_byref_object_dispose__65;
     v22 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained database];
+    database = [WeakRetained database];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__HDSourceOrderManager__sourceCacheItemForObjectType_error___block_invoke;
     v14[3] = &unk_27861CE58;
     v14[4] = self;
     v16 = &v17;
-    v15 = v6;
-    v9 = [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v14];
+    v15 = typeCopy;
+    v9 = [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:database error:error block:v14];
 
     if (v9)
     {
@@ -344,14 +344,14 @@ LABEL_22:
     v11 = 0;
   }
 
-  v12 = [(_HDCachedSourceOrder *)v11 sources];
+  sources = [(_HDCachedSourceOrder *)v11 sources];
 
-  return v12;
+  return sources;
 }
 
-- (id)orderedSourceIDsForObjectType:(id)a3 error:(id *)a4
+- (id)orderedSourceIDsForObjectType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -359,15 +359,15 @@ LABEL_22:
   v19 = __Block_byref_object_dispose__65;
   v20 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__HDSourceOrderManager_orderedSourceIDsForObjectType_error___block_invoke;
   v12[3] = &unk_27861CD68;
   v14 = &v15;
-  v9 = v6;
+  v9 = typeCopy;
   v13 = v9;
-  [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v12];
+  [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:database error:error block:v12];
 
   v10 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -387,10 +387,10 @@ BOOL __60__HDSourceOrderManager_orderedSourceIDsForObjectType_error___block_invo
   return v9;
 }
 
-- (id)orderedSourceIDsWithUnorderedIDs:(id)a3 objectType:(id)a4 error:(id *)a5
+- (id)orderedSourceIDsWithUnorderedIDs:(id)ds objectType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  typeCopy = type;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -398,17 +398,17 @@ BOOL __60__HDSourceOrderManager_orderedSourceIDsForObjectType_error___block_invo
   v24 = __Block_byref_object_dispose__65;
   v25 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__HDSourceOrderManager_orderedSourceIDsWithUnorderedIDs_objectType_error___block_invoke;
   v16[3] = &unk_27861CD90;
   v19 = &v20;
-  v12 = v9;
+  v12 = typeCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = dsCopy;
   v18 = v13;
-  [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:v11 error:a5 block:v16];
+  [(HDHealthEntity *)HDLogicalSourceOrderEntity performReadTransactionWithHealthDatabase:database error:error block:v16];
 
   v14 = v21[5];
   _Block_object_dispose(&v20, 8);
@@ -428,24 +428,24 @@ BOOL __74__HDSourceOrderManager_orderedSourceIDsWithUnorderedIDs_objectType_erro
   return v9;
 }
 
-- (BOOL)updateOrderedSources:(id)a3 forObjectType:(id)a4 error:(id *)a5
+- (BOOL)updateOrderedSources:(id)sources forObjectType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sourcesCopy = sources;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block_invoke;
   v15[3] = &unk_27861CA28;
   v15[4] = self;
-  v12 = v8;
+  v12 = sourcesCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = typeCopy;
   v17 = v13;
-  LOBYTE(a5) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  LOBYTE(error) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
 BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -549,23 +549,23 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
   return v6 != 0;
 }
 
-- (BOOL)_updateSourceOrder:(uint64_t)a1 type:(void *)a2 syncIdentity:(void *)a3 transactionCache:(uint64_t)a4 transaction:(void *)a5 error:(uint64_t)a6
+- (BOOL)_updateSourceOrder:(uint64_t)order type:(void *)type syncIdentity:(void *)identity transactionCache:(uint64_t)cache transaction:(void *)transaction error:(uint64_t)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  if (a1)
+  typeCopy = type;
+  identityCopy = identity;
+  transactionCopy = transaction;
+  if (order)
   {
-    v14 = [*(a1 + 16) objectForKey:v12];
-    if ([v14 isEqual:v11])
+    v14 = [*(order + 16) objectForKey:identityCopy];
+    if ([v14 isEqual:typeCopy])
     {
       v15 = 1;
     }
 
     else
     {
-      [*(a1 + 16) setObject:v11 forKey:v12 transaction:v13];
+      [*(order + 16) setObject:typeCopy forKey:identityCopy transaction:transactionCopy];
       _HKInitializeLogging();
       v16 = MEMORY[0x277CCC2A0];
       v17 = *MEMORY[0x277CCC2A0];
@@ -574,10 +574,10 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
         v18 = v17;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v22 = [(_HDCachedSourceOrder *)v11 sources];
-          v23 = [v22 componentsJoinedByString:{@", "}];
+          sources = [(_HDCachedSourceOrder *)typeCopy sources];
+          v23 = [sources componentsJoinedByString:{@", "}];
           *buf = 138412546;
-          v29 = v12;
+          v29 = identityCopy;
           v30 = 2112;
           v31 = v23;
           _os_log_debug_impl(&dword_228986000, v18, OS_LOG_TYPE_DEBUG, "Updating source order for type %@ sources (%@)", buf, 0x16u);
@@ -588,10 +588,10 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
       v24[1] = 3221225472;
       v24[2] = __96__HDSourceOrderManager__updateSourceOrder_type_syncIdentity_transactionCache_transaction_error___block_invoke;
       v24[3] = &unk_27861CE30;
-      v25 = v11;
-      v26 = v13;
-      v27 = a4;
-      v15 = [HDLogicalSourceOrderEntity updateOrderedLogicalSourcesForType:v12 transaction:v26 error:a6 updateHandler:v24];
+      v25 = typeCopy;
+      v26 = transactionCopy;
+      cacheCopy = cache;
+      v15 = [HDLogicalSourceOrderEntity updateOrderedLogicalSourcesForType:identityCopy transaction:v26 error:error updateHandler:v24];
       if (!v15)
       {
         _HKInitializeLogging();
@@ -599,7 +599,7 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
         if (os_log_type_enabled(*v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v29 = v12;
+          v29 = identityCopy;
           v30 = 2114;
           v31 = 0;
           _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "Failed to update source order for type %@: %{public}@.", buf, 0x16u);
@@ -617,15 +617,15 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
   return v15;
 }
 
-- (char)_sourceOrderForCodableSourceOrder:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:
+- (char)_sourceOrderForCodableSourceOrder:(void *)order transactionCache:(void *)cache transaction:(uint64_t)transaction error:
 {
   v55 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v28 = a3;
-  v29 = a4;
+  orderCopy = order;
+  cacheCopy = cache;
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [v9 sourceUUIDs];
+  sourceUUIDs = [v9 sourceUUIDs];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCache_transaction_error___block_invoke;
@@ -636,7 +636,7 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
   v51 = v27;
   v24 = v22;
   v52 = v24;
-  v11 = [HDSourceEntity enumerateBundleIdentifiersForSourcesForUUIDData:v10 transaction:v29 error:a5 enumerationHandler:v49];
+  v11 = [HDSourceEntity enumerateBundleIdentifiersForSourcesForUUIDData:sourceUUIDs transaction:cacheCopy error:transaction enumerationHandler:v49];
 
   if (v11)
   {
@@ -648,8 +648,8 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
     v47 = &unk_22929BC4D;
     memset(v48, 0, sizeof(v48));
     std::vector<_HDWrappedSource>::reserve(v48, [v24 count]);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v26 = [WeakRetained sourceManager];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    sourceManager = [WeakRetained sourceManager];
 
     v40 = 0u;
     v41 = 0u;
@@ -674,12 +674,12 @@ BOOL __65__HDSourceOrderManager_updateOrderedSources_forObjectType_error___block
           v30[4] = 3221225472;
           v30[5] = __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCache_transaction_error___block_invoke_2;
           v30[6] = &unk_27861CE08;
-          v31 = v26;
+          v31 = sourceManager;
           v32 = v16;
           v33 = v27;
-          v34 = a1;
-          v35 = v28;
-          v36 = v29;
+          selfCopy = self;
+          v35 = orderCopy;
+          v36 = cacheCopy;
           v37 = &v42;
           LODWORD(v16) = HKWithAutoreleasePool();
 
@@ -785,15 +785,15 @@ BOOL __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCac
   return v9;
 }
 
-- (BOOL)_updateOrderedSourceIDsForWrappedSource:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:
+- (BOOL)_updateOrderedSourceIDsForWrappedSource:(void *)source transactionCache:(void *)cache transaction:(uint64_t)transaction error:
 {
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  sourceCopy = source;
+  cacheCopy = cache;
+  if (self)
   {
-    v11 = [*a2 bundleIdentifier];
-    v12 = [v10 databaseForEntityClass:objc_opt_class()];
-    v13 = [(_HDSourceOrderTransactionCache *)v9 orderedSourceIDsForBundleIdentifier:v11 database:v12 error:a5];
+    bundleIdentifier = [*a2 bundleIdentifier];
+    v12 = [cacheCopy databaseForEntityClass:objc_opt_class()];
+    v13 = [(_HDSourceOrderTransactionCache *)sourceCopy orderedSourceIDsForBundleIdentifier:bundleIdentifier database:v12 error:transaction];
 
     v14 = v13 != 0;
   }
@@ -806,33 +806,33 @@ BOOL __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCac
   return v14;
 }
 
-- (void)_mergedSourceOrderForExistingOrder:(void *)a3 incomingOrder:(void *)a4 existingSyncIdentity:(void *)a5 incomingSyncIdentity:(void *)a6
+- (void)_mergedSourceOrderForExistingOrder:(void *)order incomingOrder:(void *)incomingOrder existingSyncIdentity:(void *)identity incomingSyncIdentity:(void *)syncIdentity
 {
-  v11 = a3;
-  v12 = a4;
-  v79[0] = a5;
-  v78 = a6;
+  orderCopy = order;
+  incomingOrderCopy = incomingOrder;
+  v79[0] = identity;
+  syncIdentityCopy = syncIdentity;
   WeakRetained = objc_loadWeakRetained((a2 + 8));
-  v14 = [WeakRetained syncIdentityManager];
-  v15 = [v14 currentSyncIdentity];
-  location = v15;
+  syncIdentityManager = [WeakRetained syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  location = currentSyncIdentity;
 
-  *a1 = 0;
-  a1[1] = 0;
-  if (v11[9] == 1)
+  *self = 0;
+  self[1] = 0;
+  if (orderCopy[9] == 1)
   {
-    *a1 = v12;
-    a1[1] = v78;
+    *self = incomingOrderCopy;
+    self[1] = syncIdentityCopy;
     goto LABEL_52;
   }
 
-  v16 = v11[8];
-  v48 = v12;
-  if (v16 == v12[8])
+  v16 = orderCopy[8];
+  v48 = incomingOrderCopy;
+  if (v16 == incomingOrderCopy[8])
   {
     v17 = objc_loadWeakRetained((a2 + 8));
-    v18 = [v17 syncIdentityManager];
-    v72 = [v18 currentSyncIdentity];
+    syncIdentityManager2 = [v17 syncIdentityManager];
+    currentSyncIdentity2 = [syncIdentityManager2 currentSyncIdentity];
 
     v71 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v74 = 0;
@@ -851,11 +851,11 @@ BOOL __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCac
           v44 = [_HDCachedSourceOrder alloc];
           memset(v49, 0, sizeof(v49));
           std::vector<_HDWrappedSource>::__init_with_size[abi:ne200100]<_HDWrappedSource*,_HDWrappedSource*>(v49, v74, v75, 0xAAAAAAAAAAAAAAABLL * ((v75 - v74) >> 3));
-          v45 = [(_HDCachedSourceOrder *)v44 initWithSources:v49 userOrdered:v11[8] isDefaultOrder:0];
+          v45 = [(_HDCachedSourceOrder *)v44 initWithSources:v49 userOrdered:orderCopy[8] isDefaultOrder:0];
           p_i = v49;
           std::vector<_HDWrappedSource>::__destroy_vector::operator()[abi:ne200100](&p_i);
-          *a1 = v45;
-          a1[1] = location;
+          *self = v45;
+          self[1] = location;
           p_i = &v68;
           std::vector<_HDWrappedSource>::__destroy_vector::operator()[abi:ne200100](&p_i);
           p_i = v70;
@@ -863,7 +863,7 @@ BOOL __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCac
           p_i = &v74;
           std::vector<_HDWrappedSource>::__destroy_vector::operator()[abi:ne200100](&p_i);
 
-          v43 = v72;
+          v43 = currentSyncIdentity2;
           goto LABEL_51;
         }
 
@@ -871,14 +871,14 @@ BOOL __93__HDSourceOrderManager__sourceOrderForCodableSourceOrder_transactionCac
         {
           std::vector<_HDWrappedSource>::push_back[abi:ne200100](&v74, v66);
           [v71 addObject:*v66];
-          if (location == v78)
+          if (location == syncIdentityCopy)
           {
-            v22 = v78;
+            v22 = syncIdentityCopy;
           }
 
           else
           {
-            v22 = v72;
+            v22 = currentSyncIdentity2;
           }
 
           objc_storeStrong(&location, v22);
@@ -903,7 +903,7 @@ LABEL_18:
 
           else
           {
-            v23 = v72;
+            v23 = currentSyncIdentity2;
           }
 
           objc_storeStrong(&location, v23);
@@ -930,17 +930,17 @@ LABEL_24:
       v61 = &v74;
       p_location = &location;
       v63 = v79;
-      v64 = &v72;
-      v65 = &v78;
+      v64 = &currentSyncIdentity2;
+      v65 = &syncIdentityCopy;
       p_p_i = &i;
       v51 = &v66;
       v52 = &v71;
       v53 = &v74;
       v54 = &location;
       v55 = v79;
-      v56 = &v72;
-      v57 = &v78;
-      if (v11[8] == 1)
+      v56 = &currentSyncIdentity2;
+      v57 = &syncIdentityCopy;
+      if (orderCopy[8] == 1)
       {
         if ([HDSourceOrderManager _mergedSourceOrderForExistingOrder:incomingOrder:existingSyncIdentity:incomingSyncIdentity:]::$_2::operator()(&p_i))
         {
@@ -972,7 +972,7 @@ LABEL_24:
 
         else
         {
-          v24 = v72;
+          v24 = currentSyncIdentity2;
         }
 
         objc_storeStrong(&location, v24);
@@ -981,24 +981,24 @@ LABEL_24:
   }
 
   v25 = v16 == 0;
-  if (v11[8])
+  if (orderCopy[8])
   {
-    v26 = v11;
+    v26 = orderCopy;
   }
 
   else
   {
-    v26 = v12;
+    v26 = incomingOrderCopy;
   }
 
   if (v25)
   {
-    v12 = v11;
+    incomingOrderCopy = orderCopy;
   }
 
   if (v25)
   {
-    v27 = &v78;
+    v27 = &syncIdentityCopy;
   }
 
   else
@@ -1007,7 +1007,7 @@ LABEL_24:
   }
 
   v28 = v26;
-  v47 = v12;
+  v47 = incomingOrderCopy;
   location = *v27;
 
   p_i = 0;
@@ -1038,10 +1038,10 @@ LABEL_24:
     if (([v30 containsObject:v36] & 1) == 0)
     {
       v37 = objc_loadWeakRetained((a2 + 8));
-      v38 = [v37 syncIdentityManager];
-      v39 = [v38 currentSyncIdentity];
+      syncIdentityManager3 = [v37 syncIdentityManager];
+      currentSyncIdentity3 = [syncIdentityManager3 currentSyncIdentity];
       v40 = location;
-      location = v39;
+      location = currentSyncIdentity3;
 
       std::vector<_HDWrappedSource>::push_back[abi:ne200100](&p_i, &v74);
     }
@@ -1055,8 +1055,8 @@ LABEL_24:
   v42 = [(_HDCachedSourceOrder *)v41 initWithSources:v73 userOrdered:1 isDefaultOrder:0];
   p_p_i = v73;
   std::vector<_HDWrappedSource>::__destroy_vector::operator()[abi:ne200100](&p_p_i);
-  *a1 = v42;
-  a1[1] = location;
+  *self = v42;
+  self[1] = location;
 
   p_p_i = &p_i;
   std::vector<_HDWrappedSource>::__destroy_vector::operator()[abi:ne200100](&p_p_i);
@@ -1064,28 +1064,28 @@ LABEL_24:
   v43 = v46;
 LABEL_51:
 
-  v12 = v48;
+  incomingOrderCopy = v48;
 LABEL_52:
 }
 
 - (uint64_t)_mergedSourceOrderForExistingOrder:incomingOrder:existingSyncIdentity:incomingSyncIdentity:
 {
-  v2 = _HDDefaultSourceOrderCompare(***a1, **a1[1]);
+  v2 = _HDDefaultSourceOrderCompare(***self, **self[1]);
   if (!v2)
   {
-    v3 = [(HKSource *)***a1 bundleIdentifier];
-    v4 = [(HKSource *)**a1[1] bundleIdentifier];
-    v2 = [v3 compare:v4];
+    bundleIdentifier = [(HKSource *)***self bundleIdentifier];
+    bundleIdentifier2 = [(HKSource *)**self[1] bundleIdentifier];
+    v2 = [bundleIdentifier compare:bundleIdentifier2];
   }
 
   if (v2 == 1)
   {
-    [*a1[2] addObject:**a1[1]];
-    std::vector<_HDWrappedSource>::push_back[abi:ne200100](a1[3], *a1[1]);
-    *a1[1] += 3;
-    v6 = a1[4];
+    [*self[2] addObject:**self[1]];
+    std::vector<_HDWrappedSource>::push_back[abi:ne200100](self[3], *self[1]);
+    *self[1] += 3;
+    v6 = self[4];
     v7 = *v6;
-    v5 = a1[7];
+    v5 = self[7];
   }
 
   else
@@ -1095,18 +1095,18 @@ LABEL_52:
       return 0;
     }
 
-    [*a1[2] addObject:***a1];
-    std::vector<_HDWrappedSource>::push_back[abi:ne200100](a1[3], **a1);
-    **a1 += 3;
-    v6 = a1[4];
-    v5 = a1[5];
+    [*self[2] addObject:***self];
+    std::vector<_HDWrappedSource>::push_back[abi:ne200100](self[3], **self);
+    **self += 3;
+    v6 = self[4];
+    v5 = self[5];
     v7 = *v6;
   }
 
   v8 = *v5;
   if (v7 != v8)
   {
-    v8 = *a1[6];
+    v8 = *self[6];
   }
 
   v9 = v8;
@@ -1116,22 +1116,22 @@ LABEL_52:
   return 1;
 }
 
-- (id)_sourceCacheItemForObjectType:(void *)a3 transactionCache:(void *)a4 transaction:(uint64_t)a5 error:
+- (id)_sourceCacheItemForObjectType:(void *)type transactionCache:(void *)cache transaction:(uint64_t)transaction error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  typeCopy = type;
+  cacheCopy = cache;
+  if (self)
   {
-    v12 = *(a1 + 16);
+    v12 = *(self + 16);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __89__HDSourceOrderManager__sourceCacheItemForObjectType_transactionCache_transaction_error___block_invoke;
     v15[3] = &unk_27861CE80;
-    v15[4] = a1;
+    v15[4] = self;
     v16 = v9;
-    v17 = v10;
-    v13 = [v12 fetchObjectForKey:v16 transaction:v11 error:a5 faultHandler:v15];
+    v17 = typeCopy;
+    v13 = [v12 fetchObjectForKey:v16 transaction:cacheCopy error:transaction faultHandler:v15];
   }
 
   else
@@ -1616,24 +1616,24 @@ BOOL __83__HDSourceOrderManager__defaultSourceCacheItemWithTransactionCache_data
   return v6 != 0;
 }
 
-- (BOOL)addOrderedSource:(id)a3 objectTypes:(id)a4 error:(id *)a5
+- (BOOL)addOrderedSource:(id)source objectTypes:(id)types error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  typesCopy = types;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained database];
+  database = [WeakRetained database];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__HDSourceOrderManager_addOrderedSource_objectTypes_error___block_invoke;
   v15[3] = &unk_27861CA28;
   v15[4] = self;
-  v12 = v9;
+  v12 = typesCopy;
   v16 = v12;
-  v13 = v8;
+  v13 = sourceCopy;
   v17 = v13;
-  LOBYTE(a5) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:v11 error:a5 block:v15];
+  LOBYTE(error) = [(HDHealthEntity *)HDLogicalSourceOrderEntity performWriteTransactionWithHealthDatabase:database error:error block:v15];
 
-  return a5;
+  return error;
 }
 
 uint64_t __59__HDSourceOrderManager_addOrderedSource_objectTypes_error___block_invoke(uint64_t a1, void *a2, void *a3)

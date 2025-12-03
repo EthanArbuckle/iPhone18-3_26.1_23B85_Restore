@@ -1,41 +1,41 @@
 @interface AVTAvatarEditorViewController
 + (BOOL)shouldShowSplashScreen;
 + (id)defaultSessionProvider;
-+ (id)viewControllerForCreatingAvatarInStore:(id)a3;
-+ (id)viewControllerForCreatingAvatarInStore:(id)a3 avtViewSessionProvider:(id)a4;
-+ (id)viewControllerForEditingAvatar:(id)a3 avtViewSessionProvider:(id)a4 store:(id)a5;
-+ (id)viewControllerForEditingAvatar:(id)a3 store:(id)a4;
-- (AVTAvatarEditorViewController)initWithAvatarRecord:(id)a3 avtViewSessionProvider:(id)a4 store:(id)a5 enviroment:(id)a6 isCreating:(BOOL)a7;
++ (id)viewControllerForCreatingAvatarInStore:(id)store;
++ (id)viewControllerForCreatingAvatarInStore:(id)store avtViewSessionProvider:(id)provider;
++ (id)viewControllerForEditingAvatar:(id)avatar avtViewSessionProvider:(id)provider store:(id)store;
++ (id)viewControllerForEditingAvatar:(id)avatar store:(id)store;
+- (AVTAvatarEditorViewController)initWithAvatarRecord:(id)record avtViewSessionProvider:(id)provider store:(id)store enviroment:(id)enviroment isCreating:(BOOL)creating;
 - (AVTAvatarEditorViewControllerDelegate)delegate;
 - (BOOL)disableAvatarSnapshotting;
 - (UIEdgeInsets)additionalSafeAreaInsets;
 - (id)appropriatePresentationController;
 - (id)keyCommands;
 - (id)visibleLayout;
-- (void)applyLayout:(id)a3;
-- (void)attributeEditorDidMakeFirstSelection:(id)a3;
-- (void)cancel:(id)a3;
+- (void)applyLayout:(id)layout;
+- (void)attributeEditorDidMakeFirstSelection:(id)selection;
+- (void)cancel:(id)cancel;
 - (void)configureEditorNavigationItems;
 - (void)configurePPTMemoji;
 - (void)configureSplashNavigationItems;
-- (void)confirmCancel:(id)a3;
-- (void)controllerPresentationWillObstructView:(id)a3;
-- (void)enableDoneButton:(BOOL)a3;
-- (void)finish:(id)a3;
+- (void)confirmCancel:(id)cancel;
+- (void)controllerPresentationWillObstructView:(id)view;
+- (void)enableDoneButton:(BOOL)button;
+- (void)finish:(id)finish;
 - (void)handleDiscardAttempt;
-- (void)loadAttributeEditorViewWithAvatarRecord:(id)a3;
+- (void)loadAttributeEditorViewWithAvatarRecord:(id)record;
 - (void)loadSplashScreen;
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4;
-- (void)returnPressed:(id)a3;
-- (void)setDisableAvatarSnapshotting:(BOOL)a3;
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block;
+- (void)returnPressed:(id)pressed;
+- (void)setDisableAvatarSnapshotting:(BOOL)snapshotting;
 - (void)setupInitialViewState;
-- (void)splashScreenViewControllerDidCancel:(id)a3;
-- (void)splashScreenViewControllerDidConfirm:(id)a3;
-- (void)toolbar:(id)a3 didSelectButton:(id)a4 atIndex:(unint64_t)a5;
-- (void)updateToolBarForLayout:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)splashScreenViewControllerDidCancel:(id)cancel;
+- (void)splashScreenViewControllerDidConfirm:(id)confirm;
+- (void)toolbar:(id)toolbar didSelectButton:(id)button atIndex:(unint64_t)index;
+- (void)updateToolBarForLayout:(id)layout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AVTAvatarEditorViewController
@@ -75,87 +75,87 @@
   return v6;
 }
 
-+ (id)viewControllerForEditingAvatar:(id)a3 store:(id)a4
++ (id)viewControllerForEditingAvatar:(id)avatar store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 defaultSessionProvider];
-  v9 = [a1 viewControllerForEditingAvatar:v7 avtViewSessionProvider:v8 store:v6];
+  storeCopy = store;
+  avatarCopy = avatar;
+  defaultSessionProvider = [self defaultSessionProvider];
+  v9 = [self viewControllerForEditingAvatar:avatarCopy avtViewSessionProvider:defaultSessionProvider store:storeCopy];
 
   return v9;
 }
 
-+ (id)viewControllerForEditingAvatar:(id)a3 avtViewSessionProvider:(id)a4 store:(id)a5
++ (id)viewControllerForEditingAvatar:(id)avatar avtViewSessionProvider:(id)provider store:(id)store
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if (([v9 conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
+  avatarCopy = avatar;
+  storeCopy = store;
+  providerCopy = provider;
+  if (([storeCopy conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v9}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", storeCopy}];
   }
 
-  v11 = v9;
+  v11 = storeCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v8}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", avatarCopy}];
   }
 
-  v12 = v8;
+  v12 = avatarCopy;
   v13 = +[AVTUIEnvironment defaultEnvironment];
-  v14 = [[a1 alloc] initWithAvatarRecord:v12 avtViewSessionProvider:v10 store:v11 enviroment:v13 isCreating:0];
+  v14 = [[self alloc] initWithAvatarRecord:v12 avtViewSessionProvider:providerCopy store:v11 enviroment:v13 isCreating:0];
 
   return v14;
 }
 
-+ (id)viewControllerForCreatingAvatarInStore:(id)a3
++ (id)viewControllerForCreatingAvatarInStore:(id)store
 {
-  v4 = a3;
-  v5 = [a1 defaultSessionProvider];
-  v6 = [a1 viewControllerForCreatingAvatarInStore:v4 avtViewSessionProvider:v5];
+  storeCopy = store;
+  defaultSessionProvider = [self defaultSessionProvider];
+  v6 = [self viewControllerForCreatingAvatarInStore:storeCopy avtViewSessionProvider:defaultSessionProvider];
 
   return v6;
 }
 
-+ (id)viewControllerForCreatingAvatarInStore:(id)a3 avtViewSessionProvider:(id)a4
++ (id)viewControllerForCreatingAvatarInStore:(id)store avtViewSessionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
+  storeCopy = store;
+  providerCopy = provider;
+  if (([storeCopy conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v6}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", storeCopy}];
   }
 
-  v8 = v6;
+  v8 = storeCopy;
   v9 = +[AVTUIEnvironment defaultEnvironment];
-  v10 = [MEMORY[0x1E698E320] defaultAvatarRecord];
-  v11 = [[a1 alloc] initWithAvatarRecord:v10 avtViewSessionProvider:v7 store:v8 enviroment:v9 isCreating:1];
+  defaultAvatarRecord = [MEMORY[0x1E698E320] defaultAvatarRecord];
+  v11 = [[self alloc] initWithAvatarRecord:defaultAvatarRecord avtViewSessionProvider:providerCopy store:v8 enviroment:v9 isCreating:1];
 
   return v11;
 }
 
-- (AVTAvatarEditorViewController)initWithAvatarRecord:(id)a3 avtViewSessionProvider:(id)a4 store:(id)a5 enviroment:(id)a6 isCreating:(BOOL)a7
+- (AVTAvatarEditorViewController)initWithAvatarRecord:(id)record avtViewSessionProvider:(id)provider store:(id)store enviroment:(id)enviroment isCreating:(BOOL)creating
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  recordCopy = record;
+  providerCopy = provider;
+  storeCopy = store;
+  enviromentCopy = enviroment;
   v22.receiver = self;
   v22.super_class = AVTAvatarEditorViewController;
   v17 = [(AVTAvatarEditorViewController *)&v22 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_initialAvatarRecord, a3);
-    objc_storeStrong(&v18->_store, a5);
-    objc_storeStrong(&v18->_environment, a6);
-    v19 = [v16 logger];
+    objc_storeStrong(&v17->_initialAvatarRecord, record);
+    objc_storeStrong(&v18->_store, store);
+    objc_storeStrong(&v18->_environment, enviroment);
+    logger = [enviromentCopy logger];
     logger = v18->_logger;
-    v18->_logger = v19;
+    v18->_logger = logger;
 
-    objc_storeStrong(&v18->_avtViewSessionProvider, a4);
-    v18->_isCreating = a7;
+    objc_storeStrong(&v18->_avtViewSessionProvider, provider);
+    v18->_isCreating = creating;
   }
 
   return v18;
@@ -166,38 +166,38 @@
   v7.receiver = self;
   v7.super_class = AVTAvatarEditorViewController;
   [(AVTAvatarEditorViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(AVTAvatarEditorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(AVTAvatarEditorViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   [(AVTAvatarEditorViewController *)self setupInitialViewState];
-  v5 = [(AVTAvatarEditorViewController *)self navigationItem];
-  [v5 setLargeTitleDisplayMode:2];
+  navigationItem = [(AVTAvatarEditorViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v6 = [(AVTAvatarEditorViewController *)self navigationItem];
-  [v6 _setBackgroundHidden:1];
+  navigationItem2 = [(AVTAvatarEditorViewController *)self navigationItem];
+  [navigationItem2 _setBackgroundHidden:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AVTAvatarEditorViewController;
-  [(AVTAvatarEditorViewController *)&v5 viewWillAppear:a3];
-  v4 = [(AVTAvatarEditorViewController *)self visibleLayout];
-  [(AVTAvatarEditorViewController *)self updateToolBarForLayout:v4];
+  [(AVTAvatarEditorViewController *)&v5 viewWillAppear:appear];
+  visibleLayout = [(AVTAvatarEditorViewController *)self visibleLayout];
+  [(AVTAvatarEditorViewController *)self updateToolBarForLayout:visibleLayout];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = AVTAvatarEditorViewController;
-  [(AVTAvatarEditorViewController *)&v12 viewDidAppear:a3];
-  v4 = [(AVTAvatarEditorViewController *)self navigationController];
-  if (v4)
+  [(AVTAvatarEditorViewController *)&v12 viewDidAppear:appear];
+  navigationController = [(AVTAvatarEditorViewController *)self navigationController];
+  if (navigationController)
   {
-    v5 = [(AVTAvatarEditorViewController *)self navigationController];
-    v6 = [v5 viewControllers];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    navigationController2 = [(AVTAvatarEditorViewController *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    v7 = [viewControllers objectAtIndexedSubscript:0];
     v8 = v7 == self;
   }
 
@@ -206,112 +206,112 @@
     v8 = 0;
   }
 
-  v9 = [(AVTAvatarEditorViewController *)self navigationController];
+  navigationController3 = [(AVTAvatarEditorViewController *)self navigationController];
 
-  if (v8 || !v9)
+  if (v8 || !navigationController3)
   {
-    v10 = [(AVTAvatarEditorViewController *)self appropriatePresentationController];
-    v11 = [v10 delegate];
+    appropriatePresentationController = [(AVTAvatarEditorViewController *)self appropriatePresentationController];
+    delegate = [appropriatePresentationController delegate];
 
-    if (!v11)
+    if (!delegate)
     {
-      [v10 setDelegate:self];
+      [appropriatePresentationController setDelegate:self];
     }
   }
 }
 
 - (id)appropriatePresentationController
 {
-  v2 = self;
-  v3 = [(AVTAvatarEditorViewController *)v2 parentViewController];
+  selfCopy = self;
+  parentViewController = [(AVTAvatarEditorViewController *)selfCopy parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
     do
     {
-      v4 = [(AVTAvatarEditorViewController *)v2 parentViewController];
+      parentViewController2 = [(AVTAvatarEditorViewController *)selfCopy parentViewController];
 
-      v5 = [(AVTAvatarEditorViewController *)v4 parentViewController];
+      v4ParentViewController = [(AVTAvatarEditorViewController *)parentViewController2 parentViewController];
 
-      v2 = v4;
+      selfCopy = parentViewController2;
     }
 
-    while (v5);
+    while (v4ParentViewController);
   }
 
   else
   {
-    v4 = v2;
+    parentViewController2 = selfCopy;
   }
 
-  v6 = [(AVTAvatarEditorViewController *)v4 presentationController];
+  presentationController = [(AVTAvatarEditorViewController *)parentViewController2 presentationController];
 
-  return v6;
+  return presentationController;
 }
 
-- (void)setDisableAvatarSnapshotting:(BOOL)a3
+- (void)setDisableAvatarSnapshotting:(BOOL)snapshotting
 {
-  v3 = a3;
-  v5 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  snapshottingCopy = snapshotting;
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
 
-  if (v5)
+  if (attributeEditorViewController)
   {
-    v6 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-    [v6 setDisableAvatarSnapshotting:v3];
+    attributeEditorViewController2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+    [attributeEditorViewController2 setDisableAvatarSnapshotting:snapshottingCopy];
   }
 }
 
 - (BOOL)disableAvatarSnapshotting
 {
-  v2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-  v3 = [v2 disableAvatarSnapshotting];
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  disableAvatarSnapshotting = [attributeEditorViewController disableAvatarSnapshotting];
 
-  return v3;
+  return disableAvatarSnapshotting;
 }
 
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  layoutCopy = layout;
+  blockCopy = block;
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
 
-  if (v7)
+  if (attributeEditorViewController)
   {
-    [(AVTAvatarEditorViewController *)self updateToolBarForLayout:v9];
-    v8 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-    [v8 prepareForAnimatedTransitionWithLayout:v9 completionBlock:v6];
+    [(AVTAvatarEditorViewController *)self updateToolBarForLayout:layoutCopy];
+    attributeEditorViewController2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+    [attributeEditorViewController2 prepareForAnimatedTransitionWithLayout:layoutCopy completionBlock:blockCopy];
   }
 }
 
-- (void)applyLayout:(id)a3
+- (void)applyLayout:(id)layout
 {
-  v6 = a3;
-  v4 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  layoutCopy = layout;
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
 
-  if (v4)
+  if (attributeEditorViewController)
   {
-    [(AVTAvatarEditorViewController *)self updateToolBarForLayout:v6];
-    v5 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-    [v5 applyLayout:v6];
+    [(AVTAvatarEditorViewController *)self updateToolBarForLayout:layoutCopy];
+    attributeEditorViewController2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+    [attributeEditorViewController2 applyLayout:layoutCopy];
   }
 }
 
 - (id)visibleLayout
 {
-  v3 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
 
-  if (v3)
+  if (attributeEditorViewController)
   {
-    v4 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-    v5 = [v4 visibleLayout];
+    attributeEditorViewController2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+    visibleLayout = [attributeEditorViewController2 visibleLayout];
   }
 
   else
   {
-    v5 = 0;
+    visibleLayout = 0;
   }
 
-  return v5;
+  return visibleLayout;
 }
 
 - (void)setupInitialViewState
@@ -324,8 +324,8 @@
 
   else
   {
-    v3 = [(AVTAvatarEditorViewController *)self initialAvatarRecord];
-    [(AVTAvatarEditorViewController *)self loadAttributeEditorViewWithAvatarRecord:v3];
+    initialAvatarRecord = [(AVTAvatarEditorViewController *)self initialAvatarRecord];
+    [(AVTAvatarEditorViewController *)self loadAttributeEditorViewWithAvatarRecord:initialAvatarRecord];
   }
 }
 
@@ -364,34 +364,34 @@
   self->_splashScreenViewController = v12;
 
   [(AVTSplashScreenViewController *)self->_splashScreenViewController setDelegate:self];
-  v14 = [(AVTAvatarEditorViewController *)self view];
-  [v14 bounds];
+  view = [(AVTAvatarEditorViewController *)self view];
+  [view bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  view2 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
+  [view2 setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
-  [v24 setAutoresizingMask:18];
+  view3 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
+  [view3 setAutoresizingMask:18];
 
-  v25 = [(AVTAvatarEditorViewController *)self view];
-  v26 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
-  [v25 addSubview:v26];
+  view4 = [(AVTAvatarEditorViewController *)self view];
+  view5 = [(AVTSplashScreenViewController *)self->_splashScreenViewController view];
+  [view4 addSubview:view5];
 
   [(AVTAvatarEditorViewController *)self addChildViewController:self->_splashScreenViewController];
   [(AVTSplashScreenViewController *)self->_splashScreenViewController didMoveToParentViewController:self];
   [(AVTAvatarEditorViewController *)self configureSplashNavigationItems];
 }
 
-- (void)loadAttributeEditorViewWithAvatarRecord:(id)a3
+- (void)loadAttributeEditorViewWithAvatarRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = [AVTAvatarAttributeEditorViewController alloc];
-  v6 = [(AVTAvatarEditorViewController *)self avtViewSessionProvider];
-  v7 = [(AVTAvatarEditorViewController *)self environment];
-  v8 = [(AVTAvatarAttributeEditorViewController *)v5 initWithAvatarRecord:v4 avtViewSessionProvider:v6 environment:v7 isCreating:[(AVTAvatarEditorViewController *)self isCreating]];
+  avtViewSessionProvider = [(AVTAvatarEditorViewController *)self avtViewSessionProvider];
+  environment = [(AVTAvatarEditorViewController *)self environment];
+  v8 = [(AVTAvatarAttributeEditorViewController *)v5 initWithAvatarRecord:recordCopy avtViewSessionProvider:avtViewSessionProvider environment:environment isCreating:[(AVTAvatarEditorViewController *)self isCreating]];
 
   attributeEditorViewController = self->_attributeEditorViewController;
   self->_attributeEditorViewController = v8;
@@ -400,21 +400,21 @@
   [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController setShouldHideUserInfoView:[(AVTAvatarEditorViewController *)self shouldHideUserInfoView]];
   [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController setEditorPresentationContext:[(AVTAvatarEditorViewController *)self editorPresentationContext]];
   [(AVTAvatarEditorViewController *)self addChildViewController:self->_attributeEditorViewController];
-  v10 = [(AVTAvatarEditorViewController *)self view];
-  [v10 bounds];
+  view = [(AVTAvatarEditorViewController *)self view];
+  [view bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  view2 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
+  [view2 setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
-  [v20 setAutoresizingMask:18];
+  view3 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
+  [view3 setAutoresizingMask:18];
 
-  v21 = [(AVTAvatarEditorViewController *)self view];
-  v22 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
-  [v21 addSubview:v22];
+  view4 = [(AVTAvatarEditorViewController *)self view];
+  view5 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
+  [view4 addSubview:view5];
 
   [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController didMoveToParentViewController:self];
 
@@ -423,49 +423,49 @@
 
 - (void)configureSplashNavigationItems
 {
-  v3 = [(AVTAvatarEditorViewController *)self environment];
-  v4 = [v3 deviceIsMac];
+  environment = [(AVTAvatarEditorViewController *)self environment];
+  deviceIsMac = [environment deviceIsMac];
 
-  if ((v4 & 1) == 0)
+  if ((deviceIsMac & 1) == 0)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
     [(AVTAvatarEditorViewController *)self setCancelButtonItem:v5];
 
-    v7 = [(AVTAvatarEditorViewController *)self cancelButtonItem];
-    v6 = [(AVTAvatarEditorViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:v7];
+    cancelButtonItem = [(AVTAvatarEditorViewController *)self cancelButtonItem];
+    navigationItem = [(AVTAvatarEditorViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:cancelButtonItem];
   }
 }
 
 - (void)configureEditorNavigationItems
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTAvatarEditorViewController *)self environment];
-  v4 = [v3 deviceIsMac];
+  environment = [(AVTAvatarEditorViewController *)self environment];
+  deviceIsMac = [environment deviceIsMac];
 
-  if (v4)
+  if (deviceIsMac)
   {
-    v5 = [(AVTAvatarEditorViewController *)self toolbar];
-    [v5 removeFromSuperview];
+    toolbar = [(AVTAvatarEditorViewController *)self toolbar];
+    [toolbar removeFromSuperview];
 
     v6 = [AVTToolbarButton alloc];
     v7 = AVTAvatarUIBundle();
     v8 = [v7 localizedStringForKey:@"DONE" value:&stru_1F39618F0 table:@"Localized"];
-    v9 = [(AVTToolbarButton *)v6 initWithTitle:v8 isDefault:1];
+    doneButtonItem = [(AVTToolbarButton *)v6 initWithTitle:v8 isDefault:1];
 
     v10 = [AVTToolbarButton alloc];
     v11 = AVTAvatarUIBundle();
     v12 = [v11 localizedStringForKey:@"CANCEL" value:&stru_1F39618F0 table:@"Localized"];
-    v13 = [(AVTToolbarButton *)v10 initWithTitle:v12 isDefault:0];
+    navigationItem2 = [(AVTToolbarButton *)v10 initWithTitle:v12 isDefault:0];
 
     v14 = [AVTToolBar alloc];
-    v30[0] = v13;
-    v30[1] = v9;
+    v30[0] = navigationItem2;
+    v30[1] = doneButtonItem;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
     v16 = [(AVTToolBar *)v14 initWithButtons:v15];
 
-    v17 = [(AVTAvatarEditorViewController *)self view];
-    [v17 bounds];
+    view = [(AVTAvatarEditorViewController *)self view];
+    [view bounds];
     v19 = v18;
     v21 = v20;
 
@@ -473,13 +473,13 @@
     [(AVTToolBar *)v16 setFrame:0.0, v21 - v22, v19, v22];
     [(AVTToolBar *)v16 setAutoresizingMask:10];
     [(AVTToolBar *)v16 setDelegate:self];
-    v23 = [(AVTAvatarEditorViewController *)self view];
-    v24 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
-    [v23 insertSubview:v16 aboveSubview:v24];
+    view2 = [(AVTAvatarEditorViewController *)self view];
+    view3 = [(AVTAvatarAttributeEditorViewController *)self->_attributeEditorViewController view];
+    [view2 insertSubview:v16 aboveSubview:view3];
 
     [(AVTAvatarEditorViewController *)self setToolbar:v16];
-    v25 = [(AVTAvatarEditorViewController *)self navigationController];
-    [v25 setNavigationBarHidden:1];
+    navigationController = [(AVTAvatarEditorViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:1];
   }
 
   else
@@ -487,16 +487,16 @@
     v26 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
     [(AVTAvatarEditorViewController *)self setCancelButtonItem:v26];
 
-    v27 = [(AVTAvatarEditorViewController *)self cancelButtonItem];
-    v28 = [(AVTAvatarEditorViewController *)self navigationItem];
-    [v28 setLeftBarButtonItem:v27];
+    cancelButtonItem = [(AVTAvatarEditorViewController *)self cancelButtonItem];
+    navigationItem = [(AVTAvatarEditorViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:cancelButtonItem];
 
     v29 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_finish_];
     [(AVTAvatarEditorViewController *)self setDoneButtonItem:v29];
 
-    v9 = [(AVTAvatarEditorViewController *)self doneButtonItem];
-    v13 = [(AVTAvatarEditorViewController *)self navigationItem];
-    [(AVTToolbarButton *)v13 setRightBarButtonItem:v9];
+    doneButtonItem = [(AVTAvatarEditorViewController *)self doneButtonItem];
+    navigationItem2 = [(AVTAvatarEditorViewController *)self navigationItem];
+    [(AVTToolbarButton *)navigationItem2 setRightBarButtonItem:doneButtonItem];
   }
 
   [(AVTAvatarEditorViewController *)self enableDoneButton:[(AVTAvatarEditorViewController *)self isCreating]];
@@ -504,63 +504,63 @@
 
 - (id)keyCommands
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:sel_escPressed_];
-  v4 = [v3 _nonRepeatableKeyCommand];
-  [v2 addObject:v4];
+  _nonRepeatableKeyCommand = [v3 _nonRepeatableKeyCommand];
+  [array addObject:_nonRepeatableKeyCommand];
 
   v5 = MEMORY[0x1E69DCBA0];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\r"];
   v7 = [v5 keyCommandWithInput:v6 modifierFlags:0 action:sel_returnPressed_];
 
-  v8 = [v7 _nonRepeatableKeyCommand];
-  [v2 addObject:v8];
+  _nonRepeatableKeyCommand2 = [v7 _nonRepeatableKeyCommand];
+  [array addObject:_nonRepeatableKeyCommand2];
 
-  return v2;
+  return array;
 }
 
-- (void)updateToolBarForLayout:(id)a3
+- (void)updateToolBarForLayout:(id)layout
 {
-  v21 = a3;
-  v4 = [(AVTAvatarEditorViewController *)self toolbar];
+  layoutCopy = layout;
+  toolbar = [(AVTAvatarEditorViewController *)self toolbar];
 
-  if (v4)
+  if (toolbar)
   {
-    v5 = [(AVTAvatarEditorViewController *)self toolbar];
-    [v5 frame];
+    toolbar2 = [(AVTAvatarEditorViewController *)self toolbar];
+    [toolbar2 frame];
     v7 = v6;
     v9 = v8;
 
-    [v21 attributesContentViewFrame];
+    [layoutCopy attributesContentViewFrame];
     v11 = v10;
-    [v21 attributesContentViewFrame];
+    [layoutCopy attributesContentViewFrame];
     v13 = v12;
     [MEMORY[0x1E69DD250] inheritedAnimationDuration];
     v15 = v14 > 0.0;
-    v16 = [(AVTAvatarEditorViewController *)self toolbar];
-    [v16 setIsAnimating:v15];
+    toolbar3 = [(AVTAvatarEditorViewController *)self toolbar];
+    [toolbar3 setIsAnimating:v15];
 
-    v17 = [(AVTAvatarEditorViewController *)self toolbar];
-    [v17 setFrame:{v11, v7, v13, v9}];
+    toolbar4 = [(AVTAvatarEditorViewController *)self toolbar];
+    [toolbar4 setFrame:{v11, v7, v13, v9}];
 
-    v18 = [(AVTAvatarEditorViewController *)self toolbar];
-    v19 = [v18 window];
+    toolbar5 = [(AVTAvatarEditorViewController *)self toolbar];
+    window = [toolbar5 window];
 
-    if (v19)
+    if (window)
     {
-      v20 = [(AVTAvatarEditorViewController *)self toolbar];
-      [v20 layoutIfNeeded];
+      toolbar6 = [(AVTAvatarEditorViewController *)self toolbar];
+      [toolbar6 layoutIfNeeded];
     }
   }
 }
 
 - (UIEdgeInsets)additionalSafeAreaInsets
 {
-  v3 = [(AVTAvatarEditorViewController *)self toolbar];
-  if (v3)
+  toolbar = [(AVTAvatarEditorViewController *)self toolbar];
+  if (toolbar)
   {
-    v4 = [(AVTAvatarEditorViewController *)self toolbar];
-    [v4 bounds];
+    toolbar2 = [(AVTAvatarEditorViewController *)self toolbar];
+    [toolbar2 bounds];
     v6 = v5;
 
     v7 = 0.0;
@@ -587,43 +587,43 @@
   return result;
 }
 
-- (void)enableDoneButton:(BOOL)a3
+- (void)enableDoneButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(AVTAvatarEditorViewController *)self doneButtonItem];
-  [v5 setEnabled:v3];
+  buttonCopy = button;
+  doneButtonItem = [(AVTAvatarEditorViewController *)self doneButtonItem];
+  [doneButtonItem setEnabled:buttonCopy];
 
-  v6 = [(AVTAvatarEditorViewController *)self toolbar];
-  [v6 setEnabled:v3 forButtonAtIndex:1];
+  toolbar = [(AVTAvatarEditorViewController *)self toolbar];
+  [toolbar setEnabled:buttonCopy forButtonAtIndex:1];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v8 = a3;
+  cancelCopy = cancel;
   if ([(AVTAvatarEditorViewController *)self hasChanges])
   {
-    [(AVTAvatarEditorViewController *)self confirmCancel:v8];
+    [(AVTAvatarEditorViewController *)self confirmCancel:cancelCopy];
   }
 
   else
   {
-    v4 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-    [v4 didFinishEditing];
+    attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+    [attributeEditorViewController didFinishEditing];
 
-    v5 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
+    splashScreenViewController = [(AVTAvatarEditorViewController *)self splashScreenViewController];
 
-    if (v5)
+    if (splashScreenViewController)
     {
-      v6 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
-      [v6 stopPlayingVideos];
+      splashScreenViewController2 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
+      [splashScreenViewController2 stopPlayingVideos];
     }
 
-    v7 = [(AVTAvatarEditorViewController *)self delegate];
-    [v7 avatarEditorViewControllerDidCancel:self];
+    delegate = [(AVTAvatarEditorViewController *)self delegate];
+    [delegate avatarEditorViewControllerDidCancel:self];
   }
 }
 
-- (void)returnPressed:(id)a3
+- (void)returnPressed:(id)pressed
 {
   if ([(AVTAvatarEditorViewController *)self isCreating]|| [(AVTAvatarEditorViewController *)self hasChanges])
   {
@@ -632,43 +632,43 @@
   }
 }
 
-- (void)finish:(id)a3
+- (void)finish:(id)finish
 {
-  v4 = [(AVTAvatarEditorViewController *)self logger];
-  v5 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-  [v5 didFinishEditing];
+  logger = [(AVTAvatarEditorViewController *)self logger];
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  [attributeEditorViewController didFinishEditing];
 
-  v6 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-  v7 = [v6 avatarRecord];
+  attributeEditorViewController2 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  avatarRecord = [attributeEditorViewController2 avatarRecord];
 
-  v8 = [(AVTAvatarEditorViewController *)self isCreating];
-  v9 = [(AVTAvatarEditorViewController *)self environment];
-  v10 = [v9 usageTrackingSession];
-  v11 = v10;
-  if (v8)
+  isCreating = [(AVTAvatarEditorViewController *)self isCreating];
+  environment = [(AVTAvatarEditorViewController *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  v11 = usageTrackingSession;
+  if (isCreating)
   {
-    [v10 didCreateAvatar:v7];
+    [usageTrackingSession didCreateAvatar:avatarRecord];
   }
 
   else
   {
-    [v10 didEditAvatar:v7];
+    [usageTrackingSession didEditAvatar:avatarRecord];
   }
 
-  v12 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-  v13 = [v12 avatar];
+  attributeEditorViewController3 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  avatar = [attributeEditorViewController3 avatar];
 
-  v14 = [(AVTAvatarEditorViewController *)self store];
+  store = [(AVTAvatarEditorViewController *)self store];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __40__AVTAvatarEditorViewController_finish___block_invoke;
   v17[3] = &unk_1E7F3ADD8;
-  v18 = v4;
-  v19 = self;
-  v20 = v7;
-  v15 = v7;
-  v16 = v4;
-  [v14 saveAvatarRecord:v15 thumbnailAvatar:v13 completionBlock:v17 thumbnailGenerationCompletionBlock:0];
+  v18 = logger;
+  selfCopy = self;
+  v20 = avatarRecord;
+  v15 = avatarRecord;
+  v16 = logger;
+  [store saveAvatarRecord:v15 thumbnailAvatar:avatar completionBlock:v17 thumbnailGenerationCompletionBlock:0];
 }
 
 void __40__AVTAvatarEditorViewController_finish___block_invoke(uint64_t a1, int a2, void *a3)
@@ -701,28 +701,28 @@ void __40__AVTAvatarEditorViewController_finish___block_invoke_2(uint64_t a1)
   [v2 avatarEditorViewController:*(a1 + 32) didFinishWithAvatarRecord:*(a1 + 40)];
 }
 
-- (void)splashScreenViewControllerDidCancel:(id)a3
+- (void)splashScreenViewControllerDidCancel:(id)cancel
 {
-  v4 = [(AVTAvatarEditorViewController *)self delegate];
-  [v4 avatarEditorViewControllerDidCancel:self];
+  delegate = [(AVTAvatarEditorViewController *)self delegate];
+  [delegate avatarEditorViewControllerDidCancel:self];
 }
 
-- (void)splashScreenViewControllerDidConfirm:(id)a3
+- (void)splashScreenViewControllerDidConfirm:(id)confirm
 {
   AVTUISetHasDisplayedSplashScreen();
   AVTUISetHasDisplayedCameraDisclosureSplashScreen();
-  v4 = [(AVTAvatarEditorViewController *)self initialAvatarRecord];
-  [(AVTAvatarEditorViewController *)self loadAttributeEditorViewWithAvatarRecord:v4];
+  initialAvatarRecord = [(AVTAvatarEditorViewController *)self initialAvatarRecord];
+  [(AVTAvatarEditorViewController *)self loadAttributeEditorViewWithAvatarRecord:initialAvatarRecord];
 
-  v5 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
-  [v5 willMoveToParentViewController:0];
+  splashScreenViewController = [(AVTAvatarEditorViewController *)self splashScreenViewController];
+  [splashScreenViewController willMoveToParentViewController:0];
 
-  v6 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  splashScreenViewController2 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
+  view = [splashScreenViewController2 view];
+  [view removeFromSuperview];
 
-  v8 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
-  [v8 removeFromParentViewController];
+  splashScreenViewController3 = [(AVTAvatarEditorViewController *)self splashScreenViewController];
+  [splashScreenViewController3 removeFromParentViewController];
 }
 
 - (void)handleDiscardAttempt
@@ -739,8 +739,8 @@ void __40__AVTAvatarEditorViewController_finish___block_invoke_2(uint64_t a1)
 
   else
   {
-    v3 = [(AVTAvatarEditorViewController *)self delegate];
-    [v3 avatarEditorViewControllerDidCancel:self];
+    delegate = [(AVTAvatarEditorViewController *)self delegate];
+    [delegate avatarEditorViewControllerDidCancel:self];
   }
 }
 
@@ -751,13 +751,13 @@ void __53__AVTAvatarEditorViewController_handleDiscardAttempt__block_invoke(uint
   [v1 confirmCancel:v2];
 }
 
-- (void)confirmCancel:(id)a3
+- (void)confirmCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(AVTAvatarEditorViewController *)self isCreating];
+  cancelCopy = cancel;
+  isCreating = [(AVTAvatarEditorViewController *)self isCreating];
   v6 = AVTAvatarUIBundle();
   v7 = v6;
-  if (v5)
+  if (isCreating)
   {
     v8 = @"EDITING_CREATE_DISCARD_CONFIRMATION_TITLE";
   }
@@ -789,20 +789,20 @@ void __53__AVTAvatarEditorViewController_handleDiscardAttempt__block_invoke(uint
 
   objc_opt_class();
   LOBYTE(v18) = objc_opt_isKindOfClass();
-  v19 = [v10 popoverPresentationController];
-  v20 = v19;
+  popoverPresentationController = [v10 popoverPresentationController];
+  v20 = popoverPresentationController;
   if (v18)
   {
-    [v19 setBarButtonItem:v4];
+    [popoverPresentationController setBarButtonItem:cancelCopy];
   }
 
   else
   {
-    [v19 setSourceView:v4];
+    [popoverPresentationController setSourceView:cancelCopy];
   }
 
-  v21 = [(AVTAvatarEditorViewController *)self cancelButtonItem];
-  if (v21 == v4)
+  cancelButtonItem = [(AVTAvatarEditorViewController *)self cancelButtonItem];
+  if (cancelButtonItem == cancelCopy)
   {
     v22 = 1;
   }
@@ -812,8 +812,8 @@ void __53__AVTAvatarEditorViewController_handleDiscardAttempt__block_invoke(uint
     v22 = 15;
   }
 
-  v23 = [v10 popoverPresentationController];
-  [v23 setPermittedArrowDirections:v22];
+  popoverPresentationController2 = [v10 popoverPresentationController];
+  [popoverPresentationController2 setPermittedArrowDirections:v22];
 
   [(AVTAvatarEditorViewController *)self presentViewController:v10 animated:1 completion:0];
 }
@@ -827,36 +827,36 @@ void __47__AVTAvatarEditorViewController_confirmCancel___block_invoke(uint64_t a
   [v3 avatarEditorViewControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)attributeEditorDidMakeFirstSelection:(id)a3
+- (void)attributeEditorDidMakeFirstSelection:(id)selection
 {
   [(AVTAvatarEditorViewController *)self enableDoneButton:1];
 
   [(AVTAvatarEditorViewController *)self setHasChanges:1];
 }
 
-- (void)controllerPresentationWillObstructView:(id)a3
+- (void)controllerPresentationWillObstructView:(id)view
 {
-  v3 = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
-  v5 = [v3 presentedViewController];
+  attributeEditorViewController = [(AVTAvatarEditorViewController *)self attributeEditorViewController];
+  presentedViewController = [attributeEditorViewController presentedViewController];
 
-  v4 = v5;
-  if (v5)
+  v4 = presentedViewController;
+  if (presentedViewController)
   {
-    [v5 dismissViewControllerAnimated:0 completion:0];
-    v4 = v5;
+    [presentedViewController dismissViewControllerAnimated:0 completion:0];
+    v4 = presentedViewController;
   }
 }
 
-- (void)toolbar:(id)a3 didSelectButton:(id)a4 atIndex:(unint64_t)a5
+- (void)toolbar:(id)toolbar didSelectButton:(id)button atIndex:(unint64_t)index
 {
-  if (a5)
+  if (index)
   {
-    [(AVTAvatarEditorViewController *)self finish:a4];
+    [(AVTAvatarEditorViewController *)self finish:button];
   }
 
   else
   {
-    [(AVTAvatarEditorViewController *)self cancel:a4];
+    [(AVTAvatarEditorViewController *)self cancel:button];
   }
 }
 

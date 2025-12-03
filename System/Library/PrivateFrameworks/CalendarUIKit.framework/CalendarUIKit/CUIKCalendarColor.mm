@@ -1,6 +1,6 @@
 @interface CUIKCalendarColor
 + (NSString)providerIdentifier;
-+ (id)deserializeColor:(id)a3;
++ (id)deserializeColor:(id)color;
 - (CUIKCalendarColor)init;
 @end
 
@@ -13,9 +13,9 @@
   return v2;
 }
 
-+ (id)deserializeColor:(id)a3
++ (id)deserializeColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = sub_1CAD4C024();
   v6 = v5;
 

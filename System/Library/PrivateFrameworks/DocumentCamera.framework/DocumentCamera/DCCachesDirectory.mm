@@ -15,14 +15,14 @@
   {
     v3 = MEMORY[0x277CBEBC0];
     v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v5 = [v4 lastObject];
-    v6 = [v3 fileURLWithPath:v5];
+    lastObject = [v4 lastObject];
+    v6 = [v3 fileURLWithPath:lastObject];
 
     v7 = [v6 URLByAppendingPathComponent:@"com.apple.DocumentCamera"];
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    LOBYTE(v6) = [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v14];
+    LOBYTE(v6) = [defaultManager createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v14];
     v9 = v14;
 
     if ((v6 & 1) == 0)
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __42__DCCachesDirectory_sharedCachesDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCachesDirectory_onceToken != -1)
   {
     dispatch_once(&sharedCachesDirectory_onceToken, block);
@@ -70,7 +70,7 @@ void __42__DCCachesDirectory_sharedCachesDirectory__block_invoke(uint64_t a1)
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_249253000, log, OS_LOG_TYPE_ERROR, "Failed to create directory %@ with error %@.", &v3, 0x16u);

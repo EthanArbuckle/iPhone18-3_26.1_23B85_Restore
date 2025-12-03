@@ -1,6 +1,6 @@
 @interface PSUICarrierSpaceMyAccountWebViewController
-- (PSUICarrierSpaceMyAccountWebViewController)initWithURLString:(id)a3;
-- (PSUICarrierSpaceMyAccountWebViewController)initWithWebView:(id)a3 url:(id)a4;
+- (PSUICarrierSpaceMyAccountWebViewController)initWithURLString:(id)string;
+- (PSUICarrierSpaceMyAccountWebViewController)initWithWebView:(id)view url:(id)url;
 - (void)addCancelButton;
 - (void)loadView;
 - (void)viewDidLoad;
@@ -8,15 +8,15 @@
 
 @implementation PSUICarrierSpaceMyAccountWebViewController
 
-- (PSUICarrierSpaceMyAccountWebViewController)initWithURLString:(id)a3
+- (PSUICarrierSpaceMyAccountWebViewController)initWithURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = PSUICarrierSpaceMyAccountWebViewController;
   v5 = [(PSUICarrierSpaceMyAccountWebViewController *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
+    v6 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
     myAccountURL = v5->_myAccountURL;
     v5->_myAccountURL = v6;
 
@@ -28,18 +28,18 @@
   return v5;
 }
 
-- (PSUICarrierSpaceMyAccountWebViewController)initWithWebView:(id)a3 url:(id)a4
+- (PSUICarrierSpaceMyAccountWebViewController)initWithWebView:(id)view url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  urlCopy = url;
   v14.receiver = self;
   v14.super_class = PSUICarrierSpaceMyAccountWebViewController;
   v9 = [(PSUICarrierSpaceMyAccountWebViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_webView, a3);
-    objc_storeStrong(&v10->_myAccountURL, a4);
+    objc_storeStrong(&v9->_webView, view);
+    objc_storeStrong(&v10->_myAccountURL, url);
     v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v10 action:sel_dismissMyAccount];
     cancelButton = v10->_cancelButton;
     v10->_cancelButton = v11;
@@ -57,23 +57,23 @@
   if (!self->_webView)
   {
     v5 = objc_alloc(MEMORY[0x277CE3850]);
-    v6 = [(PSUICarrierSpaceMyAccountWebViewController *)self view];
-    [v6 bounds];
+    view = [(PSUICarrierSpaceMyAccountWebViewController *)self view];
+    [view bounds];
     v7 = [v5 initWithFrame:?];
     webView = self->_webView;
     self->_webView = v7;
 
-    v9 = [(WKWebView *)self->_webView scrollView];
-    v10 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [v9 setBackgroundColor:v10];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [scrollView setBackgroundColor:systemGroupedBackgroundColor];
 
     goto LABEL_5;
   }
 
-  v3 = [(PSUICarrierSpaceMyAccountWebViewController *)self view];
+  view2 = [(PSUICarrierSpaceMyAccountWebViewController *)self view];
   v4 = self->_webView;
 
-  if (v3 != v4)
+  if (view2 != v4)
   {
 LABEL_5:
     [(PSUICarrierSpaceMyAccountWebViewController *)self setView:self->_webView];
@@ -88,8 +88,8 @@ LABEL_5:
   if (self->_webView)
   {
     v3 = MEMORY[0x277CCAD20];
-    v4 = [(PSUICarrierSpaceMyAccountWebViewController *)self myAccountURL];
-    v5 = [v3 requestWithURL:v4];
+    myAccountURL = [(PSUICarrierSpaceMyAccountWebViewController *)self myAccountURL];
+    v5 = [v3 requestWithURL:myAccountURL];
 
     v6 = [(WKWebView *)self->_webView loadRequest:v5];
   }
@@ -97,20 +97,20 @@ LABEL_5:
 
 - (void)addCancelButton
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [(PSUICarrierSpaceMyAccountWebViewController *)self navigationItem];
+  navigationItem = [(PSUICarrierSpaceMyAccountWebViewController *)self navigationItem];
   cancelButton = self->_cancelButton;
-  v7 = v5;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  v7 = navigationItem;
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    [v5 setRightBarButtonItem:cancelButton animated:1];
+    [navigationItem setRightBarButtonItem:cancelButton animated:1];
   }
 
   else
   {
-    [v5 setLeftBarButtonItem:cancelButton animated:1];
+    [navigationItem setLeftBarButtonItem:cancelButton animated:1];
   }
 }
 

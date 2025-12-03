@@ -7,12 +7,12 @@
 - (uint64_t)rc_firstIndexOfObject:()RCAdditions
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
     v5 = 0;
-    while (([v4 isEqual:{objc_msgSend(a1, "pointerAtIndex:", v5)}] & 1) == 0)
+    while (([v4 isEqual:{objc_msgSend(self, "pointerAtIndex:", v5)}] & 1) == 0)
     {
-      if (++v5 >= [a1 count])
+      if (++v5 >= [self count])
       {
         goto LABEL_5;
       }

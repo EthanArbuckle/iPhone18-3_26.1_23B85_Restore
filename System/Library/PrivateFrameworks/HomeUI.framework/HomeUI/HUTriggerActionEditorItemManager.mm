@@ -1,20 +1,20 @@
 @interface HUTriggerActionEditorItemManager
-- (HUTriggerActionEditorItemManager)initWithDelegate:(id)a3 showShortcutItem:(BOOL)a4;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUTriggerActionEditorItemManager)initWithDelegate:(id)delegate showShortcutItem:(BOOL)item;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUTriggerActionEditorItemManager
 
-- (HUTriggerActionEditorItemManager)initWithDelegate:(id)a3 showShortcutItem:(BOOL)a4
+- (HUTriggerActionEditorItemManager)initWithDelegate:(id)delegate showShortcutItem:(BOOL)item
 {
-  v4 = a4;
+  itemCopy = item;
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = objc_opt_new();
   v8 = [HUViewControllerTableViewItem alloc];
   v9 = [(HFStaticItem *)v8 initWithResults:MEMORY[0x277CBEC10]];
   [v7 addObject:v9];
-  if (v4)
+  if (itemCopy)
   {
     v10 = [HUTriggerHeaderItem alloc];
     v29 = *MEMORY[0x277D13F60];
@@ -51,7 +51,7 @@
   v26 = v19;
   v24.receiver = self;
   v24.super_class = HUTriggerActionEditorItemManager;
-  v20 = [(HFSimpleItemManager *)&v24 initWithDelegate:v6 itemProvidersCreator:v25];
+  v20 = [(HFSimpleItemManager *)&v24 initWithDelegate:delegateCopy itemProvidersCreator:v25];
   v21 = v20;
   if (v20)
   {
@@ -77,44 +77,44 @@ id __70__HUTriggerActionEditorItemManager_initWithDelegate_showShortcutItem___bl
   return v5;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerActionEditorItemManagerGridSectionIdentifier"];
-  v6 = [(HUTriggerActionEditorItemManager *)self gridItem];
-  v19[0] = v6;
+  gridItem = [(HUTriggerActionEditorItemManager *)self gridItem];
+  v19[0] = gridItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   [v5 setItems:v7];
 
-  [v4 addObject:v5];
-  v8 = [(HUTriggerActionEditorItemManager *)self addShortcutHeader];
+  [array addObject:v5];
+  addShortcutHeader = [(HUTriggerActionEditorItemManager *)self addShortcutHeader];
 
-  if (v8)
+  if (addShortcutHeader)
   {
     v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerActionEditorItemManagerShortcutsHeaderSectionIdentifier"];
-    v10 = [(HUTriggerActionEditorItemManager *)self addShortcutHeader];
-    v18 = v10;
+    addShortcutHeader2 = [(HUTriggerActionEditorItemManager *)self addShortcutHeader];
+    v18 = addShortcutHeader2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
     [v9 setItems:v11];
 
-    [v4 addObject:v9];
+    [array addObject:v9];
   }
 
-  v12 = [(HUTriggerActionEditorItemManager *)self addShortcutItem];
+  addShortcutItem = [(HUTriggerActionEditorItemManager *)self addShortcutItem];
 
-  if (v12)
+  if (addShortcutItem)
   {
     v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTriggerActionEditorItemManagerShortcutsItemSectionIdentifier"];
-    v14 = [(HUTriggerActionEditorItemManager *)self addShortcutItem];
-    v17 = v14;
+    addShortcutItem2 = [(HUTriggerActionEditorItemManager *)self addShortcutItem];
+    v17 = addShortcutItem2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
     [v13 setItems:v15];
 
-    [v4 addObject:v13];
+    [array addObject:v13];
   }
 
-  return v4;
+  return array;
 }
 
 @end

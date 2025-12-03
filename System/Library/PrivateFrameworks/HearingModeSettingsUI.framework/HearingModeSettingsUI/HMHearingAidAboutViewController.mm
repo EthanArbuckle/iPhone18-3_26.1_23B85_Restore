@@ -27,7 +27,7 @@
   v10 = [v7 preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:4 edit:0];
   [v3 addObject:v10];
 
-  v95 = [(HMHearingAidAboutViewController *)self getDevice];
+  getDevice = [(HMHearingAidAboutViewController *)self getDevice];
   v11 = [(HMHearingAidAboutViewController *)self createGroupSpecifier:?];
   [v3 addObject:v11];
 
@@ -54,14 +54,14 @@
   v26 = [v25 localizedStringForKey:@"UDI" value:&stru_28643BDD8 table:0];
   v27 = [v24 preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-  v28 = [(HMHearingAidAboutViewController *)self getHostUDI];
-  [v27 setUserInfo:v28];
+  getHostUDI = [(HMHearingAidAboutViewController *)self getHostUDI];
+  [v27 setUserInfo:getHostUDI];
 
   v94 = v27;
   [v3 addObject:v27];
-  v93 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v92 = [v93 getActivePairedDevice];
-  if (v92)
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  if (getActivePairedDevice)
   {
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v30 = [v29 localizedStringForKey:@"Apple Watch" value:&stru_28643BDD8 table:0];
@@ -91,14 +91,14 @@
     v46 = [v45 localizedStringForKey:@"UDI" value:&stru_28643BDD8 table:0];
     v47 = [v44 preferenceSpecifierNamed:v46 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-    v48 = [(HMHearingAidAboutViewController *)self getWatchUDI];
-    [v47 setUserInfo:v48];
+    getWatchUDI = [(HMHearingAidAboutViewController *)self getWatchUDI];
+    [v47 setUserInfo:getWatchUDI];
 
     [v3 addObject:v47];
   }
 
-  v49 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v50 = [v49 objectForKeyedSubscript:@"marketingName"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v50 = [userInfo objectForKeyedSubscript:@"marketingName"];
   v51 = v50;
   v52 = @"AirPods Pro";
   if (v50)
@@ -134,8 +134,8 @@
   v69 = [v68 localizedStringForKey:@"UDI" value:&stru_28643BDD8 table:0];
   v70 = [v67 preferenceSpecifierNamed:v69 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-  v71 = [(HMHearingAidAboutViewController *)self getAccessoryUDI];
-  [v70 setUserInfo:v71];
+  getAccessoryUDI = [(HMHearingAidAboutViewController *)self getAccessoryUDI];
+  [v70 setUserInfo:getAccessoryUDI];
 
   [v3 addObject:v70];
   v72 = [(HMHearingAidAboutViewController *)self createGroupSpecifier:&stru_28643BDD8];
@@ -176,11 +176,11 @@
 
 - (id)getFeatureVersion
 {
-  v2 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"versionNumber"];
-  v4 = [v3 intValue];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"versionNumber"];
+  intValue = [v3 intValue];
 
-  if (v4 == 2)
+  if (intValue == 2)
   {
     return @"2";
   }
@@ -194,19 +194,19 @@
 - (id)getHostUpdateVersion
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMHearingAidAboutViewController *)self getFeatureVersion];
-  v4 = [v2 stringWithFormat:@"%@.%@", v3, MGGetStringAnswer()];
+  getFeatureVersion = [(HMHearingAidAboutViewController *)self getFeatureVersion];
+  v4 = [v2 stringWithFormat:@"%@.%@", getFeatureVersion, MGGetStringAnswer()];
 
   return v4;
 }
 
 - (id)getHostUDI
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"versionNumber"];
-  v5 = [v4 intValue];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"versionNumber"];
+  intValue = [v4 intValue];
 
-  if (v5 == 2)
+  if (intValue == 2)
   {
     v6 = @"(01)00195950732382(10)";
   }
@@ -217,29 +217,29 @@
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HMHearingAidAboutViewController *)self getHostUpdateVersion];
-  v9 = [v7 stringWithFormat:@"%@%@", v6, v8];
+  getHostUpdateVersion = [(HMHearingAidAboutViewController *)self getHostUpdateVersion];
+  v9 = [v7 stringWithFormat:@"%@%@", v6, getHostUpdateVersion];
 
   return v9;
 }
 
 - (id)getWatchUpdateVersion
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMHearingAidAboutViewController *)self getFeatureVersion];
-  v7 = v6;
-  if (v4)
+  getFeatureVersion = [(HMHearingAidAboutViewController *)self getFeatureVersion];
+  v7 = getFeatureVersion;
+  if (getActivePairedDevice)
   {
-    v8 = [v4 valueForProperty:*MEMORY[0x277D2BC08]];
+    v8 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC08]];
     v9 = [v5 stringWithFormat:@"%@.%@", v7, v8];
   }
 
   else
   {
-    v9 = [v5 stringWithFormat:@"%@.%@", v6, &stru_28643BDD8];
+    v9 = [v5 stringWithFormat:@"%@.%@", getFeatureVersion, &stru_28643BDD8];
   }
 
   return v9;
@@ -247,11 +247,11 @@
 
 - (id)getWatchUDI
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"versionNumber"];
-  v5 = [v4 intValue];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"versionNumber"];
+  intValue = [v4 intValue];
 
-  if (v5 == 2)
+  if (intValue == 2)
   {
     v6 = @"(01)00195950732399(10)";
   }
@@ -262,8 +262,8 @@
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HMHearingAidAboutViewController *)self getWatchUpdateVersion];
-  v9 = [v7 stringWithFormat:@"%@%@", v6, v8];
+  getWatchUpdateVersion = [(HMHearingAidAboutViewController *)self getWatchUpdateVersion];
+  v9 = [v7 stringWithFormat:@"%@%@", v6, getWatchUpdateVersion];
 
   return v9;
 }
@@ -271,21 +271,21 @@
 - (id)getAccessoryUpdateVersion
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMHearingAidAboutViewController *)self getFeatureVersion];
-  v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"fwVersion"];
-  v7 = [v3 stringWithFormat:@"%@.%@", v4, v6];
+  getFeatureVersion = [(HMHearingAidAboutViewController *)self getFeatureVersion];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"fwVersion"];
+  v7 = [v3 stringWithFormat:@"%@.%@", getFeatureVersion, v6];
 
   return v7;
 }
 
 - (id)getAccessoryUDI
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"versionNumber"];
-  v5 = [v4 intValue];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"versionNumber"];
+  intValue = [v4 intValue];
 
-  if (v5 == 2)
+  if (intValue == 2)
   {
     v6 = @"(01)00195950732405(10)";
   }
@@ -296,16 +296,16 @@
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HMHearingAidAboutViewController *)self getAccessoryUpdateVersion];
-  v9 = [v7 stringWithFormat:@"%@%@", v6, v8];
+  getAccessoryUpdateVersion = [(HMHearingAidAboutViewController *)self getAccessoryUpdateVersion];
+  v9 = [v7 stringWithFormat:@"%@%@", v6, getAccessoryUpdateVersion];
 
   return v9;
 }
 
 - (id)getDevice
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v3 = @"iPad";
   }
@@ -322,9 +322,9 @@
 
 - (void)contactAppleSupportTapped
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://getsupport.apple.com/?caller=aphap&PFC=PFC7000&category_id=SC0998&symptom_id=23669"];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 @end

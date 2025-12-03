@@ -1,23 +1,23 @@
 @interface TSCHChartAbstractLineElementsRenderer
-- (CGAffineTransform)p_adjustTransformForAADefeatInContext:(SEL)a3 inTransform:(CGContext *)a4 forSeriesShape:(CGAffineTransform *)a5 inBodyBounds:(CGPath *)a6;
+- (CGAffineTransform)p_adjustTransformForAADefeatInContext:(SEL)context inTransform:(CGContext *)transform forSeriesShape:(CGAffineTransform *)shape inBodyBounds:(CGPath *)bounds;
 - (id)allRenderingFills;
-- (id)p_findChartRootLayoutItem:(id)a3;
+- (id)p_findChartRootLayoutItem:(id)item;
 - (id)symbolTransformsForRenderingElements;
-- (void)p_clipOutSymbolsInContext:(CGContext *)a3 withTransformArray:(CGAffineTransform *)a4 withCount:(unint64_t)a5 forSeries:(id)a6;
-- (void)p_finishContextAfterRendering:(CGContext *)a3 modelCache:(id)a4 didEnableTransparencyLayer:(BOOL)a5;
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
-- (void)p_renderLabelsIntoContext:(CGContext *)a3 seriesIndex:(unint64_t)a4 model:(id)a5 modelCache:(id)a6 bodyLayoutItem:(id)a7 groupIndexSet:(id)a8;
-- (void)p_renderLabelsWithLabelCount:(unint64_t)a3 transforms:(CGAffineTransform *)a4 clipRects:(CGRect *)a5 strings:(id)a6 context:(CGContext *)a7 tLayerRect:(CGRect)a8 textEngine:(id)a9 paragraphStyle:(id)a10 viewScale:(double)a11;
-- (void)p_setupContextForRendering:(CGContext *)a3 layerRect:(CGRect)a4 modelCache:(id)a5 shadow:(id)a6 outDidEnableTransparencyLayer:(BOOL *)a7;
+- (void)p_clipOutSymbolsInContext:(CGContext *)context withTransformArray:(CGAffineTransform *)array withCount:(unint64_t)count forSeries:(id)series;
+- (void)p_finishContextAfterRendering:(CGContext *)rendering modelCache:(id)cache didEnableTransparencyLayer:(BOOL)layer;
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible;
+- (void)p_renderLabelsIntoContext:(CGContext *)context seriesIndex:(unint64_t)index model:(id)model modelCache:(id)cache bodyLayoutItem:(id)item groupIndexSet:(id)set;
+- (void)p_renderLabelsWithLabelCount:(unint64_t)count transforms:(CGAffineTransform *)transforms clipRects:(CGRect *)rects strings:(id)strings context:(CGContext *)context tLayerRect:(CGRect)rect textEngine:(id)engine paragraphStyle:(id)self0 viewScale:(double)self1;
+- (void)p_setupContextForRendering:(CGContext *)rendering layerRect:(CGRect)rect modelCache:(id)cache shadow:(id)shadow outDidEnableTransparencyLayer:(BOOL *)layer;
 @end
 
 @implementation TSCHChartAbstractLineElementsRenderer
 
-- (void)p_clipOutSymbolsInContext:(CGContext *)a3 withTransformArray:(CGAffineTransform *)a4 withCount:(unint64_t)a5 forSeries:(id)a6
+- (void)p_clipOutSymbolsInContext:(CGContext *)context withTransformArray:(CGAffineTransform *)array withCount:(unint64_t)count forSeries:(id)series
 {
-  v10 = a6;
-  v11 = v10;
-  if (a3 && a4 && a5 && v10)
+  seriesCopy = series;
+  v11 = seriesCopy;
+  if (context && array && count && seriesCopy)
   {
     HasBackgroundsSuppressed = TSDCGContextHasBackgroundsSuppressed();
     v17 = objc_msgSend_model(self, v13, v14, v15, v16);
@@ -40,7 +40,7 @@
     {
       if (objc_msgSend_shouldRender(v42, v38, v39, v40, v41))
       {
-        objc_msgSend_tLayerRectForContext_(self, v49, v50, v51, v52, a3);
+        objc_msgSend_tLayerRectForContext_(self, v49, v50, v51, v52, context);
         v54 = v53;
         v56 = v55;
         v58 = v57;
@@ -52,13 +52,13 @@
         width = BoundingBox.size.width;
         height = BoundingBox.size.height;
         v67 = 1;
-        v68 = a4;
+        arrayCopy = array;
         do
         {
-          v69 = *&v68->c;
-          *&v134.a = *&v68->a;
+          v69 = *&arrayCopy->c;
+          *&v134.a = *&arrayCopy->a;
           *&v134.c = v69;
-          *&v134.tx = *&v68->tx;
+          *&v134.tx = *&arrayCopy->tx;
           v70 = x;
           *&v69 = y;
           v71 = width;
@@ -74,17 +74,17 @@
             break;
           }
 
-          ++v68;
+          ++arrayCopy;
         }
 
-        while (v67++ < a5);
+        while (v67++ < count);
         if (v73)
         {
           v137.origin.x = v54;
           v137.origin.y = v56;
           v137.size.width = v58;
           v137.size.height = v60;
-          v138 = CGContextConvertRectToDeviceSpace(a3, v137);
+          v138 = CGContextConvertRectToDeviceSpace(context, v137);
           sub_27628CEB4(v138.origin.x, v138.origin.y, v138.size.width, v138.size.height);
           v77 = fabs(v76);
           if (v76 < 1.0)
@@ -107,7 +107,7 @@
           objc_msgSend_drawFill_inContext_frame_(TSCHRenderUtilities, v91, *MEMORY[0x277CBF390], *(MEMORY[0x277CBF390] + 8), *(MEMORY[0x277CBF390] + 16), v90, v82, *(MEMORY[0x277CBF390] + 24));
 
           memset(&v134, 0, sizeof(v134));
-          CGContextGetCTM(&v134, a3);
+          CGContextGetCTM(&v134, context);
           v133 = v134;
           v139.origin.x = v54;
           v139.origin.y = v56;
@@ -139,20 +139,20 @@
           v106 = objc_msgSend_blackColor(MEMORY[0x277D801F8], v102, v103, v104, v105);
           do
           {
-            v107 = *&a4->c;
-            *&v133.a = *&a4->a;
+            v107 = *&array->c;
+            *&v133.a = *&array->a;
             *&v133.c = v107;
-            *&v133.tx = *&a4->tx;
+            *&v133.tx = *&array->tx;
             CGContextSaveGState(v82);
             transform = v133;
             CGContextConcatCTM(v82, &transform);
             objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v108, v109, v110, v111, v106, v82, v62);
             CGContextRestoreGState(v82);
-            ++a4;
-            --a5;
+            ++array;
+            --count;
           }
 
-          while (a5);
+          while (count);
           Image = CGBitmapContextCreateImage(v82);
           if (!Image)
           {
@@ -170,7 +170,7 @@
           v146.origin.y = v99;
           v146.size.width = v100;
           v146.size.height = v101;
-          CGContextClipToMask(a3, v146, Image);
+          CGContextClipToMask(context, v146, Image);
           CGImageRelease(Image);
         }
       }
@@ -178,17 +178,17 @@
   }
 }
 
-- (id)p_findChartRootLayoutItem:(id)a3
+- (id)p_findChartRootLayoutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (!v6)
   {
-    v11 = objc_msgSend_parent(v4, v5, v7, v8, v9);
+    v11 = objc_msgSend_parent(itemCopy, v5, v7, v8, v9);
     if (v11)
     {
-      v15 = objc_msgSend_parent(v4, v10, v12, v13, v14);
+      v15 = objc_msgSend_parent(itemCopy, v10, v12, v13, v14);
       v6 = objc_msgSend_p_findChartRootLayoutItem_(self, v16, v17, v18, v19, v15);
     }
 
@@ -201,11 +201,11 @@
   return v6;
 }
 
-- (CGAffineTransform)p_adjustTransformForAADefeatInContext:(SEL)a3 inTransform:(CGContext *)a4 forSeriesShape:(CGAffineTransform *)a5 inBodyBounds:(CGPath *)a6
+- (CGAffineTransform)p_adjustTransformForAADefeatInContext:(SEL)context inTransform:(CGContext *)transform forSeriesShape:(CGAffineTransform *)shape inBodyBounds:(CGPath *)bounds
 {
-  if (a4 && a6 && ((v9 = a7.size.height, v10 = a7.size.width, v11 = a7.origin.y, v12 = a7.origin.x, BoundingBox = CGPathGetBoundingBox(a6), v14 = *&a5->c, *&v38.a = *&a5->a, *&v38.c = v14, *&v38.tx = *&a5->tx, v40 = CGRectApplyAffineTransform(BoundingBox, &v38), v41 = CGRectStandardize(v40), v15 = v41.origin.y, v16 = v41.size.width, v17 = v41.size.height, recta = v41.origin.x, v18 = CGRectGetMinX(v41), v42.origin.x = v12, v42.origin.y = v11, v42.size.width = v10, v42.size.height = v9, v19 = CGRectGetMinX(v42), v18 == v19) || vabdd_f64(v18, v19) < 0.4) && ((v43.origin.x = recta, v43.origin.y = v15, v43.size.width = v16, v43.size.height = v17, MaxX = CGRectGetMaxX(v43), v44.origin.x = v12, v44.origin.y = v11, v44.size.width = v10, v44.size.height = v9, v21 = CGRectGetMaxX(v44), MaxX == v21) || vabdd_f64(MaxX, v21) < 0.4))
+  if (transform && bounds && ((v9 = a7.size.height, v10 = a7.size.width, v11 = a7.origin.y, v12 = a7.origin.x, BoundingBox = CGPathGetBoundingBox(bounds), v14 = *&shape->c, *&v38.a = *&shape->a, *&v38.c = v14, *&v38.tx = *&shape->tx, v40 = CGRectApplyAffineTransform(BoundingBox, &v38), v41 = CGRectStandardize(v40), v15 = v41.origin.y, v16 = v41.size.width, v17 = v41.size.height, recta = v41.origin.x, v18 = CGRectGetMinX(v41), v42.origin.x = v12, v42.origin.y = v11, v42.size.width = v10, v42.size.height = v9, v19 = CGRectGetMinX(v42), v18 == v19) || vabdd_f64(v18, v19) < 0.4) && ((v43.origin.x = recta, v43.origin.y = v15, v43.size.width = v16, v43.size.height = v17, MaxX = CGRectGetMaxX(v43), v44.origin.x = v12, v44.origin.y = v11, v44.size.width = v10, v44.size.height = v9, v21 = CGRectGetMaxX(v44), MaxX == v21) || vabdd_f64(MaxX, v21) < 0.4))
   {
-    sub_27628CB34(a4, v12, v11, v10, v9, 0.0);
+    sub_27628CB34(transform, v12, v11, v10, v9, 0.0);
     v46 = CGRectStandardize(v45);
     x = v46.origin.x;
     y = v46.origin.y;
@@ -246,20 +246,20 @@
     *&retstr->c = 0u;
     *&retstr->tx = 0u;
     *&retstr->a = 0u;
-    v31 = *&a5->c;
-    *&t1.a = *&a5->a;
+    v31 = *&shape->c;
+    *&t1.a = *&shape->a;
     *&t1.c = v31;
-    *&t1.tx = *&a5->tx;
+    *&t1.tx = *&shape->tx;
     rect_8 = v38;
     return CGAffineTransformConcat(retstr, &t1, &rect_8);
   }
 
   else
   {
-    v22 = *&a5->c;
-    *&retstr->a = *&a5->a;
+    v22 = *&shape->c;
+    *&retstr->a = *&shape->a;
     *&retstr->c = v22;
-    *&retstr->tx = *&a5->tx;
+    *&retstr->tx = *&shape->tx;
   }
 
   return self;
@@ -302,25 +302,25 @@
   return v38;
 }
 
-- (void)p_setupContextForRendering:(CGContext *)a3 layerRect:(CGRect)a4 modelCache:(id)a5 shadow:(id)a6 outDidEnableTransparencyLayer:(BOOL *)a7
+- (void)p_setupContextForRendering:(CGContext *)rendering layerRect:(CGRect)rect modelCache:(id)cache shadow:(id)shadow outDidEnableTransparencyLayer:(BOOL *)layer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v81 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cacheCopy = cache;
+  shadowCopy = shadow;
   v20 = objc_msgSend_chartRep(self, v16, v17, v18, v19);
-  CGContextSaveGState(a3);
-  objc_msgSend_opacity(v81, v21, v22, v23, v24);
-  CGContextSetAlpha(a3, v25);
+  CGContextSaveGState(rendering);
+  objc_msgSend_opacity(cacheCopy, v21, v22, v23, v24);
+  CGContextSetAlpha(rendering, v25);
   v30 = objc_msgSend_renderElementsShadowOnly(v20, v26, v27, v28, v29);
   v36 = objc_msgSend_renderElementsWithoutShadows(v20, v31, v32, v33, v34);
   if (v30)
   {
-    objc_msgSend_offset(v15, v35, v37, v38, v39);
+    objc_msgSend_offset(shadowCopy, v35, v37, v38, v39);
     v41 = fabs(v40);
-    objc_msgSend_radius(v15, v42, v40, v43, v44);
+    objc_msgSend_radius(shadowCopy, v42, v40, v43, v44);
     v46 = -(v41 + fabs(v45));
     v84.origin.x = x;
     v84.origin.y = y;
@@ -333,13 +333,13 @@
     v47 = v85.size.width + v85.size.width;
     v85.origin.y = 0.0;
     v85.origin.x = v85.size.width + v85.size.width;
-    v48 = CGContextConvertSizeToDeviceSpace(a3, v85.origin);
+    v48 = CGContextConvertSizeToDeviceSpace(rendering, v85.origin);
     v83.width = ceil(v48.width);
     v83.height = ceil(v48.height);
-    v49 = CGContextConvertSizeToUserSpace(a3, v83);
+    v49 = CGContextConvertSizeToUserSpace(rendering, v83);
     CGContextClipToRectSafe();
     v50 = 0.0;
-    CGContextTranslateCTM(a3, -v49.width, v49.height);
+    CGContextTranslateCTM(rendering, -v49.width, v49.height);
   }
 
   else
@@ -348,12 +348,12 @@
     v50 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v35, v37, v38, v39, v15, *&v78, *&v79, *&v80) && !(v36 & 1 | ((objc_msgSend_shadowsEnabled(v20, v51, v52, v53, v54) & 1) == 0)))
+  if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v35, v37, v38, v39, shadowCopy, *&v78, *&v79, *&v80) && !(v36 & 1 | ((objc_msgSend_shadowsEnabled(v20, v51, v52, v53, v54) & 1) == 0)))
   {
     objc_msgSend_viewScale(self, v51, v52, v53, v54);
     v57 = v56;
-    v61 = sub_27631FD2C(a3, v58, v56, v59, v60);
-    objc_msgSend_applyToContext_viewScale_flipped_extraOffset_(v15, v62, v57, v47, v50, a3, v61);
+    v61 = sub_27631FD2C(rendering, v58, v56, v59, v60);
+    objc_msgSend_applyToContext_viewScale_flipped_extraOffset_(shadowCopy, v62, v57, v47, v50, rendering, v61);
     v55 = 1;
   }
 
@@ -362,7 +362,7 @@
     v55 = 0;
   }
 
-  v63 = objc_msgSend_series(v81, v51, v52, v53, v54);
+  v63 = objc_msgSend_series(cacheCopy, v51, v52, v53, v54);
   v68 = objc_msgSend_seriesType(v63, v64, v65, v66, v67);
   v73 = v55 | objc_msgSend_supportsLineConnectionStyle(v68, v69, v70, v71, v72);
 
@@ -372,32 +372,32 @@
     v86.origin.y = y;
     v86.size.width = width;
     v86.size.height = height;
-    CGContextBeginTransparencyLayerWithRect(a3, v86, 0);
+    CGContextBeginTransparencyLayerWithRect(rendering, v86, 0);
     if (objc_msgSend_useBlendModeCopyForTransparencyLayer(self, v74, v75, v76, v77))
     {
-      CGContextSetBlendMode(a3, kCGBlendModeCopy);
+      CGContextSetBlendMode(rendering, kCGBlendModeCopy);
     }
   }
 
-  if (a7)
+  if (layer)
   {
-    *a7 = v73;
+    *layer = v73;
   }
 }
 
-- (void)p_finishContextAfterRendering:(CGContext *)a3 modelCache:(id)a4 didEnableTransparencyLayer:(BOOL)a5
+- (void)p_finishContextAfterRendering:(CGContext *)rendering modelCache:(id)cache didEnableTransparencyLayer:(BOOL)layer
 {
-  if (a5)
+  if (layer)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(rendering);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(rendering);
 }
 
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
-  v6 = objc_msgSend_model(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v6 = objc_msgSend_model(self, a2, visible.origin.x, visible.origin.y, visible.size.width, visible.size.height);
   v11 = objc_msgSend_chartRep(self, v7, v8, v9, v10);
   HasBackgroundsSuppressed = TSDCGContextHasBackgroundsSuppressed();
   objc_opt_class();
@@ -433,7 +433,7 @@
     v52 = v56;
   }
 
-  objc_msgSend_tLayerRectForContext_(self, v48, v49, v50, v51, a3);
+  objc_msgSend_tLayerRectForContext_(self, v48, v49, v50, v51, context);
   v153.origin.x = v55;
   v153.origin.y = v54;
   v153.size.width = v53;
@@ -463,9 +463,9 @@
   v144 = HasBackgroundsSuppressed;
   v69 = v14;
   v131 = v69;
-  v132 = self;
+  selfCopy = self;
   v133 = &v145;
-  v135 = a3;
+  contextCopy = context;
   v136 = x;
   v137 = y;
   v138 = width;
@@ -477,8 +477,8 @@
   objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v66, v70, v71, v72, v73, 2, v128);
   if (objc_msgSend_renderLabels(v67, v74, v75, v76, v77))
   {
-    objc_msgSend_drawErrorBarsInContext_chartVertical_elementRenderClass_(self, v78, v79, v80, v81, a3, 1, v61);
-    objc_msgSend_drawTrendLinesInContext_chartVertical_elementRenderClass_(self, v82, v83, v84, v85, a3, 1, v61);
+    objc_msgSend_drawErrorBarsInContext_chartVertical_elementRenderClass_(self, v78, v79, v80, v81, context, 1, v61);
+    objc_msgSend_drawTrendLinesInContext_chartVertical_elementRenderClass_(self, v82, v83, v84, v85, context, 1, v61);
   }
 
   if (objc_msgSend_renderLabels(v67, v78, v79, v80, v81))
@@ -507,8 +507,8 @@
     v122 = v68;
     v126 = v61;
     v123 = v67;
-    v124 = self;
-    v127 = a3;
+    selfCopy2 = self;
+    contextCopy2 = context;
     v125 = v69;
     objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v91, v92, v93, v94, v95, 2, v121);
   }
@@ -525,9 +525,9 @@ LABEL_14:
     v112[2] = sub_27625C234;
     v112[3] = &unk_27A6B6FD8;
     v113 = v68;
-    v114 = self;
+    selfCopy3 = self;
     v115 = v67;
-    v116 = a3;
+    contextCopy3 = context;
     v117 = x;
     v118 = y;
     v119 = width;
@@ -539,22 +539,22 @@ LABEL_14:
   _Block_object_dispose(&v145, 8);
 }
 
-- (void)p_renderLabelsIntoContext:(CGContext *)a3 seriesIndex:(unint64_t)a4 model:(id)a5 modelCache:(id)a6 bodyLayoutItem:(id)a7 groupIndexSet:(id)a8
+- (void)p_renderLabelsIntoContext:(CGContext *)context seriesIndex:(unint64_t)index model:(id)model modelCache:(id)cache bodyLayoutItem:(id)item groupIndexSet:(id)set
 {
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v22 = objc_msgSend_seriesAtIndex_(a5, v17, v18, v19, v20, a4);
-  if (!v16)
+  cacheCopy = cache;
+  itemCopy = item;
+  setCopy = set;
+  v22 = objc_msgSend_seriesAtIndex_(model, v17, v18, v19, v20, index);
+  if (!setCopy)
   {
     v26 = objc_msgSend_chartRep(self, v21, v23, v24, v25);
-    v16 = objc_msgSend_renderGroupIndexSetForSeriesIndex_(v26, v27, v28, v29, v30, a4);
+    setCopy = objc_msgSend_renderGroupIndexSetForSeriesIndex_(v26, v27, v28, v29, v30, index);
   }
 
-  if (objc_msgSend_count(v16, v21, v23, v24, v25))
+  if (objc_msgSend_count(setCopy, v21, v23, v24, v25))
   {
     v74 = objc_msgSend_sharedText(TSCHText, v31, v32, v33, v34);
-    objc_msgSend_tLayerRectForContext_(self, v35, v36, v37, v38, a3);
+    objc_msgSend_tLayerRectForContext_(self, v35, v36, v37, v38, context);
     v40 = v39;
     v42 = v41;
     v44 = v43;
@@ -566,16 +566,16 @@ LABEL_14:
 
     v78 = 0;
     v79 = 0;
-    v76 = v15;
+    v76 = itemCopy;
     v77 = 0;
-    v63 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v58, v59, v60, v61, v62, v22, v16, v15, &v79, 0, &v78, &v77);
+    v63 = objc_msgSend_countOfLabelsForSeries_forGroups_forBodyLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewStrings_(v58, v59, v60, v61, v62, v22, setCopy, itemCopy, &v79, 0, &v78, &v77);
     v64 = v77;
-    v65 = v14;
+    v65 = cacheCopy;
     v67 = v78;
     v66 = v79;
     v75 = v65;
     v72 = objc_msgSend_paragraphStyle(v65, v68, v69, v70, v71);
-    objc_msgSend_p_renderLabelsWithLabelCount_transforms_clipRects_strings_context_tLayerRect_textEngine_paragraphStyle_viewScale_(self, v73, v40, v42, v44, v63, v66, v67, v64, a3, v74, v46, v49, v72);
+    objc_msgSend_p_renderLabelsWithLabelCount_transforms_clipRects_strings_context_tLayerRect_textEngine_paragraphStyle_viewScale_(self, v73, v40, v42, v44, v63, v66, v67, v64, context, v74, v46, v49, v72);
 
     if (v79)
     {
@@ -587,34 +587,34 @@ LABEL_14:
       free(v78);
     }
 
-    v14 = v75;
-    v15 = v76;
+    cacheCopy = v75;
+    itemCopy = v76;
   }
 }
 
-- (void)p_renderLabelsWithLabelCount:(unint64_t)a3 transforms:(CGAffineTransform *)a4 clipRects:(CGRect *)a5 strings:(id)a6 context:(CGContext *)a7 tLayerRect:(CGRect)a8 textEngine:(id)a9 paragraphStyle:(id)a10 viewScale:(double)a11
+- (void)p_renderLabelsWithLabelCount:(unint64_t)count transforms:(CGAffineTransform *)transforms clipRects:(CGRect *)rects strings:(id)strings context:(CGContext *)context tLayerRect:(CGRect)rect textEngine:(id)engine paragraphStyle:(id)self0 viewScale:(double)self1
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v20 = a9;
-  v22 = a10;
-  if (a3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  engineCopy = engine;
+  styleCopy = style;
+  if (count)
   {
     v24 = 0;
-    p_size = &a5->size;
+    p_size = &rects->size;
     do
     {
-      v26 = *&a4->c;
-      *&v37.a = *&a4->a;
+      v26 = *&transforms->c;
+      *&v37.a = *&transforms->a;
       *&v37.c = v26;
-      *&v37.tx = *&a4->tx;
+      *&v37.tx = *&transforms->tx;
       v27 = p_size[-1].width;
       v28 = p_size[-1].height;
       v30 = p_size->width;
       v29 = p_size->height;
-      v31 = objc_msgSend_objectAtIndexedSubscript_(a6, v21, v37.tx, *&v26, v23, v24);
+      v31 = objc_msgSend_objectAtIndexedSubscript_(strings, v21, v37.tx, *&v26, v23, v24);
       v38.origin.x = v27;
       v38.origin.y = v28;
       v38.size.width = v30;
@@ -633,26 +633,26 @@ LABEL_14:
         v40.size.height = height;
         if (CGRectIntersectsRect(v40, v42))
         {
-          CGContextSaveGState(a7);
+          CGContextSaveGState(context);
           transform = v37;
-          CGContextConcatCTM(a7, &transform);
+          CGContextConcatCTM(context, &transform);
           v41.origin.x = v27;
           v41.origin.y = v28;
           v41.size.width = v30;
           v41.size.height = v29;
-          CGContextBeginTransparencyLayerWithRect(a7, v41, 0);
-          objc_msgSend_drawText_paragraphStyle_intoContext_viewScale_(v20, v32, a11, v33, v34, v31, v22, a7);
-          CGContextEndTransparencyLayer(a7);
-          CGContextRestoreGState(a7);
+          CGContextBeginTransparencyLayerWithRect(context, v41, 0);
+          objc_msgSend_drawText_paragraphStyle_intoContext_viewScale_(engineCopy, v32, scale, v33, v34, v31, styleCopy, context);
+          CGContextEndTransparencyLayer(context);
+          CGContextRestoreGState(context);
         }
       }
 
       ++v24;
       p_size += 2;
-      ++a4;
+      ++transforms;
     }
 
-    while (a3 != v24);
+    while (count != v24);
   }
 }
 

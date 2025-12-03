@@ -1,34 +1,34 @@
 @interface NTKCaliforniaFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarIconShadow;
 - (BOOL)isCircularDialWithBezel;
-- (NTKCaliforniaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
+- (NTKCaliforniaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
 - (double)bezelComplicationTextWidthInRadians;
 - (double)californiaContentViewScale;
 - (double)circleDiameter;
-- (id)_simpleTextComplicationColorForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)backgroundColorForDial:(unint64_t)a3 palette:(id)a4;
+- (id)_simpleTextComplicationColorForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)backgroundColorForDial:(unint64_t)dial palette:(id)palette;
 - (id)createFaceColorPalette;
 - (id)utilityBezelComplicationView;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyComplicationColorTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyComplicationColorTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_removeBackgroundView;
 - (void)_removeCaliforniaContentView;
@@ -38,36 +38,36 @@
 - (void)_setupCaliforniaContentView;
 - (void)_setupViews;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3;
-- (void)_updateDialBezelComplicationColor:(id)a3;
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style;
+- (void)_updateDialBezelComplicationColor:(id)color;
 - (void)_updateDialTicksForBezelText;
-- (void)_updateSimpleTextLabelColor:(id)a3;
-- (void)_updateSubDialRichComplicationsColor:(id)a3 alternateColor:(id)a4;
+- (void)_updateSimpleTextLabelColor:(id)color;
+- (void)_updateSubDialRichComplicationsColor:(id)color alternateColor:(id)alternateColor;
 - (void)applyColorOnAnalogHands;
-- (void)applyTransitionToCircularDialWithBezelFraction:(double)a3;
+- (void)applyTransitionToCircularDialWithBezelFraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)setCircularMaskForCircularDialFraction:(double)a3 circleDiameter:(double)a4;
-- (void)setDial:(unint64_t)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setCircularMaskForCircularDialFraction:(double)fraction circleDiameter:(double)diameter;
+- (void)setDial:(unint64_t)dial;
+- (void)setStyle:(unint64_t)style;
 - (void)updateCircularMask;
-- (void)updateWithPalette:(id)a3;
+- (void)updateWithPalette:(id)palette;
 @end
 
 @implementation NTKCaliforniaFaceView
 
-- (NTKCaliforniaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKCaliforniaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v33.receiver = self;
   v33.super_class = NTKCaliforniaFaceView;
-  v9 = [(NTKCaliforniaFaceView *)&v33 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKCaliforniaFaceView *)&v33 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = objc_alloc_init(NTKCompositeComplicationFactory);
     v11 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v12 = [(NTKCaliforniaFaceView *)v9 device];
-    sub_F3A4(v12, v31);
-    v13 = [v11 initWithFaceView:v9 dialDiameter:v8 device:v32];
+    device = [(NTKCaliforniaFaceView *)v9 device];
+    sub_F3A4(device, v31);
+    v13 = [v11 initWithFaceView:v9 dialDiameter:deviceCopy device:v32];
 
     [v13 setUsesNarrowTopSlots:1];
     [v13 setAlpha:v9 faceView:1.0];
@@ -78,28 +78,28 @@
     v14 = [NSArray arrayWithObjects:v34 count:4];
     [v10 registerFactory:v13 forSlots:v14];
 
-    v15 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v15 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     [v15 setFaceView:v9];
-    v16 = [(NTKCaliforniaFaceView *)v9 device];
-    sub_F3A4(v16, v29);
+    device2 = [(NTKCaliforniaFaceView *)v9 device];
+    sub_F3A4(device2, v29);
     [v15 setDialDiameter:v30];
 
     [v10 registerFactory:v15 forSlot:NTKComplicationSlotBezel];
     v17 = [NTKFullscreenSubdialComplicationFactory alloc];
-    v18 = [(NTKCaliforniaFaceView *)v9 device];
-    v19 = [v17 initForDevice:v18];
+    device3 = [(NTKCaliforniaFaceView *)v9 device];
+    v19 = [v17 initForDevice:device3];
 
     [v19 setFaceView:v9];
-    v20 = [(NTKCaliforniaFaceView *)v9 device];
-    sub_F3A4(v20, v26);
+    device4 = [(NTKCaliforniaFaceView *)v9 device];
+    sub_F3A4(device4, v26);
     [v19 setCircularComplicationDistanceFromCenter:{v27, v28}];
 
     [v19 setAlpha:v9 faceView:1.0];
     [v10 registerFactory:v19 forSlot:NTKComplicationSlotSubdialBottom];
     v21 = objc_alloc_init(NTKSimpleTextFaceViewComplicationFactory);
     [v21 setFaceView:v9];
-    v22 = [(NTKCaliforniaFaceView *)v9 device];
-    sub_F3A4(v22, v24);
+    device5 = [(NTKCaliforniaFaceView *)v9 device];
+    sub_F3A4(device5, v24);
     [v21 setVerticalCenterOffset:v25];
 
     [v10 registerFactory:v21 forSlot:NTKComplicationSlotSubdialTop];
@@ -123,20 +123,20 @@
     return 0;
   }
 
-  v2 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v3 = [v2 isBlackBackground];
+  colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+  isBlackBackground = [colorPalette isBlackBackground];
 
-  return v3 ^ 1;
+  return isBlackBackground ^ 1;
 }
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKCaliforniaFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKCaliforniaFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKCaliforniaFaceView *)self switcherSnapshotView];
-    [(NTKCaliforniaFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKCaliforniaFaceView *)self switcherSnapshotView];
+    [(NTKCaliforniaFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -164,8 +164,8 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = v4;
 
-  v6 = [(NTKCaliforniaFaceView *)self contentView];
-  [v6 addSubview:self->_backgroundView];
+  contentView = [(NTKCaliforniaFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundView];
 }
 
 - (void)_setupCaliforniaContentView
@@ -178,14 +178,14 @@
   v11 = v10;
   dial = self->_dial;
   style = self->_style;
-  v14 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v15 = [(NTKCaliforniaFaceView *)self device];
-  v16 = [(NTKCaliforniaContentView *)v3 initWithFrame:dial dial:style style:v14 colorPalette:v15 device:v5, v7, v9, v11];
+  colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+  device = [(NTKCaliforniaFaceView *)self device];
+  v16 = [(NTKCaliforniaContentView *)v3 initWithFrame:dial dial:style style:colorPalette colorPalette:device device:v5, v7, v9, v11];
   californiaContentView = self->_californiaContentView;
   self->_californiaContentView = v16;
 
-  v18 = [(NTKCaliforniaFaceView *)self contentView];
-  [v18 addSubview:self->_californiaContentView];
+  contentView = [(NTKCaliforniaFaceView *)self contentView];
+  [contentView addSubview:self->_californiaContentView];
 }
 
 - (void)_setupViews
@@ -198,13 +198,13 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKCaliforniaFaceView *)self device];
-  v13 = [v3 initWithFrame:v12 forDeviceCornerRadius:{v5, v7, v9, v11}];
+  device = [(NTKCaliforniaFaceView *)self device];
+  v13 = [v3 initWithFrame:device forDeviceCornerRadius:{v5, v7, v9, v11}];
   cornerView = self->_cornerView;
   self->_cornerView = v13;
 
-  v15 = [(NTKCaliforniaFaceView *)self contentView];
-  [v15 addSubview:self->_cornerView];
+  contentView = [(NTKCaliforniaFaceView *)self contentView];
+  [contentView addSubview:self->_cornerView];
 
   [(NTKCaliforniaFaceView *)self applyColorOnAnalogHands];
   [(NTKCaliforniaFaceView *)self updateCircularMask];
@@ -259,61 +259,61 @@
 
 - (void)applyColorOnAnalogHands
 {
-  v3 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v15 = [v3 clockHandsInlay];
+  colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+  clockHandsInlay = [colorPalette clockHandsInlay];
 
-  v4 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v5 = [v4 clockHands];
+  colorPalette2 = [(NTKCaliforniaFaceView *)self colorPalette];
+  clockHands = [colorPalette2 clockHands];
 
-  v6 = [(NTKCaliforniaFaceView *)self timeView];
-  v7 = [v6 hourHandView];
-  [v7 setInlayColor:v15];
+  timeView = [(NTKCaliforniaFaceView *)self timeView];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setInlayColor:clockHandsInlay];
 
-  v8 = [v6 minuteHandView];
-  [v8 setInlayColor:v15];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setInlayColor:clockHandsInlay];
 
-  v9 = [v6 hourHandView];
-  [v9 setColor:v5];
+  hourHandView2 = [timeView hourHandView];
+  [hourHandView2 setColor:clockHands];
 
-  v10 = [v6 minuteHandView];
-  [v10 setColor:v5];
+  minuteHandView2 = [timeView minuteHandView];
+  [minuteHandView2 setColor:clockHands];
 
-  v11 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v12 = [v11 secondHand];
-  v13 = [v6 secondHandView];
-  [v13 setColor:v12];
+  colorPalette3 = [(NTKCaliforniaFaceView *)self colorPalette];
+  secondHand = [colorPalette3 secondHand];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setColor:secondHand];
 
-  v14 = [v6 secondHandView];
-  [v14 setHandDotColor:v15];
+  secondHandView2 = [timeView secondHandView];
+  [secondHandView2 setHandDotColor:clockHandsInlay];
 }
 
-- (void)updateWithPalette:(id)a3
+- (void)updateWithPalette:(id)palette
 {
-  v5 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:a3];
-  v4 = [(NTKCaliforniaFaceView *)self backgroundView];
-  [v4 setBackgroundColor:v5];
+  v5 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:palette];
+  backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+  [backgroundView setBackgroundColor:v5];
 }
 
-- (id)backgroundColorForDial:(unint64_t)a3 palette:(id)a4
+- (id)backgroundColorForDial:(unint64_t)dial palette:(id)palette
 {
-  if (a3 == 1)
+  if (dial == 1)
   {
-    [a4 background];
+    [palette background];
   }
 
   else
   {
-    [a4 circularBackground];
+    [palette circularBackground];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)setDial:(unint64_t)a3
+- (void)setDial:(unint64_t)dial
 {
-  self->_dial = a3;
-  if (a3)
+  self->_dial = dial;
+  if (dial)
   {
     californiaContentView = self->_californiaContentView;
     v5 = *&CGAffineTransformIdentity.c;
@@ -335,19 +335,19 @@
 
   [(NTKCaliforniaContentView *)self->_californiaContentView setDial:self->_dial];
   dial = self->_dial;
-  v9 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v10 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:dial palette:v9];
-  v11 = [(NTKCaliforniaFaceView *)self backgroundView];
-  [v11 setBackgroundColor:v10];
+  colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+  v10 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:dial palette:colorPalette];
+  backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+  [backgroundView setBackgroundColor:v10];
 
   [(NTKCaliforniaFaceView *)self updateCircularMask];
 }
 
 - (double)californiaContentViewScale
 {
-  v2 = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
+  isCircularDialWithBezel = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
   result = 0.95;
-  if (!v2)
+  if (!isCircularDialWithBezel)
   {
     return 1.0;
   }
@@ -355,57 +355,57 @@
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v24 = a3;
-  v8 = a5;
-  switch(a4)
+  optionCopy = option;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v11 = [(NTKCaliforniaFaceView *)self colorPalette];
-      [(NTKCaliforniaFaceView *)self updateWithPalette:v11];
+      colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+      [(NTKCaliforniaFaceView *)self updateWithPalette:colorPalette];
 
       [(NTKCaliforniaFaceView *)self applyColorOnAnalogHands];
-      v12 = [(NTKCaliforniaFaceView *)self colorPalette];
-      [(NTKCaliforniaContentView *)self->_californiaContentView setColorPalette:v12];
+      colorPalette2 = [(NTKCaliforniaFaceView *)self colorPalette];
+      [(NTKCaliforniaContentView *)self->_californiaContentView setColorPalette:colorPalette2];
 
-      v13 = [(NTKCaliforniaFaceView *)self colorPalette];
-      v14 = [v13 circularComplication];
-      v15 = [(NTKCaliforniaFaceView *)self colorPalette];
-      v16 = [v15 circularComplicationSecondary];
-      [(NTKCaliforniaFaceView *)self _updateSubDialRichComplicationsColor:v14 alternateColor:v16];
+      colorPalette3 = [(NTKCaliforniaFaceView *)self colorPalette];
+      circularComplication = [colorPalette3 circularComplication];
+      colorPalette4 = [(NTKCaliforniaFaceView *)self colorPalette];
+      circularComplicationSecondary = [colorPalette4 circularComplicationSecondary];
+      [(NTKCaliforniaFaceView *)self _updateSubDialRichComplicationsColor:circularComplication alternateColor:circularComplicationSecondary];
 
-      v17 = [(NTKCaliforniaFaceView *)self colorPalette];
-      v18 = [v17 cornerComplication];
-      v19 = [(NTKCaliforniaFaceView *)self colorPalette];
-      v20 = [v19 cornerComplicationSecondary];
-      [(NTKCaliforniaFaceView *)self updateRichCornerComplicationsInnerColor:v18 outerColor:v20];
+      colorPalette5 = [(NTKCaliforniaFaceView *)self colorPalette];
+      cornerComplication = [colorPalette5 cornerComplication];
+      colorPalette6 = [(NTKCaliforniaFaceView *)self colorPalette];
+      cornerComplicationSecondary = [colorPalette6 cornerComplicationSecondary];
+      [(NTKCaliforniaFaceView *)self updateRichCornerComplicationsInnerColor:cornerComplication outerColor:cornerComplicationSecondary];
 
       v21 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:10];
       [(NTKCaliforniaFaceView *)self _updateSimpleTextLabelColor:v21];
 
-      v9 = [(NTKCaliforniaFaceView *)self colorPalette];
-      v22 = [v9 bezelComplication];
-      [(NTKCaliforniaFaceView *)self _updateDialBezelComplicationColor:v22];
+      colorPalette7 = [(NTKCaliforniaFaceView *)self colorPalette];
+      bezelComplication = [colorPalette7 bezelComplication];
+      [(NTKCaliforniaFaceView *)self _updateDialBezelComplicationColor:bezelComplication];
 
       break;
     case 15:
-      v9 = [(NTKCaliforniaFaceView *)self optionForCustomEditMode:15 slot:0];
-      -[NTKCaliforniaFaceView setDial:](self, "setDial:", [v9 dialShape]);
+      colorPalette7 = [(NTKCaliforniaFaceView *)self optionForCustomEditMode:15 slot:0];
+      -[NTKCaliforniaFaceView setDial:](self, "setDial:", [colorPalette7 dialShape]);
       break;
     case 13:
-      v9 = [(NTKCaliforniaFaceView *)self optionForCustomEditMode:13 slot:0];
-      if ([v9 style] == -1)
+      colorPalette7 = [(NTKCaliforniaFaceView *)self optionForCustomEditMode:13 slot:0];
+      if ([colorPalette7 style] == -1)
       {
-        v10 = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
+        style = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
       }
 
       else
       {
-        v10 = [v9 style];
+        style = [colorPalette7 style];
       }
 
-      [(NTKCaliforniaFaceView *)self setStyle:v10];
+      [(NTKCaliforniaFaceView *)self setStyle:style];
       [(NTKCaliforniaFaceView *)self _updateComplicationCenterOffsetForStyle:self->_style];
       break;
     default:
@@ -413,32 +413,32 @@
   }
 
 LABEL_11:
-  v23 = [(NTKCaliforniaFaceView *)self delegate];
-  [v23 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKCaliforniaFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
-- (void)_updateSubDialRichComplicationsColor:(id)a3 alternateColor:(id)a4
+- (void)_updateSubDialRichComplicationsColor:(id)color alternateColor:(id)alternateColor
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_CF44;
   v7[3] = &unk_1C8D0;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKCaliforniaFaceView *)v8 enumerateComplicationDisplayWrappersWithBlock:v7];
+  selfCopy = self;
+  colorCopy = color;
+  alternateColorCopy = alternateColor;
+  v5 = alternateColorCopy;
+  v6 = colorCopy;
+  [(NTKCaliforniaFaceView *)selfCopy enumerateComplicationDisplayWrappersWithBlock:v7];
 }
 
-- (void)_updateDialBezelComplicationColor:(id)a3
+- (void)_updateDialBezelComplicationColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_D0C8;
   v5[3] = &unk_1C8F8;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(NTKCaliforniaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
@@ -459,7 +459,7 @@ LABEL_11:
   [(NTKCaliforniaFaceView *)self setCircularMaskForCircularDialFraction:v3 circleDiameter:v4];
 }
 
-- (void)setCircularMaskForCircularDialFraction:(double)a3 circleDiameter:(double)a4
+- (void)setCircularMaskForCircularDialFraction:(double)fraction circleDiameter:(double)diameter
 {
   [(NTKCaliforniaContentView *)self->_californiaContentView setBezelComplicationEnabled:[(NTKCaliforniaFaceView *)self isCircularDialWithBezel]];
   if ([(NTKCaliforniaFaceView *)self isCircularDialWithBezel])
@@ -482,9 +482,9 @@ LABEL_11:
   v13 = [UIBezierPath bezierPathWithOvalInRect:v11, v12 * 0.5 - v9, v8, v8];
   v14 = +[CAShapeLayer layer];
   [v14 setPath:{objc_msgSend(v13, "CGPath")}];
-  v15 = [(NTKCaliforniaFaceView *)self backgroundView];
-  v16 = [v15 layer];
-  [v16 setMask:v14];
+  backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer setMask:v14];
 }
 
 - (double)circleDiameter
@@ -492,9 +492,9 @@ LABEL_11:
   v3 = [(NTKCaliforniaFaceView *)self device:0];
   sub_F3A4(v3, &v7);
 
-  v4 = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
+  isCircularDialWithBezel = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
   v5 = &v7 + 1;
-  if (v4)
+  if (isCircularDialWithBezel)
   {
     v5 = &v7;
   }
@@ -504,11 +504,11 @@ LABEL_11:
 
 - (BOOL)isCircularDialWithBezel
 {
-  v3 = [(NTKCaliforniaFaceView *)self delegate];
-  if (v3)
+  delegate = [(NTKCaliforniaFaceView *)self delegate];
+  if (delegate)
   {
-    v4 = [(NTKCaliforniaFaceView *)self delegate];
-    v5 = [v4 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBezel] ^ 1;
+    delegate2 = [(NTKCaliforniaFaceView *)self delegate];
+    v5 = [delegate2 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBezel] ^ 1;
   }
 
   else
@@ -519,23 +519,23 @@ LABEL_11:
   return v5;
 }
 
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style
 {
   v12 = 0;
   v11 = 0u;
   memset(v10, 0, sizeof(v10));
-  v5 = [(NTKCaliforniaFaceView *)self device];
-  sub_F3A4(v5, v10);
+  device = [(NTKCaliforniaFaceView *)self device];
+  sub_F3A4(device, v10);
 
   v6 = &v11 + 1;
-  if (a3 == 6)
+  if (style == 6)
   {
     v6 = &v12;
   }
 
   v7 = *v6;
-  v9 = [(NTKCaliforniaFaceView *)self complicationFactory];
-  v8 = [v9 factoryAtSlot:NTKComplicationSlotSubdialTop];
+  complicationFactory = [(NTKCaliforniaFaceView *)self complicationFactory];
+  v8 = [complicationFactory factoryAtSlot:NTKComplicationSlotSubdialTop];
   [v8 verticalCenterOffset];
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
@@ -546,11 +546,11 @@ LABEL_11:
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  v3 = a3;
-  self->_style = a3;
-  v5 = [(NTKCaliforniaFaceView *)self device];
+  styleCopy = style;
+  self->_style = style;
+  device = [(NTKCaliforniaFaceView *)self device];
   if (NTKShowIndicScriptNumerals())
   {
 
@@ -571,54 +571,54 @@ LABEL_11:
   {
   }
 
-  v3 = 3;
+  styleCopy = 3;
 LABEL_7:
   californiaContentView = self->_californiaContentView;
 
-  [(NTKCaliforniaContentView *)californiaContentView setStyle:v3];
+  [(NTKCaliforniaContentView *)californiaContentView setStyle:styleCopy];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v18 = a4;
-  v12 = a5;
-  v13 = a7;
-  switch(a6)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v14 = [(NTKCaliforniaFaceView *)self interpolatedColorPalette];
-      v15 = [v14 fromPalette];
-      v16 = [(NTKCaliforniaFaceView *)self interpolatedColorPalette];
-      v17 = [v16 toPalette];
-      [(NTKCaliforniaFaceView *)self _applyTransitionFraction:v15 fromColorPalette:v17 toColorPalette:a3];
+      interpolatedColorPalette = [(NTKCaliforniaFaceView *)self interpolatedColorPalette];
+      fromPalette = [interpolatedColorPalette fromPalette];
+      interpolatedColorPalette2 = [(NTKCaliforniaFaceView *)self interpolatedColorPalette];
+      toPalette = [interpolatedColorPalette2 toPalette];
+      [(NTKCaliforniaFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:fraction];
 
       break;
     case 13:
-      -[NTKCaliforniaFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [v18 style], objc_msgSend(v12, "style"), a3);
+      -[NTKCaliforniaFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [optionCopy style], objc_msgSend(toOptionCopy, "style"), fraction);
       break;
     case 15:
-      -[NTKCaliforniaFaceView _applyTransitionFraction:fromDial:toDial:](self, "_applyTransitionFraction:fromDial:toDial:", [v18 dialShape], objc_msgSend(v12, "dialShape"), a3);
+      -[NTKCaliforniaFaceView _applyTransitionFraction:fromDial:toDial:](self, "_applyTransitionFraction:fromDial:toDial:", [optionCopy dialShape], objc_msgSend(toOptionCopy, "dialShape"), fraction);
       break;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
-  if (a4 == a5)
+  if (dial == toDial)
   {
 
-    [(NTKCaliforniaFaceView *)self setDial:a3];
+    [(NTKCaliforniaFaceView *)self setDial:fraction];
   }
 
   else
   {
-    v8 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v9 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:a4 palette:v8];
-    v10 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v11 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:a5 palette:v10];
+    colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+    v9 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:dial palette:colorPalette];
+    colorPalette2 = [(NTKCaliforniaFaceView *)self colorPalette];
+    v11 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:toDial palette:colorPalette2];
     v12 = NTKInterpolateBetweenColors();
-    v13 = [(NTKCaliforniaFaceView *)self backgroundView];
-    [v13 setBackgroundColor:v12];
+    backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+    [backgroundView setBackgroundColor:v12];
 
     CLKCompressFraction();
     v15 = v14;
@@ -626,7 +626,7 @@ LABEL_7:
     v17 = v16;
     [(NTKCaliforniaFaceView *)self circleDiameter];
     [(NTKCaliforniaFaceView *)self setCircularMaskForCircularDialFraction:v15 circleDiameter:v18];
-    [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:a4 fromDial:a5 toDial:v15];
+    [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:dial fromDial:toDial toDial:v15];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_D94C;
@@ -638,25 +638,25 @@ LABEL_7:
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  v6 = a4;
-  if (a4 == -1)
+  toStyleCopy = style;
+  if (style == -1)
   {
-    v6 = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
+    toStyleCopy = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
   }
 
-  if (a5 == -1)
+  if (toStyle == -1)
   {
-    a5 = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
+    toStyle = +[NTKCaliforniaStyleEditOption resolvedAutomaticStyleForCurrentLocale];
   }
 
-  [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:v6 fromStyle:a5 toStyle:a3];
+  [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:toStyleCopy fromStyle:toStyle toStyle:fraction];
   CLKMapFractionIntoRange();
-  if (a3 >= 0.5)
+  if (fraction >= 0.5)
   {
     v10 = v9;
-    v6 = a5;
+    toStyleCopy = toStyle;
   }
 
   else
@@ -667,31 +667,31 @@ LABEL_7:
   CLKMapFractionIntoRange();
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeScale(&v15, v11, v11);
-  [(NTKCaliforniaFaceView *)self _updateComplicationCenterOffsetForStyle:v6];
-  if (a5 == 6 && self->_dial == 1)
+  [(NTKCaliforniaFaceView *)self _updateComplicationCenterOffsetForStyle:toStyleCopy];
+  if (toStyle == 6 && self->_dial == 1)
   {
     v12 = [(NTKCaliforniaFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotSubdialTop];
-    v13 = [v12 display];
+    display = [v12 display];
 
-    [v13 setAlpha:v10];
+    [display setAlpha:v10];
     v14 = v15;
-    [v13 setTransform:&v14];
+    [display setTransform:&v14];
   }
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v23.receiver = self;
   v23.super_class = NTKCaliforniaFaceView;
-  [(NTKCaliforniaFaceView *)&v23 _configureComplicationView:v6 forSlot:v7];
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  [(NTKCaliforniaFaceView *)&v23 _configureComplicationView:viewCopy forSlot:slotCopy];
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
-    v8 = v6;
-    v9 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v10 = [v9 bezelComplication];
-    [v8 setForegroundColor:v10];
+    v8 = viewCopy;
+    colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+    bezelComplication = [colorPalette bezelComplication];
+    [v8 setForegroundColor:bezelComplication];
 
     [v8 setFontWeight:UIFontWeightSemibold];
     [v8 setUseRoundedFontDesign:1];
@@ -701,57 +701,57 @@ LABEL_17:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqualToString:NTKComplicationSlotSubdialBottom])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [slotCopy isEqualToString:NTKComplicationSlotSubdialBottom])
   {
-    v8 = v6;
-    v11 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v12 = [v11 circularComplication];
-    [(NTKCaliforniaFaceView *)self setComplicationColor:v12];
+    v8 = viewCopy;
+    colorPalette2 = [(NTKCaliforniaFaceView *)self colorPalette];
+    circularComplication = [colorPalette2 circularComplication];
+    [(NTKCaliforniaFaceView *)self setComplicationColor:circularComplication];
 
-    v13 = [(NTKCaliforniaFaceView *)self complicationColor];
-    [(NTKCaliforniaFaceView *)self setInterpolatedComplicationColor:v13];
+    complicationColor = [(NTKCaliforniaFaceView *)self complicationColor];
+    [(NTKCaliforniaFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
-    v14 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v15 = [v14 circularComplicationSecondary];
+    colorPalette3 = [(NTKCaliforniaFaceView *)self colorPalette];
+    circularComplicationSecondary = [colorPalette3 circularComplicationSecondary];
 LABEL_12:
-    v19 = v15;
-    [(NTKCaliforniaFaceView *)self setAlternateComplicationColor:v15];
+    v19 = circularComplicationSecondary;
+    [(NTKCaliforniaFaceView *)self setAlternateComplicationColor:circularComplicationSecondary];
 
     [v8 updateMonochromeColor];
     goto LABEL_17;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (([v7 isEqualToString:NTKComplicationSlotTopLeft] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", NTKComplicationSlotTopRight) & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", NTKComplicationSlotBottomLeft) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", NTKComplicationSlotBottomRight)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (([slotCopy isEqualToString:NTKComplicationSlotTopLeft] & 1) != 0 || (objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotTopRight) & 1) != 0 || (objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotBottomLeft) & 1) != 0 || objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotBottomRight)))
   {
-    v8 = v6;
-    v16 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v17 = [v16 cornerComplication];
-    [(NTKCaliforniaFaceView *)self setComplicationColor:v17];
+    v8 = viewCopy;
+    colorPalette4 = [(NTKCaliforniaFaceView *)self colorPalette];
+    cornerComplication = [colorPalette4 cornerComplication];
+    [(NTKCaliforniaFaceView *)self setComplicationColor:cornerComplication];
 
-    v18 = [(NTKCaliforniaFaceView *)self complicationColor];
-    [(NTKCaliforniaFaceView *)self setInterpolatedComplicationColor:v18];
+    complicationColor2 = [(NTKCaliforniaFaceView *)self complicationColor];
+    [(NTKCaliforniaFaceView *)self setInterpolatedComplicationColor:complicationColor2];
 
-    v14 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v15 = [v14 cornerComplicationSecondary];
+    colorPalette3 = [(NTKCaliforniaFaceView *)self colorPalette];
+    circularComplicationSecondary = [colorPalette3 cornerComplicationSecondary];
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v6;
+    v20 = viewCopy;
     v8 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:[(NTKCaliforniaFaceView *)self editing]];
-    v21 = [v20 label];
+    label = [v20 label];
 
-    [v21 setTextColor:v8];
+    [label setTextColor:v8];
     goto LABEL_17;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v6;
+    v22 = viewCopy;
     v8 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:[(NTKCaliforniaFaceView *)self editing]];
     [v22 setTextColor:v8];
 
@@ -761,132 +761,132 @@ LABEL_12:
 LABEL_18:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v29 = a4;
-  v8 = a5;
-  if ([v29 isEqual:v8])
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  if ([paletteCopy isEqual:colorPaletteCopy])
   {
-    [(NTKCaliforniaFaceView *)self updateWithPalette:v8];
+    [(NTKCaliforniaFaceView *)self updateWithPalette:colorPaletteCopy];
   }
 
   else
   {
-    v9 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:v29];
-    v10 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:v8];
+    v9 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:paletteCopy];
+    v10 = [(NTKCaliforniaFaceView *)self backgroundColorForDial:self->_dial palette:colorPaletteCopy];
     v11 = NTKInterpolateBetweenColors();
-    v12 = [(NTKCaliforniaFaceView *)self backgroundView];
-    [v12 setBackgroundColor:v11];
+    backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+    [backgroundView setBackgroundColor:v11];
 
-    [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:v29 fromColorPalette:v8 toColorPalette:a3];
-    v13 = [v29 clockHandsInlay];
-    v14 = [v8 clockHandsInlay];
+    [(NTKCaliforniaContentView *)self->_californiaContentView applyTransitionFraction:paletteCopy fromColorPalette:colorPaletteCopy toColorPalette:fraction];
+    clockHandsInlay = [paletteCopy clockHandsInlay];
+    clockHandsInlay2 = [colorPaletteCopy clockHandsInlay];
     v15 = NTKInterpolateBetweenColors();
 
-    v16 = [v29 clockHands];
-    v17 = [v8 clockHands];
+    clockHands = [paletteCopy clockHands];
+    clockHands2 = [colorPaletteCopy clockHands];
     v18 = NTKInterpolateBetweenColors();
 
-    v19 = [v29 secondHand];
-    v20 = [v8 secondHand];
+    secondHand = [paletteCopy secondHand];
+    secondHand2 = [colorPaletteCopy secondHand];
     v21 = NTKInterpolateBetweenColors();
 
-    v22 = [(NTKCaliforniaFaceView *)self timeView];
-    v23 = [v22 hourHandView];
-    [v23 setInlayColor:v15];
+    timeView = [(NTKCaliforniaFaceView *)self timeView];
+    hourHandView = [timeView hourHandView];
+    [hourHandView setInlayColor:v15];
 
-    v24 = [v22 minuteHandView];
-    [v24 setInlayColor:v15];
+    minuteHandView = [timeView minuteHandView];
+    [minuteHandView setInlayColor:v15];
 
-    v25 = [v22 hourHandView];
-    [v25 setColor:v18];
+    hourHandView2 = [timeView hourHandView];
+    [hourHandView2 setColor:v18];
 
-    v26 = [v22 minuteHandView];
-    [v26 setColor:v18];
+    minuteHandView2 = [timeView minuteHandView];
+    [minuteHandView2 setColor:v18];
 
-    v27 = [v22 secondHandView];
-    [v27 setColor:v21];
+    secondHandView = [timeView secondHandView];
+    [secondHandView setColor:v21];
 
-    v28 = [v22 secondHandView];
-    [v28 setHandDotColor:v15];
+    secondHandView2 = [timeView secondHandView];
+    [secondHandView2 setHandDotColor:v15];
 
-    [(NTKCaliforniaFaceView *)self _applyComplicationColorTransitionFraction:v29 fromColorPalette:v8 toColorPalette:a3];
+    [(NTKCaliforniaFaceView *)self _applyComplicationColorTransitionFraction:paletteCopy fromColorPalette:colorPaletteCopy toColorPalette:fraction];
   }
 }
 
-- (void)_applyComplicationColorTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)_applyComplicationColorTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 circularComplication];
-  v10 = [v7 circularComplication];
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  circularComplication = [paletteCopy circularComplication];
+  circularComplication2 = [colorPaletteCopy circularComplication];
   v11 = NTKInterpolateBetweenColors();
-  v12 = [v8 circularComplicationSecondary];
-  v13 = [v7 circularComplicationSecondary];
+  circularComplicationSecondary = [paletteCopy circularComplicationSecondary];
+  circularComplicationSecondary2 = [colorPaletteCopy circularComplicationSecondary];
   v14 = NTKInterpolateBetweenColors();
   [(NTKCaliforniaFaceView *)self _updateSubDialRichComplicationsColor:v11 alternateColor:v14];
 
-  v15 = [v8 cornerComplication];
-  v16 = [v7 cornerComplication];
+  cornerComplication = [paletteCopy cornerComplication];
+  cornerComplication2 = [colorPaletteCopy cornerComplication];
   v17 = NTKInterpolateBetweenColors();
-  v18 = [v8 cornerComplicationSecondary];
-  v19 = [v7 cornerComplicationSecondary];
+  cornerComplicationSecondary = [paletteCopy cornerComplicationSecondary];
+  cornerComplicationSecondary2 = [colorPaletteCopy cornerComplicationSecondary];
   v20 = NTKInterpolateBetweenColors();
   [(NTKCaliforniaFaceView *)self updateRichCornerComplicationsInnerColor:v17 outerColor:v20];
 
-  v21 = [v8 simpleTextComplication];
-  v22 = [v7 simpleTextComplication];
+  simpleTextComplication = [paletteCopy simpleTextComplication];
+  simpleTextComplication2 = [colorPaletteCopy simpleTextComplication];
   v23 = NTKInterpolateBetweenColors();
   [(NTKCaliforniaFaceView *)self _updateSimpleTextLabelColor:v23];
 
-  v26 = [v8 bezelComplication];
+  bezelComplication = [paletteCopy bezelComplication];
 
-  v24 = [v7 bezelComplication];
+  bezelComplication2 = [colorPaletteCopy bezelComplication];
 
   v25 = NTKInterpolateBetweenColors();
   [(NTKCaliforniaFaceView *)self _updateDialBezelComplicationColor:v25];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
-  v10 = a4;
-  v11 = a5;
+  complicationCopy = complication;
+  toComplicationCopy = toComplication;
   v17.receiver = self;
   v17.super_class = NTKCaliforniaFaceView;
-  v12 = a6;
-  [(NTKCaliforniaFaceView *)&v17 _applyTransitionFraction:v10 fromComplication:v11 toComplication:v12 slot:a3];
+  slotCopy = slot;
+  [(NTKCaliforniaFaceView *)&v17 _applyTransitionFraction:complicationCopy fromComplication:toComplicationCopy toComplication:slotCopy slot:fraction];
   v13 = NTKComplicationSlotBezel;
 
-  if (v13 == v12)
+  if (v13 == slotCopy)
   {
-    if (![v10 complicationType] || (v15 = objc_msgSend(v11, "complicationType"), v14 = 1.0, !v15))
+    if (![complicationCopy complicationType] || (v15 = objc_msgSend(toComplicationCopy, "complicationType"), fractionCopy = 1.0, !v15))
     {
-      if ([v10 complicationType] || objc_msgSend(v11, "complicationType"))
+      if ([complicationCopy complicationType] || objc_msgSend(toComplicationCopy, "complicationType"))
       {
-        v16 = [v11 complicationType];
-        v14 = 1.0 - a3;
-        if (v16)
+        complicationType = [toComplicationCopy complicationType];
+        fractionCopy = 1.0 - fraction;
+        if (complicationType)
         {
-          v14 = a3;
+          fractionCopy = fraction;
         }
       }
 
       else
       {
-        v14 = 0.0;
+        fractionCopy = 0.0;
       }
     }
 
-    [(NTKCaliforniaFaceView *)self applyTransitionToCircularDialWithBezelFraction:v14];
+    [(NTKCaliforniaFaceView *)self applyTransitionToCircularDialWithBezelFraction:fractionCopy];
   }
 }
 
-- (void)applyTransitionToCircularDialWithBezelFraction:(double)a3
+- (void)applyTransitionToCircularDialWithBezelFraction:(double)fraction
 {
   v12 = 0;
   memset(v11, 0, sizeof(v11));
-  v5 = [(NTKCaliforniaFaceView *)self device];
-  sub_F3A4(v5, v11);
+  device = [(NTKCaliforniaFaceView *)self device];
+  sub_F3A4(device, v11);
 
   CLKInterpolateBetweenFloatsClipped();
   [(NTKCaliforniaFaceView *)self setCircularMaskForCircularDialFraction:1.0 circleDiameter:v6];
@@ -895,37 +895,37 @@ LABEL_18:
   californiaContentView = self->_californiaContentView;
   v9 = v10;
   [(NTKCaliforniaContentView *)californiaContentView setTransform:&v9];
-  [(NTKCaliforniaContentView *)self->_californiaContentView setBezelComplicationEnabled:a3 > 0.5];
+  [(NTKCaliforniaContentView *)self->_californiaContentView setBezelComplicationEnabled:fraction > 0.5];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKCaliforniaFaceView;
-  [(NTKCaliforniaFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKCaliforniaFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v12, 0, sizeof(v12));
     CGAffineTransformMakeScale(&v12, v7, v7);
-    v8 = [(NTKCaliforniaFaceView *)self contentView];
+    contentView = [(NTKCaliforniaFaceView *)self contentView];
     v11 = v12;
-    [v8 setTransform:&v11];
+    [contentView setTransform:&v11];
 
-    v9 = [(NTKCaliforniaFaceView *)self timeView];
+    timeView = [(NTKCaliforniaFaceView *)self timeView];
     v11 = v12;
-    [v9 setTransform:&v11];
+    [timeView setTransform:&v11];
 
-    v10 = [(NTKCaliforniaFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKCaliforniaFaceView *)self complicationContainerView];
     v11 = v12;
-    [v10 setTransform:&v11];
+    [complicationContainerView setTransform:&v11];
   }
 }
 
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBezel])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBezel])
   {
     v5 = NTKLargeElementMinimumBreathingScale;
   }
@@ -934,93 +934,93 @@ LABEL_18:
   {
     v8.receiver = self;
     v8.super_class = NTKCaliforniaFaceView;
-    [(NTKCaliforniaFaceView *)&v8 _minimumBreathingScaleForComplicationSlot:v4];
+    [(NTKCaliforniaFaceView *)&v8 _minimumBreathingScaleForComplicationSlot:slotCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v19.receiver = self;
   v19.super_class = NTKCaliforniaFaceView;
   [(NTKCaliforniaFaceView *)&v19 _configureForEditMode:?];
-  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:a3];
+  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKCaliforniaFaceView *)self californiaContentView];
-  [v7 setCircularBezelTickAlpha:v6];
+  californiaContentView = [(NTKCaliforniaFaceView *)self californiaContentView];
+  [californiaContentView setCircularBezelTickAlpha:v6];
 
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a3];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:mode];
   v9 = v8;
-  v10 = [(NTKCaliforniaFaceView *)self backgroundView];
-  [v10 setAlpha:v9];
+  backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+  [backgroundView setAlpha:v9];
 
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a3];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:mode];
   v12 = v11;
-  v13 = [(NTKCaliforniaFaceView *)self californiaContentView];
-  [v13 setAlpha:v12];
+  californiaContentView2 = [(NTKCaliforniaFaceView *)self californiaContentView];
+  [californiaContentView2 setAlpha:v12];
 
-  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:a3];
+  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:mode];
   v15 = v14;
-  v16 = [(NTKCaliforniaFaceView *)self timeView];
-  [v16 setAlpha:v15];
+  timeView = [(NTKCaliforniaFaceView *)self timeView];
+  [timeView setAlpha:v15];
 
   [(NTKCaliforniaFaceView *)self _applyTransitionFraction:self->_dial fromDial:self->_dial toDial:1.0];
   [(NTKCaliforniaFaceView *)self _applyTransitionFraction:self->_style fromStyle:self->_style toStyle:1.0];
-  v17 = [(NTKCaliforniaFaceView *)self colorPalette];
-  v18 = [(NTKCaliforniaFaceView *)self colorPalette];
-  [(NTKCaliforniaFaceView *)self _applyTransitionFraction:v17 fromColorPalette:v18 toColorPalette:1.0];
+  colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+  colorPalette2 = [(NTKCaliforniaFaceView *)self colorPalette];
+  [(NTKCaliforniaFaceView *)self _applyTransitionFraction:colorPalette fromColorPalette:colorPalette2 toColorPalette:1.0];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v23.receiver = self;
   v23.super_class = NTKCaliforniaFaceView;
   [NTKCaliforniaFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKCaliforniaFaceView *)self backgroundView];
-  [v10 setAlpha:v9];
+  backgroundView = [(NTKCaliforniaFaceView *)self backgroundView];
+  [backgroundView setAlpha:v9];
 
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKCaliforniaFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKCaliforniaFaceView *)self californiaContentView];
-  [v13 setAlpha:v12];
+  californiaContentView = [(NTKCaliforniaFaceView *)self californiaContentView];
+  [californiaContentView setAlpha:v12];
 
-  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKCaliforniaFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v15 = v14;
-  v16 = [(NTKCaliforniaFaceView *)self timeView];
-  [v16 setAlpha:v15];
+  timeView = [(NTKCaliforniaFaceView *)self timeView];
+  [timeView setAlpha:v15];
 
-  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:a4];
-  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:a5];
+  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:mode];
+  [(NTKCaliforniaFaceView *)self _dialAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v18 = v17;
-  v19 = [(NTKCaliforniaFaceView *)self californiaContentView];
-  [v19 setCircularBezelTickAlpha:v18];
+  californiaContentView2 = [(NTKCaliforniaFaceView *)self californiaContentView];
+  [californiaContentView2 setCircularBezelTickAlpha:v18];
 
-  v20 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:a4];
-  v21 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:a5];
+  v20 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:mode];
+  v21 = [(NTKCaliforniaFaceView *)self _simpleTextComplicationColorForEditMode:editMode];
   v22 = NTKInterpolateBetweenColors();
 
   [(NTKCaliforniaFaceView *)self _updateSimpleTextLabelColor:v22];
 }
 
-- (void)_updateSimpleTextLabelColor:(id)a3
+- (void)_updateSimpleTextLabelColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_EBA8;
   v5[3] = &unk_1C8F8;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(NTKCaliforniaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
@@ -1029,49 +1029,49 @@ LABEL_18:
   v5.receiver = self;
   v5.super_class = NTKCaliforniaFaceView;
   [(NTKCaliforniaFaceView *)&v5 _cleanupAfterEditing];
-  v3 = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
-  if (v3)
+  isCircularDialWithBezel = [(NTKCaliforniaFaceView *)self isCircularDialWithBezel];
+  if (isCircularDialWithBezel)
   {
     [(NTKCaliforniaFaceView *)self _updateDialTicksForBezelText];
   }
 
-  [(NTKCaliforniaContentView *)self->_californiaContentView setBezelComplicationEnabled:v3];
-  v4 = [(NTKCaliforniaFaceView *)self delegate];
-  [v4 faceViewDidChangeWantsStatusBarIconShadow];
+  [(NTKCaliforniaContentView *)self->_californiaContentView setBezelComplicationEnabled:isCircularDialWithBezel];
+  delegate = [(NTKCaliforniaFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v5.receiver = self;
   v5.super_class = NTKCaliforniaFaceView;
-  [(NTKCaliforniaFaceView *)&v5 _cleanupAfterTransitionComplicationSlot:a3 selectedComplication:a4];
+  [(NTKCaliforniaFaceView *)&v5 _cleanupAfterTransitionComplicationSlot:slot selectedComplication:complication];
   [(NTKCaliforniaFaceView *)self _updateDialTicksForBezelText];
 }
 
-- (id)_simpleTextComplicationColorForEditMode:(int64_t)a3
+- (id)_simpleTextComplicationColorForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v3 = [UIColor colorWithWhite:0.95 alpha:1.0];
+    simpleTextComplication = [UIColor colorWithWhite:0.95 alpha:1.0];
   }
 
   else
   {
-    v4 = [(NTKCaliforniaFaceView *)self colorPalette];
-    v3 = [v4 simpleTextComplication];
+    colorPalette = [(NTKCaliforniaFaceView *)self colorPalette];
+    simpleTextComplication = [colorPalette simpleTextComplication];
   }
 
-  return v3;
+  return simpleTextComplication;
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 0.0;
   }
@@ -1079,10 +1079,10 @@ LABEL_18:
   return NTKEditModeDimmedAlpha;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -1090,12 +1090,12 @@ LABEL_18:
   return result;
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3)
+  if (mode)
   {
-    if (a3 != 10)
+    if (mode != 10)
     {
       return NTKEditModeDimmedAlpha;
     }
@@ -1114,8 +1114,8 @@ LABEL_18:
 
 - (double)bezelComplicationTextWidthInRadians
 {
-  v2 = [(NTKCaliforniaFaceView *)self utilityBezelComplicationView];
-  [v2 textWidthInRadians];
+  utilityBezelComplicationView = [(NTKCaliforniaFaceView *)self utilityBezelComplicationView];
+  [utilityBezelComplicationView textWidthInRadians];
   v4 = v3;
 
   return v4;
@@ -1124,25 +1124,25 @@ LABEL_18:
 - (id)utilityBezelComplicationView
 {
   v2 = [(NTKCaliforniaFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBezel];
-  v3 = [v2 display];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityFlatComplicationView];
+  display = [v2 display];
+  v4 = [display conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityFlatComplicationView];
 
   if (v4)
   {
-    v5 = [v2 display];
+    display2 = [v2 display];
   }
 
   else
   {
-    v5 = 0;
+    display2 = 0;
   }
 
-  return v5;
+  return display2;
 }
 
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     return NTKEditSpeedCustomEditModeDefault;
   }
@@ -1151,19 +1151,19 @@ LABEL_18:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKCaliforniaFaceView;
-  [(NTKCaliforniaFaceView *)&v7 _editSpeedForCustomEditMode:a3 slot:a4];
+  [(NTKCaliforniaFaceView *)&v7 _editSpeedForCustomEditMode:mode slot:slot];
   return result;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &off_1F890;
-  if (a3 != 15)
+  if (options != 15)
   {
     v4 = 0;
   }
 
-  if (a3 == 13)
+  if (options == 13)
   {
     return &off_1F878;
   }
@@ -1174,35 +1174,35 @@ LABEL_18:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if ((a4 | 2) != 0xF)
+  optionCopy = option;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if ((mode | 2) != 0xF)
   {
     v29.receiver = self;
     v29.super_class = NTKCaliforniaFaceView;
-    v15 = [(NTKCaliforniaFaceView *)&v29 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKCaliforniaFaceView *)&v29 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
     goto LABEL_13;
   }
 
-  v11 = [v9 objectForKeyedSubscript:&off_1EE20];
+  v11 = [optionsCopy objectForKeyedSubscript:&off_1EE20];
   v12 = [v10 objectForKeyedSubscript:&off_1EDD8];
   v13 = v12;
-  if (a4 == 13)
+  if (mode == 13)
   {
     v14 = v11;
-    v11 = v8;
+    v11 = optionCopy;
     goto LABEL_7;
   }
 
-  if (a4 == 15)
+  if (mode == 15)
   {
     v14 = v12;
-    v13 = v8;
+    v13 = optionCopy;
 LABEL_7:
-    v16 = v8;
+    v16 = optionCopy;
   }
 
   v17 = [v10 objectForKeyedSubscript:&off_1EDF0];
@@ -1218,8 +1218,8 @@ LABEL_7:
   if (!v15)
   {
     v21 = [NTKCaliforniaFaceView alloc];
-    v22 = [(NTKCaliforniaFaceView *)self device];
-    v23 = [(NTKCaliforniaFaceView *)v21 initWithFaceStyle:39 forDevice:v22 clientIdentifier:0];
+    device = [(NTKCaliforniaFaceView *)self device];
+    v23 = [(NTKCaliforniaFaceView *)v21 initWithFaceStyle:39 forDevice:device clientIdentifier:0];
 
     [(NTKCaliforniaFaceView *)self frame];
     [(NTKCaliforniaFaceView *)v23 setFrame:?];
@@ -1236,8 +1236,8 @@ LABEL_7:
     v31.width = v25;
     v31.height = v26;
     UIGraphicsBeginImageContextWithOptions(v31, 0, 0.0);
-    v27 = [(NTKCaliforniaFaceView *)v23 layer];
-    [v27 renderInContext:UIGraphicsGetCurrentContext()];
+    layer = [(NTKCaliforniaFaceView *)v23 layer];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
 
     v15 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

@@ -1,70 +1,70 @@
 @interface HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventStartDate:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventStartDate:(BOOL)date;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4[8])
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy[8])
   {
     [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self setThreadIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 8) != 0)
   {
-    self->_state = v4[4];
+    self->_state = fromCopy[4];
     *&self->_has |= 8u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_reason = v4[3];
+    self->_reason = fromCopy[3];
     *&self->_has |= 4u;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self setNotificationUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_dateOfOccurrence = v4[1];
+    self->_dateOfOccurrence = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self setAccessoryIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self setHomeIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[9] & 2) != 0)
+  if ((fromCopy[9] & 2) != 0)
   {
-    self->_eventStartDate = v4[2];
+    self->_eventStartDate = fromCopy[2];
     *&self->_has |= 2u;
   }
 }
@@ -120,16 +120,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   threadIdentifier = self->_threadIdentifier;
-  if (threadIdentifier | *(v4 + 8))
+  if (threadIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)threadIdentifier isEqual:?])
     {
@@ -138,35 +138,35 @@ LABEL_6:
   }
 
   has = self->_has;
-  v7 = *(v4 + 72);
+  v7 = *(equalCopy + 72);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_state != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_state != *(equalCopy + 4))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_reason != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_reason != *(equalCopy + 3))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_30;
   }
 
   notificationUUID = self->_notificationUUID;
-  if (notificationUUID | *(v4 + 7))
+  if (notificationUUID | *(equalCopy + 7))
   {
     if (![(NSString *)notificationUUID isEqual:?])
     {
@@ -176,12 +176,12 @@ LABEL_30:
     }
 
     has = self->_has;
-    v7 = *(v4 + 72);
+    v7 = *(equalCopy + 72);
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_dateOfOccurrence != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_dateOfOccurrence != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
@@ -193,13 +193,13 @@ LABEL_30:
   }
 
   accessoryIdentifier = self->_accessoryIdentifier;
-  if (accessoryIdentifier | *(v4 + 5) && ![(NSString *)accessoryIdentifier isEqual:?])
+  if (accessoryIdentifier | *(equalCopy + 5) && ![(NSString *)accessoryIdentifier isEqual:?])
   {
     goto LABEL_30;
   }
 
   homeIdentifier = self->_homeIdentifier;
-  if (homeIdentifier | *(v4 + 6))
+  if (homeIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)homeIdentifier isEqual:?])
     {
@@ -207,10 +207,10 @@ LABEL_30:
     }
   }
 
-  v11 = (*(v4 + 72) & 2) == 0;
+  v11 = (*(equalCopy + 72) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_eventStartDate != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_eventStartDate != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
@@ -223,10 +223,10 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_threadIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_threadIdentifier copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -244,7 +244,7 @@ LABEL_31:
     *(v5 + 72) |= 4u;
   }
 
-  v9 = [(NSString *)self->_notificationUUID copyWithZone:a3];
+  v9 = [(NSString *)self->_notificationUUID copyWithZone:zone];
   v10 = *(v5 + 56);
   *(v5 + 56) = v9;
 
@@ -254,11 +254,11 @@ LABEL_31:
     *(v5 + 72) |= 1u;
   }
 
-  v11 = [(NSString *)self->_accessoryIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_accessoryIdentifier copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
-  v13 = [(NSString *)self->_homeIdentifier copyWithZone:a3];
+  v13 = [(NSString *)self->_homeIdentifier copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
@@ -271,69 +271,69 @@ LABEL_31:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_threadIdentifier)
   {
-    [v4 setThreadIdentifier:?];
-    v4 = v6;
+    [toCopy setThreadIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 4) = self->_state;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 4) = self->_state;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_reason;
-    *(v4 + 72) |= 4u;
+    *(toCopy + 3) = self->_reason;
+    *(toCopy + 72) |= 4u;
   }
 
   if (self->_notificationUUID)
   {
     [v6 setNotificationUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_dateOfOccurrence;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_dateOfOccurrence;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_accessoryIdentifier)
   {
     [v6 setAccessoryIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_homeIdentifier)
   {
     [v6 setHomeIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_eventStartDate;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 2) = self->_eventStartDate;
+    *(toCopy + 72) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_threadIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -341,7 +341,7 @@ LABEL_31:
   {
     state = self->_state;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -349,50 +349,50 @@ LABEL_31:
   {
     reason = self->_reason;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_notificationUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
     dateOfOccurrence = self->_dateOfOccurrence;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_accessoryIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_homeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     eventStartDate = self->_eventStartDate;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   threadIdentifier = self->_threadIdentifier;
   if (threadIdentifier)
   {
-    [v3 setObject:threadIdentifier forKey:@"threadIdentifier"];
+    [dictionary setObject:threadIdentifier forKey:@"threadIdentifier"];
   }
 
   has = self->_has;
@@ -449,15 +449,15 @@ LABEL_31:
   v8.receiver = self;
   v8.super_class = HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent;
   v4 = [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)&v8 description];
-  v5 = [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAudioAnalysisEventBulletinEventProtoAudioAnalysisEventBulletinEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasEventStartDate:(BOOL)a3
+- (void)setHasEventStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -470,9 +470,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -485,9 +485,9 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }

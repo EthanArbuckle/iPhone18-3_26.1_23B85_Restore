@@ -1,6 +1,6 @@
 @interface FRHeadlineRendererAssembly
 - (FRHeadlineRendererAssembly)init;
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation FRHeadlineRendererAssembly
@@ -12,10 +12,10 @@
   return [(FRHeadlineRendererAssembly *)&v3 init];
 }
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v4 = [a3 publicContainer];
-  v3 = [v4 registerClass:objc_opt_class() factory:&stru_1000C6468];
+  publicContainer = [registry publicContainer];
+  v3 = [publicContainer registerClass:objc_opt_class() factory:&stru_1000C6468];
 }
 
 @end

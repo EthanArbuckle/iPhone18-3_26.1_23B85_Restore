@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (IMMessagesToTrack)init;
 - (unint64_t)currentNumberOfMessages;
-- (void)addMessagesID:(id)a3;
-- (void)containsMessageID:(id)a3 completion:(id)a4;
+- (void)addMessagesID:(id)d;
+- (void)containsMessageID:(id)d completion:(id)completion;
 @end
 
 @implementation IMMessagesToTrack
@@ -39,11 +39,11 @@
   return v2;
 }
 
-- (void)addMessagesID:(id)a3
+- (void)addMessagesID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -51,42 +51,42 @@
     v7[2] = sub_22B6772D0;
     v7[3] = &unk_278702FA0;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(internalQueue, v7);
   }
 }
 
-- (void)containsMessageID:(id)a3 completion:(id)a4
+- (void)containsMessageID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       internalQueue = self->_internalQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_22B677470;
       block[3] = &unk_278702CC8;
-      v12 = v7;
+      v12 = completionCopy;
       block[4] = self;
-      v11 = v6;
+      v11 = dCopy;
       dispatch_async(internalQueue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
 - (unint64_t)currentNumberOfMessages
 {
-  v2 = [(IMMessagesToTrack *)self recentMessageIDs];
-  v3 = [v2 count];
+  recentMessageIDs = [(IMMessagesToTrack *)self recentMessageIDs];
+  v3 = [recentMessageIDs count];
 
   return v3;
 }

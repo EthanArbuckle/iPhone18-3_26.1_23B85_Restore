@@ -1,8 +1,8 @@
 @interface PowerZoneTelemetry
 + (id)sharedInstance;
 - (PowerZoneTelemetry)init;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (void)dealloc;
 - (void)queryData;
 @end
@@ -368,29 +368,29 @@ LABEL_38:
   [(PowerZoneTelemetry *)&v4 dealloc];
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 4)
+  if (index > 4)
   {
     return 0;
   }
 
   else
   {
-    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, *(&off_1000856F8 + a3), 0);
+    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, *(&off_1000856F8 + index), 0);
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 > 4)
+  if (index > 4)
   {
     return 0;
   }
 
   else
   {
-    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%f", *(&self->super.isa + qword_100066648[a3]));
+    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%f", *(&self->super.isa + qword_100066648[index]));
   }
 }
 

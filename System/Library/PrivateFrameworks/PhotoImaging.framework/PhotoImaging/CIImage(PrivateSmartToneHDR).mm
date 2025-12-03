@@ -6,7 +6,7 @@
 
 - (id)smartToneHDRStatistics
 {
-  v1 = MEMORY[0x1EEE9AC00](a1);
+  v1 = MEMORY[0x1EEE9AC00](self);
   v64[2] = *MEMORY[0x1E69E9840];
   v57 = 0;
   v55 = 0u;
@@ -14,15 +14,15 @@
   v53 = 0u;
   v54 = 0u;
   v52 = 0u;
-  v2 = [v1 properties];
+  properties = [v1 properties];
 
-  if (!v2)
+  if (!properties)
   {
     NSLog(&cfstr_WarningSmartto.isa);
   }
 
-  v3 = [v1 properties];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696D9B0]];
+  properties2 = [v1 properties];
+  v4 = [properties2 valueForKey:*MEMORY[0x1E696D9B0]];
   v5 = [v4 valueForKey:*MEMORY[0x1E696D9F0]];
 
   v6 = 1.0;
@@ -63,7 +63,7 @@
   v18 = v67.size.height;
   v19 = 4 * v67.size.width;
   v20 = [MEMORY[0x1E695DF88] dataWithLength:v19 * v67.size.height];
-  v45 = [v20 bytes];
+  bytes = [v20 bytes];
   v61[0] = @"inputRVector";
   v47 = [MEMORY[0x1E695F688] vectorWithX:0.333333333 Y:0.333333333 Z:0.333333333 W:0.0];
   v62[0] = v47;
@@ -82,14 +82,14 @@
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:5];
   v25 = [v10 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v24];
 
-  v26 = [v20 mutableBytes];
-  [v48 render:v25 toBitmap:v26 rowBytes:v19 bounds:*MEMORY[0x1E695F910] format:0 colorSpace:{x, y, width, height}];
+  mutableBytes = [v20 mutableBytes];
+  [v48 render:v25 toBitmap:mutableBytes rowBytes:v19 bounds:*MEMORY[0x1E695F910] format:0 colorSpace:{x, y, width, height}];
   bzero(v60, 0x1000uLL);
   if (v18)
   {
     v27 = 0;
     v28 = 1.0 / (v18 * v17);
-    v29 = (v45 + 2);
+    v29 = (bytes + 2);
     while (1)
     {
       v30 = v29;

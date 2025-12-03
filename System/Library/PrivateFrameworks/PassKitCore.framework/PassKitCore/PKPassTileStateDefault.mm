@@ -1,21 +1,21 @@
 @interface PKPassTileStateDefault
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (BOOL)isEqualToUnresolvedState:(id)a3;
-- (PKPassTileStateDefault)initWithCoder:(id)a3;
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (BOOL)isEqualToUnresolvedState:(id)state;
+- (PKPassTileStateDefault)initWithCoder:(id)coder;
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileStateDefault
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKPassTileStateDefault;
-  if (-[PKPassTileState _setUpWithDictionary:](&v17, sel__setUpWithDictionary_, v4) && ([v4 PKStringForKey:@"title"], v5 = objc_claimAutoreleasedReturnValue(), title = self->_title, self->_title = v5, title, objc_msgSend(v4, "PKStringForKey:", @"body"), v7 = objc_claimAutoreleasedReturnValue(), body = self->_body, self->_body = v7, body, self->_body))
+  if (-[PKPassTileState _setUpWithDictionary:](&v17, sel__setUpWithDictionary_, dictionaryCopy) && ([dictionaryCopy PKStringForKey:@"title"], v5 = objc_claimAutoreleasedReturnValue(), title = self->_title, self->_title = v5, title, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"body"), v7 = objc_claimAutoreleasedReturnValue(), body = self->_body, self->_body = v7, body, self->_body))
   {
-    v9 = [v4 PKDictionaryForKey:@"accessory"];
+    v9 = [dictionaryCopy PKDictionaryForKey:@"accessory"];
     if (v9 && (v10 = [PKPassTileAccessory _createForDictionary:v9], accessory = self->_accessory, self->_accessory = v10, accessory, !self->_accessory))
     {
       v15 = 0;
@@ -23,7 +23,7 @@
 
     else
     {
-      v12 = [v4 PKDictionaryForKey:@"secondaryAccessory"];
+      v12 = [dictionaryCopy PKDictionaryForKey:@"secondaryAccessory"];
       v15 = 1;
       if (v12)
       {
@@ -47,53 +47,53 @@
   return v15;
 }
 
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v18.receiver = self;
   v18.super_class = PKPassTileStateDefault;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPassTileState *)&v18 createResolvedStateWithBundle:v7 privateBundle:v6];
-  v9 = PKLocalizedPassStringForPassBundle(self->_title, v7, v6);
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  v8 = [(PKPassTileState *)&v18 createResolvedStateWithBundle:bundleCopy privateBundle:privateBundleCopy];
+  v9 = PKLocalizedPassStringForPassBundle(self->_title, bundleCopy, privateBundleCopy);
   v10 = v8[8];
   v8[8] = v9;
 
-  v11 = PKLocalizedPassStringForPassBundle(self->_body, v7, v6);
+  v11 = PKLocalizedPassStringForPassBundle(self->_body, bundleCopy, privateBundleCopy);
   v12 = v8[9];
   v8[9] = v11;
 
-  v13 = [(PKPassTileAccessory *)self->_accessory createResolvedAccessoryWithBundle:v7 privateBundle:v6, v18.receiver, v18.super_class];
+  v13 = [(PKPassTileAccessory *)self->_accessory createResolvedAccessoryWithBundle:bundleCopy privateBundle:privateBundleCopy, v18.receiver, v18.super_class];
   v14 = v8[10];
   v8[10] = v13;
 
-  v15 = [(PKPassTileAccessory *)self->_secondaryAccessory createResolvedAccessoryWithBundle:v7 privateBundle:v6];
+  v15 = [(PKPassTileAccessory *)self->_secondaryAccessory createResolvedAccessoryWithBundle:bundleCopy privateBundle:privateBundleCopy];
   v16 = v8[11];
   v8[11] = v15;
 
   return v8;
 }
 
-- (PKPassTileStateDefault)initWithCoder:(id)a3
+- (PKPassTileStateDefault)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPassTileStateDefault;
-  v5 = [(PKPassTileState *)&v15 initWithCoder:v4];
+  v5 = [(PKPassTileState *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     body = v5->_body;
     v5->_body = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
     accessory = v5->_accessory;
     v5->_accessory = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAccessory"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryAccessory"];
     secondaryAccessory = v5->_secondaryAccessory;
     v5->_secondaryAccessory = v12;
   }
@@ -101,26 +101,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileStateDefault;
-  v4 = a3;
-  [(PKPassTileState *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_body forKey:@"body"];
-  [v4 encodeObject:self->_accessory forKey:@"accessory"];
-  [v4 encodeObject:self->_secondaryAccessory forKey:@"secondaryAccessory"];
+  coderCopy = coder;
+  [(PKPassTileState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_body forKey:@"body"];
+  [coderCopy encodeObject:self->_accessory forKey:@"accessory"];
+  [coderCopy encodeObject:self->_secondaryAccessory forKey:@"secondaryAccessory"];
 }
 
-- (BOOL)isEqualToUnresolvedState:(id)a3
+- (BOOL)isEqualToUnresolvedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v22.receiver = self;
   v22.super_class = PKPassTileStateDefault;
-  if ([(PKPassTileState *)&v22 isEqualToUnresolvedState:v4])
+  if ([(PKPassTileState *)&v22 isEqualToUnresolvedState:stateCopy])
   {
-    v5 = v4;
+    v5 = stateCopy;
     title = self->_title;
     v7 = v5[8];
     v8 = title;

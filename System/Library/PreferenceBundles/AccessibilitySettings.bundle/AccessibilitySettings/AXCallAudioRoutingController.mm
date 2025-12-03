@@ -1,9 +1,9 @@
 @interface AXCallAudioRoutingController
 - (AXCallAudioRoutingController)init;
-- (id)autoAnswerDelaySummary:(id)a3;
+- (id)autoAnswerDelaySummary:(id)summary;
 - (id)specifiers;
-- (int)_callAudioRoutingFromSpecifierKey:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int)_callAudioRoutingFromSpecifierKey:(id)key;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXCallAudioRoutingController
@@ -60,7 +60,7 @@ void __36__AXCallAudioRoutingController_init__block_invoke_2(uint64_t a1)
   {
     v5 = [(AXCallAudioRoutingController *)self loadSpecifiersFromPlistName:@"CallAudioRoutingSettings" target:self];
     v19 = v3;
-    v20 = self;
+    selfCopy = self;
     objc_storeStrong(&self->AXUISettingsBaseListController_opaque[v3], v5);
     v23 = 0u;
     v24 = 0u;
@@ -89,11 +89,11 @@ void __36__AXCallAudioRoutingController_init__block_invoke_2(uint64_t a1)
           if (v14)
           {
             v15 = [v12 objectForKeyedSubscript:v10];
-            v16 = [(AXCallAudioRoutingController *)v20 _callAudioRoutingFromSpecifierKey:v15];
+            v16 = [(AXCallAudioRoutingController *)selfCopy _callAudioRoutingFromSpecifierKey:v15];
 
             if (v16 == _AXSDefaultRouteForCall())
             {
-              v17 = [(AXCallAudioRoutingController *)v20 getGroupSpecifierForSpecifier:v12];
+              v17 = [(AXCallAudioRoutingController *)selfCopy getGroupSpecifierForSpecifier:v12];
               [v17 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
               [v17 setProperty:v12 forKey:PSRadioGroupCheckedSpecifierKey];
 
@@ -114,13 +114,13 @@ void __36__AXCallAudioRoutingController_init__block_invoke_2(uint64_t a1)
 
 LABEL_13:
 
-    v4 = *&v20->AXUISettingsBaseListController_opaque[v19];
+    v4 = *&selfCopy->AXUISettingsBaseListController_opaque[v19];
   }
 
   return v4;
 }
 
-- (id)autoAnswerDelaySummary:(id)a3
+- (id)autoAnswerDelaySummary:(id)summary
 {
   v4 = +[AXSettings sharedInstance];
   if ([v4 callAudioRoutingAutoAnswerEnabled])
@@ -138,18 +138,18 @@ LABEL_13:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = AXCallAudioRoutingController;
-  v6 = a4;
-  [(AXCallAudioRoutingController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXCallAudioRoutingController *)self specifierAtIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  [(AXCallAudioRoutingController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXCallAudioRoutingController *)self specifierAtIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   v8 = [v7 propertyForKey:@"type"];
-  LODWORD(v6) = [v8 isEqualToString:@"DefaultRouteForCall"];
+  LODWORD(pathCopy) = [v8 isEqualToString:@"DefaultRouteForCall"];
 
-  if (v6)
+  if (pathCopy)
   {
     v9 = [v7 propertyForKey:PSKeyNameKey];
     [(AXCallAudioRoutingController *)self _callAudioRoutingFromSpecifierKey:v9];
@@ -158,18 +158,18 @@ LABEL_13:
   }
 }
 
-- (int)_callAudioRoutingFromSpecifierKey:(id)a3
+- (int)_callAudioRoutingFromSpecifierKey:(id)key
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"callAudioRoutingAutomatic"] & 1) == 0)
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"callAudioRoutingAutomatic"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"callAudioRoutingHeadset"])
+    if ([keyCopy isEqualToString:@"callAudioRoutingHeadset"])
     {
       v4 = 1;
       goto LABEL_7;
     }
 
-    if ([v3 isEqualToString:@"callAudioRoutingSpeaker"])
+    if ([keyCopy isEqualToString:@"callAudioRoutingSpeaker"])
     {
       v4 = 2;
       goto LABEL_7;

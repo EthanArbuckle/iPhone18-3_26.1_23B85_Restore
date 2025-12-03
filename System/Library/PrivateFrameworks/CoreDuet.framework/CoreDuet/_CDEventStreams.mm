@@ -1,17 +1,17 @@
 @interface _CDEventStreams
 + (id)ephemeralitySchedule;
-+ (id)eventStreamForName:(id)a3;
-+ (id)eventStreamPropertiesForEventStream:(id)a3;
-+ (id)eventStreamPropertiesForKBName:(id)a3;
-+ (id)eventStreamPropertiesForName:(id)a3;
-+ (id)privacyPolicyForEventStreamName:(id)a3;
-+ (id)rateLimiterForEventStreamName:(id)a3;
++ (id)eventStreamForName:(id)name;
++ (id)eventStreamPropertiesForEventStream:(id)stream;
++ (id)eventStreamPropertiesForKBName:(id)name;
++ (id)eventStreamPropertiesForName:(id)name;
++ (id)privacyPolicyForEventStreamName:(id)name;
++ (id)rateLimiterForEventStreamName:(id)name;
 + (id)sharedInstance;
 + (void)loadAllEventStreams;
 - (NSDictionary)allEventStreams;
 - (NSDictionary)allKBEventStreams;
 - (_CDEventStreams)init;
-- (id)_eventStreamForName:(id)a3 orKBName:(id)a4;
+- (id)_eventStreamForName:(id)name orKBName:(id)bName;
 @end
 
 @implementation _CDEventStreams
@@ -35,52 +35,52 @@
   v2 = [(_CDEventStreams *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     allEventStreams = v2->_allEventStreams;
-    v2->_allEventStreams = v3;
+    v2->_allEventStreams = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     allKBEventStreams = v2->_allKBEventStreams;
-    v2->_allKBEventStreams = v5;
+    v2->_allKBEventStreams = dictionary2;
   }
 
   return v2;
 }
 
-- (id)_eventStreamForName:(id)a3 orKBName:(id)a4
+- (id)_eventStreamForName:(id)name orKBName:(id)bName
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bNameCopy = bName;
   v70 = 0;
   v71 = &v70;
   v72 = 0x3032000000;
   v73 = __Block_byref_object_copy__1;
   v74 = __Block_byref_object_dispose__1;
   v75 = 0;
-  v8 = self;
-  objc_sync_enter(v8);
-  v49 = v6;
-  v50 = v7;
-  v48 = (v6 | v7) == 0;
-  obj = &v8->super.isa;
-  if (v6 | v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v49 = nameCopy;
+  v50 = bNameCopy;
+  v48 = (nameCopy | bNameCopy) == 0;
+  obj = &selfCopy->super.isa;
+  if (nameCopy | bNameCopy)
   {
-    if (v6)
+    if (nameCopy)
     {
-      v9 = [(NSDictionary *)v8->_allEventStreams objectForKeyedSubscript:v6];
+      v9 = [(NSDictionary *)selfCopy->_allEventStreams objectForKeyedSubscript:nameCopy];
       v10 = v71[5];
       v71[5] = v9;
     }
 
     else
     {
-      if (!v7)
+      if (!bNameCopy)
       {
         goto LABEL_12;
       }
 
-      v11 = [(NSDictionary *)v8->_allKBEventStreams objectForKeyedSubscript:v7];
+      v11 = [(NSDictionary *)selfCopy->_allKBEventStreams objectForKeyedSubscript:bNameCopy];
       v12 = v71[5];
       v71[5] = v11;
     }
@@ -95,24 +95,24 @@
 
   else
   {
-    if ([(_CDEventStreams *)v8 allStreamsLoaded])
+    if ([(_CDEventStreams *)selfCopy allStreamsLoaded])
     {
       v44 = 0;
 LABEL_11:
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_61;
     }
 
-    [(_CDEventStreams *)v8 setAllStreamsLoaded:1];
+    [(_CDEventStreams *)selfCopy setAllStreamsLoaded:1];
   }
 
 LABEL_12:
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = +[_CDPaths eventPlistPath];
   if (v42)
   {
-    [v14 addObject:?];
+    [array addObject:?];
   }
 
   else
@@ -130,7 +130,7 @@ LABEL_12:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v45 = v14;
+  v45 = array;
   v16 = [v45 countByEnumeratingWithState:&v66 objects:v81 count:16];
   if (v16)
   {
@@ -200,8 +200,8 @@ LABEL_12:
 
 LABEL_37:
 
-            v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != 'Default'", kCDESPEventNameKey];
-            [v23 filterUsingPredicate:v33];
+            kCDESPEventNameKey = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != 'Default'", kCDESPEventNameKey];
+            [v23 filterUsingPredicate:kCDESPEventNameKey];
           }
 
           v54[0] = MEMORY[0x1E69E9820];
@@ -344,13 +344,13 @@ LABEL_61:
   return allKBEventStreams;
 }
 
-+ (id)eventStreamForName:(id)a3
++ (id)eventStreamForName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = a3;
+    nameCopy = name;
     v4 = +[_CDEventStreams sharedInstance];
-    v5 = [v4 _eventStreamForName:v3 orKBName:0];
+    v5 = [v4 _eventStreamForName:nameCopy orKBName:0];
   }
 
   else
@@ -361,48 +361,48 @@ LABEL_61:
   return v5;
 }
 
-+ (id)eventStreamPropertiesForName:(id)a3
++ (id)eventStreamPropertiesForName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = a3;
+    nameCopy = name;
     v4 = +[_CDEventStreams sharedInstance];
-    v5 = [v4 _eventStreamForName:v3 orKBName:0];
+    v5 = [v4 _eventStreamForName:nameCopy orKBName:0];
 
-    v6 = [v5 eventStreamProperties];
+    eventStreamProperties = [v5 eventStreamProperties];
   }
 
   else
   {
-    v6 = 0;
+    eventStreamProperties = 0;
   }
 
-  return v6;
+  return eventStreamProperties;
 }
 
-+ (id)eventStreamPropertiesForKBName:(id)a3
++ (id)eventStreamPropertiesForKBName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = a3;
+    nameCopy = name;
     v4 = +[_CDEventStreams sharedInstance];
-    v5 = [v4 _eventStreamForName:0 orKBName:v3];
+    v5 = [v4 _eventStreamForName:0 orKBName:nameCopy];
 
-    v6 = [v5 eventStreamProperties];
+    eventStreamProperties = [v5 eventStreamProperties];
   }
 
   else
   {
-    v6 = 0;
+    eventStreamProperties = 0;
   }
 
-  return v6;
+  return eventStreamProperties;
 }
 
-+ (id)eventStreamPropertiesForEventStream:(id)a3
++ (id)eventStreamPropertiesForEventStream:(id)stream
 {
-  v4 = [a3 name];
-  v5 = [a1 eventStreamPropertiesForKBName:v4];
+  name = [stream name];
+  v5 = [self eventStreamPropertiesForKBName:name];
 
   return v5;
 }
@@ -411,16 +411,16 @@ LABEL_61:
 {
   v27 = *MEMORY[0x1E69E9840];
   v2 = +[_CDEventStreams sharedInstance];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v21 = v2;
-  v4 = [v2 allKBEventStreams];
-  v5 = [v4 allValues];
+  allKBEventStreams = [v2 allKBEventStreams];
+  allValues = [allKBEventStreams allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -431,37 +431,37 @@ LABEL_61:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 eventStreamProperties];
-        v12 = [v11 knowledgeBaseName];
+        eventStreamProperties = [v10 eventStreamProperties];
+        knowledgeBaseName = [eventStreamProperties knowledgeBaseName];
 
-        if (v12)
+        if (knowledgeBaseName)
         {
-          v13 = [v10 eventStreamProperties];
-          [v13 timeToLive];
+          eventStreamProperties2 = [v10 eventStreamProperties];
+          [eventStreamProperties2 timeToLive];
           v15 = v14;
 
           v16 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
-          v17 = [v3 objectForKeyedSubscript:v16];
+          v17 = [dictionary objectForKeyedSubscript:v16];
 
           if (v17)
           {
-            [v17 addObject:v12];
+            [v17 addObject:knowledgeBaseName];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFA8] setWithObject:v12];
+            v17 = [MEMORY[0x1E695DFA8] setWithObject:knowledgeBaseName];
             v18 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
-            [v3 setObject:v17 forKeyedSubscript:v18];
+            [dictionary setObject:v17 forKeyedSubscript:v18];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
@@ -469,12 +469,12 @@ LABEL_61:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)rateLimiterForEventStreamName:(id)a3
++ (id)rateLimiterForEventStreamName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (rateLimiterForEventStreamName__onceToken != -1)
   {
     +[_CDEventStreams rateLimiterForEventStreamName:];
@@ -482,7 +482,7 @@ LABEL_61:
 
   v4 = rateLimiterForEventStreamName__policies;
   objc_sync_enter(v4);
-  v5 = [rateLimiterForEventStreamName__policies objectForKeyedSubscript:v3];
+  v5 = [rateLimiterForEventStreamName__policies objectForKeyedSubscript:nameCopy];
   if (v5)
   {
     v6 = v5;
@@ -493,14 +493,14 @@ LABEL_61:
 
   else
   {
-    v8 = [objc_opt_class() eventStreamPropertiesForKBName:v3];
+    v8 = [objc_opt_class() eventStreamPropertiesForKBName:nameCopy];
     if (v8)
     {
       v9 = [_CDRateAndTotalLimiter alloc];
-      v10 = [v8 eventsPerPeriod];
+      eventsPerPeriod = [v8 eventsPerPeriod];
       [v8 period];
-      v6 = -[_CDRateAndTotalLimiter initWithCount:perPeriod:totalCountLimit:](v9, "initWithCount:perPeriod:totalCountLimit:", v10, [v8 eventCountLimit], v11);
-      [rateLimiterForEventStreamName__policies setObject:v6 forKeyedSubscript:v3];
+      v6 = -[_CDRateAndTotalLimiter initWithCount:perPeriod:totalCountLimit:](v9, "initWithCount:perPeriod:totalCountLimit:", eventsPerPeriod, [v8 eventCountLimit], v11);
+      [rateLimiterForEventStreamName__policies setObject:v6 forKeyedSubscript:nameCopy];
     }
 
     else
@@ -524,9 +524,9 @@ LABEL_61:
   return v7;
 }
 
-+ (id)privacyPolicyForEventStreamName:(id)a3
++ (id)privacyPolicyForEventStreamName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (privacyPolicyForEventStreamName__onceToken != -1)
   {
     +[_CDEventStreams privacyPolicyForEventStreamName:];
@@ -534,7 +534,7 @@ LABEL_61:
 
   v4 = privacyPolicyForEventStreamName__policies;
   objc_sync_enter(v4);
-  v5 = [privacyPolicyForEventStreamName__policies objectForKeyedSubscript:v3];
+  v5 = [privacyPolicyForEventStreamName__policies objectForKeyedSubscript:nameCopy];
   if (v5)
   {
     v6 = v5;
@@ -545,13 +545,13 @@ LABEL_61:
 
   else
   {
-    v8 = [objc_opt_class() eventStreamPropertiesForKBName:v3];
+    v8 = [objc_opt_class() eventStreamPropertiesForKBName:nameCopy];
     if (v8)
     {
       v9 = [_CDPrivacyPolicy alloc];
       [v8 temporalPrecision];
       v6 = -[_CDPrivacyPolicy initWithTemporalPrecision:canPersistOnStorage:](v9, "initWithTemporalPrecision:canPersistOnStorage:", [v8 isHistorical], v10);
-      [privacyPolicyForEventStreamName__policies setObject:v6 forKeyedSubscript:v3];
+      [privacyPolicyForEventStreamName__policies setObject:v6 forKeyedSubscript:nameCopy];
     }
 
     else

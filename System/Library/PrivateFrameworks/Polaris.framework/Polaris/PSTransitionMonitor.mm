@@ -1,7 +1,7 @@
 @interface PSTransitionMonitor
-+ (id)stateToString:(unsigned int)a3;
++ (id)stateToString:(unsigned int)string;
 - (PSTransitionManager)transitionManager;
-- (PSTransitionMonitor)initWithTransitionManager:(id)a3;
+- (PSTransitionMonitor)initWithTransitionManager:(id)manager;
 - (id)generateErrorForStateAddExecutorGraphs;
 - (id)generateErrorForStateBufferDeinit;
 - (id)generateErrorForStateBufferInit;
@@ -15,58 +15,58 @@
 - (id)generateErrorForStateSysGraphNotify;
 - (id)generateErrorForStateSystemGraphInit;
 - (id)getError;
-- (id)getPendingSystemGraphKeys:(id)a3;
-- (id)getThreadPoolInfo:(ps_exec_shared_thread_pool_s *)a3 forSubgraph:;
+- (id)getPendingSystemGraphKeys:(id)keys;
+- (id)getThreadPoolInfo:(ps_exec_shared_thread_pool_s *)info forSubgraph:;
 - (uint64_t)getError;
-- (void)NO_RESPONSE_FROM_ARBITRARY_PRODUCER_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)NO_RESPONSE_FROM_ARKIT_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)NO_RESPONSE_FROM_CVCAL_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)NO_RESPONSE_FROM_MULTIPLE_PRODUCERS_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)NO_RESPONSE_FROM_REALITYCAMERA_TO_START_CAMERAS:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_ADD_EXEC_GRAPHS:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_BUFFER_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_BUFFER_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_DOMAIN_RESOLUTION:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_GST_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_GST_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_REMOVE_EXEC_GRAPHS:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_STARTING:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)TIMED_OUT_IN_STATE_SYSTEM_GRAPH_NOTIFY:(id)a3 SHOULD_ABORT:(BOOL)a4;
-- (void)armDiagnosticsTimer:(unint64_t)a3;
-- (void)armTimeoutTimer:(unint64_t)a3;
+- (void)NO_RESPONSE_FROM_ARBITRARY_PRODUCER_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)NO_RESPONSE_FROM_ARKIT_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)NO_RESPONSE_FROM_CVCAL_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)NO_RESPONSE_FROM_MULTIPLE_PRODUCERS_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)NO_RESPONSE_FROM_REALITYCAMERA_TO_START_CAMERAS:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)TIMED_OUT_IN_STATE_ADD_EXEC_GRAPHS:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)TIMED_OUT_IN_STATE_BUFFER_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_BUFFER_INIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_DOMAIN_RESOLUTION:(id)n SHOULD_ABORT:(BOOL)t;
+- (void)TIMED_OUT_IN_STATE_GST_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_GST_INIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_INIT:(id)t SHOULD_ABORT:(BOOL)rT;
+- (void)TIMED_OUT_IN_STATE_REMOVE_EXEC_GRAPHS:(id)s SHOULD_ABORT:(BOOL)t;
+- (void)TIMED_OUT_IN_STATE_STARTING:(id)g SHOULD_ABORT:(BOOL)t;
+- (void)TIMED_OUT_IN_STATE_SYSTEM_GRAPH_NOTIFY:(id)y SHOULD_ABORT:(BOOL)t;
+- (void)armDiagnosticsTimer:(unint64_t)timer;
+- (void)armTimeoutTimer:(unint64_t)timer;
 - (void)cancelTimers;
 - (void)dealloc;
-- (void)start:(double)a3;
+- (void)start:(double)start;
 - (void)updateTransitionCompleted;
 @end
 
 @implementation PSTransitionMonitor
 
-+ (id)stateToString:(unsigned int)a3
++ (id)stateToString:(unsigned int)string
 {
-  if (a3 < 0xD)
+  if (string < 0xD)
   {
-    return off_279A48978[a3];
+    return off_279A48978[string];
   }
 
   v9[1] = v3;
   v9[2] = v4;
-  v6 = [(PSTransitionMonitor *)v9 stateToString:a3];
+  v6 = [(PSTransitionMonitor *)v9 stateToString:string];
   return [(PSTransitionMonitor *)v6 initWithTransitionManager:v7, v8];
 }
 
-- (PSTransitionMonitor)initWithTransitionManager:(id)a3
+- (PSTransitionMonitor)initWithTransitionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = PSTransitionMonitor;
   v5 = [(PSTransitionMonitor *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_transitionManager, v4);
+    objc_storeWeak(&v5->_transitionManager, managerCopy);
     v6->_transitionState = 12;
     v7 = objc_alloc_init(MEMORY[0x277CCA928]);
     transitionCond = v6->_transitionCond;
@@ -95,17 +95,17 @@
   [(PSTransitionMonitor *)&v3 dealloc];
 }
 
-- (void)armTimeoutTimer:(unint64_t)a3
+- (void)armTimeoutTimer:(unint64_t)timer
 {
-  v3 = 1000000000 * a3;
+  v3 = 1000000000 * timer;
   source = [(PSTransitionMonitor *)self timeoutTimer];
   v4 = dispatch_time(0, v3);
   dispatch_source_set_timer(source, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
-- (void)armDiagnosticsTimer:(unint64_t)a3
+- (void)armDiagnosticsTimer:(unint64_t)timer
 {
-  v3 = 1000000000 * a3;
+  v3 = 1000000000 * timer;
   source = [(PSTransitionMonitor *)self diagnosticsTimer];
   v4 = dispatch_time(0, v3);
   dispatch_source_set_timer(source, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -113,23 +113,23 @@
 
 - (void)cancelTimers
 {
-  v3 = [(PSTransitionMonitor *)self timeoutTimer];
-  dispatch_source_cancel(v3);
+  timeoutTimer = [(PSTransitionMonitor *)self timeoutTimer];
+  dispatch_source_cancel(timeoutTimer);
 
-  v4 = [(PSTransitionMonitor *)self diagnosticsTimer];
-  dispatch_source_cancel(v4);
+  diagnosticsTimer = [(PSTransitionMonitor *)self diagnosticsTimer];
+  dispatch_source_cancel(diagnosticsTimer);
 }
 
 - (void)updateTransitionCompleted
 {
   objc_initWeak(&location, self);
-  v3 = [(PSTransitionMonitor *)self timerQueue];
+  timerQueue = [(PSTransitionMonitor *)self timerQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__PSTransitionMonitor_updateTransitionCompleted__block_invoke;
   v4[3] = &unk_279A48298;
   objc_copyWeak(&v5, &location);
-  dispatch_sync(v3, v4);
+  dispatch_sync(timerQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -166,19 +166,19 @@ void __48__PSTransitionMonitor_updateTransitionCompleted__block_invoke(uint64_t 
 
 - (id)getError
 {
-  v3 = [(PSTransitionMonitor *)self transitionState];
-  v4 = [PSTransitionMonitor stateToString:v3];
-  v5 = [(PSTransitionMonitor *)self generateErrorForState:v3];
+  transitionState = [(PSTransitionMonitor *)self transitionState];
+  v4 = [PSTransitionMonitor stateToString:transitionState];
+  v5 = [(PSTransitionMonitor *)self generateErrorForState:transitionState];
   if (v5)
   {
     v6 = v5;
     v7 = MEMORY[0x277CBEB38];
-    v8 = [v5 userInfo];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    userInfo = [v5 userInfo];
+    v9 = [v7 dictionaryWithDictionary:userInfo];
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v6 localizedDescription];
-    v12 = [v10 stringWithFormat:@"Transition Failure (%@): %@", v4, v11];
+    localizedDescription = [v6 localizedDescription];
+    v12 = [v10 stringWithFormat:@"Transition Failure (%@): %@", v4, localizedDescription];
     [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
 
     v13 = [MEMORY[0x277CCA9B8] polarisErrorWithCode:objc_msgSend(v6 userInfo:{"code"), v9}];
@@ -188,14 +188,14 @@ void __48__PSTransitionMonitor_updateTransitionCompleted__block_invoke(uint64_t 
 
   else
   {
-    v15 = [(PSTransitionMonitor *)&v18 getError];
-    [(PSTransitionMonitor *)v15 start:v16, v17];
+    getError = [(PSTransitionMonitor *)&v18 getError];
+    [(PSTransitionMonitor *)getError start:v16, v17];
   }
 
   return result;
 }
 
-- (void)start:(double)a3
+- (void)start:(double)start
 {
   v5 = MEMORY[0x277D85D38];
   v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_timerQueue);
@@ -205,31 +205,31 @@ void __48__PSTransitionMonitor_updateTransitionCompleted__block_invoke(uint64_t 
   [(PSTransitionMonitor *)self setDiagnosticsTimer:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(PSTransitionMonitor *)self timeoutTimer];
+  timeoutTimer = [(PSTransitionMonitor *)self timeoutTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __29__PSTransitionMonitor_start___block_invoke;
   handler[3] = &unk_279A48958;
   objc_copyWeak(v15, &location);
   handler[4] = self;
-  v15[1] = *&a3;
-  dispatch_source_set_event_handler(v8, handler);
+  v15[1] = *&start;
+  dispatch_source_set_event_handler(timeoutTimer, handler);
 
-  v9 = [(PSTransitionMonitor *)self diagnosticsTimer];
+  diagnosticsTimer = [(PSTransitionMonitor *)self diagnosticsTimer];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __29__PSTransitionMonitor_start___block_invoke_2;
   v12[3] = &unk_279A48298;
   objc_copyWeak(&v13, &location);
-  dispatch_source_set_event_handler(v9, v12);
+  dispatch_source_set_event_handler(diagnosticsTimer, v12);
 
-  [(PSTransitionMonitor *)self armTimeoutTimer:a3];
-  [(PSTransitionMonitor *)self armDiagnosticsTimer:fmin(a3, 10.0)];
-  v10 = [(PSTransitionMonitor *)self timeoutTimer];
-  dispatch_resume(v10);
+  [(PSTransitionMonitor *)self armTimeoutTimer:start];
+  [(PSTransitionMonitor *)self armDiagnosticsTimer:fmin(start, 10.0)];
+  timeoutTimer2 = [(PSTransitionMonitor *)self timeoutTimer];
+  dispatch_resume(timeoutTimer2);
 
-  v11 = [(PSTransitionMonitor *)self diagnosticsTimer];
-  dispatch_resume(v11);
+  diagnosticsTimer2 = [(PSTransitionMonitor *)self diagnosticsTimer];
+  dispatch_resume(diagnosticsTimer2);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(v15);
@@ -309,18 +309,18 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  v5 = [WeakRetained systemGraphClient];
-  v6 = [v5 requestState];
+  systemGraphClient = [WeakRetained systemGraphClient];
+  requestState = [systemGraphClient requestState];
 
-  v7 = [v6 requestedKeys];
-  v8 = [v6 pendingKeys];
-  v34 = v7;
-  v31 = [MEMORY[0x277CBEB58] setWithSet:v7];
-  v33 = v8;
-  [v31 minusSet:v8];
-  v32 = self;
-  v35 = v6;
-  v9 = [(PSTransitionMonitor *)self getPendingSystemGraphKeys:v6];
+  requestedKeys = [requestState requestedKeys];
+  pendingKeys = [requestState pendingKeys];
+  v34 = requestedKeys;
+  v31 = [MEMORY[0x277CBEB58] setWithSet:requestedKeys];
+  v33 = pendingKeys;
+  [v31 minusSet:pendingKeys];
+  selfCopy = self;
+  v35 = requestState;
+  v9 = [(PSTransitionMonitor *)self getPendingSystemGraphKeys:requestState];
   v36 = v3;
   [v3 appendFormat:@"Timed out waiting for providers. Pending keys: {"];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -347,8 +347,8 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
         v17 = objc_alloc_init(MEMORY[0x277CCAB68]);
         [v17 appendFormat:@"%@: [", v16];
         v18 = [v11 objectForKeyedSubscript:v16];
-        v19 = [v18 allObjects];
-        v20 = [v19 componentsJoinedByString:{@", "}];
+        allObjects = [v18 allObjects];
+        v20 = [allObjects componentsJoinedByString:{@", "}];
         [v17 appendString:v20];
 
         [v17 appendFormat:@"]"];
@@ -367,8 +367,8 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   [v36 appendString:v22];
 
   [v36 appendFormat:@"}. Completed keys: ["];
-  v23 = [v31 allObjects];
-  v24 = [v23 componentsJoinedByString:{@", "}];
+  allObjects2 = [v31 allObjects];
+  v24 = [allObjects2 componentsJoinedByString:{@", "}];
   [v36 appendString:v24];
 
   [v36 appendFormat:@"]."];
@@ -376,7 +376,7 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   v43[0] = v36;
   v42[0] = v25;
   v42[1] = @"state";
-  v26 = [PSTransitionMonitor stateToString:[(PSTransitionMonitor *)v32 transitionState]];
+  v26 = [PSTransitionMonitor stateToString:[(PSTransitionMonitor *)selfCopy transitionState]];
   v43[1] = v26;
   v43[2] = v37;
   v42[2] = @"pending";
@@ -476,15 +476,15 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)getThreadPoolInfo:(ps_exec_shared_thread_pool_s *)a3 forSubgraph:
+- (id)getThreadPoolInfo:(ps_exec_shared_thread_pool_s *)info forSubgraph:
 {
   v4 = v3;
   v19 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  var2 = a3->var2;
+  var2 = info->var2;
   if (var2)
   {
     v6 = 0;
-    p_var9 = &a3[17].var9;
+    p_var9 = &info[17].var9;
     do
     {
       if (*&p_var9[2 * v6] != -1)
@@ -513,7 +513,7 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
           }
 
           while (v9 < v8);
-          var2 = a3->var2;
+          var2 = info->var2;
         }
       }
 
@@ -546,7 +546,7 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v30 = self;
+  selfCopy = self;
   v5 = self->_subGraphsToBeRemoved;
   v6 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v36 objects:v43 count:16];
   if (v6)
@@ -562,16 +562,16 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v36 + 1) + 8 * i) pointerValue];
-        if (v10)
+        pointerValue = [*(*(&v36 + 1) + 8 * i) pointerValue];
+        if (pointerValue)
         {
-          v11 = v10;
-          if (*(v10 + 16) != 5)
+          v11 = pointerValue;
+          if (*(pointerValue + 16) != 5)
           {
-            v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:v10 + 113];
+            v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:pointerValue + 113];
             [v31 addObject:v12];
 
-            v13 = [(PSTransitionMonitor *)v30 getThreadPoolInfo:*(v11 + 6792) forSubgraph:v11];
+            v13 = [(PSTransitionMonitor *)selfCopy getThreadPoolInfo:*(v11 + 6792) forSubgraph:v11];
             v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", *(v11 + 6792) + 72];
             [v4 setValue:v13 forKey:v14];
           }
@@ -594,8 +594,8 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = [v4 allKeys];
-    v18 = [v17 countByEnumeratingWithState:&v32 objects:v42 count:16];
+    allKeys = [v4 allKeys];
+    v18 = [allKeys countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v18)
     {
       v19 = v18;
@@ -606,7 +606,7 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
         {
           if (*v33 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 = *(*(&v32 + 1) + 8 * j);
@@ -614,19 +614,19 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
           [v3 appendFormat:@"\nThread pool: %@\n{\n%@}", v22, v23];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v32 objects:v42 count:16];
+        v19 = [allKeys countByEnumeratingWithState:&v32 objects:v42 count:16];
       }
 
       while (v19);
     }
   }
 
-  [(PSTransitionMonitor *)v30 unlock];
+  [(PSTransitionMonitor *)selfCopy unlock];
   v24 = *MEMORY[0x277CCA450];
   v41[0] = v3;
   v40[0] = v24;
   v40[1] = @"state";
-  v25 = [PSTransitionMonitor stateToString:[(PSTransitionMonitor *)v30 transitionState]];
+  v25 = [PSTransitionMonitor stateToString:[(PSTransitionMonitor *)selfCopy transitionState]];
   v40[2] = @"graphs";
   v41[1] = v25;
   v41[2] = v31;
@@ -738,150 +738,150 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)TIMED_OUT_IN_STATE_STARTING:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_STARTING:(id)g SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  gCopy = g;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, gCopy, tCopy);
 }
 
-- (void)NO_RESPONSE_FROM_REALITYCAMERA_TO_START_CAMERAS:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)NO_RESPONSE_FROM_REALITYCAMERA_TO_START_CAMERAS:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)NO_RESPONSE_FROM_ARKIT_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)NO_RESPONSE_FROM_ARKIT_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)NO_RESPONSE_FROM_CVCAL_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)NO_RESPONSE_FROM_CVCAL_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)NO_RESPONSE_FROM_ARBITRARY_PRODUCER_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)NO_RESPONSE_FROM_ARBITRARY_PRODUCER_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)NO_RESPONSE_FROM_MULTIPLE_PRODUCERS_TO_START_RESOURCES:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)NO_RESPONSE_FROM_MULTIPLE_PRODUCERS_TO_START_RESOURCES:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_DOMAIN_RESOLUTION:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_DOMAIN_RESOLUTION:(id)n SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  nCopy = n;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, nCopy, tCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_INIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_BUFFER_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_BUFFER_INIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_GST_INIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_GST_INIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_ADD_EXEC_GRAPHS:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_ADD_EXEC_GRAPHS:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_REMOVE_EXEC_GRAPHS:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_REMOVE_EXEC_GRAPHS:(id)s SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  sCopy = s;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, sCopy, tCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_GST_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_GST_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_BUFFER_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_BUFFER_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_DEINIT:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_LOCAL_SOURCE_DEINIT:(id)t SHOULD_ABORT:(BOOL)rT
 {
-  v4 = a4;
-  v6 = a3;
+  rTCopy = rT;
+  tCopy = t;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, tCopy, rTCopy);
 }
 
-- (void)TIMED_OUT_IN_STATE_SYSTEM_GRAPH_NOTIFY:(id)a3 SHOULD_ABORT:(BOOL)a4
+- (void)TIMED_OUT_IN_STATE_SYSTEM_GRAPH_NOTIFY:(id)y SHOULD_ABORT:(BOOL)t
 {
-  v4 = a4;
-  v6 = a3;
+  tCopy = t;
+  yCopy = y;
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  _handleTimeoutBranching(WeakRetained, v6, v4);
+  _handleTimeoutBranching(WeakRetained, yCopy, tCopy);
 }
 
-- (id)getPendingSystemGraphKeys:(id)a3
+- (id)getPendingSystemGraphKeys:(id)keys
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  v7 = [WeakRetained executionSession];
-  v8 = [v7 context];
+  executionSession = [WeakRetained executionSession];
+  context = [executionSession context];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v20 = v4;
-  v9 = [v4 pendingKeys];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v20 = keysCopy;
+  pendingKeys = [keysCopy pendingKeys];
+  v10 = [pendingKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -892,11 +892,11 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(pendingKeys);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v8 producingExecutionSessionForResourceKey:v14];
+        v15 = [context producingExecutionSessionForResourceKey:v14];
         if (v15)
         {
           v16 = v15;
@@ -917,7 +917,7 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
         [v17 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [pendingKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
@@ -968,9 +968,9 @@ void __29__PSTransitionMonitor_start___block_invoke_2(uint64_t a1)
 - (uint64_t)getError
 {
   v25 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
+  *self = 0;
   v5 = a2;
-  asprintf(a1, "Could not generate error for state %s", [a2 UTF8String]);
+  asprintf(self, "Could not generate error for state %s", [a2 UTF8String]);
   v6 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v6))
   {

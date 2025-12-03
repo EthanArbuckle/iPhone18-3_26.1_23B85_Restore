@@ -1,14 +1,14 @@
 @interface CAMLowLightBoostCommand
-- (CAMLowLightBoostCommand)initWithCoder:(id)a3;
-- (CAMLowLightBoostCommand)initWithLowLightBoostEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMLowLightBoostCommand)initWithCoder:(id)coder;
+- (CAMLowLightBoostCommand)initWithLowLightBoostEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMLowLightBoostCommand
 
-- (CAMLowLightBoostCommand)initWithLowLightBoostEnabled:(BOOL)a3
+- (CAMLowLightBoostCommand)initWithLowLightBoostEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMLowLightBoostCommand;
@@ -16,53 +16,53 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMLowLightBoostCommand)initWithCoder:(id)a3
+- (CAMLowLightBoostCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMLowLightBoostCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMLowLightBoostCommandEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMLowLightBoostCommandEnabled"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMLowLightBoostCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMLowLightBoostCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMLowLightBoostCommandEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMLowLightBoostCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMLowLightBoostCommandEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMLowLightBoostCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMLowLightBoostCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v5 = [a3 currentVideoDevice];
-  v4 = [(CAMLowLightBoostCommand *)self _isEnabled];
-  if ([v5 isLowLightBoostSupported])
+  currentVideoDevice = [context currentVideoDevice];
+  _isEnabled = [(CAMLowLightBoostCommand *)self _isEnabled];
+  if ([currentVideoDevice isLowLightBoostSupported])
   {
-    [v5 setAutomaticallyEnablesLowLightBoostWhenAvailable:v4];
+    [currentVideoDevice setAutomaticallyEnablesLowLightBoostWhenAvailable:_isEnabled];
   }
 }
 

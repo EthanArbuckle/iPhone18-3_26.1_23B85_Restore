@@ -1,32 +1,32 @@
 @interface VNGenerateAnimalSegmentationRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (int64_t)qualityLevel;
 - (unsigned)outputPixelFormat;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setOutputPixelFormat:(unsigned int)a3;
-- (void)setQualityLevel:(int64_t)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setOutputPixelFormat:(unsigned int)format;
+- (void)setQualityLevel:(int64_t)level;
 @end
 
 @implementation VNGenerateAnimalSegmentationRequest
 
-- (void)setOutputPixelFormat:(unsigned int)a3
+- (void)setOutputPixelFormat:(unsigned int)format
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v4[36] = a3;
+    configuration[36] = format;
   }
 }
 
 - (unsigned)outputPixelFormat
 {
-  v2 = [(VNRequest *)self configuration];
-  if (v2)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v3 = v2[36];
+    v3 = configuration[36];
   }
 
   else
@@ -37,21 +37,21 @@
   return v3;
 }
 
-- (void)setQualityLevel:(int64_t)a3
+- (void)setQualityLevel:(int64_t)level
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v4[19] = a3;
+    configuration[19] = level;
   }
 }
 
 - (int64_t)qualityLevel
 {
-  v2 = [(VNRequest *)self configuration];
-  if (v2)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v3 = v2[19];
+    v3 = configuration[19];
   }
 
   else
@@ -62,16 +62,16 @@
   return v3;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v51 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v51 = [contextCopy imageBufferAndReturnError:error];
   if (v51)
   {
-    v50 = [v8 session];
-    v9 = [v8 qosClass];
-    v52 = [(VNGenerateAnimalSegmentationRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:v50];
+    session = [contextCopy session];
+    qosClass = [contextCopy qosClass];
+    v52 = [(VNGenerateAnimalSegmentationRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
     v55 = v51;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
     [v52 setObject:v10 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
@@ -79,12 +79,12 @@
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VNGenerateAnimalSegmentationRequest outputPixelFormat](self, "outputPixelFormat")}];
     [v52 setObject:v11 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat"];
 
-    v12 = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
-    if (v12)
+    qualityLevel = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
+    if (qualityLevel)
     {
-      if (v12 == 1)
+      if (qualityLevel == 1)
       {
-        if (a5)
+        if (error)
         {
           v13 = 0;
           v14 = [VNError errorForInternalErrorWithLocalizedDescription:@"Balanced quality level is handled by compound request"];
@@ -94,7 +94,7 @@ LABEL_35:
         }
       }
 
-      else if (a5)
+      else if (error)
       {
         v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VNGenerateAnimalSegmentationRequest qualityLevel](self, "qualityLevel")}];
         v27 = [VNError errorForInvalidOption:v26 named:@"qualityLevel"];
@@ -107,8 +107,8 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v45 = v50;
-    v16 = v8;
+    v45 = session;
+    v16 = contextCopy;
     v46 = v52;
     v44 = v16;
     if (!self)
@@ -125,8 +125,8 @@ LABEL_36:
     if (!v17)
     {
       [(VNGenerateAnimalSegmentationRequest *)v49 setOutputPixelFormat:1278226534];
-      v28 = [v16 requestPerformerAndReturnError:a5];
-      if (!v28 || (v56[0] = v49, [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "performDependentRequests:onBehalfOfRequest:inContext:error:", v29, self, v16, a5), v29, (v30 & 1) == 0))
+      v28 = [v16 requestPerformerAndReturnError:error];
+      if (!v28 || (v56[0] = v49, [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v28, "performDependentRequests:onBehalfOfRequest:inContext:error:", v29, self, v16, error), v29, (v30 & 1) == 0))
       {
         v48 = 0;
         v13 = 0;
@@ -135,9 +135,9 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v31 = [(VNRequest *)v49 results];
+      results = [(VNRequest *)v49 results];
 
-      v17 = v31;
+      v17 = results;
     }
 
     v48 = v17;
@@ -176,11 +176,11 @@ LABEL_33:
     v23 = v46;
     v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v23];
     [v24 removeObjectForKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat"];
-    v25 = [v21 detectorOfType:@"VNGuidedUpsamplingGeneratorType" configuredWithOptions:v24 error:a5];
+    v25 = [v21 detectorOfType:@"VNGuidedUpsamplingGeneratorType" configuredWithOptions:v24 error:error];
     if (v25)
     {
       [(VNImageBasedRequest *)self regionOfInterest];
-      v47 = [v25 processUsingQualityOfServiceClass:v9 options:v23 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v47 = [v25 processUsingQualityOfServiceClass:qosClass options:v23 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
     }
 
     else
@@ -200,23 +200,23 @@ LABEL_33:
           {
             v34 = [(VNGenerateAnimalSegmentationRequest *)v49 objectAtIndexedSubscript:i];
             v35 = [VNPixelBufferObservation alloc];
-            v36 = [v34 originatingRequestSpecifier];
-            v37 = [v34 featureName];
+            originatingRequestSpecifier = [v34 originatingRequestSpecifier];
+            featureName = [v34 featureName];
             v38 = [v47 objectAtIndexedSubscript:i];
-            v39 = -[VNPixelBufferObservation initWithOriginatingRequestSpecifier:featureName:CVPixelBuffer:](v35, "initWithOriginatingRequestSpecifier:featureName:CVPixelBuffer:", v36, v37, [v38 pixelBuffer]);
+            v39 = -[VNPixelBufferObservation initWithOriginatingRequestSpecifier:featureName:CVPixelBuffer:](v35, "initWithOriginatingRequestSpecifier:featureName:CVPixelBuffer:", originatingRequestSpecifier, featureName, [v38 pixelBuffer]);
 
             v40 = [v48 objectAtIndexedSubscript:i];
-            v41 = [v40 vn_cloneObject];
+            vn_cloneObject = [v40 vn_cloneObject];
 
-            [(VNDetectedObjectObservation *)v41 setInstanceSegmentationMask:v39];
-            [v13 addObject:v41];
+            [(VNDetectedObjectObservation *)vn_cloneObject setInstanceSegmentationMask:v39];
+            [v13 addObject:vn_cloneObject];
           }
         }
 
         goto LABEL_30;
       }
 
-      if (a5)
+      if (error)
       {
         v42 = [VNError errorForInternalErrorWithLocalizedDescription:@"Accurate observations count mismatch"];
       }
@@ -242,13 +242,13 @@ void __113__VNGenerateAnimalSegmentationRequest__internalPerformAccurateSession_
   [v2 addObject:?];
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
-  if (v4)
+  configurationCopy = configuration;
+  qualityLevel = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
+  if (configurationCopy)
   {
-    v6 = v4[19];
+    v6 = configurationCopy[19];
   }
 
   else
@@ -256,11 +256,11 @@ void __113__VNGenerateAnimalSegmentationRequest__internalPerformAccurateSession_
     v6 = 0;
   }
 
-  if (v5 == v6 && ((v7 = [(VNGenerateAnimalSegmentationRequest *)self outputPixelFormat], !v4) ? (v8 = 0) : (v8 = *(v4 + 36)), v7 == v8))
+  if (qualityLevel == v6 && ((v7 = [(VNGenerateAnimalSegmentationRequest *)self outputPixelFormat], !configurationCopy) ? (v8 = 0) : (v8 = *(configurationCopy + 36)), v7 == v8))
   {
     v11.receiver = self;
     v11.super_class = VNGenerateAnimalSegmentationRequest;
-    v9 = [(VNImageBasedRequest *)&v11 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v9 = [(VNImageBasedRequest *)&v11 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -271,29 +271,29 @@ void __113__VNGenerateAnimalSegmentationRequest__internalPerformAccurateSession_
   return v9;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v8.receiver = self;
   v8.super_class = VNGenerateAnimalSegmentationRequest;
-  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VNGenerateAnimalSegmentationRequest qualityLevel](self, "qualityLevel")}];
   [v5 setObject:v6 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_QualityLevel"];
 
   return v5;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
-    v6 = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
-    if (v6 == 1)
+    qualityLevel = [(VNGenerateAnimalSegmentationRequest *)self qualityLevel];
+    if (qualityLevel == 1)
     {
       v7 = @"VNE5RTSegmentationMultiGeneratorType";
       goto LABEL_8;
     }
 
-    if (!v6)
+    if (!qualityLevel)
     {
       v7 = @"VNGuidedUpsamplingGeneratorType";
 LABEL_8:
@@ -301,17 +301,17 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    if (a4)
+    if (error)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[VNGenerateAnimalSegmentationRequest qualityLevel](self, "qualityLevel")}];
-      *a4 = [VNError errorForInvalidOption:v9 named:@"qualityLevel"];
+      *error = [VNError errorForInvalidOption:v9 named:@"qualityLevel"];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
     goto LABEL_12;
   }
 
@@ -321,18 +321,18 @@ LABEL_12:
   return v7;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNGenerateAnimalSegmentationRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNGenerateAnimalSegmentationRequest *)self setQualityLevel:[(VNGenerateAnimalSegmentationRequest *)v5 qualityLevel]];
       [(VNGenerateAnimalSegmentationRequest *)self setOutputPixelFormat:[(VNGenerateAnimalSegmentationRequest *)v5 outputPixelFormat]];
     }

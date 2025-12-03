@@ -1,6 +1,6 @@
 @interface GEOAPShowUploadInfoHandler
-- (GEOAPShowUploadInfoHandler)initWithHistoryVisitorBlock:(id)a3 completion:(id)a4;
-- (GEOAPShowUploadInfoHandler)initWithInflightVisitorBlock:(id)a3 completion:(id)a4;
+- (GEOAPShowUploadInfoHandler)initWithHistoryVisitorBlock:(id)block completion:(id)completion;
+- (GEOAPShowUploadInfoHandler)initWithInflightVisitorBlock:(id)block completion:(id)completion;
 - (void)endHistoricalData;
 - (void)endInflightData;
 - (void)showInflight;
@@ -48,14 +48,14 @@ LABEL_11:
     return;
   }
 
-  v5 = [(NSXPCConnection *)self->_xpcConn remoteObjectProxy];
-  [v5 showInflight];
+  remoteObjectProxy = [(NSXPCConnection *)self->_xpcConn remoteObjectProxy];
+  [remoteObjectProxy showInflight];
 }
 
-- (GEOAPShowUploadInfoHandler)initWithInflightVisitorBlock:(id)a3 completion:(id)a4
+- (GEOAPShowUploadInfoHandler)initWithInflightVisitorBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = GEOAPShowUploadInfoHandler;
   v8 = [(GEOAPShowUploadInfoHandler *)&v16 init];
@@ -65,11 +65,11 @@ LABEL_11:
     xpcConn = v8->_xpcConn;
     v8->_xpcConn = v9;
 
-    v11 = [v6 copy];
+    v11 = [blockCopy copy];
     inflightVisitorBlock = v8->_inflightVisitorBlock;
     v8->_inflightVisitorBlock = v11;
 
-    v13 = [v7 copy];
+    v13 = [completionCopy copy];
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v13;
   }
@@ -85,10 +85,10 @@ LABEL_11:
   self->_xpcConn = 0;
 }
 
-- (GEOAPShowUploadInfoHandler)initWithHistoryVisitorBlock:(id)a3 completion:(id)a4
+- (GEOAPShowUploadInfoHandler)initWithHistoryVisitorBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = GEOAPShowUploadInfoHandler;
   v8 = [(GEOAPShowUploadInfoHandler *)&v16 init];
@@ -98,11 +98,11 @@ LABEL_11:
     xpcConn = v8->_xpcConn;
     v8->_xpcConn = v9;
 
-    v11 = [v6 copy];
+    v11 = [blockCopy copy];
     historyVisitorBlock = v8->_historyVisitorBlock;
     v8->_historyVisitorBlock = v11;
 
-    v13 = [v7 copy];
+    v13 = [completionCopy copy];
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v13;
   }

@@ -1,7 +1,7 @@
 @interface FCGlobalCuratedESLArticlesOperation
 - (FCGlobalCuratedESLArticlesOperation)init;
-- (FCGlobalCuratedESLArticlesOperation)initWithContext:(id)a3 configuration:(id)a4 contentVariantProvider:(id)a5;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCGlobalCuratedESLArticlesOperation)initWithContext:(id)context configuration:(id)configuration contentVariantProvider:(id)provider;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
@@ -34,23 +34,23 @@
   objc_exception_throw(v6);
 }
 
-- (FCGlobalCuratedESLArticlesOperation)initWithContext:(id)a3 configuration:(id)a4 contentVariantProvider:(id)a5
+- (FCGlobalCuratedESLArticlesOperation)initWithContext:(id)context configuration:(id)configuration contentVariantProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  configurationCopy = configuration;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = FCGlobalCuratedESLArticlesOperation;
   v12 = [(FCOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_configuration, a4);
-    objc_storeStrong(&v13->_contentVariantProvider, a5);
-    v14 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_configuration, configuration);
+    objc_storeStrong(&v13->_contentVariantProvider, provider);
+    array = [MEMORY[0x1E695DEC8] array];
     networkEvents = v13->_networkEvents;
-    v13->_networkEvents = v14;
+    v13->_networkEvents = array;
   }
 
   return v13;
@@ -149,7 +149,7 @@ LABEL_18:
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -161,11 +161,11 @@ LABEL_18:
     v3 = FCOperationLog;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(FCOperation *)v2 shortOperationDescription];
-      v5 = v4;
-      if (v2)
+      shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
+      v5 = shortOperationDescription;
+      if (selfCopy)
       {
-        evergreenArticleListIDs = v2->_evergreenArticleListIDs;
+        evergreenArticleListIDs = selfCopy->_evergreenArticleListIDs;
       }
 
       else
@@ -174,16 +174,16 @@ LABEL_18:
       }
 
       *buf = 138543618;
-      v26 = v4;
+      v26 = shortOperationDescription;
       v27 = 2114;
       v28 = evergreenArticleListIDs;
       _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch from article list IDs: %{public}@", buf, 0x16u);
     }
 
     v7 = objc_alloc_init(FCCKBatchedMultiFetchQueryOperation);
-    if (v2)
+    if (selfCopy)
     {
-      context = v2->_context;
+      context = selfCopy->_context;
     }
 
     else
@@ -191,9 +191,9 @@ LABEL_18:
       context = 0;
     }
 
-    v9 = [(FCContentContext *)context internalContentContext];
-    v10 = [v9 contentDatabase];
-    [(FCCKBatchedMultiFetchQueryOperation *)v7 setDatabase:v10];
+    internalContentContext = [(FCContentContext *)context internalContentContext];
+    contentDatabase = [internalContentContext contentDatabase];
+    [(FCCKBatchedMultiFetchQueryOperation *)v7 setDatabase:contentDatabase];
 
     v12 = +[FCEdgeCacheHint edgeCacheHintForEvergreenArticles];
     if (v7)
@@ -201,9 +201,9 @@ LABEL_18:
       objc_setProperty_nonatomic_copy(v7, v11, v12, 424);
     }
 
-    if (v2)
+    if (selfCopy)
     {
-      v13 = v2->_evergreenArticleListIDs;
+      v13 = selfCopy->_evergreenArticleListIDs;
     }
 
     else
@@ -236,7 +236,7 @@ LABEL_18:
     v23[1] = 3221225472;
     v23[2] = __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke_18;
     v23[3] = &unk_1E7C36D40;
-    v23[4] = v2;
+    v23[4] = selfCopy;
     v16 = [MEMORY[0x1E695DEC8] fc_array:v23];
     [(FCCKBatchedMultiFetchQueryOperation *)v7 setRecordSpecs:v16];
 
@@ -244,7 +244,7 @@ LABEL_18:
     newValue[1] = 3221225472;
     newValue[2] = __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke_2;
     newValue[3] = &unk_1E7C36D68;
-    newValue[4] = v2;
+    newValue[4] = selfCopy;
     if (v7)
     {
       objc_setProperty_nonatomic_copy(v7, v17, newValue, 448);
@@ -255,14 +255,14 @@ LABEL_18:
     v20[1] = 3221225472;
     v20[2] = __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke_4;
     v20[3] = &unk_1E7C406A0;
-    v20[4] = v2;
+    v20[4] = selfCopy;
     objc_copyWeak(&v21, buf);
     if (v7)
     {
       objc_setProperty_nonatomic_copy(v7, v18, v20, 464);
     }
 
-    [(FCOperation *)v2 associateChildOperation:v7];
+    [(FCOperation *)selfCopy associateChildOperation:v7];
     [(FCOperation *)v7 start];
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -274,7 +274,7 @@ LABEL_18:
     v24[1] = 3221225472;
     v24[2] = __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke;
     v24[3] = &unk_1E7C36EA0;
-    v24[4] = v2;
+    v24[4] = selfCopy;
     __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke(v24);
   }
 
@@ -427,15 +427,15 @@ void __55__FCGlobalCuratedESLArticlesOperation_performOperation__block_invoke_4(
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCGlobalCuratedESLArticlesOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(FCGlobalCuratedESLArticlesOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(FCGlobalCuratedESLArticlesOperation *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(FCGlobalCuratedESLArticlesOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 }
 

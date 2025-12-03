@@ -1,21 +1,21 @@
 @interface NFLPCDStatisticsCALogger
-+ (void)postAnalyticsLPCDStatistic:(id)a3;
++ (void)postAnalyticsLPCDStatistic:(id)statistic;
 @end
 
 @implementation NFLPCDStatisticsCALogger
 
-+ (void)postAnalyticsLPCDStatistic:(id)a3
++ (void)postAnalyticsLPCDStatistic:(id)statistic
 {
   v40[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  statisticCopy = statistic;
   v6 = objc_msgSend_sharedCALogger(NFCALogger, v4, v5);
   v9 = objc_msgSend_generateDailyUUIDForCA(v6, v7, v8);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v3, v10, @"falseDetectionCount");
+  v11 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v10, @"falseDetectionCount");
 
   if (v11)
   {
     v39[0] = @"falseDetectionCount";
-    v14 = objc_msgSend_objectForKeyedSubscript_(v3, v12, @"falseDetectionCount");
+    v14 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v12, @"falseDetectionCount");
     v40[0] = v14;
     v40[1] = &unk_2843B4C98;
     v39[1] = @"tagType1ReadSuccessCount";
@@ -42,7 +42,7 @@
     goto LABEL_10;
   }
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v3, v12, @"notNDEFFormatedTagCount");
+  v16 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v12, @"notNDEFFormatedTagCount");
 
   if (v16)
   {
@@ -59,7 +59,7 @@
     v38[4] = &unk_2843B4C98;
     v38[5] = &unk_2843B4C98;
     v37[6] = @"notNDEFFormatedTagCount";
-    v18 = objc_msgSend_objectForKeyedSubscript_(v3, v17, @"notNDEFFormatedTagCount");
+    v18 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v17, @"notNDEFFormatedTagCount");
     v14 = v18;
     v37[7] = @"dailyDeviceUUID";
     v20 = @"noUUID";
@@ -75,19 +75,19 @@
   }
 
   v36[0] = &unk_2843B4C98;
-  v14 = objc_msgSend_objectForKeyedSubscript_(v3, v17, @"tagType1ReadSuccessCount", @"falseDetectionCount", @"tagType1ReadSuccessCount");
+  v14 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v17, @"tagType1ReadSuccessCount", @"falseDetectionCount", @"tagType1ReadSuccessCount");
   v36[1] = v14;
   v35[2] = @"tagType2ReadSuccessCount";
-  v26 = objc_msgSend_objectForKeyedSubscript_(v3, v25, @"tagType2ReadSuccessCount");
+  v26 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v25, @"tagType2ReadSuccessCount");
   v36[2] = v26;
   v35[3] = @"tagType3ReadSuccessCount";
-  v28 = objc_msgSend_objectForKeyedSubscript_(v3, v27, @"tagType3ReadSuccessCount");
+  v28 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v27, @"tagType3ReadSuccessCount");
   v36[3] = v28;
   v35[4] = @"tagType4ReadSuccessCount";
-  v30 = objc_msgSend_objectForKeyedSubscript_(v3, v29, @"tagType4ReadSuccessCount");
+  v30 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v29, @"tagType4ReadSuccessCount");
   v36[4] = v30;
   v35[5] = @"tagType5ReadSuccessCount";
-  v33 = objc_msgSend_objectForKeyedSubscript_(v3, v31, @"tagType5ReadSuccessCount");
+  v33 = objc_msgSend_objectForKeyedSubscript_(statisticCopy, v31, @"tagType5ReadSuccessCount");
   v36[5] = v33;
   v36[6] = &unk_2843B4C98;
   v35[6] = @"notNDEFFormatedTagCount";

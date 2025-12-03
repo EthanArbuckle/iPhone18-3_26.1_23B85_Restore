@@ -1,34 +1,34 @@
 @interface MTLRenderPipelineReflectionInternal
-- (MTLRenderPipelineReflectionInternal)initWithTileData:(id)a3 tileDynamicLibraries:(id)a4 functionType:(unint64_t)a5 device:(id)a6 options:(unint64_t)a7 flags:(id)a8;
-- (id)formattedDescription:(unint64_t)a3;
+- (MTLRenderPipelineReflectionInternal)initWithTileData:(id)data tileDynamicLibraries:(id)libraries functionType:(unint64_t)type device:(id)device options:(unint64_t)options flags:(id)flags;
+- (id)formattedDescription:(unint64_t)description;
 - (id)fragmentBindings;
-- (id)initWithTileData:(void *)a1 device:(NSObject *)a2 options:(uint64_t)a3 flags:(uint64_t)a4;
+- (id)initWithTileData:(void *)data device:(NSObject *)device options:(uint64_t)options flags:(uint64_t)flags;
 - (id)meshBindings;
 - (id)objectBindings;
 - (id)tileBindings;
 - (id)vertexBindings;
 - (void)dealloc;
-- (void)initWithFragmentReader:(uint64_t)a3 dylibReaders:(unsigned int)a4 dylibReaderCount:(int)a5 dylibGlobalBindingCount:(void *)a6 device:(uint64_t)a7 flags:;
-- (void)initWithFragmentReader:(void *)a3 device:(uint64_t)a4 flags:;
-- (void)initWithReader:(uint64_t)a3 dylibReaders:(unsigned int)a4 dylibReaderCount:(int)a5 dylibGlobalBindingCount:(void *)a6 device:(uint64_t)a7 flags:;
-- (void)initWithReader:(void *)a3 device:(uint64_t)a4 flags:;
-- (void)setConstantSamplerUniqueIdentifiers:(id)a3;
-- (void)setPerformanceStatistics:(id)a3;
+- (void)initWithFragmentReader:(uint64_t)reader dylibReaders:(unsigned int)readers dylibReaderCount:(int)count dylibGlobalBindingCount:(void *)bindingCount device:(uint64_t)device flags:;
+- (void)initWithFragmentReader:(void *)reader device:(uint64_t)device flags:;
+- (void)initWithReader:(uint64_t)reader dylibReaders:(unsigned int)readers dylibReaderCount:(int)count dylibGlobalBindingCount:(void *)bindingCount device:(uint64_t)device flags:;
+- (void)initWithReader:(void *)reader device:(uint64_t)device flags:;
+- (void)setConstantSamplerUniqueIdentifiers:(id)identifiers;
+- (void)setPerformanceStatistics:(id)statistics;
 @end
 
 @implementation MTLRenderPipelineReflectionInternal
 
-- (id)initWithTileData:(void *)a1 device:(NSObject *)a2 options:(uint64_t)a3 flags:(uint64_t)a4
+- (id)initWithTileData:(void *)data device:(NSObject *)device options:(uint64_t)options flags:(uint64_t)flags
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (data)
   {
-    v9.receiver = a1;
+    v9.receiver = data;
     v9.super_class = MTLRenderPipelineReflectionInternal;
     v6 = objc_msgSendSuper2(&v9, sel_init);
     if (v6)
     {
-      MTLArgumentDeserializer::MTLArgumentDeserializer(v10, a4);
+      MTLArgumentDeserializer::MTLArgumentDeserializer(v10, flags);
       v11 = 0;
       v10[16] = 0;
       v10[17] = 0;
@@ -37,7 +37,7 @@
       v13 = 0;
       v14 = 0;
       v15 = 0;
-      ReflectionReaderFactory<MTLComputeReflectionReader>::Create(a4, a2);
+      ReflectionReaderFactory<MTLComputeReflectionReader>::Create(flags, device);
     }
   }
 
@@ -50,34 +50,34 @@
   return v6;
 }
 
-- (MTLRenderPipelineReflectionInternal)initWithTileData:(id)a3 tileDynamicLibraries:(id)a4 functionType:(unint64_t)a5 device:(id)a6 options:(unint64_t)a7 flags:(id)a8
+- (MTLRenderPipelineReflectionInternal)initWithTileData:(id)data tileDynamicLibraries:(id)libraries functionType:(unint64_t)type device:(id)device options:(unint64_t)options flags:(id)flags
 {
   v17.receiver = self;
   v17.super_class = MTLRenderPipelineReflectionInternal;
   if ([(MTLRenderPipelineReflectionInternal *)&v17 init])
   {
     memset(v16, 0, sizeof(v16));
-    if (a4)
+    if (libraries)
     {
       v15 = 0;
-      std::vector<MTLDynamicLibraryReflectionReader *>::resize(v16, [a4 count], &v15);
-      readDynamicLibraryReflectionData(a6, v16[0], a4, a7);
+      std::vector<MTLDynamicLibraryReflectionReader *>::resize(v16, [libraries count], &v15);
+      readDynamicLibraryReflectionData(device, v16[0], libraries, options);
     }
 
-    v13 = MTLNewReflectionData(a3);
-    if (a5 != 2)
+    v13 = MTLNewReflectionData(data);
+    if (type != 2)
     {
-      if (a5 == 3)
+      if (type == 3)
       {
-        ReflectionValidator<MTLComputeReflectionReader>::Validate(a6, a7, a3);
-        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(a7, v13);
+        ReflectionValidator<MTLComputeReflectionReader>::Validate(device, options, data);
+        ReflectionReaderFactory<MTLComputeReflectionReader>::Create(options, v13);
       }
 
       abort();
     }
 
-    ReflectionValidator<MTLFragmentReflectionReader>::Validate(a6, a7, a3);
-    ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(a7, v13);
+    ReflectionValidator<MTLFragmentReflectionReader>::Validate(device, options, data);
+    ReflectionReaderFactory<MTLFragmentReflectionReader>::Create(options, v13);
   }
 
   return 0;
@@ -90,20 +90,20 @@
   [(MTLRenderPipelineReflectionInternal *)&v3 dealloc];
 }
 
-- (void)setPerformanceStatistics:(id)a3
+- (void)setPerformanceStatistics:(id)statistics
 {
-  v5 = a3;
+  statisticsCopy = statistics;
 
-  self->_performanceStatistics = a3;
+  self->_performanceStatistics = statistics;
 }
 
-- (void)setConstantSamplerUniqueIdentifiers:(id)a3
+- (void)setConstantSamplerUniqueIdentifiers:(id)identifiers
 {
   constantSamplerUniqueIdentifiers = self->_constantSamplerUniqueIdentifiers;
-  if (constantSamplerUniqueIdentifiers != a3)
+  if (constantSamplerUniqueIdentifiers != identifiers)
   {
 
-    self->_constantSamplerUniqueIdentifiers = a3;
+    self->_constantSamplerUniqueIdentifiers = identifiers;
   }
 }
 
@@ -172,13 +172,13 @@
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v96[2] = *MEMORY[0x1E69E9840];
-  v49 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v49 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:128];
-  v50 = self;
+  selfCopy = self;
   if ((self->_printStyle & 8) != 0)
   {
     v96[0] = v49;
@@ -209,16 +209,16 @@
           }
 
           v12 = *(*(&v73 + 1) + 8 * i);
-          v13 = [v12 isArgument];
+          isArgument = [v12 isArgument];
           v14 = @"Global";
-          if (v13)
+          if (isArgument)
           {
             v14 = @"Argument";
           }
 
           v93[0] = v5;
           v93[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %u:", v14, v9];
-          v93[2] = [v12 formattedDescription:a3 + 8];
+          v93[2] = [v12 formattedDescription:description + 8];
           [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v93, 3)}];
           v9 = (v9 + 1);
         }
@@ -230,20 +230,20 @@
     }
   }
 
-  if ((v50->_printStyle & 0x10) != 0)
+  if ((selfCopy->_printStyle & 0x10) != 0)
   {
     v92[0] = v49;
     v92[1] = @"Mesh Bindings:";
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v92, 2)}];
     v91[0] = v5;
     v91[1] = @"bindingsCount =";
-    v91[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](v50->_meshBindings, "count")}];
+    v91[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](selfCopy->_meshBindings, "count")}];
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v91, 3)}];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    obja = v50->_meshBindings;
+    obja = selfCopy->_meshBindings;
     v15 = [(NSArray *)obja countByEnumeratingWithState:&v69 objects:v90 count:16];
     if (v15)
     {
@@ -260,16 +260,16 @@
           }
 
           v20 = *(*(&v69 + 1) + 8 * j);
-          v21 = [v20 isArgument];
+          isArgument2 = [v20 isArgument];
           v22 = @"Global";
-          if (v21)
+          if (isArgument2)
           {
             v22 = @"Argument";
           }
 
           v89[0] = v5;
           v89[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %u:", v22, v17];
-          v89[2] = [v20 formattedDescription:a3 + 8];
+          v89[2] = [v20 formattedDescription:description + 8];
           [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v89, 3)}];
           v17 = (v17 + 1);
         }
@@ -281,20 +281,20 @@
     }
   }
 
-  if (v50->_printStyle)
+  if (selfCopy->_printStyle)
   {
     v88[0] = v49;
     v88[1] = @"Vertex Bindings:";
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v88, 2)}];
     v87[0] = v5;
     v87[1] = @"bindingsCount =";
-    v87[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](v50->_vertexBindings, "count")}];
+    v87[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](selfCopy->_vertexBindings, "count")}];
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v87, 3)}];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    objb = v50->_vertexBindings;
+    objb = selfCopy->_vertexBindings;
     v23 = [(NSArray *)objb countByEnumeratingWithState:&v65 objects:v86 count:16];
     if (v23)
     {
@@ -311,16 +311,16 @@
           }
 
           v28 = *(*(&v65 + 1) + 8 * k);
-          v29 = [v28 isArgument];
+          isArgument3 = [v28 isArgument];
           v30 = @"Global";
-          if (v29)
+          if (isArgument3)
           {
             v30 = @"Argument";
           }
 
           v85[0] = v5;
           v85[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %u:", v30, v25];
-          v85[2] = [v28 formattedDescription:a3 + 8];
+          v85[2] = [v28 formattedDescription:description + 8];
           [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v85, 3)}];
           v25 = (v25 + 1);
         }
@@ -332,20 +332,20 @@
     }
   }
 
-  if ((v50->_printStyle & 2) != 0)
+  if ((selfCopy->_printStyle & 2) != 0)
   {
     v84[0] = v49;
     v84[1] = @"Fragment Bindings:";
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v84, 2)}];
     v83[0] = v5;
     v83[1] = @"bindingsCount =";
-    v83[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](v50->_fragmentBindings, "count")}];
+    v83[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](selfCopy->_fragmentBindings, "count")}];
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v83, 3)}];
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    objc = v50->_fragmentBindings;
+    objc = selfCopy->_fragmentBindings;
     v31 = [(NSArray *)objc countByEnumeratingWithState:&v61 objects:v82 count:16];
     if (v31)
     {
@@ -362,16 +362,16 @@
           }
 
           v36 = *(*(&v61 + 1) + 8 * m);
-          v37 = [v36 isArgument];
+          isArgument4 = [v36 isArgument];
           v38 = @"Global";
-          if (v37)
+          if (isArgument4)
           {
             v38 = @"Argument";
           }
 
           v81[0] = v5;
           v81[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %u:", v38, v33];
-          v81[2] = [v36 formattedDescription:a3 + 8];
+          v81[2] = [v36 formattedDescription:description + 8];
           [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v81, 3)}];
           v33 = (v33 + 1);
         }
@@ -383,20 +383,20 @@
     }
   }
 
-  if ((v50->_printStyle & 4) != 0)
+  if ((selfCopy->_printStyle & 4) != 0)
   {
     v80[0] = v49;
     v80[1] = @"Tile Bindings:";
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v80, 2)}];
     v79[0] = v5;
     v79[1] = @"bindingsCount =";
-    v79[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](v50->_tileBindings, "count")}];
+    v79[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](selfCopy->_tileBindings, "count")}];
     [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v79, 3)}];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    objd = v50->_tileBindings;
+    objd = selfCopy->_tileBindings;
     v39 = [(NSArray *)objd countByEnumeratingWithState:&v57 objects:v78 count:16];
     if (v39)
     {
@@ -413,16 +413,16 @@
           }
 
           v44 = *(*(&v57 + 1) + 8 * n);
-          v45 = [v44 isArgument];
+          isArgument5 = [v44 isArgument];
           v46 = @"Global";
-          if (v45)
+          if (isArgument5)
           {
             v46 = @"Argument";
           }
 
           v77[0] = v5;
           v77[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %u:", v46, v41];
-          v77[2] = [v44 formattedDescription:a3 + 8];
+          v77[2] = [v44 formattedDescription:description + 8];
           [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v77, 3)}];
           v41 = (v41 + 1);
         }
@@ -434,35 +434,35 @@
     }
   }
 
-  v56.receiver = v50;
+  v56.receiver = selfCopy;
   v56.super_class = MTLRenderPipelineReflectionInternal;
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", -[MTLRenderPipelineReflectionInternal description](&v56, sel_description), objc_msgSend(v6, "componentsJoinedByString:", @" "];
   v48 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)initWithReader:(void *)a3 device:(uint64_t)a4 flags:
+- (void)initWithReader:(void *)reader device:(uint64_t)device flags:
 {
   if (result)
   {
-    return [(MTLRenderPipelineReflectionInternal *)result initWithReader:a2 dylibReaders:0 dylibReaderCount:0 dylibGlobalBindingCount:0 device:a3 flags:a4];
+    return [(MTLRenderPipelineReflectionInternal *)result initWithReader:a2 dylibReaders:0 dylibReaderCount:0 dylibGlobalBindingCount:0 device:reader flags:device];
   }
 
   return result;
 }
 
-- (void)initWithReader:(uint64_t)a3 dylibReaders:(unsigned int)a4 dylibReaderCount:(int)a5 dylibGlobalBindingCount:(void *)a6 device:(uint64_t)a7 flags:
+- (void)initWithReader:(uint64_t)reader dylibReaders:(unsigned int)readers dylibReaderCount:(int)count dylibGlobalBindingCount:(void *)bindingCount device:(uint64_t)device flags:
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v50.receiver = a1;
+    v50.receiver = self;
     v50.super_class = MTLRenderPipelineReflectionInternal;
     v13 = objc_msgSendSuper2(&v50, sel_init);
     v14 = v13;
     if (v13)
     {
-      v13[1] = a7;
+      v13[1] = device;
       v13[27] = 4;
       v15 = *(a2 + 8);
       *(v13 + 22) = *(v15 + 48);
@@ -484,8 +484,8 @@
 
       v20 = *(*(a2 + 8) + 32);
       v21 = [v14[7] count];
-      v22 = v20 + a5;
-      v23 = (v20 + a5 + v21);
+      v22 = v20 + count;
+      v23 = (v20 + count + v21);
       if (v22 + v21)
       {
         v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v23];
@@ -502,13 +502,13 @@
           while (v20);
         }
 
-        if (a4)
+        if (readers)
         {
           v30 = 0;
-          v31 = a4;
+          readersCopy = readers;
           do
           {
-            v32 = *(a3 + 8 * v30);
+            v32 = *(reader + 8 * v30);
             if (v32)
             {
               v33 = *(*(v32 + 8) + 32);
@@ -535,7 +535,7 @@
             ++v30;
           }
 
-          while (v30 != v31);
+          while (v30 != readersCopy);
         }
 
         v37 = OUTLINED_FUNCTION_1_6(v25, v26, v27, v28);
@@ -552,7 +552,7 @@
                 objc_enumerationMutation(v24);
               }
 
-              _MTLFixIABReflectionOffsets(*(8 * i), a6);
+              _MTLFixIABReflectionOffsets(*(8 * i), bindingCount);
             }
 
             v38 = OUTLINED_FUNCTION_1_6(v41, v42, v43, v44);
@@ -580,24 +580,24 @@
   return v14;
 }
 
-- (void)initWithFragmentReader:(void *)a3 device:(uint64_t)a4 flags:
+- (void)initWithFragmentReader:(void *)reader device:(uint64_t)device flags:
 {
   if (result)
   {
-    return [(MTLRenderPipelineReflectionInternal *)result initWithFragmentReader:a2 dylibReaders:0 dylibReaderCount:0 dylibGlobalBindingCount:0 device:a3 flags:a4];
+    return [(MTLRenderPipelineReflectionInternal *)result initWithFragmentReader:a2 dylibReaders:0 dylibReaderCount:0 dylibGlobalBindingCount:0 device:reader flags:device];
   }
 
   return result;
 }
 
-- (void)initWithFragmentReader:(uint64_t)a3 dylibReaders:(unsigned int)a4 dylibReaderCount:(int)a5 dylibGlobalBindingCount:(void *)a6 device:(uint64_t)a7 flags:
+- (void)initWithFragmentReader:(uint64_t)reader dylibReaders:(unsigned int)readers dylibReaderCount:(int)count dylibGlobalBindingCount:(void *)bindingCount device:(uint64_t)device flags:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = [(MTLRenderPipelineReflectionInternal *)a1 initWithReader:a2 dylibReaders:a3 dylibReaderCount:a4 dylibGlobalBindingCount:a5 device:a6 flags:a7];
+  v8 = [(MTLRenderPipelineReflectionInternal *)self initWithReader:a2 dylibReaders:reader dylibReaderCount:readers dylibGlobalBindingCount:count device:bindingCount flags:device];
   v9 = v8;
   if (v8)
   {

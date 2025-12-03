@@ -1,15 +1,15 @@
 @interface AMSCookieDatabaseSchema
-+ (BOOL)createOrUpdateSchemaUsingConnection:(id)a3 error:(id *)a4;
-+ (BOOL)migrateVersion0to1WithMigration:(id)a3 error:(id *)a4;
-+ (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)a3;
++ (BOOL)createOrUpdateSchemaUsingConnection:(id)connection error:(id *)error;
++ (BOOL)migrateVersion0to1WithMigration:(id)migration error:(id *)error;
++ (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)context;
 @end
 
 @implementation AMSCookieDatabaseSchema
 
-+ (BOOL)createOrUpdateSchemaUsingConnection:(id)a3 error:(id *)a4
++ (BOOL)createOrUpdateSchemaUsingConnection:(id)connection error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  connectionCopy = connection;
   v7 = AMSSetLogKeyIfNeeded();
   v31 = 0;
   v32 = &v31;
@@ -17,33 +17,33 @@
   v34 = __Block_byref_object_copy__19;
   v35 = __Block_byref_object_dispose__19;
   v36 = 0;
-  v8 = [[AMSSQLiteSchema alloc] initWithConnection:v6];
-  v9 = [(AMSSQLiteSchema *)v8 currentUserVersion];
+  v8 = [[AMSSQLiteSchema alloc] initWithConnection:connectionCopy];
+  currentUserVersion = [(AMSSQLiteSchema *)v8 currentUserVersion];
   v10 = v30;
   while (1)
   {
-    if (v9 > 0)
+    if (currentUserVersion > 0)
     {
       goto LABEL_22;
     }
 
-    if (!v9)
+    if (!currentUserVersion)
     {
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v30[0] = __69__AMSCookieDatabaseSchema_createOrUpdateSchemaUsingConnection_error___block_invoke;
       v30[1] = &unk_1E73B61A8;
       v30[2] = &v31;
-      v30[3] = a1;
+      v30[3] = self;
       if (![(AMSSQLiteSchema *)v8 migrateToVersion:1 usingBlock:v29 error:0])
       {
         break;
       }
     }
 
-    v11 = [(AMSSQLiteSchema *)v8 currentUserVersion];
-    v12 = v11 == v9;
-    v9 = v11;
+    currentUserVersion2 = [(AMSSQLiteSchema *)v8 currentUserVersion];
+    v12 = currentUserVersion2 == currentUserVersion;
+    currentUserVersion = currentUserVersion2;
     if (v12)
     {
       v13 = +[AMSLogConfig sharedAccountsCookiesConfig];
@@ -52,8 +52,8 @@
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = AMSLogKey();
         v16 = MEMORY[0x1E696AEC0];
@@ -71,7 +71,7 @@
         v18 = ;
         *buf = 138543362;
         v38 = v18;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to update AMS cookie database schema. User version did not change.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Failed to update AMS cookie database schema. User version did not change.", buf, 0xCu);
         if (v15)
         {
 
@@ -79,7 +79,7 @@
         }
       }
 
-      [a1 _sendAutoBugCaptureReportWithSubtypeContext:@"User version did not change after updating the cookie database schema"];
+      [self _sendAutoBugCaptureReportWithSubtypeContext:@"User version did not change after updating the cookie database schema"];
 LABEL_22:
       v26 = 1;
       goto LABEL_23;
@@ -92,8 +92,8 @@ LABEL_22:
     v19 = +[AMSLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v21 = AMSLogKey();
     v22 = MEMORY[0x1E696AEC0];
@@ -115,18 +115,18 @@ LABEL_22:
     v38 = v25;
     v39 = 2114;
     v40 = v28;
-    _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to update AMS cookie database schema. error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Failed to update AMS cookie database schema. error = %{public}@", buf, 0x16u);
     if (v21)
     {
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v32[5];
+    *error = v32[5];
   }
 
-  [a1 _sendAutoBugCaptureReportWithSubtypeContext:@"Error during create or update cookie schema"];
+  [self _sendAutoBugCaptureReportWithSubtypeContext:@"Error during create or update cookie schema"];
   v26 = 0;
 LABEL_23:
 
@@ -183,10 +183,10 @@ void __69__AMSCookieDatabaseSchema_createOrUpdateSchemaUsingConnection_error___b
   }
 }
 
-+ (BOOL)migrateVersion0to1WithMigration:(id)a3 error:(id *)a4
++ (BOOL)migrateVersion0to1WithMigration:(id)migration error:(id *)error
 {
-  v5 = a3;
-  if ([v5 executeStatement:@"PRAGMA auto_vacuum = 2;" error:a4])
+  migrationCopy = migration;
+  if ([migrationCopy executeStatement:@"PRAGMA auto_vacuum = 2;" error:error])
   {
     v6 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"CREATE TABLE cookies (");
     v7 = [&unk_1F0779BC8 ams_mapWithTransformIgnoresNil:&__block_literal_global_33];
@@ -205,7 +205,7 @@ void __69__AMSCookieDatabaseSchema_createOrUpdateSchemaUsingConnection_error___b
 
     [v6 appendString:@";"]);
     v14 = [v6 copy];
-    v15 = [v5 executeStatement:v14 error:a4];
+    v15 = [migrationCopy executeStatement:v14 error:error];
   }
 
   else
@@ -261,18 +261,18 @@ __CFString *__65__AMSCookieDatabaseSchema_migrateVersion0to1WithMigration_error_
   return AMSNameForAMSCookieDatabaseColumn(v2);
 }
 
-+ (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)a3
++ (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -289,12 +289,12 @@ __CFString *__65__AMSCookieDatabaseSchema_migrateVersion0to1WithMigration_error_
       [v9 stringWithFormat:@"%@: ", v10];
     }
     v12 = ;
-    v13 = AMSHashIfNeeded(v5);
+    v13 = AMSHashIfNeeded(contextCopy);
     *buf = 138543618;
     v20 = v12;
     v21 = 2114;
     v22 = v13;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Sending Auto Bug Capture report for subtype context: %{public}@.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Sending Auto Bug Capture report for subtype context: %{public}@.", buf, 0x16u);
     if (v8)
     {
 
@@ -304,14 +304,14 @@ __CFString *__65__AMSCookieDatabaseSchema_migrateVersion0to1WithMigration_error_
 
   v14 = [AMSAutoBugCaptureReport alloc];
   v15 = +[AMSProcessInfo currentProcess];
-  v16 = [v15 bundleIdentifier];
-  v17 = [(AMSAutoBugCaptureReport *)v14 initWithDomain:@"AppleMediaServices" type:@"AMSCookieDatabaseSchema" subtype:@"Failure" subtypeContext:v5 process:v16 thresholdValues:0];
+  bundleIdentifier = [v15 bundleIdentifier];
+  v17 = [(AMSAutoBugCaptureReport *)v14 initWithDomain:@"AppleMediaServices" type:@"AMSCookieDatabaseSchema" subtype:@"Failure" subtypeContext:contextCopy process:bundleIdentifier thresholdValues:0];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__AMSCookieDatabaseSchema__sendAutoBugCaptureReportWithSubtypeContext___block_invoke;
   v18[3] = &__block_descriptor_40_e53_v24__0__AMSAutoBugCaptureReportResponse_8__NSError_16l;
-  v18[4] = a1;
+  v18[4] = self;
   [(AMSAutoBugCaptureReport *)v17 captureWithDelay:0 events:0 payload:0 actions:v18 completionHandler:0.0];
 }
 

@@ -1,31 +1,31 @@
 @interface RoutePlanningSessionRouteLoadedNotifier
-+ (id)_createAndSaveHistoryEntryFromSession:(id)a3 selectedRoute:(id)a4;
-- (RoutePlanningSessionRouteLoadedNotifier)initWithPlatformController:(id)a3 handler:(id)a4;
-- (void)_createAndSaveHistoryEntryFromOutgoingSession:(id)a3;
-- (void)_createAndSaveHistoryEntryFromUpdatedSession:(id)a3;
-- (void)_updateCurrentRouteHistoryEntryFromSession:(id)a3;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setCurrentRouteHistoryEntry:(id)a3;
-- (void)setObservedRoutePlanningSession:(id)a3;
++ (id)_createAndSaveHistoryEntryFromSession:(id)session selectedRoute:(id)route;
+- (RoutePlanningSessionRouteLoadedNotifier)initWithPlatformController:(id)controller handler:(id)handler;
+- (void)_createAndSaveHistoryEntryFromOutgoingSession:(id)session;
+- (void)_createAndSaveHistoryEntryFromUpdatedSession:(id)session;
+- (void)_updateCurrentRouteHistoryEntryFromSession:(id)session;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setCurrentRouteHistoryEntry:(id)entry;
+- (void)setObservedRoutePlanningSession:(id)session;
 @end
 
 @implementation RoutePlanningSessionRouteLoadedNotifier
 
-- (void)_createAndSaveHistoryEntryFromOutgoingSession:(id)a3
+- (void)_createAndSaveHistoryEntryFromOutgoingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v7 = [v4 routeCollectionForTransportType:{objc_msgSend(v4, "currentTransportType")}];
-    v8 = [v7 currentRoute];
+    v7 = [sessionCopy routeCollectionForTransportType:{objc_msgSend(sessionCopy, "currentTransportType")}];
+    currentRoute = [v7 currentRoute];
     v9 = sub_100C07318();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v8)
+    if (currentRoute)
     {
       if (v10)
       {
@@ -33,7 +33,7 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "_createAndSaveHistoryEntryFromOutgoingSession will create and save route", buf, 2u);
       }
 
-      [(RoutePlanningSessionRouteLoadedNotifier *)self _updateCurrentRouteHistoryEntryFromSession:v4];
+      [(RoutePlanningSessionRouteLoadedNotifier *)self _updateCurrentRouteHistoryEntryFromSession:sessionCopy];
     }
 
     else
@@ -57,13 +57,13 @@
   }
 }
 
-- (void)_createAndSaveHistoryEntryFromUpdatedSession:(id)a3
+- (void)_createAndSaveHistoryEntryFromUpdatedSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 routeCollectionForTransportType:{objc_msgSend(v4, "currentTransportType")}];
-  v6 = [v5 currentRoute];
-  v7 = [v6 waypoints];
-  v8 = [v7 count];
+  sessionCopy = session;
+  v5 = [sessionCopy routeCollectionForTransportType:{objc_msgSend(sessionCopy, "currentTransportType")}];
+  currentRoute = [v5 currentRoute];
+  waypoints = [currentRoute waypoints];
+  v8 = [waypoints count];
 
   if ((_UISolariumEnabled() & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 userInterfaceIdiom], v10, v11 != 5) || v8 > 2)
   {
@@ -71,11 +71,11 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "_createAndSaveHistoryEntryFromUpdatedSession will create and save route from session: %@", &v13, 0xCu);
     }
 
-    [(RoutePlanningSessionRouteLoadedNotifier *)self _updateCurrentRouteHistoryEntryFromSession:v4];
+    [(RoutePlanningSessionRouteLoadedNotifier *)self _updateCurrentRouteHistoryEntryFromSession:sessionCopy];
   }
 
   else
@@ -89,21 +89,21 @@
   }
 }
 
-- (void)_updateCurrentRouteHistoryEntryFromSession:(id)a3
+- (void)_updateCurrentRouteHistoryEntryFromSession:(id)session
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _createAndSaveHistoryEntryFromSession:v4 selectedRoute:0];
+  sessionCopy = session;
+  v5 = [objc_opt_class() _createAndSaveHistoryEntryFromSession:sessionCopy selectedRoute:0];
 
   [(RoutePlanningSessionRouteLoadedNotifier *)self setCurrentRouteHistoryEntry:v5];
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(RoutePlanningSessionRouteLoadedNotifier *)self observedRoutePlanningSession];
+  sessionCopy = session;
+  resultCopy = result;
+  observedRoutePlanningSession = [(RoutePlanningSessionRouteLoadedNotifier *)self observedRoutePlanningSession];
 
-  if (v10 != v8)
+  if (observedRoutePlanningSession != sessionCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -132,21 +132,21 @@
     }
   }
 
-  if ([v8 currentTransportType] == a5)
+  if ([sessionCopy currentTransportType] == type)
   {
-    v11 = [v9 isSuccess];
+    isSuccess = [resultCopy isSuccess];
     v12 = sub_100C07318();
     v13 = v12;
-    if (v11)
+    if (isSuccess)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v8;
+        v19 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "didUpdateRouteCollectionResult was successful, will create a resume item with session: %@", &v18, 0xCu);
       }
 
-      [(RoutePlanningSessionRouteLoadedNotifier *)self _createAndSaveHistoryEntryFromUpdatedSession:v8];
+      [(RoutePlanningSessionRouteLoadedNotifier *)self _createAndSaveHistoryEntryFromUpdatedSession:sessionCopy];
     }
 
     else
@@ -154,20 +154,20 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v18 = 138412290;
-        v19 = v8;
+        v19 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "didUpdateRouteCollectionResult but it was not successful, will not create a resume item. session: %@", &v18, 0xCu);
       }
     }
 
-    v14 = [(RoutePlanningSessionRouteLoadedNotifier *)self handler];
-    (v14)[2](v14, v9);
+    handler = [(RoutePlanningSessionRouteLoadedNotifier *)self handler];
+    (handler)[2](handler, resultCopy);
   }
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  v7 = a3;
-  v8 = [v7 routeCollectionForTransportType:a4];
+  sessionCopy = session;
+  v8 = [sessionCopy routeCollectionForTransportType:type];
 
   if (v8)
   {
@@ -175,18 +175,18 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "routePlanningSession:didChangeCurrentTransportType will save updated session: %@", &v10, 0xCu);
     }
 
-    [(RoutePlanningSessionRouteLoadedNotifier *)self _createAndSaveHistoryEntryFromUpdatedSession:v7];
+    [(RoutePlanningSessionRouteLoadedNotifier *)self _createAndSaveHistoryEntryFromUpdatedSession:sessionCopy];
   }
 }
 
-- (void)setCurrentRouteHistoryEntry:(id)a3
+- (void)setCurrentRouteHistoryEntry:(id)entry
 {
-  v5 = a3;
-  if (self->_currentRouteHistoryEntry != v5)
+  entryCopy = entry;
+  if (self->_currentRouteHistoryEntry != entryCopy)
   {
     v6 = sub_100C07318();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -195,40 +195,40 @@
       v16 = 138412546;
       v17 = currentRouteHistoryEntry;
       v18 = 2112;
-      v19 = v5;
+      v19 = entryCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Will update currentRouteHistoryEntry from: %@ to %@", &v16, 0x16u);
     }
 
-    objc_storeStrong(&self->_currentRouteHistoryEntry, a3);
+    objc_storeStrong(&self->_currentRouteHistoryEntry, entry);
     v8 = sub_100C07318();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [self->_observedRoutePlanningSession configuration];
-      v10 = [v9 originalHistoryEntryIdentifier];
-      v11 = [(HistoryEntryRecentsItem *)v5 historyEntry];
-      v12 = [v11 storageIdentifier];
+      configuration = [self->_observedRoutePlanningSession configuration];
+      originalHistoryEntryIdentifier = [configuration originalHistoryEntryIdentifier];
+      historyEntry = [(HistoryEntryRecentsItem *)entryCopy historyEntry];
+      storageIdentifier = [historyEntry storageIdentifier];
       v16 = 138412546;
-      v17 = v10;
+      v17 = originalHistoryEntryIdentifier;
       v18 = 2112;
-      v19 = v12;
+      v19 = storageIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will update session originalHistoryEntryIdentifier from %@ to %@", &v16, 0x16u);
     }
 
-    v13 = [(HistoryEntryRecentsItem *)v5 historyEntry];
-    v14 = [v13 storageIdentifier];
-    v15 = [self->_observedRoutePlanningSession configuration];
-    [v15 setOriginalHistoryEntryIdentifier:v14];
+    historyEntry2 = [(HistoryEntryRecentsItem *)entryCopy historyEntry];
+    storageIdentifier2 = [historyEntry2 storageIdentifier];
+    configuration2 = [self->_observedRoutePlanningSession configuration];
+    [configuration2 setOriginalHistoryEntryIdentifier:storageIdentifier2];
   }
 }
 
-- (void)setObservedRoutePlanningSession:(id)a3
+- (void)setObservedRoutePlanningSession:(id)session
 {
-  v5 = a3;
-  v6 = v5;
+  sessionCopy = session;
+  v6 = sessionCopy;
   observedRoutePlanningSession = self->_observedRoutePlanningSession;
-  if (observedRoutePlanningSession != v5)
+  if (observedRoutePlanningSession != sessionCopy)
   {
-    if (!v5 && observedRoutePlanningSession)
+    if (!sessionCopy && observedRoutePlanningSession)
     {
       [(RoutePlanningSessionRouteLoadedNotifier *)self _createAndSaveHistoryEntryFromOutgoingSession:?];
     }
@@ -245,11 +245,11 @@
     }
 
     [self->_observedRoutePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_observedRoutePlanningSession, a3);
+    objc_storeStrong(&self->_observedRoutePlanningSession, session);
     [self->_observedRoutePlanningSession registerObserver:self];
-    v10 = [self->_observedRoutePlanningSession currentRouteCollection];
+    currentRouteCollection = [self->_observedRoutePlanningSession currentRouteCollection];
 
-    if (v10)
+    if (currentRouteCollection)
     {
       v11 = sub_100C07318();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -263,13 +263,13 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -281,11 +281,11 @@
   [(RoutePlanningSessionRouteLoadedNotifier *)self setObservedRoutePlanningSession:v7];
 }
 
-- (RoutePlanningSessionRouteLoadedNotifier)initWithPlatformController:(id)a3 handler:(id)a4
+- (RoutePlanningSessionRouteLoadedNotifier)initWithPlatformController:(id)controller handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -319,21 +319,21 @@
   v8 = [(RoutePlanningSessionRouteLoadedNotifier *)&v20 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v9;
 
-    v11 = [v6 sessionStack];
-    v12 = sub_1000282CC(v11, &stru_10164DA00);
-    v13 = [v12 firstObject];
-    [(RoutePlanningSessionRouteLoadedNotifier *)v8 setObservedRoutePlanningSession:v13];
+    sessionStack = [controllerCopy sessionStack];
+    v12 = sub_1000282CC(sessionStack, &stru_10164DA00);
+    firstObject = [v12 firstObject];
+    [(RoutePlanningSessionRouteLoadedNotifier *)v8 setObservedRoutePlanningSession:firstObject];
 
     v14 = sub_100C07318();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(RoutePlanningSessionRouteLoadedNotifier *)v8 observedRoutePlanningSession];
+      observedRoutePlanningSession = [(RoutePlanningSessionRouteLoadedNotifier *)v8 observedRoutePlanningSession];
       *buf = 138412290;
-      v22 = v15;
+      v22 = observedRoutePlanningSession;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Initiated a loader notifier with current routePlanningSession: %@", buf, 0xCu);
     }
   }
@@ -341,29 +341,29 @@
   return v8;
 }
 
-+ (id)_createAndSaveHistoryEntryFromSession:(id)a3 selectedRoute:(id)a4
++ (id)_createAndSaveHistoryEntryFromSession:(id)session selectedRoute:(id)route
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 routeCollectionForTransportType:{objc_msgSend(v5, "currentTransportType")}];
+  sessionCopy = session;
+  routeCopy = route;
+  v7 = [sessionCopy routeCollectionForTransportType:{objc_msgSend(sessionCopy, "currentTransportType")}];
   v8 = v7;
-  if (v6)
+  if (routeCopy)
   {
-    v9 = v6;
+    currentRoute = routeCopy;
 LABEL_4:
     v10 = sub_100C07318();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v5 configuration];
-      v12 = [v11 originalHistoryEntryIdentifier];
+      configuration = [sessionCopy configuration];
+      originalHistoryEntryIdentifier = [configuration originalHistoryEntryIdentifier];
       v51 = 138412290;
-      v52 = v12;
+      v52 = originalHistoryEntryIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Saving route as recent using identifier: %@", &v51, 0xCu);
     }
 
-    v13 = [v5 configuration];
-    v14 = [v13 originalHistoryEntryIdentifier];
-    v15 = [HistoryEntryRecentsItem saveRoute:v9 withOriginalHistoryIdentifier:v14 editBlock:0 completionBlock:&stru_10164DA20];
+    configuration2 = [sessionCopy configuration];
+    originalHistoryEntryIdentifier2 = [configuration2 originalHistoryEntryIdentifier];
+    v15 = [HistoryEntryRecentsItem saveRoute:currentRoute withOriginalHistoryIdentifier:originalHistoryEntryIdentifier2 editBlock:0 completionBlock:&stru_10164DA20];
 
     v16 = sub_100C07318();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -371,55 +371,55 @@ LABEL_4:
       v51 = 138412546;
       v52 = v15;
       v53 = 2112;
-      v54 = v5;
+      v54 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Created a historyRecentsItem: %@ from session: %@", &v51, 0x16u);
     }
 
     if (v15)
     {
-      v17 = [v5 configuration];
-      v18 = [v17 originalHistoryEntryIdentifier];
+      configuration3 = [sessionCopy configuration];
+      originalHistoryEntryIdentifier3 = [configuration3 originalHistoryEntryIdentifier];
 
-      if (!v18)
+      if (!originalHistoryEntryIdentifier3)
       {
-        v19 = [v15 historyEntry];
-        v20 = [v19 storageIdentifier];
-        v21 = [v5 configuration];
-        [v21 setOriginalHistoryEntryIdentifier:v20];
+        historyEntry = [v15 historyEntry];
+        storageIdentifier = [historyEntry storageIdentifier];
+        configuration4 = [sessionCopy configuration];
+        [configuration4 setOriginalHistoryEntryIdentifier:storageIdentifier];
       }
 
-      v22 = [v5 reportAProblemRecorder];
-      [v22 clearAll];
+      reportAProblemRecorder = [sessionCopy reportAProblemRecorder];
+      [reportAProblemRecorder clearAll];
 
-      v23 = [v5 currentTransportType];
-      if (v23 > 4 || ((1 << v23) & 0x19) == 0)
+      currentTransportType = [sessionCopy currentTransportType];
+      if (currentTransportType > 4 || ((1 << currentTransportType) & 0x19) == 0)
       {
-        v24 = [v15 historyEntry];
-        v25 = [v24 storageIdentifier];
-        v26 = [v5 reportAProblemRecorder];
-        [v26 setHistoryItemIdentifier:v25];
+        historyEntry2 = [v15 historyEntry];
+        storageIdentifier2 = [historyEntry2 storageIdentifier];
+        reportAProblemRecorder2 = [sessionCopy reportAProblemRecorder];
+        [reportAProblemRecorder2 setHistoryItemIdentifier:storageIdentifier2];
 
-        v27 = [v5 reportAProblemRecorder];
-        v28 = [v9 routeInitializerData];
-        v29 = [v28 directionsRequest];
-        [v27 recordNewRequest:v29];
+        reportAProblemRecorder3 = [sessionCopy reportAProblemRecorder];
+        routeInitializerData = [currentRoute routeInitializerData];
+        directionsRequest = [routeInitializerData directionsRequest];
+        [reportAProblemRecorder3 recordNewRequest:directionsRequest];
 
-        v30 = [v5 reportAProblemRecorder];
-        v31 = [v9 routeInitializerData];
-        v32 = [v31 directionsResponse];
-        [v30 recordNewResponse:v32];
+        reportAProblemRecorder4 = [sessionCopy reportAProblemRecorder];
+        routeInitializerData2 = [currentRoute routeInitializerData];
+        directionsResponse = [routeInitializerData2 directionsResponse];
+        [reportAProblemRecorder4 recordNewResponse:directionsResponse];
 
-        v33 = [v5 reportAProblemRecorder];
-        [v33 recordNewRoute:v9];
+        reportAProblemRecorder5 = [sessionCopy reportAProblemRecorder];
+        [reportAProblemRecorder5 recordNewRoute:currentRoute];
 
-        v34 = [v5 reportAProblemRecorder];
-        v35 = [v8 routes];
-        [v34 setSelectedRoute:v9 fromRouteList:v35];
+        reportAProblemRecorder6 = [sessionCopy reportAProblemRecorder];
+        routes = [v8 routes];
+        [reportAProblemRecorder6 setSelectedRoute:currentRoute fromRouteList:routes];
 
-        v36 = [v5 resolvedWaypoints];
-        LOBYTE(v35) = [v36 areAllValidWaypoints];
+        resolvedWaypoints = [sessionCopy resolvedWaypoints];
+        LOBYTE(routes) = [resolvedWaypoints areAllValidWaypoints];
 
-        if ((v35 & 1) == 0)
+        if ((routes & 1) == 0)
         {
           v37 = sub_100798874();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -429,15 +429,15 @@ LABEL_4:
           }
         }
 
-        v38 = [v5 resolvedWaypoints];
-        v39 = [v38 waypointsOrNull];
-        v40 = sub_1000282CC(v39, &stru_10164DA60);
+        resolvedWaypoints2 = [sessionCopy resolvedWaypoints];
+        waypointsOrNull = [resolvedWaypoints2 waypointsOrNull];
+        v40 = sub_1000282CC(waypointsOrNull, &stru_10164DA60);
 
-        v41 = [v5 reportAProblemRecorder];
-        [v41 recordWaypoints:v40 startWaypointSearchTicket:0 endWaypointSearchTicket:0];
+        reportAProblemRecorder7 = [sessionCopy reportAProblemRecorder];
+        [reportAProblemRecorder7 recordWaypoints:v40 startWaypointSearchTicket:0 endWaypointSearchTicket:0];
 
-        v42 = [v5 reportAProblemRecorder];
-        [v42 setOriginatingDeviceFromOrigin:0];
+        reportAProblemRecorder8 = [sessionCopy reportAProblemRecorder];
+        [reportAProblemRecorder8 setOriginatingDeviceFromOrigin:0];
       }
 
       v43 = v15;
@@ -456,16 +456,16 @@ LABEL_4:
     goto LABEL_23;
   }
 
-  v9 = [v7 currentRoute];
-  if (v9)
+  currentRoute = [v7 currentRoute];
+  if (currentRoute)
   {
     goto LABEL_4;
   }
 
-  v46 = [v5 configuration];
-  v47 = [v46 isNavigationTracePlayback];
+  configuration5 = [sessionCopy configuration];
+  isNavigationTracePlayback = [configuration5 isNavigationTracePlayback];
 
-  if ((v47 & 1) == 0)
+  if ((isNavigationTracePlayback & 1) == 0)
   {
     v48 = sub_10006D178();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -494,11 +494,11 @@ LABEL_4:
     }
   }
 
-  v9 = sub_100C07318();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  currentRoute = sub_100C07318();
+  if (os_log_type_enabled(currentRoute, OS_LOG_TYPE_ERROR))
   {
     LOWORD(v51) = 0;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Cannot save RAP history with a nil route.", &v51, 2u);
+    _os_log_impl(&_mh_execute_header, currentRoute, OS_LOG_TYPE_ERROR, "Cannot save RAP history with a nil route.", &v51, 2u);
   }
 
   v15 = 0;

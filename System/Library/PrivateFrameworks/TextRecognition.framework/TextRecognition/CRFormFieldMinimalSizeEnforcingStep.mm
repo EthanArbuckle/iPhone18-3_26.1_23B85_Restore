@@ -1,6 +1,6 @@
 @interface CRFormFieldMinimalSizeEnforcingStep
 - (CRFormFieldMinimalSizeEnforcingStep)init;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormFieldMinimalSizeEnforcingStep
@@ -20,15 +20,15 @@
   return v3;
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  processCopy = process;
   v8 = CROSLogForCategory(6);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v12 = [v7 count];
+    v12 = [processCopy count];
     _os_log_impl(&dword_1B40D2000, v8, OS_LOG_TYPE_DEBUG, "CRFormPostProcessor: CRFormFieldMinimalSizeEnforcingStep is running (#input:%lu).", buf, 0xCu);
   }
 
@@ -37,9 +37,9 @@
   v10[2] = __79__CRFormFieldMinimalSizeEnforcingStep_process_externalFields_document_options___block_invoke;
   v10[3] = &unk_1E7BC2048;
   v10[4] = self;
-  [CRFormPostProcessingManager enumerateDetectedFields:v7 block:v10];
+  [CRFormPostProcessingManager enumerateDetectedFields:processCopy block:v10];
 
-  return v7;
+  return processCopy;
 }
 
 void __79__CRFormFieldMinimalSizeEnforcingStep_process_externalFields_document_options___block_invoke(uint64_t a1, void *a2)

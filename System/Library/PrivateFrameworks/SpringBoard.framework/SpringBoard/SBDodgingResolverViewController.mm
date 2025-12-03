@@ -1,34 +1,34 @@
 @interface SBDodgingResolverViewController
 - (CGRect)contentViewBounds;
-- (SBDodgingResolverViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)addItemWithIdentifier:(id)a3 view:(id)a4 initialCenter:(CGPoint)a5 initialSize:(CGSize)a6 delegate:(id)a7;
-- (id)invalidateItem:(id)a3;
-- (id)preferenceForIdentifier:(id)a3;
+- (SBDodgingResolverViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)addItemWithIdentifier:(id)identifier view:(id)view initialCenter:(CGPoint)center initialSize:(CGSize)size delegate:(id)delegate;
+- (id)invalidateItem:(id)item;
+- (id)preferenceForIdentifier:(id)identifier;
 - (void)_dispatchNextEventIfNeededAndHandleResponse;
-- (void)_dispatchOrAppendEvent:(id)a3;
-- (void)_handleEventResponse:(id)a3;
-- (void)_performEventResponse:(id)a3;
-- (void)_performInvalidationResponse:(id)a3;
-- (void)_performScheduleEventResponse:(id)a3;
+- (void)_dispatchOrAppendEvent:(id)event;
+- (void)_handleEventResponse:(id)response;
+- (void)_performEventResponse:(id)response;
+- (void)_performInvalidationResponse:(id)response;
+- (void)_performScheduleEventResponse:(id)response;
 - (void)_setAllItemsNeedUpdate;
-- (void)_updateItemIfNeeded:(id)a3;
+- (void)_updateItemIfNeeded:(id)needed;
 - (void)_updateItemsIfNeeded;
 - (void)_updateLayoutIfNeeded;
-- (void)_updateLayoutWithItemIdentifier:(id)a3 completion:(id)a4;
+- (void)_updateLayoutWithItemIdentifier:(id)identifier completion:(id)completion;
 - (void)_updateModelIfNeeded;
 - (void)loadView;
-- (void)performTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4 animated:(BOOL)a5 mutationBlock:(id)a6;
-- (void)setItemNeedsUpdate:(id)a3 animated:(BOOL)a4;
+- (void)performTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation animated:(BOOL)animated mutationBlock:(id)block;
+- (void)setItemNeedsUpdate:(id)update animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation SBDodgingResolverViewController
 
-- (SBDodgingResolverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBDodgingResolverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v19.receiver = self;
   v19.super_class = SBDodgingResolverViewController;
-  v4 = [(SBDodgingResolverViewController *)&v19 initWithNibName:a3 bundle:a4];
+  v4 = [(SBDodgingResolverViewController *)&v19 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -61,86 +61,86 @@
   return v4;
 }
 
-- (id)addItemWithIdentifier:(id)a3 view:(id)a4 initialCenter:(CGPoint)a5 initialSize:(CGSize)a6 delegate:(id)a7
+- (id)addItemWithIdentifier:(id)identifier view:(id)view initialCenter:(CGPoint)center initialSize:(CGSize)size delegate:(id)delegate
 {
-  height = a6.height;
-  width = a6.width;
-  y = a5.y;
-  x = a5.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:v15];
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  identifierCopy = identifier;
+  viewCopy = view;
+  delegateCopy = delegate;
+  v18 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:identifierCopy];
 
   if (v18)
   {
-    [SBDodgingResolverViewController addItemWithIdentifier:a2 view:v15 initialCenter:? initialSize:? delegate:?];
+    [SBDodgingResolverViewController addItemWithIdentifier:a2 view:identifierCopy initialCenter:? initialSize:? delegate:?];
   }
 
-  v19 = [[SBDodgingItem alloc] initWithUniqueIdentifier:v15 view:v16 delegate:v17 dodgingResolverViewController:self];
-  [(NSMutableDictionary *)self->_itemsForIdentifiers setObject:v19 forKey:v15];
-  if (v16)
+  v19 = [[SBDodgingItem alloc] initWithUniqueIdentifier:identifierCopy view:viewCopy delegate:delegateCopy dodgingResolverViewController:self];
+  [(NSMutableDictionary *)self->_itemsForIdentifiers setObject:v19 forKey:identifierCopy];
+  if (viewCopy)
   {
-    v20 = [(SBDodgingResolverViewController *)self view];
-    [v20 addSubview:v16];
+    view = [(SBDodgingResolverViewController *)self view];
+    [view addSubview:viewCopy];
   }
 
-  v21 = [v17 dodgingResolver:self preferenceForDodgingItem:v19];
+  v21 = [delegateCopy dodgingResolver:self preferenceForDodgingItem:v19];
   [(SBDodgingItem *)v19 setPreference:v21];
 
-  v22 = [[SBInsertionDodgingModifierEvent alloc] initWithIdentifier:v15 center:x size:y, width, height];
-  [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v22];
+  height = [[SBInsertionDodgingModifierEvent alloc] initWithIdentifier:identifierCopy center:x size:y, width, height];
+  [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:height];
 
   return v19;
 }
 
-- (id)invalidateItem:(id)a3
+- (id)invalidateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [SBRemovalDodgingModifierEvent alloc];
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(SBRemovalDodgingModifierEvent *)v5 initWithIdentifier:v6];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v7 = [(SBRemovalDodgingModifierEvent *)v5 initWithIdentifier:uniqueIdentifier];
 
   [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v7];
-  v8 = [v4 view];
-  v9 = v8;
-  if (v8)
+  view = [itemCopy view];
+  v9 = view;
+  if (view)
   {
-    [v8 removeFromSuperview];
+    [view removeFromSuperview];
   }
 
   itemsForIdentifiers = self->_itemsForIdentifiers;
-  v11 = [v4 uniqueIdentifier];
-  [(NSMutableDictionary *)itemsForIdentifiers removeObjectForKey:v11];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+  [(NSMutableDictionary *)itemsForIdentifiers removeObjectForKey:uniqueIdentifier2];
 
   return v9;
 }
 
-- (void)setItemNeedsUpdate:(id)a3 animated:(BOOL)a4
+- (void)setItemNeedsUpdate:(id)update animated:(BOOL)animated
 {
-  v7 = a3;
+  updateCopy = update;
   v6 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  [(NSMutableSet *)self->_itemsNeedingUpdate addObject:v7];
-  if (!a4)
+  [(NSMutableSet *)self->_itemsNeedingUpdate addObject:updateCopy];
+  if (!animated)
   {
-    [(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate addObject:v7];
+    [(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate addObject:updateCopy];
   }
 
-  [(SBDodgingResolverViewController *)self _updateItemIfNeeded:v7];
+  [(SBDodgingResolverViewController *)self _updateItemIfNeeded:updateCopy];
   self->_lastUpdateTimeNS = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW) - v6;
 }
 
-- (void)performTransitionFromOrientation:(int64_t)a3 toOrientation:(int64_t)a4 animated:(BOOL)a5 mutationBlock:(id)a6
+- (void)performTransitionFromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation animated:(BOOL)animated mutationBlock:(id)block
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [[SBRotationDodgingModifierEvent alloc] initWithIdentifier:v11 fromOrientation:a3 toOrientation:a4 phase:0];
+  animatedCopy = animated;
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v12 = [[SBRotationDodgingModifierEvent alloc] initWithIdentifier:uUID fromOrientation:orientation toOrientation:toOrientation phase:0];
   [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v12];
   v13 = 0;
-  if (v6)
+  if (animatedCopy)
   {
-    v13 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:a3 toInterfaceOrientation:a4];
+    v13 = [SBAnimationUtilities animationSettingsForRotationFromInterfaceOrientation:orientation toInterfaceOrientation:toOrientation];
   }
 
   v14 = MEMORY[0x277CF0D38];
@@ -148,21 +148,21 @@
   v22[1] = 3221225472;
   v22[2] = __105__SBDodgingResolverViewController_performTransitionFromOrientation_toOrientation_animated_mutationBlock___block_invoke;
   v22[3] = &unk_2783C0208;
-  v24 = v10;
-  v25 = a4;
+  v24 = blockCopy;
+  toOrientationCopy = toOrientation;
   v22[4] = self;
-  v23 = v11;
-  v26 = a3;
+  v23 = uUID;
+  orientationCopy = orientation;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __105__SBDodgingResolverViewController_performTransitionFromOrientation_toOrientation_animated_mutationBlock___block_invoke_2;
   v17[3] = &unk_2783C0230;
-  v20 = a3;
-  v21 = a4;
+  orientationCopy2 = orientation;
+  toOrientationCopy2 = toOrientation;
   v18 = v23;
-  v19 = self;
+  selfCopy = self;
   v15 = v23;
-  v16 = v10;
+  v16 = blockCopy;
   [v14 animateWithSettings:v13 actions:v22 completion:v17];
 }
 
@@ -184,8 +184,8 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
 
 - (CGRect)contentViewBounds
 {
-  v2 = [(SBDodgingResolverViewController *)self view];
-  [v2 bounds];
+  view = [(SBDodgingResolverViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -202,25 +202,25 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
   return result;
 }
 
-- (id)preferenceForIdentifier:(id)a3
+- (id)preferenceForIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:a3];
-  v4 = [v3 preference];
+  v3 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:identifier];
+  preference = [v3 preference];
 
-  return v4;
+  return preference;
 }
 
-- (void)_dispatchOrAppendEvent:(id)a3
+- (void)_dispatchOrAppendEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  eventCopy = event;
+  v6 = eventCopy;
+  if (!eventCopy)
   {
     [(SBDodgingResolverViewController *)a2 _dispatchOrAppendEvent:?];
-    v5 = 0;
+    eventCopy = 0;
   }
 
-  [(NSMutableArray *)self->_eventQueue _sb_enqueue:v5];
+  [(NSMutableArray *)self->_eventQueue _sb_enqueue:eventCopy];
   [(SBDodgingResolverViewController *)self _dispatchNextEventIfNeededAndHandleResponse];
 }
 
@@ -228,12 +228,12 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
 {
   if (!self->_dispatchingEvent)
   {
-    v3 = [(NSMutableArray *)self->_eventQueue _sb_dequeue];
-    if (v3)
+    _sb_dequeue = [(NSMutableArray *)self->_eventQueue _sb_dequeue];
+    if (_sb_dequeue)
     {
       self->_dispatchingEvent = 1;
-      v5 = v3;
-      v4 = [(SBChainableModifier *)self->_rootModifier handleEvent:v3];
+      v5 = _sb_dequeue;
+      v4 = [(SBChainableModifier *)self->_rootModifier handleEvent:_sb_dequeue];
       if (v4)
       {
         [(SBDodgingResolverViewController *)self _handleEventResponse:v4];
@@ -245,7 +245,7 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
       self->_dispatchingEvent = 0;
       [(SBDodgingResolverViewController *)self _dispatchNextEventIfNeededAndHandleResponse];
 
-      v3 = v5;
+      _sb_dequeue = v5;
     }
   }
 }
@@ -271,19 +271,19 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
   }
 }
 
-- (void)_updateLayoutWithItemIdentifier:(id)a3 completion:(id)a4
+- (void)_updateLayoutWithItemIdentifier:(id)identifier completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(SBRootDodgingLayerModifier *)self->_rootModifier zOrderedIdentifiers];
-  v9 = [v8 reverseObjectEnumerator];
+  zOrderedIdentifiers = [(SBRootDodgingLayerModifier *)self->_rootModifier zOrderedIdentifiers];
+  reverseObjectEnumerator = [zOrderedIdentifiers reverseObjectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -295,23 +295,23 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:*(*(&v21 + 1) + 8 * v13)];
-        v15 = [v14 view];
+        view = [v14 view];
 
-        if (v15)
+        if (view)
         {
-          v16 = [(SBDodgingResolverViewController *)self view];
-          [v16 bringSubviewToFront:v15];
+          view2 = [(SBDodgingResolverViewController *)self view];
+          [view2 bringSubviewToFront:view];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
@@ -323,9 +323,9 @@ void __105__SBDodgingResolverViewController_performTransitionFromOrientation_toO
   v19[2] = __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_completion___block_invoke;
   v19[3] = &unk_2783AE530;
   v19[4] = self;
-  v20 = v6;
-  v18 = v6;
-  [v17 perform:v19 finalCompletion:v7];
+  v20 = identifierCopy;
+  v18 = identifierCopy;
+  [v17 perform:v19 finalCompletion:completionCopy];
 }
 
 void __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -455,13 +455,13 @@ uint64_t __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_c
 - (void)_setAllItemsNeedUpdate
 {
   itemsNeedingUpdate = self->_itemsNeedingUpdate;
-  v4 = [(SBDodgingModel *)self->_model identifiers];
+  identifiers = [(SBDodgingModel *)self->_model identifiers];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__SBDodgingResolverViewController__setAllItemsNeedUpdate__block_invoke;
   v6[3] = &unk_2783BD920;
   v6[4] = self;
-  v5 = [v4 bs_map:v6];
+  v5 = [identifiers bs_map:v6];
   [(NSMutableSet *)itemsNeedingUpdate addObjectsFromArray:v5];
 }
 
@@ -500,19 +500,19 @@ uint64_t __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_c
   }
 }
 
-- (void)_updateItemIfNeeded:(id)a3
+- (void)_updateItemIfNeeded:(id)needed
 {
-  v15 = a3;
+  neededCopy = needed;
   if ([(NSMutableSet *)self->_itemsNeedingUpdate containsObject:?])
   {
-    [(NSMutableSet *)self->_itemsNeedingUpdate removeObject:v15];
-    v4 = [v15 delegate];
-    v5 = [v4 dodgingResolver:self preferenceForDodgingItem:v15];
+    [(NSMutableSet *)self->_itemsNeedingUpdate removeObject:neededCopy];
+    delegate = [neededCopy delegate];
+    v5 = [delegate dodgingResolver:self preferenceForDodgingItem:neededCopy];
 
-    v6 = [v5 isUpdatingInteractively];
-    if ([(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate containsObject:v15])
+    isUpdatingInteractively = [v5 isUpdatingInteractively];
+    if ([(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate containsObject:neededCopy])
     {
-      [(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate removeObject:v15];
+      [(NSMutableSet *)self->_itemsNeedingNonAnimatedUpdate removeObject:neededCopy];
       v7 = 0;
     }
 
@@ -521,7 +521,7 @@ uint64_t __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_c
       v7 = 2;
     }
 
-    if (v6)
+    if (isUpdatingInteractively)
     {
       v8 = 1;
     }
@@ -532,46 +532,46 @@ uint64_t __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_c
     }
 
     v9 = [SBPreferenceChangeDodgingModifierEvent alloc];
-    v10 = [v15 uniqueIdentifier];
-    v11 = [(SBPreferenceChangeDodgingModifierEvent *)v9 initWithIdentifier:v10 phase:0 style:v8];
+    uniqueIdentifier = [neededCopy uniqueIdentifier];
+    v11 = [(SBPreferenceChangeDodgingModifierEvent *)v9 initWithIdentifier:uniqueIdentifier phase:0 style:v8];
 
     [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v11];
-    [v15 setPreference:v5];
+    [neededCopy setPreference:v5];
     v12 = [SBPreferenceChangeDodgingModifierEvent alloc];
-    v13 = [v15 uniqueIdentifier];
-    v14 = [(SBPreferenceChangeDodgingModifierEvent *)v12 initWithIdentifier:v13 phase:1 style:v8];
+    uniqueIdentifier2 = [neededCopy uniqueIdentifier];
+    v14 = [(SBPreferenceChangeDodgingModifierEvent *)v12 initWithIdentifier:uniqueIdentifier2 phase:1 style:v8];
 
     [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v14];
   }
 }
 
-- (void)_handleEventResponse:(id)a3
+- (void)_handleEventResponse:(id)response
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  responseCopy = response;
+  if (!responseCopy)
   {
     [(SBDodgingResolverViewController *)a2 _handleEventResponse:?];
   }
 
-  if ([v5 isValid])
+  if ([responseCopy isValid])
   {
-    [v5 delay];
+    [responseCopy delay];
     if (BSFloatIsZero())
     {
-      [(SBDodgingResolverViewController *)self _performEventResponse:v5];
+      [(SBDodgingResolverViewController *)self _performEventResponse:responseCopy];
     }
 
     else
     {
-      [v5 delay];
+      [responseCopy delay];
       v9 = dispatch_time(0, (v8 * 1000000000.0));
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __56__SBDodgingResolverViewController__handleEventResponse___block_invoke;
       v10[3] = &unk_2783A92D8;
-      v11 = v5;
-      v12 = self;
+      v11 = responseCopy;
+      selfCopy = self;
       dispatch_after(v9, MEMORY[0x277D85CD0], v10);
     }
   }
@@ -581,7 +581,7 @@ uint64_t __78__SBDodgingResolverViewController__updateLayoutWithItemIdentifier_c
     v6 = SBLogAppSwitcher();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 description];
+      v7 = [responseCopy description];
       *buf = 138412290;
       v14 = v7;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "[DodgingVC] Skipping the following action because it's no longer valid: %@", buf, 0xCu);
@@ -613,23 +613,23 @@ void __56__SBDodgingResolverViewController__handleEventResponse___block_invoke(u
   }
 }
 
-- (void)_performEventResponse:(id)a3
+- (void)_performEventResponse:(id)response
 {
-  v5 = a3;
-  if (!v5)
+  responseCopy = response;
+  if (!responseCopy)
   {
     [(SBDodgingResolverViewController *)a2 _performEventResponse:?];
   }
 
-  v6 = [v5 type];
-  if (v6 == 2)
+  type = [responseCopy type];
+  if (type == 2)
   {
-    [(SBDodgingResolverViewController *)self _performScheduleEventResponse:v5];
+    [(SBDodgingResolverViewController *)self _performScheduleEventResponse:responseCopy];
   }
 
-  else if (v6 == 1)
+  else if (type == 1)
   {
-    [(SBDodgingResolverViewController *)self _performInvalidationResponse:v5];
+    [(SBDodgingResolverViewController *)self _performInvalidationResponse:responseCopy];
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -637,28 +637,28 @@ void __56__SBDodgingResolverViewController__handleEventResponse___block_invoke(u
   v7[2] = __57__SBDodgingResolverViewController__performEventResponse___block_invoke;
   v7[3] = &unk_2783C0280;
   v7[4] = self;
-  [v5 enumerateChildResponsesUsingBlock:v7];
+  [responseCopy enumerateChildResponsesUsingBlock:v7];
 }
 
-- (void)_performInvalidationResponse:(id)a3
+- (void)_performInvalidationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 options];
-  v6 = [v4 identifier];
-  v7 = [v4 completionIdentifier];
-  v8 = [v4 disableCoalescing];
+  responseCopy = response;
+  options = [responseCopy options];
+  identifier = [responseCopy identifier];
+  completionIdentifier = [responseCopy completionIdentifier];
+  disableCoalescing = [responseCopy disableCoalescing];
 
-  if (v7)
+  if (completionIdentifier)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = disableCoalescing;
   }
 
-  if (v6)
+  if (identifier)
   {
     v10 = 1;
   }
@@ -668,11 +668,11 @@ void __56__SBDodgingResolverViewController__handleEventResponse___block_invoke(u
     v10 = v9;
   }
 
-  if (SBInvalidationDodgingOptionsContainsOption(v5, 4))
+  if (SBInvalidationDodgingOptionsContainsOption(options, 4))
   {
-    if (v6)
+    if (identifier)
     {
-      v11 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:v6];
+      v11 = [(NSMutableDictionary *)self->_itemsForIdentifiers objectForKey:identifier];
       [(SBDodgingResolverViewController *)self _setItemNeedsUpdate:v11];
 
       if (!v10)
@@ -692,13 +692,13 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (SBInvalidationDodgingOptionsContainsOption(v5, 1))
+  if (SBInvalidationDodgingOptionsContainsOption(options, 1))
   {
     [(SBDodgingResolverViewController *)self _setNeedsModelUpdate];
     if (v10)
     {
       [(SBDodgingResolverViewController *)self _updateModelIfNeeded];
-      if (!SBInvalidationDodgingOptionsContainsOption(v5, 2))
+      if (!SBInvalidationDodgingOptionsContainsOption(options, 2))
       {
         goto LABEL_20;
       }
@@ -706,7 +706,7 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    if (!SBInvalidationDodgingOptionsContainsOption(v5, 2))
+    if (!SBInvalidationDodgingOptionsContainsOption(options, 2))
     {
       goto LABEL_20;
     }
@@ -714,7 +714,7 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (SBInvalidationDodgingOptionsContainsOption(v5, 2))
+  if (SBInvalidationDodgingOptionsContainsOption(options, 2))
   {
     if (v10)
     {
@@ -723,9 +723,9 @@ LABEL_17:
       v12[1] = 3221225472;
       v12[2] = __64__SBDodgingResolverViewController__performInvalidationResponse___block_invoke;
       v12[3] = &unk_2783B5CD8;
-      v13 = v7;
-      v14 = self;
-      [(SBDodgingResolverViewController *)self _updateLayoutWithItemIdentifier:v6 completion:v12];
+      v13 = completionIdentifier;
+      selfCopy = self;
+      [(SBDodgingResolverViewController *)self _updateLayoutWithItemIdentifier:identifier completion:v12];
 
       goto LABEL_20;
     }
@@ -746,13 +746,13 @@ void __64__SBDodgingResolverViewController__performInvalidationResponse___block_
   }
 }
 
-- (void)_performScheduleEventResponse:(id)a3
+- (void)_performScheduleEventResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [SBCustomEventDodgingModifierEvent alloc];
-  v6 = [v4 name];
+  name = [responseCopy name];
 
-  v7 = [(SBCustomEventDodgingModifierEvent *)v5 initWithName:v6];
+  v7 = [(SBCustomEventDodgingModifierEvent *)v5 initWithName:name];
   [(SBDodgingResolverViewController *)self _dispatchOrAppendEvent:v7];
 }
 

@@ -1,31 +1,31 @@
 @interface TPSDeliveryPrecondition
-- (TPSDeliveryPrecondition)initWithDictionary:(id)a3 fallbackId:(id)a4;
-- (id)conditionsForType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSDeliveryPrecondition)initWithDictionary:(id)dictionary fallbackId:(id)id;
+- (id)conditionsForType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)registrableEvents;
 @end
 
 @implementation TPSDeliveryPrecondition
 
-- (TPSDeliveryPrecondition)initWithDictionary:(id)a3 fallbackId:(id)a4
+- (TPSDeliveryPrecondition)initWithDictionary:(id)dictionary fallbackId:(id)id
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  idCopy = id;
   v34.receiver = self;
   v34.super_class = TPSDeliveryPrecondition;
-  v8 = [(TPSSerializableObject *)&v34 initWithDictionary:v6];
+  v8 = [(TPSSerializableObject *)&v34 initWithDictionary:dictionaryCopy];
   v9 = v8;
   if (v8)
   {
     v8->_statusType = 0;
-    if ([v6 TPSSafeIntegerForKey:@"statusType"] == 1)
+    if ([dictionaryCopy TPSSafeIntegerForKey:@"statusType"] == 1)
     {
       v9->_statusType = 1;
     }
 
-    v10 = [v6 TPSSafeStringForKey:@"joinType"];
+    v10 = [dictionaryCopy TPSSafeStringForKey:@"joinType"];
     v9->_joinType = 0;
     v29 = v10;
     if ([v10 isEqualToString:@"OR"])
@@ -33,7 +33,7 @@
       v9->_joinType = 1;
     }
 
-    v11 = [v6 TPSSafeArrayForKey:@"conditions"];
+    v11 = [dictionaryCopy TPSSafeArrayForKey:@"conditions"];
     v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v30 = 0u;
     v31 = 0u;
@@ -64,18 +64,18 @@
       while (v15);
     }
 
-    v19 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v20 = [v12 count];
-    if (v7)
+    if (idCopy)
     {
       if (v20 == 1)
       {
-        v21 = [v19 identifier];
-        v22 = [v21 isEqualToString:@"unknown"];
+        identifier = [firstObject identifier];
+        v22 = [identifier isEqualToString:@"unknown"];
 
         if (v22)
         {
-          [v19 setIdentifier:v7];
+          [firstObject setIdentifier:idCopy];
         }
       }
     }
@@ -84,7 +84,7 @@
     conditions = v9->_conditions;
     v9->_conditions = v23;
 
-    v25 = [v6 TPSSafeStringForKey:@"label"];
+    v25 = [dictionaryCopy TPSSafeStringForKey:@"label"];
     label = v9->_label;
     v9->_label = v25;
   }
@@ -101,16 +101,16 @@
   v12 = __Block_byref_object_copy__6;
   v13 = __Block_byref_object_dispose__6;
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSDeliveryPrecondition *)self conditions];
-  v14 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  conditions = [(TPSDeliveryPrecondition *)self conditions];
+  v14 = [v3 arrayWithCapacity:{objc_msgSend(conditions, "count")}];
 
-  v5 = [(TPSDeliveryPrecondition *)self conditions];
+  conditions2 = [(TPSDeliveryPrecondition *)self conditions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__TPSDeliveryPrecondition_registrableEvents__block_invoke;
   v8[3] = &unk_2789B09C8;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [conditions2 enumerateObjectsUsingBlock:v8];
 
   if ([v10[5] count])
   {
@@ -183,9 +183,9 @@ void __44__TPSDeliveryPrecondition_registrableEvents__block_invoke_2(uint64_t a1
   }
 }
 
-- (id)conditionsForType:(int64_t)a3
+- (id)conditionsForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     v11 = 0;
     v12 = &v11;
@@ -193,26 +193,26 @@ void __44__TPSDeliveryPrecondition_registrableEvents__block_invoke_2(uint64_t a1
     v14 = __Block_byref_object_copy__6;
     v15 = __Block_byref_object_dispose__6;
     v5 = MEMORY[0x277CBEB18];
-    v6 = [(TPSDeliveryPrecondition *)self conditions];
-    v16 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    conditions = [(TPSDeliveryPrecondition *)self conditions];
+    v16 = [v5 arrayWithCapacity:{objc_msgSend(conditions, "count")}];
 
-    v7 = [(TPSDeliveryPrecondition *)self conditions];
+    conditions2 = [(TPSDeliveryPrecondition *)self conditions];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__TPSDeliveryPrecondition_conditionsForType___block_invoke;
     v10[3] = &unk_2789B09F0;
     v10[4] = &v11;
-    v10[5] = a3;
-    [v7 enumerateObjectsUsingBlock:v10];
+    v10[5] = type;
+    [conditions2 enumerateObjectsUsingBlock:v10];
 
     if ([v12[5] count])
     {
-      v8 = [v12[5] copy];
+      conditions3 = [v12[5] copy];
     }
 
     else
     {
-      v8 = 0;
+      conditions3 = 0;
     }
 
     _Block_object_dispose(&v11, 8);
@@ -220,10 +220,10 @@ void __44__TPSDeliveryPrecondition_registrableEvents__block_invoke_2(uint64_t a1
 
   else
   {
-    v8 = [(TPSDeliveryPrecondition *)self conditions];
+    conditions3 = [(TPSDeliveryPrecondition *)self conditions];
   }
 
-  return v8;
+  return conditions3;
 }
 
 void __45__TPSDeliveryPrecondition_conditionsForType___block_invoke(uint64_t a1, void *a2)
@@ -236,9 +236,9 @@ void __45__TPSDeliveryPrecondition_conditionsForType___block_invoke(uint64_t a1,
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setStatusType:self->_statusType];
   [v4 setJoinType:self->_joinType];
   v5 = [(NSArray *)self->_conditions copy];
@@ -257,8 +257,8 @@ void __45__TPSDeliveryPrecondition_conditionsForType___block_invoke(uint64_t a1,
 
   [v5 appendFormat:@"\n%@ = %zd\n", @"statusType", -[TPSDeliveryPrecondition statusType](self, "statusType")];
   [v5 appendFormat:@"%@ = %zd\n", @"joinType", -[TPSDeliveryPrecondition joinType](self, "joinType")];
-  v6 = [(TPSDeliveryPrecondition *)self conditions];
-  v7 = [v6 debugDescription];
+  conditions = [(TPSDeliveryPrecondition *)self conditions];
+  v7 = [conditions debugDescription];
   [v5 appendFormat:@"%@ = %@\n", @"conditions", v7];
 
   return v5;

@@ -1,29 +1,29 @@
 @interface HDConceptAuthorizationEntity
-+ (BOOL)deleteConceptAuthorizationRecordsMatchingPredicate:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)insertConceptAuthorizationRecords:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (BOOL)resetConceptAuthorizationRecordsForSource:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)authorizationRecordsForHealthConceptIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)authorizationRecordsForHealthConceptIdentifiers:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)authorizationRecordsForMedications:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (uint64_t)_enumerateConceptAuthorizationRecordsAndSourcesWithPredicate:(void *)a3 transaction:(void *)a4 profile:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_enumerateConceptAuthorizationRecordsWithPredicate:(uint64_t)a1 limit:(void *)a2 transaction:(void *)a3 error:(uint64_t)a4 enumerationHandler:(void *)a5;
++ (BOOL)deleteConceptAuthorizationRecordsMatchingPredicate:(id)predicate transaction:(id)transaction error:(id *)error;
++ (BOOL)insertConceptAuthorizationRecords:(id)records transaction:(id)transaction profile:(id)profile error:(id *)error;
++ (BOOL)resetConceptAuthorizationRecordsForSource:(id)source profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsForHealthConceptIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsForHealthConceptIdentifiers:(id)identifiers sourceEntity:(id)entity profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsForMedications:(id)medications sourceEntity:(id)entity profile:(id)profile error:(id *)error;
++ (id)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain profile:(id)profile error:(id *)error;
++ (uint64_t)_enumerateConceptAuthorizationRecordsAndSourcesWithPredicate:(void *)predicate transaction:(void *)transaction profile:(uint64_t)profile error:(void *)error enumerationHandler:;
++ (uint64_t)_enumerateConceptAuthorizationRecordsWithPredicate:(uint64_t)predicate limit:(void *)limit transaction:(void *)transaction error:(uint64_t)error enumerationHandler:(void *)handler;
 @end
 
 @implementation HDConceptAuthorizationEntity
 
-+ (BOOL)insertConceptAuthorizationRecords:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertConceptAuthorizationRecords:(id)records transaction:(id)transaction profile:(id)profile error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v48 = a4;
-  v47 = a5;
-  v43 = [v47 currentSyncIdentityPersistentID];
+  recordsCopy = records;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  currentSyncIdentityPersistentID = [profileCopy currentSyncIdentityPersistentID];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v9;
+  obj = recordsCopy;
   v46 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v46)
   {
@@ -40,33 +40,33 @@
         }
 
         v12 = *(*(&v51 + 1) + 8 * i);
-        v13 = v48;
-        v14 = v47;
+        v13 = transactionCopy;
+        v14 = profileCopy;
         v49 = objc_opt_self();
-        v15 = [MEMORY[0x277D10B70] falsePredicate];
+        falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
         v16 = MEMORY[0x277CCDB40];
-        v17 = [v12 semanticIdentifierString];
-        v18 = [v16 semanticIdentifierFromSemanticIdentifierString:v17 profile:v14];
+        semanticIdentifierString = [v12 semanticIdentifierString];
+        v18 = [v16 semanticIdentifierFromSemanticIdentifierString:semanticIdentifierString profile:v14];
 
         v50 = v14;
         if (v18)
         {
-          v19 = [v14 daemon];
-          v20 = [v19 userDomainConceptEntityRegistry];
-          v21 = [v18 typeIdentifier];
-          v22 = a6;
-          v23 = [v20 userDomainConceptEntityClassForTypeIdentifier:v21];
+          daemon = [v14 daemon];
+          userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+          typeIdentifier = [v18 typeIdentifier];
+          errorCopy = error;
+          v23 = [userDomainConceptEntityRegistry userDomainConceptEntityClassForTypeIdentifier:typeIdentifier];
 
           v24 = v23;
-          a6 = v22;
+          error = errorCopy;
           v25 = [v24 predicateMatchingSemanticIdentifier:v18];
 
-          v15 = v25;
+          falsePredicate = v25;
         }
 
-        v26 = [v13 protectedDatabase];
+        protectedDatabase = [v13 protectedDatabase];
         v55 = 0;
-        v27 = [(HDSQLiteEntity *)HDUserDomainConceptEntity anyInDatabase:v26 predicate:v15 error:&v55];
+        v27 = [(HDSQLiteEntity *)HDUserDomainConceptEntity anyInDatabase:protectedDatabase predicate:falsePredicate error:&v55];
         v28 = v55;
 
         if (!v27 && v28)
@@ -85,10 +85,10 @@
             _os_log_error_impl(&dword_228986000, v37, OS_LOG_TYPE_ERROR, "%{public}@ Failed to look up exisitng user domain concept when trying to insert record %{public}@ Error: %{public}@", buf, 0x20u);
           }
 
-          if (a6)
+          if (error)
           {
             v38 = v28;
-            *a6 = v28;
+            *error = v28;
           }
 
           else
@@ -106,7 +106,7 @@ LABEL_26:
           v29 = v12;
           v30 = v13;
           v31 = objc_opt_self();
-          v32 = [v30 protectedDatabase];
+          protectedDatabase2 = [v30 protectedDatabase];
 
           v56[0] = MEMORY[0x277D85DD0];
           v56[1] = 3221225472;
@@ -119,9 +119,9 @@ LABEL_26:
           v59 = &unk_278619A20;
           v60 = v29;
           v61 = 0;
-          v62 = v43;
+          v62 = currentSyncIdentityPersistentID;
           v33 = v29;
-          LODWORD(v31) = [v32 executeCachedStatementForKey:&_insertConceptAuthorizationRecord_syncProvenance_syncIdentity_transaction_error__statementKey error:a6 SQLGenerator:v56 bindingHandler:buf enumerationHandler:0];
+          LODWORD(v31) = [protectedDatabase2 executeCachedStatementForKey:&_insertConceptAuthorizationRecord_syncProvenance_syncIdentity_transaction_error__statementKey error:error SQLGenerator:v56 bindingHandler:buf enumerationHandler:0];
 
           if (!v31)
           {
@@ -167,44 +167,44 @@ LABEL_27:
   return v36;
 }
 
-+ (uint64_t)_enumerateConceptAuthorizationRecordsWithPredicate:(uint64_t)a1 limit:(void *)a2 transaction:(void *)a3 error:(uint64_t)a4 enumerationHandler:(void *)a5
++ (uint64_t)_enumerateConceptAuthorizationRecordsWithPredicate:(uint64_t)predicate limit:(void *)limit transaction:(void *)transaction error:(uint64_t)error enumerationHandler:(void *)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = a2;
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  limitCopy = limit;
   v11 = objc_opt_self();
-  v12 = [v9 databaseForEntityClass:v11];
+  v12 = [transactionCopy databaseForEntityClass:v11];
 
-  v13 = [v11 queryWithDatabase:v12 predicate:v10 limit:*MEMORY[0x277D10C08] orderingTerms:0 groupBy:0];
+  v13 = [v11 queryWithDatabase:v12 predicate:limitCopy limit:*MEMORY[0x277D10C08] orderingTerms:0 groupBy:0];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __126__HDConceptAuthorizationEntity__enumerateConceptAuthorizationRecordsWithPredicate_limit_transaction_error_enumerationHandler___block_invoke;
   v17[3] = &unk_278617EE8;
-  v18 = v8;
+  v18 = handlerCopy;
   v19 = v11;
-  v14 = v8;
-  v15 = [v13 enumeratePersistentIDsAndProperties:&unk_283CB02D0 error:a4 enumerationHandler:v17];
+  v14 = handlerCopy;
+  v15 = [v13 enumeratePersistentIDsAndProperties:&unk_283CB02D0 error:error enumerationHandler:v17];
 
   return v15;
 }
 
-+ (BOOL)resetConceptAuthorizationRecordsForSource:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)resetConceptAuthorizationRecordsForSource:(id)source profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  sourceCopy = source;
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __88__HDConceptAuthorizationEntity_resetConceptAuthorizationRecordsForSource_profile_error___block_invoke;
   v14[3] = &unk_278613218;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a5) = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  v15 = sourceCopy;
+  v16 = profileCopy;
+  v11 = profileCopy;
+  v12 = sourceCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v14];
 
-  return a5;
+  return error;
 }
 
 BOOL __88__HDConceptAuthorizationEntity_resetConceptAuthorizationRecordsForSource_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -225,34 +225,34 @@ BOOL __88__HDConceptAuthorizationEntity_resetConceptAuthorizationRecordsForSourc
   return v8;
 }
 
-+ (BOOL)deleteConceptAuthorizationRecordsMatchingPredicate:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)deleteConceptAuthorizationRecordsMatchingPredicate:(id)predicate transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 protectedDatabase];
-  LOBYTE(a5) = [(HDSQLiteEntity *)HDConceptAuthorizationEntity deleteEntitiesInDatabase:v8 predicate:v7 error:a5];
+  predicateCopy = predicate;
+  protectedDatabase = [transaction protectedDatabase];
+  LOBYTE(error) = [(HDSQLiteEntity *)HDConceptAuthorizationEntity deleteEntitiesInDatabase:protectedDatabase predicate:predicateCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)authorizationRecordsForHealthConceptIdentifiers:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationRecordsForHealthConceptIdentifiers:(id)identifiers sourceEntity:(id)entity profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [a4 sourceUUIDWithProfile:v11 error:a6];
+  identifiersCopy = identifiers;
+  profileCopy = profile;
+  v12 = [entity sourceUUIDWithProfile:profileCopy error:error];
   if (v12)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [v11 database];
+    database = [profileCopy database];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __107__HDConceptAuthorizationEntity_authorizationRecordsForHealthConceptIdentifiers_sourceEntity_profile_error___block_invoke;
     v19[3] = &unk_278613550;
-    v20 = v10;
+    v20 = identifiersCopy;
     v21 = v12;
-    v23 = a1;
+    selfCopy = self;
     v15 = v13;
     v22 = v15;
-    v16 = [a1 performReadTransactionWithHealthDatabase:v14 error:a6 block:v19];
+    v16 = [self performReadTransactionWithHealthDatabase:database error:error block:v19];
 
     if (v16)
     {
@@ -297,20 +297,20 @@ uint64_t __107__HDConceptAuthorizationEntity_authorizationRecordsForHealthConcep
   return v13;
 }
 
-+ (id)authorizationRecordsForMedications:(id)a3 sourceEntity:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationRecordsForMedications:(id)medications sourceEntity:(id)entity profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 hk_map:&__block_literal_global_226];
-  v14 = [a1 authorizationRecordsForHealthConceptIdentifiers:v13 sourceEntity:v12 profile:v11 error:a6];
+  medicationsCopy = medications;
+  profileCopy = profile;
+  entityCopy = entity;
+  v13 = [medicationsCopy hk_map:&__block_literal_global_226];
+  v14 = [self authorizationRecordsForHealthConceptIdentifiers:v13 sourceEntity:entityCopy profile:profileCopy error:error];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __94__HDConceptAuthorizationEntity_authorizationRecordsForMedications_sourceEntity_profile_error___block_invoke_2;
   v18[3] = &unk_27862D380;
-  v19 = v10;
-  v15 = v10;
+  v19 = medicationsCopy;
+  v15 = medicationsCopy;
   v16 = [v14 hk_mapToDictionary:v18];
 
   return v16;
@@ -349,29 +349,29 @@ uint64_t __94__HDConceptAuthorizationEntity_authorizationRecordsForMedications_s
   return v6;
 }
 
-+ (id)authorizationRecordsForHealthConceptIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)authorizationRecordsForHealthConceptIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a4;
+  profileCopy = profile;
   v9 = MEMORY[0x277CBEB38];
-  v10 = a3;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(v9);
-  v12 = HDConceptAuthorizationEntityPredicateForHealthConceptIdentifier(v10, 1);
+  v12 = HDConceptAuthorizationEntityPredicateForHealthConceptIdentifier(identifierCopy, 1);
 
-  v13 = [v8 database];
+  database = [profileCopy database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __93__HDConceptAuthorizationEntity_authorizationRecordsForHealthConceptIdentifier_profile_error___block_invoke;
   v20[3] = &unk_278613550;
   v21 = v12;
-  v22 = v8;
+  v22 = profileCopy;
   v23 = v11;
-  v24 = a1;
+  selfCopy = self;
   v14 = v11;
-  v15 = v8;
+  v15 = profileCopy;
   v16 = v12;
-  LODWORD(a5) = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:v13 error:a5 block:v20];
+  LODWORD(error) = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:database error:error block:v20];
 
-  if (a5)
+  if (error)
   {
     v17 = v14;
   }
@@ -401,37 +401,37 @@ uint64_t __93__HDConceptAuthorizationEntity_authorizationRecordsForHealthConcept
   return v8;
 }
 
-+ (uint64_t)_enumerateConceptAuthorizationRecordsAndSourcesWithPredicate:(void *)a3 transaction:(void *)a4 profile:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateConceptAuthorizationRecordsAndSourcesWithPredicate:(void *)predicate transaction:(void *)transaction profile:(uint64_t)profile error:(void *)error enumerationHandler:
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  errorCopy = error;
+  transactionCopy = transaction;
+  predicateCopy = predicate;
   v13 = a2;
   v14 = objc_opt_self();
-  v15 = [v11 sourceManager];
+  sourceManager = [transactionCopy sourceManager];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __138__HDConceptAuthorizationEntity__enumerateConceptAuthorizationRecordsAndSourcesWithPredicate_transaction_profile_error_enumerationHandler___block_invoke;
   v20[3] = &unk_27862D3D0;
-  v22 = v10;
+  v22 = errorCopy;
   v23 = v14;
-  v21 = v15;
-  v16 = v10;
-  v17 = v15;
-  v18 = [HDConceptAuthorizationEntity _enumerateConceptAuthorizationRecordsWithPredicate:v14 limit:v13 transaction:v12 error:a5 enumerationHandler:v20];
+  v21 = sourceManager;
+  v16 = errorCopy;
+  v17 = sourceManager;
+  v18 = [HDConceptAuthorizationEntity _enumerateConceptAuthorizationRecordsWithPredicate:v14 limit:v13 transaction:predicateCopy error:profile enumerationHandler:v20];
 
   return v18;
 }
 
-+ (id)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)fetchSourcesWithExistingAuthorizationsForHealthConceptDomain:(id)domain profile:(id)profile error:(id *)error
 {
   v7 = MEMORY[0x277D10B18];
-  v8 = a4;
-  v9 = [v7 predicateWithProperty:@"concept_identifier_domain" equalToValue:a3];
+  profileCopy = profile;
+  v9 = [v7 predicateWithProperty:@"concept_identifier_domain" equalToValue:domain];
   v10 = HDConceptAuthorizationEntityPredicateForStatus(0, 0);
   v11 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v9 otherPredicate:v10];
-  v12 = v8;
+  v12 = profileCopy;
   v13 = objc_opt_self();
   v27 = 0;
   v28 = &v27;
@@ -439,7 +439,7 @@ uint64_t __93__HDConceptAuthorizationEntity_authorizationRecordsForHealthConcept
   v30 = __Block_byref_object_copy__187;
   v31 = __Block_byref_object_dispose__187;
   v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v14 = [v12 database];
+  database = [v12 database];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __74__HDConceptAuthorizationEntity__clientSourcesWithPredicate_profile_error___block_invoke;
@@ -450,9 +450,9 @@ uint64_t __93__HDConceptAuthorizationEntity_authorizationRecordsForHealthConcept
   v16 = v12;
   v24 = v16;
   v25 = &v27;
-  LODWORD(a5) = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:v14 error:a5 block:&v19];
+  LODWORD(error) = [(HDHealthEntity *)HDConceptAuthorizationEntity performReadTransactionWithHealthDatabase:database error:error block:&v19];
 
-  if (a5)
+  if (error)
   {
     v17 = [v28[5] copy];
   }

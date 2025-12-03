@@ -14,23 +14,23 @@
 
 - (id)defaultClientName
 {
-  v2 = [MEMORY[0x277D46F48] currentProcess];
-  v3 = [v2 bundle];
-  v4 = [v3 identifier];
+  currentProcess = [MEMORY[0x277D46F48] currentProcess];
+  bundle = [currentProcess bundle];
+  identifier = [bundle identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [v2 bundle];
-    v6 = [v5 identifier];
+    bundle2 = [currentProcess bundle];
+    identifier2 = [bundle2 identifier];
 LABEL_5:
-    v7 = v6;
+    v7 = identifier2;
     goto LABEL_6;
   }
 
-  v5 = [MEMORY[0x277D46F60] identityOfCurrentProcess];
-  if (v5)
+  bundle2 = [MEMORY[0x277D46F60] identityOfCurrentProcess];
+  if (bundle2)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v5];
+    identifier2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", bundle2];
     goto LABEL_5;
   }
 

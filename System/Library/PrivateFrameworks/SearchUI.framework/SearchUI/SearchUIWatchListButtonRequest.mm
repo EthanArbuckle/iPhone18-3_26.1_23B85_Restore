@@ -1,22 +1,22 @@
 @interface SearchUIWatchListButtonRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation SearchUIWatchListButtonRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SearchUIWatchListButtonRequest *)self identifier];
-    v6 = [v4 identifier];
-    if ([v5 isEqual:v6] && (v7 = -[SearchUIWatchListButtonRequest type](self, "type"), v7 == objc_msgSend(v4, "type")))
+    identifier = [(SearchUIWatchListButtonRequest *)self identifier];
+    identifier2 = [equalCopy identifier];
+    if ([identifier isEqual:identifier2] && (v7 = -[SearchUIWatchListButtonRequest type](self, "type"), v7 == objc_msgSend(equalCopy, "type")))
     {
-      v8 = [(SearchUIWatchListButtonRequest *)self isHorizontallySrollingStyle];
-      v9 = v8 ^ [v4 isHorizontallySrollingStyle] ^ 1;
+      isHorizontallySrollingStyle = [(SearchUIWatchListButtonRequest *)self isHorizontallySrollingStyle];
+      v9 = isHorizontallySrollingStyle ^ [equalCopy isHorizontallySrollingStyle] ^ 1;
     }
 
     else
@@ -35,12 +35,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SearchUIWatchListButtonRequest *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(SearchUIWatchListButtonRequest *)self identifier];
+  v4 = [identifier hash];
   v5 = v4 ^ [(SearchUIWatchListButtonRequest *)self type];
-  v6 = [(SearchUIWatchListButtonRequest *)self isHorizontallySrollingStyle];
+  isHorizontallySrollingStyle = [(SearchUIWatchListButtonRequest *)self isHorizontallySrollingStyle];
 
-  return v5 ^ v6;
+  return v5 ^ isHorizontallySrollingStyle;
 }
 
 @end

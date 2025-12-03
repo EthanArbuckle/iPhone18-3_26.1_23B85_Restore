@@ -1,20 +1,20 @@
 @interface PKPeerPaymentRequestTokenRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata;
 @end
 
 @implementation PKPeerPaymentRequestTokenRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata
 {
   v56 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  assessmentCopy = assessment;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (!lCopy)
   {
     v40 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -34,7 +34,7 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if (!v15)
+  if (!informationCopy)
   {
     v40 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -51,7 +51,7 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (!v16)
+  if (!identifierCopy)
   {
     v40 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -68,7 +68,7 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (!v19)
+  if (!metadataCopy)
   {
     v40 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -156,29 +156,29 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  v21 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:&unk_1F23B4718 queryParameters:0 appleAccountInformation:v15];
+  v21 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4718 queryParameters:0 appleAccountInformation:informationCopy];
   [v21 setHTTPMethod:@"POST"];
   v51 = v21;
   [v21 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v22 = [MEMORY[0x1E695DF90] dictionary];
-  [v22 setObject:v16 forKey:@"deviceIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:identifierCopy forKey:@"deviceIdentifier"];
   recipientIdentifier = self->_recipientIdentifier;
   if (recipientIdentifier)
   {
-    [v22 setObject:recipientIdentifier forKey:@"recipientIdentifier"];
+    [dictionary setObject:recipientIdentifier forKey:@"recipientIdentifier"];
   }
 
   amount = self->_amount;
   if (amount)
   {
-    v25 = [(NSDecimalNumber *)amount stringValue];
-    [v22 setObject:v25 forKey:@"amount"];
+    stringValue = [(NSDecimalNumber *)amount stringValue];
+    [dictionary setObject:stringValue forKey:@"amount"];
   }
 
   currency = self->_currency;
   if (currency)
   {
-    [v22 setObject:currency forKey:@"currency"];
+    [dictionary setObject:currency forKey:@"currency"];
   }
 
   v27 = self->_source - 1;
@@ -188,7 +188,7 @@ LABEL_55:
     v28 = off_1E79E2E98[v27];
   }
 
-  [v22 setObject:v28 forKey:@"source"];
+  [dictionary setObject:v28 forKey:@"source"];
   messagesContext = self->_messagesContext;
   if (messagesContext == 1)
   {
@@ -200,7 +200,7 @@ LABEL_55:
     messagesContext = 3;
 LABEL_21:
     v30 = PKPeerPaymentPaymentModeToString(messagesContext);
-    [v22 setObject:v30 forKey:@"paymentMode"];
+    [dictionary setObject:v30 forKey:@"paymentMode"];
   }
 
   behavior = self->_behavior;
@@ -222,7 +222,7 @@ LABEL_21:
       v33 = v32;
     }
 
-    [v22 setObject:v33 forKey:@"behavior"];
+    [dictionary setObject:v33 forKey:@"behavior"];
   }
 
   senderAddress = self->_senderAddress;
@@ -231,25 +231,25 @@ LABEL_21:
     v35 = PKIDSNormalizedAddress(senderAddress);
     if (v35)
     {
-      [v22 setObject:v35 forKey:@"senderAddress"];
+      [dictionary setObject:v35 forKey:@"senderAddress"];
     }
   }
 
-  if (v17)
+  if (scoreCopy)
   {
-    v36 = [v17 hexEncoding];
-    [v22 setObject:v36 forKey:@"deviceScore"];
+    hexEncoding = [scoreCopy hexEncoding];
+    [dictionary setObject:hexEncoding forKey:@"deviceScore"];
   }
 
-  if (v18)
+  if (assessmentCopy)
   {
-    [v22 setObject:v18 forKey:@"odiAssessment"];
+    [dictionary setObject:assessmentCopy forKey:@"odiAssessment"];
   }
 
-  v37 = [v20 dictionaryRepresentation];
-  [v22 setObject:v37 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
-  v38 = [objc_opt_class() _HTTPBodyWithDictionary:v22];
+  v38 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v51 setHTTPBody:v38];
 
   v39 = [v51 copy];

@@ -1,18 +1,18 @@
 @interface APCacheStoreCleanupOperation
-- (APCacheStoreCleanupOperation)initWithFilesEnumerator:(id)a3 expirationDate:(id)a4;
+- (APCacheStoreCleanupOperation)initWithFilesEnumerator:(id)enumerator expirationDate:(id)date;
 - (void)main;
 @end
 
 @implementation APCacheStoreCleanupOperation
 
-- (APCacheStoreCleanupOperation)initWithFilesEnumerator:(id)a3 expirationDate:(id)a4
+- (APCacheStoreCleanupOperation)initWithFilesEnumerator:(id)enumerator expirationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  enumeratorCopy = enumerator;
+  dateCopy = date;
+  v9 = dateCopy;
+  if (enumeratorCopy)
   {
-    if (v8)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -37,7 +37,7 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_filesEnumerator, a3);
+    objc_storeStrong(&v10->_filesEnumerator, enumerator);
     [v9 timeIntervalSince1970];
     v11->_expirationDate = v12;
     v11->_maxObjectLifetime = 864000.0;

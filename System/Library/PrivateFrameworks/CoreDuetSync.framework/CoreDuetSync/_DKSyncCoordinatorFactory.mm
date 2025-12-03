@@ -1,13 +1,13 @@
 @interface _DKSyncCoordinatorFactory
-+ (id)syncCoordinatorWithContext:(id)a3;
++ (id)syncCoordinatorWithContext:(id)context;
 @end
 
 @implementation _DKSyncCoordinatorFactory
 
-+ (id)syncCoordinatorWithContext:(id)a3
++ (id)syncCoordinatorWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [[_DKSync3Coordinator alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[_DKSync3Coordinator alloc] initWithContext:contextCopy];
 
   return v4;
 }

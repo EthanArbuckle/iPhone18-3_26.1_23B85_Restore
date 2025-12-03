@@ -1,6 +1,6 @@
 @interface TSPUnknownMessage
 - (TSPUnknownMessage)init;
-- (TSPUnknownMessage)initWithMessageInfo:(const void *)a3 data:(id)a4;
+- (TSPUnknownMessage)initWithMessageInfo:(const void *)info data:(id)data;
 - (const)fieldPath;
 - (unint64_t)messageVersion;
 @end
@@ -44,17 +44,17 @@
   objc_exception_throw(v13);
 }
 
-- (TSPUnknownMessage)initWithMessageInfo:(const void *)a3 data:(id)a4
+- (TSPUnknownMessage)initWithMessageInfo:(const void *)info data:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = TSPUnknownMessage;
   v8 = [(TSPUnknownMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    sub_2769E0D78(v8 + 1, a3);
-    objc_storeStrong(&v9->_messageData, a4);
+    sub_2769E0D78(v8 + 1, info);
+    objc_storeStrong(&v9->_messageData, data);
   }
 
   return v9;

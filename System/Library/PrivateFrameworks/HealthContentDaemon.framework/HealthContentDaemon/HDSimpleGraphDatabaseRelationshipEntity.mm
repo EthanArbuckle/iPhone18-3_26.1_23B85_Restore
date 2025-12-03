@@ -1,17 +1,17 @@
 @interface HDSimpleGraphDatabaseRelationshipEntity
-+ (BOOL)addRelationshipWithType:(int64_t)a3 subjectNodeID:(int64_t)a4 objectNodeID:(int64_t)a5 version:(int64_t)a6 slots:(unint64_t)a7 database:(id)a8 error:(id *)a9;
-+ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)a3 lessThanVersion:(int64_t)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)a3 relationshipID:(int64_t)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateRelationshipsWithPredicate:(id)a3 skipDeleted:(BOOL)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)enumerateRelationshipsWithSubjectID:(int64_t)a3 skipDeleted:(BOOL)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)removeRelationshipWithType:(int64_t)a3 subjectNodeID:(int64_t)a4 objectNodeID:(int64_t)a5 database:(id)a6 error:(id *)a7;
-+ (BOOL)updateSlots:(unint64_t)a3 subjectNodeID:(int64_t)a4 relationshipID:(int64_t)a5 database:(id)a6 error:(id *)a7;
++ (BOOL)addRelationshipWithType:(int64_t)type subjectNodeID:(int64_t)d objectNodeID:(int64_t)iD version:(int64_t)version slots:(unint64_t)slots database:(id)database error:(id *)error;
++ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)d lessThanVersion:(int64_t)version database:(id)database error:(id *)error;
++ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error;
++ (BOOL)enumerateRelationshipsWithPredicate:(id)predicate skipDeleted:(BOOL)deleted database:(id)database error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateRelationshipsWithSubjectID:(int64_t)d skipDeleted:(BOOL)deleted database:(id)database error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)removeRelationshipWithType:(int64_t)type subjectNodeID:(int64_t)d objectNodeID:(int64_t)iD database:(id)database error:(id *)error;
++ (BOOL)updateSlots:(unint64_t)slots subjectNodeID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error;
 + (HDSimpleGraphRelationship)_relationshipForRow:;
-+ (id)_sqlForRelationshipsOfNodeSkipDeleted:(uint64_t)a1;
++ (id)_sqlForRelationshipsOfNodeSkipDeleted:(uint64_t)deleted;
 + (id)foreignKeys;
 + (id)indices;
 + (id)uniquedColumns;
-+ (int64_t)maxVersion:(int64_t *)a3 slots:(unint64_t *)a4 subjectNodeID:(int64_t)a5 relationshipID:(int64_t)a6 database:(id)a7 error:(id *)a8;
++ (int64_t)maxVersion:(int64_t *)version slots:(unint64_t *)slots subjectNodeID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error;
 - (HDSimpleGraphDatabaseRelationshipEntity)init;
 @end
 
@@ -27,10 +27,10 @@
   return 0;
 }
 
-+ (BOOL)addRelationshipWithType:(int64_t)a3 subjectNodeID:(int64_t)a4 objectNodeID:(int64_t)a5 version:(int64_t)a6 slots:(unint64_t)a7 database:(id)a8 error:(id *)a9
++ (BOOL)addRelationshipWithType:(int64_t)type subjectNodeID:(int64_t)d objectNodeID:(int64_t)iD version:(int64_t)version slots:(unint64_t)slots database:(id)database error:(id *)error
 {
-  v14 = a8;
-  if (([v14 isWriter] & 1) == 0)
+  databaseCopy = database;
+  if (([databaseCopy isWriter] & 1) == 0)
   {
     +[HDSimpleGraphDatabaseRelationshipEntity addRelationshipWithType:subjectNodeID:objectNodeID:version:slots:database:error:];
   }
@@ -39,12 +39,12 @@
   v17[1] = 3221225472;
   v17[2] = __123__HDSimpleGraphDatabaseRelationshipEntity_addRelationshipWithType_subjectNodeID_objectNodeID_version_slots_database_error___block_invoke_2;
   v17[3] = &__block_descriptor_72_e23_v16__0__sqlite3_stmt__8l;
-  v17[4] = a4;
-  v17[5] = a3;
-  v17[6] = a5;
-  v17[7] = a6;
-  v17[8] = a7;
-  v15 = [v14 executeCachedStatementForKey:&addRelationshipWithType_subjectNodeID_objectNodeID_version_slots_database_error__key error:a9 SQLGenerator:&__block_literal_global_0 bindingHandler:v17 enumerationHandler:0];
+  v17[4] = d;
+  v17[5] = type;
+  v17[6] = iD;
+  v17[7] = version;
+  v17[8] = slots;
+  v15 = [databaseCopy executeCachedStatementForKey:&addRelationshipWithType_subjectNodeID_objectNodeID_version_slots_database_error__key error:error SQLGenerator:&__block_literal_global_0 bindingHandler:v17 enumerationHandler:0];
 
   return v15;
 }
@@ -60,10 +60,10 @@ uint64_t __123__HDSimpleGraphDatabaseRelationshipEntity_addRelationshipWithType_
   return sqlite3_bind_int64(a2, 5, v4);
 }
 
-+ (BOOL)updateSlots:(unint64_t)a3 subjectNodeID:(int64_t)a4 relationshipID:(int64_t)a5 database:(id)a6 error:(id *)a7
++ (BOOL)updateSlots:(unint64_t)slots subjectNodeID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error
 {
-  v11 = a6;
-  if (([v11 isWriter] & 1) == 0)
+  databaseCopy = database;
+  if (([databaseCopy isWriter] & 1) == 0)
   {
     +[HDSimpleGraphDatabaseRelationshipEntity updateSlots:subjectNodeID:relationshipID:database:error:];
   }
@@ -72,10 +72,10 @@ uint64_t __123__HDSimpleGraphDatabaseRelationshipEntity_addRelationshipWithType_
   v14[1] = 3221225472;
   v14[2] = __99__HDSimpleGraphDatabaseRelationshipEntity_updateSlots_subjectNodeID_relationshipID_database_error___block_invoke_2;
   v14[3] = &__block_descriptor_56_e23_v16__0__sqlite3_stmt__8l;
-  v14[4] = a3;
-  v14[5] = a4;
-  v14[6] = a5;
-  v12 = [v11 executeCachedStatementForKey:&updateSlots_subjectNodeID_relationshipID_database_error__key error:a7 SQLGenerator:&__block_literal_global_323 bindingHandler:v14 enumerationHandler:0];
+  v14[4] = slots;
+  v14[5] = d;
+  v14[6] = iD;
+  v12 = [databaseCopy executeCachedStatementForKey:&updateSlots_subjectNodeID_relationshipID_database_error__key error:error SQLGenerator:&__block_literal_global_323 bindingHandler:v14 enumerationHandler:0];
 
   return v12;
 }
@@ -89,15 +89,15 @@ uint64_t __99__HDSimpleGraphDatabaseRelationshipEntity_updateSlots_subjectNodeID
   return sqlite3_bind_int64(a2, 3, v4);
 }
 
-+ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)a3 relationshipID:(int64_t)a4 database:(id)a5 error:(id *)a6
++ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __106__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithSubjectID_relationshipID_database_error___block_invoke_2;
   v7[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-  v7[4] = a3;
-  v7[5] = a4;
-  return [a5 executeCachedStatementForKey:&deleteRelationshipsWithSubjectID_relationshipID_database_error__key error:a6 SQLGenerator:&__block_literal_global_329 bindingHandler:v7 enumerationHandler:0];
+  v7[4] = d;
+  v7[5] = iD;
+  return [database executeCachedStatementForKey:&deleteRelationshipsWithSubjectID_relationshipID_database_error__key error:error SQLGenerator:&__block_literal_global_329 bindingHandler:v7 enumerationHandler:0];
 }
 
 uint64_t __106__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithSubjectID_relationshipID_database_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -108,15 +108,15 @@ uint64_t __106__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithS
   return sqlite3_bind_int64(a2, 2, v4);
 }
 
-+ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)a3 lessThanVersion:(int64_t)a4 database:(id)a5 error:(id *)a6
++ (BOOL)deleteRelationshipsWithSubjectID:(int64_t)d lessThanVersion:(int64_t)version database:(id)database error:(id *)error
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __107__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithSubjectID_lessThanVersion_database_error___block_invoke_2;
   v7[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-  v7[4] = a3;
-  v7[5] = a4;
-  return [a5 executeCachedStatementForKey:&deleteRelationshipsWithSubjectID_lessThanVersion_database_error__key error:a6 SQLGenerator:&__block_literal_global_335 bindingHandler:v7 enumerationHandler:0];
+  v7[4] = d;
+  v7[5] = version;
+  return [database executeCachedStatementForKey:&deleteRelationshipsWithSubjectID_lessThanVersion_database_error__key error:error SQLGenerator:&__block_literal_global_335 bindingHandler:v7 enumerationHandler:0];
 }
 
 uint64_t __107__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithSubjectID_lessThanVersion_database_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -127,10 +127,10 @@ uint64_t __107__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithS
   return sqlite3_bind_int64(a2, 2, v4);
 }
 
-+ (int64_t)maxVersion:(int64_t *)a3 slots:(unint64_t *)a4 subjectNodeID:(int64_t)a5 relationshipID:(int64_t)a6 database:(id)a7 error:(id *)a8
++ (int64_t)maxVersion:(int64_t *)version slots:(unint64_t *)slots subjectNodeID:(int64_t)d relationshipID:(int64_t)iD database:(id)database error:(id *)error
 {
-  v13 = a7;
-  if (([v13 isWriter] & 1) == 0)
+  databaseCopy = database;
+  if (([databaseCopy isWriter] & 1) == 0)
   {
     +[HDSimpleGraphDatabaseRelationshipEntity maxVersion:slots:subjectNodeID:relationshipID:database:error:];
   }
@@ -151,8 +151,8 @@ uint64_t __107__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithS
   v17[1] = 3221225472;
   v17[2] = __104__HDSimpleGraphDatabaseRelationshipEntity_maxVersion_slots_subjectNodeID_relationshipID_database_error___block_invoke_2;
   v17[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-  v17[4] = a5;
-  v17[5] = a6;
+  v17[4] = d;
+  v17[5] = iD;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__HDSimpleGraphDatabaseRelationshipEntity_maxVersion_slots_subjectNodeID_relationshipID_database_error___block_invoke_3;
@@ -160,18 +160,18 @@ uint64_t __107__HDSimpleGraphDatabaseRelationshipEntity_deleteRelationshipsWithS
   v16[4] = &v22;
   v16[5] = &v18;
   v16[6] = &v26;
-  if ([v13 executeCachedStatementForKey:&maxVersion_slots_subjectNodeID_relationshipID_database_error__key error:a8 SQLGenerator:&__block_literal_global_340 bindingHandler:v17 enumerationHandler:v16])
+  if ([databaseCopy executeCachedStatementForKey:&maxVersion_slots_subjectNodeID_relationshipID_database_error__key error:error SQLGenerator:&__block_literal_global_340 bindingHandler:v17 enumerationHandler:v16])
   {
     if (*(v27 + 24))
     {
-      if (a3)
+      if (version)
       {
-        *a3 = v23[3];
+        *version = v23[3];
       }
 
-      if (a4)
+      if (slots)
       {
-        *a4 = v19[3];
+        *slots = v19[3];
       }
 
       v14 = 1;
@@ -211,10 +211,10 @@ uint64_t __104__HDSimpleGraphDatabaseRelationshipEntity_maxVersion_slots_subject
   return 0;
 }
 
-+ (BOOL)removeRelationshipWithType:(int64_t)a3 subjectNodeID:(int64_t)a4 objectNodeID:(int64_t)a5 database:(id)a6 error:(id *)a7
++ (BOOL)removeRelationshipWithType:(int64_t)type subjectNodeID:(int64_t)d objectNodeID:(int64_t)iD database:(id)database error:(id *)error
 {
-  v11 = a6;
-  if (([v11 isWriter] & 1) == 0)
+  databaseCopy = database;
+  if (([databaseCopy isWriter] & 1) == 0)
   {
     +[HDSimpleGraphDatabaseRelationshipEntity removeRelationshipWithType:subjectNodeID:objectNodeID:database:error:];
   }
@@ -223,10 +223,10 @@ uint64_t __104__HDSimpleGraphDatabaseRelationshipEntity_maxVersion_slots_subject
   v14[1] = 3221225472;
   v14[2] = __112__HDSimpleGraphDatabaseRelationshipEntity_removeRelationshipWithType_subjectNodeID_objectNodeID_database_error___block_invoke;
   v14[3] = &__block_descriptor_56_e23_v16__0__sqlite3_stmt__8l;
-  v14[4] = a4;
-  v14[5] = a3;
-  v14[6] = a5;
-  v12 = [v11 executeSQL:@"DELETE FROM relationships WHERE subject_id = ? AND relationship_type = ? AND object_id = ?" error:a7 bindingHandler:v14 enumerationHandler:0];
+  v14[4] = d;
+  v14[5] = type;
+  v14[6] = iD;
+  v12 = [databaseCopy executeSQL:@"DELETE FROM relationships WHERE subject_id = ? AND relationship_type = ? AND object_id = ?" error:error bindingHandler:v14 enumerationHandler:0];
 
   return v12;
 }
@@ -240,32 +240,32 @@ uint64_t __112__HDSimpleGraphDatabaseRelationshipEntity_removeRelationshipWithTy
   return sqlite3_bind_int64(a2, 3, v4);
 }
 
-+ (BOOL)enumerateRelationshipsWithPredicate:(id)a3 skipDeleted:(BOOL)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateRelationshipsWithPredicate:(id)predicate skipDeleted:(BOOL)deleted database:(id)database error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (v10)
+  deletedCopy = deleted;
+  predicateCopy = predicate;
+  databaseCopy = database;
+  handlerCopy = handler;
+  if (deletedCopy)
   {
     v15 = MEMORY[0x277D10B70];
     v16 = MEMORY[0x277D10B18];
     v17 = [MEMORY[0x277CCABB0] numberWithLongLong:204];
     v18 = [v16 predicateWithProperty:@"object_id" notEqualToValue:v17];
-    v19 = [v15 compoundPredicateWithPredicate:v12 otherPredicate:v18];
+    v19 = [v15 compoundPredicateWithPredicate:predicateCopy otherPredicate:v18];
 
-    v12 = v19;
+    predicateCopy = v19;
   }
 
-  v20 = [a1 queryWithDatabase:v13 predicate:v12];
+  v20 = [self queryWithDatabase:databaseCopy predicate:predicateCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWithPredicate_skipDeleted_database_error_enumerationHandler___block_invoke;
   v24[3] = &unk_2796B8F68;
-  v25 = v14;
-  v26 = a1;
-  v21 = v14;
-  v22 = [v20 enumerateProperties:&unk_2863747D8 error:a6 enumerationHandler:v24];
+  v25 = handlerCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v22 = [v20 enumerateProperties:&unk_2863747D8 error:error enumerationHandler:v24];
 
   return v22;
 }
@@ -293,11 +293,11 @@ uint64_t __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWi
   return v5;
 }
 
-+ (BOOL)enumerateRelationshipsWithSubjectID:(int64_t)a3 skipDeleted:(BOOL)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateRelationshipsWithSubjectID:(int64_t)d skipDeleted:(BOOL)deleted database:(id)database error:(id *)error enumerationHandler:(id)handler
 {
-  v9 = a4;
-  v12 = a7;
-  if (v9)
+  deletedCopy = deleted;
+  handlerCopy = handler;
+  if (deletedCopy)
   {
     v13 = &enumerateRelationshipsWithSubjectID_skipDeleted_database_error_enumerationHandler__skipDeletedKey;
   }
@@ -311,27 +311,27 @@ uint64_t __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWi
   v22[1] = 3221225472;
   v22[2] = __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWithSubjectID_skipDeleted_database_error_enumerationHandler___block_invoke;
   v22[3] = &__block_descriptor_41_e15___NSString_8__0l;
-  v22[4] = a1;
-  v23 = v9;
+  v22[4] = self;
+  v23 = deletedCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWithSubjectID_skipDeleted_database_error_enumerationHandler___block_invoke_2;
   v20[3] = &__block_descriptor_41_e23_v16__0__sqlite3_stmt__8l;
-  v20[4] = a3;
-  v21 = v9;
+  v20[4] = d;
+  v21 = deletedCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __125__HDSimpleGraphDatabaseRelationshipEntity_enumerateRelationshipsWithSubjectID_skipDeleted_database_error_enumerationHandler___block_invoke_3;
   v17[3] = &unk_2796B8FD0;
-  v18 = v12;
-  v19 = a1;
-  v14 = v12;
-  v15 = [a5 executeCachedStatementForKey:v13 error:a6 SQLGenerator:v22 bindingHandler:v20 enumerationHandler:v17];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = [database executeCachedStatementForKey:v13 error:error SQLGenerator:v22 bindingHandler:v20 enumerationHandler:v17];
 
   return v15;
 }
 
-+ (id)_sqlForRelationshipsOfNodeSkipDeleted:(uint64_t)a1
++ (id)_sqlForRelationshipsOfNodeSkipDeleted:(uint64_t)deleted
 {
   objc_opt_self();
   v3 = objc_alloc(MEMORY[0x277CCACA8]);

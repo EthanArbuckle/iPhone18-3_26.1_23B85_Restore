@@ -1,24 +1,24 @@
 @interface TPSContextualClientContextEvent
-- (TPSContextualClientContextEvent)initWithCoder:(id)a3;
-- (TPSContextualClientContextEvent)initWithDictionary:(id)a3;
+- (TPSContextualClientContextEvent)initWithCoder:(id)coder;
+- (TPSContextualClientContextEvent)initWithDictionary:(id)dictionary;
 - (id)clientContextKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSContextualClientContextEvent
 
-- (TPSContextualClientContextEvent)initWithDictionary:(id)a3
+- (TPSContextualClientContextEvent)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = TPSContextualClientContextEvent;
-  v5 = [(TPSContextualEvent *)&v24 initWithDictionary:v4];
+  v5 = [(TPSContextualEvent *)&v24 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 TPSSafeArrayForKey:@"conditions"];
+    v6 = [dictionaryCopy TPSSafeArrayForKey:@"conditions"];
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
     v20 = 0u;
     v21 = 0u;
@@ -67,18 +67,18 @@
   return v5;
 }
 
-- (TPSContextualClientContextEvent)initWithCoder:(id)a3
+- (TPSContextualClientContextEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TPSContextualClientContextEvent;
-  v5 = [(TPSContextualEvent *)&v12 initWithCoder:v4];
+  v5 = [(TPSContextualEvent *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"conditions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"conditions"];
     conditions = v5->_conditions;
     v5->_conditions = v9;
   }
@@ -86,20 +86,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSContextualClientContextEvent;
-  v4 = a3;
-  [(TPSContextualEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_conditions forKey:{@"conditions", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TPSContextualEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_conditions forKey:{@"conditions", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualClientContextEvent;
-  v4 = [(TPSContextualEvent *)&v6 copyWithZone:a3];
+  v4 = [(TPSContextualEvent *)&v6 copyWithZone:zone];
   [v4 setConditions:self->_conditions];
   return v4;
 }
@@ -137,11 +137,11 @@
     while (v6);
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return allObjects;
 }
 
 - (id)debugDescription
@@ -152,8 +152,8 @@
   v4 = [(TPSContextualEvent *)&v9 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSContextualClientContextEvent *)self conditions];
-  v7 = [v6 debugDescription];
+  conditions = [(TPSContextualClientContextEvent *)self conditions];
+  v7 = [conditions debugDescription];
   [v5 appendFormat:@"%@ = %@", @"conditions", v7];
 
   return v5;

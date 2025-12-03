@@ -1,6 +1,6 @@
 @interface HRECharacteristicTriggerTemplate
 - (HRECharacteristicTriggerTemplate)init;
-- (id)_subclass_triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4;
+- (id)_subclass_triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects;
 @end
 
 @implementation HRECharacteristicTriggerTemplate
@@ -22,23 +22,23 @@
   return v3;
 }
 
-- (id)_subclass_triggerBuilderForRecommendation:(id)a3 withObjects:(id)a4
+- (id)_subclass_triggerBuilderForRecommendation:(id)recommendation withObjects:(id)objects
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recommendationCopy = recommendation;
+  objectsCopy = objects;
   v8 = objc_alloc_init(HRERecommendationEmptyTriggerBuilderContext);
   v9 = objc_alloc(MEMORY[0x277D14668]);
-  v10 = [v6 home];
-  v11 = [v9 initWithHome:v10 context:v8];
+  home = [recommendationCopy home];
+  v11 = [v9 initWithHome:home context:v8];
 
-  v12 = [v6 splitCharacteristic];
+  splitCharacteristic = [recommendationCopy splitCharacteristic];
 
-  if (v12)
+  if (splitCharacteristic)
   {
     v13 = MEMORY[0x277CBEB98];
-    v14 = [v6 splitCharacteristic];
-    v26[0] = v14;
+    splitCharacteristic2 = [recommendationCopy splitCharacteristic];
+    v26[0] = splitCharacteristic2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
     v16 = [v13 setWithArray:v15];
 
@@ -51,8 +51,8 @@ LABEL_5:
     v17 = v11;
     v24 = v17;
     [v16 na_each:v23];
-    v18 = [v17 characteristics];
-    v19 = [v18 count];
+    characteristics = [v17 characteristics];
+    v19 = [characteristics count];
 
     if (v19)
     {
@@ -69,13 +69,13 @@ LABEL_5:
 
   if ([(HRECharacteristicTriggerTemplate *)self allowMultipleEventsFeature])
   {
-    v14 = [v7 na_flatMap:&__block_literal_global_1];
+    splitCharacteristic2 = [objectsCopy na_flatMap:&__block_literal_global_1];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __90__HRECharacteristicTriggerTemplate__subclass_triggerBuilderForRecommendation_withObjects___block_invoke_2;
     v25[3] = &unk_279776320;
     v25[4] = self;
-    v16 = [v14 na_filter:v25];
+    v16 = [splitCharacteristic2 na_filter:v25];
     goto LABEL_5;
   }
 

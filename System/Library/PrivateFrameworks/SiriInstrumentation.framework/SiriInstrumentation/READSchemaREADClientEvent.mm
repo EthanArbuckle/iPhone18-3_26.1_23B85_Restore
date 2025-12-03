@@ -1,14 +1,14 @@
 @interface READSchemaREADClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (READSchemaREADClientEvent)initWithDictionary:(id)a3;
-- (READSchemaREADClientEvent)initWithJSON:(id)a3;
+- (READSchemaREADClientEvent)initWithDictionary:(id)dictionary;
+- (READSchemaREADClientEvent)initWithJSON:(id)n;
 - (READSchemaREADPlaybackSessionContext)playbackSessionContext;
 - (READSchemaREADRequestContext)readThisRequestContext;
 - (READSchemaREADRequestPreprocessingContext)readsThisRequestPreprocessingContext;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -18,23 +18,23 @@
 - (void)deletePlaybackSessionContext;
 - (void)deleteReadThisRequestContext;
 - (void)deleteReadsThisRequestPreprocessingContext;
-- (void)setPlaybackSessionContext:(id)a3;
-- (void)setReadThisRequestContext:(id)a3;
-- (void)setReadsThisRequestPreprocessingContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPlaybackSessionContext:(id)context;
+- (void)setReadThisRequestContext:(id)context;
+- (void)setReadsThisRequestPreprocessingContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation READSchemaREADClientEvent
 
-- (READSchemaREADClientEvent)initWithDictionary:(id)a3
+- (READSchemaREADClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = READSchemaREADClientEvent;
   v5 = [(READSchemaREADClientEvent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(READSchemaREADClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"readThisRequestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"readThisRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(READSchemaREADClientEvent *)v5 setReadThisRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"readsThisRequestPreprocessingContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"readsThisRequestPreprocessingContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(READSchemaREADClientEvent *)v5 setReadsThisRequestPreprocessingContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"playbackSessionContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"playbackSessionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (READSchemaREADClientEvent)initWithJSON:(id)a3
+- (READSchemaREADClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(READSchemaREADClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(READSchemaREADClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(READSchemaREADClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,74 +108,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(READSchemaREADClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_playbackSessionContext)
   {
-    v7 = [(READSchemaREADClientEvent *)self playbackSessionContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    playbackSessionContext = [(READSchemaREADClientEvent *)self playbackSessionContext];
+    dictionaryRepresentation2 = [playbackSessionContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"playbackSessionContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"playbackSessionContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"playbackSessionContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"playbackSessionContext"];
     }
   }
 
   if (self->_readThisRequestContext)
   {
-    v10 = [(READSchemaREADClientEvent *)self readThisRequestContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    readThisRequestContext = [(READSchemaREADClientEvent *)self readThisRequestContext];
+    dictionaryRepresentation3 = [readThisRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"readThisRequestContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"readThisRequestContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"readThisRequestContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"readThisRequestContext"];
     }
   }
 
   if (self->_readsThisRequestPreprocessingContext)
   {
-    v13 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    readsThisRequestPreprocessingContext = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+    dictionaryRepresentation4 = [readsThisRequestPreprocessingContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"readsThisRequestPreprocessingContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"readsThisRequestPreprocessingContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"readsThisRequestPreprocessingContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"readsThisRequestPreprocessingContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -186,34 +186,34 @@
   return v4 ^ v5 ^ [(READSchemaREADPlaybackSessionContext *)self->_playbackSessionContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_23;
   }
 
-  v6 = [(READSchemaREADClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(READSchemaREADClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(READSchemaREADClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(READSchemaREADClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(READSchemaREADClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -225,20 +225,20 @@
   {
   }
 
-  v6 = [(READSchemaREADClientEvent *)self readThisRequestContext];
-  v7 = [v4 readThisRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(READSchemaREADClientEvent *)self readThisRequestContext];
+  eventMetadata2 = [equalCopy readThisRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(READSchemaREADClientEvent *)self readThisRequestContext];
-  if (v13)
+  readThisRequestContext = [(READSchemaREADClientEvent *)self readThisRequestContext];
+  if (readThisRequestContext)
   {
-    v14 = v13;
-    v15 = [(READSchemaREADClientEvent *)self readThisRequestContext];
-    v16 = [v4 readThisRequestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = readThisRequestContext;
+    readThisRequestContext2 = [(READSchemaREADClientEvent *)self readThisRequestContext];
+    readThisRequestContext3 = [equalCopy readThisRequestContext];
+    v17 = [readThisRequestContext2 isEqual:readThisRequestContext3];
 
     if (!v17)
     {
@@ -250,20 +250,20 @@
   {
   }
 
-  v6 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
-  v7 = [v4 readsThisRequestPreprocessingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+  eventMetadata2 = [equalCopy readsThisRequestPreprocessingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
-  if (v18)
+  readsThisRequestPreprocessingContext = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+  if (readsThisRequestPreprocessingContext)
   {
-    v19 = v18;
-    v20 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
-    v21 = [v4 readsThisRequestPreprocessingContext];
-    v22 = [v20 isEqual:v21];
+    v19 = readsThisRequestPreprocessingContext;
+    readsThisRequestPreprocessingContext2 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+    readsThisRequestPreprocessingContext3 = [equalCopy readsThisRequestPreprocessingContext];
+    v22 = [readsThisRequestPreprocessingContext2 isEqual:readsThisRequestPreprocessingContext3];
 
     if (!v22)
     {
@@ -275,12 +275,12 @@
   {
   }
 
-  v6 = [(READSchemaREADClientEvent *)self playbackSessionContext];
-  v7 = [v4 playbackSessionContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(READSchemaREADClientEvent *)self playbackSessionContext];
+  eventMetadata2 = [equalCopy playbackSessionContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v23 = [(READSchemaREADClientEvent *)self playbackSessionContext];
-    if (!v23)
+    playbackSessionContext = [(READSchemaREADClientEvent *)self playbackSessionContext];
+    if (!playbackSessionContext)
     {
 
 LABEL_26:
@@ -288,10 +288,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(READSchemaREADClientEvent *)self playbackSessionContext];
-    v26 = [v4 playbackSessionContext];
-    v27 = [v25 isEqual:v26];
+    v24 = playbackSessionContext;
+    playbackSessionContext2 = [(READSchemaREADClientEvent *)self playbackSessionContext];
+    playbackSessionContext3 = [equalCopy playbackSessionContext];
+    v27 = [playbackSessionContext2 isEqual:playbackSessionContext3];
 
     if (v27)
     {
@@ -311,42 +311,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(READSchemaREADClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(READSchemaREADClientEvent *)self eventMetadata];
+    eventMetadata2 = [(READSchemaREADClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(READSchemaREADClientEvent *)self readThisRequestContext];
+  readThisRequestContext = [(READSchemaREADClientEvent *)self readThisRequestContext];
 
-  if (v6)
+  if (readThisRequestContext)
   {
-    v7 = [(READSchemaREADClientEvent *)self readThisRequestContext];
+    readThisRequestContext2 = [(READSchemaREADClientEvent *)self readThisRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+  readsThisRequestPreprocessingContext = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
 
-  if (v8)
+  if (readsThisRequestPreprocessingContext)
   {
-    v9 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+    readsThisRequestPreprocessingContext2 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(READSchemaREADClientEvent *)self playbackSessionContext];
+  playbackSessionContext = [(READSchemaREADClientEvent *)self playbackSessionContext];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (playbackSessionContext)
   {
-    v12 = [(READSchemaREADClientEvent *)self playbackSessionContext];
+    playbackSessionContext2 = [(READSchemaREADClientEvent *)self playbackSessionContext];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -375,9 +375,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setPlaybackSessionContext:(id)a3
+- (void)setPlaybackSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   readThisRequestContext = self->_readThisRequestContext;
   self->_readThisRequestContext = 0;
 
@@ -385,14 +385,14 @@ LABEL_24:
   self->_readsThisRequestPreprocessingContext = 0;
 
   v7 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   playbackSessionContext = self->_playbackSessionContext;
-  self->_playbackSessionContext = v4;
+  self->_playbackSessionContext = contextCopy;
 }
 
 - (void)deleteReadsThisRequestPreprocessingContext
@@ -420,9 +420,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setReadsThisRequestPreprocessingContext:(id)a3
+- (void)setReadsThisRequestPreprocessingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   readThisRequestContext = self->_readThisRequestContext;
   self->_readThisRequestContext = 0;
 
@@ -430,14 +430,14 @@ LABEL_24:
   self->_playbackSessionContext = 0;
 
   v7 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   readsThisRequestPreprocessingContext = self->_readsThisRequestPreprocessingContext;
-  self->_readsThisRequestPreprocessingContext = v4;
+  self->_readsThisRequestPreprocessingContext = contextCopy;
 }
 
 - (void)deleteReadThisRequestContext
@@ -465,9 +465,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setReadThisRequestContext:(id)a3
+- (void)setReadThisRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   readsThisRequestPreprocessingContext = self->_readsThisRequestPreprocessingContext;
   self->_readsThisRequestPreprocessingContext = 0;
 
@@ -475,68 +475,68 @@ LABEL_24:
   self->_playbackSessionContext = 0;
 
   v7 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   readThisRequestContext = self->_readThisRequestContext;
-  self->_readThisRequestContext = v4;
+  self->_readThisRequestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(READSchemaREADClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 2)
+  whichEvent_Type = [(READSchemaREADClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     return @"com.apple.aiml.siri.read.READClientEvent";
   }
 
   else
   {
-    return off_1E78E18C8[v2 - 101];
+    return off_1E78E18C8[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = READSchemaREADClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(READSchemaREADClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(READSchemaREADClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(READSchemaREADClientEvent *)self readThisRequestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  readThisRequestContext = [(READSchemaREADClientEvent *)self readThisRequestContext];
+  v10 = [readThisRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(READSchemaREADClientEvent *)self deleteReadThisRequestContext];
   }
 
-  v12 = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  readsThisRequestPreprocessingContext = [(READSchemaREADClientEvent *)self readsThisRequestPreprocessingContext];
+  v13 = [readsThisRequestPreprocessingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(READSchemaREADClientEvent *)self deleteReadsThisRequestPreprocessingContext];
   }
 
-  v15 = [(READSchemaREADClientEvent *)self playbackSessionContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  playbackSessionContext = [(READSchemaREADClientEvent *)self playbackSessionContext];
+  v16 = [playbackSessionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(READSchemaREADClientEvent *)self deletePlaybackSessionContext];
   }
@@ -554,98 +554,98 @@ LABEL_24:
 
 - (int)componentName
 {
-  v2 = [(READSchemaREADClientEvent *)self eventMetadata];
-  v3 = [v2 readId];
+  eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
+  readId = [eventMetadata readId];
 
-  if (v3)
+  if (readId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [readId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [readId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 40;
+        LODWORD(value) = 40;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(READSchemaREADClientEvent *)self eventMetadata];
-  v3 = [v2 readId];
+  eventMetadata = [(READSchemaREADClientEvent *)self eventMetadata];
+  readId = [eventMetadata readId];
 
-  if (!v3)
+  if (!readId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [readId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [readId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = readId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(READSchemaREADClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 2)
+  whichEvent_Type = [(READSchemaREADClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EAE38[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EAE38[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 2)
+  if (tag - 101 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAE50[a3 - 101];
+    return off_1E78EAE50[tag - 101];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface _SFWebClipMetadataFetcher
-+ (id)_webClipLinkTagWithDictionary:(id)a3;
++ (id)_webClipLinkTagWithDictionary:(id)dictionary;
 + (id)metadataFetcherScriptSource;
-+ (void)parseRawMetadataDictionary:(id)a3 consumer:(id)a4;
-- (_SFWebClipMetadataFetcher)initWithInjectedJavascriptController:(id)a3;
++ (void)parseRawMetadataDictionary:(id)dictionary consumer:(id)consumer;
+- (_SFWebClipMetadataFetcher)initWithInjectedJavascriptController:(id)controller;
 - (void)_startFetchingMetadata;
-- (void)fetchMetadataWithConsumer:(id)a3;
+- (void)fetchMetadataWithConsumer:(id)consumer;
 @end
 
 @implementation _SFWebClipMetadataFetcher
@@ -17,16 +17,16 @@
   return v3;
 }
 
-- (_SFWebClipMetadataFetcher)initWithInjectedJavascriptController:(id)a3
+- (_SFWebClipMetadataFetcher)initWithInjectedJavascriptController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = _SFWebClipMetadataFetcher;
   v5 = [(_SFWebClipMetadataFetcher *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_jsController, v4);
+    objc_storeWeak(&v5->_jsController, controllerCopy);
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
     metadataConsumers = v6->_metadataConsumers;
     v6->_metadataConsumers = v7;
@@ -49,42 +49,42 @@
   [WeakRetained runJavaScriptForActivity:@"WebClipMetadataJS" withScript:0 object:@"WebClipMetadataFinderJS" invokeMethod:@"webClipMetadata" completionHandler:v4];
 }
 
-+ (id)_webClipLinkTagWithDictionary:(id)a3
++ (id)_webClipLinkTagWithDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E69DD2C8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 safari_stringForKey:@"href"];
+  v6 = [dictionaryCopy safari_stringForKey:@"href"];
   [v5 setHref:v6];
 
-  v7 = [v4 safari_stringForKey:@"rel"];
+  v7 = [dictionaryCopy safari_stringForKey:@"rel"];
   [v5 setRel:v7];
 
-  v8 = [v4 safari_stringForKey:@"sizes"];
+  v8 = [dictionaryCopy safari_stringForKey:@"sizes"];
   [v5 setSizes:v8];
 
-  [v5 setMediaMatchesPortraitOrientation:{objc_msgSend(v4, "safari_BOOLForKey:", @"mediaMatchesPortraitOrientation"}];
-  v9 = [v4 safari_BOOLForKey:@"mediaMatchesLandscapeOrientation"];
+  [v5 setMediaMatchesPortraitOrientation:{objc_msgSend(dictionaryCopy, "safari_BOOLForKey:", @"mediaMatchesPortraitOrientation"}];
+  v9 = [dictionaryCopy safari_BOOLForKey:@"mediaMatchesLandscapeOrientation"];
 
   [v5 setMediaMatchesLandscapeOrientation:v9];
 
   return v5;
 }
 
-+ (void)parseRawMetadataDictionary:(id)a3 consumer:(id)a4
++ (void)parseRawMetadataDictionary:(id)dictionary consumer:(id)consumer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  consumerCopy = consumer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v5 safari_arrayForKey:{@"linkTags", 0}];
+    v8 = [dictionaryCopy safari_arrayForKey:{@"linkTags", 0}];
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -101,7 +101,7 @@
           }
 
           v13 = [objc_opt_class() _webClipLinkTagWithDictionary:*(*(&v16 + 1) + 8 * v12)];
-          [v7 addObject:v13];
+          [array addObject:v13];
 
           ++v12;
         }
@@ -113,32 +113,32 @@
       while (v10);
     }
 
-    v14 = [v5 safari_dictionaryForKey:@"metaTags"];
-    v15 = [v7 copy];
-    v6[2](v6, v14, v15);
+    v14 = [dictionaryCopy safari_dictionaryForKey:@"metaTags"];
+    v15 = [array copy];
+    consumerCopy[2](consumerCopy, v14, v15);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F0]);
+    consumerCopy[2](consumerCopy, MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F0]);
   }
 }
 
-- (void)fetchMetadataWithConsumer:(id)a3
+- (void)fetchMetadataWithConsumer:(id)consumer
 {
   if (self->_fetchingCompleted)
   {
     metaTags = self->_metaTags;
     linkTags = self->_linkTags;
-    v7 = *(a3 + 2);
+    v7 = *(consumer + 2);
 
-    v7(a3, metaTags, linkTags);
+    v7(consumer, metaTags, linkTags);
   }
 
   else
   {
     metadataConsumers = self->_metadataConsumers;
-    v9 = _Block_copy(a3);
+    v9 = _Block_copy(consumer);
     [(NSMutableArray *)metadataConsumers addObject:v9];
   }
 }

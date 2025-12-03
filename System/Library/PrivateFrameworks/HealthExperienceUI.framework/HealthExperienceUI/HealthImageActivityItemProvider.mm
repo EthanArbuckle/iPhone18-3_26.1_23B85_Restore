@@ -1,31 +1,31 @@
 @interface HealthImageActivityItemProvider
-- (_TtC18HealthExperienceUI31HealthImageActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (_TtC18HealthExperienceUI31HealthImageActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation HealthImageActivityItemProvider
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_1BA3759E8();
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   v10 = sub_1BA375AD0();
 
   return v10;
 }
 
-- (_TtC18HealthExperienceUI31HealthImageActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC18HealthExperienceUI31HealthImageActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1BA4A7BF8();

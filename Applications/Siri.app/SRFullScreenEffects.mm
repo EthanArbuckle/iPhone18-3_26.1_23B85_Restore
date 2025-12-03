@@ -1,50 +1,50 @@
 @interface SRFullScreenEffects
-- (id)_effectForIdentifier:(id)a3;
+- (id)_effectForIdentifier:(id)identifier;
 - (id)_fullscreenEffectMap;
-- (id)effectForAceObject:(id)a3;
+- (id)effectForAceObject:(id)object;
 @end
 
 @implementation SRFullScreenEffects
 
-- (id)effectForAceObject:(id)a3
+- (id)effectForAceObject:(id)object
 {
-  v4 = [a3 fullScreenEffectType];
-  if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeCONFETTIValue])
+  fullScreenEffectType = [object fullScreenEffectType];
+  if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeCONFETTIValue])
   {
     v5 = @"com.apple.messages.effect.CKConfettiEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeLASERSValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeLASERSValue])
   {
     v5 = @"com.apple.messages.effect.CKLasersEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeFIREWORKSValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeFIREWORKSValue])
   {
     v5 = @"com.apple.messages.effect.CKFireworksEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeSHOOTINGSTARValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeSHOOTINGSTARValue])
   {
     v5 = @"com.apple.messages.effect.CKShootingStarEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeBALLOONSValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeBALLOONSValue])
   {
     v5 = @"com.apple.messages.effect.CKHappyBirthdayEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeSPARKLESValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeSPARKLESValue])
   {
     v5 = @"com.apple.messages.effect.CKSparklesEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeLOVEValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeLOVEValue])
   {
     v5 = @"com.apple.messages.effect.CKHeartEffect";
   }
 
-  else if ([v4 isEqualToString:SAUIShowFullScreenEffectEffectTypeSPOTLIGHTValue])
+  else if ([fullScreenEffectType isEqualToString:SAUIShowFullScreenEffectEffectTypeSPOTLIGHTValue])
   {
     v5 = @"com.apple.messages.effect.CKSpotlightEffect";
   }
@@ -59,13 +59,13 @@
   return v6;
 }
 
-- (id)_effectForIdentifier:(id)a3
+- (id)_effectForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(SRFullScreenEffects *)self _fullscreenEffectMap];
-    v6 = [v5 objectForKey:v4];
+    _fullscreenEffectMap = [(SRFullScreenEffects *)self _fullscreenEffectMap];
+    v6 = [_fullscreenEffectMap objectForKey:identifierCopy];
 
     if (v6)
     {
@@ -75,7 +75,7 @@
       }
 
       v7 = objc_alloc_init([v6 principalClass]);
-      [v7 setIdentifier:v4];
+      [v7 setIdentifier:identifierCopy];
     }
 
     else
@@ -97,7 +97,7 @@
   fullscreenEffectMapInternal = self->_fullscreenEffectMapInternal;
   if (!fullscreenEffectMapInternal)
   {
-    v18 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = +[NSFileManager defaultManager];
     v6 = [NSURL fileURLWithPath:@"/System/Library/Messages/iMessageEffects"];
@@ -124,10 +124,10 @@
           }
 
           v13 = [[NSBundle alloc] initWithURL:*(*(&v19 + 1) + 8 * v12)];
-          v14 = [v13 bundleIdentifier];
-          if (v14)
+          bundleIdentifier = [v13 bundleIdentifier];
+          if (bundleIdentifier)
           {
-            [(NSDictionary *)v4 setObject:v13 forKey:v14];
+            [(NSDictionary *)v4 setObject:v13 forKey:bundleIdentifier];
           }
 
           else
@@ -153,10 +153,10 @@
       while (v10);
     }
 
-    v16 = v18->_fullscreenEffectMapInternal;
-    v18->_fullscreenEffectMapInternal = v4;
+    v16 = selfCopy->_fullscreenEffectMapInternal;
+    selfCopy->_fullscreenEffectMapInternal = v4;
 
-    fullscreenEffectMapInternal = v18->_fullscreenEffectMapInternal;
+    fullscreenEffectMapInternal = selfCopy->_fullscreenEffectMapInternal;
   }
 
   return fullscreenEffectMapInternal;

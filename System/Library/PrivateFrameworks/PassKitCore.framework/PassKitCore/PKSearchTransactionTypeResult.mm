@@ -1,28 +1,28 @@
 @interface PKSearchTransactionTypeResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchTransactionTypeResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKSearchTransactionTypeResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchTransactionTypeResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transactionType = self->_transactionType;
-  v5 = a3;
-  [v5 encodeInteger:transactionType forKey:@"transactionType"];
-  [v5 encodeInteger:self->_creditDebitIndicator forKey:@"creditDebitIndicator"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:transactionType forKey:@"transactionType"];
+  [coderCopy encodeInteger:self->_creditDebitIndicator forKey:@"creditDebitIndicator"];
 }
 
-- (PKSearchTransactionTypeResult)initWithCoder:(id)a3
+- (PKSearchTransactionTypeResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchTransactionTypeResult *)self init];
   if (v5)
   {
-    v5->_transactionType = [v4 decodeIntegerForKey:@"transactionType"];
-    v5->_creditDebitIndicator = [v4 decodeIntegerForKey:@"creditDebitIndicator"];
+    v5->_transactionType = [coderCopy decodeIntegerForKey:@"transactionType"];
+    v5->_creditDebitIndicator = [coderCopy decodeIntegerForKey:@"creditDebitIndicator"];
   }
 
   return v5;
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_creditDebitIndicator == v4[2] && self->_transactionType == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_creditDebitIndicator == equalCopy[2] && self->_transactionType == equalCopy[1];
 
   return v5;
 }

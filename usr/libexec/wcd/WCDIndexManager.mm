@@ -1,8 +1,8 @@
 @interface WCDIndexManager
 + (id)sharedManager;
 - (WCDIndexManager)init;
-- (id)contentIndexWithApplication:(id)a3 type:(id)a4 pairingID:(id)a5;
-- (void)clearCacheForApplication:(id)a3;
+- (id)contentIndexWithApplication:(id)application type:(id)type pairingID:(id)d;
+- (void)clearCacheForApplication:(id)application;
 @end
 
 @implementation WCDIndexManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E828;
   block[3] = &unk_100048E08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100054CA8 != -1)
   {
     dispatch_once(&qword_100054CA8, block);
@@ -39,39 +39,39 @@
   return v2;
 }
 
-- (id)contentIndexWithApplication:(id)a3 type:(id)a4 pairingID:(id)a5
+- (id)contentIndexWithApplication:(id)application type:(id)type pairingID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WCDIndexManager *)self _bundleIDForApplication:v8];
-  v12 = [(WCDIndexManager *)self indexKeyWithBundleID:v11 type:v9 pairingID:v10];
-  v13 = [(WCDIndexManager *)self indexCache];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  applicationCopy = application;
+  typeCopy = type;
+  dCopy = d;
+  v11 = [(WCDIndexManager *)self _bundleIDForApplication:applicationCopy];
+  v12 = [(WCDIndexManager *)self indexKeyWithBundleID:v11 type:typeCopy pairingID:dCopy];
+  indexCache = [(WCDIndexManager *)self indexCache];
+  v14 = [indexCache objectForKeyedSubscript:v12];
 
   if (!v14)
   {
     v15 = +[WCDSystemMonitor sharedSystemMonitor];
-    v16 = [v15 dataContainerURLForApplicationInfo:v8];
+    v16 = [v15 dataContainerURLForApplicationInfo:applicationCopy];
 
-    if ([v9 isEqual:@"file"])
+    if ([typeCopy isEqual:@"file"])
     {
       v17 = WCSessionFilesURLInContainer();
     }
 
-    else if ([v9 isEqual:@"file_results"])
+    else if ([typeCopy isEqual:@"file_results"])
     {
       v17 = WCFileTransfersURLInContainer();
     }
 
-    else if ([v9 isEqual:@"user_info"])
+    else if ([typeCopy isEqual:@"user_info"])
     {
       v17 = WCTransferredUserInfoInboxURLInContainer();
     }
 
     else
     {
-      if (![v9 isEqual:@"user_info_results"])
+      if (![typeCopy isEqual:@"user_info_results"])
       {
         goto LABEL_12;
       }
@@ -83,8 +83,8 @@
     if (v17)
     {
       v14 = [[WCContentIndex alloc] initWithContainingFolder:v17];
-      v19 = [(WCDIndexManager *)self indexCache];
-      [v19 setObject:v14 forKeyedSubscript:v12];
+      indexCache2 = [(WCDIndexManager *)self indexCache];
+      [indexCache2 setObject:v14 forKeyedSubscript:v12];
 
 LABEL_13:
       goto LABEL_14;
@@ -100,19 +100,19 @@ LABEL_14:
   return v14;
 }
 
-- (void)clearCacheForApplication:(id)a3
+- (void)clearCacheForApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v5 = [(WCDIndexManager *)self _bundleIDForApplication:v4];
+    v5 = [(WCDIndexManager *)self _bundleIDForApplication:applicationCopy];
     if (v5)
     {
-      v29 = v4;
+      v29 = applicationCopy;
       v6 = objc_opt_new();
-      v7 = [(WCDIndexManager *)self indexCache];
-      v8 = [v7 allKeys];
-      v9 = [v8 copy];
+      indexCache = [(WCDIndexManager *)self indexCache];
+      allKeys = [indexCache allKeys];
+      v9 = [allKeys copy];
 
       v10 = wc_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -186,12 +186,12 @@ LABEL_14:
             }
 
             v25 = *(*(&v30 + 1) + 8 * j);
-            v26 = [(WCDIndexManager *)self indexCache];
-            v27 = [v26 objectForKeyedSubscript:v25];
+            indexCache2 = [(WCDIndexManager *)self indexCache];
+            v27 = [indexCache2 objectForKeyedSubscript:v25];
 
             [v27 invalidate];
-            v28 = [(WCDIndexManager *)self indexCache];
-            [v28 removeObjectForKey:v25];
+            indexCache3 = [(WCDIndexManager *)self indexCache];
+            [indexCache3 removeObjectForKey:v25];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -200,7 +200,7 @@ LABEL_14:
         while (v22);
       }
 
-      v4 = v29;
+      applicationCopy = v29;
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_14:
       v20 = wc_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        sub_10002A564(v4, v20);
+        sub_10002A564(applicationCopy, v20);
       }
     }
   }

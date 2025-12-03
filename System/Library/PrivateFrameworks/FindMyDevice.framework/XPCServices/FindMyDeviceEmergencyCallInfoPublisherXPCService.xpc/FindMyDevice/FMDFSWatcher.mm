@@ -1,8 +1,8 @@
 @interface FMDFSWatcher
-+ (id)monitorURL:(id)a3 action:(id)a4;
++ (id)monitorURL:(id)l action:(id)action;
 - (BOOL)start;
 - (FMDFSWatcher)init;
-- (FMDFSWatcher)initWithURL:(id)a3 action:(id)a4;
+- (FMDFSWatcher)initWithURL:(id)l action:(id)action;
 - (void)cancel;
 - (void)directoryChanged;
 - (void)fileDiscovered;
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (FMDFSWatcher)initWithURL:(id)a3 action:(id)a4
+- (FMDFSWatcher)initWithURL:(id)l action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  actionCopy = action;
   v19.receiver = self;
   v19.super_class = FMDFSWatcher;
   v8 = [(FMDFSWatcher *)&v19 init];
   if (v8)
   {
     v9 = v8;
-    v10 = [v6 standardizedURL];
-    v11 = CFURLCopyPath(v10);
+    standardizedURL = [lCopy standardizedURL];
+    v11 = CFURLCopyPath(standardizedURL);
     v12 = [(__CFString *)v11 hasSuffix:@"/"];
     CFRelease(v11);
     v18.receiver = v9;
@@ -37,20 +37,20 @@
     v14 = v13;
     if (v12)
     {
-      [(FMDFSWatcher *)v13 setDirectoryURL:v10];
+      [(FMDFSWatcher *)v13 setDirectoryURL:standardizedURL];
       [(FMDFSWatcher *)v14 setTargetFilename:0];
     }
 
     else
     {
-      v15 = [(__CFURL *)v10 URLByDeletingLastPathComponent];
-      [(FMDFSWatcher *)v14 setDirectoryURL:v15];
+      uRLByDeletingLastPathComponent = [(__CFURL *)standardizedURL URLByDeletingLastPathComponent];
+      [(FMDFSWatcher *)v14 setDirectoryURL:uRLByDeletingLastPathComponent];
 
-      v16 = [(__CFURL *)v10 lastPathComponent];
-      [(FMDFSWatcher *)v14 setTargetFilename:v16];
+      lastPathComponent = [(__CFURL *)standardizedURL lastPathComponent];
+      [(FMDFSWatcher *)v14 setTargetFilename:lastPathComponent];
     }
 
-    [(FMDFSWatcher *)v14 setBlock:v7];
+    [(FMDFSWatcher *)v14 setBlock:actionCopy];
   }
 
   else
@@ -67,19 +67,19 @@
   v3 = sub_100001F6C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDFSWatcher *)self directoryURL];
-    v5 = [(FMDFSWatcher *)self targetFilename];
+    directoryURL = [(FMDFSWatcher *)self directoryURL];
+    targetFilename = [(FMDFSWatcher *)self targetFilename];
     *buf = 138412546;
-    v37 = v4;
+    v37 = directoryURL;
     v38 = 2112;
-    v39 = v5;
+    v39 = targetFilename;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting to watch for existence of %@/%@", buf, 0x16u);
   }
 
-  v6 = [(FMDFSWatcher *)self directoryURL];
-  v7 = [v6 path];
-  v8 = v7;
-  -[FMDFSWatcher setFd:](self, "setFd:", open([v7 fileSystemRepresentation], 0x8000));
+  directoryURL2 = [(FMDFSWatcher *)self directoryURL];
+  path = [directoryURL2 path];
+  v8 = path;
+  -[FMDFSWatcher setFd:](self, "setFd:", open([path fileSystemRepresentation], 0x8000));
 
   v9 = [(FMDFSWatcher *)self fd];
   if (v9 < 1)
@@ -87,16 +87,16 @@
     v24 = sub_100001F6C();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(FMDFSWatcher *)self directoryURL];
-      sub_100004430(v25, buf, v24);
+      directoryURL3 = [(FMDFSWatcher *)self directoryURL];
+      sub_100004430(directoryURL3, buf, v24);
     }
 
     v26 = sub_100001F6C();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(FMDFSWatcher *)self directoryURL];
+      directoryURL4 = [(FMDFSWatcher *)self directoryURL];
       *v34 = 138412290;
-      v35 = v27;
+      v35 = directoryURL4;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Failed to open %@", v34, 0xCu);
     }
   }
@@ -108,50 +108,50 @@
     v12 = dispatch_source_create(&_dispatch_source_type_vnode, v10, 2uLL, v11);
     [(FMDFSWatcher *)self setDispatchSourceChange:v12];
 
-    v13 = [(FMDFSWatcher *)self dispatchSourceChange];
+    dispatchSourceChange = [(FMDFSWatcher *)self dispatchSourceChange];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100001604;
     handler[3] = &unk_10000C3E8;
     handler[4] = self;
     objc_copyWeak(&v32, &location);
-    dispatch_source_set_event_handler(v13, handler);
+    dispatch_source_set_event_handler(dispatchSourceChange, handler);
 
-    v14 = [(FMDFSWatcher *)self dispatchSourceChange];
-    dispatch_resume(v14);
+    dispatchSourceChange2 = [(FMDFSWatcher *)self dispatchSourceChange];
+    dispatch_resume(dispatchSourceChange2);
 
     v15 = sub_100001F6C();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(FMDFSWatcher *)self directoryURL];
-      v17 = [v16 path];
+      directoryURL5 = [(FMDFSWatcher *)self directoryURL];
+      path2 = [directoryURL5 path];
       *buf = 138412290;
-      v37 = v17;
+      v37 = path2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Started monitoring changes to directory: %@", buf, 0xCu);
     }
 
     v18 = dispatch_source_create(&_dispatch_source_type_vnode, [(FMDFSWatcher *)self fd], 0x61uLL, v11);
     [(FMDFSWatcher *)self setDispatchSourceAbort:v18];
 
-    v19 = [(FMDFSWatcher *)self dispatchSourceAbort];
+    dispatchSourceAbort = [(FMDFSWatcher *)self dispatchSourceAbort];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000016E8;
     v29[3] = &unk_10000C3E8;
     v29[4] = self;
     objc_copyWeak(&v30, &location);
-    dispatch_source_set_event_handler(v19, v29);
+    dispatch_source_set_event_handler(dispatchSourceAbort, v29);
 
-    v20 = [(FMDFSWatcher *)self dispatchSourceAbort];
-    dispatch_resume(v20);
+    dispatchSourceAbort2 = [(FMDFSWatcher *)self dispatchSourceAbort];
+    dispatch_resume(dispatchSourceAbort2);
 
     v21 = sub_100001F6C();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(FMDFSWatcher *)self directoryURL];
-      v23 = [v22 path];
+      directoryURL6 = [(FMDFSWatcher *)self directoryURL];
+      path3 = [directoryURL6 path];
       *buf = 138412290;
-      v37 = v23;
+      v37 = path3;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Started monitoring for removal of directory: %@", buf, 0xCu);
     }
 
@@ -163,15 +163,15 @@
   return v9 > 0;
 }
 
-+ (id)monitorURL:(id)a3 action:(id)a4
++ (id)monitorURL:(id)l action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FMDFSWatcher alloc] initWithURL:v6 action:v5];
+  actionCopy = action;
+  lCopy = l;
+  v7 = [[FMDFSWatcher alloc] initWithURL:lCopy action:actionCopy];
 
-  v8 = [(FMDFSWatcher *)v7 targetFilename];
+  targetFilename = [(FMDFSWatcher *)v7 targetFilename];
 
-  if (v8)
+  if (targetFilename)
   {
     v9 = sub_100001F6C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -195,14 +195,14 @@
 
 - (void)directoryChanged
 {
-  v3 = [(FMDFSWatcher *)self targetFilename];
+  targetFilename = [(FMDFSWatcher *)self targetFilename];
 
-  if (v3)
+  if (targetFilename)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [(FMDFSWatcher *)self directoryURL];
+    directoryURL = [(FMDFSWatcher *)self directoryURL];
     v26 = 0;
-    v6 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:&v26];
+    v6 = [v4 contentsOfDirectoryAtURL:directoryURL includingPropertiesForKeys:0 options:0 error:&v26];
     v7 = v26;
 
     if (v7)
@@ -216,9 +216,9 @@
       v9 = sub_100001F6C();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(FMDFSWatcher *)self directoryURL];
+        directoryURL2 = [(FMDFSWatcher *)self directoryURL];
         *buf = 138412546;
-        v28 = v10;
+        v28 = directoryURL2;
         v29 = 2112;
         v30 = v7;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Error while trying to read the contents of directory %@: %@", buf, 0x16u);
@@ -249,9 +249,9 @@
               objc_enumerationMutation(v11);
             }
 
-            v16 = [*(*(&v22 + 1) + 8 * i) lastPathComponent];
-            v17 = [(FMDFSWatcher *)self targetFilename];
-            v18 = [v16 isEqualToString:v17];
+            lastPathComponent = [*(*(&v22 + 1) + 8 * i) lastPathComponent];
+            targetFilename2 = [(FMDFSWatcher *)self targetFilename];
+            v18 = [lastPathComponent isEqualToString:targetFilename2];
 
             if (v18)
             {
@@ -273,9 +273,9 @@
       v11 = sub_100001F6C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(FMDFSWatcher *)self targetFilename];
+        targetFilename3 = [(FMDFSWatcher *)self targetFilename];
         *buf = 138412290;
-        v28 = v19;
+        v28 = targetFilename3;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "File was not found in the directory yet: %@", buf, 0xCu);
       }
 
@@ -287,8 +287,8 @@ LABEL_22:
 
   else
   {
-    v20 = [(FMDFSWatcher *)self block];
-    v20[2]();
+    block = [(FMDFSWatcher *)self block];
+    block[2]();
   }
 }
 
@@ -297,16 +297,16 @@ LABEL_22:
   v3 = sub_100001F6C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDFSWatcher *)self targetFilename];
+    targetFilename = [(FMDFSWatcher *)self targetFilename];
     v6 = 138412290;
-    v7 = v4;
+    v7 = targetFilename;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Found file being watched: %@", &v6, 0xCu);
   }
 
   [(FMDFSWatcher *)self setTriggered:1];
   [(FMDFSWatcher *)self cancel];
-  v5 = [(FMDFSWatcher *)self block];
-  v5[2]();
+  block = [(FMDFSWatcher *)self block];
+  block[2]();
 }
 
 - (void)cancel
@@ -318,22 +318,22 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deinitializing watcher", v8, 2u);
   }
 
-  v4 = [(FMDFSWatcher *)self dispatchSourceChange];
+  dispatchSourceChange = [(FMDFSWatcher *)self dispatchSourceChange];
 
-  if (v4)
+  if (dispatchSourceChange)
   {
-    v5 = [(FMDFSWatcher *)self dispatchSourceChange];
-    dispatch_source_cancel(v5);
+    dispatchSourceChange2 = [(FMDFSWatcher *)self dispatchSourceChange];
+    dispatch_source_cancel(dispatchSourceChange2);
 
     [(FMDFSWatcher *)self setDispatchSourceChange:0];
   }
 
-  v6 = [(FMDFSWatcher *)self dispatchSourceAbort];
+  dispatchSourceAbort = [(FMDFSWatcher *)self dispatchSourceAbort];
 
-  if (v6)
+  if (dispatchSourceAbort)
   {
-    v7 = [(FMDFSWatcher *)self dispatchSourceAbort];
-    dispatch_source_cancel(v7);
+    dispatchSourceAbort2 = [(FMDFSWatcher *)self dispatchSourceAbort];
+    dispatch_source_cancel(dispatchSourceAbort2);
 
     [(FMDFSWatcher *)self setDispatchSourceAbort:0];
   }

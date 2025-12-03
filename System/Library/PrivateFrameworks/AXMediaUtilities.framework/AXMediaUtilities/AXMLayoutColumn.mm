@@ -1,16 +1,16 @@
 @interface AXMLayoutColumn
-+ (id)column:(id)a3;
++ (id)column:(id)column;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutColumn
 
-+ (id)column:(id)a3
++ (id)column:(id)column
 {
-  v3 = a3;
+  columnCopy = column;
   v4 = objc_alloc_init(AXMLayoutColumn);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:columnCopy];
 
   cells = v4->_cells;
   v4->_cells = v5;

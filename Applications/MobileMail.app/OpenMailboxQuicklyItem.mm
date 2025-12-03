@@ -1,5 +1,5 @@
 @interface OpenMailboxQuicklyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)pathComponents;
 - (NSString)displayName;
 - (NSString)identifier;
@@ -37,11 +37,11 @@
   return isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
-  if (a3)
+  if (equal)
   {
     _bridgeAnyObjectToAny(_:)();
     sub_100014898(v6, v7);

@@ -1,20 +1,20 @@
 @interface CHBReader
-+ (void)readChart:(id)a3 state:(id)a4;
++ (void)readChart:(id)chart state:(id)state;
 @end
 
 @implementation CHBReader
 
-+ (void)readChart:(id)a3 state:(id)a4
++ (void)readChart:(id)chart state:(id)state
 {
-  v9 = a3;
-  v5 = a4;
+  chartCopy = chart;
+  stateCopy = state;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 edSheet];
-  [v9 setSheet:v7];
+  edSheet = [stateCopy edSheet];
+  [chartCopy setSheet:edSheet];
 
-  [v9 setStyleId:0];
-  v8 = [[CHBReaderState alloc] initWithEBReaderSheetState:v5];
-  [(CHBReaderState *)v8 setChart:v9];
+  [chartCopy setStyleId:0];
+  v8 = [[CHBReaderState alloc] initWithEBReaderSheetState:stateCopy];
+  [(CHBReaderState *)v8 setChart:chartCopy];
   [CHBChart readWithState:v8];
 
   objc_autoreleasePoolPop(v6);

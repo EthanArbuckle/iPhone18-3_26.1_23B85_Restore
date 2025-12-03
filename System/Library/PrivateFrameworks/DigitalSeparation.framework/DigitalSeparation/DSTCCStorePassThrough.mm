@@ -1,26 +1,26 @@
 @interface DSTCCStorePassThrough
 + (void)initialize;
-- (BOOL)isServiceGranted:(id)a3 forApp:(id)a4;
+- (BOOL)isServiceGranted:(id)granted forApp:(id)app;
 - (id)appsWithLocationService;
-- (id)deleteApp:(id)a3 forTest:(BOOL)a4;
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4;
-- (id)resetTCCCategory:(id)a3 forApp:(id)a4;
-- (id)resetTCCPermission:(id)a3 forApp:(id)a4;
-- (unint64_t)locationAuthorizationForApp:(id)a3;
-- (void)allAppsWithLocalNetworkAccess:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)appsWithPermissionGrantedForService:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)healthAuthorizationForApp:(id)a3 andAuthorizationStore:(id)a4 withCompletionHandler:(id)a5;
-- (void)loadConfigurations:(id)a3 handler:(id)a4;
-- (void)resetLocalNetworkPermissionForApp:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)resetLocationPermissionForApp:(id)a3;
-- (void)saveConfiguration:(id)a3 handler:(id)a4;
+- (id)deleteApp:(id)app forTest:(BOOL)test;
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create;
+- (id)resetTCCCategory:(id)category forApp:(id)app;
+- (id)resetTCCPermission:(id)permission forApp:(id)app;
+- (unint64_t)locationAuthorizationForApp:(id)app;
+- (void)allAppsWithLocalNetworkAccess:(id)access queue:(id)queue handler:(id)handler;
+- (void)appsWithPermissionGrantedForService:(id)service queue:(id)queue completionHandler:(id)handler;
+- (void)healthAuthorizationForApp:(id)app andAuthorizationStore:(id)store withCompletionHandler:(id)handler;
+- (void)loadConfigurations:(id)configurations handler:(id)handler;
+- (void)resetLocalNetworkPermissionForApp:(id)app queue:(id)queue handler:(id)handler;
+- (void)resetLocationPermissionForApp:(id)app;
+- (void)saveConfiguration:(id)configuration handler:(id)handler;
 @end
 
 @implementation DSTCCStorePassThrough
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_9 = os_log_create("com.apple.DigitalSeparation", "DSTCCStore");
 
@@ -28,12 +28,12 @@
   }
 }
 
-- (BOOL)isServiceGranted:(id)a3 forApp:(id)a4
+- (BOOL)isServiceGranted:(id)granted forApp:(id)app
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"DSHealth"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DSLocalNetwork"))
+  grantedCopy = granted;
+  appCopy = app;
+  if (([grantedCopy isEqualToString:@"DSHealth"] & 1) != 0 || objc_msgSend(grantedCopy, "isEqualToString:", @"DSLocalNetwork"))
   {
     v8 = DSLog_9;
     if (os_log_type_enabled(DSLog_9, OS_LOG_TYPE_FAULT))
@@ -46,10 +46,10 @@
 
   else
   {
-    if (([v6 isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DSLocationWhenInUse"))
+    if (([grantedCopy isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(grantedCopy, "isEqualToString:", @"DSLocationWhenInUse"))
     {
-      v10 = [(DSTCCStorePassThrough *)self appsWithLocationService];
-      v11 = [v10 objectForKey:v7];
+      appsWithLocationService = [(DSTCCStorePassThrough *)self appsWithLocationService];
+      v11 = [appsWithLocationService objectForKey:appCopy];
 
       if (v11)
       {
@@ -65,7 +65,7 @@
     else
     {
       v12 = TCCAccessCopyInformationForBundleId();
-      v13 = v6;
+      v13 = grantedCopy;
       if ([v13 isEqualToString:@"DSContacts"])
       {
         v14 = *MEMORY[0x277D6C100];
@@ -94,12 +94,12 @@
 
             v19 = *(*(&v26 + 1) + 8 * i);
             v20 = [v19 valueForKey:@"kTCCInfoGranted"];
-            v21 = [v20 BOOLValue];
+            bOOLValue = [v20 BOOLValue];
 
             v22 = [v19 objectForKeyedSubscript:@"kTCCInfoService"];
             LODWORD(v20) = [v22 isEqualToString:v13];
 
-            if (v20 && (v21 & 1) != 0)
+            if (v20 && (bOOLValue & 1) != 0)
             {
               v9 = 1;
               goto LABEL_24;
@@ -126,17 +126,17 @@ LABEL_24:
   return v9;
 }
 
-- (void)appsWithPermissionGrantedForService:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)appsWithPermissionGrantedForService:(id)service queue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  serviceCopy = service;
+  handlerCopy = handler;
   v8 = tcc_server_create();
   v9 = tcc_service_singleton_for_CF_name();
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = serviceCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = serviceCopy;
   v12 = v13;
   tcc_server_message_get_authorization_records_by_service();
 }
@@ -207,9 +207,9 @@ void __85__DSTCCStorePassThrough_appsWithPermissionGrantedForService_queue_compl
   return v2;
 }
 
-- (unint64_t)locationAuthorizationForApp:(id)a3
+- (unint64_t)locationAuthorizationForApp:(id)app
 {
-  v3 = [MEMORY[0x277CBFC10] entityAuthorizationForLocationDictionary:a3];
+  v3 = [MEMORY[0x277CBFC10] entityAuthorizationForLocationDictionary:app];
   if (v3 == 4)
   {
     return 2;
@@ -221,21 +221,21 @@ void __85__DSTCCStorePassThrough_appsWithPermissionGrantedForService_queue_compl
   }
 }
 
-- (void)healthAuthorizationForApp:(id)a3 andAuthorizationStore:(id)a4 withCompletionHandler:(id)a5
+- (void)healthAuthorizationForApp:(id)app andAuthorizationStore:(id)store withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  appCopy = app;
+  handlerCopy = handler;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __95__DSTCCStorePassThrough_healthAuthorizationForApp_andAuthorizationStore_withCompletionHandler___block_invoke;
   v16 = &unk_278F730C8;
-  v17 = v7;
-  v18 = v8;
-  v9 = v8;
-  v10 = v7;
-  v11 = a4;
+  v17 = appCopy;
+  v18 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = appCopy;
+  storeCopy = store;
   v12 = MEMORY[0x24C1E7EB0](&v13);
-  [v11 fetchAuthorizationRecordsForBundleIdentifier:v10 completion:{v12, v13, v14, v15, v16}];
+  [storeCopy fetchAuthorizationRecordsForBundleIdentifier:v10 completion:{v12, v13, v14, v15, v16}];
 }
 
 void __95__DSTCCStorePassThrough_healthAuthorizationForApp_andAuthorizationStore_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -288,20 +288,20 @@ uint64_t __95__DSTCCStorePassThrough_healthAuthorizationForApp_andAuthorizationS
   return result;
 }
 
-- (void)loadConfigurations:(id)a3 handler:(id)a4
+- (void)loadConfigurations:(id)configurations handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CD92B8];
-  v8 = a3;
-  v9 = [v7 sharedManagerForAllUsers];
+  configurationsCopy = configurations;
+  sharedManagerForAllUsers = [v7 sharedManagerForAllUsers];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke;
   v11[3] = &unk_278F730F0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 loadConfigurationsWithCompletionQueue:v8 handler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [sharedManagerForAllUsers loadConfigurationsWithCompletionQueue:configurationsCopy handler:v11];
 }
 
 void __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -361,20 +361,20 @@ void __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke(uint6
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pathRuleForBundleID:(id)a3 create:(BOOL)a4
+- (id)pathRuleForBundleID:(id)d create:(BOOL)create
 {
-  v4 = a4;
+  createCopy = create;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DSTCCStorePassThrough *)self pathControllerConfiguration];
-  v8 = [v7 pathController];
+  dCopy = d;
+  pathControllerConfiguration = [(DSTCCStorePassThrough *)self pathControllerConfiguration];
+  pathController = [pathControllerConfiguration pathController];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 pathRules];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  pathRules = [pathController pathRules];
+  v10 = [pathRules countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -385,12 +385,12 @@ void __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke(uint6
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(pathRules);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 matchSigningIdentifier];
-        v16 = [v15 isEqualToString:v6];
+        matchSigningIdentifier = [v14 matchSigningIdentifier];
+        v16 = [matchSigningIdentifier isEqualToString:dCopy];
 
         if (v16)
         {
@@ -399,7 +399,7 @@ void __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke(uint6
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v11 = [pathRules countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -409,23 +409,23 @@ void __52__DSTCCStorePassThrough_loadConfigurations_handler___block_invoke(uint6
     }
   }
 
-  if (v4)
+  if (createCopy)
   {
-    v17 = [objc_alloc(MEMORY[0x277CD92D0]) initWithSigningIdentifier:v6];
-    v18 = [v8 pathRules];
+    v17 = [objc_alloc(MEMORY[0x277CD92D0]) initWithSigningIdentifier:dCopy];
+    pathRules2 = [pathController pathRules];
 
-    if (v18)
+    if (pathRules2)
     {
-      v9 = [v8 pathRules];
-      v19 = [v9 arrayByAddingObject:v17];
-      [v8 setPathRules:v19];
+      pathRules = [pathController pathRules];
+      v19 = [pathRules arrayByAddingObject:v17];
+      [pathController setPathRules:v19];
     }
 
     else
     {
       v26 = v17;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-      [v8 setPathRules:v9];
+      pathRules = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
+      [pathController setPathRules:pathRules];
     }
 
 LABEL_13:
@@ -441,25 +441,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)allAppsWithLocalNetworkAccess:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)allAppsWithLocalNetworkAccess:(id)access queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  accessCopy = access;
+  handlerCopy = handler;
   v10 = MEMORY[0x277CBEB58];
-  v11 = a4;
+  queueCopy = queue;
   v12 = objc_alloc_init(v10);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___block_invoke;
   v16[3] = &unk_278F73118;
-  v17 = v8;
-  v18 = self;
+  v17 = accessCopy;
+  selfCopy = self;
   v19 = v12;
-  v20 = v9;
-  v13 = v9;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v12;
-  v15 = v8;
-  [(DSTCCStorePassThrough *)self loadConfigurations:v11 handler:v16];
+  v15 = accessCopy;
+  [(DSTCCStorePassThrough *)self loadConfigurations:queueCopy handler:v16];
 }
 
 void __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___block_invoke(uint64_t a1, void *a2)
@@ -520,15 +520,15 @@ void __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)deleteApp:(id)a3 forTest:(BOOL)a4
+- (id)deleteApp:(id)app forTest:(BOOL)test
 {
-  v4 = a4;
-  v5 = a3;
+  testCopy = test;
+  appCopy = app;
   v6 = objc_alloc_init(MEMORY[0x277D1C1D0]);
-  [v6 setRequestUserConfirmation:!v4];
+  [v6 setRequestUserConfirmation:!testCopy];
   [v6 setWaitForDeletion:1];
   v7 = MEMORY[0x277D1C148];
-  v8 = [objc_alloc(MEMORY[0x277D1C160]) initWithBundleIdentifier:v5];
+  v8 = [objc_alloc(MEMORY[0x277D1C160]) initWithBundleIdentifier:appCopy];
   v12 = 0;
   [v7 uninstallAppWithIdentity:v8 options:v6 disposition:0 error:&v12];
   v9 = v12;
@@ -546,17 +546,17 @@ void __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___b
   return v9;
 }
 
-- (id)resetTCCCategory:(id)a3 forApp:(id)a4
+- (id)resetTCCCategory:(id)category forApp:(id)app
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  categoryCopy = category;
+  appCopy = app;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = categoryCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -575,7 +575,7 @@ void __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___b
         v14 = *(*(&v18 + 1) + 8 * i);
         if (!TCCAccessResetForBundleId())
         {
-          v15 = [DSError errorWithCode:4 appName:v6 serviceName:v14 underlyingErrors:v12, v18];
+          v15 = [DSError errorWithCode:4 appName:appCopy serviceName:v14 underlyingErrors:v12, v18];
           [v7 addObject:v15];
         }
       }
@@ -591,20 +591,20 @@ void __69__DSTCCStorePassThrough_allAppsWithLocalNetworkAccess_queue_handler___b
   return v7;
 }
 
-- (id)resetTCCPermission:(id)a3 forApp:(id)a4
+- (id)resetTCCPermission:(id)permission forApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"DSContacts"])
+  permissionCopy = permission;
+  appCopy = app;
+  if ([permissionCopy isEqualToString:@"DSContacts"])
   {
     v8 = +[DSUtilities contactsServices];
-    v9 = [(DSTCCStorePassThrough *)self resetTCCCategory:v8 forApp:v7];
+    v9 = [(DSTCCStorePassThrough *)self resetTCCCategory:v8 forApp:appCopy];
 LABEL_3:
 
     goto LABEL_7;
   }
 
-  if ([DSApp skipTCCCheck:v6])
+  if ([DSApp skipTCCCheck:permissionCopy])
   {
     v9 = 0;
   }
@@ -614,7 +614,7 @@ LABEL_3:
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (!TCCAccessResetForBundleId())
     {
-      v8 = [DSError errorWithCode:4 appName:v7 serviceName:v6 underlyingErrors:MEMORY[0x277CBEBF8]];
+      v8 = [DSError errorWithCode:4 appName:appCopy serviceName:permissionCopy underlyingErrors:MEMORY[0x277CBEBF8]];
       [v9 addObject:v8];
       goto LABEL_3;
     }
@@ -625,11 +625,11 @@ LABEL_7:
   return v9;
 }
 
-- (void)resetLocationPermissionForApp:(id)a3
+- (void)resetLocationPermissionForApp:(id)app
 {
-  v4 = a3;
-  v6 = [(DSTCCStorePassThrough *)self appsWithLocationService];
-  v5 = [v6 objectForKey:v4];
+  appCopy = app;
+  appsWithLocationService = [(DSTCCStorePassThrough *)self appsWithLocationService];
+  v5 = [appsWithLocationService objectForKey:appCopy];
 
   if (v5)
   {
@@ -637,21 +637,21 @@ LABEL_7:
   }
 }
 
-- (void)saveConfiguration:(id)a3 handler:(id)a4
+- (void)saveConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSTCCStorePassThrough *)self pathControllerConfiguration];
-  v9 = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  pathControllerConfiguration = [(DSTCCStorePassThrough *)self pathControllerConfiguration];
+  mEMORY[0x277CD92B8] = [MEMORY[0x277CD92B8] sharedManagerForAllUsers];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__DSTCCStorePassThrough_saveConfiguration_handler___block_invoke;
   v12[3] = &unk_278F73140;
-  v13 = v8;
-  v14 = v6;
-  v10 = v6;
-  v11 = v8;
-  [v9 saveConfiguration:v11 withCompletionQueue:v7 handler:v12];
+  v13 = pathControllerConfiguration;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = pathControllerConfiguration;
+  [mEMORY[0x277CD92B8] saveConfiguration:v11 withCompletionQueue:configurationCopy handler:v12];
 }
 
 void __51__DSTCCStorePassThrough_saveConfiguration_handler___block_invoke(uint64_t a1, void *a2)
@@ -686,20 +686,20 @@ void __51__DSTCCStorePassThrough_saveConfiguration_handler___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resetLocalNetworkPermissionForApp:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)resetLocalNetworkPermissionForApp:(id)app queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  appCopy = app;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__DSTCCStorePassThrough_resetLocalNetworkPermissionForApp_queue_handler___block_invoke;
   v12[3] = &unk_278F73168;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(DSTCCStorePassThrough *)self loadConfigurations:a4 handler:v12];
+  v13 = appCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = appCopy;
+  [(DSTCCStorePassThrough *)self loadConfigurations:queue handler:v12];
 }
 
 void __73__DSTCCStorePassThrough_resetLocalNetworkPermissionForApp_queue_handler___block_invoke(uint64_t a1)

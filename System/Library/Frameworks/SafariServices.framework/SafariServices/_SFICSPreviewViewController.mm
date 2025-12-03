@@ -1,25 +1,25 @@
 @interface _SFICSPreviewViewController
-- (_SFICSPreviewViewController)initWithFilePath:(id)a3 sourceURL:(id)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)_ensureLeftBarButtonItemsIncludesActivityItem:(id)a3;
-- (void)_ensureLeftBarButtonItemsIncludesDoneItem:(id)a3;
-- (void)_presentActivityViewController:(id)a3;
+- (_SFICSPreviewViewController)initWithFilePath:(id)path sourceURL:(id)l;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)_ensureLeftBarButtonItemsIncludesActivityItem:(id)item;
+- (void)_ensureLeftBarButtonItemsIncludesDoneItem:(id)item;
+- (void)_presentActivityViewController:(id)controller;
 - (void)_updateNavigationBarItems;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _SFICSPreviewViewController
 
-- (_SFICSPreviewViewController)initWithFilePath:(id)a3 sourceURL:(id)a4
+- (_SFICSPreviewViewController)initWithFilePath:(id)path sourceURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  pathCopy = path;
+  lCopy = l;
+  if ([pathCopy length])
   {
-    v9 = v7;
-    v10 = v8;
+    v9 = pathCopy;
+    v10 = lCopy;
     v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v9];
     v36 = 0;
     v37 = &v36;
@@ -37,14 +37,14 @@
       v12 = v37[3];
     }
 
-    obj = a4;
-    v29 = v8;
+    obj = l;
+    v29 = lCopy;
     v13 = v12;
     _Block_object_dispose(&v36, 8);
     v14 = objc_alloc_init(v12);
-    v15 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v16 = [v10 safari_URLByNormalizingBlobURL];
-    if ([v15 isURLManaged:v16])
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    safari_URLByNormalizingBlobURL = [v10 safari_URLByNormalizingBlobURL];
+    if ([mEMORY[0x1E69ADFB8] isURLManaged:safari_URLByNormalizingBlobURL])
     {
       v17 = 2;
     }
@@ -79,7 +79,7 @@
 
     if (v20 && ([v20 viewController], v21 = objc_claimAutoreleasedReturnValue(), v30.receiver = self, v30.super_class = _SFICSPreviewViewController, self = -[_SFICSPreviewViewController initWithRootViewController:](&v30, sel_initWithRootViewController_, v21), v21, self))
     {
-      objc_storeStrong(&self->_filePath, a3);
+      objc_storeStrong(&self->_filePath, path);
       objc_storeStrong(&self->_sourceURL, obj);
       objc_storeStrong(&self->_icsController, v20);
       [(EKICSPreviewController *)self->_icsController setPreviewDelegate:self];
@@ -92,38 +92,38 @@
       self->_doneBarButtonItem = v24;
 
       self = self;
-      v26 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v26 = 0;
+      selfCopy = 0;
     }
 
-    v8 = v29;
+    lCopy = v29;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SFICSPreviewViewController;
-  [(_SFICSPreviewViewController *)&v4 viewWillAppear:a3];
+  [(_SFICSPreviewViewController *)&v4 viewWillAppear:appear];
   [(_SFICSPreviewViewController *)self _updateNavigationBarItems];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _SFICSPreviewViewController;
-  [(_SFICSPreviewViewController *)&v5 viewWillDisappear:a3];
+  [(_SFICSPreviewViewController *)&v5 viewWillDisappear:disappear];
   if (self->_beforeDismissHandler)
   {
     if ([(_SFICSPreviewViewController *)self isBeingDismissed])
@@ -140,34 +140,34 @@
   v5.receiver = self;
   v5.super_class = _SFICSPreviewViewController;
   [(_SFICSPreviewViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [(_SFICSPreviewViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  view = [(_SFICSPreviewViewController *)self view];
+  [view setBackgroundColor:whiteColor];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v9.receiver = self;
   v9.super_class = _SFICSPreviewViewController;
   v5 = [(_SFICSPreviewViewController *)&v9 popViewControllerAnimated:?];
   if ((_SFDeviceIsPad() & 1) == 0 && !v5)
   {
-    v6 = [(_SFICSPreviewViewController *)self topViewController];
-    v7 = [(_SFICSPreviewViewController *)self bottomViewController];
+    topViewController = [(_SFICSPreviewViewController *)self topViewController];
+    bottomViewController = [(_SFICSPreviewViewController *)self bottomViewController];
 
-    if (v6 == v7)
+    if (topViewController == bottomViewController)
     {
-      [(_SFICSPreviewViewController *)self dismissViewControllerAnimated:v3 completion:0];
+      [(_SFICSPreviewViewController *)self dismissViewControllerAnimated:animatedCopy completion:0];
     }
   }
 
   return v5;
 }
 
-- (void)_presentActivityViewController:(id)a3
+- (void)_presentActivityViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5 = [[_SFOpenInOtherAppActivityViewController alloc] initWithFilePath:self->_filePath UTI:@"com.apple.ical.ics" sourceURL:self->_sourceURL];
   v7 = MEMORY[0x1E69E9820];
@@ -177,8 +177,8 @@
   objc_copyWeak(&v11, &location);
   [(_SFOpenInOtherAppActivityViewController *)v5 setCompletionWithItemsHandler:&v7];
   [(_SFOpenInOtherAppActivityViewController *)v5 setModalPresentationStyle:7, v7, v8, v9, v10];
-  v6 = [(_SFOpenInOtherAppActivityViewController *)v5 popoverPresentationController];
-  [v6 setBarButtonItem:v4];
+  popoverPresentationController = [(_SFOpenInOtherAppActivityViewController *)v5 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:controllerCopy];
 
   [(_SFICSPreviewViewController *)self presentViewController:v5 animated:1 completion:0];
   objc_destroyWeak(&v11);
@@ -186,52 +186,52 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_ensureLeftBarButtonItemsIncludesActivityItem:(id)a3
+- (void)_ensureLeftBarButtonItemsIncludesActivityItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   if ([_SFOpenInOtherAppActivityViewController canOpenWithFilePath:self->_filePath UTI:@"com.apple.ical.ics" sourceURL:self->_sourceURL])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [v6 leftBarButtonItem];
-    if (v5)
+    array = [MEMORY[0x1E695DF70] array];
+    leftBarButtonItem = [itemCopy leftBarButtonItem];
+    if (leftBarButtonItem)
     {
-      [v4 addObject:v5];
+      [array addObject:leftBarButtonItem];
     }
 
-    if (([v4 containsObject:self->_activityBarButtonItem] & 1) == 0)
+    if (([array containsObject:self->_activityBarButtonItem] & 1) == 0)
     {
-      [v4 insertObject:self->_activityBarButtonItem atIndex:0];
+      [array insertObject:self->_activityBarButtonItem atIndex:0];
     }
 
-    [v6 setLeftBarButtonItems:v4];
+    [itemCopy setLeftBarButtonItems:array];
   }
 }
 
-- (void)_ensureLeftBarButtonItemsIncludesDoneItem:(id)a3
+- (void)_ensureLeftBarButtonItemsIncludesDoneItem:(id)item
 {
-  v6 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v6 leftBarButtonItem];
-  if (v5)
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
+  leftBarButtonItem = [itemCopy leftBarButtonItem];
+  if (leftBarButtonItem)
   {
-    [v4 addObject:v5];
+    [array addObject:leftBarButtonItem];
   }
 
-  if (([v4 containsObject:self->_doneBarButtonItem] & 1) == 0)
+  if (([array containsObject:self->_doneBarButtonItem] & 1) == 0)
   {
-    [v4 insertObject:self->_doneBarButtonItem atIndex:0];
+    [array insertObject:self->_doneBarButtonItem atIndex:0];
   }
 
-  [v6 setLeftBarButtonItems:v4];
+  [itemCopy setLeftBarButtonItems:array];
 }
 
 - (void)_updateNavigationBarItems
 {
-  v3 = [(_SFICSPreviewViewController *)self bottomViewController];
-  v4 = [v3 navigationItem];
-  [v3 view];
+  bottomViewController = [(_SFICSPreviewViewController *)self bottomViewController];
+  navigationItem = [bottomViewController navigationItem];
+  [bottomViewController view];
 
-  [(_SFICSPreviewViewController *)self _ensureLeftBarButtonItemsIncludesActivityItem:v4];
+  [(_SFICSPreviewViewController *)self _ensureLeftBarButtonItemsIncludesActivityItem:navigationItem];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -252,12 +252,12 @@
   _Block_object_dispose(&v8, 8);
   if (objc_opt_isKindOfClass())
   {
-    [v3 setShowsDoneButton:1];
+    [bottomViewController setShowsDoneButton:1];
   }
 
   else
   {
-    [(_SFICSPreviewViewController *)self _ensureLeftBarButtonItemsIncludesDoneItem:v4];
+    [(_SFICSPreviewViewController *)self _ensureLeftBarButtonItemsIncludesDoneItem:navigationItem];
   }
 }
 

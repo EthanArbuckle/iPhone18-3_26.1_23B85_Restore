@@ -1,17 +1,17 @@
 @interface CKContextContentProviderComponent
-+ (double)_fontSizeOfView:(id)a3 usingExecutor:(id)a4;
-+ (id)_UIElementsForWebViewContentString:(id)a3 withSceneIdentifier:(id)a4;
-+ (id)_bestVisibleStringForView:(id)a3 usingExecutor:(id)a4;
-+ (id)_decendantsRelevantForExtractionFromParentView:(id)a3;
-+ (id)_getNotableSuperviewClassNamesForView:(id)a3;
-+ (id)_handleWKWebView:(id)a3 withExecutor:(id)a4;
-+ (void)_donateContentsOfParentView:(id)a3 usingExecutor:(id)a4 withOptions:(unint64_t)a5;
-+ (void)_donateText:(id)a3 withTitle:(id)a4 debugText:(id)a5 debugUrlString:(id)a6 leadImage:(id)a7 snapshot:(id)a8 uiElements:(id)a9 usingContextFromExecutor:(id)a10;
-+ (void)_extractContentFromWebView:(id)a3 includingUIBoundingBox:(BOOL)a4 withCompletionHandler:(id)a5;
++ (double)_fontSizeOfView:(id)view usingExecutor:(id)executor;
++ (id)_UIElementsForWebViewContentString:(id)string withSceneIdentifier:(id)identifier;
++ (id)_bestVisibleStringForView:(id)view usingExecutor:(id)executor;
++ (id)_decendantsRelevantForExtractionFromParentView:(id)view;
++ (id)_getNotableSuperviewClassNamesForView:(id)view;
++ (id)_handleWKWebView:(id)view withExecutor:(id)executor;
++ (void)_donateContentsOfParentView:(id)view usingExecutor:(id)executor withOptions:(unint64_t)options;
++ (void)_donateText:(id)text withTitle:(id)title debugText:(id)debugText debugUrlString:(id)string leadImage:(id)image snapshot:(id)snapshot uiElements:(id)elements usingContextFromExecutor:(id)self0;
++ (void)_extractContentFromWebView:(id)view includingUIBoundingBox:(BOOL)box withCompletionHandler:(id)handler;
 + (void)initialize;
 - (CKContextContentProviderComponent)init;
 - (UIView)view;
-- (void)extractUsingExecutor:(id)a3 withOptions:(unint64_t)a4;
+- (void)extractUsingExecutor:(id)executor withOptions:(unint64_t)options;
 @end
 
 @implementation CKContextContentProviderComponent
@@ -19,7 +19,7 @@
 + (void)initialize
 {
   v12[6] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x1E695DFD8];
     v3 = *MEMORY[0x1E69DE4A0];
@@ -66,9 +66,9 @@
   return v2;
 }
 
-- (void)extractUsingExecutor:(id)a3 withOptions:(unint64_t)a4
+- (void)extractUsingExecutor:(id)executor withOptions:(unint64_t)options
 {
-  v6 = a3;
+  executorCopy = executor;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
@@ -77,7 +77,7 @@
     {
       v8 = objc_opt_class();
       v9 = objc_loadWeakRetained(&self->_view);
-      [v8 _donateContentsOfParentView:v9 usingExecutor:v6 withOptions:a4];
+      [v8 _donateContentsOfParentView:v9 usingExecutor:executorCopy withOptions:options];
     }
 
     else
@@ -96,22 +96,22 @@
   }
 }
 
-+ (void)_donateContentsOfParentView:(id)a3 usingExecutor:(id)a4 withOptions:(unint64_t)a5
++ (void)_donateContentsOfParentView:(id)view usingExecutor:(id)executor withOptions:(unint64_t)options
 {
   v75 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v60 = [v7 window];
-  v9 = [a1 _decendantsRelevantForExtractionFromParentView:v7];
+  viewCopy = view;
+  executorCopy = executor;
+  window = [viewCopy window];
+  v9 = [self _decendantsRelevantForExtractionFromParentView:viewCopy];
   if ([v9 count])
   {
     v64 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v57 = v7;
+    v57 = viewCopy;
     v58 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [v7 window];
-    v11 = [v10 windowScene];
-    v56 = [v11 _sceneIdentifier];
+    window2 = [viewCopy window];
+    windowScene = [window2 windowScene];
+    _sceneIdentifier = [windowScene _sceneIdentifier];
 
     v71 = 0u;
     v72 = 0u;
@@ -127,7 +127,7 @@
     }
 
     v65 = *v70;
-    v63 = a1;
+    selfCopy = self;
     while (1)
     {
       for (i = 0; i != v66; ++i)
@@ -138,7 +138,7 @@
         }
 
         v14 = *(*(&v69 + 1) + 8 * i);
-        v15 = [a1 _bestVisibleStringForView:v14 usingExecutor:v8];
+        v15 = [self _bestVisibleStringForView:v14 usingExecutor:executorCopy];
         if ([v15 length])
         {
           v67 = v12;
@@ -149,8 +149,8 @@
 
           v16 = objc_opt_class();
           v17 = NSStringFromClass(v16);
-          v18 = [a1 _getNotableSuperviewClassNamesForView:v14];
-          [a1 _fontSizeOfView:v14 usingExecutor:v8];
+          v18 = [self _getNotableSuperviewClassNamesForView:v14];
+          [self _fontSizeOfView:v14 usingExecutor:executorCopy];
           v20 = v19;
           v21 = [v15 length];
           if (v21 >= 0xFA)
@@ -168,30 +168,30 @@
           [(CKContextUIElement *)v24 setSuperviewClassNames:v18];
           *&v25 = v20;
           [(CKContextUIElement *)v24 setFontSize:v25];
-          v26 = [(CKContextUIElement *)v24 sceneIdentifier];
-          v27 = [v26 length];
+          sceneIdentifier = [(CKContextUIElement *)v24 sceneIdentifier];
+          v27 = [sceneIdentifier length];
 
           if (!v27)
           {
-            v28 = [v56 copy];
+            v28 = [_sceneIdentifier copy];
             [(CKContextUIElement *)v24 setSceneIdentifier:v28];
           }
 
-          if ((a5 & 4) != 0)
+          if ((options & 4) != 0)
           {
-            v62 = [CKContextSharedExtractionHelper elementIsOnScreenWithView:v14 window:v60];
+            v62 = [CKContextSharedExtractionHelper elementIsOnScreenWithView:v14 window:window];
             [v14 bounds];
-            [v14 convertRect:v60 toView:?];
+            [v14 convertRect:window toView:?];
             v30 = v29;
             v32 = v31;
             [(CKContextUIElement *)v24 setFrameInWindow:?];
-            v33 = [v60 screen];
-            [v33 coordinateSpace];
-            v35 = v34 = v8;
+            screen = [window screen];
+            [screen coordinateSpace];
+            v35 = v34 = executorCopy;
             [v57 convertPoint:v35 toCoordinateSpace:{v30, v32}];
             [(CKContextUIElement *)v24 setAbsoluteOriginOnScreen:?];
 
-            v8 = v34;
+            executorCopy = v34;
             [(CKContextUIElement *)v24 setOnScreen:v62];
           }
 
@@ -218,11 +218,11 @@ LABEL_21:
 
 LABEL_22:
 
-          a1 = v63;
+          self = selfCopy;
           v12 = v67;
         }
 
-        if ((a5 & 1) != 0 && !v12)
+        if ((options & 1) != 0 && !v12)
         {
           v37 = [CKContextSharedExtractionHelper bestImageForView:v14];
           v12 = v37;
@@ -254,22 +254,22 @@ LABEL_30:
         [v59 addObjectsFromArray:v42];
 
         v43 = 0;
-        if ((a5 & 2) != 0)
+        if ((options & 2) != 0)
         {
-          v7 = v57;
+          viewCopy = v57;
           v9 = v55;
           if (!v12)
           {
-            [v60 bounds];
+            [window bounds];
             v45 = v44;
             v47 = v46;
             v49 = v48;
             v51 = v50;
-            v52 = [v60 isOpaque];
+            isOpaque = [window isOpaque];
             v76.width = v49;
             v76.height = v51;
-            UIGraphicsBeginImageContextWithOptions(v76, v52, 0.0);
-            [v60 drawViewHierarchyInRect:1 afterScreenUpdates:{v45, v47, v49, v51}];
+            UIGraphicsBeginImageContextWithOptions(v76, isOpaque, 0.0);
+            [window drawViewHierarchyInRect:1 afterScreenUpdates:{v45, v47, v49, v51}];
             v43 = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
           }
@@ -277,12 +277,12 @@ LABEL_30:
 
         else
         {
-          v7 = v57;
+          viewCopy = v57;
           v9 = v55;
         }
 
         v53 = [v64 componentsJoinedByString:@"\n\n"];
-        [a1 _donateText:v53 withTitle:0 debugText:0 debugUrlString:0 leadImage:v12 snapshot:v43 uiElements:v59 & ((a5 << 60) >> 63) usingContextFromExecutor:v8];
+        [self _donateText:v53 withTitle:0 debugText:0 debugUrlString:0 leadImage:v12 snapshot:v43 uiElements:v59 & ((options << 60) >> 63) usingContextFromExecutor:executorCopy];
 
         goto LABEL_40;
       }
@@ -300,19 +300,19 @@ LABEL_40:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_decendantsRelevantForExtractionFromParentView:(id)a3
++ (id)_decendantsRelevantForExtractionFromParentView:(id)view
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [v3 subviews];
-  v6 = [v5 reverseObjectEnumerator];
+  subviews = [viewCopy subviews];
+  reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v7)
   {
     v9 = 0;
@@ -328,7 +328,7 @@ LABEL_40:
     {
       if (*v41 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v12 = *(*(&v40 + 1) + 8 * i);
@@ -340,8 +340,8 @@ LABEL_40:
           goto LABEL_12;
         }
 
-        v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v13 bounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen bounds];
         v15 = v14;
         v17 = v16;
         v19 = v18;
@@ -387,7 +387,7 @@ LABEL_12:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v44 count:16];
   }
 
   while (v8);
@@ -398,23 +398,23 @@ LABEL_17:
   return v4;
 }
 
-+ (id)_getNotableSuperviewClassNamesForView:(id)a3
++ (id)_getNotableSuperviewClassNamesForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 superview];
+  superview = [viewCopy superview];
   v6 = 20;
   while (1)
   {
-    if (!v5)
+    if (!superview)
     {
-      v9 = 0;
+      v5Superview = 0;
       goto LABEL_10;
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v5 superview];
+    v5Superview = [superview superview];
 
     if (([kNotNotableSuperviewClassNames_0 containsObject:v8] & 1) == 0)
     {
@@ -423,7 +423,7 @@ LABEL_17:
 
 LABEL_6:
 
-    v5 = v9;
+    superview = v5Superview;
     if (!--v6)
     {
       goto LABEL_10;
@@ -441,42 +441,42 @@ LABEL_10:
   return v4;
 }
 
-+ (void)_donateText:(id)a3 withTitle:(id)a4 debugText:(id)a5 debugUrlString:(id)a6 leadImage:(id)a7 snapshot:(id)a8 uiElements:(id)a9 usingContextFromExecutor:(id)a10
++ (void)_donateText:(id)text withTitle:(id)title debugText:(id)debugText debugUrlString:(id)string leadImage:(id)image snapshot:(id)snapshot uiElements:(id)elements usingContextFromExecutor:(id)self0
 {
   v16 = MEMORY[0x1E6997208];
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  executorCopy = executor;
+  elementsCopy = elements;
+  snapshotCopy = snapshot;
+  imageCopy = image;
+  stringCopy = string;
+  debugTextCopy = debugText;
+  titleCopy = title;
+  textCopy = text;
   v26 = objc_alloc_init(v16);
-  [v26 setText:v24];
+  [v26 setText:textCopy];
 
-  [v26 setTitle:v23];
-  [v26 setDebugText:v22];
+  [v26 setTitle:titleCopy];
+  [v26 setDebugText:debugTextCopy];
 
-  [v26 setDebugUrlString:v21];
-  [v26 setUiElements:v18];
+  [v26 setDebugUrlString:stringCopy];
+  [v26 setUiElements:elementsCopy];
 
-  [CKContextExtractionUtil renderSnapshot:v19 toDonationItem:v26];
-  [CKContextExtractionUtil renderLeadImage:v20 toDonationItem:v26];
+  [CKContextExtractionUtil renderSnapshot:snapshotCopy toDonationItem:v26];
+  [CKContextExtractionUtil renderLeadImage:imageCopy toDonationItem:v26];
 
-  v25 = [v17 context];
+  context = [executorCopy context];
 
-  [v25 addItem:v26];
+  [context addItem:v26];
 }
 
-+ (double)_fontSizeOfView:(id)a3 usingExecutor:(id)a4
++ (double)_fontSizeOfView:(id)view usingExecutor:(id)executor
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   v5 = 0.0;
   if (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    v6 = [v4 performSelector:sel_font];
+    v6 = [viewCopy performSelector:sel_font];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -488,35 +488,35 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_bestVisibleStringForView:(id)a3 usingExecutor:(id)a4
++ (id)_bestVisibleStringForView:(id)view usingExecutor:(id)executor
 {
-  v6 = a3;
-  v7 = a4;
-  if ([CKContextUIClasses isSFSafariView:v6])
+  viewCopy = view;
+  executorCopy = executor;
+  if ([CKContextUIClasses isSFSafariView:viewCopy])
   {
-    v8 = [v7 context];
-    [v8 setRemoteProcesses:{objc_msgSend(v8, "remoteProcesses") + 1}];
+    context = [executorCopy context];
+    [context setRemoteProcesses:{objc_msgSend(context, "remoteProcesses") + 1}];
   }
 
-  if ([CKContextUIClasses isWKWebView:v6])
+  if ([CKContextUIClasses isWKWebView:viewCopy])
   {
-    v9 = [a1 _handleWKWebView:v6 withExecutor:v7];
+    v9 = [self _handleWKWebView:viewCopy withExecutor:executorCopy];
 LABEL_7:
     v10 = v9;
     goto LABEL_8;
   }
 
-  if ([CKContextUIClasses isPDFView:v6])
+  if ([CKContextUIClasses isPDFView:viewCopy])
   {
-    v9 = [a1 handlePDFView:v6 withExecutor:v7];
+    v9 = [self handlePDFView:viewCopy withExecutor:executorCopy];
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v6 textContentType];
+    textContentType = [viewCopy textContentType];
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([a1 _isSensitiveTextContentType:v12])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([self _isSensitiveTextContentType:textContentType])
     {
 
 LABEL_18:
@@ -525,58 +525,58 @@ LABEL_18:
     }
   }
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v6 isSecureTextEntry])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([viewCopy isSecureTextEntry])
   {
     goto LABEL_18;
   }
 
   if ([0 length] || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v14 = 0;
+    string = 0;
   }
 
   else
   {
-    v13 = [v6 attributedText];
+    attributedText = [viewCopy attributedText];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 string];
+      string = [attributedText string];
     }
 
     else
     {
-      v14 = 0;
+      string = 0;
     }
   }
 
-  if (![v14 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (![string length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v15 = [v6 performSelector:sel_text];
+    v15 = [viewCopy performSelector:sel_text];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
 
-      v14 = v16;
+      string = v16;
     }
   }
 
-  if (![v14 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (![string length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v17 = [v6 performSelector:sel_accessibilityLabel];
+    v17 = [viewCopy performSelector:sel_accessibilityLabel];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v17 length] >= 0x14)
     {
       v18 = v17;
 
-      v14 = v18;
+      string = v18;
     }
   }
 
-  if (![v14 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (![string length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = [v6 performSelector:sel_component];
+    v19 = [viewCopy performSelector:sel_component];
     if (objc_opt_respondsToSelector())
     {
       v20 = [v19 performSelector:sel_text];
@@ -585,14 +585,14 @@ LABEL_18:
       {
         v21 = v20;
 
-        v14 = v21;
+        string = v21;
       }
     }
   }
 
-  if (![v14 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (![string length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v22 = [v6 performSelector:sel_dataDetectorElement];
+    v22 = [viewCopy performSelector:sel_dataDetectorElement];
     if (objc_opt_respondsToSelector())
     {
       v23 = [v22 performSelector:sel_scannerResult];
@@ -604,15 +604,15 @@ LABEL_18:
         {
           v25 = v24;
 
-          v14 = v25;
+          string = v25;
         }
       }
     }
   }
 
-  if ([v14 length])
+  if ([string length])
   {
-    v26 = v14;
+    v26 = string;
   }
 
   else
@@ -627,19 +627,19 @@ LABEL_8:
   return v10;
 }
 
-+ (id)_UIElementsForWebViewContentString:(id)a3 withSceneIdentifier:(id)a4
++ (id)_UIElementsForWebViewContentString:(id)string withSceneIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v30 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  identifierCopy = identifier;
+  if ([stringCopy length])
   {
-    v6 = [CKContextSharedExtractionHelper blocksFromText:v5];
+    v6 = [CKContextSharedExtractionHelper blocksFromText:stringCopy];
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ([v6 count])
     {
       v27 = v6;
-      v28 = v5;
+      v28 = stringCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
@@ -662,8 +662,8 @@ LABEL_8:
             v12 = *(*(&v31 + 1) + 8 * i);
             if (![CKContextSharedExtractionHelper textBlockLooksLikeAListWithText:v12])
             {
-              v13 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-              v14 = [v12 componentsSeparatedByCharactersInSet:v13];
+              newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+              v14 = [v12 componentsSeparatedByCharactersInSet:newlineCharacterSet];
               v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@distinctUnionOfObjects.%@", @"self"];
               v16 = [v14 valueForKeyPath:v15];
 
@@ -686,7 +686,7 @@ LABEL_8:
                 v22 = [[CKContextUIElement alloc] initWithText:v17 className:@"WKWebView"];
                 *&v23 = v21;
                 [(CKContextUIElement *)v22 setDensity:v23];
-                v24 = [v30 copy];
+                v24 = [identifierCopy copy];
                 [(CKContextUIElement *)v22 setSceneIdentifier:v24];
 
                 [v29 addObject:v22];
@@ -701,7 +701,7 @@ LABEL_8:
       }
 
       v6 = v27;
-      v5 = v28;
+      stringCopy = v28;
     }
   }
 
@@ -715,19 +715,19 @@ LABEL_8:
   return v29;
 }
 
-+ (id)_handleWKWebView:(id)a3 withExecutor:(id)a4
++ (id)_handleWKWebView:(id)view withExecutor:(id)executor
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  executorCopy = executor;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 0;
     _os_log_impl(&dword_1B842F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Extracting from a WKWebView", buf, 2u);
   }
 
-  v8 = [a1 controlCodeForExecutor:v7];
+  v8 = [self controlCodeForExecutor:executorCopy];
   [CKContextContentProviderManager optionsForControlCode:v8];
-  if (v8 != 2 && v8 != 4 && [v6 isLoading])
+  if (v8 != 2 && v8 != 4 && [viewCopy isLoading])
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -742,11 +742,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [v6 configuration];
-  v12 = [v11 websiteDataStore];
-  v13 = [v12 isPersistent];
+  configuration = [viewCopy configuration];
+  websiteDataStore = [configuration websiteDataStore];
+  isPersistent = [websiteDataStore isPersistent];
 
-  if ((v13 & 1) == 0)
+  if ((isPersistent & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -767,14 +767,14 @@ LABEL_15:
     [(CKContextContentProviderComponent *)v14 _handleWKWebView:v15 withExecutor:v16, v17, v18, v19, v20, v21];
   }
 
-  [v7 markIncomplete];
+  [executorCopy markIncomplete];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __67__CKContextContentProviderComponent__handleWKWebView_withExecutor___block_invoke;
   v24[3] = &unk_1E7CEE5A8;
-  v26 = a1;
-  v25 = v6;
-  [v7 addWorkItem:v24];
+  selfCopy = self;
+  v25 = viewCopy;
+  [executorCopy addWorkItem:v24];
 
   v22 = 0;
 LABEL_16:
@@ -899,23 +899,23 @@ void __67__CKContextContentProviderComponent__handleWKWebView_withExecutor___blo
   [*(a1 + 40) markReady];
 }
 
-+ (void)_extractContentFromWebView:(id)a3 includingUIBoundingBox:(BOOL)a4 withCompletionHandler:(id)a5
++ (void)_extractContentFromWebView:(id)view includingUIBoundingBox:(BOOL)box withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  boxCopy = box;
+  viewCopy = view;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [v8 window];
-    if ([v8 _isDisplayingPDF])
+    window = [viewCopy window];
+    if ([viewCopy _isDisplayingPDF])
     {
-      v11 = [v8 _dataForDisplayedPDF];
+      _dataForDisplayedPDF = [viewCopy _dataForDisplayedPDF];
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
       v52[2] = __109__CKContextContentProviderComponent__extractContentFromWebView_includingUIBoundingBox_withCompletionHandler___block_invoke;
       v52[3] = &unk_1E7CEE648;
-      v53 = v9;
-      [a1 extractContentFromWebViewPDFData:v11 withCompletionHandler:v52];
+      v53 = handlerCopy;
+      [self extractContentFromWebViewPDFData:_dataForDisplayedPDF withCompletionHandler:v52];
       v12 = v53;
     }
 
@@ -947,9 +947,9 @@ void __67__CKContextContentProviderComponent__handleWKWebView_withExecutor___blo
       v41[3] = &unk_1E7CEE818;
       v44 = v50;
       v45 = 3000;
-      v11 = v13;
-      v42 = v11;
-      v14 = v8;
+      _dataForDisplayedPDF = v13;
+      v42 = _dataForDisplayedPDF;
+      v14 = viewCopy;
       v43 = v14;
       [v14 _getContentsAsStringWithCompletionHandler:v41];
       v55 = 0;
@@ -972,26 +972,26 @@ void __67__CKContextContentProviderComponent__handleWKWebView_withExecutor___blo
       _Block_object_dispose(&v55, 8);
       v17 = [v15 worldWithName:@"CKContextExtractionContentWorld"];
       v18 = v17;
-      if (v6 && v17)
+      if (boxCopy && v17)
       {
-        v19 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v20 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG);
         if (v20)
         {
           [(CKContextContentProviderComponent *)v20 _extractContentFromWebView:v21 includingUIBoundingBox:v22 withCompletionHandler:v23, v24, v25, v26, v27];
         }
 
-        dispatch_group_enter(v11);
+        dispatch_group_enter(_dataForDisplayedPDF);
         v28 = +[CKContextSharedExtractionHelper webPageNodeExtractionJavaScript];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __109__CKContextContentProviderComponent__extractContentFromWebView_includingUIBoundingBox_withCompletionHandler___block_invoke_117;
         v35[3] = &unk_1E7CEE840;
-        v29 = v19;
+        v29 = date;
         v36 = v29;
-        v37 = v11;
+        v37 = _dataForDisplayedPDF;
         v38 = v14;
-        v39 = v10;
+        v39 = window;
         v40 = v46;
         [v38 evaluateJavaScript:v28 inFrame:0 inContentWorld:v18 completionHandler:v35];
       }
@@ -1000,11 +1000,11 @@ void __67__CKContextContentProviderComponent__handleWKWebView_withExecutor___blo
       block[1] = 3221225472;
       block[2] = __109__CKContextContentProviderComponent__extractContentFromWebView_includingUIBoundingBox_withCompletionHandler___block_invoke_122;
       block[3] = &unk_1E7CEE868;
-      v31 = v9;
+      v31 = handlerCopy;
       v32 = v50;
       v33 = v48;
       v34 = v46;
-      dispatch_group_notify(v11, MEMORY[0x1E69E96A0], block);
+      dispatch_group_notify(_dataForDisplayedPDF, MEMORY[0x1E69E96A0], block);
 
       _Block_object_dispose(v46, 8);
       _Block_object_dispose(v48, 8);

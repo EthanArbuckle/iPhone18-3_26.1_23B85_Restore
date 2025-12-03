@@ -1,31 +1,31 @@
 @interface CSVoiceIdXPCListener
 - (CSVoiceIdXPCListener)init;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_handleNewRemoteConnection:(id)a3;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_handleNewRemoteConnection:(id)connection;
 - (void)listen;
 @end
 
 @implementation CSVoiceIdXPCListener
 
-- (void)_handleNewRemoteConnection:(id)a3
+- (void)_handleNewRemoteConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = CSLogContextFacilityCoreSpeech;
-  if (v4)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 136315394;
       v8 = "[CSVoiceIdXPCListener _handleNewRemoteConnection:]";
       v9 = 2050;
-      v10 = v4;
+      v10 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Getting new client connection : %{public}p", &v7, 0x16u);
     }
 
-    if ([CSUtils machXPCConnection:v4 hasEntitlement:@"corespeech.corespeechd.voiceid.xpc"])
+    if ([CSUtils machXPCConnection:connectionCopy hasEntitlement:@"corespeech.corespeechd.voiceid.xpc"])
     {
-      v6 = [[CSVoiceIdXPCConnection alloc] initWithConnection:v4];
+      v6 = [[CSVoiceIdXPCConnection alloc] initWithConnection:connectionCopy];
       [(CSVoiceIdXPCConnection *)v6 activateConnection];
       if (v6)
       {
@@ -42,7 +42,7 @@
   }
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -51,14 +51,14 @@
     v6 = 136315394;
     v7 = "[CSVoiceIdXPCListener _handleListenerError:]";
     v8 = 2082;
-    string = xpc_dictionary_get_string(a3, _xpc_error_key_description);
+    string = xpc_dictionary_get_string(error, _xpc_error_key_description);
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s Error = %{public}s", &v6, 0x16u);
   }
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -68,16 +68,16 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s Received new remote control connection request", &v7, 0xCu);
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    if (xpc_get_type(v4) == &_xpc_type_error)
+    if (xpc_get_type(eventCopy) == &_xpc_type_error)
     {
-      [(CSVoiceIdXPCListener *)self _handleListenerError:v4];
+      [(CSVoiceIdXPCListener *)self _handleListenerError:eventCopy];
     }
 
     else
     {
-      [(CSVoiceIdXPCListener *)self _handleNewRemoteConnection:v4];
+      [(CSVoiceIdXPCListener *)self _handleNewRemoteConnection:eventCopy];
     }
   }
 

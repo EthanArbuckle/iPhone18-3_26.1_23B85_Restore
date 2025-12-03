@@ -1,6 +1,6 @@
 @interface PEEditSessionEventBuilder
 + (id)allowedAdjustmentIdentifiers;
-- (BOOL)shouldReportAdjustmentIdentifierString:(id)a3;
+- (BOOL)shouldReportAdjustmentIdentifierString:(id)string;
 - (CGSize)quickCropSelectedAspectRatio;
 - (id)buildEvent;
 @end
@@ -34,16 +34,16 @@ void __57__PEEditSessionEventBuilder_allowedAdjustmentIdentifiers__block_invoke(
   return result;
 }
 
-- (BOOL)shouldReportAdjustmentIdentifierString:(id)a3
+- (BOOL)shouldReportAdjustmentIdentifierString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [objc_opt_class() allowedAdjustmentIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allowedAdjustmentIdentifiers = [objc_opt_class() allowedAdjustmentIdentifiers];
+  v5 = [allowedAdjustmentIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -53,13 +53,13 @@ void __57__PEEditSessionEventBuilder_allowedAdjustmentIdentifiers__block_invoke(
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allowedAdjustmentIdentifiers);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v3 lowercaseString];
-        v10 = [v8 lowercaseString];
-        v11 = [v9 hasPrefix:v10];
+        lowercaseString = [stringCopy lowercaseString];
+        lowercaseString2 = [v8 lowercaseString];
+        v11 = [lowercaseString hasPrefix:lowercaseString2];
 
         if (v11)
         {
@@ -68,7 +68,7 @@ void __57__PEEditSessionEventBuilder_allowedAdjustmentIdentifiers__block_invoke(
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allowedAdjustmentIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -87,15 +87,15 @@ LABEL_11:
 {
   v118 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(PEEditSessionEventBuilder *)self asset];
-  if (v4)
+  asset = [(PEEditSessionEventBuilder *)self asset];
+  if (asset)
   {
-    [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x277CF6E18]];
-    v5 = [(PEEditSessionEventBuilder *)self asset];
-    v6 = [v5 pixelWidth];
-    v7 = [v4 pixelHeight];
+    [v3 setObject:asset forKeyedSubscript:*MEMORY[0x277CF6E18]];
+    asset2 = [(PEEditSessionEventBuilder *)self asset];
+    pixelWidth = [asset2 pixelWidth];
+    pixelHeight = [asset pixelHeight];
 
-    v8 = 1000 * ((v7 * v6 + 500) / 0x3E8uLL);
+    v8 = 1000 * ((pixelHeight * pixelWidth + 500) / 0x3E8uLL);
   }
 
   else
@@ -110,25 +110,25 @@ LABEL_11:
     v8 = 0;
   }
 
-  v10 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
+  adjustmentIdentifierAndVersion = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
 
-  if (v10)
+  if (adjustmentIdentifierAndVersion)
   {
-    v11 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
-    v12 = [(PEEditSessionEventBuilder *)self shouldReportAdjustmentIdentifierString:v11];
+    adjustmentIdentifierAndVersion2 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
+    v12 = [(PEEditSessionEventBuilder *)self shouldReportAdjustmentIdentifierString:adjustmentIdentifierAndVersion2];
 
     if (v12)
     {
-      v92 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
+      adjustmentIdentifierAndVersion3 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
       goto LABEL_16;
     }
 
     v15 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
+      adjustmentIdentifierAndVersion4 = [(PEEditSessionEventBuilder *)self adjustmentIdentifierAndVersion];
       *buf = 138412546;
-      v115 = v16;
+      v115 = adjustmentIdentifierAndVersion4;
       v116 = 2112;
       v117 = @"ThirdPartyEditPlugin";
       _os_log_impl(&dword_25E6E9000, v15, OS_LOG_TYPE_DEFAULT, "PEEditAnalyticsEventBuilder - adjustmentIdentifierAndVersion (%@) doesn't seem to be part of our allow-list (1st party bundleIDs only), reporting it as %@", buf, 0x16u);
@@ -149,29 +149,29 @@ LABEL_11:
     v14 = &stru_2870659C0;
   }
 
-  v92 = v14;
+  adjustmentIdentifierAndVersion3 = v14;
 LABEL_16:
   v112[0] = @"assetInputPixelCount";
   v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
   v113[0] = v90;
   v112[1] = @"bundleIdentifier";
-  v89 = [MEMORY[0x277CCA8D8] mainBundle];
-  v88 = [v89 bundleIdentifier];
-  v113[1] = v88;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v113[1] = bundleIdentifier;
   v112[2] = @"isFirstSinceLaunch";
   v87 = [MEMORY[0x277CCABB0] numberWithBool:{-[PEEditSessionEventBuilder isFirstSinceLaunch](self, "isFirstSinceLaunch")}];
   v113[2] = v87;
   v112[3] = @"sessionEndReason";
-  v17 = [(PEEditSessionEventBuilder *)self sessionEndReason];
-  v93 = v4;
-  if ((v17 - 1) > 4)
+  sessionEndReason = [(PEEditSessionEventBuilder *)self sessionEndReason];
+  v93 = asset;
+  if ((sessionEndReason - 1) > 4)
   {
     v18 = @"Saved";
   }
 
   else
   {
-    v18 = off_279A31388[v17 - 1];
+    v18 = off_279A31388[sessionEndReason - 1];
   }
 
   v113[3] = v18;
@@ -215,41 +215,41 @@ LABEL_16:
   [(PEEditSessionEventBuilder *)self autoCalcDuration];
   v33 = [v32 numberWithDouble:?];
   v113[11] = v33;
-  v113[12] = v92;
+  v113[12] = adjustmentIdentifierAndVersion3;
   v112[12] = @"adjustmentIdentifierAndVersion";
   v112[13] = @"sessionEntryPoint";
-  v34 = [(PEEditSessionEventBuilder *)self sessionEntryPoint];
+  sessionEntryPoint = [(PEEditSessionEventBuilder *)self sessionEntryPoint];
   v35 = @"1UPButton";
-  if (v34 == 1)
+  if (sessionEntryPoint == 1)
   {
     v35 = @"1UPQuickCrop";
   }
 
-  if (v34 == 2)
+  if (sessionEntryPoint == 2)
   {
     v35 = @"Arrowing";
   }
 
   v113[13] = v35;
-  v94 = self;
+  selfCopy = self;
   v36 = MEMORY[0x277CBEAC0];
   v37 = v35;
   v38 = [v36 dictionaryWithObjects:v113 forKeys:v112 count:14];
 
   [v3 addEntriesFromDictionary:v38];
-  v39 = v94;
+  v39 = selfCopy;
 
   v40 = v3;
-  if (![(PEEditSessionEventBuilder *)v94 sessionEndReason])
+  if (![(PEEditSessionEventBuilder *)selfCopy sessionEndReason])
   {
-    v41 = [(PEEditSessionEventBuilder *)v94 saveActionType];
+    saveActionType = [(PEEditSessionEventBuilder *)selfCopy saveActionType];
     v42 = @"Save";
-    if (v41 == 2)
+    if (saveActionType == 2)
     {
       v42 = @"SaveAsDuplicate";
     }
 
-    if (v41 == 1)
+    if (saveActionType == 1)
     {
       v42 = @"SaveAsNewClip";
     }
@@ -263,10 +263,10 @@ LABEL_16:
     [v3 addEntriesFromDictionary:v45];
   }
 
-  if ([(PEEditSessionEventBuilder *)v94 sessionEntryPoint]== 1)
+  if ([(PEEditSessionEventBuilder *)selfCopy sessionEntryPoint]== 1)
   {
-    [(PEEditSessionEventBuilder *)v94 quickCropSelectedAspectRatio];
-    if (v46 == 0.0 || ([(PEEditSessionEventBuilder *)v94 quickCropSelectedAspectRatio], v47 == 0.0))
+    [(PEEditSessionEventBuilder *)selfCopy quickCropSelectedAspectRatio];
+    if (v46 == 0.0 || ([(PEEditSessionEventBuilder *)selfCopy quickCropSelectedAspectRatio], v47 == 0.0))
     {
       [v3 addEntriesFromDictionary:&unk_28706EFF0];
     }
@@ -278,9 +278,9 @@ LABEL_16:
       [v78 setMaximumFractionDigits:2];
       v108 = @"quickCropSelectedAspectRatio";
       v79 = MEMORY[0x277CCABB0];
-      [(PEEditSessionEventBuilder *)v94 quickCropSelectedAspectRatio];
+      [(PEEditSessionEventBuilder *)selfCopy quickCropSelectedAspectRatio];
       v81 = v80;
-      [(PEEditSessionEventBuilder *)v94 quickCropSelectedAspectRatio];
+      [(PEEditSessionEventBuilder *)selfCopy quickCropSelectedAspectRatio];
       v83 = [v79 numberWithDouble:v81 / v82];
       v84 = [v78 stringFromNumber:v83];
       v109 = v84;
@@ -289,10 +289,10 @@ LABEL_16:
     }
   }
 
-  v48 = [(PEEditSessionEventBuilder *)v94 initialComposition];
-  v49 = [(PEEditSessionEventBuilder *)v94 compositionController];
-  v50 = [v49 composition];
-  v51 = [PEAnalyticsUtility diffKeysFromInitialComposition:v48 toFinalComposition:v50];
+  initialComposition = [(PEEditSessionEventBuilder *)selfCopy initialComposition];
+  compositionController = [(PEEditSessionEventBuilder *)selfCopy compositionController];
+  composition = [compositionController composition];
+  v51 = [PEAnalyticsUtility diffKeysFromInitialComposition:initialComposition toFinalComposition:composition];
 
   v91 = v51;
   [v3 addEntriesFromDictionary:v51];
@@ -319,42 +319,42 @@ LABEL_16:
     }
   }
 
-  if ([(PEEditSessionEventBuilder *)v94 segmentationCount])
+  if ([(PEEditSessionEventBuilder *)selfCopy segmentationCount])
   {
     v102 = @"cleanup_presegmented_count";
-    v58 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder segmentationCount](v94, "segmentationCount")}];
+    v58 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder segmentationCount](selfCopy, "segmentationCount")}];
     v103 = v58;
     v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
     [v3 addEntriesFromDictionary:v59];
   }
 
-  if ([(PEEditSessionEventBuilder *)v94 numberOfConsecutiveInpaints])
+  if ([(PEEditSessionEventBuilder *)selfCopy numberOfConsecutiveInpaints])
   {
     v100[0] = @"cleanup_consecutive_inpaints";
-    v60 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder numberOfConsecutiveInpaints](v94, "numberOfConsecutiveInpaints")}];
+    v60 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder numberOfConsecutiveInpaints](selfCopy, "numberOfConsecutiveInpaints")}];
     v101[0] = v60;
     v100[1] = @"cleanup_cumulative_consecutive_inpaint_kpixels";
-    v61 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder cumulativePixelsOfConsecutiveInpaints](v94, "cumulativePixelsOfConsecutiveInpaints") / 1000}];
+    v61 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder cumulativePixelsOfConsecutiveInpaints](selfCopy, "cumulativePixelsOfConsecutiveInpaints") / 1000}];
     v101[1] = v61;
     v100[2] = @"cleanup_highest_thermal_state";
-    v62 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder highestEncounteredThermalStateInCleanup](v94, "highestEncounteredThermalStateInCleanup")}];
+    v62 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PEEditSessionEventBuilder highestEncounteredThermalStateInCleanup](selfCopy, "highestEncounteredThermalStateInCleanup")}];
     v101[2] = v62;
     v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v101 forKeys:v100 count:3];
     [v3 addEntriesFromDictionary:v63];
   }
 
-  v64 = [(PEEditSessionEventBuilder *)v94 timeSpentInEachTab];
+  timeSpentInEachTab = [(PEEditSessionEventBuilder *)selfCopy timeSpentInEachTab];
 
-  if (v64)
+  if (timeSpentInEachTab)
   {
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v65 = [(PEEditSessionEventBuilder *)v94 timeSpentInEachTab];
-    v66 = [v65 allKeys];
+    timeSpentInEachTab2 = [(PEEditSessionEventBuilder *)selfCopy timeSpentInEachTab];
+    allKeys = [timeSpentInEachTab2 allKeys];
 
-    v67 = [v66 countByEnumeratingWithState:&v95 objects:v99 count:16];
+    v67 = [allKeys countByEnumeratingWithState:&v95 objects:v99 count:16];
     if (v67)
     {
       v68 = v67;
@@ -365,19 +365,19 @@ LABEL_16:
         {
           if (*v96 != v69)
           {
-            objc_enumerationMutation(v66);
+            objc_enumerationMutation(allKeys);
           }
 
           v71 = *(*(&v95 + 1) + 8 * i);
           v72 = [MEMORY[0x277CCACA8] stringWithFormat:@"time_in_tool_%d", objc_msgSend(v71, "unsignedIntValue")];
-          v73 = [(PEEditSessionEventBuilder *)v39 timeSpentInEachTab];
-          v74 = [v73 objectForKeyedSubscript:v71];
+          timeSpentInEachTab3 = [(PEEditSessionEventBuilder *)v39 timeSpentInEachTab];
+          v74 = [timeSpentInEachTab3 objectForKeyedSubscript:v71];
           [v3 setObject:v74 forKeyedSubscript:v72];
 
-          v39 = v94;
+          v39 = selfCopy;
         }
 
-        v68 = [v66 countByEnumeratingWithState:&v95 objects:v99 count:16];
+        v68 = [allKeys countByEnumeratingWithState:&v95 objects:v99 count:16];
       }
 
       while (v68);
@@ -386,8 +386,8 @@ LABEL_16:
     v40 = v3;
   }
 
-  v75 = [(PEEditSessionEventBuilder *)v39 compositionController];
-  v76 = [PEAnalyticsUtility analyticPayloadForCompositionController:v75];
+  compositionController2 = [(PEEditSessionEventBuilder *)v39 compositionController];
+  v76 = [PEAnalyticsUtility analyticPayloadForCompositionController:compositionController2];
 
   [v40 addEntriesFromDictionary:v76];
 

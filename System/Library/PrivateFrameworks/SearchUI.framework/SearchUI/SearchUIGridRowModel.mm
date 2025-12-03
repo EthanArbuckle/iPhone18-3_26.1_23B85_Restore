@@ -1,27 +1,27 @@
 @interface SearchUIGridRowModel
 - (BOOL)hasLeadingImage;
 - (BOOL)prefersNoSeparatorAbove;
-- (SearchUIGridRowModel)initWithResult:(id)a3 cardSection:(id)a4 gridLayoutManager:(id)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SearchUIGridRowModel)initWithResult:(id)result cardSection:(id)section gridLayoutManager:(id)manager queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SearchUIGridRowModel
 
-- (SearchUIGridRowModel)initWithResult:(id)a3 cardSection:(id)a4 gridLayoutManager:(id)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUIGridRowModel)initWithResult:(id)result cardSection:(id)section gridLayoutManager:(id)manager queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v12 = a4;
-  v13 = a5;
+  sectionCopy = section;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = SearchUIGridRowModel;
-  v14 = [(SearchUICardSectionRowModel *)&v20 initWithResult:a3 cardSection:v12 isInline:0 queryId:a6 itemIdentifier:a7];
+  v14 = [(SearchUICardSectionRowModel *)&v20 initWithResult:result cardSection:sectionCopy isInline:0 queryId:id itemIdentifier:identifier];
   v15 = v14;
   if (v14)
   {
-    [(SearchUIGridRowModel *)v14 setGridLayoutManager:v13];
-    v16 = [(SearchUIGridRowModel *)v15 gridLayoutManager];
-    v17 = [v16 tableRowForTableRowCardSection:v12];
-    v18 = [v17 data];
-    [(SearchUIGridRowModel *)v15 setShouldHide:[SearchUIGridLayoutManager shouldHideViewForRichData:v18]];
+    [(SearchUIGridRowModel *)v14 setGridLayoutManager:managerCopy];
+    gridLayoutManager = [(SearchUIGridRowModel *)v15 gridLayoutManager];
+    v17 = [gridLayoutManager tableRowForTableRowCardSection:sectionCopy];
+    data = [v17 data];
+    [(SearchUIGridRowModel *)v15 setShouldHide:[SearchUIGridLayoutManager shouldHideViewForRichData:data]];
   }
 
   return v15;
@@ -29,42 +29,42 @@
 
 - (BOOL)prefersNoSeparatorAbove
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SearchUIGridRowModel *)self gridLayoutManager];
-    v5 = [v4 gridManager];
-    v6 = [v5 tableContainsRowHeaders];
+    gridLayoutManager = [(SearchUIGridRowModel *)self gridLayoutManager];
+    gridManager = [gridLayoutManager gridManager];
+    tableContainsRowHeaders = [gridManager tableContainsRowHeaders];
   }
 
   else
   {
-    v6 = 0;
+    tableContainsRowHeaders = 0;
   }
 
-  return v6;
+  return tableContainsRowHeaders;
 }
 
 - (BOOL)hasLeadingImage
 {
-  v3 = [(SearchUIGridRowModel *)self gridLayoutManager];
-  v4 = [(SearchUIRowModel *)self cardSection];
-  v5 = [v3 tableRowForTableRowCardSection:v4];
-  v6 = [v5 data];
-  v7 = [v6 firstObject];
-  v8 = [v7 hasOnlyImage];
+  gridLayoutManager = [(SearchUIGridRowModel *)self gridLayoutManager];
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  v5 = [gridLayoutManager tableRowForTableRowCardSection:cardSection];
+  data = [v5 data];
+  firstObject = [data firstObject];
+  hasOnlyImage = [firstObject hasOnlyImage];
 
-  return v8;
+  return hasOnlyImage;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SearchUIGridRowModel;
-  v4 = [(SearchUICardSectionRowModel *)&v7 copyWithZone:a3];
-  v5 = [(SearchUIGridRowModel *)self gridLayoutManager];
-  [v4 setGridLayoutManager:v5];
+  v4 = [(SearchUICardSectionRowModel *)&v7 copyWithZone:zone];
+  gridLayoutManager = [(SearchUIGridRowModel *)self gridLayoutManager];
+  [v4 setGridLayoutManager:gridLayoutManager];
 
   [v4 setShouldHide:{-[SearchUIGridRowModel shouldHide](self, "shouldHide")}];
   return v4;

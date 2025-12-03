@@ -3,7 +3,7 @@
 - (void)_alertDidFinishProcessing;
 - (void)_contactsAuthorizationDismissed;
 - (void)_presentAlertUI;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchContactsAlert
@@ -62,16 +62,16 @@
   return v2 == CNAuthorizationStatusNotDetermined;
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(AppLaunchContactsAlert *)self _shouldDisplayAlert];
+  _shouldDisplayAlert = [(AppLaunchContactsAlert *)self _shouldDisplayAlert];
   v7 = sub_100005610();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_shouldDisplayAlert)
   {
     if (v8)
     {

@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __98__UNNotificationAttachment_UNNotificationAttachmentBackwardCompatible__blt_swizzleEncodeWithCoder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (blt_swizzleEncodeWithCoder_onceToken != -1)
   {
     dispatch_once(&blt_swizzleEncodeWithCoder_onceToken, block);
@@ -23,11 +23,11 @@
 - (void)blt_encodeWithCoder:()UNNotificationAttachmentBackwardCompatible
 {
   v4 = a3;
-  [a1 blt_encodeWithCoder:v4];
-  v5 = [a1 _blt_encodedShouldAddNotificationAttachmentOptions];
-  if (v5)
+  [self blt_encodeWithCoder:v4];
+  _blt_encodedShouldAddNotificationAttachmentOptions = [self _blt_encodedShouldAddNotificationAttachmentOptions];
+  if (_blt_encodedShouldAddNotificationAttachmentOptions)
   {
-    if ([a1 family] == 2)
+    if ([self family] == 2)
     {
       v6 = blt_ids_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -38,10 +38,10 @@
 
       v7 = objc_alloc_init(UNImageNotificationAttachmentOptions);
       [(UNImageNotificationAttachmentOptions *)v7 setHiddenFromDefaultExpandedView:0];
-      v8 = [a1 options];
-      v9 = [v8 displayLocation];
+      options = [self options];
+      displayLocation = [options displayLocation];
 
-      if (v9 == 1)
+      if (displayLocation == 1)
       {
         [(UNImageNotificationAttachmentOptions *)v7 setHiddenFromDefaultExpandedView:1];
       }
@@ -49,7 +49,7 @@
 
     else
     {
-      if ([a1 family] == 3)
+      if ([self family] == 3)
       {
         v10 = blt_ids_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -63,10 +63,10 @@
 
       else
       {
-        if ([a1 family] != 1)
+        if ([self family] != 1)
         {
 LABEL_17:
-          [v4 encodeInteger:objc_msgSend(a1 forKey:{"family"), @"family"}];
+          [v4 encodeInteger:objc_msgSend(self forKey:{"family"), @"family"}];
           goto LABEL_18;
         }
 
@@ -95,12 +95,12 @@ LABEL_18:
 {
   [MEMORY[0x277CE1F90] blt_swizzleEncodeWithCoder];
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [a1 _blt_setEncodedShouldAddNotificationAttachmentOptions:v2];
+  [self _blt_setEncodedShouldAddNotificationAttachmentOptions:v2];
 }
 
 - (void)_blt_encodedShouldAddNotificationAttachmentOptions
 {
-  v1 = objc_getAssociatedObject(a1, sel__blt_encodedShouldAddNotificationAttachmentOptions);
+  v1 = objc_getAssociatedObject(self, sel__blt_encodedShouldAddNotificationAttachmentOptions);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

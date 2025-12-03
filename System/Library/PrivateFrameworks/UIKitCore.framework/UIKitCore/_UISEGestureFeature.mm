@@ -1,17 +1,17 @@
 @interface _UISEGestureFeature
 - (_UISEGestureFeatureDelegate)delegate;
 - (id)debugDictionary;
-- (void)_setState:(unint64_t)a3;
-- (void)incorporateSample:(const _UISEGestureFeatureSample *)a3;
+- (void)_setState:(unint64_t)state;
+- (void)incorporateSample:(const _UISEGestureFeatureSample *)sample;
 @end
 
 @implementation _UISEGestureFeature
 
-- (void)incorporateSample:(const _UISEGestureFeatureSample *)a3
+- (void)incorporateSample:(const _UISEGestureFeatureSample *)sample
 {
   if (!self->_state)
   {
-    [(_UISEGestureFeature *)self _incorporateSample:a3];
+    [(_UISEGestureFeature *)self _incorporateSample:sample];
   }
 }
 
@@ -20,15 +20,15 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(_UISEGestureFeature *)self state];
-  if (v5 > 2)
+  state = [(_UISEGestureFeature *)self state];
+  if (state > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E710AF08[v5];
+    v6 = off_1E710AF08[state];
   }
 
   v9[0] = @"class";
@@ -40,11 +40,11 @@
   return v7;
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  if (a3 && !self->_state)
+  if (state && !self->_state)
   {
-    self->_state = a3;
+    self->_state = state;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained featureDidChangeState:self];
   }

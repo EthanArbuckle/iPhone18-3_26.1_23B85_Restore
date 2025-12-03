@@ -10,15 +10,15 @@
   {
     if (a6)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage(TSDAdditions) CGImageForSize:inContext:orLayer:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSUImage-TSDAdditions.m"), 20, @"using context to determine requested image size. layer should be nil"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSUImage-TSDAdditions.m"), 20, @"using context to determine requested image size. layer should be nil"}];
     }
 
     if ((TSDCGContextIsPrintContext(a5) & 1) != 0 || TSDCGContextIsPDFContext(a5))
     {
 
-      return [a1 CGImageForContentsScale:2.0];
+      return [self CGImageForContentsScale:2.0];
     }
 
     v16 = TSDCGContextAssociatedScreenScale(a5);
@@ -38,8 +38,8 @@
     a3 = a3 * v15;
   }
 
-  [a1 size];
-  if (a2 <= v22 && ([a1 size], a3 <= v23))
+  [self size];
+  if (a2 <= v22 && ([self size], a3 <= v23))
   {
     v24 = 1.0;
   }
@@ -49,7 +49,7 @@
     v24 = 2.0;
   }
 
-  return [a1 CGImageForContentsScale:v24];
+  return [self CGImageForContentsScale:v24];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SiriUserFeedbackLearningPlatformPlugin
 - (_TtC38SiriUserFeedbackLearningPlatformPlugin38SiriUserFeedbackLearningPlatformPlugin)init;
-- (id)performTask:(id)a3 error:(id *)a4;
+- (id)performTask:(id)task error:(id *)error;
 @end
 
 @implementation SiriUserFeedbackLearningPlatformPlugin
@@ -22,11 +22,11 @@
   return [(SiriUserFeedbackLearningPlatformPlugin *)&v4 init];
 }
 
-- (id)performTask:(id)a3 error:(id *)a4
+- (id)performTask:(id)task error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1000014C8(v5);
+  taskCopy = task;
+  selfCopy = self;
+  v7 = sub_1000014C8(taskCopy);
 
   return v7;
 }

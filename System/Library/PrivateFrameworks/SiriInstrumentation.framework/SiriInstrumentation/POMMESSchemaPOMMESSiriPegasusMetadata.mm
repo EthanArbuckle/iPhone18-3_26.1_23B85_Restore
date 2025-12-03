@@ -1,32 +1,32 @@
 @interface POMMESSchemaPOMMESSiriPegasusMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsCarplay:(BOOL)a3;
-- (void)setHasIsExplicitContentAllowed:(BOOL)a3;
-- (void)setHasIsInRestrictedSharingMode:(BOOL)a3;
-- (void)setHasIsWebContentDisabled:(BOOL)a3;
-- (void)setHasMovieRestriction:(BOOL)a3;
-- (void)setHasTvRestriction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsCarplay:(BOOL)carplay;
+- (void)setHasIsExplicitContentAllowed:(BOOL)allowed;
+- (void)setHasIsInRestrictedSharingMode:(BOOL)mode;
+- (void)setHasIsWebContentDisabled:(BOOL)disabled;
+- (void)setHasMovieRestriction:(BOOL)restriction;
+- (void)setHasTvRestriction:(BOOL)restriction;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESSiriPegasusMetadata
 
-- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = POMMESSchemaPOMMESSiriPegasusMetadata;
   v5 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"interactionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"interactionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,49 +34,49 @@
     }
 
     v17 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"isCarplay"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isCarplay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setIsCarplay:](v5, "setIsCarplay:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"movieRestriction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"movieRestriction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setMovieRestriction:](v5, "setMovieRestriction:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"tvRestriction"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"tvRestriction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setTvRestriction:](v5, "setTvRestriction:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isInRestrictedSharingMode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isInRestrictedSharingMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setIsInRestrictedSharingMode:](v5, "setIsInRestrictedSharingMode:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isExplicitContentAllowed"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isExplicitContentAllowed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setIsExplicitContentAllowed:](v5, "setIsExplicitContentAllowed:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isWebContentDisabled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isWebContentDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESSiriPegasusMetadata setIsWebContentDisabled:](v5, "setIsWebContentDisabled:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"deviceState"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"deviceState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESSiriPegasusMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,34 +126,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceState)
   {
-    v4 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deviceState = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+    dictionaryRepresentation = [deviceState dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deviceState"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceState"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deviceState"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deviceState"];
     }
   }
 
   has = self->_has;
   if (has)
   {
-    v8 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self interactionType];
+    interactionType = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self interactionType];
     v9 = @"POMMESSIRIPEGASUSCONTEXTINTERACTIONTYPE_UNKNOWN";
-    if (v8 == 1)
+    if (interactionType == 1)
     {
       v9 = @"POMMESSIRIPEGASUSCONTEXTINTERACTIONTYPE_DIALOG_DRIVEN";
     }
 
-    if (v8 == 2)
+    if (interactionType == 2)
     {
       v10 = @"POMMESSIRIPEGASUSCONTEXTINTERACTIONTYPE_DISPLAY_DRIVEN";
     }
@@ -163,14 +163,14 @@
       v10 = v9;
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"interactionType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"interactionType"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESSiriPegasusMetadata isCarplay](self, "isCarplay")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isCarplay"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isCarplay"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -191,7 +191,7 @@ LABEL_15:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESSiriPegasusMetadata isExplicitContentAllowed](self, "isExplicitContentAllowed")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isExplicitContentAllowed"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isExplicitContentAllowed"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -207,7 +207,7 @@ LABEL_16:
 
 LABEL_25:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESSiriPegasusMetadata isInRestrictedSharingMode](self, "isInRestrictedSharingMode")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isInRestrictedSharingMode"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isInRestrictedSharingMode"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -223,7 +223,7 @@ LABEL_17:
 
 LABEL_26:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESSiriPegasusMetadata isWebContentDisabled](self, "isWebContentDisabled")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isWebContentDisabled"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isWebContentDisabled"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -239,19 +239,19 @@ LABEL_18:
 
 LABEL_27:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESSiriPegasusMetadata movieRestriction](self, "movieRestriction")}];
-  [v3 setObject:v17 forKeyedSubscript:@"movieRestriction"];
+  [dictionary setObject:v17 forKeyedSubscript:@"movieRestriction"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_19:
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESSiriPegasusMetadata tvRestriction](self, "tvRestriction")}];
-    [v3 setObject:v11 forKeyedSubscript:@"tvRestriction"];
+    [dictionary setObject:v11 forKeyedSubscript:@"tvRestriction"];
   }
 
 LABEL_20:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -350,16 +350,16 @@ LABEL_8:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(POMMESSchemaPOMMESDeviceState *)self->_deviceState hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -368,13 +368,13 @@ LABEL_8:
   if (*&has)
   {
     interactionType = self->_interactionType;
-    if (interactionType != [v4 interactionType])
+    if (interactionType != [equalCopy interactionType])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -383,13 +383,13 @@ LABEL_8:
     if (v8)
     {
       isCarplay = self->_isCarplay;
-      if (isCarplay != [v4 isCarplay])
+      if (isCarplay != [equalCopy isCarplay])
       {
         goto LABEL_34;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -398,13 +398,13 @@ LABEL_8:
       if (v10)
       {
         movieRestriction = self->_movieRestriction;
-        if (movieRestriction != [v4 movieRestriction])
+        if (movieRestriction != [equalCopy movieRestriction])
         {
           goto LABEL_34;
         }
 
         has = self->_has;
-        v6 = v4[40];
+        v6 = equalCopy[40];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -413,13 +413,13 @@ LABEL_8:
         if (v12)
         {
           tvRestriction = self->_tvRestriction;
-          if (tvRestriction != [v4 tvRestriction])
+          if (tvRestriction != [equalCopy tvRestriction])
           {
             goto LABEL_34;
           }
 
           has = self->_has;
-          v6 = v4[40];
+          v6 = equalCopy[40];
         }
 
         v14 = (*&has >> 4) & 1;
@@ -428,13 +428,13 @@ LABEL_8:
           if (v14)
           {
             isInRestrictedSharingMode = self->_isInRestrictedSharingMode;
-            if (isInRestrictedSharingMode != [v4 isInRestrictedSharingMode])
+            if (isInRestrictedSharingMode != [equalCopy isInRestrictedSharingMode])
             {
               goto LABEL_34;
             }
 
             has = self->_has;
-            v6 = v4[40];
+            v6 = equalCopy[40];
           }
 
           v16 = (*&has >> 5) & 1;
@@ -443,27 +443,27 @@ LABEL_8:
             if (v16)
             {
               isExplicitContentAllowed = self->_isExplicitContentAllowed;
-              if (isExplicitContentAllowed != [v4 isExplicitContentAllowed])
+              if (isExplicitContentAllowed != [equalCopy isExplicitContentAllowed])
               {
                 goto LABEL_34;
               }
 
               has = self->_has;
-              v6 = v4[40];
+              v6 = equalCopy[40];
             }
 
             v18 = (*&has >> 6) & 1;
             if (v18 == ((v6 >> 6) & 1))
             {
-              if (!v18 || (isWebContentDisabled = self->_isWebContentDisabled, isWebContentDisabled == [v4 isWebContentDisabled]))
+              if (!v18 || (isWebContentDisabled = self->_isWebContentDisabled, isWebContentDisabled == [equalCopy isWebContentDisabled]))
               {
-                v20 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
-                v21 = [v4 deviceState];
-                v22 = v21;
-                if ((v20 != 0) != (v21 == 0))
+                deviceState = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+                deviceState2 = [equalCopy deviceState];
+                v22 = deviceState2;
+                if ((deviceState != 0) != (deviceState2 == 0))
                 {
-                  v23 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
-                  if (!v23)
+                  deviceState3 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+                  if (!deviceState3)
                   {
 
 LABEL_37:
@@ -471,10 +471,10 @@ LABEL_37:
                     goto LABEL_35;
                   }
 
-                  v24 = v23;
-                  v25 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
-                  v26 = [v4 deviceState];
-                  v27 = [v25 isEqual:v26];
+                  v24 = deviceState3;
+                  deviceState4 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+                  deviceState5 = [equalCopy deviceState];
+                  v27 = [deviceState4 isEqual:deviceState5];
 
                   if (v27)
                   {
@@ -500,9 +500,9 @@ LABEL_35:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -589,21 +589,21 @@ LABEL_8:
   }
 
 LABEL_9:
-  v5 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+  deviceState = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (deviceState)
   {
-    v7 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
+    deviceState2 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasIsWebContentDisabled:(BOOL)a3
+- (void)setHasIsWebContentDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 64;
   }
@@ -616,9 +616,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsExplicitContentAllowed:(BOOL)a3
+- (void)setHasIsExplicitContentAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 32;
   }
@@ -631,9 +631,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsInRestrictedSharingMode:(BOOL)a3
+- (void)setHasIsInRestrictedSharingMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 16;
   }
@@ -646,9 +646,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTvRestriction:(BOOL)a3
+- (void)setHasTvRestriction:(BOOL)restriction
 {
-  if (a3)
+  if (restriction)
   {
     v3 = 8;
   }
@@ -661,9 +661,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMovieRestriction:(BOOL)a3
+- (void)setHasMovieRestriction:(BOOL)restriction
 {
-  if (a3)
+  if (restriction)
   {
     v3 = 4;
   }
@@ -676,9 +676,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsCarplay:(BOOL)a3
+- (void)setHasIsCarplay:(BOOL)carplay
 {
-  if (a3)
+  if (carplay)
   {
     v3 = 2;
   }
@@ -691,17 +691,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = POMMESSchemaPOMMESSiriPegasusMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deviceState:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(POMMESSchemaPOMMESSiriPegasusMetadata *)self deleteDeviceState];
   }

@@ -1,58 +1,58 @@
 @interface SearchUIScreenTimeResultsRowModel
-- (SearchUIScreenTimeResultsRowModel)initWithSection:(id)a3 result:(id)a4 itemIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SearchUIScreenTimeResultsRowModel)initWithSection:(id)section result:(id)result itemIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifyingResult;
 @end
 
 @implementation SearchUIScreenTimeResultsRowModel
 
-- (SearchUIScreenTimeResultsRowModel)initWithSection:(id)a3 result:(id)a4 itemIdentifier:(id)a5
+- (SearchUIScreenTimeResultsRowModel)initWithSection:(id)section result:(id)result itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 results];
+  sectionCopy = section;
+  resultCopy = result;
+  identifierCopy = identifier;
+  results = [sectionCopy results];
   v27.receiver = self;
   v27.super_class = SearchUIScreenTimeResultsRowModel;
-  v12 = [(SearchUIRowModel *)&v27 initWithResults:v11 itemIdentifier:v10];
+  v12 = [(SearchUIRowModel *)&v27 initWithResults:results itemIdentifier:identifierCopy];
 
   if (v12)
   {
-    [(SearchUIScreenTimeResultsRowModel *)v12 setOverrideIdentifyingResult:v9];
-    v13 = [(SearchUIScreenTimeResultsRowModel *)v12 identifyingResult];
-    v14 = [v13 sectionBundleIdentifier];
+    [(SearchUIScreenTimeResultsRowModel *)v12 setOverrideIdentifyingResult:resultCopy];
+    identifyingResult = [(SearchUIScreenTimeResultsRowModel *)v12 identifyingResult];
+    sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
 
-    v15 = [(SearchUIScreenTimeResultsRowModel *)v12 identifyingResult];
-    v16 = [v15 applicationBundleIdentifier];
+    identifyingResult2 = [(SearchUIScreenTimeResultsRowModel *)v12 identifyingResult];
+    applicationBundleIdentifier = [identifyingResult2 applicationBundleIdentifier];
 
     v17 = [SearchUIUtilities bundleIdentifierForApp:15];
-    if ([v14 isEqualToString:v17])
+    if ([sectionBundleIdentifier isEqualToString:v17])
     {
       v18 = [SearchUIUtilities bundleIdentifierForApp:15];
     }
 
     else
     {
-      v18 = v16;
+      v18 = applicationBundleIdentifier;
     }
 
     v19 = v18;
 
     v20 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v19 allowPlaceholder:1 error:0];
-    v21 = [v20 localizedName];
+    localizedName = [v20 localizedName];
 
     v22 = MEMORY[0x1E696AEC0];
     v23 = [SearchUIUtilities localizedStringForKey:@"BLOCKED_APP"];
-    v24 = v21;
-    if (!v21)
+    title = localizedName;
+    if (!localizedName)
     {
-      v24 = [v8 title];
+      title = [sectionCopy title];
     }
 
-    v25 = [v22 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, v24];
+    v25 = [v22 stringWithValidatedFormat:v23 validFormatSpecifiers:@"%@" error:0, title];
     [(SearchUIScreenTimeResultsRowModel *)v12 setTitle:v25];
 
-    if (!v21)
+    if (!localizedName)
     {
     }
   }
@@ -62,32 +62,32 @@
 
 - (id)identifyingResult
 {
-  v3 = [(SearchUIScreenTimeResultsRowModel *)self overrideIdentifyingResult];
-  v4 = v3;
-  if (v3)
+  overrideIdentifyingResult = [(SearchUIScreenTimeResultsRowModel *)self overrideIdentifyingResult];
+  v4 = overrideIdentifyingResult;
+  if (overrideIdentifyingResult)
   {
-    v5 = v3;
+    identifyingResult = overrideIdentifyingResult;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SearchUIScreenTimeResultsRowModel;
-    v5 = [(SearchUIRowModel *)&v8 identifyingResult];
+    identifyingResult = [(SearchUIRowModel *)&v8 identifyingResult];
   }
 
-  v6 = v5;
+  v6 = identifyingResult;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SearchUIScreenTimeResultsRowModel;
-  v4 = [(SearchUIRowModel *)&v7 copyWithZone:a3];
-  v5 = [(SearchUIScreenTimeResultsRowModel *)self title];
-  [v4 setTitle:v5];
+  v4 = [(SearchUIRowModel *)&v7 copyWithZone:zone];
+  title = [(SearchUIScreenTimeResultsRowModel *)self title];
+  [v4 setTitle:title];
 
   return v4;
 }

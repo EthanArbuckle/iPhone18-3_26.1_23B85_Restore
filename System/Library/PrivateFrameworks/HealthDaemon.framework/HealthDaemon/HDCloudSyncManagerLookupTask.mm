@@ -1,19 +1,19 @@
 @interface HDCloudSyncManagerLookupTask
-- (HDCloudSyncManagerLookupTask)initWithManager:(id)a3 context:(id)a4 lookupInfo:(id)a5 accessibilityAssertion:(id)a6 completion:(id)a7;
-- (id)pipelineForRepository:(id)a3;
+- (HDCloudSyncManagerLookupTask)initWithManager:(id)manager context:(id)context lookupInfo:(id)info accessibilityAssertion:(id)assertion completion:(id)completion;
+- (id)pipelineForRepository:(id)repository;
 @end
 
 @implementation HDCloudSyncManagerLookupTask
 
-- (HDCloudSyncManagerLookupTask)initWithManager:(id)a3 context:(id)a4 lookupInfo:(id)a5 accessibilityAssertion:(id)a6 completion:(id)a7
+- (HDCloudSyncManagerLookupTask)initWithManager:(id)manager context:(id)context lookupInfo:(id)info accessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v12 = a5;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = HDCloudSyncManagerLookupTask;
-  v13 = [(HDCloudSyncManagerPipelineTask *)&v17 initWithManager:a3 context:a4 accessibilityAssertion:a6 completion:a7];
+  v13 = [(HDCloudSyncManagerPipelineTask *)&v17 initWithManager:manager context:context accessibilityAssertion:assertion completion:completion];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [infoCopy copy];
     lookupInfo = v13->_lookupInfo;
     v13->_lookupInfo = v14;
   }
@@ -21,19 +21,19 @@
   return v13;
 }
 
-- (id)pipelineForRepository:(id)a3
+- (id)pipelineForRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   v5 = [HDCloudSyncPipeline alloc];
-  v6 = [(HDCloudSyncManagerRepositoryTask *)self context];
-  v7 = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
-  v8 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  v9 = [v8 queue];
-  v10 = [(HDCloudSyncPipeline *)v5 initForContext:v6 repository:v4 accessibilityAssertion:v7 queue:v9];
+  context = [(HDCloudSyncManagerRepositoryTask *)self context];
+  accessibilityAssertion = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  queue = [manager queue];
+  v10 = [(HDCloudSyncPipeline *)v5 initForContext:context repository:repositoryCopy accessibilityAssertion:accessibilityAssertion queue:queue];
 
   v11 = [HDCloudSyncPipelineStageLookupParticipant alloc];
-  v12 = [v10 operationConfiguration];
-  v13 = [(HDCloudSyncPipelineStageLookupParticipant *)v11 initWithConfiguration:v12 cloudState:0 identityLookupInfo:self->_lookupInfo];
+  operationConfiguration = [v10 operationConfiguration];
+  v13 = [(HDCloudSyncPipelineStageLookupParticipant *)v11 initWithConfiguration:operationConfiguration cloudState:0 identityLookupInfo:self->_lookupInfo];
   lookupStage = self->_lookupStage;
   self->_lookupStage = v13;
 

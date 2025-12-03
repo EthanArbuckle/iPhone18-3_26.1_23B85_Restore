@@ -1,38 +1,38 @@
 @interface HMDHomeEventsGenerated
-+ (id)accessorySettingsTopicsForAccessory:(id)a3 homeUUID:(id)a4;
-+ (id)accessoryTopicsForAccessory:(id)a3 homeUUID:(id)a4;
-+ (id)clientIndexToHomeTopicsForHomeUUID:(id)a3;
-+ (id)expandedTopicsWithTopics:(id)a3 homeManager:(id)a4;
-+ (id)forwardingTopicsWithTopics:(id)a3 forHomeRouterWithUUID:(id)a4;
-+ (id)indexTopicForTopicSuffix:(id)a3 indexName:(id)a4;
-+ (id)upstreamClientTopicForTopic:(id)a3;
-+ (id)upstreamHomeAndAccessoryTopicsForTopic:(id)a3 homeUUID:(id)a4 accessoryUUID:(id)a5;
-+ (id)upstreamHomeTopicForTopic:(id)a3 homeUUID:(id)a4;
-+ (id)upstreamTopicsForTopic:(id)a3;
++ (id)accessorySettingsTopicsForAccessory:(id)accessory homeUUID:(id)d;
++ (id)accessoryTopicsForAccessory:(id)accessory homeUUID:(id)d;
++ (id)clientIndexToHomeTopicsForHomeUUID:(id)d;
++ (id)expandedTopicsWithTopics:(id)topics homeManager:(id)manager;
++ (id)forwardingTopicsWithTopics:(id)topics forHomeRouterWithUUID:(id)d;
++ (id)indexTopicForTopicSuffix:(id)suffix indexName:(id)name;
++ (id)upstreamClientTopicForTopic:(id)topic;
++ (id)upstreamHomeAndAccessoryTopicsForTopic:(id)topic homeUUID:(id)d accessoryUUID:(id)iD;
++ (id)upstreamHomeTopicForTopic:(id)topic homeUUID:(id)d;
++ (id)upstreamTopicsForTopic:(id)topic;
 @end
 
 @implementation HMDHomeEventsGenerated
 
-+ (id)expandedTopicsWithTopics:(id)a3 homeManager:(id)a4
++ (id)expandedTopicsWithTopics:(id)topics homeManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
+  topicsCopy = topics;
   v9 = [v7 set];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_invoke;
   v14[3] = &unk_2797235E8;
-  v15 = v6;
+  v15 = managerCopy;
   v16 = v9;
-  v17 = a1;
+  selfCopy = self;
   v10 = v9;
-  v11 = v6;
-  [v8 na_each:v14];
+  v11 = managerCopy;
+  [topicsCopy na_each:v14];
 
-  v12 = [v10 allObjects];
+  allObjects = [v10 allObjects];
 
-  return v12;
+  return allObjects;
 }
 
 void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_invoke(uint64_t a1, void *a2)
@@ -266,14 +266,14 @@ void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_i
   [v4 addObjectsFromArray:v6];
 }
 
-+ (id)accessoryTopicsForAccessory:(id)a3 homeUUID:(id)a4
++ (id)accessoryTopicsForAccessory:(id)accessory homeUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = accessoryCopy;
   }
 
   else
@@ -285,8 +285,8 @@ void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_i
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 uuid];
-    v11 = [HMDAccessoryEventsGenerated appleMediaAccessoryTopicsForAccessoryUUID:v10 homeUUID:v6];
+    uuid = [v8 uuid];
+    v11 = [HMDAccessoryEventsGenerated appleMediaAccessoryTopicsForAccessoryUUID:uuid homeUUID:dCopy];
   }
 
   else
@@ -297,14 +297,14 @@ void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_i
   return v11;
 }
 
-+ (id)accessorySettingsTopicsForAccessory:(id)a3 homeUUID:(id)a4
++ (id)accessorySettingsTopicsForAccessory:(id)accessory homeUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  accessoryCopy = accessory;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = accessoryCopy;
   }
 
   else
@@ -313,7 +313,7 @@ void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_i
   }
 
   v8 = v7;
-  v9 = v5;
+  v9 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -329,20 +329,20 @@ void __63__HMDHomeEventsGenerated_expandedTopicsWithTopics_homeManager___block_i
 
   if (v8)
   {
-    v12 = [v8 category];
-    v13 = [v12 categoryType];
-    if ([v13 isEqualToString:*MEMORY[0x277CCE8B0]])
+    category = [v8 category];
+    categoryType = [category categoryType];
+    if ([categoryType isEqualToString:*MEMORY[0x277CCE8B0]])
     {
 
 LABEL_14:
-      v14 = [v8 uuid];
-      v15 = [HMDAccessoryEventsGenerated homePodAccessorySettingsTopicsForAccessoryUUID:v14 homeUUID:v6];
+      uuid = [v8 uuid];
+      v15 = [HMDAccessoryEventsGenerated homePodAccessorySettingsTopicsForAccessoryUUID:uuid homeUUID:dCopy];
       goto LABEL_15;
     }
 
-    v16 = [v8 homePodVariant];
+    homePodVariant = [v8 homePodVariant];
 
-    if (v16)
+    if (homePodVariant)
     {
       goto LABEL_14;
     }
@@ -350,8 +350,8 @@ LABEL_14:
 
   else if (v11 && [v11 hasSiriEndpointService])
   {
-    v14 = [v11 uuid];
-    v15 = [HMDAccessoryEventsGenerated endpointAccessorySettingsTopicsForAccessoryUUID:v14 homeUUID:v6];
+    uuid = [v11 uuid];
+    v15 = [HMDAccessoryEventsGenerated endpointAccessorySettingsTopicsForAccessoryUUID:uuid homeUUID:dCopy];
 LABEL_15:
     v17 = v15;
 
@@ -364,40 +364,40 @@ LABEL_17:
   return v17;
 }
 
-+ (id)upstreamTopicsForTopic:(id)a3
++ (id)upstreamTopicsForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [MEMORY[0x277CD19F0] decodeTopic:v4];
-  v7 = [v6 accessoryUUID];
-  if (v7 && (v8 = v7, [v6 homeUUID], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  v6 = [MEMORY[0x277CD19F0] decodeTopic:topicCopy];
+  accessoryUUID = [v6 accessoryUUID];
+  if (accessoryUUID && (v8 = accessoryUUID, [v6 homeUUID], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [v6 homeUUID];
-    v11 = [v6 accessoryUUID];
-    v12 = [a1 upstreamHomeAndAccessoryTopicsForTopic:v4 homeUUID:v10 accessoryUUID:v11];
+    homeUUID = [v6 homeUUID];
+    accessoryUUID2 = [v6 accessoryUUID];
+    v12 = [self upstreamHomeAndAccessoryTopicsForTopic:topicCopy homeUUID:homeUUID accessoryUUID:accessoryUUID2];
     [v5 unionSet:v12];
   }
 
   else
   {
-    v13 = [v6 homeUUID];
+    homeUUID2 = [v6 homeUUID];
 
-    if (!v13)
+    if (!homeUUID2)
     {
       goto LABEL_8;
     }
 
-    v14 = [v6 homeUUID];
-    v10 = [a1 upstreamHomeTopicForTopic:v4 homeUUID:v14];
+    homeUUID3 = [v6 homeUUID];
+    homeUUID = [self upstreamHomeTopicForTopic:topicCopy homeUUID:homeUUID3];
 
-    if (v10)
+    if (homeUUID)
     {
-      [v5 addObject:v10];
+      [v5 addObject:homeUUID];
     }
   }
 
 LABEL_8:
-  v15 = [a1 upstreamClientTopicForTopic:v4];
+  v15 = [self upstreamClientTopicForTopic:topicCopy];
   if (v15)
   {
     [v5 addObject:v15];
@@ -408,46 +408,46 @@ LABEL_8:
   return v16;
 }
 
-+ (id)upstreamHomeAndAccessoryTopicsForTopic:(id)a3 homeUUID:(id)a4 accessoryUUID:(id)a5
++ (id)upstreamHomeAndAccessoryTopicsForTopic:(id)topic homeUUID:(id)d accessoryUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
   v11 = [MEMORY[0x277CBEB58] set];
-  v12 = [a1 upstreamHomeTopicForTopic:v8 homeUUID:v9];
+  v12 = [self upstreamHomeTopicForTopic:topicCopy homeUUID:dCopy];
   if (v12)
   {
     [v11 addObject:v12];
   }
 
-  v13 = [MEMORY[0x277CD19F0] decodeTopic:v8];
+  v13 = [MEMORY[0x277CD19F0] decodeTopic:topicCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 homeUUID];
-    if ([v15 hmf_isEqualToUUID:v9])
+    homeUUID = [v13 homeUUID];
+    if ([homeUUID hmf_isEqualToUUID:dCopy])
     {
-      v16 = [v14 accessoryUUID];
-      v17 = [v16 hmf_isEqualToUUID:v10];
+      accessoryUUID = [v14 accessoryUUID];
+      v17 = [accessoryUUID hmf_isEqualToUUID:iDCopy];
 
       if (!v17)
       {
         goto LABEL_9;
       }
 
-      v18 = [v14 asAccessorySettingTopic];
+      asAccessorySettingTopic = [v14 asAccessorySettingTopic];
 
-      if (!v18)
+      if (!asAccessorySettingTopic)
       {
-        v21 = [v14 asAccessoryTopic];
-        if (!v21)
+        asAccessoryTopic = [v14 asAccessoryTopic];
+        if (!asAccessoryTopic)
         {
           goto LABEL_9;
         }
 
-        v22 = v21;
-        v23 = [v14 topicSuffix];
-        v24 = [HMDAccessoryEventsGenerated topicSuffix:v23 isPartOfIndex:@"AppleAccessoryIndex"];
+        v22 = asAccessoryTopic;
+        topicSuffix = [v14 topicSuffix];
+        v24 = [HMDAccessoryEventsGenerated topicSuffix:topicSuffix isPartOfIndex:@"AppleAccessoryIndex"];
 
         if (!v24)
         {
@@ -455,8 +455,8 @@ LABEL_8:
         }
       }
 
-      v15 = [HMDAccessoryEventsGenerated accessoryIndexForAccessoryUUID:v10 homeUUID:v9];
-      [v11 addObject:v15];
+      homeUUID = [HMDAccessoryEventsGenerated accessoryIndexForAccessoryUUID:iDCopy homeUUID:dCopy];
+      [v11 addObject:homeUUID];
     }
   }
 
@@ -466,37 +466,37 @@ LABEL_9:
   return v19;
 }
 
-+ (id)upstreamHomeTopicForTopic:(id)a3 homeUUID:(id)a4
++ (id)upstreamHomeTopicForTopic:(id)topic homeUUID:(id)d
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CD19F0] decodeTopic:a3];
+  dCopy = d;
+  v7 = [MEMORY[0x277CD19F0] decodeTopic:topic];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_9;
   }
 
-  v9 = [v7 homeUUID];
-  v10 = [v9 hmf_isEqualToUUID:v6];
+  homeUUID = [v7 homeUUID];
+  v10 = [homeUUID hmf_isEqualToUUID:dCopy];
 
   if (!v10)
   {
     goto LABEL_9;
   }
 
-  v11 = [v8 asAccessorySettingTopic];
+  asAccessorySettingTopic = [v8 asAccessorySettingTopic];
 
-  if (v11)
+  if (asAccessorySettingTopic)
   {
     goto LABEL_4;
   }
 
-  v13 = [v8 asAccessoryTopic];
-  if (v13)
+  asAccessoryTopic = [v8 asAccessoryTopic];
+  if (asAccessoryTopic)
   {
-    v14 = v13;
-    v15 = [v8 topicSuffix];
-    v16 = [HMDAccessoryEventsGenerated topicSuffix:v15 isPartOfIndex:@"HomeIndex"];
+    v14 = asAccessoryTopic;
+    topicSuffix = [v8 topicSuffix];
+    v16 = [HMDAccessoryEventsGenerated topicSuffix:topicSuffix isPartOfIndex:@"HomeIndex"];
 
     if (v16)
     {
@@ -504,22 +504,22 @@ LABEL_9:
     }
   }
 
-  v17 = [v8 asHomeEventTopic];
-  if (!v17)
+  asHomeEventTopic = [v8 asHomeEventTopic];
+  if (!asHomeEventTopic)
   {
     goto LABEL_9;
   }
 
-  v18 = v17;
-  v19 = [v8 topicSuffix];
-  v20 = [&unk_28662A7C8 objectForKeyedSubscript:v19];
+  v18 = asHomeEventTopic;
+  topicSuffix2 = [v8 topicSuffix];
+  v20 = [&unk_28662A7C8 objectForKeyedSubscript:topicSuffix2];
   v21 = [v20 objectForKeyedSubscript:@"indexes"];
   v22 = [v21 objectForKeyedSubscript:@"HomeIndex"];
 
   if (v22)
   {
 LABEL_4:
-    v12 = [a1 homeInfoIndexForHomeUUID:v6];
+    v12 = [self homeInfoIndexForHomeUUID:dCopy];
   }
 
   else
@@ -531,43 +531,43 @@ LABEL_9:
   return v12;
 }
 
-+ (id)upstreamClientTopicForTopic:(id)a3
++ (id)upstreamClientTopicForTopic:(id)topic
 {
-  v3 = [MEMORY[0x277CD19F0] decodeTopic:a3];
+  v3 = [MEMORY[0x277CD19F0] decodeTopic:topic];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 asAccessorySettingTopic];
+    asAccessorySettingTopic = [v3 asAccessorySettingTopic];
 
-    if (v5)
+    if (asAccessorySettingTopic)
     {
-      v6 = @"index.xpc.client.spi.settings";
+      asHomeEventTopic = @"index.xpc.client.spi.settings";
     }
 
     else
     {
-      v7 = [v4 asAccessoryTopic];
-      if (v7 && (v8 = v7, [v4 topicSuffix], v9 = objc_claimAutoreleasedReturnValue(), v10 = +[HMDAccessoryEventsGenerated topicSuffix:isPartOfIndex:](HMDAccessoryEventsGenerated, "topicSuffix:isPartOfIndex:", v9, @"SpiIndex"), v9, v8, v10))
+      asAccessoryTopic = [v4 asAccessoryTopic];
+      if (asAccessoryTopic && (v8 = asAccessoryTopic, [v4 topicSuffix], v9 = objc_claimAutoreleasedReturnValue(), v10 = +[HMDAccessoryEventsGenerated topicSuffix:isPartOfIndex:](HMDAccessoryEventsGenerated, "topicSuffix:isPartOfIndex:", v9, @"SpiIndex"), v9, v8, v10))
       {
-        v6 = @"index.xpc.client.spi";
+        asHomeEventTopic = @"index.xpc.client.spi";
       }
 
       else
       {
-        v6 = [v4 asHomeEventTopic];
-        if (v6)
+        asHomeEventTopic = [v4 asHomeEventTopic];
+        if (asHomeEventTopic)
         {
           v11 = [&unk_28662A750 objectForKeyedSubscript:@"indexes"];
           v12 = [v11 objectForKeyedSubscript:@"SpiIndex"];
 
           if (v12)
           {
-            v6 = @"index.xpc.client.spi";
+            asHomeEventTopic = @"index.xpc.client.spi";
           }
 
           else
           {
-            v6 = 0;
+            asHomeEventTopic = 0;
           }
         }
       }
@@ -576,32 +576,32 @@ LABEL_9:
 
   else
   {
-    v6 = 0;
+    asHomeEventTopic = 0;
   }
 
-  return v6;
+  return asHomeEventTopic;
 }
 
-+ (id)forwardingTopicsWithTopics:(id)a3 forHomeRouterWithUUID:(id)a4
++ (id)forwardingTopicsWithTopics:(id)topics forHomeRouterWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  topicsCopy = topics;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   v9 = MEMORY[0x277CBEB98];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __75__HMDHomeEventsGenerated_forwardingTopicsWithTopics_forHomeRouterWithUUID___block_invoke;
   v18 = &unk_279723570;
-  v10 = v7;
+  v10 = dCopy;
   v19 = v10;
-  v20 = a1;
-  v11 = [v6 na_flatMap:&v15];
+  selfCopy = self;
+  v11 = [topicsCopy na_flatMap:&v15];
   v12 = [v9 setWithArray:{v11, v15, v16, v17, v18}];
-  v13 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
   objc_autoreleasePoolPop(v8);
 
-  return v13;
+  return allObjects;
 }
 
 id __75__HMDHomeEventsGenerated_forwardingTopicsWithTopics_forHomeRouterWithUUID___block_invoke(uint64_t a1, void *a2)
@@ -688,12 +688,12 @@ LABEL_19:
   return v10;
 }
 
-+ (id)clientIndexToHomeTopicsForHomeUUID:(id)a3
++ (id)clientIndexToHomeTopicsForHomeUUID:(id)d
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"index.home.%@.info", v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringWithFormat:@"index.home.%@.info", uUIDString];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -702,12 +702,12 @@ LABEL_19:
   return v6;
 }
 
-+ (id)indexTopicForTopicSuffix:(id)a3 indexName:(id)a4
++ (id)indexTopicForTopicSuffix:(id)suffix indexName:(id)name
 {
-  v5 = a4;
-  v6 = [&unk_28662A660 objectForKeyedSubscript:a3];
+  nameCopy = name;
+  v6 = [&unk_28662A660 objectForKeyedSubscript:suffix];
   v7 = [v6 objectForKeyedSubscript:@"indexes"];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [v7 objectForKeyedSubscript:nameCopy];
 
   return v8;
 }

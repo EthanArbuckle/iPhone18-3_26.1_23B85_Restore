@@ -11,12 +11,12 @@
 - (id)learnMoreButtonTitle;
 - (id)okayButtonTitle;
 - (id)suggestedButtonTitle;
-- (void)alternateButtonPressed:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)okayButtonPressed:(id)a3;
-- (void)showOptinConfirmationAlert:(id)a3 optinChoice:(BOOL)a4;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)okayButtonPressed:(id)pressed;
+- (void)showOptinConfirmationAlert:(id)alert optinChoice:(BOOL)choice;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -110,7 +110,7 @@
   return 0;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v6 = *MEMORY[0x277D85DE8];
   if ([(BPSSetupOptinViewController *)self wantsSuggestedChoicePillButton])
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v7 = *MEMORY[0x277D85DE8];
   if ([(BPSSetupOptinViewController *)self wantsAlternateChoicePillButton]&& [(BPSSetupOptinViewController *)self wantsAlternateChoiceSystemButton])
@@ -140,7 +140,7 @@
   }
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v6 = *MEMORY[0x277D85DE8];
   if ([(BPSSetupOptinViewController *)self wantsLearnMoreButton])
@@ -155,7 +155,7 @@
   }
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   v6 = *MEMORY[0x277D85DE8];
   if ([(BPSSetupOptinViewController *)self wantsOkayPillButton])
@@ -267,7 +267,7 @@
   scrollView = self->_scrollView;
   self->_scrollView = v11;
 
-  v13 = [(BPSSetupPageViewController *)self contentView];
+  contentView = [(BPSSetupPageViewController *)self contentView];
   __asm { FMOV            V0.2D, #16.0 }
 
   v86 = xmmword_241EADD50;
@@ -277,14 +277,14 @@
   v95 = _Q0;
   v96 = _Q0;
   RelevantValue = BPSScreenValueGetRelevantValue(buf);
-  v20 = [(BPSSetupOptinViewController *)self detailTitleString];
+  detailTitleString = [(BPSSetupOptinViewController *)self detailTitleString];
   v21 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
   detailTextTitleLabel = self->_detailTextTitleLabel;
   self->_detailTextTitleLabel = v21;
 
   v23 = self->_detailTextTitleLabel;
-  v24 = [MEMORY[0x277D75348] clearColor];
-  [(UILabel *)v23 setBackgroundColor:v24];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UILabel *)v23 setBackgroundColor:clearColor];
 
   v25 = self->_detailTextTitleLabel;
   v26 = BPSTextColor();
@@ -296,24 +296,24 @@
 
   [(UILabel *)self->_detailTextTitleLabel setTextAlignment:1];
   [(UILabel *)self->_detailTextTitleLabel setNumberOfLines:0];
-  v92 = v20;
-  [(UILabel *)self->_detailTextTitleLabel setText:v20];
-  [v13 addSubview:self->_detailTextTitleLabel];
-  v29 = [(BPSSetupOptinViewController *)self detailString];
-  v30 = [(BPSSetupOptinViewController *)self detailAttributedString];
-  if (v29 | v30)
+  v92 = detailTitleString;
+  [(UILabel *)self->_detailTextTitleLabel setText:detailTitleString];
+  [contentView addSubview:self->_detailTextTitleLabel];
+  detailString = [(BPSSetupOptinViewController *)self detailString];
+  detailAttributedString = [(BPSSetupOptinViewController *)self detailAttributedString];
+  if (detailString | detailAttributedString)
   {
     v31 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
     detailTextLabel = self->_detailTextLabel;
     self->_detailTextLabel = v31;
 
     v33 = self->_detailTextLabel;
-    v34 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v33 setBackgroundColor:v34];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v33 setBackgroundColor:clearColor2];
 
     v35 = self->_detailTextLabel;
-    v36 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v35 setTextColor:v36];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v35 setTextColor:systemGrayColor];
 
     v37 = self->_detailTextLabel;
     v38 = BPSRegularFontWithSize(RelevantValue);
@@ -322,54 +322,54 @@
     [(UILabel *)self->_detailTextLabel setTextAlignment:1];
     [(UILabel *)self->_detailTextLabel setNumberOfLines:0];
     v39 = self->_detailTextLabel;
-    if (v29)
+    if (detailString)
     {
-      [(UILabel *)v39 setText:v29];
+      [(UILabel *)v39 setText:detailString];
     }
 
     else
     {
-      [(UILabel *)v39 setAttributedText:v30];
+      [(UILabel *)v39 setAttributedText:detailAttributedString];
     }
 
-    [v13 addSubview:{self->_detailTextLabel, 0x402E000000000000, 0x4030000000000000, v88}];
+    [contentView addSubview:{self->_detailTextLabel, 0x402E000000000000, 0x4030000000000000, v88}];
   }
 
   if ([(BPSSetupOptinViewController *)self wantsToShowWatchHW:v86])
   {
-    v40 = [(BPSSetupOptinViewController *)self imageResource];
-    v41 = [(BPSSetupOptinViewController *)self imageResourceBundleIdentifier];
-    if (v40)
+    imageResource = [(BPSSetupOptinViewController *)self imageResource];
+    imageResourceBundleIdentifier = [(BPSSetupOptinViewController *)self imageResourceBundleIdentifier];
+    if (imageResource)
     {
       v42 = [[BPSWatchView alloc] initWithStyle:2];
       watchView = self->_watchView;
       self->_watchView = v42;
 
       [(BPSWatchView *)self->_watchView setWantsLightenBlendedScreen:[(BPSSetupOptinViewController *)self wantsLightenBlendedScreen]];
-      [(BPSWatchView *)self->_watchView setScreenImageSearchBundleIdentifier:v41];
-      [(BPSWatchView *)self->_watchView setScreenImageName:v40];
-      [v13 addSubview:self->_watchView];
+      [(BPSWatchView *)self->_watchView setScreenImageSearchBundleIdentifier:imageResourceBundleIdentifier];
+      [(BPSWatchView *)self->_watchView setScreenImageName:imageResource];
+      [contentView addSubview:self->_watchView];
     }
   }
 
-  v90 = v30;
-  v91 = v29;
-  v44 = [(BPSSetupOptinViewController *)self suggestedButtonTitle];
-  v45 = [(BPSSetupOptinViewController *)self alternateButtonTitle];
-  v46 = [(BPSSetupOptinViewController *)self okayButtonTitle];
-  [v13 frame];
+  v90 = detailAttributedString;
+  v91 = detailString;
+  suggestedButtonTitle = [(BPSSetupOptinViewController *)self suggestedButtonTitle];
+  alternateButtonTitle = [(BPSSetupOptinViewController *)self alternateButtonTitle];
+  okayButtonTitle = [(BPSSetupOptinViewController *)self okayButtonTitle];
+  [contentView frame];
   Width = CGRectGetWidth(v98);
   [(BPSSetupOptinViewController *)self sidePadding];
   v49 = Width + v48 * -2.0;
-  BPSPillButtonImageDesiredSize(v44);
-  BPSPillButtonImageDesiredSize(v45);
-  v50 = [(BPSSetupOptinViewController *)self wantsSuggestedChoicePillButton];
-  v51 = [(BPSSetupOptinViewController *)self wantsAlternateChoicePillButton];
-  v52 = [(BPSSetupOptinViewController *)self wantsAlternateChoiceSystemButton];
-  v53 = [(BPSSetupOptinViewController *)self wantsOkayPillButton];
-  if (v50)
+  BPSPillButtonImageDesiredSize(suggestedButtonTitle);
+  BPSPillButtonImageDesiredSize(alternateButtonTitle);
+  wantsSuggestedChoicePillButton = [(BPSSetupOptinViewController *)self wantsSuggestedChoicePillButton];
+  wantsAlternateChoicePillButton = [(BPSSetupOptinViewController *)self wantsAlternateChoicePillButton];
+  wantsAlternateChoiceSystemButton = [(BPSSetupOptinViewController *)self wantsAlternateChoiceSystemButton];
+  wantsOkayPillButton = [(BPSSetupOptinViewController *)self wantsOkayPillButton];
+  if (wantsSuggestedChoicePillButton)
   {
-    if (v44)
+    if (suggestedButtonTitle)
     {
       v54 = [MEMORY[0x277D75220] buttonWithType:0];
       suggestedChoiceButton = self->_suggestedChoiceButton;
@@ -378,28 +378,28 @@
       [(UIButton *)self->_suggestedChoiceButton addTarget:self action:sel_suggestedButtonPressed_ forControlEvents:64];
     }
 
-    if (v51)
+    if (wantsAlternateChoicePillButton)
     {
       v56 = [MEMORY[0x277D75220] buttonWithType:0];
       alternateChoiceButton = self->_alternateChoiceButton;
       self->_alternateChoiceButton = v56;
 
       v58 = self->_alternateChoiceButton;
-      v59 = BPSPillButtonImage(v45, v49, 0.0, 0, 0);
+      v59 = BPSPillButtonImage(alternateButtonTitle, v49, 0.0, 0, 0);
       [(UIButton *)v58 setImage:v59 forState:0];
 
       v60 = self->_suggestedChoiceButton;
-      v61 = BPSPillButtonImage(v44, v49, 0.0, 0, 0);
+      v61 = BPSPillButtonImage(suggestedButtonTitle, v49, 0.0, 0, 0);
       [(UIButton *)v60 setImage:v61 forState:0];
     }
 
     else
     {
       v62 = self->_suggestedChoiceButton;
-      v63 = BPSPillButtonImage(v44, v49, 0.0, 0, 0);
+      v63 = BPSPillButtonImage(suggestedButtonTitle, v49, 0.0, 0, 0);
       [(UIButton *)v62 setImage:v63 forState:0];
 
-      if (!v52)
+      if (!wantsAlternateChoiceSystemButton)
       {
         goto LABEL_23;
       }
@@ -408,20 +408,20 @@
       v65 = self->_alternateChoiceButton;
       self->_alternateChoiceButton = v64;
 
-      [(UIButton *)self->_alternateChoiceButton setTitle:v45 forState:0];
+      [(UIButton *)self->_alternateChoiceButton setTitle:alternateButtonTitle forState:0];
       v66 = self->_alternateChoiceButton;
       v67 = BPSBridgeTintColor();
-      v68 = [v13 _accessibilityHigherContrastTintColorForColor:v67];
+      v68 = [contentView _accessibilityHigherContrastTintColorForColor:v67];
       [(UIButton *)v66 setTitleColor:v68 forState:0];
 
-      v69 = [(UIButton *)self->_alternateChoiceButton titleLabel];
+      titleLabel = [(UIButton *)self->_alternateChoiceButton titleLabel];
       *buf = v87;
       *&buf[16] = v89;
       v95 = v89;
       v96 = v89;
       v70 = BPSScreenValueGetRelevantValue(buf);
       v71 = BPSRegularFontWithSize(v70);
-      [v69 setFont:v71];
+      [titleLabel setFont:v71];
 
       v72 = self->_alternateChoiceButton;
       v61 = BPSTextColor();
@@ -430,51 +430,51 @@
   }
 
 LABEL_23:
-  if (v53)
+  if (wantsOkayPillButton)
   {
     v73 = [MEMORY[0x277D75220] buttonWithType:0];
     okayButton = self->_okayButton;
     self->_okayButton = v73;
 
     v75 = self->_okayButton;
-    v76 = BPSPillButtonImage(v46, v49, 0.0, 0, 0);
+    v76 = BPSPillButtonImage(okayButtonTitle, v49, 0.0, 0, 0);
     [(UIButton *)v75 setImage:v76 forState:0];
 
     [(UIButton *)self->_okayButton addTarget:self action:sel_okayButtonPressed_ forControlEvents:64];
   }
 
   [(UIButton *)self->_alternateChoiceButton addTarget:self action:sel_alternateButtonPressed_ forControlEvents:64];
-  [v13 addSubview:self->_alternateChoiceButton];
-  [v13 addSubview:self->_suggestedChoiceButton];
-  [v13 addSubview:self->_okayButton];
+  [contentView addSubview:self->_alternateChoiceButton];
+  [contentView addSubview:self->_suggestedChoiceButton];
+  [contentView addSubview:self->_okayButton];
   if ([(BPSSetupOptinViewController *)self wantsLearnMoreButton])
   {
-    v77 = [(BPSSetupOptinViewController *)self learnMoreButtonTitle];
-    if (v77)
+    learnMoreButtonTitle = [(BPSSetupOptinViewController *)self learnMoreButtonTitle];
+    if (learnMoreButtonTitle)
     {
       v78 = [MEMORY[0x277D75220] buttonWithType:1];
       learnMoreButton = self->_learnMoreButton;
       self->_learnMoreButton = v78;
 
-      [(UIButton *)self->_learnMoreButton setTitle:v77 forState:0];
+      [(UIButton *)self->_learnMoreButton setTitle:learnMoreButtonTitle forState:0];
       v80 = self->_learnMoreButton;
       v81 = BPSBridgeTintColor();
-      v82 = [v13 _accessibilityHigherContrastTintColorForColor:v81];
+      v82 = [contentView _accessibilityHigherContrastTintColorForColor:v81];
       [(UIButton *)v80 setTitleColor:v82 forState:0];
 
-      v83 = [(UIButton *)self->_learnMoreButton titleLabel];
+      titleLabel2 = [(UIButton *)self->_learnMoreButton titleLabel];
       v84 = BPSRegularFontWithSize(RelevantValue);
-      [v83 setFont:v84];
+      [titleLabel2 setFont:v84];
 
       [(UIButton *)self->_learnMoreButton addTarget:self action:sel_learnMoreButtonPressed_ forControlEvents:64];
-      [v13 addSubview:self->_learnMoreButton];
+      [contentView addSubview:self->_learnMoreButton];
     }
   }
 
-  v85 = [(BPSSetupOptinViewController *)self view];
-  [v85 addSubview:self->_scrollView];
+  view = [(BPSSetupOptinViewController *)self view];
+  [view addSubview:self->_scrollView];
 
-  [(UIScrollView *)self->_scrollView addSubview:v13];
+  [(UIScrollView *)self->_scrollView addSubview:contentView];
 }
 
 - (double)suggestedChoicePillDetailTextLabelVerticalOffset
@@ -495,8 +495,8 @@ LABEL_23:
   v126.receiver = self;
   v126.super_class = BPSSetupOptinViewController;
   [(BPSSetupPageViewController *)&v126 viewDidLayoutSubviews];
-  v3 = [(BPSSetupOptinViewController *)self view];
-  [v3 bounds];
+  view = [(BPSSetupOptinViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -550,8 +550,8 @@ LABEL_23:
   v124 = Width;
   *&v34 = (Width - v20) * 0.5;
   v36 = floorf(*&v34);
-  v37 = [(BPSSetupPageViewController *)self titleLabel];
-  [v37 _lastLineBaselineFrameOriginY];
+  titleLabel = [(BPSSetupPageViewController *)self titleLabel];
+  [titleLabel _lastLineBaselineFrameOriginY];
   v39 = v38;
   __asm { FMOV            V0.2D, #20.0 }
 
@@ -563,11 +563,11 @@ LABEL_23:
   v45 = v39 + BPSScreenValueGetRelevantValue(v125);
 
   [(BPSWatchView *)self->_watchView setFrame:v36, v45, v20, v22];
-  v46 = [(BPSSetupOptinViewController *)self imageResource];
+  imageResource = [(BPSSetupOptinViewController *)self imageResource];
 
-  v47 = [(BPSSetupOptinViewController *)self wantsSuggestedChoicePillButton];
-  v48 = [(BPSSetupOptinViewController *)self wantsAlternateChoicePillButton];
-  v49 = [(BPSSetupOptinViewController *)self wantsAlternateChoiceSystemButton];
+  wantsSuggestedChoicePillButton = [(BPSSetupOptinViewController *)self wantsSuggestedChoicePillButton];
+  wantsAlternateChoicePillButton = [(BPSSetupOptinViewController *)self wantsAlternateChoicePillButton];
+  wantsAlternateChoiceSystemButton = [(BPSSetupOptinViewController *)self wantsAlternateChoiceSystemButton];
   if (![(BPSSetupOptinViewController *)self wantsToShowWatchHW])
   {
     [(BPSSetupOptinViewController *)self noHWImageOffset];
@@ -575,10 +575,10 @@ LABEL_23:
   }
 
   v51 = v119 * -2.0;
-  if (v47)
+  if (wantsSuggestedChoicePillButton)
   {
     v112 = v9;
-    if (!v46)
+    if (!imageResource)
     {
       [(BPSSetupOptinViewController *)self noHWImageOffset];
       v22 = v52;
@@ -597,7 +597,7 @@ LABEL_23:
     *&v125[48] = v108;
     v56 = MaxY + BPSScreenValueGetRelevantValue(v125);
     [(UIButton *)self->_suggestedChoiceButton setFrame:v54, v56, rect, v109];
-    if (v48 || v49)
+    if (wantsAlternateChoicePillButton || wantsAlternateChoiceSystemButton)
     {
       v57 = (v124 - v113) * 0.5;
       v58 = floorf(v57);
@@ -618,9 +618,9 @@ LABEL_23:
       v59 = *(MEMORY[0x277CBF3A0] + 8);
     }
 
-    if (v48 || v49)
+    if (wantsAlternateChoicePillButton || wantsAlternateChoiceSystemButton)
     {
-      if (v46)
+      if (imageResource)
       {
         [(BPSSetupOptinViewController *)self alternateButtonDetailTextPaddingWithImage];
       }
@@ -820,47 +820,47 @@ LABEL_32:
   }
 
 LABEL_33:
-  v106 = [(BPSSetupPageViewController *)self contentView];
-  [v106 setFrame:{0.0, v51, v9, v71}];
+  contentView = [(BPSSetupPageViewController *)self contentView];
+  [contentView setFrame:{0.0, v51, v9, v71}];
 }
 
-- (void)showOptinConfirmationAlert:(id)a3 optinChoice:(BOOL)a4
+- (void)showOptinConfirmationAlert:(id)alert optinChoice:(BOOL)choice
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%@_ENABLE_ALERT_TITLE", v6];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_BODY", v6];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_CANCEL", v6];
-  v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_OK", v6];
+  alertCopy = alert;
+  alertCopy = [v5 stringWithFormat:@"%@_ENABLE_ALERT_TITLE", alertCopy];
+  alertCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_BODY", alertCopy];
+  alertCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_CANCEL", alertCopy];
+  alertCopy4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_ENABLE_ALERT_OK", alertCopy];
 
   v10 = MEMORY[0x277D75110];
-  v11 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
-  v12 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
-  v33 = v7;
-  v13 = [v11 localizedStringForKey:v7 value:&stru_285406330 table:v12];
-  v14 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
-  v15 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
-  v32 = v8;
-  v16 = [v14 localizedStringForKey:v8 value:&stru_285406330 table:v15];
+  optinLocalizationBundle = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
+  v33 = alertCopy;
+  v13 = [optinLocalizationBundle localizedStringForKey:alertCopy value:&stru_285406330 table:optinLocalizationStringsFile];
+  optinLocalizationBundle2 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile2 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
+  v32 = alertCopy2;
+  v16 = [optinLocalizationBundle2 localizedStringForKey:alertCopy2 value:&stru_285406330 table:optinLocalizationStringsFile2];
   v17 = [v10 alertControllerWithTitle:v13 message:v16 preferredStyle:1];
 
   v18 = MEMORY[0x277D750F8];
-  v19 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
-  v20 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
-  v21 = [v19 localizedStringForKey:v9 value:&stru_285406330 table:v20];
+  optinLocalizationBundle3 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile3 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
+  v21 = [optinLocalizationBundle3 localizedStringForKey:alertCopy3 value:&stru_285406330 table:optinLocalizationStringsFile3];
   v22 = [v18 actionWithTitle:v21 style:1 handler:0];
   [v17 addAction:v22];
 
   v23 = MEMORY[0x277D750F8];
-  v24 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
-  v25 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
-  v26 = [v24 localizedStringForKey:v30 value:&stru_285406330 table:v25];
+  optinLocalizationBundle4 = [(BPSSetupOptinViewController *)self optinLocalizationBundle];
+  optinLocalizationStringsFile4 = [(BPSSetupOptinViewController *)self optinLocalizationStringsFile];
+  v26 = [optinLocalizationBundle4 localizedStringForKey:alertCopy4 value:&stru_285406330 table:optinLocalizationStringsFile4];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __70__BPSSetupOptinViewController_showOptinConfirmationAlert_optinChoice___block_invoke;
   v38[3] = &unk_278D234C0;
   v38[4] = self;
-  v39 = a4;
+  choiceCopy = choice;
   v27 = [v23 actionWithTitle:v26 style:0 handler:v38];
   [v17 addAction:v27];
 
@@ -875,14 +875,14 @@ LABEL_33:
   v34[1] = 3221225472;
   v34[2] = __70__BPSSetupOptinViewController_showOptinConfirmationAlert_optinChoice___block_invoke_61;
   v34[3] = &unk_278D234E8;
-  v36 = a4;
+  choiceCopy2 = choice;
   v34[4] = self;
   v35 = v17;
   v29 = v17;
   [(BPSSetupOptinViewController *)self presentViewController:v29 animated:1 completion:v34];
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
   v6 = *MEMORY[0x277D85DE8];
   v3 = bps_setup_log();

@@ -1,8 +1,8 @@
 @interface SKGInteractionEdge
 + (id)filter;
-+ (id)filterWithDomainIdentifier:(id)a3;
-- (SKGInteractionEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8;
-- (SKGInteractionEdge)initWithSourceNode:(id)a3 targetNode:(id)a4 domainIdentifier:(id)a5 relationship:(id)a6 score:(id)a7;
++ (id)filterWithDomainIdentifier:(id)identifier;
+- (SKGInteractionEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties;
+- (SKGInteractionEdge)initWithSourceNode:(id)node targetNode:(id)targetNode domainIdentifier:(id)identifier relationship:(id)relationship score:(id)score;
 - (id)propertyDictionary;
 @end
 
@@ -15,13 +15,13 @@
   return v2;
 }
 
-+ (id)filterWithDomainIdentifier:(id)a3
++ (id)filterWithDomainIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc(MEMORY[0x277D22C20]);
   v9 = @"domainIdentifier";
-  v10[0] = v3;
+  v10[0] = identifierCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [v4 initWithLabel:@"relationship" domain:100 properties:v5];
 
@@ -30,58 +30,58 @@
   return v6;
 }
 
-- (SKGInteractionEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8
+- (SKGInteractionEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a8;
-  v14 = [v13 objectForKeyedSubscript:@"domainIdentifier"];
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
+  v14 = [propertiesCopy objectForKeyedSubscript:@"domainIdentifier"];
   if (v14)
   {
-    v15 = [v13 objectForKeyedSubscript:@"relationship"];
+    v15 = [propertiesCopy objectForKeyedSubscript:@"relationship"];
     if (v15)
     {
-      v16 = [v13 objectForKeyedSubscript:@"score"];
+      v16 = [propertiesCopy objectForKeyedSubscript:@"score"];
       if (v16)
       {
-        self = [(SKGInteractionEdge *)self initWithSourceNode:v11 targetNode:v12 domainIdentifier:v14 relationship:v15 score:v16];
-        v17 = self;
+        self = [(SKGInteractionEdge *)self initWithSourceNode:nodeCopy targetNode:targetNodeCopy domainIdentifier:v14 relationship:v15 score:v16];
+        selfCopy = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (SKGInteractionEdge)initWithSourceNode:(id)a3 targetNode:(id)a4 domainIdentifier:(id)a5 relationship:(id)a6 score:(id)a7
+- (SKGInteractionEdge)initWithSourceNode:(id)node targetNode:(id)targetNode domainIdentifier:(id)identifier relationship:(id)relationship score:(id)score
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  relationshipCopy = relationship;
+  scoreCopy = score;
   v19.receiver = self;
   v19.super_class = SKGInteractionEdge;
-  v16 = [(SKGEdge *)&v19 initWithSourceNode:a3 targetNode:a4];
+  v16 = [(SKGEdge *)&v19 initWithSourceNode:node targetNode:targetNode];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_domainIdentifier, a5);
-    objc_storeStrong(&v17->_relationship, a6);
-    objc_storeStrong(&v17->_score, a7);
+    objc_storeStrong(&v16->_domainIdentifier, identifier);
+    objc_storeStrong(&v17->_relationship, relationship);
+    objc_storeStrong(&v17->_score, score);
   }
 
   return v17;
@@ -91,14 +91,14 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"relationship";
-  v3 = [(SKGInteractionEdge *)self relationship];
-  v10[0] = v3;
+  relationship = [(SKGInteractionEdge *)self relationship];
+  v10[0] = relationship;
   v9[1] = @"domainIdentifier";
-  v4 = [(SKGInteractionEdge *)self domainIdentifier];
-  v10[1] = v4;
+  domainIdentifier = [(SKGInteractionEdge *)self domainIdentifier];
+  v10[1] = domainIdentifier;
   v9[2] = @"score";
-  v5 = [(SKGInteractionEdge *)self score];
-  v10[2] = v5;
+  score = [(SKGInteractionEdge *)self score];
+  v10[2] = score;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];

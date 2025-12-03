@@ -1,19 +1,19 @@
 @interface QLAsynchronousBlockOperation
-- (QLAsynchronousBlockOperation)initWithBlock:(id)a3;
+- (QLAsynchronousBlockOperation)initWithBlock:(id)block;
 - (void)main;
 @end
 
 @implementation QLAsynchronousBlockOperation
 
-- (QLAsynchronousBlockOperation)initWithBlock:(id)a3
+- (QLAsynchronousBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = QLAsynchronousBlockOperation;
   v5 = [(QLAsynchronousBlockOperation *)&v10 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(blockCopy);
     block = v5->_block;
     v5->_block = v6;
 

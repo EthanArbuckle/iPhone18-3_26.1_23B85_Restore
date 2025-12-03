@@ -1,29 +1,29 @@
 @interface SUSection
 - (BOOL)isDefaultSection;
-- (BOOL)loadFromDictionary:(id)a3 searchField:(id)a4;
+- (BOOL)loadFromDictionary:(id)dictionary searchField:(id)field;
 - (NSArray)itemImages;
 - (NSString)title;
 - (NSURL)url;
 - (SUGradient)backgroundGradient;
 - (SUPageSectionGroup)pageSectionGroup;
-- (SUSection)initWithClientInterface:(id)a3;
-- (SUSection)initWithClientInterface:(id)a3 sectionType:(int64_t)a4 defaultPNGStyle:(int64_t)a5;
+- (SUSection)initWithClientInterface:(id)interface;
+- (SUSection)initWithClientInterface:(id)interface sectionType:(int64_t)type defaultPNGStyle:(int64_t)style;
 - (UIImage)image;
 - (UIImage)moreListImage;
 - (UIImage)selectedImage;
 - (UIImage)selectedMoreListImage;
-- (id)_colorForKey:(id)a3;
-- (id)_sectionButtonsForKey:(id)a3;
+- (id)_colorForKey:(id)key;
+- (id)_sectionButtonsForKey:(id)key;
 - (id)description;
-- (id)imageForSectionButtonWithTag:(int64_t)a3;
-- (id)valueForProperty:(id)a3;
-- (int64_t)_minimumNetworkTypeFromDictionary:(id)a3;
-- (int64_t)_typeForString:(id)a3;
+- (id)imageForSectionButtonWithTag:(int64_t)tag;
+- (id)valueForProperty:(id)property;
+- (int64_t)_minimumNetworkTypeFromDictionary:(id)dictionary;
+- (int64_t)_typeForString:(id)string;
 - (int64_t)defaultPNGStyle;
 - (int64_t)minimumNetworkType;
 - (int64_t)type;
 - (void)dealloc;
-- (void)setSectionButtonImage:(id)a3 forTag:(int64_t)a4;
+- (void)setSectionButtonImage:(id)image forTag:(int64_t)tag;
 @end
 
 @implementation SUSection
@@ -43,20 +43,20 @@
   }
 }
 
-- (SUSection)initWithClientInterface:(id)a3
+- (SUSection)initWithClientInterface:(id)interface
 {
   v6.receiver = self;
   v6.super_class = SUSection;
   v4 = [(SUSection *)&v6 init];
   if (v4)
   {
-    v4->_clientInterface = a3;
+    v4->_clientInterface = interface;
   }
 
   return v4;
 }
 
-- (SUSection)initWithClientInterface:(id)a3 sectionType:(int64_t)a4 defaultPNGStyle:(int64_t)a5
+- (SUSection)initWithClientInterface:(id)interface sectionType:(int64_t)type defaultPNGStyle:(int64_t)style
 {
   v13.receiver = self;
   v13.super_class = SUSection;
@@ -66,12 +66,12 @@
     return v8;
   }
 
-  v8->_clientInterface = a3;
+  v8->_clientInterface = interface;
   dictionary = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8->_dictionary = dictionary;
-  if (a5)
+  if (style)
   {
-    if (a5 != 1)
+    if (style != 1)
     {
       goto LABEL_7;
     }
@@ -92,9 +92,9 @@
 
   [(NSMutableDictionary *)dictionary setObject:v11 forKey:v10];
 LABEL_7:
-  if ((a4 - 1) <= 5)
+  if ((type - 1) <= 5)
   {
-    [(NSMutableDictionary *)v8->_dictionary setObject:off_1E81648E8[a4 - 1] forKey:@"canonical-name"];
+    [(NSMutableDictionary *)v8->_dictionary setObject:off_1E81648E8[type - 1] forKey:@"canonical-name"];
   }
 
   return v8;
@@ -109,18 +109,18 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(SUSection *)self urlBagKey];
+  urlBagKey = [(SUSection *)self urlBagKey];
   v4 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = SUSection;
   v5 = [(SUSection *)&v8 description];
-  v6 = [(SUSection *)self identifier];
-  if (!v3)
+  identifier = [(SUSection *)self identifier];
+  if (!urlBagKey)
   {
-    v3 = [(SUSection *)self url];
+    urlBagKey = [(SUSection *)self url];
   }
 
-  return [v4 stringWithFormat:@"%@: %@: %@", v5, v6, v3];
+  return [v4 stringWithFormat:@"%@: %@: %@", v5, identifier, urlBagKey];
 }
 
 - (SUGradient)backgroundGradient
@@ -143,7 +143,7 @@ LABEL_7:
 - (UIImage)image
 {
   image = self->_image;
-  v3 = [(SUSection *)self _imageBaseName];
+  _imageBaseName = [(SUSection *)self _imageBaseName];
   if (image)
   {
     v4 = 1;
@@ -151,7 +151,7 @@ LABEL_7:
 
   else
   {
-    v4 = v3 == 0;
+    v4 = _imageBaseName == 0;
   }
 
   if (v4)
@@ -160,14 +160,14 @@ LABEL_7:
   }
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.png", v3];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.png", _imageBaseName];
 
   return [v6 imageNamed:v7];
 }
 
-- (id)imageForSectionButtonWithTag:(int64_t)a3
+- (id)imageForSectionButtonWithTag:(int64_t)tag
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:tag];
   v5 = [(NSMutableDictionary *)self->_sectionButtonImages objectForKey:v4];
 
   return v5;
@@ -192,18 +192,18 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 searchField:(id)a4
+- (BOOL)loadFromDictionary:(id)dictionary searchField:(id)field
 {
   v7 = self->_dictionary;
 
-  self->_dictionary = [a3 mutableCopy];
+  self->_dictionary = [dictionary mutableCopy];
   if ([(SUSection *)self identifier]&& ([(SUSection *)self title]|| [(SUSection *)self urlBagKey]|| [(SUSection *)self url]))
   {
-    v8 = [a3 objectForKey:@"search-field"];
+    v8 = [dictionary objectForKey:@"search-field"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a4 copy];
+      v9 = [field copy];
       if (v9)
       {
         v10 = v9;
@@ -220,7 +220,7 @@ LABEL_7:
 
     else
     {
-      [(SUSection *)self setSearchFieldConfiguration:a4];
+      [(SUSection *)self setSearchFieldConfiguration:field];
     }
 
     v11 = 1;
@@ -251,7 +251,7 @@ LABEL_7:
 - (UIImage)moreListImage
 {
   moreListImage = self->_moreListImage;
-  v3 = [(SUSection *)self _imageBaseName];
+  _imageBaseName = [(SUSection *)self _imageBaseName];
   if (moreListImage)
   {
     v4 = 1;
@@ -259,7 +259,7 @@ LABEL_7:
 
   else
   {
-    v4 = v3 == 0;
+    v4 = _imageBaseName == 0;
   }
 
   if (v4)
@@ -268,7 +268,7 @@ LABEL_7:
   }
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MoreList%@.png", v3];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MoreList%@.png", _imageBaseName];
 
   return [v6 imageNamed:v7];
 }
@@ -293,7 +293,7 @@ LABEL_7:
 - (UIImage)selectedImage
 {
   selectedImage = self->_selectedImage;
-  v3 = [(SUSection *)self _imageBaseName];
+  _imageBaseName = [(SUSection *)self _imageBaseName];
   if (selectedImage)
   {
     v4 = 1;
@@ -301,7 +301,7 @@ LABEL_7:
 
   else
   {
-    v4 = v3 == 0;
+    v4 = _imageBaseName == 0;
   }
 
   if (v4)
@@ -310,7 +310,7 @@ LABEL_7:
   }
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Selected.png", v3];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Selected.png", _imageBaseName];
 
   return [v6 imageNamed:v7];
 }
@@ -318,7 +318,7 @@ LABEL_7:
 - (UIImage)selectedMoreListImage
 {
   selectedMoreListImage = self->_selectedMoreListImage;
-  v3 = [(SUSection *)self _imageBaseName];
+  _imageBaseName = [(SUSection *)self _imageBaseName];
   if (selectedMoreListImage)
   {
     v4 = 1;
@@ -326,7 +326,7 @@ LABEL_7:
 
   else
   {
-    v4 = v3 == 0;
+    v4 = _imageBaseName == 0;
   }
 
   if (v4)
@@ -335,17 +335,17 @@ LABEL_7:
   }
 
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MoreList%@Selected.png", v3];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MoreList%@Selected.png", _imageBaseName];
 
   return [v6 imageNamed:v7];
 }
 
-- (void)setSectionButtonImage:(id)a3 forTag:(int64_t)a4
+- (void)setSectionButtonImage:(id)image forTag:(int64_t)tag
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:tag];
   sectionButtonImages = self->_sectionButtonImages;
   v8 = v6;
-  if (a3)
+  if (image)
   {
     if (!sectionButtonImages)
     {
@@ -354,7 +354,7 @@ LABEL_7:
       self->_sectionButtonImages = sectionButtonImages;
     }
 
-    [(NSMutableDictionary *)sectionButtonImages setObject:a3 forKey:v6];
+    [(NSMutableDictionary *)sectionButtonImages setObject:image forKey:v6];
   }
 
   else
@@ -372,10 +372,10 @@ LABEL_7:
     return v3;
   }
 
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
   v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:@"_title"];
 
-  return [v5 localizedStringForKey:v6 value:&stru_1F41B3660 table:0];
+  return [mainBundle localizedStringForKey:v6 value:&stru_1F41B3660 table:0];
 }
 
 - (int64_t)type
@@ -404,16 +404,16 @@ LABEL_7:
   return [v3 URLWithString:v2];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:property];
 
   return v3;
 }
 
-- (id)_colorForKey:(id)a3
+- (id)_colorForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -432,7 +432,7 @@ LABEL_7:
   return v6;
 }
 
-- (int64_t)_minimumNetworkTypeFromDictionary:(id)a3
+- (int64_t)_minimumNetworkTypeFromDictionary:(id)dictionary
 {
   v5 = 0;
   v6 = &v5;
@@ -471,11 +471,11 @@ uint64_t __47__SUSection__minimumNetworkTypeFromDictionary___block_invoke(uint64
   return result;
 }
 
-- (id)_sectionButtonsForKey:(id)a3
+- (id)_sectionButtonsForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:a3];
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(NSMutableDictionary *)self->_dictionary objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -505,7 +505,7 @@ uint64_t __47__SUSection__minimumNetworkTypeFromDictionary___block_invoke(uint64
             v12 = [[SUSectionButton alloc] initWithSectionButtonDictionary:v11];
             v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:{-[SUSectionButton tag](v12, "tag")}];
             [(SUSectionButton *)v12 setImage:[(NSMutableDictionary *)self->_sectionButtonImages objectForKey:v13]];
-            [v5 addObject:v12];
+            [array addObject:v12];
           }
 
           ++v10;
@@ -519,37 +519,37 @@ uint64_t __47__SUSection__minimumNetworkTypeFromDictionary___block_invoke(uint64
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (int64_t)_typeForString:(id)a3
+- (int64_t)_typeForString:(id)string
 {
-  if ([a3 isEqualToString:@"downloads"])
+  if ([string isEqualToString:@"downloads"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"search"])
+  if ([string isEqualToString:@"search"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"updates"])
+  if ([string isEqualToString:@"updates"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"podcasts"])
+  if ([string isEqualToString:@"podcasts"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"iTunesU"])
+  if ([string isEqualToString:@"iTunesU"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"purchases"])
+  if ([string isEqualToString:@"purchases"])
   {
     return 6;
   }

@@ -1,10 +1,10 @@
 @interface INRestaurantReservation
-- (BOOL)isEqual:(id)a3;
-- (INRestaurantReservation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRestaurantReservation)initWithCoder:(id)coder;
 - (INRestaurantReservation)initWithItemReference:(INSpeakableString *)itemReference reservationNumber:(NSString *)reservationNumber bookingTime:(NSDate *)bookingTime reservationStatus:(INReservationStatus)reservationStatus reservationHolderName:(NSString *)reservationHolderName actions:(NSArray *)actions URL:(NSURL *)URL reservationDuration:(INDateComponentsRange *)reservationDuration partySize:(NSNumber *)partySize restaurantLocation:(CLPlacemark *)restaurantLocation;
 - (id)_dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurantReservation
@@ -14,36 +14,36 @@
   v16[3] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = INRestaurantReservation;
-  v3 = [(INReservation *)&v14 _dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  _dictionaryRepresentation = [(INReservation *)&v14 _dictionaryRepresentation];
+  v4 = [_dictionaryRepresentation mutableCopy];
 
   v15[0] = @"reservationDuration";
   reservationDuration = self->_reservationDuration;
-  v6 = reservationDuration;
+  null = reservationDuration;
   if (!reservationDuration)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v6;
+  v16[0] = null;
   v15[1] = @"partySize";
   partySize = self->_partySize;
-  v8 = partySize;
+  null2 = partySize;
   if (!partySize)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v8;
+  v16[1] = null2;
   v15[2] = @"restaurantLocation";
   restaurantLocation = self->_restaurantLocation;
-  v10 = restaurantLocation;
+  null3 = restaurantLocation;
   if (!restaurantLocation)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
   [v4 addEntriesFromDictionary:v11];
 
@@ -83,48 +83,48 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = INRestaurantReservation;
-  v4 = a3;
-  [(INReservation *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INReservation *)&v11 encodeWithCoder:coderCopy];
   reservationDuration = self->_reservationDuration;
   v6 = NSStringFromSelector(sel_reservationDuration);
-  [v4 encodeObject:reservationDuration forKey:{v6, v11.receiver, v11.super_class}];
+  [coderCopy encodeObject:reservationDuration forKey:{v6, v11.receiver, v11.super_class}];
 
   partySize = self->_partySize;
   v8 = NSStringFromSelector(sel_partySize);
-  [v4 encodeObject:partySize forKey:v8];
+  [coderCopy encodeObject:partySize forKey:v8];
 
   restaurantLocation = self->_restaurantLocation;
   v10 = NSStringFromSelector(sel_restaurantLocation);
-  [v4 encodeObject:restaurantLocation forKey:v10];
+  [coderCopy encodeObject:restaurantLocation forKey:v10];
 }
 
-- (INRestaurantReservation)initWithCoder:(id)a3
+- (INRestaurantReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = INRestaurantReservation;
-  v5 = [(INReservation *)&v19 initWithCoder:v4];
+  v5 = [(INReservation *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_reservationDuration);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     reservationDuration = v5->_reservationDuration;
     v5->_reservationDuration = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_partySize);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     partySize = v5->_partySize;
     v5->_partySize = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_restaurantLocation);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     restaurantLocation = v5->_restaurantLocation;
     v5->_restaurantLocation = v16;
   }
@@ -132,10 +132,10 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -143,9 +143,9 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = INRestaurantReservation, [(INReservation *)&v11 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = INRestaurantReservation, [(INReservation *)&v11 isEqual:equalCopy]))
     {
-      v5 = v4;
+      v5 = equalCopy;
       reservationDuration = self->_reservationDuration;
       v9 = 0;
       if (reservationDuration == v5->_reservationDuration || [(INDateComponentsRange *)reservationDuration isEqual:?])

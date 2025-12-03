@@ -1,16 +1,16 @@
 @interface MNGuidanceARInfo
 - ($1AB5FA073B851C12C2339EC22442E995)locationCoordinate;
-- (BOOL)_isInstructionStringOutputEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isInstructionStringOutputEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (GEOPolylineCoordinateRange)locationCoordinateRange;
 - (MNGuidanceARInfo)init;
-- (MNGuidanceARInfo)initWithCoder:(id)a3;
-- (MNGuidanceARInfo)initWithEventID:(id)a3 type:(int)a4 maneuverType:(int)a5 instruction:(id)a6 variableOverrides:(id)a7 arrowLabel:(id)a8 locationCoordinate:(id)a9 maneuverRoadName:(id)a10 heading:(double)a11 stepIndex:(unint64_t)a12;
-- (MNGuidanceARInfo)initWithEventID:(id)a3 type:(int)a4 maneuverType:(int)a5 instruction:(id)a6 variableOverrides:(id)a7 arrowLabel:(id)a8 locationCoordinateRange:(GEOPolylineCoordinateRange)a9 maneuverRoadName:(id)a10 stepIndex:(unint64_t)a11;
+- (MNGuidanceARInfo)initWithCoder:(id)coder;
+- (MNGuidanceARInfo)initWithEventID:(id)d type:(int)type maneuverType:(int)maneuverType instruction:(id)instruction variableOverrides:(id)overrides arrowLabel:(id)label locationCoordinate:(id)coordinate maneuverRoadName:(id)self0 heading:(double)self1 stepIndex:(unint64_t)self2;
+- (MNGuidanceARInfo)initWithEventID:(id)d type:(int)type maneuverType:(int)maneuverType instruction:(id)instruction variableOverrides:(id)overrides arrowLabel:(id)label locationCoordinateRange:(GEOPolylineCoordinateRange)range maneuverRoadName:(id)self0 stepIndex:(unint64_t)self1;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNGuidanceARInfo
@@ -35,43 +35,43 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   guidanceEventID = self->_guidanceEventID;
-  v5 = a3;
-  [v5 encodeObject:guidanceEventID forKey:@"_guidanceEventID"];
-  [v5 encodeInteger:self->_eventType forKey:@"_eventType"];
-  [v5 encodeInteger:self->_maneuverType forKey:@"_maneuverType"];
-  [v5 encodeObject:self->_instructionString forKey:@"_instructionString"];
-  [v5 encodeObject:self->_instruction forKey:@"_instruction"];
-  [v5 encodeObject:self->_variableOverrides forKey:@"_variableOverrides"];
-  [v5 encodeObject:self->_arrowLabel forKey:@"_arrowLabel"];
-  [v5 encodeBytes:&self->_locationCoordinate length:24 forKey:@"_locationCoordinate"];
-  [v5 encodeBytes:&self->_locationCoordinateRange length:16 forKey:@"_locationCoordinateRange"];
-  [v5 encodeObject:self->_maneuverRoadName forKey:@"_maneuverRoadName"];
-  [v5 encodeDouble:@"_heading" forKey:self->_heading];
-  [v5 encodeInteger:self->_stepIndex forKey:@"_stepIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:guidanceEventID forKey:@"_guidanceEventID"];
+  [coderCopy encodeInteger:self->_eventType forKey:@"_eventType"];
+  [coderCopy encodeInteger:self->_maneuverType forKey:@"_maneuverType"];
+  [coderCopy encodeObject:self->_instructionString forKey:@"_instructionString"];
+  [coderCopy encodeObject:self->_instruction forKey:@"_instruction"];
+  [coderCopy encodeObject:self->_variableOverrides forKey:@"_variableOverrides"];
+  [coderCopy encodeObject:self->_arrowLabel forKey:@"_arrowLabel"];
+  [coderCopy encodeBytes:&self->_locationCoordinate length:24 forKey:@"_locationCoordinate"];
+  [coderCopy encodeBytes:&self->_locationCoordinateRange length:16 forKey:@"_locationCoordinateRange"];
+  [coderCopy encodeObject:self->_maneuverRoadName forKey:@"_maneuverRoadName"];
+  [coderCopy encodeDouble:@"_heading" forKey:self->_heading];
+  [coderCopy encodeInteger:self->_stepIndex forKey:@"_stepIndex"];
 }
 
-- (MNGuidanceARInfo)initWithCoder:(id)a3
+- (MNGuidanceARInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = MNGuidanceARInfo;
   v5 = [(MNGuidanceARInfo *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_guidanceEventID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_guidanceEventID"];
     guidanceEventID = v5->_guidanceEventID;
     v5->_guidanceEventID = v6;
 
-    v5->_eventType = [v4 decodeIntegerForKey:@"_eventType"];
-    v5->_maneuverType = [v4 decodeIntegerForKey:@"_maneuverType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_instructionString"];
+    v5->_eventType = [coderCopy decodeIntegerForKey:@"_eventType"];
+    v5->_maneuverType = [coderCopy decodeIntegerForKey:@"_maneuverType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_instructionString"];
     instructionString = v5->_instructionString;
     v5->_instructionString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_instruction"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_instruction"];
     instruction = v5->_instruction;
     v5->_instruction = v10;
 
@@ -79,16 +79,16 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"_variableOverrides"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"_variableOverrides"];
     variableOverrides = v5->_variableOverrides;
     v5->_variableOverrides = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_arrowLabel"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_arrowLabel"];
     arrowLabel = v5->_arrowLabel;
     v5->_arrowLabel = v18;
 
     v28 = 0;
-    v20 = [v4 decodeBytesForKey:@"_locationCoordinate" returnedLength:&v28];
+    v20 = [coderCopy decodeBytesForKey:@"_locationCoordinate" returnedLength:&v28];
     if (v28 && v20)
     {
       if (v28 >= 0x18)
@@ -105,7 +105,7 @@
     }
 
     v28 = 0;
-    v22 = [v4 decodeBytesForKey:@"_locationCoordinateRange" returnedLength:&v28];
+    v22 = [coderCopy decodeBytesForKey:@"_locationCoordinateRange" returnedLength:&v28];
     if (v28 && v22)
     {
       if (v28 >= 0x10)
@@ -121,13 +121,13 @@
       memcpy(&v5->_locationCoordinateRange, v22, v23);
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maneuverRoadName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maneuverRoadName"];
     maneuverRoadName = v5->_maneuverRoadName;
     v5->_maneuverRoadName = v24;
 
-    [v4 decodeDoubleForKey:@"_heading"];
+    [coderCopy decodeDoubleForKey:@"_heading"];
     v5->_heading = v26;
-    v5->_stepIndex = [v4 decodeIntegerForKey:@"_stepIndex"];
+    v5->_stepIndex = [coderCopy decodeIntegerForKey:@"_stepIndex"];
   }
 
   return v5;
@@ -135,19 +135,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MNGuidanceARInfo *)self guidanceEventID];
-  v4 = [v3 hash];
+  guidanceEventID = [(MNGuidanceARInfo *)self guidanceEventID];
+  v4 = [guidanceEventID hash];
 
   v5 = 31 * (31 * v4 + [(MNGuidanceARInfo *)self eventType]);
   v6 = v5 + [(MNGuidanceARInfo *)self maneuverType];
-  v7 = [(MNGuidanceARInfo *)self instructionString];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  instructionString = [(MNGuidanceARInfo *)self instructionString];
+  v8 = [instructionString hash] - v6 + 32 * v6;
 
-  v9 = [(MNGuidanceARInfo *)self instruction];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  instruction = [(MNGuidanceARInfo *)self instruction];
+  v10 = [instruction hash] - v8 + 32 * v8;
 
-  v11 = [(MNGuidanceARInfo *)self arrowLabel];
-  v12 = [v11 hash] - v10 + 32 * v10;
+  arrowLabel = [(MNGuidanceARInfo *)self arrowLabel];
+  v12 = [arrowLabel hash] - v10 + 32 * v10;
 
   [(MNGuidanceARInfo *)self locationCoordinate];
   v14 = (v13 * 1000000.0) - v12 + 32 * v12;
@@ -162,38 +162,38 @@
   return (v22 * 1000000.0) - v21 + 32 * v21 + 0x52DC8CFCE1DDC99FLL;
 }
 
-- (BOOL)_isInstructionStringOutputEqual:(id)a3
+- (BOOL)_isInstructionStringOutputEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(MNGuidanceARInfo *)self instructionString];
-  if (v5)
+  equalCopy = equal;
+  instructionString = [(MNGuidanceARInfo *)self instructionString];
+  if (instructionString)
   {
   }
 
   else
   {
-    v6 = [v4 instructionString];
+    instructionString2 = [equalCopy instructionString];
 
-    if (!v6)
+    if (!instructionString2)
     {
       v15 = 1;
       goto LABEL_5;
     }
   }
 
-  v7 = [(MNGuidanceARInfo *)self instructionString];
-  v8 = [v7 defaultOptions];
+  instructionString3 = [(MNGuidanceARInfo *)self instructionString];
+  defaultOptions = [instructionString3 defaultOptions];
 
-  [v8 setShouldUpdateFormatStrings:1];
-  v9 = [(MNGuidanceARInfo *)self instructionString];
-  v10 = [v9 composedStringWithOptions:v8];
+  [defaultOptions setShouldUpdateFormatStrings:1];
+  instructionString4 = [(MNGuidanceARInfo *)self instructionString];
+  v10 = [instructionString4 composedStringWithOptions:defaultOptions];
 
-  v11 = [v4 instructionString];
-  v12 = [v11 defaultOptions];
+  instructionString5 = [equalCopy instructionString];
+  defaultOptions2 = [instructionString5 defaultOptions];
 
-  [v12 setShouldUpdateFormatStrings:1];
-  v13 = [v4 instructionString];
-  v14 = [v13 composedStringWithOptions:v12];
+  [defaultOptions2 setShouldUpdateFormatStrings:1];
+  instructionString6 = [equalCopy instructionString];
+  v14 = [instructionString6 composedStringWithOptions:defaultOptions2];
 
   v15 = [v10 isEqual:v14];
 LABEL_5:
@@ -201,11 +201,11 @@ LABEL_5:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v104 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_15;
@@ -214,10 +214,10 @@ LABEL_5:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = v5;
-    v9 = [(MNGuidanceARInfo *)self guidanceEventID];
-    v10 = [(MNGuidanceARInfo *)v8 guidanceEventID];
-    if (![v9 isEqual:v10] || (v11 = -[MNGuidanceARInfo eventType](self, "eventType"), v11 != -[MNGuidanceARInfo eventType](v8, "eventType")) || (v12 = -[MNGuidanceARInfo maneuverType](self, "maneuverType"), v12 != -[MNGuidanceARInfo maneuverType](v8, "maneuverType")))
+    v8 = equalCopy;
+    guidanceEventID = [(MNGuidanceARInfo *)self guidanceEventID];
+    guidanceEventID2 = [(MNGuidanceARInfo *)v8 guidanceEventID];
+    if (![guidanceEventID isEqual:guidanceEventID2] || (v11 = -[MNGuidanceARInfo eventType](self, "eventType"), v11 != -[MNGuidanceARInfo eventType](v8, "eventType")) || (v12 = -[MNGuidanceARInfo maneuverType](self, "maneuverType"), v12 != -[MNGuidanceARInfo maneuverType](v8, "maneuverType")))
     {
       v7 = 0;
 LABEL_14:
@@ -225,22 +225,22 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v13 = [(MNGuidanceARInfo *)self instruction];
-    v14 = [(MNGuidanceARInfo *)v8 instruction];
-    v15 = v13;
-    v16 = v14;
-    v17 = v16;
+    instruction = [(MNGuidanceARInfo *)self instruction];
+    instruction2 = [(MNGuidanceARInfo *)v8 instruction];
+    v15 = instruction;
+    v16 = instruction2;
+    arrowLabel2 = v16;
     if (!(v15 | v16))
     {
 LABEL_9:
       v92 = v15;
-      v18 = v17;
-      v19 = [(MNGuidanceARInfo *)self arrowLabel];
-      if (v19 || ([(MNGuidanceARInfo *)v8 arrowLabel], (v98 = objc_claimAutoreleasedReturnValue()) != 0))
+      v18 = arrowLabel2;
+      arrowLabel = [(MNGuidanceARInfo *)self arrowLabel];
+      if (arrowLabel || ([(MNGuidanceARInfo *)v8 arrowLabel], (v98 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v17 = [(MNGuidanceARInfo *)self arrowLabel];
-        v3 = [(MNGuidanceARInfo *)v8 arrowLabel];
-        if (![v17 isEqual:v3])
+        arrowLabel2 = [(MNGuidanceARInfo *)self arrowLabel];
+        arrowLabel3 = [(MNGuidanceARInfo *)v8 arrowLabel];
+        if (![arrowLabel2 isEqual:arrowLabel3])
         {
           v7 = 0;
           goto LABEL_48;
@@ -266,8 +266,8 @@ LABEL_9:
         if ((v20 & 1) == 0)
         {
 LABEL_49:
-          v17 = v18;
-          if (!v19)
+          arrowLabel2 = v18;
+          if (!arrowLabel)
           {
           }
 
@@ -304,10 +304,10 @@ LABEL_48:
       goto LABEL_85;
     }
 
-    v23 = [v15 formatStrings];
-    v24 = [v17 formatStrings];
-    v25 = v23;
-    v26 = v24;
+    formatStrings = [v15 formatStrings];
+    formatStrings2 = [arrowLabel2 formatStrings];
+    v25 = formatStrings;
+    v26 = formatStrings2;
     v27 = v26;
     if (v25 | v26)
     {
@@ -319,7 +319,7 @@ LABEL_39:
       }
 
       v98 = v27;
-      v77 = v17;
+      v77 = arrowLabel2;
       v93 = v15;
       v101 = 0u;
       v102 = 0u;
@@ -354,7 +354,7 @@ LABEL_39:
 
                 v27 = v98;
                 v15 = v93;
-                v17 = v77;
+                arrowLabel2 = v77;
                 v25 = v84;
                 goto LABEL_39;
               }
@@ -374,7 +374,7 @@ LABEL_39:
       }
 
       v15 = v93;
-      v17 = v77;
+      arrowLabel2 = v77;
       v25 = v84;
     }
 
@@ -383,10 +383,10 @@ LABEL_39:
       v98 = v26;
     }
 
-    v28 = [v15 separators];
-    v29 = [v17 separators];
-    v30 = v28;
-    v31 = v29;
+    separators = [v15 separators];
+    separators2 = [arrowLabel2 separators];
+    v30 = separators;
+    v31 = separators2;
     v32 = v30;
     v96 = v31;
     if (v30 | v31)
@@ -408,7 +408,7 @@ LABEL_85:
 
       v82 = v32;
       v85 = v25;
-      v78 = v17;
+      v78 = arrowLabel2;
       v94 = v15;
       v101 = 0u;
       v102 = 0u;
@@ -442,7 +442,7 @@ LABEL_85:
 
                 v68 = v96;
                 v15 = v94;
-                v17 = v78;
+                arrowLabel2 = v78;
                 v32 = v82;
                 v25 = v85;
                 goto LABEL_68;
@@ -464,7 +464,7 @@ LABEL_85:
       }
 
       v15 = v94;
-      v17 = v78;
+      arrowLabel2 = v78;
       v25 = v85;
     }
 
@@ -473,26 +473,26 @@ LABEL_85:
       v82 = v30;
     }
 
-    v33 = [v15 formatTokens];
-    v34 = [v17 formatTokens];
-    v35 = v33;
-    v36 = v34;
+    formatTokens = [v15 formatTokens];
+    formatTokens2 = [arrowLabel2 formatTokens];
+    v35 = formatTokens;
+    v36 = formatTokens2;
     v37 = v36;
     if (!(v35 | v36))
     {
       v81 = v35;
       v83 = v25;
 LABEL_23:
-      v3 = [v15 alternativeString];
-      v38 = [v17 alternativeString];
-      if (!(v3 | v38))
+      arrowLabel3 = [v15 alternativeString];
+      alternativeString = [arrowLabel2 alternativeString];
+      if (!(arrowLabel3 | alternativeString))
       {
 
         goto LABEL_9;
       }
 
-      v76 = v38;
-      objc = [v3 isEqual:v38];
+      v76 = alternativeString;
+      objc = [arrowLabel3 isEqual:alternativeString];
 
       if (objc)
       {
@@ -515,7 +515,7 @@ LABEL_87:
       if (v59)
       {
         v83 = v25;
-        v79 = v17;
+        v79 = arrowLabel2;
         v95 = v15;
         v101 = 0u;
         v102 = 0u;
@@ -545,7 +545,7 @@ LABEL_87:
               {
 
                 v15 = v95;
-                v17 = v79;
+                arrowLabel2 = v79;
                 v25 = v83;
                 goto LABEL_82;
               }
@@ -565,7 +565,7 @@ LABEL_87:
         }
 
         v15 = v95;
-        v17 = v79;
+        arrowLabel2 = v79;
         goto LABEL_23;
       }
     }
@@ -843,21 +843,21 @@ LABEL_70:
   eventType = self->_eventType;
   if (eventType >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", eventType];
+    eventType = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", eventType];
   }
 
   else
   {
-    v4 = off_1E842F4B8[eventType];
+    eventType = off_1E842F4B8[eventType];
   }
 
-  v5 = [(__CFString *)v4 stringByReplacingOccurrencesOfString:@"AR_GUIDANCE_TYPE_" withString:&stru_1F4EB6B70];
-  v6 = [v5 capitalizedString];
+  v5 = [(__CFString *)eventType stringByReplacingOccurrencesOfString:@"AR_GUIDANCE_TYPE_" withString:&stru_1F4EB6B70];
+  capitalizedString = [v5 capitalizedString];
 
   v7 = [(GEOComposedString *)self->_instructionString optionsWithArgumentHandler:&__block_literal_global_12470];
   [v7 setCreateAttributedString:1];
   v8 = [(GEOComposedString *)self->_instructionString stringWithOptions:v7];
-  v9 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%@] %@", v6, v8];
+  v9 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%@] %@", capitalizedString, v8];
   v10 = v9;
   if (self->_arrowLabel)
   {
@@ -1311,60 +1311,60 @@ id __31__MNGuidanceARInfo_description__block_invoke_2(uint64_t a1, uint64_t a2, 
   return v10;
 }
 
-- (MNGuidanceARInfo)initWithEventID:(id)a3 type:(int)a4 maneuverType:(int)a5 instruction:(id)a6 variableOverrides:(id)a7 arrowLabel:(id)a8 locationCoordinateRange:(GEOPolylineCoordinateRange)a9 maneuverRoadName:(id)a10 stepIndex:(unint64_t)a11
+- (MNGuidanceARInfo)initWithEventID:(id)d type:(int)type maneuverType:(int)maneuverType instruction:(id)instruction variableOverrides:(id)overrides arrowLabel:(id)label locationCoordinateRange:(GEOPolylineCoordinateRange)range maneuverRoadName:(id)self0 stepIndex:(unint64_t)self1
 {
-  v16 = a3;
-  v17 = a6;
-  v25 = a7;
-  v18 = a8;
-  v19 = a10;
+  dCopy = d;
+  instructionCopy = instruction;
+  overridesCopy = overrides;
+  labelCopy = label;
+  nameCopy = name;
   v20 = [(MNGuidanceARInfo *)self init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_guidanceEventID, a3);
-    v21->_eventType = a4;
-    v21->_maneuverType = a5;
-    objc_storeStrong(&v21->_instruction, a6);
-    objc_storeStrong(&v21->_variableOverrides, a7);
-    objc_storeStrong(&v21->_arrowLabel, a8);
-    v21->_locationCoordinateRange = a9;
-    objc_storeStrong(&v21->_maneuverRoadName, a10);
-    v21->_stepIndex = a11;
+    objc_storeStrong(&v20->_guidanceEventID, d);
+    v21->_eventType = type;
+    v21->_maneuverType = maneuverType;
+    objc_storeStrong(&v21->_instruction, instruction);
+    objc_storeStrong(&v21->_variableOverrides, overrides);
+    objc_storeStrong(&v21->_arrowLabel, label);
+    v21->_locationCoordinateRange = range;
+    objc_storeStrong(&v21->_maneuverRoadName, name);
+    v21->_stepIndex = index;
   }
 
   return v21;
 }
 
-- (MNGuidanceARInfo)initWithEventID:(id)a3 type:(int)a4 maneuverType:(int)a5 instruction:(id)a6 variableOverrides:(id)a7 arrowLabel:(id)a8 locationCoordinate:(id)a9 maneuverRoadName:(id)a10 heading:(double)a11 stepIndex:(unint64_t)a12
+- (MNGuidanceARInfo)initWithEventID:(id)d type:(int)type maneuverType:(int)maneuverType instruction:(id)instruction variableOverrides:(id)overrides arrowLabel:(id)label locationCoordinate:(id)coordinate maneuverRoadName:(id)self0 heading:(double)self1 stepIndex:(unint64_t)self2
 {
-  var2 = a9.var2;
-  var1 = a9.var1;
-  var0 = a9.var0;
-  v32 = a3;
-  v31 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
+  var2 = coordinate.var2;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  dCopy = d;
+  instructionCopy = instruction;
+  overridesCopy = overrides;
+  labelCopy = label;
+  nameCopy = name;
   v26 = [(MNGuidanceARInfo *)self init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_guidanceEventID, a3);
-    v27->_eventType = a4;
-    v27->_maneuverType = a5;
-    objc_storeStrong(&v27->_instruction, a6);
-    v28 = [v23 objectForKeyedSubscript:@"{Destination}"];
+    objc_storeStrong(&v26->_guidanceEventID, d);
+    v27->_eventType = type;
+    v27->_maneuverType = maneuverType;
+    objc_storeStrong(&v27->_instruction, instruction);
+    v28 = [overridesCopy objectForKeyedSubscript:@"{Destination}"];
     variableOverrides = v27->_variableOverrides;
     v27->_variableOverrides = v28;
 
-    objc_storeStrong(&v27->_arrowLabel, a8);
+    objc_storeStrong(&v27->_arrowLabel, label);
     v27->_locationCoordinate.latitude = var0;
     v27->_locationCoordinate.longitude = var1;
     v27->_locationCoordinate.altitude = var2;
-    objc_storeStrong(&v27->_maneuverRoadName, a10);
-    v27->_heading = a11;
-    v27->_stepIndex = a12;
+    objc_storeStrong(&v27->_maneuverRoadName, name);
+    v27->_heading = heading;
+    v27->_stepIndex = index;
   }
 
   return v27;

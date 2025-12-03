@@ -1,16 +1,16 @@
 @interface WFContentCollectionTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (TLKSimpleRowView)rowView;
 - (UIImageView)checkmarkImageView;
 - (WFContentCollectionTableView)tableView;
-- (WFContentCollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFContentCollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)preferredSeparatorInsetForCheckmark;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (unint64_t)tlkCornerRoundingStyleForWFRoundingStyle:(unint64_t)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (unint64_t)tlkCornerRoundingStyleForWFRoundingStyle:(unint64_t)style;
 - (void)layoutSubviews;
-- (void)setCheckmarkStyle:(unint64_t)a3;
-- (void)setFillVisualStylingProvider:(id)a3;
-- (void)setListItem:(id)a3;
+- (void)setCheckmarkStyle:(unint64_t)style;
+- (void)setFillVisualStylingProvider:(id)provider;
+- (void)setListItem:(id)item;
 @end
 
 @implementation WFContentCollectionTableViewCell
@@ -36,7 +36,7 @@
   return WeakRetained;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self];
   v5 = [MEMORY[0x277D75868] effectWithPreview:v4];
@@ -45,28 +45,28 @@
   return v6;
 }
 
-- (void)setFillVisualStylingProvider:(id)a3
+- (void)setFillVisualStylingProvider:(id)provider
 {
-  objc_storeStrong(&self->_fillVisualStylingProvider, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_fillVisualStylingProvider, provider);
+  providerCopy = provider;
   v11 = [MEMORY[0x277D75210] effectWithStyle:1200];
   v6 = [MEMORY[0x277D75D00] effectForBlurEffect:v11 style:4];
   v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v6];
-  v8 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
 
-  v9 = [v8 colorWithAlphaComponent:0.4];
-  v10 = [v7 contentView];
-  [v10 setBackgroundColor:v9];
+  v9 = [blackColor colorWithAlphaComponent:0.4];
+  contentView = [v7 contentView];
+  [contentView setBackgroundColor:v9];
 
   [(WFContentCollectionTableViewCell *)self setSelectedBackgroundView:v7];
 }
 
-- (void)setCheckmarkStyle:(unint64_t)a3
+- (void)setCheckmarkStyle:(unint64_t)style
 {
-  self->_checkmarkStyle = a3;
-  v5 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-  v6 = v5;
-  if (a3)
+  self->_checkmarkStyle = style;
+  checkmarkImageView = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+  v6 = checkmarkImageView;
+  if (style)
   {
 
     if (!v6)
@@ -76,8 +76,8 @@
       v8 = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_19770];
       [v7 setTintColor:v8];
 
-      v9 = [(WFContentCollectionTableViewCell *)self contentView];
-      [v9 addSubview:v7];
+      contentView = [(WFContentCollectionTableViewCell *)self contentView];
+      [contentView addSubview:v7];
 
       [(WFContentCollectionTableViewCell *)self setCheckmarkImageView:v7];
       [(WFContentCollectionTableViewCell *)self setNeedsLayout];
@@ -85,7 +85,7 @@
     }
 
     v10 = @"circle";
-    if (a3 == 2)
+    if (style == 2)
     {
       v10 = @"checkmark.circle.fill";
     }
@@ -94,13 +94,13 @@
     v12 = *MEMORY[0x277D76918];
     v13 = v10;
     v14 = [v11 configurationWithTextStyle:v12 scale:3];
-    v15 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
-    v19 = [v14 configurationByApplyingConfiguration:v15];
+    configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+    v19 = [v14 configurationByApplyingConfiguration:configurationPreferringMulticolor];
 
     v16 = [MEMORY[0x277D755B8] systemImageNamed:v13 withConfiguration:v19];
 
-    v17 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v17 setImage:v16];
+    checkmarkImageView2 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView2 setImage:v16];
 
     [(WFContentCollectionTableViewCell *)self setSelectionStyle:0];
   }
@@ -110,8 +110,8 @@
 
     if (v6)
     {
-      v18 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-      [v18 removeFromSuperview];
+      checkmarkImageView3 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+      [checkmarkImageView3 removeFromSuperview];
 
       [(WFContentCollectionTableViewCell *)self setCheckmarkImageView:0];
       [(WFContentCollectionTableViewCell *)self setNeedsLayout];
@@ -141,25 +141,25 @@ id __54__WFContentCollectionTableViewCell_setCheckmarkStyle___block_invoke(uint6
   return v4;
 }
 
-- (unint64_t)tlkCornerRoundingStyleForWFRoundingStyle:(unint64_t)a3
+- (unint64_t)tlkCornerRoundingStyleForWFRoundingStyle:(unint64_t)style
 {
-  if (a3 - 1 >= 3)
+  if (style - 1 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
-- (void)setListItem:(id)a3
+- (void)setListItem:(id)item
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_listItem, a3);
-  v6 = v5;
+  itemCopy = item;
+  objc_storeStrong(&self->_listItem, item);
+  v6 = itemCopy;
   if (!v6)
   {
     goto LABEL_13;
@@ -173,23 +173,23 @@ id __54__WFContentCollectionTableViewCell_setCheckmarkStyle___block_invoke(uint6
 
   if (![MEMORY[0x277CBEBD0] universalPreviewsEnabled])
   {
-    v10 = [(WFContentCollectionTableViewCell *)self rowView];
-    v11 = [v6 title];
-    v12 = [v11 length];
+    rowView = [(WFContentCollectionTableViewCell *)self rowView];
+    title = [v6 title];
+    v12 = [title length];
 
     if (v12)
     {
       TLKFormattedTextClass = getTLKFormattedTextClass();
-      v14 = [v6 title];
-      v15 = [(objc_class *)TLKFormattedTextClass formattedTextWithString:v14];
+      title2 = [v6 title];
+      v15 = [(objc_class *)TLKFormattedTextClass formattedTextWithString:title2];
 
       [v15 setIsBold:1];
-      v16 = [(WFContentCollectionTableViewCell *)self displayConfiguration];
-      v17 = [v16 titleLineLimit];
+      displayConfiguration = [(WFContentCollectionTableViewCell *)self displayConfiguration];
+      titleLineLimit = [displayConfiguration titleLineLimit];
 
-      if (v17)
+      if (titleLineLimit)
       {
-        [v15 setMaxLines:{objc_msgSend(v17, "unsignedIntegerValue")}];
+        [v15 setMaxLines:{objc_msgSend(titleLineLimit, "unsignedIntegerValue")}];
       }
 
       getTLKRichTextClass();
@@ -198,17 +198,17 @@ id __54__WFContentCollectionTableViewCell_setCheckmarkStyle___block_invoke(uint6
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
       [v18 setFormattedTextItems:v19];
 
-      [v10 setLeadingTitle:v18];
+      [rowView setLeadingTitle:v18];
       [(WFContentCollectionTableViewCell *)self setPrefersSeparatorInsetForImage:0];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __48__WFContentCollectionTableViewCell_setListItem___block_invoke_2;
       v21[3] = &unk_279EE8DF8;
       v22 = v6;
-      v23 = v10;
-      v24 = self;
+      v23 = rowView;
+      selfCopy = self;
       v9 = v6;
-      v20 = v10;
+      v20 = rowView;
       [v9 prepareForDisplayWithCompletionHandler:v21];
 
       goto LABEL_11;
@@ -218,12 +218,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [(WFContentCollectionTableViewCell *)self previewView];
+  previewView = [(WFContentCollectionTableViewCell *)self previewView];
 
-  if (v7)
+  if (previewView)
   {
-    v8 = [(WFContentCollectionTableViewCell *)self previewView];
-    [v8 removeFromSuperview];
+    previewView2 = [(WFContentCollectionTableViewCell *)self previewView];
+    [previewView2 removeFromSuperview];
   }
 
   v25[0] = MEMORY[0x277D85DD0];
@@ -231,7 +231,7 @@ LABEL_13:
   v25[2] = __48__WFContentCollectionTableViewCell_setListItem___block_invoke;
   v25[3] = &unk_279EE8D58;
   v26 = v6;
-  v27 = self;
+  selfCopy2 = self;
   v9 = v6;
   [v9 prepareForDisplayWithCompletionHandler:v25];
 
@@ -432,10 +432,10 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
   v40.receiver = self;
   v40.super_class = WFContentCollectionTableViewCell;
   [(WFContentCollectionTableViewCell *)&v40 layoutSubviews];
-  v3 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+  checkmarkImageView = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
 
   v4 = 0.0;
-  if (v3)
+  if (checkmarkImageView)
   {
     if ([MEMORY[0x277CBEBD0] universalPreviewsEnabled])
     {
@@ -450,37 +450,37 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
     v6 = v5;
     if ([(WFContentCollectionTableViewCell *)self effectiveUserInterfaceLayoutDirection])
     {
-      v7 = [(WFContentCollectionTableViewCell *)self contentView];
-      [v7 bounds];
+      contentView = [(WFContentCollectionTableViewCell *)self contentView];
+      [contentView bounds];
       v9 = v8 - v5;
-      v10 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-      [v10 intrinsicContentSize];
+      checkmarkImageView2 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+      [checkmarkImageView2 intrinsicContentSize];
       v6 = v9 - v11;
     }
 
-    v12 = [(WFContentCollectionTableViewCell *)self contentView];
-    [v12 bounds];
-    v13 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v13 intrinsicContentSize];
-    v14 = [(WFContentCollectionTableViewCell *)self traitCollection];
-    [v14 displayScale];
+    contentView2 = [(WFContentCollectionTableViewCell *)self contentView];
+    [contentView2 bounds];
+    checkmarkImageView3 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView3 intrinsicContentSize];
+    traitCollection = [(WFContentCollectionTableViewCell *)self traitCollection];
+    [traitCollection displayScale];
     BSFloatRoundForScale();
     v16 = v15;
-    v17 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v17 intrinsicContentSize];
+    checkmarkImageView4 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView4 intrinsicContentSize];
     v19 = v18;
-    v20 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v20 intrinsicContentSize];
+    checkmarkImageView5 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView5 intrinsicContentSize];
     v22 = v21;
-    v23 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v23 setFrame:{v6, v16, v19, v22}];
+    checkmarkImageView6 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView6 setFrame:{v6, v16, v19, v22}];
 
-    LODWORD(v12) = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
-    v24 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v24 frame];
+    LODWORD(contentView2) = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+    checkmarkImageView7 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView7 frame];
     v26 = v5 + v25;
 
-    if (v12)
+    if (contentView2)
     {
       v4 = v26 + -10.0;
     }
@@ -491,7 +491,7 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
     }
   }
 
-  v27 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+  universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
   if ([(WFContentCollectionTableViewCell *)self effectiveUserInterfaceLayoutDirection])
   {
     x = 0.0;
@@ -502,15 +502,15 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
     x = v4;
   }
 
-  v29 = [(WFContentCollectionTableViewCell *)self contentView];
-  [v29 bounds];
+  contentView3 = [(WFContentCollectionTableViewCell *)self contentView];
+  [contentView3 bounds];
   width = v30 - v4;
-  v32 = [(WFContentCollectionTableViewCell *)self contentView];
-  [v32 bounds];
+  contentView4 = [(WFContentCollectionTableViewCell *)self contentView];
+  [contentView4 bounds];
   height = v33;
-  if (v27)
+  if (universalPreviewsEnabled)
   {
-    v35 = [(WFContentCollectionTableViewCell *)self previewView];
+    previewView = [(WFContentCollectionTableViewCell *)self previewView];
     y = 0.0;
   }
 
@@ -524,23 +524,23 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
     y = v41.origin.y;
     width = v41.size.width;
     height = v41.size.height;
-    v35 = [(WFContentCollectionTableViewCell *)self rowView];
+    previewView = [(WFContentCollectionTableViewCell *)self rowView];
   }
 
-  [v35 setFrame:{x, y, width, height}];
+  [previewView setFrame:{x, y, width, height}];
 }
 
 - (double)preferredSeparatorInsetForCheckmark
 {
-  v3 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
-  v4 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-  v5 = v4;
-  if (v3)
+  universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+  checkmarkImageView = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+  v5 = checkmarkImageView;
+  if (universalPreviewsEnabled)
   {
-    if (v4)
+    if (checkmarkImageView)
     {
-      v6 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-      [v6 intrinsicContentSize];
+      checkmarkImageView2 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+      [checkmarkImageView2 intrinsicContentSize];
       v8 = v7 + 10.0;
     }
 
@@ -552,10 +552,10 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
 
   else
   {
-    if (v4)
+    if (checkmarkImageView)
     {
-      v9 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-      [v9 intrinsicContentSize];
+      checkmarkImageView3 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+      [checkmarkImageView3 intrinsicContentSize];
       v11 = v10 + 16.0 + -8.0;
     }
 
@@ -570,19 +570,19 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v5 = [(WFContentCollectionTableViewCell *)self contentView];
-  [v5 bounds];
+  height = fits.height;
+  contentView = [(WFContentCollectionTableViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
 
-  v8 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+  checkmarkImageView = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
 
-  if (v8)
+  if (checkmarkImageView)
   {
-    v9 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
-    [v9 intrinsicContentSize];
+    checkmarkImageView2 = [(WFContentCollectionTableViewCell *)self checkmarkImageView];
+    [checkmarkImageView2 intrinsicContentSize];
     v7 = v7 - (v10 + 16.0);
   }
 
@@ -616,22 +616,22 @@ void __48__WFContentCollectionTableViewCell_setListItem___block_invoke_6(uint64_
   return result;
 }
 
-- (WFContentCollectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFContentCollectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = WFContentCollectionTableViewCell;
-  v4 = [(WFContentCollectionTableViewCell *)&v11 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(WFContentCollectionTableViewCell *)&v11 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(WFContentCollectionTableViewCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFContentCollectionTableViewCell *)v4 setBackgroundColor:clearColor];
 
     [(WFContentCollectionTableViewCell *)v4 setCheckmarkStyle:0];
     if (([MEMORY[0x277CBEBD0] universalPreviewsEnabled] & 1) == 0)
     {
       v6 = objc_alloc_init(WFTLKSimpleRowView);
-      v7 = [(WFContentCollectionTableViewCell *)v4 contentView];
-      [v7 addSubview:v6];
+      contentView = [(WFContentCollectionTableViewCell *)v4 contentView];
+      [contentView addSubview:v6];
 
       objc_storeWeak(&v4->_rowView, v6);
     }

@@ -1,31 +1,31 @@
 @interface CLMiLoConnectionSubscriptionAdapter
-- (CLMiLoConnectionSubscriptionAdapter)initWithMiLoConnectionSubscription:(void *)a3;
-- (void)onMiLoConnectionStatusEventUpdate:(id)a3;
-- (void)onMiLoDebugResponse:(id)a3;
-- (void)onMiLoGenericEvent:(id)a3;
-- (void)onMiLoObservationMetaInfo:(id)a3;
-- (void)onMiLoPredictionEventUpdate:(id)a3;
-- (void)onMiLoServiceEventUpdate:(id)a3;
+- (CLMiLoConnectionSubscriptionAdapter)initWithMiLoConnectionSubscription:(void *)subscription;
+- (void)onMiLoConnectionStatusEventUpdate:(id)update;
+- (void)onMiLoDebugResponse:(id)response;
+- (void)onMiLoGenericEvent:(id)event;
+- (void)onMiLoObservationMetaInfo:(id)info;
+- (void)onMiLoPredictionEventUpdate:(id)update;
+- (void)onMiLoServiceEventUpdate:(id)update;
 @end
 
 @implementation CLMiLoConnectionSubscriptionAdapter
 
-- (CLMiLoConnectionSubscriptionAdapter)initWithMiLoConnectionSubscription:(void *)a3
+- (CLMiLoConnectionSubscriptionAdapter)initWithMiLoConnectionSubscription:(void *)subscription
 {
   v5.receiver = self;
   v5.super_class = CLMiLoConnectionSubscriptionAdapter;
   result = [(CLMiLoConnectionSubscriptionAdapter *)&v5 init];
   if (result)
   {
-    result->_subscription = a3;
+    result->_subscription = subscription;
   }
 
   return result;
 }
 
-- (void)onMiLoServiceEventUpdate:(id)a3
+- (void)onMiLoServiceEventUpdate:(id)update
 {
-  v4 = sub_1005DE15C(a3);
+  v4 = sub_1005DE15C(update);
   if (v4)
   {
     v5 = v4;
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)onMiLoPredictionEventUpdate:(id)a3
+- (void)onMiLoPredictionEventUpdate:(id)update
 {
-  v4 = sub_1005DEAA8(a3);
+  v4 = sub_1005DEAA8(update);
   if (v4)
   {
     v5 = v4;
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)onMiLoDebugResponse:(id)a3
+- (void)onMiLoDebugResponse:(id)response
 {
-  v4 = sub_1005DEC78(a3);
+  v4 = sub_1005DEC78(response);
   if (v4)
   {
     v5 = v4;
@@ -101,9 +101,9 @@
   }
 }
 
-- (void)onMiLoConnectionStatusEventUpdate:(id)a3
+- (void)onMiLoConnectionStatusEventUpdate:(id)update
 {
-  v4 = sub_1005DEEFC(a3);
+  v4 = sub_1005DEEFC(update);
   if (v4)
   {
     v5 = v4;
@@ -126,9 +126,9 @@
   }
 }
 
-- (void)onMiLoObservationMetaInfo:(id)a3
+- (void)onMiLoObservationMetaInfo:(id)info
 {
-  v4 = sub_1005DF124(a3);
+  v4 = sub_1005DF124(info);
   if (v4)
   {
     v5 = v4;
@@ -154,9 +154,9 @@
   }
 }
 
-- (void)onMiLoGenericEvent:(id)a3
+- (void)onMiLoGenericEvent:(id)event
 {
-  v4 = sub_1005DF440(a3);
+  v4 = sub_1005DF440(event);
   if (v4)
   {
     v5 = v4;

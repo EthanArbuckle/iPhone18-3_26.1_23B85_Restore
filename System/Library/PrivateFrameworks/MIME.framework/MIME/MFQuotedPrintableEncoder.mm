@@ -1,18 +1,18 @@
 @interface MFQuotedPrintableEncoder
-+ (unint64_t)requiredSizeToEncodeHeaderBytes:(const char *)a3 length:(unint64_t)a4;
-- (int64_t)appendData:(id)a3;
++ (unint64_t)requiredSizeToEncodeHeaderBytes:(const char *)bytes length:(unint64_t)length;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation MFQuotedPrintableEncoder
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v25 = v4;
-  v5 = [v25 bytes];
-  v6 = [v4 length];
+  dataCopy = data;
+  v25 = dataCopy;
+  bytes = [v25 bytes];
+  v6 = [dataCopy length];
   memset(__b, 170, sizeof(__b));
   if (v6 <= 0)
   {
@@ -20,12 +20,12 @@
   }
 
   v7 = 0;
-  v26 = &v5[v6];
+  v26 = &bytes[v6];
   do
   {
     self->_lastWasNewLine = 0;
     forTextPart = self->_forTextPart;
-    if (forTextPart && (lastHorizontalWhitespace = self->_lastHorizontalWhitespace) != 0 && *v5 == 10)
+    if (forTextPart && (lastHorizontalWhitespace = self->_lastHorizontalWhitespace) != 0 && *bytes == 10)
     {
       v10 = &__b[v7];
       *v10 = 61;
@@ -34,10 +34,10 @@
       v10[2] = kEncodeHexTable[lastHorizontalWhitespace & 0xF];
       self->_line += 3;
       self->_lastHorizontalWhitespace = 0;
-      --v5;
+      --bytes;
     }
 
-    else if (self->_forHeader || (v11 = self->_matchedFrom, kFromSpace[v11] != *v5))
+    else if (self->_forHeader || (v11 = self->_matchedFrom, kFromSpace[v11] != *bytes))
     {
       if (self->_forTextPart && self->_lastHorizontalWhitespace)
       {
@@ -56,8 +56,8 @@
         self->_matchedFrom = 0;
       }
 
-      v4 = v25;
-      v16 = *v5;
+      dataCopy = v25;
+      v16 = *bytes;
       if (v16 != 61 && (v16 - 127) >= 0xFFFFFFA2 && (!self->_forHeader || (v16 - 40) > 0x37 || ((1 << (v16 - 40)) & 0x80000001800003) == 0))
       {
         goto LABEL_34;
@@ -81,7 +81,7 @@
           v17 = &__b[v7];
           *v17 = 13;
           v7 += 2;
-          v17[1] = *v5;
+          v17[1] = *bytes;
           self->_line = 0;
           self->_lastWasNewLine = 1;
           break;
@@ -99,9 +99,9 @@ LABEL_34:
           {
             v19 = &__b[v7];
             *v19 = 61;
-            v19[1] = kEncodeHexTable[*v5 >> 4];
+            v19[1] = kEncodeHexTable[*bytes >> 4];
             v7 += 3;
-            v19[2] = kEncodeHexTable[*v5 & 0xF];
+            v19[2] = kEncodeHexTable[*bytes & 0xF];
             v18 = self->_line + 3;
           }
 
@@ -141,7 +141,7 @@ LABEL_38:
         memcpy(&__b[v7], "=46rom ", v13);
         v7 += v13;
         self->_line += v13;
-        v4 = v25;
+        dataCopy = v25;
       }
     }
 
@@ -171,10 +171,10 @@ LABEL_38:
       v7 = 0;
     }
 
-    ++v5;
+    ++bytes;
   }
 
-  while (v5 < v26);
+  while (bytes < v26);
   if (v7)
   {
     v22 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:__b length:v7 freeWhenDone:0];
@@ -256,18 +256,18 @@ LABEL_53:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (unint64_t)requiredSizeToEncodeHeaderBytes:(const char *)a3 length:(unint64_t)a4
++ (unint64_t)requiredSizeToEncodeHeaderBytes:(const char *)bytes length:(unint64_t)length
 {
-  if (a4 < 1)
+  if (length < 1)
   {
     return 0;
   }
 
   result = 0;
-  v5 = &a3[a4];
+  v5 = &bytes[length];
   do
   {
-    v7 = *a3++;
+    v7 = *bytes++;
     v6 = v7;
     if ((v7 - 32) < 0x5F && v6 != 61 || v6 == 10)
     {
@@ -280,7 +280,7 @@ LABEL_53:
     }
   }
 
-  while (a3 < v5);
+  while (bytes < v5);
   return result;
 }
 

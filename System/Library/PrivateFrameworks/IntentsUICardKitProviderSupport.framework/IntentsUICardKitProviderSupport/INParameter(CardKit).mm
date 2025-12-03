@@ -8,24 +8,24 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 parameterClass];
-  if (v5 == [v4 parameterClass])
+  parameterClass = [self parameterClass];
+  if (parameterClass == [v4 parameterClass])
   {
-    v7 = [v4 parameterKeyPath];
-    v8 = [v7 length];
+    parameterKeyPath = [v4 parameterKeyPath];
+    v8 = [parameterKeyPath length];
 
-    v9 = [a1 parameterKeyPath];
-    v10 = [v4 parameterKeyPath];
-    v11 = [v9 hasPrefix:v10];
+    parameterKeyPath2 = [self parameterKeyPath];
+    parameterKeyPath3 = [v4 parameterKeyPath];
+    v11 = [parameterKeyPath2 hasPrefix:parameterKeyPath3];
 
-    v12 = [v4 _indexesForSubKeyPaths];
-    v13 = [a1 _indexesForSubKeyPaths];
+    _indexesForSubKeyPaths = [v4 _indexesForSubKeyPaths];
+    _indexesForSubKeyPaths2 = [self _indexesForSubKeyPaths];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [v12 allKeys];
-    v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    allKeys = [_indexesForSubKeyPaths allKeys];
+    v15 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v15)
     {
       v16 = v15;
@@ -38,12 +38,12 @@
         {
           if (*v29 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allKeys);
           }
 
           v19 = *(*(&v28 + 1) + 8 * i);
-          v20 = [v13 objectForKey:v19];
-          v21 = [v12 objectForKey:v19];
+          v20 = [_indexesForSubKeyPaths2 objectForKey:v19];
+          v21 = [_indexesForSubKeyPaths objectForKey:v19];
           v22 = [v20 isEqual:v21];
 
           if (!v22)
@@ -53,7 +53,7 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v16)
         {
           continue;

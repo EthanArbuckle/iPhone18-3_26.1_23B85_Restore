@@ -1,17 +1,17 @@
 @interface GTRemoteDeviceBrowserXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GTRemoteDeviceBrowserXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GTRemoteDeviceBrowserXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
 - (id)allDevices;
-- (unint64_t)registerObserver:(id)a3;
-- (void)deregisterObserver:(unint64_t)a3;
+- (unint64_t)registerObserver:(id)observer;
+- (void)deregisterObserver:(unint64_t)observer;
 @end
 
 @implementation GTRemoteDeviceBrowserXPCProxy
 
-- (GTRemoteDeviceBrowserXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTRemoteDeviceBrowserXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v21.receiver = self;
   v21.super_class = GTRemoteDeviceBrowserXPCProxy;
   v8 = [(GTRemoteDeviceBrowserXPCProxy *)&v21 init];
@@ -19,14 +19,14 @@
   {
     v9 = &unk_2860EF1A8;
     v10 = [GTServiceConnection alloc];
-    v11 = [v7 deviceUDID];
-    v12 = -[GTServiceConnection initWithConnection:device:port:](v10, "initWithConnection:device:port:", v6, v11, [v7 servicePort]);
+    deviceUDID = [propertiesCopy deviceUDID];
+    v12 = -[GTServiceConnection initWithConnection:device:port:](v10, "initWithConnection:device:port:", connectionCopy, deviceUDID, [propertiesCopy servicePort]);
     connection = v8->_connection;
     v8->_connection = v12;
 
     v14 = [GTServiceProperties protocolMethods:v9];
-    v15 = [v7 protocolMethods];
-    v16 = newSetWithArrayMinusArray(v14, v15);
+    protocolMethods = [propertiesCopy protocolMethods];
+    v16 = newSetWithArrayMinusArray(v14, protocolMethods);
     ignoreMethods = v8->_ignoreMethods;
     v8->_ignoreMethods = v16;
 
@@ -38,10 +38,10 @@
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -51,7 +51,7 @@
   {
     v9.receiver = self;
     v9.super_class = GTRemoteDeviceBrowserXPCProxy;
-    v7 = [(GTRemoteDeviceBrowserXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTRemoteDeviceBrowserXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
@@ -77,13 +77,13 @@
   return nsarray;
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v8 = [[GTRemoteDeviceBrowserReplyStream alloc] initWithObserver:v5];
+  v8 = [[GTRemoteDeviceBrowserReplyStream alloc] initWithObserver:observerCopy];
 
   v9 = [(GTServiceConnection *)self->_connection registerDispatcher:v8];
   connection = self->_connection;
@@ -123,23 +123,23 @@
   return uint64;
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   observerIdToPort = self->_observerIdToPort;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v8 = [(NSMutableDictionary *)observerIdToPort objectForKeyedSubscript:v7];
-  v9 = [v8 unsignedLongValue];
+  unsignedLongValue = [v8 unsignedLongValue];
 
   v10 = self->_observerIdToPort;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:observer];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
-  xpc_dictionary_set_uint64(xdict, "observerId", a3);
+  xpc_dictionary_set_uint64(xdict, "observerId", observer);
   v13 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:xdict error:0];
-  [(GTServiceConnection *)self->_connection deregisterDispatcher:v9];
+  [(GTServiceConnection *)self->_connection deregisterDispatcher:unsignedLongValue];
 }
 
 - (void)registerObserver:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

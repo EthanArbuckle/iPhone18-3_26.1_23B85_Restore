@@ -2,61 +2,61 @@
 - (BOOL)userCancelledMatching;
 - (GKInternalPlayerPickerDelegate)internalPlayerPickerDelegate;
 - (GKMatchmakerViewController)init;
-- (GKMatchmakerViewController)initWithPlayerPickerDelegate:(id)a3 andPlayerPickerContext:(id)a4;
+- (GKMatchmakerViewController)initWithPlayerPickerDelegate:(id)delegate andPlayerPickerContext:(id)context;
 - (OS_dispatch_queue)cancellingQueue;
 - (OS_dispatch_queue)invitationQueue;
 - (id)initWithInvite:(GKInvite *)invite;
 - (id)initWithMatchRequest:(GKMatchRequest *)request;
 - (id)matchmakerDelegate;
-- (id)registerGroupActivitySharingControllerItemProvider:(id)a3;
+- (id)registerGroupActivitySharingControllerItemProvider:(id)provider;
 - (void)_setupChildViewController;
 - (void)_setupRemoteViewController;
 - (void)activateGroupActivities;
 - (void)addPlayersToMatch:(GKMatch *)match;
-- (void)authenticationChanged:(id)a3;
+- (void)authenticationChanged:(id)changed;
 - (void)cancel;
 - (void)cancelMatching;
-- (void)cancelPendingInviteToPlayer:(id)a3;
+- (void)cancelPendingInviteToPlayer:(id)player;
 - (void)cancelWithoutNotifyingDelegate;
 - (void)createMatchForAcceptedInvite;
 - (void)dealloc;
 - (void)disconnectFromMatch;
 - (void)endGroupActivities;
-- (void)extensionDidFinishWithError:(id)a3;
-- (void)finishWithError:(id)a3;
+- (void)extensionDidFinishWithError:(id)error;
+- (void)finishWithError:(id)error;
 - (void)finishWithMatch;
 - (void)finishWithPlayers;
-- (void)groupActivityJoiningPlayer:(id)a3 devicePushToken:(id)a4 participantServerIdentifier:(id)a5;
-- (void)handleRecipientPropertiesNeededForPlayer:(id)a3 completionHandler:(id)a4;
-- (void)inviteSharePlayPlayer:(id)a3;
-- (void)invitedPlayer:(id)a3 responded:(int64_t)a4;
-- (void)inviterCancelledNotification:(id)a3;
-- (void)match:(id)a3 didReceiveData:(id)a4 fromRemotePlayer:(id)a5;
-- (void)match:(id)a3 player:(id)a4 didChangeConnectionState:(int64_t)a5;
+- (void)groupActivityJoiningPlayer:(id)player devicePushToken:(id)token participantServerIdentifier:(id)identifier;
+- (void)handleRecipientPropertiesNeededForPlayer:(id)player completionHandler:(id)handler;
+- (void)inviteSharePlayPlayer:(id)player;
+- (void)invitedPlayer:(id)player responded:(int64_t)responded;
+- (void)inviterCancelledNotification:(id)notification;
+- (void)match:(id)match didReceiveData:(id)data fromRemotePlayer:(id)player;
+- (void)match:(id)match player:(id)player didChangeConnectionState:(int64_t)state;
 - (void)playerPickerDidCancel;
-- (void)playerPickerDidPickPlayers:(id)a3;
+- (void)playerPickerDidPickPlayers:(id)players;
 - (void)presentSharePlaySharingController;
-- (void)recipientPropertiesNeededForPlayer:(id)a3;
-- (void)setBrowsingForNearbyPlayers:(BOOL)a3;
-- (void)setConnectingStateForPlayer:(id)a3;
+- (void)recipientPropertiesNeededForPlayer:(id)player;
+- (void)setBrowsingForNearbyPlayers:(BOOL)players;
+- (void)setConnectingStateForPlayer:(id)player;
 - (void)setDefaultInvitationMessage:(NSString *)defaultInvitationMessage;
 - (void)setHosted:(BOOL)hosted;
 - (void)setHostedPlayer:(GKPlayer *)player didConnect:(BOOL)connected;
 - (void)setHostedPlayer:(NSString *)playerID connected:(BOOL)connected;
 - (void)setHostedPlayerReady:(NSString *)playerID;
 - (void)setMatchmakingMode:(GKMatchmakingMode)matchmakingMode;
-- (void)setRemoteViewController:(id)a3;
-- (void)setShareInvitees:(id)a3;
-- (void)setUserCancelledMatching:(BOOL)a3;
+- (void)setRemoteViewController:(id)controller;
+- (void)setShareInvitees:(id)invitees;
+- (void)setUserCancelledMatching:(BOOL)matching;
 - (void)setupNotifications;
-- (void)shareMatchWithRequest:(id)a3 handler:(id)a4;
-- (void)sharePlayEligibilityChanged:(id)a3;
-- (void)sharePlaySharingControllerResultSucceeded:(BOOL)a3;
-- (void)startMatchingWithRequest:(id)a3 devicePushToken:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)shareMatchWithRequest:(id)request handler:(id)handler;
+- (void)sharePlayEligibilityChanged:(id)changed;
+- (void)sharePlaySharingControllerResultSucceeded:(BOOL)succeeded;
+- (void)startMatchingWithRequest:(id)request devicePushToken:(id)token;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKMatchmakerViewController
@@ -64,8 +64,8 @@
 - (id)initWithMatchRequest:(GKMatchRequest *)request
 {
   v4 = request;
-  v5 = [MEMORY[0x277D0C1F8] reporter];
-  [v5 reportEvent:*MEMORY[0x277D0BED8] reportable:v4];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BED8] reportable:v4];
 
   v14.receiver = self;
   v14.super_class = GKMatchmakerViewController;
@@ -88,8 +88,8 @@
     [(GKMatchmakerViewController *)v6 setupNotifications];
     [(GKMatchmakerViewController *)v6 _setupChildViewController];
     v11 = v6->_matchRequest;
-    v12 = [(GKMatchmakerViewController *)v6 matchmaker];
-    [v12 setCurrentMatchRequest:v11];
+    matchmaker = [(GKMatchmakerViewController *)v6 matchmaker];
+    [matchmaker setCurrentMatchRequest:v11];
   }
 
   return v6;
@@ -113,18 +113,18 @@
   return v6;
 }
 
-- (GKMatchmakerViewController)initWithPlayerPickerDelegate:(id)a3 andPlayerPickerContext:(id)a4
+- (GKMatchmakerViewController)initWithPlayerPickerDelegate:(id)delegate andPlayerPickerContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = GKMatchmakerViewController;
   v8 = [(GKMatchmakerViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_internalPlayerPickerDelegate, v6);
-    objc_storeStrong(&v9->_playerPickerContext, a4);
+    objc_storeWeak(&v8->_internalPlayerPickerDelegate, delegateCopy);
+    objc_storeStrong(&v9->_playerPickerContext, context);
     [(GKMatchmakerViewController *)v9 _setupChildViewController];
   }
 
@@ -153,15 +153,15 @@
   }
 
   [(GKExtensionRemoteViewController *)self->_remoteViewController cancelExtension];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [(GKMatchmakerViewController *)self playerPickerContext];
+  playerPickerContext = [(GKMatchmakerViewController *)self playerPickerContext];
 
-  if (!v6)
+  if (!playerPickerContext)
   {
-    v7 = [(GKMatchmakerViewController *)self matchmaker];
-    [v7 cancel];
+    matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+    [matchmaker cancel];
   }
 
   v8.receiver = self;
@@ -171,22 +171,22 @@
 
 - (void)setupNotifications
 {
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = *MEMORY[0x277D0B970];
-  v4 = [MEMORY[0x277D0C138] localPlayer];
-  [v9 addObserver:self selector:sel_localPlayerAcceptedGameInvite_ name:v3 object:v4];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  [defaultCenter addObserver:self selector:sel_localPlayerAcceptedGameInvite_ name:v3 object:localPlayer];
 
   v5 = *MEMORY[0x277D0BD60];
-  v6 = [MEMORY[0x277D0C138] localPlayer];
-  [v9 addObserver:self selector:sel_playersToInvite_ name:v5 object:v6];
+  localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+  [defaultCenter addObserver:self selector:sel_playersToInvite_ name:v5 object:localPlayer2];
 
   v7 = *MEMORY[0x277D0BCD0];
-  v8 = [MEMORY[0x277D0C138] localPlayer];
-  [v9 addObserver:self selector:sel_authenticationChanged_ name:v7 object:v8];
+  localPlayer3 = [MEMORY[0x277D0C138] localPlayer];
+  [defaultCenter addObserver:self selector:sel_authenticationChanged_ name:v7 object:localPlayer3];
 
-  [v9 addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
-  [v9 addObserver:self selector:sel_inviteSharePlayPlayer_ name:*MEMORY[0x277D0BB68] object:0];
-  [v9 addObserver:self selector:sel_sharePlayEligibilityChanged_ name:*MEMORY[0x277D0BB60] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:self selector:sel_inviteSharePlayPlayer_ name:*MEMORY[0x277D0BB68] object:0];
+  [defaultCenter addObserver:self selector:sel_sharePlayEligibilityChanged_ name:*MEMORY[0x277D0BB60] object:0];
 }
 
 - (void)_setupChildViewController
@@ -199,9 +199,9 @@
   v3 = [(GKMatchmakerViewController *)self _gkInGameUIUnavailableAlertWithRestrictionMode:2 dismissHandler:v5];
   [(GKMatchmakerViewController *)self setAlertController:v3];
 
-  v4 = [(GKMatchmakerViewController *)self alertController];
+  alertController = [(GKMatchmakerViewController *)self alertController];
 
-  if (!v4)
+  if (!alertController)
   {
     [(GKMatchmakerViewController *)self setNavigationBarHidden:1];
     [(GKMatchmakerViewController *)self setWantsFullScreenLayout:1];
@@ -358,22 +358,22 @@ void __56__GKMatchmakerViewController__setupRemoteViewController__block_invoke_6
   }
 }
 
-- (void)extensionDidFinishWithError:(id)a3
+- (void)extensionDidFinishWithError:(id)error
 {
-  [(GKMatchmakerViewController *)self finishWithError:a3];
+  [(GKMatchmakerViewController *)self finishWithError:error];
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
 
   [(GKMatchmakerViewController *)self setRemoteViewController:0];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_remoteViewController != v5)
+  controllerCopy = controller;
+  if (self->_remoteViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_remoteViewController, a3);
-    v6 = [(GKMatchmakerViewController *)self remoteViewController];
-    [v6 setDelegate:self];
+    objc_storeStrong(&self->_remoteViewController, controller);
+    remoteViewController = [(GKMatchmakerViewController *)self remoteViewController];
+    [remoteViewController setDelegate:self];
 
     v7 = MEMORY[0x277CBEB38];
     v8 = +[GKExtensionRemoteViewController initialItemsForExtension];
@@ -389,37 +389,37 @@ void __56__GKMatchmakerViewController__setupRemoteViewController__block_invoke_6
     [v9 setObject:v12 forKeyedSubscript:@"MatchesFastStartEnabled"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(GKMatchmakerViewController *)self matchmaker];
-    v15 = [v13 numberWithBool:{objc_msgSend(v14, "isEligibleForGroupSession")}];
+    matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+    v15 = [v13 numberWithBool:{objc_msgSend(matchmaker, "isEligibleForGroupSession")}];
     [v9 setObject:v15 forKeyedSubscript:@"MatchesGroupSessionEligible"];
 
     v16 = MEMORY[0x277CCABB0];
-    v17 = [(GKMatchmakerViewController *)self matchmaker];
-    v18 = [v16 numberWithBool:{objc_msgSend(v17, "isEntitledToUseGroupActivities")}];
+    matchmaker2 = [(GKMatchmakerViewController *)self matchmaker];
+    v18 = [v16 numberWithBool:{objc_msgSend(matchmaker2, "isEntitledToUseGroupActivities")}];
     [v9 setObject:v18 forKeyedSubscript:@"EntitledToGroupActivities"];
 
-    v19 = [(GKMatchmakerViewController *)self playerPickerContext];
-    [v9 setObject:v19 forKeyedSubscript:@"playerPickerContext"];
+    playerPickerContext = [(GKMatchmakerViewController *)self playerPickerContext];
+    [v9 setObject:playerPickerContext forKeyedSubscript:@"playerPickerContext"];
 
     matchRequest = self->_matchRequest;
     if (matchRequest)
     {
-      v21 = [(GKMatchRequest *)matchRequest internal];
-      [v9 setObject:v21 forKeyedSubscript:@"MatchesMatchRequestInternal"];
+      internal = [(GKMatchRequest *)matchRequest internal];
+      [v9 setObject:internal forKeyedSubscript:@"MatchesMatchRequestInternal"];
     }
 
     acceptedInvite = self->_acceptedInvite;
     if (acceptedInvite)
     {
-      v23 = [(GKInvite *)acceptedInvite internal];
-      [v9 setObject:v23 forKeyedSubscript:@"MatchesAcceptedInviteInternal"];
+      internal2 = [(GKInvite *)acceptedInvite internal];
+      [v9 setObject:internal2 forKeyedSubscript:@"MatchesAcceptedInviteInternal"];
     }
 
     match = self->_match;
     if (match)
     {
-      v25 = [(GKMatch *)match players];
-      v26 = [v25 _gkMapWithBlock:&__block_literal_global_76];
+      players = [(GKMatch *)match players];
+      v26 = [players _gkMapWithBlock:&__block_literal_global_76];
 
       [v9 setObject:v26 forKeyedSubscript:@"PlayerInternalsKey"];
     }
@@ -430,7 +430,7 @@ void __56__GKMatchmakerViewController__setupRemoteViewController__block_invoke_6
     v29[2] = __54__GKMatchmakerViewController_setRemoteViewController___block_invoke_2;
     v29[3] = &unk_279669C90;
     v29[4] = self;
-    v28 = self;
+    selfCopy = self;
     [(GKExtensionRemoteViewController *)remoteViewController setInitialState:v9 withReply:v29];
   }
 }
@@ -452,39 +452,39 @@ void __54__GKMatchmakerViewController_setRemoteViewController___block_invoke_2(u
   _os_log_error_impl(v0, v1, v2, v3, v4, 0xCu);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
-  v6 = [(GKMatchmakerViewController *)self remoteViewController];
+  remoteViewController = [(GKMatchmakerViewController *)self remoteViewController];
 
-  if (v6)
+  if (remoteViewController)
   {
-    v7 = [(GKMatchmakerViewController *)self alertController];
-    if (!v7)
+    alertController = [(GKMatchmakerViewController *)self alertController];
+    if (!alertController)
     {
-      v8 = [(GKMatchmakerViewController *)self viewControllers];
-      v9 = [v8 count];
+      viewControllers = [(GKMatchmakerViewController *)self viewControllers];
+      v9 = [viewControllers count];
 
       if (v9)
       {
         goto LABEL_5;
       }
 
-      v7 = [(GKMatchmakerViewController *)self remoteViewController];
-      [(UINavigationController *)self _updateViewControllerStackWithViewController:v7];
+      alertController = [(GKMatchmakerViewController *)self remoteViewController];
+      [(UINavigationController *)self _updateViewControllerStackWithViewController:alertController];
     }
 
 LABEL_5:
-    v10 = [(GKMatchmakerViewController *)self remoteViewController];
-    [v10 setDelegate:self];
+    remoteViewController2 = [(GKMatchmakerViewController *)self remoteViewController];
+    [remoteViewController2 setDelegate:self];
   }
 
   v15.receiver = self;
   v15.super_class = GKMatchmakerViewController;
-  [(GKMatchmakerViewController *)&v15 viewWillAppear:v3];
+  [(GKMatchmakerViewController *)&v15 viewWillAppear:appearCopy];
   acceptedInvite = self->_acceptedInvite;
   if (acceptedInvite && ![(GKInvite *)acceptedInvite isHosted])
   {
@@ -493,10 +493,10 @@ LABEL_5:
 
   else
   {
-    v12 = [(GKMatchmakerViewController *)self matchRequest];
-    v13 = [v12 isIncorrectlyInvitingPlayers];
+    matchRequest = [(GKMatchmakerViewController *)self matchRequest];
+    isIncorrectlyInvitingPlayers = [matchRequest isIncorrectlyInvitingPlayers];
 
-    if (v13)
+    if (isIncorrectlyInvitingPlayers)
     {
       v14 = [MEMORY[0x277CCA9B8] userErrorForCode:30 userInfo:0];
       [(GKMatchmakerViewController *)self finishWithError:v14];
@@ -504,28 +504,28 @@ LABEL_5:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = GKMatchmakerViewController;
-  [(GKMatchmakerViewController *)&v6 viewDidAppear:a3];
-  v4 = [(GKMatchmakerViewController *)self alertController];
+  [(GKMatchmakerViewController *)&v6 viewDidAppear:appear];
+  alertController = [(GKMatchmakerViewController *)self alertController];
 
-  if (v4)
+  if (alertController)
   {
-    v5 = [(GKMatchmakerViewController *)self alertController];
-    [(GKMatchmakerViewController *)self presentViewController:v5 animated:1 completion:&__block_literal_global_87];
+    alertController2 = [(GKMatchmakerViewController *)self alertController];
+    [(GKMatchmakerViewController *)self presentViewController:alertController2 animated:1 completion:&__block_literal_global_87];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = GKMatchmakerViewController;
-  [(GKMatchmakerViewController *)&v8 viewDidDisappear:a3];
+  [(GKMatchmakerViewController *)&v8 viewDidDisappear:disappear];
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
-  v4 = [MEMORY[0x277D0C138] local];
-  [v4 showAccessPoint];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -547,9 +547,9 @@ LABEL_5:
   v3 = hosted;
   self->_hosted = hosted;
   [(GKMatchmakerHostViewController *)self->_remoteViewController setHosted:?];
-  v6 = [(GKMatchmakerViewController *)self matchRequest];
-  v5 = [v6 internal];
-  [v5 setMatchType:v3];
+  matchRequest = [(GKMatchmakerViewController *)self matchRequest];
+  internal = [matchRequest internal];
+  [internal setMatchType:v3];
 }
 
 - (void)setMatchmakingMode:(GKMatchmakingMode)matchmakingMode
@@ -557,10 +557,10 @@ LABEL_5:
   self->_matchmakingMode = matchmakingMode;
   if (matchmakingMode == GKMatchmakingModeNearbyOnly)
   {
-    v5 = [MEMORY[0x277D0C1D8] shared];
-    v6 = [v5 shouldAllowNearbyMultiplayer];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    shouldAllowNearbyMultiplayer = [mEMORY[0x277D0C1D8] shouldAllowNearbyMultiplayer];
 
-    if (v6)
+    if (shouldAllowNearbyMultiplayer)
     {
       matchRequest = self->_matchRequest;
       if (!matchRequest || ![(GKMatchRequest *)matchRequest restrictToAutomatch])
@@ -594,8 +594,8 @@ LABEL_5:
 {
   v4 = connected;
   remoteViewController = self->_remoteViewController;
-  v6 = [(GKPlayer *)player internal];
-  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:v6 connected:v4];
+  internal = [(GKPlayer *)player internal];
+  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:internal connected:v4];
 }
 
 - (void)setHostedPlayer:(NSString *)playerID connected:(BOOL)connected
@@ -617,9 +617,9 @@ LABEL_5:
 
   else
   {
-    v8 = [MEMORY[0x277D0C1C8] internalRepresentation];
-    [v8 setPlayerID:v6];
-    [(GKMatchmakerHostViewController *)self->_remoteViewController setPlayer:v8 connected:v4];
+    internalRepresentation = [MEMORY[0x277D0C1C8] internalRepresentation];
+    [internalRepresentation setPlayerID:v6];
+    [(GKMatchmakerHostViewController *)self->_remoteViewController setPlayer:internalRepresentation connected:v4];
   }
 }
 
@@ -627,15 +627,15 @@ LABEL_5:
 {
   objc_storeStrong(&self->_match, match);
   v5 = match;
-  v6 = [(GKMatchmakerViewController *)self match];
-  [v6 setInviteDelegate:self];
+  match = [(GKMatchmakerViewController *)self match];
+  [match setInviteDelegate:self];
 
-  v7 = [(GKMatchmakerViewController *)self match];
-  [v7 setFastStartStateActive:0];
+  match2 = [(GKMatchmakerViewController *)self match];
+  [match2 setFastStartStateActive:0];
 
   remoteViewController = self->_remoteViewController;
-  v10 = [(GKMatch *)v5 players];
-  v9 = [v10 _gkMapWithBlock:&__block_literal_global_105];
+  players = [(GKMatch *)v5 players];
+  v9 = [players _gkMapWithBlock:&__block_literal_global_105];
   [(GKMatchmakerHostViewController *)remoteViewController setExistingPlayers:v9];
 }
 
@@ -648,8 +648,8 @@ LABEL_5:
     {
       v5 = defaultInvitationMessage;
       [(GKMatchRequest *)matchRequest setInviteMessage:v5];
-      v6 = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
-      [v6 setDefaultInvitationMessage:v5];
+      serviceViewControllerProxy = [(_UIRemoteViewController *)self->_remoteViewController serviceViewControllerProxy];
+      [serviceViewControllerProxy setDefaultInvitationMessage:v5];
     }
   }
 }
@@ -685,14 +685,14 @@ LABEL_5:
 
 - (void)cancelWithoutNotifyingDelegate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(GKMatchmakerViewController *)self matchmaker];
-  [v4 cancel];
+  matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker cancel];
 
-  v5 = [(GKMatchmakerViewController *)self matchmaker];
-  [v5 stopBrowsingForNearbyPlayers];
+  matchmaker2 = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker2 stopBrowsingForNearbyPlayers];
 
   [(GKMatchRequest *)self->_matchRequest setRecipientResponseHandler:0];
   match = self->_match;
@@ -750,35 +750,35 @@ void __45__GKMatchmakerViewController_invitationQueue__block_invoke()
 
 - (BOOL)userCancelledMatching
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(GKMatchmakerViewController *)self cancellingQueue];
+  cancellingQueue = [(GKMatchmakerViewController *)self cancellingQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__GKMatchmakerViewController_userCancelledMatching__block_invoke;
   v5[3] = &unk_27966B9A0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(cancellingQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setUserCancelledMatching:(BOOL)a3
+- (void)setUserCancelledMatching:(BOOL)matching
 {
-  v5 = [(GKMatchmakerViewController *)self cancellingQueue];
+  cancellingQueue = [(GKMatchmakerViewController *)self cancellingQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__GKMatchmakerViewController_setUserCancelledMatching___block_invoke;
   v6[3] = &unk_27966A890;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  matchingCopy = matching;
+  dispatch_barrier_async(cancellingQueue, v6);
 }
 
 - (void)cancelMatching
@@ -809,17 +809,17 @@ void __45__GKMatchmakerViewController_invitationQueue__block_invoke()
     _os_log_impl(&dword_24DE53000, v7, OS_LOG_TYPE_INFO, "userCancelledMatching, set shared matchmaker matching to NO", v10, 2u);
   }
 
-  v8 = [(GKMatchmakerViewController *)self matchmaker];
-  [v8 userCancelledMatching];
+  matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker userCancelledMatching];
 
-  v9 = [(GKMatchmakerViewController *)self matchmaker];
-  [v9 cancel];
+  matchmaker2 = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker2 cancel];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -830,46 +830,46 @@ void __45__GKMatchmakerViewController_invitationQueue__block_invoke()
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = errorCopy;
     _os_log_impl(&dword_24DE53000, v7, OS_LOG_TYPE_INFO, "GKMatchmakerViewController finish with error: %@", buf, 0xCu);
   }
 
   if (![(GKMatchmakerViewController *)self canStartWithMinimumPlayers])
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
-    v9 = [(GKMatchmakerViewController *)self matchmaker];
-    [v9 cancel];
+    matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+    [matchmaker cancel];
 
-    v10 = [(GKMatchmakerViewController *)self matchmaker];
-    [v10 stopBrowsingForNearbyPlayers];
+    matchmaker2 = [(GKMatchmakerViewController *)self matchmaker];
+    [matchmaker2 stopBrowsingForNearbyPlayers];
 
     [(GKMatchRequest *)self->_matchRequest setRecipientResponseHandler:0];
   }
 
-  v11 = [(GKMatchmakerViewController *)self matchmaker];
-  v12 = v11;
-  if (v4)
+  matchmaker3 = [(GKMatchmakerViewController *)self matchmaker];
+  v12 = matchmaker3;
+  if (errorCopy)
   {
-    [v11 endGroupActivity];
+    [matchmaker3 endGroupActivity];
 
-    v13 = [(GKMatchmakerViewController *)self match];
-    [v13 setInviteDelegate:0];
+    match = [(GKMatchmakerViewController *)self match];
+    [match setInviteDelegate:0];
 
-    v14 = [(GKMatchmakerViewController *)self matchmaker];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v4];
-    [v14 promptForRadarWithDescriptionAddition:v15];
+    matchmaker4 = [(GKMatchmakerViewController *)self matchmaker];
+    errorCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", errorCopy];
+    [matchmaker4 promptForRadarWithDescriptionAddition:errorCopy];
 
     match = self->_match;
     self->_match = 0;
 
-    v17 = [(GKMatchmakerViewController *)self matchmakerDelegate];
-    if (v17)
+    matchmakerDelegate = [(GKMatchmakerViewController *)self matchmakerDelegate];
+    if (matchmakerDelegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v17 matchmakerViewController:self didFailWithError:v4];
+        [matchmakerDelegate matchmakerViewController:self didFailWithError:errorCopy];
       }
 
       else
@@ -899,20 +899,20 @@ void __45__GKMatchmakerViewController_invitationQueue__block_invoke()
       }
     }
 
-    v20 = [v4 domain];
-    v21 = [v20 isEqualToString:*MEMORY[0x277D0BA78]];
+    domain = [errorCopy domain];
+    v21 = [domain isEqualToString:*MEMORY[0x277D0BA78]];
 
-    if (v21 && [v4 code] == 35)
+    if (v21 && [errorCopy code] == 35)
     {
-      v22 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-      v23 = [v22 utilityService];
-      [v23 openICloudSettings];
+      proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+      utilityService = [proxyForLocalPlayer utilityService];
+      [utilityService openICloudSettings];
     }
   }
 
   else
   {
-    [v11 resetGroupActivity];
+    [matchmaker3 resetGroupActivity];
 
     if (self->_hosted)
     {
@@ -949,10 +949,10 @@ id __47__GKMatchmakerViewController_finishWithPlayers__block_invoke(uint64_t a1,
   return v3;
 }
 
-- (void)playerPickerDidPickPlayers:(id)a3
+- (void)playerPickerDidPickPlayers:(id)players
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 _gkPlayersFromInternals];
+  _gkPlayersFromInternals = [players _gkPlayersFromInternals];
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -962,12 +962,12 @@ id __47__GKMatchmakerViewController_finishWithPlayers__block_invoke(uint64_t a1,
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = _gkPlayersFromInternals;
     _os_log_impl(&dword_24DE53000, v6, OS_LOG_TYPE_INFO, "Client - player picker - didPickPlayers: %@", &v8, 0xCu);
   }
 
-  v7 = [(GKMatchmakerViewController *)self internalPlayerPickerDelegate];
-  [v7 internalPlayerPickerDidPickPlayers:v4];
+  internalPlayerPickerDelegate = [(GKMatchmakerViewController *)self internalPlayerPickerDelegate];
+  [internalPlayerPickerDelegate internalPlayerPickerDidPickPlayers:_gkPlayersFromInternals];
 }
 
 - (void)playerPickerDidCancel
@@ -984,14 +984,14 @@ id __47__GKMatchmakerViewController_finishWithPlayers__block_invoke(uint64_t a1,
     _os_log_impl(&dword_24DE53000, v4, OS_LOG_TYPE_INFO, "Client - player picker - playerPickerDidCancel, didCancel", v6, 2u);
   }
 
-  v5 = [(GKMatchmakerViewController *)self internalPlayerPickerDelegate];
-  [v5 internalPlayerPickerDidCancel];
+  internalPlayerPickerDelegate = [(GKMatchmakerViewController *)self internalPlayerPickerDelegate];
+  [internalPlayerPickerDelegate internalPlayerPickerDidCancel];
 }
 
 - (void)createMatchForAcceptedInvite
 {
-  v3 = [MEMORY[0x277D0C1F8] reporter];
-  [v3 recordInviteeUILaunchTimestamp];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter recordInviteeUILaunchTimestamp];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1045,32 +1045,32 @@ void __58__GKMatchmakerViewController_createMatchForAcceptedInvite__block_invoke
   }
 }
 
-- (void)shareMatchWithRequest:(id)a3 handler:(id)a4
+- (void)shareMatchWithRequest:(id)request handler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = a3;
-    v8 = [(GKMatchmakerViewController *)self match];
+    requestCopy = request;
+    match = [(GKMatchmakerViewController *)self match];
 
-    if (!v8)
+    if (!match)
     {
-      v9 = [(GKMatchmakerViewController *)self matchmaker];
-      v10 = [v9 newMatch];
-      [(GKMatchmakerViewController *)self setMatch:v10];
+      matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+      newMatch = [matchmaker newMatch];
+      [(GKMatchmakerViewController *)self setMatch:newMatch];
 
-      v11 = [(GKMatchmakerViewController *)self match];
-      [v11 setInviteDelegate:self];
+      match2 = [(GKMatchmakerViewController *)self match];
+      [match2 setInviteDelegate:self];
     }
 
-    v12 = [(GKMatchmakerViewController *)self matchmaker];
+    matchmaker2 = [(GKMatchmakerViewController *)self matchmaker];
     match = self->_match;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__GKMatchmakerViewController_shareMatchWithRequest_handler___block_invoke;
     v14[3] = &unk_27966C4A8;
-    v15 = v6;
-    [v12 loadURLForMatch:match matchRequest:v7 completionHandler:v14];
+    v15 = handlerCopy;
+    [matchmaker2 loadURLForMatch:match matchRequest:requestCopy completionHandler:v14];
   }
 }
 
@@ -1085,12 +1085,12 @@ uint64_t __60__GKMatchmakerViewController_shareMatchWithRequest_handler___block_
   return result;
 }
 
-- (void)setShareInvitees:(id)a3
+- (void)setShareInvitees:(id)invitees
 {
-  v4 = a3;
-  v5 = [(GKMatchmakerViewController *)self matchmaker];
-  v6 = [(GKMatchmakerViewController *)self match];
-  [v5 setShareInvitees:v4 forMatch:v6 propagateToDaemon:1];
+  inviteesCopy = invitees;
+  matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+  match = [(GKMatchmakerViewController *)self match];
+  [matchmaker setShareInvitees:inviteesCopy forMatch:match propagateToDaemon:1];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D85DD0];
@@ -1109,11 +1109,11 @@ void __47__GKMatchmakerViewController_setShareInvitees___block_invoke(uint64_t a
   [WeakRetained invitedPlayer:v5 responded:a3];
 }
 
-- (void)startMatchingWithRequest:(id)a3 devicePushToken:(id)a4
+- (void)startMatchingWithRequest:(id)request devicePushToken:(id)token
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  tokenCopy = token;
   v8 = objc_alloc_init(MEMORY[0x277CCAD78]);
   v9 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
@@ -1126,16 +1126,16 @@ void __47__GKMatchmakerViewController_setShareInvitees___block_invoke(uint64_t a
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = requestCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = tokenCopy;
     *&buf[22] = 2112;
     v31 = v8;
     _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_INFO, "GKMatchmakerVC start matching with request: %@, pushToken: %@. UUID: %@", buf, 0x20u);
   }
 
-  v13 = [(GKMatchmakerViewController *)self invitationGroup];
-  v14 = v13 == 0;
+  invitationGroup = [(GKMatchmakerViewController *)self invitationGroup];
+  v14 = invitationGroup == 0;
 
   if (v14)
   {
@@ -1164,20 +1164,20 @@ void __47__GKMatchmakerViewController_setShareInvitees___block_invoke(uint64_t a
   v31 = __Block_byref_object_copy__6;
   v32 = __Block_byref_object_dispose__6;
   v33 = 0;
-  v20 = [(GKMatchmakerViewController *)self invitationQueue];
+  invitationQueue = [(GKMatchmakerViewController *)self invitationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__GKMatchmakerViewController_startMatchingWithRequest_devicePushToken___block_invoke;
   block[3] = &unk_27966C638;
   v25 = v8;
-  v26 = v6;
-  v28 = v7;
+  v26 = requestCopy;
+  v28 = tokenCopy;
   v29 = buf;
-  v27 = self;
-  v21 = v7;
-  v22 = v6;
+  selfCopy = self;
+  v21 = tokenCopy;
+  v22 = requestCopy;
   v23 = v8;
-  dispatch_async(v20, block);
+  dispatch_async(invitationQueue, block);
 
   _Block_object_dispose(buf, 8);
 }
@@ -1583,9 +1583,9 @@ void __71__GKMatchmakerViewController_startMatchingWithRequest_devicePushToken__
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)cancelPendingInviteToPlayer:(id)a3
+- (void)cancelPendingInviteToPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v5 = MEMORY[0x277D0BFD0];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmakerViewController_iOS.m", 810, "-[GKMatchmakerViewController cancelPendingInviteToPlayer:]"];
   v8[0] = MEMORY[0x277D85DD0];
@@ -1593,8 +1593,8 @@ void __71__GKMatchmakerViewController_startMatchingWithRequest_devicePushToken__
   v8[2] = __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke;
   v8[3] = &unk_279669E48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = playerCopy;
+  v7 = playerCopy;
   [v5 named:v6 execute:v8];
 }
 
@@ -1605,12 +1605,12 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
   [v3 cancelPendingInviteToPlayer:v2];
 }
 
-- (void)groupActivityJoiningPlayer:(id)a3 devicePushToken:(id)a4 participantServerIdentifier:(id)a5
+- (void)groupActivityJoiningPlayer:(id)player devicePushToken:(id)token participantServerIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playerCopy = player;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v11 = MEMORY[0x277D0C2A0];
   v12 = *MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
@@ -1622,21 +1622,21 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = playerCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = identifierCopy;
     _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_DEFAULT, "groupActivityJoiningPlayer player: %@, participantID: %@", &v16, 0x16u);
   }
 
   remoteViewController = self->_remoteViewController;
-  v15 = [v8 internal];
-  [(GKMatchmakerHostViewController *)remoteViewController groupActivityJoiningPlayer:v15 devicePushToken:v9 participantServerIdentifier:v10];
+  internal = [playerCopy internal];
+  [(GKMatchmakerHostViewController *)remoteViewController groupActivityJoiningPlayer:internal devicePushToken:tokenCopy participantServerIdentifier:identifierCopy];
 }
 
-- (void)invitedPlayer:(id)a3 responded:(int64_t)a4
+- (void)invitedPlayer:(id)player responded:(int64_t)responded
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  playerCopy = player;
   v7 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1660,9 +1660,9 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v6 internal];
-    v15 = [v14 debugDescription];
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    internal = [playerCopy internal];
+    v15 = [internal debugDescription];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:responded];
     v25 = 138412546;
     v26 = v15;
     v27 = 2112;
@@ -1670,7 +1670,7 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
     _os_log_impl(&dword_24DE53000, v13, OS_LOG_TYPE_INFO, "Invited player: %@ responded: %@", &v25, 0x16u);
   }
 
-  if (!a4 && self->_hosted)
+  if (!responded && self->_hosted)
   {
     if (!*v7)
     {
@@ -1684,18 +1684,18 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
       _os_log_impl(&dword_24DE53000, v18, OS_LOG_TYPE_INFO, "    ---> GKInviteeResponseAccepted", &v25, 2u);
     }
 
-    [(NSMutableArray *)self->_hostedPlayers addObject:v6];
-    v19 = [(GKMatchmakerViewController *)self matchmakerDelegate];
+    [(NSMutableArray *)self->_hostedPlayers addObject:playerCopy];
+    matchmakerDelegate = [(GKMatchmakerViewController *)self matchmakerDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v19 matchmakerViewController:self hostedPlayerDidAccept:v6];
+      [matchmakerDelegate matchmakerViewController:self hostedPlayerDidAccept:playerCopy];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v20 = [v6 internal];
-      v21 = [v20 playerID];
-      [v19 matchmakerViewController:self didReceiveAcceptFromHostedPlayer:v21];
+      internal2 = [playerCopy internal];
+      playerID = [internal2 playerID];
+      [matchmakerDelegate matchmakerViewController:self didReceiveAcceptFromHostedPlayer:playerID];
     }
 
     else
@@ -1713,26 +1713,26 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
   }
 
   remoteViewController = self->_remoteViewController;
-  v24 = [v6 internal];
-  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:v24 responded:a4];
+  internal3 = [playerCopy internal];
+  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:internal3 responded:responded];
 }
 
-- (void)match:(id)a3 didReceiveData:(id)a4 fromRemotePlayer:(id)a5
+- (void)match:(id)match didReceiveData:(id)data fromRemotePlayer:(id)player
 {
   remoteViewController = self->_remoteViewController;
-  v7 = a4;
-  v8 = [a5 internal];
-  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:v8 sentData:v7];
+  dataCopy = data;
+  internal = [player internal];
+  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:internal sentData:dataCopy];
 }
 
-- (void)match:(id)a3 player:(id)a4 didChangeConnectionState:(int64_t)a5
+- (void)match:(id)match player:(id)player didChangeConnectionState:(int64_t)state
 {
   remoteViewController = self->_remoteViewController;
-  v7 = [a4 internal];
-  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:v7 connected:a5 == 1];
+  internal = [player internal];
+  [(GKMatchmakerHostViewController *)remoteViewController setPlayer:internal connected:state == 1];
 }
 
-- (void)setBrowsingForNearbyPlayers:(BOOL)a3
+- (void)setBrowsingForNearbyPlayers:(BOOL)players
 {
   v5 = MEMORY[0x277D0BFD0];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchmakerViewController_iOS.m", 869, "-[GKMatchmakerViewController setBrowsingForNearbyPlayers:]"];
@@ -1740,7 +1740,7 @@ void __58__GKMatchmakerViewController_cancelPendingInviteToPlayer___block_invoke
   v7[1] = 3221225472;
   v7[2] = __58__GKMatchmakerViewController_setBrowsingForNearbyPlayers___block_invoke;
   v7[3] = &unk_27966A890;
-  v8 = a3;
+  playersCopy = players;
   v7[4] = self;
   [v5 named:v6 execute:v7];
 }
@@ -1791,8 +1791,8 @@ void __58__GKMatchmakerViewController_setBrowsingForNearbyPlayers___block_invoke
     _os_log_impl(&dword_24DE53000, v4, OS_LOG_TYPE_INFO, "Game Center trying to activate GroupActivity", v6, 2u);
   }
 
-  v5 = [(GKMatchmakerViewController *)self matchmaker];
-  [v5 activateGroupActivityWithHandler:&__block_literal_global_162];
+  matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker activateGroupActivityWithHandler:&__block_literal_global_162];
 }
 
 void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint64_t a1, int a2)
@@ -1826,8 +1826,8 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
     _os_log_impl(&dword_24DE53000, v4, OS_LOG_TYPE_INFO, "Game Center trying to activate GroupActivity", v6, 2u);
   }
 
-  v5 = [(GKMatchmakerViewController *)self matchmaker];
-  [v5 endGroupActivity];
+  matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+  [matchmaker endGroupActivity];
 }
 
 - (void)presentSharePlaySharingController
@@ -1861,19 +1861,19 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
 
   else
   {
-    v8 = [(GKMatchmakerViewController *)self matchmaker];
-    v9 = [v8 sharingControllerItemProvider];
+    matchmaker = [(GKMatchmakerViewController *)self matchmaker];
+    sharingControllerItemProvider = [matchmaker sharingControllerItemProvider];
 
-    v10 = [(GKMatchmakerViewController *)self registerGroupActivitySharingControllerItemProvider:v9];
+    v10 = [(GKMatchmakerViewController *)self registerGroupActivitySharingControllerItemProvider:sharingControllerItemProvider];
     [(GKMatchmakerViewController *)self presentViewController:v10 animated:1 completion:0];
   }
 }
 
 - (void)disconnectFromMatch
 {
-  v3 = [(GKMatchmakerViewController *)self match];
+  match = [(GKMatchmakerViewController *)self match];
 
-  if (v3)
+  if (match)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -1888,27 +1888,27 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
     }
 
     v9 = 5;
-    v6 = [(GKMatchmakerViewController *)self match];
+    match2 = [(GKMatchmakerViewController *)self match];
     v7 = [MEMORY[0x277CBEA90] dataWithBytes:&v9 length:4];
-    [v6 sendInviteData:v7];
+    [match2 sendInviteData:v7];
 
-    v8 = [(GKMatchmakerViewController *)self match];
-    [v8 setInviteDelegate:0];
+    match3 = [(GKMatchmakerViewController *)self match];
+    [match3 setInviteDelegate:0];
 
     [(GKMatchmakerViewController *)self setMatch:0];
   }
 }
 
-- (void)setConnectingStateForPlayer:(id)a3
+- (void)setConnectingStateForPlayer:(id)player
 {
   remoteViewController = self->_remoteViewController;
-  v4 = [a3 internal];
-  [(GKMatchmakerHostViewController *)remoteViewController setConnectingStateForPlayer:v4];
+  internal = [player internal];
+  [(GKMatchmakerHostViewController *)remoteViewController setConnectingStateForPlayer:internal];
 }
 
-- (void)inviterCancelledNotification:(id)a3
+- (void)inviterCancelledNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1922,17 +1922,17 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
     _os_log_impl(&dword_24DE53000, v7, OS_LOG_TYPE_INFO, "GKMatchmakterViewController: inviterCancelledNotification", buf, 2u);
   }
 
-  v8 = [(GKMatchmakerViewController *)self acceptedInvite];
+  acceptedInvite = [(GKMatchmakerViewController *)self acceptedInvite];
 
-  if (v8)
+  if (acceptedInvite)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x277D0BC10]];
+    userInfo = [notificationCopy userInfo];
+    v10 = [userInfo objectForKey:*MEMORY[0x277D0BC10]];
 
     if (!v10)
     {
-      v11 = [v4 userInfo];
-      v12 = [v11 objectForKeyedSubscript:@"session-token"];
+      userInfo2 = [notificationCopy userInfo];
+      v12 = [userInfo2 objectForKeyedSubscript:@"session-token"];
 
       if (v12)
       {
@@ -1945,18 +1945,18 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
       }
     }
 
-    v13 = [(GKMatchmakerViewController *)self acceptedInvite];
-    v14 = [v13 inviteID];
-    v15 = [v14 isEqualToString:v10];
+    acceptedInvite2 = [(GKMatchmakerViewController *)self acceptedInvite];
+    inviteID = [acceptedInvite2 inviteID];
+    v15 = [inviteID isEqualToString:v10];
 
     if (v15)
     {
-      v16 = [(GKMatchmakerViewController *)self remoteViewController];
+      remoteViewController = [(GKMatchmakerViewController *)self remoteViewController];
 
-      if (v16)
+      if (remoteViewController)
       {
-        v17 = [(GKMatchmakerViewController *)self remoteViewController];
-        [v17 inviterCancelled];
+        remoteViewController2 = [(GKMatchmakerViewController *)self remoteViewController];
+        [remoteViewController2 inviterCancelled];
 
         if (!*v5)
         {
@@ -1991,10 +1991,10 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
   }
 }
 
-- (void)inviteSharePlayPlayer:(id)a3
+- (void)inviteSharePlayPlayer:(id)player
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playerCopy = player;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -2006,14 +2006,14 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = playerCopy;
     _os_log_impl(&dword_24DE53000, v8, OS_LOG_TYPE_INFO, "inviteSharePlayPlayer: %@", &v15, 0xCu);
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"player"];
-  v11 = [v9 objectForKeyedSubscript:@"pushToken"];
-  v12 = [v9 objectForKeyedSubscript:@"participantIdentifier"];
+  userInfo = [playerCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"player"];
+  v11 = [userInfo objectForKeyedSubscript:@"pushToken"];
+  v12 = [userInfo objectForKeyedSubscript:@"participantIdentifier"];
   if (v10 && v11)
   {
     [(GKMatchmakerViewController *)self groupActivityJoiningPlayer:v10 devicePushToken:v11 participantServerIdentifier:v12];
@@ -2038,10 +2038,10 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
   }
 }
 
-- (void)sharePlayEligibilityChanged:(id)a3
+- (void)sharePlayEligibilityChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -2051,20 +2051,20 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = changedCopy;
     _os_log_impl(&dword_24DE53000, v6, OS_LOG_TYPE_INFO, "sharePlayEligibilityChanged: %@", &v10, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"isEligibleForGroupSession"];
-  v9 = [v8 BOOLValue];
+  userInfo = [changedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"isEligibleForGroupSession"];
+  bOOLValue = [v8 BOOLValue];
 
-  [(GKMatchmakerHostViewController *)self->_remoteViewController setEligibilityForGroupSession:v9];
+  [(GKMatchmakerHostViewController *)self->_remoteViewController setEligibilityForGroupSession:bOOLValue];
 }
 
-- (void)sharePlaySharingControllerResultSucceeded:(BOOL)a3
+- (void)sharePlaySharingControllerResultSucceeded:(BOOL)succeeded
 {
-  v3 = a3;
+  succeededCopy = succeeded;
   v12 = *MEMORY[0x277D85DE8];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -2076,25 +2076,25 @@ void __53__GKMatchmakerViewController_activateGroupActivities__block_invoke(uint
   {
     v7 = MEMORY[0x277CCABB0];
     v8 = v6;
-    v9 = [v7 numberWithBool:v3];
+    v9 = [v7 numberWithBool:succeededCopy];
     v10 = 138412290;
     v11 = v9;
     _os_log_impl(&dword_24DE53000, v8, OS_LOG_TYPE_INFO, "sharePlaySharingControllerResultSucceeded: %@", &v10, 0xCu);
   }
 
-  [(GKMatchmakerHostViewController *)self->_remoteViewController setSharePlaySharingControllerResult:v3];
+  [(GKMatchmakerHostViewController *)self->_remoteViewController setSharePlaySharingControllerResult:succeededCopy];
 }
 
-- (void)recipientPropertiesNeededForPlayer:(id)a3
+- (void)recipientPropertiesNeededForPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__GKMatchmakerViewController_recipientPropertiesNeededForPlayer___block_invoke;
   v6[3] = &unk_27966C6A8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = playerCopy;
   v7 = v5;
   [(GKMatchmakerViewController *)self handleRecipientPropertiesNeededForPlayer:v5 completionHandler:v6];
 
@@ -2113,21 +2113,21 @@ void __65__GKMatchmakerViewController_recipientPropertiesNeededForPlayer___block
   }
 }
 
-- (void)authenticationChanged:(id)a3
+- (void)authenticationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D0BCE0]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D0BCE0]];
 
   if (!self->_alertController)
   {
-    v7 = [MEMORY[0x277D0C138] localPlayer];
-    if ([v7 isAuthenticated])
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    if ([localPlayer isAuthenticated])
     {
-      v8 = [MEMORY[0x277D0C138] localPlayer];
-      v9 = [v8 internal];
-      v10 = [v9 playerID];
-      v11 = [v10 isEqualToString:v6];
+      localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+      internal = [localPlayer2 internal];
+      playerID = [internal playerID];
+      v11 = [playerID isEqualToString:v6];
 
       if (v11)
       {
@@ -2169,23 +2169,23 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (id)registerGroupActivitySharingControllerItemProvider:(id)a3
+- (id)registerGroupActivitySharingControllerItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = self;
-  GKMatchmakerViewController.registerSharingControllerItemProvider(itemProvider:)(v6, v4);
+  providerCopy = provider;
+  selfCopy = self;
+  GKMatchmakerViewController.registerSharingControllerItemProvider(itemProvider:)(v6, providerCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (void)handleRecipientPropertiesNeededForPlayer:(id)a3 completionHandler:(id)a4
+- (void)handleRecipientPropertiesNeededForPlayer:(id)player completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_24E25B34C(a3, v8, v6);
+  playerCopy = player;
+  selfCopy = self;
+  sub_24E25B34C(player, selfCopy, v6);
   _Block_release(v6);
 }
 

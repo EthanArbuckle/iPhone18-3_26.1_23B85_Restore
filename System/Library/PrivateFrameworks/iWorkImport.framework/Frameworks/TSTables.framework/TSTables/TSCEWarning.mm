@@ -1,149 +1,149 @@
 @interface TSCEWarning
-+ (id)loadFromArchive:(const void *)a3;
-+ (id)warningFor3DReferenceFormula:(id)a3;
-+ (id)warningForArrayModeWarning:(id)a3;
-+ (id)warningForArrayedFormula:(id)a3;
-+ (id)warningForComparisonWithLeftType:(char)a3 rightType:(char)a4;
-+ (id)warningForDifferentBehaviorForFunctionFormula:(id)a3 originalFormula:(id)a4;
-+ (id)warningForErrorTokenFormula:(id)a3;
-+ (id)warningForExternalReferenceFormula:(id)a3;
-+ (id)warningForFormulaReplacedForExcelCompat:(id)a3 originalFormula:(id)a4;
-+ (id)warningForNaturalLanguageFormula:(id)a3;
-+ (id)warningForReferenceOutOfBoundsFormula:(id)a3;
-+ (id)warningForSharedFormulaBaseNotFoundFormula:(id)a3;
-+ (id)warningForTransposedWithIssues:(id)a3;
-+ (id)warningForTransposedWithoutIssues:(id)a3;
-+ (id)warningForUnknownName:(id)a3 originalFormula:(id)a4;
-+ (id)warningForUnsupportedDataFormat:(id)a3;
-+ (id)warningForUnsupportedFormula:(id)a3;
-+ (id)warningForUnsupportedFunction:(id)a3 originalFormula:(id)a4;
-+ (id)warningForUnsupportedNameFormula:(id)a3 originalFormula:(id)a4;
-+ (id)warningWithType:(int64_t)a3;
-+ (id)warningWithType:(int64_t)a3 originalDataFormat:(id)a4;
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4;
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5;
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5 originalDataFormat:(id)a6;
-+ (int64_t)warningTypePrunedToThisVersion:(unsigned int)a3;
-+ (void)reportAutomaticUnitConversionWarningInContext:(id)a3;
-+ (void)reportBoolToNumberConversionWarningInContext:(id)a3;
-+ (void)reportComparisonWarningInContext:(id)a3 leftType:(char)a4 rightType:(char)a5;
-+ (void)reportDayOutOfRangeWarningInContext:(id)a3;
-+ (void)reportLossOfUnitsWarningInContext:(id)a3;
-+ (void)reportMonthOutOfRangeWarningInContext:(id)a3;
-+ (void)reportNonNumericCellWarningInContext:(id)a3;
-+ (void)reportWarningInContext:(id)a3 warningType:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCEWarning)initWithWarningType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5 originalDataFormat:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)loadFromArchive:(const void *)archive;
++ (id)warningFor3DReferenceFormula:(id)formula;
++ (id)warningForArrayModeWarning:(id)warning;
++ (id)warningForArrayedFormula:(id)formula;
++ (id)warningForComparisonWithLeftType:(char)type rightType:(char)rightType;
++ (id)warningForDifferentBehaviorForFunctionFormula:(id)formula originalFormula:(id)originalFormula;
++ (id)warningForErrorTokenFormula:(id)formula;
++ (id)warningForExternalReferenceFormula:(id)formula;
++ (id)warningForFormulaReplacedForExcelCompat:(id)compat originalFormula:(id)formula;
++ (id)warningForNaturalLanguageFormula:(id)formula;
++ (id)warningForReferenceOutOfBoundsFormula:(id)formula;
++ (id)warningForSharedFormulaBaseNotFoundFormula:(id)formula;
++ (id)warningForTransposedWithIssues:(id)issues;
++ (id)warningForTransposedWithoutIssues:(id)issues;
++ (id)warningForUnknownName:(id)name originalFormula:(id)formula;
++ (id)warningForUnsupportedDataFormat:(id)format;
++ (id)warningForUnsupportedFormula:(id)formula;
++ (id)warningForUnsupportedFunction:(id)function originalFormula:(id)formula;
++ (id)warningForUnsupportedNameFormula:(id)formula originalFormula:(id)originalFormula;
++ (id)warningWithType:(int64_t)type;
++ (id)warningWithType:(int64_t)type originalDataFormat:(id)format;
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula;
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text;
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text originalDataFormat:(id)format;
++ (int64_t)warningTypePrunedToThisVersion:(unsigned int)version;
++ (void)reportAutomaticUnitConversionWarningInContext:(id)context;
++ (void)reportBoolToNumberConversionWarningInContext:(id)context;
++ (void)reportComparisonWarningInContext:(id)context leftType:(char)type rightType:(char)rightType;
++ (void)reportDayOutOfRangeWarningInContext:(id)context;
++ (void)reportLossOfUnitsWarningInContext:(id)context;
++ (void)reportMonthOutOfRangeWarningInContext:(id)context;
++ (void)reportNonNumericCellWarningInContext:(id)context;
++ (void)reportWarningInContext:(id)context warningType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (TSCEWarning)initWithWarningType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text originalDataFormat:(id)format;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)displayStringWithCalculationEngine:(id)a3 forTable:(const TSKUIDStruct *)a4;
-- (id)displayStringWithCalculationEngine:(id)a3 forTable:(const TSKUIDStruct *)a4 andCellID:(TSUCellCoord)a5;
-- (id)numberForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (id)displayStringWithCalculationEngine:(id)engine forTable:(const TSKUIDStruct *)table;
+- (id)displayStringWithCalculationEngine:(id)engine forTable:(const TSKUIDStruct *)table andCellID:(TSUCellCoord)d;
+- (id)numberForKey:(id)key;
+- (id)stringForKey:(id)key;
 - (void)_calculatehashValue;
-- (void)saveToArchive:(void *)a3;
-- (void)setNumber:(id)a3 forKey:(id)a4;
-- (void)setString:(id)a3 forKey:(id)a4;
+- (void)saveToArchive:(void *)archive;
+- (void)setNumber:(id)number forKey:(id)key;
+- (void)setString:(id)string forKey:(id)key;
 @end
 
 @implementation TSCEWarning
 
-+ (int64_t)warningTypePrunedToThisVersion:(unsigned int)a3
++ (int64_t)warningTypePrunedToThisVersion:(unsigned int)version
 {
-  if (a3 - 33 < 0x43 || a3 > 0x6E)
+  if (version - 33 < 0x43 || version > 0x6E)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return version;
   }
 }
 
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5 originalDataFormat:(id)a6
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text originalDataFormat:(id)format
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 alloc];
-  v15 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v13, v14, a3, v10, v11, v12);
+  formulaCopy = formula;
+  textCopy = text;
+  formatCopy = format;
+  v13 = [self alloc];
+  v15 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v13, v14, type, formulaCopy, textCopy, formatCopy);
 
   return v15;
 }
 
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 alloc];
-  v12 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v10, v11, a3, v8, v9, 0);
+  formulaCopy = formula;
+  textCopy = text;
+  v10 = [self alloc];
+  v12 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v10, v11, type, formulaCopy, textCopy, 0);
 
   return v12;
 }
 
-+ (id)warningWithType:(int64_t)a3 originalFormula:(id)a4
++ (id)warningWithType:(int64_t)type originalFormula:(id)formula
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v9 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v7, v8, a3, v6, 0, 0);
+  formulaCopy = formula;
+  v7 = [self alloc];
+  v9 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v7, v8, type, formulaCopy, 0, 0);
 
   return v9;
 }
 
-+ (id)warningWithType:(int64_t)a3 originalDataFormat:(id)a4
++ (id)warningWithType:(int64_t)type originalDataFormat:(id)format
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v9 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v7, v8, a3, 0, 0, v6);
+  formatCopy = format;
+  v7 = [self alloc];
+  v9 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v7, v8, type, 0, 0, formatCopy);
 
   return v9;
 }
 
-+ (id)warningWithType:(int64_t)a3
++ (id)warningWithType:(int64_t)type
 {
-  v4 = [a1 alloc];
-  v6 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v4, v5, a3, 0, 0, 0);
+  v4 = [self alloc];
+  v6 = objc_msgSend_initWithWarningType_originalFormula_supplementaryText_originalDataFormat_(v4, v5, type, 0, 0, 0);
 
   return v6;
 }
 
-- (TSCEWarning)initWithWarningType:(int64_t)a3 originalFormula:(id)a4 supplementaryText:(id)a5 originalDataFormat:(id)a6
+- (TSCEWarning)initWithWarningType:(int64_t)type originalFormula:(id)formula supplementaryText:(id)text originalDataFormat:(id)format
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  formulaCopy = formula;
+  textCopy = text;
+  formatCopy = format;
   v34.receiver = self;
   v34.super_class = TSCEWarning;
   v13 = [(TSCEWarning *)&v34 init];
   v18 = v13;
   if (v13)
   {
-    v13->_warningType = a3;
-    if (v10 || v11 || v12)
+    v13->_warningType = type;
+    if (formulaCopy || textCopy || formatCopy)
     {
       v19 = objc_opt_new();
       warningInfoDict = v18->_warningInfoDict;
       v18->_warningInfoDict = v19;
 
-      if (v10)
+      if (formulaCopy)
       {
         v21 = v18->_warningInfoDict;
-        v22 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, v10, v16, v17);
+        v22 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, formulaCopy, v16, v17);
         objc_msgSend_setObject_forKey_(v21, v23, v22, @"TSCEOriginalFormulaKey", v24);
       }
 
-      if (v11)
+      if (textCopy)
       {
         v25 = v18->_warningInfoDict;
-        v26 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, v11, v16, v17);
+        v26 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, textCopy, v16, v17);
         objc_msgSend_setObject_forKey_(v25, v27, v26, @"TSCESupplementaryTextKey", v28);
       }
 
-      if (v12)
+      if (formatCopy)
       {
         v29 = v18->_warningInfoDict;
-        v30 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, v12, v16, v17);
+        v30 = objc_msgSend_valueWithString_(TSCEWarningValue, v14, formatCopy, v16, v17);
         objc_msgSend_setObject_forKey_(v29, v31, v30, @"TSCEOriginalDataFormatKey", v32);
       }
     }
@@ -154,7 +154,7 @@
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   v8 = objc_msgSend_warningWithType_(v4, v5, self->_warningType, v6, v7);
@@ -166,27 +166,27 @@
   return v8;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v5 = objc_msgSend_objectForKey_(self->_warningInfoDict, a2, a3, v3, v4);
+  v5 = objc_msgSend_objectForKey_(self->_warningInfoDict, a2, key, v3, v4);
   v10 = objc_msgSend_number(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v5 = objc_msgSend_objectForKey_(self->_warningInfoDict, a2, a3, v3, v4);
+  v5 = objc_msgSend_objectForKey_(self->_warningInfoDict, a2, key, v3, v4);
   v10 = objc_msgSend_string(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-- (void)setNumber:(id)a3 forKey:(id)a4
+- (void)setNumber:(id)number forKey:(id)key
 {
-  v17 = a3;
-  v10 = a4;
-  if (v17 && v10)
+  numberCopy = number;
+  keyCopy = key;
+  if (numberCopy && keyCopy)
   {
     warningInfoDict = self->_warningInfoDict;
     if (!warningInfoDict)
@@ -198,23 +198,23 @@
       warningInfoDict = self->_warningInfoDict;
     }
 
-    v14 = objc_msgSend_valueWithNumber_(TSCEWarningValue, v6, v17, v8, v9);
-    objc_msgSend_setObject_forKey_(warningInfoDict, v15, v14, v10, v16);
+    v14 = objc_msgSend_valueWithNumber_(TSCEWarningValue, v6, numberCopy, v8, v9);
+    objc_msgSend_setObject_forKey_(warningInfoDict, v15, v14, keyCopy, v16);
   }
 
-  else if (v10)
+  else if (keyCopy)
   {
-    objc_msgSend_removeObjectForKey_(self->_warningInfoDict, v6, v10, v8, v9);
+    objc_msgSend_removeObjectForKey_(self->_warningInfoDict, v6, keyCopy, v8, v9);
   }
 
   objc_msgSend__calculatehashValue(self, v6, v7, v8, v9);
 }
 
-- (void)setString:(id)a3 forKey:(id)a4
+- (void)setString:(id)string forKey:(id)key
 {
-  v17 = a3;
-  v10 = a4;
-  if (v17 && v10)
+  stringCopy = string;
+  keyCopy = key;
+  if (stringCopy && keyCopy)
   {
     warningInfoDict = self->_warningInfoDict;
     if (!warningInfoDict)
@@ -226,28 +226,28 @@
       warningInfoDict = self->_warningInfoDict;
     }
 
-    v14 = objc_msgSend_valueWithString_(TSCEWarningValue, v6, v17, v8, v9);
-    objc_msgSend_setObject_forKey_(warningInfoDict, v15, v14, v10, v16);
+    v14 = objc_msgSend_valueWithString_(TSCEWarningValue, v6, stringCopy, v8, v9);
+    objc_msgSend_setObject_forKey_(warningInfoDict, v15, v14, keyCopy, v16);
   }
 
-  else if (v10)
+  else if (keyCopy)
   {
-    objc_msgSend_removeObjectForKey_(self->_warningInfoDict, v6, v10, v8, v9);
+    objc_msgSend_removeObjectForKey_(self->_warningInfoDict, v6, keyCopy, v8, v9);
   }
 
   objc_msgSend__calculatehashValue(self, v6, v7, v8, v9);
 }
 
-- (id)displayStringWithCalculationEngine:(id)a3 forTable:(const TSKUIDStruct *)a4 andCellID:(TSUCellCoord)a5
+- (id)displayStringWithCalculationEngine:(id)engine forTable:(const TSKUIDStruct *)table andCellID:(TSUCellCoord)d
 {
-  v5 = objc_msgSend_displayStringWithCalculationEngine_forTable_(self, a2, a3, a4, *&a5);
+  v5 = objc_msgSend_displayStringWithCalculationEngine_forTable_(self, a2, engine, table, *&d);
 
   return v5;
 }
 
-- (id)displayStringWithCalculationEngine:(id)a3 forTable:(const TSKUIDStruct *)a4
+- (id)displayStringWithCalculationEngine:(id)engine forTable:(const TSKUIDStruct *)table
 {
-  v5 = a3;
+  engineCopy = engine;
   v10 = objc_msgSend_warningType(self, v6, v7, v8, v9);
   v15 = v10;
   if (v10 <= 99)
@@ -499,7 +499,7 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  v17 = objc_msgSend_documentLocale(v5, v11, v12, v13, v14);
+  v17 = objc_msgSend_documentLocale(engineCopy, v11, v12, v13, v14);
   v26 = objc_msgSend_numberForKey_(self, v23, @"TSCEArgument1Key", v24, v25);
   v31 = objc_msgSend_intValue(v26, v27, v28, v29, v30);
   v35 = objc_msgSend_localizedTypeStringForArgumentType_(v17, v32, v31, v33, v34);
@@ -536,13 +536,13 @@ LABEL_62:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v9 = v5;
     if (self->_cachedHashValue == v5[3] && self->_warningType == v5[1])
     {
@@ -602,250 +602,250 @@ LABEL_62:
   return v7;
 }
 
-+ (void)reportWarningInContext:(id)a3 warningType:(int64_t)a4
++ (void)reportWarningInContext:(id)context warningType:(int64_t)type
 {
-  v17 = a3;
-  if (objc_msgSend_shouldReportWarnings(v17, v6, v7, v8, v9))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v6, v7, v8, v9))
   {
-    v13 = objc_msgSend_warningWithType_(a1, v10, a4, v11, v12);
-    objc_msgSend_reportWarning_(v17, v14, v13, v15, v16);
+    v13 = objc_msgSend_warningWithType_(self, v10, type, v11, v12);
+    objc_msgSend_reportWarning_(contextCopy, v14, v13, v15, v16);
   }
 
-  objc_msgSend_setHasWarnings_(v17, v10, 1, v11, v12);
+  objc_msgSend_setHasWarnings_(contextCopy, v10, 1, v11, v12);
 }
 
-+ (void)reportNonNumericCellWarningInContext:(id)a3
++ (void)reportNonNumericCellWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForNonNumericCell(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForNonNumericCell(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (void)reportMonthOutOfRangeWarningInContext:(id)a3
++ (void)reportMonthOutOfRangeWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForMonthOutOfRange(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForMonthOutOfRange(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (void)reportDayOutOfRangeWarningInContext:(id)a3
++ (void)reportDayOutOfRangeWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForDayOutOfRange(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForDayOutOfRange(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (void)reportBoolToNumberConversionWarningInContext:(id)a3
++ (void)reportBoolToNumberConversionWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForBoolToNumberConversion(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForBoolToNumberConversion(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (void)reportLossOfUnitsWarningInContext:(id)a3
++ (void)reportLossOfUnitsWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForLossOfUnits(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForLossOfUnits(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (void)reportAutomaticUnitConversionWarningInContext:(id)a3
++ (void)reportAutomaticUnitConversionWarningInContext:(id)context
 {
-  v16 = a3;
-  if (objc_msgSend_shouldReportWarnings(v16, v4, v5, v6, v7))
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_warningForAutomaticUnitConversion(a1, v8, v9, v10, v11);
-    objc_msgSend_reportWarning_(v16, v13, v12, v14, v15);
+    v12 = objc_msgSend_warningForAutomaticUnitConversion(self, v8, v9, v10, v11);
+    objc_msgSend_reportWarning_(contextCopy, v13, v12, v14, v15);
   }
 
-  objc_msgSend_setHasWarnings_(v16, v8, 1, v10, v11);
+  objc_msgSend_setHasWarnings_(contextCopy, v8, 1, v10, v11);
 }
 
-+ (id)warningForComparisonWithLeftType:(char)a3 rightType:(char)a4
++ (id)warningForComparisonWithLeftType:(char)type rightType:(char)rightType
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = objc_msgSend_warningWithType_(a1, a2, 101, a4, v4);
-  v11 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v8, v6, v9, v10);
+  rightTypeCopy = rightType;
+  typeCopy = type;
+  v7 = objc_msgSend_warningWithType_(self, a2, 101, rightType, v4);
+  v11 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v8, typeCopy, v9, v10);
   objc_msgSend_setNumber_forKey_(v7, v12, v11, @"TSCEArgument1Key", v13);
 
-  v17 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v14, v5, v15, v16);
+  v17 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v14, rightTypeCopy, v15, v16);
   objc_msgSend_setNumber_forKey_(v7, v18, v17, @"TSCEArgument2Key", v19);
 
   return v7;
 }
 
-+ (void)reportComparisonWarningInContext:(id)a3 leftType:(char)a4 rightType:(char)a5
++ (void)reportComparisonWarningInContext:(id)context leftType:(char)type rightType:(char)rightType
 {
-  v5 = a5;
-  v6 = a4;
-  v19 = a3;
-  if (objc_msgSend_shouldReportWarnings(v19, v8, v9, v10, v11))
+  rightTypeCopy = rightType;
+  typeCopy = type;
+  contextCopy = context;
+  if (objc_msgSend_shouldReportWarnings(contextCopy, v8, v9, v10, v11))
   {
-    v15 = objc_msgSend_warningForComparisonWithLeftType_rightType_(a1, v12, v6, v5, v14);
-    objc_msgSend_reportWarning_(v19, v16, v15, v17, v18);
+    v15 = objc_msgSend_warningForComparisonWithLeftType_rightType_(self, v12, typeCopy, rightTypeCopy, v14);
+    objc_msgSend_reportWarning_(contextCopy, v16, v15, v17, v18);
   }
 
-  objc_msgSend_setHasWarnings_(v19, v12, 1, v13, v14);
+  objc_msgSend_setHasWarnings_(contextCopy, v12, 1, v13, v14);
 }
 
-+ (id)warningFor3DReferenceFormula:(id)a3
++ (id)warningFor3DReferenceFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 1, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 1, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForArrayedFormula:(id)a3
++ (id)warningForArrayedFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 2, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 2, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForDifferentBehaviorForFunctionFormula:(id)a3 originalFormula:(id)a4
++ (id)warningForDifferentBehaviorForFunctionFormula:(id)formula originalFormula:(id)originalFormula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(a1, a2, 3, a4, a3);
+  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(self, a2, 3, originalFormula, formula);
 
   return v4;
 }
 
-+ (id)warningForErrorTokenFormula:(id)a3
++ (id)warningForErrorTokenFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 4, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 4, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForExternalReferenceFormula:(id)a3
++ (id)warningForExternalReferenceFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 5, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 5, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForNaturalLanguageFormula:(id)a3
++ (id)warningForNaturalLanguageFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 6, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 6, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForReferenceOutOfBoundsFormula:(id)a3
++ (id)warningForReferenceOutOfBoundsFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 7, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 7, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForSharedFormulaBaseNotFoundFormula:(id)a3
++ (id)warningForSharedFormulaBaseNotFoundFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 8, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 8, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForUnknownName:(id)a3 originalFormula:(id)a4
++ (id)warningForUnknownName:(id)name originalFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(a1, a2, 9, a4, a3);
+  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(self, a2, 9, formula, name);
 
   return v4;
 }
 
-+ (id)warningForUnsupportedFormula:(id)a3
++ (id)warningForUnsupportedFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 10, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 10, formula, v3);
 
   return v4;
 }
 
-+ (id)warningForUnsupportedFunction:(id)a3 originalFormula:(id)a4
++ (id)warningForUnsupportedFunction:(id)function originalFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(a1, a2, 11, a4, a3);
+  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(self, a2, 11, formula, function);
 
   return v4;
 }
 
-+ (id)warningForUnsupportedNameFormula:(id)a3 originalFormula:(id)a4
++ (id)warningForUnsupportedNameFormula:(id)formula originalFormula:(id)originalFormula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(a1, a2, 12, a4, a3);
+  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(self, a2, 12, originalFormula, formula);
 
   return v4;
 }
 
-+ (id)warningForTransposedWithoutIssues:(id)a3
++ (id)warningForTransposedWithoutIssues:(id)issues
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 13, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 13, issues, v3);
 
   return v4;
 }
 
-+ (id)warningForTransposedWithIssues:(id)a3
++ (id)warningForTransposedWithIssues:(id)issues
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 14, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 14, issues, v3);
 
   return v4;
 }
 
-+ (id)warningForArrayModeWarning:(id)a3
++ (id)warningForArrayModeWarning:(id)warning
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_(a1, a2, 32, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalFormula_(self, a2, 32, warning, v3);
 
   return v4;
 }
 
-+ (id)warningForFormulaReplacedForExcelCompat:(id)a3 originalFormula:(id)a4
++ (id)warningForFormulaReplacedForExcelCompat:(id)compat originalFormula:(id)formula
 {
-  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(a1, a2, 17, a4, a3);
+  v4 = objc_msgSend_warningWithType_originalFormula_supplementaryText_(self, a2, 17, formula, compat);
 
   return v4;
 }
 
-+ (id)warningForUnsupportedDataFormat:(id)a3
++ (id)warningForUnsupportedDataFormat:(id)format
 {
-  v4 = objc_msgSend_warningWithType_originalDataFormat_(a1, a2, 30, a3, v3);
+  v4 = objc_msgSend_warningWithType_originalDataFormat_(self, a2, 30, format, v3);
 
   return v4;
 }
 
-+ (id)loadFromArchive:(const void *)a3
++ (id)loadFromArchive:(const void *)archive
 {
-  v7 = objc_msgSend_warningTypePrunedToThisVersion_(a1, a2, *(a3 + 14), v3, v4);
+  v7 = objc_msgSend_warningTypePrunedToThisVersion_(self, a2, *(archive + 14), v3, v4);
   if (v7)
   {
-    v15 = objc_msgSend_warningWithType_(a1, v8, v7, v9, v10);
-    v16 = *(a3 + 8);
+    v15 = objc_msgSend_warningWithType_(self, v8, v7, v9, v10);
+    v16 = *(archive + 8);
     if (v16 >= 1)
     {
       v17 = 8;
       while (1)
       {
-        v18 = *(*(a3 + 5) + v17);
+        v18 = *(*(archive + 5) + v17);
         v23 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v11, *(v18 + 24) & 0xFFFFFFFFFFFFFFFELL, v13, v14);
         v24 = *(v18 + 16);
         if ((v24 & 2) != 0)
@@ -884,12 +884,12 @@ LABEL_10:
   return v15;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v73 = *MEMORY[0x277D85DE8];
   warningType = self->_warningType;
-  *(a3 + 4) |= 2u;
-  *(a3 + 14) = warningType;
+  *(archive + 4) |= 2u;
+  *(archive + 14) = warningType;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -916,34 +916,34 @@ LABEL_10:
           goto LABEL_19;
         }
 
-        v20 = *(a3 + 5);
+        v20 = *(archive + 5);
         if (!v20)
         {
           goto LABEL_12;
         }
 
-        v21 = *(a3 + 8);
+        v21 = *(archive + 8);
         v22 = *v20;
         if (v21 >= *v20)
         {
-          if (v22 == *(a3 + 9))
+          if (v22 == *(archive + 9))
           {
 LABEL_12:
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-            v20 = *(a3 + 5);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+            v20 = *(archive + 5);
             v22 = *v20;
           }
 
           *v20 = v22 + 1;
-          v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::WarningArchive_WarningDictionaryEntry>(*(a3 + 3));
-          v24 = *(a3 + 8);
-          v25 = *(a3 + 5) + 8 * v24;
-          *(a3 + 8) = v24 + 1;
+          v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::WarningArchive_WarningDictionaryEntry>(*(archive + 3));
+          v24 = *(archive + 8);
+          v25 = *(archive + 5) + 8 * v24;
+          *(archive + 8) = v24 + 1;
           *(v25 + 8) = v23;
           goto LABEL_14;
         }
 
-        *(a3 + 8) = v21 + 1;
+        *(archive + 8) = v21 + 1;
         v23 = *&v20[2 * v21 + 2];
 LABEL_14:
         v26 = objc_msgSend_tsp_protobufString(v14, v15, v16, v17, v18);

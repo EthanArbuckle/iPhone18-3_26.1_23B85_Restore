@@ -1,78 +1,78 @@
 @interface PEGASUSSchemaPEGASUSWebAnswerExecution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unsigned)contentAgeInSecondsAtIndex:(unint64_t)a3;
-- (void)addContentAgeInSeconds:(unsigned int)a3;
-- (void)setHasAllowListType:(BOOL)a3;
-- (void)setHasAnswerClass:(BOOL)a3;
-- (void)setHasFuzzyMatchType:(BOOL)a3;
-- (void)setHasNumCallouts:(BOOL)a3;
-- (void)setHasNumHighlights:(BOOL)a3;
-- (void)setHasNumLinkedCallouts:(BOOL)a3;
-- (void)setHasQuality:(BOOL)a3;
-- (void)setHasSubDomain:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)contentAgeInSecondsAtIndex:(unint64_t)index;
+- (void)addContentAgeInSeconds:(unsigned int)seconds;
+- (void)setHasAllowListType:(BOOL)type;
+- (void)setHasAnswerClass:(BOOL)class;
+- (void)setHasFuzzyMatchType:(BOOL)type;
+- (void)setHasNumCallouts:(BOOL)callouts;
+- (void)setHasNumHighlights:(BOOL)highlights;
+- (void)setHasNumLinkedCallouts:(BOOL)callouts;
+- (void)setHasQuality:(BOOL)quality;
+- (void)setHasSubDomain:(BOOL)domain;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSWebAnswerExecution
 
-- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = PEGASUSSchemaPEGASUSWebAnswerExecution;
   v5 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"answerType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"answerType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setAnswerType:](v5, "setAnswerType:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"allowListType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"allowListType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setAllowListType:](v5, "setAllowListType:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fuzzyMatchType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fuzzyMatchType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setFuzzyMatchType:](v5, "setFuzzyMatchType:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"subDomain"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"subDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setSubDomain:](v5, "setSubDomain:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"quality"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setQuality:](v5, "setQuality:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"answerClass"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"answerClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setAnswerClass:](v5, "setAnswerClass:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"numHighlights"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"numHighlights"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
     }
 
     v31 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"numCallouts"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numCallouts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,14 +89,14 @@
 
     v29 = v13;
     v30 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"numLinkedCallouts"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numLinkedCallouts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSWebAnswerExecution setNumLinkedCallouts:](v5, "setNumLinkedCallouts:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"contentAgeInSeconds"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"contentAgeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,30 +155,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSWebAnswerExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -191,12 +191,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution allowListType](self, "allowListType")}];
-    [v3 setObject:v11 forKeyedSubscript:@"allowListType"];
+    [dictionary setObject:v11 forKeyedSubscript:@"allowListType"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -217,28 +217,28 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution answerClass](self, "answerClass")}];
-  [v3 setObject:v12 forKeyedSubscript:@"answerClass"];
+  [dictionary setObject:v12 forKeyedSubscript:@"answerClass"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution answerType](self, "answerType")}];
-    [v3 setObject:v5 forKeyedSubscript:@"answerType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"answerType"];
   }
 
 LABEL_5:
   if ([(NSArray *)self->_contentAgeInSeconds count])
   {
-    v6 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"contentAgeInSeconds"];
+    contentAgeInSeconds = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
+    v7 = [contentAgeInSeconds copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"contentAgeInSeconds"];
   }
 
   v8 = self->_has;
   if ((v8 & 4) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution fuzzyMatchType](self, "fuzzyMatchType")}];
-    [v3 setObject:v13 forKeyedSubscript:@"fuzzyMatchType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"fuzzyMatchType"];
 
     v8 = self->_has;
     if ((v8 & 0x80) == 0)
@@ -259,7 +259,7 @@ LABEL_9:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution numCallouts](self, "numCallouts")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numCallouts"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numCallouts"];
 
   v8 = self->_has;
   if ((v8 & 0x40) == 0)
@@ -275,7 +275,7 @@ LABEL_10:
 
 LABEL_22:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution numHighlights](self, "numHighlights")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numHighlights"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numHighlights"];
 
   v8 = self->_has;
   if ((v8 & 0x100) == 0)
@@ -291,7 +291,7 @@ LABEL_11:
 
 LABEL_23:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution numLinkedCallouts](self, "numLinkedCallouts")}];
-  [v3 setObject:v16 forKeyedSubscript:@"numLinkedCallouts"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numLinkedCallouts"];
 
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
@@ -307,19 +307,19 @@ LABEL_12:
 
 LABEL_24:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution quality](self, "quality")}];
-  [v3 setObject:v17 forKeyedSubscript:@"quality"];
+  [dictionary setObject:v17 forKeyedSubscript:@"quality"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSWebAnswerExecution subDomain](self, "subDomain")}];
-    [v3 setObject:v9 forKeyedSubscript:@"subDomain"];
+    [dictionary setObject:v9 forKeyedSubscript:@"subDomain"];
   }
 
 LABEL_14:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -447,16 +447,16 @@ LABEL_10:
   return v8 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(NSArray *)self->_contentAgeInSeconds hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -465,13 +465,13 @@ LABEL_10:
   if (*&has)
   {
     answerType = self->_answerType;
-    if (answerType != [v4 answerType])
+    if (answerType != [equalCopy answerType])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -480,13 +480,13 @@ LABEL_10:
     if (v8)
     {
       allowListType = self->_allowListType;
-      if (allowListType != [v4 allowListType])
+      if (allowListType != [equalCopy allowListType])
       {
         goto LABEL_42;
       }
 
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -495,13 +495,13 @@ LABEL_10:
       if (v10)
       {
         fuzzyMatchType = self->_fuzzyMatchType;
-        if (fuzzyMatchType != [v4 fuzzyMatchType])
+        if (fuzzyMatchType != [equalCopy fuzzyMatchType])
         {
           goto LABEL_42;
         }
 
         has = self->_has;
-        v6 = v4[28];
+        v6 = equalCopy[28];
       }
 
       v12 = (*&has >> 3) & 1;
@@ -510,13 +510,13 @@ LABEL_10:
         if (v12)
         {
           subDomain = self->_subDomain;
-          if (subDomain != [v4 subDomain])
+          if (subDomain != [equalCopy subDomain])
           {
             goto LABEL_42;
           }
 
           has = self->_has;
-          v6 = v4[28];
+          v6 = equalCopy[28];
         }
 
         v14 = (*&has >> 4) & 1;
@@ -525,13 +525,13 @@ LABEL_10:
           if (v14)
           {
             quality = self->_quality;
-            if (quality != [v4 quality])
+            if (quality != [equalCopy quality])
             {
               goto LABEL_42;
             }
 
             has = self->_has;
-            v6 = v4[28];
+            v6 = equalCopy[28];
           }
 
           v16 = (*&has >> 5) & 1;
@@ -540,13 +540,13 @@ LABEL_10:
             if (v16)
             {
               answerClass = self->_answerClass;
-              if (answerClass != [v4 answerClass])
+              if (answerClass != [equalCopy answerClass])
               {
                 goto LABEL_42;
               }
 
               has = self->_has;
-              v6 = v4[28];
+              v6 = equalCopy[28];
             }
 
             v18 = (*&has >> 6) & 1;
@@ -555,13 +555,13 @@ LABEL_10:
               if (v18)
               {
                 numHighlights = self->_numHighlights;
-                if (numHighlights != [v4 numHighlights])
+                if (numHighlights != [equalCopy numHighlights])
                 {
                   goto LABEL_42;
                 }
 
                 has = self->_has;
-                v6 = v4[28];
+                v6 = equalCopy[28];
               }
 
               v20 = (*&has >> 7) & 1;
@@ -570,27 +570,27 @@ LABEL_10:
                 if (v20)
                 {
                   numCallouts = self->_numCallouts;
-                  if (numCallouts != [v4 numCallouts])
+                  if (numCallouts != [equalCopy numCallouts])
                   {
                     goto LABEL_42;
                   }
 
                   has = self->_has;
-                  v6 = v4[28];
+                  v6 = equalCopy[28];
                 }
 
                 v22 = (*&has >> 8) & 1;
                 if (v22 == ((v6 >> 8) & 1))
                 {
-                  if (!v22 || (numLinkedCallouts = self->_numLinkedCallouts, numLinkedCallouts == [v4 numLinkedCallouts]))
+                  if (!v22 || (numLinkedCallouts = self->_numLinkedCallouts, numLinkedCallouts == [equalCopy numLinkedCallouts]))
                   {
-                    v24 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
-                    v25 = [v4 contentAgeInSeconds];
-                    v26 = v25;
-                    if ((v24 != 0) != (v25 == 0))
+                    contentAgeInSeconds = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
+                    contentAgeInSeconds2 = [equalCopy contentAgeInSeconds];
+                    v26 = contentAgeInSeconds2;
+                    if ((contentAgeInSeconds != 0) != (contentAgeInSeconds2 == 0))
                     {
-                      v27 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
-                      if (!v27)
+                      contentAgeInSeconds3 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
+                      if (!contentAgeInSeconds3)
                       {
 
 LABEL_45:
@@ -598,10 +598,10 @@ LABEL_45:
                         goto LABEL_43;
                       }
 
-                      v28 = v27;
-                      v29 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
-                      v30 = [v4 contentAgeInSeconds];
-                      v31 = [v29 isEqual:v30];
+                      v28 = contentAgeInSeconds3;
+                      contentAgeInSeconds4 = [(PEGASUSSchemaPEGASUSWebAnswerExecution *)self contentAgeInSeconds];
+                      contentAgeInSeconds5 = [equalCopy contentAgeInSeconds];
+                      v31 = [contentAgeInSeconds4 isEqual:contentAgeInSeconds5];
 
                       if (v31)
                       {
@@ -629,10 +629,10 @@ LABEL_43:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -780,23 +780,23 @@ LABEL_11:
   }
 }
 
-- (unsigned)contentAgeInSecondsAtIndex:(unint64_t)a3
+- (unsigned)contentAgeInSecondsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_contentAgeInSeconds objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_contentAgeInSeconds objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addContentAgeInSeconds:(unsigned int)a3
+- (void)addContentAgeInSeconds:(unsigned int)seconds
 {
-  v3 = *&a3;
+  v3 = *&seconds;
   contentAgeInSeconds = self->_contentAgeInSeconds;
   if (!contentAgeInSeconds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contentAgeInSeconds;
-    self->_contentAgeInSeconds = v6;
+    self->_contentAgeInSeconds = array;
 
     contentAgeInSeconds = self->_contentAgeInSeconds;
   }
@@ -805,9 +805,9 @@ LABEL_11:
   [(NSArray *)contentAgeInSeconds addObject:v8];
 }
 
-- (void)setHasNumLinkedCallouts:(BOOL)a3
+- (void)setHasNumLinkedCallouts:(BOOL)callouts
 {
-  if (a3)
+  if (callouts)
   {
     v3 = 256;
   }
@@ -820,9 +820,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumCallouts:(BOOL)a3
+- (void)setHasNumCallouts:(BOOL)callouts
 {
-  if (a3)
+  if (callouts)
   {
     v3 = 128;
   }
@@ -835,9 +835,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumHighlights:(BOOL)a3
+- (void)setHasNumHighlights:(BOOL)highlights
 {
-  if (a3)
+  if (highlights)
   {
     v3 = 64;
   }
@@ -850,9 +850,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAnswerClass:(BOOL)a3
+- (void)setHasAnswerClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 32;
   }
@@ -865,9 +865,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasQuality:(BOOL)a3
+- (void)setHasQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 16;
   }
@@ -880,9 +880,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSubDomain:(BOOL)a3
+- (void)setHasSubDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 8;
   }
@@ -895,9 +895,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasFuzzyMatchType:(BOOL)a3
+- (void)setHasFuzzyMatchType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -910,9 +910,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAllowListType:(BOOL)a3
+- (void)setHasAllowListType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

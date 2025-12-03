@@ -1,20 +1,20 @@
 @interface HDCloudSyncUpdateCachedRecordsOperation
-- (HDCloudSyncUpdateCachedRecordsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncUpdateCachedRecordsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (NSArray)invalidRecordIDs;
-- (uint64_t)_updateCKCachedZoneForZone:(void *)a3 recordsToAdd:(void *)a4 recordIDsToDelete:(void *)a5 serverChangeToken:(unsigned int)a6 fetchComplete:(void *)a7 container:(void *)a8 database:(void *)a9 error:;
-- (void)_fetchChangesForRecordZoneIDs:(void *)a3 container:(void *)a4 database:;
-- (void)_limitExceededFetchingChangesForRecordZoneIDs:(void *)a3 container:(void *)a4 database:(void *)a5 error:;
-- (void)fetchRecordZoneChangesForContainer:(id)a3 database:(id)a4;
+- (uint64_t)_updateCKCachedZoneForZone:(void *)zone recordsToAdd:(void *)add recordIDsToDelete:(void *)delete serverChangeToken:(unsigned int)token fetchComplete:(void *)complete container:(void *)container database:(void *)database error:;
+- (void)_fetchChangesForRecordZoneIDs:(void *)ds container:(void *)container database:;
+- (void)_limitExceededFetchingChangesForRecordZoneIDs:(void *)ds container:(void *)container database:(void *)database error:;
+- (void)fetchRecordZoneChangesForContainer:(id)container database:(id)database;
 - (void)main;
 @end
 
 @implementation HDCloudSyncUpdateCachedRecordsOperation
 
-- (HDCloudSyncUpdateCachedRecordsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncUpdateCachedRecordsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v10.receiver = self;
   v10.super_class = HDCloudSyncUpdateCachedRecordsOperation;
-  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:a3 cloudState:0];
+  v4 = [(HDCloudSyncOperation *)&v10 initWithConfiguration:configuration cloudState:0];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D10BB0]);
@@ -40,11 +40,11 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allCKContainers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -55,15 +55,15 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allCKContainers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 privateCloudDatabase];
-        [(HDCloudSyncUpdateCachedRecordsOperation *)self fetchRecordZoneChangesForContainer:v10 database:v11];
+        privateCloudDatabase = [v10 privateCloudDatabase];
+        [(HDCloudSyncUpdateCachedRecordsOperation *)self fetchRecordZoneChangesForContainer:v10 database:privateCloudDatabase];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allCKContainers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -76,35 +76,35 @@
 - (NSArray)invalidRecordIDs
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableSet *)self->_invalidRecordIDs allObjects];
+  allObjects = [(NSMutableSet *)self->_invalidRecordIDs allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)fetchRecordZoneChangesForContainer:(id)a3 database:(id)a4
+- (void)fetchRecordZoneChangesForContainer:(id)container database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 cachedCloudState];
-  v10 = [v6 containerIdentifier];
+  containerCopy = container;
+  databaseCopy = database;
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  containerIdentifier = [containerCopy containerIdentifier];
   v26 = 0;
-  v11 = [v9 zoneIdentifiersRequiringFetchForContainerIdentifier:v10 databaseScope:objc_msgSend(v7 error:{"databaseScope"), &v26}];
+  v11 = [cachedCloudState zoneIdentifiersRequiringFetchForContainerIdentifier:containerIdentifier databaseScope:objc_msgSend(databaseCopy error:{"databaseScope"), &v26}];
   v12 = v26;
 
   if (v11 || !v12)
   {
-    v13 = [(HDCloudSyncOperation *)self configuration];
-    v14 = [v13 repository];
-    v15 = [v14 syncAvailability];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration2 repository];
+    syncAvailability = [repository syncAvailability];
 
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesForContainer_database___block_invoke;
     v24 = &unk_278616300;
-    v25 = v15;
-    v16 = v15;
+    v25 = syncAvailability;
+    v16 = syncAvailability;
     v17 = [v11 hk_filter:&v21];
     v18 = [v17 mutableCopy];
 
@@ -112,7 +112,7 @@
     v20 = v19;
     if (v19 && [v19 count])
     {
-      [(HDCloudSyncUpdateCachedRecordsOperation *)&self->super.super.isa _fetchChangesForRecordZoneIDs:v20 container:v6 database:v7];
+      [(HDCloudSyncUpdateCachedRecordsOperation *)&self->super.super.isa _fetchChangesForRecordZoneIDs:v20 container:containerCopy database:databaseCopy];
     }
   }
 
@@ -144,15 +144,15 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
   return v4;
 }
 
-- (void)_fetchChangesForRecordZoneIDs:(void *)a3 container:(void *)a4 database:
+- (void)_fetchChangesForRecordZoneIDs:(void *)ds container:(void *)container database:
 {
   v77 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dsCopy = ds;
+  containerCopy = container;
+  if (self)
   {
-    [a1[13] beginTask];
+    [self[13] beginTask];
     v69[0] = 0;
     v69[1] = v69;
     v69[2] = 0x2810000000;
@@ -180,16 +180,16 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
     {
       if ([v7 count] < 0x190)
       {
-        v14 = [v8 containerIdentifier];
-        v15 = [v9 databaseScope];
-        v16 = v14;
+        containerIdentifier = [dsCopy containerIdentifier];
+        databaseScope = [containerCopy databaseScope];
+        v16 = containerIdentifier;
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __108__HDCloudSyncUpdateCachedRecordsOperation__configurationsByRecordZoneIDs_containerIdentifier_databaseScope___block_invoke;
         v74 = &unk_2786168B8;
         v17 = v16;
-        *(&v75 + 1) = a1;
-        v76 = v15;
+        *(&v75 + 1) = self;
+        v76 = databaseScope;
         *&v75 = v17;
         v35 = [v7 hk_mapToDictionary:buf];
 
@@ -197,14 +197,14 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
         v18 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v8 containerIdentifier];
-          [v9 databaseScope];
+          containerIdentifier2 = [dsCopy containerIdentifier];
+          [containerCopy databaseScope];
           v20 = CKDatabaseScopeString();
           v21 = [v7 count];
           *buf = 138544130;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v19;
+          *&buf[14] = containerIdentifier2;
           *&buf[22] = 2114;
           v74 = v20;
           LOWORD(v75) = 2048;
@@ -212,7 +212,7 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
           _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@: %{public}@: Beginning fetch of %ld record zone changes", buf, 0x2Au);
         }
 
-        v34 = v8;
+        v34 = dsCopy;
         v22 = [objc_alloc(MEMORY[0x277CBC3B8]) initWithRecordZoneIDs:v7 configurationsByRecordZoneID:v35];
         [v22 setFetchAllChanges:1];
         [v22 setShouldFetchAssetContents:0];
@@ -220,10 +220,10 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
         v57[1] = 3221225472;
         v57[2] = __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZoneIDs_container_database___block_invoke;
         v57[3] = &unk_278616780;
-        v57[4] = a1;
-        v23 = v8;
+        v57[4] = self;
+        v23 = dsCopy;
         v58 = v23;
-        v24 = v9;
+        v24 = containerCopy;
         v59 = v24;
         v60 = v69;
         v61 = v63;
@@ -244,7 +244,7 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
         v49 = v25;
         v26 = v24;
         v50 = v26;
-        v51 = a1;
+        selfCopy = self;
         v52 = v69;
         v53 = v63;
         v54 = v67;
@@ -258,7 +258,7 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
         v41 = v27;
         v28 = v26;
         v42 = v28;
-        v43 = a1;
+        selfCopy2 = self;
         v44 = v69;
         v45 = v63;
         v46 = v67;
@@ -268,22 +268,22 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
         v36[1] = 3221225472;
         v36[2] = __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZoneIDs_container_database___block_invoke_317;
         v36[3] = &unk_278616890;
-        v36[4] = a1;
+        v36[4] = self;
         v37 = v27;
         v29 = v28;
         v38 = v29;
         v39 = v7;
         [v22 setFetchRecordZoneChangesCompletionBlock:v36];
-        v30 = [a1 configuration];
-        v31 = [v30 cachedCloudState];
-        [v31 setOperationCountForAnalytics:{objc_msgSend(v31, "operationCountForAnalytics") + 1}];
+        configuration = [self configuration];
+        cachedCloudState = [configuration cachedCloudState];
+        [cachedCloudState setOperationCountForAnalytics:{objc_msgSend(cachedCloudState, "operationCountForAnalytics") + 1}];
 
-        v32 = [a1 configuration];
-        v33 = [v32 operationGroup];
-        [v22 setGroup:v33];
+        configuration2 = [self configuration];
+        operationGroup = [configuration2 operationGroup];
+        [v22 setGroup:operationGroup];
 
         [v29 hd_addOperation:v22];
-        v8 = v34;
+        dsCopy = v34;
 
         goto LABEL_7;
       }
@@ -293,10 +293,10 @@ uint64_t __87__HDCloudSyncUpdateCachedRecordsOperation_fetchRecordZoneChangesFor
       v72 = @"Synthesized error for preemptive split.";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
       v12 = [v10 errorWithDomain:*MEMORY[0x277CBBF50] code:27 userInfo:v11];
-      [(HDCloudSyncUpdateCachedRecordsOperation *)a1 _limitExceededFetchingChangesForRecordZoneIDs:v7 container:v8 database:v9 error:v12];
+      [(HDCloudSyncUpdateCachedRecordsOperation *)self _limitExceededFetchingChangesForRecordZoneIDs:v7 container:dsCopy database:containerCopy error:v12];
     }
 
-    [a1[13] finishTask];
+    [self[13] finishTask];
 LABEL_7:
     _Block_object_dispose(v63, 8);
 
@@ -309,14 +309,14 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_limitExceededFetchingChangesForRecordZoneIDs:(void *)a3 container:(void *)a4 database:(void *)a5 error:
+- (void)_limitExceededFetchingChangesForRecordZoneIDs:(void *)ds container:(void *)container database:(void *)database error:
 {
   v25 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  dsCopy = ds;
+  containerCopy = container;
+  databaseCopy = database;
+  if (self)
   {
     v13 = [v9 count];
     _HKInitializeLogging();
@@ -327,12 +327,12 @@ LABEL_7:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v21 = 138543362;
-        v22 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_228986000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Received limit exceeded error for a single record zone. This is unexpected.", &v21, 0xCu);
       }
 
-      [*(a1 + 104) beginTask];
-      [*(a1 + 104) failTaskWithError:v12];
+      [*(self + 104) beginTask];
+      [*(self + 104) failTaskWithError:databaseCopy];
     }
 
     else
@@ -341,7 +341,7 @@ LABEL_7:
       {
         v16 = v14;
         v21 = 138543618;
-        v22 = a1;
+        selfCopy2 = self;
         v23 = 2048;
         v24 = [v9 count];
         _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Received limit exceeded error; retrying by splitting record zone request in half and re-fetching (%ld zones).", &v21, 0x16u);
@@ -349,10 +349,10 @@ LABEL_7:
 
       v17 = [v9 hk_splitWithBucketCount:2];
       v18 = [v17 objectAtIndexedSubscript:0];
-      [(HDCloudSyncUpdateCachedRecordsOperation *)a1 _fetchChangesForRecordZoneIDs:v18 container:v10 database:v11];
+      [(HDCloudSyncUpdateCachedRecordsOperation *)self _fetchChangesForRecordZoneIDs:v18 container:dsCopy database:containerCopy];
 
       v19 = [v17 objectAtIndexedSubscript:1];
-      [(HDCloudSyncUpdateCachedRecordsOperation *)a1 _fetchChangesForRecordZoneIDs:v19 container:v10 database:v11];
+      [(HDCloudSyncUpdateCachedRecordsOperation *)self _fetchChangesForRecordZoneIDs:v19 container:dsCopy database:containerCopy];
     }
   }
 
@@ -552,37 +552,37 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
   return v6;
 }
 
-- (uint64_t)_updateCKCachedZoneForZone:(void *)a3 recordsToAdd:(void *)a4 recordIDsToDelete:(void *)a5 serverChangeToken:(unsigned int)a6 fetchComplete:(void *)a7 container:(void *)a8 database:(void *)a9 error:
+- (uint64_t)_updateCKCachedZoneForZone:(void *)zone recordsToAdd:(void *)add recordIDsToDelete:(void *)delete serverChangeToken:(unsigned int)token fetchComplete:(void *)complete container:(void *)container database:(void *)database error:
 {
   v149 = *MEMORY[0x277D85DE8];
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
+  zoneCopy = zone;
+  addCopy = add;
+  deleteCopy = delete;
+  completeCopy = complete;
+  containerCopy = container;
   v21 = 0;
-  v118 = a1;
-  if (a1 && v18)
+  selfCopy = self;
+  if (self && deleteCopy)
   {
     v109 = v15;
-    v107 = v18;
-    v22 = v20;
-    v23 = [v118 configuration];
-    v24 = [v23 cachedCloudState];
-    [v24 setChangedRecordsCount:{objc_msgSend(v24, "changedRecordsCount") + objc_msgSend(v16, "count")}];
+    v107 = deleteCopy;
+    v22 = containerCopy;
+    configuration = [selfCopy configuration];
+    cachedCloudState = [configuration cachedCloudState];
+    [cachedCloudState setChangedRecordsCount:{objc_msgSend(cachedCloudState, "changedRecordsCount") + objc_msgSend(zoneCopy, "count")}];
 
-    v25 = [v118 configuration];
-    v26 = [v25 cachedCloudState];
-    [v26 setDeletedRecordsCount:{objc_msgSend(v26, "deletedRecordsCount") + objc_msgSend(v17, "count")}];
+    configuration2 = [selfCopy configuration];
+    cachedCloudState2 = [configuration2 cachedCloudState];
+    [cachedCloudState2 setDeletedRecordsCount:{objc_msgSend(cachedCloudState2, "deletedRecordsCount") + objc_msgSend(addCopy, "count")}];
 
-    v106 = v19;
-    v27 = v19;
+    v106 = completeCopy;
+    v27 = completeCopy;
     v105 = v22;
     v112 = v22;
-    v28 = v16;
-    v108 = v17;
-    v29 = v17;
+    v28 = zoneCopy;
+    v108 = addCopy;
+    v29 = addCopy;
     v111 = v27;
     if ([v28 count] || objc_msgSend(v29, "count"))
     {
@@ -591,15 +591,15 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v31 = v30;
-        v32 = [v27 containerIdentifier];
+        containerIdentifier = [v27 containerIdentifier];
         v33 = [v28 count];
         v34 = [v29 count];
         [v112 databaseScope];
         v35 = CKDatabaseScopeString();
         *buf = 138544386;
-        v140 = v118;
+        v140 = selfCopy;
         v141 = 2114;
-        v142 = v32;
+        v142 = containerIdentifier;
         v143 = 2048;
         v144 = v33;
         v27 = v111;
@@ -611,11 +611,11 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
       }
     }
 
-    v36 = [v27 containerIdentifier];
-    v116 = [v112 databaseScope];
+    containerIdentifier2 = [v27 containerIdentifier];
+    databaseScope = [v112 databaseScope];
     v37 = v28;
     v113 = v29;
-    v38 = v36;
+    v38 = containerIdentifier2;
     v39 = v37;
     v40 = v38;
     v125 = 0u;
@@ -645,8 +645,8 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
           *&v123 = v45;
           v46 = v40;
           v47 = v40;
-          *&v124 = v118;
-          *(&v124 + 1) = v116;
+          *&v124 = selfCopy;
+          *(&v124 + 1) = databaseScope;
           *(&v123 + 1) = v47;
           v48 = HKWithAutoreleasePool();
 
@@ -654,10 +654,10 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
           {
 
             v21 = 0;
-            v18 = v107;
-            v17 = v108;
-            v20 = v105;
-            v19 = v106;
+            deleteCopy = v107;
+            addCopy = v108;
+            containerCopy = v105;
+            completeCopy = v106;
             v15 = v109;
             goto LABEL_68;
           }
@@ -675,7 +675,7 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
       }
     }
 
-    v104 = v16;
+    v104 = zoneCopy;
     if ([obj count])
     {
       v103 = v40;
@@ -686,7 +686,7 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
         v50 = v49;
         v51 = [obj count];
         *v132 = 138543618;
-        *&v132[4] = v118;
+        *&v132[4] = selfCopy;
         *&v132[12] = 2048;
         *&v132[14] = v51;
         _os_log_impl(&dword_228986000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@ Updated cache with %ld changed records:", v132, 0x16u);
@@ -718,11 +718,11 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
             if (os_log_type_enabled(*v54, OS_LOG_TYPE_DEFAULT))
             {
               v61 = v60;
-              v62 = [v59 recordID];
+              recordID = [v59 recordID];
               *v132 = 67109378;
               *&v132[4] = v56;
               *&v132[8] = 2114;
-              *&v132[10] = v62;
+              *&v132[10] = recordID;
               _os_log_impl(&dword_228986000, v61, OS_LOG_TYPE_DEFAULT, "\t\t%3d. %{public}@", v132, 0x12u);
 
               ++v56;
@@ -785,29 +785,29 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
 
           v73 = *(*(&v125 + 1) + 8 * v71);
           v74 = [HDCloudSyncZoneIdentifier alloc];
-          v75 = [v73 zoneID];
-          v76 = [(HDCloudSyncZoneIdentifier *)v74 initForZone:v75 container:v119 scope:v116];
+          zoneID = [v73 zoneID];
+          v76 = [(HDCloudSyncZoneIdentifier *)v74 initForZone:zoneID container:v119 scope:databaseScope];
 
           v77 = [HDCloudSyncCachedZone alloc];
-          v78 = [v118 configuration];
-          v79 = [v78 repository];
-          v80 = [v118 configuration];
-          v81 = [v80 accessibilityAssertion];
-          v82 = [(HDCloudSyncCachedZone *)v77 initForZoneIdentifier:v76 repository:v79 accessibilityAssertion:v81];
+          configuration3 = [selfCopy configuration];
+          repository = [configuration3 repository];
+          configuration4 = [selfCopy configuration];
+          accessibilityAssertion = [configuration4 accessibilityAssertion];
+          v82 = [(HDCloudSyncCachedZone *)v77 initForZoneIdentifier:v76 repository:repository accessibilityAssertion:accessibilityAssertion];
 
           *v132 = v72;
-          LOBYTE(v79) = [v82 deleteRecordID:v73 error:v132];
+          LOBYTE(repository) = [v82 deleteRecordID:v73 error:v132];
           v70 = *v132;
 
-          if ((v79 & 1) == 0)
+          if ((repository & 1) == 0)
           {
             _HKInitializeLogging();
             v83 = *MEMORY[0x277CCC328];
-            v84 = a9;
+            databaseCopy2 = database;
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *v133 = 138543874;
-              v134 = v118;
+              v134 = selfCopy;
               v135 = 2114;
               v136 = v73;
               v137 = 2114;
@@ -817,16 +817,16 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
 
             v85 = v70;
             v86 = v85;
-            v17 = v108;
+            addCopy = v108;
             v15 = v109;
-            v16 = v104;
-            v18 = v107;
+            zoneCopy = v104;
+            deleteCopy = v107;
             if (v85)
             {
-              if (a9)
+              if (database)
               {
                 v87 = v85;
-                *a9 = v86;
+                *database = v86;
               }
 
               else
@@ -873,7 +873,7 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
         v89 = v88;
         v90 = [v114 count];
         *v133 = 138543618;
-        v134 = v118;
+        v134 = selfCopy;
         v135 = 2048;
         v136 = v90;
         _os_log_impl(&dword_228986000, v89, OS_LOG_TYPE_DEFAULT, "%{public}@ Updated cache with %ld deleted records:", v133, 0x16u);
@@ -921,20 +921,20 @@ uint64_t __92__HDCloudSyncUpdateCachedRecordsOperation__fetchChangesForRecordZon
     }
 
     v129[0] = 1;
-    v17 = v108;
+    addCopy = v108;
     v15 = v109;
-    v16 = v104;
-    v18 = v107;
-    v84 = a9;
+    zoneCopy = v104;
+    deleteCopy = v107;
+    databaseCopy2 = database;
     v86 = v117;
     v99 = v114;
 LABEL_64:
 
     v100 = v129[0];
-    v19 = v106;
+    completeCopy = v106;
     if (v100 == 1)
     {
-      v21 = [v15 setServerChangeToken:v18 fetchComplete:a6 error:v84];
+      v21 = [v15 setServerChangeToken:deleteCopy fetchComplete:token error:databaseCopy2];
     }
 
     else
@@ -942,7 +942,7 @@ LABEL_64:
       v21 = 0;
     }
 
-    v20 = v105;
+    containerCopy = v105;
   }
 
 LABEL_68:

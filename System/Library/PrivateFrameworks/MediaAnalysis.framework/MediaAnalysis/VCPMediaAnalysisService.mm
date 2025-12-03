@@ -2,81 +2,81 @@
 + (BOOL)isEntitled;
 + (id)analysisService;
 + (id)defaultDeferredProcessingTypes;
-+ (id)errorWithDescription:(id)a3;
++ (id)errorWithDescription:(id)description;
 + (id)sharedAnalysisService;
-+ (int)queryProgress:(float *)a3 forPhotoLibrary:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6;
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibrary:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6;
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibraryURL:(id)a4 andTaskID:(unint64_t)a5;
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibraryURL:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6;
-- (BOOL)requestDeferredProcessingTypes:(id)a3 assets:(id)a4 error:(id *)a5;
++ (int)queryProgress:(float *)progress forPhotoLibrary:(id)library andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block;
++ (int)queryProgressDetail:(id *)detail forPhotoLibrary:(id)library andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block;
++ (int)queryProgressDetail:(id *)detail forPhotoLibraryURL:(id)l andTaskID:(unint64_t)d;
++ (int)queryProgressDetail:(id *)detail forPhotoLibraryURL:(id)l andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block;
+- (BOOL)requestDeferredProcessingTypes:(id)types assets:(id)assets error:(id *)error;
 - (VCPMediaAnalysisService)init;
-- (id)assetsPendingDeferredProcessingWithPhotoLibraryURL:(id)a3 error:(id *)a4;
+- (id)assetsPendingDeferredProcessingWithPhotoLibraryURL:(id)l error:(id *)error;
 - (id)connection;
-- (id)requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (id)requestSystemXPCStoreListenerEndpointWithError:(id *)a3;
-- (int)downloadVideoEncoderWithCompletionHandler:(id)a3;
-- (int)queryAutoCounterOptInStatusForPhotoLibraryURL:(id)a3 withPersonLocalIdentifiers:(id)a4 completionHandler:(id)a5;
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssetWithResourceURLs:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)a3 clusterStateURL:(id)a4 groundTruthURL:(id)a5 completionHandler:(id)a6;
-- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)a3 completionHandler:(id)a4;
-- (int)requestAutoCounterSIMLValidationForPhotoLibraryURL:(id)a3 simlGroundTruthURL:(id)a4 completionHandler:(id)a5;
-- (int)requestBackgroundAnalysisForAssets:(id)a3 fromPhotoLibraryWithURL:(id)a4 realTime:(BOOL)a5 progessHandler:(id)a6 completionHandler:(id)a7;
-- (int)requestBackgroundAnalysisForAssets:(id)a3 realTime:(BOOL)a4 progessHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestBackgroundProcessingWithTaskID:(unint64_t)a3 forPhotoLibrary:(id)a4 progessHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestClusterCacheValidationWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestCollectionThemeForAssetsWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestCollectionThemeVersionWithOptions:(id)a3 andCompletionHandler:(id)a4;
-- (int)requestDatabaseRestoreFastPassProcessingWithCompletionHandler:(id)a3;
-- (int)requestDumpAutoCounterForPhotoLibraryURL:(id)a3 completionHandler:(id)a4;
-- (int)requestFRCForAssetURL:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)a3 photoLibraryURL:(id)a4 progessHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestFaceProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestForceDeferredProcessingWithProgessHandler:(id)a3 andCompletionHandler:(id)a4;
-- (int)requestFullImageOnlyProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestFullVideoProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestIdentificationOfFaces:(id)a3 withCompletionHandler:(id)a4;
-- (int)requestLivePhotoEffectsForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestOCRProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestOTAMaintenanceWithOptions:(id)a3 progessHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestOptInAutoCounterForPhotoLibraryURL:(id)a3 withPersons:(id)a4 completionHandler:(id)a5;
-- (int)requestPersonPreferenceForPhotoLibraryURL:(id)a3 completionHandler:(id)a4;
-- (int)requestPersonProcessingForPhotoLibraryURL:(id)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestPersonPromoterStatusWithAdvancedFlag:(BOOL)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestPhotosDeferredProcessingWithCompletionHandler:(id)a3;
-- (int)requestPhotosFaceFastPassProcessingForPhotoLibraryURL:(id)a3 withCompletionHandler:(id)a4;
-- (int)requestPhotosSceneFastPassProcessingForPhotoLibraryURL:(id)a3 withCompletionHandler:(id)a4;
-- (int)requestProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (int)requestProcessingWithTaskID:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestProcessingWithTaskID:(unint64_t)a3 forPhotoLibrary:(id)a4 withOptions:(id)a5 progessHandler:(id)a6 andCompletionHandler:(id)a7;
-- (int)requestProgressReportWithCompletionHandler:(id)a3;
-- (int)requestQuickFaceIdentificationForPhotoLibraryURL:(id)a3 withOptions:(id)a4 andCompletionHandler:(id)a5;
-- (int)requestRebuildPersonsWithLocalIdentifiers:(id)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestRecentsProcessing:(unint64_t)a3 photoLibrary:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestReclusterFacesWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestResetFaceClassificationModelForPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestResetFaceClusteringStateWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestResetPersons:(id)a3 forPhotoLibraryURL:(id)a4 completionHandler:(id)a5;
-- (int)requestResetPetClassificationModelForPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (int)requestResetProcessingStatusWithTaskID:(unint64_t)a3 photoLibrary:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (int)requestSceneProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestSceneprintProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestStaticStickerScoringForLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (int)requestSuggestedMePersonIdentifierWithContext:(id)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestSuggestedPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 photoLibraryURL:(id)a6 progessHandler:(id)a7 completionHandler:(id)a8;
-- (int)requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 photoLibraryURL:(id)a5 progessHandler:(id)a6 completionHandler:(id)a7;
-- (int)requestVIPModelFilepathForPhotoLibraryURL:(id)a3 forModelType:(unint64_t)a4 completionHandler:(id)a5;
-- (int)requestVideoCaptionForFrames:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestVideoStabilizationForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestVisualSearchProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-- (int)requestWallpaperUpgradeAtURL:(id)a3 toDestinationURL:(id)a4 withOptions:(id)a5 andCompletionHandler:(id)a6;
+- (id)requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary:(id)library error:(id *)error;
+- (id)requestSystemXPCStoreListenerEndpointWithError:(id *)error;
+- (int)downloadVideoEncoderWithCompletionHandler:(id)handler;
+- (int)queryAutoCounterOptInStatusForPhotoLibraryURL:(id)l withPersonLocalIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (int)requestAnalysisTypes:(unint64_t)types forAssetWithResourceURLs:(id)ls withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)l clusterStateURL:(id)rL groundTruthURL:(id)uRL completionHandler:(id)handler;
+- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)l completionHandler:(id)handler;
+- (int)requestAutoCounterSIMLValidationForPhotoLibraryURL:(id)l simlGroundTruthURL:(id)rL completionHandler:(id)handler;
+- (int)requestBackgroundAnalysisForAssets:(id)assets fromPhotoLibraryWithURL:(id)l realTime:(BOOL)time progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestBackgroundAnalysisForAssets:(id)assets realTime:(BOOL)time progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestBackgroundProcessingWithTaskID:(unint64_t)d forPhotoLibrary:(id)library progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestClusterCacheValidationWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestCollectionThemeForAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestCollectionThemeVersionWithOptions:(id)options andCompletionHandler:(id)handler;
+- (int)requestDatabaseRestoreFastPassProcessingWithCompletionHandler:(id)handler;
+- (int)requestDumpAutoCounterForPhotoLibraryURL:(id)l completionHandler:(id)handler;
+- (int)requestFRCForAssetURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestFaceProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestForceDeferredProcessingWithProgessHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestFullImageOnlyProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestFullVideoProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestIdentificationOfFaces:(id)faces withCompletionHandler:(id)handler;
+- (int)requestLivePhotoEffectsForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestOCRProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestOTAMaintenanceWithOptions:(id)options progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestOptInAutoCounterForPhotoLibraryURL:(id)l withPersons:(id)persons completionHandler:(id)handler;
+- (int)requestPersonPreferenceForPhotoLibraryURL:(id)l completionHandler:(id)handler;
+- (int)requestPersonProcessingForPhotoLibraryURL:(id)l options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestPersonPromoterStatusWithAdvancedFlag:(BOOL)flag photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestPhotosDeferredProcessingWithCompletionHandler:(id)handler;
+- (int)requestPhotosFaceFastPassProcessingForPhotoLibraryURL:(id)l withCompletionHandler:(id)handler;
+- (int)requestPhotosSceneFastPassProcessingForPhotoLibraryURL:(id)l withCompletionHandler:(id)handler;
+- (int)requestProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestProcessingWithTaskID:(unint64_t)d forAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestProcessingWithTaskID:(unint64_t)d forPhotoLibrary:(id)library withOptions:(id)options progessHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestProgressReportWithCompletionHandler:(id)handler;
+- (int)requestQuickFaceIdentificationForPhotoLibraryURL:(id)l withOptions:(id)options andCompletionHandler:(id)handler;
+- (int)requestRebuildPersonsWithLocalIdentifiers:(id)identifiers photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestRecentsProcessing:(unint64_t)processing photoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestReclusterFacesWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestResetFaceClassificationModelForPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestResetFaceClusteringStateWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestResetPersons:(id)persons forPhotoLibraryURL:(id)l completionHandler:(id)handler;
+- (int)requestResetPetClassificationModelForPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestResetProcessingStatusWithTaskID:(unint64_t)d photoLibrary:(id)library options:(id)options completionHandler:(id)handler;
+- (int)requestSceneProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestSceneprintProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestStaticStickerScoringForLibrary:(id)library options:(id)options completionHandler:(id)handler;
+- (int)requestSuggestedMePersonIdentifierWithContext:(id)context photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestSuggestedPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestVIPModelFilepathForPhotoLibraryURL:(id)l forModelType:(unint64_t)type completionHandler:(id)handler;
+- (int)requestVideoCaptionForFrames:(id)frames withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestVideoStabilizationForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestVisualSearchProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (int)requestWallpaperUpgradeAtURL:(id)l toDestinationURL:(id)rL withOptions:(id)options andCompletionHandler:(id)handler;
 - (void)cancelAllRequests;
 - (void)cancelBackgroundActivity;
-- (void)cancelRequest:(int)a3;
+- (void)cancelRequest:(int)request;
 - (void)invalidate;
-- (void)notifyLibraryAvailableAtURL:(id)a3;
-- (void)reportProgress:(double)a3 forRequest:(int)a4;
-- (void)requestInProcessMovieCurationAnalysisWithURL:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
+- (void)notifyLibraryAvailableAtURL:(id)l;
+- (void)reportProgress:(double)progress forRequest:(int)request;
+- (void)requestInProcessMovieCurationAnalysisWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation VCPMediaAnalysisService
@@ -107,9 +107,9 @@
     handlerQueue = v3->_handlerQueue;
     v3->_handlerQueue = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     progressBlocks = v3->_progressBlocks;
-    v3->_progressBlocks = v9;
+    v3->_progressBlocks = dictionary;
 
     v3->_nextRequestID = 1;
     v11 = v3;
@@ -137,13 +137,13 @@ void __48__VCPMediaAnalysisService_sharedAnalysisService__block_invoke()
   +[VCPMediaAnalysisService sharedAnalysisService]::instance = v0;
 }
 
-+ (id)errorWithDescription:(id)a3
++ (id)errorWithDescription:(id)description
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E696A578];
-  v9[0] = v3;
+  v9[0] = descriptionCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 errorWithDomain:@"MediaAnalysisService" code:1 userInfo:v5];
 
@@ -238,21 +238,21 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
   *(v2 + 8) = 0;
 }
 
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssetWithResourceURLs:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestAnalysisTypes:(unint64_t)types forAssetWithResourceURLs:(id)ls withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v40 = a6;
-  v13 = a7;
-  v39 = v12;
-  if (v11 && ([v11 count] == 1 || objc_msgSend(v11, "count") == 2))
+  lsCopy = ls;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v39 = optionsCopy;
+  if (lsCopy && ([lsCopy count] == 1 || objc_msgSend(lsCopy, "count") == 2))
   {
-    v14 = [v12 objectForKeyedSubscript:@"InProcess"];
-    v37 = v13;
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
+    v37 = completionHandlerCopy;
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -266,7 +266,7 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
       block[4] = self;
       block[5] = &buf;
       dispatch_sync(managementQueue, block);
-      v17 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:v11 withOptions:v12 analysisTypes:a3 progressHandler:0 completionHandler:v13];
+      v17 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:lsCopy withOptions:optionsCopy analysisTypes:types progressHandler:0 completionHandler:completionHandlerCopy];
       [v17 run];
       v18 = *(*(&buf + 1) + 24);
 
@@ -275,14 +275,14 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
 
     else
     {
-      v36 = a3;
-      v19 = [MEMORY[0x1E695DF70] array];
-      v20 = [MEMORY[0x1E695DF70] array];
+      typesCopy = types;
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      obj = v11;
+      obj = lsCopy;
       v21 = [obj countByEnumeratingWithState:&v50 objects:v57 count:16];
       if (v21)
       {
@@ -297,18 +297,18 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
             }
 
             v24 = *(*(&v50 + 1) + 8 * i);
-            v25 = [v24 path];
-            v26 = v25;
-            [v25 UTF8String];
+            path = [v24 path];
+            v26 = path;
+            [path UTF8String];
             v27 = sandbox_extension_issue_file();
 
             if (!v27)
             {
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [v24 path];
+                path2 = [v24 path];
                 LODWORD(buf) = 138412290;
-                *(&buf + 4) = v31;
+                *(&buf + 4) = path2;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to issue sandbox extension on %@", &buf, 0xCu);
               }
 
@@ -324,10 +324,10 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
             }
 
             v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v27];
-            [v19 addObject:v28];
+            [array addObject:v28];
 
-            v29 = [v24 path];
-            [v20 addObject:v29];
+            path3 = [v24 path];
+            [array2 addObject:path3];
 
             free(v27);
           }
@@ -353,12 +353,12 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
       v42[3] = &unk_1E834C5E8;
       p_buf = &buf;
       v42[4] = self;
-      v46 = v40;
+      v46 = handlerCopy;
       v47 = v37;
-      v43 = v20;
+      v43 = array2;
       v44 = v39;
-      v49 = v36;
-      v45 = v19;
+      v49 = typesCopy;
+      v45 = array;
       dispatch_sync(v30, v42);
       v18 = *(*(&buf + 1) + 24);
 
@@ -366,7 +366,7 @@ void __37__VCPMediaAnalysisService_connection__block_invoke_563(uint64_t a1)
 LABEL_23:
     }
 
-    v13 = v37;
+    completionHandlerCopy = v37;
   }
 
   else
@@ -377,7 +377,7 @@ LABEL_23:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MediaAnalysis] [MediaAnalyzer requestAnalysisTypes] call with invalid resourceURLs", &buf, 2u);
     }
 
-    (*(v13 + 2))(v13, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     v18 = 0;
   }
 
@@ -529,23 +529,23 @@ void __122__VCPMediaAnalysisService_requestAnalysisTypes_forAssetWithResourceURL
   dispatch_async(v4, block);
 }
 
-- (void)requestInProcessMovieCurationAnalysisWithURL:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)requestInProcessMovieCurationAnalysisWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  lCopy = l;
+  blockCopy = block;
+  completionHandlerCopy = completionHandler;
   v11 = qos_class_self();
   v12 = dispatch_get_global_queue(v11, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __118__VCPMediaAnalysisService_requestInProcessMovieCurationAnalysisWithURL_cancelBlock_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834C660;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v18 = blockCopy;
+  v19 = completionHandlerCopy;
+  v17 = lCopy;
+  v13 = lCopy;
+  v14 = completionHandlerCopy;
+  v15 = blockCopy;
   dispatch_async(v12, block);
 }
 
@@ -647,16 +647,16 @@ void __118__VCPMediaAnalysisService_requestInProcessMovieCurationAnalysisWithURL
   }
 }
 
-- (int)requestAnalysisTypes:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestAnalysisTypes:(unint64_t)types forAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   v66 = *MEMORY[0x1E69E9840];
-  v46 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v44 = v13;
-  v45 = v14;
-  v15 = [v12 objectForKeyedSubscript:@"InProcess"];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v44 = handlerCopy;
+  v45 = completionHandlerCopy;
+  v15 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
   if ([v15 BOOLValue])
   {
 
@@ -673,7 +673,7 @@ LABEL_7:
     block[4] = self;
     block[5] = &buf;
     dispatch_sync(managementQueue, block);
-    v24 = [VCPFullAnalysisAssetProcessingTask taskWithAsset:v46 andAnalysisTypes:a3 andOptions:v12 andProgressHandler:v13 andCompletionHandler:v14];
+    v24 = [VCPFullAnalysisAssetProcessingTask taskWithAsset:assetsCopy andAnalysisTypes:types andOptions:optionsCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
     [v24 run];
     v25 = *(*(&buf + 1) + 24);
 
@@ -681,19 +681,19 @@ LABEL_7:
     goto LABEL_26;
   }
 
-  v16 = [v12 objectForKeyedSubscript:@"AllowOnDemand"];
-  v17 = [v16 BOOLValue];
+  v16 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
+  bOOLValue = [v16 BOOLValue];
 
-  if ((v17 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v18 = [v12 objectForKeyedSubscript:@"OutputPath"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"OutputPath"];
 
   if (v18)
   {
-    v19 = [v12 objectForKeyedSubscript:@"OutputPath"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"OutputPath"];
     [v19 UTF8String];
     v20 = sandbox_extension_issue_file();
     if (!v20)
@@ -712,20 +712,20 @@ LABEL_7:
       v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
       v41 = [v38 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v40];
 
-      (*(v14 + 2))(v14, 0, v41);
+      (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v41);
       v25 = 0;
       goto LABEL_26;
     }
 
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v20];
     free(v20);
-    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
+    v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:optionsCopy];
     [v22 setValue:v21 forKey:@"OutputPathSandboxTokenKey"];
   }
 
   else
   {
-    v22 = v12;
+    v22 = optionsCopy;
   }
 
   v26 = [MEMORY[0x1E695DFA8] set];
@@ -733,9 +733,9 @@ LABEL_7:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v27 = v46;
+  v27 = assetsCopy;
   v43 = v22;
-  v28 = 0;
+  photoLibrary2 = 0;
   v29 = [v27 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v29)
   {
@@ -750,10 +750,10 @@ LABEL_7:
         }
 
         v32 = *(*(&v55 + 1) + 8 * i);
-        if (v28)
+        if (photoLibrary2)
         {
-          v33 = [*(*(&v55 + 1) + 8 * i) photoLibrary];
-          v34 = v33 == v28;
+          photoLibrary = [*(*(&v55 + 1) + 8 * i) photoLibrary];
+          v34 = photoLibrary == photoLibrary2;
 
           if (!v34)
           {
@@ -767,11 +767,11 @@ LABEL_7:
 
         else
         {
-          v28 = [*(*(&v55 + 1) + 8 * i) photoLibrary];
+          photoLibrary2 = [*(*(&v55 + 1) + 8 * i) photoLibrary];
         }
 
-        v35 = [v32 localIdentifier];
-        [v26 addObject:v35];
+        localIdentifier = [v32 localIdentifier];
+        [v26 addObject:localIdentifier];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -794,17 +794,17 @@ LABEL_7:
   v51 = v44;
   v52 = v45;
   v48 = v26;
-  v28 = v28;
-  v49 = v28;
+  photoLibrary2 = photoLibrary2;
+  v49 = photoLibrary2;
   v50 = v43;
-  v54 = a3;
+  typesCopy = types;
   dispatch_sync(v36, v47);
   v25 = *(*(&buf + 1) + 24);
 
   _Block_object_dispose(&buf, 8);
 LABEL_21:
 
-  v12 = v43;
+  optionsCopy = v43;
 LABEL_26:
 
   return v25;
@@ -953,13 +953,13 @@ void __107__VCPMediaAnalysisService_requestAnalysisTypes_forAssets_withOptions_p
   dispatch_async(v4, block);
 }
 
-- (int)requestBackgroundAnalysisForAssets:(id)a3 fromPhotoLibraryWithURL:(id)a4 realTime:(BOOL)a5 progessHandler:(id)a6 completionHandler:(id)a7
+- (int)requestBackgroundAnalysisForAssets:(id)assets fromPhotoLibraryWithURL:(id)l realTime:(BOOL)time progessHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12 && [v12 count])
+  assetsCopy = assets;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (assetsCopy && [assetsCopy count])
   {
     v26 = 0;
     v27 = &v26;
@@ -972,11 +972,11 @@ void __107__VCPMediaAnalysisService_requestAnalysisTypes_forAssets_withOptions_p
     block[3] = &unk_1E834C688;
     v24 = &v26;
     block[4] = self;
-    v22 = v14;
-    v23 = v15;
-    v20 = v13;
-    v21 = v12;
-    v25 = a5;
+    v22 = handlerCopy;
+    v23 = completionHandlerCopy;
+    v20 = lCopy;
+    v21 = assetsCopy;
+    timeCopy = time;
     dispatch_sync(managementQueue, block);
     v17 = *(v27 + 6);
 
@@ -985,7 +985,7 @@ void __107__VCPMediaAnalysisService_requestAnalysisTypes_forAssets_withOptions_p
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     v17 = 0;
   }
 
@@ -1127,24 +1127,24 @@ void __128__VCPMediaAnalysisService_requestBackgroundAnalysisForAssets_fromPhoto
   dispatch_async(v4, block);
 }
 
-- (int)requestBackgroundAnalysisForAssets:(id)a3 realTime:(BOOL)a4 progessHandler:(id)a5 completionHandler:(id)a6
+- (int)requestBackgroundAnalysisForAssets:(id)assets realTime:(BOOL)time progessHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69789B0] vcp_defaultURL];
-  LODWORD(v8) = [(VCPMediaAnalysisService *)self requestBackgroundAnalysisForAssets:v10 fromPhotoLibraryWithURL:v13 realTime:v8 progessHandler:v11 completionHandler:v12];
+  timeCopy = time;
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  vcp_defaultURL = [MEMORY[0x1E69789B0] vcp_defaultURL];
+  LODWORD(timeCopy) = [(VCPMediaAnalysisService *)self requestBackgroundAnalysisForAssets:assetsCopy fromPhotoLibraryWithURL:vcp_defaultURL realTime:timeCopy progessHandler:handlerCopy completionHandler:completionHandlerCopy];
 
-  return v8;
+  return timeCopy;
 }
 
-- (int)requestProcessingWithTaskID:(unint64_t)a3 forPhotoLibrary:(id)a4 withOptions:(id)a5 progessHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestProcessingWithTaskID:(unint64_t)d forPhotoLibrary:(id)library withOptions:(id)options progessHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  libraryCopy = library;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1154,22 +1154,22 @@ void __128__VCPMediaAnalysisService_requestBackgroundAnalysisForAssets_fromPhoto
   block[1] = 3221225472;
   block[2] = __119__VCPMediaAnalysisService_requestProcessingWithTaskID_forPhotoLibrary_withOptions_progessHandler_andCompletionHandler___block_invoke;
   block[3] = &unk_1E834C6D8;
-  v26 = v15;
+  v26 = completionHandlerCopy;
   v27 = &v29;
-  v28 = a3;
+  dCopy = d;
   block[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v23 = libraryCopy;
+  v24 = optionsCopy;
+  v25 = handlerCopy;
+  v17 = optionsCopy;
+  v18 = libraryCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(a3) = *(v30 + 6);
+  LODWORD(d) = *(v30 + 6);
 
   _Block_object_dispose(&v29, 8);
-  return a3;
+  return d;
 }
 
 void __119__VCPMediaAnalysisService_requestProcessingWithTaskID_forPhotoLibrary_withOptions_progessHandler_andCompletionHandler___block_invoke(uint64_t a1)
@@ -1301,11 +1301,11 @@ void __119__VCPMediaAnalysisService_requestProcessingWithTaskID_forPhotoLibrary_
   dispatch_async(v4, v5);
 }
 
-- (int)requestResetProcessingStatusWithTaskID:(unint64_t)a3 photoLibrary:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (int)requestResetProcessingStatusWithTaskID:(unint64_t)d photoLibrary:(id)library options:(id)options completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  libraryCopy = library;
+  optionsCopy = options;
+  handlerCopy = handler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1316,19 +1316,19 @@ void __119__VCPMediaAnalysisService_requestProcessingWithTaskID_forPhotoLibrary_
   v18[2] = __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photoLibrary_options_completionHandler___block_invoke;
   v18[3] = &unk_1E834C728;
   v22 = &v24;
-  v23 = a3;
+  dCopy = d;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v19 = libraryCopy;
+  v20 = optionsCopy;
+  v21 = handlerCopy;
+  v14 = optionsCopy;
+  v15 = libraryCopy;
+  v16 = handlerCopy;
   dispatch_sync(managementQueue, v18);
-  LODWORD(a3) = *(v25 + 6);
+  LODWORD(d) = *(v25 + 6);
 
   _Block_object_dispose(&v24, 8);
-  return a3;
+  return d;
 }
 
 void __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photoLibrary_options_completionHandler___block_invoke(uint64_t a1)
@@ -1442,15 +1442,15 @@ void __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photo
   dispatch_async(v2, v3);
 }
 
-- (int)requestBackgroundProcessingWithTaskID:(unint64_t)a3 forPhotoLibrary:(id)a4 progessHandler:(id)a5 completionHandler:(id)a6
+- (int)requestBackgroundProcessingWithTaskID:(unint64_t)d forPhotoLibrary:(id)library progessHandler:(id)handler completionHandler:(id)completionHandler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 <= 7 && ((1 << a3) & 0x8E) != 0)
+  libraryCopy = library;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (d <= 7 && ((1 << d) & 0x8E) != 0)
   {
-    v13 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:a3 forPhotoLibrary:v10 withOptions:0 progessHandler:v11 andCompletionHandler:v12];
+    v13 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:d forPhotoLibrary:libraryCopy withOptions:0 progessHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   }
 
   else
@@ -1458,7 +1458,7 @@ void __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photo
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       v15 = 134217984;
-      v16 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MediaAnalysis] Unsupported task %lu", &v15, 0xCu);
     }
 
@@ -1468,12 +1468,12 @@ void __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photo
   return v13;
 }
 
-- (int)requestVideoCaptionForFrames:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestVideoCaptionForFrames:(id)frames withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  framesCopy = frames;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1483,16 +1483,16 @@ void __105__VCPMediaAnalysisService_requestResetProcessingStatusWithTaskID_photo
   v20[1] = 3221225472;
   v20[2] = __105__VCPMediaAnalysisService_requestVideoCaptionForFrames_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v20[3] = &unk_1E834C750;
-  v24 = v13;
+  v24 = completionHandlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
-  v18 = v12;
+  v21 = framesCopy;
+  v22 = optionsCopy;
+  v23 = handlerCopy;
+  v15 = optionsCopy;
+  v16 = framesCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -1634,11 +1634,11 @@ void __105__VCPMediaAnalysisService_requestVideoCaptionForFrames_withOptions_pro
   dispatch_async(v4, block);
 }
 
-- (int)requestRecentsProcessing:(unint64_t)a3 photoLibrary:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestRecentsProcessing:(unint64_t)processing photoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  libraryCopy = library;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1648,15 +1648,15 @@ void __105__VCPMediaAnalysisService_requestVideoCaptionForFrames_withOptions_pro
   v18[1] = 3221225472;
   v18[2] = __99__VCPMediaAnalysisService_requestRecentsProcessing_photoLibrary_progressHandler_completionHandler___block_invoke;
   v18[3] = &unk_1E834C778;
-  v20 = v11;
-  v21 = v12;
+  v20 = handlerCopy;
+  v21 = completionHandlerCopy;
   v22 = &v24;
-  v23 = a3;
+  processingCopy = processing;
   v18[4] = self;
-  v19 = v10;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
+  v19 = libraryCopy;
+  v14 = libraryCopy;
+  v15 = completionHandlerCopy;
+  v16 = handlerCopy;
   dispatch_sync(managementQueue, v18);
   LODWORD(self) = *(v25 + 6);
 
@@ -1792,22 +1792,22 @@ void __99__VCPMediaAnalysisService_requestRecentsProcessing_photoLibrary_progres
   dispatch_async(v4, v5);
 }
 
-- (int)requestProcessingWithTaskID:(unint64_t)a3 forAssets:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestProcessingWithTaskID:(unint64_t)d forAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v29 = a5;
-  v30 = a6;
-  v13 = a7;
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v14 = [MEMORY[0x1E695DFA8] set];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v15 = v12;
+  v15 = assetsCopy;
   v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
-  v28 = a3;
-  v17 = 0;
+  dCopy = d;
+  photoLibrary2 = 0;
   if (v16)
   {
     v18 = *v44;
@@ -1821,15 +1821,15 @@ void __99__VCPMediaAnalysisService_requestRecentsProcessing_photoLibrary_progres
         }
 
         v20 = *(*(&v43 + 1) + 8 * i);
-        if (v17)
+        if (photoLibrary2)
         {
-          v21 = [*(*(&v43 + 1) + 8 * i) photoLibrary];
-          v22 = v21 == v17;
+          photoLibrary = [*(*(&v43 + 1) + 8 * i) photoLibrary];
+          v22 = photoLibrary == photoLibrary2;
 
           if (!v22)
           {
             v25 = [objc_opt_class() errorWithDescription:@"Assets from multiple libraries not supported"];
-            v13[2](v13, 0, v25);
+            completionHandlerCopy[2](completionHandlerCopy, 0, v25);
 
             v26 = 0;
             goto LABEL_13;
@@ -1838,11 +1838,11 @@ void __99__VCPMediaAnalysisService_requestRecentsProcessing_photoLibrary_progres
 
         else
         {
-          v17 = [*(*(&v43 + 1) + 8 * i) photoLibrary];
+          photoLibrary2 = [*(*(&v43 + 1) + 8 * i) photoLibrary];
         }
 
-        v23 = [v20 localIdentifier];
-        [v14 addObject:v23];
+        localIdentifier = [v20 localIdentifier];
+        [v14 addObject:localIdentifier];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -1862,13 +1862,13 @@ void __99__VCPMediaAnalysisService_requestRecentsProcessing_photoLibrary_progres
   block[3] = &unk_1E834C5E8;
   v37 = &v39;
   block[4] = self;
-  v35 = v30;
-  v36 = v13;
-  v38 = v28;
+  v35 = handlerCopy;
+  v36 = completionHandlerCopy;
+  v38 = dCopy;
   v32 = v14;
-  v17 = v17;
-  v33 = v17;
-  v34 = v29;
+  photoLibrary2 = photoLibrary2;
+  v33 = photoLibrary2;
+  v34 = optionsCopy;
   dispatch_sync(managementQueue, block);
   v26 = *(v40 + 6);
 
@@ -2012,55 +2012,55 @@ void __114__VCPMediaAnalysisService_requestProcessingWithTaskID_forAssets_withOp
   dispatch_async(v4, block);
 }
 
-- (int)requestLivePhotoEffectsForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestLivePhotoEffectsForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __109__VCPMediaAnalysisService_requestLivePhotoEffectsForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:4 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:4 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestSceneProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestSceneProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108__VCPMediaAnalysisService_requestSceneProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:2 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:2 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestFaceProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestFaceProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __107__VCPMediaAnalysisService_requestFaceProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:3 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:3 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestCollectionThemeForAssetsWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 withOptions:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (int)requestCollectionThemeForAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -2070,18 +2070,18 @@ void __114__VCPMediaAnalysisService_requestProcessingWithTaskID_forAssets_withOp
   block[1] = 3221225472;
   block[2] = __152__VCPMediaAnalysisService_requestCollectionThemeForAssetsWithLocalIdentifiers_fromPhotoLibraryWithURL_withOptions_progressHandler_andCompletionHandler___block_invoke;
   block[3] = &unk_1E834C7C8;
-  v29 = v16;
+  v29 = completionHandlerCopy;
   v30 = &v31;
-  v27 = v14;
-  v28 = v15;
+  v27 = optionsCopy;
+  v28 = handlerCopy;
   block[4] = self;
-  v25 = v12;
-  v26 = v13;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v16;
-  v22 = v15;
+  v25 = identifiersCopy;
+  v26 = lCopy;
+  v18 = optionsCopy;
+  v19 = lCopy;
+  v20 = identifiersCopy;
+  v21 = completionHandlerCopy;
+  v22 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(self) = *(v32 + 6);
 
@@ -2224,10 +2224,10 @@ void __152__VCPMediaAnalysisService_requestCollectionThemeForAssetsWithLocalIden
   dispatch_async(v4, block);
 }
 
-- (int)requestCollectionThemeVersionWithOptions:(id)a3 andCompletionHandler:(id)a4
+- (int)requestCollectionThemeVersionWithOptions:(id)options andCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -2237,17 +2237,17 @@ void __152__VCPMediaAnalysisService_requestCollectionThemeForAssetsWithLocalIden
   v12[1] = 3221225472;
   v12[2] = __89__VCPMediaAnalysisService_requestCollectionThemeVersionWithOptions_andCompletionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(optionsCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return optionsCopy;
 }
 
 void __89__VCPMediaAnalysisService_requestCollectionThemeVersionWithOptions_andCompletionHandler___block_invoke(uint64_t a1)
@@ -2363,15 +2363,15 @@ void __89__VCPMediaAnalysisService_requestCollectionThemeVersionWithOptions_andC
   dispatch_async(v2, block);
 }
 
-- (int)requestQuickFaceIdentificationForPhotoLibraryURL:(id)a3 withOptions:(id)a4 andCompletionHandler:(id)a5
+- (int)requestQuickFaceIdentificationForPhotoLibraryURL:(id)l withOptions:(id)options andCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"InProcess"];
-  v12 = [v11 BOOLValue];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v11 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+  if (bOOLValue && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "In-Process quick face identification not supported", buf, 2u);
@@ -2386,14 +2386,14 @@ void __89__VCPMediaAnalysisService_requestCollectionThemeVersionWithOptions_andC
   block[1] = 3221225472;
   block[2] = __109__VCPMediaAnalysisService_requestQuickFaceIdentificationForPhotoLibraryURL_withOptions_andCompletionHandler___block_invoke;
   block[3] = &unk_1E834C868;
-  v22 = v10;
+  v22 = handlerCopy;
   v23 = buf;
   block[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
+  v20 = lCopy;
+  v21 = optionsCopy;
+  v14 = optionsCopy;
+  v15 = lCopy;
+  v16 = handlerCopy;
   dispatch_sync(managementQueue, block);
   v17 = *(v25 + 6);
 
@@ -2520,72 +2520,72 @@ void __109__VCPMediaAnalysisService_requestQuickFaceIdentificationForPhotoLibrar
   dispatch_async(v4, v5);
 }
 
-- (int)requestOCRProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestOCRProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__VCPMediaAnalysisService_requestOCRProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:10 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:10 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestVisualSearchProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestVisualSearchProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __115__VCPMediaAnalysisService_requestVisualSearchProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:12 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:12 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestFullImageOnlyProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestFullImageOnlyProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __116__VCPMediaAnalysisService_requestFullImageOnlyProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:255 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:255 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestFullVideoProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestFullVideoProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
+  completionHandlerCopy = completionHandler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __112__VCPMediaAnalysisService_requestFullVideoProcessingForAssets_withOptions_progressHandler_andCompletionHandler___block_invoke;
   v13[3] = &unk_1E834C7A0;
-  v14 = v10;
-  v11 = v10;
-  LODWORD(a5) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:1 forAssets:a3 withOptions:a4 progressHandler:a5 andCompletionHandler:v13];
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
+  LODWORD(handler) = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:1 forAssets:assets withOptions:options progressHandler:handler andCompletionHandler:v13];
 
-  return a5;
+  return handler;
 }
 
-- (int)requestSceneprintProcessingForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestSceneprintProcessingForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 objectForKeyedSubscript:@"InProcess"];
-  v15 = [v14 BOOLValue];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v14 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v21 = 0;
     v22 = &v21;
@@ -2599,7 +2599,7 @@ void __109__VCPMediaAnalysisService_requestQuickFaceIdentificationForPhotoLibrar
     v20[4] = self;
     v20[5] = &v21;
     dispatch_sync(managementQueue, v20);
-    v17 = [VCPPhotosSceneprintAssetProcessingTask taskWithAssets:v10 options:v11 andCompletionHandler:v13];
+    v17 = [VCPPhotosSceneprintAssetProcessingTask taskWithAssets:assetsCopy options:optionsCopy andCompletionHandler:completionHandlerCopy];
     [v17 run];
     v18 = *(v22 + 6);
 
@@ -2608,7 +2608,7 @@ void __109__VCPMediaAnalysisService_requestQuickFaceIdentificationForPhotoLibrar
 
   else
   {
-    v18 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:5 forAssets:v10 withOptions:v11 progressHandler:v12 andCompletionHandler:v13];
+    v18 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:5 forAssets:assetsCopy withOptions:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   }
 
   return v18;
@@ -2623,16 +2623,16 @@ uint64_t __113__VCPMediaAnalysisService_requestSceneprintProcessingForAssets_wit
   return result;
 }
 
-- (int)requestVideoStabilizationForAssets:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestVideoStabilizationForAssets:(id)assets withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 objectForKeyedSubscript:@"InProcess"];
-  v15 = [v14 BOOLValue];
+  assetsCopy = assets;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v14 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v21 = 0;
     v22 = &v21;
@@ -2646,7 +2646,7 @@ uint64_t __113__VCPMediaAnalysisService_requestSceneprintProcessingForAssets_wit
     v20[4] = self;
     v20[5] = &v21;
     dispatch_sync(managementQueue, v20);
-    v17 = [VCPVideoStabilizationAssetProcessingTask taskWithAssets:v10 andOptions:v11 andCompletionHandler:v13];
+    v17 = [VCPVideoStabilizationAssetProcessingTask taskWithAssets:assetsCopy andOptions:optionsCopy andCompletionHandler:completionHandlerCopy];
     [v17 run];
     v18 = *(v22 + 6);
 
@@ -2655,7 +2655,7 @@ uint64_t __113__VCPMediaAnalysisService_requestSceneprintProcessingForAssets_wit
 
   else
   {
-    v18 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:6 forAssets:v10 withOptions:v11 progressHandler:v12 andCompletionHandler:v13];
+    v18 = [(VCPMediaAnalysisService *)self requestProcessingWithTaskID:6 forAssets:assetsCopy withOptions:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   }
 
   return v18;
@@ -2670,14 +2670,14 @@ uint64_t __111__VCPMediaAnalysisService_requestVideoStabilizationForAssets_withO
   return result;
 }
 
-- (int)requestFRCForAssetURL:(id)a3 withOptions:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
+- (int)requestFRCForAssetURL:(id)l withOptions:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (!lCopy)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2692,23 +2692,23 @@ uint64_t __111__VCPMediaAnalysisService_requestVideoStabilizationForAssets_withO
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:&v65 count:1];
     v24 = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v23];
 
-    v13[2](v13, 0, v24);
+    completionHandlerCopy[2](completionHandlerCopy, 0, v24);
     goto LABEL_15;
   }
 
-  v14 = [v11 objectForKeyedSubscript:@"InProcess"];
-  v15 = [v14 BOOLValue];
+  v14 = [optionsCopy objectForKeyedSubscript:@"InProcess"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (!v15)
+  if (!bOOLValue)
   {
-    v25 = [v10 path];
-    [v25 UTF8String];
+    path = [lCopy path];
+    [path UTF8String];
     v26 = sandbox_extension_issue_file();
 
     if (v26)
     {
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v26];
-      v28 = [v10 path];
+      path2 = [lCopy path];
       free(v26);
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -2721,13 +2721,13 @@ uint64_t __111__VCPMediaAnalysisService_requestVideoStabilizationForAssets_withO
       v38[3] = &unk_1E834C7C8;
       p_buf = &buf;
       v38[4] = self;
-      v42 = v12;
-      v43 = v13;
-      v39 = v28;
-      v40 = v11;
+      v42 = handlerCopy;
+      v43 = completionHandlerCopy;
+      v39 = path2;
+      v40 = optionsCopy;
       v41 = v27;
       v30 = v27;
-      v31 = v28;
+      v31 = path2;
       dispatch_sync(managementQueue, v38);
       v19 = *(*(&buf + 1) + 24);
 
@@ -2737,9 +2737,9 @@ uint64_t __111__VCPMediaAnalysisService_requestVideoStabilizationForAssets_withO
 
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v10 path];
+      path3 = [lCopy path];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v32;
+      *(&buf + 4) = path3;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to issue sandbox extension on %@", &buf, 0xCu);
     }
 
@@ -2750,7 +2750,7 @@ uint64_t __111__VCPMediaAnalysisService_requestVideoStabilizationForAssets_withO
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
     v36 = [v33 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v35];
 
-    v13[2](v13, 0, v36);
+    completionHandlerCopy[2](completionHandlerCopy, 0, v36);
 LABEL_15:
     v19 = 0;
     goto LABEL_16;
@@ -2780,7 +2780,7 @@ LABEL_15:
   block[4] = self;
   block[5] = &v53;
   dispatch_sync(v16, block);
-  v59 = v10;
+  v59 = lCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
@@ -2788,10 +2788,10 @@ LABEL_15:
   v45[3] = &unk_1E834C890;
   v45[4] = &v47;
   v45[5] = &buf;
-  v18 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:v17 withOptions:v11 analysisTypes:0x20000000 progressHandler:0 completionHandler:v45];
+  v18 = [VCPFullAnalysisURLProcessingTask taskForURLAsset:v17 withOptions:optionsCopy analysisTypes:0x20000000 progressHandler:0 completionHandler:v45];
 
   [v18 run];
-  v13[2](v13, v48[5], *(*(&buf + 1) + 40));
+  completionHandlerCopy[2](completionHandlerCopy, v48[5], *(*(&buf + 1) + 40));
   v19 = *(v54 + 6);
 
   _Block_object_dispose(&v47, 8);
@@ -2996,14 +2996,14 @@ void __98__VCPMediaAnalysisService_requestFRCForAssetURL_withOptions_progressHan
   dispatch_async(v4, block);
 }
 
-- (int)requestWallpaperUpgradeAtURL:(id)a3 toDestinationURL:(id)a4 withOptions:(id)a5 andCompletionHandler:(id)a6
+- (int)requestWallpaperUpgradeAtURL:(id)l toDestinationURL:(id)rL withOptions:(id)options andCompletionHandler:(id)handler
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 || !v11)
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!lCopy || !rLCopy)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -3016,24 +3016,24 @@ void __98__VCPMediaAnalysisService_requestFRCForAssetURL_withOptions_progressHan
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MediaAnalysis] requestWallpaperUpgradeAtURL call with invalid URL"];
     v52[0] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
-    v14 = [v23 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v25];
+    array = [v23 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v25];
 
-    v13[2](v13, 0, v14);
+    handlerCopy[2](handlerCopy, 0, array);
     goto LABEL_18;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [v10 path];
-  [v15 UTF8String];
+  array = [MEMORY[0x1E695DF70] array];
+  path = [lCopy path];
+  [path UTF8String];
   v16 = sandbox_extension_issue_file();
 
   if (!v16)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v10 path];
+      path2 = [lCopy path];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v26;
+      *(&buf + 4) = path2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to issue sandbox extension on %@", &buf, 0xCu);
     }
 
@@ -3044,25 +3044,25 @@ void __98__VCPMediaAnalysisService_requestFRCForAssetURL_withOptions_progressHan
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
     v30 = [v27 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v29];
 
-    v13[2](v13, 0, v30);
+    handlerCopy[2](handlerCopy, 0, v30);
     goto LABEL_18;
   }
 
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v16];
-  [v14 addObject:v17];
+  [array addObject:v17];
 
   free(v16);
-  v18 = [v11 path];
-  [v18 UTF8String];
+  path3 = [rLCopy path];
+  [path3 UTF8String];
   v19 = sandbox_extension_issue_file();
 
   if (!v19)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v11 path];
+      path4 = [rLCopy path];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v31;
+      *(&buf + 4) = path4;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to issue sandbox extension on %@", &buf, 0xCu);
     }
 
@@ -3073,14 +3073,14 @@ void __98__VCPMediaAnalysisService_requestFRCForAssetURL_withOptions_progressHan
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v35 = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v34];
 
-    v13[2](v13, 0, v35);
+    handlerCopy[2](handlerCopy, 0, v35);
 LABEL_18:
     v22 = 0;
     goto LABEL_19;
   }
 
   v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v19];
-  [v14 addObject:v20];
+  [array addObject:v20];
 
   free(v19);
   *&buf = 0;
@@ -3094,12 +3094,12 @@ LABEL_18:
   block[3] = &unk_1E834C8E0;
   p_buf = &buf;
   block[4] = self;
-  v42 = v13;
-  v38 = v10;
-  v39 = v11;
-  v40 = v12;
-  v14 = v14;
-  v41 = v14;
+  v42 = handlerCopy;
+  v38 = lCopy;
+  v39 = rLCopy;
+  v40 = optionsCopy;
+  array = array;
+  v41 = array;
   dispatch_sync(managementQueue, block);
   v22 = *(*(&buf + 1) + 24);
 
@@ -3236,15 +3236,15 @@ void __106__VCPMediaAnalysisService_requestWallpaperUpgradeAtURL_toDestinationUR
   dispatch_async(v4, block);
 }
 
-- (void)reportProgress:(double)a3 forRequest:(int)a4
+- (void)reportProgress:(double)progress forRequest:(int)request
 {
   v14 = *MEMORY[0x1E69E9840];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    v11 = a4;
+    requestCopy = request;
     v12 = 2048;
-    v13 = a3;
+    progressCopy = progress;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis] Request %d is %.2f%% complete", buf, 0x12u);
   }
 
@@ -3254,8 +3254,8 @@ void __106__VCPMediaAnalysisService_requestWallpaperUpgradeAtURL_toDestinationUR
   block[2] = __53__VCPMediaAnalysisService_reportProgress_forRequest___block_invoke;
   block[3] = &unk_1E834C930;
   block[4] = self;
-  v9 = a4;
-  *&block[5] = a3;
+  requestCopy2 = request;
+  *&block[5] = progress;
   dispatch_async(managementQueue, block);
 }
 
@@ -3278,7 +3278,7 @@ void __53__VCPMediaAnalysisService_reportProgress_forRequest___block_invoke(uint
   }
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
   managementQueue = self->_managementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3286,7 +3286,7 @@ void __53__VCPMediaAnalysisService_reportProgress_forRequest___block_invoke(uint
   v4[2] = __41__VCPMediaAnalysisService_cancelRequest___block_invoke;
   v4[3] = &unk_1E834C978;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_sync(managementQueue, v4);
 }
 
@@ -3433,12 +3433,12 @@ LABEL_8:
   dispatch_sync(managementQueue, block);
 }
 
-- (void)notifyLibraryAvailableAtURL:(id)a3
+- (void)notifyLibraryAvailableAtURL:(id)l
 {
-  v6 = a3;
-  v4 = [(VCPMediaAnalysisService *)self connection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_695];
-  [v5 notifyLibraryAvailableAtURL:v6];
+  lCopy = l;
+  connection = [(VCPMediaAnalysisService *)self connection];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_695];
+  [v5 notifyLibraryAvailableAtURL:lCopy];
 }
 
 void __55__VCPMediaAnalysisService_notifyLibraryAvailableAtURL___block_invoke(uint64_t a1, void *a2)
@@ -3454,83 +3454,83 @@ void __55__VCPMediaAnalysisService_notifyLibraryAvailableAtURL___block_invoke(ui
   }
 }
 
-+ (int)queryProgress:(float *)a3 forPhotoLibrary:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6
++ (int)queryProgress:(float *)progress forPhotoLibrary:(id)library andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block
 {
-  v9 = a6;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__VCPMediaAnalysisService_queryProgress_forPhotoLibrary_andTaskID_withExtendTimeoutBlock___block_invoke;
   v12[3] = &unk_1E834C9F0;
-  v13 = v9;
-  v10 = v9;
-  LODWORD(a5) = [VCPAnalysisProgressQuery queryAnalysisProgress:a3 photoLibrary:a4 taskID:a5 cancelOrExtendTimeoutBlock:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LODWORD(d) = [VCPAnalysisProgressQuery queryAnalysisProgress:progress photoLibrary:library taskID:d cancelOrExtendTimeoutBlock:v12];
 
-  return a5;
+  return d;
 }
 
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibrary:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6
++ (int)queryProgressDetail:(id *)detail forPhotoLibrary:(id)library andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block
 {
-  v9 = a6;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__VCPMediaAnalysisService_queryProgressDetail_forPhotoLibrary_andTaskID_withExtendTimeoutBlock___block_invoke;
   v12[3] = &unk_1E834C9F0;
-  v13 = v9;
-  v10 = v9;
-  LODWORD(a5) = [VCPAnalysisProgressQuery queryProgressDetail:a3 photoLibrary:a4 taskID:a5 cancelOrExtendTimeoutBlock:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LODWORD(d) = [VCPAnalysisProgressQuery queryProgressDetail:detail photoLibrary:library taskID:d cancelOrExtendTimeoutBlock:v12];
 
-  return a5;
+  return d;
 }
 
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibraryURL:(id)a4 andTaskID:(unint64_t)a5
++ (int)queryProgressDetail:(id *)detail forPhotoLibraryURL:(id)l andTaskID:(unint64_t)d
 {
-  v7 = a4;
+  lCopy = l;
   if ([MEMORY[0x1E69789B0] isMultiLibraryModeEnabled])
   {
-    v8 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v7];
+    vcp_defaultPhotoLibrary = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:lCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+    vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
   }
 
-  v9 = v8;
-  v10 = [VCPAnalysisProgressQuery queryProgressDetail:a3 photoLibrary:v8 taskID:a5 cancelOrExtendTimeoutBlock:0];
+  v9 = vcp_defaultPhotoLibrary;
+  v10 = [VCPAnalysisProgressQuery queryProgressDetail:detail photoLibrary:vcp_defaultPhotoLibrary taskID:d cancelOrExtendTimeoutBlock:0];
 
   return v10;
 }
 
-+ (int)queryProgressDetail:(id *)a3 forPhotoLibraryURL:(id)a4 andTaskID:(unint64_t)a5 withExtendTimeoutBlock:(id)a6
++ (int)queryProgressDetail:(id *)detail forPhotoLibraryURL:(id)l andTaskID:(unint64_t)d withExtendTimeoutBlock:(id)block
 {
-  v9 = a4;
-  v10 = a6;
+  lCopy = l;
+  blockCopy = block;
   if ([MEMORY[0x1E69789B0] isMultiLibraryModeEnabled])
   {
-    v11 = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:v9];
+    vcp_defaultPhotoLibrary = [objc_alloc(MEMORY[0x1E69789B0]) initWithPhotoLibraryURL:lCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+    vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
   }
 
-  v12 = v11;
+  v12 = vcp_defaultPhotoLibrary;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __99__VCPMediaAnalysisService_queryProgressDetail_forPhotoLibraryURL_andTaskID_withExtendTimeoutBlock___block_invoke;
   v16[3] = &unk_1E834C9F0;
-  v13 = v10;
+  v13 = blockCopy;
   v17 = v13;
-  v14 = [VCPAnalysisProgressQuery queryProgressDetail:a3 photoLibrary:v12 taskID:a5 cancelOrExtendTimeoutBlock:v16];
+  v14 = [VCPAnalysisProgressQuery queryProgressDetail:detail photoLibrary:v12 taskID:d cancelOrExtendTimeoutBlock:v16];
 
   return v14;
 }
 
-- (int)requestPersonPreferenceForPhotoLibraryURL:(id)a3 completionHandler:(id)a4
+- (int)requestPersonPreferenceForPhotoLibraryURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3540,17 +3540,17 @@ void __55__VCPMediaAnalysisService_notifyLibraryAvailableAtURL___block_invoke(ui
   v12[1] = 3221225472;
   v12[2] = __87__VCPMediaAnalysisService_requestPersonPreferenceForPhotoLibraryURL_completionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(lCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return lCopy;
 }
 
 void __87__VCPMediaAnalysisService_requestPersonPreferenceForPhotoLibraryURL_completionHandler___block_invoke(uint64_t a1)
@@ -3674,10 +3674,10 @@ void __87__VCPMediaAnalysisService_requestPersonPreferenceForPhotoLibraryURL_com
   dispatch_async(v4, block);
 }
 
-- (int)requestVIPModelFilepathForPhotoLibraryURL:(id)a3 forModelType:(unint64_t)a4 completionHandler:(id)a5
+- (int)requestVIPModelFilepathForPhotoLibraryURL:(id)l forModelType:(unint64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -3687,13 +3687,13 @@ void __87__VCPMediaAnalysisService_requestPersonPreferenceForPhotoLibraryURL_com
   block[1] = 3221225472;
   block[2] = __100__VCPMediaAnalysisService_requestVIPModelFilepathForPhotoLibraryURL_forModelType_completionHandler___block_invoke;
   block[3] = &unk_1E834CA40;
-  v16 = v9;
+  v16 = handlerCopy;
   v17 = &v19;
   block[4] = self;
-  v15 = v8;
-  v18 = a4;
-  v11 = v8;
-  v12 = v9;
+  v15 = lCopy;
+  typeCopy = type;
+  v11 = lCopy;
+  v12 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(self) = *(v20 + 6);
 
@@ -3823,10 +3823,10 @@ void __100__VCPMediaAnalysisService_requestVIPModelFilepathForPhotoLibraryURL_fo
   dispatch_async(v4, block);
 }
 
-- (int)requestPhotosSceneFastPassProcessingForPhotoLibraryURL:(id)a3 withCompletionHandler:(id)a4
+- (int)requestPhotosSceneFastPassProcessingForPhotoLibraryURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3836,17 +3836,17 @@ void __100__VCPMediaAnalysisService_requestVIPModelFilepathForPhotoLibraryURL_fo
   v12[1] = 3221225472;
   v12[2] = __104__VCPMediaAnalysisService_requestPhotosSceneFastPassProcessingForPhotoLibraryURL_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(lCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return lCopy;
 }
 
 void __104__VCPMediaAnalysisService_requestPhotosSceneFastPassProcessingForPhotoLibraryURL_withCompletionHandler___block_invoke(uint64_t a1)
@@ -3969,10 +3969,10 @@ void __104__VCPMediaAnalysisService_requestPhotosSceneFastPassProcessingForPhoto
   dispatch_async(v4, v5);
 }
 
-- (int)requestPhotosFaceFastPassProcessingForPhotoLibraryURL:(id)a3 withCompletionHandler:(id)a4
+- (int)requestPhotosFaceFastPassProcessingForPhotoLibraryURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3982,17 +3982,17 @@ void __104__VCPMediaAnalysisService_requestPhotosSceneFastPassProcessingForPhoto
   v12[1] = 3221225472;
   v12[2] = __103__VCPMediaAnalysisService_requestPhotosFaceFastPassProcessingForPhotoLibraryURL_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(lCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return lCopy;
 }
 
 void __103__VCPMediaAnalysisService_requestPhotosFaceFastPassProcessingForPhotoLibraryURL_withCompletionHandler___block_invoke(uint64_t a1)
@@ -4115,9 +4115,9 @@ void __103__VCPMediaAnalysisService_requestPhotosFaceFastPassProcessingForPhotoL
   dispatch_async(v4, v5);
 }
 
-- (int)requestDatabaseRestoreFastPassProcessingWithCompletionHandler:(id)a3
+- (int)requestDatabaseRestoreFastPassProcessingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -4127,10 +4127,10 @@ void __103__VCPMediaAnalysisService_requestPhotosFaceFastPassProcessingForPhotoL
   block[1] = 3221225472;
   block[2] = __89__VCPMediaAnalysisService_requestDatabaseRestoreFastPassProcessingWithCompletionHandler___block_invoke;
   block[3] = &unk_1E834CA68;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(managementQueue) = *(v12 + 6);
 
@@ -4257,14 +4257,14 @@ void __89__VCPMediaAnalysisService_requestDatabaseRestoreFastPassProcessingWithC
   dispatch_async(v4, v5);
 }
 
-- (int)requestSuggestedPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 photoLibraryURL:(id)a6 progessHandler:(id)a7 completionHandler:(id)a8
+- (int)requestSuggestedPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  personSuggestionsCopy = personSuggestions;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -4274,20 +4274,20 @@ void __89__VCPMediaAnalysisService_requestDatabaseRestoreFastPassProcessingWithC
   v28[1] = 3221225472;
   v28[2] = __206__VCPMediaAnalysisService_FaceSuggestions__requestSuggestedPersonsForPersonWithLocalIdentifier_toBeConfirmedPersonSuggestions_toBeRejectedPersonSuggestions_photoLibraryURL_progessHandler_completionHandler___block_invoke;
   v28[3] = &unk_1E834CB60;
-  v34 = v19;
+  v34 = completionHandlerCopy;
   v35 = &v36;
   v28[4] = self;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
-  v25 = v19;
-  v26 = v18;
+  v29 = identifierCopy;
+  v30 = suggestionsCopy;
+  v31 = personSuggestionsCopy;
+  v32 = lCopy;
+  v33 = handlerCopy;
+  v21 = lCopy;
+  v22 = personSuggestionsCopy;
+  v23 = suggestionsCopy;
+  v24 = identifierCopy;
+  v25 = completionHandlerCopy;
+  v26 = handlerCopy;
   dispatch_sync(managementQueue, v28);
   LODWORD(managementQueue) = *(v37 + 6);
 
@@ -4433,12 +4433,12 @@ void __206__VCPMediaAnalysisService_FaceSuggestions__requestSuggestedPersonsForP
   dispatch_async(v4, block);
 }
 
-- (int)requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 photoLibraryURL:(id)a5 progessHandler:(id)a6 completionHandler:(id)a7
+- (int)requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -4448,17 +4448,17 @@ void __206__VCPMediaAnalysisService_FaceSuggestions__requestSuggestedPersonsForP
   block[1] = 3221225472;
   block[2] = __156__VCPMediaAnalysisService_FaceSuggestions__requestUpdateKeyFacesOfPersonsWithLocalIdentifiers_forceUpdate_photoLibraryURL_progessHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834C688;
-  v27 = v15;
+  v27 = completionHandlerCopy;
   v28 = &v30;
   block[4] = self;
-  v24 = v12;
-  v29 = a4;
-  v25 = v13;
-  v26 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
-  v20 = v14;
+  v24 = identifiersCopy;
+  updateCopy = update;
+  v25 = lCopy;
+  v26 = handlerCopy;
+  v17 = lCopy;
+  v18 = identifiersCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
   dispatch_sync(managementQueue, block);
   v21 = *(v31 + 6);
 
@@ -4601,12 +4601,12 @@ void __156__VCPMediaAnalysisService_FaceSuggestions__requestUpdateKeyFacesOfPers
   dispatch_async(v4, block);
 }
 
-- (int)requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)a3 photoLibraryURL:(id)a4 progessHandler:(id)a5 completionHandler:(id)a6
+- (int)requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers photoLibraryURL:(id)l progessHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -4616,16 +4616,16 @@ void __156__VCPMediaAnalysisService_FaceSuggestions__requestUpdateKeyFacesOfPers
   v20[1] = 3221225472;
   v20[2] = __155__VCPMediaAnalysisService_FaceSuggestions__requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers_photoLibraryURL_progessHandler_completionHandler___block_invoke;
   v20[3] = &unk_1E834C750;
-  v24 = v13;
+  v24 = completionHandlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
-  v18 = v12;
+  v21 = identifiersCopy;
+  v22 = lCopy;
+  v23 = handlerCopy;
+  v15 = lCopy;
+  v16 = identifiersCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -4769,11 +4769,11 @@ void __155__VCPMediaAnalysisService_FaceSuggestions__requestFaceCandidatesforKey
   dispatch_async(v4, block);
 }
 
-- (int)requestResetFaceClassificationModelForPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)requestResetFaceClassificationModelForPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -4783,19 +4783,19 @@ void __155__VCPMediaAnalysisService_FaceSuggestions__requestFaceCandidatesforKey
   block[1] = 3221225472;
   block[2] = __141__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetFaceClassificationModelForPhotoLibraryURL_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834CC00;
-  v19 = v10;
+  v19 = completionHandlerCopy;
   v20 = &v21;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = lCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __141__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetFaceClassificationModelForPhotoLibraryURL_progressHandler_completionHandler___block_invoke(uint64_t a1)
@@ -4931,11 +4931,11 @@ void __141__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetFaceCl
   dispatch_async(v4, block);
 }
 
-- (int)requestResetPetClassificationModelForPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)requestResetPetClassificationModelForPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -4945,19 +4945,19 @@ void __141__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetFaceCl
   block[1] = 3221225472;
   block[2] = __140__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPetClassificationModelForPhotoLibraryURL_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834CC00;
-  v19 = v10;
+  v19 = completionHandlerCopy;
   v20 = &v21;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = lCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __140__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPetClassificationModelForPhotoLibraryURL_progressHandler_completionHandler___block_invoke(uint64_t a1)
@@ -5093,12 +5093,12 @@ void __140__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPetCla
   dispatch_async(v4, block);
 }
 
-- (int)requestSuggestedMePersonIdentifierWithContext:(id)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestSuggestedMePersonIdentifierWithContext:(id)context photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -5108,16 +5108,16 @@ void __140__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPetCla
   v20[1] = 3221225472;
   v20[2] = __149__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestSuggestedMePersonIdentifierWithContext_photoLibraryURL_progressHandler_completionHandler___block_invoke;
   v20[3] = &unk_1E834C750;
-  v24 = v13;
+  v24 = completionHandlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
-  v18 = v12;
+  v21 = contextCopy;
+  v22 = lCopy;
+  v23 = handlerCopy;
+  v15 = lCopy;
+  v16 = contextCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -5261,11 +5261,11 @@ void __149__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestSuggestedMe
   dispatch_async(v4, block);
 }
 
-- (int)requestPersonPromoterStatusWithAdvancedFlag:(BOOL)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestPersonPromoterStatusWithAdvancedFlag:(BOOL)flag photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -5275,15 +5275,15 @@ void __149__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestSuggestedMe
   v18[1] = 3221225472;
   v18[2] = __147__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonPromoterStatusWithAdvancedFlag_photoLibraryURL_progressHandler_completionHandler___block_invoke;
   v18[3] = &unk_1E834CC28;
-  v21 = v12;
+  v21 = completionHandlerCopy;
   v22 = &v24;
-  v19 = v10;
-  v20 = v11;
-  v23 = a3;
+  v19 = lCopy;
+  v20 = handlerCopy;
+  flagCopy = flag;
   v18[4] = self;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
+  v14 = lCopy;
+  v15 = completionHandlerCopy;
+  v16 = handlerCopy;
   dispatch_sync(managementQueue, v18);
   LODWORD(self) = *(v25 + 6);
 
@@ -5427,12 +5427,12 @@ void __147__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonPromo
   dispatch_async(v4, block);
 }
 
-- (int)requestPersonProcessingForPhotoLibraryURL:(id)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestPersonProcessingForPhotoLibraryURL:(id)l options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -5442,16 +5442,16 @@ void __147__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonPromo
   v20[1] = 3221225472;
   v20[2] = __137__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonProcessingForPhotoLibraryURL_options_progressHandler_completionHandler___block_invoke;
   v20[3] = &unk_1E834C750;
-  v24 = v13;
+  v24 = completionHandlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v11;
-  v22 = v10;
-  v23 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v13;
-  v18 = v12;
+  v21 = optionsCopy;
+  v22 = lCopy;
+  v23 = handlerCopy;
+  v15 = lCopy;
+  v16 = optionsCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -5592,10 +5592,10 @@ void __137__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonProce
   dispatch_async(v4, v5);
 }
 
-- (int)requestResetPersons:(id)a3 forPhotoLibraryURL:(id)a4 completionHandler:(id)a5
+- (int)requestResetPersons:(id)persons forPhotoLibraryURL:(id)l completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -5605,17 +5605,17 @@ void __137__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestPersonProce
   v13[1] = 3221225472;
   v13[2] = __110__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPersons_forPhotoLibraryURL_completionHandler___block_invoke;
   v13[3] = &unk_1E834C840;
-  v15 = v8;
+  v15 = handlerCopy;
   v16 = &v17;
   v13[4] = self;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v14 = lCopy;
+  v10 = lCopy;
+  v11 = handlerCopy;
   dispatch_sync(managementQueue, v13);
-  LODWORD(v7) = *(v18 + 6);
+  LODWORD(lCopy) = *(v18 + 6);
 
   _Block_object_dispose(&v17, 8);
-  return v7;
+  return lCopy;
 }
 
 void __110__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPersons_forPhotoLibraryURL_completionHandler___block_invoke(uint64_t a1)
@@ -5736,11 +5736,11 @@ void __110__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPerson
   dispatch_async(v4, block);
 }
 
-- (int)requestClusterCacheValidationWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)requestClusterCacheValidationWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -5750,19 +5750,19 @@ void __110__VCPMediaAnalysisService_PersonBuilderAndPromoter__requestResetPerson
   block[1] = 3221225472;
   block[2] = __125__VCPMediaAnalysisService_InternalTools__requestClusterCacheValidationWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834CC00;
-  v19 = v10;
+  v19 = completionHandlerCopy;
   v20 = &v21;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = lCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __125__VCPMediaAnalysisService_InternalTools__requestClusterCacheValidationWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke(uint64_t a1)
@@ -5900,11 +5900,11 @@ void __125__VCPMediaAnalysisService_InternalTools__requestClusterCacheValidation
   dispatch_async(v4, block);
 }
 
-- (int)requestResetFaceClusteringStateWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)requestResetFaceClusteringStateWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -5914,19 +5914,19 @@ void __125__VCPMediaAnalysisService_InternalTools__requestClusterCacheValidation
   block[1] = 3221225472;
   block[2] = __127__VCPMediaAnalysisService_InternalTools__requestResetFaceClusteringStateWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834CC00;
-  v19 = v10;
+  v19 = completionHandlerCopy;
   v20 = &v21;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = lCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __127__VCPMediaAnalysisService_InternalTools__requestResetFaceClusteringStateWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke(uint64_t a1)
@@ -6062,11 +6062,11 @@ void __127__VCPMediaAnalysisService_InternalTools__requestResetFaceClusteringSta
   dispatch_async(v4, block);
 }
 
-- (int)requestReclusterFacesWithPhotoLibraryURL:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (int)requestReclusterFacesWithPhotoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6076,19 +6076,19 @@ void __127__VCPMediaAnalysisService_InternalTools__requestResetFaceClusteringSta
   block[1] = 3221225472;
   block[2] = __117__VCPMediaAnalysisService_InternalTools__requestReclusterFacesWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E834CC00;
-  v19 = v10;
+  v19 = completionHandlerCopy;
   v20 = &v21;
-  v17 = v8;
-  v18 = v9;
+  v17 = lCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v12 = lCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __117__VCPMediaAnalysisService_InternalTools__requestReclusterFacesWithPhotoLibraryURL_progressHandler_completionHandler___block_invoke(uint64_t a1)
@@ -6224,12 +6224,12 @@ void __117__VCPMediaAnalysisService_InternalTools__requestReclusterFacesWithPhot
   dispatch_async(v4, block);
 }
 
-- (int)requestRebuildPersonsWithLocalIdentifiers:(id)a3 photoLibraryURL:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (int)requestRebuildPersonsWithLocalIdentifiers:(id)identifiers photoLibraryURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -6239,16 +6239,16 @@ void __117__VCPMediaAnalysisService_InternalTools__requestReclusterFacesWithPhot
   v20[1] = 3221225472;
   v20[2] = __134__VCPMediaAnalysisService_InternalTools__requestRebuildPersonsWithLocalIdentifiers_photoLibraryURL_progressHandler_completionHandler___block_invoke;
   v20[3] = &unk_1E834C750;
-  v24 = v13;
+  v24 = completionHandlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v13;
-  v18 = v12;
+  v21 = identifiersCopy;
+  v22 = lCopy;
+  v23 = handlerCopy;
+  v15 = lCopy;
+  v16 = identifiersCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -6390,11 +6390,11 @@ void __134__VCPMediaAnalysisService_InternalTools__requestRebuildPersonsWithLoca
   dispatch_async(v4, block);
 }
 
-- (int)queryAutoCounterOptInStatusForPhotoLibraryURL:(id)a3 withPersonLocalIdentifiers:(id)a4 completionHandler:(id)a5
+- (int)queryAutoCounterOptInStatusForPhotoLibraryURL:(id)l withPersonLocalIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6404,19 +6404,19 @@ void __134__VCPMediaAnalysisService_InternalTools__requestRebuildPersonsWithLoca
   block[1] = 3221225472;
   block[2] = __133__VCPMediaAnalysisService_InternalTools__queryAutoCounterOptInStatusForPhotoLibraryURL_withPersonLocalIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_1E834C868;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = &v21;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = lCopy;
+  v18 = identifiersCopy;
+  v12 = identifiersCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __133__VCPMediaAnalysisService_InternalTools__queryAutoCounterOptInStatusForPhotoLibraryURL_withPersonLocalIdentifiers_completionHandler___block_invoke(uint64_t a1)
@@ -6544,11 +6544,11 @@ void __133__VCPMediaAnalysisService_InternalTools__queryAutoCounterOptInStatusFo
   dispatch_async(v4, block);
 }
 
-- (int)requestOptInAutoCounterForPhotoLibraryURL:(id)a3 withPersons:(id)a4 completionHandler:(id)a5
+- (int)requestOptInAutoCounterForPhotoLibraryURL:(id)l withPersons:(id)persons completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  personsCopy = persons;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6558,19 +6558,19 @@ void __133__VCPMediaAnalysisService_InternalTools__queryAutoCounterOptInStatusFo
   block[1] = 3221225472;
   block[2] = __114__VCPMediaAnalysisService_InternalTools__requestOptInAutoCounterForPhotoLibraryURL_withPersons_completionHandler___block_invoke;
   block[3] = &unk_1E834C868;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = &v21;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = lCopy;
+  v18 = personsCopy;
+  v12 = personsCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __114__VCPMediaAnalysisService_InternalTools__requestOptInAutoCounterForPhotoLibraryURL_withPersons_completionHandler___block_invoke(uint64_t a1)
@@ -6698,10 +6698,10 @@ void __114__VCPMediaAnalysisService_InternalTools__requestOptInAutoCounterForPho
   dispatch_async(v4, block);
 }
 
-- (int)requestDumpAutoCounterForPhotoLibraryURL:(id)a3 completionHandler:(id)a4
+- (int)requestDumpAutoCounterForPhotoLibraryURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -6711,17 +6711,17 @@ void __114__VCPMediaAnalysisService_InternalTools__requestOptInAutoCounterForPho
   v12[1] = 3221225472;
   v12[2] = __101__VCPMediaAnalysisService_InternalTools__requestDumpAutoCounterForPhotoLibraryURL_completionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(lCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return lCopy;
 }
 
 void __101__VCPMediaAnalysisService_InternalTools__requestDumpAutoCounterForPhotoLibraryURL_completionHandler___block_invoke(uint64_t a1)
@@ -6848,10 +6848,10 @@ void __101__VCPMediaAnalysisService_InternalTools__requestDumpAutoCounterForPhot
   dispatch_async(v4, block);
 }
 
-- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)a3 completionHandler:(id)a4
+- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -6861,17 +6861,17 @@ void __101__VCPMediaAnalysisService_InternalTools__requestDumpAutoCounterForPhot
   v12[1] = 3221225472;
   v12[2] = __116__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCalculationForPhotoLibraryURL_completionHandler___block_invoke;
   v12[3] = &unk_1E834C840;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
   v12[4] = self;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
-  LODWORD(v6) = *(v17 + 6);
+  LODWORD(lCopy) = *(v17 + 6);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return lCopy;
 }
 
 void __116__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCalculationForPhotoLibraryURL_completionHandler___block_invoke(uint64_t a1)
@@ -6998,12 +6998,12 @@ void __116__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCal
   dispatch_async(v4, block);
 }
 
-- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)a3 clusterStateURL:(id)a4 groundTruthURL:(id)a5 completionHandler:(id)a6
+- (int)requestAutoCounterAccuracyCalculationForPhotoLibraryURL:(id)l clusterStateURL:(id)rL groundTruthURL:(id)uRL completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -7013,16 +7013,16 @@ void __116__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCal
   v20[1] = 3221225472;
   v20[2] = __147__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCalculationForPhotoLibraryURL_clusterStateURL_groundTruthURL_completionHandler___block_invoke;
   v20[3] = &unk_1E834CC50;
-  v24 = v13;
+  v24 = handlerCopy;
   v25 = &v26;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v21 = lCopy;
+  v22 = rLCopy;
+  v23 = uRLCopy;
+  v15 = uRLCopy;
+  v16 = rLCopy;
+  v17 = lCopy;
+  v18 = handlerCopy;
   dispatch_sync(managementQueue, v20);
   LODWORD(self) = *(v27 + 6);
 
@@ -7156,11 +7156,11 @@ void __147__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCal
   dispatch_async(v4, block);
 }
 
-- (int)requestAutoCounterSIMLValidationForPhotoLibraryURL:(id)a3 simlGroundTruthURL:(id)a4 completionHandler:(id)a5
+- (int)requestAutoCounterSIMLValidationForPhotoLibraryURL:(id)l simlGroundTruthURL:(id)rL completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -7170,19 +7170,19 @@ void __147__VCPMediaAnalysisService_InternalTools__requestAutoCounterAccuracyCal
   block[1] = 3221225472;
   block[2] = __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidationForPhotoLibraryURL_simlGroundTruthURL_completionHandler___block_invoke;
   block[3] = &unk_1E834C868;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = &v21;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = lCopy;
+  v18 = rLCopy;
+  v12 = rLCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(lCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return lCopy;
 }
 
 void __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidationForPhotoLibraryURL_simlGroundTruthURL_completionHandler___block_invoke(uint64_t a1)
@@ -7310,23 +7310,23 @@ void __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidat
   dispatch_async(v4, block);
 }
 
-- (int)requestIdentificationOfFaces:(id)a3 withCompletionHandler:(id)a4
+- (int)requestIdentificationOfFaces:(id)faces withCompletionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v7 && v8)
+  facesCopy = faces;
+  handlerCopy = handler;
+  v8 = [facesCopy count];
+  if (handlerCopy && v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = v6;
+    v10 = facesCopy;
     v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
-    v23 = self;
-    v12 = 0;
+    selfCopy = self;
+    photoLibrary2 = 0;
     if (v11)
     {
       v13 = *v34;
@@ -7340,10 +7340,10 @@ void __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidat
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
-          if (v12)
+          if (photoLibrary2)
           {
-            v16 = [*(*(&v33 + 1) + 8 * i) photoLibrary];
-            v17 = v12 == v16;
+            photoLibrary = [*(*(&v33 + 1) + 8 * i) photoLibrary];
+            v17 = photoLibrary2 == photoLibrary;
 
             if (!v17)
             {
@@ -7361,11 +7361,11 @@ void __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidat
 
           else
           {
-            v12 = [*(*(&v33 + 1) + 8 * i) photoLibrary];
+            photoLibrary2 = [*(*(&v33 + 1) + 8 * i) photoLibrary];
           }
 
-          v18 = [v15 localIdentifier];
-          [v9 addObject:v18];
+          localIdentifier = [v15 localIdentifier];
+          [array addObject:localIdentifier];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -7382,17 +7382,17 @@ void __130__VCPMediaAnalysisService_InternalTools__requestAutoCounterSIMLValidat
     v30 = buf;
     v31 = 0x2020000000;
     v32 = 0;
-    managementQueue = v23->_managementQueue;
+    managementQueue = selfCopy->_managementQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __86__VCPMediaAnalysisService_Hubble__requestIdentificationOfFaces_withCompletionHandler___block_invoke;
     block[3] = &unk_1E834C868;
     v28 = buf;
-    block[4] = v23;
-    v27 = v7;
-    v25 = v9;
-    v12 = v12;
-    v26 = v12;
+    block[4] = selfCopy;
+    v27 = handlerCopy;
+    v25 = array;
+    photoLibrary2 = photoLibrary2;
+    v26 = photoLibrary2;
     dispatch_sync(managementQueue, block);
     v20 = *(v30 + 6);
 
@@ -7527,15 +7527,15 @@ void __86__VCPMediaAnalysisService_Hubble__requestIdentificationOfFaces_withComp
   dispatch_async(v4, block);
 }
 
-- (int)requestProcessingTypes:(unint64_t)a3 forAssetsWithLocalIdentifiers:(id)a4 fromPhotoLibraryWithURL:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (int)requestProcessingTypes:(unint64_t)types forAssetsWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a3 && (v16 = [v12 count], v15) && v13 && v16)
+  identifiersCopy = identifiers;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (types && (v16 = [identifiersCopy count], completionHandlerCopy) && lCopy && v16)
   {
-    v17 = [MEMORY[0x1E695DFD8] setWithArray:v12];
+    v17 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
     v18 = MEMORY[0x1E6978628];
     v19 = [MEMORY[0x1E6978628] uuidsFromLocalIdentifiers:v17];
     v20 = [v18 localIdentifiersWithUUIDs:v19];
@@ -7553,11 +7553,11 @@ void __86__VCPMediaAnalysisService_Hubble__requestIdentificationOfFaces_withComp
       block[3] = &unk_1E834C6D8;
       v29 = buf;
       block[4] = self;
-      v27 = v14;
-      v28 = v15;
-      v30 = a3;
+      v27 = handlerCopy;
+      v28 = completionHandlerCopy;
+      typesCopy = types;
       v25 = v20;
-      v26 = v13;
+      v26 = lCopy;
       dispatch_sync(managementQueue, block);
       v22 = *(v32 + 6);
 
@@ -7711,9 +7711,9 @@ void __146__VCPMediaAnalysisService_Hubble__requestProcessingTypes_forAssetsWith
   dispatch_async(v4, v5);
 }
 
-- (int)downloadVideoEncoderWithCompletionHandler:(id)a3
+- (int)downloadVideoEncoderWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -7723,10 +7723,10 @@ void __146__VCPMediaAnalysisService_Hubble__requestProcessingTypes_forAssetsWith
   block[1] = 3221225472;
   block[2] = __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithCompletionHandler___block_invoke;
   block[3] = &unk_1E834CA68;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(managementQueue) = *(v12 + 6);
 
@@ -7837,19 +7837,19 @@ void __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithComple
 
 + (id)defaultDeferredProcessingTypes
 {
-  v2 = [MEMORY[0x1E696AD50] indexSet];
-  [v2 addIndex:2];
-  [v2 addIndex:8];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  [indexSet addIndex:2];
+  [indexSet addIndex:8];
 
-  return v2;
+  return indexSet;
 }
 
-- (BOOL)requestDeferredProcessingTypes:(id)a3 assets:(id)a4 error:(id *)a5
+- (BOOL)requestDeferredProcessingTypes:(id)types assets:(id)assets error:(id *)error
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
-  if ([v32 count] && objc_msgSend(v33, "count"))
+  typesCopy = types;
+  assetsCopy = assets;
+  if ([typesCopy count] && objc_msgSend(assetsCopy, "count"))
   {
     *buf = 0;
     v49 = buf;
@@ -7862,26 +7862,26 @@ void __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithComple
     v47[2] = __80__VCPMediaAnalysisService_Moments__requestDeferredProcessingTypes_assets_error___block_invoke;
     v47[3] = &unk_1E834CC78;
     v47[4] = buf;
-    [v32 enumerateIndexesUsingBlock:v47];
+    [typesCopy enumerateIndexesUsingBlock:v47];
     v6 = *(v49 + 5);
     if (v6)
     {
       v7 = 0;
-      *a5 = [v6 copy];
+      *error = [v6 copy];
     }
 
     else
     {
-      v11 = [v33 firstObject];
-      v12 = [v11 photoLibrary];
-      v34 = [v12 photoLibraryURL];
+      firstObject = [assetsCopy firstObject];
+      photoLibrary = [firstObject photoLibrary];
+      photoLibraryURL = [photoLibrary photoLibraryURL];
 
-      v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v33, "count")}];
+      v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      obj = v33;
+      obj = assetsCopy;
       v13 = [obj countByEnumeratingWithState:&v43 objects:v56 count:16];
       if (v13)
       {
@@ -7899,14 +7899,14 @@ void __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithComple
 
             v18 = *(*(&v43 + 1) + 8 * i);
             v19 = objc_autoreleasePoolPush();
-            v20 = [v18 photoLibrary];
-            v21 = [v20 photoLibraryURL];
-            v22 = [v21 isEqual:v34];
+            photoLibrary2 = [v18 photoLibrary];
+            photoLibraryURL2 = [photoLibrary2 photoLibraryURL];
+            v22 = [photoLibraryURL2 isEqual:photoLibraryURL];
 
             if (v22)
             {
-              v23 = [v18 localIdentifier];
-              [v30 addObject:v23];
+              localIdentifier = [v18 localIdentifier];
+              [v30 addObject:localIdentifier];
             }
 
             else
@@ -7919,10 +7919,10 @@ void __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithComple
 
               v24 = MEMORY[0x1E696ABC0];
               v54 = v16;
-              v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MediaAnalysis] All requested assets must come from the same photo library"];
-              v55 = v23;
+              localIdentifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MediaAnalysis] All requested assets must come from the same photo library"];
+              v55 = localIdentifier;
               v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-              *a5 = [v24 errorWithDomain:v15 code:-50 userInfo:v25];
+              *error = [v24 errorWithDomain:v15 code:-50 userInfo:v25];
             }
 
             objc_autoreleasePoolPop(v19);
@@ -7950,16 +7950,16 @@ void __84__VCPMediaAnalysisService_Accessibility__downloadVideoEncoderWithComple
       v40 = __Block_byref_object_copy__5;
       v41 = __Block_byref_object_dispose__5;
       v42 = 0;
-      v26 = [(VCPMediaAnalysisService *)self connection];
-      v27 = [v26 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1067];
+      connection = [(VCPMediaAnalysisService *)self connection];
+      v27 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1067];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __80__VCPMediaAnalysisService_Moments__requestDeferredProcessingTypes_assets_error___block_invoke_1068;
       v36[3] = &unk_1E834CCA0;
       v36[4] = v37;
-      [v27 requestDeferredProcessingTypes:v32 forAssetsWithLocalIdentifiers:v30 withPhotoLibraryURL:v34 andReply:v36];
+      [v27 requestDeferredProcessingTypes:typesCopy forAssetsWithLocalIdentifiers:v30 withPhotoLibraryURL:photoLibraryURL andReply:v36];
 
-      *a5 = [*(v38 + 5) copy];
+      *error = [*(v38 + 5) copy];
       v7 = *(v38 + 5) == 0;
       _Block_object_dispose(v37, 8);
 
@@ -7982,7 +7982,7 @@ LABEL_25:
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MediaAnalysis] nil specified for non-nullable parameter"];
     v58[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    *a5 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v10];
+    *error = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v10];
 
     v7 = 0;
   }
@@ -8037,9 +8037,9 @@ void __80__VCPMediaAnalysisService_Moments__requestDeferredProcessingTypes_asset
   *(v4 + 40) = v3;
 }
 
-- (id)assetsPendingDeferredProcessingWithPhotoLibraryURL:(id)a3 error:(id *)a4
+- (id)assetsPendingDeferredProcessingWithPhotoLibraryURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -8052,17 +8052,17 @@ void __80__VCPMediaAnalysisService_Moments__requestDeferredProcessingTypes_asset
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v7 = [(VCPMediaAnalysisService *)self connection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1070];
+  connection = [(VCPMediaAnalysisService *)self connection];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_1070];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__VCPMediaAnalysisService_Moments__assetsPendingDeferredProcessingWithPhotoLibraryURL_error___block_invoke_1071;
   v11[3] = &unk_1E834C890;
   v11[4] = &v18;
   v11[5] = &v12;
-  [v8 queryAssetsPendingDeferredProcessingWithPhotoLibraryURL:v6 andReply:v11];
+  [v8 queryAssetsPendingDeferredProcessingWithPhotoLibraryURL:lCopy andReply:v11];
 
-  *a4 = [v13[5] copy];
+  *error = [v13[5] copy];
   v9 = v19[5];
   _Block_object_dispose(&v12, 8);
 
@@ -8098,10 +8098,10 @@ void __93__VCPMediaAnalysisService_Moments__assetsPendingDeferredProcessingWithP
   *(v10 + 40) = v9;
 }
 
-- (int)requestForceDeferredProcessingWithProgessHandler:(id)a3 andCompletionHandler:(id)a4
+- (int)requestForceDeferredProcessingWithProgessHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -8112,11 +8112,11 @@ void __93__VCPMediaAnalysisService_Moments__assetsPendingDeferredProcessingWithP
   v12[2] = __106__VCPMediaAnalysisService_Moments__requestForceDeferredProcessingWithProgessHandler_andCompletionHandler___block_invoke;
   v12[3] = &unk_1E834CCC8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = handlerCopy;
+  v14 = completionHandlerCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionHandlerCopy;
+  v10 = handlerCopy;
   dispatch_sync(managementQueue, v12);
   LODWORD(managementQueue) = *(v17 + 6);
 
@@ -8254,11 +8254,11 @@ void __106__VCPMediaAnalysisService_Moments__requestForceDeferredProcessingWithP
   dispatch_async(v4, v5);
 }
 
-- (int)requestStaticStickerScoringForLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (int)requestStaticStickerScoringForLibrary:(id)library options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  optionsCopy = options;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -8268,19 +8268,19 @@ void __106__VCPMediaAnalysisService_Moments__requestForceDeferredProcessingWithP
   block[1] = 3221225472;
   block[2] = __101__VCPMediaAnalysisService_Stickers__requestStaticStickerScoringForLibrary_options_completionHandler___block_invoke;
   block[3] = &unk_1E834C868;
-  v19 = v10;
+  v19 = handlerCopy;
   v20 = &v21;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = libraryCopy;
+  v18 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = libraryCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, block);
-  LODWORD(v8) = *(v22 + 6);
+  LODWORD(libraryCopy) = *(v22 + 6);
 
   _Block_object_dispose(&v21, 8);
-  return v8;
+  return libraryCopy;
 }
 
 void __101__VCPMediaAnalysisService_Stickers__requestStaticStickerScoringForLibrary_options_completionHandler___block_invoke(uint64_t a1)
@@ -8416,12 +8416,12 @@ void __101__VCPMediaAnalysisService_Stickers__requestStaticStickerScoringForLibr
   dispatch_async(v4, v5);
 }
 
-- (int)requestOTAMaintenanceWithOptions:(id)a3 progessHandler:(id)a4 completionHandler:(id)a5
+- (int)requestOTAMaintenanceWithOptions:(id)options progessHandler:(id)handler completionHandler:(id)completionHandler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
@@ -8440,13 +8440,13 @@ void __101__VCPMediaAnalysisService_Stickers__requestStaticStickerScoringForLibr
   v17[3] = &unk_1E834CD48;
   v17[4] = self;
   v18 = @"[RequestOTAMaintenance]";
-  v21 = v10;
+  v21 = completionHandlerCopy;
   p_buf = &buf;
-  v19 = v8;
-  v20 = v9;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v19 = optionsCopy;
+  v20 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = completionHandlerCopy;
+  v14 = handlerCopy;
   dispatch_sync(managementQueue, v17);
   v15 = *(*(&buf + 1) + 24);
 
@@ -8651,7 +8651,7 @@ const void **__48__VCPMediaAnalysisService_DataStore__isEntitled__block_invoke()
   return CF<__CVBuffer *>::~CF(&v6);
 }
 
-- (id)requestSystemXPCStoreListenerEndpointWithError:(id *)a3
+- (id)requestSystemXPCStoreListenerEndpointWithError:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() isEntitled])
@@ -8668,13 +8668,13 @@ const void **__48__VCPMediaAnalysisService_DataStore__isEntitled__block_invoke()
     v17 = __Block_byref_object_copy__5;
     v18 = __Block_byref_object_dispose__5;
     v19 = 0;
-    v5 = [(VCPMediaAnalysisService *)self connection];
+    connection = [(VCPMediaAnalysisService *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpointWithError___block_invoke;
     v13[3] = &unk_1E834CCA0;
     v13[4] = &v14;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
+    v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpointWithError___block_invoke_1121;
@@ -8683,16 +8683,16 @@ const void **__48__VCPMediaAnalysisService_DataStore__isEntitled__block_invoke()
     v12[5] = &v14;
     [v6 requestSystemXPCStoreListenerEndpoint:v12];
 
-    if (a3)
+    if (error)
     {
       v7 = v15[5];
       if (v7)
       {
-        *a3 = [v7 copy];
+        *error = [v7 copy];
       }
     }
 
-    a3 = v21[5];
+    error = v21[5];
     _Block_object_dispose(&v14, 8);
 
     _Block_object_dispose(&v20, 8);
@@ -8705,20 +8705,20 @@ const void **__48__VCPMediaAnalysisService_DataStore__isEntitled__block_invoke()
       [VCPMediaAnalysisService(DataStore) requestSystemXPCStoreListenerEndpointWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v8 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A578];
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request not entitled"];
       v27[0] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a3 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v10];
+      *error = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v10];
 
-      a3 = 0;
+      error = 0;
     }
   }
 
-  return a3;
+  return error;
 }
 
 void __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpointWithError___block_invoke(uint64_t a1, void *a2)
@@ -8769,10 +8769,10 @@ void __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpo
   }
 }
 
-- (id)requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary:(id)a3 error:(id *)a4
+- (id)requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary:(id)library error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  libraryCopy = library;
   if ([objc_opt_class() isEntitled])
   {
     v23 = 0;
@@ -8787,32 +8787,32 @@ void __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpo
     v20 = __Block_byref_object_copy__5;
     v21 = __Block_byref_object_dispose__5;
     v22 = 0;
-    v7 = [(VCPMediaAnalysisService *)self connection];
+    connection = [(VCPMediaAnalysisService *)self connection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __100__VCPMediaAnalysisService_DataStore__requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary_error___block_invoke;
     v16[3] = &unk_1E834CCA0;
     v16[4] = &v17;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v16];
-    v9 = [v6 photoLibraryURL];
+    v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
+    photoLibraryURL = [libraryCopy photoLibraryURL];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __100__VCPMediaAnalysisService_DataStore__requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary_error___block_invoke_1123;
     v15[3] = &unk_1E834CD70;
     v15[4] = &v23;
     v15[5] = &v17;
-    [v8 requestAnalysisXPCStoreListenerEndpointWithPhotoLibraryURL:v9 reply:v15];
+    [v8 requestAnalysisXPCStoreListenerEndpointWithPhotoLibraryURL:photoLibraryURL reply:v15];
 
-    if (a4)
+    if (error)
     {
       v10 = v18[5];
       if (v10)
       {
-        *a4 = [v10 copy];
+        *error = [v10 copy];
       }
     }
 
-    a4 = v24[5];
+    error = v24[5];
     _Block_object_dispose(&v17, 8);
 
     _Block_object_dispose(&v23, 8);
@@ -8825,20 +8825,20 @@ void __85__VCPMediaAnalysisService_DataStore__requestSystemXPCStoreListenerEndpo
       [VCPMediaAnalysisService(DataStore) requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Request not entitled"];
       v30[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-      *a4 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v13];
+      *error = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v13];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
 void __100__VCPMediaAnalysisService_DataStore__requestAnalysisXPCStoreListenerEndpointWithPhotoLibrary_error___block_invoke(uint64_t a1, void *a2)
@@ -8889,9 +8889,9 @@ void __100__VCPMediaAnalysisService_DataStore__requestAnalysisXPCStoreListenerEn
   }
 }
 
-- (int)requestPhotosDeferredProcessingWithCompletionHandler:(id)a3
+- (int)requestPhotosDeferredProcessingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -8901,10 +8901,10 @@ void __100__VCPMediaAnalysisService_DataStore__requestAnalysisXPCStoreListenerEn
   block[1] = 3221225472;
   block[2] = __96__VCPMediaAnalysisService_PhotosDeferred__requestPhotosDeferredProcessingWithCompletionHandler___block_invoke;
   block[3] = &unk_1E834CA68;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(managementQueue) = *(v12 + 6);
 
@@ -9031,9 +9031,9 @@ void __96__VCPMediaAnalysisService_PhotosDeferred__requestPhotosDeferredProcessi
   dispatch_async(v4, v5);
 }
 
-- (int)requestProgressReportWithCompletionHandler:(id)a3
+- (int)requestProgressReportWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -9043,10 +9043,10 @@ void __96__VCPMediaAnalysisService_PhotosDeferred__requestPhotosDeferredProcessi
   block[1] = 3221225472;
   block[2] = __88__VCPMediaAnalysisService_ProgressReporter__requestProgressReportWithCompletionHandler___block_invoke;
   block[3] = &unk_1E834CA68;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(managementQueue, block);
   LODWORD(managementQueue) = *(v12 + 6);
 

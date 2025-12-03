@@ -1,6 +1,6 @@
 @interface AVTMorpherDrivenMaterialDescriptor
 - (uint64_t)setMorphTargetIndex:(uint64_t)result;
-- (void)setPropertyName:(void *)a1;
+- (void)setPropertyName:(void *)name;
 @end
 
 @implementation AVTMorpherDrivenMaterialDescriptor
@@ -15,11 +15,11 @@
   return result;
 }
 
-- (void)setPropertyName:(void *)a1
+- (void)setPropertyName:(void *)name
 {
-  if (a1)
+  if (name)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 40);
+    objc_setProperty_nonatomic_copy(name, newValue, newValue, 40);
   }
 }
 

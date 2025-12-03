@@ -1,7 +1,7 @@
 @interface UIKitHoverGestureRecognizer
 - (_TtC7SwiftUI27UIKitHoverGestureRecognizer)init;
-- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithCoder:(id)a3;
-- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithCoder:(id)coder;
+- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
 @end
 
@@ -16,7 +16,7 @@
   return [(UIKitHoverGestureRecognizer *)&v5 initWithTarget:0 action:0];
 }
 
-- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithCoder:(id)a3
+- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithCoder:(id)coder
 {
   swift_weakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -29,14 +29,14 @@
   if (swift_weakLoadStrong())
   {
     lazy protocol witness table accessor for type UIKitHoverGestureRecognizer and conformance UIKitHoverGestureRecognizer();
-    v3 = self;
+    selfCopy = self;
     dispatch thunk of EventBindingBridge.reset(eventSource:resetForwardedEventDispatchers:)();
   }
 }
 
-- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC7SwiftUI27UIKitHoverGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

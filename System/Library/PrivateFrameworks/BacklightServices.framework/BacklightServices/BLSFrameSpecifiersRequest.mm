@@ -1,18 +1,18 @@
 @interface BLSFrameSpecifiersRequest
-- (BLSFrameSpecifiersRequest)initWithDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BLSFrameSpecifiersRequest)initWithDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)completeWithDateSpecifiers:(id)a3;
+- (void)completeWithDateSpecifiers:(id)specifiers;
 @end
 
 @implementation BLSFrameSpecifiersRequest
 
-- (BLSFrameSpecifiersRequest)initWithDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6
+- (BLSFrameSpecifiersRequest)initWithDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  intervalCopy = interval;
+  dateCopy = date;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = BLSFrameSpecifiersRequest;
   v14 = [(BLSFrameSpecifiersRequest *)&v19 init];
@@ -20,10 +20,10 @@
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_dateInterval, a3);
-    objc_storeStrong(&v15->_previousPresentationDate, a4);
-    v15->_shouldReset = a5;
-    v16 = MEMORY[0x223D716E0](v13);
+    objc_storeStrong(&v14->_dateInterval, interval);
+    objc_storeStrong(&v15->_previousPresentationDate, date);
+    v15->_shouldReset = reset;
+    v16 = MEMORY[0x223D716E0](completionCopy);
     completion = v15->_completion;
     v15->_completion = v16;
   }
@@ -34,39 +34,39 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDateInterval *)self->_dateInterval bls_shortLoggingString];
-  v5 = [v3 appendObject:v4 withName:@"interval"];
+  bls_shortLoggingString = [(NSDateInterval *)self->_dateInterval bls_shortLoggingString];
+  v5 = [v3 appendObject:bls_shortLoggingString withName:@"interval"];
 
-  v6 = [(NSDate *)self->_previousPresentationDate bls_shortLoggingString];
-  v7 = [v3 appendObject:v6 withName:@"previous"];
+  bls_shortLoggingString2 = [(NSDate *)self->_previousPresentationDate bls_shortLoggingString];
+  v7 = [v3 appendObject:bls_shortLoggingString2 withName:@"previous"];
 
   v8 = [v3 appendBool:self->_shouldReset withName:@"reset"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_dateInterval];
-  v5 = [v3 appendObject:self->_previousPresentationDate];
-  v6 = [v3 appendBool:self->_shouldReset];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_dateInterval];
+  v5 = [builder appendObject:self->_previousPresentationDate];
+  v6 = [builder appendBool:self->_shouldReset];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   dateInterval = self->_dateInterval;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __37__BLSFrameSpecifiersRequest_isEqual___block_invoke;
   v20[3] = &unk_278428B00;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:dateInterval counterpart:v20];
   previousPresentationDate = self->_previousPresentationDate;
@@ -90,9 +90,9 @@
   return shouldReset;
 }
 
-- (void)completeWithDateSpecifiers:(id)a3
+- (void)completeWithDateSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   os_unfair_lock_lock(&self->_lock);
   lock_completed = self->_lock_completed;
   self->_lock_completed = 1;
@@ -112,7 +112,7 @@
 
   else if (v6)
   {
-    (v6)[2](v6, v4);
+    (v6)[2](v6, specifiersCopy);
   }
 }
 

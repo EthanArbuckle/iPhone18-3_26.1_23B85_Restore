@@ -1,52 +1,52 @@
 @interface AMSContiguousActionPerformer
-- (unint64_t)performInitialContiguousActionWithBlock:(id)a3;
-- (void)async:(id)a3;
-- (void)continueContiguousActionWithIdentifier:(unint64_t)a3 withBlock:(id)a4;
-- (void)finishContiguousActionWithIdentifier:(unint64_t)a3;
-- (void)sync:(id)a3;
+- (unint64_t)performInitialContiguousActionWithBlock:(id)block;
+- (void)async:(id)async;
+- (void)continueContiguousActionWithIdentifier:(unint64_t)identifier withBlock:(id)block;
+- (void)finishContiguousActionWithIdentifier:(unint64_t)identifier;
+- (void)sync:(id)sync;
 @end
 
 @implementation AMSContiguousActionPerformer
 
-- (unint64_t)performInitialContiguousActionWithBlock:(id)a3
+- (unint64_t)performInitialContiguousActionWithBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   v6 = ContiguousActionPerformer.performInitialContiguousAction(_:)();
 
   return v6;
 }
 
-- (void)continueContiguousActionWithIdentifier:(unint64_t)a3 withBlock:(id)a4
+- (void)continueContiguousActionWithIdentifier:(unint64_t)identifier withBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  ContiguousActionPerformer.continueContiguousAction(withIdentifier:work:)(a3, sub_192910DA4, v7);
+  selfCopy = self;
+  ContiguousActionPerformer.continueContiguousAction(withIdentifier:work:)(identifier, sub_192910DA4, v7);
 }
 
-- (void)finishContiguousActionWithIdentifier:(unint64_t)a3
+- (void)finishContiguousActionWithIdentifier:(unint64_t)identifier
 {
-  v4 = self;
-  ContiguousActionPerformer.finishContiguousAction(identifier:)(a3);
+  selfCopy = self;
+  ContiguousActionPerformer.finishContiguousAction(identifier:)(identifier);
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(async);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   ContiguousActionPerformer.async(_:)(sub_19291AB38, v5);
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(sync);
   v6[2] = v4;
-  v5 = self;
+  selfCopy = self;
   ContiguousActionPerformer.sync(_:)(sub_19291AB38, v6);
   _Block_release(v4);
 }

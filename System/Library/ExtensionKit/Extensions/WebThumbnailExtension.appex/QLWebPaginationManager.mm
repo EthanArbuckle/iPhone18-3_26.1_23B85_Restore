@@ -1,20 +1,20 @@
 @interface QLWebPaginationManager
-- (CGRect)pageRectForPage:(int64_t)a3;
+- (CGRect)pageRectForPage:(int64_t)page;
 - (CGSize)pageSize;
-- (QLWebPaginationManager)initWithPageElementXPath:(id)a3 webview:(id)a4;
-- (QLWebPaginationManager)initWithPageSize:(CGSize)a3 webview:(id)a4;
+- (QLWebPaginationManager)initWithPageElementXPath:(id)path webview:(id)webview;
+- (QLWebPaginationManager)initWithPageSize:(CGSize)size webview:(id)webview;
 - (WKWebView)webview;
-- (void)_getFramesForXpath:(id)a3 completion:(id)a4;
-- (void)processPageGeometryFromXpath:(id)a3;
+- (void)_getFramesForXpath:(id)xpath completion:(id)completion;
+- (void)processPageGeometryFromXpath:(id)xpath;
 @end
 
 @implementation QLWebPaginationManager
 
-- (QLWebPaginationManager)initWithPageSize:(CGSize)a3 webview:(id)a4
+- (QLWebPaginationManager)initWithPageSize:(CGSize)size webview:(id)webview
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  webviewCopy = webview;
   v11.receiver = self;
   v11.super_class = QLWebPaginationManager;
   v8 = [(QLWebPaginationManager *)&v11 init];
@@ -23,76 +23,76 @@
   {
     v8->_pageSize.width = width;
     v8->_pageSize.height = height;
-    objc_storeWeak(&v8->_webview, v7);
+    objc_storeWeak(&v8->_webview, webviewCopy);
   }
 
   return v9;
 }
 
-- (QLWebPaginationManager)initWithPageElementXPath:(id)a3 webview:(id)a4
+- (QLWebPaginationManager)initWithPageElementXPath:(id)path webview:(id)webview
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  webviewCopy = webview;
   v12.receiver = self;
   v12.super_class = QLWebPaginationManager;
   v9 = [(QLWebPaginationManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pageElementXPath, a3);
-    objc_storeWeak(&v10->_webview, v8);
+    objc_storeStrong(&v9->_pageElementXPath, path);
+    objc_storeWeak(&v10->_webview, webviewCopy);
   }
 
   return v10;
 }
 
-- (void)processPageGeometryFromXpath:(id)a3
+- (void)processPageGeometryFromXpath:(id)xpath
 {
-  v4 = a3;
-  v5 = [(QLWebPaginationManager *)self pageFrames];
+  xpathCopy = xpath;
+  pageFrames = [(QLWebPaginationManager *)self pageFrames];
 
-  if (v5)
+  if (pageFrames)
   {
-    if (v4)
+    if (xpathCopy)
     {
-      v4[2](v4);
+      xpathCopy[2](xpathCopy);
     }
   }
 
   else
   {
-    v6 = [(QLWebPaginationManager *)self pageElementXPath];
+    pageElementXPath = [(QLWebPaginationManager *)self pageElementXPath];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100001FBC;
     v7[3] = &unk_1000083D0;
     v7[4] = self;
-    v8 = v4;
-    [(QLWebPaginationManager *)self _getFramesForXpath:v6 completion:v7];
+    v8 = xpathCopy;
+    [(QLWebPaginationManager *)self _getFramesForXpath:pageElementXPath completion:v7];
   }
 }
 
-- (CGRect)pageRectForPage:(int64_t)a3
+- (CGRect)pageRectForPage:(int64_t)page
 {
-  v5 = [(QLWebPaginationManager *)self pageElementXPath];
+  pageElementXPath = [(QLWebPaginationManager *)self pageElementXPath];
 
-  if (v5)
+  if (pageElementXPath)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v10 = [(QLWebPaginationManager *)self pageFrames];
+    pageFrames = [(QLWebPaginationManager *)self pageFrames];
 
-    if (v10)
+    if (pageFrames)
     {
-      v11 = [(QLWebPaginationManager *)self pageFrames];
-      v12 = [v11 count];
+      pageFrames2 = [(QLWebPaginationManager *)self pageFrames];
+      v12 = [pageFrames2 count];
 
-      if (v12 > a3)
+      if (v12 > page)
       {
-        v13 = [(QLWebPaginationManager *)self pageFrames];
-        v14 = [v13 objectAtIndexedSubscript:a3];
+        pageFrames3 = [(QLWebPaginationManager *)self pageFrames];
+        v14 = [pageFrames3 objectAtIndexedSubscript:page];
 
         [v14 rectValue];
         x = v15;
@@ -121,7 +121,7 @@
   else
   {
     [(QLWebPaginationManager *)self pageSize];
-    y = v19 * a3;
+    y = v19 * page;
     [(QLWebPaginationManager *)self pageSize];
     width = v20;
     [(QLWebPaginationManager *)self pageSize];
@@ -140,22 +140,22 @@
   return result;
 }
 
-- (void)_getFramesForXpath:(id)a3 completion:(id)a4
+- (void)_getFramesForXpath:(id)xpath completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(QLWebPaginationManager *)self webview];
+  completionCopy = completion;
+  xpathCopy = xpath;
+  webview = [(QLWebPaginationManager *)self webview];
   v14 = @"xpath";
-  v15 = v7;
+  v15 = xpathCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v10 = +[WKContentWorld defaultClientWorld];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000022C0;
   v12[3] = &unk_1000083F8;
-  v13 = v6;
-  v11 = v6;
-  [v8 callAsyncJavaScript:@"\nlet elements = document.evaluate(xpath arguments:document inFrame:null inContentWorld:XPathResult.ORDERED_NODE_ITERATOR_TYPE completionHandler:{null) \nlet frames = []\nvar node\nwhile ((node = elements.iterateNext()) != null) {\n    const {x, y, width, height} = node.getBoundingClientRect()\n    frames.push({x, y, width, height})\n}\nreturn frames;\n\n", v9, 0, v10, v12}];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [webview callAsyncJavaScript:@"\nlet elements = document.evaluate(xpath arguments:document inFrame:null inContentWorld:XPathResult.ORDERED_NODE_ITERATOR_TYPE completionHandler:{null) \nlet frames = []\nvar node\nwhile ((node = elements.iterateNext()) != null) {\n    const {x, y, width, height} = node.getBoundingClientRect()\n    frames.push({x, y, width, height})\n}\nreturn frames;\n\n", v9, 0, v10, v12}];
 }
 
 - (CGSize)pageSize

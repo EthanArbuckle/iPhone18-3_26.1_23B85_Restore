@@ -68,24 +68,24 @@
 
 - (BOOL)isInPlaceholderState
 {
-  v3 = [(_GKStateMachine *)self currentState];
-  if (v3 == @"LoadingState")
+  currentState = [(_GKStateMachine *)self currentState];
+  if (currentState == @"LoadingState")
   {
     v6 = 1;
   }
 
   else
   {
-    v4 = [(_GKStateMachine *)self currentState];
-    if (v4 == @"NoContentState")
+    currentState2 = [(_GKStateMachine *)self currentState];
+    if (currentState2 == @"NoContentState")
     {
       v6 = 1;
     }
 
     else
     {
-      v5 = [(_GKStateMachine *)self currentState];
-      v6 = v5 == @"ErrorState";
+      currentState3 = [(_GKStateMachine *)self currentState];
+      v6 = currentState3 == @"ErrorState";
     }
   }
 

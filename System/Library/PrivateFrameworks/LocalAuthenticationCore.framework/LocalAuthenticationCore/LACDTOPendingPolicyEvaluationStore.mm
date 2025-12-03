@@ -2,13 +2,13 @@
 + (NSString)storeKey;
 - (NSArray)pendingEvaluations;
 - (_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore)init;
-- (_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore)initWithPersistentStore:(id)a3 workQueue:(id)a4;
-- (id)pendingEvaluationWithIdentifier:(id)a3;
-- (void)addPendingEvaluation:(id)a3;
-- (void)loadPersistedEvaluationsWithCompletion:(id)a3;
-- (void)loadWithCompletionHandler:(id)a3;
+- (_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore)initWithPersistentStore:(id)store workQueue:(id)queue;
+- (id)pendingEvaluationWithIdentifier:(id)identifier;
+- (void)addPendingEvaluation:(id)evaluation;
+- (void)loadPersistedEvaluationsWithCompletion:(id)completion;
+- (void)loadWithCompletionHandler:(id)handler;
 - (void)persistEvaluations;
-- (void)removePendingEvaluationWith:(id)a3;
+- (void)removePendingEvaluationWith:(id)with;
 @end
 
 @implementation LACDTOPendingPolicyEvaluationStore
@@ -31,7 +31,7 @@
   return v4.super.isa;
 }
 
-- (_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore)initWithPersistentStore:(id)a3 workQueue:(id)a4
+- (_TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore)initWithPersistentStore:(id)store workQueue:(id)queue
 {
   v7 = OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_taskGroup;
   v8 = type metadata accessor for SerialTask();
@@ -42,25 +42,25 @@
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScS12ContinuationVyyyYac_GMd, &_sScS12ContinuationVyyyYac_GMR);
   (*(*(v13 - 8) + 56))(v11 + v12, 1, 1, v13);
   swift_unknownObjectRetain();
-  v14 = a4;
+  queueCopy = queue;
   SerialTask.start()();
   *(&self->super.isa + v7) = v11;
   v15 = OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_pendingEvaluationsDict;
   *(&self->super.isa + v15) = _sSD17dictionaryLiteralSDyxq_Gx_q_td_tcfCSS_23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluationCTt0g5Tf4g_n(MEMORY[0x1E69E7CC0]);
-  *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_store) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_workQueue) = v14;
+  *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_store) = store;
+  *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_workQueue) = queueCopy;
   v17.receiver = self;
   v17.super_class = type metadata accessor for LACDTOPendingPolicyEvaluationStore();
   return [(LACDTOPendingPolicyEvaluationStore *)&v17 init];
 }
 
-- (void)loadPersistedEvaluationsWithCompletion:(id)a3
+- (void)loadPersistedEvaluationsWithCompletion:(id)completion
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();
@@ -76,13 +76,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &closure #1 in LACDTOPendingPolicyEvaluationStore.loadPersistedEvaluations(completion:)partial apply, v12);
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -98,7 +98,7 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTATu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTATu, v13);
 }
 
@@ -106,48 +106,48 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x88);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_taskGroup);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_taskGroup);
   v8 = swift_allocObject();
-  v8[2] = v5;
+  v8[2] = selfCopy;
   v8[3] = v6;
   v8[4] = ObjectType;
   v9 = *(*v7 + 120);
-  v10 = v5;
+  v10 = selfCopy;
   v9(&closure #1 in LACDTOPendingPolicyEvaluationStore.persist()partial apply, v8);
 }
 
-- (void)addPendingEvaluation:(id)a3
+- (void)addPendingEvaluation:(id)evaluation
 {
-  v4 = *(a3 + OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_identifier);
-  v5 = *(a3 + OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_identifier + 8);
+  v4 = *(evaluation + OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_identifier);
+  v5 = *(evaluation + OBJC_IVAR____TtC23LocalAuthenticationCore36LACDTOMutablePendingPolicyEvaluation_identifier + 8);
   v6 = *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_pendingEvaluationsDict);
-  v7 = a3;
-  v9 = self;
+  evaluationCopy = evaluation;
+  selfCopy = self;
 
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
-  specialized _NativeDictionary.setValue(_:forKey:isUnique:)(v7, v4, v5, isUniquelyReferenced_nonNull_native);
+  specialized _NativeDictionary.setValue(_:forKey:isUnique:)(evaluationCopy, v4, v5, isUniquelyReferenced_nonNull_native);
 
   LACDTOPendingPolicyEvaluationStore.pendingEvaluationsDict.setter(v6);
 }
 
-- (id)pendingEvaluationWithIdentifier:(id)a3
+- (id)pendingEvaluationWithIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = LACDTOPendingPolicyEvaluationStore.pendingEvaluation(withIdentifier:)(v4, v6);
 
   return v8;
 }
 
-- (void)removePendingEvaluationWith:(id)a3
+- (void)removePendingEvaluationWith:(id)with
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
   v9 = *(&self->super.isa + OBJC_IVAR____TtC23LocalAuthenticationCore34LACDTOPendingPolicyEvaluationStore_pendingEvaluationsDict);
-  v8 = self;
+  selfCopy = self;
 
   v7 = specialized Dictionary._Variant.removeValue(forKey:)(v4, v6);
 

@@ -1,48 +1,48 @@
 @interface MBKeyboardPlugin
-- (id)startingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (void)_addRelativePathsToPathsToBackupAndRestore:(id)a3 forDomain:(id)a4;
-- (void)_removeRelativePathsFromPathsNotToBackup:(id)a3 forDomain:(id)a4;
-- (void)_removeRelativePathsFromPathsNotToRestore:(id)a3 forDomain:(id)a4;
-- (void)_updatePathsForKeyboardDomainWithEngine:(id)a3;
+- (id)startingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (void)_addRelativePathsToPathsToBackupAndRestore:(id)restore forDomain:(id)domain;
+- (void)_removeRelativePathsFromPathsNotToBackup:(id)backup forDomain:(id)domain;
+- (void)_removeRelativePathsFromPathsNotToRestore:(id)restore forDomain:(id)domain;
+- (void)_updatePathsForKeyboardDomainWithEngine:(id)engine;
 @end
 
 @implementation MBKeyboardPlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   if (!MBIsInternalInstall() || (+[MBBehaviorOptions sharedOptions](MBBehaviorOptions, "sharedOptions"), v5 = objc_claimAutoreleasedReturnValue(), [v5 domainsToBackUpRegex], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    if ([v4 isDeviceTransferEngine])
+    if ([engineCopy isDeviceTransferEngine])
     {
-      [(MBKeyboardPlugin *)self _updatePathsForKeyboardDomainWithEngine:v4];
+      [(MBKeyboardPlugin *)self _updatePathsForKeyboardDomainWithEngine:engineCopy];
     }
   }
 
   return 0;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v5 = a4;
-  if ([v5 isDeviceTransferEngine])
+  engineCopy = engine;
+  if ([engineCopy isDeviceTransferEngine])
   {
-    [(MBKeyboardPlugin *)self _updatePathsForKeyboardDomainWithEngine:v5];
+    [(MBKeyboardPlugin *)self _updatePathsForKeyboardDomainWithEngine:engineCopy];
   }
 
   return 0;
 }
 
-- (void)_removeRelativePathsFromPathsNotToBackup:(id)a3 forDomain:(id)a4
+- (void)_removeRelativePathsFromPathsNotToBackup:(id)backup forDomain:(id)domain
 {
-  v5 = a3;
-  v6 = a4;
+  backupCopy = backup;
+  domainCopy = domain;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v7 = [backupCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -53,53 +53,53 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(backupCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v6 standardizedRelativePathFor:{v11, v18, v19}];
-        v13 = [v6 relativePathsNotToBackup];
-        v14 = [v13 containsObject:v12];
+        v12 = [domainCopy standardizedRelativePathFor:{v11, v18, v19}];
+        relativePathsNotToBackup = [domainCopy relativePathsNotToBackup];
+        v14 = [relativePathsNotToBackup containsObject:v12];
 
         if (v14)
         {
-          v15 = [v6 relativePathsNotToBackup];
-          v16 = [v15 mutableCopy];
+          relativePathsNotToBackup2 = [domainCopy relativePathsNotToBackup];
+          v16 = [relativePathsNotToBackup2 mutableCopy];
 
           v17 = MBGetDefaultLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v25 = v6;
+            v25 = domainCopy;
             v26 = 2114;
             v27 = v11;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing %{public}@ from relativePathsNotToBackup", buf, 0x16u);
-            v18 = v6;
+            v18 = domainCopy;
             v19 = v11;
             _MBLog();
           }
 
           [v16 removeObject:v12];
-          [v6 setRelativePathsNotToBackup:v16];
+          [domainCopy setRelativePathsNotToBackup:v16];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v8 = [backupCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_removeRelativePathsFromPathsNotToRestore:(id)a3 forDomain:(id)a4
+- (void)_removeRelativePathsFromPathsNotToRestore:(id)restore forDomain:(id)domain
 {
-  v5 = a3;
-  v6 = a4;
+  restoreCopy = restore;
+  domainCopy = domain;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v7 = [restoreCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -110,53 +110,53 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(restoreCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v6 standardizedRelativePathFor:{v11, v18, v19}];
-        v13 = [v6 relativePathsNotToRestore];
-        v14 = [v13 containsObject:v12];
+        v12 = [domainCopy standardizedRelativePathFor:{v11, v18, v19}];
+        relativePathsNotToRestore = [domainCopy relativePathsNotToRestore];
+        v14 = [relativePathsNotToRestore containsObject:v12];
 
         if (v14)
         {
-          v15 = [v6 relativePathsNotToRestore];
-          v16 = [v15 mutableCopy];
+          relativePathsNotToRestore2 = [domainCopy relativePathsNotToRestore];
+          v16 = [relativePathsNotToRestore2 mutableCopy];
 
           v17 = MBGetDefaultLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v25 = v6;
+            v25 = domainCopy;
             v26 = 2114;
             v27 = v11;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing %{public}@ from relativePathsNotToRestore", buf, 0x16u);
-            v18 = v6;
+            v18 = domainCopy;
             v19 = v11;
             _MBLog();
           }
 
           [v16 removeObject:v12];
-          [v6 setRelativePathsNotToRestore:v16];
+          [domainCopy setRelativePathsNotToRestore:v16];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v8 = [restoreCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_addRelativePathsToPathsToBackupAndRestore:(id)a3 forDomain:(id)a4
+- (void)_addRelativePathsToPathsToBackupAndRestore:(id)restore forDomain:(id)domain
 {
-  v5 = a3;
-  v6 = a4;
+  restoreCopy = restore;
+  domainCopy = domain;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v7 = [restoreCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -167,16 +167,16 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(restoreCopy);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v6 relativePathsToBackupAndRestore];
+        relativePathsToBackupAndRestore = [domainCopy relativePathsToBackupAndRestore];
 
-        if (v12)
+        if (relativePathsToBackupAndRestore)
         {
-          v13 = [v6 relativePathsToBackupAndRestore];
-          v14 = [v13 mutableCopy];
+          relativePathsToBackupAndRestore2 = [domainCopy relativePathsToBackupAndRestore];
+          v14 = [relativePathsToBackupAndRestore2 mutableCopy];
         }
 
         else
@@ -188,31 +188,31 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v23 = v6;
+          v23 = domainCopy;
           v24 = 2114;
           v25 = v11;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding %{public}@ to relativePathsToBackupAndRestore", buf, 0x16u);
-          v16 = v6;
+          v16 = domainCopy;
           v17 = v11;
           _MBLog();
         }
 
         [v14 addObject:@"Library/Keyboard"];
-        [v6 setRelativePathsToBackupAndRestore:v14];
+        [domainCopy setRelativePathsToBackupAndRestore:v14];
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v8 = [restoreCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_updatePathsForKeyboardDomainWithEngine:(id)a3
+- (void)_updatePathsForKeyboardDomainWithEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [v4 domainManager];
-  v6 = [v5 domainForName:@"KeyboardDomain"];
+  engineCopy = engine;
+  domainManager = [engineCopy domainManager];
+  v6 = [domainManager domainForName:@"KeyboardDomain"];
 
   if (!v6)
   {
@@ -236,12 +236,12 @@
   [(MBKeyboardPlugin *)self _removeRelativePathsFromPathsNotToRestore:v9 forDomain:v6];
   [v9 removeObject:@"Library/Keyboard/CoreDataUbiquitySupport"];
   [(MBKeyboardPlugin *)self _addRelativePathsToPathsToBackupAndRestore:v9 forDomain:v6];
-  v10 = [v6 relativePathsToIgnoreExclusionsForDrive];
+  relativePathsToIgnoreExclusionsForDrive = [v6 relativePathsToIgnoreExclusionsForDrive];
 
-  if (v10)
+  if (relativePathsToIgnoreExclusionsForDrive)
   {
-    v11 = [v6 relativePathsToIgnoreExclusionsForDrive];
-    v12 = [v11 mutableCopy];
+    relativePathsToIgnoreExclusionsForDrive2 = [v6 relativePathsToIgnoreExclusionsForDrive];
+    v12 = [relativePathsToIgnoreExclusionsForDrive2 mutableCopy];
   }
 
   else

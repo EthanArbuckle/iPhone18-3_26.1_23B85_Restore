@@ -1,21 +1,21 @@
 @interface AMSMarketingItemActionComponent
-- (AMSMarketingItemActionComponent)initWithDictionary:(id)a3;
+- (AMSMarketingItemActionComponent)initWithDictionary:(id)dictionary;
 - (NSString)description;
 - (NSURL)artworkURL;
 @end
 
 @implementation AMSMarketingItemActionComponent
 
-- (AMSMarketingItemActionComponent)initWithDictionary:(id)a3
+- (AMSMarketingItemActionComponent)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSMarketingItemActionComponent;
   v6 = [(AMSMarketingItemActionComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValues, a3);
+    objc_storeStrong(&v6->_rawValues, dictionary);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 
 - (NSString)description
 {
-  v2 = [(AMSMarketingItemActionComponent *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D88];
+  rawValues = [(AMSMarketingItemActionComponent *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D88];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -42,8 +42,8 @@
 
 - (NSURL)artworkURL
 {
-  v2 = [(AMSMarketingItemActionComponent *)self rawValues];
-  v3 = [v2 objectForKeyedSubscript:qword_1F0719D90];
+  rawValues = [(AMSMarketingItemActionComponent *)self rawValues];
+  v3 = [rawValues objectForKeyedSubscript:qword_1F0719D90];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

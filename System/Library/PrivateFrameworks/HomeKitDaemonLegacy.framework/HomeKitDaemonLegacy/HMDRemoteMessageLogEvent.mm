@@ -1,66 +1,66 @@
 @interface HMDRemoteMessageLogEvent
-+ (id)newFromRemoteMessage:(id)a3 device:(id)a4 transportType:(int)a5 sending:(BOOL)a6;
-+ (id)peerInformationForDevice:(id)a3;
-+ (id)peerInformationForRemoteMessage:(id)a3;
-- (HMDRemoteMessageLogEvent)initWithMessageName:(id)a3 identifier:(id)a4 transactionIdentifier:(id)a5 messageType:(int64_t)a6 peerInformation:(id)a7 secure:(BOOL)a8 transportType:(int)a9 sending:(BOOL)a10 messageQoS:(int64_t)a11;
++ (id)newFromRemoteMessage:(id)message device:(id)device transportType:(int)type sending:(BOOL)sending;
++ (id)peerInformationForDevice:(id)device;
++ (id)peerInformationForRemoteMessage:(id)message;
+- (HMDRemoteMessageLogEvent)initWithMessageName:(id)name identifier:(id)identifier transactionIdentifier:(id)transactionIdentifier messageType:(int64_t)type peerInformation:(id)information secure:(BOOL)secure transportType:(int)transportType sending:(BOOL)self0 messageQoS:(int64_t)self1;
 @end
 
 @implementation HMDRemoteMessageLogEvent
 
-- (HMDRemoteMessageLogEvent)initWithMessageName:(id)a3 identifier:(id)a4 transactionIdentifier:(id)a5 messageType:(int64_t)a6 peerInformation:(id)a7 secure:(BOOL)a8 transportType:(int)a9 sending:(BOOL)a10 messageQoS:(int64_t)a11
+- (HMDRemoteMessageLogEvent)initWithMessageName:(id)name identifier:(id)identifier transactionIdentifier:(id)transactionIdentifier messageType:(int64_t)type peerInformation:(id)information secure:(BOOL)secure transportType:(int)transportType sending:(BOOL)self0 messageQoS:(int64_t)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
+  informationCopy = information;
   v29.receiver = self;
   v29.super_class = HMDRemoteMessageLogEvent;
   v22 = [(HMMLogEvent *)&v29 init];
   v23 = v22;
   if (v22)
   {
-    v22->_transportType = a9;
-    v22->_sending = a10;
-    v24 = [v19 UUIDString];
+    v22->_transportType = transportType;
+    v22->_sending = sending;
+    uUIDString = [identifierCopy UUIDString];
     msgIdentifier = v23->_msgIdentifier;
-    v23->_msgIdentifier = v24;
+    v23->_msgIdentifier = uUIDString;
 
-    v26 = [v20 UUIDString];
+    uUIDString2 = [transactionIdentifierCopy UUIDString];
     transactionIdentifier = v23->_transactionIdentifier;
-    v23->_transactionIdentifier = v26;
+    v23->_transactionIdentifier = uUIDString2;
 
-    v23->_secure = a8;
-    objc_storeStrong(&v23->_msgName, a3);
-    v23->_msgType = a6;
-    objc_storeStrong(&v23->_peerInformation, a7);
-    v23->_msgQoS = a11;
+    v23->_secure = secure;
+    objc_storeStrong(&v23->_msgName, name);
+    v23->_msgType = type;
+    objc_storeStrong(&v23->_peerInformation, information);
+    v23->_msgQoS = s;
   }
 
   return v23;
 }
 
-+ (id)newFromRemoteMessage:(id)a3 device:(id)a4 transportType:(int)a5 sending:(BOOL)a6
++ (id)newFromRemoteMessage:(id)message device:(id)device transportType:(int)type sending:(BOOL)sending
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 attributedMessageName];
-  v12 = v11;
-  if (v11)
+  messageCopy = message;
+  deviceCopy = device;
+  attributedMessageName = [messageCopy attributedMessageName];
+  v12 = attributedMessageName;
+  if (attributedMessageName)
   {
-    v13 = v11;
+    name = attributedMessageName;
   }
 
   else
   {
-    v13 = [v9 name];
+    name = [messageCopy name];
   }
 
-  v14 = v13;
+  v14 = name;
 
   if ([v14 isEqualToString:@"HMDHomeCHIPSendRemoteRequestMessage"])
   {
-    v15 = [v9 messagePayload];
-    v16 = [v15 objectForKeyedSubscript:@"HMDHomeCHIPRequestMessageKey"];
+    messagePayload = [messageCopy messagePayload];
+    v16 = [messagePayload objectForKeyedSubscript:@"HMDHomeCHIPRequestMessageKey"];
     v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D17C78]];
 
     if (v17)
@@ -71,33 +71,33 @@
     }
   }
 
-  if (v10)
+  if (deviceCopy)
   {
-    [a1 peerInformationForDevice:v10];
+    [self peerInformationForDevice:deviceCopy];
   }
 
   else
   {
-    [a1 peerInformationForRemoteMessage:v9];
+    [self peerInformationForRemoteMessage:messageCopy];
   }
   v19 = ;
-  v20 = [a1 alloc];
-  v21 = [v9 identifier];
-  v22 = [v9 transactionIdentifier];
-  BYTE4(v25) = a6;
-  LODWORD(v25) = a5;
-  v23 = [v20 initWithMessageName:v14 identifier:v21 transactionIdentifier:v22 messageType:objc_msgSend(v9 peerInformation:"type") secure:v19 transportType:objc_msgSend(v9 sending:"isSecure") messageQoS:{v25, objc_msgSend(v9, "qualityOfService")}];
+  v20 = [self alloc];
+  identifier = [messageCopy identifier];
+  transactionIdentifier = [messageCopy transactionIdentifier];
+  BYTE4(v25) = sending;
+  LODWORD(v25) = type;
+  v23 = [v20 initWithMessageName:v14 identifier:identifier transactionIdentifier:transactionIdentifier messageType:objc_msgSend(messageCopy peerInformation:"type") secure:v19 transportType:objc_msgSend(messageCopy sending:"isSecure") messageQoS:{v25, objc_msgSend(messageCopy, "qualityOfService")}];
 
   return v23;
 }
 
-+ (id)peerInformationForRemoteMessage:(id)a3
++ (id)peerInformationForRemoteMessage:(id)message
 {
-  v3 = [a3 destination];
+  destination = [message destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = destination;
   }
 
   else
@@ -123,8 +123,8 @@
 
   if (v8)
   {
-    v9 = [v8 device];
-    v10 = [HMDRemoteMessageLogEvent peerInformationForDevice:v9];
+    device = [v8 device];
+    v10 = [HMDRemoteMessageLogEvent peerInformationForDevice:device];
   }
 
   else
@@ -147,12 +147,12 @@
   return v10;
 }
 
-+ (id)peerInformationForDevice:(id)a3
++ (id)peerInformationForDevice:(id)device
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 productInfo];
-  [v4 productClass];
+  deviceCopy = device;
+  productInfo = [deviceCopy productInfo];
+  [productInfo productClass];
   v5 = HMFProductClassToString();
 
   if (!v5)
@@ -165,7 +165,7 @@
       v11 = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v3;
+      v14 = deviceCopy;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Unable to map productClass for device %@", &v11, 0x16u);
     }
 

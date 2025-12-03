@@ -1,28 +1,28 @@
 @interface MFMailboxFilter
-+ (id)_addressLabelOfType:(int64_t)a3;
-+ (id)filterForAccount:(id)a3 iconFromSmartMailbox:(id)a4;
++ (id)_addressLabelOfType:(int64_t)type;
++ (id)filterForAccount:(id)account iconFromSmartMailbox:(id)mailbox;
 + (id)filterForCCMeMessages;
 + (id)filterForFlaggedMessages;
 + (id)filterForMessagesWithAttachments;
-+ (id)filterForSender:(id)a3;
++ (id)filterForSender:(id)sender;
 + (id)filterForToMeMessages;
 + (id)filterForTodayMessages;
 + (id)filterForTouchedByCleanupMessages;
 + (id)filterForUnreadMessages;
 + (id)filterForVIPMessages;
-- (BOOL)hasCriterionOfType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFilter:(id)a3;
-- (BOOL)isEquivalentToCriterion:(id)a3;
-- (MFMailboxFilter)initWithAccount:(id)a3 iconFromSmartMailbox:(id)a4;
-- (MFMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 criterion:(id)a6;
-- (MFMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 icon:(id)a6 iconTintColor:(id)a7 criterion:(id)a8;
+- (BOOL)hasCriterionOfType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFilter:(id)filter;
+- (BOOL)isEquivalentToCriterion:(id)criterion;
+- (MFMailboxFilter)initWithAccount:(id)account iconFromSmartMailbox:(id)mailbox;
+- (MFMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description criterion:(id)criterion;
+- (MFMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description icon:(id)icon iconTintColor:(id)color criterion:(id)criterion;
 - (id)_blankImage;
 - (id)debugDescription;
 - (id)initForCCMeMessages;
 - (id)initForFlaggedMessages;
 - (id)initForMessagesWithAttachments;
-- (id)initForSender:(id)a3;
+- (id)initForSender:(id)sender;
 - (id)initForToMeMessages;
 - (id)initForTodayMessages;
 - (id)initForTouchedByCleanupMessages;
@@ -33,28 +33,28 @@
 
 @implementation MFMailboxFilter
 
-- (MFMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 criterion:(id)a6
+- (MFMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description criterion:(id)criterion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MFMailboxFilter *)self _blankImage];
-  v14 = [(MFMailboxFilter *)self initWithType:a3 name:v10 description:v11 icon:v13 iconTintColor:0 criterion:v12];
+  nameCopy = name;
+  descriptionCopy = description;
+  criterionCopy = criterion;
+  _blankImage = [(MFMailboxFilter *)self _blankImage];
+  v14 = [(MFMailboxFilter *)self initWithType:type name:nameCopy description:descriptionCopy icon:_blankImage iconTintColor:0 criterion:criterionCopy];
 
   return v14;
 }
 
-- (MFMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 icon:(id)a6 iconTintColor:(id)a7 criterion:(id)a8
+- (MFMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description icon:(id)icon iconTintColor:(id)color criterion:(id)criterion
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (v15)
+  nameCopy = name;
+  descriptionCopy = description;
+  iconCopy = icon;
+  colorCopy = color;
+  criterionCopy = criterion;
+  v20 = criterionCopy;
+  if (nameCopy)
   {
-    if (v19)
+    if (criterionCopy)
     {
       goto LABEL_3;
     }
@@ -78,13 +78,13 @@ LABEL_3:
   v27.receiver = self;
   v27.super_class = MFMailboxFilter;
   LOBYTE(v26) = [v20 criterionType] == 23;
-  v21 = [(MFMailboxFilter *)&v27 initWithType:a3 name:v15 description:v16 iconImageName:0 iconTintColor:v18 predicate:0 hasMailboxPredicate:v26];
+  v21 = [(MFMailboxFilter *)&v27 initWithType:type name:nameCopy description:descriptionCopy iconImageName:0 iconTintColor:colorCopy predicate:0 hasMailboxPredicate:v26];
   if (v21)
   {
-    v22 = [v17 imageWithRenderingMode:2];
+    v22 = [iconCopy imageWithRenderingMode:2];
     [(MFMailboxFilter *)v21 setIcon:v22];
 
-    objc_storeStrong(&v21->_criterion, a8);
+    objc_storeStrong(&v21->_criterion, criterion);
   }
 
   return v21;
@@ -102,27 +102,27 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)isEquivalentToCriterion:(id)a3
+- (BOOL)isEquivalentToCriterion:(id)criterion
 {
-  v4 = a3;
-  v5 = [(MFMailboxFilter *)self criterion];
-  v6 = [v5 isEqual:v4];
+  criterionCopy = criterion;
+  criterion = [(MFMailboxFilter *)self criterion];
+  v6 = [criterion isEqual:criterionCopy];
 
   return v6;
 }
 
-- (BOOL)hasCriterionOfType:(int64_t)a3
+- (BOOL)hasCriterionOfType:(int64_t)type
 {
-  v4 = [(MFMailboxFilter *)self criterion];
-  LOBYTE(a3) = [v4 criterionType] == a3;
+  criterion = [(MFMailboxFilter *)self criterion];
+  LOBYTE(type) = [criterion criterionType] == type;
 
-  return a3;
+  return type;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MFMailboxFilter *)self predicate];
-  if (v3)
+  predicate = [(MFMailboxFilter *)self predicate];
+  if (predicate)
   {
     [(MFMailboxFilter *)self predicate];
   }
@@ -134,20 +134,20 @@ LABEL_3:
   v4 = ;
   v5 = [v4 hash];
 
-  v6 = [(MFMailboxFilter *)self name];
-  v7 = [v6 hash];
+  name = [(MFMailboxFilter *)self name];
+  v7 = [name hash];
 
-  v8 = [(MFMailboxFilter *)self filterDescription];
+  filterDescription = [(MFMailboxFilter *)self filterDescription];
   v9 = 33 * (v7 + 33 * v5);
-  v10 = [v8 hash] + 193376997;
+  v10 = [filterDescription hash] + 193376997;
 
   return &v10[v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -157,7 +157,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MFMailboxFilter *)self isEqualToFilter:v4];
+      v5 = [(MFMailboxFilter *)self isEqualToFilter:equalCopy];
     }
 
     else
@@ -169,33 +169,33 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqualToFilter:(id)a3
+- (BOOL)isEqualToFilter:(id)filter
 {
-  v4 = a3;
-  if (v4)
+  filterCopy = filter;
+  if (filterCopy)
   {
-    v5 = [(MFMailboxFilter *)self predicate];
+    predicate = [(MFMailboxFilter *)self predicate];
 
-    if (v5)
+    if (predicate)
     {
-      v6 = [(MFMailboxFilter *)self predicate];
-      v7 = [v4 isEquivalentToPredicate:v6];
+      predicate2 = [(MFMailboxFilter *)self predicate];
+      v7 = [filterCopy isEquivalentToPredicate:predicate2];
     }
 
     else
     {
-      v6 = [(MFMailboxFilter *)self criterion];
-      v9 = [v4 criterion];
-      v7 = [v6 isEqual:v9];
+      predicate2 = [(MFMailboxFilter *)self criterion];
+      criterion = [filterCopy criterion];
+      v7 = [predicate2 isEqual:criterion];
     }
 
-    v10 = [(MFMailboxFilter *)self name];
-    v11 = [v4 name];
-    if ([v10 isEqualToString:v11])
+    name = [(MFMailboxFilter *)self name];
+    name2 = [filterCopy name];
+    if ([name isEqualToString:name2])
     {
-      v12 = [(MFMailboxFilter *)self filterDescription];
-      v13 = [v4 filterDescription];
-      v8 = [v12 isEqualToString:v13] & v7;
+      filterDescription = [(MFMailboxFilter *)self filterDescription];
+      filterDescription2 = [filterCopy filterDescription];
+      v8 = [filterDescription isEqualToString:filterDescription2] & v7;
     }
 
     else
@@ -216,11 +216,11 @@ LABEL_3:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MFMailboxFilter *)self name];
-  v6 = [(MFMailboxFilter *)self filterDescription];
-  v7 = [(MFMailboxFilter *)self criterion];
-  v8 = [(MFMailboxFilter *)self predicate];
-  v9 = [NSString stringWithFormat:@"<%@: %p\nName: %@\nDescription:  %@\nCriterion: \n%@\nPredicate: \n%@", v4, self, v5, v6, v7, v8];
+  name = [(MFMailboxFilter *)self name];
+  filterDescription = [(MFMailboxFilter *)self filterDescription];
+  criterion = [(MFMailboxFilter *)self criterion];
+  predicate = [(MFMailboxFilter *)self predicate];
+  v9 = [NSString stringWithFormat:@"<%@: %p\nName: %@\nDescription:  %@\nCriterion: \n%@\nPredicate: \n%@", v4, self, name, filterDescription, criterion, predicate];
 
   return v9;
 }
@@ -229,141 +229,141 @@ LABEL_3:
 {
   v6.receiver = self;
   v6.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v6 initForFlaggedMessages];
-  if (v2)
+  initForFlaggedMessages = [(MFMailboxFilter *)&v6 initForFlaggedMessages];
+  if (initForFlaggedMessages)
   {
     v3 = +[MFMessageCriterion flaggedMessageCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForFlaggedMessages[1];
+    initForFlaggedMessages[1] = v3;
   }
 
-  return v2;
+  return initForFlaggedMessages;
 }
 
 - (id)initForUnreadMessages
 {
   v6.receiver = self;
   v6.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v6 initForUnreadMessages];
-  if (v2)
+  initForUnreadMessages = [(MFMailboxFilter *)&v6 initForUnreadMessages];
+  if (initForUnreadMessages)
   {
     v3 = +[MFMessageCriterion unreadMessageCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForUnreadMessages[1];
+    initForUnreadMessages[1] = v3;
   }
 
-  return v2;
+  return initForUnreadMessages;
 }
 
 - (id)initForToMeMessages
 {
   v7.receiver = self;
   v7.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v7 initForToMeMessages];
-  if (v2)
+  initForToMeMessages = [(MFMailboxFilter *)&v7 initForToMeMessages];
+  if (initForToMeMessages)
   {
     v3 = +[MFMessageCriterion toMeCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForToMeMessages[1];
+    initForToMeMessages[1] = v3;
 
     v5 = [MFMailboxFilter _addressLabelOfType:2];
-    [v2 setIcon:v5];
+    [initForToMeMessages setIcon:v5];
   }
 
-  return v2;
+  return initForToMeMessages;
 }
 
 - (id)initForCCMeMessages
 {
   v7.receiver = self;
   v7.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v7 initForCCMeMessages];
-  if (v2)
+  initForCCMeMessages = [(MFMailboxFilter *)&v7 initForCCMeMessages];
+  if (initForCCMeMessages)
   {
     v3 = +[MFMessageCriterion ccMeCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForCCMeMessages[1];
+    initForCCMeMessages[1] = v3;
 
     v5 = [MFMailboxFilter _addressLabelOfType:3];
-    [v2 setIcon:v5];
+    [initForCCMeMessages setIcon:v5];
   }
 
-  return v2;
+  return initForCCMeMessages;
 }
 
 - (id)initForTodayMessages
 {
   v6.receiver = self;
   v6.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v6 initForTodayMessages];
-  if (v2)
+  initForTodayMessages = [(MFMailboxFilter *)&v6 initForTodayMessages];
+  if (initForTodayMessages)
   {
     v3 = +[MFMessageCriterion todayMessageCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForTodayMessages[1];
+    initForTodayMessages[1] = v3;
   }
 
-  return v2;
+  return initForTodayMessages;
 }
 
 - (id)initForMessagesWithAttachments
 {
   v6.receiver = self;
   v6.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v6 initForMessagesWithAttachments];
-  if (v2)
+  initForMessagesWithAttachments = [(MFMailboxFilter *)&v6 initForMessagesWithAttachments];
+  if (initForMessagesWithAttachments)
   {
     v3 = +[MFMessageCriterion hasAttachmentsCriterion];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForMessagesWithAttachments[1];
+    initForMessagesWithAttachments[1] = v3;
   }
 
-  return v2;
+  return initForMessagesWithAttachments;
 }
 
 - (id)initForVIPMessages
 {
   v6.receiver = self;
   v6.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v6 initForVIPMessages];
-  if (v2)
+  initForVIPMessages = [(MFMailboxFilter *)&v6 initForVIPMessages];
+  if (initForVIPMessages)
   {
     v3 = [MFMessageCriterion senderIsVIPCriterion:1];
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = initForVIPMessages[1];
+    initForVIPMessages[1] = v3;
   }
 
-  return v2;
+  return initForVIPMessages;
 }
 
 - (id)initForTouchedByCleanupMessages
 {
   v7.receiver = self;
   v7.super_class = MFMailboxFilter;
-  v2 = [(MFMailboxFilter *)&v7 initForTouchedByCleanupMessages];
-  if (v2)
+  initForTouchedByCleanupMessages = [(MFMailboxFilter *)&v7 initForTouchedByCleanupMessages];
+  if (initForTouchedByCleanupMessages)
   {
     v3 = [UIImage mf_symbolConfigurationForView:6];
     v4 = [UIImage _systemImageNamed:MFImageGlyphFilterTouchedByCleanupMailbox withConfiguration:v3];
     v5 = [v4 imageWithRenderingMode:2];
-    [v2 setIcon:v5];
+    [initForTouchedByCleanupMessages setIcon:v5];
   }
 
-  return v2;
+  return initForTouchedByCleanupMessages;
 }
 
-- (MFMailboxFilter)initWithAccount:(id)a3 iconFromSmartMailbox:(id)a4
+- (MFMailboxFilter)initWithAccount:(id)account iconFromSmartMailbox:(id)mailbox
 {
-  v6 = a3;
+  accountCopy = account;
   v14.receiver = self;
   v14.super_class = MFMailboxFilter;
-  v7 = [(MFMailboxFilter *)&v14 initWithAccount:v6 iconFromSmartMailbox:a4];
+  v7 = [(MFMailboxFilter *)&v14 initWithAccount:accountCopy iconFromSmartMailbox:mailbox];
   if (v7)
   {
-    v8 = [v6 objectID];
-    v9 = [v8 representedObjectID];
+    objectID = [accountCopy objectID];
+    representedObjectID = [objectID representedObjectID];
 
-    v10 = [MailAccount accountWithUniqueId:v9];
+    v10 = [MailAccount accountWithUniqueId:representedObjectID];
     v11 = [MFMessageCriterion criterionForAccount:v10];
     criterion = v7->_criterion;
     v7->_criterion = v11;
@@ -372,11 +372,11 @@ LABEL_3:
   return v7;
 }
 
-- (id)initForSender:(id)a3
+- (id)initForSender:(id)sender
 {
   v7.receiver = self;
   v7.super_class = MFMailboxFilter;
-  v3 = [(MFMailboxFilter *)&v7 initForSender:a3];
+  v3 = [(MFMailboxFilter *)&v7 initForSender:sender];
   v4 = v3;
   if (v3)
   {
@@ -389,86 +389,86 @@ LABEL_3:
 
 + (id)filterForFlaggedMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForFlaggedMessages];
+  initForFlaggedMessages = [[MFMailboxFilter alloc] initForFlaggedMessages];
 
-  return v2;
+  return initForFlaggedMessages;
 }
 
 + (id)filterForUnreadMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForUnreadMessages];
+  initForUnreadMessages = [[MFMailboxFilter alloc] initForUnreadMessages];
 
-  return v2;
+  return initForUnreadMessages;
 }
 
 + (id)filterForToMeMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForToMeMessages];
+  initForToMeMessages = [[MFMailboxFilter alloc] initForToMeMessages];
 
-  return v2;
+  return initForToMeMessages;
 }
 
 + (id)filterForCCMeMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForCCMeMessages];
+  initForCCMeMessages = [[MFMailboxFilter alloc] initForCCMeMessages];
 
-  return v2;
+  return initForCCMeMessages;
 }
 
 + (id)filterForTodayMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForTodayMessages];
+  initForTodayMessages = [[MFMailboxFilter alloc] initForTodayMessages];
 
-  return v2;
+  return initForTodayMessages;
 }
 
 + (id)filterForMessagesWithAttachments
 {
-  v2 = [[MFMailboxFilter alloc] initForMessagesWithAttachments];
+  initForMessagesWithAttachments = [[MFMailboxFilter alloc] initForMessagesWithAttachments];
 
-  return v2;
+  return initForMessagesWithAttachments;
 }
 
 + (id)filterForVIPMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForVIPMessages];
+  initForVIPMessages = [[MFMailboxFilter alloc] initForVIPMessages];
 
-  return v2;
+  return initForVIPMessages;
 }
 
-+ (id)filterForAccount:(id)a3 iconFromSmartMailbox:(id)a4
++ (id)filterForAccount:(id)account iconFromSmartMailbox:(id)mailbox
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MFMailboxFilter alloc] initWithAccount:v5 iconFromSmartMailbox:v6];
+  accountCopy = account;
+  mailboxCopy = mailbox;
+  v7 = [[MFMailboxFilter alloc] initWithAccount:accountCopy iconFromSmartMailbox:mailboxCopy];
 
   return v7;
 }
 
-+ (id)filterForSender:(id)a3
++ (id)filterForSender:(id)sender
 {
-  v3 = a3;
-  v4 = [[MFMailboxFilter alloc] initForSender:v3];
+  senderCopy = sender;
+  v4 = [[MFMailboxFilter alloc] initForSender:senderCopy];
 
   return v4;
 }
 
 + (id)filterForTouchedByCleanupMessages
 {
-  v2 = [[MFMailboxFilter alloc] initForTouchedByCleanupMessages];
+  initForTouchedByCleanupMessages = [[MFMailboxFilter alloc] initForTouchedByCleanupMessages];
 
-  return v2;
+  return initForTouchedByCleanupMessages;
 }
 
-+ (id)_addressLabelOfType:(int64_t)a3
++ (id)_addressLabelOfType:(int64_t)type
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
 
-  v6 = sub_10014A0BC(a3, v5, 36.0);
+  v6 = sub_10014A0BC(type, preferredContentSizeCategory, 36.0);
   v7 = +[NSBundle mainBundle];
   v8 = +[UIColor systemGrayColor];
-  v9 = sub_100149B0C(a3, v5, v7, v8, 0, v6);
+  v9 = sub_100149B0C(type, preferredContentSizeCategory, v7, v8, 0, v6);
 
   return v9;
 }

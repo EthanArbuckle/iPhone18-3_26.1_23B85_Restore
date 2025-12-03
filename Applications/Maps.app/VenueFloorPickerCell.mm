@@ -1,11 +1,11 @@
 @interface VenueFloorPickerCell
 + (double)cellHeight;
 + (id)floorNameFont;
-- (VenueFloorPickerCell)initWithFrame:(CGRect)a3;
+- (VenueFloorPickerCell)initWithFrame:(CGRect)frame;
 - (void)_updateSelectedBackgroundCorners;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowSelection:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowSelection:(BOOL)selection;
 - (void)updateStyle;
 @end
 
@@ -17,33 +17,33 @@
   {
     [(UIView *)self->_selectionBackgroundView bounds];
     v3 = CGRectGetWidth(v6) * 0.5;
-    v4 = [(UIView *)self->_selectionBackgroundView layer];
-    [v4 setCornerRadius:v3];
+    layer = [(UIView *)self->_selectionBackgroundView layer];
+    [layer setCornerRadius:v3];
   }
 }
 
 - (void)updateStyle
 {
   v3 = +[UIColor tertiarySystemFillColor];
-  v4 = [(VenueFloorPickerCell *)self selectionBackgroundView];
-  [v4 setBackgroundColor:v3];
+  selectionBackgroundView = [(VenueFloorPickerCell *)self selectionBackgroundView];
+  [selectionBackgroundView setBackgroundColor:v3];
 
   if ([(VenueFloorPickerCell *)self isUserLocation])
   {
-    v5 = [(VenueFloorPickerCell *)self theme];
-    v6 = [v5 keyColor];
+    theme = [(VenueFloorPickerCell *)self theme];
+    keyColor = [theme keyColor];
 LABEL_5:
-    v7 = v6;
-    v8 = [(VenueFloorPickerCell *)self floorNameLabel];
-    [v8 setTextColor:v7];
+    floorNameLabel2 = keyColor;
+    floorNameLabel = [(VenueFloorPickerCell *)self floorNameLabel];
+    [floorNameLabel setTextColor:floorNameLabel2];
 
     goto LABEL_10;
   }
 
   if ([(VenueFloorPickerCell *)self lacksSearchResults])
   {
-    v5 = [(VenueFloorPickerCell *)self theme];
-    v6 = [v5 venueFloorPickerLackingSearchResultsTextColor];
+    theme = [(VenueFloorPickerCell *)self theme];
+    keyColor = [theme venueFloorPickerLackingSearchResultsTextColor];
     goto LABEL_5;
   }
 
@@ -56,15 +56,15 @@ LABEL_5:
   {
     +[MapsTheme floatingControlsTintColor];
   }
-  v5 = ;
-  v7 = [(VenueFloorPickerCell *)self floorNameLabel];
-  [v7 setTextColor:v5];
+  theme = ;
+  floorNameLabel2 = [(VenueFloorPickerCell *)self floorNameLabel];
+  [floorNameLabel2 setTextColor:theme];
 LABEL_10:
 
-  v9 = [(VenueFloorPickerCell *)self floorNameLabel];
-  v10 = [v9 textColor];
-  v11 = [(VenueFloorPickerCell *)self floorNameLabel];
-  [v11 setHighlightedTextColor:v10];
+  floorNameLabel3 = [(VenueFloorPickerCell *)self floorNameLabel];
+  textColor = [floorNameLabel3 textColor];
+  floorNameLabel4 = [(VenueFloorPickerCell *)self floorNameLabel];
+  [floorNameLabel4 setHighlightedTextColor:textColor];
 
   v12 = 0.0;
   if ([(VenueFloorPickerCell *)self isSelected])
@@ -80,15 +80,15 @@ LABEL_10:
     }
   }
 
-  v13 = [(VenueFloorPickerCell *)self selectionBackgroundView];
-  [v13 setAlpha:v12];
+  selectionBackgroundView2 = [(VenueFloorPickerCell *)self selectionBackgroundView];
+  [selectionBackgroundView2 setAlpha:v12];
 
   [(VenueFloorPickerCell *)self _updateSelectedBackgroundCorners];
 }
 
-- (void)setShowSelection:(BOOL)a3
+- (void)setShowSelection:(BOOL)selection
 {
-  self->_showSelection = a3;
+  self->_showSelection = selection;
   if ([(VenueFloorPickerCell *)self isSelected])
   {
 
@@ -96,11 +96,11 @@ LABEL_10:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = VenueFloorPickerCell;
-  [(VenueFloorPickerCell *)&v4 setSelected:a3];
+  [(VenueFloorPickerCell *)&v4 setSelected:selected];
   [(VenueFloorPickerCell *)self updateStyle];
 }
 
@@ -112,12 +112,12 @@ LABEL_10:
   [(VenueFloorPickerCell *)self _updateSelectedBackgroundCorners];
 }
 
-- (VenueFloorPickerCell)initWithFrame:(CGRect)a3
+- (VenueFloorPickerCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v47.receiver = self;
   v47.super_class = VenueFloorPickerCell;
   v7 = [(VenueFloorPickerCell *)&v47 initWithFrame:?];
@@ -132,8 +132,8 @@ LABEL_10:
     [(UIView *)v8->_selectionBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v8->_selectionBackgroundView setAlpha:0.0];
     [(UIView *)v8->_selectionBackgroundView setClipsToBounds:1];
-    v11 = [(VenueFloorPickerCell *)v8 contentView];
-    [v11 addSubview:v8->_selectionBackgroundView];
+    contentView = [(VenueFloorPickerCell *)v8 contentView];
+    [contentView addSubview:v8->_selectionBackgroundView];
 
     v12 = [[UILabel alloc] initWithFrame:{x + 5.0, y, width + -10.0, height}];
     floorNameLabel = v8->_floorNameLabel;
@@ -145,24 +145,24 @@ LABEL_10:
 
     [(UILabel *)v8->_floorNameLabel setTextAlignment:1];
     [(UILabel *)v8->_floorNameLabel setBaselineAdjustment:1];
-    v15 = [objc_opt_class() floorNameFont];
-    [(UILabel *)v8->_floorNameLabel setFont:v15];
+    floorNameFont = [objc_opt_class() floorNameFont];
+    [(UILabel *)v8->_floorNameLabel setFont:floorNameFont];
 
     [(UILabel *)v8->_floorNameLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v8->_floorNameLabel setMinimumScaleFactor:0.25];
-    v16 = [(VenueFloorPickerCell *)v8 contentView];
-    [v16 addSubview:v8->_floorNameLabel];
+    contentView2 = [(VenueFloorPickerCell *)v8 contentView];
+    [contentView2 addSubview:v8->_floorNameLabel];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v17 = [(VenueFloorPickerCell *)v8 contentView];
-      v18 = [v17 _maps_addHairlineAtBottomWithMargin:0.0];
+      contentView3 = [(VenueFloorPickerCell *)v8 contentView];
+      v18 = [contentView3 _maps_addHairlineAtBottomWithMargin:0.0];
     }
 
     v19 = [MUEdgeLayout alloc];
     v20 = v8->_selectionBackgroundView;
-    v21 = [(VenueFloorPickerCell *)v8 contentView];
-    v22 = [v19 initWithItem:v20 container:v21];
+    contentView4 = [(VenueFloorPickerCell *)v8 contentView];
+    v22 = [v19 initWithItem:v20 container:contentView4];
 
     if (_UISolariumEnabled())
     {
@@ -171,31 +171,31 @@ LABEL_10:
 
     v46 = v22;
     v23 = objc_alloc_init(NSMutableArray);
-    v44 = [(UILabel *)v8->_floorNameLabel leadingAnchor];
-    v45 = [(VenueFloorPickerCell *)v8 contentView];
-    v43 = [v45 leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:5.0];
+    leadingAnchor = [(UILabel *)v8->_floorNameLabel leadingAnchor];
+    contentView5 = [(VenueFloorPickerCell *)v8 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
     v50[0] = v42;
-    v40 = [(UILabel *)v8->_floorNameLabel trailingAnchor];
-    v41 = [(VenueFloorPickerCell *)v8 contentView];
-    v24 = [v41 trailingAnchor];
-    v25 = [v40 constraintEqualToAnchor:v24 constant:-5.0];
+    trailingAnchor = [(UILabel *)v8->_floorNameLabel trailingAnchor];
+    contentView6 = [(VenueFloorPickerCell *)v8 contentView];
+    trailingAnchor2 = [contentView6 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
     v50[1] = v25;
-    v26 = [(UILabel *)v8->_floorNameLabel centerYAnchor];
-    v27 = [(VenueFloorPickerCell *)v8 contentView];
-    v28 = [v27 centerYAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    centerYAnchor = [(UILabel *)v8->_floorNameLabel centerYAnchor];
+    contentView7 = [(VenueFloorPickerCell *)v8 contentView];
+    centerYAnchor2 = [contentView7 centerYAnchor];
+    v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v50[2] = v29;
     v30 = [NSArray arrayWithObjects:v50 count:3];
     [v23 addObjectsFromArray:v30];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v31 = [(UILabel *)v8->_floorNameLabel heightAnchor];
-      v32 = [(VenueFloorPickerCell *)v8 contentView];
-      v33 = [v32 heightAnchor];
+      heightAnchor = [(UILabel *)v8->_floorNameLabel heightAnchor];
+      contentView8 = [(VenueFloorPickerCell *)v8 contentView];
+      heightAnchor2 = [contentView8 heightAnchor];
       LODWORD(v34) = 1144750080;
-      v35 = [v31 constraintLessThanOrEqualToAnchor:v33 constant:-16.0 priority:v34];
+      v35 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2 constant:-16.0 priority:v34];
       v49 = v35;
       v36 = [NSArray arrayWithObjects:&v49 count:1];
       [v23 addObjectsFromArray:v36];
@@ -230,10 +230,10 @@ LABEL_10:
 
 + (double)cellHeight
 {
-  v2 = [a1 floorNameFont];
-  [v2 ascender];
+  floorNameFont = [self floorNameFont];
+  [floorNameFont ascender];
   v4 = v3;
-  [v2 descender];
+  [floorNameFont descender];
   v6 = v4 + 16.0 - v5;
 
   return v6;

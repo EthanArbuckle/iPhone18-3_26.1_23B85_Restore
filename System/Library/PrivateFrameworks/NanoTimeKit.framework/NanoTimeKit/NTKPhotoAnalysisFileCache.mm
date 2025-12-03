@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)_save;
 - (NTKPhotoAnalysisFileCache)init;
-- (id)photoAnalysisForIdentifier:(id)a3;
+- (id)photoAnalysisForIdentifier:(id)identifier;
 - (void)_dirtyCache;
 - (void)dealloc;
-- (void)setPhotoAnalysis:(id)a3 forIdentifier:(id)a4;
+- (void)setPhotoAnalysis:(id)analysis forIdentifier:(id)identifier;
 @end
 
 @implementation NTKPhotoAnalysisFileCache
@@ -185,11 +185,11 @@ uint64_t __34__NTKPhotoAnalysisFileCache__save__block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (id)photoAnalysisForIdentifier:(id)a3
+- (id)photoAnalysisForIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:identifierCopy];
   v6 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -197,14 +197,14 @@ uint64_t __34__NTKPhotoAnalysisFileCache__save__block_invoke(uint64_t a1, void *
     if (v7)
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = identifierCopy;
       _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "[photo analysis file cache] found %@", &v10, 0xCu);
     }
 
     ++self->_sequenceNumber;
     [v5 setSequenceNumber:?];
     [(NTKPhotoAnalysisFileCache *)self _dirtyCache];
-    v8 = [v5 analysis];
+    analysis = [v5 analysis];
   }
 
   else
@@ -212,32 +212,32 @@ uint64_t __34__NTKPhotoAnalysisFileCache__save__block_invoke(uint64_t a1, void *
     if (v7)
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = identifierCopy;
       _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "[photo analysis file cache] not found %@", &v10, 0xCu);
     }
 
-    v8 = 0;
+    analysis = 0;
   }
 
-  return v8;
+  return analysis;
 }
 
-- (void)setPhotoAnalysis:(id)a3 forIdentifier:(id)a4
+- (void)setPhotoAnalysis:(id)analysis forIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  analysisCopy = analysis;
   v8 = objc_opt_new();
   ++self->_sequenceNumber;
   [v8 setSequenceNumber:?];
-  [v8 setAnalysis:v7];
+  [v8 setAnalysis:analysisCopy];
 
-  [(NSMutableDictionary *)self->_cache setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)self->_cache setObject:v8 forKey:identifierCopy];
   v9 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = identifierCopy;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "[photo analysis file cache] add %@", &v10, 0xCu);
   }
 

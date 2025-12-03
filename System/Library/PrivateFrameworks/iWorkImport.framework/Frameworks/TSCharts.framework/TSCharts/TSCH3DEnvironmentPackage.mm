@@ -1,14 +1,14 @@
 @interface TSCH3DEnvironmentPackage
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (BOOL)hasCompleteData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DEnvironmentPackage)init;
-- (TSCH3DEnvironmentPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DEnvironmentPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addMaterial:(id)a3;
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)addMaterial:(id)material;
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCH3DEnvironmentPackage
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v15)
   {
@@ -44,10 +44,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -154,45 +154,45 @@ LABEL_12:
   return v15;
 }
 
-- (void)addMaterial:(id)a3
+- (void)addMaterial:(id)material
 {
-  v16 = a3;
+  materialCopy = material;
   v4 = self->_materials;
-  v9 = objc_msgSend_arrayByAddingObject_(v4, v5, v6, v7, v8, v16);
+  v9 = objc_msgSend_arrayByAddingObject_(v4, v5, v6, v7, v8, materialCopy);
   v14 = objc_msgSend_copy(v9, v10, v11, v12, v13);
   materials = self->_materials;
   self->_materials = v14;
 }
 
-- (void)affect:(id)a3 states:(id)a4 scene:(id)a5 texturePool:(id)a6
+- (void)affect:(id)affect states:(id)states scene:(id)scene texturePool:(id)pool
 {
-  v22 = a3;
-  v8 = a6;
+  affectCopy = affect;
+  poolCopy = pool;
   if (objc_msgSend_count(self->_materials, v9, v10, v11, v12))
   {
-    v17 = objc_msgSend_effectWithMaterials_pool_(TSCH3DSphericalEnvironmentShaderEffect, v13, v14, v15, v16, self->_materials, v8);
-    objc_msgSend_addEffect_toSection_(v22, v18, v19, v20, v21, v17, 1);
+    v17 = objc_msgSend_effectWithMaterials_pool_(TSCH3DSphericalEnvironmentShaderEffect, v13, v14, v15, v16, self->_materials, poolCopy);
+    objc_msgSend_addEffect_toSection_(affectCopy, v18, v19, v20, v21, v17, 1);
   }
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DEnvironmentPackage alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DEnvironmentPackage)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DEnvironmentPackage)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v47.receiver = self;
   v47.super_class = TSCH3DEnvironmentPackage;
   v8 = [(TSCH3DEnvironmentPackage *)&v47 init];
   if (v8)
   {
-    v12 = *(a3 + 6);
+    v12 = *(archive + 6);
     v14 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v7, v9, v10, v11, v12);
     if (v12 >= 1)
     {
@@ -200,7 +200,7 @@ LABEL_12:
       do
       {
         v19 = [TSCH3DEnvironmentMaterial alloc];
-        v24 = objc_msgSend_initWithArchive_unarchiver_(v19, v20, v21, v22, v23, *(*(a3 + 4) + v18), v6);
+        v24 = objc_msgSend_initWithArchive_unarchiver_(v19, v20, v21, v22, v23, *(*(archive + 4) + v18), unarchiverCopy);
         objc_msgSend_addObject_(v14, v25, v26, v27, v28, v24);
 
         v18 += 8;
@@ -228,10 +228,10 @@ LABEL_12:
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -252,36 +252,36 @@ LABEL_12:
         }
 
         v19 = *(*(&v30 + 1) + 8 * v18);
-        v20 = *(a3 + 4);
+        v20 = *(archive + 4);
         if (!v20)
         {
           goto LABEL_11;
         }
 
-        v21 = *(a3 + 6);
+        v21 = *(archive + 6);
         v22 = *v20;
         if (v21 < *v20)
         {
-          *(a3 + 6) = v21 + 1;
-          objc_msgSend_saveToArchive_archiver_(v19, v12, v14, v15, v16, *&v20[2 * v21 + 2], v6, v30);
+          *(archive + 6) = v21 + 1;
+          objc_msgSend_saveToArchive_archiver_(v19, v12, v14, v15, v16, *&v20[2 * v21 + 2], archiverCopy, v30);
           goto LABEL_13;
         }
 
-        if (v22 == *(a3 + 7))
+        if (v22 == *(archive + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v20 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+          v20 = *(archive + 4);
           v22 = *v20;
         }
 
         *v20 = v22 + 1;
-        v23 = sub_276447A5C(*(a3 + 2));
-        v24 = *(a3 + 6);
-        v25 = *(a3 + 4) + 8 * v24;
-        *(a3 + 6) = v24 + 1;
+        v23 = sub_276447A5C(*(archive + 2));
+        v24 = *(archive + 6);
+        v25 = *(archive + 4) + 8 * v24;
+        *(archive + 6) = v24 + 1;
         *(v25 + 8) = v23;
-        objc_msgSend_saveToArchive_archiver_(v19, v26, v27, v28, v29, v23, v6, v30);
+        objc_msgSend_saveToArchive_archiver_(v19, v26, v27, v28, v29, v23, archiverCopy, v30);
 LABEL_13:
         ++v18;
       }

@@ -1,6 +1,6 @@
 @interface RenameDetectorFlowController
 - (RenameDetectorDelegate)renameDetectorDelegate;
-- (RenameDetectorFlowController)initWithDetectorSpecifier:(id)a3;
+- (RenameDetectorFlowController)initWithDetectorSpecifier:(id)specifier;
 - (void)_finishRenaming;
 - (void)_setUpDoneButton;
 - (void)viewDidLoad;
@@ -8,16 +8,16 @@
 
 @implementation RenameDetectorFlowController
 
-- (RenameDetectorFlowController)initWithDetectorSpecifier:(id)a3
+- (RenameDetectorFlowController)initWithDetectorSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = RenameDetectorFlowController;
   v6 = [(RenameDetectorFlowController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_editingSpec, a3);
+    objc_storeStrong(&v6->_editingSpec, specifier);
   }
 
   return v7;
@@ -35,23 +35,23 @@
   renameDetectorController = self->_renameDetectorController;
   self->_renameDetectorController = v6;
 
-  v8 = [(RenameDetectorFlowController *)self renameDetectorController];
-  [v8 setDelegate:self];
+  renameDetectorController = [(RenameDetectorFlowController *)self renameDetectorController];
+  [renameDetectorController setDelegate:self];
 
   [(RenameDetectorFlowController *)self _setUpDoneButton];
-  v9 = [(RenameDetectorFlowController *)self editingSpec];
-  v10 = [v9 name];
-  v11 = [(RenameDetectorFlowController *)self renameDetectorController];
-  v12 = [v11 detectorNameTextField];
-  [v12 setText:v10];
+  editingSpec = [(RenameDetectorFlowController *)self editingSpec];
+  name = [editingSpec name];
+  renameDetectorController2 = [(RenameDetectorFlowController *)self renameDetectorController];
+  detectorNameTextField = [renameDetectorController2 detectorNameTextField];
+  [detectorNameTextField setText:name];
 
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelRenameFlow"];
-  v14 = [(RenameDetectorFlowController *)self renameDetectorController];
-  v15 = [v14 navigationItem];
-  [v15 setLeftBarButtonItem:v13];
+  renameDetectorController3 = [(RenameDetectorFlowController *)self renameDetectorController];
+  navigationItem = [renameDetectorController3 navigationItem];
+  [navigationItem setLeftBarButtonItem:v13];
 
-  v16 = [(RenameDetectorFlowController *)self renameDetectorController];
-  [(RenameDetectorFlowController *)self pushViewController:v16 animated:1];
+  renameDetectorController4 = [(RenameDetectorFlowController *)self renameDetectorController];
+  [(RenameDetectorFlowController *)self pushViewController:renameDetectorController4 animated:1];
 }
 
 - (void)_setUpDoneButton
@@ -60,28 +60,28 @@
   doneButton = self->_doneButton;
   self->_doneButton = v3;
 
-  v5 = [(RenameDetectorFlowController *)self doneButton];
+  doneButton = [(RenameDetectorFlowController *)self doneButton];
   v6 = settingsLocString(@"DONE_BUTTON", @"SoundDetection");
-  [v5 setTitle:v6 forState:0];
+  [doneButton setTitle:v6 forState:0];
 
-  v7 = [(RenameDetectorFlowController *)self doneButton];
-  [v7 addTarget:self action:"_finishRenaming" forControlEvents:64];
+  doneButton2 = [(RenameDetectorFlowController *)self doneButton];
+  [doneButton2 addTarget:self action:"_finishRenaming" forControlEvents:64];
 
-  v10 = [(RenameDetectorFlowController *)self renameDetectorController];
-  v8 = [v10 buttonTray];
-  v9 = [(RenameDetectorFlowController *)self doneButton];
-  [v8 addButton:v9];
+  renameDetectorController = [(RenameDetectorFlowController *)self renameDetectorController];
+  buttonTray = [renameDetectorController buttonTray];
+  doneButton3 = [(RenameDetectorFlowController *)self doneButton];
+  [buttonTray addButton:doneButton3];
 }
 
 - (void)_finishRenaming
 {
-  v3 = [(RenameDetectorFlowController *)self renameDetectorController];
-  v4 = [v3 detectorNameTextField];
-  v7 = [v4 text];
+  renameDetectorController = [(RenameDetectorFlowController *)self renameDetectorController];
+  detectorNameTextField = [renameDetectorController detectorNameTextField];
+  text = [detectorNameTextField text];
 
-  v5 = [(RenameDetectorFlowController *)self renameDetectorDelegate];
-  v6 = [(RenameDetectorFlowController *)self editingSpec];
-  [v5 renameDetector:v6 to:v7];
+  renameDetectorDelegate = [(RenameDetectorFlowController *)self renameDetectorDelegate];
+  editingSpec = [(RenameDetectorFlowController *)self editingSpec];
+  [renameDetectorDelegate renameDetector:editingSpec to:text];
 
   [(RenameDetectorFlowController *)self dismissViewControllerAnimated:1 completion:0];
 }

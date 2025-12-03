@@ -7,9 +7,9 @@
 - (double)_atvaccessibilityAlphaComponent
 {
   v3 = 1.0;
-  if (([a1 getWhite:0 alpha:&v3] & 1) == 0 && (objc_msgSend(a1, "getHue:saturation:brightness:alpha:", 0, 0, 0, &v3) & 1) == 0)
+  if (([self getWhite:0 alpha:&v3] & 1) == 0 && (objc_msgSend(self, "getHue:saturation:brightness:alpha:", 0, 0, 0, &v3) & 1) == 0)
   {
-    [a1 getRed:0 green:0 blue:0 alpha:&v3];
+    [self getRed:0 green:0 blue:0 alpha:&v3];
   }
 
   return v3;

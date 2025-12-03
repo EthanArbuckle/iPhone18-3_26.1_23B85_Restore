@@ -1,14 +1,14 @@
 @interface DUStructuredExtractionLabel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUStructuredExtractionLabel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232C045B4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232C045B4(coderCopy);
 }
 
 @end

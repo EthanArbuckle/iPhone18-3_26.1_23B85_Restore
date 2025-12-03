@@ -6,15 +6,15 @@
 
 - (uint64_t)atx_isAllowedCalendar
 {
-  if ([a1 type] == 3 || (objc_msgSend(a1, "isSubscribed") & 1) != 0)
+  if ([self type] == 3 || (objc_msgSend(self, "isSubscribed") & 1) != 0)
   {
     return 0;
   }
 
-  v3 = [a1 source];
-  v4 = [v3 isDelegate];
+  source = [self source];
+  isDelegate = [source isDelegate];
 
-  return v4 ^ 1u;
+  return isDelegate ^ 1u;
 }
 
 @end

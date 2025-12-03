@@ -1,10 +1,10 @@
 @interface DBDateRange
-+ (BOOL)_validDate:(id)a3;
-- (BOOL)containsDate:(id)a3;
++ (BOOL)_validDate:(id)date;
+- (BOOL)containsDate:(id)date;
 - (BOOL)hasEnd;
 - (BOOL)hasStart;
 - (BOOL)validRange;
-- (DBDateRange)initWithStart:(id)a3 end:(id)a4;
+- (DBDateRange)initWithStart:(id)start end:(id)end;
 - (double)endTimeIntervalSinceReferenceDate;
 - (double)startTimeIntervalSinceReferenceDate;
 - (id)description;
@@ -12,11 +12,11 @@
 
 @implementation DBDateRange
 
-+ (BOOL)_validDate:(id)a3
++ (BOOL)_validDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
-  v5 = [DBComparison isValue:v3 equalTo:v4];
+  dateCopy = date;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v5 = [DBComparison isValue:dateCopy equalTo:distantFuture];
 
   if (v5)
   {
@@ -25,8 +25,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CBEAA8] distantPast];
-    v8 = [DBComparison isValue:v3 equalTo:v7];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v8 = [DBComparison isValue:dateCopy equalTo:distantPast];
 
     v6 = !v8;
   }
@@ -34,18 +34,18 @@
   return v6;
 }
 
-- (DBDateRange)initWithStart:(id)a3 end:(id)a4
+- (DBDateRange)initWithStart:(id)start end:(id)end
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  endCopy = end;
   v12.receiver = self;
   v12.super_class = DBDateRange;
   v9 = [(DBDateRange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_start, a3);
-    objc_storeStrong(&v10->_end, a4);
+    objc_storeStrong(&v9->_start, start);
+    objc_storeStrong(&v10->_end, end);
   }
 
   return v10;
@@ -53,8 +53,8 @@
 
 - (double)startTimeIntervalSinceReferenceDate
 {
-  v2 = [(DBDateRange *)self start];
-  [v2 timeIntervalSinceReferenceDate];
+  start = [(DBDateRange *)self start];
+  [start timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -79,8 +79,8 @@
 
 - (BOOL)hasStart
 {
-  v2 = [(DBDateRange *)self start];
-  v3 = [DBDateRange _validDate:v2];
+  start = [(DBDateRange *)self start];
+  v3 = [DBDateRange _validDate:start];
 
   return v3;
 }
@@ -93,18 +93,18 @@
   return v3;
 }
 
-- (BOOL)containsDate:(id)a3
+- (BOOL)containsDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DBDateRange *)self start];
-  [v5 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  start = [(DBDateRange *)self start];
+  [start timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v8 = [(DBDateRange *)self end];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   return v12 < v10 && v7 < v12;
@@ -114,8 +114,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DBDateRange *)self start];
-  v6 = [DBDateFormatter formattedDateTimeStamp:v5];
+  start = [(DBDateRange *)self start];
+  v6 = [DBDateFormatter formattedDateTimeStamp:start];
   v7 = [(DBDateRange *)self end];
   v8 = [DBDateFormatter formattedDateTimeStamp:v7];
   v9 = [v3 stringWithFormat:@"<%@: %p start=%@ end=%@>", v4, self, v6, v8];

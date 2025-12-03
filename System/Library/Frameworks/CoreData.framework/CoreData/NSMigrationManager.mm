@@ -1,5 +1,5 @@
 @interface NSMigrationManager
-+ (uint64_t)_performSanityCheckForMapping:(void *)a3 fromSourceModel:(void *)a4 toDestinationModel:;
++ (uint64_t)_performSanityCheckForMapping:(void *)mapping fromSourceModel:(void *)model toDestinationModel:;
 - (BOOL)migrateStoreFromURL:(NSURL *)sourceURL type:(NSString *)sStoreType options:(NSDictionary *)sOptions withMappingModel:(NSMappingModel *)mappings toDestinationURL:(NSURL *)dURL destinationType:(NSString *)dStoreType destinationOptions:(NSDictionary *)dOptions error:(NSError *)error;
 - (NSArray)destinationInstancesForEntityMappingNamed:(NSString *)mappingName sourceInstances:(NSArray *)sourceInstances;
 - (NSArray)sourceInstancesForEntityMappingNamed:(NSString *)mappingName destinationInstances:(NSArray *)destinationInstances;
@@ -9,9 +9,9 @@
 - (NSMigrationManager)initWithSourceModel:(NSManagedObjectModel *)sourceModel destinationModel:(NSManagedObjectModel *)destinationModel;
 - (float)migrationProgress;
 - (id)currentPropertyMapping;
-- (id)destinationInstancesForSourceRelationshipNamed:(id)a3 sourceInstances:(id)a4;
-- (uint64_t)_validateAllObjectsAfterMigration:(void *)a1;
-- (void)_doCleanupOnFailure:(id *)a1;
+- (id)destinationInstancesForSourceRelationshipNamed:(id)named sourceInstances:(id)instances;
+- (uint64_t)_validateAllObjectsAfterMigration:(void *)migration;
+- (void)_doCleanupOnFailure:(id *)failure;
 - (void)associateSourceInstance:(NSManagedObject *)sourceInstance withDestinationInstance:(NSManagedObject *)destinationInstance forEntityMapping:(NSEntityMapping *)entityMapping;
 - (void)cancelMigrationWithError:(NSError *)error;
 - (void)dealloc;
@@ -83,18 +83,18 @@
   [(NSMigrationManager *)&v3 dealloc];
 }
 
-- (void)_doCleanupOnFailure:(id *)a1
+- (void)_doCleanupOnFailure:(id *)failure
 {
-  if (a1)
+  if (failure)
   {
 
-    a1[6] = 0;
-    a1[7] = 0;
+    failure[6] = 0;
+    failure[7] = 0;
 
-    a1[8] = 0;
-    a1[5] = 0;
+    failure[8] = 0;
+    failure[5] = 0;
 
-    a1[13] = 0;
+    failure[13] = 0;
   }
 }
 
@@ -102,28 +102,28 @@
 {
   v138 = *MEMORY[0x1E69E9840];
   v104 = [(_PFBackgroundRuntimeVoucher *)_PFRunningBoardBackgroundMigrationVoucher _beginPowerAssertionNamed:@"CoreData: Schema migration (manager)"];
-  v113 = self;
+  selfCopy = self;
   v15 = objc_opt_class();
   if (v15 == objc_opt_class() && [(NSMigrationManager *)self usesStoreSpecificMigrationManager]&& [(NSString *)sStoreType isEqualToString:dStoreType])
   {
-    v16 = [(NSDictionary *)+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator objectForKey:"objectForKey:", sStoreType];
-    if (objc_opt_class() != v16)
+    sStoreType = [(NSDictionary *)+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator objectForKey:"objectForKey:", sStoreType];
+    if (objc_opt_class() != sStoreType)
     {
-      if (![v16 isNSValue])
+      if (![sStoreType isNSValue])
       {
         goto LABEL_21;
       }
 
-      v16 = [v16 pointerValue];
+      sStoreType = [sStoreType pointerValue];
     }
 
-    if (v16)
+    if (sStoreType)
     {
-      v17 = [v16 migrationManagerClass];
+      migrationManagerClass = [sStoreType migrationManagerClass];
       if (objc_opt_respondsToSelector())
       {
-        v18 = [v17 _canMigrateWithMappingModel:mappings];
-        if (v17)
+        v18 = [migrationManagerClass _canMigrateWithMappingModel:mappings];
+        if (migrationManagerClass)
         {
           v19 = v18;
         }
@@ -139,24 +139,24 @@
         }
       }
 
-      else if (!v17)
+      else if (!migrationManagerClass)
       {
         goto LABEL_21;
       }
 
-      if (v17 != objc_opt_class())
+      if (migrationManagerClass != objc_opt_class())
       {
-        v20 = [[v17 alloc] initWithSourceModel:-[NSMigrationManager sourceModel](self destinationModel:{"sourceModel"), -[NSMigrationManager destinationModel](self, "destinationModel")}];
+        v20 = [[migrationManagerClass alloc] initWithSourceModel:-[NSMigrationManager sourceModel](self destinationModel:{"sourceModel"), -[NSMigrationManager destinationModel](self, "destinationModel")}];
         [v20 setDestinationConfigurationForCloudKitValidation:{-[NSMigrationManager destinationConfigurationForCloudKitValidation](self, "destinationConfigurationForCloudKitValidation")}];
-        v21 = [(NSMigrationManager *)self sourceModel];
-        if (v21)
+        sourceModel = [(NSMigrationManager *)self sourceModel];
+        if (sourceModel)
         {
-          if ((*&v21->_managedObjectModelFlags & 0x10) != 0)
+          if ((*&sourceModel->_managedObjectModelFlags & 0x10) != 0)
           {
-            v22 = [v20 sourceModel];
-            if (v22)
+            sourceModel2 = [v20 sourceModel];
+            if (sourceModel2)
             {
-              *(v22 + 64) |= 0x10u;
+              *(sourceModel2 + 64) |= 0x10u;
             }
           }
         }
@@ -290,15 +290,15 @@ LABEL_130:
   v123[6] = v100;
   v123[7] = self;
   [(NSPersistentStoreCoordinator *)v30 performBlockAndWait:v123];
-  v42 = [(NSMappingModel *)mappings entityMappings];
+  entityMappings = [(NSMappingModel *)mappings entityMappings];
   v99 = v29;
   v122 = 0;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v43 = v113;
-  v44 = [(NSArray *)v42 countByEnumeratingWithState:&v118 objects:v136 count:16];
+  v43 = selfCopy;
+  v44 = [(NSArray *)entityMappings countByEnumeratingWithState:&v118 objects:v136 count:16];
   if (!v44)
   {
     goto LABEL_74;
@@ -307,7 +307,7 @@ LABEL_130:
   v45 = *v119;
   v101 = *MEMORY[0x1E696A250];
   v46 = 0x1E696A000uLL;
-  obja = v42;
+  obja = entityMappings;
   do
   {
     for (i = 0; i != v44; ++i)
@@ -319,8 +319,8 @@ LABEL_130:
 
       v48 = *(*(&v118 + 1) + 8 * i);
       v110 = objc_alloc_init(*(v46 + 2760));
-      v49 = [(NSEntityMapping *)v48 _migrationPolicy];
-      if (![(NSEntityMigrationPolicy *)v49 beginEntityMapping:v48 manager:v43 error:&v122])
+      _migrationPolicy = [(NSEntityMapping *)v48 _migrationPolicy];
+      if (![(NSEntityMigrationPolicy *)_migrationPolicy beginEntityMapping:v48 manager:v43 error:&v122])
       {
         v55 = 0;
 LABEL_60:
@@ -338,9 +338,9 @@ LABEL_60:
 
       [(NSMigrationContext *)v43->_migrationContext setCurrentEntityMapping:v48];
       v50 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:8];
-      [v50 setValue:v113 forKey:@"manager"];
+      [v50 setValue:selfCopy forKey:@"manager"];
       [v50 setValue:v48 forKey:@"entityMapping"];
-      [v50 setValue:v49 forKey:@"entityPolicy"];
+      [v50 setValue:_migrationPolicy forKey:@"entityPolicy"];
       v51 = [-[NSEntityMigrationPolicy sourceExpression](v48 "sourceExpression")];
 
       v134 = 0u;
@@ -360,15 +360,15 @@ LABEL_60:
               objc_enumerationMutation(v51);
             }
 
-            if (![(NSEntityMigrationPolicy *)v49 createDestinationInstancesForSourceInstance:*(*(&v132 + 1) + 8 * j) entityMapping:v48 manager:v113 error:&v122])
+            if (![(NSEntityMigrationPolicy *)_migrationPolicy createDestinationInstancesForSourceInstance:*(*(&v132 + 1) + 8 * j) entityMapping:v48 manager:selfCopy error:&v122])
             {
               v55 = 0;
               goto LABEL_64;
             }
 
-            if (*&v113->_migrationManagerFlags)
+            if (*&selfCopy->_migrationManagerFlags)
             {
-              v122 = v113->_migrationCancellationError;
+              v122 = selfCopy->_migrationCancellationError;
               LOBYTE(v126) = 0;
               v56 = 1;
               v55 = 1;
@@ -386,16 +386,16 @@ LABEL_60:
         }
       }
 
-      v55 = [(NSEntityMigrationPolicy *)v49 endInstanceCreationForEntityMapping:v48 manager:v113 error:&v122];
-      v43 = v113;
-      if (*&v113->_migrationManagerFlags)
+      v55 = [(NSEntityMigrationPolicy *)_migrationPolicy endInstanceCreationForEntityMapping:v48 manager:selfCopy error:&v122];
+      v43 = selfCopy;
+      if (*&selfCopy->_migrationManagerFlags)
       {
-        v122 = v113->_migrationCancellationError;
+        v122 = selfCopy->_migrationCancellationError;
 LABEL_64:
         LOBYTE(v126) = 0;
         v56 = 1;
 LABEL_65:
-        v43 = v113;
+        v43 = selfCopy;
       }
 
       else
@@ -443,7 +443,7 @@ LABEL_138:
       [v110 drain];
     }
 
-    v42 = obja;
+    entityMappings = obja;
     v44 = [(NSArray *)obja countByEnumeratingWithState:&v118 objects:v136 count:16];
   }
 
@@ -453,7 +453,7 @@ LABEL_74:
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v57 = [(NSArray *)v42 countByEnumeratingWithState:&v114 objects:&v132 count:16];
+  v57 = [(NSArray *)entityMappings countByEnumeratingWithState:&v114 objects:&v132 count:16];
   if (!v57)
   {
     goto LABEL_105;
@@ -461,7 +461,7 @@ LABEL_74:
 
   v103 = *v115;
   v98 = *MEMORY[0x1E696A250];
-  objb = v42;
+  objb = entityMappings;
   while (2)
   {
     v58 = 0;
@@ -477,7 +477,7 @@ LABEL_74:
       v105 = v58;
       v111 = objc_alloc_init(MEMORY[0x1E696AAC8]);
       v130 = 0;
-      v60 = [(NSEntityMapping *)v59 _migrationPolicy];
+      _migrationPolicy2 = [(NSEntityMapping *)v59 _migrationPolicy];
       [(NSMigrationContext *)v43->_migrationContext setCurrentEntityMapping:v59];
       v61 = [(NSMigrationContext *)&v43->_migrationContext->super.isa destinationInstancesForEntityMapping:v59 sourceInstance:0];
       v128 = 0u;
@@ -499,16 +499,16 @@ LABEL_81:
 
           v65 = *(*(&v126 + 1) + 8 * v64);
           v66 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-          if (![(NSEntityMigrationPolicy *)v60 createRelationshipsForDestinationInstance:v65 entityMapping:v59 manager:v113 error:&v130])
+          if (![(NSEntityMigrationPolicy *)_migrationPolicy2 createRelationshipsForDestinationInstance:v65 entityMapping:v59 manager:selfCopy error:&v130])
           {
             break;
           }
 
-          if (*&v113->_migrationManagerFlags)
+          if (*&selfCopy->_migrationManagerFlags)
           {
             v70 = 1;
             v57 = v102;
-            v130 = v113->_migrationCancellationError;
+            v130 = selfCopy->_migrationCancellationError;
             goto LABEL_93;
           }
 
@@ -536,12 +536,12 @@ LABEL_93:
       }
 
 LABEL_88:
-      v67 = [(NSEntityMigrationPolicy *)v60 endRelationshipCreationForEntityMapping:v59 manager:v113 error:&v130];
+      v67 = [(NSEntityMigrationPolicy *)_migrationPolicy2 endRelationshipCreationForEntityMapping:v59 manager:selfCopy error:&v130];
       v68 = v67;
-      if (*&v113->_migrationManagerFlags)
+      if (*&selfCopy->_migrationManagerFlags)
       {
         v66 = 0;
-        v130 = v113->_migrationCancellationError;
+        v130 = selfCopy->_migrationCancellationError;
         v131 = 0;
         v69 = 1;
         v70 = v68;
@@ -575,7 +575,7 @@ LABEL_96:
       v75 = 0;
       if ((v69 | 2) != 2)
       {
-        v43 = v113;
+        v43 = selfCopy;
         if (v131)
         {
           goto LABEL_102;
@@ -586,7 +586,7 @@ LABEL_135:
         goto LABEL_137;
       }
 
-      v43 = v113;
+      v43 = selfCopy;
       if ((v70 & 1) == 0)
       {
         goto LABEL_135;
@@ -612,7 +612,7 @@ LABEL_137:
       break;
     }
 
-    v42 = objb;
+    entityMappings = objb;
     v57 = [(NSArray *)objb countByEnumeratingWithState:&v114 objects:&v132 count:16];
     if (v57)
     {
@@ -631,7 +631,7 @@ LABEL_105:
     v129 = 0u;
     v126 = 0u;
     v127 = 0u;
-    v76 = [(NSArray *)v42 countByEnumeratingWithState:&v126 objects:v137 count:16];
+    v76 = [(NSArray *)entityMappings countByEnumeratingWithState:&v126 objects:v137 count:16];
     if (!v76)
     {
       v85 = 1;
@@ -646,24 +646,24 @@ LABEL_108:
     {
       if (*v127 != v77)
       {
-        objc_enumerationMutation(v42);
+        objc_enumerationMutation(entityMappings);
       }
 
       v79 = *(*(&v126 + 1) + 8 * v78);
       v80 = 1;
-      v81 = [(NSEntityMapping *)v79 _migrationPolicy];
-      [(NSMigrationContext *)v113->_migrationContext setCurrentEntityMapping:v79];
-      if (![(NSEntityMigrationPolicy *)v81 performCustomValidationForEntityMapping:v79 manager:v113 error:&v122])
+      _migrationPolicy3 = [(NSEntityMapping *)v79 _migrationPolicy];
+      [(NSMigrationContext *)selfCopy->_migrationContext setCurrentEntityMapping:v79];
+      if (![(NSEntityMigrationPolicy *)_migrationPolicy3 performCustomValidationForEntityMapping:v79 manager:selfCopy error:&v122])
       {
         break;
       }
 
-      if ((*&v113->_migrationManagerFlags & 1) == 0)
+      if ((*&selfCopy->_migrationManagerFlags & 1) == 0)
       {
-        v82 = [NSEntityMigrationPolicy endEntityMapping:v81 manager:"endEntityMapping:manager:error:" error:v79];
-        if (*&v113->_migrationManagerFlags)
+        v82 = [NSEntityMigrationPolicy endEntityMapping:_migrationPolicy3 manager:"endEntityMapping:manager:error:" error:v79];
+        if (*&selfCopy->_migrationManagerFlags)
         {
-          v122 = v113->_migrationCancellationError;
+          v122 = selfCopy->_migrationCancellationError;
           LOBYTE(v130) = 0;
           v83 = 1;
         }
@@ -677,9 +677,9 @@ LABEL_108:
         goto LABEL_119;
       }
 
-      v122 = v113->_migrationCancellationError;
+      v122 = selfCopy->_migrationCancellationError;
       LOBYTE(v130) = 0;
-      v84 = v81;
+      v84 = _migrationPolicy3;
       v83 = 1;
 LABEL_120:
 
@@ -694,7 +694,7 @@ LABEL_120:
       else if ((v130 & 1) == 0)
       {
 LABEL_151:
-        v43 = v113;
+        v43 = selfCopy;
         v95 = v122;
         [NSMigrationManager _doCleanupOnFailure:?];
         goto LABEL_152;
@@ -702,9 +702,9 @@ LABEL_151:
 
       if (v76 == ++v78)
       {
-        v76 = [(NSArray *)v42 countByEnumeratingWithState:&v126 objects:v137 count:16];
+        v76 = [(NSArray *)entityMappings countByEnumeratingWithState:&v126 objects:v137 count:16];
         v85 = 1;
-        v43 = v113;
+        v43 = selfCopy;
         if (v76)
         {
           goto LABEL_108;
@@ -718,7 +718,7 @@ LABEL_151:
     LOBYTE(v130) = 0;
     v83 = 1;
 LABEL_119:
-    v84 = v81;
+    v84 = _migrationPolicy3;
     goto LABEL_120;
   }
 
@@ -745,9 +745,9 @@ LABEL_141:
   if ([(NSManagedObjectContext *)v43->_destinationManagedObjectContext save:&v124])
   {
 
-    v113->_mappingModel = 0;
-    [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)v113->_destinationManagedObjectContext persistentStoreCoordinator] removePersistentStore:v100 error:0];
-    [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)v113->_sourceManagedObjectContext persistentStoreCoordinator] removePersistentStore:v99 error:0];
+    selfCopy->_mappingModel = 0;
+    [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)selfCopy->_destinationManagedObjectContext persistentStoreCoordinator] removePersistentStore:v100 error:0];
+    [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)selfCopy->_sourceManagedObjectContext persistentStoreCoordinator] removePersistentStore:v99 error:0];
     [NSMigrationManager _doCleanupOnFailure:?];
     v23 = 1;
     goto LABEL_148;
@@ -768,17 +768,17 @@ LABEL_148:
 - (NSEntityDescription)sourceEntityForEntityMapping:(NSEntityMapping *)mEntity
 {
   sourceEntitiesByVersionHash = self->_sourceEntitiesByVersionHash;
-  v4 = [(NSEntityMapping *)mEntity sourceEntityVersionHash];
+  sourceEntityVersionHash = [(NSEntityMapping *)mEntity sourceEntityVersionHash];
 
-  return [(NSDictionary *)sourceEntitiesByVersionHash objectForKey:v4];
+  return [(NSDictionary *)sourceEntitiesByVersionHash objectForKey:sourceEntityVersionHash];
 }
 
 - (NSEntityDescription)destinationEntityForEntityMapping:(NSEntityMapping *)mEntity
 {
   destinationEntitiesByVersionHash = self->_destinationEntitiesByVersionHash;
-  v4 = [(NSEntityMapping *)mEntity destinationEntityVersionHash];
+  destinationEntityVersionHash = [(NSEntityMapping *)mEntity destinationEntityVersionHash];
 
-  return [(NSDictionary *)destinationEntitiesByVersionHash objectForKey:v4];
+  return [(NSDictionary *)destinationEntitiesByVersionHash objectForKey:destinationEntityVersionHash];
 }
 
 - (void)associateSourceInstance:(NSManagedObject *)sourceInstance withDestinationInstance:(NSManagedObject *)destinationInstance forEntityMapping:(NSEntityMapping *)entityMapping
@@ -953,38 +953,38 @@ LABEL_148:
   return result;
 }
 
-- (id)destinationInstancesForSourceRelationshipNamed:(id)a3 sourceInstances:(id)a4
+- (id)destinationInstancesForSourceRelationshipNamed:(id)named sourceInstances:(id)instances
 {
   v105 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v8 = [(NSMigrationManager *)self currentEntityMapping];
-  v9 = [(NSMigrationManager *)self currentPropertyMapping];
-  v10 = [(NSMigrationManager *)self sourceEntityForEntityMapping:v8];
-  v65 = v8;
-  v11 = [(NSMigrationManager *)self destinationEntityForEntityMapping:v8];
+  currentEntityMapping = [(NSMigrationManager *)self currentEntityMapping];
+  currentPropertyMapping = [(NSMigrationManager *)self currentPropertyMapping];
+  v10 = [(NSMigrationManager *)self sourceEntityForEntityMapping:currentEntityMapping];
+  v65 = currentEntityMapping;
+  v11 = [(NSMigrationManager *)self destinationEntityForEntityMapping:currentEntityMapping];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [MEMORY[0x1E695DEC8] arrayWithObject:a4];
+    instances = [MEMORY[0x1E695DEC8] arrayWithObject:instances];
   }
 
-  if (!a3)
+  if (!named)
   {
     v58 = MEMORY[0x1E695DF30];
     v59 = *MEMORY[0x1E695D940];
-    v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Property mapping %@.%@ missing required relationship name argument to destinationInstancesForSourceRelationshipNamed:sourceInstances:", -[NSEntityMapping name](v65, "name"), objc_msgSend(v9, "name")];
+    v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Property mapping %@.%@ missing required relationship name argument to destinationInstancesForSourceRelationshipNamed:sourceInstances:", -[NSEntityMapping name](v65, "name"), objc_msgSend(currentPropertyMapping, "name")];
     v61 = v58;
     v62 = v59;
     goto LABEL_73;
   }
 
-  obj = a4;
-  v12 = [(NSEntityDescription *)v10 _relationshipNamed:a3];
+  obj = instances;
+  v12 = [(NSEntityDescription *)v10 _relationshipNamed:named];
   if (!v12)
   {
     v63 = MEMORY[0x1E695DF30];
     v64 = *MEMORY[0x1E695D940];
-    v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find relationship for name (%@) for entity (%@) in source model.", a3, -[NSEntityDescription name](v10, "name")];
+    v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't find relationship for name (%@) for entity (%@) in source model.", named, -[NSEntityDescription name](v10, "name")];
     v61 = v63;
     v62 = v64;
 LABEL_73:
@@ -992,17 +992,17 @@ LABEL_73:
   }
 
   v13 = v12;
-  v66 = v9;
-  v14 = -[NSEntityDescription _relationshipNamed:](v11, [v9 name]);
-  v15 = [v13 destinationEntity];
-  v16 = [v14 destinationEntity];
-  v72 = [MEMORY[0x1E695DF70] array];
+  v66 = currentPropertyMapping;
+  v14 = -[NSEntityDescription _relationshipNamed:](v11, [currentPropertyMapping name]);
+  destinationEntity = [v13 destinationEntity];
+  destinationEntity2 = [v14 destinationEntity];
+  array = [MEMORY[0x1E695DF70] array];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v17 = [(NSMappingModel *)[(NSMigrationManager *)self mappingModel] entityMappings];
-  v18 = [(NSArray *)v17 countByEnumeratingWithState:&v87 objects:v104 count:16];
+  entityMappings = [(NSMappingModel *)[(NSMigrationManager *)self mappingModel] entityMappings];
+  v18 = [(NSArray *)entityMappings countByEnumeratingWithState:&v87 objects:v104 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1013,17 +1013,17 @@ LABEL_73:
       {
         if (*v88 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(entityMappings);
         }
 
         v22 = *(*(&v87 + 1) + 8 * i);
-        if ([(NSEntityDescription *)[(NSMigrationManager *)self sourceEntityForEntityMapping:v22] isKindOfEntity:v15]&& [(NSEntityDescription *)[(NSMigrationManager *)self destinationEntityForEntityMapping:v22] isKindOfEntity:v16])
+        if ([(NSEntityDescription *)[(NSMigrationManager *)self sourceEntityForEntityMapping:v22] isKindOfEntity:destinationEntity]&& [(NSEntityDescription *)[(NSMigrationManager *)self destinationEntityForEntityMapping:v22] isKindOfEntity:destinationEntity2])
         {
-          [v72 addObject:v22];
+          [array addObject:v22];
         }
       }
 
-      v19 = [(NSArray *)v17 countByEnumeratingWithState:&v87 objects:v104 count:16];
+      v19 = [(NSArray *)entityMappings countByEnumeratingWithState:&v87 objects:v104 count:16];
     }
 
     while (v19);
@@ -1056,7 +1056,7 @@ LABEL_73:
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v74 = [v72 countByEnumeratingWithState:&v79 objects:v102 count:16];
+        v74 = [array countByEnumeratingWithState:&v79 objects:v102 count:16];
         if (v74)
         {
           v73 = *v80;
@@ -1067,19 +1067,19 @@ LABEL_73:
             {
               if (*v80 != v73)
               {
-                objc_enumerationMutation(v72);
+                objc_enumerationMutation(array);
               }
 
               v28 = *(*(&v79 + 1) + 8 * v27);
               if (self)
               {
-                v29 = self;
+                selfCopy = self;
                 migrationContext = self->_migrationContext;
               }
 
               else
               {
-                v29 = 0;
+                selfCopy = 0;
                 migrationContext = 0;
               }
 
@@ -1168,11 +1168,11 @@ LABEL_73:
               }
 
               ++v27;
-              self = v29;
+              self = selfCopy;
             }
 
             while (v27 != v74);
-            v41 = [v72 countByEnumeratingWithState:&v79 objects:v102 count:16];
+            v41 = [array countByEnumeratingWithState:&v79 objects:v102 count:16];
             v74 = v41;
           }
 
@@ -1525,18 +1525,18 @@ LABEL_73:
   self->_migrationManagerFlags = (*&self->_migrationManagerFlags & 0xFFFFFFFD | v3);
 }
 
-+ (uint64_t)_performSanityCheckForMapping:(void *)a3 fromSourceModel:(void *)a4 toDestinationModel:
++ (uint64_t)_performSanityCheckForMapping:(void *)mapping fromSourceModel:(void *)model toDestinationModel:
 {
   v24 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v7 = [objc_msgSend(a3 "entities")];
-  v8 = [objc_msgSend(a4 "entities")];
+  v7 = [objc_msgSend(mapping "entities")];
+  v8 = [objc_msgSend(model "entities")];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [a2 entityMappings];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  entityMappings = [a2 entityMappings];
+  v10 = [entityMappings countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1547,7 +1547,7 @@ LABEL_73:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(entityMappings);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
@@ -1578,7 +1578,7 @@ LABEL_73:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [entityMappings countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -1594,11 +1594,11 @@ LABEL_17:
   return result;
 }
 
-- (uint64_t)_validateAllObjectsAfterMigration:(void *)a1
+- (uint64_t)_validateAllObjectsAfterMigration:(void *)migration
 {
   v26 = a2;
   v28[1] = *MEMORY[0x1E69E9840];
-  v2 = [objc_msgSend(a1 "destinationContext")];
+  v2 = [objc_msgSend(migration "destinationContext")];
   v3 = [v2 count];
   v4 = v3;
   if (v3 <= 1)
@@ -1659,8 +1659,8 @@ LABEL_17:
       {
         if ([objc_msgSend(v28[0] "domain")] && objc_msgSend(v28[0], "code") == 1560)
         {
-          v13 = [v28[0] userInfo];
-          [v9 addObjectsFromArray:{objc_msgSend(v13, "objectForKey:", v27)}];
+          userInfo = [v28[0] userInfo];
+          [v9 addObjectsFromArray:{objc_msgSend(userInfo, "objectForKey:", v27)}];
         }
 
         else
@@ -1672,8 +1672,8 @@ LABEL_17:
             v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v28[0], "userInfo")}];
             [v16 setObject:objc_msgSend(objc_msgSend(v16 forKey:{"objectForKey:", @"NSValidationErrorObject", "description"), @"NSValidationErrorObject"}];
             v17 = MEMORY[0x1E696ABC0];
-            v18 = [v28[0] domain];
-            v15 = [v17 errorWithDomain:v18 code:objc_msgSend(v28[0] userInfo:{"code"), v16}];
+            domain = [v28[0] domain];
+            v15 = [v17 errorWithDomain:domain code:objc_msgSend(v28[0] userInfo:{"code"), v16}];
             v28[0] = v15;
           }
 

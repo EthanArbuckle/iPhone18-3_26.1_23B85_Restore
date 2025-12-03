@@ -1,17 +1,17 @@
 @interface InstallWatchAppsTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation InstallWatchAppsTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v6 = +[NSMutableArray array];
   v7 = &unk_10044B000;
   v51 = v6;
-  v52 = self;
+  selfCopy = self;
   if ([*(&self->super._finished + 1) count] != 1)
   {
     v67 = 0u;
@@ -22,16 +22,16 @@
     v55 = [obj countByEnumeratingWithState:&v65 objects:v76 count:16];
     if (!v55)
     {
-      v8 = 0;
+      firstObject = 0;
       v13 = 0;
       v10 = obj;
       goto LABEL_41;
     }
 
-    v50 = v4;
-    v8 = 0;
+    v50 = handlerCopy;
+    firstObject = 0;
     v14 = *v66;
-    v15 = self;
+    selfCopy2 = self;
     v10 = obj;
     v53 = *v66;
     while (1)
@@ -47,36 +47,36 @@
         v18 = sub_100346144(InstallWatchAppsTask, v17);
         if (!v18)
         {
-          v21 = [v17 buyParams];
-          v22 = sub_1003B33BC(v21);
+          buyParams = [v17 buyParams];
+          v22 = sub_1003B33BC(buyParams);
 
           if ([v17 isUserInitiated])
           {
-            v23 = v8;
+            v23 = firstObject;
             goto LABEL_19;
           }
 
           v24 = v5;
-          v25 = *(&v15->_purchaseInfo + 2);
-          v26 = [v17 itemID];
-          v27 = [v26 stringValue];
-          v64 = v8;
-          v28 = sub_1003A4B10(v25, v27, v22, &v64);
+          v25 = *(&selfCopy2->_purchaseInfo + 2);
+          itemID = [v17 itemID];
+          stringValue = [itemID stringValue];
+          v64 = firstObject;
+          v28 = sub_1003A4B10(v25, stringValue, v22, &v64);
           v23 = v64;
 
           if (v28)
           {
             v5 = v24;
             v6 = v51;
-            v15 = v52;
+            selfCopy2 = selfCopy;
 LABEL_19:
             dispatch_group_enter(v5);
             v29 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
-              v30 = [v17 logKey];
+              logKey = [v17 logKey];
               *buf = 138412290;
-              v78 = v30;
+              v78 = logKey;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[%@] Starting purchases for redownload", buf, 0xCu);
             }
 
@@ -86,7 +86,7 @@ LABEL_19:
             v60[2] = sub_1003465F0;
             v60[3] = &unk_100524320;
             v60[4] = v17;
-            v60[5] = v15;
+            v60[5] = selfCopy2;
             v61 = v22;
             v62 = v6;
             v63 = v5;
@@ -99,19 +99,19 @@ LABEL_19:
             v5 = v24;
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = [v17 logKey];
+              logKey2 = [v17 logKey];
               *buf = 138412546;
-              v78 = v33;
+              v78 = logKey2;
               v79 = 2114;
               v80 = v23;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[%@] Redownload request throttled with error: %{public}@", buf, 0x16u);
             }
 
             v6 = v51;
-            v15 = v52;
+            selfCopy2 = selfCopy;
           }
 
-          v8 = v23;
+          firstObject = v23;
           v14 = v53;
           v10 = obj;
           goto LABEL_26;
@@ -120,9 +120,9 @@ LABEL_19:
         v19 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v17 logKey];
+          logKey3 = [v17 logKey];
           *buf = 138412546;
-          v78 = v20;
+          v78 = logKey3;
           v79 = 2114;
           v80 = v18;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] Active installation already exists: %{public}@", buf, 0x16u);
@@ -136,21 +136,21 @@ LABEL_26:
       if (!v55)
       {
         v13 = 0;
-        v4 = v50;
+        handlerCopy = v50;
         v7 = &unk_10044B000;
         goto LABEL_41;
       }
     }
   }
 
-  v8 = [*(&self->super._finished + 1) firstObject];
-  v9 = sub_100346144(InstallWatchAppsTask, v8);
+  firstObject = [*(&self->super._finished + 1) firstObject];
+  v9 = sub_100346144(InstallWatchAppsTask, firstObject);
   if (!v9)
   {
-    v34 = [v8 buyParams];
-    v35 = sub_1003B33BC(v34);
+    buyParams2 = [firstObject buyParams];
+    v35 = sub_1003B33BC(buyParams2);
 
-    if ([v8 isUserInitiated])
+    if ([firstObject isUserInitiated])
     {
       v13 = 0;
     }
@@ -158,11 +158,11 @@ LABEL_26:
     else
     {
       v36 = v5;
-      v37 = *(&v52->_purchaseInfo + 2);
-      v38 = [v8 itemID];
-      v39 = [v38 stringValue];
+      v37 = *(&selfCopy->_purchaseInfo + 2);
+      itemID2 = [firstObject itemID];
+      stringValue2 = [itemID2 stringValue];
       v75 = 0;
-      v40 = sub_1003A4B10(v37, v39, v35, &v75);
+      v40 = sub_1003A4B10(v37, stringValue2, v35, &v75);
       v13 = v75;
 
       if ((v40 & 1) == 0)
@@ -170,9 +170,9 @@ LABEL_26:
         v44 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v8 logKey];
+          logKey4 = [firstObject logKey];
           *buf = 138412546;
-          v78 = v45;
+          v78 = logKey4;
           v79 = 2114;
           v80 = v13;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "[%@] Redownload request throttled with error: %{public}@", buf, 0x16u);
@@ -190,9 +190,9 @@ LABEL_26:
     v41 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v8 logKey];
+      logKey5 = [firstObject logKey];
       *buf = 138412290;
-      v78 = v42;
+      v78 = logKey5;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "[%@] Starting purchase for redownload", buf, 0xCu);
     }
 
@@ -201,8 +201,8 @@ LABEL_26:
     v69[1] = 3221225472;
     v69[2] = sub_1003462E8;
     v69[3] = &unk_100524320;
-    v70 = v8;
-    v71 = v52;
+    v70 = firstObject;
+    v71 = selfCopy;
     v72 = v35;
     v73 = v51;
     v74 = v5;
@@ -220,9 +220,9 @@ LABEL_40:
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 logKey];
+    logKey6 = [firstObject logKey];
     *buf = 138412546;
-    v78 = v12;
+    v78 = logKey6;
     v79 = 2114;
     v80 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%@] Active installation already exists: %{public}@", buf, 0x16u);
@@ -237,12 +237,12 @@ LABEL_41:
   block[1] = v7[259];
   block[2] = sub_100346794;
   block[3] = &unk_10051CBD0;
-  block[4] = v52;
+  block[4] = selfCopy;
   v57 = v6;
   v58 = v13;
-  v59 = v4;
+  v59 = handlerCopy;
   v47 = v13;
-  v48 = v4;
+  v48 = handlerCopy;
   v49 = v6;
   dispatch_group_notify(v5, v46, block);
 }

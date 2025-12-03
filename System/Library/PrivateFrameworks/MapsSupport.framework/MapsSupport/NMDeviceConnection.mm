@@ -1,20 +1,20 @@
 @interface NMDeviceConnection
-- (BOOL)_shouldIncludeTemporaryLocationAuthorizationWithMessage:(id)a3;
+- (BOOL)_shouldIncludeTemporaryLocationAuthorizationWithMessage:(id)message;
 - (NMDeviceConnection)init;
-- (id)_idsOptionsForMessage:(id)a3 withOptions:(id)a4;
+- (id)_idsOptionsForMessage:(id)message withOptions:(id)options;
 - (id)_nearbyConnectedDevice;
-- (int64_t)_priorityForMessage:(id)a3;
-- (unint64_t)_determineProtocolVersion:(id)a3;
+- (int64_t)_priorityForMessage:(id)message;
+- (unint64_t)_determineProtocolVersion:(id)version;
 - (unint64_t)protocolVersion;
-- (void)_dequeueNextMessageIfNecessaryForType:(int)a3;
-- (void)_sendMessage:(id)a3 options:(id)a4 force:(BOOL)a5 timeSpentEnqueued:(double)a6 withReply:(id)a7;
-- (void)_sendReply:(id)a3 forMessage:(id)a4 options:(id)a5 force:(BOOL)a6 timeSpentEnqueued:(double)a7;
+- (void)_dequeueNextMessageIfNecessaryForType:(int)type;
+- (void)_sendMessage:(id)message options:(id)options force:(BOOL)force timeSpentEnqueued:(double)enqueued withReply:(id)reply;
+- (void)_sendReply:(id)reply forMessage:(id)message options:(id)options force:(BOOL)force timeSpentEnqueued:(double)enqueued;
 - (void)_unpauseAllQueues;
-- (void)_updateReceiverProcessUUID:(id)a3;
-- (void)sendMessage:(id)a3 options:(id)a4 withReply:(id)a5;
-- (void)sendReply:(id)a3 forMessage:(id)a4 options:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)_updateReceiverProcessUUID:(id)d;
+- (void)sendMessage:(id)message options:(id)options withReply:(id)reply;
+- (void)sendReply:(id)reply forMessage:(id)message options:(id)options;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 - (void)suspend;
 - (void)test_disconnect;
 - (void)test_reconnect;
@@ -29,11 +29,11 @@
   if (!result)
   {
     v4 = +[NRPairedDeviceRegistry sharedInstance];
-    v5 = [v4 getActivePairedDevice];
+    getActivePairedDevice = [v4 getActivePairedDevice];
 
-    if (v5)
+    if (getActivePairedDevice)
     {
-      self->_protocolVersion = [(NMDeviceConnection *)self _determineProtocolVersion:v5];
+      self->_protocolVersion = [(NMDeviceConnection *)self _determineProtocolVersion:getActivePairedDevice];
 
       return self->_protocolVersion;
     }
@@ -127,13 +127,13 @@
   }
 }
 
-- (void)_updateReceiverProcessUUID:(id)a3
+- (void)_updateReceiverProcessUUID:(id)d
 {
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
     [(NSLock *)self->_receiverProcessUUIDLock lock];
-    if ([(NSString *)self->_receiverProcessUUID isEqualToString:v5])
+    if ([(NSString *)self->_receiverProcessUUID isEqualToString:dCopy])
     {
       [(NSLock *)self->_receiverProcessUUIDLock unlock];
     }
@@ -147,11 +147,11 @@
         v8 = 138478083;
         v9 = receiverProcessUUID;
         v10 = 2113;
-        v11 = v5;
+        v11 = dCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Receiver process UUID changed (old: %{private}@, new: %{private}@). Requesting clients re-sync state if necessary.", &v8, 0x16u);
       }
 
-      objc_storeStrong(&self->_receiverProcessUUID, a3);
+      objc_storeStrong(&self->_receiverProcessUUID, d);
       [(NSLock *)self->_receiverProcessUUIDLock unlock];
       [(GEOObserverHashTable *)self->_observers connectionNeedsStateSynchronization:self];
     }
@@ -164,8 +164,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -175,7 +175,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -186,7 +186,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -201,10 +201,10 @@ LABEL_12:
   return v3;
 }
 
-- (id)_idsOptionsForMessage:(id)a3 withOptions:(id)a4
+- (id)_idsOptionsForMessage:(id)message withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  optionsCopy = options;
   v8 = IDSSendMessageOptionBypassDuetKey;
   v22[0] = IDSSendMessageOptionEnforceRemoteTimeoutsKey;
   v22[1] = IDSSendMessageOptionBypassDuetKey;
@@ -213,37 +213,37 @@ LABEL_12:
   v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
   v10 = [v9 mutableCopy];
 
-  v11 = [v7 objectForKey:@"NMSendMessageOptionTimeout"];
+  v11 = [optionsCopy objectForKey:@"NMSendMessageOptionTimeout"];
 
   if (v11)
   {
-    v12 = [v7 objectForKeyedSubscript:@"NMSendMessageOptionTimeout"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionTimeout"];
     [v10 setObject:v12 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
   }
 
-  v13 = [v7 objectForKey:@"NMSendMessageOptionMapTile"];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKey:@"NMSendMessageOptionMapTile"];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionMapTileKey];
   }
 
-  v15 = [v7 objectForKey:@"NMSendMessageOptionFireAndForget"];
-  if (!v15 || (v16 = v15, [v7 objectForKey:@"NMSendMessageOptionFireAndForget"], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v18))
+  v15 = [optionsCopy objectForKey:@"NMSendMessageOptionFireAndForget"];
+  if (!v15 || (v16 = v15, [optionsCopy objectForKey:@"NMSendMessageOptionFireAndForget"], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v18))
   {
     [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionFireAndForgetKey];
   }
 
-  v19 = [v7 objectForKeyedSubscript:@"NMSendMessageOptionDisableIDSCompressionKey"];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionDisableIDSCompressionKey"];
+  bOOLValue2 = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue2)
   {
     [v10 setObject:&__kCFBooleanFalse forKeyedSubscript:IDSSendMessageOptionCompressPayloadKey];
   }
 
-  if ([(NMDeviceConnection *)self _priorityForMessage:v6]== 100)
+  if ([(NMDeviceConnection *)self _priorityForMessage:messageCopy]== 100)
   {
     [v10 removeObjectForKey:v8];
   }
@@ -251,30 +251,30 @@ LABEL_12:
   return v10;
 }
 
-- (int64_t)_priorityForMessage:(id)a3
+- (int64_t)_priorityForMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 hasPriority])
+  messageCopy = message;
+  if ([messageCopy hasPriority])
   {
-    v4 = [v3 IDSMessagePriority];
+    iDSMessagePriority = [messageCopy IDSMessagePriority];
 
-    return v4;
+    return iDSMessagePriority;
   }
 
-  v6 = [v3 type];
+  type = [messageCopy type];
 
   result = 300;
-  if (v6 > 199)
+  if (type > 199)
   {
-    if (v6 <= 499)
+    if (type <= 499)
     {
-      if ((v6 - 200) >= 6 && v6 != 308)
+      if ((type - 200) >= 6 && type != 308)
       {
         return result;
       }
     }
 
-    else if ((v6 - 500) >= 3 && (v6 - 1500) >= 2 && v6 != 600)
+    else if ((type - 500) >= 3 && (type - 1500) >= 2 && type != 600)
     {
       return result;
     }
@@ -282,7 +282,7 @@ LABEL_12:
     return 200;
   }
 
-  if ((v6 - 50) <= 0x35 && ((1 << (v6 - 50)) & 0x3C00000003AFFFLL) != 0 || (v6 - 1) < 4)
+  if ((type - 50) <= 0x35 && ((1 << (type - 50)) & 0x3C00000003AFFFLL) != 0 || (type - 1) < 4)
   {
     return 200;
   }
@@ -290,7 +290,7 @@ LABEL_12:
   return result;
 }
 
-- (void)_dequeueNextMessageIfNecessaryForType:(int)a3
+- (void)_dequeueNextMessageIfNecessaryForType:(int)type
 {
   v5 = [(NMDeviceConnection *)self _messageQueueForType:?];
   queue = self->_queue;
@@ -298,9 +298,9 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_10003D1A4;
   block[3] = &unk_1000865B0;
-  v11 = a3;
+  typeCopy = type;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_async(queue, block);
 }
@@ -318,84 +318,84 @@ LABEL_12:
   [(NSRecursiveLock *)self->_messageQueuesLock unlock];
 }
 
-- (BOOL)_shouldIncludeTemporaryLocationAuthorizationWithMessage:(id)a3
+- (BOOL)_shouldIncludeTemporaryLocationAuthorizationWithMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = 1;
-  if (v4 > 301)
+  messageCopy = message;
+  type = [messageCopy type];
+  hasDataValue = 1;
+  if (type > 301)
   {
-    if (v4 != 302 && v4 != 304)
+    if (type != 302 && type != 304)
     {
       goto LABEL_7;
     }
   }
 
-  else if (v4 != 206)
+  else if (type != 206)
   {
-    if (v4 == 300)
+    if (type == 300)
     {
-      v6 = [v3 argumentForTag:401];
-      v5 = [v6 hasDataValue];
+      v6 = [messageCopy argumentForTag:401];
+      hasDataValue = [v6 hasDataValue];
 
       goto LABEL_8;
     }
 
 LABEL_7:
-    v5 = 0;
+    hasDataValue = 0;
   }
 
 LABEL_8:
 
-  return v5;
+  return hasDataValue;
 }
 
-- (void)sendMessage:(id)a3 options:(id)a4 withReply:(id)a5
+- (void)sendMessage:(id)message options:(id)options withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  optionsCopy = options;
+  replyCopy = reply;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003E3F4;
   v15[3] = &unk_100086600;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = messageCopy;
+  v17 = optionsCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = optionsCopy;
+  v14 = messageCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_sendMessage:(id)a3 options:(id)a4 force:(BOOL)a5 timeSpentEnqueued:(double)a6 withReply:(id)a7
+- (void)_sendMessage:(id)message options:(id)options force:(BOOL)force timeSpentEnqueued:(double)enqueued withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  messageCopy = message;
+  optionsCopy = options;
+  replyCopy = reply;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_connected)
   {
-    v15 = [v13 objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
-    if (!v15 || (v16 = v15, [v13 objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v18))
+    v15 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
+    if (!v15 || (v16 = v15, [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v18))
     {
       v19 = sub_100001B24();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v12 shortDebugDescription];
+        shortDebugDescription = [messageCopy shortDebugDescription];
         *buf = 138477827;
-        v94 = v20;
+        v94 = shortDebugDescription;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Not sending message because device is not connected: %{private}@", buf, 0xCu);
       }
 
-      if (v14)
+      if (replyCopy)
       {
         v21 = 3;
 LABEL_15:
         v25 = [NSError errorWithDomain:@"NMDeviceConnectionErrorDomain" code:v21 userInfo:0];
-        v14[2](v14, 0, v25);
+        replyCopy[2](replyCopy, 0, v25);
 LABEL_16:
 
         goto LABEL_17;
@@ -405,65 +405,65 @@ LABEL_16:
     }
   }
 
-  if ([(NMDeviceConnection *)self shouldSendMessage:v12])
+  if ([(NMDeviceConnection *)self shouldSendMessage:messageCopy])
   {
-    if (a5)
+    if (force)
     {
-      v22 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v26 = [v13 objectForKeyedSubscript:@"NMSendMessageOptionSendImmediately"];
-      v22 = [v26 BOOLValue];
+      v26 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionSendImmediately"];
+      bOOLValue = [v26 BOOLValue];
     }
 
-    v25 = -[NMDeviceConnection _messageQueueForType:](self, "_messageQueueForType:", [v12 type]);
-    if (!-[NMDeviceConnection canSendMessageWithType:](self, "canSendMessageWithType:", [v12 type]))
+    v25 = -[NMDeviceConnection _messageQueueForType:](self, "_messageQueueForType:", [messageCopy type]);
+    if (!-[NMDeviceConnection canSendMessageWithType:](self, "canSendMessageWithType:", [messageCopy type]))
     {
       v29 = sub_100001B24();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [v12 shortDebugDescription];
+        shortDebugDescription2 = [messageCopy shortDebugDescription];
         *buf = 138477827;
-        v94 = v30;
+        v94 = shortDebugDescription2;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Not sending message because remote device does not support it: %{private}@", buf, 0xCu);
       }
 
-      if (v14)
+      if (replyCopy)
       {
         v31 = [NSError errorWithDomain:@"NMDeviceConnectionErrorDomain" code:6 userInfo:0];
-        v14[2](v14, 0, v31);
+        replyCopy[2](replyCopy, 0, v31);
       }
 
       goto LABEL_16;
     }
 
-    if (([v25 isPaused] & 1) != 0 || (v22 & 1) == 0 && (objc_msgSend(v25, "shouldSendNewPayload") & 1) == 0)
+    if (([v25 isPaused] & 1) != 0 || (bOOLValue & 1) == 0 && (objc_msgSend(v25, "shouldSendNewPayload") & 1) == 0)
     {
       v27 = sub_100001B24();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [v12 shortDebugDescription];
+        shortDebugDescription3 = [messageCopy shortDebugDescription];
         *buf = 138477827;
-        v94 = v28;
+        v94 = shortDebugDescription3;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Cannot send message now, adding to queue: %{private}@", buf, 0xCu);
       }
 
-      [v25 enqueueMessage:v12 options:v13 reply:v14];
+      [v25 enqueueMessage:messageCopy options:optionsCopy reply:replyCopy];
       goto LABEL_16;
     }
 
     v32 = sub_100001B7C();
-    [v12 setSenderUUID:v32];
+    [messageCopy setSenderUUID:v32];
 
-    [v12 setSentTimestamp:CFAbsoluteTimeGetCurrent()];
-    if (a6 > 0.0)
+    [messageCopy setSentTimestamp:CFAbsoluteTimeGetCurrent()];
+    if (enqueued > 0.0)
     {
-      [v12 setEnqueuedTimeInterval:a6];
+      [messageCopy setEnqueuedTimeInterval:enqueued];
     }
 
-    if (![(NMDeviceConnection *)self _shouldIncludeTemporaryLocationAuthorizationWithMessage:v12])
+    if (![(NMDeviceConnection *)self _shouldIncludeTemporaryLocationAuthorizationWithMessage:messageCopy])
     {
       goto LABEL_130;
     }
@@ -492,14 +492,14 @@ LABEL_128:
       v36 = objc_alloc_init(NMArgument);
       [v36 setTag:600];
       [v36 setDataValue:v33];
-      [v12 addArgument:v36];
+      [messageCopy addArgument:v36];
 LABEL_129:
 
 LABEL_130:
-      v84 = [v12 data];
-      v39 = [(NMDeviceConnection *)self _idsOptionsForMessage:v12 withOptions:v13];
+      data = [messageCopy data];
+      v39 = [(NMDeviceConnection *)self _idsOptionsForMessage:messageCopy withOptions:optionsCopy];
       v40 = v39;
-      if (v14)
+      if (replyCopy)
       {
         if (v39)
         {
@@ -522,12 +522,12 @@ LABEL_130:
         v82 = v39;
       }
 
-      v43 = [(NMDeviceConnection *)self _priorityForMessage:v12];
-      v44 = [v13 objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
+      v43 = [(NMDeviceConnection *)self _priorityForMessage:messageCopy];
+      v44 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
 
       if (v44)
       {
-        v45 = [v13 objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
+        v45 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
         if ([v45 BOOLValue])
         {
           v43 = 300;
@@ -539,7 +539,7 @@ LABEL_130:
         }
       }
 
-      v46 = [v84 length];
+      v46 = [data length];
       v47 = v46;
       if (v43 == 300 && v46 > 0x100000)
       {
@@ -570,14 +570,14 @@ LABEL_130:
       }
 
       idsService = self->_idsService;
-      v51 = [(IDSService *)idsService accounts];
-      v52 = [v51 anyObject];
+      accounts = [(IDSService *)idsService accounts];
+      anyObject = [accounts anyObject];
       v53 = [NSSet setWithObject:IDSDefaultPairedDevice];
       v90 = 0;
       v91 = 0;
       v54 = v43;
       v55 = v82;
-      LODWORD(idsService) = [(IDSService *)idsService sendData:v84 fromAccount:v52 toDestinations:v53 priority:v54 options:v82 identifier:&v91 error:&v90];
+      LODWORD(idsService) = [(IDSService *)idsService sendData:data fromAccount:anyObject toDestinations:v53 priority:v54 options:v82 identifier:&v91 error:&v90];
       v83 = v91;
       v81 = v90;
 
@@ -587,45 +587,45 @@ LABEL_130:
       {
         if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
         {
-          v58 = [v12 shortDebugDescription];
-          v59 = [v84 length];
-          if (v13)
+          shortDebugDescription4 = [messageCopy shortDebugDescription];
+          v59 = [data length];
+          if (optionsCopy)
           {
-            v60 = [NSString stringWithFormat:@", options: %@", v13];
+            optionsCopy = [NSString stringWithFormat:@", options: %@", optionsCopy];
           }
 
           else
           {
-            v60 = &stru_100087EB8;
+            optionsCopy = &stru_100087EB8;
           }
 
-          if (a6 <= 0.0)
+          if (enqueued <= 0.0)
           {
             v65 = &stru_100087EB8;
           }
 
           else
           {
-            v65 = [NSString stringWithFormat:@", enqueued time: %f", *&a6];
+            v65 = [NSString stringWithFormat:@", enqueued time: %f", *&enqueued];
           }
 
           *buf = 138478851;
-          v94 = v58;
+          v94 = shortDebugDescription4;
           v95 = 2048;
           v96 = v59;
           v97 = 2113;
-          v98 = v60;
+          v98 = optionsCopy;
           v99 = 2113;
           v100 = v65;
           v101 = 2113;
           v102 = v83;
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "Sending message: %{private}@ (size = %lu%{private}@%{private}@, GUID = %{private}@)", buf, 0x34u);
-          if (a6 > 0.0)
+          if (enqueued > 0.0)
           {
           }
 
           v55 = v82;
-          if (v13)
+          if (optionsCopy)
           {
           }
         }
@@ -636,30 +636,30 @@ LABEL_130:
         if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138477827;
-          v94 = v12;
+          v94 = messageCopy;
           _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEBUG, "Message contents to be sent: %{private}@", buf, 0xCu);
         }
 
         v67 = objc_alloc_init(_NMSentMessageMetadata);
-        -[_NMSentMessageMetadata setType:](v67, "setType:", [v12 type]);
-        [v12 sentTimestamp];
+        -[_NMSentMessageMetadata setType:](v67, "setType:", [messageCopy type]);
+        [messageCopy sentTimestamp];
         [(_NMSentMessageMetadata *)v67 setTimestamp:?];
-        -[_NMSentMessageMetadata setPayloadSize:](v67, "setPayloadSize:", [v84 length]);
+        -[_NMSentMessageMetadata setPayloadSize:](v67, "setPayloadSize:", [data length]);
         [(_NMSentMessageMetadata *)v67 setReply:0];
         [v25 willSendPayloadWithSize:{-[_NMSentMessageMetadata payloadSize](v67, "payloadSize")}];
         if (v83)
         {
-          if (v14)
+          if (replyCopy)
           {
             [(NSLock *)self->_replyCallbackBlocksLock lock];
             replyCallbackBlocks = self->_replyCallbackBlocks;
-            v69 = [v14 copy];
+            v69 = [replyCopy copy];
             [(NSMutableDictionary *)replyCallbackBlocks setObject:v69 forKey:v83];
 
-            v70 = [v13 objectForKey:@"NMSendMessageOptionReplyTimeout"];
+            v70 = [optionsCopy objectForKey:@"NMSendMessageOptionReplyTimeout"];
             if (v70)
             {
-              v71 = [v13 objectForKeyedSubscript:@"NMSendMessageOptionReplyTimeout"];
+              v71 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionReplyTimeout"];
               [v71 doubleValue];
               delta = (v72 * 1000000000.0);
 
@@ -681,9 +681,9 @@ LABEL_130:
               handler[1] = 3221225472;
               handler[2] = sub_10003F5A8;
               handler[3] = &unk_100086628;
-              v86 = v12;
+              v86 = messageCopy;
               v87 = v83;
-              v88 = self;
+              selfCopy = self;
               v79 = v67;
               v89 = v79;
               dispatch_source_set_event_handler(v77, handler);
@@ -740,9 +740,9 @@ LABEL_130:
         v61 = v81;
         if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
         {
-          v62 = [v12 shortDebugDescription];
+          shortDebugDescription5 = [messageCopy shortDebugDescription];
           *buf = 138478083;
-          v94 = v62;
+          v94 = shortDebugDescription5;
           v95 = 2113;
           v96 = v81;
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "Error sending message: messageType=%{private}@ -- %{private}@", buf, 0x16u);
@@ -753,34 +753,34 @@ LABEL_130:
         if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138477827;
-          v94 = v12;
+          v94 = messageCopy;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEBUG, "Message contents which failed: %{private}@", buf, 0xCu);
         }
 
-        if (v14)
+        if (replyCopy)
         {
-          v14[2](v14, 0, v81);
+          replyCopy[2](replyCopy, 0, v81);
         }
 
-        -[NMDeviceConnection _dequeueNextMessageIfNecessaryForType:](self, "_dequeueNextMessageIfNecessaryForType:", [v12 type]);
+        -[NMDeviceConnection _dequeueNextMessageIfNecessaryForType:](self, "_dequeueNextMessageIfNecessaryForType:", [messageCopy type]);
       }
 
       goto LABEL_16;
     }
 
-    v37 = [v12 type];
-    if (v37 > 202)
+    type = [messageCopy type];
+    if (type > 202)
     {
-      if (v37 <= 400)
+      if (type <= 400)
       {
-        if (v37 <= 205)
+        if (type <= 205)
         {
-          if (v37 == 203)
+          if (type == 203)
           {
             v38 = @"FAILED_TO_UPDATE_LOCATION";
           }
 
-          else if (v37 == 204)
+          else if (type == 204)
           {
             v38 = @"DID_PAUSE_LOCATION_UPDATES";
           }
@@ -793,7 +793,7 @@ LABEL_130:
 
         else
         {
-          switch(v37)
+          switch(type)
           {
             case 300:
               v38 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -844,7 +844,7 @@ LABEL_130:
               v38 = @"SET_DISPLAYED_STEP";
               break;
             default:
-              if (v37 != 206)
+              if (type != 206)
               {
                 goto LABEL_87;
               }
@@ -857,17 +857,17 @@ LABEL_130:
         goto LABEL_127;
       }
 
-      if (v37 > 599)
+      if (type > 599)
       {
-        if (v37 > 1499)
+        if (type > 1499)
         {
-          if (v37 == 1500)
+          if (type == 1500)
           {
             v38 = @"DEBUG_FETCH_CONFIGURATION_INFO";
             goto LABEL_127;
           }
 
-          if (v37 == 1501)
+          if (type == 1501)
           {
             v38 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
             goto LABEL_127;
@@ -876,13 +876,13 @@ LABEL_130:
 
         else
         {
-          if (v37 == 600)
+          if (type == 600)
           {
             v38 = @"FETCH_ROUTE_GENIUS";
             goto LABEL_127;
           }
 
-          if (v37 == 1000)
+          if (type == 1000)
           {
             v38 = @"PING";
             goto LABEL_127;
@@ -892,15 +892,15 @@ LABEL_130:
         goto LABEL_87;
       }
 
-      if (v37 > 500)
+      if (type > 500)
       {
-        if (v37 == 501)
+        if (type == 501)
         {
           v38 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
           goto LABEL_127;
         }
 
-        if (v37 == 502)
+        if (type == 502)
         {
           v38 = @"SERVICE_REQUEST";
           goto LABEL_127;
@@ -909,13 +909,13 @@ LABEL_130:
         goto LABEL_87;
       }
 
-      if (v37 == 401)
+      if (type == 401)
       {
         v38 = @"OPEN_URL";
         goto LABEL_127;
       }
 
-      if (v37 != 500)
+      if (type != 500)
       {
         goto LABEL_87;
       }
@@ -925,11 +925,11 @@ LABEL_130:
 
     else
     {
-      if (v37 <= 99)
+      if (type <= 99)
       {
-        if (v37 > 3)
+        if (type > 3)
         {
-          switch(v37)
+          switch(type)
           {
             case '2':
               v38 = @"START_INITIAL_SYNC";
@@ -985,7 +985,7 @@ LABEL_130:
               v38 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
               break;
             default:
-              if (v37 != 4)
+              if (type != 4)
               {
                 goto LABEL_87;
               }
@@ -997,7 +997,7 @@ LABEL_130:
           goto LABEL_127;
         }
 
-        switch(v37)
+        switch(type)
         {
           case 1:
             v38 = @"FETCH_TILES";
@@ -1011,18 +1011,18 @@ LABEL_130:
         }
 
 LABEL_87:
-        v38 = [NSString stringWithFormat:@"(unknown: %i)", v37];
+        v38 = [NSString stringWithFormat:@"(unknown: %i)", type];
         goto LABEL_127;
       }
 
-      if (v37 <= 102)
+      if (type <= 102)
       {
-        if (v37 == 100)
+        if (type == 100)
         {
           v38 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v37 == 101)
+        else if (type == 101)
         {
           v38 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -1035,9 +1035,9 @@ LABEL_87:
         goto LABEL_127;
       }
 
-      if (v37 > 200)
+      if (type > 200)
       {
-        if (v37 == 201)
+        if (type == 201)
         {
           v38 = @"STOP_LOCATION_UPDATE";
         }
@@ -1050,13 +1050,13 @@ LABEL_87:
         goto LABEL_127;
       }
 
-      if (v37 == 103)
+      if (type == 103)
       {
         v38 = @"FETCH_RESOURCE";
         goto LABEL_127;
       }
 
-      if (v37 != 200)
+      if (type != 200)
       {
         goto LABEL_87;
       }
@@ -1075,13 +1075,13 @@ LABEL_127:
   v23 = sub_100001B24();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [v12 shortDebugDescription];
+    shortDebugDescription6 = [messageCopy shortDebugDescription];
     *buf = 138477827;
-    v94 = v24;
+    v94 = shortDebugDescription6;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Not sending message because connection was short circuited: %{private}@", buf, 0xCu);
   }
 
-  if (v14)
+  if (replyCopy)
   {
     v21 = 4;
     goto LABEL_15;
@@ -1090,108 +1090,108 @@ LABEL_127:
 LABEL_17:
 }
 
-- (void)sendReply:(id)a3 forMessage:(id)a4 options:(id)a5
+- (void)sendReply:(id)reply forMessage:(id)message options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  messageCopy = message;
+  optionsCopy = options;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003F870;
   v15[3] = &unk_100086628;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = replyCopy;
+  v17 = messageCopy;
+  v18 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = messageCopy;
+  v14 = replyCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_sendReply:(id)a3 forMessage:(id)a4 options:(id)a5 force:(BOOL)a6 timeSpentEnqueued:(double)a7
+- (void)_sendReply:(id)reply forMessage:(id)message options:(id)options force:(BOOL)force timeSpentEnqueued:(double)enqueued
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  replyCopy = reply;
+  messageCopy = message;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_queue);
-  if (v12 && v13)
+  if (replyCopy && messageCopy)
   {
     if (self->_connected)
     {
       goto LABEL_8;
     }
 
-    v15 = [v14 objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
     if (!v15)
     {
       goto LABEL_6;
     }
 
     v16 = v15;
-    v17 = [v14 objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
-    v18 = [v17 BOOLValue];
+    v17 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionFireAndForget"];
+    bOOLValue = [v17 BOOLValue];
 
-    if (!v18)
+    if (!bOOLValue)
     {
 LABEL_8:
-      if (a6)
+      if (force)
       {
-        v21 = 1;
+        bOOLValue2 = 1;
       }
 
       else
       {
-        v22 = [v14 objectForKeyedSubscript:@"NMSendMessageOptionSendImmediately"];
-        v21 = [v22 BOOLValue];
+        v22 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionSendImmediately"];
+        bOOLValue2 = [v22 BOOLValue];
       }
 
-      v23 = -[NMDeviceConnection _messageQueueForType:](self, "_messageQueueForType:", [v13 type]);
+      v23 = -[NMDeviceConnection _messageQueueForType:](self, "_messageQueueForType:", [messageCopy type]);
       v19 = v23;
-      if ((v21 & 1) != 0 || ([v23 shouldSendNewPayload]& 1) != 0)
+      if ((bOOLValue2 & 1) != 0 || ([v23 shouldSendNewPayload]& 1) != 0)
       {
         Current = CFAbsoluteTimeGetCurrent();
-        v25 = objc_getAssociatedObject(v13, &unk_10009E838);
+        v25 = objc_getAssociatedObject(messageCopy, &unk_10009E838);
         if (v25)
         {
           v26 = sub_100001B7C();
-          [v12 setSenderUUID:v26];
+          [replyCopy setSenderUUID:v26];
 
-          if (([v12 hasResponseTime] & 1) == 0)
+          if (([replyCopy hasResponseTime] & 1) == 0)
           {
             [v25 requestReceivedTimestamp];
-            [v12 setResponseTime:Current - v27];
+            [replyCopy setResponseTime:Current - v27];
           }
 
           v54 = v19;
-          if (a7 > 0.0)
+          if (enqueued > 0.0)
           {
-            [v12 setEnqueuedTimeInterval:a7];
+            [replyCopy setEnqueuedTimeInterval:enqueued];
           }
 
           [v25 requestReceivedTimestamp];
-          [v12 setRequestReceivedTimestamp:?];
-          [v12 setSentTimestamp:Current];
-          v28 = [v12 data];
-          v29 = [v25 idsMessageIdentifier];
-          v30 = [NSMutableDictionary dictionaryWithObject:v29 forKey:IDSSendMessageOptionPeerResponseIdentifierKey];
+          [replyCopy setRequestReceivedTimestamp:?];
+          [replyCopy setSentTimestamp:Current];
+          data = [replyCopy data];
+          idsMessageIdentifier = [v25 idsMessageIdentifier];
+          v30 = [NSMutableDictionary dictionaryWithObject:idsMessageIdentifier forKey:IDSSendMessageOptionPeerResponseIdentifierKey];
 
-          v31 = [(NMDeviceConnection *)self _idsOptionsForMessage:v13 withOptions:v14];
+          v31 = [(NMDeviceConnection *)self _idsOptionsForMessage:messageCopy withOptions:optionsCopy];
           if (v31)
           {
             [v30 addEntriesFromDictionary:v31];
           }
 
           v53 = v31;
-          v32 = [(NMDeviceConnection *)self _priorityForReply:v13];
-          v33 = [v14 objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
+          v32 = [(NMDeviceConnection *)self _priorityForReply:messageCopy];
+          v33 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
 
           v55 = v25;
           v57 = v30;
           if (v33)
           {
-            v34 = [v14 objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
+            v34 = [optionsCopy objectForKeyedSubscript:@"NMSendMessageOptionUrgent"];
             if ([v34 BOOLValue])
             {
               v32 = 300;
@@ -1204,12 +1204,12 @@ LABEL_8:
           }
 
           idsService = self->_idsService;
-          v36 = [(IDSService *)idsService accounts];
-          v37 = [v36 anyObject];
+          accounts = [(IDSService *)idsService accounts];
+          anyObject = [accounts anyObject];
           v38 = [NSSet setWithObject:IDSDefaultPairedDevice];
           v58 = 0;
           v59 = 0;
-          LODWORD(idsService) = [(IDSService *)idsService sendData:v28 fromAccount:v37 toDestinations:v38 priority:v32 options:v57 identifier:&v59 error:&v58];
+          LODWORD(idsService) = [(IDSService *)idsService sendData:data fromAccount:anyObject toDestinations:v38 priority:v32 options:v57 identifier:&v59 error:&v58];
           v39 = v59;
           v56 = v58;
 
@@ -1217,53 +1217,53 @@ LABEL_8:
           v41 = v40;
           if (idsService)
           {
-            v42 = v28;
+            v42 = data;
             v19 = v54;
             v43 = v39;
             if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
             {
-              v44 = [v13 shortDebugDescription];
+              shortDebugDescription = [messageCopy shortDebugDescription];
               v51 = [v42 length];
-              [v12 responseTime];
+              [replyCopy responseTime];
               v46 = v45;
-              if (v14)
+              if (optionsCopy)
               {
-                v52 = [NSString stringWithFormat:@", options: %@", v14];
+                optionsCopy = [NSString stringWithFormat:@", options: %@", optionsCopy];
               }
 
               else
               {
-                v52 = &stru_100087EB8;
+                optionsCopy = &stru_100087EB8;
               }
 
-              if (a7 <= 0.0)
+              if (enqueued <= 0.0)
               {
                 v48 = &stru_100087EB8;
               }
 
               else
               {
-                v48 = [NSString stringWithFormat:@", enqueued time: %f", *&a7];
+                v48 = [NSString stringWithFormat:@", enqueued time: %f", *&enqueued];
               }
 
               *buf = 138479107;
-              v61 = v44;
+              v61 = shortDebugDescription;
               v62 = 2048;
               v63 = v51;
               v64 = 2048;
               v65 = v46;
               v66 = 2113;
-              v67 = v52;
+              v67 = optionsCopy;
               v68 = 2113;
               v69 = v48;
               v70 = 2113;
               v71 = v43;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "Sending reply for original message: %{private}@ (size = %lu, response time = %f%{private}@%{private}@, GUID = %{private}@)", buf, 0x3Eu);
-              if (a7 > 0.0)
+              if (enqueued > 0.0)
               {
               }
 
-              if (v14)
+              if (optionsCopy)
               {
               }
             }
@@ -1273,15 +1273,15 @@ LABEL_8:
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138478083;
-              v61 = v12;
+              v61 = replyCopy;
               v62 = 2113;
-              v63 = v13;
+              v63 = messageCopy;
               _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEBUG, "Reply contents to be sent: %{private}@\n Original message contents: %{private}@", buf, 0x16u);
             }
 
             v50 = objc_alloc_init(_NMSentMessageMetadata);
-            -[_NMSentMessageMetadata setType:](v50, "setType:", [v13 type]);
-            [v13 sentTimestamp];
+            -[_NMSentMessageMetadata setType:](v50, "setType:", [messageCopy type]);
+            [messageCopy sentTimestamp];
             [(_NMSentMessageMetadata *)v50 setTimestamp:?];
             [(_NMSentMessageMetadata *)v50 setPayloadSize:[v42 length]];
             [(_NMSentMessageMetadata *)v50 setReply:1];
@@ -1293,16 +1293,16 @@ LABEL_8:
           {
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
-              v47 = [v13 shortDebugDescription];
+              shortDebugDescription2 = [messageCopy shortDebugDescription];
               *buf = 138543618;
-              v61 = v47;
+              v61 = shortDebugDescription2;
               v62 = 2114;
               v63 = v56;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Error sending reply to message: messageType=%{public}@ -- %{public}@", buf, 0x16u);
             }
 
-            -[NMDeviceConnection _dequeueNextMessageIfNecessaryForType:](self, "_dequeueNextMessageIfNecessaryForType:", [v13 type]);
-            v42 = v28;
+            -[NMDeviceConnection _dequeueNextMessageIfNecessaryForType:](self, "_dequeueNextMessageIfNecessaryForType:", [messageCopy type]);
+            v42 = data;
             v19 = v54;
             v25 = v55;
             v43 = v39;
@@ -1315,7 +1315,7 @@ LABEL_8:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v61 = v13;
+            v61 = messageCopy;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "Sending reply to unknown message '%{public}@'. Ignoring...", buf, 0xCu);
           }
         }
@@ -1323,7 +1323,7 @@ LABEL_8:
 
       else
       {
-        [v19 enqueueReply:v12 forMessage:v13 options:v14];
+        [v19 enqueueReply:replyCopy forMessage:messageCopy options:optionsCopy];
       }
     }
 
@@ -1333,20 +1333,20 @@ LABEL_6:
       v19 = sub_100001B24();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v13 shortDebugDescription];
+        shortDebugDescription3 = [messageCopy shortDebugDescription];
         *buf = 138477827;
-        v61 = v20;
+        v61 = shortDebugDescription3;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Not sending reply because device is not connected. Original message: %{private}@", buf, 0xCu);
       }
     }
   }
 }
 
-- (unint64_t)_determineProtocolVersion:(id)a3
+- (unint64_t)_determineProtocolVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = [[NSUUID alloc] initWithUUIDString:@"9FFD76FA-21FC-46AE-8AAB-14FB3F692B28"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [versionCopy supportsCapability:v4];
 
   if (v5)
   {
@@ -1356,7 +1356,7 @@ LABEL_6:
   else
   {
     v7 = [[NSUUID alloc] initWithUUIDString:@"AC953E03-CAB8-4508-9145-EA5D629BCDAC"];
-    v8 = [v3 supportsCapability:v7];
+    v8 = [versionCopy supportsCapability:v7];
 
     if (v8)
     {
@@ -1366,7 +1366,7 @@ LABEL_6:
     else
     {
       v9 = [[NSUUID alloc] initWithUUIDString:@"CBAC2DE5-C7A2-4DA2-932B-E57BABEA3B97"];
-      v10 = [v3 supportsCapability:v9];
+      v10 = [versionCopy supportsCapability:v9];
 
       if (v10)
       {
@@ -1376,7 +1376,7 @@ LABEL_6:
       else
       {
         v11 = [[NSUUID alloc] initWithUUIDString:@"5C068089-C478-48CE-892A-13DBA45BE33A"];
-        v12 = [v3 supportsCapability:v11];
+        v12 = [versionCopy supportsCapability:v11];
 
         if (v12)
         {
@@ -1386,7 +1386,7 @@ LABEL_6:
         else
         {
           v13 = [[NSUUID alloc] initWithUUIDString:@"AC310276-2B5D-4C25-A6AC-7D59ED5CB5D3"];
-          v14 = [v3 supportsCapability:v13];
+          v14 = [versionCopy supportsCapability:v13];
 
           if (v14)
           {
@@ -1410,9 +1410,9 @@ LABEL_6:
   v3 = sub_100001B24();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(IDSService *)self->_idsService devices];
+    devices = [(IDSService *)self->_idsService devices];
     *buf = 138477827;
-    *v65 = v4;
+    *v65 = devices;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Updating connection status with devices: %{private}@", buf, 0xCu);
   }
 
@@ -1420,8 +1420,8 @@ LABEL_6:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = [(IDSService *)self->_idsService devices];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v66 count:16];
+  devices2 = [(IDSService *)self->_idsService devices];
+  v6 = [devices2 countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1432,19 +1432,19 @@ LABEL_6:
       {
         if (*v58 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices2);
         }
 
         v10 = *(*(&v57 + 1) + 8 * i);
         if ([v10 isDefaultPairedDevice] && objc_msgSend(v10, "isConnected"))
         {
-          v11 = [v10 isNearby];
+          isNearby = [v10 isNearby];
           v12 = 1;
           goto LABEL_14;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      v7 = [devices2 countByEnumeratingWithState:&v57 objects:v66 count:16];
       if (v7)
       {
         continue;
@@ -1454,7 +1454,7 @@ LABEL_6:
     }
   }
 
-  v11 = 0;
+  isNearby = 0;
   v12 = 0;
 LABEL_14:
 
@@ -1469,7 +1469,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "New connection status: simulating no devices connected", buf, 2u);
     }
 
-    v11 = 0;
+    isNearby = 0;
     v12 = 0;
   }
 
@@ -1478,31 +1478,31 @@ LABEL_14:
     *buf = 67109376;
     *v65 = v12;
     *&v65[4] = 1024;
-    *&v65[6] = v11;
+    *&v65[6] = isNearby;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "New connection status: connected: %i, nearby: %i", buf, 0xEu);
   }
 
   nearby = self->_nearby;
-  if (nearby != v11)
+  if (nearby != isNearby)
   {
-    self->_nearby = v11;
+    self->_nearby = isNearby;
   }
 
   self->_protocolVersion = 0;
   if (self->_connected != v12)
   {
     v43 = nearby;
-    v44 = v11;
+    v44 = isNearby;
     self->_connected = v12;
     if (!v12)
     {
       v17 = [[NSError alloc] initWithDomain:@"NMDeviceConnectionErrorDomain" code:0 userInfo:0];
       [(NSLock *)self->_replyCallbackBlocksLock lock];
-      v18 = [(NSMutableDictionary *)self->_replyCallbackBlocks allValues];
-      v19 = [v18 copy];
+      allValues = [(NSMutableDictionary *)self->_replyCallbackBlocks allValues];
+      v19 = [allValues copy];
 
-      v20 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata allValues];
-      v21 = [v20 copy];
+      allValues2 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata allValues];
+      v21 = [allValues2 copy];
 
       [(NSMutableDictionary *)self->_replyCallbackBlocks removeAllObjects];
       [(NSMutableDictionary *)self->_replyExpectingMessageMetadata removeAllObjects];
@@ -1539,12 +1539,12 @@ LABEL_14:
             }
 
             v29 = *(*(&v53 + 1) + 8 * j);
-            v30 = [v29 timeoutTimer];
+            timeoutTimer = [v29 timeoutTimer];
 
-            if (v30)
+            if (timeoutTimer)
             {
-              v31 = [v29 timeoutTimer];
-              dispatch_source_cancel(v31);
+              timeoutTimer2 = [v29 timeoutTimer];
+              dispatch_source_cancel(timeoutTimer2);
 
               [v29 setTimeoutTimer:0];
             }
@@ -1589,12 +1589,12 @@ LABEL_14:
       [(NSRecursiveLock *)self->_messageQueuesLock unlock];
     }
 
-    v37 = [(GEOObserverHashTable *)self->_observers allObservers];
+    allObservers = [(GEOObserverHashTable *)self->_observers allObservers];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v38 = [v37 countByEnumeratingWithState:&v45 objects:v61 count:16];
+    v38 = [allObservers countByEnumeratingWithState:&v45 objects:v61 count:16];
     if (v38)
     {
       v39 = v38;
@@ -1605,7 +1605,7 @@ LABEL_14:
         {
           if (*v46 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(allObservers);
           }
 
           v42 = *(*(&v45 + 1) + 8 * m);
@@ -1620,36 +1620,36 @@ LABEL_14:
           }
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v45 objects:v61 count:16];
+        v39 = [allObservers countByEnumeratingWithState:&v45 objects:v61 count:16];
       }
 
       while (v39);
     }
 
     nearby = v43;
-    v11 = v44;
+    isNearby = v44;
   }
 
-  if (nearby != v11)
+  if (nearby != isNearby)
   {
-    [(GEOObserverHashTable *)self->_observers connection:self didChangeDeviceNearby:v11];
+    [(GEOObserverHashTable *)self->_observers connection:self didChangeDeviceNearby:isNearby];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a7;
+  dataCopy = data;
+  contextCopy = context;
   Current = CFAbsoluteTimeGetCurrent();
-  v12 = [v10 incomingResponseIdentifier];
-  v13 = [v10 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
 
-  if (v13)
+  if (incomingResponseIdentifier2)
   {
     [(NSLock *)self->_replyCallbackBlocksLock lock];
     replyCallbackBlocks = self->_replyCallbackBlocks;
-    v15 = [v10 incomingResponseIdentifier];
-    v16 = [(NSMutableDictionary *)replyCallbackBlocks objectForKey:v15];
+    incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
+    v16 = [(NSMutableDictionary *)replyCallbackBlocks objectForKey:incomingResponseIdentifier3];
     v17 = v16 != 0;
 
     [(NSLock *)self->_replyCallbackBlocksLock unlock];
@@ -1662,12 +1662,12 @@ LABEL_14:
 
   v18 = sub_100001B24();
   v19 = v18;
-  if (v9)
+  if (dataCopy)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138477827;
-      v101 = v12;
+      v101 = incomingResponseIdentifier;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Received data with incomingResponseIdentifier: %{private}@", buf, 0xCu);
     }
 
@@ -1680,23 +1680,23 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "incomingResponseIdentifier matches message awaiting reply", buf, 2u);
       }
 
-      v21 = [[NMReply alloc] initWithData:v9];
+      v21 = [[NMReply alloc] initWithData:dataCopy];
       v19 = v21;
       if (v21)
       {
-        v22 = [(NMReply *)v21 senderUUID];
-        [(NMDeviceConnection *)self _updateReceiverProcessUUID:v22];
+        senderUUID = [(NMReply *)v21 senderUUID];
+        [(NMDeviceConnection *)self _updateReceiverProcessUUID:senderUUID];
 
         [(NSLock *)self->_replyCallbackBlocksLock lock];
-        v23 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata objectForKey:v12];
-        [(NSMutableDictionary *)self->_replyExpectingMessageMetadata removeObjectForKey:v12];
+        v23 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata objectForKey:incomingResponseIdentifier];
+        [(NSMutableDictionary *)self->_replyExpectingMessageMetadata removeObjectForKey:incomingResponseIdentifier];
         [(NSLock *)self->_replyCallbackBlocksLock unlock];
-        v24 = [v23 timeoutTimer];
+        timeoutTimer = [v23 timeoutTimer];
 
-        if (v24)
+        if (timeoutTimer)
         {
-          v25 = [v23 timeoutTimer];
-          dispatch_source_cancel(v25);
+          timeoutTimer2 = [v23 timeoutTimer];
+          dispatch_source_cancel(timeoutTimer2);
 
           [v23 setTimeoutTimer:0];
         }
@@ -1710,19 +1710,19 @@ LABEL_14:
         }
 
         v29 = Current - v27;
-        v30 = [v23 type];
-        if (v30 > 202)
+        type = [v23 type];
+        if (type > 202)
         {
-          if (v30 <= 400)
+          if (type <= 400)
           {
-            if (v30 <= 205)
+            if (type <= 205)
             {
-              if (v30 == 203)
+              if (type == 203)
               {
                 v31 = @"FAILED_TO_UPDATE_LOCATION";
               }
 
-              else if (v30 == 204)
+              else if (type == 204)
               {
                 v31 = @"DID_PAUSE_LOCATION_UPDATES";
               }
@@ -1735,7 +1735,7 @@ LABEL_14:
 
             else
             {
-              switch(v30)
+              switch(type)
               {
                 case 300:
                   v31 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1786,7 +1786,7 @@ LABEL_14:
                   v31 = @"SET_DISPLAYED_STEP";
                   goto LABEL_147;
                 default:
-                  if (v30 != 206)
+                  if (type != 206)
                   {
                     goto LABEL_107;
                   }
@@ -1799,17 +1799,17 @@ LABEL_14:
             goto LABEL_147;
           }
 
-          if (v30 > 599)
+          if (type > 599)
           {
-            if (v30 > 1499)
+            if (type > 1499)
             {
-              if (v30 == 1500)
+              if (type == 1500)
               {
                 v31 = @"DEBUG_FETCH_CONFIGURATION_INFO";
                 goto LABEL_147;
               }
 
-              if (v30 == 1501)
+              if (type == 1501)
               {
                 v31 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
                 goto LABEL_147;
@@ -1818,13 +1818,13 @@ LABEL_14:
 
             else
             {
-              if (v30 == 600)
+              if (type == 600)
               {
                 v31 = @"FETCH_ROUTE_GENIUS";
                 goto LABEL_147;
               }
 
-              if (v30 == 1000)
+              if (type == 1000)
               {
                 v31 = @"PING";
                 goto LABEL_147;
@@ -1834,15 +1834,15 @@ LABEL_14:
             goto LABEL_107;
           }
 
-          if (v30 > 500)
+          if (type > 500)
           {
-            if (v30 == 501)
+            if (type == 501)
             {
               v31 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
               goto LABEL_147;
             }
 
-            if (v30 == 502)
+            if (type == 502)
             {
               v31 = @"SERVICE_REQUEST";
               goto LABEL_147;
@@ -1851,13 +1851,13 @@ LABEL_14:
             goto LABEL_107;
           }
 
-          if (v30 == 401)
+          if (type == 401)
           {
             v31 = @"OPEN_URL";
             goto LABEL_147;
           }
 
-          if (v30 != 500)
+          if (type != 500)
           {
             goto LABEL_107;
           }
@@ -1867,11 +1867,11 @@ LABEL_14:
 
         else
         {
-          if (v30 <= 99)
+          if (type <= 99)
           {
-            if (v30 > 3)
+            if (type > 3)
             {
-              switch(v30)
+              switch(type)
               {
                 case '2':
                   v31 = @"START_INITIAL_SYNC";
@@ -1927,7 +1927,7 @@ LABEL_14:
                   v31 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
                   goto LABEL_147;
                 default:
-                  if (v30 != 4)
+                  if (type != 4)
                   {
                     goto LABEL_107;
                   }
@@ -1939,7 +1939,7 @@ LABEL_14:
               goto LABEL_147;
             }
 
-            switch(v30)
+            switch(type)
             {
               case 1:
                 v31 = @"FETCH_TILES";
@@ -1953,9 +1953,9 @@ LABEL_14:
             }
 
 LABEL_107:
-            v94 = [NSString stringWithFormat:@"(unknown: %i)", v30];
+            v94 = [NSString stringWithFormat:@"(unknown: %i)", type];
 LABEL_148:
-            v75 = [v9 length];
+            v75 = [dataCopy length];
             [v19 responseTime];
             v77 = v76;
             [v19 enqueuedTimeInterval];
@@ -1964,8 +1964,8 @@ LABEL_148:
             v81 = v29 - v80;
             [v19 enqueuedTimeInterval];
             v83 = v81 - v82;
-            v84 = [v10 incomingResponseIdentifier];
-            v85 = [v10 outgoingResponseIdentifier];
+            incomingResponseIdentifier4 = [contextCopy incomingResponseIdentifier];
+            outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
             *buf = 138479619;
             v101 = v94;
             v102 = 2048;
@@ -1979,16 +1979,16 @@ LABEL_148:
             v110 = 2048;
             v111 = v83;
             v112 = 2113;
-            v113 = v84;
+            v113 = incomingResponseIdentifier4;
             v114 = 2113;
-            v115 = v85;
+            v115 = outgoingResponseIdentifier;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Received reply for original message type: %{private}@ (size = %lu, elapsed time = %f, remote processing time = %f, enqueued time = %f, inferred transport time = %f, incoming guid = %{private}@, outgoing guid = %{private}@)", buf, 0x52u);
 
 LABEL_149:
-            v86 = [v19 decompressArguments];
+            decompressArguments = [v19 decompressArguments];
             v87 = sub_100001B24();
             v88 = v87;
-            if (v86)
+            if (decompressArguments)
             {
               if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
               {
@@ -1998,12 +1998,12 @@ LABEL_149:
               }
 
               [(NSLock *)self->_replyCallbackBlocksLock lock];
-              v89 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:v12];
+              v89 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:incomingResponseIdentifier];
               v70 = [v89 copy];
 
               if (v70)
               {
-                [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:v12];
+                [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:incomingResponseIdentifier];
                 [(NSLock *)self->_replyCallbackBlocksLock unlock];
                 v90 = sub_100001B24();
                 if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -2026,7 +2026,7 @@ LABEL_149:
             }
 
             [(NSLock *)self->_replyCallbackBlocksLock lock];
-            v91 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:v12];
+            v91 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:incomingResponseIdentifier];
             v70 = [v91 copy];
 
             if (!v70)
@@ -2036,24 +2036,24 @@ LABEL_161:
               goto LABEL_162;
             }
 
-            [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:v12];
+            [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:incomingResponseIdentifier];
             [(NSLock *)self->_replyCallbackBlocksLock unlock];
-            v67 = [NSError errorWithDomain:@"NMDeviceConnectionErrorDomain" code:1 userInfo:0];
-            (v70)[2](v70, 0, v67);
+            dataValue = [NSError errorWithDomain:@"NMDeviceConnectionErrorDomain" code:1 userInfo:0];
+            (v70)[2](v70, 0, dataValue);
 LABEL_160:
 
 LABEL_162:
             goto LABEL_163;
           }
 
-          if (v30 <= 102)
+          if (type <= 102)
           {
-            if (v30 == 100)
+            if (type == 100)
             {
               v31 = @"CHECKIN_WITH_TILE_GROUP";
             }
 
-            else if (v30 == 101)
+            else if (type == 101)
             {
               v31 = @"FORCE_UPDATE_MANIFEST";
             }
@@ -2066,9 +2066,9 @@ LABEL_162:
             goto LABEL_147;
           }
 
-          if (v30 > 200)
+          if (type > 200)
           {
-            if (v30 == 201)
+            if (type == 201)
             {
               v31 = @"STOP_LOCATION_UPDATE";
             }
@@ -2081,13 +2081,13 @@ LABEL_162:
             goto LABEL_147;
           }
 
-          if (v30 == 103)
+          if (type == 103)
           {
             v31 = @"FETCH_RESOURCE";
             goto LABEL_147;
           }
 
-          if (v30 != 200)
+          if (type != 200)
           {
             goto LABEL_107;
           }
@@ -2113,7 +2113,7 @@ LABEL_36:
       goto LABEL_163;
     }
 
-    v19 = [[NMMessage alloc] initWithData:v9];
+    v19 = [[NMMessage alloc] initWithData:dataCopy];
     v33 = sub_100001B24();
     v23 = v33;
     if (!v19)
@@ -2132,13 +2132,13 @@ LABEL_163:
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
-      v34 = [v19 shortDebugDescription];
-      v35 = [v9 length];
+      shortDebugDescription = [v19 shortDebugDescription];
+      v35 = [dataCopy length];
       [v19 sentTimestamp];
       v37 = Current - v36;
       [v19 enqueuedTimeInterval];
       *buf = 138478595;
-      v101 = v34;
+      v101 = shortDebugDescription;
       v102 = 2048;
       v103 = v35;
       v104 = 2048;
@@ -2148,13 +2148,13 @@ LABEL_163:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Received message type: %{private}@ (size = %lu, sent %f seconds ago, enqueued time = %f)", buf, 0x2Au);
     }
 
-    v39 = [v19 senderUUID];
-    [(NMDeviceConnection *)self _updateReceiverProcessUUID:v39];
+    senderUUID2 = [v19 senderUUID];
+    [(NMDeviceConnection *)self _updateReceiverProcessUUID:senderUUID2];
 
-    v40 = [v19 decompressArguments];
+    decompressArguments2 = [v19 decompressArguments];
     v41 = sub_100001B24();
     v42 = v41;
-    if (v40)
+    if (decompressArguments2)
     {
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
       {
@@ -2163,15 +2163,15 @@ LABEL_163:
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "Received message contents: %{private}@", buf, 0xCu);
       }
 
-      if ([v10 expectsPeerResponse])
+      if ([contextCopy expectsPeerResponse])
       {
-        v43 = [v10 outgoingResponseIdentifier];
+        outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
 
-        if (v43)
+        if (outgoingResponseIdentifier2)
         {
           v44 = objc_alloc_init(_NMReplyInfo);
-          v45 = [v10 outgoingResponseIdentifier];
-          [(_NMReplyInfo *)v44 setIdsMessageIdentifier:v45];
+          outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
+          [(_NMReplyInfo *)v44 setIdsMessageIdentifier:outgoingResponseIdentifier3];
 
           [(_NMReplyInfo *)v44 setRequestReceivedTimestamp:Current];
           objc_setAssociatedObject(v19, &unk_10009E838, v44, 0x301);
@@ -2182,9 +2182,9 @@ LABEL_163:
           v44 = sub_100001B24();
           if (os_log_type_enabled(&v44->super, OS_LOG_TYPE_ERROR))
           {
-            v59 = [v19 shortDebugDescription];
+            shortDebugDescription2 = [v19 shortDebugDescription];
             *buf = 138543362;
-            v101 = v59;
+            v101 = shortDebugDescription2;
             _os_log_impl(&_mh_execute_header, &v44->super, OS_LOG_TYPE_ERROR, "Message wants reply, but didn't receive a message identifier! Message: %{public}@", buf, 0xCu);
           }
         }
@@ -2195,8 +2195,8 @@ LABEL_163:
       v61 = [NSNumber numberWithInt:[v19 type]];
       v23 = [(NSMutableDictionary *)messageObservers objectForKeyedSubscript:v61];
 
-      v62 = [v23 allValues];
-      v63 = [v62 copy];
+      allValues = [v23 allValues];
+      v63 = [allValues copy];
 
       [(NSLock *)self->_observersLock unlock];
       if (![v63 count])
@@ -2204,17 +2204,17 @@ LABEL_163:
         v64 = sub_100001B24();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v65 = [v19 shortDebugDescription];
+          shortDebugDescription3 = [v19 shortDebugDescription];
           *buf = 138543362;
-          v101 = v65;
+          v101 = shortDebugDescription3;
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "No handler registered for incoming message type %{public}@", buf, 0xCu);
         }
       }
 
       v66 = [v19 argumentForTag:600];
-      v67 = [v66 dataValue];
+      dataValue = [v66 dataValue];
 
-      if (v67)
+      if (dataValue)
       {
         v68 = sub_100001B24();
         if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
@@ -2223,7 +2223,7 @@ LABEL_163:
           _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_INFO, "Applying transient location authorization", buf, 2u);
         }
 
-        v69 = [CLLocationManager _setClientTransientAuthorizationInfoForBundleId:@"com.apple.Maps" data:v67];
+        v69 = [CLLocationManager _setClientTransientAuthorizationInfoForBundleId:@"com.apple.Maps" data:dataValue];
       }
 
       v97 = 0u;
@@ -2263,11 +2263,11 @@ LABEL_163:
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "Failed to decompress message arguments", buf, 2u);
     }
 
-    if ([v10 expectsPeerResponse])
+    if ([contextCopy expectsPeerResponse])
     {
-      v47 = [v10 outgoingResponseIdentifier];
+      outgoingResponseIdentifier4 = [contextCopy outgoingResponseIdentifier];
 
-      if (v47)
+      if (outgoingResponseIdentifier4)
       {
         v23 = objc_alloc_init(NMReply);
         v48 = sub_100001B7C();
@@ -2287,15 +2287,15 @@ LABEL_163:
           v53 = +[NSMutableDictionary dictionary];
         }
 
-        v54 = [v10 outgoingResponseIdentifier];
-        [v53 setObject:v54 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+        outgoingResponseIdentifier5 = [contextCopy outgoingResponseIdentifier];
+        [v53 setObject:outgoingResponseIdentifier5 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
 
         idsService = self->_idsService;
-        v55 = [v23 data];
-        v56 = [(IDSService *)self->_idsService accounts];
-        v57 = [v56 anyObject];
+        data = [v23 data];
+        accounts = [(IDSService *)self->_idsService accounts];
+        anyObject = [accounts anyObject];
         v58 = [NSSet setWithObject:IDSDefaultPairedDevice];
-        [(IDSService *)idsService sendData:v55 fromAccount:v57 toDestinations:v58 priority:200 options:v53 identifier:0 error:0];
+        [(IDSService *)idsService sendData:data fromAccount:anyObject toDestinations:v58 priority:200 options:v53 identifier:0 error:0];
 
         goto LABEL_163;
       }
@@ -2311,7 +2311,7 @@ LABEL_163:
     }
 
     *buf = 138478083;
-    v101 = v12;
+    v101 = incomingResponseIdentifier;
     v102 = 2080;
     v103 = v32;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Missing data with incomingResponseIdentifier: %{private}@ (Reply: %s) ", buf, 0x16u);
@@ -2320,15 +2320,15 @@ LABEL_163:
 LABEL_164:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v10)
+  if (!identifierCopy)
   {
     v14 = 0;
-    if (a6)
+    if (success)
     {
       goto LABEL_121;
     }
@@ -2336,23 +2336,23 @@ LABEL_164:
     goto LABEL_103;
   }
 
-  v12 = [(NSMutableDictionary *)self->_inFlightMessageMetadata objectForKey:v10];
-  [(NSMutableDictionary *)self->_inFlightMessageMetadata removeObjectForKey:v10];
+  v12 = [(NSMutableDictionary *)self->_inFlightMessageMetadata objectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->_inFlightMessageMetadata removeObjectForKey:identifierCopy];
   if (v12)
   {
-    v13 = [v12 type];
-    if (v13 > 202)
+    type = [v12 type];
+    if (type > 202)
     {
-      if (v13 <= 400)
+      if (type <= 400)
       {
-        if (v13 <= 205)
+        if (type <= 205)
         {
-          if (v13 == 203)
+          if (type == 203)
           {
             v14 = @"FAILED_TO_UPDATE_LOCATION";
           }
 
-          else if (v13 == 204)
+          else if (type == 204)
           {
             v14 = @"DID_PAUSE_LOCATION_UPDATES";
           }
@@ -2365,7 +2365,7 @@ LABEL_164:
 
         else
         {
-          switch(v13)
+          switch(type)
           {
             case 300:
               v14 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -2416,7 +2416,7 @@ LABEL_164:
               v14 = @"SET_DISPLAYED_STEP";
               break;
             default:
-              if (v13 != 206)
+              if (type != 206)
               {
                 goto LABEL_57;
               }
@@ -2429,17 +2429,17 @@ LABEL_164:
         goto LABEL_97;
       }
 
-      if (v13 > 599)
+      if (type > 599)
       {
-        if (v13 > 1499)
+        if (type > 1499)
         {
-          if (v13 == 1500)
+          if (type == 1500)
           {
             v14 = @"DEBUG_FETCH_CONFIGURATION_INFO";
             goto LABEL_97;
           }
 
-          if (v13 == 1501)
+          if (type == 1501)
           {
             v14 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
             goto LABEL_97;
@@ -2448,13 +2448,13 @@ LABEL_164:
 
         else
         {
-          if (v13 == 600)
+          if (type == 600)
           {
             v14 = @"FETCH_ROUTE_GENIUS";
             goto LABEL_97;
           }
 
-          if (v13 == 1000)
+          if (type == 1000)
           {
             v14 = @"PING";
             goto LABEL_97;
@@ -2464,15 +2464,15 @@ LABEL_164:
         goto LABEL_57;
       }
 
-      if (v13 > 500)
+      if (type > 500)
       {
-        if (v13 == 501)
+        if (type == 501)
         {
           v14 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
           goto LABEL_97;
         }
 
-        if (v13 == 502)
+        if (type == 502)
         {
           v14 = @"SERVICE_REQUEST";
           goto LABEL_97;
@@ -2481,13 +2481,13 @@ LABEL_164:
         goto LABEL_57;
       }
 
-      if (v13 == 401)
+      if (type == 401)
       {
         v14 = @"OPEN_URL";
         goto LABEL_97;
       }
 
-      if (v13 != 500)
+      if (type != 500)
       {
         goto LABEL_57;
       }
@@ -2497,11 +2497,11 @@ LABEL_164:
 
     else
     {
-      if (v13 <= 99)
+      if (type <= 99)
       {
-        if (v13 > 3)
+        if (type > 3)
         {
-          switch(v13)
+          switch(type)
           {
             case '2':
               v14 = @"START_INITIAL_SYNC";
@@ -2557,7 +2557,7 @@ LABEL_164:
               v14 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
               break;
             default:
-              if (v13 != 4)
+              if (type != 4)
               {
                 goto LABEL_57;
               }
@@ -2569,7 +2569,7 @@ LABEL_164:
           goto LABEL_97;
         }
 
-        switch(v13)
+        switch(type)
         {
           case 1:
             v14 = @"FETCH_TILES";
@@ -2583,18 +2583,18 @@ LABEL_164:
         }
 
 LABEL_57:
-        v14 = [NSString stringWithFormat:@"(unknown: %i)", v13];
+        v14 = [NSString stringWithFormat:@"(unknown: %i)", type];
         goto LABEL_97;
       }
 
-      if (v13 <= 102)
+      if (type <= 102)
       {
-        if (v13 == 100)
+        if (type == 100)
         {
           v14 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v13 == 101)
+        else if (type == 101)
         {
           v14 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -2607,9 +2607,9 @@ LABEL_57:
         goto LABEL_97;
       }
 
-      if (v13 > 200)
+      if (type > 200)
       {
-        if (v13 == 201)
+        if (type == 201)
         {
           v14 = @"STOP_LOCATION_UPDATE";
         }
@@ -2622,13 +2622,13 @@ LABEL_57:
         goto LABEL_97;
       }
 
-      if (v13 == 103)
+      if (type == 103)
       {
         v14 = @"FETCH_RESOURCE";
         goto LABEL_97;
       }
 
-      if (v13 != 200)
+      if (type != 200)
       {
         goto LABEL_57;
       }
@@ -2640,10 +2640,10 @@ LABEL_97:
     v16 = sub_100001B24();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v12 isReply];
+      isReply = [v12 isReply];
       v18 = @"message";
       *buf = 138543875;
-      if (v17)
+      if (isReply)
       {
         v18 = @"reply";
       }
@@ -2652,7 +2652,7 @@ LABEL_97:
       v35 = 2113;
       v36 = v14;
       v37 = 2113;
-      v38 = v10;
+      v38 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Finished sending %{public}@ for type: %{private}@ (GUID = %{private}@)", buf, 0x20u);
     }
 
@@ -2666,14 +2666,14 @@ LABEL_97:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
   {
     *buf = 138543362;
-    v34 = v10;
+    v34 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "Unable to find metadata for message GUID = %{public}@. This could throw off the in-flight message counters.", buf, 0xCu);
   }
 
   v14 = 0;
 LABEL_102:
 
-  if (a6)
+  if (success)
   {
     goto LABEL_121;
   }
@@ -2692,9 +2692,9 @@ LABEL_103:
     *buf = 138478339;
     v34 = v14;
     v35 = 2114;
-    v36 = v11;
+    v36 = errorCopy;
     v37 = 2114;
-    v38 = v10;
+    v38 = identifierCopy;
     v22 = "Error sending message: messageType=%{private}@ -- %{public}@ (GUID = %{public}@)";
     v23 = v20;
     v24 = 32;
@@ -2708,9 +2708,9 @@ LABEL_103:
     }
 
     *buf = 138543618;
-    v34 = v11;
+    v34 = errorCopy;
     v35 = 2114;
-    v36 = v10;
+    v36 = identifierCopy;
     v22 = "Error sending message: %{public}@ (GUID = %{public}@)";
     v23 = v20;
     v24 = 22;
@@ -2719,24 +2719,24 @@ LABEL_103:
   _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, v22, buf, v24);
 LABEL_109:
 
-  if (v10)
+  if (identifierCopy)
   {
     [(NSLock *)self->_replyCallbackBlocksLock lock];
-    v25 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:v10];
+    v25 = [(NSMutableDictionary *)self->_replyCallbackBlocks objectForKey:identifierCopy];
     v26 = [v25 copy];
 
     if (v26)
     {
-      [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:v10];
-      v27 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata objectForKey:v10];
-      [(NSMutableDictionary *)self->_replyExpectingMessageMetadata removeObjectForKey:v10];
+      [(NSMutableDictionary *)self->_replyCallbackBlocks removeObjectForKey:identifierCopy];
+      v27 = [(NSMutableDictionary *)self->_replyExpectingMessageMetadata objectForKey:identifierCopy];
+      [(NSMutableDictionary *)self->_replyExpectingMessageMetadata removeObjectForKey:identifierCopy];
       [(NSLock *)self->_replyCallbackBlocksLock unlock];
-      v28 = [v27 timeoutTimer];
+      timeoutTimer = [v27 timeoutTimer];
 
-      if (v28)
+      if (timeoutTimer)
       {
-        v29 = [v27 timeoutTimer];
-        dispatch_source_cancel(v29);
+        timeoutTimer2 = [v27 timeoutTimer];
+        dispatch_source_cancel(timeoutTimer2);
 
         [v27 setTimeoutTimer:0];
       }
@@ -2748,9 +2748,9 @@ LABEL_109:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "Sending reply to callback block", buf, 2u);
       }
 
-      if (v11)
+      if (errorCopy)
       {
-        v31 = [NSDictionary dictionaryWithObject:v11 forKey:NSUnderlyingErrorKey];
+        v31 = [NSDictionary dictionaryWithObject:errorCopy forKey:NSUnderlyingErrorKey];
       }
 
       else
@@ -2761,7 +2761,7 @@ LABEL_109:
       v32 = [NSError errorWithDomain:@"NMDeviceConnectionErrorDomain" code:5 userInfo:v31];
 
       v26[2](v26, 0, v32);
-      v11 = v32;
+      errorCopy = v32;
     }
 
     else

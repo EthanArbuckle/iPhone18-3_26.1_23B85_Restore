@@ -1,16 +1,16 @@
 @interface MapsSuggestionsFlightDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsFlightDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v68 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -53,16 +53,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(15, v5, v6))
+  if (!MapsSuggestionsEntriesAreBothOfType(15, entryCopy, withEntryCopy))
   {
     goto LABEL_18;
   }
 
-  v8 = v5;
+  v8 = entryCopy;
   v9 = v7;
-  v10 = [v8 uniqueIdentifier];
-  v11 = [v9 uniqueIdentifier];
-  v12 = [v10 isEqualToString:v11];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  uniqueIdentifier2 = [v9 uniqueIdentifier];
+  v12 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
   if (v12)
   {
@@ -80,11 +80,11 @@ LABEL_6:
       {
         v18 = v13;
         v19 = v14;
-        v20 = [v19 originatingSourceName];
-        if ([v20 isEqualToString:@"MapsSuggestionsWalletSource"])
+        originatingSourceName = [v19 originatingSourceName];
+        if ([originatingSourceName isEqualToString:@"MapsSuggestionsWalletSource"])
         {
-          v21 = [v18 originatingSourceName];
-          v22 = [v21 isEqualToString:@"MapsSuggestionsWalletSource"];
+          originatingSourceName2 = [v18 originatingSourceName];
+          v22 = [originatingSourceName2 isEqualToString:@"MapsSuggestionsWalletSource"];
 
           if (!v22)
           {
@@ -102,7 +102,7 @@ LABEL_6:
           v59 = 0;
 LABEL_33:
 
-          v46 = [v18 hasFullFlightInfoAndGate];
+          hasFullFlightInfoAndGate = [v18 hasFullFlightInfoAndGate];
           v47 = [v18 dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
           v48 = [v18 stringForKey:@"MapsSuggestionsFlightDepartureGateKey"];
           v49 = [v18 stringForKey:@"MapsSuggestionsFlightDepartureTerminalKey"];
@@ -112,7 +112,7 @@ LABEL_33:
           v55 = [v18 BOOLeanForKey:@"MapsSuggestionsFlightMapItemIsGateKey"];
           LOWORD(v52) = 256;
           [v18 mergeFromSuggestionEntry:v19 behavior:v59 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v52 protectIcon:?];
-          if (v46)
+          if (hasFullFlightInfoAndGate)
           {
             [v18 setDate:v47 forKey:@"MapsSuggestionsFlightDepartureTimeKey"];
             [v18 setString:v48 forKey:@"MapsSuggestionsFlightDepartureGateKey"];
@@ -143,19 +143,19 @@ LABEL_25:
   }
 
   v26 = [v8 stringForKey:@"MapsSuggestionsFullFlightNumberKey"];
-  v27 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v28 = [v27 invertedSet];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
 
   v58 = v26;
-  v29 = [v26 componentsSeparatedByCharactersInSet:v28];
+  v29 = [v26 componentsSeparatedByCharactersInSet:invertedSet];
   v30 = [v29 componentsJoinedByString:&stru_1F444C108];
 
   v31 = [v9 stringForKey:@"MapsSuggestionsFullFlightNumberKey"];
-  v32 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v33 = [v32 invertedSet];
+  alphanumericCharacterSet2 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  invertedSet2 = [alphanumericCharacterSet2 invertedSet];
 
   v34 = v31;
-  v35 = [v31 componentsSeparatedByCharactersInSet:v33];
+  v35 = [v31 componentsSeparatedByCharactersInSet:invertedSet2];
   v36 = [v35 componentsJoinedByString:&stru_1F444C108];
 
   if (![v30 isEqualToString:v36])
@@ -165,15 +165,15 @@ LABEL_25:
   }
 
   v56 = [v8 stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
-  v37 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v38 = [v37 invertedSet];
+  alphanumericCharacterSet3 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  invertedSet3 = [alphanumericCharacterSet3 invertedSet];
 
-  v39 = [v56 componentsSeparatedByCharactersInSet:v38];
+  v39 = [v56 componentsSeparatedByCharactersInSet:invertedSet3];
   v40 = [v39 componentsJoinedByString:&stru_1F444C108];
 
   v41 = [v9 stringForKey:@"MapsSuggestionsEntryTitleNameKey"];
-  v42 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  [v42 invertedSet];
+  alphanumericCharacterSet4 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  [alphanumericCharacterSet4 invertedSet];
   v43 = v54 = v30;
 
   v44 = [v41 componentsSeparatedByCharactersInSet:v43];

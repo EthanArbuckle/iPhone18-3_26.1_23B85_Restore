@@ -1,26 +1,26 @@
 @interface PSGInputSuggesterServerRequestHandler
 - (PSGInputSuggesterServerRequestHandler)init;
-- (PSGInputSuggesterServerRequestHandler)initWithExperimentResolver:(id)a3 metricsLogger:(id)a4;
-- (id)_getExperimentConfigForLogging:(id)a3;
-- (id)_quickResponsesConfigFromPSGInputSuggestionsRequest:(id)a3;
-- (id)_quickResponsesForResponseContext:(id)a3 conversationTurns:(id)a4 localeIdentifier:(id)a5 maxResponses:(unint64_t)a6 recipients:(id)a7 chunkPath:(id)a8 plistPath:(id)a9 espressoBinFilePath:(id)a10 vocabFilePath:(id)a11;
-- (id)_wordBoundaryResponseForRequest:(id)a3 config:(id)a4;
-- (id)_zkwResponseForRequest:(id)a3 config:(id)a4;
-- (void)_forwardFeedbackToPortraitWithResponseItems:(id)a3 feedbackType:(unsigned int)a4;
-- (void)_forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:(id)a3 request:(id)a4 isSelected:(BOOL)a5;
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4;
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5;
-- (void)logImpression:(id)a3 request:(id)a4;
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5;
-- (void)logTrigger:(id)a3 request:(id)a4;
-- (void)warmUpWithCompletion:(id)a3;
+- (PSGInputSuggesterServerRequestHandler)initWithExperimentResolver:(id)resolver metricsLogger:(id)logger;
+- (id)_getExperimentConfigForLogging:(id)logging;
+- (id)_quickResponsesConfigFromPSGInputSuggestionsRequest:(id)request;
+- (id)_quickResponsesForResponseContext:(id)context conversationTurns:(id)turns localeIdentifier:(id)identifier maxResponses:(unint64_t)responses recipients:(id)recipients chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)self0 vocabFilePath:(id)self1;
+- (id)_wordBoundaryResponseForRequest:(id)request config:(id)config;
+- (id)_zkwResponseForRequest:(id)request config:(id)config;
+- (void)_forwardFeedbackToPortraitWithResponseItems:(id)items feedbackType:(unsigned int)type;
+- (void)_forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:(id)items request:(id)request isSelected:(BOOL)selected;
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion;
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position;
+- (void)logImpression:(id)impression request:(id)request;
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis;
+- (void)logTrigger:(id)trigger request:(id)request;
+- (void)warmUpWithCompletion:(id)completion;
 @end
 
 @implementation PSGInputSuggesterServerRequestHandler
 
-- (void)warmUpWithCompletion:(id)a3
+- (void)warmUpWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (warmUpWithCompletion___pasOnceToken27 != -1)
   {
     dispatch_once(&warmUpWithCompletion___pasOnceToken27, &__block_literal_global_138);
@@ -32,8 +32,8 @@
   v8[1] = 3221225472;
   v8[2] = __62__PSGInputSuggesterServerRequestHandler_warmUpWithCompletion___block_invoke_2;
   v8[3] = &unk_279ABDF58;
-  v9 = v3;
-  v6 = v3;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = v4;
   [v5 runAsyncOnQueue:v7 afterDelaySeconds:v8 block:0.1];
 }
@@ -82,19 +82,19 @@ void __62__PSGInputSuggesterServerRequestHandler_warmUpWithCompletion___block_in
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)_forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:(id)a3 request:(id)a4 isSelected:(BOOL)a5
+- (void)_forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:(id)items request:(id)request isSelected:(BOOL)selected
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(PSGInputSuggesterServerRequestHandler *)self _mlStringsFromResponseItems:a3];
+  selectedCopy = selected;
+  requestCopy = request;
+  v9 = [(PSGInputSuggesterServerRequestHandler *)self _mlStringsFromResponseItems:items];
   if ([v9 count])
   {
-    v10 = [(PSGInputSuggesterServerRequestHandler *)self _quickResponsesConfigFromPSGInputSuggestionsRequest:v8];
+    v10 = [(PSGInputSuggesterServerRequestHandler *)self _quickResponsesConfigFromPSGInputSuggestionsRequest:requestCopy];
     if (v10)
     {
       v11 = objc_opt_new();
       v12 = v11;
-      if (v5)
+      if (selectedCopy)
       {
         v13 = [v9 objectAtIndexedSubscript:0];
         [v12 registerSelectedResponse:v13 config:v10];
@@ -118,22 +118,22 @@ void __62__PSGInputSuggesterServerRequestHandler_warmUpWithCompletion___block_in
   }
 }
 
-- (id)_quickResponsesConfigFromPSGInputSuggestionsRequest:(id)a3
+- (id)_quickResponsesConfigFromPSGInputSuggestionsRequest:(id)request
 {
   experimentResolver = self->_experimentResolver;
-  v4 = a3;
-  v5 = [v4 localeIdentifier];
-  v6 = [(PSGExperimentResolver *)experimentResolver getResponseSuggestionsExperimentConfig:v5 shouldDownloadAssets:0];
+  requestCopy = request;
+  localeIdentifier = [requestCopy localeIdentifier];
+  v6 = [(PSGExperimentResolver *)experimentResolver getResponseSuggestionsExperimentConfig:localeIdentifier shouldDownloadAssets:0];
 
   v7 = MEMORY[0x277D02548];
-  v8 = [v4 localeIdentifier];
+  localeIdentifier2 = [requestCopy localeIdentifier];
 
-  v9 = [v7 languageForLocaleIdentifier:v8];
+  v9 = [v7 languageForLocaleIdentifier:localeIdentifier2];
 
   v10 = MEMORY[0x277D02588];
-  v11 = [v6 inferenceModelConfigPath];
-  v12 = [v6 vocabFilePath];
-  v13 = [v10 configWithLanguage:v9 mode:1 plistPath:v11 vocabPath:v12];
+  inferenceModelConfigPath = [v6 inferenceModelConfigPath];
+  vocabFilePath = [v6 vocabFilePath];
+  v13 = [v10 configWithLanguage:v9 mode:1 plistPath:inferenceModelConfigPath vocabPath:vocabFilePath];
 
   return v13;
 }
@@ -181,25 +181,25 @@ id __69__PSGInputSuggesterServerRequestHandler__mlStringsFromResponseItems___blo
   return v11;
 }
 
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:v9];
-  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logEngagement:v8 request:v9 position:a5 config:v10];
-  [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToPortraitWithResponseItems:v8 feedbackType:1];
-  if (a5 && [v8 count] >= a5)
+  engagementCopy = engagement;
+  requestCopy = request;
+  v10 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:requestCopy];
+  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logEngagement:engagementCopy request:requestCopy position:position config:v10];
+  [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToPortraitWithResponseItems:engagementCopy feedbackType:1];
+  if (position && [engagementCopy count] >= position)
   {
-    if (![v9 isDocumentEmpty])
+    if (![requestCopy isDocumentEmpty])
     {
       goto LABEL_6;
     }
 
-    v11 = [v8 objectAtIndexedSubscript:a5 - 1];
+    v11 = [engagementCopy objectAtIndexedSubscript:position - 1];
     v14 = v11;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
-    [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:v13 request:v9 isSelected:1];
+    [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:v13 request:requestCopy isSelected:1];
   }
 
   else
@@ -208,9 +208,9 @@ id __69__PSGInputSuggesterServerRequestHandler__mlStringsFromResponseItems___blo
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v16 = [v8 count];
+      v16 = [engagementCopy count];
       v17 = 2048;
-      v18 = a5;
+      positionCopy = position;
       _os_log_error_impl(&dword_260D36000, v11, OS_LOG_TYPE_ERROR, "[ZKW-ML] Position argument expected to be between 1 and response count %lu. Position %lu is out of bounds.", buf, 0x16u);
     }
   }
@@ -219,47 +219,47 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logImpression:(id)a3 request:(id)a4
+- (void)logImpression:(id)impression request:(id)request
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:v6];
-  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logImpression:v8 request:v6 config:v7];
-  [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToPortraitWithResponseItems:v8 feedbackType:5];
-  if ([v6 isDocumentEmpty])
+  impressionCopy = impression;
+  requestCopy = request;
+  v7 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:requestCopy];
+  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logImpression:impressionCopy request:requestCopy config:v7];
+  [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToPortraitWithResponseItems:impressionCopy feedbackType:5];
+  if ([requestCopy isDocumentEmpty])
   {
-    [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:v8 request:v6 isSelected:0];
+    [(PSGInputSuggesterServerRequestHandler *)self _forwardFeedbackToQuickResponsesPersonalizationWithResponseItems:impressionCopy request:requestCopy isSelected:0];
   }
 }
 
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:v8];
-  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logPrediction:v9 request:v8 latencyMillis:v10 config:a5];
+  requestCopy = request;
+  predictionCopy = prediction;
+  v10 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:requestCopy];
+  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logPrediction:predictionCopy request:requestCopy latencyMillis:v10 config:millis];
 }
 
-- (void)logTrigger:(id)a3 request:(id)a4
+- (void)logTrigger:(id)trigger request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:v6];
-  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logTrigger:v7 request:v6 config:v8];
+  requestCopy = request;
+  triggerCopy = trigger;
+  v8 = [(PSGInputSuggesterServerRequestHandler *)self _getExperimentConfigForLogging:requestCopy];
+  [(PSGInputSuggesterMetricsLogger *)self->_metricsLogger logTrigger:triggerCopy request:requestCopy config:v8];
 }
 
-- (void)_forwardFeedbackToPortraitWithResponseItems:(id)a3 feedbackType:(unsigned int)a4
+- (void)_forwardFeedbackToPortraitWithResponseItems:(id)items feedbackType:(unsigned int)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_10];
+  v5 = [items _pas_mappedArrayWithTransform:&__block_literal_global_10];
   if ([v5 count])
   {
     v6 = 0;
-    if (a4 <= 1)
+    if (type <= 1)
     {
-      if (a4)
+      if (type)
       {
-        if (a4 == 1)
+        if (type == 1)
         {
           v7 = objc_alloc(MEMORY[0x277D3A3B8]);
           v8 = v5;
@@ -269,17 +269,17 @@ LABEL_6:
 
 LABEL_10:
         [v6 setClientIdentifier:@"PSGPred"];
-        v10 = [MEMORY[0x277D3A778] sharedInstance];
-        [v10 registerFeedback:v6 completion:0];
+        mEMORY[0x277D3A778] = [MEMORY[0x277D3A778] sharedInstance];
+        [mEMORY[0x277D3A778] registerFeedback:v6 completion:0];
 
 LABEL_13:
         goto LABEL_14;
       }
     }
 
-    else if (a4 - 2 >= 3)
+    else if (type - 2 >= 3)
     {
-      if (a4 == 5)
+      if (type == 5)
       {
         v7 = objc_alloc(MEMORY[0x277D3A3B8]);
         v8 = 0;
@@ -296,7 +296,7 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v12[0] = 67109120;
-      v12[1] = a4;
+      v12[1] = type;
       _os_log_fault_impl(&dword_260D36000, v6, OS_LOG_TYPE_FAULT, "Unhandled feedback type in forwardFeedbackToPortraitWithResponseItems: %d", v12, 8u);
     }
 
@@ -317,31 +317,31 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
   return v4;
 }
 
-- (id)_getExperimentConfigForLogging:(id)a3
+- (id)_getExperimentConfigForLogging:(id)logging
 {
-  v4 = a3;
-  v5 = [v4 isDocumentEmpty];
+  loggingCopy = logging;
+  isDocumentEmpty = [loggingCopy isDocumentEmpty];
   experimentResolver = self->_experimentResolver;
-  v7 = [v4 localeIdentifier];
+  localeIdentifier = [loggingCopy localeIdentifier];
 
-  if (v5)
+  if (isDocumentEmpty)
   {
-    [(PSGExperimentResolver *)experimentResolver getResponseSuggestionsExperimentConfig:v7 shouldDownloadAssets:0];
+    [(PSGExperimentResolver *)experimentResolver getResponseSuggestionsExperimentConfig:localeIdentifier shouldDownloadAssets:0];
   }
 
   else
   {
-    [(PSGExperimentResolver *)experimentResolver getWordBoundarySuggestionsExperimentConfig:v7 shouldDownloadAssets:0];
+    [(PSGExperimentResolver *)experimentResolver getWordBoundarySuggestionsExperimentConfig:localeIdentifier shouldDownloadAssets:0];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = psg_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -360,27 +360,27 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
     _os_signpost_emit_with_name_impl(&dword_260D36000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PSGInputSuggesterServerRequestHandler_inputSuggestionsWithRequest", "", buf, 2u);
   }
 
-  if ([v6 isDocumentEmpty])
+  if ([requestCopy isDocumentEmpty])
   {
-    v13 = [MEMORY[0x277D41DC0] sharedInstance];
-    v14 = [v6 responseContext];
-    v15 = [v6 localeIdentifier];
-    v16 = [v6 adaptationContextID];
-    v17 = [v13 localeForMessage:v14 outgoingMessageHistory:0 defaultLocale:v15 defaultLocaleLastChangedDate:0 sender:v16];
+    mEMORY[0x277D41DC0] = [MEMORY[0x277D41DC0] sharedInstance];
+    responseContext = [requestCopy responseContext];
+    localeIdentifier = [requestCopy localeIdentifier];
+    adaptationContextID = [requestCopy adaptationContextID];
+    v17 = [mEMORY[0x277D41DC0] localeForMessage:responseContext outgoingMessageHistory:0 defaultLocale:localeIdentifier defaultLocaleLastChangedDate:0 sender:adaptationContextID];
 
     v18 = [(PSGExperimentResolver *)self->_experimentResolver getResponseSuggestionsExperimentConfig:v17 shouldDownloadAssets:1];
-    [(PSGInputSuggesterServerRequestHandler *)self _logRequest:v6 config:v18];
-    v19 = [(PSGInputSuggesterServerRequestHandler *)self _zkwResponseForRequest:v6 config:v18];
+    [(PSGInputSuggesterServerRequestHandler *)self _logRequest:requestCopy config:v18];
+    v19 = [(PSGInputSuggesterServerRequestHandler *)self _zkwResponseForRequest:requestCopy config:v18];
   }
 
   else
   {
     experimentResolver = self->_experimentResolver;
-    v21 = [v6 localeIdentifier];
-    v17 = [(PSGExperimentResolver *)experimentResolver getWordBoundarySuggestionsExperimentConfig:v21 shouldDownloadAssets:1];
+    localeIdentifier2 = [requestCopy localeIdentifier];
+    v17 = [(PSGExperimentResolver *)experimentResolver getWordBoundarySuggestionsExperimentConfig:localeIdentifier2 shouldDownloadAssets:1];
 
-    [(PSGInputSuggesterServerRequestHandler *)self _logRequest:v6 config:v17];
-    v19 = [(PSGInputSuggesterServerRequestHandler *)self _wordBoundaryResponseForRequest:v6 config:v17];
+    [(PSGInputSuggesterServerRequestHandler *)self _logRequest:requestCopy config:v17];
+    v19 = [(PSGInputSuggesterServerRequestHandler *)self _wordBoundaryResponseForRequest:requestCopy config:v17];
   }
 
   v22 = psg_default_log_handle();
@@ -391,72 +391,72 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
     _os_signpost_emit_with_name_impl(&dword_260D36000, v23, OS_SIGNPOST_INTERVAL_END, v10, "PSGInputSuggesterServerRequestHandler_inputSuggestionsWithRequest", "", v24, 2u);
   }
 
-  v7[2](v7, v19, 0);
+  completionCopy[2](completionCopy, v19, 0);
 }
 
-- (id)_zkwResponseForRequest:(id)a3 config:(id)a4
+- (id)_zkwResponseForRequest:(id)request config:(id)config
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 responseContext];
-  if ([v8 length])
+  requestCopy = request;
+  configCopy = config;
+  responseContext = [requestCopy responseContext];
+  if ([responseContext length])
   {
-    v9 = [v6 localeIdentifier];
-    if ([v9 length])
+    localeIdentifier = [requestCopy localeIdentifier];
+    if ([localeIdentifier length])
     {
       v10 = MEMORY[0x277D41DC0];
-      v11 = [v7 language];
-      v12 = [v10 isLanguageMismatchedForIdentifier:v9 withIdentifier:v11];
+      language = [configCopy language];
+      v12 = [v10 isLanguageMismatchedForIdentifier:localeIdentifier withIdentifier:language];
 
       v13 = psg_default_log_handle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 treatmentName];
-        v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "isMLModelEnabled")}];
+        treatmentName = [configCopy treatmentName];
+        v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(configCopy, "isMLModelEnabled")}];
         *buf = 138412546;
-        v52 = v14;
+        v52 = treatmentName;
         v53 = 2112;
         v54 = v15;
         _os_log_impl(&dword_260D36000, v13, OS_LOG_TYPE_DEFAULT, "[ZKW-ML] ML config treatment name %@ enabled %@", buf, 0x16u);
       }
 
-      if ([v7 isMLModelEnabled])
+      if ([configCopy isMLModelEnabled])
       {
-        v16 = [v7 inferenceModelFilePath];
-        v17 = [v7 inferenceModelConfigPath];
-        v18 = [v7 espressoBinFilePath];
-        v47 = [v7 vocabFilePath];
-        if ([v16 length])
+        inferenceModelFilePath = [configCopy inferenceModelFilePath];
+        inferenceModelConfigPath = [configCopy inferenceModelConfigPath];
+        espressoBinFilePath = [configCopy espressoBinFilePath];
+        vocabFilePath = [configCopy vocabFilePath];
+        if ([inferenceModelFilePath length])
         {
           v19 = 0;
         }
 
         else
         {
-          v19 = [v18 length] == 0;
+          v19 = [espressoBinFilePath length] == 0;
         }
 
-        if (![v17 length] || v19)
+        if (![inferenceModelConfigPath length] || v19)
         {
           v22 = psg_default_log_handle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
           {
-            v46 = [v7 experimentIdentifiers];
-            v39 = [v46 experimentId];
-            v44 = [v7 experimentIdentifiers];
-            v40 = [v44 treatmentId];
+            experimentIdentifiers = [configCopy experimentIdentifiers];
+            experimentId = [experimentIdentifiers experimentId];
+            experimentIdentifiers2 = [configCopy experimentIdentifiers];
+            treatmentId = [experimentIdentifiers2 treatmentId];
             *buf = 138412546;
-            v52 = v39;
+            v52 = experimentId;
             v53 = 2112;
-            v54 = v40;
+            v54 = treatmentId;
             _os_log_fault_impl(&dword_260D36000, v22, OS_LOG_TYPE_FAULT, "[ZKW-ML] Some required file is missing for zkw experiment: %@, treatment: %@", buf, 0x16u);
           }
 
           v20 = 0;
         }
 
-        else if ([v6 isResponseContextBlacklisted])
+        else if ([requestCopy isResponseContextBlacklisted])
         {
           v21 = psg_default_log_handle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -471,16 +471,16 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
         else
         {
           v41 = v12;
-          [v6 conversationTurns];
-          v42 = v23 = v18;
-          v45 = v17;
-          v24 = [v6 textualResponseLimit];
-          v25 = [v6 structuredInfoLimit];
-          v26 = [v6 recipients];
-          v27 = v25 + v24;
-          v17 = v45;
+          [requestCopy conversationTurns];
+          v42 = v23 = espressoBinFilePath;
+          v45 = inferenceModelConfigPath;
+          textualResponseLimit = [requestCopy textualResponseLimit];
+          structuredInfoLimit = [requestCopy structuredInfoLimit];
+          recipients = [requestCopy recipients];
+          v27 = structuredInfoLimit + textualResponseLimit;
+          inferenceModelConfigPath = v45;
           v43 = v23;
-          v28 = [(PSGInputSuggesterServerRequestHandler *)self _quickResponsesForResponseContext:v8 conversationTurns:v42 localeIdentifier:v9 maxResponses:v27 recipients:v26 chunkPath:v16 plistPath:v45 espressoBinFilePath:v23 vocabFilePath:v47];
+          v28 = [(PSGInputSuggesterServerRequestHandler *)self _quickResponsesForResponseContext:responseContext conversationTurns:v42 localeIdentifier:localeIdentifier maxResponses:v27 recipients:recipients chunkPath:inferenceModelFilePath plistPath:v45 espressoBinFilePath:v23 vocabFilePath:vocabFilePath];
 
           if ([v28 count])
           {
@@ -489,7 +489,7 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
             v48[2] = __71__PSGInputSuggesterServerRequestHandler__zkwResponseForRequest_config___block_invoke;
             v48[3] = &unk_279ABDF10;
             v50 = v41;
-            v49 = v6;
+            v49 = requestCopy;
             v29 = [v28 _pas_mappedArrayWithTransform:v48];
             v30 = psg_default_log_handle();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -515,34 +515,34 @@ id __98__PSGInputSuggesterServerRequestHandler__forwardFeedbackToPortraitWithRes
             v20 = [objc_alloc(MEMORY[0x277D41EB8]) initWithResponseItems:0 explanationSet:0];
           }
 
-          v18 = v43;
+          espressoBinFilePath = v43;
         }
 
         goto LABEL_35;
       }
 
-      v16 = psg_default_log_handle();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      inferenceModelFilePath = psg_default_log_handle();
+      if (os_log_type_enabled(inferenceModelFilePath, OS_LOG_TYPE_DEBUG))
       {
-        v35 = [v7 experimentIdentifiers];
-        v36 = [v35 experimentId];
-        v37 = [v7 experimentIdentifiers];
-        v38 = [v37 treatmentId];
+        experimentIdentifiers3 = [configCopy experimentIdentifiers];
+        experimentId2 = [experimentIdentifiers3 experimentId];
+        experimentIdentifiers4 = [configCopy experimentIdentifiers];
+        treatmentId2 = [experimentIdentifiers4 treatmentId];
         *buf = 138412546;
-        v52 = v36;
+        v52 = experimentId2;
         v53 = 2112;
-        v54 = v38;
-        _os_log_debug_impl(&dword_260D36000, v16, OS_LOG_TYPE_DEBUG, "[ZKW-ML] ML disabled for zkw experiment: %@, treatment: %@", buf, 0x16u);
+        v54 = treatmentId2;
+        _os_log_debug_impl(&dword_260D36000, inferenceModelFilePath, OS_LOG_TYPE_DEBUG, "[ZKW-ML] ML disabled for zkw experiment: %@, treatment: %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v16 = psg_default_log_handle();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      inferenceModelFilePath = psg_default_log_handle();
+      if (os_log_type_enabled(inferenceModelFilePath, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_260D36000, v16, OS_LOG_TYPE_ERROR, "[ZKW-ML] Locale not specified. Bail out.", buf, 2u);
+        _os_log_error_impl(&dword_260D36000, inferenceModelFilePath, OS_LOG_TYPE_ERROR, "[ZKW-ML] Locale not specified. Bail out.", buf, 2u);
       }
     }
 
@@ -552,11 +552,11 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v9 = psg_default_log_handle();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  localeIdentifier = psg_default_log_handle();
+  if (os_log_type_enabled(localeIdentifier, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_260D36000, v9, OS_LOG_TYPE_ERROR, "[ZKW-ML] Context not specified. Bail out.", buf, 2u);
+    _os_log_error_impl(&dword_260D36000, localeIdentifier, OS_LOG_TYPE_ERROR, "[ZKW-ML] Context not specified. Bail out.", buf, 2u);
   }
 
   v20 = 0;
@@ -629,24 +629,24 @@ id __71__PSGInputSuggesterServerRequestHandler__zkwResponseForRequest_config___b
   return v19;
 }
 
-- (id)_wordBoundaryResponseForRequest:(id)a3 config:(id)a4
+- (id)_wordBoundaryResponseForRequest:(id)request config:(id)config
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contextBeforeInput];
-  if ([v8 length])
+  requestCopy = request;
+  configCopy = config;
+  contextBeforeInput = [requestCopy contextBeforeInput];
+  if ([contextBeforeInput length])
   {
-    v9 = [v6 localeIdentifier];
-    if ([v9 length])
+    localeIdentifier = [requestCopy localeIdentifier];
+    if ([localeIdentifier length])
     {
-      if ([v7 isMLModelEnabled])
+      if ([configCopy isMLModelEnabled])
       {
-        v10 = [v7 inferenceModelConfigPath];
-        v11 = [v7 espressoBinFilePath];
-        if (-[NSObject length](v10, "length") && [v11 length])
+        inferenceModelConfigPath = [configCopy inferenceModelConfigPath];
+        espressoBinFilePath = [configCopy espressoBinFilePath];
+        if (-[NSObject length](inferenceModelConfigPath, "length") && [espressoBinFilePath length])
         {
-          v12 = [(PSGInputSuggesterServerRequestHandler *)self _quickTypeTriggerForContext:v8 localeIdentifier:v9 modelConfigPath:v10 espressoBinFilePath:v11];
+          v12 = [(PSGInputSuggesterServerRequestHandler *)self _quickTypeTriggerForContext:contextBeforeInput localeIdentifier:localeIdentifier modelConfigPath:inferenceModelConfigPath espressoBinFilePath:espressoBinFilePath];
           v13 = psg_default_log_handle();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
@@ -688,14 +688,14 @@ id __71__PSGInputSuggesterServerRequestHandler__zkwResponseForRequest_config___b
           v14 = psg_default_log_handle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
           {
-            v32 = [v7 experimentIdentifiers];
-            v28 = [v32 experimentId];
-            v29 = [v7 experimentIdentifiers];
-            v30 = [v29 treatmentId];
+            experimentIdentifiers = [configCopy experimentIdentifiers];
+            experimentId = [experimentIdentifiers experimentId];
+            experimentIdentifiers2 = [configCopy experimentIdentifiers];
+            treatmentId = [experimentIdentifiers2 treatmentId];
             *buf = 138412546;
-            v34 = v28;
+            v34 = experimentId;
             v35 = 2112;
-            v36 = v30;
+            v36 = treatmentId;
             _os_log_fault_impl(&dword_260D36000, v14, OS_LOG_TYPE_FAULT, "Some required file is missing for word boundary experiment: %@, treatment: %@", buf, 0x16u);
           }
 
@@ -705,28 +705,28 @@ id __71__PSGInputSuggesterServerRequestHandler__zkwResponseForRequest_config___b
         goto LABEL_26;
       }
 
-      v10 = psg_default_log_handle();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      inferenceModelConfigPath = psg_default_log_handle();
+      if (os_log_type_enabled(inferenceModelConfigPath, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v7 experimentIdentifiers];
-        v25 = [v24 experimentId];
-        v26 = [v7 experimentIdentifiers];
-        v27 = [v26 treatmentId];
+        experimentIdentifiers3 = [configCopy experimentIdentifiers];
+        experimentId2 = [experimentIdentifiers3 experimentId];
+        experimentIdentifiers4 = [configCopy experimentIdentifiers];
+        treatmentId2 = [experimentIdentifiers4 treatmentId];
         *buf = 138412546;
-        v34 = v25;
+        v34 = experimentId2;
         v35 = 2112;
-        v36 = v27;
-        _os_log_debug_impl(&dword_260D36000, v10, OS_LOG_TYPE_DEBUG, "ML not enabled for word boundary experiment: %@, treatment: %@", buf, 0x16u);
+        v36 = treatmentId2;
+        _os_log_debug_impl(&dword_260D36000, inferenceModelConfigPath, OS_LOG_TYPE_DEBUG, "ML not enabled for word boundary experiment: %@, treatment: %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v10 = psg_default_log_handle();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      inferenceModelConfigPath = psg_default_log_handle();
+      if (os_log_type_enabled(inferenceModelConfigPath, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_260D36000, v10, OS_LOG_TYPE_ERROR, "[WordBoundary-ML] Locale not specified. Bail out", buf, 2u);
+        _os_log_error_impl(&dword_260D36000, inferenceModelConfigPath, OS_LOG_TYPE_ERROR, "[WordBoundary-ML] Locale not specified. Bail out", buf, 2u);
       }
     }
 
@@ -736,11 +736,11 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v9 = psg_default_log_handle();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  localeIdentifier = psg_default_log_handle();
+  if (os_log_type_enabled(localeIdentifier, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_260D36000, v9, OS_LOG_TYPE_ERROR, "[WordBoundary-ML] Context not specified. Bail out", buf, 2u);
+    _os_log_error_impl(&dword_260D36000, localeIdentifier, OS_LOG_TYPE_ERROR, "[WordBoundary-ML] Context not specified. Bail out", buf, 2u);
   }
 
   v19 = 0;
@@ -751,25 +751,25 @@ LABEL_27:
   return v19;
 }
 
-- (id)_quickResponsesForResponseContext:(id)a3 conversationTurns:(id)a4 localeIdentifier:(id)a5 maxResponses:(unint64_t)a6 recipients:(id)a7 chunkPath:(id)a8 plistPath:(id)a9 espressoBinFilePath:(id)a10 vocabFilePath:(id)a11
+- (id)_quickResponsesForResponseContext:(id)context conversationTurns:(id)turns localeIdentifier:(id)identifier maxResponses:(unint64_t)responses recipients:(id)recipients chunkPath:(id)path plistPath:(id)plistPath espressoBinFilePath:(id)self0 vocabFilePath:(id)self1
 {
   BYTE2(v12) = 1;
   LOWORD(v12) = 257;
-  return [MEMORY[0x277D02598] quickResponsesForMessage:a3 conversationTurns:a4 maxResponses:a6 localeIdentifier:a5 recipientHandles:a7 chunkPath:a8 plistPath:a9 espressoBinFilePath:a10 vocabFilePath:a11 useContactNames:v12 includeCustomResponses:? includeResponsesToRobots:?];
+  return [MEMORY[0x277D02598] quickResponsesForMessage:context conversationTurns:turns maxResponses:responses localeIdentifier:identifier recipientHandles:recipients chunkPath:path plistPath:plistPath espressoBinFilePath:filePath vocabFilePath:vocabFilePath useContactNames:v12 includeCustomResponses:? includeResponsesToRobots:?];
 }
 
-- (PSGInputSuggesterServerRequestHandler)initWithExperimentResolver:(id)a3 metricsLogger:(id)a4
+- (PSGInputSuggesterServerRequestHandler)initWithExperimentResolver:(id)resolver metricsLogger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  resolverCopy = resolver;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = PSGInputSuggesterServerRequestHandler;
   v9 = [(PSGInputSuggesterServerRequestHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_experimentResolver, a3);
-    objc_storeStrong(&v10->_metricsLogger, a4);
+    objc_storeStrong(&v9->_experimentResolver, resolver);
+    objc_storeStrong(&v10->_metricsLogger, logger);
   }
 
   return v10;

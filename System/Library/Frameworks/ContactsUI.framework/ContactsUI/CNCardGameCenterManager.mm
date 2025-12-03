@@ -2,25 +2,25 @@
 - (BOOL)shouldActionDisplayDropdownMenu;
 - (CNCardGameCenterManager)init;
 - (GKServiceProxy)gameCenterProxy;
-- (id)defaultFriendResultFromFriendResults:(id)a3 forContact:(id)a4;
+- (id)defaultFriendResultFromFriendResults:(id)results forContact:(id)contact;
 - (id)handles;
-- (id)handlesForContact:(id)a3;
-- (void)getGameCenterRelationshipsForContact:(id)a3 completionHandler:(id)a4;
-- (void)handleResults:(id)a3 forContact:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)refreshGameCenterRelationshipsForContact:(id)a3 completionHandler:(id)a4;
+- (id)handlesForContact:(id)contact;
+- (void)getGameCenterRelationshipsForContact:(id)contact completionHandler:(id)handler;
+- (void)handleResults:(id)results forContact:(id)contact error:(id)error completionHandler:(id)handler;
+- (void)refreshGameCenterRelationshipsForContact:(id)contact completionHandler:(id)handler;
 @end
 
 @implementation CNCardGameCenterManager
 
-- (id)handlesForContact:(id)a3
+- (id)handlesForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 _cn_map:&__block_literal_global_17];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v5 = [phoneNumbers _cn_map:&__block_literal_global_17];
 
-  v6 = [v3 emailAddresses];
+  emailAddresses = [contactCopy emailAddresses];
 
-  v7 = [v6 _cn_map:&__block_literal_global_19_42241];
+  v7 = [emailAddresses _cn_map:&__block_literal_global_19_42241];
 
   v8 = [v5 arrayByAddingObjectsFromArray:v7];
 
@@ -35,11 +35,11 @@ id __45__CNCardGameCenterManager_handlesForContact___block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (id)defaultFriendResultFromFriendResults:(id)a3 forContact:(id)a4
+- (id)defaultFriendResultFromFriendResults:(id)results forContact:(id)contact
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(CNCardGameCenterManager *)self handlesForContact:a4];
+  resultsCopy = results;
+  [(CNCardGameCenterManager *)self handlesForContact:contact];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -64,10 +64,10 @@ id __45__CNCardGameCenterManager_handlesForContact___block_invoke(uint64_t a1, v
         v16[2] = __75__CNCardGameCenterManager_defaultFriendResultFromFriendResults_forContact___block_invoke;
         v16[3] = &unk_1E74E4C80;
         v16[4] = v12;
-        v13 = [v6 _cn_firstObjectPassingTest:v16];
+        v13 = [resultsCopy _cn_firstObjectPassingTest:v16];
         if (v13)
         {
-          v14 = v13;
+          firstObject = v13;
 
           goto LABEL_11;
         }
@@ -83,10 +83,10 @@ id __45__CNCardGameCenterManager_handlesForContact___block_invoke(uint64_t a1, v
     }
   }
 
-  v14 = [v6 firstObject];
+  firstObject = [resultsCopy firstObject];
 LABEL_11:
 
-  return v14;
+  return firstObject;
 }
 
 uint64_t __75__CNCardGameCenterManager_defaultFriendResultFromFriendResults_forContact___block_invoke(uint64_t a1, void *a2)
@@ -110,36 +110,36 @@ uint64_t __75__CNCardGameCenterManager_defaultFriendResultFromFriendResults_forC
   return v11;
 }
 
-- (void)handleResults:(id)a3 forContact:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)handleResults:(id)results forContact:(id)contact error:(id)error completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultsCopy = results;
+  contactCopy = contact;
+  errorCopy = error;
+  handlerCopy = handler;
   v14 = (*(*MEMORY[0x1E6996530] + 16))();
-  if (v12 || v14)
+  if (errorCopy || v14)
   {
     v23 = CNUILogContactCard();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v42 = v12;
+      v42 = errorCopy;
       _os_log_error_impl(&dword_199A75000, v23, OS_LOG_TYPE_ERROR, "Failed to get Game Center relationships: %@", buf, 0xCu);
     }
 
-    v13[2](v13, MEMORY[0x1E695E0F0], v12);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F0], errorCopy);
   }
 
   else
   {
-    v15 = [v10 _cn_filter:&__block_literal_global_42251];
+    v15 = [resultsCopy _cn_filter:&__block_literal_global_42251];
     if ([v15 count] < 2)
     {
-      if (v11)
+      if (contactCopy)
       {
-        v24 = [v11 identifier];
-        v40 = v24;
+        identifier = [contactCopy identifier];
+        v40 = identifier;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
       }
 
@@ -148,26 +148,26 @@ uint64_t __75__CNCardGameCenterManager_defaultFriendResultFromFriendResults_forC
         v18 = MEMORY[0x1E695E0F0];
       }
 
-      v25 = [(CNCardGameCenterManager *)self gameCenterProxy];
-      v26 = [v25 profileServicePrivate];
+      gameCenterProxy = [(CNCardGameCenterManager *)self gameCenterProxy];
+      profileServicePrivate = [gameCenterProxy profileServicePrivate];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __76__CNCardGameCenterManager_handleResults_forContact_error_completionHandler___block_invoke_7;
       v27[3] = &unk_1E74E4CF8;
       v27[4] = self;
-      v30 = v13;
-      v28 = v10;
-      v29 = v11;
-      [v26 filterForContactIDsSupportingFriendingViaPushFromContactIDs:v18 withCompletion:v27];
+      v30 = handlerCopy;
+      v28 = resultsCopy;
+      v29 = contactCopy;
+      [profileServicePrivate filterForContactIDsSupportingFriendingViaPushFromContactIDs:v18 withCompletion:v27];
 
       v22 = v30;
     }
 
     else
     {
-      v16 = [(CNCardGameCenterManager *)self recentsManager];
-      v17 = [v11 mutableCopy];
-      v18 = [v16 sortedRecentHandlesMatchingAllPropertiesOfContact:v17];
+      recentsManager = [(CNCardGameCenterManager *)self recentsManager];
+      v17 = [contactCopy mutableCopy];
+      v18 = [recentsManager sortedRecentHandlesMatchingAllPropertiesOfContact:v17];
 
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
@@ -175,11 +175,11 @@ uint64_t __75__CNCardGameCenterManager_defaultFriendResultFromFriendResults_forC
       v35[3] = &unk_1E74E4CA8;
       v19 = v15;
       v36 = v19;
-      v20 = v13;
+      v20 = handlerCopy;
       v39 = v20;
-      v21 = v11;
+      v21 = contactCopy;
       v37 = v21;
-      v38 = self;
+      selfCopy = self;
       [v18 addSuccessBlock:v35];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
@@ -283,25 +283,25 @@ uint64_t __76__CNCardGameCenterManager_handleResults_forContact_error_completion
   return v4;
 }
 
-- (void)refreshGameCenterRelationshipsForContact:(id)a3 completionHandler:(id)a4
+- (void)refreshGameCenterRelationshipsForContact:(id)contact completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNCardGameCenterManager *)self relationshipResultsCancelable];
-  [v8 cancel];
+  contactCopy = contact;
+  handlerCopy = handler;
+  relationshipResultsCancelable = [(CNCardGameCenterManager *)self relationshipResultsCancelable];
+  [relationshipResultsCancelable cancel];
 
-  v9 = [(CNCardGameCenterManager *)self schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  schedulerProvider = [(CNCardGameCenterManager *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__CNCardGameCenterManager_refreshGameCenterRelationshipsForContact_completionHandler___block_invoke;
   v14[3] = &unk_1E74E4C38;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 performCancelableBlock:v14];
+  v15 = contactCopy;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = contactCopy;
+  v13 = [backgroundScheduler performCancelableBlock:v14];
   [(CNCardGameCenterManager *)self setRelationshipResultsCancelable:v13];
 }
 
@@ -320,25 +320,25 @@ void __86__CNCardGameCenterManager_refreshGameCenterRelationshipsForContact_comp
   [v3 getGameCenterRelationshipsForContact:v6 shouldRefresh:1 completionHandler:v5];
 }
 
-- (void)getGameCenterRelationshipsForContact:(id)a3 completionHandler:(id)a4
+- (void)getGameCenterRelationshipsForContact:(id)contact completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNCardGameCenterManager *)self relationshipResultsCancelable];
-  [v8 cancel];
+  contactCopy = contact;
+  handlerCopy = handler;
+  relationshipResultsCancelable = [(CNCardGameCenterManager *)self relationshipResultsCancelable];
+  [relationshipResultsCancelable cancel];
 
-  v9 = [(CNCardGameCenterManager *)self schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  schedulerProvider = [(CNCardGameCenterManager *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__CNCardGameCenterManager_getGameCenterRelationshipsForContact_completionHandler___block_invoke;
   v14[3] = &unk_1E74E4C38;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 performCancelableBlock:v14];
+  v15 = contactCopy;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = contactCopy;
+  v13 = [backgroundScheduler performCancelableBlock:v14];
   [(CNCardGameCenterManager *)self setRelationshipResultsCancelable:v13];
 }
 
@@ -398,8 +398,8 @@ void __82__CNCardGameCenterManager_getGameCenterRelationshipsForContact_completi
 
     v7 = v6;
     _Block_object_dispose(&v18, 8);
-    v8 = [v6 currentLocalPlayer];
-    v9 = [v4 proxyForPlayer:v8];
+    currentLocalPlayer = [v6 currentLocalPlayer];
+    v9 = [v4 proxyForPlayer:currentLocalPlayer];
     v10 = self->_gameCenterProxy;
     self->_gameCenterProxy = v9;
 
@@ -418,16 +418,16 @@ void __82__CNCardGameCenterManager_getGameCenterRelationshipsForContact_completi
     return 0;
   }
 
-  v4 = [(CNCardGameCenterManager *)self handles];
-  v3 = [v4 count] > 1;
+  handles = [(CNCardGameCenterManager *)self handles];
+  v3 = [handles count] > 1;
 
   return v3;
 }
 
 - (id)handles
 {
-  v3 = [(CNCardGameCenterManager *)self contact];
-  v4 = [(CNCardGameCenterManager *)self handlesForContact:v3];
+  contact = [(CNCardGameCenterManager *)self contact];
+  v4 = [(CNCardGameCenterManager *)self handlesForContact:contact];
 
   return v4;
 }
@@ -440,13 +440,13 @@ void __82__CNCardGameCenterManager_getGameCenterRelationshipsForContact_completi
   if (v2)
   {
     v3 = +[CNUIContactsEnvironment currentEnvironment];
-    v4 = [v3 defaultSchedulerProvider];
+    defaultSchedulerProvider = [v3 defaultSchedulerProvider];
     schedulerProvider = v2->_schedulerProvider;
-    v2->_schedulerProvider = v4;
+    v2->_schedulerProvider = defaultSchedulerProvider;
 
     v6 = +[CNUIContactsEnvironment currentEnvironment];
-    v7 = [v6 defaultSchedulerProvider];
-    v8 = [v7 newSerialSchedulerWithName:@"com.apple.Contacts.CNCardGameCenterManager.workQueue"];
+    defaultSchedulerProvider2 = [v6 defaultSchedulerProvider];
+    v8 = [defaultSchedulerProvider2 newSerialSchedulerWithName:@"com.apple.Contacts.CNCardGameCenterManager.workQueue"];
     workQueue = v2->_workQueue;
     v2->_workQueue = v8;
 

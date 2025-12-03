@@ -1,23 +1,23 @@
 @interface SUUIReportAConcernReasonViewElement
-- (SUUIReportAConcernReasonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIReportAConcernReasonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIReportAConcernReasonViewElement
 
-- (SUUIReportAConcernReasonViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIReportAConcernReasonViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUIReportAConcernReasonViewElement;
-  v9 = [(SUUIViewElement *)&v18 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"data-content-id"];
+    v10 = [elementCopy getAttribute:@"data-content-id"];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "integerValue")}];
     reasonID = v9->_reasonID;
     v9->_reasonID = v11;
 
-    v13 = [v8 getAttribute:@"data-uppercase-name"];
+    v13 = [elementCopy getAttribute:@"data-uppercase-name"];
     if ([v13 length])
     {
       v14 = v13;
@@ -29,9 +29,9 @@
     }
 
     objc_storeStrong(&v9->_uppercaseName, v14);
-    v15 = [v8 textContent];
+    textContent = [elementCopy textContent];
     name = v9->_name;
-    v9->_name = v15;
+    v9->_name = textContent;
   }
 
   return v9;

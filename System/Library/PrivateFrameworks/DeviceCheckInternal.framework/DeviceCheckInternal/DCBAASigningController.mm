@@ -1,7 +1,7 @@
 @interface DCBAASigningController
 - (DCCryptoProxyImpl)cryptoProxy;
-- (void)baaSignatureForData:(id)a3 completion:(id)a4;
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4;
+- (void)baaSignatureForData:(id)data completion:(id)completion;
+- (void)baaSignaturesForData:(id)data completion:(id)completion;
 @end
 
 @implementation DCBAASigningController
@@ -21,20 +21,20 @@
   return cryptoProxy;
 }
 
-- (void)baaSignatureForData:(id)a3 completion:(id)a4
+- (void)baaSignatureForData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCBAASigningController *)self cryptoProxy];
-  [v8 baaSignatureForData:v7 completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  cryptoProxy = [(DCBAASigningController *)self cryptoProxy];
+  [cryptoProxy baaSignatureForData:dataCopy completion:completionCopy];
 }
 
-- (void)baaSignaturesForData:(id)a3 completion:(id)a4
+- (void)baaSignaturesForData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCBAASigningController *)self cryptoProxy];
-  [v8 baaSignaturesForData:v7 completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  cryptoProxy = [(DCBAASigningController *)self cryptoProxy];
+  [cryptoProxy baaSignaturesForData:dataCopy completion:completionCopy];
 }
 
 @end

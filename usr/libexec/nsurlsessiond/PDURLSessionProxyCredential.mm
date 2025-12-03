@@ -1,14 +1,14 @@
 @interface PDURLSessionProxyCredential
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_actualCredential;
-- (id)_initWithActualCredential:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithActualCredential:(id)credential;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyCredential
@@ -16,39 +16,39 @@
 - (id)_actualCredential
 {
   v3 = objc_opt_class();
-  v4 = [(PDURLSessionProxyCredential *)self archiveList];
-  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:v4];
+  archiveList = [(PDURLSessionProxyCredential *)self archiveList];
+  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:archiveList];
 
   return v5;
 }
 
-- (id)_initWithActualCredential:(id)a3
+- (id)_initWithActualCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v5 = [(PDURLSessionProxyCredential *)self init];
   if (v5)
   {
-    v6 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:v4];
+    v6 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:credentialCopy];
     [(PDURLSessionProxyCredential *)v5 setArchiveList:v6];
   }
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_version = v4[4];
+    self->_version = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(PDURLSessionProxyCredential *)self setArchiveList:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -67,24 +67,24 @@
   return [(NSData *)self->_archiveList hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -92,7 +92,7 @@ LABEL_9:
   }
 
   archiveList = self->_archiveList;
-  if (archiveList | *(v4 + 1))
+  if (archiveList | *(equalCopy + 1))
   {
     v7 = [(NSData *)archiveList isEqual:?];
   }
@@ -107,9 +107,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -117,45 +117,45 @@ LABEL_10:
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSData *)self->_archiveList copyWithZone:a3];
+  v7 = [(NSData *)self->_archiveList copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_archiveList)
   {
-    v5 = v4;
-    [v4 setArchiveList:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setArchiveList:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_archiveList)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -182,8 +182,8 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyCredential;
   v3 = [(PDURLSessionProxyCredential *)&v7 description];
-  v4 = [(PDURLSessionProxyCredential *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyCredential *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

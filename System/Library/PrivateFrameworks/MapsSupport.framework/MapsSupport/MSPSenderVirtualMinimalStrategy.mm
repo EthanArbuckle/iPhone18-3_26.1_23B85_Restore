@@ -1,49 +1,49 @@
 @interface MSPSenderVirtualMinimalStrategy
-- (MSPSenderVirtualMinimalStrategy)initWithGroupSession:(id)a3;
-- (void)fetchCapabilitiesForParticipants:(id)a3 completion:(id)a4;
+- (MSPSenderVirtualMinimalStrategy)initWithGroupSession:(id)session;
+- (void)fetchCapabilitiesForParticipants:(id)participants completion:(id)completion;
 @end
 
 @implementation MSPSenderVirtualMinimalStrategy
 
-- (MSPSenderVirtualMinimalStrategy)initWithGroupSession:(id)a3
+- (MSPSenderVirtualMinimalStrategy)initWithGroupSession:(id)session
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0EC70] sharedPlatform];
-  v6 = [v5 isInternalInstall];
+  sessionCopy = session;
+  mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+  isInternalInstall = [mEMORY[0x277D0EC70] isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
     v10.receiver = self;
     v10.super_class = MSPSenderVirtualMinimalStrategy;
-    v7 = [(MSPSenderMinimalStrategy *)&v10 initWithGroupSession:v4];
+    v7 = [(MSPSenderMinimalStrategy *)&v10 initWithGroupSession:sessionCopy];
     if (v7)
     {
       v7->super.super.super._loggingOnly = 1;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)fetchCapabilitiesForParticipants:(id)a3 completion:(id)a4
+- (void)fetchCapabilitiesForParticipants:(id)participants completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  participantsCopy = participants;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = participantsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -70,7 +70,7 @@
   }
 
   v15 = [v7 copy];
-  v6[2](v6, v15);
+  completionCopy[2](completionCopy, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }

@@ -1,12 +1,12 @@
 @interface LinkCollectionViewCell
-- (_TtC8AppStore22LinkCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore22LinkCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation LinkCollectionViewCell
 
-- (_TtC8AppStore22LinkCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore22LinkCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore22LinkCollectionViewCell____lazy_storage___standardLinkView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore22LinkCollectionViewCell____lazy_storage___presentationLinkView) = 0;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100738C74();
 }
 

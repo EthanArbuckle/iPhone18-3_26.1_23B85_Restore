@@ -1,7 +1,7 @@
 @interface _MFNTLMAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 - (void)dealloc;
-- (void)setAuthenticationState:(int)a3;
+- (void)setAuthenticationState:(int)state;
 @end
 
 @implementation _MFNTLMAuthenticator
@@ -18,12 +18,12 @@
   [(MFSASLAuthenticator *)&v3 dealloc];
 }
 
-- (void)setAuthenticationState:(int)a3
+- (void)setAuthenticationState:(int)state
 {
   v9.receiver = self;
   v9.super_class = _MFNTLMAuthenticator;
   [(MFSASLAuthenticator *)&v9 setAuthenticationState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = vm_imap_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_11:
     self->_ntlmError = 0;
     v5 = vm_imap_log();
     v7 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (a3 == 4)
+    if (state == 4)
     {
       if (v7)
       {
@@ -65,11 +65,11 @@ LABEL_11:
   }
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_ntlmError)
   {
     goto LABEL_25;
@@ -77,12 +77,12 @@ LABEL_11:
 
   if (self->_ntlmGeneratorRef)
   {
-    v6 = [(MFSASLAuthenticator *)self account];
-    v7 = [v6 domain];
-    v8 = [v6 username];
-    if (v8)
+    account = [(MFSASLAuthenticator *)self account];
+    domain = [account domain];
+    username = [account username];
+    if (username)
     {
-      v9 = v8;
+      v9 = username;
     }
 
     else
@@ -90,10 +90,10 @@ LABEL_11:
       v9 = &stru_288159858;
     }
 
-    v10 = [v6 password];
-    if (v10)
+    password = [account password];
+    if (password)
     {
-      v11 = v10;
+      v11 = password;
     }
 
     else
@@ -104,9 +104,9 @@ LABEL_11:
     v12 = vm_imap_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      if (v7)
+      if (domain)
       {
-        v13 = v7;
+        v13 = domain;
       }
 
       else
@@ -139,7 +139,7 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if ([v4 length])
+  if ([dataCopy length])
   {
     v15 = vm_imap_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))

@@ -1,38 +1,38 @@
 @interface PXAppIntentsExtendedTraitCollection
-- (PXAppIntentsExtendedTraitCollection)initWithUserInterfaceStyle:(int64_t)a3 displayScale:(double)a4;
-- (void)setDisplayScale:(double)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (PXAppIntentsExtendedTraitCollection)initWithUserInterfaceStyle:(int64_t)style displayScale:(double)scale;
+- (void)setDisplayScale:(double)scale;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation PXAppIntentsExtendedTraitCollection
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     [(PXAppIntentsExtendedTraitCollection *)self signalChange:32];
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(PXAppIntentsExtendedTraitCollection *)self signalChange:1024];
   }
 }
 
-- (PXAppIntentsExtendedTraitCollection)initWithUserInterfaceStyle:(int64_t)a3 displayScale:(double)a4
+- (PXAppIntentsExtendedTraitCollection)initWithUserInterfaceStyle:(int64_t)style displayScale:(double)scale
 {
   v7.receiver = self;
   v7.super_class = PXAppIntentsExtendedTraitCollection;
   result = [(PXAppIntentsExtendedTraitCollection *)&v7 _initForSubclassWithUserInterfaceFeature:0];
   if (result)
   {
-    result->_userInterfaceStyle = a3;
-    result->_displayScale = a4;
+    result->_userInterfaceStyle = style;
+    result->_displayScale = scale;
   }
 
   return result;

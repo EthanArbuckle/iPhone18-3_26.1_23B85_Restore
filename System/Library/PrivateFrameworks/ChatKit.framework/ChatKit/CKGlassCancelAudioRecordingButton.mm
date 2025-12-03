@@ -1,14 +1,14 @@
 @interface CKGlassCancelAudioRecordingButton
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKGlassCancelAudioRecordingButton)initWithCoder:(id)a3;
-- (void)animateBlurTo:(double)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKGlassCancelAudioRecordingButton)initWithCoder:(id)coder;
+- (void)animateBlurTo:(double)to;
 - (void)layoutSubviews;
 @end
 
 @implementation CKGlassCancelAudioRecordingButton
 
-- (CKGlassCancelAudioRecordingButton)initWithCoder:(id)a3
+- (CKGlassCancelAudioRecordingButton)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR___CKGlassCancelAudioRecordingButton_foregroundColor;
   *(&self->super.super.super.super.super.isa + v3) = [objc_opt_self() labelColor];
@@ -23,15 +23,15 @@
   v4.super_class = type metadata accessor for GlassCancelAudioRecordingButton();
   v2 = v4.receiver;
   [(CKGlassCancelAudioRecordingButton *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for GlassCancelAudioRecordingButton();
   [(CKGlassCancelAudioRecordingButton *)&v8 sizeThatFits:width, height];
@@ -46,9 +46,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -60,21 +60,21 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1909517A4(v4, v6);
 
   return v8 & 1;
 }
 
-- (void)animateBlurTo:(double)a3
+- (void)animateBlurTo:(double)to
 {
-  v6 = self;
-  v3 = [(CKGlassCancelAudioRecordingButton *)v6 layer];
+  selfCopy = self;
+  layer = [(CKGlassCancelAudioRecordingButton *)selfCopy layer];
   v4 = sub_190D51C70();
   v5 = sub_190D56ED0();
-  [v3 setValue:v4 forKeyPath:v5];
+  [layer setValue:v4 forKeyPath:v5];
 
-  [(CKGlassCancelAudioRecordingButton *)v6 setNeedsUpdateConfiguration];
+  [(CKGlassCancelAudioRecordingButton *)selfCopy setNeedsUpdateConfiguration];
 }
 
 @end

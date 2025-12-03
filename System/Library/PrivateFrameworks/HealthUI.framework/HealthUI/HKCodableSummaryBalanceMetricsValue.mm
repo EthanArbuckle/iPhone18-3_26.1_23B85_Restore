@@ -1,33 +1,33 @@
 @interface HKCodableSummaryBalanceMetricsValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBaselineComparison:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBaselineComparison:(id)comparison;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryBalanceMetricsValue
 
-- (void)addBaselineComparison:(id)a3
+- (void)addBaselineComparison:(id)comparison
 {
-  v4 = a3;
+  comparisonCopy = comparison;
   baselineComparisons = self->_baselineComparisons;
-  v8 = v4;
+  v8 = comparisonCopy;
   if (!baselineComparisons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_baselineComparisons;
     self->_baselineComparisons = v6;
 
-    v4 = v8;
+    comparisonCopy = v8;
     baselineComparisons = self->_baselineComparisons;
   }
 
-  [(NSMutableArray *)baselineComparisons addObject:v4];
+  [(NSMutableArray *)baselineComparisons addObject:comparisonCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryBalanceMetricsValue;
   v4 = [(HKCodableSummaryBalanceMetricsValue *)&v8 description];
-  v5 = [(HKCodableSummaryBalanceMetricsValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryBalanceMetricsValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,18 +45,18 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_morningIndex];
-    [v3 setObject:v4 forKey:@"morningIndex"];
+    [dictionary setObject:v4 forKey:@"morningIndex"];
   }
 
   baselineRange = self->_baselineRange;
   if (baselineRange)
   {
-    v6 = [(HKCodableDayIndexRange *)baselineRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"baselineRange"];
+    dictionaryRepresentation = [(HKCodableDayIndexRange *)baselineRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"baselineRange"];
   }
 
   if ([(NSMutableArray *)self->_baselineComparisons count])
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -91,16 +91,16 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"baselineComparison"];
+    [dictionary setObject:v7 forKey:@"baselineComparison"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
@@ -143,28 +143,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_morningIndex;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_morningIndex;
+    *(toCopy + 32) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_baselineRange)
   {
-    [v4 setBaselineRange:?];
+    [toCopy setBaselineRange:?];
   }
 
   if ([(HKCodableSummaryBalanceMetricsValue *)self baselineComparisonsCount])
   {
     [v9 clearBaselineComparisons];
-    v5 = [(HKCodableSummaryBalanceMetricsValue *)self baselineComparisonsCount];
-    if (v5)
+    baselineComparisonsCount = [(HKCodableSummaryBalanceMetricsValue *)self baselineComparisonsCount];
+    if (baselineComparisonsCount)
     {
-      v6 = v5;
+      v6 = baselineComparisonsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableSummaryBalanceMetricsValue *)self baselineComparisonAtIndex:i];
@@ -174,10 +174,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -185,7 +185,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(HKCodableDayIndexRange *)self->_baselineRange copyWithZone:a3];
+  v7 = [(HKCodableDayIndexRange *)self->_baselineRange copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -209,7 +209,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{zone, v16}];
         [v6 addBaselineComparison:v14];
 
         ++v13;
@@ -225,23 +225,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_morningIndex != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_morningIndex != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -249,13 +249,13 @@ LABEL_11:
   }
 
   baselineRange = self->_baselineRange;
-  if (baselineRange | *(v4 + 3) && ![(HKCodableDayIndexRange *)baselineRange isEqual:?])
+  if (baselineRange | *(equalCopy + 3) && ![(HKCodableDayIndexRange *)baselineRange isEqual:?])
   {
     goto LABEL_11;
   }
 
   baselineComparisons = self->_baselineComparisons;
-  if (baselineComparisons | *(v4 + 2))
+  if (baselineComparisons | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)baselineComparisons isEqual:?];
   }
@@ -286,14 +286,14 @@ LABEL_12:
   return v4 ^ [(NSMutableArray *)self->_baselineComparisons hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[4])
   {
-    self->_morningIndex = v4[1];
+    self->_morningIndex = fromCopy[1];
     *&self->_has |= 1u;
   }
 

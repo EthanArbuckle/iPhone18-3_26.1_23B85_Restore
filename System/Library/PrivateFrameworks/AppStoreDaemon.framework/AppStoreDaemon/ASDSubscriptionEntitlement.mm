@@ -1,6 +1,6 @@
 @interface ASDSubscriptionEntitlement
-- (ASDSubscriptionEntitlement)initWithCoder:(id)a3;
-- (ASDSubscriptionEntitlement)initWithDictionary:(id)a3 forAppAdamID:(id)a4 segment:(unint64_t)a5 hasFamily:(BOOL)a6;
+- (ASDSubscriptionEntitlement)initWithCoder:(id)coder;
+- (ASDSubscriptionEntitlement)initWithDictionary:(id)dictionary forAppAdamID:(id)d segment:(unint64_t)segment hasFamily:(BOOL)family;
 - (BOOL)autoRenewEnabled;
 - (BOOL)isInGracePeriod;
 - (BOOL)isNewsAppPurchase;
@@ -36,30 +36,30 @@
 - (NSString)productCode;
 - (NSString)vendorAdHocOfferID;
 - (NSString)vendorID;
-- (id)_dateFromDateString:(uint64_t)a1;
-- (id)_valueForKey:(uint64_t)a1 ofType:(uint64_t)a2;
+- (id)_dateFromDateString:(uint64_t)string;
+- (id)_valueForKey:(uint64_t)key ofType:(uint64_t)type;
 @end
 
 @implementation ASDSubscriptionEntitlement
 
-- (ASDSubscriptionEntitlement)initWithDictionary:(id)a3 forAppAdamID:(id)a4 segment:(unint64_t)a5 hasFamily:(BOOL)a6
+- (ASDSubscriptionEntitlement)initWithDictionary:(id)dictionary forAppAdamID:(id)d segment:(unint64_t)segment hasFamily:(BOOL)family
 {
-  v10 = a3;
-  v11 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = ASDSubscriptionEntitlement;
   v12 = [(ASDSubscriptionEntitlement *)&v18 init];
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = [v10 mutableCopy];
-    [v14 setObject:v11 forKeyedSubscript:@"appAdamId"];
+    v14 = [dictionaryCopy mutableCopy];
+    [v14 setObject:dCopy forKeyedSubscript:@"appAdamId"];
     v15 = [v14 copy];
     dictionary = v12->_dictionary;
     v12->_dictionary = v15;
 
-    v12->_segment = a5;
-    v12->_hasFamily = a6;
+    v12->_segment = segment;
+    v12->_hasFamily = family;
 
     objc_autoreleasePoolPop(v13);
   }
@@ -74,11 +74,11 @@
   return [ASDSubscriptionEntitlement _valueForKey:@"appAdamId" ofType:?];
 }
 
-- (id)_valueForKey:(uint64_t)a1 ofType:(uint64_t)a2
+- (id)_valueForKey:(uint64_t)key ofType:(uint64_t)type
 {
-  if (a1)
+  if (key)
   {
-    v2 = [*(a1 + 8) valueForKey:a2];
+    v2 = [*(key + 8) valueForKey:type];
     v3 = [v2 copy];
 
     if (objc_opt_isKindOfClass())
@@ -113,9 +113,9 @@
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"autoRenew" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)chargeCountryCode
@@ -162,10 +162,10 @@
   return v4;
 }
 
-- (id)_dateFromDateString:(uint64_t)a1
+- (id)_dateFromDateString:(uint64_t)string
 {
   v2 = 0;
-  if (a1 && a2)
+  if (string && a2)
   {
     v3 = MEMORY[0x1E696AB78];
     v4 = a2;
@@ -239,45 +239,45 @@
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"isTrialPeriod" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isOfferPeriod
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"isOfferPeriod" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPurchaser
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"isPurchaser" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isNewsAppPurchase
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"isNewsAppPurchase" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isInGracePeriod
 {
   objc_opt_class();
   v3 = [ASDSubscriptionEntitlement _valueForKey:@"isGracePeriod" ofType:?];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)offerID
@@ -373,15 +373,15 @@
   return [ASDSubscriptionEntitlement _valueForKey:@"vendorIdentifier" ofType:?];
 }
 
-- (ASDSubscriptionEntitlement)initWithCoder:(id)a3
+- (ASDSubscriptionEntitlement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASDSubscriptionEntitlement;
   v5 = [(ASDSubscriptionEntitlement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodePropertyListForKey:@"dictionary"];
+    v6 = [coderCopy decodePropertyListForKey:@"dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }

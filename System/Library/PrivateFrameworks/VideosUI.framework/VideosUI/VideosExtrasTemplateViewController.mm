@@ -1,36 +1,36 @@
 @interface VideosExtrasTemplateViewController
-+ (id)templateViewControllerWithDocument:(id)a3 options:(id)a4 context:(id)a5;
-- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)a3;
++ (id)templateViewControllerWithDocument:(id)document options:(id)options context:(id)context;
+- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)template;
 - (VideosExtrasContext)context;
-- (VideosExtrasTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5;
+- (VideosExtrasTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context;
 - (void)_showPlaceholder;
 - (void)_startBackgroundAudio;
-- (void)configureBackgroundWithElements:(id)a3;
+- (void)configureBackgroundWithElements:(id)elements;
 - (void)dealloc;
-- (void)documentDidFail:(id)a3 withError:(id)a4;
-- (void)documentDidUpdate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)documentDidFail:(id)fail withError:(id)error;
+- (void)documentDidUpdate:(id)update;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation VideosExtrasTemplateViewController
 
-- (VideosExtrasTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5
+- (VideosExtrasTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  documentCopy = document;
+  optionsCopy = options;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = VideosExtrasTemplateViewController;
   v12 = [(VideosExtrasElementViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_options, a4);
-    objc_storeStrong(&v13->_document, a3);
+    objc_storeStrong(&v12->_options, options);
+    objc_storeStrong(&v13->_document, document);
     [(IKAppDocument *)v13->_document setDelegate:v13];
-    objc_storeWeak(&v13->_context, v11);
+    objc_storeWeak(&v13->_context, contextCopy);
     [(IKAppDocument *)v13->_document onLoad];
   }
 
@@ -47,9 +47,9 @@
 
 - (void)_showPlaceholder
 {
-  v3 = [(VideosExtrasTemplateViewController *)self view];
-  v2 = [MEMORY[0x1E69DC888] blackColor];
-  [v3 setBackgroundColor:v2];
+  view = [(VideosExtrasTemplateViewController *)self view];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [view setBackgroundColor:blackColor];
 }
 
 - (void)viewDidLoad
@@ -57,9 +57,9 @@
   v5.receiver = self;
   v5.super_class = VideosExtrasTemplateViewController;
   [(VideosExtrasTemplateViewController *)&v5 viewDidLoad];
-  v3 = [(VideosExtrasTemplateViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VideosExtrasTemplateViewController *)self view];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [view setBackgroundColor:blackColor];
 
   if ([(VideosExtrasTemplateViewController *)self showsPlaceholder])
   {
@@ -72,93 +72,93 @@
 - (void)_startBackgroundAudio
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 applicationState];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  applicationState = [mEMORY[0x1E69DC668] applicationState];
 
-  if (v4 != 2)
+  if (applicationState != 2)
   {
-    v5 = [(VideosExtrasTemplateViewController *)self document];
-    v6 = [v5 templateElement];
+    document = [(VideosExtrasTemplateViewController *)self document];
+    templateElement = [document templateElement];
 
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (templateElement && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v7 = [v6 performSelector:sel_background withObject:0];
+      v7 = [templateElement performSelector:sel_background withObject:0];
       if (v7)
       {
-        v8 = [(VideosExtrasTemplateViewController *)self context];
-        v9 = [v7 audio];
+        context = [(VideosExtrasTemplateViewController *)self context];
+        audio = [v7 audio];
 
-        if (v9)
+        if (audio)
         {
-          v10 = [v7 audio];
-          v12[0] = v10;
+          audio2 = [v7 audio];
+          v12[0] = audio2;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-          [v8 extrasRequestsMediaPlayback:v11 isBackground:1];
+          [context extrasRequestsMediaPlayback:v11 isBackground:1];
         }
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = VideosExtrasTemplateViewController;
-  [(VideosExtrasTemplateViewController *)&v5 viewDidAppear:a3];
+  [(VideosExtrasTemplateViewController *)&v5 viewDidAppear:appear];
   [(VideosExtrasTemplateViewController *)self _startBackgroundAudio];
-  v4 = [(VideosExtrasTemplateViewController *)self document];
-  [v4 onAppear];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  [document onAppear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = VideosExtrasTemplateViewController;
-  [(VideosExtrasTemplateViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(VideosExtrasTemplateViewController *)self document];
-  [v4 onDisappear];
+  [(VideosExtrasTemplateViewController *)&v5 viewDidDisappear:disappear];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  [document onDisappear];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v12 = a3;
-  v4 = [v12 templateElement];
-  v5 = [(VideosExtrasTemplateViewController *)self shouldUpdateByReplacingViewControllerWithTemplate:v4];
+  updateCopy = update;
+  templateElement = [updateCopy templateElement];
+  v5 = [(VideosExtrasTemplateViewController *)self shouldUpdateByReplacingViewControllerWithTemplate:templateElement];
 
   if (v5)
   {
     v6 = objc_opt_class();
     options = self->_options;
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    displayedTemplate = [v6 templateViewControllerWithDocument:v12 options:options context:WeakRetained];
+    displayedTemplate = [v6 templateViewControllerWithDocument:updateCopy options:options context:WeakRetained];
 
     if (!displayedTemplate)
     {
       goto LABEL_6;
     }
 
-    v10 = [(VideosExtrasTemplateViewController *)self navigationController];
-    [v10 _VideosExtras_replaceViewController:self withViewController:displayedTemplate animated:0];
+    navigationController = [(VideosExtrasTemplateViewController *)self navigationController];
+    [navigationController _VideosExtras_replaceViewController:self withViewController:displayedTemplate animated:0];
   }
 
   else
   {
-    v11 = [v12 templateElement];
+    templateElement2 = [updateCopy templateElement];
     displayedTemplate = self->_displayedTemplate;
-    self->_displayedTemplate = v11;
+    self->_displayedTemplate = templateElement2;
   }
 
 LABEL_6:
 }
 
-- (void)documentDidFail:(id)a3 withError:(id)a4
+- (void)documentDidFail:(id)fail withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failCopy = fail;
+  errorCopy = error;
   v8 = MEMORY[0x1E69DC650];
-  v9 = [v7 localizedDescription];
-  v10 = [v7 localizedDescription];
-  v11 = [v8 alertControllerWithTitle:v9 message:v10 preferredStyle:1];
+  localizedDescription = [errorCopy localizedDescription];
+  localizedDescription2 = [errorCopy localizedDescription];
+  v11 = [v8 alertControllerWithTitle:localizedDescription message:localizedDescription2 preferredStyle:1];
 
   objc_initWeak(&location, v11);
   v12 = MEMORY[0x1E69DC648];
@@ -184,12 +184,12 @@ void __64__VideosExtrasTemplateViewController_documentDidFail_withError___block_
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)a3
+- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)template
 {
   displayedTemplate = self->_displayedTemplate;
   if (displayedTemplate)
   {
-    v4 = displayedTemplate == a3;
+    v4 = displayedTemplate == template;
   }
 
   else
@@ -200,18 +200,18 @@ void __64__VideosExtrasTemplateViewController_documentDidFail_withError___block_
   return !v4;
 }
 
-- (void)configureBackgroundWithElements:(id)a3
+- (void)configureBackgroundWithElements:(id)elements
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v20.receiver = self;
   v20.super_class = VideosExtrasTemplateViewController;
-  [(VideosExtrasElementViewController *)&v20 configureBackgroundWithElements:v4];
+  [(VideosExtrasElementViewController *)&v20 configureBackgroundWithElements:elementsCopy];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
@@ -229,13 +229,13 @@ void __64__VideosExtrasTemplateViewController_documentDidFail_withError___block_
         v10 = *(*(&v16 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 audio];
-          if (v11)
+          audio = [v10 audio];
+          if (audio)
           {
-            v12 = v11;
+            v12 = audio;
             WeakRetained = objc_loadWeakRetained(&self->_context);
-            v14 = [v10 audio];
-            v21 = v14;
+            audio2 = [v10 audio];
+            v21 = audio2;
             v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
             [WeakRetained extrasRequestsMediaPlayback:v15 isBackground:1];
 
@@ -257,28 +257,28 @@ void __64__VideosExtrasTemplateViewController_documentDidFail_withError___block_
 LABEL_12:
 }
 
-+ (id)templateViewControllerWithDocument:(id)a3 options:(id)a4 context:(id)a5
++ (id)templateViewControllerWithDocument:(id)document options:(id)options context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  documentCopy = document;
+  optionsCopy = options;
+  contextCopy = context;
   if (templateViewControllerWithDocument_options_context__onceToken != -1)
   {
     +[VideosExtrasTemplateViewController templateViewControllerWithDocument:options:context:];
   }
 
-  v11 = [v8 templateElement];
+  templateElement = [documentCopy templateElement];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [v8 templateElement];
-    v14 = [v13 items];
+    templateElement2 = [documentCopy templateElement];
+    items = [templateElement2 items];
 
-    if ([v14 count])
+    if ([items count])
     {
-      [v10 extrasRequestsMediaPlayback:v14 isBackground:0];
+      [contextCopy extrasRequestsMediaPlayback:items isBackground:0];
     }
 
     v15 = 0;
@@ -287,22 +287,22 @@ LABEL_12:
   else
   {
     v16 = templateViewControllerWithDocument_options_context__templateMap;
-    v17 = [v8 templateElement];
+    templateElement3 = [documentCopy templateElement];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v16 objectForKey:v19];
 
     if (v20)
     {
-      v21 = v20;
+      selfCopy = v20;
     }
 
     else
     {
-      v21 = a1;
+      selfCopy = self;
     }
 
-    v15 = [[v21 alloc] initWithDocument:v8 options:v9 context:v10];
+    v15 = [[selfCopy alloc] initWithDocument:documentCopy options:optionsCopy context:contextCopy];
   }
 
   return v15;

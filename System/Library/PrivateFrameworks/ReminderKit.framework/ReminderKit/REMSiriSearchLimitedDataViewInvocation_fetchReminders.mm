@@ -1,43 +1,43 @@
 @interface REMSiriSearchLimitedDataViewInvocation_fetchReminders
-- (BOOL)isEqual:(id)a3;
-- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithCoder:(id)a3;
-- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithTitle:(id)a3 dueAfter:(id)a4 dueBefore:(id)a5 isCompleted:(id)a6 hasLocation:(id)a7 location:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithCoder:(id)coder;
+- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithTitle:(id)title dueAfter:(id)after dueBefore:(id)before isCompleted:(id)completed hasLocation:(id)location location:(id)a8;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMSiriSearchLimitedDataViewInvocation_fetchReminders
 
-- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithTitle:(id)a3 dueAfter:(id)a4 dueBefore:(id)a5 isCompleted:(id)a6 hasLocation:(id)a7 location:(id)a8
+- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithTitle:(id)title dueAfter:(id)after dueBefore:(id)before isCompleted:(id)completed hasLocation:(id)location location:(id)a8
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  titleCopy = title;
+  afterCopy = after;
+  beforeCopy = before;
+  completedCopy = completed;
+  locationCopy = location;
   v19 = a8;
   v34.receiver = self;
   v34.super_class = REMSiriSearchLimitedDataViewInvocation_fetchReminders;
   v20 = [(REMStoreInvocationValueStorage *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v21;
 
-    v23 = [v16 copy];
+    v23 = [beforeCopy copy];
     dueBefore = v20->_dueBefore;
     v20->_dueBefore = v23;
 
-    v25 = [v15 copy];
+    v25 = [afterCopy copy];
     dueAfter = v20->_dueAfter;
     v20->_dueAfter = v25;
 
-    v27 = [v17 copy];
+    v27 = [completedCopy copy];
     completed = v20->_completed;
     v20->_completed = v27;
 
-    v29 = [v18 copy];
+    v29 = [locationCopy copy];
     hasLocation = v20->_hasLocation;
     v20->_hasLocation = v29;
 
@@ -49,63 +49,63 @@
   return v20;
 }
 
-- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithCoder:(id)a3
+- (REMSiriSearchLimitedDataViewInvocation_fetchReminders)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueBefore"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueAfter"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completed"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasLocation"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueBefore"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueAfter"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completed"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasLocation"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
 
   v11 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self initWithTitle:v5 dueAfter:v7 dueBefore:v6 isCompleted:v8 hasLocation:v9 location:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
-  [v4 encodeObject:v6 forKey:@"dueBefore"];
+  dueBefore = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
+  [coderCopy encodeObject:dueBefore forKey:@"dueBefore"];
 
-  v7 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
-  [v4 encodeObject:v7 forKey:@"dueAfter"];
+  dueAfter = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
+  [coderCopy encodeObject:dueAfter forKey:@"dueAfter"];
 
-  v8 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
-  [v4 encodeObject:v8 forKey:@"completed"];
+  completed = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
+  [coderCopy encodeObject:completed forKey:@"completed"];
 
-  v9 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
-  [v4 encodeObject:v9 forKey:@"hasLocation"];
+  hasLocation = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
+  [coderCopy encodeObject:hasLocation forKey:@"hasLocation"];
 
-  v10 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
-  [v4 encodeObject:v10 forKey:@"location"];
+  location = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_20;
   }
 
-  v5 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
-  v6 = [v4 title];
-  v7 = v6;
-  if (v5 == v6)
+  title = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
+  title2 = [equalCopy title];
+  v7 = title2;
+  if (title == title2)
   {
   }
 
   else
   {
-    v8 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
-    v9 = [v4 title];
-    v10 = [v8 isEqual:v9];
+    title3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
+    title4 = [equalCopy title];
+    v10 = [title3 isEqual:title4];
 
     if (!v10)
     {
@@ -113,18 +113,18 @@
     }
   }
 
-  v11 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
-  v12 = [v4 dueBefore];
-  v13 = v12;
-  if (v11 == v12)
+  dueBefore = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
+  dueBefore2 = [equalCopy dueBefore];
+  v13 = dueBefore2;
+  if (dueBefore == dueBefore2)
   {
   }
 
   else
   {
-    v14 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
-    v15 = [v4 dueBefore];
-    v16 = [v14 isEqual:v15];
+    dueBefore3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
+    dueBefore4 = [equalCopy dueBefore];
+    v16 = [dueBefore3 isEqual:dueBefore4];
 
     if (!v16)
     {
@@ -132,18 +132,18 @@
     }
   }
 
-  v17 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
-  v18 = [v4 dueAfter];
-  v19 = v18;
-  if (v17 == v18)
+  dueAfter = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
+  dueAfter2 = [equalCopy dueAfter];
+  v19 = dueAfter2;
+  if (dueAfter == dueAfter2)
   {
   }
 
   else
   {
-    v20 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
-    v21 = [v4 dueAfter];
-    v22 = [v20 isEqual:v21];
+    dueAfter3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
+    dueAfter4 = [equalCopy dueAfter];
+    v22 = [dueAfter3 isEqual:dueAfter4];
 
     if (!v22)
     {
@@ -151,18 +151,18 @@
     }
   }
 
-  v23 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
-  v24 = [v4 completed];
-  v25 = v24;
-  if (v23 == v24)
+  completed = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
+  completed2 = [equalCopy completed];
+  v25 = completed2;
+  if (completed == completed2)
   {
   }
 
   else
   {
-    v26 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
-    v27 = [v4 completed];
-    v28 = [v26 isEqual:v27];
+    completed3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
+    completed4 = [equalCopy completed];
+    v28 = [completed3 isEqual:completed4];
 
     if (!v28)
     {
@@ -170,18 +170,18 @@
     }
   }
 
-  v29 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
-  v30 = [v4 hasLocation];
-  v31 = v30;
-  if (v29 == v30)
+  hasLocation = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
+  hasLocation2 = [equalCopy hasLocation];
+  v31 = hasLocation2;
+  if (hasLocation == hasLocation2)
   {
   }
 
   else
   {
-    v32 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
-    v33 = [v4 hasLocation];
-    v34 = [v32 isEqual:v33];
+    hasLocation3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
+    hasLocation4 = [equalCopy hasLocation];
+    v34 = [hasLocation3 isEqual:hasLocation4];
 
     if (!v34)
     {
@@ -191,18 +191,18 @@ LABEL_20:
     }
   }
 
-  v37 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
-  v38 = [v4 location];
-  if (v37 == v38)
+  location = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
+  location2 = [equalCopy location];
+  if (location == location2)
   {
     v35 = 1;
   }
 
   else
   {
-    v39 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
-    v40 = [v4 location];
-    v35 = [v39 isEqual:v40];
+    location3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
+    location4 = [equalCopy location];
+    v35 = [location3 isEqual:location4];
   }
 
 LABEL_21:
@@ -211,18 +211,18 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
-  v4 = [v3 hash];
-  v5 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
-  v8 = [v7 hash];
-  v9 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
-  v12 = [v11 hash];
-  v13 = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
-  v14 = v12 ^ [v13 hash];
+  title = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self title];
+  v4 = [title hash];
+  dueBefore = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueBefore];
+  v6 = [dueBefore hash] ^ v4;
+  dueAfter = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self dueAfter];
+  v8 = [dueAfter hash];
+  completed = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self completed];
+  v10 = v6 ^ v8 ^ [completed hash];
+  hasLocation = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self hasLocation];
+  v12 = [hasLocation hash];
+  location = [(REMSiriSearchLimitedDataViewInvocation_fetchReminders *)self location];
+  v14 = v12 ^ [location hash];
 
   return v10 ^ v14;
 }

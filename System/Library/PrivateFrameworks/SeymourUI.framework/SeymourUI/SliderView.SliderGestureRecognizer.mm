@@ -1,29 +1,29 @@
 @interface SliderView.SliderGestureRecognizer
-- (_TtCC9SeymourUI10SliderViewP33_2440CD4F62170E63FB4B5B855592F14723SliderGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (_TtCC9SeymourUI10SliderViewP33_2440CD4F62170E63FB4B5B855592F14723SliderGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SliderView.SliderGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_20B51C88C(0, &qword_27C769700);
   sub_20BA646BC();
   sub_20C13CF74();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_20C13CF64();
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = type metadata accessor for SliderView.SliderGestureRecognizer();
-  [(SliderView.SliderGestureRecognizer *)&v9 touchesBegan:v8 withEvent:v6];
+  [(SliderView.SliderGestureRecognizer *)&v9 touchesBegan:v8 withEvent:eventCopy];
 
-  [(SliderView.SliderGestureRecognizer *)v7 setState:1];
+  [(SliderView.SliderGestureRecognizer *)selfCopy setState:1];
 }
 
-- (_TtCC9SeymourUI10SliderViewP33_2440CD4F62170E63FB4B5B855592F14723SliderGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtCC9SeymourUI10SliderViewP33_2440CD4F62170E63FB4B5B855592F14723SliderGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_20C13DA64();
@@ -35,7 +35,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_20C0D7C3C(v6, a4);
+  return sub_20C0D7C3C(v6, action);
 }
 
 @end

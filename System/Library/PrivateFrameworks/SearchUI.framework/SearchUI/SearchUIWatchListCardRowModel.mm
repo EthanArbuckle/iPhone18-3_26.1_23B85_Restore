@@ -1,76 +1,76 @@
 @interface SearchUIWatchListCardRowModel
-- (SearchUIWatchListCardRowModel)initWithResult:(id)a3 cardSection:(id)a4 asyncRowManager:(id)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
+- (SearchUIWatchListCardRowModel)initWithResult:(id)result cardSection:(id)section asyncRowManager:(id)manager queryId:(unint64_t)id itemIdentifier:(id)identifier;
 - (SearchUIWatchListCardRowModelDelegate)delegate;
 - (id)punchouts;
 - (int)separatorStyle;
-- (void)setHasError:(BOOL)a3;
-- (void)updateWithTitle:(id)a3 subtitle:(id)a4;
-- (void)updateWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 punchout:(id)a6;
+- (void)setHasError:(BOOL)error;
+- (void)updateWithTitle:(id)title subtitle:(id)subtitle;
+- (void)updateWithTitle:(id)title subtitle:(id)subtitle image:(id)image punchout:(id)punchout;
 @end
 
 @implementation SearchUIWatchListCardRowModel
 
-- (SearchUIWatchListCardRowModel)initWithResult:(id)a3 cardSection:(id)a4 asyncRowManager:(id)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUIWatchListCardRowModel)initWithResult:(id)result cardSection:(id)section asyncRowManager:(id)manager queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v12 = a5;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = SearchUIWatchListCardRowModel;
-  v13 = [(SearchUICardSectionRowModel *)&v16 initWithResult:a3 cardSection:a4 isInline:0 queryId:a6 itemIdentifier:a7];
+  v13 = [(SearchUICardSectionRowModel *)&v16 initWithResult:result cardSection:section isInline:0 queryId:id itemIdentifier:identifier];
   v14 = v13;
   if (v13)
   {
-    [(SearchUIWatchListCardRowModel *)v13 setManager:v12];
-    [v12 addWatchListRowModelObserver:v14];
+    [(SearchUIWatchListCardRowModel *)v13 setManager:managerCopy];
+    [managerCopy addWatchListRowModelObserver:v14];
   }
 
   return v14;
 }
 
-- (void)updateWithTitle:(id)a3 subtitle:(id)a4
+- (void)updateWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   [(SearchUIWatchListCardRowModel *)self setHasLoaded:1];
-  [(SearchUIWatchListCardRowModel *)self setTitle:v7];
+  [(SearchUIWatchListCardRowModel *)self setTitle:titleCopy];
 
-  [(SearchUIWatchListCardRowModel *)self setSubtitle:v6];
-  v8 = [(SearchUIWatchListCardRowModel *)self delegate];
-  [v8 didUpdateRowModel:self animate:0];
+  [(SearchUIWatchListCardRowModel *)self setSubtitle:subtitleCopy];
+  delegate = [(SearchUIWatchListCardRowModel *)self delegate];
+  [delegate didUpdateRowModel:self animate:0];
 }
 
-- (void)updateWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 punchout:(id)a6
+- (void)updateWithTitle:(id)title subtitle:(id)subtitle image:(id)image punchout:(id)punchout
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  punchoutCopy = punchout;
+  imageCopy = image;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   [(SearchUIWatchListCardRowModel *)self setHasLoaded:1];
-  [(SearchUIWatchListCardRowModel *)self setTitle:v13];
+  [(SearchUIWatchListCardRowModel *)self setTitle:titleCopy];
 
-  [(SearchUIWatchListCardRowModel *)self setSubtitle:v12];
-  [(SearchUIWatchListCardRowModel *)self setImage:v11];
+  [(SearchUIWatchListCardRowModel *)self setSubtitle:subtitleCopy];
+  [(SearchUIWatchListCardRowModel *)self setImage:imageCopy];
 
-  [(SearchUIWatchListCardRowModel *)self setPunchout:v10];
-  v14 = [(SearchUIWatchListCardRowModel *)self delegate];
-  [v14 didUpdateRowModel:self animate:1];
+  [(SearchUIWatchListCardRowModel *)self setPunchout:punchoutCopy];
+  delegate = [(SearchUIWatchListCardRowModel *)self delegate];
+  [delegate didUpdateRowModel:self animate:1];
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  self->_hasError = a3;
+  self->_hasError = error;
   [(SearchUIWatchListCardRowModel *)self setHasLoaded:1];
-  v4 = [(SearchUIWatchListCardRowModel *)self delegate];
-  [v4 didUpdateRowModel:self animate:1];
+  delegate = [(SearchUIWatchListCardRowModel *)self delegate];
+  [delegate didUpdateRowModel:self animate:1];
 }
 
 - (id)punchouts
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIWatchListCardRowModel *)self punchout];
-  if (v3)
+  punchout = [(SearchUIWatchListCardRowModel *)self punchout];
+  if (punchout)
   {
-    v4 = [(SearchUIWatchListCardRowModel *)self punchout];
-    v7[0] = v4;
+    punchout2 = [(SearchUIWatchListCardRowModel *)self punchout];
+    v7[0] = punchout2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 

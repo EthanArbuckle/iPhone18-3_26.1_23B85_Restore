@@ -1,14 +1,14 @@
 @interface SOSFeedbackViewController
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithFeedbackID:(id)a4;
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5;
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4;
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4;
-- (void)feedbackDraftViewControllerDidCancel:(id)a3;
+- (void)feedbackDraftViewController:(id)controller didCompleteWithFeedbackID:(id)d;
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error;
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback;
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation SOSFeedbackViewController
 
-- (void)feedbackDraftViewController:(id)a3 didCompleteWithFeedbackID:(id)a4
+- (void)feedbackDraftViewController:(id)controller didCompleteWithFeedbackID:(id)d
 {
   v5 = sub_146D4();
   v7 = v6;
@@ -23,7 +23,7 @@
   }
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToStartWithError:(int64_t)a4
+- (void)feedbackDraftViewController:(id)controller didFailToStartWithError:(int64_t)error
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -37,7 +37,7 @@
   }
 }
 
-- (void)feedbackDraftViewControllerDidCancel:(id)a3
+- (void)feedbackDraftViewControllerDidCancel:(id)cancel
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -50,7 +50,7 @@
   }
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error
 {
   v6 = sub_14114();
   v7 = *(v6 - 8);
@@ -72,16 +72,16 @@
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToSubmitFeedback:(id)a4
+- (void)feedbackDraftViewController:(id)controller didFailToSubmitFeedback:(id)feedback
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     v7 = *&self->delegate[8];
     ObjectType = swift_getObjectType();
-    v9 = a3;
-    v10 = a4;
+    controllerCopy = controller;
+    feedbackCopy = feedback;
 
-    v11 = [v10 description];
+    v11 = [feedbackCopy description];
     v12 = sub_146D4();
     v14 = v13;
 

@@ -1,47 +1,47 @@
 @interface SRUserUtteranceViewController
-- (BOOL)editableTextViewTextShouldPreventCorrection:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)editableTextViewTextShouldPreventCorrection:(id)correction;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSString)description;
-- (double)_scaledPaddingForPadding:(double)a3;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)_scaledPaddingForPadding:(double)padding;
+- (double)desiredHeightForWidth:(double)width;
 - (double)desiredPinnedTopPadding;
 - (id)_correctionIdentifier;
-- (id)_processUserUtterance:(id)a3 isCombined:(BOOL)a4 displayedText:(id)a5 withScore:(BOOL)a6;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)speechAlternativeHighlightListWithScore:(BOOL)a3;
-- (id)userSelectionResults:(id)a3;
+- (id)_processUserUtterance:(id)utterance isCombined:(BOOL)combined displayedText:(id)text withScore:(BOOL)score;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)speechAlternativeHighlightListWithScore:(BOOL)score;
+- (id)userSelectionResults:(id)results;
 - (int64_t)_replacementAnimation;
-- (void)_checkUpdatedSizingForEditableTextView:(id)a3;
+- (void)_checkUpdatedSizingForEditableTextView:(id)view;
 - (void)_createSpeechAlternativeViewsIfNecessary;
 - (void)_hideEditableUtteranceView;
-- (void)_setUserUtterance:(id)a3;
-- (void)_updateViewWithChangeUtteranceIfNeeded:(id)a3;
-- (void)_updateViewWithUserUtterance:(id)a3;
-- (void)_utteranceViewDidSelect:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_setUserUtterance:(id)utterance;
+- (void)_updateViewWithChangeUtteranceIfNeeded:(id)needed;
+- (void)_updateViewWithUserUtterance:(id)utterance;
+- (void)_utteranceViewDidSelect:(id)select;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)createEditableUtteranceView;
 - (void)createViewArray;
-- (void)editableTextViewRequestKeyboardForTapToEditWithCompletion:(id)a3;
-- (void)editableTextViewTextDidChange:(id)a3;
-- (void)editableTextViewTextDidFinishCorrecting:(id)a3;
-- (void)editableTextViewTextDidResignFirstResponder:(id)a3;
-- (void)editableTextViewTextWillBeginCorrecting:(id)a3;
-- (void)endEditingAndCorrect:(BOOL)a3;
-- (void)endEditingAndCorrectByTouchPoint:(CGPoint)a3;
-- (void)handleAceCommand:(id)a3;
-- (void)handleChangeUtteranceCommand:(id)a3;
-- (void)handleSelectRow:(int64_t)a3;
-- (void)handleShowSpeechAlternativesCommand:(id)a3;
+- (void)editableTextViewRequestKeyboardForTapToEditWithCompletion:(id)completion;
+- (void)editableTextViewTextDidChange:(id)change;
+- (void)editableTextViewTextDidFinishCorrecting:(id)correcting;
+- (void)editableTextViewTextDidResignFirstResponder:(id)responder;
+- (void)editableTextViewTextWillBeginCorrecting:(id)correcting;
+- (void)endEditingAndCorrect:(BOOL)correct;
+- (void)endEditingAndCorrectByTouchPoint:(CGPoint)point;
+- (void)handleAceCommand:(id)command;
+- (void)handleChangeUtteranceCommand:(id)command;
+- (void)handleSelectRow:(int64_t)row;
+- (void)handleShowSpeechAlternativesCommand:(id)command;
 - (void)loadView;
 - (void)removeSpeechAlternativeViewAndUpdateUtteranceTextIfNecessary;
 - (void)removeSpeechAlternatives;
-- (void)restoreOriginalEditTextContents:(id)a3;
-- (void)setAceObject:(id)a3;
-- (void)setUtteranceUserInteractionEnabled:(BOOL)a3;
+- (void)restoreOriginalEditTextContents:(id)contents;
+- (void)setAceObject:(id)object;
+- (void)setUtteranceUserInteractionEnabled:(BOOL)enabled;
 - (void)siriDidDeactivate;
 - (void)viewDidLayoutSubviews;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SRUserUtteranceViewController
@@ -55,8 +55,8 @@
     self->_utteranceView = v3;
 
     [(SRUserUtteranceView *)self->_utteranceView setEditable:1];
-    v5 = [(SRUserUtteranceViewController *)self _userUtterance];
-    [(SRUserUtteranceViewController *)self _updateViewWithUserUtterance:v5];
+    _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+    [(SRUserUtteranceViewController *)self _updateViewWithUserUtterance:_userUtterance];
 
     v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_utteranceViewDidSelect:"];
     tapRecognizer = self->_tapRecognizer;
@@ -80,8 +80,8 @@
   v14.receiver = self;
   v14.super_class = SRUserUtteranceViewController;
   [(SRUserUtteranceViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(SRUserUtteranceViewController *)self view];
-  [v3 bounds];
+  view = [(SRUserUtteranceViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -91,8 +91,8 @@
   {
     if (self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews)
     {
-      v13 = [(UICollectionView *)self->_speechAlternativeCollectionView collectionViewLayout];
-      [v13 invalidateLayout];
+      collectionViewLayout = [(UICollectionView *)self->_speechAlternativeCollectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
 
     self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews = 1;
@@ -103,21 +103,21 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(SRUserUtteranceViewController *)self view];
-  [v8 bounds];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(SRUserUtteranceViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
   if (v10 != width || v12 != height)
   {
     self->_needsToInvalidateCollectionViewLayoutOnViewWillLayoutSubviews = 0;
-    v14 = [(UICollectionView *)self->_speechAlternativeCollectionView collectionViewLayout];
-    [v14 invalidateLayout];
+    collectionViewLayout = [(UICollectionView *)self->_speechAlternativeCollectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -129,7 +129,7 @@
 
   v15.receiver = self;
   v15.super_class = SRUserUtteranceViewController;
-  [(SRUserUtteranceViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SRUserUtteranceViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (void)viewDidLayoutSubviews
@@ -144,8 +144,8 @@
   {
     v10 = v3;
     v11 = v4;
-    v12 = [(SRUserUtteranceViewController *)self delegate];
-    [v12 siriViewControllerHeightDidChange:self];
+    delegate = [(SRUserUtteranceViewController *)self delegate];
+    [delegate siriViewControllerHeightDidChange:self];
 
     v16.origin.x = v6;
     v16.origin.y = v8;
@@ -162,24 +162,24 @@
   }
 }
 
-- (void)_updateViewWithUserUtterance:(id)a3
+- (void)_updateViewWithUserUtterance:(id)utterance
 {
   utteranceView = self->_utteranceView;
-  v5 = a3;
-  v6 = [v5 bestTextInterpretation];
-  [(SRUserUtteranceView *)utteranceView setText:v6];
+  utteranceCopy = utterance;
+  bestTextInterpretation = [utteranceCopy bestTextInterpretation];
+  [(SRUserUtteranceView *)utteranceView setText:bestTextInterpretation];
 
-  v9 = [v5 allPhrases];
+  allPhrases = [utteranceCopy allPhrases];
 
-  if (v9)
+  if (allPhrases)
   {
     self->_changeUtteranceShouldDisplay = 1;
     self->_receivedFinalRecognitionResult = 1;
     [(SRUserUtteranceViewController *)self _updateViewWithChangeUtteranceIfNeeded:self->_changeUtteranceCommand];
     if (self->_editableUtteranceView)
     {
-      v7 = [(SRUserUtteranceViewController *)self _userUtterance];
-      [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v7];
+      _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+      [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance];
     }
 
     else
@@ -188,47 +188,47 @@
     }
 
     [(SRUserUtteranceView *)self->_utteranceView setBlendEffectEnabled:1];
-    v8 = [(SRUserUtteranceViewController *)self delegate];
-    [v8 siriViewControllerHeightDidChange:self];
+    delegate = [(SRUserUtteranceViewController *)self delegate];
+    [delegate siriViewControllerHeightDidChange:self];
   }
 }
 
-- (void)_updateViewWithChangeUtteranceIfNeeded:(id)a3
+- (void)_updateViewWithChangeUtteranceIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
     if (self->_changeUtteranceShouldDisplay)
     {
-      v10 = v4;
-      v5 = [v4 utteranceIndex];
-      v4 = v10;
-      if (v5 >= 1)
+      v10 = neededCopy;
+      utteranceIndex = [neededCopy utteranceIndex];
+      neededCopy = v10;
+      if (utteranceIndex >= 1)
       {
-        v6 = [(SRUserUtteranceViewController *)self _userUtterance];
-        v7 = [v6 numberOfAlternativeUtterances];
+        _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+        numberOfAlternativeUtterances = [_userUtterance numberOfAlternativeUtterances];
 
-        v4 = v10;
-        if (v5 < v7)
+        neededCopy = v10;
+        if (utteranceIndex < numberOfAlternativeUtterances)
         {
-          v8 = [(SRUserUtteranceViewController *)self _userUtterance];
-          v9 = [v8 textOfUtteranceAtIndex:v5];
+          _userUtterance2 = [(SRUserUtteranceViewController *)self _userUtterance];
+          v9 = [_userUtterance2 textOfUtteranceAtIndex:utteranceIndex];
 
           [(SRUserUtteranceView *)self->_utteranceView setText:v9];
-          v4 = v10;
+          neededCopy = v10;
         }
       }
     }
   }
 }
 
-- (void)setUtteranceUserInteractionEnabled:(BOOL)a3
+- (void)setUtteranceUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = SRUserUtteranceViewController;
   [(SRUserUtteranceViewController *)&v8 setUtteranceUserInteractionEnabled:?];
-  v5 = !v3;
+  v5 = !enabledCopy;
   [(SRUserUtteranceView *)self->_utteranceView setChevronHidden:v5];
   utteranceView = self->_utteranceView;
   tapRecognizer = self->_tapRecognizer;
@@ -248,25 +248,25 @@
   v7.receiver = self;
   v7.super_class = SRUserUtteranceViewController;
   v3 = [(SRUserUtteranceViewController *)&v7 description];
-  v4 = [(SRUserUtteranceViewController *)self _userUtterance];
-  v5 = [v3 stringByAppendingFormat:@"%@", v4];
+  _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+  v5 = [v3 stringByAppendingFormat:@"%@", _userUtterance];
 
   return v5;
 }
 
-- (void)_setUserUtterance:(id)a3
+- (void)_setUserUtterance:(id)utterance
 {
-  v5 = a3;
-  if (v5)
+  utteranceCopy = utterance;
+  if (utteranceCopy)
   {
-    v7 = v5;
-    v6 = [(SRUserUtteranceViewController *)self _userUtterance];
+    v7 = utteranceCopy;
+    _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
 
-    if (v6 != v7)
+    if (_userUtterance != v7)
     {
       self->_forceBestTextInterpretation = 0;
       [(SRUserUtteranceViewController *)self _updateViewWithUserUtterance:v7];
-      objc_storeStrong(&self->_userUtterance, a3);
+      objc_storeStrong(&self->_userUtterance, utterance);
     }
   }
 
@@ -275,15 +275,15 @@
 
 - (id)_correctionIdentifier
 {
-  v2 = [(SRUserUtteranceViewController *)self _userUtterance];
-  v3 = [v2 correctionIdentifier];
+  _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+  correctionIdentifier = [_userUtterance correctionIdentifier];
 
-  return v3;
+  return correctionIdentifier;
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  self->_latestGivenWidth = a3;
+  self->_latestGivenWidth = width;
   if (self->_showSpeechAlternativeList)
   {
     [(SiriUICollectionViewFlowLayout *)self->_speechAlternativeCollectionViewLayout collectionViewContentSize];
@@ -314,11 +314,11 @@
 - (void)removeSpeechAlternativeViewAndUpdateUtteranceTextIfNecessary
 {
   self->_showSpeechAlternativeList = 0;
-  v3 = [(SRUserUtteranceViewController *)self delegate];
-  [v3 siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
+  delegate = [(SRUserUtteranceViewController *)self delegate];
+  [delegate siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
 
-  v4 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  [v4 siriViewControllerRequestToPin:self];
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerRequestToPin:self];
 
   if (self->_textChanged)
   {
@@ -328,22 +328,22 @@
 
   else
   {
-    v5 = [(SRUserUtteranceViewController *)self _userUtterance];
-    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v5];
+    _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance];
 
     utteranceView = self->_utteranceView;
-    v7 = [(SREditableTextView *)self->_editableUtteranceView text];
-    [(SRUserUtteranceView *)utteranceView setText:v7];
+    text = [(SREditableTextView *)self->_editableUtteranceView text];
+    [(SRUserUtteranceView *)utteranceView setText:text];
   }
 }
 
-- (void)handleAceCommand:(id)a3
+- (void)handleAceCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_changeUtteranceCommand, a3);
+    objc_storeStrong(&self->_changeUtteranceCommand, command);
     [(SRUserUtteranceViewController *)self handleChangeUtteranceCommand:self->_changeUtteranceCommand];
   }
 
@@ -352,19 +352,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SRUserUtteranceViewController *)self handleShowSpeechAlternativesCommand:v5];
+      [(SRUserUtteranceViewController *)self handleShowSpeechAlternativesCommand:commandCopy];
     }
   }
 }
 
-- (void)handleShowSpeechAlternativesCommand:(id)a3
+- (void)handleShowSpeechAlternativesCommand:(id)command
 {
-  v4 = [(SRUserUtteranceViewController *)self _userUtterance];
-  [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v4];
+  _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+  [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance];
 
-  v5 = [(UICollectionView *)self->_speechAlternativeCollectionView window];
+  window = [(UICollectionView *)self->_speechAlternativeCollectionView window];
 
-  if (v5)
+  if (window)
   {
     editableUtteranceView = self->_editableUtteranceView;
 
@@ -379,37 +379,37 @@
   }
 }
 
-- (void)handleChangeUtteranceCommand:(id)a3
+- (void)handleChangeUtteranceCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 136315394;
     v23 = "[SRUserUtteranceViewController handleChangeUtteranceCommand:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = commandCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s handleChangeUtteranceCommand: %@", &v22, 0x16u);
   }
 
   if (self->_receivedFinalRecognitionResult)
   {
-    changeUtteranceCommand = v4;
-    v7 = [(SAUIChangePrimaryUtterance *)changeUtteranceCommand utteranceIndex];
-    if (v7 >= 1)
+    changeUtteranceCommand = commandCopy;
+    utteranceIndex = [(SAUIChangePrimaryUtterance *)changeUtteranceCommand utteranceIndex];
+    if (utteranceIndex >= 1)
     {
-      v8 = v7;
-      v9 = [(SRUserUtteranceViewController *)self _userUtterance];
-      v10 = [v9 numberOfAlternativeUtterances];
+      v8 = utteranceIndex;
+      _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+      numberOfAlternativeUtterances = [_userUtterance numberOfAlternativeUtterances];
 
-      if (v8 < v10)
+      if (v8 < numberOfAlternativeUtterances)
       {
         self->_forceBestTextInterpretation = 1;
-        v11 = [(SRUserUtteranceViewController *)self _userUtterance];
-        v12 = [v11 dictationResult];
+        _userUtterance2 = [(SRUserUtteranceViewController *)self _userUtterance];
+        dictationResult = [_userUtterance2 dictationResult];
 
-        v13 = [(SRUserUtteranceViewController *)self _userUtterance];
-        v14 = [v13 updateDictationResult:v12 withAlternativeUtteranceAtIndex:v8];
+        _userUtterance3 = [(SRUserUtteranceViewController *)self _userUtterance];
+        v14 = [_userUtterance3 updateDictationResult:dictationResult withAlternativeUtteranceAtIndex:v8];
 
         v15 = [(SRUserUtteranceViewController *)self speechAlternativeHighlightListWithScore:SiriUIShowSpeechAlternativeScore()];
         speechAlternativeDisplayList = self->_speechAlternativeDisplayList;
@@ -419,41 +419,41 @@
         [(UICollectionView *)self->_speechAlternativeCollectionView reloadData];
         [(UICollectionView *)self->_speechAlternativeCollectionView recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
         utteranceView = self->_utteranceView;
-        v18 = [(SREditableTextView *)self->_editableUtteranceView text];
-        [(SRUserUtteranceView *)utteranceView setText:v18];
+        text = [(SREditableTextView *)self->_editableUtteranceView text];
+        [(SRUserUtteranceView *)utteranceView setText:text];
 
         [(SRUserUtteranceView *)self->_utteranceView setNeedsLayout];
-        v19 = [(SRUserUtteranceViewController *)self delegate];
-        [v19 siriViewControllerHeightDidChange:self];
+        delegate = [(SRUserUtteranceViewController *)self delegate];
+        [delegate siriViewControllerHeightDidChange:self];
 
-        v20 = [(SRUserUtteranceViewController *)self view];
-        [v20 setNeedsLayout];
+        view = [(SRUserUtteranceViewController *)self view];
+        [view setNeedsLayout];
       }
     }
   }
 
   else
   {
-    v21 = v4;
+    v21 = commandCopy;
     changeUtteranceCommand = self->_changeUtteranceCommand;
     self->_changeUtteranceCommand = v21;
   }
 }
 
-- (void)setAceObject:(id)a3
+- (void)setAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v24.receiver = self;
   v24.super_class = SRUserUtteranceViewController;
-  [(SRUserUtteranceViewController *)&v24 setAceObject:v4];
+  [(SRUserUtteranceViewController *)&v24 setAceObject:objectCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 af_userUtteranceValue];
-    v7 = [v5 title];
+    text = objectCopy;
+    af_userUtteranceValue = [text af_userUtteranceValue];
+    title = [text title];
     speechAlternativeListTitle = self->_speechAlternativeListTitle;
-    self->_speechAlternativeListTitle = v7;
+    self->_speechAlternativeListTitle = title;
 
     if (!self->_speechAlternativeListTitle)
     {
@@ -471,15 +471,15 @@
     alternativeInfoMap = self->_alternativeInfoMap;
     self->_alternativeInfoMap = v16;
 
-    v18 = [v5 sessionId];
+    sessionId = [text sessionId];
     sessionId = self->_sessionId;
-    self->_sessionId = v18;
+    self->_sessionId = sessionId;
 
     if (AFIsInternalInstall())
     {
       v25 = @"bestTextInterpretation";
-      v20 = [v5 af_bestTextInterpretation];
-      v26 = v20;
+      af_bestTextInterpretation = [text af_bestTextInterpretation];
+      v26 = af_bestTextInterpretation;
       v21 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     }
 
@@ -501,20 +501,20 @@ LABEL_10:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = 0;
+      af_userUtteranceValue = 0;
       goto LABEL_11;
     }
 
-    v5 = [v4 text];
-    v6 = [[AFUserUtterance alloc] initWithString:v5 correctionIdentifier:0];
+    text = [objectCopy text];
+    af_userUtteranceValue = [[AFUserUtterance alloc] initWithString:text correctionIdentifier:0];
     goto LABEL_10;
   }
 
-  v6 = [v4 af_userUtteranceValue];
+  af_userUtteranceValue = [objectCopy af_userUtteranceValue];
 LABEL_11:
-  [(SRUserUtteranceViewController *)self _setUserUtterance:v6];
-  v23 = [(SRUserUtteranceViewController *)self _userUtterance];
-  [(SRUserUtteranceViewController *)self _updateViewWithUserUtterance:v23];
+  [(SRUserUtteranceViewController *)self _setUserUtterance:af_userUtteranceValue];
+  _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+  [(SRUserUtteranceViewController *)self _updateViewWithUserUtterance:_userUtterance];
 }
 
 - (double)desiredPinnedTopPadding
@@ -538,38 +538,38 @@ LABEL_11:
   return result;
 }
 
-- (double)_scaledPaddingForPadding:(double)a3
+- (double)_scaledPaddingForPadding:(double)padding
 {
   v5 = +[UIFont siriui_userUtteranceFont];
-  [v5 _scaledValueForValue:a3];
+  [v5 _scaledValueForValue:padding];
   v7 = v6;
 
   [(SRUserUtteranceContainerView *)self->_containerView firstLineBaselineOffsetFromTop];
   return v7 - v8;
 }
 
-- (void)endEditingAndCorrect:(BOOL)a3
+- (void)endEditingAndCorrect:(BOOL)correct
 {
-  v3 = a3;
-  v5 = [(SREditableTextView *)self->_editableUtteranceView window];
+  correctCopy = correct;
+  window = [(SREditableTextView *)self->_editableUtteranceView window];
 
-  if (v5)
+  if (window)
   {
-    [(SREditableTextView *)self->_editableUtteranceView endEditingAndCorrect:v3];
+    [(SREditableTextView *)self->_editableUtteranceView endEditingAndCorrect:correctCopy];
   }
 
-  if (!v3)
+  if (!correctCopy)
   {
     self->_showSpeechAlternativeList = 0;
     [(SRUserUtteranceViewController *)self _hideEditableUtteranceView];
-    v6 = [(SRUserUtteranceViewController *)self _privateDelegate];
-    [v6 siriViewControllerRequestTearDownEditingViewController:self];
+    _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+    [_privateDelegate siriViewControllerRequestTearDownEditingViewController:self];
   }
 }
 
-- (void)endEditingAndCorrectByTouchPoint:(CGPoint)a3
+- (void)endEditingAndCorrectByTouchPoint:(CGPoint)point
 {
-  v4 = [(UICollectionView *)self->_speechAlternativeCollectionView hitTest:0 withEvent:a3.x, a3.y];
+  v4 = [(UICollectionView *)self->_speechAlternativeCollectionView hitTest:0 withEvent:point.x, point.y];
   v5 = v4;
   v14 = 0;
   v15 = &v14;
@@ -626,7 +626,7 @@ LABEL_11:
   }
 }
 
-- (void)_utteranceViewDidSelect:(id)a3
+- (void)_utteranceViewDidSelect:(id)select
 {
   if (self->_receivedFinalRecognitionResult)
   {
@@ -649,8 +649,8 @@ LABEL_11:
 - (void)_hideEditableUtteranceView
 {
   utteranceView = self->_utteranceView;
-  v4 = [(SREditableTextView *)self->_editableUtteranceView text];
-  [(SRUserUtteranceView *)utteranceView setText:v4];
+  text = [(SREditableTextView *)self->_editableUtteranceView text];
+  [(SRUserUtteranceView *)utteranceView setText:text];
 
   containerView = self->_containerView;
   v6[0] = _NSConcreteStackBlock;
@@ -682,32 +682,32 @@ LABEL_11:
     [(SREditableTextView *)self->_editableUtteranceView setTextAlignment:v5];
     [(SREditableTextView *)self->_editableUtteranceView setDelegate:self];
     [(SREditableTextView *)self->_editableUtteranceView setAutoresizingMask:18];
-    v6 = [(SRUserUtteranceViewController *)self _userUtterance];
-    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v6];
+    _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance];
   }
 }
 
-- (BOOL)editableTextViewTextShouldPreventCorrection:(id)a3
+- (BOOL)editableTextViewTextShouldPreventCorrection:(id)correction
 {
-  v3 = self;
-  v4 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  LOBYTE(v3) = [v4 siriViewControllerShouldPreventUserInteraction:v3];
+  selfCopy = self;
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  LOBYTE(selfCopy) = [_privateDelegate siriViewControllerShouldPreventUserInteraction:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)editableTextViewRequestKeyboardForTapToEditWithCompletion:(id)a3
+- (void)editableTextViewRequestKeyboardForTapToEditWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  [v5 siriViewControllerRequestKeyboardForTapToEditWithCompletion:v4];
+  completionCopy = completion;
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerRequestKeyboardForTapToEditWithCompletion:completionCopy];
 }
 
-- (void)editableTextViewTextWillBeginCorrecting:(id)a3
+- (void)editableTextViewTextWillBeginCorrecting:(id)correcting
 {
-  v4 = [(SREditableTextView *)self->_editableUtteranceView text];
+  text = [(SREditableTextView *)self->_editableUtteranceView text];
   preCorrectionText = self->_preCorrectionText;
-  self->_preCorrectionText = v4;
+  self->_preCorrectionText = text;
 
   editableUtteranceView = self->_editableUtteranceView;
   [(SREditableTextView *)editableUtteranceView frame];
@@ -727,24 +727,24 @@ LABEL_11:
 
   if ([(NSArray *)speechAlternativeDisplayList count])
   {
-    v12 = [(SRUserUtteranceViewController *)self delegate];
-    [v12 siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
+    delegate = [(SRUserUtteranceViewController *)self delegate];
+    [delegate siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
   }
 
-  v13 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  [v13 siriViewControllerWillBeginEditing:self];
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerWillBeginEditing:self];
 
   v16 = +[AFAnalytics sharedAnalytics];
-  v14 = [(SRUserUtteranceViewController *)self aceObject];
+  aceObject = [(SRUserUtteranceViewController *)self aceObject];
   v15 = AFAnalyticsContextCreateWithCommand();
   [v16 logEventWithType:1424 context:v15];
 }
 
-- (void)_checkUpdatedSizingForEditableTextView:(id)a3
+- (void)_checkUpdatedSizingForEditableTextView:(id)view
 {
-  v4 = a3;
-  [v4 frame];
-  [v4 sizeThatFits:{CGRectGetWidth(v12), 1.79769313e308}];
+  viewCopy = view;
+  [viewCopy frame];
+  [viewCopy sizeThatFits:{CGRectGetWidth(v12), 1.79769313e308}];
   v6 = v5;
   v8 = v7;
 
@@ -753,52 +753,52 @@ LABEL_11:
     self->_currentTextSize.width = v6;
     self->_currentTextSize.height = v8;
     [(SiriUICollectionViewFlowLayout *)self->_speechAlternativeCollectionViewLayout invalidateLayout];
-    v10 = [(SRUserUtteranceViewController *)self delegate];
-    [v10 siriViewControllerHeightDidChange:self];
+    delegate = [(SRUserUtteranceViewController *)self delegate];
+    [delegate siriViewControllerHeightDidChange:self];
   }
 }
 
-- (void)editableTextViewTextDidChange:(id)a3
+- (void)editableTextViewTextDidChange:(id)change
 {
-  v4 = a3;
-  [(SRUserUtteranceViewController *)self _checkUpdatedSizingForEditableTextView:v4];
-  [v4 setNeedsLayout];
+  changeCopy = change;
+  [(SRUserUtteranceViewController *)self _checkUpdatedSizingForEditableTextView:changeCopy];
+  [changeCopy setNeedsLayout];
   preCorrectionText = self->_preCorrectionText;
-  v6 = [v4 text];
+  text = [changeCopy text];
 
   v7 = +[NSCharacterSet whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [text stringByTrimmingCharactersInSet:v7];
   self->_textChanged = ![(NSString *)preCorrectionText isEqualToString:v8];
 
-  v9 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  [v9 siriViewControllerRequestToPin:self];
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerRequestToPin:self];
 }
 
-- (void)editableTextViewTextDidFinishCorrecting:(id)a3
+- (void)editableTextViewTextDidFinishCorrecting:(id)correcting
 {
-  v4 = a3;
-  v5 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  [v5 siriViewControllerDidEndEditing:self];
+  correctingCopy = correcting;
+  _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+  [_privateDelegate siriViewControllerDidEndEditing:self];
 
-  v6 = [v4 text];
-  v7 = v6;
+  text = [correctingCopy text];
+  v7 = text;
   self->_showSpeechAlternativeList = 0;
   if (!self->_textChanged)
   {
-    v11 = [(SRUserUtteranceViewController *)self _userUtterance];
-    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v11];
+    _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance];
     goto LABEL_6;
   }
 
-  if (![v6 length])
+  if (![text length])
   {
-    v18 = [(SRUserUtteranceViewController *)self _userUtterance];
-    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:v18];
+    _userUtterance2 = [(SRUserUtteranceViewController *)self _userUtterance];
+    [(SRUserUtteranceViewController *)self restoreOriginalEditTextContents:_userUtterance2];
 
     utteranceView = self->_utteranceView;
-    v20 = [(SRUserUtteranceViewController *)self _userUtterance];
-    v21 = [v20 bestTextInterpretation];
-    [(SRUserUtteranceView *)utteranceView setText:v21];
+    _userUtterance3 = [(SRUserUtteranceViewController *)self _userUtterance];
+    bestTextInterpretation = [_userUtterance3 bestTextInterpretation];
+    [(SRUserUtteranceView *)utteranceView setText:bestTextInterpretation];
 
     goto LABEL_10;
   }
@@ -806,21 +806,21 @@ LABEL_11:
   if (![(NSString *)self->_preCorrectionText isEqualToString:v7])
   {
     v8 = [AFUserUtterance alloc];
-    v9 = [(SRUserUtteranceViewController *)self _userUtterance];
-    v10 = [v9 correctionIdentifier];
-    v11 = [v8 initWithString:v7 correctionIdentifier:v10];
+    _userUtterance4 = [(SRUserUtteranceViewController *)self _userUtterance];
+    correctionIdentifier = [_userUtterance4 correctionIdentifier];
+    _userUtterance = [v8 initWithString:v7 correctionIdentifier:correctionIdentifier];
 
-    [(SRUserUtteranceViewController *)self _setUserUtterance:v11];
+    [(SRUserUtteranceViewController *)self _setUserUtterance:_userUtterance];
     [(SRUserUtteranceViewController *)self removeSpeechAlternatives];
-    [v4 setText:v7];
+    [correctingCopy setText:v7];
     self->_newRequestSent = 1;
 LABEL_6:
   }
 
   v12 = objc_alloc_init(SAUIListItem);
   [v12 setSelectionText:v7];
-  v13 = [(SRUserUtteranceViewController *)self delegate];
-  [v13 siriViewController:self addSelectionResponse:v12];
+  delegate = [(SRUserUtteranceViewController *)self delegate];
+  [delegate siriViewController:self addSelectionResponse:v12];
 
   v14 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -832,43 +832,43 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s CorrectedText = %@", &v22, 0x16u);
   }
 
-  v15 = [(SRUserUtteranceViewController *)self _privateDelegate];
-  v16 = [(SRUserUtteranceViewController *)self _correctionIdentifier];
+  _privateDelegate2 = [(SRUserUtteranceViewController *)self _privateDelegate];
+  _correctionIdentifier = [(SRUserUtteranceViewController *)self _correctionIdentifier];
   v17 = [(SRUserUtteranceViewController *)self userSelectionResults:v7];
-  [v15 siriViewController:self startCorrectedSpeechRequestWithText:v7 correctionIdentifier:v16 userSelectionResults:v17];
+  [_privateDelegate2 siriViewController:self startCorrectedSpeechRequestWithText:v7 correctionIdentifier:_correctionIdentifier userSelectionResults:v17];
 
 LABEL_10:
   [(SRUserUtteranceViewController *)self _hideEditableUtteranceView];
 }
 
-- (void)editableTextViewTextDidResignFirstResponder:(id)a3
+- (void)editableTextViewTextDidResignFirstResponder:(id)responder
 {
-  v4 = [(SRUserUtteranceViewController *)self delegate];
+  delegate = [(SRUserUtteranceViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SRUserUtteranceViewController *)self delegate];
-    [v6 siriViewControllerDidResignFirstResponder:self];
+    delegate2 = [(SRUserUtteranceViewController *)self delegate];
+    [delegate2 siriViewControllerDidResignFirstResponder:self];
   }
 }
 
-- (void)restoreOriginalEditTextContents:(id)a3
+- (void)restoreOriginalEditTextContents:(id)contents
 {
-  v8 = a3;
-  v4 = [v8 allPhrases];
-  if (v4 && !self->_forceBestTextInterpretation)
+  contentsCopy = contents;
+  allPhrases = [contentsCopy allPhrases];
+  if (allPhrases && !self->_forceBestTextInterpretation)
   {
     editableUtteranceView = self->_editableUtteranceView;
-    v6 = [v8 correctionIdentifier];
-    [(SREditableTextView *)editableUtteranceView setDictationResult:v4 withCorrectionIdentifier:v6];
+    correctionIdentifier = [contentsCopy correctionIdentifier];
+    [(SREditableTextView *)editableUtteranceView setDictationResult:allPhrases withCorrectionIdentifier:correctionIdentifier];
   }
 
   else
   {
     v5 = self->_editableUtteranceView;
-    v6 = [v8 bestTextInterpretation];
-    [(SREditableTextView *)v5 setText:v6];
+    correctionIdentifier = [contentsCopy bestTextInterpretation];
+    [(SREditableTextView *)v5 setText:correctionIdentifier];
   }
 }
 
@@ -974,9 +974,9 @@ LABEL_10:
   }
 }
 
-- (id)speechAlternativeHighlightListWithScore:(BOOL)a3
+- (id)speechAlternativeHighlightListWithScore:(BOOL)score
 {
-  v3 = a3;
+  scoreCopy = score;
   if (SiriUIDisableAlternativesFeature())
   {
     v5 = 0;
@@ -995,11 +995,11 @@ LABEL_10:
 
   [(NSMutableDictionary *)self->_alternativeInfoMap removeAllObjects];
   self->_showOnDeviceResults = 0;
-  v9 = [(SRUserUtteranceViewController *)self _userUtterance];
-  v10 = [v9 allRecognitionStringsAndScores];
+  _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+  allRecognitionStringsAndScores = [_userUtterance allRecognitionStringsAndScores];
 
-  v11 = [(SRUserUtteranceViewController *)self _userUtterance];
-  v12 = [v11 textOfUtteranceAtIndex:0];
+  _userUtterance2 = [(SRUserUtteranceViewController *)self _userUtterance];
+  v12 = [_userUtterance2 textOfUtteranceAtIndex:0];
 
   if (!v12)
   {
@@ -1015,7 +1015,7 @@ LABEL_10:
 
   v13 = objc_alloc_init(SRUIFAlternativeInfo);
   [v13 setOriginalRank:&off_10016E590];
-  v14 = [v10 objectForKey:v12];
+  v14 = [allRecognitionStringsAndScores objectForKey:v12];
   v15 = AFUserUtteranceConfidenceAverageKey;
   v16 = [v14 objectForKey:AFUserUtteranceConfidenceAverageKey];
   [v13 setOriginalScore:v16];
@@ -1026,7 +1026,7 @@ LABEL_10:
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v10 objectForKey:v12];
+    v19 = [allRecognitionStringsAndScores objectForKey:v12];
     v20 = [v19 objectForKey:v15];
     v30 = 136315650;
     v31 = "[SRUserUtteranceViewController speechAlternativeHighlightListWithScore:]";
@@ -1037,7 +1037,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Original utterance:  %@ (%@)", &v30, 0x20u);
   }
 
-  v21 = [(SRUserUtteranceViewController *)self delegate];
+  delegate = [(SRUserUtteranceViewController *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if ((v22 & 1) == 0)
@@ -1052,14 +1052,14 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s server results only", &v30, 0xCu);
     }
 
-    v28 = [(SRUserUtteranceViewController *)self _userUtterance];
-    v5 = [(SRUserUtteranceViewController *)self _processUserUtterance:v28 isCombined:0 displayedText:v12 withScore:v3];
+    _userUtterance3 = [(SRUserUtteranceViewController *)self _userUtterance];
+    v5 = [(SRUserUtteranceViewController *)self _processUserUtterance:_userUtterance3 isCombined:0 displayedText:v12 withScore:scoreCopy];
 
     goto LABEL_21;
   }
 
-  v23 = [(SRUserUtteranceViewController *)self delegate];
-  v24 = [v23 updatedUserUtteranceForSiriViewController:self];
+  delegate2 = [(SRUserUtteranceViewController *)self delegate];
+  v24 = [delegate2 updatedUserUtteranceForSiriViewController:self];
 
   if (!v24 || [v24 numberOfAlternativeUtterances] < 1)
   {
@@ -1074,7 +1074,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s combined results", &v30, 0xCu);
   }
 
-  v5 = [(SRUserUtteranceViewController *)self _processUserUtterance:v24 isCombined:1 displayedText:v12 withScore:v3];
+  v5 = [(SRUserUtteranceViewController *)self _processUserUtterance:v24 isCombined:1 displayedText:v12 withScore:scoreCopy];
 LABEL_21:
 
 LABEL_22:
@@ -1083,10 +1083,10 @@ LABEL_23:
   return v5;
 }
 
-- (id)_processUserUtterance:(id)a3 isCombined:(BOOL)a4 displayedText:(id)a5 withScore:(BOOL)a6
+- (id)_processUserUtterance:(id)utterance isCombined:(BOOL)combined displayedText:(id)text withScore:(BOOL)score
 {
-  v10 = a3;
-  v11 = a5;
+  utteranceCopy = utterance;
+  textCopy = text;
   v39 = NSForegroundColorAttributeName;
   v12 = [UIColor colorWithWhite:1.0 alpha:1.0];
   v40 = v12;
@@ -1097,27 +1097,27 @@ LABEL_23:
   v38 = v14;
   v15 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
 
-  v16 = [v10 allRecognitionStringsAndScores];
-  v17 = [v16 keysSortedByValueUsingComparator:&stru_100167AE8];
+  allRecognitionStringsAndScores = [utteranceCopy allRecognitionStringsAndScores];
+  v17 = [allRecognitionStringsAndScores keysSortedByValueUsingComparator:&stru_100167AE8];
   +[NSMutableArray array];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10004F6D0;
   v27[3] = &unk_100167B10;
-  v28 = v11;
-  v29 = v16;
-  v30 = self;
+  v28 = textCopy;
+  v29 = allRecognitionStringsAndScores;
+  selfCopy = self;
   v31 = v15;
-  v35 = a4;
-  v32 = v10;
+  combinedCopy = combined;
+  v32 = utteranceCopy;
   v33 = v13;
-  v18 = v36 = a6;
+  v18 = v36 = score;
   v34 = v18;
   v19 = v13;
-  v20 = v10;
+  v20 = utteranceCopy;
   v21 = v15;
-  v22 = v16;
-  v23 = v11;
+  v22 = allRecognitionStringsAndScores;
+  v23 = textCopy;
   [v17 enumerateObjectsUsingBlock:v27];
   v24 = v34;
   v25 = v18;
@@ -1125,11 +1125,11 @@ LABEL_23:
   return v18;
 }
 
-- (void)handleSelectRow:(int64_t)a3
+- (void)handleSelectRow:(int64_t)row
 {
   if ([(NSMutableArray *)self->_speechAlternativeList count])
   {
-    v5 = a3 - self->_speechAlternativesStartIndex;
+    v5 = row - self->_speechAlternativesStartIndex;
     if (v5 >= 0 && v5 < [(NSMutableArray *)self->_speechAlternativeList count])
     {
       v6 = [(NSMutableArray *)self->_speechAlternativeList objectAtIndex:v5];
@@ -1144,22 +1144,22 @@ LABEL_23:
       }
 
       v8 = [AFUserUtterance alloc];
-      v9 = [(SRUserUtteranceViewController *)self _userUtterance];
-      v10 = [v9 correctionIdentifier];
-      v11 = [v8 initWithString:v6 correctionIdentifier:v10];
+      _userUtterance = [(SRUserUtteranceViewController *)self _userUtterance];
+      correctionIdentifier = [_userUtterance correctionIdentifier];
+      v11 = [v8 initWithString:v6 correctionIdentifier:correctionIdentifier];
 
       [(SRUserUtteranceViewController *)self _setUserUtterance:v11];
       [(SRUserUtteranceView *)self->_utteranceView setText:v6];
       [(SREditableTextView *)self->_editableUtteranceView setText:v6];
       self->_showSpeechAlternativeList = 0;
       [(SRUserUtteranceViewController *)self removeSpeechAlternatives];
-      v12 = [(SRUserUtteranceViewController *)self delegate];
-      [v12 siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
+      delegate = [(SRUserUtteranceViewController *)self delegate];
+      [delegate siriViewControllerHeightDidChange:self pinTopOfSnippet:1];
 
-      v13 = [(SRUserUtteranceViewController *)self _privateDelegate];
-      v14 = [(SRUserUtteranceViewController *)self _correctionIdentifier];
+      _privateDelegate = [(SRUserUtteranceViewController *)self _privateDelegate];
+      _correctionIdentifier = [(SRUserUtteranceViewController *)self _correctionIdentifier];
       v15 = [(SRUserUtteranceViewController *)self userSelectionResults:v6];
-      [v13 siriViewController:self startCorrectedSpeechRequestWithText:v6 correctionIdentifier:v14 userSelectionResults:v15];
+      [_privateDelegate siriViewController:self startCorrectedSpeechRequestWithText:v6 correctionIdentifier:_correctionIdentifier userSelectionResults:v15];
 
       self->_newRequestSent = 1;
       [(SRUserUtteranceViewController *)self _hideEditableUtteranceView];
@@ -1174,35 +1174,35 @@ LABEL_23:
   }
 }
 
-- (id)userSelectionResults:(id)a3
+- (id)userSelectionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(AFUserUtteranceSelectionResults);
   v6 = v5;
-  if (v4)
+  if (resultsCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_alternativeInfoMap objectForKey:v4];
-    v8 = [v7 originalScore];
-    [v6 setOriginalScore:v8];
+    v7 = [(NSMutableDictionary *)self->_alternativeInfoMap objectForKey:resultsCopy];
+    originalScore = [v7 originalScore];
+    [v6 setOriginalScore:originalScore];
 
-    v9 = [v7 originalRank];
-    [v6 setOriginalRank:v9];
+    originalRank = [v7 originalRank];
+    [v6 setOriginalRank:originalRank];
 
-    v10 = [v7 isFromDevice];
-    v11 = [v10 BOOLValue];
+    isFromDevice = [v7 isFromDevice];
+    bOOLValue = [isFromDevice BOOLValue];
 
     v12 = &SASStartCorrectedSpeechRequestUtteranceSourceCLIENTValue;
-    if (!v11)
+    if (!bOOLValue)
     {
       v12 = &SASStartCorrectedSpeechRequestUtteranceSourceSERVERValue;
     }
 
     [v6 setUtteranceSource:*v12];
-    v13 = [v7 combinedRank];
-    [v6 setCombinedRank:v13];
+    combinedRank = [v7 combinedRank];
+    [v6 setCombinedRank:combinedRank];
 
-    v14 = [v7 combinedScore];
-    [v6 setCombinedScore:v14];
+    combinedScore = [v7 combinedScore];
+    [v6 setCombinedScore:combinedScore];
   }
 
   else
@@ -1210,9 +1210,9 @@ LABEL_23:
     [v5 setUtteranceSource:SASStartCorrectedSpeechRequestUtteranceSourceUSER_EDITEDValue];
   }
 
-  v15 = [(SRUserUtteranceViewController *)self aceObject];
-  v16 = [v15 refId];
-  [v6 setInteractionId:v16];
+  aceObject = [(SRUserUtteranceViewController *)self aceObject];
+  refId = [aceObject refId];
+  [v6 setInteractionId:refId];
 
   v17 = [NSNumber numberWithBool:self->_showOnDeviceResults];
   [v6 setOnDeviceUtterancesPresent:v17];
@@ -1232,31 +1232,31 @@ LABEL_23:
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setHasChevron:0];
-  v10 = [v6 item];
+  item = [pathCopy item];
 
   v11 = +[UIColor clearColor];
   [v9 setBackgroundColor:v11];
 
-  if (v10)
+  if (item)
   {
     [v9 setKeylineType:4];
-    v12 = [v9 keyline];
-    [v12 setCustomLeftPadding:44.0];
+    keyline = [v9 keyline];
+    [keyline setCustomLeftPadding:44.0];
 
-    v13 = [v9 keyline];
-    [v13 setCustomRightPadding:44.0];
+    keyline2 = [v9 keyline];
+    [keyline2 setCustomRightPadding:44.0];
 
-    v14 = [v9 keyline];
+    keyline3 = [v9 keyline];
     v15 = [UIColor colorWithWhite:0.5 alpha:0.3];
-    [v14 setCustomBackgroundColor:v15];
+    [keyline3 setCustomBackgroundColor:v15];
   }
 
   else
@@ -1264,21 +1264,21 @@ LABEL_23:
     [v9 setKeylineType:0];
   }
 
-  v16 = [(NSMutableArray *)self->_viewArray objectAtIndex:v10];
-  v17 = [v9 contentView];
+  v16 = [(NSMutableArray *)self->_viewArray objectAtIndex:item];
+  contentView = [v9 contentView];
   [v9 bounds];
   Width = CGRectGetWidth(v44);
   [v9 bounds];
-  [v17 setBounds:{0.0, 0.0, Width, CGRectGetHeight(v45)}];
+  [contentView setBounds:{0.0, 0.0, Width, CGRectGetHeight(v45)}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v9 contentView];
-    [v19 addSubview:v16];
+    contentView2 = [v9 contentView];
+    [contentView2 addSubview:v16];
 
-    v20 = [v9 contentView];
-    [v20 bounds];
+    contentView3 = [v9 contentView];
+    [contentView3 bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1297,11 +1297,11 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v37 = [v9 contentView];
-    [v37 addSubview:v16];
+    contentView4 = [v9 contentView];
+    [contentView4 addSubview:v16];
 
-    v20 = [v9 contentView];
-    [v20 bounds];
+    contentView3 = [v9 contentView];
+    [contentView3 bounds];
     v30 = v38;
     v32 = v39;
     v34 = v40;
@@ -1314,33 +1314,33 @@ LABEL_10:
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectItemAtIndexPath:v6 animated:1];
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectItemAtIndexPath:pathCopy animated:1];
+  v7 = [pathCopy row];
 
   [(SRUserUtteranceViewController *)self handleSelectRow:v7];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(SRUserUtteranceViewController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  delegate = [(SRUserUtteranceViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   width = v8;
 
   height = CGSizeZero.height;
-  v11 = [v6 item];
+  item = [pathCopy item];
 
-  if (v11 >= [(NSMutableArray *)self->_viewArray count])
+  if (item >= [(NSMutableArray *)self->_viewArray count])
   {
     width = CGSizeZero.width;
   }
 
   else
   {
-    v12 = [(NSMutableArray *)self->_viewArray objectAtIndex:v11];
+    v12 = [(NSMutableArray *)self->_viewArray objectAtIndex:item];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {

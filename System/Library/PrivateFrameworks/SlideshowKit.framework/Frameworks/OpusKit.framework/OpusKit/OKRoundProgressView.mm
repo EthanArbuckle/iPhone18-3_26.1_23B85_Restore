@@ -1,33 +1,33 @@
 @interface OKRoundProgressView
-- (OKRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)_setContentsScale:(double)a3;
-- (void)_setProgressArcLayer:(id)a3;
+- (OKRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)_setContentsScale:(double)scale;
+- (void)_setProgressArcLayer:(id)layer;
 - (void)_setupSubviews;
 - (void)_updateSublayersContentsScale;
 - (void)_updateUIProgress;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)increaseUIProgress:(id)a3;
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4;
+- (void)increaseUIProgress:(id)progress;
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff;
 - (void)resetProgress;
-- (void)setInitialIncreaseRatePerFrame:(double)a3;
-- (void)setPieRadius:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)setInitialIncreaseRatePerFrame:(double)frame;
+- (void)setPieRadius:(double)radius;
+- (void)setProgress:(double)progress;
 - (void)startProgressTimer;
 - (void)stopProgressTimer;
 @end
 
 @implementation OKRoundProgressView
 
-- (OKRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (OKRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = OKRoundProgressView;
-  v5 = [(OKRoundProgressView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(OKRoundProgressView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     -[OKRoundProgressView setBackgroundColor:](v5, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
     [(OKRoundProgressView *)v6 _setupSubviews];
   }
@@ -53,22 +53,22 @@
   [(OKRoundProgressView *)self _setContentsScale:?];
 }
 
-- (void)_setContentsScale:(double)a3
+- (void)_setContentsScale:(double)scale
 {
-  if (self->__contentsScale != a3)
+  if (self->__contentsScale != scale)
   {
-    self->__contentsScale = a3;
+    self->__contentsScale = scale;
     [(OKRoundProgressView *)self _updateSublayersContentsScale];
   }
 }
 
-- (void)_setProgressArcLayer:(id)a3
+- (void)_setProgressArcLayer:(id)layer
 {
   progressArcLayer = self->__progressArcLayer;
-  if (progressArcLayer != a3)
+  if (progressArcLayer != layer)
   {
 
-    self->__progressArcLayer = a3;
+    self->__progressArcLayer = layer;
 
     [(OKRoundProgressView *)self _updateSublayersContentsScale];
   }
@@ -78,9 +78,9 @@
 {
   [(OKRoundProgressView *)self _contentsScale];
   v4 = v3;
-  v5 = [(OKRoundProgressView *)self _progressArcLayer];
+  _progressArcLayer = [(OKRoundProgressView *)self _progressArcLayer];
 
-  [(OKProgressArcLayer *)v5 setContentsScale:v4];
+  [(OKProgressArcLayer *)_progressArcLayer setContentsScale:v4];
 }
 
 - (void)_setupSubviews
@@ -91,11 +91,11 @@
   v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v7, v8, v3, v5}];
   [v9 setAutoresizingMask:18];
   [(OKRoundProgressView *)self addSubview:v9];
-  v10 = [v9 layer];
+  layer = [v9 layer];
   style = self->_style;
   if (style == 1)
   {
-    v13 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     v15 = 0;
     v14 = 1;
     v12 = 0.5;
@@ -106,14 +106,14 @@
     v12 = 1.0;
     if (style)
     {
-      v13 = 0;
+      blackColor = 0;
       v14 = 0;
       v15 = 0;
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75348] whiteColor];
+      blackColor = [MEMORY[0x277D75348] whiteColor];
       v14 = 1;
       v15 = 1;
     }
@@ -132,15 +132,15 @@
   [(OKRoundProgressView *)self resetProgress];
   if (v14)
   {
-    v18 = [MEMORY[0x277CD9F90] layer];
-    self->_sliceLayer = v18;
-    [(CAShapeLayer *)v18 setZPosition:0.0];
+    layer2 = [MEMORY[0x277CD9F90] layer];
+    self->_sliceLayer = layer2;
+    [(CAShapeLayer *)layer2 setZPosition:0.0];
     [(CAShapeLayer *)self->_sliceLayer setStrokeColor:0];
-    -[CAShapeLayer setFillColor:](self->_sliceLayer, "setFillColor:", [v13 CGColor]);
-    v19 = [MEMORY[0x277CD9F90] layer];
-    self->_circleLayer = v19;
-    [(CAShapeLayer *)v19 setZPosition:0.0];
-    -[CAShapeLayer setStrokeColor:](self->_circleLayer, "setStrokeColor:", [v13 CGColor]);
+    -[CAShapeLayer setFillColor:](self->_sliceLayer, "setFillColor:", [blackColor CGColor]);
+    layer3 = [MEMORY[0x277CD9F90] layer];
+    self->_circleLayer = layer3;
+    [(CAShapeLayer *)layer3 setZPosition:0.0];
+    -[CAShapeLayer setStrokeColor:](self->_circleLayer, "setStrokeColor:", [blackColor CGColor]);
     [(CAShapeLayer *)self->_circleLayer setFillColor:0];
     [(CAShapeLayer *)self->_circleLayer setLineWidth:v17];
     pieRadius = self->_pieRadius;
@@ -151,25 +151,25 @@
     CGPathCloseSubpath(Mutable);
     [(CAShapeLayer *)self->_circleLayer setPath:Mutable];
     CGPathRelease(Mutable);
-    [v10 addSublayer:self->_circleLayer];
-    [v10 addSublayer:self->_sliceLayer];
+    [layer addSublayer:self->_circleLayer];
+    [layer addSublayer:self->_sliceLayer];
   }
 
   if (v15)
   {
-    [v10 setShadowColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.0, 0.75), "CGColor")}];
-    [v10 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [layer setShadowColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D75348], "colorWithWhite:alpha:", 0.0, 0.75), "CGColor")}];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
     LODWORD(v24) = 1.0;
-    [v10 setShadowOpacity:v24];
-    [v10 setShadowRadius:0.5];
+    [layer setShadowOpacity:v24];
+    [layer setShadowRadius:0.5];
   }
 
   [(OKRoundProgressView *)self _updateUIProgress];
 }
 
-- (void)setPieRadius:(double)a3
+- (void)setPieRadius:(double)radius
 {
-  self->_pieRadius = a3;
+  self->_pieRadius = radius;
   [(OKRoundProgressView *)self bounds];
   x = v13.origin.x;
   y = v13.origin.y;
@@ -183,10 +183,10 @@
   MidY = CGRectGetMidY(v14);
   self->_pieCenter.x = MidX;
   self->_pieCenter.y = MidY;
-  v10 = [(OKRoundProgressView *)self layer];
+  layer = [(OKRoundProgressView *)self layer];
   pieRadius = self->_pieRadius;
 
-  [v10 setCornerRadius:pieRadius];
+  [layer setCornerRadius:pieRadius];
 }
 
 - (void)stopProgressTimer
@@ -208,7 +208,7 @@
   }
 }
 
-- (void)increaseUIProgress:(id)a3
+- (void)increaseUIProgress:(id)progress
 {
   realProgress = self->_realProgress;
   if (realProgress != 0.0)
@@ -274,27 +274,27 @@ LABEL_15:
     CFRelease(Mutable);
   }
 
-  v9 = [(OKRoundProgressView *)self _progressArcLayer];
-  if (v9)
+  _progressArcLayer = [(OKRoundProgressView *)self _progressArcLayer];
+  if (_progressArcLayer)
   {
-    v10 = v9;
-    [(OKProgressArcLayer *)v9 setStartAngle:4.71238898];
+    v10 = _progressArcLayer;
+    [(OKProgressArcLayer *)_progressArcLayer setStartAngle:4.71238898];
 
     [(OKProgressArcLayer *)v10 setEndAngle:v4];
   }
 }
 
-- (void)setInitialIncreaseRatePerFrame:(double)a3
+- (void)setInitialIncreaseRatePerFrame:(double)frame
 {
   if (!self->_progressTimer)
   {
-    self->_increaseRate = a3;
+    self->_increaseRate = frame;
   }
 }
 
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff
 {
-  v4 = a3 / a4 / 60.0;
+  v4 = progress / diff / 60.0;
   if (v4 < 0.000166666667)
   {
     v4 = 0.000166666667;
@@ -303,20 +303,20 @@ LABEL_15:
   self->_increaseRate = v4;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
+  self->_progress = progress;
   if (!self->_progressTimer && self->_realProgress <= 1.0)
   {
     [(OKRoundProgressView *)self startProgressTimer];
   }
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
     realProgress = self->_realProgress;
-    if (realProgress < 1.0 && realProgress < a3)
+    if (realProgress < 1.0 && realProgress < progress)
     {
-      if (a3 >= 1.0)
+      if (progress >= 1.0)
       {
         v9 = 1.0 - self->_uiProgress;
         v10 = 0.1;
@@ -329,11 +329,11 @@ LABEL_15:
 
         self->_prevUpdateTime = [MEMORY[0x277CBEAA8] date];
         v9 = 1.0 - self->_uiProgress;
-        v10 = v8 * (v9 / (a3 - self->_realProgress));
+        v10 = v8 * (v9 / (progress - self->_realProgress));
       }
 
       [(OKRoundProgressView *)self recalculateIncreaseProgress:v9 withTimeDiff:v10];
-      self->_realProgress = a3;
+      self->_realProgress = progress;
     }
   }
 }

@@ -1,10 +1,10 @@
 @interface CCUISatelliteModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation CCUISatelliteModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v3 = objc_alloc_init(CCUISatelliteModuleViewController);
 

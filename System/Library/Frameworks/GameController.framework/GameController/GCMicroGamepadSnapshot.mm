@@ -24,14 +24,14 @@
     v6 = self->snapshotData;
     self->snapshotData = v5;
 
-    v7 = [(GCMicroGamepad *)self dpad];
-    [(GCPhysicalInputProfile *)self setDpad:v7 x:snapshotDataa.dpadX y:snapshotDataa.dpadY];
+    dpad = [(GCMicroGamepad *)self dpad];
+    [(GCPhysicalInputProfile *)self setDpad:dpad x:snapshotDataa.dpadX y:snapshotDataa.dpadY];
 
-    v8 = [(GCMicroGamepad *)self buttonA];
-    [(GCPhysicalInputProfile *)self setButton:v8 value:snapshotDataa.buttonA];
+    buttonA = [(GCMicroGamepad *)self buttonA];
+    [(GCPhysicalInputProfile *)self setButton:buttonA value:snapshotDataa.buttonA];
 
-    v9 = [(GCMicroGamepad *)self buttonX];
-    [(GCPhysicalInputProfile *)self setButton:v9 value:snapshotDataa.buttonX];
+    buttonX = [(GCMicroGamepad *)self buttonX];
+    [(GCPhysicalInputProfile *)self setButton:buttonX value:snapshotDataa.buttonX];
   }
 }
 
@@ -59,15 +59,15 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

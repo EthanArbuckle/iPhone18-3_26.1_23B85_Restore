@@ -1,13 +1,13 @@
 @interface CLSBusinessItem
-+ (double)_defaultRadiusForCategories:(id)a3;
-+ (id)_businessCategoriesFromGeoMapItems:(id)a3;
-+ (id)_regionFromMapItem:(id)a3;
++ (double)_defaultRadiusForCategories:(id)categories;
++ (id)_businessCategoriesFromGeoMapItems:(id)items;
++ (id)_regionFromMapItem:(id)item;
 - (BOOL)isEnriched;
-- (CLSBusinessItem)initWithCoder:(id)a3;
-- (CLSBusinessItem)initWithName:(id)a3 region:(id)a4 categories:(id)a5;
+- (CLSBusinessItem)initWithCoder:(id)coder;
+- (CLSBusinessItem)initWithName:(id)name region:(id)region categories:(id)categories;
 - (id)description;
-- (id)initFromMapItem:(id)a3 isoCountryCode:(id)a4 categoryOnly:(BOOL)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromMapItem:(id)item isoCountryCode:(id)code categoryOnly:(BOOL)only;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSBusinessItem
@@ -26,50 +26,50 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cached = self->_cached;
-  v5 = a3;
-  [v5 encodeBool:cached forKey:@"cached"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_region forKey:@"region"];
-  [v5 encodeObject:self->_categories forKey:@"categories"];
-  [v5 encodeObject:self->_businessCategories forKey:@"businessCategories"];
-  [v5 encodeInt64:self->_muid forKey:@"muid"];
-  [v5 encodeInteger:self->_venueCapacity forKey:@"venueCapacity"];
+  coderCopy = coder;
+  [coderCopy encodeBool:cached forKey:@"cached"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_categories forKey:@"categories"];
+  [coderCopy encodeObject:self->_businessCategories forKey:@"businessCategories"];
+  [coderCopy encodeInt64:self->_muid forKey:@"muid"];
+  [coderCopy encodeInteger:self->_venueCapacity forKey:@"venueCapacity"];
 }
 
-- (CLSBusinessItem)initWithCoder:(id)a3
+- (CLSBusinessItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CLSBusinessItem *)self init];
   if (v5)
   {
-    v5->_cached = [v4 decodeBoolForKey:@"cached"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_cached = [coderCopy decodeBoolForKey:@"cached"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"categories"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"categories"];
     categories = v5->_categories;
     v5->_categories = v13;
 
-    v5->_muid = [v4 decodeInt64ForKey:@"muid"];
+    v5->_muid = [coderCopy decodeInt64ForKey:@"muid"];
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"businessCategories"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"businessCategories"];
     businessCategories = v5->_businessCategories;
     v5->_businessCategories = v18;
 
-    v5->_venueCapacity = [v4 decodeIntegerForKey:@"venueCapacity"];
+    v5->_venueCapacity = [coderCopy decodeIntegerForKey:@"venueCapacity"];
   }
 
   return v5;
@@ -77,17 +77,17 @@
 
 - (BOOL)isEnriched
 {
-  v2 = [(CLSBusinessItem *)self name];
-  v3 = [v2 length] != 0;
+  name = [(CLSBusinessItem *)self name];
+  v3 = [name length] != 0;
 
   return v3;
 }
 
-- (CLSBusinessItem)initWithName:(id)a3 region:(id)a4 categories:(id)a5
+- (CLSBusinessItem)initWithName:(id)name region:(id)region categories:(id)categories
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  regionCopy = region;
+  categoriesCopy = categories;
   v15.receiver = self;
   v15.super_class = CLSBusinessItem;
   v12 = [(CLSBusinessItem *)&v15 init];
@@ -95,28 +95,28 @@
   if (v12)
   {
     v12->_cached = 0;
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_region, a4);
-    objc_storeStrong(&v13->_categories, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_region, region);
+    objc_storeStrong(&v13->_categories, categories);
   }
 
   return v13;
 }
 
-- (id)initFromMapItem:(id)a3 isoCountryCode:(id)a4 categoryOnly:(BOOL)a5
+- (id)initFromMapItem:(id)item isoCountryCode:(id)code categoryOnly:(BOOL)only
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 _hasMUID])
+  itemCopy = item;
+  codeCopy = code;
+  if ([itemCopy _hasMUID])
   {
     v35.receiver = self;
     v35.super_class = CLSBusinessItem;
     v10 = [(CLSBusinessItem *)&v35 init];
     if (v10)
     {
-      v11 = [v8 spatialMappedCategories];
-      v12 = [objc_opt_class() _regionFromMapItem:v8];
+      spatialMappedCategories = [itemCopy spatialMappedCategories];
+      v12 = [objc_opt_class() _regionFromMapItem:itemCopy];
       v13 = v12;
       if (v12)
       {
@@ -127,43 +127,43 @@
 
       else
       {
-        [objc_opt_class() _defaultRadiusForCategories:v11];
+        [objc_opt_class() _defaultRadiusForCategories:spatialMappedCategories];
         v18 = v17;
-        [v8 centerCoordinate];
+        [itemCopy centerCoordinate];
         v20 = v19;
         v22 = v21;
         v23 = objc_alloc(MEMORY[0x277CBFBC8]);
         v24 = CLLocationCoordinate2DMake(v20, v22);
         region = [MEMORY[0x277CCAD78] UUID];
-        v25 = [region UUIDString];
-        v26 = [v23 initWithCenter:v25 radius:v24.latitude identifier:{v24.longitude, v18}];
+        uUIDString = [region UUIDString];
+        v26 = [v23 initWithCenter:uUIDString radius:v24.latitude identifier:{v24.longitude, v18}];
         v27 = v10->_region;
         v10->_region = v26;
       }
 
-      objc_storeStrong(&v10->_isoCountryCode, a4);
-      v28 = [MEMORY[0x277D3AD60] currentRevGeoProvider];
+      objc_storeStrong(&v10->_isoCountryCode, code);
+      currentRevGeoProvider = [MEMORY[0x277D3AD60] currentRevGeoProvider];
       geoServiceProvider = v10->_geoServiceProvider;
-      v10->_geoServiceProvider = v28;
+      v10->_geoServiceProvider = currentRevGeoProvider;
 
       v10->_cached = 0;
-      objc_storeStrong(&v10->_categories, v11);
-      v10->_muid = [v8 _muid];
-      if (!a5)
+      objc_storeStrong(&v10->_categories, spatialMappedCategories);
+      v10->_muid = [itemCopy _muid];
+      if (!only)
       {
-        v10->_venueCapacity = [v8 venueCapacity];
-        v30 = [v8 name];
+        v10->_venueCapacity = [itemCopy venueCapacity];
+        name = [itemCopy name];
         name = v10->_name;
-        v10->_name = v30;
+        v10->_name = name;
 
-        v32 = [objc_opt_class() _businessCategoriesFromGeoMapItems:v8];
+        v32 = [objc_opt_class() _businessCategoriesFromGeoMapItems:itemCopy];
         businessCategories = v10->_businessCategories;
         v10->_businessCategories = v32;
       }
     }
 
     self = v10;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -171,31 +171,31 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v37 = v8;
+      v37 = itemCopy;
       _os_log_error_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot create BusinessItem from MapItem %{private}@ with no MUID", buf, 0xCu);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)_businessCategoriesFromGeoMapItems:(id)a3
++ (id)_businessCategoriesFromGeoMapItems:(id)items
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = v3;
-  v5 = [v3 _place];
-  v6 = [v5 business];
+  v23 = itemsCopy;
+  _place = [itemsCopy _place];
+  business = [_place business];
 
-  obj = v6;
-  v26 = [v6 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  obj = business;
+  v26 = [business countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v26)
   {
     v25 = *v37;
@@ -216,10 +216,10 @@
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v9 = [v8 localizedCategories];
-          v10 = [v9 reverseObjectEnumerator];
+          localizedCategories = [v8 localizedCategories];
+          reverseObjectEnumerator = [localizedCategories reverseObjectEnumerator];
 
-          v11 = [v10 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v11)
           {
             v12 = v11;
@@ -230,7 +230,7 @@
               {
                 if (*v33 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v15 = *(*(&v32 + 1) + 8 * j);
@@ -238,8 +238,8 @@
                 v29 = 0u;
                 v30 = 0u;
                 v31 = 0u;
-                v16 = [v15 localizedNames];
-                v17 = [v16 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                localizedNames = [v15 localizedNames];
+                v17 = [localizedNames countByEnumeratingWithState:&v28 objects:v40 count:16];
                 if (v17)
                 {
                   v18 = v17;
@@ -250,24 +250,24 @@
                     {
                       if (*v29 != v19)
                       {
-                        objc_enumerationMutation(v16);
+                        objc_enumerationMutation(localizedNames);
                       }
 
-                      v21 = [*(*(&v28 + 1) + 8 * k) name];
-                      if ([v21 length])
+                      name = [*(*(&v28 + 1) + 8 * k) name];
+                      if ([name length])
                       {
-                        [v4 addObject:v21];
+                        [array addObject:name];
                       }
                     }
 
-                    v18 = [v16 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                    v18 = [localizedNames countByEnumeratingWithState:&v28 objects:v40 count:16];
                   }
 
                   while (v18);
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v32 objects:v41 count:16];
+              v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v41 count:16];
             }
 
             while (v12);
@@ -283,18 +283,18 @@
     while (v26);
   }
 
-  return v4;
+  return array;
 }
 
-+ (double)_defaultRadiusForCategories:(id)a3
++ (double)_defaultRadiusForCategories:(id)categories
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_28449B818])
+  categoriesCopy = categories;
+  if ([categoriesCopy containsObject:&unk_28449B818])
   {
     v4 = 500.0;
   }
 
-  else if ([v3 containsObject:&unk_28449B830])
+  else if ([categoriesCopy containsObject:&unk_28449B830])
   {
     v4 = 2000.0;
   }
@@ -307,18 +307,18 @@
   return v4;
 }
 
-+ (id)_regionFromMapItem:(id)a3
++ (id)_regionFromMapItem:(id)item
 {
-  v3 = [a3 geoFenceMapRegion];
-  if ([v3 hasNorthLat] && objc_msgSend(v3, "hasSouthLat") && objc_msgSend(v3, "hasEastLng") && objc_msgSend(v3, "hasWestLng"))
+  geoFenceMapRegion = [item geoFenceMapRegion];
+  if ([geoFenceMapRegion hasNorthLat] && objc_msgSend(geoFenceMapRegion, "hasSouthLat") && objc_msgSend(geoFenceMapRegion, "hasEastLng") && objc_msgSend(geoFenceMapRegion, "hasWestLng"))
   {
-    [v3 northLat];
+    [geoFenceMapRegion northLat];
     v5 = v4;
-    [v3 southLat];
+    [geoFenceMapRegion southLat];
     v7 = v6;
-    [v3 westLng];
+    [geoFenceMapRegion westLng];
     v9 = v8;
-    [v3 eastLng];
+    [geoFenceMapRegion eastLng];
     v11 = (v5 + v7) * 0.5;
     if (v9 <= v10)
     {
@@ -339,9 +339,9 @@
       }
     }
 
-    [v3 southLat];
+    [geoFenceMapRegion southLat];
     v17 = v16;
-    [v3 westLng];
+    [geoFenceMapRegion westLng];
     CLSCommonCalculateDistanceRadius(1, v11, v13, v17, v18);
     v20 = v19;
     v21 = objc_alloc(MEMORY[0x277CBFBC8]);

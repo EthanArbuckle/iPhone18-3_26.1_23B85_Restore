@@ -4,8 +4,8 @@
 - (HMDSiriEndpointProfileAccessorySettingFields)init;
 - (id)attributeDescriptions;
 - (id)serializeFields;
-- (void)setLanguageValue:(id)a3 forKeyPath:(id)a4;
-- (void)setNumberValue:(id)a3 forKeyPath:(id)a4;
+- (void)setLanguageValue:(id)value forKeyPath:(id)path;
+- (void)setNumberValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation HMDSiriEndpointProfileAccessorySettingFields
@@ -14,8 +14,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDSiriEndpointProfileAccessorySettingFields *)self serializeFields];
-  v5 = [v3 initWithName:@"serializedFields" value:v4];
+  serializeFields = [(HMDSiriEndpointProfileAccessorySettingFields *)self serializeFields];
+  v5 = [v3 initWithName:@"serializedFields" value:serializeFields];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -33,32 +33,32 @@
   return v3;
 }
 
-- (void)setLanguageValue:(id)a3 forKeyPath:(id)a4
+- (void)setLanguageValue:(id)value forKeyPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v8 = +[HMDSiriEndpointProfileAccessorySettingFields languageValueKeyPaths];
-  v9 = [v8 containsObject:v7];
+  v9 = [v8 containsObject:pathCopy];
 
   if (v9)
   {
-    v10 = [HMDSiriEndpointProfileAccessorySettingFields fieldKeyForKeyPath:v7];
+    v10 = [HMDSiriEndpointProfileAccessorySettingFields fieldKeyForKeyPath:pathCopy];
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v10, @"_inputLanguageCode"];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v10, @"_outputVoiceLanguageCode"];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v10, @"_outputVoiceGenderCode"];
     os_unfair_lock_lock_with_options();
     serializeFields = self->_serializeFields;
-    v14 = [v6 inputLanguageCode];
-    [(NSMutableDictionary *)serializeFields setObject:v14 forKey:v24];
+    inputLanguageCode = [valueCopy inputLanguageCode];
+    [(NSMutableDictionary *)serializeFields setObject:inputLanguageCode forKey:v24];
 
     v15 = self->_serializeFields;
-    v16 = [v6 outputVoiceLanguageCode];
-    [(NSMutableDictionary *)v15 setObject:v16 forKey:v11];
+    outputVoiceLanguageCode = [valueCopy outputVoiceLanguageCode];
+    [(NSMutableDictionary *)v15 setObject:outputVoiceLanguageCode forKey:v11];
 
     v17 = self->_serializeFields;
-    v18 = [v6 outputVoiceGenderCode];
-    [(NSMutableDictionary *)v17 setObject:v18 forKey:v12];
+    outputVoiceGenderCode = [valueCopy outputVoiceGenderCode];
+    [(NSMutableDictionary *)v17 setObject:outputVoiceGenderCode forKey:v12];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -66,7 +66,7 @@
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -74,9 +74,9 @@
       *buf = 138543874;
       v26 = v22;
       v27 = 2112;
-      v28 = v6;
+      v28 = valueCopy;
       v29 = 2112;
-      v30 = v7;
+      v30 = pathCopy;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to store language value: %@ for keypath: %@", buf, 0x20u);
     }
 
@@ -86,26 +86,26 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNumberValue:(id)a3 forKeyPath:(id)a4
+- (void)setNumberValue:(id)value forKeyPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v8 = +[HMDSiriEndpointProfileAccessorySettingFields numberValueKeyPaths];
-  v9 = [v8 containsObject:v7];
+  v9 = [v8 containsObject:pathCopy];
 
   if (v9)
   {
-    v10 = [HMDSiriEndpointProfileAccessorySettingFields fieldKeyForKeyPath:v7];
+    v10 = [HMDSiriEndpointProfileAccessorySettingFields fieldKeyForKeyPath:pathCopy];
     os_unfair_lock_lock_with_options();
-    [(NSMutableDictionary *)self->_serializeFields setObject:v6 forKey:v10];
+    [(NSMutableDictionary *)self->_serializeFields setObject:valueCopy forKey:v10];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -113,9 +113,9 @@
       v16 = 138543874;
       v17 = v14;
       v18 = 2112;
-      v19 = v6;
+      v19 = valueCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = pathCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to store integer value: %@ for keypath: %@", &v16, 0x20u);
     }
 

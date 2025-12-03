@@ -9,26 +9,26 @@
 - (HDCodableFitnessFriendAchievement)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableFitnessFriendAchievement);
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &off_283D41478;
   v3 = objc_msgSendSuper2(&v11, sel_codableRepresentationForSync);
   [(HDCodableFitnessFriendAchievement *)v2 setSample:v3];
-  v4 = [a1 friendUUID];
-  v5 = [v4 hk_dataForUUIDBytes];
-  [(HDCodableFitnessFriendAchievement *)v2 setFriendUUID:v5];
+  friendUUID = [self friendUUID];
+  hk_dataForUUIDBytes = [friendUUID hk_dataForUUIDBytes];
+  [(HDCodableFitnessFriendAchievement *)v2 setFriendUUID:hk_dataForUUIDBytes];
 
-  v6 = [a1 templateUniqueName];
-  [(HDCodableFitnessFriendAchievement *)v2 setTemplateUniqueName:v6];
+  templateUniqueName = [self templateUniqueName];
+  [(HDCodableFitnessFriendAchievement *)v2 setTemplateUniqueName:templateUniqueName];
 
-  v7 = [a1 completedDate];
-  [v7 timeIntervalSinceReferenceDate];
+  completedDate = [self completedDate];
+  [completedDate timeIntervalSinceReferenceDate];
   [(HDCodableFitnessFriendAchievement *)v2 setCompletedDate:?];
 
-  v8 = [a1 value];
-  v9 = v8;
-  if (v8)
+  value = [self value];
+  v9 = value;
+  if (value)
   {
-    if ([v8 hk_hasFloatingPointValue])
+    if ([value hk_hasFloatingPointValue])
     {
       [v9 doubleValue];
       [(HDCodableFitnessFriendAchievement *)v2 setDoubleValue:?];
@@ -46,13 +46,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addFitnessFriendAchievements:v5];
+    [v4 addFitnessFriendAchievements:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -62,11 +62,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -74,7 +74,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;

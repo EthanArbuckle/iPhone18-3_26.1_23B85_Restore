@@ -7,8 +7,8 @@
 
 - (BOOL)_accessibilityInTodayViewController
 {
-  v2 = [(SBUIViewControllerWrapperViewAccessibility *)self subviews];
-  v3 = [v2 indexOfObjectPassingTest:&__block_literal_global_22] != 0x7FFFFFFFFFFFFFFFLL;
+  subviews = [(SBUIViewControllerWrapperViewAccessibility *)self subviews];
+  v3 = [subviews indexOfObjectPassingTest:&__block_literal_global_22] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }

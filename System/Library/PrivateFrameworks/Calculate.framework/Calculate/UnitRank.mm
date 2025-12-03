@@ -1,8 +1,8 @@
 @interface UnitRank
-- (BOOL)isEqual:(id)a3;
-- (UnitRank)initWithUnitID:(int)a3 rank:(float)a4 locale:(id)a5 context:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (UnitRank)initWithUnitID:(int)d rank:(float)rank locale:(id)locale context:(id)context;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
@@ -11,9 +11,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UnitRank *)self unitID];
+  unitID = [(UnitRank *)self unitID];
   [(UnitRank *)self rank];
-  return [v3 stringWithFormat:@"%d (%f)", v4, v5];
+  return [v3 stringWithFormat:@"%d (%f)", unitID, v5];
 }
 
 - (unint64_t)hash
@@ -23,17 +23,17 @@
   return v3 + (v4 * 1000.0) + 961;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(UnitRank *)self rank];
   v6 = v5;
-  [v4 rank];
+  [compareCopy rank];
   if (v6 <= v7)
   {
     [(UnitRank *)self rank];
     v10 = v9;
-    [v4 rank];
+    [compareCopy rank];
     if (v10 >= v11)
     {
       v8 = 0;
@@ -53,14 +53,14 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = -[UnitRank unitID](self, "unitID"), v5 == [v4 unitID]))
+  equalCopy = equal;
+  if (equalCopy && (v5 = -[UnitRank unitID](self, "unitID"), v5 == [equalCopy unitID]))
   {
     [(UnitRank *)self rank];
     v7 = v6;
-    [v4 rank];
+    [equalCopy rank];
     v9 = v7 == v8;
   }
 
@@ -72,20 +72,20 @@
   return v9;
 }
 
-- (UnitRank)initWithUnitID:(int)a3 rank:(float)a4 locale:(id)a5 context:(id)a6
+- (UnitRank)initWithUnitID:(int)d rank:(float)rank locale:(id)locale context:(id)context
 {
-  v11 = a5;
-  v12 = a6;
+  localeCopy = locale;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = UnitRank;
   v13 = [(UnitRank *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_unitID = a3;
-    v13->_rank = a4;
-    objc_storeStrong(&v13->_locale, a5);
-    objc_storeStrong(&v14->_context, a6);
+    v13->_unitID = d;
+    v13->_rank = rank;
+    objc_storeStrong(&v13->_locale, locale);
+    objc_storeStrong(&v14->_context, context);
     v14->_tokenType = 2;
   }
 

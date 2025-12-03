@@ -1,16 +1,16 @@
 @interface CHSActivityPreviewInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSActivityPreviewInfo)init;
 - (NSString)description;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSActivityPreviewInfo
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_243424C0C();
 
   v3 = sub_24342C6BC();
@@ -18,11 +18,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24342C7CC();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_243424D9C(v8);
@@ -42,17 +42,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2434250EC();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_243425540(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_243425540(coderCopy);
 }
 
 - (CHSActivityPreviewInfo)init

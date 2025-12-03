@@ -1,28 +1,28 @@
 @interface HDSHWidgetSchedulingManager
-+ (void)_logSleepSampleStatistics:(id)a3;
-- (HDSHWidgetSchedulingManager)initWithProfile:(id)a3;
-- (void)_reloadWidgetsWithReasons:(unint64_t)a3;
++ (void)_logSleepSampleStatistics:(id)statistics;
+- (HDSHWidgetSchedulingManager)initWithProfile:(id)profile;
+- (void)_reloadWidgetsWithReasons:(unint64_t)reasons;
 - (void)_startObservingSleep;
 - (void)_stopObservingSleep;
 - (void)_updateWidgetRelevances;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDSHWidgetSchedulingManager
 
-- (HDSHWidgetSchedulingManager)initWithProfile:(id)a3
+- (HDSHWidgetSchedulingManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v25.receiver = self;
   v25.super_class = HDSHWidgetSchedulingManager;
   v5 = [(HDSHWidgetSchedulingManager *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -45,8 +45,8 @@
     v6->_reloadThrottler = v14;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v17 = [WeakRetained daemon];
-    [v17 registerDaemonReadyObserver:v6 queue:v6->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_queue];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -73,32 +73,32 @@ void __47__HDSHWidgetSchedulingManager_initWithProfile___block_invoke(uint64_t a
 - (void)_startObservingSleep
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v4 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
-  [v3 addObserver:self forDataType:v4];
+  [dataManager addObserver:self forDataType:v4];
 }
 
 - (void)_stopObservingSleep
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v4 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
-  [v3 removeObserver:self forDataType:v4];
+  [dataManager removeObserver:self forDataType:v4];
 }
 
-- (void)_reloadWidgetsWithReasons:(unint64_t)a3
+- (void)_reloadWidgetsWithReasons:(unint64_t)reasons
 {
-  v4 = [(HKSPSleepStore *)self->_sleepStore widgetManager];
-  [v4 reloadWidgetsWithReason:a3];
+  widgetManager = [(HKSPSleepStore *)self->_sleepStore widgetManager];
+  [widgetManager reloadWidgetsWithReason:reasons];
 }
 
 - (void)_updateWidgetRelevances
 {
-  v2 = [(HKSPSleepStore *)self->_sleepStore widgetManager];
-  [v2 invalidateRelevances];
+  widgetManager = [(HKSPSleepStore *)self->_sleepStore widgetManager];
+  [widgetManager invalidateRelevances];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v14 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -115,14 +115,14 @@ void __47__HDSHWidgetSchedulingManager_initWithProfile___block_invoke(uint64_t a
 
   [(HDSHWidgetSchedulingManager *)self _startObservingSleep];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__HDSHWidgetSchedulingManager_daemonReady___block_invoke;
   v11[3] = &unk_279C830E0;
   v11[4] = self;
-  [v8 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v11];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -147,9 +147,9 @@ uint64_t __43__HDSHWidgetSchedulingManager_daemonReady___block_invoke(uint64_t a
   return result;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = [a3 na_filter:{&__block_literal_global_0, a4}];
+  v5 = [added na_filter:{&__block_literal_global_0, anchor}];
   if ([v5 count])
   {
     [objc_opt_class() _logSleepSampleStatistics:v5];
@@ -181,9 +181,9 @@ uint64_t __51__HDSHWidgetSchedulingManager_samplesAdded_anchor___block_invoke(ui
   return v8;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  if ([a3 na_any:{&__block_literal_global_307, a4}])
+  if ([removed na_any:{&__block_literal_global_307, anchor}])
   {
     reloadThrottler = self->_reloadThrottler;
 
@@ -199,10 +199,10 @@ uint64_t __64__HDSHWidgetSchedulingManager_samplesOfTypesWereRemoved_anchor___bl
   return v3;
 }
 
-+ (void)_logSleepSampleStatistics:(id)a3
++ (void)_logSleepSampleStatistics:(id)statistics
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  statisticsCopy = statistics;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -227,14 +227,14 @@ uint64_t __64__HDSHWidgetSchedulingManager_samplesOfTypesWereRemoved_anchor___bl
   v25[5] = &v34;
   v25[6] = &v26;
   v25[7] = &v30;
-  [v3 na_each:v25];
+  [statisticsCopy na_each:v25];
   _HKInitializeLogging();
   v4 = MEMORY[0x277CCC320];
   v5 = *MEMORY[0x277CCC320];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v3 count];
+    v7 = [statisticsCopy count];
     *buf = 138543618;
     v43 = v6;
     v44 = 2048;

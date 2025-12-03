@@ -1,21 +1,21 @@
 @interface _HKCalendarDayCellIconConfiguration
-+ (id)configurationWithDateIndex:(int64_t)a3 color:(id)a4 style:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)configurationWithDateIndex:(int64_t)index color:(id)color style:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _HKCalendarDayCellIconConfiguration
 
-+ (id)configurationWithDateIndex:(int64_t)a3 color:(id)a4 style:(int64_t)a5
++ (id)configurationWithDateIndex:(int64_t)index color:(id)color style:(int64_t)style
 {
-  v7 = a4;
+  colorCopy = color;
   v8 = objc_alloc_init(objc_opt_class());
   v9 = v8[2];
-  v8[1] = a3;
-  v8[2] = v7;
+  v8[1] = index;
+  v8[2] = colorCopy;
 
-  v8[3] = a5;
+  v8[3] = style;
 
   return v8;
 }
@@ -31,13 +31,13 @@
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (dateIndex = self->_dateIndex, v6 = v4[1], v7 = [(UIColor *)self->_color isEqual:v4[2]], dateIndex == v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (dateIndex = self->_dateIndex, v6 = equalCopy[1], v7 = [(UIColor *)self->_color isEqual:equalCopy[2]], dateIndex == v6))
   {
-    if (self->_style == v4[3])
+    if (self->_style == equalCopy[3])
     {
       v8 = v7;
     }

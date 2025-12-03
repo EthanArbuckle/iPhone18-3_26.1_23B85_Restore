@@ -1,58 +1,58 @@
 @interface REMMigrationResult
-- (REMMigrationResult)initWithCoder:(id)a3;
-- (REMMigrationResult)initWithState:(id)a3 IsObserver:(BOOL)a4 timeElapsed:(double)a5 listsMigrated:(unint64_t)a6 remindersMigrated:(unint64_t)a7 log:(id)a8;
+- (REMMigrationResult)initWithCoder:(id)coder;
+- (REMMigrationResult)initWithState:(id)state IsObserver:(BOOL)observer timeElapsed:(double)elapsed listsMigrated:(unint64_t)migrated remindersMigrated:(unint64_t)remindersMigrated log:(id)log;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMMigrationResult
 
-- (REMMigrationResult)initWithState:(id)a3 IsObserver:(BOOL)a4 timeElapsed:(double)a5 listsMigrated:(unint64_t)a6 remindersMigrated:(unint64_t)a7 log:(id)a8
+- (REMMigrationResult)initWithState:(id)state IsObserver:(BOOL)observer timeElapsed:(double)elapsed listsMigrated:(unint64_t)migrated remindersMigrated:(unint64_t)remindersMigrated log:(id)log
 {
-  v15 = a3;
-  v16 = a8;
+  stateCopy = state;
+  logCopy = log;
   v20.receiver = self;
   v20.super_class = REMMigrationResult;
   v17 = [(REMMigrationResult *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_state, a3);
-    v18->_isObserver = a4;
-    v18->_timeElapsed = a5;
-    v18->_listsMigrated = a6;
-    v18->_remindersMigrated = a7;
-    objc_storeStrong(&v18->_log, a8);
+    objc_storeStrong(&v17->_state, state);
+    v18->_isObserver = observer;
+    v18->_timeElapsed = elapsed;
+    v18->_listsMigrated = migrated;
+    v18->_remindersMigrated = remindersMigrated;
+    objc_storeStrong(&v18->_log, log);
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMMigrationResult *)self state];
-  [v4 encodeObject:v5 forKey:@"state"];
+  coderCopy = coder;
+  state = [(REMMigrationResult *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  [v4 encodeBool:-[REMMigrationResult isObserver](self forKey:{"isObserver"), @"isObserver"}];
+  [coderCopy encodeBool:-[REMMigrationResult isObserver](self forKey:{"isObserver"), @"isObserver"}];
   [(REMMigrationResult *)self timeElapsed];
-  [v4 encodeDouble:@"timeElapsed" forKey:?];
-  [v4 encodeInteger:-[REMMigrationResult listsMigrated](self forKey:{"listsMigrated"), @"listsMigrated"}];
-  [v4 encodeInteger:-[REMMigrationResult remindersMigrated](self forKey:{"remindersMigrated"), @"remindersMigrated"}];
+  [coderCopy encodeDouble:@"timeElapsed" forKey:?];
+  [coderCopy encodeInteger:-[REMMigrationResult listsMigrated](self forKey:{"listsMigrated"), @"listsMigrated"}];
+  [coderCopy encodeInteger:-[REMMigrationResult remindersMigrated](self forKey:{"remindersMigrated"), @"remindersMigrated"}];
   v6 = [(REMMigrationResult *)self log];
-  [v4 encodeObject:v6 forKey:@"log"];
+  [coderCopy encodeObject:v6 forKey:@"log"];
 }
 
-- (REMMigrationResult)initWithCoder:(id)a3
+- (REMMigrationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
-  v6 = [v4 decodeBoolForKey:@"isObserver"];
-  [v4 decodeDoubleForKey:@"timeElapsed"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  v6 = [coderCopy decodeBoolForKey:@"isObserver"];
+  [coderCopy decodeDoubleForKey:@"timeElapsed"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"listsMigrated"];
-  v10 = [v4 decodeIntegerForKey:@"remindersMigrated"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"log"];
+  v9 = [coderCopy decodeIntegerForKey:@"listsMigrated"];
+  v10 = [coderCopy decodeIntegerForKey:@"remindersMigrated"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"log"];
 
   v12 = [(REMMigrationResult *)self initWithState:v5 IsObserver:v6 timeElapsed:v9 listsMigrated:v10 remindersMigrated:v11 log:v8];
   return v12;
@@ -65,8 +65,8 @@
   v5 = NSStringFromClass(v4);
   v6 = objc_msgSend(v3, "stringWithFormat:", @"<%@ %p ("), v5, self;
 
-  v7 = [(REMMigrationResult *)self state];
-  [v6 appendFormat:@"state: %@, ", v7];
+  state = [(REMMigrationResult *)self state];
+  [v6 appendFormat:@"state: %@, ", state];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMMigrationResult isObserver](self, "isObserver")}];
   [v6 appendFormat:@"isObserver: %@, ", v8];

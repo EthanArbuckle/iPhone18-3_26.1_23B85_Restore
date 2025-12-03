@@ -1,17 +1,17 @@
 @interface PeoplePickerActionBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PeoplePickerActionBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.PeoplePickerActionBar" hasSwiftField:@"audioButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"ConversationKit.PeoplePickerActionBar" hasSwiftField:@"serviceAvailability" withSwiftType:"ServiceAvailability"];
-  [v3 validateSwiftStruct:@"ConversationKit.ServiceAvailability" hasSwiftField:@"telephony" withSwiftType:"Bool"];
-  [v3 validateSwiftStruct:@"ConversationKit.ServiceAvailability" hasSwiftField:@"faceTimeAudio" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.PeoplePickerActionBar" hasSwiftField:@"audioButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"ConversationKit.PeoplePickerActionBar" hasSwiftField:@"serviceAvailability" withSwiftType:"ServiceAvailability"];
+  [validationsCopy validateSwiftStruct:@"ConversationKit.ServiceAvailability" hasSwiftField:@"telephony" withSwiftType:"Bool"];
+  [validationsCopy validateSwiftStruct:@"ConversationKit.ServiceAvailability" hasSwiftField:@"faceTimeAudio" withSwiftType:"Bool"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

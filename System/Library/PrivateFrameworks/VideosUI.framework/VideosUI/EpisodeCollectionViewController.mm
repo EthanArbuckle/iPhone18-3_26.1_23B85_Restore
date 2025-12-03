@@ -1,16 +1,16 @@
 @interface EpisodeCollectionViewController
-- (_TtC8VideosUI31EpisodeCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)vuiCollectionView:(id)a3 didEndDisplaying:(id)a4 for:(id)a5;
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4;
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5;
-- (void)vuiCollectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 at:(id)a6;
-- (void)vuiScrollViewDidEndDecelerating:(id)a3;
-- (void)vuiScrollViewDidScroll:(id)a3;
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (_TtC8VideosUI31EpisodeCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)vuiCollectionView:(id)view didEndDisplaying:(id)displaying for:(id)for;
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at;
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for;
+- (void)vuiCollectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind at:(id)at;
+- (void)vuiScrollViewDidEndDecelerating:(id)decelerating;
+- (void)vuiScrollViewDidScroll:(id)scroll;
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)vui_loadView;
 - (void)vui_viewDidLayoutSubviews;
 @end
@@ -19,21 +19,21 @@
 
 - (void)vui_loadView
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E389147C();
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E38917C0();
 }
 
-- (_TtC8VideosUI31EpisodeCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI31EpisodeCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1E4205F14();
     v7 = v6;
@@ -45,19 +45,19 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1E3892D50(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1E3892D50(v5, v7, bundle);
 }
 
-- (void)vuiCollectionView:(id)a3 didSelectItemAt:(id)a4
+- (void)vuiCollectionView:(id)view didSelectItemAt:(id)at
 {
   sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
   MEMORY[0x1EEE9AC00](v6);
   OUTLINED_FUNCTION_5();
   sub_1E41FE804();
-  v7 = a3;
-  v8 = self;
+  viewCopy = view;
+  selfCopy = self;
   OUTLINED_FUNCTION_50();
   sub_1E3893ED0();
 
@@ -65,7 +65,7 @@
   v10(v9);
 }
 
-- (void)vuiCollectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 at:(id)a6
+- (void)vuiCollectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind at:(id)at
 {
   sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -79,7 +79,7 @@
   v8(v7);
 }
 
-- (void)vuiCollectionView:(id)a3 willDisplay:(id)a4 for:(id)a5
+- (void)vuiCollectionView:(id)view willDisplay:(id)display for:(id)for
 {
   OUTLINED_FUNCTION_11_14();
   v9 = sub_1E41FE874();
@@ -89,15 +89,15 @@
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_9_12();
   sub_1E41FE804();
-  v13 = a3;
-  v14 = a4;
+  viewCopy = view;
+  displayCopy = display;
   v15 = v5;
   sub_1E3894404();
 
   (*(v11 + 8))(v6, v9);
 }
 
-- (void)vuiCollectionView:(id)a3 didEndDisplaying:(id)a4 for:(id)a5
+- (void)vuiCollectionView:(id)view didEndDisplaying:(id)displaying for:(id)for
 {
   OUTLINED_FUNCTION_11_14();
   v9 = sub_1E41FE874();
@@ -107,75 +107,75 @@
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_9_12();
   sub_1E41FE804();
-  v13 = a3;
-  v14 = a4;
+  viewCopy = view;
+  displayingCopy = displaying;
   v15 = v5;
   sub_1E38947C0();
 
   (*(v11 + 8))(v6, v9);
 }
 
-- (void)vuiScrollViewDidScroll:(id)a3
+- (void)vuiScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E3894A54(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1E3894A54(scrollCopy);
 }
 
-- (void)vuiScrollViewDidEndDecelerating:(id)a3
+- (void)vuiScrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3894C1C();
 }
 
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = self;
-  sub_1E3894C80(v7, &a5->x);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1E3894C80(draggingCopy, &offset->x);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = sub_1E3896BAC(x, y);
 
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1E3896E28(v8, v7);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_1E3896E28(selfCopy, configurationCopy);
 
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3896EF0();
 
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_15_45();
   sub_1E3896FA4(v9, v10, v11);
 

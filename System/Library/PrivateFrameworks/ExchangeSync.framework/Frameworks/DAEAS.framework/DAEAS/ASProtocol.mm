@@ -1,15 +1,15 @@
 @interface ASProtocol
 - (ASProtocol)init;
-- (id)_initWithVersion:(id)a3 capabilitiesVersion:(id)a4;
-- (id)_requestLinePrefixWithTask:(id)a3;
-- (id)_usernameOnlyPortionOfUserString:(id)a3;
-- (id)requestURLStringWithTask:(id)a3;
+- (id)_initWithVersion:(id)version capabilitiesVersion:(id)capabilitiesVersion;
+- (id)_requestLinePrefixWithTask:(id)task;
+- (id)_usernameOnlyPortionOfUserString:(id)string;
+- (id)requestURLStringWithTask:(id)task;
 - (int)supportsConversations;
 - (int)supportsDraftFolderSync;
 - (int)supportsEmailFlagging;
 - (int)supportsMailboxEnhancedSearch;
 - (int)supportsMailboxSearch;
-- (void)_setCapabilitiesVersion:(id)a3;
+- (void)_setCapabilitiesVersion:(id)version;
 - (void)init;
 @end
 
@@ -28,50 +28,50 @@
   return [(ASProtocol *)&v6 init];
 }
 
-- (void)_setCapabilitiesVersion:(id)a3
+- (void)_setCapabilitiesVersion:(id)version
 {
-  v6 = a3;
+  versionCopy = version;
   if (![(ASProtocolCapabilities *)self->_capabilities supportsProtocolVersion:?])
   {
-    v4 = [[ASProtocolCapabilities alloc] initWithProtocolVersionString:v6];
+    v4 = [[ASProtocolCapabilities alloc] initWithProtocolVersionString:versionCopy];
     capabilities = self->_capabilities;
     self->_capabilities = v4;
   }
 }
 
-- (id)_initWithVersion:(id)a3 capabilitiesVersion:(id)a4
+- (id)_initWithVersion:(id)version capabilitiesVersion:(id)capabilitiesVersion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"2.5"])
+  versionCopy = version;
+  capabilitiesVersionCopy = capabilitiesVersion;
+  if ([versionCopy isEqualToString:@"2.5"])
   {
     v8 = off_278FC6F40;
   }
 
-  else if ([v6 isEqualToString:@"12.1"])
+  else if ([versionCopy isEqualToString:@"12.1"])
   {
     v8 = off_278FC6F18;
   }
 
-  else if ([v6 isEqualToString:@"14.0"])
+  else if ([versionCopy isEqualToString:@"14.0"])
   {
     v8 = off_278FC6F20;
   }
 
-  else if ([v6 isEqualToString:@"14.1"])
+  else if ([versionCopy isEqualToString:@"14.1"])
   {
     v8 = off_278FC6F28;
   }
 
-  else if ([v6 isEqualToString:@"16.0"])
+  else if ([versionCopy isEqualToString:@"16.0"])
   {
     v8 = off_278FC6F30;
   }
 
   else
   {
-    v9 = [v6 isEqualToString:@"16.1"];
+    v9 = [versionCopy isEqualToString:@"16.1"];
     v8 = off_278FC6F78;
     if (v9)
     {
@@ -91,24 +91,24 @@
   }
 
   v14 = objc_opt_new();
-  [v14 _setCapabilitiesVersion:v7];
+  [v14 _setCapabilitiesVersion:capabilitiesVersionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (id)_usernameOnlyPortionOfUserString:(id)a3
+- (id)_usernameOnlyPortionOfUserString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"\\""];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [v3 length] - 1))
+  stringCopy = string;
+  v4 = [stringCopy rangeOfString:@"\\""];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, v4 >= [stringCopy length] - 1))
   {
-    v6 = v3;
+    v6 = stringCopy;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v5 + 1];
+    v6 = [stringCopy substringFromIndex:v5 + 1];
   }
 
   v7 = v6;
@@ -116,12 +116,12 @@
   return v7;
 }
 
-- (id)_requestLinePrefixWithTask:(id)a3
+- (id)_requestLinePrefixWithTask:(id)task
 {
-  v3 = [a3 taskManager];
-  if ([v3 port])
+  taskManager = [task taskManager];
+  if ([taskManager port])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@":%ld", objc_msgSend(v3, "port")];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@":%ld", objc_msgSend(taskManager, "port")];
   }
 
   else
@@ -130,7 +130,7 @@
   }
 
   v5 = MEMORY[0x277CCACA8];
-  if ([v3 useSSL])
+  if ([taskManager useSSL])
   {
     v6 = @"s";
   }
@@ -140,30 +140,30 @@
     v6 = &stru_285D39BD0;
   }
 
-  v7 = [v3 server];
-  v8 = [v5 stringWithFormat:@"http%@://%@%@/Microsoft-Server-ActiveSync?", v6, v7, v4];
+  server = [taskManager server];
+  v8 = [v5 stringWithFormat:@"http%@://%@%@/Microsoft-Server-ActiveSync?", v6, server, v4];
 
   return v8;
 }
 
-- (id)requestURLStringWithTask:(id)a3
+- (id)requestURLStringWithTask:(id)task
 {
-  v4 = a3;
-  v5 = [(ASProtocol *)self _requestLinePrefixWithTask:v4];
-  v6 = [v4 taskManager];
-  v7 = [v6 user];
-  v8 = [(ASProtocol *)self _usernameOnlyPortionOfUserString:v7];
+  taskCopy = task;
+  v5 = [(ASProtocol *)self _requestLinePrefixWithTask:taskCopy];
+  taskManager = [taskCopy taskManager];
+  user = [taskManager user];
+  v8 = [(ASProtocol *)self _usernameOnlyPortionOfUserString:user];
 
-  v9 = [v6 deviceID];
-  v10 = [v6 deviceType];
-  v11 = [v5 stringByAppendingFormat:@"User=%@&DeviceId=%@&DeviceType=%@", v8, v9, v10];
+  deviceID = [taskManager deviceID];
+  deviceType = [taskManager deviceType];
+  v11 = [v5 stringByAppendingFormat:@"User=%@&DeviceId=%@&DeviceType=%@", v8, deviceID, deviceType];
 
   v12 = [v11 stringByAddingPercentEscapesUsingEncoding:4];
 
-  if ([v4 commandCode] != -1)
+  if ([taskCopy commandCode] != -1)
   {
-    v13 = [v4 command];
-    v14 = [v12 stringByAppendingFormat:@"&Cmd=%@", v13];
+    command = [taskCopy command];
+    v14 = [v12 stringByAppendingFormat:@"&Cmd=%@", command];
 
     v12 = v14;
   }
@@ -238,8 +238,8 @@
 
 - (void)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASProtocol.m" lineNumber:37 description:{@"%@ is an abstract superclass.", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASProtocol.m" lineNumber:37 description:{@"%@ is an abstract superclass.", objc_opt_class()}];
 }
 
 @end

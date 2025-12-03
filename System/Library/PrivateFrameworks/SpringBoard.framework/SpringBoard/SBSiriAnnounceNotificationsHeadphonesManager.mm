@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)canAnnounce;
 - (SBSiriAnnounceNotificationsHeadphonesManager)init;
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4;
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __62__SBSiriAnnounceNotificationsHeadphonesManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_6 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_6, block);
@@ -68,28 +68,28 @@ void __62__SBSiriAnnounceNotificationsHeadphonesManager_sharedInstance__block_in
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
   v5 = +[SBTelephonyManager sharedTelephonyManager];
-  v6 = [v5 inCall];
+  inCall = [v5 inCall];
 
   v7 = +[SBConferenceManager sharedInstance];
-  v8 = [v7 inFaceTime];
+  inFaceTime = [v7 inFaceTime];
 
-  v9 = [(SBSiriAnnounceNotificationsHeadphonesManager *)self headphonesNotificationAnnouncementsAvailable];
-  v10 = v9;
-  v11 = v4 & (v6 ^ 1) & (v8 ^ 1) & v9;
+  headphonesNotificationAnnouncementsAvailable = [(SBSiriAnnounceNotificationsHeadphonesManager *)self headphonesNotificationAnnouncementsAvailable];
+  v10 = headphonesNotificationAnnouncementsAvailable;
+  v11 = isUILocked & (inCall ^ 1) & (inFaceTime ^ 1) & headphonesNotificationAnnouncementsAvailable;
   v12 = SBLogSiri();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67110144;
     v14[1] = v11;
     v15 = 1024;
-    v16 = v4;
+    v16 = isUILocked;
     v17 = 1024;
-    v18 = v6 & 1;
+    v18 = inCall & 1;
     v19 = 1024;
-    v20 = v8 & 1;
+    v20 = inFaceTime & 1;
     v21 = 1024;
     v22 = v10;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Notification/LiveActivityAlert can be spoken: %{BOOL}u [ isUILocked: %{BOOL}u inCall: %{BOOL}u inFaceTime: %{BOOL}u headphonesNotificationAnnouncementsAvailable: %{BOOL}u ]", v14, 0x20u);
@@ -98,15 +98,15 @@ void __62__SBSiriAnnounceNotificationsHeadphonesManager_sharedInstance__block_in
   return v11;
 }
 
-- (void)availableAnnouncementRequestTypesChanged:(unint64_t)a3 onPlatform:(int64_t)a4
+- (void)availableAnnouncementRequestTypesChanged:(unint64_t)changed onPlatform:(int64_t)platform
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (platform == 1)
   {
-    v4 = a3;
-    if ([(SBSiriAnnounceNotificationsHeadphonesManager *)self headphonesNotificationAnnouncementsAvailable]!= (a3 & 1))
+    changedCopy = changed;
+    if ([(SBSiriAnnounceNotificationsHeadphonesManager *)self headphonesNotificationAnnouncementsAvailable]!= (changed & 1))
     {
-      v6 = v4 & 1;
+      v6 = changedCopy & 1;
       v7 = SBLogSiri();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {

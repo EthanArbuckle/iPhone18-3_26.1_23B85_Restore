@@ -1,71 +1,71 @@
 @interface MSDSignedManifestV7
-+ (id)signedManifestFromManifestData:(id)a3;
++ (id)signedManifestFromManifestData:(id)data;
 - (BOOL)checkPlatformTypeForAllComponents;
-- (BOOL)hasSystemContainerBackupInRange:(_NSRange)a3;
-- (BOOL)isItemDeviceSettings:(id)a3;
-- (BOOL)isPathUnderNonContainerizedContentRoot:(id)a3;
-- (MSDSignedManifestV7)initWithManifestData:(id)a3;
-- (id)appIdentifierFromOrderItem:(id)a3;
-- (id)configurationProfileIdentifierFromOrderItem:(id)a3;
-- (id)getAppDependecies:(id)a3;
-- (id)getAppFileSize:(id)a3;
+- (BOOL)hasSystemContainerBackupInRange:(_NSRange)range;
+- (BOOL)isItemDeviceSettings:(id)settings;
+- (BOOL)isPathUnderNonContainerizedContentRoot:(id)root;
+- (MSDSignedManifestV7)initWithManifestData:(id)data;
+- (id)appIdentifierFromOrderItem:(id)item;
+- (id)configurationProfileIdentifierFromOrderItem:(id)item;
+- (id)getAppDependecies:(id)dependecies;
+- (id)getAppFileSize:(id)size;
 - (id)getAppList;
-- (id)getAppManifest:(id)a3;
-- (id)getAppPrivacyPermissions:(id)a3;
-- (id)getAppRealSize:(id)a3;
+- (id)getAppManifest:(id)manifest;
+- (id)getAppPrivacyPermissions:(id)permissions;
+- (id)getAppRealSize:(id)size;
 - (id)getBackupList;
-- (id)getComponentDataList:(id)a3;
-- (id)getComponentVersion:(id)a3;
-- (id)getContainerTypeFromComponentName:(id)a3;
-- (id)getDataComponentRealSizeFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getManifestDataFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getManifestInfoFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getSettingsDataFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getSettingsFromSection:(id)a3 forIdentifier:(id)a4;
-- (id)getSettingsInfoFromSection:(id)a3 forIdentifier:(id)a4;
+- (id)getComponentDataList:(id)list;
+- (id)getComponentVersion:(id)version;
+- (id)getContainerTypeFromComponentName:(id)name;
+- (id)getDataComponentRealSizeFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getManifestDataFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getManifestInfoFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getSettingsDataFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getSettingsFromSection:(id)section forIdentifier:(id)identifier;
+- (id)getSettingsInfoFromSection:(id)section forIdentifier:(id)identifier;
 - (id)getSharedDataList;
-- (id)getStandAlonePackageFileSize:(id)a3;
+- (id)getStandAlonePackageFileSize:(id)size;
 - (id)getStandAlonePackageList;
-- (id)getStandAlonePackageRealSize:(id)a3;
-- (id)getStandAlonePackageVersion:(id)a3;
+- (id)getStandAlonePackageRealSize:(id)size;
+- (id)getStandAlonePackageVersion:(id)version;
 - (id)getSystemAppDataList;
-- (id)getSystemAppDependecies:(id)a3;
-- (id)getSystemAppPrivacyPermissions:(id)a3;
+- (id)getSystemAppDependecies:(id)dependecies;
+- (id)getSystemAppPrivacyPermissions:(id)permissions;
 - (id)getUserDataList;
-- (id)mergedBackupManifest:(_NSRange)a3;
-- (id)originServerForBackupManifest:(_NSRange)a3;
+- (id)mergedBackupManifest:(_NSRange)manifest;
+- (id)originServerForBackupManifest:(_NSRange)manifest;
 - (id)parseAllFileHash;
-- (id)parseSectionForContentRoot:(id)a3;
-- (id)standAlonePackageIdentifierFromOrderItem:(id)a3;
-- (int64_t)getAppType:(id)a3;
+- (id)parseSectionForContentRoot:(id)root;
+- (id)standAlonePackageIdentifierFromOrderItem:(id)item;
+- (int64_t)getAppType:(id)type;
 - (void)parseLocaleCode;
 - (void)parseNonContainerizedContentRootSet;
 @end
 
 @implementation MSDSignedManifestV7
 
-+ (id)signedManifestFromManifestData:(id)a3
++ (id)signedManifestFromManifestData:(id)data
 {
-  v3 = a3;
-  v4 = [[MSDSignedManifestV7 alloc] initWithManifestData:v3];
+  dataCopy = data;
+  v4 = [[MSDSignedManifestV7 alloc] initWithManifestData:dataCopy];
 
   return v4;
 }
 
-- (BOOL)isItemDeviceSettings:(id)a3
+- (BOOL)isItemDeviceSettings:(id)settings
 {
-  v3 = [(MSDSignedManifestV7 *)self getSettingsFromSection:@"BackupData" forIdentifier:a3];
+  v3 = [(MSDSignedManifestV7 *)self getSettingsFromSection:@"BackupData" forIdentifier:settings];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)appIdentifierFromOrderItem:(id)a3
+- (id)appIdentifierFromOrderItem:(id)item
 {
-  v4 = a3;
-  if ([(MSDSignedManifestV7 *)self isItemApp:v4])
+  itemCopy = item;
+  if ([(MSDSignedManifestV7 *)self isItemApp:itemCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"/Apps/", "length")}];
+    v5 = [itemCopy substringFromIndex:{objc_msgSend(@"/Apps/", "length")}];
   }
 
   else
@@ -76,12 +76,12 @@
   return v5;
 }
 
-- (id)standAlonePackageIdentifierFromOrderItem:(id)a3
+- (id)standAlonePackageIdentifierFromOrderItem:(id)item
 {
-  v4 = a3;
-  if ([(MSDSignedManifestV7 *)self isItemStandAlonePackage:v4])
+  itemCopy = item;
+  if ([(MSDSignedManifestV7 *)self isItemStandAlonePackage:itemCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"/Packages/", "length")}];
+    v5 = [itemCopy substringFromIndex:{objc_msgSend(@"/Packages/", "length")}];
   }
 
   else
@@ -92,12 +92,12 @@
   return v5;
 }
 
-- (id)configurationProfileIdentifierFromOrderItem:(id)a3
+- (id)configurationProfileIdentifierFromOrderItem:(id)item
 {
-  v4 = a3;
-  if ([(MSDSignedManifestV7 *)self isItemConfigurationProfile:v4])
+  itemCopy = item;
+  if ([(MSDSignedManifestV7 *)self isItemConfigurationProfile:itemCopy])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"/ConfigurationProfiles/", "length")}];
+    v5 = [itemCopy substringFromIndex:{objc_msgSend(@"/ConfigurationProfiles/", "length")}];
   }
 
   else
@@ -110,19 +110,19 @@
 
 - (id)getBackupList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"BackupData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"BackupData"];
 
   return v3;
 }
 
-- (id)getAppDependecies:(id)a3
+- (id)getAppDependecies:(id)dependecies
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"Apps"];
+  dependeciesCopy = dependecies;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"Apps"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:dependeciesCopy];
 
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Dependencies"];
@@ -130,13 +130,13 @@
   return v9;
 }
 
-- (id)getSystemAppDependecies:(id)a3
+- (id)getSystemAppDependecies:(id)dependecies
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"SystemApps"];
+  dependeciesCopy = dependecies;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"SystemApps"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:dependeciesCopy];
 
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Dependencies"];
@@ -144,11 +144,11 @@
   return v9;
 }
 
-- (id)getAppPrivacyPermissions:(id)a3
+- (id)getAppPrivacyPermissions:(id)permissions
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifestV7 *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  permissionsCopy = permissions;
+  getAppList = [(MSDSignedManifestV7 *)self getAppList];
+  v6 = [getAppList objectForKey:permissionsCopy];
 
   v7 = [v6 objectForKey:@"Manifest"];
   v8 = [v7 objectForKey:@"Info"];
@@ -158,11 +158,11 @@
   return v9;
 }
 
-- (id)getSystemAppPrivacyPermissions:(id)a3
+- (id)getSystemAppPrivacyPermissions:(id)permissions
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifestV7 *)self getSystemAppDataList];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  permissionsCopy = permissions;
+  getSystemAppDataList = [(MSDSignedManifestV7 *)self getSystemAppDataList];
+  v6 = [getSystemAppDataList objectForKeyedSubscript:permissionsCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"Manifest"];
   v8 = [v7 objectForKeyedSubscript:@"Info"];
@@ -171,22 +171,22 @@
   return v9;
 }
 
-- (int64_t)getAppType:(id)a3
+- (int64_t)getAppType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[MSDPlatform sharedInstance];
-  v6 = [v5 macOS];
+  macOS = [v5 macOS];
 
-  if (v6)
+  if (macOS)
   {
-    v7 = [(MSDSignedManifest *)self payload];
-    v8 = [v7 objectForKey:@"Apps"];
+    payload = [(MSDSignedManifest *)self payload];
+    v8 = [payload objectForKey:@"Apps"];
 
-    v9 = [v8 objectForKey:v4];
+    v9 = [v8 objectForKey:typeCopy];
 
     if (v9)
     {
-      v10 = [v8 objectForKey:v4];
+      v10 = [v8 objectForKey:typeCopy];
       v11 = [v10 objectForKey:@"Manifest"];
 
       v12 = [v11 objectForKey:@"Info"];
@@ -197,36 +197,36 @@
         v14 = [v11 objectForKey:@"Info"];
         v15 = [v14 objectForKey:@"AppType"];
 
-        v16 = [v15 unsignedIntegerValue];
+        unsignedIntegerValue = [v15 unsignedIntegerValue];
       }
 
       else
       {
-        v16 = 0;
+        unsignedIntegerValue = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntegerValue = 0;
     }
   }
 
   else
   {
-    v16 = 2;
+    unsignedIntegerValue = 2;
   }
 
-  return v16;
+  return unsignedIntegerValue;
 }
 
-- (id)getAppFileSize:(id)a3
+- (id)getAppFileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"Apps"];
+  sizeCopy = size;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"Apps"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:sizeCopy];
 
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Info"];
@@ -236,13 +236,13 @@
   return v10;
 }
 
-- (id)getAppRealSize:(id)a3
+- (id)getAppRealSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"Apps"];
+  sizeCopy = size;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"Apps"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:sizeCopy];
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Info"];
 
@@ -281,13 +281,13 @@ LABEL_6:
   return v10;
 }
 
-- (id)getStandAlonePackageFileSize:(id)a3
+- (id)getStandAlonePackageFileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"Packages"];
+  sizeCopy = size;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"Packages"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:sizeCopy];
 
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Info"];
@@ -297,13 +297,13 @@ LABEL_6:
   return v10;
 }
 
-- (id)getStandAlonePackageRealSize:(id)a3
+- (id)getStandAlonePackageRealSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 objectForKey:@"Packages"];
+  sizeCopy = size;
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload objectForKey:@"Packages"];
 
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:sizeCopy];
   v8 = [v7 objectForKey:@"Manifest"];
   v9 = [v8 objectForKey:@"Info"];
 
@@ -342,16 +342,16 @@ LABEL_6:
   return v10;
 }
 
-- (id)getDataComponentRealSizeFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getDataComponentRealSizeFromSection:(id)section forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSDSignedManifestV7 *)self getManifestDataFromSection:v6 forIdentifier:v7];
+  sectionCopy = section;
+  identifierCopy = identifier;
+  v8 = [(MSDSignedManifestV7 *)self getManifestDataFromSection:sectionCopy forIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {
-    v25 = v7;
-    v26 = v6;
+    v25 = identifierCopy;
+    v26 = sectionCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -380,8 +380,8 @@ LABEL_6:
 
           if (v19)
           {
-            v20 = [v19 fileType];
-            v21 = [v20 isEqualToString:NSFileTypeRegular];
+            fileType = [v19 fileType];
+            v21 = [fileType isEqualToString:NSFileTypeRegular];
 
             if (v21)
             {
@@ -404,8 +404,8 @@ LABEL_6:
     }
 
     v22 = [NSNumber numberWithUnsignedLongLong:v13];
-    v7 = v25;
-    v6 = v26;
+    identifierCopy = v25;
+    sectionCopy = v26;
     v9 = v24;
   }
 
@@ -418,10 +418,10 @@ LABEL_6:
   return v22;
 }
 
-- (id)mergedBackupManifest:(_NSRange)a3
+- (id)mergedBackupManifest:(_NSRange)manifest
 {
-  length = a3.length;
-  location = a3.location;
+  length = manifest.length;
+  location = manifest.location;
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -434,26 +434,26 @@ LABEL_6:
   }
 
   v21 = +[NSMutableDictionary dictionary];
-  v8 = [(MSDSignedManifest *)self installationOrder];
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
   if (location < location + length)
   {
     do
     {
-      v9 = [v8 objectAtIndex:location];
+      v9 = [installationOrder objectAtIndex:location];
       v10 = [v9 substringFromIndex:{objc_msgSend(@"/BackupData/", "length")}];
-      v11 = [(MSDSignedManifestV7 *)self getBackupList];
-      v12 = [v11 objectForKey:v10];
+      getBackupList = [(MSDSignedManifestV7 *)self getBackupList];
+      v12 = [getBackupList objectForKey:v10];
       v13 = [v12 objectForKey:@"Manifest"];
       v14 = [v13 objectForKey:@"Data"];
 
       if ([(MSDSignedManifestV7 *)self isItemSystemContainerBackup:v10])
       {
         v15 = +[MSDPlatform sharedInstance];
-        v16 = [v15 watchOS];
+        watchOS = [v15 watchOS];
 
         v17 = sub_100063A54();
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-        if (!v16)
+        if (!watchOS)
         {
           if (v18)
           {
@@ -488,25 +488,25 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)hasSystemContainerBackupInRange:(_NSRange)a3
+- (BOOL)hasSystemContainerBackupInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(MSDSignedManifest *)self getVersion]< 5)
   {
     return 0;
   }
 
   v6 = +[MSDPlatform sharedInstance];
-  v7 = [v6 watchOS];
+  watchOS = [v6 watchOS];
 
-  if (!v7)
+  if (!watchOS)
   {
     return 0;
   }
 
-  v8 = [(MSDSignedManifest *)self installationOrder];
-  v9 = v8;
+  installationOrder = [(MSDSignedManifest *)self installationOrder];
+  v9 = installationOrder;
   v10 = location + length;
   if (location >= location + length)
   {
@@ -515,7 +515,7 @@ LABEL_13:
 
   else
   {
-    v11 = [v8 objectAtIndex:location];
+    v11 = [installationOrder objectAtIndex:location];
     v12 = [v11 isEqualToString:@"/BackupData/systemContainer"];
 
     if (v12)
@@ -550,11 +550,11 @@ LABEL_13:
   return v13;
 }
 
-- (id)getComponentVersion:(id)a3
+- (id)getComponentVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifestV7 *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  versionCopy = version;
+  getAppList = [(MSDSignedManifestV7 *)self getAppList];
+  v6 = [getAppList objectForKey:versionCopy];
 
   if (v6)
   {
@@ -571,7 +571,7 @@ LABEL_13:
         v13 = 136315650;
         v14 = "[MSDSignedManifestV7 getComponentVersion:]";
         v15 = 2114;
-        v16 = v4;
+        v16 = versionCopy;
         v17 = 2114;
         v18 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s - appName:%{public}@ componentVersion:%{public}@", &v13, 0x20u);
@@ -601,11 +601,11 @@ LABEL_13:
   return v9;
 }
 
-- (id)getAppManifest:(id)a3
+- (id)getAppManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifestV7 *)self getAppList];
-  v6 = [v5 objectForKey:v4];
+  manifestCopy = manifest;
+  getAppList = [(MSDSignedManifestV7 *)self getAppList];
+  v6 = [getAppList objectForKey:manifestCopy];
 
   v7 = [v6 objectForKey:@"Manifest"];
   v8 = [v7 objectForKey:@"Info"];
@@ -613,11 +613,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)getStandAlonePackageVersion:(id)a3
+- (id)getStandAlonePackageVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(MSDSignedManifestV7 *)self getStandAlonePackageList];
-  v6 = [v5 objectForKey:v4];
+  versionCopy = version;
+  getStandAlonePackageList = [(MSDSignedManifestV7 *)self getStandAlonePackageList];
+  v6 = [getStandAlonePackageList objectForKey:versionCopy];
 
   if (v6)
   {
@@ -634,7 +634,7 @@ LABEL_13:
         v13 = 136315650;
         v14 = "[MSDSignedManifestV7 getStandAlonePackageVersion:]";
         v15 = 2114;
-        v16 = v4;
+        v16 = versionCopy;
         v17 = 2114;
         v18 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s - pkgName:%{public}@ pkgVersion:%{public}@", &v13, 0x20u);
@@ -666,16 +666,16 @@ LABEL_13:
 
 - (id)getStandAlonePackageList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"Packages"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"Packages"];
 
   return v3;
 }
 
 - (id)getAppList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"Apps"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"Apps"];
 
   return v3;
 }
@@ -688,22 +688,22 @@ LABEL_13:
   }
 
   v4 = +[MSDPlatform sharedInstance];
-  v40 = [v4 platformType];
+  platformType = [v4 platformType];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = [(MSDSignedManifest *)self payload];
-  v6 = [v5 countByEnumeratingWithState:&v45 objects:v58 count:16];
+  payload = [(MSDSignedManifest *)self payload];
+  v6 = [payload countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = &IDSSendMessageOptionFireAndForgetKey_ptr;
     v9 = *v46;
-    v39 = v5;
+    v39 = payload;
     v35 = *v46;
-    v36 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -711,7 +711,7 @@ LABEL_13:
       {
         if (*v46 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payload);
         }
 
         v11 = *(*(&v45 + 1) + 8 * v10);
@@ -728,9 +728,9 @@ LABEL_13:
 
         if ((v15 & 1) == 0)
         {
-          v16 = [(MSDSignedManifest *)self payload];
+          payload2 = [(MSDSignedManifest *)self payload];
           v38 = v11;
-          v17 = [v16 objectForKey:v11];
+          v17 = [payload2 objectForKey:v11];
 
           v43 = 0u;
           v44 = 0u;
@@ -781,7 +781,7 @@ LABEL_17:
             }
 
             v29 = [v28 objectForKey:@"PlatformType"];
-            v30 = [v40 isEqualToString:v29];
+            v30 = [platformType isEqualToString:v29];
 
             if ((v30 & 1) == 0)
             {
@@ -792,7 +792,7 @@ LABEL_17:
                 *buf = 138544130;
                 v50 = v34;
                 v51 = 2114;
-                v52 = v40;
+                v52 = platformType;
                 v53 = 2114;
                 v54 = v22;
                 v55 = 2114;
@@ -801,7 +801,7 @@ LABEL_17:
               }
 
 LABEL_32:
-              v5 = v39;
+              payload = v39;
 
               v3 = 0;
               goto LABEL_33;
@@ -816,9 +816,9 @@ LABEL_32:
               }
 
               v12 = v13;
-              v5 = v39;
+              payload = v39;
               v9 = v35;
-              self = v36;
+              self = selfCopy;
               v8 = &IDSSendMessageOptionFireAndForgetKey_ptr;
               v7 = v37;
 LABEL_11:
@@ -841,7 +841,7 @@ LABEL_12:
       }
 
       while (v10 != v7);
-      v31 = [v5 countByEnumeratingWithState:&v45 objects:v58 count:16];
+      v31 = [payload countByEnumeratingWithState:&v45 objects:v58 count:16];
       v7 = v31;
     }
 
@@ -854,13 +854,13 @@ LABEL_33:
   return v3;
 }
 
-- (id)getComponentDataList:(id)a3
+- (id)getComponentDataList:(id)list
 {
-  v4 = a3;
-  if (v4)
+  listCopy = list;
+  if (listCopy)
   {
-    v5 = [(MSDSignedManifest *)self payload];
-    v6 = [v5 objectForKey:v4];
+    payload = [(MSDSignedManifest *)self payload];
+    v6 = [payload objectForKey:listCopy];
   }
 
   else
@@ -874,31 +874,31 @@ LABEL_33:
 
 - (id)getSystemAppDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"SystemApps"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"SystemApps"];
 
   return v3;
 }
 
 - (id)getSharedDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"SharedAppData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"SharedAppData"];
 
   return v3;
 }
 
 - (id)getUserDataList
 {
-  v2 = [(MSDSignedManifest *)self payload];
-  v3 = [v2 objectForKey:@"UserData"];
+  payload = [(MSDSignedManifest *)self payload];
+  v3 = [payload objectForKey:@"UserData"];
 
   return v3;
 }
 
-- (BOOL)isPathUnderNonContainerizedContentRoot:(id)a3
+- (BOOL)isPathUnderNonContainerizedContentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -909,7 +909,7 @@ LABEL_33:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [v4 pathComponents];
+  pathComponents = [rootCopy pathComponents];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014A7C;
@@ -917,7 +917,7 @@ LABEL_33:
   v7[4] = self;
   v7[5] = v12;
   v7[6] = &v8;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [pathComponents enumerateObjectsUsingBlock:v7];
 
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -926,57 +926,57 @@ LABEL_33:
   return self;
 }
 
-- (id)getManifestDataFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getManifestDataFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifest *)self getManifestFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifest *)self getManifestFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Data"];
 
   return v5;
 }
 
-- (id)getManifestInfoFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getManifestInfoFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifest *)self getManifestFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifest *)self getManifestFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Info"];
 
   return v5;
 }
 
-- (id)getSettingsFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getSettingsFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifest *)self getDictFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifest *)self getDictFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Settings"];
 
   return v5;
 }
 
-- (id)getSettingsDataFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getSettingsDataFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifestV7 *)self getSettingsFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifestV7 *)self getSettingsFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Data"];
 
   return v5;
 }
 
-- (id)getSettingsInfoFromSection:(id)a3 forIdentifier:(id)a4
+- (id)getSettingsInfoFromSection:(id)section forIdentifier:(id)identifier
 {
-  v4 = [(MSDSignedManifestV7 *)self getSettingsFromSection:a3 forIdentifier:a4];
+  v4 = [(MSDSignedManifestV7 *)self getSettingsFromSection:section forIdentifier:identifier];
   v5 = [v4 objectForKey:@"Info"];
 
   return v5;
 }
 
-- (id)originServerForBackupManifest:(_NSRange)a3
+- (id)originServerForBackupManifest:(_NSRange)manifest
 {
-  location = a3.location;
-  v5 = [(MSDSignedManifest *)self installationOrder:a3.location];
+  location = manifest.location;
+  v5 = [(MSDSignedManifest *)self installationOrder:manifest.location];
   v6 = [v5 objectAtIndex:location];
 
-  v7 = [v6 lastPathComponent];
-  if (v7)
+  lastPathComponent = [v6 lastPathComponent];
+  if (lastPathComponent)
   {
-    v8 = [(MSDSignedManifestV7 *)self getBackupList];
-    v9 = [v8 objectForKey:v7];
+    getBackupList = [(MSDSignedManifestV7 *)self getBackupList];
+    v9 = [getBackupList objectForKey:lastPathComponent];
 
     v10 = [v9 objectForKey:@"OriginServer"];
   }
@@ -989,13 +989,13 @@ LABEL_33:
   return v10;
 }
 
-- (id)getContainerTypeFromComponentName:(id)a3
+- (id)getContainerTypeFromComponentName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"."];
+  nameCopy = name;
+  v5 = [nameCopy componentsSeparatedByString:@"."];
   v6 = [v5 objectAtIndex:0];
-  v7 = [(MSDSignedManifestV7 *)self getDataSectionKeys];
-  if ([v7 containsObject:v6])
+  getDataSectionKeys = [(MSDSignedManifestV7 *)self getDataSectionKeys];
+  if ([getDataSectionKeys containsObject:v6])
   {
     v8 = v6;
   }
@@ -1012,14 +1012,14 @@ LABEL_33:
 - (void)parseNonContainerizedContentRootSet
 {
   v3 = objc_alloc_init(NSMutableSet);
-  v4 = [(MSDSignedManifestV7 *)self getDataSectionKeys];
-  v5 = [v4 allObjects];
+  getDataSectionKeys = [(MSDSignedManifestV7 *)self getDataSectionKeys];
+  allObjects = [getDataSectionKeys allObjects];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1037,8 +1037,8 @@ LABEL_33:
         v11 = *(*(&v16 + 1) + 8 * i);
         if (![(MSDSignedManifest *)self isContainerizedComponent:v11, v16])
         {
-          v12 = [(MSDSignedManifest *)self payload];
-          v13 = [v12 objectForKey:v11];
+          payload = [(MSDSignedManifest *)self payload];
+          v13 = [payload objectForKey:v11];
 
           v14 = [(MSDSignedManifestV7 *)self parseSectionForContentRoot:v13];
           v15 = v14;
@@ -1058,16 +1058,16 @@ LABEL_33:
   [(MSDSignedManifestV7 *)self setNonContainerizedContentRoots:v3];
 }
 
-- (id)parseSectionForContentRoot:(id)a3
+- (id)parseSectionForContentRoot:(id)root
 {
-  v3 = a3;
+  rootCopy = root;
   v27 = objc_alloc_init(NSMutableSet);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = v3;
-  obj = [v3 allKeys];
+  v24 = rootCopy;
+  obj = [rootCopy allKeys];
   v25 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v25)
   {
@@ -1093,8 +1093,8 @@ LABEL_33:
         v29 = 0u;
         v30 = 0u;
         v28 = v8;
-        v9 = [v8 allKeys];
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        allKeys = [v8 allKeys];
+        v10 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1105,7 +1105,7 @@ LABEL_33:
             {
               if (*v30 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(allKeys);
               }
 
               v14 = *(*(&v29 + 1) + 8 * i);
@@ -1132,7 +1132,7 @@ LABEL_33:
               objc_autoreleasePoolPop(v15);
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v11 = [allKeys countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v11);
@@ -1213,8 +1213,8 @@ LABEL_5:
         v58 = v4;
         v5 = *(*(&v78 + 1) + 8 * v4);
         context = objc_autoreleasePoolPush();
-        v6 = [(MSDSignedManifest *)self payload];
-        v7 = [v6 objectForKey:v5];
+        payload = [(MSDSignedManifest *)self payload];
+        v7 = [payload objectForKey:v5];
 
         v76 = 0u;
         v77 = 0u;
@@ -1304,8 +1304,8 @@ LABEL_5:
         v49 = v24;
         v25 = *(*(&v70 + 1) + 8 * v24);
         v48 = objc_autoreleasePoolPush();
-        v26 = [(MSDSignedManifest *)self payload];
-        v27 = [v26 objectForKey:v25];
+        payload2 = [(MSDSignedManifest *)self payload];
+        v27 = [payload2 objectForKey:v25];
 
         v68 = 0u;
         v69 = 0u;
@@ -1404,9 +1404,9 @@ LABEL_5:
   return v44;
 }
 
-- (MSDSignedManifestV7)initWithManifestData:(id)a3
+- (MSDSignedManifestV7)initWithManifestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_new();
   v96.receiver = self;
   v96.super_class = MSDSignedManifestV7;
@@ -1419,7 +1419,7 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v7 = [v4 objectForKey:@"Info"];
+  v7 = [dataCopy objectForKey:@"Info"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = sub_100063A54();
@@ -1459,8 +1459,8 @@ LABEL_57:
     v10 = NSClassFromString(@"MSDHubTestConfiguration");
     if (v10)
     {
-      v11 = [(objc_class *)v10 sharedInstance];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ([v11 shouldRunManifestRigorousTest] & 1) == 0)
+      sharedInstance = [(objc_class *)v10 sharedInstance];
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ([sharedInstance shouldRunManifestRigorousTest] & 1) == 0)
       {
         v16 = sub_100063A54();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1489,16 +1489,16 @@ LABEL_57:
     v12 = 0;
   }
 
-  v17 = [(MSDSignedManifest *)v6 manifestVerifier];
+  manifestVerifier = [(MSDSignedManifest *)v6 manifestVerifier];
 
-  if (!v17)
+  if (!manifestVerifier)
   {
     v18 = +[MSDDemoManifestCheck sharedInstance];
     [(MSDSignedManifest *)v6 setManifestVerifier:v18];
 
-    v19 = [(MSDSignedManifest *)v6 manifestVerifier];
+    manifestVerifier2 = [(MSDSignedManifest *)v6 manifestVerifier];
 
-    if (!v19)
+    if (!manifestVerifier2)
     {
       v8 = sub_100063A54();
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1512,15 +1512,15 @@ LABEL_57:
     }
   }
 
-  v14 = [v4 objectForKey:@"Version"];
+  v14 = [dataCopy objectForKey:@"Version"];
   if (v12)
   {
     [v5 setObject:v12 forKey:@"RigorousTestingOverride"];
   }
 
-  v20 = [(MSDSignedManifest *)v6 manifestVerifier];
-  v21 = [(MSDSignedManifestV7 *)v6 getDataSectionKeys];
-  v8 = [v20 verifyManifestSignature:v4 forDataSectionKeys:v21 withOptions:v5];
+  manifestVerifier3 = [(MSDSignedManifest *)v6 manifestVerifier];
+  getDataSectionKeys = [(MSDSignedManifestV7 *)v6 getDataSectionKeys];
+  v8 = [manifestVerifier3 verifyManifestSignature:dataCopy forDataSectionKeys:getDataSectionKeys withOptions:v5];
 
   if (v8)
   {
@@ -1626,13 +1626,13 @@ LABEL_53:
 
 LABEL_42:
         v31 = [v8 objectForKey:@"Packages"];
-        v85 = v4;
+        v85 = dataCopy;
         if (v31)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v54 = v4;
+            v54 = dataCopy;
             v55 = sub_100063A54();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
             {
@@ -1642,7 +1642,7 @@ LABEL_42:
             }
 
             v15 = 0;
-            v4 = v54;
+            dataCopy = v54;
             goto LABEL_92;
           }
 
@@ -1665,7 +1665,7 @@ LABEL_42:
 
 LABEL_91:
             v15 = 0;
-            v4 = v85;
+            dataCopy = v85;
             goto LABEL_92;
           }
 
@@ -1700,7 +1700,7 @@ LABEL_91:
             v15 = 0;
           }
 
-          v4 = v85;
+          dataCopy = v85;
           v5 = v93;
           goto LABEL_52;
         }

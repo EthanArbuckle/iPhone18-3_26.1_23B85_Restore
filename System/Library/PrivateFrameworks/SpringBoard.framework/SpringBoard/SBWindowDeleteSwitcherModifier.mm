@@ -1,21 +1,21 @@
 @interface SBWindowDeleteSwitcherModifier
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3;
-- (CGPoint)_centerOfCenterPageFullScreenAssociatedSourceDisplayItem:(id)a3 appLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (SBWindowDeleteSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 layoutRole:(int64_t)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutContainingAppLayout:(id)a3;
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3;
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout;
+- (CGPoint)_centerOfCenterPageFullScreenAssociatedSourceDisplayItem:(id)item appLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (SBWindowDeleteSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout layoutRole:(int64_t)role;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutContainingAppLayout:(id)layout;
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
@@ -25,18 +25,18 @@
 
 @implementation SBWindowDeleteSwitcherModifier
 
-- (SBWindowDeleteSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 layoutRole:(int64_t)a5
+- (SBWindowDeleteSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout layoutRole:(int64_t)role
 {
-  v9 = a4;
+  layoutCopy = layout;
   v21.receiver = self;
   v21.super_class = SBWindowDeleteSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v21 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v21 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fromAppLayout, a4);
-    v11->_layoutRole = a5;
-    v12 = [v9 leafAppLayoutForRole:a5];
+    objc_storeStrong(&v10->_fromAppLayout, layout);
+    v11->_layoutRole = role;
+    v12 = [layoutCopy leafAppLayoutForRole:role];
     centerWindowAppLayout = v11->_centerWindowAppLayout;
     v11->_centerWindowAppLayout = v12;
 
@@ -46,12 +46,12 @@
     v19[3] = &unk_2783A8C90;
     v14 = v11;
     v20 = v14;
-    v15 = [v9 appLayoutWithItemsPassingTest:v19];
+    v15 = [layoutCopy appLayoutWithItemsPassingTest:v19];
     fullScreenAppLayout = v14->_fullScreenAppLayout;
     v14->_fullScreenAppLayout = v15;
 
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v14->_supportsGroupOpacity = [v17 sbf_animatedBlurRadiusGraphicsQuality] == 100;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v14->_supportsGroupOpacity = [currentDevice sbf_animatedBlurRadiusGraphicsQuality] == 100;
   }
 
   return v11;
@@ -71,15 +71,15 @@ uint64_t __80__SBWindowDeleteSwitcherModifier_initWithTransitionID_fromAppLayout
 {
   v16.receiver = self;
   v16.super_class = SBWindowDeleteSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v16 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v16 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = SBAppendSwitcherModifierResponse(v4, v3);
+  v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
   v6 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
   v7 = SBAppendSwitcherModifierResponse(v6, v5);
 
-  v8 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v9 = [v8 mutableCopy];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v9 = [appLayouts mutableCopy];
 
   if (!self->_fullScreenAppLayout)
   {
@@ -153,9 +153,9 @@ id __53__SBWindowDeleteSwitcherModifier_transitionWillBegin__block_invoke(uint64
 {
   v7.receiver = self;
   v7.super_class = SBWindowDeleteSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
   v4 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_centerWindowAppLayout shouldBlur:1 animationUpdateMode:3];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillUpdate];
 
   return v5;
 }
@@ -164,31 +164,31 @@ id __53__SBWindowDeleteSwitcherModifier_transitionWillBegin__block_invoke(uint64
 {
   v7.receiver = self;
   v7.super_class = SBWindowDeleteSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   v4 = [[SBBlurItemContainerSwitcherEventResponse alloc] initWithAppLayout:self->_centerWindowAppLayout shouldBlur:0 animationUpdateMode:2];
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
   return v5;
 }
 
-- (id)appLayoutContainingAppLayout:(id)a3
+- (id)appLayoutContainingAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
-  if (![v5 isChamoisOrFlexibleWindowing])
+  layoutCopy = layout;
+  windowManagementContext = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
+  if (![windowManagementContext isChamoisOrFlexibleWindowing])
   {
 
     goto LABEL_8;
   }
 
-  v6 = [v4 isEqual:self->_centerWindowAppLayout];
+  v6 = [layoutCopy isEqual:self->_centerWindowAppLayout];
 
   if (!v6)
   {
 LABEL_8:
     v11.receiver = self;
     v11.super_class = SBWindowDeleteSwitcherModifier;
-    v8 = [(SBWindowDeleteSwitcherModifier *)&v11 appLayoutContainingAppLayout:v4];
+    v8 = [(SBWindowDeleteSwitcherModifier *)&v11 appLayoutContainingAppLayout:layoutCopy];
     goto LABEL_9;
   }
 
@@ -204,23 +204,23 @@ LABEL_9:
   return v9;
 }
 
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip
 {
-  v4 = a3;
-  v5 = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
-  if (![v5 isAutomaticStageCreationEnabled] || -[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") < 2 || self->_fullScreenAppLayout)
+  stripCopy = strip;
+  windowManagementContext = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
+  if (![windowManagementContext isAutomaticStageCreationEnabled] || -[SBTransitionSwitcherModifier transitionPhase](self, "transitionPhase") < 2 || self->_fullScreenAppLayout)
   {
 
 LABEL_5:
     v12.receiver = self;
     v12.super_class = SBWindowDeleteSwitcherModifier;
-    v6 = [(SBWindowDeleteSwitcherModifier *)&v12 adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:v4];
+    v6 = [(SBWindowDeleteSwitcherModifier *)&v12 adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:stripCopy];
     goto LABEL_6;
   }
 
-  v8 = [(SBWindowDeleteSwitcherModifier *)self appLayoutOnStage];
+  appLayoutOnStage = [(SBWindowDeleteSwitcherModifier *)self appLayoutOnStage];
 
-  if (!v8)
+  if (!appLayoutOnStage)
   {
     goto LABEL_5;
   }
@@ -233,13 +233,13 @@ LABEL_5:
   v24 = 0;
   v18.receiver = self;
   v18.super_class = SBWindowDeleteSwitcherModifier;
-  v9 = [(SBWindowDeleteSwitcherModifier *)&v18 appLayouts];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)&v18 appLayouts];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip___block_invoke;
   v17[3] = &unk_2783A8CB8;
   v17[4] = self;
-  v10 = [v9 bs_filter:v17];
+  v10 = [appLayouts bs_filter:v17];
 
   v11 = [[SBOverrideAppLayoutsSwitcherModifier alloc] initWithAppLayouts:v10];
   v13[0] = MEMORY[0x277D85DD0];
@@ -247,8 +247,8 @@ LABEL_5:
   v13[2] = __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip___block_invoke_2;
   v13[3] = &unk_2783AB258;
   v16 = &v19;
-  v14 = v4;
-  v15 = self;
+  v14 = stripCopy;
+  selfCopy = self;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v11 usingBlock:v13];
   v6 = v20[5];
 
@@ -286,47 +286,47 @@ void __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersIn
   *(v4 + 40) = v3;
 }
 
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBWindowDeleteSwitcherModifier;
-  v4 = [(SBWindowDeleteSwitcherModifier *)&v7 appLayoutsToEnsureExistForMainTransitionEvent:a3];
+  v4 = [(SBWindowDeleteSwitcherModifier *)&v7 appLayoutsToEnsureExistForMainTransitionEvent:event];
   v5 = [v4 sb_arrayByAddingOrMovingObject:self->_centerWindowAppLayout];
 
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBWindowDeleteSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
   centerWindowAppLayout = self->_centerWindowAppLayout;
-  if (centerWindowAppLayout == v4)
+  if (centerWindowAppLayout == elementCopy)
   {
-    v8 = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
-    v9 = [v8 dosidoDeclineIntentAnimationSettings];
-    v10 = [v9 fromViewSlideOutAnimationSettings];
-    [v6 setLayoutSettings:v10];
+    entityRemovalSettings = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
+    dosidoDeclineIntentAnimationSettings = [entityRemovalSettings dosidoDeclineIntentAnimationSettings];
+    fromViewSlideOutAnimationSettings = [dosidoDeclineIntentAnimationSettings fromViewSlideOutAnimationSettings];
+    [v6 setLayoutSettings:fromViewSlideOutAnimationSettings];
   }
 
   return v6;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_fullScreenAppLayout == v6 && [(SBTransitionSwitcherModifier *)self isPreparingLayout])
+  layoutCopy = layout;
+  if (self->_fullScreenAppLayout == layoutCopy && [(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
-    v7 = [(SBWindowDeleteSwitcherModifier *)self medusaSettings];
-    [v7 defaultDimmingOpacity];
+    medusaSettings = [(SBWindowDeleteSwitcherModifier *)self medusaSettings];
+    [medusaSettings defaultDimmingOpacity];
     v9 = v8;
   }
 
-  else if (self->_centerWindowAppLayout == v6)
+  else if (self->_centerWindowAppLayout == layoutCopy)
   {
     v9 = 0.0;
   }
@@ -335,32 +335,32 @@ void __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersIn
   {
     v12.receiver = self;
     v12.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v12 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+    [(SBWindowDeleteSwitcherModifier *)&v12 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout)
   {
     if (self->_usePageFullScreenCenterWindowDeletion)
     {
-      v15 = [(SBAppLayout *)self->_fromAppLayout centerItem];
-      if (v15)
+      centerItem = [(SBAppLayout *)self->_fromAppLayout centerItem];
+      if (centerItem)
       {
-        v16 = [(SBWindowDeleteSwitcherModifier *)self sourceLeafAppLayoutForCenterItem:v15];
-        v17 = [v16 allItems];
-        v18 = [v17 firstObject];
+        v16 = [(SBWindowDeleteSwitcherModifier *)self sourceLeafAppLayoutForCenterItem:centerItem];
+        allItems = [v16 allItems];
+        firstObject = [allItems firstObject];
 
         v19 = [(SBWindowDeleteSwitcherModifier *)self appLayoutContainingAppLayout:v16];
         v20 = v19;
-        if (v18)
+        if (firstObject)
         {
           v21 = v19 == 0;
         }
@@ -372,7 +372,7 @@ void __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersIn
 
         if (!v21)
         {
-          [(SBWindowDeleteSwitcherModifier *)self _centerOfCenterPageFullScreenAssociatedSourceDisplayItem:v18 appLayout:v19];
+          [(SBWindowDeleteSwitcherModifier *)self _centerOfCenterPageFullScreenAssociatedSourceDisplayItem:firstObject appLayout:v19];
           x = v26;
           y = v27;
           width = self->_initialFrame.size.width;
@@ -392,7 +392,7 @@ void __107__SBWindowDeleteSwitcherModifier_adjustedContinuousExposeIdentifiersIn
 
   v28.receiver = self;
   v28.super_class = SBWindowDeleteSwitcherModifier;
-  [(SBWindowDeleteSwitcherModifier *)&v28 frameForIndex:a3];
+  [(SBWindowDeleteSwitcherModifier *)&v28 frameForIndex:index];
   x = v7;
   y = v9;
   width = v11;
@@ -410,18 +410,18 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)_centerOfCenterPageFullScreenAssociatedSourceDisplayItem:(id)a3 appLayout:(id)a4
+- (CGPoint)_centerOfCenterPageFullScreenAssociatedSourceDisplayItem:(id)item appLayout:(id)layout
 {
   p_initialFrame = &self->_initialFrame;
   y = self->_initialFrame.origin.y;
   height = self->_initialFrame.size.height;
   v8 = (self->_initialFrame.origin.x + self->_initialFrame.size.width * 0.5) / self->_initialFrame.size.width;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 configuration];
-  v12 = [v9 layoutRoleForItem:v10];
+  layoutCopy = layout;
+  itemCopy = item;
+  configuration = [layoutCopy configuration];
+  v12 = [layoutCopy layoutRoleForItem:itemCopy];
 
-  switch(v11)
+  switch(configuration)
   {
     case 2:
       if (v12 == 1)
@@ -470,15 +470,15 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = v11;
-  if (self->_centerWindowAppLayout == v11 && ([(SBAppLayout *)v11 itemForLayoutRole:a3], v13 = objc_claimAutoreleasedReturnValue(), [(SBAppLayout *)self->_fromAppLayout itemForLayoutRole:self->_layoutRole], v14 = objc_claimAutoreleasedReturnValue(), v15 = [(SBDisplayItem *)v13 isEqualToItem:v14], v14, v13, v15))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = layoutCopy;
+  if (self->_centerWindowAppLayout == layoutCopy && ([(SBAppLayout *)layoutCopy itemForLayoutRole:role], v13 = objc_claimAutoreleasedReturnValue(), [(SBAppLayout *)self->_fromAppLayout itemForLayoutRole:self->_layoutRole], v14 = objc_claimAutoreleasedReturnValue(), v15 = [(SBDisplayItem *)v13 isEqualToItem:v14], v14, v13, v15))
   {
     layoutRole = self->_layoutRole;
     fromAppLayout = self->_fromAppLayout;
@@ -488,7 +488,7 @@ LABEL_13:
 
   else
   {
-    [(SBWindowDeleteSwitcherModifier *)&v34 frameForLayoutRole:a3 inAppLayout:v12 withBounds:x, y, width, height, self, SBWindowDeleteSwitcherModifier, v35.receiver, v35.super_class];
+    [(SBWindowDeleteSwitcherModifier *)&v34 frameForLayoutRole:role inAppLayout:v12 withBounds:x, y, width, height, self, SBWindowDeleteSwitcherModifier, v35.receiver, v35.super_class];
   }
 
   v26 = v22;
@@ -507,10 +507,10 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout)
   {
@@ -522,7 +522,7 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v13 anchorPointForIndex:a3];
+    [(SBWindowDeleteSwitcherModifier *)&v13 anchorPointForIndex:index];
     v8 = v7;
     v10 = v9;
   }
@@ -534,18 +534,18 @@ LABEL_13:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (self->_centerWindowAppLayout == v8 && [(SBTransitionSwitcherModifier *)self isUpdatingLayout])
+  layoutCopy = layout;
+  if (self->_centerWindowAppLayout == layoutCopy && [(SBTransitionSwitcherModifier *)self isUpdatingLayout])
   {
-    v9 = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
-    v10 = [v9 dosidoDeleteIntentAnimationSettings];
-    [v10 fromViewFinalAlpha];
+    entityRemovalSettings = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
+    dosidoDeleteIntentAnimationSettings = [entityRemovalSettings dosidoDeleteIntentAnimationSettings];
+    [dosidoDeleteIntentAnimationSettings fromViewFinalAlpha];
     v12 = v11;
   }
 
-  else if (self->_fullScreenAppLayout == v8)
+  else if (self->_fullScreenAppLayout == layoutCopy)
   {
     v12 = 1.0;
   }
@@ -554,17 +554,17 @@ LABEL_13:
   {
     v15.receiver = self;
     v15.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBWindowDeleteSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v12 = v13;
   }
 
   return v12;
 }
 
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_centerWindowAppLayout] && self->_supportsGroupOpacity)
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_centerWindowAppLayout] && self->_supportsGroupOpacity)
   {
     v5 = 1;
   }
@@ -573,33 +573,33 @@ LABEL_13:
   {
     v7.receiver = self;
     v7.super_class = SBWindowDeleteSwitcherModifier;
-    v5 = [(SBWindowDeleteSwitcherModifier *)&v7 shouldAllowGroupOpacityForAppLayout:v4];
+    v5 = [(SBWindowDeleteSwitcherModifier *)&v7 shouldAllowGroupOpacityForAppLayout:layoutCopy];
   }
 
   return v5;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.0;
   if (([v6 isEqual:self->_centerWindowAppLayout] & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v10 titleAndIconOpacityForIndex:a3];
+    [(SBWindowDeleteSwitcherModifier *)&v10 titleAndIconOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_centerWindowAppLayout])
   {
@@ -613,7 +613,7 @@ LABEL_13:
   {
     v19.receiver = self;
     v19.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBWindowDeleteSwitcherModifier *)&v19 cornerRadiiForIndex:index];
     topLeft = v11;
     bottomLeft = v12;
     bottomRight = v13;
@@ -631,17 +631,17 @@ LABEL_13:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_centerWindowAppLayout && [(SBTransitionSwitcherModifier *)self isUpdatingLayout])
   {
-    v7 = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
-    v8 = [v7 isChamoisOrFlexibleWindowing];
+    windowManagementContext = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v8)
+    if (isChamoisOrFlexibleWindowing)
     {
       v9 = 0.8;
     }
@@ -651,9 +651,9 @@ LABEL_13:
       v9 = 0.0;
       if ([(SBAppLayout *)v6 centerConfiguration]!= 2)
       {
-        v12 = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
-        v13 = [v12 dosidoDeleteIntentAnimationSettings];
-        [v13 fromViewFinalScale];
+        entityRemovalSettings = [(SBWindowDeleteSwitcherModifier *)self entityRemovalSettings];
+        dosidoDeleteIntentAnimationSettings = [entityRemovalSettings dosidoDeleteIntentAnimationSettings];
+        [dosidoDeleteIntentAnimationSettings fromViewFinalScale];
         v9 = v14;
       }
     }
@@ -663,7 +663,7 @@ LABEL_13:
   {
     v15.receiver = self;
     v15.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v15 scaleForIndex:a3];
+    [(SBWindowDeleteSwitcherModifier *)&v15 scaleForIndex:index];
     v9 = v10;
   }
 
@@ -674,18 +674,18 @@ LABEL_13:
 {
   v11.receiver = self;
   v11.super_class = SBWindowDeleteSwitcherModifier;
-  v3 = [(SBWindowDeleteSwitcherModifier *)&v11 topMostLayoutElements];
-  v4 = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
-  v5 = [v4 isChamoisOrFlexibleWindowing];
+  topMostLayoutElements = [(SBWindowDeleteSwitcherModifier *)&v11 topMostLayoutElements];
+  windowManagementContext = [(SBWindowDeleteSwitcherModifier *)self windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v5)
+  if (isChamoisOrFlexibleWindowing)
   {
-    v6 = v3;
+    v6 = topMostLayoutElements;
   }
 
   else
   {
-    v7 = [v3 mutableCopy];
+    v7 = [topMostLayoutElements mutableCopy];
     v8 = v7;
     if (v7)
     {
@@ -710,8 +710,8 @@ LABEL_13:
 {
   v6.receiver = self;
   v6.super_class = SBWindowDeleteSwitcherModifier;
-  v3 = [(SBWindowDeleteSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBWindowDeleteSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   if (self->_centerWindowAppLayout)
   {
@@ -726,10 +726,10 @@ LABEL_13:
   return v4;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBWindowDeleteSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_centerWindowAppLayout])
   {
@@ -741,7 +741,7 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBWindowDeleteSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -753,10 +753,10 @@ LABEL_13:
   return result;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_centerWindowAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_centerWindowAppLayout])
   {
     Empty = SBSwitcherWallpaperGradientAttributesMakeEmpty();
   }
@@ -765,7 +765,7 @@ LABEL_13:
   {
     v13.receiver = self;
     v13.super_class = SBWindowDeleteSwitcherModifier;
-    [(SBWindowDeleteSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:a3 inAppLayout:v6];
+    [(SBWindowDeleteSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   v9 = Empty;

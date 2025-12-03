@@ -1,71 +1,71 @@
 @interface BSXPCServiceConnectionMessage
-+ (id)messageWithXPCConnection:(void *)a3 targetQueue:(void *)a4 handshake:(int)a5 activationGeneration:(void *)a6 delegate:;
-- (BOOL)_sendWithMode:(uint64_t)a1;
++ (id)messageWithXPCConnection:(void *)connection targetQueue:(void *)queue handshake:(int)handshake activationGeneration:(void *)generation delegate:;
+- (BOOL)_sendWithMode:(uint64_t)mode;
 - (BOOL)expectsReply;
-- (BSXPCServiceConnectionMessage)initWithMessage:(id)a3;
+- (BSXPCServiceConnectionMessage)initWithMessage:(id)message;
 - (char)connection;
 - (id)_subMessages;
 - (id)createReply;
 - (id)messageID;
 - (id)selectorName;
-- (id)sendSynchronouslyWithError:(id *)a3;
-- (uint64_t)_initWithXPCConnection:(void *)a3 targetQueue:(void *)a4 handshake:(int)a5 activationGeneration:(void *)a6 delegate:;
+- (id)sendSynchronouslyWithError:(id *)error;
+- (uint64_t)_initWithXPCConnection:(void *)connection targetQueue:(void *)queue handshake:(int)handshake activationGeneration:(void *)generation delegate:;
 - (void)childIdentifier;
 - (void)childIdentifierIsRemotelyDefined;
 - (void)invalidate;
 - (void)setChildIdentifier:(void *)result;
-- (void)setChildIdentifierIsRemotelyDefined:(void *)a1;
-- (void)setMessageID:(void *)a1;
-- (void)setReplyQueue:(uint64_t)a1;
-- (void)setSelectorName:(void *)a1;
+- (void)setChildIdentifierIsRemotelyDefined:(void *)defined;
+- (void)setMessageID:(void *)d;
+- (void)setReplyQueue:(uint64_t)queue;
+- (void)setSelectorName:(void *)name;
 @end
 
 @implementation BSXPCServiceConnectionMessage
 
 - (id)messageID
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 decodeStringForKey:@"bsxpc"];
+    self = [self decodeStringForKey:@"bsxpc"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)childIdentifier
 {
-  if (a1)
+  if (self)
   {
-    return [a1 decodeUInt64ForKey:@"bsxpc_CID"];
+    return [self decodeUInt64ForKey:@"bsxpc_CID"];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)childIdentifierIsRemotelyDefined
 {
-  if (a1)
+  if (self)
   {
-    return [a1 decodeBoolForKey:@"bsxpc_CIDr"];
+    return [self decodeBoolForKey:@"bsxpc_CIDr"];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_subMessages
 {
-  if (a1 && [a1 containsValueForKey:@"bsxpc_BATCH"])
+  if (self && [self containsValueForKey:@"bsxpc_BATCH"])
   {
-    v2 = [a1 decodeXPCObjectOfType:MEMORY[0x1E69E9E50] forKey:@"bsxpc_BATCH"];
+    v2 = [self decodeXPCObjectOfType:MEMORY[0x1E69E9E50] forKey:@"bsxpc_BATCH"];
     if (v2)
     {
-      v3 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       applier[0] = MEMORY[0x1E69E9820];
       applier[1] = 3221225472;
       applier[2] = __45__BSXPCServiceConnectionMessage__subMessages__block_invoke;
       applier[3] = &unk_1E7521210;
-      v4 = v3;
+      v4 = array;
       v7 = v4;
       xpc_array_apply(v2, applier);
     }
@@ -86,13 +86,13 @@
 
 - (id)selectorName
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1 decodeStringForKey:@"bsxpc_SEL"];
+    self = [self decodeStringForKey:@"bsxpc_SEL"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)invalidate
@@ -144,13 +144,13 @@
 
 - (char)connection
 {
-  if (a1)
+  if (self)
   {
-    a1 = *&a1[*MEMORY[0x1E698E7C8]];
+    self = *&self[*MEMORY[0x1E698E7C8]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -163,11 +163,11 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
   return 1;
 }
 
-- (BSXPCServiceConnectionMessage)initWithMessage:(id)a3
+- (BSXPCServiceConnectionMessage)initWithMessage:(id)message
 {
   v4.receiver = self;
   v4.super_class = BSXPCServiceConnectionMessage;
-  result = [(BSXPCCoder *)&v4 initWithMessage:a3];
+  result = [(BSXPCCoder *)&v4 initWithMessage:message];
   if (result)
   {
     result->_sendFlag = 0;
@@ -176,45 +176,45 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
   return result;
 }
 
-- (uint64_t)_initWithXPCConnection:(void *)a3 targetQueue:(void *)a4 handshake:(int)a5 activationGeneration:(void *)a6 delegate:
+- (uint64_t)_initWithXPCConnection:(void *)connection targetQueue:(void *)queue handshake:(int)handshake activationGeneration:(void *)generation delegate:
 {
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  if (a1)
+  connectionCopy = connection;
+  queueCopy = queue;
+  generationCopy = generation;
+  if (self)
   {
-    v16 = [a1 initWithMessage:0];
-    a1 = v16;
+    v16 = [self initWithMessage:0];
+    self = v16;
     if (v16)
     {
       objc_storeStrong((v16 + *MEMORY[0x1E698E7C8]), a2);
-      objc_storeStrong((a1 + 72), a3);
-      objc_storeStrong((a1 + 40), a4);
-      *(a1 + 64) = a5;
-      objc_storeStrong((a1 + 48), a6);
+      objc_storeStrong((self + 72), connection);
+      objc_storeStrong((self + 40), queue);
+      *(self + 64) = handshake;
+      objc_storeStrong((self + 48), generation);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)messageWithXPCConnection:(void *)a3 targetQueue:(void *)a4 handshake:(int)a5 activationGeneration:(void *)a6 delegate:
++ (id)messageWithXPCConnection:(void *)connection targetQueue:(void *)queue handshake:(int)handshake activationGeneration:(void *)generation delegate:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  connectionCopy = connection;
+  queueCopy = queue;
+  generationCopy = generation;
   v14 = objc_alloc(objc_opt_self());
-  v15 = [(BSXPCServiceConnectionMessage *)v14 _initWithXPCConnection:v10 targetQueue:v11 handshake:v12 activationGeneration:a5 delegate:v13];
+  v15 = [(BSXPCServiceConnectionMessage *)v14 _initWithXPCConnection:v10 targetQueue:connectionCopy handshake:queueCopy activationGeneration:handshake delegate:generationCopy];
 
   return v15;
 }
 
-- (BOOL)_sendWithMode:(uint64_t)a1
+- (BOOL)_sendWithMode:(uint64_t)mode
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (mode)
   {
     if ((BSAtomicSetFlag() & 1) == 0)
     {
@@ -229,7 +229,7 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
         *&handler[12] = 2114;
         *&handler[14] = v23;
         *&handler[22] = 2048;
-        v53 = a1;
+        modeCopy5 = mode;
         LOWORD(v54) = 2114;
         *(&v54 + 2) = @"BSXPCServiceConnectionMessage.m";
         WORD5(v54) = 1024;
@@ -248,7 +248,7 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
 
     if (a2 == 1)
     {
-      if (!*(a1 + 80))
+      if (!*(mode + 80))
       {
         v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"only messages with a reply can be sent synchronously"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -261,7 +261,7 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
           *&handler[12] = 2114;
           *&handler[14] = v28;
           *&handler[22] = 2048;
-          v53 = a1;
+          modeCopy5 = mode;
           LOWORD(v54) = 2114;
           *(&v54 + 2) = @"BSXPCServiceConnectionMessage.m";
           WORD5(v54) = 1024;
@@ -278,7 +278,7 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
         JUMPOUT(0x19A86FF28);
       }
 
-      if (*(a1 + 60) == 1)
+      if (*(mode + 60) == 1)
       {
         v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"only async messages are batchable"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -291,7 +291,7 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
           *&handler[12] = 2114;
           *&handler[14] = v33;
           *&handler[22] = 2048;
-          v53 = a1;
+          modeCopy5 = mode;
           LOWORD(v54) = 2114;
           *(&v54 + 2) = @"BSXPCServiceConnectionMessage.m";
           WORD5(v54) = 1024;
@@ -309,17 +309,17 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
       }
     }
 
-    [*(a1 + 40) sendIfNecessary];
-    v4 = *(a1 + 48);
-    if (!v4 || [v4 shouldSendMessage:a1])
+    [*(mode + 40) sendIfNecessary];
+    v4 = *(mode + 48);
+    if (!v4 || [v4 shouldSendMessage:mode])
     {
-      v5 = [a1 createMessage];
-      v6 = *(a1 + 88);
-      v7 = MEMORY[0x19A908200](*(a1 + 80));
-      v8 = *(a1 + 48);
+      createMessage = [mode createMessage];
+      v6 = *(mode + 88);
+      v7 = MEMORY[0x19A908200](*(mode + 80));
+      v8 = *(mode + 48);
       if (v7)
       {
-        v9 = *(a1 + 64);
+        v9 = *(mode + 64);
         v10 = v48;
         v48[0] = MEMORY[0x1E69E9820];
         v48[1] = 3221225472;
@@ -339,19 +339,19 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
 
       v11 = MEMORY[0x19A908200](v10);
       v12 = MEMORY[0x1E698E7C8];
-      v13 = *(a1 + *MEMORY[0x1E698E7C8]);
+      v13 = *(mode + *MEMORY[0x1E698E7C8]);
       if (v13)
       {
         if (!v11)
         {
-          if (*(a1 + 61) == 1)
+          if (*(mode + 61) == 1)
           {
             xpc_connection_send_notification();
           }
 
           else
           {
-            xpc_connection_send_message(v13, v5);
+            xpc_connection_send_message(v13, createMessage);
           }
 
           goto LABEL_26;
@@ -359,16 +359,16 @@ uint64_t __45__BSXPCServiceConnectionMessage__subMessages__block_invoke(uint64_t
 
         if (a2 == 1)
         {
-          v14 = xpc_connection_send_message_with_reply_sync(v13, v5);
-          (v11)[2](v11, v14);
+          _xpcReplyQueue2 = xpc_connection_send_message_with_reply_sync(v13, createMessage);
+          (v11)[2](v11, _xpcReplyQueue2);
 LABEL_25:
 
           goto LABEL_26;
         }
 
-        v15 = [v6 _xpcReplyQueue];
-        v14 = v15;
-        if (!v15)
+        _xpcReplyQueue = [v6 _xpcReplyQueue];
+        _xpcReplyQueue2 = _xpcReplyQueue;
+        if (!_xpcReplyQueue)
         {
           v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Must have a connection replyQueue that understands how to schedule replies : %@", v6];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -382,7 +382,7 @@ LABEL_25:
             v39 = v38;
             *&handler[14] = v38;
             *&handler[22] = 2048;
-            v53 = a1;
+            modeCopy5 = mode;
             LOWORD(v54) = 2114;
             *(&v54 + 2) = @"BSXPCServiceConnectionMessage.m";
             WORD5(v54) = 1024;
@@ -399,15 +399,15 @@ LABEL_25:
           JUMPOUT(0x19A87011CLL);
         }
 
-        v16 = *(a1 + *v12);
-        v17 = [v15 queue];
+        v16 = *(mode + *v12);
+        queue = [_xpcReplyQueue queue];
         *handler = MEMORY[0x1E69E9820];
         *&handler[8] = 3221225472;
         *&handler[16] = __55__BSXPCServiceConnectionMessage__actuallySendWithMode___block_invoke_45;
-        v53 = &unk_1E75211E8;
+        modeCopy5 = &unk_1E75211E8;
         *&v54 = v6;
         *(&v54 + 1) = v11;
-        xpc_connection_send_message_with_reply(v16, v5, v17, handler);
+        xpc_connection_send_message_with_reply(v16, createMessage, queue, handler);
 
 LABEL_24:
         goto LABEL_25;
@@ -417,8 +417,8 @@ LABEL_24:
       {
         if (a2 != 1)
         {
-          v14 = [v6 _xpcReplyQueue];
-          if (!v14)
+          _xpcReplyQueue2 = [v6 _xpcReplyQueue];
+          if (!_xpcReplyQueue2)
           {
             v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Must have a connection replyQueue that understands how to schedule replies : %@", v6];
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -431,7 +431,7 @@ LABEL_24:
               *&handler[12] = 2114;
               *&handler[14] = v44;
               *&handler[22] = 2048;
-              v53 = a1;
+              modeCopy5 = mode;
               LOWORD(v54) = 2114;
               *(&v54 + 2) = @"BSXPCServiceConnectionMessage.m";
               WORD5(v54) = 1024;
@@ -451,10 +451,10 @@ LABEL_24:
           *handler = MEMORY[0x1E69E9820];
           *&handler[8] = 3221225472;
           *&handler[16] = __55__BSXPCServiceConnectionMessage__actuallySendWithMode___block_invoke_47;
-          v53 = &unk_1E7520648;
+          modeCopy5 = &unk_1E7520648;
           *&v54 = v6;
           *(&v54 + 1) = v11;
-          [v14 performAsync:handler];
+          [_xpcReplyQueue2 performAsync:handler];
           goto LABEL_24;
         }
 
@@ -462,7 +462,7 @@ LABEL_24:
       }
 
 LABEL_26:
-      [a1 invalidate];
+      [mode invalidate];
 
       if (v7)
       {
@@ -470,24 +470,24 @@ LABEL_26:
     }
   }
 
-  result = a1 != 0;
+  result = mode != 0;
   v19 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)setMessageID:(void *)a1
+- (void)setMessageID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
     if (v3)
     {
-      [a1 encodeObject:v3 forKey:@"bsxpc"];
+      [d encodeObject:v3 forKey:@"bsxpc"];
     }
 
     else
     {
-      [a1 _removeValueForKey:@"bsxpc"];
+      [d _removeValueForKey:@"bsxpc"];
     }
   }
 }
@@ -541,29 +541,29 @@ LABEL_26:
   return result;
 }
 
-- (void)setChildIdentifierIsRemotelyDefined:(void *)a1
+- (void)setChildIdentifierIsRemotelyDefined:(void *)defined
 {
-  if (a1)
+  if (defined)
   {
-    return [a1 encodeBool:a2 forKey:@"bsxpc_CIDr"];
+    return [defined encodeBool:a2 forKey:@"bsxpc_CIDr"];
   }
 
-  return a1;
+  return defined;
 }
 
-- (void)setSelectorName:(void *)a1
+- (void)setSelectorName:(void *)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
     if (v3)
     {
-      [a1 encodeObject:v3 forKey:@"bsxpc_SEL"];
+      [name encodeObject:v3 forKey:@"bsxpc_SEL"];
     }
 
     else
     {
-      [a1 _removeValueForKey:@"bsxpc_SEL"];
+      [name _removeValueForKey:@"bsxpc_SEL"];
     }
   }
 }
@@ -612,7 +612,7 @@ void __55__BSXPCServiceConnectionMessage__actuallySendWithMode___block_invoke_47
   [v1 _xpcReplyQueue_performReply:v2];
 }
 
-- (id)sendSynchronouslyWithError:(id *)a3
+- (id)sendSynchronouslyWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -637,9 +637,9 @@ void __55__BSXPCServiceConnectionMessage__actuallySendWithMode___block_invoke_47
   self->_completion = v5;
 
   [(BSXPCServiceConnectionMessage *)self sendSynchronously];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v7 = v11[5];
@@ -664,11 +664,11 @@ void __60__BSXPCServiceConnectionMessage_sendSynchronouslyWithError___block_invo
   *(v9 + 40) = v6;
 }
 
-- (void)setReplyQueue:(uint64_t)a1
+- (void)setReplyQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((queue + 88), a2);
   }
 }
 

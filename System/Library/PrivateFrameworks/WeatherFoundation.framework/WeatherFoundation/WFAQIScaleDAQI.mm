@@ -1,13 +1,13 @@
 @interface WFAQIScaleDAQI
-- (id)scaleCategoryForCategoryIndex:(unint64_t)a3 localizedCategoryDescription:(id)a4;
+- (id)scaleCategoryForCategoryIndex:(unint64_t)index localizedCategoryDescription:(id)description;
 @end
 
 @implementation WFAQIScaleDAQI
 
-- (id)scaleCategoryForCategoryIndex:(unint64_t)a3 localizedCategoryDescription:(id)a4
+- (id)scaleCategoryForCategoryIndex:(unint64_t)index localizedCategoryDescription:(id)description
 {
-  v5 = a4;
-  v6 = [[WFAQIScaleCategoryDAQI alloc] initWithCategoryIndex:a3 localizedCategoryDescription:v5];
+  descriptionCopy = description;
+  v6 = [[WFAQIScaleCategoryDAQI alloc] initWithCategoryIndex:index localizedCategoryDescription:descriptionCopy];
 
   return v6;
 }

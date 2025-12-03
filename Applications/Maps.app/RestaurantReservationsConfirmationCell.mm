@@ -1,5 +1,5 @@
 @interface RestaurantReservationsConfirmationCell
-- (RestaurantReservationsConfirmationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RestaurantReservationsConfirmationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)initConstraints;
 @end
 
@@ -7,35 +7,35 @@
 
 - (void)initConstraints
 {
-  v3 = [(RestaurantReservationsConfirmationCell *)self details];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  details = [(RestaurantReservationsConfirmationCell *)self details];
+  [details setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(RestaurantReservationsConfirmationCell *)self details];
-  v5 = [v4 leadingAnchor];
-  v6 = [(RestaurantReservationsConfirmationCell *)self contentView];
-  v7 = [v6 layoutMarginsGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  details2 = [(RestaurantReservationsConfirmationCell *)self details];
+  leadingAnchor = [details2 leadingAnchor];
+  contentView = [(RestaurantReservationsConfirmationCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v10 = [(RestaurantReservationsConfirmationCell *)self details];
-  v11 = [v10 trailingAnchor];
-  v12 = [(RestaurantReservationsConfirmationCell *)self contentView];
-  v13 = [v12 layoutMarginsGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  details3 = [(RestaurantReservationsConfirmationCell *)self details];
+  trailingAnchor = [details3 trailingAnchor];
+  contentView2 = [(RestaurantReservationsConfirmationCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v16 = [(RestaurantReservationsConfirmationCell *)self details];
-  v17 = [v16 topAnchor];
-  v18 = [(RestaurantReservationsConfirmationCell *)self contentView];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  details4 = [(RestaurantReservationsConfirmationCell *)self details];
+  topAnchor = [details4 topAnchor];
+  contentView3 = [(RestaurantReservationsConfirmationCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v21 = [(RestaurantReservationsConfirmationCell *)self contentView];
-  v22 = [v21 layoutMarginsGuide];
-  v23 = [v22 bottomAnchor];
-  v24 = [(RestaurantReservationsConfirmationCell *)self details];
-  v25 = [v24 lastBaselineAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25 constant:20.0];
+  contentView4 = [(RestaurantReservationsConfirmationCell *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide3 bottomAnchor];
+  details5 = [(RestaurantReservationsConfirmationCell *)self details];
+  lastBaselineAnchor = [details5 lastBaselineAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:20.0];
 
   v28[0] = v9;
   v28[1] = v20;
@@ -45,11 +45,11 @@
   [NSLayoutConstraint activateConstraints:v27];
 }
 
-- (RestaurantReservationsConfirmationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RestaurantReservationsConfirmationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = RestaurantReservationsConfirmationCell;
-  v4 = [(RestaurantReservationsConfirmationCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RestaurantReservationsConfirmationCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(UILabel);
@@ -67,8 +67,8 @@
     v9 = [UIFont systemFontOfSize:18.0];
     [(UILabel *)v4->_details setFont:v9];
 
-    v10 = [(RestaurantReservationsConfirmationCell *)v4 contentView];
-    [v10 addSubview:v4->_details];
+    contentView = [(RestaurantReservationsConfirmationCell *)v4 contentView];
+    [contentView addSubview:v4->_details];
 
     [(RestaurantReservationsConfirmationCell *)v4 initConstraints];
     v11 = +[UIColor systemGroupedBackgroundColor];

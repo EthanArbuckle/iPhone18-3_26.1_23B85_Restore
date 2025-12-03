@@ -1,26 +1,26 @@
 @interface MBPrebuddyDisabledDataclassesViewController
-- (MBPrebuddyDisabledDataclassesViewController)initWithFlow:(id)a3 disabledSyncCategories:(id)a4 disabledBackupDomains:(id)a5 needsTemporaryStorage:(BOOL)a6;
+- (MBPrebuddyDisabledDataclassesViewController)initWithFlow:(id)flow disabledSyncCategories:(id)categories disabledBackupDomains:(id)domains needsTemporaryStorage:(BOOL)storage;
 - (MBViewControllerFlow)flow;
-- (id)_iconForBackupDomain:(id)a3;
-- (id)_localizedTitleForBackupDomain:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)_presentKeychainError:(id)a3;
+- (id)_iconForBackupDomain:(id)domain;
+- (id)_localizedTitleForBackupDomain:(id)domain;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)_presentKeychainError:(id)error;
 - (void)_presentUnknownError;
 - (void)_setUp;
-- (void)_updateTableView:(BOOL)a3;
-- (void)didTapPrimaryButton:(id)a3;
-- (void)didTapSecondaryButton:(id)a3;
+- (void)_updateTableView:(BOOL)view;
+- (void)didTapPrimaryButton:(id)button;
+- (void)didTapSecondaryButton:(id)button;
 - (void)viewDidLoad;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MBPrebuddyDisabledDataclassesViewController
 
-- (MBPrebuddyDisabledDataclassesViewController)initWithFlow:(id)a3 disabledSyncCategories:(id)a4 disabledBackupDomains:(id)a5 needsTemporaryStorage:(BOOL)a6
+- (MBPrebuddyDisabledDataclassesViewController)initWithFlow:(id)flow disabledSyncCategories:(id)categories disabledBackupDomains:(id)domains needsTemporaryStorage:(BOOL)storage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  flowCopy = flow;
+  categoriesCopy = categories;
+  domainsCopy = domains;
   v13 = MBLocalizedStringFromTable();
   v14 = MBLocalizedStringFromTable();
   v17.receiver = self;
@@ -29,10 +29,10 @@
 
   if (v15)
   {
-    objc_storeWeak(&v15->_flow, v10);
-    objc_storeStrong(&v15->_disabledSyncCategories, a4);
-    objc_storeStrong(&v15->_disabledBackupDomains, a5);
-    v15->_needsTemporaryStorage = a6;
+    objc_storeWeak(&v15->_flow, flowCopy);
+    objc_storeStrong(&v15->_disabledSyncCategories, categories);
+    objc_storeStrong(&v15->_disabledBackupDomains, domains);
+    v15->_needsTemporaryStorage = storage;
   }
 
   return v15;
@@ -48,32 +48,32 @@
 
 - (void)_setUp
 {
-  v3 = [(MBPrebuddyDisabledDataclassesViewController *)self traitCollection];
-  self->_currentAppearance = [v3 mb_appearance];
+  traitCollection = [(MBPrebuddyDisabledDataclassesViewController *)self traitCollection];
+  self->_currentAppearance = [traitCollection mb_appearance];
 
   v4 = +[OBBoldTrayButton boldButton];
   v5 = MBLocalizedStringFromTable();
   [v4 setTitle:v5 forState:0];
 
   [v4 addTarget:self action:"didTapPrimaryButton:" forEvents:0x2000];
-  v6 = [v4 titleLabel];
+  titleLabel = [v4 titleLabel];
   LODWORD(v7) = 1036831949;
-  [v6 _setHyphenationFactor:v7];
+  [titleLabel _setHyphenationFactor:v7];
 
-  v8 = [(MBPrebuddyDisabledDataclassesViewController *)self buttonTray];
-  [v8 addButton:v4];
+  buttonTray = [(MBPrebuddyDisabledDataclassesViewController *)self buttonTray];
+  [buttonTray addButton:v4];
 
   v9 = +[OBLinkTrayButton linkButton];
   v10 = MBLocalizedStringFromTable();
   [v9 setTitle:v10 forState:0];
 
   [v9 addTarget:self action:"didTapSecondaryButton:" forEvents:0x2000];
-  v11 = [v9 titleLabel];
+  titleLabel2 = [v9 titleLabel];
   LODWORD(v12) = 1036831949;
-  [v11 _setHyphenationFactor:v12];
+  [titleLabel2 _setHyphenationFactor:v12];
 
-  v13 = [(MBPrebuddyDisabledDataclassesViewController *)self buttonTray];
-  [v13 addButton:v9];
+  buttonTray2 = [(MBPrebuddyDisabledDataclassesViewController *)self buttonTray];
+  [buttonTray2 addButton:v9];
 
   v14 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v14 setDelegate:self];
@@ -81,8 +81,8 @@
   [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"AppItemCell"];
   [(MBPrebuddyDisabledDataclassesViewController *)self setTableView:v14];
   v15 = +[UIColor clearColor];
-  v16 = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
-  [v16 setBackgroundColor:v15];
+  tableView = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
+  [tableView setBackgroundColor:v15];
 
   objc_initWeak(&location, self);
   v17 = [UITableViewDiffableDataSource alloc];
@@ -97,18 +97,18 @@
 
   [(UITableViewDiffableDataSource *)self->_dataSource setDefaultRowAnimation:0, v21, v22, v23, v24];
   [(MBPrebuddyDisabledDataclassesViewController *)self _updateTableView:0];
-  v20 = [(MBPrebuddyDisabledDataclassesViewController *)self navigationItem];
-  [v20 _setBackgroundHidden:1];
+  navigationItem = [(MBPrebuddyDisabledDataclassesViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 }
 
-- (void)didTapPrimaryButton:(id)a3
+- (void)didTapPrimaryButton:(id)button
 {
-  v4 = [(MBPrebuddyDisabledDataclassesViewController *)self navigationController];
-  v5 = [v4 view];
-  [v5 setUserInteractionEnabled:0];
+  navigationController = [(MBPrebuddyDisabledDataclassesViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:0];
 
   v6 = objc_opt_new();
   v17 = 0;
@@ -148,16 +148,16 @@
 
   else
   {
-    v11 = [(MBPrebuddyDisabledDataclassesViewController *)self navigationController];
-    v12 = [v11 view];
-    [v12 setUserInteractionEnabled:1];
+    navigationController2 = [(MBPrebuddyDisabledDataclassesViewController *)self navigationController];
+    view2 = [navigationController2 view];
+    [view2 setUserInteractionEnabled:1];
 
     WeakRetained = objc_loadWeakRetained(&self->_flow);
     [WeakRetained mb_didTapNextFromViewController:self];
   }
 }
 
-- (void)didTapSecondaryButton:(id)a3
+- (void)didTapSecondaryButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_flow);
   [WeakRetained mb_didTapCancelFromViewController:self];
@@ -181,9 +181,9 @@
   }
 }
 
-- (void)_updateTableView:(BOOL)a3
+- (void)_updateTableView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   if ([(MBPrebuddyDisabledDataclassesViewController *)self isViewLoaded])
   {
     v10 = [[NSMutableArray alloc] initWithCapacity:2];
@@ -197,25 +197,25 @@
       [v10 addObject:MBDisabledDataclassTableViewSectionHeaderDisabledBackupDomains];
     }
 
-    v5 = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
-    [v5 deleteAllItems];
-    [v5 appendSectionsWithIdentifiers:v10];
+    snapshot = [(UITableViewDiffableDataSource *)self->_dataSource snapshot];
+    [snapshot deleteAllItems];
+    [snapshot appendSectionsWithIdentifiers:v10];
     if ([(NSArray *)self->_disabledSyncCategories count])
     {
-      [v5 appendItemsWithIdentifiers:self->_disabledSyncCategories intoSectionWithIdentifier:MBDisabledDataclassTableViewSectionHeaderDisabledSyncCategories];
+      [snapshot appendItemsWithIdentifiers:self->_disabledSyncCategories intoSectionWithIdentifier:MBDisabledDataclassTableViewSectionHeaderDisabledSyncCategories];
     }
 
     if ([(NSArray *)self->_disabledBackupDomains count])
     {
-      [v5 appendItemsWithIdentifiers:self->_disabledBackupDomains intoSectionWithIdentifier:MBDisabledDataclassTableViewSectionHeaderDisabledBackupDomains];
+      [snapshot appendItemsWithIdentifiers:self->_disabledBackupDomains intoSectionWithIdentifier:MBDisabledDataclassTableViewSectionHeaderDisabledBackupDomains];
     }
 
     dataSource = self->_dataSource;
-    v7 = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
-    v8 = [v7 window];
-    if (v8)
+    tableView = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
+    window = [tableView window];
+    if (window)
     {
-      v9 = v3;
+      v9 = viewCopy;
     }
 
     else
@@ -223,13 +223,13 @@
       v9 = 0;
     }
 
-    [(UITableViewDiffableDataSource *)dataSource applySnapshot:v5 animatingDifferences:v9];
+    [(UITableViewDiffableDataSource *)dataSource applySnapshot:snapshot animatingDifferences:v9];
   }
 }
 
-- (void)_presentKeychainError:(id)a3
+- (void)_presentKeychainError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MBLocalizedStringFromTable();
   v6 = MBLocalizedStringFromTable();
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -242,8 +242,8 @@
   v12[1] = 3221225472;
   v12[2] = sub_100003ED8;
   v12[3] = &unk_10001C720;
-  v13 = v4;
-  v10 = v4;
+  v13 = errorCopy;
+  v10 = errorCopy;
   v11 = [UIAlertAction actionWithTitle:v9 style:0 handler:v12];
 
   [v7 addAction:v11];
@@ -266,19 +266,19 @@
   [(MBPrebuddyDisabledDataclassesViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (id)_iconForBackupDomain:(id)a3
+- (id)_iconForBackupDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 bundleID];
-  if ([v4 isCameraRollDomain])
+  domainCopy = domain;
+  bundleID = [domainCopy bundleID];
+  if ([domainCopy isCameraRollDomain])
   {
     v6 = @"com.apple.camera";
   }
 
   else
   {
-    v7 = [v4 domainName];
-    v8 = [v7 isEqualToString:@"KeyboardDomain"];
+    domainName = [domainCopy domainName];
+    v8 = [domainName isEqualToString:@"KeyboardDomain"];
 
     if (v8)
     {
@@ -287,8 +287,8 @@
 
     else
     {
-      v9 = [v4 domainName];
-      v10 = [v9 isEqualToString:@"HealthDomain"];
+      domainName2 = [domainCopy domainName];
+      v10 = [domainName2 isEqualToString:@"HealthDomain"];
 
       if (!v10)
       {
@@ -299,43 +299,43 @@
     }
   }
 
-  v5 = v6;
+  bundleID = v6;
 LABEL_8:
-  v11 = [[ISIcon alloc] initWithBundleIdentifier:v5];
+  v11 = [[ISIcon alloc] initWithBundleIdentifier:bundleID];
   v12 = [ISImageDescriptor imageDescriptorNamed:kISImageDescriptorTableUIName];
   [v12 setAppearance:self->_currentAppearance];
   v13 = [v11 prepareImageForDescriptor:v12];
-  v14 = [v13 CGImage];
+  cGImage = [v13 CGImage];
   v15 = +[UIScreen mainScreen];
   [v15 scale];
-  v16 = [UIImage imageWithCGImage:v14 scale:0 orientation:?];
+  v16 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v16;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v5 = [a3 mb_appearance];
-  if (v5 != self->_currentAppearance)
+  mb_appearance = [collection mb_appearance];
+  if (mb_appearance != self->_currentAppearance)
   {
-    self->_currentAppearance = v5;
-    v6 = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
-    [v6 reloadData];
+    self->_currentAppearance = mb_appearance;
+    tableView = [(MBPrebuddyDisabledDataclassesViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (id)_localizedTitleForBackupDomain:(id)a3
+- (id)_localizedTitleForBackupDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isCameraRollDomain])
+  domainCopy = domain;
+  if ([domainCopy isCameraRollDomain])
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 domainName];
-  v5 = [v4 isEqualToString:@"KeyboardDomain"];
+  domainName = [domainCopy domainName];
+  v5 = [domainName isEqualToString:@"KeyboardDomain"];
 
-  if (v5 || ([v3 domainName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"HealthDomain"), v6, v7))
+  if (v5 || ([domainCopy domainName], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"HealthDomain"), v6, v7))
   {
 LABEL_4:
     v8 = MBLocalizedStringFromTable();
@@ -343,8 +343,8 @@ LABEL_4:
 
   else
   {
-    v10 = [v3 bundleID];
-    v11 = [LSApplicationProxy applicationProxyForIdentifier:v10];
+    bundleID = [domainCopy bundleID];
+    v11 = [LSApplicationProxy applicationProxyForIdentifier:bundleID];
 
     v8 = [v11 localizedNameForContext:0];
   }
@@ -352,15 +352,15 @@ LABEL_4:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!section)
   {
     [(NSArray *)self->_disabledSyncCategories count];
 LABEL_4:
@@ -372,7 +372,7 @@ LABEL_4:
 LABEL_6:
   v8 = +[UIListContentConfiguration extraProminentInsetGroupedHeaderConfiguration];
   [v8 setText:v7];
-  v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"SectionHeaderView"];
+  v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"SectionHeaderView"];
   [v9 setContentConfiguration:v8];
 
   return v9;

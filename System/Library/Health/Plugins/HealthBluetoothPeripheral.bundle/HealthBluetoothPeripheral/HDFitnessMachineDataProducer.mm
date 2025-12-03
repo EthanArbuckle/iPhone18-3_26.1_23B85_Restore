@@ -1,28 +1,28 @@
 @interface HDFitnessMachineDataProducer
 - (BOOL)attached;
-- (HDFitnessMachineDataProducer)initWithProfile:(id)a3;
-- (void)attachHealthServiceSession:(unint64_t)a3;
+- (HDFitnessMachineDataProducer)initWithProfile:(id)profile;
+- (void)attachHealthServiceSession:(unint64_t)session;
 - (void)dealloc;
-- (void)deliverFinalValuesAndDetachWithCompletion:(id)a3;
+- (void)deliverFinalValuesAndDetachWithCompletion:(id)completion;
 - (void)detachHealthServiceSession;
 - (void)pauseCurrentSession;
 - (void)resumeCurrentSession;
 - (void)sendInitialValues;
-- (void)workoutDataAccumulator:(id)a3 didUpdateStatistics:(id)a4;
+- (void)workoutDataAccumulator:(id)accumulator didUpdateStatistics:(id)statistics;
 @end
 
 @implementation HDFitnessMachineDataProducer
 
-- (HDFitnessMachineDataProducer)initWithProfile:(id)a3
+- (HDFitnessMachineDataProducer)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDFitnessMachineDataProducer;
   v5 = [(HDFitnessMachineDataProducer *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v8 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v8;
@@ -45,7 +45,7 @@
   [(HDFitnessMachineDataProducer *)&v4 dealloc];
 }
 
-- (void)attachHealthServiceSession:(unint64_t)a3
+- (void)attachHealthServiceSession:(unint64_t)session
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -53,7 +53,7 @@
   v4[2] = sub_28128;
   v4[3] = &unk_5C9B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_async(queue, v4);
 }
 
@@ -68,17 +68,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)deliverFinalValuesAndDetachWithCompletion:(id)a3
+- (void)deliverFinalValuesAndDetachWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4AD0;
   v7[3] = &unk_5C9D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -134,18 +134,18 @@
   return v3;
 }
 
-- (void)workoutDataAccumulator:(id)a3 didUpdateStatistics:(id)a4
+- (void)workoutDataAccumulator:(id)accumulator didUpdateStatistics:(id)statistics
 {
-  v6 = a3;
-  v7 = a4;
+  accumulatorCopy = accumulator;
+  statisticsCopy = statistics;
   _HKInitializeLogging();
   v8 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v7;
+    v18 = statisticsCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Received updated accumulator statistics: %@", buf, 0x16u);
   }
 
@@ -155,10 +155,10 @@
   block[2] = sub_4E98;
   block[3] = &unk_5C788;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = accumulatorCopy;
+  v14 = statisticsCopy;
+  v10 = statisticsCopy;
+  v11 = accumulatorCopy;
   dispatch_async(queue, block);
 }
 

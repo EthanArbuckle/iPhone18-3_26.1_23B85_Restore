@@ -1,15 +1,15 @@
 @interface GTMTLCaptureService
-- (GTMTLCaptureService)initWithGuestApp:(GTMTLGuestAppClient *)a3;
-- (id)query:(id)a3;
-- (id)startWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (id)update:(id)a3;
-- (unint64_t)registerObserver:(id)a3;
-- (void)deregisterObserver:(unint64_t)a3;
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4;
-- (void)notifyCaptureObjectsChanged:(id)a3;
-- (void)notifyCaptureProgress:(id)a3;
-- (void)notifyCaptureRequest:(id)a3;
-- (void)notifyUnsupportedFenum:(id)a3;
+- (GTMTLCaptureService)initWithGuestApp:(GTMTLGuestAppClient *)app;
+- (id)query:(id)query;
+- (id)startWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (id)update:(id)update;
+- (unint64_t)registerObserver:(id)observer;
+- (void)deregisterObserver:(unint64_t)observer;
+- (void)deregisterObserversForConnection:(id)connection path:(id)path;
+- (void)notifyCaptureObjectsChanged:(id)changed;
+- (void)notifyCaptureProgress:(id)progress;
+- (void)notifyCaptureRequest:(id)request;
+- (void)notifyUnsupportedFenum:(id)fenum;
 - (void)signalInterposeSemaphore;
 - (void)stop;
 - (void)waitForInterposeSignal;
@@ -17,17 +17,17 @@
 
 @implementation GTMTLCaptureService
 
-- (void)notifyCaptureRequest:(id)a3
+- (void)notifyCaptureRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __44__GTMTLCaptureService_notifyCaptureRequest___block_invoke;
   v7[3] = &unk_2F2550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -46,17 +46,17 @@ void __44__GTMTLCaptureService_notifyCaptureRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)notifyUnsupportedFenum:(id)a3
+- (void)notifyUnsupportedFenum:(id)fenum
 {
-  v4 = a3;
+  fenumCopy = fenum;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __46__GTMTLCaptureService_notifyUnsupportedFenum___block_invoke;
   v7[3] = &unk_2F2550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = fenumCopy;
+  v6 = fenumCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -71,17 +71,17 @@ void __46__GTMTLCaptureService_notifyUnsupportedFenum___block_invoke(uint64_t a1
   [v1 notifyAll:v2];
 }
 
-- (void)notifyCaptureProgress:(id)a3
+- (void)notifyCaptureProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __45__GTMTLCaptureService_notifyCaptureProgress___block_invoke;
   v7[3] = &unk_2F2550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -96,17 +96,17 @@ void __45__GTMTLCaptureService_notifyCaptureProgress___block_invoke(uint64_t a1)
   [v1 notifyAll:v2];
 }
 
-- (void)notifyCaptureObjectsChanged:(id)a3
+- (void)notifyCaptureObjectsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke;
   v7[3] = &unk_2F2550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -121,24 +121,24 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
   [v1 notifyAll:v2];
 }
 
-- (id)query:(id)a3
+- (id)query:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   v4 = [NSMutableArray alloc];
-  v5 = [v3 requests];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  requests = [queryCopy requests];
+  v6 = [v4 initWithCapacity:{objc_msgSend(requests, "count")}];
 
-  v35 = [v3 requestID];
-  v7 = [v3 requests];
-  v8 = [v7 count];
+  requestID = [queryCopy requestID];
+  requests2 = [queryCopy requests];
+  v8 = [requests2 count];
 
   if (v8)
   {
     v9 = 0;
     do
     {
-      v10 = [v3 requests];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      requests3 = [queryCopy requests];
+      v11 = [requests3 objectAtIndexedSubscript:v9];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -153,9 +153,9 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
         [v15 setData:v16];
 
         [v15 setError:v17];
-        v18 = [v13 requestID];
+        requestID2 = [v13 requestID];
 
-        [v15 setRequestID:v18];
+        [v15 setRequestID:requestID2];
         [v6 setObject:v15 atIndexedSubscript:v9];
       }
 
@@ -179,9 +179,9 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
           [v20 setData:v21];
 
           [v20 setError:v22];
-          v23 = [v19 requestID];
+          requestID3 = [v19 requestID];
 
-          [v20 setRequestID:v23];
+          [v20 setRequestID:requestID3];
           [v6 setObject:v20 atIndexedSubscript:v9];
         }
 
@@ -201,8 +201,8 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
       }
 
       ++v9;
-      v27 = [v3 requests];
-      v28 = [v27 count];
+      requests4 = [queryCopy requests];
+      v28 = [requests4 count];
     }
 
     while (v28 > v9);
@@ -216,36 +216,36 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
   [v29 setData:v31];
 
   [v29 setError:v32];
-  [v29 setRequestID:v35];
-  v33 = [v3 completionHandler];
-  (v33)[2](v33, v29);
+  [v29 setRequestID:requestID];
+  completionHandler = [queryCopy completionHandler];
+  (completionHandler)[2](completionHandler, v29);
 
   return 0;
 }
 
-- (id)update:(id)a3
+- (id)update:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = dispatch_group_create();
   v5 = [NSMutableArray alloc];
-  v6 = [v3 requests];
-  v70 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  requests = [updateCopy requests];
+  v70 = [v5 initWithCapacity:{objc_msgSend(requests, "count")}];
 
-  v63 = [v3 requestID];
-  v7 = [v3 requests];
-  v8 = [v7 count];
+  requestID = [updateCopy requestID];
+  requests2 = [updateCopy requests];
+  v8 = [requests2 count];
 
   v9 = &GSSystemRootDirectory_ptr;
   if (v8)
   {
     v10 = 0;
     v64 = v4;
-    v65 = v3;
+    v65 = updateCopy;
     while (1)
     {
       dispatch_group_enter(v4);
-      v11 = [v3 requests];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      requests3 = [updateCopy requests];
+      v12 = [requests3 objectAtIndexedSubscript:v10];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -257,11 +257,11 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
       if (objc_opt_isKindOfClass())
       {
         v28 = v12;
-        v13 = [v28 configuration];
-        v29 = [v13 enablePresentDownload];
-        dword_31F7C8 = dword_31F7C8 & 0xFFFFFFFE | v29;
-        qword_31F7C0 = [v13 presentDownloadSize];
-        if ([v13 enableLogErrors])
+        configuration = [v28 configuration];
+        enablePresentDownload = [configuration enablePresentDownload];
+        dword_31F7C8 = dword_31F7C8 & 0xFFFFFFFE | enablePresentDownload;
+        qword_31F7C0 = [configuration presentDownloadSize];
+        if ([configuration enableLogErrors])
         {
           v30 = 2;
         }
@@ -272,7 +272,7 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
         }
 
         dword_31F7C8 = dword_31F7C8 & 0xFFFFFFFD | v30;
-        if ([v13 disableHashResources])
+        if ([configuration disableHashResources])
         {
           v31 = 0;
         }
@@ -283,8 +283,8 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
         }
 
         dword_31F7C8 = dword_31F7C8 & 0xFFFFFFDF | v31;
-        GT_ENV = [v13 waitEventTimeout];
-        qword_31F7B0 = [v13 maxDownloadCommandBuffers];
+        GT_ENV = [configuration waitEventTimeout];
+        qword_31F7B0 = [configuration maxDownloadCommandBuffers];
         v32 = v9[401];
         v18 = objc_opt_new();
         v72 = 0;
@@ -293,9 +293,9 @@ void __51__GTMTLCaptureService_notifyCaptureObjectsChanged___block_invoke(uint64
         [v18 setData:v33];
 
         [v18 setError:v34];
-        v35 = [v28 requestID];
+        requestID2 = [v28 requestID];
 
-        [v18 setRequestID:v35];
+        [v18 setRequestID:requestID2];
         [v70 setObject:v18 atIndexedSubscript:v10];
         dispatch_group_leave(v4);
 
@@ -306,22 +306,22 @@ LABEL_38:
       }
 
       v36 = v9[401];
-      v13 = objc_opt_new();
-      [v13 setRequestID:{objc_msgSend(v12, "requestID")}];
+      configuration = objc_opt_new();
+      [configuration setRequestID:{objc_msgSend(v12, "requestID")}];
       v37 = [NSError alloc];
       v92 = NSLocalizedDescriptionKey;
       v93 = @"unknown request";
       v38 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
       v39 = [v37 initWithDomain:NSCocoaErrorDomain code:1 userInfo:v38];
-      [v13 setError:v39];
+      [configuration setError:v39];
 
-      [v70 setObject:v13 atIndexedSubscript:v10];
+      [v70 setObject:configuration atIndexedSubscript:v10];
       dispatch_group_leave(v4);
 LABEL_39:
 
       ++v10;
-      v54 = [v3 requests];
-      v55 = [v54 count];
+      requests4 = [updateCopy requests];
+      v55 = [requests4 count];
 
       if (v55 <= v10)
       {
@@ -329,19 +329,19 @@ LABEL_39:
       }
     }
 
-    v13 = v12;
-    v14 = [v13 requestID];
-    v15 = [v13 streamRef];
-    v16 = [v13 enable];
-    Stream = GTTraceContext_getStream(g_ctx, v15);
+    configuration = v12;
+    requestID3 = [configuration requestID];
+    streamRef = [configuration streamRef];
+    enable = [configuration enable];
+    Stream = GTTraceContext_getStream(g_ctx, streamRef);
     if (Stream)
     {
-      v69 = v14;
+      v69 = requestID3;
       v18 = *(Stream + 16);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v66 = v16;
+        v66 = enable;
         v67 = v18;
         v19 = v18;
         v88 = 0u;
@@ -349,10 +349,10 @@ LABEL_39:
         v90 = 0u;
         v91 = 0u;
         v68 = v19;
-        v20 = [v19 superlayer];
-        v21 = [v20 sublayers];
+        superlayer = [v19 superlayer];
+        sublayers = [superlayer sublayers];
 
-        v22 = [v21 countByEnumeratingWithState:&v88 objects:v96 count:16];
+        v22 = [sublayers countByEnumeratingWithState:&v88 objects:v96 count:16];
         if (v22)
         {
           v23 = *v89;
@@ -362,12 +362,12 @@ LABEL_39:
             {
               if (*v89 != v23)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(sublayers);
               }
 
               v25 = *(*(&v88 + 1) + 8 * i);
-              v26 = [v25 name];
-              v27 = [v26 isEqualToString:@"gputools.overlay"];
+              name = [v25 name];
+              v27 = [name isEqualToString:@"gputools.overlay"];
 
               if (v27)
               {
@@ -376,7 +376,7 @@ LABEL_39:
               }
             }
 
-            v22 = [v21 countByEnumeratingWithState:&v88 objects:v96 count:16];
+            v22 = [sublayers countByEnumeratingWithState:&v88 objects:v96 count:16];
             if (v22)
             {
               continue;
@@ -387,7 +387,7 @@ LABEL_39:
 
 LABEL_27:
           v4 = v64;
-          v3 = v65;
+          updateCopy = v65;
           v9 = &GSSystemRootDirectory_ptr;
         }
 
@@ -487,7 +487,7 @@ LABEL_27:
       [v41 setError:v44];
 
       v18 = v41;
-      [v41 setRequestID:v14];
+      [v41 setRequestID:requestID3];
       [v70 setObject:v41 atIndexedSubscript:v10];
       dispatch_group_leave(v4);
     }
@@ -506,9 +506,9 @@ LABEL_40:
   [v57 setData:v59];
 
   [v57 setError:v60];
-  [v57 setRequestID:v63];
-  v61 = [v3 completionHandler];
-  (v61)[2](v61, v57);
+  [v57 setRequestID:requestID];
+  completionHandler = [updateCopy completionHandler];
+  (completionHandler)[2](completionHandler, v57);
 
   return 0;
 }
@@ -575,13 +575,13 @@ void __30__GTMTLCaptureService_update___block_invoke_2(uint64_t a1)
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (id)startWithDescriptor:(id)a3 completionHandler:(id)a4
+- (id)startWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v8 = objc_opt_new();
-  v9 = [v6 streamRef];
-  Stream = GTTraceContext_getStream(g_ctx, v9);
+  streamRef = [descriptorCopy streamRef];
+  Stream = GTTraceContext_getStream(g_ctx, streamRef);
   if (Stream)
   {
     v11 = *(Stream + 16);
@@ -595,8 +595,8 @@ void __30__GTMTLCaptureService_update___block_invoke_2(uint64_t a1)
   [v8 setCaptureObject:v11];
 
   [v8 setDestination:2];
-  [v8 setSessionID:{objc_msgSend(v6, "sessionID")}];
-  v12 = [v8 captureObject];
+  [v8 setSessionID:{objc_msgSend(descriptorCopy, "sessionID")}];
+  captureObject = [v8 captureObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -647,38 +647,38 @@ void __30__GTMTLCaptureService_update___block_invoke_2(uint64_t a1)
   [v8 setCaptureMode:v13];
   if (self->_interposeSemaphore)
   {
-    v14 = 0;
+    triggerHitsToStart = 0;
   }
 
   else
   {
-    v14 = [v6 triggerHitsToStart];
+    triggerHitsToStart = [descriptorCopy triggerHitsToStart];
   }
 
-  [v8 setTriggerHitsToStart:v14];
-  [v8 setTriggerHitsToEnd:{objc_msgSend(v6, "triggerHitsToEnd")}];
-  [v8 setSuspendAfterCapture:{objc_msgSend(v6, "suspendAfterCapture")}];
-  [v8 setIgnoreUnusedResources:{objc_msgSend(v6, "ignoreUnusedResources")}];
-  [v8 setIncludeBacktrace:{objc_msgSend(v6, "includeBacktrace")}];
+  [v8 setTriggerHitsToStart:triggerHitsToStart];
+  [v8 setTriggerHitsToEnd:{objc_msgSend(descriptorCopy, "triggerHitsToEnd")}];
+  [v8 setSuspendAfterCapture:{objc_msgSend(descriptorCopy, "suspendAfterCapture")}];
+  [v8 setIgnoreUnusedResources:{objc_msgSend(descriptorCopy, "ignoreUnusedResources")}];
+  [v8 setIncludeBacktrace:{objc_msgSend(descriptorCopy, "includeBacktrace")}];
   [v8 setApiTriggeredCapture:1];
   [v8 setToolTriggeredCapture:1];
-  v15 = [v6 outputURL];
-  if (v15)
+  outputURL = [descriptorCopy outputURL];
+  if (outputURL)
   {
-    v16 = v15;
-    [v8 setOutputURL:v15];
+    v16 = outputURL;
+    [v8 setOutputURL:outputURL];
   }
 
   else
   {
     v17 = +[NSFileManager defaultManager];
-    v18 = [v17 temporaryDirectory];
+    temporaryDirectory = [v17 temporaryDirectory];
 
     v19 = +[NSProcessInfo processInfo];
-    v20 = [v19 globallyUniqueString];
-    v21 = [v20 stringByAppendingString:@".gputrace"];
+    globallyUniqueString = [v19 globallyUniqueString];
+    v21 = [globallyUniqueString stringByAppendingString:@".gputrace"];
 
-    v16 = [[NSURL alloc] initFileURLWithPath:v21 isDirectory:1 relativeToURL:v18];
+    v16 = [[NSURL alloc] initFileURLWithPath:v21 isDirectory:1 relativeToURL:temporaryDirectory];
     [v8 setOutputURL:v16];
   }
 
@@ -691,10 +691,10 @@ void __30__GTMTLCaptureService_update___block_invoke_2(uint64_t a1)
   v35 = v23;
   v24 = v16;
   v36 = v24;
-  v25 = v7;
+  v25 = handlerCopy;
   v37 = v25;
   [v8 setCompletionHandler:v34];
-  if (([v6 isToolsCapture] & 1) != 0 || !objc_msgSend(v6, "sessionID"))
+  if (([descriptorCopy isToolsCapture] & 1) != 0 || !objc_msgSend(descriptorCopy, "sessionID"))
   {
     v26 = +[CaptureMTLCaptureManager toolsCaptureManager];
   }
@@ -734,7 +734,7 @@ void __61__GTMTLCaptureService_startWithDescriptor_completionHandler___block_inv
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   serialQueue = self->_serialQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -742,30 +742,30 @@ void __61__GTMTLCaptureService_startWithDescriptor_completionHandler___block_inv
   v4[2] = __42__GTMTLCaptureService_deregisterObserver___block_invoke;
   v4[3] = &unk_2F1CA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4
+- (void)deregisterObserversForConnection:(id)connection path:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  pathCopy = path;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __61__GTMTLCaptureService_deregisterObserversForConnection_path___block_invoke;
   block[3] = &unk_2F1C80;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = pathCopy;
+  v9 = pathCopy;
+  v10 = connectionCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -775,10 +775,10 @@ void __61__GTMTLCaptureService_startWithDescriptor_completionHandler___block_inv
   block[1] = 3221225472;
   block[2] = __40__GTMTLCaptureService_registerObserver___block_invoke;
   block[3] = &unk_2F1C58;
-  v10 = v4;
+  v10 = observerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = observerCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[3];
 
@@ -826,7 +826,7 @@ void *__40__GTMTLCaptureService_registerObserver___block_invoke(void *a1)
   }
 }
 
-- (GTMTLCaptureService)initWithGuestApp:(GTMTLGuestAppClient *)a3
+- (GTMTLCaptureService)initWithGuestApp:(GTMTLGuestAppClient *)app
 {
   v18.receiver = self;
   v18.super_class = GTMTLCaptureService;

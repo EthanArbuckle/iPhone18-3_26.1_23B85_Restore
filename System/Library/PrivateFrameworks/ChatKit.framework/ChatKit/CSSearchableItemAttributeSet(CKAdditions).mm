@@ -8,16 +8,16 @@
 
 - (id)__ck_itemContentCreationDate
 {
-  v1 = [a1 __ck_privateMutableAttributesDictionary];
-  v2 = [v1 objectForKey:@"kMDItemContentCreationDate"];
+  __ck_privateMutableAttributesDictionary = [self __ck_privateMutableAttributesDictionary];
+  v2 = [__ck_privateMutableAttributesDictionary objectForKey:@"kMDItemContentCreationDate"];
 
   return v2;
 }
 
 - (id)__ck_spotlightItemSnippet
 {
-  v1 = [a1 __ck_privateMutableAttributesDictionary];
-  v2 = [v1 objectForKey:*MEMORY[0x1E6964B18]];
+  __ck_privateMutableAttributesDictionary = [self __ck_privateMutableAttributesDictionary];
+  v2 = [__ck_privateMutableAttributesDictionary objectForKey:*MEMORY[0x1E6964B18]];
 
   return v2;
 }
@@ -26,7 +26,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_mutableAttributes];
+    v2 = [self performSelector:sel_mutableAttributes];
   }
 
   else

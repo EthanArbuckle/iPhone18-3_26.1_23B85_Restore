@@ -1,14 +1,14 @@
 @interface AnnounceManager
-- (void)onSilentModeSwitch:(id)a3;
+- (void)onSilentModeSwitch:(id)switch;
 @end
 
 @implementation AnnounceManager
 
-- (void)onSilentModeSwitch:(id)a3
+- (void)onSilentModeSwitch:(id)switch
 {
-  v3 = a3;
+  switchCopy = switch;
 
-  sub_243FB8348(v3);
+  sub_243FB8348(switchCopy);
 }
 
 @end

@@ -1,74 +1,74 @@
 @interface _MCDContentManager
-- (BOOL)itemIsPlayable:(id)a3;
+- (BOOL)itemIsPlayable:(id)playable;
 - (Class)tableCellClass;
 - (MCDContentManagerDataSource)dataSource;
 - (MCDContentManagerDelegate)delegate;
 - (UITableView)tableView;
 - (UIViewController)viewController;
-- (_MCDContentManager)initWithDataSource:(id)a3 delegate:(id)a4;
-- (_MCDContentManager)initWithDataSource:(id)a3 limitedUI:(BOOL)a4 showLocalContent:(BOOL)a5 delegate:(id)a6 viewController:(id)a7 playbackManager:(id)a8 shouldPerformRequestImmediately:(BOOL)a9;
+- (_MCDContentManager)initWithDataSource:(id)source delegate:(id)delegate;
+- (_MCDContentManager)initWithDataSource:(id)source limitedUI:(BOOL)i showLocalContent:(BOOL)content delegate:(id)delegate viewController:(id)controller playbackManager:(id)manager shouldPerformRequestImmediately:(BOOL)immediately;
 - (double)_heightForHeaderView;
-- (double)_tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)_tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_textForHeaderView;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemsInSectionAtIndex:(int64_t)a3;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (void)_initiatePlaybackForItem:(id)a3 shuffled:(BOOL)a4;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemsInSectionAtIndex:(int64_t)index;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (void)_initiatePlaybackForItem:(id)item shuffled:(BOOL)shuffled;
 - (void)_performRequest;
-- (void)_processResponse:(id)a3 error:(id)a4;
+- (void)_processResponse:(id)response error:(id)error;
 - (void)_setupOperationQueue;
 - (void)dealloc;
-- (void)modelResponseDidInvalidate:(id)a3;
-- (void)performRequest:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setLimitedUI:(BOOL)a3;
-- (void)setShowShuffleAll:(BOOL)a3;
-- (void)setShowSiriCellInLimitedUI:(BOOL)a3;
-- (void)setShowsMediaCell:(BOOL)a3;
-- (void)setTableView:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)modelResponseDidInvalidate:(id)invalidate;
+- (void)performRequest:(id)request;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setLimitedUI:(BOOL)i;
+- (void)setShowShuffleAll:(BOOL)all;
+- (void)setShowSiriCellInLimitedUI:(BOOL)i;
+- (void)setShowsMediaCell:(BOOL)cell;
+- (void)setTableView:(id)view;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 @end
 
 @implementation _MCDContentManager
 
-- (_MCDContentManager)initWithDataSource:(id)a3 limitedUI:(BOOL)a4 showLocalContent:(BOOL)a5 delegate:(id)a6 viewController:(id)a7 playbackManager:(id)a8 shouldPerformRequestImmediately:(BOOL)a9
+- (_MCDContentManager)initWithDataSource:(id)source limitedUI:(BOOL)i showLocalContent:(BOOL)content delegate:(id)delegate viewController:(id)controller playbackManager:(id)manager shouldPerformRequestImmediately:(BOOL)immediately
 {
-  v12 = a5;
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  contentCopy = content;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  managerCopy = manager;
   v25.receiver = self;
   v25.super_class = _MCDContentManager;
   v19 = [(_MCDContentManager *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_dataSource, v15);
-    objc_storeWeak(&v20->_delegate, v16);
+    objc_storeWeak(&v19->_dataSource, sourceCopy);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     v21 = objc_opt_class();
     objc_storeWeak(&v20->_tableCellClass, v21);
-    v20->_limitedUI = a4;
-    v20->_showLocalContent = v12;
+    v20->_limitedUI = i;
+    v20->_showLocalContent = contentCopy;
     v20->_showFavoriteContent = 0;
-    objc_storeStrong(&v20->_playbackManager, a8);
-    [(MCDPlayableProvider *)v20->_playbackManager setLocalContentOnly:v12];
+    objc_storeStrong(&v20->_playbackManager, manager);
+    [(MCDPlayableProvider *)v20->_playbackManager setLocalContentOnly:contentCopy];
     [(MCDPlayableProvider *)v20->_playbackManager setFavoriteContentOnly:0];
     *&v20->_showSiriCellInLimitedUI = 0;
     v20->_showsMediaCell = 0;
-    objc_storeWeak(&v20->_viewController, v17);
+    objc_storeWeak(&v20->_viewController, controllerCopy);
     v22 = [[SiriDirectActionSource alloc] initWithDelegate:0];
     siriDirectActionSource = v20->_siriDirectActionSource;
     v20->_siriDirectActionSource = v22;
 
     [(_MCDContentManager *)v20 _setupOperationQueue];
-    if (a9)
+    if (immediately)
     {
       [(_MCDContentManager *)v20 _performRequest];
     }
@@ -77,18 +77,18 @@
   return v20;
 }
 
-- (_MCDContentManager)initWithDataSource:(id)a3 delegate:(id)a4
+- (_MCDContentManager)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _MCDContentManager;
   v8 = [(_MCDContentManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     [(_MCDContentManager *)v9 _setupOperationQueue];
     [(_MCDContentManager *)v9 _performRequest];
   }
@@ -101,8 +101,8 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(_MCDContentManager *)self siriDirectActionSource];
-  [v4 invalidate];
+  siriDirectActionSource = [(_MCDContentManager *)self siriDirectActionSource];
+  [siriDirectActionSource invalidate];
 
   v5.receiver = self;
   v5.super_class = _MCDContentManager;
@@ -122,34 +122,34 @@
   [(NSOperationQueue *)v5 setName:@"com.apple.MusicCarDisplayUI.MCDContentManager.operationQueue"];
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_MCDContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 itemAtIndexPath:v4];
+  pathCopy = path;
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v7 = [results itemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (id)itemsInSectionAtIndex:(int64_t)a3
+- (id)itemsInSectionAtIndex:(int64_t)index
 {
-  v4 = [(_MCDContentManager *)self lastReceivedResponse];
-  v5 = [v4 results];
-  v6 = [v5 itemsInSectionAtIndex:a3];
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v6 = [results itemsInSectionAtIndex:index];
 
   return v6;
 }
 
-- (BOOL)itemIsPlayable:(id)a3
+- (BOOL)itemIsPlayable:(id)playable
 {
-  v4 = a3;
+  playableCopy = playable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 song];
+    song = [playableCopy song];
 
-    v4 = v5;
+    playableCopy = song;
   }
 
   if ([(_MCDContentManager *)self limitedUI])
@@ -157,20 +157,20 @@
     goto LABEL_8;
   }
 
-  v6 = [(_MCDContentManager *)self delegate];
+  delegate = [(_MCDContentManager *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(_MCDContentManager *)self delegate];
-  v8 = [v7 contentManager:self canDrillIntoItem:v4];
+  delegate2 = [(_MCDContentManager *)self delegate];
+  v8 = [delegate2 contentManager:self canDrillIntoItem:playableCopy];
 
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    v9 = [_TtC5Music31CarPlayPlayabilityStatusService isModelObjectPlayable:v4];
+    v9 = [_TtC5Music31CarPlayPlayabilityStatusService isModelObjectPlayable:playableCopy];
     goto LABEL_9;
   }
 
@@ -180,14 +180,14 @@ LABEL_9:
   return v9;
 }
 
-- (void)setLimitedUI:(BOOL)a3
+- (void)setLimitedUI:(BOOL)i
 {
-  if (self->_limitedUI != a3)
+  if (self->_limitedUI != i)
   {
-    v4 = a3;
-    self->_limitedUI = a3;
-    v6 = [(_MCDContentManager *)self dataSource];
-    [v6 setLimitedUI:v4];
+    iCopy = i;
+    self->_limitedUI = i;
+    dataSource = [(_MCDContentManager *)self dataSource];
+    [dataSource setLimitedUI:iCopy];
 
     [(_MCDContentManager *)self setLastReceivedResponse:0];
 
@@ -195,41 +195,41 @@ LABEL_9:
   }
 }
 
-- (void)setShowSiriCellInLimitedUI:(BOOL)a3
+- (void)setShowSiriCellInLimitedUI:(BOOL)i
 {
-  if (self->_showSiriCellInLimitedUI != a3)
+  if (self->_showSiriCellInLimitedUI != i)
   {
-    self->_showSiriCellInLimitedUI = a3;
-    v4 = [(_MCDContentManager *)self tableView];
-    [v4 reloadData];
+    self->_showSiriCellInLimitedUI = i;
+    tableView = [(_MCDContentManager *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)setShowShuffleAll:(BOOL)a3
+- (void)setShowShuffleAll:(BOOL)all
 {
-  if (self->_showShuffleAll != a3)
+  if (self->_showShuffleAll != all)
   {
-    self->_showShuffleAll = a3;
-    v4 = [(_MCDContentManager *)self tableView];
-    [v4 reloadData];
+    self->_showShuffleAll = all;
+    tableView = [(_MCDContentManager *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)setShowsMediaCell:(BOOL)a3
+- (void)setShowsMediaCell:(BOOL)cell
 {
-  if (self->_showsMediaCell != a3)
+  if (self->_showsMediaCell != cell)
   {
-    self->_showsMediaCell = a3;
-    v4 = [(_MCDContentManager *)self tableView];
-    [v4 reloadData];
+    self->_showsMediaCell = cell;
+    tableView = [(_MCDContentManager *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)modelResponseDidInvalidate:(id)a3
+- (void)modelResponseDidInvalidate:(id)invalidate
 {
-  v7 = [a3 object];
-  v4 = [(_MCDContentManager *)self lastReceivedResponse];
-  v5 = [v7 isEqual:v4];
+  object = [invalidate object];
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+  v5 = [object isEqual:lastReceivedResponse];
 
   if (v5)
   {
@@ -240,61 +240,61 @@ LABEL_9:
   }
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v10 = a3;
-  objc_storeWeak(&self->_tableView, v10);
-  if (v10)
+  viewCopy = view;
+  objc_storeWeak(&self->_tableView, viewCopy);
+  if (viewCopy)
   {
-    v4 = [(_MCDContentManager *)self tableCellClass];
+    tableCellClass = [(_MCDContentManager *)self tableCellClass];
     v5 = NSStringFromClass([(_MCDContentManager *)self tableCellClass]);
-    [v10 registerClass:v4 forCellReuseIdentifier:v5];
+    [viewCopy registerClass:tableCellClass forCellReuseIdentifier:v5];
 
     v6 = objc_opt_class();
     v7 = +[(_MCDReusableCell *)MCDShuffleActionCell];
-    [v10 registerClass:v6 forCellReuseIdentifier:v7];
+    [viewCopy registerClass:v6 forCellReuseIdentifier:v7];
 
     v8 = objc_opt_class();
     v9 = +[(_MCDReusableCell *)MCDSiriActionCell];
-    [v10 registerClass:v8 forCellReuseIdentifier:v9];
+    [viewCopy registerClass:v8 forCellReuseIdentifier:v9];
 
-    [v10 setRowHeight:UITableViewAutomaticDimension];
-    [v10 setEstimatedRowHeight:UITableViewAutomaticDimension];
-    [v10 setDataSource:self];
-    [v10 setDelegate:self];
+    [viewCopy setRowHeight:UITableViewAutomaticDimension];
+    [viewCopy setEstimatedRowHeight:UITableViewAutomaticDimension];
+    [viewCopy setDataSource:self];
+    [viewCopy setDelegate:self];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(_MCDContentManager *)self lastReceivedResponse];
-  v4 = [v3 results];
-  v5 = [v4 numberOfSections];
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  numberOfSections = [results numberOfSections];
 
-  return v5;
+  return numberOfSections;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(_MCDContentManager *)self lastReceivedResponse];
-  v7 = [v6 results];
-  v8 = [v7 numberOfSections];
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  numberOfSections = [results numberOfSections];
 
-  if (v8 <= a4)
+  if (numberOfSections <= section)
   {
     return 0;
   }
 
-  v9 = [(_MCDContentManager *)self lastReceivedResponse];
-  v10 = [v9 results];
-  v11 = [v10 numberOfItemsInSection:a4];
+  lastReceivedResponse2 = [(_MCDContentManager *)self lastReceivedResponse];
+  results2 = [lastReceivedResponse2 results];
+  v11 = [results2 numberOfItemsInSection:section];
 
-  if (!a4)
+  if (!section)
   {
-    v12 = [(_MCDContentManager *)self showShuffleAll];
+    showShuffleAll = [(_MCDContentManager *)self showShuffleAll];
     if (v11 > 0)
     {
-      v13 = v12;
+      v13 = showShuffleAll;
     }
 
     else
@@ -305,14 +305,14 @@ LABEL_9:
     v11 += v13;
   }
 
-  v14 = [(_MCDContentManager *)self limitedUI];
+  limitedUI = [(_MCDContentManager *)self limitedUI];
   v15 = 12;
   if (v11 < 12)
   {
     v15 = v11;
   }
 
-  if (v14)
+  if (limitedUI)
   {
     return v15;
   }
@@ -323,45 +323,45 @@ LABEL_9:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(objc_class *)[(_MCDContentManager *)self tableCellClass] cellForTableView:v6 indexPath:v7];
-  if (-[_MCDContentManager showSiriCellInLimitedUI](self, "showSiriCellInLimitedUI") && -[_MCDContentManager limitedUI](self, "limitedUI") && [v7 row] == 11)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(objc_class *)[(_MCDContentManager *)self tableCellClass] cellForTableView:viewCopy indexPath:pathCopy];
+  if (-[_MCDContentManager showSiriCellInLimitedUI](self, "showSiriCellInLimitedUI") && -[_MCDContentManager limitedUI](self, "limitedUI") && [pathCopy row] == 11)
   {
-    v9 = [(_MCDReusableCell *)MCDSiriActionCell cellForTableView:v6 indexPath:v7];
+    v9 = [(_MCDReusableCell *)MCDSiriActionCell cellForTableView:viewCopy indexPath:pathCopy];
     goto LABEL_17;
   }
 
-  if (!-[_MCDContentManager showShuffleAll](self, "showShuffleAll") || [v7 section])
+  if (!-[_MCDContentManager showShuffleAll](self, "showShuffleAll") || [pathCopy section])
   {
     goto LABEL_9;
   }
 
-  if ([v7 row])
+  if ([pathCopy row])
   {
-    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v7 row] - 1, objc_msgSend(v7, "section"));
+    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
 
-    v7 = v10;
+    pathCopy = v10;
 LABEL_9:
-    v11 = [(_MCDContentManager *)self itemAtIndexPath:v7];
-    v12 = [(_MCDContentManager *)self tableCellConfigurationBlock];
+    v11 = [(_MCDContentManager *)self itemAtIndexPath:pathCopy];
+    tableCellConfigurationBlock = [(_MCDContentManager *)self tableCellConfigurationBlock];
 
-    if (v12)
+    if (tableCellConfigurationBlock)
     {
-      v13 = [(_MCDContentManager *)self tableCellConfigurationBlock];
-      (v13)[2](v13, v8, 0, v11, v6, v7);
+      tableCellConfigurationBlock2 = [(_MCDContentManager *)self tableCellConfigurationBlock];
+      (tableCellConfigurationBlock2)[2](tableCellConfigurationBlock2, v8, 0, v11, viewCopy, pathCopy);
     }
 
     [v8 setAccessoryType:0];
     if (![(_MCDContentManager *)self limitedUI])
     {
-      v14 = [(_MCDContentManager *)self delegate];
+      delegate = [(_MCDContentManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v15 = [(_MCDContentManager *)self delegate];
-        v16 = [v15 contentManager:self canDrillIntoItem:v11];
+        delegate2 = [(_MCDContentManager *)self delegate];
+        v16 = [delegate2 contentManager:self canDrillIntoItem:v11];
 
         if (v16)
         {
@@ -379,7 +379,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  v9 = [(_MCDReusableCell *)MCDShuffleActionCell cellForTableView:v6 indexPath:v7];
+  v9 = [(_MCDReusableCell *)MCDShuffleActionCell cellForTableView:viewCopy indexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -392,15 +392,15 @@ LABEL_17:
   return v9;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
-  v4 = [(_MCDContentManager *)self delegate];
+  delegate = [(_MCDContentManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_MCDContentManager *)self delegate];
-    v7 = [v6 sectionIndexTitlesForContentManager:self];
+    delegate2 = [(_MCDContentManager *)self delegate];
+    v7 = [delegate2 sectionIndexTitlesForContentManager:self];
   }
 
   else
@@ -411,72 +411,72 @@ LABEL_17:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = [(_MCDContentManager *)self delegate];
+  titleCopy = title;
+  delegate = [(_MCDContentManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_MCDContentManager *)self delegate];
-    a5 = [v10 sectionForSectionIndexTitle:v7 atIndex:a5 contentManager:self];
+    delegate2 = [(_MCDContentManager *)self delegate];
+    index = [delegate2 sectionForSectionIndexTitle:titleCopy atIndex:index contentManager:self];
   }
 
-  return a5;
+  return index;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v24 = a4;
-  v5 = [v24 copy];
-  if (-[_MCDContentManager showSiriCellInLimitedUI](self, "showSiriCellInLimitedUI") && -[_MCDContentManager limitedUI](self, "limitedUI") && [v24 row] == 11)
+  pathCopy = path;
+  v5 = [pathCopy copy];
+  if (-[_MCDContentManager showSiriCellInLimitedUI](self, "showSiriCellInLimitedUI") && -[_MCDContentManager limitedUI](self, "limitedUI") && [pathCopy row] == 11)
   {
-    v6 = [(_MCDContentManager *)self tableView];
-    [v6 deselectRowAtIndexPath:v24 animated:1];
+    tableView = [(_MCDContentManager *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-    v7 = [SiriDirectActionContext musicSearchDirectActionWithAppBundleId:MCDMusicBundleIdentifier];
-    v8 = [(_MCDContentManager *)self siriDirectActionSource];
-    [v8 activateWithContext:v7 completion:&stru_101098230];
+    delegate6 = [SiriDirectActionContext musicSearchDirectActionWithAppBundleId:MCDMusicBundleIdentifier];
+    siriDirectActionSource = [(_MCDContentManager *)self siriDirectActionSource];
+    [siriDirectActionSource activateWithContext:delegate6 completion:&stru_101098230];
     goto LABEL_15;
   }
 
-  if (!-[_MCDContentManager showShuffleAll](self, "showShuffleAll") || [v24 section])
+  if (!-[_MCDContentManager showShuffleAll](self, "showShuffleAll") || [pathCopy section])
   {
     goto LABEL_9;
   }
 
-  if ([v24 row])
+  if ([pathCopy row])
   {
-    v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v24 row] - 1, objc_msgSend(v24, "section"));
+    v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row] - 1, objc_msgSend(pathCopy, "section"));
 
     v5 = v9;
 LABEL_9:
-    v7 = [(_MCDContentManager *)self itemAtIndexPath:v5];
+    delegate6 = [(_MCDContentManager *)self itemAtIndexPath:v5];
     if ([(_MCDContentManager *)self limitedUI])
     {
-      if ([(_MCDContentManager *)self itemIsPlayable:v7])
+      if ([(_MCDContentManager *)self itemIsPlayable:delegate6])
       {
-        [(_MCDContentManager *)self _initiatePlaybackForItem:v7 shuffled:0];
+        [(_MCDContentManager *)self _initiatePlaybackForItem:delegate6 shuffled:0];
 LABEL_27:
 
         goto LABEL_28;
       }
 
-      v8 = [(_MCDContentManager *)self tableView];
-      [v8 deselectRowAtIndexPath:v24 animated:1];
+      siriDirectActionSource = [(_MCDContentManager *)self tableView];
+      [siriDirectActionSource deselectRowAtIndexPath:pathCopy animated:1];
 LABEL_15:
 
       goto LABEL_27;
     }
 
-    v10 = [(_MCDContentManager *)self delegate];
+    delegate = [(_MCDContentManager *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(_MCDContentManager *)self delegate];
-      v13 = [v12 contentManager:self viewControllerForItem:v7];
+      delegate2 = [(_MCDContentManager *)self delegate];
+      v13 = [delegate2 contentManager:self viewControllerForItem:delegate6];
     }
 
     else
@@ -484,48 +484,48 @@ LABEL_15:
       v13 = 0;
     }
 
-    v14 = [(_MCDContentManager *)self viewController];
-    [v13 setPlayActivityFeatureNameSourceViewController:v14];
+    viewController = [(_MCDContentManager *)self viewController];
+    [v13 setPlayActivityFeatureNameSourceViewController:viewController];
 
     if (v13)
     {
-      v15 = [(_MCDContentManager *)self delegate];
+      delegate3 = [(_MCDContentManager *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(_MCDContentManager *)self delegate];
-        [v17 contentManager:self shouldDisplayViewController:v13];
+        delegate4 = [(_MCDContentManager *)self delegate];
+        [delegate4 contentManager:self shouldDisplayViewController:v13];
       }
 
       goto LABEL_26;
     }
 
-    if (![(_MCDContentManager *)self itemIsPlayable:v7])
+    if (![(_MCDContentManager *)self itemIsPlayable:delegate6])
     {
-      v21 = [(_MCDContentManager *)self tableView];
-      [v21 deselectRowAtIndexPath:v24 animated:1];
+      tableView2 = [(_MCDContentManager *)self tableView];
+      [tableView2 deselectRowAtIndexPath:pathCopy animated:1];
 
 LABEL_26:
       goto LABEL_27;
     }
 
-    v18 = self;
-    v19 = v7;
+    selfCopy2 = self;
+    v19 = delegate6;
     v20 = 0;
 LABEL_25:
-    [(_MCDContentManager *)v18 _initiatePlaybackForItem:v19 shuffled:v20];
+    [(_MCDContentManager *)selfCopy2 _initiatePlaybackForItem:v19 shuffled:v20];
     goto LABEL_26;
   }
 
-  v22 = [(_MCDContentManager *)self delegate];
+  delegate5 = [(_MCDContentManager *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v7 = [(_MCDContentManager *)self delegate];
-    v13 = [v7 shuffleContainerForContentManager:self];
-    v18 = self;
+    delegate6 = [(_MCDContentManager *)self delegate];
+    v13 = [delegate6 shuffleContainerForContentManager:self];
+    selfCopy2 = self;
     v19 = v13;
     v20 = 1;
     goto LABEL_25;
@@ -535,13 +535,13 @@ LABEL_25:
 LABEL_28:
 }
 
-- (double)_tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)_tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(_MCDContentManager *)self limitedUI:a3]|| [(_MCDContentManager *)self showLocalContent])
+  if ([(_MCDContentManager *)self limitedUI:view]|| [(_MCDContentManager *)self showLocalContent])
   {
-    v5 = [(_MCDContentManager *)self _textForHeaderView];
+    _textForHeaderView = [(_MCDContentManager *)self _textForHeaderView];
     v6 = 27.0;
-    if (!v5)
+    if (!_textForHeaderView)
     {
       [(_MCDContentManager *)self _heightForHeaderView];
       v6 = v7;
@@ -559,15 +559,15 @@ LABEL_28:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(_MCDContentManager *)self delegate:a3];
+  v5 = [(_MCDContentManager *)self delegate:view];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_MCDContentManager *)self delegate];
-    v8 = [v7 viewForHeaderViewInContentManager:self];
+    delegate = [(_MCDContentManager *)self delegate];
+    v8 = [delegate viewForHeaderViewInContentManager:self];
   }
 
   else
@@ -578,48 +578,48 @@ LABEL_28:
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = [(_MCDContentManager *)self delegate];
+  viewCopy = view;
+  headerViewCopy = headerView;
+  delegate = [(_MCDContentManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
-  if ((v9 & 1) == 0 && [v14 numberOfSections] <= 1 && (-[_MCDContentManager limitedUI](self, "limitedUI") || -[_MCDContentManager showLocalContent](self, "showLocalContent")))
+  if ((v9 & 1) == 0 && [viewCopy numberOfSections] <= 1 && (-[_MCDContentManager limitedUI](self, "limitedUI") || -[_MCDContentManager showLocalContent](self, "showLocalContent")))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v7;
+      v10 = headerViewCopy;
       MCDSetupTableHeaderView();
       v11 = +[UIBackgroundConfiguration clearConfiguration];
       [v10 setBackgroundConfiguration:v11];
 
-      v12 = [(_MCDContentManager *)self _textForHeaderView];
-      v13 = [v10 textLabel];
+      _textForHeaderView = [(_MCDContentManager *)self _textForHeaderView];
+      textLabel = [v10 textLabel];
 
-      [v13 setText:v12];
+      [textLabel setText:_textForHeaderView];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
+  scrollCopy = scroll;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 scrollViewDidScroll:v7];
+    [v6 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)_initiatePlaybackForItem:(id)a3 shuffled:(BOOL)a4
+- (void)_initiatePlaybackForItem:(id)item shuffled:(BOOL)shuffled
 {
-  v4 = a4;
-  v20 = a3;
+  shuffledCopy = shuffled;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -630,57 +630,57 @@ LABEL_28:
 
   else
   {
-    v7 = v20;
+    v7 = itemCopy;
   }
 
   v21 = v7;
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [(_MCDContentManager *)self dataSource];
+    dataSource = [(_MCDContentManager *)self dataSource];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(_MCDContentManager *)self dataSource];
-      v11 = [v10 forceScopingToResponseResults];
+      dataSource2 = [(_MCDContentManager *)self dataSource];
+      forceScopingToResponseResults = [dataSource2 forceScopingToResponseResults];
     }
 
     else
     {
-      v11 = 0;
+      forceScopingToResponseResults = 0;
     }
 
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v14 = [(_MCDContentManager *)self playbackManager];
-      v15 = [(_MCDContentManager *)self lastReceivedResponse];
-      v16 = [(_MCDContentManager *)self viewController];
-      v17 = [v16 combinedPlayActivityFeatureName];
-      [v14 initiatePlaybackForPlaylistEntry:v21 lastResponse:v15 shuffled:v4 forceScopingToResponseResults:v11 playActivityFeatureName:v17];
+      playbackManager = [(_MCDContentManager *)self playbackManager];
+      lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+      viewController = [(_MCDContentManager *)self viewController];
+      combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+      [playbackManager initiatePlaybackForPlaylistEntry:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy forceScopingToResponseResults:forceScopingToResponseResults playActivityFeatureName:combinedPlayActivityFeatureName];
     }
 
     else
     {
-      v12 = [(_MCDContentManager *)self dataSource];
+      dataSource3 = [(_MCDContentManager *)self dataSource];
       v13 = objc_opt_respondsToSelector();
 
-      v14 = [(_MCDContentManager *)self playbackManager];
+      playbackManager = [(_MCDContentManager *)self playbackManager];
       if (v13)
       {
-        v15 = [(_MCDContentManager *)self dataSource];
-        v16 = [v15 playbackSectionKind];
-        v17 = [(_MCDContentManager *)self lastReceivedResponse];
-        v18 = [(_MCDContentManager *)self viewController];
-        v19 = [v18 combinedPlayActivityFeatureName];
-        [v14 initiatePlaybackForSong:v21 sectionKind:v16 lastResponse:v17 shuffled:v4 forceScopingToResponseResults:v11 playActivityFeatureName:v19];
+        lastReceivedResponse = [(_MCDContentManager *)self dataSource];
+        viewController = [lastReceivedResponse playbackSectionKind];
+        combinedPlayActivityFeatureName = [(_MCDContentManager *)self lastReceivedResponse];
+        viewController2 = [(_MCDContentManager *)self viewController];
+        combinedPlayActivityFeatureName2 = [viewController2 combinedPlayActivityFeatureName];
+        [playbackManager initiatePlaybackForSong:v21 sectionKind:viewController lastResponse:combinedPlayActivityFeatureName shuffled:shuffledCopy forceScopingToResponseResults:forceScopingToResponseResults playActivityFeatureName:combinedPlayActivityFeatureName2];
       }
 
       else
       {
-        v15 = [(_MCDContentManager *)self lastReceivedResponse];
-        v16 = [(_MCDContentManager *)self viewController];
-        v17 = [v16 combinedPlayActivityFeatureName];
-        [v14 initiatePlaybackForSong:v21 lastResponse:v15 shuffled:v4 forceScopingToResponseResults:v11 playActivityFeatureName:v17];
+        lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+        viewController = [(_MCDContentManager *)self viewController];
+        combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+        [playbackManager initiatePlaybackForSong:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy forceScopingToResponseResults:forceScopingToResponseResults playActivityFeatureName:combinedPlayActivityFeatureName];
       }
     }
   }
@@ -690,11 +690,11 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [(_MCDContentManager *)self playbackManager];
-      v15 = [(_MCDContentManager *)self lastReceivedResponse];
-      v16 = [(_MCDContentManager *)self viewController];
-      v17 = [v16 combinedPlayActivityFeatureName];
-      [v14 initiatePlaybackForPlaylist:v21 lastResponse:v15 shuffled:v4 playActivityFeatureName:v17];
+      playbackManager = [(_MCDContentManager *)self playbackManager];
+      lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+      viewController = [(_MCDContentManager *)self viewController];
+      combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+      [playbackManager initiatePlaybackForPlaylist:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy playActivityFeatureName:combinedPlayActivityFeatureName];
     }
 
     else
@@ -702,11 +702,11 @@ LABEL_28:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [(_MCDContentManager *)self playbackManager];
-        v15 = [(_MCDContentManager *)self lastReceivedResponse];
-        v16 = [(_MCDContentManager *)self viewController];
-        v17 = [v16 combinedPlayActivityFeatureName];
-        [v14 initiatePlaybackForGenre:v21 lastResponse:v15 shuffled:v4 playActivityFeatureName:v17];
+        playbackManager = [(_MCDContentManager *)self playbackManager];
+        lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+        viewController = [(_MCDContentManager *)self viewController];
+        combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+        [playbackManager initiatePlaybackForGenre:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy playActivityFeatureName:combinedPlayActivityFeatureName];
       }
 
       else
@@ -714,11 +714,11 @@ LABEL_28:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [(_MCDContentManager *)self playbackManager];
-          v15 = [(_MCDContentManager *)self lastReceivedResponse];
-          v16 = [(_MCDContentManager *)self viewController];
-          v17 = [v16 combinedPlayActivityFeatureName];
-          [v14 initiatePlaybackForAlbum:v21 lastResponse:v15 shuffled:v4 playActivityFeatureName:v17];
+          playbackManager = [(_MCDContentManager *)self playbackManager];
+          lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+          viewController = [(_MCDContentManager *)self viewController];
+          combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+          [playbackManager initiatePlaybackForAlbum:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy playActivityFeatureName:combinedPlayActivityFeatureName];
         }
 
         else
@@ -729,11 +729,11 @@ LABEL_28:
             goto LABEL_25;
           }
 
-          v14 = [(_MCDContentManager *)self playbackManager];
-          v15 = [(_MCDContentManager *)self lastReceivedResponse];
-          v16 = [(_MCDContentManager *)self viewController];
-          v17 = [v16 combinedPlayActivityFeatureName];
-          [v14 initiatePlaybackForPerson:v21 lastResponse:v15 shuffled:v4 playActivityFeatureName:v17];
+          playbackManager = [(_MCDContentManager *)self playbackManager];
+          lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
+          viewController = [(_MCDContentManager *)self viewController];
+          combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+          [playbackManager initiatePlaybackForPerson:v21 lastResponse:lastReceivedResponse shuffled:shuffledCopy playActivityFeatureName:combinedPlayActivityFeatureName];
         }
       }
     }
@@ -744,7 +744,7 @@ LABEL_25:
 
 - (double)_heightForHeaderView
 {
-  v3 = [(_MCDContentManager *)self delegate];
+  delegate = [(_MCDContentManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -752,8 +752,8 @@ LABEL_25:
     return 0.0;
   }
 
-  v5 = [(_MCDContentManager *)self delegate];
-  [v5 heightForHeaderViewInContentManager:self];
+  delegate2 = [(_MCDContentManager *)self delegate];
+  [delegate2 heightForHeaderViewInContentManager:self];
   v7 = v6;
 
   return v7;
@@ -761,20 +761,20 @@ LABEL_25:
 
 - (id)_textForHeaderView
 {
-  v3 = [(_MCDContentManager *)self delegate];
+  delegate = [(_MCDContentManager *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v6 = 0;
     goto LABEL_5;
   }
 
-  v4 = [(_MCDContentManager *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView = [(_MCDContentManager *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v5 == 1)
+  if (numberOfSections == 1)
   {
-    v3 = [(_MCDContentManager *)self delegate];
-    v6 = [v3 textForHeaderViewInContentManager:self];
+    delegate = [(_MCDContentManager *)self delegate];
+    v6 = [delegate textForHeaderViewInContentManager:self];
 LABEL_5:
 
     goto LABEL_7;
@@ -788,20 +788,20 @@ LABEL_7:
 
 - (void)_performRequest
 {
-  v3 = [(_MCDContentManager *)self lastReceivedResponse];
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
 
-  if (v3)
+  if (lastReceivedResponse)
   {
-    v4 = [(_MCDContentManager *)self lastReceivedResponse];
-    v5 = [v4 request];
+    lastReceivedResponse2 = [(_MCDContentManager *)self lastReceivedResponse];
+    request = [lastReceivedResponse2 request];
   }
 
   else
   {
-    v5 = [(_MCDContentManager *)self _modelRequest];
+    request = [(_MCDContentManager *)self _modelRequest];
   }
 
-  v6 = [(_MCDContentManager *)self _operationForRequest:v5];
+  v6 = [(_MCDContentManager *)self _operationForRequest:request];
   v7 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -816,9 +816,9 @@ LABEL_7:
       v8 = 78;
     }
 
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v5;
+    v15 = request;
     v16 = 1024;
     v17 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ Performing request: %@, as operation: %c", buf, 0x1Cu);
@@ -826,8 +826,8 @@ LABEL_7:
 
   if (v6)
   {
-    v9 = [(_MCDContentManager *)self operationQueue];
-    [v9 addOperation:v6];
+    operationQueue = [(_MCDContentManager *)self operationQueue];
+    [operationQueue addOperation:v6];
   }
 
   else
@@ -838,46 +838,46 @@ LABEL_7:
     v10[2] = sub_1000F16C8;
     v10[3] = &unk_101098258;
     objc_copyWeak(&v11, buf);
-    [v5 performWithResponseHandler:v10];
+    [request performWithResponseHandler:v10];
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(_MCDContentManager *)self lastReceivedResponse];
+  requestCopy = request;
+  lastReceivedResponse = [(_MCDContentManager *)self lastReceivedResponse];
 
-  if (v5)
+  if (lastReceivedResponse)
   {
-    v6 = [(_MCDContentManager *)self lastReceivedResponse];
-    v7 = [v6 request];
+    lastReceivedResponse2 = [(_MCDContentManager *)self lastReceivedResponse];
+    request = [lastReceivedResponse2 request];
   }
 
   else
   {
-    v7 = [(_MCDContentManager *)self _modelRequest];
+    request = [(_MCDContentManager *)self _modelRequest];
   }
 
-  [v7 performWithResponseHandler:v4];
+  [request performWithResponseHandler:requestCopy];
 }
 
-- (void)_processResponse:(id)a3 error:(id)a4
+- (void)_processResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
+  responseCopy = response;
+  errorCopy = error;
+  request = [responseCopy request];
   v9 = MCDMusicGeneralLogging();
   v10 = v9;
-  if (!v7)
+  if (!errorCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v8;
+      v21 = request;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Processing response of request: %@", buf, 0x16u);
     }
 
@@ -885,16 +885,16 @@ LABEL_7:
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v14 = sub_1000F1A2C;
-    v15 = v6;
+    v15 = responseCopy;
     goto LABEL_9;
   }
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_100DEEF20(self, v8, v10);
+    sub_100DEEF20(self, request, v10);
   }
 
-  v11 = [(_MCDContentManager *)self delegate];
+  delegate = [(_MCDContentManager *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
@@ -903,7 +903,7 @@ LABEL_7:
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v14 = sub_1000F19D8;
-    v15 = v7;
+    v15 = errorCopy;
 LABEL_9:
     v13[2] = v14;
     v13[3] = &unk_101098158;

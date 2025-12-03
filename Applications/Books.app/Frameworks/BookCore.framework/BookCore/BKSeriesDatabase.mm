@@ -9,22 +9,22 @@
 
 - (BKSeriesDatabase)init
 {
-  v3 = [objc_opt_class() persistentStoreURL];
+  persistentStoreURL = [objc_opt_class() persistentStoreURL];
   v11.receiver = self;
   v11.super_class = BKSeriesDatabase;
-  v4 = [(IMCoreDataSource *)&v11 initWithPersistentStoreURL:v3];
+  v4 = [(IMCoreDataSource *)&v11 initWithPersistentStoreURL:persistentStoreURL];
 
   if (v4)
   {
-    v5 = [objc_opt_class() persistentStoreURL];
+    persistentStoreURL2 = [objc_opt_class() persistentStoreURL];
     v6 = +[NSFileManager defaultManager];
-    v7 = [v5 URLByDeletingLastPathComponent];
-    v8 = [v7 path];
-    v9 = [v6 fileExistsAtPath:v8 isDirectory:0];
+    uRLByDeletingLastPathComponent = [persistentStoreURL2 URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
+    v9 = [v6 fileExistsAtPath:path isDirectory:0];
 
     if ((v9 & 1) == 0)
     {
-      [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
+      [v6 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     [(IMCoreDataSource *)v4 loadCoreData];
@@ -36,9 +36,9 @@
 + (id)persistentStoreURL
 {
   v3 = +[UIApplication applicationDocumentsDirectory];
-  v4 = [a1 persistentStoreName];
+  persistentStoreName = [self persistentStoreName];
   v5 = [v3 stringByAppendingPathComponent:@"BKSeriesDatabase"];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v6 = [v5 stringByAppendingPathComponent:persistentStoreName];
 
   v7 = [NSURL fileURLWithPath:v6];
 

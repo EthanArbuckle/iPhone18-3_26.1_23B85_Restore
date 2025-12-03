@@ -1,8 +1,8 @@
 @interface NSPurgeableData
 - (BOOL)beginContentAccess;
 - (BOOL)isContentDiscarded;
-- (NSPurgeableData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6;
-- (NSPurgeableData)initWithCapacity:(unint64_t)a3;
+- (NSPurgeableData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator;
+- (NSPurgeableData)initWithCapacity:(unint64_t)capacity;
 - (const)bytes;
 - (id)description;
 - (unint64_t)length;
@@ -11,7 +11,7 @@
 - (void)discardContentIfPossible;
 - (void)endContentAccess;
 - (void)mutableBytes;
-- (void)setLength:(unint64_t)a3;
+- (void)setLength:(unint64_t)length;
 @end
 
 @implementation NSPurgeableData
@@ -129,21 +129,21 @@ LABEL_8:
   return self->_reserved->var0;
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   if (!self->_accessCount || (reserved = self->_reserved, !reserved->var0))
   {
     v19 = _NSMethodExceptionProem(self, a2);
     v20 = objc_opt_class();
-    v21 = [NSString stringWithFormat:@"%@: <%@: %p> accessed outside successful -beginContentAccess and -endContentAccess calls.", v19, NSStringFromClass(v20), self];
+    0x8000000000000000 = [NSString stringWithFormat:@"%@: <%@: %p> accessed outside successful -beginContentAccess and -endContentAccess calls.", v19, NSStringFromClass(v20), self];
     v22 = MEMORY[0x1E695DF30];
     v23 = MEMORY[0x1E695D920];
     goto LABEL_31;
   }
 
-  if (a3 >= 0x8000000000000001)
+  if (length >= 0x8000000000000001)
   {
-    v21 = [NSString stringWithFormat:@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", a3, 0x8000000000000000];
+    0x8000000000000000 = [NSString stringWithFormat:@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", length, 0x8000000000000000];
     v22 = MEMORY[0x1E695DF30];
     v23 = MEMORY[0x1E695D940];
     goto LABEL_31;
@@ -152,27 +152,27 @@ LABEL_8:
   var1 = reserved->var1;
   length = self->_length;
   v9 = 1;
-  if (a3 >> 19)
+  if (length >> 19)
   {
     v9 = 2;
   }
 
-  v10 = (a3 >> v9) + a3;
-  if (var1 > v10)
+  lengthCopy = (length >> v9) + length;
+  if (var1 > lengthCopy)
   {
-    v10 = var1;
+    lengthCopy = var1;
   }
 
-  if (a3 <= length)
+  if (length <= length)
   {
-    v10 = a3;
+    lengthCopy = length;
   }
 
   v11 = MEMORY[0x1E69E9AC8];
-  v12 = v10 + *MEMORY[0x1E69E9AC8] - 1;
-  if ((v12 & -*MEMORY[0x1E69E9AC8]) <= v10)
+  v12 = lengthCopy + *MEMORY[0x1E69E9AC8] - 1;
+  if ((v12 & -*MEMORY[0x1E69E9AC8]) <= lengthCopy)
   {
-    v13 = v10;
+    v13 = lengthCopy;
   }
 
   else
@@ -186,17 +186,17 @@ LABEL_8:
     {
       v14 = 0;
       var0 = self->_reserved->var0;
-      if (length >= a3)
+      if (length >= length)
       {
-        v16 = a3;
+        lengthCopy3 = length;
       }
 
       else
       {
-        v16 = length;
+        lengthCopy3 = length;
       }
 
-      if (v16 >= 0x80000)
+      if (lengthCopy3 >= 0x80000)
       {
         if (((*v11 - 1) & var0) != 0)
         {
@@ -209,14 +209,14 @@ LABEL_8:
           goto LABEL_23;
         }
 
-        v17 = v16 & -*v11;
+        v17 = lengthCopy3 & -*v11;
         NSCopyMemoryPages(var0, 0, v17);
         var0 += v17;
         v14 = v17;
-        v16 -= v17;
+        lengthCopy3 -= v17;
       }
 
-      if (!v16)
+      if (!lengthCopy3)
       {
 LABEL_24:
         _CFDiscorporateMemoryDeallocate();
@@ -228,24 +228,24 @@ LABEL_24:
       }
 
 LABEL_23:
-      memmove(v14, var0, v16);
+      memmove(v14, var0, lengthCopy3);
       goto LABEL_24;
     }
 
-    v21 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(self, a2), v13];
+    0x8000000000000000 = [NSString stringWithFormat:@"%@: unable to allocate memory for length (%lu)", _NSMethodExceptionProem(self, a2), v13];
     v22 = MEMORY[0x1E695DF30];
     v23 = MEMORY[0x1E695DA18];
 LABEL_31:
-    objc_exception_throw([v22 exceptionWithName:*v23 reason:v21 userInfo:0]);
+    objc_exception_throw([v22 exceptionWithName:*v23 reason:0x8000000000000000 userInfo:0]);
   }
 
 LABEL_25:
-  if (a3 > length)
+  if (length > length)
   {
-    bzero((self->_reserved->var0 + length), a3 - length);
+    bzero((self->_reserved->var0 + length), length - length);
   }
 
-  self->_length = a3;
+  self->_length = length;
 }
 
 - (id)description
@@ -309,12 +309,12 @@ LABEL_6:
   return v3;
 }
 
-- (NSPurgeableData)initWithCapacity:(unint64_t)a3
+- (NSPurgeableData)initWithCapacity:(unint64_t)capacity
 {
-  v3 = self;
-  if (a3 >= 0x8000000000000001)
+  selfCopy = self;
+  if (capacity >= 0x8000000000000001)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "capacity", a3, 0x8000000000000000), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "capacity", capacity, 0x8000000000000000), 0}];
     objc_exception_throw(v5);
   }
 
@@ -328,58 +328,58 @@ LABEL_6:
 
   else
   {
-    v3->_accessCount = 1;
+    selfCopy->_accessCount = 1;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (NSPurgeableData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6
+- (NSPurgeableData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator
 {
-  if (a4 >= 0x8000000000000001)
+  if (length >= 0x8000000000000001)
   {
-    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", a4, 0x8000000000000000), 0}];
+    v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", length, 0x8000000000000000), 0}];
     objc_exception_throw(v17);
   }
 
-  v9 = [(NSPurgeableData *)self initWithCapacity:a4];
+  v9 = [(NSPurgeableData *)self initWithCapacity:length];
   v10 = v9;
   if (v9)
   {
     var0 = v9->_reserved->var0;
-    v12 = a3;
-    v13 = a4;
-    if (a4 >= 0x80000)
+    bytesCopy2 = bytes;
+    lengthCopy2 = length;
+    if (length >= 0x80000)
     {
       v14 = MEMORY[0x1E69E9AC8];
-      if (((*MEMORY[0x1E69E9AC8] - 1) & (var0 | a3)) != 0 || (malloc_default_zone(), malloc_zone_claimed_address()))
+      if (((*MEMORY[0x1E69E9AC8] - 1) & (var0 | bytes)) != 0 || (malloc_default_zone(), malloc_zone_claimed_address()))
       {
-        v13 = a4;
-        v12 = a3;
+        lengthCopy2 = length;
+        bytesCopy2 = bytes;
         goto LABEL_9;
       }
 
-      v15 = -*v14 & a4;
-      NSCopyMemoryPages(a3, var0, v15);
-      v12 = a3 + v15;
+      v15 = -*v14 & length;
+      NSCopyMemoryPages(bytes, var0, v15);
+      bytesCopy2 = bytes + v15;
       var0 += v15;
-      v13 = a4 - v15;
+      lengthCopy2 = length - v15;
     }
 
-    if (!v13)
+    if (!lengthCopy2)
     {
 LABEL_10:
-      if (a6)
+      if (deallocator)
       {
-        (*(a6 + 2))(a6, a3, a4);
+        (*(deallocator + 2))(deallocator, bytes, length);
       }
 
-      v10->_length = a4;
+      v10->_length = length;
       return v10;
     }
 
 LABEL_9:
-    memmove(var0, v12, v13);
+    memmove(var0, bytesCopy2, lengthCopy2);
     goto LABEL_10;
   }
 

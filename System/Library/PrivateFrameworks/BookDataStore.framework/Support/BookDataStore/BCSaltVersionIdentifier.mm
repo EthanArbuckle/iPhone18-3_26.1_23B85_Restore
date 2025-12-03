@@ -1,16 +1,16 @@
 @interface BCSaltVersionIdentifier
-- (id)initIntoManagedObjectContext:(id)a3;
+- (id)initIntoManagedObjectContext:(id)context;
 @end
 
 @implementation BCSaltVersionIdentifier
 
-- (id)initIntoManagedObjectContext:(id)a3
+- (id)initIntoManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [NSEntityDescription entityForName:@"BCSaltVersionIdentifier" inManagedObjectContext:v4];
+  contextCopy = context;
+  v5 = [NSEntityDescription entityForName:@"BCSaltVersionIdentifier" inManagedObjectContext:contextCopy];
   v8.receiver = self;
   v8.super_class = BCSaltVersionIdentifier;
-  v6 = [(BCSaltVersionIdentifier *)&v8 initWithEntity:v5 insertIntoManagedObjectContext:v4];
+  v6 = [(BCSaltVersionIdentifier *)&v8 initWithEntity:v5 insertIntoManagedObjectContext:contextCopy];
 
   return v6;
 }

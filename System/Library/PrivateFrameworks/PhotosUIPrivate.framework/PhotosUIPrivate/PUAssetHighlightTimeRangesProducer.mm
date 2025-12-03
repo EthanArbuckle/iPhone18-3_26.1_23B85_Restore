@@ -4,11 +4,11 @@
 - (PUAssetHighlightTimeRangesProducerDelegate)delegate;
 - (PXDisplayAsset)asset;
 - (PXSearchQueryMatchInfo)searchQueryMatchInfo;
-- (void)setAsset:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHighlightTimeRanges:(id)a3;
-- (void)setSearchContextualVideoThumbnailIdentifier:(id)a3;
-- (void)setSearchQueryMatchInfo:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)setDelegate:(id)delegate;
+- (void)setHighlightTimeRanges:(id)ranges;
+- (void)setSearchContextualVideoThumbnailIdentifier:(id)identifier;
+- (void)setSearchQueryMatchInfo:(id)info;
 @end
 
 @implementation PUAssetHighlightTimeRangesProducer
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1B383F9A8(a3);
+  selfCopy = self;
+  sub_1B383F9A8(asset);
 }
 
 - (PXSearchQueryMatchInfo)searchQueryMatchInfo
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (void)setSearchQueryMatchInfo:(id)a3
+- (void)setSearchQueryMatchInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B383FC54(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1B383FC54(info);
 }
 
 - (NSString)searchContextualVideoThumbnailIdentifier
@@ -57,9 +57,9 @@
   return v3;
 }
 
-- (void)setSearchContextualVideoThumbnailIdentifier:(id)a3
+- (void)setSearchContextualVideoThumbnailIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1B3C9C5E8();
     v6 = v5;
@@ -71,7 +71,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B383FFB0(v4, v6);
 }
 
@@ -82,10 +82,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B38402C0();
 }
 
@@ -105,17 +105,17 @@
   return v2;
 }
 
-- (void)setHighlightTimeRanges:(id)a3
+- (void)setHighlightTimeRanges:(id)ranges
 {
-  v3 = a3;
-  if (a3)
+  rangesCopy = ranges;
+  if (ranges)
   {
     sub_1B3710718(0, &unk_1EB84F780);
-    v3 = sub_1B3C9C788();
+    rangesCopy = sub_1B3C9C788();
   }
 
-  v5 = self;
-  sub_1B3840534(v3);
+  selfCopy = self;
+  sub_1B3840534(rangesCopy);
 }
 
 @end

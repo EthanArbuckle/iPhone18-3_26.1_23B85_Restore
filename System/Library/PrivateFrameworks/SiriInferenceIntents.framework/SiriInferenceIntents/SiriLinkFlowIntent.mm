@@ -1,6 +1,6 @@
 @interface SiriLinkFlowIntent
 - (SiriLinkFlowIntent)init;
-- (SiriLinkFlowIntent)initWithCoder:(id)a3;
+- (SiriLinkFlowIntent)initWithCoder:(id)coder;
 @end
 
 @implementation SiriLinkFlowIntent
@@ -12,12 +12,12 @@
   return [(SiriLinkFlowIntent *)&v3 init];
 }
 
-- (SiriLinkFlowIntent)initWithCoder:(id)a3
+- (SiriLinkFlowIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SiriLinkFlowIntent();
-  v4 = a3;
-  v5 = [(SiriLinkFlowIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SiriLinkFlowIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

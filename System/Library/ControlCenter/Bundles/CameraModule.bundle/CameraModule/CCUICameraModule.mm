@@ -1,11 +1,11 @@
 @interface CCUICameraModule
-- (void)handleTapWithTouchType:(int64_t)a3;
-- (void)handleTouchDownWithTouchType:(int64_t)a3;
+- (void)handleTapWithTouchType:(int64_t)type;
+- (void)handleTouchDownWithTouchType:(int64_t)type;
 @end
 
 @implementation CCUICameraModule
 
-- (void)handleTouchDownWithTouchType:(int64_t)a3
+- (void)handleTouchDownWithTouchType:(int64_t)type
 {
   v16[3] = *MEMORY[0x29EDCA608];
   v5 = *MEMORY[0x29EDC0C90];
@@ -27,17 +27,17 @@
   v15[2] = *MEMORY[0x29EDBD550];
   v16[2] = v7;
   v10 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  v11 = [(CCUIAppLauncherModule *)self applicationIdentifier];
+  applicationIdentifier = [(CCUIAppLauncherModule *)self applicationIdentifier];
   AVCapturePrewarmWithOptions();
 
   v13.receiver = self;
   v13.super_class = CCUICameraModule;
-  [(CCUIAppLauncherModule *)&v13 handleTouchDownWithTouchType:a3];
+  [(CCUIAppLauncherModule *)&v13 handleTouchDownWithTouchType:type];
 
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)handleTapWithTouchType:(int64_t)a3
+- (void)handleTapWithTouchType:(int64_t)type
 {
   v5 = *MEMORY[0x29EDC0C90];
   if (os_signpost_enabled(*MEMORY[0x29EDC0C90]))
@@ -49,7 +49,7 @@
   kdebug_trace();
   v6.receiver = self;
   v6.super_class = CCUICameraModule;
-  [(CCUIAppLauncherModule *)&v6 handleTapWithTouchType:a3];
+  [(CCUIAppLauncherModule *)&v6 handleTapWithTouchType:type];
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface CDPFollowUpViewController
-- (BOOL)_synchronizeFollowUpsWithProvider:(id)a3 error:(id *)a4;
-- (id)_contextForActionIdentifier:(id)a3;
+- (BOOL)_synchronizeFollowUpsWithProvider:(id)provider error:(id *)error;
+- (id)_contextForActionIdentifier:(id)identifier;
 - (id)_followupProvider;
-- (id)_makeADPUpsellLandingPageViewedEventWithCDPContext:(id)a3;
-- (id)_makeEscapeOfferSelectedEventForOffer:(id)a3 withContext:(id)a4;
+- (id)_makeADPUpsellLandingPageViewedEventWithCDPContext:(id)context;
+- (id)_makeEscapeOfferSelectedEventForOffer:(id)offer withContext:(id)context;
 - (id)_navController;
 - (id)_spinnerViewController;
-- (id)accountsForAccountManager:(id)a3;
-- (id)grandSlamPresenterWithPresentingScreen:(id)a3;
-- (void)_apdUpsellSetupCDPContextForAccountWithAltDSID:(id)a3 itemIdentifier:(id)a4;
-- (void)_beginExtensionFlowWithAction:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
+- (id)grandSlamPresenterWithPresentingScreen:(id)screen;
+- (void)_apdUpsellSetupCDPContextForAccountWithAltDSID:(id)d itemIdentifier:(id)identifier;
+- (void)_beginExtensionFlowWithAction:(id)action;
 - (void)_beginLocalSecretCreateActionFlow;
-- (void)_beginUpsellFlowOnIOSUsingContext:(id)a3 completion:(id)a4;
+- (void)_beginUpsellFlowOnIOSUsingContext:(id)context completion:(id)completion;
 - (void)_beginWalrusEnablementFromUpsellCFU;
 - (void)_clearADPUpsellFollowUp;
 - (void)_clearADPUpsellFollowUpWithAKController;
-- (void)_clearFollowUpWithAKControllerWithItemID:(id)a3;
+- (void)_clearFollowUpWithAKControllerWithItemID:(id)d;
 - (void)_clearLocalSecretCreateFollowUp;
 - (void)_clearRecoveryKeyRepairFollowUp;
 - (void)_clearSOSCompatibilityModeFollowUp;
 - (void)_clearSecureTermsFollowUp;
-- (void)_handleADPUpsellHTTPResponse:(id)a3;
-- (void)_harvestWebAccessStatus:(id)a3;
-- (void)_postADPUpsellActionEventForItem:(id)a3 selectedAction:(id)a4;
-- (void)_presentAKServerUIWithUrlKey:(id)a3 altDSID:(id)a4 itemID:(id)a5 completion:(id)a6;
-- (void)_secureTermsTearDownWithUpdatedSecret:(BOOL)a3 error:(id)a4;
-- (void)_setupEncryptionFlowContextWithAltDSID:(id)a3;
-- (void)_setupSOSCompatibilityModeEnabledFlowWithContext:(id)a3;
-- (void)_setupWithContext:(id)a3;
+- (void)_handleADPUpsellHTTPResponse:(id)response;
+- (void)_harvestWebAccessStatus:(id)status;
+- (void)_postADPUpsellActionEventForItem:(id)item selectedAction:(id)action;
+- (void)_presentAKServerUIWithUrlKey:(id)key altDSID:(id)d itemID:(id)iD completion:(id)completion;
+- (void)_secureTermsTearDownWithUpdatedSecret:(BOOL)secret error:(id)error;
+- (void)_setupEncryptionFlowContextWithAltDSID:(id)d;
+- (void)_setupSOSCompatibilityModeEnabledFlowWithContext:(id)context;
+- (void)_setupWithContext:(id)context;
 - (void)_showADPUpsellNetworkError;
 - (void)_showGenericTermsUI;
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 - (void)loadView;
-- (void)presentAlertUIWithCompletion:(id)a3;
-- (void)presentFullUIWithCompletion:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)processNotSupportedItem:(id)a3 altDSID:(id)a4 completion:(id)a5 hasFullCDPSupport:(BOOL)a6;
-- (void)remoteUIDidDismiss:(id)a3;
-- (void)remoteUIDidHandleButton:(id)a3;
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
-- (void)sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5;
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4;
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4;
-- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)a3;
-- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)a3;
-- (void)upsellViewModelDidRequestFlowCancellationWithContext:(id)a3;
+- (void)presentAlertUIWithCompletion:(id)completion;
+- (void)presentFullUIWithCompletion:(id)completion;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)processNotSupportedItem:(id)item altDSID:(id)d completion:(id)completion hasFullCDPSupport:(BOOL)support;
+- (void)remoteUIDidDismiss:(id)dismiss;
+- (void)remoteUIDidHandleButton:(id)button;
+- (void)remoteUIDidReceiveHTTPResponse:(id)response;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
+- (void)sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier;
+- (void)uiController:(id)controller prepareAlertContext:(id)context;
+- (void)uiController:(id)controller preparePresentationContext:(id)context;
+- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)context;
+- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)context;
+- (void)upsellViewModelDidRequestFlowCancellationWithContext:(id)context;
 @end
 
 @implementation CDPFollowUpViewController
@@ -57,16 +57,16 @@
   v5.super_class = CDPFollowUpViewController;
   [(CDPFollowUpViewController *)&v5 loadView];
   v3 = +[UIColor clearColor];
-  v4 = [(CDPFollowUpViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CDPFollowUpViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CDPFollowUpViewController *)self _followupProvider];
+  handlerCopy = handler;
+  _followupProvider = [(CDPFollowUpViewController *)self _followupProvider];
   v15 = 0;
-  v6 = [(CDPFollowUpViewController *)self _synchronizeFollowUpsWithProvider:v5 error:&v15];
+  v6 = [(CDPFollowUpViewController *)self _synchronizeFollowUpsWithProvider:_followupProvider error:&v15];
   v7 = v15;
 
   if (v6)
@@ -94,8 +94,8 @@
     sub_1000069C4();
   }
 
-  v12 = [v7 domain];
-  if ([v12 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+  domain = [v7 domain];
+  if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
   {
     v13 = [v7 code] != -7064;
   }
@@ -105,41 +105,41 @@
     v13 = 1;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, (v8 ^ 1) & v13);
+    handlerCopy[2](handlerCopy, (v8 ^ 1) & v13);
   }
 }
 
-- (BOOL)_synchronizeFollowUpsWithProvider:(id)a3 error:(id *)a4
+- (BOOL)_synchronizeFollowUpsWithProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = objc_alloc_init(AKFollowUpSynchronizer);
   followupSynchronizer = self->_followupSynchronizer;
   self->_followupSynchronizer = v7;
 
-  [(AKFollowUpSynchronizer *)self->_followupSynchronizer setFollowupProvider:v6];
+  [(AKFollowUpSynchronizer *)self->_followupSynchronizer setFollowupProvider:providerCopy];
   v9 = self->_followupSynchronizer;
   if (objc_opt_respondsToSelector())
   {
     v10 = self->_followupSynchronizer;
     v11 = +[CDPAccount sharedInstance];
-    v12 = [v11 primaryAppleAccount];
+    primaryAppleAccount = [v11 primaryAppleAccount];
     v17 = 0;
-    v13 = [(AKFollowUpSynchronizer *)v10 synchronizeFollowUpsForAccount:v12 error:&v17];
+    v13 = [(AKFollowUpSynchronizer *)v10 synchronizeFollowUpsForAccount:primaryAppleAccount error:&v17];
     v14 = v17;
 
-    if (a4)
+    if (error)
     {
       v15 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     _CDPStateError();
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -150,11 +150,11 @@
   return v13;
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v48 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   v10 = _os_activity_create(&_mh_execute_header, "cdp: Processing follow up action", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -162,19 +162,19 @@
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 uniqueIdentifier];
-    v13 = [v9 label];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    label = [actionCopy label];
     *buf = 138412546;
-    v72 = v12;
+    v72 = uniqueIdentifier;
     v73 = 2112;
-    v74 = v13;
+    v74 = label;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Attempting to process the item: %@ and the action: %@", buf, 0x16u);
   }
 
-  v14 = [v8 userInfo];
-  v15 = [v14 objectForKeyedSubscript:CDPFollowUpItemUserInfoKeyAltDSID];
+  userInfo = [itemCopy userInfo];
+  aa_altDSID = [userInfo objectForKeyedSubscript:CDPFollowUpItemUserInfoKeyAltDSID];
 
-  if (!v15)
+  if (!aa_altDSID)
   {
     v16 = _CDPLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -184,27 +184,27 @@
     }
 
     v17 = +[ACAccountStore defaultStore];
-    v18 = [v17 aa_primaryAppleAccount];
-    v15 = [v18 aa_altDSID];
+    aa_primaryAppleAccount = [v17 aa_primaryAppleAccount];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
   }
 
   v19 = +[NSUUID UUID];
-  v20 = [v19 UUIDString];
+  uUIDString = [v19 UUIDString];
   telemetryFlowID = self->_telemetryFlowID;
-  self->_telemetryFlowID = v20;
+  self->_telemetryFlowID = uUIDString;
 
   v22 = self->_telemetryFlowID;
-  v23 = [v8 uniqueIdentifier];
-  [(CDPFollowUpViewController *)self sendCFUClickedEventWithTelemetryFlowID:v22 altDSID:v15 identifier:v23];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+  [(CDPFollowUpViewController *)self sendCFUClickedEventWithTelemetryFlowID:v22 altDSID:aa_altDSID identifier:uniqueIdentifier2];
 
   v24 = +[CDPUtilities hasFullCDPSupport];
-  v25 = [v9 userInfo];
-  v26 = [v25 objectForKeyedSubscript:kCDPAKNativeActionKey];
+  userInfo2 = [actionCopy userInfo];
+  v26 = [userInfo2 objectForKeyedSubscript:kCDPAKNativeActionKey];
   akNativeAction = self->_akNativeAction;
   self->_akNativeAction = v26;
 
-  v28 = [v9 userInfo];
-  v29 = [v28 objectForKeyedSubscript:kCDPAKFollowUpURLKey];
+  userInfo3 = [actionCopy userInfo];
+  v29 = [userInfo3 objectForKeyedSubscript:kCDPAKFollowUpURLKey];
   urlKey = self->_urlKey;
   self->_urlKey = v29;
 
@@ -213,116 +213,116 @@
     goto LABEL_27;
   }
 
-  v31 = [v9 identifier];
-  if ([v31 isEqualToString:kRepairCDPStateActionContinue])
+  identifier = [actionCopy identifier];
+  if ([identifier isEqualToString:kRepairCDPStateActionContinue])
   {
 LABEL_17:
 
 LABEL_18:
-    objc_storeStrong(&self->_followUpAction, a4);
+    objc_storeStrong(&self->_followUpAction, action);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001E38;
     block[3] = &unk_100010478;
-    v66 = v15;
-    v67 = v8;
-    v68 = self;
-    v69 = v48;
+    v66 = aa_altDSID;
+    v67 = itemCopy;
+    selfCopy = self;
+    v69 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     goto LABEL_28;
   }
 
-  v32 = [v9 identifier];
-  if ([v32 isEqualToString:kOfflineLocalSecretChangeActionContinue])
+  identifier2 = [actionCopy identifier];
+  if ([identifier2 isEqualToString:kOfflineLocalSecretChangeActionContinue])
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v47 = [v9 identifier];
-  if ([v47 isEqualToString:kRepairCDPStateActionRecoveryKey])
+  identifier3 = [actionCopy identifier];
+  if ([identifier3 isEqualToString:kRepairCDPStateActionRecoveryKey])
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v46 = [v9 identifier];
-  if ([v46 isEqualToString:kSecureTermsActionContinue])
+  identifier4 = [actionCopy identifier];
+  if ([identifier4 isEqualToString:kSecureTermsActionContinue])
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v45 = [v9 identifier];
-  if ([v45 isEqualToString:kConfirmExistingSecretActionContinue])
+  identifier5 = [actionCopy identifier];
+  if ([identifier5 isEqualToString:kConfirmExistingSecretActionContinue])
   {
 
     goto LABEL_14;
   }
 
-  v44 = [v9 identifier];
-  v43 = [v44 isEqualToString:kADPStateHealingActionContinue];
+  identifier6 = [actionCopy identifier];
+  v43 = [identifier6 isEqualToString:kADPStateHealingActionContinue];
 
   if (v43)
   {
     goto LABEL_18;
   }
 
-  v33 = [v9 identifier];
-  v34 = [v33 isEqualToString:kOfflineLocalSecretCreateActionContinue];
+  identifier7 = [actionCopy identifier];
+  v34 = [identifier7 isEqualToString:kOfflineLocalSecretCreateActionContinue];
 
   if (v34)
   {
-    objc_storeStrong(&self->_followUpAction, a4);
+    objc_storeStrong(&self->_followUpAction, action);
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_100001F94;
     v62[3] = &unk_1000104A0;
     v62[4] = self;
-    v63 = v15;
-    v64 = v48;
+    v63 = aa_altDSID;
+    v64 = completionCopy;
     dispatch_async(&_dispatch_main_q, v62);
 
     goto LABEL_28;
   }
 
-  v35 = [v9 identifier];
-  v36 = [(CDPFollowUpViewController *)self _isSOSCompatibilityActionIdentifier:v35];
+  identifier8 = [actionCopy identifier];
+  v36 = [(CDPFollowUpViewController *)self _isSOSCompatibilityActionIdentifier:identifier8];
 
   if (v36)
   {
-    objc_storeStrong(&self->_followUpAction, a4);
+    objc_storeStrong(&self->_followUpAction, action);
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = sub_100001FE0;
     v58[3] = &unk_1000104A0;
-    v59 = v8;
-    v60 = self;
-    v61 = v48;
+    v59 = itemCopy;
+    selfCopy2 = self;
+    v61 = completionCopy;
     dispatch_async(&_dispatch_main_q, v58);
 
     goto LABEL_28;
   }
 
-  v37 = [v8 uniqueIdentifier];
-  v38 = [v37 isEqualToString:kADPUpsellItemIdentifier];
+  uniqueIdentifier3 = [itemCopy uniqueIdentifier];
+  v38 = [uniqueIdentifier3 isEqualToString:kADPUpsellItemIdentifier];
 
   if (!v38)
   {
 LABEL_27:
-    [(CDPFollowUpViewController *)self processNotSupportedItem:v9 altDSID:v15 completion:v48 hasFullCDPSupport:v24];
+    [(CDPFollowUpViewController *)self processNotSupportedItem:actionCopy altDSID:aa_altDSID completion:completionCopy hasFullCDPSupport:v24];
     goto LABEL_28;
   }
 
-  objc_storeStrong(&self->_followUpAction, a4);
-  v39 = [v8 uniqueIdentifier];
-  [(CDPFollowUpViewController *)self _apdUpsellSetupCDPContextForAccountWithAltDSID:v15 itemIdentifier:v39];
+  objc_storeStrong(&self->_followUpAction, action);
+  uniqueIdentifier4 = [itemCopy uniqueIdentifier];
+  [(CDPFollowUpViewController *)self _apdUpsellSetupCDPContextForAccountWithAltDSID:aa_altDSID itemIdentifier:uniqueIdentifier4];
 
-  [(CDPFollowUpViewController *)self _postADPUpsellActionEventForItem:v8 selectedAction:v9];
+  [(CDPFollowUpViewController *)self _postADPUpsellActionEventForItem:itemCopy selectedAction:actionCopy];
   if (self->_urlKey)
   {
     v56[0] = _NSConcreteStackBlock;
@@ -330,15 +330,15 @@ LABEL_27:
     v56[2] = sub_100002088;
     v56[3] = &unk_1000104C8;
     v56[4] = self;
-    v57 = v48;
+    v57 = completionCopy;
     v40 = objc_retainBlock(v56);
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_1000021B0;
     v52[3] = &unk_100010478;
     v52[4] = self;
-    v53 = v15;
-    v54 = v8;
+    v53 = aa_altDSID;
+    v54 = itemCopy;
     v55 = v40;
     v41 = v40;
     dispatch_async(&_dispatch_main_q, v52);
@@ -352,8 +352,8 @@ LABEL_27:
     v49[2] = sub_10000222C;
     v49[3] = &unk_100010518;
     v49[4] = self;
-    v51 = v48;
-    v50 = v15;
+    v51 = completionCopy;
+    v50 = aa_altDSID;
     [v42 walrusStatusWithCompletion:v49];
   }
 
@@ -362,13 +362,13 @@ LABEL_28:
   os_activity_scope_leave(&state);
 }
 
-- (void)_apdUpsellSetupCDPContextForAccountWithAltDSID:(id)a3 itemIdentifier:(id)a4
+- (void)_apdUpsellSetupCDPContextForAccountWithAltDSID:(id)d itemIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = +[AKAccountManager sharedInstance];
-  v9 = [v8 primaryAuthKitAccount];
-  if (!v9)
+  primaryAuthKitAccount = [v8 primaryAuthKitAccount];
+  if (!primaryAuthKitAccount)
   {
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -379,14 +379,14 @@ LABEL_28:
 
   v18 = _CDPLogSystem();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (dCopy)
   {
     if (v19)
     {
       sub_100006C38(v18, v20, v21, v22, v23, v24, v25, v26);
     }
 
-    v27 = [CDPContext contextForAccountWithAltDSID:v6];
+    v27 = [CDPContext contextForAccountWithAltDSID:dCopy];
   }
 
   else
@@ -415,7 +415,7 @@ LABEL_28:
   }
 
   [(CDPContext *)v29 setTelemetryFlowID:self->_telemetryFlowID];
-  v38 = [v8 telemetryDeviceSessionIDForAccount:v9];
+  v38 = [v8 telemetryDeviceSessionIDForAccount:primaryAuthKitAccount];
   [(CDPContext *)self->_cdpContext setTelemetryDeviceSessionID:v38];
 
   v39 = _CDPLogSystem();
@@ -424,12 +424,12 @@ LABEL_28:
     sub_100006DA0(&self->_cdpContext);
   }
 
-  [(CDPContext *)self->_cdpContext setFollowUpType:v7];
+  [(CDPContext *)self->_cdpContext setFollowUpType:identifierCopy];
 }
 
-- (void)_postADPUpsellActionEventForItem:(id)a3 selectedAction:(id)a4
+- (void)_postADPUpsellActionEventForItem:(id)item selectedAction:(id)action
 {
-  if ([(NSString *)self->_urlKey isEqualToString:kADPUpsellTearDownAction, a4])
+  if ([(NSString *)self->_urlKey isEqualToString:kADPUpsellTearDownAction, action])
   {
     cdpContext = self->_cdpContext;
     v6 = &kADPUpsellCFURejected;
@@ -457,30 +457,30 @@ LABEL_28:
   }
 }
 
-- (void)processNotSupportedItem:(id)a3 altDSID:(id)a4 completion:(id)a5 hasFullCDPSupport:(BOOL)a6
+- (void)processNotSupportedItem:(id)item altDSID:(id)d completion:(id)completion hasFullCDPSupport:(BOOL)support
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  itemCopy = item;
+  dCopy = d;
+  completionCopy = completion;
   followUpAction = self->_followUpAction;
   self->_followUpAction = 0;
 
   v14 = _CDPLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138412290;
-    v24 = v15;
+    v24 = identifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Unknown Action %@, suppressing handling", buf, 0xCu);
   }
 
-  if (!a6)
+  if (!support)
   {
     v16 = objc_alloc_init(CDPFollowUpController);
-    v17 = [v10 identifier];
-    v18 = [(CDPFollowUpViewController *)self _contextForActionIdentifier:v17];
+    identifier2 = [itemCopy identifier];
+    v18 = [(CDPFollowUpViewController *)self _contextForActionIdentifier:identifier2];
 
-    [v18 setAltDSID:v11];
+    [v18 setAltDSID:dCopy];
     if (v18)
     {
       v22 = 0;
@@ -489,9 +489,9 @@ LABEL_28:
       v20 = _CDPLogSystem();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v10 identifier];
+        identifier3 = [itemCopy identifier];
         *buf = 138412546;
-        v24 = v21;
+        v24 = identifier3;
         v25 = 2112;
         v26 = v19;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "cleared followp %@ with result: %@", buf, 0x16u);
@@ -499,13 +499,13 @@ LABEL_28:
     }
   }
 
-  v12[2](v12, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (id)_contextForActionIdentifier:(id)a3
+- (id)_contextForActionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kRepairCDPStateActionContinue])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:kRepairCDPStateActionContinue])
   {
     v5 = +[CDPFollowUpContext contextForStateRepair];
 LABEL_13:
@@ -513,31 +513,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:kOfflineLocalSecretChangeActionContinue])
+  if ([identifierCopy isEqualToString:kOfflineLocalSecretChangeActionContinue])
   {
     v5 = +[CDPFollowUpContext contextForOfflinePasscodeChange];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:kRepairCDPStateActionRecoveryKey])
+  if ([identifierCopy isEqualToString:kRepairCDPStateActionRecoveryKey])
   {
     v5 = +[CDPFollowUpContext contextForRecoveryKeyRepair];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:kSecureTermsActionContinue])
+  if ([identifierCopy isEqualToString:kSecureTermsActionContinue])
   {
     v5 = +[CDPFollowUpContext contextForSecureTerms];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:kConfirmExistingSecretActionContinue])
+  if ([identifierCopy isEqualToString:kConfirmExistingSecretActionContinue])
   {
     v5 = +[CDPFollowUpContext contextForConfirmExistingSecret];
     goto LABEL_13;
   }
 
-  if ([(CDPFollowUpViewController *)self _isSOSCompatibilityActionIdentifier:v4])
+  if ([(CDPFollowUpViewController *)self _isSOSCompatibilityActionIdentifier:identifierCopy])
   {
     v5 = +[CDPFollowUpContext contextForSOSCompatibilityMode];
     goto LABEL_13;
@@ -550,18 +550,18 @@ LABEL_14:
   return v6;
 }
 
-- (void)_presentAKServerUIWithUrlKey:(id)a3 altDSID:(id)a4 itemID:(id)a5 completion:(id)a6
+- (void)_presentAKServerUIWithUrlKey:(id)key altDSID:(id)d itemID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  keyCopy = key;
+  iDCopy = iD;
+  completionCopy = completion;
+  dCopy = d;
   v14 = objc_alloc_init(AKExtensionlessFollowUpHelperContext);
-  [v14 setAltDSID:v13];
+  [v14 setAltDSID:dCopy];
 
   [v14 setPresentingViewController:self];
-  [v14 setUniqueItemIdentifier:v11];
-  [v14 setUrlKey:v10];
+  [v14 setUniqueItemIdentifier:iDCopy];
+  [v14 setUrlKey:keyCopy];
   v15 = objc_alloc_init(AKAppleIDFollowUpServerUIPresenter);
   v16 = +[AKFollowUpProviderFactory sharedAuthKitFollowupProvider];
   [v15 setFollowUpProvider:v16];
@@ -577,9 +577,9 @@ LABEL_14:
   v19[2] = sub_100002BDC;
   v19[3] = &unk_100010540;
   v19[4] = self;
-  v20 = v11;
-  v18 = v11;
-  [v15 presentServerUIWithContext:v14 withCompletion:v12 withResponse:v19];
+  v20 = iDCopy;
+  v18 = iDCopy;
+  [v15 presentServerUIWithContext:v14 withCompletion:completionCopy withResponse:v19];
 }
 
 - (void)_beginLocalSecretCreateActionFlow
@@ -596,11 +596,11 @@ LABEL_14:
   }
 }
 
-- (void)_beginExtensionFlowWithAction:(id)a3
+- (void)_beginExtensionFlowWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:kRepairCDPStateActionContinue];
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  v6 = [identifier isEqualToString:kRepairCDPStateActionContinue];
 
   if (v6)
   {
@@ -615,8 +615,8 @@ LABEL_14:
 
   else
   {
-    v8 = [v4 identifier];
-    v9 = [v8 isEqualToString:kOfflineLocalSecretChangeActionContinue];
+    identifier2 = [actionCopy identifier];
+    v9 = [identifier2 isEqualToString:kOfflineLocalSecretChangeActionContinue];
 
     if (v9)
     {
@@ -631,8 +631,8 @@ LABEL_14:
 
     else
     {
-      v11 = [v4 identifier];
-      v12 = [v11 isEqualToString:kOfflineLocalSecretCreateActionContinue];
+      identifier3 = [actionCopy identifier];
+      v12 = [identifier3 isEqualToString:kOfflineLocalSecretCreateActionContinue];
 
       if (v12)
       {
@@ -641,8 +641,8 @@ LABEL_14:
 
       else
       {
-        v13 = [v4 identifier];
-        v14 = [v13 isEqualToString:kSecureTermsActionContinue];
+        identifier4 = [actionCopy identifier];
+        v14 = [identifier4 isEqualToString:kSecureTermsActionContinue];
 
         if (v14)
         {
@@ -651,8 +651,8 @@ LABEL_14:
 
         else
         {
-          v15 = [v4 identifier];
-          v16 = [v15 isEqualToString:kConfirmExistingSecretActionContinue];
+          identifier5 = [actionCopy identifier];
+          v16 = [identifier5 isEqualToString:kConfirmExistingSecretActionContinue];
 
           if (v16)
           {
@@ -667,8 +667,8 @@ LABEL_14:
 
           else
           {
-            v18 = [v4 identifier];
-            v19 = [v18 isEqualToString:kRepairCDPStateActionRecoveryKey];
+            identifier6 = [actionCopy identifier];
+            v19 = [identifier6 isEqualToString:kRepairCDPStateActionRecoveryKey];
 
             if (v19)
             {
@@ -683,8 +683,8 @@ LABEL_14:
 
             else
             {
-              v21 = [v4 identifier];
-              v22 = [v21 isEqualToString:kSOSCompatibilityActionContinue];
+              identifier7 = [actionCopy identifier];
+              v22 = [identifier7 isEqualToString:kSOSCompatibilityActionContinue];
 
               if (v22)
               {
@@ -702,11 +702,11 @@ LABEL_14:
 
               else
               {
-                v24 = [v4 userInfo];
-                v25 = [v24 objectForKeyedSubscript:kCDPAKNativeActionKey];
+                userInfo = [actionCopy userInfo];
+                v25 = [userInfo objectForKeyedSubscript:kCDPAKNativeActionKey];
 
-                v26 = [v4 userInfo];
-                v27 = [v26 objectForKeyedSubscript:kCDPAKFollowUpURLKey];
+                userInfo2 = [actionCopy userInfo];
+                v27 = [userInfo2 objectForKeyedSubscript:kCDPAKFollowUpURLKey];
 
                 if (v25 && [v25 isEqualToString:kADPEnrollAction])
                 {
@@ -738,10 +738,10 @@ LABEL_14:
   [(CDPFollowUpViewController *)self _beginUpsellFlowOnIOSUsingContext:self->_cdpContext completion:v4];
 }
 
-- (void)_beginUpsellFlowOnIOSUsingContext:(id)a3 completion:(id)a4
+- (void)_beginUpsellFlowOnIOSUsingContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(CDPUIWalrusSwiftUIFactory);
   v9 = +[AKURLBag sharedBag];
   v10 = +[AKNetworkObserver sharedNetworkObserver];
@@ -750,20 +750,20 @@ LABEL_14:
   v12[2] = sub_1000034C4;
   v12[3] = &unk_1000105E0;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v8 makeSwiftUIUpsellViewWithCDPContext:v7 urlBag:v9 networkObserver:v10 viewModelDelegate:self completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [v8 makeSwiftUIUpsellViewWithCDPContext:contextCopy urlBag:v9 networkObserver:v10 viewModelDelegate:self completion:v12];
 }
 
-- (id)_makeADPUpsellLandingPageViewedEventWithCDPContext:(id)a3
+- (id)_makeADPUpsellLandingPageViewedEventWithCDPContext:(id)context
 {
-  v3 = [AAFAnalyticsEvent analyticsEventWithContext:a3 eventName:kADPUpsellLandingPageViewed category:kCDPRTCEventCategoryAccountDataAccessRecovery];
+  v3 = [AAFAnalyticsEvent analyticsEventWithContext:context eventName:kADPUpsellLandingPageViewed category:kCDPRTCEventCategoryAccountDataAccessRecovery];
   v7[0] = kADPUpsellLandingPageTurnOnEscapeOffer;
   v7[1] = kADPUpsellLandingPageSetUpLaterIniCloudSettingsEscapeOffer;
   v7[2] = kDataAccessCancel;
   v4 = [NSArray arrayWithObjects:v7 count:3];
-  v5 = [v4 aaf_arrayAsCommaSeperatedString];
-  [v3 setObject:v5 forKeyedSubscript:kCDPAnalyticsEscapeOffer];
+  aaf_arrayAsCommaSeperatedString = [v4 aaf_arrayAsCommaSeperatedString];
+  [v3 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:kCDPAnalyticsEscapeOffer];
 
   return v3;
 }
@@ -818,11 +818,11 @@ LABEL_14:
   }
 }
 
-- (void)_clearFollowUpWithAKControllerWithItemID:(id)a3
+- (void)_clearFollowUpWithAKControllerWithItemID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[AKFollowUpProviderFactory sharedAuthKitFollowupProvider];
-  v17 = v3;
+  v17 = dCopy;
   v5 = [NSArray arrayWithObjects:&v17 count:1];
   v10 = 0;
   v6 = [v4 removeFollowUpItemsWithIdentifiers:v5 error:&v10];
@@ -840,7 +840,7 @@ LABEL_14:
 
     v12 = v9;
     v13 = 2112;
-    v14 = v3;
+    v14 = dCopy;
     v15 = 2112;
     v16 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ %@ follow up with error: %@", buf, 0x20u);
@@ -898,10 +898,10 @@ LABEL_14:
   }
 }
 
-- (void)_setupWithContext:(id)a3
+- (void)_setupWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[CDPStateController alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[CDPStateController alloc] initWithContext:contextCopy];
 
   stateController = self->_stateController;
   self->_stateController = v5;
@@ -922,18 +922,18 @@ LABEL_14:
 {
   v2 = [FLFollowUpController alloc];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 initWithClientIdentifier:v4];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = [v2 initWithClientIdentifier:bundleIdentifier];
 
   v6 = [[AKFollowUpController alloc] initWithFLFollowupController:v5];
 
   return v6;
 }
 
-- (void)_setupEncryptionFlowContextWithAltDSID:(id)a3
+- (void)_setupEncryptionFlowContextWithAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:v4];
+  dCopy = d;
+  v5 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:dCopy];
 
   context = self->_context;
   self->_context = v5;
@@ -946,13 +946,13 @@ LABEL_14:
   [(CDPUIDeviceToDeviceEncryptionFlowContext *)v7 setPresentingViewController:self];
 }
 
-- (void)_setupSOSCompatibilityModeEnabledFlowWithContext:(id)a3
+- (void)_setupSOSCompatibilityModeEnabledFlowWithContext:(id)context
 {
-  v4 = a3;
-  [v4 setSosCompatibilityType:1];
-  [v4 setKeychainSyncSystem:1];
-  [v4 setIsSOSCFUFlow:1];
-  v5 = [[CDPStateController alloc] initWithContext:v4];
+  contextCopy = context;
+  [contextCopy setSosCompatibilityType:1];
+  [contextCopy setKeychainSyncSystem:1];
+  [contextCopy setIsSOSCFUFlow:1];
+  v5 = [[CDPStateController alloc] initWithContext:contextCopy];
 
   stateController = self->_stateController;
   self->_stateController = v5;
@@ -974,8 +974,8 @@ LABEL_14:
   v2 = objc_alloc_init(PSSetupController);
   [v2 setNavigationBarHidden:1];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [v2 view];
-  [v4 setBackgroundColor:v3];
+  view = [v2 view];
+  [view setBackgroundColor:v3];
 
   [v2 setModalPresentationStyle:3];
 
@@ -1009,9 +1009,9 @@ LABEL_14:
     v7 = self->_spinnerViewController;
     self->_spinnerViewController = v6;
 
-    v8 = [(AAUISpinnerViewController *)self->_spinnerViewController label];
+    label = [(AAUISpinnerViewController *)self->_spinnerViewController label];
     v9 = CDPLocalizedString();
-    [v8 setText:v9];
+    [label setText:v9];
 
     [(AAUISpinnerViewController *)self->_spinnerViewController setSpinning:1];
     [(AAUISpinnerViewController *)self->_spinnerViewController setModalInPresentation:1];
@@ -1021,96 +1021,96 @@ LABEL_14:
   return spinnerViewController;
 }
 
-- (void)uiController:(id)a3 preparePresentationContext:(id)a4
+- (void)uiController:(id)controller preparePresentationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preparing full context for controller: %@", &v11, 0xCu);
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v9 = [v6 presentingViewController];
+    presentingViewController = [controllerCopy presentingViewController];
 
-    if (v9 == self)
+    if (presentingViewController == self)
     {
-      [(CDPFollowUpViewController *)self presentFullUIWithCompletion:v7];
+      [(CDPFollowUpViewController *)self presentFullUIWithCompletion:contextCopy];
     }
 
     else
     {
-      v10 = [v6 presentingViewController];
+      presentingViewController2 = [controllerCopy presentingViewController];
 
-      if (v10)
+      if (presentingViewController2)
       {
-        v7[2](v7);
+        contextCopy[2](contextCopy);
       }
     }
   }
 }
 
-- (void)uiController:(id)a3 prepareAlertContext:(id)a4
+- (void)uiController:(id)controller prepareAlertContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preparing alert context for controller: %@", &v11, 0xCu);
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v9 = [v6 presentingViewController];
+    presentingViewController = [controllerCopy presentingViewController];
 
-    if (v9)
+    if (presentingViewController)
     {
-      v7[2](v7);
+      contextCopy[2](contextCopy);
     }
 
     else
     {
-      v10 = [(CDPFollowUpViewController *)self _spinnerViewController];
-      [(CDPFollowUpViewController *)self presentViewController:v10 animated:1 completion:0];
+      _spinnerViewController = [(CDPFollowUpViewController *)self _spinnerViewController];
+      [(CDPFollowUpViewController *)self presentViewController:_spinnerViewController animated:1 completion:0];
 
-      [(CDPFollowUpViewController *)self presentAlertUIWithCompletion:v7];
+      [(CDPFollowUpViewController *)self presentAlertUIWithCompletion:contextCopy];
     }
   }
 }
 
-- (void)presentAlertUIWithCompletion:(id)a3
+- (void)presentAlertUIWithCompletion:(id)completion
 {
   uiController = self->_uiController;
-  v5 = a3;
+  completionCopy = completion;
   [(CDPUIController *)uiController setPresentingViewController:self];
-  v5[2]();
+  completionCopy[2]();
 }
 
-- (void)presentFullUIWithCompletion:(id)a3
+- (void)presentFullUIWithCompletion:(id)completion
 {
-  v4 = a3;
-  v11 = [(CDPFollowUpViewController *)self _navController];
+  completionCopy = completion;
+  _navController = [(CDPFollowUpViewController *)self _navController];
   [(CDPUIController *)self->_uiController setPresentingViewController:?];
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 
-  v5 = self;
-  v6 = [(CDPFollowUpViewController *)v5 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(CDPFollowUpViewController *)selfCopy presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [(CDPFollowUpViewController *)v5 presentedViewController];
+    presentedViewController2 = [(CDPFollowUpViewController *)selfCopy presentedViewController];
 
-    v8 = [(CDPFollowUpViewController *)v5 view];
-    v9 = [v8 effectiveUserInterfaceLayoutDirection];
+    view = [(CDPFollowUpViewController *)selfCopy view];
+    effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v10 = 15;
     }
@@ -1120,11 +1120,11 @@ LABEL_14:
       v10 = 16;
     }
 
-    [v11 setModalTransitionStyle:v10];
-    v5 = v7;
+    [_navController setModalTransitionStyle:v10];
+    selfCopy = presentedViewController2;
   }
 
-  [(CDPFollowUpViewController *)v5 presentViewController:v11 animated:1 completion:0];
+  [(CDPFollowUpViewController *)selfCopy presentViewController:_navController animated:1 completion:0];
 }
 
 - (void)_clearSOSCompatibilityModeFollowUp
@@ -1152,16 +1152,16 @@ LABEL_14:
   }
 }
 
-- (void)sendCFUClickedEventWithTelemetryFlowID:(id)a3 altDSID:(id)a4 identifier:(id)a5
+- (void)sendCFUClickedEventWithTelemetryFlowID:(id)d altDSID:(id)iD identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  dCopy = d;
   v12 = objc_alloc_init(AAAFollowUpAnalyticsInfo);
-  [v12 setFlowID:v9];
+  [v12 setFlowID:dCopy];
 
-  [v12 setCfuType:v7];
-  v10 = [AAFAnalyticsEvent analyticsEventWithName:kAAFClickFollowupEvent eventCategory:kCDPRTCEventCategoryAccountDataAccessRecovery followupAnalyticsData:v12 altDSID:v8];
+  [v12 setCfuType:identifierCopy];
+  v10 = [AAFAnalyticsEvent analyticsEventWithName:kAAFClickFollowupEvent eventCategory:kCDPRTCEventCategoryAccountDataAccessRecovery followupAnalyticsData:v12 altDSID:iDCopy];
 
   v11 = +[CDPAnalyticsReporterRTC rtcAnalyticsReporter];
   [v11 sendEvent:v10];
@@ -1192,15 +1192,15 @@ LABEL_14:
   }
 }
 
-- (void)_secureTermsTearDownWithUpdatedSecret:(BOOL)a3 error:(id)a4
+- (void)_secureTermsTearDownWithUpdatedSecret:(BOOL)secret error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  secretCopy = secret;
+  errorCopy = error;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"was not";
-    if (v4)
+    if (secretCopy)
     {
       v8 = @"was";
     }
@@ -1210,7 +1210,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Local secret %@ updated after terms agreement.", &v10, 0xCu);
   }
 
-  if (v6)
+  if (errorCopy)
   {
     v9 = _CDPLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1226,7 +1226,7 @@ LABEL_14:
 - (void)_showGenericTermsUI
 {
   v3 = objc_alloc_init(ACAccountStore);
-  v4 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -1245,7 +1245,7 @@ LABEL_14:
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [[v5 alloc] initWithAccount:v4 inStore:v3];
+  v7 = [[v5 alloc] initWithAccount:aa_primaryAppleAccount inStore:v3];
   genericTermsRemoteUI = self->_genericTermsRemoteUI;
   self->_genericTermsRemoteUI = v7;
 
@@ -1253,15 +1253,15 @@ LABEL_14:
   [(AAUIGenericTermsRemoteUI *)self->_genericTermsRemoteUI presentFromViewController:self modal:1];
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
+  successCopy = success;
+  iCopy = i;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (successCopy)
     {
       v8 = @"YES";
     }
@@ -1271,20 +1271,20 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AAUIGenericTermsRemoteUI generic terms callback with success: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (successCopy)
   {
-    v9 = [v6 account];
-    if (v9)
+    account = [iCopy account];
+    if (account)
     {
-      v10 = [v6 accountStore];
+      accountStore = [iCopy accountStore];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100004C68;
       v12[3] = &unk_100010608;
       v12[4] = self;
-      v13 = v6;
-      v14 = v9;
-      [v10 aa_updatePropertiesForAppleAccount:v14 completion:v12];
+      v13 = iCopy;
+      v14 = account;
+      [accountStore aa_updatePropertiesForAppleAccount:v14 completion:v12];
     }
 
     else
@@ -1305,9 +1305,9 @@ LABEL_14:
   }
 }
 
-- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)a3
+- (void)upsellViewModelDidRequestBeginEnablementFlowWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1315,21 +1315,21 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User tapped Turn On on the ADP upsell landing page. Beginning RUI flow.", buf, 2u);
   }
 
-  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kADPUpsellLandingPageTurnOnEscapeOffer withContext:v4];
+  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kADPUpsellLandingPageTurnOnEscapeOffer withContext:contextCopy];
   if (v6)
   {
     v7 = +[CDPAnalyticsReporterRTC rtcAnalyticsReporter];
     [v7 sendEvent:v6];
   }
 
-  v8 = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
+  adpUpsellLandingScreen = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
 
-  if (v8)
+  if (adpUpsellLandingScreen)
   {
     v9 = [NSMutableURLRequest alloc];
     v10 = +[AKURLBag sharedBag];
-    v11 = [v10 dataRecoveryServiceDisableURL];
-    v12 = [v9 initWithURL:v11];
+    dataRecoveryServiceDisableURL = [v10 dataRecoveryServiceDisableURL];
+    v12 = [v9 initWithURL:dataRecoveryServiceDisableURL];
 
     [v12 setHTTPMethod:@"GET"];
     objc_initWeak(buf, self);
@@ -1339,8 +1339,8 @@ LABEL_14:
       sub_100007200();
     }
 
-    v14 = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
-    v15 = [(CDPFollowUpViewController *)self grandSlamPresenterWithPresentingScreen:v14];
+    adpUpsellLandingScreen2 = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
+    v15 = [(CDPFollowUpViewController *)self grandSlamPresenterWithPresentingScreen:adpUpsellLandingScreen2];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -1367,9 +1367,9 @@ LABEL_14:
   }
 }
 
-- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)a3
+- (void)upsellViewModelDidRequestCFUDismissalWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1377,15 +1377,15 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User tapped Set Up Later on the ADP upsell landing page.", buf, 2u);
   }
 
-  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kADPUpsellLandingPageSetUpLaterIniCloudSettingsEscapeOffer withContext:v4];
+  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kADPUpsellLandingPageSetUpLaterIniCloudSettingsEscapeOffer withContext:contextCopy];
   if (v6)
   {
     v7 = +[CDPAnalyticsReporterRTC rtcAnalyticsReporter];
     [v7 sendEvent:v6];
   }
 
-  v8 = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
-  v9 = v8 == 0;
+  adpUpsellLandingScreen = [(CDPFollowUpViewController *)self adpUpsellLandingScreen];
+  v9 = adpUpsellLandingScreen == 0;
 
   if (v9)
   {
@@ -1402,7 +1402,7 @@ LABEL_14:
   {
     v10 = kADPUpsellTearDownAction;
     v11 = +[CDPAccount sharedInstance];
-    v12 = [v11 primaryAccountAltDSID];
+    primaryAccountAltDSID = [v11 primaryAccountAltDSID];
 
     v13 = kADPUpsellItemIdentifier;
     v14 = _CDPLogSystem();
@@ -1411,7 +1411,7 @@ LABEL_14:
       *buf = 138412802;
       v19 = v10;
       v20 = 2112;
-      v21 = v12;
+      v21 = primaryAccountAltDSID;
       v22 = 2112;
       v23 = v13;
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Firing off best effort teardown with urlKey=%@, altDSID=%@, itemID=%@", buf, 0x20u);
@@ -1423,15 +1423,15 @@ LABEL_14:
     v16[2] = sub_1000054F4;
     v16[3] = &unk_100010590;
     objc_copyWeak(&v17, buf);
-    [(CDPFollowUpViewController *)self _presentAKServerUIWithUrlKey:v10 altDSID:v12 itemID:v13 completion:v16];
+    [(CDPFollowUpViewController *)self _presentAKServerUIWithUrlKey:v10 altDSID:primaryAccountAltDSID itemID:v13 completion:v16];
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)upsellViewModelDidRequestFlowCancellationWithContext:(id)a3
+- (void)upsellViewModelDidRequestFlowCancellationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1439,7 +1439,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User requested exiting out of the ADP upsell landing page. Not taking any action.", v8, 2u);
   }
 
-  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kDataAccessCancel withContext:v4];
+  v6 = [(CDPFollowUpViewController *)self _makeEscapeOfferSelectedEventForOffer:kDataAccessCancel withContext:contextCopy];
 
   if (v6)
   {
@@ -1450,45 +1450,45 @@ LABEL_14:
   [(CDPFollowUpViewController *)self finishProcessing];
 }
 
-- (id)_makeEscapeOfferSelectedEventForOffer:(id)a3 withContext:(id)a4
+- (id)_makeEscapeOfferSelectedEventForOffer:(id)offer withContext:(id)context
 {
   v5 = kCDPAnalyticsEscapeOfferSelectedEvent;
   v6 = kCDPRTCEventCategoryAccountDataAccessRecovery;
-  v7 = a3;
-  v8 = [AAFAnalyticsEvent analyticsEventWithContext:a4 eventName:v5 category:v6];
-  [v8 setObject:v7 forKeyedSubscript:kCDPAnalyticsEscapeOfferSelected];
+  offerCopy = offer;
+  v8 = [AAFAnalyticsEvent analyticsEventWithContext:context eventName:v5 category:v6];
+  [v8 setObject:offerCopy forKeyedSubscript:kCDPAnalyticsEscapeOfferSelected];
 
   return v8;
 }
 
-- (void)_harvestWebAccessStatus:(id)a3
+- (void)_harvestWebAccessStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = _CDPLogSystem();
-  v6 = v5;
-  if (v4)
+  aa_altDSID = v5;
+  if (statusCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000074C8(v4);
+      sub_1000074C8(statusCopy);
     }
 
     v7 = +[CDPAccount sharedInstance];
-    v8 = [v7 primaryAppleAccount];
-    v6 = [v8 aa_altDSID];
+    primaryAppleAccount = [v7 primaryAppleAccount];
+    aa_altDSID = [primaryAppleAccount aa_altDSID];
 
     v9 = +[AKAccountManager sharedInstance];
-    v10 = [v9 authKitAccountWithAltDSID:v6];
+    v10 = [v9 authKitAccountWithAltDSID:aa_altDSID];
 
-    [v10 setAccountProperty:v4 forKey:@"webAccessEnabled"];
+    [v10 setAccountProperty:statusCopy forKey:@"webAccessEnabled"];
     objc_initWeak(&location, self);
-    v11 = [v10 accountStore];
+    accountStore = [v10 accountStore];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000058A0;
     v12[3] = &unk_100010590;
     objc_copyWeak(&v13, &location);
-    [v11 saveAccount:v10 withCompletionHandler:v12];
+    [accountStore saveAccount:v10 withCompletionHandler:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -1515,30 +1515,30 @@ LABEL_14:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleADPUpsellHTTPResponse:(id)a3
+- (void)_handleADPUpsellHTTPResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 statusCode] != 401)
+  responseCopy = response;
+  if ([responseCopy statusCode] != 401)
   {
-    v5 = [v4 statusCode];
-    if (v4)
+    statusCode = [responseCopy statusCode];
+    if (responseCopy)
     {
-      if (v5 != 302)
+      if (statusCode != 302)
       {
         v6 = _CDPLogSystem();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138477827;
-          v19 = v4;
+          v19 = responseCopy;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Harvesting data from response: %{private}@", &v18, 0xCu);
         }
 
-        v7 = [v4 allHeaderFields];
-        v8 = [v7 objectForKeyedSubscript:@"X-Apple-I-Web-Access"];
+        allHeaderFields = [responseCopy allHeaderFields];
+        v8 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-Web-Access"];
 
         [(CDPFollowUpViewController *)self _harvestWebAccessStatus:v8];
-        v9 = [v4 allHeaderFields];
-        v10 = [v9 objectForKeyedSubscript:@"X-Apple-AK-Advanced-ICloud-Data-Protection"];
+        allHeaderFields2 = [responseCopy allHeaderFields];
+        v10 = [allHeaderFields2 objectForKeyedSubscript:@"X-Apple-AK-Advanced-ICloud-Data-Protection"];
 
         if (v10)
         {
@@ -1547,17 +1547,17 @@ LABEL_14:
           {
             v12 = objc_opt_class();
             v13 = NSStringFromClass(v12);
-            v14 = [v10 BOOLValue];
+            bOOLValue = [v10 BOOLValue];
             v18 = 138412546;
             v19 = v13;
             v20 = 1024;
-            v21 = v14;
+            v21 = bOOLValue;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: ADP isEnabled: %d", &v18, 0x12u);
           }
         }
 
-        v15 = [v4 allHeaderFields];
-        v16 = [v15 objectForKeyedSubscript:@"X-Apple-AK-Action"];
+        allHeaderFields3 = [responseCopy allHeaderFields];
+        v16 = [allHeaderFields3 objectForKeyedSubscript:@"X-Apple-AK-Action"];
 
         if (v16 && [v16 isEqual:@"delete"])
         {
@@ -1574,15 +1574,15 @@ LABEL_14:
   }
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v3 = +[CDPAccount sharedInstance];
-  v4 = [v3 primaryAppleAccount];
+  primaryAppleAccount = [v3 primaryAppleAccount];
 
-  if (v4)
+  if (primaryAppleAccount)
   {
     v15 = AIDAServiceTypeCloud;
-    v16 = v4;
+    v16 = primaryAppleAccount;
     v5 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   }
 
@@ -1600,9 +1600,9 @@ LABEL_14:
   return v5;
 }
 
-- (id)grandSlamPresenterWithPresentingScreen:(id)a3
+- (id)grandSlamPresenterWithPresentingScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1626,7 +1626,7 @@ LABEL_14:
   v16 = objc_alloc_init(sub_10000600C());
   if (objc_opt_respondsToSelector())
   {
-    v17 = [objc_alloc(sub_10000600C()) initWithAccountManager:v15 hookType:2 presenter:v4 cdpContext:self->_cdpContext];
+    v17 = [objc_alloc(sub_10000600C()) initWithAccountManager:v15 hookType:2 presenter:screenCopy cdpContext:self->_cdpContext];
   }
 
   else
@@ -1637,7 +1637,7 @@ LABEL_14:
       sub_1000077A0();
     }
 
-    v17 = [objc_alloc(sub_10000600C()) initWithAccountManager:v15 hookType:2 presenter:v4];
+    v17 = [objc_alloc(sub_10000600C()) initWithAccountManager:v15 hookType:2 presenter:screenCopy];
   }
 
   v19 = v17;
@@ -1653,44 +1653,44 @@ LABEL_14:
   return v22;
 }
 
-- (void)remoteUIDidReceiveHTTPResponse:(id)a3
+- (void)remoteUIDidReceiveHTTPResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000077DC();
   }
 
-  [(CDPFollowUpViewController *)self _handleADPUpsellHTTPResponse:v4];
+  [(CDPFollowUpViewController *)self _handleADPUpsellHTTPResponse:responseCopy];
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v6 debugDescription];
+    v11 = [completeCopy debugDescription];
     v12 = 138412803;
     v13 = v10;
     v14 = 2112;
     v15 = v11;
     v16 = 2113;
-    v17 = v7;
+    v17 = errorCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@: Request %@ completed with error: %{private}@", &v12, 0x20u);
   }
 
-  if (v7)
+  if (errorCopy)
   {
     [(CDPFollowUpViewController *)self _showADPUpsellNetworkError];
   }
 }
 
-- (void)remoteUIDidDismiss:(id)a3
+- (void)remoteUIDidDismiss:(id)dismiss
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1698,25 +1698,25 @@ LABEL_14:
     sub_100007844();
   }
 
-  v5 = [(CDPFollowUpViewController *)self navigationController];
+  navigationController = [(CDPFollowUpViewController *)self navigationController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100006338;
   v6[3] = &unk_1000105B8;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:1 completion:v6];
+  [navigationController dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (void)remoteUIDidHandleButton:(id)a3
+- (void)remoteUIDidHandleButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10000791C();
   }
 
-  v6 = [v4 objectForKeyedSubscript:AKActionKey];
+  v6 = [buttonCopy objectForKeyedSubscript:AKActionKey];
   if ([v6 isEqualToString:AKActionCancel])
   {
     v7 = _CDPLogSystem();

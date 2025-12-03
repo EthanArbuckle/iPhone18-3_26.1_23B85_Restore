@@ -1,22 +1,22 @@
 @interface IMBaseCommandHandlerRegistry
-- (BOOL)hasHandlerForCommand:(id)a3;
-- (BOOL)hasLockdownHandlerForCommand:(id)a3;
+- (BOOL)hasHandlerForCommand:(id)command;
+- (BOOL)hasLockdownHandlerForCommand:(id)command;
 - (IMBaseCommandHandlerRegistry)init;
 - (NSDictionary)handlers;
-- (id)handlerForCommand:(id)a3;
-- (id)noopHandlerForCommand:(id)a3;
-- (void)setLockdownHandler:(id)a3 forCommand:(id)a4;
-- (void)setPassThroughLockdownHandlerForCommand:(id)a3;
-- (void)setStandardHandler:(id)a3 forCommand:(id)a4;
+- (id)handlerForCommand:(id)command;
+- (id)noopHandlerForCommand:(id)command;
+- (void)setLockdownHandler:(id)handler forCommand:(id)command;
+- (void)setPassThroughLockdownHandlerForCommand:(id)command;
+- (void)setStandardHandler:(id)handler forCommand:(id)command;
 @end
 
 @implementation IMBaseCommandHandlerRegistry
 
 - (NSDictionary)handlers
 {
-  v3 = [(IMBaseCommandHandlerRegistry *)self isLockedDown];
+  isLockedDown = [(IMBaseCommandHandlerRegistry *)self isLockedDown];
   v4 = 8;
-  if (v3)
+  if (isLockedDown)
   {
     v4 = 16;
   }
@@ -33,22 +33,22 @@
   v2 = [(IMBaseCommandHandlerRegistry *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     standardHandlers = v2->_standardHandlers;
-    v2->_standardHandlers = v3;
+    v2->_standardHandlers = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     lockdownHandlers = v2->_lockdownHandlers;
-    v2->_lockdownHandlers = v5;
+    v2->_lockdownHandlers = dictionary2;
   }
 
   return v2;
 }
 
-- (id)noopHandlerForCommand:(id)a3
+- (id)noopHandlerForCommand:(id)command
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  commandCopy = command;
   v4 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -63,28 +63,28 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)hasHandlerForCommand:(id)a3
+- (BOOL)hasHandlerForCommand:(id)command
 {
-  v3 = [(NSMutableDictionary *)self->_standardHandlers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_standardHandlers objectForKeyedSubscript:command];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)hasLockdownHandlerForCommand:(id)a3
+- (BOOL)hasLockdownHandlerForCommand:(id)command
 {
-  v3 = [(NSMutableDictionary *)self->_lockdownHandlers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_lockdownHandlers objectForKeyedSubscript:command];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)setLockdownHandler:(id)a3 forCommand:(id)a4
+- (void)setLockdownHandler:(id)handler forCommand:(id)command
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMBaseCommandHandlerRegistry *)self canAddCommand:v7];
+  handlerCopy = handler;
+  commandCopy = command;
+  v8 = [(IMBaseCommandHandlerRegistry *)self canAddCommand:commandCopy];
   v9 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v8)
@@ -94,14 +94,14 @@
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v15 = 138412546;
-      v16 = v7;
+      v16 = commandCopy;
       v17 = 2112;
       v18 = v12;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "lockdown handler for command '%@' in %@: ADDED", &v15, 0x16u);
     }
 
-    v9 = [v6 copy];
-    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v9 forKeyedSubscript:v7];
+    v9 = [handlerCopy copy];
+    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v9 forKeyedSubscript:commandCopy];
   }
 
   else if (v10)
@@ -109,20 +109,20 @@
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = 138412546;
-    v16 = v7;
+    v16 = commandCopy;
     v17 = 2112;
     v18 = v14;
     _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "lockdown handler for command '%@' in %@: NOT ADDED (Command not ready for Blastdoor)", &v15, 0x16u);
   }
 }
 
-- (void)setPassThroughLockdownHandlerForCommand:(id)a3
+- (void)setPassThroughLockdownHandlerForCommand:(id)command
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(IMBaseCommandHandlerRegistry *)self canAddCommand:v4])
+  commandCopy = command;
+  if ([(IMBaseCommandHandlerRegistry *)self canAddCommand:commandCopy])
   {
-    v5 = [(NSMutableDictionary *)self->_standardHandlers objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_standardHandlers objectForKeyedSubscript:commandCopy];
     v6 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
     v7 = v6;
     if (v5)
@@ -132,7 +132,7 @@
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
         v13 = 138412546;
-        v14 = v4;
+        v14 = commandCopy;
         v15 = 2112;
         v16 = v9;
         _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "lockdown passThrough handler for command '%@' in %@: ADDED", &v13, 0x16u);
@@ -143,14 +143,14 @@
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_1A88C1BD4(v4, self, v7);
+        sub_1A88C1BD4(commandCopy, self, v7);
       }
 
-      v5 = [(IMBaseCommandHandlerRegistry *)self noopHandlerForCommand:v4];
+      v5 = [(IMBaseCommandHandlerRegistry *)self noopHandlerForCommand:commandCopy];
     }
 
     v12 = [v5 copy];
-    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v12 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v12 forKeyedSubscript:commandCopy];
   }
 
   else
@@ -161,7 +161,7 @@
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v13 = 138412546;
-      v14 = v4;
+      v14 = commandCopy;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "lockdown passThrought handler for command '%@' in %@: NOT ADDED (Command not ready for Blastdoor)", &v13, 0x16u);
@@ -169,12 +169,12 @@
   }
 }
 
-- (void)setStandardHandler:(id)a3 forCommand:(id)a4
+- (void)setStandardHandler:(id)handler forCommand:(id)command
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![(IMBaseCommandHandlerRegistry *)self canAddCommand:v7])
+  handlerCopy = handler;
+  commandCopy = command;
+  if (![(IMBaseCommandHandlerRegistry *)self canAddCommand:commandCopy])
   {
     v14 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -182,7 +182,7 @@
       v18 = objc_opt_class();
       v16 = NSStringFromClass(v18);
       v19 = 138412546;
-      v20 = v7;
+      v20 = commandCopy;
       v21 = 2112;
       v22 = v16;
       v17 = "handler for command '%@' in %@: NOT ADDED (Command not ready for Blastdoor)";
@@ -194,8 +194,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [v6 copy];
-  [(NSMutableDictionary *)self->_standardHandlers setObject:v8 forKeyedSubscript:v7];
+  v8 = [handlerCopy copy];
+  [(NSMutableDictionary *)self->_standardHandlers setObject:v8 forKeyedSubscript:commandCopy];
 
   v9 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -203,7 +203,7 @@ LABEL_10:
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v19 = 138412546;
-    v20 = v7;
+    v20 = commandCopy;
     v21 = 2112;
     v22 = v11;
     _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "blastdoor handler for command '%@' in %@: ADDED", &v19, 0x16u);
@@ -211,9 +211,9 @@ LABEL_10:
 
   if ([(IMBaseCommandHandlerRegistry *)self isLockedDown])
   {
-    v12 = [(IMBaseCommandHandlerRegistry *)self noopHandlerForCommand:v7];
+    v12 = [(IMBaseCommandHandlerRegistry *)self noopHandlerForCommand:commandCopy];
     v13 = [v12 copy];
-    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v13 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_lockdownHandlers setObject:v13 forKeyedSubscript:commandCopy];
 
     v14 = IMLogHandleForCategory("IMBaseCommandHandlerRegistry");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -221,7 +221,7 @@ LABEL_10:
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       v19 = 138412546;
-      v20 = v7;
+      v20 = commandCopy;
       v21 = 2112;
       v22 = v16;
       v17 = "added noop lockdown handler for command '%@' in %@";
@@ -237,11 +237,11 @@ LABEL_9:
 LABEL_11:
 }
 
-- (id)handlerForCommand:(id)a3
+- (id)handlerForCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(IMBaseCommandHandlerRegistry *)self handlers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  commandCopy = command;
+  handlers = [(IMBaseCommandHandlerRegistry *)self handlers];
+  v6 = [handlers objectForKeyedSubscript:commandCopy];
 
   return v6;
 }

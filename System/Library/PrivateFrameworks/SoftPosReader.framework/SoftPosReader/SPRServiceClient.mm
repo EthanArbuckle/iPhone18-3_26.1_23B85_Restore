@@ -1,7 +1,7 @@
 @interface SPRServiceClient
 + (SPRServiceClient)shared;
-- (BOOL)abortAndReturnError:(id *)a3;
-- (BOOL)jetsamAndReturnError:(id *)a3;
+- (BOOL)abortAndReturnError:(id *)error;
+- (BOOL)jetsamAndReturnError:(id *)error;
 - (NSDate)buildDate;
 - (SPRPrimer)sharedPrimer;
 - (void)invalidate;
@@ -66,10 +66,10 @@
   objc_msgSend_onDisconnect(self, v11, v12, v13, v14);
 }
 
-- (BOOL)abortAndReturnError:(id *)a3
+- (BOOL)abortAndReturnError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_connection(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_connection(self, a2, error, v3, v4);
   v12 = objc_msgSend_processIdentifier(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_xpcClient(MEMORY[0x277D498B8], v13, v14, v15, v16);
@@ -83,12 +83,12 @@
   v22 = terminate_with_reason();
   if (v22)
   {
-    if (a3)
+    if (error)
     {
       v23 = MEMORY[0x277CCA9B8];
       v24 = *MEMORY[0x277CCA5B8];
       v25 = __error();
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, v24, *v25, 0);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, v24, *v25, 0);
     }
   }
 
@@ -103,10 +103,10 @@
   return result;
 }
 
-- (BOOL)jetsamAndReturnError:(id *)a3
+- (BOOL)jetsamAndReturnError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_connection(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_connection(self, a2, error, v3, v4);
   v12 = objc_msgSend_processIdentifier(v7, v8, v9, v10, v11);
 
   v17 = objc_msgSend_xpcClient(MEMORY[0x277D498B8], v13, v14, v15, v16);
@@ -120,12 +120,12 @@
   v22 = terminate_with_reason();
   if (v22)
   {
-    if (a3)
+    if (error)
     {
       v23 = MEMORY[0x277CCA9B8];
       v24 = *MEMORY[0x277CCA5B8];
       v25 = __error();
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, v24, *v25, 0);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, v24, *v25, 0);
     }
   }
 

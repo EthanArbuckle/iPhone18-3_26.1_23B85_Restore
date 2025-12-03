@@ -1,17 +1,17 @@
 @interface DBSCheckmarkView
-- (DBSCheckmarkView)initWithFrame:(CGRect)a3;
+- (DBSCheckmarkView)initWithFrame:(CGRect)frame;
 - (void)_configureView;
 - (void)_updateViewState;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation DBSCheckmarkView
 
-- (DBSCheckmarkView)initWithFrame:(CGRect)a3
+- (DBSCheckmarkView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DBSCheckmarkView;
-  v3 = [(DBSCheckmarkView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBSCheckmarkView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -41,14 +41,14 @@
 
     v11 = MEMORY[0x277D755B8];
     v12 = MEMORY[0x277D755D0];
-    v13 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    v109[0] = v13;
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    v109[0] = tertiaryLabelColor;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:1];
     v15 = [v12 configurationWithPaletteColors:v14];
     v16 = [v11 systemImageNamed:@"circle" withConfiguration:v15];
     [(DBSCheckmarkView *)self set_circleImage:v16];
 
-    v17 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    _checkmarkImageView = [(DBSCheckmarkView *)self _checkmarkImageView];
     if ([(DBSCheckmarkView *)self isSelected])
     {
       [(DBSCheckmarkView *)self _circleFillImage];
@@ -59,170 +59,170 @@
       [(DBSCheckmarkView *)self _circleImage];
     }
     v84 = ;
-    v85 = [MEMORY[0x277CE1600] transition];
-    [v17 setSymbolImage:v84 withContentTransition:v85];
+    transition = [MEMORY[0x277CE1600] transition];
+    [_checkmarkImageView setSymbolImage:v84 withContentTransition:transition];
 
-    v86 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v86 setTranslatesAutoresizingMaskIntoConstraints:0];
+    _checkmarkImageView2 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v87 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v87 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+    _checkmarkImageView3 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView3 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
     v88 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:3];
-    v89 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v89 setPreferredSymbolConfiguration:v88];
+    _checkmarkImageView4 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView4 setPreferredSymbolConfiguration:v88];
 
-    v90 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [(DBSCheckmarkView *)self addSubview:v90];
+    _checkmarkImageView5 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [(DBSCheckmarkView *)self addSubview:_checkmarkImageView5];
 
-    v91 = [MEMORY[0x277CBEB18] array];
-    v92 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v93 = [v92 leadingAnchor];
-    v94 = [(DBSCheckmarkView *)self leadingAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94];
-    [v91 addObject:v95];
+    array = [MEMORY[0x277CBEB18] array];
+    _checkmarkImageView6 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    leadingAnchor = [_checkmarkImageView6 leadingAnchor];
+    leadingAnchor2 = [(DBSCheckmarkView *)self leadingAnchor];
+    v95 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v95];
 
-    v96 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v97 = [v96 trailingAnchor];
-    v98 = [(DBSCheckmarkView *)self trailingAnchor];
-    v99 = [v97 constraintEqualToAnchor:v98];
-    [v91 addObject:v99];
+    _checkmarkImageView7 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    trailingAnchor = [_checkmarkImageView7 trailingAnchor];
+    trailingAnchor2 = [(DBSCheckmarkView *)self trailingAnchor];
+    v99 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v99];
 
-    v100 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v101 = [v100 topAnchor];
-    v102 = [(DBSCheckmarkView *)self topAnchor];
-    v103 = [v101 constraintEqualToAnchor:v102];
-    [v91 addObject:v103];
+    _checkmarkImageView8 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    topAnchor = [_checkmarkImageView8 topAnchor];
+    topAnchor2 = [(DBSCheckmarkView *)self topAnchor];
+    v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v103];
 
-    v104 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v105 = [v104 bottomAnchor];
-    v106 = [(DBSCheckmarkView *)self bottomAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106];
-    [v91 addObject:v107];
+    _checkmarkImageView9 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    bottomAnchor = [_checkmarkImageView9 bottomAnchor];
+    bottomAnchor2 = [(DBSCheckmarkView *)self bottomAnchor];
+    v107 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v107];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v91];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   else
   {
     v18 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill" compatibleWithTraitCollection:0];
-    v19 = [v18 _imageThatSuppressesAccessibilityHairlineThickening];
-    v20 = [v19 imageWithRenderingMode:2];
-    v21 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v21 setImage:v20];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v18 _imageThatSuppressesAccessibilityHairlineThickening];
+    v20 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithRenderingMode:2];
+    _checkmarkImageView10 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView10 setImage:v20];
 
-    v22 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    _checkmarkImageView11 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView11 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v23 setContentMode:4];
+    _checkmarkImageView12 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView12 setContentMode:4];
 
-    v24 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v24 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+    _checkmarkImageView13 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView13 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
-    v25 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v25 setAlpha:0.0];
+    _checkmarkImageView14 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView14 setAlpha:0.0];
 
     v26 = *MEMORY[0x277D76918];
     v27 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:3];
-    v28 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v28 setPreferredSymbolConfiguration:v27];
+    _checkmarkImageView15 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView15 setPreferredSymbolConfiguration:v27];
 
-    v29 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [(DBSCheckmarkView *)self addSubview:v29];
+    _checkmarkImageView16 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [(DBSCheckmarkView *)self addSubview:_checkmarkImageView16];
 
     v30 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v5, v6, v7, v8}];
     [(DBSCheckmarkView *)self set_circleImageView:v30];
 
     v31 = [MEMORY[0x277D755B8] systemImageNamed:@"circle" compatibleWithTraitCollection:0];
     v32 = [v31 imageWithRenderingMode:2];
-    v33 = [(DBSCheckmarkView *)self _circleImageView];
-    [v33 setImage:v32];
+    _circleImageView = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView setImage:v32];
 
-    v34 = [(DBSCheckmarkView *)self _circleImageView];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    _circleImageView2 = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v35 = [(DBSCheckmarkView *)self _circleImageView];
-    [v35 setContentMode:4];
+    _circleImageView3 = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView3 setContentMode:4];
 
-    v36 = [(DBSCheckmarkView *)self _circleImageView];
-    [v36 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+    _circleImageView4 = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView4 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
-    v37 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    v38 = [(DBSCheckmarkView *)self _circleImageView];
-    [v38 setTintColor:v37];
+    tertiaryLabelColor2 = [MEMORY[0x277D75348] tertiaryLabelColor];
+    _circleImageView5 = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView5 setTintColor:tertiaryLabelColor2];
 
     v39 = [MEMORY[0x277D755D0] configurationWithTextStyle:v26 scale:3];
-    v40 = [(DBSCheckmarkView *)self _circleImageView];
-    [v40 setPreferredSymbolConfiguration:v39];
+    _circleImageView6 = [(DBSCheckmarkView *)self _circleImageView];
+    [_circleImageView6 setPreferredSymbolConfiguration:v39];
 
-    v41 = [(DBSCheckmarkView *)self _circleImageView];
-    [(DBSCheckmarkView *)self addSubview:v41];
+    _circleImageView7 = [(DBSCheckmarkView *)self _circleImageView];
+    [(DBSCheckmarkView *)self addSubview:_circleImageView7];
 
-    v108 = [MEMORY[0x277CBEB18] array];
-    v42 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v43 = [v42 leadingAnchor];
-    v44 = [(DBSCheckmarkView *)self leadingAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
-    [v108 addObject:v45];
+    array2 = [MEMORY[0x277CBEB18] array];
+    _checkmarkImageView17 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    leadingAnchor3 = [_checkmarkImageView17 leadingAnchor];
+    leadingAnchor4 = [(DBSCheckmarkView *)self leadingAnchor];
+    v45 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+    [array2 addObject:v45];
 
-    v46 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v47 = [v46 trailingAnchor];
-    v48 = [(DBSCheckmarkView *)self trailingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
-    [v108 addObject:v49];
+    _checkmarkImageView18 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    trailingAnchor3 = [_checkmarkImageView18 trailingAnchor];
+    trailingAnchor4 = [(DBSCheckmarkView *)self trailingAnchor];
+    v49 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+    [array2 addObject:v49];
 
-    v50 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v51 = [v50 topAnchor];
-    v52 = [(DBSCheckmarkView *)self topAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
-    [v108 addObject:v53];
+    _checkmarkImageView19 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    topAnchor3 = [_checkmarkImageView19 topAnchor];
+    topAnchor4 = [(DBSCheckmarkView *)self topAnchor];
+    v53 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+    [array2 addObject:v53];
 
-    v54 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v55 = [v54 bottomAnchor];
-    v56 = [(DBSCheckmarkView *)self bottomAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
-    [v108 addObject:v57];
+    _checkmarkImageView20 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    bottomAnchor3 = [_checkmarkImageView20 bottomAnchor];
+    bottomAnchor4 = [(DBSCheckmarkView *)self bottomAnchor];
+    v57 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+    [array2 addObject:v57];
 
-    v58 = [(DBSCheckmarkView *)self _circleImageView];
-    v59 = [v58 leadingAnchor];
-    v60 = [(DBSCheckmarkView *)self leadingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
-    [v108 addObject:v61];
+    _circleImageView8 = [(DBSCheckmarkView *)self _circleImageView];
+    leadingAnchor5 = [_circleImageView8 leadingAnchor];
+    leadingAnchor6 = [(DBSCheckmarkView *)self leadingAnchor];
+    v61 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+    [array2 addObject:v61];
 
-    v62 = [(DBSCheckmarkView *)self _circleImageView];
-    v63 = [v62 trailingAnchor];
-    v64 = [(DBSCheckmarkView *)self trailingAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64];
-    [v108 addObject:v65];
+    _circleImageView9 = [(DBSCheckmarkView *)self _circleImageView];
+    trailingAnchor5 = [_circleImageView9 trailingAnchor];
+    trailingAnchor6 = [(DBSCheckmarkView *)self trailingAnchor];
+    v65 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+    [array2 addObject:v65];
 
-    v66 = [(DBSCheckmarkView *)self _circleImageView];
-    v67 = [v66 topAnchor];
-    v68 = [(DBSCheckmarkView *)self topAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
-    [v108 addObject:v69];
+    _circleImageView10 = [(DBSCheckmarkView *)self _circleImageView];
+    topAnchor5 = [_circleImageView10 topAnchor];
+    topAnchor6 = [(DBSCheckmarkView *)self topAnchor];
+    v69 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+    [array2 addObject:v69];
 
-    v70 = [(DBSCheckmarkView *)self _circleImageView];
-    v71 = [v70 bottomAnchor];
-    v72 = [(DBSCheckmarkView *)self bottomAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72];
-    [v108 addObject:v73];
+    _circleImageView11 = [(DBSCheckmarkView *)self _circleImageView];
+    bottomAnchor5 = [_circleImageView11 bottomAnchor];
+    bottomAnchor6 = [(DBSCheckmarkView *)self bottomAnchor];
+    v73 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
+    [array2 addObject:v73];
 
-    v74 = [(DBSCheckmarkView *)self _circleImageView];
-    v75 = [v74 heightAnchor];
-    v76 = [(DBSCheckmarkView *)self _circleImageView];
-    v77 = [v76 widthAnchor];
-    v78 = [v75 constraintEqualToAnchor:v77 multiplier:1.0];
-    [v108 addObject:v78];
+    _circleImageView12 = [(DBSCheckmarkView *)self _circleImageView];
+    heightAnchor = [_circleImageView12 heightAnchor];
+    _circleImageView13 = [(DBSCheckmarkView *)self _circleImageView];
+    widthAnchor = [_circleImageView13 widthAnchor];
+    v78 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:1.0];
+    [array2 addObject:v78];
 
-    v79 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v80 = [v79 heightAnchor];
-    v81 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    v82 = [v81 widthAnchor];
-    v83 = [v80 constraintEqualToAnchor:v82 multiplier:1.0];
-    [v108 addObject:v83];
+    _checkmarkImageView21 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    heightAnchor2 = [_checkmarkImageView21 heightAnchor];
+    _checkmarkImageView22 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    widthAnchor2 = [_checkmarkImageView22 widthAnchor];
+    v83 = [heightAnchor2 constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
+    [array2 addObject:v83];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v108];
+    [MEMORY[0x277CCAAD0] activateConstraints:array2];
   }
 }
 
@@ -230,7 +230,7 @@
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    _checkmarkImageView = [(DBSCheckmarkView *)self _checkmarkImageView];
     if ([(DBSCheckmarkView *)self isSelected])
     {
       [(DBSCheckmarkView *)self _circleFillImage];
@@ -241,8 +241,8 @@
       [(DBSCheckmarkView *)self _circleImage];
     }
     v7 = ;
-    v8 = [MEMORY[0x277CE1600] transition];
-    [v3 setSymbolImage:v7 withContentTransition:v8];
+    transition = [MEMORY[0x277CE1600] transition];
+    [_checkmarkImageView setSymbolImage:v7 withContentTransition:transition];
 
     if ([(DBSCheckmarkView *)self isSelected])
     {
@@ -254,16 +254,16 @@
       [MEMORY[0x277D75348] tertiaryLabelColor];
     }
     v17 = ;
-    v16 = [(DBSCheckmarkView *)self _checkmarkImageView];
-    [v16 setTintColor:v17];
+    _checkmarkImageView2 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    [_checkmarkImageView2 setTintColor:v17];
   }
 
   else
   {
     memset(&v19, 0, sizeof(v19));
-    v4 = [(DBSCheckmarkView *)self isSelected];
+    isSelected = [(DBSCheckmarkView *)self isSelected];
     v5 = MEMORY[0x277CBF2C0];
-    if (v4)
+    if (isSelected)
     {
       v6 = *(MEMORY[0x277CBF2C0] + 16);
       *&v19.a = *MEMORY[0x277CBF2C0];
@@ -276,18 +276,18 @@
       CGAffineTransformMakeScale(&v19, 0.01, 0.01);
     }
 
-    v9 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    _checkmarkImageView3 = [(DBSCheckmarkView *)self _checkmarkImageView];
     v10 = v5[1];
     *&v18.a = *v5;
     *&v18.c = v10;
     *&v18.tx = v5[2];
-    [v9 setTransform:&v18];
+    [_checkmarkImageView3 setTransform:&v18];
 
-    v11 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    _checkmarkImageView4 = [(DBSCheckmarkView *)self _checkmarkImageView];
     v18 = v19;
-    [v11 setTransform:&v18];
+    [_checkmarkImageView4 setTransform:&v18];
 
-    v12 = [(DBSCheckmarkView *)self _checkmarkImageView];
+    _checkmarkImageView5 = [(DBSCheckmarkView *)self _checkmarkImageView];
     if ([(DBSCheckmarkView *)self isSelected])
     {
       v13 = 1.0;
@@ -298,9 +298,9 @@
       v13 = 0.0;
     }
 
-    [v12 setAlpha:v13];
+    [_checkmarkImageView5 setAlpha:v13];
 
-    v14 = [(DBSCheckmarkView *)self _circleImageView];
+    _circleImageView = [(DBSCheckmarkView *)self _circleImageView];
     if ([(DBSCheckmarkView *)self isSelected])
     {
       v15 = 0.0;
@@ -311,15 +311,15 @@
       v15 = 1.0;
     }
 
-    [v14 setAlpha:v15];
+    [_circleImageView setAlpha:v15];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     if (_UISolariumEnabled())
     {
 

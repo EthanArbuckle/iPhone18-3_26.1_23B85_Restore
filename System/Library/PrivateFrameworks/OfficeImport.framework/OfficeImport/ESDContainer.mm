@@ -1,30 +1,30 @@
 @interface ESDContainer
-+ (void)pbReadChildrenOfObject:(EshObject *)a3 toArray:(id)a4 state:(id)a5;
-+ (void)readChildrenOfObject:(EshObject *)a3 reader:(OcReader *)a4 toArray:(id)a5;
-- (ESDContainer)initWithEshObject:(EshObject *)a3;
-- (EshObject)addAtomChildOfType:(unsigned __int16)a3;
-- (id)addChildOfType:(unsigned __int16)a3;
-- (id)addEshChild:(EshObject *)a3;
-- (id)addPptEshClientChildOfType:(unsigned __int16)a3;
-- (id)childOfType:(unsigned __int16)a3 instance:(signed __int16)a4;
-- (id)containerChildAt:(unint64_t)a3;
-- (id)containerChildOfType:(unsigned __int16)a3 instance:(signed __int16)a4 mustExist:(BOOL)a5;
-- (id)containerFromObject:(id)a3 mustExist:(BOOL)a4;
-- (id)firstChildOfType:(unsigned __int16)a3;
-- (id)firstChildOfType:(unsigned __int16)a3 afterChild:(id)a4;
-- (id)firstChildOfType:(unsigned __int16)a3 afterIndex:(unint64_t)a4;
-- (id)firstContainerChildOfType:(unsigned __int16)a3 mustExist:(BOOL)a4;
-- (id)initForExcelBinaryWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5;
-- (id)initFromReader:(OcReader *)a3 type:(unsigned __int16)a4 version:(unsigned __int16)a5;
-- (id)initPBWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5;
-- (id)insertEshChild:(EshObject *)a3 at:(unint64_t)a4;
-- (unint64_t)indexOfFirstChildOfType:(unsigned __int16)a3 afterIndex:(unint64_t)a4;
-- (void)addChild:(id)a3;
++ (void)pbReadChildrenOfObject:(EshObject *)object toArray:(id)array state:(id)state;
++ (void)readChildrenOfObject:(EshObject *)object reader:(OcReader *)reader toArray:(id)array;
+- (ESDContainer)initWithEshObject:(EshObject *)object;
+- (EshObject)addAtomChildOfType:(unsigned __int16)type;
+- (id)addChildOfType:(unsigned __int16)type;
+- (id)addEshChild:(EshObject *)child;
+- (id)addPptEshClientChildOfType:(unsigned __int16)type;
+- (id)childOfType:(unsigned __int16)type instance:(signed __int16)instance;
+- (id)containerChildAt:(unint64_t)at;
+- (id)containerChildOfType:(unsigned __int16)type instance:(signed __int16)instance mustExist:(BOOL)exist;
+- (id)containerFromObject:(id)object mustExist:(BOOL)exist;
+- (id)firstChildOfType:(unsigned __int16)type;
+- (id)firstChildOfType:(unsigned __int16)type afterChild:(id)child;
+- (id)firstChildOfType:(unsigned __int16)type afterIndex:(unint64_t)index;
+- (id)firstContainerChildOfType:(unsigned __int16)type mustExist:(BOOL)exist;
+- (id)initForExcelBinaryWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state;
+- (id)initFromReader:(OcReader *)reader type:(unsigned __int16)type version:(unsigned __int16)version;
+- (id)initPBWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state;
+- (id)insertEshChild:(EshObject *)child at:(unint64_t)at;
+- (unint64_t)indexOfFirstChildOfType:(unsigned __int16)type afterIndex:(unint64_t)index;
+- (void)addChild:(id)child;
 - (void)eshContainer;
 - (void)eshGroup;
-- (void)insertChild:(id)a3 at:(unint64_t)a4;
-- (void)removeChild:(id)a3;
-- (void)writeToWriter:(OcWriter *)a3;
+- (void)insertChild:(id)child at:(unint64_t)at;
+- (void)removeChild:(id)child;
+- (void)writeToWriter:(OcWriter *)writer;
 @end
 
 @implementation ESDContainer
@@ -47,8 +47,8 @@
   }
 
   v3 = [(ESDContainer *)self childAt:0];
-  v4 = [v3 eshObject];
-  if (!v4)
+  eshObject = [v3 eshObject];
+  if (!eshObject)
   {
 
 LABEL_6:
@@ -65,11 +65,11 @@ LABEL_6:
   return v5;
 }
 
-- (ESDContainer)initWithEshObject:(EshObject *)a3
+- (ESDContainer)initWithEshObject:(EshObject *)object
 {
   v7.receiver = self;
   v7.super_class = ESDContainer;
-  v3 = [(ESDObject *)&v7 initWithEshObject:a3];
+  v3 = [(ESDObject *)&v7 initWithEshObject:object];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -80,25 +80,25 @@ LABEL_6:
   return v3;
 }
 
-- (id)initFromReader:(OcReader *)a3 type:(unsigned __int16)a4 version:(unsigned __int16)a5
+- (id)initFromReader:(OcReader *)reader type:(unsigned __int16)type version:(unsigned __int16)version
 {
   v12.receiver = self;
   v12.super_class = ESDContainer;
-  v6 = [(ESDObject *)&v12 initFromReader:a3 type:a4 version:a5];
+  v6 = [(ESDObject *)&v12 initFromReader:reader type:type version:version];
   if (v6)
   {
-    [objc_opt_class() readChildrenOfObject:*(v6 + 1) reader:a3 toArray:*(v6 + 4)];
-    v7 = [*(v6 + 4) objectEnumerator];
+    [objc_opt_class() readChildrenOfObject:*(v6 + 1) reader:reader toArray:*(v6 + 4)];
+    objectEnumerator = [*(v6 + 4) objectEnumerator];
     while (1)
     {
-      v8 = [v7 nextObject];
-      v9 = v8;
-      if (!v8)
+      nextObject = [objectEnumerator nextObject];
+      v9 = nextObject;
+      if (!nextObject)
       {
         break;
       }
 
-      objc_storeWeak((v8 + 16), v6);
+      objc_storeWeak((nextObject + 16), v6);
     }
   }
 
@@ -107,114 +107,114 @@ LABEL_6:
   return v10;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   [(NSMutableArray *)self->mChildren addObject:?];
-  objc_storeWeak(v4 + 2, self);
-  EshContainer::addChild(-[ESDContainer eshContainer](self, "eshContainer"), [v4 eshObject]);
+  objc_storeWeak(childCopy + 2, self);
+  EshContainer::addChild(-[ESDContainer eshContainer](self, "eshContainer"), [childCopy eshObject]);
 }
 
-- (id)addEshChild:(EshObject *)a3
+- (id)addEshChild:(EshObject *)child
 {
-  (*(a3->var0 + 11))(a3, a2);
-  v5 = [objc_alloc(objc_opt_class()) initWithEshObject:a3];
+  (*(child->var0 + 11))(child, a2);
+  v5 = [objc_alloc(objc_opt_class()) initWithEshObject:child];
   [(ESDContainer *)self addChild:v5];
 
   return v5;
 }
 
-- (id)addChildOfType:(unsigned __int16)a3
+- (id)addChildOfType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = +[ESDObjectFactory threadLocalFactory];
-  v6 = [v5 createObjectWithType:v3];
+  v6 = [v5 createObjectWithType:typeCopy];
 
   return [(ESDContainer *)self addEshChild:v6];
 }
 
-- (EshObject)addAtomChildOfType:(unsigned __int16)a3
+- (EshObject)addAtomChildOfType:(unsigned __int16)type
 {
-  v3 = [(ESDContainer *)self addChildOfType:a3];
-  v4 = [v3 eshObject];
+  v3 = [(ESDContainer *)self addChildOfType:type];
+  eshObject = [v3 eshObject];
 
-  return v4;
+  return eshObject;
 }
 
-- (void)insertChild:(id)a3 at:(unint64_t)a4
+- (void)insertChild:(id)child at:(unint64_t)at
 {
-  v5 = a3;
+  childCopy = child;
   [NSMutableArray insertObject:"insertObject:atIndex:" atIndex:?];
-  objc_storeWeak(v5 + 2, self);
-  EshContainer::insertChild(-[ESDContainer eshContainer](self, "eshContainer"), [v5 eshObject]);
+  objc_storeWeak(childCopy + 2, self);
+  EshContainer::insertChild(-[ESDContainer eshContainer](self, "eshContainer"), [childCopy eshObject]);
 }
 
-- (id)insertEshChild:(EshObject *)a3 at:(unint64_t)a4
+- (id)insertEshChild:(EshObject *)child at:(unint64_t)at
 {
-  (*(a3->var0 + 11))(a3, a2);
-  v7 = [objc_alloc(objc_opt_class()) initWithEshObject:a3];
-  [(NSMutableArray *)self->mChildren insertObject:v7 atIndex:a4];
+  (*(child->var0 + 11))(child, a2);
+  v7 = [objc_alloc(objc_opt_class()) initWithEshObject:child];
+  [(NSMutableArray *)self->mChildren insertObject:v7 atIndex:at];
   objc_storeWeak(v7 + 2, self);
   EshContainer::insertChild(-[ESDContainer eshContainer](self, "eshContainer"), [v7 eshObject]);
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  v5 = a3;
+  childCopy = child;
   v4 = [(NSMutableArray *)self->mChildren indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->mChildren removeObjectAtIndex:v4];
-    objc_storeWeak(v5 + 2, 0);
+    objc_storeWeak(childCopy + 2, 0);
     EshContainer::removeChild([(ESDContainer *)self eshContainer], v4);
   }
 }
 
-- (id)firstChildOfType:(unsigned __int16)a3
+- (id)firstChildOfType:(unsigned __int16)type
 {
-  v3 = a3;
-  v4 = [(NSMutableArray *)self->mChildren objectEnumerator];
+  typeCopy = type;
+  objectEnumerator = [(NSMutableArray *)self->mChildren objectEnumerator];
   v5 = 0;
   do
   {
-    v6 = [v4 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = [v6 eshObject];
-    v5 = v6;
+    eshObject = [nextObject eshObject];
+    v5 = nextObject;
   }
 
-  while ((*(*v7 + 16))(v7) != v3);
+  while ((*(*eshObject + 16))(eshObject) != typeCopy);
 
-  return v6;
+  return nextObject;
 }
 
-- (id)firstChildOfType:(unsigned __int16)a3 afterChild:(id)a4
+- (id)firstChildOfType:(unsigned __int16)type afterChild:(id)child
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->mChildren objectEnumerator];
+  typeCopy = type;
+  childCopy = child;
+  objectEnumerator = [(NSMutableArray *)self->mChildren objectEnumerator];
   v8 = 0;
   v9 = 0;
   while (1)
   {
-    v10 = [v7 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
     if (v8)
     {
-      v11 = [v10 eshObject];
+      eshObject = [nextObject eshObject];
       v8 = 1;
-      v9 = v10;
-      if ((*(*v11 + 16))(v11) == v4)
+      v9 = nextObject;
+      if ((*(*eshObject + 16))(eshObject) == typeCopy)
       {
         break;
       }
@@ -222,17 +222,17 @@ LABEL_6:
 
     else
     {
-      v8 = v10 == v6;
-      v9 = v10;
+      v8 = nextObject == childCopy;
+      v9 = nextObject;
     }
   }
 
-  return v10;
+  return nextObject;
 }
 
-- (id)firstChildOfType:(unsigned __int16)a3 afterIndex:(unint64_t)a4
+- (id)firstChildOfType:(unsigned __int16)type afterIndex:(unint64_t)index
 {
-  v5 = [(ESDContainer *)self indexOfFirstChildOfType:a3 afterIndex:a4];
+  v5 = [(ESDContainer *)self indexOfFirstChildOfType:type afterIndex:index];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -246,65 +246,65 @@ LABEL_6:
   return v6;
 }
 
-- (unint64_t)indexOfFirstChildOfType:(unsigned __int16)a3 afterIndex:(unint64_t)a4
+- (unint64_t)indexOfFirstChildOfType:(unsigned __int16)type afterIndex:(unint64_t)index
 {
-  v5 = a3;
-  v7 = [(ESDContainer *)self childCount];
-  while (++a4 < v7)
+  typeCopy = type;
+  childCount = [(ESDContainer *)self childCount];
+  while (++index < childCount)
   {
-    v8 = [(ESDContainer *)self childAt:a4];
-    v9 = [v8 eshObject];
-    v10 = (*(*v9 + 16))(v9);
+    v8 = [(ESDContainer *)self childAt:index];
+    eshObject = [v8 eshObject];
+    v10 = (*(*eshObject + 16))(eshObject);
 
-    if (v10 == v5)
+    if (v10 == typeCopy)
     {
-      return a4;
+      return index;
     }
   }
 
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)childOfType:(unsigned __int16)a3 instance:(signed __int16)a4
+- (id)childOfType:(unsigned __int16)type instance:(signed __int16)instance
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(NSMutableArray *)self->mChildren objectEnumerator];
+  instanceCopy = instance;
+  typeCopy = type;
+  objectEnumerator = [(NSMutableArray *)self->mChildren objectEnumerator];
   v7 = 0;
   while (1)
   {
-    v8 = [v6 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v9 = [v8 eshObject];
-    v7 = v8;
-    if ((*(*v9 + 16))(v9) == v5)
+    eshObject = [nextObject eshObject];
+    v7 = nextObject;
+    if ((*(*eshObject + 16))(eshObject) == typeCopy)
     {
-      if ((v5 - 2) < 0x1Bu)
+      if ((typeCopy - 2) < 0x1Bu)
       {
         break;
       }
 
-      v7 = v8;
-      if (EshRecord::getInstance(v10) == v4)
+      v7 = nextObject;
+      if (EshRecord::getInstance(v10) == instanceCopy)
       {
         break;
       }
     }
   }
 
-  return v8;
+  return nextObject;
 }
 
-- (id)containerFromObject:(id)a3 mustExist:(BOOL)a4
+- (id)containerFromObject:(id)object mustExist:(BOOL)exist
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  existCopy = exist;
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -312,58 +312,58 @@ LABEL_6:
       TCVerifyInputMeetsCondition(0);
     }
 
-    v6 = v5;
+    v6 = objectCopy;
   }
 
-  else if (v4)
+  else if (existCopy)
   {
     TCVerifyInputMeetsCondition(0);
   }
 
-  return v5;
+  return objectCopy;
 }
 
-- (id)firstContainerChildOfType:(unsigned __int16)a3 mustExist:(BOOL)a4
+- (id)firstContainerChildOfType:(unsigned __int16)type mustExist:(BOOL)exist
 {
-  v4 = a4;
-  v6 = [(ESDContainer *)self firstChildOfType:a3];
-  v7 = [(ESDContainer *)self containerFromObject:v6 mustExist:v4];
+  existCopy = exist;
+  v6 = [(ESDContainer *)self firstChildOfType:type];
+  v7 = [(ESDContainer *)self containerFromObject:v6 mustExist:existCopy];
 
   return v7;
 }
 
-- (id)containerChildOfType:(unsigned __int16)a3 instance:(signed __int16)a4 mustExist:(BOOL)a5
+- (id)containerChildOfType:(unsigned __int16)type instance:(signed __int16)instance mustExist:(BOOL)exist
 {
-  v5 = a5;
-  v7 = [(ESDContainer *)self childOfType:a3 instance:a4];
-  v8 = [(ESDContainer *)self containerFromObject:v7 mustExist:v5];
+  existCopy = exist;
+  v7 = [(ESDContainer *)self childOfType:type instance:instance];
+  v8 = [(ESDContainer *)self containerFromObject:v7 mustExist:existCopy];
 
   return v8;
 }
 
-- (id)containerChildAt:(unint64_t)a3
+- (id)containerChildAt:(unint64_t)at
 {
-  v4 = [(ESDContainer *)self childAt:a3];
+  v4 = [(ESDContainer *)self childAt:at];
   v5 = [(ESDContainer *)self containerFromObject:v4 mustExist:1];
 
   return v5;
 }
 
-+ (void)readChildrenOfObject:(EshObject *)a3 reader:(OcReader *)a4 toArray:(id)a5
++ (void)readChildrenOfObject:(EshObject *)object reader:(OcReader *)reader toArray:(id)array
 {
-  v12 = a5;
-  v7 = (*(a3->var0 + 5))(a3);
+  arrayCopy = array;
+  v7 = (*(object->var0 + 5))(object);
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = (*(a3->var0 + 6))(a3, v8);
-      v10 = (*(a3->var0 + 7))(a3, v8);
-      v11 = [objc_alloc(objc_opt_class()) initFromReader:a4 type:v9 version:v10];
+      v9 = (*(object->var0 + 6))(object, v8);
+      v10 = (*(object->var0 + 7))(object, v8);
+      v11 = [objc_alloc(objc_opt_class()) initFromReader:reader type:v9 version:v10];
       if (v11)
       {
-        [v12 addObject:v11];
+        [arrayCopy addObject:v11];
       }
 
       v8 = (v8 + 1);
@@ -373,34 +373,34 @@ LABEL_6:
   }
 }
 
-- (void)writeToWriter:(OcWriter *)a3
+- (void)writeToWriter:(OcWriter *)writer
 {
   v8.receiver = self;
   v8.super_class = ESDContainer;
   [(ESDObject *)&v8 writeToWriter:?];
-  v5 = [(NSMutableArray *)self->mChildren objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mChildren objectEnumerator];
   while (1)
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
-    if (!v6)
+    nextObject = [objectEnumerator nextObject];
+    v7 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    [v6 writeToWriter:a3];
+    [nextObject writeToWriter:writer];
   }
 }
 
-- (id)initForExcelBinaryWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5
+- (id)initForExcelBinaryWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [v8 xlReader];
-  if (v9)
+  versionCopy = version;
+  typeCopy = type;
+  stateCopy = state;
+  xlReader = [stateCopy xlReader];
+  if (xlReader)
   {
-    v10 = v9 + *(*v9 - 24);
+    v10 = xlReader + *(*xlReader - 24);
   }
 
   else
@@ -410,11 +410,11 @@ LABEL_6:
 
   v15.receiver = self;
   v15.super_class = ESDContainer;
-  v11 = [(ESDObject *)&v15 initFromReader:v10 type:v6 version:v5];
+  v11 = [(ESDObject *)&v15 initFromReader:v10 type:typeCopy version:versionCopy];
   v12 = v11;
   if (v11)
   {
-    [EBEscher readChildrenOfObject:v11[1] toArray:v11[4] state:v8];
+    [EBEscher readChildrenOfObject:v11[1] toArray:v11[4] state:stateCopy];
   }
 
   v13 = v12;
@@ -422,28 +422,28 @@ LABEL_6:
   return v13;
 }
 
-- (id)initPBWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5
+- (id)initPBWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  versionCopy = version;
+  typeCopy = type;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = ESDContainer;
-  v9 = [(ESDObject *)&v15 initPBWithType:v6 version:v5 state:v8];
+  v9 = [(ESDObject *)&v15 initPBWithType:typeCopy version:versionCopy state:stateCopy];
   if (v9)
   {
-    [objc_opt_class() pbReadChildrenOfObject:*(v9 + 1) toArray:*(v9 + 4) state:v8];
-    v10 = [*(v9 + 4) objectEnumerator];
+    [objc_opt_class() pbReadChildrenOfObject:*(v9 + 1) toArray:*(v9 + 4) state:stateCopy];
+    objectEnumerator = [*(v9 + 4) objectEnumerator];
     while (1)
     {
-      v11 = [v10 nextObject];
-      v12 = v11;
-      if (!v11)
+      nextObject = [objectEnumerator nextObject];
+      v12 = nextObject;
+      if (!nextObject)
       {
         break;
       }
 
-      objc_storeWeak((v11 + 16), v9);
+      objc_storeWeak((nextObject + 16), v9);
     }
   }
 
@@ -452,27 +452,27 @@ LABEL_6:
   return v13;
 }
 
-+ (void)pbReadChildrenOfObject:(EshObject *)a3 toArray:(id)a4 state:(id)a5
++ (void)pbReadChildrenOfObject:(EshObject *)object toArray:(id)array state:(id)state
 {
-  v19 = a4;
-  v8 = a5;
-  v9 = [v8 reader];
-  v10 = (*(a3->var0 + 5))(a3);
+  arrayCopy = array;
+  stateCopy = state;
+  reader = [stateCopy reader];
+  v10 = (*(object->var0 + 5))(object);
   if (v10)
   {
     v11 = 0;
     do
     {
-      v12 = (*(a3->var0 + 6))(a3, v11);
-      v13 = (*(a3->var0 + 7))(a3, v11);
+      v12 = (*(object->var0 + 6))(object, v11);
+      v13 = (*(object->var0 + 7))(object, v11);
       if (v14)
       {
-        (*(*v9 + 56))(v9, v14, v11);
+        (*(*reader + 56))(reader, v14, v11);
       }
 
       if (v12 == 1)
       {
-        v15 = (*(*v9 + 216))(v9);
+        v15 = (*(*reader + 216))(reader);
         Object = PptObjectFactory::createObject(v15, 1, v13);
         if (Object)
         {
@@ -483,8 +483,8 @@ LABEL_6:
           v17 = 0;
         }
 
-        (*(*v9 + 72))(v9, v17);
-        [a1 pbReadChildrenOfObject:v17 toArray:v19 state:v8];
+        (*(*reader + 72))(reader, v17);
+        [self pbReadChildrenOfObject:v17 toArray:arrayCopy state:stateCopy];
         if (v17)
         {
           (*(*v17 + 8))(v17);
@@ -493,10 +493,10 @@ LABEL_6:
 
       else
       {
-        v18 = [objc_alloc(objc_opt_class()) initPBWithType:v12 version:v13 state:v8];
+        v18 = [objc_alloc(objc_opt_class()) initPBWithType:v12 version:v13 state:stateCopy];
         if (v18)
         {
-          [v19 addObject:v18];
+          [arrayCopy addObject:v18];
         }
       }
 
@@ -507,9 +507,9 @@ LABEL_6:
   }
 }
 
-- (id)addPptEshClientChildOfType:(unsigned __int16)a3
+- (id)addPptEshClientChildOfType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = (*(self->super.mEshObject->var0 + 2))(self->super.mEshObject, a2);
   mEshObject = self->super.mEshObject;
   if (v5 == 7)
@@ -539,7 +539,7 @@ LABEL_6:
     }
   }
 
-  switch(v3)
+  switch(typeCopy)
   {
     case 61453:
       operator new();

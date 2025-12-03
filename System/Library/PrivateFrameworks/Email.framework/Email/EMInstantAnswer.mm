@@ -1,76 +1,76 @@
 @interface EMInstantAnswer
-- (EMInstantAnswer)initWithCSInstantAnswers:(id)a3 message:(id)a4;
-- (EMInstantAnswer)initWithCoder:(id)a3;
-- (id)initFakeWithMessage:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMInstantAnswer)initWithCSInstantAnswers:(id)answers message:(id)message;
+- (EMInstantAnswer)initWithCoder:(id)coder;
+- (id)initFakeWithMessage:(id)message;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMInstantAnswer
 
-- (id)initFakeWithMessage:(id)a3
+- (id)initFakeWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v17.receiver = self;
   v17.super_class = EMInstantAnswer;
   v6 = [(EMInstantAnswer *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
-    v8 = [[EMInstantAnswerFlight alloc] initWithFakeData];
+    objc_storeStrong(&v6->_message, message);
+    initWithFakeData = [[EMInstantAnswerFlight alloc] initWithFakeData];
     flight = v7->_flight;
-    v7->_flight = v8;
+    v7->_flight = initWithFakeData;
 
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     bodyCardSectionID = v7->_bodyCardSectionID;
-    v7->_bodyCardSectionID = v11;
+    v7->_bodyCardSectionID = uUIDString;
 
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
     buttonsCardSectionID = v7->_buttonsCardSectionID;
-    v7->_buttonsCardSectionID = v14;
+    v7->_buttonsCardSectionID = uUIDString2;
   }
 
   return v7;
 }
 
-- (EMInstantAnswer)initWithCSInstantAnswers:(id)a3 message:(id)a4
+- (EMInstantAnswer)initWithCSInstantAnswers:(id)answers message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  answersCopy = answers;
+  messageCopy = message;
   v20.receiver = self;
   v20.super_class = EMInstantAnswer;
   v8 = [(EMInstantAnswer *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_message, a4);
-    if ([v6 instantAnswersKind])
+    objc_storeStrong(&v8->_message, message);
+    if ([answersCopy instantAnswersKind])
     {
-      if ([v6 instantAnswersKind] != 1)
+      if ([answersCopy instantAnswersKind] != 1)
       {
 LABEL_7:
-        v13 = [MEMORY[0x1E696AFB0] UUID];
-        v14 = [v13 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
         bodyCardSectionID = v9->_bodyCardSectionID;
-        v9->_bodyCardSectionID = v14;
+        v9->_bodyCardSectionID = uUIDString;
 
-        v16 = [MEMORY[0x1E696AFB0] UUID];
-        v17 = [v16 UUIDString];
+        uUID2 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString2 = [uUID2 UUIDString];
         buttonsCardSectionID = v9->_buttonsCardSectionID;
-        v9->_buttonsCardSectionID = v17;
+        v9->_buttonsCardSectionID = uUIDString2;
 
         goto LABEL_8;
       }
 
-      v10 = [[EMInstantAnswerHotel alloc] initWithCSInstantAnswers:v6];
+      v10 = [[EMInstantAnswerHotel alloc] initWithCSInstantAnswers:answersCopy];
       v11 = 24;
     }
 
     else
     {
-      v10 = [[EMInstantAnswerFlight alloc] initWithCSInstantAnswers:v6];
+      v10 = [[EMInstantAnswerFlight alloc] initWithCSInstantAnswers:answersCopy];
       v11 = 16;
     }
 
@@ -85,31 +85,31 @@ LABEL_8:
   return v9;
 }
 
-- (EMInstantAnswer)initWithCoder:(id)a3
+- (EMInstantAnswer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = EMInstantAnswer;
   v5 = [(EMInstantAnswer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_message"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_message"];
     message = v5->_message;
     v5->_message = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_flight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_flight"];
     flight = v5->_flight;
     v5->_flight = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hotel"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hotel"];
     hotel = v5->_hotel;
     v5->_hotel = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_bodyCardSectionID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_bodyCardSectionID"];
     bodyCardSectionID = v5->_bodyCardSectionID;
     v5->_bodyCardSectionID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_buttonsCardSectionID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_buttonsCardSectionID"];
     buttonsCardSectionID = v5->_buttonsCardSectionID;
     v5->_buttonsCardSectionID = v14;
   }
@@ -117,23 +117,23 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(EMInstantAnswer *)self message];
-  [v9 encodeObject:v4 forKey:@"EFPropertyKey_message"];
+  coderCopy = coder;
+  message = [(EMInstantAnswer *)self message];
+  [coderCopy encodeObject:message forKey:@"EFPropertyKey_message"];
 
-  v5 = [(EMInstantAnswer *)self flight];
-  [v9 encodeObject:v5 forKey:@"EFPropertyKey_flight"];
+  flight = [(EMInstantAnswer *)self flight];
+  [coderCopy encodeObject:flight forKey:@"EFPropertyKey_flight"];
 
-  v6 = [(EMInstantAnswer *)self hotel];
-  [v9 encodeObject:v6 forKey:@"EFPropertyKey_hotel"];
+  hotel = [(EMInstantAnswer *)self hotel];
+  [coderCopy encodeObject:hotel forKey:@"EFPropertyKey_hotel"];
 
-  v7 = [(EMInstantAnswer *)self bodyCardSectionID];
-  [v9 encodeObject:v7 forKey:@"EFPropertyKey_bodyCardSectionID"];
+  bodyCardSectionID = [(EMInstantAnswer *)self bodyCardSectionID];
+  [coderCopy encodeObject:bodyCardSectionID forKey:@"EFPropertyKey_bodyCardSectionID"];
 
-  v8 = [(EMInstantAnswer *)self buttonsCardSectionID];
-  [v9 encodeObject:v8 forKey:@"EFPropertyKey_buttonsCardSectionID"];
+  buttonsCardSectionID = [(EMInstantAnswer *)self buttonsCardSectionID];
+  [coderCopy encodeObject:buttonsCardSectionID forKey:@"EFPropertyKey_buttonsCardSectionID"];
 }
 
 @end

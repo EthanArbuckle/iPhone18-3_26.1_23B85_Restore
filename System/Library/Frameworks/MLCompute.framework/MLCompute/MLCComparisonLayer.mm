@@ -1,47 +1,47 @@
 @interface MLCComparisonLayer
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCComparisonLayer)initWithOperation:(int)a3;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCComparisonLayer)initWithOperation:(int)operation;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
 @implementation MLCComparisonLayer
 
-- (MLCComparisonLayer)initWithOperation:(int)a3
+- (MLCComparisonLayer)initWithOperation:(int)operation
 {
   v5.receiver = self;
   v5.super_class = MLCComparisonLayer;
   result = [(MLCLayer *)&v5 initWithLabel:@"Compare"];
   if (result)
   {
-    result->_operation = a3;
+    result->_operation = operation;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MLCComparisonLayer *)self operation];
-  if ((v12 - 6) >= 6)
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  operation = [(MLCComparisonLayer *)self operation];
+  if ((operation - 6) >= 6)
   {
-    if ((v12 - 2) <= 3)
+    if ((operation - 2) <= 3)
     {
-      if ([v10 count])
+      if ([tensorsCopy count])
       {
         v18 = 0;
         do
         {
-          v19 = [v10 objectAtIndexedSubscript:v18];
-          v20 = [v19 descriptor];
-          v21 = [v20 dataType];
+          v19 = [tensorsCopy objectAtIndexedSubscript:v18];
+          descriptor = [v19 descriptor];
+          dataType = [descriptor dataType];
 
-          v22 = v21 == 4;
-          if (v21 == 4)
+          v22 = dataType == 4;
+          if (dataType == 4)
           {
             break;
           }
@@ -49,7 +49,7 @@
           ++v18;
         }
 
-        while (v18 < [v10 count]);
+        while (v18 < [tensorsCopy count]);
       }
 
       else
@@ -57,10 +57,10 @@
         v22 = 0;
       }
 
-      v26 = [v11 descriptor];
-      v27 = [v26 dataType];
+      descriptor2 = [tensorCopy descriptor];
+      dataType2 = [descriptor2 dataType];
 
-      if (v22 || v27 != 4)
+      if (v22 || dataType2 != 4)
       {
         v25 = +[MLCLog framework];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -75,17 +75,17 @@
 
   else
   {
-    if ([v10 count])
+    if ([tensorsCopy count])
     {
       v13 = 0;
       do
       {
-        v14 = [v10 objectAtIndexedSubscript:v13];
-        v15 = [v14 descriptor];
-        v16 = [v15 dataType];
+        v14 = [tensorsCopy objectAtIndexedSubscript:v13];
+        descriptor3 = [v14 descriptor];
+        dataType3 = [descriptor3 dataType];
 
-        v17 = v16 != 4;
-        if (v16 != 4)
+        v17 = dataType3 != 4;
+        if (dataType3 != 4)
         {
           break;
         }
@@ -93,7 +93,7 @@
         ++v13;
       }
 
-      while (v13 < [v10 count]);
+      while (v13 < [tensorsCopy count]);
     }
 
     else
@@ -101,10 +101,10 @@
       v17 = 0;
     }
 
-    v23 = [v11 descriptor];
-    v24 = [v23 dataType];
+    descriptor4 = [tensorCopy descriptor];
+    dataType4 = [descriptor4 dataType];
 
-    if (v17 || v24 != 4)
+    if (v17 || dataType4 != 4)
     {
       v25 = +[MLCLog framework];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -118,8 +118,8 @@ LABEL_29:
     }
   }
 
-  v28 = [v9 computeEngine];
-  v25 = [v28 compareLayerWithOperation:{-[MLCComparisonLayer operation](self, "operation")}];
+  computeEngine = [deviceCopy computeEngine];
+  v25 = [computeEngine compareLayerWithOperation:{-[MLCComparisonLayer operation](self, "operation")}];
 
   if (!v25 || ![v25 count])
   {
@@ -132,22 +132,22 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v29 = [v9 computeEngine];
-  v30 = [v29 compileLayerDeviceOps:v25 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v30 = [computeEngine2 compileLayerDeviceOps:v25 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v33.receiver = self;
   v33.super_class = MLCComparisonLayer;
-  [(MLCLayer *)&v33 bindDevice:v9 deviceOps:v25];
+  [(MLCLayer *)&v33 bindDevice:deviceCopy deviceOps:v25];
 LABEL_30:
 
   return v30;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
   v5.receiver = self;
   v5.super_class = MLCComparisonLayer;
-  v3 = [(MLCLayer *)&v5 resultTensorsFromBroadcastableSources:a3 resultTensorDataType:4];
+  v3 = [(MLCLayer *)&v5 resultTensorsFromBroadcastableSources:sources resultTensorDataType:4];
 
   return v3;
 }
@@ -157,10 +157,10 @@ LABEL_30:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCComparisonLayer *)self operation];
-  v7 = [(MLCLayer *)self conditionalTreeNode];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { compare operation=%d : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  operation = [(MLCComparisonLayer *)self operation];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { compare operation=%d : conditionalTreeNode=%@ : resultTensor=%@ }", v5, operation, conditionalTreeNode, resultTensors];
 
   return v9;
 }
@@ -170,9 +170,9 @@ LABEL_30:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
+  layerID = [(MLCLayer *)self layerID];
   v7 = MLCComparisonOperationDebugDescription([(MLCComparisonLayer *)self operation]);
-  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Predicate: %@</FONT>>", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Predicate: %@</FONT>>", v5, layerID, v7];
 
   return v8;
 }

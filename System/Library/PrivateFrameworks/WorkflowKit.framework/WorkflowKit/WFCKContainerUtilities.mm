@@ -1,7 +1,7 @@
 @interface WFCKContainerUtilities
 + (id)metaDataDeviceQueryOperation;
-+ (void)fetchDeviceRecordsInContainer:(id)a3 completion:(id)a4;
-+ (void)fetchDeviceRecordsInContainer:(id)a3 withCursor:(id)a4 results:(id)a5 completion:(id)a6;
++ (void)fetchDeviceRecordsInContainer:(id)container completion:(id)completion;
++ (void)fetchDeviceRecordsInContainer:(id)container withCursor:(id)cursor results:(id)results completion:(id)completion;
 @end
 
 @implementation WFCKContainerUtilities
@@ -13,8 +13,8 @@
   v3 = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"metadata_device_type" predicate:v2];
   v4 = [objc_alloc(MEMORY[0x1E695BA48]) initWithQuery:v3];
   v5 = [objc_alloc(MEMORY[0x1E695BA80]) initWithZoneName:@"metadata_zone"];
-  v6 = [v5 zoneID];
-  [v4 setZoneID:v6];
+  zoneID = [v5 zoneID];
+  [v4 setZoneID:zoneID];
 
   v10[0] = @"DeviceOSType";
   v10[1] = @"DeviceOSVersionNumber";
@@ -26,33 +26,33 @@
   return v4;
 }
 
-+ (void)fetchDeviceRecordsInContainer:(id)a3 withCursor:(id)a4 results:(id)a5 completion:(id)a6
++ (void)fetchDeviceRecordsInContainer:(id)container withCursor:(id)cursor results:(id)results completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 metaDataDeviceQueryOperation];
+  containerCopy = container;
+  resultsCopy = results;
+  completionCopy = completion;
+  metaDataDeviceQueryOperation = [self metaDataDeviceQueryOperation];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__WFCKContainerUtilities_fetchDeviceRecordsInContainer_withCursor_results_completion___block_invoke;
   v23[3] = &unk_1E837E448;
-  v13 = v10;
+  v13 = resultsCopy;
   v24 = v13;
-  [v12 setRecordMatchedBlock:v23];
+  [metaDataDeviceQueryOperation setRecordMatchedBlock:v23];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__WFCKContainerUtilities_fetchDeviceRecordsInContainer_withCursor_results_completion___block_invoke_2;
   v18[3] = &unk_1E837E470;
-  v19 = v9;
+  v19 = containerCopy;
   v20 = v13;
-  v21 = v11;
-  v22 = a1;
-  v14 = v11;
+  v21 = completionCopy;
+  selfCopy = self;
+  v14 = completionCopy;
   v15 = v13;
-  v16 = v9;
-  [v12 setQueryCompletionBlock:v18];
-  v17 = [v16 privateCloudDatabase];
-  [v17 addOperation:v12];
+  v16 = containerCopy;
+  [metaDataDeviceQueryOperation setQueryCompletionBlock:v18];
+  privateCloudDatabase = [v16 privateCloudDatabase];
+  [privateCloudDatabase addOperation:metaDataDeviceQueryOperation];
 }
 
 void __86__WFCKContainerUtilities_fetchDeviceRecordsInContainer_withCursor_results_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -92,12 +92,12 @@ LABEL_3:
 LABEL_6:
 }
 
-+ (void)fetchDeviceRecordsInContainer:(id)a3 completion:(id)a4
++ (void)fetchDeviceRecordsInContainer:(id)container completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  containerCopy = container;
   v8 = objc_opt_new();
-  [a1 fetchDeviceRecordsInContainer:v7 withCursor:0 results:v8 completion:v6];
+  [self fetchDeviceRecordsInContainer:containerCopy withCursor:0 results:v8 completion:completionCopy];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface SUScriptMusicPlayerController
-+ (id)scriptPlaybackStateForNativePlaybackState:(int64_t)a3;
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)scriptPlaybackStateForNativePlaybackState:(int64_t)state;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)playbackState;
 - (NSString)playerType;
 - (NSString)repeatMode;
 - (NSString)shuffleMode;
 - (SUScriptMediaItem)nowPlayingItem;
-- (SUScriptMusicPlayerController)initWithPlayerType:(id)a3;
+- (SUScriptMusicPlayerController)initWithPlayerType:(id)type;
 - (double)currentPlaybackTime;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setQueueWithItemCollection:(id)a3;
-- (void)setQueueWithQuery:(id)a3;
-- (void)setRepeatMode:(id)a3;
-- (void)setShuffleMode:(id)a3;
-- (void)setVolume:(id)a3;
+- (void)setQueueWithItemCollection:(id)collection;
+- (void)setQueueWithQuery:(id)query;
+- (void)setRepeatMode:(id)mode;
+- (void)setShuffleMode:(id)mode;
+- (void)setVolume:(id)volume;
 @end
 
 @implementation SUScriptMusicPlayerController
 
-- (SUScriptMusicPlayerController)initWithPlayerType:(id)a3
+- (SUScriptMusicPlayerController)initWithPlayerType:(id)type
 {
   v4 = [(SUScriptObject *)self init];
   if (v4)
   {
-    if (([a3 isEqualToString:@"app"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"iPod"))
+    if (([type isEqualToString:@"app"] & 1) != 0 || objc_msgSend(type, "isEqualToString:", @"iPod"))
     {
-      v4->_playerType = a3;
+      v4->_playerType = type;
       WebThreadRunOnMainThread();
     }
 
@@ -79,16 +79,16 @@ uint64_t __52__SUScriptMusicPlayerController_initWithPlayerType___block_invoke(u
   [(SUScriptObject *)&v3 dealloc];
 }
 
-+ (id)scriptPlaybackStateForNativePlaybackState:(int64_t)a3
++ (id)scriptPlaybackStateForNativePlaybackState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E8165EF0[a3];
+    return off_1E8165EF0[state];
   }
 }
 
@@ -127,10 +127,10 @@ uint64_t __37__SUScriptMusicPlayerController_play__block_invoke(uint64_t a1)
   return [v1 play];
 }
 
-- (void)setQueueWithItemCollection:(id)a3
+- (void)setQueueWithItemCollection:(id)collection
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !collection) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -151,10 +151,10 @@ uint64_t __60__SUScriptMusicPlayerController_setQueueWithItemCollection___block_
   return [v2 setQueueWithItemCollection:v3];
 }
 
-- (void)setQueueWithQuery:(id)a3
+- (void)setQueueWithQuery:(id)query
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !query) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -235,15 +235,15 @@ uint64_t __52__SUScriptMusicPlayerController_currentPlaybackTime__block_invoke(u
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -278,15 +278,15 @@ uint64_t __47__SUScriptMusicPlayerController_nowPlayingItem__block_invoke(uint64
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -334,15 +334,15 @@ id __46__SUScriptMusicPlayerController_playbackState__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -405,15 +405,15 @@ uint64_t __43__SUScriptMusicPlayerController_repeatMode__block_invoke(uint64_t a
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -463,10 +463,10 @@ uint64_t __44__SUScriptMusicPlayerController_shuffleMode__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setRepeatMode:(id)a3
+- (void)setRepeatMode:(id)mode
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (([a3 isEqualToString:{-[SUScriptMusicPlayerController repeatModeDefault](self, "repeatModeDefault")}] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeNone](self, "repeatModeNone")) & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeOne](self, "repeatModeOne")) & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeAll](self, "repeatModeAll"))))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (([mode isEqualToString:{-[SUScriptMusicPlayerController repeatModeDefault](self, "repeatModeDefault")}] & 1) != 0 || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeNone](self, "repeatModeNone")) & 1) != 0 || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeOne](self, "repeatModeOne")) & 1) != 0 || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController repeatModeAll](self, "repeatModeAll"))))
   {
     WebThreadRunOnMainThread();
   }
@@ -487,10 +487,10 @@ uint64_t __47__SUScriptMusicPlayerController_setRepeatMode___block_invoke(uint64
   return [v2 setRepeatMode:v3];
 }
 
-- (void)setShuffleMode:(id)a3
+- (void)setShuffleMode:(id)mode
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (![a3 isEqualToString:{-[SUScriptMusicPlayerController shuffleModeDefault](self, "shuffleModeDefault")}] || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeOff](self, "shuffleModeOff")) & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeSongs](self, "shuffleModeSongs")) & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeAlbums](self, "shuffleModeAlbums"))))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (![mode isEqualToString:{-[SUScriptMusicPlayerController shuffleModeDefault](self, "shuffleModeDefault")}] || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeOff](self, "shuffleModeOff")) & 1) != 0 || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeSongs](self, "shuffleModeSongs")) & 1) != 0 || (objc_msgSend(mode, "isEqualToString:", -[SUScriptMusicPlayerController shuffleModeAlbums](self, "shuffleModeAlbums"))))
   {
     WebThreadRunOnMainThread();
   }
@@ -511,7 +511,7 @@ uint64_t __48__SUScriptMusicPlayerController_setShuffleMode___block_invoke(uint6
   return [v2 setShuffleMode:v3];
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
   if (objc_opt_respondsToSelector())
   {
@@ -534,27 +534,27 @@ uint64_t __43__SUScriptMusicPlayerController_setVolume___block_invoke(uint64_t a
   return [v2 setVolumePrivate:?];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_40 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMusicPlayerController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_32, 11);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_32, 11);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMusicPlayerController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -564,14 +564,14 @@ uint64_t __43__SUScriptMusicPlayerController_setVolume___block_invoke(uint64_t a
 {
   v4.receiver = self;
   v4.super_class = SUScriptMusicPlayerController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_40 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_40 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_32 = sel_beginSeekingBackward;
     *algn_1EBF3B0E8 = @"beginSeekingBackward";

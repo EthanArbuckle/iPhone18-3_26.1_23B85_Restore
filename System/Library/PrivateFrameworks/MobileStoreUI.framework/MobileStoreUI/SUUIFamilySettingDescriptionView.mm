@@ -1,17 +1,17 @@
 @interface SUUIFamilySettingDescriptionView
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-- (id)_attributedStringForKey:(id)a3;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
+- (id)_attributedStringForKey:(id)key;
 - (id)_attributedStringForViewState;
 - (void)_layoutWithActivityIndicator;
 - (void)_layoutWithLockup;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SUUIFamilySettingDescriptionView
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -20,26 +20,26 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
-  v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*MEMORY[0x277D76918], a5}];
+  v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:{*MEMORY[0x277D76918], context}];
   [v6 _scaledValueForValue:48.0];
   v8 = v7;
 
-  v9 = a3;
+  widthCopy = width;
   v10 = v8;
   result.height = v10;
-  result.width = v9;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  objc_storeStrong(&self->_layoutContext, a5);
-  v7 = a3;
-  v8 = [v7 viewState];
+  objc_storeStrong(&self->_layoutContext, context);
+  descriptionCopy = description;
+  viewState = [descriptionCopy viewState];
 
-  [(SUUIFamilySettingDescriptionView *)self _setViewState:v8];
+  [(SUUIFamilySettingDescriptionView *)self _setViewState:viewState];
 }
 
 - (void)layoutSubviews
@@ -62,35 +62,35 @@
   }
 }
 
-- (id)_attributedStringForKey:(id)a3
+- (id)_attributedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SUUISettingsFamilyViewElement *)self->_viewElement style];
-  v6 = [(SUUIViewElementLayoutContext *)self->_layoutContext clientContext];
-  v7 = v6;
-  if (v6)
+  keyCopy = key;
+  style = [(SUUISettingsFamilyViewElement *)self->_viewElement style];
+  clientContext = [(SUUIViewElementLayoutContext *)self->_layoutContext clientContext];
+  v7 = clientContext;
+  if (clientContext)
   {
-    [v6 localizedStringForKey:v4 inTable:@"Settings"];
+    [clientContext localizedStringForKey:keyCopy inTable:@"Settings"];
   }
 
   else
   {
-    [SUUIClientContext localizedStringForKey:v4 inBundles:0 inTable:@"Settings"];
+    [SUUIClientContext localizedStringForKey:keyCopy inBundles:0 inTable:@"Settings"];
   }
   v8 = ;
 
-  v9 = [v5 textShadow];
-  v10 = [(SUUIFamilySettingDescriptionView *)self tintColor];
-  v11 = SUUIViewElementPlainColorWithStyle(v5, v10);
+  textShadow = [style textShadow];
+  tintColor = [(SUUIFamilySettingDescriptionView *)self tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v11)
+  if (!blackColor)
   {
-    v11 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v12 = SUUIViewElementFontWithStyle(v5);
+  v12 = SUUIViewElementFontWithStyle(style);
   v13 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v14 = [v13 initWithObjectsAndKeys:{v11, *MEMORY[0x277D740C0], v12, *MEMORY[0x277D740A8], v9, *MEMORY[0x277D74138], 0}];
+  v14 = [v13 initWithObjectsAndKeys:{blackColor, *MEMORY[0x277D740C0], v12, *MEMORY[0x277D740A8], textShadow, *MEMORY[0x277D74138], 0}];
   v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8 attributes:v14];
 
   return v15;
@@ -178,8 +178,8 @@
     iconImageView = self->_iconImageView;
   }
 
-  v19 = [(UIImageView *)iconImageView image];
-  [v19 size];
+  image = [(UIImageView *)iconImageView image];
+  [image size];
   v21 = v20;
   v23 = v22;
 
@@ -201,8 +201,8 @@
     labelView = self->_labelView;
   }
 
-  v28 = [(SUUIFamilySettingDescriptionView *)self _attributedStringForViewState];
-  [(UILabel *)labelView setAttributedText:v28];
+  _attributedStringForViewState = [(SUUIFamilySettingDescriptionView *)self _attributedStringForViewState];
+  [(UILabel *)labelView setAttributedText:_attributedStringForViewState];
 
   v37 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v40.origin.x = v4;

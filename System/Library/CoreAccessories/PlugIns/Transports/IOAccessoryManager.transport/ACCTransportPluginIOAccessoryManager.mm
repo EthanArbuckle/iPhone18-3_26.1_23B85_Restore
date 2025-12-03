@@ -1,21 +1,21 @@
 @interface ACCTransportPluginIOAccessoryManager
-- (BOOL)isBatteryPackModeEnabled:(id)a3;
-- (BOOL)isPowerDuringSleepEnabled:(id)a3;
-- (BOOL)isPowerDuringSleepSupported:(id)a3;
-- (BOOL)resetAccessoryBaseCurrent:(id)a3;
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (int)CableType:(id)a3;
-- (int)USBModeForConnectionUUID:(id)a3;
-- (int)USBModeForEndpointUUID:(id)a3;
-- (unsigned)USBChargingVoltageInmV:(id)a3;
-- (unsigned)USBCurrentLimitBaseInmA:(id)a3;
-- (unsigned)USBCurrentLimitInmA:(id)a3;
-- (unsigned)USBCurrentLimitOffsetInmA:(id)a3;
-- (unsigned)accessoryChargingCurrentInmA:(id)a3;
-- (unsigned)sleepPowerCurrentLimitInmA:(id)a3;
-- (void)authStatusDidChange:(int)a3 forConnectionWithUUID:(id)a4 previousAuthStatus:(int)a5 authType:(int)a6 connectionIsAuthenticated:(BOOL)a7 connectionWasAuthenticated:(BOOL)a8;
+- (BOOL)isBatteryPackModeEnabled:(id)enabled;
+- (BOOL)isPowerDuringSleepEnabled:(id)enabled;
+- (BOOL)isPowerDuringSleepSupported:(id)supported;
+- (BOOL)resetAccessoryBaseCurrent:(id)current;
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (int)CableType:(id)type;
+- (int)USBModeForConnectionUUID:(id)d;
+- (int)USBModeForEndpointUUID:(id)d;
+- (unsigned)USBChargingVoltageInmV:(id)v;
+- (unsigned)USBCurrentLimitBaseInmA:(id)a;
+- (unsigned)USBCurrentLimitInmA:(id)a;
+- (unsigned)USBCurrentLimitOffsetInmA:(id)a;
+- (unsigned)accessoryChargingCurrentInmA:(id)a;
+- (unsigned)sleepPowerCurrentLimitInmA:(id)a;
+- (void)authStatusDidChange:(int)change forConnectionWithUUID:(id)d previousAuthStatus:(int)status authType:(int)type connectionIsAuthenticated:(BOOL)authenticated connectionWasAuthenticated:(BOOL)wasAuthenticated;
 - (void)initPlugin;
-- (void)resetLightningBusForEndpointWithUUID:(id)a3;
+- (void)resetLightningBusForEndpointWithUUID:(id)d;
 - (void)startPlugin;
 - (void)stopPlugin;
 @end
@@ -130,12 +130,12 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
   }
 }
 
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -165,27 +165,27 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412802;
-    v17 = v7;
+    v17 = dataCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = iDCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = dCopy;
     _os_log_debug_impl(&dword_233656000, v12, OS_LOG_TYPE_DEBUG, "Plugin sending outgoing data %@ for connection UUID: %@ endpoint UUID: %@", &v16, 0x20u);
   }
 
   v13 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  [v13 transmitData:v7 forEndpointUUID:v8];
+  [v13 transmitData:dataCopy forEndpointUUID:dCopy];
 
   v14 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)authStatusDidChange:(int)a3 forConnectionWithUUID:(id)a4 previousAuthStatus:(int)a5 authType:(int)a6 connectionIsAuthenticated:(BOOL)a7 connectionWasAuthenticated:(BOOL)a8
+- (void)authStatusDidChange:(int)change forConnectionWithUUID:(id)d previousAuthStatus:(int)status authType:(int)type connectionIsAuthenticated:(BOOL)authenticated connectionWasAuthenticated:(BOOL)wasAuthenticated
 {
-  v8 = a8;
-  v9 = a7;
+  wasAuthenticatedCopy = wasAuthenticated;
+  authenticatedCopy = authenticated;
   v72 = *MEMORY[0x277D85DE8];
-  v13 = a4;
+  dCopy = d;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 1;
@@ -216,8 +216,8 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
   {
     v17 = "NO";
     *buf = 138413570;
-    v61 = v13;
-    if (v9)
+    v61 = dCopy;
+    if (authenticatedCopy)
     {
       v18 = "YES";
     }
@@ -228,16 +228,16 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
     }
 
     v62 = 1024;
-    v63 = a3;
-    if (v8)
+    changeCopy4 = change;
+    if (wasAuthenticatedCopy)
     {
       v17 = "YES";
     }
 
     v64 = 1024;
-    v65 = a5;
+    typeCopy2 = status;
     v66 = 1024;
-    v67 = a6;
+    typeCopy = type;
     v68 = 2080;
     v69 = v18;
     v70 = 2080;
@@ -245,15 +245,15 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
     _os_log_impl(&dword_233656000, v16, OS_LOG_TYPE_INFO, "authStatusDidChange handler!\nconnectionUUID: %@, authStatus: %{coreacc:ACCAuthInfo_Status_t}d, previousAuthStatus: %{coreacc:ACCAuthInfo_Status_t}d, authType: %{coreacc:ACCAuthInfo_Type_t}d, connectionIsAuthenticated: %s, connectionWasAuthenticated: %s", buf, 0x32u);
   }
 
-  if (a6 <= 2)
+  if (type <= 2)
   {
-    if (a6 != 1)
+    if (type != 1)
     {
-      if (a6 == 2)
+      if (type == 2)
       {
         v19 = +[ACCTransportIOAccessorySharedManager sharedManager];
-        v20 = [v19 delegate];
-        v21 = [v20 connectionTypeForConnectionWithUUID:v13];
+        delegate = [v19 delegate];
+        v21 = [delegate connectionTypeForConnectionWithUUID:dCopy];
         if (gLogObjects && gNumLogObjects >= 1)
         {
           v22 = *gLogObjects;
@@ -273,13 +273,13 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138413058;
-          v61 = v13;
+          v61 = dCopy;
           v62 = 1024;
-          v63 = a3;
+          changeCopy4 = change;
           v64 = 1024;
-          v65 = 2;
+          typeCopy2 = 2;
           v66 = 1024;
-          v67 = v21;
+          typeCopy = v21;
           _os_log_impl(&dword_233656000, v22, OS_LOG_TYPE_INFO, "authStatusDidChange handler!\nconnectionUUID: %@, authStatus: %{coreacc:ACCAuthInfo_Status_t}d, authType: %{coreacc:ACCAuthInfo_Type_t}d, connectionType %{coreacc:ACCConnection_Type_t}d", buf, 0x1Eu);
         }
 
@@ -288,8 +288,8 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
           goto LABEL_79;
         }
 
-        v40 = [v20 certificateDataForConnectionWithUUID:v13];
-        if (a3 == 2)
+        v40 = [delegate certificateDataForConnectionWithUUID:dCopy];
+        if (change == 2)
         {
           v42 = 2;
         }
@@ -302,7 +302,7 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
         v43 = v19;
         v44 = v40;
         v45 = 0xFFFFFFFFLL;
-        v46 = v13;
+        v46 = dCopy;
         v47 = 8;
         goto LABEL_77;
       }
@@ -312,8 +312,8 @@ void __51__ACCTransportPluginIOAccessoryManager_startPlugin__block_invoke(uint64
 
 LABEL_24:
     v19 = +[ACCTransportIOAccessorySharedManager sharedManager];
-    v52 = [v19 delegate];
-    v23 = [v52 connectionTypeForConnectionWithUUID:v13];
+    delegate2 = [v19 delegate];
+    v23 = [delegate2 connectionTypeForConnectionWithUUID:dCopy];
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v24 = *gLogObjects;
@@ -333,23 +333,23 @@ LABEL_24:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v61 = v13;
+      v61 = dCopy;
       v62 = 1024;
-      v63 = a3;
+      changeCopy4 = change;
       v64 = 1024;
-      v65 = a6;
+      typeCopy2 = type;
       v66 = 1024;
-      v67 = v23;
+      typeCopy = v23;
       _os_log_impl(&dword_233656000, v24, OS_LOG_TYPE_INFO, "authStatusDidChange handler!\nconnectionUUID: %@, authStatus: %{coreacc:ACCAuthInfo_Status_t}d, authType: %{coreacc:ACCAuthInfo_Type_t}d, connectionType %{coreacc:ACCConnection_Type_t}d", buf, 0x1Eu);
     }
 
     if (v23 > 6)
     {
-      v20 = v52;
+      delegate = delegate2;
       goto LABEL_79;
     }
 
-    v20 = v52;
+    delegate = delegate2;
     if (((1 << v23) & 0x5A) == 0)
     {
 LABEL_79:
@@ -357,27 +357,27 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    v26 = [v52 certificateDataForConnectionWithUUID:v13];
-    if ((a3 - 1) > 2)
+    v26 = [delegate2 certificateDataForConnectionWithUUID:dCopy];
+    if ((change - 1) > 2)
     {
       v27 = 0;
     }
 
     else
     {
-      v27 = dword_2336C0380[a3 - 1];
+      v27 = dword_2336C0380[change - 1];
     }
 
     v54 = v26;
-    v51 = v13;
+    v51 = dCopy;
     [v19 setFeaturesFromAuthStatus:v27 andAuthCert:? certType:? forConnectionUUID:? withConnectionType:?];
-    v50 = [(ACCTransportPlugin *)self allConnectionUUIDs];
-    v30 = [v50 allObjects];
+    allConnectionUUIDs = [(ACCTransportPlugin *)self allConnectionUUIDs];
+    allObjects = [allConnectionUUIDs allObjects];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v31 = [v30 countByEnumeratingWithState:&v55 objects:v59 count:16];
+    v31 = [allObjects countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v31)
     {
       v32 = v31;
@@ -388,16 +388,16 @@ LABEL_79:
         {
           if (*v56 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(allObjects);
           }
 
           v35 = *(*(&v55 + 1) + 8 * i);
           if ([(ACCTransportPlugin *)self connectionTypeForConnectionWithUUID:v35]== 1)
           {
             v36 = [v19 digitalIDDataForUpstreamConnection:v35];
-            v37 = [v36 bytes];
+            bytes = [v36 bytes];
             v38 = [v36 length];
-            if (v37)
+            if (bytes)
             {
               v39 = v38 == 6;
             }
@@ -407,32 +407,32 @@ LABEL_79:
               v39 = 0;
             }
 
-            if (v39 && (*v37 & 0x38) == 0x18)
+            if (v39 && (*bytes & 0x38) == 0x18)
             {
               [v19 setFeaturesFromAuthStatus:v27 andAuthCert:v54 certType:0xFFFFFFFFLL forConnectionUUID:v35 withConnectionType:1];
             }
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v55 objects:v59 count:16];
+        v32 = [allObjects countByEnumeratingWithState:&v55 objects:v59 count:16];
       }
 
       while (v32);
     }
 
-    v13 = v51;
-    v20 = v52;
+    dCopy = v51;
+    delegate = delegate2;
     v40 = v54;
 LABEL_78:
 
     goto LABEL_79;
   }
 
-  if (a6 == 4)
+  if (type == 4)
   {
     v19 = +[ACCTransportIOAccessorySharedManager sharedManager];
-    v20 = [v19 delegate];
-    v28 = [v20 connectionTypeForConnectionWithUUID:v13];
+    delegate = [v19 delegate];
+    v28 = [delegate connectionTypeForConnectionWithUUID:dCopy];
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v29 = *gLogObjects;
@@ -452,13 +452,13 @@ LABEL_78:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v61 = v13;
+      v61 = dCopy;
       v62 = 1024;
-      v63 = a3;
+      changeCopy4 = change;
       v64 = 1024;
-      v65 = 4;
+      typeCopy2 = 4;
       v66 = 1024;
-      v67 = v28;
+      typeCopy = v28;
       _os_log_impl(&dword_233656000, v29, OS_LOG_TYPE_INFO, "authStatusDidChange handler!\nconnectionUUID: %@, authStatus: %{coreacc:ACCAuthInfo_Status_t}d, authType: %{coreacc:ACCAuthInfo_Type_t}d, connectionType %{coreacc:ACCConnection_Type_t}d", buf, 0x1Eu);
     }
 
@@ -467,8 +467,8 @@ LABEL_78:
       goto LABEL_79;
     }
 
-    v40 = [v20 certificateDataForConnectionWithUUID:v13];
-    if (a3 == 2)
+    v40 = [delegate certificateDataForConnectionWithUUID:dCopy];
+    if (change == 2)
     {
       v42 = 2;
     }
@@ -481,14 +481,14 @@ LABEL_78:
     v43 = v19;
     v44 = v40;
     v45 = 2;
-    v46 = v13;
+    v46 = dCopy;
     v47 = 4;
 LABEL_77:
     [v43 setFeaturesFromAuthStatus:v42 andAuthCert:v44 certType:v45 forConnectionUUID:v46 withConnectionType:v47];
     goto LABEL_78;
   }
 
-  if (a6 == 3)
+  if (type == 3)
   {
     goto LABEL_24;
   }
@@ -498,128 +498,128 @@ LABEL_80:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (int)USBModeForConnectionUUID:(id)a3
+- (int)USBModeForConnectionUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBModeForConnectionUUID:v3];
+  v5 = [v4 USBModeForConnectionUUID:dCopy];
 
   return v5;
 }
 
-- (int)USBModeForEndpointUUID:(id)a3
+- (int)USBModeForEndpointUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBModeForEndpointUUID:v3];
+  v5 = [v4 USBModeForEndpointUUID:dCopy];
 
   return v5;
 }
 
-- (unsigned)USBCurrentLimitInmA:(id)a3
+- (unsigned)USBCurrentLimitInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBCurrentLimitInmA:v3];
+  v5 = [v4 USBCurrentLimitInmA:aCopy];
 
   return v5;
 }
 
-- (unsigned)USBCurrentLimitBaseInmA:(id)a3
+- (unsigned)USBCurrentLimitBaseInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBCurrentLimitBaseInmA:v3];
+  v5 = [v4 USBCurrentLimitBaseInmA:aCopy];
 
   return v5;
 }
 
-- (unsigned)USBCurrentLimitOffsetInmA:(id)a3
+- (unsigned)USBCurrentLimitOffsetInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBCurrentLimitOffsetInmA:v3];
+  v5 = [v4 USBCurrentLimitOffsetInmA:aCopy];
 
   return v5;
 }
 
-- (unsigned)USBChargingVoltageInmV:(id)a3
+- (unsigned)USBChargingVoltageInmV:(id)v
 {
-  v3 = a3;
+  vCopy = v;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 USBChargingVoltageInmV:v3];
+  v5 = [v4 USBChargingVoltageInmV:vCopy];
 
   return v5;
 }
 
-- (int)CableType:(id)a3
+- (int)CableType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 CableType:v3];
+  v5 = [v4 CableType:typeCopy];
 
   return v5;
 }
 
-- (unsigned)sleepPowerCurrentLimitInmA:(id)a3
+- (unsigned)sleepPowerCurrentLimitInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 sleepPowerCurrentLimitInmA:v3];
+  v5 = [v4 sleepPowerCurrentLimitInmA:aCopy];
 
   return v5;
 }
 
-- (BOOL)isPowerDuringSleepSupported:(id)a3
+- (BOOL)isPowerDuringSleepSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 isPowerDuringSleepSupported:v3];
+  v5 = [v4 isPowerDuringSleepSupported:supportedCopy];
 
   return v5;
 }
 
-- (BOOL)isPowerDuringSleepEnabled:(id)a3
+- (BOOL)isPowerDuringSleepEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 isPowerDuringSleepEnabled:v3];
+  v5 = [v4 isPowerDuringSleepEnabled:enabledCopy];
 
   return v5;
 }
 
-- (BOOL)isBatteryPackModeEnabled:(id)a3
+- (BOOL)isBatteryPackModeEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 isBatteryPackModeEnabled:v3];
+  v5 = [v4 isBatteryPackModeEnabled:enabledCopy];
 
   return v5;
 }
 
-- (unsigned)accessoryChargingCurrentInmA:(id)a3
+- (unsigned)accessoryChargingCurrentInmA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 accessoryChargingCurrentInmA:v3];
+  v5 = [v4 accessoryChargingCurrentInmA:aCopy];
 
   return v5;
 }
 
-- (BOOL)resetAccessoryBaseCurrent:(id)a3
+- (BOOL)resetAccessoryBaseCurrent:(id)current
 {
-  v3 = a3;
+  currentCopy = current;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  v5 = [v4 resetAccessoryBaseCurrent:v3];
+  v5 = [v4 resetAccessoryBaseCurrent:currentCopy];
 
   return v5;
 }
 
-- (void)resetLightningBusForEndpointWithUUID:(id)a3
+- (void)resetLightningBusForEndpointWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[ACCTransportIOAccessorySharedManager sharedManager];
-  [v4 resetLightningBusForEndpointWithUUID:v3];
+  [v4 resetLightningBusForEndpointWithUUID:dCopy];
 }
 
 @end

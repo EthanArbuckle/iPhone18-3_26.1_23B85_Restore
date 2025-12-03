@@ -1,14 +1,14 @@
 @interface ClimateCompressorIndicator
-- (void)cabinService:(id)a3 didUpdateCompressorOn:(BOOL)a4;
+- (void)cabinService:(id)service didUpdateCompressorOn:(BOOL)on;
 @end
 
 @implementation ClimateCompressorIndicator
 
-- (void)cabinService:(id)a3 didUpdateCompressorOn:(BOOL)a4
+- (void)cabinService:(id)service didUpdateCompressorOn:(BOOL)on
 {
-  v6 = a3;
-  v7 = self;
-  sub_10005D080(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10005D080(serviceCopy, on);
 }
 
 @end

@@ -3,10 +3,10 @@
 - (id)_phoneAppSpecifiers;
 - (id)_watchAppSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cachePrivacyType;
 - (void)_loadSettings;
-- (void)settingsModel:(id)a3 didUpdateSettings:(id)a4;
+- (void)settingsModel:(id)model didUpdateSettings:(id)settings;
 @end
 
 @implementation CSLPRFAppBacklightPrivacySettingsViewController
@@ -19,9 +19,9 @@
   if (v2)
   {
     v3 = +[PDRRegistry sharedInstance];
-    v4 = [v3 getActivePairedDeviceExcludingAltAccount];
+    getActivePairedDeviceExcludingAltAccount = [v3 getActivePairedDeviceExcludingAltAccount];
 
-    v2->_hasAOTCapability = [v4 supportsCapability:1789638251];
+    v2->_hasAOTCapability = [getActivePairedDeviceExcludingAltAccount supportsCapability:1789638251];
     v5 = cslprf_settings_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -49,9 +49,9 @@
       settingsModel = v2->_settingsModel;
       v2->_settingsModel = v13;
 
-      v15 = [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel globalSettings];
+      globalSettings = [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel globalSettings];
       globalSettings = v2->_globalSettings;
-      v2->_globalSettings = v15;
+      v2->_globalSettings = globalSettings;
 
       [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel addObserver:v2];
     }
@@ -60,19 +60,19 @@
   return v2;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CSLPRFAppBacklightPrivacySettingsViewController;
-  v4 = [(CSLPRFAppBacklightPrivacySettingsViewController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(CSLPRFAppBacklightPrivacySettingsViewController *)&v6 tableView:view cellForRowAtIndexPath:path];
 
   return v4;
 }
 
-- (void)settingsModel:(id)a3 didUpdateSettings:(id)a4
+- (void)settingsModel:(id)model didUpdateSettings:(id)settings
 {
-  v5 = a4;
-  v4 = v5;
+  settingsCopy = settings;
+  v4 = settingsCopy;
   BSDispatchMain();
 }
 
@@ -105,19 +105,19 @@ LABEL_8:
 
 - (void)_loadSettings
 {
-  v2 = self;
+  selfCopy = self;
   [(CSLPRFAppBacklightPrivacySettingsViewController *)self _cachePrivacyType];
   v3 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
   v5 = 176;
-  if (v2->_privacyType != 3)
+  if (selfCopy->_privacyType != 3)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(CSLPRFPerApplicationSettingsModel *)v2->_settingsModel allApplicationSettings];
-    v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    allApplicationSettings = [(CSLPRFPerApplicationSettingsModel *)selfCopy->_settingsModel allApplicationSettings];
+    v7 = [allApplicationSettings countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v7)
     {
       goto LABEL_16;
@@ -132,15 +132,15 @@ LABEL_8:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allApplicationSettings);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 category];
-        if (v12 == &dword_0 + 1)
+        category = [v11 category];
+        if (category == &dword_0 + 1)
         {
           v13 = v4;
-          if (*&v2->PSListController_opaque[v5] != 2)
+          if (*&selfCopy->PSListController_opaque[v5] != 2)
           {
             continue;
           }
@@ -150,37 +150,37 @@ LABEL_13:
           continue;
         }
 
-        if (!v12)
+        if (!category)
         {
           v13 = v3;
-          if (*&v2->PSListController_opaque[v5] == 2)
+          if (*&selfCopy->PSListController_opaque[v5] == 2)
           {
             goto LABEL_13;
           }
 
           [v11 application];
           v14 = v5;
-          v15 = v6;
-          v16 = v2;
+          v15 = allApplicationSettings;
+          v16 = selfCopy;
           v17 = v3;
           v19 = v18 = v4;
-          v20 = [v19 supportsAlwaysOnDisplay];
+          supportsAlwaysOnDisplay = [v19 supportsAlwaysOnDisplay];
 
           v4 = v18;
           v3 = v17;
-          v2 = v16;
-          v6 = v15;
+          selfCopy = v16;
+          allApplicationSettings = v15;
           v5 = v14;
           v9 = v25;
           v13 = v3;
-          if (v20)
+          if (supportsAlwaysOnDisplay)
           {
             goto LABEL_13;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [allApplicationSettings countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (!v8)
       {
 LABEL_16:
@@ -193,12 +193,12 @@ LABEL_16:
   }
 
   v21 = [v3 copy];
-  sortedWatchSettings = v2->_sortedWatchSettings;
-  v2->_sortedWatchSettings = v21;
+  sortedWatchSettings = selfCopy->_sortedWatchSettings;
+  selfCopy->_sortedWatchSettings = v21;
 
   v23 = [v4 copy];
-  sortedPhoneNotificationSettings = v2->_sortedPhoneNotificationSettings;
-  v2->_sortedPhoneNotificationSettings = v23;
+  sortedPhoneNotificationSettings = selfCopy->_sortedPhoneNotificationSettings;
+  selfCopy->_sortedPhoneNotificationSettings = v23;
 }
 
 - (id)_watchAppSpecifiers
@@ -417,24 +417,24 @@ LABEL_16:
     globalSettings = self->_globalSettings;
     if (self->_privacyType == 1)
     {
-      v23 = [(CSLPRFAppBacklightPrivacySettings *)globalSettings privacyDuringAlwaysOnForApp];
+      privacyDuringAlwaysOnForApp = [(CSLPRFAppBacklightPrivacySettings *)globalSettings privacyDuringAlwaysOnForApp];
     }
 
     else
     {
-      v23 = [(CSLPRFAppBacklightPrivacySettings *)globalSettings privacyDuringAlwaysOnForNotification];
+      privacyDuringAlwaysOnForApp = [(CSLPRFAppBacklightPrivacySettings *)globalSettings privacyDuringAlwaysOnForNotification];
     }
 
-    if (v33 != 3 && (v23 & 1) == 0)
+    if (v33 != 3 && (privacyDuringAlwaysOnForApp & 1) == 0)
     {
-      v25 = [(CSLPRFAppBacklightPrivacySettingsViewController *)self _watchAppSpecifiers];
-      [v3 addObjectsFromArray:v25];
+      _watchAppSpecifiers = [(CSLPRFAppBacklightPrivacySettingsViewController *)self _watchAppSpecifiers];
+      [v3 addObjectsFromArray:_watchAppSpecifiers];
       if (self->_privacyType == 2)
       {
-        v26 = [(CSLPRFAppBacklightPrivacySettingsViewController *)self _phoneAppSpecifiers];
+        _phoneAppSpecifiers = [(CSLPRFAppBacklightPrivacySettingsViewController *)self _phoneAppSpecifiers];
 
-        [v3 addObjectsFromArray:v26];
-        v25 = v26;
+        [v3 addObjectsFromArray:_phoneAppSpecifiers];
+        _watchAppSpecifiers = _phoneAppSpecifiers;
       }
     }
 

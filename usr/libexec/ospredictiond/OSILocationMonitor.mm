@@ -2,15 +2,15 @@
 - (BOOL)inTypicalChargingLocation;
 - (BOOL)inTypicalLocation;
 - (BOOL)isInSameTimeZone;
-- (BOOL)locationIsUncertain:(id)a3;
-- (BOOL)locationOfInterestFoundNear:(id)a3 withError:(id *)a4 considerCharging:(BOOL)a5 distance:(int)a6;
+- (BOOL)locationIsUncertain:(id)uncertain;
+- (BOOL)locationOfInterestFoundNear:(id)near withError:(id *)error considerCharging:(BOOL)charging distance:(int)distance;
 - (BOOL)notAuthorizedForLocation;
 - (OSILocationMonitor)init;
 - (id)likelyToBeInKnownArea;
 - (int64_t)inKnownMicrolocation;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation OSILocationMonitor
@@ -92,13 +92,13 @@ LABEL_20:
   }
 
 LABEL_14:
-  v15 = [(OSILocationMonitor *)self likelyToBeInKnownArea];
+  likelyToBeInKnownArea = [(OSILocationMonitor *)self likelyToBeInKnownArea];
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10005C8B8();
   }
 
-  v16 = [v15 objectForKeyedSubscript:@"value"];
+  v16 = [likelyToBeInKnownArea objectForKeyedSubscript:@"value"];
   LOBYTE(v7) = [v16 BOOLValue];
 
   return v7 & 1;
@@ -107,14 +107,14 @@ LABEL_14:
 - (id)likelyToBeInKnownArea
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(OSILocationMonitor *)self inKnownMicrolocation];
-  if (v4 == -1)
+  inKnownMicrolocation = [(OSILocationMonitor *)self inKnownMicrolocation];
+  if (inKnownMicrolocation == -1)
   {
     [v3 setObject:@"TimeZone" forKeyedSubscript:@"reason"];
-    v10 = [(OSILocationMonitor *)self isInSameTimeZone];
+    isInSameTimeZone = [(OSILocationMonitor *)self isInSameTimeZone];
     log = self->_log;
     v11 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (isInSameTimeZone)
     {
       if (v11)
       {
@@ -140,7 +140,7 @@ LABEL_9:
 
   else
   {
-    v5 = v4;
+    v5 = inKnownMicrolocation;
     [v3 setObject:@"Microlocation" forKeyedSubscript:@"reason"];
     log = self->_log;
     v7 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -191,10 +191,10 @@ LABEL_16:
   v22 = 0x2020000000;
   v23 = 0;
   v6 = BiomeLibrary();
-  v7 = [v6 Location];
-  v8 = [v7 MicroLocationVisit];
+  location = [v6 Location];
+  microLocationVisit = [location MicroLocationVisit];
 
-  v9 = [v8 publisher];
+  publisher = [microLocationVisit publisher];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100002BEC;
@@ -208,7 +208,7 @@ LABEL_16:
   v18[4] = self;
   v18[5] = &v24;
   v18[6] = &v20;
-  v10 = [v9 sinkWithCompletion:v19 receiveInput:v18];
+  v10 = [publisher sinkWithCompletion:v19 receiveInput:v18];
 
   if (v25[3])
   {
@@ -264,11 +264,11 @@ LABEL_16:
   v54 = sub_100003578;
   v55 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Device];
-  v5 = [v4 TimeZone];
+  device = [v3 Device];
+  timeZone = [device TimeZone];
 
-  v6 = [v5 publisher];
-  v7 = [v6 last];
+  publisher = [timeZone publisher];
+  last = [publisher last];
   v49[0] = _NSConcreteStackBlock;
   v49[1] = 3221225472;
   v49[2] = sub_1000032AC;
@@ -279,7 +279,7 @@ LABEL_16:
   v48[2] = sub_100003444;
   v48[3] = &unk_100095090;
   v48[4] = &v50;
-  v8 = [v7 sinkWithCompletion:v49 receiveInput:v48];
+  v8 = [last sinkWithCompletion:v49 receiveInput:v48];
 
   if (v51[5])
   {
@@ -309,17 +309,17 @@ LABEL_16:
     v34[4] = sub_100003578;
     v35 = 0;
     v11 = BiomeLibrary();
-    v12 = [v11 Device];
-    v13 = [v12 Power];
-    v14 = [v13 PluggedIn];
+    device2 = [v11 Device];
+    power = [device2 Power];
+    pluggedIn = [power PluggedIn];
 
     v32[0] = 0;
     v32[1] = v32;
     v32[2] = 0x2020000000;
     v33 = -1;
-    v15 = [v5 publisher];
-    v16 = [v14 publisher];
-    v17 = [v15 orderedMergeWithOther:v16 comparator:&stru_1000950B0];
+    publisher2 = [timeZone publisher];
+    publisher3 = [pluggedIn publisher];
+    v17 = [publisher2 orderedMergeWithOther:publisher3 comparator:&stru_1000950B0];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100003310;
@@ -531,24 +531,24 @@ LABEL_20:
   }
 
 LABEL_14:
-  v15 = [(OSILocationMonitor *)self likelyToBeInKnownArea];
+  likelyToBeInKnownArea = [(OSILocationMonitor *)self likelyToBeInKnownArea];
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10005C8B8();
   }
 
-  v16 = [v15 objectForKeyedSubscript:@"value"];
+  v16 = [likelyToBeInKnownArea objectForKeyedSubscript:@"value"];
   LOBYTE(v7) = [v16 BOOLValue];
 
   return v7 & 1;
 }
 
-- (BOOL)locationOfInterestFoundNear:(id)a3 withError:(id *)a4 considerCharging:(BOOL)a5 distance:(int)a6
+- (BOOL)locationOfInterestFoundNear:(id)near withError:(id *)error considerCharging:(BOOL)charging distance:(int)distance
 {
-  v7 = a5;
-  v10 = a3;
-  v65 = v10;
-  if ([(OSILocationMonitor *)self locationIsUncertain:v10])
+  chargingCopy = charging;
+  nearCopy = near;
+  v65 = nearCopy;
+  if ([(OSILocationMonitor *)self locationIsUncertain:nearCopy])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -558,7 +558,7 @@ LABEL_14:
     }
 
     [NSError errorWithDomain:@"com.apple.ospredictiond" code:2 userInfo:&off_10009CB88];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_10;
   }
 
@@ -585,7 +585,7 @@ LABEL_14:
   dsema = v13;
   v109 = dsema;
   v111 = buf;
-  [(RTRoutineManager *)routine fetchLocationsOfInterestWithinDistance:v10 ofLocation:v108 withHandler:a6];
+  [(RTRoutineManager *)routine fetchLocationsOfInterestWithinDistance:nearCopy ofLocation:v108 withHandler:distance];
   v15 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(dsema, v15))
   {
@@ -595,19 +595,19 @@ LABEL_14:
     }
 
     [NSError errorWithDomain:@"com.apple.ospredictiond" code:7 userInfo:&off_10009CBB0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_9;
   }
 
   v17 = v113[5];
   if (v17)
   {
-    *a4 = v17;
+    *error = v17;
   }
 
   if ([*(v119 + 5) count])
   {
-    if (!v7)
+    if (!chargingCopy)
     {
       v12 = 1;
       goto LABEL_9;
@@ -632,8 +632,8 @@ LABEL_14:
             objc_enumerationMutation(v19);
           }
 
-          v23 = [*(*(&v101 + 1) + 8 * i) visits];
-          [v18 addObjectsFromArray:v23];
+          visits = [*(*(&v101 + 1) + 8 * i) visits];
+          [v18 addObjectsFromArray:visits];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v101 objects:v128 count:16];
@@ -694,17 +694,17 @@ LABEL_14:
     v69[2] = 0x2020000000;
     v70 = -1;
     v26 = BiomeLibrary();
-    v27 = [v26 Device];
-    v28 = [v27 Power];
-    v61 = [v28 PluggedIn];
+    device = [v26 Device];
+    power = [device Power];
+    pluggedIn = [power PluggedIn];
 
-    v29 = [v61 publisher];
+    publisher = [pluggedIn publisher];
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_100025844;
     v68[3] = &unk_100095018;
     v68[4] = v69;
-    v30 = [v29 filterWithIsIncluded:v68];
+    v30 = [publisher filterWithIsIncluded:v68];
     v67[0] = _NSConcreteStackBlock;
     v67[1] = 3221225472;
     v67[2] = sub_10002590C;
@@ -760,18 +760,18 @@ LABEL_14:
       }
 
       v36 = [v18 objectAtIndexedSubscript:?];
-      v37 = [v36 entryDate];
+      entryDate = [v36 entryDate];
       v38 = [v82[5] objectAtIndexedSubscript:v33];
-      [v37 timeIntervalSinceDate:v38];
+      [entryDate timeIntervalSinceDate:v38];
       if (v39 >= 0.0)
       {
       }
 
       else
       {
-        v40 = [v36 exitDate];
+        exitDate = [v36 exitDate];
         v41 = [v76[5] objectAtIndexedSubscript:v35];
-        [v40 timeIntervalSinceDate:v41];
+        [exitDate timeIntervalSinceDate:v41];
         v43 = v42 > 0.0;
 
         if (!v43)
@@ -780,28 +780,28 @@ LABEL_14:
         }
 
         ++v63;
-        v37 = self->_log;
-        if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+        entryDate = self->_log;
+        if (os_log_type_enabled(entryDate, OS_LOG_TYPE_DEFAULT))
         {
           v44 = [v76[5] objectAtIndexedSubscript:v35];
           v45 = [v82[5] objectAtIndexedSubscript:v35];
           [v44 timeIntervalSinceDate:v45];
           v47 = v46;
-          v48 = [v36 exitDate];
-          v49 = [v36 entryDate];
-          [v48 timeIntervalSinceDate:v49];
+          exitDate2 = [v36 exitDate];
+          entryDate2 = [v36 entryDate];
+          [exitDate2 timeIntervalSinceDate:entryDate2];
           *v124 = v60;
           v125 = round(v47 / 3600.0);
           v126 = 2048;
           v127 = round(v50 / 3600.0);
-          _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Charged at LOI for %.0f hours, present for %.0f hours", v124, 0x16u);
+          _os_log_impl(&_mh_execute_header, entryDate, OS_LOG_TYPE_DEFAULT, "Charged at LOI for %.0f hours, present for %.0f hours", v124, 0x16u);
         }
       }
 
 LABEL_31:
-      v51 = [v36 exitDate];
+      exitDate3 = [v36 exitDate];
       v52 = [v76[5] objectAtIndexedSubscript:v35];
-      [v51 timeIntervalSinceDate:v52];
+      [exitDate3 timeIntervalSinceDate:v52];
       v54 = v53 <= 0.0;
 
       v32 += v54;
@@ -836,7 +836,7 @@ LABEL_31:
     }
 
     [NSError errorWithDomain:@"com.apple.osintelligence" code:7 userInfo:&off_10009CBD8];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -854,13 +854,13 @@ LABEL_10:
   return v12 & 1;
 }
 
-- (BOOL)locationIsUncertain:(id)a3
+- (BOOL)locationIsUncertain:(id)uncertain
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  uncertainCopy = uncertain;
+  v5 = uncertainCopy;
+  if (uncertainCopy)
   {
-    [v4 horizontalAccuracy];
+    [uncertainCopy horizontalAccuracy];
     if (v6 <= 200.0)
     {
       v11 = 0;
@@ -895,12 +895,12 @@ LABEL_9:
   return v11;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus];
+  authorizationStatus = [authorization authorizationStatus];
   log = self->_log;
   v6 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 3)
+  if (authorizationStatus == 3)
   {
     if (v6)
     {
@@ -912,19 +912,19 @@ LABEL_9:
   else if (v6)
   {
     v7 = log;
-    v8 = [NSNumber numberWithInt:v4];
+    v8 = [NSNumber numberWithInt:authorizationStatus];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Authorization status: %@", &v9, 0xCu);
   }
 
-  self->_authorizationStatus = v4;
+  self->_authorizationStatus = authorizationStatus;
   dispatch_semaphore_signal(self->_authorizationSemaphore);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10005CD50();
@@ -937,19 +937,19 @@ LABEL_9:
   v8[2] = sub_100026458;
   v8[3] = &unk_100095128;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = locationsCopy;
+  v7 = locationsCopy;
   dispatch_sync(queue, v8);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = errorCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Location Manager failed with error: %@", &v7, 0xCu);
   }
 }

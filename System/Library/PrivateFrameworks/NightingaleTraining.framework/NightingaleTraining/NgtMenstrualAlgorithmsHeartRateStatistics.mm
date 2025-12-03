@@ -1,54 +1,54 @@
 @interface NgtMenstrualAlgorithmsHeartRateStatistics
-- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)a3;
-- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithLowerPercentile:(id)a3 forSampleCount:(int)a4;
-- (void)encodeWithCoder:(id)a3;
+- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)coder;
+- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithLowerPercentile:(id)percentile forSampleCount:(int)count;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NgtMenstrualAlgorithmsHeartRateStatistics
 
-- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithLowerPercentile:(id)a3 forSampleCount:(int)a4
+- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithLowerPercentile:(id)percentile forSampleCount:(int)count
 {
-  v7 = a3;
+  percentileCopy = percentile;
   v12.receiver = self;
   v12.super_class = NgtMenstrualAlgorithmsHeartRateStatistics;
   v8 = [(NgtMenstrualAlgorithmsHeartRateStatistics *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lowerPercentile, a3);
-    v9->_sampleCount = a4;
+    objc_storeStrong(&v8->_lowerPercentile, percentile);
+    v9->_sampleCount = count;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   lowerPercentile = self->_lowerPercentile;
   v5 = NSStringFromSelector(sel_lowerPercentile);
-  [v8 encodeObject:lowerPercentile forKey:v5];
+  [coderCopy encodeObject:lowerPercentile forKey:v5];
 
   sampleCount = self->_sampleCount;
   v7 = NSStringFromSelector(sel_sampleCount);
-  [v8 encodeInteger:sampleCount forKey:v7];
+  [coderCopy encodeInteger:sampleCount forKey:v7];
 }
 
-- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)a3
+- (NgtMenstrualAlgorithmsHeartRateStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NgtMenstrualAlgorithmsHeartRateStatistics *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_lowerPercentile);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     lowerPercentile = v5->_lowerPercentile;
     v5->_lowerPercentile = v8;
 
     v10 = NSStringFromSelector(sel_sampleCount);
-    v5->_sampleCount = [v4 decodeIntegerForKey:v10];
+    v5->_sampleCount = [coderCopy decodeIntegerForKey:v10];
 
     v11 = v5;
   }

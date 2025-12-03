@@ -1,36 +1,36 @@
 @interface VNMPImageGrouping
-+ (float)computeTimestampAdjustedDistanceForBaseDistance:(float)a3 andTimestampDiff:(int64_t)a4;
-+ (float)computeTotalDistanceForDescriptorDistance:(float)result timestampDiff:(int64_t)a4 useTimestampAdjustment:(BOOL)a5;
-+ (float)getDistanceForClusterNode:(MPClusteringTreeNode *)a3 splitDistanceType:(int)a4;
-+ (int64_t)computeHierarchicalClusteringOfImageDescriptors:(id)a3 results:(MPClusteringTreeNode *)a4 context:(id)a5;
-+ (vector<MPClusteringTreeNode)computeClusteringIntoKGroups:(id)a2 orUsingDistanceThreshold:(SEL)a3 forHierarchicalTree:(int)a4 context:(float)a5;
-+ (vector<MPClusteringTreeNode)computeNaturalClusteringForHierarchicalTree:(id)a2 context:(SEL)a3;
++ (float)computeTimestampAdjustedDistanceForBaseDistance:(float)distance andTimestampDiff:(int64_t)diff;
++ (float)computeTotalDistanceForDescriptorDistance:(float)result timestampDiff:(int64_t)diff useTimestampAdjustment:(BOOL)adjustment;
++ (float)getDistanceForClusterNode:(MPClusteringTreeNode *)node splitDistanceType:(int)type;
++ (int64_t)computeHierarchicalClusteringOfImageDescriptors:(id)descriptors results:(MPClusteringTreeNode *)results context:(id)context;
++ (vector<MPClusteringTreeNode)computeClusteringIntoKGroups:(id)groups orUsingDistanceThreshold:(SEL)threshold forHierarchicalTree:(int)tree context:(float)context;
++ (vector<MPClusteringTreeNode)computeNaturalClusteringForHierarchicalTree:(id)tree context:(SEL)context;
 @end
 
 @implementation VNMPImageGrouping
 
-+ (float)computeTotalDistanceForDescriptorDistance:(float)result timestampDiff:(int64_t)a4 useTimestampAdjustment:(BOOL)a5
++ (float)computeTotalDistanceForDescriptorDistance:(float)result timestampDiff:(int64_t)diff useTimestampAdjustment:(BOOL)adjustment
 {
-  if (a5)
+  if (adjustment)
   {
-    [a1 computeTimestampAdjustedDistanceForBaseDistance:a4 andTimestampDiff:?];
+    [self computeTimestampAdjustedDistanceForBaseDistance:diff andTimestampDiff:?];
   }
 
   return result;
 }
 
-+ (float)computeTimestampAdjustedDistanceForBaseDistance:(float)a3 andTimestampDiff:(int64_t)a4
++ (float)computeTimestampAdjustedDistanceForBaseDistance:(float)distance andTimestampDiff:(int64_t)diff
 {
-  if (a4 >= 10)
+  if (diff >= 10)
   {
-    if (a4 >= 0x3C)
+    if (diff >= 0x3C)
     {
-      if (a4 <= 0x15180)
+      if (diff <= 0x15180)
       {
-        if (a4 <= 0x4650)
+        if (diff <= 0x4650)
         {
           v4 = 0.12;
-          if (a4 <= 0xE10)
+          if (diff <= 0xE10)
           {
             v4 = 0.0;
           }
@@ -59,7 +59,7 @@
     v4 = -0.06;
   }
 
-  v5 = v4 + a3;
+  v5 = v4 + distance;
   if (v5 < 0.0)
   {
     v5 = 0.0;
@@ -68,41 +68,41 @@
   return fminf(v5, 1.0);
 }
 
-+ (vector<MPClusteringTreeNode)computeNaturalClusteringForHierarchicalTree:(id)a2 context:(SEL)a3
++ (vector<MPClusteringTreeNode)computeNaturalClusteringForHierarchicalTree:(id)tree context:(SEL)context
 {
   v8 = a5;
   [v8 naturalClusteringDistanceThreshold];
-  [a2 computeClusteringIntoKGroups:0x7FFFFFFFLL orUsingDistanceThreshold:a4 forHierarchicalTree:v8 context:?];
+  [tree computeClusteringIntoKGroups:0x7FFFFFFFLL orUsingDistanceThreshold:a4 forHierarchicalTree:v8 context:?];
 
   return result;
 }
 
-+ (vector<MPClusteringTreeNode)computeClusteringIntoKGroups:(id)a2 orUsingDistanceThreshold:(SEL)a3 forHierarchicalTree:(int)a4 context:(float)a5
++ (vector<MPClusteringTreeNode)computeClusteringIntoKGroups:(id)groups orUsingDistanceThreshold:(SEL)threshold forHierarchicalTree:(int)tree context:(float)context
 {
   v9 = a7;
-  [a2 getDistanceForClusterNode:a6 splitDistanceType:{objc_msgSend(v9, "clusterSplitDistanceType", v9)}];
+  [groups getDistanceForClusterNode:a6 splitDistanceType:{objc_msgSend(v9, "clusterSplitDistanceType", v9)}];
   std::__tree<std::__value_type<float,MPClusteringTreeNode *>,std::__map_value_compare<float,std::__value_type<float,MPClusteringTreeNode *>,std::less<float>,true>,std::allocator<std::__value_type<float,MPClusteringTreeNode *>>>::__emplace_multi<std::pair<float,MPClusteringTreeNode *>>();
 }
 
-+ (float)getDistanceForClusterNode:(MPClusteringTreeNode *)a3 splitDistanceType:(int)a4
++ (float)getDistanceForClusterNode:(MPClusteringTreeNode *)node splitDistanceType:(int)type
 {
-  if (!a4)
+  if (!type)
   {
-    return a3->var2;
+    return node->var2;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    return a3->var3;
+    return node->var3;
   }
 
   return result;
 }
 
-+ (int64_t)computeHierarchicalClusteringOfImageDescriptors:(id)a3 results:(MPClusteringTreeNode *)a4 context:(id)a5
++ (int64_t)computeHierarchicalClusteringOfImageDescriptors:(id)descriptors results:(MPClusteringTreeNode *)results context:(id)context
 {
-  v6 = a3;
-  v48 = a5;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
   v7 = 0;
   v8 = 0;
   v9 = 0;
@@ -112,9 +112,9 @@
   v52 = v53;
   v49 = &v50;
   v50 = 0;
-  while (v7 < [v6 count])
+  while (v7 < [descriptorsCopy count])
   {
-    v10 = [v6 objectAtIndexedSubscript:v7];
+    v10 = [descriptorsCopy objectAtIndexedSubscript:v7];
     v11 = malloc_type_malloc(0x38uLL, 0x10A00406DB9B953uLL);
     *v11 = v10;
     v11[3] = 0;
@@ -127,13 +127,13 @@
     *(v11 + 3) = 0;
     if (v9)
     {
-      v12 = [v10 exifTimestamp];
-      v13 = [v8 exifTimestamp];
+      exifTimestamp = [v10 exifTimestamp];
+      exifTimestamp2 = [v8 exifTimestamp];
       [*v11 distanceFromDescriptor:*v9];
       v15 = v14;
-      v16 = [v48 useTimestampAdjustedDistances];
+      useTimestampAdjustedDistances = [contextCopy useTimestampAdjustedDistances];
       LODWORD(v17) = v15;
-      [a1 computeTotalDistanceForDescriptorDistance:v12 - v13 timestampDiff:v16 useTimestampAdjustment:v17];
+      [self computeTotalDistanceForDescriptorDistance:exifTimestamp - exifTimestamp2 timestampDiff:useTimestampAdjustedDistances useTimestampAdjustment:v17];
       operator new();
     }
 
@@ -307,7 +307,7 @@
   }
 
   syslog(5, "end clustering, iterations : %d", v18);
-  *a4 = v39;
+  *results = v39;
 
   std::__tree<std::__value_type<long long,int>,std::__map_value_compare<long long,std::__value_type<long long,int>,std::less<long long>,true>,std::allocator<std::__value_type<long long,int>>>::destroy(v50);
   std::__tree<std::__value_type<long long,int>,std::__map_value_compare<long long,std::__value_type<long long,int>,std::less<long long>,true>,std::allocator<std::__value_type<long long,int>>>::destroy(v53[0]);

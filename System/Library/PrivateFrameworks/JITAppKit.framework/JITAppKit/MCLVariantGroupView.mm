@@ -1,22 +1,22 @@
 @interface MCLVariantGroupView
-- (MCLVariantGroupView)initWithFrame:(CGRect)a3;
-- (id)createVariantButton:(Class)a3 type:(int64_t)a4;
+- (MCLVariantGroupView)initWithFrame:(CGRect)frame;
+- (id)createVariantButton:(Class)button type:(int64_t)type;
 - (void)clearVariants;
 - (void)reloadData;
-- (void)selectItemAtIndex:(int64_t)a3;
-- (void)selectVariant:(id)a3;
+- (void)selectItemAtIndex:(int64_t)index;
+- (void)selectVariant:(id)variant;
 @end
 
 @implementation MCLVariantGroupView
 
-- (MCLVariantGroupView)initWithFrame:(CGRect)a3
+- (MCLVariantGroupView)initWithFrame:(CGRect)frame
 {
-  v14 = a3;
+  frameCopy = frame;
   v12 = a2;
   v13 = 0;
   v11.receiver = self;
   v11.super_class = MCLVariantGroupView;
-  v13 = [(MCLVariantGroupView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v13 = [(MCLVariantGroupView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v13, v13);
   if (v13)
   {
@@ -44,43 +44,43 @@
 - (void)reloadData
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  v56 = self;
+  selfCopy = self;
   v55[1] = a2;
-  if (([(objc_class *)self->_buttonClass isSubclassOfClass:objc_opt_class()]& 1) != 0 && v56->_variantCount > 0 && v56->_variantsPerLine > 0)
+  if (([(objc_class *)self->_buttonClass isSubclassOfClass:objc_opt_class()]& 1) != 0 && selfCopy->_variantCount > 0 && selfCopy->_variantsPerLine > 0)
   {
-    if ([(NSMutableArray *)v56->_buttons count])
+    if ([(NSMutableArray *)selfCopy->_buttons count])
     {
-      [(MCLVariantGroupView *)v56 clearVariants];
+      [(MCLVariantGroupView *)selfCopy clearVariants];
     }
 
     v55[0] = 0;
-    v54 = (1.0 / v56->_variantsPerLine);
-    v53 = 8.0 * (v56->_variantsPerLine - 1) / v56->_variantsPerLine;
-    while ([(NSMutableArray *)v56->_buttons count]> v56->_variantCount)
+    v54 = (1.0 / selfCopy->_variantsPerLine);
+    v53 = 8.0 * (selfCopy->_variantsPerLine - 1) / selfCopy->_variantsPerLine;
+    while ([(NSMutableArray *)selfCopy->_buttons count]> selfCopy->_variantCount)
     {
-      [(NSMutableArray *)v56->_buttons removeLastObject];
+      [(NSMutableArray *)selfCopy->_buttons removeLastObject];
     }
 
     while (1)
     {
-      v2 = [(NSMutableArray *)v56->_buttons count];
-      if (v2 >= v56->_variantCount)
+      v2 = [(NSMutableArray *)selfCopy->_buttons count];
+      if (v2 >= selfCopy->_variantCount)
       {
         break;
       }
 
-      v52 = [(MCLVariantGroupView *)v56 createVariantButton:v56->_buttonClass type:v56->_buttonType];
+      v52 = [(MCLVariantGroupView *)selfCopy createVariantButton:selfCopy->_buttonClass type:selfCopy->_buttonType];
       LODWORD(v3) = 1148846080;
       [v52 setContentCompressionResistancePriority:1 forAxis:v3];
-      [(NSMutableArray *)v56->_buttons addObject:v52];
+      [(NSMutableArray *)selfCopy->_buttons addObject:v52];
       objc_storeStrong(&v52, 0);
     }
 
-    for (i = 0; i < v56->_variantCount; ++i)
+    for (i = 0; i < selfCopy->_variantCount; ++i)
     {
-      v50 = [(NSMutableArray *)v56->_buttons objectAtIndexedSubscript:i];
-      [(MCLVariantGroupView *)v56 addSubview:v50];
-      v46 = v56;
+      v50 = [(NSMutableArray *)selfCopy->_buttons objectAtIndexedSubscript:i];
+      [(MCLVariantGroupView *)selfCopy addSubview:v50];
+      v46 = selfCopy;
       v57[0] = v50;
       v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
       v57[1] = v48;
@@ -90,45 +90,45 @@
       MEMORY[0x277D82BD8](v48);
       if ([v50 isSelected])
       {
-        v56->_selectedIndex = i;
+        selfCopy->_selectedIndex = i;
       }
 
-      if (i % v56->_variantsPerLine)
+      if (i % selfCopy->_variantsPerLine)
       {
         if (v55[0])
         {
-          buttonConstraints = v56->_buttonConstraints;
-          v12 = [v50 topAnchor];
-          v11 = [v55[0] topAnchor];
-          v10 = [v12 constraintEqualToAnchor:?];
+          buttonConstraints = selfCopy->_buttonConstraints;
+          topAnchor = [v50 topAnchor];
+          topAnchor2 = [v55[0] topAnchor];
+          v10 = [topAnchor constraintEqualToAnchor:?];
           [(NSMutableArray *)buttonConstraints addObject:?];
           MEMORY[0x277D82BD8](v10);
-          MEMORY[0x277D82BD8](v11);
-          MEMORY[0x277D82BD8](v12);
-          v13 = v56->_buttonConstraints;
-          v16 = [v50 leadingAnchor];
-          v15 = [v55[0] trailingAnchor];
-          v14 = [v16 constraintEqualToAnchor:8.0 constant:?];
+          MEMORY[0x277D82BD8](topAnchor2);
+          MEMORY[0x277D82BD8](topAnchor);
+          v13 = selfCopy->_buttonConstraints;
+          leadingAnchor = [v50 leadingAnchor];
+          trailingAnchor = [v55[0] trailingAnchor];
+          v14 = [leadingAnchor constraintEqualToAnchor:8.0 constant:?];
           [(NSMutableArray *)v13 addObject:?];
           MEMORY[0x277D82BD8](v14);
-          MEMORY[0x277D82BD8](v15);
-          MEMORY[0x277D82BD8](v16);
-          v17 = v56->_buttonConstraints;
-          v20 = [v50 widthAnchor];
-          v19 = [v55[0] widthAnchor];
-          v18 = [v20 constraintEqualToAnchor:?];
+          MEMORY[0x277D82BD8](trailingAnchor);
+          MEMORY[0x277D82BD8](leadingAnchor);
+          v17 = selfCopy->_buttonConstraints;
+          widthAnchor = [v50 widthAnchor];
+          widthAnchor2 = [v55[0] widthAnchor];
+          v18 = [widthAnchor constraintEqualToAnchor:?];
           [(NSMutableArray *)v17 addObject:?];
           MEMORY[0x277D82BD8](v18);
-          MEMORY[0x277D82BD8](v19);
-          MEMORY[0x277D82BD8](v20);
-          v21 = v56->_buttonConstraints;
-          v24 = [v50 heightAnchor];
-          v23 = [v55[0] heightAnchor];
-          v22 = [v24 constraintEqualToAnchor:?];
+          MEMORY[0x277D82BD8](widthAnchor2);
+          MEMORY[0x277D82BD8](widthAnchor);
+          v21 = selfCopy->_buttonConstraints;
+          heightAnchor = [v50 heightAnchor];
+          heightAnchor2 = [v55[0] heightAnchor];
+          v22 = [heightAnchor constraintEqualToAnchor:?];
           [(NSMutableArray *)v21 addObject:?];
           MEMORY[0x277D82BD8](v22);
-          MEMORY[0x277D82BD8](v23);
-          MEMORY[0x277D82BD8](v24);
+          MEMORY[0x277D82BD8](heightAnchor2);
+          MEMORY[0x277D82BD8](heightAnchor);
         }
       }
 
@@ -136,78 +136,78 @@
       {
         if (v55[0])
         {
-          v38 = v56->_buttonConstraints;
-          v41 = [v50 topAnchor];
-          v40 = [v55[0] bottomAnchor];
-          v39 = [v41 constraintEqualToAnchor:8.0 constant:?];
+          v38 = selfCopy->_buttonConstraints;
+          topAnchor3 = [v50 topAnchor];
+          bottomAnchor = [v55[0] bottomAnchor];
+          v39 = [topAnchor3 constraintEqualToAnchor:8.0 constant:?];
           [(NSMutableArray *)v38 addObject:?];
           MEMORY[0x277D82BD8](v39);
-          MEMORY[0x277D82BD8](v40);
-          MEMORY[0x277D82BD8](v41);
-          v42 = v56->_buttonConstraints;
-          v45 = [v50 heightAnchor];
-          v44 = [v55[0] heightAnchor];
-          v43 = [v45 constraintEqualToAnchor:?];
+          MEMORY[0x277D82BD8](bottomAnchor);
+          MEMORY[0x277D82BD8](topAnchor3);
+          v42 = selfCopy->_buttonConstraints;
+          heightAnchor3 = [v50 heightAnchor];
+          heightAnchor4 = [v55[0] heightAnchor];
+          v43 = [heightAnchor3 constraintEqualToAnchor:?];
           [(NSMutableArray *)v42 addObject:?];
           MEMORY[0x277D82BD8](v43);
-          MEMORY[0x277D82BD8](v44);
-          MEMORY[0x277D82BD8](v45);
+          MEMORY[0x277D82BD8](heightAnchor4);
+          MEMORY[0x277D82BD8](heightAnchor3);
         }
 
         else
         {
-          v34 = v56->_buttonConstraints;
-          v37 = [v50 topAnchor];
-          v36 = [(MCLVariantGroupView *)v56 topAnchor];
-          v35 = [v37 constraintEqualToAnchor:?];
+          v34 = selfCopy->_buttonConstraints;
+          topAnchor4 = [v50 topAnchor];
+          topAnchor5 = [(MCLVariantGroupView *)selfCopy topAnchor];
+          v35 = [topAnchor4 constraintEqualToAnchor:?];
           [(NSMutableArray *)v34 addObject:?];
           MEMORY[0x277D82BD8](v35);
-          MEMORY[0x277D82BD8](v36);
-          MEMORY[0x277D82BD8](v37);
+          MEMORY[0x277D82BD8](topAnchor5);
+          MEMORY[0x277D82BD8](topAnchor4);
         }
 
-        v25 = v56->_buttonConstraints;
-        v28 = [v50 leadingAnchor];
-        v27 = [(MCLVariantGroupView *)v56 leadingAnchor];
-        v26 = [v28 constraintEqualToAnchor:?];
+        v25 = selfCopy->_buttonConstraints;
+        leadingAnchor2 = [v50 leadingAnchor];
+        leadingAnchor3 = [(MCLVariantGroupView *)selfCopy leadingAnchor];
+        v26 = [leadingAnchor2 constraintEqualToAnchor:?];
         [(NSMutableArray *)v25 addObject:?];
         MEMORY[0x277D82BD8](v26);
-        MEMORY[0x277D82BD8](v27);
-        MEMORY[0x277D82BD8](v28);
-        v29 = [v50 heightAnchor];
-        v49 = [v29 constraintGreaterThanOrEqualToConstant:80.0];
-        MEMORY[0x277D82BD8](v29);
+        MEMORY[0x277D82BD8](leadingAnchor3);
+        MEMORY[0x277D82BD8](leadingAnchor2);
+        heightAnchor5 = [v50 heightAnchor];
+        v49 = [heightAnchor5 constraintGreaterThanOrEqualToConstant:80.0];
+        MEMORY[0x277D82BD8](heightAnchor5);
         LODWORD(v4) = 1144750080;
         [v49 setPriority:v4];
-        [(NSMutableArray *)v56->_buttonConstraints addObject:v49];
-        v30 = v56->_buttonConstraints;
-        v33 = [v50 widthAnchor];
-        v32 = [(MCLVariantGroupView *)v56 widthAnchor];
-        v31 = [v33 constraintEqualToAnchor:v54 multiplier:-v53 constant:?];
+        [(NSMutableArray *)selfCopy->_buttonConstraints addObject:v49];
+        v30 = selfCopy->_buttonConstraints;
+        widthAnchor3 = [v50 widthAnchor];
+        widthAnchor4 = [(MCLVariantGroupView *)selfCopy widthAnchor];
+        v31 = [widthAnchor3 constraintEqualToAnchor:v54 multiplier:-v53 constant:?];
         [(NSMutableArray *)v30 addObject:?];
         MEMORY[0x277D82BD8](v31);
-        MEMORY[0x277D82BD8](v32);
-        MEMORY[0x277D82BD8](v33);
+        MEMORY[0x277D82BD8](widthAnchor4);
+        MEMORY[0x277D82BD8](widthAnchor3);
         objc_storeStrong(&v49, 0);
       }
 
-      if (i == v56->_variantCount - 1)
+      if (i == selfCopy->_variantCount - 1)
       {
-        v5 = v56->_buttonConstraints;
-        v8 = [v50 bottomAnchor];
-        v7 = [(MCLVariantGroupView *)v56 bottomAnchor];
-        v6 = [v8 constraintEqualToAnchor:?];
+        v5 = selfCopy->_buttonConstraints;
+        bottomAnchor2 = [v50 bottomAnchor];
+        bottomAnchor3 = [(MCLVariantGroupView *)selfCopy bottomAnchor];
+        v6 = [bottomAnchor2 constraintEqualToAnchor:?];
         [(NSMutableArray *)v5 addObject:?];
         MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v7);
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](bottomAnchor3);
+        MEMORY[0x277D82BD8](bottomAnchor2);
       }
 
       objc_storeStrong(v55, v50);
       objc_storeStrong(&v50, 0);
     }
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v56->_buttonConstraints];
+    [MEMORY[0x277CCAAD0] activateConstraints:selfCopy->_buttonConstraints];
     objc_storeStrong(v55, 0);
   }
 
@@ -231,37 +231,37 @@ void __36__MCLVariantGroupView_clearVariants__block_invoke(void *a1, void *a2)
   objc_storeStrong(location, 0);
 }
 
-- (id)createVariantButton:(Class)a3 type:(int64_t)a4
+- (id)createVariantButton:(Class)button type:(int64_t)type
 {
-  v9 = self;
+  selfCopy = self;
   v8[3] = a2;
-  v8[2] = a3;
-  v8[1] = a4;
-  v8[0] = [(objc_class *)a3 buttonWithType:a4];
+  v8[2] = button;
+  v8[1] = type;
+  v8[0] = [(objc_class *)button buttonWithType:type];
   [v8[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = v8[0];
-  v6 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   [v5 setTitleColor:? forState:?];
-  MEMORY[0x277D82BD8](v6);
-  [v8[0] addTarget:v9 action:sel_selectVariant_ forControlEvents:64];
+  MEMORY[0x277D82BD8](blackColor);
+  [v8[0] addTarget:selfCopy action:sel_selectVariant_ forControlEvents:64];
   v7 = MEMORY[0x277D82BE0](v8[0]);
   objc_storeStrong(v8, 0);
 
   return v7;
 }
 
-- (void)selectVariant:(id)a3
+- (void)selectVariant:(id)variant
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(NSMutableArray *)v8->_buttons indexOfObject:location[0]];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL && (v6 != v8->_selectedIndex || v8->_actionVariant))
+  objc_storeStrong(location, variant);
+  v6 = [(NSMutableArray *)selfCopy->_buttons indexOfObject:location[0]];
+  if (v6 != 0x7FFFFFFFFFFFFFFFLL && (v6 != selfCopy->_selectedIndex || selfCopy->_actionVariant))
   {
-    [(MCLVariantGroupView *)v8 selectItemAtIndex:v6];
-    v3 = v8;
+    [(MCLVariantGroupView *)selfCopy selectItemAtIndex:v6];
+    v3 = selfCopy;
     v9[0] = location[0];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
     v9[1] = v5;
@@ -275,26 +275,26 @@ void __36__MCLVariantGroupView_clearVariants__block_invoke(void *a1, void *a2)
   *MEMORY[0x277D85DE8];
 }
 
-- (void)selectItemAtIndex:(int64_t)a3
+- (void)selectItemAtIndex:(int64_t)index
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  indexCopy = index;
   if ((self->_selectedIndex & 0x8000000000000000) == 0)
   {
-    v5 = [(NSMutableArray *)v8->_buttons objectAtIndexedSubscript:v8->_selectedIndex];
+    v5 = [(NSMutableArray *)selfCopy->_buttons objectAtIndexedSubscript:selfCopy->_selectedIndex];
     [v5 setSelected:0];
     objc_storeStrong(&v5, 0);
   }
 
-  if ((v6 & 0x8000000000000000) == 0)
+  if ((indexCopy & 0x8000000000000000) == 0)
   {
-    v3 = v6;
-    if (v3 < [(NSMutableArray *)v8->_buttons count])
+    v3 = indexCopy;
+    if (v3 < [(NSMutableArray *)selfCopy->_buttons count])
     {
-      v4 = [(NSMutableArray *)v8->_buttons objectAtIndexedSubscript:v6];
+      v4 = [(NSMutableArray *)selfCopy->_buttons objectAtIndexedSubscript:indexCopy];
       [v4 setSelected:1];
-      v8->_selectedIndex = v6;
+      selfCopy->_selectedIndex = indexCopy;
       objc_storeStrong(&v4, 0);
     }
   }

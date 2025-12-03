@@ -8,14 +8,14 @@
 {
   v4 = a3;
   v5 = +[PRWidgetMetricsProvider sharedInstance];
-  v6 = [v4 widget];
-  v7 = [v5 systemMetricsForWidget:v6];
+  widget = [v4 widget];
+  v7 = [v5 systemMetricsForWidget:widget];
 
-  v8 = a1;
-  v9 = [v4 widget];
-  v10 = [v4 uniqueIdentifier];
+  selfCopy = self;
+  widget2 = [v4 widget];
+  uniqueIdentifier = [v4 uniqueIdentifier];
 
-  v11 = [v8 initWithWidget:v9 metrics:v7 widgetConfigurationIdentifier:v10];
+  v11 = [selfCopy initWithWidget:widget2 metrics:v7 widgetConfigurationIdentifier:uniqueIdentifier];
 
   return v11;
 }

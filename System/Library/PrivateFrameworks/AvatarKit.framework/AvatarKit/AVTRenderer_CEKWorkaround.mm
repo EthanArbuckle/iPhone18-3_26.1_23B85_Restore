@@ -9,20 +9,20 @@
 {
   v4.receiver = self;
   v4.super_class = AVTRenderer_CEKWorkaround;
-  v2 = [(AVTRenderer_CEKWorkaround *)&v4 world];
-  [v2 _implementCEKWorkaroundIfNeeded];
+  world = [(AVTRenderer_CEKWorkaround *)&v4 world];
+  [world _implementCEKWorkaroundIfNeeded];
 
-  return v2;
+  return world;
 }
 
 - (id)pointOfView
 {
   v4.receiver = self;
   v4.super_class = AVTRenderer_CEKWorkaround;
-  v2 = [(AVTRenderer_CEKWorkaround *)&v4 pointOfView];
-  [v2 _implementCEKWorkaroundIfNeeded];
+  pointOfView = [(AVTRenderer_CEKWorkaround *)&v4 pointOfView];
+  [pointOfView _implementCEKWorkaroundIfNeeded];
 
-  return v2;
+  return pointOfView;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface RETransformerInvocation
-+ (id)invocationWithArguments:(unint64_t *)a3 count:(unint64_t)a4;
++ (id)invocationWithArguments:(unint64_t *)arguments count:(unint64_t)count;
 - (RETransformerInvocation)init;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setArgument:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)setArgument:(unint64_t)argument atIndex:(unint64_t)index;
 @end
 
 @implementation RETransformerInvocation
 
-+ (id)invocationWithArguments:(unint64_t *)a3 count:(unint64_t)a4
++ (id)invocationWithArguments:(unint64_t *)arguments count:(unint64_t)count
 {
   v6 = objc_alloc_init(RETransformerInvocation);
-  if (a4)
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(RETransformerInvocation *)v6 setArgument:a3[v7] atIndex:v7];
+      [(RETransformerInvocation *)v6 setArgument:arguments[v7] atIndex:v7];
       ++v7;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
   return v6;
@@ -53,17 +53,17 @@
   [(RETransformerInvocation *)&v5 dealloc];
 }
 
-- (void)setArgument:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setArgument:(unint64_t)argument atIndex:(unint64_t)index
 {
   p_values = &self->_values;
-  if (a4 >= self->_values.__end_ - self->_values.__begin_)
+  if (index >= self->_values.__end_ - self->_values.__begin_)
   {
-    std::vector<unsigned long>::resize(&self->_values.__begin_, a4 + 1);
+    std::vector<unsigned long>::resize(&self->_values.__begin_, index + 1);
   }
 
-  RERetainFeatureValueTaggedPointer(a3);
-  REReleaseFeatureValueTaggedPointer(p_values->__begin_[a4]);
-  p_values->__begin_[a4] = a3;
+  RERetainFeatureValueTaggedPointer(argument);
+  REReleaseFeatureValueTaggedPointer(p_values->__begin_[index]);
+  p_values->__begin_[index] = argument;
 }
 
 - (id).cxx_construct

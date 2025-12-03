@@ -1,68 +1,68 @@
 @interface ATXModeAnchorModelSuggestion
-- (ATXModeAnchorModelSuggestion)initWithCoder:(id)a3;
-- (ATXModeAnchorModelSuggestion)initWithModeUUID:(id)a3 isStart:(BOOL)a4 anchorType:(id)a5 score:(double)a6 numUniqueOccurrencesAfterAnchor:(unint64_t)a7 posteriorProbability:(double)a8 classConditionalProbability:(double)a9 serializedTriggers:(id)a10;
-- (void)encodeWithCoder:(id)a3;
+- (ATXModeAnchorModelSuggestion)initWithCoder:(id)coder;
+- (ATXModeAnchorModelSuggestion)initWithModeUUID:(id)d isStart:(BOOL)start anchorType:(id)type score:(double)score numUniqueOccurrencesAfterAnchor:(unint64_t)anchor posteriorProbability:(double)probability classConditionalProbability:(double)conditionalProbability serializedTriggers:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXModeAnchorModelSuggestion
 
-- (ATXModeAnchorModelSuggestion)initWithModeUUID:(id)a3 isStart:(BOOL)a4 anchorType:(id)a5 score:(double)a6 numUniqueOccurrencesAfterAnchor:(unint64_t)a7 posteriorProbability:(double)a8 classConditionalProbability:(double)a9 serializedTriggers:(id)a10
+- (ATXModeAnchorModelSuggestion)initWithModeUUID:(id)d isStart:(BOOL)start anchorType:(id)type score:(double)score numUniqueOccurrencesAfterAnchor:(unint64_t)anchor posteriorProbability:(double)probability classConditionalProbability:(double)conditionalProbability serializedTriggers:(id)self0
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a10;
+  dCopy = d;
+  typeCopy = type;
+  triggersCopy = triggers;
   v25.receiver = self;
   v25.super_class = ATXModeAnchorModelSuggestion;
   v21 = [(ATXModeAnchorModelSuggestion *)&v25 init];
   if (v21)
   {
-    v22 = [v18 copy];
+    v22 = [dCopy copy];
     modeUUID = v21->_modeUUID;
     v21->_modeUUID = v22;
 
-    v21->_isStart = a4;
-    objc_storeStrong(&v21->_anchorType, a5);
-    v21->_score = a6;
-    v21->_numUniqueOccurrencesAfterAnchor = a7;
-    v21->_posteriorProbability = a8;
-    v21->_classConditionalProbability = a9;
-    objc_storeStrong(&v21->_serializedTriggers, a10);
+    v21->_isStart = start;
+    objc_storeStrong(&v21->_anchorType, type);
+    v21->_score = score;
+    v21->_numUniqueOccurrencesAfterAnchor = anchor;
+    v21->_posteriorProbability = probability;
+    v21->_classConditionalProbability = conditionalProbability;
+    objc_storeStrong(&v21->_serializedTriggers, triggers);
   }
 
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modeUUID = self->_modeUUID;
-  v5 = a3;
-  [v5 encodeObject:modeUUID forKey:@"modeUUID"];
-  [v5 encodeObject:self->_anchorType forKey:@"anchorType"];
-  [v5 encodeBool:self->_isStart forKey:@"isStart"];
-  [v5 encodeDouble:@"score" forKey:self->_score];
-  [v5 encodeInteger:self->_numUniqueOccurrencesAfterAnchor forKey:@"numUniqueOccurrencesAfterAnchor"];
-  [v5 encodeDouble:@"posteriorProbability" forKey:self->_posteriorProbability];
-  [v5 encodeDouble:@"classConditionalProbability" forKey:self->_classConditionalProbability];
-  [v5 encodeObject:self->_serializedTriggers forKey:@"triggers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modeUUID forKey:@"modeUUID"];
+  [coderCopy encodeObject:self->_anchorType forKey:@"anchorType"];
+  [coderCopy encodeBool:self->_isStart forKey:@"isStart"];
+  [coderCopy encodeDouble:@"score" forKey:self->_score];
+  [coderCopy encodeInteger:self->_numUniqueOccurrencesAfterAnchor forKey:@"numUniqueOccurrencesAfterAnchor"];
+  [coderCopy encodeDouble:@"posteriorProbability" forKey:self->_posteriorProbability];
+  [coderCopy encodeDouble:@"classConditionalProbability" forKey:self->_classConditionalProbability];
+  [coderCopy encodeObject:self->_serializedTriggers forKey:@"triggers"];
 }
 
-- (ATXModeAnchorModelSuggestion)initWithCoder:(id)a3
+- (ATXModeAnchorModelSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchorType"];
-  v7 = [v4 decodeBoolForKey:@"isStart"];
-  [v4 decodeDoubleForKey:@"score"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modeUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchorType"];
+  v7 = [coderCopy decodeBoolForKey:@"isStart"];
+  [coderCopy decodeDoubleForKey:@"score"];
   v9 = v8;
-  v10 = [v4 decodeIntegerForKey:@"numUniqueOccurrencesAfterAnchor"];
-  [v4 decodeDoubleForKey:@"classConditionalProbability"];
+  v10 = [coderCopy decodeIntegerForKey:@"numUniqueOccurrencesAfterAnchor"];
+  [coderCopy decodeDoubleForKey:@"classConditionalProbability"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"classConditionalProbability"];
+  [coderCopy decodeDoubleForKey:@"classConditionalProbability"];
   v14 = v13;
   v15 = MEMORY[0x277CBEB98];
   v16 = objc_opt_class();
   v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"triggers"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"triggers"];
 
   v19 = [(ATXModeAnchorModelSuggestion *)self initWithModeUUID:v5 isStart:v7 anchorType:v6 score:v10 numUniqueOccurrencesAfterAnchor:v18 posteriorProbability:v9 classConditionalProbability:v12 serializedTriggers:v14];
   return v19;

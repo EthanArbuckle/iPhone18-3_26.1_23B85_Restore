@@ -5,49 +5,49 @@
 - (BOOL)isManagingEntitlementConfiguration;
 - (BOOL)isManagingTimeConfiguration;
 - (NSArray)allPossibleCapabilitySets;
-- (PKPassEntitlementsComposerEntryNode)initWithIdentifier:(id)a3 parentEntitlementComposer:(id)a4;
+- (PKPassEntitlementsComposerEntryNode)initWithIdentifier:(id)identifier parentEntitlementComposer:(id)composer;
 - (PKPassEntitlementsComposerEntryNode)parent;
 - (PKPassShareTimeConfiguration)possibleTimeConfiguration;
 - (PKPassShareTimeConfiguration)timeConfiguration;
-- (id)_allPossibleCapabilityForAccumulateBlock:(id)a3;
-- (id)_effectiveValueForProperty:(unint64_t)a3 ofType:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)_leastRestrictivePossibleCapabilityForAccumulateBlock:(id)a3 maxCapability:(unint64_t)a4;
-- (unint64_t)_mostRestrictiveCapabilityForAccumulateBlock:(id)a3 maxCapability:(unint64_t)a4;
+- (id)_allPossibleCapabilityForAccumulateBlock:(id)block;
+- (id)_effectiveValueForProperty:(unint64_t)property ofType:(Class)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)_leastRestrictivePossibleCapabilityForAccumulateBlock:(id)block maxCapability:(unint64_t)capability;
+- (unint64_t)_mostRestrictiveCapabilityForAccumulateBlock:(id)block maxCapability:(unint64_t)capability;
 - (unint64_t)manageability;
 - (unint64_t)maxSelectionCount;
 - (unint64_t)shareability;
 - (unint64_t)visibility;
-- (void)_mutateCapability:(id)a3;
-- (void)childEntryNodeDidSetProperty:(unint64_t)a3 updatedChildNode:(id)a4;
-- (void)enumerateEntitlementEntries:(id)a3;
-- (void)parentEntryNodeWillSetProperty:(unint64_t)a3 updatedParentNode:(id)a4;
+- (void)_mutateCapability:(id)capability;
+- (void)childEntryNodeDidSetProperty:(unint64_t)property updatedChildNode:(id)node;
+- (void)enumerateEntitlementEntries:(id)entries;
+- (void)parentEntryNodeWillSetProperty:(unint64_t)property updatedParentNode:(id)node;
 - (void)resetCapabilities;
-- (void)setEnabled:(BOOL)a3 notifyIfRoot:(BOOL)a4;
-- (void)setIntraAccountSharingEnabled:(BOOL)a3;
-- (void)setIsManagingEntitlementConfiguration:(BOOL)a3;
-- (void)setIsManagingTimeConfiguration:(BOOL)a3;
-- (void)setManageability:(unint64_t)a3;
-- (void)setShareability:(unint64_t)a3;
-- (void)setTimeConfiguration:(id)a3;
-- (void)setVisibility:(unint64_t)a3;
-- (void)updateCapabilitiesWithSet:(id)a3;
+- (void)setEnabled:(BOOL)enabled notifyIfRoot:(BOOL)root;
+- (void)setIntraAccountSharingEnabled:(BOOL)enabled;
+- (void)setIsManagingEntitlementConfiguration:(BOOL)configuration;
+- (void)setIsManagingTimeConfiguration:(BOOL)configuration;
+- (void)setManageability:(unint64_t)manageability;
+- (void)setShareability:(unint64_t)shareability;
+- (void)setTimeConfiguration:(id)configuration;
+- (void)setVisibility:(unint64_t)visibility;
+- (void)updateCapabilitiesWithSet:(id)set;
 @end
 
 @implementation PKPassEntitlementsComposerEntryNode
 
-- (PKPassEntitlementsComposerEntryNode)initWithIdentifier:(id)a3 parentEntitlementComposer:(id)a4
+- (PKPassEntitlementsComposerEntryNode)initWithIdentifier:(id)identifier parentEntitlementComposer:(id)composer
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  composerCopy = composer;
   v16.receiver = self;
   v16.super_class = PKPassEntitlementsComposerEntryNode;
   v9 = [(PKPassEntitlementsComposerEntryNode *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeWeak(&v10->_parentEntitlementComposer, v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeWeak(&v10->_parentEntitlementComposer, composerCopy);
     v10->_editable = 1;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     properties = v10->_properties;
@@ -132,20 +132,20 @@ id __66__PKPassEntitlementsComposerEntryNode_possibleIntraAccountSharing__block_
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) possibleTimeConfiguration];
-        v9 = v8;
-        if (v8)
+        possibleTimeConfiguration = [*(*(&v13 + 1) + 8 * i) possibleTimeConfiguration];
+        v9 = possibleTimeConfiguration;
+        if (possibleTimeConfiguration)
         {
           if (v5)
           {
-            v10 = [v5 intersect:v8];
+            v10 = [v5 intersect:possibleTimeConfiguration];
 
             v5 = v10;
           }
 
           else
           {
-            v5 = v8;
+            v5 = possibleTimeConfiguration;
           }
         }
       }
@@ -180,26 +180,26 @@ id __66__PKPassEntitlementsComposerEntryNode_possibleIntraAccountSharing__block_
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 shareability];
+    shareability = [v3 shareability];
   }
 
   else
   {
-    v5 = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_119 maxCapability:999];
+    shareability = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_119 maxCapability:999];
   }
 
-  v6 = v5;
+  v6 = shareability;
 
   return v6;
 }
 
-- (void)setShareability:(unint64_t)a3
+- (void)setShareability:(unint64_t)shareability
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__PKPassEntitlementsComposerEntryNode_setShareability___block_invoke;
   v3[3] = &__block_descriptor_40_e47_v16__0__PKMutablePassEntitlementCapabilitySet_8l;
-  v3[4] = a3;
+  v3[4] = shareability;
   [(PKPassEntitlementsComposerEntryNode *)self _mutateCapability:v3];
 }
 
@@ -209,26 +209,26 @@ id __66__PKPassEntitlementsComposerEntryNode_possibleIntraAccountSharing__block_
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 visibility];
+    visibility = [v3 visibility];
   }
 
   else
   {
-    v5 = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_123_3 maxCapability:2];
+    visibility = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_123_3 maxCapability:2];
   }
 
-  v6 = v5;
+  v6 = visibility;
 
   return v6;
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__PKPassEntitlementsComposerEntryNode_setVisibility___block_invoke;
   v3[3] = &__block_descriptor_40_e47_v16__0__PKMutablePassEntitlementCapabilitySet_8l;
-  v3[4] = a3;
+  v3[4] = visibility;
   [(PKPassEntitlementsComposerEntryNode *)self _mutateCapability:v3];
 }
 
@@ -238,26 +238,26 @@ id __66__PKPassEntitlementsComposerEntryNode_possibleIntraAccountSharing__block_
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 manageability];
+    manageability = [v3 manageability];
   }
 
   else
   {
-    v5 = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_125_3 maxCapability:-1];
+    manageability = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_125_3 maxCapability:-1];
   }
 
-  v6 = v5;
+  v6 = manageability;
 
   return v6;
 }
 
-- (void)setManageability:(unint64_t)a3
+- (void)setManageability:(unint64_t)manageability
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__PKPassEntitlementsComposerEntryNode_setManageability___block_invoke;
   v3[3] = &__block_descriptor_40_e47_v16__0__PKMutablePassEntitlementCapabilitySet_8l;
-  v3[4] = a3;
+  v3[4] = manageability;
   [(PKPassEntitlementsComposerEntryNode *)self _mutateCapability:v3];
 }
 
@@ -267,36 +267,36 @@ id __66__PKPassEntitlementsComposerEntryNode_possibleIntraAccountSharing__block_
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intraAccountSharingEnabled];
+    intraAccountSharingEnabled = [v3 intraAccountSharingEnabled];
   }
 
   else
   {
-    v5 = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_127_0 maxCapability:1]== 1;
+    intraAccountSharingEnabled = [(PKPassEntitlementsComposerEntryNode *)self _mostRestrictiveCapabilityForAccumulateBlock:&__block_literal_global_127_0 maxCapability:1]== 1;
   }
 
-  return v5;
+  return intraAccountSharingEnabled;
 }
 
-- (void)setIntraAccountSharingEnabled:(BOOL)a3
+- (void)setIntraAccountSharingEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __69__PKPassEntitlementsComposerEntryNode_setIntraAccountSharingEnabled___block_invoke;
   v3[3] = &__block_descriptor_33_e47_v16__0__PKMutablePassEntitlementCapabilitySet_8l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(PKPassEntitlementsComposerEntryNode *)self _mutateCapability:v3];
 }
 
-- (void)updateCapabilitiesWithSet:(id)a3
+- (void)updateCapabilitiesWithSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKPassEntitlementsComposerEntryNode_updateCapabilitiesWithSet___block_invoke;
   v6[3] = &unk_1E79E2AA8;
-  v7 = v4;
-  v5 = v4;
+  v7 = setCopy;
+  v5 = setCopy;
   [(PKPassEntitlementsComposerEntryNode *)self _mutateCapability:v6];
 }
 
@@ -337,19 +337,19 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
   return [(PKPassEntitlementsComposerEntryNode *)self _effectiveValueForProperty:2 ofType:v3];
 }
 
-- (void)setTimeConfiguration:(id)a3
+- (void)setTimeConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   [(PKPassEntitlementsComposerEntryNode *)self parentEntryNodeWillSetProperty:2 updatedParentNode:self];
-  if (v6)
+  if (configurationCopy)
   {
-    [(NSMutableDictionary *)self->_properties setObject:v6 forKeyedSubscript:&unk_1F23B5870];
+    [(NSMutableDictionary *)self->_properties setObject:configurationCopy forKeyedSubscript:&unk_1F23B5870];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableDictionary *)self->_properties setObject:v4 forKeyedSubscript:&unk_1F23B5870];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableDictionary *)self->_properties setObject:null forKeyedSubscript:&unk_1F23B5870];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_parent);
@@ -364,10 +364,10 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
   return v3;
 }
 
-- (void)setIsManagingTimeConfiguration:(BOOL)a3
+- (void)setIsManagingTimeConfiguration:(BOOL)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
 
     [(PKPassEntitlementsComposerEntryNode *)self setTimeConfiguration:0];
@@ -376,7 +376,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
   else
   {
     [(NSMutableDictionary *)self->_properties setObject:0 forKeyedSubscript:&unk_1F23B5870];
-    v4 = [(PKPassEntitlementsComposerEntryNode *)self possibleTimeConfiguration];
+    possibleTimeConfiguration = [(PKPassEntitlementsComposerEntryNode *)self possibleTimeConfiguration];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -396,7 +396,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setTimeConfiguration:{v4, v10}];
+          [*(*(&v10 + 1) + 8 * i) setTimeConfiguration:{possibleTimeConfiguration, v10}];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -415,10 +415,10 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
   return v3;
 }
 
-- (void)setIsManagingEntitlementConfiguration:(BOOL)a3
+- (void)setIsManagingEntitlementConfiguration:(BOOL)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
 
     [(PKPassEntitlementsComposerEntryNode *)self resetCapabilities];
@@ -461,17 +461,17 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 - (BOOL)enabled
 {
   v2 = [(PKPassEntitlementsComposerEntryNode *)self _effectiveValueForProperty:0 ofType:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setEnabled:(BOOL)a3 notifyIfRoot:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled notifyIfRoot:(BOOL)root
 {
-  v4 = a4;
-  v5 = a3;
+  rootCopy = root;
+  enabledCopy = enabled;
   [(PKPassEntitlementsComposerEntryNode *)self parentEntryNodeWillSetProperty:0 updatedParentNode:self];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [(NSMutableDictionary *)self->_properties setObject:v7 forKeyedSubscript:&unk_1F23B58A0];
 
   WeakRetained = objc_loadWeakRetained(&self->_parent);
@@ -483,7 +483,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
   else
   {
-    if (!v4)
+    if (!rootCopy)
     {
       return;
     }
@@ -496,15 +496,15 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 - (unint64_t)maxSelectionCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentEntitlementComposer);
-  v3 = [WeakRetained maxSelectionCount];
+  maxSelectionCount = [WeakRetained maxSelectionCount];
 
-  return v3;
+  return maxSelectionCount;
 }
 
-- (void)enumerateEntitlementEntries:(id)a3
+- (void)enumerateEntitlementEntries:(id)entries
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -525,7 +525,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) enumerateEntitlementEntries:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) enumerateEntitlementEntries:{entriesCopy, v10}];
       }
 
       while (v7 != v9);
@@ -536,17 +536,17 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
   }
 }
 
-- (void)parentEntryNodeWillSetProperty:(unint64_t)a3 updatedParentNode:(id)a4
+- (void)parentEntryNodeWillSetProperty:(unint64_t)property updatedParentNode:(id)node
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
+  nodeCopy = node;
+  v7 = nodeCopy;
   if (self->_editable)
   {
-    if (self != v6)
+    if (self != nodeCopy)
     {
       properties = self->_properties;
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
       [(NSMutableDictionary *)properties setObject:0 forKeyedSubscript:v9];
     }
 
@@ -570,7 +570,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v15 + 1) + 8 * v14++) parentEntryNodeWillSetProperty:a3 updatedParentNode:self];
+          [*(*(&v15 + 1) + 8 * v14++) parentEntryNodeWillSetProperty:property updatedParentNode:self];
         }
 
         while (v12 != v14);
@@ -583,32 +583,32 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassEntitlementsComposer: '%lu' should not be updated on non editable composer", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassEntitlementsComposer: '%lu' should not be updated on non editable composer", property}];
   }
 }
 
-- (void)childEntryNodeDidSetProperty:(unint64_t)a3 updatedChildNode:(id)a4
+- (void)childEntryNodeDidSetProperty:(unint64_t)property updatedChildNode:(id)node
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  nodeCopy = node;
   if (self->_editable)
   {
     properties = self->_properties;
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
     v9 = [(NSMutableDictionary *)properties objectForKeyedSubscript:v8];
 
     if (v9)
     {
       v10 = self->_properties;
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
       v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
 
       v13 = self->_properties;
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
       [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:v14];
 
       WeakRetained = objc_loadWeakRetained(&self->_parent);
-      [WeakRetained childEntryNodeDidSetProperty:a3 updatedChildNode:self];
+      [WeakRetained childEntryNodeDidSetProperty:property updatedChildNode:self];
 
       v26 = 0u;
       v27 = 0u;
@@ -631,10 +631,10 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
             }
 
             v21 = *(*(&v24 + 1) + 8 * v20);
-            if (v21 != v6)
+            if (v21 != nodeCopy)
             {
               v22 = v21[2];
-              v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+              v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
               [v22 setObject:v12 forKeyedSubscript:v23];
             }
 
@@ -652,13 +652,13 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassEntitlementsComposer: '%lu' should not be updated on non editable composer", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassEntitlementsComposer: '%lu' should not be updated on non editable composer", property}];
   }
 }
 
-- (void)_mutateCapability:(id)a3
+- (void)_mutateCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   [(PKPassEntitlementsComposerEntryNode *)self parentEntryNodeWillSetProperty:1 updatedParentNode:self];
   v5 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:&unk_1F23B5888];
   if (!v5)
@@ -668,17 +668,17 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
   v7 = v5;
   [(NSMutableDictionary *)self->_properties setObject:0 forKeyedSubscript:&unk_1F23B5888];
-  v4[2](v4, v7);
+  capabilityCopy[2](capabilityCopy, v7);
 
   [(NSMutableDictionary *)self->_properties setObject:v7 forKeyedSubscript:&unk_1F23B5888];
   WeakRetained = objc_loadWeakRetained(&self->_parent);
   [WeakRetained childEntryNodeDidSetProperty:1 updatedChildNode:self];
 }
 
-- (unint64_t)_mostRestrictiveCapabilityForAccumulateBlock:(id)a3 maxCapability:(unint64_t)a4
+- (unint64_t)_mostRestrictiveCapabilityForAccumulateBlock:(id)block maxCapability:(unint64_t)capability
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   if ([(PKPassEntitlementsComposerEntryNode *)self hasEnabledEntitlements])
   {
     v17 = 0u;
@@ -703,10 +703,10 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
           v12 = *(*(&v15 + 1) + 8 * i);
           if ([v12 enabled])
           {
-            v13 = v6[2](v6, v12);
-            if (v13 < a4)
+            v13 = blockCopy[2](blockCopy, v12);
+            if (v13 < capability)
             {
-              a4 = v13;
+              capability = v13;
             }
           }
         }
@@ -720,16 +720,16 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
   else
   {
-    a4 = 0;
+    capability = 0;
   }
 
-  return a4;
+  return capability;
 }
 
-- (unint64_t)_leastRestrictivePossibleCapabilityForAccumulateBlock:(id)a3 maxCapability:(unint64_t)a4
+- (unint64_t)_leastRestrictivePossibleCapabilityForAccumulateBlock:(id)block maxCapability:(unint64_t)capability
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blockCopy = block;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -749,7 +749,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
           objc_enumerationMutation(obj);
         }
 
-        v10 = v6[2](v6, *(*(&v25 + 1) + 8 * i));
+        v10 = blockCopy[2](blockCopy, *(*(&v25 + 1) + 8 * i));
         v11 = v10;
         if (v10 && (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, (v12 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16]) != 0))
         {
@@ -765,10 +765,10 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
                 objc_enumerationMutation(v11);
               }
 
-              v17 = [*(*(&v21 + 1) + 8 * j) unsignedIntegerValue];
-              if (v14 <= v17)
+              unsignedIntegerValue = [*(*(&v21 + 1) + 8 * j) unsignedIntegerValue];
+              if (v14 <= unsignedIntegerValue)
               {
-                v14 = v17;
+                v14 = unsignedIntegerValue;
               }
             }
 
@@ -783,9 +783,9 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
           v14 = 0;
         }
 
-        if (a4 >= v14)
+        if (capability >= v14)
         {
-          a4 = v14;
+          capability = v14;
         }
       }
 
@@ -795,13 +795,13 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
     while (v8);
   }
 
-  return a4;
+  return capability;
 }
 
-- (id)_allPossibleCapabilityForAccumulateBlock:(id)a3
+- (id)_allPossibleCapabilityForAccumulateBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -824,7 +824,7 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = objc_alloc(MEMORY[0x1E695DFD8]);
-        v12 = v4[2](v4, v10);
+        v12 = blockCopy[2](blockCopy, v10);
         v13 = [v11 initWithArray:v12];
 
         if (v7)
@@ -849,8 +849,8 @@ void __56__PKPassEntitlementsComposerEntryNode_resetCapabilities__block_invoke(u
     v7 = 0;
   }
 
-  v14 = [v7 allObjects];
-  v15 = [v14 sortedArrayUsingComparator:&__block_literal_global_147_0];
+  allObjects = [v7 allObjects];
+  v15 = [allObjects sortedArrayUsingComparator:&__block_literal_global_147_0];
   v16 = v15;
   if (v15)
   {
@@ -910,22 +910,22 @@ LABEL_11:
   return v3;
 }
 
-- (id)_effectiveValueForProperty:(unint64_t)a3 ofType:(Class)a4
+- (id)_effectiveValueForProperty:(unint64_t)property ofType:(Class)type
 {
-  v5 = self;
-  if (!v5)
+  selfCopy = self;
+  if (!selfCopy)
   {
 LABEL_8:
     v13 = 0;
     goto LABEL_12;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
   v7 = *MEMORY[0x1E695D930];
   while (1)
   {
     properties = v6->_properties;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
     v10 = [(NSMutableDictionary *)properties objectForKeyedSubscript:v9];
 
     if (v10)
@@ -943,9 +943,9 @@ LABEL_7:
     }
   }
 
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v10 == v11)
+  if (v10 == null)
   {
     v13 = 0;
     goto LABEL_11;
@@ -953,7 +953,7 @@ LABEL_7:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:v7 format:{@"PKPassEntitlementsComposer: Found unexpected value %@ for property '%lu'", v10, a3}];
+    [MEMORY[0x1E695DF30] raise:v7 format:{@"PKPassEntitlementsComposer: Found unexpected value %@ for property '%lu'", v10, property}];
     goto LABEL_7;
   }
 
@@ -965,10 +965,10 @@ LABEL_12:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   WeakRetained = objc_loadWeakRetained(&self->_parentEntitlementComposer);
   v7 = [v4 initWithIdentifier:identifier parentEntitlementComposer:WeakRetained];

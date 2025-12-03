@@ -12,16 +12,16 @@
 - (int64_t)connectionState;
 - (unint64_t)context;
 - (unint64_t)signalBars;
-- (void)setConnectionState:(int64_t)a3;
-- (void)setContext:(unint64_t)a3;
-- (void)setHideConnectionState:(BOOL)a3;
-- (void)setInfoButtonHandler:(id)a3;
-- (void)setIsEditable:(BOOL)a3;
-- (void)setNetwork:(id)a3;
-- (void)setProblematicConnection:(BOOL)a3;
-- (void)setShowInfoButton:(BOOL)a3;
-- (void)setSignalBars:(unint64_t)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setConnectionState:(int64_t)state;
+- (void)setContext:(unint64_t)context;
+- (void)setHideConnectionState:(BOOL)state;
+- (void)setInfoButtonHandler:(id)handler;
+- (void)setIsEditable:(BOOL)editable;
+- (void)setNetwork:(id)network;
+- (void)setProblematicConnection:(BOOL)connection;
+- (void)setShowInfoButton:(BOOL)button;
+- (void)setSignalBars:(unint64_t)bars;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation WFNetworkRowConfig
@@ -30,17 +30,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_274050E68();
 
   return v5;
 }
 
-- (void)setNetwork:(id)a3
+- (void)setNetwork:(id)network
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_27403DF48(a3);
+  selfCopy = self;
+  sub_27403DF48(network);
   swift_getKeyPath();
   swift_getKeyPath();
   sub_274050E78();
@@ -50,7 +50,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_274050E68();
 
   if (v6)
@@ -66,9 +66,9 @@
   return v4;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = sub_2740517D8();
     v6 = v5;
@@ -80,7 +80,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_27403E520(v4, v6);
   swift_getKeyPath();
   swift_getKeyPath();
@@ -91,16 +91,16 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_274050E68();
 
   return v5;
 }
 
-- (void)setConnectionState:(int64_t)a3
+- (void)setConnectionState:(int64_t)state
 {
-  v4 = self;
-  sub_27403EB84(a3);
+  selfCopy = self;
+  sub_27403EB84(state);
   swift_getKeyPath();
   swift_getKeyPath();
   sub_274050E78();
@@ -110,16 +110,16 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_274050E68();
 
   return v5;
 }
 
-- (void)setProblematicConnection:(BOOL)a3
+- (void)setProblematicConnection:(BOOL)connection
 {
-  v4 = self;
-  sub_27403F0F0(a3);
+  selfCopy = self;
+  sub_27403F0F0(connection);
   swift_getKeyPath();
   swift_getKeyPath();
   sub_274050E78();
@@ -129,16 +129,16 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_274050E68();
 
   return v5;
 }
 
-- (void)setSignalBars:(unint64_t)a3
+- (void)setSignalBars:(unint64_t)bars
 {
-  v4 = self;
-  sub_27403F65C(a3);
+  selfCopy = self;
+  sub_27403F65C(bars);
   swift_getKeyPath();
   swift_getKeyPath();
   sub_274050E78();
@@ -151,11 +151,11 @@
   return *(self + v3);
 }
 
-- (void)setContext:(unint64_t)a3
+- (void)setContext:(unint64_t)context
 {
   v5 = OBJC_IVAR___WFNetworkRowConfig_context;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = context;
 }
 
 - (BOOL)hideConnectionState
@@ -165,11 +165,11 @@
   return *(self + v3);
 }
 
-- (void)setHideConnectionState:(BOOL)a3
+- (void)setHideConnectionState:(BOOL)state
 {
   v5 = OBJC_IVAR___WFNetworkRowConfig_hideConnectionState;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = state;
 }
 
 - (BOOL)showInfoButton
@@ -179,11 +179,11 @@
   return *(self + v3);
 }
 
-- (void)setShowInfoButton:(BOOL)a3
+- (void)setShowInfoButton:(BOOL)button
 {
   v5 = OBJC_IVAR___WFNetworkRowConfig_showInfoButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (BOOL)isEditable
@@ -193,11 +193,11 @@
   return *(self + v3);
 }
 
-- (void)setIsEditable:(BOOL)a3
+- (void)setIsEditable:(BOOL)editable
 {
   v5 = OBJC_IVAR___WFNetworkRowConfig_isEditable;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = editable;
 }
 
 - (id)infoButtonHandler
@@ -224,9 +224,9 @@
   return v4;
 }
 
-- (void)setInfoButtonHandler:(id)a3
+- (void)setInfoButtonHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -245,7 +245,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_2740368EC(v7);
 }
 

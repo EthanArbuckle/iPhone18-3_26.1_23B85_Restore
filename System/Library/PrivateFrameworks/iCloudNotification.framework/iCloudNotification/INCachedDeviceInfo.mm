@@ -1,20 +1,20 @@
 @interface INCachedDeviceInfo
 + (id)currentDeviceInfo;
-- (INCachedDeviceInfo)initWithDeviceInfo:(id)a3;
+- (INCachedDeviceInfo)initWithDeviceInfo:(id)info;
 - (NSString)deviceEnclosureColor;
 - (NSString)mobileEquipmentIdentifier;
 @end
 
 @implementation INCachedDeviceInfo
 
-- (INCachedDeviceInfo)initWithDeviceInfo:(id)a3
+- (INCachedDeviceInfo)initWithDeviceInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = [(INCachedDeviceInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceInfo, a3);
+    objc_storeStrong(&v6->_deviceInfo, info);
   }
 
   return v7;
@@ -37,9 +37,9 @@
   mobileEquipmentIdentifier = self->_mobileEquipmentIdentifier;
   if (!mobileEquipmentIdentifier)
   {
-    v4 = [(AADeviceInfo *)self->_deviceInfo mobileEquipmentIdentifier];
+    mobileEquipmentIdentifier = [(AADeviceInfo *)self->_deviceInfo mobileEquipmentIdentifier];
     v5 = self->_mobileEquipmentIdentifier;
-    self->_mobileEquipmentIdentifier = v4;
+    self->_mobileEquipmentIdentifier = mobileEquipmentIdentifier;
 
     mobileEquipmentIdentifier = self->_mobileEquipmentIdentifier;
   }
@@ -52,9 +52,9 @@
   deviceEnclosureColor = self->_deviceEnclosureColor;
   if (!deviceEnclosureColor)
   {
-    v4 = [(AADeviceInfo *)self->_deviceInfo deviceEnclosureColor];
+    deviceEnclosureColor = [(AADeviceInfo *)self->_deviceInfo deviceEnclosureColor];
     v5 = self->_deviceEnclosureColor;
-    self->_deviceEnclosureColor = v4;
+    self->_deviceEnclosureColor = deviceEnclosureColor;
 
     deviceEnclosureColor = self->_deviceEnclosureColor;
   }

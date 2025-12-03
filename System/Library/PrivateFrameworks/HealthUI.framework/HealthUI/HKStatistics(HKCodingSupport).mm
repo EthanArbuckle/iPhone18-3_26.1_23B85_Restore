@@ -38,48 +38,48 @@
     if ([v3 hasAverageQuantity])
     {
       v8 = MEMORY[0x1E696C348];
-      v9 = [v3 averageQuantity];
-      v10 = [v8 createWithCodableQuantity:v9];
+      averageQuantity = [v3 averageQuantity];
+      v10 = [v8 createWithCodableQuantity:averageQuantity];
       [v6 setAverageQuantity:v10];
     }
 
     if ([v3 hasMinQuantity])
     {
       v11 = MEMORY[0x1E696C348];
-      v12 = [v3 minQuantity];
-      v13 = [v11 createWithCodableQuantity:v12];
+      minQuantity = [v3 minQuantity];
+      v13 = [v11 createWithCodableQuantity:minQuantity];
       [v6 setMinimumQuantity:v13];
     }
 
     if ([v3 hasMaxQuantity])
     {
       v14 = MEMORY[0x1E696C348];
-      v15 = [v3 maxQuantity];
-      v16 = [v14 createWithCodableQuantity:v15];
+      maxQuantity = [v3 maxQuantity];
+      v16 = [v14 createWithCodableQuantity:maxQuantity];
       [v6 setMaximumQuantity:v16];
     }
 
     if ([v3 hasMostRecentQuantity])
     {
       v17 = MEMORY[0x1E696C348];
-      v18 = [v3 mostRecentQuantity];
-      v19 = [v17 createWithCodableQuantity:v18];
+      mostRecentQuantity = [v3 mostRecentQuantity];
+      v19 = [v17 createWithCodableQuantity:mostRecentQuantity];
       [v6 setMostRecentQuantity:v19];
     }
 
     if ([v3 hasSumQuantity])
     {
       v20 = MEMORY[0x1E696C348];
-      v21 = [v3 sumQuantity];
-      v22 = [v20 createWithCodableQuantity:v21];
+      sumQuantity = [v3 sumQuantity];
+      v22 = [v20 createWithCodableQuantity:sumQuantity];
       [v6 setSumQuantity:v22];
     }
 
     if ([v3 hasDurationQuantity])
     {
       v23 = MEMORY[0x1E696C348];
-      v24 = [v3 durationQuantity];
-      v25 = [v23 createWithCodableQuantity:v24];
+      durationQuantity = [v3 durationQuantity];
+      v25 = [v23 createWithCodableQuantity:durationQuantity];
       [v6 setDuration:v25];
     }
 
@@ -100,47 +100,47 @@
 - (HKCodableStatistics)codableStatistics
 {
   v2 = objc_alloc_init(HKCodableStatistics);
-  v3 = [a1 quantityType];
-  -[HKCodableStatistics setDataType:](v2, "setDataType:", [v3 code]);
+  quantityType = [self quantityType];
+  -[HKCodableStatistics setDataType:](v2, "setDataType:", [quantityType code]);
 
-  v4 = [a1 startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableStatistics *)v2 setStartDate:?];
 
-  v5 = [a1 endDate];
-  [v5 timeIntervalSinceReferenceDate];
+  endDate = [self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKCodableStatistics *)v2 setEndDate:?];
 
-  v6 = [a1 averageQuantity];
-  v7 = [v6 codableRepresentation];
-  [(HKCodableStatistics *)v2 setAverageQuantity:v7];
+  averageQuantity = [self averageQuantity];
+  codableRepresentation = [averageQuantity codableRepresentation];
+  [(HKCodableStatistics *)v2 setAverageQuantity:codableRepresentation];
 
-  v8 = [a1 minimumQuantity];
-  v9 = [v8 codableRepresentation];
-  [(HKCodableStatistics *)v2 setMinQuantity:v9];
+  minimumQuantity = [self minimumQuantity];
+  codableRepresentation2 = [minimumQuantity codableRepresentation];
+  [(HKCodableStatistics *)v2 setMinQuantity:codableRepresentation2];
 
-  v10 = [a1 maximumQuantity];
-  v11 = [v10 codableRepresentation];
-  [(HKCodableStatistics *)v2 setMaxQuantity:v11];
+  maximumQuantity = [self maximumQuantity];
+  codableRepresentation3 = [maximumQuantity codableRepresentation];
+  [(HKCodableStatistics *)v2 setMaxQuantity:codableRepresentation3];
 
-  v12 = [a1 mostRecentQuantity];
-  v13 = [v12 codableRepresentation];
-  [(HKCodableStatistics *)v2 setMostRecentQuantity:v13];
+  mostRecentQuantity = [self mostRecentQuantity];
+  codableRepresentation4 = [mostRecentQuantity codableRepresentation];
+  [(HKCodableStatistics *)v2 setMostRecentQuantity:codableRepresentation4];
 
-  v14 = [a1 sumQuantity];
-  v15 = [v14 codableRepresentation];
-  [(HKCodableStatistics *)v2 setSumQuantity:v15];
+  sumQuantity = [self sumQuantity];
+  codableRepresentation5 = [sumQuantity codableRepresentation];
+  [(HKCodableStatistics *)v2 setSumQuantity:codableRepresentation5];
 
-  v16 = [a1 duration];
-  v17 = [v16 codableRepresentation];
-  [(HKCodableStatistics *)v2 setDurationQuantity:v17];
+  duration = [self duration];
+  codableRepresentation6 = [duration codableRepresentation];
+  [(HKCodableStatistics *)v2 setDurationQuantity:codableRepresentation6];
 
-  -[HKCodableStatistics setDataCount:](v2, "setDataCount:", [a1 dataCount]);
-  v18 = [a1 baselineRelativeValueState];
-  v19 = v18;
-  if (v18)
+  -[HKCodableStatistics setDataCount:](v2, "setDataCount:", [self dataCount]);
+  baselineRelativeValueState = [self baselineRelativeValueState];
+  v19 = baselineRelativeValueState;
+  if (baselineRelativeValueState)
   {
-    -[HKCodableStatistics setBaselineRelativeValueState:](v2, "setBaselineRelativeValueState:", [v18 integerValue]);
+    -[HKCodableStatistics setBaselineRelativeValueState:](v2, "setBaselineRelativeValueState:", [baselineRelativeValueState integerValue]);
   }
 
   return v2;

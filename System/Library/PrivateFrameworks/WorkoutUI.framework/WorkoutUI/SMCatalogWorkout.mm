@@ -13,7 +13,7 @@
 
 - (SMContributor)narrator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkoutBridge.narrator.getter();
 
   return v3;
@@ -21,7 +21,7 @@
 
 - (NSSet)artwork
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkout.artwork.getter();
   v4 = _sSlsE3mapySayqd__Gqd__7ElementQzqd_0_YKXEqd_0_YKs5ErrorRd_0_r0_lFShy11SeymourCore7ArtworkVG_9WorkoutUI0F6BridgeCs5NeverOTg503_s9g13UI07CatalogA6i16C7artworkShyAA07f10D0CGvgAF11D13Core0F0VXEfU_Tf1cn_nTm(v3, MEMORY[0x277D53A78], type metadata accessor for ArtworkBridge, &OBJC_IVAR___SMArtwork_artwork);
 
@@ -36,7 +36,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   CatalogWorkout.duration.getter();
   v4 = v3;
 
@@ -45,7 +45,7 @@
 
 - (NSArray)musicTracks
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkout.musicTracks.getter();
   _sSlsE3mapySayqd__Gqd__7ElementQzqd_0_YKXEqd_0_YKs5ErrorRd_0_r0_lFShy11SeymourCore7ArtworkVG_9WorkoutUI0F6BridgeCs5NeverOTg503_s9g13UI07CatalogA6i16C7artworkShyAA07f10D0CGvgAF11D13Core0F0VXEfU_Tf1cn_nTm(v3, MEMORY[0x277D4FEC8], type metadata accessor for MusicTrackBridge, &OBJC_IVAR___SMMusicTrack_musicTrack);
 
@@ -60,7 +60,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v14 - v4;
-  v6 = self;
+  selfCopy = self;
   CatalogWorkout.musicPlaylistURL.getter();
 
   v7 = type metadata accessor for URL();
@@ -80,7 +80,7 @@
 
 - (NSSet)mediaMoments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkout.mediaMoments.getter();
   v4 = _sSlsE3mapySayqd__Gqd__7ElementQzqd_0_YKXEqd_0_YKs5ErrorRd_0_r0_lFShy11SeymourCore7ArtworkVG_9WorkoutUI0F6BridgeCs5NeverOTg503_s9g13UI07CatalogA6i16C7artworkShyAA07f10D0CGvgAF11D13Core0F0VXEfU_Tf1cn_nTm(v3, MEMORY[0x277D50018], type metadata accessor for MediaMomentBridge, &OBJC_IVAR___SMMediaMoment_mediaMoment);
 
@@ -95,7 +95,7 @@
 
 - (NSNumber)mediaTypeRawValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkoutBridge.mediaTypeRawValue.getter();
 
   return v3;

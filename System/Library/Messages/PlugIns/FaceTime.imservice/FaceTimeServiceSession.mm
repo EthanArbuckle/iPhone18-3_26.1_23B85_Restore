@@ -1,25 +1,25 @@
 @interface FaceTimeServiceSession
 + (void)initialize;
-- (BOOL)_anyPeersForConferenceIDMayRequireBreakBeforeMake:(id)a3;
-- (BOOL)_checkBadPushToken:(id)a3;
+- (BOOL)_anyPeersForConferenceIDMayRequireBreakBeforeMake:(id)make;
+- (BOOL)_checkBadPushToken:(id)token;
 - (BOOL)_hasOutgoingInvitationInFlight;
 - (BOOL)_hasOutgoingRelayInitiateInFlight;
-- (BOOL)_hasPeersForPeerID:(id)a3 conferenceID:(id)a4;
+- (BOOL)_hasPeersForPeerID:(id)d conferenceID:(id)iD;
 - (BOOL)_registrationSupportedForRegistration;
 - (BOOL)_validRegistrationStateToAcceptCalls;
 - (BOOL)_validRegistrationStateToMakeCalls;
-- (BOOL)queue:(id)a3 shouldInvoke:(id)a4;
-- (FaceTimeServiceSession)initWithAccount:(id)a3 service:(id)a4;
+- (BOOL)queue:(id)queue shouldInvoke:(id)invoke;
+- (FaceTimeServiceSession)initWithAccount:(id)account service:(id)service;
 - (__SecKey)callerPrivateKey;
-- (double)_messageTimeoutTimeForMessage:(id)a3;
-- (id)_displayIDForPeerID:(id)a3 conferenceID:(id)a4;
-- (id)_peerIDForDiplayID:(id)a3 conferenceID:(id)a4;
-- (id)_peerIDPushTokenPairsForConferenceID:(id)a3;
-- (id)_peerIDPushTokensPairsForPeerID:(id)a3 conferenceID:(id)a4 skippingPairs:(id)a5;
-- (id)_peerIDsForDiplayID:(id)a3 conferenceID:(id)a4;
-- (id)_peerInfoForDisplayID:(id)a3 conferenceID:(id)a4 skippingPairs:(id)a5;
-- (id)_pushTokenForPeerID:(id)a3 conferenceID:(id)a4;
-- (id)_pushTokensForPeerID:(id)a3 conferenceID:(id)a4;
+- (double)_messageTimeoutTimeForMessage:(id)message;
+- (id)_displayIDForPeerID:(id)d conferenceID:(id)iD;
+- (id)_peerIDForDiplayID:(id)d conferenceID:(id)iD;
+- (id)_peerIDPushTokenPairsForConferenceID:(id)d;
+- (id)_peerIDPushTokensPairsForPeerID:(id)d conferenceID:(id)iD skippingPairs:(id)pairs;
+- (id)_peerIDsForDiplayID:(id)d conferenceID:(id)iD;
+- (id)_peerInfoForDisplayID:(id)d conferenceID:(id)iD skippingPairs:(id)pairs;
+- (id)_pushTokenForPeerID:(id)d conferenceID:(id)iD;
+- (id)_pushTokensForPeerID:(id)d conferenceID:(id)iD;
 - (id)idsAccounts;
 - (id)loggingName;
 - (id)phoneNumber;
@@ -29,36 +29,36 @@
 - (id)regionServerContext;
 - (id)registeredURIs;
 - (id)userID;
-- (int)_callTypeForConferenceID:(id)a3;
-- (unint64_t)queue:(id)a3 optionsForInvocation:(id)a4;
-- (void)_cancelOtherInvitesForPeerID:(id)a3 skipPairs:(id)a4 properties:(id)a5 conference:(id)a6 reason:(id)a7;
-- (void)_cancelVCRequestWithPerson:(id)a3 properties:(id)a4 conference:(id)a5 pairsToSkip:(id)a6 reason:(id)a7;
+- (int)_callTypeForConferenceID:(id)d;
+- (unint64_t)queue:(id)queue optionsForInvocation:(id)invocation;
+- (void)_cancelOtherInvitesForPeerID:(id)d skipPairs:(id)pairs properties:(id)properties conference:(id)conference reason:(id)reason;
+- (void)_cancelVCRequestWithPerson:(id)person properties:(id)properties conference:(id)conference pairsToSkip:(id)skip reason:(id)reason;
 - (void)_logLocalInfo;
 - (void)_purgeMap;
-- (void)_retargetPeerID:(id)a3 displayID:(id)a4 pushToken:(id)a5 conferenceID:(id)a6;
-- (void)_setAlternateDisplayID:(id)a3 forPeerID:(id)a4 conferenceID:(id)a5;
-- (void)_setConferenceIDMap:(id)a3 forToken:(id)a4;
-- (void)_setInitiatedConference:(id)a3;
-- (void)_setPeerInfo:(id)a3 conferenceID:(id)a4;
+- (void)_retargetPeerID:(id)d displayID:(id)iD pushToken:(id)token conferenceID:(id)conferenceID;
+- (void)_setAlternateDisplayID:(id)d forPeerID:(id)iD conferenceID:(id)conferenceID;
+- (void)_setConferenceIDMap:(id)map forToken:(id)token;
+- (void)_setInitiatedConference:(id)conference;
+- (void)_setPeerInfo:(id)info conferenceID:(id)d;
 - (void)_setPurgeTimer;
 - (void)dealloc;
-- (void)handler:(id)a3 incomingMessage:(id)a4 topic:(id)a5 peerID:(id)a6 reason:(id)a7 clientInfo:(id)a8 serviceData:(id)a9;
-- (void)handler:(id)a3 peerDisplay:(id)a4 topic:(id)a5 myID:(id)a6 sessionInitated:(id)a7 clientInfo:(id)a8 peerID:(id)a9 peerPushToken:(id)a10;
-- (void)handler:(id)a3 relayCancelled:(id)a4 topic:(id)a5 peerID:(id)a6 relayType:(id)a7 relayTokenAllocReq:(id)a8 relayConnectionID:(id)value relayTransactionIDAlloc:(id)a10 relayCandidateID:(id)a11 myRelayIP:(id)a12 myRelayPort:(id)a13 peerRelayIP:(id)a14 peerRelayPort:(id)a15 reason:(id)a16 clientInfo:(id)a17 serviceData:(id)a18;
-- (void)handler:(id)a3 relayInitiated:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 relayType:(id)a8 relayConnectionID:(id)value relayTransactionIDAlloc:(id)a10 relayTokenAllocReq:(id)a11 relayCandidateID:(id)a12 myRelayIP:(id)a13 myRelayPort:(id)a14 peerRelayIP:(id)a15 peerRelayPort:(id)a16 clientInfo:(id)a17 serviceData:(id)a18;
-- (void)handler:(id)a3 relayUpdated:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 relayType:(id)a8 relayConnectionID:(id)value relayTransactionIDChannelBind:(id)a10 relayTokenChannelBind:(id)a11 relayCandidateID:(id)a12 relayBlob:(id)a13 peerRelayNATIP:(id)a14 peerRelayNATPort:(id)a15 clientInfo:(id)a16 serviceData:(id)a17;
-- (void)handler:(id)a3 sessionAccepted:(id)a4 topic:(id)a5 peerID:(id)a6 peerCN:(id)a7 peerPushToken:(id)a8 peerNATType:(id)a9 peerBlob:(id)a10 peerNatIP:(id)a11 relayType:(id)a12 relayConnectionID:(id)a13 relayTransactionIDAlloc:(id)a14 relayTokenAllocReq:(id)a15 myRelayIP:(id)a16 myRelayPort:(id)a17 peerRelayIP:(id)a18 peerRelayPort:(id)a19 clientInfo:(id)a20 serviceData:(id)a21;
-- (void)handler:(id)a3 sessionCancelled:(id)a4 topic:(id)a5 peerID:(id)a6 reason:(id)a7 clientInfo:(id)a8 serviceData:(id)a9;
-- (void)handler:(id)a3 sessionInitated:(id)a4 topic:(id)a5 myID:(id)a6 peerID:(id)a7 peerDisplayID:(id)a8 peerCN:(id)a9 peerPushToken:(id)a10 peerNATType:(id)a11 peerBlob:(id)a12 peerNatIP:(id)a13 clientInfo:(id)a14 serviceData:(id)a15;
-- (void)handler:(id)a3 sessionRejected:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 reason:(id)a8 clientInfo:(id)a9 serviceData:(id)a10;
+- (void)handler:(id)handler incomingMessage:(id)message topic:(id)topic peerID:(id)d reason:(id)reason clientInfo:(id)info serviceData:(id)data;
+- (void)handler:(id)handler peerDisplay:(id)display topic:(id)topic myID:(id)d sessionInitated:(id)initated clientInfo:(id)info peerID:(id)iD peerPushToken:(id)self0;
+- (void)handler:(id)handler relayCancelled:(id)cancelled topic:(id)topic peerID:(id)d relayType:(id)type relayTokenAllocReq:(id)req relayConnectionID:(id)value relayTransactionIDAlloc:(id)self0 relayCandidateID:(id)self1 myRelayIP:(id)self2 myRelayPort:(id)self3 peerRelayIP:(id)self4 peerRelayPort:(id)self5 reason:(id)self6 clientInfo:(id)self7 serviceData:(id)self8;
+- (void)handler:(id)handler relayInitiated:(id)initiated topic:(id)topic peerID:(id)d peerPushToken:(id)token relayType:(id)type relayConnectionID:(id)value relayTransactionIDAlloc:(id)self0 relayTokenAllocReq:(id)self1 relayCandidateID:(id)self2 myRelayIP:(id)self3 myRelayPort:(id)self4 peerRelayIP:(id)self5 peerRelayPort:(id)self6 clientInfo:(id)self7 serviceData:(id)self8;
+- (void)handler:(id)handler relayUpdated:(id)updated topic:(id)topic peerID:(id)d peerPushToken:(id)token relayType:(id)type relayConnectionID:(id)value relayTransactionIDChannelBind:(id)self0 relayTokenChannelBind:(id)self1 relayCandidateID:(id)self2 relayBlob:(id)self3 peerRelayNATIP:(id)self4 peerRelayNATPort:(id)self5 clientInfo:(id)self6 serviceData:(id)self7;
+- (void)handler:(id)handler sessionAccepted:(id)accepted topic:(id)topic peerID:(id)d peerCN:(id)n peerPushToken:(id)token peerNATType:(id)type peerBlob:(id)self0 peerNatIP:(id)self1 relayType:(id)self2 relayConnectionID:(id)self3 relayTransactionIDAlloc:(id)self4 relayTokenAllocReq:(id)self5 myRelayIP:(id)self6 myRelayPort:(id)self7 peerRelayIP:(id)self8 peerRelayPort:(id)self9 clientInfo:(id)info serviceData:(id)data;
+- (void)handler:(id)handler sessionCancelled:(id)cancelled topic:(id)topic peerID:(id)d reason:(id)reason clientInfo:(id)info serviceData:(id)data;
+- (void)handler:(id)handler sessionInitated:(id)initated topic:(id)topic myID:(id)d peerID:(id)iD peerDisplayID:(id)displayID peerCN:(id)n peerPushToken:(id)self0 peerNATType:(id)self1 peerBlob:(id)self2 peerNatIP:(id)self3 clientInfo:(id)self4 serviceData:(id)self5;
+- (void)handler:(id)handler sessionRejected:(id)rejected topic:(id)topic peerID:(id)d peerPushToken:(id)token reason:(id)reason clientInfo:(id)info serviceData:(id)self0;
 - (void)refreshRegistration;
 - (void)refreshServiceCapabilities;
-- (void)relay:(id)a3 sendCancel:(id)a4 toPerson:(id)a5;
-- (void)relay:(id)a3 sendInitateRequest:(id)a4 toPerson:(id)a5;
-- (void)relay:(id)a3 sendUpdate:(id)a4 toPerson:(id)a5;
-- (void)requestVCWithPerson:(id)a3 properties:(id)a4 conference:(id)a5;
-- (void)respondToVCInvitationWithPerson:(id)a3 properties:(id)a4 conference:(id)a5;
-- (void)sessionWillBecomeInactiveWithAccount:(id)a3;
+- (void)relay:(id)relay sendCancel:(id)cancel toPerson:(id)person;
+- (void)relay:(id)relay sendInitateRequest:(id)request toPerson:(id)person;
+- (void)relay:(id)relay sendUpdate:(id)update toPerson:(id)person;
+- (void)requestVCWithPerson:(id)person properties:(id)properties conference:(id)conference;
+- (void)respondToVCInvitationWithPerson:(id)person properties:(id)properties conference:(id)conference;
+- (void)sessionWillBecomeInactiveWithAccount:(id)account;
 @end
 
 @implementation FaceTimeServiceSession
@@ -105,13 +105,13 @@
   MEMORY[0x2821F9670](self, sel_performSelector_withObject_afterDelay_, sel__purgeMap, 0, v3);
 }
 
-- (void)_setPeerInfo:(id)a3 conferenceID:(id)a4
+- (void)_setPeerInfo:(id)info conferenceID:(id)d
 {
   v79 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (info && d)
   {
     v8 = qword_2814228A0;
-    v9 = objc_msgSend_GUID(self, a2, a3, a4, v4);
+    v9 = objc_msgSend_GUID(self, a2, info, d, v4);
     if (!objc_msgSend_objectForKey_(v8, v10, v9, v11, v12))
     {
       v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -149,16 +149,16 @@
     v60 = qword_2814228A0;
     v61 = objc_msgSend_GUID(self, v36, v37, v38, v39);
     v65 = objc_msgSend_objectForKey_(v60, v62, v61, v63, v64);
-    objc_msgSend_setObject_forKey_(v65, v66, a3, a4, v67);
+    objc_msgSend_setObject_forKey_(v65, v66, info, d, v67);
     if (IMOSLoggingEnabled())
     {
       v68 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *v78 = a3;
+        *v78 = info;
         *&v78[8] = 2112;
-        *&v78[10] = a4;
+        *&v78[10] = d;
         _os_log_impl(&dword_23BC9F000, v68, OS_LOG_TYPE_INFO, "Setting peer info: %@  for cid: %@", buf, 0x16u);
       }
     }
@@ -167,9 +167,9 @@
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v78 = a3;
+      *v78 = info;
       *&v78[8] = 2112;
-      *&v78[10] = a4;
+      *&v78[10] = d;
       _os_log_impl(&dword_23BC9F000, v69, OS_LOG_TYPE_DEFAULT, "Setting peer info: %@  for cid: %@", buf, 0x16u);
     }
 
@@ -177,26 +177,26 @@
     {
       if (MarcoShouldLog())
       {
-        v75 = a3;
-        v76 = a4;
+        infoCopy2 = info;
+        dCopy2 = d;
         MarcoLog();
       }
 
       if (IMShouldLog())
       {
-        v75 = a3;
-        v76 = a4;
+        infoCopy2 = info;
+        dCopy2 = d;
         IMLogString();
       }
     }
 
-    objc_msgSend__setPurgeTimer(self, v70, v71, v72, v73, v75, v76);
+    objc_msgSend__setPurgeTimer(self, v70, v71, v72, v73, infoCopy2, dCopy2);
   }
 
   v74 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasPeersForPeerID:(id)a3 conferenceID:(id)a4
+- (BOOL)_hasPeersForPeerID:(id)d conferenceID:(id)iD
 {
   v65 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -205,9 +205,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v62 = a3;
+      dCopy2 = d;
       v63 = 2112;
-      v64 = a4;
+      iDCopy = iD;
       _os_log_impl(&dword_23BC9F000, v7, OS_LOG_TYPE_INFO, "Checking peers with peerID %@ conferenceID %@", buf, 0x16u);
     }
   }
@@ -219,7 +219,7 @@
     {
       v13 = objc_msgSend_GUID(self, v9, v10, v11, v12);
       *buf = 138412290;
-      v62 = v13;
+      dCopy2 = v13;
       _os_log_impl(&dword_23BC9F000, v8, OS_LOG_TYPE_INFO, "My GUID: %@", buf, 0xCu);
     }
   }
@@ -230,7 +230,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v62 = qword_2814228A0;
+      dCopy2 = qword_2814228A0;
       _os_log_impl(&dword_23BC9F000, v14, OS_LOG_TYPE_INFO, "Conference maps %@", buf, 0xCu);
     }
   }
@@ -244,7 +244,7 @@
       v21 = objc_msgSend_GUID(self, v15, v16, v17, v18);
       v25 = objc_msgSend_objectForKey_(v20, v22, v21, v23, v24);
       *buf = 138412290;
-      v62 = v25;
+      dCopy2 = v25;
       _os_log_impl(&dword_23BC9F000, v19, OS_LOG_TYPE_INFO, "Looking for peer in map %@", buf, 0xCu);
     }
   }
@@ -252,7 +252,7 @@
   v26 = qword_2814228A0;
   v27 = objc_msgSend_GUID(self, v15, v16, v17, v18);
   v31 = objc_msgSend_objectForKey_(v26, v28, v27, v29, v30);
-  v35 = objc_msgSend_objectForKey_(v31, v32, a4, v33, v34);
+  v35 = objc_msgSend_objectForKey_(v31, v32, iD, v33, v34);
   if (!v35)
   {
     goto LABEL_32;
@@ -264,7 +264,7 @@
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v62 = v35;
+      dCopy2 = v35;
       _os_log_impl(&dword_23BC9F000, v37, OS_LOG_TYPE_INFO, "Peers %@", buf, 0xCu);
     }
   }
@@ -295,7 +295,7 @@
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v62 = v42;
+            dCopy2 = v42;
             _os_log_impl(&dword_23BC9F000, v46, OS_LOG_TYPE_INFO, "Peer info %@", buf, 0xCu);
           }
         }
@@ -307,14 +307,14 @@
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
           {
             *buf = v55;
-            v62 = a3;
+            dCopy2 = d;
             v63 = 2112;
-            v64 = v47;
+            iDCopy = v47;
             _os_log_impl(&dword_23BC9F000, v51, OS_LOG_TYPE_INFO, "Comparing %@ to %@", buf, 0x16u);
           }
         }
 
-        if (objc_msgSend_isEqualToString_(a3, v48, v47, v49, v50))
+        if (objc_msgSend_isEqualToString_(d, v48, v47, v49, v50))
         {
           result = 1;
           goto LABEL_34;
@@ -343,13 +343,13 @@ LABEL_34:
   return result;
 }
 
-- (id)_displayIDForPeerID:(id)a3 conferenceID:(id)a4
+- (id)_displayIDForPeerID:(id)d conferenceID:(id)iD
 {
   v56 = *MEMORY[0x277D85DE8];
   v7 = qword_2814228A0;
-  v8 = objc_msgSend_GUID(self, a2, a3, a4, v4);
+  v8 = objc_msgSend_GUID(self, a2, d, iD, v4);
   v12 = objc_msgSend_objectForKey_(v7, v9, v8, v10, v11);
-  v16 = objc_msgSend_objectForKey_(v12, v13, a4, v14, v15);
+  v16 = objc_msgSend_objectForKey_(v12, v13, iD, v14, v15);
   if (v16)
   {
     v18 = v16;
@@ -372,19 +372,19 @@ LABEL_34:
 
           v25 = *(*(&v47 + 1) + 8 * i);
           v26 = objc_msgSend_objectForKey_(v25, v19, @"id", v20, v21);
-          if (objc_msgSend_isEqualToString_(a3, v27, v26, v28, v29))
+          if (objc_msgSend_isEqualToString_(d, v27, v26, v28, v29))
           {
             v36 = objc_msgSend_objectForKey_(v25, v19, @"canonical-id", v20, v21);
-            v35 = objc_msgSend__stripFZIDPrefix(v36, v37, v38, v39, v40);
-            if (v35)
+            dCopy4 = objc_msgSend__stripFZIDPrefix(v36, v37, v38, v39, v40);
+            if (dCopy4)
             {
               v41 = OSLogHandleForIDSCategory();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v53 = v35;
+                dCopy6 = dCopy4;
                 v54 = 2112;
-                v55 = a3;
+                iDCopy = d;
                 _os_log_impl(&dword_23BC9F000, v41, OS_LOG_TYPE_DEFAULT, "Found display ID: %@ for peer ID: %@", buf, 0x16u);
               }
 
@@ -407,9 +407,9 @@ LABEL_34:
                 if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412546;
-                  v53 = v35;
+                  dCopy6 = dCopy4;
                   v54 = 2112;
-                  v55 = a3;
+                  iDCopy = d;
                   _os_log_impl(&dword_23BC9F000, v42, OS_LOG_TYPE_INFO, "Found display ID: %@ for peer ID: %@", buf, 0x16u);
                 }
               }
@@ -423,12 +423,12 @@ LABEL_34:
                 if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v53 = a3;
+                  dCopy6 = d;
                   _os_log_impl(&dword_23BC9F000, v44, OS_LOG_TYPE_INFO, "Found no display ID for peer ID: %@", buf, 0xCu);
                 }
               }
 
-              v35 = a3;
+              dCopy4 = d;
             }
 
             goto LABEL_33;
@@ -451,12 +451,12 @@ LABEL_34:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v53 = a3;
+        dCopy6 = d;
         _os_log_impl(&dword_23BC9F000, v34, OS_LOG_TYPE_INFO, "Found no mapping at all for peer ID: %@", buf, 0xCu);
       }
     }
 
-    v35 = objc_msgSend__stripFZIDPrefix(a3, v30, v31, v32, v33);
+    dCopy4 = objc_msgSend__stripFZIDPrefix(d, v30, v31, v32, v33);
   }
 
   else
@@ -467,22 +467,22 @@ LABEL_34:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v53 = a3;
+        dCopy6 = d;
         v54 = 2112;
-        v55 = a4;
+        iDCopy = iD;
         _os_log_impl(&dword_23BC9F000, v43, OS_LOG_TYPE_INFO, "No peers found for peer id: %@  cid: %@", buf, 0x16u);
       }
     }
 
-    v35 = 0;
+    dCopy4 = 0;
   }
 
 LABEL_33:
   v45 = *MEMORY[0x277D85DE8];
-  return v35;
+  return dCopy4;
 }
 
-- (void)_retargetPeerID:(id)a3 displayID:(id)a4 pushToken:(id)a5 conferenceID:(id)a6
+- (void)_retargetPeerID:(id)d displayID:(id)iD pushToken:(id)token conferenceID:(id)conferenceID
 {
   v117 = *MEMORY[0x277D85DE8];
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -492,13 +492,13 @@ LABEL_33:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      *v112 = a3;
+      *v112 = d;
       *&v112[8] = 2112;
-      *&v112[10] = a4;
+      *&v112[10] = iD;
       v113 = 2112;
-      v114 = a5;
+      tokenCopy2 = token;
       v115 = 2112;
-      v116 = a6;
+      conferenceIDCopy2 = conferenceID;
       _os_log_impl(&dword_23BC9F000, v12, OS_LOG_TYPE_INFO, "Retargeting peer ID: %@   display ID: %@   token: %@   cid: %@", buf, 0x2Au);
     }
   }
@@ -507,13 +507,13 @@ LABEL_33:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    *v112 = a3;
+    *v112 = d;
     *&v112[8] = 2112;
-    *&v112[10] = a4;
+    *&v112[10] = iD;
     v113 = 2112;
-    v114 = a5;
+    tokenCopy2 = token;
     v115 = 2112;
-    v116 = a6;
+    conferenceIDCopy2 = conferenceID;
     _os_log_impl(&dword_23BC9F000, v13, OS_LOG_TYPE_DEFAULT, "Retargeting peer ID: %@   display ID: %@   token: %@   cid: %@", buf, 0x2Au);
   }
 
@@ -521,43 +521,43 @@ LABEL_33:
   {
     if (MarcoShouldLog())
     {
-      v109 = a5;
-      v110 = a6;
-      v107 = a3;
-      v108 = a4;
+      tokenCopy4 = token;
+      conferenceIDCopy4 = conferenceID;
+      dCopy2 = d;
+      iDCopy2 = iD;
       MarcoLog();
     }
 
     if (IMShouldLog())
     {
-      v109 = a5;
-      v110 = a6;
-      v107 = a3;
-      v108 = a4;
+      tokenCopy4 = token;
+      conferenceIDCopy4 = conferenceID;
+      dCopy2 = d;
+      iDCopy2 = iD;
       IMLogString();
     }
   }
 
-  if (!a4)
+  if (!iD)
   {
-    a4 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v14, a3, a6, v17);
+    iD = objc_msgSend__displayIDForPeerID_conferenceID_(self, v14, d, conferenceID, v17);
   }
 
-  v18 = objc_msgSend__FZBestGuessFZIDType(a4, v14, v15, v16, v17, v107, v108, v109, v110);
-  v22 = objc_msgSend__IDFromFZIDType_(a4, v19, v18, v20, v21);
+  v18 = objc_msgSend__FZBestGuessFZIDType(iD, v14, v15, v16, v17, dCopy2, iDCopy2, tokenCopy4, conferenceIDCopy4);
+  v22 = objc_msgSend__IDFromFZIDType_(iD, v19, v18, v20, v21);
   if (v22)
   {
     CFDictionarySetValue(v11, @"canonical-id", v22);
   }
 
-  if (a3)
+  if (d)
   {
-    CFDictionarySetValue(v11, @"id", a3);
+    CFDictionarySetValue(v11, @"id", d);
   }
 
-  if (a5)
+  if (token)
   {
-    CFDictionarySetValue(v11, @"push-token", a5);
+    CFDictionarySetValue(v11, @"push-token", token);
   }
 
   if (IMOSLoggingEnabled())
@@ -612,7 +612,7 @@ LABEL_33:
   v82 = objc_msgSend_GUID(self, v56, v57, v58, v59);
   v86 = objc_msgSend_objectForKey_(v81, v83, v82, v84, v85);
   v87 = IMSingleObjectArray();
-  objc_msgSend_setObject_forKey_(v86, v88, v87, a6, v89);
+  objc_msgSend_setObject_forKey_(v86, v88, v87, conferenceID, v89);
   if (IMOSLoggingEnabled())
   {
     v90 = OSLogHandleForIMFoundationCategory();
@@ -642,34 +642,34 @@ LABEL_33:
   v106 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAlternateDisplayID:(id)a3 forPeerID:(id)a4 conferenceID:(id)a5
+- (void)_setAlternateDisplayID:(id)d forPeerID:(id)iD conferenceID:(id)conferenceID
 {
   v86 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    if (a4)
+    if (iD)
     {
-      if (a5)
+      if (conferenceID)
       {
         v9 = qword_2814228A0;
-        v10 = objc_msgSend_GUID(self, a2, a3, a4, a5);
+        v10 = objc_msgSend_GUID(self, a2, d, iD, conferenceID);
         if (objc_msgSend_objectForKey_(v9, v11, v10, v12, v13))
         {
           v18 = qword_2814228A0;
           v19 = objc_msgSend_GUID(self, v14, v15, v16, v17);
           v23 = objc_msgSend_objectForKey_(v18, v20, v19, v21, v22);
-          v27 = objc_msgSend_objectForKey_(v23, v24, a5, v25, v26);
+          v27 = objc_msgSend_objectForKey_(v23, v24, conferenceID, v25, v26);
           if (IMOSLoggingEnabled())
           {
             v28 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              v81 = a3;
+              dCopy2 = d;
               v82 = 2112;
-              v83 = a4;
+              iDCopy2 = iD;
               v84 = 2112;
-              v85 = a5;
+              conferenceIDCopy2 = conferenceID;
               _os_log_impl(&dword_23BC9F000, v28, OS_LOG_TYPE_INFO, "Setting alternate display ID: %@ for peer ID: %@ cid: %@", buf, 0x20u);
             }
           }
@@ -678,11 +678,11 @@ LABEL_33:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v81 = a3;
+            dCopy2 = d;
             v82 = 2112;
-            v83 = a4;
+            iDCopy2 = iD;
             v84 = 2112;
-            v85 = a5;
+            conferenceIDCopy2 = conferenceID;
             _os_log_impl(&dword_23BC9F000, v29, OS_LOG_TYPE_DEFAULT, "Setting alternate display ID: %@ for peer ID: %@ cid: %@", buf, 0x20u);
           }
 
@@ -690,17 +690,17 @@ LABEL_33:
           {
             if (MarcoShouldLog())
             {
-              v73 = a4;
-              v74 = a5;
-              v72 = a3;
+              iDCopy4 = iD;
+              conferenceIDCopy4 = conferenceID;
+              dCopy4 = d;
               MarcoLog();
             }
 
             if (IMShouldLog())
             {
-              v73 = a4;
-              v74 = a5;
-              v72 = a3;
+              iDCopy4 = iD;
+              conferenceIDCopy4 = conferenceID;
+              dCopy4 = d;
               IMLogString();
             }
           }
@@ -709,7 +709,7 @@ LABEL_33:
           v78 = 0u;
           v75 = 0u;
           v76 = 0u;
-          v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v30, &v75, v79, 16, v72, v73, v74);
+          v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v30, &v75, v79, 16, dCopy4, iDCopy4, conferenceIDCopy4);
           if (v34)
           {
             v35 = *v76;
@@ -724,11 +724,11 @@ LABEL_33:
 
                 v37 = *(*(&v75 + 1) + 8 * i);
                 v38 = objc_msgSend_objectForKey_(v37, v31, @"id", v32, v33);
-                if (objc_msgSend_isEqualToString_(a4, v39, v38, v40, v41))
+                if (objc_msgSend_isEqualToString_(iD, v39, v38, v40, v41))
                 {
                   v44 = objc_msgSend_mutableCopy(v37, v31, v42, v32, v33);
                   v43 = objc_msgSend_mutableCopy(v27, v45, v46, v47, v48);
-                  CFDictionarySetValue(v44, @"alternate-display-id", a3);
+                  CFDictionarySetValue(v44, @"alternate-display-id", d);
                   objc_msgSend_removeObjectIdenticalTo_(v43, v49, v37, v50, v51);
                   objc_msgSend_addObject_(v43, v52, v44, v53, v54);
 
@@ -737,7 +737,7 @@ LABEL_33:
                     v59 = qword_2814228A0;
                     v60 = objc_msgSend_GUID(self, v55, v56, v57, v58);
                     v64 = objc_msgSend_objectForKey_(v59, v61, v60, v62, v63);
-                    objc_msgSend_setObject_forKey_(v64, v65, v43, a5, v66);
+                    objc_msgSend_setObject_forKey_(v64, v65, v43, conferenceID, v66);
                   }
 
                   goto LABEL_26;
@@ -766,13 +766,13 @@ LABEL_26:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_anyPeersForConferenceIDMayRequireBreakBeforeMake:(id)a3
+- (BOOL)_anyPeersForConferenceIDMayRequireBreakBeforeMake:(id)make
 {
   v46 = *MEMORY[0x277D85DE8];
   v6 = qword_2814228A0;
-  v7 = objc_msgSend_GUID(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_GUID(self, a2, make, v3, v4);
   v11 = objc_msgSend_objectForKey_(v6, v8, v7, v9, v10);
-  v15 = objc_msgSend_objectForKey_(v11, v12, a3, v13, v14);
+  v15 = objc_msgSend_objectForKey_(v11, v12, make, v13, v14);
   if (!v15)
   {
     if (IMOSLoggingEnabled())
@@ -781,7 +781,7 @@ LABEL_26:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v45 = a3;
+        makeCopy = make;
         _os_log_impl(&dword_23BC9F000, v36, OS_LOG_TYPE_INFO, "No peers found for cid: %@", buf, 0xCu);
       }
     }
@@ -824,7 +824,7 @@ LABEL_17:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v45 = v29;
+            makeCopy = v29;
             _os_log_impl(&dword_23BC9F000, v35, OS_LOG_TYPE_INFO, "Peer: %@   requires break before make!", buf, 0xCu);
           }
         }
@@ -853,16 +853,16 @@ LABEL_19:
   return v34;
 }
 
-- (id)_peerIDPushTokenPairsForConferenceID:(id)a3
+- (id)_peerIDPushTokenPairsForConferenceID:(id)d
 {
   v65 = *MEMORY[0x277D85DE8];
   v6 = qword_2814228A0;
-  v7 = objc_msgSend_GUID(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_GUID(self, a2, d, v3, v4);
   v11 = objc_msgSend_objectForKey_(v6, v8, v7, v9, v10);
-  v15 = objc_msgSend_objectForKey_(v11, v12, a3, v13, v14);
+  v15 = objc_msgSend_objectForKey_(v11, v12, d, v13, v14);
   if (v15)
   {
-    v55 = a3;
+    dCopy = d;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -906,7 +906,7 @@ LABEL_19:
               if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v61 = v32;
+                dCopy2 = v32;
                 v62 = 2112;
                 v63 = v27;
                 _os_log_impl(&dword_23BC9F000, v36, OS_LOG_TYPE_INFO, "Found token: %@ for peer ID: %@", buf, 0x16u);
@@ -917,7 +917,7 @@ LABEL_19:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v61 = v32;
+              dCopy2 = v32;
               v62 = 2112;
               v63 = v27;
               _os_log_impl(&dword_23BC9F000, v37, OS_LOG_TYPE_DEFAULT, "Found token: %@ for peer ID: %@", buf, 0x16u);
@@ -954,7 +954,7 @@ LABEL_19:
               if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v61 = v32;
+                dCopy2 = v32;
                 v62 = 2112;
                 v63 = v27;
                 _os_log_impl(&dword_23BC9F000, v46, OS_LOG_TYPE_INFO, "Peer didn't have a token %@ or peer ID: %@", buf, 0x16u);
@@ -965,7 +965,7 @@ LABEL_19:
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v61 = v32;
+              dCopy2 = v32;
               v62 = 2112;
               v63 = v27;
               _os_log_impl(&dword_23BC9F000, v47, OS_LOG_TYPE_DEFAULT, "Peer didn't have a token %@ or peer ID: %@", buf, 0x16u);
@@ -1002,7 +1002,7 @@ LABEL_19:
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v61 = v55;
+        dCopy2 = dCopy;
         _os_log_impl(&dword_23BC9F000, v48, OS_LOG_TYPE_DEFAULT, "Couldn't build peerID to push token map for cid: %@", buf, 0xCu);
       }
 
@@ -1025,7 +1025,7 @@ LABEL_19:
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v61 = v55;
+          dCopy2 = dCopy;
           _os_log_impl(&dword_23BC9F000, v49, OS_LOG_TYPE_INFO, "Couldn't build peerID to push token map for cid: %@", buf, 0xCu);
         }
       }
@@ -1042,7 +1042,7 @@ LABEL_19:
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v61 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_23BC9F000, v51, OS_LOG_TYPE_INFO, "No peers found for cid: %@", buf, 0xCu);
       }
     }
@@ -1054,13 +1054,13 @@ LABEL_19:
   return result;
 }
 
-- (id)_pushTokensForPeerID:(id)a3 conferenceID:(id)a4
+- (id)_pushTokensForPeerID:(id)d conferenceID:(id)iD
 {
   v57 = *MEMORY[0x277D85DE8];
   v7 = qword_2814228A0;
-  v8 = objc_msgSend_GUID(self, a2, a3, a4, v4);
+  v8 = objc_msgSend_GUID(self, a2, d, iD, v4);
   v12 = objc_msgSend_objectForKey_(v7, v9, v8, v10, v11);
-  v16 = objc_msgSend_objectForKey_(v12, v13, a4, v14, v15);
+  v16 = objc_msgSend_objectForKey_(v12, v13, iD, v14, v15);
   if (v16)
   {
     v18 = v16;
@@ -1083,8 +1083,8 @@ LABEL_19:
           }
 
           v27 = *(*(&v48 + 1) + 8 * i);
-          v28 = objc_msgSend_objectForKey_(v27, v20, @"id", v22, v23, v46);
-          if (objc_msgSend_isEqualToString_(a3, v29, v28, v30, v31))
+          v28 = objc_msgSend_objectForKey_(v27, v20, @"id", v22, v23, dCopy8);
+          if (objc_msgSend_isEqualToString_(d, v29, v28, v30, v31))
           {
             v32 = objc_msgSend_objectForKey_(v27, v20, @"push-token", v22, v23);
             v33 = IMOSLoggingEnabled();
@@ -1096,9 +1096,9 @@ LABEL_19:
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412546;
-                  v54 = v32;
+                  dCopy11 = v32;
                   v55 = 2112;
-                  v56 = a3;
+                  iDCopy = d;
                   _os_log_impl(&dword_23BC9F000, v34, OS_LOG_TYPE_INFO, "Found token: %@ for peer ID: %@", buf, 0x16u);
                 }
               }
@@ -1107,9 +1107,9 @@ LABEL_19:
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v54 = v32;
+                dCopy11 = v32;
                 v55 = 2112;
-                v56 = a3;
+                iDCopy = d;
                 _os_log_impl(&dword_23BC9F000, v35, OS_LOG_TYPE_DEFAULT, "Found token: %@ for peer ID: %@", buf, 0x16u);
               }
 
@@ -1117,15 +1117,15 @@ LABEL_19:
               {
                 if (MarcoShouldLog())
                 {
-                  v46 = v32;
-                  v47 = a3;
+                  dCopy8 = v32;
+                  dCopy4 = d;
                   MarcoLog();
                 }
 
                 if (IMShouldLog())
                 {
-                  v46 = v32;
-                  v47 = a3;
+                  dCopy8 = v32;
+                  dCopy4 = d;
                   IMLogString();
                 }
               }
@@ -1135,7 +1135,7 @@ LABEL_19:
                 v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
               }
 
-              objc_msgSend_addObject_(v19, v36, v32, v37, v38, v46, v47);
+              objc_msgSend_addObject_(v19, v36, v32, v37, v38, dCopy8, dCopy4);
             }
 
             else
@@ -1146,7 +1146,7 @@ LABEL_19:
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v54 = a3;
+                  dCopy11 = d;
                   _os_log_impl(&dword_23BC9F000, v39, OS_LOG_TYPE_INFO, "Found no token for peer ID: %@", buf, 0xCu);
                 }
               }
@@ -1155,7 +1155,7 @@ LABEL_19:
               if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v54 = a3;
+                dCopy11 = d;
                 _os_log_impl(&dword_23BC9F000, v40, OS_LOG_TYPE_DEFAULT, "Found no token for peer ID: %@", buf, 0xCu);
               }
 
@@ -1163,13 +1163,13 @@ LABEL_19:
               {
                 if (MarcoShouldLog())
                 {
-                  v46 = a3;
+                  dCopy8 = d;
                   MarcoLog();
                 }
 
                 if (IMShouldLog())
                 {
-                  v46 = a3;
+                  dCopy8 = d;
                   IMLogString();
                 }
               }
@@ -1183,13 +1183,13 @@ LABEL_19:
       while (v24);
     }
 
-    if (!objc_msgSend_count(v19, v20, v21, v22, v23, v46))
+    if (!objc_msgSend_count(v19, v20, v21, v22, v23, dCopy8))
     {
       v41 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v54 = a3;
+        dCopy11 = d;
         _os_log_impl(&dword_23BC9F000, v41, OS_LOG_TYPE_DEFAULT, "Found no mapping at all for peer ID: %@", buf, 0xCu);
       }
 
@@ -1212,7 +1212,7 @@ LABEL_19:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v54 = a3;
+          dCopy11 = d;
           _os_log_impl(&dword_23BC9F000, v42, OS_LOG_TYPE_INFO, "Found no mapping at all for peer ID: %@", buf, 0xCu);
         }
       }
@@ -1229,9 +1229,9 @@ LABEL_19:
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v54 = a3;
+        dCopy11 = d;
         v55 = 2112;
-        v56 = a4;
+        iDCopy = iD;
         _os_log_impl(&dword_23BC9F000, v44, OS_LOG_TYPE_INFO, "No peers found for peer id: %@  cid: %@", buf, 0x16u);
       }
     }
@@ -1243,20 +1243,20 @@ LABEL_19:
   return result;
 }
 
-- (id)_pushTokenForPeerID:(id)a3 conferenceID:(id)a4
+- (id)_pushTokenForPeerID:(id)d conferenceID:(id)iD
 {
-  v5 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, a2, a3, a4, v4);
+  v5 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, a2, d, iD, v4);
 
   return objc_msgSend_lastObject(v5, v6, v7, v8, v9);
 }
 
-- (id)_peerIDsForDiplayID:(id)a3 conferenceID:(id)a4
+- (id)_peerIDsForDiplayID:(id)d conferenceID:(id)iD
 {
   v76 = *MEMORY[0x277D85DE8];
   v7 = qword_2814228A0;
-  v8 = objc_msgSend_GUID(self, a2, a3, a4, v4);
+  v8 = objc_msgSend_GUID(self, a2, d, iD, v4);
   v12 = objc_msgSend_objectForKey_(v7, v9, v8, v10, v11);
-  v16 = objc_msgSend_objectForKey_(v12, v13, a4, v14, v15);
+  v16 = objc_msgSend_objectForKey_(v12, v13, iD, v14, v15);
   if (v16)
   {
     v17 = v16;
@@ -1282,7 +1282,7 @@ LABEL_19:
           v27 = objc_msgSend_objectForKey_(v26, v19, @"canonical-id", v21, v22);
           v32 = objc_msgSend__stripFZIDPrefix(v27, v28, v29, v30, v31);
           v36 = objc_msgSend_objectForKey_(v26, v33, @"alternate-display-id", v34, v35);
-          if ((objc_msgSend_isEqualToString_(v32, v37, a3, v38, v39) & 1) != 0 || v36 && objc_msgSend_isEqualToString_(a3, v19, v36, v21, v22))
+          if ((objc_msgSend_isEqualToString_(v32, v37, d, v38, v39) & 1) != 0 || v36 && objc_msgSend_isEqualToString_(d, v19, v36, v21, v22))
           {
             v40 = objc_msgSend_objectForKey_(v26, v19, @"id", v21, v22);
             if (v40)
@@ -1291,9 +1291,9 @@ LABEL_19:
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412802;
-                v70 = v40;
+                dCopy9 = v40;
                 v71 = 2112;
-                v72 = a3;
+                iDCopy2 = d;
                 v73 = 2112;
                 v74 = v26;
                 _os_log_impl(&dword_23BC9F000, v41, OS_LOG_TYPE_DEFAULT, "Found peer ID: %@ for display ID: %@  (Peer info: %@)", buf, 0x20u);
@@ -1303,7 +1303,7 @@ LABEL_19:
               {
                 if (MarcoShouldLog())
                 {
-                  v62 = a3;
+                  dCopy3 = d;
                   v63 = v26;
                   v61 = v40;
                   MarcoLog();
@@ -1311,7 +1311,7 @@ LABEL_19:
 
                 if (IMShouldLog())
                 {
-                  v62 = a3;
+                  dCopy3 = d;
                   v63 = v26;
                   v61 = v40;
                   IMLogString();
@@ -1324,16 +1324,16 @@ LABEL_19:
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412802;
-                  v70 = v40;
+                  dCopy9 = v40;
                   v71 = 2112;
-                  v72 = a3;
+                  iDCopy2 = d;
                   v73 = 2112;
                   v74 = v26;
                   _os_log_impl(&dword_23BC9F000, v45, OS_LOG_TYPE_INFO, "Found peer ID: %@ for display ID: %@  (Peer info: %@)", buf, 0x20u);
                 }
               }
 
-              objc_msgSend_addObject_(v64, v42, v40, v43, v44, v61, v62, v63);
+              objc_msgSend_addObject_(v64, v42, v40, v43, v44, v61, dCopy3, v63);
             }
 
             else
@@ -1344,7 +1344,7 @@ LABEL_19:
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v70 = v26;
+                  dCopy9 = v26;
                   _os_log_impl(&dword_23BC9F000, v46, OS_LOG_TYPE_INFO, "Found no ref ID in peer info: %@", buf, 0xCu);
                 }
               }
@@ -1355,7 +1355,7 @@ LABEL_19:
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v70 = v26;
+                  dCopy9 = v26;
                   _os_log_impl(&dword_23BC9F000, v47, OS_LOG_TYPE_INFO, "Found no ref ID in peer info: %@", buf, 0xCu);
                 }
               }
@@ -1382,7 +1382,7 @@ LABEL_19:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v70 = a3;
+          dCopy9 = d;
           _os_log_impl(&dword_23BC9F000, v52, OS_LOG_TYPE_INFO, "Found no peers for display ID: %@", buf, 0xCu);
         }
       }
@@ -1393,7 +1393,7 @@ LABEL_19:
         if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v70 = a3;
+          dCopy9 = d;
           _os_log_impl(&dword_23BC9F000, v53, OS_LOG_TYPE_INFO, "Found no peers for display ID: %@", buf, 0xCu);
         }
       }
@@ -1402,7 +1402,7 @@ LABEL_19:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v70 = a3;
+        dCopy9 = d;
         _os_log_impl(&dword_23BC9F000, v54, OS_LOG_TYPE_DEFAULT, "Found no peers for display ID: %@", buf, 0xCu);
       }
 
@@ -1434,9 +1434,9 @@ LABEL_19:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v70 = a3;
+        dCopy9 = d;
         v71 = 2112;
-        v72 = a4;
+        iDCopy2 = iD;
         _os_log_impl(&dword_23BC9F000, v49, OS_LOG_TYPE_INFO, "No peers found for display id: %@  cid: %@", buf, 0x16u);
       }
     }
@@ -1447,9 +1447,9 @@ LABEL_19:
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v70 = a3;
+        dCopy9 = d;
         v71 = 2112;
-        v72 = a4;
+        iDCopy2 = iD;
         _os_log_impl(&dword_23BC9F000, v50, OS_LOG_TYPE_INFO, "No peers found for display id: %@  cid: %@", buf, 0x16u);
       }
     }
@@ -1461,18 +1461,18 @@ LABEL_19:
   return result;
 }
 
-- (id)_peerIDForDiplayID:(id)a3 conferenceID:(id)a4
+- (id)_peerIDForDiplayID:(id)d conferenceID:(id)iD
 {
-  v5 = objc_msgSend__peerIDsForDiplayID_conferenceID_(self, a2, a3, a4, v4);
+  v5 = objc_msgSend__peerIDsForDiplayID_conferenceID_(self, a2, d, iD, v4);
 
   return objc_msgSend_lastObject(v5, v6, v7, v8, v9);
 }
 
-- (id)_peerIDPushTokensPairsForPeerID:(id)a3 conferenceID:(id)a4 skippingPairs:(id)a5
+- (id)_peerIDPushTokensPairsForPeerID:(id)d conferenceID:(id)iD skippingPairs:(id)pairs
 {
   v39 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = objc_msgSend__peerIDPushTokenPairsForConferenceID_(self, v9, a4, v10, v11);
+  v12 = objc_msgSend__peerIDPushTokenPairsForConferenceID_(self, v9, iD, v10, v11);
   v17 = objc_msgSend_pushToken(self, v13, v14, v15, v16);
   v34 = 0u;
   v35 = 0u;
@@ -1494,7 +1494,7 @@ LABEL_19:
 
         v27 = *(*(&v34 + 1) + 8 * i);
         v28 = objc_msgSend_objectForKey_(v27, v20, @"push-token", v22, v23);
-        if ((objc_msgSend_containsObject_(a5, v29, v27, v30, v31) & 1) == 0 && (!v17 || (objc_msgSend_isEqual_(v17, v20, v28, v22, v23) & 1) == 0))
+        if ((objc_msgSend_containsObject_(pairs, v29, v27, v30, v31) & 1) == 0 && (!v17 || (objc_msgSend_isEqual_(v17, v20, v28, v22, v23) & 1) == 0))
         {
           objc_msgSend_addObject_(v8, v20, v27, v22, v23);
         }
@@ -1517,12 +1517,12 @@ LABEL_19:
   return result;
 }
 
-- (id)_peerInfoForDisplayID:(id)a3 conferenceID:(id)a4 skippingPairs:(id)a5
+- (id)_peerInfoForDisplayID:(id)d conferenceID:(id)iD skippingPairs:(id)pairs
 {
   v50 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v35 = a4;
-  v12 = objc_msgSend__peerIDPushTokenPairsForConferenceID_(self, v9, a4, v10, v11);
+  iDCopy = iD;
+  v12 = objc_msgSend__peerIDPushTokenPairsForConferenceID_(self, v9, iD, v10, v11);
   v17 = objc_msgSend_pushToken(self, v13, v14, v15, v16);
   v37 = 0u;
   v38 = 0u;
@@ -1543,7 +1543,7 @@ LABEL_19:
 
         v26 = *(*(&v37 + 1) + 8 * i);
         v27 = objc_msgSend_objectForKey_(v26, v19, @"push-token", v21, v22);
-        if ((objc_msgSend_containsObject_(a5, v28, v26, v29, v30) & 1) == 0 && (!v17 || (objc_msgSend_isEqual_(v17, v19, v27, v21, v22) & 1) == 0))
+        if ((objc_msgSend_containsObject_(pairs, v28, v26, v29, v30) & 1) == 0 && (!v17 || (objc_msgSend_isEqual_(v17, v19, v27, v21, v22) & 1) == 0))
         {
           objc_msgSend_addObject_(v8, v19, v26, v21, v22);
         }
@@ -1567,11 +1567,11 @@ LABEL_19:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v42 = a5;
+      pairsCopy2 = pairs;
       v43 = 2112;
-      v44 = a3;
+      dCopy2 = d;
       v45 = 2112;
-      v46 = v35;
+      v46 = iDCopy;
       v47 = 2112;
       v48 = v8;
       _os_log_impl(&dword_23BC9F000, v31, OS_LOG_TYPE_INFO, "Skipping pairs: %@    for display id: %@   conference: %@  Built peer info: %@", buf, 0x2Au);
@@ -1582,11 +1582,11 @@ LABEL_19:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v42 = a5;
+    pairsCopy2 = pairs;
     v43 = 2112;
-    v44 = a3;
+    dCopy2 = d;
     v45 = 2112;
-    v46 = v35;
+    v46 = iDCopy;
     v47 = 2112;
     v48 = v8;
     _os_log_impl(&dword_23BC9F000, v32, OS_LOG_TYPE_DEFAULT, "Skipping pairs: %@    for display id: %@   conference: %@  Built peer info: %@", buf, 0x2Au);
@@ -1610,10 +1610,10 @@ LABEL_19:
   return result;
 }
 
-- (void)_setConferenceIDMap:(id)a3 forToken:(id)a4
+- (void)_setConferenceIDMap:(id)map forToken:(id)token
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (map && token)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1621,9 +1621,9 @@ LABEL_19:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v26 = 138412546;
-        *v27 = a4;
+        *v27 = token;
         *&v27[8] = 2112;
-        *&v27[10] = a3;
+        *&v27[10] = map;
         _os_log_impl(&dword_23BC9F000, v11, OS_LOG_TYPE_INFO, "Setting token %@ for conference ID %@", &v26, 0x16u);
       }
     }
@@ -1654,17 +1654,17 @@ LABEL_19:
       objc_msgSend_removeAllObjects(self->_conferenceIDMap, v15, v16, v17, v18);
     }
 
-    objc_msgSend_setObject_forKey_(self->_conferenceIDMap, v13, a4, a3, v14);
+    objc_msgSend_setObject_forKey_(self->_conferenceIDMap, v13, token, map, v14);
     objc_msgSend__setPurgeTimer(self, v21, v22, v23, v24);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setInitiatedConference:(id)a3
+- (void)_setInitiatedConference:(id)conference
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (conference)
   {
     initiatedConferences = self->_initiatedConferences;
     if (!initiatedConferences)
@@ -1673,7 +1673,7 @@ LABEL_19:
       self->_initiatedConferences = initiatedConferences;
     }
 
-    if (objc_msgSend_count(initiatedConferences, a2, a3, v3, v4) >= 0x15)
+    if (objc_msgSend_count(initiatedConferences, a2, conference, v3, v4) >= 0x15)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1692,16 +1692,16 @@ LABEL_19:
       objc_msgSend_removeAllObjects(self->_initiatedConferences, v11, v12, v13, v14);
     }
 
-    objc_msgSend_addObject_(self->_initiatedConferences, v8, a3, v9, v10);
+    objc_msgSend_addObject_(self->_initiatedConferences, v8, conference, v9, v10);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_callTypeForConferenceID:(id)a3
+- (int)_callTypeForConferenceID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend_objectForKey_(self->_callTypeMap, a2, a3, v3, v4);
+  v11 = objc_msgSend_objectForKey_(self->_callTypeMap, a2, d, v3, v4);
   if (!v11)
   {
     if (IMOSLoggingEnabled())
@@ -1711,7 +1711,7 @@ LABEL_19:
       {
         callTypeMap = self->_callTypeMap;
         v16 = 138412546;
-        v17 = a3;
+        dCopy = d;
         v18 = 2112;
         v19 = callTypeMap;
         _os_log_impl(&dword_23BC9F000, v12, OS_LOG_TYPE_INFO, "Could not find call type for conference ID %@ in map: %@", &v16, 0x16u);
@@ -1724,12 +1724,12 @@ LABEL_19:
   return result;
 }
 
-- (FaceTimeServiceSession)initWithAccount:(id)a3 service:(id)a4
+- (FaceTimeServiceSession)initWithAccount:(id)account service:(id)service
 {
   v113 = *MEMORY[0x277D85DE8];
   v108.receiver = self;
   v108.super_class = FaceTimeServiceSession;
-  v4 = [(IMDAppleServiceSession *)&v108 initWithAccount:a3 service:a4];
+  v4 = [(IMDAppleServiceSession *)&v108 initWithAccount:account service:service];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D186C8]);
@@ -2182,13 +2182,13 @@ LABEL_9:
   return self->_privateKey;
 }
 
-- (BOOL)_checkBadPushToken:(id)a3
+- (BOOL)_checkBadPushToken:(id)token
 {
-  v7 = objc_msgSend_pushToken(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_pushToken(self, a2, token, v3, v4);
   LOBYTE(v10) = 1;
-  if (a3 && v7)
+  if (token && v7)
   {
-    if (objc_msgSend_isEqual_(a3, v6, v7, v8, v9))
+    if (objc_msgSend_isEqual_(token, v6, v7, v8, v9))
     {
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2707,7 +2707,7 @@ LABEL_33:
   return v56;
 }
 
-- (void)sessionWillBecomeInactiveWithAccount:(id)a3
+- (void)sessionWillBecomeInactiveWithAccount:(id)account
 {
   v15 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -2731,7 +2731,7 @@ LABEL_33:
 
   v12.receiver = self;
   v12.super_class = FaceTimeServiceSession;
-  [(IMDAppleServiceSession *)&v12 sessionWillBecomeInactiveWithAccount:a3];
+  [(IMDAppleServiceSession *)&v12 sessionWillBecomeInactiveWithAccount:account];
   v11 = *MEMORY[0x277D85DE8];
 }
 
@@ -2773,7 +2773,7 @@ LABEL_33:
   MEMORY[0x2821F9670](v6, sel_account_capabilitiesChanged_, v11, v16, v17);
 }
 
-- (void)_cancelVCRequestWithPerson:(id)a3 properties:(id)a4 conference:(id)a5 pairsToSkip:(id)a6 reason:(id)a7
+- (void)_cancelVCRequestWithPerson:(id)person properties:(id)properties conference:(id)conference pairsToSkip:(id)skip reason:(id)reason
 {
   v155 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -2782,22 +2782,22 @@ LABEL_33:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138413314;
-      v146 = a3;
+      conferenceCopy6 = person;
       v147 = 2112;
-      v148 = a5;
+      conferenceCopy5 = conference;
       v149 = 2112;
-      v150 = a4;
+      conferenceCopy2 = properties;
       v151 = 2112;
-      v152 = a6;
+      skipCopy = skip;
       v153 = 2112;
-      v154 = a7;
+      reasonCopy = reason;
       _os_log_impl(&dword_23BC9F000, v16, OS_LOG_TYPE_INFO, "cancelVCRequestWithPerson: %@  conference: %@ properties: %@ pairsToSkip: %@ reason: %@", buf, 0x34u);
     }
   }
 
-  v17 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v13, a5, v14, v15);
-  v21 = objc_msgSend__callTypeForConferenceID_(self, v18, a5, v19, v20);
-  v25 = objc_msgSend_objectForKey_(a4, v22, *MEMORY[0x277D19568], v23, v24);
+  v17 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v13, conference, v14, v15);
+  v21 = objc_msgSend__callTypeForConferenceID_(self, v18, conference, v19, v20);
+  v25 = objc_msgSend_objectForKey_(properties, v22, *MEMORY[0x277D19568], v23, v24);
   v26 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
@@ -2808,18 +2808,18 @@ LABEL_33:
     }
 
     *buf = 138413058;
-    v146 = a3;
+    conferenceCopy6 = person;
     if (v21 == 1)
     {
       v27 = @"audio";
     }
 
     v147 = 2112;
-    v148 = v27;
+    conferenceCopy5 = v27;
     v149 = 2112;
-    v150 = a5;
+    conferenceCopy2 = conference;
     v151 = 2112;
-    v152 = v25;
+    skipCopy = v25;
     _os_log_impl(&dword_23BC9F000, v26, OS_LOG_TYPE_DEFAULT, "userID: %@  call type: %@  rid: %@ sessionID: %@", buf, 0x2Au);
   }
 
@@ -2838,9 +2838,9 @@ LABEL_33:
         v29 = @"audio";
       }
 
-      v140 = a5;
+      conferenceCopy4 = conference;
       v141 = v25;
-      v137 = a3;
+      personCopy4 = person;
       v139 = v29;
       MarcoLog();
     }
@@ -2858,28 +2858,28 @@ LABEL_33:
         v30 = @"audio";
       }
 
-      v140 = a5;
+      conferenceCopy4 = conference;
       v141 = v25;
-      v137 = a3;
+      personCopy4 = person;
       v139 = v30;
       IMLogString();
     }
   }
 
-  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 3, v21, a5, a3, 0, v137, v139, v140, v141) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v31, 3, v21, a5, a3, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v32, 3, v21, a5, a3, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v33, 3, v21, a5, a3, 0))
+  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 3, v21, conference, person, 0, personCopy4, v139, conferenceCopy4, v141) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v31, 3, v21, conference, person, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v32, 3, v21, conference, person, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v33, 3, v21, conference, person, 0))
   {
-    v142 = objc_msgSend__peerInfoForDisplayID_conferenceID_skippingPairs_(self, v34, a3, a5, a6);
+    v142 = objc_msgSend__peerInfoForDisplayID_conferenceID_skippingPairs_(self, v34, person, conference, skip);
     if (objc_msgSend_count(v142, v35, v36, v37, v38))
     {
       goto LABEL_35;
     }
 
-    v42 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v39, a5, v40, v41);
+    v42 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v39, conference, v40, v41);
     v47 = objc_msgSend___imHexString(v42, v43, v44, v45, v46);
     if (v47)
     {
       v143 = v47;
-      if ((objc_msgSend_isEqualToString_(a5, v48, v47, v50, v51) & 1) == 0)
+      if ((objc_msgSend_isEqualToString_(conference, v48, v47, v50, v51) & 1) == 0)
       {
         if (IMOSLoggingEnabled())
         {
@@ -2887,14 +2887,14 @@ LABEL_33:
           if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v146 = v143;
+            conferenceCopy6 = v143;
             v147 = 2112;
-            v148 = a5;
+            conferenceCopy5 = conference;
             _os_log_impl(&dword_23BC9F000, v53, OS_LOG_TYPE_INFO, "New conference ID %@ for %@, finding peers", buf, 0x16u);
           }
         }
 
-        v142 = objc_msgSend__peerInfoForDisplayID_conferenceID_skippingPairs_(self, v52, a3, v143, a6);
+        v142 = objc_msgSend__peerInfoForDisplayID_conferenceID_skippingPairs_(self, v52, person, v143, skip);
       }
     }
 
@@ -2908,23 +2908,23 @@ LABEL_35:
       v70 = objc_alloc_init(FTCancelMessage);
       if (!v17)
       {
-        v17 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v67, a5, v68, v69);
+        v17 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v67, conference, v68, v69);
       }
 
       objc_msgSend_setSessionToken_(v70, v67, v17, v68, v69);
-      objc_msgSend_setReason_(v70, v71, a7, v72, v73);
+      objc_msgSend_setReason_(v70, v71, reason, v72, v73);
       objc_msgSend_setPeers_(v70, v74, v142, v75, v76);
       objc_msgSend_setClientInfo_(v70, v77, v144, v78, v79);
       v80 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v85 = v80;
-      if (a3)
+      if (person)
       {
-        CFDictionarySetValue(v80, @"ID", a3);
+        CFDictionarySetValue(v80, @"ID", person);
       }
 
-      if (a5)
+      if (conference)
       {
-        CFDictionarySetValue(v85, @"conference", a5);
+        CFDictionarySetValue(v85, @"conference", conference);
       }
 
       v87 = objc_msgSend_date(MEMORY[0x277CBEAA8], v81, v82, v83, v84);
@@ -2951,18 +2951,18 @@ LABEL_35:
         if (os_log_type_enabled(v130, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v146 = a3;
+          conferenceCopy6 = person;
           _os_log_impl(&dword_23BC9F000, v130, OS_LOG_TYPE_INFO, "Sending cancel invitation to: %@", buf, 0xCu);
         }
       }
 
       if (MarcoShouldLogCheckpoints())
       {
-        v138 = a3;
+        personCopy6 = person;
         MarcoNoteCheckpoint();
       }
 
-      objc_msgSend_sendMessage_(qword_281422890, v131, v70, v132, v133, v138);
+      objc_msgSend_sendMessage_(qword_281422890, v131, v70, v132, v133, personCopy6);
     }
 
     else
@@ -2975,7 +2975,7 @@ LABEL_35:
           if (os_log_type_enabled(v135, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v146 = a5;
+            conferenceCopy6 = conference;
             _os_log_impl(&dword_23BC9F000, v135, OS_LOG_TYPE_INFO, "Delaying cancel for cid %@", buf, 0xCu);
           }
         }
@@ -3003,7 +3003,7 @@ LABEL_35:
   v134 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestVCWithPerson:(id)a3 properties:(id)a4 conference:(id)a5
+- (void)requestVCWithPerson:(id)person properties:(id)properties conference:(id)conference
 {
   v408 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -3012,17 +3012,17 @@ LABEL_35:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v401 = a3;
+      personCopy4 = person;
       v402 = 2112;
-      v403 = a4;
+      conferenceCopy3 = properties;
       v404 = 2112;
-      v405 = a5;
+      propertiesCopy2 = conference;
       _os_log_impl(&dword_23BC9F000, v8, OS_LOG_TYPE_INFO, "requestVCWithPerson: %@  properties: %@ conference: %@", buf, 0x20u);
     }
   }
 
-  value = a3;
-  v386 = a5;
+  value = person;
+  conferenceCopy2 = conference;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -3030,24 +3030,24 @@ LABEL_35:
     {
       v14 = objc_msgSend_callerURI(self, v10, v11, v12, v13);
       *buf = 138412546;
-      v401 = a3;
+      personCopy4 = person;
       v402 = 2112;
-      v403 = v14;
+      conferenceCopy3 = v14;
       _os_log_impl(&dword_23BC9F000, v9, OS_LOG_TYPE_INFO, "Sending invitation to: %@   from: %@", buf, 0x16u);
     }
   }
 
   if (MarcoShouldLogCheckpoints())
   {
-    v372 = a3;
+    personCopy3 = person;
     v375 = objc_msgSend_callerURI(self, v15, v16, v17, v18);
     MarcoNoteCheckpoint();
   }
 
-  objc_msgSend__logLocalInfo(self, v15, v16, v17, v18, v372, v375);
-  v23 = objc_msgSend__FZBestGuessFZIDType(a3, v19, v20, v21, v22);
-  v27 = objc_msgSend__URIFromFZIDType_(a3, v24, v23, v25, v26);
-  v31 = objc_msgSend_objectForKey_(a4, v28, *MEMORY[0x277D194E0], v29, v30);
+  objc_msgSend__logLocalInfo(self, v15, v16, v17, v18, personCopy3, v375);
+  v23 = objc_msgSend__FZBestGuessFZIDType(person, v19, v20, v21, v22);
+  v27 = objc_msgSend__URIFromFZIDType_(person, v24, v23, v25, v26);
+  v31 = objc_msgSend_objectForKey_(properties, v28, *MEMORY[0x277D194E0], v29, v30);
   v35 = objc_msgSend_dictionaryWithPlistData_(MEMORY[0x277CBEAC0], v32, v31, v33, v34);
   v39 = objc_msgSend_objectForKey_(v35, v36, *MEMORY[0x277D194F0], v37, v38);
   v43 = objc_msgSend_objectForKey_(v35, v40, *MEMORY[0x277D19510], v41, v42);
@@ -3056,27 +3056,27 @@ LABEL_35:
   v383 = objc_msgSend_objectForKey_(v35, v51, *MEMORY[0x277D19568], v52, v53);
   v381 = objc_msgSend_objectForKey_(v35, v54, *MEMORY[0x277D19500], v55, v56);
   v60 = objc_msgSend_objectForKey_(v35, v57, @"excludingPushTokens", v58, v59);
-  v385 = objc_msgSend_objectForKey_(a4, v61, *MEMORY[0x277D194C8], v62, v63);
-  v67 = objc_msgSend_objectForKey_(a4, v64, *MEMORY[0x277D19518], v65, v66);
-  v384 = objc_msgSend_objectForKey_(a4, v68, *MEMORY[0x277D194D8], v69, v70);
+  v385 = objc_msgSend_objectForKey_(properties, v61, *MEMORY[0x277D194C8], v62, v63);
+  v67 = objc_msgSend_objectForKey_(properties, v64, *MEMORY[0x277D19518], v65, v66);
+  v384 = objc_msgSend_objectForKey_(properties, v68, *MEMORY[0x277D194D8], v69, v70);
   v387 = objc_msgSend_BOOLValue(v385, v71, v72, v73, v74);
-  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v75, 1, v387, a5, a3, a4) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v76, 1, v387, a5, a3, a4) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v77, 1, v387, a5, a3, a4) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v78, 1, v387, a5, a3, a4) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v79, 1, v387, a5, a3, a4, v27))
+  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v75, 1, v387, conference, person, properties) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v76, 1, v387, conference, person, properties) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v77, 1, v387, conference, person, properties) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v78, 1, v387, conference, person, properties) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v79, 1, v387, conference, person, properties, v27))
   {
     v80 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
     {
       v81 = @"video";
       *buf = 138413058;
-      v401 = a3;
+      personCopy4 = person;
       if (v387)
       {
         v81 = @"audio";
       }
 
       v402 = 2112;
-      v403 = v383;
+      conferenceCopy3 = v383;
       v404 = 2112;
-      v405 = a4;
+      propertiesCopy2 = properties;
       v406 = 2112;
       v407 = v81;
       _os_log_impl(&dword_23BC9F000, v80, OS_LOG_TYPE_DEFAULT, "userID: %@  sessionID: %@ props: %@   call type: %@", buf, 0x2Au);
@@ -3092,9 +3092,9 @@ LABEL_35:
           v82 = @"audio";
         }
 
-        v377 = a4;
+        propertiesCopy4 = properties;
         v378 = v82;
-        v373 = a3;
+        personCopy6 = person;
         v376 = v383;
         MarcoLog();
       }
@@ -3107,9 +3107,9 @@ LABEL_35:
           v83 = @"audio";
         }
 
-        v377 = a4;
+        propertiesCopy4 = properties;
         v378 = v83;
-        v373 = a3;
+        personCopy6 = person;
         v376 = v383;
         IMLogString();
       }
@@ -3126,10 +3126,10 @@ LABEL_35:
 
       else
       {
-        v87 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v84, a5, v85, v86);
+        v87 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v84, conference, v85, v86);
       }
 
-      objc_msgSend_setSessionToken_(v380, v88, v87, v89, v90, v373, v376, v377, v378);
+      objc_msgSend_setSessionToken_(v380, v88, v87, v89, v90, personCopy6, v376, propertiesCopy4, v378);
       if (IMOSLoggingEnabled())
       {
         v94 = OSLogHandleForIMFoundationCategory();
@@ -3137,11 +3137,11 @@ LABEL_35:
         {
           v96 = objc_msgSend_sessionToken(v380, v91, v95, v92, v93);
           *buf = 138412802;
-          v401 = v67;
+          personCopy4 = v67;
           v402 = 2112;
-          v403 = a5;
+          conferenceCopy3 = conference;
           v404 = 2112;
-          v405 = v96;
+          propertiesCopy2 = v96;
           _os_log_impl(&dword_23BC9F000, v94, OS_LOG_TYPE_INFO, "existingConferenceID %@   conferenceID %@   sessionToken %@", buf, 0x20u);
         }
       }
@@ -3164,7 +3164,7 @@ LABEL_35:
       v117 = qword_2814228A0;
       v118 = objc_msgSend_GUID(self, v112, v113, v114, v115);
       v122 = objc_msgSend_objectForKey_(v117, v119, v118, v120, v121);
-      v130 = (objc_msgSend_length(v67, v123, v124, v125, v126) ? objc_msgSend_objectForKey_(v122, v127, v67, v128, v129, v373) : objc_msgSend_objectForKey_(v122, v127, a5, v128, v129, v373));
+      v130 = (objc_msgSend_length(v67, v123, v124, v125, v126) ? objc_msgSend_objectForKey_(v122, v127, v67, v128, v129, personCopy6) : objc_msgSend_objectForKey_(v122, v127, conference, v128, v129, personCopy6));
       Object = objc_msgSend_lastObject(v130, v131, v132, v133, v134);
       v136 = Object;
       if (Object)
@@ -3177,7 +3177,7 @@ LABEL_35:
           if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v401 = v136;
+            personCopy4 = v136;
             _os_log_impl(&dword_23BC9F000, v142, OS_LOG_TYPE_INFO, "Existing peer found %@", buf, 0xCu);
           }
         }
@@ -3188,7 +3188,7 @@ LABEL_35:
       }
     }
 
-    if (!objc_msgSend_count(v111, v112, v113, v114, v115, v373))
+    if (!objc_msgSend_count(v111, v112, v113, v114, v115, personCopy6))
     {
       v151 = objc_alloc_init(MEMORY[0x277CBEB58]);
       if (objc_msgSend_count(v381, v152, v153, v154, v155))
@@ -3258,7 +3258,7 @@ LABEL_35:
       if (os_log_type_enabled(v184, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v401 = v116;
+        personCopy4 = v116;
         _os_log_impl(&dword_23BC9F000, v184, OS_LOG_TYPE_INFO, "All peers %@", buf, 0xCu);
       }
     }
@@ -3272,7 +3272,7 @@ LABEL_35:
         if (os_log_type_enabled(v192, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v401 = v116;
+          personCopy4 = v116;
           _os_log_impl(&dword_23BC9F000, v192, OS_LOG_TYPE_INFO, "Excluding push tokens %@", buf, 0xCu);
         }
       }
@@ -3329,7 +3329,7 @@ LABEL_35:
       if (os_log_type_enabled(v328, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v401 = v319;
+        personCopy4 = v319;
         _os_log_impl(&dword_23BC9F000, v328, OS_LOG_TYPE_DEFAULT, "Using base number: %@", buf, 0xCu);
       }
 
@@ -3400,9 +3400,9 @@ LABEL_35:
         if (os_log_type_enabled(v324, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v401 = v319;
+          personCopy4 = v319;
           v402 = 2112;
-          v403 = v300;
+          conferenceCopy3 = v300;
           _os_log_impl(&dword_23BC9F000, v324, OS_LOG_TYPE_DEFAULT, "Using device number: %@ instead of base number: %@", buf, 0x16u);
         }
 
@@ -3430,7 +3430,7 @@ LABEL_35:
       if (os_log_type_enabled(v331, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v401 = v300;
+        personCopy4 = v300;
         _os_log_impl(&dword_23BC9F000, v331, OS_LOG_TYPE_DEFAULT, "No device number present, using base number: %@", buf, 0xCu);
       }
 
@@ -3469,15 +3469,15 @@ LABEL_122:
           CFDictionarySetValue(v336, @"sessionID", v383);
         }
 
-        if (a4)
+        if (properties)
         {
-          CFDictionarySetValue(v336, @"properties", a4);
+          CFDictionarySetValue(v336, @"properties", properties);
         }
 
-        v337 = v386;
-        if (v386)
+        v337 = conferenceCopy2;
+        if (conferenceCopy2)
         {
-          CFDictionarySetValue(v336, @"conference", v386);
+          CFDictionarySetValue(v336, @"conference", conferenceCopy2);
         }
 
         v339 = objc_msgSend_date(MEMORY[0x277CBEAA8], v333, v337, v334, v335);
@@ -3512,7 +3512,7 @@ LABEL_122:
       if (os_log_type_enabled(v330, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v401 = v300;
+        personCopy4 = v300;
         _os_log_impl(&dword_23BC9F000, v330, OS_LOG_TYPE_DEFAULT, "This is not a telephony device, just using base number: %@", buf, 0xCu);
       }
 
@@ -3542,10 +3542,10 @@ LABEL_135:
   v371 = *MEMORY[0x277D85DE8];
 }
 
-- (void)respondToVCInvitationWithPerson:(id)a3 properties:(id)a4 conference:(id)a5
+- (void)respondToVCInvitationWithPerson:(id)person properties:(id)properties conference:(id)conference
 {
   v292 = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend__callTypeForConferenceID_(self, a2, a5, a4, a5);
+  v9 = objc_msgSend__callTypeForConferenceID_(self, a2, conference, properties, conference);
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -3558,16 +3558,16 @@ LABEL_135:
       }
 
       *buf = 138413058;
-      v287 = a3;
+      personCopy13 = person;
       if (v9 == 1)
       {
         v11 = @"audio";
       }
 
       v288 = 2112;
-      v289 = a4;
+      conferenceCopy5 = properties;
       v290 = 2112;
-      *v291 = a5;
+      *v291 = conference;
       *&v291[8] = 2112;
       *&v291[10] = v11;
       _os_log_impl(&dword_23BC9F000, v10, OS_LOG_TYPE_INFO, "respondToVCInvitationWithPerson: %@  properties: %@ conference: %@  callType: %@", buf, 0x2Au);
@@ -3580,15 +3580,15 @@ LABEL_135:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v287 = qword_2814228A0;
+      personCopy13 = qword_2814228A0;
       _os_log_impl(&dword_23BC9F000, v14, OS_LOG_TYPE_INFO, "All conference maps %@", buf, 0xCu);
     }
   }
 
-  v15 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v12, a3, a5, v13);
-  v18 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v16, v15, a5, v17);
-  v22 = objc_msgSend_objectForKey_(a4, v19, *MEMORY[0x277D19550], v20, v21);
-  v26 = objc_msgSend_objectForKey_(a4, v23, *MEMORY[0x277D19558], v24, v25);
+  v15 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v12, person, conference, v13);
+  v18 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v16, v15, conference, v17);
+  v22 = objc_msgSend_objectForKey_(properties, v19, *MEMORY[0x277D19550], v20, v21);
+  v26 = objc_msgSend_objectForKey_(properties, v23, *MEMORY[0x277D19558], v24, v25);
   v30 = objc_msgSend_dictionaryWithPlistData_(MEMORY[0x277CBEAC0], v27, v26, v28, v29);
   value = objc_msgSend_objectForKey_(v30, v31, *MEMORY[0x277D19568], v32, v33);
   if (IMOSLoggingEnabled())
@@ -3597,18 +3597,18 @@ LABEL_135:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v287 = v30;
+      personCopy13 = v30;
       _os_log_impl(&dword_23BC9F000, v35, OS_LOG_TYPE_INFO, "Reponse dictionary: %@", buf, 0xCu);
     }
   }
 
-  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v34, 4, v9, a5, a3, a4) && objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v36, 4, v9, a5, a3, a4) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v37, 4, v9, a5, a3, a4) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v38, 4, v9, a5, a3, a4) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v39, 4, v9, a5, a3, a4) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v40, 4, v9, a5, a3, a4, v15))
+  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v34, 4, v9, conference, person, properties) && objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v36, 4, v9, conference, person, properties) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v37, 4, v9, conference, person, properties) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v38, 4, v9, conference, person, properties) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v39, 4, v9, conference, person, properties) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v40, 4, v9, conference, person, properties, v15))
   {
     v283 = objc_alloc_init(MEMORY[0x277CBEB38]);
     theDict = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if (a3)
+    if (person)
     {
-      CFDictionarySetValue(theDict, @"ID", a3);
+      CFDictionarySetValue(theDict, @"ID", person);
     }
 
     if (v22)
@@ -3621,14 +3621,14 @@ LABEL_135:
       CFDictionarySetValue(theDict, @"sessionID", value);
     }
 
-    if (a4)
+    if (properties)
     {
-      CFDictionarySetValue(theDict, @"properties", a4);
+      CFDictionarySetValue(theDict, @"properties", properties);
     }
 
-    if (a5)
+    if (conference)
     {
-      CFDictionarySetValue(theDict, @"conference", a5);
+      CFDictionarySetValue(theDict, @"conference", conference);
     }
 
     v46 = objc_msgSend_date(MEMORY[0x277CBEAA8], v41, v42, v43, v44);
@@ -3647,7 +3647,7 @@ LABEL_135:
     *buf = objc_msgSend_unsignedIntValue(value, v54, v55, v56, v57);
     v60 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v58, buf, 4, v59);
     objc_msgSend_setObject_forKey_(v283, v61, v60, @"s", v62);
-    v66 = objc_msgSend_objectForKey_(a4, v63, *MEMORY[0x277D194E8], v64, v65);
+    v66 = objc_msgSend_objectForKey_(properties, v63, *MEMORY[0x277D194E8], v64, v65);
     sub_23BCACFD4(v66, v283, v67, v68, v69);
     v73 = objc_msgSend_objectForKey_(v30, v70, *MEMORY[0x277D19560], v71, v72);
     sub_23BCACF68(v73, v283, v74, v75, v76);
@@ -3659,7 +3659,7 @@ LABEL_135:
     {
       v284 = objc_alloc_init(FTAcceptMessage);
       objc_msgSend_setClientInfo_(v284, v115, v283, v116, v117);
-      v121 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v118, a5, v119, v120);
+      v121 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v118, conference, v119, v120);
       objc_msgSend_setSessionToken_(v284, v122, v121, v123, v124);
       v129 = objc_msgSend_pushToken(self, v125, v126, v127, v128);
       objc_msgSend_setSelfPushToken_(v284, v130, v129, v131, v132);
@@ -3683,21 +3683,21 @@ LABEL_135:
         if (os_log_type_enabled(v181, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v287 = a3;
+          personCopy13 = person;
           v288 = 2112;
-          v289 = a5;
+          conferenceCopy5 = conference;
           _os_log_impl(&dword_23BC9F000, v181, OS_LOG_TYPE_INFO, "Sending accept to: %@  for conference: %@", buf, 0x16u);
         }
       }
 
       if (MarcoShouldLogCheckpoints())
       {
-        v275 = a3;
-        v277 = a5;
+        personCopy15 = person;
+        conferenceCopy6 = conference;
         MarcoNoteCheckpoint();
       }
 
-      v185 = objc_msgSend_topicForCallType_(self, v182, v9, v183, v184, v275, v277);
+      v185 = objc_msgSend_topicForCallType_(self, v182, v9, v183, v184, personCopy15, conferenceCopy6);
       objc_msgSend_setTopic_(v284, v186, v185, v187, v188);
       objc_msgSend_setUserInfo_(v284, v189, theDict, v190, v191);
       objc_msgSend_setCompletionBlock_(v284, v192, self->_completionBlock, v193, v194);
@@ -3716,13 +3716,13 @@ LABEL_135:
       {
         v233 = objc_msgSend_intValue(v22, v229, v230, v231, v232);
         *buf = 138413314;
-        v287 = a3;
+        personCopy13 = person;
         v288 = 2112;
-        v289 = value;
+        conferenceCopy5 = value;
         v290 = 1024;
         *v291 = v233;
         *&v291[4] = 2112;
-        *&v291[6] = a4;
+        *&v291[6] = properties;
         *&v291[14] = 2112;
         *&v291[16] = v283;
         _os_log_impl(&dword_23BC9F000, v228, OS_LOG_TYPE_DEFAULT, "userID: %@  sessionID: %@ response: %d props: %@  client info: %@", buf, 0x30u);
@@ -3732,21 +3732,21 @@ LABEL_135:
       {
         if (MarcoShouldLog())
         {
-          v280 = a4;
+          propertiesCopy6 = properties;
           v281 = v283;
           v278 = value;
           v279 = objc_msgSend_intValue(v22, v238, v239, v240, v241);
-          v276 = a3;
+          personCopy6 = person;
           MarcoLog();
         }
 
         if (IMShouldLog())
         {
-          v280 = a4;
+          propertiesCopy6 = properties;
           v281 = v283;
           v278 = value;
           v279 = objc_msgSend_intValue(v22, v234, v235, v236, v237);
-          v276 = a3;
+          personCopy6 = person;
           IMLogString();
         }
       }
@@ -3762,10 +3762,10 @@ LABEL_135:
       }
 
       v265 = v242;
-      v266 = objc_msgSend_accountID(self, v243, v244, v245, v246, v276, v278, v279, v280, v281);
-      v267 = sub_23BCA7F48(a3);
+      v266 = objc_msgSend_accountID(self, v243, v244, v245, v246, personCopy6, v278, v279, propertiesCopy6, v281);
+      v267 = sub_23BCA7F48(person);
       v272 = objc_msgSend_unsignedIntValue(value, v268, v269, v270, v271);
-      objc_msgSend_account_conference_receivedAVMessage_from_sessionID_userInfo_(v265, v273, v266, a5, 350, v267, v272, 0);
+      objc_msgSend_account_conference_receivedAVMessage_from_sessionID_userInfo_(v265, v273, v266, conference, 350, v267, v272, 0);
       goto LABEL_77;
     }
 
@@ -3779,17 +3779,17 @@ LABEL_135:
         if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v287 = a3;
+          personCopy13 = person;
           v288 = 2112;
-          v289 = a5;
+          conferenceCopy5 = conference;
           _os_log_impl(&dword_23BC9F000, v100, OS_LOG_TYPE_INFO, "Sending decline to: %@  for conference: %@", buf, 0x16u);
         }
       }
 
       if (MarcoShouldLogCheckpoints())
       {
-        v275 = a3;
-        v277 = a5;
+        personCopy15 = person;
+        conferenceCopy6 = conference;
         MarcoNoteCheckpoint();
       }
 
@@ -3798,13 +3798,13 @@ LABEL_135:
       {
         v106 = objc_msgSend_intValue(v22, v102, v103, v104, v105);
         *buf = 138413058;
-        v287 = a3;
+        personCopy13 = person;
         v288 = 2112;
-        v289 = value;
+        conferenceCopy5 = value;
         v290 = 1024;
         *v291 = v106;
         *&v291[4] = 2112;
-        *&v291[6] = a4;
+        *&v291[6] = properties;
         _os_log_impl(&dword_23BC9F000, v101, OS_LOG_TYPE_DEFAULT, "userID: %@  sessionID: %@ response: %d props: %@", buf, 0x26u);
       }
 
@@ -3816,9 +3816,9 @@ LABEL_135:
       if (MarcoShouldLog())
       {
         v279 = objc_msgSend_intValue(v22, v110, v111, v112, v113);
-        v280 = a4;
-        v275 = a3;
-        v277 = value;
+        propertiesCopy6 = properties;
+        personCopy15 = person;
+        conferenceCopy6 = value;
         MarcoLog();
       }
 
@@ -3836,17 +3836,17 @@ LABEL_135:
         if (os_log_type_enabled(v247, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v287 = a3;
+          personCopy13 = person;
           v288 = 2112;
-          v289 = a5;
+          conferenceCopy5 = conference;
           _os_log_impl(&dword_23BC9F000, v247, OS_LOG_TYPE_INFO, "Sending busy to: %@  for conference: %@", buf, 0x16u);
         }
       }
 
       if (MarcoShouldLogCheckpoints())
       {
-        v275 = a3;
-        v277 = a5;
+        personCopy15 = person;
+        conferenceCopy6 = conference;
         MarcoNoteCheckpoint();
       }
 
@@ -3855,13 +3855,13 @@ LABEL_135:
       {
         v253 = objc_msgSend_intValue(v22, v249, v250, v251, v252);
         *buf = 138413058;
-        v287 = a3;
+        personCopy13 = person;
         v288 = 2112;
-        v289 = value;
+        conferenceCopy5 = value;
         v290 = 1024;
         *v291 = v253;
         *&v291[4] = 2112;
-        *&v291[6] = a4;
+        *&v291[6] = properties;
         _os_log_impl(&dword_23BC9F000, v248, OS_LOG_TYPE_DEFAULT, "userID: %@  sessionID: %@ response: %d props: %@", buf, 0x26u);
       }
 
@@ -3873,9 +3873,9 @@ LABEL_135:
       if (MarcoShouldLog())
       {
         v279 = objc_msgSend_intValue(v22, v254, v255, v256, v257);
-        v280 = a4;
-        v275 = a3;
-        v277 = value;
+        propertiesCopy6 = properties;
+        personCopy15 = person;
+        conferenceCopy6 = value;
         MarcoLog();
       }
 
@@ -3885,13 +3885,13 @@ LABEL_135:
       }
     }
 
-    v279 = objc_msgSend_intValue(v22, v107, v114, v108, v109, v275, v277, v279, v280);
-    v280 = a4;
-    v275 = a3;
-    v277 = value;
+    v279 = objc_msgSend_intValue(v22, v107, v114, v108, v109, personCopy15, conferenceCopy6, v279, propertiesCopy6);
+    propertiesCopy6 = properties;
+    personCopy15 = person;
+    conferenceCopy6 = value;
     IMLogString();
 LABEL_74:
-    v258 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v107, a5, v108, v109, v275, v277, v279, v280);
+    v258 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v107, conference, v108, v109, personCopy15, conferenceCopy6, v279, propertiesCopy6);
     v263 = objc_msgSend_intValue(v22, v259, v260, v261, v262);
     objc_msgSend__sendRejectToPeerID_peerToken_sessionToken_callType_reason_clientInfo_(self, v264, v15, v18, v258, v9, v263, v283);
 LABEL_77:
@@ -3900,7 +3900,7 @@ LABEL_77:
   v274 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relay:(id)a3 sendInitateRequest:(id)a4 toPerson:(id)a5
+- (void)relay:(id)relay sendInitateRequest:(id)request toPerson:(id)person
 {
   v164 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -3909,19 +3909,19 @@ LABEL_77:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v159 = a5;
+      personCopy2 = person;
       v160 = 2112;
-      v161 = a3;
+      relayCopy = relay;
       v162 = 2112;
-      v163 = a4;
+      requestCopy = request;
       _os_log_impl(&dword_23BC9F000, v12, OS_LOG_TYPE_INFO, "sendRelayInitateRequestTo: %@ relayID: %@  userInfo: %@", buf, 0x20u);
     }
   }
 
-  v13 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v9, a3, v10, v11);
-  v16 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v14, a5, a3, v15);
-  v19 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v17, v16, a3, v18);
-  v23 = objc_msgSend__callTypeForConferenceID_(self, v20, a3, v21, v22);
+  v13 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v9, relay, v10, v11);
+  v16 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v14, person, relay, v15);
+  v19 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v17, v16, relay, v18);
+  v23 = objc_msgSend__callTypeForConferenceID_(self, v20, relay, v21, v22);
   if (IMOSLoggingEnabled())
   {
     v24 = OSLogHandleForIMFoundationCategory();
@@ -3939,9 +3939,9 @@ LABEL_77:
       }
 
       *buf = 138412546;
-      v159 = a5;
+      personCopy2 = person;
       v160 = 2112;
-      v161 = v25;
+      relayCopy = v25;
       _os_log_impl(&dword_23BC9F000, v24, OS_LOG_TYPE_INFO, "Sending relay initate to: %@  callType: %@", buf, 0x16u);
     }
   }
@@ -3959,12 +3959,12 @@ LABEL_77:
       v27 = @"audio";
     }
 
-    v156 = a5;
+    personCopy3 = person;
     v157 = v27;
     MarcoNoteCheckpoint();
   }
 
-  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v26, 7, v23, a3, a5, 0, v156, v157) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 7, v23, a3, a5, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v29, 7, v23, a3, a5, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v30, 7, v23, a3, a5, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v31, 7, v23, a3, a5, 0, v16))
+  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v26, 7, v23, relay, person, 0, personCopy3, v157) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 7, v23, relay, person, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v29, 7, v23, relay, person, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v30, 7, v23, relay, person, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v31, 7, v23, relay, person, 0, v16))
   {
     if (v13)
     {
@@ -3974,40 +3974,40 @@ LABEL_77:
 
     else
     {
-      if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v32, 7, v23, a3, a5, 0) & 1) == 0)
+      if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v32, 7, v23, relay, person, 0) & 1) == 0)
       {
         goto LABEL_35;
       }
 
       v33 = objc_alloc_init(FTRelayInitateMessage);
-      v44 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v41, a3, v42, v43);
+      v44 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v41, relay, v42, v43);
       objc_msgSend_setSessionToken_(v33, v45, v44, v46, v47);
     }
 
     v48 = objc_msgSend_pushToken(self, v37, v38, v39, v40);
     objc_msgSend_setSelfPushToken_(v33, v49, v48, v50, v51);
-    v55 = objc_msgSend_objectForKey_(a4, v52, *MEMORY[0x277D18FB0], v53, v54);
+    v55 = objc_msgSend_objectForKey_(request, v52, *MEMORY[0x277D18FB0], v53, v54);
     objc_msgSend_setSelfNatType_(v33, v56, v55, v57, v58);
-    v62 = objc_msgSend_objectForKey_(a4, v59, *MEMORY[0x277D18FA8], v60, v61);
+    v62 = objc_msgSend_objectForKey_(request, v59, *MEMORY[0x277D18FA8], v60, v61);
     objc_msgSend_setSelfNATIP_(v33, v63, v62, v64, v65);
     objc_msgSend_setPeerID_(v33, v66, v16, v67, v68);
     objc_msgSend_setPeerPushToken_(v33, v69, v19, v70, v71);
-    v75 = objc_msgSend_objectForKey_(a4, v72, *MEMORY[0x277D18F68], v73, v74);
+    v75 = objc_msgSend_objectForKey_(request, v72, *MEMORY[0x277D18F68], v73, v74);
     objc_msgSend_setPeerNatType_(v33, v76, v75, v77, v78);
-    v82 = objc_msgSend_objectForKey_(a4, v79, *MEMORY[0x277D18F60], v80, v81);
+    v82 = objc_msgSend_objectForKey_(request, v79, *MEMORY[0x277D18F60], v80, v81);
     objc_msgSend_setPeerNATIP_(v33, v83, v82, v84, v85);
-    v89 = objc_msgSend_objectForKey_(a4, v86, *MEMORY[0x277D18F98], v87, v88);
+    v89 = objc_msgSend_objectForKey_(request, v86, *MEMORY[0x277D18F98], v87, v88);
     objc_msgSend_setRelayCandidateID_(v33, v90, v89, v91, v92);
     v93 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v98 = v93;
-    if (a5)
+    if (person)
     {
-      CFDictionarySetValue(v93, @"ID", a5);
+      CFDictionarySetValue(v93, @"ID", person);
     }
 
-    if (a3)
+    if (relay)
     {
-      CFDictionarySetValue(v98, @"conference", a3);
+      CFDictionarySetValue(v98, @"conference", relay);
     }
 
     v100 = objc_msgSend_date(MEMORY[0x277CBEAA8], v94, v95, v96, v97);
@@ -4042,7 +4042,7 @@ LABEL_35:
   v155 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relay:(id)a3 sendUpdate:(id)a4 toPerson:(id)a5
+- (void)relay:(id)relay sendUpdate:(id)update toPerson:(id)person
 {
   v219 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -4051,19 +4051,19 @@ LABEL_35:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v214 = a5;
+      personCopy2 = person;
       v215 = 2112;
-      v216 = a3;
+      relayCopy = relay;
       v217 = 2112;
-      v218 = a4;
+      updateCopy = update;
       _os_log_impl(&dword_23BC9F000, v12, OS_LOG_TYPE_INFO, "sendRelayUpdateTo: %@ relayID: %@  userInfo: %@", buf, 0x20u);
     }
   }
 
-  v13 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v9, a3, v10, v11);
-  v16 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v14, a5, a3, v15);
-  v19 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v17, v16, a3, v18);
-  v23 = objc_msgSend__callTypeForConferenceID_(self, v20, a3, v21, v22);
+  v13 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v9, relay, v10, v11);
+  v16 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v14, person, relay, v15);
+  v19 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v17, v16, relay, v18);
+  v23 = objc_msgSend__callTypeForConferenceID_(self, v20, relay, v21, v22);
   if (IMOSLoggingEnabled())
   {
     v24 = OSLogHandleForIMFoundationCategory();
@@ -4081,9 +4081,9 @@ LABEL_35:
       }
 
       *buf = 138412546;
-      v214 = a5;
+      personCopy2 = person;
       v215 = 2112;
-      v216 = v25;
+      relayCopy = v25;
       _os_log_impl(&dword_23BC9F000, v24, OS_LOG_TYPE_INFO, "Sending relay update to: %@   callType: %@", buf, 0x16u);
     }
   }
@@ -4101,12 +4101,12 @@ LABEL_35:
       v27 = @"audio";
     }
 
-    v211 = a5;
+    personCopy3 = person;
     v212 = v27;
     MarcoNoteCheckpoint();
   }
 
-  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v26, 8, v23, a3, a5, 0, v211, v212) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 8, v23, a3, a5, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v29, 8, v23, a3, a5, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v30, 8, v23, a3, a5, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v31, 8, v23, a3, a5, 0, v16))
+  if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v26, 8, v23, relay, person, 0, personCopy3, v212) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v28, 8, v23, relay, person, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v29, 8, v23, relay, person, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v30, 8, v23, relay, person, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v31, 8, v23, relay, person, 0, v16))
   {
     if (v13)
     {
@@ -4116,66 +4116,66 @@ LABEL_35:
 
     else
     {
-      if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v32, 8, v23, a3, a5, 0) & 1) == 0)
+      if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v32, 8, v23, relay, person, 0) & 1) == 0)
       {
         goto LABEL_38;
       }
 
       v33 = objc_alloc_init(FTRelayUpdateMessage);
-      v43 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v40, a3, v41, v42);
+      v43 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v40, relay, v41, v42);
       objc_msgSend_setSessionToken_(v33, v44, v43, v45, v46);
     }
 
     objc_msgSend_setPeerID_(v33, v37, v16, v38, v39);
     objc_msgSend_setPeerPushToken_(v33, v47, v19, v48, v49);
-    v53 = objc_msgSend_objectForKey_(a4, v50, *MEMORY[0x277D18FE8], v51, v52);
+    v53 = objc_msgSend_objectForKey_(update, v50, *MEMORY[0x277D18FE8], v51, v52);
     objc_msgSend_setRelayType_(v33, v54, v53, v55, v56);
-    v60 = objc_msgSend_objectForKey_(a4, v57, *MEMORY[0x277D18F48], v58, v59);
+    v60 = objc_msgSend_objectForKey_(update, v57, *MEMORY[0x277D18F48], v58, v59);
     objc_msgSend_setRelayConnectionID_(v33, v61, v60, v62, v63);
-    v67 = objc_msgSend_objectForKey_(a4, v64, *MEMORY[0x277D18FE0], v65, v66);
+    v67 = objc_msgSend_objectForKey_(update, v64, *MEMORY[0x277D18FE0], v65, v66);
     objc_msgSend_setRelayTransactionIDAlloc_(v33, v68, v67, v69, v70);
-    v74 = objc_msgSend_objectForKey_(a4, v71, *MEMORY[0x277D18FD8], v72, v73);
+    v74 = objc_msgSend_objectForKey_(update, v71, *MEMORY[0x277D18FD8], v72, v73);
     objc_msgSend_setRelayTokenAllocRes_(v33, v75, v74, v76, v77);
     v82 = objc_msgSend_pushToken(self, v78, v79, v80, v81);
     objc_msgSend_setSelfPushToken_(v33, v83, v82, v84, v85);
-    v89 = objc_msgSend_objectForKey_(a4, v86, *MEMORY[0x277D18FB8], v87, v88);
+    v89 = objc_msgSend_objectForKey_(update, v86, *MEMORY[0x277D18FB8], v87, v88);
     objc_msgSend_setSelfRelayIP_(v33, v90, v89, v91, v92);
-    v96 = objc_msgSend_objectForKey_(a4, v93, *MEMORY[0x277D18FD0], v94, v95);
+    v96 = objc_msgSend_objectForKey_(update, v93, *MEMORY[0x277D18FD0], v94, v95);
     objc_msgSend_setSelfRelayPort_(v33, v97, v96, v98, v99);
-    v103 = objc_msgSend_objectForKey_(a4, v100, *MEMORY[0x277D18FC0], v101, v102);
+    v103 = objc_msgSend_objectForKey_(update, v100, *MEMORY[0x277D18FC0], v101, v102);
     objc_msgSend_setSelfRelayNATIP_(v33, v104, v103, v105, v106);
-    v110 = objc_msgSend_objectForKey_(a4, v107, *MEMORY[0x277D18FC8], v108, v109);
+    v110 = objc_msgSend_objectForKey_(update, v107, *MEMORY[0x277D18FC8], v108, v109);
     objc_msgSend_setSelfRelayNATPort_(v33, v111, v110, v112, v113);
     v114 = *MEMORY[0x277D18F78];
-    v118 = objc_msgSend_objectForKey_(a4, v115, *MEMORY[0x277D18F78], v116, v117);
+    v118 = objc_msgSend_objectForKey_(update, v115, *MEMORY[0x277D18F78], v116, v117);
     v122 = *MEMORY[0x277D18F70];
     if (v118)
     {
-      v123 = objc_msgSend_objectForKey_(a4, v119, v114, v120, v121);
+      v123 = objc_msgSend_objectForKey_(update, v119, v114, v120, v121);
     }
 
     else
     {
-      v123 = objc_msgSend_objectForKey_(a4, v119, *MEMORY[0x277D18F70], v120, v121);
+      v123 = objc_msgSend_objectForKey_(update, v119, *MEMORY[0x277D18F70], v120, v121);
     }
 
     objc_msgSend_setPeerRelayIP_(v33, v124, v123, v125, v126);
-    v130 = objc_msgSend_objectForKey_(a4, v127, *MEMORY[0x277D18F88], v128, v129);
+    v130 = objc_msgSend_objectForKey_(update, v127, *MEMORY[0x277D18F88], v128, v129);
     objc_msgSend_setPeerRelayPort_(v33, v131, v130, v132, v133);
-    v137 = objc_msgSend_objectForKey_(a4, v134, *MEMORY[0x277D18F90], v135, v136);
+    v137 = objc_msgSend_objectForKey_(update, v134, *MEMORY[0x277D18F90], v135, v136);
     objc_msgSend_setSelfRelayBlob_(v33, v138, v137, v139, v140);
-    v144 = objc_msgSend_objectForKey_(a4, v141, *MEMORY[0x277D18F98], v142, v143);
+    v144 = objc_msgSend_objectForKey_(update, v141, *MEMORY[0x277D18F98], v142, v143);
     objc_msgSend_setRelayCandidateID_(v33, v145, v144, v146, v147);
     v148 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v153 = v148;
-    if (a5)
+    if (person)
     {
-      CFDictionarySetValue(v148, @"ID", a5);
+      CFDictionarySetValue(v148, @"ID", person);
     }
 
-    if (a3)
+    if (relay)
     {
-      CFDictionarySetValue(v153, @"conference", a3);
+      CFDictionarySetValue(v153, @"conference", relay);
     }
 
     v155 = objc_msgSend_date(MEMORY[0x277CBEAA8], v149, v150, v151, v152);
@@ -4266,7 +4266,7 @@ LABEL_3:
   return v9;
 }
 
-- (void)relay:(id)a3 sendCancel:(id)a4 toPerson:(id)a5
+- (void)relay:(id)relay sendCancel:(id)cancel toPerson:(id)person
 {
   v169 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -4275,11 +4275,11 @@ LABEL_3:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v164 = a5;
+      personCopy2 = person;
       v165 = 2112;
-      v166 = a3;
+      relayCopy = relay;
       v167 = 2112;
-      v168 = a4;
+      cancelCopy = cancel;
       _os_log_impl(&dword_23BC9F000, v13, OS_LOG_TYPE_INFO, "sendRelayCancelTo: %@ relayID: %@  userInfo: %@", buf, 0x20u);
     }
   }
@@ -4291,10 +4291,10 @@ LABEL_3:
 
   else
   {
-    v17 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v14, a3, v15, v16);
-    v20 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v18, a5, a3, v19);
-    v23 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v21, v20, a3, v22);
-    v27 = objc_msgSend__callTypeForConferenceID_(self, v24, a3, v25, v26);
+    v17 = objc_msgSend__mappedSessionTokenForConferenceID_(self, v14, relay, v15, v16);
+    v20 = objc_msgSend__peerIDForDiplayID_conferenceID_(self, v18, person, relay, v19);
+    v23 = objc_msgSend__pushTokenForPeerID_conferenceID_(self, v21, v20, relay, v22);
+    v27 = objc_msgSend__callTypeForConferenceID_(self, v24, relay, v25, v26);
     if (IMOSLoggingEnabled())
     {
       v28 = OSLogHandleForIMFoundationCategory();
@@ -4312,9 +4312,9 @@ LABEL_3:
         }
 
         *buf = 138412546;
-        v164 = a5;
+        personCopy2 = person;
         v165 = 2112;
-        v166 = v29;
+        relayCopy = v29;
         _os_log_impl(&dword_23BC9F000, v28, OS_LOG_TYPE_INFO, "Sending relay cancel to: %@  callType: %@", buf, 0x16u);
       }
     }
@@ -4332,12 +4332,12 @@ LABEL_3:
         v31 = @"audio";
       }
 
-      v161 = a5;
+      personCopy3 = person;
       v162 = v31;
       MarcoNoteCheckpoint();
     }
 
-    if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v30, 9, v27, a3, a5, 0, v161, v162) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v32, 9, v27, a3, a5, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v33, 9, v27, a3, a5, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v34, 9, v27, a3, a5, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v35, 9, v27, a3, a5, 0, v20))
+    if (objc_msgSend__checkRegistrationAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v30, 9, v27, relay, person, 0, personCopy3, v162) && objc_msgSend__checkManagedProfileAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v32, 9, v27, relay, person, 0) && objc_msgSend__checkCanSendRequestsAndFailIfNecessaryAction_callType_conferenceID_withPerson_properties_(self, v33, 9, v27, relay, person, 0) && objc_msgSend__checkAliasInfoAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v34, 9, v27, relay, person, 0) && objc_msgSend__checkForBadPeerIDWithAction_callType_conferenceID_withPerson_properties_peerID_(self, v35, 9, v27, relay, person, 0, v20))
     {
       if (v17)
       {
@@ -4347,55 +4347,55 @@ LABEL_3:
 
       else
       {
-        if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v36, 9, v27, a3, a5, 0) & 1) == 0)
+        if ((objc_msgSend__checkConferenceIDAndFailIfNecessaryWithAction_callType_conferenceID_withPerson_properties_(self, v36, 9, v27, relay, person, 0) & 1) == 0)
         {
           goto LABEL_36;
         }
 
         v37 = objc_alloc_init(FTRelayCancelMessage);
-        v47 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v44, a3, v45, v46);
+        v47 = objc_msgSend___imDataWithHexString_(MEMORY[0x277CBEA90], v44, relay, v45, v46);
         objc_msgSend_setSessionToken_(v37, v48, v47, v49, v50);
       }
 
       objc_msgSend_setPeerID_(v37, v41, v20, v42, v43);
       objc_msgSend_setPeerPushToken_(v37, v51, v23, v52, v53);
       objc_msgSend_setReason_(v37, v54, &unk_284E75830, v55, v56);
-      v60 = objc_msgSend_objectForKey_(a4, v57, *MEMORY[0x277D18FE8], v58, v59);
+      v60 = objc_msgSend_objectForKey_(cancel, v57, *MEMORY[0x277D18FE8], v58, v59);
       objc_msgSend_setRelayType_(v37, v61, v60, v62, v63);
-      v67 = objc_msgSend_objectForKey_(a4, v64, *MEMORY[0x277D18F48], v65, v66);
+      v67 = objc_msgSend_objectForKey_(cancel, v64, *MEMORY[0x277D18F48], v65, v66);
       objc_msgSend_setRelayConnectionID_(v37, v68, v67, v69, v70);
-      v74 = objc_msgSend_objectForKey_(a4, v71, *MEMORY[0x277D18FB8], v72, v73);
+      v74 = objc_msgSend_objectForKey_(cancel, v71, *MEMORY[0x277D18FB8], v72, v73);
       objc_msgSend_setSelfRelayIP_(v37, v75, v74, v76, v77);
-      v81 = objc_msgSend_objectForKey_(a4, v78, *MEMORY[0x277D18FD0], v79, v80);
+      v81 = objc_msgSend_objectForKey_(cancel, v78, *MEMORY[0x277D18FD0], v79, v80);
       objc_msgSend_setSelfRelayPort_(v37, v82, v81, v83, v84);
       v85 = *MEMORY[0x277D18F78];
-      v89 = objc_msgSend_objectForKey_(a4, v86, *MEMORY[0x277D18F78], v87, v88);
+      v89 = objc_msgSend_objectForKey_(cancel, v86, *MEMORY[0x277D18F78], v87, v88);
       v93 = *MEMORY[0x277D18F70];
       if (v89)
       {
-        v94 = objc_msgSend_objectForKey_(a4, v90, v85, v91, v92);
+        v94 = objc_msgSend_objectForKey_(cancel, v90, v85, v91, v92);
       }
 
       else
       {
-        v94 = objc_msgSend_objectForKey_(a4, v90, *MEMORY[0x277D18F70], v91, v92);
+        v94 = objc_msgSend_objectForKey_(cancel, v90, *MEMORY[0x277D18F70], v91, v92);
       }
 
       objc_msgSend_setPeerRelayIP_(v37, v95, v94, v96, v97);
-      v101 = objc_msgSend_objectForKey_(a4, v98, *MEMORY[0x277D18F88], v99, v100);
+      v101 = objc_msgSend_objectForKey_(cancel, v98, *MEMORY[0x277D18F88], v99, v100);
       objc_msgSend_setPeerRelayPort_(v37, v102, v101, v103, v104);
-      v108 = objc_msgSend_objectForKey_(a4, v105, *MEMORY[0x277D18F98], v106, v107);
+      v108 = objc_msgSend_objectForKey_(cancel, v105, *MEMORY[0x277D18F98], v106, v107);
       objc_msgSend_setRelayCandidateID_(v37, v109, v108, v110, v111);
       v112 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v116 = v112;
-      if (a5)
+      if (person)
       {
-        CFDictionarySetValue(v112, @"ID", a5);
+        CFDictionarySetValue(v112, @"ID", person);
       }
 
-      if (a3)
+      if (relay)
       {
-        CFDictionarySetValue(v116, @"conference", a3);
+        CFDictionarySetValue(v116, @"conference", relay);
       }
 
       v117 = objc_msgSend_topicForCallType_(self, v113, v27, v114, v115);
@@ -4418,7 +4418,7 @@ LABEL_36:
   v160 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelOtherInvitesForPeerID:(id)a3 skipPairs:(id)a4 properties:(id)a5 conference:(id)a6 reason:(id)a7
+- (void)_cancelOtherInvitesForPeerID:(id)d skipPairs:(id)pairs properties:(id)properties conference:(id)conference reason:(id)reason
 {
   v30 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -4427,29 +4427,29 @@ LABEL_36:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v26 = 138412546;
-      v27 = a3;
+      dCopy = d;
       v28 = 2112;
-      v29 = a4;
+      pairsCopy = pairs;
       _os_log_impl(&dword_23BC9F000, v14, OS_LOG_TYPE_INFO, "Cancelling other invites for peer ID: %@     ignore pairs: %@", &v26, 0x16u);
     }
   }
 
-  v15 = objc_msgSend__peerIDPushTokensPairsForPeerID_conferenceID_skippingPairs_(self, v13, a3, a6, a4);
+  v15 = objc_msgSend__peerIDPushTokensPairsForPeerID_conferenceID_skippingPairs_(self, v13, d, conference, pairs);
   if (IMOSLoggingEnabled())
   {
     v20 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v26 = 138412290;
-      v27 = v15;
+      dCopy = v15;
       _os_log_impl(&dword_23BC9F000, v20, OS_LOG_TYPE_INFO, "         pairs to cancel: %@", &v26, 0xCu);
     }
   }
 
   if (objc_msgSend_count(v15, v16, v17, v18, v19))
   {
-    v23 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v21, a3, a6, v22);
-    objc_msgSend__cancelVCRequestWithPerson_properties_conference_pairsToSkip_reason_(self, v24, v23, a5, a6, a4, a7);
+    v23 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v21, d, conference, v22);
+    objc_msgSend__cancelVCRequestWithPerson_properties_conference_pairsToSkip_reason_(self, v24, v23, properties, conference, pairs, reason);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -4511,7 +4511,7 @@ LABEL_3:
   return v9;
 }
 
-- (void)handler:(id)a3 sessionInitated:(id)a4 topic:(id)a5 myID:(id)a6 peerID:(id)a7 peerDisplayID:(id)a8 peerCN:(id)a9 peerPushToken:(id)a10 peerNATType:(id)a11 peerBlob:(id)a12 peerNatIP:(id)a13 clientInfo:(id)a14 serviceData:(id)a15
+- (void)handler:(id)handler sessionInitated:(id)initated topic:(id)topic myID:(id)d peerID:(id)iD peerDisplayID:(id)displayID peerCN:(id)n peerPushToken:(id)self0 peerNATType:(id)self1 peerBlob:(id)self2 peerNatIP:(id)self3 clientInfo:(id)self4 serviceData:(id)self5
 {
   v325 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -4520,16 +4520,16 @@ LABEL_3:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v320 = a4;
+      dCopy3 = initated;
       v321 = 2112;
-      v322 = a5;
+      iDCopy2 = topic;
       v323 = 2112;
-      v324 = a6;
+      dCopy = d;
       _os_log_impl(&dword_23BC9F000, v23, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@, myID: %@", buf, 0x20u);
     }
   }
 
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v20, @"com.apple.private.ac", v21, v22);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v20, @"com.apple.private.ac", v21, v22);
   v28 = objc_msgSend_idsAccount(self, v24, v25, v26, v27);
   v33 = objc_msgSend_accountType(v28, v29, v30, v31, v32);
   if (v33)
@@ -4565,14 +4565,14 @@ LABEL_3:
     }
 
     v38 = objc_msgSend_profileID(self, v34, v35, v36, v37);
-    v42 = objc_msgSend_isEqualToString_(a6, v39, v38, v40, v41);
+    v42 = objc_msgSend_isEqualToString_(d, v39, v38, v40, v41);
   }
 
   else
   {
     v47 = objc_msgSend_phoneNumber(self, v34, v35, v36, v37);
     v51 = objc_msgSend__IDFromFZIDType_(v47, v48, 0, v49, v50);
-    v42 = objc_msgSend_isEqualToString_(a6, v52, v51, v53, v54);
+    v42 = objc_msgSend_isEqualToString_(d, v52, v51, v53, v54);
   }
 
   if ((v42 & 1) == 0)
@@ -4584,9 +4584,9 @@ LABEL_3:
       {
         v80 = objc_msgSend_userID(self, v76, v77, v78, v79);
         *buf = 138412546;
-        v320 = a6;
+        dCopy3 = d;
         v321 = 2112;
-        v322 = v80;
+        iDCopy2 = v80;
         _os_log_impl(&dword_23BC9F000, v75, OS_LOG_TYPE_INFO, "Ignoring this invite, it is not to me, but instead to: %@  (mine is: %@)", buf, 0x16u);
       }
     }
@@ -4598,9 +4598,9 @@ LABEL_3:
       {
         v86 = objc_msgSend_userID(self, v82, v83, v84, v85);
         *buf = 138412546;
-        v320 = a6;
+        dCopy3 = d;
         v321 = 2112;
-        v322 = v86;
+        iDCopy2 = v86;
         _os_log_impl(&dword_23BC9F000, v81, OS_LOG_TYPE_INFO, "Ignoring this invite, it is not to me, but instead to: %@  (mine is: %@)", buf, 0x16u);
       }
     }
@@ -4614,7 +4614,7 @@ LABEL_3:
     goto LABEL_184;
   }
 
-  v55 = objc_msgSend___imHexString(a4, v43, v44, v45, v46);
+  v55 = objc_msgSend___imHexString(initated, v43, v44, v45, v46);
   objc_msgSend__setCallType_forConferenceID_(self, v56, isEqualToString, v55, v57);
   v314 = 0u;
   v315 = 0u;
@@ -4663,9 +4663,9 @@ LABEL_17:
         if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v320 = v55;
+          dCopy3 = v55;
           v321 = 2112;
-          v322 = a4;
+          iDCopy2 = initated;
           _os_log_impl(&dword_23BC9F000, v72, OS_LOG_TYPE_INFO, "Delaying initiate for conference ID: %@  (token: %@)", buf, 0x16u);
         }
       }
@@ -4674,36 +4674,36 @@ LABEL_17:
       v295 = 3221225472;
       v296 = sub_23BCB0E2C;
       v297 = &unk_278B8F200;
-      v298 = self;
-      v299 = a3;
-      v300 = a4;
-      v301 = a5;
-      v302 = a6;
-      v303 = a7;
-      v304 = a8;
-      v305 = a9;
-      v306 = a10;
-      v307 = a11;
-      v308 = a12;
-      v309 = a13;
-      v310 = a14;
-      v311 = a15;
+      selfCopy = self;
+      handlerCopy = handler;
+      initatedCopy3 = initated;
+      topicCopy2 = topic;
+      dCopy4 = d;
+      iDCopy = iD;
+      displayIDCopy = displayID;
+      nCopy = n;
+      tokenCopy = token;
+      typeCopy = type;
+      blobCopy = blob;
+      pCopy = p;
+      infoCopy = info;
+      dataCopy = data;
       im_dispatch_after();
       goto LABEL_184;
     }
   }
 
   v91 = objc_msgSend_sharedInstance(MEMORY[0x277D18728], v64, v71, v66, v67);
-  objc_msgSend__setCurrentIDStatus_forDestination_service_(v91, v92, 1, a8, a5);
-  v97 = sub_23BCB0E7C(a14, v93, v94, v95, v96);
-  if (objc_msgSend_length(a8, v98, v99, v100, v101))
+  objc_msgSend__setCurrentIDStatus_forDestination_service_(v91, v92, 1, displayID, topic);
+  v97 = sub_23BCB0E7C(info, v93, v94, v95, v96);
+  if (objc_msgSend_length(displayID, v98, v99, v100, v101))
   {
-    v106 = objc_msgSend__stripFZIDPrefix(a8, v102, v103, v104, v105);
+    v106 = objc_msgSend__stripFZIDPrefix(displayID, v102, v103, v104, v105);
   }
 
   else
   {
-    v106 = objc_msgSend__stripFZIDPrefix(a7, v102, v103, v104, v105);
+    v106 = objc_msgSend__stripFZIDPrefix(iD, v102, v103, v104, v105);
   }
 
   v282 = v106;
@@ -4863,7 +4863,7 @@ LABEL_77:
       if (os_log_type_enabled(v147, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v320 = v146;
+        dCopy3 = v146;
         _os_log_impl(&dword_23BC9F000, v147, OS_LOG_TYPE_INFO, "Peers for this call %@", buf, 0xCu);
       }
     }
@@ -4880,7 +4880,7 @@ LABEL_77:
         }
 
         *buf = 138412290;
-        v320 = v153;
+        dCopy3 = v153;
         _os_log_impl(&dword_23BC9F000, v152, OS_LOG_TYPE_INFO, "Is reinitiate: %@", buf, 0xCu);
       }
     }
@@ -4912,16 +4912,16 @@ LABEL_77:
         {
           v168 = @"video";
           *buf = 138412802;
-          v320 = v282;
+          dCopy3 = v282;
           v321 = 2112;
           if (isEqualToString)
           {
             v168 = @"audio";
           }
 
-          v322 = a7;
+          iDCopy2 = iD;
           v323 = 2112;
-          v324 = v168;
+          dCopy = v168;
           _os_log_impl(&dword_23BC9F000, v167, OS_LOG_TYPE_INFO, "Received invite push from: %@ (%@)  type: %@", buf, 0x20u);
         }
       }
@@ -4938,7 +4938,7 @@ LABEL_77:
           v169 = @"video";
         }
 
-        v280 = a7;
+        iDCopy3 = iD;
         v281 = v169;
         v277 = v282;
         MarcoNoteCheckpoint();
@@ -4950,7 +4950,7 @@ LABEL_77:
         if (os_log_type_enabled(v170, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v320 = v55;
+          dCopy3 = v55;
           _os_log_impl(&dword_23BC9F000, v170, OS_LOG_TYPE_INFO, "Conference ID: %@", buf, 0xCu);
         }
       }
@@ -4961,7 +4961,7 @@ LABEL_77:
         MarcoNoteCheckpoint();
       }
 
-      objc_msgSend__logLocalInfo(self, v171, v172, v173, v174, v277, v280, v281);
+      objc_msgSend__logLocalInfo(self, v171, v172, v173, v174, v277, iDCopy3, v281);
       if (objc_msgSend_allowedAsChild(self, v175, v176, v177, v178))
       {
         if (objc_msgSend__validRegistrationStateToAcceptCalls(self, v179, v180, v181, v182))
@@ -4972,47 +4972,47 @@ LABEL_77:
             v191 = objc_msgSend_initWithIdentifier_timeout_(v187, v188, @"IncomingFaceTimeCall", v189, v190, 10.0);
             v192 = objc_alloc_init(MEMORY[0x277CBEB38]);
             v196 = v192;
-            if (a6)
+            if (d)
             {
-              CFDictionarySetValue(v192, *MEMORY[0x277D19570], a6);
+              CFDictionarySetValue(v192, *MEMORY[0x277D19570], d);
             }
 
-            if (a12)
+            if (blob)
             {
-              CFDictionarySetValue(v196, *MEMORY[0x277D194F0], a12);
+              CFDictionarySetValue(v196, *MEMORY[0x277D194F0], blob);
             }
 
-            if (a9)
+            if (n)
             {
-              CFDictionarySetValue(v196, *MEMORY[0x277D194D0], a9);
+              CFDictionarySetValue(v196, *MEMORY[0x277D194D0], n);
             }
 
-            v197 = a11;
-            if (a11)
+            typeCopy2 = type;
+            if (type)
             {
-              CFDictionarySetValue(v196, *MEMORY[0x277D19510], a11);
+              CFDictionarySetValue(v196, *MEMORY[0x277D19510], type);
             }
 
             v198 = MEMORY[0x277D19508];
-            if (a13)
+            if (p)
             {
-              CFDictionarySetValue(v196, *MEMORY[0x277D19508], a13);
+              CFDictionarySetValue(v196, *MEMORY[0x277D19508], p);
             }
 
-            v200 = sub_23BCB0F64(a14, v193, v197, v194, v195);
+            v200 = sub_23BCB0F64(info, v193, typeCopy2, v194, v195);
             if (v200)
             {
               CFDictionarySetValue(v196, *MEMORY[0x277D19568], v200);
             }
 
-            v204 = sub_23BCB1050(a14, v199, v200, v201, v202);
+            v204 = sub_23BCB1050(info, v199, v200, v201, v202);
             if (v204)
             {
               CFDictionarySetValue(v196, *MEMORY[0x277D194C8], v204);
             }
 
             v207 = MEMORY[0x277CCABB0];
-            v208 = sub_23BCB0E7C(a14, v203, v204, v205, v206);
+            v208 = sub_23BCB0E7C(info, v203, v204, v205, v206);
             v213 = objc_msgSend_numberWithBool_(v207, v209, v208, v210, v211);
             if (v213)
             {
@@ -5020,20 +5020,20 @@ LABEL_77:
             }
 
             v216 = MEMORY[0x277CCABB0];
-            v217 = sub_23BCB113C(a14, v212, v213, v214, v215);
+            v217 = sub_23BCB113C(info, v212, v213, v214, v215);
             v222 = objc_msgSend_numberWithBool_(v216, v218, v217, v219, v220);
             if (v222)
             {
               CFDictionarySetValue(v196, *MEMORY[0x277D194E8], v222);
             }
 
-            v226 = sub_23BCB1224(a14, v221, v222, v223, v224);
+            v226 = sub_23BCB1224(info, v221, v222, v223, v224);
             if (v226)
             {
               CFDictionarySetValue(v196, *MEMORY[0x277D19560], v226);
             }
 
-            v229 = sub_23BCB1308(a14, v225, v226, v227, v228);
+            v229 = sub_23BCB1308(info, v225, v226, v227, v228);
             if (v229)
             {
               CFDictionarySetValue(v196, *MEMORY[0x277D19540], v229);
@@ -5045,7 +5045,7 @@ LABEL_77:
               if (os_log_type_enabled(v230, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v320 = v196;
+                dCopy3 = v196;
                 _os_log_impl(&dword_23BC9F000, v230, OS_LOG_TYPE_INFO, "ConferenceDictionary: %@", buf, 0xCu);
               }
             }
@@ -5054,7 +5054,7 @@ LABEL_77:
             if (os_log_type_enabled(v231, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v320 = v196;
+              dCopy3 = v196;
               _os_log_impl(&dword_23BC9F000, v231, OS_LOG_TYPE_DEFAULT, "Response dictionary: %@", buf, 0xCu);
             }
 
@@ -5077,7 +5077,7 @@ LABEL_77:
             v236 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v232, 4, v233, v234, v278);
             v241 = objc_msgSend_plistData(v196, v237, v238, v239, v240);
             v245 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v242, 0, v243, v244);
-            v249 = objc_msgSend_dictionaryWithObjectsAndKeys_(v235, v246, v236, v247, v248, *MEMORY[0x277D19578], v241, *MEMORY[0x277D194E0], v245, *MEMORY[0x277D19528], a13, *v198, 0);
+            v249 = objc_msgSend_dictionaryWithObjectsAndKeys_(v235, v246, v236, v247, v248, *MEMORY[0x277D19578], v241, *MEMORY[0x277D194E0], v245, *MEMORY[0x277D19528], p, *v198, 0);
             objc_msgSend_addEntriesFromDictionary_(v249, v250, v196, v251, v252);
             if (IMOSLoggingEnabled())
             {
@@ -5085,7 +5085,7 @@ LABEL_77:
               if (os_log_type_enabled(v253, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v320 = v249;
+                dCopy3 = v249;
                 _os_log_impl(&dword_23BC9F000, v253, OS_LOG_TYPE_INFO, "Generated Properties: %@", buf, 0xCu);
               }
             }
@@ -5094,7 +5094,7 @@ LABEL_77:
             if (os_log_type_enabled(v254, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v320 = v196;
+              dCopy3 = v196;
               _os_log_impl(&dword_23BC9F000, v254, OS_LOG_TYPE_DEFAULT, "Properties dictionary: %@", buf, 0xCu);
             }
 
@@ -5127,7 +5127,7 @@ LABEL_77:
             v272 = objc_msgSend_accountID(self, v260, v261, v262, v263, v279);
             v273 = sub_23BCA7F48(v282);
             objc_msgSend_account_conference_receivedInvitationFrom_properties_(v271, v274, v272, v55, v273, v249);
-            objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v275, a7, v282, a10, v55);
+            objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v275, iD, v282, token, v55);
 
             goto LABEL_184;
           }
@@ -5234,7 +5234,7 @@ LABEL_184:
   v276 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 peerDisplay:(id)a4 topic:(id)a5 myID:(id)a6 sessionInitated:(id)a7 clientInfo:(id)a8 peerID:(id)a9 peerPushToken:(id)a10
+- (void)handler:(id)handler peerDisplay:(id)display topic:(id)topic myID:(id)d sessionInitated:(id)initated clientInfo:(id)info peerID:(id)iD peerPushToken:(id)self0
 {
   v144 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -5247,11 +5247,11 @@ LABEL_184:
     }
   }
 
-  v21 = objc_msgSend__stripFZIDPrefix(a4, v16, v17, v18, v19);
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v22, @"com.apple.private.ac", v23, v24);
+  v21 = objc_msgSend__stripFZIDPrefix(display, v16, v17, v18, v19);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v22, @"com.apple.private.ac", v23, v24);
   v30 = objc_msgSend_idsAccount(self, v26, v27, v28, v29);
   v35 = objc_msgSend_accountType(v30, v31, v32, v33, v34);
-  v40 = objc_msgSend___imHexString(a7, v36, v37, v38, v39);
+  v40 = objc_msgSend___imHexString(initated, v36, v37, v38, v39);
   objc_msgSend__setCallType_forConferenceID_(self, v41, isEqualToString, v40, v42);
   if (v35)
   {
@@ -5286,14 +5286,14 @@ LABEL_184:
     }
 
     v47 = objc_msgSend_profileID(self, v43, v44, v45, v46);
-    v51 = objc_msgSend_isEqualToString_(a6, v48, v47, v49, v50);
+    v51 = objc_msgSend_isEqualToString_(d, v48, v47, v49, v50);
   }
 
   else
   {
     v56 = objc_msgSend_phoneNumber(self, v43, v44, v45, v46);
     v60 = objc_msgSend__IDFromFZIDType_(v56, v57, 0, v58, v59);
-    v51 = objc_msgSend_isEqualToString_(a6, v61, v60, v62, v63);
+    v51 = objc_msgSend_isEqualToString_(d, v61, v60, v62, v63);
   }
 
   if (v51)
@@ -5305,13 +5305,13 @@ LABEL_184:
         if (objc_msgSend__isDeviceRegistered(self, v68, v69, v70, v71))
         {
           v72 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v78 = sub_23BCB0F64(a8, v73, v74, v75, v76);
+          v78 = sub_23BCB0F64(info, v73, v74, v75, v76);
           if (v78)
           {
             CFDictionarySetValue(v72, *MEMORY[0x277D19568], v78);
           }
 
-          v82 = sub_23BCB1050(a8, v77, v78, v79, v80);
+          v82 = sub_23BCB1050(info, v77, v78, v79, v80);
           if (v82)
           {
             CFDictionarySetValue(v72, *MEMORY[0x277D194C8], v82);
@@ -5342,7 +5342,7 @@ LABEL_184:
           v135 = objc_msgSend_accountID(self, v106, v107, v108, v109);
           v136 = sub_23BCA7F48(v21);
           objc_msgSend_account_conference_remoteUser_properties_(v134, v137, v135, v40, v136, v94);
-          objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v138, a9, v21, a10, v40);
+          objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v138, iD, v21, token, v40);
 
           goto LABEL_65;
         }
@@ -5441,7 +5441,7 @@ LABEL_184:
     {
       v117 = objc_msgSend_userID(self, v113, v114, v115, v116);
       *buf = 138412546;
-      v141 = a6;
+      dCopy2 = d;
       v142 = 2112;
       v143 = v117;
       _os_log_impl(&dword_23BC9F000, v112, OS_LOG_TYPE_INFO, "Ignoring this invite, it is not to me, but instead to: %@  (mine is: %@)", buf, 0x16u);
@@ -5455,7 +5455,7 @@ LABEL_184:
     {
       v123 = objc_msgSend_userID(self, v119, v120, v121, v122);
       *buf = 138412546;
-      v141 = a6;
+      dCopy2 = d;
       v142 = 2112;
       v143 = v123;
       _os_log_impl(&dword_23BC9F000, v118, OS_LOG_TYPE_INFO, "Ignoring this invite, it is not to me, but instead to: %@  (mine is: %@)", buf, 0x16u);
@@ -5472,7 +5472,7 @@ LABEL_65:
   v139 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 sessionAccepted:(id)a4 topic:(id)a5 peerID:(id)a6 peerCN:(id)a7 peerPushToken:(id)a8 peerNATType:(id)a9 peerBlob:(id)a10 peerNatIP:(id)a11 relayType:(id)a12 relayConnectionID:(id)a13 relayTransactionIDAlloc:(id)a14 relayTokenAllocReq:(id)a15 myRelayIP:(id)a16 myRelayPort:(id)a17 peerRelayIP:(id)a18 peerRelayPort:(id)a19 clientInfo:(id)a20 serviceData:(id)a21
+- (void)handler:(id)handler sessionAccepted:(id)accepted topic:(id)topic peerID:(id)d peerCN:(id)n peerPushToken:(id)token peerNATType:(id)type peerBlob:(id)self0 peerNatIP:(id)self1 relayType:(id)self2 relayConnectionID:(id)self3 relayTransactionIDAlloc:(id)self4 relayTokenAllocReq:(id)self5 myRelayIP:(id)self6 myRelayPort:(id)self7 peerRelayIP:(id)self8 peerRelayPort:(id)self9 clientInfo:(id)info serviceData:(id)data
 {
   v193 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -5481,16 +5481,16 @@ LABEL_65:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v187 = a4;
+      tokenCopy2 = accepted;
       v188 = 2112;
-      v189 = a5;
+      dCopy2 = topic;
       _os_log_impl(&dword_23BC9F000, v28, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  if (objc_msgSend__checkBadPushToken_(self, v25, a8, v26, v27))
+  if (objc_msgSend__checkBadPushToken_(self, v25, token, v26, v27))
   {
-    v33 = objc_msgSend___imHexString(a4, v29, v30, v31, v32);
+    v33 = objc_msgSend___imHexString(accepted, v29, v30, v31, v32);
     v184 = 0u;
     v185 = 0u;
     v182 = 0u;
@@ -5538,9 +5538,9 @@ LABEL_13:
           if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v187 = v33;
+            tokenCopy2 = v33;
             v188 = 2112;
-            v189 = a4;
+            dCopy2 = accepted;
             _os_log_impl(&dword_23BC9F000, v48, OS_LOG_TYPE_INFO, "Delaying accept for conference ID: %@  (token: %@)", buf, 0x16u);
           }
         }
@@ -5550,7 +5550,7 @@ LABEL_13:
       }
     }
 
-    if ((sub_23BCB0E7C(a20, v40, v47, v42, v43) & 1) == 0 && (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v49, a6, v33, v50) & 1) == 0)
+    if ((sub_23BCB0E7C(info, v40, v47, v42, v43) & 1) == 0 && (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v49, d, v33, v50) & 1) == 0)
     {
       if (!IMOSLoggingEnabled())
       {
@@ -5564,9 +5564,9 @@ LABEL_13:
       }
 
       *buf = 138412546;
-      v187 = a6;
+      tokenCopy2 = d;
       v188 = 2112;
-      v189 = v33;
+      dCopy2 = v33;
       v170 = "Ignoring this accept, no peers with peerID %@ in conferenceID %@";
       v171 = v173;
       v172 = 22;
@@ -5575,9 +5575,9 @@ LABEL_94:
       goto LABEL_95;
     }
 
-    v51 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v49, a6, v33, v50);
-    v54 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v52, a6, v33, v53);
-    isEqualToString = objc_msgSend_isEqualToString_(a5, v55, @"com.apple.private.ac", v56, v57);
+    v51 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v49, d, v33, v50);
+    v54 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v52, d, v33, v53);
+    isEqualToString = objc_msgSend_isEqualToString_(topic, v55, @"com.apple.private.ac", v56, v57);
     if (IMOSLoggingEnabled())
     {
       v58 = OSLogHandleForIMFoundationCategory();
@@ -5585,16 +5585,16 @@ LABEL_94:
       {
         v59 = @"video";
         *buf = 138412802;
-        v187 = v51;
+        tokenCopy2 = v51;
         v188 = 2112;
         if (isEqualToString)
         {
           v59 = @"audio";
         }
 
-        v189 = a6;
+        dCopy2 = d;
         v190 = 2112;
-        v191 = v59;
+        dCopy5 = v59;
         _os_log_impl(&dword_23BC9F000, v58, OS_LOG_TYPE_INFO, "Received accept push from: %@ (%@)   %@", buf, 0x20u);
       }
     }
@@ -5611,13 +5611,13 @@ LABEL_94:
         v63 = @"video";
       }
 
-      v177 = a6;
+      dCopy3 = d;
       v178 = v63;
       v175 = v51;
       MarcoNoteCheckpoint();
     }
 
-    if (objc_msgSend_containsObject_(v54, v60, a8, v61, v62, v175, v177, v178))
+    if (objc_msgSend_containsObject_(v54, v60, token, v61, v62, v175, dCopy3, v178))
     {
       v68 = objc_msgSend_sharedInstance(MEMORY[0x277D192A8], v64, v65, v66, v67);
       objc_msgSend_isScreenLocked(v68, v69, v70, v71, v72);
@@ -5628,30 +5628,30 @@ LABEL_94:
       PLLogRegisteredEvent();
       v80 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v84 = v80;
-      if (a10)
+      if (blob)
       {
-        CFDictionarySetValue(v80, *MEMORY[0x277D194F0], a10);
+        CFDictionarySetValue(v80, *MEMORY[0x277D194F0], blob);
       }
 
-      if (a7)
+      if (n)
       {
-        CFDictionarySetValue(v84, *MEMORY[0x277D194D0], a7);
+        CFDictionarySetValue(v84, *MEMORY[0x277D194D0], n);
       }
 
-      v85 = a9;
-      if (a9)
+      typeCopy = type;
+      if (type)
       {
-        CFDictionarySetValue(v84, *MEMORY[0x277D19510], a9);
+        CFDictionarySetValue(v84, *MEMORY[0x277D19510], type);
       }
 
-      v87 = sub_23BCB0F64(a20, v81, v85, v82, v83);
+      v87 = sub_23BCB0F64(info, v81, typeCopy, v82, v83);
       if (v87)
       {
         CFDictionarySetValue(v84, *MEMORY[0x277D19568], v87);
       }
 
       v90 = MEMORY[0x277CCABB0];
-      v91 = sub_23BCB0E7C(a20, v86, v87, v88, v89);
+      v91 = sub_23BCB0E7C(info, v86, v87, v88, v89);
       v96 = objc_msgSend_numberWithBool_(v90, v92, v91, v93, v94);
       if (v96)
       {
@@ -5659,20 +5659,20 @@ LABEL_94:
       }
 
       v99 = MEMORY[0x277CCABB0];
-      v100 = sub_23BCB113C(a20, v95, v96, v97, v98);
+      v100 = sub_23BCB113C(info, v95, v96, v97, v98);
       v105 = objc_msgSend_numberWithBool_(v99, v101, v100, v102, v103);
       if (v105)
       {
         CFDictionarySetValue(v84, *MEMORY[0x277D194E8], v105);
       }
 
-      v109 = sub_23BCB1224(a20, v104, v105, v106, v107);
+      v109 = sub_23BCB1224(info, v104, v105, v106, v107);
       if (v109)
       {
         CFDictionarySetValue(v84, *MEMORY[0x277D19560], v109);
       }
 
-      v112 = sub_23BCB1308(a20, v108, v109, v110, v111);
+      v112 = sub_23BCB1308(info, v108, v109, v110, v111);
       if (v112)
       {
         CFDictionarySetValue(v84, *MEMORY[0x277D19540], v112);
@@ -5684,12 +5684,12 @@ LABEL_94:
         if (os_log_type_enabled(v116, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v187 = v84;
+          tokenCopy2 = v84;
           _os_log_impl(&dword_23BC9F000, v116, OS_LOG_TYPE_INFO, "Response Dictionary : %@", buf, 0xCu);
         }
       }
 
-      if (a12)
+      if (relayType)
       {
         if (IMOSLoggingEnabled())
         {
@@ -5697,57 +5697,57 @@ LABEL_94:
           if (os_log_type_enabled(v117, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v187 = a12;
+            tokenCopy2 = relayType;
             _os_log_impl(&dword_23BC9F000, v117, OS_LOG_TYPE_INFO, "Accept also had inline relay request for relay type: %@", buf, 0xCu);
           }
         }
 
         if (MarcoShouldLogCheckpoints())
         {
-          v176 = a12;
+          relayTypeCopy2 = relayType;
           MarcoNoteCheckpoint();
         }
 
         v118 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        CFDictionarySetValue(v118, *MEMORY[0x277D18FE8], a12);
-        if (a13)
+        CFDictionarySetValue(v118, *MEMORY[0x277D18FE8], relayType);
+        if (iD)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18F48], a13);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18F48], iD);
         }
 
-        if (a14)
+        if (alloc)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18FE0], a14);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18FE0], alloc);
         }
 
-        if (a15)
+        if (req)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18FD8], a15);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18FD8], req);
         }
 
-        if (a6)
+        if (d)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18F58], a6);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18F58], d);
         }
 
-        if (a18)
+        if (relayIP)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18F70], a18);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18F70], relayIP);
         }
 
-        if (a19)
+        if (relayPort)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18F88], a19);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18F88], relayPort);
         }
 
-        if (a16)
+        if (iP)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18FB8], a16);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18FB8], iP);
         }
 
-        if (a17)
+        if (port)
         {
-          CFDictionarySetValue(v118, *MEMORY[0x277D18FD0], a17);
+          CFDictionarySetValue(v118, *MEMORY[0x277D18FD0], port);
         }
 
         if (v118)
@@ -5757,7 +5757,7 @@ LABEL_94:
       }
 
       v119 = MEMORY[0x277CBEAC0];
-      v120 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v113, 0, v114, v115, v176);
+      v120 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v113, 0, v114, v115, relayTypeCopy2);
       v124 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v121, 4, v122, v123);
       v129 = objc_msgSend_plistData(v84, v125, v126, v127, v128);
       v133 = objc_msgSend_dictionaryWithObjectsAndKeys_(v119, v130, v120, v131, v132, *MEMORY[0x277D19550], v124, *MEMORY[0x277D19578], v129, *MEMORY[0x277D19558], 0);
@@ -5767,7 +5767,7 @@ LABEL_94:
         if (os_log_type_enabled(v138, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v187 = v133;
+          tokenCopy2 = v133;
           _os_log_impl(&dword_23BC9F000, v138, OS_LOG_TYPE_INFO, "Generated Properties: %@", buf, 0xCu);
         }
       }
@@ -5780,21 +5780,21 @@ LABEL_94:
 
       v140 = *(&self->super.super.super.isa + *v139);
       v141 = objc_msgSend_accountID(self, v134, v135, v136, v137);
-      v146 = objc_msgSend___imHexString(a4, v142, v143, v144, v145);
+      v146 = objc_msgSend___imHexString(accepted, v142, v143, v144, v145);
       v147 = sub_23BCA7F48(v51);
       objc_msgSend_account_conference_receivedResponseToInvitationFrom_properties_(v140, v148, v141, v146, v147, v133);
       v149 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v154 = sub_23BCB0F64(a20, v150, v151, v152, v153);
+      v154 = sub_23BCB0F64(info, v150, v151, v152, v153);
       if (v154)
       {
         CFDictionarySetValue(v149, *MEMORY[0x277D19568], v154);
       }
 
-      v155 = sub_23BCB2858(a6, a8);
-      v160 = objc_msgSend___imHexString(a4, v156, v157, v158, v159);
-      objc_msgSend__cancelOtherInvitesForPeerID_skipPairs_properties_conference_reason_(self, v161, a6, v155, v149, v160, &unk_284E75848);
-      v166 = objc_msgSend___imHexString(a4, v162, v163, v164, v165);
-      objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v167, a6, 0, a8, v166);
+      v155 = sub_23BCB2858(d, token);
+      v160 = objc_msgSend___imHexString(accepted, v156, v157, v158, v159);
+      objc_msgSend__cancelOtherInvitesForPeerID_skipPairs_properties_conference_reason_(self, v161, d, v155, v149, v160, &unk_284E75848);
+      v166 = objc_msgSend___imHexString(accepted, v162, v163, v164, v165);
+      objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v167, d, 0, token, v166);
 
       goto LABEL_95;
     }
@@ -5805,11 +5805,11 @@ LABEL_94:
       if (os_log_type_enabled(v168, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v187 = a8;
+        tokenCopy2 = token;
         v188 = 2112;
-        v189 = v54;
+        dCopy2 = v54;
         v190 = 2112;
-        v191 = a6;
+        dCopy5 = d;
         _os_log_impl(&dword_23BC9F000, v168, OS_LOG_TYPE_INFO, "Response from token (%@) not in this conference set: %@ (%@)", buf, 0x20u);
       }
     }
@@ -5825,11 +5825,11 @@ LABEL_94:
       if (os_log_type_enabled(v169, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v187 = a8;
+        tokenCopy2 = token;
         v188 = 2112;
-        v189 = v54;
+        dCopy2 = v54;
         v190 = 2112;
-        v191 = a6;
+        dCopy5 = d;
         v170 = "Response from token (%@) not in this conference set: %@ (%@)";
         v171 = v169;
         v172 = 32;
@@ -5842,7 +5842,7 @@ LABEL_95:
   v174 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 sessionRejected:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 reason:(id)a8 clientInfo:(id)a9 serviceData:(id)a10
+- (void)handler:(id)handler sessionRejected:(id)rejected topic:(id)topic peerID:(id)d peerPushToken:(id)token reason:(id)reason clientInfo:(id)info serviceData:(id)self0
 {
   v132 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -5851,15 +5851,15 @@ LABEL_95:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v126 = a4;
+      dCopy5 = rejected;
       v127 = 2112;
-      v128 = a5;
+      dCopy3 = topic;
       _os_log_impl(&dword_23BC9F000, v18, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  v19 = objc_msgSend___imHexString(a4, v14, v15, v16, v17);
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v20, @"com.apple.private.ac", v21, v22);
+  v19 = objc_msgSend___imHexString(rejected, v14, v15, v16, v17);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v20, @"com.apple.private.ac", v21, v22);
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
@@ -5906,18 +5906,18 @@ LABEL_12:
     }
   }
 
-  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v29, a6, v19, v32))
+  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v29, d, v19, v32))
   {
-    v38 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v36, a6, v19, v37);
+    v38 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v36, d, v19, v37);
     if (IMOSLoggingEnabled())
     {
       v39 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v126 = v38;
+        dCopy5 = v38;
         v127 = 2112;
-        v128 = a6;
+        dCopy3 = d;
         _os_log_impl(&dword_23BC9F000, v39, OS_LOG_TYPE_INFO, "Received reject push from: %@  (%@)", buf, 0x16u);
       }
     }
@@ -5925,7 +5925,7 @@ LABEL_12:
     if (MarcoShouldLogCheckpoints())
     {
       v116 = v38;
-      v117 = a6;
+      dCopy2 = d;
       MarcoNoteCheckpoint();
     }
 
@@ -5935,22 +5935,22 @@ LABEL_12:
       if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v126 = v38;
+        dCopy5 = v38;
         v127 = 2112;
-        v128 = a6;
+        dCopy3 = d;
         _os_log_impl(&dword_23BC9F000, v42, OS_LOG_TYPE_INFO, "Received reject push from: %@  (%@)", buf, 0x16u);
       }
     }
 
-    v43 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v40, a6, v19, v41, v116, v117);
-    if (objc_msgSend_containsObject_(v43, v44, a7, v45, v46))
+    v43 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v40, d, v19, v41, v116, dCopy2);
+    if (objc_msgSend_containsObject_(v43, v44, token, v45, v46))
     {
       v50 = MEMORY[0x277CBEAC0];
       v51 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v47, @"%@", v48, v49, v19);
       objc_msgSend_dictionaryWithObject_forKey_(v50, v52, v51, @"ConferenceID", v53);
       PLLogRegisteredEvent();
       v54 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v59 = sub_23BCB0F64(a9, v55, v56, v57, v58);
+      v59 = sub_23BCB0F64(info, v55, v56, v57, v58);
       if (v59)
       {
         CFDictionarySetValue(v54, *MEMORY[0x277D19568], v59);
@@ -5962,7 +5962,7 @@ LABEL_12:
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v126 = v54;
+          dCopy5 = v54;
           _os_log_impl(&dword_23BC9F000, v63, OS_LOG_TYPE_INFO, "Response Dictionary : %@", buf, 0xCu);
         }
       }
@@ -5971,18 +5971,18 @@ LABEL_12:
       v65 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v60, 4, v61, v62);
       v70 = objc_msgSend_plistData(v54, v66, v67, v68, v69);
       v71 = *MEMORY[0x277D19550];
-      v75 = objc_msgSend_dictionaryWithObjectsAndKeys_(v64, v72, a8, v73, v74, *MEMORY[0x277D19550], v65, *MEMORY[0x277D19578], v70, *MEMORY[0x277D19558], 0);
+      v75 = objc_msgSend_dictionaryWithObjectsAndKeys_(v64, v72, reason, v73, v74, *MEMORY[0x277D19550], v65, *MEMORY[0x277D19578], v70, *MEMORY[0x277D19558], 0);
       if (IMOSLoggingEnabled())
       {
         v80 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v126 = a8;
+          dCopy5 = reason;
           v127 = 2112;
-          v128 = v38;
+          dCopy3 = v38;
           v129 = 2112;
-          v130 = a7;
+          dCopy4 = token;
           _os_log_impl(&dword_23BC9F000, v80, OS_LOG_TYPE_INFO, "Reject response: %@   from peer: %@   token: %@", buf, 0x20u);
         }
       }
@@ -5995,11 +5995,11 @@ LABEL_12:
 
       v82 = *(&self->super.super.super.isa + *v81);
       v83 = objc_msgSend_accountID(self, v76, v77, v78, v79);
-      v88 = objc_msgSend___imHexString(a4, v84, v85, v86, v87);
+      v88 = objc_msgSend___imHexString(rejected, v84, v85, v86, v87);
       v89 = sub_23BCA7F48(v38);
       objc_msgSend_account_conference_receivedResponseToInvitationFrom_properties_(v82, v90, v83, v88, v89, v75);
       v91 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v97 = sub_23BCB0F64(a9, v92, v93, v94, v95);
+      v97 = sub_23BCB0F64(info, v92, v93, v94, v95);
       if (v97)
       {
         CFDictionarySetValue(v91, *MEMORY[0x277D19568], v97);
@@ -6009,9 +6009,9 @@ LABEL_12:
       v105 = objc_msgSend_intValue(v100, v101, v102, v103, v104);
       if (v105 > 0xB || ((1 << v105) & 0x830) == 0)
       {
-        v106 = sub_23BCB2858(a6, a7);
-        v111 = objc_msgSend___imHexString(a4, v107, v108, v109, v110);
-        objc_msgSend__cancelOtherInvitesForPeerID_skipPairs_properties_conference_reason_(self, v112, a6, v106, v91, v111, &unk_284E75860);
+        v106 = sub_23BCB2858(d, token);
+        v111 = objc_msgSend___imHexString(rejected, v107, v108, v109, v110);
+        objc_msgSend__cancelOtherInvitesForPeerID_skipPairs_properties_conference_reason_(self, v112, d, v106, v91, v111, &unk_284E75860);
       }
     }
 
@@ -6023,11 +6023,11 @@ LABEL_12:
         if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v126 = a7;
+          dCopy5 = token;
           v127 = 2112;
-          v128 = v43;
+          dCopy3 = v43;
           v129 = 2112;
-          v130 = a6;
+          dCopy4 = d;
           _os_log_impl(&dword_23BC9F000, v114, OS_LOG_TYPE_INFO, "Response from token (%@) not in this conference set: %@ (%@)", buf, 0x20u);
         }
       }
@@ -6045,9 +6045,9 @@ LABEL_12:
     if (os_log_type_enabled(v113, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v126 = a6;
+      dCopy5 = d;
       v127 = 2112;
-      v128 = v19;
+      dCopy3 = v19;
       _os_log_impl(&dword_23BC9F000, v113, OS_LOG_TYPE_INFO, "Ignoring this reject, no peers with peerID %@ conferenceID %@", buf, 0x16u);
     }
   }
@@ -6056,7 +6056,7 @@ LABEL_48:
   v115 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 sessionCancelled:(id)a4 topic:(id)a5 peerID:(id)a6 reason:(id)a7 clientInfo:(id)a8 serviceData:(id)a9
+- (void)handler:(id)handler sessionCancelled:(id)cancelled topic:(id)topic peerID:(id)d reason:(id)reason clientInfo:(id)info serviceData:(id)data
 {
   v85 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -6065,31 +6065,31 @@ LABEL_48:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v82 = a4;
+      dCopy3 = cancelled;
       v83 = 2112;
-      v84 = a5;
+      dCopy = topic;
       _os_log_impl(&dword_23BC9F000, v19, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  v20 = objc_msgSend___imHexString(a4, v15, v16, v17, v18);
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v21, @"com.apple.private.ac", v22, v23);
-  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v25, a6, v20, v26))
+  v20 = objc_msgSend___imHexString(cancelled, v15, v16, v17, v18);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v21, @"com.apple.private.ac", v22, v23);
+  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v25, d, v20, v26))
   {
     v30 = MEMORY[0x277CBEAC0];
     v31 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v27, @"%@", v28, v29, v20);
     objc_msgSend_dictionaryWithObject_forKey_(v30, v32, v31, @"ConferenceID", v33);
     PLLogRegisteredEvent();
-    v36 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v34, a6, v20, v35);
+    v36 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v34, d, v20, v35);
     if (IMOSLoggingEnabled())
     {
       v37 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v82 = v36;
+        dCopy3 = v36;
         v83 = 2112;
-        v84 = a6;
+        dCopy = d;
         _os_log_impl(&dword_23BC9F000, v37, OS_LOG_TYPE_INFO, "Received cancel push from: %@ (%@)", buf, 0x16u);
       }
     }
@@ -6097,19 +6097,19 @@ LABEL_48:
     if (MarcoShouldLogCheckpoints())
     {
       v79 = v36;
-      v80 = a6;
+      dCopy2 = d;
       MarcoNoteCheckpoint();
     }
 
     v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v44 = sub_23BCB0F64(a8, v39, v40, v41, v42);
+    v44 = sub_23BCB0F64(info, v39, v40, v41, v42);
     if (v44)
     {
       CFDictionarySetValue(v38, *MEMORY[0x277D19568], v44);
     }
 
     v47 = MEMORY[0x277CCABB0];
-    v48 = objc_msgSend_intValue(a7, v43, v44, v45, v46, v79, v80);
+    v48 = objc_msgSend_intValue(reason, v43, v44, v45, v46, v79, dCopy2);
     v52 = objc_msgSend_numberWithInt_(v47, v49, v48, v50, v51);
     if (v52)
     {
@@ -6122,7 +6122,7 @@ LABEL_48:
       if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v82 = v38;
+        dCopy3 = v38;
         _os_log_impl(&dword_23BC9F000, v57, OS_LOG_TYPE_INFO, "Response Dictionary : %@", buf, 0xCu);
       }
     }
@@ -6152,9 +6152,9 @@ LABEL_48:
     if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v82 = a6;
+      dCopy3 = d;
       v83 = 2112;
-      v84 = v20;
+      dCopy = v20;
       _os_log_impl(&dword_23BC9F000, v73, OS_LOG_TYPE_INFO, "Ignoring this cancel, no peers with peerID %@ conferenceID %@", buf, 0x16u);
     }
   }
@@ -6162,7 +6162,7 @@ LABEL_48:
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 incomingMessage:(id)a4 topic:(id)a5 peerID:(id)a6 reason:(id)a7 clientInfo:(id)a8 serviceData:(id)a9
+- (void)handler:(id)handler incomingMessage:(id)message topic:(id)topic peerID:(id)d reason:(id)reason clientInfo:(id)info serviceData:(id)data
 {
   v71 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -6171,19 +6171,19 @@ LABEL_48:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v70 = a4;
+      *v70 = message;
       *&v70[8] = 2112;
-      *&v70[10] = a5;
+      *&v70[10] = topic;
       _os_log_impl(&dword_23BC9F000, v19, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  v20 = objc_msgSend___imHexString(a4, v15, v16, v17, v18);
-  v25 = sub_23BCB0F64(a8, v21, v22, v23, v24);
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v26, @"com.apple.private.ac", v27, v28);
-  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v30, a6, v20, v31))
+  v20 = objc_msgSend___imHexString(message, v15, v16, v17, v18);
+  v25 = sub_23BCB0F64(info, v21, v22, v23, v24);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v26, @"com.apple.private.ac", v27, v28);
+  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v30, d, v20, v31))
   {
-    v34 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v32, a6, v20, v33);
+    v34 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v32, d, v20, v33);
     if (IMOSLoggingEnabled())
     {
       v35 = OSLogHandleForIMFoundationCategory();
@@ -6192,7 +6192,7 @@ LABEL_48:
         *buf = 138412546;
         *v70 = v34;
         *&v70[8] = 2112;
-        *&v70[10] = a6;
+        *&v70[10] = d;
         _os_log_impl(&dword_23BC9F000, v35, OS_LOG_TYPE_INFO, "Received generic message push from: %@ (%@)", buf, 0x16u);
       }
     }
@@ -6200,17 +6200,17 @@ LABEL_48:
     if (MarcoShouldLogCheckpoints())
     {
       v67 = v34;
-      v68 = a6;
+      dCopy = d;
       MarcoNoteCheckpoint();
     }
 
-    v39 = objc_msgSend_objectForKey_(a8, v36, @"info", v37, v38, v67, v68);
+    v39 = objc_msgSend_objectForKey_(info, v36, @"info", v37, v38, v67, dCopy);
     if (IMOSLoggingEnabled())
     {
       v44 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
-        v45 = objc_msgSend_intValue(a7, v40, v41, v42, v43);
+        v45 = objc_msgSend_intValue(reason, v40, v41, v42, v43);
         *buf = 67109378;
         *v70 = v45;
         *&v70[4] = 2112;
@@ -6231,7 +6231,7 @@ LABEL_48:
 
     v52 = v46;
     v53 = objc_msgSend_accountID(self, v47, v48, v49, v50);
-    v58 = objc_msgSend_intValue(a7, v54, v55, v56, v57);
+    v58 = objc_msgSend_intValue(reason, v54, v55, v56, v57);
     v59 = sub_23BCA7F48(v34);
     v64 = objc_msgSend_unsignedIntValue(v25, v60, v61, v62, v63);
     objc_msgSend_account_conference_receivedAVMessage_from_sessionID_userInfo_(v52, v65, v53, v20, v58, v59, v64, v39);
@@ -6243,7 +6243,7 @@ LABEL_48:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v70 = a6;
+      *v70 = d;
       *&v70[8] = 2112;
       *&v70[10] = v20;
       _os_log_impl(&dword_23BC9F000, v51, OS_LOG_TYPE_INFO, "Ignoring this message, no peers with peerID %@ conferenceID %@", buf, 0x16u);
@@ -6253,7 +6253,7 @@ LABEL_48:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 relayInitiated:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 relayType:(id)a8 relayConnectionID:(id)value relayTransactionIDAlloc:(id)a10 relayTokenAllocReq:(id)a11 relayCandidateID:(id)a12 myRelayIP:(id)a13 myRelayPort:(id)a14 peerRelayIP:(id)a15 peerRelayPort:(id)a16 clientInfo:(id)a17 serviceData:(id)a18
+- (void)handler:(id)handler relayInitiated:(id)initiated topic:(id)topic peerID:(id)d peerPushToken:(id)token relayType:(id)type relayConnectionID:(id)value relayTransactionIDAlloc:(id)self0 relayTokenAllocReq:(id)self1 relayCandidateID:(id)self2 myRelayIP:(id)self3 myRelayPort:(id)self4 peerRelayIP:(id)self5 peerRelayPort:(id)self6 clientInfo:(id)self7 serviceData:(id)self8
 {
   v101 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -6262,29 +6262,29 @@ LABEL_48:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v96 = a4;
+      dCopy4 = initiated;
       v97 = 2112;
-      v98 = a5;
+      dCopy = topic;
       _os_log_impl(&dword_23BC9F000, v27, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  if (objc_msgSend__checkBadPushToken_(self, v24, a7, v25, v26))
+  if (objc_msgSend__checkBadPushToken_(self, v24, token, v25, v26))
   {
-    v32 = objc_msgSend___imHexString(a4, v28, v29, v30, v31);
-    isEqualToString = objc_msgSend_isEqualToString_(a5, v33, @"com.apple.private.ac", v34, v35);
-    if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v37, a6, v32, v38))
+    v32 = objc_msgSend___imHexString(initiated, v28, v29, v30, v31);
+    isEqualToString = objc_msgSend_isEqualToString_(topic, v33, @"com.apple.private.ac", v34, v35);
+    if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v37, d, v32, v38))
     {
-      v41 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v39, a6, v32, v40);
+      v41 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v39, d, v32, v40);
       if (IMOSLoggingEnabled())
       {
         v42 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v96 = v41;
+          dCopy4 = v41;
           v97 = 2112;
-          v98 = a6;
+          dCopy = d;
           _os_log_impl(&dword_23BC9F000, v42, OS_LOG_TYPE_INFO, "Received relay initate push from: %@ (%@)", buf, 0x16u);
         }
       }
@@ -6292,12 +6292,12 @@ LABEL_48:
       if (MarcoShouldLogCheckpoints())
       {
         v93 = v41;
-        v94 = a6;
+        dCopy2 = d;
         MarcoNoteCheckpoint();
       }
 
-      v45 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v43, a6, v32, v44, v93, v94);
-      if (objc_msgSend_containsObject_(v45, v46, a7, v47, v48))
+      v45 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v43, d, v32, v44, v93, dCopy2);
+      if (objc_msgSend_containsObject_(v45, v46, token, v47, v48))
       {
         objc_msgSend_containsObject_(self->_initiatedConferences, v49, v32, v50, v51);
         v56 = objc_msgSend_sharedInstance(MEMORY[0x277D192A8], v52, v53, v54, v55);
@@ -6309,9 +6309,9 @@ LABEL_48:
         PLLogRegisteredEvent();
         v68 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v72 = v68;
-        if (a8)
+        if (type)
         {
-          CFDictionarySetValue(v68, *MEMORY[0x277D18FE8], a8);
+          CFDictionarySetValue(v68, *MEMORY[0x277D18FE8], type);
         }
 
         if (value)
@@ -6319,45 +6319,45 @@ LABEL_48:
           CFDictionarySetValue(v72, *MEMORY[0x277D18F48], value);
         }
 
-        if (a10)
+        if (alloc)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18FE0], a10);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18FE0], alloc);
         }
 
-        if (a11)
+        if (req)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18FD8], a11);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18FD8], req);
         }
 
-        if (a6)
+        if (d)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18F58], a6);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18F58], d);
         }
 
-        if (a15)
+        if (iP)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18F70], a15);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18F70], iP);
         }
 
-        if (a16)
+        if (relayPort)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18F88], a16);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18F88], relayPort);
         }
 
-        if (a13)
+        if (p)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18FB8], a13);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18FB8], p);
         }
 
-        if (a14)
+        if (port)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18FD0], a14);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18FD0], port);
         }
 
-        v73 = a12;
-        if (a12)
+        iDCopy = iD;
+        if (iD)
         {
-          CFDictionarySetValue(v72, *MEMORY[0x277D18F98], a12);
+          CFDictionarySetValue(v72, *MEMORY[0x277D18F98], iD);
         }
 
         v74 = &OBJC_IVAR___FaceTimeServiceSession__broadcasterVCInvocationQueue;
@@ -6367,12 +6367,12 @@ LABEL_48:
         }
 
         v75 = *(&self->super.super.super.isa + *v74);
-        v76 = objc_msgSend_accountID(self, v69, v73, v70, v71);
-        v81 = objc_msgSend___imHexString(a4, v77, v78, v79, v80);
+        v76 = objc_msgSend_accountID(self, v69, iDCopy, v70, v71);
+        v81 = objc_msgSend___imHexString(initiated, v77, v78, v79, v80);
         v82 = sub_23BCA7F48(v41);
         objc_msgSend_account_relay_handleInitate_fromPerson_(v75, v83, v76, v81, v72, v82);
-        v88 = objc_msgSend___imHexString(a4, v84, v85, v86, v87);
-        objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v89, a6, 0, a7, v88);
+        v88 = objc_msgSend___imHexString(initiated, v84, v85, v86, v87);
+        objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v89, d, 0, token, v88);
       }
 
       else
@@ -6383,11 +6383,11 @@ LABEL_48:
           if (os_log_type_enabled(v91, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v96 = a7;
+            dCopy4 = token;
             v97 = 2112;
-            v98 = v45;
+            dCopy = v45;
             v99 = 2112;
-            v100 = a6;
+            dCopy3 = d;
             _os_log_impl(&dword_23BC9F000, v91, OS_LOG_TYPE_INFO, "Response from token (%@) not in this conference set: %@ (%@)", buf, 0x20u);
           }
         }
@@ -6405,9 +6405,9 @@ LABEL_48:
       if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v96 = a6;
+        dCopy4 = d;
         v97 = 2112;
-        v98 = v32;
+        dCopy = v32;
         _os_log_impl(&dword_23BC9F000, v90, OS_LOG_TYPE_INFO, "Ignoring this relay initiate, no peers with peerID %@ in conferenceID %@", buf, 0x16u);
       }
     }
@@ -6416,7 +6416,7 @@ LABEL_48:
   v92 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 relayUpdated:(id)a4 topic:(id)a5 peerID:(id)a6 peerPushToken:(id)a7 relayType:(id)a8 relayConnectionID:(id)value relayTransactionIDChannelBind:(id)a10 relayTokenChannelBind:(id)a11 relayCandidateID:(id)a12 relayBlob:(id)a13 peerRelayNATIP:(id)a14 peerRelayNATPort:(id)a15 clientInfo:(id)a16 serviceData:(id)a17
+- (void)handler:(id)handler relayUpdated:(id)updated topic:(id)topic peerID:(id)d peerPushToken:(id)token relayType:(id)type relayConnectionID:(id)value relayTransactionIDChannelBind:(id)self0 relayTokenChannelBind:(id)self1 relayCandidateID:(id)self2 relayBlob:(id)self3 peerRelayNATIP:(id)self4 peerRelayNATPort:(id)self5 clientInfo:(id)self6 serviceData:(id)self7
 {
   v100 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -6425,28 +6425,28 @@ LABEL_48:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v95 = a4;
+      dCopy4 = updated;
       v96 = 2112;
-      v97 = a5;
+      dCopy = topic;
       _os_log_impl(&dword_23BC9F000, v26, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  if (objc_msgSend__checkBadPushToken_(self, v23, a7, v24, v25))
+  if (objc_msgSend__checkBadPushToken_(self, v23, token, v24, v25))
   {
-    v31 = objc_msgSend___imHexString(a4, v27, v28, v29, v30);
-    if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v32, a6, v31, v33))
+    v31 = objc_msgSend___imHexString(updated, v27, v28, v29, v30);
+    if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v32, d, v31, v33))
     {
-      v36 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v34, a6, v31, v35);
+      v36 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v34, d, v31, v35);
       if (IMOSLoggingEnabled())
       {
         v37 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v95 = v36;
+          dCopy4 = v36;
           v96 = 2112;
-          v97 = a6;
+          dCopy = d;
           _os_log_impl(&dword_23BC9F000, v37, OS_LOG_TYPE_INFO, "Received relay update push from: %@ (%@)", buf, 0x16u);
         }
       }
@@ -6454,15 +6454,15 @@ LABEL_48:
       if (MarcoShouldLogCheckpoints())
       {
         v92 = v36;
-        v93 = a6;
+        dCopy2 = d;
         MarcoNoteCheckpoint();
       }
 
-      v40 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v38, a6, v31, v39, v92, v93);
-      if (objc_msgSend_containsObject_(v40, v41, a7, v42, v43))
+      v40 = objc_msgSend__pushTokensForPeerID_conferenceID_(self, v38, d, v31, v39, v92, dCopy2);
+      if (objc_msgSend_containsObject_(v40, v41, token, v42, v43))
       {
         objc_msgSend_containsObject_(self->_initiatedConferences, v44, v31, v45, v46);
-        isEqualToString = objc_msgSend_isEqualToString_(a5, v47, @"com.apple.private.ac", v48, v49);
+        isEqualToString = objc_msgSend_isEqualToString_(topic, v47, @"com.apple.private.ac", v48, v49);
         v55 = objc_msgSend_sharedInstance(MEMORY[0x277D192A8], v51, v52, v53, v54);
         objc_msgSend_isScreenLocked(v55, v56, v57, v58, v59);
         FTAWDLogCallRelayUpdatedReceived();
@@ -6472,9 +6472,9 @@ LABEL_48:
         PLLogRegisteredEvent();
         v67 = objc_alloc_init(MEMORY[0x277CBEB38]);
         v71 = v67;
-        if (a8)
+        if (type)
         {
-          CFDictionarySetValue(v67, *MEMORY[0x277D18FE8], a8);
+          CFDictionarySetValue(v67, *MEMORY[0x277D18FE8], type);
         }
 
         if (value)
@@ -6482,40 +6482,40 @@ LABEL_48:
           CFDictionarySetValue(v71, *MEMORY[0x277D18F48], value);
         }
 
-        if (a10)
+        if (bind)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18FE0], a10);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18FE0], bind);
         }
 
-        if (a11)
+        if (channelBind)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18FD8], a11);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18FD8], channelBind);
         }
 
-        if (a6)
+        if (d)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18F58], a6);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18F58], d);
         }
 
-        if (a14)
+        if (p)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18F78], a14);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18F78], p);
         }
 
-        if (a15)
+        if (port)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18F80], a15);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18F80], port);
         }
 
-        if (a13)
+        if (blob)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18F90], a13);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18F90], blob);
         }
 
-        v72 = a12;
-        if (a12)
+        iDCopy = iD;
+        if (iD)
         {
-          CFDictionarySetValue(v71, *MEMORY[0x277D18F98], a12);
+          CFDictionarySetValue(v71, *MEMORY[0x277D18F98], iD);
         }
 
         v73 = &OBJC_IVAR___FaceTimeServiceSession__broadcasterVCInvocationQueue;
@@ -6525,12 +6525,12 @@ LABEL_48:
         }
 
         v74 = *(&self->super.super.super.isa + *v73);
-        v75 = objc_msgSend_accountID(self, v68, v72, v69, v70);
-        v80 = objc_msgSend___imHexString(a4, v76, v77, v78, v79);
+        v75 = objc_msgSend_accountID(self, v68, iDCopy, v69, v70);
+        v80 = objc_msgSend___imHexString(updated, v76, v77, v78, v79);
         v81 = sub_23BCA7F48(v36);
         objc_msgSend_account_relay_handleUpdate_fromPerson_(v74, v82, v75, v80, v71, v81);
-        v87 = objc_msgSend___imHexString(a4, v83, v84, v85, v86);
-        objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v88, a6, 0, a7, v87);
+        v87 = objc_msgSend___imHexString(updated, v83, v84, v85, v86);
+        objc_msgSend__retargetPeerID_displayID_pushToken_conferenceID_(self, v88, d, 0, token, v87);
       }
 
       else
@@ -6541,11 +6541,11 @@ LABEL_48:
           if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v95 = a7;
+            dCopy4 = token;
             v96 = 2112;
-            v97 = v40;
+            dCopy = v40;
             v98 = 2112;
-            v99 = a6;
+            dCopy3 = d;
             _os_log_impl(&dword_23BC9F000, v90, OS_LOG_TYPE_INFO, "Response from token (%@) not in this conference set: %@ (%@)", buf, 0x20u);
           }
         }
@@ -6563,9 +6563,9 @@ LABEL_48:
       if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v95 = a6;
+        dCopy4 = d;
         v96 = 2112;
-        v97 = v31;
+        dCopy = v31;
         _os_log_impl(&dword_23BC9F000, v89, OS_LOG_TYPE_INFO, "Ignoring this relay update, no peers with peerID %@ in conferenceID %@", buf, 0x16u);
       }
     }
@@ -6574,7 +6574,7 @@ LABEL_48:
   v91 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 relayCancelled:(id)a4 topic:(id)a5 peerID:(id)a6 relayType:(id)a7 relayTokenAllocReq:(id)a8 relayConnectionID:(id)value relayTransactionIDAlloc:(id)a10 relayCandidateID:(id)a11 myRelayIP:(id)a12 myRelayPort:(id)a13 peerRelayIP:(id)a14 peerRelayPort:(id)a15 reason:(id)a16 clientInfo:(id)a17 serviceData:(id)a18
+- (void)handler:(id)handler relayCancelled:(id)cancelled topic:(id)topic peerID:(id)d relayType:(id)type relayTokenAllocReq:(id)req relayConnectionID:(id)value relayTransactionIDAlloc:(id)self0 relayCandidateID:(id)self1 myRelayIP:(id)self2 myRelayPort:(id)self3 peerRelayIP:(id)self4 peerRelayPort:(id)self5 reason:(id)self6 clientInfo:(id)self7 serviceData:(id)self8
 {
   v71 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -6583,31 +6583,31 @@ LABEL_48:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v68 = a4;
+      dCopy3 = cancelled;
       v69 = 2112;
-      v70 = a5;
+      dCopy = topic;
       _os_log_impl(&dword_23BC9F000, v28, OS_LOG_TYPE_INFO, "sessionToken: %@, topic: %@", buf, 0x16u);
     }
   }
 
-  v29 = objc_msgSend___imHexString(a4, v24, v25, v26, v27);
-  isEqualToString = objc_msgSend_isEqualToString_(a5, v30, @"com.apple.private.ac", v31, v32);
-  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v34, a6, v29, v35))
+  v29 = objc_msgSend___imHexString(cancelled, v24, v25, v26, v27);
+  isEqualToString = objc_msgSend_isEqualToString_(topic, v30, @"com.apple.private.ac", v31, v32);
+  if (objc_msgSend__hasPeersForPeerID_conferenceID_(self, v34, d, v29, v35))
   {
     v39 = MEMORY[0x277CBEAC0];
     v40 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v36, @"%@", v37, v38, v29);
     objc_msgSend_dictionaryWithObject_forKey_(v39, v41, v40, @"ConferenceID", v42);
     PLLogRegisteredEvent();
-    v45 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v43, a6, v29, v44);
+    v45 = objc_msgSend__displayIDForPeerID_conferenceID_(self, v43, d, v29, v44);
     if (IMOSLoggingEnabled())
     {
       v46 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v68 = v45;
+        dCopy3 = v45;
         v69 = 2112;
-        v70 = a6;
+        dCopy = d;
         _os_log_impl(&dword_23BC9F000, v46, OS_LOG_TYPE_INFO, "Received relay cancel push from: %@ (%@)", buf, 0x16u);
       }
     }
@@ -6615,20 +6615,20 @@ LABEL_48:
     if (MarcoShouldLogCheckpoints())
     {
       v65 = v45;
-      v66 = a6;
+      dCopy2 = d;
       MarcoNoteCheckpoint();
     }
 
     v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v51 = v47;
-    if (a7)
+    if (type)
     {
-      CFDictionarySetValue(v47, *MEMORY[0x277D18FE8], a7);
+      CFDictionarySetValue(v47, *MEMORY[0x277D18FE8], type);
     }
 
-    if (a8)
+    if (req)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18FD8], a8);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18FD8], req);
     }
 
     if (value)
@@ -6636,40 +6636,40 @@ LABEL_48:
       CFDictionarySetValue(v51, *MEMORY[0x277D18F48], value);
     }
 
-    if (a10)
+    if (alloc)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18FE0], a10);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18FE0], alloc);
     }
 
-    if (a11)
+    if (iD)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18F98], a11);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18F98], iD);
     }
 
-    if (a12)
+    if (p)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18FB8], a12);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18FB8], p);
     }
 
-    if (a13)
+    if (port)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18FD0], a13);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18FD0], port);
     }
 
-    if (a14)
+    if (iP)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18F70], a14);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18F70], iP);
     }
 
-    v52 = a15;
-    if (a15)
+    relayPortCopy = relayPort;
+    if (relayPort)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18F88], a15);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18F88], relayPort);
     }
 
-    if (a6)
+    if (d)
     {
-      CFDictionarySetValue(v51, *MEMORY[0x277D18F58], a6);
+      CFDictionarySetValue(v51, *MEMORY[0x277D18F58], d);
     }
 
     v53 = &OBJC_IVAR___FaceTimeServiceSession__broadcasterVCInvocationQueue;
@@ -6679,8 +6679,8 @@ LABEL_48:
     }
 
     v54 = *(&self->super.super.super.isa + *v53);
-    v55 = objc_msgSend_accountID(self, v48, v52, v49, v50, v65, v66);
-    v60 = objc_msgSend___imHexString(a4, v56, v57, v58, v59);
+    v55 = objc_msgSend_accountID(self, v48, relayPortCopy, v49, v50, v65, dCopy2);
+    v60 = objc_msgSend___imHexString(cancelled, v56, v57, v58, v59);
     v61 = sub_23BCA7F48(v45);
     objc_msgSend_account_relay_handleCancel_fromPerson_(v54, v62, v55, v60, v51, v61);
   }
@@ -6691,9 +6691,9 @@ LABEL_48:
     if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v68 = a6;
+      dCopy3 = d;
       v69 = 2112;
-      v70 = v29;
+      dCopy = v29;
       _os_log_impl(&dword_23BC9F000, v63, OS_LOG_TYPE_INFO, "Ignoring this relay cancel, no peers with peerID %@ in conferenceID %@", buf, 0x16u);
     }
   }
@@ -6701,10 +6701,10 @@ LABEL_48:
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)queue:(id)a3 optionsForInvocation:(id)a4
+- (unint64_t)queue:(id)queue optionsForInvocation:(id)invocation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_selector(a4, a2, a3, a4, v4);
+  v7 = objc_msgSend_selector(invocation, a2, queue, invocation, v4);
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -6775,7 +6775,7 @@ LABEL_48:
       }
     }
 
-    if (self->_broadcasterACInvocationQueue == a3)
+    if (self->_broadcasterACInvocationQueue == queue)
     {
       v20 = objc_msgSend_broadcasterForACConferenceListeners(self, v16, v17, v18, v19);
     }
@@ -6785,7 +6785,7 @@ LABEL_48:
       v20 = objc_msgSend_broadcasterForVCConferenceListeners(self, v16, v17, v18, v19);
     }
 
-    objc_msgSend_setTarget_(a3, v21, v20, v22, v23);
+    objc_msgSend_setTarget_(queue, v21, v20, v22, v23);
     result = 16;
   }
 
@@ -6793,10 +6793,10 @@ LABEL_48:
   return result;
 }
 
-- (BOOL)queue:(id)a3 shouldInvoke:(id)a4
+- (BOOL)queue:(id)queue shouldInvoke:(id)invoke
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_selector(a4, a2, a3, a4, v4);
+  v7 = objc_msgSend_selector(invoke, a2, queue, invoke, v4);
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -6875,7 +6875,7 @@ LABEL_48:
       }
     }
 
-    if (self->_broadcasterACInvocationQueue == a3)
+    if (self->_broadcasterACInvocationQueue == queue)
     {
       v46 = objc_msgSend_broadcasterForACConferenceListeners(self, v42, v43, v44, v45);
     }
@@ -6885,7 +6885,7 @@ LABEL_48:
       v46 = objc_msgSend_broadcasterForVCConferenceListeners(self, v42, v43, v44, v45);
     }
 
-    objc_msgSend_setTarget_(a3, v47, v46, v48, v49);
+    objc_msgSend_setTarget_(queue, v47, v46, v48, v49);
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -6905,10 +6905,10 @@ LABEL_48:
   }
 }
 
-- (double)_messageTimeoutTimeForMessage:(id)a3
+- (double)_messageTimeoutTimeForMessage:(id)message
 {
   v13 = *MEMORY[0x277D85DE8];
-  objc_msgSend_timeout(a3, a2, a3, v3, v4);
+  objc_msgSend_timeout(message, a2, message, v3, v4);
   v6 = v5;
   v7 = IMGetCachedDomainIntForKey();
   if (v7 < 1)

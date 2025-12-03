@@ -1,21 +1,21 @@
 @interface SFUFileDataRepresentation
-- (BOOL)hasSameLocationAs:(id)a3;
-- (BOOL)isCryptoKeyIdenticalToKey:(id)a3;
-- (SFUFileDataRepresentation)initWithCopyOfData:(id)a3 path:(id)a4 cryptoKey:(id)a5;
-- (SFUFileDataRepresentation)initWithInputStream:(id)a3 cryptoKey:(id)a4 dataLength:(int64_t)a5;
-- (SFUFileDataRepresentation)initWithPath:(id)a3 sharedFileDescriptor:(int)a4 cryptoKey:(id)a5 dataLength:(int64_t)a6;
+- (BOOL)hasSameLocationAs:(id)as;
+- (BOOL)isCryptoKeyIdenticalToKey:(id)key;
+- (SFUFileDataRepresentation)initWithCopyOfData:(id)data path:(id)path cryptoKey:(id)key;
+- (SFUFileDataRepresentation)initWithInputStream:(id)stream cryptoKey:(id)key dataLength:(int64_t)length;
+- (SFUFileDataRepresentation)initWithPath:(id)path sharedFileDescriptor:(int)descriptor cryptoKey:(id)key dataLength:(int64_t)length;
 - (id)inputStream;
 - (int64_t)dataLength;
 - (void)dealloc;
 - (void)readFileAttributes;
-- (void)setFileType:(unsigned int)a3;
+- (void)setFileType:(unsigned int)type;
 @end
 
 @implementation SFUFileDataRepresentation
 
-- (SFUFileDataRepresentation)initWithPath:(id)a3 sharedFileDescriptor:(int)a4 cryptoKey:(id)a5 dataLength:(int64_t)a6
+- (SFUFileDataRepresentation)initWithPath:(id)path sharedFileDescriptor:(int)descriptor cryptoKey:(id)key dataLength:(int64_t)length
 {
-  if (!a3)
+  if (!path)
   {
     v11 = +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -36,36 +36,36 @@
   v13 = [(SFUFileDataRepresentation *)self init];
   if (v13)
   {
-    v13->mPath = a3;
-    v14 = a5;
-    v13->mCryptoKey = v14;
-    if (v14)
+    v13->mPath = path;
+    keyCopy = key;
+    v13->mCryptoKey = keyCopy;
+    if (keyCopy)
     {
-      v13->mPlaintextDataLength = a6;
+      v13->mPlaintextDataLength = length;
     }
 
-    v13->mSharedFd = a4;
+    v13->mSharedFd = descriptor;
     [(SFUFileDataRepresentation *)v13 path];
   }
 
   return v13;
 }
 
-- (SFUFileDataRepresentation)initWithCopyOfData:(id)a3 path:(id)a4 cryptoKey:(id)a5
+- (SFUFileDataRepresentation)initWithCopyOfData:(id)data path:(id)path cryptoKey:(id)key
 {
-  if (a3)
+  if (data)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![objc_msgSend(a3 "path")] || (objc_msgSend(a3, "isCryptoKeyIdenticalToKey:", a5) & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![objc_msgSend(data "path")] || (objc_msgSend(data, "isCryptoKeyIdenticalToKey:", key) & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = [a3 bufferedInputStream];
-      unlink([a4 fileSystemRepresentation]);
-      v11 = [[SFUFileOutputStream alloc] initWithPath:a4];
+      bufferedInputStream = [data bufferedInputStream];
+      unlink([path fileSystemRepresentation]);
+      v11 = [[SFUFileOutputStream alloc] initWithPath:path];
       v12 = v11;
-      if (a5)
+      if (key)
       {
-        v13 = [[SFUCryptoOutputStream alloc] initForEncryptionWithOutputStream:v11 key:a5];
+        v13 = [[SFUCryptoOutputStream alloc] initForEncryptionWithOutputStream:v11 key:key];
       }
 
       else
@@ -76,7 +76,7 @@
       while (1)
       {
         v16 = 0;
-        v15 = [v10 readToOwnBuffer:&v16 size:-1];
+        v15 = [bufferedInputStream readToOwnBuffer:&v16 size:-1];
         if (!v15)
         {
           break;
@@ -85,13 +85,13 @@
         [(SFUFileOutputStream *)v13 writeBuffer:v16 size:v15];
       }
 
-      [v10 close];
+      [bufferedInputStream close];
       [(SFUFileOutputStream *)v13 close];
 
       objc_autoreleasePoolPop(v9);
     }
 
-    return -[SFUFileDataRepresentation initWithPath:cryptoKey:dataLength:](self, "initWithPath:cryptoKey:dataLength:", a4, a5, [a3 dataLength]);
+    return -[SFUFileDataRepresentation initWithPath:cryptoKey:dataLength:](self, "initWithPath:cryptoKey:dataLength:", path, key, [data dataLength]);
   }
 
   else
@@ -101,19 +101,19 @@
   }
 }
 
-- (SFUFileDataRepresentation)initWithInputStream:(id)a3 cryptoKey:(id)a4 dataLength:(int64_t)a5
+- (SFUFileDataRepresentation)initWithInputStream:(id)stream cryptoKey:(id)key dataLength:(int64_t)length
 {
   v8 = [(SFUFileDataRepresentation *)self init];
   if (v8)
   {
-    v9 = a4;
-    v8->mCryptoKey = v9;
-    if (v9)
+    keyCopy = key;
+    v8->mCryptoKey = keyCopy;
+    if (keyCopy)
     {
-      v8->mPlaintextDataLength = a5;
+      v8->mPlaintextDataLength = length;
     }
 
-    v8->mInputStream = a3;
+    v8->mInputStream = stream;
   }
 
   return v8;
@@ -131,18 +131,18 @@
   [(SFUFileDataRepresentation *)&v3 dealloc];
 }
 
-- (void)setFileType:(unsigned int)a3
+- (void)setFileType:(unsigned int)type
 {
-  v5 = [(SFUFileDataRepresentation *)self path];
+  path = [(SFUFileDataRepresentation *)self path];
   objc_sync_enter(self);
-  if (v5)
+  if (path)
   {
-    v6 = [[NSNumber alloc] initWithUnsignedLong:a3];
+    v6 = [[NSNumber alloc] initWithUnsignedLong:type];
     v7 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{v6, NSFileHFSTypeCode, 0}];
-    [+[NSFileManager defaultManager](NSFileManager setAttributes:"setAttributes:ofItemAtPath:error:" ofItemAtPath:v7 error:v5, 0];
+    [+[NSFileManager defaultManager](NSFileManager setAttributes:"setAttributes:ofItemAtPath:error:" ofItemAtPath:v7 error:path, 0];
   }
 
-  self->mFileType = a3;
+  self->mFileType = type;
 
   objc_sync_exit(self);
 }
@@ -160,15 +160,15 @@
   }
 }
 
-- (BOOL)isCryptoKeyIdenticalToKey:(id)a3
+- (BOOL)isCryptoKeyIdenticalToKey:(id)key
 {
   mCryptoKey = self->mCryptoKey;
-  result = (a3 | mCryptoKey) == 0;
-  if (a3)
+  result = (key | mCryptoKey) == 0;
+  if (key)
   {
     if (mCryptoKey)
     {
-      return [a3 isEqual:mCryptoKey];
+      return [key isEqual:mCryptoKey];
     }
   }
 
@@ -209,7 +209,7 @@
   return v5;
 }
 
-- (BOOL)hasSameLocationAs:(id)a3
+- (BOOL)hasSameLocationAs:(id)as
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -217,10 +217,10 @@
     return 0;
   }
 
-  v5 = [(SFUFileDataRepresentation *)self path];
-  v6 = [a3 path];
+  path = [(SFUFileDataRepresentation *)self path];
+  path2 = [as path];
 
-  return [v5 isEqualToString:v6];
+  return [path isEqualToString:path2];
 }
 
 - (void)readFileAttributes

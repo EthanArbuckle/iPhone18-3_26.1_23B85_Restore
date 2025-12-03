@@ -1,16 +1,16 @@
 @interface ASMServicesXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (BOOL)_entitledForPrivateSPIAndReturnError:(id *)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (BOOL)_entitledForPrivateSPIAndReturnError:(id *)error;
 - (BOOL)_shouldSendXPCMessage;
-- (void)modify:(id)a3 peripheralConfiguration:(id)a4 identifier:(id)a5 completion:(id)a6;
-- (void)write:(id)a3 withData:(id)a4 characteristic:(id)a5 identifier:(id)a6 completion:(id)a7;
+- (void)modify:(id)modify peripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)write:(id)write withData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion;
 - (void)xpcConnectionInterrupted;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation ASMServicesXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -31,26 +31,26 @@
   if (dword_10001A478 <= 90 && (dword_10001A478 != -1 || _LogCategory_Initialize()))
   {
     sub_1000097F8(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = ASMErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)_entitledForPrivateSPIAndReturnError:(id *)a3
+- (BOOL)_entitledForPrivateSPIAndReturnError:(id *)error
 {
   if (self->_entitledForPrivateSPI)
   {
@@ -71,19 +71,19 @@ LABEL_9:
   if (dword_10001A478 <= 90 && (dword_10001A478 != -1 || _LogCategory_Initialize()))
   {
     sub_100009848(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = ASMErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
@@ -106,11 +106,11 @@ LABEL_9:
   }
 }
 
-- (void)modify:(id)a3 peripheralConfiguration:(id)a4 identifier:(id)a5 completion:(id)a6
+- (void)modify:(id)modify peripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  modifyCopy = modify;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -122,8 +122,8 @@ LABEL_9:
   v20[2] = sub_100007B7C;
   v20[3] = &unk_100014728;
   v22 = &v23;
-  v13 = a6;
-  v21 = v13;
+  completionCopy = completion;
+  v21 = completionCopy;
   v14 = objc_retainBlock(v20);
   v15 = (v24 + 5);
   obj = v24[5];
@@ -133,13 +133,13 @@ LABEL_9:
   {
     if (dword_10001A478 <= 30 && (dword_10001A478 != -1 || _LogCategory_Initialize()))
     {
-      v17 = v10;
-      v18 = v12;
+      v17 = modifyCopy;
+      v18 = identifierCopy;
       LogPrintF();
     }
 
     v16 = [ASMPeripheralControl sharedInstance:v17];
-    [v16 modifyPeripheralConfiguration:v11 identifier:v12 completion:v13];
+    [v16 modifyPeripheralConfiguration:configurationCopy identifier:identifierCopy completion:completionCopy];
   }
 
   (v14[2])(v14);
@@ -147,12 +147,12 @@ LABEL_9:
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)write:(id)a3 withData:(id)a4 characteristic:(id)a5 identifier:(id)a6 completion:(id)a7
+- (void)write:(id)write withData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  writeCopy = write;
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -164,8 +164,8 @@ LABEL_9:
   v23[2] = sub_100007E88;
   v23[3] = &unk_100014728;
   v25 = &v26;
-  v16 = a7;
-  v24 = v16;
+  completionCopy = completion;
+  v24 = completionCopy;
   v17 = objc_retainBlock(v23);
   v18 = (v27 + 5);
   obj = v27[5];
@@ -175,13 +175,13 @@ LABEL_9:
   {
     if (dword_10001A478 <= 30 && (dword_10001A478 != -1 || _LogCategory_Initialize()))
     {
-      v20 = v12;
-      v21 = v15;
+      v20 = writeCopy;
+      v21 = identifierCopy;
       LogPrintF();
     }
 
     v19 = [ASMPeripheralControl sharedInstance:v20];
-    [v19 writeWithData:v13 characteristic:v14 identifier:v15 completion:v16];
+    [v19 writeWithData:dataCopy characteristic:characteristicCopy identifier:identifierCopy completion:completionCopy];
   }
 
   (v17[2])(v17);
@@ -222,8 +222,8 @@ LABEL_9:
       sub_1000098D0(self, p_xpcMessageCounter);
     }
 
-    v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v5 asmServicesRequireReset];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy asmServicesRequireReset];
 
     return 0;
   }

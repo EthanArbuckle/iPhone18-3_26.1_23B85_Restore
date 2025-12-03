@@ -1,5 +1,5 @@
 @interface CAMVideoThumbnailOutputConfiguration
-- (CAMVideoThumbnailOutputConfiguration)initWithThumbnailSize:(CGSize)a3 filters:(id)a4;
+- (CAMVideoThumbnailOutputConfiguration)initWithThumbnailSize:(CGSize)size filters:(id)filters;
 - (CGSize)thumbnailSize;
 @end
 
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (CAMVideoThumbnailOutputConfiguration)initWithThumbnailSize:(CGSize)a3 filters:(id)a4
+- (CAMVideoThumbnailOutputConfiguration)initWithThumbnailSize:(CGSize)size filters:(id)filters
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  filtersCopy = filters;
   v12.receiver = self;
   v12.super_class = CAMVideoThumbnailOutputConfiguration;
   v9 = [(CAMVideoThumbnailOutputConfiguration *)&v12 self];
@@ -27,7 +27,7 @@
   {
     *(v9 + 16) = width;
     *(v9 + 24) = height;
-    objc_storeStrong((v9 + 8), a4);
+    objc_storeStrong((v9 + 8), filters);
     v10 = v9;
   }
 

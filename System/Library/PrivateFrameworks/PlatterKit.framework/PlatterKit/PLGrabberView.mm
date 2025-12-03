@@ -1,12 +1,12 @@
 @interface PLGrabberView
 - (CGSize)_defaultContainerSize;
-- (CGSize)_intrinsicContentSizeWithContainerSize:(CGSize)a3;
+- (CGSize)_intrinsicContentSizeWithContainerSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (PLGrabberView)initWithFrame:(CGRect)a3;
+- (PLGrabberView)initWithFrame:(CGRect)frame;
 - (double)weighting;
 - (void)_configureMaterialViewIfNecessary;
 - (void)layoutSubviews;
-- (void)setWeighting:(double)a3;
+- (void)setWeighting:(double)weighting;
 @end
 
 @implementation PLGrabberView
@@ -20,24 +20,24 @@
   return result;
 }
 
-- (void)setWeighting:(double)a3
+- (void)setWeighting:(double)weighting
 {
   [(PLGrabberView *)self weighting];
-  if (v5 != a3)
+  if (v5 != weighting)
   {
     materialView = self->_materialView;
 
-    [(MTMaterialView *)materialView setWeighting:a3];
+    [(MTMaterialView *)materialView setWeighting:weighting];
   }
 }
 
-- (PLGrabberView)initWithFrame:(CGRect)a3
+- (PLGrabberView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsEmpty(frame))
   {
     [(PLGrabberView *)self intrinsicContentSize];
     BSRectWithSize();
@@ -49,11 +49,11 @@
 
   v15.receiver = self;
   v15.super_class = PLGrabberView;
-  v12 = [(PLGrabberView *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(PLGrabberView *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(PLGrabberView *)v12 setWeighting:1.0];
+    [(PLGrabberView *)height setWeighting:1.0];
   }
 
   return v13;
@@ -82,21 +82,21 @@
 
 - (CGSize)_defaultContainerSize
 {
-  v2 = [(PLGrabberView *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 screen];
-  v5 = v4;
-  if (v4)
+  window = [(PLGrabberView *)self window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  v5 = screen;
+  if (screen)
   {
-    v6 = v4;
+    mainScreen = screen;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  v7 = v6;
+  v7 = mainScreen;
 
   [v7 bounds];
   v9 = v8;
@@ -109,9 +109,9 @@
   return result;
 }
 
-- (CGSize)_intrinsicContentSizeWithContainerSize:(CGSize)a3
+- (CGSize)_intrinsicContentSizeWithContainerSize:(CGSize)size
 {
-  v3 = round(a3.width * 0.11971831);
+  v3 = round(size.width * 0.11971831);
   v4 = 10.0;
   result.height = v4;
   result.width = v3;

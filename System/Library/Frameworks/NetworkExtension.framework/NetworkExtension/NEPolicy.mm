@@ -1,23 +1,23 @@
 @interface NEPolicy
 - (NEPolicy)init;
-- (NEPolicy)initWithOrder:(unsigned int)a3 result:(id)a4 conditions:(id)a5;
+- (NEPolicy)initWithOrder:(unsigned int)order result:(id)result conditions:(id)conditions;
 @end
 
 @implementation NEPolicy
 
-- (NEPolicy)initWithOrder:(unsigned int)a3 result:(id)a4 conditions:(id)a5
+- (NEPolicy)initWithOrder:(unsigned int)order result:(id)result conditions:(id)conditions
 {
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  conditionsCopy = conditions;
   v17.receiver = self;
   v17.super_class = NEPolicy;
   v11 = [(NEPolicy *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_order = a3;
-    objc_storeStrong(&v11->_result, a4);
-    objc_storeStrong(&v12->_conditions, a5);
+    v11->_order = order;
+    objc_storeStrong(&v11->_result, result);
+    objc_storeStrong(&v12->_conditions, conditions);
     v13 = v12;
   }
 

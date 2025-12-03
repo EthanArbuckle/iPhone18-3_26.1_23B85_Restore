@@ -1,21 +1,21 @@
 @interface PSListItemsController
-- (id)identifierForValue:(id)a3;
+- (id)identifierForValue:(id)value;
 - (id)itemsFromDataSource;
 - (id)itemsFromParent;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_addStaticText:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_addStaticText:(id)text;
 - (void)dealloc;
-- (void)listItemSelected:(id)a3;
+- (void)listItemSelected:(id)selected;
 - (void)prepareSpecifiersMetadata;
 - (void)saveChangesIfNeeded;
 - (void)scrollToSelectedCell;
 - (void)setRowToSelect;
-- (void)setValueForSpecifier:(id)a3 defaultValue:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setValueForSpecifier:(id)specifier defaultValue:(id)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PSListItemsController
@@ -25,18 +25,18 @@
   v5.receiver = self;
   v5.super_class = PSListItemsController;
   [(PSListController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_didEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_willEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_willEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PSListItemsController;
-  [(PSListController *)&v9 viewWillAppear:a3];
+  [(PSListController *)&v9 viewWillAppear:appear];
   [(PSListController *)self setSpecifier:self->super.super._specifier];
   [(PSListItemsController *)self scrollToSelectedCell];
   v4 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"deferItemSelection"];
@@ -44,20 +44,20 @@
 
   if (self->_deferItemSelection)
   {
-    v5 = [(PSSpecifier *)self->super.super._specifier target];
+    target = [(PSSpecifier *)self->super.super._specifier target];
     retainedTarget = self->_retainedTarget;
-    self->_retainedTarget = v5;
+    self->_retainedTarget = target;
   }
 
   v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:self];
-  v8 = [(PSListController *)self specifier];
-  [v8 setObject:v7 forKeyedSubscript:@"PSListItemsControllerSpecifierKey"];
+  specifier = [(PSListController *)self specifier];
+  [specifier setObject:v7 forKeyedSubscript:@"PSListItemsControllerSpecifierKey"];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSListItemsController;
@@ -76,9 +76,9 @@
 - (void)setRowToSelect
 {
   self->_rowToSelect = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(PSSpecifier *)self->super.super._specifier hasValidGetter];
+  hasValidGetter = [(PSSpecifier *)self->super.super._specifier hasValidGetter];
   specifier = self->super.super._specifier;
-  if (v3)
+  if (hasValidGetter)
   {
     [(PSSpecifier *)specifier performGetter];
   }
@@ -97,30 +97,30 @@
   }
 }
 
-- (void)setValueForSpecifier:(id)a3 defaultValue:(id)a4
+- (void)setValueForSpecifier:(id)specifier defaultValue:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  valueCopy = value;
   if ([(PSSpecifier *)self->super.super._specifier hasValidSetter])
   {
-    v7 = [v10 values];
+    values = [specifierCopy values];
     specifier = self->super.super._specifier;
-    if ([v7 count])
+    if ([values count])
     {
-      v9 = [v7 firstObject];
-      [(PSSpecifier *)specifier performSetterWithValue:v9];
+      firstObject = [values firstObject];
+      [(PSSpecifier *)specifier performSetterWithValue:firstObject];
     }
 
     else
     {
-      [(PSSpecifier *)specifier performSetterWithValue:v6];
+      [(PSSpecifier *)specifier performSetterWithValue:valueCopy];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   lastSelectedSpecifier = self->_lastSelectedSpecifier;
   if (lastSelectedSpecifier)
   {
@@ -128,16 +128,16 @@
     {
       v6 = [(PSSpecifier *)lastSelectedSpecifier propertyForKey:@"cellObject"];
       v7 = self->_lastSelectedSpecifier;
-      v8 = [v6 title];
-      [(PSListItemsController *)self setValueForSpecifier:v7 defaultValue:v8];
+      title = [v6 title];
+      [(PSListItemsController *)self setValueForSpecifier:v7 defaultValue:title];
     }
 
     objc_opt_class();
-    v9 = [(PSListItemsController *)self navigationController];
-    v10 = [v9 topViewController];
+    navigationController = [(PSListItemsController *)self navigationController];
+    topViewController = [navigationController topViewController];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = topViewController;
     }
 
     else
@@ -148,10 +148,10 @@
     v12 = v11;
 
     objc_opt_class();
-    v13 = [(PSViewController *)self parentController];
+    parentController = [(PSViewController *)self parentController];
     if (objc_opt_isKindOfClass())
     {
-      v14 = v13;
+      v14 = parentController;
     }
 
     else
@@ -163,11 +163,11 @@
 
     objc_opt_class();
     v16 = objc_opt_self();
-    v17 = [v16 specifier];
-    v18 = [v17 target];
+    specifier = [v16 specifier];
+    target = [specifier target];
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = target;
     }
 
     else
@@ -195,7 +195,7 @@
 
   v24.receiver = self;
   v24.super_class = PSListItemsController;
-  [(PSListController *)&v24 viewWillDisappear:v3];
+  [(PSListController *)&v24 viewWillDisappear:disappearCopy];
 }
 
 - (void)saveChangesIfNeeded
@@ -207,8 +207,8 @@
     {
       v7 = [(PSSpecifier *)lastSelectedSpecifier propertyForKey:@"cellObject"];
       v4 = self->_lastSelectedSpecifier;
-      v5 = [v7 title];
-      [(PSListItemsController *)self setValueForSpecifier:v4 defaultValue:v5];
+      title = [v7 title];
+      [(PSListItemsController *)self setValueForSpecifier:v4 defaultValue:title];
 
       v6 = self->_lastSelectedSpecifier;
       self->_lastSelectedSpecifier = 0;
@@ -224,18 +224,18 @@
   [(PSListItemsController *)self setRowToSelect];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PSListController *)self indexForIndexPath:pathCopy];
   v13.receiver = self;
   v13.super_class = PSListItemsController;
-  v9 = [(PSListController *)&v13 tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [(PSListController *)&v13 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
-  LOBYTE(v6) = self->_restrictionList;
+  LOBYTE(pathCopy) = self->_restrictionList;
   v10 = [v9 tag];
-  if ((v6 & 1) == 0)
+  if ((pathCopy & 1) == 0)
   {
     if (v10 != 3)
     {
@@ -261,9 +261,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v12 = a3;
+  selectedCopy = selected;
   v4 = [(PSListController *)self indexForIndexPath:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -277,7 +277,7 @@ LABEL_8:
       [v8 setChecked:0];
     }
 
-    v9 = [(UITableView *)self->super._table cellForRowAtIndexPath:v12];
+    v9 = [(UITableView *)self->super._table cellForRowAtIndexPath:selectedCopy];
     v10 = [(NSArray *)self->super._specifiers objectAtIndex:v5];
     [v9 setChecked:1];
     self->_rowToSelect = v5;
@@ -288,32 +288,32 @@ LABEL_8:
 
     if (!self->_deferItemSelection)
     {
-      v11 = [v9 title];
-      [(PSListItemsController *)self setValueForSpecifier:v10 defaultValue:v11];
+      title = [v9 title];
+      [(PSListItemsController *)self setValueForSpecifier:v10 defaultValue:title];
     }
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(PSListItemsController *)self listItemSelected:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [(PSListItemsController *)self listItemSelected:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_addStaticText:(id)a3
+- (void)_addStaticText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   v4 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"staticTextMessage"];
   if (v4)
   {
-    [v7 setProperty:v4 forKey:@"footerText"];
+    [textCopy setProperty:v4 forKey:@"footerText"];
   }
 
   else
   {
-    [v7 removePropertyForKey:@"footerText"];
+    [textCopy removePropertyForKey:@"footerText"];
   }
 
   v5 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"staticHeaderText"];
@@ -327,13 +327,13 @@ LABEL_8:
     v6 = 0;
   }
 
-  [v7 setName:v6];
+  [textCopy setName:v6];
 }
 
 - (id)itemsFromParent
 {
-  v21 = [(PSSpecifier *)self->super.super._specifier values];
-  v3 = [v21 count];
+  values = [(PSSpecifier *)self->super.super._specifier values];
+  v3 = [values count];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
   v5 = [PSSpecifier groupSpecifierWithID:@"LIST_ITEMS_GROUP_SPECIFIER"];
   v20 = v4;
@@ -346,21 +346,21 @@ LABEL_8:
     v6 = 0;
     do
     {
-      v7 = [v21 objectAtIndex:v6];
-      v8 = [(PSSpecifier *)self->super.super._specifier titleDictionary];
-      v9 = [v8 objectForKey:v7];
+      v7 = [values objectAtIndex:v6];
+      titleDictionary = [(PSSpecifier *)self->super.super._specifier titleDictionary];
+      v9 = [titleDictionary objectForKey:v7];
 
       v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v7, 0}];
       v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v9, 0}];
-      v12 = [(PSSpecifier *)self->super.super._specifier target];
-      v13 = [PSSpecifier preferenceSpecifierNamed:v9 target:v12 set:0 get:0 detail:0 cell:3 edit:0];
+      target = [(PSSpecifier *)self->super.super._specifier target];
+      v13 = [PSSpecifier preferenceSpecifierNamed:v9 target:target set:0 get:0 detail:0 cell:3 edit:0];
 
       v14 = [(PSListItemsController *)self identifierForValue:v7];
       [v13 setIdentifier:v14];
 
       [v13 setValues:v10 titles:v11];
-      v15 = [(PSListController *)self specifier];
-      v16 = [v15 objectForKeyedSubscript:@"PSListItemsValuesAreAppIDsKey"];
+      specifier = [(PSListController *)self specifier];
+      v16 = [specifier objectForKeyedSubscript:@"PSListItemsValuesAreAppIDsKey"];
 
       if (v16)
       {
@@ -404,12 +404,12 @@ LABEL_8:
   {
     v28 = v4;
     NSSelectorFromString(v4);
-    v8 = [(PSSpecifier *)self->super.super._specifier target];
+    target = [(PSSpecifier *)self->super.super._specifier target];
     v9 = SFPerformSelector();
 
     v27 = v6;
     NSSelectorFromString(v6);
-    v10 = [(PSSpecifier *)self->super.super._specifier target];
+    target2 = [(PSSpecifier *)self->super.super._specifier target];
     v32 = SFPerformSelector();
 
     v33 = v9;
@@ -439,8 +439,8 @@ LABEL_8:
         [v21 setIdentifier:v22];
 
         [v21 setValues:v17 titles:v18];
-        v23 = [(PSListController *)self specifier];
-        v24 = [v23 objectForKeyedSubscript:@"PSListItemsValuesAreAppIDsKey"];
+        specifier = [(PSListController *)self specifier];
+        v24 = [specifier objectForKeyedSubscript:@"PSListItemsValuesAreAppIDsKey"];
 
         if (v24)
         {
@@ -475,19 +475,19 @@ LABEL_8:
 {
   if (!self->super._specifiers)
   {
-    v3 = [(PSSpecifier *)self->super.super._specifier values];
-    if (v3 && (v4 = v3, [(PSSpecifier *)self->super.super._specifier titleDictionary], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+    values = [(PSSpecifier *)self->super.super._specifier values];
+    if (values && (v4 = values, [(PSSpecifier *)self->super.super._specifier titleDictionary], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
     {
-      v6 = [(PSListItemsController *)self itemsFromParent];
+      itemsFromParent = [(PSListItemsController *)self itemsFromParent];
     }
 
     else
     {
-      v6 = [(PSListItemsController *)self itemsFromDataSource];
+      itemsFromParent = [(PSListItemsController *)self itemsFromDataSource];
     }
 
     specifiers = self->super._specifiers;
-    self->super._specifiers = v6;
+    self->super._specifiers = itemsFromParent;
   }
 
   v8 = self->super._specifiers;
@@ -495,13 +495,13 @@ LABEL_8:
   return v8;
 }
 
-- (id)identifierForValue:(id)a3
+- (id)identifierForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else
@@ -509,12 +509,12 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 stringValue];
+      [valueCopy stringValue];
     }
 
     else
     {
-      [v3 description];
+      [valueCopy description];
     }
     v4 = ;
   }

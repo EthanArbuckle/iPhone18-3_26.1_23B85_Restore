@@ -1,21 +1,21 @@
 @interface PFCloudKitImporter
-- (PFCloudKitImporter)initWithOptions:(id)a3 request:(id)a4;
+- (PFCloudKitImporter)initWithOptions:(id)options request:(id)request;
 - (void)dealloc;
-- (void)importIfNecessaryWithCompletion:(uint64_t)a1;
-- (void)processWorkItemsWithCompletion:(uint64_t)a1;
+- (void)importIfNecessaryWithCompletion:(uint64_t)completion;
+- (void)processWorkItemsWithCompletion:(uint64_t)completion;
 @end
 
 @implementation PFCloudKitImporter
 
-- (PFCloudKitImporter)initWithOptions:(id)a3 request:(id)a4
+- (PFCloudKitImporter)initWithOptions:(id)options request:(id)request
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitImporter;
   v6 = [(PFCloudKitImporter *)&v8 init];
   if (v6)
   {
-    v6->_options = [a3 copy];
-    v6->_request = a4;
+    v6->_options = [options copy];
+    v6->_request = request;
     v6->_workItemResults = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6->_totalImportedBytes = 0;
   }
@@ -37,11 +37,11 @@
   [(PFCloudKitImporter *)&v3 dealloc];
 }
 
-- (void)importIfNecessaryWithCompletion:(uint64_t)a1
+- (void)importIfNecessaryWithCompletion:(uint64_t)completion
 {
-  if (a1)
+  if (completion)
   {
-    v2 = *(a1 + 8);
+    v2 = *(completion + 8);
     if (v2)
     {
       v2 = *(v2 + 16);
@@ -52,7 +52,7 @@
     v3[2] = __54__PFCloudKitImporter_importIfNecessaryWithCompletion___block_invoke;
     v3[3] = &unk_1E6EC34A0;
     v3[4] = v2;
-    v3[5] = a1;
+    v3[5] = completion;
     v3[6] = a2;
     [(PFCloudKitStoreMonitor *)v2 performBlock:v3];
   }
@@ -388,10 +388,10 @@ LABEL_26:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processWorkItemsWithCompletion:(uint64_t)a1
+- (void)processWorkItemsWithCompletion:(uint64_t)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (completion)
   {
     v4 = objc_autoreleasePoolPush();
     Stream = __PFCloudKitLoggingGetStream();
@@ -423,27 +423,27 @@ LABEL_26:
 
     if (os_log_type_enabled(Stream, v8))
     {
-      v9 = *(a1 + 24);
+      v9 = *(completion + 24);
       *buf = 136315906;
       v22 = "[PFCloudKitImporter processWorkItemsWithCompletion:]";
       v23 = 1024;
       v24 = 445;
       v25 = 2112;
-      v26 = a1;
+      completionCopy = completion;
       v27 = 2112;
       v28 = v9;
       _os_log_impl(&dword_18565F000, v6, v8, "CoreData+CloudKit: %s(%d): %@: Processing work items: %@", buf, 0x26u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v10 = *(a1 + 8);
+    v10 = *(completion + 8);
     if (v10)
     {
       v10 = v10[2];
     }
 
     v11 = v10;
-    if ([*(a1 + 24) count] && (v12 = objc_msgSend(*(a1 + 24), "objectAtIndex:", 0), v13 = objc_msgSend(*(a1 + 24), "mutableCopy"), objc_msgSend(v13, "removeObjectAtIndex:", 0), *(a1 + 24), *(a1 + 24) = objc_msgSend(v13, "copy"), v13, v12))
+    if ([*(completion + 24) count] && (v12 = objc_msgSend(*(completion + 24), "objectAtIndex:", 0), v13 = objc_msgSend(*(completion + 24), "mutableCopy"), objc_msgSend(v13, "removeObjectAtIndex:", 0), *(completion + 24), *(completion + 24) = objc_msgSend(v13, "copy"), v13, v12))
     {
       v14 = v19;
       v19[0] = MEMORY[0x1E69E9820];
@@ -451,7 +451,7 @@ LABEL_26:
       v19[2] = __53__PFCloudKitImporter_processWorkItemsWithCompletion___block_invoke;
       v19[3] = &unk_1E6EC1E90;
       v19[4] = v11;
-      v19[5] = a1;
+      v19[5] = completion;
       v19[6] = v12;
       v15 = &v20;
     }
@@ -465,7 +465,7 @@ LABEL_26:
       v17[2] = __53__PFCloudKitImporter_processWorkItemsWithCompletion___block_invoke_4;
       v17[3] = &unk_1E6EC34A0;
       v17[4] = v11;
-      v17[5] = a1;
+      v17[5] = completion;
       v15 = &v18;
     }
 

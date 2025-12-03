@@ -3,7 +3,7 @@
 - (BOOL)_isValidConfiguration;
 - (BOOL)isSatisfied;
 - (EFObservable)conditionsObservable;
-- (MFActivityCondition)initWithBuilder:(id)a3;
+- (MFActivityCondition)initWithBuilder:(id)builder;
 - (void)dealloc;
 @end
 
@@ -24,13 +24,13 @@
   [(MFActivityCondition *)&v3 dealloc];
 }
 
-- (MFActivityCondition)initWithBuilder:(id)a3
+- (MFActivityCondition)initWithBuilder:(id)builder
 {
-  v5 = a3;
-  if (!v5)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MFActivityCondition.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFActivityCondition.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v20.receiver = self;
@@ -41,7 +41,7 @@
   {
     v6->_requireLowPowerModeDisabled = 1;
     v6->_maxThermalPressureLevel = 3;
-    v5[2](v5, v6);
+    builderCopy[2](builderCopy, v6);
     if ([(MFActivityCondition *)v7 _isValidConfiguration])
     {
       v8 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.mail.MFActivityCondition" qualityOfService:17];
@@ -54,13 +54,13 @@
 
       objc_initWeak(&location, v7);
       v12 = v7->_cancellationToken;
-      v13 = [(MFActivityCondition *)v7 conditionsObservable];
+      conditionsObservable = [(MFActivityCondition *)v7 conditionsObservable];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __39__MFActivityCondition_initWithBuilder___block_invoke;
       v17[3] = &unk_1E7AA4AF0;
       objc_copyWeak(&v18, &location);
-      v14 = [v13 subscribeWithResultBlock:v17];
+      v14 = [conditionsObservable subscribeWithResultBlock:v17];
       [(EFManualCancelationToken *)v12 addCancelable:v14];
 
       objc_destroyWeak(&v18);
@@ -90,44 +90,44 @@ void __39__MFActivityCondition_initWithBuilder___block_invoke(uint64_t a1, void 
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = -86;
-  v3 = [(MFActivityCondition *)self scheduler];
+  scheduler = [(MFActivityCondition *)self scheduler];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__MFActivityCondition_isSatisfied__block_invoke;
   v5[3] = &unk_1E7AA4B18;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performSyncBlock:v5];
+  [scheduler performSyncBlock:v5];
 
-  LOBYTE(v3) = *(v7 + 24);
+  LOBYTE(scheduler) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return scheduler;
 }
 
 - (EFObservable)conditionsObservable
 {
   v25[6] = *MEMORY[0x1E69E9840];
   v3 = +[MFPowerController sharedInstance];
-  v20 = [v3 lowPowerModeObservable];
-  v21 = [v3 pluggedInObservable];
-  v4 = [v3 batteryLevelObservable];
+  lowPowerModeObservable = [v3 lowPowerModeObservable];
+  pluggedInObservable = [v3 pluggedInObservable];
+  batteryLevelObservable = [v3 batteryLevelObservable];
   v5 = +[MFNetworkController sharedInstance];
-  v6 = [v5 wifiObservable];
+  wifiObservable = [v5 wifiObservable];
 
   v7 = +[MFLockStateMonitor sharedInstance];
-  v8 = [v7 lockStateObservable];
+  lockStateObservable = [v7 lockStateObservable];
 
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v9 mf_thermalStateObservable];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  mf_thermalStateObservable = [processInfo mf_thermalStateObservable];
 
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E699B830];
-  v25[0] = v20;
-  v25[1] = v8;
-  v25[2] = v6;
-  v25[3] = v21;
-  v25[4] = v10;
-  v25[5] = v4;
+  v25[0] = lowPowerModeObservable;
+  v25[1] = lockStateObservable;
+  v25[2] = wifiObservable;
+  v25[3] = pluggedInObservable;
+  v25[4] = mf_thermalStateObservable;
+  v25[5] = batteryLevelObservable;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:6];
   v13 = [v11 combineLatest:v12];
   v22[0] = MEMORY[0x1E69E9820];
@@ -137,8 +137,8 @@ void __39__MFActivityCondition_initWithBuilder___block_invoke(uint64_t a1, void 
   objc_copyWeak(&v23, &location);
   v14 = [v13 map:v22];
 
-  v15 = [v14 distinctUntilChanged];
-  v16 = [v15 doOnError:&__block_literal_global_78];
+  distinctUntilChanged = [v14 distinctUntilChanged];
+  v16 = [distinctUntilChanged doOnError:&__block_literal_global_78];
   v17 = [v16 observeOn:self->_scheduler];
 
   objc_destroyWeak(&v23);

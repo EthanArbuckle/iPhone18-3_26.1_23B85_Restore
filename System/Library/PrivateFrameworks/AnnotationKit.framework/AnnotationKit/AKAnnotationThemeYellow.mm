@@ -13,13 +13,13 @@
 
 - (id)noteFillColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -57,7 +57,7 @@
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -114,13 +114,13 @@ LABEL_23:
 
 - (id)noteBorderColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -158,7 +158,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -215,13 +215,13 @@ LABEL_23:
 
 - (id)noteTextColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -259,7 +259,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -316,13 +316,13 @@ LABEL_23:
 
 - (id)highlightColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -360,7 +360,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -417,13 +417,13 @@ LABEL_23:
 
 - (id)noteMarkerFillColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -461,7 +461,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -518,13 +518,13 @@ LABEL_23:
 
 - (id)noteMarkerBorderColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -562,7 +562,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -619,13 +619,13 @@ LABEL_23:
 
 - (id)notesSidebarBarColor
 {
-  v3 = [(AKAnnotationTheme *)self pageTheme];
+  pageTheme = [(AKAnnotationTheme *)self pageTheme];
   v4 = 0;
-  if (v3 <= 1)
+  if (pageTheme <= 1)
   {
-    if (v3)
+    if (pageTheme)
     {
-      if (v3 != 1)
+      if (pageTheme != 1)
       {
         goto LABEL_23;
       }
@@ -663,7 +663,7 @@ LABEL_23:
 
   else
   {
-    switch(v3)
+    switch(pageTheme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];

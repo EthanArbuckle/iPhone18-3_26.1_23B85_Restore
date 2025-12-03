@@ -1,41 +1,41 @@
 @interface SharedCollectionsDataProvider
 - (GEOObserverHashTable)observers;
 - (SharedCollectionsDataProvider)init;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
-- (void)addSharedCollection:(id)a3;
-- (void)removeSharedCollection:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
+- (void)addSharedCollection:(id)collection;
+- (void)removeSharedCollection:(id)collection;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation SharedCollectionsDataProvider
 
-- (void)removeSharedCollection:(id)a3
+- (void)removeSharedCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(NSMutableArray *)self->_mutableCollections containsObject:?])
   {
-    [(NSMutableArray *)self->_mutableCollections removeObject:v4];
-    [v4 removeObserver:self];
+    [(NSMutableArray *)self->_mutableCollections removeObject:collectionCopy];
+    [collectionCopy removeObserver:self];
     [(SharedCollectionsDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)addSharedCollection:(id)a3
+- (void)addSharedCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (([(NSMutableArray *)self->_mutableCollections containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->_mutableCollections addObject:v4];
-    [v4 addObserver:self];
+    [(NSMutableArray *)self->_mutableCollections addObject:collectionCopy];
+    [collectionCopy addObserver:self];
     [(SharedCollectionsDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     v6 = sub_1000282CC(self->_mutableCollections, &stru_1016509F0);
     v7 = v6;
     if (v6 == self->_sharedCollections)
@@ -54,7 +54,7 @@
       v10 = objc_opt_class();
       v19 = v10;
       v11 = NSStringFromSelector(a2);
-      if (v3)
+      if (observersCopy)
       {
         v12 = @"YES";
       }
@@ -98,7 +98,7 @@
       sharedCollections = self->_sharedCollections;
       self->_sharedCollections = v17;
 
-      if (v3)
+      if (observersCopy)
       {
         [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
       }
@@ -121,11 +121,11 @@
   return observers;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(SharedCollectionsDataProvider *)self _updateAndNotifyObservers:0];
   }
 }

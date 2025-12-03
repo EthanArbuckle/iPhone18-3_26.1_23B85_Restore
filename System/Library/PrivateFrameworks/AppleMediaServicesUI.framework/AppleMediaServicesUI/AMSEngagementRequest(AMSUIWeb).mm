@@ -8,32 +8,32 @@
 {
   v4 = a3;
   v5 = MEMORY[0x1E6959A48];
-  v6 = [v4 clientInfo];
-  v7 = [v6 accountMediaType];
-  v8 = [v5 ams_sharedAccountStoreForMediaType:v7];
+  clientInfo = [v4 clientInfo];
+  accountMediaType = [clientInfo accountMediaType];
+  v8 = [v5 ams_sharedAccountStoreForMediaType:accountMediaType];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [a1 URL];
-  v11 = [v10 absoluteString];
-  [v9 setObject:v11 forKeyedSubscript:@"url"];
+  v10 = [self URL];
+  absoluteString = [v10 absoluteString];
+  [v9 setObject:absoluteString forKeyedSubscript:@"url"];
 
-  v12 = [a1 clientData];
-  [v9 setObject:v12 forKeyedSubscript:@"clientData"];
+  clientData = [self clientData];
+  [v9 setObject:clientData forKeyedSubscript:@"clientData"];
 
-  v13 = [a1 metricsOverlay];
-  [v9 setObject:v13 forKeyedSubscript:@"metricsOverlay"];
+  metricsOverlay = [self metricsOverlay];
+  [v9 setObject:metricsOverlay forKeyedSubscript:@"metricsOverlay"];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "presentationStyle")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "presentationStyle")}];
   [v9 setObject:v14 forKeyedSubscript:@"presentationStyle"];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "destinationStyle")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "destinationStyle")}];
   [v9 setObject:v15 forKeyedSubscript:@"destinationStyle"];
 
-  v16 = [a1 account];
-  if (v16)
+  account = [self account];
+  if (account)
   {
-    v17 = [a1 account];
-    v18 = [v4 JSAccountFromAccount:v17 store:v8];
+    account2 = [self account];
+    v18 = [v4 JSAccountFromAccount:account2 store:v8];
     [v9 setObject:v18 forKeyedSubscript:@"account"];
   }
 

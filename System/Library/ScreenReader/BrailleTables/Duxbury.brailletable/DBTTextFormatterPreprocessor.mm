@@ -1,27 +1,27 @@
 @interface DBTTextFormatterPreprocessor
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 @end
 
 @implementation DBTTextFormatterPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
-  if (v9)
+  dotCopy = dot;
+  stringCopy = string;
+  rangesCopy = ranges;
+  if (stringCopy)
   {
-    if (v7)
+    if (dotCopy)
     {
-      v11 = v9;
+      v11 = stringCopy;
     }
 
     else
     {
-      [NSMutableString stringWithString:v9];
-      v76 = a4;
-      v89 = v77 = v9;
-      if (a4)
+      [NSMutableString stringWithString:stringCopy];
+      mapCopy = map;
+      v89 = v77 = stringCopy;
+      if (map)
       {
         v86 = [NSMutableData dataWithLength:0];
       }
@@ -36,9 +36,9 @@
       v111 = 0u;
       v112 = 0u;
       v113 = 0u;
-      v78 = v10;
-      v12 = [v10 boldRanges];
-      v13 = [v12 countByEnumeratingWithState:&v110 objects:v118 count:16];
+      v78 = rangesCopy;
+      boldRanges = [rangesCopy boldRanges];
+      v13 = [boldRanges countByEnumeratingWithState:&v110 objects:v118 count:16];
       if (v13)
       {
         v14 = v13;
@@ -49,15 +49,15 @@
           {
             if (*v111 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(boldRanges);
             }
 
-            v17 = [*(*(&v110 + 1) + 8 * i) rangeValue];
-            if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+            rangeValue = [*(*(&v110 + 1) + 8 * i) rangeValue];
+            if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v19 = v17;
-              v20 = &v17[v18];
-              if (&v17[v18] <= [v89 length])
+              v19 = rangeValue;
+              v20 = &rangeValue[v18];
+              if (&rangeValue[v18] <= [v89 length])
               {
                 v21 = [NSNumber numberWithUnsignedInteger:v19];
                 [v82 setArrayObject:@"\x1Cfts~b\x1F" forKey:v21];
@@ -68,7 +68,7 @@
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v110 objects:v118 count:16];
+          v14 = [boldRanges countByEnumeratingWithState:&v110 objects:v118 count:16];
         }
 
         while (v14);
@@ -78,8 +78,8 @@
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v23 = [v78 italicRanges];
-      v24 = [v23 countByEnumeratingWithState:&v106 objects:v117 count:16];
+      italicRanges = [v78 italicRanges];
+      v24 = [italicRanges countByEnumeratingWithState:&v106 objects:v117 count:16];
       if (v24)
       {
         v25 = v24;
@@ -90,15 +90,15 @@
           {
             if (*v107 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(italicRanges);
             }
 
-            v28 = [*(*(&v106 + 1) + 8 * j) rangeValue];
-            if (v28 != 0x7FFFFFFFFFFFFFFFLL)
+            rangeValue2 = [*(*(&v106 + 1) + 8 * j) rangeValue];
+            if (rangeValue2 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v30 = v28;
-              v31 = &v28[v29];
-              if (&v28[v29] <= [v89 length])
+              v30 = rangeValue2;
+              v31 = &rangeValue2[v29];
+              if (&rangeValue2[v29] <= [v89 length])
               {
                 v32 = [NSNumber numberWithUnsignedInteger:v30];
                 [v82 setArrayObject:@"\x1Cfts~i\x1F" forKey:v32];
@@ -109,7 +109,7 @@
             }
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v106 objects:v117 count:16];
+          v25 = [italicRanges countByEnumeratingWithState:&v106 objects:v117 count:16];
         }
 
         while (v25);
@@ -119,8 +119,8 @@
       v105 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v34 = [v78 underlineRanges];
-      v35 = [v34 countByEnumeratingWithState:&v102 objects:v116 count:16];
+      underlineRanges = [v78 underlineRanges];
+      v35 = [underlineRanges countByEnumeratingWithState:&v102 objects:v116 count:16];
       if (v35)
       {
         v36 = v35;
@@ -131,15 +131,15 @@
           {
             if (*v103 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(underlineRanges);
             }
 
-            v39 = [*(*(&v102 + 1) + 8 * k) rangeValue];
-            if (v39 != 0x7FFFFFFFFFFFFFFFLL)
+            rangeValue3 = [*(*(&v102 + 1) + 8 * k) rangeValue];
+            if (rangeValue3 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v41 = v39;
-              v42 = &v39[v40];
-              if (&v39[v40] <= [v89 length])
+              v41 = rangeValue3;
+              v42 = &rangeValue3[v40];
+              if (&rangeValue3[v40] <= [v89 length])
               {
                 v43 = [NSNumber numberWithUnsignedInteger:v41];
                 [v82 setArrayObject:@"\x1Cfts~u\x1F" forKey:v43];
@@ -150,7 +150,7 @@
             }
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v102 objects:v116 count:16];
+          v36 = [underlineRanges countByEnumeratingWithState:&v102 objects:v116 count:16];
         }
 
         while (v36);
@@ -174,8 +174,8 @@
       v98 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v47 = [v82 allKeys];
-      v48 = [v47 sortedArrayUsingComparator:&__block_literal_global_0];
+      allKeys = [v82 allKeys];
+      v48 = [allKeys sortedArrayUsingComparator:&__block_literal_global_0];
 
       v79 = v48;
       v81 = [v48 countByEnumeratingWithState:&v97 objects:v115 count:16];
@@ -203,8 +203,8 @@
             v93 = 0u;
             v94 = 0u;
             v83 = v53;
-            v85 = [v53 reverseObjectEnumerator];
-            v90 = [v85 countByEnumeratingWithState:&v93 objects:v114 count:16];
+            reverseObjectEnumerator = [v53 reverseObjectEnumerator];
+            v90 = [reverseObjectEnumerator countByEnumeratingWithState:&v93 objects:v114 count:16];
             if (v90)
             {
               v87 = *v94;
@@ -216,7 +216,7 @@
                 {
                   if (*v94 != v87)
                   {
-                    objc_enumerationMutation(v85);
+                    objc_enumerationMutation(reverseObjectEnumerator);
                   }
 
                   v92 = v54;
@@ -248,11 +248,11 @@
                       v62 = v49[132];
                       [v46 objectAtIndexedSubscript:v61];
                       v64 = v63 = v49;
-                      v65 = [v64 rangeValue];
+                      rangeValue4 = [v64 rangeValue];
                       v66 = [v55 length];
                       v67 = [v46 objectAtIndexedSubscript:v61];
                       [v67 rangeValue];
-                      v69 = [v62 valueWithRange:{&v66[v65], v68}];
+                      v69 = [v62 valueWithRange:{&v66[rangeValue4], v68}];
                       [v46 setObject:v69 atIndexedSubscript:v61];
 
                       v49 = v63;
@@ -271,7 +271,7 @@
                 }
 
                 while ((v92 + 1) != v90);
-                v90 = [v85 countByEnumeratingWithState:&v93 objects:v114 count:16];
+                v90 = [reverseObjectEnumerator countByEnumeratingWithState:&v93 objects:v114 count:16];
               }
 
               while (v90);
@@ -287,16 +287,16 @@
         while (v81);
       }
 
-      v71 = v76;
+      v71 = mapCopy;
       v72 = v86;
-      if (v76)
+      if (mapCopy)
       {
         v73 = v86;
         *v71 = v72;
       }
 
-      v9 = v77;
-      v10 = v78;
+      stringCopy = v77;
+      rangesCopy = v78;
     }
   }
 

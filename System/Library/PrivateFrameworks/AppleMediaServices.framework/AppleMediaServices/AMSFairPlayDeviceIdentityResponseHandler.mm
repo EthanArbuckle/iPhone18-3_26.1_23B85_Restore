@@ -1,20 +1,20 @@
 @interface AMSFairPlayDeviceIdentityResponseHandler
-+ (id)handleResponse:(id)a3 request:(id)a4 buyParams:(id)a5 bag:(id)a6 fairPlayDeviceIdentity:(id)a7;
++ (id)handleResponse:(id)response request:(id)request buyParams:(id)params bag:(id)bag fairPlayDeviceIdentity:(id)identity;
 @end
 
 @implementation AMSFairPlayDeviceIdentityResponseHandler
 
-+ (id)handleResponse:(id)a3 request:(id)a4 buyParams:(id)a5 bag:(id)a6 fairPlayDeviceIdentity:(id)a7
++ (id)handleResponse:(id)response request:(id)request buyParams:(id)params bag:(id)bag fairPlayDeviceIdentity:(id)identity
 {
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (a3 && v14 && v15)
+  requestCopy = request;
+  paramsCopy = params;
+  bagCopy = bag;
+  identityCopy = identity;
+  v16 = identityCopy;
+  if (response && bagCopy && identityCopy)
   {
-    v17 = [a3 ams_valueForHTTPHeaderField:@"X-Apple-FPDIAction"];
+    v17 = [response ams_valueForHTTPHeaderField:@"X-Apple-FPDIAction"];
     if ([v17 ams_caseInsensitiveEquals:@"RP"])
     {
       v18 = +[AMSLogConfig sharedConfig];
@@ -23,12 +23,12 @@
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v20 = AMSLogKey();
         v21 = MEMORY[0x1E696AEC0];
-        v36 = a1;
+        selfCopy = self;
         v22 = objc_opt_class();
         v23 = v22;
         if (v20)
@@ -44,8 +44,8 @@
         v24 = ;
         *buf = 138543362;
         v43 = v24;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling reprovision action", buf, 0xCu);
-        a1 = v36;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling reprovision action", buf, 0xCu);
+        self = selfCopy;
         if (v20)
         {
 
@@ -54,24 +54,24 @@
       }
 
       v26 = objc_alloc_init(AMSMutablePromise);
-      v28 = [v12 URL];
+      v28 = [requestCopy URL];
 
       if (v28)
       {
-        v37 = [v12 URL];
+        v37 = [requestCopy URL];
         v29 = v17;
-        v30 = a1;
-        v31 = [[AMSSendableBag alloc] initWithWrappedBag:v14];
-        v32 = [v13 dictionaryForFPDI];
+        selfCopy2 = self;
+        v31 = [[AMSSendableBag alloc] initWithWrappedBag:bagCopy];
+        dictionaryForFPDI = [paramsCopy dictionaryForFPDI];
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __104__AMSFairPlayDeviceIdentityResponseHandler_handleResponse_request_buyParams_bag_fairPlayDeviceIdentity___block_invoke;
         v38[3] = &unk_1E73B77B0;
         v39 = v16;
         v40 = v26;
-        v41 = v30;
+        v41 = selfCopy2;
         v17 = v29;
-        [v39 fpdiLevelFor:v37 bag:v31 buyParams:v32 completionHandler:v38];
+        [v39 fpdiLevelFor:v37 bag:v31 buyParams:dictionaryForFPDI completionHandler:v38];
 
         v33 = v39;
       }

@@ -1,7 +1,7 @@
 @interface NPHCSCellularSettingsDetailsViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForHeaderInSection:(unint64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForHeaderInSection:(unint64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -12,35 +12,35 @@
   v10.receiver = self;
   v10.super_class = NPHCSCellularSettingsDetailsViewController;
   [(NPHCSCellularSettingsDetailsViewController *)&v10 viewDidLoad];
-  v3 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
-  v4 = [v3 displayName];
-  [(NPHCSCellularSettingsDetailsViewController *)self setTitle:v4];
+  appDataUsageItem = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
+  displayName = [appDataUsageItem displayName];
+  [(NPHCSCellularSettingsDetailsViewController *)self setTitle:displayName];
 
-  v5 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
-  v6 = [v5 childObjects];
+  appDataUsageItem2 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
+  childObjects = [appDataUsageItem2 childObjects];
   v7 = +[NPHCSAppCellularDataUsageItem userSelectedComparator];
-  v8 = [v6 sortedArrayUsingComparator:v7];
-  v9 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
-  [v9 setChildObjects:v8];
+  v8 = [childObjects sortedArrayUsingComparator:v7];
+  appDataUsageItem3 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
+  [appDataUsageItem3 setChildObjects:v8];
 }
 
-- (id)titleForHeaderInSection:(unint64_t)a3
+- (id)titleForHeaderInSection:(unint64_t)section
 {
-  if (a3 || (-[NPHCSCellularSettingsDetailsViewController appDataUsageItem](self, "appDataUsageItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isForAnApp], v4, !v5))
+  if (section || (-[NPHCSCellularSettingsDetailsViewController appDataUsageItem](self, "appDataUsageItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isForAnApp], v4, !v5))
   {
     v10 = 0;
   }
 
   else
   {
-    v6 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
-    v7 = [v6 displayName];
+    appDataUsageItem = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
+    displayName = [appDataUsageItem displayName];
 
-    if ([v7 length])
+    if ([displayName length])
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"ALLOW_DATA_ACCESS_FORMAT" value:&stru_1CD90 table:0];
-      v10 = [NSString stringWithFormat:v9, v7];
+      v10 = [NSString stringWithFormat:v9, displayName];
     }
 
     else
@@ -53,35 +53,35 @@
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem:a3];
-  v5 = [v4 childObjects];
-  v6 = [v5 count];
+  v4 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem:view];
+  childObjects = [v4 childObjects];
+  v6 = [childObjects count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
-  v9 = [v8 childObjects];
-  v10 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  appDataUsageItem = [(NPHCSCellularSettingsDetailsViewController *)self appDataUsageItem];
+  childObjects = [appDataUsageItem childObjects];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
-  v12 = [NPHCSAppCellularDataUsageCell cellForTableView:v7 reuseIdentifier:@"cellularDetailViewCellIdentifier" appDataUsageItem:v11 isCellularSetup:[(NPHCSCellularSettingsDetailsViewController *)self isCellularSetup]];
+  v11 = [childObjects objectAtIndexedSubscript:v10];
+  v12 = [NPHCSAppCellularDataUsageCell cellForTableView:viewCopy reuseIdentifier:@"cellularDetailViewCellIdentifier" appDataUsageItem:v11 isCellularSetup:[(NPHCSCellularSettingsDetailsViewController *)self isCellularSetup]];
 
-  v13 = [v12 imageView];
-  [v13 setImage:0];
+  imageView = [v12 imageView];
+  [imageView setImage:0];
 
   [v12 setAccessoryView:0];
   [v12 setAccessoryType:0];
   if (+[NPHSharedUtilities isActiveWatchChinaRegionCellular])
   {
-    v14 = [v12 detailTextLabel];
-    [v14 setText:0];
+    detailTextLabel = [v12 detailTextLabel];
+    [detailTextLabel setText:0];
   }
 
   return v12;

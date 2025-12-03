@@ -1,12 +1,12 @@
 @interface SUUILoadResourceOperation
 - (SUUIClientContext)clientContext;
-- (SUUILoadResourceOperation)initWithResourceRequest:(id)a3;
+- (SUUILoadResourceOperation)initWithResourceRequest:(id)request;
 - (id)_initSUUILoadResourceOperation;
 - (id)outputBlock;
 - (void)cancel;
 - (void)main;
-- (void)setClientContext:(id)a3;
-- (void)setOutputBlock:(id)a3;
+- (void)setClientContext:(id)context;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SUUILoadResourceOperation
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (SUUILoadResourceOperation)initWithResourceRequest:(id)a3
+- (SUUILoadResourceOperation)initWithResourceRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SUUILoadResourceOperation *)self _initSUUILoadResourceOperation];
-  if (v5)
+  requestCopy = request;
+  _initSUUILoadResourceOperation = [(SUUILoadResourceOperation *)self _initSUUILoadResourceOperation];
+  if (_initSUUILoadResourceOperation)
   {
-    v6 = [v4 copy];
-    request = v5->_request;
-    v5->_request = v6;
+    v6 = [requestCopy copy];
+    request = _initSUUILoadResourceOperation->_request;
+    _initSUUILoadResourceOperation->_request = v6;
   }
 
-  return v5;
+  return _initSUUILoadResourceOperation;
 }
 
 - (SUUIClientContext)clientContext
@@ -59,25 +59,25 @@
   return v4;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(NSLock *)self->_lock lock];
-  if (self->_clientContext != v5)
+  if (self->_clientContext != contextCopy)
   {
-    objc_storeStrong(&self->_clientContext, a3);
+    objc_storeStrong(&self->_clientContext, context);
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -87,12 +87,12 @@
 
 - (void)main
 {
-  v2 = [(SUUILoadResourceOperation *)self outputBlock];
-  if (v2)
+  outputBlock = [(SUUILoadResourceOperation *)self outputBlock];
+  if (outputBlock)
   {
-    v3 = v2;
-    v2[2](v2, 0, 0);
-    v2 = v3;
+    v3 = outputBlock;
+    outputBlock[2](outputBlock, 0, 0);
+    outputBlock = v3;
   }
 }
 

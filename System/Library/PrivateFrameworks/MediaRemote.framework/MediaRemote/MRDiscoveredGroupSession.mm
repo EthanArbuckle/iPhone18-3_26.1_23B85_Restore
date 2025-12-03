@@ -1,36 +1,36 @@
 @interface MRDiscoveredGroupSession
-- (BOOL)isEqual:(id)a3;
-- (MRDiscoveredGroupSession)initWithCoder:(id)a3;
-- (MRDiscoveredGroupSession)initWithData:(id)a3;
-- (MRDiscoveredGroupSession)initWithIdentifier:(id)a3 hostInfo:(id)a4 source:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRDiscoveredGroupSession)initWithCoder:(id)coder;
+- (MRDiscoveredGroupSession)initWithData:(id)data;
+- (MRDiscoveredGroupSession)initWithIdentifier:(id)identifier hostInfo:(id)info source:(int64_t)source;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRDiscoveredGroupSession
 
-- (MRDiscoveredGroupSession)initWithIdentifier:(id)a3 hostInfo:(id)a4 source:(int64_t)a5
+- (MRDiscoveredGroupSession)initWithIdentifier:(id)identifier hostInfo:(id)info source:(int64_t)source
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = MRDiscoveredGroupSession;
   v11 = [(MRDiscoveredGroupSession *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_hostInfo, a4);
-    v12->_source = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_hostInfo, info);
+    v12->_source = source;
   }
 
   return v12;
 }
 
-- (MRDiscoveredGroupSession)initWithData:(id)a3
+- (MRDiscoveredGroupSession)initWithData:(id)data
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = MSVPropertyListDataClasses();
   v6 = [v5 mutableCopy];
 
@@ -41,7 +41,7 @@
   [v6 addObjectsFromArray:v8];
 
   v14 = 0;
-  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:v4 error:&v14];
+  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:dataCopy error:&v14];
 
   v10 = v14;
   if (v10)
@@ -57,41 +57,41 @@
   return v9;
 }
 
-- (MRDiscoveredGroupSession)initWithCoder:(id)a3
+- (MRDiscoveredGroupSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MRDiscoveredGroupSession;
   v5 = [(MRDiscoveredGroupSession *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hst"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hst"];
     hostInfo = v5->_hostInfo;
     v5->_hostInfo = v8;
 
-    v5->_source = [v4 decodeIntegerForKey:@"src"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"src"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"id"];
-  [v5 encodeObject:self->_hostInfo forKey:@"hst"];
-  [v5 encodeInteger:self->_source forKey:@"src"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"id"];
+  [coderCopy encodeObject:self->_hostInfo forKey:@"hst"];
+  [coderCopy encodeInteger:self->_source forKey:@"src"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -101,17 +101,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRDiscoveredGroupSession *)self identifier];
-      v7 = [(MRDiscoveredGroupSession *)v5 identifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(MRDiscoveredGroupSession *)self identifier];
+      identifier2 = [(MRDiscoveredGroupSession *)v5 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v8 = [(MRDiscoveredGroupSession *)self hostInfo];
-        v9 = [(MRDiscoveredGroupSession *)v5 hostInfo];
-        if ([v8 isEqual:v9])
+        hostInfo = [(MRDiscoveredGroupSession *)self hostInfo];
+        hostInfo2 = [(MRDiscoveredGroupSession *)v5 hostInfo];
+        if ([hostInfo isEqual:hostInfo2])
         {
-          v10 = [(MRDiscoveredGroupSession *)self source];
-          v11 = v10 == [(MRDiscoveredGroupSession *)v5 source];
+          source = [(MRDiscoveredGroupSession *)self source];
+          v11 = source == [(MRDiscoveredGroupSession *)v5 source];
         }
 
         else
@@ -135,7 +135,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MRDiscoveredGroupSession alloc];
   identifier = self->_identifier;

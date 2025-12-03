@@ -1,13 +1,13 @@
 @interface VIACacheHitContextBuilder
 - (id)build;
-- (id)setApplicationIdentifer:(id)a3;
+- (id)setApplicationIdentifer:(id)identifer;
 @end
 
 @implementation VIACacheHitContextBuilder
 
-- (id)setApplicationIdentifer:(id)a3
+- (id)setApplicationIdentifer:(id)identifer
 {
-  v4 = [a3 copy];
+  v4 = [identifer copy];
   applicationIdentifier = self->_applicationIdentifier;
   self->_applicationIdentifier = v4;
 

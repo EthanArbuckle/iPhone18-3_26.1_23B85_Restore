@@ -1,38 +1,38 @@
 @interface CyclerCommandHandler
 - (BOOL)_isBookmarkSyncEnabled;
-- (BOOL)_isSpecialBookmark:(id)a3;
-- (CyclerCommandHandler)initWithBookmarkCollection:(id)a3;
-- (id)_cyclerRepresentationOfBookmark:(id)a3;
-- (unint64_t)_adjustInsertionIndex:(unint64_t)a3 forInsertionIntoListWithIdentifier:(int)a4;
-- (void)_startMonitoringSyncStatusWithCompletionHandler:(id)a3;
-- (void)_tryToAcquireDatabaseLockWithCompletionHandler:(id)a3;
-- (void)clearBookmarksWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)createBookmarkListWithTitle:(id)a3 inListWithIdentifier:(id)a4 atIndex:(unint64_t)a5 reply:(id)a6;
-- (void)createBookmarkWithTitle:(id)a3 url:(id)a4 inListWithIdentifier:(id)a5 atIndex:(unint64_t)a6 reply:(id)a7;
-- (void)databaseLockAcquisitor:(id)a3 acquiredLock:(BOOL)a4;
-- (void)deleteBookmarkWithIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchTopLevelBookmarkList:(id)a3;
-- (void)moveBookmarkWithIdentifier:(id)a3 intoListWithIdentifier:(id)a4 atIndex:(unint64_t)a5 reply:(id)a6;
-- (void)setTitle:(id)a3 forBookmarkWithIdentifier:(id)a4 reply:(id)a5;
-- (void)setURL:(id)a3 forBookmarkWithIdentifier:(id)a4 reply:(id)a5;
-- (void)syncBookmarksWithCompletionHandler:(id)a3;
+- (BOOL)_isSpecialBookmark:(id)bookmark;
+- (CyclerCommandHandler)initWithBookmarkCollection:(id)collection;
+- (id)_cyclerRepresentationOfBookmark:(id)bookmark;
+- (unint64_t)_adjustInsertionIndex:(unint64_t)index forInsertionIntoListWithIdentifier:(int)identifier;
+- (void)_startMonitoringSyncStatusWithCompletionHandler:(id)handler;
+- (void)_tryToAcquireDatabaseLockWithCompletionHandler:(id)handler;
+- (void)clearBookmarksWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)createBookmarkListWithTitle:(id)title inListWithIdentifier:(id)identifier atIndex:(unint64_t)index reply:(id)reply;
+- (void)createBookmarkWithTitle:(id)title url:(id)url inListWithIdentifier:(id)identifier atIndex:(unint64_t)index reply:(id)reply;
+- (void)databaseLockAcquisitor:(id)acquisitor acquiredLock:(BOOL)lock;
+- (void)deleteBookmarkWithIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchTopLevelBookmarkList:(id)list;
+- (void)moveBookmarkWithIdentifier:(id)identifier intoListWithIdentifier:(id)withIdentifier atIndex:(unint64_t)index reply:(id)reply;
+- (void)setTitle:(id)title forBookmarkWithIdentifier:(id)identifier reply:(id)reply;
+- (void)setURL:(id)l forBookmarkWithIdentifier:(id)identifier reply:(id)reply;
+- (void)syncBookmarksWithCompletionHandler:(id)handler;
 @end
 
 @implementation CyclerCommandHandler
 
-- (CyclerCommandHandler)initWithBookmarkCollection:(id)a3
+- (CyclerCommandHandler)initWithBookmarkCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v14.receiver = self;
   v14.super_class = CyclerCommandHandler;
   v6 = [(CyclerCommandHandler *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bookmarkCollection, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_bookmarkCollection, collection);
+    array = [MEMORY[0x277CBEB18] array];
     blocksAwaitingDatabaseLock = v7->_blocksAwaitingDatabaseLock;
-    v7->_blocksAwaitingDatabaseLock = v8;
+    v7->_blocksAwaitingDatabaseLock = array;
 
     v10 = [objc_alloc(MEMORY[0x277D7B528]) initWithWebBookmarkCollectionClass:objc_opt_class()];
     bookmarkDatabaseLockAcquisitor = v7->_bookmarkDatabaseLockAcquisitor;
@@ -45,31 +45,31 @@
   return v7;
 }
 
-- (void)fetchTopLevelBookmarkList:(id)a3
+- (void)fetchTopLevelBookmarkList:(id)list
 {
-  v8 = a3;
-  v4 = [(WebBookmarkCollection *)self->_bookmarkCollection rootBookmark];
-  v5 = [(CyclerCommandHandler *)self _cyclerRepresentationOfBookmark:v4];
+  listCopy = list;
+  rootBookmark = [(WebBookmarkCollection *)self->_bookmarkCollection rootBookmark];
+  v5 = [(CyclerCommandHandler *)self _cyclerRepresentationOfBookmark:rootBookmark];
 
-  v6 = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
-  if (v6)
+  favoritesFolder = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
+  if (favoritesFolder)
   {
-    v7 = [(CyclerCommandHandler *)self _cyclerRepresentationOfBookmark:v6];
+    v7 = [(CyclerCommandHandler *)self _cyclerRepresentationOfBookmark:favoritesFolder];
     [v5 insertChild:v7 atIndex:0];
   }
 
-  v8[2](v8, v5);
+  listCopy[2](listCopy, v5);
 }
 
-- (void)clearBookmarksWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)clearBookmarksWithOptions:(unint64_t)options completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = @"local and remote";
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v8 = @"local";
     }
@@ -83,11 +83,11 @@
   v10[1] = 3221225472;
   v10[2] = __68__CyclerCommandHandler_clearBookmarksWithOptions_completionHandler___block_invoke;
   v10[3] = &unk_2781D55E8;
-  v13 = a3 & 1;
+  v13 = options & 1;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = handlerCopy;
+  optionsCopy = options;
+  v9 = handlerCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v10];
 }
 
@@ -218,24 +218,24 @@ uint64_t __68__CyclerCommandHandler_clearBookmarksWithOptions_completionHandler_
   return result;
 }
 
-- (void)createBookmarkWithTitle:(id)a3 url:(id)a4 inListWithIdentifier:(id)a5 atIndex:(unint64_t)a6 reply:(id)a7
+- (void)createBookmarkWithTitle:(id)title url:(id)url inListWithIdentifier:(id)identifier atIndex:(unint64_t)index reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  titleCopy = title;
+  urlCopy = url;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v16 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 138544130;
-    v28 = v12;
+    v28 = titleCopy;
     v29 = 2114;
-    v30 = v13;
+    v30 = urlCopy;
     v31 = 2114;
-    v32 = v14;
+    v32 = identifierCopy;
     v33 = 1024;
-    v34 = a6;
+    indexCopy = index;
     _os_log_impl(&dword_215819000, v16, OS_LOG_TYPE_INFO, "Told to create a bookmark (title: %{public}@, url: %{public}@) in list (identifier: %{public}@) at index %d", buf, 0x26u);
   }
 
@@ -243,16 +243,16 @@ uint64_t __68__CyclerCommandHandler_clearBookmarksWithOptions_completionHandler_
   v21[1] = 3221225472;
   v21[2] = __87__CyclerCommandHandler_createBookmarkWithTitle_url_inListWithIdentifier_atIndex_reply___block_invoke;
   v21[3] = &unk_2781D5610;
-  v25 = v15;
-  v26 = a6;
+  v25 = replyCopy;
+  indexCopy2 = index;
   v21[4] = self;
-  v22 = v14;
-  v23 = v12;
-  v24 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v14;
-  v20 = v15;
+  v22 = identifierCopy;
+  v23 = titleCopy;
+  v24 = urlCopy;
+  v17 = urlCopy;
+  v18 = titleCopy;
+  v19 = identifierCopy;
+  v20 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v21];
 }
 
@@ -342,21 +342,21 @@ LABEL_22:
   v12();
 }
 
-- (void)createBookmarkListWithTitle:(id)a3 inListWithIdentifier:(id)a4 atIndex:(unint64_t)a5 reply:(id)a6
+- (void)createBookmarkListWithTitle:(id)title inListWithIdentifier:(id)identifier atIndex:(unint64_t)index reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v13 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v23 = v10;
+    v23 = titleCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = identifierCopy;
     v26 = 1024;
-    v27 = a5;
+    indexCopy = index;
     _os_log_impl(&dword_215819000, v13, OS_LOG_TYPE_INFO, "Told to create a list (title: %{public}@) in list (identifier: %{public}@) at index %d", buf, 0x1Cu);
   }
 
@@ -364,14 +364,14 @@ LABEL_22:
   v17[1] = 3221225472;
   v17[2] = __87__CyclerCommandHandler_createBookmarkListWithTitle_inListWithIdentifier_atIndex_reply___block_invoke;
   v17[3] = &unk_2781D5638;
-  v20 = v12;
-  v21 = a5;
+  v20 = replyCopy;
+  indexCopy2 = index;
   v17[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
+  v18 = identifierCopy;
+  v19 = titleCopy;
+  v14 = titleCopy;
+  v15 = identifierCopy;
+  v16 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v17];
 }
 
@@ -451,16 +451,16 @@ LABEL_20:
   v11();
 }
 
-- (void)deleteBookmarkWithIdentifier:(id)a3 reply:(id)a4
+- (void)deleteBookmarkWithIdentifier:(id)identifier reply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = identifierCopy;
     _os_log_impl(&dword_215819000, v8, OS_LOG_TYPE_INFO, "Told to delete a bookmark (identifier: %{public}@)", buf, 0xCu);
   }
 
@@ -468,11 +468,11 @@ LABEL_20:
   v11[1] = 3221225472;
   v11[2] = __59__CyclerCommandHandler_deleteBookmarkWithIdentifier_reply___block_invoke;
   v11[3] = &unk_2781D5660;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = replyCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v11];
 }
 
@@ -538,21 +538,21 @@ LABEL_16:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)moveBookmarkWithIdentifier:(id)a3 intoListWithIdentifier:(id)a4 atIndex:(unint64_t)a5 reply:(id)a6
+- (void)moveBookmarkWithIdentifier:(id)identifier intoListWithIdentifier:(id)withIdentifier atIndex:(unint64_t)index reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  replyCopy = reply;
   v13 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v23 = v10;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = withIdentifierCopy;
     v26 = 1024;
-    v27 = a5;
+    indexCopy = index;
     _os_log_impl(&dword_215819000, v13, OS_LOG_TYPE_INFO, "Told to move a bookmark (identifier: %{public}@) into list (identifier: %{public}@) at index %d", buf, 0x1Cu);
   }
 
@@ -561,13 +561,13 @@ LABEL_16:
   v17[2] = __88__CyclerCommandHandler_moveBookmarkWithIdentifier_intoListWithIdentifier_atIndex_reply___block_invoke;
   v17[3] = &unk_2781D5638;
   v17[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = identifierCopy;
+  v20 = replyCopy;
+  indexCopy2 = index;
+  v19 = withIdentifierCopy;
+  v14 = withIdentifierCopy;
+  v15 = identifierCopy;
+  v16 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v17];
 }
 
@@ -678,19 +678,19 @@ LABEL_25:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)setTitle:(id)a3 forBookmarkWithIdentifier:(id)a4 reply:(id)a5
+- (void)setTitle:(id)title forBookmarkWithIdentifier:(id)identifier reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v11 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v20 = v9;
+    v20 = identifierCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = titleCopy;
     _os_log_impl(&dword_215819000, v11, OS_LOG_TYPE_INFO, "Told to change title of bookmark (identifier: %{public}@) to %{public}@", buf, 0x16u);
   }
 
@@ -699,12 +699,12 @@ LABEL_25:
   v15[2] = __65__CyclerCommandHandler_setTitle_forBookmarkWithIdentifier_reply___block_invoke;
   v15[3] = &unk_2781D5688;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = titleCopy;
+  v18 = replyCopy;
+  v12 = titleCopy;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v15];
 }
 
@@ -771,19 +771,19 @@ LABEL_16:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)setURL:(id)a3 forBookmarkWithIdentifier:(id)a4 reply:(id)a5
+- (void)setURL:(id)l forBookmarkWithIdentifier:(id)identifier reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v11 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v20 = v9;
+    v20 = identifierCopy;
     v21 = 2114;
-    v22 = v8;
+    v22 = lCopy;
     _os_log_impl(&dword_215819000, v11, OS_LOG_TYPE_INFO, "Told to change URL of bookmark (identifier: %{public}@) to %{public}@", buf, 0x16u);
   }
 
@@ -792,12 +792,12 @@ LABEL_16:
   v15[2] = __63__CyclerCommandHandler_setURL_forBookmarkWithIdentifier_reply___block_invoke;
   v15[3] = &unk_2781D5688;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = lCopy;
+  v18 = replyCopy;
+  v12 = lCopy;
+  v13 = identifierCopy;
+  v14 = replyCopy;
   [(CyclerCommandHandler *)self _tryToAcquireDatabaseLockWithCompletionHandler:v15];
 }
 
@@ -866,9 +866,9 @@ LABEL_16:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)syncBookmarksWithCompletionHandler:(id)a3
+- (void)syncBookmarksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -883,7 +883,7 @@ LABEL_16:
     v7[2] = __59__CyclerCommandHandler_syncBookmarksWithCompletionHandler___block_invoke;
     v7[3] = &unk_2781D56B0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 
@@ -896,7 +896,7 @@ LABEL_16:
       _os_log_impl(&dword_215819000, v6, OS_LOG_TYPE_INFO, "Not syncing because bookmark sync is disabled", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 2);
+    (*(handlerCopy + 2))(handlerCopy, 2);
   }
 }
 
@@ -919,17 +919,17 @@ void __59__CyclerCommandHandler_syncBookmarksWithCompletionHandler___block_invok
   [*(*(a1 + 32) + 8) _postBookmarksChangedSyncNotification];
 }
 
-- (void)databaseLockAcquisitor:(id)a3 acquiredLock:(BOOL)a4
+- (void)databaseLockAcquisitor:(id)acquisitor acquiredLock:(BOOL)lock
 {
-  v6 = a3;
+  acquisitorCopy = acquisitor;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CyclerCommandHandler_databaseLockAcquisitor_acquiredLock___block_invoke;
   block[3] = &unk_2781D5060;
-  v10 = a4;
+  lockCopy = lock;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = acquisitorCopy;
+  v7 = acquisitorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -977,9 +977,9 @@ uint64_t __60__CyclerCommandHandler_databaseLockAcquisitor_acquiredLock___block_
   return result;
 }
 
-- (void)_startMonitoringSyncStatusWithCompletionHandler:(id)a3
+- (void)_startMonitoringSyncStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if ([(WebBookmarkCollection *)self->_bookmarkCollection _usesCloudKit])
   {
@@ -1018,7 +1018,7 @@ uint64_t __60__CyclerCommandHandler_databaseLockAcquisitor_acquiredLock___block_
   v19[2] = __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler___block_invoke;
   v19[3] = &unk_2781D56D8;
   objc_copyWeak(&v21, &location);
-  v11 = v4;
+  v11 = handlerCopy;
   v20 = v11;
   [(WBSDistributedNotificationObserver *)self->_syncAgentNotificationObserver setNotificationHandler:v19];
   v13 = MEMORY[0x277D85DD0];
@@ -1095,12 +1095,12 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
   }
 }
 
-- (BOOL)_isSpecialBookmark:(id)a3
+- (BOOL)_isSpecialBookmark:(id)bookmark
 {
-  v3 = a3;
-  if ([v3 identifier])
+  bookmarkCopy = bookmark;
+  if ([bookmarkCopy identifier])
   {
-    v4 = [v3 specialID] != 0;
+    v4 = [bookmarkCopy specialID] != 0;
   }
 
   else
@@ -1111,17 +1111,17 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
   return v4;
 }
 
-- (unint64_t)_adjustInsertionIndex:(unint64_t)a3 forInsertionIntoListWithIdentifier:(int)a4
+- (unint64_t)_adjustInsertionIndex:(unint64_t)index forInsertionIntoListWithIdentifier:(int)identifier
 {
-  v4 = a3;
+  indexCopy = index;
   v13 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!identifier)
   {
-    if (a3)
+    if (index)
     {
-      v6 = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
+      favoritesFolder = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
 
-      if (v6)
+      if (favoritesFolder)
       {
         v7 = 4;
       }
@@ -1134,9 +1134,9 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
       v8 = WBS_LOG_CHANNEL_PREFIXCycler();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = v7 + v4;
+        v9 = v7 + indexCopy;
         v10[0] = 67109376;
-        v10[1] = v4;
+        v10[1] = indexCopy;
         v11 = 1024;
         v12 = v9;
         _os_log_impl(&dword_215819000, v8, OS_LOG_TYPE_INFO, "Adjusting insertion index %d to %d because it's offset by special bookmarks in the root folder", v10, 0xEu);
@@ -1145,7 +1145,7 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
 
       else
       {
-        v4 += v7;
+        indexCopy += v7;
       }
     }
 
@@ -1155,28 +1155,28 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
     }
   }
 
-  return v4;
+  return indexCopy;
 }
 
-- (id)_cyclerRepresentationOfBookmark:(id)a3
+- (id)_cyclerRepresentationOfBookmark:(id)bookmark
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isFolder])
+  bookmarkCopy = bookmark;
+  if ([bookmarkCopy isFolder])
   {
     v5 = objc_alloc(MEMORY[0x277D49F08]);
-    v6 = [v4 title];
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "identifier")}];
-    v8 = [v7 stringValue];
-    v9 = [v5 initWithTitle:v6 uniqueIdentifier:v8];
+    title = [bookmarkCopy title];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(bookmarkCopy, "identifier")}];
+    stringValue = [v7 stringValue];
+    v9 = [v5 initWithTitle:title uniqueIdentifier:stringValue];
 
-    v10 = -[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [v4 identifier]);
+    v10 = -[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [bookmarkCopy identifier]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v10 bookmarkArray];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    bookmarkArray = [v10 bookmarkArray];
+    v12 = [bookmarkArray countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1187,14 +1187,14 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(bookmarkArray);
           }
 
           v16 = [(CyclerCommandHandler *)self _cyclerRepresentationOfBookmark:*(*(&v24 + 1) + 8 * i)];
           [v9 addChild:v16];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [bookmarkArray countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
@@ -1204,35 +1204,35 @@ void __72__CyclerCommandHandler__startMonitoringSyncStatusWithCompletionHandler_
   else
   {
     v17 = MEMORY[0x277CBEBC0];
-    v18 = [v4 address];
-    v10 = [v17 safari_URLWithDataAsString:v18];
+    address = [bookmarkCopy address];
+    v10 = [v17 safari_URLWithDataAsString:address];
 
     v19 = objc_alloc(MEMORY[0x277D49EF8]);
-    v11 = [v4 title];
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "identifier")}];
-    v21 = [v20 stringValue];
-    v9 = [v19 initWithURL:v10 title:v11 uniqueIdentifier:v21];
+    bookmarkArray = [bookmarkCopy title];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(bookmarkCopy, "identifier")}];
+    stringValue2 = [v20 stringValue];
+    v9 = [v19 initWithURL:v10 title:bookmarkArray uniqueIdentifier:stringValue2];
   }
 
   if ([(WebBookmarkCollection *)self->_bookmarkCollection _usesCloudKit])
   {
-    v22 = [v4 extraAttributes];
-    [v9 setExtraAttributes:v22];
+    extraAttributes = [bookmarkCopy extraAttributes];
+    [v9 setExtraAttributes:extraAttributes];
   }
 
   return v9;
 }
 
-- (void)_tryToAcquireDatabaseLockWithCompletionHandler:(id)a3
+- (void)_tryToAcquireDatabaseLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__CyclerCommandHandler__tryToAcquireDatabaseLockWithCompletionHandler___block_invoke;
   v6[3] = &unk_2781D56B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1253,16 +1253,16 @@ void __71__CyclerCommandHandler__tryToAcquireDatabaseLockWithCompletionHandler__
 - (BOOL)_isBookmarkSyncEnabled
 {
   v2 = +[FeatureManager sharedFeatureManager];
-  v3 = [v2 isCloudSyncAvailable];
+  isCloudSyncAvailable = [v2 isCloudSyncAvailable];
 
-  if (!v3)
+  if (!isCloudSyncAvailable)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v5 = [v4 aa_primaryAppleAccountWithPreloadedDataclasses];
-  v6 = [v5 isEnabledForDataclass:*MEMORY[0x277CB90D0]];
+  aa_primaryAppleAccountWithPreloadedDataclasses = [v4 aa_primaryAppleAccountWithPreloadedDataclasses];
+  v6 = [aa_primaryAppleAccountWithPreloadedDataclasses isEnabledForDataclass:*MEMORY[0x277CB90D0]];
 
   return v6;
 }

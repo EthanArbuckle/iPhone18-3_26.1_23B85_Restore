@@ -1,7 +1,7 @@
 @interface CarAudioControlButton
-- (CarAudioControlButton)initWithFrame:(CGRect)a3;
+- (CarAudioControlButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityUserInputLabels;
-- (void)setButtonAudioType:(unint64_t)a3;
+- (void)setButtonAudioType:(unint64_t)type;
 @end
 
 @implementation CarAudioControlButton
@@ -19,22 +19,22 @@
   return v6;
 }
 
-- (void)setButtonAudioType:(unint64_t)a3
+- (void)setButtonAudioType:(unint64_t)type
 {
-  if (self->_buttonAudioType != a3 || !self->_hasButtonAudioType)
+  if (self->_buttonAudioType != type || !self->_hasButtonAudioType)
   {
-    self->_buttonAudioType = a3;
+    self->_buttonAudioType = type;
     self->_hasButtonAudioType = 1;
-    v5 = [_TtC4Maps22NavAudioControlFactory stringFromAudioControlButtonType:a3];
+    v5 = [_TtC4Maps22NavAudioControlFactory stringFromAudioControlButtonType:type];
     v6 = [@"CarAudioControlButton" stringByAppendingString:v5];
     [(CarAudioControlButton *)self setAccessibilityIdentifier:v6];
 
-    v7 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:a3];
+    v7 = [_TtC4Maps22NavAudioControlFactory imageForNavAudioType:type];
     [(CarFocusableImageButton *)self setImage:v7];
   }
 }
 
-- (CarAudioControlButton)initWithFrame:(CGRect)a3
+- (CarAudioControlButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarAudioControlButton;

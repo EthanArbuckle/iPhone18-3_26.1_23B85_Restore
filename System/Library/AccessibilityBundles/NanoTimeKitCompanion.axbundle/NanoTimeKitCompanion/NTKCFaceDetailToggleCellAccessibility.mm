@@ -1,5 +1,5 @@
 @interface NTKCFaceDetailToggleCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilityCellSwitch;
 - (id)accessibilityValue;
@@ -7,17 +7,17 @@
 
 @implementation NTKCFaceDetailToggleCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCFaceDetailToggleCell" hasInstanceMethod:@"toggle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCFaceDetailToggleCell" hasInstanceMethod:@"_switchToggled" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCFaceDetailToggleCell" hasInstanceMethod:@"toggle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCFaceDetailToggleCell" hasInstanceMethod:@"_switchToggled" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(NTKCFaceDetailToggleCellAccessibility *)self _accessibilityCellSwitch];
-  if ([v2 isOn])
+  _accessibilityCellSwitch = [(NTKCFaceDetailToggleCellAccessibility *)self _accessibilityCellSwitch];
+  if ([_accessibilityCellSwitch isOn])
   {
     v3 = @"toggle.cell.on";
   }

@@ -1,14 +1,14 @@
 @interface BKMatchTouchIDOperation
-- (id)optionsDictionaryWithError:(id *)a3;
+- (id)optionsDictionaryWithError:(id *)error;
 @end
 
 @implementation BKMatchTouchIDOperation
 
-- (id)optionsDictionaryWithError:(id *)a3
+- (id)optionsDictionaryWithError:(id *)error
 {
   v9.receiver = self;
   v9.super_class = BKMatchTouchIDOperation;
-  v4 = [(BKMatchOperation *)&v9 optionsDictionaryWithError:a3];
+  v4 = [(BKMatchOperation *)&v9 optionsDictionaryWithError:error];
   if (v4)
   {
     v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];

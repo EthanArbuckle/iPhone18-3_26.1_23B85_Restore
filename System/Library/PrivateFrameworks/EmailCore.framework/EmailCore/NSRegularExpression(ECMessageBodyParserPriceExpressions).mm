@@ -70,7 +70,7 @@
 
   v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v9, objc_msgSend(v12, "componentsJoinedByString:", @"|"];
   v21 = 0;
-  v18 = [[a1 alloc] initWithPattern:v17 options:1 error:&v21];
+  v18 = [[self alloc] initWithPattern:v17 options:1 error:&v21];
   if (!v18)
   {
     +[NSRegularExpression(ECMessageBodyParserPriceExpressions) ec_copyCurrencyRegularExpressionForType:];
@@ -86,7 +86,7 @@
   block[1] = 3221225472;
   block[2] = __87__NSRegularExpression_ECMessageBodyParserPriceExpressions__ec_priceBeginningExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_priceBeginningExpression_onceToken != -1)
   {
     dispatch_once(&ec_priceBeginningExpression_onceToken, block);
@@ -101,7 +101,7 @@
   block[1] = 3221225472;
   block[2] = __81__NSRegularExpression_ECMessageBodyParserPriceExpressions__ec_priceEndExpression__block_invoke;
   block[3] = &unk_27874BC28;
-  block[4] = a1;
+  block[4] = self;
   if (ec_priceEndExpression_onceToken != -1)
   {
     dispatch_once(&ec_priceEndExpression_onceToken, block);

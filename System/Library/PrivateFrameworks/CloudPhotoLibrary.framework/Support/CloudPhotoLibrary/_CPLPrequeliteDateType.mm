@@ -1,7 +1,7 @@
 @interface _CPLPrequeliteDateType
 - (_CPLPrequeliteDateType)init;
-- (id)_bindableValueForValue:(id)a3;
-- (id)_valueForBindableValue:(id)a3;
+- (id)_bindableValueForValue:(id)value;
+- (id)_valueForBindableValue:(id)value;
 @end
 
 @implementation _CPLPrequeliteDateType
@@ -14,18 +14,18 @@
   return [(CPLPrequeliteType *)&v5 initWithTypeName:"TIMESTAMP" defaultValue:0 objcClass:v3];
 }
 
-- (id)_bindableValueForValue:(id)a3
+- (id)_bindableValueForValue:(id)value
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      sub_1001BF8B8(v5, a2, self);
+      sub_1001BF8B8(valueCopy, a2, self);
     }
 
-    [v5 timeIntervalSinceReferenceDate];
+    [valueCopy timeIntervalSinceReferenceDate];
     v6 = [NSNumber numberWithDouble:?];
   }
 
@@ -37,11 +37,11 @@
   return v6;
 }
 
-- (id)_valueForBindableValue:(id)a3
+- (id)_valueForBindableValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    [a3 doubleValue];
+    [value doubleValue];
     v4 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   }
 

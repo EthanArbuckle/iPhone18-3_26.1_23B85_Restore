@@ -1,5 +1,5 @@
 @interface _UISceneIntelligenceSupportClientComponent
-- (id)scene:(id)a3 handleActions:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
 - (void)collectAsRemoteElement;
 @end
 
@@ -9,27 +9,27 @@
 {
   if (result)
   {
-    v1 = [result scene];
-    v2 = [v1 settings];
+    scene = [result scene];
+    settings = [scene settings];
 
-    v3 = [v2 collectAsRemoteElement];
-    return v3;
+    collectAsRemoteElement = [settings collectAsRemoteElement];
+    return collectAsRemoteElement;
   }
 
   return result;
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
+  sceneCopy = scene;
+  actionsCopy = actions;
+  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = actionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -72,18 +72,18 @@
         {
           if (self)
           {
-            v18 = [UIScene _sceneForFBSScene:v22];
-            v19 = [v18 _windowHostingScene];
+            v18 = [UIScene _sceneForFBSScene:sceneCopy];
+            _windowHostingScene = [v18 _windowHostingScene];
 
-            if (v19)
+            if (_windowHostingScene)
             {
-              [v17 executeActionForWindowHostingScene:v19];
+              [v17 executeActionForWindowHostingScene:_windowHostingScene];
             }
           }
 
           else
           {
-            v19 = 0;
+            _windowHostingScene = 0;
           }
 
           [v7 addObject:v17];

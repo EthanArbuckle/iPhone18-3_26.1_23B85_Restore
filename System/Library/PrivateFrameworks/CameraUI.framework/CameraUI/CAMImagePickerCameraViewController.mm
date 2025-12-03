@@ -1,66 +1,66 @@
 @interface CAMImagePickerCameraViewController
 - (BOOL)isShowingStandardControls;
-- (CAMImagePickerCameraViewController)initWithInitialImagePickerProperties:(id)a3;
+- (CAMImagePickerCameraViewController)initWithInitialImagePickerProperties:(id)properties;
 - (CGAffineTransform)customPreviewViewTransform;
 - (double)maximumVideoRecordingDuration;
-- (double)videoViewScrubberYOrigin:(id)a3 forOrientation:(int64_t)a4;
+- (double)videoViewScrubberYOrigin:(id)origin forOrientation:(int64_t)orientation;
 - (id)_cameraOverlayView;
 - (id)_containingImagePickerController;
 - (id)_currentCancelButtonTitle;
 - (int64_t)_cameraCaptureMode;
 - (int64_t)_cameraDevice;
 - (int64_t)_cameraFlashMode;
-- (int64_t)_flashModeForImagePickerCameraFlashMode:(int64_t)a3;
-- (int64_t)_imagePickerCameraDeviceForCaptureDevice:(int64_t)a3;
-- (int64_t)_imagePickerCameraFlashModeForFlashMode:(int64_t)a3;
-- (int64_t)_imagePickerQualityTypeForVideoConfiguration:(int64_t)a3;
-- (int64_t)_videoConfigurationForImagePickerQualityType:(int64_t)a3;
+- (int64_t)_flashModeForImagePickerCameraFlashMode:(int64_t)mode;
+- (int64_t)_imagePickerCameraDeviceForCaptureDevice:(int64_t)device;
+- (int64_t)_imagePickerCameraFlashModeForFlashMode:(int64_t)mode;
+- (int64_t)_imagePickerQualityTypeForVideoConfiguration:(int64_t)configuration;
+- (int64_t)_videoConfigurationForImagePickerQualityType:(int64_t)type;
 - (int64_t)imagePickerVideoQuality;
-- (void)_applyPropertiesFromImagePicker:(id)a3;
+- (void)_applyPropertiesFromImagePicker:(id)picker;
 - (void)_createCropOverlayIfNecessary;
-- (void)_handleCapturedImagePickerPhotoWithCropOverlayOutput:(id)a3;
-- (void)_handleCapturedImagePickerVideoAtPath:(id)a3 withEditingMetadata:(id)a4;
-- (void)_handleEditabilityChanged:(id)a3;
-- (void)_removeFileAtPath:(id)a3;
+- (void)_handleCapturedImagePickerPhotoWithCropOverlayOutput:(id)output;
+- (void)_handleCapturedImagePickerVideoAtPath:(id)path withEditingMetadata:(id)metadata;
+- (void)_handleEditabilityChanged:(id)changed;
+- (void)_removeFileAtPath:(id)path;
 - (void)_resetTileViewControllerAndVideoView;
-- (void)_setCameraCaptureMode:(int64_t)a3;
-- (void)_setCameraDevice:(int64_t)a3;
-- (void)_setCameraFlashMode:(int64_t)a3;
-- (void)_setCameraOverlayView:(id)a3;
-- (void)_setCameraViewTransform:(CGAffineTransform *)a3;
-- (void)_setEditingAllowed:(BOOL)a3;
-- (void)_setImagePickerMediaTypes:(id)a3;
-- (void)_setStatusBarHidden:(BOOL)a3;
+- (void)_setCameraCaptureMode:(int64_t)mode;
+- (void)_setCameraDevice:(int64_t)device;
+- (void)_setCameraFlashMode:(int64_t)mode;
+- (void)_setCameraOverlayView:(id)view;
+- (void)_setCameraViewTransform:(CGAffineTransform *)transform;
+- (void)_setEditingAllowed:(BOOL)allowed;
+- (void)_setImagePickerMediaTypes:(id)types;
+- (void)_setStatusBarHidden:(BOOL)hidden;
 - (void)_updateFromEditabilityChange;
-- (void)cameraViewController:(id)a3 didCaptureAVAsset:(id)a4 andAudioMix:(id)a5 withProperties:(id)a6 error:(id)a7;
-- (void)cameraViewController:(id)a3 didCapturePhoto:(id)a4 withProperties:(id)a5 error:(id)a6;
-- (void)cropOverlayPause:(id)a3;
-- (void)cropOverlayPlay:(id)a3;
-- (void)cropOverlayWasCancelled:(id)a3;
-- (void)cropOverlayWasOKed:(id)a3;
+- (void)cameraViewController:(id)controller didCaptureAVAsset:(id)asset andAudioMix:(id)mix withProperties:(id)properties error:(id)error;
+- (void)cameraViewController:(id)controller didCapturePhoto:(id)photo withProperties:(id)properties error:(id)error;
+- (void)cropOverlayPause:(id)pause;
+- (void)cropOverlayPlay:(id)play;
+- (void)cropOverlayWasCancelled:(id)cancelled;
+- (void)cropOverlayWasOKed:(id)ked;
 - (void)loadView;
-- (void)setCustomOverlayView:(id)a3;
-- (void)setCustomPreviewViewTransform:(CGAffineTransform *)a3;
-- (void)setImagePickerVideoQuality:(int64_t)a3;
-- (void)setMaximumVideoRecordingDuration:(double)a3;
-- (void)setShowingStandardControls:(BOOL)a3;
-- (void)videoViewDidBeginPlayback:(id)a3;
-- (void)videoViewDidEndPlayback:(id)a3 didFinish:(BOOL)a4;
-- (void)videoViewDidPausePlayback:(id)a3;
-- (void)videoViewIsReadyToBeginPlayback:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setCustomOverlayView:(id)view;
+- (void)setCustomPreviewViewTransform:(CGAffineTransform *)transform;
+- (void)setImagePickerVideoQuality:(int64_t)quality;
+- (void)setMaximumVideoRecordingDuration:(double)duration;
+- (void)setShowingStandardControls:(BOOL)controls;
+- (void)videoViewDidBeginPlayback:(id)playback;
+- (void)videoViewDidEndPlayback:(id)playback didFinish:(BOOL)finish;
+- (void)videoViewDidPausePlayback:(id)playback;
+- (void)videoViewIsReadyToBeginPlayback:(id)playback;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CAMImagePickerCameraViewController
 
-- (CAMImagePickerCameraViewController)initWithInitialImagePickerProperties:(id)a3
+- (CAMImagePickerCameraViewController)initWithInitialImagePickerProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x1E69DE8E8]];
+    v6 = [propertiesCopy objectForKey:*MEMORY[0x1E69DE8E8]];
     v7 = [v5 objectForKey:*MEMORY[0x1E69DE8F0]];
     v8 = [v5 objectForKey:*MEMORY[0x1E69DDE30]];
     v9 = v8;
@@ -111,9 +111,9 @@
   }
 
   v19 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DE998]];
-  v20 = [v19 BOOLValue];
+  bOOLValue = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue)
   {
     v21 = 2;
   }
@@ -132,7 +132,7 @@
     v22->_editingAllowed = 1;
     v22->_videoEditingAllowed = 1;
     v22->_currentlyReviewing = 0;
-    v22->_usingTelephonyUI = v20;
+    v22->_usingTelephonyUI = bOOLValue;
     mostRecentPhotoProperties = v22->_mostRecentPhotoProperties;
     v22->_mostRecentPhotoProperties = 0;
 
@@ -153,28 +153,28 @@
   v6.receiver = self;
   v6.super_class = CAMImagePickerCameraViewController;
   [(CAMCameraViewController *)&v6 loadView];
-  v3 = [(CAMImagePickerCameraViewController *)self view];
-  v4 = [(CAMImagePickerCameraViewController *)self customOverlayView];
-  if (v4)
+  view = [(CAMImagePickerCameraViewController *)self view];
+  customOverlayView = [(CAMImagePickerCameraViewController *)self customOverlayView];
+  if (customOverlayView)
   {
-    [v3 setCustomOverlayView:v4];
+    [view setCustomOverlayView:customOverlayView];
   }
 
-  v5 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  [(CAMImagePickerCameraViewController *)self _applyPropertiesFromImagePicker:v5];
-  [v5 setPreferredContentSize:{320.0, 568.0}];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  [(CAMImagePickerCameraViewController *)self _applyPropertiesFromImagePicker:_containingImagePickerController];
+  [_containingImagePickerController setPreferredContentSize:{320.0, 568.0}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CAMImagePickerCameraViewController;
-  [(CAMCameraViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 isStatusBarHidden];
+  [(CAMCameraViewController *)&v6 viewWillAppear:appear];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668] isStatusBarHidden];
 
-  [(CAMImagePickerCameraViewController *)self _setStatusBarWasHidden:v5];
-  if ((v5 & 1) == 0 && ([(CAMImagePickerCameraViewController *)self _isInPopoverPresentation]& 1) == 0)
+  [(CAMImagePickerCameraViewController *)self _setStatusBarWasHidden:isStatusBarHidden];
+  if ((isStatusBarHidden & 1) == 0 && ([(CAMImagePickerCameraViewController *)self _isInPopoverPresentation]& 1) == 0)
   {
     [(CAMImagePickerCameraViewController *)self _setStatusBarHidden:1];
   }
@@ -182,95 +182,95 @@
   [(CAMImagePickerCameraViewController *)self _createCropOverlayIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CAMImagePickerCameraViewController;
-  [(CAMImagePickerCameraViewController *)&v4 viewWillDisappear:a3];
+  [(CAMImagePickerCameraViewController *)&v4 viewWillDisappear:disappear];
   if (![(CAMImagePickerCameraViewController *)self _statusBarWasHidden]&& ([(CAMImagePickerCameraViewController *)self _isInPopoverPresentation]& 1) == 0)
   {
     [(CAMImagePickerCameraViewController *)self _setStatusBarHidden:0];
   }
 }
 
-- (void)_setStatusBarHidden:(BOOL)a3
+- (void)_setStatusBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69DCFA0]) initWithDefaultParameters];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 setStatusBarHidden:v3 animationParameters:v5];
+  hiddenCopy = hidden;
+  initWithDefaultParameters = [objc_alloc(MEMORY[0x1E69DCFA0]) initWithDefaultParameters];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setStatusBarHidden:hiddenCopy animationParameters:initWithDefaultParameters];
 }
 
 - (BOOL)isShowingStandardControls
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isShowingStandardControls];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isShowingStandardControls = [viewfinderViewController isShowingStandardControls];
 
-  return v3;
+  return isShowingStandardControls;
 }
 
-- (void)setShowingStandardControls:(BOOL)a3
+- (void)setShowingStandardControls:(BOOL)controls
 {
-  v3 = a3;
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setShowingStandardControls:v3];
+  controlsCopy = controls;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setShowingStandardControls:controlsCopy];
 }
 
 - (int64_t)imagePickerVideoQuality
 {
-  v3 = [(CAMCameraViewController *)self viewfinderViewController];
-  v4 = -[CAMImagePickerCameraViewController _imagePickerQualityTypeForVideoConfiguration:](self, "_imagePickerQualityTypeForVideoConfiguration:", [v3 imagePickerVideoConfiguration]);
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  v4 = -[CAMImagePickerCameraViewController _imagePickerQualityTypeForVideoConfiguration:](self, "_imagePickerQualityTypeForVideoConfiguration:", [viewfinderViewController imagePickerVideoConfiguration]);
 
   return v4;
 }
 
-- (void)setImagePickerVideoQuality:(int64_t)a3
+- (void)setImagePickerVideoQuality:(int64_t)quality
 {
-  v5 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v5 setImagePickerVideoConfiguration:{-[CAMImagePickerCameraViewController _videoConfigurationForImagePickerQualityType:](self, "_videoConfigurationForImagePickerQualityType:", a3)}];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setImagePickerVideoConfiguration:{-[CAMImagePickerCameraViewController _videoConfigurationForImagePickerQualityType:](self, "_videoConfigurationForImagePickerQualityType:", quality)}];
 }
 
 - (double)maximumVideoRecordingDuration
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v2 maximumVideoRecordingDuration];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController maximumVideoRecordingDuration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMaximumVideoRecordingDuration:(double)a3
+- (void)setMaximumVideoRecordingDuration:(double)duration
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setMaximumVideoRecordingDuration:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setMaximumVideoRecordingDuration:duration];
 }
 
-- (void)setCustomOverlayView:(id)a3
+- (void)setCustomOverlayView:(id)view
 {
-  v5 = a3;
-  if (self->_customOverlayView != v5)
+  viewCopy = view;
+  if (self->_customOverlayView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_customOverlayView, a3);
-    v5 = [(CAMImagePickerCameraViewController *)self isViewLoaded];
-    if (v5)
+    v7 = viewCopy;
+    objc_storeStrong(&self->_customOverlayView, view);
+    viewCopy = [(CAMImagePickerCameraViewController *)self isViewLoaded];
+    if (viewCopy)
     {
-      v6 = [(CAMImagePickerCameraViewController *)self view];
-      [v6 setCustomOverlayView:v7];
+      view = [(CAMImagePickerCameraViewController *)self view];
+      [view setCustomOverlayView:v7];
     }
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](viewCopy);
 }
 
 - (CGAffineTransform)customPreviewViewTransform
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  if (v4)
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  if (viewfinderViewController)
   {
-    v6 = v4;
-    [v4 customPreviewViewTransform];
-    v4 = v6;
+    v6 = viewfinderViewController;
+    [viewfinderViewController customPreviewViewTransform];
+    viewfinderViewController = v6;
   }
 
   else
@@ -283,60 +283,60 @@
   return result;
 }
 
-- (void)setCustomPreviewViewTransform:(CGAffineTransform *)a3
+- (void)setCustomPreviewViewTransform:(CGAffineTransform *)transform
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [v4 setCustomPreviewViewTransform:v6];
+  v6[2] = *&transform->tx;
+  [viewfinderViewController setCustomPreviewViewTransform:v6];
 }
 
-- (void)_setEditingAllowed:(BOOL)a3
+- (void)_setEditingAllowed:(BOOL)allowed
 {
-  if (self->_editingAllowed != a3)
+  if (self->_editingAllowed != allowed)
   {
-    self->_editingAllowed = a3;
+    self->_editingAllowed = allowed;
     [(CAMImagePickerCameraViewController *)self _updateFromEditabilityChange];
   }
 }
 
-- (void)_applyPropertiesFromImagePicker:(id)a3
+- (void)_applyPropertiesFromImagePicker:(id)picker
 {
-  v4 = a3;
-  v5 = [v4 _properties];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69DE978]];
-  v7 = [v6 BOOLValue];
+  pickerCopy = picker;
+  _properties = [pickerCopy _properties];
+  v6 = [_properties objectForKey:*MEMORY[0x1E69DE978]];
+  bOOLValue = [v6 BOOLValue];
 
-  [(CAMImagePickerCameraViewController *)self setShowingStandardControls:v7];
-  v8 = [v5 objectForKey:*MEMORY[0x1E69DDE30]];
+  [(CAMImagePickerCameraViewController *)self setShowingStandardControls:bOOLValue];
+  v8 = [_properties objectForKey:*MEMORY[0x1E69DDE30]];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v10 = 1;
+    integerValue = 1;
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v10 == 3 && v12 == 1)
+  if (integerValue == 3 && userInterfaceIdiom == 1)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = v10;
+    v14 = integerValue;
   }
 
   [(CAMImagePickerCameraViewController *)self setImagePickerVideoQuality:v14];
-  v15 = [v5 objectForKey:*MEMORY[0x1E69DDE28]];
+  v15 = [_properties objectForKey:*MEMORY[0x1E69DDE28]];
   v16 = v15;
   if (v15)
   {
@@ -349,23 +349,23 @@
   }
 
   [(CAMImagePickerCameraViewController *)self setMaximumVideoRecordingDuration:v17];
-  v18 = [v5 objectForKey:*MEMORY[0x1E69DE8F8]];
+  v18 = [_properties objectForKey:*MEMORY[0x1E69DE8F8]];
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 integerValue];
+    integerValue2 = [v18 integerValue];
   }
 
   else
   {
-    v20 = 0;
+    integerValue2 = 0;
   }
 
-  [(CAMImagePickerCameraViewController *)self _setCameraFlashMode:v20];
+  [(CAMImagePickerCameraViewController *)self _setCameraFlashMode:integerValue2];
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
-  v21 = [v5 objectForKey:*MEMORY[0x1E69DE908]];
+  v21 = [_properties objectForKey:*MEMORY[0x1E69DE908]];
   v22 = v21;
   if (v21)
   {
@@ -383,32 +383,32 @@
   v29[1] = v31;
   v29[2] = v32;
   [(CAMImagePickerCameraViewController *)self setCustomPreviewViewTransform:v29];
-  v23 = [v4 _imagePickerSavingOptions];
+  _imagePickerSavingOptions = [pickerCopy _imagePickerSavingOptions];
 
-  [(CAMImagePickerCameraViewController *)self _setPhotoSavingOptions:4 * (v23 & 1u)];
-  v24 = [v5 objectForKey:*MEMORY[0x1E69DDDD8]];
-  v25 = [v24 BOOLValue];
+  [(CAMImagePickerCameraViewController *)self _setPhotoSavingOptions:4 * (_imagePickerSavingOptions & 1u)];
+  v24 = [_properties objectForKey:*MEMORY[0x1E69DDDD8]];
+  bOOLValue2 = [v24 BOOLValue];
 
-  [(CAMImagePickerCameraViewController *)self _setEditingAllowed:v25];
-  v26 = [v5 objectForKey:*MEMORY[0x1E69DE8D8]];
-  v27 = [v26 BOOLValue];
+  [(CAMImagePickerCameraViewController *)self _setEditingAllowed:bOOLValue2];
+  v26 = [_properties objectForKey:*MEMORY[0x1E69DE8D8]];
+  bOOLValue3 = [v26 BOOLValue];
 
-  [(CAMImagePickerCameraViewController *)self _setVideoEditingAllowed:v27];
-  v28 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v28 addObserver:self selector:sel__handleEditabilityChanged_ name:*MEMORY[0x1E69DE928] object:0];
+  [(CAMImagePickerCameraViewController *)self _setVideoEditingAllowed:bOOLValue3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleEditabilityChanged_ name:*MEMORY[0x1E69DE928] object:0];
 }
 
-- (void)_setImagePickerMediaTypes:(id)a3
+- (void)_setImagePickerMediaTypes:(id)types
 {
-  v18 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -426,14 +426,14 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v8 identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [v8 identifier];
+        v13 = [v11 isEqualToString:identifier];
 
         v14 = &unk_1F16C7A48;
         if ((v13 & 1) == 0)
         {
-          v15 = [v9 identifier];
-          v16 = [v11 isEqualToString:v15];
+          identifier2 = [v9 identifier];
+          v16 = [v11 isEqualToString:identifier2];
 
           v14 = &unk_1F16C7A60;
           if (!v16)
@@ -451,78 +451,78 @@
     while (v6);
   }
 
-  v17 = [(CAMCameraViewController *)v18 viewfinderViewController];
-  [v17 setAvailableCaptureModes:v4];
+  viewfinderViewController = [(CAMCameraViewController *)selfCopy viewfinderViewController];
+  [viewfinderViewController setAvailableCaptureModes:v4];
 }
 
 - (id)_cameraOverlayView
 {
-  v2 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  v3 = [v2 overlayContainerView];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  overlayContainerView = [_cropOverlay overlayContainerView];
 
-  return v3;
+  return overlayContainerView;
 }
 
-- (void)_setCameraOverlayView:(id)a3
+- (void)_setCameraOverlayView:(id)view
 {
-  v4 = a3;
-  v5 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  [v5 setOverlayContainerView:v4];
+  viewCopy = view;
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  [_cropOverlay setOverlayContainerView:viewCopy];
 }
 
-- (void)_setCameraViewTransform:(CGAffineTransform *)a3
+- (void)_setCameraViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(CAMImagePickerCameraViewController *)self setCustomPreviewViewTransform:v4];
 }
 
 - (int64_t)_cameraDevice
 {
-  v3 = [(CAMCameraViewController *)self captureDevice];
+  captureDevice = [(CAMCameraViewController *)self captureDevice];
 
-  return [(CAMImagePickerCameraViewController *)self _imagePickerCameraDeviceForCaptureDevice:v3];
+  return [(CAMImagePickerCameraViewController *)self _imagePickerCameraDeviceForCaptureDevice:captureDevice];
 }
 
-- (void)_setCameraDevice:(int64_t)a3
+- (void)_setCameraDevice:(int64_t)device
 {
-  v4 = [(CAMImagePickerCameraViewController *)self _captureDeviceForImagePickerCameraDevice:a3];
-  v5 = [(CAMCameraViewController *)self captureMode];
+  v4 = [(CAMImagePickerCameraViewController *)self _captureDeviceForImagePickerCameraDevice:device];
+  captureMode = [(CAMCameraViewController *)self captureMode];
 
-  [(CAMCameraViewController *)self configureForCaptureMode:v5 captureDevice:v4];
+  [(CAMCameraViewController *)self configureForCaptureMode:captureMode captureDevice:v4];
 }
 
 - (int64_t)_cameraCaptureMode
 {
-  v3 = [(CAMCameraViewController *)self captureMode];
+  captureMode = [(CAMCameraViewController *)self captureMode];
 
-  return [(CAMImagePickerCameraViewController *)self _imagePickerCameraCaptureModeForCaptureMode:v3];
+  return [(CAMImagePickerCameraViewController *)self _imagePickerCameraCaptureModeForCaptureMode:captureMode];
 }
 
-- (void)_setCameraCaptureMode:(int64_t)a3
+- (void)_setCameraCaptureMode:(int64_t)mode
 {
-  v4 = [(CAMImagePickerCameraViewController *)self _captureModeForImagePickerCameraCaptureMode:a3];
-  v5 = [(CAMCameraViewController *)self captureDevice];
+  v4 = [(CAMImagePickerCameraViewController *)self _captureModeForImagePickerCameraCaptureMode:mode];
+  captureDevice = [(CAMCameraViewController *)self captureDevice];
 
-  [(CAMCameraViewController *)self configureForCaptureMode:v4 captureDevice:v5];
+  [(CAMCameraViewController *)self configureForCaptureMode:v4 captureDevice:captureDevice];
 }
 
 - (int64_t)_cameraFlashMode
 {
-  v3 = [(CAMCameraViewController *)self captureMode];
-  if (v3 == 1)
+  captureMode = [(CAMCameraViewController *)self captureMode];
+  if (captureMode == 1)
   {
-    v4 = [CAMCaptureConversions flashModeForTorchMode:[(CAMCameraViewController *)self torchMode]];
+    flashMode = [CAMCaptureConversions flashModeForTorchMode:[(CAMCameraViewController *)self torchMode]];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!captureMode)
   {
-    v4 = [(CAMCameraViewController *)self flashMode];
+    flashMode = [(CAMCameraViewController *)self flashMode];
 LABEL_5:
-    v5 = v4;
+    v5 = flashMode;
     goto LABEL_7;
   }
 
@@ -532,48 +532,48 @@ LABEL_7:
   return [(CAMImagePickerCameraViewController *)self _imagePickerCameraFlashModeForFlashMode:v5];
 }
 
-- (void)_setCameraFlashMode:(int64_t)a3
+- (void)_setCameraFlashMode:(int64_t)mode
 {
-  v4 = [(CAMImagePickerCameraViewController *)self _flashModeForImagePickerCameraFlashMode:a3];
-  v5 = [(CAMCameraViewController *)self captureMode];
-  if (v5 == 1)
+  v4 = [(CAMImagePickerCameraViewController *)self _flashModeForImagePickerCameraFlashMode:mode];
+  captureMode = [(CAMCameraViewController *)self captureMode];
+  if (captureMode == 1)
   {
     v6 = [CAMCaptureConversions torchModeForFlashMode:v4];
 
     [(CAMCameraViewController *)self setTorchMode:v6];
   }
 
-  else if (!v5)
+  else if (!captureMode)
   {
 
     [(CAMCameraViewController *)self setFlashMode:v4];
   }
 }
 
-- (void)_handleEditabilityChanged:(id)a3
+- (void)_handleEditabilityChanged:(id)changed
 {
-  v7 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v4 = [v7 _properties];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDDD8]];
-  v6 = [v5 BOOLValue];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _properties = [_containingImagePickerController _properties];
+  v5 = [_properties objectForKey:*MEMORY[0x1E69DDDD8]];
+  bOOLValue = [v5 BOOLValue];
 
-  [(CAMImagePickerCameraViewController *)self _setEditingAllowed:v6];
+  [(CAMImagePickerCameraViewController *)self _setEditingAllowed:bOOLValue];
 }
 
 - (void)_updateFromEditabilityChange
 {
-  v3 = [(CAMImagePickerCameraViewController *)self _isEditingAllowed];
-  v5 = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
-  [v5 setGesturesEnabled:v3];
-  v4 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  [v4 setShowsCropRegion:v3];
+  _isEditingAllowed = [(CAMImagePickerCameraViewController *)self _isEditingAllowed];
+  _photoTileViewController = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
+  [_photoTileViewController setGesturesEnabled:_isEditingAllowed];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  [_cropOverlay setShowsCropRegion:_isEditingAllowed];
 }
 
 - (id)_currentCancelButtonTitle
 {
-  v2 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v3 = [v2 _properties];
-  v4 = [v3 objectForKey:@"_UIImagePickerControllerCancelButtonTitle"];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _properties = [_containingImagePickerController _properties];
+  v4 = [_properties objectForKey:@"_UIImagePickerControllerCancelButtonTitle"];
   v5 = v4;
   if (v4)
   {
@@ -594,13 +594,13 @@ LABEL_7:
 {
   if (!self->__cropOverlay)
   {
-    v3 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-    v4 = [v3 _properties];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE998]];
-    v6 = [v5 BOOLValue];
+    _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+    _properties = [_containingImagePickerController _properties];
+    v5 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE998]];
+    bOOLValue = [v5 BOOLValue];
 
-    [(CAMImagePickerCameraViewController *)self _setUsingTelephonyUI:v6];
-    if (v6)
+    [(CAMImagePickerCameraViewController *)self _setUsingTelephonyUI:bOOLValue];
+    if (bOOLValue)
     {
       v7 = 3;
     }
@@ -629,15 +629,15 @@ LABEL_7:
     v9 = v8;
     _Block_object_dispose(&v22, 8);
     v10 = [v8 alloc];
-    v11 = [(CAMImagePickerCameraViewController *)self view];
-    [v11 bounds];
+    view = [(CAMImagePickerCameraViewController *)self view];
+    [view bounds];
     v12 = [v10 initWithFrame:v7 mode:1 offsettingStatusBar:?];
     cropOverlay = self->__cropOverlay;
     self->__cropOverlay = v12;
 
     [(PLCropOverlay *)self->__cropOverlay setDisplayedInPopover:[(CAMImagePickerCameraViewController *)self _isInPopoverPresentation]];
     [(PLCropOverlay *)self->__cropOverlay setControlsAreVisible:[(CAMImagePickerCameraViewController *)self isShowingStandardControls]];
-    v14 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE910]];
+    v14 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE910]];
     if (![v14 length])
     {
       v15 = CAMLocalizedFrameworkString(@"USE_PHOTO", 0);
@@ -646,20 +646,20 @@ LABEL_7:
     }
 
     [(PLCropOverlay *)self->__cropOverlay setDefaultOKButtonTitle:v14];
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE900]];
+    v16 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE900]];
     [(PLCropOverlay *)self->__cropOverlay setOverlayContainerView:v16];
     [(PLCropOverlay *)self->__cropOverlay setDelegate:self];
     [(PLCropOverlay *)self->__cropOverlay setAutoresizingMask:18];
     v17 = self->__cropOverlay;
-    if (v6)
+    if (bOOLValue)
     {
       v18 = CAMLocalizedFrameworkString(@"TAKE_PICTURE", &stru_1F1660A30);
       [(PLCropOverlay *)v17 setTitle:v18];
 
       [(PLCropOverlay *)self->__cropOverlay setOKButtonShowsCamera:1];
       v19 = self->__cropOverlay;
-      v20 = [(CAMImagePickerCameraViewController *)self _currentCancelButtonTitle];
-      [(PLCropOverlay *)v19 setCancelButtonTitle:v20];
+      _currentCancelButtonTitle = [(CAMImagePickerCameraViewController *)self _currentCancelButtonTitle];
+      [(PLCropOverlay *)v19 setCancelButtonTitle:_currentCancelButtonTitle];
     }
 
     else
@@ -671,11 +671,11 @@ LABEL_7:
   }
 }
 
-- (void)cameraViewController:(id)a3 didCapturePhoto:(id)a4 withProperties:(id)a5 error:(id)a6
+- (void)cameraViewController:(id)controller didCapturePhoto:(id)photo withProperties:(id)properties error:(id)error
 {
-  v58 = a4;
-  v8 = a5;
-  [(CAMImagePickerCameraViewController *)self _setMostRecentPhotoProperties:v8];
+  photoCopy = photo;
+  propertiesCopy = properties;
+  [(CAMImagePickerCameraViewController *)self _setMostRecentPhotoProperties:propertiesCopy];
   LODWORD(v53) = [(CAMImagePickerCameraViewController *)self isShowingStandardControls];
   if (v53)
   {
@@ -686,28 +686,28 @@ LABEL_7:
   if (photoTileViewController)
   {
     [(PLPhotoTileViewController *)photoTileViewController willMoveToParentViewController:0];
-    v10 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-    [v10 removeFromSuperview];
+    view = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+    [view removeFromSuperview];
 
     [(PLPhotoTileViewController *)self->__photoTileViewController removeFromParentViewController];
     v11 = self->__photoTileViewController;
     self->__photoTileViewController = 0;
   }
 
-  v12 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v13 = [v12 _properties];
-  v14 = [v8 objectForKeyedSubscript:@"CAMCameraViewControllerFullsizeImage"];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _properties = [_containingImagePickerController _properties];
+  v14 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerFullsizeImage"];
   v15 = v14;
   if (![(CAMImagePickerCameraViewController *)self _isEditingAllowed])
   {
-    v15 = v58;
+    v15 = photoCopy;
   }
 
   v56 = v15;
   if ([(CAMImagePickerCameraViewController *)self _isUsingTelephonyUI])
   {
-    v16 = [(CAMImagePickerCameraViewController *)self view];
-    [v16 bounds];
+    view2 = [(CAMImagePickerCameraViewController *)self view];
+    [view2 bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -717,20 +717,20 @@ LABEL_7:
     v26 = self->__photoTileViewController;
     self->__photoTileViewController = v25;
 
-    v27 = [(PLPhotoTileViewController *)self->__photoTileViewController scrollView];
-    [v27 setContentInsetAdjustmentBehavior:2];
+    scrollView = [(PLPhotoTileViewController *)self->__photoTileViewController scrollView];
+    [scrollView setContentInsetAdjustmentBehavior:2];
 
     [(PLPhotoTileViewController *)self->__photoTileViewController setShouldSupressViewWillTransitionToSize:1];
-    v28 = [v8 objectForKeyedSubscript:@"CAMCameraViewControllerCaptureOrientation"];
-    v29 = [v28 integerValue];
+    v28 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerCaptureOrientation"];
+    integerValue = [v28 integerValue];
 
-    [(PLPhotoTileViewController *)self->__photoTileViewController setCenterContentVertically:(v29 - 3) < 2];
+    [(PLPhotoTileViewController *)self->__photoTileViewController setCenterContentVertically:(integerValue - 3) < 2];
   }
 
   else
   {
-    v30 = [(CAMCameraViewController *)self viewfinderViewController];
-    [v30 reviewUsingOverlayFrame];
+    viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+    [viewfinderViewController reviewUsingOverlayFrame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -743,77 +743,77 @@ LABEL_7:
     [(PLPhotoTileViewController *)self->__photoTileViewController setShouldSupressViewWillTransitionToSize:1];
   }
 
-  v41 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DE8B0]];
+  v41 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE8B0]];
   -[PLPhotoTileViewController setForce1XCroppedImage:](self->__photoTileViewController, "setForce1XCroppedImage:", [v41 BOOLValue]);
   v57 = v14;
   [(PLPhotoTileViewController *)self->__photoTileViewController setUnscaledImage:v14];
   [(CAMImagePickerCameraViewController *)self _updateFromEditabilityChange];
-  v42 = [(PLPhotoTileViewController *)self->__photoTileViewController scrollView];
-  v43 = [MEMORY[0x1E69DC888] blackColor];
-  [v42 setBackgroundColor:v43];
+  scrollView2 = [(PLPhotoTileViewController *)self->__photoTileViewController scrollView];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [scrollView2 setBackgroundColor:blackColor];
 
-  v44 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  v45 = v13;
-  v46 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DE970]];
-  v47 = [v46 BOOLValue];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  v45 = _properties;
+  v46 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE970]];
+  bOOLValue = [v46 BOOLValue];
 
   if (v54)
   {
-    v55 = v12;
-    v48 = v8;
+    v55 = _containingImagePickerController;
+    v48 = propertiesCopy;
     [(CAMImagePickerCameraViewController *)self addChildViewController:self->__photoTileViewController];
-    v49 = [(CAMImagePickerCameraViewController *)self view];
-    v50 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-    [v49 setAdditionalContentView:v50];
+    view3 = [(CAMImagePickerCameraViewController *)self view];
+    view4 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+    [view3 setAdditionalContentView:view4];
 
     [(PLPhotoTileViewController *)self->__photoTileViewController didMoveToParentViewController:self];
-    if (v47)
+    if (bOOLValue)
     {
-      v51 = [(CAMCameraViewController *)self viewfinderViewController];
-      [v51 setPerformingReviewUsingOverlay:1];
-      [v44 didCapturePhoto];
+      viewfinderViewController2 = [(CAMCameraViewController *)self viewfinderViewController];
+      [viewfinderViewController2 setPerformingReviewUsingOverlay:1];
+      [_cropOverlay didCapturePhoto];
     }
 
-    v52 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v52 postNotificationName:*MEMORY[0x1E69DE9A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x1E69DE9A0] object:0];
 
-    v8 = v48;
-    v12 = v55;
+    propertiesCopy = v48;
+    _containingImagePickerController = v55;
   }
 
   else
   {
-    [(CAMImagePickerCameraViewController *)self cropOverlay:v44 didFinishSaving:0];
-    v49 = [(CAMCameraViewController *)self viewfinderViewController];
-    [v49 setPerformingReviewUsingOverlay:0];
+    [(CAMImagePickerCameraViewController *)self cropOverlay:_cropOverlay didFinishSaving:0];
+    view3 = [(CAMCameraViewController *)self viewfinderViewController];
+    [view3 setPerformingReviewUsingOverlay:0];
   }
 
-  [v44 setUserInteractionEnabled:1];
+  [_cropOverlay setUserInteractionEnabled:1];
 }
 
-- (void)cameraViewController:(id)a3 didCaptureAVAsset:(id)a4 andAudioMix:(id)a5 withProperties:(id)a6 error:(id)a7
+- (void)cameraViewController:(id)controller didCaptureAVAsset:(id)asset andAudioMix:(id)mix withProperties:(id)properties error:(id)error
 {
-  v12 = a3;
-  v52 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  [(CAMImagePickerCameraViewController *)self _setMostRecentVideoProperties:v14];
-  v16 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  v17 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v18 = [v17 _properties];
-  v19 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69DE970]];
-  v20 = [v19 BOOLValue];
+  controllerCopy = controller;
+  assetCopy = asset;
+  mixCopy = mix;
+  propertiesCopy = properties;
+  errorCopy = error;
+  [(CAMImagePickerCameraViewController *)self _setMostRecentVideoProperties:propertiesCopy];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _properties = [_containingImagePickerController _properties];
+  v19 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DE970]];
+  bOOLValue = [v19 BOOLValue];
 
-  if ([(CAMImagePickerCameraViewController *)self isShowingStandardControls]&& v20)
+  if ([(CAMImagePickerCameraViewController *)self isShowingStandardControls]&& bOOLValue)
   {
     [(CAMImagePickerCameraViewController *)self _setCurrentlyReviewing:1];
     photoTileViewController = self->__photoTileViewController;
     if (photoTileViewController)
     {
       [(PLPhotoTileViewController *)photoTileViewController willMoveToParentViewController:0];
-      v22 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-      [v22 removeFromSuperview];
+      view = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+      [view removeFromSuperview];
 
       [(PLPhotoTileViewController *)self->__photoTileViewController removeFromParentViewController];
       v23 = self->__photoTileViewController;
@@ -823,28 +823,28 @@ LABEL_7:
       self->__videoView = 0;
     }
 
-    v25 = [(CAMCameraViewController *)self viewfinderViewController];
-    [v25 reviewUsingOverlayFrame];
+    viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+    [viewfinderViewController reviewUsingOverlayFrame];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
 
-    v51 = v12;
-    v34 = [(CAMImagePickerCameraViewController *)self _isEditingAllowed]|| [(CAMImagePickerCameraViewController *)self _isVideoEditingAllowed];
+    v51 = controllerCopy;
+    _isVideoEditingAllowed = [(CAMImagePickerCameraViewController *)self _isEditingAllowed]|| [(CAMImagePickerCameraViewController *)self _isVideoEditingAllowed];
     v37 = objc_alloc_init(getPLPhotoTileViewControllerClass());
     v38 = self->__photoTileViewController;
     self->__photoTileViewController = v37;
 
-    v39 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-    [v39 setFrame:{v27, v29, v31, v33}];
+    view2 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+    [view2 setFrame:{v27, v29, v31, v33}];
 
-    v40 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-    v41 = [MEMORY[0x1E69DC888] blackColor];
-    [v40 setBackgroundColor:v41];
+    view3 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [view3 setBackgroundColor:blackColor];
 
     [(PLPhotoTileViewController *)self->__photoTileViewController setShouldSupressViewWillTransitionToSize:1];
-    v42 = [v14 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+    v42 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
     v54 = 0;
     v55 = &v54;
     v56 = 0x2050000000;
@@ -871,62 +871,62 @@ LABEL_7:
     [(PLVideoView *)self->__videoView setDelegate:self];
     [(PLVideoView *)self->__videoView setShowsScrubber:1];
     [(PLVideoView *)self->__videoView setShowsPlayOverlay:0];
-    [(PLVideoView *)self->__videoView setCanEdit:v34];
+    [(PLVideoView *)self->__videoView setCanEdit:_isVideoEditingAllowed];
     [(PLVideoView *)self->__videoView setImageTile:self->__photoTileViewController];
     [(PLPhotoTileViewController *)self->__photoTileViewController setVideoView:self->__videoView];
     [(CAMImagePickerCameraViewController *)self addChildViewController:self->__photoTileViewController];
-    v47 = [(CAMImagePickerCameraViewController *)self view];
-    v48 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
-    [v47 setAdditionalContentView:v48];
+    view4 = [(CAMImagePickerCameraViewController *)self view];
+    view5 = [(PLPhotoTileViewController *)self->__photoTileViewController view];
+    [view4 setAdditionalContentView:view5];
 
     [(PLPhotoTileViewController *)self->__photoTileViewController didMoveToParentViewController:self];
-    v49 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v49 postNotificationName:*MEMORY[0x1E69DE9A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x1E69DE9A0] object:0];
 
-    v50 = [(CAMCameraViewController *)self viewfinderViewController];
-    [v50 setPerformingReviewUsingOverlay:1];
-    [v16 didCaptureVideo];
+    viewfinderViewController2 = [(CAMCameraViewController *)self viewfinderViewController];
+    [viewfinderViewController2 setPerformingReviewUsingOverlay:1];
+    [_cropOverlay didCaptureVideo];
 
-    v12 = v51;
+    controllerCopy = v51;
   }
 
   else
   {
-    v35 = [v14 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
-    v36 = [v35 path];
-    [(CAMImagePickerCameraViewController *)self _handleCapturedImagePickerVideoAtPath:v36 withEditingMetadata:0];
+    v35 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+    path = [v35 path];
+    [(CAMImagePickerCameraViewController *)self _handleCapturedImagePickerVideoAtPath:path withEditingMetadata:0];
   }
 }
 
-- (void)_removeFileAtPath:(id)a3
+- (void)_removeFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v8];
+  v5 = [defaultManager removeItemAtPath:pathCopy error:&v8];
   v6 = v8;
   if ((v5 & 1) == 0)
   {
     v7 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CAMImagePickerCameraViewController *)v3 _removeFileAtPath:v6, v7];
+      [(CAMImagePickerCameraViewController *)pathCopy _removeFileAtPath:v6, v7];
     }
   }
 }
 
 - (void)_resetTileViewControllerAndVideoView
 {
-  v7 = [(CAMImagePickerCameraViewController *)self _videoView];
-  v3 = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
-  [v7 setDelegate:0];
-  [v3 setVideoView:0];
-  [v7 removeFromSuperview];
-  [v3 willMoveToParentViewController:0];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  _videoView = [(CAMImagePickerCameraViewController *)self _videoView];
+  _photoTileViewController = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
+  [_videoView setDelegate:0];
+  [_photoTileViewController setVideoView:0];
+  [_videoView removeFromSuperview];
+  [_photoTileViewController willMoveToParentViewController:0];
+  view = [_photoTileViewController view];
+  [view removeFromSuperview];
 
-  [v3 removeFromParentViewController];
+  [_photoTileViewController removeFromParentViewController];
   photoTileViewController = self->__photoTileViewController;
   self->__photoTileViewController = 0;
 
@@ -937,64 +937,64 @@ LABEL_7:
   [(CAMImagePickerCameraViewController *)self _setMostRecentVideoProperties:0];
 }
 
-- (void)cropOverlayWasCancelled:(id)a3
+- (void)cropOverlayWasCancelled:(id)cancelled
 {
-  v12 = a3;
+  cancelledCopy = cancelled;
   if (![(CAMImagePickerCameraViewController *)self _isCurrentlyReviewing])
   {
-    v5 = [(CAMImagePickerCameraViewController *)self _mostRecentVideoProperties];
-    v7 = [v5 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
-    v9 = [v7 path];
-    [(CAMImagePickerCameraViewController *)self _removeFileAtPath:v9];
-    v10 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-    [v10 _imagePickerDidCancel];
+    _mostRecentVideoProperties = [(CAMImagePickerCameraViewController *)self _mostRecentVideoProperties];
+    pathForVideoFile = [_mostRecentVideoProperties objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+    path = [pathForVideoFile path];
+    [(CAMImagePickerCameraViewController *)self _removeFileAtPath:path];
+    _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+    [_containingImagePickerController _imagePickerDidCancel];
 
     goto LABEL_7;
   }
 
   [(CAMImagePickerCameraViewController *)self _setCurrentlyReviewing:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x1E69DE9A8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69DE9A8] object:0];
 
-  v5 = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
-  v6 = [v5 videoView];
-  v7 = [v6 pathForVideoFile];
+  _mostRecentVideoProperties = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
+  videoView = [_mostRecentVideoProperties videoView];
+  pathForVideoFile = [videoView pathForVideoFile];
 
-  if (v7)
+  if (pathForVideoFile)
   {
-    [(CAMImagePickerCameraViewController *)self _removeFileAtPath:v7];
+    [(CAMImagePickerCameraViewController *)self _removeFileAtPath:pathForVideoFile];
   }
 
   [(CAMImagePickerCameraViewController *)self _resetTileViewControllerAndVideoView];
   if ([(CAMImagePickerCameraViewController *)self _isUsingTelephonyUI])
   {
     v8 = CAMLocalizedFrameworkString(@"TAKE_PICTURE", &stru_1F1660A30);
-    [v12 setTitle:v8];
+    [cancelledCopy setTitle:v8];
 
-    [v12 setOKButtonShowsCamera:1];
-    v9 = [(CAMImagePickerCameraViewController *)self _currentCancelButtonTitle];
-    [v12 setCancelButtonTitle:v9];
+    [cancelledCopy setOKButtonShowsCamera:1];
+    path = [(CAMImagePickerCameraViewController *)self _currentCancelButtonTitle];
+    [cancelledCopy setCancelButtonTitle:path];
 LABEL_7:
   }
 
-  v11 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v11 setPerformingReviewUsingOverlay:0];
-  [v12 setUserInteractionEnabled:1];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setPerformingReviewUsingOverlay:0];
+  [cancelledCopy setUserInteractionEnabled:1];
 }
 
-- (void)cropOverlayWasOKed:(id)a3
+- (void)cropOverlayWasOKed:(id)ked
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kedCopy = ked;
   if ([(CAMImagePickerCameraViewController *)self _isCurrentlyReviewing])
   {
-    v5 = [(CAMImagePickerCameraViewController *)self _isEditingAllowed];
-    v6 = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
-    v7 = [v6 videoView];
-    v8 = v7;
-    if (v7)
+    _isEditingAllowed = [(CAMImagePickerCameraViewController *)self _isEditingAllowed];
+    _photoTileViewController = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
+    videoView = [_photoTileViewController videoView];
+    v8 = videoView;
+    if (videoView)
     {
-      if ([v7 isEditing])
+      if ([videoView isEditing])
       {
         [v8 startTime];
         v10 = v9;
@@ -1014,50 +1014,50 @@ LABEL_7:
         v15 = 0;
       }
 
-      v16 = [v8 pathForVideoFile];
-      [(CAMImagePickerCameraViewController *)self _handleCapturedImagePickerVideoAtPath:v16 withEditingMetadata:v15];
+      pathForVideoFile = [v8 pathForVideoFile];
+      [(CAMImagePickerCameraViewController *)self _handleCapturedImagePickerVideoAtPath:pathForVideoFile withEditingMetadata:v15];
     }
 
-    else if (v5)
+    else if (_isEditingAllowed)
     {
-      [v4 beginBackgroundSaveWithTile:v6 progressTitle:0 completionCallbackTarget:self options:{-[CAMImagePickerCameraViewController _photoSavingOptions](self, "_photoSavingOptions")}];
+      [kedCopy beginBackgroundSaveWithTile:_photoTileViewController progressTitle:0 completionCallbackTarget:self options:{-[CAMImagePickerCameraViewController _photoSavingOptions](self, "_photoSavingOptions")}];
     }
 
     else
     {
-      [(CAMImagePickerCameraViewController *)self cropOverlay:v4 didFinishSaving:0];
+      [(CAMImagePickerCameraViewController *)self cropOverlay:kedCopy didFinishSaving:0];
     }
   }
 }
 
-- (void)cropOverlayPlay:(id)a3
+- (void)cropOverlayPlay:(id)play
 {
-  v3 = [(CAMImagePickerCameraViewController *)self _videoView];
-  [v3 play];
+  _videoView = [(CAMImagePickerCameraViewController *)self _videoView];
+  [_videoView play];
 }
 
-- (void)cropOverlayPause:(id)a3
+- (void)cropOverlayPause:(id)pause
 {
-  v3 = [(CAMImagePickerCameraViewController *)self _videoView];
-  [v3 pause];
+  _videoView = [(CAMImagePickerCameraViewController *)self _videoView];
+  [_videoView pause];
 }
 
-- (double)videoViewScrubberYOrigin:(id)a3 forOrientation:(int64_t)a4
+- (double)videoViewScrubberYOrigin:(id)origin forOrientation:(int64_t)orientation
 {
-  v4 = [(CAMImagePickerCameraViewController *)self view:a3];
-  v5 = [v4 safeAreaLayoutGuide];
-  [v5 layoutFrame];
+  v4 = [(CAMImagePickerCameraViewController *)self view:origin];
+  safeAreaLayoutGuide = [v4 safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v7 = v6;
 
   return v7;
 }
 
-- (void)videoViewIsReadyToBeginPlayback:(id)a3
+- (void)videoViewIsReadyToBeginPlayback:(id)playback
 {
-  v17 = a3;
-  v4 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v5 = [v4 _properties];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69DDE28]];
+  playbackCopy = playback;
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _properties = [_containingImagePickerController _properties];
+  v6 = [_properties objectForKey:*MEMORY[0x1E69DDE28]];
   if ([(CAMImagePickerCameraViewController *)self _isEditingAllowed])
   {
     LOBYTE(v7) = 0;
@@ -1078,59 +1078,59 @@ LABEL_7:
 
   if ((v7 & 1) == 0)
   {
-    [v17 duration];
+    [playbackCopy duration];
     v9 = v8;
     [v6 doubleValue];
     if (v9 > v10)
     {
       [v6 doubleValue];
-      [v17 setMaximumTrimLength:?];
-      [v17 setEditing:1];
-      v11 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-      v12 = [v11 bottomBar];
-      [v12 bounds];
-      [v17 convertRect:v12 fromView:?];
+      [playbackCopy setMaximumTrimLength:?];
+      [playbackCopy setEditing:1];
+      _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+      bottomBar = [_cropOverlay bottomBar];
+      [bottomBar bounds];
+      [playbackCopy convertRect:bottomBar fromView:?];
       v14 = v13;
       v15 = CAMLocalizedFrameworkString(@"VIDEO_TOO_LONG_TITLE", 0);
       *&v16 = v14;
-      [v17 showTrimMessage:v15 withBottomY:v16];
+      [playbackCopy showTrimMessage:v15 withBottomY:v16];
     }
   }
 
 LABEL_8:
 }
 
-- (void)videoViewDidBeginPlayback:(id)a3
+- (void)videoViewDidBeginPlayback:(id)playback
 {
-  v3 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  [v3 didPlayVideo];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  [_cropOverlay didPlayVideo];
 }
 
-- (void)videoViewDidPausePlayback:(id)a3
+- (void)videoViewDidPausePlayback:(id)playback
 {
-  v3 = [(CAMImagePickerCameraViewController *)self _cropOverlay];
-  [v3 didPauseVideo];
+  _cropOverlay = [(CAMImagePickerCameraViewController *)self _cropOverlay];
+  [_cropOverlay didPauseVideo];
 }
 
-- (void)videoViewDidEndPlayback:(id)a3 didFinish:(BOOL)a4
+- (void)videoViewDidEndPlayback:(id)playback didFinish:(BOOL)finish
 {
-  v4 = [(CAMImagePickerCameraViewController *)self _cropOverlay:a3];
+  v4 = [(CAMImagePickerCameraViewController *)self _cropOverlay:playback];
   [v4 didPauseVideo];
 }
 
-- (void)_handleCapturedImagePickerPhotoWithCropOverlayOutput:(id)a3
+- (void)_handleCapturedImagePickerPhotoWithCropOverlayOutput:(id)output
 {
-  v23 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v23];
-  v5 = [(CAMImagePickerCameraViewController *)self _mostRecentPhotoProperties];
-  v6 = [v5 objectForKeyedSubscript:@"CAMCameraViewControllerFullsizeImageData"];
+  outputCopy = output;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:outputCopy];
+  _mostRecentPhotoProperties = [(CAMImagePickerCameraViewController *)self _mostRecentPhotoProperties];
+  v6 = [_mostRecentPhotoProperties objectForKeyedSubscript:@"CAMCameraViewControllerFullsizeImageData"];
   if (v6)
   {
     [v4 setObject:v6 forKey:*MEMORY[0x1E69C05B0]];
   }
 
   v22 = v6;
-  v7 = [v5 objectForKeyedSubscript:@"CAMCameraViewControllerPhotoMetadata"];
+  v7 = [_mostRecentPhotoProperties objectForKeyedSubscript:@"CAMCameraViewControllerPhotoMetadata"];
   v8 = v7;
   if (v7)
   {
@@ -1140,14 +1140,14 @@ LABEL_8:
     [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69C05A8]];
   }
 
-  v11 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  v12 = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
-  v13 = [v11 _properties];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DDDD8]];
-  v15 = [v14 BOOLValue];
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  _photoTileViewController = [(CAMImagePickerCameraViewController *)self _photoTileViewController];
+  _properties = [_containingImagePickerController _properties];
+  v14 = [_properties objectForKeyedSubscript:*MEMORY[0x1E69DDDD8]];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = v11;
-  v17 = v12;
+  v16 = _containingImagePickerController;
+  v17 = _photoTileViewController;
   v18 = v4;
   v24 = 0;
   v25 = &v24;
@@ -1165,24 +1165,24 @@ LABEL_8:
   _Block_object_dispose(&v24, 8);
   if (!v19)
   {
-    v21 = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
+    setupFaceDetector = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
     _Block_object_dispose(&v24, 8);
-    _Unwind_Resume(v21);
+    _Unwind_Resume(setupFaceDetector);
   }
 
-  v19(v16, v17, 0, v18, v15);
+  v19(v16, v17, 0, v18, bOOLValue);
 
   [(CAMImagePickerCameraViewController *)self _setMostRecentPhotoProperties:0];
 }
 
-- (void)_handleCapturedImagePickerVideoAtPath:(id)a3 withEditingMetadata:(id)a4
+- (void)_handleCapturedImagePickerVideoAtPath:(id)path withEditingMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
-  if (v6)
+  pathCopy = path;
+  metadataCopy = metadata;
+  _containingImagePickerController = [(CAMImagePickerCameraViewController *)self _containingImagePickerController];
+  if (pathCopy)
   {
-    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   }
 
   else
@@ -1190,9 +1190,9 @@ LABEL_8:
     v9 = 0;
   }
 
-  v10 = v8;
+  v10 = _containingImagePickerController;
   v11 = v9;
-  v12 = v7;
+  v12 = metadataCopy;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1209,9 +1209,9 @@ LABEL_8:
   _Block_object_dispose(&v16, 8);
   if (!v13)
   {
-    v15 = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
+    setupFaceDetector = [CAMBurstImageFaceAnalysisContext setupFaceDetector];
     _Block_object_dispose(&v16, 8);
-    _Unwind_Resume(v15);
+    _Unwind_Resume(setupFaceDetector);
   }
 
   v13(v10, v11, 0, v12);
@@ -1221,11 +1221,11 @@ LABEL_8:
 
 - (id)_containingImagePickerController
 {
-  v2 = [(CAMImagePickerCameraViewController *)self parentViewController];
+  parentViewController = [(CAMImagePickerCameraViewController *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = parentViewController;
   }
 
   else
@@ -1238,22 +1238,22 @@ LABEL_8:
   return v3;
 }
 
-- (int64_t)_imagePickerCameraDeviceForCaptureDevice:(int64_t)a3
+- (int64_t)_imagePickerCameraDeviceForCaptureDevice:(int64_t)device
 {
-  if ((a3 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A3A68848[a3 - 1];
+    return qword_1A3A68848[device - 1];
   }
 }
 
-- (int64_t)_imagePickerCameraFlashModeForFlashMode:(int64_t)a3
+- (int64_t)_imagePickerCameraFlashModeForFlashMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v3 = 0;
   }
@@ -1263,7 +1263,7 @@ LABEL_8:
     v3 = -1;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
@@ -1274,42 +1274,42 @@ LABEL_8:
   }
 }
 
-- (int64_t)_flashModeForImagePickerCameraFlashMode:(int64_t)a3
+- (int64_t)_flashModeForImagePickerCameraFlashMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 0);
+    return 2 * (mode == 0);
   }
 }
 
-- (int64_t)_imagePickerQualityTypeForVideoConfiguration:(int64_t)a3
+- (int64_t)_imagePickerQualityTypeForVideoConfiguration:(int64_t)configuration
 {
-  if ((a3 - 10000) >= 6)
+  if ((configuration - 10000) >= 6)
   {
     return 1;
   }
 
   else
   {
-    return a3 - 10000;
+    return configuration - 10000;
   }
 }
 
-- (int64_t)_videoConfigurationForImagePickerQualityType:(int64_t)a3
+- (int64_t)_videoConfigurationForImagePickerQualityType:(int64_t)type
 {
-  if (a3 >= 6)
+  if (type >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 10000;
+    return type + 10000;
   }
 }
 

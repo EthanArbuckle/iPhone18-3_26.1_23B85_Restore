@@ -1,12 +1,12 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -14,7 +14,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received a connection!", v11, 2u);
   }
 
-  v6 = [v4 valueForEntitlement:off_10001E930];
+  v6 = [connectionCopy valueForEntitlement:off_10001E930];
   if (!v6)
   {
     sub_10000E93C(v11);
@@ -33,17 +33,17 @@ LABEL_10:
   if (![v6 BOOLValue])
   {
 LABEL_11:
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v9 = 0;
     goto LABEL_7;
   }
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRSystemHealthProtocol];
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v8 = +[MRComponentHealthHandler sharedInstance];
-  [v4 setExportedObject:v8];
-  [v4 resume];
+  [connectionCopy setExportedObject:v8];
+  [connectionCopy resume];
 
   v9 = 1;
 LABEL_7:

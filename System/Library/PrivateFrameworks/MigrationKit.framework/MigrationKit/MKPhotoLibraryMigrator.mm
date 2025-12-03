@@ -1,90 +1,90 @@
 @interface MKPhotoLibraryMigrator
 - (BOOL)importAndWait;
-- (BOOL)importAssetAndWait:(id)a3 retryNeeded:(BOOL *)a4;
+- (BOOL)importAssetAndWait:(id)wait retryNeeded:(BOOL *)needed;
 - (MKPhotoLibraryAlbumMigrator)albumMigrator;
-- (void)addImportTime:(id)a3;
-- (void)addToAssetQueue:(id)a3;
+- (void)addImportTime:(id)time;
+- (void)addToAssetQueue:(id)queue;
 - (void)import;
-- (void)import:(id)a3 identifier:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 filename:(id)a8 collection:(id)a9 originalFilename:(id)a10 complete:(BOOL)a11;
-- (void)importChunk:(id)a3 identifier:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 filename:(id)a8 collection:(id)a9 originalFilename:(id)a10 complete:(BOOL)a11;
-- (void)photoLibraryDidAddAsset:(id)a3 identifier:(id)a4;
-- (void)photoLibraryDidInterruptAsset:(id)a3;
-- (void)photoLibraryDidSetIdentifier:(id)a3 forAsset:(id)a4;
+- (void)import:(id)import identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)collection originalFilename:(id)self0 complete:(BOOL)self1;
+- (void)importChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)collection originalFilename:(id)self0 complete:(BOOL)self1;
+- (void)photoLibraryDidAddAsset:(id)asset identifier:(id)identifier;
+- (void)photoLibraryDidInterruptAsset:(id)asset;
+- (void)photoLibraryDidSetIdentifier:(id)identifier forAsset:(id)asset;
 - (void)photoLibraryWillAddAsset;
 - (void)retry;
 @end
 
 @implementation MKPhotoLibraryMigrator
 
-- (void)importChunk:(id)a3 identifier:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 filename:(id)a8 collection:(id)a9 originalFilename:(id)a10 complete:(BOOL)a11
+- (void)importChunk:(id)chunk identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)collection originalFilename:(id)self0 complete:(BOOL)self1
 {
-  v24 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = self;
-  objc_sync_enter(v21);
+  chunkCopy = chunk;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  collectionCopy = collection;
+  originalFilenameCopy = originalFilename;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = objc_autoreleasePoolPush();
-  LOBYTE(v23) = a11;
-  [(MKPhotoLibraryMigrator *)v21 import:v24 identifier:v17 offset:a5 length:a6 total:a7 filename:v18 collection:v19 originalFilename:v20 complete:v23];
+  LOBYTE(v23) = complete;
+  [(MKPhotoLibraryMigrator *)selfCopy import:chunkCopy identifier:identifierCopy offset:offset length:length total:total filename:filenameCopy collection:collectionCopy originalFilename:originalFilenameCopy complete:v23];
   objc_autoreleasePoolPop(v22);
-  objc_sync_exit(v21);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)import:(id)a3 identifier:(id)a4 offset:(unint64_t)a5 length:(unint64_t)a6 total:(unint64_t)a7 filename:(id)a8 collection:(id)a9 originalFilename:(id)a10 complete:(BOOL)a11
+- (void)import:(id)import identifier:(id)identifier offset:(unint64_t)offset length:(unint64_t)length total:(unint64_t)total filename:(id)filename collection:(id)collection originalFilename:(id)self0 complete:(BOOL)self1
 {
   v72 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  if ([v18 length] && objc_msgSend(v19, "length"))
+  importCopy = import;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  collectionCopy = collection;
+  originalFilenameCopy = originalFilename;
+  if ([identifierCopy length] && objc_msgSend(filenameCopy, "length"))
   {
-    v64 = a5;
-    v65 = v17;
-    v22 = [v20 lowercaseString];
-    v23 = [v22 isEqualToString:@"camera"];
+    offsetCopy = offset;
+    v65 = importCopy;
+    lowercaseString = [collectionCopy lowercaseString];
+    v23 = [lowercaseString isEqualToString:@"camera"];
 
-    v61 = a6;
+    lengthCopy = length;
     if (v23)
     {
 
-      v20 = 0;
+      collectionCopy = 0;
     }
 
-    v24 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v25 = self->_root;
-    v26 = [v18 lastPathComponent];
-    v27 = [v26 substringWithRange:{0, 1}];
+    lastPathComponent = [identifierCopy lastPathComponent];
+    v27 = [lastPathComponent substringWithRange:{0, 1}];
 
     v28 = v27;
     v63 = v25;
     v29 = [(NSString *)v25 stringByAppendingPathComponent:v27];
-    v67 = [v29 stringByAppendingPathComponent:v19];
-    v30 = [MEMORY[0x277CCAA00] defaultManager];
-    v66 = v30;
-    if (([v30 fileExistsAtPath:v29] & 1) != 0 || (v69 = 0, objc_msgSend(v30, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v29, 1, 0, &v69), (v31 = v69) == 0))
+    v67 = [v29 stringByAppendingPathComponent:filenameCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v66 = defaultManager;
+    if (([defaultManager fileExistsAtPath:v29] & 1) != 0 || (v69 = 0, objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v29, 1, 0, &v69), (v31 = v69) == 0))
     {
       v62 = 0;
     }
 
     else
     {
-      v32 = self;
+      selfCopy = self;
       v33 = v31;
       v58 = v29;
       v34 = v28;
-      v35 = v32;
-      v36 = a7;
+      v35 = selfCopy;
+      totalCopy = total;
       v37 = +[MKLog log];
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         [MKFileMigrator import:filename:offset:length:total:complete:];
       }
 
-      a7 = v36;
+      total = totalCopy;
       v38 = v35;
       v28 = v34;
       v29 = v58;
@@ -92,9 +92,9 @@
       self = v38;
     }
 
-    if (v64)
+    if (offsetCopy)
     {
-      v59 = a7;
+      totalCopy2 = total;
       v68 = 0;
       v39 = [v66 attributesOfItemAtPath:v67 error:&v68];
       v40 = v68;
@@ -114,11 +114,11 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v57 = v21;
+      v57 = originalFilenameCopy;
       v44 = [v39 objectForKey:*MEMORY[0x277CCA1C0]];
-      v45 = [v44 unsignedLongLongValue];
+      unsignedLongLongValue = [v44 unsignedLongLongValue];
 
-      if (v45 == v64)
+      if (unsignedLongLongValue == offsetCopy)
       {
         v56 = v39;
         v46 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v67];
@@ -136,20 +136,20 @@ LABEL_40:
           _os_log_impl(&dword_2592D2000, v47, OS_LOG_TYPE_INFO, "appended some bytes to a file. bytes=%ld", buf, 0xCu);
         }
 
-        v21 = v57;
-        a7 = v59;
-        v49 = a11;
-        if (v64 + v61 == v59)
+        originalFilenameCopy = v57;
+        total = totalCopy2;
+        completeCopy2 = complete;
+        if (offsetCopy + lengthCopy == totalCopy2)
         {
-          v49 = 1;
+          completeCopy2 = 1;
         }
 
         goto LABEL_34;
       }
 
-      v21 = v57;
-      v50 = v45 == v59;
-      a7 = v59;
+      originalFilenameCopy = v57;
+      v50 = unsignedLongLongValue == totalCopy2;
+      total = totalCopy2;
       if (!v50)
       {
         v56 = v39;
@@ -161,22 +161,22 @@ LABEL_40:
           [MKFileMigrator import:v51 filename:? offset:? length:? total:? complete:?];
         }
 
-        v49 = a11;
+        completeCopy2 = complete;
 LABEL_34:
 
-        [(MKPhotoLibraryMigrator *)self addImportTime:v24];
-        if (!v49)
+        [(MKPhotoLibraryMigrator *)self addImportTime:date];
+        if (!completeCopy2)
         {
 LABEL_41:
 
-          v17 = v65;
+          importCopy = v65;
           goto LABEL_42;
         }
 
         goto LABEL_35;
       }
 
-      [(MKPhotoLibraryMigrator *)self addImportTime:v24];
+      [(MKPhotoLibraryMigrator *)self addImportTime:date];
     }
 
     else
@@ -186,8 +186,8 @@ LABEL_41:
         [v65 writeToFile:v67 atomically:1];
       }
 
-      [(MKPhotoLibraryMigrator *)self addImportTime:v24];
-      if (v61 != a7 && !a11)
+      [(MKPhotoLibraryMigrator *)self addImportTime:date];
+      if (lengthCopy != total && !complete)
       {
         goto LABEL_41;
       }
@@ -203,12 +203,12 @@ LABEL_35:
       _os_log_impl(&dword_2592D2000, v53, OS_LOG_TYPE_INFO, "will add a file to asset queue. file=%@", buf, 0xCu);
     }
 
-    if (!a7)
+    if (!total)
     {
-      a7 = [v66 mk_fileSizeAtPath:v67];
+      total = [v66 mk_fileSizeAtPath:v67];
     }
 
-    v41 = [[MKPhotoLibraryAsset alloc] initWithPath:v67 filename:v19 collection:v20 originalFilename:v21 size:a7];
+    v41 = [[MKPhotoLibraryAsset alloc] initWithPath:v67 filename:filenameCopy collection:collectionCopy originalFilename:originalFilenameCopy size:total];
     [(MKPhotoLibraryAssetDatabase *)self->_db addAsset:v41];
     [(MKMigrator *)self migratorDidImport];
     [(MKMigrator *)self migratorDidAppendDataSize:[(MKPhotoLibraryAsset *)v41 size]];
@@ -216,8 +216,8 @@ LABEL_35:
     goto LABEL_40;
   }
 
-  v24 = +[MKLog log];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+  date = +[MKLog log];
+  if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
   {
     [MKPhotoLibraryMigrator import:identifier:offset:length:total:filename:collection:originalFilename:complete:];
   }
@@ -227,11 +227,11 @@ LABEL_42:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addToAssetQueue:(id)a3
+- (void)addToAssetQueue:(id)queue
 {
-  [(MKPhotoLibraryAssetDatabase *)self->_db addAsset:a3];
-  v4 = [(MKMigrator *)self delegate];
-  [v4 migratorWillExecuteOperation:self];
+  [(MKPhotoLibraryAssetDatabase *)self->_db addAsset:queue];
+  delegate = [(MKMigrator *)self delegate];
+  [delegate migratorWillExecuteOperation:self];
 
   [(MKPhotoLibraryMigrator *)self photoLibraryWillAddAsset];
 }
@@ -243,13 +243,13 @@ LABEL_42:
     if ([(MKPhotoLibraryAssetDatabase *)self->_db count])
     {
       self->_isBusy = 1;
-      v3 = [MEMORY[0x277CBEAA8] date];
-      v4 = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
-      v5 = [v4 path];
-      v6 = [v4 filename];
-      v7 = [v4 originalFilename];
-      v8 = [v4 size];
-      v9 = [(MKPhotoLibraryMigrator *)self shouldRetry];
+      date = [MEMORY[0x277CBEAA8] date];
+      asset = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
+      path = [asset path];
+      filename = [asset filename];
+      originalFilename = [asset originalFilename];
+      v8 = [asset size];
+      shouldRetry = [(MKPhotoLibraryMigrator *)self shouldRetry];
       objc_initWeak(&location, self);
       photoLibrary = self->_photoLibrary;
       v14[0] = MEMORY[0x277D85DD0];
@@ -257,14 +257,14 @@ LABEL_42:
       v14[2] = __50__MKPhotoLibraryMigrator_photoLibraryWillAddAsset__block_invoke;
       v14[3] = &unk_2798DCFB0;
       objc_copyWeak(&v18, &location);
-      v11 = v5;
+      v11 = path;
       v15 = v11;
-      v19 = v9;
-      v12 = v3;
+      v19 = shouldRetry;
+      v12 = date;
       v16 = v12;
-      v13 = v4;
+      v13 = asset;
       v17 = v13;
-      [(MKPhotoLibrary *)photoLibrary addAsset:v11 filename:v6 originalFilename:v7 size:v8 completion:v14];
+      [(MKPhotoLibrary *)photoLibrary addAsset:v11 filename:filename originalFilename:originalFilename size:v8 completion:v14];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -349,7 +349,7 @@ void __50__MKPhotoLibraryMigrator_photoLibraryWillAddAsset__block_invoke(uint64_
   [(MKPhotoLibraryMigrator *)self photoLibraryWillAddAsset];
 }
 
-- (void)photoLibraryDidInterruptAsset:(id)a3
+- (void)photoLibraryDidInterruptAsset:(id)asset
 {
   objc_initWeak(&location, self);
   assetQueue = self->_assetQueue;
@@ -369,10 +369,10 @@ void __56__MKPhotoLibraryMigrator_photoLibraryDidInterruptAsset___block_invoke(u
   [WeakRetained retry];
 }
 
-- (void)photoLibraryDidAddAsset:(id)a3 identifier:(id)a4
+- (void)photoLibraryDidAddAsset:(id)asset identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   assetQueue = self->_assetQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -380,10 +380,10 @@ void __56__MKPhotoLibraryMigrator_photoLibraryDidInterruptAsset___block_invoke(u
   v11[2] = __61__MKPhotoLibraryMigrator_photoLibraryDidAddAsset_identifier___block_invoke;
   v11[3] = &unk_2798DD000;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = assetCopy;
+  v9 = assetCopy;
+  v10 = identifierCopy;
   dispatch_async(assetQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -399,21 +399,21 @@ void __61__MKPhotoLibraryMigrator_photoLibraryDidAddAsset_identifier___block_inv
   [WeakRetained photoLibraryWillAddAsset];
 }
 
-- (void)photoLibraryDidSetIdentifier:(id)a3 forAsset:(id)a4
+- (void)photoLibraryDidSetIdentifier:(id)identifier forAsset:(id)asset
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 length])
+  identifierCopy = identifier;
+  assetCopy = asset;
+  if ([identifierCopy length])
   {
     [(MKMigrator *)self migratorDidImport];
-    -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v6 size]);
-    v7 = [v6 collection];
-    v8 = [v7 length];
+    -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [assetCopy size]);
+    collection = [assetCopy collection];
+    v8 = [collection length];
 
     if (v8)
     {
       WeakRetained = objc_loadWeakRetained(&self->_albumMigrator);
-      [WeakRetained setIdentifier:v11 forAsset:v6];
+      [WeakRetained setIdentifier:identifierCopy forAsset:assetCopy];
     }
   }
 
@@ -422,9 +422,9 @@ void __61__MKPhotoLibraryMigrator_photoLibraryDidAddAsset_identifier___block_inv
     [(MKMigrator *)self migratorDidFailWithImportError:0];
   }
 
-  [(MKPhotoLibraryAssetDatabase *)self->_db remove:v6];
-  v10 = [(MKMigrator *)self delegate];
-  [v10 migratorDidExecuteOperation:self];
+  [(MKPhotoLibraryAssetDatabase *)self->_db remove:assetCopy];
+  delegate = [(MKMigrator *)self delegate];
+  [delegate migratorDidExecuteOperation:self];
 }
 
 - (void)import
@@ -438,17 +438,17 @@ void __61__MKPhotoLibraryMigrator_photoLibraryDidAddAsset_identifier___block_inv
   [(MKMigrator *)&v4 import];
 }
 
-- (void)addImportTime:(id)a3
+- (void)addImportTime:(id)time
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = +[MKAnalytics sharedInstance];
   objc_sync_enter(v5);
   type = self->_type;
   if (type == 1)
   {
-    v7 = [v5 payload];
-    v8 = [v7 videos];
+    payload = [v5 payload];
+    videos = [payload videos];
   }
 
   else
@@ -458,21 +458,21 @@ void __61__MKPhotoLibraryMigrator_photoLibraryDidAddAsset_identifier___block_inv
       goto LABEL_7;
     }
 
-    v7 = [v5 payload];
-    v8 = [v7 photos];
+    payload = [v5 payload];
+    videos = [payload photos];
   }
 
-  v9 = v8;
+  v9 = videos;
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:timeCopy];
     v12 = v11;
 
     v13 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:v12];
-    v14 = [v9 importElapsedTime];
-    v15 = [v14 decimalNumberByAdding:v13];
+    importElapsedTime = [v9 importElapsedTime];
+    v15 = [importElapsedTime decimalNumberByAdding:v13];
     [v9 setImportElapsedTime:v15];
 
     goto LABEL_9;
@@ -496,10 +496,10 @@ LABEL_9:
 
 - (BOOL)importAndWait
 {
-  v3 = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
-  if (v3)
+  asset = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
+  if (asset)
   {
-    v4 = v3;
+    v4 = asset;
     do
     {
       v5 = 0;
@@ -516,25 +516,25 @@ LABEL_9:
 
       while (![(MKPhotoLibraryMigrator *)self importAssetAndWait:v4 retryNeeded:&v9]);
       [(MKPhotoLibraryAssetDatabase *)self->_db remove:v4];
-      v7 = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
+      asset2 = [(MKPhotoLibraryAssetDatabase *)self->_db asset];
 
-      v4 = v7;
+      v4 = asset2;
     }
 
-    while (v7);
+    while (asset2);
   }
 
   return 1;
 }
 
-- (BOOL)importAssetAndWait:(id)a3 retryNeeded:(BOOL *)a4
+- (BOOL)importAssetAndWait:(id)wait retryNeeded:(BOOL *)needed
 {
   v60 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v6 = [v26 path];
-  v25 = [v26 filename];
-  v24 = [v26 originalFilename];
-  v7 = [v26 size];
+  waitCopy = wait;
+  path = [waitCopy path];
+  filename = [waitCopy filename];
+  originalFilename = [waitCopy originalFilename];
+  v7 = [waitCopy size];
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
@@ -566,7 +566,7 @@ LABEL_9:
   v28[1] = 3221225472;
   v28[2] = __57__MKPhotoLibraryMigrator_importAssetAndWait_retryNeeded___block_invoke;
   v28[3] = &unk_2798DD028;
-  v10 = v6;
+  v10 = path;
   v29 = v10;
   v31 = &v54;
   v32 = v52;
@@ -575,7 +575,7 @@ LABEL_9:
   v35 = &v36;
   v11 = v8;
   v30 = v11;
-  [(MKPhotoLibrary *)photoLibrary addAsset:v10 filename:v25 originalFilename:v24 size:v7 completion:v28];
+  [(MKPhotoLibrary *)photoLibrary addAsset:v10 filename:filename originalFilename:originalFilename size:v7 completion:v28];
   if ((v55[3] & 1) == 0)
   {
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
@@ -593,21 +593,21 @@ LABEL_9:
       _os_log_impl(&dword_2592D2000, v13, OS_LOG_TYPE_INFO, "will retry to import an asset. file=%@", buf, 0xCu);
     }
 
-    *a4 = 1;
+    *needed = 1;
   }
 
   else
   {
     if (v43[5])
     {
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      v15 = [v14 isDeletableFileAtPath:v10];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v15 = [defaultManager isDeletableFileAtPath:v10];
 
       if (v15)
       {
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v27 = 0;
-        [v16 removeItemAtPath:v10 error:&v27];
+        [defaultManager2 removeItemAtPath:v10 error:&v27];
         v17 = v27;
 
         if (v17)
@@ -624,14 +624,14 @@ LABEL_9:
     if ([v37[5] length])
     {
       [(MKMigrator *)self migratorDidImport];
-      -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [v26 size]);
-      v19 = [v26 collection];
-      v20 = [v19 length] == 0;
+      -[MKMigrator migratorDidAppendDataSize:](self, "migratorDidAppendDataSize:", [waitCopy size]);
+      collection = [waitCopy collection];
+      v20 = [collection length] == 0;
 
       if (!v20)
       {
         WeakRetained = objc_loadWeakRetained(&self->_albumMigrator);
-        [WeakRetained setIdentifier:v37[5] forAsset:v26];
+        [WeakRetained setIdentifier:v37[5] forAsset:waitCopy];
       }
     }
 

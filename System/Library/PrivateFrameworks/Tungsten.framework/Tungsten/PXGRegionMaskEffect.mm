@@ -1,7 +1,7 @@
 @interface PXGRegionMaskEffect
-- (PXGRegionMaskEffect)initWithEntityManager:(id)a3;
+- (PXGRegionMaskEffect)initWithEntityManager:(id)manager;
 - (void)_updateValues;
-- (void)setRegion:(id)a3;
+- (void)setRegion:(id)region;
 @end
 
 @implementation PXGRegionMaskEffect
@@ -17,19 +17,19 @@
       goto LABEL_3;
     }
 
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [(PXRegion *)v18 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGRegionMaskEffect.m" lineNumber:47 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_region", v12, v14}];
+    px_descriptionForAssertionMessage = [(PXRegion *)v18 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGRegionMaskEffect.m" lineNumber:47 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_region", v12, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGRegionMaskEffect.m" lineNumber:47 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_region", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGRegionMaskEffect.m" lineNumber:47 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_region", v12}];
   }
 
 LABEL_3:
@@ -47,15 +47,15 @@ LABEL_3:
   [(PXGUniform *)self->_valuesUniform setFloat4Value:*vcvt_hight_f32_f64(vcvt_f32_f64(v9), v7).i64];
 }
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  v4 = a3;
-  if (!v4)
+  regionCopy = region;
+  if (!regionCopy)
   {
-    v4 = [MEMORY[0x277D3CD88] identityRegion];
+    regionCopy = [MEMORY[0x277D3CD88] identityRegion];
   }
 
-  obj = v4;
+  obj = regionCopy;
   v5 = self->_region;
   v6 = v5;
   if (v5 == obj)
@@ -74,12 +74,12 @@ LABEL_3:
   }
 }
 
-- (PXGRegionMaskEffect)initWithEntityManager:(id)a3
+- (PXGRegionMaskEffect)initWithEntityManager:(id)manager
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = PXGRegionMaskEffect;
-  v3 = [(PXGEffect *)&v11 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v11 initWithEntityManager:manager];
   if (v3)
   {
     v4 = [[PXGUniform alloc] initWithName:@"values" type:3];

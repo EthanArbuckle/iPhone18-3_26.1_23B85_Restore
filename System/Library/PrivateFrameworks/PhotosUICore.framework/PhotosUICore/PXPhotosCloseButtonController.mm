@@ -1,8 +1,8 @@
 @interface PXPhotosCloseButtonController
-- (PXPhotosCloseButtonController)initWithButtonConfiguration:(id)a3;
+- (PXPhotosCloseButtonController)initWithButtonConfiguration:(id)configuration;
 - (PXPhotosCloseButtonControllerDelegate)delegate;
-- (void)_handleButtonAction:(id)a3;
-- (void)setForegroundColor:(id)a3;
+- (void)_handleButtonAction:(id)action;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation PXPhotosCloseButtonController
@@ -14,46 +14,46 @@
   return WeakRetained;
 }
 
-- (void)_handleButtonAction:(id)a3
+- (void)_handleButtonAction:(id)action
 {
-  v4 = [(PXPhotosCloseButtonController *)self delegate];
-  [v4 photosCloseButtonControllerHandleAction:self];
+  delegate = [(PXPhotosCloseButtonController *)self delegate];
+  [delegate photosCloseButtonControllerHandleAction:self];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v10 = a3;
+  colorCopy = color;
   v5 = self->_foregroundColor;
   v6 = v5;
-  if (v5 != v10)
+  if (v5 != colorCopy)
   {
-    v7 = [(UIColor *)v5 isEqual:v10];
+    v7 = [(UIColor *)v5 isEqual:colorCopy];
 
-    v8 = v10;
+    v8 = colorCopy;
     if (v7)
     {
       goto LABEL_5;
     }
 
-    objc_storeStrong(&self->_foregroundColor, a3);
-    v9 = [(UIButton *)self->_button configuration];
-    v6 = [v9 copy];
+    objc_storeStrong(&self->_foregroundColor, color);
+    configuration = [(UIButton *)self->_button configuration];
+    v6 = [configuration copy];
 
-    [(UIColor *)v6 setBaseForegroundColor:v10];
+    [(UIColor *)v6 setBaseForegroundColor:colorCopy];
     [(UIButton *)self->_button setConfiguration:v6];
   }
 
-  v8 = v10;
+  v8 = colorCopy;
 LABEL_5:
 }
 
-- (PXPhotosCloseButtonController)initWithButtonConfiguration:(id)a3
+- (PXPhotosCloseButtonController)initWithButtonConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPhotosCloseButtonController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"buttonConfiguration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosCloseButtonController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"buttonConfiguration"}];
   }
 
   v13.receiver = self;
@@ -61,14 +61,14 @@ LABEL_5:
   v6 = [(PXPhotosCloseButtonController *)&v13 init];
   if (v6)
   {
-    v7 = [PXPhotosViewRoundedAccessoryButton buttonWithConfiguration:v5 primaryAction:0];
+    v7 = [PXPhotosViewRoundedAccessoryButton buttonWithConfiguration:configurationCopy primaryAction:0];
     button = v6->_button;
     v6->_button = v7;
 
     [(UIButton *)v6->_button addTarget:v6 action:sel__handleButtonAction_ forControlEvents:0x2000];
-    v9 = [v5 baseForegroundColor];
+    baseForegroundColor = [configurationCopy baseForegroundColor];
     foregroundColor = v6->_foregroundColor;
-    v6->_foregroundColor = v9;
+    v6->_foregroundColor = baseForegroundColor;
   }
 
   return v6;

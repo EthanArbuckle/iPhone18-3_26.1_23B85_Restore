@@ -7,20 +7,20 @@
 - (id)im_jsonSerializableValue
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:a1])
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:self])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+    v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = a1;
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    selfCopy2 = self;
+    v5 = [selfCopy2 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v5)
     {
       v7 = v5;
@@ -33,7 +33,7 @@
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selfCopy2);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
@@ -57,18 +57,18 @@
           [v3 addObject:{v11, v17, v18}];
         }
 
-        v7 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v7 = [selfCopy2 countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v7);
     }
 
-    v2 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+    selfCopy = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

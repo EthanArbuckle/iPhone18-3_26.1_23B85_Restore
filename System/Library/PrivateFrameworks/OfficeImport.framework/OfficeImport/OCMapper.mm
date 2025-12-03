@@ -25,9 +25,9 @@
 
 - (void)setup
 {
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v7 threadDictionary];
-  v4 = [v3 objectForKey:@"kOCMapper"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"kOCMapper"];
 
   if (v4)
   {
@@ -38,17 +38,17 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v9 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v9 threadDictionary];
-  [v6 setObject:self forKey:@"kOCMapper"];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:self forKey:@"kOCMapper"];
 }
 
 - (void)teardown
 {
   +[TCBundleResourceManager disposeInstance];
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKey:@"kOCMapper"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v5 = [threadDictionary objectForKey:@"kOCMapper"];
 
   if (v5 != self)
   {
@@ -59,9 +59,9 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v8 = [MEMORY[0x277CCACC8] currentThread];
-  v9 = [v8 threadDictionary];
-  [v9 removeObjectForKey:@"kOCMapper"];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 removeObjectForKey:@"kOCMapper"];
 
   mTemporaryDirectoryObject = self->mTemporaryDirectoryObject;
   self->mTemporaryDirectoryObject = 0;
@@ -69,9 +69,9 @@
 
 + (id)mapperForCurrentThread
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"kOCMapper"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"kOCMapper"];
 
   return v4;
 }

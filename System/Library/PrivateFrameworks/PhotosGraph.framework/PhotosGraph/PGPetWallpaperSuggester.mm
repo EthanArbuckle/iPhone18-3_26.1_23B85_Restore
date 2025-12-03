@@ -1,37 +1,37 @@
 @interface PGPetWallpaperSuggester
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7;
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6;
-+ (id)prefilteringInternalPredicateWithContext:(id)a3;
-- (PGPetWallpaperSuggester)initWithSession:(id)a3;
-- (id)candidatesForPet:(id)a3;
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics;
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason;
++ (id)prefilteringInternalPredicateWithContext:(id)context;
+- (PGPetWallpaperSuggester)initWithSession:(id)session;
+- (id)candidatesForPet:(id)pet;
 - (id)fetchPets;
-- (id)sortedCandidatesByPetLocalIdentifierFromPets:(id)a3 maximumNumberOfSuggestions:(unint64_t)a4 progressReporter:(id)a5;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (void)logPosterFilteringStatistics:(id *)a3;
+- (id)sortedCandidatesByPetLocalIdentifierFromPets:(id)pets maximumNumberOfSuggestions:(unint64_t)suggestions progressReporter:(id)reporter;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (void)logPosterFilteringStatistics:(id *)statistics;
 - (void)setupFilteringContexts;
 @end
 
 @implementation PGPetWallpaperSuggester
 
-- (void)logPosterFilteringStatistics:(id *)a3
+- (void)logPosterFilteringStatistics:(id *)statistics
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = [(PGAbstractSuggester *)self session];
-  v5 = [v4 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    var3 = a3->var3;
-    var4 = a3->var4;
-    var5 = a3->var5;
-    var6 = a3->var6;
-    var7 = a3->var7;
-    var8 = a3->var8;
-    var9 = a3->var9;
-    var10 = a3->var10;
+    var0 = statistics->var0;
+    var1 = statistics->var1;
+    var2 = statistics->var2;
+    var3 = statistics->var3;
+    var4 = statistics->var4;
+    var5 = statistics->var5;
+    var6 = statistics->var6;
+    var7 = statistics->var7;
+    var8 = statistics->var8;
+    var9 = statistics->var9;
+    var10 = statistics->var10;
     v18[0] = 67111680;
     v18[1] = var0;
     v19 = 1024;
@@ -54,22 +54,22 @@
     v36 = var9;
     v37 = 1024;
     v38 = var10;
-    _os_log_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v18, 0x44u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v18, 0x44u);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)candidatesForPet:(id)a3
+- (id)candidatesForPet:(id)pet
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 photoLibrary];
-  v59 = [v5 curationContext];
-  v7 = [v5 loggingConnection];
-  v8 = os_signpost_id_generate(v7);
-  v9 = v7;
+  petCopy = pet;
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
+  curationContext = [session curationContext];
+  loggingConnection = [session loggingConnection];
+  v8 = os_signpost_id_generate(loggingConnection);
+  v9 = loggingConnection;
   v10 = v9;
   v50 = v8 - 1;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -83,16 +83,16 @@
   info = 0;
   mach_timebase_info(&info);
   v49 = mach_absolute_time();
-  v53 = v6;
-  v11 = [v6 librarySpecificFetchOptions];
-  [v11 setIncludedDetectionTypes:&unk_2844853B8];
+  v53 = photoLibrary;
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844853B8];
   v12 = objc_opt_class();
-  v13 = [(PGPetWallpaperSuggester *)self primaryFilteringContext];
-  v14 = [v12 prefilteringInternalPredicateWithContext:v13];
-  [v11 setInternalPredicate:v14];
+  primaryFilteringContext = [(PGPetWallpaperSuggester *)self primaryFilteringContext];
+  v14 = [v12 prefilteringInternalPredicateWithContext:primaryFilteringContext];
+  [librarySpecificFetchOptions setInternalPredicate:v14];
 
-  v52 = v11;
-  v15 = [MEMORY[0x277CD9868] fetchFacesForPerson:v4 options:v11];
+  v52 = librarySpecificFetchOptions;
+  v15 = [MEMORY[0x277CD9868] fetchFacesForPerson:petCopy options:librarySpecificFetchOptions];
   v16 = v10;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -102,14 +102,14 @@
     _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Found %lu faces.", buf, 0xCu);
   }
 
-  v55 = v4;
+  v55 = petCopy;
 
-  v57 = self;
+  selfCopy = self;
   v51 = +[PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:](PGWallpaperSuggestionUtilities, "assetFetchPropertySetsIncludingGating:", [objc_opt_class() filtersForTopSuggestions]);
   v18 = [MEMORY[0x277CD97A8] fetchAssetsGroupedByFaceUUIDForFaces:v15 fetchPropertySets:?];
   v19 = MEMORY[0x277CD97A8];
-  v20 = [v18 allValues];
-  [v19 prefetchOnAssets:v20 options:14 curationContext:v59];
+  allValues = [v18 allValues];
+  [v19 prefetchOnAssets:allValues options:14 curationContext:curationContext];
 
   v21 = v16;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -121,8 +121,8 @@
   }
 
   v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v54 = v5;
-  v61 = [v5 forbiddenAssetUUIDs];
+  v54 = session;
+  forbiddenAssetUUIDs = [session forbiddenAssetUUIDs];
   v89 = 0u;
   memset(v90, 0, 28);
   v87 = 0u;
@@ -161,22 +161,22 @@
         }
 
         v27 = *(*(&v62 + 1) + 8 * v26);
-        v28 = [v27 uuid];
-        v29 = [v18 objectForKeyedSubscript:v28];
+        uuid = [v27 uuid];
+        v29 = [v18 objectForKeyedSubscript:uuid];
 
         if (v29)
         {
-          v30 = [v29 uuid];
-          v31 = [v61 containsObject:v30];
+          uuid2 = [v29 uuid];
+          v31 = [forbiddenAssetUUIDs containsObject:uuid2];
 
           if (v31)
           {
             v32 = v21;
             if (os_log_type_enabled(&v32->super, OS_LOG_TYPE_INFO))
             {
-              v33 = [v29 uuid];
+              uuid3 = [v29 uuid];
               *v75 = 138412290;
-              *&v75[4] = v33;
+              *&v75[4] = uuid3;
               _os_log_impl(&dword_22F0FC000, &v32->super, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Avoiding asset %@ because it has been rejected by the user", v75, 0xCu);
             }
           }
@@ -185,12 +185,12 @@
           {
             v32 = [[PGPetWallpaperSuggestionCandidate alloc] initWithFace:v27 inAsset:v29];
             v34 = objc_opt_class();
-            v35 = [(PGPetWallpaperSuggester *)v57 primaryFilteringContext];
-            LODWORD(v34) = [v34 candidate:v32 passesFilteringWithContext:v35 curationContext:v59 thresholdHelper:v57->_peopleSceneConfidenceThresholdHelper statistics:buf];
+            primaryFilteringContext2 = [(PGPetWallpaperSuggester *)selfCopy primaryFilteringContext];
+            LODWORD(v34) = [v34 candidate:v32 passesFilteringWithContext:primaryFilteringContext2 curationContext:curationContext thresholdHelper:selfCopy->_peopleSceneConfidenceThresholdHelper statistics:buf];
 
             if (v34)
             {
-              if (!v57->_secondaryFilteringContext || (v36 = objc_opt_class(), -[PGPetWallpaperSuggester secondaryFilteringContext](v57, "secondaryFilteringContext"), v37 = objc_claimAutoreleasedReturnValue(), LODWORD(v36) = [v36 candidate:v32 passesFilteringWithContext:v37 curationContext:v59 thresholdHelper:v57->_peopleSceneConfidenceThresholdHelper statistics:&v66], v37, v36))
+              if (!selfCopy->_secondaryFilteringContext || (v36 = objc_opt_class(), -[PGPetWallpaperSuggester secondaryFilteringContext](selfCopy, "secondaryFilteringContext"), v37 = objc_claimAutoreleasedReturnValue(), LODWORD(v36) = [v36 candidate:v32 passesFilteringWithContext:v37 curationContext:curationContext thresholdHelper:selfCopy->_peopleSceneConfidenceThresholdHelper statistics:&v66], v37, v36))
               {
                 [v56 addObject:v32];
               }
@@ -234,11 +234,11 @@
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
     v44 = [v56 count];
-    v45 = [v55 localIdentifier];
+    localIdentifier = [v55 localIdentifier];
     *v75 = 67109378;
     *&v75[4] = v44;
     *&v75[8] = 2112;
-    *&v75[10] = v45;
+    *&v75[10] = localIdentifier;
     _os_log_impl(&dword_22F0FC000, v43, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Found %d candidates after postfiltering for Pet %@", v75, 0x12u);
   }
 
@@ -251,8 +251,8 @@
   v79 = v88;
   *v75 = *buf;
   *&v75[16] = v84;
-  [(PGPetWallpaperSuggester *)v57 logPosterFilteringStatistics:v75];
-  if (v57->_secondaryFilteringContext)
+  [(PGPetWallpaperSuggester *)selfCopy logPosterFilteringStatistics:v75];
+  if (selfCopy->_secondaryFilteringContext)
   {
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
@@ -269,7 +269,7 @@
     v79 = v71;
     *v75 = v66;
     *&v75[16] = v67;
-    [(PGPetWallpaperSuggester *)v57 logPosterFilteringStatistics:v75];
+    [(PGPetWallpaperSuggester *)selfCopy logPosterFilteringStatistics:v75];
   }
 
   if (*&buf[4] >= 1)
@@ -282,12 +282,12 @@
   return v56;
 }
 
-- (id)sortedCandidatesByPetLocalIdentifierFromPets:(id)a3 maximumNumberOfSuggestions:(unint64_t)a4 progressReporter:(id)a5
+- (id)sortedCandidatesByPetLocalIdentifierFromPets:(id)pets maximumNumberOfSuggestions:(unint64_t)suggestions progressReporter:(id)reporter
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([v8 isCancelledWithProgress:0.0])
+  petsCopy = pets;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -303,11 +303,11 @@
 
   else
   {
-    v46 = v8;
-    v45 = [(PGAbstractSuggester *)self session];
-    v10 = [v45 loggingConnection];
-    v11 = os_signpost_id_generate(v10);
-    v12 = v10;
+    v46 = reporterCopy;
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    v11 = os_signpost_id_generate(loggingConnection);
+    v12 = loggingConnection;
     v13 = v12;
     v44 = v11 - 1;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
@@ -326,8 +326,8 @@
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v47 = v7;
-    obj = v7;
+    v47 = petsCopy;
+    obj = petsCopy;
     v52 = [obj countByEnumeratingWithState:&v56 objects:v64 count:16];
     if (v52)
     {
@@ -346,14 +346,14 @@
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             v16 = v13;
-            v17 = [v15 uuid];
+            uuid = [v15 uuid];
             *buf = 138412290;
-            *v62 = v17;
+            *v62 = uuid;
             _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Finding candidates for Pet %@", buf, 0xCu);
           }
 
           v53 = v15;
-          v54 = [(PGPetWallpaperSuggester *)self candidatesForPet:v15, spid];
+          spid = [(PGPetWallpaperSuggester *)self candidatesForPet:v15, spid];
           v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"isFavorite" ascending:0];
           v63[0] = v18;
           v19 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"headroomEngaged" ascending:1];
@@ -374,19 +374,19 @@
           v13 = v20;
 
           v27 = MEMORY[0x277D3C810];
-          v28 = [(PGPetWallpaperSuggester *)v24 primaryFilteringContext];
-          [v28 timeIntervalForCandidateDeduping];
-          v29 = [v27 sortedDedupedCandidatesFromCandidates:v54 sortDescriptors:v26 timeIntervalForCandidateDeduping:a4 targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
+          primaryFilteringContext = [(PGPetWallpaperSuggester *)v24 primaryFilteringContext];
+          [primaryFilteringContext timeIntervalForCandidateDeduping];
+          v29 = [v27 sortedDedupedCandidatesFromCandidates:spid sortDescriptors:v26 timeIntervalForCandidateDeduping:suggestions targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
 
-          if ([v54 count])
+          if ([spid count])
           {
-            v30 = [v53 localIdentifier];
-            [v49 setObject:v29 forKeyedSubscript:v30];
+            localIdentifier = [v53 localIdentifier];
+            [v49 setObject:v29 forKeyedSubscript:localIdentifier];
 
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
               v31 = v13;
-              v32 = [v54 count];
+              v32 = [spid count];
               *buf = 134217984;
               *v62 = v32;
               _os_log_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Found %lu candidates.", buf, 0xCu);
@@ -402,7 +402,7 @@
       while (v52);
     }
 
-    v8 = v46;
+    reporterCopy = v46;
     if ([v46 isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -415,8 +415,8 @@
       }
 
       v9 = MEMORY[0x277CBEC10];
-      v7 = v47;
-      v33 = v45;
+      petsCopy = v47;
+      v33 = session;
       v34 = v49;
     }
 
@@ -433,7 +433,7 @@
         _os_signpost_emit_with_name_impl(&dword_22F0FC000, v39, OS_SIGNPOST_INTERVAL_END, spid, "PGPetWallpaperSuggesterFindCandidateForAllPets", "", buf, 2u);
       }
 
-      v33 = v45;
+      v33 = session;
       v34 = v49;
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
@@ -445,7 +445,7 @@
       }
 
       v9 = v49;
-      v7 = v47;
+      petsCopy = v47;
     }
   }
 
@@ -457,10 +457,10 @@
 - (id)fetchPets
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 loggingConnection];
-  v4 = os_signpost_id_generate(v3);
-  v5 = v3;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v4 = os_signpost_id_generate(loggingConnection);
+  v5 = loggingConnection;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
@@ -477,9 +477,9 @@
     _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Fetching inferred user's pets and user-verified pets... (Pets Parity enabled)", buf, 2u);
   }
 
-  v8 = [v2 workingContext];
-  v9 = [v2 curationContext];
-  v10 = [PGGraphPetIdentityProcessor fetchInterestingEligiblePetsForWallpaperWithWorkingContext:v8 curationContext:v9];
+  workingContext = [session workingContext];
+  curationContext = [session curationContext];
+  v10 = [PGGraphPetIdentityProcessor fetchInterestingEligiblePetsForWallpaperWithWorkingContext:workingContext curationContext:curationContext];
 
   v11 = mach_absolute_time();
   numer = info.numer;
@@ -515,12 +515,12 @@
   return v10;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:v7];
+  optionsCopy = options;
+  progressCopy = progress;
+  v8 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:progressCopy];
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -529,10 +529,10 @@
   *(v56 + 24) = v9;
   if (!v9)
   {
-    v11 = [(PGAbstractSuggester *)self session];
-    v12 = [v11 loggingConnection];
-    v13 = [v6 maximumNumberOfSuggestions];
-    v14 = v12;
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+    v14 = loggingConnection;
     v15 = os_signpost_id_generate(v14);
     v16 = v14;
     v17 = v16;
@@ -548,11 +548,11 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      *v60 = v13;
+      *v60 = maximumNumberOfSuggestions;
       _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGPetWallpaperSuggester] Starting to generate %d suggestions.", buf, 8u);
     }
 
-    v42 = [(PGPetWallpaperSuggester *)self fetchPets];
+    fetchPets = [(PGPetWallpaperSuggester *)self fetchPets];
     if (v56[3])
     {
       *(v56 + 24) = 1;
@@ -578,7 +578,7 @@ LABEL_13:
     }
 
     v39 = [v8 childProgressReporterFromStart:0.2 toEnd:0.79];
-    v40 = [(PGPetWallpaperSuggester *)self sortedCandidatesByPetLocalIdentifierFromPets:v42 maximumNumberOfSuggestions:v13 progressReporter:?];
+    v40 = [(PGPetWallpaperSuggester *)self sortedCandidatesByPetLocalIdentifierFromPets:fetchPets maximumNumberOfSuggestions:maximumNumberOfSuggestions progressReporter:?];
     if (v56[3])
     {
       *(v56 + 24) = 1;
@@ -604,11 +604,11 @@ LABEL_19:
     }
 
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = [objc_opt_class() suggestionTypes];
-    v36 = [v20 firstIndex];
+    suggestionTypes = [objc_opt_class() suggestionTypes];
+    firstIndex = [suggestionTypes firstIndex];
 
-    v21 = [objc_opt_class() suggestionSubtypes];
-    v35 = [v21 firstIndex];
+    suggestionSubtypes = [objc_opt_class() suggestionSubtypes];
+    firstIndex2 = [suggestionSubtypes firstIndex];
 
     v22 = self->_assetGater == 0;
     v23 = 5;
@@ -617,7 +617,7 @@ LABEL_19:
       v23 = 0;
     }
 
-    v24 = 2 * v13;
+    v24 = 2 * maximumNumberOfSuggestions;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __59__PGPetWallpaperSuggester_suggestionsWithOptions_progress___block_invoke;
@@ -627,17 +627,17 @@ LABEL_19:
       v24 = 0;
     }
 
-    v49 = v13;
+    v49 = maximumNumberOfSuggestions;
     v50 = v23;
     v51 = v24;
     v25 = v17;
     v44 = v25;
     v48 = &v55;
     v26 = v8;
-    v52 = v36;
-    v53 = v35;
+    v52 = firstIndex;
+    v53 = firstIndex2;
     v45 = v26;
-    v46 = self;
+    selfCopy = self;
     v27 = v37;
     v47 = v27;
     [v40 enumerateKeysAndObjectsUsingBlock:v43];
@@ -1024,9 +1024,9 @@ LABEL_59:
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -1036,7 +1036,7 @@ LABEL_11:
     return;
   }
 
-  if (([(PGPetWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGPetWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v12 = objc_opt_class();
     NSStringFromClass(v12);
@@ -1052,8 +1052,8 @@ LABEL_11:
   if (IsIPad)
   {
     v6 = [(PGPetWallpaperSuggesterFilteringContext *)v5 initForPetsInOrientation:2];
-    primaryFilteringContext = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v6;
+    primaryFilteringContext = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v6;
 
     v8 = [[PGPetWallpaperSuggesterFilteringContext alloc] initForPetsInOrientation:1];
   }
@@ -1061,29 +1061,29 @@ LABEL_11:
   else
   {
     v9 = [(PGPetWallpaperSuggesterFilteringContext *)v5 initForPetsInOrientation:1];
-    v10 = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v9;
+    v10 = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v9;
 
     v8 = 0;
   }
 
-  secondaryFilteringContext = v2->_secondaryFilteringContext;
-  v2->_secondaryFilteringContext = v8;
+  secondaryFilteringContext = selfCopy->_secondaryFilteringContext;
+  selfCopy->_secondaryFilteringContext = v8;
 }
 
-- (PGPetWallpaperSuggester)initWithSession:(id)a3
+- (PGPetWallpaperSuggester)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = PGPetWallpaperSuggester;
-  v5 = [(PGAbstractSuggester *)&v13 initWithSession:v4];
+  v5 = [(PGAbstractSuggester *)&v13 initWithSession:sessionCopy];
   if (v5)
   {
     if ([objc_opt_class() filtersForTopSuggestions])
     {
       v6 = [PGWallpaperSuggestionAssetGater alloc];
-      v7 = [v4 loggingConnection];
-      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:2 loggingConnection:v7];
+      loggingConnection = [sessionCopy loggingConnection];
+      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:2 loggingConnection:loggingConnection];
       assetGater = v5->_assetGater;
       v5->_assetGater = v8;
     }
@@ -1098,72 +1098,72 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 photoLibrary];
-  v13 = [v12 librarySpecificFetchOptions];
-  [v13 setIncludedDetectionTypes:&unk_2844853E8];
-  v14 = [MEMORY[0x277CD9868] fetchFacesInAsset:v10 options:v13];
+  assetCopy = asset;
+  contextCopy = context;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_2844853E8];
+  v14 = [MEMORY[0x277CD9868] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
   if ([v14 count] == 1)
   {
-    v15 = [v14 firstObject];
-    if (([v15 detectionType] - 5) <= 0xFFFCu)
+    firstObject = [v14 firstObject];
+    if (([firstObject detectionType] - 5) <= 0xFFFCu)
     {
       v16 = 0;
-      if (a6)
+      if (reason)
       {
-        *a6 = @"No Pet Found";
+        *reason = @"No Pet Found";
       }
 
       goto LABEL_45;
     }
 
-    v51 = a6;
-    v53 = v15;
-    v18 = [objc_opt_class() filtersForTopSuggestions];
+    reasonCopy = reason;
+    v53 = firstObject;
+    filtersForTopSuggestions = [objc_opt_class() filtersForTopSuggestions];
     v19 = [PGPetWallpaperSuggesterFilteringContext alloc];
-    v48 = v18;
-    v50 = v11;
-    v45 = a5;
-    if (v18)
+    v48 = filtersForTopSuggestions;
+    v50 = contextCopy;
+    orientationCopy = orientation;
+    if (filtersForTopSuggestions)
     {
-      v20 = [(PGPetWallpaperSuggesterFilteringContext *)v19 initForTopPetsInOrientation:a5];
+      v20 = [(PGPetWallpaperSuggesterFilteringContext *)v19 initForTopPetsInOrientation:orientation];
     }
 
     else
     {
-      v20 = [(PGPetWallpaperSuggesterFilteringContext *)v19 initForPetsInOrientation:a5];
+      v20 = [(PGPetWallpaperSuggesterFilteringContext *)v19 initForPetsInOrientation:orientation];
     }
 
     v21 = v20;
-    v22 = [a1 prefilteringInternalPredicateWithContext:v20];
-    [v13 setInternalPredicate:v22];
+    v22 = [self prefilteringInternalPredicateWithContext:v20];
+    [librarySpecificFetchOptions setInternalPredicate:v22];
 
     v23 = MEMORY[0x277CD9868];
-    v24 = [v15 localIdentifier];
-    v63[0] = v24;
+    localIdentifier = [firstObject localIdentifier];
+    v63[0] = localIdentifier;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:1];
-    v26 = [v23 fetchFacesWithLocalIdentifiers:v25 options:v13];
-    v27 = [v26 firstObject];
+    v26 = [v23 fetchFacesWithLocalIdentifiers:v25 options:librarySpecificFetchOptions];
+    firstObject2 = [v26 firstObject];
 
     v52 = v21;
-    if (!v27)
+    if (!firstObject2)
     {
-      v11 = v50;
+      contextCopy = v50;
       v16 = 0;
-      if (v51)
+      if (reasonCopy)
       {
-        *v51 = @"Fails Predicate";
+        *reasonCopy = @"Fails Predicate";
       }
 
-      v15 = v53;
+      firstObject = v53;
       goto LABEL_44;
     }
 
-    v28 = [[PGPetWallpaperSuggestionCandidate alloc] initWithFace:v27 inAsset:v10];
+    v28 = [[PGPetWallpaperSuggestionCandidate alloc] initWithFace:firstObject2 inAsset:assetCopy];
     v29 = +[PGWallpaperSuggestionUtilities peopleSceneConfidenceThresholdHelper];
     v61 = 0u;
     memset(v62, 0, sizeof(v62));
@@ -1175,13 +1175,13 @@ LABEL_11:
     v56 = 0u;
     v30 = v28;
     v31 = v28;
-    v11 = v50;
+    contextCopy = v50;
     v46 = v29;
-    v47 = v27;
-    if ([a1 candidate:v31 passesFilteringWithContext:v21 curationContext:v50 thresholdHelper:? statistics:?])
+    v47 = firstObject2;
+    if ([self candidate:v31 passesFilteringWithContext:v21 curationContext:v50 thresholdHelper:? statistics:?])
     {
       v16 = 1;
-      v32 = v51;
+      v32 = reasonCopy;
       if (v48)
       {
         v33 = [PGWallpaperSuggestionAssetGater alloc];
@@ -1189,8 +1189,8 @@ LABEL_11:
         [(PGWallpaperSuggestionAssetGater *)v34 setCoversTracks:1];
         [(PGWallpaperSuggestionAssetGater *)v34 setIsUserInitiated:1];
         v54 = 1;
-        v35 = [(PGPetWallpaperSuggestionCandidate *)v30 asset];
-        v36 = [(PGWallpaperSuggestionAssetGater *)v34 gateAsset:v35 hasPetFace:&v54];
+        asset = [(PGPetWallpaperSuggestionCandidate *)v30 asset];
+        v36 = [(PGWallpaperSuggestionAssetGater *)v34 gateAsset:asset hasPetFace:&v54];
 
         v49 = v36;
         if (v54)
@@ -1203,8 +1203,8 @@ LABEL_11:
 
           else
           {
-            v38 = [(PGPetWallpaperSuggestionCandidate *)v30 cropResult];
-            v39 = [v38 cropForOrientation:v45];
+            cropResult = [(PGPetWallpaperSuggestionCandidate *)v30 cropResult];
+            v39 = [cropResult cropForOrientation:orientationCopy];
 
             if (([v52 ignoreClockOverlap] & 1) != 0 || objc_msgSend(v39, "passesClockOverlap"))
             {
@@ -1229,7 +1229,7 @@ LABEL_11:
               v37 = @"Clock Overlap";
             }
 
-            v32 = v51;
+            v32 = reasonCopy;
           }
         }
 
@@ -1245,7 +1245,7 @@ LABEL_11:
         v37 = @"Pass";
       }
 
-      v15 = v53;
+      firstObject = v53;
       if (!v32)
       {
         goto LABEL_43;
@@ -1254,14 +1254,14 @@ LABEL_11:
 
     else
     {
-      v15 = v53;
-      v32 = v51;
-      if (!v51)
+      firstObject = v53;
+      v32 = reasonCopy;
+      if (!reasonCopy)
       {
         v16 = 0;
 LABEL_43:
 
-        v27 = v47;
+        firstObject2 = v47;
 LABEL_44:
 
 LABEL_45:
@@ -1320,8 +1320,8 @@ LABEL_45:
                       v37 = @"Not Safe for Display";
                     }
 
-                    v15 = v53;
-                    v32 = v51;
+                    firstObject = v53;
+                    v32 = reasonCopy;
                   }
 
                   else
@@ -1377,7 +1377,7 @@ LABEL_45:
     goto LABEL_43;
   }
 
-  if (a6)
+  if (reason)
   {
     if ([v14 count] <= 1)
     {
@@ -1390,7 +1390,7 @@ LABEL_45:
     }
 
     v16 = 0;
-    *a6 = v17;
+    *reason = v17;
   }
 
   else
@@ -1404,44 +1404,44 @@ LABEL_46:
   return v16;
 }
 
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 asset];
-  v16 = [v15 curationModel];
-  [v12 minimumWallpaperScore];
+  candidateCopy = candidate;
+  contextCopy = context;
+  curationContextCopy = curationContext;
+  helperCopy = helper;
+  asset = [candidateCopy asset];
+  curationModel = [asset curationModel];
+  [contextCopy minimumWallpaperScore];
   v18 = v17;
   if (v17 < 0.0)
   {
-    v19 = [v16 wallpaperScoreModel];
-    v20 = [v11 face];
-    v21 = [v20 detectionType];
+    wallpaperScoreModel = [curationModel wallpaperScoreModel];
+    face = [candidateCopy face];
+    detectionType = [face detectionType];
 
     v18 = 1.79769313e308;
-    if (v21 > 2u)
+    if (detectionType > 2u)
     {
-      if (v21 == 3)
+      if (detectionType == 3)
       {
-        v22 = [v19 dogNode];
+        dogNode = [wallpaperScoreModel dogNode];
         goto LABEL_13;
       }
 
-      if (v21 == 4)
+      if (detectionType == 4)
       {
-        v22 = [v19 catNode];
+        dogNode = [wallpaperScoreModel catNode];
 LABEL_13:
-        v23 = v22;
-        [v22 operatingPoint];
+        v23 = dogNode;
+        [dogNode operatingPoint];
         v18 = v24;
       }
     }
 
     else
     {
-      if (v21 < 2u)
+      if (detectionType < 2u)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -1453,9 +1453,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (v21 == 2)
+      if (detectionType == 2)
       {
-        v22 = [v19 petNode];
+        dogNode = [wallpaperScoreModel petNode];
         goto LABEL_13;
       }
     }
@@ -1463,70 +1463,70 @@ LABEL_13:
 LABEL_14:
   }
 
-  [v11 wallpaperScore];
+  [candidateCopy wallpaperScore];
   if (v18 > v25)
   {
     v26 = 0;
-    ++a7->var3;
+    ++statistics->var3;
     goto LABEL_43;
   }
 
-  v27 = [v13 userFeedbackCalculator];
-  v28 = [v16 isUtilityForMemoriesWithAsset:v15 userFeedbackCalculator:v27 blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
+  userFeedbackCalculator = [curationContextCopy userFeedbackCalculator];
+  v28 = [curationModel isUtilityForMemoriesWithAsset:asset userFeedbackCalculator:userFeedbackCalculator blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
 
   if (v28)
   {
     v26 = 0;
-    ++a7->var0;
+    ++statistics->var0;
     goto LABEL_43;
   }
 
-  if ([v16 avoidIfPossibleForKeyAssetWithAsset:v15 statistics:&a7->var11])
+  if ([curationModel avoidIfPossibleForKeyAssetWithAsset:asset statistics:&statistics->var11])
   {
     v26 = 0;
-    ++a7->var1;
+    ++statistics->var1;
     goto LABEL_43;
   }
 
-  if (([v16 isAestheticallyPrettyGoodWithAsset:v15] & 1) == 0)
+  if (([curationModel isAestheticallyPrettyGoodWithAsset:asset] & 1) == 0)
   {
     v26 = 0;
-    ++a7->var2;
+    ++statistics->var2;
     goto LABEL_43;
   }
 
-  if (([v12 bypassCropScoreCheck] & 1) == 0)
+  if (([contextCopy bypassCropScoreCheck] & 1) == 0)
   {
-    v29 = [v11 cropResult];
-    v30 = [v29 cropForOrientation:{objc_msgSend(v12, "orientation")}];
+    cropResult = [candidateCopy cropResult];
+    v30 = [cropResult cropForOrientation:{objc_msgSend(contextCopy, "orientation")}];
 
-    if (([v12 ignoreClockOverlap] & 1) == 0 && !objc_msgSend(v30, "passesClockOverlap"))
+    if (([contextCopy ignoreClockOverlap] & 1) == 0 && !objc_msgSend(v30, "passesClockOverlap"))
     {
       v34 = 16;
       goto LABEL_41;
     }
 
-    [v11 setHeadroomEngaged:{objc_msgSend(v30, "headroomEngaged")}];
+    [candidateCopy setHeadroomEngaged:{objc_msgSend(v30, "headroomEngaged")}];
     if ([v30 layoutVariant] != 2)
     {
       [v30 cropZoomRatio];
       v32 = v31;
-      [v12 maximumCropZoomRatio];
+      [contextCopy maximumCropZoomRatio];
       if (v32 > v33)
       {
         v34 = 20;
 LABEL_41:
-        ++*(&a7->var0 + v34);
+        ++*(&statistics->var0 + v34);
         goto LABEL_42;
       }
     }
 
     [v30 cropScore];
     v36 = v35;
-    [v12 minimumCropScore];
+    [contextCopy minimumCropScore];
     if (v36 < v37)
     {
-      ++a7->var6;
+      ++statistics->var6;
 LABEL_42:
 
       v26 = 0;
@@ -1534,40 +1534,40 @@ LABEL_42:
     }
   }
 
-  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:v15])
+  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:asset])
   {
-    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:v15 withConfidenceThresholdHelper:v14])
+    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:asset withConfidenceThresholdHelper:helperCopy])
     {
       v26 = 0;
-      ++a7->var8;
+      ++statistics->var8;
     }
 
     else
     {
-      [v12 maximumLowLightScore];
+      [contextCopy maximumLowLightScore];
       v39 = v38;
       if (v38 < 0.0)
       {
-        v40 = [v15 curationModel];
-        v41 = [v40 aestheticsModel];
-        v42 = [v41 lowLightNode];
-        [v42 operatingPoint];
+        curationModel2 = [asset curationModel];
+        aestheticsModel = [curationModel2 aestheticsModel];
+        lowLightNode = [aestheticsModel lowLightNode];
+        [lowLightNode operatingPoint];
         v39 = v43;
       }
 
-      v44 = [v15 aestheticProperties];
-      [v44 lowLight];
+      aestheticProperties = [asset aestheticProperties];
+      [aestheticProperties lowLight];
       v46 = v45;
 
       if (v39 >= v46)
       {
-        v48 = [v11 asset];
-        v49 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:v48];
+        asset2 = [candidateCopy asset];
+        v49 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:asset2];
 
         if (v49)
         {
           v26 = 0;
-          ++a7->var10;
+          ++statistics->var10;
         }
 
         else
@@ -1579,7 +1579,7 @@ LABEL_42:
       else
       {
         v26 = 0;
-        ++a7->var9;
+        ++statistics->var9;
       }
     }
   }
@@ -1587,7 +1587,7 @@ LABEL_42:
   else
   {
     v26 = 0;
-    ++a7->var7;
+    ++statistics->var7;
   }
 
 LABEL_43:
@@ -1595,15 +1595,15 @@ LABEL_43:
   return v26;
 }
 
-+ (id)prefilteringInternalPredicateWithContext:(id)a3
++ (id)prefilteringInternalPredicateWithContext:(id)context
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277CCAC30];
-  [v4 minimumFaceSize];
+  [contextCopy minimumFaceSize];
   v8 = v7;
-  [v4 maximumFaceSize];
+  [contextCopy maximumFaceSize];
   v10 = v9;
 
   v11 = [v6 predicateWithFormat:@"%K >= %f AND %K < %f", @"size", v8, @"size", v10];

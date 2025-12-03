@@ -1,12 +1,12 @@
 @interface PVLivePlayerThermalThrottlingPolicy
 - (PVLivePlayerThermalThrottlingPolicy)init;
 - (id).cxx_construct;
-- (id)controlParametersForThermalLevel:(int)a3;
+- (id)controlParametersForThermalLevel:(int)level;
 - (id)description;
 - (id)populatedControlParametersForCurrentThermalLevel;
-- (id)populatedControlParametersForThermalLevel:(int)a3;
+- (id)populatedControlParametersForThermalLevel:(int)level;
 - (void)dealloc;
-- (void)setThermalLevel:(int)a3 controlParameters:(id)a4;
+- (void)setThermalLevel:(int)level controlParameters:(id)parameters;
 @end
 
 @implementation PVLivePlayerThermalThrottlingPolicy
@@ -40,48 +40,48 @@
   [(PVLivePlayerThermalThrottlingPolicy *)&v4 dealloc];
 }
 
-- (void)setThermalLevel:(int)a3 controlParameters:(id)a4
+- (void)setThermalLevel:(int)level controlParameters:(id)parameters
 {
-  v9 = a3;
-  v6 = a4;
+  levelCopy = level;
+  parametersCopy = parameters;
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
-  if (v6)
+  if (parametersCopy)
   {
-    v10 = &v9;
-    v8 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &v9);
-    objc_storeStrong(v8 + 5, a4);
+    v10 = &levelCopy;
+    v8 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &levelCopy);
+    objc_storeStrong(v8 + 5, parameters);
   }
 
   else
   {
-    std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__erase_unique<PVSPI_OSThermalPressureLevel>(&self->_policy, &v9);
+    std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__erase_unique<PVSPI_OSThermalPressureLevel>(&self->_policy, &levelCopy);
   }
 
   HGSynchronizable::Unlock(lock);
 }
 
-- (id)controlParametersForThermalLevel:(int)a3
+- (id)controlParametersForThermalLevel:(int)level
 {
-  v7 = a3;
+  levelCopy = level;
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
-  v8 = &v7;
-  v5 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &v7)[5];
+  v8 = &levelCopy;
+  v5 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &levelCopy)[5];
   HGSynchronizable::Unlock(lock);
 
   return v5;
 }
 
-- (id)populatedControlParametersForThermalLevel:(int)a3
+- (id)populatedControlParametersForThermalLevel:(int)level
 {
-  v16 = a3;
+  levelCopy = level;
   lock = self->_lock;
   v14 = lock;
   v15 = 0;
   HGSynchronizable::Lock(lock);
-  v17 = &v16;
-  v5 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &v16)[5];
+  v17 = &levelCopy;
+  v5 = std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::__map_value_compare<PVSPI_OSThermalPressureLevel,std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>,std::less<PVSPI_OSThermalPressureLevel>,true>,std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel,PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel,std::piecewise_construct_t const&,std::tuple<PVSPI_OSThermalPressureLevel const&>,std::tuple<>>(&self->_policy, &levelCopy)[5];
   if (v5)
   {
     v6 = v5;
@@ -93,8 +93,8 @@
     v7 = [PVLivePlayerThrottlingControlParameters CreateControllerParameters:0];
   }
 
-  v8 = v16;
-  v13 = v16;
+  v8 = levelCopy;
+  v13 = levelCopy;
   if (v7)
   {
     v9 = [v7 hasNilParameter] ^ 1;
@@ -144,7 +144,7 @@
 
 - (id)description
 {
-  v2 = self;
+  selfCopy2 = self;
   v34 = 0;
   v3 = 0uLL;
   *__src = 0u;
@@ -240,7 +240,7 @@
 
     while (v19 != p_end_node);
     v3 = *__src;
-    v2 = self;
+    selfCopy2 = self;
   }
 
   v21 = 126 - 2 * __clz((*(&v3 + 1) - v3) >> 2);
@@ -255,18 +255,18 @@
   }
 
   std::__introsort<std::_ClassicAlgPolicy,std::__less<void,void> &,PVSPI_OSThermalPressureLevel *,false>(v3, *(&v3 + 1), &v35, v22, 1);
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %p>", objc_opt_class(), v2];
-  v24 = [v23 mutableCopy];
+  selfCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@ %p>", objc_opt_class(), selfCopy2];
+  v24 = [selfCopy2 mutableCopy];
 
   v25 = __src[0];
   for (i = __src[1]; v25 != i; ++v25)
   {
     v32 = *v25;
     v27 = PVThermalMonitorLevelName(v32);
-    v28 = [v27 UTF8String];
+    uTF8String = [v27 UTF8String];
     v35 = &v32;
     v29 = [std::__tree<std::__value_type<PVSPI_OSThermalPressureLevel PVLivePlayerThrottlingControlParameters * {:std::__map_value_compare<PVSPI_OSThermalPressureLevel :{std::__value_type<PVSPI_OSThermalPressureLevel, PVLivePlayerThrottlingControlParameters * {__strong}>, std::less<PVSPI_OSThermalPressureLevel>, true>, std::allocator<std::__value_type<PVSPI_OSThermalPressureLevel, PVLivePlayerThrottlingControlParameters * {__strong}>>>::__emplace_unique_key_args<PVSPI_OSThermalPressureLevel, std::piecewise_construct_t const&, std::tuple<PVSPI_OSThermalPressureLevel const&>, std::tuple<>>(p_policy, &v32)[5], "description"}strong}>];
-    [v24 appendFormat:@"\n %15s - %@", v28, v29];
+    [v24 appendFormat:@"\n %15s - %@", uTF8String, v29];
   }
 
   if (__src[0])

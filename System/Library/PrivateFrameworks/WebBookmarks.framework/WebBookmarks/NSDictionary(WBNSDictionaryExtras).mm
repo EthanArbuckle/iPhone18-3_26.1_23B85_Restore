@@ -13,16 +13,16 @@
 
 - (uint64_t)wb_BOOLForKey:()WBNSDictionaryExtras
 {
-  v3 = [a1 wb_numberForKey:a3 isValid:0];
-  v4 = [v3 BOOLValue];
+  v3 = [self wb_numberForKey:a3 isValid:0];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)wb_numberForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -30,7 +30,7 @@
 - (id)wb_stringForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -38,7 +38,7 @@
 - (id)wb_dictionaryForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -46,7 +46,7 @@
 - (id)wb_arrayForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -54,7 +54,7 @@
 - (id)wb_dateForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -62,7 +62,7 @@
 - (id)wb_URLForKey:()WBNSDictionaryExtras isValid:
 {
   v6 = a3;
-  v7 = [a1 wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
+  v7 = [self wb_objectOfType:objc_opt_class() forKey:v6 isValid:a4];
 
   return v7;
 }
@@ -76,7 +76,7 @@
   v13[4] = a5;
   v6 = a4;
   v7 = MEMORY[0x2743D6830](v13);
-  v8 = [a1 objectForKey:v6];
+  v8 = [self objectForKey:v6];
 
   if (v8)
   {

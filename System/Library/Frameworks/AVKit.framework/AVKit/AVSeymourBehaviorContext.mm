@@ -1,12 +1,12 @@
 @interface AVSeymourBehaviorContext
 - (AVPlayerViewController)playerViewController;
-- (AVSeymourBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVSeymourBehaviorContext)initWithAVKitOwner:(id)owner;
 - (NSEdgeInsets)legibleContentInsets;
 - (id)behavior;
 - (void)_updateLegibleContentInsets;
-- (void)didRemoveBehavior:(id)a3;
+- (void)didRemoveBehavior:(id)behavior;
 - (void)hidePlaybackControlsImmediately;
-- (void)seymourBehaviorContextDidReceiveButtonTap:(id)a3;
+- (void)seymourBehaviorContextDidReceiveButtonTap:(id)tap;
 - (void)viewDidLoad;
 @end
 
@@ -39,17 +39,17 @@
   return WeakRetained;
 }
 
-- (void)seymourBehaviorContextDidReceiveButtonTap:(id)a3
+- (void)seymourBehaviorContextDidReceiveButtonTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   objc_initWeak(&location, self);
-  v5 = [(AVSeymourBehaviorContext *)self behavior];
+  behavior = [(AVSeymourBehaviorContext *)self behavior];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__AVSeymourBehaviorContext_seymourBehaviorContextDidReceiveButtonTap___block_invoke;
   v6[3] = &unk_1E7209EA8;
   objc_copyWeak(&v7, &location);
-  [v5 seymourBehaviorContext:self didRecieveDoneButtonTapWithDismissalBlock:v6];
+  [behavior seymourBehaviorContext:self didRecieveDoneButtonTapWithDismissalBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -89,19 +89,19 @@ void __70__AVSeymourBehaviorContext_seymourBehaviorContextDidReceiveButtonTap___
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d", &v9, 0x12u);
   }
 
-  v4 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v5 = [v4 catalystPlaybackControlsController];
+  playerViewController = [(AVSeymourBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController catalystPlaybackControlsController];
 
-  v6 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v7 = v6;
-  if (v5)
+  playerViewController2 = [(AVSeymourBehaviorContext *)self playerViewController];
+  v7 = playerViewController2;
+  if (catalystPlaybackControlsController)
   {
-    [v6 catalystPlaybackControlsController];
+    [playerViewController2 catalystPlaybackControlsController];
   }
 
   else
   {
-    [v6 chromePlaybackControlsController];
+    [playerViewController2 chromePlaybackControlsController];
   }
   v8 = ;
   [v8 flashPlaybackControlsWithDuration:0.0];
@@ -109,120 +109,120 @@ void __70__AVSeymourBehaviorContext_seymourBehaviorContextDidReceiveButtonTap___
 
 - (void)_updateLegibleContentInsets
 {
-  v3 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v4 = [v3 contentView];
-  v5 = [v4 playbackContentContainerView];
-  v6 = [v5 activeContentView];
-  v7 = [v6 playerLayerView];
-  v8 = [v7 playerLayer];
+  playerViewController = [(AVSeymourBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  playbackContentContainerView = [contentView playbackContentContainerView];
+  activeContentView = [playbackContentContainerView activeContentView];
+  playerLayerView = [activeContentView playerLayerView];
+  playerLayer = [playerLayerView playerLayer];
 
   [(AVSeymourBehaviorContext *)self legibleContentInsets];
-  [v8 setLegibleContentInsets:?];
+  [playerLayer setLegibleContentInsets:?];
 }
 
 - (void)viewDidLoad
 {
-  v19 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v3 = [v19 contentView];
-  v4 = [v19 catalystPlaybackControlsController];
+  playerViewController = [(AVSeymourBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  catalystPlaybackControlsController = [playerViewController catalystPlaybackControlsController];
 
-  if (v4)
+  if (catalystPlaybackControlsController)
   {
-    v5 = [v19 catalystPlaybackControlsController];
-    [v5 setShowsVideoZoomControl:0];
+    catalystPlaybackControlsController2 = [playerViewController catalystPlaybackControlsController];
+    [catalystPlaybackControlsController2 setShowsVideoZoomControl:0];
 
-    v6 = [v19 catalystPlaybackControlsController];
-    [v6 setWantsExternalPlaybackButtonShown:0];
+    catalystPlaybackControlsController3 = [playerViewController catalystPlaybackControlsController];
+    [catalystPlaybackControlsController3 setWantsExternalPlaybackButtonShown:0];
 
-    v7 = [v19 controlsViewController];
-    v8 = [v7 controlsViewControllerIfCatalystGlass];
-    v9 = [v8 playbackControlsView];
+    controlsViewController = [playerViewController controlsViewController];
+    controlsViewControllerIfCatalystGlass = [controlsViewController controlsViewControllerIfCatalystGlass];
+    playbackControlsView = [controlsViewControllerIfCatalystGlass playbackControlsView];
 
-    v10 = [v9 doneButton];
-    [v10 removeTarget:0 action:sel_doneButtonTapped_ forControlEvents:64];
+    doneButton = [playbackControlsView doneButton];
+    [doneButton removeTarget:0 action:sel_doneButtonTapped_ forControlEvents:64];
   }
 
   else
   {
-    v11 = [v19 chromePlaybackControlsController];
-    [v11 setShowsVideoGravityButton:0];
+    chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+    [chromePlaybackControlsController setShowsVideoGravityButton:0];
 
-    v12 = [v19 chromePlaybackControlsController];
-    [v12 setWantsExternalPlaybackButtonShown:0];
+    chromePlaybackControlsController2 = [playerViewController chromePlaybackControlsController];
+    [chromePlaybackControlsController2 setWantsExternalPlaybackButtonShown:0];
 
-    v13 = [v3 chromePlaybackControlsView];
-    v14 = [v13 doneButton];
-    [v14 removeTarget:0 action:sel_doneButtonTapped_ forControlEvents:64];
+    chromePlaybackControlsView = [contentView chromePlaybackControlsView];
+    doneButton2 = [chromePlaybackControlsView doneButton];
+    [doneButton2 removeTarget:0 action:sel_doneButtonTapped_ forControlEvents:64];
 
-    v9 = [v3 chromePlaybackControlsView];
+    playbackControlsView = [contentView chromePlaybackControlsView];
   }
 
-  v15 = [v9 doneButton];
-  [v15 addTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
+  doneButton3 = [playbackControlsView doneButton];
+  [doneButton3 addTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
 
-  v16 = [v19 controlsViewController];
-  v17 = [(AVSeymourBehaviorContext *)self playerViewController];
-  [v16 removeAction:sel_doneButtonTapped_ withTarget:v17 forEvent:@"AVControlsDoneButtonPressedEvent"];
+  controlsViewController2 = [playerViewController controlsViewController];
+  playerViewController2 = [(AVSeymourBehaviorContext *)self playerViewController];
+  [controlsViewController2 removeAction:sel_doneButtonTapped_ withTarget:playerViewController2 forEvent:@"AVControlsDoneButtonPressedEvent"];
 
-  v18 = [v19 controlsViewController];
-  [v18 addAction:sel_seymourBehaviorContextDidReceiveButtonTap_ withTarget:self forEvent:@"AVControlsDoneButtonPressedEvent"];
+  controlsViewController3 = [playerViewController controlsViewController];
+  [controlsViewController3 addAction:sel_seymourBehaviorContextDidReceiveButtonTap_ withTarget:self forEvent:@"AVControlsDoneButtonPressedEvent"];
 
   [(AVSeymourBehaviorContext *)self _updateLegibleContentInsets];
 }
 
-- (AVSeymourBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVSeymourBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v9.receiver = self;
   v9.super_class = AVSeymourBehaviorContext;
   v5 = [(AVSeymourBehaviorContext *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_playerViewController, v4);
-    [v4 setSpeeds:MEMORY[0x1E695E0F0]];
+    v7 = objc_storeWeak(&v5->_playerViewController, ownerCopy);
+    [ownerCopy setSpeeds:MEMORY[0x1E695E0F0]];
   }
 
   return v6;
 }
 
-- (void)didRemoveBehavior:(id)a3
+- (void)didRemoveBehavior:(id)behavior
 {
-  v19 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v4 = [v19 contentView];
-  v5 = [v19 catalystPlaybackControlsController];
+  playerViewController = [(AVSeymourBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  catalystPlaybackControlsController = [playerViewController catalystPlaybackControlsController];
 
-  if (v5)
+  if (catalystPlaybackControlsController)
   {
-    v6 = [v19 controlsViewController];
-    v7 = [v6 controlsViewControllerIfCatalystGlass];
-    v8 = [v7 playbackControlsView];
+    controlsViewController = [playerViewController controlsViewController];
+    controlsViewControllerIfCatalystGlass = [controlsViewController controlsViewControllerIfCatalystGlass];
+    playbackControlsView = [controlsViewControllerIfCatalystGlass playbackControlsView];
 
-    v9 = [v8 doneButton];
-    [v9 removeTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
+    doneButton = [playbackControlsView doneButton];
+    [doneButton removeTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
   }
 
   else
   {
-    v10 = [v4 chromePlaybackControlsView];
-    v11 = [v10 doneButton];
-    [v11 removeTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
+    chromePlaybackControlsView = [contentView chromePlaybackControlsView];
+    doneButton2 = [chromePlaybackControlsView doneButton];
+    [doneButton2 removeTarget:self action:sel_seymourBehaviorContextDidReceiveButtonTap_ forControlEvents:64];
 
-    v8 = [v4 chromePlaybackControlsView];
+    playbackControlsView = [contentView chromePlaybackControlsView];
   }
 
-  v12 = [v8 doneButton];
-  v13 = [(AVSeymourBehaviorContext *)self playerViewController];
-  [v12 addTarget:v13 action:sel_doneButtonTapped_ forControlEvents:64];
+  doneButton3 = [playbackControlsView doneButton];
+  playerViewController2 = [(AVSeymourBehaviorContext *)self playerViewController];
+  [doneButton3 addTarget:playerViewController2 action:sel_doneButtonTapped_ forControlEvents:64];
 
-  v14 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v15 = [v14 controlsViewController];
-  [v15 removeAction:sel_seymourBehaviorContextDidReceiveButtonTap_ withTarget:self forEvent:@"AVControlsDoneButtonPressedEvent"];
+  playerViewController3 = [(AVSeymourBehaviorContext *)self playerViewController];
+  controlsViewController2 = [playerViewController3 controlsViewController];
+  [controlsViewController2 removeAction:sel_seymourBehaviorContextDidReceiveButtonTap_ withTarget:self forEvent:@"AVControlsDoneButtonPressedEvent"];
 
-  v16 = [(AVSeymourBehaviorContext *)self playerViewController];
-  v17 = [v16 controlsViewController];
-  v18 = [(AVSeymourBehaviorContext *)self playerViewController];
-  [v17 addAction:sel_doneButtonTapped_ withTarget:v18 forEvent:@"AVControlsDoneButtonPressedEvent"];
+  playerViewController4 = [(AVSeymourBehaviorContext *)self playerViewController];
+  controlsViewController3 = [playerViewController4 controlsViewController];
+  playerViewController5 = [(AVSeymourBehaviorContext *)self playerViewController];
+  [controlsViewController3 addAction:sel_doneButtonTapped_ withTarget:playerViewController5 forEvent:@"AVControlsDoneButtonPressedEvent"];
 }
 
 @end

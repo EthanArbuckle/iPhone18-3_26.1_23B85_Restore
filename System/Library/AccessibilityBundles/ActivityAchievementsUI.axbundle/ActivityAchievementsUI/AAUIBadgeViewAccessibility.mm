@@ -8,26 +8,26 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(AAUIBadgeViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(AAUIBadgeViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(AAUIBadgeViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(AAUIBadgeViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
   v4.receiver = self;
   v4.super_class = AAUIBadgeViewAccessibility;
-  v2 = [(AAUIBadgeViewAccessibility *)&v4 accessibilityLabel];
+  accessibilityLabel = [(AAUIBadgeViewAccessibility *)&v4 accessibilityLabel];
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

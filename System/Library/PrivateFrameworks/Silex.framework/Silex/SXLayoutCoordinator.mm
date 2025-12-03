@@ -1,52 +1,52 @@
 @interface SXLayoutCoordinator
-- (SXLayoutCoordinator)initWithPipeline:(id)a3 integrator:(id)a4 instructionFactory:(id)a5 invalidationManager:(id)a6 blueprintProvider:(id)a7 DOMObjectProvider:(id)a8 layoutParametersManager:(id)a9 documentProvider:(id)a10 layoutPolicyManager:(id)a11;
+- (SXLayoutCoordinator)initWithPipeline:(id)pipeline integrator:(id)integrator instructionFactory:(id)factory invalidationManager:(id)manager blueprintProvider:(id)provider DOMObjectProvider:(id)objectProvider layoutParametersManager:(id)parametersManager documentProvider:(id)self0 layoutPolicyManager:(id)self1;
 - (SXLayoutCoordinatorDelegate)delegate;
-- (id)taskWithOptions:(id)a3 layoutBlueprint:(id)a4 instructions:(id)a5;
-- (void)layoutInvalidationManager:(id)a3 didInvalidateBlueprint:(id)a4;
-- (void)layoutPipeline:(id)a3 finishedTask:(id)a4 withResult:(id)a5;
-- (void)layoutWithOptions:(id)a3;
-- (void)startTask:(id)a3;
+- (id)taskWithOptions:(id)options layoutBlueprint:(id)blueprint instructions:(id)instructions;
+- (void)layoutInvalidationManager:(id)manager didInvalidateBlueprint:(id)blueprint;
+- (void)layoutPipeline:(id)pipeline finishedTask:(id)task withResult:(id)result;
+- (void)layoutWithOptions:(id)options;
+- (void)startTask:(id)task;
 @end
 
 @implementation SXLayoutCoordinator
 
-- (SXLayoutCoordinator)initWithPipeline:(id)a3 integrator:(id)a4 instructionFactory:(id)a5 invalidationManager:(id)a6 blueprintProvider:(id)a7 DOMObjectProvider:(id)a8 layoutParametersManager:(id)a9 documentProvider:(id)a10 layoutPolicyManager:(id)a11
+- (SXLayoutCoordinator)initWithPipeline:(id)pipeline integrator:(id)integrator instructionFactory:(id)factory invalidationManager:(id)manager blueprintProvider:(id)provider DOMObjectProvider:(id)objectProvider layoutParametersManager:(id)parametersManager documentProvider:(id)self0 layoutPolicyManager:(id)self1
 {
-  v29 = a3;
-  v27 = a4;
-  v26 = a5;
-  v28 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  pipelineCopy = pipeline;
+  integratorCopy = integrator;
+  factoryCopy = factory;
+  managerCopy = manager;
+  providerCopy = provider;
+  objectProviderCopy = objectProvider;
+  parametersManagerCopy = parametersManager;
+  documentProviderCopy = documentProvider;
+  policyManagerCopy = policyManager;
   v30.receiver = self;
   v30.super_class = SXLayoutCoordinator;
   v19 = [(SXLayoutCoordinator *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_pipeline, a3);
-    objc_storeStrong(&v20->_integrator, a4);
-    objc_storeStrong(&v20->_instructionFactory, a5);
-    objc_storeStrong(&v20->_invalidationManager, a6);
-    objc_storeStrong(&v20->_blueprintProvider, a7);
-    objc_storeStrong(&v20->_DOMObjectProvider, a8);
-    objc_storeStrong(&v20->_layoutParametersManager, a9);
-    objc_storeStrong(&v20->_documentProvider, a10);
-    objc_storeStrong(&v20->_layoutPolicyManager, a11);
-    [v29 setDelegate:v20];
-    [v28 setDelegate:v20];
+    objc_storeStrong(&v19->_pipeline, pipeline);
+    objc_storeStrong(&v20->_integrator, integrator);
+    objc_storeStrong(&v20->_instructionFactory, factory);
+    objc_storeStrong(&v20->_invalidationManager, manager);
+    objc_storeStrong(&v20->_blueprintProvider, provider);
+    objc_storeStrong(&v20->_DOMObjectProvider, objectProvider);
+    objc_storeStrong(&v20->_layoutParametersManager, parametersManager);
+    objc_storeStrong(&v20->_documentProvider, documentProvider);
+    objc_storeStrong(&v20->_layoutPolicyManager, policyManager);
+    [pipelineCopy setDelegate:v20];
+    [managerCopy setDelegate:v20];
   }
 
   return v20;
 }
 
-- (void)layoutWithOptions:(id)a3
+- (void)layoutWithOptions:(id)options
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  optionsCopy = options;
   v6 = SXLayoutLog;
   if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -54,8 +54,8 @@
     _os_log_impl(&dword_1D825C000, v6, OS_LOG_TYPE_DEFAULT, "Received request for new layout", buf, 2u);
   }
 
-  v7 = [(SXLayoutCoordinator *)self layoutOptions];
-  v8 = [v7 isEqual:v5];
+  layoutOptions = [(SXLayoutCoordinator *)self layoutOptions];
+  v8 = [layoutOptions isEqual:optionsCopy];
 
   if (v8)
   {
@@ -63,7 +63,7 @@
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v41 = v5;
+      v41 = optionsCopy;
       v10 = "Ignored layout request because options are identical to a previous request, options=%{public}@";
       v11 = v9;
 LABEL_6:
@@ -74,10 +74,10 @@ LABEL_6:
     goto LABEL_62;
   }
 
-  v12 = [(SXLayoutCoordinator *)self blueprintProvider];
-  v13 = [v12 blueprint];
-  v14 = [v13 layoutOptions];
-  v15 = [v14 isEqual:v5];
+  blueprintProvider = [(SXLayoutCoordinator *)self blueprintProvider];
+  blueprint = [blueprintProvider blueprint];
+  layoutOptions2 = [blueprint layoutOptions];
+  v15 = [layoutOptions2 isEqual:optionsCopy];
 
   if (v15)
   {
@@ -85,29 +85,29 @@ LABEL_6:
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v41 = v5;
+      v41 = optionsCopy;
       _os_log_impl(&dword_1D825C000, v16, OS_LOG_TYPE_DEFAULT, "Ignored layout request; options are identical to integrated layout blueprint, options=%{public}@", buf, 0xCu);
     }
 
-    v17 = [(SXLayoutCoordinator *)self pipeline];
-    [v17 cancelTasks];
+    pipeline = [(SXLayoutCoordinator *)self pipeline];
+    [pipeline cancelTasks];
 
-    v18 = [(SXLayoutCoordinator *)self layoutOptions];
-    objc_storeStrong(&self->_layoutOptions, a3);
-    v19 = [(SXLayoutCoordinator *)self delegate];
+    layoutOptions3 = [(SXLayoutCoordinator *)self layoutOptions];
+    objc_storeStrong(&self->_layoutOptions, options);
+    delegate = [(SXLayoutCoordinator *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(SXLayoutCoordinator *)self delegate];
-      [v21 layoutCoordinator:self cancelledLayoutWithOptions:v18];
+      delegate2 = [(SXLayoutCoordinator *)self delegate];
+      [delegate2 layoutCoordinator:self cancelledLayoutWithOptions:layoutOptions3];
     }
 
     goto LABEL_62;
   }
 
-  v22 = [(SXLayoutCoordinator *)self layoutOptions];
-  v23 = [v5 diffWithLayoutOptions:v22];
+  layoutOptions4 = [(SXLayoutCoordinator *)self layoutOptions];
+  v23 = [optionsCopy diffWithLayoutOptions:layoutOptions4];
 
   v24 = SXLayoutLog;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -228,12 +228,12 @@ LABEL_55:
     *buf = 138543618;
     v41 = v26;
     v42 = 2114;
-    v43 = v5;
+    v43 = optionsCopy;
     _os_log_impl(&dword_1D825C000, v24, OS_LOG_TYPE_DEFAULT, "Assessing layout request; layout diff=%{public}@, options=%{public}@", buf, 0x16u);
   }
 
-  v28 = [(SXLayoutCoordinator *)self layoutPolicyManager];
-  v29 = [v28 shouldPerformLayoutWithLayoutOptionsDiff:v23];
+  layoutPolicyManager = [(SXLayoutCoordinator *)self layoutPolicyManager];
+  v29 = [layoutPolicyManager shouldPerformLayoutWithLayoutOptionsDiff:v23];
 
   v30 = SXLayoutLog;
   v31 = os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT);
@@ -245,7 +245,7 @@ LABEL_55:
     }
 
     *buf = 138543362;
-    v41 = v5;
+    v41 = optionsCopy;
     v10 = "Ignored layout request; layout policy did not require layout, options=%{public}@";
     v11 = v30;
     goto LABEL_6;
@@ -254,13 +254,13 @@ LABEL_55:
   if (v31)
   {
     *buf = 138543362;
-    v41 = v5;
+    v41 = optionsCopy;
     _os_log_impl(&dword_1D825C000, v30, OS_LOG_TYPE_DEFAULT, "Creating layout task; layout policy requires a layout, options=%{public}@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_layoutOptions, a3);
-  v32 = [(SXLayoutCoordinator *)self debouncer];
-  [v32 cancel];
+  objc_storeStrong(&self->_layoutOptions, options);
+  debouncer = [(SXLayoutCoordinator *)self debouncer];
+  [debouncer cancel];
 
   objc_initWeak(buf, self);
   v34 = MEMORY[0x1E69E9820];
@@ -268,7 +268,7 @@ LABEL_55:
   v36 = __41__SXLayoutCoordinator_layoutWithOptions___block_invoke;
   v37 = &unk_1E8500638;
   objc_copyWeak(&v39, buf);
-  v38 = v5;
+  v38 = optionsCopy;
   v33 = [SXDelayed execute:&v34 delay:0.0];
   [(SXLayoutCoordinator *)self setDebouncer:v33, v34, v35, v36, v37];
 
@@ -295,71 +295,71 @@ void __41__SXLayoutCoordinator_layoutWithOptions___block_invoke(uint64_t a1)
   }
 }
 
-- (void)layoutPipeline:(id)a3 finishedTask:(id)a4 withResult:(id)a5
+- (void)layoutPipeline:(id)pipeline finishedTask:(id)task withResult:(id)result
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pipelineCopy = pipeline;
+  taskCopy = task;
+  resultCopy = result;
   v11 = CACurrentMediaTime();
   v12 = SXLayoutLog;
   if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v9 identifier];
+    identifier = [taskCopy identifier];
     *buf = 138543618;
-    v44 = v14;
+    v44 = identifier;
     v45 = 2112;
-    v46 = v10;
+    v46 = resultCopy;
     _os_log_impl(&dword_1D825C000, v13, OS_LOG_TYPE_DEFAULT, "Received layout result, task-identifier=%{public}@, result=%@", buf, 0x16u);
   }
 
-  v15 = [(SXLayoutCoordinator *)self layoutOptions];
-  v16 = [v9 options];
-  v17 = [v15 isEqual:v16];
+  layoutOptions = [(SXLayoutCoordinator *)self layoutOptions];
+  options = [taskCopy options];
+  v17 = [layoutOptions isEqual:options];
 
   if (v17)
   {
-    v18 = [(SXLayoutCoordinator *)self DOMObjectProvider];
-    v19 = [v10 DOM];
-    [v18 setDOM:v19];
+    dOMObjectProvider = [(SXLayoutCoordinator *)self DOMObjectProvider];
+    v19 = [resultCopy DOM];
+    [dOMObjectProvider setDOM:v19];
 
-    v20 = [(SXLayoutCoordinator *)self blueprintProvider];
-    v21 = [v10 blueprint];
-    [v20 updateBlueprint:v21];
+    blueprintProvider = [(SXLayoutCoordinator *)self blueprintProvider];
+    blueprint = [resultCopy blueprint];
+    [blueprintProvider updateBlueprint:blueprint];
 
-    v22 = [(SXLayoutCoordinator *)self layoutParametersManager];
-    [v22 layoutFinishedForTask:v9 result:v10];
+    layoutParametersManager = [(SXLayoutCoordinator *)self layoutParametersManager];
+    [layoutParametersManager layoutFinishedForTask:taskCopy result:resultCopy];
 
-    v23 = [(SXLayoutCoordinator *)self delegate];
-    LOBYTE(v21) = objc_opt_respondsToSelector();
+    delegate = [(SXLayoutCoordinator *)self delegate];
+    LOBYTE(blueprint) = objc_opt_respondsToSelector();
 
-    if (v21)
+    if (blueprint)
     {
-      v24 = [(SXLayoutCoordinator *)self delegate];
-      v25 = [v10 blueprint];
-      [v24 layoutCoordinator:self willIntegrateBlueprint:v25];
+      delegate2 = [(SXLayoutCoordinator *)self delegate];
+      blueprint2 = [resultCopy blueprint];
+      [delegate2 layoutCoordinator:self willIntegrateBlueprint:blueprint2];
     }
 
     objc_initWeak(&location, self);
-    v26 = [(SXLayoutCoordinator *)self integrator];
-    v27 = [v10 blueprint];
+    integrator = [(SXLayoutCoordinator *)self integrator];
+    blueprint3 = [resultCopy blueprint];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __62__SXLayoutCoordinator_layoutPipeline_finishedTask_withResult___block_invoke;
     v38[3] = &unk_1E8501240;
     objc_copyWeak(v41, &location);
     v41[1] = *&v11;
-    v28 = v9;
+    v28 = taskCopy;
     v39 = v28;
-    v29 = v10;
+    v29 = resultCopy;
     v40 = v29;
-    [v26 integrateBlueprint:v27 withCompletion:v38];
+    [integrator integrateBlueprint:blueprint3 withCompletion:v38];
 
-    v30 = [v29 blueprint];
-    LOBYTE(v27) = [v30 isComplete];
+    blueprint4 = [v29 blueprint];
+    LOBYTE(blueprint3) = [blueprint4 isComplete];
 
-    if ((v27 & 1) == 0)
+    if ((blueprint3 & 1) == 0)
     {
       v31 = SXLayoutLog;
       if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
@@ -374,8 +374,8 @@ void __41__SXLayoutCoordinator_layoutWithOptions___block_invoke(uint64_t a1)
         v36 = SXLayoutLog;
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          v37 = [v28 identifier];
-          [SXLayoutCoordinator layoutPipeline:v37 finishedTask:buf withResult:v36];
+          identifier2 = [v28 identifier];
+          [SXLayoutCoordinator layoutPipeline:identifier2 finishedTask:buf withResult:v36];
         }
       }
 
@@ -395,9 +395,9 @@ void __41__SXLayoutCoordinator_layoutWithOptions___block_invoke(uint64_t a1)
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v33;
-      v35 = [v9 identifier];
+      identifier3 = [taskCopy identifier];
       *buf = 138543362;
-      v44 = v35;
+      v44 = identifier3;
       _os_log_impl(&dword_1D825C000, v34, OS_LOG_TYPE_DEFAULT, "Dropped result of layout because options are no longer valid, task-identifier=%{public}@", buf, 0xCu);
     }
   }
@@ -436,28 +436,28 @@ void __62__SXLayoutCoordinator_layoutPipeline_finishedTask_withResult___block_in
   }
 }
 
-- (void)layoutInvalidationManager:(id)a3 didInvalidateBlueprint:(id)a4
+- (void)layoutInvalidationManager:(id)manager didInvalidateBlueprint:(id)blueprint
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  blueprintCopy = blueprint;
   v8 = SXLayoutLog;
   if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v16[0] = 67109120;
-    v16[1] = [v7 isComplete];
+    v16[1] = [blueprintCopy isComplete];
     _os_log_impl(&dword_1D825C000, v9, OS_LOG_TYPE_DEFAULT, "Received invalidated blueprint, requesting new layout; layoutIsComplete=%d", v16, 8u);
   }
 
-  v10 = [v7 layoutOptions];
-  v11 = [(SXLayoutCoordinator *)self layoutOptions];
-  v12 = [v10 isEqual:v11];
+  layoutOptions = [blueprintCopy layoutOptions];
+  layoutOptions2 = [(SXLayoutCoordinator *)self layoutOptions];
+  v12 = [layoutOptions isEqual:layoutOptions2];
 
   if (v12)
   {
-    v13 = [v7 layoutOptions];
-    v14 = [(SXLayoutCoordinator *)self taskWithOptions:v13 layoutBlueprint:v7 instructions:MEMORY[0x1E695E0F0]];
+    layoutOptions3 = [blueprintCopy layoutOptions];
+    v14 = [(SXLayoutCoordinator *)self taskWithOptions:layoutOptions3 layoutBlueprint:blueprintCopy instructions:MEMORY[0x1E695E0F0]];
 
     [(SXLayoutCoordinator *)self startTask:v14];
   }
@@ -473,11 +473,11 @@ void __62__SXLayoutCoordinator_layoutPipeline_finishedTask_withResult___block_in
   }
 }
 
-- (void)startTask:(id)a3
+- (void)startTask:(id)task
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 type] == 1 && (objc_msgSend(v4, "blueprint"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "layoutOptions"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "options"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, v5, (v8 & 1) == 0))
+  taskCopy = task;
+  if ([taskCopy type] == 1 && (objc_msgSend(taskCopy, "blueprint"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "layoutOptions"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(taskCopy, "options"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, v5, (v8 & 1) == 0))
   {
     v23 = SXLayoutLog;
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_ERROR))
@@ -488,62 +488,62 @@ void __62__SXLayoutCoordinator_layoutPipeline_finishedTask_withResult___block_in
 
   else
   {
-    v9 = [(SXLayoutCoordinator *)self documentProvider];
-    v10 = [v9 document];
+    documentProvider = [(SXLayoutCoordinator *)self documentProvider];
+    document = [documentProvider document];
 
     v11 = SXLayoutLog;
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v10 identifier];
-      v14 = [v4 identifier];
+      identifier = [document identifier];
+      identifier2 = [taskCopy identifier];
       v24 = 138543874;
-      v25 = v13;
+      v25 = identifier;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
-      v29 = v14;
+      v29 = identifier2;
       _os_log_impl(&dword_1D825C000, v12, OS_LOG_TYPE_DEFAULT, "Scheduling new layout task, document-identifier=%{public}@, coordinator=%p, task-identifier=%{public}@", &v24, 0x20u);
     }
 
-    v15 = [(SXLayoutCoordinator *)self layoutParametersManager];
-    v16 = [(SXLayoutCoordinator *)self blueprintProvider];
-    v17 = [v16 blueprint];
-    v18 = [v17 layoutOptions];
-    v19 = [v15 layoutParametersForTask:v4 previousLayoutOptions:v18];
+    layoutParametersManager = [(SXLayoutCoordinator *)self layoutParametersManager];
+    blueprintProvider = [(SXLayoutCoordinator *)self blueprintProvider];
+    blueprint = [blueprintProvider blueprint];
+    layoutOptions = [blueprint layoutOptions];
+    v19 = [layoutParametersManager layoutParametersForTask:taskCopy previousLayoutOptions:layoutOptions];
 
-    v20 = [(SXLayoutCoordinator *)self delegate];
-    LOBYTE(v16) = objc_opt_respondsToSelector();
+    delegate = [(SXLayoutCoordinator *)self delegate];
+    LOBYTE(blueprintProvider) = objc_opt_respondsToSelector();
 
-    if (v16)
+    if (blueprintProvider)
     {
-      v21 = [(SXLayoutCoordinator *)self delegate];
-      [v21 layoutCoordinator:self willLayoutWithParameters:v19];
+      delegate2 = [(SXLayoutCoordinator *)self delegate];
+      [delegate2 layoutCoordinator:self willLayoutWithParameters:v19];
     }
 
-    v22 = [(SXLayoutCoordinator *)self pipeline];
-    [v22 layoutWithTask:v4];
+    pipeline = [(SXLayoutCoordinator *)self pipeline];
+    [pipeline layoutWithTask:taskCopy];
   }
 }
 
-- (id)taskWithOptions:(id)a3 layoutBlueprint:(id)a4 instructions:(id)a5
+- (id)taskWithOptions:(id)options layoutBlueprint:(id)blueprint instructions:(id)instructions
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v10 count])
+  optionsCopy = options;
+  blueprintCopy = blueprint;
+  instructionsCopy = instructions;
+  if (![instructionsCopy count])
   {
     v11 = +[SXDefaultLayoutInstruction instruction];
     v21[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
 
-    v10 = v12;
+    instructionsCopy = v12;
   }
 
-  if ([v10 count])
+  if ([instructionsCopy count])
   {
-    v13 = [[SXLayoutInstructions alloc] initWithInstructions:v10];
+    v13 = [[SXLayoutInstructions alloc] initWithInstructions:instructionsCopy];
   }
 
   else
@@ -554,16 +554,16 @@ void __62__SXLayoutCoordinator_layoutPipeline_finishedTask_withResult___block_in
   v14 = v13;
   v15 = [SXLayoutTask alloc];
   v16 = v15;
-  if (v9)
+  if (blueprintCopy)
   {
-    v17 = [(SXLayoutCoordinator *)self DOMObjectProvider];
-    v18 = [v17 DOM];
-    v19 = [(SXLayoutTask *)v16 initWithOptions:v8 instructions:v14 blueprint:v9 DOM:v18];
+    dOMObjectProvider = [(SXLayoutCoordinator *)self DOMObjectProvider];
+    v18 = [dOMObjectProvider DOM];
+    v19 = [(SXLayoutTask *)v16 initWithOptions:optionsCopy instructions:v14 blueprint:blueprintCopy DOM:v18];
   }
 
   else
   {
-    v19 = [(SXLayoutTask *)v15 initWithOptions:v8 instructions:v14];
+    v19 = [(SXLayoutTask *)v15 initWithOptions:optionsCopy instructions:v14];
   }
 
   return v19;

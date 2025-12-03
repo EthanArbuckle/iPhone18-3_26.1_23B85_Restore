@@ -1,14 +1,14 @@
 @interface STUserNotificationManager
 - (STUserNotificationManager)init;
-- (void)_postNotificationRequest:(id)a3 context:(id)a4 notificationCenter:(id)a5 withCompletionHandler:(id)a6;
-- (void)_requestAuthorizationForNotificationRequest:(id)a3 context:(id)a4 notificationCenter:(id)a5 withCompletionHandler:(id)a6;
-- (void)_shouldPostNotificationRequest:(id)a3 notificationCenter:(id)a4 withCompletionHandler:(id)a5;
-- (void)postNotificationForContext:(id)a3 completionHandler:(id)a4;
-- (void)postNotificationNotificationReceived:(id)a3;
-- (void)removeNotificationForContext:(id)a3 completionHandler:(id)a4;
-- (void)removeNotificationNotificationReceived:(id)a3;
+- (void)_postNotificationRequest:(id)request context:(id)context notificationCenter:(id)center withCompletionHandler:(id)handler;
+- (void)_requestAuthorizationForNotificationRequest:(id)request context:(id)context notificationCenter:(id)center withCompletionHandler:(id)handler;
+- (void)_shouldPostNotificationRequest:(id)request notificationCenter:(id)center withCompletionHandler:(id)handler;
+- (void)postNotificationForContext:(id)context completionHandler:(id)handler;
+- (void)postNotificationNotificationReceived:(id)received;
+- (void)removeNotificationForContext:(id)context completionHandler:(id)handler;
+- (void)removeNotificationNotificationReceived:(id)received;
 - (void)resume;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation STUserNotificationManager
@@ -37,8 +37,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(NSDictionary *)v2->_notificationCenterByBundleIdentifier allValues];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allValues = [(NSDictionary *)v2->_notificationCenterByBundleIdentifier allValues];
+    v9 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -50,7 +50,7 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v14 + 1) + 8 * v12) setDelegate:v2];
@@ -58,7 +58,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v10);
@@ -70,9 +70,9 @@
 
 - (void)resume
 {
-  v3 = [(STUserNotificationManager *)self notificationCenterByBundleIdentifier];
-  v4 = [v3 allValues];
-  [v4 makeObjectsPerformSelector:"setWantsNotificationResponsesDelivered"];
+  notificationCenterByBundleIdentifier = [(STUserNotificationManager *)self notificationCenterByBundleIdentifier];
+  allValues = [notificationCenterByBundleIdentifier allValues];
+  [allValues makeObjectsPerformSelector:"setWantsNotificationResponsesDelivered"];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"postNotificationNotificationReceived:" name:@"STUserNotificationManagerShouldPostNotification" object:0];
@@ -81,12 +81,12 @@
   [v6 addObserver:self selector:"removeNotificationNotificationReceived:" name:@"STUserNotificationManagerShouldRemoveNotification" object:0];
 }
 
-- (void)postNotificationNotificationReceived:(id)a3
+- (void)postNotificationNotificationReceived:(id)received
 {
-  v5 = a3;
+  receivedCopy = received;
   if (+[NSThread isMainThread])
   {
-    v6 = [v5 object];
+    object = [receivedCopy object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -97,7 +97,7 @@
 
     else
     {
-      v9 = [v5 object];
+      object2 = [receivedCopy object];
       objc_opt_class();
       v10 = objc_opt_isKindOfClass();
 
@@ -108,7 +108,7 @@
 
       else
       {
-        v11 = [v5 object];
+        object3 = [receivedCopy object];
         objc_opt_class();
         v12 = objc_opt_isKindOfClass();
 
@@ -119,20 +119,20 @@
 
         else
         {
-          v13 = [v5 object];
+          object4 = [receivedCopy object];
           objc_opt_class();
           v14 = objc_opt_isKindOfClass();
 
           if ((v14 & 1) == 0)
           {
 LABEL_12:
-            v17 = [v5 object];
+            object5 = [receivedCopy object];
             v18[0] = _NSConcreteStackBlock;
             v18[1] = 3221225472;
             v18[2] = sub_10009C000;
             v18[3] = &unk_1001A4048;
-            v19 = v5;
-            [(STUserNotificationManager *)self postNotificationForContext:v17 completionHandler:v18];
+            v19 = receivedCopy;
+            [(STUserNotificationManager *)self postNotificationForContext:object5 completionHandler:v18];
 
             goto LABEL_13;
           }
@@ -149,152 +149,152 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(STUserNotificationManager *)self performSelectorOnMainThread:a2 withObject:v5 waitUntilDone:0];
+  [(STUserNotificationManager *)self performSelectorOnMainThread:a2 withObject:receivedCopy waitUntilDone:0];
 LABEL_13:
 }
 
-- (void)postNotificationForContext:(id)a3 completionHandler:(id)a4
+- (void)postNotificationForContext:(id)context completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009C12C;
   v8[3] = &unk_1001A6330;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  contextCopy = context;
+  selfCopy = self;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = contextCopy;
   [v7 notificationContentWithCompletionBlock:v8];
 }
 
-- (void)_requestAuthorizationForNotificationRequest:(id)a3 context:(id)a4 notificationCenter:(id)a5 withCompletionHandler:(id)a6
+- (void)_requestAuthorizationForNotificationRequest:(id)request context:(id)context notificationCenter:(id)center withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10009C368;
   v16[3] = &unk_1001A6358;
-  v20 = a5;
-  v21 = a6;
-  v17 = v11;
-  v18 = self;
-  v19 = v10;
-  v12 = v20;
-  v13 = v10;
-  v14 = v21;
-  v15 = v11;
+  centerCopy = center;
+  handlerCopy = handler;
+  v17 = contextCopy;
+  selfCopy = self;
+  v19 = requestCopy;
+  v12 = centerCopy;
+  v13 = requestCopy;
+  v14 = handlerCopy;
+  v15 = contextCopy;
   [v12 requestAuthorizationWithOptions:66 completionHandler:v16];
 }
 
-- (void)_postNotificationRequest:(id)a3 context:(id)a4 notificationCenter:(id)a5 withCompletionHandler:(id)a6
+- (void)_postNotificationRequest:(id)request context:(id)context notificationCenter:(id)center withCompletionHandler:(id)handler
 {
-  v10 = a3;
+  requestCopy = request;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10009C574;
   v15[3] = &unk_1001A6380;
-  v16 = a4;
-  v17 = a5;
-  v18 = v10;
-  v19 = a6;
-  v11 = v10;
-  v12 = v17;
-  v13 = v19;
-  v14 = v16;
+  contextCopy = context;
+  centerCopy = center;
+  v18 = requestCopy;
+  handlerCopy = handler;
+  v11 = requestCopy;
+  v12 = centerCopy;
+  v13 = handlerCopy;
+  v14 = contextCopy;
   [(STUserNotificationManager *)self _shouldPostNotificationRequest:v11 notificationCenter:v12 withCompletionHandler:v15];
 }
 
-- (void)_shouldPostNotificationRequest:(id)a3 notificationCenter:(id)a4 withCompletionHandler:(id)a5
+- (void)_shouldPostNotificationRequest:(id)request notificationCenter:(id)center withCompletionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10009C880;
   v9[3] = &unk_1001A63A8;
-  v10 = a3;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
-  [a4 getDeliveredNotificationsWithCompletionHandler:v9];
+  requestCopy = request;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = requestCopy;
+  [center getDeliveredNotificationsWithCompletionHandler:v9];
 }
 
-- (void)removeNotificationNotificationReceived:(id)a3
+- (void)removeNotificationNotificationReceived:(id)received
 {
-  v5 = a3;
+  receivedCopy = received;
   if (+[NSThread isMainThread])
   {
-    v6 = [v5 object];
+    object = [receivedCopy object];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10009CA98;
     v7[3] = &unk_1001A4048;
-    v8 = v5;
-    [(STUserNotificationManager *)self removeNotificationForContext:v6 completionHandler:v7];
+    v8 = receivedCopy;
+    [(STUserNotificationManager *)self removeNotificationForContext:object completionHandler:v7];
   }
 
   else
   {
-    [(STUserNotificationManager *)self performSelectorOnMainThread:a2 withObject:v5 waitUntilDone:0];
+    [(STUserNotificationManager *)self performSelectorOnMainThread:a2 withObject:receivedCopy waitUntilDone:0];
   }
 }
 
-- (void)removeNotificationForContext:(id)a3 completionHandler:(id)a4
+- (void)removeNotificationForContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STUserNotificationManager *)self notificationCenterByBundleIdentifier];
-  v9 = [v7 notificationBundleIdentifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  handlerCopy = handler;
+  contextCopy = context;
+  notificationCenterByBundleIdentifier = [(STUserNotificationManager *)self notificationCenterByBundleIdentifier];
+  notificationBundleIdentifier = [contextCopy notificationBundleIdentifier];
+  v10 = [notificationCenterByBundleIdentifier objectForKeyedSubscript:notificationBundleIdentifier];
 
-  v11 = [v7 identifier];
+  identifier = [contextCopy identifier];
 
-  v13 = v11;
+  v13 = identifier;
   v12 = [NSArray arrayWithObjects:&v13 count:1];
   [v10 removeDeliveredNotificationsWithIdentifiers:v12];
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 notification];
-  v10 = [v9 request];
+  handlerCopy = handler;
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
 
-  v11 = [v10 content];
-  v12 = [v11 categoryIdentifier];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  v13 = [v8 actionIdentifier];
+  actionIdentifier = [responseCopy actionIdentifier];
 
   v14 = +[STLog userNotifications];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v37 = v12;
+    v37 = categoryIdentifier;
     v38 = 2114;
-    v39 = v13;
+    v39 = actionIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received notification response category: %{public}@ action: %{public}@", buf, 0x16u);
   }
 
-  if ([v12 isEqualToString:STNotificationCategoryAskForTime])
+  if ([categoryIdentifier isEqualToString:STNotificationCategoryAskForTime])
   {
-    v15 = [v10 identifier];
-    v16 = [v13 isEqualToString:STNotificationActionIdentifierApproveFifteen];
+    identifier = [request identifier];
+    v16 = [actionIdentifier isEqualToString:STNotificationActionIdentifierApproveFifteen];
     v17 = STNotificationActionIdentifierApproveHour;
-    if ((v16 & 1) != 0 || ([v13 isEqualToString:STNotificationActionIdentifierApproveHour] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", STNotificationActionIdentifierApproveDay))
+    if ((v16 & 1) != 0 || ([actionIdentifier isEqualToString:STNotificationActionIdentifierApproveHour] & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", STNotificationActionIdentifierApproveDay))
     {
-      if ([v13 isEqualToString:v17])
+      if ([actionIdentifier isEqualToString:v17])
       {
         v18 = &off_1001B23C8;
       }
 
       else
       {
-        v25 = [v13 isEqualToString:STNotificationActionIdentifierApproveDay];
+        v25 = [actionIdentifier isEqualToString:STNotificationActionIdentifierApproveDay];
         v18 = &off_1001B23B0;
         if (v25)
         {
@@ -304,14 +304,14 @@ LABEL_13:
 
       v34[0] = STUserNotificationAskForTimeKeyRequestIdentifier;
       v34[1] = STUserNotificationAskForTimeKeyTimeApproved;
-      v35[0] = v15;
+      v35[0] = identifier;
       v35[1] = v18;
       v24 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
       v26 = +[STLog userNotifications];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v37 = v15;
+        v37 = identifier;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Received approval for ask for time identifier %{public}@", buf, 0xCu);
       }
 
@@ -322,25 +322,25 @@ LABEL_13:
 
     else
     {
-      if (![v13 isEqualToString:STNotificationActionIdentifierDontApprove])
+      if (![actionIdentifier isEqualToString:STNotificationActionIdentifierDontApprove])
       {
         v24 = +[STLog userNotifications];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          sub_100121460(v13, v24);
+          sub_100121460(actionIdentifier, v24);
         }
 
         goto LABEL_26;
       }
 
       v32 = STUserNotificationAskForTimeKeyRequestIdentifier;
-      v33 = v15;
+      v33 = identifier;
       v24 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v31 = +[STLog userNotifications];
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v37 = v15;
+        v37 = identifier;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Received rejection of ask for time identifier %{public}@", buf, 0xCu);
       }
 
@@ -357,9 +357,9 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ([v12 isEqualToString:STNotificationCategoryManageContacts])
+  if ([categoryIdentifier isEqualToString:STNotificationCategoryManageContacts])
   {
-    if ([v13 isEqualToString:STNotificationActionIdentifierApproveManagement])
+    if ([actionIdentifier isEqualToString:STNotificationActionIdentifierApproveManagement])
     {
       v19 = +[STLog userNotifications];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -369,13 +369,13 @@ LABEL_32:
       }
 
       v20 = +[NSNotificationCenter defaultCenter];
-      v15 = v20;
+      identifier = v20;
       v21 = &STUserNotificationAskToManageContactsResponseReceivedApprove;
     }
 
     else
     {
-      if (![v13 isEqualToString:STNotificationActionIdentifierDontApproveManagement])
+      if (![actionIdentifier isEqualToString:STNotificationActionIdentifierDontApproveManagement])
       {
         goto LABEL_33;
       }
@@ -388,7 +388,7 @@ LABEL_32:
       }
 
       v20 = +[NSNotificationCenter defaultCenter];
-      v15 = v20;
+      identifier = v20;
       v21 = &STUserNotificationAskToManageContactsResponseReceivedDontApprove;
     }
 
@@ -396,31 +396,31 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if ([v12 isEqualToString:STUserNotificationWeeklyReportCategoryIdentifier] && ((objc_msgSend(v13, "isEqualToString:", STUserNotificationWeeklyReportPrimaryActionIdentifier) & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"RMUserNotificationWeeklyReportPrimaryActionIdentifier")))
+  if ([categoryIdentifier isEqualToString:STUserNotificationWeeklyReportCategoryIdentifier] && ((objc_msgSend(actionIdentifier, "isEqualToString:", STUserNotificationWeeklyReportPrimaryActionIdentifier) & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", @"RMUserNotificationWeeklyReportPrimaryActionIdentifier")))
   {
     v22 = +[STLog userNotifications];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v37 = v13;
+      v37 = actionIdentifier;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Received primary action for weekly notification %{public}@", buf, 0xCu);
     }
 
-    v15 = +[LSApplicationWorkspace defaultWorkspace];
+    identifier = +[LSApplicationWorkspace defaultWorkspace];
     v23 = objc_opt_new();
     [v23 setScheme:STPrefsURLComponentScheme];
     [v23 setPath:STPrefsURLComponentPathScreenTimeSummary];
     [v23 setFragment:STPrefsURLComponentFragmentLastWeek];
     v24 = [v23 URL];
 
-    [v15 openSensitiveURL:v24 withOptions:0];
+    [identifier openSensitiveURL:v24 withOptions:0];
     goto LABEL_26;
   }
 
 LABEL_33:
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 

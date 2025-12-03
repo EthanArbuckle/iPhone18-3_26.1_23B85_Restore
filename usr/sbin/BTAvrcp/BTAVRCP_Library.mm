@@ -4,20 +4,20 @@
 - (unint64_t)getNowPlayingItemsCount;
 - (unint64_t)getSearchItemsCount;
 - (unint64_t)getVFSItemsCount;
-- (unsigned)getNowPlayingItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5;
-- (unsigned)getSearchItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5;
-- (unsigned)getVFSItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5;
-- (unsigned)playNowPlayingItemWithUid:(unint64_t)a3;
-- (unsigned)playSearchItemWithUid:(unint64_t)a3;
-- (unsigned)playVFSItemWithUid:(unint64_t)a3;
-- (void)changePath:(unint64_t)a3 replyBlock:(id)a4;
+- (unsigned)getNowPlayingItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply;
+- (unsigned)getSearchItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply;
+- (unsigned)getVFSItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply;
+- (unsigned)playNowPlayingItemWithUid:(unint64_t)uid;
+- (unsigned)playSearchItemWithUid:(unint64_t)uid;
+- (unsigned)playVFSItemWithUid:(unint64_t)uid;
+- (void)changePath:(unint64_t)path replyBlock:(id)block;
 - (void)dealloc;
-- (void)getCurrentPath:(id)a3;
-- (void)getNowPlayingItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6;
-- (void)getSearchItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6;
-- (void)getVFSItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6;
+- (void)getCurrentPath:(id)path;
+- (void)getNowPlayingItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block;
+- (void)getSearchItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block;
+- (void)getVFSItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block;
 - (void)libraryDidChange;
-- (void)search:(id)a3 replyBlock:(id)a4;
+- (void)search:(id)search replyBlock:(id)block;
 @end
 
 @implementation BTAVRCP_Library
@@ -66,20 +66,20 @@
 
 - (void)libraryDidChange
 {
-  v2 = [(BTAVRCP_Library *)self delegate];
-  [v2 libraryDidChange];
+  delegate = [(BTAVRCP_Library *)self delegate];
+  [delegate libraryDidChange];
 }
 
-- (void)getCurrentPath:(id)a3
+- (void)getCurrentPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(BTAVRCP_Library *)self currentVFSPath];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  v7 = [currentVFSPath countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -91,24 +91,24 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(currentVFSPath);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
-        v12 = [(BTAVRCP_Library *)self currentVFSPath];
-        v13 = [v12 firstObject];
+        currentVFSPath2 = [(BTAVRCP_Library *)self currentVFSPath];
+        firstObject = [currentVFSPath2 firstObject];
 
-        if (v11 != v13)
+        if (v11 != firstObject)
         {
-          v14 = [v11 name];
-          [v5 addObject:v14];
+          name = [v11 name];
+          [v5 addObject:name];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v8 = [currentVFSPath countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v8);
@@ -117,40 +117,40 @@
   v23[0] = @"kFolders";
   v23[1] = @"kNumItems";
   v24[0] = v5;
-  v15 = [(BTAVRCP_Library *)self currentVFSPath];
-  v16 = [v15 lastObject];
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 childrenCount]);
+  currentVFSPath3 = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject = [currentVFSPath3 lastObject];
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [lastObject childrenCount]);
   v24[1] = v17;
   v18 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v4[2](v4, 4, v18);
+  pathCopy[2](pathCopy, 4, v18);
 }
 
-- (void)changePath:(unint64_t)a3 replyBlock:(id)a4
+- (void)changePath:(unint64_t)path replyBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(BTAVRCP_Library *)self currentVFSPath];
-  v8 = v7;
-  if (!a3)
+  blockCopy = block;
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  v8 = currentVFSPath;
+  if (!path)
   {
-    v16 = [v7 count];
+    v16 = [currentVFSPath count];
 
     if (v16 >= 2)
     {
-      v11 = [(BTAVRCP_Library *)self currentVFSPath];
-      [v11 removeLastObject];
+      currentVFSPath2 = [(BTAVRCP_Library *)self currentVFSPath];
+      [currentVFSPath2 removeLastObject];
       goto LABEL_6;
     }
 
     v10 = 9;
 LABEL_9:
-    v6[2](v6, v10, 0);
+    blockCopy[2](blockCopy, v10, 0);
     goto LABEL_10;
   }
 
-  v9 = [v7 lastObject];
+  lastObject = [currentVFSPath lastObject];
   v21 = 0;
-  v10 = [v9 createFolderWithUid:a3 folder:&v21];
-  v11 = v21;
+  v10 = [lastObject createFolderWithUid:path folder:&v21];
+  currentVFSPath2 = v21;
 
   if (v10 != 4)
   {
@@ -158,36 +158,36 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v12 = [(BTAVRCP_Library *)self currentVFSPath];
-  v13 = [v12 lastObject];
-  v14 = [v13 predicates];
-  [v11 storePredicates:v14];
+  currentVFSPath3 = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject2 = [currentVFSPath3 lastObject];
+  predicates = [lastObject2 predicates];
+  [currentVFSPath2 storePredicates:predicates];
 
-  v15 = [(BTAVRCP_Library *)self currentVFSPath];
-  [v15 addObject:v11];
+  currentVFSPath4 = [(BTAVRCP_Library *)self currentVFSPath];
+  [currentVFSPath4 addObject:currentVFSPath2];
 
 LABEL_6:
   v22 = @"kNumItems";
-  v17 = [(BTAVRCP_Library *)self currentVFSPath];
-  v18 = [v17 lastObject];
-  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 childrenCount]);
+  currentVFSPath5 = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject3 = [currentVFSPath5 lastObject];
+  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [lastObject3 childrenCount]);
   v23 = v19;
   v20 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-  (v6)[2](v6, 4, v20);
+  (blockCopy)[2](blockCopy, 4, v20);
 
 LABEL_10:
 }
 
-- (void)getVFSItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6
+- (void)getVFSItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
+  dsCopy = ds;
+  blockCopy = block;
   v12 = +[NSMutableArray array];
-  while (a3 <= a4)
+  while (start <= end)
   {
-    v13 = [(BTAVRCP_Library *)self currentVFSPath];
-    v14 = [v13 lastObject];
-    v15 = [v14 replyItemAtIndex:a3 attributeIDs:v10];
+    currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+    lastObject = [currentVFSPath lastObject];
+    v15 = [lastObject replyItemAtIndex:start attributeIDs:dsCopy];
 
     if (!v15)
     {
@@ -196,7 +196,7 @@ LABEL_10:
 
     [v12 addObject:v15];
 
-    ++a3;
+    ++start;
   }
 
   if ([v12 count])
@@ -204,36 +204,36 @@ LABEL_10:
     v17 = @"kItems";
     v18 = v12;
     v16 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v11[2](v11, 4, v16);
+    blockCopy[2](blockCopy, 4, v16);
   }
 
   else
   {
-    v11[2](v11, 11, 0);
+    blockCopy[2](blockCopy, 11, 0);
   }
 }
 
-- (void)getSearchItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6
+- (void)getSearchItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
+  dsCopy = ds;
+  blockCopy = block;
+  v12 = blockCopy;
   if (self->_currentSearchQuery)
   {
     v13 = +[NSMutableArray array];
-    while (a3 <= a4)
+    while (start <= end)
     {
-      v14 = [(MPMediaQuery *)self->_currentSearchQuery itemAtIndex:a3];
+      v14 = [(MPMediaQuery *)self->_currentSearchQuery itemAtIndex:start];
       if (!v14)
       {
         break;
       }
 
       v15 = v14;
-      v16 = [v14 replyItemWithAttributeIDs:v10];
+      v16 = [v14 replyItemWithAttributeIDs:dsCopy];
       [v13 addObject:v16];
 
-      ++a3;
+      ++start;
     }
 
     if ([v13 count])
@@ -252,51 +252,51 @@ LABEL_10:
 
   else
   {
-    (*(v11 + 2))(v11, 20, 0);
+    (*(blockCopy + 2))(blockCopy, 20, 0);
   }
 }
 
-- (void)getNowPlayingItemsFromStart:(unint64_t)a3 toEnd:(unint64_t)a4 attributeIDs:(id)a5 replyBlock:(id)a6
+- (void)getNowPlayingItemsFromStart:(unint64_t)start toEnd:(unint64_t)end attributeIDs:(id)ds replyBlock:(id)block
 {
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  blockCopy = block;
   v11 = +[NSMutableArray array];
   v12 = +[MPMusicPlayerController systemMusicPlayer];
-  v13 = [v12 numberOfItems];
-  if (a3 <= a4)
+  numberOfItems = [v12 numberOfItems];
+  if (start <= end)
   {
-    if (v13 <= a3)
+    if (numberOfItems <= start)
     {
-      v14 = a3;
+      startCopy = start;
     }
 
     else
     {
-      v14 = v13;
+      startCopy = numberOfItems;
     }
 
-    v15 = a4 + 1;
+    v15 = end + 1;
     do
     {
-      if (v14 == a3)
+      if (startCopy == start)
       {
         break;
       }
 
-      v16 = [v12 nowPlayingItemAtIndex:a3];
+      v16 = [v12 nowPlayingItemAtIndex:start];
       if (!v16)
       {
         break;
       }
 
       v17 = v16;
-      v18 = [v16 replyItemWithAttributeIDs:v9];
+      v18 = [v16 replyItemWithAttributeIDs:dsCopy];
       [v11 addObject:v18];
 
-      ++a3;
+      ++start;
     }
 
-    while (v15 != a3);
+    while (v15 != start);
   }
 
   if ([v11 count])
@@ -304,26 +304,26 @@ LABEL_10:
     v20 = @"kItems";
     v21 = v11;
     v19 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v10[2](v10, 4, v19);
+    blockCopy[2](blockCopy, 4, v19);
   }
 
   else
   {
-    v10[2](v10, 11, 0);
+    blockCopy[2](blockCopy, 11, 0);
   }
 }
 
-- (unsigned)getVFSItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5
+- (unsigned)getVFSItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(BTAVRCP_Library *)self currentVFSPath];
-  v11 = [v10 lastObject];
-  v12 = [v11 replyAttributesForUid:a3 attributeIDs:v9];
+  replyCopy = reply;
+  dsCopy = ds;
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject = [currentVFSPath lastObject];
+  v12 = [lastObject replyAttributesForUid:uid attributeIDs:dsCopy];
 
   if (v12)
   {
-    [v8 addEntriesFromDictionary:v12];
+    [replyCopy addEntriesFromDictionary:v12];
     v13 = 4;
   }
 
@@ -335,19 +335,19 @@ LABEL_10:
   return v13;
 }
 
-- (unsigned)getSearchItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5
+- (unsigned)getSearchItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  replyCopy = reply;
   currentSearchQuery = self->_currentSearchQuery;
   if (currentSearchQuery)
   {
-    v11 = [(MPMediaQuery *)currentSearchQuery itemWithUid:a3];
+    v11 = [(MPMediaQuery *)currentSearchQuery itemWithUid:uid];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 replyAttributesForIDs:v8];
-      [v9 addEntriesFromDictionary:v13];
+      v13 = [v11 replyAttributesForIDs:dsCopy];
+      [replyCopy addEntriesFromDictionary:v13];
 
       v14 = 4;
     }
@@ -366,31 +366,31 @@ LABEL_10:
   return v14;
 }
 
-- (unsigned)getNowPlayingItemWithUid:(unint64_t)a3 attributeIDs:(id)a4 reply:(id)a5
+- (unsigned)getNowPlayingItemWithUid:(unint64_t)uid attributeIDs:(id)ds reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  replyCopy = reply;
   v9 = +[MPMusicPlayerController systemMusicPlayer];
-  v10 = [v9 nowPlayingItem];
-  v11 = v10;
-  if (v10 && [v10 persistentID] == a3)
+  nowPlayingItem = [v9 nowPlayingItem];
+  v11 = nowPlayingItem;
+  if (nowPlayingItem && [nowPlayingItem persistentID] == uid)
   {
-    v12 = [v9 indexOfNowPlayingItem];
+    indexOfNowPlayingItem = [v9 indexOfNowPlayingItem];
     v13 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    if (indexOfNowPlayingItem == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v14 = v12 + 1;
+      v14 = indexOfNowPlayingItem + 1;
     }
 
-    v15 = [v9 numberOfItems];
-    if (v15)
+    numberOfItems = [v9 numberOfItems];
+    if (numberOfItems)
     {
-      v13 = v15;
+      v13 = numberOfItems;
     }
   }
 
@@ -398,7 +398,7 @@ LABEL_10:
   {
 
     v16 = objc_alloc_init(MPMediaQuery);
-    v11 = [v16 itemWithUid:a3];
+    v11 = [v16 itemWithUid:uid];
 
     if (!v11)
     {
@@ -416,10 +416,10 @@ LABEL_10:
   v20[3] = &unk_100018A50;
   v23 = v14;
   v24 = v13;
-  v21 = v8;
+  v21 = replyCopy;
   v22 = v11;
   v17 = v11;
-  [v7 enumerateAttributeIDs:v20];
+  [dsCopy enumerateAttributeIDs:v20];
 
   v18 = 4;
 LABEL_13:
@@ -427,14 +427,14 @@ LABEL_13:
   return v18;
 }
 
-- (void)search:(id)a3 replyBlock:(id)a4
+- (void)search:(id)search replyBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BTAVRCP_Library *)self currentVFSPath];
-  v9 = [v8 lastObject];
-  v10 = [v9 query];
-  v11 = [v10 copy];
+  blockCopy = block;
+  searchCopy = search;
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject = [currentVFSPath lastObject];
+  query = [lastObject query];
+  v11 = [query copy];
   v12 = v11;
   if (v11)
   {
@@ -449,7 +449,7 @@ LABEL_13:
   v14 = v13;
 
   v15 = [NSSet setWithObjects:MPMediaItemPropertyTitle, MPMediaItemPropertyAlbumTitle, MPMediaItemPropertyArtist, MPMediaItemPropertyPodcastTitle, 0];
-  v16 = [_MPMediaSearchStringPredicate predicateWithSearchString:v7 forProperties:v15];
+  v16 = [_MPMediaSearchStringPredicate predicateWithSearchString:searchCopy forProperties:v15];
 
   [(MPMediaQuery *)v14 addFilterPredicate:v16];
   currentSearchQuery = self->_currentSearchQuery;
@@ -457,21 +457,21 @@ LABEL_13:
   v18 = v14;
 
   v22 = @"kNumItems";
-  v19 = [(MPMediaQuery *)v18 items];
-  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v19 count]);
+  items = [(MPMediaQuery *)v18 items];
+  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [items count]);
   v23 = v20;
   v21 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
-  v6[2](v6, 4, v21);
+  blockCopy[2](blockCopy, 4, v21);
 }
 
 - (unint64_t)getVFSItemsCount
 {
-  v2 = [(BTAVRCP_Library *)self currentVFSPath];
-  v3 = [v2 lastObject];
-  v4 = [v3 childrenCount];
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject = [currentVFSPath lastObject];
+  childrenCount = [lastObject childrenCount];
 
-  return v4;
+  return childrenCount;
 }
 
 - (unint64_t)getSearchItemsCount
@@ -479,8 +479,8 @@ LABEL_13:
   result = self->_currentSearchQuery;
   if (result)
   {
-    v3 = [result items];
-    v4 = [v3 count];
+    items = [result items];
+    v4 = [items count];
 
     return v4;
   }
@@ -491,21 +491,21 @@ LABEL_13:
 - (unint64_t)getNowPlayingItemsCount
 {
   v2 = +[MPMusicPlayerController systemMusicPlayer];
-  v3 = [v2 numberOfItems];
+  numberOfItems = [v2 numberOfItems];
 
-  return v3;
+  return numberOfItems;
 }
 
-- (unsigned)playVFSItemWithUid:(unint64_t)a3
+- (unsigned)playVFSItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_Library *)self currentVFSPath];
-  v5 = [v4 lastObject];
-  LOBYTE(a3) = [v5 playItemWithUid:a3];
+  currentVFSPath = [(BTAVRCP_Library *)self currentVFSPath];
+  lastObject = [currentVFSPath lastObject];
+  LOBYTE(uid) = [lastObject playItemWithUid:uid];
 
-  return a3;
+  return uid;
 }
 
-- (unsigned)playSearchItemWithUid:(unint64_t)a3
+- (unsigned)playSearchItemWithUid:(unint64_t)uid
 {
   currentSearchQuery = self->_currentSearchQuery;
   if (!currentSearchQuery)
@@ -513,7 +513,7 @@ LABEL_13:
     return 20;
   }
 
-  v5 = [(MPMediaQuery *)currentSearchQuery itemWithUid:a3];
+  v5 = [(MPMediaQuery *)currentSearchQuery itemWithUid:uid];
   if (v5)
   {
     v6 = +[MPMusicPlayerController systemMusicPlayer];
@@ -531,10 +531,10 @@ LABEL_13:
   return v7;
 }
 
-- (unsigned)playNowPlayingItemWithUid:(unint64_t)a3
+- (unsigned)playNowPlayingItemWithUid:(unint64_t)uid
 {
   v4 = objc_alloc_init(MPMediaQuery);
-  v5 = [v4 itemWithUid:a3];
+  v5 = [v4 itemWithUid:uid];
   if (v5)
   {
     v6 = +[MPMusicPlayerController systemMusicPlayer];

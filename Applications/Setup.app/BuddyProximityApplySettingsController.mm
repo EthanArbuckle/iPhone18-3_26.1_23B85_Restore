@@ -2,9 +2,9 @@
 - (BOOL)addWirelessNetworks;
 - (BuddyProximityApplySettingsController)init;
 - (void)endProximityIfApplicable;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)waitForWirelessConnection:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)waitForWirelessConnection:(id)connection;
 @end
 
 @implementation BuddyProximityApplySettingsController
@@ -26,11 +26,11 @@
   objc_storeStrong(&location, v5);
   if (v5)
   {
-    v6 = [location navigationItem];
-    [v6 setTitle:&stru_10032F900];
+    navigationItem = [location navigationItem];
+    [navigationItem setTitle:&stru_10032F900];
 
-    v7 = [location navigationItem];
-    [v7 setHidesBackButton:1 animated:0];
+    navigationItem2 = [location navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   v8 = location;
@@ -39,21 +39,21 @@
   return v8;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = BuddyProximityApplySettingsController;
-  [(BuddyProximityApplySettingsController *)&v10 viewDidAppear:a3];
+  [(BuddyProximityApplySettingsController *)&v10 viewDidAppear:appear];
   v3 = dispatch_get_global_queue(0, 0);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10009F8CC;
   v8 = &unk_10032B0D0;
-  v9 = v13;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);
@@ -63,8 +63,8 @@
 {
   v21[2] = self;
   v21[1] = a2;
-  v2 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-  v21[0] = [(ProximitySetupController *)v2 information];
+  proximitySetupController = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+  v21[0] = [(ProximitySetupController *)proximitySetupController information];
 
   v20 = WiFiManagerClientCreate();
   v19 = 0;
@@ -74,8 +74,8 @@
     v17 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = [v21[0] networks];
-      sub_100077E48(buf, [v3 count]);
+      networks = [v21[0] networks];
+      sub_100077E48(buf, [networks count]);
       _os_log_impl(&_mh_execute_header, oslog, v17, "Adding auto-join information for %llu Wi-Fi networks...", buf, 0xCu);
     }
 
@@ -83,19 +83,19 @@
     for (i = 0; ; ++i)
     {
       v4 = i;
-      v5 = [v21[0] networks];
-      v6 = [v5 count];
+      networks2 = [v21[0] networks];
+      v6 = [networks2 count];
 
       if (v4 >= v6)
       {
         break;
       }
 
-      v7 = [v21[0] networks];
-      v15 = [v7 objectAtIndexedSubscript:i];
+      networks3 = [v21[0] networks];
+      v15 = [networks3 objectAtIndexedSubscript:i];
 
-      v8 = [v21[0] networkPasswords];
-      location = [v8 objectAtIndexedSubscript:i];
+      networkPasswords = [v21[0] networkPasswords];
+      location = [networkPasswords objectAtIndexedSubscript:i];
 
       cf = WiFiNetworkCreate();
       v9 = location;
@@ -122,12 +122,12 @@
   return v11 & 1;
 }
 
-- (void)waitForWirelessConnection:(id)a3
+- (void)waitForWirelessConnection:(id)connection
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   oslog = _BYLoggingFacility();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -143,7 +143,7 @@
   v6 = 0;
   v7 = sub_1000A012C;
   v8 = &unk_10032B020;
-  v9 = v14;
+  v9 = selfCopy;
   v10 = location[0];
   [(BYNetworkMonitor *)v3 withMinimumNetworkType:1 timeout:&v4 runBlock:15.0];
 
@@ -154,51 +154,51 @@
 
 - (void)endProximityIfApplicable
 {
-  v2 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-  v3 = ![(ProximitySetupController *)v2 hasConnection];
+  proximitySetupController = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+  v3 = ![(ProximitySetupController *)proximitySetupController hasConnection];
 
   if ((v3 & 1) == 0)
   {
-    v4 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-    v5 = [(ProximitySetupController *)v4 information];
-    v6 = [(SASProximityInformation *)v5 appleID];
-    v7 = v6 != 0;
+    proximitySetupController2 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+    information = [(ProximitySetupController *)proximitySetupController2 information];
+    appleID = [(SASProximityInformation *)information appleID];
+    v7 = appleID != 0;
 
     v18 = v7;
-    v8 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-    v9 = [(ProximitySetupController *)v8 information];
-    v10 = [(SASProximityInformation *)v9 hasTransferrableTelephonyPlan];
-    v11 = [v10 BOOLValue];
+    proximitySetupController3 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+    information2 = [(ProximitySetupController *)proximitySetupController3 information];
+    hasTransferrableTelephonyPlan = [(SASProximityInformation *)information2 hasTransferrableTelephonyPlan];
+    bOOLValue = [hasTransferrableTelephonyPlan BOOLValue];
 
-    v17 = v11 & 1;
-    v12 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-    v13 = [(ProximitySetupController *)v12 information];
-    v14 = [(SASProximityInformation *)v13 supportsDeviceToDeviceMigration];
-    v15 = [v14 BOOLValue];
+    v17 = bOOLValue & 1;
+    proximitySetupController4 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+    information3 = [(ProximitySetupController *)proximitySetupController4 information];
+    supportsDeviceToDeviceMigration = [(SASProximityInformation *)information3 supportsDeviceToDeviceMigration];
+    bOOLValue2 = [supportsDeviceToDeviceMigration BOOLValue];
 
-    if (!v18 && (v17 & 1) == 0 && (v15 & 1) == 0)
+    if (!v18 && (v17 & 1) == 0 && (bOOLValue2 & 1) == 0)
     {
-      v16 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
-      [(ProximitySetupController *)v16 setupFinished];
+      proximitySetupController5 = [(BuddyProximityApplySettingsController *)self proximitySetupController];
+      [(ProximitySetupController *)proximitySetupController5 setupFinished];
     }
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityApplySettingsController *)v12 proximitySetupController];
+  objc_storeStrong(location, completion);
+  proximitySetupController = [(BuddyProximityApplySettingsController *)selfCopy proximitySetupController];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000A0570;
   v8 = &unk_10032BB88;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  [(ProximitySetupController *)v3 waitForIntent:&v4];
+  [(ProximitySetupController *)proximitySetupController waitForIntent:&v4];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);

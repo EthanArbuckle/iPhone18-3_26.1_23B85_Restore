@@ -1,31 +1,31 @@
 @interface HKHealthPrivacyServiceObjectPickerViewController
-- (HKHealthPrivacyServiceObjectPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (HKHealthPrivacyServiceObjectPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_pickerControllerForDocuments;
 - (id)_pickerControllerForMedications;
-- (id)_pickerControllerForObjectType:(id)a3;
+- (id)_pickerControllerForObjectType:(id)type;
 - (id)_pickerControllerForSignedClinicalData;
 - (id)_pickerControllerForVisionPrescriptions;
-- (id)medicalRecordsForVerifiableClinicalRecord:(id)a3;
-- (id)signedClinicalDataRecordForVerifiableClinicalRecord:(id)a3;
-- (id)signedRecordsForClinicalRecords:(id)a3;
-- (void)_beginAuthorizationSessionWithIdentifier:(id)a3;
+- (id)medicalRecordsForVerifiableClinicalRecord:(id)record;
+- (id)signedClinicalDataRecordForVerifiableClinicalRecord:(id)record;
+- (id)signedRecordsForClinicalRecords:(id)records;
+- (void)_beginAuthorizationSessionWithIdentifier:(id)identifier;
 - (void)_configureApplicationStateMonitor;
 - (void)_configureNavigationController;
-- (void)_finishWithError:(id)a3;
-- (void)_hostApplicationStateDidChange:(unsigned int)a3;
+- (void)_finishWithError:(id)error;
+- (void)_hostApplicationStateDidChange:(unsigned int)change;
 - (void)_hostDidTerminate;
-- (void)_queryMedicalRecordsWithQueryDescriptors:(id)a3 completion:(id)a4;
-- (void)pickerControllerDidFinish:(id)a3 error:(id)a4;
-- (void)setPromptSession:(id)a3 presentationRequests:(id)a4;
+- (void)_queryMedicalRecordsWithQueryDescriptors:(id)descriptors completion:(id)completion;
+- (void)pickerControllerDidFinish:(id)finish error:(id)error;
+- (void)setPromptSession:(id)session presentationRequests:(id)requests;
 @end
 
 @implementation HKHealthPrivacyServiceObjectPickerViewController
 
-- (HKHealthPrivacyServiceObjectPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKHealthPrivacyServiceObjectPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = HKHealthPrivacyServiceObjectPickerViewController;
-  v4 = [(HKHealthPrivacyServiceObjectPickerViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(HKHealthPrivacyServiceObjectPickerViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(HKHealthStore);
@@ -40,15 +40,15 @@
   return v4;
 }
 
-- (void)setPromptSession:(id)a3 presentationRequests:(id)a4
+- (void)setPromptSession:(id)session presentationRequests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_promptSession, a3);
-  objc_storeStrong(&self->_presentationRequests, a4);
-  v9 = [v7 objectType];
+  sessionCopy = session;
+  requestsCopy = requests;
+  objc_storeStrong(&self->_promptSession, session);
+  objc_storeStrong(&self->_presentationRequests, requests);
+  objectType = [sessionCopy objectType];
   objectType = self->_objectType;
-  self->_objectType = v9;
+  self->_objectType = objectType;
 
   v11 = self->_objectType;
   v12 = +[HKUserAnnotatedMedicationType userAnnotatedMedicationType];
@@ -66,15 +66,15 @@
 LABEL_9:
       authorizationStore = self->_authorizationStore;
       v30 = 0;
-      v19 = [(HKAuthorizationStore *)authorizationStore fetchAuthorizationContextForPromptSession:v7 error:&v30];
+      v19 = [(HKAuthorizationStore *)authorizationStore fetchAuthorizationContextForPromptSession:sessionCopy error:&v30];
       v20 = v30;
       if (v19)
       {
-        v24 = [v19 samplesRequiringAuthorization];
+        samplesRequiringAuthorization = [v19 samplesRequiringAuthorization];
         samplesRequiringAuthorization = self->_samplesRequiringAuthorization;
-        self->_samplesRequiringAuthorization = v24;
+        self->_samplesRequiringAuthorization = samplesRequiringAuthorization;
 
-        v21 = [v19 metadata];
+        metadata = [v19 metadata];
         v22 = &OBJC_IVAR___HKHealthPrivacyServiceObjectPickerViewController__metadata;
         goto LABEL_11;
       }
@@ -83,7 +83,7 @@ LABEL_9:
       v29 = HKLogAuthorization();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        sub_100005E3C(v7);
+        sub_100005E3C(sessionCopy);
       }
 
 LABEL_16:
@@ -105,7 +105,7 @@ LABEL_16:
 
   v18 = self->_authorizationStore;
   v31 = 0;
-  v19 = [(HKAuthorizationStore *)v18 fetchConceptAuthorizationContextForPromptSession:v7 error:&v31];
+  v19 = [(HKAuthorizationStore *)v18 fetchConceptAuthorizationContextForPromptSession:sessionCopy error:&v31];
   v20 = v31;
   if (!v19)
   {
@@ -113,47 +113,47 @@ LABEL_16:
     v29 = HKLogAuthorization();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      sub_100005ED8(v7);
+      sub_100005ED8(sessionCopy);
     }
 
     goto LABEL_16;
   }
 
-  v21 = [v19 userAnnotatedMedications];
+  metadata = [v19 userAnnotatedMedications];
   v22 = &OBJC_IVAR___HKHealthPrivacyServiceObjectPickerViewController__medicationsRequiringAuthorization;
 LABEL_11:
   v26 = *v22;
   v27 = *&self->HKViewController_opaque[v26];
-  *&self->HKViewController_opaque[v26] = v21;
+  *&self->HKViewController_opaque[v26] = metadata;
 
-  v28 = [v7 sessionIdentifier];
-  [(HKHealthPrivacyServiceObjectPickerViewController *)self _beginAuthorizationSessionWithIdentifier:v28];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
+  [(HKHealthPrivacyServiceObjectPickerViewController *)self _beginAuthorizationSessionWithIdentifier:sessionIdentifier];
 
 LABEL_17:
 }
 
-- (id)_pickerControllerForObjectType:(id)a3
+- (id)_pickerControllerForObjectType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForDocuments];
+    _pickerControllerForDocuments = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForDocuments];
 LABEL_18:
-    v18 = v5;
+    v18 = _pickerControllerForDocuments;
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForSignedClinicalData];
+    _pickerControllerForDocuments = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForSignedClinicalData];
     goto LABEL_18;
   }
 
   v6 = +[HKPrescriptionType visionPrescriptionType];
   v7 = v6;
-  if (v6 == v4)
+  if (v6 == typeCopy)
   {
 
     goto LABEL_10;
@@ -168,19 +168,19 @@ LABEL_18:
 
   v9 = v8;
   v10 = +[HKPrescriptionType visionPrescriptionType];
-  v11 = [v4 isEqual:v10];
+  v11 = [typeCopy isEqual:v10];
 
   if (v11)
   {
 LABEL_10:
-    v5 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForVisionPrescriptions];
+    _pickerControllerForDocuments = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForVisionPrescriptions];
     goto LABEL_18;
   }
 
 LABEL_12:
   v12 = +[HKUserAnnotatedMedicationType userAnnotatedMedicationType];
   v13 = v12;
-  if (v12 == v4)
+  if (v12 == typeCopy)
   {
 
     goto LABEL_17;
@@ -191,7 +191,7 @@ LABEL_12:
   {
     v15 = v14;
     v16 = +[HKUserAnnotatedMedicationType userAnnotatedMedicationType];
-    v17 = [v4 isEqual:v16];
+    v17 = [typeCopy isEqual:v16];
 
     if (!v17)
     {
@@ -199,7 +199,7 @@ LABEL_12:
     }
 
 LABEL_17:
-    v5 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForMedications];
+    _pickerControllerForDocuments = [(HKHealthPrivacyServiceObjectPickerViewController *)self _pickerControllerForMedications];
     goto LABEL_18;
   }
 
@@ -213,8 +213,8 @@ LABEL_19:
 - (id)_pickerControllerForDocuments
 {
   v3 = [HKDocumentPickerViewController alloc];
-  v4 = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
-  v5 = [v3 initWithDocuments:v4 presentationStyle:1];
+  allKeys = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
+  v5 = [v3 initWithDocuments:allKeys presentationStyle:1];
 
   [v5 setDelegate:self];
   [v5 setSource:self->_currentSource];
@@ -224,13 +224,13 @@ LABEL_19:
 
 - (id)_pickerControllerForSignedClinicalData
 {
-  v3 = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
-  v4 = [v3 sortedArrayUsingComparator:&stru_10000C478];
+  allKeys = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
+  v4 = [allKeys sortedArrayUsingComparator:&stru_10000C478];
 
   v5 = [(HKHealthPrivacyServiceObjectPickerViewController *)self signedRecordsForClinicalRecords:v4];
   v6 = [HKVerifiableClinicalRecordPickerViewController alloc];
-  v7 = [(HKObjectAuthorizationPromptSessionMetadata *)self->_metadata recordTypes];
-  v8 = [v6 initWithClinicalRecords:v4 signedRecords:v5 recordTypes:v7];
+  recordTypes = [(HKObjectAuthorizationPromptSessionMetadata *)self->_metadata recordTypes];
+  v8 = [v6 initWithClinicalRecords:v4 signedRecords:v5 recordTypes:recordTypes];
 
   [v8 setDelegate:self];
   [v8 setSource:self->_currentSource];
@@ -241,13 +241,13 @@ LABEL_19:
 
 - (id)_pickerControllerForVisionPrescriptions
 {
-  v3 = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
-  v4 = [v3 sortedArrayUsingComparator:&stru_10000C4B8];
+  allKeys = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
+  v4 = [allKeys sortedArrayUsingComparator:&stru_10000C4B8];
 
   v5 = [(NSDictionary *)self->_samplesRequiringAuthorization hk_filter:&stru_10000C4F8];
-  v6 = [v5 allKeys];
+  allKeys2 = [v5 allKeys];
 
-  v7 = [[HKPrescriptionPickerViewController alloc] initWithHealthStore:self->_healthStore samples:v4 enabledSamples:v6 source:self->_currentSource];
+  v7 = [[HKPrescriptionPickerViewController alloc] initWithHealthStore:self->_healthStore samples:v4 enabledSamples:allKeys2 source:self->_currentSource];
   [v7 setDelegate:self];
 
   return v7;
@@ -256,9 +256,9 @@ LABEL_19:
 - (id)_pickerControllerForMedications
 {
   v3 = [[HKHealthConceptPickerViewController alloc] initWithHealthStore:self->_healthStore source:self->_currentSource userAnnotatedMedications:self->_medicationsRequiringAuthorization];
-  v4 = [(NSArray *)self->_presentationRequests firstObject];
-  v5 = [v4 readUsageDescription];
-  [v3 setReadUsageDescription:v5];
+  firstObject = [(NSArray *)self->_presentationRequests firstObject];
+  readUsageDescription = [firstObject readUsageDescription];
+  [v3 setReadUsageDescription:readUsageDescription];
 
   [v3 setDelegate:self];
 
@@ -270,22 +270,22 @@ LABEL_19:
   objectType = self->_objectType;
   if (!objectType)
   {
-    v4 = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
-    v5 = [v4 firstObject];
-    v6 = [v5 sampleType];
-    v7 = v6;
-    if (v6)
+    allKeys = [(NSDictionary *)self->_samplesRequiringAuthorization allKeys];
+    firstObject = [allKeys firstObject];
+    sampleType = [firstObject sampleType];
+    v7 = sampleType;
+    if (sampleType)
     {
-      v8 = v6;
+      expectedObjectType = sampleType;
     }
 
     else
     {
-      v8 = [(HKObjectAuthorizationPromptSessionMetadata *)self->_metadata expectedObjectType];
+      expectedObjectType = [(HKObjectAuthorizationPromptSessionMetadata *)self->_metadata expectedObjectType];
     }
 
     v9 = self->_objectType;
-    self->_objectType = v8;
+    self->_objectType = expectedObjectType;
 
     objectType = self->_objectType;
   }
@@ -304,16 +304,16 @@ LABEL_19:
 
   else
   {
-    v12 = [(HKObjectType *)self->_objectType identifier];
-    v13 = [NSError hk_error:303 format:@"No picker view controller for object type: %@", v12];
+    identifier = [(HKObjectType *)self->_objectType identifier];
+    v13 = [NSError hk_error:303 format:@"No picker view controller for object type: %@", identifier];
 
     [(HKHealthPrivacyServiceObjectPickerViewController *)self _finishWithError:v13];
   }
 }
 
-- (void)_hostApplicationStateDidChange:(unsigned int)a3
+- (void)_hostApplicationStateDidChange:(unsigned int)change
 {
-  if (a3 <= 3)
+  if (change <= 3)
   {
     block[9] = v3;
     block[10] = v4;
@@ -326,7 +326,7 @@ LABEL_19:
       v9 = HKLogAuthorization();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        sub_100005F74(a3, v9);
+        sub_100005F74(change, v9);
       }
     }
 
@@ -343,8 +343,8 @@ LABEL_19:
 {
   objc_initWeak(&location, self);
   v3 = [BKSApplicationStateMonitor alloc];
-  v4 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _hostApplicationBundleIdentifier];
-  v12 = v4;
+  _hostApplicationBundleIdentifier = [(HKHealthPrivacyServiceObjectPickerViewController *)self _hostApplicationBundleIdentifier];
+  v12 = _hostApplicationBundleIdentifier;
   v5 = [NSArray arrayWithObjects:&v12 count:1];
   v6 = [v3 initWithBundleIDs:v5 states:BKSApplicationStateAll];
   applicationStateMonitor = self->_applicationStateMonitor;
@@ -361,10 +361,10 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (void)_beginAuthorizationSessionWithIdentifier:(id)a3
+- (void)_beginAuthorizationSessionWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_100005FF0(a2, self);
   }
@@ -387,15 +387,15 @@ LABEL_19:
     }
   }
 
-  objc_storeStrong(&self->_sessionIdentifier, a3);
+  objc_storeStrong(&self->_sessionIdentifier, identifier);
   [(HKHealthPrivacyServiceObjectPickerViewController *)self _configureApplicationStateMonitor];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100002BD8;
   v14[3] = &unk_10000C548;
   v14[4] = self;
-  v15 = v6;
-  v10 = v6;
+  v15 = identifierCopy;
+  v10 = identifierCopy;
   v11 = objc_retainBlock(v14);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -421,15 +421,15 @@ LABEL_19:
   }
 }
 
-- (id)signedRecordsForClinicalRecords:(id)a3
+- (id)signedRecordsForClinicalRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_alloc_init(NSMutableDictionary);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -446,8 +446,8 @@ LABEL_19:
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [(HKHealthPrivacyServiceObjectPickerViewController *)self signedClinicalDataRecordForVerifiableClinicalRecord:v11, v16];
-        v13 = [v11 originIdentifier];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        originIdentifier = [v11 originIdentifier];
+        [v5 setObject:v12 forKeyedSubscript:originIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -461,9 +461,9 @@ LABEL_19:
   return v14;
 }
 
-- (id)signedClinicalDataRecordForVerifiableClinicalRecord:(id)a3
+- (id)signedClinicalDataRecordForVerifiableClinicalRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -478,8 +478,8 @@ LABEL_19:
   v29 = 0;
   v5 = dispatch_semaphore_create(0);
   v6 = +[HKSignedClinicalDataRecordType signedClinicalDataRecordType];
-  v7 = [v4 originIdentifier];
-  v8 = [HKQuery predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:v7];
+  originIdentifier = [recordCopy originIdentifier];
+  v8 = [HKQuery predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:originIdentifier];
 
   v9 = [[HKQueryDescriptor alloc] initWithSampleType:v6 predicate:v8];
   v42 = v9;
@@ -512,12 +512,12 @@ LABEL_19:
     v15 = HKLogAuthorization();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 originIdentifier];
+      originIdentifier2 = [recordCopy originIdentifier];
       v19 = v25[5];
       *buf = 138543874;
-      v37 = self;
+      selfCopy = self;
       v38 = 2112;
-      v39 = v18;
+      v39 = originIdentifier2;
       v40 = 2112;
       v41 = v19;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@: Unable to find HKSignedClinicalDataRecord associated with sync identifier %@, error: %@", buf, 0x20u);
@@ -534,26 +534,26 @@ LABEL_19:
   return v16;
 }
 
-- (void)_queryMedicalRecordsWithQueryDescriptors:(id)a3 completion:(id)a4
+- (void)_queryMedicalRecordsWithQueryDescriptors:(id)descriptors completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  descriptorsCopy = descriptors;
   v8 = [HKSampleQuery alloc];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100003630;
   v12[3] = &unk_10000C5C0;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 initWithQueryDescriptors:v7 limit:0 resultsHandler:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [v8 initWithQueryDescriptors:descriptorsCopy limit:0 resultsHandler:v12];
 
-  v11 = [(HKHealthPrivacyServiceObjectPickerViewController *)self healthStore];
-  [v11 executeQuery:v10];
+  healthStore = [(HKHealthPrivacyServiceObjectPickerViewController *)self healthStore];
+  [healthStore executeQuery:v10];
 }
 
-- (id)medicalRecordsForVerifiableClinicalRecord:(id)a3
+- (id)medicalRecordsForVerifiableClinicalRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -567,8 +567,8 @@ LABEL_19:
   v36 = sub_1000034A4;
   v37 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [v3 originIdentifier];
-  v6 = [HKQuery predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:v5];
+  originIdentifier = [recordCopy originIdentifier];
+  v6 = [HKQuery predicateForMedicalRecordsWithSignedClinicalDataOriginIdentifier:originIdentifier];
 
   v7 = [HKSampleType medicalRecordTypesWithOptions:1];
   v8 = objc_alloc_init(NSMutableArray);
@@ -627,12 +627,12 @@ LABEL_19:
     v18 = HKLogAuthorization();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v3 originIdentifier];
+      originIdentifier2 = [recordCopy originIdentifier];
       v22 = v33[5];
       *buf = 138543874;
-      v45 = self;
+      selfCopy = self;
       v46 = 2112;
-      v47 = v21;
+      v47 = originIdentifier2;
       v48 = 2112;
       v49 = v22;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@: Unable to find HKMedicalRecords associated with sync identifier %@, error: %@", buf, 0x20u);
@@ -649,26 +649,26 @@ LABEL_19:
   return v19;
 }
 
-- (void)pickerControllerDidFinish:(id)a3 error:(id)a4
+- (void)pickerControllerDidFinish:(id)finish error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKHealthPrivacyServiceObjectPickerViewController *)self presentedViewController];
+  finishCopy = finish;
+  errorCopy = error;
+  presentedViewController = [(HKHealthPrivacyServiceObjectPickerViewController *)self presentedViewController];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003BCC;
   v11[3] = &unk_10000C520;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  [v8 dismissViewControllerAnimated:1 completion:v11];
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = finishCopy;
+  v9 = finishCopy;
+  v10 = errorCopy;
+  [presentedViewController dismissViewControllerAnimated:1 completion:v11];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[_HKBehavior sharedBehavior];
   if ([v5 isiPad])
   {
@@ -676,9 +676,9 @@ LABEL_19:
 
     if ((v6 & 1) == 0)
     {
-      v7 = [[HKHealthSyncDisplayController alloc] initWithHealthStore:self->_healthStore source:self->_currentSource];
-      v8 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _healthPrivacyHostViewController];
-      [v7 setObjectPickerDelegate:v8];
+      _healthPrivacyHostViewController2 = [[HKHealthSyncDisplayController alloc] initWithHealthStore:self->_healthStore source:self->_currentSource];
+      _healthPrivacyHostViewController = [(HKHealthPrivacyServiceObjectPickerViewController *)self _healthPrivacyHostViewController];
+      [_healthPrivacyHostViewController2 setObjectPickerDelegate:_healthPrivacyHostViewController];
 
       _HKInitializeLogging();
       v9 = HKLogAuthorization();
@@ -690,7 +690,7 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Prompting health sync view controller", &v14, 0xCu);
       }
 
-      [(HKHealthPrivacyServiceObjectPickerViewController *)self presentViewController:v7 animated:1 completion:0];
+      [(HKHealthPrivacyServiceObjectPickerViewController *)self presentViewController:_healthPrivacyHostViewController2 animated:1 completion:0];
       goto LABEL_12;
     }
   }
@@ -712,8 +712,8 @@ LABEL_19:
     }
   }
 
-  v7 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _healthPrivacyHostViewController];
-  [v7 didFinishWithError:v4];
+  _healthPrivacyHostViewController2 = [(HKHealthPrivacyServiceObjectPickerViewController *)self _healthPrivacyHostViewController];
+  [_healthPrivacyHostViewController2 didFinishWithError:errorCopy];
 LABEL_12:
 }
 

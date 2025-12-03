@@ -1,18 +1,18 @@
 @interface SYDocumentFetchRequest
-+ (BOOL)_isSearchableItemValid:(id)a3 loggableErrorDescription:(id *)a4;
-+ (id)_buildResultWithMatches:(id)a3;
-+ (id)_contentURLForItem:(id)a3;
-+ (id)_itemIdFromSearchableItem:(id)a3;
-+ (void)_fetchDocumentsWithReason:(id)a3 queryString:(id)a4 completion:(id)a5;
-+ (void)fetchAllDocumentsMatchingAnyIndexIdWithCompletion:(id)a3;
-+ (void)fetchDocumentsWithIndexIds:(id)a3 completion:(id)a4;
++ (BOOL)_isSearchableItemValid:(id)valid loggableErrorDescription:(id *)description;
++ (id)_buildResultWithMatches:(id)matches;
++ (id)_contentURLForItem:(id)item;
++ (id)_itemIdFromSearchableItem:(id)item;
++ (void)_fetchDocumentsWithReason:(id)reason queryString:(id)string completion:(id)completion;
++ (void)fetchAllDocumentsMatchingAnyIndexIdWithCompletion:(id)completion;
++ (void)fetchDocumentsWithIndexIds:(id)ids completion:(id)completion;
 @end
 
 @implementation SYDocumentFetchRequest
 
-+ (void)fetchAllDocumentsMatchingAnyIndexIdWithCompletion:(id)a3
++ (void)fetchAllDocumentsMatchingAnyIndexIdWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -25,10 +25,10 @@
   v8[1] = 3221225472;
   v8[2] = __76__SYDocumentFetchRequest_fetchAllDocumentsMatchingAnyIndexIdWithCompletion___block_invoke;
   v8[3] = &unk_27856B5F0;
-  v9 = v4;
-  v10 = a1;
-  v7 = v4;
-  [a1 _fetchDocumentsWithReason:@"Document Workflows: Fetch documents to update link state." queryString:v6 completion:v8];
+  v9 = completionCopy;
+  selfCopy = self;
+  v7 = completionCopy;
+  [self _fetchDocumentsWithReason:@"Document Workflows: Fetch documents to update link state." queryString:v6 completion:v8];
 }
 
 void __76__SYDocumentFetchRequest_fetchAllDocumentsMatchingAnyIndexIdWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -39,38 +39,38 @@ void __76__SYDocumentFetchRequest_fetchAllDocumentsMatchingAnyIndexIdWithComplet
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)fetchDocumentsWithIndexIds:(id)a3 completion:(id)a4
++ (void)fetchDocumentsWithIndexIds:(id)ids completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idsCopy = ids;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v22 = v6;
+    v22 = idsCopy;
     _os_log_impl(&dword_225901000, v8, OS_LOG_TYPE_DEFAULT, "Fetching documents matching ids: %{private}@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __64__SYDocumentFetchRequest_fetchDocumentsWithIndexIds_completion___block_invoke;
   v18[3] = &unk_27856B618;
-  v19 = v9;
-  v20 = v6;
-  v10 = v6;
-  v11 = v9;
+  v19 = string;
+  v20 = idsCopy;
+  v10 = idsCopy;
+  v11 = string;
   [v10 enumerateObjectsUsingBlock:v18];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"(kMDItemIsTrashed != 1) && (%@)", v11];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__SYDocumentFetchRequest_fetchDocumentsWithIndexIds_completion___block_invoke_2;
   v15[3] = &unk_27856B5F0;
-  v16 = v7;
-  v17 = a1;
-  v13 = v7;
-  [a1 _fetchDocumentsWithReason:@"Document Workflows: Fetch documents for unlinking." queryString:v12 completion:v15];
+  v16 = completionCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  [self _fetchDocumentsWithReason:@"Document Workflows: Fetch documents for unlinking." queryString:v12 completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -97,14 +97,14 @@ void __64__SYDocumentFetchRequest_fetchDocumentsWithIndexIds_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)_fetchDocumentsWithReason:(id)a3 queryString:(id)a4 completion:(id)a5
++ (void)_fetchDocumentsWithReason:(id)reason queryString:(id)string completion:(id)completion
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  stringCopy = string;
+  completionCopy = completion;
   v10 = objc_alloc_init(MEMORY[0x277CC34A0]);
-  [v10 setReason:v7];
+  [v10 setReason:reasonCopy];
   v30[0] = @"SYDocumentRelatedUniqueIdentifierKey";
   v30[1] = @"kMDItemContentURL";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
@@ -113,16 +113,16 @@ void __64__SYDocumentFetchRequest_fetchDocumentsWithIndexIds_completion___block_
   v12 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [SYDocumentFetchRequest _fetchDocumentsWithReason:v8 queryString:v12 completion:?];
+    [SYDocumentFetchRequest _fetchDocumentsWithReason:stringCopy queryString:v12 completion:?];
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v8 queryContext:v10];
-  v14 = [MEMORY[0x277CBEB18] array];
+  v13 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:stringCopy queryContext:v10];
+  array = [MEMORY[0x277CBEB18] array];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completion___block_invoke;
   v28[3] = &unk_27856B640;
-  v15 = v14;
+  v15 = array;
   v29 = v15;
   [v13 setFoundItemsHandler:v28];
   objc_initWeak(&location, v13);
@@ -133,7 +133,7 @@ void __64__SYDocumentFetchRequest_fetchDocumentsWithIndexIds_completion___block_
   objc_copyWeak(&v26, &location);
   v16 = v15;
   v24 = v16;
-  v17 = v9;
+  v17 = completionCopy;
   v25 = v17;
   [v13 setCompletionHandler:&v20];
   if (_fetchDocumentsWithReason_queryString_completion__onceToken != -1)
@@ -193,16 +193,16 @@ void __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completi
   }
 }
 
-+ (id)_buildResultWithMatches:(id)a3
++ (id)_buildResultWithMatches:(id)matches
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  matchesCopy = matches;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(matchesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = matchesCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
@@ -221,11 +221,11 @@ void __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completi
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v22 = 0;
-        v13 = [a1 _isSearchableItemValid:v12 loggableErrorDescription:{&v22, v21}];
+        v13 = [self _isSearchableItemValid:v12 loggableErrorDescription:{&v22, v21}];
         v14 = v22;
         if (v13)
         {
-          v15 = [a1 _itemIdFromSearchableItem:v12];
+          v15 = [self _itemIdFromSearchableItem:v12];
           v16 = [SYDocumentFetchRequest _contentURLForItem:v12];
           v17 = [[SYDocumentFetchResult alloc] initWithDocumentId:v15 fileURL:v16];
           [v5 addObject:v17];
@@ -257,16 +257,16 @@ void __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completi
   return v18;
 }
 
-+ (BOOL)_isSearchableItemValid:(id)a3 loggableErrorDescription:(id *)a4
++ (BOOL)_isSearchableItemValid:(id)valid loggableErrorDescription:(id *)description
 {
-  v6 = a3;
-  v7 = [v6 attributeSet];
-  v8 = [v7 bundleID];
+  validCopy = valid;
+  attributeSet = [validCopy attributeSet];
+  bundleID = [attributeSet bundleID];
 
-  if (v8 && ![v8 isEqualToString:@"com.apple.mobilemail"])
+  if (bundleID && ![bundleID isEqualToString:@"com.apple.mobilemail"])
   {
-    v10 = [a1 _itemIdFromSearchableItem:v6];
-    v11 = [SYDocumentFetchRequest _contentURLForItem:v6];
+    v10 = [self _itemIdFromSearchableItem:validCopy];
+    v11 = [SYDocumentFetchRequest _contentURLForItem:validCopy];
     v12 = v11;
     if (v10)
     {
@@ -279,18 +279,18 @@ void __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completi
     }
 
     v9 = !v13;
-    if (a4 && !v9)
+    if (description && !v9)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v11 path];
-      *a4 = [v14 stringWithFormat:@"Skip invalid searchable with itemId: %@, contentURL: %@", v10, v15];
+      path = [v11 path];
+      *description = [v14 stringWithFormat:@"Skip invalid searchable with itemId: %@, contentURL: %@", v10, path];
     }
   }
 
-  else if (a4)
+  else if (description)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Skip searchable item with bundle id: %@", v8];
-    *a4 = v9 = 0;
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Skip searchable item with bundle id: %@", bundleID];
+    *description = v9 = 0;
   }
 
   else
@@ -301,24 +301,24 @@ void __75__SYDocumentFetchRequest__fetchDocumentsWithReason_queryString_completi
   return v9;
 }
 
-+ (id)_itemIdFromSearchableItem:(id)a3
++ (id)_itemIdFromSearchableItem:(id)item
 {
   v3 = MEMORY[0x277CC33B0];
-  v4 = a3;
+  itemCopy = item;
   v5 = [[v3 alloc] initWithKeyName:@"SYDocumentRelatedUniqueIdentifierKey"];
-  v6 = [v4 attributeSet];
+  attributeSet = [itemCopy attributeSet];
 
-  v7 = [v6 valueForCustomKey:v5];
+  v7 = [attributeSet valueForCustomKey:v5];
 
   return v7;
 }
 
-+ (id)_contentURLForItem:(id)a3
++ (id)_contentURLForItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 contentURL];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  return v4;
+  return contentURL;
 }
 
 + (void)_fetchDocumentsWithReason:(uint64_t)a1 queryString:(NSObject *)a2 completion:.cold.1(uint64_t a1, NSObject *a2)

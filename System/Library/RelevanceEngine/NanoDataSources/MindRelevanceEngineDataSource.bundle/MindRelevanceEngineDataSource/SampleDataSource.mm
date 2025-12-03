@@ -2,7 +2,7 @@
 + (NSString)bundleIdentifier;
 - (NSArray)supportedSections;
 - (_TtC29MindRelevanceEngineDataSource16SampleDataSource)init;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation SampleDataSource
@@ -30,16 +30,16 @@
   return v4.super.isa;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     *(swift_allocObject() + 16) = v5;
     v5 = sub_1FDC;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_9498(v5);
   sub_1D64(v5);
 }

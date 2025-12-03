@@ -1,80 +1,80 @@
 @interface HUIconButton
 - (CGSize)intrinsicContentSize;
 - (HFIconDescriptor)iconDescriptor;
-- (HUIconButton)initWithFrame:(CGRect)a3;
+- (HUIconButton)initWithFrame:(CGRect)frame;
 - (id)vibrancyEffect;
 - (int64_t)contentMode;
-- (void)setBackgroundVisualEffect:(id)a3 animated:(BOOL)a4;
-- (void)setBackgroundVisualEffectViewCornerRaduis:(double)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setIconSize:(unint64_t)a3;
-- (void)setIconTintColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setVibrancyEffect:(id)a3 animated:(BOOL)a4;
+- (void)setBackgroundVisualEffect:(id)effect animated:(BOOL)animated;
+- (void)setBackgroundVisualEffectViewCornerRaduis:(double)raduis;
+- (void)setContentMode:(int64_t)mode;
+- (void)setIconSize:(unint64_t)size;
+- (void)setIconTintColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setVibrancyEffect:(id)effect animated:(BOOL)animated;
 - (void)tintColorDidChange;
-- (void)updateWithIconDescriptor:(id)a3 displayStyle:(unint64_t)a4 animated:(BOOL)a5;
+- (void)updateWithIconDescriptor:(id)descriptor displayStyle:(unint64_t)style animated:(BOOL)animated;
 @end
 
 @implementation HUIconButton
 
-- (HUIconButton)initWithFrame:(CGRect)a3
+- (HUIconButton)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = HUIconButton;
-  v3 = [(HUIconButton *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconButton *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUIconButton *)v3 tintColor];
-    v6 = [v5 CGColor];
-    v7 = [(HUIconButton *)v4 layer];
-    [v7 setBorderColor:v6];
+    tintColor = [(HUIconButton *)v3 tintColor];
+    cGColor = [tintColor CGColor];
+    layer = [(HUIconButton *)v4 layer];
+    [layer setBorderColor:cGColor];
 
     [(HUIconButton *)v4 _setContinuousCornerRadius:16.0];
     v8 = objc_alloc_init(MEMORY[0x277D180D0]);
     [(HUIconButton *)v4 setIconView:v8];
 
-    v9 = [(HUIconButton *)v4 iconView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(HUIconButton *)v4 iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(HUIconButton *)v4 iconView];
-    [v10 setUserInteractionEnabled:0];
+    iconView2 = [(HUIconButton *)v4 iconView];
+    [iconView2 setUserInteractionEnabled:0];
 
-    v11 = [(HUIconButton *)v4 iconView];
-    [v11 setDisableContinuousAnimation:1];
+    iconView3 = [(HUIconButton *)v4 iconView];
+    [iconView3 setDisableContinuousAnimation:1];
 
-    v12 = [(HUIconButton *)v4 iconView];
-    [v12 setUseIntrinsicContentSizeFromAsset:0];
+    iconView4 = [(HUIconButton *)v4 iconView];
+    [iconView4 setUseIntrinsicContentSizeFromAsset:0];
 
-    v13 = [(HUIconButton *)v4 iconView];
-    [(HUIconButton *)v4 addSubview:v13];
+    iconView5 = [(HUIconButton *)v4 iconView];
+    [(HUIconButton *)v4 addSubview:iconView5];
 
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [(HUIconButton *)v4 iconView];
-    v16 = [v15 centerXAnchor];
-    v17 = [(HUIconButton *)v4 centerXAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
-    [v14 addObject:v18];
+    array = [MEMORY[0x277CBEB18] array];
+    iconView6 = [(HUIconButton *)v4 iconView];
+    centerXAnchor = [iconView6 centerXAnchor];
+    centerXAnchor2 = [(HUIconButton *)v4 centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v18];
 
-    v19 = [(HUIconButton *)v4 iconView];
-    v20 = [v19 centerYAnchor];
-    v21 = [(HUIconButton *)v4 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
-    [v14 addObject:v22];
+    iconView7 = [(HUIconButton *)v4 iconView];
+    centerYAnchor = [iconView7 centerYAnchor];
+    centerYAnchor2 = [(HUIconButton *)v4 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v22];
 
-    v23 = [(HUIconButton *)v4 iconView];
-    v24 = [v23 widthAnchor];
-    v25 = [(HUIconButton *)v4 widthAnchor];
-    v26 = [v24 constraintLessThanOrEqualToAnchor:v25];
-    [v14 addObject:v26];
+    iconView8 = [(HUIconButton *)v4 iconView];
+    widthAnchor = [iconView8 widthAnchor];
+    widthAnchor2 = [(HUIconButton *)v4 widthAnchor];
+    v26 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
+    [array addObject:v26];
 
-    v27 = [(HUIconButton *)v4 iconView];
-    v28 = [v27 heightAnchor];
-    v29 = [(HUIconButton *)v4 heightAnchor];
-    v30 = [v28 constraintLessThanOrEqualToAnchor:v29];
-    [v14 addObject:v30];
+    iconView9 = [(HUIconButton *)v4 iconView];
+    heightAnchor = [iconView9 heightAnchor];
+    heightAnchor2 = [(HUIconButton *)v4 heightAnchor];
+    v30 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
+    [array addObject:v30];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v14];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v4;
@@ -85,34 +85,34 @@
   v6.receiver = self;
   v6.super_class = HUIconButton;
   [(HUIconButton *)&v6 tintColorDidChange];
-  v3 = [(HUIconButton *)self tintColor];
-  v4 = [v3 CGColor];
-  v5 = [(HUIconButton *)self layer];
-  [v5 setBorderColor:v4];
+  tintColor = [(HUIconButton *)self tintColor];
+  cGColor = [tintColor CGColor];
+  layer = [(HUIconButton *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = HUIconButton;
   [(HUIconButton *)&v7 setSelected:?];
   v5 = 0.0;
-  if (v3)
+  if (selectedCopy)
   {
     v5 = HURoundToScreenScale(1.5);
   }
 
-  v6 = [(HUIconButton *)self layer];
-  [v6 setBorderWidth:v5];
+  layer = [(HUIconButton *)self layer];
+  [layer setBorderWidth:v5];
 }
 
-- (void)updateWithIconDescriptor:(id)a3 displayStyle:(unint64_t)a4 animated:(BOOL)a5
+- (void)updateWithIconDescriptor:(id)descriptor displayStyle:(unint64_t)style animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(HUIconButton *)self iconView];
-  [v9 updateWithIconDescriptor:v8 displayStyle:a4 animated:v5];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  iconView = [(HUIconButton *)self iconView];
+  [iconView updateWithIconDescriptor:descriptorCopy displayStyle:style animated:animatedCopy];
 }
 
 - (CGSize)intrinsicContentSize
@@ -126,123 +126,123 @@
 
 - (HFIconDescriptor)iconDescriptor
 {
-  v2 = [(HUIconButton *)self iconView];
-  v3 = [v2 iconDescriptor];
+  iconView = [(HUIconButton *)self iconView];
+  iconDescriptor = [iconView iconDescriptor];
 
-  return v3;
+  return iconDescriptor;
 }
 
 - (int64_t)contentMode
 {
-  v2 = [(HUIconButton *)self iconView];
-  v3 = [v2 contentMode];
+  iconView = [(HUIconButton *)self iconView];
+  contentMode = [iconView contentMode];
 
-  return v3;
+  return contentMode;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  v4 = [(HUIconButton *)self iconView];
-  [v4 setContentMode:a3];
+  iconView = [(HUIconButton *)self iconView];
+  [iconView setContentMode:mode];
 }
 
 - (id)vibrancyEffect
 {
-  v2 = [(HUIconButton *)self iconView];
-  v3 = [v2 vibrancyEffect];
+  iconView = [(HUIconButton *)self iconView];
+  vibrancyEffect = [iconView vibrancyEffect];
 
-  return v3;
+  return vibrancyEffect;
 }
 
-- (void)setVibrancyEffect:(id)a3 animated:(BOOL)a4
+- (void)setVibrancyEffect:(id)effect animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUIconButton *)self iconView];
-  [v7 setVibrancyEffect:v6 animated:v4];
+  animatedCopy = animated;
+  effectCopy = effect;
+  iconView = [(HUIconButton *)self iconView];
+  [iconView setVibrancyEffect:effectCopy animated:animatedCopy];
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HUIconButton *)self iconView];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  iconView = [(HUIconButton *)self iconView];
+  [iconView setTintColor:colorCopy];
 }
 
-- (void)setIconSize:(unint64_t)a3
+- (void)setIconSize:(unint64_t)size
 {
-  v4 = [(HUIconButton *)self iconView];
-  [v4 setIconSize:a3];
+  iconView = [(HUIconButton *)self iconView];
+  [iconView setIconSize:size];
 }
 
-- (void)setBackgroundVisualEffect:(id)a3 animated:(BOOL)a4
+- (void)setBackgroundVisualEffect:(id)effect animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUIconButton *)self backgroundEffectView];
+  animatedCopy = animated;
+  effectCopy = effect;
+  backgroundEffectView = [(HUIconButton *)self backgroundEffectView];
 
-  if (v7)
+  if (backgroundEffectView)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8 = MEMORY[0x277D75D18];
-      v9 = [(HUIconButton *)self iconView];
-      [v9 vibrancyEffectAnimationDuration];
+      iconView = [(HUIconButton *)self iconView];
+      [iconView vibrancyEffectAnimationDuration];
       v11 = v10;
       v32 = MEMORY[0x277D85DD0];
       v33 = 3221225472;
       v34 = __51__HUIconButton_setBackgroundVisualEffect_animated___block_invoke;
       v35 = &unk_277DB7558;
-      v36 = self;
-      v37 = v6;
+      selfCopy = self;
+      v37 = effectCopy;
       [v8 animateWithDuration:&v32 animations:v11];
 
       goto LABEL_7;
     }
 
-    v12 = [(HUIconButton *)self backgroundEffectView];
-    [v12 setEffect:v6];
+    backgroundEffectView2 = [(HUIconButton *)self backgroundEffectView];
+    [backgroundEffectView2 setEffect:effectCopy];
   }
 
   else
   {
-    v12 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v6];
+    backgroundEffectView2 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:effectCopy];
     [(HUIconButton *)self frame];
-    [v12 setFrame:?];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v12 setClipsToBounds:1];
-    [v12 setUserInteractionEnabled:0];
-    [(HUIconButton *)self insertSubview:v12 atIndex:0];
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [v12 leadingAnchor];
-    v15 = [(HUIconButton *)self leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
-    [v13 addObject:v16];
+    [backgroundEffectView2 setFrame:?];
+    [backgroundEffectView2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [backgroundEffectView2 setClipsToBounds:1];
+    [backgroundEffectView2 setUserInteractionEnabled:0];
+    [(HUIconButton *)self insertSubview:backgroundEffectView2 atIndex:0];
+    array = [MEMORY[0x277CBEB18] array];
+    leadingAnchor = [backgroundEffectView2 leadingAnchor];
+    leadingAnchor2 = [(HUIconButton *)self leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v16];
 
-    v17 = [v12 trailingAnchor];
-    v18 = [(HUIconButton *)self trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
-    [v13 addObject:v19];
+    trailingAnchor = [backgroundEffectView2 trailingAnchor];
+    trailingAnchor2 = [(HUIconButton *)self trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v19];
 
-    v20 = [v12 topAnchor];
-    v21 = [(HUIconButton *)self topAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
-    [v13 addObject:v22];
+    topAnchor = [backgroundEffectView2 topAnchor];
+    topAnchor2 = [(HUIconButton *)self topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v22];
 
-    v23 = [v12 bottomAnchor];
-    v24 = [(HUIconButton *)self bottomAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
-    [v13 addObject:v25];
+    bottomAnchor = [backgroundEffectView2 bottomAnchor];
+    bottomAnchor2 = [(HUIconButton *)self bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v25];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v13];
-    [(HUIconButton *)self setBackgroundEffectView:v12];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
+    [(HUIconButton *)self setBackgroundEffectView:backgroundEffectView2];
   }
 
 LABEL_7:
   v26 = [(HUIconButton *)self iconView:v32];
   v27 = MEMORY[0x277D75D00];
   objc_opt_class();
-  v28 = v6;
+  v28 = effectCopy;
   if (objc_opt_isKindOfClass())
   {
     v29 = v28;
@@ -265,15 +265,15 @@ void __51__HUIconButton_setBackgroundVisualEffect_animated___block_invoke(uint64
   [v2 setEffect:*(a1 + 40)];
 }
 
-- (void)setBackgroundVisualEffectViewCornerRaduis:(double)a3
+- (void)setBackgroundVisualEffectViewCornerRaduis:(double)raduis
 {
-  v5 = [(HUIconButton *)self backgroundEffectView];
+  backgroundEffectView = [(HUIconButton *)self backgroundEffectView];
 
-  if (v5)
+  if (backgroundEffectView)
   {
-    v7 = [(HUIconButton *)self backgroundEffectView];
-    v6 = [v7 layer];
-    [v6 setCornerRadius:a3];
+    backgroundEffectView2 = [(HUIconButton *)self backgroundEffectView];
+    layer = [backgroundEffectView2 layer];
+    [layer setCornerRadius:raduis];
   }
 }
 

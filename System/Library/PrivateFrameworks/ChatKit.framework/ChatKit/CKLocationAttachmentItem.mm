@@ -1,11 +1,11 @@
 @interface CKLocationAttachmentItem
 + (id)UTITypes;
 - (BOOL)isDroppedPin;
-- (CKLocationAttachmentItem)initWithFileURL:(id)a3 size:(CGSize)a4 transferGUID:(id)a5 guid:(id)a6 createdDate:(id)a7;
+- (CKLocationAttachmentItem)initWithFileURL:(id)l size:(CGSize)size transferGUID:(id)d guid:(id)guid createdDate:(id)date;
 - (CLLocationCoordinate2D)coordinate;
-- (id)_generateThumbnailFillToSize:(CGSize)a3;
+- (id)_generateThumbnailFillToSize:(CGSize)size;
 - (id)vCardURLProperties;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (void)generatePreviewWithCompletion:(id)completion;
 @end
 
 @implementation CKLocationAttachmentItem
@@ -20,22 +20,22 @@
   return v3;
 }
 
-- (CKLocationAttachmentItem)initWithFileURL:(id)a3 size:(CGSize)a4 transferGUID:(id)a5 guid:(id)a6 createdDate:(id)a7
+- (CKLocationAttachmentItem)initWithFileURL:(id)l size:(CGSize)size transferGUID:(id)d guid:(id)guid createdDate:(id)date
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v29 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  dCopy = d;
+  guidCopy = guid;
+  dateCopy = date;
   v26.receiver = self;
   v26.super_class = CKLocationAttachmentItem;
-  v17 = [(CKAttachmentItem *)&v26 initWithFileURL:v13 size:v14 transferGUID:v15 guid:v16 createdDate:0 shareURL:width, height];
-  if (v17)
+  height = [(CKAttachmentItem *)&v26 initWithFileURL:lCopy size:dCopy transferGUID:guidCopy guid:dateCopy createdDate:0 shareURL:width, height];
+  if (height)
   {
-    [(CKLocationAttachmentItem *)v17 setCoordinate:__IMWeakkCLLocationCoordinate2DInvalid()];
-    v18 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v13];
+    [(CKLocationAttachmentItem *)height setCoordinate:__IMWeakkCLLocationCoordinate2DInvalid()];
+    v18 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
     if (v18)
     {
       v25 = 0;
@@ -43,18 +43,18 @@
       v20 = v25;
       if (v20)
       {
-        v21 = [v13 absoluteString];
-        [v21 lastPathComponent];
+        absoluteString = [lCopy absoluteString];
+        [absoluteString lastPathComponent];
       }
 
       else
       {
-        v21 = [v19 firstObject];
-        [v21 givenName];
+        absoluteString = [v19 firstObject];
+        [absoluteString givenName];
       }
       v23 = ;
 
-      [(CKLocationAttachmentItem *)v17 setLocationTitle:v23];
+      [(CKLocationAttachmentItem *)height setLocationTitle:v23];
     }
 
     else
@@ -65,23 +65,23 @@
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v28 = v13;
+          v28 = lCopy;
           _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Initializing CKLocationAttachmentItem at URL %@ with nil data", buf, 0xCu);
         }
       }
 
-      v18 = v17;
-      v17 = 0;
+      v18 = height;
+      height = 0;
     }
   }
 
-  return v17;
+  return height;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
+  completionCopy = completion;
+  previewCache = [objc_opt_class() previewCache];
   v6 = CKAttachmentPreviewCacheKey(self);
   v7 = +[CKUIBehavior sharedBehaviors];
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -92,7 +92,7 @@
   v14 = v13;
   v16 = v15;
 
-  if (([v5 isGeneratingPreviewForKey:v6] & 1) == 0)
+  if (([previewCache isGeneratingPreviewForKey:v6] & 1) == 0)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -105,10 +105,10 @@
     v17[1] = 3221225472;
     v17[2] = __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke_45;
     v17[3] = &unk_1E72EDE00;
-    v18 = v5;
+    v18 = previewCache;
     v19 = v6;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = completionCopy;
     [v18 enqueueGenerationBlock:v22 completion:v17 withPriority:1 forKey:v19];
   }
 }
@@ -156,10 +156,10 @@ void __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke
   }
 }
 
-- (id)_generateThumbnailFillToSize:(CGSize)a3
+- (id)_generateThumbnailFillToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v48 = *MEMORY[0x1E69E9840];
   if (_generateThumbnailFillToSize___pred_CLLocationCoordinate2DIsValidCoreLocation != -1)
   {
@@ -172,10 +172,10 @@ void __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke
   v40 = __Block_byref_object_copy__9;
   v41 = __Block_byref_object_dispose__9;
   v42 = 0;
-  v6 = [(CKLocationAttachmentItem *)self coordinate];
+  coordinate = [(CKLocationAttachmentItem *)self coordinate];
   v8 = v7;
   v10 = v9;
-  if ((_generateThumbnailFillToSize___CLLocationCoordinate2DIsValid(v6) & 1) == 0)
+  if ((_generateThumbnailFillToSize___CLLocationCoordinate2DIsValid(coordinate) & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -184,7 +184,7 @@ void __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v45 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_19020E000, v20, OS_LOG_TYPE_INFO, "%@ has invalid coordinate. Abort preview generation.", buf, 0xCu);
       }
     }
@@ -240,7 +240,7 @@ void __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v45 = @"MKMapSnapshotFeatureAnnotation";
+          selfCopy2 = @"MKMapSnapshotFeatureAnnotation";
           v46 = 2112;
           v47 = @"MapKit";
           _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "Failed weak linking %@ from %@.", buf, 0x16u);
@@ -273,7 +273,7 @@ void __58__CKLocationAttachmentItem_generatePreviewWithCompletion___block_invoke
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v45 = self;
+              selfCopy2 = self;
               _os_log_impl(&dword_19020E000, v30, OS_LOG_TYPE_INFO, "%@ thumbnail generation timed out.", buf, 0xCu);
             }
           }
@@ -295,7 +295,7 @@ LABEL_45:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v45 = @"MKMapSnapshotter";
+          selfCopy2 = @"MKMapSnapshotter";
           v46 = 2112;
           v47 = @"MapKit";
           _os_log_impl(&dword_19020E000, v32, OS_LOG_TYPE_INFO, "Failed weak linking %@ from %@.", buf, 0x16u);
@@ -310,7 +310,7 @@ LABEL_45:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v45 = @"MKMapSnapshotOptions";
+      selfCopy2 = @"MKMapSnapshotOptions";
       v46 = 2112;
       v47 = @"MapKit";
       _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Failed weak linking %@ from %@.", buf, 0x16u);
@@ -407,8 +407,8 @@ void __57__CKLocationAttachmentItem__generateThumbnailFillToSize___block_invoke_
             [v14 doubleValue];
             v16 = v15;
             v17 = [v12 objectAtIndex:1];
-            v18 = [v17 doubleValue];
-            v4 = v13(v18, v16, v19);
+            doubleValue = [v17 doubleValue];
+            v4 = v13(doubleValue, v16, v19);
             v6 = v20;
 
             goto LABEL_16;
@@ -454,23 +454,23 @@ void *__38__CKLocationAttachmentItem_coordinate__block_invoke_2()
 
 - (id)vCardURLProperties
 {
-  v2 = [(CKAttachmentItem *)self fileURL];
-  if (v2)
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  if (fileURL)
   {
-    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2 options:8 error:0];
+    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL options:8 error:0];
     if (v3)
     {
       v8 = 0;
       v4 = [MEMORY[0x1E695CE30] contactsWithData:v3 error:&v8];
       if ([v4 count])
       {
-        v5 = [v4 firstObject];
-        v6 = [v5 urlAddresses];
+        firstObject = [v4 firstObject];
+        urlAddresses = [firstObject urlAddresses];
       }
 
       else
       {
-        v6 = 0;
+        urlAddresses = 0;
       }
 
       goto LABEL_9;
@@ -482,17 +482,17 @@ void *__38__CKLocationAttachmentItem_coordinate__block_invoke_2()
     v3 = 0;
   }
 
-  v6 = 0;
+  urlAddresses = 0;
 LABEL_9:
 
-  return v6;
+  return urlAddresses;
 }
 
 - (BOOL)isDroppedPin
 {
-  v2 = [(CKAttachmentItem *)self fileURL];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A6E98]];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  v4 = [lastPathComponent isEqualToString:*MEMORY[0x1E69A6E98]];
 
   return v4;
 }

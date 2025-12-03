@@ -12,16 +12,16 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 _FBSScene];
-  if (v5)
+  _FBSScene = [v4 _FBSScene];
+  if (_FBSScene)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__BLSBacklightFBSSceneEnvironment_UIKit__initWithScene___block_invoke;
     v10[3] = &unk_1E711F5C8;
     v11 = v4;
-    v12 = a1;
-    v13 = v5;
+    selfCopy = self;
+    v13 = _FBSScene;
     v6 = [v13 backlightSceneEnvironmentWithCreationBlock:v10];
 
     v7 = v11;
@@ -47,28 +47,28 @@
 
 - (id)_scene
 {
-  v1 = [a1 _FBSScene];
-  v2 = [UIScene _sceneForFBSScene:v1];
+  _FBSScene = [self _FBSScene];
+  v2 = [UIScene _sceneForFBSScene:_FBSScene];
 
   return v2;
 }
 
 - (void)_setScene:()UIKit
 {
-  v8 = [a3 _FBSScene];
-  if (v8)
+  _FBSScene = [a3 _FBSScene];
+  if (_FBSScene)
   {
-    v5 = [a1 _FBSScene];
+    _FBSScene2 = [self _FBSScene];
 
-    if (v8 != v5)
+    if (_FBSScene != _FBSScene2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      v7 = [a1 _FBSScene];
-      [v6 handleFailureInMethod:a2 object:a1 file:@"BLSBacklightFBSSceneEnvironment+UIKit.m" lineNumber:74 description:{@"unexpectedly scene changed from %@ to %@", v7, v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      _FBSScene3 = [self _FBSScene];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BLSBacklightFBSSceneEnvironment+UIKit.m" lineNumber:74 description:{@"unexpectedly scene changed from %@ to %@", _FBSScene3, _FBSScene}];
     }
   }
 
-  [a1 _setFBSScene:v8];
+  [self _setFBSScene:_FBSScene];
 }
 
 - (id)_settingsDiffActionsForScene:()UIKit

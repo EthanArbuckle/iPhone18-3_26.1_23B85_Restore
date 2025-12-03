@@ -1,17 +1,17 @@
 @interface BMMediaNowPlaying
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaNowPlaying)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMediaNowPlaying)initWithUniqueID:(id)a3 absoluteTimestamp:(id)a4 playbackState:(int)a5 album:(id)a6 artist:(id)a7 duration:(id)a8 genre:(id)a9 title:(id)a10 elapsed:(id)a11 mediaType:(id)a12 iTunesStoreIdentifier:(id)a13 iTunesSubscriptionIdentifier:(id)a14 isAirPlayVideo:(id)a15 outputDevices:(id)a16 bundleID:(id)a17 iTunesArtistIdentifier:(id)a18 iTunesAlbumIdentifier:(id)a19 groupIdentifier:(id)a20 isRemoteControl:(id)a21 itemMediaType:(int)a22 itemMediaSubtype:(int)a23 isAirPlayActive:(id)a24 parentGroupContainsDiscoverableGroupLeader:(id)a25 excludeFromSuggestions:(id)a26;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaNowPlaying)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMediaNowPlaying)initWithUniqueID:(id)d absoluteTimestamp:(id)timestamp playbackState:(int)state album:(id)album artist:(id)artist duration:(id)duration genre:(id)genre title:(id)self0 elapsed:(id)self1 mediaType:(id)self2 iTunesStoreIdentifier:(id)self3 iTunesSubscriptionIdentifier:(id)self4 isAirPlayVideo:(id)self5 outputDevices:(id)self6 bundleID:(id)self7 iTunesArtistIdentifier:(id)self8 iTunesAlbumIdentifier:(id)self9 groupIdentifier:(id)groupIdentifier isRemoteControl:(id)control itemMediaType:(int)mediaType itemMediaSubtype:(int)subtype isAirPlayActive:(id)active parentGroupContainsDiscoverableGroupLeader:(id)leader excludeFromSuggestions:(id)suggestions;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (id)_outputDevicesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaNowPlaying
@@ -74,25 +74,25 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaNowPlaying *)self uniqueID];
-    v7 = [v5 uniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueID = [(BMMediaNowPlaying *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v8 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMMediaNowPlaying *)self uniqueID];
-      v10 = [v5 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID3 = [(BMMediaNowPlaying *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v11 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v11)
       {
@@ -100,18 +100,18 @@
       }
     }
 
-    v13 = [(BMMediaNowPlaying *)self absoluteTimestamp];
-    v14 = [v5 absoluteTimestamp];
-    v15 = v14;
-    if (v13 == v14)
+    absoluteTimestamp = [(BMMediaNowPlaying *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v15 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v16 = [(BMMediaNowPlaying *)self absoluteTimestamp];
-      v17 = [v5 absoluteTimestamp];
-      v18 = [v16 isEqual:v17];
+      absoluteTimestamp3 = [(BMMediaNowPlaying *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v18 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v18)
       {
@@ -119,21 +119,21 @@
       }
     }
 
-    v19 = [(BMMediaNowPlaying *)self playbackState];
-    if (v19 == [v5 playbackState])
+    playbackState = [(BMMediaNowPlaying *)self playbackState];
+    if (playbackState == [v5 playbackState])
     {
-      v20 = [(BMMediaNowPlaying *)self album];
-      v21 = [v5 album];
-      v22 = v21;
-      if (v20 == v21)
+      album = [(BMMediaNowPlaying *)self album];
+      album2 = [v5 album];
+      v22 = album2;
+      if (album == album2)
       {
       }
 
       else
       {
-        v23 = [(BMMediaNowPlaying *)self album];
-        v24 = [v5 album];
-        v25 = [v23 isEqual:v24];
+        album3 = [(BMMediaNowPlaying *)self album];
+        album4 = [v5 album];
+        v25 = [album3 isEqual:album4];
 
         if (!v25)
         {
@@ -141,18 +141,18 @@
         }
       }
 
-      v26 = [(BMMediaNowPlaying *)self artist];
-      v27 = [v5 artist];
-      v28 = v27;
-      if (v26 == v27)
+      artist = [(BMMediaNowPlaying *)self artist];
+      artist2 = [v5 artist];
+      v28 = artist2;
+      if (artist == artist2)
       {
       }
 
       else
       {
-        v29 = [(BMMediaNowPlaying *)self artist];
-        v30 = [v5 artist];
-        v31 = [v29 isEqual:v30];
+        artist3 = [(BMMediaNowPlaying *)self artist];
+        artist4 = [v5 artist];
+        v31 = [artist3 isEqual:artist4];
 
         if (!v31)
         {
@@ -172,25 +172,25 @@
           goto LABEL_97;
         }
 
-        v32 = [(BMMediaNowPlaying *)self duration];
-        if (v32 != [v5 duration])
+        duration = [(BMMediaNowPlaying *)self duration];
+        if (duration != [v5 duration])
         {
           goto LABEL_97;
         }
       }
 
-      v33 = [(BMMediaNowPlaying *)self genre];
-      v34 = [v5 genre];
-      v35 = v34;
-      if (v33 == v34)
+      genre = [(BMMediaNowPlaying *)self genre];
+      genre2 = [v5 genre];
+      v35 = genre2;
+      if (genre == genre2)
       {
       }
 
       else
       {
-        v36 = [(BMMediaNowPlaying *)self genre];
-        v37 = [v5 genre];
-        v38 = [v36 isEqual:v37];
+        genre3 = [(BMMediaNowPlaying *)self genre];
+        genre4 = [v5 genre];
+        v38 = [genre3 isEqual:genre4];
 
         if (!v38)
         {
@@ -198,18 +198,18 @@
         }
       }
 
-      v39 = [(BMMediaNowPlaying *)self title];
-      v40 = [v5 title];
-      v41 = v40;
-      if (v39 == v40)
+      title = [(BMMediaNowPlaying *)self title];
+      title2 = [v5 title];
+      v41 = title2;
+      if (title == title2)
       {
       }
 
       else
       {
-        v42 = [(BMMediaNowPlaying *)self title];
-        v43 = [v5 title];
-        v44 = [v42 isEqual:v43];
+        title3 = [(BMMediaNowPlaying *)self title];
+        title4 = [v5 title];
+        v44 = [title3 isEqual:title4];
 
         if (!v44)
         {
@@ -229,25 +229,25 @@
           goto LABEL_97;
         }
 
-        v45 = [(BMMediaNowPlaying *)self elapsed];
-        if (v45 != [v5 elapsed])
+        elapsed = [(BMMediaNowPlaying *)self elapsed];
+        if (elapsed != [v5 elapsed])
         {
           goto LABEL_97;
         }
       }
 
-      v46 = [(BMMediaNowPlaying *)self mediaType];
-      v47 = [v5 mediaType];
-      v48 = v47;
-      if (v46 == v47)
+      mediaType = [(BMMediaNowPlaying *)self mediaType];
+      mediaType2 = [v5 mediaType];
+      v48 = mediaType2;
+      if (mediaType == mediaType2)
       {
       }
 
       else
       {
-        v49 = [(BMMediaNowPlaying *)self mediaType];
-        v50 = [v5 mediaType];
-        v51 = [v49 isEqual:v50];
+        mediaType3 = [(BMMediaNowPlaying *)self mediaType];
+        mediaType4 = [v5 mediaType];
+        v51 = [mediaType3 isEqual:mediaType4];
 
         if (!v51)
         {
@@ -255,18 +255,18 @@
         }
       }
 
-      v52 = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
-      v53 = [v5 iTunesStoreIdentifier];
-      v54 = v53;
-      if (v52 == v53)
+      iTunesStoreIdentifier = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
+      iTunesStoreIdentifier2 = [v5 iTunesStoreIdentifier];
+      v54 = iTunesStoreIdentifier2;
+      if (iTunesStoreIdentifier == iTunesStoreIdentifier2)
       {
       }
 
       else
       {
-        v55 = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
-        v56 = [v5 iTunesStoreIdentifier];
-        v57 = [v55 isEqual:v56];
+        iTunesStoreIdentifier3 = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
+        iTunesStoreIdentifier4 = [v5 iTunesStoreIdentifier];
+        v57 = [iTunesStoreIdentifier3 isEqual:iTunesStoreIdentifier4];
 
         if (!v57)
         {
@@ -274,18 +274,18 @@
         }
       }
 
-      v58 = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
-      v59 = [v5 iTunesSubscriptionIdentifier];
-      v60 = v59;
-      if (v58 == v59)
+      iTunesSubscriptionIdentifier = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
+      iTunesSubscriptionIdentifier2 = [v5 iTunesSubscriptionIdentifier];
+      v60 = iTunesSubscriptionIdentifier2;
+      if (iTunesSubscriptionIdentifier == iTunesSubscriptionIdentifier2)
       {
       }
 
       else
       {
-        v61 = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
-        v62 = [v5 iTunesSubscriptionIdentifier];
-        v63 = [v61 isEqual:v62];
+        iTunesSubscriptionIdentifier3 = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
+        iTunesSubscriptionIdentifier4 = [v5 iTunesSubscriptionIdentifier];
+        v63 = [iTunesSubscriptionIdentifier3 isEqual:iTunesSubscriptionIdentifier4];
 
         if (!v63)
         {
@@ -305,25 +305,25 @@
           goto LABEL_97;
         }
 
-        v64 = [(BMMediaNowPlaying *)self isAirPlayVideo];
-        if (v64 != [v5 isAirPlayVideo])
+        isAirPlayVideo = [(BMMediaNowPlaying *)self isAirPlayVideo];
+        if (isAirPlayVideo != [v5 isAirPlayVideo])
         {
           goto LABEL_97;
         }
       }
 
-      v65 = [(BMMediaNowPlaying *)self outputDevices];
-      v66 = [v5 outputDevices];
-      v67 = v66;
-      if (v65 == v66)
+      outputDevices = [(BMMediaNowPlaying *)self outputDevices];
+      outputDevices2 = [v5 outputDevices];
+      v67 = outputDevices2;
+      if (outputDevices == outputDevices2)
       {
       }
 
       else
       {
-        v68 = [(BMMediaNowPlaying *)self outputDevices];
-        v69 = [v5 outputDevices];
-        v70 = [v68 isEqual:v69];
+        outputDevices3 = [(BMMediaNowPlaying *)self outputDevices];
+        outputDevices4 = [v5 outputDevices];
+        v70 = [outputDevices3 isEqual:outputDevices4];
 
         if (!v70)
         {
@@ -331,18 +331,18 @@
         }
       }
 
-      v71 = [(BMMediaNowPlaying *)self bundleID];
-      v72 = [v5 bundleID];
-      v73 = v72;
-      if (v71 == v72)
+      bundleID = [(BMMediaNowPlaying *)self bundleID];
+      bundleID2 = [v5 bundleID];
+      v73 = bundleID2;
+      if (bundleID == bundleID2)
       {
       }
 
       else
       {
-        v74 = [(BMMediaNowPlaying *)self bundleID];
-        v75 = [v5 bundleID];
-        v76 = [v74 isEqual:v75];
+        bundleID3 = [(BMMediaNowPlaying *)self bundleID];
+        bundleID4 = [v5 bundleID];
+        v76 = [bundleID3 isEqual:bundleID4];
 
         if (!v76)
         {
@@ -350,18 +350,18 @@
         }
       }
 
-      v77 = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
-      v78 = [v5 iTunesArtistIdentifier];
-      v79 = v78;
-      if (v77 == v78)
+      iTunesArtistIdentifier = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
+      iTunesArtistIdentifier2 = [v5 iTunesArtistIdentifier];
+      v79 = iTunesArtistIdentifier2;
+      if (iTunesArtistIdentifier == iTunesArtistIdentifier2)
       {
       }
 
       else
       {
-        v80 = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
-        v81 = [v5 iTunesArtistIdentifier];
-        v82 = [v80 isEqual:v81];
+        iTunesArtistIdentifier3 = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
+        iTunesArtistIdentifier4 = [v5 iTunesArtistIdentifier];
+        v82 = [iTunesArtistIdentifier3 isEqual:iTunesArtistIdentifier4];
 
         if (!v82)
         {
@@ -369,18 +369,18 @@
         }
       }
 
-      v83 = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
-      v84 = [v5 iTunesAlbumIdentifier];
-      v85 = v84;
-      if (v83 == v84)
+      iTunesAlbumIdentifier = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
+      iTunesAlbumIdentifier2 = [v5 iTunesAlbumIdentifier];
+      v85 = iTunesAlbumIdentifier2;
+      if (iTunesAlbumIdentifier == iTunesAlbumIdentifier2)
       {
       }
 
       else
       {
-        v86 = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
-        v87 = [v5 iTunesAlbumIdentifier];
-        v88 = [v86 isEqual:v87];
+        iTunesAlbumIdentifier3 = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
+        iTunesAlbumIdentifier4 = [v5 iTunesAlbumIdentifier];
+        v88 = [iTunesAlbumIdentifier3 isEqual:iTunesAlbumIdentifier4];
 
         if (!v88)
         {
@@ -388,18 +388,18 @@
         }
       }
 
-      v89 = [(BMMediaNowPlaying *)self groupIdentifier];
-      v90 = [v5 groupIdentifier];
-      v91 = v90;
-      if (v89 == v90)
+      groupIdentifier = [(BMMediaNowPlaying *)self groupIdentifier];
+      groupIdentifier2 = [v5 groupIdentifier];
+      v91 = groupIdentifier2;
+      if (groupIdentifier == groupIdentifier2)
       {
       }
 
       else
       {
-        v92 = [(BMMediaNowPlaying *)self groupIdentifier];
-        v93 = [v5 groupIdentifier];
-        v94 = [v92 isEqual:v93];
+        groupIdentifier3 = [(BMMediaNowPlaying *)self groupIdentifier];
+        groupIdentifier4 = [v5 groupIdentifier];
+        v94 = [groupIdentifier3 isEqual:groupIdentifier4];
 
         if (!v94)
         {
@@ -409,11 +409,11 @@
 
       if (!-[BMMediaNowPlaying hasIsRemoteControl](self, "hasIsRemoteControl") && ![v5 hasIsRemoteControl] || -[BMMediaNowPlaying hasIsRemoteControl](self, "hasIsRemoteControl") && objc_msgSend(v5, "hasIsRemoteControl") && (v95 = -[BMMediaNowPlaying isRemoteControl](self, "isRemoteControl"), v95 == objc_msgSend(v5, "isRemoteControl")))
       {
-        v96 = [(BMMediaNowPlaying *)self itemMediaType];
-        if (v96 == [v5 itemMediaType])
+        itemMediaType = [(BMMediaNowPlaying *)self itemMediaType];
+        if (itemMediaType == [v5 itemMediaType])
         {
-          v97 = [(BMMediaNowPlaying *)self itemMediaSubtype];
-          if (v97 == [v5 itemMediaSubtype])
+          itemMediaSubtype = [(BMMediaNowPlaying *)self itemMediaSubtype];
+          if (itemMediaSubtype == [v5 itemMediaSubtype])
           {
             if (!-[BMMediaNowPlaying hasIsAirPlayActive](self, "hasIsAirPlayActive") && ![v5 hasIsAirPlayActive] || -[BMMediaNowPlaying hasIsAirPlayActive](self, "hasIsAirPlayActive") && objc_msgSend(v5, "hasIsAirPlayActive") && (v98 = -[BMMediaNowPlaying isAirPlayActive](self, "isAirPlayActive"), v98 == objc_msgSend(v5, "isAirPlayActive")))
             {
@@ -427,8 +427,8 @@
 
                 if (-[BMMediaNowPlaying hasExcludeFromSuggestions](self, "hasExcludeFromSuggestions") && [v5 hasExcludeFromSuggestions])
                 {
-                  v100 = [(BMMediaNowPlaying *)self excludeFromSuggestions];
-                  v12 = v100 ^ [v5 excludeFromSuggestions] ^ 1;
+                  excludeFromSuggestions = [(BMMediaNowPlaying *)self excludeFromSuggestions];
+                  v12 = excludeFromSuggestions ^ [v5 excludeFromSuggestions] ^ 1;
 LABEL_98:
 
                   goto LABEL_99;
@@ -471,13 +471,13 @@ LABEL_99:
 - (id)jsonDictionary
 {
   v82[24] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMediaNowPlaying *)self uniqueID];
-  v4 = [(BMMediaNowPlaying *)self absoluteTimestamp];
-  if (v4)
+  uniqueID = [(BMMediaNowPlaying *)self uniqueID];
+  absoluteTimestamp = [(BMMediaNowPlaying *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMMediaNowPlaying *)self absoluteTimestamp];
-    [v6 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMMediaNowPlaying *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -487,8 +487,8 @@ LABEL_99:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaNowPlaying playbackState](self, "playbackState")}];
-  v9 = [(BMMediaNowPlaying *)self album];
-  v62 = [(BMMediaNowPlaying *)self artist];
+  album = [(BMMediaNowPlaying *)self album];
+  artist = [(BMMediaNowPlaying *)self artist];
   if ([(BMMediaNowPlaying *)self hasDuration])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMediaNowPlaying duration](self, "duration")}];
@@ -499,8 +499,8 @@ LABEL_99:
     v10 = 0;
   }
 
-  v11 = [(BMMediaNowPlaying *)self genre];
-  v79 = [(BMMediaNowPlaying *)self title];
+  genre = [(BMMediaNowPlaying *)self genre];
+  title = [(BMMediaNowPlaying *)self title];
   if ([(BMMediaNowPlaying *)self hasElapsed])
   {
     v78 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMediaNowPlaying elapsed](self, "elapsed")}];
@@ -511,9 +511,9 @@ LABEL_99:
     v78 = 0;
   }
 
-  v77 = [(BMMediaNowPlaying *)self mediaType];
-  v76 = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
-  v75 = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
+  mediaType = [(BMMediaNowPlaying *)self mediaType];
+  iTunesStoreIdentifier = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
+  iTunesSubscriptionIdentifier = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
   if ([(BMMediaNowPlaying *)self hasIsAirPlayVideo])
   {
     v74 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying isAirPlayVideo](self, "isAirPlayVideo")}];
@@ -524,11 +524,11 @@ LABEL_99:
     v74 = 0;
   }
 
-  v73 = [(BMMediaNowPlaying *)self _outputDevicesJSONArray];
-  v72 = [(BMMediaNowPlaying *)self bundleID];
-  v71 = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
-  v70 = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
-  v69 = [(BMMediaNowPlaying *)self groupIdentifier];
+  _outputDevicesJSONArray = [(BMMediaNowPlaying *)self _outputDevicesJSONArray];
+  bundleID = [(BMMediaNowPlaying *)self bundleID];
+  iTunesArtistIdentifier = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
+  iTunesAlbumIdentifier = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
+  groupIdentifier = [(BMMediaNowPlaying *)self groupIdentifier];
   if ([(BMMediaNowPlaying *)self hasIsRemoteControl])
   {
     v68 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying isRemoteControl](self, "isRemoteControl")}];
@@ -572,219 +572,219 @@ LABEL_99:
   }
 
   v81[0] = @"uniqueID";
-  v13 = v3;
-  if (!v3)
+  null = uniqueID;
+  if (!uniqueID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v13;
-  v82[0] = v13;
+  v53 = null;
+  v82[0] = null;
   v81[1] = @"absoluteTimestamp";
-  v14 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52 = v14;
-  v82[1] = v14;
+  v52 = null2;
+  v82[1] = null2;
   v81[2] = @"playbackState";
-  v15 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v51 = v15;
-  v82[2] = v15;
+  v51 = null3;
+  v82[2] = null3;
   v81[3] = @"album";
-  v16 = v9;
-  if (!v9)
+  null4 = album;
+  if (!album)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50 = v16;
-  v82[3] = v16;
+  v50 = null4;
+  v82[3] = null4;
   v81[4] = @"artist";
-  v17 = v62;
-  if (!v62)
+  null5 = artist;
+  if (!artist)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v17;
-  v82[4] = v17;
+  v49 = null5;
+  v82[4] = null5;
   v81[5] = @"duration";
-  v18 = v10;
+  null6 = v10;
   if (!v10)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v18;
-  v82[5] = v18;
+  v48 = null6;
+  v82[5] = null6;
   v81[6] = @"genre";
-  v19 = v11;
-  if (!v11)
+  null7 = genre;
+  if (!genre)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47 = v19;
-  v82[6] = v19;
+  v47 = null7;
+  v82[6] = null7;
   v81[7] = @"title";
-  v20 = v79;
-  if (!v79)
+  null8 = title;
+  if (!title)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[7] = v20;
+  v82[7] = null8;
   v81[8] = @"elapsed";
-  v21 = v78;
+  null9 = v78;
   if (!v78)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[8] = v21;
+  v82[8] = null9;
   v81[9] = @"mediaType";
-  v22 = v77;
-  if (!v77)
+  null10 = mediaType;
+  if (!mediaType)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v22;
-  v82[9] = v22;
+  v58 = null10;
+  v82[9] = null10;
   v81[10] = @"iTunesStoreIdentifier";
-  v23 = v76;
-  if (!v76)
+  null11 = iTunesStoreIdentifier;
+  if (!iTunesStoreIdentifier)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v23;
-  v82[10] = v23;
+  v57 = null11;
+  v82[10] = null11;
   v81[11] = @"iTunesSubscriptionIdentifier";
-  v24 = v75;
-  if (!v75)
+  null12 = iTunesSubscriptionIdentifier;
+  if (!iTunesSubscriptionIdentifier)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v24;
-  v82[11] = v24;
+  v56 = null12;
+  v82[11] = null12;
   v81[12] = @"isAirPlayVideo";
-  v25 = v74;
+  null13 = v74;
   if (!v74)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v80 = v25;
-  v82[12] = v25;
+  v80 = null13;
+  v82[12] = null13;
   v81[13] = @"outputDevices";
-  v26 = v73;
-  if (!v73)
+  null14 = _outputDevicesJSONArray;
+  if (!_outputDevicesJSONArray)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v26;
-  v82[13] = v26;
+  v45 = null14;
+  v82[13] = null14;
   v81[14] = @"bundleID";
-  v27 = v72;
-  if (!v72)
+  null15 = bundleID;
+  if (!bundleID)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v27;
-  v82[14] = v27;
+  v44 = null15;
+  v82[14] = null15;
   v81[15] = @"iTunesArtistIdentifier";
-  v28 = v71;
-  if (!v71)
+  null16 = iTunesArtistIdentifier;
+  if (!iTunesArtistIdentifier)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v11;
-  v43 = v28;
-  v82[15] = v28;
+  v59 = genre;
+  v43 = null16;
+  v82[15] = null16;
   v81[16] = @"iTunesAlbumIdentifier";
-  v29 = v70;
-  if (!v70)
+  null17 = iTunesAlbumIdentifier;
+  if (!iTunesAlbumIdentifier)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v21;
-  v42 = v29;
-  v82[16] = v29;
+  v46 = null9;
+  v42 = null17;
+  v82[16] = null17;
   v81[17] = @"groupIdentifier";
-  v30 = v69;
-  if (!v69)
+  null18 = groupIdentifier;
+  if (!groupIdentifier)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
   v61 = v8;
-  v40 = v30;
-  v82[17] = v30;
+  v40 = null18;
+  v82[17] = null18;
   v81[18] = @"isRemoteControl";
-  v31 = v68;
+  null19 = v68;
   if (!v68)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
   v63 = v12;
-  v60 = v9;
-  v82[18] = v31;
+  v60 = album;
+  v82[18] = null19;
   v81[19] = @"itemMediaType";
-  v32 = v67;
+  null20 = v67;
   if (!v67)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
   v55 = v10;
-  v82[19] = v32;
+  v82[19] = null20;
   v81[20] = @"itemMediaSubtype";
-  v33 = v66;
+  null21 = v66;
   if (!v66)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[20] = v33;
+  v82[20] = null21;
   v81[21] = @"isAirPlayActive";
-  v34 = v65;
+  null22 = v65;
   if (!v65)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[21] = v34;
+  v82[21] = null22;
   v81[22] = @"parentGroupContainsDiscoverableGroupLeader";
-  v35 = v64;
+  null23 = v64;
   if (!v64)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[22] = v35;
+  v82[22] = null23;
   v81[23] = @"excludeFromSuggestions";
-  v36 = v63;
+  null24 = v63;
   if (!v63)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82[23] = v36;
+  v82[23] = null24;
   v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v82 forKeys:v81 count:{24, v40}];
   if (!v63)
   {
@@ -821,31 +821,31 @@ LABEL_99:
     v37 = v80;
   }
 
-  if (!v69)
+  if (!groupIdentifier)
   {
 
     v37 = v80;
   }
 
-  if (!v70)
+  if (!iTunesAlbumIdentifier)
   {
 
     v37 = v80;
   }
 
-  if (!v71)
+  if (!iTunesArtistIdentifier)
   {
 
     v37 = v80;
   }
 
-  if (!v72)
+  if (!bundleID)
   {
 
     v37 = v80;
   }
 
-  if (!v73)
+  if (!_outputDevicesJSONArray)
   {
 
     v37 = v80;
@@ -855,15 +855,15 @@ LABEL_99:
   {
   }
 
-  if (!v75)
+  if (!iTunesSubscriptionIdentifier)
   {
   }
 
-  if (!v76)
+  if (!iTunesStoreIdentifier)
   {
   }
 
-  if (!v77)
+  if (!mediaType)
   {
   }
 
@@ -871,7 +871,7 @@ LABEL_99:
   {
   }
 
-  if (v79)
+  if (title)
   {
     if (v59)
     {
@@ -897,7 +897,7 @@ LABEL_107:
   if (v55)
   {
 LABEL_108:
-    if (v62)
+    if (artist)
     {
       goto LABEL_109;
     }
@@ -907,7 +907,7 @@ LABEL_108:
 
 LABEL_118:
 
-  if (v62)
+  if (artist)
   {
 LABEL_109:
     if (v60)
@@ -943,7 +943,7 @@ LABEL_111:
 
 LABEL_122:
 
-    if (v3)
+    if (uniqueID)
     {
       goto LABEL_113;
     }
@@ -959,7 +959,7 @@ LABEL_121:
   }
 
 LABEL_112:
-  if (v3)
+  if (uniqueID)
   {
     goto LABEL_113;
   }
@@ -980,8 +980,8 @@ LABEL_113:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMediaNowPlaying *)self outputDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  outputDevices = [(BMMediaNowPlaying *)self outputDevices];
+  v5 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -992,14 +992,14 @@ LABEL_113:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputDevices);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [outputDevices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1010,12 +1010,12 @@ LABEL_113:
   return v3;
 }
 
-- (BMMediaNowPlaying)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMediaNowPlaying)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v344[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"uniqueID"];
-  v285 = v5;
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
+  v285 = dictionaryCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v286 = 0;
@@ -1027,7 +1027,7 @@ LABEL_113:
   {
     v286 = v6;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     v282 = v7;
     if (!v7 || (v8 = v7, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -1061,9 +1061,9 @@ LABEL_4:
     {
       v280 = v8;
 LABEL_7:
-      v9 = [v5 objectForKeyedSubscript:@"playbackState"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"playbackState"];
       v284 = v9;
-      v279 = a4;
+      errorCopy = error;
       if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v10 = v286;
@@ -1079,7 +1079,7 @@ LABEL_7:
 LABEL_22:
 
 LABEL_23:
-        v21 = [v5 objectForKeyedSubscript:@"album"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"album"];
         v281 = v21;
         v286 = v10;
         if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1093,7 +1093,7 @@ LABEL_23:
         {
           v277 = v22;
 LABEL_26:
-          v23 = [v5 objectForKeyedSubscript:@"artist"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"artist"];
           v278 = v23;
           if (!v23 || (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -1106,19 +1106,19 @@ LABEL_26:
           {
             v276 = v24;
 LABEL_29:
-            v25 = [v5 objectForKeyedSubscript:@"duration"];
+            v25 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
             if (!v25 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v26 = 0;
 LABEL_32:
-              v27 = [v5 objectForKeyedSubscript:@"genre"];
+              v27 = [dictionaryCopy objectForKeyedSubscript:@"genre"];
               v274 = v25;
               if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v279)
+                  if (!errorCopy)
                   {
                     v275 = 0;
                     v17 = 0;
@@ -1153,7 +1153,7 @@ LABEL_228:
                   v273 = v74;
                   v275 = 0;
                   v17 = 0;
-                  *v279 = [v75 initWithDomain:v70 code:2 userInfo:?];
+                  *errorCopy = [v75 initWithDomain:v70 code:2 userInfo:?];
                   v77 = v73;
                   v16 = v280;
                   v44 = v276;
@@ -1169,7 +1169,7 @@ LABEL_228:
                 v275 = 0;
               }
 
-              v28 = [v5 objectForKeyedSubscript:@"title"];
+              v28 = [dictionaryCopy objectForKeyedSubscript:@"title"];
               v271 = v11;
               v273 = v28;
               v268 = v27;
@@ -1184,7 +1184,7 @@ LABEL_228:
               {
                 v267 = v29;
 LABEL_38:
-                v30 = [v5 objectForKeyedSubscript:@"elapsed"];
+                v30 = [dictionaryCopy objectForKeyedSubscript:@"elapsed"];
                 v269 = v30;
                 if (!v30 || (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1197,24 +1197,24 @@ LABEL_38:
                 {
                   v32 = v31;
 LABEL_41:
-                  v33 = [v5 objectForKeyedSubscript:@"mediaType"];
+                  v33 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
                   v265 = v32;
                   v266 = v33;
                   if (!v33 || (v34 = v33, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v270 = 0;
 LABEL_44:
-                    v35 = [v5 objectForKeyedSubscript:@"iTunesStoreIdentifier"];
+                    v35 = [dictionaryCopy objectForKeyedSubscript:@"iTunesStoreIdentifier"];
                     v264 = v35;
                     if (v35 && (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                     {
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        if (!v279)
+                        if (!errorCopy)
                         {
                           v37 = 0;
-                          v259 = 0;
+                          selfCopy = 0;
                           v16 = v280;
                           v44 = v276;
                           v48 = v277;
@@ -1235,8 +1235,8 @@ LABEL_44:
                         v32 = v265;
                         v258 = v117;
                         v37 = 0;
-                        v259 = 0;
-                        *v279 = [v118 initWithDomain:v114 code:2 userInfo:?];
+                        selfCopy = 0;
+                        *errorCopy = [v118 initWithDomain:v114 code:2 userInfo:?];
                         goto LABEL_165;
                       }
 
@@ -1248,13 +1248,13 @@ LABEL_44:
                       v37 = 0;
                     }
 
-                    v38 = [v5 objectForKeyedSubscript:@"iTunesSubscriptionIdentifier"];
+                    v38 = [dictionaryCopy objectForKeyedSubscript:@"iTunesSubscriptionIdentifier"];
                     v255 = v37;
                     v258 = v38;
                     if (!v38)
                     {
 LABEL_80:
-                      v83 = [v5 objectForKeyedSubscript:@"isAirPlayVideo"];
+                      v83 = [dictionaryCopy objectForKeyedSubscript:@"isAirPlayVideo"];
                       v253 = v26;
                       v256 = v83;
                       if (v83 && (v84 = v83, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1262,7 +1262,7 @@ LABEL_80:
                         objc_opt_class();
                         if ((objc_opt_isKindOfClass() & 1) == 0)
                         {
-                          if (v279)
+                          if (errorCopy)
                           {
                             v142 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v143 = *MEMORY[0x1E698F240];
@@ -1275,8 +1275,8 @@ LABEL_80:
                             v320 = v257;
                             v146 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v320 forKeys:&v319 count:1];
                             v254 = 0;
-                            v259 = 0;
-                            *v279 = [v142 initWithDomain:v143 code:2 userInfo:v146];
+                            selfCopy = 0;
+                            *errorCopy = [v142 initWithDomain:v143 code:2 userInfo:v146];
                             v129 = v146;
                             v16 = v280;
                             v44 = v276;
@@ -1286,7 +1286,7 @@ LABEL_80:
                           }
 
                           v254 = 0;
-                          v259 = 0;
+                          selfCopy = 0;
                           v16 = v280;
                           v44 = v276;
                           v48 = v277;
@@ -1304,9 +1304,9 @@ LABEL_80:
                         v254 = 0;
                       }
 
-                      v86 = [v5 objectForKeyedSubscript:@"outputDevices"];
-                      v87 = [MEMORY[0x1E695DFB0] null];
-                      v88 = [v86 isEqual:v87];
+                      v86 = [dictionaryCopy objectForKeyedSubscript:@"outputDevices"];
+                      null = [MEMORY[0x1E695DFB0] null];
+                      v88 = [v86 isEqual:null];
 
                       v252 = v85;
                       if (v88)
@@ -1324,7 +1324,7 @@ LABEL_80:
                           if ((objc_opt_isKindOfClass() & 1) == 0)
                           {
                             v38 = v85;
-                            if (v279)
+                            if (errorCopy)
                             {
                               v154 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v155 = *MEMORY[0x1E698F240];
@@ -1336,15 +1336,15 @@ LABEL_80:
                               v32 = v265;
                               v158 = v155;
                               v159 = v156;
-                              v259 = 0;
-                              *v279 = [v157 initWithDomain:v158 code:2 userInfo:v156];
+                              selfCopy = 0;
+                              *errorCopy = [v157 initWithDomain:v158 code:2 userInfo:v156];
                               v16 = v280;
                               v48 = v277;
                               v27 = v268;
                               goto LABEL_218;
                             }
 
-                            v259 = 0;
+                            selfCopy = 0;
                             v16 = v280;
                             v44 = v276;
                             v48 = v277;
@@ -1396,8 +1396,8 @@ LABEL_112:
                         objc_opt_class();
                         if ((objc_opt_isKindOfClass() & 1) == 0)
                         {
-                          v147 = v279;
-                          if (v279)
+                          v147 = errorCopy;
+                          if (errorCopy)
                           {
                             v148 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v149 = *MEMORY[0x1E698F240];
@@ -1421,13 +1421,13 @@ LABEL_112:
                         if (v139)
                         {
                           v140 = v139;
-                          if (v279)
+                          if (errorCopy)
                           {
                             v153 = v139;
-                            *v279 = v140;
+                            *errorCopy = v140;
                           }
 
-                          v259 = 0;
+                          selfCopy = 0;
                           goto LABEL_137;
                         }
 
@@ -1438,7 +1438,7 @@ LABEL_112:
                         if (v132 == v134)
                         {
                           v132 = [v130 countByEnumeratingWithState:&v288 objects:v316 count:16];
-                          v5 = v285;
+                          dictionaryCopy = v285;
                           if (v132)
                           {
                             goto LABEL_112;
@@ -1446,7 +1446,7 @@ LABEL_112:
 
 LABEL_120:
 
-                          v136 = [v5 objectForKeyedSubscript:@"bundleID"];
+                          v136 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
                           if (!v136 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
                             v249 = 0;
@@ -1457,9 +1457,9 @@ LABEL_120:
                           if (objc_opt_isKindOfClass())
                           {
                             v249 = v136;
-                            v5 = v285;
+                            dictionaryCopy = v285;
 LABEL_123:
-                            v140 = [v5 objectForKeyedSubscript:@"iTunesArtistIdentifier"];
+                            v140 = [dictionaryCopy objectForKeyedSubscript:@"iTunesArtistIdentifier"];
                             v247 = v140;
                             if (v140)
                             {
@@ -1473,7 +1473,7 @@ LABEL_123:
                               {
                                 v140 = 0;
 LABEL_152:
-                                v160 = [v5 objectForKeyedSubscript:@"iTunesAlbumIdentifier"];
+                                v160 = [dictionaryCopy objectForKeyedSubscript:@"iTunesAlbumIdentifier"];
                                 v270 = v141;
                                 v245 = v160;
                                 if (v160 && (v161 = v160, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1486,10 +1486,10 @@ LABEL_152:
                                     goto LABEL_155;
                                   }
 
-                                  if (!v279)
+                                  if (!errorCopy)
                                   {
                                     v246 = 0;
-                                    v259 = 0;
+                                    selfCopy = 0;
                                     v16 = v280;
                                     v48 = v277;
                                     v26 = v253;
@@ -1504,21 +1504,21 @@ LABEL_152:
                                   v307 = v251;
                                   v244 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v307 forKeys:&v306 count:1];
                                   v246 = 0;
-                                  v259 = 0;
-                                  *v279 = [v176 initWithDomain:v177 code:2 userInfo:?];
+                                  selfCopy = 0;
+                                  *errorCopy = [v176 initWithDomain:v177 code:2 userInfo:?];
                                 }
 
                                 else
                                 {
                                   v246 = 0;
 LABEL_155:
-                                  v162 = [v5 objectForKeyedSubscript:@"groupIdentifier"];
+                                  v162 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
                                   v244 = v162;
                                   if (!v162 || (v163 = v162, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
                                     v251 = 0;
 LABEL_158:
-                                    v164 = [v5 objectForKeyedSubscript:@"isRemoteControl"];
+                                    v164 = [dictionaryCopy objectForKeyedSubscript:@"isRemoteControl"];
                                     v242 = v164;
                                     if (v164 && (v165 = v164, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                     {
@@ -1530,10 +1530,10 @@ LABEL_158:
                                       }
 
                                       v180 = v129;
-                                      if (!v279)
+                                      if (!errorCopy)
                                       {
                                         v243 = 0;
-                                        v259 = 0;
+                                        selfCopy = 0;
                                         v16 = v280;
                                         v48 = v277;
                                         v38 = v252;
@@ -1552,8 +1552,8 @@ LABEL_158:
                                       v303 = v241;
                                       v239 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v303 forKeys:&v302 count:1];
                                       v243 = 0;
-                                      v259 = 0;
-                                      *v279 = [v181 initWithDomain:v182 code:2 userInfo:?];
+                                      selfCopy = 0;
+                                      *errorCopy = [v181 initWithDomain:v182 code:2 userInfo:?];
                                       v16 = v280;
                                       v48 = v277;
                                       v26 = v253;
@@ -1563,7 +1563,7 @@ LABEL_158:
                                     {
                                       v243 = 0;
 LABEL_161:
-                                      v166 = [v5 objectForKeyedSubscript:@"itemMediaType"];
+                                      v166 = [dictionaryCopy objectForKeyedSubscript:@"itemMediaType"];
                                       v239 = v166;
                                       if (!v166 || (v167 = v166, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -1580,7 +1580,7 @@ LABEL_188:
 
                                         v32 = v265;
 LABEL_189:
-                                        v186 = [v5 objectForKeyedSubscript:@"itemMediaSubtype"];
+                                        v186 = [dictionaryCopy objectForKeyedSubscript:@"itemMediaSubtype"];
                                         v237 = v186;
                                         if (v186)
                                         {
@@ -1608,12 +1608,12 @@ LABEL_196:
                                             v188 = v186;
                                             v187 = [MEMORY[0x1E696AD98] numberWithInt:BMMediaNowPlayingMediaSubtypeFromString(v188)];
 
-                                            v5 = v285;
+                                            dictionaryCopy = v285;
                                             goto LABEL_196;
                                           }
 
                                           v180 = v129;
-                                          if (v279)
+                                          if (errorCopy)
                                           {
                                             v215 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v263 = *MEMORY[0x1E698F240];
@@ -1623,8 +1623,8 @@ LABEL_196:
                                             v235 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v299 forKeys:&v298 count:1];
                                             v216 = [v215 initWithDomain:v263 code:2 userInfo:?];
                                             v236 = 0;
-                                            v259 = 0;
-                                            *v279 = v216;
+                                            selfCopy = 0;
+                                            *errorCopy = v216;
                                             v16 = v280;
                                             v48 = v277;
                                             v26 = v253;
@@ -1633,7 +1633,7 @@ LABEL_196:
                                           }
 
                                           v236 = 0;
-                                          v259 = 0;
+                                          selfCopy = 0;
 LABEL_266:
                                           v16 = v280;
                                           v48 = v277;
@@ -1657,7 +1657,7 @@ LABEL_216:
                                         }
 
 LABEL_197:
-                                        v189 = [v5 objectForKeyedSubscript:@"isAirPlayActive"];
+                                        v189 = [dictionaryCopy objectForKeyedSubscript:@"isAirPlayActive"];
                                         v235 = v189;
                                         v236 = v186;
                                         if (v189 && (v190 = v189, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1670,10 +1670,10 @@ LABEL_197:
                                           }
 
                                           v180 = v129;
-                                          if (!v279)
+                                          if (!errorCopy)
                                           {
                                             v240 = 0;
-                                            v259 = 0;
+                                            selfCopy = 0;
                                             v16 = v280;
                                             v48 = v277;
                                             v26 = v253;
@@ -1694,21 +1694,21 @@ LABEL_260:
                                           v297 = v238;
                                           v233 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v297 forKeys:&v296 count:1];
                                           v240 = 0;
-                                          v259 = 0;
-                                          *v279 = [v202 initWithDomain:v203 code:2 userInfo:?];
+                                          selfCopy = 0;
+                                          *errorCopy = [v202 initWithDomain:v203 code:2 userInfo:?];
                                         }
 
                                         else
                                         {
                                           v240 = 0;
 LABEL_200:
-                                          v191 = [v5 objectForKeyedSubscript:@"parentGroupContainsDiscoverableGroupLeader"];
+                                          v191 = [dictionaryCopy objectForKeyedSubscript:@"parentGroupContainsDiscoverableGroupLeader"];
                                           v233 = v191;
                                           if (!v191 || (v192 = v191, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
                                             v238 = 0;
 LABEL_203:
-                                            v193 = [v5 objectForKeyedSubscript:@"excludeFromSuggestions"];
+                                            v193 = [dictionaryCopy objectForKeyedSubscript:@"excludeFromSuggestions"];
                                             v232 = v193;
                                             if (!v193 || (v194 = v193, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -1725,20 +1725,20 @@ LABEL_203:
                                             {
                                               v234 = v201;
 LABEL_206:
-                                              v195 = [v271 intValue];
-                                              v196 = [v241 intValue];
-                                              v231 = __PAIR64__([v186 intValue], v196);
-                                              v197 = v195;
+                                              intValue = [v271 intValue];
+                                              intValue2 = [v241 intValue];
+                                              v231 = __PAIR64__([v186 intValue], intValue2);
+                                              v197 = intValue;
                                               v32 = v265;
                                               v48 = v277;
                                               v26 = v253;
                                               self = [BMMediaNowPlaying initWithUniqueID:"initWithUniqueID:absoluteTimestamp:playbackState:album:artist:duration:genre:title:elapsed:mediaType:iTunesStoreIdentifier:iTunesSubscriptionIdentifier:isAirPlayVideo:outputDevices:bundleID:iTunesArtistIdentifier:iTunesAlbumIdentifier:groupIdentifier:isRemoteControl:itemMediaType:itemMediaSubtype:isAirPlayActive:parentGroupContainsDiscoverableGroupLeader:excludeFromSuggestions:" absoluteTimestamp:v286 playbackState:v16 album:v197 artist:v277 duration:v276 genre:v275 title:v267 elapsed:v265 mediaType:v270 iTunesStoreIdentifier:v255 iTunesSubscriptionIdentifier:v38 isAirPlayVideo:v254 outputDevices:v129 bundleID:v249 iTunesArtistIdentifier:v140 iTunesAlbumIdentifier:v246 groupIdentifier:v251 isRemoteControl:v243 itemMediaType:v231 itemMediaSubtype:v240 isAirPlayActive:v238 parentGroupContainsDiscoverableGroupLeader:v234 excludeFromSuggestions:?];
-                                              v259 = self;
+                                              selfCopy = self;
                                             }
 
                                             else
                                             {
-                                              if (v279)
+                                              if (errorCopy)
                                               {
                                                 v210 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v261 = *MEMORY[0x1E698F240];
@@ -1746,13 +1746,13 @@ LABEL_206:
                                                 v211 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"excludeFromSuggestions"];
                                                 v293 = v211;
                                                 v212 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v293 forKeys:&v292 count:1];
-                                                *v279 = [v210 initWithDomain:v261 code:2 userInfo:v212];
+                                                *errorCopy = [v210 initWithDomain:v261 code:2 userInfo:v212];
 
                                                 v32 = v265;
                                               }
 
                                               v234 = 0;
-                                              v259 = 0;
+                                              selfCopy = 0;
                                               v48 = v277;
                                               v26 = v253;
                                               v27 = v268;
@@ -1774,7 +1774,7 @@ LABEL_209:
                                           }
 
                                           v180 = v129;
-                                          if (v279)
+                                          if (errorCopy)
                                           {
                                             v206 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v207 = *MEMORY[0x1E698F240];
@@ -1787,8 +1787,8 @@ LABEL_209:
                                             v295 = v234;
                                             v232 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v295 forKeys:&v294 count:1];
                                             v238 = 0;
-                                            v259 = 0;
-                                            *v279 = [v206 initWithDomain:v207 code:2 userInfo:?];
+                                            selfCopy = 0;
+                                            *errorCopy = [v206 initWithDomain:v207 code:2 userInfo:?];
                                             v16 = v280;
                                             v48 = v277;
                                             v38 = v252;
@@ -1797,7 +1797,7 @@ LABEL_209:
                                           }
 
                                           v238 = 0;
-                                          v259 = 0;
+                                          selfCopy = 0;
                                         }
 
                                         v16 = v280;
@@ -1814,12 +1814,12 @@ LABEL_209:
                                         v185 = v167;
                                         v172 = [MEMORY[0x1E696AD98] numberWithInt:BMMediaNowPlayingMediaTypeFromString(v185)];
 
-                                        v5 = v285;
+                                        dictionaryCopy = v285;
                                         goto LABEL_188;
                                       }
 
                                       v180 = v129;
-                                      if (v279)
+                                      if (errorCopy)
                                       {
                                         v213 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v262 = *MEMORY[0x1E698F240];
@@ -1829,13 +1829,13 @@ LABEL_209:
                                         v237 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v301 forKeys:&v300 count:1];
                                         v214 = [v213 initWithDomain:v262 code:2 userInfo:?];
                                         v241 = 0;
-                                        v259 = 0;
-                                        *v279 = v214;
+                                        selfCopy = 0;
+                                        *errorCopy = v214;
                                         goto LABEL_266;
                                       }
 
                                       v241 = 0;
-                                      v259 = 0;
+                                      selfCopy = 0;
                                       v16 = v280;
                                       v48 = v277;
                                       v26 = v253;
@@ -1855,7 +1855,7 @@ LABEL_209:
                                     goto LABEL_158;
                                   }
 
-                                  if (v279)
+                                  if (errorCopy)
                                   {
                                     v178 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v179 = *MEMORY[0x1E698F240];
@@ -1864,8 +1864,8 @@ LABEL_209:
                                     v305 = v243;
                                     v242 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v305 forKeys:&v304 count:1];
                                     v251 = 0;
-                                    v259 = 0;
-                                    *v279 = [v178 initWithDomain:v179 code:2 userInfo:?];
+                                    selfCopy = 0;
+                                    *errorCopy = [v178 initWithDomain:v179 code:2 userInfo:?];
                                     v16 = v280;
                                     v48 = v277;
                                     v26 = v253;
@@ -1874,7 +1874,7 @@ LABEL_209:
                                   }
 
                                   v251 = 0;
-                                  v259 = 0;
+                                  selfCopy = 0;
                                 }
 
                                 v16 = v280;
@@ -1887,7 +1887,7 @@ LABEL_209:
                               objc_opt_class();
                               if ((objc_opt_isKindOfClass() & 1) == 0)
                               {
-                                if (v279)
+                                if (errorCopy)
                                 {
                                   v173 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v174 = *MEMORY[0x1E698F240];
@@ -1897,8 +1897,8 @@ LABEL_209:
                                   v245 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v309 forKeys:&v308 count:1];
                                   v175 = [v173 initWithDomain:v174 code:2 userInfo:?];
                                   v140 = 0;
-                                  v259 = 0;
-                                  *v279 = v175;
+                                  selfCopy = 0;
+                                  *errorCopy = v175;
                                   v16 = v280;
                                   v48 = v277;
                                   v32 = v265;
@@ -1908,7 +1908,7 @@ LABEL_209:
                                 }
 
                                 v140 = 0;
-                                v259 = 0;
+                                selfCopy = 0;
                                 v16 = v280;
                                 v48 = v277;
                                 v32 = v265;
@@ -1936,7 +1936,7 @@ LABEL_209:
                           v6 = v250;
                           v38 = v252;
                           v32 = v265;
-                          if (v279)
+                          if (errorCopy)
                           {
                             v260 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v168 = *MEMORY[0x1E698F240];
@@ -1950,8 +1950,8 @@ LABEL_209:
                             v248 = v169;
                             v171 = [v260 initWithDomain:v170 code:2 userInfo:?];
                             v249 = 0;
-                            v259 = 0;
-                            *v279 = v171;
+                            selfCopy = 0;
+                            *errorCopy = v171;
                             v16 = v280;
                             v48 = v277;
                             v27 = v268;
@@ -1960,7 +1960,7 @@ LABEL_209:
                           }
 
                           v249 = 0;
-                          v259 = 0;
+                          selfCopy = 0;
                           v16 = v280;
                           v48 = v277;
                           v27 = v268;
@@ -1982,13 +1982,13 @@ LABEL_223:
                           v77 = v267;
 LABEL_224:
 
-                          v17 = v259;
+                          v17 = selfCopy;
                           goto LABEL_225;
                         }
                       }
 
-                      v147 = v279;
-                      if (v279)
+                      v147 = errorCopy;
+                      if (errorCopy)
                       {
                         v148 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v149 = *MEMORY[0x1E698F240];
@@ -2000,7 +2000,7 @@ LABEL_224:
                         v152 = &v314;
 LABEL_132:
                         v140 = [v150 dictionaryWithObjects:v151 forKeys:v152 count:1];
-                        v259 = 0;
+                        selfCopy = 0;
                         *v147 = [v148 initWithDomain:v149 code:2 userInfo:v140];
 LABEL_137:
                         v249 = v257;
@@ -2014,7 +2014,7 @@ LABEL_137:
                       }
 
 LABEL_142:
-                      v259 = 0;
+                      selfCopy = 0;
                       v159 = v257;
                       v6 = v250;
                       v38 = v252;
@@ -2039,7 +2039,7 @@ LABEL_142:
                       goto LABEL_80;
                     }
 
-                    if (v279)
+                    if (errorCopy)
                     {
                       v123 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v124 = *MEMORY[0x1E698F240];
@@ -2055,8 +2055,8 @@ LABEL_142:
                       v32 = v265;
                       v256 = v127;
                       v38 = 0;
-                      v259 = 0;
-                      *v279 = [v128 initWithDomain:v124 code:2 userInfo:?];
+                      selfCopy = 0;
+                      *errorCopy = [v128 initWithDomain:v124 code:2 userInfo:?];
                       v16 = v280;
                       v44 = v276;
                       v48 = v277;
@@ -2064,7 +2064,7 @@ LABEL_142:
                     }
 
                     v38 = 0;
-                    v259 = 0;
+                    selfCopy = 0;
 LABEL_165:
                     v16 = v280;
                     v44 = v276;
@@ -2079,7 +2079,7 @@ LABEL_165:
                     goto LABEL_44;
                   }
 
-                  if (v279)
+                  if (errorCopy)
                   {
                     v107 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v108 = *MEMORY[0x1E698F240];
@@ -2096,8 +2096,8 @@ LABEL_165:
                     v77 = v267;
                     v264 = v111;
                     v270 = 0;
-                    v259 = 0;
-                    *v279 = [v112 initWithDomain:v108 code:2 userInfo:?];
+                    selfCopy = 0;
+                    *errorCopy = [v112 initWithDomain:v108 code:2 userInfo:?];
                     v16 = v280;
                     v44 = v276;
                     v48 = v277;
@@ -2115,8 +2115,8 @@ LABEL_225:
                   goto LABEL_226;
                 }
 
-                v17 = v279;
-                if (v279)
+                v17 = errorCopy;
+                if (errorCopy)
                 {
                   v102 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v103 = *MEMORY[0x1E698F240];
@@ -2130,7 +2130,7 @@ LABEL_225:
                   v266 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v328 forKeys:&v327 count:1];
                   v106 = [v102 initWithDomain:v103 code:2 userInfo:?];
                   v32 = 0;
-                  *v279 = v106;
+                  *errorCopy = v106;
                   v17 = 0;
                   v16 = v280;
                   v44 = v276;
@@ -2150,7 +2150,7 @@ LABEL_226:
                 goto LABEL_227;
               }
 
-              if (v279)
+              if (errorCopy)
               {
                 v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v91 = v26;
@@ -2174,7 +2174,7 @@ LABEL_226:
                 v269 = v99;
                 v77 = 0;
                 v17 = 0;
-                *v279 = [v100 initWithDomain:v95 code:2 userInfo:?];
+                *errorCopy = [v100 initWithDomain:v95 code:2 userInfo:?];
                 v16 = v280;
                 v44 = v276;
                 v48 = v277;
@@ -2198,8 +2198,8 @@ LABEL_227:
               goto LABEL_32;
             }
 
-            v17 = v279;
-            if (v279)
+            v17 = errorCopy;
+            if (errorCopy)
             {
               v58 = v11;
               v59 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -2215,7 +2215,7 @@ LABEL_227:
               v63 = v59;
               v11 = v58;
               v26 = 0;
-              *v279 = [v63 initWithDomain:v60 code:2 userInfo:v27];
+              *errorCopy = [v63 initWithDomain:v60 code:2 userInfo:v27];
               v17 = 0;
               v16 = v280;
               v44 = v276;
@@ -2234,7 +2234,7 @@ LABEL_230:
             goto LABEL_231;
           }
 
-          if (v279)
+          if (errorCopy)
           {
             v272 = v11;
             v49 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -2251,7 +2251,7 @@ LABEL_230:
             v56 = v49;
             v11 = v272;
             v44 = 0;
-            *v279 = [v56 initWithDomain:v50 code:2 userInfo:v55];
+            *errorCopy = [v56 initWithDomain:v50 code:2 userInfo:v55];
             v16 = v280;
             v48 = v277;
             v17 = 0;
@@ -2271,7 +2271,7 @@ LABEL_231:
           goto LABEL_232;
         }
 
-        if (v279)
+        if (errorCopy)
         {
           v39 = v11;
           v40 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -2290,7 +2290,7 @@ LABEL_231:
           v47 = [v46 initWithDomain:v41 code:2 userInfo:?];
           v48 = 0;
           v17 = 0;
-          *v279 = v47;
+          *errorCopy = v47;
           v16 = v280;
           goto LABEL_231;
         }
@@ -2314,7 +2314,7 @@ LABEL_232:
         goto LABEL_22;
       }
 
-      if (a4)
+      if (error)
       {
         v78 = objc_alloc(MEMORY[0x1E696ABC0]);
         v79 = *MEMORY[0x1E698F240];
@@ -2329,7 +2329,7 @@ LABEL_232:
         v82 = [v78 initWithDomain:v79 code:2 userInfo:?];
         v11 = 0;
         v17 = 0;
-        *a4 = v82;
+        *error = v82;
         goto LABEL_96;
       }
 
@@ -2341,7 +2341,7 @@ LABEL_233:
       goto LABEL_234;
     }
 
-    if (a4)
+    if (error)
     {
       v119 = objc_alloc(MEMORY[0x1E696ABC0]);
       v120 = *MEMORY[0x1E698F240];
@@ -2352,7 +2352,7 @@ LABEL_233:
       v122 = v119;
       v11 = v121;
       v16 = 0;
-      *a4 = [v122 initWithDomain:v120 code:2 userInfo:v9];
+      *error = [v122 initWithDomain:v120 code:2 userInfo:v9];
       v17 = 0;
       goto LABEL_233;
     }
@@ -2364,7 +2364,7 @@ LABEL_234:
     goto LABEL_235;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = objc_alloc(MEMORY[0x1E696ABC0]);
     v15 = *MEMORY[0x1E698F240];
@@ -2374,7 +2374,7 @@ LABEL_234:
     v282 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v344 forKeys:&v343 count:1];
     v286 = 0;
     v17 = 0;
-    *a4 = [v14 initWithDomain:v15 code:2 userInfo:?];
+    *error = [v14 initWithDomain:v15 code:2 userInfo:?];
     goto LABEL_234;
   }
 
@@ -2390,15 +2390,15 @@ LABEL_235:
 {
   v3 = objc_opt_new();
   [(BMMediaNowPlaying *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
@@ -2486,7 +2486,7 @@ LABEL_235:
 
         v15 = *(*(&v23 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v15 writeTo:v4];
+        [v15 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -2547,9 +2547,9 @@ LABEL_235:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v94.receiver = self;
   v94.super_class = BMMediaNowPlaying;
   v5 = [(BMEventBase *)&v94 init];
@@ -2559,12 +2559,12 @@ LABEL_235:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -2575,18 +2575,18 @@ LABEL_235:
       while (1)
       {
         LOBYTE(v95[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v95[0] & 0x7F) << v8;
@@ -2604,9 +2604,9 @@ LABEL_235:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -2620,18 +2620,18 @@ LABEL_16:
         case 2u:
           v5->_hasRaw_absoluteTimestamp = 1;
           v95[0] = 0;
-          v32 = [v4 position] + 8;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 8, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 8;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 8, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v88 = [v4 data];
-            [v88 getBytes:v95 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           *&v5->_raw_absoluteTimestamp = v95[0];
@@ -2643,18 +2643,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v95[0] & 0x7F) << v25;
@@ -2671,7 +2671,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v27 > 5)
+          if (([fromCopy hasError] & 1) != 0 || v27 > 5)
           {
 LABEL_134:
             LODWORD(v27) = 0;
@@ -2695,18 +2695,18 @@ LABEL_134:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 |= (v95[0] & 0x7F) << v39;
@@ -2724,7 +2724,7 @@ LABEL_134:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v45 = 0;
           }
@@ -2753,18 +2753,18 @@ LABEL_143:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v64 = [v4 position] + 1;
-            if (v64 >= [v4 position] && (v65 = objc_msgSend(v4, "position") + 1, v65 <= objc_msgSend(v4, "length")))
+            v64 = [fromCopy position] + 1;
+            if (v64 >= [fromCopy position] && (v65 = objc_msgSend(fromCopy, "position") + 1, v65 <= objc_msgSend(fromCopy, "length")))
             {
-              v66 = [v4 data];
-              [v66 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v63 |= (v95[0] & 0x7F) << v61;
@@ -2782,7 +2782,7 @@ LABEL_143:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v45 = 0;
           }
@@ -2817,18 +2817,18 @@ LABEL_152:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v95[0] & 0x7F) << v18;
@@ -2846,7 +2846,7 @@ LABEL_152:
             }
           }
 
-          v24 = (v20 != 0) & ~[v4 hasError];
+          v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_131:
           v84 = 34;
           goto LABEL_162;
@@ -2858,7 +2858,7 @@ LABEL_131:
             goto LABEL_171;
           }
 
-          v52 = [[BMMediaNowPlayingOutputDevice alloc] initByReadFrom:v4];
+          v52 = [[BMMediaNowPlayingOutputDevice alloc] initByReadFrom:fromCopy];
           if (!v52)
           {
             goto LABEL_171;
@@ -2897,18 +2897,18 @@ LABEL_91:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v57 = [v4 position] + 1;
-            if (v57 >= [v4 position] && (v58 = objc_msgSend(v4, "position") + 1, v58 <= objc_msgSend(v4, "length")))
+            v57 = [fromCopy position] + 1;
+            if (v57 >= [fromCopy position] && (v58 = objc_msgSend(fromCopy, "position") + 1, v58 <= objc_msgSend(fromCopy, "length")))
             {
-              v59 = [v4 data];
-              [v59 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v56 |= (v95[0] & 0x7F) << v54;
@@ -2926,7 +2926,7 @@ LABEL_91:
             }
           }
 
-          v24 = (v56 != 0) & ~[v4 hasError];
+          v24 = (v56 != 0) & ~[fromCopy hasError];
 LABEL_147:
           v84 = 36;
           goto LABEL_162;
@@ -2937,18 +2937,18 @@ LABEL_147:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v75 = [v4 position] + 1;
-            if (v75 >= [v4 position] && (v76 = objc_msgSend(v4, "position") + 1, v76 <= objc_msgSend(v4, "length")))
+            v75 = [fromCopy position] + 1;
+            if (v75 >= [fromCopy position] && (v76 = objc_msgSend(fromCopy, "position") + 1, v76 <= objc_msgSend(fromCopy, "length")))
             {
-              v77 = [v4 data];
-              [v77 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v95[0] & 0x7F) << v73;
@@ -2965,7 +2965,7 @@ LABEL_147:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v27 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v27 > 2)
           {
 LABEL_157:
             LODWORD(v27) = 0;
@@ -2980,18 +2980,18 @@ LABEL_157:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v36 = [v4 position] + 1;
-            if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+            v36 = [fromCopy position] + 1;
+            if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
             {
-              v38 = [v4 data];
-              [v38 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v95[0] & 0x7F) << v34;
@@ -3008,7 +3008,7 @@ LABEL_157:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v27 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v27 > 7)
           {
 LABEL_138:
             LODWORD(v27) = 0;
@@ -3026,18 +3026,18 @@ LABEL_159:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v49 = [v4 position] + 1;
-            if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 1, v50 <= objc_msgSend(v4, "length")))
+            v49 = [fromCopy position] + 1;
+            if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 1, v50 <= objc_msgSend(fromCopy, "length")))
             {
-              v51 = [v4 data];
-              [v51 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v48 |= (v95[0] & 0x7F) << v46;
@@ -3055,7 +3055,7 @@ LABEL_159:
             }
           }
 
-          v24 = (v48 != 0) & ~[v4 hasError];
+          v24 = (v48 != 0) & ~[fromCopy hasError];
 LABEL_145:
           v84 = 38;
           goto LABEL_162;
@@ -3067,18 +3067,18 @@ LABEL_145:
           while (1)
           {
             LOBYTE(v95[0]) = 0;
-            v70 = [v4 position] + 1;
-            if (v70 >= [v4 position] && (v71 = objc_msgSend(v4, "position") + 1, v71 <= objc_msgSend(v4, "length")))
+            v70 = [fromCopy position] + 1;
+            if (v70 >= [fromCopy position] && (v71 = objc_msgSend(fromCopy, "position") + 1, v71 <= objc_msgSend(fromCopy, "length")))
             {
-              v72 = [v4 data];
-              [v72 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+              data11 = [fromCopy data];
+              [data11 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v69 |= (v95[0] & 0x7F) << v67;
@@ -3096,7 +3096,7 @@ LABEL_145:
             }
           }
 
-          v24 = (v69 != 0) & ~[v4 hasError];
+          v24 = (v69 != 0) & ~[fromCopy hasError];
 LABEL_154:
           v84 = 40;
           goto LABEL_162;
@@ -3120,18 +3120,18 @@ LABEL_171:
       while (1)
       {
         LOBYTE(v95[0]) = 0;
-        v81 = [v4 position] + 1;
-        if (v81 >= [v4 position] && (v82 = objc_msgSend(v4, "position") + 1, v82 <= objc_msgSend(v4, "length")))
+        v81 = [fromCopy position] + 1;
+        if (v81 >= [fromCopy position] && (v82 = objc_msgSend(fromCopy, "position") + 1, v82 <= objc_msgSend(fromCopy, "length")))
         {
-          v83 = [v4 data];
-          [v83 getBytes:v95 range:{objc_msgSend(v4, "position"), 1}];
+          data12 = [fromCopy data];
+          [data12 getBytes:v95 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v80 |= (v95[0] & 0x7F) << v78;
@@ -3149,24 +3149,24 @@ LABEL_171:
         }
       }
 
-      v24 = (v80 != 0) & ~[v4 hasError];
+      v24 = (v80 != 0) & ~[fromCopy hasError];
 LABEL_161:
       v84 = 42;
 LABEL_162:
       *(&v5->super.super.isa + v84) = v24;
 LABEL_163:
-      v87 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v87 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v89 = [v6 copy];
   outputDevices = v5->_outputDevices;
   v5->_outputDevices = v89;
 
-  v91 = [v4 hasError];
-  if (v91)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_168:
     v92 = 0;
@@ -3184,71 +3184,71 @@ LABEL_169:
 - (NSString)description
 {
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v29 = [(BMMediaNowPlaying *)self uniqueID];
-  v28 = [(BMMediaNowPlaying *)self absoluteTimestamp];
+  uniqueID = [(BMMediaNowPlaying *)self uniqueID];
+  absoluteTimestamp = [(BMMediaNowPlaying *)self absoluteTimestamp];
   v27 = BMMediaNowPlayingPlaybackStateAsString([(BMMediaNowPlaying *)self playbackState]);
-  v26 = [(BMMediaNowPlaying *)self album];
-  v25 = [(BMMediaNowPlaying *)self artist];
+  album = [(BMMediaNowPlaying *)self album];
+  artist = [(BMMediaNowPlaying *)self artist];
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMediaNowPlaying duration](self, "duration")}];
-  v24 = [(BMMediaNowPlaying *)self genre];
-  v17 = [(BMMediaNowPlaying *)self title];
+  genre = [(BMMediaNowPlaying *)self genre];
+  title = [(BMMediaNowPlaying *)self title];
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMediaNowPlaying elapsed](self, "elapsed")}];
-  v16 = [(BMMediaNowPlaying *)self mediaType];
-  v15 = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
-  v21 = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
+  mediaType = [(BMMediaNowPlaying *)self mediaType];
+  iTunesStoreIdentifier = [(BMMediaNowPlaying *)self iTunesStoreIdentifier];
+  iTunesSubscriptionIdentifier = [(BMMediaNowPlaying *)self iTunesSubscriptionIdentifier];
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying isAirPlayVideo](self, "isAirPlayVideo")}];
-  v12 = [(BMMediaNowPlaying *)self outputDevices];
-  v14 = [(BMMediaNowPlaying *)self bundleID];
-  v11 = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
-  v13 = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
-  v10 = [(BMMediaNowPlaying *)self groupIdentifier];
+  outputDevices = [(BMMediaNowPlaying *)self outputDevices];
+  bundleID = [(BMMediaNowPlaying *)self bundleID];
+  iTunesArtistIdentifier = [(BMMediaNowPlaying *)self iTunesArtistIdentifier];
+  iTunesAlbumIdentifier = [(BMMediaNowPlaying *)self iTunesAlbumIdentifier];
+  groupIdentifier = [(BMMediaNowPlaying *)self groupIdentifier];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying isRemoteControl](self, "isRemoteControl")}];
   v3 = BMMediaNowPlayingMediaTypeAsString([(BMMediaNowPlaying *)self itemMediaType]);
   v4 = BMMediaNowPlayingMediaSubtypeAsString([(BMMediaNowPlaying *)self itemMediaSubtype]);
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying isAirPlayActive](self, "isAirPlayActive")}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying parentGroupContainsDiscoverableGroupLeader](self, "parentGroupContainsDiscoverableGroupLeader")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaNowPlaying excludeFromSuggestions](self, "excludeFromSuggestions")}];
-  v19 = [v18 initWithFormat:@"BMMediaNowPlaying with uniqueID: %@, absoluteTimestamp: %@, playbackState: %@, album: %@, artist: %@, duration: %@, genre: %@, title: %@, elapsed: %@, mediaType: %@, iTunesStoreIdentifier: %@, iTunesSubscriptionIdentifier: %@, isAirPlayVideo: %@, outputDevices: %@, bundleID: %@, iTunesArtistIdentifier: %@, iTunesAlbumIdentifier: %@, groupIdentifier: %@, isRemoteControl: %@, itemMediaType: %@, itemMediaSubtype: %@, isAirPlayActive: %@, parentGroupContainsDiscoverableGroupLeader: %@, excludeFromSuggestions: %@", v29, v28, v27, v26, v25, v23, v24, v17, v22, v16, v15, v21, v20, v12, v14, v11, v13, v10, v9, v3, v4, v5, v6, v7];
+  v19 = [v18 initWithFormat:@"BMMediaNowPlaying with uniqueID: %@, absoluteTimestamp: %@, playbackState: %@, album: %@, artist: %@, duration: %@, genre: %@, title: %@, elapsed: %@, mediaType: %@, iTunesStoreIdentifier: %@, iTunesSubscriptionIdentifier: %@, isAirPlayVideo: %@, outputDevices: %@, bundleID: %@, iTunesArtistIdentifier: %@, iTunesAlbumIdentifier: %@, groupIdentifier: %@, isRemoteControl: %@, itemMediaType: %@, itemMediaSubtype: %@, isAirPlayActive: %@, parentGroupContainsDiscoverableGroupLeader: %@, excludeFromSuggestions: %@", uniqueID, absoluteTimestamp, v27, album, artist, v23, genre, title, v22, mediaType, iTunesStoreIdentifier, iTunesSubscriptionIdentifier, v20, outputDevices, bundleID, iTunesArtistIdentifier, iTunesAlbumIdentifier, groupIdentifier, v9, v3, v4, v5, v6, v7];
 
   return v19;
 }
 
-- (BMMediaNowPlaying)initWithUniqueID:(id)a3 absoluteTimestamp:(id)a4 playbackState:(int)a5 album:(id)a6 artist:(id)a7 duration:(id)a8 genre:(id)a9 title:(id)a10 elapsed:(id)a11 mediaType:(id)a12 iTunesStoreIdentifier:(id)a13 iTunesSubscriptionIdentifier:(id)a14 isAirPlayVideo:(id)a15 outputDevices:(id)a16 bundleID:(id)a17 iTunesArtistIdentifier:(id)a18 iTunesAlbumIdentifier:(id)a19 groupIdentifier:(id)a20 isRemoteControl:(id)a21 itemMediaType:(int)a22 itemMediaSubtype:(int)a23 isAirPlayActive:(id)a24 parentGroupContainsDiscoverableGroupLeader:(id)a25 excludeFromSuggestions:(id)a26
+- (BMMediaNowPlaying)initWithUniqueID:(id)d absoluteTimestamp:(id)timestamp playbackState:(int)state album:(id)album artist:(id)artist duration:(id)duration genre:(id)genre title:(id)self0 elapsed:(id)self1 mediaType:(id)self2 iTunesStoreIdentifier:(id)self3 iTunesSubscriptionIdentifier:(id)self4 isAirPlayVideo:(id)self5 outputDevices:(id)self6 bundleID:(id)self7 iTunesArtistIdentifier:(id)self8 iTunesAlbumIdentifier:(id)self9 groupIdentifier:(id)groupIdentifier isRemoteControl:(id)control itemMediaType:(int)mediaType itemMediaSubtype:(int)subtype isAirPlayActive:(id)active parentGroupContainsDiscoverableGroupLeader:(id)leader excludeFromSuggestions:(id)suggestions
 {
-  v59 = a3;
-  v60 = a4;
-  v44 = a6;
-  v58 = a6;
-  v45 = a7;
-  v57 = a7;
-  v30 = a8;
-  v56 = a9;
-  v55 = a10;
-  v31 = a11;
-  v54 = a12;
-  v53 = a13;
-  v52 = a14;
-  v32 = a15;
-  v51 = a16;
-  v50 = a17;
-  v49 = a18;
-  v48 = a19;
-  v47 = a20;
-  v33 = a21;
-  v34 = a24;
-  v35 = a25;
-  v36 = a26;
+  dCopy = d;
+  timestampCopy = timestamp;
+  albumCopy = album;
+  albumCopy2 = album;
+  artistCopy = artist;
+  artistCopy2 = artist;
+  durationCopy = duration;
+  genreCopy = genre;
+  titleCopy = title;
+  elapsedCopy = elapsed;
+  typeCopy = type;
+  identifierCopy = identifier;
+  subscriptionIdentifierCopy = subscriptionIdentifier;
+  videoCopy = video;
+  devicesCopy = devices;
+  iDCopy = iD;
+  artistIdentifierCopy = artistIdentifier;
+  albumIdentifierCopy = albumIdentifier;
+  groupIdentifierCopy = groupIdentifier;
+  controlCopy = control;
+  activeCopy = active;
+  leaderCopy = leader;
+  suggestionsCopy = suggestions;
   v61.receiver = self;
   v61.super_class = BMMediaNowPlaying;
   v37 = [(BMEventBase *)&v61 init];
   if (v37)
   {
     v37->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v37->_uniqueID, a3);
-    if (v60)
+    objc_storeStrong(&v37->_uniqueID, d);
+    if (timestampCopy)
     {
       v37->_hasRaw_absoluteTimestamp = 1;
-      [v60 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -3258,44 +3258,44 @@ LABEL_169:
     }
 
     v37->_raw_absoluteTimestamp = v38;
-    v37->_playbackState = a5;
-    objc_storeStrong(&v37->_album, v44);
-    objc_storeStrong(&v37->_artist, v45);
-    if (v30)
+    v37->_playbackState = state;
+    objc_storeStrong(&v37->_album, albumCopy);
+    objc_storeStrong(&v37->_artist, artistCopy);
+    if (durationCopy)
     {
       v37->_hasDuration = 1;
-      v39 = [v30 unsignedIntValue];
+      unsignedIntValue = [durationCopy unsignedIntValue];
     }
 
     else
     {
-      v39 = 0;
+      unsignedIntValue = 0;
       v37->_hasDuration = 0;
     }
 
-    v37->_duration = v39;
-    objc_storeStrong(&v37->_genre, a9);
-    objc_storeStrong(&v37->_title, a10);
-    if (v31)
+    v37->_duration = unsignedIntValue;
+    objc_storeStrong(&v37->_genre, genre);
+    objc_storeStrong(&v37->_title, title);
+    if (elapsedCopy)
     {
       v37->_hasElapsed = 1;
-      v40 = [v31 unsignedIntValue];
+      unsignedIntValue2 = [elapsedCopy unsignedIntValue];
     }
 
     else
     {
-      v40 = 0;
+      unsignedIntValue2 = 0;
       v37->_hasElapsed = 0;
     }
 
-    v37->_elapsed = v40;
-    objc_storeStrong(&v37->_mediaType, a12);
-    objc_storeStrong(&v37->_iTunesStoreIdentifier, a13);
-    objc_storeStrong(&v37->_iTunesSubscriptionIdentifier, a14);
-    if (v32)
+    v37->_elapsed = unsignedIntValue2;
+    objc_storeStrong(&v37->_mediaType, type);
+    objc_storeStrong(&v37->_iTunesStoreIdentifier, identifier);
+    objc_storeStrong(&v37->_iTunesSubscriptionIdentifier, subscriptionIdentifier);
+    if (videoCopy)
     {
       v37->_hasIsAirPlayVideo = 1;
-      v37->_isAirPlayVideo = [v32 BOOLValue];
+      v37->_isAirPlayVideo = [videoCopy BOOLValue];
     }
 
     else
@@ -3304,15 +3304,15 @@ LABEL_169:
       v37->_isAirPlayVideo = 0;
     }
 
-    objc_storeStrong(&v37->_outputDevices, a16);
-    objc_storeStrong(&v37->_bundleID, a17);
-    objc_storeStrong(&v37->_iTunesArtistIdentifier, a18);
-    objc_storeStrong(&v37->_iTunesAlbumIdentifier, a19);
-    objc_storeStrong(&v37->_groupIdentifier, a20);
-    if (v33)
+    objc_storeStrong(&v37->_outputDevices, devices);
+    objc_storeStrong(&v37->_bundleID, iD);
+    objc_storeStrong(&v37->_iTunesArtistIdentifier, artistIdentifier);
+    objc_storeStrong(&v37->_iTunesAlbumIdentifier, albumIdentifier);
+    objc_storeStrong(&v37->_groupIdentifier, groupIdentifier);
+    if (controlCopy)
     {
       v37->_hasIsRemoteControl = 1;
-      v37->_isRemoteControl = [v33 BOOLValue];
+      v37->_isRemoteControl = [controlCopy BOOLValue];
     }
 
     else
@@ -3321,12 +3321,12 @@ LABEL_169:
       v37->_isRemoteControl = 0;
     }
 
-    v37->_itemMediaType = a22;
-    v37->_itemMediaSubtype = a23;
-    if (v34)
+    v37->_itemMediaType = mediaType;
+    v37->_itemMediaSubtype = subtype;
+    if (activeCopy)
     {
       v37->_hasIsAirPlayActive = 1;
-      v37->_isAirPlayActive = [v34 BOOLValue];
+      v37->_isAirPlayActive = [activeCopy BOOLValue];
     }
 
     else
@@ -3335,10 +3335,10 @@ LABEL_169:
       v37->_isAirPlayActive = 0;
     }
 
-    if (v35)
+    if (leaderCopy)
     {
       v37->_hasParentGroupContainsDiscoverableGroupLeader = 1;
-      v37->_parentGroupContainsDiscoverableGroupLeader = [v35 BOOLValue];
+      v37->_parentGroupContainsDiscoverableGroupLeader = [leaderCopy BOOLValue];
     }
 
     else
@@ -3347,10 +3347,10 @@ LABEL_169:
       v37->_parentGroupContainsDiscoverableGroupLeader = 0;
     }
 
-    if (v36)
+    if (suggestionsCopy)
     {
       v37->_hasExcludeFromSuggestions = 1;
-      v37->_excludeFromSuggestions = [v36 BOOLValue];
+      v37->_excludeFromSuggestions = [suggestionsCopy BOOLValue];
     }
 
     else
@@ -3430,13 +3430,13 @@ id __28__BMMediaNowPlaying_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMMediaNowPlaying alloc] initByReadFrom:v6];
     v8 = v7;

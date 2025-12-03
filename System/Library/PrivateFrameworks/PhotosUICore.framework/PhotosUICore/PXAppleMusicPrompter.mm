@@ -1,8 +1,8 @@
 @interface PXAppleMusicPrompter
-+ (void)showPromptsIfNeededWithCompletion:(id)a3;
-- (PXAppleMusicPrompter)initWithCompletion:(id)a3;
-- (void)_handleAppleMusicPlaybackStatus:(int64_t)a3 error:(id)a4;
-- (void)_handleTCCAccessResult:(unsigned __int8)a3;
++ (void)showPromptsIfNeededWithCompletion:(id)completion;
+- (PXAppleMusicPrompter)initWithCompletion:(id)completion;
+- (void)_handleAppleMusicPlaybackStatus:(int64_t)status error:(id)error;
+- (void)_handleTCCAccessResult:(unsigned __int8)result;
 - (void)_promptingFinished;
 - (void)_requestAppleMusicPlaybackStatus;
 - (void)_requestAppleMusicTCCAccessIfNeeded;
@@ -15,40 +15,40 @@
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:97 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _promptingFinished]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:97 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _promptingFinished]"}];
   }
 
-  v6 = [(PXAppleMusicPrompter *)self completion];
-  if (v6)
+  completion = [(PXAppleMusicPrompter *)self completion];
+  if (completion)
   {
-    v6[2]();
+    completion[2]();
   }
 
   v4 = _prompter;
   _prompter = 0;
 }
 
-- (void)_handleAppleMusicPlaybackStatus:(int64_t)a3 error:(id)a4
+- (void)_handleAppleMusicPlaybackStatus:(int64_t)status error:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  errorCopy = error;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:87 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _handleAppleMusicPlaybackStatus:error:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:87 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _handleAppleMusicPlaybackStatus:error:]"}];
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 2)
+    if ((status - 1) > 2)
     {
       v8 = @"Unknown";
     }
 
     else
     {
-      v8 = off_1E772D358[a3 - 1];
+      v8 = off_1E772D358[status - 1];
     }
 
     v9 = v8;
@@ -57,10 +57,10 @@
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PXAppleMusicPrompter] Got Apple Music Playback Status: %@", buf, 0xCu);
   }
 
-  if (v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (errorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PXAppleMusicPrompter] Got Apple Music Playback Status Error: %@", buf, 0xCu);
   }
 
@@ -90,20 +90,20 @@
   [(PXAppleMusicStatusProvider *)appleMusicStatusProvider requestStatusForCapability:1 handler:v4];
 }
 
-- (void)_handleTCCAccessResult:(unsigned __int8)a3
+- (void)_handleTCCAccessResult:(unsigned __int8)result
 {
-  v3 = a3;
+  resultCopy = result;
   v11 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:67 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _handleTCCAccessResult:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:67 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _handleTCCAccessResult:]"}];
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v6 = @"YES";
-    if (!v3)
+    if (!resultCopy)
     {
       v6 = @"NO";
     }
@@ -114,7 +114,7 @@
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PXAppleMusicPrompter] Received Media Library TCC access request result: %@", buf, 0xCu);
   }
 
-  if (v3)
+  if (resultCopy)
   {
     [(PXAppleMusicPrompter *)self _requestAppleMusicPlaybackStatus];
   }
@@ -135,8 +135,8 @@
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:57 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _requestAppleMusicTCCAccessIfNeeded]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:57 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _requestAppleMusicTCCAccessIfNeeded]"}];
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -152,19 +152,19 @@
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:52 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _start]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:52 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter _start]"}];
   }
 
   [(PXAppleMusicPrompter *)self _requestAppleMusicTCCAccessIfNeeded];
 }
 
-- (PXAppleMusicPrompter)initWithCompletion:(id)a3
+- (PXAppleMusicPrompter)initWithCompletion:(id)completion
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:43 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter initWithCompletion:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:43 description:{@"%s must be called on the main thread", "-[PXAppleMusicPrompter initWithCompletion:]"}];
   }
 
   v10.receiver = self;
@@ -180,36 +180,36 @@
   return v5;
 }
 
-+ (void)showPromptsIfNeededWithCompletion:(id)a3
++ (void)showPromptsIfNeededWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PXAppleMusicPrompter.m" lineNumber:31 description:{@"%s must be called on the main thread", "+[PXAppleMusicPrompter showPromptsIfNeededWithCompletion:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicPrompter.m" lineNumber:31 description:{@"%s must be called on the main thread", "+[PXAppleMusicPrompter showPromptsIfNeededWithCompletion:]"}];
   }
 
   if (_prompter)
   {
-    v5 = v9;
-    if (!v9)
+    v5 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
 
-    (*(v9 + 2))(v9);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    v6 = [[PXAppleMusicPrompter alloc] initWithCompletion:v9];
+    v6 = [[PXAppleMusicPrompter alloc] initWithCompletion:completionCopy];
     v7 = _prompter;
     _prompter = v6;
 
     [_prompter _start];
   }
 
-  v5 = v9;
+  v5 = completionCopy;
 LABEL_8:
 }
 

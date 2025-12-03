@@ -1,33 +1,33 @@
 @interface PKDeviceScorer
-- (PKDeviceScorer)initWithContext:(id)a3;
+- (PKDeviceScorer)initWithContext:(id)context;
 - (id)_createScorer;
-- (void)_getScoreWithNonce:(id)a3 cryptogram:(id)a4 challengeResponse:(id)a5 completion:(id)a6;
-- (void)deviceScoreWithCryptogram:(id)a3 challengeResponse:(id)a4 nonce:(id)a5 completion:(id)a6;
-- (void)peerPaymentDeviceScoreWithCryptogram:(id)a3 challengeResponse:(id)a4 completion:(id)a5;
+- (void)_getScoreWithNonce:(id)nonce cryptogram:(id)cryptogram challengeResponse:(id)response completion:(id)completion;
+- (void)deviceScoreWithCryptogram:(id)cryptogram challengeResponse:(id)response nonce:(id)nonce completion:(id)completion;
+- (void)peerPaymentDeviceScoreWithCryptogram:(id)cryptogram challengeResponse:(id)response completion:(id)completion;
 @end
 
 @implementation PKDeviceScorer
 
-- (PKDeviceScorer)initWithContext:(id)a3
+- (PKDeviceScorer)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = PKDeviceScorer;
   v5 = [(PKDeviceScorer *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
 
     v5->_deviceScoreTimeout = 1.8;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     scoreCompletions = v5->_scoreCompletions;
-    v5->_scoreCompletions = v8;
+    v5->_scoreCompletions = dictionary;
 
-    v10 = [(PKDeviceScorer *)v5 _createScorer];
+    _createScorer = [(PKDeviceScorer *)v5 _createScorer];
     scorer = v5->_scorer;
-    v5->_scorer = v10;
+    v5->_scorer = _createScorer;
 
     [(CdQwUTvJnDEPQgR8 *)v5->_scorer prepareScoreMessage];
   }
@@ -35,21 +35,21 @@
   return v5;
 }
 
-- (void)deviceScoreWithCryptogram:(id)a3 challengeResponse:(id)a4 nonce:(id)a5 completion:(id)a6
+- (void)deviceScoreWithCryptogram:(id)cryptogram challengeResponse:(id)response nonce:(id)nonce completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  cryptogramCopy = cryptogram;
+  responseCopy = response;
+  nonceCopy = nonce;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     goto LABEL_15;
   }
 
-  if (v10)
+  if (cryptogramCopy)
   {
-    if (v11)
+    if (responseCopy)
     {
       goto LABEL_4;
     }
@@ -65,18 +65,18 @@
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
     }
 
-    if (v11)
+    if (responseCopy)
     {
 LABEL_4:
-      if (v12)
+      if (nonceCopy)
       {
 LABEL_5:
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __79__PKDeviceScorer_deviceScoreWithCryptogram_challengeResponse_nonce_completion___block_invoke;
         v17[3] = &unk_1E79CEE68;
-        v18 = v13;
-        [(PKDeviceScorer *)self _getScoreWithNonce:v12 cryptogram:v10 challengeResponse:v11 completion:v17];
+        v18 = completionCopy;
+        [(PKDeviceScorer *)self _getScoreWithNonce:nonceCopy cryptogram:cryptogramCopy challengeResponse:responseCopy completion:v17];
 
         goto LABEL_15;
       }
@@ -93,7 +93,7 @@ LABEL_5:
     _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
   }
 
-  if (v12)
+  if (nonceCopy)
   {
     goto LABEL_5;
   }
@@ -107,23 +107,23 @@ LABEL_12:
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
   }
 
-  (*(v13 + 2))(v13, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_15:
 }
 
-- (void)peerPaymentDeviceScoreWithCryptogram:(id)a3 challengeResponse:(id)a4 completion:(id)a5
+- (void)peerPaymentDeviceScoreWithCryptogram:(id)cryptogram challengeResponse:(id)response completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  cryptogramCopy = cryptogram;
+  responseCopy = response;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (cryptogramCopy)
     {
-      if (v9)
+      if (responseCopy)
       {
-        [(PKDeviceScorer *)self _getScoreWithNonce:0 cryptogram:v8 challengeResponse:v9 completion:v10];
+        [(PKDeviceScorer *)self _getScoreWithNonce:0 cryptogram:cryptogramCopy challengeResponse:responseCopy completion:completionCopy];
         goto LABEL_11;
       }
 
@@ -148,19 +148,19 @@ LABEL_9:
       }
     }
 
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
 LABEL_11:
 }
 
-- (void)_getScoreWithNonce:(id)a3 cryptogram:(id)a4 challengeResponse:(id)a5 completion:(id)a6
+- (void)_getScoreWithNonce:(id)nonce cryptogram:(id)cryptogram challengeResponse:(id)response completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nonceCopy = nonce;
+  cryptogramCopy = cryptogram;
+  responseCopy = response;
+  completionCopy = completion;
   v14 = MEMORY[0x1E69E96A0];
   v15 = MEMORY[0x1E69E96A0];
   if (PKProvisioningSecurityEnhancementsDisableDeviceScore())
@@ -177,8 +177,8 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_completion___block_invoke;
     block[3] = &unk_1E79C4428;
-    v29 = v13;
-    v17 = v13;
+    v29 = completionCopy;
+    v17 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v18 = v29;
   }
@@ -193,11 +193,11 @@ LABEL_11:
     v22[4] = self;
     v20 = v14;
     v23 = v14;
-    v27 = v13;
-    v24 = v10;
-    v25 = v11;
-    v26 = v12;
-    v21 = v13;
+    v27 = completionCopy;
+    v24 = nonceCopy;
+    v25 = cryptogramCopy;
+    v26 = responseCopy;
+    v21 = completionCopy;
     dispatch_async(v19, v22);
 
     v18 = v23;
@@ -478,8 +478,8 @@ uint64_t __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_co
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = [jprL7AuZZkLkFoBK alloc];
-  v4 = [(PKDSPContext *)self->_context serverEndpointIdentifier];
-  v5 = [(jprL7AuZZkLkFoBK *)v3 initWithServerEndpointIdentifier:v4];
+  serverEndpointIdentifier = [(PKDSPContext *)self->_context serverEndpointIdentifier];
+  v5 = [(jprL7AuZZkLkFoBK *)v3 initWithServerEndpointIdentifier:serverEndpointIdentifier];
 
   if (!v5)
   {
@@ -493,10 +493,10 @@ uint64_t __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_co
   }
 
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [(PKDSPContext *)self->_context cardholderName];
-  if (v8)
+  cardholderName = [(PKDSPContext *)self->_context cardholderName];
+  if (cardholderName)
   {
-    v9 = [[PawuKFL8icsLHMZd alloc] initWithFullName:v8 source:2];
+    v9 = [[PawuKFL8icsLHMZd alloc] initWithFullName:cardholderName source:2];
     [v7 addObject:v9];
   }
 
@@ -511,12 +511,12 @@ uint64_t __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_co
     }
   }
 
-  v10 = [(PKDSPContext *)self->_context primaryAppleAccountFirstName];
-  v11 = [(PKDSPContext *)self->_context primaryAppleAccountLastName];
-  v12 = v11;
-  if (v10 && v11)
+  primaryAppleAccountFirstName = [(PKDSPContext *)self->_context primaryAppleAccountFirstName];
+  primaryAppleAccountLastName = [(PKDSPContext *)self->_context primaryAppleAccountLastName];
+  v12 = primaryAppleAccountLastName;
+  if (primaryAppleAccountFirstName && primaryAppleAccountLastName)
   {
-    v13 = [[PawuKFL8icsLHMZd alloc] initWithFirstName:v10 lastName:v11 source:1];
+    v13 = [[PawuKFL8icsLHMZd alloc] initWithFirstName:primaryAppleAccountFirstName lastName:primaryAppleAccountLastName source:1];
     [v7 addObject:v13];
   }
 
@@ -531,11 +531,11 @@ uint64_t __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_co
     }
   }
 
-  v14 = [(PKDSPContext *)self->_context peerPaymentRecipientAddress];
-  if (v14)
+  peerPaymentRecipientAddress = [(PKDSPContext *)self->_context peerPaymentRecipientAddress];
+  if (peerPaymentRecipientAddress)
   {
-    v15 = v14;
-    v16 = PKIDSNormalizedAddress(v14);
+    v15 = peerPaymentRecipientAddress;
+    v16 = PKIDSNormalizedAddress(peerPaymentRecipientAddress);
 
     v17 = [v16 hasPrefix:@"mailto:"];
     v18 = [v16 hasPrefix:@"tel:"];
@@ -585,16 +585,16 @@ uint64_t __77__PKDeviceScorer__getScoreWithNonce_cryptogram_challengeResponse_co
   }
 
   [(jprL7AuZZkLkFoBK *)v5 setIdentities:v7];
-  v22 = [(PKDSPContext *)self->_context eventFrequency];
-  if (v22 <= 2)
+  eventFrequency = [(PKDSPContext *)self->_context eventFrequency];
+  if (eventFrequency <= 2)
   {
-    [(jprL7AuZZkLkFoBK *)v5 setEventFrequency:v22];
+    [(jprL7AuZZkLkFoBK *)v5 setEventFrequency:eventFrequency];
   }
 
-  v23 = [(PKDSPContext *)self->_context phoneNumber];
-  if (v23)
+  phoneNumber = [(PKDSPContext *)self->_context phoneNumber];
+  if (phoneNumber)
   {
-    [(jprL7AuZZkLkFoBK *)v5 setPhoneNumber:v23];
+    [(jprL7AuZZkLkFoBK *)v5 setPhoneNumber:phoneNumber];
   }
 
   else

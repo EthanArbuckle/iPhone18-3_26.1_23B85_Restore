@@ -1,16 +1,16 @@
 @interface CKDDaemonProcess
 + (id)currentProcess;
-- (id)_initWithArgC:(int)a3 argv:(const char *)a4;
-- (id)_initWithProcessType:(int64_t)a3;
-- (id)chunkDataFromSignature:(id)a3 forContainerIdentifier:(id)a4;
+- (id)_initWithArgC:(int)c argv:(const char *)argv;
+- (id)_initWithProcessType:(int64_t)type;
+- (id)chunkDataFromSignature:(id)signature forContainerIdentifier:(id)identifier;
 @end
 
 @implementation CKDDaemonProcess
 
 + (id)currentProcess
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_280D586E0;
   if (!qword_280D586E0)
   {
@@ -23,12 +23,12 @@
   }
 
   v8 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)_initWithProcessType:(int64_t)a3
+- (id)_initWithProcessType:(int64_t)type
 {
   v11.receiver = self;
   v11.super_class = CKDDaemonProcess;
@@ -36,14 +36,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_processType = a3;
+    v4->_processType = type;
     if (*MEMORY[0x277CBC820] != -1)
     {
       dispatch_once(MEMORY[0x277CBC820], &unk_28385E920);
     }
 
     *(v5 + 8) = *MEMORY[0x277CBC818];
-    if (!a3 && _os_feature_enabled_impl())
+    if (!type && _os_feature_enabled_impl())
     {
       v6 = objc_alloc(MEMORY[0x277CF36C8]);
       v8 = objc_msgSend_initWithChunkDelegate_(v6, v7, v5);
@@ -55,7 +55,7 @@
   return v5;
 }
 
-- (id)_initWithArgC:(int)a3 argv:(const char *)a4
+- (id)_initWithArgC:(int)c argv:(const char *)argv
 {
   v8 = 0;
   v9 = 0;
@@ -71,7 +71,7 @@
   {
     while (1)
     {
-      v10 = getopt_long_only(a3, a4, "std", &v22, 0);
+      v10 = getopt_long_only(c, argv, "std", &v22, 0);
       if (v10 <= 114)
       {
         break;
@@ -120,10 +120,10 @@
   return v15;
 }
 
-- (id)chunkDataFromSignature:(id)a3 forContainerIdentifier:(id)a4
+- (id)chunkDataFromSignature:(id)signature forContainerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     v24 = 0;
@@ -138,9 +138,9 @@
     v18[1] = 3221225472;
     v18[2] = sub_225403F60;
     v18[3] = &unk_27854E0D8;
-    v19 = v7;
-    v20 = self;
-    v21 = v6;
+    v19 = identifierCopy;
+    selfCopy = self;
+    v21 = signatureCopy;
     v14 = v10;
     v22 = v14;
     v23 = &v24;

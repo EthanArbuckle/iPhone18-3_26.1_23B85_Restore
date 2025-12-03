@@ -1,43 +1,43 @@
 @interface SBSystemAction
 + (UIFont)defaultSymbolFont;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSystemAction)initWithConfiguredAction:(id)a3 instanceIdentity:(id)a4;
+- (SBSystemAction)initWithConfiguredAction:(id)action instanceIdentity:(id)identity;
 - (SBSystemActionAnalyticsData)analyticsData;
 - (id)newExecutor;
 - (id)newSimplePreviewElement;
 - (void)_configureWithConfiguredAction;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBSystemAction
 
 + (UIFont)defaultSymbolFont
 {
-  v4 = [MEMORY[0x277D7D738] defaultSymbolConfiguration];
-  v5 = [v4 weight];
-  if (v5 > 4)
+  defaultSymbolConfiguration = [MEMORY[0x277D7D738] defaultSymbolConfiguration];
+  weight = [defaultSymbolConfiguration weight];
+  if (weight > 4)
   {
-    if (v5 <= 9)
+    if (weight <= 9)
     {
       goto LABEL_7;
     }
 
 LABEL_10:
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"SBSystemAction+SimplePreview.m" lineNumber:55 description:{@"Unhandled symbol weight: %ld", objc_msgSend(v4, "weight")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemAction+SimplePreview.m" lineNumber:55 description:{@"Unhandled symbol weight: %ld", objc_msgSend(defaultSymbolConfiguration, "weight")}];
 
     goto LABEL_7;
   }
 
-  if (v5 <= 1 && v5 > 1)
+  if (weight <= 1 && weight > 1)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
   v6 = MEMORY[0x277D74300];
-  [v4 pointSize];
+  [defaultSymbolConfiguration pointSize];
   v7 = [v6 systemFontOfSize:? weight:?];
 
   return v7;
@@ -45,9 +45,9 @@ LABEL_7:
 
 - (id)newSimplePreviewElement
 {
-  v3 = [(SBSystemAction *)self configuredAction];
-  v4 = [v3 sectionIdentifier];
-  v5 = [v4 isEqualToString:@"Accessibility"];
+  configuredAction = [(SBSystemAction *)self configuredAction];
+  sectionIdentifier = [configuredAction sectionIdentifier];
+  v5 = [sectionIdentifier isEqualToString:@"Accessibility"];
 
   v6 = off_2783A2360;
   if (!v5)
@@ -60,23 +60,23 @@ LABEL_7:
   return v7;
 }
 
-- (SBSystemAction)initWithConfiguredAction:(id)a3 instanceIdentity:(id)a4
+- (SBSystemAction)initWithConfiguredAction:(id)action instanceIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  actionCopy = action;
+  identityCopy = identity;
+  if (!actionCopy)
   {
     [SBSystemAction initWithConfiguredAction:a2 instanceIdentity:?];
   }
 
-  v10 = v9;
+  v10 = identityCopy;
   v16.receiver = self;
   v16.super_class = SBSystemAction;
   v11 = [(SBSystemAction *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_configuredAction, a3);
+    objc_storeStrong(&v11->_configuredAction, action);
     v13 = [v10 copyWithZone:0];
     instanceIdentity = v12->_instanceIdentity;
     v12->_instanceIdentity = v13;
@@ -89,13 +89,13 @@ LABEL_7:
 
 - (void)_configureWithConfiguredAction
 {
-  v3 = [a1 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D7A578]];
+  identifier = [self identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x277D7A578]];
   *(a2 + 9) = v4;
   *(a2 + 10) = v4 ^ 1;
-  v5 = [a1 sectionIdentifier];
-  v6 = v5;
-  if (v4 & 1) != 0 || ([v5 isEqualToString:@"Focus"])
+  sectionIdentifier = [self sectionIdentifier];
+  v6 = sectionIdentifier;
+  if (v4 & 1) != 0 || ([sectionIdentifier isEqualToString:@"Focus"])
   {
     v7 = 1;
   }
@@ -109,43 +109,43 @@ LABEL_7:
   v8 = [v6 isEqualToString:@"Camera"];
   if (v8)
   {
-    v9 = @"com.apple.camera";
+    associatedBundleIdentifier = @"com.apple.camera";
   }
 
   else
   {
-    v9 = [a1 associatedBundleIdentifier];
+    associatedBundleIdentifier = [self associatedBundleIdentifier];
   }
 
   v10 = *(a2 + 32);
-  *(a2 + 32) = v9;
+  *(a2 + 32) = associatedBundleIdentifier;
 
-  v11 = [a1 identifier];
+  identifier2 = [self identifier];
   v12 = *(a2 + 40);
-  *(a2 + 40) = v11;
+  *(a2 + 40) = identifier2;
 
   v13 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = a1;
-    v16 = [v15 intent];
-    v17 = [v16 linkAction];
-    [v17 systemProtocols];
-    v18 = v27 = v3;
+    selfCopy = self;
+    intent = [selfCopy intent];
+    linkAction = [intent linkAction];
+    [linkAction systemProtocols];
+    v18 = v27 = identifier;
 
-    v19 = [MEMORY[0x277D23938] cameraCaptureProtocol];
-    v20 = [v18 containsObject:v19];
-    v21 = [v15 templateParameterValues];
+    cameraCaptureProtocol = [MEMORY[0x277D23938] cameraCaptureProtocol];
+    v20 = [v18 containsObject:cameraCaptureProtocol];
+    templateParameterValues = [selfCopy templateParameterValues];
 
-    v22 = [v21 allValues];
-    v23 = [v22 firstObject];
-    v24 = [v23 identifier];
+    allValues = [templateParameterValues allValues];
+    firstObject = [allValues firstObject];
+    identifier3 = [firstObject identifier];
     v25 = *(a2 + 48);
-    *(a2 + 48) = v24;
+    *(a2 + 48) = identifier3;
 
-    v3 = v27;
+    identifier = v27;
   }
 
   else
@@ -154,7 +154,7 @@ LABEL_7:
   }
 
   *(a2 + 8) = v20;
-  if ([a1 isSystemStaccatoAction])
+  if ([self isSystemStaccatoAction])
   {
     v26 = (v8 | [*(a2 + 32) isEqualToString:@"com.apple.springboard"]) ^ 1;
   }
@@ -167,21 +167,21 @@ LABEL_7:
   *(a2 + 12) = v26;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  [v6 appendString:self->_hostBundleIdentifier withName:@"hostBundleIdentifier"];
-  v4 = [v6 appendBool:self->_cameraCaptureAction withName:@"isCameraCaptureAction" ifEqualTo:1];
+  formatterCopy = formatter;
+  [formatterCopy appendString:self->_hostBundleIdentifier withName:@"hostBundleIdentifier"];
+  v4 = [formatterCopy appendBool:self->_cameraCaptureAction withName:@"isCameraCaptureAction" ifEqualTo:1];
   if (os_variant_has_internal_content())
   {
-    v5 = [v6 appendObject:self->_configuredAction withName:@"configuredAction"];
+    v5 = [formatterCopy appendObject:self->_configuredAction withName:@"configuredAction"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -191,7 +191,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (BSEqualObjects())
       {
         v6 = SBSystemActionInstanceIdentityEqualToIdentity(self->_instanceIdentity, v5[3]);
@@ -220,7 +220,7 @@ LABEL_7:
   v9 = __29__SBSystemAction_description__block_invoke;
   v10 = &unk_2783A92D8;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];

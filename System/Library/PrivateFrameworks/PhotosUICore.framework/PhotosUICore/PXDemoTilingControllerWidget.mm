@@ -3,12 +3,12 @@
 - (PXDemoTilingControllerWidget)init;
 - (PXTilingController)contentTilingController;
 - (PXWidgetDelegate)widgetDelegate;
-- (id)_demoTilingLayoutForDataSource:(id)a3;
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4;
+- (id)_demoTilingLayoutForDataSource:(id)source;
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change;
 - (void)_loadTilingController;
-- (void)_setLocalizedSubtitle:(id)a3;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)_setLocalizedSubtitle:(id)subtitle;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)userDidSelectSubtitle;
 @end
 
@@ -21,13 +21,13 @@
   return WeakRetained;
 }
 
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXDemoTilingControllerWidget *)self _scene];
-  v9 = [v8 tilingController:v7 tileIdentifierConverterForChange:v6];
+  changeCopy = change;
+  controllerCopy = controller;
+  _scene = [(PXDemoTilingControllerWidget *)self _scene];
+  v9 = [_scene tilingController:controllerCopy tileIdentifierConverterForChange:changeCopy];
 
   v10 = objc_alloc_init(PXTileIdentifierIdentityConverter);
   v11 = [PXComposedTileIdentifierConverter alloc];
@@ -39,32 +39,32 @@
   return v13;
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
-  if (*&a4->length == __PAIR128__(6432423, 5))
+  if (*&identifier->length == __PAIR128__(6432423, 5))
   {
-    v8 = [(PXDemoTilingControllerWidget *)self _scene];
-    v9 = *&a4->index[5];
-    v26 = *&a4->index[3];
+    _scene = [(PXDemoTilingControllerWidget *)self _scene];
+    v9 = *&identifier->index[5];
+    v26 = *&identifier->index[3];
     v27 = v9;
-    v28 = *&a4->index[7];
-    v29 = a4->index[9];
-    v10 = *&a4->index[1];
-    v24 = *&a4->length;
+    v28 = *&identifier->index[7];
+    v29 = identifier->index[9];
+    v10 = *&identifier->index[1];
+    v24 = *&identifier->length;
     v25 = v10;
-    [v8 checkInTile:a3 withIdentifier:&v24];
+    [_scene checkInTile:tile withIdentifier:&v24];
   }
 
   else
   {
     +[PXDemoTilingControllerWidgetLayout backgroundTileIdentifier];
-    v11 = *&a4->index[5];
-    v22[2] = *&a4->index[3];
+    v11 = *&identifier->index[5];
+    v22[2] = *&identifier->index[3];
     v22[3] = v11;
-    v22[4] = *&a4->index[7];
-    v23 = a4->index[9];
-    v12 = *&a4->index[1];
-    v22[0] = *&a4->length;
+    v22[4] = *&identifier->index[7];
+    v23 = identifier->index[9];
+    v12 = *&identifier->index[1];
+    v22[0] = *&identifier->length;
     v22[1] = v12;
     v13 = *&v22[0] == v24;
     if (*&v22[0] && *&v22[0] == v24)
@@ -88,59 +88,59 @@
 
     if (v13)
     {
-      v17 = a3;
-      v18 = [(PXDemoTilingControllerWidget *)self _tilesInUse];
-      [v18 removeObject:v17];
+      tileCopy = tile;
+      _tilesInUse = [(PXDemoTilingControllerWidget *)self _tilesInUse];
+      [_tilesInUse removeObject:tileCopy];
 
-      v8 = [v17 view];
+      _scene = [tileCopy view];
 
-      [v8 removeFromSuperview];
+      [_scene removeFromSuperview];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      v19 = *&a4->index[5];
-      v26 = *&a4->index[3];
+      _scene = [MEMORY[0x1E696AAA8] currentHandler];
+      v19 = *&identifier->index[5];
+      v26 = *&identifier->index[3];
       v27 = v19;
-      v28 = *&a4->index[7];
-      v29 = a4->index[9];
-      v20 = *&a4->index[1];
-      v24 = *&a4->length;
+      v28 = *&identifier->index[7];
+      v29 = identifier->index[9];
+      v20 = *&identifier->index[1];
+      v24 = *&identifier->length;
       v25 = v20;
       v21 = PXTileIdentifierDescription(&v24);
-      [v8 handleFailureInMethod:a2 object:self file:@"PXDemoTilingControllerWidget.m" lineNumber:159 description:{@"unknown identifier %@", v21}];
+      [_scene handleFailureInMethod:a2 object:self file:@"PXDemoTilingControllerWidget.m" lineNumber:159 description:{@"unknown identifier %@", v21}];
     }
   }
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v7 = a4;
-  if (*&a3->length == __PAIR128__(6432423, 5))
+  layoutCopy = layout;
+  if (*&identifier->length == __PAIR128__(6432423, 5))
   {
-    v8 = [(PXDemoTilingControllerWidget *)self _scene];
-    v9 = *&a3->index[5];
-    v30 = *&a3->index[3];
+    _scene = [(PXDemoTilingControllerWidget *)self _scene];
+    v9 = *&identifier->index[5];
+    v30 = *&identifier->index[3];
     v31 = v9;
-    v32 = *&a3->index[7];
-    v33 = a3->index[9];
-    v10 = *&a3->index[1];
-    v28 = *&a3->length;
+    v32 = *&identifier->index[7];
+    v33 = identifier->index[9];
+    v10 = *&identifier->index[1];
+    v28 = *&identifier->length;
     v29 = v10;
-    v11 = [(PXDemoTilingControllerWidgetTile *)v8 checkOutTileForIdentifier:&v28 layout:v7];
+    v11 = [(PXDemoTilingControllerWidgetTile *)_scene checkOutTileForIdentifier:&v28 layout:layoutCopy];
   }
 
   else
   {
     +[PXDemoTilingControllerWidgetLayout backgroundTileIdentifier];
-    v12 = *&a3->index[5];
-    v26[2] = *&a3->index[3];
+    v12 = *&identifier->index[5];
+    v26[2] = *&identifier->index[3];
     v26[3] = v12;
-    v26[4] = *&a3->index[7];
-    v27 = a3->index[9];
-    v13 = *&a3->index[1];
-    v26[0] = *&a3->length;
+    v26[4] = *&identifier->index[7];
+    v27 = identifier->index[9];
+    v13 = *&identifier->index[1];
+    v26[0] = *&identifier->length;
     v26[1] = v13;
     v14 = *&v26[0] == v28;
     if (*&v26[0] && *&v26[0] == v28)
@@ -164,32 +164,32 @@
 
     if (v14)
     {
-      v8 = objc_alloc_init(PXDemoTilingControllerWidgetTile);
-      v18 = [(PXDemoTilingControllerWidget *)self _tilingController];
-      v19 = [v18 scrollController];
+      _scene = objc_alloc_init(PXDemoTilingControllerWidgetTile);
+      _tilingController = [(PXDemoTilingControllerWidget *)self _tilingController];
+      scrollController = [_tilingController scrollController];
 
-      v20 = [(PXDemoTilingControllerWidgetTile *)v8 view];
-      [v19 addSubview:v20];
+      view = [(PXDemoTilingControllerWidgetTile *)_scene view];
+      [scrollController addSubview:view];
 
-      v21 = [(PXDemoTilingControllerWidget *)self _tilesInUse];
-      [v21 addObject:v8];
+      _tilesInUse = [(PXDemoTilingControllerWidget *)self _tilesInUse];
+      [_tilesInUse addObject:_scene];
 
-      v11 = v8;
+      v11 = _scene;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      v22 = *&a3->index[5];
-      v30 = *&a3->index[3];
+      _scene = [MEMORY[0x1E696AAA8] currentHandler];
+      v22 = *&identifier->index[5];
+      v30 = *&identifier->index[3];
       v31 = v22;
-      v32 = *&a3->index[7];
-      v33 = a3->index[9];
-      v23 = *&a3->index[1];
-      v28 = *&a3->length;
+      v32 = *&identifier->index[7];
+      v33 = identifier->index[9];
+      v23 = *&identifier->index[1];
+      v28 = *&identifier->length;
       v29 = v23;
       v24 = PXTileIdentifierDescription(&v28);
-      [(PXDemoTilingControllerWidgetTile *)v8 handleFailureInMethod:a2 object:self file:@"PXDemoTilingControllerWidget.m" lineNumber:144 description:@"unknown identifier %@", v24];
+      [(PXDemoTilingControllerWidgetTile *)_scene handleFailureInMethod:a2 object:self file:@"PXDemoTilingControllerWidget.m" lineNumber:144 description:@"unknown identifier %@", v24];
 
       v11 = 0;
     }
@@ -200,8 +200,8 @@
 
 - (void)userDidSelectSubtitle
 {
-  v3 = [(PXDemoTilingControllerWidget *)self localizedSubtitle];
-  v4 = [v3 mutableCopy];
+  localizedSubtitle = [(PXDemoTilingControllerWidget *)self localizedSubtitle];
+  v4 = [localizedSubtitle mutableCopy];
 
   [v4 replaceOccurrencesOfString:@"i" withString:@"_#_" options:0 range:{0, objc_msgSend(v4, "length")}];
   [v4 replaceOccurrencesOfString:@"o" withString:@"i" options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -219,35 +219,35 @@
 - (BOOL)hasContentForCurrentInput
 {
   v2 = +[PXPhotosDetailsSettings sharedInstance];
-  v3 = [v2 showDemoTilingViewWidget];
+  showDemoTilingViewWidget = [v2 showDemoTilingViewWidget];
 
-  return v3;
+  return showDemoTilingViewWidget;
 }
 
-- (void)_setLocalizedSubtitle:(id)a3
+- (void)_setLocalizedSubtitle:(id)subtitle
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_localizedSubtitle != v5)
+  subtitleCopy = subtitle;
+  v6 = subtitleCopy;
+  if (self->_localizedSubtitle != subtitleCopy)
   {
-    v9 = v5;
-    v7 = [(NSString *)v5 isEqual:?];
+    v9 = subtitleCopy;
+    v7 = [(NSString *)subtitleCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_localizedSubtitle, a3);
-      v8 = [(PXDemoTilingControllerWidget *)self widgetDelegate];
-      [v8 widgetLocalizedSubtitleDidChange:self];
+      objc_storeStrong(&self->_localizedSubtitle, subtitle);
+      widgetDelegate = [(PXDemoTilingControllerWidget *)self widgetDelegate];
+      [widgetDelegate widgetLocalizedSubtitleDidChange:self];
 
       v6 = v9;
     }
   }
 }
 
-- (id)_demoTilingLayoutForDataSource:(id)a3
+- (id)_demoTilingLayoutForDataSource:(id)source
 {
-  v3 = a3;
-  v4 = [(PXAssetsTilingLayout *)[PXDemoTilingControllerWidgetLayout alloc] initWithDataSource:v3];
+  sourceCopy = source;
+  v4 = [(PXAssetsTilingLayout *)[PXDemoTilingControllerWidgetLayout alloc] initWithDataSource:sourceCopy];
 
   return v4;
 }
@@ -256,10 +256,10 @@
 {
   if (!self->__tilingController)
   {
-    v4 = [(PXDemoTilingControllerWidget *)self context];
-    v21 = [v4 assetCollections];
+    context = [(PXDemoTilingControllerWidget *)self context];
+    assetCollections = [context assetCollections];
 
-    v5 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v21 options:0];
+    v5 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:assetCollections options:0];
     v6 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v5];
     v7 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:v6];
     dataSourceManager = self->__dataSourceManager;
@@ -277,8 +277,8 @@
     tilesInUse = self->__tilesInUse;
     self->__tilesInUse = v13;
 
-    v15 = [(PXAssetsDataSourceManager *)self->__dataSourceManager dataSource];
-    v16 = [(PXDemoTilingControllerWidget *)self _demoTilingLayoutForDataSource:v15];
+    dataSource = [(PXAssetsDataSourceManager *)self->__dataSourceManager dataSource];
+    v16 = [(PXDemoTilingControllerWidget *)self _demoTilingLayoutForDataSource:dataSource];
 
     v17 = [[PXTilingController alloc] initWithLayout:v16];
     tilingController = self->__tilingController;

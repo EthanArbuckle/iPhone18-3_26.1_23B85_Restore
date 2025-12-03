@@ -1,25 +1,25 @@
 @interface HKEmergencyCardLastUpdatedTableItem
 - (BOOL)hasPresentableData;
-- (id)initInEditMode:(BOOL)a3 editable:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode editable:(BOOL)editable;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 @end
 
 @implementation HKEmergencyCardLastUpdatedTableItem
 
-- (id)initInEditMode:(BOOL)a3 editable:(BOOL)a4
+- (id)initInEditMode:(BOOL)mode editable:(BOOL)editable
 {
-  v5 = a3;
-  if (a3)
+  modeCopy = mode;
+  if (mode)
   {
     [HKEmergencyCardLastUpdatedTableItem initInEditMode:a2 editable:self];
   }
 
   v8.receiver = self;
   v8.super_class = HKEmergencyCardLastUpdatedTableItem;
-  result = [(HKEmergencyCardTableItem *)&v8 initInEditMode:v5];
+  result = [(HKEmergencyCardTableItem *)&v8 initInEditMode:modeCopy];
   if (result)
   {
-    *(result + 40) = a4;
+    *(result + 40) = editable;
   }
 
   return result;
@@ -35,18 +35,18 @@
   return +[HKOrganDonationConnectionManager shouldShowStoreDemoOrganDonation];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
   v4 = off_1E81B2838;
-  if (a4)
+  if (index)
   {
     v4 = off_1E81B2BC0;
   }
 
   v5 = *v4;
-  v6 = a3;
-  v7 = [(__objc2_class *)v5 defaultReuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithIdentifier:v7];
+  viewCopy = view;
+  defaultReuseIdentifier = [(__objc2_class *)v5 defaultReuseIdentifier];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:defaultReuseIdentifier];
 
   return v8;
 }

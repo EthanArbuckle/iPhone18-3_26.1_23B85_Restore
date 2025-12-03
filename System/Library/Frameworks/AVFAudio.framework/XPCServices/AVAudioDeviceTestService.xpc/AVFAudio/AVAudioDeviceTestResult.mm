@@ -1,59 +1,59 @@
 @interface AVAudioDeviceTestResult
-- (AVAudioDeviceTestResult)initWithCoder:(id)a3;
-- (AVAudioDeviceTestResult)initWithData:(id)a3 inputID:(int64_t)a4 outputID:(int64_t)a5 sampleRate:(double)a6 correlationValue:(double)a7;
-- (void)encodeWithCoder:(id)a3;
+- (AVAudioDeviceTestResult)initWithCoder:(id)coder;
+- (AVAudioDeviceTestResult)initWithData:(id)data inputID:(int64_t)d outputID:(int64_t)iD sampleRate:(double)rate correlationValue:(double)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAudioDeviceTestResult
 
-- (AVAudioDeviceTestResult)initWithCoder:(id)a3
+- (AVAudioDeviceTestResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AVAudioDeviceTestResult;
   v5 = [(AVAudioDeviceTestResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v5->_outputID = [v4 decodeIntegerForKey:@"outputID"];
-    v5->_inputID = [v4 decodeIntegerForKey:@"inputID"];
-    [v4 decodeDoubleForKey:@"sampleRate"];
+    v5->_outputID = [coderCopy decodeIntegerForKey:@"outputID"];
+    v5->_inputID = [coderCopy decodeIntegerForKey:@"inputID"];
+    [coderCopy decodeDoubleForKey:@"sampleRate"];
     v5->_sampleRate = v8;
-    [v4 decodeDoubleForKey:@"correlationValue"];
+    [coderCopy decodeDoubleForKey:@"correlationValue"];
     v5->_correlationValue = v9;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"data"];
-  [v5 encodeInteger:self->_outputID forKey:@"outputID"];
-  [v5 encodeInteger:self->_inputID forKey:@"inputID"];
-  [v5 encodeDouble:@"sampleRate" forKey:self->_sampleRate];
-  [v5 encodeDouble:@"correlationValue" forKey:self->_correlationValue];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"data"];
+  [coderCopy encodeInteger:self->_outputID forKey:@"outputID"];
+  [coderCopy encodeInteger:self->_inputID forKey:@"inputID"];
+  [coderCopy encodeDouble:@"sampleRate" forKey:self->_sampleRate];
+  [coderCopy encodeDouble:@"correlationValue" forKey:self->_correlationValue];
 }
 
-- (AVAudioDeviceTestResult)initWithData:(id)a3 inputID:(int64_t)a4 outputID:(int64_t)a5 sampleRate:(double)a6 correlationValue:(double)a7
+- (AVAudioDeviceTestResult)initWithData:(id)data inputID:(int64_t)d outputID:(int64_t)iD sampleRate:(double)rate correlationValue:(double)value
 {
-  v13 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = AVAudioDeviceTestResult;
   v14 = [(AVAudioDeviceTestResult *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_data, a3);
-    v15->_inputID = a4;
-    v15->_outputID = a5;
-    v15->_sampleRate = a6;
-    v15->_correlationValue = a7;
+    objc_storeStrong(&v14->_data, data);
+    v15->_inputID = d;
+    v15->_outputID = iD;
+    v15->_sampleRate = rate;
+    v15->_correlationValue = value;
   }
 
   return v15;

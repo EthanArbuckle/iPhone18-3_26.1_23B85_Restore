@@ -1,17 +1,17 @@
 @interface MusicUsageDetailController
 - (id)_placeholderAlbumArtistArtworkCatalog;
-- (id)sizeForSpecifier:(id)a3;
+- (id)sizeForSpecifier:(id)specifier;
 - (id)specifiers;
 - (id)specifiersFromUsageGroups;
-- (void)addUsageGroup:(id)a3;
-- (void)buildUsageGroupForCategory:(id)a3 usingStorageReporter:(id)a4;
-- (void)deleteUsageItemAtIndexPath:(id)a3;
+- (void)addUsageGroup:(id)group;
+- (void)buildUsageGroupForCategory:(id)category usingStorageReporter:(id)reporter;
+- (void)deleteUsageItemAtIndexPath:(id)path;
 - (void)reloadSpecifiers;
-- (void)removeSpecifierAtIndexPath:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)removeSpecifierAtIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateLocalSongsGroupSize;
-- (void)updateUsageBundleSizeForCategoryIdentifier:(id)a3;
+- (void)updateUsageBundleSizeForCategoryIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
@@ -45,16 +45,16 @@
   v4 = *&self->PSUsageBundleDetailController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(MusicUsageDetailController *)self specifier];
-    v6 = [v5 propertyForKey:PSUsageBundleAppKey];
+    specifier = [(MusicUsageDetailController *)self specifier];
+    v6 = [specifier propertyForKey:PSUsageBundleAppKey];
 
-    v7 = [v6 usageBundleStorageReporter];
+    usageBundleStorageReporter = [v6 usageBundleStorageReporter];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v6 categories];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    categories = [v6 categories];
+    v9 = [categories countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -65,26 +65,26 @@
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(categories);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          [v7 sizeForCategory:v13];
+          [usageBundleStorageReporter sizeForCategory:v13];
           if (fabsf(v14) >= 0.00000011921)
           {
-            [(MusicUsageDetailController *)self buildUsageGroupForCategory:v13 usingStorageReporter:v7];
+            [(MusicUsageDetailController *)self buildUsageGroupForCategory:v13 usingStorageReporter:usageBundleStorageReporter];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [categories countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
     }
 
-    v15 = [(MusicUsageDetailController *)self specifiersFromUsageGroups];
+    specifiersFromUsageGroups = [(MusicUsageDetailController *)self specifiersFromUsageGroups];
     v16 = *&self->PSUsageBundleDetailController_opaque[v3];
-    *&self->PSUsageBundleDetailController_opaque[v3] = v15;
+    *&self->PSUsageBundleDetailController_opaque[v3] = specifiersFromUsageGroups;
 
     v4 = *&self->PSUsageBundleDetailController_opaque[v3];
   }
@@ -92,20 +92,20 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"MusicUsageItemPropertyKey"];
-  v10 = [v9 childUsageGroup];
-  v11 = [v10 numberOfUsageItems];
+  childUsageGroup = [v9 childUsageGroup];
+  numberOfUsageItems = [childUsageGroup numberOfUsageItems];
 
-  if (v11)
+  if (numberOfUsageItems)
   {
-    v12 = [(MusicUsageDetailController *)self specifier];
+    specifier = [(MusicUsageDetailController *)self specifier];
     v13 = PSUsageBundleAppKey;
-    v14 = [v12 propertyForKey:PSUsageBundleAppKey];
+    v14 = [specifier propertyForKey:PSUsageBundleAppKey];
     [v8 setProperty:v14 forKey:v13];
 
     v15 = [MusicUsageArtistDetailController alloc];
@@ -114,51 +114,51 @@
     v19[2] = sub_6694;
     v19[3] = &unk_10440;
     v20 = v9;
-    v21 = self;
+    selfCopy = self;
     v16 = v8;
     v22 = v16;
     v17 = [(MusicUsageArtistDetailController *)v15 initWithFileSizeDidChangeHandler:v19];
     [(MusicUsageArtistDetailController *)v17 setParentController:self];
     [(MusicUsageArtistDetailController *)v17 setSpecifier:v16];
-    v18 = [(MusicUsageDetailController *)self rootController];
-    [(MusicUsageArtistDetailController *)v17 setRootController:v18];
+    rootController = [(MusicUsageDetailController *)self rootController];
+    [(MusicUsageArtistDetailController *)v17 setRootController:rootController];
 
     [(MusicUsageDetailController *)self showController:v17 animate:1];
   }
 
   else
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  [(MusicUsageDetailController *)self removeSpecifierAtIndexPath:a5, a4];
+  [(MusicUsageDetailController *)self removeSpecifierAtIndexPath:path, style];
   if (![(NSMutableArray *)self->_usageGroups count])
   {
-    v7 = [(MusicUsageDetailController *)self navigationController];
-    v6 = [v7 popViewControllerAnimated:1];
+    navigationController = [(MusicUsageDetailController *)self navigationController];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (id)sizeForSpecifier:(id)a3
+- (id)sizeForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"MusicUsageItemPropertyKey"];
-  v6 = [v5 itemCollection];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"MusicUsageItemPropertyKey"];
+  itemCollection = [v5 itemCollection];
 
-  if (v6)
+  if (itemCollection)
   {
-    v7 = [v5 itemCollection];
-    v8 = [NSByteCountFormatter stringFromByteCount:MusicUsageFileSizeForMediaItemCollection(v7) countStyle:2];
+    itemCollection2 = [v5 itemCollection];
+    v8 = [NSByteCountFormatter stringFromByteCount:MusicUsageFileSizeForMediaItemCollection(itemCollection2) countStyle:2];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MusicUsageDetailController;
-    v8 = [(MusicUsageDetailController *)&v10 sizeForSpecifier:v4];
+    v8 = [(MusicUsageDetailController *)&v10 sizeForSpecifier:specifierCopy];
   }
 
   return v8;
@@ -175,8 +175,8 @@
 - (void)updateLocalSongsGroupSize
 {
   [(MusicUsageGroup *)self->_localSongsGroup updateGroupSize];
-  v3 = [(MusicUsageGroup *)self->_localSongsGroup groupSpecifierIdentifier];
-  v4 = [(MusicUsageDetailController *)self specifierForID:v3];
+  groupSpecifierIdentifier = [(MusicUsageGroup *)self->_localSongsGroup groupSpecifierIdentifier];
+  v4 = [(MusicUsageDetailController *)self specifierForID:groupSpecifierIdentifier];
 
   if ([(MusicUsageGroup *)self->_localSongsGroup groupSize])
   {
@@ -187,17 +187,17 @@
     v7 = [v4 propertyForKey:PSHeaderViewKey];
     [v7 setSize:v6];
 
-    v8 = [(MusicUsageGroup *)self->_localSongsGroup groupSpecifierIdentifier];
-    [(MusicUsageDetailController *)self reloadSpecifierID:v8];
+    groupSpecifierIdentifier2 = [(MusicUsageGroup *)self->_localSongsGroup groupSpecifierIdentifier];
+    [(MusicUsageDetailController *)self reloadSpecifierID:groupSpecifierIdentifier2];
   }
 
   else
   {
     [(NSMutableArray *)self->_usageGroups removeObject:self->_localSongsGroup];
-    v9 = [(MusicUsageGroup *)self->_localSongsGroup usageItems];
-    v10 = [v9 firstObject];
-    v11 = [v10 specifierIdentifier];
-    v12 = [(MusicUsageDetailController *)self specifierForID:v11];
+    usageItems = [(MusicUsageGroup *)self->_localSongsGroup usageItems];
+    firstObject = [usageItems firstObject];
+    specifierIdentifier = [firstObject specifierIdentifier];
+    v12 = [(MusicUsageDetailController *)self specifierForID:specifierIdentifier];
 
     v15[0] = v4;
     v15[1] = v12;
@@ -205,45 +205,45 @@
     [(MusicUsageDetailController *)self removeContiguousSpecifiers:v13 animated:1];
   }
 
-  v14 = [(MusicUsageGroup *)self->_localSongsGroup categoryIdentifier];
-  [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:v14];
+  categoryIdentifier = [(MusicUsageGroup *)self->_localSongsGroup categoryIdentifier];
+  [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:categoryIdentifier];
 }
 
-- (void)updateUsageBundleSizeForCategoryIdentifier:(id)a3
+- (void)updateUsageBundleSizeForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MusicUsageDetailController *)self specifier];
-  v12 = [v5 propertyForKey:PSUsageBundleAppKey];
+  identifierCopy = identifier;
+  specifier = [(MusicUsageDetailController *)self specifier];
+  v12 = [specifier propertyForKey:PSUsageBundleAppKey];
 
-  v6 = [v12 usageBundleStorageReporter];
-  [v6 reloadSizeForCategoryIdentifier:v4];
+  usageBundleStorageReporter = [v12 usageBundleStorageReporter];
+  [usageBundleStorageReporter reloadSizeForCategoryIdentifier:identifierCopy];
 
-  *&v7 = [v6 totalSize];
+  *&v7 = [usageBundleStorageReporter totalSize];
   [v12 setTotalSize:v7];
-  v8 = [(MusicUsageDetailController *)self specifier];
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 totalSize]);
-  [v8 setProperty:v9 forKey:@"TOTAL_SIZE"];
+  specifier2 = [(MusicUsageDetailController *)self specifier];
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [usageBundleStorageReporter totalSize]);
+  [specifier2 setProperty:v9 forKey:@"TOTAL_SIZE"];
 
   WeakRetained = objc_loadWeakRetained(&self->PSUsageBundleDetailController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v11 = [(MusicUsageDetailController *)self specifier];
-  [WeakRetained reloadSpecifier:v11];
+  specifier3 = [(MusicUsageDetailController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier3];
 }
 
-- (void)removeSpecifierAtIndexPath:(id)a3
+- (void)removeSpecifierAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:v4]];
+  pathCopy = path;
+  v5 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:pathCopy]];
   v6 = [v5 propertyForKey:@"MusicUsageItemPropertyKey"];
-  v7 = [v6 usageGroup];
-  v8 = v7;
-  if (v7 == self->_localSongsGroup)
+  usageGroup = [v6 usageGroup];
+  v8 = usageGroup;
+  if (usageGroup == self->_localSongsGroup)
   {
-    v31 = v7;
+    v31 = usageGroup;
     v32 = v5;
     v9 = +[MPMediaLibrary defaultMediaLibrary];
-    v10 = [v6 itemCollection];
-    v11 = [v10 items];
-    [v9 removeItems:v11];
+    itemCollection = [v6 itemCollection];
+    items = [itemCollection items];
+    [v9 removeItems:items];
 
     v12 = +[MPMediaQuery albumsQuery];
     [v12 setIgnoreSystemFilterPredicates:1];
@@ -253,12 +253,12 @@
     [v12 addFilterPredicate:v13];
 
     v30 = v12;
-    v14 = [v12 collections];
+    collections = [v12 collections];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v15 = [collections countByEnumeratingWithState:&v38 objects:v43 count:16];
     v16 = MPMediaEntityPropertyKeepLocal;
     if (v15)
     {
@@ -270,19 +270,19 @@
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(collections);
           }
 
           [*(*(&v38 + 1) + 8 * i) setValue:&off_10D78 forProperty:v16];
         }
 
-        v17 = [v14 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v17 = [collections countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v17);
     }
 
-    v33 = v4;
+    v33 = pathCopy;
     v20 = +[MPMediaQuery playlistsQuery];
     [v20 setIgnoreSystemFilterPredicates:1];
     [v20 setIgnoreRestrictionsPredicates:1];
@@ -290,12 +290,12 @@
     v21 = [MPMediaPropertyPredicate predicateWithValue:&off_10D78 forProperty:v16 comparisonType:101];
     [v20 addFilterPredicate:v21];
 
-    v22 = [v20 collections];
+    collections2 = [v20 collections];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v23 = [v22 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    v23 = [collections2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v23)
     {
       v24 = v23;
@@ -306,79 +306,79 @@
         {
           if (*v35 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(collections2);
           }
 
           [*(*(&v34 + 1) + 8 * j) setValue:&off_10D78 forProperty:v16];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v24 = [collections2 countByEnumeratingWithState:&v34 objects:v42 count:16];
       }
 
       while (v24);
     }
 
-    v27 = [(MusicUsageGroup *)self->_localSongsGroup categoryIdentifier];
-    [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:v27];
+    categoryIdentifier = [(MusicUsageGroup *)self->_localSongsGroup categoryIdentifier];
+    [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:categoryIdentifier];
 
-    v28 = [(MusicUsageDetailController *)self navigationController];
-    v29 = [v28 popViewControllerAnimated:1];
+    navigationController = [(MusicUsageDetailController *)self navigationController];
+    v29 = [navigationController popViewControllerAnimated:1];
 
     v5 = v32;
-    v4 = v33;
+    pathCopy = v33;
     v8 = v31;
   }
 
   else
   {
-    [(MusicUsageDetailController *)self deleteUsageItemAtIndexPath:v4];
+    [(MusicUsageDetailController *)self deleteUsageItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)deleteUsageItemAtIndexPath:(id)a3
+- (void)deleteUsageItemAtIndexPath:(id)path
 {
-  v4 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:a3]];
+  v4 = [(MusicUsageDetailController *)self specifierAtIndex:[(MusicUsageDetailController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"MusicUsageItemPropertyKey"];
-  v6 = [v5 usageGroup];
-  [v6 removeUsageItem:v5];
-  v7 = [v5 itemCollection];
-  v8 = [v7 items];
+  usageGroup = [v5 usageGroup];
+  [usageGroup removeUsageItem:v5];
+  itemCollection = [v5 itemCollection];
+  items = [itemCollection items];
 
-  if ([v8 count])
+  if ([items count])
   {
     v9 = +[MPMediaLibrary defaultMediaLibrary];
-    [v9 removeItems:v8];
+    [v9 removeItems:items];
 
-    if ([v6 isIncludedInLocalGroup])
+    if ([usageGroup isIncludedInLocalGroup])
     {
       [(MusicUsageDetailController *)self updateLocalSongsGroupSize];
     }
 
     else
     {
-      v10 = [v6 categoryIdentifier];
-      [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:v10];
+      categoryIdentifier = [usageGroup categoryIdentifier];
+      [(MusicUsageDetailController *)self updateUsageBundleSizeForCategoryIdentifier:categoryIdentifier];
     }
   }
 
-  v11 = [v6 groupSpecifierIdentifier];
-  v12 = [(MusicUsageDetailController *)self specifierForID:v11];
+  groupSpecifierIdentifier = [usageGroup groupSpecifierIdentifier];
+  v12 = [(MusicUsageDetailController *)self specifierForID:groupSpecifierIdentifier];
 
-  if ([v6 numberOfUsageItems])
+  if ([usageGroup numberOfUsageItems])
   {
     [(MusicUsageDetailController *)self removeSpecifier:v4 animated:1];
-    [v6 updateGroupSize];
-    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 groupSize]);
+    [usageGroup updateGroupSize];
+    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [usageGroup groupSize]);
     [v12 setProperty:v13 forKey:@"SIZE"];
 
-    v14 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v6 groupSize], 2);
+    v14 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [usageGroup groupSize], 2);
     v15 = [v12 propertyForKey:PSHeaderViewKey];
     [v15 setSize:v14];
   }
 
   else
   {
-    [(NSMutableArray *)self->_usageGroups removeObject:v6];
+    [(NSMutableArray *)self->_usageGroups removeObject:usageGroup];
     v17[0] = v12;
     v17[1] = v4;
     v16 = [NSArray arrayWithObjects:v17 count:2];
@@ -386,43 +386,43 @@
   }
 }
 
-- (void)addUsageGroup:(id)a3
+- (void)addUsageGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   usageGroups = self->_usageGroups;
-  v8 = v4;
+  v8 = groupCopy;
   if (!usageGroups)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_usageGroups;
     self->_usageGroups = v6;
 
-    v4 = v8;
+    groupCopy = v8;
     usageGroups = self->_usageGroups;
   }
 
-  [(NSMutableArray *)usageGroups addObject:v4];
+  [(NSMutableArray *)usageGroups addObject:groupCopy];
 }
 
-- (void)buildUsageGroupForCategory:(id)a3 usingStorageReporter:(id)a4
+- (void)buildUsageGroupForCategory:(id)category usingStorageReporter:(id)reporter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v51 = v6;
-  if ([v8 isEqualToString:@"MusicUsageCategoryLocalMusic"])
+  categoryCopy = category;
+  reporterCopy = reporter;
+  identifier = [categoryCopy identifier];
+  v51 = categoryCopy;
+  if ([identifier isEqualToString:@"MusicUsageCategoryLocalMusic"])
   {
     v9 = objc_alloc_init(MusicUsageGroup);
     localSongsGroup = self->_localSongsGroup;
     self->_localSongsGroup = v9;
 
     [(MusicUsageGroup *)self->_localSongsGroup setGroupSpecifierIdentifier:@"local_songs"];
-    v11 = [v6 name];
-    [(MusicUsageGroup *)self->_localSongsGroup setGroupName:v11];
+    name = [categoryCopy name];
+    [(MusicUsageGroup *)self->_localSongsGroup setGroupName:name];
 
-    [(MusicUsageGroup *)self->_localSongsGroup setCategoryIdentifier:v8];
+    [(MusicUsageGroup *)self->_localSongsGroup setCategoryIdentifier:identifier];
     [(MusicUsageGroup *)self->_localSongsGroup setShowsItemArtwork:0];
-    v54 = [v7 queryForCategoryIdentifier:v8];
+    v54 = [reporterCopy queryForCategoryIdentifier:identifier];
     v47 = [[MPMediaItemCollection alloc] initWithItemsQuery:v54];
     v50 = [MusicUsageItem usageItemWithItemCollection:"usageItemWithItemCollection:displayNameBlock:" displayNameBlock:?];
     [(MusicUsageGroup *)self->_localSongsGroup addUsageItem:v50];
@@ -436,27 +436,27 @@
     v13 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanTrue forProperty:?];
     [v12 addFilterPredicate:v13];
 
-    v14 = [v12 collections];
+    collections = [v12 collections];
     v15 = objc_alloc_init(MusicUsageGroup);
     [(MusicUsageGroup *)v15 setGroupSpecifierIdentifier:@"artists"];
     v16 = [NSBundle bundleWithIdentifier:@"com.apple.MusicUsage"];
     v17 = [v16 localizedStringForKey:@"ARTISTS_HEADER" value:&stru_108A0 table:@"MusicUsage"];
     [(MusicUsageGroup *)v15 setGroupName:v17];
 
-    [(MusicUsageGroup *)v15 setCategoryIdentifier:v8];
+    [(MusicUsageGroup *)v15 setCategoryIdentifier:identifier];
     [(MusicUsageGroup *)v15 setIncludedInLocalGroup:1];
     v18 = v15;
     [(MusicUsageGroup *)v15 setShowsItemArtwork:1];
     v46 = v12;
-    if ([v14 count])
+    if ([collections count])
     {
-      v19 = self;
-      v49 = v8;
+      selfCopy = self;
+      v49 = identifier;
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      obj = v14;
+      obj = collections;
       v20 = [obj countByEnumeratingWithState:&v63 objects:v68 count:16];
       if (v20)
       {
@@ -477,7 +477,7 @@
             v62[1] = 3221225472;
             v62[2] = sub_82DC;
             v62[3] = &unk_105D0;
-            v62[4] = v19;
+            v62[4] = selfCopy;
             [v24 setArtworkCatalogBlock:v62];
             [v24 setArtworkWantsCircleTreatment:1];
             [(MusicUsageGroup *)v18 addUsageItem:v24];
@@ -489,8 +489,8 @@
         while (v21);
       }
 
-      v8 = v49;
-      self = v19;
+      identifier = v49;
+      self = selfCopy;
     }
 
     v25 = +[MPMediaQuery songsQuery];
@@ -516,10 +516,10 @@
       v31 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanTrue forProperty:v45];
       [v29 addFilterPredicate:v31];
 
-      v32 = [v29 collections];
-      v33 = [v32 firstObject];
+      collections2 = [v29 collections];
+      firstObject = [collections2 firstObject];
 
-      v34 = [MusicUsageItem usageItemWithItemCollection:v33 displayNameBlock:&stru_105F0];
+      v34 = [MusicUsageItem usageItemWithItemCollection:firstObject displayNameBlock:&stru_105F0];
       [v34 setSubtitlesBlock:&stru_10610];
       v61[0] = _NSConcreteStackBlock;
       v61[1] = 3221225472;
@@ -538,22 +538,22 @@
     }
 
     v35 = v47;
-    v36 = v7;
+    v36 = reporterCopy;
     v37 = v51;
   }
 
   else
   {
-    v48 = self;
+    selfCopy2 = self;
     v54 = MPMediaItemPropertyTitle;
     v35 = objc_alloc_init(MusicUsageGroup);
-    [(MusicUsageGroup *)v35 setGroupSpecifierIdentifier:v8];
-    v38 = [v6 name];
-    [(MusicUsageGroup *)v35 setGroupName:v38];
+    [(MusicUsageGroup *)v35 setGroupSpecifierIdentifier:identifier];
+    name2 = [categoryCopy name];
+    [(MusicUsageGroup *)v35 setGroupName:name2];
 
-    [(MusicUsageGroup *)v35 setCategoryIdentifier:v8];
+    [(MusicUsageGroup *)v35 setCategoryIdentifier:identifier];
     [(MusicUsageGroup *)v35 setShowsItemArtwork:1];
-    [v7 queryForCategoryIdentifier:v8];
+    [reporterCopy queryForCategoryIdentifier:identifier];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -591,9 +591,9 @@
     }
 
     [(MusicUsageGroup *)v35 updateGroupSize];
-    [(MusicUsageDetailController *)v48 addUsageGroup:v35];
-    v36 = v7;
-    v37 = v6;
+    [(MusicUsageDetailController *)selfCopy2 addUsageGroup:v35];
+    v36 = reporterCopy;
+    v37 = categoryCopy;
   }
 }
 
@@ -605,7 +605,7 @@
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v73 = self;
+  selfCopy = self;
   obj = self->_usageGroups;
   v56 = [(NSMutableArray *)obj countByEnumeratingWithState:&v89 objects:v97 count:16];
   if (v56)
@@ -628,12 +628,12 @@
 
         v58 = v3;
         v4 = *(*(&v89 + 1) + 8 * v3);
-        v5 = [v4 groupName];
-        v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+        groupName = [v4 groupName];
+        v6 = [PSSpecifier preferenceSpecifierNamed:groupName target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
         [v6 setProperty:@"PSUsageSizeHeader" forKey:v54];
-        v7 = [v4 groupSpecifierIdentifier];
-        [v6 setIdentifier:v7];
+        groupSpecifierIdentifier = [v4 groupSpecifierIdentifier];
+        [v6 setIdentifier:groupSpecifierIdentifier];
 
         v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 groupSize]);
         [v6 setProperty:v8 forKey:@"SIZE"];
@@ -645,8 +645,8 @@
         v85 = 0u;
         v86 = 0u;
         v76 = v4;
-        v66 = [v4 usageItems];
-        v69 = [v66 countByEnumeratingWithState:&v85 objects:v96 count:16];
+        usageItems = [v4 usageItems];
+        v69 = [usageItems countByEnumeratingWithState:&v85 objects:v96 count:16];
         if (v69)
         {
           v67 = *v86;
@@ -656,36 +656,36 @@
             {
               if (*v86 != v67)
               {
-                objc_enumerationMutation(v66);
+                objc_enumerationMutation(usageItems);
               }
 
               v10 = *(*(&v85 + 1) + 8 * i);
-              v11 = [v10 title];
-              v12 = [v10 itemCollection];
-              v13 = [v76 categoryIdentifier];
-              v14 = [v13 stringByAppendingFormat:@"-%llu-%d", objc_msgSend(v12, "persistentID"), objc_msgSend(v12, "groupingType")];
+              title = [v10 title];
+              itemCollection = [v10 itemCollection];
+              categoryIdentifier = [v76 categoryIdentifier];
+              v14 = [categoryIdentifier stringByAppendingFormat:@"-%llu-%d", objc_msgSend(itemCollection, "persistentID"), objc_msgSend(itemCollection, "groupingType")];
 
               v15 = v14;
               v16 = v10;
               [v10 setSpecifierIdentifier:v15];
-              v74 = v11;
-              v17 = [PSSpecifier preferenceSpecifierNamed:v11 target:v73 set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
+              v74 = title;
+              v17 = [PSSpecifier preferenceSpecifierNamed:title target:selfCopy set:0 get:"sizeForSpecifier:" detail:0 cell:4 edit:0];
               [v17 setIdentifier:v15];
               [v17 setProperty:v16 forKey:@"MusicUsageItemPropertyKey"];
               if ([v76 showsItemArtwork])
               {
                 [v17 setProperty:&__kCFBooleanTrue forKey:v65];
-                v71 = v12;
+                v71 = itemCollection;
                 [v17 setProperty:objc_opt_class() forKey:v64];
-                v18 = [v16 artworkCatalogBlock];
+                artworkCatalogBlock = [v16 artworkCatalogBlock];
                 v75 = v16;
-                v19 = v18 != 0;
+                v19 = artworkCatalogBlock != 0;
 
-                v20 = [v75 subtitlesBlock];
-                v21 = v20 != 0;
+                subtitlesBlock = [v75 subtitlesBlock];
+                v21 = subtitlesBlock != 0;
 
                 v72 = i;
-                [(MusicUsageDetailController *)v73 traitCollection];
+                [(MusicUsageDetailController *)selfCopy traitCollection];
                 v22 = v70 = v17;
                 [MusicUsageTableViewCell maximumRowHeightIncludingArtwork:v19 includingSubtitle:v21 traitCollection:v22 sizingCache:v93];
                 v24 = v23;
@@ -694,22 +694,22 @@
                 v25 = [NSNumber numberWithDouble:v24];
                 [v70 setProperty:v25 forKey:v63];
 
-                if ([v12 groupingType] == &dword_0 + 2 || objc_msgSend(v12, "groupingType") == &dword_0 + 3)
+                if ([itemCollection groupingType] == &dword_0 + 2 || objc_msgSend(itemCollection, "groupingType") == &dword_0 + 3)
                 {
-                  v26 = [v75 itemCollection];
-                  v27 = [v26 groupingType];
+                  itemCollection2 = [v75 itemCollection];
+                  groupingType = [itemCollection2 groupingType];
 
-                  if (v27 == &dword_0 + 3)
+                  if (groupingType == &dword_0 + 3)
                   {
                     v61 = v15;
-                    v28 = [v75 itemCollection];
-                    v29 = [v28 persistentID];
+                    itemCollection3 = [v75 itemCollection];
+                    persistentID = [itemCollection3 persistentID];
 
                     v30 = +[MPMediaQuery albumsQuery];
                     [v30 setIgnoreSystemFilterPredicates:1];
                     [v30 setIgnoreRestrictionsPredicates:1];
                     [v30 setShouldIncludeNonLibraryEntities:1];
-                    v31 = [NSNumber numberWithUnsignedLongLong:v29];
+                    v31 = [NSNumber numberWithUnsignedLongLong:persistentID];
                     v32 = [MPMediaPropertyPredicate predicateWithValue:v31 forProperty:MPMediaItemPropertyAlbumArtistPersistentID];
                     [v30 addFilterPredicate:v32];
 
@@ -717,16 +717,16 @@
                     [v30 addFilterPredicate:v33];
 
                     v60 = v30;
-                    v34 = [v30 collections];
+                    collections = [v30 collections];
                     v35 = +[NSMutableArray array];
-                    v62 = v34;
-                    if ([v34 count])
+                    v62 = collections;
+                    if ([collections count])
                     {
                       v83 = 0u;
                       v84 = 0u;
                       v81 = 0u;
                       v82 = 0u;
-                      v36 = v34;
+                      v36 = collections;
                       v37 = [v36 countByEnumeratingWithState:&v81 objects:v95 count:16];
                       if (v37)
                       {
@@ -761,8 +761,8 @@
                     [(MusicUsageGroup *)v43 setGroupName:v45];
 
                     [(MusicUsageGroup *)v43 setGroupSpecifierIdentifier:@"albums"];
-                    v46 = [v76 categoryIdentifier];
-                    [(MusicUsageGroup *)v43 setCategoryIdentifier:v46];
+                    categoryIdentifier2 = [v76 categoryIdentifier];
+                    [(MusicUsageGroup *)v43 setCategoryIdentifier:categoryIdentifier2];
 
                     [(MusicUsageGroup *)v43 setShowsItemArtwork:1];
                     v79 = 0u;
@@ -796,7 +796,7 @@
                     [(MusicUsageGroup *)v43 updateGroupSize];
                     [v75 setChildUsageGroup:v43];
 
-                    v12 = v71;
+                    itemCollection = v71;
                     i = v72;
                     v15 = v61;
                     v17 = v70;
@@ -807,7 +807,7 @@
               [v68 addObject:v17];
             }
 
-            v69 = [v66 countByEnumeratingWithState:&v85 objects:v96 count:16];
+            v69 = [usageItems countByEnumeratingWithState:&v85 objects:v96 count:16];
           }
 
           while (v69);

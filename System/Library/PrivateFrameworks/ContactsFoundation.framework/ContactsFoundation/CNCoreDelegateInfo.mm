@@ -1,91 +1,91 @@
 @interface CNCoreDelegateInfo
-+ (id)nameComponentsForFamilyMember:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNCoreDelegateInfo)initWithCoder:(id)a3;
-- (CNCoreDelegateInfo)initWithDSID:(id)a3 altDSID:(id)a4 appleID:(id)a5 principalPath:(id)a6 nameComponents:(id)a7 isMe:(BOOL)a8;
-- (CNCoreDelegateInfo)initWithFamilyMember:(id)a3;
-- (id)_hardCodedPrincipalPathForFamilyMember:(id)a3;
++ (id)nameComponentsForFamilyMember:(id)member;
+- (BOOL)isEqual:(id)equal;
+- (CNCoreDelegateInfo)initWithCoder:(id)coder;
+- (CNCoreDelegateInfo)initWithDSID:(id)d altDSID:(id)iD appleID:(id)appleID principalPath:(id)path nameComponents:(id)components isMe:(BOOL)me;
+- (CNCoreDelegateInfo)initWithFamilyMember:(id)member;
+- (id)_hardCodedPrincipalPathForFamilyMember:(id)member;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNCoreDelegateInfo
 
-- (CNCoreDelegateInfo)initWithDSID:(id)a3 altDSID:(id)a4 appleID:(id)a5 principalPath:(id)a6 nameComponents:(id)a7 isMe:(BOOL)a8
+- (CNCoreDelegateInfo)initWithDSID:(id)d altDSID:(id)iD appleID:(id)appleID principalPath:(id)path nameComponents:(id)components isMe:(BOOL)me
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  appleIDCopy = appleID;
+  pathCopy = path;
+  componentsCopy = components;
   v32.receiver = self;
   v32.super_class = CNCoreDelegateInfo;
   v19 = [(CNCoreDelegateInfo *)&v32 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [dCopy copy];
     dsid = v19->_dsid;
     v19->_dsid = v20;
 
-    v22 = [v15 copy];
+    v22 = [iDCopy copy];
     altDSID = v19->_altDSID;
     v19->_altDSID = v22;
 
-    v24 = [v16 copy];
+    v24 = [appleIDCopy copy];
     appleID = v19->_appleID;
     v19->_appleID = v24;
 
-    v26 = [v17 copy];
+    v26 = [pathCopy copy];
     principalPath = v19->_principalPath;
     v19->_principalPath = v26;
 
-    v28 = [v18 copy];
+    v28 = [componentsCopy copy];
     nameComponents = v19->_nameComponents;
     v19->_nameComponents = v28;
 
-    v19->_isMe = a8;
+    v19->_isMe = me;
     v30 = v19;
   }
 
   return v19;
 }
 
-- (CNCoreDelegateInfo)initWithFamilyMember:(id)a3
+- (CNCoreDelegateInfo)initWithFamilyMember:(id)member
 {
-  v4 = a3;
-  v5 = [v4 dsid];
-  v6 = [v4 altDSID];
-  v7 = [v4 appleID];
-  v8 = [(CNCoreDelegateInfo *)self _hardCodedPrincipalPathForFamilyMember:v4];
-  v9 = [objc_opt_class() nameComponentsForFamilyMember:v4];
-  v10 = [v4 isMe];
+  memberCopy = member;
+  dsid = [memberCopy dsid];
+  altDSID = [memberCopy altDSID];
+  appleID = [memberCopy appleID];
+  v8 = [(CNCoreDelegateInfo *)self _hardCodedPrincipalPathForFamilyMember:memberCopy];
+  v9 = [objc_opt_class() nameComponentsForFamilyMember:memberCopy];
+  isMe = [memberCopy isMe];
 
-  v11 = [(CNCoreDelegateInfo *)self initWithDSID:v5 altDSID:v6 appleID:v7 principalPath:v8 nameComponents:v9 isMe:v10];
+  v11 = [(CNCoreDelegateInfo *)self initWithDSID:dsid altDSID:altDSID appleID:appleID principalPath:v8 nameComponents:v9 isMe:isMe];
   return v11;
 }
 
-+ (id)nameComponentsForFamilyMember:(id)a3
++ (id)nameComponentsForFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v5 = [v3 firstName];
-  v6 = (off_1EF440728)(&__block_literal_global_122, v5);
+  firstName = [memberCopy firstName];
+  v6 = (off_1EF440728)(&__block_literal_global_122, firstName);
 
   if (v6)
   {
-    v7 = [v3 firstName];
-    [v4 setGivenName:v7];
+    firstName2 = [memberCopy firstName];
+    [v4 setGivenName:firstName2];
   }
 
-  v8 = [v3 lastName];
-  v9 = (off_1EF440728)(&__block_literal_global_122, v8);
+  lastName = [memberCopy lastName];
+  v9 = (off_1EF440728)(&__block_literal_global_122, lastName);
 
   if (v9)
   {
-    v10 = [v3 lastName];
-    [v4 setFamilyName:v10];
+    lastName2 = [memberCopy lastName];
+    [v4 setFamilyName:lastName2];
 
 LABEL_6:
     v11 = v4;
@@ -112,18 +112,18 @@ LABEL_8:
   v7 = [v3 appendName:@"principalPath" object:self->_principalPath];
   v8 = [v3 appendName:@"altDSID" object:self->_altDSID];
   v9 = [v3 appendName:@"nameComponents" object:self->_nameComponents];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (dsid = self->_dsid, dsid | v4->_dsid) && ![(NSNumber *)dsid isEqual:?]|| (altDSID = self->_altDSID, altDSID | v4->_altDSID) && ![(NSString *)altDSID isEqual:?]|| (appleID = self->_appleID, appleID | v4->_appleID) && ![(NSString *)appleID isEqual:?]|| (principalPath = self->_principalPath, principalPath | v4->_principalPath) && ![(NSString *)principalPath isEqual:?]|| (nameComponents = self->_nameComponents, nameComponents | v4->_nameComponents) && ![(NSPersonNameComponents *)nameComponents isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (dsid = self->_dsid, dsid | equalCopy->_dsid) && ![(NSNumber *)dsid isEqual:?]|| (altDSID = self->_altDSID, altDSID | equalCopy->_altDSID) && ![(NSString *)altDSID isEqual:?]|| (appleID = self->_appleID, appleID | equalCopy->_appleID) && ![(NSString *)appleID isEqual:?]|| (principalPath = self->_principalPath, principalPath | equalCopy->_principalPath) && ![(NSString *)principalPath isEqual:?]|| (nameComponents = self->_nameComponents, nameComponents | equalCopy->_nameComponents) && ![(NSPersonNameComponents *)nameComponents isEqual:?])
     {
       v10 = 0;
     }
@@ -141,7 +141,7 @@ LABEL_8:
   return [CNHashBuilder objectHash:self->_nameComponents]- v6 + 32 * v6 + 486695567;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CNCoreMutableDelegateInfo alloc];
   dsid = self->_dsid;
@@ -154,38 +154,38 @@ LABEL_8:
   return [(CNCoreDelegateInfo *)v4 initWithDSID:dsid altDSID:altDSID appleID:appleID principalPath:principalPath nameComponents:nameComponents isMe:isMe];
 }
 
-- (CNCoreDelegateInfo)initWithCoder:(id)a3
+- (CNCoreDelegateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dsid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_appleID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_principalPath"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_nameComponents"];
-  v10 = [v4 decodeBoolForKey:@"_isMe"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dsid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_appleID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_principalPath"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nameComponents"];
+  v10 = [coderCopy decodeBoolForKey:@"_isMe"];
 
   v11 = [(CNCoreDelegateInfo *)self initWithDSID:v5 altDSID:v6 appleID:v7 principalPath:v8 nameComponents:v9 isMe:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dsid = self->_dsid;
-  v5 = a3;
-  [v5 encodeObject:dsid forKey:@"_dsid"];
-  [v5 encodeObject:self->_altDSID forKey:@"_altDSID"];
-  [v5 encodeObject:self->_appleID forKey:@"_appleID"];
-  [v5 encodeObject:self->_principalPath forKey:@"_principalPath"];
-  [v5 encodeObject:self->_nameComponents forKey:@"_nameComponents"];
-  [v5 encodeBool:self->_isMe forKey:@"_isMe"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dsid forKey:@"_dsid"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
+  [coderCopy encodeObject:self->_appleID forKey:@"_appleID"];
+  [coderCopy encodeObject:self->_principalPath forKey:@"_principalPath"];
+  [coderCopy encodeObject:self->_nameComponents forKey:@"_nameComponents"];
+  [coderCopy encodeBool:self->_isMe forKey:@"_isMe"];
 }
 
-- (id)_hardCodedPrincipalPathForFamilyMember:(id)a3
+- (id)_hardCodedPrincipalPathForFamilyMember:(id)member
 {
-  v3 = [a3 dsid];
-  v4 = [v3 stringValue];
+  dsid = [member dsid];
+  stringValue = [dsid stringValue];
 
-  v5 = [objc_opt_class() hardCodedPrincipalPathForDSID:v4];
+  v5 = [objc_opt_class() hardCodedPrincipalPathForDSID:stringValue];
 
   return v5;
 }

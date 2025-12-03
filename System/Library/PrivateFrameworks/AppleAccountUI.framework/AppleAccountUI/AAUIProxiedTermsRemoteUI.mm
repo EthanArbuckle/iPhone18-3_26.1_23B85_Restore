@@ -1,78 +1,78 @@
 @interface AAUIProxiedTermsRemoteUI
-- (AAUIProxiedTermsRemoteUI)initWithAuthResults:(id)a3 proxiedDevice:(id)a4 anisetteDataProvider:(id)a5 appProvidedContext:(id)a6 termsEntries:(id)a7;
+- (AAUIProxiedTermsRemoteUI)initWithAuthResults:(id)results proxiedDevice:(id)device anisetteDataProvider:(id)provider appProvidedContext:(id)context termsEntries:(id)entries;
 - (id)_authContextForRenewCredentials;
 - (id)_sessionConfiguration;
-- (void)_addHeadersToRequest:(id)a3;
-- (void)_agreeToTermsWithURLString:(id)a3 serverInfo:(id)a4 preferPassword:(BOOL)a5 completion:(id)a6;
-- (void)_sendAcceptedTermsInfo:(id)a3;
+- (void)_addHeadersToRequest:(id)request;
+- (void)_agreeToTermsWithURLString:(id)string serverInfo:(id)info preferPassword:(BOOL)password completion:(id)completion;
+- (void)_sendAcceptedTermsInfo:(id)info;
 @end
 
 @implementation AAUIProxiedTermsRemoteUI
 
-- (AAUIProxiedTermsRemoteUI)initWithAuthResults:(id)a3 proxiedDevice:(id)a4 anisetteDataProvider:(id)a5 appProvidedContext:(id)a6 termsEntries:(id)a7
+- (AAUIProxiedTermsRemoteUI)initWithAuthResults:(id)results proxiedDevice:(id)device anisetteDataProvider:(id)provider appProvidedContext:(id)context termsEntries:(id)entries
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  deviceCopy = device;
+  providerCopy = provider;
+  contextCopy = context;
   proxiedDevice = self->_proxiedDevice;
-  self->_proxiedDevice = v12;
-  v16 = v12;
-  v17 = a7;
-  v18 = a3;
+  self->_proxiedDevice = deviceCopy;
+  v16 = deviceCopy;
+  entriesCopy = entries;
+  resultsCopy = results;
 
   appProvidedContext = self->_appProvidedContext;
-  self->_appProvidedContext = v14;
-  v20 = v14;
+  self->_appProvidedContext = contextCopy;
+  v20 = contextCopy;
 
   anisetteDataProvider = self->_anisetteDataProvider;
-  self->_anisetteDataProvider = v13;
-  v22 = v13;
+  self->_anisetteDataProvider = providerCopy;
+  v22 = providerCopy;
 
   v23 = objc_alloc_init(MEMORY[0x1E6959A48]);
   v24 = objc_alloc(MEMORY[0x1E6959A28]);
   v25 = [v23 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
   v26 = [v24 initWithAccountType:v25];
 
-  v27 = [v18 objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
+  v27 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBF0]];
   [v26 setUsername:v27];
 
-  v28 = [v18 objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
+  v28 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
   [v26 setAccountProperty:v28 forKey:@"personID"];
 
-  v29 = [v18 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v29 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
   [v26 _aa_setAltDSID:v29];
 
-  v30 = [v18 objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
+  v30 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
 
   [v26 aa_setPassword:v30];
   v33.receiver = self;
   v33.super_class = AAUIProxiedTermsRemoteUI;
-  v31 = [(AAUIGenericTermsRemoteUI *)&v33 initWithAccount:v26 inStore:v23 termsEntries:v17];
+  v31 = [(AAUIGenericTermsRemoteUI *)&v33 initWithAccount:v26 inStore:v23 termsEntries:entriesCopy];
 
   return v31;
 }
 
 - (id)_sessionConfiguration
 {
-  v3 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
   v4 = objc_alloc_init(MEMORY[0x1E698DCC8]);
   [v4 setPairedDevice:self->_proxiedDevice];
   [v4 setAnisetteDataProvider:self->_anisetteDataProvider];
-  [v3 set_appleIDContext:v4];
+  [defaultSessionConfiguration set_appleIDContext:v4];
 
-  return v3;
+  return defaultSessionConfiguration;
 }
 
 - (id)_authContextForRenewCredentials
 {
   v3 = objc_alloc_init(MEMORY[0x1E698DE80]);
-  v4 = [(AAUIGenericTermsRemoteUI *)self account];
-  v5 = [v4 username];
-  [v3 setUsername:v5];
+  account = [(AAUIGenericTermsRemoteUI *)self account];
+  username = [account username];
+  [v3 setUsername:username];
 
   [v3 setIsUsernameEditable:0];
-  v6 = [(AAUIGenericTermsRemoteUI *)self originatingViewController];
-  [v3 setPresentingViewController:v6];
+  originatingViewController = [(AAUIGenericTermsRemoteUI *)self originatingViewController];
+  [v3 setPresentingViewController:originatingViewController];
 
   [v3 setShouldOfferSecurityUpgrade:0];
   [v3 setServiceType:1];
@@ -86,50 +86,50 @@
   v9 = MEMORY[0x1E696AEC0];
   v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"RENEW_FOR_TERMS_AND_CONDITIONS_MESSAGE" value:&stru_1F447F790 table:@"Localizable"];
-  v12 = [(AAUIGenericTermsRemoteUI *)self account];
-  v13 = [v12 username];
-  v14 = [v9 stringWithFormat:v11, v13];
+  account2 = [(AAUIGenericTermsRemoteUI *)self account];
+  username2 = [account2 username];
+  v14 = [v9 stringWithFormat:v11, username2];
   [v3 setReason:v14];
 
   return v3;
 }
 
-- (void)_addHeadersToRequest:(id)a3
+- (void)_addHeadersToRequest:(id)request
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 aa_addClientInfoHeaders];
-  v5 = [(AAUIGenericTermsRemoteUI *)self account];
-  [v4 aa_addProxiedAuthHeaderWithAccount:v5];
+  requestCopy = request;
+  [requestCopy aa_addClientInfoHeaders];
+  account = [(AAUIGenericTermsRemoteUI *)self account];
+  [requestCopy aa_addProxiedAuthHeaderWithAccount:account];
 
-  [v4 aa_addAppProvidedContext:self->_appProvidedContext];
+  [requestCopy aa_addAppProvidedContext:self->_appProvidedContext];
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 allHTTPHeaderFields];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
     v8 = 138412290;
-    v9 = v7;
+    v9 = allHTTPHeaderFields;
     _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Proxied Terms Request Headers: %@", &v8, 0xCu);
   }
 }
 
-- (void)_agreeToTermsWithURLString:(id)a3 serverInfo:(id)a4 preferPassword:(BOOL)a5 completion:(id)a6
+- (void)_agreeToTermsWithURLString:(id)string serverInfo:(id)info preferPassword:(BOOL)password completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v10 = MEMORY[0x1E698B9E8];
-  v11 = a4;
-  v12 = a3;
+  infoCopy = info;
+  stringCopy = string;
   v13 = [v10 alloc];
-  v14 = [(AAUIGenericTermsRemoteUI *)self account];
-  v15 = [v13 initWithURLString:v12 account:v14];
+  account = [(AAUIGenericTermsRemoteUI *)self account];
+  v15 = [v13 initWithURLString:stringCopy account:account];
 
   [v15 setPreferPassword:1];
   v16 = objc_alloc_init(MEMORY[0x1E696AD68]);
   [(AAUIProxiedTermsRemoteUI *)self _addHeadersToRequest:v16];
-  v17 = [v16 allHTTPHeaderFields];
-  [v15 setCustomHeaders:v17];
+  allHTTPHeaderFields = [v16 allHTTPHeaderFields];
+  [v15 setCustomHeaders:allHTTPHeaderFields];
 
-  [v15 setServerInfo:v11];
+  [v15 setServerInfo:infoCopy];
   proxiedDevice = self->_proxiedDevice;
   anisetteDataProvider = self->_anisetteDataProvider;
   v21[0] = MEMORY[0x1E69E9820];
@@ -137,8 +137,8 @@
   v21[2] = __92__AAUIProxiedTermsRemoteUI__agreeToTermsWithURLString_serverInfo_preferPassword_completion___block_invoke;
   v21[3] = &unk_1E820D0D0;
   v21[4] = self;
-  v22 = v9;
-  v20 = v9;
+  v22 = completionCopy;
+  v20 = completionCopy;
   [v15 performRequestForDevice:proxiedDevice anisetteDataProvider:anisetteDataProvider withHandler:v21];
 }
 
@@ -193,18 +193,18 @@ void __92__AAUIProxiedTermsRemoteUI__agreeToTermsWithURLString_serverInfo_prefer
   }
 }
 
-- (void)_sendAcceptedTermsInfo:(id)a3
+- (void)_sendAcceptedTermsInfo:(id)info
 {
-  v7 = a3;
-  if ([v7 count])
+  infoCopy = info;
+  if ([infoCopy count])
   {
-    v4 = [(AAUIGenericTermsRemoteUI *)self delegate];
+    delegate = [(AAUIGenericTermsRemoteUI *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(AAUIGenericTermsRemoteUI *)self delegate];
-      [v6 genericTermsRemoteUI:self acceptedTermsInfo:v7];
+      delegate2 = [(AAUIGenericTermsRemoteUI *)self delegate];
+      [delegate2 genericTermsRemoteUI:self acceptedTermsInfo:infoCopy];
     }
   }
 }

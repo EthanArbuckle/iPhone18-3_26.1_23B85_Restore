@@ -1,14 +1,14 @@
 @interface _PXEmptyAudioCueProvider
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4;
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler;
 @end
 
 @implementation _PXEmptyAudioCueProvider
 
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_alloc_init(PXConcreteAudioCueSource);
-  (*(a4 + 2))(v5, v6, 0);
+  (*(handler + 2))(handlerCopy, v6, 0);
 
   return 0;
 }

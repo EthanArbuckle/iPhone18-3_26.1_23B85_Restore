@@ -1,35 +1,35 @@
 @interface PUIStylePickerComponentViewController
 - (BOOL)shouldShowContentStyleItems;
 - (PUIStylePickerComponentViewController)init;
-- (PUIStylePickerComponentViewController)initWithConfiguration:(id)a3;
+- (PUIStylePickerComponentViewController)initWithConfiguration:(id)configuration;
 - (PUIStylePickerComponentViewControllerDelegate)delegate;
 - (double)estimatedHeight;
-- (id)coordinatorForStyle:(id)a3 isSuggestedStyle:(BOOL)a4 fromDataSource:(id)a5;
-- (id)stylePickerComponentViewController:(id)a3 coordinatorForStyle:(id)a4 isSuggested:(BOOL)a5;
-- (void)_didSelectContentStyle:(id)a3 isSuggestedStyle:(BOOL)a4;
-- (void)colorSliderDidUpdateVariation:(id)a3;
+- (id)coordinatorForStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle fromDataSource:(id)source;
+- (id)stylePickerComponentViewController:(id)controller coordinatorForStyle:(id)style isSuggested:(BOOL)suggested;
+- (void)_didSelectContentStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle;
+- (void)colorSliderDidUpdateVariation:(id)variation;
 - (void)loadItemsViewControllerIfNeeded;
 - (void)loadView;
-- (void)setContentsLuminance:(double)a3;
-- (void)styleItemsViewController:(id)a3 didSelectContentStyleCoordinator:(id)a4;
-- (void)styleItemsViewControllerDidUpdateEstimatedSize:(id)a3;
-- (void)stylePickerComponentViewController:(id)a3 didSelectStyle:(id)a4 isSuggestedStyle:(BOOL)a5 userSelected:(BOOL)a6;
-- (void)stylePickerComponentViewControllerDidChangeHeight:(id)a3;
-- (void)updateSliderVisibility:(BOOL)a3;
+- (void)setContentsLuminance:(double)luminance;
+- (void)styleItemsViewController:(id)controller didSelectContentStyleCoordinator:(id)coordinator;
+- (void)styleItemsViewControllerDidUpdateEstimatedSize:(id)size;
+- (void)stylePickerComponentViewController:(id)controller didSelectStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle userSelected:(BOOL)selected;
+- (void)stylePickerComponentViewControllerDidChangeHeight:(id)height;
+- (void)updateSliderVisibility:(BOOL)visibility;
 @end
 
 @implementation PUIStylePickerComponentViewController
 
-- (PUIStylePickerComponentViewController)initWithConfiguration:(id)a3
+- (PUIStylePickerComponentViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PUIStylePickerComponentViewController;
   v6 = [(PUIStylePickerComponentViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -62,14 +62,14 @@
       v6 = v5;
       if ([(PUIStyleConfiguration *)self->_configuration colorWellDisplayMode]== 2)
       {
-        v7 = [(PUIStyleItemsViewController *)v6 colorWellView];
+        colorWellView = [(PUIStyleItemsViewController *)v6 colorWellView];
         colorWellView = self->_colorWellView;
-        self->_colorWellView = v7;
-        v9 = v7;
+        self->_colorWellView = colorWellView;
+        v9 = colorWellView;
 
-        v10 = [(PUIColorWellView *)v9 colorWell];
+        colorWell = [(PUIColorWellView *)v9 colorWell];
         colorWell = self->_colorWell;
-        self->_colorWell = v10;
+        self->_colorWell = colorWell;
       }
     }
 
@@ -93,8 +93,8 @@
     v7 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
     [v4 setFont:v7];
 
-    v8 = [MEMORY[0x1E69DC888] labelColor];
-    [v4 setTextColor:v8];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v4 setTextColor:labelColor];
 
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v3 addSubview:v4];
@@ -106,42 +106,42 @@
   }
 
   [(PUIStylePickerComponentViewController *)self loadItemsViewControllerIfNeeded];
-  v9 = [(PUIStylePickerComponentViewController *)self itemsViewController];
-  v10 = [v9 view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  itemsViewController = [(PUIStylePickerComponentViewController *)self itemsViewController];
+  view = [itemsViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = 0x1E695D000uLL;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v72 = v10;
-  [v12 addObject:v10];
-  v13 = [v9 selectedStyleCoordinator];
+  array = [MEMORY[0x1E695DF70] array];
+  v72 = view;
+  [array addObject:view];
+  selectedStyleCoordinator = [itemsViewController selectedStyleCoordinator];
   v14 = [(PUIStyleItemsDataSource *)self->_dataSource firstCoordinatorPassingTest:&__block_literal_global_6];
 
-  v71 = v13;
-  if (!v13)
+  v71 = selectedStyleCoordinator;
+  if (!selectedStyleCoordinator)
   {
-    v15 = [(PUIStylePickerComponentViewController *)self delegate];
-    v16 = [0 style];
-    [v15 stylePickerComponentViewController:self didSelectStyle:v16 isSuggestedStyle:objc_msgSend(0 userSelected:{"isSuggested"), 0}];
+    delegate = [(PUIStylePickerComponentViewController *)self delegate];
+    style = [0 style];
+    [delegate stylePickerComponentViewController:self didSelectStyle:style isSuggestedStyle:objc_msgSend(0 userSelected:{"isSuggested"), 0}];
   }
 
   if (v14)
   {
     v17 = [PUIStyleVariationSlider alloc];
-    v18 = [(PUIStyleConfiguration *)self->_configuration identifier];
-    v19 = [(PUIStyleVariationSlider *)v17 initWithStyleCoordinator:v71 contextIdentifier:v18];
+    identifier = [(PUIStyleConfiguration *)self->_configuration identifier];
+    v19 = [(PUIStyleVariationSlider *)v17 initWithStyleCoordinator:v71 contextIdentifier:identifier];
 
     [(PUIStyleVariationSlider *)v19 addTarget:self action:sel_colorSliderDidUpdateVariation_ forControlEvents:4096];
-    v20 = [v9 selectedStyleCoordinator];
-    v21 = [v20 style];
-    v22 = [v21 allowsVariation];
+    selectedStyleCoordinator2 = [itemsViewController selectedStyleCoordinator];
+    style2 = [selectedStyleCoordinator2 style];
+    allowsVariation = [style2 allowsVariation];
 
-    if ((v22 & 1) == 0)
+    if ((allowsVariation & 1) == 0)
     {
       [(PUIStyleVariationSlider *)v19 setHidden:1];
     }
 
     objc_storeStrong(&self->_sliderView, v19);
-    [v12 addObject:v19];
+    [array addObject:v19];
     v23 = v19;
     v11 = 0x1E695D000;
   }
@@ -151,55 +151,55 @@
     v23 = 0;
   }
 
-  v65 = v12;
-  v24 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v12];
+  v65 = array;
+  v24 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
   [v24 setAxis:1];
   [v24 setAlignment:3];
   [v24 setSpacing:24.0];
   [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_storeStrong(&self->_verticalStack, v24);
   [v3 addSubview:v24];
-  [(PUIStylePickerComponentViewController *)self addChildViewController:v9];
+  [(PUIStylePickerComponentViewController *)self addChildViewController:itemsViewController];
   [(PUIStylePickerComponentViewController *)self setView:v3];
-  v66 = v9;
-  [v9 didMoveToParentViewController:self];
-  v25 = [*(v11 + 3952) array];
+  v66 = itemsViewController;
+  [itemsViewController didMoveToParentViewController:self];
+  array2 = [*(v11 + 3952) array];
   v73 = v3;
   v67 = v4;
   if (self->_showsHeader)
   {
-    v69 = [v4 leadingAnchor];
-    v63 = [v3 leadingAnchor];
-    v26 = [v69 constraintEqualToAnchor:v63 constant:20.0];
+    leadingAnchor = [v4 leadingAnchor];
+    leadingAnchor2 = [v3 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v77[0] = v26;
-    v27 = [v4 topAnchor];
-    v61 = [v3 topAnchor];
-    v59 = [v27 constraintEqualToAnchor:v61 constant:10.0];
+    topAnchor = [v4 topAnchor];
+    topAnchor2 = [v3 topAnchor];
+    v59 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v77[1] = v59;
-    v28 = [v24 topAnchor];
-    v29 = [v4 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:20.0];
+    topAnchor3 = [v24 topAnchor];
+    bottomAnchor = [v4 bottomAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:20.0];
     v77[2] = v30;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:3];
     v32 = v31 = v23;
-    v33 = v25;
-    [v25 addObjectsFromArray:v32];
+    v33 = array2;
+    [array2 addObjectsFromArray:v32];
 
     v23 = v31;
-    v34 = v63;
+    topAnchor5 = leadingAnchor2;
 
-    v35 = v69;
+    topAnchor4 = leadingAnchor;
   }
 
   else
   {
-    v35 = [v24 topAnchor];
-    v34 = [v3 topAnchor];
-    v26 = [v35 constraintEqualToAnchor:v34];
+    topAnchor4 = [v24 topAnchor];
+    topAnchor5 = [v3 topAnchor];
+    v26 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v76 = v26;
-    v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
-    v33 = v25;
-    [v25 addObjectsFromArray:v27];
+    topAnchor = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
+    v33 = array2;
+    [array2 addObjectsFromArray:topAnchor];
   }
 
   v68 = v33;
@@ -208,17 +208,17 @@
   v70 = v23;
   if (v23)
   {
-    v37 = [(PUIStyleVariationSlider *)v23 heightAnchor];
+    heightAnchor = [(PUIStyleVariationSlider *)v23 heightAnchor];
     +[PUIStyleVariationSlider defaultHeight];
-    v38 = [v37 constraintEqualToConstant:?];
+    v38 = [heightAnchor constraintEqualToConstant:?];
     v75[0] = v38;
-    v39 = [(PUIStyleVariationSlider *)v23 leadingAnchor];
-    v40 = [v24 leadingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:36.0];
+    leadingAnchor3 = [(PUIStyleVariationSlider *)v23 leadingAnchor];
+    leadingAnchor4 = [v24 leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:36.0];
     v75[1] = v41;
-    v42 = [(PUIStyleVariationSlider *)v70 trailingAnchor];
-    v43 = [v24 trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43 constant:-36.0];
+    trailingAnchor = [(PUIStyleVariationSlider *)v70 trailingAnchor];
+    trailingAnchor2 = [v24 trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-36.0];
     v75[2] = v44;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
     [v68 addObjectsFromArray:v45];
@@ -226,25 +226,25 @@
     v36 = 0x1E695D000uLL;
   }
 
-  v64 = [v72 leadingAnchor];
-  v62 = [v24 leadingAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  leadingAnchor5 = [v72 leadingAnchor];
+  leadingAnchor6 = [v24 leadingAnchor];
+  v60 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v74[0] = v60;
-  v58 = [v72 trailingAnchor];
-  v57 = [v24 trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  trailingAnchor3 = [v72 trailingAnchor];
+  trailingAnchor4 = [v24 trailingAnchor];
+  v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v74[1] = v56;
-  v55 = [v24 leadingAnchor];
-  v54 = [v73 leadingAnchor];
-  v46 = [v55 constraintEqualToAnchor:v54];
+  leadingAnchor7 = [v24 leadingAnchor];
+  leadingAnchor8 = [v73 leadingAnchor];
+  v46 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v74[2] = v46;
-  v47 = [v24 trailingAnchor];
-  v48 = [v73 trailingAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  trailingAnchor5 = [v24 trailingAnchor];
+  trailingAnchor6 = [v73 trailingAnchor];
+  v49 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v74[3] = v49;
-  v50 = [v24 bottomAnchor];
-  v51 = [v73 bottomAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  bottomAnchor2 = [v24 bottomAnchor];
+  bottomAnchor3 = [v73 bottomAnchor];
+  v52 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v74[4] = v52;
   v53 = [*(v36 + 3784) arrayWithObjects:v74 count:5];
   [v68 addObjectsFromArray:v53];
@@ -262,23 +262,23 @@ uint64_t __49__PUIStylePickerComponentViewController_loadView__block_invoke(uint
 
 - (BOOL)shouldShowContentStyleItems
 {
-  v2 = [(PUIStylePickerComponentViewController *)self itemsViewController];
-  v3 = [v2 configuration];
-  v4 = [v3 stylePalette];
-  v5 = [v4 styles];
-  v6 = [v5 count];
+  itemsViewController = [(PUIStylePickerComponentViewController *)self itemsViewController];
+  configuration = [itemsViewController configuration];
+  stylePalette = [configuration stylePalette];
+  styles = [stylePalette styles];
+  v6 = [styles count];
 
   return v6 < 2;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  self->_contentsLuminance = a3;
+  self->_contentsLuminance = luminance;
   if ([(PUIStylePickerComponentViewController *)self isViewLoaded])
   {
     itemsViewController = self->_itemsViewController;
 
-    [(PUIStyleItemsViewController *)itemsViewController setContentsLuminance:a3];
+    [(PUIStyleItemsViewController *)itemsViewController setContentsLuminance:luminance];
   }
 }
 
@@ -289,13 +289,13 @@ uint64_t __49__PUIStylePickerComponentViewController_loadView__block_invoke(uint
   v4 = v3;
   if (self->_sliderView)
   {
-    v5 = [(PUIStyleItemsViewController *)self->_itemsViewController selectedStyleCoordinator];
-    v6 = [v5 style];
-    if ([v6 allowsVariation])
+    selectedStyleCoordinator = [(PUIStyleItemsViewController *)self->_itemsViewController selectedStyleCoordinator];
+    style = [selectedStyleCoordinator style];
+    if ([style allowsVariation])
     {
-      v7 = [(PUIStylePickerComponentViewController *)self shouldShowContentStyleItems];
+      shouldShowContentStyleItems = [(PUIStylePickerComponentViewController *)self shouldShowContentStyleItems];
 
-      if (!v7)
+      if (!shouldShowContentStyleItems)
       {
         return v4 + 58.0;
       }
@@ -309,52 +309,52 @@ uint64_t __49__PUIStylePickerComponentViewController_loadView__block_invoke(uint
   return v4;
 }
 
-- (void)updateSliderVisibility:(BOOL)a3
+- (void)updateSliderVisibility:(BOOL)visibility
 {
-  [(PUIStyleVariationSlider *)self->_sliderView setHidden:!a3];
-  v4 = [(PUIStylePickerComponentViewController *)self delegate];
-  [v4 stylePickerComponentViewControllerDidChangeHeight:self];
+  [(PUIStyleVariationSlider *)self->_sliderView setHidden:!visibility];
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  [delegate stylePickerComponentViewControllerDidChangeHeight:self];
 }
 
-- (void)_didSelectContentStyle:(id)a3 isSuggestedStyle:(BOOL)a4
+- (void)_didSelectContentStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUIStylePickerComponentViewController *)self delegate];
-  [v7 stylePickerComponentViewController:self didSelectStyle:v6 isSuggestedStyle:v4 userSelected:1];
+  suggestedStyleCopy = suggestedStyle;
+  styleCopy = style;
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  [delegate stylePickerComponentViewController:self didSelectStyle:styleCopy isSuggestedStyle:suggestedStyleCopy userSelected:1];
 }
 
-- (void)colorSliderDidUpdateVariation:(id)a3
+- (void)colorSliderDidUpdateVariation:(id)variation
 {
-  v4 = [(PUIStyleItemsViewController *)self->_itemsViewController selectedStyleCoordinator];
-  if (v4)
+  selectedStyleCoordinator = [(PUIStyleItemsViewController *)self->_itemsViewController selectedStyleCoordinator];
+  if (selectedStyleCoordinator)
   {
-    v6 = v4;
-    v5 = [v4 style];
-    -[PUIStylePickerComponentViewController _didSelectContentStyle:isSuggestedStyle:](self, "_didSelectContentStyle:isSuggestedStyle:", v5, [v6 isSuggested]);
+    v6 = selectedStyleCoordinator;
+    style = [selectedStyleCoordinator style];
+    -[PUIStylePickerComponentViewController _didSelectContentStyle:isSuggestedStyle:](self, "_didSelectContentStyle:isSuggestedStyle:", style, [v6 isSuggested]);
 
-    v4 = v6;
+    selectedStyleCoordinator = v6;
   }
 }
 
-- (void)styleItemsViewController:(id)a3 didSelectContentStyleCoordinator:(id)a4
+- (void)styleItemsViewController:(id)controller didSelectContentStyleCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [v5 style];
-  v7 = [v6 allowsVariation];
+  coordinatorCopy = coordinator;
+  style = [coordinatorCopy style];
+  allowsVariation = [style allowsVariation];
 
   v8 = [(PUIStyleItemsDataSource *)self->_dataSource firstCoordinatorPassingTest:&__block_literal_global_20];
 
-  if (v8 && v7 == [(PUIStyleVariationSlider *)self->_sliderView isHidden])
+  if (v8 && allowsVariation == [(PUIStyleVariationSlider *)self->_sliderView isHidden])
   {
-    [(PUIStylePickerComponentViewController *)self updateSliderVisibility:v7];
+    [(PUIStylePickerComponentViewController *)self updateSliderVisibility:allowsVariation];
   }
 
-  [(PUIStyleVariationSlider *)self->_sliderView setStyleCoordinator:v5];
-  v10 = [v5 style];
-  v9 = [v5 isSuggested];
+  [(PUIStyleVariationSlider *)self->_sliderView setStyleCoordinator:coordinatorCopy];
+  style2 = [coordinatorCopy style];
+  isSuggested = [coordinatorCopy isSuggested];
 
-  [(PUIStylePickerComponentViewController *)self _didSelectContentStyle:v10 isSuggestedStyle:v9];
+  [(PUIStylePickerComponentViewController *)self _didSelectContentStyle:style2 isSuggestedStyle:isSuggested];
 }
 
 uint64_t __99__PUIStylePickerComponentViewController_styleItemsViewController_didSelectContentStyleCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -365,42 +365,42 @@ uint64_t __99__PUIStylePickerComponentViewController_styleItemsViewController_di
   return v3;
 }
 
-- (void)styleItemsViewControllerDidUpdateEstimatedSize:(id)a3
+- (void)styleItemsViewControllerDidUpdateEstimatedSize:(id)size
 {
-  v4 = [(PUIStylePickerComponentViewController *)self delegate];
-  [v4 stylePickerComponentViewControllerDidChangeHeight:self];
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  [delegate stylePickerComponentViewControllerDidChangeHeight:self];
 }
 
-- (id)stylePickerComponentViewController:(id)a3 coordinatorForStyle:(id)a4 isSuggested:(BOOL)a5
+- (id)stylePickerComponentViewController:(id)controller coordinatorForStyle:(id)style isSuggested:(BOOL)suggested
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(PUIStylePickerComponentViewController *)self delegate];
-  v9 = [v8 stylePickerComponentViewController:self coordinatorForStyle:v7 isSuggested:v5];
+  suggestedCopy = suggested;
+  styleCopy = style;
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  v9 = [delegate stylePickerComponentViewController:self coordinatorForStyle:styleCopy isSuggested:suggestedCopy];
 
   return v9;
 }
 
-- (void)stylePickerComponentViewController:(id)a3 didSelectStyle:(id)a4 isSuggestedStyle:(BOOL)a5 userSelected:(BOOL)a6
+- (void)stylePickerComponentViewController:(id)controller didSelectStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle userSelected:(BOOL)selected
 {
-  v6 = a5;
-  v10 = a4;
-  v8 = [(PUIStylePickerComponentViewController *)self delegate];
-  v9 = [v8 stylePickerComponentViewController:self coordinatorForStyle:v10 isSuggested:v6];
+  suggestedStyleCopy = suggestedStyle;
+  styleCopy = style;
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  v9 = [delegate stylePickerComponentViewController:self coordinatorForStyle:styleCopy isSuggested:suggestedStyleCopy];
 }
 
-- (void)stylePickerComponentViewControllerDidChangeHeight:(id)a3
+- (void)stylePickerComponentViewControllerDidChangeHeight:(id)height
 {
-  v4 = [(PUIStylePickerComponentViewController *)self delegate];
-  [v4 stylePickerComponentViewControllerDidChangeHeight:self];
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  [delegate stylePickerComponentViewControllerDidChangeHeight:self];
 }
 
-- (id)coordinatorForStyle:(id)a3 isSuggestedStyle:(BOOL)a4 fromDataSource:(id)a5
+- (id)coordinatorForStyle:(id)style isSuggestedStyle:(BOOL)suggestedStyle fromDataSource:(id)source
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(PUIStylePickerComponentViewController *)self delegate];
-  v9 = [v8 stylePickerComponentViewController:self coordinatorForStyle:v7 isSuggested:v5];
+  suggestedStyleCopy = suggestedStyle;
+  styleCopy = style;
+  delegate = [(PUIStylePickerComponentViewController *)self delegate];
+  v9 = [delegate stylePickerComponentViewController:self coordinatorForStyle:styleCopy isSuggested:suggestedStyleCopy];
 
   return v9;
 }

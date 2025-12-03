@@ -1,36 +1,36 @@
 @interface CAWindowServer
-+ (id)contextWithOptions:(id)a3;
-+ (id)serverWithOptions:(id)a3;
++ (id)contextWithOptions:(id)options;
++ (id)serverWithOptions:(id)options;
 - (BOOL)isSecure;
-- (BOOL)isSlotValid:(unsigned int)a3;
+- (BOOL)isSlotValid:(unsigned int)valid;
 - (id)_init;
-- (id)displayWithDisplayId:(unsigned int)a3;
-- (id)displayWithName:(id)a3;
-- (id)displayWithUniqueId:(id)a3;
+- (id)displayWithDisplayId:(unsigned int)id;
+- (id)displayWithName:(id)name;
+- (id)displayWithUniqueId:(id)id;
 - (id)insecureProcessIds;
 - (id)secureModeViolations;
-- (unsigned)clientPortOfContextId:(unsigned int)a3;
-- (unsigned)contextIdHostingContextId:(unsigned int)a3;
-- (unsigned)taskNamePortOfContextId:(unsigned int)a3;
+- (unsigned)clientPortOfContextId:(unsigned int)id;
+- (unsigned)contextIdHostingContextId:(unsigned int)id;
+- (unsigned)taskNamePortOfContextId:(unsigned int)id;
 - (void)_detectDisplays;
-- (void)addDisplay:(id)a3;
+- (void)addDisplay:(id)display;
 - (void)dealloc;
 - (void)removeAllDisplays;
-- (void)removeDisplay:(id)a3;
-- (void)setRendererFlags:(unsigned int)a3;
-- (void)setSecure:(BOOL)a3;
+- (void)removeDisplay:(id)display;
+- (void)setRendererFlags:(unsigned int)flags;
+- (void)setSecure:(BOOL)secure;
 @end
 
 @implementation CAWindowServer
 
-- (unsigned)contextIdHostingContextId:(unsigned int)a3
+- (unsigned)contextIdHostingContextId:(unsigned int)id
 {
   if (!self->_impl)
   {
     return 0;
   }
 
-  v3 = CA::Render::Context::context_by_id(*&a3);
+  v3 = CA::Render::Context::context_by_id(*&id);
   if (!v3)
   {
     return 0;
@@ -60,7 +60,7 @@
   return v6;
 }
 
-- (unsigned)taskNamePortOfContextId:(unsigned int)a3
+- (unsigned)taskNamePortOfContextId:(unsigned int)id
 {
   v10 = *MEMORY[0x1E69E9840];
   if (!self->_impl)
@@ -68,7 +68,7 @@
     return 0;
   }
 
-  v3 = CA::Render::Context::context_by_id(*&a3);
+  v3 = CA::Render::Context::context_by_id(*&id);
   if (!v3)
   {
     return 0;
@@ -93,14 +93,14 @@
   return v5;
 }
 
-- (unsigned)clientPortOfContextId:(unsigned int)a3
+- (unsigned)clientPortOfContextId:(unsigned int)id
 {
   if (!self->_impl)
   {
     return 0;
   }
 
-  v3 = CA::Render::Context::context_by_id(*&a3);
+  v3 = CA::Render::Context::context_by_id(*&id);
   if (!v3)
   {
     return 0;
@@ -120,12 +120,12 @@
   return v4;
 }
 
-- (BOOL)isSlotValid:(unsigned int)a3
+- (BOOL)isSlotValid:(unsigned int)valid
 {
   os_unfair_lock_lock(&CA::Render::Context::_context_lock);
   if (CA::Render::Context::_slot_table)
   {
-    v4 = x_hash_table_lookup(CA::Render::Context::_slot_table, a3, 0) != 0;
+    v4 = x_hash_table_lookup(CA::Render::Context::_slot_table, valid, 0) != 0;
   }
 
   else
@@ -449,10 +449,10 @@
 
       if (*(&v56 + 1))
       {
-        v42 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         for (k = v56; k; k = *k)
         {
-          [v42 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", k[2] + 28)}];
+          [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", k[2] + 28)}];
           v44 = k[2];
           if (atomic_fetch_add(v44 + 2, 0xFFFFFFFF) == 1)
           {
@@ -460,7 +460,7 @@
           }
         }
 
-        [v38 setObject:v42 forKeyedSubscript:@"layerNames"];
+        [v38 setObject:array forKeyedSubscript:@"layerNames"];
       }
 
       [v47 addObject:v38];
@@ -495,9 +495,9 @@
   return CFArrayGetCount(self->_impl->var0) && (*(*(*(CFArrayGetValueAtIndex(self->_impl->var0, 0) + 1) + 64) + 825) & 1) != 0;
 }
 
-- (void)setSecure:(BOOL)a3
+- (void)setSecure:(BOOL)secure
 {
-  v3 = a3;
+  secureCopy = secure;
   v8 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
   {
@@ -514,15 +514,15 @@
   if (CFArrayGetCount(self->_impl->var0))
   {
     ValueAtIndex = CFArrayGetValueAtIndex(self->_impl->var0, 0);
-    CA::WindowServer::Server::set_secure(*(ValueAtIndex[1] + 64), v3);
+    CA::WindowServer::Server::set_secure(*(ValueAtIndex[1] + 64), secureCopy);
   }
 }
 
-- (void)setRendererFlags:(unsigned int)a3
+- (void)setRendererFlags:(unsigned int)flags
 {
-  v3 = a3 | 3;
+  v3 = flags | 3;
   impl = self->_impl;
-  if (impl->var1 != (a3 | 3))
+  if (impl->var1 != (flags | 3))
   {
     impl->var1 = v3;
     Count = CFArrayGetCount(impl->var0);
@@ -564,13 +564,13 @@
 
 - (void)_detectDisplays
 {
-  v2 = self;
+  selfCopy = self;
   for (i = 0; i != 3; ++i)
   {
     self = ([CAWindowServer _detectDisplays]::count_funcs[i])(self, a2);
     if (self)
     {
-      v4 = self;
+      selfCopy2 = self;
       v5 = 0;
       v6 = [CAWindowServer _detectDisplays]::open_funcs[i];
       do
@@ -578,9 +578,9 @@
         self = (v6)(v5);
         if (self)
         {
-          v7 = self;
-          Count = CFArrayGetCount(v2->_impl->var0);
-          v9 = (*(v7->super.isa + 207))(v7);
+          selfCopy3 = self;
+          Count = CFArrayGetCount(selfCopy->_impl->var0);
+          v9 = (*(selfCopy3->super.isa + 207))(selfCopy3);
           if (v9)
           {
             v10 = v9;
@@ -594,7 +594,7 @@
             if (v11)
             {
               v12 = v11;
-              [(CAWindowServer *)v2 addDisplay:v11];
+              [(CAWindowServer *)selfCopy addDisplay:v11];
             }
 
             else
@@ -606,27 +606,27 @@
 
           else
           {
-            self = (*(v7->super.isa + 1))(v7);
+            self = (*(selfCopy3->super.isa + 1))(selfCopy3);
           }
         }
 
         v5 = (v5 + 1);
       }
 
-      while (v4 != v5);
+      while (selfCopy2 != v5);
     }
   }
 }
 
-- (id)displayWithUniqueId:(id)a3
+- (id)displayWithUniqueId:(id)id
 {
   v6[5] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!id)
   {
     return 0;
   }
 
-  result = [a3 UTF8String];
+  result = [id UTF8String];
   if (result)
   {
     impl = self->_impl;
@@ -656,7 +656,7 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   return result;
 }
 
-- (id)displayWithDisplayId:(unsigned int)a3
+- (id)displayWithDisplayId:(unsigned int)id
 {
   v7 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -664,14 +664,14 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   v5[1] = 3221225472;
   v5[2] = __39__CAWindowServer_displayWithDisplayId___block_invoke;
   v5[3] = &__block_descriptor_36_e31_B16__0__CAWindowServerDisplay_8l;
-  v6 = a3;
+  idCopy = id;
   return find_display(&impl->var0, v5);
 }
 
-- (id)displayWithName:(id)a3
+- (id)displayWithName:(id)name
 {
   v5[5] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
@@ -681,7 +681,7 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   v5[1] = 3221225472;
   v5[2] = __34__CAWindowServer_displayWithName___block_invoke;
   v5[3] = &unk_1E6DF7C80;
-  v5[4] = a3;
+  v5[4] = name;
   return find_display(&impl->var0, v5);
 }
 
@@ -700,17 +700,17 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)removeDisplay:(id)a3
+- (void)removeDisplay:(id)display
 {
-  if (a3)
+  if (display)
   {
     v8.length = CFArrayGetCount(self->_impl->var0);
     v8.location = 0;
-    FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->_impl->var0, v8, a3);
+    FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->_impl->var0, v8, display);
     if (FirstIndexOfValue != -1)
     {
       v6 = FirstIndexOfValue;
-      [a3 invalidate];
+      [display invalidate];
       [(CAWindowServer *)self willChangeValueForKey:@"displays"];
       CFArrayRemoveValueAtIndex(self->_impl->var0, v6);
 
@@ -719,17 +719,17 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)addDisplay:(id)a3
+- (void)addDisplay:(id)display
 {
-  if (a3)
+  if (display)
   {
     v6.length = CFArrayGetCount(self->_impl->var0);
     v6.location = 0;
-    if (CFArrayGetFirstIndexOfValue(self->_impl->var0, v6, a3) == -1)
+    if (CFArrayGetFirstIndexOfValue(self->_impl->var0, v6, display) == -1)
     {
-      *(*(*(a3 + 1) + 64) + 184) = self->_impl->var1;
+      *(*(*(display + 1) + 64) + 184) = self->_impl->var1;
       [(CAWindowServer *)self willChangeValueForKey:@"displays"];
-      CFArrayAppendValue(self->_impl->var0, a3);
+      CFArrayAppendValue(self->_impl->var0, display);
 
       [(CAWindowServer *)self didChangeValueForKey:@"displays"];
     }
@@ -757,14 +757,14 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   return v2;
 }
 
-+ (id)serverWithOptions:(id)a3
++ (id)serverWithOptions:(id)options
 {
   result = _shared_server;
   if (!_shared_server)
   {
     if (+[CAWindowServer serverWithOptions:]::once != -1)
     {
-      dispatch_once_f(&+[CAWindowServer serverWithOptions:]::once, a3, shared_server_init);
+      dispatch_once_f(&+[CAWindowServer serverWithOptions:]::once, options, shared_server_init);
     }
 
     return _shared_server;
@@ -773,11 +773,11 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
   return result;
 }
 
-+ (id)contextWithOptions:(id)a3
++ (id)contextWithOptions:(id)options
 {
   if (!_shared_server)
   {
-    result = [CAContext remoteContextWithOptions:a3];
+    result = [CAContext remoteContextWithOptions:options];
     if (result)
     {
       return result;
@@ -789,7 +789,7 @@ BOOL __38__CAWindowServer_displayWithUniqueId___block_invoke(uint64_t a1, uint64
     }
   }
 
-  return [CAContext localContextWithOptions:a3];
+  return [CAContext localContextWithOptions:options];
 }
 
 @end

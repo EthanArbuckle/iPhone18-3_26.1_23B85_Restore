@@ -1,7 +1,7 @@
 @interface AVDisplayCriteria
-- (AVDisplayCriteria)initWithRefreshRate:(float)a3 videoDynamicRange:(int)a4;
+- (AVDisplayCriteria)initWithRefreshRate:(float)rate videoDynamicRange:(int)range;
 - (AVDisplayCriteria)initWithRefreshRate:(float)refreshRate formatDescription:(CMFormatDescriptionRef)formatDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -28,9 +28,9 @@
   [(AVDisplayCriteria *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -42,25 +42,25 @@
   }
 
   videoDynamicRange = self->_videoDynamicRange;
-  if (videoDynamicRange != [a3 videoDynamicRange])
+  if (videoDynamicRange != [equal videoDynamicRange])
   {
     return 0;
   }
 
   refreshRate = self->_refreshRate;
-  [a3 refreshRate];
+  [equal refreshRate];
   return refreshRate == v7;
 }
 
-- (AVDisplayCriteria)initWithRefreshRate:(float)a3 videoDynamicRange:(int)a4
+- (AVDisplayCriteria)initWithRefreshRate:(float)rate videoDynamicRange:(int)range
 {
   v7.receiver = self;
   v7.super_class = AVDisplayCriteria;
   result = [(AVDisplayCriteria *)&v7 init];
   if (result)
   {
-    result->_videoDynamicRange = a4;
-    result->_refreshRate = a3;
+    result->_videoDynamicRange = range;
+    result->_refreshRate = rate;
   }
 
   return result;

@@ -1,28 +1,28 @@
 @interface PSUCurrentActivityManager
 + (PSUCurrentActivityManager)sharedInstance;
 - (BOOL)_hasLayoutInfo;
-- (BOOL)_isAppVisibleWithBundleId:(id)a3;
+- (BOOL)_isAppVisibleWithBundleId:(id)id;
 - (PSUCurrentActivityManager)init;
-- (void)_visibilityForAppWithBundleId:(id)a3 completionHandler:(id)a4;
+- (void)_visibilityForAppWithBundleId:(id)id completionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchUserActivityContentIdentifiersForBundleId:(id)a3 completionHandler:(id)a4;
+- (void)fetchUserActivityContentIdentifiersForBundleId:(id)id completionHandler:(id)handler;
 @end
 
 @implementation PSUCurrentActivityManager
 
-- (BOOL)_isAppVisibleWithBundleId:(id)a3
+- (BOOL)_isAppVisibleWithBundleId:(id)id
 {
   v30 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  idCopy = id;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(FBSDisplayLayoutMonitor *)self->_monitor currentLayout];
-  v5 = [v4 elements];
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->_monitor currentLayout];
+  elements = [currentLayout elements];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = elements;
+  v6 = [elements countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -41,22 +41,22 @@
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        if ([v13 isEqualToString:v9])
+        identifier = [v12 identifier];
+        if ([identifier isEqualToString:v9])
         {
           goto LABEL_15;
         }
 
-        v14 = [v12 identifier];
-        if ([v14 isEqualToString:v10])
+        identifier2 = [v12 identifier];
+        if ([identifier2 isEqualToString:v10])
         {
 
 LABEL_15:
           goto LABEL_16;
         }
 
-        v15 = [v12 identifier];
-        v16 = [v15 isEqualToString:v23];
+        identifier3 = [v12 identifier];
+        v16 = [identifier3 isEqualToString:v23];
 
         if (v16)
         {
@@ -65,8 +65,8 @@ LABEL_15:
 
         if ([v12 conformsToProtocol:&unk_284702678])
         {
-          v17 = [v12 bundleIdentifier];
-          v18 = [v17 isEqualToString:v21];
+          bundleIdentifier = [v12 bundleIdentifier];
+          v18 = [bundleIdentifier isEqualToString:idCopy];
 
           v8 |= v18;
         }
@@ -94,19 +94,19 @@ LABEL_16:
 
 - (BOOL)_hasLayoutInfo
 {
-  v2 = [(FBSDisplayLayoutMonitor *)self->_monitor currentLayout];
-  v3 = v2 != 0;
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->_monitor currentLayout];
+  v3 = currentLayout != 0;
 
   return v3;
 }
 
-- (void)_visibilityForAppWithBundleId:(id)a3 completionHandler:(id)a4
+- (void)_visibilityForAppWithBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   if ([(PSUCurrentActivityManager *)self _hasLayoutInfo])
   {
-    v7[2](v7, [(PSUCurrentActivityManager *)self _isAppVisibleWithBundleId:v6]);
+    handlerCopy[2](handlerCopy, [(PSUCurrentActivityManager *)self _isAppVisibleWithBundleId:idCopy]);
   }
 
   else
@@ -117,9 +117,9 @@ LABEL_16:
     block[1] = 3221225472;
     block[2] = __77__PSUCurrentActivityManager__visibilityForAppWithBundleId_completionHandler___block_invoke;
     block[3] = &unk_2789476C8;
-    v12 = v7;
+    v12 = handlerCopy;
     block[4] = self;
-    v11 = v6;
+    v11 = idCopy;
     dispatch_after(v8, v9, block);
   }
 }
@@ -133,19 +133,19 @@ uint64_t __77__PSUCurrentActivityManager__visibilityForAppWithBundleId_completio
   return v3(v1, v2);
 }
 
-- (void)fetchUserActivityContentIdentifiersForBundleId:(id)a3 completionHandler:(id)a4
+- (void)fetchUserActivityContentIdentifiersForBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__PSUCurrentActivityManager_fetchUserActivityContentIdentifiersForBundleId_completionHandler___block_invoke;
   v10[3] = &unk_278947678;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = idCopy;
+  v8 = idCopy;
+  v9 = handlerCopy;
   [(PSUCurrentActivityManager *)self _visibilityForAppWithBundleId:v8 completionHandler:v10];
 }
 
@@ -354,8 +354,8 @@ void __94__PSUCurrentActivityManager_fetchUserActivityContentIdentifiersForBundl
   v2 = [(PSUCurrentActivityManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-    v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v3];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    v4 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     monitor = v2->_monitor;
     v2->_monitor = v4;
   }

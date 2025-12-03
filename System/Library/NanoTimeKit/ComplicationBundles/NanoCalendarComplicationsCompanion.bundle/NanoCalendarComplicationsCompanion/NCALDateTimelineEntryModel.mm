@@ -1,8 +1,8 @@
 @interface NCALDateTimelineEntryModel
-- (id)_graphicRectangularDateBodyTextWithDate:(id)a3 displayLunarDate:(BOOL)a4;
-- (id)_graphicRectangularDateHeaderTextWithDate:(id)a3 useLunarDate:(BOOL)a4;
+- (id)_graphicRectangularDateBodyTextWithDate:(id)date displayLunarDate:(BOOL)lunarDate;
+- (id)_graphicRectangularDateHeaderTextWithDate:(id)date useLunarDate:(BOOL)lunarDate;
 - (id)_newBezelTemplate;
-- (id)_newCircularTemplateMedium:(BOOL)a3;
+- (id)_newCircularTemplateMedium:(BOOL)medium;
 - (id)_newExtraLargeLunarTemplate;
 - (id)_newExtraLargeTemplate;
 - (id)_newLargeUtilitarianTemplate;
@@ -15,12 +15,12 @@
 - (id)_newSimpleTextTemplate;
 - (id)_newSmallFlatUtilitarianTemplate;
 - (id)_simpleTextShortDateProvider;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NCALDateTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   if ([(NCALDateTimelineEntryModel *)self lunar])
   {
@@ -34,101 +34,101 @@
   }
 
   v7 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v8 = [(NCALDateTimelineEntryModel *)self _newSignatureCircularTemplate];
+          _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newSignatureCircularTemplate];
           break;
         case 11:
-          v8 = [(NCALDateTimelineEntryModel *)self _newGraphicRectangularTemplateDisplayingLunarDate:v6];
+          _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newGraphicRectangularTemplateDisplayingLunarDate:v6];
           break;
         case 12:
-          v8 = [(NCALDateTimelineEntryModel *)self _newSignatureExtraLargeCircularTemplate];
+          _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newSignatureExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_37;
       }
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
       if (v6)
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newExtraLargeLunarTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newExtraLargeLunarTemplate];
       }
 
       else
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newExtraLargeTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newExtraLargeTemplate];
       }
     }
 
-    else if (a3 == 8)
+    else if (family == 8)
     {
-      v8 = [(NCALDateTimelineEntryModel *)self _newSignatureCornerTemplate];
+      _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newSignatureCornerTemplate];
     }
 
     else
     {
-      v8 = [(NCALDateTimelineEntryModel *)self _newBezelTemplate];
+      _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newBezelTemplate];
     }
 
     goto LABEL_36;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
-      v8 = [(NCALDateTimelineEntryModel *)self _newLargeUtilitarianTemplate];
+      _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newLargeUtilitarianTemplate];
       goto LABEL_36;
     }
 
-    if (a3 == 4)
+    if (family == 4)
     {
-      v8 = [(NCALDateTimelineEntryModel *)self _newCircularTemplateMedium:0];
+      _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newCircularTemplateMedium:0];
       goto LABEL_36;
     }
 
-    if (a3 != 6)
+    if (family != 6)
     {
       goto LABEL_37;
     }
 
 LABEL_17:
-    v8 = [(NCALDateTimelineEntryModel *)self _newSmallFlatUtilitarianTemplate];
+    _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newSmallFlatUtilitarianTemplate];
 LABEL_36:
-    v7 = v8;
+    v7 = _newSignatureCircularTemplate;
     goto LABEL_37;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 0:
       if (v6)
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newModularSmallLunarTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newModularSmallLunarTemplate];
       }
 
       else
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newModularSmallTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newModularSmallTemplate];
       }
 
       goto LABEL_36;
     case 1:
       if (v6)
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newModularLargeLunarTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newModularLargeLunarTemplate];
       }
 
       else
       {
-        v8 = [(NCALDateTimelineEntryModel *)self _newModularLargeTemplate];
+        _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newModularLargeTemplate];
       }
 
       goto LABEL_36;
@@ -137,22 +137,22 @@ LABEL_36:
   }
 
 LABEL_37:
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
-    v9 = [(NCALDateTimelineEntryModel *)self _newCircularTemplateMedium:1];
+    _newSimpleTextTemplate = [(NCALDateTimelineEntryModel *)self _newCircularTemplateMedium:1];
   }
 
   else
   {
-    if (CLKComplicationFamilySimpleText != a3)
+    if (CLKComplicationFamilySimpleText != family)
     {
       goto LABEL_42;
     }
 
-    v9 = [(NCALDateTimelineEntryModel *)self _newSimpleTextTemplate];
+    _newSimpleTextTemplate = [(NCALDateTimelineEntryModel *)self _newSimpleTextTemplate];
   }
 
-  v10 = v9;
+  v10 = _newSimpleTextTemplate;
 
   v7 = v10;
 LABEL_42:
@@ -160,7 +160,7 @@ LABEL_42:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134218240;
-    v14 = a3;
+    familyCopy = family;
     v15 = 1024;
     v16 = v7 != 0;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Has template for family %ld? -> %d", &v13, 0x12u);
@@ -171,12 +171,12 @@ LABEL_42:
 
 - (id)_newModularSmallTemplate
 {
-  v3 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v4 = [CLKDateTextProvider textProviderWithDate:v3 units:512];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:512];
 
   [v4 setShortUnits:1];
-  v5 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v6 = [CLKDateTextProvider textProviderWithDate:v5 units:16];
+  entryDate2 = [(NCALDateTimelineEntryModel *)self entryDate];
+  v6 = [CLKDateTextProvider textProviderWithDate:entryDate2 units:16];
 
   v7 = [CLKComplicationTemplateModularSmallDate templateWithWeekdayTextProvider:v4 dayTextProvider:v6];
   [v7 setHighlightMode:2];
@@ -188,15 +188,15 @@ LABEL_42:
 
 - (id)_newModularSmallLunarTemplate
 {
-  v3 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v4 = [CLKDateTextProvider textProviderWithDate:v3 units:8];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:8];
 
   [v4 setShortUnits:1];
   v5 = OverlayCalendarLocaleID();
   [v4 setAlternateCalendarLocaleID:v5];
 
-  v6 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v7 = [CLKDateTextProvider textProviderWithDate:v6 units:16];
+  entryDate2 = [(NCALDateTimelineEntryModel *)self entryDate];
+  v7 = [CLKDateTextProvider textProviderWithDate:entryDate2 units:16];
 
   v8 = OverlayCalendarLocaleID();
   [v7 setAlternateCalendarLocaleID:v8];
@@ -211,9 +211,9 @@ LABEL_42:
 
 - (id)_newModularLargeTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v3 = [CLKDateTextProvider textProviderWithDate:v2 units:512];
-  v4 = [CLKDateTextProvider textProviderWithDate:v2 units:24];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v3 = [CLKDateTextProvider textProviderWithDate:entryDate units:512];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:24];
   [v4 setShortUnits:1];
   [v4 setAllowsNarrowUnits:1];
   v5 = [CLKComplicationTemplateModularLargeTallBody templateWithHeaderTextProvider:v3 bodyTextProvider:v4];
@@ -225,14 +225,14 @@ LABEL_42:
 
 - (id)_newModularLargeLunarTemplate
 {
-  v3 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v4 = [CLKDateTextProvider textProviderWithDate:v3 units:12];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:12];
 
   v5 = OverlayCalendarLocaleID();
   [v4 setAlternateCalendarLocaleID:v5];
 
-  v6 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v7 = [CLKDateTextProvider textProviderWithDate:v6 units:16];
+  entryDate2 = [(NCALDateTimelineEntryModel *)self entryDate];
+  v7 = [CLKDateTextProvider textProviderWithDate:entryDate2 units:16];
 
   [v7 setShortUnits:1];
   v8 = OverlayCalendarLocaleID();
@@ -247,8 +247,8 @@ LABEL_42:
 
 - (id)_newSmallFlatUtilitarianTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self _simpleTextShortDateProvider];
-  v3 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:v2];
+  _simpleTextShortDateProvider = [(NCALDateTimelineEntryModel *)self _simpleTextShortDateProvider];
+  v3 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:_simpleTextShortDateProvider];
 
   return v3;
 }
@@ -275,8 +275,8 @@ LABEL_42:
     v4 = 528;
   }
 
-  v5 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v6 = [CLKDateTextProvider textProviderWithDate:v5 units:v4];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v6 = [CLKDateTextProvider textProviderWithDate:entryDate units:v4];
 
   [v6 setUppercase:1];
   [v6 setShortUnits:1];
@@ -291,8 +291,8 @@ LABEL_42:
 
 - (id)_newSimpleTextTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self _simpleTextShortDateProvider];
-  v3 = [CLKComplicationTemplateSimpleText templateWithTextProvider:v2];
+  _simpleTextShortDateProvider = [(NCALDateTimelineEntryModel *)self _simpleTextShortDateProvider];
+  v3 = [CLKComplicationTemplateSimpleText templateWithTextProvider:_simpleTextShortDateProvider];
 
   return v3;
 }
@@ -319,8 +319,8 @@ LABEL_42:
     v4 = 536;
   }
 
-  v5 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v6 = [CLKDateTextProvider textProviderWithDate:v5 units:v4];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v6 = [CLKDateTextProvider textProviderWithDate:entryDate units:v4];
 
   if ([(NCALDateTimelineEntryModel *)self lunar])
   {
@@ -333,11 +333,11 @@ LABEL_42:
   return v8;
 }
 
-- (id)_newCircularTemplateMedium:(BOOL)a3
+- (id)_newCircularTemplateMedium:(BOOL)medium
 {
-  v3 = a3;
-  v5 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v6 = [CLKDateTextProvider textProviderWithDate:v5 units:16];
+  mediumCopy = medium;
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v6 = [CLKDateTextProvider textProviderWithDate:entryDate units:16];
 
   if ([(NCALDateTimelineEntryModel *)self lunar])
   {
@@ -346,7 +346,7 @@ LABEL_42:
   }
 
   v8 = CLKComplicationTemplateCircularMediumSimpleText_ptr;
-  if (!v3)
+  if (!mediumCopy)
   {
     v8 = CLKComplicationTemplateCircularSmallSimpleText_ptr;
   }
@@ -358,12 +358,12 @@ LABEL_42:
 
 - (id)_newExtraLargeTemplate
 {
-  v3 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v4 = [CLKDateTextProvider textProviderWithDate:v3 units:512];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:512];
 
   [v4 setShortUnits:1];
-  v5 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v6 = [CLKDateTextProvider textProviderWithDate:v5 units:16];
+  entryDate2 = [(NCALDateTimelineEntryModel *)self entryDate];
+  v6 = [CLKDateTextProvider textProviderWithDate:entryDate2 units:16];
 
   v7 = [CLKComplicationTemplateExtraLargeDate templateWithWeekdayTextProvider:v4 dayTextProvider:v6];
   [v7 setHighlightMode:2];
@@ -375,15 +375,15 @@ LABEL_42:
 
 - (id)_newExtraLargeLunarTemplate
 {
-  v3 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v4 = [CLKDateTextProvider textProviderWithDate:v3 units:8];
+  entryDate = [(NCALDateTimelineEntryModel *)self entryDate];
+  v4 = [CLKDateTextProvider textProviderWithDate:entryDate units:8];
 
   [v4 setShortUnits:1];
   v5 = OverlayCalendarLocaleID();
   [v4 setAlternateCalendarLocaleID:v5];
 
-  v6 = [(NCALDateTimelineEntryModel *)self entryDate];
-  v7 = [CLKDateTextProvider textProviderWithDate:v6 units:16];
+  entryDate2 = [(NCALDateTimelineEntryModel *)self entryDate];
+  v7 = [CLKDateTextProvider textProviderWithDate:entryDate2 units:16];
 
   v8 = OverlayCalendarLocaleID();
   [v7 setAlternateCalendarLocaleID:v8];
@@ -398,17 +398,17 @@ LABEL_42:
 
 - (id)_newBezelTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self _newSignatureCircularTemplate];
-  v3 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:v2];
+  _newSignatureCircularTemplate = [(NCALDateTimelineEntryModel *)self _newSignatureCircularTemplate];
+  v3 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:_newSignatureCircularTemplate];
 
   return v3;
 }
 
 - (id)_newSignatureCircularTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self lunar];
+  lunar = [(NCALDateTimelineEntryModel *)self lunar];
   v3 = &off_20350;
-  if (!v2)
+  if (!lunar)
   {
     v3 = off_20340;
   }
@@ -426,9 +426,9 @@ LABEL_42:
 
 - (id)_newSignatureExtraLargeCircularTemplate
 {
-  v2 = [(NCALDateTimelineEntryModel *)self lunar];
+  lunar = [(NCALDateTimelineEntryModel *)self lunar];
   v3 = off_20348;
-  if (!v2)
+  if (!lunar)
   {
     v3 = off_20338;
   }
@@ -444,9 +444,9 @@ LABEL_42:
   return v6;
 }
 
-- (id)_graphicRectangularDateHeaderTextWithDate:(id)a3 useLunarDate:(BOOL)a4
+- (id)_graphicRectangularDateHeaderTextWithDate:(id)date useLunarDate:(BOOL)lunarDate
 {
-  if (a4)
+  if (lunarDate)
   {
     v5 = 12;
   }
@@ -456,9 +456,9 @@ LABEL_42:
     v5 = 512;
   }
 
-  v6 = [CLKDateTextProvider textProviderWithDate:a3 units:v5];
+  v6 = [CLKDateTextProvider textProviderWithDate:date units:v5];
   v7 = v6;
-  if (a4)
+  if (lunarDate)
   {
     v8 = OverlayCalendarLocaleID();
     [v7 setAlternateCalendarLocaleID:v8];
@@ -475,10 +475,10 @@ LABEL_42:
   return v7;
 }
 
-- (id)_graphicRectangularDateBodyTextWithDate:(id)a3 displayLunarDate:(BOOL)a4
+- (id)_graphicRectangularDateBodyTextWithDate:(id)date displayLunarDate:(BOOL)lunarDate
 {
-  v4 = a4;
-  if (a4)
+  lunarDateCopy = lunarDate;
+  if (lunarDate)
   {
     v5 = 16;
   }
@@ -488,10 +488,10 @@ LABEL_42:
     v5 = 24;
   }
 
-  v6 = [CLKDateTextProvider textProviderWithDate:a3 units:v5];
+  v6 = [CLKDateTextProvider textProviderWithDate:date units:v5];
   [v6 setShortUnits:1];
-  [v6 setAllowsNarrowUnits:!v4];
-  if (v4)
+  [v6 setAllowsNarrowUnits:!lunarDateCopy];
+  if (lunarDateCopy)
   {
     v7 = OverlayCalendarLocaleID();
     [v6 setAlternateCalendarLocaleID:v7];

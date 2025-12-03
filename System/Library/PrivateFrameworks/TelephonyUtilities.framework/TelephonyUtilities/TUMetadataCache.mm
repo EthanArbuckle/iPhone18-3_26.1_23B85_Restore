@@ -3,13 +3,13 @@
 - (BOOL)isEmpty;
 - (NSString)description;
 - (TUMetadataCache)init;
-- (TUMetadataCache)initWithDataProviders:(id)a3;
-- (TUMetadataCache)initWithQueue:(id)a3 dataProviders:(id)a4;
-- (id)metadataForDestinationID:(id)a3;
-- (void)_updateCacheWithDestinationIDs:(id)a3 onlyEmptyProviders:(BOOL)a4 completion:(id)a5;
-- (void)dataProvider:(id)a3 requestedRefreshWithDestinationIDs:(id)a4;
-- (void)updateCacheForEmptyDataProvidersWithDestinationIDs:(id)a3 completion:(id)a4;
-- (void)updateCacheWithDestinationIDs:(id)a3 completion:(id)a4;
+- (TUMetadataCache)initWithDataProviders:(id)providers;
+- (TUMetadataCache)initWithQueue:(id)queue dataProviders:(id)providers;
+- (id)metadataForDestinationID:(id)d;
+- (void)_updateCacheWithDestinationIDs:(id)ds onlyEmptyProviders:(BOOL)providers completion:(id)completion;
+- (void)dataProvider:(id)provider requestedRefreshWithDestinationIDs:(id)ds;
+- (void)updateCacheForEmptyDataProvidersWithDestinationIDs:(id)ds completion:(id)completion;
+- (void)updateCacheWithDestinationIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation TUMetadataCache
@@ -19,9 +19,9 @@
   v2 = objc_opt_class();
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:v2];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
   v6 = NSStringFromClass(v2);
-  v7 = [v3 stringWithFormat:@"%@.%@", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@.%@", bundleIdentifier, v6];
 
   return v7;
 }
@@ -33,36 +33,36 @@
   return 0;
 }
 
-- (TUMetadataCache)initWithDataProviders:(id)a3
+- (TUMetadataCache)initWithDataProviders:(id)providers
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [objc_opt_class() classIdentifier];
+  providersCopy = providers;
+  classIdentifier = [objc_opt_class() classIdentifier];
   v7 = NSStringFromSelector(sel_queue);
-  v8 = [v4 stringWithFormat:@"%@.%@", v6, v7];
+  v8 = [v4 stringWithFormat:@"%@.%@", classIdentifier, v7];
 
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_BACKGROUND, 0);
 
   v11 = dispatch_queue_create([v8 UTF8String], v10);
-  v12 = [(TUMetadataCache *)self initWithQueue:v11 dataProviders:v5];
+  v12 = [(TUMetadataCache *)self initWithQueue:v11 dataProviders:providersCopy];
 
   return v12;
 }
 
-- (TUMetadataCache)initWithQueue:(id)a3 dataProviders:(id)a4
+- (TUMetadataCache)initWithQueue:(id)queue dataProviders:(id)providers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  providersCopy = providers;
   v24.receiver = self;
   v24.super_class = TUMetadataCache;
   v9 = [(TUMetadataCache *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [providersCopy copy];
     providers = v10->_providers;
     v10->_providers = v11;
 
@@ -101,17 +101,17 @@
   return v10;
 }
 
-- (id)metadataForDestinationID:(id)a3
+- (id)metadataForDestinationID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(TUMetadataItem);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(TUMetadataCache *)self providers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  providers = [(TUMetadataCache *)self providers];
+  v7 = [providers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -122,24 +122,24 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(providers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 metadataForDestinationID:v4];
+        v12 = [v11 metadataForDestinationID:dCopy];
         if (v12)
         {
           [(TUMetadataItem *)v5 setMetadata:v12 forProvider:objc_opt_class()];
         }
 
-        v13 = [v11 metadataDictForDestinationID:v4];
+        v13 = [v11 metadataDictForDestinationID:dCopy];
         if (v13)
         {
           [(TUMetadataItem *)v5 setMetadataDict:v13 forProvider:objc_opt_class()];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [providers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -150,16 +150,16 @@
   return v5;
 }
 
-- (void)updateCacheWithDestinationIDs:(id)a3 completion:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__TUMetadataCache_updateCacheWithDestinationIDs_completion___block_invoke;
   v8[3] = &unk_1E74269B0;
-  v9 = v6;
-  v7 = v6;
-  [(TUMetadataCache *)self _updateCacheWithDestinationIDs:a3 onlyEmptyProviders:0 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(TUMetadataCache *)self _updateCacheWithDestinationIDs:ds onlyEmptyProviders:0 completion:v8];
 }
 
 uint64_t __60__TUMetadataCache_updateCacheWithDestinationIDs_completion___block_invoke(uint64_t a1)
@@ -173,16 +173,16 @@ uint64_t __60__TUMetadataCache_updateCacheWithDestinationIDs_completion___block_
   return result;
 }
 
-- (void)updateCacheForEmptyDataProvidersWithDestinationIDs:(id)a3 completion:(id)a4
+- (void)updateCacheForEmptyDataProvidersWithDestinationIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationIDs_completion___block_invoke;
   v8[3] = &unk_1E74269B0;
-  v9 = v6;
-  v7 = v6;
-  [(TUMetadataCache *)self _updateCacheWithDestinationIDs:a3 onlyEmptyProviders:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(TUMetadataCache *)self _updateCacheWithDestinationIDs:ds onlyEmptyProviders:1 completion:v8];
 }
 
 uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationIDs_completion___block_invoke(uint64_t a1)
@@ -196,18 +196,18 @@ uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationID
   return result;
 }
 
-- (void)_updateCacheWithDestinationIDs:(id)a3 onlyEmptyProviders:(BOOL)a4 completion:(id)a5
+- (void)_updateCacheWithDestinationIDs:(id)ds onlyEmptyProviders:(BOOL)providers completion:(id)completion
 {
-  v6 = a4;
+  providersCopy = providers;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v18 = v7;
-  if ([v7 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  v18 = dsCopy;
+  if ([dsCopy count])
   {
-    v17 = v8;
+    v17 = completionCopy;
     group = dispatch_group_create();
-    v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
+    v9 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
     v31[0] = 0;
     v31[1] = v31;
     v31[2] = 0x2020000000;
@@ -216,8 +216,8 @@ uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationID
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = [(TUMetadataCache *)self providers];
-    v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    providers = [(TUMetadataCache *)self providers];
+    v11 = [providers countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v11)
     {
       v12 = *v28;
@@ -228,11 +228,11 @@ uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationID
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(providers);
           }
 
           v14 = *(*(&v27 + 1) + 8 * v13);
-          if (!v6 || [*(*(&v27 + 1) + 8 * v13) isEmpty])
+          if (!providersCopy || [*(*(&v27 + 1) + 8 * v13) isEmpty])
           {
             v15 = [(TUMetadataCache *)self queue:v17];
             block[0] = MEMORY[0x1E69E9820];
@@ -249,7 +249,7 @@ uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationID
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v33 count:16];
+        v11 = [providers countByEnumeratingWithState:&v27 objects:v33 count:16];
       }
 
       while (v11);
@@ -265,12 +265,12 @@ uint64_t __81__TUMetadataCache_updateCacheForEmptyDataProvidersWithDestinationID
     dispatch_group_notify(group, MEMORY[0x1E69E96A0], v21);
 
     _Block_object_dispose(v31, 8);
-    v8 = v17;
+    completionCopy = v17;
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -346,8 +346,8 @@ void __80__TUMetadataCache__updateCacheWithDestinationIDs_onlyEmptyProviders_com
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(TUMetadataCache *)self providers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  providers = [(TUMetadataCache *)self providers];
+  v3 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -358,7 +358,7 @@ void __80__TUMetadataCache__updateCacheWithDestinationIDs_onlyEmptyProviders_com
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(providers);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) isEmpty])
@@ -368,7 +368,7 @@ void __80__TUMetadataCache__updateCacheWithDestinationIDs_onlyEmptyProviders_com
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -405,8 +405,8 @@ LABEL_11:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(TUMetadataCache *)self providers];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    providers = [(TUMetadataCache *)self providers];
+    v7 = [providers countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -417,7 +417,7 @@ LABEL_11:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(providers);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -427,7 +427,7 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [providers countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
@@ -439,21 +439,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)dataProvider:(id)a3 requestedRefreshWithDestinationIDs:(id)a4
+- (void)dataProvider:(id)provider requestedRefreshWithDestinationIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUMetadataCache *)self queue];
+  providerCopy = provider;
+  dsCopy = ds;
+  queue = [(TUMetadataCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__TUMetadataCache_dataProvider_requestedRefreshWithDestinationIDs___block_invoke;
   block[3] = &unk_1E7424FD8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = providerCopy;
+  v13 = dsCopy;
+  selfCopy = self;
+  v9 = dsCopy;
+  v10 = providerCopy;
+  dispatch_async(queue, block);
 }
 
 void __67__TUMetadataCache_dataProvider_requestedRefreshWithDestinationIDs___block_invoke(uint64_t a1)

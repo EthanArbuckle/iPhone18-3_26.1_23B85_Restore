@@ -1,110 +1,110 @@
 @interface ICQUpgradeFlowManager
-+ (BOOL)shouldShowForOffer:(id)a3;
++ (BOOL)shouldShowForOffer:(id)offer;
 + (NSMutableArray)activeFlowManagers;
-+ (void)addActiveFlowManager:(id)a3;
-+ (void)flowManagerWithJourneyId:(id)a3 params:(id)a4 completion:(id)a5;
-+ (void)needsToRunWithCompletion:(id)a3;
-+ (void)removeActiveFlowManager:(id)a3;
++ (void)addActiveFlowManager:(id)manager;
++ (void)flowManagerWithJourneyId:(id)id params:(id)params completion:(id)completion;
++ (void)needsToRunWithCompletion:(id)completion;
++ (void)removeActiveFlowManager:(id)manager;
 - (BOOL)_shouldPresentLiftUIFlow;
 - (BOOL)_shouldPresentRemoteFlow;
 - (ICQUpgradeFlowManager)init;
-- (ICQUpgradeFlowManager)initWithJourneyId:(id)a3 params:(id)a4;
-- (ICQUpgradeFlowManager)initWithOffer:(id)a3;
+- (ICQUpgradeFlowManager)initWithJourneyId:(id)id params:(id)params;
+- (ICQUpgradeFlowManager)initWithOffer:(id)offer;
 - (ICQUpgradeFlowManagerDelegate)delegate;
 - (NSURL)serverUIURL;
 - (icq_signpost_s)loadLiftUISignpost;
 - (icq_signpost_s)loadRemoteUISignpost;
 - (id)_allowedInProcessClients;
-- (id)_navControllerWithRootVC:(id)a3;
-- (id)addParams:(id)a3 toJourneyURL:(id)a4;
-- (id)initBaseclassWithOffer:(id)a3;
+- (id)_navControllerWithRootVC:(id)c;
+- (id)addParams:(id)params toJourneyURL:(id)l;
+- (id)initBaseclassWithOffer:(id)offer;
 - (id)presentationContext;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_addAlertActionForAlertSpec:(id)a3 buttonIndex:(int64_t)a4;
-- (void)_beginRemoteFlowWithURL:(id)a3;
-- (void)_beginRemoteFlowWithViewController:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_addAlertActionForAlertSpec:(id)spec buttonIndex:(int64_t)index;
+- (void)_beginRemoteFlowWithURL:(id)l;
+- (void)_beginRemoteFlowWithViewController:(id)controller;
 - (void)_cancelFlow;
 - (void)_clearBusyOfferViewController;
-- (void)_configurePresentingViewController:(id)a3 andPresentedViewController:(id)a4;
-- (void)_configurePresentingViewController:(id)a3 preloadedRemoteUIData:(id)a4;
-- (void)_handleRemoteUIActionWithURLString:(id)a3 httpMethod:(id)a4;
+- (void)_configurePresentingViewController:(id)controller andPresentedViewController:(id)viewController;
+- (void)_configurePresentingViewController:(id)controller preloadedRemoteUIData:(id)data;
+- (void)_handleRemoteUIActionWithURLString:(id)string httpMethod:(id)method;
 - (void)_initiateFamilySetupFlow;
-- (void)_openURL:(id)a3 completion:(id)a4;
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4;
-- (void)_presentLiftUIInParentViewController:(id)a3;
-- (void)_presentLiftUIUsingViewController:(id)a3;
-- (void)_presentPageWithSpecification:(id)a3;
-- (void)_presentRemoteUIUsingViewController:(id)a3 withData:(id)a4;
-- (void)_presentRemoteViewWithData:(id)a3 andRequest:(id)a4;
+- (void)_openURL:(id)l completion:(id)completion;
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion;
+- (void)_presentLiftUIInParentViewController:(id)controller;
+- (void)_presentLiftUIUsingViewController:(id)controller;
+- (void)_presentPageWithSpecification:(id)specification;
+- (void)_presentRemoteUIUsingViewController:(id)controller withData:(id)data;
+- (void)_presentRemoteViewWithData:(id)data andRequest:(id)request;
 - (void)_presentUpgradeComplete;
 - (void)_sendDelegateCancel;
 - (void)_sendDelegateComplete;
-- (void)_sendDelegateDidPresentViewController:(id)a3;
-- (void)_sendDelegateLoadError:(id)a3;
-- (void)_setBusyOfferViewController:(id)a3;
+- (void)_sendDelegateDidPresentViewController:(id)controller;
+- (void)_sendDelegateLoadError:(id)error;
+- (void)_setBusyOfferViewController:(id)controller;
 - (void)_simulateDoneButton;
-- (void)_tappedAlertLink:(id)a3;
-- (void)beginFlowWithPresentingViewController:(id)a3;
+- (void)_tappedAlertLink:(id)link;
+- (void)beginFlowWithPresentingViewController:(id)controller;
 - (void)beginJourney;
-- (void)beginOSLOFlowWithPresentingViewController:(id)a3;
-- (void)beginPostPurchaseFlowWithLink:(id)a3 offer:(id)a4;
-- (void)beginRemoteUpgradeFlowWithICQLink:(id)a3 presenter:(id)a4;
-- (void)dismissNavigationControllerAnimated:(BOOL)a3 success:(BOOL)a4 completion:(id)a5;
-- (void)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissUpgradeFlowWithSuccess:(BOOL)a3;
-- (void)liftUIPresenter:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)liftUIPresenter:(id)a3 performAction:(int64_t)a4 parameters:(id)a5 completion:(id)a6;
-- (void)liftUIPresenterDidCancel:(id)a3;
-- (void)liftUIPresenterDidComplete:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)presentFlowHostedInNavigationController:(id)a3;
+- (void)beginOSLOFlowWithPresentingViewController:(id)controller;
+- (void)beginPostPurchaseFlowWithLink:(id)link offer:(id)offer;
+- (void)beginRemoteUpgradeFlowWithICQLink:(id)link presenter:(id)presenter;
+- (void)dismissNavigationControllerAnimated:(BOOL)animated success:(BOOL)success completion:(id)completion;
+- (void)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissUpgradeFlowWithSuccess:(BOOL)success;
+- (void)liftUIPresenter:(id)presenter didLoadWithSuccess:(BOOL)success error:(id)error;
+- (void)liftUIPresenter:(id)presenter performAction:(int64_t)action parameters:(id)parameters completion:(id)completion;
+- (void)liftUIPresenterDidCancel:(id)cancel;
+- (void)liftUIPresenterDidComplete:(id)complete;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)presentFlowHostedInNavigationController:(id)controller;
 - (void)presentHostingNavigationController;
-- (void)presentRemoteViewWithData:(id)a3 andURL:(id)a4;
-- (void)purchaseFlowCompletedWith:(BOOL)a3 error:(id)a4;
-- (void)remoteUIController:(id)a3 didDismissModalNavigationWithObjectModels:(id)a4;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4;
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
-- (void)remoteUIControllerDidDismiss:(id)a3;
-- (void)remoteUIFlowManager:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5;
-- (void)setPresentingSceneBundleIdentifier:(id)a3;
-- (void)setPresentingSceneIdentifier:(id)a3;
+- (void)presentRemoteViewWithData:(id)data andURL:(id)l;
+- (void)purchaseFlowCompletedWith:(BOOL)with error:(id)error;
+- (void)remoteUIController:(id)controller didDismissModalNavigationWithObjectModels:(id)models;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error;
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
+- (void)remoteUIFlowManager:(id)manager didLoadWithSuccess:(BOOL)success error:(id)error;
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters;
+- (void)setPresentingSceneBundleIdentifier:(id)identifier;
+- (void)setPresentingSceneIdentifier:(id)identifier;
 - (void)showNetworkFailurePage;
 - (void)showUpgradeFailurePage;
-- (void)startFlowWithParentViewController:(id)a3;
+- (void)startFlowWithParentViewController:(id)controller;
 @end
 
 @implementation ICQUpgradeFlowManager
 
 - (ICQUpgradeFlowManager)init
 {
-  v3 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v4 = [v3 currentOffer];
-  v5 = [(ICQUpgradeFlowManager *)self initWithOffer:v4];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  currentOffer = [mEMORY[0x277D7F390] currentOffer];
+  v5 = [(ICQUpgradeFlowManager *)self initWithOffer:currentOffer];
 
   return v5;
 }
 
-- (ICQUpgradeFlowManager)initWithOffer:(id)a3
+- (ICQUpgradeFlowManager)initWithOffer:(id)offer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  offerCopy = offer;
   v14.receiver = self;
   v14.super_class = ICQUpgradeFlowManager;
   v5 = [(ICQUpgradeFlowManager *)&v14 init];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 upgradeFlowSpecification];
-    v8 = [v7 offerType];
+    upgradeFlowSpecification = [offerCopy upgradeFlowSpecification];
+    offerType = [upgradeFlowSpecification offerType];
 
-    v9 = [ICQUIUpgradeFlowFactory flowManagerClassForOfferType:v8];
+    v9 = [ICQUIUpgradeFlowFactory flowManagerClassForOfferType:offerType];
     if (v9)
     {
-      v10 = [[v9 alloc] initSubclassWithOffer:v4];
+      v10 = [[v9 alloc] initSubclassWithOffer:offerCopy];
     }
 
     else
@@ -130,17 +130,17 @@
   return v10;
 }
 
-- (id)initBaseclassWithOffer:(id)a3
+- (id)initBaseclassWithOffer:(id)offer
 {
   v27[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  offerCopy = offer;
   v21.receiver = self;
   v21.super_class = ICQUpgradeFlowManager;
   v6 = [(ICQUpgradeFlowManager *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_offer, a3);
+    objc_storeStrong(&v6->_offer, offer);
     v8 = [[ICQUpgradeStorageHook alloc] initWithOffer:v7->_offer flowDelegate:v7];
     upgradeStorageHook = v7->_upgradeStorageHook;
     v7->_upgradeStorageHook = v8;
@@ -184,42 +184,42 @@
   return v7;
 }
 
-- (void)setPresentingSceneIdentifier:(id)a3
+- (void)setPresentingSceneIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_presentingSceneIdentifier, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_presentingSceneIdentifier, identifier);
+  identifierCopy = identifier;
   [(ICQUpgradeStorageHook *)self->_upgradeStorageHook setPresentingSceneIdentifier:self->_presentingSceneIdentifier];
 }
 
-- (void)setPresentingSceneBundleIdentifier:(id)a3
+- (void)setPresentingSceneBundleIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_presentingSceneBundleIdentifier, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_presentingSceneBundleIdentifier, identifier);
+  identifierCopy = identifier;
   [(ICQUpgradeStorageHook *)self->_upgradeStorageHook setPresentingSceneBundleIdentifier:self->_presentingSceneBundleIdentifier];
 }
 
 - (NSURL)serverUIURL
 {
-  v3 = [(ICQUpgradeFlowManager *)self icqLink];
-  v4 = [v3 actionURL];
+  icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+  actionURL = [icqLink actionURL];
 
-  if (v4)
+  if (actionURL)
   {
-    v5 = [(ICQUpgradeFlowManager *)self icqLink];
-    v6 = [v5 actionURL];
+    icqLink2 = [(ICQUpgradeFlowManager *)self icqLink];
+    actionURL2 = [icqLink2 actionURL];
 LABEL_5:
-    v9 = v6;
+    v9 = actionURL2;
 
     goto LABEL_6;
   }
 
-  v7 = [(ICQUpgradeFlowManager *)self offer];
-  v8 = [v7 serverUIURL];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  serverUIURL = [offer serverUIURL];
 
-  if (v8)
+  if (serverUIURL)
   {
-    v5 = [(ICQUpgradeFlowManager *)self offer];
-    v6 = [v5 serverUIURL];
+    icqLink2 = [(ICQUpgradeFlowManager *)self offer];
+    actionURL2 = [icqLink2 serverUIURL];
     goto LABEL_5;
   }
 
@@ -229,29 +229,29 @@ LABEL_6:
   return v9;
 }
 
-+ (BOOL)shouldShowForOffer:(id)a3
++ (BOOL)shouldShowForOffer:(id)offer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 upgradeFlowSpecification];
-  if (v4)
+  offerCopy = offer;
+  upgradeFlowSpecification = [offerCopy upgradeFlowSpecification];
+  if (upgradeFlowSpecification)
   {
-    v5 = [v3 level];
+    level = [offerCopy level];
 
-    if (v5)
+    if (level)
     {
-      v4 = [v3 upgradeFlowSpecification];
-      v6 = [v4 offerType];
+      upgradeFlowSpecification = [offerCopy upgradeFlowSpecification];
+      offerType = [upgradeFlowSpecification offerType];
 
-      v7 = [ICQUIUpgradeFlowFactory flowManagerClassForOfferType:v6];
-      LODWORD(v4) = [(objc_class *)v7 shouldSubclassShowForOffer:v3];
+      v7 = [ICQUIUpgradeFlowFactory flowManagerClassForOfferType:offerType];
+      LODWORD(upgradeFlowSpecification) = [(objc_class *)v7 shouldSubclassShowForOffer:offerCopy];
       v8 = _ICQGetLogSystem();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = NSStringFromClass(v7);
         v10 = v9;
         v11 = @"NO";
-        if (v4)
+        if (upgradeFlowSpecification)
         {
           v11 = @"YES";
         }
@@ -266,52 +266,52 @@ LABEL_6:
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(upgradeFlowSpecification) = 0;
     }
   }
 
-  return v4;
+  return upgradeFlowSpecification;
 }
 
-- (void)_tappedAlertLink:(id)a3
+- (void)_tappedAlertLink:(id)link
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 text];
-    [v4 action];
+    text = [linkCopy text];
+    [linkCopy action];
     v7 = _ICQStringForAction();
-    v8 = [v4 parameters];
+    parameters = [linkCopy parameters];
     *buf = 138543874;
-    v25 = v6;
+    v25 = text;
     v26 = 2114;
     v27 = v7;
     v28 = 2112;
-    v29 = v8;
+    v29 = parameters;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "tapped %{public}@ button; action:%{public}@ parameters:%@", buf, 0x20u);
   }
 
-  v9 = [v4 parameters];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D7F270]];
+  parameters2 = [linkCopy parameters];
+  v10 = [parameters2 objectForKeyedSubscript:*MEMORY[0x277D7F270]];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277D7F390] sharedOfferManager];
-    v12 = [(ICQUpgradeFlowManager *)self offer];
-    v13 = [v12 offerId];
-    [v11 updateOfferId:v13 buttonId:v10 info:0 completion:0];
+    mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    offerId = [offer offerId];
+    [mEMORY[0x277D7F390] updateOfferId:offerId buttonId:v10 info:0 completion:0];
   }
 
-  v14 = [v4 action];
-  if (v14 <= 4)
+  action = [linkCopy action];
+  if (action <= 4)
   {
-    if (v14 <= 1)
+    if (action <= 1)
     {
-      if (v14)
+      if (action)
       {
-        if (v14 != 1)
+        if (action != 1)
         {
           goto LABEL_25;
         }
@@ -320,9 +320,9 @@ LABEL_6:
       }
     }
 
-    else if ((v14 - 2) >= 2)
+    else if ((action - 2) >= 2)
     {
-      if (v14 != 4)
+      if (action != 4)
       {
         goto LABEL_25;
       }
@@ -333,8 +333,8 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  v15 = v14 - 100;
-  if ((v14 - 100) > 0x12)
+  v15 = action - 100;
+  if ((action - 100) > 0x12)
   {
     goto LABEL_15;
   }
@@ -342,13 +342,13 @@ LABEL_6:
   if (((1 << v15) & 0x711F8) != 0)
   {
 LABEL_8:
-    v16 = [v4 parameters];
+    parameters3 = [linkCopy parameters];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __42__ICQUpgradeFlowManager__tappedAlertLink___block_invoke;
     v23[3] = &unk_27A65A7F8;
     v23[4] = self;
-    [(ICQUpgradeFlowManager *)self _performPageButtonActionWithParameters:v16 completion:v23];
+    [(ICQUpgradeFlowManager *)self _performPageButtonActionWithParameters:parameters3 completion:v23];
 
     goto LABEL_25;
   }
@@ -359,20 +359,20 @@ LABEL_21:
     v19 = _ICQGetLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 action];
+      [linkCopy action];
       v20 = _ICQStringForAction();
-      v21 = [v4 parameters];
+      parameters4 = [linkCopy parameters];
       *buf = 138412546;
       v25 = v20;
       v26 = 2112;
-      v27 = v21;
+      v27 = parameters4;
       _os_log_impl(&dword_275623000, v19, OS_LOG_TYPE_DEFAULT, "Alert action:%@ parameters:%@ unexpected", buf, 0x16u);
     }
 
     goto LABEL_24;
   }
 
-  if (v14 == 101)
+  if (action == 101)
   {
 LABEL_24:
     [(ICQUpgradeFlowManager *)self _sendDelegateCancel];
@@ -380,15 +380,15 @@ LABEL_24:
   }
 
 LABEL_15:
-  if (v14 == 5)
+  if (action == 5)
   {
     [(ICQUpgradeFlowManager *)self _sendDelegateComplete];
   }
 
-  else if (v14 == 6)
+  else if (action == 6)
   {
-    v17 = [v4 parameters];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D7F280]];
+    parameters5 = [linkCopy parameters];
+    v18 = [parameters5 objectForKeyedSubscript:*MEMORY[0x277D7F280]];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -449,27 +449,27 @@ LABEL_6:
   return [*(a1 + 40) _sendDelegateComplete];
 }
 
-- (void)_addAlertActionForAlertSpec:(id)a3 buttonIndex:(int64_t)a4
+- (void)_addAlertActionForAlertSpec:(id)spec buttonIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [v6 linkForButtonIndex:a4];
+  specCopy = spec;
+  v7 = [specCopy linkForButtonIndex:index];
   v8 = v7;
   if (v7)
   {
     v9 = MEMORY[0x277D750F8];
-    v10 = [v7 text];
+    text = [v7 text];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __65__ICQUpgradeFlowManager__addAlertActionForAlertSpec_buttonIndex___block_invoke;
     v15 = &unk_27A65A848;
-    v16 = self;
+    selfCopy = self;
     v17 = v8;
-    v11 = [v9 actionWithTitle:v10 style:0 handler:&v12];
+    v11 = [v9 actionWithTitle:text style:0 handler:&v12];
 
     if (v11)
     {
-      [(ICQAlertController *)self->_upgradeAlertController addAction:v11, v12, v13, v14, v15, v16];
-      if ([v6 defaultButtonIndex] == a4)
+      [(ICQAlertController *)self->_upgradeAlertController addAction:v11, v12, v13, v14, v15, selfCopy];
+      if ([specCopy defaultButtonIndex] == index)
       {
         [(ICQAlertController *)self->_upgradeAlertController setPreferredAction:v11];
       }
@@ -482,23 +482,23 @@ LABEL_6:
   }
 }
 
-- (void)beginRemoteUpgradeFlowWithICQLink:(id)a3 presenter:(id)a4
+- (void)beginRemoteUpgradeFlowWithICQLink:(id)link presenter:(id)presenter
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(ICQUpgradeFlowManager *)self setIcqLink:v6];
-  v8 = [(ICQUpgradeFlowManager *)self offer];
-  v9 = [v6 actionURL];
-  [v8 _updateRequestedServerUIURLWithURL:v9];
+  linkCopy = link;
+  presenterCopy = presenter;
+  [(ICQUpgradeFlowManager *)self setIcqLink:linkCopy];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  actionURL = [linkCopy actionURL];
+  [offer _updateRequestedServerUIURLWithURL:actionURL];
 
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ICQUpgradeFlowManager *)self offer];
-    [v11 action];
+    offer2 = [(ICQUpgradeFlowManager *)self offer];
+    [offer2 action];
     v12 = _ICQStringForAction();
-    [v6 action];
+    [linkCopy action];
     v13 = _ICQStringForAction();
     v15 = 136315650;
     v16 = "[ICQUpgradeFlowManager beginRemoteUpgradeFlowWithICQLink:presenter:]";
@@ -509,126 +509,126 @@ LABEL_6:
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "%s: Overriding offer action %@ with link action %@", &v15, 0x20u);
   }
 
-  v14 = [(ICQUpgradeFlowManager *)self offer];
-  [v14 updateOfferWithAction:{objc_msgSend(v6, "action")}];
+  offer3 = [(ICQUpgradeFlowManager *)self offer];
+  [offer3 updateOfferWithAction:{objc_msgSend(linkCopy, "action")}];
 
-  [(ICQUpgradeFlowManager *)self _beginRemoteFlowWithViewController:v7];
+  [(ICQUpgradeFlowManager *)self _beginRemoteFlowWithViewController:presenterCopy];
 }
 
-- (void)_beginRemoteFlowWithURL:(id)a3
+- (void)_beginRemoteFlowWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ICQUpgradeFlowManager *)self offer];
-  [v5 _updateRequestedServerUIURLWithURL:v4];
+  lCopy = l;
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  [offer _updateRequestedServerUIURLWithURL:lCopy];
 
   [(ICQUpgradeFlowManager *)self _beginRemoteFlowWithViewController:0];
 }
 
-- (void)_beginRemoteFlowWithViewController:(id)a3
+- (void)_beginRemoteFlowWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15 = +[ICQUIOutOfProcessUpgradeFlowManager sharedManager];
-  v5 = [(ICQUpgradeFlowManager *)self delegate];
-  [v15 setDelegate:v5];
+  delegate = [(ICQUpgradeFlowManager *)self delegate];
+  [v15 setDelegate:delegate];
 
-  v6 = [(ICQUpgradeFlowManager *)self flowOptions];
-  [v15 setFlowOptions:v6];
+  flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+  [v15 setFlowOptions:flowOptions];
 
-  v7 = [(ICQUpgradeFlowManager *)self offer];
-  [v15 setOffer:v7];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  [v15 setOffer:offer];
 
-  v8 = [(ICQUpgradeFlowManager *)self icqLink];
-  [v15 setLink:v8];
+  icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+  [v15 setLink:icqLink];
 
   [v15 setFlowManager:self];
-  v9 = [v4 view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
-  v12 = [v11 _sceneIdentifier];
-  [v15 setPresentingSceneIdentifier:v12];
+  view = [controllerCopy view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
+  [v15 setPresentingSceneIdentifier:_sceneIdentifier];
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 bundleIdentifier];
-  [v15 setPresentingSceneBundleIdentifier:v14];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v15 setPresentingSceneBundleIdentifier:bundleIdentifier];
 
-  [v15 beginFlowWithViewController:v4];
+  [v15 beginFlowWithViewController:controllerCopy];
 }
 
-- (void)beginFlowWithPresentingViewController:(id)a3
+- (void)beginFlowWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(ICQUpgradeFlowManager *)self _shouldPresentRemoteFlow])
   {
-    [(ICQUpgradeFlowManager *)self _beginRemoteFlowWithViewController:v4];
+    [(ICQUpgradeFlowManager *)self _beginRemoteFlowWithViewController:controllerCopy];
   }
 
   else
   {
-    [(ICQUpgradeFlowManager *)self _configurePresentingViewController:v4];
+    [(ICQUpgradeFlowManager *)self _configurePresentingViewController:controllerCopy];
   }
 }
 
-- (void)_configurePresentingViewController:(id)a3 andPresentedViewController:(id)a4
+- (void)_configurePresentingViewController:(id)controller andPresentedViewController:(id)viewController
 {
-  v6 = a3;
-  objc_storeStrong(&self->_hostingNavigationController, a4);
-  v7 = a4;
+  controllerCopy = controller;
+  objc_storeStrong(&self->_hostingNavigationController, viewController);
+  viewControllerCopy = viewController;
   [(UINavigationController *)self->_hostingNavigationController setDelegate:self];
-  v8 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
-  v9 = [(ICQUpgradeFlowManager *)self flowOptions];
-  v10 = [v9 navigationBarTintColor];
-  [v8 setTintColor:v10];
+  navigationBar = [(UINavigationController *)self->_hostingNavigationController navigationBar];
+  flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+  navigationBarTintColor = [flowOptions navigationBarTintColor];
+  [navigationBar setTintColor:navigationBarTintColor];
 
   self->_shouldNavigationControllerBeDismissed = 1;
   presentingViewController = self->_presentingViewController;
-  self->_presentingViewController = v6;
+  self->_presentingViewController = controllerCopy;
 
-  v13 = [(ICQUpgradeFlowManager *)self offer];
-  v12 = [v13 requestedServerUIURL];
-  [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:v12];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  requestedServerUIURL = [offer requestedServerUIURL];
+  [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:requestedServerUIURL];
 }
 
-- (void)_configurePresentingViewController:(id)a3 preloadedRemoteUIData:(id)a4
+- (void)_configurePresentingViewController:(id)controller preloadedRemoteUIData:(id)data
 {
   v75 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  dataCopy = data;
   if (![(ICQUpgradeFlowManager *)self _shouldPresentLiftUIFlow])
   {
-    v9 = [(ICQUpgradeFlowManager *)self offer];
-    v10 = [v9 upgradeFlowSpecification];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    upgradeFlowSpecification = [offer upgradeFlowSpecification];
 
-    v11 = [(ICQUpgradeFlowManager *)self offer];
-    v12 = [v11 alertSpecificationAtIndex:0];
-    [v10 setStartAlert:v12];
+    offer2 = [(ICQUpgradeFlowManager *)self offer];
+    v12 = [offer2 alertSpecificationAtIndex:0];
+    [upgradeFlowSpecification setStartAlert:v12];
 
-    if (v8)
+    if (dataCopy)
     {
       v13 = _ICQGetLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(ICQUpgradeFlowManager *)self offer];
-        v15 = [v14 requestedServerUIURL];
+        offer3 = [(ICQUpgradeFlowManager *)self offer];
+        requestedServerUIURL = [offer3 requestedServerUIURL];
         *buf = 138412290;
-        v74 = v15;
+        v74 = requestedServerUIURL;
         _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "presenting remoteUI URL %@ with preloaded data", buf, 0xCu);
       }
 
-      v16 = self;
-      v17 = v7;
-      v18 = v8;
+      selfCopy2 = self;
+      v17 = controllerCopy;
+      v18 = dataCopy;
     }
 
     else
     {
-      v19 = [(ICQUpgradeFlowManager *)self offer];
-      v20 = [v19 requestedServerUIURL];
+      offer4 = [(ICQUpgradeFlowManager *)self offer];
+      requestedServerUIURL2 = [offer4 requestedServerUIURL];
 
-      if (!v20)
+      if (!requestedServerUIURL2)
       {
-        v24 = [v10 startPage];
+        startPage = [upgradeFlowSpecification startPage];
 
-        if (v24)
+        if (startPage)
         {
           v25 = _ICQGetLogSystem();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -637,23 +637,23 @@ LABEL_6:
             _os_log_impl(&dword_275623000, v25, OS_LOG_TYPE_DEFAULT, "presenting start page", buf, 2u);
           }
 
-          v26 = [(ICQUpgradeFlowManager *)self offer];
-          v27 = [v26 serverUIURL];
+          offer5 = [(ICQUpgradeFlowManager *)self offer];
+          serverUIURL = [offer5 serverUIURL];
 
-          if (v27)
+          if (serverUIURL)
           {
-            v28 = [(ICQUpgradeFlowManager *)self offer];
-            v29 = [v28 bundleIdentifier];
-            v30 = [v29 isEqualToString:@"com.apple.icq"];
+            offer6 = [(ICQUpgradeFlowManager *)self offer];
+            bundleIdentifier = [offer6 bundleIdentifier];
+            v30 = [bundleIdentifier isEqualToString:@"com.apple.icq"];
 
             if (v30)
             {
-              objc_storeStrong(&self->_hostingNavigationController, a3);
+              objc_storeStrong(&self->_hostingNavigationController, controller);
               [(UINavigationController *)self->_hostingNavigationController setDelegate:self];
-              v31 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
-              v32 = [(ICQUpgradeFlowManager *)self flowOptions];
-              v33 = [v32 navigationBarTintColor];
-              [v31 setTintColor:v33];
+              navigationBar = [(UINavigationController *)self->_hostingNavigationController navigationBar];
+              flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+              navigationBarTintColor = [flowOptions navigationBarTintColor];
+              [navigationBar setTintColor:navigationBarTintColor];
 
               self->_shouldNavigationControllerBeDismissed = 1;
             }
@@ -665,10 +665,10 @@ LABEL_6:
               hostingNavigationController = self->_hostingNavigationController;
               self->_hostingNavigationController = v55;
 
-              v57 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
-              v58 = [(ICQUpgradeFlowManager *)self flowOptions];
-              v59 = [v58 navigationBarTintColor];
-              [v57 setTintColor:v59];
+              navigationBar2 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
+              flowOptions2 = [(ICQUpgradeFlowManager *)self flowOptions];
+              navigationBarTintColor2 = [flowOptions2 navigationBarTintColor];
+              [navigationBar2 setTintColor:navigationBarTintColor2];
 
               if ([(ICQOffer *)self->_offer action]== 118)
               {
@@ -680,17 +680,17 @@ LABEL_6:
                   _os_log_impl(&dword_275623000, v60, OS_LOG_TYPE_DEFAULT, "%s, Detected action direct to oslo, skipping presentation and saving presenting view controller", buf, 0xCu);
                 }
 
-                objc_storeStrong(&self->_presentingViewController, a3);
+                objc_storeStrong(&self->_presentingViewController, controller);
               }
 
               else
               {
                 self->_shouldNavigationControllerBeDismissed = 1;
-                [v7 presentPreferredSizeWithViewController:self->_hostingNavigationController animated:1 completion:0];
+                [controllerCopy presentPreferredSizeWithViewController:self->_hostingNavigationController animated:1 completion:0];
               }
             }
 
-            [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:v27];
+            [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:serverUIURL];
           }
 
           else
@@ -704,25 +704,25 @@ LABEL_6:
 
             [objc_opt_class() addActiveFlowManager:self];
             v43 = [ICQViewController alloc];
-            v44 = [v10 startPage];
-            v45 = [(ICQViewController *)v43 initWithPageSpecification:v44];
+            startPage2 = [upgradeFlowSpecification startPage];
+            v45 = [(ICQViewController *)v43 initWithPageSpecification:startPage2];
 
-            v46 = [(ICQUpgradeFlowManager *)self flowOptions];
-            v47 = [v46 buttonTintColor];
-            [(ICQViewController *)v45 setButtonTintColor:v47];
+            flowOptions3 = [(ICQUpgradeFlowManager *)self flowOptions];
+            buttonTintColor = [flowOptions3 buttonTintColor];
+            [(ICQViewController *)v45 setButtonTintColor:buttonTintColor];
 
-            v48 = [(ICQUpgradeFlowManager *)self offer];
-            v49 = [v48 bundleIdentifier];
-            v50 = [v49 isEqualToString:@"com.apple.icq"];
+            offer7 = [(ICQUpgradeFlowManager *)self offer];
+            bundleIdentifier2 = [offer7 bundleIdentifier];
+            v50 = [bundleIdentifier2 isEqualToString:@"com.apple.icq"];
 
             if (v50)
             {
-              objc_storeStrong(&self->_hostingNavigationController, a3);
+              objc_storeStrong(&self->_hostingNavigationController, controller);
               [(UINavigationController *)self->_hostingNavigationController setDelegate:self];
-              v51 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
-              v52 = [(ICQUpgradeFlowManager *)self flowOptions];
-              v53 = [v52 navigationBarTintColor];
-              [v51 setTintColor:v53];
+              navigationBar3 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
+              flowOptions4 = [(ICQUpgradeFlowManager *)self flowOptions];
+              navigationBarTintColor3 = [flowOptions4 navigationBarTintColor];
+              [navigationBar3 setTintColor:navigationBarTintColor3];
 
               self->_shouldNavigationControllerBeDismissed = 1;
               [(UINavigationController *)self->_hostingNavigationController pushViewController:v45 animated:0];
@@ -735,10 +735,10 @@ LABEL_6:
               v66 = self->_hostingNavigationController;
               self->_hostingNavigationController = v65;
 
-              v67 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
-              v68 = [(ICQUpgradeFlowManager *)self flowOptions];
-              v69 = [v68 navigationBarTintColor];
-              [v67 setTintColor:v69];
+              navigationBar4 = [(UINavigationController *)self->_hostingNavigationController navigationBar];
+              flowOptions5 = [(ICQUpgradeFlowManager *)self flowOptions];
+              navigationBarTintColor4 = [flowOptions5 navigationBarTintColor];
+              [navigationBar4 setTintColor:navigationBarTintColor4];
 
               self->_shouldNavigationControllerBeDismissed = 1;
               v70 = self->_hostingNavigationController;
@@ -748,23 +748,23 @@ LABEL_6:
               v71[3] = &unk_27A65A708;
               v71[4] = self;
               v72 = v45;
-              [v7 presentPreferredSizeWithViewController:v70 animated:1 completion:v71];
+              [controllerCopy presentPreferredSizeWithViewController:v70 animated:1 completion:v71];
             }
           }
         }
 
         else
         {
-          v34 = [v10 startAlert];
+          startAlert = [upgradeFlowSpecification startAlert];
 
-          if (!v34)
+          if (!startAlert)
           {
             v61 = _ICQGetLogSystem();
             if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
             {
               v62 = MEMORY[0x277CCABB0];
-              v63 = [(ICQUpgradeFlowManager *)self offer];
-              v64 = [v62 numberWithInteger:{objc_msgSend(v63, "level")}];
+              offer8 = [(ICQUpgradeFlowManager *)self offer];
+              v64 = [v62 numberWithInteger:{objc_msgSend(offer8, "level")}];
               *buf = 138412290;
               v74 = v64;
               _os_log_impl(&dword_275623000, v61, OS_LOG_TYPE_DEFAULT, "offer level %@ missing upgrade flow specification", buf, 0xCu);
@@ -774,21 +774,21 @@ LABEL_6:
             goto LABEL_12;
           }
 
-          v27 = [v10 startAlert];
+          serverUIURL = [upgradeFlowSpecification startAlert];
           v35 = MEMORY[0x277D7F390];
-          v36 = [v27 message];
-          v37 = [v27 altMessage];
-          v38 = [v35 stringWithPlaceholderFormat:v36 alternateString:v37];
+          message = [serverUIURL message];
+          altMessage = [serverUIURL altMessage];
+          v38 = [v35 stringWithPlaceholderFormat:message alternateString:altMessage];
 
-          v39 = [v27 title];
-          v40 = [ICQAlertController alertControllerWithTitle:v39 message:v38 preferredStyle:1];
+          title = [serverUIURL title];
+          v40 = [ICQAlertController alertControllerWithTitle:title message:v38 preferredStyle:1];
           upgradeAlertController = self->_upgradeAlertController;
           self->_upgradeAlertController = v40;
 
-          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:v27 buttonIndex:1];
-          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:v27 buttonIndex:2];
-          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:v27 buttonIndex:3];
-          [v7 presentViewController:self->_upgradeAlertController animated:1 completion:&__block_literal_global_0];
+          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:serverUIURL buttonIndex:1];
+          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:serverUIURL buttonIndex:2];
+          [(ICQUpgradeFlowManager *)self _addAlertActionForAlertSpec:serverUIURL buttonIndex:3];
+          [controllerCopy presentViewController:self->_upgradeAlertController animated:1 completion:&__block_literal_global_0];
         }
 
 LABEL_12:
@@ -798,33 +798,33 @@ LABEL_12:
       v21 = _ICQGetLogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(ICQUpgradeFlowManager *)self offer];
-        v23 = [v22 requestedServerUIURL];
+        offer9 = [(ICQUpgradeFlowManager *)self offer];
+        requestedServerUIURL3 = [offer9 requestedServerUIURL];
         *buf = 138412290;
-        v74 = v23;
+        v74 = requestedServerUIURL3;
         _os_log_impl(&dword_275623000, v21, OS_LOG_TYPE_DEFAULT, "presenting remoteUI URL %@", buf, 0xCu);
       }
 
-      v16 = self;
-      v17 = v7;
+      selfCopy2 = self;
+      v17 = controllerCopy;
       v18 = 0;
     }
 
-    [(ICQUpgradeFlowManager *)v16 _presentRemoteUIUsingViewController:v17 withData:v18];
+    [(ICQUpgradeFlowManager *)selfCopy2 _presentRemoteUIUsingViewController:v17 withData:v18];
     goto LABEL_12;
   }
 
-  [(ICQUpgradeFlowManager *)self _presentLiftUIUsingViewController:v7];
+  [(ICQUpgradeFlowManager *)self _presentLiftUIUsingViewController:controllerCopy];
 LABEL_13:
 }
 
-- (void)startFlowWithParentViewController:(id)a3
+- (void)startFlowWithParentViewController:(id)controller
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ([(ICQUpgradeFlowManager *)self _shouldPresentLiftUIFlow])
   {
-    [(ICQUpgradeFlowManager *)self _presentLiftUIInParentViewController:v4];
+    [(ICQUpgradeFlowManager *)self _presentLiftUIInParentViewController:controllerCopy];
   }
 
   else
@@ -833,18 +833,18 @@ LABEL_13:
     v6 = [(ICQUpgradeFlowManager *)self _navControllerWithRootVC:v5];
     [(ICQUpgradeFlowManager *)self setHostingNavigationController:v6];
 
-    v7 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    v8 = [v7 navigationBar];
-    v9 = [(ICQUpgradeFlowManager *)self flowOptions];
-    v10 = [v9 navigationBarTintColor];
-    [v8 setTintColor:v10];
+    hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    navigationBar = [hostingNavigationController navigationBar];
+    flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+    navigationBarTintColor = [flowOptions navigationBarTintColor];
+    [navigationBar setTintColor:navigationBarTintColor];
 
     v11 = dispatch_time(0, 5000000000);
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invoke;
     v20 = &unk_27A65A708;
-    v21 = self;
+    selfCopy = self;
     v12 = v5;
     v22 = v12;
     dispatch_after(v11, MEMORY[0x277D85CD0], &v17);
@@ -858,7 +858,7 @@ LABEL_13:
         _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "%s, Detected action direct to oslo, skipping presentation and saving presenting view controller", buf, 0xCu);
       }
 
-      v14 = v4;
+      v14 = controllerCopy;
       presentingViewController = self->_presentingViewController;
       self->_presentingViewController = v14;
     }
@@ -867,11 +867,11 @@ LABEL_13:
     {
       [(ICQUpgradeFlowManager *)self setShouldNavigationControllerBeDismissed:1];
       presentingViewController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-      [v4 addChildAndPinToEdgesWithChildViewController:presentingViewController];
+      [controllerCopy addChildAndPinToEdgesWithChildViewController:presentingViewController];
     }
 
-    v16 = [(ICQUpgradeFlowManager *)self serverUIURL];
-    [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:v16];
+    serverUIURL = [(ICQUpgradeFlowManager *)self serverUIURL];
+    [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:0 andURL:serverUIURL];
   }
 }
 
@@ -901,13 +901,13 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
   }
 }
 
-- (void)_presentLiftUIUsingViewController:(id)a3
+- (void)_presentLiftUIUsingViewController:(id)controller
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQUpgradeFlowManager *)self serverUIURL];
+  controllerCopy = controller;
+  serverUIURL = [(ICQUpgradeFlowManager *)self serverUIURL];
 
-  if (v5)
+  if (serverUIURL)
   {
     v6 = _ICQSignpostLogSystem();
     v7 = objc_opt_new();
@@ -918,9 +918,9 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
     v12 = v11;
     if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
-      v13 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIURL2 = [(ICQUpgradeFlowManager *)self serverUIURL];
       *buf = 138412290;
-      v46 = v13;
+      v46 = serverUIURL2;
       _os_signpost_emit_with_name_impl(&dword_275623000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v8, "UpsellLoadLiftUI", " enableTelemetry=YES URL: %@", buf, 0xCu);
     }
 
@@ -936,47 +936,47 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
     v15 = _ICQGetLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIURL3 = [(ICQUpgradeFlowManager *)self serverUIURL];
       *buf = 138412290;
-      v46 = v16;
+      v46 = serverUIURL3;
       _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Starting liftUI flow using url %@", buf, 0xCu);
     }
 
-    v17 = [(ICQUpgradeFlowManager *)self offer];
-    v18 = [v17 XMLSpecification];
-    v19 = [v18 placeholderReplacementsWithDeviceInfo:0];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    xMLSpecification = [offer XMLSpecification];
+    v19 = [xMLSpecification placeholderReplacementsWithDeviceInfo:0];
 
-    v20 = [(ICQUpgradeFlowManager *)self icqLink];
-    v21 = [v20 serverUIContent];
+    icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+    serverUIContent = [icqLink serverUIContent];
 
     v22 = [ICQLiftUIPresenter alloc];
-    if (v21)
+    if (serverUIContent)
     {
-      v23 = [(ICQUpgradeFlowManager *)self icqLink];
-      v24 = [v23 serverUIContent];
-      v25 = [(ICQLiftUIPresenter *)v22 initWithContent:v24 account:0 data:v19];
+      icqLink2 = [(ICQUpgradeFlowManager *)self icqLink];
+      serverUIContent2 = [icqLink2 serverUIContent];
+      v25 = [(ICQLiftUIPresenter *)v22 initWithContent:serverUIContent2 account:0 data:v19];
       [(ICQUpgradeFlowManager *)self setLiftUIPresenter:v25];
     }
 
     else
     {
-      v23 = [(ICQUpgradeFlowManager *)self serverUIURL];
-      v24 = [(ICQLiftUIPresenter *)v22 initWithURL:v23 account:0 data:v19];
-      [(ICQUpgradeFlowManager *)self setLiftUIPresenter:v24];
+      icqLink2 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIContent2 = [(ICQLiftUIPresenter *)v22 initWithURL:icqLink2 account:0 data:v19];
+      [(ICQUpgradeFlowManager *)self setLiftUIPresenter:serverUIContent2];
     }
 
-    v27 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
-    [v27 setDelegate:self];
+    liftUIPresenter = [(ICQUpgradeFlowManager *)self liftUIPresenter];
+    [liftUIPresenter setDelegate:self];
 
-    v28 = [(ICQUpgradeFlowManager *)self offer];
-    v29 = [v28 bundleIdentifier];
-    v30 = [v29 isEqualToString:@"com.apple.icq"];
+    offer2 = [(ICQUpgradeFlowManager *)self offer];
+    bundleIdentifier = [offer2 bundleIdentifier];
+    v30 = [bundleIdentifier isEqualToString:@"com.apple.icq"];
 
     objc_opt_class();
     v31 = v30 & objc_opt_isKindOfClass();
     if (v31 == 1)
     {
-      [(ICQUpgradeFlowManager *)self setHostingNavigationController:v4];
+      [(ICQUpgradeFlowManager *)self setHostingNavigationController:controllerCopy];
     }
 
     else
@@ -985,40 +985,40 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
       [(ICQUpgradeFlowManager *)self setHostingNavigationController:v32];
     }
 
-    v33 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    v34 = [v33 navigationBar];
-    v35 = [(ICQUpgradeFlowManager *)self flowOptions];
-    v36 = [v35 navigationBarTintColor];
-    [v34 setTintColor:v36];
+    hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    navigationBar = [hostingNavigationController navigationBar];
+    flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+    navigationBarTintColor = [flowOptions navigationBarTintColor];
+    [navigationBar setTintColor:navigationBarTintColor];
 
-    v37 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v37 setDelegate:self];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController2 setDelegate:self];
 
     [(ICQUpgradeFlowManager *)self setShouldNavigationControllerBeDismissed:1];
-    v38 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
-    v39 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    LOBYTE(v35) = [v38 pushInNavigationController:v39 animated:0];
+    liftUIPresenter2 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
+    hostingNavigationController3 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    LOBYTE(flowOptions) = [liftUIPresenter2 pushInNavigationController:hostingNavigationController3 animated:0];
 
-    if (v35)
+    if (flowOptions)
     {
-      v40 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-      [v40 setNavigationBarHidden:1];
+      hostingNavigationController4 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+      [hostingNavigationController4 setNavigationBarHidden:1];
 
       if (v31)
       {
-        [(ICQUpgradeFlowManager *)self _sendDelegateDidPresentViewController:v4];
+        [(ICQUpgradeFlowManager *)self _sendDelegateDidPresentViewController:controllerCopy];
       }
 
       else
       {
-        v42 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+        hostingNavigationController5 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __59__ICQUpgradeFlowManager__presentLiftUIUsingViewController___block_invoke;
         v43[3] = &unk_27A65A708;
         v43[4] = self;
-        v44 = v4;
-        [v44 presentPreferredSizeWithViewController:v42 animated:1 completion:v43];
+        v44 = controllerCopy;
+        [v44 presentPreferredSizeWithViewController:hostingNavigationController5 animated:1 completion:v43];
       }
     }
 
@@ -1046,13 +1046,13 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
   }
 }
 
-- (void)_presentLiftUIInParentViewController:(id)a3
+- (void)_presentLiftUIInParentViewController:(id)controller
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQUpgradeFlowManager *)self serverUIURL];
+  controllerCopy = controller;
+  serverUIURL = [(ICQUpgradeFlowManager *)self serverUIURL];
 
-  if (v5)
+  if (serverUIURL)
   {
     v6 = _ICQSignpostLogSystem();
     v7 = objc_opt_new();
@@ -1063,9 +1063,9 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
     v12 = v11;
     if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
-      v13 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIURL2 = [(ICQUpgradeFlowManager *)self serverUIURL];
       v38 = 138412290;
-      v39 = v13;
+      v39 = serverUIURL2;
       _os_signpost_emit_with_name_impl(&dword_275623000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v8, "UpsellLoadLiftUI", " enableTelemetry=YES URL: %@", &v38, 0xCu);
     }
 
@@ -1081,61 +1081,61 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
     v15 = _ICQGetLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIURL3 = [(ICQUpgradeFlowManager *)self serverUIURL];
       v38 = 138412290;
-      v39 = v16;
+      v39 = serverUIURL3;
       _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Starting liftUI flow using url %@", &v38, 0xCu);
     }
 
-    v17 = [(ICQUpgradeFlowManager *)self offer];
-    v18 = [v17 XMLSpecification];
-    v19 = [v18 placeholderReplacementsWithDeviceInfo:0];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    xMLSpecification = [offer XMLSpecification];
+    v19 = [xMLSpecification placeholderReplacementsWithDeviceInfo:0];
 
-    v20 = [(ICQUpgradeFlowManager *)self icqLink];
-    v21 = [v20 serverUIContent];
+    icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+    serverUIContent = [icqLink serverUIContent];
 
     v22 = [ICQLiftUIPresenter alloc];
-    if (v21)
+    if (serverUIContent)
     {
-      v23 = [(ICQUpgradeFlowManager *)self icqLink];
-      v24 = [v23 serverUIContent];
-      v25 = [(ICQLiftUIPresenter *)v22 initWithContent:v24 account:0 data:v19];
+      icqLink2 = [(ICQUpgradeFlowManager *)self icqLink];
+      serverUIContent2 = [icqLink2 serverUIContent];
+      v25 = [(ICQLiftUIPresenter *)v22 initWithContent:serverUIContent2 account:0 data:v19];
       [(ICQUpgradeFlowManager *)self setLiftUIPresenter:v25];
     }
 
     else
     {
-      v23 = [(ICQUpgradeFlowManager *)self serverUIURL];
-      v24 = [(ICQLiftUIPresenter *)v22 initWithURL:v23 account:0 data:v19];
-      [(ICQUpgradeFlowManager *)self setLiftUIPresenter:v24];
+      icqLink2 = [(ICQUpgradeFlowManager *)self serverUIURL];
+      serverUIContent2 = [(ICQLiftUIPresenter *)v22 initWithURL:icqLink2 account:0 data:v19];
+      [(ICQUpgradeFlowManager *)self setLiftUIPresenter:serverUIContent2];
     }
 
-    v27 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
-    [v27 setDelegate:self];
+    liftUIPresenter = [(ICQUpgradeFlowManager *)self liftUIPresenter];
+    [liftUIPresenter setDelegate:self];
 
     v28 = [(ICQUpgradeFlowManager *)self _navControllerWithRootVC:0];
     [(ICQUpgradeFlowManager *)self setHostingNavigationController:v28];
 
-    v29 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    v30 = [v29 navigationBar];
-    v31 = [(ICQUpgradeFlowManager *)self flowOptions];
-    v32 = [v31 navigationBarTintColor];
-    [v30 setTintColor:v32];
+    hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    navigationBar = [hostingNavigationController navigationBar];
+    flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+    navigationBarTintColor = [flowOptions navigationBarTintColor];
+    [navigationBar setTintColor:navigationBarTintColor];
 
-    v33 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v33 setNavigationBarHidden:1];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController2 setNavigationBarHidden:1];
 
     [(ICQUpgradeFlowManager *)self setShouldNavigationControllerBeDismissed:1];
-    v34 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
-    v35 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    LOBYTE(v31) = [v34 pushInNavigationController:v35 animated:0];
+    liftUIPresenter2 = [(ICQUpgradeFlowManager *)self liftUIPresenter];
+    hostingNavigationController3 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    LOBYTE(flowOptions) = [liftUIPresenter2 pushInNavigationController:hostingNavigationController3 animated:0];
 
-    if (v31)
+    if (flowOptions)
     {
-      v36 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-      [v4 addChildAndPinToEdgesWithChildViewController:v36];
+      hostingNavigationController4 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+      [controllerCopy addChildAndPinToEdgesWithChildViewController:hostingNavigationController4];
 
-      [(ICQUpgradeFlowManager *)self _sendDelegateDidPresentViewController:v4];
+      [(ICQUpgradeFlowManager *)self _sendDelegateDidPresentViewController:controllerCopy];
     }
 
     else
@@ -1162,21 +1162,21 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
   }
 }
 
-- (void)_presentRemoteUIUsingViewController:(id)a3 withData:(id)a4
+- (void)_presentRemoteUIUsingViewController:(id)controller withData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  controllerCopy = controller;
   v8 = MEMORY[0x277CECAF8];
-  v9 = a4;
+  dataCopy = data;
   v10 = [[v8 alloc] initWithNibName:0 bundle:0];
   v11 = [(ICQUpgradeFlowManager *)self _navControllerWithRootVC:v10];
   [(ICQUpgradeFlowManager *)self setHostingNavigationController:v11];
 
-  v12 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-  v13 = [v12 navigationBar];
-  v14 = [(ICQUpgradeFlowManager *)self flowOptions];
-  v15 = [v14 navigationBarTintColor];
-  [v13 setTintColor:v15];
+  hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  navigationBar = [hostingNavigationController navigationBar];
+  flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+  navigationBarTintColor = [flowOptions navigationBarTintColor];
+  [navigationBar setTintColor:navigationBarTintColor];
 
   if ([(ICQOffer *)self->_offer action]== 118)
   {
@@ -1188,47 +1188,47 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
       _os_log_impl(&dword_275623000, v16, OS_LOG_TYPE_DEFAULT, "%s, Detected action direct to oslo, skipping presentation and saving presenting view controller", &v19, 0xCu);
     }
 
-    objc_storeStrong(&self->_presentingViewController, a3);
+    objc_storeStrong(&self->_presentingViewController, controller);
   }
 
   else
   {
     [(ICQUpgradeFlowManager *)self setShouldNavigationControllerBeDismissed:1];
-    v17 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v7 presentPreferredSizeWithViewController:v17 animated:1 completion:0];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [controllerCopy presentPreferredSizeWithViewController:hostingNavigationController2 animated:1 completion:0];
   }
 
-  v18 = [(ICQUpgradeFlowManager *)self serverUIURL];
-  [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:v9 andURL:v18];
+  serverUIURL = [(ICQUpgradeFlowManager *)self serverUIURL];
+  [(ICQUpgradeFlowManager *)self presentRemoteViewWithData:dataCopy andURL:serverUIURL];
 }
 
-- (void)presentRemoteViewWithData:(id)a3 andURL:(id)a4
+- (void)presentRemoteViewWithData:(id)data andURL:(id)l
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  lCopy = l;
+  dataCopy = data;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = lCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "presenting remote view with url = %@", &v10, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCAD20] requestWithURL:v6];
-  [(ICQUpgradeFlowManager *)self _presentRemoteViewWithData:v7 andRequest:v9];
+  v9 = [MEMORY[0x277CCAD20] requestWithURL:lCopy];
+  [(ICQUpgradeFlowManager *)self _presentRemoteViewWithData:dataCopy andRequest:v9];
 }
 
-- (void)_presentRemoteViewWithData:(id)a3 andRequest:(id)a4
+- (void)_presentRemoteViewWithData:(id)data andRequest:(id)request
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  requestCopy = request;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 138412290;
-    v34 = v7;
+    v34 = requestCopy;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "presenting remote view with request = %@", &v33, 0xCu);
   }
 
@@ -1241,10 +1241,10 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
   v15 = v14;
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v16 = [(ICQUpgradeFlowManager *)self offer];
-    v17 = [v16 remoteUIURL];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    remoteUIURL = [offer remoteUIURL];
     v33 = 138412290;
-    v34 = v17;
+    v34 = remoteUIURL;
     _os_signpost_emit_with_name_impl(&dword_275623000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v11, "UpsellLoadRemoteUI", " enableTelemetry=YES URL: %@", &v33, 0xCu);
   }
 
@@ -1265,8 +1265,8 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
   [(AAUIRemoteUIController *)self->_remoteUIController setHostViewController:self->_hostingNavigationController];
   v21 = objc_alloc(MEMORY[0x277D46200]);
   v22 = self->_remoteUIController;
-  v23 = [(ICQUpgradeFlowManager *)self serverHooks];
-  v24 = [v21 initWithRemoteUIController:v22 hooks:v23];
+  serverHooks = [(ICQUpgradeFlowManager *)self serverHooks];
+  v24 = [v21 initWithRemoteUIController:v22 hooks:serverHooks];
   serverHookHandler = self->_serverHookHandler;
   self->_serverHookHandler = v24;
 
@@ -1282,20 +1282,20 @@ void __59__ICQUpgradeFlowManager_startFlowWithParentViewController___block_invok
     v28 = [MEMORY[0x277D7F3E0] defaultStringValueForKey:@"_ICQ_MOCK_BUY_PAGE"];
     v29 = [v28 dataUsingEncoding:4];
     v30 = self->_remoteUIController;
-    v31 = [v7 URL];
+    v31 = [requestCopy URL];
     [(AAUIRemoteUIController *)v30 loadData:v29 baseURL:v31];
   }
 
-  else if (v6)
+  else if (dataCopy)
   {
     v32 = self->_remoteUIController;
-    v28 = [v7 URL];
-    [(AAUIRemoteUIController *)v32 loadData:v6 baseURL:v28];
+    v28 = [requestCopy URL];
+    [(AAUIRemoteUIController *)v32 loadData:dataCopy baseURL:v28];
   }
 
   else
   {
-    v28 = [v7 mutableCopy];
+    v28 = [requestCopy mutableCopy];
     [v28 setTimeoutInterval:30.0];
     [(AAUIRemoteUIController *)self->_remoteUIController loadRequest:v28 completion:0];
   }
@@ -1320,58 +1320,58 @@ void __43__ICQUpgradeFlowManager_activeFlowManagers__block_invoke()
   activeFlowManagers_sActiveFlowManagers = v0;
 }
 
-+ (void)addActiveFlowManager:(id)a3
++ (void)addActiveFlowManager:(id)manager
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = v4;
+    v8 = managerCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "adding active flow manager %p", &v7, 0xCu);
   }
 
-  v6 = [a1 activeFlowManagers];
-  [v6 addObject:v4];
+  activeFlowManagers = [self activeFlowManagers];
+  [activeFlowManagers addObject:managerCopy];
 }
 
-+ (void)removeActiveFlowManager:(id)a3
++ (void)removeActiveFlowManager:(id)manager
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = v4;
+    v8 = managerCopy;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "removing active flow manager %p", &v7, 0xCu);
   }
 
-  v6 = [a1 activeFlowManagers];
-  [v6 removeObject:v4];
+  activeFlowManagers = [self activeFlowManagers];
+  [activeFlowManagers removeObject:managerCopy];
 }
 
-- (void)_setBusyOfferViewController:(id)a3
+- (void)_setBusyOfferViewController:(id)controller
 {
-  objc_storeStrong(&self->_busyOfferViewController, a3);
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 setUpgradeMode:1];
-  [v4 setCancelEnabled:0];
+  objc_storeStrong(&self->_busyOfferViewController, controller);
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setUpgradeMode:1];
+  [controllerCopy setCancelEnabled:0];
 }
 
-- (void)_openURL:(id)a3 completion:(id)a4
+- (void)_openURL:(id)l completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  completionCopy = completion;
+  if (lCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+      v7 = [MEMORY[0x277CBEBC0] URLWithString:lCopy];
       if (!v7)
       {
         goto LABEL_13;
@@ -1384,9 +1384,9 @@ void __43__ICQUpgradeFlowManager_activeFlowManagers__block_invoke()
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_13:
-        if (v6)
+        if (completionCopy)
         {
-          v6[2](v6);
+          completionCopy[2](completionCopy);
         }
 
         v7 = 0;
@@ -1395,11 +1395,11 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v7 = v5;
+      v7 = lCopy;
     }
 
-    v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v9 = [v8 openSensitiveURL:v7 withOptions:MEMORY[0x277CBEC10]];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v9 = [defaultWorkspace openSensitiveURL:v7 withOptions:MEMORY[0x277CBEC10]];
 
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1417,9 +1417,9 @@ LABEL_16:
       _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "open URL %@ succeeded:%@", &v12, 0x16u);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_16;
@@ -1450,11 +1450,11 @@ void __49__ICQUpgradeFlowManager__allowedInProcessClients__block_invoke()
 - (BOOL)_shouldPresentRemoteFlow
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v5 = [(ICQUpgradeFlowManager *)self _allowedInProcessClients];
-  v6 = [v5 containsObject:v4];
+  _allowedInProcessClients = [(ICQUpgradeFlowManager *)self _allowedInProcessClients];
+  v6 = [_allowedInProcessClients containsObject:bundleIdentifier];
 
   if (v6)
   {
@@ -1462,7 +1462,7 @@ void __49__ICQUpgradeFlowManager__allowedInProcessClients__block_invoke()
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = bundleIdentifier;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "%@ is allowed in process UI", &v9, 0xCu);
     }
   }
@@ -1473,17 +1473,17 @@ void __49__ICQUpgradeFlowManager__allowedInProcessClients__block_invoke()
 - (BOOL)_shouldPresentLiftUIFlow
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQUpgradeFlowManager *)self icqLink];
-  if (v3)
+  icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+  if (icqLink)
   {
   }
 
   else
   {
-    v4 = [(ICQUpgradeFlowManager *)self offer];
-    v5 = [v4 action];
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    action = [offer action];
 
-    if (v5 == 115)
+    if (action == 115)
     {
       v6 = _ICQGetLogSystem();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1500,17 +1500,17 @@ LABEL_17:
     }
   }
 
-  v8 = [(ICQUpgradeFlowManager *)self icqLink];
-  if (v8)
+  icqLink2 = [(ICQUpgradeFlowManager *)self icqLink];
+  if (icqLink2)
   {
 
     goto LABEL_12;
   }
 
-  v9 = [(ICQUpgradeFlowManager *)self offer];
-  v10 = [v9 action];
+  offer2 = [(ICQUpgradeFlowManager *)self offer];
+  action2 = [offer2 action];
 
-  if (v10 == 121)
+  if (action2 == 121)
   {
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1524,24 +1524,24 @@ LABEL_17:
   }
 
 LABEL_12:
-  v11 = [(ICQUpgradeFlowManager *)self icqLink];
-  if ([v11 action] == 121)
+  icqLink3 = [(ICQUpgradeFlowManager *)self icqLink];
+  if ([icqLink3 action] == 121)
   {
 
     goto LABEL_15;
   }
 
-  v12 = [(ICQUpgradeFlowManager *)self icqLink];
-  v13 = [v12 action];
+  icqLink4 = [(ICQUpgradeFlowManager *)self icqLink];
+  action3 = [icqLink4 action];
 
-  if (v13 == 115)
+  if (action3 == 115)
   {
 LABEL_15:
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(ICQUpgradeFlowManager *)self icqLink];
-      [v14 action];
+      icqLink5 = [(ICQUpgradeFlowManager *)self icqLink];
+      [icqLink5 action];
       v15 = _ICQStringForAction();
       v18 = 138412290;
       v19 = v15;
@@ -1564,10 +1564,10 @@ LABEL_18:
   return v16;
 }
 
-- (id)_navControllerWithRootVC:(id)a3
+- (id)_navControllerWithRootVC:(id)c
 {
-  v4 = a3;
-  v5 = [[ICQRemoteUINavigationController alloc] initWithRootViewController:v4];
+  cCopy = c;
+  v5 = [[ICQRemoteUINavigationController alloc] initWithRootViewController:cCopy];
 
   [(ICQRemoteUINavigationController *)v5 setModalInPresentation:1];
   if ([MEMORY[0x277D75418] icqui_isiPad])
@@ -1588,7 +1588,7 @@ LABEL_18:
   return v5;
 }
 
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1610,23 +1610,23 @@ LABEL_18:
   [(ICQUpgradeFlowManager *)self sender:self action:1 parameters:MEMORY[0x277CBEC10]];
 }
 
-- (void)_presentPageWithSpecification:(id)a3
+- (void)_presentPageWithSpecification:(id)specification
 {
-  v4 = a3;
-  v5 = [(ICQUpgradeFlowManager *)self bindings];
+  specificationCopy = specification;
+  bindings = [(ICQUpgradeFlowManager *)self bindings];
 
-  if (v5)
+  if (bindings)
   {
-    v6 = [(ICQUpgradeFlowManager *)self bindings];
-    v7 = [v4 copyWithBindings:v6];
+    bindings2 = [(ICQUpgradeFlowManager *)self bindings];
+    v7 = [specificationCopy copyWithBindings:bindings2];
 
-    v4 = v7;
+    specificationCopy = v7;
   }
 
-  v8 = [(ICQUpgradeFlowManager *)self offer];
-  v9 = [v8 isBuddyOffer];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  isBuddyOffer = [offer isBuddyOffer];
 
-  if (v9)
+  if (isBuddyOffer)
   {
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1635,23 +1635,23 @@ LABEL_18:
       _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "presenting buddy view controller", buf, 2u);
     }
 
-    v11 = [[ICQBuddyOfferViewController alloc] initWithPageSpecification:v4];
+    v11 = [[ICQBuddyOfferViewController alloc] initWithPageSpecification:specificationCopy];
   }
 
   else
   {
-    v11 = [[ICQViewController alloc] initWithPageSpecification:v4];
-    v12 = [(ICQUpgradeFlowManager *)self flowOptions];
-    v13 = [v12 buttonTintColor];
-    [(ICQBuddyOfferViewController *)v11 setButtonTintColor:v13];
+    v11 = [[ICQViewController alloc] initWithPageSpecification:specificationCopy];
+    flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+    buttonTintColor = [flowOptions buttonTintColor];
+    [(ICQBuddyOfferViewController *)v11 setButtonTintColor:buttonTintColor];
   }
 
-  v14 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
 
-  if (v14 && v11)
+  if (hostingNavigationController && v11)
   {
-    v15 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v15 pushViewController:v11 animated:1];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController2 pushViewController:v11 animated:1];
 
     [(ICQUpgradeFlowManager *)self _sendDelegateDidPresentViewController:v11];
   }
@@ -1678,11 +1678,11 @@ LABEL_18:
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "ERROR: _presentUpgradeComplete is an old code path that should not be used anymore", v7, 2u);
   }
 
-  v4 = [(ICQUpgradeFlowManager *)self offer];
-  v5 = [v4 upgradeFlowSpecification];
-  v6 = [v5 upgradeSuccessPage];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  upgradeFlowSpecification = [offer upgradeFlowSpecification];
+  upgradeSuccessPage = [upgradeFlowSpecification upgradeSuccessPage];
 
-  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:v6];
+  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:upgradeSuccessPage];
 }
 
 - (void)_clearBusyOfferViewController
@@ -1709,17 +1709,17 @@ void __54__ICQUpgradeFlowManager__clearBusyOfferViewController__block_invoke(uin
   *(v2 + 24) = 0;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v6 setPageDelegate:self];
+    [viewControllerCopy setPageDelegate:self];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   if ([MEMORY[0x277D75418] icqui_isiPad])
   {
@@ -1732,39 +1732,39 @@ void __54__ICQUpgradeFlowManager__clearBusyOfferViewController__block_invoke(uin
   }
 }
 
-- (void)dismissNavigationControllerAnimated:(BOOL)a3 success:(BOOL)a4 completion:(id)a5
+- (void)dismissNavigationControllerAnimated:(BOOL)animated success:(BOOL)success completion:(id)completion
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  successCopy = success;
+  completionCopy = completion;
+  hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v10 setShouldSignalDelegateOnDismiss:0];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController2 setShouldSignalDelegateOnDismiss:0];
 
-    v11 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v11 setDidCompletePurchaseFlowWithSuccess:v5];
+    hostingNavigationController3 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController3 setDidCompletePurchaseFlowWithSuccess:successCopy];
   }
 
-  v12 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-  [v12 dismissViewControllerAnimated:1 completion:v7];
+  hostingNavigationController4 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  [hostingNavigationController4 dismissViewControllerAnimated:1 completion:completionCopy];
 }
 
-- (void)sender:(id)a3 action:(int64_t)a4 parameters:(id)a5
+- (void)sender:(id)sender action:(int64_t)action parameters:(id)parameters
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 <= 100)
+  senderCopy = sender;
+  parametersCopy = parameters;
+  if (action <= 100)
   {
-    if (a4 > 3)
+    if (action > 3)
     {
-      if (a4 <= 5)
+      if (action <= 5)
       {
-        if (a4 == 4)
+        if (action == 4)
         {
           goto LABEL_17;
         }
@@ -1792,7 +1792,7 @@ LABEL_47:
         goto LABEL_33;
       }
 
-      if (a4 == 6)
+      if (action == 6)
       {
         v25 = _ICQGetLogSystem();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1801,21 +1801,21 @@ LABEL_47:
           _os_log_impl(&dword_275623000, v25, OS_LOG_TYPE_DEFAULT, "ICQActionOpenURL", buf, 2u);
         }
 
-        v26 = [v9 objectForKeyedSubscript:*MEMORY[0x277D7F280]];
+        v26 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x277D7F280]];
         [(ICQUpgradeFlowManager *)self _openURL:v26 completion:0];
 
         goto LABEL_33;
       }
 
-      if (a4 != 100)
+      if (action != 100)
       {
         goto LABEL_33;
       }
     }
 
-    else if ((a4 - 2) >= 2 && a4)
+    else if ((action - 2) >= 2 && action)
     {
-      if (a4 != 1)
+      if (action != 1)
       {
         goto LABEL_33;
       }
@@ -1828,19 +1828,19 @@ LABEL_47:
     {
       v18 = _ICQStringForAction();
       *buf = 138412802;
-      v39 = v8;
+      v39 = senderCopy;
       v40 = 2112;
       v41 = v18;
       v42 = 2112;
-      v43 = v9;
+      v43 = parametersCopy;
       _os_log_impl(&dword_275623000, v17, OS_LOG_TYPE_DEFAULT, "ICQUpgradeFlowManager: sender:%@ action:%@ parameters:%@ unexpected", buf, 0x20u);
     }
 
     goto LABEL_33;
   }
 
-  v10 = a4 - 103;
-  if ((a4 - 103) <= 0xF)
+  v10 = action - 103;
+  if ((action - 103) <= 0xF)
   {
     if (((1 << v10) & 0x23F) != 0)
     {
@@ -1857,11 +1857,11 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(ICQUpgradeFlowManager *)self _setBusyOfferViewController:v8];
+        [(ICQUpgradeFlowManager *)self _setBusyOfferViewController:senderCopy];
       }
 
-      v15 = [(ICQUpgradeFlowManager *)self offer];
-      v16 = [v15 upgradeFlowSpecification];
+      offer = [(ICQUpgradeFlowManager *)self offer];
+      upgradeFlowSpecification = [offer upgradeFlowSpecification];
 
       if (-[ICQUpgradeFlowManager needsNetwork](self, "needsNetwork") && ([MEMORY[0x277D7F380] isNetworkReachable] & 1) == 0)
       {
@@ -1872,8 +1872,8 @@ LABEL_17:
           _os_log_impl(&dword_275623000, v19, OS_LOG_TYPE_DEFAULT, "network is needed, but not reachable", buf, 2u);
         }
 
-        v20 = [v16 upgradeFailurePageForNetwork];
-        [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:v20];
+        upgradeFailurePageForNetwork = [upgradeFlowSpecification upgradeFailurePageForNetwork];
+        [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:upgradeFailurePageForNetwork];
 
         [(ICQUpgradeFlowManager *)self _clearBusyOfferViewController];
       }
@@ -1886,10 +1886,10 @@ LABEL_17:
         v32[2] = __50__ICQUpgradeFlowManager_sender_action_parameters___block_invoke_161;
         v32[3] = &unk_27A65A898;
         objc_copyWeak(&v36, buf);
-        v33 = v8;
-        v34 = v16;
-        v35 = self;
-        [(ICQUpgradeFlowManager *)self _performPageButtonActionWithParameters:v9 completion:v32];
+        v33 = senderCopy;
+        v34 = upgradeFlowSpecification;
+        selfCopy = self;
+        [(ICQUpgradeFlowManager *)self _performPageButtonActionWithParameters:parametersCopy completion:v32];
 
         objc_destroyWeak(&v36);
         objc_destroyWeak(buf);
@@ -1900,23 +1900,23 @@ LABEL_17:
 
     if (((1 << v10) & 0xE000) != 0)
     {
-      v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v9];
+      v11 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:parametersCopy];
       [v11 setObject:&unk_288479B58 forKey:@"osloPurchase"];
 
-      v9 = v11;
+      parametersCopy = v11;
       goto LABEL_17;
     }
 
-    if (a4 == 109)
+    if (action == 109)
     {
       [(ICQUpgradeFlowManager *)self _initiateFamilySetupFlow];
       goto LABEL_33;
     }
   }
 
-  if (a4 != 102)
+  if (action != 102)
   {
-    if (a4 != 101)
+    if (action != 101)
     {
       goto LABEL_33;
     }
@@ -1950,22 +1950,22 @@ LABEL_43:
   {
     v30 = _ICQStringForAction();
     *buf = 138412802;
-    v39 = v8;
+    v39 = senderCopy;
     v40 = 2112;
     v41 = v30;
     v42 = 2112;
-    v43 = v9;
+    v43 = parametersCopy;
     _os_log_impl(&dword_275623000, v29, OS_LOG_TYPE_DEFAULT, "ICQUpgradeFlowManager: sender:%@ action:%@ parameters:%@ not yet implemented", buf, 0x20u);
   }
 
 LABEL_33:
-  v21 = [v9 objectForKeyedSubscript:*MEMORY[0x277D7F270]];
+  v21 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x277D7F270]];
   if (v21)
   {
-    v22 = [MEMORY[0x277D7F390] sharedOfferManager];
-    v23 = [(ICQUpgradeFlowManager *)self offer];
-    v24 = [v23 offerId];
-    [v22 updateOfferId:v24 buttonId:v21 info:0 completion:0];
+    mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+    offer2 = [(ICQUpgradeFlowManager *)self offer];
+    offerId = [offer2 offerId];
+    [mEMORY[0x277D7F390] updateOfferId:offerId buttonId:v21 info:0 completion:0];
   }
 }
 
@@ -2080,30 +2080,30 @@ LABEL_13:
   }
 }
 
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __101__ICQUpgradeFlowManager_remoteUIController_shouldLoadRequest_redirectResponse_withCompletionHandler___block_invoke;
   v9[3] = &unk_27A65A8C0;
-  v10 = v7;
-  v8 = v7;
-  [a4 icq_addHeadersForUpgradeWithCompletion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [request icq_addHeadersForUpgradeWithCompletion:v9];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [v7 clientInfo];
-  v9 = [v8 objectForKeyedSubscript:@"closeURL"];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  v9 = [clientInfo objectForKeyedSubscript:@"closeURL"];
   [(ICQUpgradeFlowManager *)self setCloseURL:v9];
 
-  v10 = [v8 objectForKeyedSubscript:@"forceRefresh"];
-  v11 = [v10 BOOLValue];
+  v10 = [clientInfo objectForKeyedSubscript:@"forceRefresh"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = _ICQGetLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2114,23 +2114,23 @@ LABEL_13:
     +[ICQPurchase clearCacheAndNotifyClients];
   }
 
-  v13 = [v8 objectForKeyedSubscript:@"didCancel"];
-  v14 = [v13 BOOLValue];
+  v13 = [clientInfo objectForKeyedSubscript:@"didCancel"];
+  bOOLValue2 = [v13 BOOLValue];
 
-  if (*a5 != 1 || (v14 & 1) != 0)
+  if (*signal != 1 || (bOOLValue2 & 1) != 0)
   {
-    v71 = v8;
+    v71 = clientInfo;
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v70 = self;
-    v16 = [(ICQUpgradeFlowManager *)self offer];
-    v75 = [v16 XMLSpecification];
+    selfCopy = self;
+    offer = [(ICQUpgradeFlowManager *)self offer];
+    xMLSpecification = [offer XMLSpecification];
 
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v72 = v7;
-    obj = [v7 allPages];
+    v72 = modelCopy;
+    obj = [modelCopy allPages];
     v17 = [obj countByEnumeratingWithState:&v85 objects:v93 count:16];
     v18 = 0x277D7F000uLL;
     if (v17)
@@ -2149,29 +2149,29 @@ LABEL_13:
 
           v23 = *(*(&v85 + 1) + 8 * i);
           v24 = *(v18 + 992);
-          v25 = [v23 navTitle];
-          v26 = [v24 findPlaceholdersInString:v25];
+          navTitle = [v23 navTitle];
+          v26 = [v24 findPlaceholdersInString:navTitle];
           [v15 unionSet:v26];
 
           v27 = *(v18 + 992);
-          v28 = [v23 navSubTitle];
-          v29 = [v27 findPlaceholdersInString:v28];
+          navSubTitle = [v23 navSubTitle];
+          v29 = [v27 findPlaceholdersInString:navSubTitle];
           [v15 unionSet:v29];
 
           v30 = [v23 subElementWithID:v20];
           v31 = v30;
           if (v30)
           {
-            v32 = [v30 identifier];
-            v33 = [v31 body];
-            v34 = v33;
-            if (v32 && v33)
+            identifier = [v30 identifier];
+            body = [v31 body];
+            v34 = body;
+            if (identifier && body)
             {
               v35 = v19;
               v36 = v21;
               v37 = v18;
               v38 = v20;
-              v39 = [v75 stringForPlaceholder:v33];
+              v39 = [xMLSpecification stringForPlaceholder:body];
               if (v39)
               {
                 [v31 setBody:v39];
@@ -2231,7 +2231,7 @@ LABEL_13:
           }
 
           v47 = *(*(&v81 + 1) + 8 * j);
-          v48 = [v75 stringForPlaceholder:v47];
+          v48 = [xMLSpecification stringForPlaceholder:v47];
           [v41 setValue:v48 forKey:v47];
         }
 
@@ -2255,8 +2255,8 @@ LABEL_13:
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v50 = [v72 allPages];
-    v51 = [v50 countByEnumeratingWithState:&v77 objects:v89 count:16];
+    allPages = [v72 allPages];
+    v51 = [allPages countByEnumeratingWithState:&v77 objects:v89 count:16];
     if (v51)
     {
       v52 = v51;
@@ -2267,51 +2267,51 @@ LABEL_13:
         {
           if (*v78 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(allPages);
           }
 
           v55 = *(*(&v77 + 1) + 8 * k);
           v56 = *(v18 + 992);
-          v57 = [v55 navTitle];
-          v58 = [v56 replaceWordsIn:v57 with:v41];
+          navTitle2 = [v55 navTitle];
+          v58 = [v56 replaceWordsIn:navTitle2 with:v41];
           [v55 setNavTitle:v58];
 
           v59 = *(v18 + 992);
-          v60 = [v55 navSubTitle];
-          v61 = [v59 replaceWordsIn:v60 with:v41];
+          navSubTitle2 = [v55 navSubTitle];
+          v61 = [v59 replaceWordsIn:navSubTitle2 with:v41];
           [v55 setNavSubTitle:v61];
 
           v62 = _ICQGetLogSystem();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
           {
-            v63 = [v55 navTitle];
+            navTitle3 = [v55 navTitle];
             *buf = 138412290;
-            v92 = v63;
+            v92 = navTitle3;
             _os_log_impl(&dword_275623000, v62, OS_LOG_TYPE_DEFAULT, "navtitle = %@", buf, 0xCu);
           }
 
           v64 = _ICQGetLogSystem();
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
           {
-            v65 = [v55 navSubTitle];
+            navSubTitle3 = [v55 navSubTitle];
             *buf = 138412290;
-            v92 = v65;
+            v92 = navSubTitle3;
             _os_log_impl(&dword_275623000, v64, OS_LOG_TYPE_DEFAULT, "navSubTitle = %@", buf, 0xCu);
           }
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v77 objects:v89 count:16];
+        v52 = [allPages countByEnumeratingWithState:&v77 objects:v89 count:16];
       }
 
       while (v52);
     }
 
-    v7 = v72;
-    [(RUIServerHookHandler *)v70->_serverHookHandler processObjectModel:v72 isModal:1];
-    v66 = [(ICQUpgradeFlowManager *)v70 hostingNavigationController];
-    v67 = [v66 isNavigationBarHidden];
+    modelCopy = v72;
+    [(RUIServerHookHandler *)selfCopy->_serverHookHandler processObjectModel:v72 isModal:1];
+    hostingNavigationController = [(ICQUpgradeFlowManager *)selfCopy hostingNavigationController];
+    isNavigationBarHidden = [hostingNavigationController isNavigationBarHidden];
 
-    if (v67)
+    if (isNavigationBarHidden)
     {
       v68 = _ICQGetLogSystem();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
@@ -2320,25 +2320,25 @@ LABEL_13:
         _os_log_impl(&dword_275623000, v68, OS_LOG_TYPE_DEFAULT, "Navigation bar is hidden, resetting it to be visible.", buf, 2u);
       }
 
-      v69 = [(ICQUpgradeFlowManager *)v70 hostingNavigationController];
-      [v69 setNavigationBarHidden:0];
+      hostingNavigationController2 = [(ICQUpgradeFlowManager *)selfCopy hostingNavigationController];
+      [hostingNavigationController2 setNavigationBarHidden:0];
     }
 
-    v8 = v71;
+    clientInfo = v71;
   }
 
   else
   {
     [(ICQUpgradeFlowManager *)self dismissUpgradeFlowWithSuccess:1];
-    [(RUIServerHookHandler *)self->_serverHookHandler processObjectModel:v7 isModal:1];
+    [(RUIServerHookHandler *)self->_serverHookHandler processObjectModel:modelCopy isModal:1];
   }
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   Nanoseconds = _ICQSignpostGetNanoseconds();
   v9 = _ICQSignpostLogSystem();
   v10 = v9;
@@ -2346,7 +2346,7 @@ LABEL_13:
   if (identifier - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     v12 = @"NO";
-    if (!v7)
+    if (!errorCopy)
     {
       v12 = @"YES";
     }
@@ -2362,7 +2362,7 @@ LABEL_13:
     identifier_low = LOWORD(self->_loadRemoteUISignpost.identifier);
     *buf = 67109634;
     *&buf[4] = identifier_low;
-    if (v7)
+    if (errorCopy)
     {
       v29 = @"NO";
     }
@@ -2379,24 +2379,24 @@ LABEL_13:
     _os_log_debug_impl(&dword_275623000, v13, OS_LOG_TYPE_DEBUG, "SIGNPOST END   [id: %hu]: (%.4fs) UpsellLoadRemoteUI Success: %@", buf, 0x1Cu);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v14 = [v7 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"statusCode"];
+    userInfo = [errorCopy userInfo];
+    v15 = [userInfo objectForKeyedSubscript:@"statusCode"];
     v16 = [v15 intValue] == 401;
 
     if (!v16)
     {
       self->_renewCredentialsCount = 0;
 LABEL_15:
-      v19 = [v7 code] == -1009;
+      v19 = [errorCopy code] == -1009;
       v20 = _ICQGetLogSystem();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
       if (v19)
       {
         if (v21)
         {
-          v22 = [v7 debugDescription];
+          v22 = [errorCopy debugDescription];
           *buf = 138412290;
           *&buf[4] = v22;
           _os_log_impl(&dword_275623000, v20, OS_LOG_TYPE_DEFAULT, "RemoteUIController finished loading with network error: %@", buf, 0xCu);
@@ -2409,7 +2409,7 @@ LABEL_15:
       {
         if (v21)
         {
-          v23 = [v7 debugDescription];
+          v23 = [errorCopy debugDescription];
           *buf = 138412290;
           *&buf[4] = v23;
           _os_log_impl(&dword_275623000, v20, OS_LOG_TYPE_DEFAULT, "RemoteUIController finished loading with error: %@", buf, 0xCu);
@@ -2525,14 +2525,14 @@ void __67__ICQUpgradeFlowManager_remoteUIController_didFinishLoadWithError___blo
   }
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
-  objc_storeStrong(&self->_hostingNavigationController, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_hostingNavigationController, navigationController);
+  navigationControllerCopy = navigationController;
   [(UINavigationController *)self->_hostingNavigationController setDelegate:self];
 }
 
-- (void)remoteUIController:(id)a3 didDismissModalNavigationWithObjectModels:(id)a4
+- (void)remoteUIController:(id)controller didDismissModalNavigationWithObjectModels:(id)models
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2542,17 +2542,17 @@ void __67__ICQUpgradeFlowManager_remoteUIController_didFinishLoadWithError___blo
   }
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICQUpgradeFlowManager *)self closeURL];
+  closeURL = [(ICQUpgradeFlowManager *)self closeURL];
 
-  if (v4)
+  if (closeURL)
   {
     v5 = MEMORY[0x277D7F370];
     v8 = *MEMORY[0x277D7F268];
-    v6 = [(ICQUpgradeFlowManager *)self closeURL];
-    v9[0] = v6;
+    closeURL2 = [(ICQUpgradeFlowManager *)self closeURL];
+    v9[0] = closeURL2;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     [v5 performAction:124 parameters:v7 options:2];
   }
@@ -2560,11 +2560,11 @@ void __67__ICQUpgradeFlowManager_remoteUIController_didFinishLoadWithError___blo
   [(ICQUpgradeFlowManager *)self _cancelFlow];
 }
 
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v5 = a4;
-  v6 = [v5 clientInfo];
-  v7 = [v6 objectForKeyedSubscript:@"action"];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  v7 = [clientInfo objectForKeyedSubscript:@"action"];
   v8 = _ICQActionForServerActionString();
 
   if (v8 == 118)
@@ -2576,12 +2576,12 @@ void __67__ICQUpgradeFlowManager_remoteUIController_didFinishLoadWithError___blo
       _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Detected clientInfo action Direct to Oslo. Attempting to launch oslo.", buf, 2u);
     }
 
-    v10 = [v5 subElementWithID:@"upgradeButton"];
+    v10 = [modelCopy subElementWithID:@"upgradeButton"];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__ICQUpgradeFlowManager_remoteUIController_didPresentObjectModel_modally___block_invoke;
     v12[3] = &unk_27A65A708;
-    v13 = v5;
+    v13 = modelCopy;
     v14 = v10;
     v11 = v10;
     dispatch_async(MEMORY[0x277D85CD0], v12);
@@ -2606,22 +2606,22 @@ void __74__ICQUpgradeFlowManager_remoteUIController_didPresentObjectModel_modall
 - (void)showNetworkFailurePage
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(ICQOffer *)self->_offer upgradeFlowSpecification];
-  v4 = [v3 upgradeFailurePageForNetwork];
+  upgradeFlowSpecification = [(ICQOffer *)self->_offer upgradeFlowSpecification];
+  upgradeFailurePageForNetwork = [upgradeFlowSpecification upgradeFailurePageForNetwork];
 
-  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:v4];
+  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:upgradeFailurePageForNetwork];
 }
 
 - (void)showUpgradeFailurePage
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(ICQOffer *)self->_offer upgradeFlowSpecification];
-  v4 = [v3 upgradeFailurePage];
+  upgradeFlowSpecification = [(ICQOffer *)self->_offer upgradeFlowSpecification];
+  upgradeFailurePage = [upgradeFlowSpecification upgradeFailurePage];
 
-  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:v4];
+  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:upgradeFailurePage];
 }
 
-- (void)dismissUpgradeFlowWithSuccess:(BOOL)a3
+- (void)dismissUpgradeFlowWithSuccess:(BOOL)success
 {
   if (self->_hostingNavigationController)
   {
@@ -2629,9 +2629,9 @@ void __74__ICQUpgradeFlowManager_remoteUIController_didPresentObjectModel_modall
     v3[1] = 3221225472;
     v3[2] = __55__ICQUpgradeFlowManager_dismissUpgradeFlowWithSuccess___block_invoke;
     v3[3] = &unk_27A65A930;
-    v4 = a3;
+    successCopy = success;
     v3[4] = self;
-    [(ICQUpgradeFlowManager *)self dismissNavigationControllerAnimated:1 success:a3 completion:v3];
+    [(ICQUpgradeFlowManager *)self dismissNavigationControllerAnimated:1 success:success completion:v3];
   }
 }
 
@@ -2681,16 +2681,16 @@ uint64_t __55__ICQUpgradeFlowManager_dismissUpgradeFlowWithSuccess___block_invok
 - (id)presentationContext
 {
   p_hostingNavigationController = &self->_hostingNavigationController;
-  v4 = [(UINavigationController *)self->_hostingNavigationController presentingViewController];
-  if (v4)
+  presentingViewController = [(UINavigationController *)self->_hostingNavigationController presentingViewController];
+  if (presentingViewController)
   {
   }
 
   else
   {
-    v5 = [(UINavigationController *)self->_hostingNavigationController parentViewController];
+    parentViewController = [(UINavigationController *)self->_hostingNavigationController parentViewController];
 
-    if (!v5)
+    if (!parentViewController)
     {
       p_hostingNavigationController = &self->_presentingViewController;
     }
@@ -2861,17 +2861,17 @@ void __49__ICQUpgradeFlowManager__initiateFamilySetupFlow__block_invoke(uint64_t
   [*(a1 + 32) _simulateDoneButton];
 }
 
-- (void)_sendDelegateLoadError:(id)a3
+- (void)_sendDelegateLoadError:(id)error
 {
-  v9 = a3;
-  v4 = [(ICQUpgradeFlowManager *)self delegate];
+  errorCopy = error;
+  delegate = [(ICQUpgradeFlowManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(ICQUpgradeFlowManager *)self delegate];
-  v7 = v6;
+  delegate2 = [(ICQUpgradeFlowManager *)self delegate];
+  delegate3 = delegate2;
   if (v5)
   {
-    [v6 upgradeFlowManagerDidFail:self error:v9];
+    [delegate2 upgradeFlowManagerDidFail:self error:errorCopy];
   }
 
   else
@@ -2883,8 +2883,8 @@ void __49__ICQUpgradeFlowManager__initiateFamilySetupFlow__block_invoke(uint64_t
       goto LABEL_6;
     }
 
-    v7 = [(ICQUpgradeFlowManager *)self delegate];
-    [v7 manager:self loadDidFailWithError:v9];
+    delegate3 = [(ICQUpgradeFlowManager *)self delegate];
+    [delegate3 manager:self loadDidFailWithError:errorCopy];
   }
 
 LABEL_6:
@@ -2940,28 +2940,28 @@ void __46__ICQUpgradeFlowManager__sendDelegateComplete__block_invoke(uint64_t a1
   }
 }
 
-- (void)_sendDelegateDidPresentViewController:(id)a3
+- (void)_sendDelegateDidPresentViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(ICQUpgradeFlowManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(ICQUpgradeFlowManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICQUpgradeFlowManager *)self delegate];
-    [v6 upgradeFlowManager:self didPresentViewController:v7];
+    delegate2 = [(ICQUpgradeFlowManager *)self delegate];
+    [delegate2 upgradeFlowManager:self didPresentViewController:controllerCopy];
   }
 }
 
-- (ICQUpgradeFlowManager)initWithJourneyId:(id)a3 params:(id)a4
+- (ICQUpgradeFlowManager)initWithJourneyId:(id)id params:(id)params
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v9 = [v8 currentDefaultOffer];
+  idCopy = id;
+  paramsCopy = params;
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  currentDefaultOffer = [mEMORY[0x277D7F390] currentDefaultOffer];
 
-  v10 = [(ICQUpgradeFlowManager *)self initWithOffer:v9];
+  v10 = [(ICQUpgradeFlowManager *)self initWithOffer:currentDefaultOffer];
   if (!v10)
   {
 LABEL_6:
@@ -2969,12 +2969,12 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v11 = [v9 journeyLinkForId:v6];
+  v11 = [currentDefaultOffer journeyLinkForId:idCopy];
   if (v11)
   {
     v12 = v11;
-    v13 = [v11 serverUIURL];
-    v14 = [(ICQUpgradeFlowManager *)v10 addParams:v7 toJourneyURL:v13];
+    serverUIURL = [v11 serverUIURL];
+    v14 = [(ICQUpgradeFlowManager *)v10 addParams:paramsCopy toJourneyURL:serverUIURL];
 
     [v12 setServerUIURL:v14];
     [(ICQUpgradeFlowManager *)v10 setIcqLink:v12];
@@ -2992,7 +2992,7 @@ LABEL_6:
   v17 = _ICQGetLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [(ICQUpgradeFlowManager *)v6 initWithJourneyId:v9 params:v17];
+    [(ICQUpgradeFlowManager *)idCopy initWithJourneyId:currentDefaultOffer params:v17];
   }
 
   v16 = 0;
@@ -3001,23 +3001,23 @@ LABEL_10:
   return v16;
 }
 
-+ (void)flowManagerWithJourneyId:(id)a3 params:(id)a4 completion:(id)a5
++ (void)flowManagerWithJourneyId:(id)id params:(id)params completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D7F390] sharedOfferManager];
+  idCopy = id;
+  paramsCopy = params;
+  completionCopy = completion;
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___block_invoke;
   v14[3] = &unk_27A65A980;
-  v16 = v8;
-  v17 = v9;
-  v15 = v7;
-  v11 = v8;
-  v12 = v9;
-  v13 = v7;
-  [v10 getDefaultOfferWithCompletion:v14];
+  v16 = paramsCopy;
+  v17 = completionCopy;
+  v15 = idCopy;
+  v11 = paramsCopy;
+  v12 = completionCopy;
+  v13 = idCopy;
+  [mEMORY[0x277D7F390] getDefaultOfferWithCompletion:v14];
 }
 
 void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___block_invoke(void *a1, void *a2, void *a3)
@@ -3068,18 +3068,18 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
   _os_log_error_impl(&dword_275623000, a2, OS_LOG_TYPE_ERROR, "requestedServerUIURL is nil. Use initWithJourneyId: to initialize %{public}@ before calling beginJourney", &v4, 0xCu);
 }
 
-- (id)addParams:(id)a3 toJourneyURL:(id)a4
+- (id)addParams:(id)params toJourneyURL:(id)l
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 absoluteString];
-  v7 = [v6 mutableCopy];
+  paramsCopy = params;
+  absoluteString = [l absoluteString];
+  v7 = [absoluteString mutableCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v5;
+  v8 = paramsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -3109,7 +3109,7 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
   return v14;
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3
+- (void)liftUIPresenterDidComplete:(id)complete
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -3128,7 +3128,7 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
   [(ICQUpgradeFlowManager *)self dismissNavigationControllerAnimated:1 success:1 completion:v5];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3
+- (void)liftUIPresenterDidCancel:(id)cancel
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -3139,21 +3139,21 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__ICQUpgradeFlowManager_liftUIPresenterDidCancel___block_invoke;
   v6[3] = &unk_27A65A820;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:1 completion:v6];
+  [hostingNavigationController dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (void)liftUIPresenter:(id)a3 performAction:(int64_t)a4 parameters:(id)a5 completion:(id)a6
+- (void)liftUIPresenter:(id)presenter performAction:(int64_t)action parameters:(id)parameters completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v10 = a5;
-  v11 = a6;
+  presenterCopy = presenter;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v12 = _ICQGetLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -3167,13 +3167,13 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
 
   v14 = objc_alloc_init(MEMORY[0x277D461E8]);
   [v14 setName:@"LiftUI Proxy"];
-  [v14 setClientInfo:v10];
+  [v14 setClientInfo:parametersCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [(ICQUpgradeFlowManager *)self serverHooks];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  serverHooks = [(ICQUpgradeFlowManager *)self serverHooks];
+  v16 = [serverHooks countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
@@ -3184,7 +3184,7 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
       {
         if (*v30 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(serverHooks);
         }
 
         v20 = *(*(&v29 + 1) + 8 * i);
@@ -3195,18 +3195,18 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
           v26[1] = 3221225472;
           v26[2] = __77__ICQUpgradeFlowManager_liftUIPresenter_performAction_parameters_completion___block_invoke;
           v26[3] = &unk_27A65A9D0;
-          v28 = v11;
+          v28 = completionCopy;
           v26[4] = v20;
           v26[5] = self;
-          v24 = v25;
-          v27 = v25;
+          v24 = presenterCopy;
+          v27 = presenterCopy;
           [v20 processObjectModel:v14 completion:v26];
 
           goto LABEL_16;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v17 = [serverHooks countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v17)
       {
         continue;
@@ -3216,21 +3216,21 @@ void __68__ICQUpgradeFlowManager_flowManagerWithJourneyId_params_completion___bl
     }
   }
 
-  if (a4 == 112 && ([v10 objectForKeyedSubscript:@"url"], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
+  if (action == 112 && ([parametersCopy objectForKeyedSubscript:@"url"], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
   {
-    v22 = [v10 objectForKeyedSubscript:@"url"];
-    v23 = [v10 objectForKeyedSubscript:@"httpMethod"];
+    v22 = [parametersCopy objectForKeyedSubscript:@"url"];
+    v23 = [parametersCopy objectForKeyedSubscript:@"httpMethod"];
     [(ICQUpgradeFlowManager *)self _handleRemoteUIActionWithURLString:v22 httpMethod:v23];
 
-    (*(v11 + 2))(v11, 1, 0);
-    v24 = v25;
+    (*(completionCopy + 2))(completionCopy, 1, 0);
+    v24 = presenterCopy;
   }
 
   else
   {
-    v24 = v25;
-    [(ICQUpgradeFlowManager *)self sender:v25 action:a4 parameters:v10];
-    (*(v11 + 2))(v11, 1, 0);
+    v24 = presenterCopy;
+    [(ICQUpgradeFlowManager *)self sender:presenterCopy action:action parameters:parametersCopy];
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_16:
@@ -3309,13 +3309,13 @@ LABEL_14:
   }
 }
 
-- (void)_handleRemoteUIActionWithURLString:(id)a3 httpMethod:(id)a4
+- (void)_handleRemoteUIActionWithURLString:(id)string httpMethod:(id)method
 {
-  v6 = a4;
-  v17 = v6;
-  if (v6)
+  methodCopy = method;
+  v17 = methodCopy;
+  if (methodCopy)
   {
-    v7 = v6;
+    v7 = methodCopy;
   }
 
   else
@@ -3324,11 +3324,11 @@ LABEL_14:
   }
 
   v8 = MEMORY[0x277CCAB70];
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:a3];
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:string];
   v10 = [v8 requestWithURL:v9];
 
-  v11 = [(__CFString *)v7 uppercaseString];
-  v12 = [v11 isEqualToString:@"POST"];
+  uppercaseString = [(__CFString *)v7 uppercaseString];
+  v12 = [uppercaseString isEqualToString:@"POST"];
 
   if (v12)
   {
@@ -3339,18 +3339,18 @@ LABEL_14:
     v15 = [MEMORY[0x277CCAC58] dataWithPropertyList:v14 format:100 options:0 error:0];
 
     [v10 setHTTPBody:v15];
-    v16 = [(__CFString *)v7 uppercaseString];
-    [v10 setHTTPMethod:v16];
+    uppercaseString2 = [(__CFString *)v7 uppercaseString];
+    [v10 setHTTPMethod:uppercaseString2];
   }
 
   [(ICQUpgradeFlowManager *)self _presentRemoteViewWithData:0 andRequest:v10];
 }
 
-- (void)liftUIPresenter:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5
+- (void)liftUIPresenter:(id)presenter didLoadWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
+  successCopy = success;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  errorCopy = error;
   Nanoseconds = _ICQSignpostGetNanoseconds();
   v9 = _ICQSignpostLogSystem();
   v10 = v9;
@@ -3358,7 +3358,7 @@ LABEL_14:
   if (identifier - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     v12 = @"NO";
-    if (v5)
+    if (successCopy)
     {
       v12 = @"YES";
     }
@@ -3374,7 +3374,7 @@ LABEL_14:
     identifier_low = LOWORD(self->_loadLiftUISignpost.identifier);
     v21 = 67109634;
     *v22 = identifier_low;
-    if (v5)
+    if (successCopy)
     {
       v20 = @"YES";
     }
@@ -3391,16 +3391,16 @@ LABEL_14:
     _os_log_debug_impl(&dword_275623000, v13, OS_LOG_TYPE_DEBUG, "SIGNPOST END   [id: %hu]: (%.4fs) UpsellLoadLiftUI Success: %@", &v21, 0x1Cu);
   }
 
-  if (!v5)
+  if (!successCopy)
   {
-    v14 = [v7 code];
+    code = [errorCopy code];
     v15 = _ICQGetLogSystem();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14 == -1009)
+    if (code == -1009)
     {
       if (v16)
       {
-        v17 = [v7 debugDescription];
+        v17 = [errorCopy debugDescription];
         v21 = 138412290;
         *v22 = v17;
         _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "RemoteUIController finished loading with network error: %@", &v21, 0xCu);
@@ -3413,7 +3413,7 @@ LABEL_14:
     {
       if (v16)
       {
-        v18 = [v7 debugDescription];
+        v18 = [errorCopy debugDescription];
         v21 = 138412290;
         *v22 = v18;
         _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "RemoteUIController finished loading with error: %@", &v21, 0xCu);
@@ -3424,31 +3424,31 @@ LABEL_14:
   }
 }
 
-- (void)dismissObjectModelsAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissObjectModelsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = [(ICQUpgradeFlowManager *)self hostingNavigationController:a3];
+  v4 = [(ICQUpgradeFlowManager *)self hostingNavigationController:animated];
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentFlowHostedInNavigationController:(id)a3
+- (void)presentFlowHostedInNavigationController:(id)controller
 {
-  v5 = a3;
-  v6 = [(ICQUpgradeFlowManager *)self offer];
-  v7 = [v6 upgradeFlowSpecification];
+  controllerCopy = controller;
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  upgradeFlowSpecification = [offer upgradeFlowSpecification];
 
-  v8 = [(ICQUpgradeFlowManager *)self offer];
-  v9 = [v8 alertSpecificationAtIndex:0];
-  [v7 setStartAlert:v9];
+  offer2 = [(ICQUpgradeFlowManager *)self offer];
+  v9 = [offer2 alertSpecificationAtIndex:0];
+  [upgradeFlowSpecification setStartAlert:v9];
 
-  v10 = [v7 startPage];
+  startPage = [upgradeFlowSpecification startPage];
 
-  if (!v10)
+  if (!startPage)
   {
-    v12 = [v7 startAlert];
+    startAlert = [upgradeFlowSpecification startAlert];
 
     v13 = _ICQGetLogSystem();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (startAlert)
     {
       if (v14)
       {
@@ -3468,29 +3468,29 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v11 = ICQCreateError();
-    [(ICQUpgradeFlowManager *)self _sendDelegateLoadError:v11];
+    startPage2 = ICQCreateError();
+    [(ICQUpgradeFlowManager *)self _sendDelegateLoadError:startPage2];
     goto LABEL_10;
   }
 
-  objc_storeStrong(&self->_hostingNavigationController, a3);
+  objc_storeStrong(&self->_hostingNavigationController, controller);
   [(UINavigationController *)self->_hostingNavigationController setDelegate:self];
   self->_shouldNavigationControllerBeDismissed = 0;
-  v11 = [v7 startPage];
-  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:v11];
+  startPage2 = [upgradeFlowSpecification startPage];
+  [(ICQUpgradeFlowManager *)self _presentPageWithSpecification:startPage2];
 LABEL_10:
 }
 
-- (void)remoteUIFlowManager:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5
+- (void)remoteUIFlowManager:(id)manager didLoadWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  managerCopy = manager;
+  errorCopy = error;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (successCopy)
     {
       v11 = @"YES";
     }
@@ -3500,35 +3500,35 @@ LABEL_10:
       v11 = @"NO";
     }
 
-    v12 = [v9 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v16 = 136315906;
     v17 = "[ICQUpgradeFlowManager remoteUIFlowManager:didLoadWithSuccess:error:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = managerCopy;
     v20 = 2112;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = localizedDescription;
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "%s: %@, success: %@, error: %@", &v16, 0x2Au);
   }
 
-  v13 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-  v14 = [v13 isNavigationBarHidden];
+  hostingNavigationController = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+  isNavigationBarHidden = [hostingNavigationController isNavigationBarHidden];
 
-  if (v14)
+  if (isNavigationBarHidden)
   {
-    v15 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [v15 setNavigationBarHidden:0];
+    hostingNavigationController2 = [(ICQUpgradeFlowManager *)self hostingNavigationController];
+    [hostingNavigationController2 setNavigationBarHidden:0];
   }
 }
 
-- (void)beginOSLOFlowWithPresentingViewController:(id)a3
+- (void)beginOSLOFlowWithPresentingViewController:(id)controller
 {
   osloPresenter = self->_osloPresenter;
   if (!osloPresenter)
   {
-    v5 = a3;
-    v6 = [[ICQUIOSLOPresenter alloc] initWithOffer:self->_offer link:self->_icqLink presenter:v5];
+    controllerCopy = controller;
+    v6 = [[ICQUIOSLOPresenter alloc] initWithOffer:self->_offer link:self->_icqLink presenter:controllerCopy];
 
     v7 = self->_osloPresenter;
     self->_osloPresenter = v6;
@@ -3540,16 +3540,16 @@ LABEL_10:
   [(ICQUIOSLOPresenter *)osloPresenter beginOSLOPurchaseFlow];
 }
 
-- (void)purchaseFlowCompletedWith:(BOOL)a3 error:(id)a4
+- (void)purchaseFlowCompletedWith:(BOOL)with error:(id)error
 {
-  v4 = a3;
+  withCopy = with;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     osloPresenter = self->_osloPresenter;
-    if (v4)
+    if (withCopy)
     {
       v9 = @"YES";
     }
@@ -3559,7 +3559,7 @@ LABEL_10:
       v9 = @"NO";
     }
 
-    v10 = [v6 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v14 = 136315906;
     v15 = "[ICQUpgradeFlowManager purchaseFlowCompletedWith:error:]";
     v16 = 2112;
@@ -3567,17 +3567,17 @@ LABEL_10:
     v18 = 2112;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = localizedDescription;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@, success: %@, error: %@", &v14, 0x2Au);
   }
 
-  v11 = [(ICQUpgradeFlowManager *)self delegate];
+  delegate = [(ICQUpgradeFlowManager *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(ICQUpgradeFlowManager *)self delegate];
-    [v13 upgradeFlowManagerDidComplete:self];
+    delegate2 = [(ICQUpgradeFlowManager *)self delegate];
+    [delegate2 upgradeFlowManagerDidComplete:self];
   }
 }
 
@@ -3606,10 +3606,10 @@ LABEL_10:
   return result;
 }
 
-- (void)beginPostPurchaseFlowWithLink:(id)a3 offer:(id)a4
+- (void)beginPostPurchaseFlowWithLink:(id)link offer:(id)offer
 {
-  v6 = a4;
-  v7 = a3;
+  offerCopy = offer;
+  linkCopy = link;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3618,38 +3618,38 @@ LABEL_10:
   }
 
   v9 = +[ICQUIOutOfProcessUpgradeFlowManager sharedManager];
-  v10 = [(ICQUpgradeFlowManager *)self delegate];
-  [v9 setDelegate:v10];
+  delegate = [(ICQUpgradeFlowManager *)self delegate];
+  [v9 setDelegate:delegate];
 
-  v11 = [(ICQUpgradeFlowManager *)self flowOptions];
-  [v9 setFlowOptions:v11];
+  flowOptions = [(ICQUpgradeFlowManager *)self flowOptions];
+  [v9 setFlowOptions:flowOptions];
 
-  v12 = [(ICQUpgradeFlowManager *)self offer];
-  [v9 setOffer:v12];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  [v9 setOffer:offer];
 
-  v13 = [(ICQUpgradeFlowManager *)self icqLink];
-  [v9 setLink:v13];
+  icqLink = [(ICQUpgradeFlowManager *)self icqLink];
+  [v9 setLink:icqLink];
 
   [v9 setFlowManager:self];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 bundleIdentifier];
-  [v9 setPresentingSceneBundleIdentifier:v15];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v9 setPresentingSceneBundleIdentifier:bundleIdentifier];
 
-  [v9 beginPostPurchaseFlowWithOffer:v6 link:v7];
+  [v9 beginPostPurchaseFlowWithOffer:offerCopy link:linkCopy];
 }
 
-+ (void)needsToRunWithCompletion:(id)a3
++ (void)needsToRunWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (needsToRunWithCompletion__onceToken != -1)
   {
     +[ICQUpgradeFlowManager(ICQBuddy) needsToRunWithCompletion:];
   }
 
-  v5 = [MEMORY[0x277D7F390] sharedOfferManager];
-  v6 = [v5 isBuddyOfferEnabled];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
+  isBuddyOfferEnabled = [mEMORY[0x277D7F390] isBuddyOfferEnabled];
 
-  if (v6)
+  if (isBuddyOfferEnabled)
   {
     v23[0] = 0;
     v23[1] = v23;
@@ -3667,10 +3667,10 @@ LABEL_10:
     block[3] = &unk_27A65B4D0;
     v19 = v21;
     v20 = v23;
-    v9 = v4;
+    v9 = completionCopy;
     v18 = v9;
     dispatch_after(v7, v8, block);
-    v10 = [MEMORY[0x277D7F390] sharedOfferManager];
+    mEMORY[0x277D7F390]2 = [MEMORY[0x277D7F390] sharedOfferManager];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__ICQUpgradeFlowManager_ICQBuddy__needsToRunWithCompletion___block_invoke_9;
@@ -3678,8 +3678,8 @@ LABEL_10:
     v14 = v23;
     v15 = v21;
     v13 = v9;
-    v16 = a1;
-    [v10 getOfferForBundleIdentifier:@"com.apple.purplebuddy" completion:v12];
+    selfCopy = self;
+    [mEMORY[0x277D7F390]2 getOfferForBundleIdentifier:@"com.apple.purplebuddy" completion:v12];
 
     _Block_object_dispose(v21, 8);
     _Block_object_dispose(v23, 8);
@@ -3688,7 +3688,7 @@ LABEL_10:
   else
   {
     v11 = ICQCreateErrorWithMessage();
-    (*(v4 + 2))(v4, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 

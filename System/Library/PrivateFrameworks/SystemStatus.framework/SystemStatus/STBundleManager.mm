@@ -1,40 +1,40 @@
 @interface STBundleManager
-+ (id)_defaultBundleRecordDirectoriesForClass:(Class)a3;
-+ (id)_defaultBundleRecordIdentifierAllowListForClass:(Class)a3;
++ (id)_defaultBundleRecordDirectoriesForClass:(Class)class;
++ (id)_defaultBundleRecordIdentifierAllowListForClass:(Class)class;
 - (NSSet)recordIdentifiers;
-- (STBundleManager)initWithBundleRecordClass:(Class)a3;
-- (id)_initWithBundleRecordClass:(Class)a3 directoryURLs:(id)a4 allowedBundleRecordIdentifiers:(id)a5;
+- (STBundleManager)initWithBundleRecordClass:(Class)class;
+- (id)_initWithBundleRecordClass:(Class)class directoryURLs:(id)ls allowedBundleRecordIdentifiers:(id)identifiers;
 - (id)_queue_loadAllBundleRecords;
-- (id)bundleRecordForRecordIdentifier:(id)a3;
+- (id)bundleRecordForRecordIdentifier:(id)identifier;
 - (void)_queue_prepareInternalPreferences;
 - (void)_queue_registerForInternalPreferenceChanges;
-- (void)_queue_runBlockOnObservers:(id)a3;
-- (void)_queue_setIgnoreAllowedList:(BOOL)a3;
+- (void)_queue_runBlockOnObservers:(id)observers;
+- (void)_queue_setIgnoreAllowedList:(BOOL)list;
 - (void)_queue_unregisterForInternalPreferenceChanges;
 - (void)_queue_updateAllBundleRecords;
-- (void)_queue_updateAllBundleRecordsForAllBundleRecords:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_queue_updateAllBundleRecordsForAllBundleRecords:(id)records;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation STBundleManager
 
-- (id)_initWithBundleRecordClass:(Class)a3 directoryURLs:(id)a4 allowedBundleRecordIdentifiers:(id)a5
+- (id)_initWithBundleRecordClass:(Class)class directoryURLs:(id)ls allowedBundleRecordIdentifiers:(id)identifiers
 {
-  v8 = a4;
-  v9 = a5;
+  lsCopy = ls;
+  identifiersCopy = identifiers;
   v28.receiver = self;
   v28.super_class = STBundleManager;
   v10 = [(STBundleManager *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleRecordClass, a3);
-    v12 = [v8 copy];
+    objc_storeStrong(&v10->_bundleRecordClass, class);
+    v12 = [lsCopy copy];
     directoryURLs = v11->_directoryURLs;
     v11->_directoryURLs = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifiersCopy copy];
     allowedBundleRecordIdentifiers = v11->_allowedBundleRecordIdentifiers;
     v11->_allowedBundleRecordIdentifiers = v14;
 
@@ -73,24 +73,24 @@ uint64_t __91__STBundleManager__initWithBundleRecordClass_directoryURLs_allowedB
   return [v2 _queue_registerForInternalPreferenceChanges];
 }
 
-- (STBundleManager)initWithBundleRecordClass:(Class)a3
+- (STBundleManager)initWithBundleRecordClass:(Class)class
 {
-  v5 = [objc_opt_class() _defaultBundleRecordDirectoriesForClass:a3];
-  v6 = [objc_opt_class() _defaultBundleRecordIdentifierAllowListForClass:a3];
-  v7 = [(STBundleManager *)self _initWithBundleRecordClass:a3 directoryURLs:v5 allowedBundleRecordIdentifiers:v6];
+  v5 = [objc_opt_class() _defaultBundleRecordDirectoriesForClass:class];
+  v6 = [objc_opt_class() _defaultBundleRecordIdentifierAllowListForClass:class];
+  v7 = [(STBundleManager *)self _initWithBundleRecordClass:class directoryURLs:v5 allowedBundleRecordIdentifiers:v6];
 
   return v7;
 }
 
-+ (id)_defaultBundleRecordDirectoriesForClass:(Class)a3
++ (id)_defaultBundleRecordDirectoriesForClass:(Class)class
 {
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 8uLL, 1);
   if (MEMORY[0x1E12742A0]("+[STBundleManager _defaultBundleRecordDirectoriesForClass:]"))
   {
     v5 = +[STSystemStatusDefaults standardDefaults];
-    v6 = [v5 shouldEnableInternalBundles];
+    shouldEnableInternalBundles = [v5 shouldEnableInternalBundles];
 
-    if (v6)
+    if (shouldEnableInternalBundles)
     {
       v7 = [MEMORY[0x1E696AEC0] pathWithComponents:&unk_1F5678600];
       v8 = [v4 arrayByAddingObject:v7];
@@ -99,13 +99,13 @@ uint64_t __91__STBundleManager__initWithBundleRecordClass_directoryURLs_allowedB
     }
   }
 
-  v9 = [(objc_class *)a3 recordType];
+  recordType = [(objc_class *)class recordType];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__STBundleManager__defaultBundleRecordDirectoriesForClass___block_invoke;
   v13[3] = &unk_1E85DE650;
-  v14 = v9;
-  v10 = v9;
+  v14 = recordType;
+  v10 = recordType;
   v11 = [v4 bs_map:v13];
 
   return v11;
@@ -130,20 +130,20 @@ id __59__STBundleManager__defaultBundleRecordDirectoriesForClass___block_invoke(
   return v7;
 }
 
-+ (id)_defaultBundleRecordIdentifierAllowListForClass:(Class)a3
++ (id)_defaultBundleRecordIdentifierAllowListForClass:(Class)class
 {
-  v4 = [(objc_class *)a3 recordType];
+  recordType = [(objc_class *)class recordType];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__STBundleManager__defaultBundleRecordIdentifierAllowListForClass___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED7F5CC8 != -1)
   {
     dispatch_once(&qword_1ED7F5CC8, block);
   }
 
-  v5 = [_MergedGlobals_7 objectForKey:v4];
+  v5 = [_MergedGlobals_7 objectForKey:recordType];
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v5];
 
   return v6;
@@ -191,9 +191,9 @@ void __67__STBundleManager__defaultBundleRecordIdentifierAllowListForClass___blo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)bundleRecordForRecordIdentifier:(id)a3
+- (id)bundleRecordForRecordIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -205,10 +205,10 @@ void __67__STBundleManager__defaultBundleRecordIdentifierAllowListForClass___blo
   block[1] = 3221225472;
   block[2] = __51__STBundleManager_bundleRecordForRecordIdentifier___block_invoke;
   block[3] = &unk_1E85DDDF0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -258,64 +258,64 @@ void __36__STBundleManager_recordIdentifiers__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__STBundleManager_addObserver___block_invoke;
   v7[3] = &unk_1E85DDD00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__STBundleManager_removeObserver___block_invoke;
   v7[3] = &unk_1E85DDD00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_runBlockOnObservers:(id)a3
+- (void)_queue_runBlockOnObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSHashTable *)self->_queue_observers allObjects];
+  allObjects = [(NSHashTable *)self->_queue_observers allObjects];
   callOutQueue = self->_callOutQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__STBundleManager__queue_runBlockOnObservers___block_invoke;
   v9[3] = &unk_1E85DE6C0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = allObjects;
+  v11 = observersCopy;
+  v7 = observersCopy;
+  v8 = allObjects;
   dispatch_async(callOutQueue, v9);
 }
 
 - (void)_queue_updateAllBundleRecords
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(STBundleManager *)self _queue_loadAllBundleRecords];
-  [(STBundleManager *)self _queue_updateAllBundleRecordsForAllBundleRecords:v3];
+  _queue_loadAllBundleRecords = [(STBundleManager *)self _queue_loadAllBundleRecords];
+  [(STBundleManager *)self _queue_updateAllBundleRecordsForAllBundleRecords:_queue_loadAllBundleRecords];
 }
 
 - (id)_queue_loadAllBundleRecords
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = [(NSArray *)self->_directoryURLs bs_mapNoNulls:&__block_literal_global_8];
-  v4 = [v3 bs_flatten];
-  v5 = [v4 bs_filter:&__block_literal_global_34];
+  bs_flatten = [v3 bs_flatten];
+  v5 = [bs_flatten bs_filter:&__block_literal_global_34];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__STBundleManager__queue_loadAllBundleRecords__block_invoke_3;
@@ -395,17 +395,17 @@ LABEL_7:
   return v10;
 }
 
-- (void)_queue_updateAllBundleRecordsForAllBundleRecords:(id)a3
+- (void)_queue_updateAllBundleRecordsForAllBundleRecords:(id)records
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(recordsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -421,8 +421,8 @@ LABEL_7:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 recordIdentifier];
-        [v5 setObject:v11 forKey:v12];
+        recordIdentifier = [v11 recordIdentifier];
+        [v5 setObject:v11 forKey:recordIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -498,19 +498,19 @@ void __62__STBundleManager__queue_registerForInternalPreferenceChanges__block_in
   [(BSDefaultObserver *)internalDefaultsObserver invalidate];
 }
 
-- (void)_queue_setIgnoreAllowedList:(BOOL)a3
+- (void)_queue_setIgnoreAllowedList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   v10 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (MEMORY[0x1E12742A0]("[STBundleManager _queue_setIgnoreAllowedList:]") && self->_queue_ignoreAllowList != v3)
+  if (MEMORY[0x1E12742A0]("[STBundleManager _queue_setIgnoreAllowedList:]") && self->_queue_ignoreAllowList != listCopy)
   {
-    self->_queue_ignoreAllowList = v3;
+    self->_queue_ignoreAllowList = listCopy;
     v5 = STSystemStatusLogBundleLoading();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"Disabling";
-      if (v3)
+      if (listCopy)
       {
         v6 = @"Enabling";
       }

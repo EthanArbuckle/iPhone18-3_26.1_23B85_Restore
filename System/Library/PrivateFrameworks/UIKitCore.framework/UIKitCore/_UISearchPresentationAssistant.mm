@@ -1,18 +1,18 @@
 @interface _UISearchPresentationAssistant
 - (BOOL)_currentTransitionIsRotating;
 - (BOOL)_statusBarPreferredHidden;
-- (BOOL)_statusBarPreferredHiddenForInterfaceOrientation:(int64_t)a3;
+- (BOOL)_statusBarPreferredHiddenForInterfaceOrientation:(int64_t)orientation;
 - (BOOL)presentationIsPopoverToOverFullScreenAdaptation;
 - (BOOL)searchBarToBecomeTopAttached;
 - (BOOL)searchBarWillResizeForScopeBar;
 - (CGRect)_containerFrame;
-- (CGRect)optimalFrameForSearchBar:(id)a3;
+- (CGRect)optimalFrameForSearchBar:(id)bar;
 - (CGSize)updateSearchBarContainerFrame;
-- (_UISearchPresentationAssistant)initWithSearchPresentationController:(id)a3;
+- (_UISearchPresentationAssistant)initWithSearchPresentationController:(id)controller;
 - (double)_statusBarHeightChangeDueToRotation;
 - (double)resultsControllerContentOffset;
 - (double)statusBarAdjustment;
-- (id)_outermostNavigationControllerForPresentingViewController:(id)a3;
+- (id)_outermostNavigationControllerForPresentingViewController:(id)controller;
 - (id)_searchBarContainerSuperview;
 - (id)_searchControllerPresenting;
 - (id)dimmingView;
@@ -20,13 +20,13 @@
 - (id)locatePresentingNavigationController;
 - (id)searchBarContainerView;
 - (void)dealloc;
-- (void)dimmingViewWasTapped:(id)a3;
-- (void)ensureAppropriatelySizedSearchBar:(id)a3;
+- (void)dimmingViewWasTapped:(id)tapped;
+- (void)ensureAppropriatelySizedSearchBar:(id)bar;
 @end
 
 @implementation _UISearchPresentationAssistant
 
-- (_UISearchPresentationAssistant)initWithSearchPresentationController:(id)a3
+- (_UISearchPresentationAssistant)initWithSearchPresentationController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = _UISearchPresentationAssistant;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_searchPresentationController = a3;
+    v4->_searchPresentationController = controller;
     objc_opt_class();
     v5->_isFormSheetPresentation = objc_opt_isKindOfClass() & 1;
   }
@@ -82,30 +82,30 @@
   return v2 & 1;
 }
 
-- (CGRect)optimalFrameForSearchBar:(id)a3
+- (CGRect)optimalFrameForSearchBar:(id)bar
 {
   if ([(_UISearchPresentationAssistant *)self presentationIsPopoverToOverFullScreenAdaptation])
   {
-    [a3 frame];
+    [bar frame];
     v8 = v7;
     v10 = v9;
   }
 
   else
   {
-    v11 = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
-    if (!v11)
+    _searchBarContainerSuperview = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
+    if (!_searchBarContainerSuperview)
     {
-      v11 = +[UIWindow _applicationKeyWindow];
+      _searchBarContainerSuperview = +[UIWindow _applicationKeyWindow];
     }
 
-    [v11 bounds];
+    [_searchBarContainerSuperview bounds];
     Width = CGRectGetWidth(v17);
-    [a3 bounds];
-    [a3 sizeThatFits:{Width, CGRectGetHeight(v18)}];
+    [bar bounds];
+    [bar sizeThatFits:{Width, CGRectGetHeight(v18)}];
     v8 = v13;
     v10 = v14;
-    [a3 frame];
+    [bar frame];
   }
 
   v15 = v8;
@@ -117,15 +117,15 @@
   return result;
 }
 
-- (void)ensureAppropriatelySizedSearchBar:(id)a3
+- (void)ensureAppropriatelySizedSearchBar:(id)bar
 {
   [(_UISearchPresentationAssistant *)self optimalFrameForSearchBar:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  [a3 _defaultHeightForOrientation:{objc_msgSend(a3, "_expectedInterfaceOrientation")}];
+  [bar _defaultHeightForOrientation:{objc_msgSend(bar, "_expectedInterfaceOrientation")}];
   v11 = v10;
-  [a3 frame];
+  [bar frame];
   v18.origin.x = v12;
   v18.origin.y = v13;
   v18.size.width = v14;
@@ -136,26 +136,26 @@
   v17.size.height = v11;
   if (!CGRectEqualToRect(v17, v18))
   {
-    [a3 setFrame:{v5, v7, v9, v11}];
+    [bar setFrame:{v5, v7, v9, v11}];
 
-    [a3 layoutIfNeeded];
+    [bar layoutIfNeeded];
   }
 }
 
 - (CGRect)_containerFrame
 {
-  v3 = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
+  _searchBarContainerSuperview = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
   if (self)
   {
-    v4 = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
+    presentedViewController = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
   }
 
   else
   {
-    v4 = 0;
+    presentedViewController = 0;
   }
 
-  v5 = [(UIViewController *)v4 searchBar];
+  searchBar = [(UIViewController *)presentedViewController searchBar];
   v7 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
   v8 = *(MEMORY[0x1E695F058] + 16);
@@ -164,22 +164,22 @@
   v43 = v8;
   v45 = v6;
   v47 = *MEMORY[0x1E695F058];
-  if ([v5 window])
+  if ([searchBar window])
   {
-    if (![(UIView *)v3 window])
+    if (![(UIView *)_searchBarContainerSuperview window])
     {
-      v3 = [[(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentingViewController] view] superview];
+      _searchBarContainerSuperview = [[(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentingViewController] view] superview];
     }
 
-    if ([v5 superview] == v3)
+    if ([searchBar superview] == _searchBarContainerSuperview)
     {
-      [v5 frame];
+      [searchBar frame];
     }
 
     else
     {
-      [v5 bounds];
-      [v5 convertRect:v3 toView:?];
+      [searchBar bounds];
+      [searchBar convertRect:_searchBarContainerSuperview toView:?];
     }
 
     v7 = v10;
@@ -188,13 +188,13 @@
     v9 = v13;
   }
 
-  [v5 frame];
+  [searchBar frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [(_UISearchPresentationAssistant *)self ensureAppropriatelySizedSearchBar:v5];
-  [v5 frame];
+  [(_UISearchPresentationAssistant *)self ensureAppropriatelySizedSearchBar:searchBar];
+  [searchBar frame];
   v52.origin.x = v22;
   v52.origin.y = v23;
   v52.size.width = v24;
@@ -216,7 +216,7 @@
   {
     v7 = *MEMORY[0x1E695EFF8];
     v6 = *(MEMORY[0x1E695EFF8] + 8);
-    [v5 bounds];
+    [searchBar bounds];
     v8 = v32;
     v31 = v33;
   }
@@ -225,32 +225,32 @@
   {
     if (self)
     {
-      v27 = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
+      presentedViewController2 = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v27 = 0;
+      presentedViewController2 = 0;
     }
 
-    v28 = [[(UIViewController *)v27 view] window];
-    v29 = [(UIWindow *)v28 interfaceOrientation];
+    window = [[(UIViewController *)presentedViewController2 view] window];
+    interfaceOrientation = [(UIWindow *)window interfaceOrientation];
     if ([(_UISearchPresentationAssistant *)self _currentTransitionIsRotating])
     {
-      v29 = [(UIWindow *)v28 _toWindowOrientation];
+      interfaceOrientation = [(UIWindow *)window _toWindowOrientation];
     }
 
-    [v5 _barHeightForBarMetrics:{objc_msgSend(v5, "_barMetricsForOrientation:", v29)}];
+    [searchBar _barHeightForBarMetrics:{objc_msgSend(searchBar, "_barMetricsForOrientation:", interfaceOrientation)}];
     v31 = v30;
   }
 
   if ([(_UISearchPresentationAssistant *)self searchBarWillResizeForScopeBar])
   {
-    [v5 _scopeBarHeight];
+    [searchBar _scopeBarHeight];
     v31 = v31 + v34;
   }
 
-  if ([v5 barPosition] == 3)
+  if ([searchBar barPosition] == 3)
   {
     [(_UISearchPresentationAssistant *)self statusBarAdjustment];
     v36 = v35;
@@ -280,70 +280,70 @@
   searchPresentationController = self->_searchPresentationController;
   if (isFormSheetPresentation)
   {
-    v4 = [(UIPresentationController *)searchPresentationController containerView];
+    containerView = [(UIPresentationController *)searchPresentationController containerView];
 
-    return [(UIView *)v4 superview];
+    return [(UIView *)containerView superview];
   }
 
   else
   {
-    v6 = [(UIPresentationController *)searchPresentationController presentedViewController];
+    presentedViewController = [(UIPresentationController *)searchPresentationController presentedViewController];
 
-    return [(UIViewController *)v6 view];
+    return [(UIViewController *)presentedViewController view];
   }
 }
 
 - (id)searchBarContainerView
 {
-  v3 = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
-  v4 = [(_UISearchPresentationAssistant *)self _searchControllerPresenting];
+  _searchBarContainerSuperview = [(_UISearchPresentationAssistant *)self _searchBarContainerSuperview];
+  _searchControllerPresenting = [(_UISearchPresentationAssistant *)self _searchControllerPresenting];
   if (!self->_searchBarContainerView)
   {
     [(_UISearchPresentationAssistant *)self _containerFrame];
     v9 = [[_UISearchBarContainerView alloc] initWithFrame:v5, v6, v7, v8];
     self->_searchBarContainerView = &v9->super;
     [(UIView *)v9 setAutoresizingMask:2];
-    if (!v4 || [v4 searchBarShouldClipToBounds])
+    if (!_searchControllerPresenting || [_searchControllerPresenting searchBarShouldClipToBounds])
     {
       [(UIView *)self->_searchBarContainerView setClipsToBounds:1];
     }
   }
 
-  v10 = [(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] _viewToInsertSearchBarContainerViewUnder];
-  if (v10)
+  _viewToInsertSearchBarContainerViewUnder = [(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] _viewToInsertSearchBarContainerViewUnder];
+  if (_viewToInsertSearchBarContainerViewUnder)
   {
-    v11 = v10;
-    if ([v10 superview] == v3)
+    v11 = _viewToInsertSearchBarContainerViewUnder;
+    if ([_viewToInsertSearchBarContainerViewUnder superview] == _searchBarContainerSuperview)
     {
-      v15 = [(UIView *)v3 subviews];
-      v16 = [(NSArray *)v15 indexOfObject:self->_searchBarContainerView];
-      if (v16 == [(NSArray *)v15 indexOfObject:v11]- 1)
+      subviews = [(UIView *)_searchBarContainerSuperview subviews];
+      v16 = [(NSArray *)subviews indexOfObject:self->_searchBarContainerView];
+      if (v16 == [(NSArray *)subviews indexOfObject:v11]- 1)
       {
         return self->_searchBarContainerView;
       }
 
       searchBarContainerView = self->_searchBarContainerView;
-      v18 = v3;
+      v18 = _searchBarContainerSuperview;
       v19 = v11;
       goto LABEL_17;
     }
   }
 
-  v12 = [objc_msgSend(objc_msgSend(objc_msgSend(v4 "presentedViewController")];
+  v12 = [objc_msgSend(objc_msgSend(objc_msgSend(_searchControllerPresenting "presentedViewController")];
   if (v12)
   {
     v13 = v12;
-    if ([v12 superview] == v3)
+    if ([v12 superview] == _searchBarContainerSuperview)
     {
-      v21 = [(UIView *)v3 subviews];
-      v22 = [(NSArray *)v21 indexOfObject:v13];
-      if (v3 == [(UIView *)self->_searchBarContainerView superview]&& (!v22 || [(NSArray *)v21 indexOfObject:self->_searchBarContainerView]>= v22 - 1))
+      subviews2 = [(UIView *)_searchBarContainerSuperview subviews];
+      v22 = [(NSArray *)subviews2 indexOfObject:v13];
+      if (_searchBarContainerSuperview == [(UIView *)self->_searchBarContainerView superview]&& (!v22 || [(NSArray *)subviews2 indexOfObject:self->_searchBarContainerView]>= v22 - 1))
       {
         return self->_searchBarContainerView;
       }
 
       searchBarContainerView = self->_searchBarContainerView;
-      v18 = v3;
+      v18 = _searchBarContainerSuperview;
       v19 = v13;
 LABEL_17:
       [(UIView *)v18 insertSubview:searchBarContainerView belowSubview:v19];
@@ -351,17 +351,17 @@ LABEL_17:
     }
   }
 
-  if (v3 != [(UIView *)self->_searchBarContainerView superview])
+  if (_searchBarContainerSuperview != [(UIView *)self->_searchBarContainerView superview])
   {
     v14 = self->_searchBarContainerView;
 LABEL_14:
-    [(UIView *)v3 addSubview:v14];
+    [(UIView *)_searchBarContainerSuperview addSubview:v14];
     return self->_searchBarContainerView;
   }
 
-  v20 = [(NSArray *)[(UIView *)v3 subviews] lastObject];
+  lastObject = [(NSArray *)[(UIView *)_searchBarContainerSuperview subviews] lastObject];
   v14 = self->_searchBarContainerView;
-  if (v20 != v14)
+  if (lastObject != v14)
   {
     goto LABEL_14;
   }
@@ -391,33 +391,33 @@ LABEL_14:
 
   if (self)
   {
-    v4 = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
+    presentedViewController = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
   }
 
   else
   {
-    v4 = 0;
+    presentedViewController = 0;
   }
 
-  v5 = [[(UIViewController *)v4 view] window];
-  v6 = [(UIWindow *)v5 _toWindowOrientation];
-  v7 = [(UIWindow *)v5 interfaceOrientation];
-  v8 = [(_UISearchPresentationAssistant *)self _statusBarPreferredHiddenForInterfaceOrientation:v6];
-  v9 = [(_UISearchPresentationAssistant *)self _statusBarPreferredHiddenForInterfaceOrientation:v7];
+  window = [[(UIViewController *)presentedViewController view] window];
+  _toWindowOrientation = [(UIWindow *)window _toWindowOrientation];
+  interfaceOrientation = [(UIWindow *)window interfaceOrientation];
+  v8 = [(_UISearchPresentationAssistant *)self _statusBarPreferredHiddenForInterfaceOrientation:_toWindowOrientation];
+  v9 = [(_UISearchPresentationAssistant *)self _statusBarPreferredHiddenForInterfaceOrientation:interfaceOrientation];
   if (!v9 || v8)
   {
     if (!v9 && v8)
     {
-      [__UIStatusBarManagerForWindow(v5) defaultStatusBarHeightInOrientation:v7];
+      [__UIStatusBarManagerForWindow(window) defaultStatusBarHeightInOrientation:interfaceOrientation];
       return -v12;
     }
 
     return v3;
   }
 
-  v10 = __UIStatusBarManagerForWindow(v5);
+  v10 = __UIStatusBarManagerForWindow(window);
 
-  [v10 defaultStatusBarHeightInOrientation:v6];
+  [v10 defaultStatusBarHeightInOrientation:_toWindowOrientation];
   return result;
 }
 
@@ -426,11 +426,11 @@ LABEL_14:
   v2 = *MEMORY[0x1E695F060];
   if (self->_searchBarContainerView)
   {
-    v4 = [(_UISearchPresentationAssistant *)self locatePresentingNavigationController];
-    v5 = [v4 navigationBar];
-    if (v4)
+    locatePresentingNavigationController = [(_UISearchPresentationAssistant *)self locatePresentingNavigationController];
+    navigationBar = [locatePresentingNavigationController navigationBar];
+    if (locatePresentingNavigationController)
     {
-      v6 = v5;
+      v6 = navigationBar;
       if ((-[UIViewController _hidesNavigationBarDuringPresentationRespectingInlineSearch](-[UIPresentationController presentedViewController](self->_searchPresentationController, "presentedViewController"), "_hidesNavigationBarDuringPresentationRespectingInlineSearch") & 1) == 0 && ([v6 forceFullHeightInLandscape] & 1) == 0)
       {
         [v6 bounds];
@@ -460,13 +460,13 @@ LABEL_14:
         if (vabdd_f64(MaxY, CGRectGetMinY(v39)) <= 1.0 || [(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] _searchbarWasTableHeaderView])
         {
           v24 = [(_UISearchPresentationAssistant *)self _currentTransitionIsRotating:*&v10];
-          v25 = [[(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] view] window];
-          v26 = v24 ? [(UIWindow *)v25 _toWindowOrientation]: [(UIWindow *)v25 interfaceOrientation];
+          window = [[(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] view] window];
+          v26 = v24 ? [(UIWindow *)window _toWindowOrientation]: [(UIWindow *)window interfaceOrientation];
           v28 = v26;
-          v29 = [v4 navigationBar];
-          if ([v29 _heightDependentOnOrientation])
+          navigationBar2 = [locatePresentingNavigationController navigationBar];
+          if ([navigationBar2 _heightDependentOnOrientation])
           {
-            [v29 defaultSizeForOrientation:v28];
+            [navigationBar2 defaultSizeForOrientation:v28];
             v40.origin.y = v34;
             v40.origin.x = v35;
             v40.size.width = v36;
@@ -477,7 +477,7 @@ LABEL_14:
       }
     }
 
-    if (([(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentingViewController:*&v34] edgesForExtendedLayout]& 1) == 0 || v4 && ([(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] _hidesNavigationBarDuringPresentationRespectingInlineSearch]& 1) == 0)
+    if (([(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentingViewController:*&v34] edgesForExtendedLayout]& 1) == 0 || locatePresentingNavigationController && ([(UIViewController *)[(UIPresentationController *)self->_searchPresentationController presentedViewController] _hidesNavigationBarDuringPresentationRespectingInlineSearch]& 1) == 0)
     {
       [(_UISearchPresentationAssistant *)self _statusBarHeightChangeDueToRotation];
     }
@@ -528,7 +528,7 @@ LABEL_14:
 
 - (BOOL)_statusBarPreferredHidden
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
@@ -536,10 +536,10 @@ LABEL_14:
 
   v3 = [objc_msgSend(-[_UISearchPresentationAssistant view](self "view")];
 
-  return [(_UISearchPresentationAssistant *)v2 _statusBarPreferredHiddenForInterfaceOrientation:v3];
+  return [(_UISearchPresentationAssistant *)selfCopy _statusBarPreferredHiddenForInterfaceOrientation:v3];
 }
 
-- (BOOL)_statusBarPreferredHiddenForInterfaceOrientation:(int64_t)a3
+- (BOOL)_statusBarPreferredHiddenForInterfaceOrientation:(int64_t)orientation
 {
   if (self)
   {
@@ -573,59 +573,59 @@ LABEL_14:
     return 0.0;
   }
 
-  v4 = [(_UISearchPresentationAssistant *)self _currentTransitionIsRotating];
+  _currentTransitionIsRotating = [(_UISearchPresentationAssistant *)self _currentTransitionIsRotating];
   searchPresentationController = self->_searchPresentationController;
-  if (v4)
+  if (_currentTransitionIsRotating)
   {
-    v6 = [(UIViewController *)[(UIPresentationController *)searchPresentationController presentedViewController] _window];
-    v7 = [(UIWindow *)v6 _toWindowOrientation];
-    if ([__UIStatusBarManagerForWindow(v6) isStatusBarHidden])
+    _window = [(UIViewController *)[(UIPresentationController *)searchPresentationController presentedViewController] _window];
+    _toWindowOrientation = [(UIWindow *)_window _toWindowOrientation];
+    if ([__UIStatusBarManagerForWindow(_window) isStatusBarHidden])
     {
       return 0.0;
     }
 
-    [__UIStatusBarManagerForWindow(v6) defaultStatusBarHeightInOrientation:v7];
+    [__UIStatusBarManagerForWindow(_window) defaultStatusBarHeightInOrientation:_toWindowOrientation];
     if (v8 == 0.0 || [(_UISearchPresentationAssistant *)self _statusBarPreferredHidden])
     {
       return 0.0;
     }
 
-    v9 = __UIStatusBarManagerForWindow(v6);
+    v9 = __UIStatusBarManagerForWindow(_window);
 
-    [v9 defaultStatusBarHeightInOrientation:v7];
+    [v9 defaultStatusBarHeightInOrientation:_toWindowOrientation];
   }
 
   else
   {
-    v10 = [(UIPresentationController *)searchPresentationController presentingViewController];
+    presentingViewController = [(UIPresentationController *)searchPresentationController presentingViewController];
 
-    [(UIViewController *)v10 _statusBarHeightAdjustmentForCurrentOrientation];
+    [(UIViewController *)presentingViewController _statusBarHeightAdjustmentForCurrentOrientation];
   }
 
   return result;
 }
 
-- (id)_outermostNavigationControllerForPresentingViewController:(id)a3
+- (id)_outermostNavigationControllerForPresentingViewController:(id)controller
 {
-  v3 = a3;
-  if (([a3 _isNavigationController] & 1) == 0)
+  controllerCopy = controller;
+  if (([controller _isNavigationController] & 1) == 0)
   {
-    v3 = [v3 navigationController];
+    controllerCopy = [controllerCopy navigationController];
   }
 
-  return [v3 _outermostNavigationController];
+  return [controllerCopy _outermostNavigationController];
 }
 
 - (id)locatePresentingNavigationController
 {
-  v3 = [(UIPresentationController *)self->_searchPresentationController presentingViewController];
+  presentingViewController = [(UIPresentationController *)self->_searchPresentationController presentingViewController];
 
-  return [(_UISearchPresentationAssistant *)self _outermostNavigationControllerForPresentingViewController:v3];
+  return [(_UISearchPresentationAssistant *)self _outermostNavigationControllerForPresentingViewController:presentingViewController];
 }
 
 - (id)locateOriginNavigationController
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
@@ -634,19 +634,19 @@ LABEL_14:
   v3 = [-[_UISearchPresentationAssistant searchBar](self "searchBar")];
   if (!v3)
   {
-    if (v2)
+    if (selfCopy)
     {
-      v4 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v4 = 0;
+      presentedViewController = 0;
     }
 
-    if ([(UIViewController *)v4 _isSearchTextFieldBorrowed])
+    if ([(UIViewController *)presentedViewController _isSearchTextFieldBorrowed])
     {
-      v3 = [objc_msgSend(-[UIViewController _navigationItemCurrentlyDisplayingSearchBar](v4 "_navigationItemCurrentlyDisplayingSearchBar")];
+      v3 = [objc_msgSend(-[UIViewController _navigationItemCurrentlyDisplayingSearchBar](presentedViewController "_navigationItemCurrentlyDisplayingSearchBar")];
     }
 
     else
@@ -655,49 +655,49 @@ LABEL_14:
     }
   }
 
-  return [(_UISearchPresentationAssistant *)v2 _outermostNavigationControllerForPresentingViewController:v3];
+  return [(_UISearchPresentationAssistant *)selfCopy _outermostNavigationControllerForPresentingViewController:v3];
 }
 
 - (BOOL)searchBarToBecomeTopAttached
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
   }
 
-  v3 = [(_UISearchPresentationAssistant *)self _window];
-  if (v3)
+  _window = [(_UISearchPresentationAssistant *)self _window];
+  if (_window)
   {
-    if (([UIApp _sceneInterfaceOrientationFromWindow:v3] - 3) <= 1 && objc_msgSend(__UIStatusBarManagerForWindow(v3), "isStatusBarHidden") && (objc_msgSend(__UIStatusBarManagerForWindow(v3), "isStatusBarHidden") & 1) == 0)
+    if (([UIApp _sceneInterfaceOrientationFromWindow:_window] - 3) <= 1 && objc_msgSend(__UIStatusBarManagerForWindow(_window), "isStatusBarHidden") && (objc_msgSend(__UIStatusBarManagerForWindow(_window), "isStatusBarHidden") & 1) == 0)
     {
-      [__UIStatusBarManagerForWindow(v3) defaultStatusBarHeightInOrientation:1];
-      LODWORD(v3) = v9 != 0.0;
+      [__UIStatusBarManagerForWindow(_window) defaultStatusBarHeightInOrientation:1];
+      LODWORD(_window) = v9 != 0.0;
     }
 
     else
     {
-      LODWORD(v3) = 0;
+      LODWORD(_window) = 0;
     }
   }
 
-  if (!-[_UISearchPresentationAssistant shouldAccountForStatusBar](v2, "shouldAccountForStatusBar") && !v3 || (!v2 ? (v4 = 0) : (v4 = -[UIPresentationController presentedViewController](v2->_searchPresentationController, "presentedViewController")), [-[UIViewController searchBar](v4 "searchBar")] && (!v2 ? (v5 = 0) : (v5 = -[UIPresentationController presentedViewController](v2->_searchPresentationController, "presentedViewController")), objc_msgSend(-[UIViewController searchBar](v5, "searchBar"), "barPosition") != 2)))
+  if (!-[_UISearchPresentationAssistant shouldAccountForStatusBar](selfCopy, "shouldAccountForStatusBar") && !_window || (!selfCopy ? (v4 = 0) : (v4 = -[UIPresentationController presentedViewController](selfCopy->_searchPresentationController, "presentedViewController")), [-[UIViewController searchBar](v4 "searchBar")] && (!selfCopy ? (v5 = 0) : (v5 = -[UIPresentationController presentedViewController](selfCopy->_searchPresentationController, "presentedViewController")), objc_msgSend(-[UIViewController searchBar](v5, "searchBar"), "barPosition") != 2)))
   {
-    LOBYTE(v7) = 0;
-    return v7 & 1;
+    LOBYTE(_hidesNavigationBarDuringPresentationRespectingInlineSearch) = 0;
+    return _hidesNavigationBarDuringPresentationRespectingInlineSearch & 1;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    if ([(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentedViewController] _barPresentationStyle]== 1 || [(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentedViewController] _barPresentationStyle]== 2)
+    if ([(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController] _barPresentationStyle]== 1 || [(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController] _barPresentationStyle]== 2)
     {
-      v6 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
       goto LABEL_20;
     }
 
 LABEL_22:
-    LOBYTE(v7) = 1;
-    return v7 & 1;
+    LOBYTE(_hidesNavigationBarDuringPresentationRespectingInlineSearch) = 1;
+    return _hidesNavigationBarDuringPresentationRespectingInlineSearch & 1;
   }
 
   if ([0 _barPresentationStyle] != 1 && objc_msgSend(0, "_barPresentationStyle") != 2)
@@ -705,51 +705,51 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v6 = 0;
+  presentedViewController = 0;
 LABEL_20:
-  v7 = [(UIViewController *)v6 _hidesNavigationBarDuringPresentationRespectingInlineSearch];
-  if (v7)
+  _hidesNavigationBarDuringPresentationRespectingInlineSearch = [(UIViewController *)presentedViewController _hidesNavigationBarDuringPresentationRespectingInlineSearch];
+  if (_hidesNavigationBarDuringPresentationRespectingInlineSearch)
   {
-    if (![(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentingViewController] navigationController])
+    if (![(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentingViewController] navigationController])
     {
-      [(UIPresentationController *)v2->_searchPresentationController presentingViewController];
+      [(UIPresentationController *)selfCopy->_searchPresentationController presentingViewController];
       objc_opt_class();
-      LOBYTE(v7) = objc_opt_isKindOfClass();
-      return v7 & 1;
+      LOBYTE(_hidesNavigationBarDuringPresentationRespectingInlineSearch) = objc_opt_isKindOfClass();
+      return _hidesNavigationBarDuringPresentationRespectingInlineSearch & 1;
     }
 
     goto LABEL_22;
   }
 
-  return v7 & 1;
+  return _hidesNavigationBarDuringPresentationRespectingInlineSearch & 1;
 }
 
 - (double)resultsControllerContentOffset
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
   }
 
-  v3 = [(_UISearchPresentationAssistant *)self searchResultsController];
-  v4 = [v3 _contentOrObservableScrollViewForEdge:1];
+  searchResultsController = [(_UISearchPresentationAssistant *)self searchResultsController];
+  v4 = [searchResultsController _contentOrObservableScrollViewForEdge:1];
   Height = 0.0;
-  if (v3 && v4 && [v3 automaticallyAdjustsScrollViewInsets])
+  if (searchResultsController && v4 && [searchResultsController automaticallyAdjustsScrollViewInsets])
   {
-    if (v2)
+    if (selfCopy)
     {
-      if (([(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentedViewController] _resultsControllerWillLayoutVisibleUnderContainerView]& 1) == 0)
+      if (([(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController] _resultsControllerWillLayoutVisibleUnderContainerView]& 1) == 0)
       {
         return Height;
       }
 
-      if ([(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentedViewController] _barPresentationStyle]== 3)
+      if ([(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController] _barPresentationStyle]== 3)
       {
         goto LABEL_9;
       }
 
-      v7 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
     }
 
     else
@@ -759,62 +759,62 @@ LABEL_20:
         return Height;
       }
 
-      v32 = [0 _barPresentationStyle];
-      v7 = 0;
-      if (v32 == 3)
+      _barPresentationStyle = [0 _barPresentationStyle];
+      presentedViewController = 0;
+      if (_barPresentationStyle == 3)
       {
 LABEL_9:
-        [-[_UISearchPresentationAssistant searchBarContainerView](v2 "searchBarContainerView")];
+        [-[_UISearchPresentationAssistant searchBarContainerView](selfCopy "searchBarContainerView")];
         Height = CGRectGetHeight(v33);
-        if (v2)
+        if (selfCopy)
         {
-          v6 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+          presentedViewController2 = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
         }
 
         else
         {
-          v6 = 0;
+          presentedViewController2 = 0;
         }
 
-        [(UIViewController *)v6 set_resultsContentScrollViewPresentationOffset:Height];
+        [(UIViewController *)presentedViewController2 set_resultsContentScrollViewPresentationOffset:Height];
         return Height;
       }
     }
 
-    v8 = [(UIViewController *)v7 searchBar];
-    [v8 bounds];
+    searchBar = [(UIViewController *)presentedViewController searchBar];
+    [searchBar bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    if (v2)
+    if (selfCopy)
     {
-      v17 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController3 = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v17 = 0;
+      presentedViewController3 = 0;
     }
 
-    [v8 convertRect:-[UIViewController view](v17 toView:{"view"), v10, v12, v14, v16}];
+    [searchBar convertRect:-[UIViewController view](presentedViewController3 toView:{"view"), v10, v12, v14, v16}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    if (v2)
+    if (selfCopy)
     {
-      v26 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController4 = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v26 = 0;
+      presentedViewController4 = 0;
     }
 
-    if ([(UIViewController *)v26 _hidesNavigationBarDuringPresentationRespectingInlineSearch]&& [(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentingViewController] navigationController])
+    if ([(UIViewController *)presentedViewController4 _hidesNavigationBarDuringPresentationRespectingInlineSearch]&& [(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentingViewController] navigationController])
     {
-      [[(UINavigationController *)[(UIViewController *)[(UIPresentationController *)v2->_searchPresentationController presentingViewController] navigationController] navigationBar] frame];
+      [[(UINavigationController *)[(UIViewController *)[(UIPresentationController *)selfCopy->_searchPresentationController presentingViewController] navigationController] navigationBar] frame];
       v21 = v21 - CGRectGetHeight(v34);
     }
 
@@ -823,20 +823,20 @@ LABEL_9:
     v35.size.width = v23;
     v35.size.height = v25;
     v27 = CGRectGetHeight(v35);
-    if (v2)
+    if (selfCopy)
     {
-      v28 = [(UIPresentationController *)v2->_searchPresentationController presentedViewController];
+      presentedViewController5 = [(UIPresentationController *)selfCopy->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v28 = 0;
+      presentedViewController5 = 0;
     }
 
-    [(UIViewController *)v28 set_resultsContentScrollViewPresentationOffset:v27];
-    if ([(_UISearchPresentationAssistant *)v2 searchBarToBecomeTopAttached])
+    [(UIViewController *)presentedViewController5 set_resultsContentScrollViewPresentationOffset:v27];
+    if ([(_UISearchPresentationAssistant *)selfCopy searchBarToBecomeTopAttached])
     {
-      [(_UISearchPresentationAssistant *)v2 statusBarAdjustment];
+      [(_UISearchPresentationAssistant *)selfCopy statusBarAdjustment];
       v21 = v21 - v29;
       v25 = v25 + v29;
     }
@@ -846,9 +846,9 @@ LABEL_9:
     v36.size.width = v23;
     v36.size.height = v25;
     Height = CGRectGetMaxY(v36);
-    if ([(_UISearchPresentationAssistant *)v2 searchBarWillResizeForScopeBar])
+    if ([(_UISearchPresentationAssistant *)selfCopy searchBarWillResizeForScopeBar])
     {
-      [v8 _scopeBarHeight];
+      [searchBar _scopeBarHeight];
       return Height + v30;
     }
   }
@@ -858,39 +858,39 @@ LABEL_9:
 
 - (BOOL)searchBarWillResizeForScopeBar
 {
-  v3 = [(_UISearchPresentationAssistant *)self _searchControllerPresenting];
-  if (!v3 || (v4 = [v3 searchBarCanContainScopeBar]) != 0)
+  _searchControllerPresenting = [(_UISearchPresentationAssistant *)self _searchControllerPresenting];
+  if (!_searchControllerPresenting || (_scopeBarIsVisible = [_searchControllerPresenting searchBarCanContainScopeBar]) != 0)
   {
     if (self)
     {
-      v5 = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
+      presentedViewController = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
     }
 
     else
     {
-      v5 = 0;
+      presentedViewController = 0;
     }
 
-    v6 = [(UIViewController *)v5 searchBar];
-    v4 = [v6 _scopeBarIsVisible];
-    if (v4)
+    searchBar = [(UIViewController *)presentedViewController searchBar];
+    _scopeBarIsVisible = [searchBar _scopeBarIsVisible];
+    if (_scopeBarIsVisible)
     {
-      LOBYTE(v4) = [v6 _shouldCombineLandscapeBars] ^ 1;
+      LOBYTE(_scopeBarIsVisible) = [searchBar _shouldCombineLandscapeBars] ^ 1;
     }
   }
 
-  return v4;
+  return _scopeBarIsVisible;
 }
 
-- (void)dimmingViewWasTapped:(id)a3
+- (void)dimmingViewWasTapped:(id)tapped
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = [(UIPresentationController *)self->_searchPresentationController presentedViewController];
   }
 
-  presentationWasAnimated = v3->_presentationWasAnimated;
+  presentationWasAnimated = selfCopy->_presentationWasAnimated;
 
   [(_UISearchPresentationAssistant *)self _dismissPresentation:presentationWasAnimated];
 }

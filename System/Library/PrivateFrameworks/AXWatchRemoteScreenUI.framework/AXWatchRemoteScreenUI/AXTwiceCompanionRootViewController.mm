@@ -1,15 +1,15 @@
 @interface AXTwiceCompanionRootViewController
-- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)airplayDidStartStreamingWithMirroringLayer:(id)a3;
+- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)airplayDidStartStreamingWithMirroringLayer:(id)layer;
 - (void)airplayDidStopStreaming;
-- (void)axActionPerformWithAction:(int)a3 value:(id)a4 bridgeElement:(id)a5;
-- (void)axElementActivate:(CGPoint)a3;
+- (void)axActionPerformWithAction:(int)action value:(id)value bridgeElement:(id)element;
+- (void)axElementActivate:(CGPoint)activate;
 - (void)crownButtonLongPressed;
 - (void)crownButtonPressed;
 - (void)crownButtonScrollDown;
 - (void)crownButtonScrollUp;
 - (void)dealloc;
-- (void)dismissButtonTappedWithSender:(id)a3;
+- (void)dismissButtonTappedWithSender:(id)sender;
 - (void)doubleCrownButtonPressed;
 - (void)pullToDismissViewController;
 - (void)sideButtonLongPressed;
@@ -18,50 +18,50 @@
 - (void)stingButtonLongPressed;
 - (void)stingButtonPressed;
 - (void)tripleCrownButtonPressed;
-- (void)twiceRemoteScreenReceiveMessage:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)twiceRemoteScreenReceiveMessage:(id)message;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AXTwiceCompanionRootViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6DF20C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_23D6DFAF4(a3);
+  selfCopy = self;
+  sub_23D6DFAF4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_23D6DFF8C(a3);
+  selfCopy = self;
+  sub_23D6DFF8C(disappear);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21AXWatchRemoteScreenUI34AXTwiceCompanionRootViewController_remoteMessenger);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_23D6EE520();
 
   v5 = sub_23D6DDD68();
   [v5 cleanup];
 
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AXTwiceCompanionRootViewController();
   [(AXTwiceCompanionRootViewController *)&v6 dealloc];
 }
 
-- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AXWatchRemoteScreenUI34AXTwiceCompanionRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_23D6EE740();
     v7 = v6;
@@ -73,99 +73,99 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AXTwiceCompanionRootViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AXTwiceCompanionRootViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)twiceRemoteScreenReceiveMessage:(id)a3
+- (void)twiceRemoteScreenReceiveMessage:(id)message
 {
   v4 = sub_23D6EE710();
-  v5 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.twiceRemoteScreenReceiveMessage(_:)(v4);
 }
 
-- (void)dismissButtonTappedWithSender:(id)a3
+- (void)dismissButtonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_23D6ED9C8();
 }
 
-- (void)airplayDidStartStreamingWithMirroringLayer:(id)a3
+- (void)airplayDidStartStreamingWithMirroringLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  AXTwiceCompanionRootViewController.airplayDidStartStreaming(withMirroringLayer:)(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  AXTwiceCompanionRootViewController.airplayDidStartStreaming(withMirroringLayer:)(layerCopy);
 }
 
 - (void)airplayDidStopStreaming
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.airplayDidStopStreaming()();
 }
 
-- (void)axElementActivate:(CGPoint)a3
+- (void)axElementActivate:(CGPoint)activate
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = activate.y;
+  x = activate.x;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.axElementActivate(_:)(__PAIR128__(*&y, *&x));
 }
 
 - (void)crownButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.crownButtonPressed()();
 }
 
 - (void)doubleCrownButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.doubleCrownButtonPressed()();
 }
 
 - (void)tripleCrownButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.tripleCrownButtonPressed()();
 }
 
 - (void)crownButtonScrollUp
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.crownButtonScrollUp()();
 }
 
 - (void)crownButtonScrollDown
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.crownButtonScrollDown()();
 }
 
 - (void)crownButtonLongPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.crownButtonLongPressed()();
 }
 
 - (void)sideButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.sideButtonPressed()();
 }
 
 - (void)sideButtonLongPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.sideButtonLongPressed()();
 }
 
-- (void)axActionPerformWithAction:(int)a3 value:(id)a4 bridgeElement:(id)a5
+- (void)axActionPerformWithAction:(int)action value:(id)value bridgeElement:(id)element
 {
-  if (a4)
+  if (value)
   {
-    v8 = a5;
-    v9 = self;
+    elementCopy = element;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23D6EE8A0();
     swift_unknownObjectRelease();
@@ -174,36 +174,36 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v10 = a5;
-    v11 = self;
+    elementCopy2 = element;
+    selfCopy2 = self;
   }
 
-  AXTwiceCompanionRootViewController.axActionPerform(action:value:bridgeElement:)(a3, v12, a5);
+  AXTwiceCompanionRootViewController.axActionPerform(action:value:bridgeElement:)(action, v12, element);
 
   sub_23D6EDEA0(v12, &qword_27E2E2B60, qword_23D6EFE00);
 }
 
 - (void)pullToDismissViewController
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.pullToDismissViewController()();
 }
 
 - (void)stingButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.stingButtonPressed()();
 }
 
 - (void)stingButtonLongPressed
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.stingButtonLongPressed()();
 }
 
 - (void)stingButtonKeycord
 {
-  v2 = self;
+  selfCopy = self;
   AXTwiceCompanionRootViewController.stingButtonKeycord()();
 }
 

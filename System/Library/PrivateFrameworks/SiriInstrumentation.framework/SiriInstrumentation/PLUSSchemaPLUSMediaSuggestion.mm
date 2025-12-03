@@ -1,28 +1,28 @@
 @interface PLUSSchemaPLUSMediaSuggestion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSMediaSuggestion)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSMediaSuggestion)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSMediaSuggestion)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSMediaSuggestion)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addContributingGroundTruth:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContributingGroundTruth:(id)truth;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSMediaSuggestion
 
-- (PLUSSchemaPLUSMediaSuggestion)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSMediaSuggestion)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PLUSSchemaPLUSMediaSuggestion;
   v5 = [(PLUSSchemaPLUSMediaSuggestion *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"source"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(PLUSSchemaPLUSMediaSuggestion *)v5 setSource:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contributingGroundTruth"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contributingGroundTruth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       v6 = v19;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"locality"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"locality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSMediaSuggestion)initWithJSON:(id)a3
+- (PLUSSchemaPLUSMediaSuggestion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSMediaSuggestion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSMediaSuggestion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSMediaSuggestion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,10 +126,10 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_contributingGroundTruths count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -149,16 +149,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -168,7 +168,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"contributingGroundTruth"];
+    [dictionary setObject:array forKeyedSubscript:@"contributingGroundTruth"];
   }
 
   if (*&self->_has)
@@ -184,28 +184,28 @@
       v13 = off_1E78E0870[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:{@"locality", v18}];
+    [dictionary setObject:v13 forKeyedSubscript:{@"locality", v18}];
   }
 
   if (self->_source)
   {
-    v14 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    source = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+    dictionaryRepresentation2 = [source dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"source"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"source"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"source"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"source"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -225,28 +225,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
-  v6 = [v4 source];
-  if ((v5 != 0) == (v6 == 0))
+  source = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+  source2 = [equalCopy source];
+  if ((source != 0) == (source2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
-  if (v7)
+  source3 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+  if (source3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
-    v10 = [v4 source];
-    v11 = [v9 isEqual:v10];
+    v8 = source3;
+    source4 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+    source5 = [equalCopy source];
+    v11 = [source4 isEqual:source5];
 
     if (!v11)
     {
@@ -258,22 +258,22 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
-  v6 = [v4 contributingGroundTruths];
-  if ((v5 != 0) == (v6 == 0))
+  source = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
+  source2 = [equalCopy contributingGroundTruths];
+  if ((source != 0) == (source2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
-  if (v12)
+  contributingGroundTruths = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
+  if (contributingGroundTruths)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
-    v15 = [v4 contributingGroundTruths];
-    v16 = [v14 isEqual:v15];
+    v13 = contributingGroundTruths;
+    contributingGroundTruths2 = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
+    contributingGroundTruths3 = [equalCopy contributingGroundTruths];
+    v16 = [contributingGroundTruths2 isEqual:contributingGroundTruths3];
 
     if (!v16)
     {
@@ -285,9 +285,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (locality = self->_locality, locality == [v4 locality]))
+    if ((*&self->_has & 1) == 0 || (locality = self->_locality, locality == [equalCopy locality]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -301,15 +301,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+  toCopy = to;
+  source = [(PLUSSchemaPLUSMediaSuggestion *)self source];
 
-  if (v5)
+  if (source)
   {
-    v6 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+    source2 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
     PBDataWriterWriteSubmessage();
   }
 
@@ -350,41 +350,41 @@ LABEL_13:
   }
 }
 
-- (void)addContributingGroundTruth:(id)a3
+- (void)addContributingGroundTruth:(id)truth
 {
-  v4 = a3;
+  truthCopy = truth;
   contributingGroundTruths = self->_contributingGroundTruths;
-  v8 = v4;
+  v8 = truthCopy;
   if (!contributingGroundTruths)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contributingGroundTruths;
-    self->_contributingGroundTruths = v6;
+    self->_contributingGroundTruths = array;
 
-    v4 = v8;
+    truthCopy = v8;
     contributingGroundTruths = self->_contributingGroundTruths;
   }
 
-  [(NSArray *)contributingGroundTruths addObject:v4];
+  [(NSArray *)contributingGroundTruths addObject:truthCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = PLUSSchemaPLUSMediaSuggestion;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSMediaSuggestion *)self source];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  source = [(PLUSSchemaPLUSMediaSuggestion *)self source];
+  v7 = [source applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSMediaSuggestion *)self deleteSource];
   }
 
-  v9 = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  contributingGroundTruths = [(PLUSSchemaPLUSMediaSuggestion *)self contributingGroundTruths];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:contributingGroundTruths underConditions:policyCopy];
   [(PLUSSchemaPLUSMediaSuggestion *)self setContributingGroundTruths:v10];
 
   return v5;

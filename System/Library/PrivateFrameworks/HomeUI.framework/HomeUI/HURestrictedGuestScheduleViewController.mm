@@ -1,26 +1,26 @@
 @interface HURestrictedGuestScheduleViewController
-- (HURestrictedGuestScheduleViewController)initWithHome:(id)a3 user:(id)a4;
-- (HURestrictedGuestScheduleViewController)initWithSchedule:(id)a3 delegate:(id)a4;
+- (HURestrictedGuestScheduleViewController)initWithHome:(id)home user:(id)user;
+- (HURestrictedGuestScheduleViewController)initWithSchedule:(id)schedule delegate:(id)delegate;
 - (HURestrictedGuestScheduleViewControllerDelegate)delegate;
 - (id)_editorItemModule;
 - (id)_originalScheduleBuilder;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (void)doneButtonPressed:(id)a3;
-- (void)scheduleEditorModule:(id)a3 didUpdateScheduleBuilder:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (void)doneButtonPressed:(id)pressed;
+- (void)scheduleEditorModule:(id)module didUpdateScheduleBuilder:(id)builder;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation HURestrictedGuestScheduleViewController
 
-- (HURestrictedGuestScheduleViewController)initWithHome:(id)a3 user:(id)a4
+- (HURestrictedGuestScheduleViewController)initWithHome:(id)home user:(id)user
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  homeCopy = home;
+  userCopy = user;
+  v10 = userCopy;
+  if (homeCopy)
   {
-    if (v9)
+    if (userCopy)
     {
       goto LABEL_3;
     }
@@ -28,8 +28,8 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
     if (v10)
     {
@@ -37,45 +37,45 @@
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"user"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"user"}];
 
 LABEL_3:
-  if (([v8 hf_userIsRestrictedGuest:v10] & 1) == 0)
+  if (([homeCopy hf_userIsRestrictedGuest:v10] & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[home hf_userIsRestrictedGuest:user]"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[home hf_userIsRestrictedGuest:user]"}];
   }
 
-  v11 = [[HURestrictedGuestScheduleItemManager alloc] initWithHome:v8 user:v10 delegate:self];
+  v11 = [[HURestrictedGuestScheduleItemManager alloc] initWithHome:homeCopy user:v10 delegate:self];
   v19.receiver = self;
   v19.super_class = HURestrictedGuestScheduleViewController;
   v12 = [(HUItemTableViewController *)&v19 initWithItemManager:v11 tableViewStyle:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_home, a3);
-    objc_storeStrong(&v13->_user, a4);
+    objc_storeStrong(&v12->_home, home);
+    objc_storeStrong(&v13->_user, user);
     objc_storeStrong(&v13->_scheduleItemManager, v11);
     if ([(HURestrictedGuestScheduleItemManager *)v11 scheduleContext])
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v13 file:@"HURestrictedGuestScheduleViewController.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"itemManager.scheduleContext == HUScheduleContextExistingUser"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v13 file:@"HURestrictedGuestScheduleViewController.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"itemManager.scheduleContext == HUScheduleContextExistingUser"}];
     }
   }
 
   return v13;
 }
 
-- (HURestrictedGuestScheduleViewController)initWithSchedule:(id)a3 delegate:(id)a4
+- (HURestrictedGuestScheduleViewController)initWithSchedule:(id)schedule delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  scheduleCopy = schedule;
+  delegateCopy = delegate;
+  v10 = delegateCopy;
+  if (!scheduleCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"schedule"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"schedule"}];
 
     if (v10)
     {
@@ -83,32 +83,32 @@ LABEL_3:
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HURestrictedGuestScheduleViewController.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!delegateCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v11 = [[HURestrictedGuestScheduleItemManager alloc] initWithSchedule:v8 delegate:self];
+  v11 = [[HURestrictedGuestScheduleItemManager alloc] initWithSchedule:scheduleCopy delegate:self];
   v18.receiver = self;
   v18.super_class = HURestrictedGuestScheduleViewController;
   v12 = [(HUItemTableViewController *)&v18 initWithItemManager:v11 tableViewStyle:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_inviteUserSchedule, a3);
+    objc_storeStrong(&v12->_inviteUserSchedule, schedule);
     objc_storeWeak(&v13->_delegate, v10);
     objc_storeStrong(&v13->_scheduleItemManager, v11);
     if ([(HURestrictedGuestScheduleItemManager *)v11 scheduleContext]!= 1)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v13 file:@"HURestrictedGuestScheduleViewController.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"itemManager.scheduleContext == HUScheduleContextNewUser"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v13 file:@"HURestrictedGuestScheduleViewController.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"itemManager.scheduleContext == HUScheduleContextNewUser"}];
     }
   }
 
@@ -120,8 +120,8 @@ LABEL_3:
   v10.receiver = self;
   v10.super_class = HURestrictedGuestScheduleViewController;
   [(HUItemTableViewController *)&v10 viewDidLoad];
-  v3 = [(HURestrictedGuestScheduleViewController *)self home];
-  if ([v3 hf_currentUserIsRestrictedGuest])
+  home = [(HURestrictedGuestScheduleViewController *)self home];
+  if ([home hf_currentUserIsRestrictedGuest])
   {
     v4 = @"HURestrictedGuestScheduleItem_GuestView_Title";
   }
@@ -135,25 +135,25 @@ LABEL_3:
 
   [(HURestrictedGuestScheduleViewController *)self setTitle:v5];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-  v7 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(HURestrictedGuestScheduleViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
-  v8 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setAccessibilityIdentifier:@"Home.Users.Guest.Schedule.Done"];
+  navigationItem2 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Users.Guest.Schedule.Done"];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
   objc_opt_class();
-  v5 = v4;
+  v5 = moduleCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -172,30 +172,30 @@ LABEL_3:
   return v8;
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
   v68 = *MEMORY[0x277D85DE8];
-  v46 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v59 = self;
+    selfCopy5 = self;
     v60 = 2112;
     v61 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Done button pressed", buf, 0x16u);
   }
 
-  v7 = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
-  v8 = [(HUItemTableViewController *)self itemModuleControllers];
-  v9 = [v8 na_firstObjectPassingTest:&__block_literal_global_70];
+  _editorItemModule = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
+  itemModuleControllers = [(HUItemTableViewController *)self itemModuleControllers];
+  v9 = [itemModuleControllers na_firstObjectPassingTest:&__block_literal_global_70];
 
   if ([v9 saveCustomScheduleStartAndEndTimes])
   {
-    v10 = [v7 updatedScheduleBuilder];
-    v11 = [v7 originalScheduleBuilder];
-    v12 = [v10 isEqual:v11];
+    updatedScheduleBuilder = [_editorItemModule updatedScheduleBuilder];
+    originalScheduleBuilder = [_editorItemModule originalScheduleBuilder];
+    v12 = [updatedScheduleBuilder isEqual:originalScheduleBuilder];
 
     if (v12)
     {
@@ -203,85 +203,85 @@ LABEL_3:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = NSStringFromSelector(a2);
-        v15 = [v7 originalScheduleBuilder];
+        originalScheduleBuilder2 = [_editorItemModule originalScheduleBuilder];
         *buf = 138413058;
-        v59 = self;
+        selfCopy5 = self;
         v60 = 2112;
         v61 = v14;
         v62 = 2112;
-        v63 = v10;
+        v63 = updatedScheduleBuilder;
         v64 = 2112;
-        v65 = v15;
+        v65 = originalScheduleBuilder2;
         _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@ Exiting without applying changes...New guest access schedule builder [%@] did not change from original schedule builder [%@].", buf, 0x2Au);
       }
 
-      v16 = [(HURestrictedGuestScheduleViewController *)self navigationController];
-      [v16 dismissViewControllerAnimated:1 completion:0];
+      navigationController = [(HURestrictedGuestScheduleViewController *)self navigationController];
+      [navigationController dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
-      v17 = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
-      v18 = [v17 scheduleContext] == 0;
+      scheduleItemManager = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
+      v18 = [scheduleItemManager scheduleContext] == 0;
 
       if (v18)
       {
-        v26 = [(HURestrictedGuestScheduleViewController *)self home];
-        v27 = [(HURestrictedGuestScheduleViewController *)self user];
-        v16 = [v26 homeAccessControlForUser:v27];
+        home = [(HURestrictedGuestScheduleViewController *)self home];
+        user = [(HURestrictedGuestScheduleViewController *)self user];
+        navigationController = [home homeAccessControlForUser:user];
 
-        v42 = [v16 restrictedGuestAccessSettings];
-        v44 = [v42 guestAccessSchedule];
-        v43 = [v10 build];
-        v45 = [MEMORY[0x277CD1D78] hf_restrictedGuestHomeAccessScheduleFromHFSchedule:v43];
+        restrictedGuestAccessSettings = [navigationController restrictedGuestAccessSettings];
+        guestAccessSchedule = [restrictedGuestAccessSettings guestAccessSchedule];
+        build = [updatedScheduleBuilder build];
+        v45 = [MEMORY[0x277CD1D78] hf_restrictedGuestHomeAccessScheduleFromHFSchedule:build];
         v28 = HFLogForCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           v29 = NSStringFromSelector(a2);
           *buf = 138413058;
-          v59 = self;
+          selfCopy5 = self;
           v60 = 2112;
           v61 = v29;
           v62 = 2112;
           v63 = v45;
           v64 = 2112;
-          v65 = v43;
+          v65 = build;
           _os_log_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_DEFAULT, "%@:%@ Constructed new guest access schedule [%@] from schedule [%@].", buf, 0x2Au);
         }
 
-        if ([v44 isEqual:v45])
+        if ([guestAccessSchedule isEqual:v45])
         {
           v30 = HFLogForCategory();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             v31 = NSStringFromSelector(a2);
             *buf = 138413058;
-            v59 = self;
+            selfCopy5 = self;
             v60 = 2112;
             v61 = v31;
             v62 = 2112;
             v63 = v45;
             v64 = 2112;
-            v65 = v44;
+            v65 = guestAccessSchedule;
             _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "%@:%@ Exiting without applying changes...New guest access schedule [%@] is the same as the current access schedule [%@].", buf, 0x2Au);
           }
 
-          v32 = [(HURestrictedGuestScheduleViewController *)self navigationController];
-          [v32 dismissViewControllerAnimated:1 completion:0];
+          navigationController2 = [(HURestrictedGuestScheduleViewController *)self navigationController];
+          [navigationController2 dismissViewControllerAnimated:1 completion:0];
         }
 
         else
         {
-          v33 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
-          v34 = [v33 rightBarButtonItem];
-          [(HURestrictedGuestScheduleViewController *)self setSavedButtonBarItem:v34];
+          navigationItem = [(HURestrictedGuestScheduleViewController *)self navigationItem];
+          rightBarButtonItem = [navigationItem rightBarButtonItem];
+          [(HURestrictedGuestScheduleViewController *)self setSavedButtonBarItem:rightBarButtonItem];
 
-          v32 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-          v35 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v32];
-          v36 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
-          [v36 setRightBarButtonItem:v35];
+          navigationController2 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
+          v35 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:navigationController2];
+          navigationItem2 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
+          [navigationItem2 setRightBarButtonItem:v35];
 
-          [v32 startAnimating];
+          [navigationController2 startAnimating];
           objc_initWeak(buf, self);
           v37 = MEMORY[0x277D2C900];
           v53[0] = MEMORY[0x277D85DD0];
@@ -290,9 +290,9 @@ LABEL_3:
           v53[3] = &unk_277DBB7D8;
           objc_copyWeak(v57, buf);
           v57[1] = a2;
-          v54 = v44;
+          v54 = guestAccessSchedule;
           v55 = v45;
-          v56 = v16;
+          v56 = navigationController;
           v38 = [v37 futureWithBlock:v53];
           v51[0] = MEMORY[0x277D85DD0];
           v51[1] = 3221225472;
@@ -323,8 +323,8 @@ LABEL_3:
 
       else
       {
-        v19 = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
-        v20 = [v19 scheduleContext] == 1;
+        scheduleItemManager2 = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
+        v20 = [scheduleItemManager2 scheduleContext] == 1;
 
         if (!v20)
         {
@@ -333,30 +333,30 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v16 = [v10 build];
+        navigationController = [updatedScheduleBuilder build];
         v21 = HFLogForCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v22 = NSStringFromSelector(a2);
-          v23 = [(HURestrictedGuestScheduleViewController *)self delegate];
+          delegate = [(HURestrictedGuestScheduleViewController *)self delegate];
           *buf = 138413314;
-          v59 = self;
+          selfCopy5 = self;
           v60 = 2112;
           v61 = v22;
           v62 = 2112;
-          v63 = v23;
+          v63 = delegate;
           v64 = 2112;
-          v65 = v16;
+          v65 = navigationController;
           v66 = 2112;
-          v67 = v10;
+          v67 = updatedScheduleBuilder;
           _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%@:%@ Notifying delegate [%@] of updated schedule [%@] from schedule builder [%@].", buf, 0x34u);
         }
 
-        v24 = [(HURestrictedGuestScheduleViewController *)self delegate];
-        [v24 didUpdateInviteUserSchedule:self schedule:v16];
+        delegate2 = [(HURestrictedGuestScheduleViewController *)self delegate];
+        [delegate2 didUpdateInviteUserSchedule:self schedule:navigationController];
 
-        v25 = [(HURestrictedGuestScheduleViewController *)self navigationController];
-        [v25 dismissViewControllerAnimated:1 completion:0];
+        navigationController3 = [(HURestrictedGuestScheduleViewController *)self navigationController];
+        [navigationController3 dismissViewControllerAnimated:1 completion:0];
       }
     }
 
@@ -529,47 +529,47 @@ void __61__HURestrictedGuestScheduleViewController_doneButtonPressed___block_inv
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)scheduleEditorModule:(id)a3 didUpdateScheduleBuilder:(id)a4
+- (void)scheduleEditorModule:(id)module didUpdateScheduleBuilder:(id)builder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 build];
+  builderCopy = builder;
+  build = [builderCopy build];
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v6;
+    v17 = builderCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = build;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ Updated schedule builder [%@] results in schedule [%@].", &v12, 0x2Au);
   }
 
-  v10 = [(HURestrictedGuestScheduleViewController *)self navigationItem];
-  v11 = [v10 rightBarButtonItem];
-  [v11 setEnabled:v7 != 0];
+  navigationItem = [(HURestrictedGuestScheduleViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:build != 0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v56.receiver = self;
   v56.super_class = HURestrictedGuestScheduleViewController;
-  v49 = v6;
-  [(HUItemTableViewController *)&v56 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
-  LODWORD(v6) = [v8 scheduleContext] == 0;
+  v49 = viewCopy;
+  [(HUItemTableViewController *)&v56 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  scheduleItemManager = [(HURestrictedGuestScheduleViewController *)self scheduleItemManager];
+  LODWORD(viewCopy) = [scheduleItemManager scheduleContext] == 0;
 
-  if (v6)
+  if (viewCopy)
   {
-    v9 = [(HUItemTableViewController *)self itemManager];
-    v10 = [v9 displayedItemAtIndexPath:v7];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    v10 = [itemManager displayedItemAtIndexPath:pathCopy];
 
     objc_opt_class();
     v43 = v10;
@@ -585,50 +585,50 @@ void __61__HURestrictedGuestScheduleViewController_doneButtonPressed___block_inv
 
     v47 = v11;
 
-    v12 = [v47 type];
+    type = [v47 type];
     v46 = [MEMORY[0x277D14A08] scheduleBuilderFromType:objc_msgSend(v47 withDefaultRules:{"type"), 1}];
-    v13 = [(HURestrictedGuestScheduleViewController *)self home];
-    v14 = [(HURestrictedGuestScheduleViewController *)self user];
-    v15 = [v13 homeAccessControlForUser:v14];
-    v16 = [v15 restrictedGuestAccessSettings];
-    v48 = [v16 mutableCopy];
+    home = [(HURestrictedGuestScheduleViewController *)self home];
+    user = [(HURestrictedGuestScheduleViewController *)self user];
+    v15 = [home homeAccessControlForUser:user];
+    restrictedGuestAccessSettings = [v15 restrictedGuestAccessSettings];
+    v48 = [restrictedGuestAccessSettings mutableCopy];
 
     v17 = MEMORY[0x277CD1D78];
-    v18 = [v46 build];
-    v42 = [v17 hf_restrictedGuestHomeAccessScheduleFromHFSchedule:v18];
+    build = [v46 build];
+    v42 = [v17 hf_restrictedGuestHomeAccessScheduleFromHFSchedule:build];
 
     [v48 setGuestAccessSchedule:v42];
-    v44 = [v48 locksWithReducedFunctionalityDueToSchedule];
-    v41 = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
-    v45 = [v41 originalScheduleBuilder];
-    v19 = [v45 rules];
+    locksWithReducedFunctionalityDueToSchedule = [v48 locksWithReducedFunctionalityDueToSchedule];
+    _editorItemModule = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
+    originalScheduleBuilder = [_editorItemModule originalScheduleBuilder];
+    rules = [originalScheduleBuilder rules];
     v20 = 0;
-    if (![v19 count] && v12)
+    if (![rules count] && type)
     {
-      v20 = !-[HURestrictedGuestScheduleViewController didDisplayLimitedLockAlert](self, "didDisplayLimitedLockAlert") && [v44 count] != 0;
+      v20 = !-[HURestrictedGuestScheduleViewController didDisplayLimitedLockAlert](self, "didDisplayLimitedLockAlert") && [locksWithReducedFunctionalityDueToSchedule count] != 0;
     }
 
     v21 = HFLogForCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(HURestrictedGuestScheduleViewController *)self didDisplayLimitedLockAlert];
+      didDisplayLimitedLockAlert = [(HURestrictedGuestScheduleViewController *)self didDisplayLimitedLockAlert];
       v23 = MEMORY[0x277CD1650];
-      v24 = [v44 allObjects];
-      v25 = [v23 hf_minimumDescriptionsOfAccessories:v24];
+      allObjects = [locksWithReducedFunctionalityDueToSchedule allObjects];
+      v25 = [v23 hf_minimumDescriptionsOfAccessories:allObjects];
       v26 = MEMORY[0x277CD1650];
-      v27 = [v48 accessAllowedToAccessories];
-      v28 = [v27 allObjects];
-      v29 = [v26 hf_minimumDescriptionsOfAccessories:v28];
+      accessAllowedToAccessories = [v48 accessAllowedToAccessories];
+      allObjects2 = [accessAllowedToAccessories allObjects];
+      v29 = [v26 hf_minimumDescriptionsOfAccessories:allObjects2];
       *buf = 136316674;
       v58 = "[HURestrictedGuestScheduleViewController tableView:didSelectRowAtIndexPath:]";
       v59 = 1024;
       v60 = v20;
       v61 = 2112;
-      v62 = v45;
+      v62 = originalScheduleBuilder;
       v63 = 2112;
       v64 = v46;
       v65 = 1024;
-      v66 = v22;
+      v66 = didDisplayLimitedLockAlert;
       v67 = 2112;
       v68 = v25;
       v69 = 2112;
@@ -639,7 +639,7 @@ void __61__HURestrictedGuestScheduleViewController_doneButtonPressed___block_inv
     if (v20)
     {
       objc_initWeak(buf, self);
-      if ([v44 count] == 1)
+      if ([locksWithReducedFunctionalityDueToSchedule count] == 1)
       {
         v30 = @"%@_SingleLock";
       }
@@ -668,7 +668,7 @@ void __61__HURestrictedGuestScheduleViewController_doneButtonPressed___block_inv
       v52[3] = &unk_277DBB800;
       objc_copyWeak(&v55, buf);
       v53 = v49;
-      v54 = self;
+      selfCopy = self;
       v40 = [v38 actionWithTitle:v39 style:0 handler:v52];
 
       [v40 setAccessibilityIdentifier:@"Home.Guest.ReducedFunctionality.Alert.CancelButton"];
@@ -801,17 +801,17 @@ void __77__HURestrictedGuestScheduleViewController_tableView_didSelectRowAtIndex
 
 - (id)_originalScheduleBuilder
 {
-  v2 = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
-  v3 = [v2 originalScheduleBuilder];
+  _editorItemModule = [(HURestrictedGuestScheduleViewController *)self _editorItemModule];
+  originalScheduleBuilder = [_editorItemModule originalScheduleBuilder];
 
-  return v3;
+  return originalScheduleBuilder;
 }
 
 - (id)_editorItemModule
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 itemModules];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_131_0];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  itemModules = [itemManager itemModules];
+  v4 = [itemModules na_firstObjectPassingTest:&__block_literal_global_131_0];
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface DOCTagPickerPanelAppearance
-- (DOCTagPickerPanelAppearance)initWithTopMargin:(double)a3 bottomMargin:(double)a4 maxHeight:(double)a5;
+- (DOCTagPickerPanelAppearance)initWithTopMargin:(double)margin bottomMargin:(double)bottomMargin maxHeight:(double)height;
 - (double)maxHeight;
 @end
 
 @implementation DOCTagPickerPanelAppearance
 
-- (DOCTagPickerPanelAppearance)initWithTopMargin:(double)a3 bottomMargin:(double)a4 maxHeight:(double)a5
+- (DOCTagPickerPanelAppearance)initWithTopMargin:(double)margin bottomMargin:(double)bottomMargin maxHeight:(double)height
 {
   v9.receiver = self;
   v9.super_class = DOCTagPickerPanelAppearance;
   result = [(DOCTagPickerPanelAppearance *)&v9 init];
   if (result)
   {
-    result->_topMargin = a3;
-    result->_bottomMargin = a4;
-    result->_maxHeight = a5;
+    result->_topMargin = margin;
+    result->_bottomMargin = bottomMargin;
+    result->_maxHeight = height;
   }
 
   return result;
@@ -38,7 +38,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2493AC000, v5, OS_LOG_TYPE_DEFAULT, "WARNING: Attempt to use metric (%@.maxHeight) that should never be used in this context", &v7, 0xCu);
     }
   }

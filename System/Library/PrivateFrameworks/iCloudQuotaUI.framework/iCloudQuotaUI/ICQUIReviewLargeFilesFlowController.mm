@@ -1,7 +1,7 @@
 @interface ICQUIReviewLargeFilesFlowController
 - (CGSize)preferredContentSize;
 - (RecommendationFlowControllerDelegate)cloudRecommendationsDelegate;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
@@ -24,14 +24,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ICQUIReviewLargeFilesFlowController.viewDidLoad()();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   _sSo35ICQUIReviewLargeFilesFlowControllerC13iCloudQuotaUIE012presentationE10DidDismissyySo014UIPresentationE0CF_0();
 }
 

@@ -1,31 +1,31 @@
 @interface JavaUtilConcurrentAtomicAtomicReference
-- (BOOL)compareAndSetWithId:(id)a3 withId:(id)a4;
-- (BOOL)weakCompareAndSetWithId:(id)a3 withId:(id)a4;
-- (id)getAndSetWithId:(id)a3;
+- (BOOL)compareAndSetWithId:(id)id withId:(id)withId;
+- (BOOL)weakCompareAndSetWithId:(id)id withId:(id)withId;
+- (id)getAndSetWithId:(id)id;
 - (void)__javaClone;
 - (void)dealloc;
-- (void)lazySetWithId:(id)a3;
+- (void)lazySetWithId:(id)id;
 @end
 
 @implementation JavaUtilConcurrentAtomicAtomicReference
 
-- (void)lazySetWithId:(id)a3
+- (void)lazySetWithId:(id)id
 {
-  v5 = a3;
-  v6 = atomic_exchange_explicit(&self->value_, a3, memory_order_release);
+  idCopy = id;
+  v6 = atomic_exchange_explicit(&self->value_, id, memory_order_release);
 
   v7 = v6;
 }
 
-- (BOOL)compareAndSetWithId:(id)a3 withId:(id)a4
+- (BOOL)compareAndSetWithId:(id)id withId:(id)withId
 {
-  v7 = a4;
-  v8 = a3;
-  atomic_compare_exchange_strong(&self->value_, &v8, a4);
-  v9 = v8 == a3;
-  if (v8 == a3)
+  withIdCopy = withId;
+  idCopy = id;
+  atomic_compare_exchange_strong(&self->value_, &idCopy, withId);
+  v9 = idCopy == id;
+  if (idCopy == id)
   {
-    v10 = a3;
+    idCopy2 = id;
   }
 
   else
@@ -35,15 +35,15 @@
   return v9;
 }
 
-- (BOOL)weakCompareAndSetWithId:(id)a3 withId:(id)a4
+- (BOOL)weakCompareAndSetWithId:(id)id withId:(id)withId
 {
-  v7 = a4;
-  v8 = a3;
-  atomic_compare_exchange_strong_explicit(&self->value_, &v8, a4, memory_order_relaxed, memory_order_relaxed);
-  v9 = v8 == a3;
-  if (v8 == a3)
+  withIdCopy = withId;
+  idCopy = id;
+  atomic_compare_exchange_strong_explicit(&self->value_, &idCopy, withId, memory_order_relaxed, memory_order_relaxed);
+  v9 = idCopy == id;
+  if (idCopy == id)
   {
-    v10 = a3;
+    idCopy2 = id;
   }
 
   else
@@ -53,10 +53,10 @@
   return v9;
 }
 
-- (id)getAndSetWithId:(id)a3
+- (id)getAndSetWithId:(id)id
 {
-  v5 = a3;
-  v6 = atomic_exchange(&self->value_, a3);
+  idCopy = id;
+  v6 = atomic_exchange(&self->value_, id);
   v7 = v6;
   return v6;
 }

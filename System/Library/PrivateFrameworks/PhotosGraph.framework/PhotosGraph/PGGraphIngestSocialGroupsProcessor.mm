@@ -1,22 +1,22 @@
 @interface PGGraphIngestSocialGroupsProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestSocialGroupsProcessor)initWithGraphBuilder:(id)a3;
-- (void)insertAggregateSocialGroupsIntoGraph:(id)a3 progressBlock:(id)a4;
-- (void)insertOwnerPetToRelevantSocialGroups:(id)a3 progressBlock:(id)a4;
-- (void)processSocialGroups:(BOOL)a3 graph:(id)a4 progressBlock:(id)a5;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestSocialGroupsProcessor)initWithGraphBuilder:(id)builder;
+- (void)insertAggregateSocialGroupsIntoGraph:(id)graph progressBlock:(id)block;
+- (void)insertOwnerPetToRelevantSocialGroups:(id)groups progressBlock:(id)block;
+- (void)processSocialGroups:(BOOL)groups graph:(id)graph progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestSocialGroupsProcessor
 
-- (void)insertAggregateSocialGroupsIntoGraph:(id)a3 progressBlock:(id)a4
+- (void)insertAggregateSocialGroupsIntoGraph:(id)graph progressBlock:(id)block
 {
   v83[2] = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  aBlock = a4;
-  v6 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v7 = os_signpost_id_generate(v6);
-  v8 = v6;
+  graphCopy = graph;
+  aBlock = block;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v7 = os_signpost_id_generate(loggingConnection);
+  v8 = loggingConnection;
   v9 = v8;
   spid = v7;
   v50 = v7 - 1;
@@ -42,8 +42,8 @@
   v75 = 0;
   if (!v10 || (v11 = CFAbsoluteTimeGetCurrent(), v11 - v73[3] < 0.01) || (v73[3] = v11, v71 = 0, v10[2](v10, &v71, 0.0), v12 = v77[24] | v71, v77[24] = v12, (v12 & 1) == 0))
   {
-    v56 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v57, v47];
-    v53 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:v57];
+    v56 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy, v47];
+    v53 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:graphCopy];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v69[0] = MEMORY[0x277D85DD0];
     v69[1] = 3221225472;
@@ -66,14 +66,14 @@
     v51 = [v20 adjacencyWithSources:v56 relation:v21 targetsClass:objc_opt_class()];
 
     v22 = MEMORY[0x277D22BF8];
-    v23 = [v19 targets];
+    targets = [v19 targets];
     v24 = +[PGGraphSocialGroupNode momentOfSocialGroup];
-    v25 = [v22 adjacencyWithSources:v23 relation:v24 targetsClass:objc_opt_class()];
+    v25 = [v22 adjacencyWithSources:targets relation:v24 targetsClass:objc_opt_class()];
 
     v26 = MEMORY[0x277D22BF8];
-    v27 = [v19 targets];
+    targets2 = [v19 targets];
     v28 = +[PGGraphSocialGroupNode memberOfSocialGroup];
-    v29 = [v26 adjacencyWithSources:v27 relation:v28 targetsClass:objc_opt_class()];
+    v29 = [v26 adjacencyWithSources:targets2 relation:v28 targetsClass:objc_opt_class()];
 
     if (v10)
     {
@@ -114,7 +114,7 @@
     v59 = v51;
     v60 = v25;
     v61 = v29;
-    v34 = v57;
+    v34 = graphCopy;
     v62 = v34;
     v63 = v14;
     v35 = v32;
@@ -362,15 +362,15 @@ void __89__PGGraphIngestSocialGroupsProcessor_insertAggregateSocialGroupsIntoGra
   [*(a1 + 40) addEdge:v4];
 }
 
-- (void)insertOwnerPetToRelevantSocialGroups:(id)a3 progressBlock:(id)a4
+- (void)insertOwnerPetToRelevantSocialGroups:(id)groups progressBlock:(id)block
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  groupsCopy = groups;
   graphBuilder = self->_graphBuilder;
-  v8 = a4;
-  v9 = [(PGGraphBuilder *)graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  blockCopy = block;
+  loggingConnection = [(PGGraphBuilder *)graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
@@ -381,36 +381,36 @@ void __89__PGGraphIngestSocialGroupsProcessor_insertAggregateSocialGroupsIntoGra
   info = 0;
   mach_timebase_info(&info);
   v13 = mach_absolute_time();
-  v14 = _Block_copy(v8);
+  v14 = _Block_copy(blockCopy);
 
   v15 = 0.0;
   if (!v14 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
     v17 = 0;
 LABEL_7:
-    v18 = [v6 meNode];
-    v19 = v18;
-    if (v18)
+    meNode = [groupsCopy meNode];
+    v19 = meNode;
+    if (meNode)
     {
       spid = v10;
-      v20 = [v18 collection];
-      v21 = [v20 ownedPetNodes];
+      collection = [meNode collection];
+      ownedPetNodes = [collection ownedPetNodes];
 
-      if ([v21 count])
+      if ([ownedPetNodes count])
       {
         v49 = v10 - 1;
         v46 = v17;
         v47 = v13;
         v22 = objc_alloc_init(MEMORY[0x277D22C50]);
-        if ([v21 count])
+        if ([ownedPetNodes count])
         {
-          v23 = [v21 array];
-          v24 = [PGGraphSocialGroupNode identifierForMemberNodes:v23];
-          v25 = [PGGraphSocialGroupNodeCollection socialGroupNodeForSocialGroupIdentifier:v24 inGraph:v6];
+          array = [ownedPetNodes array];
+          v24 = [PGGraphSocialGroupNode identifierForMemberNodes:array];
+          v25 = [PGGraphSocialGroupNodeCollection socialGroupNodeForSocialGroupIdentifier:v24 inGraph:groupsCopy];
           v26 = [[PGGraphSocialGroupNode alloc] initWithSocialGroupIdentifier:v24 importance:1.0];
           if ([v25 count])
           {
-            v27 = [v25 anyNode];
+            anyNode = [v25 anyNode];
           }
 
           else
@@ -420,27 +420,27 @@ LABEL_7:
             v60[1] = 3221225472;
             v60[2] = __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGroups_progressBlock___block_invoke;
             v60[3] = &unk_278882908;
-            v27 = v26;
-            v61 = v27;
+            anyNode = v26;
+            v61 = anyNode;
             v62 = v22;
-            [v23 enumerateObjectsUsingBlock:v60];
+            [array enumerateObjectsUsingBlock:v60];
 
             v26 = v61;
           }
 
-          v29 = [v21 momentNodes];
+          momentNodes = [ownedPetNodes momentNodes];
           v57[0] = MEMORY[0x277D85DD0];
           v57[1] = 3221225472;
           v57[2] = __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGroups_progressBlock___block_invoke_2;
           v57[3] = &unk_278888B78;
-          v58 = v27;
+          v58 = anyNode;
           v59 = v22;
-          v30 = v27;
-          [v29 enumerateNodesUsingBlock:v57];
+          v30 = anyNode;
+          [momentNodes enumerateNodesUsingBlock:v57];
         }
 
-        v31 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:v6];
-        v50 = [PGGraphSocialGroupNodeCollection userVerifiedSocialGroupNodesInGraph:v6];
+        v31 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:groupsCopy];
+        v50 = [PGGraphSocialGroupNodeCollection userVerifiedSocialGroupNodesInGraph:groupsCopy];
         [v31 collectionBySubtracting:?];
         v33 = v32 = v22;
         v34 = MEMORY[0x277D22BF8];
@@ -453,9 +453,9 @@ LABEL_7:
         v52[2] = __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGroups_progressBlock___block_invoke_3;
         v52[3] = &unk_278882958;
         v53 = v36;
-        v21 = v21;
-        v54 = v21;
-        v37 = v6;
+        ownedPetNodes = ownedPetNodes;
+        v54 = ownedPetNodes;
+        v37 = groupsCopy;
         v55 = v37;
         v38 = v32;
         v56 = v38;
@@ -502,12 +502,12 @@ LABEL_7:
     else
     {
       v28 = +[PGLogging sharedLogging];
-      v21 = [v28 loggingConnection];
+      ownedPetNodes = [v28 loggingConnection];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(ownedPetNodes, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error found a nil Me Node", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, ownedPetNodes, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error found a nil Me Node", buf, 2u);
       }
     }
 
@@ -671,12 +671,12 @@ double __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGr
   return result;
 }
 
-- (void)processSocialGroups:(BOOL)a3 graph:(id)a4 progressBlock:(id)a5
+- (void)processSocialGroups:(BOOL)groups graph:(id)graph progressBlock:(id)block
 {
-  v6 = a3;
+  groupsCopy = groups;
   v79 = *MEMORY[0x277D85DE8];
-  v40 = a4;
-  v35 = a5;
+  graphCopy = graph;
+  blockCopy = block;
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
@@ -685,7 +685,7 @@ double __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGr
   v65 = &v64;
   v66 = 0x2020000000;
   v67 = 0;
-  v39 = _Block_copy(v35);
+  v39 = _Block_copy(blockCopy);
   if (v39)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -711,15 +711,15 @@ double __89__PGGraphIngestSocialGroupsProcessor_insertOwnerPetToRelevantSocialGr
     }
   }
 
-  v37 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:v40];
-  v9 = [PGGraphSocialGroupNodeCollection userVerifiedSocialGroupNodesInGraph:v40];
+  v37 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection nodesInGraph:graphCopy];
+  v9 = [PGGraphSocialGroupNodeCollection userVerifiedSocialGroupNodesInGraph:graphCopy];
   v36 = [v37 collectionBySubtracting:v9];
   v38 = v9;
-  if (v6)
+  if (groupsCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x277D22C50]);
     [v10 removeNodes:v36];
-    [v40 executeGraphChangeRequest:v10];
+    [graphCopy executeGraphChangeRequest:v10];
     v11 = 0;
     v12 = 0;
 LABEL_10:
@@ -731,12 +731,12 @@ LABEL_10:
   v11 = objc_alloc_init(MEMORY[0x277D22BD0]);
   if ([v9 count])
   {
-    v13 = [v9 elementIdentifiers];
-    [v12 unionWithIdentifierSet:v13];
+    elementIdentifiers = [v9 elementIdentifiers];
+    [v12 unionWithIdentifierSet:elementIdentifiers];
 
     v10 = [(PGGraphEdgeCollection *)PGGraphSocialGroupEdgeCollection edgesToNodes:v38];
-    v14 = [v10 elementIdentifiers];
-    [v11 unionWithIdentifierSet:v14];
+    elementIdentifiers2 = [v10 elementIdentifiers];
+    [v11 unionWithIdentifierSet:elementIdentifiers2];
 
     goto LABEL_10;
   }
@@ -758,8 +758,8 @@ LABEL_11:
   p_buf = &buf;
   v62 = 0x3F847AE147AE147BLL;
   v60 = &v68;
-  v63 = v6;
-  v18 = v40;
+  v63 = groupsCopy;
+  v18 = graphCopy;
   v53 = v18;
   v19 = v12;
   v54 = v19;
@@ -784,7 +784,7 @@ LABEL_11:
 
   else
   {
-    if (!v6)
+    if (!groupsCopy)
     {
       v22 = v36;
       if ([v19 count])
@@ -1071,15 +1071,15 @@ void __78__PGGraphIngestSocialGroupsProcessor_processSocialGroups_graph_progress
   [*(a1 + 48) addEdge:v10];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   graphBuilder = self->_graphBuilder;
-  v8 = a3;
-  v9 = [(PGGraphBuilder *)graphBuilder loggingConnection];
-  v10 = os_signpost_id_generate(v9);
-  v11 = v9;
+  updateCopy = update;
+  loggingConnection = [(PGGraphBuilder *)graphBuilder loggingConnection];
+  v10 = os_signpost_id_generate(loggingConnection);
+  v11 = loggingConnection;
   v12 = v11;
   v13 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -1093,11 +1093,11 @@ void __78__PGGraphIngestSocialGroupsProcessor_processSocialGroups_graph_progress
   info = 0;
   mach_timebase_info(&info);
   v14 = mach_absolute_time();
-  v15 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v16 = [v8 isResumingFullAnalysis];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  isResumingFullAnalysis = [updateCopy isResumingFullAnalysis];
 
-  v17 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
-  if (v17)
+  photoLibrary = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
+  if (photoLibrary)
   {
     v53 = v14;
     v54 = v13;
@@ -1106,34 +1106,34 @@ void __78__PGGraphIngestSocialGroupsProcessor_processSocialGroups_graph_progress
     v63[1] = 3221225472;
     v63[2] = __71__PGGraphIngestSocialGroupsProcessor_runWithGraphUpdate_progressBlock___block_invoke;
     v63[3] = &unk_27888A280;
-    v55 = v6;
-    v19 = v6;
+    v55 = blockCopy;
+    v19 = blockCopy;
     v64 = v19;
     [v18 progressReporterWithProgressBlock:v63];
     v62 = 0;
-    v52 = v51 = v17;
-    v20 = [PGSocialGroupsPromoter ingestUserVerifiedSocialGroupsFromPhotoLibrary:"ingestUserVerifiedSocialGroupsFromPhotoLibrary:intoGraph:progressReporter:error:" intoGraph:v17 progressReporter:v15 error:?];
+    v52 = v51 = photoLibrary;
+    v20 = [PGSocialGroupsPromoter ingestUserVerifiedSocialGroupsFromPhotoLibrary:"ingestUserVerifiedSocialGroupsFromPhotoLibrary:intoGraph:progressReporter:error:" intoGraph:photoLibrary progressReporter:graph error:?];
     v21 = 0;
     v22 = +[PGLogging sharedLogging];
-    v23 = [v22 loggingConnection];
+    loggingConnection2 = [v22 loggingConnection];
 
     v56 = v20;
     if (v20)
     {
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v67 = v20;
-        _os_log_impl(&dword_22F0FC000, v23, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Ingested user-verified social groups from database into graph with UUIDs %@", buf, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Ingested user-verified social groups from database into graph with UUIDs %@", buf, 0xCu);
       }
     }
 
-    else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
-      v47 = [v21 localizedDescription];
+      localizedDescription = [v21 localizedDescription];
       *buf = 138412290;
-      v67 = v47;
-      _os_log_error_impl(&dword_22F0FC000, v23, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error ingesting user-verified social groups from database into graph: %@", buf, 0xCu);
+      v67 = localizedDescription;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error ingesting user-verified social groups from database into graph: %@", buf, 0xCu);
     }
 
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -1143,7 +1143,7 @@ void __78__PGGraphIngestSocialGroupsProcessor_processSocialGroups_graph_progress
     v26 = v19;
     v61 = v26;
     v50 = _Block_copy(aBlock);
-    [(PGGraphIngestSocialGroupsProcessor *)self processSocialGroups:v16 graph:v15 progressBlock:?];
+    [(PGGraphIngestSocialGroupsProcessor *)self processSocialGroups:isResumingFullAnalysis graph:graph progressBlock:?];
     v27 = MEMORY[0x277D22C80];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
@@ -1151,37 +1151,37 @@ void __78__PGGraphIngestSocialGroupsProcessor_processSocialGroups_graph_progress
     v58[3] = &unk_27888A280;
     v59 = v26;
     v28 = [v27 progressReporterWithProgressBlock:v58];
-    v29 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
+    photoLibrary2 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
     v57 = v21;
     v49 = v28;
-    v30 = +[PGSocialGroupsPromoter promoteSocialGroupsInGraph:photoLibrary:maxNumberOfElectedSocialGroups:progressReporter:persistGroups:error:](PGSocialGroupsPromoter, "promoteSocialGroupsInGraph:photoLibrary:maxNumberOfElectedSocialGroups:progressReporter:persistGroups:error:", v15, v29, +[PGSocialGroupsElector defaultNumberOfElectedSocialGroups], v28, 1, &v57);
-    v25 = v57;
+    v30 = +[PGSocialGroupsPromoter promoteSocialGroupsInGraph:photoLibrary:maxNumberOfElectedSocialGroups:progressReporter:persistGroups:error:](PGSocialGroupsPromoter, "promoteSocialGroupsInGraph:photoLibrary:maxNumberOfElectedSocialGroups:progressReporter:persistGroups:error:", graph, photoLibrary2, +[PGSocialGroupsElector defaultNumberOfElectedSocialGroups], v28, 1, &v57);
+    loggingConnection5 = v57;
 
     persistenceActions = self->_persistenceActions;
     self->_persistenceActions = v30;
 
-    v32 = [(PGSocialGroupPersistenceActions *)self->_persistenceActions newAutomaticSocialGroupsToCreateCount];
+    newAutomaticSocialGroupsToCreateCount = [(PGSocialGroupPersistenceActions *)self->_persistenceActions newAutomaticSocialGroupsToCreateCount];
     v33 = COERCE_DOUBLE([(PGSocialGroupPersistenceActions *)self->_persistenceActions currentAutomaticSocialGroupsToModifyCount]);
     v34 = self->_persistenceActions;
     v35 = +[PGLogging sharedLogging];
-    v36 = [v35 loggingConnection];
+    loggingConnection3 = [v35 loggingConnection];
 
-    v17 = v51;
+    photoLibrary = v51;
     if (v34)
     {
-      if (!os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+      if (!os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
       {
 LABEL_17:
 
         v38 = +[PGLogging sharedLogging];
-        v39 = [v38 loggingConnection];
+        loggingConnection4 = [v38 loggingConnection];
 
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_INFO))
         {
-          v40 = [(PGSocialGroupPersistenceActions *)self->_persistenceActions socialGroupsSkippedBecauseNoCommonAssetsCount];
+          socialGroupsSkippedBecauseNoCommonAssetsCount = [(PGSocialGroupPersistenceActions *)self->_persistenceActions socialGroupsSkippedBecauseNoCommonAssetsCount];
           *buf = 134217984;
-          v67 = v40;
-          _os_log_impl(&dword_22F0FC000, v39, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Skipped persisting %ld social groups in graph to database because they have no assets of all members", buf, 0xCu);
+          v67 = socialGroupsSkippedBecauseNoCommonAssetsCount;
+          _os_log_impl(&dword_22F0FC000, loggingConnection4, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Skipped persisting %ld social groups in graph to database because they have no assets of all members", buf, 0xCu);
         }
 
         v41 = mach_absolute_time();
@@ -1204,47 +1204,47 @@ LABEL_17:
           _os_log_impl(&dword_22F0FC000, v45, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
         }
 
-        v6 = v55;
+        blockCopy = v55;
         goto LABEL_25;
       }
 
-      v37 = [v25 localizedDescription];
+      localizedDescription2 = [loggingConnection5 localizedDescription];
       *buf = 134218498;
-      v67 = v32;
+      v67 = newAutomaticSocialGroupsToCreateCount;
       v68 = 2048;
       v69 = v33;
       v70 = 2112;
-      v71 = v37;
-      _os_log_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Successfully promoted %ld new automatic social groups in graph to database and modified order of %ld automatic social groups: %@", buf, 0x20u);
+      v71 = localizedDescription2;
+      _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_INFO, "[PGGraphIngestSocialGroupsProcessor] Successfully promoted %ld new automatic social groups in graph to database and modified order of %ld automatic social groups: %@", buf, 0x20u);
     }
 
     else
     {
-      if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_17;
       }
 
-      v37 = [v25 localizedDescription];
+      localizedDescription2 = [loggingConnection5 localizedDescription];
       *buf = 134218498;
-      v67 = v32;
+      v67 = newAutomaticSocialGroupsToCreateCount;
       v68 = 2048;
       v69 = v33;
       v70 = 2112;
-      v71 = v37;
-      _os_log_error_impl(&dword_22F0FC000, v36, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error promoting %ld new automatic social groups in graph to database and modifying order of %ld automatic social groups: %@", buf, 0x20u);
+      v71 = localizedDescription2;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Error promoting %ld new automatic social groups in graph to database and modifying order of %ld automatic social groups: %@", buf, 0x20u);
     }
 
     goto LABEL_17;
   }
 
   v24 = +[PGLogging sharedLogging];
-  v25 = [v24 loggingConnection];
+  loggingConnection5 = [v24 loggingConnection];
 
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection5, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_22F0FC000, v25, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Skipping social group ingest and generation due to nil photoLibrary! Returning...", buf, 2u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection5, OS_LOG_TYPE_ERROR, "[PGGraphIngestSocialGroupsProcessor] Skipping social group ingest and generation due to nil photoLibrary! Returning...", buf, 2u);
   }
 
 LABEL_25:
@@ -1252,11 +1252,11 @@ LABEL_25:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v4, "hasDeletedMomentNodes") & 1) != 0 || (objc_msgSend(v4, "hasDeletedPersonNodes") & 1) != 0 || (v5 = objc_msgSend(v4, "momentUpdateTypes"), (objc_msgSend(objc_opt_class(), "requiredMomentUpdateTypes") & v5) != 0) || (objc_msgSend(v4, "hasSocialGroupsToInsert") & 1) != 0 || (objc_msgSend(v4, "hasSocialGroupsToUpdate"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasDeletedMomentNodes") & 1) != 0 || (objc_msgSend(updateCopy, "hasDeletedPersonNodes") & 1) != 0 || (v5 = objc_msgSend(updateCopy, "momentUpdateTypes"), (objc_msgSend(objc_opt_class(), "requiredMomentUpdateTypes") & v5) != 0) || (objc_msgSend(updateCopy, "hasSocialGroupsToInsert") & 1) != 0 || (objc_msgSend(updateCopy, "hasSocialGroupsToUpdate"))
   {
     v6 = 1;
   }
@@ -1265,9 +1265,9 @@ LABEL_25:
   {
     if ([(PGGraphBuilder *)self->_graphBuilder isSharedLibraryEnabled])
     {
-      v9 = [(PGGraphBuilder *)self->_graphBuilder graph];
-      v10 = [v9 meNode];
-      v11 = v10 != 0;
+      graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+      meNode = [graph meNode];
+      v11 = meNode != 0;
     }
 
     else
@@ -1279,7 +1279,7 @@ LABEL_25:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = [v4 insertedMomentNodes];
+    obj = [updateCopy insertedMomentNodes];
     v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -1294,11 +1294,11 @@ LABEL_25:
             objc_enumerationMutation(obj);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) collection];
+          collection = [*(*(&v22 + 1) + 8 * i) collection];
           if (v11)
           {
-            v17 = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
-            v18 = [v17 intersectsCollection:v16];
+            momentNodesWhereMeIsPresent = [(PGGraphBuilder *)self->_graphBuilder momentNodesWhereMeIsPresent];
+            v18 = [momentNodesWhereMeIsPresent intersectsCollection:collection];
           }
 
           else
@@ -1306,8 +1306,8 @@ LABEL_25:
             v18 = 1;
           }
 
-          v19 = [v16 personNodes];
-          v20 = [v19 count];
+          personNodes = [collection personNodes];
+          v20 = [personNodes count];
 
           if (v20 && (v18 & 1) != 0)
           {
@@ -1334,16 +1334,16 @@ LABEL_26:
   return v6;
 }
 
-- (PGGraphIngestSocialGroupsProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestSocialGroupsProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestSocialGroupsProcessor;
   v6 = [(PGGraphIngestSocialGroupsProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

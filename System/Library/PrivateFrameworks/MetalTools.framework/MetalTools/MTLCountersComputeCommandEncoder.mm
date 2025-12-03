@@ -1,55 +1,55 @@
 @interface MTLCountersComputeCommandEncoder
-- (MTLCountersComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
+- (MTLCountersComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
 - (void)endEncoding;
-- (void)insertDebugSignpost:(id)a3;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
+- (void)insertDebugSignpost:(id)signpost;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setComputePipelineState:(id)a3;
-- (void)setImageBlockWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setLabel:(id)a3;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setStageInRegion:(id *)a3;
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)updateFence:(id)a3;
-- (void)useHeap:(id)a3;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)waitForFence:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setComputePipelineState:(id)state;
+- (void)setImageBlockWidth:(unint64_t)width height:(unint64_t)height;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setLabel:(id)label;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setStageInRegion:(id *)region;
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)updateFence:(id)fence;
+- (void)useHeap:(id)heap;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLCountersComputeCommandEncoder
 
-- (MTLCountersComputeCommandEncoder)initWithComputeCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLCountersComputeCommandEncoder)initWithComputeCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v8.receiver = self;
   v8.super_class = MTLCountersComputeCommandEncoder;
-  v6 = [(MTLToolsComputeCommandEncoder *)&v8 initWithComputeCommandEncoder:a3 parent:a4 descriptor:a5];
+  v6 = [(MTLToolsComputeCommandEncoder *)&v8 initWithComputeCommandEncoder:encoder parent:buffer descriptor:descriptor];
   if (v6)
   {
-    v6->_traceEncoder = [objc_msgSend(a4 "traceBuffer")];
-    *(&v6->_APITimingEnabled + 4) = [objc_msgSend(a4 "device")];
+    v6->_traceEncoder = [objc_msgSend(buffer "traceBuffer")];
+    *(&v6->_APITimingEnabled + 4) = [objc_msgSend(buffer "device")];
   }
 
   return v6;
@@ -62,7 +62,7 @@
   [(MTLToolsObject *)&v3 dealloc];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -92,10 +92,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceCommandEncoder *)v9 insertDebugSignpost:a3];
+  [(MTLCountersTraceCommandEncoder *)v9 insertDebugSignpost:signpost];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -125,7 +125,7 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceCommandEncoder *)v9 pushDebugGroup:a3];
+  [(MTLCountersTraceCommandEncoder *)v9 pushDebugGroup:group];
 }
 
 - (void)popDebugGroup
@@ -161,7 +161,7 @@
   [(MTLCountersTraceCommandEncoder *)v7 popDebugGroup];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -191,10 +191,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceCommandEncoder *)v9 setLabel:a3];
+  [(MTLCountersTraceCommandEncoder *)v9 setLabel:label];
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -224,10 +224,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v9 setComputePipelineState:a3];
+  [(MTLCountersTraceComputeCommandEncoder *)v9 setComputePipelineState:state];
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -257,10 +257,10 @@
   traceEncoder->super._timer = v12;
   v13 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v13 setBytes:a3 length:a4 atIndex:a5];
+  [(MTLCountersTraceComputeCommandEncoder *)v13 setBytes:bytes length:length atIndex:index];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -290,10 +290,10 @@
   traceEncoder->super._timer = v12;
   v13 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v13 setBuffer:a3 offset:a4 atIndex:a5];
+  [(MTLCountersTraceComputeCommandEncoder *)v13 setBuffer:buffer offset:offset atIndex:index];
 }
 
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -323,13 +323,13 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setBufferOffset:a3 atIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setBufferOffset:offset atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v10 = mach_absolute_time();
@@ -358,10 +358,10 @@
   traceEncoder->super._timer = v13;
   v14 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v14 setBuffers:a3 offsets:a4 withRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v14 setBuffers:buffers offsets:offsets withRange:location, length];
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -391,13 +391,13 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setTexture:a3 atIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setTexture:texture atIndex:index];
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v8 = mach_absolute_time();
@@ -426,10 +426,10 @@
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v12 setTextures:a3 withRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v12 setTextures:textures withRange:location, length];
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -459,13 +459,13 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setSamplerState:a3 atIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setSamplerState:state atIndex:index];
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v8 = mach_absolute_time();
@@ -494,10 +494,10 @@
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v12 setSamplerStates:a3 withRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v12 setSamplerStates:states withRange:location, length];
 }
 
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -510,10 +510,10 @@
   }
 
   self->_traceEncoder->super._timer = v11;
-  v12 = [(MTLToolsObject *)self baseObject];
-  *&v13 = a4;
-  *&v14 = a5;
-  [v12 setSamplerState:a3 lodMinClamp:a6 lodMaxClamp:v13 atIndex:v14];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  *&v13 = clamp;
+  *&v14 = maxClamp;
+  [baseObject setSamplerState:state lodMinClamp:index lodMaxClamp:v13 atIndex:v14];
   if (*(&self->_APITimingEnabled + 4))
   {
     v17 = mach_absolute_time();
@@ -529,16 +529,16 @@
 
   traceEncoder->super._timer = v19;
   v20 = self->_traceEncoder;
-  *&v15 = a4;
-  *&v16 = a5;
+  *&v15 = clamp;
+  *&v16 = maxClamp;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v20 setSamplerState:a3 lodMinClamp:a6 lodMaxClamp:v15 atIndex:v16];
+  [(MTLCountersTraceComputeCommandEncoder *)v20 setSamplerState:state lodMinClamp:index lodMaxClamp:v15 atIndex:v16];
 }
 
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v12 = mach_absolute_time();
@@ -567,10 +567,10 @@
   traceEncoder->super._timer = v15;
   v16 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v16 setSamplerStates:a3 lodMinClamps:a4 lodMaxClamps:a5 withRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v16 setSamplerStates:states lodMinClamps:clamps lodMaxClamps:maxClamps withRange:location, length];
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -600,17 +600,17 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setThreadgroupMemoryLength:a3 atIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setThreadgroupMemoryLength:length atIndex:index];
 }
 
-- (void)setImageBlockWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setImageBlockWidth:(unint64_t)width height:(unint64_t)height
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setImageBlockWidth:a3 height:a4];
+  [baseObject setImageBlockWidth:width height:height];
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -623,12 +623,12 @@
   }
 
   self->_traceEncoder->super._timer = v5;
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = *&a3->var0.var2;
-  v13 = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v7 = *&region->var0.var2;
+  v13 = *&region->var0.var0;
   v14 = v7;
-  v15 = *&a3->var1.var1;
-  [v6 setStageInRegion:&v13];
+  v15 = *&region->var1.var1;
+  [baseObject setStageInRegion:&v13];
   if (*(&self->_APITimingEnabled + 4))
   {
     v8 = mach_absolute_time();
@@ -644,14 +644,14 @@
 
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
-  v12 = *&a3->var0.var2;
-  v13 = *&a3->var0.var0;
+  v12 = *&region->var0.var2;
+  v13 = *&region->var0.var0;
   v14 = v12;
-  v15 = *&a3->var1.var1;
+  v15 = *&region->var1.var1;
   [(MTLCountersTraceComputeCommandEncoder *)v11 setStageInRegion:&v13];
 }
 
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -681,10 +681,10 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setStageInRegionWithIndirectBuffer:a3 indirectBufferOffset:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setStageInRegionWithIndirectBuffer:buffer indirectBufferOffset:offset];
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -697,12 +697,12 @@
   }
 
   self->_traceEncoder->super._timer = v7;
-  v8 = [(MTLToolsObject *)self baseObject];
-  v15 = *&a3->var0;
-  var2 = a3->var2;
-  v13 = *&a4->var0;
-  v14 = a4->var2;
-  [v8 dispatchThreadgroups:&v15 threadsPerThreadgroup:&v13];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v15 = *&threadgroups->var0;
+  var2 = threadgroups->var2;
+  v13 = *&threadgroup->var0;
+  v14 = threadgroup->var2;
+  [baseObject dispatchThreadgroups:&v15 threadsPerThreadgroup:&v13];
   if (*(&self->_APITimingEnabled + 4))
   {
     v9 = mach_absolute_time();
@@ -718,14 +718,14 @@
 
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
-  v15 = *&a3->var0;
-  var2 = a3->var2;
-  v13 = *&a4->var0;
-  v14 = a4->var2;
+  v15 = *&threadgroups->var0;
+  var2 = threadgroups->var2;
+  v13 = *&threadgroup->var0;
+  v14 = threadgroup->var2;
   [(MTLCountersTraceComputeCommandEncoder *)v12 dispatchThreadgroups:&v15 threadsPerThreadgroup:&v13];
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -738,10 +738,10 @@
   }
 
   self->_traceEncoder->super._timer = v9;
-  v10 = [(MTLToolsObject *)self baseObject];
-  v15 = *&a5->var0;
-  var2 = a5->var2;
-  [v10 dispatchThreadgroupsWithIndirectBuffer:a3 indirectBufferOffset:a4 threadsPerThreadgroup:&v15];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v15 = *&threadgroup->var0;
+  var2 = threadgroup->var2;
+  [baseObject dispatchThreadgroupsWithIndirectBuffer:buffer indirectBufferOffset:offset threadsPerThreadgroup:&v15];
   if (*(&self->_APITimingEnabled + 4))
   {
     v11 = mach_absolute_time();
@@ -757,12 +757,12 @@
 
   traceEncoder->super._timer = v13;
   v14 = self->_traceEncoder;
-  v15 = *&a5->var0;
-  var2 = a5->var2;
-  [(MTLCountersTraceComputeCommandEncoder *)v14 dispatchThreadgroupsWithIndirectBuffer:a3 indirectBufferOffset:a4 threadsPerThreadgroup:&v15];
+  v15 = *&threadgroup->var0;
+  var2 = threadgroup->var2;
+  [(MTLCountersTraceComputeCommandEncoder *)v14 dispatchThreadgroupsWithIndirectBuffer:buffer indirectBufferOffset:offset threadsPerThreadgroup:&v15];
 }
 
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -775,12 +775,12 @@
   }
 
   self->_traceEncoder->super._timer = v7;
-  v8 = [(MTLToolsObject *)self baseObject];
-  v15 = *&a3->var0;
-  var2 = a3->var2;
-  v13 = *&a4->var0;
-  v14 = a4->var2;
-  [v8 dispatchThreads:&v15 threadsPerThreadgroup:&v13];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v15 = *&threads->var0;
+  var2 = threads->var2;
+  v13 = *&threadgroup->var0;
+  v14 = threadgroup->var2;
+  [baseObject dispatchThreads:&v15 threadsPerThreadgroup:&v13];
   if (*(&self->_APITimingEnabled + 4))
   {
     v9 = mach_absolute_time();
@@ -796,14 +796,14 @@
 
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
-  v15 = *&a3->var0;
-  var2 = a3->var2;
-  v13 = *&a4->var0;
-  v14 = a4->var2;
+  v15 = *&threads->var0;
+  var2 = threads->var2;
+  v13 = *&threadgroup->var0;
+  v14 = threadgroup->var2;
   [(MTLCountersTraceComputeCommandEncoder *)v12 dispatchThreads:&v15 threadsPerThreadgroup:&v13];
 }
 
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -833,10 +833,10 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 dispatchThreadsWithIndirectBuffer:a3 indirectBufferOffset:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 dispatchThreadsWithIndirectBuffer:buffer indirectBufferOffset:offset];
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -866,10 +866,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v9 updateFence:a3];
+  [(MTLCountersTraceComputeCommandEncoder *)v9 updateFence:fence];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -899,7 +899,7 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v9 waitForFence:a3];
+  [(MTLCountersTraceComputeCommandEncoder *)v9 waitForFence:fence];
 }
 
 - (void)endEncoding
@@ -935,7 +935,7 @@
   [(MTLCountersTraceCommandEncoder *)v7 endEncoding];
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -965,10 +965,10 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 useResource:a3 usage:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 useResource:resource usage:usage];
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -998,10 +998,10 @@
   traceEncoder->super._timer = v12;
   v13 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v13 useResources:a3 count:a4 usage:a5];
+  [(MTLCountersTraceComputeCommandEncoder *)v13 useResources:resources count:count usage:usage];
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1031,10 +1031,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v9 useHeap:a3];
+  [(MTLCountersTraceComputeCommandEncoder *)v9 useHeap:heap];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1064,10 +1064,10 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 useHeaps:a3 count:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 useHeaps:heaps count:count];
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1097,10 +1097,10 @@
   traceEncoder->super._timer = v8;
   v9 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v9 memoryBarrierWithScope:a3];
+  [(MTLCountersTraceComputeCommandEncoder *)v9 memoryBarrierWithScope:scope];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1130,10 +1130,10 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 memoryBarrierWithResources:a3 count:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 memoryBarrierWithResources:resources count:count];
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1163,13 +1163,13 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setVisibleFunctionTable:a3 atBufferIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setVisibleFunctionTable:table atBufferIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v8 = mach_absolute_time();
@@ -1198,10 +1198,10 @@
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v12 setVisibleFunctionTables:a3 withBufferRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v12 setVisibleFunctionTables:tables withBufferRange:location, length];
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
   if (*(&self->_APITimingEnabled + 4))
   {
@@ -1231,13 +1231,13 @@
   traceEncoder->super._timer = v10;
   v11 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v11 setIntersectionFunctionTable:a3 atBufferIndex:a4];
+  [(MTLCountersTraceComputeCommandEncoder *)v11 setIntersectionFunctionTable:table atBufferIndex:index];
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (*(&self->_APITimingEnabled + 4))
   {
     v8 = mach_absolute_time();
@@ -1266,7 +1266,7 @@
   traceEncoder->super._timer = v11;
   v12 = self->_traceEncoder;
 
-  [(MTLCountersTraceComputeCommandEncoder *)v12 setIntersectionFunctionTables:a3 withBufferRange:location, length];
+  [(MTLCountersTraceComputeCommandEncoder *)v12 setIntersectionFunctionTables:tables withBufferRange:location, length];
 }
 
 @end

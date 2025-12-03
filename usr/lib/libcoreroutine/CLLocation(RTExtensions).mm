@@ -17,36 +17,36 @@
 - (uint64_t)coordinateToString
 {
   v2 = MEMORY[0x277CCACA8];
-  [a1 coordinate];
+  [self coordinate];
   v4 = v3;
-  [a1 coordinate];
+  [self coordinate];
   return [v2 stringWithFormat:@"<%+.8f, %+.8f>", v4, v5];
 }
 
 - (id)toString
 {
   v2 = MEMORY[0x277CCACA8];
-  [a1 coordinate];
+  [self coordinate];
   v24 = v3;
-  [a1 coordinate];
+  [self coordinate];
   v5 = v4;
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   v7 = v6;
-  [a1 altitude];
+  [self altitude];
   v9 = v8;
-  [a1 verticalAccuracy];
+  [self verticalAccuracy];
   v11 = v10;
-  [a1 speed];
+  [self speed];
   v13 = v12;
-  [a1 speedAccuracy];
+  [self speedAccuracy];
   v15 = v14;
-  [a1 course];
+  [self course];
   v17 = v16;
-  [a1 courseAccuracy];
+  [self courseAccuracy];
   v19 = v18;
-  v20 = [a1 timestamp];
-  v21 = [v20 stringFromDate];
-  v22 = [v2 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2fm alt %.2f +/- %.2fm, speed %.2f +/- %.2fmps, course %.2f +/- %.2fdeg, @ %@, type, %u", v24, v5, v7, v9, v11, v13, v15, v17, v19, v21, objc_msgSend(a1, "type")];
+  timestamp = [self timestamp];
+  stringFromDate = [timestamp stringFromDate];
+  v22 = [v2 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2fm alt %.2f +/- %.2fm, speed %.2f +/- %.2fmps, course %.2f +/- %.2fdeg, @ %@, type, %u", v24, v5, v7, v9, v11, v13, v15, v17, v19, stringFromDate, objc_msgSend(self, "type")];
 
   return v22;
 }
@@ -63,10 +63,10 @@
     v9 = CLLocationCoordinate2DMake(v7, v8);
     [v5 horizontalUncertainty];
     v11 = v10;
-    v12 = [v5 date];
-    a1 = [a1 initWithCoordinate:v12 altitude:v9.latitude horizontalAccuracy:v9.longitude verticalAccuracy:0.0 timestamp:{v11, -1.0}];
+    date = [v5 date];
+    self = [self initWithCoordinate:date altitude:v9.latitude horizontalAccuracy:v9.longitude verticalAccuracy:0.0 timestamp:{v11, -1.0}];
 
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
@@ -78,10 +78,10 @@
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", v16, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)initWithRTLocation:()RTExtensions speed:
@@ -96,10 +96,10 @@
     v11 = CLLocationCoordinate2DMake(v9, v10);
     [v7 horizontalUncertainty];
     v13 = v12;
-    v14 = [v7 date];
-    a1 = [a1 initWithCoordinate:v14 altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 course:v13 speed:-1.0 timestamp:{0.0, a2}];
+    date = [v7 date];
+    self = [self initWithCoordinate:date altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 course:v13 speed:-1.0 timestamp:{0.0, a2}];
 
-    v15 = a1;
+    selfCopy = self;
   }
 
   else
@@ -111,10 +111,10 @@
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", v18, 2u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)initWithRTLocation:()RTExtensions speed:type:signalEnvironmentType:integrity:
@@ -160,7 +160,7 @@ LABEL_12:
 
 LABEL_13:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -206,11 +206,11 @@ LABEL_13:
   v19[5] = v26;
   v19[0] = *buf;
   v19[1] = v22;
-  a1 = [a1 initWithClientLocation:v19];
-  v17 = a1;
+  self = [self initWithClientLocation:v19];
+  selfCopy = self;
 LABEL_14:
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)initWithRTLocationOfInterest:()RTExtensions
@@ -219,25 +219,25 @@ LABEL_14:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 location];
-    [v6 latitude];
+    location = [v4 location];
+    [location latitude];
     v8 = v7;
-    v9 = [v5 location];
-    [v9 longitude];
+    location2 = [v5 location];
+    [location2 longitude];
     v11 = CLLocationCoordinate2DMake(v8, v10);
-    v12 = [v5 location];
-    [v12 altitude];
+    location3 = [v5 location];
+    [location3 altitude];
     v14 = v13;
-    v15 = [v5 location];
-    [v15 horizontalUncertainty];
+    location4 = [v5 location];
+    [location4 horizontalUncertainty];
     v17 = v16;
-    v18 = [v5 location];
-    [v18 verticalUncertainty];
+    location5 = [v5 location];
+    [location5 verticalUncertainty];
     v20 = v19;
-    v21 = [MEMORY[0x277CBEAA8] date];
-    a1 = [a1 initWithCoordinate:v21 altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:v14 timestamp:{v17, v20}];
+    date = [MEMORY[0x277CBEAA8] date];
+    self = [self initWithCoordinate:date altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:v14 timestamp:{v17, v20}];
 
-    v22 = a1;
+    selfCopy = self;
   }
 
   else
@@ -249,10 +249,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: loi", v25, 2u);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (uint64_t)initWithRTPLocation:()RTExtensions
@@ -328,8 +328,8 @@ LABEL_14:
     v24 = v23;
     [v5 speed];
     v26 = v25;
-    v27 = [v5 timestamp];
-    v28 = [v12 initWithCoordinate:v27 altitude:v16.latitude horizontalAccuracy:v16.longitude verticalAccuracy:v18 course:v20 courseAccuracy:v22 speed:v24 speedAccuracy:v37 timestamp:{v26, *&v6}];
+    timestamp = [v5 timestamp];
+    v28 = [v12 initWithCoordinate:timestamp altitude:v16.latitude horizontalAccuracy:v16.longitude verticalAccuracy:v18 course:v20 courseAccuracy:v22 speed:v24 speedAccuracy:v37 timestamp:{v26, *&v6}];
 
     v47 = 0u;
     memset(v48, 0, 28);
@@ -345,11 +345,11 @@ LABEL_14:
       [v28 clientLocation];
     }
 
-    v29 = [v5 type];
-    if (v29)
+    type = [v5 type];
+    if (type)
     {
-      v30 = [v5 type];
-      LODWORD(v46) = [v30 unsignedIntValue];
+      type2 = [v5 type];
+      LODWORD(v46) = [type2 unsignedIntValue];
     }
 
     else
@@ -357,11 +357,11 @@ LABEL_14:
       LODWORD(v46) = 0;
     }
 
-    v32 = [v5 signalEnvironmentType];
-    if (v32)
+    signalEnvironmentType = [v5 signalEnvironmentType];
+    if (signalEnvironmentType)
     {
-      v33 = [v5 signalEnvironmentType];
-      HIDWORD(v48[0]) = [v33 unsignedIntValue];
+      signalEnvironmentType2 = [v5 signalEnvironmentType];
+      HIDWORD(v48[0]) = [signalEnvironmentType2 unsignedIntValue];
     }
 
     else
@@ -369,11 +369,11 @@ LABEL_14:
       HIDWORD(v48[0]) = 0;
     }
 
-    v34 = [v5 integrity];
-    if (v34)
+    integrity = [v5 integrity];
+    if (integrity)
     {
-      v35 = [v5 integrity];
-      LODWORD(v48[0]) = [v35 unsignedIntValue];
+      integrity2 = [v5 integrity];
+      LODWORD(v48[0]) = [integrity2 unsignedIntValue];
     }
 
     else
@@ -391,8 +391,8 @@ LABEL_14:
     v38[5] = v45;
     v38[0] = *buf;
     v38[1] = v41;
-    a1 = [a1 initWithClientLocation:v38];
-    v31 = a1;
+    self = [self initWithClientLocation:v38];
+    selfCopy = self;
   }
 
   else
@@ -404,10 +404,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationMO", buf, 2u);
     }
 
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
 - (uint64_t)initWithSMLocation:()RTExtensions
@@ -425,9 +425,9 @@ LABEL_14:
   v14 = v13;
   [v5 vunc];
   v16 = v15;
-  v17 = [v5 date];
+  date = [v5 date];
 
-  v18 = [v6 initWithCoordinate:v17 altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:v12 timestamp:{v14, v16}];
+  v18 = [v6 initWithCoordinate:date altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:v12 timestamp:{v14, v16}];
   return v18;
 }
 
@@ -446,65 +446,65 @@ LABEL_14:
   v14 = v13;
   [v5 vunc];
   v16 = v15;
-  v17 = [v5 date];
+  date = [v5 date];
 
-  v18 = [v6 initWithCoordinate:v17 altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:v12 timestamp:{v14, v16}];
+  v18 = [v6 initWithCoordinate:date altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:v12 timestamp:{v14, v16}];
   return v18;
 }
 
 - (id)toVerboseString
 {
-  v2 = [a1 sourceInformation];
-  if (v2)
+  sourceInformation = [self sourceInformation];
+  if (sourceInformation)
   {
-    v3 = [a1 sourceInformation];
-    v4 = [v3 isSimulatedBySoftware];
+    sourceInformation2 = [self sourceInformation];
+    isSimulatedBySoftware = [sourceInformation2 isSimulatedBySoftware];
   }
 
   else
   {
-    v4 = -1;
+    isSimulatedBySoftware = -1;
   }
 
-  v5 = [a1 sourceInformation];
-  if (v5)
+  sourceInformation3 = [self sourceInformation];
+  if (sourceInformation3)
   {
-    v6 = [a1 sourceInformation];
-    v7 = [v6 isProducedByAccessory];
+    sourceInformation4 = [self sourceInformation];
+    isProducedByAccessory = [sourceInformation4 isProducedByAccessory];
   }
 
   else
   {
-    v7 = -1;
+    isProducedByAccessory = -1;
   }
 
   v8 = MEMORY[0x277CCACA8];
-  [a1 coordinate];
+  [self coordinate];
   v35 = v9;
-  [a1 coordinate];
+  [self coordinate];
   v34 = v10;
-  [a1 altitude];
+  [self altitude];
   v12 = v11;
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   v14 = v13;
-  [a1 verticalAccuracy];
+  [self verticalAccuracy];
   v16 = v15;
-  [a1 speed];
+  [self speed];
   v18 = v17;
-  [a1 speedAccuracy];
+  [self speedAccuracy];
   v20 = v19;
-  [a1 course];
+  [self course];
   v22 = v21;
-  [a1 courseAccuracy];
+  [self courseAccuracy];
   v24 = v23;
-  v25 = [a1 type];
-  v26 = [a1 integrity];
-  v27 = [a1 timestamp];
-  [v27 timeIntervalSinceReferenceDate];
+  type = [self type];
+  integrity = [self integrity];
+  timestamp = [self timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v29 = v28;
-  v30 = [a1 timestamp];
-  v31 = [v30 stringFromDate];
-  v32 = [v8 stringWithFormat:@"lat, % 12.9f, lon, % 12.9f, alt, % 9.3f, hacc, % 9.3f, vacc, % 9.3f, speed, % 9.3f, sacc, % 9.3f, course, % 9.3f, cacc, % 9.3f, type, %3d, integrity, %3d, simulated, %+3ld, accessory, %+3ld, timestamp, %.3f, date, %@", v35, v34, v12, v14, v16, v18, v20, v22, v24, v25, v26, v4, v7, v29, v31];
+  timestamp2 = [self timestamp];
+  stringFromDate = [timestamp2 stringFromDate];
+  v32 = [v8 stringWithFormat:@"lat, % 12.9f, lon, % 12.9f, alt, % 9.3f, hacc, % 9.3f, vacc, % 9.3f, speed, % 9.3f, sacc, % 9.3f, course, % 9.3f, cacc, % 9.3f, type, %3d, integrity, %3d, simulated, %+3ld, accessory, %+3ld, timestamp, %.3f, date, %@", v35, v34, v12, v14, v16, v18, v20, v22, v24, type, integrity, isSimulatedBySoftware, isProducedByAccessory, v29, stringFromDate];
 
   return v32;
 }

@@ -1,17 +1,17 @@
 @interface HFValueSetFormatter
-+ (id)formatterWithStringProvider:(id)a3;
++ (id)formatterWithStringProvider:(id)provider;
 - (HFValueSetFormatter)init;
-- (HFValueSetFormatter)initWithStringProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (HFValueSetFormatter)initWithStringProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFValueSetFormatter
 
-+ (id)formatterWithStringProvider:(id)a3
++ (id)formatterWithStringProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStringProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithStringProvider:providerCopy];
 
   return v5;
 }
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (HFValueSetFormatter)initWithStringProvider:(id)a3
+- (HFValueSetFormatter)initWithStringProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HFValueSetFormatter.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFValueSetFormatter.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
   }
 
   v10.receiver = self;
@@ -45,31 +45,31 @@
   v7 = v6;
   if (v6)
   {
-    [(HFValueSetFormatter *)v6 setStringProvider:v5];
+    [(HFValueSetFormatter *)v6 setStringProvider:providerCopy];
     [(HFValueSetFormatter *)v7 setUnitStyle:2];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HFValueSetFormatter *)self stringProvider];
-  v6 = [v4 initWithStringProvider:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  stringProvider = [(HFValueSetFormatter *)self stringProvider];
+  v6 = [v4 initWithStringProvider:stringProvider];
 
   [v6 setUnitStyle:{-[HFValueSetFormatter unitStyle](self, "unitStyle")}];
   return v6;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HFValueSetFormatter *)self stringProvider];
-  if (v5)
+  valueCopy = value;
+  stringProvider = [(HFValueSetFormatter *)self stringProvider];
+  if (stringProvider)
   {
-    v6 = [(HFValueSetFormatter *)self stringProvider];
-    v7 = (v6)[2](v6, v4, [(HFValueSetFormatter *)self unitStyle]);
+    stringProvider2 = [(HFValueSetFormatter *)self stringProvider];
+    v7 = (stringProvider2)[2](stringProvider2, valueCopy, [(HFValueSetFormatter *)self unitStyle]);
   }
 
   else

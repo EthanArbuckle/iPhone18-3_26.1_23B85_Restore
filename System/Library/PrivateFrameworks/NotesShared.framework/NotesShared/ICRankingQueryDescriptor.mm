@@ -1,32 +1,32 @@
 @interface ICRankingQueryDescriptor
-- (ICRankingQueryDescriptor)initWithQueryFields:(id)a3 expandedTokens:(id)a4 rankingQueryType:(int64_t)a5 rankingQueryFlags:(id)a6 displayedMatchedFields:(unint64_t)a7 purpose:(unint64_t)a8;
+- (ICRankingQueryDescriptor)initWithQueryFields:(id)fields expandedTokens:(id)tokens rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags displayedMatchedFields:(unint64_t)matchedFields purpose:(unint64_t)purpose;
 - (NSArray)tokens;
 - (NSString)rankingQuery;
-- (double)rankingScoreForSearchResultType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)rankingQueryForQueryField:(id)a3 tokenString:(id)a4;
+- (double)rankingScoreForSearchResultType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)rankingQueryForQueryField:(id)field tokenString:(id)string;
 @end
 
 @implementation ICRankingQueryDescriptor
 
-- (ICRankingQueryDescriptor)initWithQueryFields:(id)a3 expandedTokens:(id)a4 rankingQueryType:(int64_t)a5 rankingQueryFlags:(id)a6 displayedMatchedFields:(unint64_t)a7 purpose:(unint64_t)a8
+- (ICRankingQueryDescriptor)initWithQueryFields:(id)fields expandedTokens:(id)tokens rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags displayedMatchedFields:(unint64_t)matchedFields purpose:(unint64_t)purpose
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  fieldsCopy = fields;
+  tokensCopy = tokens;
+  flagsCopy = flags;
   v22.receiver = self;
   v22.super_class = ICRankingQueryDescriptor;
   v18 = [(ICRankingQueryDescriptor *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queryFields, a3);
-    objc_storeStrong(&v19->_expandedTokens, a4);
-    v19->_rankingQueryType = a5;
-    objc_storeStrong(&v19->_rankingQueryFlags, a6);
-    v19->_displayedMatchedFields = a7;
-    v19->_purpose = a8;
-    if (!a7)
+    objc_storeStrong(&v18->_queryFields, fields);
+    objc_storeStrong(&v19->_expandedTokens, tokens);
+    v19->_rankingQueryType = type;
+    objc_storeStrong(&v19->_rankingQueryFlags, flags);
+    v19->_displayedMatchedFields = matchedFields;
+    v19->_purpose = purpose;
+    if (!matchedFields)
     {
       if ([(NSArray *)v19->_queryFields containsObject:@"_ICItemDisplayName"]|| [(NSArray *)v19->_queryFields containsObject:*MEMORY[0x277CC2760]])
       {
@@ -57,14 +57,14 @@ LABEL_7:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ICRankingQueryDescriptor *)self queryFields];
-  v6 = [(ICRankingQueryDescriptor *)self expandedTokens];
-  v7 = [(ICRankingQueryDescriptor *)self rankingQueryType];
-  v8 = [(ICRankingQueryDescriptor *)self rankingQueryFlags];
-  v9 = [v4 initWithQueryFields:v5 expandedTokens:v6 rankingQueryType:v7 rankingQueryFlags:v8 displayedMatchedFields:-[ICRankingQueryDescriptor displayedMatchedFields](self purpose:{"displayedMatchedFields"), -[ICRankingQueryDescriptor purpose](self, "purpose")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  queryFields = [(ICRankingQueryDescriptor *)self queryFields];
+  expandedTokens = [(ICRankingQueryDescriptor *)self expandedTokens];
+  rankingQueryType = [(ICRankingQueryDescriptor *)self rankingQueryType];
+  rankingQueryFlags = [(ICRankingQueryDescriptor *)self rankingQueryFlags];
+  v9 = [v4 initWithQueryFields:queryFields expandedTokens:expandedTokens rankingQueryType:rankingQueryType rankingQueryFlags:rankingQueryFlags displayedMatchedFields:-[ICRankingQueryDescriptor displayedMatchedFields](self purpose:{"displayedMatchedFields"), -[ICRankingQueryDescriptor purpose](self, "purpose")}];
 
   return v9;
 }
@@ -123,8 +123,8 @@ LABEL_7:
                 v31 = 0u;
                 v32 = 0u;
                 v33 = 0u;
-                v11 = [(ICRankingQueryDescriptor *)self queryFields];
-                v12 = [v11 countByEnumeratingWithState:&v30 objects:v42 count:16];
+                queryFields = [(ICRankingQueryDescriptor *)self queryFields];
+                v12 = [queryFields countByEnumeratingWithState:&v30 objects:v42 count:16];
                 if (v12)
                 {
                   v13 = v12;
@@ -136,7 +136,7 @@ LABEL_7:
                     {
                       if (*v31 != v14)
                       {
-                        objc_enumerationMutation(v11);
+                        objc_enumerationMutation(queryFields);
                       }
 
                       v16 = [(ICRankingQueryDescriptor *)self rankingQueryForQueryField:*(*(&v30 + 1) + 8 * v15) tokenString:v10];
@@ -146,7 +146,7 @@ LABEL_7:
                     }
 
                     while (v13 != v15);
-                    v13 = [v11 countByEnumeratingWithState:&v30 objects:v42 count:16];
+                    v13 = [queryFields countByEnumeratingWithState:&v30 objects:v42 count:16];
                   }
 
                   while (v13);
@@ -195,8 +195,8 @@ LABEL_7:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(ICRankingQueryDescriptor *)self expandedTokens];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  expandedTokens = [(ICRankingQueryDescriptor *)self expandedTokens];
+  v5 = [expandedTokens countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -207,13 +207,13 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(expandedTokens);
         }
 
         [v3 addObjectsFromArray:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [expandedTokens countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -224,7 +224,7 @@ LABEL_7:
   return v9;
 }
 
-- (double)rankingScoreForSearchResultType:(unint64_t)a3
+- (double)rankingScoreForSearchResultType:(unint64_t)type
 {
   v5 = 0.0;
   if ([(ICRankingQueryDescriptor *)self purpose]!= 1)
@@ -234,38 +234,38 @@ LABEL_7:
 
   if (([(ICRankingQueryDescriptor *)self displayedMatchedFields]& 1) != 0)
   {
-    v7 = [(ICRankingQueryDescriptor *)self rankingQueryType];
+    rankingQueryType = [(ICRankingQueryDescriptor *)self rankingQueryType];
     v8 = 0.0;
-    if (v7 != 2)
+    if (rankingQueryType != 2)
     {
       v9 = 0.0625;
-      if (a3 != 1)
+      if (type != 1)
       {
         v9 = 0.0;
       }
 
-      if (!a3)
+      if (!type)
       {
         v9 = 0.5;
       }
 
       v10 = 4.0;
-      if (a3 != 1)
+      if (type != 1)
       {
         v10 = 0.0;
       }
 
-      v11 = a3 == 0;
+      v11 = type == 0;
       v12 = 32.0;
       goto LABEL_23;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v8 = 0.001953125;
     }
 
-    v13 = a3 == 0;
+    v13 = type == 0;
     v14 = 0x3F90000000000000;
 LABEL_34:
     v9 = *&v14;
@@ -283,28 +283,28 @@ LABEL_35:
 
   if (([(ICRankingQueryDescriptor *)self displayedMatchedFields]& 2) != 0)
   {
-    v7 = [(ICRankingQueryDescriptor *)self rankingQueryType];
+    rankingQueryType = [(ICRankingQueryDescriptor *)self rankingQueryType];
     v8 = 0.0;
-    if (v7 != 2)
+    if (rankingQueryType != 2)
     {
       v9 = 0.03125;
-      if (a3 != 1)
+      if (type != 1)
       {
         v9 = 0.0;
       }
 
-      if (!a3)
+      if (!type)
       {
         v9 = 0.25;
       }
 
       v10 = 2.0;
-      if (a3 != 1)
+      if (type != 1)
       {
         v10 = 0.0;
       }
 
-      v11 = a3 == 0;
+      v11 = type == 0;
       v12 = 16.0;
 LABEL_23:
       if (v11)
@@ -312,65 +312,65 @@ LABEL_23:
         v10 = v12;
       }
 
-      if (!v7)
+      if (!rankingQueryType)
       {
         v8 = v10;
       }
 
-      v13 = v7 == 1;
+      v13 = rankingQueryType == 1;
       goto LABEL_35;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v8 = 0.0009765625;
     }
 
-    v13 = a3 == 0;
+    v13 = type == 0;
     v14 = 0x3F80000000000000;
     goto LABEL_34;
   }
 
   if (([(ICRankingQueryDescriptor *)self displayedMatchedFields]& 4) != 0)
   {
-    v6 = [(ICRankingQueryDescriptor *)self rankingQueryType];
-    if (v6 <= 2)
+    rankingQueryType2 = [(ICRankingQueryDescriptor *)self rankingQueryType];
+    if (rankingQueryType2 <= 2)
     {
-      return dbl_2150C0AF8[v6];
+      return dbl_2150C0AF8[rankingQueryType2];
     }
   }
 
   return v5;
 }
 
-- (id)rankingQueryForQueryField:(id)a3 tokenString:(id)a4
+- (id)rankingQueryForQueryField:(id)field tokenString:(id)string
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277D36268] stringByEscapingSearchString:a4];
+  fieldCopy = field;
+  v7 = [MEMORY[0x277D36268] stringByEscapingSearchString:string];
   if ([v7 length])
   {
-    v8 = [(ICRankingQueryDescriptor *)self rankingQueryFlags];
+    rankingQueryFlags = [(ICRankingQueryDescriptor *)self rankingQueryFlags];
   }
 
   else
   {
-    v8 = &stru_2827172C0;
+    rankingQueryFlags = &stru_2827172C0;
   }
 
-  v9 = [(ICRankingQueryDescriptor *)self rankingQueryType];
-  switch(v9)
+  rankingQueryType = [(ICRankingQueryDescriptor *)self rankingQueryType];
+  switch(rankingQueryType)
   {
     case 2:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@=*%@*%@", v6, v7, v8];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@=*%@*%@", fieldCopy, v7, rankingQueryFlags];
       goto LABEL_10;
     case 1:
       v10 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%3.3d", 66];
-      v12 = [v10 stringWithFormat:@"%@=%@*%@f%@", v6, v7, v8, v11];
+      v12 = [v10 stringWithFormat:@"%@=%@*%@f%@", fieldCopy, v7, rankingQueryFlags, v11];
 
       goto LABEL_12;
     case 0:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*%@", v6, v7, v8];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@*%@", fieldCopy, v7, rankingQueryFlags];
       v12 = LABEL_10:;
       goto LABEL_12;
   }

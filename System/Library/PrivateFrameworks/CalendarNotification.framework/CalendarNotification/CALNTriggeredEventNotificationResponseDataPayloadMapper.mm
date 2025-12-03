@@ -1,41 +1,41 @@
 @interface CALNTriggeredEventNotificationResponseDataPayloadMapper
-+ (id)_hypothesisDataForNotificationData:(id)a3;
-+ (id)_hypothesisFromPayload:(id)a3;
-+ (id)notificationResponseDataForPayload:(id)a3;
-+ (id)payloadForNotificationResponseData:(id)a3;
-+ (void)_setHypothesisDataFromNotificationData:(id)a3 inPayload:(id)a4;
-+ (void)_setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:(id)a3 inPayload:(id)a4;
++ (id)_hypothesisDataForNotificationData:(id)data;
++ (id)_hypothesisFromPayload:(id)payload;
++ (id)notificationResponseDataForPayload:(id)payload;
++ (id)payloadForNotificationResponseData:(id)data;
++ (void)_setHypothesisDataFromNotificationData:(id)data inPayload:(id)payload;
++ (void)_setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:(id)data inPayload:(id)payload;
 @end
 
 @implementation CALNTriggeredEventNotificationResponseDataPayloadMapper
 
-+ (id)payloadForNotificationResponseData:(id)a3
++ (id)payloadForNotificationResponseData:(id)data
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [a1 _setHypothesisDataFromNotificationData:v5 inPayload:v6];
-  [a1 _setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:v5 inPayload:v6];
+  dataCopy = data;
+  dictionary = [v4 dictionary];
+  [self _setHypothesisDataFromNotificationData:dataCopy inPayload:dictionary];
+  [self _setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:dataCopy inPayload:dictionary];
 
-  v7 = [v6 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-+ (id)notificationResponseDataForPayload:(id)a3
++ (id)notificationResponseDataForPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [a1 _hypothesisFromPayload:v4];
-  v6 = [a1 _lastFireTimeOfAlertOffsetFromTravelTimeFromPayload:v4];
+  payloadCopy = payload;
+  v5 = [self _hypothesisFromPayload:payloadCopy];
+  v6 = [self _lastFireTimeOfAlertOffsetFromTravelTimeFromPayload:payloadCopy];
 
   v7 = [[CALNTriggeredEventNotificationResponseData alloc] initWithHypothesis:v5 lastFireTimeOfAlertOffsetFromTravelTime:v6];
 
   return v7;
 }
 
-+ (id)_hypothesisFromPayload:(id)a3
++ (id)_hypothesisFromPayload:(id)payload
 {
-  v3 = [a3 objectForKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataHypothesisDataPayloadKey"];
+  v3 = [payload objectForKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataHypothesisDataPayloadKey"];
   if (v3)
   {
     v9 = 0;
@@ -64,23 +64,23 @@
   return v4;
 }
 
-+ (void)_setHypothesisDataFromNotificationData:(id)a3 inPayload:(id)a4
++ (void)_setHypothesisDataFromNotificationData:(id)data inPayload:(id)payload
 {
-  v7 = a4;
-  v6 = [a1 _hypothesisDataForNotificationData:a3];
+  payloadCopy = payload;
+  v6 = [self _hypothesisDataForNotificationData:data];
   if (v6)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataHypothesisDataPayloadKey"];
+    [payloadCopy setObject:v6 forKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataHypothesisDataPayloadKey"];
   }
 }
 
-+ (id)_hypothesisDataForNotificationData:(id)a3
++ (id)_hypothesisDataForNotificationData:(id)data
 {
-  v3 = [a3 hypothesis];
-  if (v3)
+  hypothesis = [data hypothesis];
+  if (hypothesis)
   {
     v9 = 0;
-    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+    v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:hypothesis requiringSecureCoding:1 error:&v9];
     v5 = v9;
     if (v4)
     {
@@ -105,13 +105,13 @@
   return v4;
 }
 
-+ (void)_setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:(id)a3 inPayload:(id)a4
++ (void)_setLastFireTimeOfAlertOffsetFromTravelTimeFromNotificationData:(id)data inPayload:(id)payload
 {
-  v6 = a4;
-  v5 = [a3 lastFireTimeOfAlertOffsetFromTravelTime];
-  if (v5)
+  payloadCopy = payload;
+  lastFireTimeOfAlertOffsetFromTravelTime = [data lastFireTimeOfAlertOffsetFromTravelTime];
+  if (lastFireTimeOfAlertOffsetFromTravelTime)
   {
-    [v6 setObject:v5 forKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataLastFireTimeOfAlertOffsetFromTravelTimePayloadKey"];
+    [payloadCopy setObject:lastFireTimeOfAlertOffsetFromTravelTime forKeyedSubscript:@"com.apple.calendar.notifications.CALNTriggeredEventNotificationResponseDataLastFireTimeOfAlertOffsetFromTravelTimePayloadKey"];
   }
 }
 

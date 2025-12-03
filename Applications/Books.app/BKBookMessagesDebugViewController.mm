@@ -1,12 +1,12 @@
 @interface BKBookMessagesDebugViewController
 - (BKBookMessagesDebugViewController)init;
-- (BKBookMessagesDebugViewController)initWithCoder:(id)a3;
-- (BKBookMessagesDebugViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BKBookMessagesDebugViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BKBookMessagesDebugViewController)initWithCoder:(id)coder;
+- (BKBookMessagesDebugViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (BKBookMessagesDebugViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -23,7 +23,7 @@
   return [(BKBookMessagesDebugViewController *)&v3 initWithStyle:2];
 }
 
-- (BKBookMessagesDebugViewController)initWithCoder:(id)a3
+- (BKBookMessagesDebugViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___BKBookMessagesDebugViewController_manager) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR___BKBookMessagesDebugViewController_propertyConfiguration) = 0;
@@ -34,11 +34,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   BookMessagesDebugViewController.viewDidLoad()();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR___BKBookMessagesDebugViewController_propertyConfiguration))
   {
@@ -57,10 +57,10 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   _s5Books31BookMessagesDebugViewControllerC05tableE0_23titleForHeaderInSectionSSSgSo07UITableE0C_SitF_0();
   v8 = v7;
 
@@ -77,44 +77,44 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  v12 = BookMessagesDebugViewController.tableView(_:cellForRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = BookMessagesDebugViewController.tableView(_:cellForRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_100796E74();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796E14();
-  v10 = a3;
-  v11 = self;
-  BookMessagesDebugViewController.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  BookMessagesDebugViewController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BKBookMessagesDebugViewController)initWithStyle:(int64_t)a3
+- (BKBookMessagesDebugViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BKBookMessagesDebugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKBookMessagesDebugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

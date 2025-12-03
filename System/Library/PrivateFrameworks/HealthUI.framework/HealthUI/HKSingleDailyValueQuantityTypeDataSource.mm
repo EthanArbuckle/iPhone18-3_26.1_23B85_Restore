@@ -1,12 +1,12 @@
 @interface HKSingleDailyValueQuantityTypeDataSource
-- (BOOL)_shouldEmitOnlySinglePointForStatistics:(id)a3;
-- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)a3;
+- (BOOL)_shouldEmitOnlySinglePointForStatistics:(id)statistics;
+- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)interval;
 - (id)_componentsForDailyValues;
-- (id)_quantityValueFromStatistics:(id)a3 statisticsInterval:(id)a4 date:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)_quantityValueFromStatistics:(id)statistics statisticsInterval:(id)interval date:(id)date;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
-- (id)statisticsIntervalForTimeScope:(int64_t)a3 resolution:(int64_t)a4 displayType:(id)a5;
-- (unint64_t)calendarUnitForTimeScope:(int64_t)a3 displayType:(id)a4;
+- (id)statisticsIntervalForTimeScope:(int64_t)scope resolution:(int64_t)resolution displayType:(id)type;
+- (unint64_t)calendarUnitForTimeScope:(int64_t)scope displayType:(id)type;
 @end
 
 @implementation HKSingleDailyValueQuantityTypeDataSource
@@ -14,49 +14,49 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKQuantityTypeDataSource *)self quantityType];
-  v4 = [v3 hk_localizedName];
-  v5 = [v2 stringWithFormat:@"HKSingleDailyValueQuantity(%@)", v4];
+  quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+  hk_localizedName = [quantityType hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKSingleDailyValueQuantity(%@)", hk_localizedName];
 
   return v5;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 statisticsInterval];
-  v9 = [(HKSingleDailyValueQuantityTypeDataSource *)self _matchesDailyValues:v8];
+  requestCopy = request;
+  handlerCopy = handler;
+  statisticsInterval = [requestCopy statisticsInterval];
+  v9 = [(HKSingleDailyValueQuantityTypeDataSource *)self _matchesDailyValues:statisticsInterval];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF10] hk_oneDay];
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v12 = [v6 startDate];
-    v25 = [v11 startOfDayForDate:v12];
+    hk_oneDay = [MEMORY[0x1E695DF10] hk_oneDay];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    startDate = [requestCopy startDate];
+    v25 = [currentCalendar startOfDayForDate:startDate];
 
-    v13 = [v6 endDate];
-    v26 = [v11 dateByAddingUnit:16 value:1 toDate:v13 options:0];
+    endDate = [requestCopy endDate];
+    v26 = [currentCalendar dateByAddingUnit:16 value:1 toDate:endDate options:0];
 
-    v24 = [v11 startOfDayForDate:v26];
+    v24 = [currentCalendar startOfDayForDate:v26];
     v14 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v25 endDate:v24 options:0];
     v15 = objc_alloc(MEMORY[0x1E696C4D8]);
-    v16 = [(HKQuantityTypeDataSource *)self quantityType];
-    v17 = [(HKQuantityTypeDataSource *)self statisticsOptions];
-    v18 = [v6 startDate];
-    v19 = [v15 initWithQuantityType:v16 quantitySamplePredicate:v14 options:v17 anchorDate:v18 intervalComponents:v10];
+    quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+    statisticsOptions = [(HKQuantityTypeDataSource *)self statisticsOptions];
+    startDate2 = [requestCopy startDate];
+    v19 = [v15 initWithQuantityType:quantityType quantitySamplePredicate:v14 options:statisticsOptions anchorDate:startDate2 intervalComponents:hk_oneDay];
 
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completionHandler___block_invoke;
     v27[3] = &unk_1E81B9D58;
     v27[4] = self;
-    v28 = v10;
-    v29 = v11;
-    v30 = v7;
-    v20 = v11;
-    v21 = v10;
+    v28 = hk_oneDay;
+    v29 = currentCalendar;
+    v30 = handlerCopy;
+    v20 = currentCalendar;
+    v21 = hk_oneDay;
     [v19 setInitialResultsHandler:v27];
     [v19 setDebugIdentifier:@"charting (single daily value)"];
     v32[0] = v19;
@@ -67,7 +67,7 @@
   {
     v31.receiver = self;
     v31.super_class = HKSingleDailyValueQuantityTypeDataSource;
-    v22 = [(HKQuantityTypeDataSource *)&v31 queriesForRequest:v6 completionHandler:v7];
+    v22 = [(HKQuantityTypeDataSource *)&v31 queriesForRequest:requestCopy completionHandler:handlerCopy];
   }
 
   return v22;
@@ -155,13 +155,13 @@ void __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completion
   [*(a1 + 56) addObject:v4];
 }
 
-- (BOOL)_shouldEmitOnlySinglePointForStatistics:(id)a3
+- (BOOL)_shouldEmitOnlySinglePointForStatistics:(id)statistics
 {
-  v3 = [a3 baselineRelativeValueState];
-  v4 = v3;
-  if (v3)
+  baselineRelativeValueState = [statistics baselineRelativeValueState];
+  v4 = baselineRelativeValueState;
+  if (baselineRelativeValueState)
   {
-    v5 = [v3 integerValue] != 3;
+    v5 = [baselineRelativeValueState integerValue] != 3;
   }
 
   else
@@ -172,42 +172,42 @@ void __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completion
   return v5;
 }
 
-- (id)_quantityValueFromStatistics:(id)a3 statisticsInterval:(id)a4 date:(id)a5
+- (id)_quantityValueFromStatistics:(id)statistics statisticsInterval:(id)interval date:(id)date
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  intervalCopy = interval;
+  statisticsCopy = statistics;
   v10 = objc_alloc_init(HKQuantityTypeDataSourceValue);
-  [(HKQuantityTypeDataSourceValue *)v10 setStartDate:v7];
-  [(HKQuantityTypeDataSourceValue *)v10 setEndDate:v7];
+  [(HKQuantityTypeDataSourceValue *)v10 setStartDate:dateCopy];
+  [(HKQuantityTypeDataSourceValue *)v10 setEndDate:dateCopy];
 
-  v11 = [v9 quantityType];
-  [(HKQuantityTypeDataSourceValue *)v10 setQuantityType:v11];
+  quantityType = [statisticsCopy quantityType];
+  [(HKQuantityTypeDataSourceValue *)v10 setQuantityType:quantityType];
 
-  v12 = [v9 averageQuantity];
-  [(HKQuantityTypeDataSourceValue *)v10 setAverageQuantity:v12];
+  averageQuantity = [statisticsCopy averageQuantity];
+  [(HKQuantityTypeDataSourceValue *)v10 setAverageQuantity:averageQuantity];
 
-  v13 = [v9 duration];
-  [(HKQuantityTypeDataSourceValue *)v10 setDurationQuantity:v13];
+  duration = [statisticsCopy duration];
+  [(HKQuantityTypeDataSourceValue *)v10 setDurationQuantity:duration];
 
-  v14 = [v9 sumQuantity];
-  [(HKQuantityTypeDataSourceValue *)v10 setSumQuantity:v14];
+  sumQuantity = [statisticsCopy sumQuantity];
+  [(HKQuantityTypeDataSourceValue *)v10 setSumQuantity:sumQuantity];
 
-  v15 = [v9 minimumQuantity];
-  [(HKQuantityTypeDataSourceValue *)v10 setMinQuantity:v15];
+  minimumQuantity = [statisticsCopy minimumQuantity];
+  [(HKQuantityTypeDataSourceValue *)v10 setMinQuantity:minimumQuantity];
 
-  v16 = [v9 maximumQuantity];
-  [(HKQuantityTypeDataSourceValue *)v10 setMaxQuantity:v16];
+  maximumQuantity = [statisticsCopy maximumQuantity];
+  [(HKQuantityTypeDataSourceValue *)v10 setMaxQuantity:maximumQuantity];
 
-  v17 = [v9 mostRecentQuantity];
-  [(HKQuantityTypeDataSourceValue *)v10 setMostRecentQuantity:v17];
+  mostRecentQuantity = [statisticsCopy mostRecentQuantity];
+  [(HKQuantityTypeDataSourceValue *)v10 setMostRecentQuantity:mostRecentQuantity];
 
   [(HKQuantityTypeDataSourceValue *)v10 setRecordCount:1];
-  [(HKQuantityTypeDataSourceValue *)v10 setStatisticsInterval:v8];
+  [(HKQuantityTypeDataSourceValue *)v10 setStatisticsInterval:intervalCopy];
 
-  v18 = [v9 baselineRelativeValueState];
+  baselineRelativeValueState = [statisticsCopy baselineRelativeValueState];
 
-  [(HKQuantityTypeDataSourceValue *)v10 setBaselineRelativeValueState:v18];
+  [(HKQuantityTypeDataSourceValue *)v10 setBaselineRelativeValueState:baselineRelativeValueState];
 
   return v10;
 }
@@ -220,37 +220,37 @@ void __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completion
   return v2;
 }
 
-- (id)statisticsIntervalForTimeScope:(int64_t)a3 resolution:(int64_t)a4 displayType:(id)a5
+- (id)statisticsIntervalForTimeScope:(int64_t)scope resolution:(int64_t)resolution displayType:(id)type
 {
-  v8 = a5;
-  if (a3 <= 8)
+  typeCopy = type;
+  if (scope <= 8)
   {
-    if (((1 << a3) & 0x13F) != 0)
+    if (((1 << scope) & 0x13F) != 0)
     {
       v11.receiver = self;
       v11.super_class = HKSingleDailyValueQuantityTypeDataSource;
-      v9 = [(HKHealthQueryChartCacheDataSource *)&v11 statisticsIntervalForTimeScope:a3 resolution:a4 displayType:v8];
+      _componentsForDailyValues = [(HKHealthQueryChartCacheDataSource *)&v11 statisticsIntervalForTimeScope:scope resolution:resolution displayType:typeCopy];
     }
 
     else
     {
-      v9 = [(HKSingleDailyValueQuantityTypeDataSource *)self _componentsForDailyValues];
+      _componentsForDailyValues = [(HKSingleDailyValueQuantityTypeDataSource *)self _componentsForDailyValues];
     }
 
-    a4 = v9;
+    resolution = _componentsForDailyValues;
   }
 
-  return a4;
+  return resolution;
 }
 
-- (unint64_t)calendarUnitForTimeScope:(int64_t)a3 displayType:(id)a4
+- (unint64_t)calendarUnitForTimeScope:(int64_t)scope displayType:(id)type
 {
-  v6 = a4;
-  if (a3 < 6 || a3 == 8)
+  typeCopy = type;
+  if (scope < 6 || scope == 8)
   {
     v9.receiver = self;
     v9.super_class = HKSingleDailyValueQuantityTypeDataSource;
-    v7 = [(HKHealthQueryChartCacheDataSource *)&v9 calendarUnitForTimeScope:a3 displayType:v6];
+    v7 = [(HKHealthQueryChartCacheDataSource *)&v9 calendarUnitForTimeScope:scope displayType:typeCopy];
   }
 
   else
@@ -261,10 +261,10 @@ void __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completion
   return v7;
 }
 
-- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)a3
+- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)interval
 {
-  v4 = a3;
-  if ([(HKSingleDailyValueQuantityTypeDataSource *)self _matchesDailyValues:v4])
+  intervalCopy = interval;
+  if ([(HKSingleDailyValueQuantityTypeDataSource *)self _matchesDailyValues:intervalCopy])
   {
     v5 = 0;
   }
@@ -273,7 +273,7 @@ void __80__HKSingleDailyValueQuantityTypeDataSource_queriesForRequest_completion
   {
     v7.receiver = self;
     v7.super_class = HKSingleDailyValueQuantityTypeDataSource;
-    v5 = [(HKQuantityTypeDataSource *)&v7 requiresPointRealignmentToMidnightForStatisticsInterval:v4];
+    v5 = [(HKQuantityTypeDataSource *)&v7 requiresPointRealignmentToMidnightForStatisticsInterval:intervalCopy];
   }
 
   return v5;

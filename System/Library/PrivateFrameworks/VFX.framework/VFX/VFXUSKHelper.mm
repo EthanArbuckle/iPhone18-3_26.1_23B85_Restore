@@ -1,20 +1,20 @@
 @interface VFXUSKHelper
-+ (id)node:(id)a3 propertyWithName:(id)a4 type:(id)a5 role:(id)a6;
-+ (id)world:(id)a3 nodeAtPath:(id)a4 type:(id)a5;
++ (id)node:(id)node propertyWithName:(id)name type:(id)type role:(id)role;
++ (id)world:(id)world nodeAtPath:(id)path type:(id)type;
 @end
 
 @implementation VFXUSKHelper
 
-+ (id)world:(id)a3 nodeAtPath:(id)a4 type:(id)a5
++ (id)world:(id)world nodeAtPath:(id)path type:(id)type
 {
-  v5 = objc_msgSend_newNodeAtPath_type_(a3, a2, a4, a5);
+  v5 = objc_msgSend_newNodeAtPath_type_(world, a2, path, type);
 
   return v5;
 }
 
-+ (id)node:(id)a3 propertyWithName:(id)a4 type:(id)a5 role:(id)a6
++ (id)node:(id)node propertyWithName:(id)name type:(id)type role:(id)role
 {
-  v6 = objc_msgSend_newPropertyWithName_type_role_(a3, a2, a4, a5, a6);
+  v6 = objc_msgSend_newPropertyWithName_type_role_(node, a2, name, type, role);
 
   return v6;
 }

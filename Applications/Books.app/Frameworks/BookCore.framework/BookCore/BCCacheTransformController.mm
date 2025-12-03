@@ -1,16 +1,16 @@
 @interface BCCacheTransformController
-- (BCCacheTransformController)initWithHighPriorityTargetQueue:(id)a3 backgroundTargetQueue:(id)a4 transformer:(id)a5;
-- (void)_transformCompleteSource:(id)a3 to:(id)a4 forRequest:(id)a5;
-- (void)transformSource:(id)a3 to:(id)a4 forRequest:(id)a5;
+- (BCCacheTransformController)initWithHighPriorityTargetQueue:(id)queue backgroundTargetQueue:(id)targetQueue transformer:(id)transformer;
+- (void)_transformCompleteSource:(id)source to:(id)to forRequest:(id)request;
+- (void)transformSource:(id)source to:(id)to forRequest:(id)request;
 @end
 
 @implementation BCCacheTransformController
 
-- (BCCacheTransformController)initWithHighPriorityTargetQueue:(id)a3 backgroundTargetQueue:(id)a4 transformer:(id)a5
+- (BCCacheTransformController)initWithHighPriorityTargetQueue:(id)queue backgroundTargetQueue:(id)targetQueue transformer:(id)transformer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  targetQueueCopy = targetQueue;
+  transformerCopy = transformer;
   v18.receiver = self;
   v18.super_class = BCCacheTransformController;
   v11 = [(BCCacheTransformController *)&v18 init];
@@ -22,8 +22,8 @@
     imagesProcessing = v12->_imagesProcessing;
     v12->_imagesProcessing = v13;
 
-    objc_storeStrong(&v12->_transformer, a5);
-    v15 = [BICWorkQueue workQueueWithHighPriorityTargetQueue:v8 backgroundTargetQueue:v9 numConcurrentWorkItems:1];
+    objc_storeStrong(&v12->_transformer, transformer);
+    v15 = [BICWorkQueue workQueueWithHighPriorityTargetQueue:queueCopy backgroundTargetQueue:targetQueueCopy numConcurrentWorkItems:1];
     workQueue = v12->_workQueue;
     v12->_workQueue = v15;
 
@@ -33,14 +33,14 @@
   return v12;
 }
 
-- (void)transformSource:(id)a3 to:(id)a4 forRequest:(id)a5
+- (void)transformSource:(id)source to:(id)to forRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  toCopy = to;
+  requestCopy = request;
   v11 = objc_alloc_init(BICDescribedImagePair);
-  [(BICDescribedImagePair *)v11 setSourceImage:v8];
-  [(BICDescribedImagePair *)v11 setDestinationImage:v9];
+  [(BICDescribedImagePair *)v11 setSourceImage:sourceCopy];
+  [(BICDescribedImagePair *)v11 setDestinationImage:toCopy];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -50,7 +50,7 @@
   v32 = sub_1400A4;
   v33 = &unk_2C7BC0;
   v36 = &v37;
-  v34 = self;
+  selfCopy = self;
   v12 = v11;
   v35 = v12;
   v13 = v31;
@@ -64,9 +64,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v42 = v9;
+      v42 = toCopy;
       v43 = 2112;
-      v44 = v10;
+      v44 = requestCopy;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "BCCacheTransformController: Transform is already in progress for: %@ for request: %@", buf, 0x16u);
     }
   }
@@ -74,20 +74,20 @@
   else
   {
     objc_initWeak(buf, self);
-    v15 = [v9 processingOptions];
+    processingOptions = [toCopy processingOptions];
     v16 = kBICCacheStatsCounterTransformSpine;
-    if (!v15)
+    if (!processingOptions)
     {
       v16 = kBICCacheStatsCounterTransformResize;
     }
 
     [BICCacheStats incrementCounter:*v16];
-    [BICCacheStats logOperation:BICCacheStatsOperationTransformQueueStart[0] forRequest:v10];
+    [BICCacheStats logOperation:BICCacheStatsOperationTransformQueueStart[0] forRequest:requestCopy];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v27 = sub_140104;
     v28 = &unk_2C7BE8;
-    v29 = self;
+    selfCopy2 = self;
     v17 = v12;
     v30 = v17;
     v18 = v26;
@@ -95,17 +95,17 @@
     v27(v18);
     os_unfair_lock_unlock(&self->_accessLock);
 
-    v19 = [(BCCacheTransformController *)self workQueue];
+    workQueue = [(BCCacheTransformController *)self workQueue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_140158;
     v20[3] = &unk_2CDED8;
-    v21 = v10;
+    v21 = requestCopy;
     objc_copyWeak(&v25, buf);
-    v22 = v8;
-    v23 = v9;
+    v22 = sourceCopy;
+    v23 = toCopy;
     v24 = v17;
-    [v19 addWorkItemWithPriority:v21 description:@"Transformer transform" block:v20];
+    [workQueue addWorkItemWithPriority:v21 description:@"Transformer transform" block:v20];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -114,20 +114,20 @@
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)_transformCompleteSource:(id)a3 to:(id)a4 forRequest:(id)a5
+- (void)_transformCompleteSource:(id)source to:(id)to forRequest:(id)request
 {
-  v12 = a4;
-  v8 = a5;
+  toCopy = to;
+  requestCopy = request;
   v9 = BICCacheStatsOperationTransformEnd[0];
-  v10 = a3;
-  [BICCacheStats logOperation:v9 forRequest:v8];
-  if ([v12 quality] == 101)
+  sourceCopy = source;
+  [BICCacheStats logOperation:v9 forRequest:requestCopy];
+  if ([toCopy quality] == 101)
   {
-    [BICCacheStats logOperation:BICCacheStatsOperationTransformedFromSmaller[0] forRequest:v8];
+    [BICCacheStats logOperation:BICCacheStatsOperationTransformedFromSmaller[0] forRequest:requestCopy];
   }
 
-  v11 = [(BCCacheTransformController *)self delegate];
-  [v11 transformResultSrc:v10 result:v12 forRequest:v8];
+  delegate = [(BCCacheTransformController *)self delegate];
+  [delegate transformResultSrc:sourceCopy result:toCopy forRequest:requestCopy];
 }
 
 @end

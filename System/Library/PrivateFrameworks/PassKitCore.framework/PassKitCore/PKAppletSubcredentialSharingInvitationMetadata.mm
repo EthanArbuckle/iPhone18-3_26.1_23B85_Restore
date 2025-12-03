@@ -1,7 +1,7 @@
 @interface PKAppletSubcredentialSharingInvitationMetadata
-- (PKAppletSubcredentialSharingInvitationMetadata)initWithCoder:(id)a3;
+- (PKAppletSubcredentialSharingInvitationMetadata)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppletSubcredentialSharingInvitationMetadata
@@ -23,25 +23,25 @@
   return [v3 stringWithFormat:@"< %@; %p; anonymization salt: %@; request invitation: %s >", v4, self, self->_anonymizationSalt, v5];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   anonymizationSalt = self->_anonymizationSalt;
-  v5 = a3;
-  [v5 encodeObject:anonymizationSalt forKey:@"anonymizationSalt"];
-  [v5 encodeBool:self->_shouldRequestInvitation forKey:@"shouldRequestInvitation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:anonymizationSalt forKey:@"anonymizationSalt"];
+  [coderCopy encodeBool:self->_shouldRequestInvitation forKey:@"shouldRequestInvitation"];
 }
 
-- (PKAppletSubcredentialSharingInvitationMetadata)initWithCoder:(id)a3
+- (PKAppletSubcredentialSharingInvitationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppletSubcredentialSharingInvitationMetadata *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anonymizationSalt"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anonymizationSalt"];
     anonymizationSalt = v5->_anonymizationSalt;
     v5->_anonymizationSalt = v6;
 
-    v5->_shouldRequestInvitation = [v4 decodeBoolForKey:@"shouldRequestInvitation"];
+    v5->_shouldRequestInvitation = [coderCopy decodeBoolForKey:@"shouldRequestInvitation"];
   }
 
   return v5;

@@ -1,38 +1,38 @@
 @interface APAttributionServer
-+ (BOOL)sendRequestToServer:(id)a3 requestTimestamp:(id)a4 payloadDeliveryTimestamp:(id)a5 interval:(unint64_t)a6 error:(id *)a7 completionHandler:(id)a8;
-+ (void)_processSigningQueue:(id)a3 useFpdi:(BOOL)a4 signingAuthorityPoolManager:(id)a5;
-+ (void)_serverPost:(id)a3 requestTimestamp:(id)a4 payloadDeliveryStartDate:(id)a5 interval:(unint64_t)a6 completionHandler:(id)a7;
-+ (void)signPayloadWithFpdi:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 payloadDeliveryStartDate:(id)a8 completionHandler:(id)a9;
-+ (void)signPayloadWithMescal:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 deliveryStartDate:(id)a8 isFallback:(BOOL)a9 completionHandler:(id)a10;
++ (BOOL)sendRequestToServer:(id)server requestTimestamp:(id)timestamp payloadDeliveryTimestamp:(id)deliveryTimestamp interval:(unint64_t)interval error:(id *)error completionHandler:(id)handler;
++ (void)_processSigningQueue:(id)queue useFpdi:(BOOL)fpdi signingAuthorityPoolManager:(id)manager;
++ (void)_serverPost:(id)post requestTimestamp:(id)timestamp payloadDeliveryStartDate:(id)date interval:(unint64_t)interval completionHandler:(id)handler;
++ (void)signPayloadWithFpdi:(id)fpdi requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date payloadDeliveryStartDate:(id)startDate completionHandler:(id)handler;
++ (void)signPayloadWithMescal:(id)mescal requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date deliveryStartDate:(id)startDate isFallback:(BOOL)fallback completionHandler:(id)self0;
 @end
 
 @implementation APAttributionServer
 
-+ (BOOL)sendRequestToServer:(id)a3 requestTimestamp:(id)a4 payloadDeliveryTimestamp:(id)a5 interval:(unint64_t)a6 error:(id *)a7 completionHandler:(id)a8
++ (BOOL)sendRequestToServer:(id)server requestTimestamp:(id)timestamp payloadDeliveryTimestamp:(id)deliveryTimestamp interval:(unint64_t)interval error:(id *)error completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [v13 requestBody];
+  serverCopy = server;
+  timestampCopy = timestamp;
+  deliveryTimestampCopy = deliveryTimestamp;
+  handlerCopy = handler;
+  requestBody = [serverCopy requestBody];
 
-  if (v17)
+  if (requestBody)
   {
-    v18 = [v13 requestBody];
+    requestBody2 = [serverCopy requestBody];
     v45 = 0;
-    v19 = [NSJSONSerialization dataWithJSONObject:v18 options:0 error:&v45];
-    v20 = v45;
+    v19 = [NSJSONSerialization dataWithJSONObject:requestBody2 options:0 error:&v45];
+    payloadForRequestBodyABCLog2 = v45;
 
     v21 = v19 != 0;
     if (v19)
     {
       v22 = APPerfLogForCategory();
       v23 = v22;
-      if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
+      if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
       {
         *buf = 134349056;
-        v49 = a6;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_BEGIN, a6, "Server Delivery Queue overhead", "id=%{public, name=id}lld", buf, 0xCu);
+        intervalCopy = interval;
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_BEGIN, interval, "Server Delivery Queue overhead", "id=%{public, name=id}lld", buf, 0xCu);
       }
 
       v24 = dispatch_get_global_queue(25, 0);
@@ -40,33 +40,33 @@
       block[1] = 3221225472;
       block[2] = sub_1002235AC;
       block[3] = &unk_100479408;
-      v44 = a6;
-      v39 = v15;
-      v40 = v13;
-      v41 = v14;
+      intervalCopy2 = interval;
+      v39 = deliveryTimestampCopy;
+      v40 = serverCopy;
+      v41 = timestampCopy;
       v42 = v19;
-      v43 = v16;
+      v43 = handlerCopy;
       dispatch_async(v24, block);
 
-      v25 = v39;
+      payloadForRequestBodyABCLog = v39;
     }
 
     else
     {
       v30 = APLogForCategory();
-      v37 = v14;
+      v37 = timestampCopy;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [v13 requestBody];
-        v32 = [v31 jsonString];
+        requestBody3 = [serverCopy requestBody];
+        jsonString = [requestBody3 jsonString];
         *buf = 138477827;
-        v49 = v32;
+        intervalCopy = jsonString;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Unable to serialize body %{private}@", buf, 0xCu);
 
-        v14 = v37;
+        timestampCopy = v37;
       }
 
-      if (a7)
+      if (error)
       {
         v46 = NSLocalizedDescriptionKey;
         v47 = @"Unable to serialize body";
@@ -74,12 +74,12 @@
         v34 = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v33];
 
         v35 = v34;
-        *a7 = v34;
-        v20 = v34;
-        v14 = v37;
+        *error = v34;
+        payloadForRequestBodyABCLog2 = v34;
+        timestampCopy = v37;
       }
 
-      v25 = [v13 payloadForRequestBodyABCLog];
+      payloadForRequestBodyABCLog = [serverCopy payloadForRequestBodyABCLog];
       CreateDiagnosticReport();
     }
   }
@@ -93,7 +93,7 @@
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Malformed request body", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v50 = NSLocalizedDescriptionKey;
       v51 = @"Malformed request body";
@@ -101,10 +101,10 @@
       v28 = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v27];
 
       v29 = v28;
-      *a7 = v28;
+      *error = v28;
     }
 
-    v20 = [v13 payloadForRequestBodyABCLog];
+    payloadForRequestBodyABCLog2 = [serverCopy payloadForRequestBodyABCLog];
     CreateDiagnosticReport();
     v21 = 0;
   }
@@ -112,17 +112,17 @@
   return v21;
 }
 
-+ (void)_serverPost:(id)a3 requestTimestamp:(id)a4 payloadDeliveryStartDate:(id)a5 interval:(unint64_t)a6 completionHandler:(id)a7
++ (void)_serverPost:(id)post requestTimestamp:(id)timestamp payloadDeliveryStartDate:(id)date interval:(unint64_t)interval completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [v11 storefront];
-  if (v15)
+  postCopy = post;
+  timestampCopy = timestamp;
+  dateCopy = date;
+  handlerCopy = handler;
+  storefront = [postCopy storefront];
+  if (storefront)
   {
-    v16 = [v11 storefront];
-    v61 = [APAttributionAnalytics storefrontCountryOnly:v16];
+    storefront2 = [postCopy storefront];
+    v61 = [APAttributionAnalytics storefrontCountryOnly:storefront2];
   }
 
   else
@@ -132,18 +132,18 @@
 
   v17 = APPerfLogForCategory();
   v18 = v17;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
+  if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
     *buf = 134349314;
-    v67 = a6;
+    intervalCopy3 = interval;
     v68 = 2114;
     v69 = v61;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, a6, "HTTP Request Time", "id=%{public, name=id}lld storefront=%{public, name=storefront}@", buf, 0x16u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, interval, "HTTP Request Time", "id=%{public, name=id}lld storefront=%{public, name=storefront}@", buf, 0x16u);
   }
 
-  v19 = [v11 requestHeader];
+  requestHeader = [postCopy requestHeader];
 
-  if (!v19)
+  if (!requestHeader)
   {
     v20 = APLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -152,21 +152,21 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Malformed request header", buf, 2u);
     }
 
-    v21 = [v11 payloadForRequestHeaderABCLog];
+    payloadForRequestHeaderABCLog = [postCopy payloadForRequestHeaderABCLog];
     CreateDiagnosticReport();
   }
 
-  v22 = [v11 requestHeader];
-  v23 = [NSMutableDictionary dictionaryWithDictionary:v22];
+  requestHeader2 = [postCopy requestHeader];
+  v23 = [NSMutableDictionary dictionaryWithDictionary:requestHeader2];
 
   v62 = v23;
   [v23 setObject:@"application/json; charset=utf-8" forKey:@"Content-Type"];
   if (+[APSystemInternal isAppleInternalInstall])
   {
     v24 = +[NSProcessInfo processInfo];
-    v25 = [v24 isRunningTests];
+    isRunningTests = [v24 isRunningTests];
 
-    if ((v25 & 1) == 0)
+    if ((isRunningTests & 1) == 0)
     {
       v26 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:0];
       v27 = [v26 valueForKey:@"APAttribution.serverSignBody"];
@@ -177,9 +177,9 @@
     }
   }
 
-  v28 = [v11 requestBody];
+  requestBody = [postCopy requestBody];
   v63 = 0;
-  v29 = [NSJSONSerialization dataWithJSONObject:v28 options:0 error:&v63];
+  v29 = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:&v63];
   v60 = v63;
 
   v30 = APLogForCategory();
@@ -188,26 +188,26 @@
   {
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v32 = [v11 requestBody];
-      v33 = [v32 jsonString];
+      requestBody2 = [postCopy requestBody];
+      jsonString = [requestBody2 jsonString];
       *buf = 138477827;
-      v67 = v33;
+      intervalCopy3 = jsonString;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "JSON body %{private}@", buf, 0xCu);
     }
 
-    v58 = a6;
-    v59 = v14;
+    intervalCopy2 = interval;
+    v59 = handlerCopy;
 
     v34 = APLogForCategory();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v62 jsonString];
+      jsonString2 = [v62 jsonString];
       *buf = 138477827;
-      v67 = v35;
+      intervalCopy3 = jsonString2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "JSON header %{private}@", buf, 0xCu);
     }
 
-    v36 = [NSURL URLWithString:@"https://ca.iadsdk.apple.com/adserver/attribution/v2"];
+    payloadForRequestBodyABCLog = [NSURL URLWithString:@"https://ca.iadsdk.apple.com/adserver/attribution/v2"];
     if (+[APSystemInternal isAppleInternalInstall])
     {
       v37 = objc_alloc_init(APServerConfiguration);
@@ -224,26 +224,26 @@
         v39 = v42;
       }
 
-      v36 = v39;
+      payloadForRequestBodyABCLog = v39;
     }
 
     v49 = APLogForCategory();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v67 = v36;
+      intervalCopy3 = payloadForRequestBodyABCLog;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "Using %{private}@ to post attribution data", buf, 0xCu);
     }
 
     v50 = +[APNetworkClient sharedAPNetworkClient];
-    v51 = [v11 bundleId];
-    v52 = [v50 temporarySessionForClient:v51];
+    bundleId = [postCopy bundleId];
+    v52 = [v50 temporarySessionForClient:bundleId];
 
-    v53 = [[APHTTPRequest alloc] initWithURL:v36 HTTPMethod:2 HTTPHeaders:v62 HTTPBody:v29 serviceName:0 completionHandler:0];
+    v53 = [[APHTTPRequest alloc] initWithURL:payloadForRequestBodyABCLog HTTPMethod:2 HTTPHeaders:v62 HTTPBody:v29 serviceName:0 completionHandler:0];
     v54 = +[NSDate now];
-    if (v12)
+    if (timestampCopy)
     {
-      if (v13)
+      if (dateCopy)
       {
 LABEL_35:
         if (qword_1004DD9D0)
@@ -257,7 +257,7 @@ LABEL_35:
         }
 
         v56 = v55;
-        if (![APAttributionRetryWorkerBridge startWithSession:v52 request:v53 requestorId:@"attribution" intervalId:v58 reportingStorefront:v61 requestTimestamp:v12 daemonStartTime:v55 tokenReturnedToClientDate:v54 payloadDeliveryStartDate:v13])
+        if (![APAttributionRetryWorkerBridge startWithSession:v52 request:v53 requestorId:@"attribution" intervalId:intervalCopy2 reportingStorefront:v61 requestTimestamp:timestampCopy daemonStartTime:v55 tokenReturnedToClientDate:v54 payloadDeliveryStartDate:dateCopy])
         {
           v57 = APLogForCategory();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -267,12 +267,12 @@ LABEL_35:
           }
 
           CreateDiagnosticReport();
-          v14 = v59;
+          handlerCopy = v59;
         }
 
-        if (v14)
+        if (handlerCopy)
         {
-          (*(v14 + 2))(v14, 1, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, 1, 0, 0);
         }
 
         v46 = v60;
@@ -282,23 +282,23 @@ LABEL_35:
 
     else
     {
-      v12 = +[NSDate now];
-      if (v13)
+      timestampCopy = +[NSDate now];
+      if (dateCopy)
       {
         goto LABEL_35;
       }
     }
 
-    v13 = +[NSDate now];
+    dateCopy = +[NSDate now];
     goto LABEL_35;
   }
 
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
-    v43 = [v11 requestBody];
-    v44 = [v43 jsonString];
+    requestBody3 = [postCopy requestBody];
+    jsonString3 = [requestBody3 jsonString];
     *buf = 138477827;
-    v67 = v44;
+    intervalCopy3 = jsonString3;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Unable to serialize body %{private}@", buf, 0xCu);
   }
 
@@ -309,27 +309,27 @@ LABEL_35:
 
   v47 = APPerfLogForCategory();
   v48 = v47;
-  if (a6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v47))
+  if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v47))
   {
     *buf = 134349056;
-    v67 = a6;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v48, OS_SIGNPOST_INTERVAL_END, a6, "HTTP Request Time", "id=%{public, name=id}lld", buf, 0xCu);
+    intervalCopy3 = interval;
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v48, OS_SIGNPOST_INTERVAL_END, interval, "HTTP Request Time", "id=%{public, name=id}lld", buf, 0xCu);
   }
 
-  (*(v14 + 2))(v14, 0, v46, 0);
-  v36 = [v11 payloadForRequestBodyABCLog];
+  (*(handlerCopy + 2))(handlerCopy, 0, v46, 0);
+  payloadForRequestBodyABCLog = [postCopy payloadForRequestBodyABCLog];
   CreateDiagnosticReport();
 LABEL_47:
 }
 
-+ (void)signPayloadWithFpdi:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 payloadDeliveryStartDate:(id)a8 completionHandler:(id)a9
++ (void)signPayloadWithFpdi:(id)fpdi requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date payloadDeliveryStartDate:(id)startDate completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v58 = a6;
-  v15 = a7;
-  v16 = a8;
-  v55 = a9;
+  fpdiCopy = fpdi;
+  timestampCopy = timestamp;
+  bodyCopy = body;
+  dateCopy = date;
+  startDateCopy = startDate;
+  handlerCopy = handler;
   v17 = APLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -338,20 +338,20 @@ LABEL_47:
   }
 
   [APAttributionServer setHasTriedMescalFallback:0];
-  v18 = v15;
+  v18 = dateCopy;
   if (qword_1004DF6A8 != -1)
   {
     sub_10039397C();
   }
 
-  [v14 timeIntervalSinceDate:qword_1004DD9D0];
+  [timestampCopy timeIntervalSinceDate:qword_1004DD9D0];
   v19 = [APAttributionAnalytics findBucketForDaemonRunningTime:?];
-  v20 = [v13 storefront];
+  storefront = [fpdiCopy storefront];
 
-  if (v20)
+  if (storefront)
   {
-    v21 = [v13 storefront];
-    v56 = [APAttributionAnalytics storefrontCountryOnly:v21];
+    storefront2 = [fpdiCopy storefront];
+    v56 = [APAttributionAnalytics storefrontCountryOnly:storefront2];
   }
 
   else
@@ -360,7 +360,7 @@ LABEL_47:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 136642819;
-      v63 = "+[APAttributionServer signPayloadWithFpdi:requestTimestamp:interval:jsonBody:startDate:payloadDeliveryStartDate:completionHandler:]";
+      intervalCopy = "+[APAttributionServer signPayloadWithFpdi:requestTimestamp:interval:jsonBody:startDate:payloadDeliveryStartDate:completionHandler:]";
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{sensitive}s, Storefront is nil", buf, 0xCu);
     }
 
@@ -375,7 +375,7 @@ LABEL_47:
     {
       [qword_1004DF6A0 unlock];
       v59 = 0;
-      v23 = [qword_1004DF690 signatureForData:v58 error:&v59];
+      v23 = [qword_1004DF690 signatureForData:bodyCopy error:&v59];
       v24 = v59;
       v53 = +[NSDate now];
       if (v24)
@@ -384,15 +384,15 @@ LABEL_47:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v63 = v24;
+          intervalCopy = v24;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Signing: signingAuthorityPoolManager.state == APSigningAuthorityPoolManagerStateSetupSucceeded but signing failed: %{public}@. Fallback to Mescal.", buf, 0xCu);
         }
 
-        v26 = v55;
+        v26 = handlerCopy;
         LOBYTE(v52) = 1;
-        v27 = v58;
+        v27 = bodyCopy;
         v28 = v18;
-        [APAttributionServer signPayloadWithMescal:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 isFallback:v52 completionHandler:v55];
+        [APAttributionServer signPayloadWithMescal:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy isFallback:v52 completionHandler:handlerCopy];
         v29 = v53;
       }
 
@@ -400,13 +400,13 @@ LABEL_47:
       {
         v35 = APPerfLogForCategory();
         v36 = v35;
-        if (a5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
+        if (interval - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v35))
         {
           *buf = 134349314;
-          v63 = a5;
+          intervalCopy = interval;
           v64 = 2114;
           v65 = v56;
-          _os_signpost_emit_with_name_impl(&_mh_execute_header, v36, OS_SIGNPOST_INTERVAL_END, a5, "Payload Signing", "id=%{public, name=id}lld storefront=%{public, name=storefront}@", buf, 0x16u);
+          _os_signpost_emit_with_name_impl(&_mh_execute_header, v36, OS_SIGNPOST_INTERVAL_END, interval, "Payload Signing", "id=%{public, name=id}lld storefront=%{public, name=storefront}@", buf, 0x16u);
         }
 
         v37 = APLogForCategory();
@@ -439,20 +439,20 @@ LABEL_47:
         v61[2] = &off_1004920B8;
         v41 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:3];
 
-        v28 = v15;
+        v28 = dateCopy;
         v29 = v53;
-        [APAttributionAnalytics sendTimingAnalytics:@"payloadSigningTime" startDate:v15 endDate:v53 additionalFields:v41];
-        [v13 setFpdiSignature:v39];
-        [a1 _serverPost:v13 requestTimestamp:v14 payloadDeliveryStartDate:v16 interval:a5 completionHandler:v55];
+        [APAttributionAnalytics sendTimingAnalytics:@"payloadSigningTime" startDate:dateCopy endDate:v53 additionalFields:v41];
+        [fpdiCopy setFpdiSignature:v39];
+        [self _serverPost:fpdiCopy requestTimestamp:timestampCopy payloadDeliveryStartDate:startDateCopy interval:interval completionHandler:handlerCopy];
 
-        v26 = v55;
-        v27 = v58;
+        v26 = handlerCopy;
+        v27 = bodyCopy;
       }
     }
 
     else
     {
-      v28 = v15;
+      v28 = dateCopy;
       if ([qword_1004DF690 state] == 18002 || objc_msgSend(qword_1004DF690, "state") == 18004)
       {
         v31 = APLogForCategory();
@@ -463,10 +463,10 @@ LABEL_47:
         }
 
         v32 = qword_1004DF698;
-        v27 = v58;
-        v33 = [APSigningQueueItem createItemWithRequest:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 completionHandler:v55];
+        v27 = bodyCopy;
+        v33 = [APSigningQueueItem createItemWithRequest:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy completionHandler:handlerCopy];
         v34 = v32;
-        v26 = v55;
+        v26 = handlerCopy;
         [v34 add:v33];
 
         byte_1004DF6B0 = 0;
@@ -482,16 +482,16 @@ LABEL_47:
         v44 = os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG);
         if (v42 == 1)
         {
-          v27 = v58;
+          v27 = bodyCopy;
           if (v44)
           {
             *buf = 0;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEBUG, "Signing: signingAuthorityPoolManager has stuck in SetupStarted state. Fallback to Mescal.", buf, 2u);
           }
 
-          v26 = v55;
+          v26 = handlerCopy;
           LOBYTE(v52) = 1;
-          [APAttributionServer signPayloadWithMescal:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 isFallback:v52 completionHandler:v55];
+          [APAttributionServer signPayloadWithMescal:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy isFallback:v52 completionHandler:handlerCopy];
         }
 
         else
@@ -503,12 +503,12 @@ LABEL_47:
           }
 
           v49 = qword_1004DF698;
-          v50 = [APSigningQueueItem createItemWithRequest:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 completionHandler:v55];
+          v50 = [APSigningQueueItem createItemWithRequest:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy completionHandler:handlerCopy];
           v51 = v49;
-          v26 = v55;
+          v26 = handlerCopy;
           [v51 add:v50];
 
-          v27 = v58;
+          v27 = bodyCopy;
           if ([qword_1004DF690 state] == 18000)
           {
             [APAttributionServer _processSigningQueue:qword_1004DF698 useFpdi:1 signingAuthorityPoolManager:qword_1004DF690];
@@ -518,7 +518,7 @@ LABEL_47:
 
       else
       {
-        v45 = [qword_1004DF690 state];
+        state = [qword_1004DF690 state];
         v46 = [[APSigningAuthorityPoolManager alloc] initWithName:@"attribution_fpdi" poolSize:1 numberToStash:1];
         v47 = qword_1004DF690;
         qword_1004DF690 = v46;
@@ -528,14 +528,14 @@ LABEL_47:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v63 = v45;
+          intervalCopy = state;
           _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Signing: Unknown signingAuthorityPoolManager state: %ld", buf, 0xCu);
         }
 
-        v26 = v55;
+        v26 = handlerCopy;
         LOBYTE(v52) = 1;
-        v27 = v58;
-        [APAttributionServer signPayloadWithMescal:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 isFallback:v52 completionHandler:v55];
+        v27 = bodyCopy;
+        [APAttributionServer signPayloadWithMescal:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy isFallback:v52 completionHandler:handlerCopy];
       }
     }
   }
@@ -549,11 +549,11 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Signing: signingAuthorityPoolManager is nil. Using Mescal.", buf, 2u);
     }
 
-    v26 = v55;
+    v26 = handlerCopy;
     LOBYTE(v52) = 1;
-    v27 = v58;
+    v27 = bodyCopy;
     v28 = v18;
-    [APAttributionServer signPayloadWithMescal:v13 requestTimestamp:v14 interval:a5 jsonBody:v58 startDate:v18 deliveryStartDate:v16 isFallback:v52 completionHandler:v55];
+    [APAttributionServer signPayloadWithMescal:fpdiCopy requestTimestamp:timestampCopy interval:interval jsonBody:bodyCopy startDate:v18 deliveryStartDate:startDateCopy isFallback:v52 completionHandler:handlerCopy];
     if (qword_1004DF6B8 != -1)
     {
       sub_1003939A4();
@@ -561,53 +561,53 @@ LABEL_47:
   }
 }
 
-+ (void)signPayloadWithMescal:(id)a3 requestTimestamp:(id)a4 interval:(unint64_t)a5 jsonBody:(id)a6 startDate:(id)a7 deliveryStartDate:(id)a8 isFallback:(BOOL)a9 completionHandler:(id)a10
++ (void)signPayloadWithMescal:(id)mescal requestTimestamp:(id)timestamp interval:(unint64_t)interval jsonBody:(id)body startDate:(id)date deliveryStartDate:(id)startDate isFallback:(BOOL)fallback completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a10;
-  objc_initWeak(&location, a1);
+  mescalCopy = mescal;
+  timestampCopy = timestamp;
+  bodyCopy = body;
+  dateCopy = date;
+  startDateCopy = startDate;
+  handlerCopy = handler;
+  objc_initWeak(&location, self);
   v22 = +[APMescalSigningService service];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1002250B8;
   v28[3] = &unk_1004794B0;
-  v35 = a9;
-  v23 = v21;
+  fallbackCopy = fallback;
+  v23 = handlerCopy;
   v33 = v23;
-  v34[1] = a5;
-  v24 = v17;
+  v34[1] = interval;
+  v24 = timestampCopy;
   v29 = v24;
-  v25 = v16;
+  v25 = mescalCopy;
   v30 = v25;
-  v26 = v19;
+  v26 = dateCopy;
   v31 = v26;
   objc_copyWeak(v34, &location);
-  v27 = v20;
+  v27 = startDateCopy;
   v32 = v27;
-  [v22 signatureForData:v18 waitTime:v28 completion:1.0e10];
+  [v22 signatureForData:bodyCopy waitTime:v28 completion:1.0e10];
 
   objc_destroyWeak(v34);
   objc_destroyWeak(&location);
 }
 
-+ (void)_processSigningQueue:(id)a3 useFpdi:(BOOL)a4 signingAuthorityPoolManager:(id)a5
++ (void)_processSigningQueue:(id)queue useFpdi:(BOOL)fpdi signingAuthorityPoolManager:(id)manager
 {
-  v7 = a3;
-  v8 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
   v9 = dispatch_queue_create("com.apple.ap.signingAuthorityPoolManager.waitingTasks", 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100225664;
   block[3] = &unk_1004794D8;
-  v15 = a4;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  fpdiCopy = fpdi;
+  v13 = queueCopy;
+  v14 = managerCopy;
+  v10 = managerCopy;
+  v11 = queueCopy;
   dispatch_async(v9, block);
 }
 

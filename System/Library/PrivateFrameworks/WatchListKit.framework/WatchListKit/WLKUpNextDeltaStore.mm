@@ -1,10 +1,10 @@
 @interface WLKUpNextDeltaStore
 + (id)sharedInstance;
 - (WLKUpNextDeltaStore)init;
-- (void)delete:(id)a3;
-- (void)merge:(id)a3 completion:(id)a4;
-- (void)read:(id)a3;
-- (void)write:(id)a3 completion:(id)a4;
+- (void)delete:(id)delete;
+- (void)merge:(id)merge completion:(id)completion;
+- (void)read:(id)read;
+- (void)write:(id)write completion:(id)completion;
 @end
 
 @implementation WLKUpNextDeltaStore
@@ -43,62 +43,62 @@ uint64_t __37__WLKUpNextDeltaStore_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)read:(id)a3
+- (void)read:(id)read
 {
-  v4 = a3;
-  if (!v4)
+  readCopy = read;
+  if (!readCopy)
   {
     [WLKUpNextDeltaStore read:];
   }
 
-  v5 = v4;
-  [(WLKSharedFileStorage *)self->_fileStorage read:v4];
+  v5 = readCopy;
+  [(WLKSharedFileStorage *)self->_fileStorage read:readCopy];
 }
 
-- (void)write:(id)a3 completion:(id)a4
+- (void)write:(id)write completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (!v7)
+  writeCopy = write;
+  completionCopy = completion;
+  if (!writeCopy)
   {
     [WLKUpNextDeltaStore write:completion:];
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     [WLKUpNextDeltaStore write:completion:];
   }
 
-  [(WLKSharedFileStorage *)self->_fileStorage write:v7 completion:v6];
+  [(WLKSharedFileStorage *)self->_fileStorage write:writeCopy completion:completionCopy];
 }
 
-- (void)merge:(id)a3 completion:(id)a4
+- (void)merge:(id)merge completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (!v7)
+  mergeCopy = merge;
+  completionCopy = completion;
+  if (!mergeCopy)
   {
     [WLKUpNextDeltaStore merge:completion:];
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     [WLKUpNextDeltaStore merge:completion:];
   }
 
-  [(WLKSharedFileStorage *)self->_fileStorage merge:v7 completion:v6];
+  [(WLKSharedFileStorage *)self->_fileStorage merge:mergeCopy completion:completionCopy];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
-  if (!v4)
+  deleteCopy = delete;
+  if (!deleteCopy)
   {
     [WLKUpNextDeltaStore delete:];
   }
 
-  v5 = v4;
-  [(WLKSharedFileStorage *)self->_fileStorage delete:v4];
+  v5 = deleteCopy;
+  [(WLKSharedFileStorage *)self->_fileStorage delete:deleteCopy];
 }
 
 @end

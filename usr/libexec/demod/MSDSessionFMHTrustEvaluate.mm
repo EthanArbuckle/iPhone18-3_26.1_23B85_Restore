@@ -1,10 +1,10 @@
 @interface MSDSessionFMHTrustEvaluate
-- (BOOL)trustServer:(__SecTrust *)a3 isRedirect:(BOOL)a4;
+- (BOOL)trustServer:(__SecTrust *)server isRedirect:(BOOL)redirect;
 @end
 
 @implementation MSDSessionFMHTrustEvaluate
 
-- (BOOL)trustServer:(__SecTrust *)a3 isRedirect:(BOOL)a4
+- (BOOL)trustServer:(__SecTrust *)server isRedirect:(BOOL)redirect
 {
   v5 = CFDataCreate(kCFAllocatorDefault, byte_1001A4CB8, dword_1001A5040);
   if (!v5)
@@ -23,7 +23,7 @@
 
   v8 = v7;
   v9 = [NSArray arrayWithObjects:v7, 0];
-  v10 = SecTrustSetAnchorCertificates(a3, v9);
+  v10 = SecTrustSetAnchorCertificates(server, v9);
   if (v10)
   {
     v14 = v10;
@@ -41,7 +41,7 @@
   }
 
   result = kSecTrustResultInvalid;
-  if (SecTrustEvaluate(a3, &result))
+  if (SecTrustEvaluate(server, &result))
   {
     v11 = sub_100063A54();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))

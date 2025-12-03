@@ -1,19 +1,19 @@
 @interface SGSuggestionsWorkGroupManager
 + (id)sharedInstance;
 - (id)_init;
-- (void)finishProcessingForUniqueIdentifier:(id)a3;
-- (void)waitForUniqueIdentifierToProcess:(id)a3 withTimeout:(double)a4;
+- (void)finishProcessingForUniqueIdentifier:(id)identifier;
+- (void)waitForUniqueIdentifierToProcess:(id)process withTimeout:(double)timeout;
 @end
 
 @implementation SGSuggestionsWorkGroupManager
 
-- (void)finishProcessingForUniqueIdentifier:(id)a3
+- (void)finishProcessingForUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SGSuggestionsWorkGroupManager.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSuggestionsWorkGroupManager.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
   }
 
   lock = self->_lock;
@@ -21,8 +21,8 @@
   v9[1] = 3221225472;
   v9[2] = __69__SGSuggestionsWorkGroupManager_finishProcessingForUniqueIdentifier___block_invoke;
   v9[3] = &unk_1E7EFD2D0;
-  v10 = v5;
-  v7 = v5;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 }
 
@@ -38,18 +38,18 @@ void __69__SGSuggestionsWorkGroupManager_finishProcessingForUniqueIdentifier___b
   }
 }
 
-- (void)waitForUniqueIdentifierToProcess:(id)a3 withTimeout:(double)a4
+- (void)waitForUniqueIdentifierToProcess:(id)process withTimeout:(double)timeout
 {
-  v7 = a3;
-  if (!v7)
+  processCopy = process;
+  if (!processCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGSuggestionsWorkGroupManager.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSuggestionsWorkGroupManager.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
   }
 
-  if (a4 == 0.0)
+  if (timeout == 0.0)
   {
-    a4 = 10.0;
+    timeout = 10.0;
   }
 
   v18 = 0;
@@ -63,13 +63,13 @@ void __69__SGSuggestionsWorkGroupManager_finishProcessingForUniqueIdentifier___b
   v15[1] = 3221225472;
   v15[2] = __78__SGSuggestionsWorkGroupManager_waitForUniqueIdentifierToProcess_withTimeout___block_invoke;
   v15[3] = &unk_1E7EFD2A8;
-  v9 = v7;
+  v9 = processCopy;
   v16 = v9;
   v17 = &v18;
   [(_PASLock *)lock runWithLockAcquired:v15];
   if (v19[5])
   {
-    v10 = [MEMORY[0x1E69C5D10] waitForGroup:a4 timeoutSeconds:?];
+    v10 = [MEMORY[0x1E69C5D10] waitForGroup:timeout timeoutSeconds:?];
     if (v10 == 1)
     {
       v11 = sgLogHandle();

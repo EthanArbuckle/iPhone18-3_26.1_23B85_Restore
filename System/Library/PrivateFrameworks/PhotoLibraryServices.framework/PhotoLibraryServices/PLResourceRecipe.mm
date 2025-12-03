@@ -1,33 +1,33 @@
 @interface PLResourceRecipe
-+ (Class)classFromRecipeID:(unsigned int)a3;
-+ (id)recipeFromID:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
-- (PLResourceRecipe)initWithRecipeID:(unsigned int)a3;
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4;
++ (Class)classFromRecipeID:(unsigned int)d;
++ (id)recipeFromID:(unsigned int)d;
+- (BOOL)isEqual:(id)equal;
+- (PLResourceRecipe)initWithRecipeID:(unsigned int)d;
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version;
 - (id)codecFourCharCodeName;
-- (id)colorSpaceGivenSourceColorSpace:(id)a3 inContext:(id)a4;
-- (id)recipeErrorWithCode:(int64_t)a3 version:(unsigned int)a4 underlyingError:(id)a5 debugDescription:(id)a6;
+- (id)colorSpaceGivenSourceColorSpace:(id)space inContext:(id)context;
+- (id)recipeErrorWithCode:(int64_t)code version:(unsigned int)version underlyingError:(id)error debugDescription:(id)description;
 - (unsigned)recipeID;
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
-- (void)populateAdjustedRecipeIngredients:(id)a3 asset:(id)a4 version:(unsigned int)a5;
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
+- (void)populateAdjustedRecipeIngredients:(id)ingredients asset:(id)asset version:(unsigned int)version;
 @end
 
 @implementation PLResourceRecipe
 
-- (void)populateAdjustedRecipeIngredients:(id)a3 asset:(id)a4 version:(unsigned int)a5
+- (void)populateAdjustedRecipeIngredients:(id)ingredients asset:(id)asset version:(unsigned int)version
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 hasAdjustments];
-  if (a5 == 2 && v9)
+  ingredientsCopy = ingredients;
+  assetCopy = asset;
+  hasAdjustments = [assetCopy hasAdjustments];
+  if (version == 2 && hasAdjustments)
   {
-    v10 = [v8 adjustmentDataResource];
-    v11 = v10;
-    if (v10)
+    adjustmentDataResource = [assetCopy adjustmentDataResource];
+    v11 = adjustmentDataResource;
+    if (adjustmentDataResource)
     {
-      v12 = [v10 adjustmentDictionary];
-      v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69BF368]];
+      adjustmentDictionary = [adjustmentDataResource adjustmentDictionary];
+      v13 = [adjustmentDictionary objectForKeyedSubscript:*MEMORY[0x1E69BF368]];
       v14 = v13;
       if (v13)
       {
@@ -39,7 +39,7 @@
         v15 = 1;
       }
 
-      [v7 setObject:v11 forKeyedSubscript:@"Adjustment"];
+      [ingredientsCopy setObject:v11 forKeyedSubscript:@"Adjustment"];
     }
 
     else
@@ -54,16 +54,16 @@
       v15 = 1;
     }
 
-    v17 = [v8 overflowAdjustmentDataResource];
-    if (v17)
+    overflowAdjustmentDataResource = [assetCopy overflowAdjustmentDataResource];
+    if (overflowAdjustmentDataResource)
     {
-      [v7 setObject:v17 forKeyedSubscript:@"LargeAdjustment"];
+      [ingredientsCopy setObject:overflowAdjustmentDataResource forKeyedSubscript:@"LargeAdjustment"];
     }
 
-    v18 = [v8 cameraProcessingAdjustmentState];
-    if (![v8 isPhoto])
+    cameraProcessingAdjustmentState = [assetCopy cameraProcessingAdjustmentState];
+    if (![assetCopy isPhoto])
     {
-      if (![v8 isVideo])
+      if (![assetCopy isVideo])
       {
 LABEL_54:
 
@@ -80,7 +80,7 @@ LABEL_54:
         v19 = &__block_literal_global_284;
       }
 
-      v20 = [v8 firstPersistedResourceMatching:v19];
+      v20 = [assetCopy firstPersistedResourceMatching:v19];
       v21 = PLBackendGetLog();
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
       if (v20)
@@ -92,8 +92,8 @@ LABEL_54:
           _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "Resource generation selected video resource for primary video recipe: %@", &v31, 0xCu);
         }
 
-        [v7 setObject:v20 forKeyedSubscript:@"Video"];
-        if ((v18 & 1) == 0)
+        [ingredientsCopy setObject:v20 forKeyedSubscript:@"Video"];
+        if ((cameraProcessingAdjustmentState & 1) == 0)
         {
           goto LABEL_53;
         }
@@ -107,25 +107,25 @@ LABEL_54:
           _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "Resource generation failed to find video for primary video recipe", &v31, 2u);
         }
 
-        if ((v18 & 1) == 0)
+        if ((cameraProcessingAdjustmentState & 1) == 0)
         {
           goto LABEL_53;
         }
       }
 
-      v27 = [v8 firstPersistedResourceMatching:&__block_literal_global_287];
-      [v7 setObject:v27 forKeyedSubscript:@"SpatialOvercapture"];
+      v27 = [assetCopy firstPersistedResourceMatching:&__block_literal_global_287];
+      [ingredientsCopy setObject:v27 forKeyedSubscript:@"SpatialOvercapture"];
       goto LABEL_52;
     }
 
     if (v15)
     {
-      [v8 primaryStoreOriginalResource];
+      [assetCopy primaryStoreOriginalResource];
     }
 
     else
     {
-      [v8 firstPersistedResourceMatching:&__block_literal_global_268_57494];
+      [assetCopy firstPersistedResourceMatching:&__block_literal_global_268_57494];
     }
     v20 = ;
     v23 = PLBackendGetLog();
@@ -139,12 +139,12 @@ LABEL_54:
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "Resource generation selected image resource for primary image recipe: %@", &v31, 0xCu);
       }
 
-      [v7 setObject:v20 forKeyedSubscript:@"Image"];
-      if (v18)
+      [ingredientsCopy setObject:v20 forKeyedSubscript:@"Image"];
+      if (cameraProcessingAdjustmentState)
       {
 LABEL_30:
-        v25 = [v8 firstPersistedResourceMatching:&__block_literal_global_271];
-        [v7 setObject:v25 forKeyedSubscript:@"SpatialOvercapture"];
+        v25 = [assetCopy firstPersistedResourceMatching:&__block_literal_global_271];
+        [ingredientsCopy setObject:v25 forKeyedSubscript:@"SpatialOvercapture"];
       }
     }
 
@@ -156,13 +156,13 @@ LABEL_30:
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "Resource generation failed to find image for primary image recipe", &v31, 2u);
       }
 
-      if (v18)
+      if (cameraProcessingAdjustmentState)
       {
         goto LABEL_30;
       }
     }
 
-    if (![v8 isPhotoIris])
+    if (![assetCopy isPhotoIris])
     {
 LABEL_53:
 
@@ -179,7 +179,7 @@ LABEL_53:
       v26 = &__block_literal_global_275_57497;
     }
 
-    v27 = [v8 firstPersistedResourceMatching:v26];
+    v27 = [assetCopy firstPersistedResourceMatching:v26];
     v28 = PLBackendGetLog();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
     if (v27)
@@ -191,8 +191,8 @@ LABEL_53:
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "Resource generation selected video complement resource: %@", &v31, 0xCu);
       }
 
-      [v7 setObject:v27 forKeyedSubscript:@"VideoComplement"];
-      if ((v18 & 1) == 0)
+      [ingredientsCopy setObject:v27 forKeyedSubscript:@"VideoComplement"];
+      if ((cameraProcessingAdjustmentState & 1) == 0)
       {
         goto LABEL_52;
       }
@@ -206,14 +206,14 @@ LABEL_53:
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEBUG, "Resource generation failed to find video complement resource.", &v31, 2u);
       }
 
-      if ((v18 & 1) == 0)
+      if ((cameraProcessingAdjustmentState & 1) == 0)
       {
         goto LABEL_52;
       }
     }
 
-    v30 = [v8 firstPersistedResourceMatching:&__block_literal_global_278];
-    [v7 setObject:v30 forKeyedSubscript:@"SpatialOvercapture"];
+    v30 = [assetCopy firstPersistedResourceMatching:&__block_literal_global_278];
+    [ingredientsCopy setObject:v30 forKeyedSubscript:@"SpatialOvercapture"];
 
 LABEL_52:
     goto LABEL_53;
@@ -222,16 +222,16 @@ LABEL_52:
 LABEL_55:
 }
 
-- (id)recipeErrorWithCode:(int64_t)a3 version:(unsigned int)a4 underlyingError:(id)a5 debugDescription:(id)a6
+- (id)recipeErrorWithCode:(int64_t)code version:(unsigned int)version underlyingError:(id)error debugDescription:(id)description
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = v12;
-  if (v11)
+  v7 = *&version;
+  errorCopy = error;
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v13 = dictionary;
+  if (descriptionCopy)
   {
-    [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696A278]];
+    [dictionary setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x1E696A278]];
   }
 
   else
@@ -246,17 +246,17 @@ LABEL_55:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7];
   [v13 setObject:v16 forKeyedSubscript:@"version"];
 
-  if (v10)
+  if (errorCopy)
   {
-    [v13 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v13 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
-  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:a3 userInfo:v13];
+  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:code userInfo:v13];
 
   return v17;
 }
 
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
@@ -264,7 +264,7 @@ LABEL_55:
   [v6 raise:v7 format:{@"Subclasses must override %@", v8}];
 }
 
-- (id)chooseIngredientsFrom:(id)a3 version:(unsigned int)a4
+- (id)chooseIngredientsFrom:(id)from version:(unsigned int)version
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -274,7 +274,7 @@ LABEL_55:
   return 0;
 }
 
-- (id)colorSpaceGivenSourceColorSpace:(id)a3 inContext:(id)a4
+- (id)colorSpaceGivenSourceColorSpace:(id)space inContext:(id)context
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -304,7 +304,7 @@ LABEL_55:
   return 0;
 }
 
-- (PLResourceRecipe)initWithRecipeID:(unsigned int)a3
+- (PLResourceRecipe)initWithRecipeID:(unsigned int)d
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -314,22 +314,22 @@ LABEL_55:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(PLResourceRecipe *)self recipeID];
-    v8 = [(PLResourceRecipe *)v6 recipeID];
+    recipeID = [(PLResourceRecipe *)self recipeID];
+    recipeID2 = [(PLResourceRecipe *)v6 recipeID];
 
-    v9 = v7 == v8;
+    v9 = recipeID == recipeID2;
   }
 
   else
@@ -340,9 +340,9 @@ LABEL_55:
   return v9;
 }
 
-+ (id)recipeFromID:(unsigned int)a3
++ (id)recipeFromID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   if (recipeFromID__s_onceToken != -1)
   {
     dispatch_once(&recipeFromID__s_onceToken, &__block_literal_global_57519);
@@ -387,11 +387,11 @@ void __33__PLResourceRecipe_recipeFromID___block_invoke()
   recipeFromID__s_lock = 0;
 }
 
-+ (Class)classFromRecipeID:(unsigned int)a3
++ (Class)classFromRecipeID:(unsigned int)d
 {
   v4 = 0;
-  v5 = HIWORD(a3);
-  if (HIWORD(a3) <= 2u)
+  v5 = HIWORD(d);
+  if (HIWORD(d) <= 2u)
   {
     if (v5 == 1 || v5 == 2)
     {

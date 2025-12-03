@@ -1,49 +1,49 @@
 @interface PXGOneColumnLayout
 - (CGPoint)anchorItemCenter;
 - (CGPoint)anchorViewportCenter;
-- (CGRect)frameForItem:(int64_t)a3;
+- (CGRect)frameForItem:(int64_t)item;
 - (CGSize)interItemSpacing;
 - (PXGOneColumnLayout)init;
 - (UIEdgeInsets)padding;
-- (_NSRange)_itemsToLoadForAnchorItem:(int64_t)a3 visibleRect:(CGRect)a4;
-- (_NSRange)itemRangeForSpriteIndexRange:(_PXGSpriteIndexRange)a3;
-- (_NSRange)itemRangeInRect:(CGRect)a3;
+- (_NSRange)_itemsToLoadForAnchorItem:(int64_t)item visibleRect:(CGRect)rect;
+- (_NSRange)itemRangeForSpriteIndexRange:(_PXGSpriteIndexRange)range;
+- (_NSRange)itemRangeInRect:(CGRect)rect;
 - (_NSRange)itemsToLoad;
-- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)a3;
+- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)rect;
 - (id)description;
 - (id)diagnosticDescription;
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4;
-- (int64_t)itemClosestTo:(CGPoint)a3;
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4;
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout;
+- (int64_t)itemClosestTo:(CGPoint)to;
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction;
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_updateSpriteStyles;
 - (void)_updateSprites;
 - (void)_updateVisibleRect;
 - (void)alphaDidChange;
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6;
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState;
 - (void)displayScaleDidChange;
 - (void)entityManagerDidChange;
 - (void)invalidateLoadedItems;
 - (void)loadedItemsDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAnchorItem:(int64_t)a3;
-- (void)setAnchorItemCenter:(CGPoint)a3;
-- (void)setAnchorObjectReference:(id)a3;
-- (void)setAnchorViewportCenter:(CGPoint)a3;
-- (void)setAspectRatioLimit:(double)a3;
-- (void)setEnableBestCropRect:(BOOL)a3;
-- (void)setEnableEffects:(BOOL)a3;
-- (void)setEnablePerItemCornerRadius:(BOOL)a3;
-- (void)setFillSafeAreaBottomInset:(BOOL)a3;
-- (void)setFillSafeAreaTopInset:(BOOL)a3;
-- (void)setInterItemSpacing:(CGSize)a3;
-- (void)setMediaKind:(unsigned __int8)a3;
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5;
-- (void)setOverrideAspectRatio:(double)a3;
-- (void)setOverrideAspectRatioAmount:(double)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setPresentationType:(unsigned __int8)a3;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setAnchorItem:(int64_t)item;
+- (void)setAnchorItemCenter:(CGPoint)center;
+- (void)setAnchorObjectReference:(id)reference;
+- (void)setAnchorViewportCenter:(CGPoint)center;
+- (void)setAspectRatioLimit:(double)limit;
+- (void)setEnableBestCropRect:(BOOL)rect;
+- (void)setEnableEffects:(BOOL)effects;
+- (void)setEnablePerItemCornerRadius:(BOOL)radius;
+- (void)setFillSafeAreaBottomInset:(BOOL)inset;
+- (void)setFillSafeAreaTopInset:(BOOL)inset;
+- (void)setInterItemSpacing:(CGSize)spacing;
+- (void)setMediaKind:(unsigned __int8)kind;
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler;
+- (void)setOverrideAspectRatio:(double)ratio;
+- (void)setOverrideAspectRatioAmount:(double)amount;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setPresentationType:(unsigned __int8)type;
+- (void)setVisibleRect:(CGRect)rect;
 - (void)update;
 - (void)visibleRectDidChange;
 @end
@@ -78,8 +78,8 @@
 {
   if (self->_didAlreadyUpdateLoadedItems)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:674 description:{@"Already updated loaded items during this update pass in %@", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:674 description:{@"Already updated loaded items during this update pass in %@", self}];
   }
 
   v5.receiver = self;
@@ -106,9 +106,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout alphaDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:656 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:656 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -177,59 +177,59 @@ LABEL_5:
   [(PXGLayout *)self referenceSize];
   v7 = v6;
   v8 = MEMORY[0x21CEE3180]([(PXGOneColumnLayout *)self padding]);
-  v9 = [(PXGItemsLayout *)self numberOfItems];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
   [(PXGOneColumnLayout *)self interItemSpacing];
   v11 = v10;
   [(PXGLayout *)self displayScale];
   v13 = v12;
   v17.receiver = self;
   v17.super_class = PXGOneColumnLayout;
-  v14 = [(PXGLayout *)&v17 diagnosticDescription];
-  v15 = [v3 stringWithFormat:@"size: {%.3f, %.3f} padding: %@; items: %li; interItemSpacing: %.3f; screenScale: %.3f sprites: {%@}", v5, v7, v8, v9, v11, v13, v14];;
+  diagnosticDescription = [(PXGLayout *)&v17 diagnosticDescription];
+  v15 = [v3 stringWithFormat:@"size: {%.3f, %.3f} padding: %@; items: %li; interItemSpacing: %.3f; screenScale: %.3f sprites: {%@}", v5, v7, v8, numberOfItems, v11, v13, diagnosticDescription];;
 
   return v15;
 }
 
-- (id)itemsInRect:(CGRect)a3 inLayout:(id)a4
+- (id)itemsInRect:(CGRect)rect inLayout:(id)layout
 {
-  v4 = [(PXGOneColumnLayout *)self itemRangeInRect:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PXGOneColumnLayout *)self itemRangeInRect:layout, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v6 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{v4, v5}];
 
   return v6;
 }
 
-- (int64_t)itemClosestToItem:(int64_t)a3 inDirection:(unint64_t)a4
+- (int64_t)itemClosestToItem:(int64_t)item inDirection:(unint64_t)direction
 {
-  v6 = [(PXGItemsLayout *)self numberOfItems];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
 
-  return PXGItemsGeometryItemClosestToItemVerticalGridDefaultImplementation(a3, a4, 1, v6);
+  return PXGItemsGeometryItemClosestToItemVerticalGridDefaultImplementation(item, direction, 1, numberOfItems);
 }
 
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState
 {
-  v8 = *&a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  v8 = *&changes;
+  detailsCopy = details;
+  stateCopy = state;
+  modifyStateCopy = modifyState;
   if (!self->_isUpdating && [(PXGItemsLayout *)self isLazy])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:693 description:{@"Invalid to modify sprites directly when lazy, use setNumberOfItems:withChangeDetails: instead."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:693 description:{@"Invalid to modify sprites directly when lazy, use setNumberOfItems:withChangeDetails: instead."}];
   }
 
   v15.receiver = self;
   v15.super_class = PXGOneColumnLayout;
-  [(PXGLayout *)&v15 applySpriteChangeDetails:v11 countAfterChanges:v8 initialState:v12 modifyState:v13];
+  [(PXGLayout *)&v15 applySpriteChangeDetails:detailsCopy countAfterChanges:v8 initialState:stateCopy modifyState:modifyStateCopy];
 }
 
-- (void)setNumberOfItems:(int64_t)a3 withChangeDetails:(id)a4 changeMediaVersionHandler:(id)a5
+- (void)setNumberOfItems:(int64_t)items withChangeDetails:(id)details changeMediaVersionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  detailsCopy = details;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = PXGOneColumnLayout;
-  [(PXGItemsLayout *)&v15 setNumberOfItems:a3 withChangeDetails:v8 changeMediaVersionHandler:v9];
-  if (!v8 || [v8 hasAnyChanges])
+  [(PXGItemsLayout *)&v15 setNumberOfItems:items withChangeDetails:detailsCopy changeMediaVersionHandler:handlerCopy];
+  if (!detailsCopy || [detailsCopy hasAnyChanges])
   {
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -245,9 +245,9 @@ LABEL_8:
 LABEL_7:
       if ((self->_updateFlags.updated & 0xA) != 0)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setNumberOfItems:withChangeDetails:changeMediaVersionHandler:]"];
-        [v13 handleFailureInFunction:v14 file:@"PXGOneColumnLayout.m" lineNumber:687 description:{@"invalidating %lu after it already has been updated", 10}];
+        [currentHandler handleFailureInFunction:v14 file:@"PXGOneColumnLayout.m" lineNumber:687 description:{@"invalidating %lu after it already has been updated", 10}];
 
         abort();
       }
@@ -290,9 +290,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0xA) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout loadedItemsDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:680 description:{@"invalidating %lu after it already has been updated", 10}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:680 description:{@"invalidating %lu after it already has been updated", 10}];
 
       abort();
     }
@@ -329,13 +329,13 @@ LABEL_5:
   v11.receiver = self;
   v11.super_class = PXGOneColumnLayout;
   [(PXGLayout *)&v11 entityManagerDidChange];
-  v3 = [(PXGLayout *)self entityManager];
-  if (v3)
+  entityManager = [(PXGLayout *)self entityManager];
+  if (entityManager)
   {
-    v4 = v3;
-    v5 = [(PXGOneColumnLayout *)self enableEffects];
+    v4 = entityManager;
+    enableEffects = [(PXGOneColumnLayout *)self enableEffects];
 
-    if (v5)
+    if (enableEffects)
     {
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
@@ -351,9 +351,9 @@ LABEL_8:
 LABEL_7:
         if ((self->_updateFlags.updated & 8) != 0)
         {
-          v9 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout entityManagerDidChange]"];
-          [v9 handleFailureInFunction:v10 file:@"PXGOneColumnLayout.m" lineNumber:650 description:{@"invalidating %lu after it already has been updated", 8}];
+          [currentHandler handleFailureInFunction:v10 file:@"PXGOneColumnLayout.m" lineNumber:650 description:{@"invalidating %lu after it already has been updated", 8}];
 
           abort();
         }
@@ -395,9 +395,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:644 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:644 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -437,9 +437,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout referenceSizeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:639 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGOneColumnLayout.m" lineNumber:639 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -460,11 +460,11 @@ LABEL_5:
   }
 }
 
-- (void)setEnablePerItemCornerRadius:(BOOL)a3
+- (void)setEnablePerItemCornerRadius:(BOOL)radius
 {
-  if (self->_enablePerItemCornerRadius != a3)
+  if (self->_enablePerItemCornerRadius != radius)
   {
-    self->_enablePerItemCornerRadius = a3;
+    self->_enablePerItemCornerRadius = radius;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -479,9 +479,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 8) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setEnablePerItemCornerRadius:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:632 description:{@"invalidating %lu after it already has been updated", 8}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:632 description:{@"invalidating %lu after it already has been updated", 8}];
 
         abort();
       }
@@ -504,11 +504,11 @@ LABEL_6:
   }
 }
 
-- (void)setEnableEffects:(BOOL)a3
+- (void)setEnableEffects:(BOOL)effects
 {
-  if (self->_enableEffects != a3)
+  if (self->_enableEffects != effects)
   {
-    self->_enableEffects = a3;
+    self->_enableEffects = effects;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -523,9 +523,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 8) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setEnableEffects:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:624 description:{@"invalidating %lu after it already has been updated", 8}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:624 description:{@"invalidating %lu after it already has been updated", 8}];
 
         abort();
       }
@@ -548,11 +548,11 @@ LABEL_6:
   }
 }
 
-- (void)setFillSafeAreaBottomInset:(BOOL)a3
+- (void)setFillSafeAreaBottomInset:(BOOL)inset
 {
-  if (self->_fillSafeAreaBottomInset != a3)
+  if (self->_fillSafeAreaBottomInset != inset)
   {
-    self->_fillSafeAreaBottomInset = a3;
+    self->_fillSafeAreaBottomInset = inset;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -567,9 +567,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setFillSafeAreaBottomInset:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:616 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:616 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -592,11 +592,11 @@ LABEL_6:
   }
 }
 
-- (void)setFillSafeAreaTopInset:(BOOL)a3
+- (void)setFillSafeAreaTopInset:(BOOL)inset
 {
-  if (self->_fillSafeAreaTopInset != a3)
+  if (self->_fillSafeAreaTopInset != inset)
   {
-    self->_fillSafeAreaTopInset = a3;
+    self->_fillSafeAreaTopInset = inset;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -611,9 +611,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setFillSafeAreaTopInset:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:608 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:608 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -636,11 +636,11 @@ LABEL_6:
   }
 }
 
-- (void)setPresentationType:(unsigned __int8)a3
+- (void)setPresentationType:(unsigned __int8)type
 {
-  if (self->_presentationType != a3)
+  if (self->_presentationType != type)
   {
-    self->_presentationType = a3;
+    self->_presentationType = type;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -655,9 +655,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setPresentationType:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:600 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:600 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -680,11 +680,11 @@ LABEL_6:
   }
 }
 
-- (void)setMediaKind:(unsigned __int8)a3
+- (void)setMediaKind:(unsigned __int8)kind
 {
-  if (self->_mediaKind != a3)
+  if (self->_mediaKind != kind)
   {
-    self->_mediaKind = a3;
+    self->_mediaKind = kind;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -699,9 +699,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setMediaKind:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:592 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:592 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -724,21 +724,21 @@ LABEL_6:
   }
 }
 
-- (void)setAnchorViewportCenter:(CGPoint)a3
+- (void)setAnchorViewportCenter:(CGPoint)center
 {
-  if (self->_anchorViewportCenter.x != a3.x || self->_anchorViewportCenter.y != a3.y)
+  if (self->_anchorViewportCenter.x != center.x || self->_anchorViewportCenter.y != center.y)
   {
-    self->_anchorViewportCenter = a3;
+    self->_anchorViewportCenter = center;
     [(PXGOneColumnLayout *)self invalidateLoadedItems];
   }
 }
 
-- (void)setAnchorObjectReference:(id)a3
+- (void)setAnchorObjectReference:(id)reference
 {
-  v13 = a3;
+  referenceCopy = reference;
   v5 = self->_anchorObjectReference;
   v6 = v5;
-  if (v5 == v13)
+  if (v5 == referenceCopy)
   {
 
     goto LABEL_11;
@@ -751,7 +751,7 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->_anchorObjectReference, a3);
+  objc_storeStrong(&self->_anchorObjectReference, reference);
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (!needsUpdate)
@@ -776,9 +776,9 @@ LABEL_6:
 LABEL_8:
     if ((self->_updateFlags.updated & 0xA) != 0)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setAnchorObjectReference:]"];
-      [v11 handleFailureInFunction:v12 file:@"PXGOneColumnLayout.m" lineNumber:575 description:{@"invalidating %lu after it already has been updated", 10}];
+      [currentHandler handleFailureInFunction:v12 file:@"PXGOneColumnLayout.m" lineNumber:575 description:{@"invalidating %lu after it already has been updated", 10}];
 
       abort();
     }
@@ -790,14 +790,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setAspectRatioLimit:(double)a3
+- (void)setAspectRatioLimit:(double)limit
 {
-  if (self->_aspectRatioLimit == a3)
+  if (self->_aspectRatioLimit == limit)
   {
     return;
   }
 
-  self->_aspectRatioLimit = a3;
+  self->_aspectRatioLimit = limit;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -812,9 +812,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 0xA) != 0)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setAspectRatioLimit:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:565 description:{@"invalidating %lu after it already has been updated", 10}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:565 description:{@"invalidating %lu after it already has been updated", 10}];
 
       abort();
     }
@@ -836,14 +836,14 @@ LABEL_7:
   }
 }
 
-- (void)setOverrideAspectRatioAmount:(double)a3
+- (void)setOverrideAspectRatioAmount:(double)amount
 {
-  if (self->_overrideAspectRatioAmount == a3)
+  if (self->_overrideAspectRatioAmount == amount)
   {
     return;
   }
 
-  self->_overrideAspectRatioAmount = a3;
+  self->_overrideAspectRatioAmount = amount;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -858,9 +858,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setOverrideAspectRatioAmount:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:556 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:556 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -882,14 +882,14 @@ LABEL_7:
   }
 }
 
-- (void)setOverrideAspectRatio:(double)a3
+- (void)setOverrideAspectRatio:(double)ratio
 {
-  if (self->_overrideAspectRatio == a3)
+  if (self->_overrideAspectRatio == ratio)
   {
     return;
   }
 
-  self->_overrideAspectRatio = a3;
+  self->_overrideAspectRatio = ratio;
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
   if (needsUpdate)
@@ -904,9 +904,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setOverrideAspectRatio:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:548 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:548 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -928,11 +928,11 @@ LABEL_7:
   }
 }
 
-- (void)setInterItemSpacing:(CGSize)a3
+- (void)setInterItemSpacing:(CGSize)spacing
 {
-  if (a3.width != self->_interItemSpacing.width || a3.height != self->_interItemSpacing.height)
+  if (spacing.width != self->_interItemSpacing.width || spacing.height != self->_interItemSpacing.height)
   {
-    self->_interItemSpacing = a3;
+    self->_interItemSpacing = spacing;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -947,9 +947,9 @@ LABEL_10:
 LABEL_9:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setInterItemSpacing:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGOneColumnLayout.m" lineNumber:540 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGOneColumnLayout.m" lineNumber:540 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -972,12 +972,12 @@ LABEL_9:
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -999,9 +999,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setPadding:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGOneColumnLayout.m" lineNumber:532 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGOneColumnLayout.m" lineNumber:532 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -1024,11 +1024,11 @@ LABEL_6:
   }
 }
 
-- (void)setEnableBestCropRect:(BOOL)a3
+- (void)setEnableBestCropRect:(BOOL)rect
 {
-  if (self->_enableBestCropRect != a3)
+  if (self->_enableBestCropRect != rect)
   {
-    self->_enableBestCropRect = a3;
+    self->_enableBestCropRect = rect;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -1043,9 +1043,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 8) != 0)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setEnableBestCropRect:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 8}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:524 description:{@"invalidating %lu after it already has been updated", 8}];
 
         abort();
       }
@@ -1068,12 +1068,12 @@ LABEL_6:
   }
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXGLayout *)self visibleRect];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -1089,11 +1089,11 @@ LABEL_6:
   [(PXGLayout *)&v12 setVisibleRect:x, y, width, height];
 }
 
-- (void)setAnchorItemCenter:(CGPoint)a3
+- (void)setAnchorItemCenter:(CGPoint)center
 {
-  if (self->_anchorItemCenter.x != a3.x || self->_anchorItemCenter.y != a3.y)
+  if (self->_anchorItemCenter.x != center.x || self->_anchorItemCenter.y != center.y)
   {
-    self->_anchorItemCenter = a3;
+    self->_anchorItemCenter = center;
     if ((PXPointIsNull() & 1) == 0)
     {
       p_updateFlags = &self->_updateFlags;
@@ -1110,9 +1110,9 @@ LABEL_11:
 LABEL_10:
         if ((self->_updateFlags.updated & 4) != 0)
         {
-          v8 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setAnchorItemCenter:]"];
-          [v8 handleFailureInFunction:v9 file:@"PXGOneColumnLayout.m" lineNumber:507 description:{@"invalidating %lu after it already has been updated", 4}];
+          [currentHandler handleFailureInFunction:v9 file:@"PXGOneColumnLayout.m" lineNumber:507 description:{@"invalidating %lu after it already has been updated", 4}];
 
           abort();
         }
@@ -1136,12 +1136,12 @@ LABEL_10:
   }
 }
 
-- (void)setAnchorItem:(int64_t)a3
+- (void)setAnchorItem:(int64_t)item
 {
-  if (self->_anchorItem != a3)
+  if (self->_anchorItem != item)
   {
-    self->_anchorItem = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_anchorItem = item;
+    if (item != 0x7FFFFFFFFFFFFFFFLL)
     {
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
@@ -1157,9 +1157,9 @@ LABEL_8:
 LABEL_7:
         if ((self->_updateFlags.updated & 4) != 0)
         {
-          v7 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout setAnchorItem:]"];
-          [v7 handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:497 description:{@"invalidating %lu after it already has been updated", 4}];
+          [currentHandler handleFailureInFunction:v8 file:@"PXGOneColumnLayout.m" lineNumber:497 description:{@"invalidating %lu after it already has been updated", 4}];
 
           abort();
         }
@@ -1183,10 +1183,10 @@ LABEL_7:
   }
 }
 
-- (unsigned)spriteIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (unsigned)spriteIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  v9 = [(PXGItemsLayout *)self itemForObjectReference:v8 options:a4];
+  referenceCopy = reference;
+  v9 = [(PXGItemsLayout *)self itemForObjectReference:referenceCopy options:options];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = -1;
@@ -1197,86 +1197,86 @@ LABEL_7:
     v10 = [(PXGItemsLayout *)self spriteIndexForItem:v9];
   }
 
-  v11 = v8;
-  *a5 = v8;
+  v11 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v10;
 }
 
-- (_NSRange)itemRangeForSpriteIndexRange:(_PXGSpriteIndexRange)a3
+- (_NSRange)itemRangeForSpriteIndexRange:(_PXGSpriteIndexRange)range
 {
-  length = a3.length;
-  v4 = [(PXGItemsLayout *)self loadedItems]+ a3.location;
+  length = range.length;
+  v4 = [(PXGItemsLayout *)self loadedItems]+ range.location;
   v5 = length;
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)itemRangeInRect:(CGRect)a3
+- (_NSRange)itemRangeInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PXGLayout *)self localNumberOfSprites];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
   [(PXGItemsLayout *)self loadedItems];
-  if (v10 != v9)
+  if (v10 != localNumberOfSprites)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:462 description:@"Every loaded item should have a sprite at this point"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:462 description:@"Every loaded item should have a sprite at this point"];
   }
 
   if ([(PXGItemsLayout *)self numberOfItems]< 1)
   {
     v16 = 0;
-    v14 = 0x7FFFFFFFFFFFFFFFLL;
+    px_coveringRange = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v11 = [(PXGLayout *)self spriteDataStore];
-    v12 = [v11 spriteIndexesInRect:{x, y, width, height}];
+    spriteDataStore = [(PXGLayout *)self spriteDataStore];
+    v12 = [spriteDataStore spriteIndexesInRect:{x, y, width, height}];
 
     v13 = [(PXGItemsLayout *)self itemsForSpriteIndexes:v12];
-    v14 = [v13 px_coveringRange];
+    px_coveringRange = [v13 px_coveringRange];
     v16 = v15;
-    if (v14 + v15 > [(PXGItemsLayout *)self numberOfItems])
+    if (px_coveringRange + v15 > [(PXGItemsLayout *)self numberOfItems])
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:470 description:@"Should not return items out of bounds."];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:470 description:@"Should not return items out of bounds."];
     }
   }
 
-  v17 = v14;
+  v17 = px_coveringRange;
   v18 = v16;
   result.length = v18;
   result.location = v17;
   return result;
 }
 
-- (int64_t)itemClosestTo:(CGPoint)a3
+- (int64_t)itemClosestTo:(CGPoint)to
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(PXGLayout *)self localNumberOfSprites];
+  y = to.y;
+  x = to.x;
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
   [(PXGItemsLayout *)self loadedItems];
-  if (v8 != v7)
+  if (v8 != localNumberOfSprites)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:421 description:@"Every loaded item should have a sprite at this point"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:421 description:@"Every loaded item should have a sprite at this point"];
   }
 
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = [(PXGItemsLayout *)self numberOfItems];
-  v10 = [(PXGLayout *)self localNumberOfSprites];
-  if (v9 >= 1)
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  localNumberOfSprites2 = [(PXGLayout *)self localNumberOfSprites];
+  if (numberOfItems >= 1)
   {
-    v11 = v10;
-    if (v10)
+    v11 = localNumberOfSprites2;
+    if (localNumberOfSprites2)
     {
       v33[0] = 0;
       v33[1] = v33;
@@ -1297,14 +1297,14 @@ LABEL_7:
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(PXGLayout *)self spriteDataStore];
+      spriteDataStore = [(PXGLayout *)self spriteDataStore];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __36__PXGOneColumnLayout_itemClosestTo___block_invoke_2;
       v30[3] = &unk_2782AA3B8;
       v22 = v12;
       v31 = v22;
-      [v21 enumerateSpritesInRect:v30 usingBlock:{v14, v16, v18, v20}];
+      [spriteDataStore enumerateSpritesInRect:v30 usingBlock:{v14, v16, v18, v20}];
 
       if (v35[3] == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1316,8 +1316,8 @@ LABEL_7:
         (*(v22 + 2))(v22, v23, &v28);
         if (v35[3] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v27 = [MEMORY[0x277CCA890] currentHandler];
-          [v27 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:456 description:@"Should always be able to find a closest item."];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:456 description:@"Should always be able to find a closest item."];
         }
       }
 
@@ -1348,25 +1348,25 @@ uint64_t __36__PXGOneColumnLayout_itemClosestTo___block_invoke(uint64_t a1, uint
   return result;
 }
 
-- (CGRect)frameForItem:(int64_t)a3
+- (CGRect)frameForItem:(int64_t)item
 {
-  v6 = [(PXGLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
   [(PXGItemsLayout *)self loadedItems];
-  if (v7 != v6)
+  if (v7 != localNumberOfSprites)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:408 description:@"Every loaded item should have a sprite at this point"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:408 description:@"Every loaded item should have a sprite at this point"];
   }
 
-  v8 = [(PXGItemsLayout *)self spriteIndexForItem:a3];
+  v8 = [(PXGItemsLayout *)self spriteIndexForItem:item];
   if (v8 == -1)
   {
     v10 = *MEMORY[0x277CBF398];
     v11 = *(MEMORY[0x277CBF398] + 8);
     v12 = *(MEMORY[0x277CBF398] + 16);
     v13 = *(MEMORY[0x277CBF398] + 24);
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:416 description:@"Invalid to ask for the frame of an item without a sprite representing it"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:416 description:@"Invalid to ask for the frame of an item without a sprite representing it"];
   }
 
   else
@@ -1390,18 +1390,18 @@ uint64_t __36__PXGOneColumnLayout_itemClosestTo___block_invoke(uint64_t a1, uint
   return result;
 }
 
-- (_NSRange)_itemsToLoadForAnchorItem:(int64_t)a3 visibleRect:(CGRect)a4
+- (_NSRange)_itemsToLoadForAnchorItem:(int64_t)item visibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v45 = *MEMORY[0x277D85DE8];
-  v11 = [(PXGItemsLayout *)self numberOfItems];
-  if (v11 <= 0)
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  if (numberOfItems <= 0)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"numberOfItems > 0"}];
   }
 
   v12 = height;
@@ -1440,12 +1440,12 @@ uint64_t __36__PXGOneColumnLayout_itemClosestTo___block_invoke(uint64_t a1, uint
       v24 = 1;
     }
 
-    v25 = a3 / v17;
-    if (a3 / v17 == 0x7FFFFFFFFFFFFFFFLL)
+    v25 = item / v17;
+    if (item / v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v35 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSRange PXRangeWithMidLocationAndPadding(NSInteger, NSInteger)"}];
-      [v35 handleFailureInFunction:v36 file:@"NSRange+PhotosUIFoundation.h" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"midLocation != NSNotFound"}];
+      [currentHandler2 handleFailureInFunction:v36 file:@"NSRange+PhotosUIFoundation.h" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"midLocation != NSNotFound"}];
 
       if ((v24 & 0x8000000000000000) == 0)
       {
@@ -1458,7 +1458,7 @@ uint64_t __36__PXGOneColumnLayout_itemClosestTo___block_invoke(uint64_t a1, uint
 LABEL_14:
       v26 = (v25 - v24) & ~((v25 - v24) >> 63);
       v27.location = 0;
-      v27.length = v11;
+      v27.length = numberOfItems;
 
       v47.location = v26 * v17;
       v47.length = v17 + v17 * (v24 + v25 - v26);
@@ -1468,9 +1468,9 @@ LABEL_14:
       goto LABEL_22;
     }
 
-    v37 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSRange PXRangeWithMidLocationAndPadding(NSInteger, NSInteger)"}];
-    [v37 handleFailureInFunction:v38 file:@"NSRange+PhotosUIFoundation.h" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"padding >= 0"}];
+    [currentHandler3 handleFailureInFunction:v38 file:@"NSRange+PhotosUIFoundation.h" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"padding >= 0"}];
 
     goto LABEL_14;
   }
@@ -1490,11 +1490,11 @@ LABEL_14:
     v41 = 2112;
     v42 = v33;
     v43 = 2112;
-    v44 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21AD38000, v31, OS_LOG_TYPE_DEFAULT, "Invalid visibleRect:%@ referenceSize:%@ in %@", buf, 0x20u);
   }
 
-  location = a3;
+  location = item;
   length = 1;
 LABEL_22:
   result.length = length;
@@ -1505,28 +1505,28 @@ LABEL_22:
 - (_NSRange)itemsToLoad
 {
   rect[6] = *MEMORY[0x277D85DE8];
-  v3 = [(PXGItemsLayout *)self numberOfItems];
-  if (!v3)
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  if (!numberOfItems)
   {
-    v30 = 0x7FFFFFFFFFFFFFFFLL;
+    height2 = 0x7FFFFFFFFFFFFFFFLL;
     [(PXGOneColumnLayout *)self setAnchorItem:0x7FFFFFFFFFFFFFFFLL];
     v31 = 0;
     goto LABEL_30;
   }
 
-  v4 = v3;
-  v5 = [(PXGOneColumnLayout *)self anchorObjectReference];
-  if (!v5 || (v6 = [(PXGItemsLayout *)self itemForObjectReference:v5], v6 == 0x7FFFFFFFFFFFFFFFLL))
+  v4 = numberOfItems;
+  anchorObjectReference = [(PXGOneColumnLayout *)self anchorObjectReference];
+  if (!anchorObjectReference || (anchorItemForAnchoredContentEdges = [(PXGItemsLayout *)self itemForObjectReference:anchorObjectReference], anchorItemForAnchoredContentEdges == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v6 = [(PXGItemsLayout *)self anchorItemForAnchoredContentEdges];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    anchorItemForAnchoredContentEdges = [(PXGItemsLayout *)self anchorItemForAnchoredContentEdges];
+    if (anchorItemForAnchoredContentEdges == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(PXGItemsLayout *)self anchorItemIndexForRootAnchor];
+      anchorItemForAnchoredContentEdges = [(PXGItemsLayout *)self anchorItemIndexForRootAnchor];
     }
   }
 
-  v7 = v6;
-  v8 = [(PXGItemsLayout *)self loadedItems];
+  v7 = anchorItemForAnchoredContentEdges;
+  loadedItems = [(PXGItemsLayout *)self loadedItems];
   v10 = v9;
   [(PXGLayout *)self visibleRect];
   x = v42.origin.x;
@@ -1540,8 +1540,8 @@ LABEL_22:
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(PXGOneColumnLayout *)self itemRangeInRect:x, y, width, height];
-    if (!v16 || v15 == 0x7FFFFFFFFFFFFFFFLL || (v7 = v15 + (v16 >> 1), v7 == 0x7FFFFFFFFFFFFFFFLL))
+    height = [(PXGOneColumnLayout *)self itemRangeInRect:x, y, width, height];
+    if (!v16 || height == 0x7FFFFFFFFFFFFFFFLL || (v7 = height + (v16 >> 1), v7 == 0x7FFFFFFFFFFFFFFFLL))
     {
       PXRectGetCenter();
       v17 = [(PXGOneColumnLayout *)self itemClosestTo:?];
@@ -1589,9 +1589,9 @@ LABEL_15:
     }
   }
 
-  v30 = [(PXGOneColumnLayout *)self _itemsToLoadForAnchorItem:v7 visibleRect:x, y, width, height];
+  height2 = [(PXGOneColumnLayout *)self _itemsToLoadForAnchorItem:v7 visibleRect:x, y, width, height];
   v31 = v29;
-  if (v8 != v30 || v10 != v29)
+  if (loadedItems != height2 || v10 != v29)
   {
     v32 = *MEMORY[0x277D3CFB0];
     v33 = *(MEMORY[0x277D3CFB0] + 8);
@@ -1614,16 +1614,16 @@ LABEL_15:
   }
 
 LABEL_30:
-  v38 = v30;
+  v38 = height2;
   v39 = v31;
   result.length = v39;
   result.location = v38;
   return result;
 }
 
-- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)a3
+- (_PXGSpriteIndexRange)spriteIndexRangeCoveringRect:(CGRect)rect
 {
-  v4 = [(PXGOneColumnLayout *)self itemRangeInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PXGOneColumnLayout *)self itemRangeInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v6 = v5;
   v17.location = [(PXGItemsLayout *)self loadedItems];
   v17.length = v7;
@@ -1635,8 +1635,8 @@ LABEL_30:
     v9 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v8.location, v8.length}];
     v10 = [(PXGItemsLayout *)self spriteIndexesForItems:v9];
 
-    v11 = [v10 px_coveringRange];
-    v13 = v11 | (v12 << 32);
+    px_coveringRange = [v10 px_coveringRange];
+    v13 = px_coveringRange | (v12 << 32);
   }
 
   else
@@ -1649,14 +1649,14 @@ LABEL_30:
 
 - (void)_updateSpriteStyles
 {
-  v3 = [(PXGLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
   [(PXGLayout *)self alpha];
   v5 = v4;
   [(PXGOneColumnLayout *)self aspectRatioLimit];
   v7 = v6;
   [(PXGOneColumnLayout *)self aspectRatioLimit];
   v9 = v8;
-  v10 = [(PXGItemsLayout *)self loadedItems];
+  loadedItems = [(PXGItemsLayout *)self loadedItems];
   if ([(PXGOneColumnLayout *)self enableBestCropRect])
   {
     v11 = [(PXGItemsLayout *)self delegateRespondsTo:8];
@@ -1668,12 +1668,12 @@ LABEL_30:
   }
 
   v12 = 1.0 / v7;
-  v13 = [(PXGItemsLayout *)self delegate];
+  delegate = [(PXGItemsLayout *)self delegate];
   if ([(PXGOneColumnLayout *)self enablePerItemCornerRadius])
   {
     if ([(PXGItemsLayout *)self delegateRespondsTo:1024])
     {
-      v14 = v13;
+      v14 = delegate;
     }
 
     else
@@ -1692,17 +1692,17 @@ LABEL_30:
   v20 = 3221225472;
   v21 = __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke;
   v22 = &unk_2782AA368;
-  v16 = v3 << 32;
+  v16 = localNumberOfSprites << 32;
   v30 = v11;
   v27 = v12;
   v28 = v9;
-  v23 = v13;
-  v24 = self;
+  v23 = delegate;
+  selfCopy = self;
   v29 = v5;
   v25 = v15;
-  v26 = v10;
+  v26 = loadedItems;
   v17 = v15;
-  v18 = v13;
+  v18 = delegate;
   [(PXGLayout *)self modifySpritesInRange:v16 state:&v19];
   if ([(PXGOneColumnLayout *)self enableEffects:v19])
   {
@@ -1771,10 +1771,10 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
 
 - (void)_updateVisibleRect
 {
-  v4 = [(PXGOneColumnLayout *)self anchorItem];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  anchorItem = [(PXGOneColumnLayout *)self anchorItem];
+  if (anchorItem != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v4;
+    v5 = anchorItem;
     [(PXGOneColumnLayout *)self anchorItemCenter];
     v7 = v6;
     [(PXGOneColumnLayout *)self setAnchorItem:0x7FFFFFFFFFFFFFFFLL];
@@ -1787,15 +1787,15 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
     v16 = [(PXGItemsLayout *)self spriteIndexForItem:v5];
     if (v16 == -1)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:226 description:@"Must have a sprite representing the item at this point."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:226 description:@"Must have a sprite representing the item at this point."];
     }
 
     [(PXGLayout *)self geometryForSpriteAtIndex:v16, 0];
     if (v24 == 0.0)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:230 description:@"Sprite must have valid geometry at this point."];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGOneColumnLayout.m" lineNumber:230 description:@"Sprite must have valid geometry at this point."];
     }
 
     if (PXPointIsNull())
@@ -1822,11 +1822,11 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
 
 - (void)_updateSprites
 {
-  v3 = [(PXGLayout *)self localNumberOfSprites];
-  v4 = [(PXGItemsLayout *)self delegate];
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
+  delegate = [(PXGItemsLayout *)self delegate];
   if ([(PXGItemsLayout *)self delegateRespondsTo:4])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -1835,10 +1835,10 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
   }
 
   v6 = v5;
-  v55 = v4;
+  v55 = delegate;
   if ([(PXGItemsLayout *)self delegateRespondsTo:256])
   {
-    v7 = v4;
+    v7 = delegate;
   }
 
   else
@@ -1847,7 +1847,7 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
   }
 
   v59 = v7;
-  v60 = [(PXGItemsLayout *)self insetDelegate];
+  insetDelegate = [(PXGItemsLayout *)self insetDelegate];
   [(PXGLayout *)self displayScale];
   v9 = v8;
   [(PXGOneColumnLayout *)self padding];
@@ -1863,21 +1863,21 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
   v58 = v20;
   [(PXGLayout *)self referenceSize];
   v22 = v21;
-  v23 = [(PXGItemsLayout *)self loadedItems];
+  loadedItems = [(PXGItemsLayout *)self loadedItems];
   v25 = v24;
-  v26 = [(PXGItemsLayout *)self numberOfItems];
-  v57 = [(PXGOneColumnLayout *)self presentationType];
-  v27 = [(PXGOneColumnLayout *)self mediaKind];
+  numberOfItems = [(PXGItemsLayout *)self numberOfItems];
+  presentationType = [(PXGOneColumnLayout *)self presentationType];
+  mediaKind = [(PXGOneColumnLayout *)self mediaKind];
   [(PXGOneColumnLayout *)self overrideAspectRatio];
   v56 = v28;
   [(PXGOneColumnLayout *)self overrideAspectRatioAmount];
   v30 = v29;
-  v31 = [(PXGOneColumnLayout *)self anchorObjectReference];
-  if (v31)
+  anchorObjectReference = [(PXGOneColumnLayout *)self anchorObjectReference];
+  if (anchorObjectReference)
   {
-    v32 = v31;
-    v33 = [(PXGOneColumnLayout *)self anchorObjectReference];
-    v34 = [(PXGItemsLayout *)self itemForObjectReference:v33];
+    v32 = anchorObjectReference;
+    anchorObjectReference2 = [(PXGOneColumnLayout *)self anchorObjectReference];
+    v34 = [(PXGItemsLayout *)self itemForObjectReference:anchorObjectReference2];
 
     if (v34 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1905,24 +1905,24 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
   v37 = v22 - v13 - v15;
   v38 = v13 + v37 * 0.5;
   v39 = 1000;
-  if (v23 < 1000)
+  if (loadedItems < 1000)
   {
-    v39 = v23;
+    v39 = loadedItems;
   }
 
-  if (v23 == 0x7FFFFFFFFFFFFFFFLL || v25 == 0)
+  if (loadedItems == 0x7FFFFFFFFFFFFFFFLL || v25 == 0)
   {
     v41 = 0x8000000000000000;
   }
 
   else
   {
-    v41 = -(v23 + v25);
+    v41 = -(loadedItems + v25);
   }
 
-  v42 = (v41 + v26) & ~((v41 + v26) >> 63);
+  v42 = (v41 + numberOfItems) & ~((v41 + numberOfItems) >> 63);
   v43 = v39;
-  if (v26 < 1)
+  if (numberOfItems < 1)
   {
     v43 = 0.0;
   }
@@ -1932,7 +1932,7 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
   v62[1] = 3221225472;
   v62[2] = __36__PXGOneColumnLayout__updateSprites__block_invoke;
   v62[3] = &unk_2782AA340;
-  if (v26 >= 1)
+  if (numberOfItems >= 1)
   {
     v44 = v42;
   }
@@ -1942,30 +1942,30 @@ uint64_t __41__PXGOneColumnLayout__updateSpriteStyles__block_invoke(uint64_t res
     v44 = 0.0;
   }
 
-  v68 = v23;
+  v68 = loadedItems;
   v69 = v18;
   v45 = v6;
   v63 = v45;
-  v64 = self;
+  selfCopy = self;
   v70 = v61;
   v71 = v16;
   v72 = v56;
   v73 = v30;
   v46 = v59;
   v65 = v46;
-  v47 = v60;
+  v47 = insetDelegate;
   v74 = v37;
   v75 = v9;
   v77 = v38;
   v66 = v47;
   v67 = &v80;
-  v78 = v57;
-  v79 = v27;
+  v78 = presentationType;
+  v79 = mediaKind;
   v76 = v58;
-  [(PXGLayout *)self modifySpritesInRange:v3 << 32 state:v62];
+  [(PXGLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v62];
   v48 = v81;
   v49 = v81[3];
-  if (v3)
+  if (localNumberOfSprites)
   {
     v49 = v49 - v58;
     v81[3] = v49;
@@ -1990,9 +1990,9 @@ LABEL_34:
 LABEL_33:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v53 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout _updateSprites]"];
-      [v53 handleFailureInFunction:v54 file:@"PXGOneColumnLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v54 file:@"PXGOneColumnLayout.m" lineNumber:209 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -2077,10 +2077,10 @@ uint64_t __36__PXGOneColumnLayout__updateSprites__block_invoke(uint64_t result, 
 {
   isUpdating = self->_isUpdating;
   self->_isUpdating = 1;
-  v4 = [(PXGLayout *)self rootLayout];
-  v5 = [v4 activeAnchor];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  activeAnchor = [rootLayout activeAnchor];
 
-  if (v5)
+  if (activeAnchor)
   {
     [(PXGOneColumnLayout *)self invalidateLoadedItems];
   }
@@ -2094,9 +2094,9 @@ uint64_t __36__PXGOneColumnLayout__updateSprites__block_invoke(uint64_t result, 
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXGOneColumnLayout.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXGOneColumnLayout.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -2109,9 +2109,9 @@ uint64_t __36__PXGOneColumnLayout__updateSprites__block_invoke(uint64_t result, 
       [(PXGOneColumnLayout *)self _updateSprites];
       if (!self->_updateFlags.isPerformingUpdate)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout update]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGOneColumnLayout.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v13 file:@"PXGOneColumnLayout.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -2125,9 +2125,9 @@ uint64_t __36__PXGOneColumnLayout__updateSprites__block_invoke(uint64_t result, 
 
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXGOneColumnLayout.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v15 file:@"PXGOneColumnLayout.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -2142,9 +2142,9 @@ uint64_t __36__PXGOneColumnLayout__updateSprites__block_invoke(uint64_t result, 
     self->_updateFlags.isPerformingUpdate = 0;
     if (v9)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGOneColumnLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXGOneColumnLayout.m" lineNumber:104 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v17 file:@"PXGOneColumnLayout.m" lineNumber:104 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 

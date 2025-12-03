@@ -1,23 +1,23 @@
 @interface SFUMemoryInputStream
-- (BOOL)seekWithinBufferToOffset:(int64_t)a3;
-- (SFUMemoryInputStream)initWithData:(id)a3;
-- (SFUMemoryInputStream)initWithData:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4;
+- (BOOL)seekWithinBufferToOffset:(int64_t)offset;
+- (SFUMemoryInputStream)initWithData:(id)data;
+- (SFUMemoryInputStream)initWithData:(id)data offset:(unint64_t)offset length:(unint64_t)length;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation SFUMemoryInputStream
 
-- (SFUMemoryInputStream)initWithData:(id)a3
+- (SFUMemoryInputStream)initWithData:(id)data
 {
-  v5 = [a3 length];
+  v5 = [data length];
 
-  return [(SFUMemoryInputStream *)self initWithData:a3 offset:0 length:v5];
+  return [(SFUMemoryInputStream *)self initWithData:data offset:0 length:v5];
 }
 
-- (SFUMemoryInputStream)initWithData:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5
+- (SFUMemoryInputStream)initWithData:(id)data offset:(unint64_t)offset length:(unint64_t)length
 {
   v14.receiver = self;
   v14.super_class = SFUMemoryInputStream;
@@ -25,21 +25,21 @@
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (data)
     {
-      v10 = [a3 length];
-      if (v10 < a5 || &v10[-a5] < a4)
+      v10 = [data length];
+      if (v10 < length || &v10[-length] < offset)
       {
 
         [NSException raise:NSInvalidArgumentException format:@"Bad data range."];
       }
 
-      v11 = a3;
-      v9->mData = v11;
-      v12 = [(NSData *)v11 bytes];
-      v9->mStart = &v12[a4];
-      v9->mCurrent = &v12[a4];
-      v9->mEnd = &v12[a4 + a5];
+      dataCopy = data;
+      v9->mData = dataCopy;
+      bytes = [(NSData *)dataCopy bytes];
+      v9->mStart = &bytes[offset];
+      v9->mCurrent = &bytes[offset];
+      v9->mEnd = &bytes[offset + length];
     }
 
     else
@@ -59,31 +59,31 @@
   [(SFUMemoryInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   mCurrent = self->mCurrent;
-  if (self->mEnd - mCurrent >= a4)
+  if (self->mEnd - mCurrent >= size)
   {
-    v6 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v6 = self->mEnd - mCurrent;
+    sizeCopy = self->mEnd - mCurrent;
   }
 
-  memcpy(a3, mCurrent, v6);
-  self->mCurrent += v6;
-  return v6;
+  memcpy(buffer, mCurrent, sizeCopy);
+  self->mCurrent += sizeCopy;
+  return sizeCopy;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   mEnd = self->mEnd;
   mStart = self->mStart;
   v5 = mEnd - mStart;
-  v6 = &mStart[a3];
-  if (v5 >= a3)
+  v6 = &mStart[offset];
+  if (v5 >= offset)
   {
     mEnd = v6;
   }
@@ -91,29 +91,29 @@
   self->mCurrent = mEnd;
 }
 
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size
 {
   mCurrent = self->mCurrent;
-  v5 = (self->mEnd - mCurrent);
-  if (v5 >= a4)
+  sizeCopy = (self->mEnd - mCurrent);
+  if (sizeCopy >= size)
   {
-    v5 = a4;
+    sizeCopy = size;
   }
 
-  *a3 = mCurrent;
-  self->mCurrent = &v5[mCurrent];
-  return v5;
+  *buffer = mCurrent;
+  self->mCurrent = &sizeCopy[mCurrent];
+  return sizeCopy;
 }
 
-- (BOOL)seekWithinBufferToOffset:(int64_t)a3
+- (BOOL)seekWithinBufferToOffset:(int64_t)offset
 {
   v4 = self->mEnd - self->mStart;
-  if (v4 >= a3)
+  if (v4 >= offset)
   {
-    [(SFUMemoryInputStream *)self seekToOffset:a3];
+    [(SFUMemoryInputStream *)self seekToOffset:offset];
   }
 
-  return v4 >= a3;
+  return v4 >= offset;
 }
 
 @end

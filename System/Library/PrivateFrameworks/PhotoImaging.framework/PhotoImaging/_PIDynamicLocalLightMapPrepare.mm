@@ -73,11 +73,11 @@
     v9 = [(NSData *)v6 length];
     if (v9)
     {
-      v10 = [(NSNumber *)v7 unsignedLongValue];
-      v11 = [(NSNumber *)v8 unsignedLongValue];
-      if (v10)
+      unsignedLongValue = [(NSNumber *)v7 unsignedLongValue];
+      unsignedLongValue2 = [(NSNumber *)v8 unsignedLongValue];
+      if (unsignedLongValue)
       {
-        v12 = v11 == 0;
+        v12 = unsignedLongValue2 == 0;
       }
 
       else
@@ -87,16 +87,16 @@
 
       if (v12)
       {
-        v10 = vcvtmd_u64_f64(sqrt(vcvtd_n_f64_u64(v9, 1uLL)));
-        v13 = v10;
+        unsignedLongValue = vcvtmd_u64_f64(sqrt(vcvtd_n_f64_u64(v9, 1uLL)));
+        v13 = unsignedLongValue;
       }
 
       else
       {
-        v13 = v11;
+        v13 = unsignedLongValue2;
       }
 
-      if (v9 == (2 * v10 * v13))
+      if (v9 == (2 * unsignedLongValue * v13))
       {
         v14 = *MEMORY[0x1E695F9F0];
         v58 = *MEMORY[0x1E695F9E8];
@@ -109,11 +109,11 @@
         *&v54.b = 3221225472;
         *&v54.c = ___lightMapImageFromData_block_invoke;
         *&v54.d = &unk_1E82AB9E8;
-        *&v54.ty = v10;
+        *&v54.ty = unsignedLongValue;
         v55 = v13;
         *&v54.tx = v6;
         v56 = v9;
-        v9 = [v16 initWithImageProvider:&v54 width:v10 height:v13 format:*MEMORY[0x1E695F8F0] colorSpace:0 options:v15];
+        v9 = [v16 initWithImageProvider:&v54 width:unsignedLongValue height:v13 format:*MEMORY[0x1E695F8F0] colorSpace:0 options:v15];
       }
 
       else
@@ -162,23 +162,23 @@
           v67.size.height = 1.0;
           if (CGRectEqualToRect(v65, v67))
           {
-            v36 = [v20 imageByClampingToExtent];
+            imageByClampingToExtent = [v20 imageByClampingToExtent];
             [v21 extent];
-            v23 = [v36 imageByCroppingToRect:?];
+            v23 = [imageByClampingToExtent imageByCroppingToRect:?];
           }
 
           else
           {
             *&v54.a = v20;
             *&v54.b = v21;
-            v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:2];
+            imageByClampingToExtent = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:2];
             v37 = MEMORY[0x1E695F688];
-            v38 = [v36 objectAtIndexedSubscript:0];
+            v38 = [imageByClampingToExtent objectAtIndexedSubscript:0];
             [v38 extent];
             v39 = [v37 vectorWithCGRect:?];
             v60 = v39;
             v40 = MEMORY[0x1E695F688];
-            v41 = [v36 objectAtIndexedSubscript:1];
+            v41 = [imageByClampingToExtent objectAtIndexedSubscript:1];
             [v41 extent];
             v42 = [v40 vectorWithCGRect:?];
             v61 = v42;
@@ -194,7 +194,7 @@
             v58 = v43;
             v59 = v22;
             v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:v57 count:2];
-            v23 = [(CIImageProcessorKernel *)_PIDynamicGuidedProcessorKernel applyWithExtent:v36 inputs:v52 arguments:0 error:v45, v47, v49, v51];
+            v23 = [(CIImageProcessorKernel *)_PIDynamicGuidedProcessorKernel applyWithExtent:imageByClampingToExtent inputs:v52 arguments:0 error:v45, v47, v49, v51];
           }
         }
       }

@@ -1,7 +1,7 @@
 @interface PHContactWallpaperSensitiveBlurView
 - (id)didTapRevealButton;
 - (void)didTapButton;
-- (void)setDidTapRevealButton:(id)a3;
+- (void)setDidTapRevealButton:(id)button;
 @end
 
 @implementation PHContactWallpaperSensitiveBlurView
@@ -28,9 +28,9 @@
   return v4;
 }
 
-- (void)setDidTapRevealButton:(id)a3
+- (void)setDidTapRevealButton:(id)button
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(button);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -43,13 +43,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1001C054C(v4, v5);
 }
 
 - (void)didTapButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C11DC();
 }
 

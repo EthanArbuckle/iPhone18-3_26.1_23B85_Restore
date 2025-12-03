@@ -1,15 +1,15 @@
 @interface PGGraphBusinessCategoryEdge
 + (id)filter;
-- (id)initFromBusinessNode:(id)a3 toBusinessCategoryNode:(id)a4;
+- (id)initFromBusinessNode:(id)node toBusinessCategoryNode:(id)categoryNode;
 @end
 
 @implementation PGGraphBusinessCategoryEdge
 
-- (id)initFromBusinessNode:(id)a3 toBusinessCategoryNode:(id)a4
+- (id)initFromBusinessNode:(id)node toBusinessCategoryNode:(id)categoryNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphBusinessCategoryEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:categoryNode];
 }
 
 + (id)filter

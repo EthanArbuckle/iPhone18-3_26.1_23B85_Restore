@@ -1,27 +1,27 @@
 @interface _ManifestSizer
-+ (id)_getDomainInfoForDomainName:(id)a3 cache:(id)a4 restrictedDomains:(id)a5 disabledDomains:(id)a6 dependentDomains:(id)a7 appManager:(id)a8;
-+ (id)sizeDomainWithName:(id)a3 manager:(id)a4 account:(id)a5 error:(id *)a6;
-+ (id)sizeDomainsWithManager:(id)a3 account:(id)a4 error:(id *)a5;
++ (id)_getDomainInfoForDomainName:(id)name cache:(id)cache restrictedDomains:(id)domains disabledDomains:(id)disabledDomains dependentDomains:(id)dependentDomains appManager:(id)manager;
++ (id)sizeDomainWithName:(id)name manager:(id)manager account:(id)account error:(id *)error;
++ (id)sizeDomainsWithManager:(id)manager account:(id)account error:(id *)error;
 @end
 
 @implementation _ManifestSizer
 
-+ (id)_getDomainInfoForDomainName:(id)a3 cache:(id)a4 restrictedDomains:(id)a5 disabledDomains:(id)a6 dependentDomains:(id)a7 appManager:(id)a8
++ (id)_getDomainInfoForDomainName:(id)name cache:(id)cache restrictedDomains:(id)domains disabledDomains:(id)disabledDomains dependentDomains:(id)dependentDomains appManager:(id)manager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v16)
+  nameCopy = name;
+  cacheCopy = cache;
+  domainsCopy = domains;
+  disabledDomainsCopy = disabledDomains;
+  dependentDomainsCopy = dependentDomains;
+  managerCopy = manager;
+  if (!disabledDomainsCopy)
   {
     __assert_rtn("+[_ManifestSizer _getDomainInfoForDomainName:cache:restrictedDomains:disabledDomains:dependentDomains:appManager:]", "MBCalculateQuota.m", 397, "disabledDomains");
   }
 
-  v19 = v18;
+  v19 = managerCopy;
   v76 = 0;
-  v20 = [v14 sizeOfDomain:v13 error:&v76];
+  v20 = [cacheCopy sizeOfDomain:nameCopy error:&v76];
   v21 = v76;
   if (v21)
   {
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v79 = v13;
+      v79 = nameCopy;
       v80 = 2112;
       v81 = v22;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "=quota-calculation= Error fetching size of domain %@: %@", buf, 0x16u);
@@ -43,7 +43,7 @@ LABEL_8:
   }
 
   v75 = 0;
-  v24 = [v14 sizeOfScannedDomain:v13 error:&v75];
+  v24 = [cacheCopy sizeOfScannedDomain:nameCopy error:&v75];
   v25 = v75;
   if (v25)
   {
@@ -52,7 +52,7 @@ LABEL_8:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v79 = v13;
+      v79 = nameCopy;
       v80 = 2112;
       v81 = v22;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "=quota-calculation= Error fetching local size of domain: %@: %@", buf, 0x16u);
@@ -65,16 +65,16 @@ LABEL_9:
   }
 
   v62 = v19;
-  v64 = v14;
-  v60 = v16;
-  v61 = v15;
-  v23 = +[MBDomainInfo domainInfoWithName:systemApp:remoteSize:localSize:enabled:restricted:](MBDomainInfo, "domainInfoWithName:systemApp:remoteSize:localSize:enabled:restricted:", v13, 0, v20, v24, [v16 containsObject:v13] ^ 1, objc_msgSend(v15, "containsObject:", v13));
+  v64 = cacheCopy;
+  v60 = disabledDomainsCopy;
+  v61 = domainsCopy;
+  v23 = +[MBDomainInfo domainInfoWithName:systemApp:remoteSize:localSize:enabled:restricted:](MBDomainInfo, "domainInfoWithName:systemApp:remoteSize:localSize:enabled:restricted:", nameCopy, 0, v20, v24, [disabledDomainsCopy containsObject:nameCopy] ^ 1, objc_msgSend(domainsCopy, "containsObject:", nameCopy));
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v59 = v17;
-  obj = v17;
+  v59 = dependentDomainsCopy;
+  obj = dependentDomainsCopy;
   v28 = [obj countByEnumeratingWithState:&v71 objects:v86 count:16];
   if (!v28)
   {
@@ -93,7 +93,7 @@ LABEL_9:
       }
 
       v32 = *(*(&v71 + 1) + 8 * i);
-      if (([v13 isEqualToString:{v32, v51, v53, v55, v57}] & 1) == 0)
+      if (([nameCopy isEqualToString:{v32, v51, v53, v55, v57}] & 1) == 0)
       {
         v70 = 0;
         v33 = [v64 sizeOfDomain:v32 error:&v70];
@@ -126,7 +126,7 @@ LABEL_54:
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
               *buf = 138413058;
-              v79 = v13;
+              v79 = nameCopy;
               v80 = 2112;
               v81 = v32;
               v82 = 2048;
@@ -136,7 +136,7 @@ LABEL_54:
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "=quota-calculation= %@ adding dependentDomain %@ (%llu %llu)", buf, 0x2Au);
               v55 = v33;
               v57 = v35;
-              v51 = v13;
+              v51 = nameCopy;
               v53 = v32;
               _MBLog();
             }
@@ -157,10 +157,10 @@ LABEL_54:
           }
         }
 
-        v14 = v64;
-        v16 = v60;
-        v15 = v61;
-        v17 = v59;
+        cacheCopy = v64;
+        disabledDomainsCopy = v60;
+        domainsCopy = v61;
+        dependentDomainsCopy = v59;
         v19 = v62;
 
         goto LABEL_9;
@@ -178,14 +178,14 @@ LABEL_54:
 
 LABEL_26:
 
-  v14 = v64;
+  cacheCopy = v64;
   v19 = v62;
-  if ([v13 isEqualToString:@"AppDomain-com.apple.iBooks"])
+  if ([nameCopy isEqualToString:@"AppDomain-com.apple.iBooks"])
   {
     -[NSObject setRemoteSize:](v23, "setRemoteSize:", [v64 sizeOfDomain:@"BooksDomain" error:0] + -[NSObject remoteSize](v23, "remoteSize"));
   }
 
-  if ([v13 isEqualToString:{@"HealthDomain", v51, v53, v55, v57}])
+  if ([nameCopy isEqualToString:{@"HealthDomain", v51, v53, v55, v57}])
   {
     v67 = 0u;
     v68 = 0u;
@@ -207,31 +207,31 @@ LABEL_26:
           }
 
           v43 = *(*(&v65 + 1) + 8 * j);
-          if (([v43 isEqualToString:v13] & 1) == 0)
+          if (([v43 isEqualToString:nameCopy] & 1) == 0)
           {
-            v44 = [v14 sizeOfDomain:v43 error:0];
+            v44 = [cacheCopy sizeOfDomain:v43 error:0];
             if (v44)
             {
               v45 = MBGetDefaultLog();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
               {
-                v46 = [v23 remoteSize];
-                v47 = [v23 remoteSize];
+                remoteSize = [v23 remoteSize];
+                remoteSize2 = [v23 remoteSize];
                 *buf = 138413058;
                 v79 = v43;
                 v80 = 2048;
-                v81 = v46;
+                v81 = remoteSize;
                 v82 = 2048;
                 v83 = v44;
                 v84 = 2048;
-                v85 = &v44[v47];
+                v85 = &v44[remoteSize2];
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "=quota-calculation= Adding health-related domain %@ to HealthDomain size %llu + %llu = %llu", buf, 0x2Au);
-                v48 = [v23 remoteSize];
+                remoteSize3 = [v23 remoteSize];
                 v56 = v44;
                 v58 = &v44[[v23 remoteSize]];
                 v52 = v43;
-                v54 = v48;
-                v14 = v64;
+                v54 = remoteSize3;
+                cacheCopy = v64;
                 _MBLog();
               }
             }
@@ -249,11 +249,11 @@ LABEL_26:
     v19 = v62;
   }
 
-  v17 = v59;
-  v16 = v60;
-  if ([MBDomain isAppName:v13]&& ([MBDomain isLegacyPerAppPlaceholderName:v13]& 1) == 0)
+  dependentDomainsCopy = v59;
+  disabledDomainsCopy = v60;
+  if ([MBDomain isAppName:nameCopy]&& ([MBDomain isLegacyPerAppPlaceholderName:nameCopy]& 1) == 0)
   {
-    v49 = [MBDomain containerIDWithName:v13];
+    v49 = [MBDomain containerIDWithName:nameCopy];
     v50 = [v19 appWithIdentifier:v49];
 
     if (v50 && [v50 isSystemApp])
@@ -265,36 +265,36 @@ LABEL_26:
   v23 = v23;
   v22 = 0;
   v26 = v23;
-  v15 = v61;
+  domainsCopy = v61;
 LABEL_10:
 
   return v26;
 }
 
-+ (id)sizeDomainsWithManager:(id)a3 account:(id)a4 error:(id *)a5
++ (id)sizeDomainsWithManager:(id)manager account:(id)account error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v86 = [v7 openCacheWithAccount:v8 accessType:1 error:a5];
+  managerCopy = manager;
+  accountCopy = account;
+  v86 = [managerCopy openCacheWithAccount:accountCopy accessType:1 error:error];
   if (v86)
   {
     v9 = [MBDomainManager alloc];
-    v10 = [v8 persona];
-    v78 = [(MBDomainManager *)v9 initWithPersona:v10];
+    persona = [accountCopy persona];
+    v78 = [(MBDomainManager *)v9 initWithPersona:persona];
 
     v11 = [MBMobileInstallation alloc];
     v12 = [(MBMobileInstallation *)v11 initWithSafeHarborDir:kMBSafeHarborDir];
     v13 = [[MBAppManager alloc] initWithMobileInstallation:v12];
-    v14 = [v8 persona];
+    persona2 = [accountCopy persona];
     v107 = 0;
-    LOBYTE(v10) = [(MBAppManager *)v13 loadAppsWithPersona:v14 safeHarbors:0 error:&v107];
+    LOBYTE(persona) = [(MBAppManager *)v13 loadAppsWithPersona:persona2 safeHarbors:0 error:&v107];
     v15 = v107;
 
-    if (v10)
+    if (persona)
     {
-      v84 = [v7 allRestrictedDomainNames:v13 account:v8];
-      v16 = [v8 persona];
-      v17 = [(MBAppManager *)v13 allDisabledDomainNamesForPersona:v16];
+      v84 = [managerCopy allRestrictedDomainNames:v13 account:accountCopy];
+      persona3 = [accountCopy persona];
+      v17 = [(MBAppManager *)v13 allDisabledDomainNamesForPersona:persona3];
 
       v88 = v17;
       if (!v17)
@@ -326,8 +326,8 @@ LABEL_10:
 
       else
       {
-        v80 = v8;
-        v77 = v7;
+        v80 = accountCopy;
+        v77 = managerCopy;
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v25 = [v18 count];
@@ -375,8 +375,8 @@ LABEL_10:
                 v98 = 0u;
                 v99 = 0u;
                 v100 = 0u;
-                v33 = [v80 persona];
-                v34 = [MBCKSizingEngine domainsForApp:v30 persona:v33];
+                persona4 = [v80 persona];
+                v34 = [MBCKSizingEngine domainsForApp:v30 persona:persona4];
 
                 v35 = [v34 countByEnumeratingWithState:&v97 objects:v110 count:16];
                 if (v35)
@@ -392,8 +392,8 @@ LABEL_10:
                         objc_enumerationMutation(v34);
                       }
 
-                      v39 = [*(*(&v97 + 1) + 8 * j) name];
-                      [v32 addObject:v39];
+                      name = [*(*(&v97 + 1) + 8 * j) name];
+                      [v32 addObject:name];
                     }
 
                     v36 = [v34 countByEnumeratingWithState:&v97 objects:v110 count:16];
@@ -411,7 +411,7 @@ LABEL_10:
                 v32 = 0;
               }
 
-              v40 = [a1 _getDomainInfoForDomainName:v27 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:v32 appManager:{v13, v74}];
+              v40 = [self _getDomainInfoForDomainName:v27 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:v32 appManager:{v13, v74}];
               v41 = v40;
               if (v40)
               {
@@ -432,14 +432,14 @@ LABEL_10:
           while (v82);
         }
 
-        v44 = [(MBDomainManager *)v78 systemDomainsByName];
-        v45 = [v44 allValues];
+        systemDomainsByName = [(MBDomainManager *)v78 systemDomainsByName];
+        allValues = [systemDomainsByName allValues];
 
         v95 = 0u;
         v96 = 0u;
         v93 = 0u;
         v94 = 0u;
-        v46 = v45;
+        v46 = allValues;
         v47 = [v46 countByEnumeratingWithState:&v93 objects:v109 count:16];
         if (v47)
         {
@@ -455,24 +455,24 @@ LABEL_10:
               }
 
               v51 = *(*(&v93 + 1) + 8 * k);
-              v52 = [v51 name];
-              v53 = sub_10008EC54(v52);
+              name2 = [v51 name];
+              v53 = sub_10008EC54(name2);
 
               if ((v53 & 1) == 0)
               {
-                v54 = [v51 name];
-                v55 = [v21 objectForKeyedSubscript:v54];
+                name3 = [v51 name];
+                v55 = [v21 objectForKeyedSubscript:name3];
 
                 if (!v55)
                 {
-                  v56 = [v51 name];
-                  v55 = [a1 _getDomainInfoForDomainName:v56 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:0 appManager:v13];
+                  name4 = [v51 name];
+                  v55 = [self _getDomainInfoForDomainName:name4 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:0 appManager:v13];
 
-                  v57 = [v51 name];
-                  [v55 setEnabled:{objc_msgSend(v88, "containsObject:", v57) ^ 1}];
+                  name5 = [v51 name];
+                  [v55 setEnabled:{objc_msgSend(v88, "containsObject:", name5) ^ 1}];
 
-                  v58 = [v51 name];
-                  [v21 setObject:v55 forKeyedSubscript:v58];
+                  name6 = [v51 name];
+                  [v21 setObject:v55 forKeyedSubscript:name6];
                 }
               }
             }
@@ -487,8 +487,8 @@ LABEL_10:
         v92 = 0u;
         v89 = 0u;
         v90 = 0u;
-        v59 = [(MBAppManager *)v13 allContainers];
-        v60 = [v59 countByEnumeratingWithState:&v89 objects:v108 count:16];
+        allContainers = [(MBAppManager *)v13 allContainers];
+        v60 = [allContainers countByEnumeratingWithState:&v89 objects:v108 count:16];
         if (v60)
         {
           v61 = v60;
@@ -499,47 +499,47 @@ LABEL_10:
             {
               if (*v90 != v62)
               {
-                objc_enumerationMutation(v59);
+                objc_enumerationMutation(allContainers);
               }
 
-              v64 = [*(*(&v89 + 1) + 8 * m) domain];
-              v65 = [v64 name];
-              v66 = sub_10008EC54(v65);
+              domain = [*(*(&v89 + 1) + 8 * m) domain];
+              name7 = [domain name];
+              v66 = sub_10008EC54(name7);
 
               if ((v66 & 1) == 0)
               {
-                v67 = [v64 name];
-                v68 = [v21 objectForKeyedSubscript:v67];
+                name8 = [domain name];
+                v68 = [v21 objectForKeyedSubscript:name8];
 
                 if (!v68)
                 {
-                  v69 = [v64 name];
-                  v68 = [a1 _getDomainInfoForDomainName:v69 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:0 appManager:v13];
+                  name9 = [domain name];
+                  v68 = [self _getDomainInfoForDomainName:name9 cache:v86 restrictedDomains:v84 disabledDomains:v88 dependentDomains:0 appManager:v13];
 
-                  v70 = [v64 name];
+                  name10 = [domain name];
                   v21 = v87;
-                  [v68 setEnabled:{objc_msgSend(v88, "containsObject:", v70) ^ 1}];
+                  [v68 setEnabled:{objc_msgSend(v88, "containsObject:", name10) ^ 1}];
 
-                  v71 = [v64 name];
-                  [v87 setObject:v68 forKeyedSubscript:v71];
+                  name11 = [domain name];
+                  [v87 setObject:v68 forKeyedSubscript:name11];
                 }
               }
             }
 
-            v61 = [v59 countByEnumeratingWithState:&v89 objects:v108 count:16];
+            v61 = [allContainers countByEnumeratingWithState:&v89 objects:v108 count:16];
           }
 
           while (v61);
         }
 
-        v72 = [v21 allValues];
-        v22 = [v72 mutableCopy];
+        allValues2 = [v21 allValues];
+        v22 = [allValues2 mutableCopy];
 
         [v22 sortUsingComparator:&stru_1003BCF08];
         v18 = 0;
         v12 = v76;
-        v7 = v77;
-        v8 = v80;
+        managerCopy = v77;
+        accountCopy = v80;
         v19 = 0;
         v15 = v75;
       }
@@ -556,11 +556,11 @@ LABEL_10:
         _MBLog();
       }
 
-      if (a5)
+      if (error)
       {
         v24 = v15;
         v22 = 0;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -578,32 +578,32 @@ LABEL_10:
   return v22;
 }
 
-+ (id)sizeDomainWithName:(id)a3 manager:(id)a4 account:(id)a5 error:(id *)a6
++ (id)sizeDomainWithName:(id)name manager:(id)manager account:(id)account error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 openCacheWithAccount:v12 accessType:1 error:a6];
+  nameCopy = name;
+  managerCopy = manager;
+  accountCopy = account;
+  v13 = [managerCopy openCacheWithAccount:accountCopy accessType:1 error:error];
   if (v13)
   {
-    v27 = v10;
+    v27 = nameCopy;
     v14 = [MBMobileInstallation alloc];
     v15 = [(MBMobileInstallation *)v14 initWithSafeHarborDir:kMBSafeHarborDir];
     v16 = [[MBAppManager alloc] initWithMobileInstallation:v15];
-    v17 = [v12 persona];
+    persona = [accountCopy persona];
     v28 = 0;
-    v18 = [(MBAppManager *)v16 loadAppsWithPersona:v17 safeHarbors:0 error:&v28];
+    v18 = [(MBAppManager *)v16 loadAppsWithPersona:persona safeHarbors:0 error:&v28];
     v19 = v28;
 
     if (v18)
     {
-      v20 = [v11 allRestrictedDomainNames:v16 account:v12];
-      v21 = [v12 persona];
-      v22 = [(MBAppManager *)v16 allDisabledDomainNamesForPersona:v21];
+      v20 = [managerCopy allRestrictedDomainNames:v16 account:accountCopy];
+      persona2 = [accountCopy persona];
+      v22 = [(MBAppManager *)v16 allDisabledDomainNamesForPersona:persona2];
 
-      v23 = [a1 _getDomainInfoForDomainName:v27 cache:v13 restrictedDomains:v20 disabledDomains:v22 dependentDomains:0 appManager:v16];
+      v23 = [self _getDomainInfoForDomainName:v27 cache:v13 restrictedDomains:v20 disabledDomains:v22 dependentDomains:0 appManager:v16];
 
-      v10 = v27;
+      nameCopy = v27;
     }
 
     else
@@ -617,12 +617,12 @@ LABEL_10:
         _MBLog();
       }
 
-      v10 = v27;
-      if (a6)
+      nameCopy = v27;
+      if (error)
       {
         v25 = v19;
         v23 = 0;
-        *a6 = v19;
+        *error = v19;
       }
 
       else

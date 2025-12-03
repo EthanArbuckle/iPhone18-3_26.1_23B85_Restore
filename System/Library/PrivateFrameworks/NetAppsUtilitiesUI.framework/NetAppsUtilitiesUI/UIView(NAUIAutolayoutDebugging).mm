@@ -8,8 +8,8 @@
 + (void)_naui_beginDebuggingAutolayout
 {
   v31 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"NAUIDebugAutolayout"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"NAUIDebugAutolayout"];
 
   if (v3)
   {
@@ -19,11 +19,11 @@
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    _showAutolayoutIssues = [v4 BOOLForKey:@"NAUIDebugAutolayout_Visualize"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    _showAutolayoutIssues = [standardUserDefaults2 BOOLForKey:@"NAUIDebugAutolayout_Visualize"];
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    _logsAutolayoutIssues = [v5 BOOLForKey:@"NAUIDebugAutolayout_EnableLogs"];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    _logsAutolayoutIssues = [standardUserDefaults3 BOOLForKey:@"NAUIDebugAutolayout_EnableLogs"];
 
     if ((_showAutolayoutIssues & 1) == 0 && _logsAutolayoutIssues != 1)
     {
@@ -36,13 +36,13 @@
   block[1] = 3221225472;
   block[2] = __65__UIView_NAUIAutolayoutDebugging___naui_beginDebuggingAutolayout__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
-  v7 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-  if ([v7 hasAmbiguousLayout])
+  _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+  if ([_applicationKeyWindow hasAmbiguousLayout])
   {
-    v18 = v7;
-    [v7 naui_descendantsWithAmbiguousLayout];
+    v18 = _applicationKeyWindow;
+    [_applicationKeyWindow naui_descendantsWithAmbiguousLayout];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -70,8 +70,8 @@
             v23 = 0u;
             v20 = 0u;
             v21 = 0u;
-            v13 = [v12 _layoutVariablesWithAmbiguousValue];
-            v14 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
+            _layoutVariablesWithAmbiguousValue = [v12 _layoutVariablesWithAmbiguousValue];
+            v14 = [_layoutVariablesWithAmbiguousValue countByEnumeratingWithState:&v20 objects:v29 count:16];
             if (v14)
             {
               v15 = v14;
@@ -83,14 +83,14 @@
                 {
                   if (*v21 != v16)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(_layoutVariablesWithAmbiguousValue);
                   }
 
                   [_NAUIAmbigousLayoutView installOnView:v12 forVariable:*(*(&v20 + 1) + 8 * v17++)];
                 }
 
                 while (v15 != v17);
-                v15 = [v13 countByEnumeratingWithState:&v20 objects:v29 count:16];
+                v15 = [_layoutVariablesWithAmbiguousValue countByEnumeratingWithState:&v20 objects:v29 count:16];
               }
 
               while (v15);
@@ -107,20 +107,20 @@
       while (v9);
     }
 
-    v7 = v18;
+    _applicationKeyWindow = v18;
   }
 }
 
 - (void)naui_descendantsWithAmbiguousLayout
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subviews = [self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -131,31 +131,31 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 naui_descendantsWithAmbiguousLayout];
-        if ([v9 count])
+        naui_descendantsWithAmbiguousLayout = [v8 naui_descendantsWithAmbiguousLayout];
+        if ([naui_descendantsWithAmbiguousLayout count])
         {
-          [v2 addObjectsFromArray:v9];
+          [array addObjectsFromArray:naui_descendantsWithAmbiguousLayout];
         }
 
         if ([v8 hasAmbiguousLayout])
         {
-          [v2 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 
-  if ([v2 count])
+  if ([array count])
   {
-    v10 = v2;
+    v10 = array;
   }
 
   else

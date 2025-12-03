@@ -1,78 +1,78 @@
 @interface _ICPortraitUtilities
 + (id)acceptedSourceBundleIds;
-+ (id)contactFromPortraitContact:(id)a3;
-+ (id)contactRecordFromPortraitContactRecord:(id)a3;
++ (id)contactFromPortraitContact:(id)contact;
++ (id)contactRecordFromPortraitContactRecord:(id)record;
 + (id)excludedAlgorithms;
-+ (id)filteredNamedEntitiesFromJSONDonations:(id)a3;
-+ (id)namedEntityRecordFromPortraitNamedEntityRecord:(id)a3;
-+ (unsigned)contactChangeTypeForPortraitChangeType:(unsigned __int8)a3;
-+ (unsigned)contactSourceTypeForPortraitSourceType:(unsigned __int8)a3;
++ (id)filteredNamedEntitiesFromJSONDonations:(id)donations;
++ (id)namedEntityRecordFromPortraitNamedEntityRecord:(id)record;
++ (unsigned)contactChangeTypeForPortraitChangeType:(unsigned __int8)type;
++ (unsigned)contactSourceTypeForPortraitSourceType:(unsigned __int8)type;
 @end
 
 @implementation _ICPortraitUtilities
 
-+ (id)contactRecordFromPortraitContactRecord:(id)a3
++ (id)contactRecordFromPortraitContactRecord:(id)record
 {
-  v4 = a3;
-  v5 = [a1 contactFromPortraitContact:v4];
-  v6 = [a1 contactChangeTypeForPortraitChangeType:{objc_msgSend(v4, "changeType")}];
-  v7 = [a1 contactSourceTypeForPortraitSourceType:{objc_msgSend(v4, "source")}];
+  recordCopy = record;
+  v5 = [self contactFromPortraitContact:recordCopy];
+  v6 = [self contactChangeTypeForPortraitChangeType:{objc_msgSend(recordCopy, "changeType")}];
+  v7 = [self contactSourceTypeForPortraitSourceType:{objc_msgSend(recordCopy, "source")}];
   v8 = [_ICContactRecord alloc];
-  v9 = [v4 sourceIdentifier];
+  sourceIdentifier = [recordCopy sourceIdentifier];
 
-  v10 = [(_ICContactRecord *)v8 initWithIdentifier:v9 contact:v5 changeType:v6 source:v7];
+  v10 = [(_ICContactRecord *)v8 initWithIdentifier:sourceIdentifier contact:v5 changeType:v6 source:v7];
 
   return v10;
 }
 
-+ (id)contactFromPortraitContact:(id)a3
++ (id)contactFromPortraitContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = [_ICContact alloc];
-  v21 = [v3 firstName];
-  v5 = [v3 phoneticFirstName];
-  v20 = [v3 middleName];
-  v19 = [v3 phoneticMiddleName];
-  v18 = [v3 lastName];
-  v17 = [v3 phoneticLastName];
-  v15 = [v3 organizationName];
-  v14 = [v3 jobTitle];
-  v6 = [v3 nickname];
-  v7 = [v3 relatedNames];
-  v8 = [v7 allValues];
-  v9 = [v3 streetNames];
-  v10 = [v3 cityNames];
-  [v3 score];
+  firstName = [contactCopy firstName];
+  phoneticFirstName = [contactCopy phoneticFirstName];
+  middleName = [contactCopy middleName];
+  phoneticMiddleName = [contactCopy phoneticMiddleName];
+  lastName = [contactCopy lastName];
+  phoneticLastName = [contactCopy phoneticLastName];
+  organizationName = [contactCopy organizationName];
+  jobTitle = [contactCopy jobTitle];
+  nickname = [contactCopy nickname];
+  relatedNames = [contactCopy relatedNames];
+  allValues = [relatedNames allValues];
+  streetNames = [contactCopy streetNames];
+  cityNames = [contactCopy cityNames];
+  [contactCopy score];
   v12 = v11;
 
-  v16 = [(_ICContact *)v4 initWithFirstName:v21 phoneticFirstName:v5 middleName:v20 phoneticMiddleName:v19 lastName:v18 phoneticLastName:v17 organizationName:v12 jobTitle:v15 nickname:v14 relations:v6 streets:v8 cities:v9 score:v10];
+  v16 = [(_ICContact *)v4 initWithFirstName:firstName phoneticFirstName:phoneticFirstName middleName:middleName phoneticMiddleName:phoneticMiddleName lastName:lastName phoneticLastName:phoneticLastName organizationName:v12 jobTitle:organizationName nickname:jobTitle relations:nickname streets:allValues cities:streetNames score:cityNames];
 
   return v16;
 }
 
-+ (unsigned)contactChangeTypeForPortraitChangeType:(unsigned __int8)a3
++ (unsigned)contactChangeTypeForPortraitChangeType:(unsigned __int8)type
 {
-  if (a3 >= 4u)
+  if (type >= 4u)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (unsigned)contactSourceTypeForPortraitSourceType:(unsigned __int8)a3
++ (unsigned)contactSourceTypeForPortraitSourceType:(unsigned __int8)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
@@ -139,25 +139,25 @@
   return v10;
 }
 
-+ (id)namedEntityRecordFromPortraitNamedEntityRecord:(id)a3
++ (id)namedEntityRecordFromPortraitNamedEntityRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   if (isTransientLexiconIngestionV2Enabled())
   {
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [v3 source];
-    v6 = [v5 date];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v4 components:16 fromDate:v6 toDate:v7 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    source = [recordCopy source];
+    date = [source date];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v8 = [currentCalendar components:16 fromDate:date toDate:date2 options:0];
     v9 = [v8 day];
 
     v10 = +[_ICPortraitUtilities acceptedSourceBundleIds];
-    v11 = [v3 source];
-    v12 = [v11 bundleId];
-    if ([v10 containsObject:v12])
+    source2 = [recordCopy source];
+    bundleId = [source2 bundleId];
+    if ([v10 containsObject:bundleId])
     {
       v13 = +[_ICPortraitUtilities acceptedAlgorithms];
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "algorithm")}];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(recordCopy, "algorithm")}];
       v15 = [v13 containsObject:v14];
       if (v9 < 8)
       {
@@ -178,39 +178,39 @@
     v21 = _ICPersNamedEntityOSLogFacility();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [(_ICPortraitUtilities *)v3 namedEntityRecordFromPortraitNamedEntityRecord:v21];
+      [(_ICPortraitUtilities *)recordCopy namedEntityRecordFromPortraitNamedEntityRecord:v21];
     }
 
     v22 = [_ICNamedEntityRecord alloc];
-    v23 = [v3 entity];
-    v24 = [v23 name];
-    v25 = [v3 source];
-    v26 = [v25 date];
-    [v26 timeIntervalSinceReferenceDate];
-    v20 = [(_ICNamedEntityRecord *)v22 initWithName:v24 timestamp:v16 passesFilters:?];
+    entity = [recordCopy entity];
+    name = [entity name];
+    source3 = [recordCopy source];
+    date3 = [source3 date];
+    [date3 timeIntervalSinceReferenceDate];
+    v20 = [(_ICNamedEntityRecord *)v22 initWithName:name timestamp:v16 passesFilters:?];
   }
 
   else
   {
     v17 = [_ICNamedEntityRecord alloc];
-    v18 = [v3 entity];
-    v19 = [v18 name];
-    v20 = [(_ICNamedEntityRecord *)v17 initWithName:v19];
+    entity2 = [recordCopy entity];
+    name2 = [entity2 name];
+    v20 = [(_ICNamedEntityRecord *)v17 initWithName:name2];
   }
 
   return v20;
 }
 
-+ (id)filteredNamedEntitiesFromJSONDonations:(id)a3
++ (id)filteredNamedEntitiesFromJSONDonations:(id)donations
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v35 = [MEMORY[0x277CBEB18] array];
+  donationsCopy = donations;
+  array = [MEMORY[0x277CBEB18] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = donationsCopy;
   v4 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v4)
   {
@@ -260,15 +260,15 @@
           v21 = v20;
           if (v20)
           {
-            v22 = v20;
+            date = v20;
           }
 
           else
           {
-            v22 = [MEMORY[0x277CBEAA8] date];
+            date = [MEMORY[0x277CBEAA8] date];
           }
 
-          v23 = v22;
+          v23 = date;
 
           v24 = [v7 objectForKeyedSubscript:@"algorithm"];
           v25 = 1;
@@ -296,10 +296,10 @@
           [v31 setEntity:v28];
           [v31 setSource:v30];
           [v31 setAlgorithm:v25];
-          v32 = [a1 namedEntityRecordFromPortraitNamedEntityRecord:v31];
+          v32 = [self namedEntityRecordFromPortraitNamedEntityRecord:v31];
           if ([v32 passesFilters])
           {
-            [v35 addObject:v8];
+            [array addObject:v8];
           }
 
           v5 = v37;
@@ -318,7 +318,7 @@ LABEL_19:
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v35;
+  return array;
 }
 
 + (void)namedEntityRecordFromPortraitNamedEntityRecord:(void *)a1 .cold.1(void *a1, NSObject *a2)

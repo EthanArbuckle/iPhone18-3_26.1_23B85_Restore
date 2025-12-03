@@ -1,17 +1,17 @@
 @interface PFStoryConcreteMotionStyleTable
-- (PFStoryConcreteMotionStyleTable)initWithMotionStylesByColorGrade:(id)a3 defaultFrequencies:(id)a4;
-- (id)motionStylesForColorGrade:(id)a3 songPace:(int64_t)a4;
+- (PFStoryConcreteMotionStyleTable)initWithMotionStylesByColorGrade:(id)grade defaultFrequencies:(id)frequencies;
+- (id)motionStylesForColorGrade:(id)grade songPace:(int64_t)pace;
 @end
 
 @implementation PFStoryConcreteMotionStyleTable
 
-- (id)motionStylesForColorGrade:(id)a3 songPace:(int64_t)a4
+- (id)motionStylesForColorGrade:(id)grade songPace:(int64_t)pace
 {
   v7 = self->_defaultFrequencies;
-  v8 = [(NSDictionary *)self->_motionStylesByColorGrade objectForKeyedSubscript:a3];
+  v8 = [(NSDictionary *)self->_motionStylesByColorGrade objectForKeyedSubscript:grade];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:pace];
     v10 = [v8 objectForKeyedSubscript:v9];
 
     if (v10)
@@ -25,15 +25,15 @@
   return v7;
 }
 
-- (PFStoryConcreteMotionStyleTable)initWithMotionStylesByColorGrade:(id)a3 defaultFrequencies:(id)a4
+- (PFStoryConcreteMotionStyleTable)initWithMotionStylesByColorGrade:(id)grade defaultFrequencies:(id)frequencies
 {
-  v7 = a3;
-  v8 = a4;
+  gradeCopy = grade;
+  frequenciesCopy = frequencies;
   v15.receiver = self;
   v15.super_class = PFStoryConcreteMotionStyleTable;
   v9 = [(PFStoryConcreteMotionStyleTable *)&v15 init];
-  objc_storeStrong(&v9->_motionStylesByColorGrade, a3);
-  objc_storeStrong(&v9->_defaultFrequencies, a4);
+  objc_storeStrong(&v9->_motionStylesByColorGrade, grade);
+  objc_storeStrong(&v9->_defaultFrequencies, frequencies);
   if (!v9->_defaultFrequencies)
   {
     v10 = 4;

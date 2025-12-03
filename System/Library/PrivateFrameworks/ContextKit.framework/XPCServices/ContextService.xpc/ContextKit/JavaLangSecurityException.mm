@@ -1,14 +1,14 @@
 @interface JavaLangSecurityException
-- (JavaLangSecurityException)initWithJavaLangThrowable:(id)a3;
+- (JavaLangSecurityException)initWithJavaLangThrowable:(id)throwable;
 @end
 
 @implementation JavaLangSecurityException
 
-- (JavaLangSecurityException)initWithJavaLangThrowable:(id)a3
+- (JavaLangSecurityException)initWithJavaLangThrowable:(id)throwable
 {
-  if (a3)
+  if (throwable)
   {
-    v5 = [a3 description];
+    v5 = [throwable description];
   }
 
   else
@@ -16,7 +16,7 @@
     v5 = 0;
   }
 
-  JavaLangRuntimeException_initWithNSString_withJavaLangThrowable_(self, v5, a3);
+  JavaLangRuntimeException_initWithNSString_withJavaLangThrowable_(self, v5, throwable);
   return self;
 }
 

@@ -1,11 +1,11 @@
 @interface MKLocationManagerSingleUpdater
-- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)a3 desiredAccuracy:(double)a4 handler:(id)a5;
-- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)a3 desiredAccuracy:(double)a4 handler:(id)a5 timeout:(double)a6 maxLocationAge:(double)a7;
+- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)manager desiredAccuracy:(double)accuracy handler:(id)handler;
+- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)manager desiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout maxLocationAge:(double)age;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleTimeout:(id)a3;
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)handleTimeout:(id)timeout;
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)start;
 @end
 
@@ -35,27 +35,27 @@
   }
 }
 
-- (void)locationManagerFailedToUpdateLocation:(id)a3 withError:(id)a4
+- (void)locationManagerFailedToUpdateLocation:(id)location withError:(id)error
 {
-  v6 = a4;
-  if (([v6 _mapkit_isCLLocationUnknown] & 1) == 0)
+  errorCopy = error;
+  if (([errorCopy _mapkit_isCLLocationUnknown] & 1) == 0)
   {
     handler = self->_handler;
     if (handler)
     {
-      handler[2](handler, 0, v6);
+      handler[2](handler, 0, errorCopy);
       [(MKLocationManagerSingleUpdater *)self cancel];
     }
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = [a3 lastLocation];
-  v5 = v4;
-  if (v4)
+  lastLocation = [location lastLocation];
+  v5 = lastLocation;
+  if (lastLocation)
   {
-    v11 = v4;
+    v11 = lastLocation;
     if (self->_maxLocationAge <= 0.0 || ([MEMORY[0x1E695DF00] date], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timestamp"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "timeIntervalSinceDate:", v7), v9 = v8, v7, v6, v5 = v11, v9 <= self->_maxLocationAge))
     {
       handler = self->_handler;
@@ -69,7 +69,7 @@
   }
 }
 
-- (void)handleTimeout:(id)a3
+- (void)handleTimeout:(id)timeout
 {
   if (self->_handler)
   {
@@ -103,36 +103,36 @@
   }
 }
 
-- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)a3 desiredAccuracy:(double)a4 handler:(id)a5
+- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)manager desiredAccuracy:(double)accuracy handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  managerCopy = manager;
   GEOConfigGetDouble();
-  v11 = [(MKLocationManagerSingleUpdater *)self initWithLocationManager:v9 desiredAccuracy:v8 handler:a4 timeout:v10];
+  v11 = [(MKLocationManagerSingleUpdater *)self initWithLocationManager:managerCopy desiredAccuracy:handlerCopy handler:accuracy timeout:v10];
 
   return v11;
 }
 
-- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)a3 desiredAccuracy:(double)a4 handler:(id)a5 timeout:(double)a6 maxLocationAge:(double)a7
+- (MKLocationManagerSingleUpdater)initWithLocationManager:(id)manager desiredAccuracy:(double)accuracy handler:(id)handler timeout:(double)timeout maxLocationAge:(double)age
 {
-  v12 = a3;
-  v13 = a5;
+  managerCopy = manager;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = MKLocationManagerSingleUpdater;
   v14 = [(MKLocationManagerSingleUpdater *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(MKLocationManagerSingleUpdater *)v14 setHandler:v13];
-    v15->_desiredAccuracy = a4;
-    if (!v12)
+    [(MKLocationManagerSingleUpdater *)v14 setHandler:handlerCopy];
+    v15->_desiredAccuracy = accuracy;
+    if (!managerCopy)
     {
-      v12 = +[MKLocationManager sharedLocationManager];
+      managerCopy = +[MKLocationManager sharedLocationManager];
     }
 
-    objc_storeStrong(&v15->_locationManager, v12);
-    v15->_timeout = a6;
-    v15->_maxLocationAge = a7;
+    objc_storeStrong(&v15->_locationManager, managerCopy);
+    v15->_timeout = timeout;
+    v15->_maxLocationAge = age;
     v16 = v15;
   }
 

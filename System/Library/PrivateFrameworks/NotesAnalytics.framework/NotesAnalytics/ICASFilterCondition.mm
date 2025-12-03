@@ -1,33 +1,33 @@
 @interface ICASFilterCondition
-- (ICASFilterCondition)initWithFilterCondition:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASFilterCondition)initWithFilterCondition:(int64_t)condition;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASFilterCondition
 
-- (ICASFilterCondition)initWithFilterCondition:(int64_t)a3
+- (ICASFilterCondition)initWithFilterCondition:(int64_t)condition
 {
   v5.receiver = self;
   v5.super_class = ICASFilterCondition;
   result = [(ICASFilterCondition *)&v5 init];
   if (result)
   {
-    result->_filterCondition = a3;
+    result->_filterCondition = condition;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASFilterCondition *)self filterCondition];
+  filterCondition = [(ICASFilterCondition *)self filterCondition];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (filterCondition == 1)
   {
     v4 = @"all";
   }
 
-  if (v3 == 2)
+  if (filterCondition == 2)
   {
     return @"any";
   }

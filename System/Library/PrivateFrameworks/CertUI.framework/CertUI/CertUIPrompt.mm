@@ -1,46 +1,46 @@
 @interface CertUIPrompt
 + (id)promptQueue;
-+ (id)stringForResponse:(int)a3;
-- (BOOL)_isRootCertificateFromTrust:(__SecTrust *)a3;
++ (id)stringForResponse:(int)response;
+- (BOOL)_isRootCertificateFromTrust:(__SecTrust *)trust;
 - (CertUIPrompt)init;
 - (NSString)connectionDisplayName;
-- (id)_copyPropertiesFromTrust:(__SecTrust *)a3;
-- (id)_digestFromTrust:(__SecTrust *)a3;
-- (id)_expirationFromTrust:(__SecTrust *)a3;
-- (id)_issuerFromTrust:(__SecTrust *)a3;
-- (id)_newUserInfoWithHostname:(id)a3 trust:(__SecTrust *)a4 options:(id)a5;
-- (id)_propertyNamed:(id)a3 ofType:(id)a4 inProperties:(id)a5;
-- (id)_purposeFromTrustProperties:(id)a3;
-- (id)_sendablePropertiesFromProperties:(id)a3;
-- (id)_sendablePropertiesFromTrust:(__SecTrust *)a3;
-- (id)_sendablePropertyFromProperty:(id)a3;
-- (id)_subtitleFromTrust:(__SecTrust *)a3;
-- (id)_titleFromTrust:(__SecTrust *)a3;
+- (id)_copyPropertiesFromTrust:(__SecTrust *)trust;
+- (id)_digestFromTrust:(__SecTrust *)trust;
+- (id)_expirationFromTrust:(__SecTrust *)trust;
+- (id)_issuerFromTrust:(__SecTrust *)trust;
+- (id)_newUserInfoWithHostname:(id)hostname trust:(__SecTrust *)trust options:(id)options;
+- (id)_propertyNamed:(id)named ofType:(id)type inProperties:(id)properties;
+- (id)_purposeFromTrustProperties:(id)properties;
+- (id)_sendablePropertiesFromProperties:(id)properties;
+- (id)_sendablePropertiesFromTrust:(__SecTrust *)trust;
+- (id)_sendablePropertyFromProperty:(id)property;
+- (id)_subtitleFromTrust:(__SecTrust *)trust;
+- (id)_titleFromTrust:(__SecTrust *)trust;
 - (id)description;
-- (int)_responseFromReplyDict:(id)a3;
-- (int)_sendRemoteMessageWithPromptOptions:(id)a3;
+- (int)_responseFromReplyDict:(id)dict;
+- (int)_sendRemoteMessageWithPromptOptions:(id)options;
 - (int)showAndWaitForResponse;
-- (void)_informConsumerOfResponse:(int)a3;
+- (void)_informConsumerOfResponse:(int)response;
 - (void)dealloc;
-- (void)setTrust:(__SecTrust *)a3;
-- (void)showPromptWithOptions:(id)a3 responseBlock:(id)a4;
+- (void)setTrust:(__SecTrust *)trust;
+- (void)showPromptWithOptions:(id)options responseBlock:(id)block;
 @end
 
 @implementation CertUIPrompt
 
-+ (id)stringForResponse:(int)a3
++ (id)stringForResponse:(int)response
 {
   v10 = *MEMORY[0x277D85DE8];
   v8 = xmmword_278DB2810;
   v9 = @"CertUIResponseAllowPermanently";
-  if (a3 > 2)
+  if (response > 2)
   {
     v3 = @"Unknown";
   }
 
   else
   {
-    v3 = *(&v8 + a3);
+    v3 = *(&v8 + response);
   }
 
   v4 = v3;
@@ -90,10 +90,10 @@
   return v4;
 }
 
-- (void)setTrust:(__SecTrust *)a3
+- (void)setTrust:(__SecTrust *)trust
 {
   trust = self->_trust;
-  if (trust != a3)
+  if (trust != trust)
   {
     if (trust)
     {
@@ -101,9 +101,9 @@
       self->_trust = 0;
     }
 
-    if (a3)
+    if (trust)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(trust);
     }
 
     else
@@ -120,27 +120,27 @@
   connectionDisplayName = self->_connectionDisplayName;
   if (connectionDisplayName)
   {
-    v3 = connectionDisplayName;
+    processName = connectionDisplayName;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v5 = [mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
     if (v5)
     {
-      v3 = v5;
+      processName = v5;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CCAC38] processInfo];
-      v3 = [v6 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
     }
   }
 
-  return v3;
+  return processName;
 }
 
 + (id)promptQueue
@@ -162,52 +162,52 @@ uint64_t __27__CertUIPrompt_promptQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_sendablePropertyFromProperty:(id)a3
+- (id)_sendablePropertyFromProperty:(id)property
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277CDC508]];
+  propertyCopy = property;
+  v5 = [propertyCopy objectForKey:*MEMORY[0x277CDC508]];
   if ([v5 isEqualToString:*MEMORY[0x277CDC538]])
   {
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:propertyCopy];
 
     v7 = *MEMORY[0x277CDC510];
-    v8 = [v4 objectForKey:*MEMORY[0x277CDC510]];
-    v9 = [v8 absoluteString];
+    v8 = [propertyCopy objectForKey:*MEMORY[0x277CDC510]];
+    absoluteString = [v8 absoluteString];
   }
 
   else
   {
-    v6 = v4;
+    v6 = propertyCopy;
     if (![v5 isEqualToString:*MEMORY[0x277CDC528]])
     {
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:propertyCopy];
 
     v7 = *MEMORY[0x277CDC510];
-    v8 = [v4 objectForKey:*MEMORY[0x277CDC510]];
-    v9 = [(CertUIPrompt *)self _sendablePropertiesFromProperties:v8];
+    v8 = [propertyCopy objectForKey:*MEMORY[0x277CDC510]];
+    absoluteString = [(CertUIPrompt *)self _sendablePropertiesFromProperties:v8];
   }
 
-  v10 = v9;
-  [v6 setObject:v9 forKey:v7];
+  v10 = absoluteString;
+  [v6 setObject:absoluteString forKey:v7];
 
 LABEL_6:
 
   return v6;
 }
 
-- (id)_sendablePropertiesFromProperties:(id)a3
+- (id)_sendablePropertiesFromProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  propertiesCopy = properties;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = propertiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -237,22 +237,22 @@ LABEL_6:
   return v5;
 }
 
-- (id)_copyPropertiesFromTrust:(__SecTrust *)a3
+- (id)_copyPropertiesFromTrust:(__SecTrust *)trust
 {
-  if (!a3)
+  if (!trust)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trust);
   if (CertificateCount >= 1)
   {
     v6 = 0;
     v7 = CertificateCount & 0x7FFFFFFF;
     do
     {
-      SecTrustGetCertificateAtIndex(a3, v6);
+      SecTrustGetCertificateAtIndex(trust, v6);
       v8 = SecCertificateCopyProperties();
       if (v8)
       {
@@ -270,10 +270,10 @@ LABEL_6:
   return v4;
 }
 
-- (id)_sendablePropertiesFromTrust:(__SecTrust *)a3
+- (id)_sendablePropertiesFromTrust:(__SecTrust *)trust
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(CertUIPrompt *)self _copyPropertiesFromTrust:a3];
+  v4 = [(CertUIPrompt *)self _copyPropertiesFromTrust:trust];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v14 = 0u;
   v15 = 0u;
@@ -309,41 +309,41 @@ LABEL_6:
   return v5;
 }
 
-- (id)_titleFromTrust:(__SecTrust *)a3
+- (id)_titleFromTrust:(__SecTrust *)trust
 {
-  if (SecTrustGetCertificateCount(a3) < 1)
+  if (SecTrustGetCertificateCount(trust) < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, 0);
+    CertificateAtIndex = SecTrustGetCertificateAtIndex(trust, 0);
     v5 = SecCertificateCopySubjectSummary(CertificateAtIndex);
   }
 
   return v5;
 }
 
-- (id)_issuerFromTrust:(__SecTrust *)a3
+- (id)_issuerFromTrust:(__SecTrust *)trust
 {
-  if (SecTrustGetCertificateCount(a3) < 1)
+  if (SecTrustGetCertificateCount(trust) < 1)
   {
     v4 = 0;
   }
 
   else
   {
-    SecTrustGetCertificateAtIndex(a3, 0);
+    SecTrustGetCertificateAtIndex(trust, 0);
     v4 = SecCertificateCopyIssuerSummary();
   }
 
   return v4;
 }
 
-- (id)_subtitleFromTrust:(__SecTrust *)a3
+- (id)_subtitleFromTrust:(__SecTrust *)trust
 {
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trust);
   if (CertificateCount < 2)
   {
     v6 = 0;
@@ -351,23 +351,23 @@ LABEL_6:
 
   else
   {
-    CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, CertificateCount - 1);
+    CertificateAtIndex = SecTrustGetCertificateAtIndex(trust, CertificateCount - 1);
     v6 = SecCertificateCopySubjectSummary(CertificateAtIndex);
   }
 
   return v6;
 }
 
-- (id)_propertyNamed:(id)a3 ofType:(id)a4 inProperties:(id)a5
+- (id)_propertyNamed:(id)named ofType:(id)type inProperties:(id)properties
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v21 = a4;
+  namedCopy = named;
+  typeCopy = type;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a5;
+  obj = properties;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -385,11 +385,11 @@ LABEL_6:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 objectForKey:{v11, v21}];
-        if ([v15 isEqualToString:v7])
+        v15 = [v14 objectForKey:{v11, typeCopy}];
+        if ([v15 isEqualToString:namedCopy])
         {
           v16 = [v14 objectForKey:v12];
-          v17 = [v16 isEqualToString:v21];
+          v17 = [v16 isEqualToString:typeCopy];
 
           if (v17)
           {
@@ -417,12 +417,12 @@ LABEL_13:
   return v18;
 }
 
-- (id)_purposeFromTrustProperties:(id)a3
+- (id)_purposeFromTrustProperties:(id)properties
 {
-  v4 = a3;
-  if ([v4 count])
+  propertiesCopy = properties;
+  if ([propertiesCopy count])
   {
-    v5 = [v4 objectAtIndex:0];
+    v5 = [propertiesCopy objectAtIndex:0];
     v6 = [(CertUIPrompt *)self _propertyNamed:@"2.5.29.37" ofType:*MEMORY[0x277CDC528] inProperties:v5];
     if (v6)
     {
@@ -443,9 +443,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)_expirationFromTrust:(__SecTrust *)a3
+- (id)_expirationFromTrust:(__SecTrust *)trust
 {
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(trust);
   if (CertificateCount < 1)
   {
     goto LABEL_10;
@@ -457,7 +457,7 @@ LABEL_13:
   v8 = *MEMORY[0x277CBECC8];
   do
   {
-    if (SecTrustGetCertificateAtIndex(a3, v7))
+    if (SecTrustGetCertificateAtIndex(trust, v7))
     {
       SecCertificateNotValidAfter();
       if ((v6 & (v9 >= v8)) == 0)
@@ -486,7 +486,7 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_isRootCertificateFromTrust:(__SecTrust *)a3
+- (BOOL)_isRootCertificateFromTrust:(__SecTrust *)trust
 {
   if (SecTrustGetCertificateCount(self->_trust) < 1)
   {
@@ -498,52 +498,52 @@ LABEL_10:
   return MEMORY[0x28212B290](CertificateAtIndex);
 }
 
-- (id)_digestFromTrust:(__SecTrust *)a3
+- (id)_digestFromTrust:(__SecTrust *)trust
 {
-  if (SecTrustGetCertificateCount(a3) < 1)
+  if (SecTrustGetCertificateCount(trust) < 1)
   {
     v4 = 0;
   }
 
   else
   {
-    SecTrustGetCertificateAtIndex(a3, 0);
+    SecTrustGetCertificateAtIndex(trust, 0);
     v4 = [SecCertificateGetSHA1Digest() copy];
   }
 
   return v4;
 }
 
-- (id)_newUserInfoWithHostname:(id)a3 trust:(__SecTrust *)a4 options:(id)a5
+- (id)_newUserInfoWithHostname:(id)hostname trust:(__SecTrust *)trust options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  hostnameCopy = hostname;
+  optionsCopy = options;
   v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:12];
   v11 = v10;
-  if (v8)
+  if (hostnameCopy)
   {
-    [v10 setObject:v8 forKey:@"kCertUITrustHostnameKey"];
+    [v10 setObject:hostnameCopy forKey:@"kCertUITrustHostnameKey"];
   }
 
-  v12 = [(CertUIPrompt *)self _sendablePropertiesFromTrust:a4];
+  v12 = [(CertUIPrompt *)self _sendablePropertiesFromTrust:trust];
   if (v12)
   {
     [v11 setObject:v12 forKey:@"kCertUITrustPropertiesKey"];
   }
 
-  v13 = [(CertUIPrompt *)self _titleFromTrust:a4];
+  v13 = [(CertUIPrompt *)self _titleFromTrust:trust];
   if (v13)
   {
     [v11 setObject:v13 forKey:@"kCertUITrustTitleKey"];
   }
 
-  v14 = [(CertUIPrompt *)self _issuerFromTrust:a4];
+  v14 = [(CertUIPrompt *)self _issuerFromTrust:trust];
   if (v14)
   {
     [v11 setObject:v14 forKey:@"kCertUITrustIssuerKey"];
   }
 
-  v15 = [(CertUIPrompt *)self _subtitleFromTrust:a4];
+  v15 = [(CertUIPrompt *)self _subtitleFromTrust:trust];
   if (v15)
   {
     [v11 setObject:v15 forKey:@"kCertUITrustSubtitleKey"];
@@ -557,7 +557,7 @@ LABEL_10:
   }
 
   v33 = v14;
-  v17 = [(CertUIPrompt *)self _expirationFromTrust:a4];
+  v17 = [(CertUIPrompt *)self _expirationFromTrust:trust];
   if (v17)
   {
     [v11 setObject:v17 forKey:@"kCertUITrustExpirationKey"];
@@ -565,18 +565,18 @@ LABEL_10:
 
   v31 = v17;
   v34 = v13;
-  v18 = [(CertUIPrompt *)self _isRootCertificateFromTrust:a4];
+  v18 = [(CertUIPrompt *)self _isRootCertificateFromTrust:trust];
   v19 = [MEMORY[0x277CCABB0] numberWithBool:v18];
   [v11 setObject:v19 forKey:@"kCertUITrustIsRootCertificateKey"];
 
-  v20 = [(CertUIPrompt *)self _digestFromTrust:a4];
+  v20 = [(CertUIPrompt *)self _digestFromTrust:trust];
   if (v20)
   {
     [v11 setObject:v20 forKey:@"kCertUITrustDigestKey"];
   }
 
-  v21 = v8;
-  v22 = [v9 objectForKey:@"allowCertificateTrust"];
+  v21 = hostnameCopy;
+  v22 = [optionsCopy objectForKey:@"allowCertificateTrust"];
   v32 = v16;
   if (v22)
   {
@@ -590,7 +590,7 @@ LABEL_10:
   }
 
   v24 = v15;
-  v25 = [v9 objectForKey:@"showCertificateDetails"];
+  v25 = [optionsCopy objectForKey:@"showCertificateDetails"];
   if (v25)
   {
     [v11 setObject:v25 forKey:@"kCertUITrustShowCertificateDetailsKey"];
@@ -602,8 +602,8 @@ LABEL_10:
     v26 = 0;
   }
 
-  v27 = v9;
-  v28 = [v9 objectForKey:@"showContinue"];
+  v27 = optionsCopy;
+  v28 = [optionsCopy objectForKey:@"showContinue"];
   v29 = v28;
   if ((v23 | v26))
   {
@@ -625,11 +625,11 @@ LABEL_27:
   return v11;
 }
 
-- (int)_responseFromReplyDict:(id)a3
+- (int)_responseFromReplyDict:(id)dict
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"kCertUITrustResponseKey"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKey:@"kCertUITrustResponseKey"];
 
   if (!v4)
   {
@@ -644,20 +644,20 @@ LABEL_27:
     }
 
 LABEL_8:
-    v6 = 0;
+    intValue = 0;
     goto LABEL_9;
   }
 
-  v5 = [v3 objectForKey:@"kCertUITrustResponseKey"];
-  v6 = [v5 intValue];
+  v5 = [dictCopy objectForKey:@"kCertUITrustResponseKey"];
+  intValue = [v5 intValue];
 
-  if (v6 >= 3)
+  if (intValue >= 3)
   {
     v7 = _CertUILogObjects;
     if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_ERROR))
     {
       v14[0] = 67109120;
-      v14[1] = v6;
+      v14[1] = intValue;
       v8 = "Invalid value for response %d";
       v9 = v7;
       v10 = 8;
@@ -672,16 +672,16 @@ LABEL_7:
 LABEL_9:
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6;
+  return intValue;
 }
 
-- (int)_sendRemoteMessageWithPromptOptions:(id)a3
+- (int)_sendRemoteMessageWithPromptOptions:(id)options
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(CertUIPrompt *)self _newUserInfoWithHostname:self->_host trust:self->_trust options:a3];
-  v5 = [(CertUIPrompt *)self _messagingCenter];
+  v4 = [(CertUIPrompt *)self _newUserInfoWithHostname:self->_host trust:self->_trust options:options];
+  _messagingCenter = [(CertUIPrompt *)self _messagingCenter];
   v12 = 0;
-  v6 = [v5 sendMessageAndReceiveReplyName:@"kCertUIPresentTrustInfoMessage" userInfo:v4 error:&v12];
+  v6 = [_messagingCenter sendMessageAndReceiveReplyName:@"kCertUIPresentTrustInfoMessage" userInfo:v4 error:&v12];
   v7 = v12;
 
   if (v7)
@@ -706,20 +706,20 @@ LABEL_9:
   return v9;
 }
 
-- (void)showPromptWithOptions:(id)a3 responseBlock:(id)a4
+- (void)showPromptWithOptions:(id)options responseBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   v8 = +[CertUIPrompt promptQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__CertUIPrompt_showPromptWithOptions_responseBlock___block_invoke;
   block[3] = &unk_278DB2830;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = optionsCopy;
   dispatch_async(v8, block);
 }
 
@@ -731,7 +731,7 @@ uint64_t __52__CertUIPrompt_showPromptWithOptions_responseBlock___block_invoke(u
   return v2();
 }
 
-- (void)_informConsumerOfResponse:(int)a3
+- (void)_informConsumerOfResponse:(int)response
 {
   (*(self->_responseBlock + 2))();
   responseBlock = self->_responseBlock;

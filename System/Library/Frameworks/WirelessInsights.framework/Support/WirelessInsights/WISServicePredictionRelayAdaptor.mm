@@ -2,12 +2,12 @@
 + (id)create;
 - (WISServicePredictionRelayAdaptor)init;
 - (WISServicePredictionRelayAdaptorDelegate)delegate;
-- (id)cellFromCellMonitorInfo:(id)a3;
-- (unint64_t)_CTRadioStateToRadioState:(int)a3;
-- (unint64_t)_registrationStringToRegistrationState:(id)a3;
+- (id)cellFromCellMonitorInfo:(id)info;
+- (unint64_t)_CTRadioStateToRadioState:(int)state;
+- (unint64_t)_registrationStringToRegistrationState:(id)state;
 - (unint64_t)fetchedRegistrationState;
 - (unint64_t)registrationState;
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5;
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state;
 - (void)triggerAirplaneModeFetch;
 @end
 
@@ -42,60 +42,60 @@
   [v3 getAirplaneModeStatus:self];
 }
 
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(WISServicePredictionRelayAdaptor *)self delegate];
+  updateCopy = update;
+  stateCopy = state;
+  delegate = [(WISServicePredictionRelayAdaptor *)self delegate];
   v11 = +[TelephonyStateRelay sharedInstance];
-  if (a4 <= 7)
+  if (key <= 7)
   {
-    if (a4)
+    if (key)
     {
-      if (a4 != 3)
+      if (key != 3)
       {
-        if (a4 == 7)
+        if (key == 7)
         {
-          [v10 airplaneModeDidUpdate:{objc_msgSend(v9, "BOOLValue")}];
+          [delegate airplaneModeDidUpdate:{objc_msgSend(stateCopy, "BOOLValue")}];
         }
 
         goto LABEL_28;
       }
 
-      if (![WISTelephonyUtils isValidContext:v8])
+      if (![WISTelephonyUtils isValidContext:updateCopy])
       {
         goto LABEL_28;
       }
 
-      v12 = [v11 fetchDataSimRegistrationStatus];
-      [v10 registrationStatusDidUpdateWithState:{-[WISServicePredictionRelayAdaptor _registrationStringToRegistrationState:](self, "_registrationStringToRegistrationState:", v12)}];
+      fetchDataSimRegistrationStatus = [v11 fetchDataSimRegistrationStatus];
+      [delegate registrationStatusDidUpdateWithState:{-[WISServicePredictionRelayAdaptor _registrationStringToRegistrationState:](self, "_registrationStringToRegistrationState:", fetchDataSimRegistrationStatus)}];
     }
 
     else
     {
-      if (!v8)
+      if (!updateCopy)
       {
         goto LABEL_28;
       }
 
-      if (!v9)
+      if (!stateCopy)
       {
         goto LABEL_28;
       }
 
-      v15 = [v8 uuid];
-      v16 = [v11 lastDataSimContext];
-      v17 = [v16 uuid];
-      v18 = [v15 isEqual:v17];
+      uuid = [updateCopy uuid];
+      lastDataSimContext = [v11 lastDataSimContext];
+      uuid2 = [lastDataSimContext uuid];
+      v18 = [uuid isEqual:uuid2];
 
       if (!v18)
       {
         goto LABEL_28;
       }
 
-      v12 = [v9 legacyInfo];
-      v19 = [(WISServicePredictionRelayAdaptor *)self cellFromCellMonitorInfo:v12];
-      [v10 didChangeCellTo:v19];
+      fetchDataSimRegistrationStatus = [stateCopy legacyInfo];
+      v19 = [(WISServicePredictionRelayAdaptor *)self cellFromCellMonitorInfo:fetchDataSimRegistrationStatus];
+      [delegate didChangeCellTo:v19];
     }
 
 LABEL_25:
@@ -103,36 +103,36 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  if (a4 == 8)
+  if (key == 8)
   {
-    if (!v8)
+    if (!updateCopy)
     {
       goto LABEL_28;
     }
 
-    v12 = v9;
-    v20 = [v8 uuid];
-    v21 = [v11 lastDataSimContext];
-    v22 = [v21 uuid];
-    v23 = [v20 isEqual:v22];
+    fetchDataSimRegistrationStatus = stateCopy;
+    uuid3 = [updateCopy uuid];
+    lastDataSimContext2 = [v11 lastDataSimContext];
+    uuid4 = [lastDataSimContext2 uuid];
+    v23 = [uuid3 isEqual:uuid4];
 
     if (v23)
     {
       v24 = *(qword_1002DBE98 + 48);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        sub_1001FCFD0(v12, v24);
+        sub_1001FCFD0(fetchDataSimRegistrationStatus, v24);
       }
 
-      [v10 registrationStatusDidUpdateWithState:{-[WISServicePredictionRelayAdaptor _registrationStringToRegistrationState:](self, "_registrationStringToRegistrationState:", v12)}];
+      [delegate registrationStatusDidUpdateWithState:{-[WISServicePredictionRelayAdaptor _registrationStringToRegistrationState:](self, "_registrationStringToRegistrationState:", fetchDataSimRegistrationStatus)}];
     }
 
     goto LABEL_25;
   }
 
-  if (a4 != 14)
+  if (key != 14)
   {
-    if (a4 != 18)
+    if (key != 18)
     {
       goto LABEL_28;
     }
@@ -143,9 +143,9 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    v12 = v9;
-    v13 = [v12 displayBars];
-    if ([v13 intValue] < 2)
+    fetchDataSimRegistrationStatus = stateCopy;
+    displayBars = [fetchDataSimRegistrationStatus displayBars];
+    if ([displayBars intValue] < 2)
     {
       v14 = 1;
     }
@@ -155,37 +155,37 @@ LABEL_25:
       v14 = 2;
     }
 
-    [v10 didUpdateSignalStrength:v14];
+    [delegate didUpdateSignalStrength:v14];
     goto LABEL_25;
   }
 
-  if (v9)
+  if (stateCopy)
   {
-    [v10 radioStateDidChangeTo:{-[WISServicePredictionRelayAdaptor _CTRadioStateToRadioState:](self, "_CTRadioStateToRadioState:", objc_msgSend(v9, "intValue"))}];
+    [delegate radioStateDidChangeTo:{-[WISServicePredictionRelayAdaptor _CTRadioStateToRadioState:](self, "_CTRadioStateToRadioState:", objc_msgSend(stateCopy, "intValue"))}];
   }
 
 LABEL_28:
 }
 
-- (unint64_t)_registrationStringToRegistrationState:(id)a3
+- (unint64_t)_registrationStringToRegistrationState:(id)state
 {
-  v3 = a3;
-  if ([WISTelephonyUtils isRegistrationDisplayStatusLimitedService:v3])
+  stateCopy = state;
+  if ([WISTelephonyUtils isRegistrationDisplayStatusLimitedService:stateCopy])
   {
     v4 = 2;
   }
 
-  else if ([WISTelephonyUtils isRegistrationDisplayStatusRegisteredHome:v3])
+  else if ([WISTelephonyUtils isRegistrationDisplayStatusRegisteredHome:stateCopy])
   {
     v4 = 0;
   }
 
-  else if ([WISTelephonyUtils isRegistrationDisplayStatusRegisteredRoaming:v3])
+  else if ([WISTelephonyUtils isRegistrationDisplayStatusRegisteredRoaming:stateCopy])
   {
     v4 = 1;
   }
 
-  else if ([WISTelephonyUtils isRegistrationDisplayStatusOutOfService:v3])
+  else if ([WISTelephonyUtils isRegistrationDisplayStatusOutOfService:stateCopy])
   {
     v4 = 3;
   }
@@ -201,8 +201,8 @@ LABEL_28:
 - (unint64_t)registrationState
 {
   v3 = +[TelephonyStateRelay sharedInstance];
-  v4 = [v3 lastDataSimRegistrationStatus];
-  v5 = [(WISServicePredictionRelayAdaptor *)self _registrationStringToRegistrationState:v4];
+  lastDataSimRegistrationStatus = [v3 lastDataSimRegistrationStatus];
+  v5 = [(WISServicePredictionRelayAdaptor *)self _registrationStringToRegistrationState:lastDataSimRegistrationStatus];
 
   return v5;
 }
@@ -210,15 +210,15 @@ LABEL_28:
 - (unint64_t)fetchedRegistrationState
 {
   v3 = +[TelephonyStateRelay sharedInstance];
-  v4 = [v3 fetchDataSimRegistrationStatus];
-  v5 = [(WISServicePredictionRelayAdaptor *)self _registrationStringToRegistrationState:v4];
+  fetchDataSimRegistrationStatus = [v3 fetchDataSimRegistrationStatus];
+  v5 = [(WISServicePredictionRelayAdaptor *)self _registrationStringToRegistrationState:fetchDataSimRegistrationStatus];
 
   return v5;
 }
 
-- (id)cellFromCellMonitorInfo:(id)a3
+- (id)cellFromCellMonitorInfo:(id)info
 {
-  v3 = [WISTelephonyUtils getServingCellInfoFromArray:a3];
+  v3 = [WISTelephonyUtils getServingCellInfoFromArray:info];
   if (v3)
   {
     v24 = 0;
@@ -304,9 +304,9 @@ LABEL_28:
   return v8;
 }
 
-- (unint64_t)_CTRadioStateToRadioState:(int)a3
+- (unint64_t)_CTRadioStateToRadioState:(int)state
 {
-  v3 = (a3 - 1);
+  v3 = (state - 1);
   if (v3 < 6)
   {
     return v3 + 1;

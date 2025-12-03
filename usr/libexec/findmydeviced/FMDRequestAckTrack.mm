@@ -1,25 +1,25 @@
 @interface FMDRequestAckTrack
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestAckTrack)initWithAccount:(id)a3 trackCommand:(id)a4 ackURL:(id)a5;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestAckTrack)initWithAccount:(id)account trackCommand:(id)command ackURL:(id)l;
 - (id)requestBody;
 @end
 
 @implementation FMDRequestAckTrack
 
-- (FMDRequestAckTrack)initWithAccount:(id)a3 trackCommand:(id)a4 ackURL:(id)a5
+- (FMDRequestAckTrack)initWithAccount:(id)account trackCommand:(id)command ackURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  commandCopy = command;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = FMDRequestAckTrack;
-  v11 = [(FMDRequest *)&v14 initWithAccount:v8];
+  v11 = [(FMDRequest *)&v14 initWithAccount:accountCopy];
   v12 = v11;
   if (v11)
   {
-    [(FMDRequestAckTrack *)v11 setAccount:v8];
-    [(FMDRequestAckTrack *)v12 setTrackCommand:v9];
-    [(FMDRequestAckTrack *)v12 setAckURL:v10];
+    [(FMDRequestAckTrack *)v11 setAccount:accountCopy];
+    [(FMDRequestAckTrack *)v12 setTrackCommand:commandCopy];
+    [(FMDRequestAckTrack *)v12 setAckURL:lCopy];
   }
 
   return v12;
@@ -29,37 +29,37 @@
 {
   v11.receiver = self;
   v11.super_class = FMDRequestAckTrack;
-  v3 = [(FMDRequest *)&v11 requestBody];
+  requestBody = [(FMDRequest *)&v11 requestBody];
   v4 = objc_alloc_init(FMDActingRequestDecorator);
-  v5 = [(FMDActingRequestDecorator *)v4 standardDeviceContext];
+  standardDeviceContext = [(FMDActingRequestDecorator *)v4 standardDeviceContext];
 
-  [v3 fm_safelyMapKey:@"deviceContext" toObject:v5];
+  [requestBody fm_safelyMapKey:@"deviceContext" toObject:standardDeviceContext];
   v6 = +[ServerDeviceInfo sharedInstance];
-  v7 = [(FMDRequestAckTrack *)self account];
-  v8 = [v6 deviceInfoForAccount:v7];
-  [v3 fm_safelyMapKey:@"deviceInfo" toObject:v8];
+  account = [(FMDRequestAckTrack *)self account];
+  v8 = [v6 deviceInfoForAccount:account];
+  [requestBody fm_safelyMapKey:@"deviceInfo" toObject:v8];
 
-  [v3 setObject:&off_1002E7A20 forKeyedSubscript:@"statusCode"];
-  v9 = [(FMDRequestAckTrack *)self trackCommand];
-  [v3 setObject:v9 forKeyedSubscript:@"cmdContext"];
+  [requestBody setObject:&off_1002E7A20 forKeyedSubscript:@"statusCode"];
+  trackCommand = [(FMDRequestAckTrack *)self trackCommand];
+  [requestBody setObject:trackCommand forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMDRequestAckTrack *)self trackCommand];
-      v7 = [v6 objectForKeyedSubscript:@"id"];
-      v8 = [v5 trackCommand];
-      v9 = [v8 objectForKeyedSubscript:@"id"];
+      trackCommand = [(FMDRequestAckTrack *)self trackCommand];
+      v7 = [trackCommand objectForKeyedSubscript:@"id"];
+      trackCommand2 = [v5 trackCommand];
+      v9 = [trackCommand2 objectForKeyedSubscript:@"id"];
       v10 = [v7 isEqualToString:v9];
     }
 

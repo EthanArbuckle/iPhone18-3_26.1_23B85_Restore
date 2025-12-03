@@ -1,6 +1,6 @@
 @interface CCMaintenanceClient
 + (id)sharedInstance;
-- (BOOL)performNightlyMaintenanceWithError:(id *)a3;
+- (BOOL)performNightlyMaintenanceWithError:(id *)error;
 - (CCMaintenanceClient)init;
 - (id)client;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __37__CCMaintenanceClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2, block);
@@ -59,7 +59,7 @@ void __37__CCMaintenanceClient_sharedInstance__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)performNightlyMaintenanceWithError:(id *)a3
+- (BOOL)performNightlyMaintenanceWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -74,10 +74,10 @@ void __37__CCMaintenanceClient_sharedInstance__block_invoke(uint64_t a1)
   v7[4] = &v8;
   [(CCMaintenanceClient *)self _performNightlyMaintenanceSynchronously:1 completion:v7];
   v4 = v9[5];
-  if (a3 && v4)
+  if (error && v4)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   v5 = v4 == 0;

@@ -1,5 +1,5 @@
 @interface SBHImmutableIconGridSizeClassDomain
-- (SBHImmutableIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5;
+- (SBHImmutableIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain;
 - (id)fallbackDomain;
 @end
 
@@ -12,25 +12,25 @@
   return WeakRetained;
 }
 
-- (SBHImmutableIconGridSizeClassDomain)initWithGridSizeClasses:(id)a3 order:(id)a4 fallbackDomain:(id)a5
+- (SBHImmutableIconGridSizeClassDomain)initWithGridSizeClasses:(id)classes order:(id)order fallbackDomain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classesCopy = classes;
+  orderCopy = order;
+  domainCopy = domain;
   v17.receiver = self;
   v17.super_class = SBHImmutableIconGridSizeClassDomain;
-  v11 = [(SBHIconGridSizeClassDomain *)&v17 initWithGridSizeClasses:v8 order:v9 fallbackDomain:v10];
+  v11 = [(SBHIconGridSizeClassDomain *)&v17 initWithGridSizeClasses:classesCopy order:orderCopy fallbackDomain:domainCopy];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [classesCopy copy];
     registeredClasses = v11->_registeredClasses;
     v11->_registeredClasses = v12;
 
-    v14 = [v9 copy];
+    v14 = [orderCopy copy];
     registeredOrder = v11->_registeredOrder;
     v11->_registeredOrder = v14;
 
-    objc_storeWeak(&v11->_fallbackDomain, v10);
+    objc_storeWeak(&v11->_fallbackDomain, domainCopy);
   }
 
   return v11;

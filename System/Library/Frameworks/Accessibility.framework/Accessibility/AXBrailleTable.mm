@@ -1,11 +1,11 @@
 @interface AXBrailleTable
-+ (id)defaultTableForLocale:(id)a3;
++ (id)defaultTableForLocale:(id)locale;
 + (id)languageAgnosticTables;
 + (id)supportedLocales;
-+ (id)tablesForLocale:(id)a3;
-- (AXBrailleTable)initWithBRLTTable:(id)a3;
-- (AXBrailleTable)initWithCoder:(id)a3;
-- (AXBrailleTable)initWithIdentifier:(id)a3;
++ (id)tablesForLocale:(id)locale;
+- (AXBrailleTable)initWithBRLTTable:(id)table;
+- (AXBrailleTable)initWithCoder:(id)coder;
+- (AXBrailleTable)initWithIdentifier:(id)identifier;
 - (BOOL)isEightDot;
 - (NSSet)locales;
 - (NSString)identifier;
@@ -13,35 +13,35 @@
 - (NSString)localizedName;
 - (NSString)localizedProviderName;
 - (NSString)providerIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXBrailleTable
 
-- (AXBrailleTable)initWithBRLTTable:(id)a3
+- (AXBrailleTable)initWithBRLTTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v9.receiver = self;
   v9.super_class = AXBrailleTable;
   v6 = [(AXBrailleTable *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_brltTable, a3);
+    objc_storeStrong(&v6->_brltTable, table);
   }
 
   return v7;
 }
 
-- (AXBrailleTable)initWithIdentifier:(id)a3
+- (AXBrailleTable)initWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(getBRLTTableClass()) initWithExternalIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(getBRLTTableClass()) initWithExternalIdentifier:identifierCopy];
   v6 = [[AXBrailleTable alloc] initWithBRLTTable:v5];
-  v7 = [(AXBrailleTable *)v6 locales];
-  v8 = [v7 count];
+  locales = [(AXBrailleTable *)v6 locales];
+  v8 = [locales count];
 
   if (v8)
   {
@@ -50,8 +50,8 @@
 
   else
   {
-    v21 = v4;
-    v22 = self;
+    v21 = identifierCopy;
+    selfCopy = self;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -72,10 +72,10 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v23 + 1) + 8 * v14) brltTable];
-          v16 = [v15 identifier];
-          v17 = [v5 identifier];
-          v18 = [v16 isEqualToString:v17];
+          brltTable = [*(*(&v23 + 1) + 8 * v14) brltTable];
+          identifier = [brltTable identifier];
+          identifier2 = [v5 identifier];
+          v18 = [identifier isEqualToString:identifier2];
 
           if (v18)
           {
@@ -100,8 +100,8 @@
 
     v9 = 0;
 LABEL_13:
-    v4 = v21;
-    self = v22;
+    identifierCopy = v21;
+    self = selfCopy;
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -111,80 +111,80 @@ LABEL_13:
 - (NSString)identifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXBrailleTable *)self providerIdentifier];
-  v5 = [(AXBrailleTable *)self brltTable];
-  v6 = [v5 tableIdentifier];
-  v7 = [v3 stringWithFormat:@"%@.%@", v4, v6];
+  providerIdentifier = [(AXBrailleTable *)self providerIdentifier];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  tableIdentifier = [brltTable tableIdentifier];
+  v7 = [v3 stringWithFormat:@"%@.%@", providerIdentifier, tableIdentifier];
 
   return v7;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 localizedName];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  localizedName = [brltTable localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)providerIdentifier
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 externalServiceIdentifier];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  externalServiceIdentifier = [brltTable externalServiceIdentifier];
 
-  return v3;
+  return externalServiceIdentifier;
 }
 
 - (NSString)localizedProviderName
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 localizedService];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  localizedService = [brltTable localizedService];
 
-  return v3;
+  return localizedService;
 }
 
 - (NSString)language
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 language];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  language = [brltTable language];
 
-  return v3;
+  return language;
 }
 
 - (NSSet)locales
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 locales];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  locales = [brltTable locales];
 
-  return v3;
+  return locales;
 }
 
 - (BOOL)isEightDot
 {
-  v2 = [(AXBrailleTable *)self brltTable];
-  v3 = [v2 supportsTranslationMode8Dot];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  supportsTranslationMode8Dot = [brltTable supportsTranslationMode8Dot];
 
-  return v3;
+  return supportsTranslationMode8Dot;
 }
 
 + (id)supportedLocales
 {
-  v2 = [(objc_class *)getBRLTTableEnumeratorClass() tableEnumeratorWithSystemBundlePath];
-  v3 = [v2 supportedLocales];
+  tableEnumeratorWithSystemBundlePath = [(objc_class *)getBRLTTableEnumeratorClass() tableEnumeratorWithSystemBundlePath];
+  supportedLocales = [tableEnumeratorWithSystemBundlePath supportedLocales];
 
-  return v3;
+  return supportedLocales;
 }
 
-+ (id)defaultTableForLocale:(id)a3
++ (id)defaultTableForLocale:(id)locale
 {
   v3 = getBRLTTableEnumeratorClass;
-  v4 = a3;
-  v5 = [(objc_class *)v3() defaultTablesArrayForLocale:v4];
+  localeCopy = locale;
+  v5 = [(objc_class *)v3() defaultTablesArrayForLocale:localeCopy];
 
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
-    v7 = [[AXBrailleTable alloc] initWithBRLTTable:v6];
+    firstObject = [v5 firstObject];
+    v7 = [[AXBrailleTable alloc] initWithBRLTTable:firstObject];
   }
 
   else
@@ -195,10 +195,10 @@ LABEL_13:
   return v7;
 }
 
-+ (id)tablesForLocale:(id)a3
++ (id)tablesForLocale:(id)locale
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  localeCopy = locale;
   v3 = objc_opt_new();
   [(objc_class *)getBRLTTableEnumeratorClass() tableEnumeratorWithSystemBundlePath];
   v24 = 0u;
@@ -225,7 +225,7 @@ LABEL_13:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v18 tablesForLocale:v19 inBundle:v8];
+        v9 = [v18 tablesForLocale:localeCopy inBundle:v8];
         v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
@@ -266,13 +266,13 @@ LABEL_13:
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_new();
-  v3 = [(objc_class *)getBRLTTableEnumeratorClass() tableEnumeratorWithSystemBundlePath];
+  tableEnumeratorWithSystemBundlePath = [(objc_class *)getBRLTTableEnumeratorClass() tableEnumeratorWithSystemBundlePath];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 languageAgnosticTables];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  languageAgnosticTables = [tableEnumeratorWithSystemBundlePath languageAgnosticTables];
+  v5 = [languageAgnosticTables countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -283,14 +283,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(languageAgnosticTables);
         }
 
         v9 = [[AXBrailleTable alloc] initWithBRLTTable:*(*(&v12 + 1) + 8 * i)];
         [v2 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [languageAgnosticTables countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -301,33 +301,33 @@ LABEL_13:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AXBrailleTable alloc];
-  v5 = [(AXBrailleTable *)self brltTable];
-  v6 = [v5 copy];
+  brltTable = [(AXBrailleTable *)self brltTable];
+  v6 = [brltTable copy];
   v7 = [(AXBrailleTable *)v4 initWithBRLTTable:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(AXBrailleTable *)self brltTable];
-  v5 = [v6 identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  brltTable = [(AXBrailleTable *)self brltTable];
+  identifier = [brltTable identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (AXBrailleTable)initWithCoder:(id)a3
+- (AXBrailleTable)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AXBrailleTable;
   v5 = [(AXBrailleTable *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v7 = [objc_alloc(getBRLTTableClass()) initWithIdentifier:v6];
     brltTable = v5->_brltTable;
     v5->_brltTable = v7;

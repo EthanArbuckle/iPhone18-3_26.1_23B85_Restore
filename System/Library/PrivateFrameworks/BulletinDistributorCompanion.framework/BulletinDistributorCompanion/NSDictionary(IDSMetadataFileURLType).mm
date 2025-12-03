@@ -6,10 +6,10 @@
 
 - (uint64_t)idsMetadataFileURLType
 {
-  v1 = [a1 objectForKeyedSubscript:@"BLTFileURLType"];
-  v2 = [v1 integerValue];
+  v1 = [self objectForKeyedSubscript:@"BLTFileURLType"];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 @end

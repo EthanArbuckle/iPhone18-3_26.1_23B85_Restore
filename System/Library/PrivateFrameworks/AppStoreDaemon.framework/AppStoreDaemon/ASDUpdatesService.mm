@@ -1,36 +1,36 @@
 @interface ASDUpdatesService
 + (BOOL)areAllAppsAuthorizedForAutomaticUpdates;
 + (BOOL)isAutomaticUpdateAuthorizationEnabled;
-+ (BOOL)isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:(id)a3;
++ (BOOL)isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:(id)record;
 + (id)defaultService;
 + (id)interface;
-+ (id)registerBadgeCountNotificationBlock:(id)a3;
++ (id)registerBadgeCountNotificationBlock:(id)block;
 + (void)badgeCount;
 - (ASDUpdatesService)init;
 - (BOOL)autoUpdateEnabled;
 - (BOOL)confirmAgentRequestedUpdateAll;
-- (id)_failedJobResultsForBundleIDs:(uint64_t)a1;
+- (id)_failedJobResultsForBundleIDs:(uint64_t)ds;
 - (id)reloadFromServer;
 - (void)dealloc;
-- (void)getManagedUpdatesWithCompletionBlock:(id)a3;
-- (void)getMetricsWithCompletionBlock:(id)a3;
-- (void)getUpdateMetricsEventsWithCompletionBlock:(id)a3;
-- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)a3;
-- (void)getUpdatesWithCompletionBlock:(id)a3;
+- (void)getManagedUpdatesWithCompletionBlock:(id)block;
+- (void)getMetricsWithCompletionBlock:(id)block;
+- (void)getUpdateMetricsEventsWithCompletionBlock:(id)block;
+- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)block;
+- (void)getUpdatesWithCompletionBlock:(id)block;
 - (void)hideApplicationBadgeForPendingUpdates;
-- (void)refreshUpdateCountWithCompletionBlock:(id)a3;
-- (void)refreshUpdateForApp:(int64_t)a3;
-- (void)refreshUpdatesWithCompletionBlock:(id)a3 completionBlock:(id)a4;
-- (void)reloadForSettingsFromServerWithCompletionBlock:(id)a3;
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3;
-- (void)reloadFromServerWithCompletionBlock:(id)a3;
-- (void)reloadManagedUpdatesWithCompletionBlock:(id)a3;
-- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)a3 completion:(id)a4;
-- (void)setAutoUpdateEnabled:(BOOL)a3;
+- (void)refreshUpdateCountWithCompletionBlock:(id)block;
+- (void)refreshUpdateForApp:(int64_t)app;
+- (void)refreshUpdatesWithCompletionBlock:(id)block completionBlock:(id)completionBlock;
+- (void)reloadForSettingsFromServerWithCompletionBlock:(id)block;
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block;
+- (void)reloadFromServerWithCompletionBlock:(id)block;
+- (void)reloadManagedUpdatesWithCompletionBlock:(id)block;
+- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)handle completion:(id)completion;
+- (void)setAutoUpdateEnabled:(BOOL)enabled;
 - (void)showApplicationBadgeForPendingUpdates;
-- (void)updateAllWithCompletionBlock:(id)a3;
-- (void)updateAllWithJobResultsCompletionBlock:(id)a3;
-- (void)updateAllWithOrder:(id)a3 completionBlock:(id)a4;
+- (void)updateAllWithCompletionBlock:(id)block;
+- (void)updateAllWithJobResultsCompletionBlock:(id)block;
+- (void)updateAllWithOrder:(id)order completionBlock:(id)block;
 @end
 
 @implementation ASDUpdatesService
@@ -159,7 +159,7 @@ void __25__ASDUpdatesService_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__ASDUpdatesService_defaultService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D560 != -1)
   {
     dispatch_once(&qword_1ED90D560, block);
@@ -177,18 +177,18 @@ uint64_t __35__ASDUpdatesService_defaultService__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)registerBadgeCountNotificationBlock:(id)a3
++ (id)registerBadgeCountNotificationBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__ASDUpdatesService_registerBadgeCountNotificationBlock___block_invoke;
     v8[3] = &unk_1E7CDCD20;
-    v9 = v4;
-    v10 = a1;
+    v9 = blockCopy;
+    selfCopy = self;
     notify_register_dispatch("com.apple.appstored.updatesstorechanged", &registerBadgeCountNotificationBlock__s_storeChangedNotificationToken, v5, v8);
   }
 
@@ -284,13 +284,13 @@ LABEL_12:
   return 0;
 }
 
-+ (BOOL)isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:(id)a3
++ (BOOL)isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:(id)record
 {
-  v3 = [a3 infoDictionary];
-  v4 = [v3 objectForKey:@"NSAppNeedsAutoUpdateConsent" ofClass:objc_opt_class()];
-  v5 = [v4 BOOLValue];
+  infoDictionary = [record infoDictionary];
+  v4 = [infoDictionary objectForKey:@"NSAppNeedsAutoUpdateConsent" ofClass:objc_opt_class()];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)areAllAppsAuthorizedForAutomaticUpdates
@@ -312,10 +312,10 @@ LABEL_12:
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v5 = [v3 allKeys];
+      allKeys = [v3 allKeys];
       v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:7];
       [v6 addObjectsFromArray:&unk_1F30333C8];
-      [v6 addObjectsFromArray:v5];
+      [v6 addObjectsFromArray:allKeys];
       v7 = [v6 copy];
 
       v8 = [v7 countByEnumeratingWithState:&v29 objects:v36 count:16];
@@ -379,8 +379,8 @@ LABEL_16:
           }
 
           v19 = *(*(&v24 + 1) + 8 * v18);
-          v20 = [v19 bundleIdentifier];
-          v21 = (v4)[2](v4, v20, v19);
+          bundleIdentifier = [v19 bundleIdentifier];
+          v21 = (v4)[2](v4, bundleIdentifier, v19);
 
           if (!v21)
           {
@@ -441,11 +441,11 @@ uint64_t __60__ASDUpdatesService_areAllAppsAuthorizedForAutomaticUpdates__block_
   return v7;
 }
 
-- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)a3 completion:(id)a4
+- (void)requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle:(id)handle completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -457,8 +457,8 @@ uint64_t __60__ASDUpdatesService_areAllAppsAuthorizedForAutomaticUpdates__block_
 
   if (+[ASDUpdatesService isAutomaticUpdateAuthorizationEnabled])
   {
-    v10 = [v6 bundleIdentifier];
-    if (_autoUpdatesEnabled() && (v11 = CFPreferencesCopyValue(@"AutomaticUpdateAuthorizations", @"com.apple.appstored", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]), [v11 objectForKeyedSubscript:v10], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
+    bundleIdentifier = [handleCopy bundleIdentifier];
+    if (_autoUpdatesEnabled() && (v11 = CFPreferencesCopyValue(@"AutomaticUpdateAuthorizations", @"com.apple.appstored", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]), [v11 objectForKeyedSubscript:bundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
     {
       accessQueue = self->_accessQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -466,8 +466,8 @@ uint64_t __60__ASDUpdatesService_areAllAppsAuthorizedForAutomaticUpdates__block_
       block[2] = __95__ASDUpdatesService_requestAutomaticUpdateAuthorizationIfNecessaryForProcessHandle_completion___block_invoke;
       block[3] = &unk_1E7CDCDC0;
       block[4] = self;
-      v22 = v7;
-      v21 = v6;
+      v22 = completionCopy;
+      v21 = handleCopy;
       v18 = accessQueue;
       v19 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
       dispatch_async(v18, v19);
@@ -483,7 +483,7 @@ uint64_t __60__ASDUpdatesService_areAllAppsAuthorizedForAutomaticUpdates__block_
       }
 
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASDErrorDomain" code:1300 userInfo:0];
-      (*(v7 + 2))(v7, v14);
+      (*(completionCopy + 2))(completionCopy, v14);
     }
   }
 
@@ -496,8 +496,8 @@ uint64_t __60__ASDUpdatesService_areAllAppsAuthorizedForAutomaticUpdates__block_
       _os_log_impl(&dword_1B8220000, v15, OS_LOG_TYPE_DEFAULT, "Automatic update authorization is disabled.", buf, 2u);
     }
 
-    v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASDErrorDomain" code:1300 userInfo:0];
-    (*(v7 + 2))(v7, v10);
+    bundleIdentifier = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASDErrorDomain" code:1300 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, bundleIdentifier);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -662,11 +662,11 @@ void __95__ASDUpdatesService_requestAutomaticUpdateAuthorizationIfNecessaryForPr
   return v4;
 }
 
-- (void)getManagedUpdatesWithCompletionBlock:(id)a3
+- (void)getManagedUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -686,8 +686,8 @@ void __95__ASDUpdatesService_requestAutomaticUpdateAuthorizationIfNecessaryForPr
   v10[2] = __58__ASDUpdatesService_getManagedUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -770,11 +770,11 @@ void __58__ASDUpdatesService_getManagedUpdatesWithCompletionBlock___block_invoke
   dispatch_async(v4, v7);
 }
 
-- (void)getUpdatesWithCompletionBlock:(id)a3
+- (void)getUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -794,8 +794,8 @@ void __58__ASDUpdatesService_getManagedUpdatesWithCompletionBlock___block_invoke
   v10[2] = __51__ASDUpdatesService_getUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -878,7 +878,7 @@ void __51__ASDUpdatesService_getUpdatesWithCompletionBlock___block_invoke_5(uint
   dispatch_async(v4, v7);
 }
 
-- (void)refreshUpdateForApp:(int64_t)a3
+- (void)refreshUpdateForApp:(int64_t)app
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = ASDLogHandleForCategory(13);
@@ -887,7 +887,7 @@ void __51__ASDUpdatesService_getUpdatesWithCompletionBlock___block_invoke_5(uint
     *buf = 138543618;
     v11 = objc_opt_class();
     v12 = 2050;
-    v13 = a3;
+    appCopy = app;
     v6 = v11;
     _os_log_impl(&dword_1B8220000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: refreshUpdateForApp %{public}lld", buf, 0x16u);
   }
@@ -898,7 +898,7 @@ void __51__ASDUpdatesService_getUpdatesWithCompletionBlock___block_invoke_5(uint
   v9[2] = __41__ASDUpdatesService_refreshUpdateForApp___block_invoke;
   v9[3] = &unk_1E7CDCE60;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = app;
   dispatch_async(accessQueue, v9);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -1005,11 +1005,11 @@ void __41__ASDUpdatesService_refreshUpdateForApp___block_invoke_35(uint64_t a1, 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshUpdateCountWithCompletionBlock:(id)a3
+- (void)refreshUpdateCountWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1029,8 +1029,8 @@ void __41__ASDUpdatesService_refreshUpdateForApp___block_invoke_35(uint64_t a1, 
   v10[2] = __59__ASDUpdatesService_refreshUpdateCountWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1120,11 +1120,11 @@ void __59__ASDUpdatesService_refreshUpdateCountWithCompletionBlock___block_invok
   dispatch_async(v6, block);
 }
 
-- (void)refreshUpdatesWithCompletionBlock:(id)a3 completionBlock:(id)a4
+- (void)refreshUpdatesWithCompletionBlock:(id)block completionBlock:(id)completionBlock
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1139,11 +1139,11 @@ void __59__ASDUpdatesService_refreshUpdateCountWithCompletionBlock___block_invok
   block[1] = 3221225472;
   block[2] = __71__ASDUpdatesService_refreshUpdatesWithCompletionBlock_completionBlock___block_invoke;
   block[3] = &unk_1E7CDCDC0;
-  v15 = v6;
-  v16 = v7;
+  v15 = blockCopy;
+  v16 = completionBlockCopy;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = blockCopy;
+  v12 = completionBlockCopy;
   dispatch_async(accessQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1305,11 +1305,11 @@ void __37__ASDUpdatesService_reloadFromServer__block_invoke_2(uint64_t a1, void 
   *(v6 + 40) = v5;
 }
 
-- (void)reloadFromServerWithCompletionBlock:(id)a3
+- (void)reloadFromServerWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1329,8 +1329,8 @@ void __37__ASDUpdatesService_reloadFromServer__block_invoke_2(uint64_t a1, void 
   v10[2] = __57__ASDUpdatesService_reloadFromServerWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1423,11 +1423,11 @@ void __57__ASDUpdatesService_reloadFromServerWithCompletionBlock___block_invoke_
   dispatch_async(v7, block);
 }
 
-- (void)reloadManagedUpdatesWithCompletionBlock:(id)a3
+- (void)reloadManagedUpdatesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -1447,8 +1447,8 @@ void __57__ASDUpdatesService_reloadFromServerWithCompletionBlock___block_invoke_
   v10[2] = __61__ASDUpdatesService_reloadManagedUpdatesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1541,7 +1541,7 @@ void __61__ASDUpdatesService_reloadManagedUpdatesWithCompletionBlock___block_inv
   dispatch_async(v7, block);
 }
 
-- (void)setAutoUpdateEnabled:(BOOL)a3
+- (void)setAutoUpdateEnabled:(BOOL)enabled
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1549,7 +1549,7 @@ void __61__ASDUpdatesService_reloadManagedUpdatesWithCompletionBlock___block_inv
   v4[2] = __42__ASDUpdatesService_setAutoUpdateEnabled___block_invoke;
   v4[3] = &unk_1E7CDBEE8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(accessQueue, v4);
 }
 
@@ -1573,11 +1573,11 @@ void __42__ASDUpdatesService_setAutoUpdateEnabled___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)updateAllWithOrder:(id)a3 completionBlock:(id)a4
+- (void)updateAllWithOrder:(id)order completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  orderCopy = order;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1592,11 +1592,11 @@ void __42__ASDUpdatesService_setAutoUpdateEnabled___block_invoke_2(uint64_t a1, 
   block[1] = 3221225472;
   block[2] = __56__ASDUpdatesService_updateAllWithOrder_completionBlock___block_invoke;
   block[3] = &unk_1E7CDCDC0;
-  v15 = v6;
-  v16 = v7;
+  v15 = orderCopy;
+  v16 = blockCopy;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = orderCopy;
+  v12 = blockCopy;
   dispatch_async(accessQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
@@ -1688,12 +1688,12 @@ void __56__ASDUpdatesService_updateAllWithOrder_completionBlock___block_invoke_4
   (*(v2 + 16))(v2, 0, v3, *(a1 + 48));
 }
 
-- (id)_failedJobResultsForBundleIDs:(uint64_t)a1
+- (id)_failedJobResultsForBundleIDs:(uint64_t)ds
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v16 = v3;
-  if (a1)
+  if (ds)
   {
     v4 = v3;
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count", v3)}];
@@ -1769,10 +1769,10 @@ void __56__ASDUpdatesService_updateAllWithOrder_completionBlock___block_invoke_7
   (*(v2 + 16))(v2, 0, v3, *(a1 + 48));
 }
 
-- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)a3
+- (void)reloadFromServerInBackgroundWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1788,8 +1788,8 @@ void __56__ASDUpdatesService_updateAllWithOrder_completionBlock___block_invoke_7
   v10[2] = __69__ASDUpdatesService_reloadFromServerInBackgroundWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDCDE8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getUpdatesServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1836,10 +1836,10 @@ void __69__ASDUpdatesService_reloadFromServerInBackgroundWithCompletionBlock___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getUpdateMetricsEventsWithCompletionBlock:(id)a3
+- (void)getUpdateMetricsEventsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1855,8 +1855,8 @@ void __69__ASDUpdatesService_reloadFromServerInBackgroundWithCompletionBlock___b
   v10[2] = __63__ASDUpdatesService_getUpdateMetricsEventsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDCDE8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getUpdatesServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1903,10 +1903,10 @@ void __63__ASDUpdatesService_getUpdateMetricsEventsWithCompletionBlock___block_i
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMetricsWithCompletionBlock:(id)a3
+- (void)getMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1922,8 +1922,8 @@ void __63__ASDUpdatesService_getUpdateMetricsEventsWithCompletionBlock___block_i
   v10[2] = __51__ASDUpdatesService_getMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -2064,10 +2064,10 @@ void __51__ASDUpdatesService_getMetricsWithCompletionBlock___block_invoke_2_45(u
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)a3
+- (void)getUpdatesIncludingMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2083,8 +2083,8 @@ void __51__ASDUpdatesService_getMetricsWithCompletionBlock___block_invoke_2_45(u
   v10[2] = __67__ASDUpdatesService_getUpdatesIncludingMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -2304,10 +2304,10 @@ void __58__ASDUpdatesService_hideApplicationBadgeForPendingUpdates__block_invoke
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reloadForSettingsFromServerWithCompletionBlock:(id)a3
+- (void)reloadForSettingsFromServerWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2323,8 +2323,8 @@ void __58__ASDUpdatesService_hideApplicationBadgeForPendingUpdates__block_invoke
   v10[2] = __68__ASDUpdatesService_reloadForSettingsFromServerWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -2551,10 +2551,10 @@ void __58__ASDUpdatesService_showApplicationBadgeForPendingUpdates__block_invoke
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAllWithCompletionBlock:(id)a3
+- (void)updateAllWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2570,8 +2570,8 @@ void __58__ASDUpdatesService_showApplicationBadgeForPendingUpdates__block_invoke
   v10[2] = __50__ASDUpdatesService_updateAllWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -2710,10 +2710,10 @@ void __50__ASDUpdatesService_updateAllWithCompletionBlock___block_invoke_2_58(ui
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAllWithJobResultsCompletionBlock:(id)a3
+- (void)updateAllWithJobResultsCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2729,8 +2729,8 @@ void __50__ASDUpdatesService_updateAllWithCompletionBlock___block_invoke_2_58(ui
   v10[2] = __60__ASDUpdatesService_updateAllWithJobResultsCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDBE48;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(accessQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];

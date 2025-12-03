@@ -1,30 +1,30 @@
 @interface HDFHIRResourceLastSeenObject
-- (HDFHIRResourceLastSeenObject)initWithCoder:(id)a3;
-- (HDFHIRResourceLastSeenObject)initWithResourceIdentifier:(id)a3 sourceURL:(id)a4 lastSeenDate:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HDFHIRResourceLastSeenObject)initWithCoder:(id)coder;
+- (HDFHIRResourceLastSeenObject)initWithResourceIdentifier:(id)identifier sourceURL:(id)l lastSeenDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDFHIRResourceLastSeenObject
 
-- (HDFHIRResourceLastSeenObject)initWithResourceIdentifier:(id)a3 sourceURL:(id)a4 lastSeenDate:(id)a5
+- (HDFHIRResourceLastSeenObject)initWithResourceIdentifier:(id)identifier sourceURL:(id)l lastSeenDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = HDFHIRResourceLastSeenObject;
   v11 = [(HDFHIRResourceLastSeenObject *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     resourceIdentifier = v11->_resourceIdentifier;
     v11->_resourceIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [lCopy copy];
     sourceURL = v11->_sourceURL;
     v11->_sourceURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [dateCopy copy];
     lastSeenDate = v11->_lastSeenDate;
     v11->_lastSeenDate = v16;
   }
@@ -32,39 +32,39 @@
   return v11;
 }
 
-- (HDFHIRResourceLastSeenObject)initWithCoder:(id)a3
+- (HDFHIRResourceLastSeenObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastSeenDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastSeenDate"];
     self = [(HDFHIRResourceLastSeenObject *)self initWithResourceIdentifier:v5 sourceURL:v6 lastSeenDate:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDFHIRResourceLastSeenObject *)self resourceIdentifier];
-  [v4 encodeObject:v5 forKey:@"Identifier"];
+  coderCopy = coder;
+  resourceIdentifier = [(HDFHIRResourceLastSeenObject *)self resourceIdentifier];
+  [coderCopy encodeObject:resourceIdentifier forKey:@"Identifier"];
 
-  v6 = [(HDFHIRResourceLastSeenObject *)self sourceURL];
-  [v4 encodeObject:v6 forKey:@"SourceURL"];
+  sourceURL = [(HDFHIRResourceLastSeenObject *)self sourceURL];
+  [coderCopy encodeObject:sourceURL forKey:@"SourceURL"];
 
-  v7 = [(HDFHIRResourceLastSeenObject *)self lastSeenDate];
-  [v4 encodeObject:v7 forKey:@"LastSeenDate"];
+  lastSeenDate = [(HDFHIRResourceLastSeenObject *)self lastSeenDate];
+  [coderCopy encodeObject:lastSeenDate forKey:@"LastSeenDate"];
 }
 
 @end

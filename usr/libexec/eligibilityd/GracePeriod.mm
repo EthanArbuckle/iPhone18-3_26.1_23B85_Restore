@@ -1,8 +1,8 @@
 @interface GracePeriod
 - (NSDate)startDate;
 - (NSString)name;
-- (void)setName:(id)a3;
-- (void)setStartDate:(id)a3;
+- (void)setName:(id)name;
+- (void)setStartDate:(id)date;
 @end
 
 @implementation GracePeriod
@@ -23,7 +23,7 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
@@ -63,13 +63,13 @@
   return v10;
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
   v5 = sub_100001EB0(&qword_10005BD00, "^/");
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = v12 - v7;
-  if (a3)
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Date();

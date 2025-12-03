@@ -1,6 +1,6 @@
 @interface HMDUserCloudShareRequest
 - (HMDHome)home;
-- (HMDUserCloudShareRequest)initWithStartDate:(id)a3 containerID:(id)a4 home:(id)a5;
+- (HMDUserCloudShareRequest)initWithStartDate:(id)date containerID:(id)d home:(id)home;
 @end
 
 @implementation HMDUserCloudShareRequest
@@ -12,26 +12,26 @@
   return WeakRetained;
 }
 
-- (HMDUserCloudShareRequest)initWithStartDate:(id)a3 containerID:(id)a4 home:(id)a5
+- (HMDUserCloudShareRequest)initWithStartDate:(id)date containerID:(id)d home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  dCopy = d;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HMDUserCloudShareRequest;
   v12 = [(HMDUserCloudShareRequest *)&v18 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v13;
+    v12->_identifier = uUID;
 
-    objc_storeStrong(&v12->_startDate, a3);
-    v15 = [v10 copy];
+    objc_storeStrong(&v12->_startDate, date);
+    v15 = [dCopy copy];
     containerID = v12->_containerID;
     v12->_containerID = v15;
 
-    objc_storeWeak(&v12->_home, v11);
+    objc_storeWeak(&v12->_home, homeCopy);
   }
 
   return v12;

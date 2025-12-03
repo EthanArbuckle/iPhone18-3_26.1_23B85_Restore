@@ -1,50 +1,50 @@
 @interface _UILabelConfiguration
 + (_UILabelConfiguration)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
 - (UIColor)_resolvedTextColor;
 - (_UILabelConfiguration)init;
-- (_UILabelConfiguration)initWithCoder:(id)a3;
-- (_UILabelConfiguration)initWithTraitCollection:(id)a3;
+- (_UILabelConfiguration)initWithCoder:(id)coder;
+- (_UILabelConfiguration)initWithTraitCollection:(id)collection;
 - (id)_content;
 - (id)_initEmpty;
 - (id)_internal;
 - (id)_resolvedStringDrawingContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setDefaultAttributes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setAllowsDefaultTighteningForTruncation:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)_setDefaultAttributes:(id)attributes;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setAllowsDefaultTighteningForTruncation:(BOOL)truncation;
+- (void)setAttributedText:(id)text;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setText:(id)text;
 @end
 
 @implementation _UILabelConfiguration
 
 - (id)_content
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (_UILabelConfiguration)initWithTraitCollection:(id)a3
+- (_UILabelConfiguration)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v17.receiver = self;
   v17.super_class = _UILabelConfiguration;
   v5 = [(_UILabelConfiguration *)&v17 init];
   if (v5)
   {
-    [v4 displayScale];
+    [collectionCopy displayScale];
     *(v5 + 19) = v6;
     v7 = +[UILabel _defaultAttributes];
     v8 = [v7 mutableCopy];
@@ -57,7 +57,7 @@
       *(v5 + 42) |= 0x8000u;
       *(v5 + 5) = [v10 lineBreakStrategy];
       *(v5 + 42) |= 0x10000u;
-      v11 = [v10 alignment];
+      alignment = [v10 alignment];
       v12 = *(v5 + 42);
     }
 
@@ -66,10 +66,10 @@
       v13 = *(v5 + 42);
       *(v5 + 2) = xmmword_18A678770;
       v12 = v13 | 0x18000;
-      v11 = 4;
+      alignment = 4;
     }
 
-    *(v5 + 3) = v11;
+    *(v5 + 3) = alignment;
     *(v5 + 42) = v12 | 0x4000;
     v14 = [[_UILabelContent alloc] initWithDefaultAttributes:v8];
     v15 = *(v5 + 1);
@@ -112,138 +112,138 @@
   return v4;
 }
 
-- (_UILabelConfiguration)initWithCoder:(id)a3
+- (_UILabelConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UILabelConfiguration *)self _initEmpty];
-  if (v5)
+  coderCopy = coder;
+  _initEmpty = [(_UILabelConfiguration *)self _initEmpty];
+  if (_initEmpty)
   {
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_defaultAttributes"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_defaultAttributes"])
     {
-      content = v5->_content;
-      v7 = [v4 decodeObjectForKey:@"UILabelConfiguration_hasCustomized_defaultAttributes"];
+      content = _initEmpty->_content;
+      v7 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_hasCustomized_defaultAttributes"];
       v8 = [(_UILabelContent *)content contentWithDefaultAttributes:v7];
-      v9 = v5->_content;
-      v5->_content = v8;
+      v9 = _initEmpty->_content;
+      _initEmpty->_content = v8;
 
-      *&v5->_configurationFlags |= 0x80u;
+      *&_initEmpty->_configurationFlags |= 0x80u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_text"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_text"])
     {
-      v10 = v5->_content;
-      v11 = [v4 decodeObjectForKey:@"UILabelConfiguration_hasCustomized_text"];
+      v10 = _initEmpty->_content;
+      v11 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_hasCustomized_text"];
       v12 = [(_UILabelContent *)v10 contentWithString:v11];
-      v13 = v5->_content;
-      v5->_content = v12;
+      v13 = _initEmpty->_content;
+      _initEmpty->_content = v12;
 
-      *&v5->_configurationFlags |= 0x20u;
+      *&_initEmpty->_configurationFlags |= 0x20u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_attributedText"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_attributedText"])
     {
-      v14 = v5->_content;
-      v15 = [v4 decodeObjectForKey:@"UILabelConfiguration_hasCustomized_attributedText"];
+      v14 = _initEmpty->_content;
+      v15 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_hasCustomized_attributedText"];
       v16 = [(_UILabelContent *)v14 contentWithAttributedString:v15];
-      v17 = v5->_content;
-      v5->_content = v16;
+      v17 = _initEmpty->_content;
+      _initEmpty->_content = v16;
 
-      *&v5->_configurationFlags |= 0x40u;
+      *&_initEmpty->_configurationFlags |= 0x40u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_textColor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_textColor"])
     {
-      v18 = [v4 decodeObjectForKey:@"UILabelConfiguration_textColor"];
-      textColor = v5->_textColor;
-      v5->_textColor = v18;
+      v18 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_textColor"];
+      textColor = _initEmpty->_textColor;
+      _initEmpty->_textColor = v18;
 
-      *&v5->_configurationFlags |= 0x200u;
+      *&_initEmpty->_configurationFlags |= 0x200u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_highlightedTextColor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_highlightedTextColor"])
     {
-      v20 = [v4 decodeObjectForKey:@"UILabelConfiguration_highlightedTextColor"];
-      highlightedTextColor = v5->_highlightedTextColor;
-      v5->_highlightedTextColor = v20;
+      v20 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_highlightedTextColor"];
+      highlightedTextColor = _initEmpty->_highlightedTextColor;
+      _initEmpty->_highlightedTextColor = v20;
 
-      *&v5->_configurationFlags |= 0x400u;
+      *&_initEmpty->_configurationFlags |= 0x400u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_textBackgroundColor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_textBackgroundColor"])
     {
-      v22 = [v4 decodeObjectForKey:@"UILabelConfiguration_textBackgroundColor"];
-      textBackgroundColor = v5->_textBackgroundColor;
-      v5->_textBackgroundColor = v22;
+      v22 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_textBackgroundColor"];
+      textBackgroundColor = _initEmpty->_textBackgroundColor;
+      _initEmpty->_textBackgroundColor = v22;
 
-      *&v5->_configurationFlags |= 0x800u;
+      *&_initEmpty->_configurationFlags |= 0x800u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_backgroundColor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_backgroundColor"])
     {
-      v24 = [v4 decodeObjectForKey:@"UILabelConfiguration_backgroundColor"];
-      backgroundColor = v5->_backgroundColor;
-      v5->_backgroundColor = v24;
+      v24 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_backgroundColor"];
+      backgroundColor = _initEmpty->_backgroundColor;
+      _initEmpty->_backgroundColor = v24;
 
-      *&v5->_configurationFlags |= 0x2000u;
+      *&_initEmpty->_configurationFlags |= 0x2000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_shadow"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_shadow"])
     {
-      v26 = [v4 decodeObjectForKey:@"UILabelConfiguration_shadow"];
-      shadow = v5->_shadow;
-      v5->_shadow = v26;
+      v26 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_shadow"];
+      shadow = _initEmpty->_shadow;
+      _initEmpty->_shadow = v26;
 
-      *&v5->_configurationFlags |= 0x1000u;
+      *&_initEmpty->_configurationFlags |= 0x1000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_font"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_font"])
     {
-      v28 = [v4 decodeObjectForKey:@"UILabelConfiguration_font"];
-      font = v5->_font;
-      v5->_font = v28;
+      v28 = [coderCopy decodeObjectForKey:@"UILabelConfiguration_font"];
+      font = _initEmpty->_font;
+      _initEmpty->_font = v28;
 
-      *&v5->_configurationFlags |= 0x100u;
+      *&_initEmpty->_configurationFlags |= 0x100u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_lineBreakMode"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_lineBreakMode"])
     {
-      v5->_lineBreakMode = [v4 decodeIntForKey:@"UILabelConfiguration_lineBreakMode"];
-      *&v5->_configurationFlags |= 0x8000u;
+      _initEmpty->_lineBreakMode = [coderCopy decodeIntForKey:@"UILabelConfiguration_lineBreakMode"];
+      *&_initEmpty->_configurationFlags |= 0x8000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_lineBreakStrategy"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_lineBreakStrategy"])
     {
-      v5->_lineBreakStrategy = [v4 decodeIntForKey:@"UILabelConfiguration_lineBreakStrategy"];
-      *&v5->_configurationFlags |= 0x10000u;
+      _initEmpty->_lineBreakStrategy = [coderCopy decodeIntForKey:@"UILabelConfiguration_lineBreakStrategy"];
+      *&_initEmpty->_configurationFlags |= 0x10000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignment"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_textAlignment"])
     {
-      v5->_textAlignment = [v4 decodeIntForKey:@"UILabelConfiguration_textAlignment"];
-      *&v5->_configurationFlags |= 0x4000u;
+      _initEmpty->_textAlignment = [coderCopy decodeIntForKey:@"UILabelConfiguration_textAlignment"];
+      *&_initEmpty->_configurationFlags |= 0x4000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_numberOfLines"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_numberOfLines"])
     {
-      v5->_numberOfLines = [v4 decodeIntForKey:@"UILabelConfiguration_numberOfLines"];
-      *&v5->_configurationFlags |= 0x20000u;
+      _initEmpty->_numberOfLines = [coderCopy decodeIntForKey:@"UILabelConfiguration_numberOfLines"];
+      *&_initEmpty->_configurationFlags |= 0x20000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_minimumScaleFactor"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_minimumScaleFactor"])
     {
-      [v4 decodeFloatForKey:@"UILabelConfiguration_minimumScaleFactor"];
-      v5->_minimumScaleFactor = v30;
-      *&v5->_configurationFlags |= 0x80000u;
+      [coderCopy decodeFloatForKey:@"UILabelConfiguration_minimumScaleFactor"];
+      _initEmpty->_minimumScaleFactor = v30;
+      *&_initEmpty->_configurationFlags |= 0x80000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"])
     {
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFE | [v4 decodeBoolForKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"] | 0x40000);
+      _initEmpty->_configurationFlags = (*&_initEmpty->_configurationFlags & 0xFFFFFFFE | [coderCopy decodeBoolForKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"] | 0x40000);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_adjustsFontForContentSizeCategory"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_adjustsFontForContentSizeCategory"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_adjustsFontForContentSizeCategory"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_adjustsFontForContentSizeCategory"])
       {
         v31 = 2097156;
       }
@@ -253,12 +253,12 @@
         v31 = 0x200000;
       }
 
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFB | v31);
+      _initEmpty->_configurationFlags = (*&_initEmpty->_configurationFlags & 0xFFFFFFFB | v31);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_allowsDefaultTighteningForTruncation"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_allowsDefaultTighteningForTruncation"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_allowsDefaultTighteningForTruncation"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_allowsDefaultTighteningForTruncation"])
       {
         v32 = 1048578;
       }
@@ -268,35 +268,35 @@
         v32 = 0x100000;
       }
 
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFFD | v32);
+      _initEmpty->_configurationFlags = (*&_initEmpty->_configurationFlags & 0xFFFFFFFD | v32);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_bounds"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_bounds"])
     {
-      [v4 decodeRectForKey:@"UILabelConfiguration_bounds"];
-      v5->_bounds.origin.x = v33;
-      v5->_bounds.origin.y = v34;
-      v5->_bounds.size.width = v35;
-      v5->_bounds.size.height = v36;
-      *&v5->_configurationFlags |= 0x400000u;
+      [coderCopy decodeRectForKey:@"UILabelConfiguration_bounds"];
+      _initEmpty->_bounds.origin.x = v33;
+      _initEmpty->_bounds.origin.y = v34;
+      _initEmpty->_bounds.size.width = v35;
+      _initEmpty->_bounds.size.height = v36;
+      *&_initEmpty->_configurationFlags |= 0x400000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_preferredMaxLayoutWidth"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_preferredMaxLayoutWidth"])
     {
-      [v4 decodeFloatForKey:@"UILabelConfiguration_preferredMaxLayoutWidth"];
-      v5->_preferredMaxLayoutWidth = v37;
-      *&v5->_configurationFlags |= 0x800000u;
+      [coderCopy decodeFloatForKey:@"UILabelConfiguration_preferredMaxLayoutWidth"];
+      _initEmpty->_preferredMaxLayoutWidth = v37;
+      *&_initEmpty->_configurationFlags |= 0x800000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_semanticContentAttribute"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_semanticContentAttribute"])
     {
-      v5->_semanticContentAttribute = [v4 decodeIntForKey:@"UILabelConfiguration_semanticContentAttribute"];
-      *&v5->_configurationFlags |= 0x1000000u;
+      _initEmpty->_semanticContentAttribute = [coderCopy decodeIntForKey:@"UILabelConfiguration_semanticContentAttribute"];
+      *&_initEmpty->_configurationFlags |= 0x1000000u;
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_isEnabled"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_isEnabled"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_isEnabled"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_isEnabled"])
       {
         v38 = 33554440;
       }
@@ -306,12 +306,12 @@
         v38 = 0x2000000;
       }
 
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFF7 | v38);
+      _initEmpty->_configurationFlags = (*&_initEmpty->_configurationFlags & 0xFFFFFFF7 | v38);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_isHighlighted"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_isHighlighted"])
     {
-      if ([v4 decodeBoolForKey:@"UILabelConfiguration_isHighlighted"])
+      if ([coderCopy decodeBoolForKey:@"UILabelConfiguration_isHighlighted"])
       {
         v39 = 67108880;
       }
@@ -321,33 +321,33 @@
         v39 = 0x4000000;
       }
 
-      v5->_configurationFlags = (*&v5->_configurationFlags & 0xFFFFFFEF | v39);
+      _initEmpty->_configurationFlags = (*&_initEmpty->_configurationFlags & 0xFFFFFFEF | v39);
     }
 
-    if ([v4 containsValueForKey:@"UILabelConfiguration_hasCustomized_internal"])
+    if ([coderCopy containsValueForKey:@"UILabelConfiguration_hasCustomized_internal"])
     {
-      v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_internal"];
-      internal = v5->_internal;
-      v5->_internal = v40;
+      v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UILabelConfiguration_internal"];
+      internal = _initEmpty->_internal;
+      _initEmpty->_internal = v40;
 
-      *&v5->_configurationFlags |= 0x8000000u;
+      *&_initEmpty->_configurationFlags |= 0x8000000u;
     }
 
-    [v4 decodeFloatForKey:@"UILabelConfiguration_displayScale"];
-    v5->_displayScale = v42;
+    [coderCopy decodeFloatForKey:@"UILabelConfiguration_displayScale"];
+    _initEmpty->_displayScale = v42;
   }
 
-  return v5;
+  return _initEmpty;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x200) != 0)
   {
-    [v8 encodeObject:self->_textColor forKey:@"UILabelConfiguration_textColor"];
-    [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textColor"];
+    [coderCopy encodeObject:self->_textColor forKey:@"UILabelConfiguration_textColor"];
+    [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textColor"];
     configurationFlags = self->_configurationFlags;
     if ((*&configurationFlags & 0x400) == 0)
     {
@@ -366,8 +366,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v8 encodeObject:self->_highlightedTextColor forKey:@"UILabelConfiguration_highlightedTextColor"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_highlightedTextColor"];
+  [coderCopy encodeObject:self->_highlightedTextColor forKey:@"UILabelConfiguration_highlightedTextColor"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_highlightedTextColor"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x800) == 0)
   {
@@ -381,8 +381,8 @@ LABEL_4:
   }
 
 LABEL_27:
-  [v8 encodeObject:self->_textBackgroundColor forKey:@"UILabelConfiguration_textBackgroundColor"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textBackgroundColor"];
+  [coderCopy encodeObject:self->_textBackgroundColor forKey:@"UILabelConfiguration_textBackgroundColor"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textBackgroundColor"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x1000) == 0)
   {
@@ -396,8 +396,8 @@ LABEL_5:
   }
 
 LABEL_28:
-  [v8 encodeObject:self->_shadow forKey:@"UILabelConfiguration_shadow"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_shadow"];
+  [coderCopy encodeObject:self->_shadow forKey:@"UILabelConfiguration_shadow"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_shadow"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x2000) == 0)
   {
@@ -411,8 +411,8 @@ LABEL_6:
   }
 
 LABEL_29:
-  [v8 encodeObject:self->_backgroundColor forKey:@"UILabelConfiguration_backgroundColor"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_backgroundColor"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"UILabelConfiguration_backgroundColor"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_backgroundColor"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x100) == 0)
   {
@@ -426,8 +426,8 @@ LABEL_7:
   }
 
 LABEL_30:
-  [v8 encodeObject:self->_font forKey:@"UILabelConfiguration_font"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_font"];
+  [coderCopy encodeObject:self->_font forKey:@"UILabelConfiguration_font"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_font"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x8000) == 0)
   {
@@ -441,8 +441,8 @@ LABEL_8:
   }
 
 LABEL_31:
-  [v8 encodeInt:LODWORD(self->_lineBreakMode) forKey:@"UILabelConfiguration_lineBreakMode"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineBreakMode"];
+  [coderCopy encodeInt:LODWORD(self->_lineBreakMode) forKey:@"UILabelConfiguration_lineBreakMode"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineBreakMode"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x10000) == 0)
   {
@@ -456,8 +456,8 @@ LABEL_9:
   }
 
 LABEL_32:
-  [v8 encodeInt:LODWORD(self->_lineBreakStrategy) forKey:@"UILabelConfiguration_lineBreakStrategy"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineBreakStrategy"];
+  [coderCopy encodeInt:LODWORD(self->_lineBreakStrategy) forKey:@"UILabelConfiguration_lineBreakStrategy"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_lineBreakStrategy"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x4000) == 0)
   {
@@ -471,8 +471,8 @@ LABEL_10:
   }
 
 LABEL_33:
-  [v8 encodeInt:LODWORD(self->_textAlignment) forKey:@"UILabelConfiguration_textAlignment"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignment"];
+  [coderCopy encodeInt:LODWORD(self->_textAlignment) forKey:@"UILabelConfiguration_textAlignment"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_textAlignment"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x20000) == 0)
   {
@@ -486,8 +486,8 @@ LABEL_11:
   }
 
 LABEL_34:
-  [v8 encodeInt:LODWORD(self->_numberOfLines) forKey:@"UILabelConfiguration_numberOfLines"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_numberOfLines"];
+  [coderCopy encodeInt:LODWORD(self->_numberOfLines) forKey:@"UILabelConfiguration_numberOfLines"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_numberOfLines"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x80000) == 0)
   {
@@ -503,8 +503,8 @@ LABEL_12:
 LABEL_35:
   minimumScaleFactor = self->_minimumScaleFactor;
   *&minimumScaleFactor = minimumScaleFactor;
-  [v8 encodeFloat:@"UILabelConfiguration_minimumScaleFactor" forKey:minimumScaleFactor];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_minimumScaleFactor"];
+  [coderCopy encodeFloat:@"UILabelConfiguration_minimumScaleFactor" forKey:minimumScaleFactor];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_minimumScaleFactor"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x40000) == 0)
   {
@@ -518,8 +518,8 @@ LABEL_13:
   }
 
 LABEL_36:
-  [v8 encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"];
+  [coderCopy encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x100000) == 0)
   {
@@ -533,8 +533,8 @@ LABEL_14:
   }
 
 LABEL_37:
-  [v8 encodeBool:(*&configurationFlags >> 1) & 1 forKey:@"UILabelConfiguration_allowsDefaultTighteningForTruncation"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_allowsDefaultTighteningForTruncation"];
+  [coderCopy encodeBool:(*&configurationFlags >> 1) & 1 forKey:@"UILabelConfiguration_allowsDefaultTighteningForTruncation"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_allowsDefaultTighteningForTruncation"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x40000) == 0)
   {
@@ -548,8 +548,8 @@ LABEL_15:
   }
 
 LABEL_38:
-  [v8 encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"];
+  [coderCopy encodeBool:*&configurationFlags & 1 forKey:@"UILabelConfiguration_adjustsFontSizeToFitWidth"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_adjustsFontSizeToFitWidth"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x400000) == 0)
   {
@@ -563,8 +563,8 @@ LABEL_16:
   }
 
 LABEL_39:
-  [v8 encodeRect:@"UILabelConfiguration_bounds" forKey:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_bounds"];
+  [coderCopy encodeRect:@"UILabelConfiguration_bounds" forKey:{self->_bounds.origin.x, self->_bounds.origin.y, self->_bounds.size.width, self->_bounds.size.height}];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_bounds"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x800000) == 0)
   {
@@ -580,8 +580,8 @@ LABEL_17:
 LABEL_40:
   preferredMaxLayoutWidth = self->_preferredMaxLayoutWidth;
   *&preferredMaxLayoutWidth = preferredMaxLayoutWidth;
-  [v8 encodeFloat:@"UILabelConfiguration_preferredMaxLayoutWidth" forKey:preferredMaxLayoutWidth];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_preferredMaxLayoutWidth"];
+  [coderCopy encodeFloat:@"UILabelConfiguration_preferredMaxLayoutWidth" forKey:preferredMaxLayoutWidth];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_preferredMaxLayoutWidth"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x1000000) == 0)
   {
@@ -595,8 +595,8 @@ LABEL_18:
   }
 
 LABEL_41:
-  [v8 encodeInt:LODWORD(self->_semanticContentAttribute) forKey:@"UILabelConfiguration_semanticContentAttribute"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_semanticContentAttribute"];
+  [coderCopy encodeInt:LODWORD(self->_semanticContentAttribute) forKey:@"UILabelConfiguration_semanticContentAttribute"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_semanticContentAttribute"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x2000000) == 0)
   {
@@ -610,8 +610,8 @@ LABEL_19:
   }
 
 LABEL_42:
-  [v8 encodeBool:(*&configurationFlags >> 3) & 1 forKey:@"UILabelConfiguration_isEnabled"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_isEnabled"];
+  [coderCopy encodeBool:(*&configurationFlags >> 3) & 1 forKey:@"UILabelConfiguration_isEnabled"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_isEnabled"];
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x4000000) == 0)
   {
@@ -625,50 +625,50 @@ LABEL_20:
   }
 
 LABEL_43:
-  [v8 encodeBool:(*&configurationFlags >> 4) & 1 forKey:@"UILabelConfiguration_isHighlighted"];
-  [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_isHighlighted"];
+  [coderCopy encodeBool:(*&configurationFlags >> 4) & 1 forKey:@"UILabelConfiguration_isHighlighted"];
+  [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_isHighlighted"];
   if ((*&self->_configurationFlags & 0x8000000) != 0)
   {
 LABEL_21:
-    [v8 encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_internal"];
-    [v8 encodeObject:self->_internal forKey:@"UILabelConfiguration_internal"];
+    [coderCopy encodeBool:1 forKey:@"UILabelConfiguration_hasCustomized_internal"];
+    [coderCopy encodeObject:self->_internal forKey:@"UILabelConfiguration_internal"];
   }
 
 LABEL_22:
   displayScale = self->_displayScale;
   *&displayScale = displayScale;
-  [v8 encodeFloat:@"UILabelConfiguration_displayScale" forKey:displayScale];
+  [coderCopy encodeFloat:@"UILabelConfiguration_displayScale" forKey:displayScale];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initEmpty"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initEmpty"}];
   *(v5 + 152) = self->_displayScale;
-  v6 = [(_UILabelContent *)self->_content copyWithZone:a3];
+  v6 = [(_UILabelContent *)self->_content copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(UIFont *)self->_font copyWithZone:a3];
+  v8 = [(UIFont *)self->_font copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(UIColor *)self->_textColor copyWithZone:a3];
+  v10 = [(UIColor *)self->_textColor copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(UIColor *)self->_highlightedTextColor copyWithZone:a3];
+  v12 = [(UIColor *)self->_highlightedTextColor copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(UIColor *)self->_textBackgroundColor copyWithZone:a3];
+  v14 = [(UIColor *)self->_textBackgroundColor copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(UIColor *)self->_backgroundColor copyWithZone:a3];
+  v16 = [(UIColor *)self->_backgroundColor copyWithZone:zone];
   v17 = *(v5 + 80);
   *(v5 + 80) = v16;
 
-  v18 = [(NSShadow *)self->_shadow copyWithZone:a3];
+  v18 = [(NSShadow *)self->_shadow copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
@@ -683,28 +683,28 @@ LABEL_22:
   *(v5 + 144) = self->_preferredMaxLayoutWidth;
   *(v5 + 16) = self->_semanticContentAttribute;
   *(v5 + 168) = self->_configurationFlags;
-  v21 = [(_UILabelConfigurationInternal *)self->_internal copyWithZone:a3];
+  v21 = [(_UILabelConfigurationInternal *)self->_internal copyWithZone:zone];
   v22 = *(v5 + 160);
   *(v5 + 160) = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ((*&self->_configurationFlags ^ *&v4->_configurationFlags) & 0x1F) != 0 || v4->_numberOfLines != self->_numberOfLines || v4->_minimumScaleFactor != self->_minimumScaleFactor || v4->_lineBreakMode != self->_lineBreakMode || v4->_displayScale != self->_displayScale || v4->_lineBreakStrategy != self->_lineBreakStrategy || v4->_textAlignment != self->_textAlignment || v4->_semanticContentAttribute != self->_semanticContentAttribute || !CGRectEqualToRect(v4->_bounds, self->_bounds) || v4->_preferredMaxLayoutWidth != self->_preferredMaxLayoutWidth || !_deferringTokenEqualToToken(v4->_textColor, self->_textColor) || !_deferringTokenEqualToToken(v4->_highlightedTextColor, self->_highlightedTextColor) || !_deferringTokenEqualToToken(v4->_textBackgroundColor, self->_textBackgroundColor) || !_deferringTokenEqualToToken(v4->_backgroundColor, self->_backgroundColor) || !_deferringTokenEqualToToken(v4->_font, self->_font) || !_deferringTokenEqualToToken(v4->_content, self->_content) || !_deferringTokenEqualToToken(v4->_textColor, self->_textColor) || !_deferringTokenEqualToToken(v4->_textBackgroundColor, self->_textBackgroundColor) || !_deferringTokenEqualToToken(v4->_backgroundColor, self->_backgroundColor) || !_deferringTokenEqualToToken(v4->_shadow, self->_shadow))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ((*&self->_configurationFlags ^ *&equalCopy->_configurationFlags) & 0x1F) != 0 || equalCopy->_numberOfLines != self->_numberOfLines || equalCopy->_minimumScaleFactor != self->_minimumScaleFactor || equalCopy->_lineBreakMode != self->_lineBreakMode || equalCopy->_displayScale != self->_displayScale || equalCopy->_lineBreakStrategy != self->_lineBreakStrategy || equalCopy->_textAlignment != self->_textAlignment || equalCopy->_semanticContentAttribute != self->_semanticContentAttribute || !CGRectEqualToRect(equalCopy->_bounds, self->_bounds) || equalCopy->_preferredMaxLayoutWidth != self->_preferredMaxLayoutWidth || !_deferringTokenEqualToToken(equalCopy->_textColor, self->_textColor) || !_deferringTokenEqualToToken(equalCopy->_highlightedTextColor, self->_highlightedTextColor) || !_deferringTokenEqualToToken(equalCopy->_textBackgroundColor, self->_textBackgroundColor) || !_deferringTokenEqualToToken(equalCopy->_backgroundColor, self->_backgroundColor) || !_deferringTokenEqualToToken(equalCopy->_font, self->_font) || !_deferringTokenEqualToToken(equalCopy->_content, self->_content) || !_deferringTokenEqualToToken(equalCopy->_textColor, self->_textColor) || !_deferringTokenEqualToToken(equalCopy->_textBackgroundColor, self->_textBackgroundColor) || !_deferringTokenEqualToToken(equalCopy->_backgroundColor, self->_backgroundColor) || !_deferringTokenEqualToToken(equalCopy->_shadow, self->_shadow))
     {
       v5 = 0;
       goto LABEL_27;
     }
 
-    if ((*(&self->_configurationFlags + 3) & 8) != 0 && (*(&v4->_configurationFlags + 3) & 8) != 0)
+    if ((*(&self->_configurationFlags + 3) & 8) != 0 && (*(&equalCopy->_configurationFlags + 3) & 8) != 0)
     {
-      v5 = _deferringTokenEqualToToken(v4->_internal, self->_internal);
+      v5 = _deferringTokenEqualToToken(equalCopy->_internal, self->_internal);
       goto LABEL_27;
     }
   }
@@ -722,36 +722,36 @@ LABEL_27:
   return self->_numberOfLines ^ v3 ^ (16 * (self->_displayScale * 100.0)) ^ ((self->_minimumScaleFactor * 100.0) << 8) ^ ((self->_preferredMaxLayoutWidth * 100.0) << 16) ^ v4 & 0x1000000 ^ (v4 & 0x2000000) ^ v4 & 0x4000000 ^ v4 & 0x8000000 ^ v4 & 0x10000000;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [(_UILabelContent *)self->_content contentWithString:a3];
+  v4 = [(_UILabelContent *)self->_content contentWithString:text];
   content = self->_content;
   self->_content = v4;
 
   self->_configurationFlags = (*&self->_configurationFlags & 0xFFFFFF9F | 0x20);
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [(_UILabelContent *)self->_content contentWithAttributedString:a3];
+  v4 = [(_UILabelContent *)self->_content contentWithAttributedString:text];
   content = self->_content;
   self->_content = v4;
 
   self->_configurationFlags = (*&self->_configurationFlags & 0xFFFFFF9F | 0x40);
 }
 
-- (void)_setDefaultAttributes:(id)a3
+- (void)_setDefaultAttributes:(id)attributes
 {
-  v4 = [(_UILabelContent *)self->_content contentWithDefaultAttributes:a3];
+  v4 = [(_UILabelContent *)self->_content contentWithDefaultAttributes:attributes];
   content = self->_content;
   self->_content = v4;
 
   *&self->_configurationFlags |= 0x80u;
 }
 
-- (void)setAllowsDefaultTighteningForTruncation:(BOOL)a3
+- (void)setAllowsDefaultTighteningForTruncation:(BOOL)truncation
 {
-  if (a3)
+  if (truncation)
   {
     v3 = 1048578;
   }
@@ -764,9 +764,9 @@ LABEL_27:
   self->_configurationFlags = (*&self->_configurationFlags & 0xFFFFFFFD | v3);
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2097156;
   }
@@ -792,9 +792,9 @@ LABEL_27:
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 33554440;
   }
@@ -807,9 +807,9 @@ LABEL_27:
   self->_configurationFlags = (*&self->_configurationFlags & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v3 = 67108880;
   }
@@ -824,38 +824,38 @@ LABEL_27:
 
 - (id)_internal
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[20];
+    self = self[20];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (UIColor)_resolvedTextColor
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 isEnabled])
+    if ([self isEnabled])
     {
-      if ([a1 isHighlighted])
+      if ([self isHighlighted])
       {
-        v2 = [a1 highlightedTextColor];
-        v3 = v2;
-        if (v2)
+        highlightedTextColor = [self highlightedTextColor];
+        v3 = highlightedTextColor;
+        if (highlightedTextColor)
         {
-          v4 = v2;
+          textColor = highlightedTextColor;
         }
 
         else
         {
-          v4 = [a1 textColor];
+          textColor = [self textColor];
         }
 
-        v8 = v4;
+        textColor2 = textColor;
 
-        if (!v8)
+        if (!textColor2)
         {
           goto LABEL_16;
         }
@@ -863,8 +863,8 @@ LABEL_27:
 
       else
       {
-        v8 = [a1 textColor];
-        if (!v8)
+        textColor2 = [self textColor];
+        if (!textColor2)
         {
 LABEL_16:
           v9 = +[UIColor labelColor];
@@ -875,26 +875,26 @@ LABEL_16:
 
     else
     {
-      v5 = a1[20];
+      v5 = self[20];
       if (v5 && (v6 = *(v5 + 16)) != 0)
       {
         v7 = v6;
-        v8 = v7;
+        textColor2 = v7;
       }
 
       else
       {
-        v8 = [[UIColor alloc] initWithWhite:0.56 alpha:1.0];
+        textColor2 = [[UIColor alloc] initWithWhite:0.56 alpha:1.0];
         v7 = 0;
       }
 
-      if (!v8)
+      if (!textColor2)
       {
         goto LABEL_16;
       }
     }
 
-    v9 = v8;
+    v9 = textColor2;
 LABEL_17:
     v10 = v9;
 
@@ -909,40 +909,40 @@ LABEL_18:
 
 - (id)_resolvedStringDrawingContext
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(off_1E70ECB98);
-    v3 = [a1 numberOfLines];
-    [v2 setWrapsForTruncationMode:v3 != 1];
-    [v2 setMaximumNumberOfLines:v3];
+    numberOfLines = [self numberOfLines];
+    [v2 setWrapsForTruncationMode:numberOfLines != 1];
+    [v2 setMaximumNumberOfLines:numberOfLines];
     [v2 setCachesLayout:1];
     [v2 setLayout:0];
-    v4 = a1[20];
+    v4 = self[20];
     if (v4 && (v4[24] & 0x10) != 0)
     {
       [v2 setUsesSimpleTextEffects:1];
-      v4 = a1[20];
+      v4 = self[20];
     }
 
-    v5 = [(_UILabelConfigurationInternal *)v4 _resolvedCuiCatalog];
+    _resolvedCuiCatalog = [(_UILabelConfigurationInternal *)v4 _resolvedCuiCatalog];
 
-    if (v5)
+    if (_resolvedCuiCatalog)
     {
-      v6 = [(_UILabelConfigurationInternal *)a1[20] _resolvedCuiCatalog];
-      [v2 setCuiCatalog:v6];
+      _resolvedCuiCatalog2 = [(_UILabelConfigurationInternal *)self[20] _resolvedCuiCatalog];
+      [v2 setCuiCatalog:_resolvedCuiCatalog2];
     }
 
-    v7 = [(_UILabelConfigurationInternal *)a1[20] _resolvedCuiStyleEffectConfiguration];
+    _resolvedCuiStyleEffectConfiguration = [(_UILabelConfigurationInternal *)self[20] _resolvedCuiStyleEffectConfiguration];
 
-    if (v7)
+    if (_resolvedCuiStyleEffectConfiguration)
     {
-      v8 = [(_UILabelConfigurationInternal *)a1[20] _resolvedCuiStyleEffectConfiguration];
-      [v2 setCuiStyleEffects:v8];
+      _resolvedCuiStyleEffectConfiguration2 = [(_UILabelConfigurationInternal *)self[20] _resolvedCuiStyleEffectConfiguration];
+      [v2 setCuiStyleEffects:_resolvedCuiStyleEffectConfiguration2];
 
-      v9 = [v2 cuiStyleEffects];
-      v10 = [v9 useSimplifiedEffect];
+      cuiStyleEffects = [v2 cuiStyleEffects];
+      useSimplifiedEffect = [cuiStyleEffects useSimplifiedEffect];
 
-      if (v10)
+      if (useSimplifiedEffect)
       {
         [v2 setUsesSimpleTextEffects:1];
       }
@@ -965,8 +965,8 @@ LABEL_18:
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x20) != 0)
   {
-    v6 = [(_UILabelConfiguration *)self text];
-    [v4 appendFormat:@" text=%@", v6];
+    text = [(_UILabelConfiguration *)self text];
+    [v4 appendFormat:@" text=%@", text];
 
     configurationFlags = self->_configurationFlags;
     if ((*&configurationFlags & 0x40) == 0)
@@ -986,8 +986,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v7 = [(_UILabelConfiguration *)self attributedText];
-  [v4 appendFormat:@" attributedText=%@", v7];
+  attributedText = [(_UILabelConfiguration *)self attributedText];
+  [v4 appendFormat:@" attributedText=%@", attributedText];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x200) == 0)
@@ -1002,8 +1002,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v8 = [(_UILabelConfiguration *)self textColor];
-  [v4 appendFormat:@" textColor=%@", v8];
+  textColor = [(_UILabelConfiguration *)self textColor];
+  [v4 appendFormat:@" textColor=%@", textColor];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x400) == 0)
@@ -1018,8 +1018,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v9 = [(_UILabelConfiguration *)self highlightedTextColor];
-  [v4 appendFormat:@" highlightedTextColor=%@", v9];
+  highlightedTextColor = [(_UILabelConfiguration *)self highlightedTextColor];
+  [v4 appendFormat:@" highlightedTextColor=%@", highlightedTextColor];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x800) == 0)
@@ -1034,8 +1034,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v10 = [(_UILabelConfiguration *)self textBackgroundColor];
-  [v4 appendFormat:@" textBackgroundColor=%@", v10];
+  textBackgroundColor = [(_UILabelConfiguration *)self textBackgroundColor];
+  [v4 appendFormat:@" textBackgroundColor=%@", textBackgroundColor];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x2000) == 0)
@@ -1050,8 +1050,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  v11 = [(_UILabelConfiguration *)self backgroundColor];
-  [v4 appendFormat:@" backgroundColor=%@", v11];
+  backgroundColor = [(_UILabelConfiguration *)self backgroundColor];
+  [v4 appendFormat:@" backgroundColor=%@", backgroundColor];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x100) == 0)
@@ -1066,8 +1066,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  v12 = [(_UILabelConfiguration *)self font];
-  [v4 appendFormat:@" font=%@", v12];
+  font = [(_UILabelConfiguration *)self font];
+  [v4 appendFormat:@" font=%@", font];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x1000) == 0)
@@ -1082,8 +1082,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  v13 = [(_UILabelConfiguration *)self shadow];
-  [v4 appendFormat:@" shadow=%@", v13];
+  shadow = [(_UILabelConfiguration *)self shadow];
+  [v4 appendFormat:@" shadow=%@", shadow];
 
   configurationFlags = self->_configurationFlags;
   if ((*&configurationFlags & 0x20000) == 0)
@@ -1105,17 +1105,17 @@ LABEL_20:
   }
 
 LABEL_21:
-  v14 = [(_UILabelConfiguration *)self lineBreakStrategy];
-  if (v14 > 1)
+  lineBreakStrategy = [(_UILabelConfiguration *)self lineBreakStrategy];
+  if (lineBreakStrategy > 1)
   {
-    if (v14 == 2)
+    if (lineBreakStrategy == 2)
     {
       v15 = @" lineBreakStrategy=hangulWordPriority";
     }
 
     else
     {
-      if (v14 != 0xFFFF)
+      if (lineBreakStrategy != 0xFFFF)
       {
         goto LABEL_31;
       }
@@ -1124,9 +1124,9 @@ LABEL_21:
     }
   }
 
-  else if (v14)
+  else if (lineBreakStrategy)
   {
-    if (v14 != 1)
+    if (lineBreakStrategy != 1)
     {
       goto LABEL_31;
     }
@@ -1146,10 +1146,10 @@ LABEL_31:
     goto LABEL_47;
   }
 
-  v16 = [(_UILabelConfiguration *)self lineBreakMode];
-  if (v16 > 2)
+  lineBreakMode = [(_UILabelConfiguration *)self lineBreakMode];
+  if (lineBreakMode > 2)
   {
-    switch(v16)
+    switch(lineBreakMode)
     {
       case 3:
         v17 = @" lineBreakMode=truncatingHead";
@@ -1167,19 +1167,19 @@ LABEL_43:
     goto LABEL_47;
   }
 
-  if (!v16)
+  if (!lineBreakMode)
   {
     v17 = @" lineBreakMode=wordWrapping";
     goto LABEL_46;
   }
 
-  if (v16 == 1)
+  if (lineBreakMode == 1)
   {
     v17 = @" lineBreakMode=charWrapping";
     goto LABEL_46;
   }
 
-  if (v16 != 2)
+  if (lineBreakMode != 2)
   {
     goto LABEL_43;
   }
@@ -1193,12 +1193,12 @@ LABEL_47:
     goto LABEL_61;
   }
 
-  v18 = [(_UILabelConfiguration *)self textAlignment];
-  if (v18 <= 1)
+  textAlignment = [(_UILabelConfiguration *)self textAlignment];
+  if (textAlignment <= 1)
   {
-    if (v18)
+    if (textAlignment)
     {
-      if (v18 != 1)
+      if (textAlignment != 1)
       {
         goto LABEL_55;
       }
@@ -1213,19 +1213,19 @@ LABEL_47:
     goto LABEL_60;
   }
 
-  if (v18 == 2)
+  if (textAlignment == 2)
   {
     v19 = @" textAlignment=right";
     goto LABEL_60;
   }
 
-  if (v18 == 3)
+  if (textAlignment == 3)
   {
     v19 = @" textAlignment=justified";
     goto LABEL_60;
   }
 
-  if (v18 != 4)
+  if (textAlignment != 4)
   {
 LABEL_55:
     [v4 appendFormat:@" textAlignment=%ld", -[_UILabelConfiguration textAlignment](self, "textAlignment")];
@@ -1336,16 +1336,16 @@ LABEL_83:
     }
 
 LABEL_84:
-    v27 = [(_UILabelConfiguration *)self semanticContentAttribute];
-    if (v27 <= 1)
+    semanticContentAttribute = [(_UILabelConfiguration *)self semanticContentAttribute];
+    if (semanticContentAttribute <= 1)
     {
-      if (!v27)
+      if (!semanticContentAttribute)
       {
         v28 = @" semanticContentAttribute=unspecified";
         goto LABEL_95;
       }
 
-      if (v27 == 1)
+      if (semanticContentAttribute == 1)
       {
         v28 = @" semanticContentAttribute=playback";
         goto LABEL_95;
@@ -1354,7 +1354,7 @@ LABEL_84:
 
     else
     {
-      switch(v27)
+      switch(semanticContentAttribute)
       {
         case 2:
           v28 = @" semanticContentAttribute=spatial";

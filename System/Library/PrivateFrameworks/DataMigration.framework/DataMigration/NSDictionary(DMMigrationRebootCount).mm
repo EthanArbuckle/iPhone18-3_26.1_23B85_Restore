@@ -10,11 +10,11 @@
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 dm_migrationRebootCountPref_buildVersionKey];
-  v13[0] = v7;
+  dm_migrationRebootCountPref_buildVersionKey = [self dm_migrationRebootCountPref_buildVersionKey];
+  v13[0] = dm_migrationRebootCountPref_buildVersionKey;
   v14[0] = v6;
-  v8 = [a1 dm_migrationRebootCountPref_rebootCountKey];
-  v13[1] = v8;
+  dm_migrationRebootCountPref_rebootCountKey = [self dm_migrationRebootCountPref_rebootCountKey];
+  v13[1] = dm_migrationRebootCountPref_rebootCountKey;
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
   v14[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -26,8 +26,8 @@
 
 - (uint64_t)dm_migrationRebootCountPref_rebootCount
 {
-  v2 = [MEMORY[0x277CBEAC0] dm_migrationRebootCountPref_rebootCountKey];
-  v3 = [a1 objectForKeyedSubscript:v2];
+  dm_migrationRebootCountPref_rebootCountKey = [MEMORY[0x277CBEAC0] dm_migrationRebootCountPref_rebootCountKey];
+  v3 = [self objectForKeyedSubscript:dm_migrationRebootCountPref_rebootCountKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -37,21 +37,21 @@
       return 0;
     }
 
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)dm_migrationRebootCountPref_buildVersion
 {
-  v2 = [MEMORY[0x277CBEAC0] dm_migrationRebootCountPref_buildVersionKey];
-  v3 = [a1 objectForKeyedSubscript:v2];
+  dm_migrationRebootCountPref_buildVersionKey = [MEMORY[0x277CBEAC0] dm_migrationRebootCountPref_buildVersionKey];
+  v3 = [self objectForKeyedSubscript:dm_migrationRebootCountPref_buildVersionKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)

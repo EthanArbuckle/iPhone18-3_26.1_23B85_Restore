@@ -1,45 +1,45 @@
 @interface KTOptInManagerServer
-+ (id)getOptInHistory:(id)a3 store:(id)a4 error:(id *)a5;
-+ (id)getOptInHistoryDiagnostic:(id)a3 store:(id)a4;
-+ (void)optInManagerOptInState:(id)a3 sync:(BOOL)a4 store:(id)a5 complete:(id)a6;
++ (id)getOptInHistory:(id)history store:(id)store error:(id *)error;
++ (id)getOptInHistoryDiagnostic:(id)diagnostic store:(id)store;
++ (void)optInManagerOptInState:(id)state sync:(BOOL)sync store:(id)store complete:(id)complete;
 - (BOOL)kvsOptInState;
 - (KTContext)context;
-- (KTOptInManagerServer)initWithApplication:(id)a3 context:(id)a4 stateMachine:(id)a5;
-- (KTOptInManagerServer)initWithApplication:(id)a3 context:(id)a4 stateMachine:(id)a5 account:(Class)a6 store:(id)a7;
+- (KTOptInManagerServer)initWithApplication:(id)application context:(id)context stateMachine:(id)machine;
+- (KTOptInManagerServer)initWithApplication:(id)application context:(id)context stateMachine:(id)machine account:(Class)account store:(id)store;
 - (KTSMManager)stateMachine;
 - (id)emailPrefix;
-- (id)getAggregateOptInState:(id *)a3;
-- (id)getCurrentOptInEntry:(id *)a3;
-- (id)getOptInHistory:(id *)a3;
+- (id)getAggregateOptInState:(id *)state;
+- (id)getCurrentOptInEntry:(id *)entry;
+- (id)getOptInHistory:(id *)history;
 - (id)notificationKey;
 - (id)optInKey;
-- (void)changeOptInState:(unint64_t)a3 dataStore:(id)a4 completionBlock:(id)a5;
+- (void)changeOptInState:(unint64_t)state dataStore:(id)store completionBlock:(id)block;
 - (void)dealloc;
-- (void)getOptInState:(BOOL)a3 completionBlock:(id)a4;
-- (void)getOptInState:(id)a3;
-- (void)handleCDPReset:(id)a3;
-- (void)handleOptInStateChange:(id)a3;
+- (void)getOptInState:(BOOL)state completionBlock:(id)block;
+- (void)getOptInState:(id)state;
+- (void)handleCDPReset:(id)reset;
+- (void)handleOptInStateChange:(id)change;
 @end
 
 @implementation KTOptInManagerServer
 
-- (KTOptInManagerServer)initWithApplication:(id)a3 context:(id)a4 stateMachine:(id)a5
+- (KTOptInManagerServer)initWithApplication:(id)application context:(id)context stateMachine:(id)machine
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(KTOptInManagerServer *)self initWithApplication:v10 context:v9 stateMachine:v8 account:objc_opt_class() store:0];
+  machineCopy = machine;
+  contextCopy = context;
+  applicationCopy = application;
+  v11 = [(KTOptInManagerServer *)self initWithApplication:applicationCopy context:contextCopy stateMachine:machineCopy account:objc_opt_class() store:0];
 
   return v11;
 }
 
-- (KTOptInManagerServer)initWithApplication:(id)a3 context:(id)a4 stateMachine:(id)a5 account:(Class)a6 store:(id)a7
+- (KTOptInManagerServer)initWithApplication:(id)application context:(id)context stateMachine:(id)machine account:(Class)account store:(id)store
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [TransparencyApplication applicationValueForIdentifier:v12];
+  applicationCopy = application;
+  contextCopy = context;
+  machineCopy = machine;
+  storeCopy = store;
+  v16 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v16)
   {
@@ -49,12 +49,12 @@
     v18 = v17;
     if (v17)
     {
-      [(KTOptInManagerServer *)v17 setApplicationId:v12];
-      [(KTOptInManagerServer *)v18 setContext:v13];
-      [(KTOptInManagerServer *)v18 setStateMachine:v14];
-      if (v15)
+      [(KTOptInManagerServer *)v17 setApplicationId:applicationCopy];
+      [(KTOptInManagerServer *)v18 setContext:contextCopy];
+      [(KTOptInManagerServer *)v18 setStateMachine:machineCopy];
+      if (storeCopy)
       {
-        [(KTOptInManagerServer *)v18 setStore:v15];
+        [(KTOptInManagerServer *)v18 setStore:storeCopy];
       }
 
       else
@@ -63,7 +63,7 @@
         [(KTOptInManagerServer *)v18 setStore:v21];
       }
 
-      [(KTOptInManagerServer *)v18 setAccount:a6];
+      [(KTOptInManagerServer *)v18 setAccount:account];
       v22 = dispatch_group_create();
       [(KTOptInManagerServer *)v18 setSetGroup:v22];
 
@@ -75,12 +75,12 @@
       [v25 addObserver:v18 selector:"handleCDPReset:" name:@"com.apple.security.resetprotecteddata.complete"];
 
       v26 = +[TransparencyDistributedReadNotificationCenter defaultCenter];
-      v27 = [(KTOptInManagerServer *)v18 notificationKey];
-      [v26 addObserver:v18 selector:"handleOptInStateChange:" name:v27];
+      notificationKey = [(KTOptInManagerServer *)v18 notificationKey];
+      [v26 addObserver:v18 selector:"handleOptInStateChange:" name:notificationKey];
     }
 
     self = v18;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -94,14 +94,14 @@
     if (os_log_type_enabled(qword_10039CBE0, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v31 = v12;
+      v31 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", buf, 0xCu);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -110,8 +110,8 @@
   [v3 removeObserver:self name:@"com.apple.security.resetprotecteddata.complete"];
 
   v4 = +[TransparencyDistributedReadNotificationCenter defaultCenter];
-  v5 = [(KTOptInManagerServer *)self notificationKey];
-  [v4 removeObserver:self name:v5];
+  notificationKey = [(KTOptInManagerServer *)self notificationKey];
+  [v4 removeObserver:self name:notificationKey];
 
   notifyToken = self->_notifyToken;
   if (notifyToken)
@@ -131,26 +131,26 @@
   [(KTOptInManagerServer *)&v8 dealloc];
 }
 
-+ (void)optInManagerOptInState:(id)a3 sync:(BOOL)a4 store:(id)a5 complete:(id)a6
++ (void)optInManagerOptInState:(id)state sync:(BOOL)sync store:(id)store complete:(id)complete
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11 && ([v11 storeReady] & 1) != 0)
+  syncCopy = sync;
+  stateCopy = state;
+  storeCopy = store;
+  completeCopy = complete;
+  if (storeCopy && ([storeCopy storeReady] & 1) != 0)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1001FF414;
     v19[3] = &unk_1003297D0;
-    v23 = a1;
-    v20 = v10;
-    v13 = v11;
+    selfCopy = self;
+    v20 = stateCopy;
+    v13 = storeCopy;
     v21 = v13;
-    v22 = v12;
+    v22 = completeCopy;
     v14 = objc_retainBlock(v19);
     v15 = v14;
-    if (v8)
+    if (syncCopy)
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -169,68 +169,68 @@
   else
   {
     v16 = [TransparencyError errorWithDomain:kTransparencyErrorInterface code:-308 description:@"KVS store not yet loaded"];
-    (*(v12 + 2))(v12, 0, 0, v16);
+    (*(completeCopy + 2))(completeCopy, 0, 0, v16);
   }
 }
 
 - (id)optInKey
 {
-  v2 = [(KTOptInManagerServer *)self applicationId];
-  v3 = [KTOptInManagerServer optInKeyForApplication:v2];
+  applicationId = [(KTOptInManagerServer *)self applicationId];
+  v3 = [KTOptInManagerServer optInKeyForApplication:applicationId];
 
   return v3;
 }
 
 - (id)notificationKey
 {
-  v2 = [(KTOptInManagerServer *)self applicationId];
-  v3 = [KTOptInManager notificationKeyForApplication:v2];
+  applicationId = [(KTOptInManagerServer *)self applicationId];
+  v3 = [KTOptInManager notificationKeyForApplication:applicationId];
 
   return v3;
 }
 
-- (id)getOptInHistory:(id *)a3
+- (id)getOptInHistory:(id *)history
 {
-  v5 = [(KTOptInManagerServer *)self store];
-  v6 = [v5 storeReady];
+  store = [(KTOptInManagerServer *)self store];
+  storeReady = [store storeReady];
 
-  if (v6)
+  if (storeReady)
   {
     v7 = objc_opt_class();
-    v8 = [(KTOptInManagerServer *)self applicationId];
-    v9 = [(KTOptInManagerServer *)self store];
-    v10 = [v7 getOptInHistory:v8 store:v9 error:a3];
+    applicationId = [(KTOptInManagerServer *)self applicationId];
+    store2 = [(KTOptInManagerServer *)self store];
+    v10 = [v7 getOptInHistory:applicationId store:store2 error:history];
   }
 
   else
   {
     v11 = [TransparencyError errorWithDomain:kTransparencyErrorInterface code:-308 description:@"KVS store not yet loaded"];
-    v8 = v11;
+    applicationId = v11;
     v10 = 0;
-    if (a3 && v11)
+    if (history && v11)
     {
       v12 = v11;
       v10 = 0;
-      *a3 = v8;
+      *history = applicationId;
     }
   }
 
   return v10;
 }
 
-+ (id)getOptInHistory:(id)a3 store:(id)a4 error:(id *)a5
++ (id)getOptInHistory:(id)history store:(id)store error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [KTOptInManagerServer optInKeyForApplication:v7];
-  v10 = [TransparencyAnalytics formatEventName:@"OptInServerGet" application:v7];
-  v11 = [v8 objectForKey:v9];
+  historyCopy = history;
+  storeCopy = store;
+  v9 = [KTOptInManagerServer optInKeyForApplication:historyCopy];
+  v10 = [TransparencyAnalytics formatEventName:@"OptInServerGet" application:historyCopy];
+  v11 = [storeCopy objectForKey:v9];
   if (v11)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = v8;
+      v35 = storeCopy;
       v36 = v10;
       v34 = v9;
       v38 = 0u;
@@ -271,15 +271,15 @@ LABEL_24:
             v31 = +[TransparencyAnalytics logger];
             [v31 logResultForEvent:v36 hardFailure:1 result:v30];
 
-            if (a5 && v30)
+            if (error && v30)
             {
               v32 = v30;
-              *a5 = v30;
+              *error = v30;
             }
 
 LABEL_28:
             v9 = v34;
-            v8 = v35;
+            storeCopy = v35;
             v10 = v36;
             v12 = obj;
             goto LABEL_29;
@@ -311,18 +311,18 @@ LABEL_28:
         v28 = +[TransparencyAnalytics logger];
         [v28 logResultForEvent:v36 hardFailure:1 result:v18];
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_28;
         }
 
         v9 = v34;
-        v8 = v35;
+        storeCopy = v35;
         v12 = obj;
         if (v18)
         {
           v29 = v18;
-          *a5 = v18;
+          *error = v18;
         }
 
         v10 = v36;
@@ -340,7 +340,7 @@ LABEL_13:
 
       v23 = [v12 sortedArrayUsingComparator:&stru_100329810];
       v9 = v34;
-      v8 = v35;
+      storeCopy = v35;
 LABEL_30:
     }
 
@@ -350,10 +350,10 @@ LABEL_30:
       v26 = +[TransparencyAnalytics logger];
       [v26 logResultForEvent:v10 hardFailure:1 result:v25];
 
-      if (a5 && v25)
+      if (error && v25)
       {
         v27 = v25;
-        *a5 = v25;
+        *error = v25;
       }
 
       v23 = 0;
@@ -371,10 +371,10 @@ LABEL_30:
   return v23;
 }
 
-+ (id)getOptInHistoryDiagnostic:(id)a3 store:(id)a4
++ (id)getOptInHistoryDiagnostic:(id)diagnostic store:(id)store
 {
   v24 = 0;
-  v4 = [a1 getOptInHistory:a3 store:a4 error:&v24];
+  v4 = [self getOptInHistory:diagnostic store:store error:&v24];
   v5 = v24;
   v6 = v5;
   if (v4)
@@ -412,9 +412,9 @@ LABEL_30:
               if (objc_opt_isKindOfClass())
               {
                 v25[0] = @"date";
-                v15 = [v13 kt_toISO_8601_UTCString];
+                kt_toISO_8601_UTCString = [v13 kt_toISO_8601_UTCString];
                 v25[1] = @"state";
-                v26[0] = v15;
+                v26[0] = kt_toISO_8601_UTCString;
                 v26[1] = v14;
                 v16 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
                 [v19 addObject:v16];
@@ -440,17 +440,17 @@ LABEL_30:
   return v19;
 }
 
-- (id)getCurrentOptInEntry:(id *)a3
+- (id)getCurrentOptInEntry:(id *)entry
 {
-  v3 = [(KTOptInManagerServer *)self getOptInHistory:a3];
-  v4 = [v3 lastObject];
+  v3 = [(KTOptInManagerServer *)self getOptInHistory:entry];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (void)getOptInState:(id)a3
+- (void)getOptInState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v10 = 0;
   v5 = [(KTOptInManagerServer *)self getCurrentOptInEntry:&v10];
   v6 = v10;
@@ -459,36 +459,36 @@ LABEL_30:
     if (v5)
     {
       v7 = [v5 objectAtIndexedSubscript:1];
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
 
       v9 = [v5 objectAtIndexedSubscript:0];
-      v4[2](v4, v8, v9, 0);
+      stateCopy[2](stateCopy, bOOLValue, v9, 0);
     }
 
     else
     {
-      v4[2](v4, 0, 0, v6);
+      stateCopy[2](stateCopy, 0, 0, v6);
     }
   }
 
   else
   {
-    v4[2](v4, 0, 0, 0);
+    stateCopy[2](stateCopy, 0, 0, 0);
   }
 }
 
-- (void)getOptInState:(BOOL)a3 completionBlock:(id)a4
+- (void)getOptInState:(BOOL)state completionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(KTOptInManagerServer *)self stateMachine];
-  v8 = [v7 deps];
-  v9 = [v8 cloudRecords];
+  stateCopy = state;
+  blockCopy = block;
+  stateMachine = [(KTOptInManagerServer *)self stateMachine];
+  deps = [stateMachine deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v9)
+  if (cloudRecords)
   {
-    v10 = [(KTOptInManagerServer *)self applicationId];
-    v11 = [v9 getAggregateOptInStateForApplication:v10];
+    applicationId = [(KTOptInManagerServer *)self applicationId];
+    v11 = [cloudRecords getAggregateOptInStateForApplication:applicationId];
 
     if (v11)
     {
@@ -500,41 +500,41 @@ LABEL_30:
       v12 = 0;
     }
 
-    (*(v6 + 2))(v6, v12, 0, 0);
+    (*(blockCopy + 2))(blockCopy, v12, 0, 0);
   }
 
   else
   {
-    v13 = [(KTOptInManagerServer *)self store];
-    v14 = [v13 storeReady];
+    store = [(KTOptInManagerServer *)self store];
+    storeReady = [store storeReady];
 
-    if (v14)
+    if (storeReady)
     {
-      if (!v4)
+      if (!stateCopy)
       {
-        [(KTOptInManagerServer *)self getOptInState:v6];
+        [(KTOptInManagerServer *)self getOptInState:blockCopy];
         goto LABEL_11;
       }
 
-      v15 = [(KTOptInManagerServer *)self applicationId];
-      v16 = [TransparencyAnalytics formatEventName:@"OptInServerGet" application:v15];
+      applicationId2 = [(KTOptInManagerServer *)self applicationId];
+      v16 = [TransparencyAnalytics formatEventName:@"OptInServerGet" application:applicationId2];
 
-      v17 = [(KTOptInManagerServer *)self store];
+      store2 = [(KTOptInManagerServer *)self store];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100200154;
       v18[3] = &unk_100329838;
       v19 = v16;
-      v20 = self;
-      v21 = v6;
+      selfCopy = self;
+      v21 = blockCopy;
       v11 = v16;
-      [v17 forceSync:v18];
+      [store2 forceSync:v18];
     }
 
     else
     {
       v11 = [TransparencyError errorWithDomain:kTransparencyErrorInterface code:-308 description:@"KVS store not yet loaded"];
-      (*(v6 + 2))(v6, 0, 0, v11);
+      (*(blockCopy + 2))(blockCopy, 0, 0, v11);
     }
   }
 
@@ -548,54 +548,54 @@ LABEL_11:
   if (v2)
   {
     v4 = [v2 objectAtIndexedSubscript:1];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)changeOptInState:(unint64_t)a3 dataStore:(id)a4 completionBlock:(id)a5
+- (void)changeOptInState:(unint64_t)state dataStore:(id)store completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = [(KTOptInManagerServer *)self setQueue];
+  blockCopy = block;
+  setQueue = [(KTOptInManagerServer *)self setQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100200310;
   block[3] = &unk_100329860;
   block[4] = self;
-  v11 = v7;
-  v12 = a3;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = blockCopy;
+  stateCopy = state;
+  v9 = blockCopy;
+  dispatch_async(setQueue, block);
 }
 
 - (id)emailPrefix
 {
-  v3 = [(KTOptInManagerServer *)self applicationId];
-  if ([v3 isEqualToString:kKTApplicationIdentifierIDS])
+  applicationId = [(KTOptInManagerServer *)self applicationId];
+  if ([applicationId isEqualToString:kKTApplicationIdentifierIDS])
   {
     goto LABEL_4;
   }
 
-  v4 = [(KTOptInManagerServer *)self applicationId];
-  if ([v4 isEqualToString:kKTApplicationIdentifierIDSFaceTime])
+  applicationId2 = [(KTOptInManagerServer *)self applicationId];
+  if ([applicationId2 isEqualToString:kKTApplicationIdentifierIDSFaceTime])
   {
 
 LABEL_4:
 LABEL_5:
-    v5 = [(KTOptInManagerServer *)self applicationId];
-    v6 = [TransparencyApplication applicationPrefixForIdentifier:v5];
+    applicationId3 = [(KTOptInManagerServer *)self applicationId];
+    v6 = [TransparencyApplication applicationPrefixForIdentifier:applicationId3];
 
     goto LABEL_6;
   }
 
-  v8 = [(KTOptInManagerServer *)self applicationId];
-  v9 = [v8 isEqualToString:kKTApplicationIdentifierIDSMultiplex];
+  applicationId4 = [(KTOptInManagerServer *)self applicationId];
+  v9 = [applicationId4 isEqualToString:kKTApplicationIdentifierIDSMultiplex];
 
   if (v9)
   {
@@ -608,9 +608,9 @@ LABEL_6:
   return v6;
 }
 
-- (void)handleCDPReset:(id)a3
+- (void)handleCDPReset:(id)reset
 {
-  v23 = a3;
+  resetCopy = reset;
   if (qword_10039CBD8 != -1)
   {
     sub_10025DAB8();
@@ -628,14 +628,14 @@ LABEL_6:
   v6 = v30;
   if (v5)
   {
-    v7 = [v5 aa_primaryEmail];
-    v8 = [(KTOptInManagerServer *)self emailPrefix];
-    if (v8)
+    aa_primaryEmail = [v5 aa_primaryEmail];
+    emailPrefix = [(KTOptInManagerServer *)self emailPrefix];
+    if (emailPrefix)
     {
-      v22 = [NSString stringWithFormat:@"%@://mailto:%@", v8, v7];
-      v9 = [(KTOptInManagerServer *)self applicationId];
+      v22 = [NSString stringWithFormat:@"%@://mailto:%@", emailPrefix, aa_primaryEmail];
+      applicationId = [(KTOptInManagerServer *)self applicationId];
       v29 = v6;
-      v10 = [TransparencyRPCRequestBuilder buildQueryRequest:v22 application:v9 error:&v29];
+      v10 = [TransparencyRPCRequestBuilder buildQueryRequest:v22 application:applicationId error:&v29];
       v11 = v29;
 
       if (v10)
@@ -657,8 +657,8 @@ LABEL_6:
 
         objc_initWeak(buf, self);
         v13 = +[NSUUID UUID];
-        v14 = [(KTOptInManagerServer *)self context];
-        v15 = [v14 logClient];
+        context = [(KTOptInManagerServer *)self context];
+        logClient = [context logClient];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100200B40;
@@ -667,8 +667,8 @@ LABEL_6:
         v25 = v10;
         v16 = v13;
         v26 = v16;
-        v27 = v7;
-        [v15 fetchQuery:v25 uuid:v16 userInitiated:0 completionHandler:v24];
+        v27 = aa_primaryEmail;
+        [logClient fetchQuery:v25 uuid:v16 userInitiated:0 completionHandler:v24];
 
         objc_destroyWeak(&v28);
         objc_destroyWeak(buf);
@@ -704,9 +704,9 @@ LABEL_6:
       if (os_log_type_enabled(qword_10039CBE0, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [(KTOptInManagerServer *)self applicationId];
+        applicationId2 = [(KTOptInManagerServer *)self applicationId];
         *buf = 138543362;
-        v32 = v20;
+        v32 = applicationId2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "skipping opt in check after CDP reset for %{public}@", buf, 0xCu);
       }
     }
@@ -729,9 +729,9 @@ LABEL_6:
   }
 }
 
-- (void)handleOptInStateChange:(id)a3
+- (void)handleOptInStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (qword_10039CBD8 != -1)
   {
     sub_10025DBE4();
@@ -770,18 +770,18 @@ LABEL_13:
   else
   {
     v8 = [v6 objectAtIndexedSubscript:1];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v7 = 0;
       goto LABEL_19;
     }
 
-    v14 = [(KTOptInManagerServer *)self context];
-    v15 = [v14 followUp];
+    context = [(KTOptInManagerServer *)self context];
+    followUp = [context followUp];
     v18 = 0;
-    v16 = [v15 clearAllFollowups:&v18];
+    v16 = [followUp clearAllFollowups:&v18];
     v7 = v18;
 
     if ((v16 & 1) == 0)
@@ -807,16 +807,16 @@ LABEL_13:
 LABEL_19:
 }
 
-- (id)getAggregateOptInState:(id *)a3
+- (id)getAggregateOptInState:(id *)state
 {
-  v4 = [(KTOptInManagerServer *)self stateMachine];
-  v5 = [v4 deps];
-  v6 = [v5 cloudRecords];
+  stateMachine = [(KTOptInManagerServer *)self stateMachine];
+  deps = [stateMachine deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v6)
+  if (cloudRecords)
   {
-    v7 = [(KTOptInManagerServer *)self applicationId];
-    v8 = [v6 getAggregateOptInStateForApplication:v7];
+    applicationId = [(KTOptInManagerServer *)self applicationId];
+    v8 = [cloudRecords getAggregateOptInStateForApplication:applicationId];
   }
 
   else

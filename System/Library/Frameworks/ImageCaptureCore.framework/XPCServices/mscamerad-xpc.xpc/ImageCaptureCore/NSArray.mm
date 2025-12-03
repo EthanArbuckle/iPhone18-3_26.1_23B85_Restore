@@ -1,19 +1,19 @@
 @interface NSArray
-- (id)copyGroupIntoDictionary:(id)a3;
+- (id)copyGroupIntoDictionary:(id)dictionary;
 @end
 
 @implementation NSArray
 
-- (id)copyGroupIntoDictionary:(id)a3
+- (id)copyGroupIntoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = self;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [(NSArray *)selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -24,11 +24,11 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = v4[2](v4, v11);
+        v12 = dictionaryCopy[2](dictionaryCopy, v11);
         if (v12)
         {
           v13 = [v5 objectForKeyedSubscript:{v12, v16}];
@@ -42,7 +42,7 @@
         }
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [(NSArray *)selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

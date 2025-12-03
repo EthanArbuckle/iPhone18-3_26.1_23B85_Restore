@@ -1,32 +1,32 @@
 @interface AMSCookieStorage
-+ (BOOL)updateCookiesWithCookiesToAdd:(id)a3 cookiesToRemove:(id)a4 forAccount:(id)a5 error:(id *)a6;
-+ (id)cookiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 error:(id *)a5;
-+ (id)updateCookiesWithCookiesToAdd:(id)a3 cookiesToRemove:(id)a4 forAccount:(id)a5;
++ (BOOL)updateCookiesWithCookiesToAdd:(id)add cookiesToRemove:(id)remove forAccount:(id)account error:(id *)error;
++ (id)cookiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only error:(id *)error;
++ (id)updateCookiesWithCookiesToAdd:(id)add cookiesToRemove:(id)remove forAccount:(id)account;
 @end
 
 @implementation AMSCookieStorage
 
-+ (id)cookiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 error:(id *)a5
++ (id)cookiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
+  onlyCopy = only;
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (([v8 ams_isiTunesAccount] & 1) == 0)
+  accountCopy = account;
+  if (([accountCopy ams_isiTunesAccount] & 1) == 0)
   {
-    v52 = v6;
-    v53 = a5;
+    v52 = onlyCopy;
+    errorCopy = error;
     v9 = +[AMSUnitTests isRunningUnitTests];
     v10 = +[AMSLogConfig sharedAccountsCookiesConfig];
-    v11 = v10;
+    defaultCenter = v10;
     if (v9)
     {
       if (!v10)
       {
-        v11 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v13 = AMSLogKey();
         v14 = MEMORY[0x1E696AEC0];
@@ -47,16 +47,16 @@
         }
         v17 = ;
         v24 = AMSHashIfNeeded(*MEMORY[0x1E6959930]);
-        v25 = [v8 accountType];
-        v26 = [v25 identifier];
-        v9 = AMSHashIfNeeded(v26);
+        accountType = [accountCopy accountType];
+        identifier = [accountType identifier];
+        v9 = AMSHashIfNeeded(identifier);
         *buf = 138543874;
         v55 = v17;
         v56 = 2114;
         v57 = v24;
         v58 = 2114;
         v59 = v9;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
         if (v13)
         {
@@ -67,20 +67,20 @@
         a2 = v50;
       }
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      v18 = +[AMSLogConfig sharedAccountsCookiesConfig];
-      [v11 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v18 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedAccountsCookiesConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v10)
       {
-        v11 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v11 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v19 = AMSLogKey();
         v20 = MEMORY[0x1E696AEC0];
@@ -101,16 +101,16 @@
         }
         v23 = ;
         v27 = AMSHashIfNeeded(*MEMORY[0x1E6959930]);
-        v28 = [v8 accountType];
-        v29 = [v28 identifier];
-        v9 = AMSHashIfNeeded(v29);
+        accountType2 = [accountCopy accountType];
+        identifier2 = [accountType2 identifier];
+        v9 = AMSHashIfNeeded(identifier2);
         *buf = 138543874;
         v55 = v23;
         v56 = 2114;
         v57 = v27;
         v58 = 2114;
         v59 = v9;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_FAULT, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
         if (v19)
         {
@@ -128,8 +128,8 @@
       v30 = +[AMSLogConfig sharedConfig];
     }
 
-    v31 = [v30 OSLogObject];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [v30 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v32 = AMSLogKey();
       v33 = MEMORY[0x1E696AEC0];
@@ -147,12 +147,12 @@
         [v33 stringWithFormat:@"%@: %@ ", v34, v35];
       }
       v36 = ;
-      v37 = AMSHashIfNeeded(v8);
+      v37 = AMSHashIfNeeded(accountCopy);
       *buf = 138543618;
       v55 = v36;
       v56 = 2114;
       v57 = v37;
-      _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_DEBUG, "%{public}@account: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@account: %{public}@", buf, 0x16u);
       if (v32)
       {
 
@@ -160,8 +160,8 @@
       }
     }
 
-    v38 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v39 = [v38 ams_iTunesAccountForAccount:v8];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v39 = [ams_sharedAccountStore ams_iTunesAccountForAccount:accountCopy];
     v40 = v39;
     if (v39)
     {
@@ -170,44 +170,44 @@
 
     else
     {
-      v41 = v8;
+      v41 = accountCopy;
     }
 
     v42 = v41;
 
-    v8 = v42;
-    a5 = v53;
-    v6 = v52;
+    accountCopy = v42;
+    error = errorCopy;
+    onlyCopy = v52;
   }
 
   v43 = +[AMSCookieService sharedService];
-  v44 = [v43 getCookiePropertiesForAccount:v8 cookieDatabaseOnly:v6 error:a5];
+  v44 = [v43 getCookiePropertiesForAccount:accountCopy cookieDatabaseOnly:onlyCopy error:error];
 
   v45 = [MEMORY[0x1E695ABF8] ams_cookiesForProperties:v44];
 
   return v45;
 }
 
-+ (id)updateCookiesWithCookiesToAdd:(id)a3 cookiesToRemove:(id)a4 forAccount:(id)a5
++ (id)updateCookiesWithCookiesToAdd:(id)add cookiesToRemove:(id)remove forAccount:(id)account
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if (([v8 ams_isiTunesAccount] & 1) == 0)
+  accountCopy = account;
+  removeCopy = remove;
+  addCopy = add;
+  if (([accountCopy ams_isiTunesAccount] & 1) == 0)
   {
     v11 = +[AMSUnitTests isRunningUnitTests];
     v12 = +[AMSLogConfig sharedAccountsCookiesConfig];
-    v13 = v12;
+    defaultCenter = v12;
     if (v11)
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = AMSLogKey();
         v16 = MEMORY[0x1E696AEC0];
@@ -229,16 +229,16 @@
         }
         v19 = ;
         v26 = AMSHashIfNeeded(*MEMORY[0x1E6959930]);
-        v27 = [v8 accountType];
-        v28 = [v27 identifier];
-        v11 = AMSHashIfNeeded(v28);
+        accountType = [accountCopy accountType];
+        identifier = [accountType identifier];
+        v11 = AMSHashIfNeeded(identifier);
         *buf = 138543874;
         v61 = v19;
         v62 = 2114;
         v63 = v26;
         v64 = 2114;
         v65 = v11;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
         if (v56)
         {
@@ -249,20 +249,20 @@
         a2 = v58;
       }
 
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      v20 = +[AMSLogConfig sharedAccountsCookiesConfig];
-      [v13 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v20 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedAccountsCookiesConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v13 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v21 = AMSLogKey();
         v22 = MEMORY[0x1E696AEC0];
@@ -284,16 +284,16 @@
         }
         v25 = ;
         v29 = AMSHashIfNeeded(*MEMORY[0x1E6959930]);
-        v30 = [v8 accountType];
-        v31 = [v30 identifier];
-        v11 = AMSHashIfNeeded(v31);
+        accountType2 = [accountCopy accountType];
+        identifier2 = [accountType2 identifier];
+        v11 = AMSHashIfNeeded(identifier2);
         *buf = 138543874;
         v61 = v25;
         v62 = 2114;
         v63 = v29;
         v64 = 2114;
         v65 = v11;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_FAULT, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected account type. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
         if (v57)
         {
@@ -311,8 +311,8 @@
       v32 = +[AMSLogConfig sharedConfig];
     }
 
-    v33 = [v32 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [v32 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v34 = AMSLogKey();
       v35 = MEMORY[0x1E696AEC0];
@@ -332,12 +332,12 @@
         [v35 stringWithFormat:@"%@: %@ ", v36, v39];
       }
       v40 = ;
-      v41 = AMSHashIfNeeded(v8);
+      v41 = AMSHashIfNeeded(accountCopy);
       *buf = 138543618;
       v61 = v40;
       v62 = 2114;
       v63 = v41;
-      _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_DEBUG, "%{public}@account: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@account: %{public}@", buf, 0x16u);
       if (v34)
       {
 
@@ -345,8 +345,8 @@
       }
     }
 
-    v42 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v43 = [v42 ams_iTunesAccountForAccount:v8];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v43 = [ams_sharedAccountStore ams_iTunesAccountForAccount:accountCopy];
     v44 = v43;
     if (v43)
     {
@@ -355,32 +355,32 @@
 
     else
     {
-      v45 = v8;
+      v45 = accountCopy;
     }
 
     v46 = v45;
 
-    v8 = v46;
+    accountCopy = v46;
   }
 
   v47 = objc_alloc_init(AMSBinaryPromise);
   v48 = +[AMSCookieService sharedService];
-  v49 = [MEMORY[0x1E695ABF8] ams_propertiesForCookies:v10];
+  v49 = [MEMORY[0x1E695ABF8] ams_propertiesForCookies:addCopy];
 
-  v50 = [MEMORY[0x1E695ABF8] ams_propertiesForCookies:v9];
+  v50 = [MEMORY[0x1E695ABF8] ams_propertiesForCookies:removeCopy];
 
-  v51 = [(AMSBinaryPromise *)v47 completionHandlerAdapter];
-  [v48 updateCookiesWithCookiePropertiesToAdd:v49 cookiePropertiesToRemove:v50 forAccount:v8 withCompletion:v51];
+  completionHandlerAdapter = [(AMSBinaryPromise *)v47 completionHandlerAdapter];
+  [v48 updateCookiesWithCookiePropertiesToAdd:v49 cookiePropertiesToRemove:v50 forAccount:accountCopy withCompletion:completionHandlerAdapter];
 
   return v47;
 }
 
-+ (BOOL)updateCookiesWithCookiesToAdd:(id)a3 cookiesToRemove:(id)a4 forAccount:(id)a5 error:(id *)a6
++ (BOOL)updateCookiesWithCookiesToAdd:(id)add cookiesToRemove:(id)remove forAccount:(id)account error:(id *)error
 {
-  v7 = [a1 updateCookiesWithCookiesToAdd:a3 cookiesToRemove:a4 forAccount:a5];
-  LOBYTE(a6) = [v7 resultWithError:a6];
+  v7 = [self updateCookiesWithCookiesToAdd:add cookiesToRemove:remove forAccount:account];
+  LOBYTE(error) = [v7 resultWithError:error];
 
-  return a6;
+  return error;
 }
 
 @end

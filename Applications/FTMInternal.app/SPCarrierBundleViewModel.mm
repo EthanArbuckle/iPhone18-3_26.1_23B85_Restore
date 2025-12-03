@@ -6,7 +6,7 @@
 
 - (void)carrierBundleDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100222E84();
 }
 

@@ -1,17 +1,17 @@
 @interface SBSplitRemovalSwitcherModifier
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)layoutRoleToKeep inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBSplitRemovalSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 layoutRoleToRemove:(int64_t)a6 animationStyle:(int64_t)a7;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)layoutRoleToKeep inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBSplitRemovalSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout layoutRoleToRemove:(int64_t)remove animationStyle:(int64_t)style;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
@@ -20,32 +20,32 @@
 
 @implementation SBSplitRemovalSwitcherModifier
 
-- (SBSplitRemovalSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 layoutRoleToRemove:(int64_t)a6 animationStyle:(int64_t)a7
+- (SBSplitRemovalSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout layoutRoleToRemove:(int64_t)remove animationStyle:(int64_t)style
 {
-  v13 = a4;
-  v14 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v23.receiver = self;
   v23.super_class = SBSplitRemovalSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:d];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fromAppLayout, a4);
-    objc_storeStrong(&v16->_toAppLayout, a5);
+    objc_storeStrong(&v15->_fromAppLayout, layout);
+    objc_storeStrong(&v16->_toAppLayout, appLayout);
     v17 = 1;
-    if (a6 == 1)
+    if (remove == 1)
     {
       v17 = 2;
     }
 
     v16->_layoutRoleToKeep = v17;
-    v16->_layoutRoleToRemove = a6;
-    v16->_animationStyle = a7;
-    v18 = [v13 leafAppLayoutForRole:v16->_layoutRoleToKeep];
+    v16->_layoutRoleToRemove = remove;
+    v16->_animationStyle = style;
+    v18 = [layoutCopy leafAppLayoutForRole:v16->_layoutRoleToKeep];
     remainingAppLayout = v16->_remainingAppLayout;
     v16->_remainingAppLayout = v18;
 
-    v20 = [v13 leafAppLayoutForRole:v16->_layoutRoleToRemove];
+    v20 = [layoutCopy leafAppLayoutForRole:v16->_layoutRoleToRemove];
     removedAppLayout = v16->_removedAppLayout;
     v16->_removedAppLayout = v20;
 
@@ -55,27 +55,27 @@
   return v16;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBSplitRemovalSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBSplitRemovalSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"SBSplitRemovalSwitcherModifierTimerEventReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"SBSplitRemovalSwitcherModifierTimerEventReason"];
+  if (eventCopy)
   {
     self->_animationPhase = 2;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -91,9 +91,9 @@
 {
   v6.receiver = self;
   v6.super_class = SBSplitRemovalSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
@@ -102,22 +102,22 @@
 {
   v19.receiver = self;
   v19.super_class = SBSplitRemovalSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v19 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v19 transitionWillUpdate];
   if (self->_animationPhase == 1)
   {
     animationStyle = self->_animationStyle;
-    v5 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-    v6 = v5;
+    entityRemovalSettings = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+    v6 = entityRemovalSettings;
     if (animationStyle == 2)
     {
-      v7 = [v5 medusaCommitIntentAnimationSettings];
-      [v7 toBeRemovedSlideOutAnimationDelay];
+      medusaCommitIntentAnimationSettings = [entityRemovalSettings medusaCommitIntentAnimationSettings];
+      [medusaCommitIntentAnimationSettings toBeRemovedSlideOutAnimationDelay];
     }
 
     else
     {
-      v7 = [v5 medusaDeleteIntentAnimationSettings];
-      [v7 toBeMadeFullscreenFrameAnimationDelay];
+      medusaCommitIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
+      [medusaCommitIntentAnimationSettings toBeMadeFullscreenFrameAnimationDelay];
     }
 
     v9 = v8;
@@ -132,14 +132,14 @@
     v16[3] = &unk_2783AD4A0;
     objc_copyWeak(&v17, &location);
     v13 = [(SBTimerEventSwitcherEventResponse *)v12 initWithDelay:v16 validator:@"SBSplitRemovalSwitcherModifierTimerEventReason" reason:v9 * v11];
-    v14 = SBAppendSwitcherModifierResponse(v13, v3);
+    v14 = SBAppendSwitcherModifierResponse(v13, transitionWillUpdate);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
-    v3 = v14;
+    transitionWillUpdate = v14;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
 BOOL __54__SBSplitRemovalSwitcherModifier_transitionWillUpdate__block_invoke(uint64_t a1)
@@ -151,11 +151,11 @@ BOOL __54__SBSplitRemovalSwitcherModifier_transitionWillUpdate__block_invoke(uin
   return v3;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v7.receiver = self;
   v7.super_class = SBSplitRemovalSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v7 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v7 adjustedAppLayoutsForAppLayouts:layouts];
   v5 = [v4 mutableCopy];
 
   if (([v5 containsObject:self->_remainingAppLayout] & 1) == 0)
@@ -171,34 +171,34 @@ BOOL __54__SBSplitRemovalSwitcherModifier_transitionWillUpdate__block_invoke(uin
   return v5;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SBSplitRemovalSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:v4];
-  if ([v4 isEqual:self->_remainingAppLayout])
+  v5 = [(SBTransitionSwitcherModifier *)&v18 animationAttributesForLayoutElement:elementCopy];
+  if ([elementCopy isEqual:self->_remainingAppLayout])
   {
     v6 = [v5 mutableCopy];
     if (self->_animationStyle != 2)
     {
-      v7 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-      v8 = [v7 medusaDeleteIntentAnimationSettings];
+      entityRemovalSettings = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+      medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
 
-      v9 = [v8 toBeMadeFullscreenFrameAnimationSettings];
-      [v6 setLayoutSettings:v9];
+      toBeMadeFullscreenFrameAnimationSettings = [medusaDeleteIntentAnimationSettings toBeMadeFullscreenFrameAnimationSettings];
+      [v6 setLayoutSettings:toBeMadeFullscreenFrameAnimationSettings];
     }
   }
 
-  if ([v4 isEqual:self->_removedAppLayout])
+  if ([elementCopy isEqual:self->_removedAppLayout])
   {
     v10 = [v5 mutableCopy];
     animationStyle = self->_animationStyle;
-    v12 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-    v13 = v12;
+    entityRemovalSettings2 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+    v13 = entityRemovalSettings2;
     if (animationStyle == 2)
     {
-      v14 = [v12 medusaCommitIntentAnimationSettings];
+      medusaCommitIntentAnimationSettings = [entityRemovalSettings2 medusaCommitIntentAnimationSettings];
 
       if (self->_animationPhase != 2)
       {
@@ -207,19 +207,19 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v15 = [v14 toBeRemovedSlideOutAnimationSettings];
-      [v10 setLayoutSettings:v15];
+      toBeRemovedSlideOutAnimationSettings = [medusaCommitIntentAnimationSettings toBeRemovedSlideOutAnimationSettings];
+      [v10 setLayoutSettings:toBeRemovedSlideOutAnimationSettings];
     }
 
     else
     {
-      v14 = [v12 medusaDeleteIntentAnimationSettings];
+      medusaCommitIntentAnimationSettings = [entityRemovalSettings2 medusaDeleteIntentAnimationSettings];
 
-      v16 = [v14 toBeRemovedScaleAnimationSettings];
-      [v10 setScaleSettings:v16];
+      toBeRemovedScaleAnimationSettings = [medusaCommitIntentAnimationSettings toBeRemovedScaleAnimationSettings];
+      [v10 setScaleSettings:toBeRemovedScaleAnimationSettings];
 
-      v15 = [v14 toBeRemovedAlphaAnimationSettings];
-      [v10 setOpacitySettings:v15];
+      toBeRemovedSlideOutAnimationSettings = [medusaCommitIntentAnimationSettings toBeRemovedAlphaAnimationSettings];
+      [v10 setOpacitySettings:toBeRemovedSlideOutAnimationSettings];
     }
 
     goto LABEL_11;
@@ -230,10 +230,10 @@ LABEL_12:
   return v5;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ((([v6 isEqual:self->_remainingAppLayout] & 1) != 0 || objc_msgSend(v6, "isEqual:", self->_removedAppLayout)) && -[SBTransitionSwitcherModifier isUpdatingLayout](self, "isUpdatingLayout"))
   {
@@ -245,7 +245,7 @@ LABEL_12:
   {
     v19.receiver = self;
     v19.super_class = SBSplitRemovalSwitcherModifier;
-    [(SBSplitRemovalSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBSplitRemovalSwitcherModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -264,10 +264,10 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (([v6 isEqual:self->_remainingAppLayout] & 1) != 0 || objc_msgSend(v6, "isEqual:", self->_removedAppLayout))
   {
@@ -278,7 +278,7 @@ LABEL_12:
   {
     v19.receiver = self;
     v19.super_class = SBSplitRemovalSwitcherModifier;
-    [(SBSplitRemovalSwitcherModifier *)&v19 frameForIndex:a3];
+    [(SBSplitRemovalSwitcherModifier *)&v19 frameForIndex:index];
   }
 
   v11 = v7;
@@ -297,14 +297,14 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)layoutRoleToKeep inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)layoutRoleToKeep inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  if ([v11 isEqual:self->_remainingAppLayout])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_remainingAppLayout])
   {
     if (self->_animationPhase == 2)
     {
@@ -323,11 +323,11 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (![v11 isEqual:self->_removedAppLayout])
+  if (![layoutCopy isEqual:self->_removedAppLayout])
   {
     v45.receiver = self;
     v45.super_class = SBSplitRemovalSwitcherModifier;
-    [(SBSplitRemovalSwitcherModifier *)&v45 frameForLayoutRole:layoutRoleToKeep inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBSplitRemovalSwitcherModifier *)&v45 frameForLayoutRole:layoutRoleToKeep inAppLayout:layoutCopy withBounds:x, y, width, height];
 LABEL_11:
     v20 = v37;
     v22 = v38;
@@ -348,9 +348,9 @@ LABEL_11:
   {
     [(SBSplitRemovalSwitcherModifier *)self containerViewBounds];
     v27 = CGRectGetHeight(v46);
-    v28 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-    v29 = [v28 medusaCommitIntentAnimationSettings];
-    [v29 toBeRemovedSlideOutHeightOffsetMultiplier];
+    entityRemovalSettings = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+    medusaCommitIntentAnimationSettings = [entityRemovalSettings medusaCommitIntentAnimationSettings];
+    [medusaCommitIntentAnimationSettings toBeRemovedSlideOutHeightOffsetMultiplier];
     v31 = v27 * v30;
 
     v22 = v22 - v31;
@@ -369,32 +369,32 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)a3
+- (BOOL)isContentStatusBarVisibleForIndex:(unint64_t)index
 {
-  v5 = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSplitRemovalSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (([v6 isEqual:self->_remainingAppLayout] & 1) != 0 || objc_msgSend(v6, "isEqual:", self->_removedAppLayout))
   {
-    v7 = [(SBTransitionSwitcherModifier *)self isPreparingLayout];
+    isPreparingLayout = [(SBTransitionSwitcherModifier *)self isPreparingLayout];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SBSplitRemovalSwitcherModifier;
-    v7 = [(SBSplitRemovalSwitcherModifier *)&v10 isContentStatusBarVisibleForIndex:a3];
+    isPreparingLayout = [(SBSplitRemovalSwitcherModifier *)&v10 isContentStatusBarVisibleForIndex:index];
   }
 
-  v8 = v7;
+  v8 = isPreparingLayout;
 
   return v8;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_remainingAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_remainingAppLayout])
   {
     v7 = 1;
   }
@@ -403,16 +403,16 @@ LABEL_12:
   {
     v9.receiver = self;
     v9.super_class = SBSplitRemovalSwitcherModifier;
-    v7 = [(SBSplitRemovalSwitcherModifier *)&v9 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    v7 = [(SBSplitRemovalSwitcherModifier *)&v9 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_remainingAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_remainingAppLayout])
   {
     v7 = 1;
   }
@@ -421,25 +421,25 @@ LABEL_12:
   {
     v9.receiver = self;
     v9.super_class = SBSplitRemovalSwitcherModifier;
-    v7 = [(SBSplitRemovalSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v7 = [(SBSplitRemovalSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v9 = 1.0;
-  if (([v8 isEqual:self->_remainingAppLayout] & 1) == 0)
+  if (([layoutCopy isEqual:self->_remainingAppLayout] & 1) == 0)
   {
-    if ([v8 isEqual:self->_removedAppLayout])
+    if ([layoutCopy isEqual:self->_removedAppLayout])
     {
       if (self->_animationStyle != 2 && ![(SBTransitionSwitcherModifier *)self isPreparingLayout])
       {
-        v10 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-        v11 = [v10 medusaDeleteIntentAnimationSettings];
-        [v11 toBeRemovedFinalAlpha];
+        entityRemovalSettings = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+        medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
+        [medusaDeleteIntentAnimationSettings toBeRemovedFinalAlpha];
         v9 = v12;
       }
     }
@@ -448,7 +448,7 @@ LABEL_12:
     {
       v15.receiver = self;
       v15.super_class = SBSplitRemovalSwitcherModifier;
-      [(SBSplitRemovalSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+      [(SBSplitRemovalSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
       v9 = v13;
     }
   }
@@ -456,14 +456,14 @@ LABEL_12:
   return v9;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_removedAppLayout] && -[SBTransitionSwitcherModifier isUpdatingLayout](self, "isUpdatingLayout"))
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_removedAppLayout] && -[SBTransitionSwitcherModifier isUpdatingLayout](self, "isUpdatingLayout"))
   {
-    v7 = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
-    v8 = [v7 medusaDeleteIntentAnimationSettings];
-    [v8 toBeRemovedFinalScale];
+    entityRemovalSettings = [(SBSplitRemovalSwitcherModifier *)self entityRemovalSettings];
+    medusaDeleteIntentAnimationSettings = [entityRemovalSettings medusaDeleteIntentAnimationSettings];
+    [medusaDeleteIntentAnimationSettings toBeRemovedFinalScale];
     v10 = v9;
   }
 
@@ -471,7 +471,7 @@ LABEL_12:
   {
     v13.receiver = self;
     v13.super_class = SBSplitRemovalSwitcherModifier;
-    [(SBSplitRemovalSwitcherModifier *)&v13 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBSplitRemovalSwitcherModifier *)&v13 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v10 = v11;
   }
 
@@ -482,8 +482,8 @@ LABEL_12:
 {
   v9.receiver = self;
   v9.super_class = SBSplitRemovalSwitcherModifier;
-  v3 = [(SBSplitRemovalSwitcherModifier *)&v9 topMostLayoutElements];
-  v4 = [v3 mutableCopy];
+  topMostLayoutElements = [(SBSplitRemovalSwitcherModifier *)&v9 topMostLayoutElements];
+  v4 = [topMostLayoutElements mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -509,8 +509,8 @@ LABEL_12:
 {
   v6.receiver = self;
   v6.super_class = SBSplitRemovalSwitcherModifier;
-  v3 = [(SBSplitRemovalSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBSplitRemovalSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   [v4 removeObject:self->_toAppLayout];
   [v4 addObject:self->_remainingAppLayout];

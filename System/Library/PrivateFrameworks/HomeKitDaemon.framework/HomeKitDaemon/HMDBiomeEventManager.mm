@@ -1,73 +1,73 @@
 @interface HMDBiomeEventManager
 - (HMDBiomeEventManager)init;
-- (HMDBiomeEventManager)initWithNotificationCenter:(id)a3 actionSetStream:(id)a4 mediaAccessoryStream:(id)a5 accessoryStream:(id)a6 prunableStreamFactory:(id)a7 workQueue:(id)a8;
-- (void)_deleteAccessoryEventsPassingTest:(void *)a1;
-- (void)_deleteActionSetEventsPassingTest:(void *)a1;
-- (void)_deleteEventFromStartDate:(void *)a3 toEndDate:stream:passingDeleteEventTest:;
-- (void)_deleteMediaAccessoryEventsPassingTest:(void *)a1;
-- (void)_handleAccessoryRemovedNotification:(id)a3;
-- (void)_handleActionSetEmptiedNotification:(id)a3;
-- (void)_handleHomeRemovedNotification:(id)a3;
-- (void)_handleServiceRemovedNotification:(id)a3;
-- (void)_submitAccessoryEvent:(id)a3;
-- (void)_submitActionSetEvent:(id)a3;
-- (void)_submitMediaAccessoryEvent:(id)a3;
+- (HMDBiomeEventManager)initWithNotificationCenter:(id)center actionSetStream:(id)stream mediaAccessoryStream:(id)accessoryStream accessoryStream:(id)a6 prunableStreamFactory:(id)factory workQueue:(id)queue;
+- (void)_deleteAccessoryEventsPassingTest:(void *)test;
+- (void)_deleteActionSetEventsPassingTest:(void *)test;
+- (void)_deleteEventFromStartDate:(void *)date toEndDate:stream:passingDeleteEventTest:;
+- (void)_deleteMediaAccessoryEventsPassingTest:(void *)test;
+- (void)_handleAccessoryRemovedNotification:(id)notification;
+- (void)_handleActionSetEmptiedNotification:(id)notification;
+- (void)_handleHomeRemovedNotification:(id)notification;
+- (void)_handleServiceRemovedNotification:(id)notification;
+- (void)_submitAccessoryEvent:(id)event;
+- (void)_submitActionSetEvent:(id)event;
+- (void)_submitMediaAccessoryEvent:(id)event;
 - (void)deleteAllEvents;
-- (void)submitAccessoryEvent:(id)a3;
-- (void)submitActionSetEvent:(id)a3;
-- (void)submitMediaAccessoryEvent:(id)a3;
+- (void)submitAccessoryEvent:(id)event;
+- (void)submitActionSetEvent:(id)event;
+- (void)submitMediaAccessoryEvent:(id)event;
 @end
 
 @implementation HMDBiomeEventManager
 
-- (void)_submitMediaAccessoryEvent:(id)a3
+- (void)_submitMediaAccessoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDBiomeEventManager *)self mediaAccessoryStream];
-  v6 = [v7 source];
-  [v6 sendEvent:v4];
+  mediaAccessoryStream = [(HMDBiomeEventManager *)self mediaAccessoryStream];
+  source = [mediaAccessoryStream source];
+  [source sendEvent:eventCopy];
 }
 
-- (void)submitMediaAccessoryEvent:(id)a3
+- (void)submitMediaAccessoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HMDBiomeEventManager_submitMediaAccessoryEvent___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_submitAccessoryEvent:(id)a3
+- (void)_submitAccessoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDBiomeEventManager *)self hapAccessoryStream];
-  v6 = [v7 source];
-  [v6 sendEvent:v4];
+  hapAccessoryStream = [(HMDBiomeEventManager *)self hapAccessoryStream];
+  source = [hapAccessoryStream source];
+  [source sendEvent:eventCopy];
 }
 
-- (void)submitAccessoryEvent:(id)a3
+- (void)submitAccessoryEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HMDBiomeEventManager_submitAccessoryEvent___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __45__HMDBiomeEventManager_submitAccessoryEvent___block_invoke(uint64_t a1)
@@ -100,41 +100,41 @@ uint64_t __45__HMDBiomeEventManager_submitAccessoryEvent___block_invoke(uint64_t
   return result;
 }
 
-- (void)_submitActionSetEvent:(id)a3
+- (void)_submitActionSetEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDBiomeEventManager *)self actionSetStream];
-  v6 = [v7 source];
-  [v6 sendEvent:v4];
+  actionSetStream = [(HMDBiomeEventManager *)self actionSetStream];
+  source = [actionSetStream source];
+  [source sendEvent:eventCopy];
 }
 
-- (void)submitActionSetEvent:(id)a3
+- (void)submitActionSetEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDBiomeEventManager *)self workQueue];
+  eventCopy = event;
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HMDBiomeEventManager_submitActionSetEvent___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)deleteAllEvents
 {
   objc_initWeak(&location, self);
-  v3 = [(HMDBiomeEventManager *)self workQueue];
+  workQueue = [(HMDBiomeEventManager *)self workQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__HMDBiomeEventManager_deleteAllEvents__block_invoke;
   v4[3] = &unk_278686B80;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(workQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -205,16 +205,16 @@ void __39__HMDBiomeEventManager_deleteAllEvents__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteEventFromStartDate:(void *)a3 toEndDate:stream:passingDeleteEventTest:
+- (void)_deleteEventFromStartDate:(void *)date toEndDate:stream:passingDeleteEventTest:
 {
   v53 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = [a1 workQueue];
-  dispatch_assert_queue_V2(v7);
+  dateCopy = date;
+  workQueue = [self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -231,22 +231,22 @@ void __39__HMDBiomeEventManager_deleteAllEvents__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [MEMORY[0x277CBEAA8] distantPast];
-  [v12 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v14 = v13;
 
-  v15 = [MEMORY[0x277CBEAA8] distantFuture];
-  [v15 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v17 = v16;
 
   v18 = MEMORY[0x277CF0E28];
-  v19 = [v5 identifier];
-  v20 = [v18 streamForStreamIdentifier:v19];
+  identifier = [v5 identifier];
+  v20 = [v18 streamForStreamIdentifier:identifier];
 
   if (v20)
   {
-    v21 = [v9 prunableStreamFactory];
-    v22 = v21[2](v21, v20);
+    prunableStreamFactory = [selfCopy prunableStreamFactory];
+    v22 = prunableStreamFactory[2](prunableStreamFactory, v20);
 
     v40 = 0;
     v35[0] = MEMORY[0x277D85DD0];
@@ -256,11 +256,11 @@ void __39__HMDBiomeEventManager_deleteAllEvents__block_invoke(uint64_t a1)
     v36 = 0;
     v38 = v14;
     v39 = v17;
-    v37 = v6;
+    v37 = dateCopy;
     [v22 pruneEventsWithError:&v40 predicateBlock:v35];
     v23 = v40;
     v24 = objc_autoreleasePoolPush();
-    v25 = v9;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -287,16 +287,16 @@ void __39__HMDBiomeEventManager_deleteAllEvents__block_invoke(uint64_t a1)
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = v9;
+    v30 = selfCopy;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [v5 identifier];
+      identifier2 = [v5 identifier];
       *buf = 138543874;
       v42 = v32;
       v43 = 2112;
-      v44 = v33;
+      v44 = identifier2;
       v45 = 2112;
       v46 = v5;
       _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Unable to find public stream to prune for stream identifier: %@ of stream: %@", buf, 0x20u);
@@ -339,12 +339,12 @@ uint64_t __90__HMDBiomeEventManager__deleteEventFromStartDate_toEndDate_stream_p
   return v9;
 }
 
-- (void)_handleActionSetEmptiedNotification:(id)a3
+- (void)_handleActionSetEmptiedNotification:(id)notification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDActionSetNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDActionSetNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -361,24 +361,24 @@ uint64_t __90__HMDBiomeEventManager__deleteEventFromStartDate_toEndDate_stream_p
 
   if (v8)
   {
-    v9 = [v8 home];
-    if (v9)
+    home = [v8 home];
+    if (home)
     {
-      v10 = [(HMDBiomeEventManager *)self workQueue];
+      workQueue = [(HMDBiomeEventManager *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__HMDBiomeEventManager__handleActionSetEmptiedNotification___block_invoke;
       block[3] = &unk_27868A010;
       block[4] = self;
       v21 = v8;
-      v22 = v9;
-      dispatch_async(v10, block);
+      v22 = home;
+      dispatch_async(workQueue, block);
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -386,7 +386,7 @@ uint64_t __90__HMDBiomeEventManager__deleteEventFromStartDate_toEndDate_stream_p
         *buf = 138543874;
         v24 = v18;
         v25 = 2112;
-        v26 = v4;
+        v26 = notificationCopy;
         v27 = 2112;
         v28 = v8;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@No home found for emptied action set notification: %@ for action set: %@", buf, 0x20u);
@@ -399,7 +399,7 @@ uint64_t __90__HMDBiomeEventManager__deleteEventFromStartDate_toEndDate_stream_p
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -407,7 +407,7 @@ uint64_t __90__HMDBiomeEventManager__deleteEventFromStartDate_toEndDate_stream_p
       *buf = 138543618;
       v24 = v14;
       v25 = 2112;
-      v26 = v4;
+      v26 = notificationCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@No action set found for emptied action set notification: %@", buf, 0x16u);
     }
 
@@ -487,20 +487,20 @@ uint64_t __113__HMDBiomeEventManager__deleteAllEventsForActionSetUniqueIdentifie
   return v9;
 }
 
-- (void)_deleteActionSetEventsPassingTest:(void *)a1
+- (void)_deleteActionSetEventsPassingTest:(void *)test
 {
   v3 = a2;
-  v4 = [a1 workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [test workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [a1 actionSetStream];
+  actionSetStream = [test actionSetStream];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_invoke;
   v7[3] = &unk_278679360;
   v6 = v3;
   v8 = v6;
-  [HMDBiomeEventManager _deleteEventFromStartDate:a1 toEndDate:v5 stream:v7 passingDeleteEventTest:?];
+  [HMDBiomeEventManager _deleteEventFromStartDate:test toEndDate:actionSetStream stream:v7 passingDeleteEventTest:?];
 }
 
 uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_invoke(uint64_t a1, void *a2)
@@ -520,12 +520,12 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
   return v4;
 }
 
-- (void)_handleServiceRemovedNotification:(id)a3
+- (void)_handleServiceRemovedNotification:(id)notification
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDServiceNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDServiceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -542,14 +542,14 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
 
   if (v8)
   {
-    v9 = [v8 accessory];
-    v10 = v9;
-    if (v9)
+    accessory = [v8 accessory];
+    v10 = accessory;
+    if (accessory)
     {
-      v11 = [v9 home];
-      if (v11)
+      home = [accessory home];
+      if (home)
       {
-        v12 = [(HMDBiomeEventManager *)self workQueue];
+        workQueue = [(HMDBiomeEventManager *)self workQueue];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __58__HMDBiomeEventManager__handleServiceRemovedNotification___block_invoke;
@@ -557,14 +557,14 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
         v26[4] = self;
         v27 = v8;
         v28 = v10;
-        v29 = v11;
-        dispatch_async(v12, v26);
+        v29 = home;
+        dispatch_async(workQueue, v26);
       }
 
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v22 = self;
+        selfCopy = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -572,7 +572,7 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
           *buf = 138544130;
           v31 = v24;
           v32 = 2112;
-          v33 = v4;
+          v33 = notificationCopy;
           v34 = 2112;
           v35 = v8;
           v36 = 2112;
@@ -587,7 +587,7 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -595,7 +595,7 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
         *buf = 138543874;
         v31 = v20;
         v32 = 2112;
-        v33 = v4;
+        v33 = notificationCopy;
         v34 = 2112;
         v35 = v8;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@No accessory found for removed service notification: %@ for service: %@", buf, 0x20u);
@@ -608,7 +608,7 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -616,7 +616,7 @@ uint64_t __58__HMDBiomeEventManager__deleteActionSetEventsPassingTest___block_in
       *buf = 138543618;
       v31 = v16;
       v32 = 2112;
-      v33 = v4;
+      v33 = notificationCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@No service found for removed service notification: %@", buf, 0x16u);
     }
 
@@ -715,20 +715,20 @@ uint64_t __167__HMDBiomeEventManager__deleteAllEventsForAccessoryServiceUniqueId
   return v11;
 }
 
-- (void)_deleteAccessoryEventsPassingTest:(void *)a1
+- (void)_deleteAccessoryEventsPassingTest:(void *)test
 {
   v3 = a2;
-  v4 = [a1 workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [test workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [a1 hapAccessoryStream];
+  hapAccessoryStream = [test hapAccessoryStream];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_invoke;
   v7[3] = &unk_278679360;
   v6 = v3;
   v8 = v6;
-  [HMDBiomeEventManager _deleteEventFromStartDate:a1 toEndDate:v5 stream:v7 passingDeleteEventTest:?];
+  [HMDBiomeEventManager _deleteEventFromStartDate:test toEndDate:hapAccessoryStream stream:v7 passingDeleteEventTest:?];
 }
 
 uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_invoke(uint64_t a1, void *a2)
@@ -748,12 +748,12 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
   return v4;
 }
 
-- (void)_handleAccessoryRemovedNotification:(id)a3
+- (void)_handleAccessoryRemovedNotification:(id)notification
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDAccessoryNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDAccessoryNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -770,11 +770,11 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
 
   if (v8)
   {
-    v9 = [v4 object];
+    object = [notificationCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = object;
     }
 
     else
@@ -786,7 +786,7 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
 
     if (v11)
     {
-      v12 = [(HMDBiomeEventManager *)self workQueue];
+      workQueue = [(HMDBiomeEventManager *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__HMDBiomeEventManager__handleAccessoryRemovedNotification___block_invoke;
@@ -794,13 +794,13 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
       block[4] = self;
       v23 = v8;
       v24 = v11;
-      dispatch_async(v12, block);
+      dispatch_async(workQueue, block);
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -808,7 +808,7 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
         *buf = 138543874;
         v26 = v20;
         v27 = 2112;
-        v28 = v4;
+        v28 = notificationCopy;
         v29 = 2112;
         v30 = v8;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@No home found for removed accessory notification: %@ for accessory: %@", buf, 0x20u);
@@ -821,7 +821,7 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -829,7 +829,7 @@ uint64_t __58__HMDBiomeEventManager__deleteAccessoryEventsPassingTest___block_in
       *buf = 138543618;
       v26 = v16;
       v27 = 2112;
-      v28 = v4;
+      v28 = notificationCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@No accessory found for removed accessory notification: %@", buf, 0x16u);
     }
 
@@ -939,20 +939,20 @@ uint64_t __113__HMDBiomeEventManager__deleteAllEventsForAccessoryUniqueIdentifie
   return v9;
 }
 
-- (void)_deleteMediaAccessoryEventsPassingTest:(void *)a1
+- (void)_deleteMediaAccessoryEventsPassingTest:(void *)test
 {
   v3 = a2;
-  v4 = [a1 workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [test workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [a1 mediaAccessoryStream];
+  mediaAccessoryStream = [test mediaAccessoryStream];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HMDBiomeEventManager__deleteMediaAccessoryEventsPassingTest___block_invoke;
   v7[3] = &unk_278679360;
   v6 = v3;
   v8 = v6;
-  [HMDBiomeEventManager _deleteEventFromStartDate:a1 toEndDate:v5 stream:v7 passingDeleteEventTest:?];
+  [HMDBiomeEventManager _deleteEventFromStartDate:test toEndDate:mediaAccessoryStream stream:v7 passingDeleteEventTest:?];
 }
 
 uint64_t __63__HMDBiomeEventManager__deleteMediaAccessoryEventsPassingTest___block_invoke(uint64_t a1, void *a2)
@@ -972,12 +972,12 @@ uint64_t __63__HMDBiomeEventManager__deleteMediaAccessoryEventsPassingTest___blo
   return v4;
 }
 
-- (void)_handleHomeRemovedNotification:(id)a3
+- (void)_handleHomeRemovedNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDHomeNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDHomeNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -994,20 +994,20 @@ uint64_t __63__HMDBiomeEventManager__deleteMediaAccessoryEventsPassingTest___blo
 
   if (v8)
   {
-    v9 = [(HMDBiomeEventManager *)self workQueue];
+    workQueue = [(HMDBiomeEventManager *)self workQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __55__HMDBiomeEventManager__handleHomeRemovedNotification___block_invoke;
     v15[3] = &unk_27868A750;
     v15[4] = self;
     v16 = v8;
-    dispatch_async(v9, v15);
+    dispatch_async(workQueue, v15);
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1015,7 +1015,7 @@ uint64_t __63__HMDBiomeEventManager__deleteMediaAccessoryEventsPassingTest___blo
       *buf = 138543618;
       v18 = v13;
       v19 = 2112;
-      v20 = v4;
+      v20 = notificationCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@No home found for home accessory notification: %@", buf, 0x16u);
     }
 
@@ -1112,16 +1112,16 @@ uint64_t __73__HMDBiomeEventManager__deleteAllEventsForHomeUniqueIdentifier_home
 - (HMDBiomeEventManager)init
 {
   v3 = HMDispatchQueueNameString();
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_BACKGROUND, 0);
-  v7 = dispatch_queue_create(v4, v6);
+  v7 = dispatch_queue_create(uTF8String, v6);
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = objc_alloc_init(MEMORY[0x277CF1978]);
   v10 = objc_alloc_init(MEMORY[0x277CF1990]);
   v11 = objc_alloc_init(MEMORY[0x277CF1968]);
-  v12 = [(HMDBiomeEventManager *)self initWithNotificationCenter:v8 actionSetStream:v9 mediaAccessoryStream:v10 accessoryStream:v11 prunableStreamFactory:&__block_literal_global_122054 workQueue:v7];
+  v12 = [(HMDBiomeEventManager *)self initWithNotificationCenter:defaultCenter actionSetStream:v9 mediaAccessoryStream:v10 accessoryStream:v11 prunableStreamFactory:&__block_literal_global_122054 workQueue:v7];
 
   return v12;
 }
@@ -1133,40 +1133,40 @@ id __28__HMDBiomeEventManager_init__block_invoke(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-- (HMDBiomeEventManager)initWithNotificationCenter:(id)a3 actionSetStream:(id)a4 mediaAccessoryStream:(id)a5 accessoryStream:(id)a6 prunableStreamFactory:(id)a7 workQueue:(id)a8
+- (HMDBiomeEventManager)initWithNotificationCenter:(id)center actionSetStream:(id)stream mediaAccessoryStream:(id)accessoryStream accessoryStream:(id)a6 prunableStreamFactory:(id)factory workQueue:(id)queue
 {
-  v29 = a3;
-  v28 = a4;
-  v15 = a5;
+  centerCopy = center;
+  streamCopy = stream;
+  accessoryStreamCopy = accessoryStream;
   v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  factoryCopy = factory;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = HMDBiomeEventManager;
   v19 = [(HMDBiomeEventManager *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_workQueue, a8);
-    objc_storeStrong(&v20->_notificationCenter, a3);
-    objc_storeStrong(&v20->_actionSetStream, a4);
-    objc_storeStrong(&v20->_mediaAccessoryStream, a5);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeStrong(&v20->_notificationCenter, center);
+    objc_storeStrong(&v20->_actionSetStream, stream);
+    objc_storeStrong(&v20->_mediaAccessoryStream, accessoryStream);
     objc_storeStrong(&v20->_hapAccessoryStream, a6);
-    v21 = _Block_copy(v17);
+    v21 = _Block_copy(factoryCopy);
     prunableStreamFactory = v20->_prunableStreamFactory;
     v20->_prunableStreamFactory = v21;
 
-    v23 = [(HMDBiomeEventManager *)v20 notificationCenter:v28];
+    v23 = [(HMDBiomeEventManager *)v20 notificationCenter:streamCopy];
     [v23 addObserver:v20 selector:sel__handleAccessoryRemovedNotification_ name:@"HMDHomeAccessoryRemovedNotification" object:0];
 
-    v24 = [(HMDBiomeEventManager *)v20 notificationCenter];
-    [v24 addObserver:v20 selector:sel__handleActionSetEmptiedNotification_ name:@"HMDHomeActionSetEmptiedNotification" object:0];
+    notificationCenter = [(HMDBiomeEventManager *)v20 notificationCenter];
+    [notificationCenter addObserver:v20 selector:sel__handleActionSetEmptiedNotification_ name:@"HMDHomeActionSetEmptiedNotification" object:0];
 
-    v25 = [(HMDBiomeEventManager *)v20 notificationCenter];
-    [v25 addObserver:v20 selector:sel__handleServiceRemovedNotification_ name:@"HMDHomeServiceRemovedNotification" object:0];
+    notificationCenter2 = [(HMDBiomeEventManager *)v20 notificationCenter];
+    [notificationCenter2 addObserver:v20 selector:sel__handleServiceRemovedNotification_ name:@"HMDHomeServiceRemovedNotification" object:0];
 
-    v26 = [(HMDBiomeEventManager *)v20 notificationCenter];
-    [v26 addObserver:v20 selector:sel__handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:0];
+    notificationCenter3 = [(HMDBiomeEventManager *)v20 notificationCenter];
+    [notificationCenter3 addObserver:v20 selector:sel__handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:0];
   }
 
   return v20;

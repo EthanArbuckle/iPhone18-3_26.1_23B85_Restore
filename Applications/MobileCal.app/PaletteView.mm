@@ -1,56 +1,56 @@
 @interface PaletteView
 - (BOOL)focusBannerVisible;
 - (BOOL)hasContent;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PaletteView)initWithBarPalette:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PaletteView)initWithBarPalette:(id)palette;
 - (PaletteViewDelegate)delegate;
 - (_UINavigationBarPalette)containingPalette;
 - (double)paletteTopMargin;
-- (id)_generateWeekDayInitialsHeaderViewWithHorizontalSizeClass:(BOOL)a3;
+- (id)_generateWeekDayInitialsHeaderViewWithHorizontalSizeClass:(BOOL)class;
 - (id)newDateLabel;
 - (id)todayButtonFont;
 - (void)_contentSizeCategoryChanged;
-- (void)_localeChanged:(id)a3;
+- (void)_localeChanged:(id)changed;
 - (void)_updateFocusBanner;
 - (void)_updateFocusBannerVisibility;
 - (void)avatarTapped;
 - (void)dealloc;
-- (void)focusBannerViewToggled:(id)a3;
+- (void)focusBannerViewToggled:(id)toggled;
 - (void)layoutSubviews;
 - (void)removeAllContent;
-- (void)setAvatarContact:(id)a3;
-- (void)setAvatarViewVisible:(BOOL)a3;
-- (void)setContainingPalette:(id)a3;
-- (void)setDateString:(id)a3;
-- (void)setDateStringVisible:(BOOL)a3;
-- (void)setDayHeaderFrames:(id)a3;
-- (void)setDayScrubberController:(id)a3;
-- (void)setDividerLineVisible:(BOOL)a3;
-- (void)setExtraPaletteHeight:(double)a3;
-- (void)setFocusBannerPlacement:(unint64_t)a3;
-- (void)setShouldHideInlineFocusBanner:(BOOL)a3;
-- (void)setTodayButtonVisible:(BOOL)a3;
-- (void)setWeekdayHeaderVisible:(BOOL)a3;
+- (void)setAvatarContact:(id)contact;
+- (void)setAvatarViewVisible:(BOOL)visible;
+- (void)setContainingPalette:(id)palette;
+- (void)setDateString:(id)string;
+- (void)setDateStringVisible:(BOOL)visible;
+- (void)setDayHeaderFrames:(id)frames;
+- (void)setDayScrubberController:(id)controller;
+- (void)setDividerLineVisible:(BOOL)visible;
+- (void)setExtraPaletteHeight:(double)height;
+- (void)setFocusBannerPlacement:(unint64_t)placement;
+- (void)setShouldHideInlineFocusBanner:(BOOL)banner;
+- (void)setTodayButtonVisible:(BOOL)visible;
+- (void)setWeekdayHeaderVisible:(BOOL)visible;
 - (void)todayTapped;
-- (void)updateForChangeToTraitCollection:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)updateForChangeToTraitCollection:(id)collection;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PaletteView
 
 - (BOOL)focusBannerVisible
 {
-  v3 = [(PaletteView *)self focusBannerPlacement];
-  if (v3)
+  focusBannerPlacement = [(PaletteView *)self focusBannerPlacement];
+  if (focusBannerPlacement)
   {
-    v4 = v3;
-    v5 = [(PaletteView *)self delegate];
-    v6 = [v5 focusFilterMode];
+    v4 = focusBannerPlacement;
+    delegate = [(PaletteView *)self delegate];
+    focusFilterMode = [delegate focusFilterMode];
 
-    LOBYTE(v3) = v6 && (v4 != 2 || ![(PaletteView *)self shouldHideInlineFocusBanner]);
+    LOBYTE(focusBannerPlacement) = focusFilterMode && (v4 != 2 || ![(PaletteView *)self shouldHideInlineFocusBanner]);
   }
 
-  return v3;
+  return focusBannerPlacement;
 }
 
 - (PaletteViewDelegate)delegate
@@ -74,18 +74,18 @@
     return 1;
   }
 
-  v4 = [(PaletteView *)self dayScrubberController];
-  if (v4 || [(PaletteView *)self todayButtonVisible]|| [(PaletteView *)self dateStringVisible])
+  dayScrubberController = [(PaletteView *)self dayScrubberController];
+  if (dayScrubberController || [(PaletteView *)self todayButtonVisible]|| [(PaletteView *)self dateStringVisible])
   {
-    v3 = 1;
+    focusBannerVisible = 1;
   }
 
   else
   {
-    v3 = [(PaletteView *)self focusBannerVisible];
+    focusBannerVisible = [(PaletteView *)self focusBannerVisible];
   }
 
-  return v3;
+  return focusBannerVisible;
 }
 
 - (void)_updateFocusBannerVisibility
@@ -99,8 +99,8 @@
 
 - (void)_updateFocusBanner
 {
-  v3 = [(PaletteView *)self delegate];
-  -[EKUIFocusBannerView setOn:](self->_focusFilterBanner, "setOn:", [v3 focusFilterMode] == 1);
+  delegate = [(PaletteView *)self delegate];
+  -[EKUIFocusBannerView setOn:](self->_focusFilterBanner, "setOn:", [delegate focusFilterMode] == 1);
 }
 
 - (void)layoutSubviews
@@ -118,19 +118,19 @@
   v101 = v5;
   v7 = v6;
   v9 = v8;
-  v10 = [(PaletteView *)self safeAreaLayoutGuide];
-  [v10 layoutFrame];
+  safeAreaLayoutGuide = [(PaletteView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v12 = v11;
   rect = v13;
   width = v14;
   v17 = v16;
 
-  v18 = [(PaletteView *)self traitCollection];
-  v19 = [v18 userInterfaceIdiom];
+  traitCollection = [(PaletteView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   [(PaletteView *)self paletteTopMargin];
   v21 = v20;
-  if (v19)
+  if (userInterfaceIdiom)
   {
     v22 = 37.0;
   }
@@ -179,7 +179,7 @@
       [(UILabel *)self->_dateLabel frame];
       v34 = v33;
       v36 = v35;
-      if (!v19)
+      if (!userInterfaceIdiom)
       {
         [(EKUILabeledAvatarView *)self->_avatarView frame];
         v21 = CGRectGetMaxY(v109) - v36 + -1.2;
@@ -281,9 +281,9 @@ LABEL_24:
     v60 = v59;
     if ([(PaletteView *)self focusBannerVisible])
     {
-      v61 = [(PaletteView *)self focusBannerPlacement];
+      focusBannerPlacement = [(PaletteView *)self focusBannerPlacement];
       MaxY = v106.origin.y;
-      if (v61 == 3)
+      if (focusBannerPlacement == 3)
       {
         [(EKUIFocusBannerView *)self->_focusFilterBanner frame];
         MaxY = CGRectGetMaxY(v115);
@@ -308,29 +308,29 @@ LABEL_24:
     v63 = v12;
   }
 
-  v68 = [(PaletteView *)self dayScrubberController];
-  v69 = [v68 view];
+  dayScrubberController = [(PaletteView *)self dayScrubberController];
+  view = [dayScrubberController view];
 
-  if (v69)
+  if (view)
   {
-    if (!v19)
+    if (!userInterfaceIdiom)
     {
       v17 = v9;
     }
 
     v70 = v106.size.width;
-    if (!v19)
+    if (!userInterfaceIdiom)
     {
       v70 = v7;
     }
 
     v71 = y;
-    if (v19)
+    if (userInterfaceIdiom)
     {
       y = v106.origin.x;
     }
 
-    [v69 sizeThatFits:{v70, v17}];
+    [view sizeThatFits:{v70, v17}];
     v73 = v72;
     v75 = v74;
     v116.origin.x = v63;
@@ -343,18 +343,18 @@ LABEL_24:
       v76 = v17 - v75;
     }
 
-    [v69 setFrame:{y, v76, v73, v75}];
+    [view setFrame:{y, v76, v73, v75}];
     y = v71;
     v7 = v102;
     v9 = v104;
-    if (!v19)
+    if (!userInterfaceIdiom)
     {
       [(PaletteView *)self safeAreaInsets];
       v78 = v77;
       [(PaletteView *)self safeAreaInsets];
       v80 = v79;
-      v81 = [(PaletteView *)self dayScrubberController];
-      [v81 setPaletteSafeAreaInsets:{0.0, v78, 0.0, v80}];
+      dayScrubberController2 = [(PaletteView *)self dayScrubberController];
+      [dayScrubberController2 setPaletteSafeAreaInsets:{0.0, v78, 0.0, v80}];
     }
   }
 
@@ -476,8 +476,8 @@ LABEL_71:
   [v3 bounds];
   v5 = v4;
 
-  v6 = [(PaletteView *)self traitCollection];
-  if ([v6 horizontalSizeClass] == 1)
+  traitCollection = [(PaletteView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     [(PaletteView *)self bounds];
     v8 = v7 <= v5 + 1.0;
@@ -488,8 +488,8 @@ LABEL_71:
     v8 = 0;
   }
 
-  v9 = [(PaletteView *)self traitCollection];
-  v10 = [v9 userInterfaceIdiom] == 0;
+  traitCollection2 = [(PaletteView *)self traitCollection];
+  v10 = [traitCollection2 userInterfaceIdiom] == 0;
 
   result = 16.0;
   if (v10 || v8)
@@ -512,10 +512,10 @@ LABEL_71:
   return v2;
 }
 
-- (PaletteView)initWithBarPalette:(id)a3
+- (PaletteView)initWithBarPalette:(id)palette
 {
-  v4 = a3;
-  [v4 bounds];
+  paletteCopy = palette;
+  [paletteCopy bounds];
   v12.receiver = self;
   v12.super_class = PaletteView;
   v5 = [(PaletteView *)&v12 initWithFrame:?];
@@ -524,8 +524,8 @@ LABEL_71:
     v6 = +[UIColor clearColor];
     [(PaletteView *)v5 setBackgroundColor:v6];
 
-    v7 = objc_storeWeak(&v5->_containingPalette, v4);
-    [v4 setClipsToBounds:0];
+    v7 = objc_storeWeak(&v5->_containingPalette, paletteCopy);
+    [paletteCopy setClipsToBounds:0];
 
     [(PaletteView *)v5 setPreservesSuperviewLayoutMargins:1];
     v8 = +[NSNotificationCenter defaultCenter];
@@ -554,28 +554,28 @@ LABEL_71:
   [(PaletteView *)&v4 dealloc];
 }
 
-- (void)setContainingPalette:(id)a3
+- (void)setContainingPalette:(id)palette
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_containingPalette, v5);
-  [v5 setClipsToBounds:0];
+  paletteCopy = palette;
+  v4 = objc_storeWeak(&self->_containingPalette, paletteCopy);
+  [paletteCopy setClipsToBounds:0];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = PaletteView;
   [(PaletteView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     [(PaletteView *)self _focusConfigurationChanged];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_todayButtonVisible || (v6 = 0.0, self->_dateStringVisible))
   {
     [(PaletteView *)self paletteTopMargin];
@@ -602,12 +602,12 @@ LABEL_71:
     v6 = v6 + v13;
   }
 
-  v14 = [(PaletteView *)self dayScrubberController];
-  v15 = [v14 view];
+  dayScrubberController = [(PaletteView *)self dayScrubberController];
+  view = [dayScrubberController view];
 
-  if (v15)
+  if (view)
   {
-    [v15 sizeThatFits:{width, height}];
+    [view sizeThatFits:{width, height}];
     v6 = v6 + v16;
   }
 
@@ -641,25 +641,25 @@ LABEL_71:
   [(PaletteView *)self setFocusBannerPlacement:0];
 }
 
-- (void)setShouldHideInlineFocusBanner:(BOOL)a3
+- (void)setShouldHideInlineFocusBanner:(BOOL)banner
 {
-  if (self->_shouldHideInlineFocusBanner != a3)
+  if (self->_shouldHideInlineFocusBanner != banner)
   {
-    self->_shouldHideInlineFocusBanner = a3;
+    self->_shouldHideInlineFocusBanner = banner;
     [(PaletteView *)self _updateFocusBannerVisibility];
   }
 }
 
-- (void)setFocusBannerPlacement:(unint64_t)a3
+- (void)setFocusBannerPlacement:(unint64_t)placement
 {
-  self->_focusBannerPlacement = a3;
-  v4 = [(PaletteView *)self focusBannerVisible];
-  v5 = [(EKUIFocusBannerView *)self->_focusFilterBanner superview];
+  self->_focusBannerPlacement = placement;
+  focusBannerVisible = [(PaletteView *)self focusBannerVisible];
+  superview = [(EKUIFocusBannerView *)self->_focusFilterBanner superview];
 
-  if (((v4 ^ (v5 == 0)) & 1) == 0)
+  if (((focusBannerVisible ^ (superview == 0)) & 1) == 0)
   {
     focusFilterBanner = self->_focusFilterBanner;
-    if (v4)
+    if (focusBannerVisible)
     {
       if (!focusFilterBanner)
       {
@@ -701,9 +701,9 @@ LABEL_71:
   [(EKUIFocusBannerView *)v11 setDisallowAccessibilityTextSizes:v10];
 }
 
-- (void)focusBannerViewToggled:(id)a3
+- (void)focusBannerViewToggled:(id)toggled
 {
-  if ([a3 on])
+  if ([toggled on])
   {
     v4 = 1;
   }
@@ -713,26 +713,26 @@ LABEL_71:
     v4 = 2;
   }
 
-  v5 = [(PaletteView *)self delegate];
-  [v5 setFocusFilterMode:v4];
+  delegate = [(PaletteView *)self delegate];
+  [delegate setFocusFilterMode:v4];
 }
 
-- (void)setExtraPaletteHeight:(double)a3
+- (void)setExtraPaletteHeight:(double)height
 {
-  if (self->_extraPaletteHeight != a3)
+  if (self->_extraPaletteHeight != height)
   {
-    self->_extraPaletteHeight = a3;
+    self->_extraPaletteHeight = height;
   }
 }
 
-- (void)setWeekdayHeaderVisible:(BOOL)a3
+- (void)setWeekdayHeaderVisible:(BOOL)visible
 {
-  if (self->_weekdayHeaderVisible != a3)
+  if (self->_weekdayHeaderVisible != visible)
   {
     v12 = v3;
-    self->_weekdayHeaderVisible = a3;
+    self->_weekdayHeaderVisible = visible;
     dayInitialsHeaderView = self->_dayInitialsHeaderView;
-    if (a3)
+    if (visible)
     {
       if (!dayInitialsHeaderView)
       {
@@ -757,69 +757,69 @@ LABEL_71:
   }
 }
 
-- (void)setDayScrubberController:(id)a3
+- (void)setDayScrubberController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   dayScrubberController = self->_dayScrubberController;
-  v37 = v5;
-  if (dayScrubberController != v5)
+  v37 = controllerCopy;
+  if (dayScrubberController != controllerCopy)
   {
     if (dayScrubberController)
     {
-      v7 = [(DayNavigationViewController *)dayScrubberController view];
-      [v7 frame];
+      view = [(DayNavigationViewController *)dayScrubberController view];
+      [view frame];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
 
-      v16 = [(PaletteView *)self superview];
-      [v16 frame];
+      superview = [(PaletteView *)self superview];
+      [superview frame];
       v18 = v9 + v17;
 
-      v19 = [(PaletteView *)self superview];
-      [v19 frame];
+      superview2 = [(PaletteView *)self superview];
+      [superview2 frame];
       v21 = v11 + v20;
 
-      v22 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v22 setFrame:{v18, v21, v13, v15}];
+      view2 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view2 setFrame:{v18, v21, v13, v15}];
 
       [(DayNavigationViewController *)self->_dayScrubberController removeFromParentViewController];
-      v23 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v23 removeFromSuperview];
+      view3 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view3 removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_dayScrubberController, a3);
+    objc_storeStrong(&self->_dayScrubberController, controller);
     if (self->_dayScrubberController)
     {
-      v24 = [(PaletteView *)self window];
-      if (v24)
+      window = [(PaletteView *)self window];
+      if (window)
       {
         EKUIPushFallbackSizingContextWithViewHierarchy();
       }
 
       [(DayNavigationViewController *)self->_dayScrubberController removeFromParentViewController];
-      v25 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v25 removeFromSuperview];
+      view4 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view4 removeFromSuperview];
 
-      v26 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [(PaletteView *)self addSubview:v26];
+      view5 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [(PaletteView *)self addSubview:view5];
 
-      v27 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v27 sizeToFit];
+      view6 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view6 sizeToFit];
 
-      v28 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v28 frame];
+      view7 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view7 frame];
       v30 = v29;
       v32 = v31;
       v34 = v33;
 
       [(PaletteView *)self bounds];
       Width = CGRectGetWidth(v39);
-      v36 = [(DayNavigationViewController *)self->_dayScrubberController view];
-      [v36 setFrame:{v30, v32, Width, v34}];
+      view8 = [(DayNavigationViewController *)self->_dayScrubberController view];
+      [view8 setFrame:{v30, v32, Width, v34}];
 
-      if (v24)
+      if (window)
       {
         EKUIPopFallbackSizingContextWithViewHierarchy();
       }
@@ -827,14 +827,14 @@ LABEL_71:
   }
 }
 
-- (void)setDayHeaderFrames:(id)a3
+- (void)setDayHeaderFrames:(id)frames
 {
-  v4 = a3;
-  if ([v4 count])
+  framesCopy = frames;
+  if ([framesCopy count])
   {
     [(PaletteView *)self layoutSubviews];
     self->_useCustomDayFrames = 1;
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(framesCopy, "count")}];
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_100110808;
@@ -849,26 +849,26 @@ LABEL_71:
       v6 = 2;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v5;
     v7 = v5;
-    [v4 enumerateObjectsWithOptions:v6 usingBlock:&v8];
-    [(WeekDayInitialsHeaderView *)self->_dayInitialsHeaderView setDayFrames:v7, v8, v9, v10, v11, v12];
+    [framesCopy enumerateObjectsWithOptions:v6 usingBlock:&v8];
+    [(WeekDayInitialsHeaderView *)self->_dayInitialsHeaderView setDayFrames:v7, v8, v9, v10, v11, selfCopy];
   }
 }
 
-- (void)updateForChangeToTraitCollection:(id)a3
+- (void)updateForChangeToTraitCollection:(id)collection
 {
-  v9 = a3;
+  collectionCopy = collection;
   [(PaletteView *)self setWeekdayHeaderVisible:0];
   dayInitialsHeaderView = self->_dayInitialsHeaderView;
   self->_dayInitialsHeaderView = 0;
 
   self->_weekdayHeaderFillsHalfWidth = 0;
   self->_weekdayHeaderMovedBeyondLeftEdge = 0;
-  if (v9)
+  if (collectionCopy)
   {
-    v5 = [v9 horizontalSizeClass] == 2 && objc_msgSend(v9, "verticalSizeClass") == 2;
+    v5 = [collectionCopy horizontalSizeClass] == 2 && objc_msgSend(collectionCopy, "verticalSizeClass") == 2;
     v6 = [(PaletteView *)self _generateWeekDayInitialsHeaderViewWithHorizontalSizeClass:v5];
     v7 = self->_dayInitialsHeaderView;
     self->_dayInitialsHeaderView = v6;
@@ -878,13 +878,13 @@ LABEL_71:
   -[PaletteView setAvatarViewVisible:](self, "setAvatarViewVisible:", [WeakRetained paletteShouldShowAvatarView]);
 }
 
-- (void)setTodayButtonVisible:(BOOL)a3
+- (void)setTodayButtonVisible:(BOOL)visible
 {
-  if (self->_todayButtonVisible != a3)
+  if (self->_todayButtonVisible != visible)
   {
-    v3 = a3;
+    visibleCopy = visible;
     todayButton = self->_todayButton;
-    if (v3)
+    if (visibleCopy)
     {
       if (!todayButton)
       {
@@ -894,18 +894,18 @@ LABEL_71:
 
         if (CalSolariumEnabled())
         {
-          v8 = +[UIButtonConfiguration plainButtonConfiguration];
+          todayButtonFont = +[UIButtonConfiguration plainButtonConfiguration];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_100110C50;
           v21[3] = &unk_100211980;
           v21[4] = self;
-          [v8 setTitleTextAttributesTransformer:v21];
+          [todayButtonFont setTitleTextAttributesTransformer:v21];
           v9 = [NSBundle bundleForClass:objc_opt_class()];
           v10 = [v9 localizedStringForKey:@"Today" value:&stru_1002133B8 table:0];
-          [v8 setTitle:v10];
+          [todayButtonFont setTitle:v10];
 
-          [(UIButton *)self->_todayButton setConfiguration:v8];
+          [(UIButton *)self->_todayButton setConfiguration:todayButtonFont];
           v11 = CalendarAppTintColor();
           [(UIButton *)self->_todayButton setTintColor:v11];
 
@@ -926,9 +926,9 @@ LABEL_71:
           v17 = CalendarAppTintColor();
           [(UIButton *)self->_todayButton setTintColor:v17];
 
-          v8 = [(PaletteView *)self todayButtonFont];
-          v18 = [(UIButton *)self->_todayButton titleLabel];
-          [v18 setFont:v8];
+          todayButtonFont = [(PaletteView *)self todayButtonFont];
+          titleLabel = [(UIButton *)self->_todayButton titleLabel];
+          [titleLabel setFont:todayButtonFont];
         }
 
         [(UIButton *)self->_todayButton addTarget:self action:"todayTapped" forControlEvents:64];
@@ -950,29 +950,29 @@ LABEL_71:
       [(UIButton *)self->_todayButton removeFromSuperview];
     }
 
-    self->_todayButtonVisible = v3;
+    self->_todayButtonVisible = visibleCopy;
   }
 }
 
-- (void)setDateStringVisible:(BOOL)a3
+- (void)setDateStringVisible:(BOOL)visible
 {
-  if (self->_dateStringVisible != a3)
+  if (self->_dateStringVisible != visible)
   {
     dateLabel = self->_dateLabel;
-    if (a3)
+    if (visible)
     {
       if (!dateLabel)
       {
-        v6 = [(PaletteView *)self newDateLabel];
+        newDateLabel = [(PaletteView *)self newDateLabel];
         v7 = self->_dateLabel;
-        self->_dateLabel = v6;
+        self->_dateLabel = newDateLabel;
       }
 
       if (!self->_animatableDateLabel)
       {
-        v8 = [(PaletteView *)self newDateLabel];
+        newDateLabel2 = [(PaletteView *)self newDateLabel];
         animatableDateLabel = self->_animatableDateLabel;
-        self->_animatableDateLabel = v8;
+        self->_animatableDateLabel = newDateLabel2;
 
         [(UILabel *)self->_animatableDateLabel setAlpha:0.0];
         [(PaletteView *)self addSubview:self->_animatableDateLabel];
@@ -994,45 +994,45 @@ LABEL_71:
       [(UILabel *)dateLabel removeFromSuperview];
     }
 
-    self->_dateStringVisible = a3;
+    self->_dateStringVisible = visible;
   }
 }
 
-- (void)setDateString:(id)a3
+- (void)setDateString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (!self->_dateLabel)
   {
-    v5 = [(PaletteView *)self newDateLabel];
+    newDateLabel = [(PaletteView *)self newDateLabel];
     dateLabel = self->_dateLabel;
-    self->_dateLabel = v5;
+    self->_dateLabel = newDateLabel;
   }
 
   if (!self->_animatableDateLabel)
   {
-    v7 = [(PaletteView *)self newDateLabel];
+    newDateLabel2 = [(PaletteView *)self newDateLabel];
     animatableDateLabel = self->_animatableDateLabel;
-    self->_animatableDateLabel = v7;
+    self->_animatableDateLabel = newDateLabel2;
 
     [(UILabel *)self->_animatableDateLabel setAlpha:0.0];
     [(PaletteView *)self addSubview:self->_animatableDateLabel];
   }
 
-  [(UILabel *)self->_dateLabel setAttributedText:v4];
-  [(UILabel *)self->_animatableDateLabel setAttributedText:v4];
+  [(UILabel *)self->_dateLabel setAttributedText:stringCopy];
+  [(UILabel *)self->_animatableDateLabel setAttributedText:stringCopy];
   dateString = self->_dateString;
-  self->_dateString = v4;
-  v10 = v4;
+  self->_dateString = stringCopy;
+  v10 = stringCopy;
 
   [(UILabel *)self->_dateLabel sizeToFit];
   [(UILabel *)self->_animatableDateLabel sizeToFit];
 }
 
-- (void)setAvatarContact:(id)a3
+- (void)setAvatarContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   avatarView = self->_avatarView;
-  v9 = v4;
+  v9 = contactCopy;
   if (!avatarView)
   {
     v6 = [[EKUILabeledAvatarView alloc] initWithPlacement:0 options:0];
@@ -1043,20 +1043,20 @@ LABEL_71:
     [(EKUILabeledAvatarView *)self->_avatarView addGestureRecognizer:v8];
     [(PaletteView *)self addSubview:self->_avatarView];
 
-    v4 = v9;
+    contactCopy = v9;
     avatarView = self->_avatarView;
   }
 
-  [(EKUILabeledAvatarView *)avatarView setContact:v4];
+  [(EKUILabeledAvatarView *)avatarView setContact:contactCopy];
 }
 
-- (void)setAvatarViewVisible:(BOOL)a3
+- (void)setAvatarViewVisible:(BOOL)visible
 {
-  self->_avatarViewVisible = a3;
+  self->_avatarViewVisible = visible;
   avatarView = self->_avatarView;
   if (avatarView)
   {
-    [(EKUILabeledAvatarView *)avatarView setAlpha:a3];
+    [(EKUILabeledAvatarView *)avatarView setAlpha:visible];
     [(PaletteView *)self setNeedsLayout];
 
     [(PaletteView *)self layoutIfNeeded];
@@ -1065,23 +1065,23 @@ LABEL_71:
 
 - (void)todayTapped
 {
-  v3 = [(PaletteView *)self delegate];
-  [v3 paletteTodayButtonTapped:self];
+  delegate = [(PaletteView *)self delegate];
+  [delegate paletteTodayButtonTapped:self];
 }
 
 - (void)avatarTapped
 {
-  v3 = [(PaletteView *)self delegate];
-  [v3 paletteAvatarViewTapped:self];
+  delegate = [(PaletteView *)self delegate];
+  [delegate paletteAvatarViewTapped:self];
 }
 
-- (void)setDividerLineVisible:(BOOL)a3
+- (void)setDividerLineVisible:(BOOL)visible
 {
-  if (self->_dividerLineVisible != a3)
+  if (self->_dividerLineVisible != visible)
   {
-    self->_dividerLineVisible = a3;
+    self->_dividerLineVisible = visible;
     dividerLine = self->_dividerLine;
-    if (a3)
+    if (visible)
     {
       if (!dividerLine)
       {
@@ -1108,7 +1108,7 @@ LABEL_71:
   }
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   dayInitialsHeaderView = self->_dayInitialsHeaderView;
   if (self->_weekdayHeaderVisible)
@@ -1125,9 +1125,9 @@ LABEL_71:
 
 - (void)_contentSizeCategoryChanged
 {
-  v3 = [(PaletteView *)self todayButtonFont];
-  v4 = [(UIButton *)self->_todayButton titleLabel];
-  [v4 setFont:v3];
+  todayButtonFont = [(PaletteView *)self todayButtonFont];
+  titleLabel = [(UIButton *)self->_todayButton titleLabel];
+  [titleLabel setFont:todayButtonFont];
 
   todayButton = self->_todayButton;
 
@@ -1144,16 +1144,16 @@ LABEL_71:
   }
 
   v5 = *v4;
-  v6 = [(PaletteView *)self traitCollection];
-  v7 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:v5 minimumContentSizeCategory:UIContentSizeCategoryLarge maximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge traitCollection:v6];
+  traitCollection = [(PaletteView *)self traitCollection];
+  v7 = [EKUIConstrainedFontUtilities constrainedFontForTextStyle:v5 minimumContentSizeCategory:UIContentSizeCategoryLarge maximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge traitCollection:traitCollection];
 
   return v7;
 }
 
-- (id)_generateWeekDayInitialsHeaderViewWithHorizontalSizeClass:(BOOL)a3
+- (id)_generateWeekDayInitialsHeaderViewWithHorizontalSizeClass:(BOOL)class
 {
   v3 = off_10020D510;
-  if (!a3)
+  if (!class)
   {
     v3 = off_10020D4A8;
   }

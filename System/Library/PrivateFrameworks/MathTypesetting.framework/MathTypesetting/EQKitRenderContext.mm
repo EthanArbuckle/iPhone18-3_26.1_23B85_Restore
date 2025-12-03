@@ -1,21 +1,21 @@
 @interface EQKitRenderContext
-- (EQKitRenderContext)initWithCGContext:(CGContext *)a3;
+- (EQKitRenderContext)initWithCGContext:(CGContext *)context;
 - (void)dealloc;
-- (void)setHighlightColor:(CGColor *)a3;
+- (void)setHighlightColor:(CGColor *)color;
 @end
 
 @implementation EQKitRenderContext
 
-- (EQKitRenderContext)initWithCGContext:(CGContext *)a3
+- (EQKitRenderContext)initWithCGContext:(CGContext *)context
 {
   v6.receiver = self;
   v6.super_class = EQKitRenderContext;
   v4 = [(EQKitRenderContext *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
+    CFRetain(context);
     v4->_selection = 0;
-    v4->_cgContext = a3;
+    v4->_cgContext = context;
     v4->_highlightColor = 0;
   }
 
@@ -36,21 +36,21 @@
   [(EQKitRenderContext *)&v4 dealloc];
 }
 
-- (void)setHighlightColor:(CGColor *)a3
+- (void)setHighlightColor:(CGColor *)color
 {
   highlightColor = self->_highlightColor;
-  if (highlightColor != a3)
+  if (highlightColor != color)
   {
     if (highlightColor)
     {
       CFRelease(highlightColor);
     }
 
-    self->_highlightColor = a3;
-    if (a3)
+    self->_highlightColor = color;
+    if (color)
     {
 
-      CFRetain(a3);
+      CFRetain(color);
     }
   }
 }

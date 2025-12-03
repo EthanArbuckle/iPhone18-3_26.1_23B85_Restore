@@ -1,17 +1,17 @@
 @interface HKSourceAliasMappings
 + (id)_builtInMappings;
 + (id)_createMedicationsMapping;
-+ (id)aliasNameForSource:(id)a3;
-+ (id)bundleIdentifierForIconForSource:(id)a3;
-+ (id)bundleIdentifierForInstallationStatusForSource:(id)a3;
++ (id)aliasNameForSource:(id)source;
++ (id)bundleIdentifierForIconForSource:(id)source;
++ (id)bundleIdentifierForInstallationStatusForSource:(id)source;
 @end
 
 @implementation HKSourceAliasMappings
 
-+ (id)aliasNameForSource:(id)a3
++ (id)aliasNameForSource:(id)source
 {
-  v4 = [a3 bundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.siri"])
+  bundleIdentifier = [source bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.siri"])
   {
     v5 = HKHealthKitFrameworkBundle();
     [v5 localizedStringForKey:@"SIRI_TITLE_WATCH" value:&stru_1F05FF230 table:@"Localizable"];
@@ -19,8 +19,8 @@
 
   else
   {
-    v6 = [a1 _builtInMappings];
-    v5 = [v6 objectForKeyedSubscript:v4];
+    _builtInMappings = [self _builtInMappings];
+    v5 = [_builtInMappings objectForKeyedSubscript:bundleIdentifier];
 
     [v5 aliasName];
   }
@@ -29,34 +29,34 @@
   return v7;
 }
 
-+ (id)bundleIdentifierForIconForSource:(id)a3
++ (id)bundleIdentifierForIconForSource:(id)source
 {
-  v4 = [a3 bundleIdentifier];
-  v5 = [a1 _builtInMappings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  bundleIdentifier = [source bundleIdentifier];
+  _builtInMappings = [self _builtInMappings];
+  v6 = [_builtInMappings objectForKeyedSubscript:bundleIdentifier];
 
-  v7 = [v6 bundleIdentifierForIcon];
+  bundleIdentifierForIcon = [v6 bundleIdentifierForIcon];
 
-  return v7;
+  return bundleIdentifierForIcon;
 }
 
-+ (id)bundleIdentifierForInstallationStatusForSource:(id)a3
++ (id)bundleIdentifierForInstallationStatusForSource:(id)source
 {
-  v4 = [a3 bundleIdentifier];
-  v5 = [a1 _builtInMappings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  bundleIdentifier = [source bundleIdentifier];
+  _builtInMappings = [self _builtInMappings];
+  v6 = [_builtInMappings objectForKeyedSubscript:bundleIdentifier];
 
-  v7 = [v6 bundleIdentifierForInstallationStatus];
+  bundleIdentifierForInstallationStatus = [v6 bundleIdentifierForInstallationStatus];
 
-  return v7;
+  return bundleIdentifierForInstallationStatus;
 }
 
 + (id)_builtInMappings
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"com.apple.Health.Medications";
-  v2 = [a1 _createMedicationsMapping];
-  v7[0] = v2;
+  _createMedicationsMapping = [self _createMedicationsMapping];
+  v7[0] = _createMedicationsMapping;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

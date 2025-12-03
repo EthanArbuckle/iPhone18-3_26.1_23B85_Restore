@@ -1,29 +1,29 @@
 @interface GPBUnknownFieldSet
-- (BOOL)hasField:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFieldFrom:(int)a3 input:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hasField:(int)field;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFieldFrom:(int)from input:(id)input;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (id)description;
-- (id)getField:(int)a3;
+- (id)getField:(int)field;
 - (id)sortedFields;
 - (unint64_t)countOfFields;
 - (unint64_t)hash;
 - (unint64_t)serializedSize;
 - (unint64_t)serializedSizeAsMessageSet;
-- (void)addField:(id)a3;
+- (void)addField:(id)field;
 - (void)dealloc;
-- (void)getTags:(int *)a3;
-- (void)mergeFromCodedInputStream:(id)a3;
-- (void)mergeFromData:(id)a3;
-- (void)mergeUnknownFields:(id)a3;
-- (void)writeAsMessageSetTo:(id)a3;
-- (void)writeToCodedOutputStream:(id)a3;
+- (void)getTags:(int *)tags;
+- (void)mergeFromCodedInputStream:(id)stream;
+- (void)mergeFromData:(id)data;
+- (void)mergeUnknownFields:(id)fields;
+- (void)writeAsMessageSetTo:(id)to;
+- (void)writeToCodedOutputStream:(id)stream;
 @end
 
 @implementation GPBUnknownFieldSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[GPBUnknownFieldSet allocWithZone:?]];
   fields = self->fields_;
@@ -48,7 +48,7 @@
   [(GPBUnknownFieldSet *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -57,7 +57,7 @@
   }
 
   fields = self->fields_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   result = (fields | v6) == 0;
   if (fields)
   {
@@ -91,23 +91,23 @@
   }
 }
 
-- (BOOL)hasField:(int)a3
+- (BOOL)hasField:(int)field
 {
   fields = self->fields_;
   if (fields)
   {
-    LOBYTE(fields) = CFDictionaryGetValue(fields, a3) != 0;
+    LOBYTE(fields) = CFDictionaryGetValue(fields, field) != 0;
   }
 
   return fields;
 }
 
-- (id)getField:(int)a3
+- (id)getField:(int)field
 {
   result = self->fields_;
   if (result)
   {
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, field);
   }
 
   return result;
@@ -177,7 +177,7 @@
   }
 }
 
-- (void)writeToCodedOutputStream:(id)a3
+- (void)writeToCodedOutputStream:(id)stream
 {
   fields = self->fields_;
   if (fields)
@@ -187,7 +187,7 @@
     CFDictionaryGetKeysAndValues(self->fields_, &v14, v7);
     if (Count < 2)
     {
-      [*v7 writeToOutput:a3];
+      [*v7 writeToOutput:stream];
     }
 
     else
@@ -211,7 +211,7 @@
       {
         v13 = *v12;
         v12 += 2;
-        [v13 writeToOutput:a3];
+        [v13 writeToOutput:stream];
         --Count;
       }
 
@@ -241,12 +241,12 @@
   return result;
 }
 
-- (void)writeAsMessageSetTo:(id)a3
+- (void)writeAsMessageSetTo:(id)to
 {
   fields = self->fields_;
   if (fields)
   {
-    CFDictionaryApplyFunction(fields, sub_10031BFA8, a3);
+    CFDictionaryApplyFunction(fields, sub_10031BFA8, to);
   }
 }
 
@@ -272,10 +272,10 @@
   return v3;
 }
 
-- (void)addField:(id)a3
+- (void)addField:(id)field
 {
-  v5 = [a3 number];
-  if (!v5)
+  number = [field number];
+  if (!number)
   {
     [NSException raise:NSInvalidArgumentException format:@"Zero is not a valid field number."];
   }
@@ -287,14 +287,14 @@
     self->fields_ = fields;
   }
 
-  CFDictionarySetValue(fields, v5, a3);
+  CFDictionarySetValue(fields, number, field);
 }
 
-- (void)mergeUnknownFields:(id)a3
+- (void)mergeUnknownFields:(id)fields
 {
-  if (a3)
+  if (fields)
   {
-    v4 = *(a3 + 1);
+    v4 = *(fields + 1);
     if (v4)
     {
       CFDictionaryApplyFunction(v4, sub_10031C20C, self);
@@ -302,22 +302,22 @@
   }
 }
 
-- (void)mergeFromData:(id)a3
+- (void)mergeFromData:(id)data
 {
-  v4 = [[GPBCodedInputStream alloc] initWithData:a3];
+  v4 = [[GPBCodedInputStream alloc] initWithData:data];
   [(GPBUnknownFieldSet *)self mergeFromCodedInputStream:v4];
   [(GPBCodedInputStream *)v4 checkLastTagWas:0];
 }
 
-- (BOOL)mergeFieldFrom:(int)a3 input:(id)a4
+- (BOOL)mergeFieldFrom:(int)from input:(id)input
 {
-  if (!GPBWireFormatIsValidTag(a3))
+  if (!GPBWireFormatIsValidTag(from))
   {
     sub_10031C6F8(a2, self);
   }
 
-  TagFieldNumber = GPBWireFormatGetTagFieldNumber(a3);
-  TagWireType = GPBWireFormatGetTagWireType(a3);
+  TagFieldNumber = GPBWireFormatGetTagFieldNumber(from);
+  TagWireType = GPBWireFormatGetTagWireType(from);
   v10 = 0;
   if (TagWireType <= 1)
   {
@@ -326,14 +326,14 @@
       if (TagWireType == 1)
       {
         v10 = 1;
-        [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addFixed64:", GPBCodedInputStreamReadFixed64(a4 + 1)}];
+        [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addFixed64:", GPBCodedInputStreamReadFixed64(input + 1)}];
       }
     }
 
     else
     {
       v10 = 1;
-      [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addVarint:", GPBCodedInputStreamReadInt64(a4 + 1)}];
+      [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addVarint:", GPBCodedInputStreamReadInt64(input + 1)}];
     }
   }
 
@@ -342,21 +342,21 @@
     switch(TagWireType)
     {
       case 2:
-        RetainedBytes = GPBCodedInputStreamReadRetainedBytes(a4 + 1);
+        RetainedBytes = GPBCodedInputStreamReadRetainedBytes(input + 1);
         v10 = 1;
         [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addLengthDelimited:", RetainedBytes}];
 
         break;
       case 3:
         v12 = objc_alloc_init(GPBUnknownFieldSet);
-        [a4 readUnknownGroup:TagFieldNumber message:v12];
+        [input readUnknownGroup:TagFieldNumber message:v12];
         v10 = 1;
         [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addGroup:", v12}];
 
         break;
       case 5:
         v10 = 1;
-        [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addFixed32:", GPBCodedInputStreamReadFixed32(a4 + 1)}];
+        [-[GPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:TagFieldNumber create:{1), "addFixed32:", GPBCodedInputStreamReadFixed32(input + 1)}];
         break;
     }
   }
@@ -364,17 +364,17 @@
   return v10;
 }
 
-- (void)mergeFromCodedInputStream:(id)a3
+- (void)mergeFromCodedInputStream:(id)stream
 {
   do
   {
-    Tag = GPBCodedInputStreamReadTag(a3 + 8);
+    Tag = GPBCodedInputStreamReadTag(stream + 8);
   }
 
-  while (Tag && [(GPBUnknownFieldSet *)self mergeFieldFrom:Tag input:a3]);
+  while (Tag && [(GPBUnknownFieldSet *)self mergeFieldFrom:Tag input:stream]);
 }
 
-- (void)getTags:(int *)a3
+- (void)getTags:(int *)tags
 {
   fields = self->fields_;
   if (fields)
@@ -385,7 +385,7 @@
     for (; Count; --Count)
     {
       v8 = *v7++;
-      *a3++ = v8;
+      *tags++ = v8;
     }
   }
 }

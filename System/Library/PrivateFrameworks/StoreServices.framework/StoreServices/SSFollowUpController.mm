@@ -1,13 +1,13 @@
 @interface SSFollowUpController
 + (id)sharedController;
 - (SSFollowUpController)init;
-- (id)_createFollowUpItemForIdentifier:(id)a3 userInfo:(id)a4;
-- (id)_createFollowUpItemForRenewCredentialsWithUserInfo:(id)a3;
-- (id)_dismissFollowUpWithIdentifier:(id)a3;
-- (id)_postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4;
-- (id)dismissFollowUpWithIdentifier:(id)a3 account:(id)a4;
-- (id)pendingFollowUpWithIdentifier:(id)a3;
-- (id)postFollowUpWithIdentifier:(id)a3 account:(id)a4 userInfo:(id)a5;
+- (id)_createFollowUpItemForIdentifier:(id)identifier userInfo:(id)info;
+- (id)_createFollowUpItemForRenewCredentialsWithUserInfo:(id)info;
+- (id)_dismissFollowUpWithIdentifier:(id)identifier;
+- (id)_postFollowUpWithIdentifier:(id)identifier userInfo:(id)info;
+- (id)dismissFollowUpWithIdentifier:(id)identifier account:(id)account;
+- (id)pendingFollowUpWithIdentifier:(id)identifier;
+- (id)postFollowUpWithIdentifier:(id)identifier account:(id)account userInfo:(id)info;
 @end
 
 @implementation SSFollowUpController
@@ -64,25 +64,25 @@ void __40__SSFollowUpController_sharedController__block_invoke()
   sharedController_ss_once_object___COUNTER__ = v0;
 }
 
-- (id)dismissFollowUpWithIdentifier:(id)a3 account:(id)a4
+- (id)dismissFollowUpWithIdentifier:(id)identifier account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  accountCopy = account;
+  if (!identifierCopy)
   {
     [SSFollowUpController dismissFollowUpWithIdentifier:account:];
   }
 
-  v8 = [(SSFollowUpController *)self pendingFollowUpWithIdentifier:v6];
+  v8 = [(SSFollowUpController *)self pendingFollowUpWithIdentifier:identifierCopy];
   objc_initWeak(&location, self);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __62__SSFollowUpController_dismissFollowUpWithIdentifier_account___block_invoke;
   v16 = &unk_1E84B0AF0;
   objc_copyWeak(&v19, &location);
-  v9 = v7;
+  v9 = accountCopy;
   v17 = v9;
-  v18 = v6;
+  v18 = identifierCopy;
   v10 = [v8 thenWithBlock:&v13];
   v11 = [SSBinaryPromise promiseWithPromise:v10, v13, v14, v15, v16];
 
@@ -182,24 +182,24 @@ LABEL_17:
   return v11;
 }
 
-- (id)pendingFollowUpWithIdentifier:(id)a3
+- (id)pendingFollowUpWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SSFollowUpController pendingFollowUpWithIdentifier:];
   }
 
   v5 = objc_alloc_init(SSPromise);
-  v6 = [(SSFollowUpController *)self followUpController];
+  followUpController = [(SSFollowUpController *)self followUpController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__SSFollowUpController_pendingFollowUpWithIdentifier___block_invoke;
   v10[3] = &unk_1E84B0B40;
   v7 = v5;
   v11 = v7;
-  v12 = v4;
-  [v6 pendingFollowUpItemsWithCompletion:v10];
+  v12 = identifierCopy;
+  [followUpController pendingFollowUpItemsWithCompletion:v10];
 
   v8 = v7;
   return v7;
@@ -244,15 +244,15 @@ uint64_t __54__SSFollowUpController_pendingFollowUpWithIdentifier___block_invoke
   return v4;
 }
 
-- (id)postFollowUpWithIdentifier:(id)a3 account:(id)a4 userInfo:(id)a5
+- (id)postFollowUpWithIdentifier:(id)identifier account:(id)account userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  identifierCopy = identifier;
+  accountCopy = account;
+  infoCopy = info;
+  v11 = infoCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (infoCopy)
     {
 LABEL_3:
       v12 = [v11 mutableCopy];
@@ -272,37 +272,37 @@ LABEL_3:
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
 LABEL_6:
   v13 = v12;
-  if (v9)
+  if (accountCopy)
   {
-    v14 = [v9 backingAccount];
-    v15 = [v14 identifier];
+    backingAccount = [accountCopy backingAccount];
+    identifier = [backingAccount identifier];
     v16 = getAAFollowUpUserInfoAccountIdentifier();
-    [v13 setObject:v15 forKeyedSubscript:v16];
+    [v13 setObject:identifier forKeyedSubscript:v16];
 
-    v17 = [v9 altDSID];
-    if ([v17 length])
+    altDSID = [accountCopy altDSID];
+    if ([altDSID length])
     {
       v18 = getAAFollowUpUserInfoAltDSID();
-      [v13 setObject:v17 forKeyedSubscript:v18];
+      [v13 setObject:altDSID forKeyedSubscript:v18];
     }
   }
 
-  v19 = [(SSFollowUpController *)self _postFollowUpWithIdentifier:v8 userInfo:v13];
+  v19 = [(SSFollowUpController *)self _postFollowUpWithIdentifier:identifierCopy userInfo:v13];
 
   return v19;
 }
 
-- (id)_createFollowUpItemForIdentifier:(id)a3 userInfo:(id)a4
+- (id)_createFollowUpItemForIdentifier:(id)identifier userInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  infoCopy = info;
+  if (!identifierCopy)
   {
     [SSFollowUpController _createFollowUpItemForIdentifier:userInfo:];
   }
 
-  if (![v6 isEqualToString:@"com.apple.SSFollowUpIdentifier.RenewCredentials"] || (-[SSFollowUpController _createFollowUpItemForRenewCredentialsWithUserInfo:](self, "_createFollowUpItemForRenewCredentialsWithUserInfo:", v7), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![identifierCopy isEqualToString:@"com.apple.SSFollowUpIdentifier.RenewCredentials"] || (-[SSFollowUpController _createFollowUpItemForRenewCredentialsWithUserInfo:](self, "_createFollowUpItemForRenewCredentialsWithUserInfo:", infoCopy), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = +[SSLogConfig sharedFollowUpConfig];
     if (!v9)
@@ -310,19 +310,19 @@ LABEL_6:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -332,7 +332,7 @@ LABEL_6:
       *v23 = 138543618;
       *&v23[4] = objc_opt_class();
       *&v23[12] = 2114;
-      *&v23[14] = v6;
+      *&v23[14] = identifierCopy;
       v13 = *&v23[4];
       LODWORD(v22) = 22;
       v14 = _os_log_send_and_compose_impl();
@@ -345,9 +345,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, v23, v22, *v23, *&v23[16], v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, v23, v22, *v23, *&v23[16], v24}];
       free(v14);
-      SSFileLog(v9, @"%@", v15, v16, v17, v18, v19, v20, v12);
+      SSFileLog(v9, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
     }
 
     goto LABEL_16;
@@ -358,12 +358,12 @@ LABEL_17:
   return v8;
 }
 
-- (id)_createFollowUpItemForRenewCredentialsWithUserInfo:(id)a3
+- (id)_createFollowUpItemForRenewCredentialsWithUserInfo:(id)info
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = getAAFollowUpUserInfoAltDSID();
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [infoCopy objectForKeyedSubscript:v4];
   v6 = [v5 length];
 
   if (!v6)
@@ -374,19 +374,19 @@ LABEL_17:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -491,7 +491,7 @@ LABEL_17:
       [SSFollowUpController _createFollowUpItemForRenewCredentialsWithUserInfo:];
     }
 
-    v33 = [v3 objectForKeyedSubscript:*v30];
+    v33 = [infoCopy objectForKeyedSubscript:*v30];
     if ([v33 length])
     {
       v34 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -558,40 +558,40 @@ LABEL_17:
   [v39 setTitle:v45];
 
   [v39 setUniqueIdentifier:@"com.apple.SSFollowUpIdentifier.RenewCredentials"];
-  [v39 setUserInfo:v3];
+  [v39 setUserInfo:infoCopy];
 
   return v39;
 }
 
-- (id)_dismissFollowUpWithIdentifier:(id)a3
+- (id)_dismissFollowUpWithIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SSFollowUpController _dismissFollowUpWithIdentifier:];
   }
 
   v5 = objc_alloc_init(SSBinaryPromise);
-  v6 = [(SSFollowUpController *)self followUpController];
-  v10[0] = v4;
+  followUpController = [(SSFollowUpController *)self followUpController];
+  v10[0] = identifierCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [(SSBinaryPromise *)v5 completionHandlerAdapter];
-  [v6 clearPendingFollowUpItemsWithUniqueIdentifiers:v7 completion:v8];
+  completionHandlerAdapter = [(SSBinaryPromise *)v5 completionHandlerAdapter];
+  [followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v7 completion:completionHandlerAdapter];
 
   return v5;
 }
 
-- (id)_postFollowUpWithIdentifier:(id)a3 userInfo:(id)a4
+- (id)_postFollowUpWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  infoCopy = info;
+  if (!identifierCopy)
   {
     [SSFollowUpController _postFollowUpWithIdentifier:userInfo:];
   }
 
-  v8 = [(SSFollowUpController *)self _createFollowUpItemForIdentifier:v6 userInfo:v7];
+  v8 = [(SSFollowUpController *)self _createFollowUpItemForIdentifier:identifierCopy userInfo:infoCopy];
   if (v8)
   {
     v9 = objc_alloc_init(SSBinaryPromise);
@@ -599,23 +599,23 @@ LABEL_17:
     v14[1] = 3221225472;
     v14[2] = __61__SSFollowUpController__postFollowUpWithIdentifier_userInfo___block_invoke;
     v14[3] = &unk_1E84AC050;
-    v14[4] = v6;
+    v14[4] = identifierCopy;
     [(SSBinaryPromise *)v9 addSuccessBlock:v14];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __61__SSFollowUpController__postFollowUpWithIdentifier_userInfo___block_invoke_56;
     v13[3] = &unk_1E84AD730;
-    v13[4] = v6;
+    v13[4] = identifierCopy;
     [(SSBinaryPromise *)v9 addErrorBlock:v13];
-    v10 = [(SSFollowUpController *)self followUpController];
-    v11 = [(SSBinaryPromise *)v9 completionHandlerAdapter];
-    [v10 postFollowUpItem:v8 completion:v11];
+    followUpController = [(SSFollowUpController *)self followUpController];
+    completionHandlerAdapter = [(SSBinaryPromise *)v9 completionHandlerAdapter];
+    [followUpController postFollowUpItem:v8 completion:completionHandlerAdapter];
   }
 
   else
   {
-    v10 = SSError(@"SSErrorDomain", 100, 0, @"Unable to create a FLFollowUpItem.");
-    v9 = [SSBinaryPromise promiseWithError:v10];
+    followUpController = SSError(@"SSErrorDomain", 100, 0, @"Unable to create a FLFollowUpItem.");
+    v9 = [SSBinaryPromise promiseWithError:followUpController];
   }
 
   return v9;

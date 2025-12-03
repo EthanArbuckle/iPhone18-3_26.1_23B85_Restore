@@ -1,7 +1,7 @@
 @interface ManagedSettingsObserver
 - (ManagedSettingsObserver)init;
 - (void)_fetchManagedSettings;
-- (void)_managedSettingsChangedWithEvent:(id)a3 settingsGroup:(id)a4;
+- (void)_managedSettingsChangedWithEvent:(id)event settingsGroup:(id)group;
 - (void)_managedSettingsSubcribeForChangesAndEvents;
 - (void)dealloc;
 @end
@@ -40,20 +40,20 @@
   if (_os_feature_enabled_impl() && sub_1005FCECC())
   {
     v3 = objc_opt_new();
-    v4 = [v3 audioAccessory];
-    v5 = [v4 temporaryPairingConfiguration];
-    v6 = [v5 unpairingTime];
-    v7 = [v6 hour];
+    audioAccessory = [v3 audioAccessory];
+    temporaryPairingConfiguration = [audioAccessory temporaryPairingConfiguration];
+    unpairingTime = [temporaryPairingConfiguration unpairingTime];
+    hour = [unpairingTime hour];
 
-    if ((v7 != 0) != [(ManagedSettingsObserver *)self allowTemporaryPairingOfAppleAudioAccessories])
+    if ((hour != 0) != [(ManagedSettingsObserver *)self allowTemporaryPairingOfAppleAudioAccessories])
     {
-      [(ManagedSettingsObserver *)self setAllowTemporaryPairingOfAppleAudioAccessories:v7 != 0];
+      [(ManagedSettingsObserver *)self setAllowTemporaryPairingOfAppleAudioAccessories:hour != 0];
       v8 = qword_100BCE8D8;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(ManagedSettingsObserver *)self allowTemporaryPairingOfAppleAudioAccessories];
+        allowTemporaryPairingOfAppleAudioAccessories = [(ManagedSettingsObserver *)self allowTemporaryPairingOfAppleAudioAccessories];
         v10 = "FALSE";
-        if (v9)
+        if (allowTemporaryPairingOfAppleAudioAccessories)
         {
           v10 = "TRUE";
         }
@@ -66,14 +66,14 @@
   }
 }
 
-- (void)_managedSettingsChangedWithEvent:(id)a3 settingsGroup:(id)a4
+- (void)_managedSettingsChangedWithEvent:(id)event settingsGroup:(id)group
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  groupCopy = group;
+  v6 = [groupCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -85,7 +85,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * v9) isEqualToString:{v8, v10}])
@@ -97,7 +97,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [groupCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

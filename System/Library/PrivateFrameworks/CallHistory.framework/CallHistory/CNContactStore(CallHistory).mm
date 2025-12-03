@@ -58,16 +58,16 @@
       *buf = 138740227;
       *&buf[4] = v13;
       *&buf[12] = 2117;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       _os_log_impl(&dword_1C3E90000, v17, OS_LOG_TYPE_DEFAULT, "Executing contact fetch request %{sensitive}@ using contact store %{sensitive}@", buf, 0x16u);
     }
 
-    v18 = [a1 executeFetchRequest:v13 error:a5];
-    v19 = [v18 value];
+    v18 = [self executeFetchRequest:v13 error:a5];
+    value = [v18 value];
     v20 = ch_framework_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v19 count];
+      v21 = [value count];
       *buf = 134217984;
       *&buf[4] = v21;
       _os_log_impl(&dword_1C3E90000, v20, OS_LOG_TYPE_DEFAULT, "Contact fetch request returned %lu results", buf, 0xCu);
@@ -76,12 +76,12 @@
 
   else
   {
-    v19 = 0;
+    value = 0;
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return value;
 }
 
 @end

@@ -1,79 +1,79 @@
 @interface TSSTheme
 + (id)presetBootstrapOrder;
 + (id)presetSources;
-+ (id)themeWithContext:(id)a3 alternate:(unint64_t)a4 withStylesheet:(id)a5;
-+ (void)registerPresetSourceClass:(Class)a3;
++ (id)themeWithContext:(id)context alternate:(unint64_t)alternate withStylesheet:(id)stylesheet;
++ (void)registerPresetSourceClass:(Class)class;
 + (void)registerPresetSourceClasses;
-- (BOOL)containsCGColor:(CGColor *)a3;
-- (BOOL)hasPresetsOfKind:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_shouldDoDOLCForPreset:(id)a3;
-- (TSSTheme)initWithContext:(id)a3;
-- (TSSTheme)initWithContext:(id)a3 documentStylesheet:(id)a4;
+- (BOOL)containsCGColor:(CGColor *)color;
+- (BOOL)hasPresetsOfKind:(id)kind;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_shouldDoDOLCForPreset:(id)preset;
+- (TSSTheme)initWithContext:(id)context;
+- (TSSTheme)initWithContext:(id)context documentStylesheet:(id)stylesheet;
 - (id)childEnumerator;
-- (id)migratedPresetUUIDForPresetUUID:(id)a3;
-- (id)modelPathComponentForChild:(id)a3;
-- (id)p_identifierForBootstrapTheme:(unint64_t)a3;
-- (id)presetOfKind:(id)a3 index:(unint64_t)a4;
-- (id)presetsOfKind:(id)a3;
+- (id)migratedPresetUUIDForPresetUUID:(id)d;
+- (id)modelPathComponentForChild:(id)child;
+- (id)p_identifierForBootstrapTheme:(unint64_t)theme;
+- (id)presetOfKind:(id)kind index:(unint64_t)index;
+- (id)presetsOfKind:(id)kind;
 - (id)referencedStyles;
-- (unint64_t)indexOfPreset:(id)a3;
-- (void)addPreset:(id)a3 ofKind:(id)a4;
-- (void)bootstrapThemeAlternate:(unint64_t)a3;
+- (unint64_t)indexOfPreset:(id)preset;
+- (void)addPreset:(id)preset ofKind:(id)kind;
+- (void)bootstrapThemeAlternate:(unint64_t)alternate;
 - (void)checkThemeStylesheetConsistency;
 - (void)clearAllReplacementsOfPresetUUIDs;
-- (void)clearReplacementsOfPresetUUID:(id)a3;
+- (void)clearReplacementsOfPresetUUID:(id)d;
 - (void)disablePresetValidation;
 - (void)enablePresetValidation;
-- (void)insertPreset:(id)a3 ofKind:(id)a4 atIndex:(unint64_t)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)movePresetOfKind:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (void)recordReplacementOfPresetUUID:(id)a3 withPresetUUID:(id)a4;
-- (void)removePreset:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setDocumentStylesheet:(id)a3;
-- (void)setLegacyStylesheet:(id)a3;
-- (void)setPresets:(id)a3 ofKind:(id)a4;
-- (void)setThemeIdentifier:(id)a3;
-- (void)upgradeStylesWithBlock:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)insertPreset:(id)preset ofKind:(id)kind atIndex:(unint64_t)index;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)movePresetOfKind:(id)kind fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)recordReplacementOfPresetUUID:(id)d withPresetUUID:(id)iD;
+- (void)removePreset:(id)preset;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setDocumentStylesheet:(id)stylesheet;
+- (void)setLegacyStylesheet:(id)stylesheet;
+- (void)setPresets:(id)presets ofKind:(id)kind;
+- (void)setThemeIdentifier:(id)identifier;
+- (void)upgradeStylesWithBlock:(id)block;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSSTheme
 
-+ (id)themeWithContext:(id)a3 alternate:(unint64_t)a4 withStylesheet:(id)a5
++ (id)themeWithContext:(id)context alternate:(unint64_t)alternate withStylesheet:(id)stylesheet
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v12 = objc_msgSend_initWithContext_documentStylesheet_(v10, v11, v9, v8);
+  stylesheetCopy = stylesheet;
+  contextCopy = context;
+  v10 = [self alloc];
+  v12 = objc_msgSend_initWithContext_documentStylesheet_(v10, v11, contextCopy, stylesheetCopy);
 
-  objc_msgSend_bootstrapThemeAlternate_(v12, v13, a4);
+  objc_msgSend_bootstrapThemeAlternate_(v12, v13, alternate);
 
   return v12;
 }
 
-- (TSSTheme)initWithContext:(id)a3
+- (TSSTheme)initWithContext:(id)context
 {
   v4 = MEMORY[0x277D81150];
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
+  contextCopy = context;
   v8 = objc_msgSend_stringWithUTF8String_(v5, v7, "[TSSTheme initWithContext:]");
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/styles/TSSTheme.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v11, v8, v10, 39, 0, "Designated initializer is -initWithContext:documentStylesheet:");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-  v15 = objc_msgSend_initWithContext_documentStylesheet_(self, v14, v6, 0);
+  v15 = objc_msgSend_initWithContext_documentStylesheet_(self, v14, contextCopy, 0);
 
   return v15;
 }
 
-- (TSSTheme)initWithContext:(id)a3 documentStylesheet:(id)a4
+- (TSSTheme)initWithContext:(id)context documentStylesheet:(id)stylesheet
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  contextCopy = context;
+  stylesheetCopy = stylesheet;
+  if (!stylesheetCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSSTheme initWithContext:documentStylesheet:]");
@@ -85,11 +85,11 @@
 
   v23.receiver = self;
   v23.super_class = TSSTheme;
-  v16 = [(TSSTheme *)&v23 initWithContext:v6];
+  v16 = [(TSSTheme *)&v23 initWithContext:contextCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->mDocumentStylesheet, a4);
+    objc_storeStrong(&v16->mDocumentStylesheet, stylesheet);
     v18 = objc_opt_new();
     mPresetsByKind = v17->mPresetsByKind;
     v17->mPresetsByKind = v18;
@@ -100,14 +100,14 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -124,42 +124,42 @@
   return isEqual;
 }
 
-- (void)setThemeIdentifier:(id)a3
+- (void)setThemeIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   objc_msgSend_willModify(self, v4, v5);
-  v8 = v11;
-  if (self->mThemeIdentifier != v11)
+  v8 = identifierCopy;
+  if (self->mThemeIdentifier != identifierCopy)
   {
-    v9 = objc_msgSend_copy(v11, v6, v7);
+    v9 = objc_msgSend_copy(identifierCopy, v6, v7);
     mThemeIdentifier = self->mThemeIdentifier;
     self->mThemeIdentifier = v9;
 
-    v8 = v11;
+    v8 = identifierCopy;
   }
 }
 
-- (void)setLegacyStylesheet:(id)a3
+- (void)setLegacyStylesheet:(id)stylesheet
 {
-  v5 = a3;
-  if (self->mLegacyStylesheet != v5)
+  stylesheetCopy = stylesheet;
+  if (self->mLegacyStylesheet != stylesheetCopy)
   {
-    v8 = v5;
+    v8 = stylesheetCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->mLegacyStylesheet, a3);
-    v5 = v8;
+    objc_storeStrong(&self->mLegacyStylesheet, stylesheet);
+    stylesheetCopy = v8;
   }
 }
 
-- (void)setDocumentStylesheet:(id)a3
+- (void)setDocumentStylesheet:(id)stylesheet
 {
-  v5 = a3;
-  if (self->mDocumentStylesheet != v5)
+  stylesheetCopy = stylesheet;
+  if (self->mDocumentStylesheet != stylesheetCopy)
   {
-    v8 = v5;
+    v8 = stylesheetCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->mDocumentStylesheet, a3);
-    v5 = v8;
+    objc_storeStrong(&self->mDocumentStylesheet, stylesheet);
+    stylesheetCopy = v8;
   }
 }
 
@@ -179,26 +179,26 @@
 {
   v3 = objc_opt_class();
 
-  MEMORY[0x2821F9670](a1, sel_registerPresetSourceClass_, v3);
+  MEMORY[0x2821F9670](self, sel_registerPresetSourceClass_, v3);
 }
 
-+ (void)registerPresetSourceClass:(Class)a3
++ (void)registerPresetSourceClass:(Class)class
 {
-  v5 = objc_msgSend_presetKinds(a3, a2, a3);
+  v5 = objc_msgSend_presetKinds(class, a2, class);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276CA1888;
   v7[3] = &unk_27A6EE928;
-  v7[4] = a1;
-  v7[5] = a3;
+  v7[4] = self;
+  v7[5] = class;
   objc_msgSend_enumerateObjectsUsingBlock_(v5, v6, v7);
 }
 
-- (id)presetsOfKind:(id)a3
+- (id)presetsOfKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
-    v4 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, a2, a3);
+    v4 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, a2, kind);
   }
 
   else
@@ -209,23 +209,23 @@
   return v4;
 }
 
-- (BOOL)hasPresetsOfKind:(id)a3
+- (BOOL)hasPresetsOfKind:(id)kind
 {
-  if (!a3)
+  if (!kind)
   {
     return 0;
   }
 
-  v3 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, a2, a3);
+  v3 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, a2, kind);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v5 = a3;
-  v8 = objc_msgSend_context(v5, v6, v7);
+  rootCopy = root;
+  v8 = objc_msgSend_context(rootCopy, v6, v7);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v9, v8);
 
   mPresetsByKind = self->mPresetsByKind;
@@ -234,33 +234,33 @@
   v13[2] = sub_276CA1A74;
   v13[3] = &unk_27A6EE978;
   v13[4] = self;
-  v14 = v5;
-  v11 = v5;
+  v14 = rootCopy;
+  v11 = rootCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(mPresetsByKind, v12, v13);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   mPresetsByKind = self->mPresetsByKind;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = sub_276CA1C70;
   v15 = &unk_27A6EE978;
-  v16 = self;
-  v17 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v17 = rootCopy;
+  v6 = rootCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(mPresetsByKind, v7, &v12);
-  v10 = objc_msgSend_context(v6, v8, v9, v12, v13, v14, v15, v16);
+  v10 = objc_msgSend_context(v6, v8, v9, v12, v13, v14, v15, selfCopy);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v11, v10);
 }
 
-- (void)setPresets:(id)a3 ofKind:(id)a4
+- (void)setPresets:(id)presets ofKind:(id)kind
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = a4;
-  if (!v9)
+  presetsCopy = presets;
+  kindCopy = kind;
+  if (!kindCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSSTheme setPresets:ofKind:]");
@@ -275,8 +275,8 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v53 = v9;
-  v18 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v17, v9);
+  v53 = kindCopy;
+  v18 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v17, kindCopy);
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v58, v63, 16);
   if (v20)
   {
@@ -307,9 +307,9 @@
     while (v21);
   }
 
-  if (v6 && objc_msgSend_count(v6, v32, v33))
+  if (presetsCopy && objc_msgSend_count(presetsCopy, v32, v33))
   {
-    v35 = objc_msgSend_mutableCopy(v6, v32, v34);
+    v35 = objc_msgSend_mutableCopy(presetsCopy, v32, v34);
     v36 = v53;
     objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v37, v35, v53);
   }
@@ -324,7 +324,7 @@
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v38 = v6;
+  v38 = presetsCopy;
   v40 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v39, &v54, v62, 16);
   if (v40)
   {
@@ -358,21 +358,21 @@
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPreset:(id)a3 ofKind:(id)a4
+- (void)addPreset:(id)preset ofKind:(id)kind
 {
-  v11 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v7, v6);
+  presetCopy = preset;
+  kindCopy = kind;
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v7, kindCopy);
   v10 = v8;
-  if (!v8 || (objc_msgSend_containsObject_(v8, v9, v11) & 1) == 0)
+  if (!v8 || (objc_msgSend_containsObject_(v8, v9, presetCopy) & 1) == 0)
   {
-    objc_msgSend_insertPreset_ofKind_atIndex_(self, v9, v11, v6, -1);
+    objc_msgSend_insertPreset_ofKind_atIndex_(self, v9, presetCopy, kindCopy, -1);
   }
 }
 
-- (BOOL)p_shouldDoDOLCForPreset:(id)a3
+- (BOOL)p_shouldDoDOLCForPreset:(id)preset
 {
-  v3 = a3;
+  presetCopy = preset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -388,39 +388,39 @@
   return v4 & 1;
 }
 
-- (void)insertPreset:(id)a3 ofKind:(id)a4 atIndex:(unint64_t)a5
+- (void)insertPreset:(id)preset ofKind:(id)kind atIndex:(unint64_t)index
 {
-  v29 = a3;
-  v8 = a4;
+  presetCopy = preset;
+  kindCopy = kind;
   objc_msgSend_willModify(self, v9, v10);
   objc_opt_class();
   v11 = TSUDynamicCast();
-  if (objc_msgSend_p_shouldDoDOLCForPreset_(self, v12, v29))
+  if (objc_msgSend_p_shouldDoDOLCForPreset_(self, v12, presetCopy))
   {
     v15 = objc_msgSend_context(self, v13, v14);
     objc_msgSend_wasAddedToDocumentWithContext_(v11, v16, v15);
   }
 
-  v17 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v13, v8);
+  v17 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v13, kindCopy);
   v20 = objc_msgSend_mutableCopy(v17, v18, v19);
 
   if (!v20)
   {
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v23, v20, v8);
+    objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v23, v20, kindCopy);
   }
 
-  if (a5 == -1 || objc_msgSend_count(v20, v21, v22) <= a5)
+  if (index == -1 || objc_msgSend_count(v20, v21, v22) <= index)
   {
-    objc_msgSend_addObject_(v20, v21, v29);
+    objc_msgSend_addObject_(v20, v21, presetCopy);
   }
 
   else
   {
-    objc_msgSend_insertObject_atIndex_(v20, v21, v29, a5);
+    objc_msgSend_insertObject_atIndex_(v20, v21, presetCopy, index);
   }
 
-  objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v24, v20, v8);
+  objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v24, v20, kindCopy);
   if (v11)
   {
     v28 = objc_msgSend_objectUUID(v11, v25, v26);
@@ -431,13 +431,13 @@
   }
 }
 
-- (void)removePreset:(id)a3
+- (void)removePreset:(id)preset
 {
-  v4 = a3;
-  if (v4)
+  presetCopy = preset;
+  if (presetCopy)
   {
-    v22 = v4;
-    v7 = objc_msgSend_presetKind(v4, v5, v6);
+    v22 = presetCopy;
+    v7 = objc_msgSend_presetKind(presetCopy, v5, v6);
     v9 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v8, v7);
     v12 = objc_msgSend_mutableCopy(v9, v10, v11);
 
@@ -456,14 +456,14 @@
       objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v21, v12, v7);
     }
 
-    v4 = v22;
+    presetCopy = v22;
   }
 }
 
-- (void)movePresetOfKind:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (void)movePresetOfKind:(id)kind fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v22 = a3;
-  v9 = objc_msgSend_presetsOfKind_(self, v8, v22);
+  kindCopy = kind;
+  v9 = objc_msgSend_presetsOfKind_(self, v8, kindCopy);
   v12 = objc_msgSend_mutableCopy(v9, v10, v11);
 
   if (!v12)
@@ -471,25 +471,25 @@
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  if (objc_msgSend_count(v12, v13, v14) > a4 && objc_msgSend_count(v12, v15, v16) > a5)
+  if (objc_msgSend_count(v12, v13, v14) > index && objc_msgSend_count(v12, v15, v16) > toIndex)
   {
-    v18 = objc_msgSend_presetOfKind_index_(self, v17, v22, a4);
+    v18 = objc_msgSend_presetOfKind_index_(self, v17, kindCopy, index);
     objc_msgSend_removeObject_(v12, v19, v18);
-    objc_msgSend_insertObject_atIndex_(v12, v20, v18, a5);
-    objc_msgSend_setPresets_ofKind_(self, v21, v12, v22);
+    objc_msgSend_insertObject_atIndex_(v12, v20, v18, toIndex);
+    objc_msgSend_setPresets_ofKind_(self, v21, v12, kindCopy);
   }
 }
 
-- (id)presetOfKind:(id)a3 index:(unint64_t)a4
+- (id)presetOfKind:(id)kind index:(unint64_t)index
 {
-  v6 = a3;
-  v8 = objc_msgSend_presetsOfKind_(self, v7, v6);
-  if (objc_msgSend_count(v8, v9, v10) <= a4)
+  kindCopy = kind;
+  v8 = objc_msgSend_presetsOfKind_(self, v7, kindCopy);
+  if (objc_msgSend_count(v8, v9, v10) <= index)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSSTheme presetOfKind:index:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/styles/TSSTheme.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 351, 0, "Attempt to request %{public}@ preset for out of bounds index %tu.", v6, a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 351, 0, "Attempt to request %{public}@ preset for out of bounds index %tu.", kindCopy, index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
     v12 = 0;
@@ -497,23 +497,23 @@
 
   else
   {
-    v12 = objc_msgSend_objectAtIndexedSubscript_(v8, v11, a4);
+    v12 = objc_msgSend_objectAtIndexedSubscript_(v8, v11, index);
   }
 
   return v12;
 }
 
-- (unint64_t)indexOfPreset:(id)a3
+- (unint64_t)indexOfPreset:(id)preset
 {
-  v4 = a3;
-  v8 = objc_msgSend_presetKind(v4, v5, v6);
+  presetCopy = preset;
+  v8 = objc_msgSend_presetKind(presetCopy, v5, v6);
   if (v8)
   {
     v9 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v7, v8);
     v12 = v9;
     if (v9 && objc_msgSend_count(v9, v10, v11))
     {
-      v14 = objc_msgSend_indexOfObjectIdenticalTo_(v12, v13, v4);
+      v14 = objc_msgSend_indexOfObjectIdenticalTo_(v12, v13, presetCopy);
     }
 
     else
@@ -530,14 +530,14 @@
   return v14;
 }
 
-- (BOOL)containsCGColor:(CGColor *)a3
+- (BOOL)containsCGColor:(CGColor *)color
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = objc_msgSend_colors(self, a2, a3, 0);
+  v4 = objc_msgSend_colors(self, a2, color, 0);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v16, v20, 16);
   if (v6)
   {
@@ -553,7 +553,7 @@
         }
 
         v12 = objc_msgSend_CGColor(*(*(&v16 + 1) + 8 * i), v7, v8);
-        if (CGColorEqualToColor(a3, v12))
+        if (CGColorEqualToColor(color, v12))
         {
           v13 = 1;
           goto LABEL_11;
@@ -592,9 +592,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)modelPathComponentForChild:(id)a3
+- (id)modelPathComponentForChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   objc_opt_class();
   v5 = TSUClassAndProtocolCast();
   v8 = v5;
@@ -609,20 +609,20 @@ LABEL_11:
 
   else
   {
-    ClassName = object_getClassName(v4);
-    v16 = objc_msgSend_stringWithFormat_(v9, v18, @"?%s-%p?", ClassName, v4);
+    ClassName = object_getClassName(childCopy);
+    v16 = objc_msgSend_stringWithFormat_(v9, v18, @"?%s-%p?", ClassName, childCopy);
   }
 
   return v16;
 }
 
-- (void)recordReplacementOfPresetUUID:(id)a3 withPresetUUID:(id)a4
+- (void)recordReplacementOfPresetUUID:(id)d withPresetUUID:(id)iD
 {
-  v21 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   objc_msgSend_willModify(self, v7, v8);
-  v10 = objc_msgSend_migratedPresetUUIDForPresetUUID_(self, v9, v6);
-  isEqual = objc_msgSend_isEqual_(v10, v11, v21);
+  v10 = objc_msgSend_migratedPresetUUIDForPresetUUID_(self, v9, iDCopy);
+  isEqual = objc_msgSend_isEqual_(v10, v11, dCopy);
 
   if (isEqual)
   {
@@ -636,15 +636,15 @@ LABEL_11:
 
   else
   {
-    objc_msgSend_setObject_forKeyedSubscript_(self->mReplacedPresetUUIDs, v13, v6, v21);
+    objc_msgSend_setObject_forKeyedSubscript_(self->mReplacedPresetUUIDs, v13, iDCopy, dCopy);
   }
 }
 
-- (void)clearReplacementsOfPresetUUID:(id)a3
+- (void)clearReplacementsOfPresetUUID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   objc_msgSend_willModify(self, v4, v5);
-  objc_msgSend_removeObjectForKey_(self->mReplacedPresetUUIDs, v6, v7);
+  objc_msgSend_removeObjectForKey_(self->mReplacedPresetUUIDs, v6, dCopy);
 }
 
 - (void)clearAllReplacementsOfPresetUUIDs
@@ -655,15 +655,15 @@ LABEL_11:
   MEMORY[0x2821F9670](mReplacedPresetUUIDs, sel_removeAllObjects, v4);
 }
 
-- (id)migratedPresetUUIDForPresetUUID:(id)a3
+- (id)migratedPresetUUIDForPresetUUID:(id)d
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(self->mReplacedPresetUUIDs, v5, v4);
+  dCopy = d;
+  v6 = objc_msgSend_objectForKeyedSubscript_(self->mReplacedPresetUUIDs, v5, dCopy);
 
-  v8 = v4;
+  v8 = dCopy;
   if (v6)
   {
-    v9 = v4;
+    v9 = dCopy;
     do
     {
       v8 = objc_msgSend_objectForKeyedSubscript_(self->mReplacedPresetUUIDs, v7, v9);
@@ -679,14 +679,14 @@ LABEL_11:
   return v8;
 }
 
-- (id)p_identifierForBootstrapTheme:(unint64_t)a3
+- (id)p_identifierForBootstrapTheme:(unint64_t)theme
 {
   v9 = *MEMORY[0x277D85DE8];
   v7[0] = xmmword_27A6EE9C0;
   v7[1] = *&off_27A6EE9D0;
   v7[2] = xmmword_27A6EE9E0;
   v8 = @"bootstrap-pages-2";
-  v3 = *(v7 + a3);
+  v3 = *(v7 + theme);
   for (i = 48; i != -8; i -= 8)
   {
   }
@@ -722,7 +722,7 @@ LABEL_11:
   return v2;
 }
 
-- (void)bootstrapThemeAlternate:(unint64_t)a3
+- (void)bootstrapThemeAlternate:(unint64_t)alternate
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
@@ -753,7 +753,7 @@ LABEL_11:
           v18 = objc_opt_class();
           v21 = objc_msgSend_presetSources(v18, v19, v20);
           v23 = objc_msgSend_objectForKeyedSubscript_(v21, v22, v17);
-          objc_msgSend_bootstrapPresetsOfKind_inTheme_alternate_(v23, v24, v17, self, a3);
+          objc_msgSend_bootstrapPresetsOfKind_inTheme_alternate_(v23, v24, v17, self, alternate);
 
           ++v16;
         }
@@ -766,7 +766,7 @@ LABEL_11:
     }
   }
 
-  v26 = objc_msgSend_p_identifierForBootstrapTheme_(self, v7, a3);
+  v26 = objc_msgSend_p_identifierForBootstrapTheme_(self, v7, alternate);
   objc_msgSend_setThemeIdentifier_(self, v27, v26);
 
   v28 = *MEMORY[0x277D85DE8];
@@ -799,47 +799,47 @@ LABEL_11:
   return v6;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   objc_msgSend_disablePresetValidation(self, v7, v8);
   mThemeIdentifier = self->mThemeIdentifier;
   self->mThemeIdentifier = 0;
 
-  v11 = *(a3 + 10);
+  v11 = *(archive + 10);
   if (v11)
   {
-    v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v10, *(a3 + 15) & 0xFFFFFFFFFFFFFFFELL);
+    v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v10, *(archive + 15) & 0xFFFFFFFFFFFFFFFELL);
     v13 = self->mThemeIdentifier;
     self->mThemeIdentifier = v12;
 
-    v11 = *(a3 + 10);
+    v11 = *(archive + 10);
   }
 
   if ((v11 & 2) != 0)
   {
-    v14 = *(a3 + 16);
+    v14 = *(archive + 16);
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = sub_276CA9718;
     v47[3] = &unk_27A6EEA50;
     v47[4] = self;
-    v15 = v6;
+    v15 = unarchiverCopy;
     v16 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v15, v17, v14, v16, 0, v47);
 
-    v11 = *(a3 + 10);
+    v11 = *(archive + 10);
   }
 
   if ((v11 & 4) != 0)
   {
-    v18 = *(a3 + 17);
+    v18 = *(archive + 17);
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = sub_276CA9730;
     v46[3] = &unk_27A6EEA50;
     v46[4] = self;
-    v19 = v6;
+    v19 = unarchiverCopy;
     v20 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v19, v21, v18, v20, 0, v46);
   }
@@ -851,7 +851,7 @@ LABEL_11:
   if (self->mPresetsByKind)
   {
     v25 = objc_alloc(MEMORY[0x277CBEA60]);
-    v27 = objc_msgSend_tsp_initWithColorArray_(v25, v26, a3 + 96);
+    v27 = objc_msgSend_tsp_initWithColorArray_(v25, v26, archive + 96);
     objc_msgSend_setObject_forKeyedSubscript_(self->mPresetsByKind, v28, v27, @"TSSColorPresetKind");
   }
 
@@ -866,54 +866,54 @@ LABEL_11:
   }
 
   v36 = objc_alloc(MEMORY[0x277CBEA60]);
-  v38 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v36, v37, a3 + 48);
+  v38 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v36, v37, archive + 48);
   v39 = objc_alloc(MEMORY[0x277CBEA60]);
-  v41 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v39, v40, a3 + 72);
+  v41 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v39, v40, archive + 72);
   v42 = objc_alloc(MEMORY[0x277CBEB38]);
   v44 = objc_msgSend_initWithObjects_forKeys_(v42, v43, v41, v38);
   mReplacedPresetUUIDs = self->mReplacedPresetUUIDs;
   self->mReplacedPresetUUIDs = v44;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v24 = a4;
+  archiverCopy = archiver;
   mThemeIdentifier = self->mThemeIdentifier;
   if (mThemeIdentifier)
   {
     v9 = objc_msgSend_tsp_protobufString(mThemeIdentifier, v6, v7);
-    sub_276CA98B4(a3, v9);
+    sub_276CA98B4(archive, v9);
   }
 
   mDocumentStylesheet = self->mDocumentStylesheet;
-  *(a3 + 10) |= 4u;
-  v11 = *(a3 + 17);
+  *(archive + 10) |= 4u;
+  v11 = *(archive + 17);
   if (!v11)
   {
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = MEMORY[0x277CA0650](v12);
-    *(a3 + 17) = v11;
+    *(archive + 17) = v11;
   }
 
-  objc_msgSend_setWeakReference_message_(v24, v6, mDocumentStylesheet, v11);
+  objc_msgSend_setWeakReference_message_(archiverCopy, v6, mDocumentStylesheet, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(self->mPresetsByKind, v13, @"TSSColorPresetKind");
-  objc_msgSend_tsp_saveToColorArray_(v14, v15, a3 + 96);
+  objc_msgSend_tsp_saveToColorArray_(v14, v15, archive + 96);
 
   v18 = objc_msgSend_allKeys(self->mReplacedPresetUUIDs, v16, v17);
-  objc_msgSend_tsp_saveToProtobufUUIDArray_(v18, v19, a3 + 48);
+  objc_msgSend_tsp_saveToProtobufUUIDArray_(v18, v19, archive + 48);
 
   v22 = objc_msgSend_allValues(self->mReplacedPresetUUIDs, v20, v21);
-  objc_msgSend_tsp_saveToProtobufUUIDArray_(v22, v23, a3 + 72);
+  objc_msgSend_tsp_saveToProtobufUUIDArray_(v22, v23, archive + 72);
 }
 
-- (void)upgradeStylesWithBlock:(id)a3
+- (void)upgradeStylesWithBlock:(id)block
 {
-  v30 = a3;
+  blockCopy = block;
   if (self->mLegacyStylesheet)
   {
     v6 = objc_msgSend_documentStylesheet(self, v4, v5);
@@ -930,7 +930,7 @@ LABEL_11:
 
     isLocked = objc_msgSend_isLocked(self->mLegacyStylesheet, v7, v8);
     objc_msgSend_setIsLocked_(self->mLegacyStylesheet, v17, 0);
-    v30[2](v30, self->mLegacyStylesheet);
+    blockCopy[2](blockCopy, self->mLegacyStylesheet);
     objc_msgSend_setIsLocked_(self->mLegacyStylesheet, v18, isLocked);
   }
 
@@ -949,7 +949,7 @@ LABEL_11:
     }
 
     v29 = objc_msgSend_documentStylesheet(self, v20, v21);
-    v30[2](v30, v29);
+    blockCopy[2](blockCopy, v29);
   }
 }
 

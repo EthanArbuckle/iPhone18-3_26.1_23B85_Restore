@@ -1,6 +1,6 @@
 @interface PKEditTableNoPassesView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEditTableNoPassesView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEditTableNoPassesView)initWithFrame:(CGRect)frame;
 - (PKEditTableNoPassesViewDelegate)delegate;
 - (void)findAppsForWalletTapped;
 - (void)layoutSubviews;
@@ -9,11 +9,11 @@
 
 @implementation PKEditTableNoPassesView
 
-- (PKEditTableNoPassesView)initWithFrame:(CGRect)a3
+- (PKEditTableNoPassesView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = PKEditTableNoPassesView;
-  v3 = [(PKEditTableNoPassesView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKEditTableNoPassesView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -131,8 +131,8 @@ void __41__PKEditTableNoPassesView_initWithFrame___block_invoke_2(uint64_t a1)
   buttonScanCode = self->_buttonScanCode;
   if (buttonScanCode)
   {
-    v16 = [(UIButton *)buttonScanCode titleLabel];
-    [v16 sizeThatFits:{v8, v22.size.height}];
+    titleLabel = [(UIButton *)buttonScanCode titleLabel];
+    [titleLabel sizeThatFits:{v8, v22.size.height}];
     v18 = v17;
 
     CGRectDivide(v22, &slice, &v22, v18, CGRectMinYEdge);
@@ -142,8 +142,8 @@ void __41__PKEditTableNoPassesView_initWithFrame___block_invoke_2(uint64_t a1)
     CGRectDivide(v22, &slice, &v22, 16.0, CGRectMinYEdge);
   }
 
-  v19 = [(UIButton *)self->_buttonFindApps titleLabel];
-  [v19 sizeThatFits:{v8, v22.size.height}];
+  titleLabel2 = [(UIButton *)self->_buttonFindApps titleLabel];
+  [titleLabel2 sizeThatFits:{v8, v22.size.height}];
   v21 = v20;
 
   CGRectDivide(v22, &slice, &v22, v21 + 5.0, CGRectMinYEdge);
@@ -152,10 +152,10 @@ void __41__PKEditTableNoPassesView_initWithFrame___block_invoke_2(uint64_t a1)
   [(UIButton *)self->_buttonFindApps setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_titleLabel sizeThatFits:?];
   v7 = (v6 + 0.0) + 16;
   [(UILabel *)self->_descriptionLabel sizeThatFits:width + -80.0, height];
@@ -163,15 +163,15 @@ void __41__PKEditTableNoPassesView_initWithFrame___block_invoke_2(uint64_t a1)
   buttonScanCode = self->_buttonScanCode;
   if (buttonScanCode)
   {
-    v11 = [(UIButton *)buttonScanCode titleLabel];
-    [v11 sizeThatFits:{width, height}];
+    titleLabel = [(UIButton *)buttonScanCode titleLabel];
+    [titleLabel sizeThatFits:{width, height}];
     v13 = v12;
 
     v9 = (v13 + 5.0 + v9) + 16;
   }
 
-  v14 = [(UIButton *)self->_buttonFindApps titleLabel];
-  [v14 sizeThatFits:{width, height}];
+  titleLabel2 = [(UIButton *)self->_buttonFindApps titleLabel];
+  [titleLabel2 sizeThatFits:{width, height}];
   v16 = v15;
 
   v17 = fmin(height, (v16 + 5.0 + v9));

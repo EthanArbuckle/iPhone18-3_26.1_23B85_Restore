@@ -27,9 +27,9 @@
     v20 = v17;
     do
     {
-      v21 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v22 = *v19;
-      *v19++ = v21;
+      *v19++ = array;
 
       --v20;
     }
@@ -38,9 +38,9 @@
   }
 
   v70[1] = v70;
-  v71 = a1;
+  selfCopy = self;
   v72 = a2;
-  v23 = [MEMORY[0x277CDCF98] emptyTileGroup];
+  emptyTileGroup = [MEMORY[0x277CDCF98] emptyTileGroup];
   if (!v75 || !v79)
   {
     goto LABEL_30;
@@ -113,8 +113,8 @@ LABEL_22:
           while (1)
           {
             v55 = v54 > v49 ? -1 : v54;
-            v56 = [v13 tileGroups];
-            v57 = [v56 count];
+            tileGroups = [v13 tileGroups];
+            v57 = [tileGroups count];
 
             v58 = *&v18[8 * v54];
             if (v55 < v57)
@@ -122,15 +122,15 @@ LABEL_22:
               break;
             }
 
-            [*&v18[8 * v54++] addObject:v23];
+            [*&v18[8 * v54++] addObject:emptyTileGroup];
             if (v17 == v54)
             {
               goto LABEL_12;
             }
           }
 
-          v59 = [v13 tileGroups];
-          v60 = [v59 objectAtIndexedSubscript:v55];
+          tileGroups2 = [v13 tileGroups];
+          v60 = [tileGroups2 objectAtIndexedSubscript:v55];
           [v58 addObject:v60];
 
           ++v54;
@@ -187,7 +187,7 @@ LABEL_12:
 LABEL_30:
   v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v62 = v72;
-  v63 = v71;
+  v63 = selfCopy;
   if (v17)
   {
     v64 = (v70 - ((8 * v17 + 15) & 0xFFFFFFFFFFFFFFF0));

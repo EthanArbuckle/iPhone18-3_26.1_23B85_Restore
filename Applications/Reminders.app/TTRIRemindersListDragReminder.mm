@@ -1,8 +1,8 @@
 @interface TTRIRemindersListDragReminder
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3;
++ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier;
 - (_TtC9Reminders29TTRIRemindersListDragReminder)init;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation TTRIRemindersListDragReminder
@@ -29,7 +29,7 @@
   *(v2 + 40) = v3;
   v4 = objc_opt_self();
 
-  v5 = [v4 writableTypeIdentifiersForItemProvider];
+  writableTypeIdentifiersForItemProvider = [v4 writableTypeIdentifiersForItemProvider];
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
   sub_100081340(v6);
@@ -38,7 +38,7 @@
   return v7.super.isa;
 }
 
-+ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3
++ (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   if (qword_100767368 != -1)
@@ -72,14 +72,14 @@
   }
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  v10 = sub_1004B1E4C(v6, v8, v9, v5);
+  selfCopy = self;
+  v10 = sub_1004B1E4C(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 

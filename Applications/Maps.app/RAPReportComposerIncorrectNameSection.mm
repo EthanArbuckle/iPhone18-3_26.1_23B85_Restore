@@ -1,12 +1,12 @@
 @interface RAPReportComposerIncorrectNameSection
-- (RAPReportComposerIncorrectNameSection)initWithCorrectableString:(id)a3 required:(BOOL)a4;
-- (id)cellForRowAtIndex:(int64_t)a3;
-- (void)setCurrentLabelCorrectableString:(id)a3;
+- (RAPReportComposerIncorrectNameSection)initWithCorrectableString:(id)string required:(BOOL)required;
+- (id)cellForRowAtIndex:(int64_t)index;
+- (void)setCurrentLabelCorrectableString:(id)string;
 @end
 
 @implementation RAPReportComposerIncorrectNameSection
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
   if (!self->_cell)
   {
@@ -16,8 +16,8 @@
 
     [(RAPTextTableViewCell *)self->_cell setSelectionStyle:0];
     [(RAPTextTableViewCell *)self->_cell setCorrectableItemKind:[(RAPPlaceCorrectableString *)self->_currentLabelCorrectableString kind]];
-    v6 = [(RAPPlaceCorrectableString *)self->_currentLabelCorrectableString value];
-    [(RAPTextTableViewCell *)self->_cell setValue:v6];
+    value = [(RAPPlaceCorrectableString *)self->_currentLabelCorrectableString value];
+    [(RAPTextTableViewCell *)self->_cell setValue:value];
 
     [(RAPTextTableViewCell *)self->_cell setDelegate:self];
     if (self->_isRequired)
@@ -33,37 +33,37 @@
   return v9;
 }
 
-- (void)setCurrentLabelCorrectableString:(id)a3
+- (void)setCurrentLabelCorrectableString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   currentLabelCorrectableString = self->_currentLabelCorrectableString;
-  if (currentLabelCorrectableString != v5)
+  if (currentLabelCorrectableString != stringCopy)
   {
-    v8 = v5;
+    v8 = stringCopy;
     if (currentLabelCorrectableString)
     {
       [(RAPPlaceCorrectableString *)currentLabelCorrectableString removeObserver:self];
     }
 
-    objc_storeStrong(&self->_currentLabelCorrectableString, a3);
-    v7 = [(RAPPlaceCorrectableString *)self->_currentLabelCorrectableString value];
-    [(RAPTextTableViewCell *)self->_cell setValue:v7];
+    objc_storeStrong(&self->_currentLabelCorrectableString, string);
+    value = [(RAPPlaceCorrectableString *)self->_currentLabelCorrectableString value];
+    [(RAPTextTableViewCell *)self->_cell setValue:value];
 
-    v5 = v8;
+    stringCopy = v8;
   }
 }
 
-- (RAPReportComposerIncorrectNameSection)initWithCorrectableString:(id)a3 required:(BOOL)a4
+- (RAPReportComposerIncorrectNameSection)initWithCorrectableString:(id)string required:(BOOL)required
 {
-  v6 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = RAPReportComposerIncorrectNameSection;
   v7 = [(RAPTablePartSection *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_isRequired = a4;
-    [(RAPReportComposerIncorrectNameSection *)v7 setCurrentLabelCorrectableString:v6];
+    v7->_isRequired = required;
+    [(RAPReportComposerIncorrectNameSection *)v7 setCurrentLabelCorrectableString:stringCopy];
   }
 
   return v8;

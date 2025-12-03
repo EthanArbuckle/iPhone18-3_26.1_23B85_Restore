@@ -1,46 +1,46 @@
 @interface PKDisbursementPaymentRequestValidator
-+ (id)validatorWithObject:(id)a3;
-+ (id)validatorWithObject:(id)a3 shouldSkipValidation:(BOOL)a4;
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4;
-- (PKDisbursementPaymentRequestValidator)initWithDisbursementPaymentRequest:(id)a3 shouldSkipSummaryItemValidation:(BOOL)a4;
++ (id)validatorWithObject:(id)object;
++ (id)validatorWithObject:(id)object shouldSkipValidation:(BOOL)validation;
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error;
+- (PKDisbursementPaymentRequestValidator)initWithDisbursementPaymentRequest:(id)request shouldSkipSummaryItemValidation:(BOOL)validation;
 @end
 
 @implementation PKDisbursementPaymentRequestValidator
 
-+ (id)validatorWithObject:(id)a3
++ (id)validatorWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_opt_class() validatorWithObject:v3 shouldSkipValidation:0];
+  objectCopy = object;
+  v4 = [objc_opt_class() validatorWithObject:objectCopy shouldSkipValidation:0];
 
   return v4;
 }
 
-+ (id)validatorWithObject:(id)a3 shouldSkipValidation:(BOOL)a4
++ (id)validatorWithObject:(id)object shouldSkipValidation:(BOOL)validation
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithDisbursementPaymentRequest:v5 shouldSkipSummaryItemValidation:v4];
+  validationCopy = validation;
+  objectCopy = object;
+  v6 = [objc_alloc(objc_opt_class()) initWithDisbursementPaymentRequest:objectCopy shouldSkipSummaryItemValidation:validationCopy];
 
   return v6;
 }
 
-- (PKDisbursementPaymentRequestValidator)initWithDisbursementPaymentRequest:(id)a3 shouldSkipSummaryItemValidation:(BOOL)a4
+- (PKDisbursementPaymentRequestValidator)initWithDisbursementPaymentRequest:(id)request shouldSkipSummaryItemValidation:(BOOL)validation
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = PKDisbursementPaymentRequestValidator;
   v8 = [(PKDisbursementPaymentRequestValidator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_disbursementPaymentRequest, a3);
-    v9->_shouldSkipSummaryItemValidation = a4;
+    objc_storeStrong(&v8->_disbursementPaymentRequest, request);
+    v9->_shouldSkipSummaryItemValidation = validation;
   }
 
   return v9;
 }
 
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -54,37 +54,37 @@
       goto LABEL_20;
     }
 
-    v10 = [(PKPaymentRequest *)self->_disbursementPaymentRequest paymentSummaryItems];
-    v11 = [v10 firstObject];
+    paymentSummaryItems = [(PKPaymentRequest *)self->_disbursementPaymentRequest paymentSummaryItems];
+    firstObject = [paymentSummaryItems firstObject];
     v12 = objc_opt_class();
     LOBYTE(v12) = [v12 isEqual:objc_opt_class()];
 
     if (v12)
     {
-      v13 = [v10 lastObject];
+      lastObject = [paymentSummaryItems lastObject];
       v14 = objc_opt_class();
       LOBYTE(v14) = [v14 isEqual:objc_opt_class()];
 
       if (v14)
       {
-        v15 = [(PKPaymentRequest *)self->_disbursementPaymentRequest merchantCapabilities];
-        v16 = [v10 pk_firstObjectPassingTest:&__block_literal_global_145];
+        merchantCapabilities = [(PKPaymentRequest *)self->_disbursementPaymentRequest merchantCapabilities];
+        v16 = [paymentSummaryItems pk_firstObjectPassingTest:&__block_literal_global_145];
         v17 = v16;
         v18 = v16 != 0;
-        if ((v15 & 0x80) == 0 || v16)
+        if ((merchantCapabilities & 0x80) == 0 || v16)
         {
           v7 = 0;
-          if ((v15 & 0x80) != 0 || !v16)
+          if ((merchantCapabilities & 0x80) != 0 || !v16)
           {
 LABEL_25:
 
-            if (((v15 >> 7) & 1) == v18)
+            if (((merchantCapabilities >> 7) & 1) == v18)
             {
-              v26 = [v10 pk_objectsPassingTest:&__block_literal_global_419];
+              v26 = [paymentSummaryItems pk_objectsPassingTest:&__block_literal_global_419];
               if ([v26 count] < 2)
               {
 
-                v26 = [v10 pk_objectsPassingTest:&__block_literal_global_421];
+                v26 = [paymentSummaryItems pk_objectsPassingTest:&__block_literal_global_421];
                 if ([v26 count] < 2)
                 {
 
@@ -97,11 +97,11 @@ LABEL_25:
                   disbursementPaymentRequest = self->_disbursementPaymentRequest;
                   v31 = objc_opt_class();
                   v32 = 0;
-                  v9 = _PKPaymentValidatePropertyArray(disbursementPaymentRequest, @"paymentSummaryItems", v31, v29, 1, a3, &v32);
+                  v9 = _PKPaymentValidatePropertyArray(disbursementPaymentRequest, @"paymentSummaryItems", v31, v29, 1, type, &v32);
                   v8 = v32;
 
 LABEL_15:
-                  if (!a4)
+                  if (!error)
                   {
                     goto LABEL_20;
                   }
@@ -158,7 +158,7 @@ LABEL_14:
   v9 = 0;
   v7 = 0;
   v8 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_20;
   }
@@ -179,7 +179,7 @@ LABEL_16:
     }
 
     [v21 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v21];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v21];
 
     v9 = 0;
   }

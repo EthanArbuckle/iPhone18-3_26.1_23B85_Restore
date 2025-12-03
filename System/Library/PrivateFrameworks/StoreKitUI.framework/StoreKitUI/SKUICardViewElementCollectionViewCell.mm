@@ -1,41 +1,41 @@
 @interface SKUICardViewElementCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)artworkBoundingSizeWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (double)_defaultWidthForLockupWithContext:(id)a3;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)artworkBoundingSizeWithViewElement:(id)element width:(double)width context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (double)_defaultWidthForLockupWithContext:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
 - (CALayer)compactAdCardHairlineLayer;
 - (NSString)impressionIdentifier;
 - (NSString)lineItem;
-- (SKUICardViewElementCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SKUICardViewElementCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIView)adCardBackgroundView;
-- (double)_dividerHeight:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_imageTapAction:(id)a3;
-- (void)_performDefaultActionForViewElement:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (double)_dividerHeight:(id)height;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
+- (void)_imageTapAction:(id)action;
+- (void)_performDefaultActionForViewElement:(id)element;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setArtworkBoundingSize:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)skuiadvertising_advertSelectionEventShouldBeForwarded:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setArtworkBoundingSize:(id)size;
+- (void)setBackgroundColor:(id)color;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSelected:(BOOL)selected;
+- (void)skuiadvertising_advertSelectionEventShouldBeForwarded:(id)forwarded;
 @end
 
 @implementation SKUICardViewElementCollectionViewCell
 
-- (SKUICardViewElementCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUICardViewElementCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICardViewElementCollectionViewCell initWithFrame:];
@@ -43,21 +43,21 @@
 
   v12.receiver = self;
   v12.super_class = SKUICardViewElementCollectionViewCell;
-  v8 = [(SKUIViewReuseCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIViewReuseCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
-    viewElements = v8->_viewElements;
-    v8->_viewElements = v9;
+    viewElements = height->_viewElements;
+    height->_viewElements = v9;
   }
 
-  return v8;
+  return height;
 }
 
-+ (CGSize)artworkBoundingSizeWithViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (CGSize)artworkBoundingSizeWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -68,10 +68,10 @@
   v14[2] = __90__SKUICardViewElementCollectionViewCell_artworkBoundingSizeWithViewElement_width_context___block_invoke;
   v14[3] = &unk_2781FC1F0;
   v16 = &v18;
-  v9 = v8;
+  v9 = contextCopy;
   v15 = v9;
-  v17 = a4;
-  [v7 enumerateChildrenUsingBlock:v14];
+  widthCopy = width;
+  [elementCopy enumerateChildrenUsingBlock:v14];
   v10 = v19[4];
   v11 = v19[5];
 
@@ -115,15 +115,15 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setArtworkBoundingSize:(id)a3
+- (void)setArtworkBoundingSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   artworkBoundingSize = self->_artworkBoundingSize;
-  if (artworkBoundingSize != v4)
+  if (artworkBoundingSize != sizeCopy)
   {
-    v8 = v4;
-    artworkBoundingSize = [artworkBoundingSize isEqual:v4];
-    v4 = v8;
+    v8 = sizeCopy;
+    artworkBoundingSize = [artworkBoundingSize isEqual:sizeCopy];
+    sizeCopy = v8;
     if ((artworkBoundingSize & 1) == 0)
     {
       v6 = [v8 copy];
@@ -131,11 +131,11 @@ LABEL_6:
       self->_artworkBoundingSize = v6;
 
       artworkBoundingSize = [(SKUICardViewElementCollectionViewCell *)self setNeedsLayout];
-      v4 = v8;
+      sizeCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](artworkBoundingSize, v4);
+  MEMORY[0x2821F96F8](artworkBoundingSize, sizeCopy);
 }
 
 - (UIView)adCardBackgroundView
@@ -147,19 +147,19 @@ LABEL_6:
     v5 = self->_adCardBackgroundView;
     self->_adCardBackgroundView = v4;
 
-    v6 = [(UIView *)self->_adCardBackgroundView layer];
-    [v6 setCornerRadius:5.0];
+    layer = [(UIView *)self->_adCardBackgroundView layer];
+    [layer setCornerRadius:5.0];
 
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = 1.0 / v8;
-    v10 = [(UIView *)self->_adCardBackgroundView layer];
-    [v10 setBorderWidth:v9];
+    layer2 = [(UIView *)self->_adCardBackgroundView layer];
+    [layer2 setBorderWidth:v9];
 
     v11 = [MEMORY[0x277D75348] colorWithHue:0.57292 saturation:0.06531 brightness:0.96078 alpha:1.0];
-    v12 = [v11 CGColor];
-    v13 = [(UIView *)self->_adCardBackgroundView layer];
-    [v13 setBorderColor:v12];
+    cGColor = [v11 CGColor];
+    layer3 = [(UIView *)self->_adCardBackgroundView layer];
+    [layer3 setBorderColor:cGColor];
 
     adCardBackgroundView = self->_adCardBackgroundView;
   }
@@ -174,9 +174,9 @@ LABEL_6:
   compactAdCardHairlineLayer = self->_compactAdCardHairlineLayer;
   if (!compactAdCardHairlineLayer)
   {
-    v4 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     v5 = self->_compactAdCardHairlineLayer;
-    self->_compactAdCardHairlineLayer = v4;
+    self->_compactAdCardHairlineLayer = layer;
 
     v6 = [MEMORY[0x277D75348] colorWithHue:0.57292 saturation:0.06531 brightness:0.96078 alpha:1.0];
     -[CALayer setBackgroundColor:](self->_compactAdCardHairlineLayer, "setBackgroundColor:", [v6 CGColor]);
@@ -189,29 +189,29 @@ LABEL_6:
   return v7;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v9 = [v7 cardType] == 1;
+  v9 = [elementCopy cardType] == 1;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__SKUICardViewElementCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke;
   v12[3] = &unk_2781FC870;
-  v15 = a4;
-  v10 = v8;
+  reasonCopy = reason;
+  v10 = contextCopy;
   v16 = v9;
   v13 = v10;
   v14 = &v17;
-  [v7 enumerateChildrenUsingBlock:v12];
-  LOBYTE(v8) = *(v18 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v12];
+  LOBYTE(contextCopy) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return v8;
+  return contextCopy;
 }
 
 void __88__SKUICardViewElementCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, void *a2)
@@ -263,17 +263,17 @@ LABEL_12:
   *(*(*(a1 + 40) + 8) + 24) = (*(*(*(a1 + 40) + 8) + 24) | v4) & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v8 = [v6 style];
-  v9 = [v8 itemWidth];
-  [v9 floatValue];
+  style = [elementCopy style];
+  itemWidth = [style itemWidth];
+  [itemWidth floatValue];
   v11 = v10;
 
   if (v11 <= 0.00000011921)
@@ -282,10 +282,10 @@ LABEL_12:
     v19[1] = 3221225472;
     v19[2] = __77__SKUICardViewElementCollectionViewCell_preferredSizeForViewElement_context___block_invoke;
     v19[3] = &unk_2781F95A0;
-    v20 = v7;
+    v20 = contextCopy;
     v21 = &v23;
-    v22 = a1;
-    [v6 enumerateChildrenUsingBlock:v19];
+    selfCopy = self;
+    [elementCopy enumerateChildrenUsingBlock:v19];
 
     v12 = v24[3];
   }
@@ -298,10 +298,10 @@ LABEL_12:
 
   if (v12 <= 0.00000011920929)
   {
-    [v7 defaultItemWidthForViewElement:v6];
+    [contextCopy defaultItemWidthForViewElement:elementCopy];
   }
 
-  [a1 sizeThatFitsWidth:v6 viewElement:v7 context:?];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v14 = v13;
   v16 = v15;
   _Block_object_dispose(&v23, 8);
@@ -378,25 +378,25 @@ LABEL_22:
 LABEL_23:
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [SKUICardLayout layoutWithCardViewElement:v8 context:v7];
-  v10 = [v7 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  v9 = [SKUICardLayout layoutWithCardViewElement:elementCopy context:contextCopy];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   [v9 horizontalContentInset];
   v15[1] = 3221225472;
   v15[0] = MEMORY[0x277D85DD0];
   v15[2] = __83__SKUICardViewElementCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v15[3] = &unk_2781FC898;
   v16 = v9;
-  v17 = v10;
-  v19 = a4 + v11 * -2.0;
-  v18 = v7;
-  v12 = v7;
-  v13 = v10;
+  v17 = labelLayoutCache;
+  v19 = width + v11 * -2.0;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = labelLayoutCache;
   v14 = v9;
-  [v8 enumerateChildrenUsingBlock:v15];
+  [elementCopy enumerateChildrenUsingBlock:v15];
 }
 
 uint64_t __83__SKUICardViewElementCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -491,17 +491,17 @@ LABEL_23:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3010000000;
   v53 = &unk_215F8ACD7;
-  v54 = a3;
+  widthCopy = width;
   v55 = 0;
-  v9 = [SKUICardLayout layoutWithCardViewElement:v7 context:v8];
+  v9 = [SKUICardLayout layoutWithCardViewElement:elementCopy context:contextCopy];
   [v9 horizontalContentInset];
   v11 = v10;
   v45 = 0;
@@ -510,15 +510,15 @@ LABEL_23:
   v48 = &unk_215F8ACD7;
   v49 = *MEMORY[0x277CBF3A8];
   v29 = v49;
-  v12 = [v7 flattenedChildren];
+  flattenedChildren = [elementCopy flattenedChildren];
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
   v43[3] = __Block_byref_object_copy__34;
   v43[4] = __Block_byref_object_dispose__34;
   v44 = 0;
-  v13 = [v7 cardType];
-  v14 = a3 + v11 * -2.0;
+  cardType = [elementCopy cardType];
+  v14 = width + v11 * -2.0;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3010000000;
@@ -534,12 +534,12 @@ LABEL_23:
   v32 = &v45;
   v33 = &v38;
   v34 = v43;
-  v37 = v13 == 2;
+  v37 = cardType == 2;
   v35 = &v50;
-  [v12 enumerateObjectsUsingBlock:v30];
-  v16 = [v12 lastObject];
-  v17 = v16;
-  if (v13 == 2)
+  [flattenedChildren enumerateObjectsUsingBlock:v30];
+  lastObject = [flattenedChildren lastObject];
+  v17 = lastObject;
+  if (cardType == 2)
   {
     v18 = v39;
     v19 = v51;
@@ -558,9 +558,9 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  if (v16)
+  if (lastObject)
   {
-    [v15 bottomInsetForLastViewElement:v16 width:v14];
+    [v15 bottomInsetForLastViewElement:lastObject width:v14];
     v19 = v51;
     v21 = v51[5];
 LABEL_7:
@@ -656,14 +656,14 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
   }
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSHashTable *)self->_artworkRelatedChildViewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
-  objc_storeStrong(&self->_cardElement, a3);
-  v11 = [SKUICardLayout layoutWithCardViewElement:v9 context:v10];
+  objc_storeStrong(&self->_cardElement, element);
+  v11 = [SKUICardLayout layoutWithCardViewElement:elementCopy context:contextCopy];
   layout = self->_layout;
   self->_layout = v11;
 
@@ -672,11 +672,11 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
 
   [(NSMapTable *)self->_viewElements removeAllObjects];
   self->_hasBottomAlignedItems = 0;
-  self->_isActivityCard = [v9 cardType] == 1;
-  v14 = [(SKUICardLayout *)self->_layout layoutStyle];
+  self->_isActivityCard = [elementCopy cardType] == 1;
+  layoutStyle = [(SKUICardLayout *)self->_layout layoutStyle];
   programmedCardBackgroundView = self->_programmedCardBackgroundView;
-  v16 = v14 == 1;
-  if (v14 == 1)
+  v16 = layoutStyle == 1;
+  if (layoutStyle == 1)
   {
     if (!programmedCardBackgroundView)
     {
@@ -684,11 +684,11 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
       v18 = self->_programmedCardBackgroundView;
       self->_programmedCardBackgroundView = v17;
 
-      v19 = [(UIView *)self->_programmedCardBackgroundView layer];
-      [v19 setCornerRadius:5.0];
+      layer = [(UIView *)self->_programmedCardBackgroundView layer];
+      [layer setCornerRadius:5.0];
 
-      v20 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      [v20 addSubview:self->_programmedCardBackgroundView];
+      contentView = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_programmedCardBackgroundView];
 
       programmedCardBackgroundView = self->_programmedCardBackgroundView;
     }
@@ -702,15 +702,15 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
   }
 
   [(UIView *)programmedCardBackgroundView setHidden:v21];
-  v22 = [v9 isAdCard];
-  v23 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-  [v23 setHidden:v22 ^ 1u];
+  isAdCard = [elementCopy isAdCard];
+  adCardBackgroundView = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+  [adCardBackgroundView setHidden:isAdCard ^ 1u];
 
-  v24 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-  [v24 setHidden:v22 ^ 1u];
+  compactAdCardHairlineLayer = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+  [compactAdCardHairlineLayer setHidden:isAdCard ^ 1u];
 
   [(SKUICardLayout *)self->_layout horizontalContentInset];
-  v26 = a4 + v25 * -2.0;
+  v26 = width + v25 * -2.0;
   backgroundWrapper = self->_backgroundWrapper;
   self->_backgroundWrapper = 0;
 
@@ -725,12 +725,12 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
   v51 = 3221225472;
   v52 = __77__SKUICardViewElementCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v53 = &unk_2781FC8E8;
-  v29 = v9;
+  v29 = elementCopy;
   v54 = v29;
   v58 = v26;
-  v30 = v10;
+  v30 = contextCopy;
   v55 = v30;
-  v56 = self;
+  selfCopy = self;
   v59 = v16;
   v57 = &v60;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:&v50];
@@ -741,18 +741,18 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
 
   if (self->_isActivityCard)
   {
-    v31 = [v30 clientContext];
-    v32 = SKUIUserInterfaceIdiom(v31);
+    clientContext = [v30 clientContext];
+    v32 = SKUIUserInterfaceIdiom(clientContext);
 
     if (v32 == 1)
     {
-      v33 = [(SKUICardViewElement *)self->_cardElement style];
-      v34 = [v33 borderRadius];
+      style = [(SKUICardViewElement *)self->_cardElement style];
+      borderRadius = [style borderRadius];
 
-      if (v34)
+      if (borderRadius)
       {
         v35 = objc_alloc_init(MEMORY[0x277CD9F90]);
-        [v34 cornerRadiiValue];
+        [borderRadius cornerRadiiValue];
         v37 = v36;
         v39 = v38;
         v41 = v40;
@@ -786,11 +786,11 @@ void __79__SKUICardViewElementCollectionViewCell_sizeThatFitsWidth_viewElement_c
 
         v47 = [v44 bezierPathWithRoundedRect:v46 byRoundingCorners:? cornerRadii:?];
         [v35 setPath:{objc_msgSend(v47, "CGPath")}];
-        v48 = [(SKUICardViewElementCollectionViewCell *)self layer];
-        [v48 setMasksToBounds:1];
+        layer2 = [(SKUICardViewElementCollectionViewCell *)self layer];
+        [layer2 setMasksToBounds:1];
 
-        v49 = [(SKUICardViewElementCollectionViewCell *)self layer];
-        [v49 setMask:v35];
+        layer3 = [(SKUICardViewElementCollectionViewCell *)self layer];
+        [layer3 setMask:v35];
       }
     }
   }
@@ -1111,14 +1111,14 @@ LABEL_65:
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
-  v25 = v8;
-  v10 = [v8 requestIdentifier];
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  v25 = requestCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -1140,15 +1140,15 @@ LABEL_65:
 
         v15 = *(*(&v32 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
-          v21 = v26;
-          [v15 setImage:v26];
+          v21 = imageCopy;
+          [v15 setImage:imageCopy];
 
           LOBYTE(v19) = 1;
-          v22 = v8;
+          v22 = requestCopy;
           goto LABEL_22;
         }
       }
@@ -1173,7 +1173,7 @@ LABEL_65:
   {
     v20 = *v29;
     v22 = v25;
-    v21 = v26;
+    v21 = imageCopy;
     while (2)
     {
       for (j = 0; j != v19; ++j)
@@ -1183,7 +1183,7 @@ LABEL_65:
           objc_enumerationMutation(obj);
         }
 
-        if ([*(*(&v28 + 1) + 8 * j) setImage:v26 forArtworkRequest:v25 context:v9])
+        if ([*(*(&v28 + 1) + 8 * j) setImage:imageCopy forArtworkRequest:v25 context:contextCopy])
         {
           LOBYTE(v19) = 1;
           goto LABEL_22;
@@ -1202,8 +1202,8 @@ LABEL_65:
 
   else
   {
-    v22 = v8;
-    v21 = v26;
+    v22 = requestCopy;
+    v21 = imageCopy;
   }
 
 LABEL_22:
@@ -1211,29 +1211,29 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v10 = [(SKUIViewElement *)self->_cardElement flattenedChildren];
-  v11 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  flattenedChildren = [(SKUIViewElement *)self->_cardElement flattenedChildren];
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__SKUICardViewElementCollectionViewCell_updateWithItemState_context_animated___block_invoke;
   v17[3] = &unk_2781FC910;
-  v12 = v11;
+  v12 = allExistingViews;
   v18 = v12;
   v21 = &v23;
-  v13 = v8;
+  v13 = stateCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = contextCopy;
   v20 = v14;
-  v22 = a5;
-  [v10 enumerateObjectsUsingBlock:v17];
+  animatedCopy = animated;
+  [flattenedChildren enumerateObjectsUsingBlock:v17];
   v15 = *(v24 + 24);
 
   _Block_object_dispose(&v23, 8);
@@ -1252,11 +1252,11 @@ void __78__SKUICardViewElementCollectionViewCell_updateWithItemState_context_ani
   }
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SKUIViewElement *)self->_cardElement flattenedChildren];
-  v6 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  identifierCopy = identifier;
+  flattenedChildren = [(SKUIViewElement *)self->_cardElement flattenedChildren];
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1267,12 +1267,12 @@ void __78__SKUICardViewElementCollectionViewCell_updateWithItemState_context_ani
   v11[1] = 3221225472;
   v11[2] = __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2781FC428;
-  v7 = v6;
+  v7 = allExistingViews;
   v12 = v7;
   v14 = &v15;
-  v8 = v4;
+  v8 = identifierCopy;
   v13 = v8;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
   v9 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -1298,64 +1298,64 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   }
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   backgroundViewWithParallax = self->_backgroundViewWithParallax;
-  v4 = a3;
-  [(SKUIPerspectiveView *)backgroundViewWithParallax setPerspectiveTargetView:v4];
+  viewCopy = view;
+  [(SKUIPerspectiveView *)backgroundViewWithParallax setPerspectiveTargetView:viewCopy];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v9.receiver = self;
   v9.super_class = SKUICardViewElementCollectionViewCell;
-  [(SKUIViewReuseCollectionViewCell *)&v9 applyLayoutAttributes:a3];
+  [(SKUIViewReuseCollectionViewCell *)&v9 applyLayoutAttributes:attributes];
   if ([(SKUICardViewElement *)self->_cardElement isAdCard])
   {
-    v4 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-    v5 = [v4 isHidden];
+    adCardBackgroundView = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+    isHidden = [adCardBackgroundView isHidden];
 
-    if ((v5 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
-      v7 = [v6 CGColor];
-      v8 = [(SKUICardViewElementCollectionViewCell *)self layer];
-      [v8 setBackgroundColor:v7];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      cGColor = [whiteColor CGColor];
+      layer = [(SKUICardViewElementCollectionViewCell *)self layer];
+      [layer setBackgroundColor:cGColor];
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = SKUICardViewElementCollectionViewCell;
   [(SKUICollectionViewCell *)&v6 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     if ([(SKUICardViewElement *)self->_cardElement isAdCard])
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
-      [v5 sendAction:sel_skuiadvertising_advertWasSelected_ to:0 from:self forEvent:0];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] sendAction:sel_skuiadvertising_advertWasSelected_ to:0 from:self forEvent:0];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   if (self->_isActivityCard)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     v6.receiver = self;
     v6.super_class = SKUICardViewElementCollectionViewCell;
-    [(SKUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:v4];
+    [(SKUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:clearColor];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SKUICardViewElementCollectionViewCell;
-    [(SKUIViewReuseCollectionViewCell *)&v5 setBackgroundColor:a3];
+    [(SKUIViewReuseCollectionViewCell *)&v5 setBackgroundColor:color];
   }
 }
 
@@ -1364,20 +1364,20 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   v124.receiver = self;
   v124.super_class = SKUICardViewElementCollectionViewCell;
   [(SKUICollectionViewCell *)&v124 layoutSubviews];
-  v3 = [(SKUICardViewElementCollectionViewCell *)self backgroundColor];
+  backgroundColor = [(SKUICardViewElementCollectionViewCell *)self backgroundColor];
   v4 = [(SKUIViewElement *)self->_cardElement firstChildForElementType:7];
 
-  v94 = [(SKUICardViewElement *)self->_cardElement cardType];
+  cardType = [(SKUICardViewElement *)self->_cardElement cardType];
   v95 = v4;
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
 
-    v3 = v5;
+    backgroundColor = clearColor;
   }
 
-  v6 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-  [v6 bounds];
+  contentView = [(SKUICardViewElementCollectionViewCell *)self contentView];
+  [contentView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1391,15 +1391,15 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   programmedCardBackgroundView = self->_programmedCardBackgroundView;
   if (programmedCardBackgroundView && ![(UIView *)programmedCardBackgroundView isHidden])
   {
-    v24 = SKUIColorSchemeStyleForColor(v3);
+    v24 = SKUIColorSchemeStyleForColor(backgroundColor);
     if (v24 <= 3)
     {
-      v25 = SKUIColorByAdjustingBrightness(v3, flt_215F3F770[v24]);
+      v25 = SKUIColorByAdjustingBrightness(backgroundColor, flt_215F3F770[v24]);
 
-      v3 = v25;
+      backgroundColor = v25;
     }
 
-    [(UIView *)self->_programmedCardBackgroundView setBackgroundColor:v3];
+    [(UIView *)self->_programmedCardBackgroundView setBackgroundColor:backgroundColor];
     [(UIView *)self->_programmedCardBackgroundView setFrame:v16, v18, v20, v22];
   }
 
@@ -1411,8 +1411,8 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   v122[3] = __Block_byref_object_copy__34;
   v122[4] = __Block_byref_object_dispose__34;
   v123 = 0;
-  v28 = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
-  v29 = [v28 count];
+  allExistingViews = [(SKUIViewReuseCollectionViewCell *)self allExistingViews];
+  v29 = [allExistingViews count];
   v121[0] = 0;
   v121[1] = v121;
   v121[2] = 0x2020000000;
@@ -1435,44 +1435,44 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   v111[1] = v111;
   v111[2] = 0x2020000000;
   v112 = 0;
-  v30 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-  [v30 removeFromSuperview];
+  adCardBackgroundView = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+  [adCardBackgroundView removeFromSuperview];
 
-  v31 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-  [v31 removeFromSuperlayer];
+  compactAdCardHairlineLayer = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+  [compactAdCardHairlineLayer removeFromSuperlayer];
 
   v32 = v16 + v27;
   v33 = v20 + v27 * -2.0;
   if ([(SKUICardViewElement *)self->_cardElement isAdCard])
   {
-    v34 = [(SKUICardViewElementCollectionViewCell *)self traitCollection];
-    v35 = [v34 horizontalSizeClass];
+    traitCollection = [(SKUICardViewElementCollectionViewCell *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
     [(SKUICardViewElement *)self->_cardElement style];
-    if (v35 == 1)
+    if (horizontalSizeClass == 1)
       v36 = {;
-      v37 = [v36 ikBackgroundColor];
-      v38 = [v37 color];
-      v39 = [v38 CGColor];
-      v40 = [(SKUICardViewElementCollectionViewCell *)self layer];
-      [v40 setBackgroundColor:v39];
+      ikBackgroundColor = [v36 ikBackgroundColor];
+      color = [ikBackgroundColor color];
+      cGColor = [color CGColor];
+      layer = [(SKUICardViewElementCollectionViewCell *)self layer];
+      [layer setBackgroundColor:cGColor];
 
-      v41 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      v42 = [v41 layer];
-      v43 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-      [v42 addSublayer:v43];
+      contentView2 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      layer2 = [contentView2 layer];
+      compactAdCardHairlineLayer2 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+      [layer2 addSublayer:compactAdCardHairlineLayer2];
 
-      v44 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      v45 = [v44 layer];
-      [v45 frame];
+      contentView3 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      layer3 = [contentView3 layer];
+      [layer3 frame];
       Width = CGRectGetWidth(v125);
-      v47 = [MEMORY[0x277D759A0] mainScreen];
-      [v47 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v49 = v48;
 
-      v50 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      v51 = [v50 layer];
-      [v51 frame];
+      contentView4 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      layer4 = [contentView4 layer];
+      [layer4 frame];
       MaxY = CGRectGetMaxY(v126);
       v127.origin.x = *MEMORY[0x277CBF3A0];
       v127.origin.y = *(MEMORY[0x277CBF3A0] + 8);
@@ -1481,25 +1481,25 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
       v127.size.height = v53;
       Height = CGRectGetHeight(v127);
 
-      v55 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-      [v55 setFrame:{0.0, MaxY - Height, Width, v53}];
+      compactAdCardHairlineLayer3 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+      [compactAdCardHairlineLayer3 setFrame:{0.0, MaxY - Height, Width, v53}];
     }
 
     else
       v56 = {;
-      v57 = [v56 ikBackgroundColor];
-      v58 = [v57 color];
+      ikBackgroundColor2 = [v56 ikBackgroundColor];
+      color2 = [ikBackgroundColor2 color];
 
-      v59 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-      [v59 setBackgroundColor:v58];
+      adCardBackgroundView2 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+      [adCardBackgroundView2 setBackgroundColor:color2];
 
-      v60 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      v61 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-      [v60 addSubview:v61];
+      contentView5 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      adCardBackgroundView3 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+      [contentView5 addSubview:adCardBackgroundView3];
 
-      v62 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-      v63 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-      [v62 sendSubviewToBack:v63];
+      contentView6 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+      adCardBackgroundView4 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+      [contentView6 sendSubviewToBack:adCardBackgroundView4];
 
       v128.origin.x = v32;
       v128.origin.y = v18;
@@ -1510,15 +1510,15 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
       y = v129.origin.y;
       v66 = v129.size.width;
       v67 = v129.size.height;
-      v68 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
-      [v68 setFrame:{x, y, v66, v67}];
+      adCardBackgroundView5 = [(SKUICardViewElementCollectionViewCell *)self adCardBackgroundView];
+      [adCardBackgroundView5 setFrame:{x, y, v66, v67}];
 
-      v55 = [MEMORY[0x277D75348] whiteColor];
-      v69 = [v55 CGColor];
-      v70 = [(SKUICardViewElementCollectionViewCell *)self layer];
-      [v70 setBackgroundColor:v69];
+      compactAdCardHairlineLayer3 = [MEMORY[0x277D75348] whiteColor];
+      cGColor2 = [compactAdCardHairlineLayer3 CGColor];
+      layer5 = [(SKUICardViewElementCollectionViewCell *)self layer];
+      [layer5 setBackgroundColor:cGColor2];
 
-      v3 = v58;
+      backgroundColor = color2;
     }
   }
 
@@ -1532,37 +1532,37 @@ void __66__SKUICardViewElementCollectionViewCell_viewForElementIdentifier___bloc
   v108 = v22;
   v96[4] = self;
   v99 = v113;
-  v110 = v94 == 2;
+  v110 = cardType == 2;
   v100 = &v115;
   v101 = v111;
   v109 = v29;
   v102 = v114;
   v103 = v121;
   v104 = v122;
-  v71 = v28;
+  v71 = allExistingViews;
   v97 = v71;
-  v72 = v3;
+  v72 = backgroundColor;
   v98 = v72;
   [v71 enumerateObjectsUsingBlock:v96];
   if ([(SKUICardViewElement *)self->_cardElement isAdCard])
   {
-    v73 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-    [v73 frame];
+    compactAdCardHairlineLayer4 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+    [compactAdCardHairlineLayer4 frame];
     v75 = v74;
     v77 = v76;
 
-    v78 = [(SKUICardViewElementCollectionViewCell *)self contentView];
-    [v78 bounds];
+    contentView7 = [(SKUICardViewElementCollectionViewCell *)self contentView];
+    [contentView7 bounds];
     v79 = CGRectGetWidth(v130);
-    v80 = [MEMORY[0x277D759A0] mainScreen];
-    [v80 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v82 = v81;
 
-    v83 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
-    [v83 setFrame:{v75, v77, v79, 1.0 / v82}];
+    compactAdCardHairlineLayer5 = [(SKUICardViewElementCollectionViewCell *)self compactAdCardHairlineLayer];
+    [compactAdCardHairlineLayer5 setFrame:{v75, v77, v79, 1.0 / v82}];
   }
 
-  if (v95 && v116[5] && v94 != 2)
+  if (v95 && v116[5] && cardType != 2)
   {
     v84 = [(NSMapTable *)self->_viewElements objectForKey:?];
     [v116[5] frame];
@@ -1810,18 +1810,18 @@ LABEL_36:
 LABEL_51:
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v3 = [(NSMapTable *)self->_viewElements objectForKey:a3];
+  v3 = [(NSMapTable *)self->_viewElements objectForKey:action];
   [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_imageTapAction:(id)a3
+- (void)_imageTapAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   viewElements = self->_viewElements;
-  v6 = [v4 view];
-  v7 = [(NSMapTable *)viewElements objectForKey:v6];
+  view = [actionCopy view];
+  v7 = [(NSMapTable *)viewElements objectForKey:view];
 
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
@@ -1859,9 +1859,9 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
   [WeakRetained _performDefaultActionForViewElement:*(a1 + 32)];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   if (objc_opt_respondsToSelector())
   {
     v7 = 1;
@@ -1871,24 +1871,24 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
   {
     v9.receiver = self;
     v9.super_class = SKUICardViewElementCollectionViewCell;
-    v7 = [(SKUICardViewElementCollectionViewCell *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(SKUICardViewElementCollectionViewCell *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (void)skuiadvertising_advertSelectionEventShouldBeForwarded:(id)a3
+- (void)skuiadvertising_advertSelectionEventShouldBeForwarded:(id)forwarded
 {
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 sendAction:sel_skuiadvertising_advertWasSelected_ to:0 from:self forEvent:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] sendAction:sel_skuiadvertising_advertWasSelected_ to:0 from:self forEvent:0];
 }
 
 - (NSString)lineItem
 {
   if ([(SKUICardViewElement *)self->_cardElement isAdCard])
   {
-    v3 = [(SKUICardViewElement *)self->_cardElement attributes];
-    v4 = [v3 objectForKeyedSubscript:@"lineItem"];
+    attributes = [(SKUICardViewElement *)self->_cardElement attributes];
+    v4 = [attributes objectForKeyedSubscript:@"lineItem"];
   }
 
   else
@@ -1903,8 +1903,8 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
 {
   if ([(SKUICardViewElement *)self->_cardElement isAdCard])
   {
-    v3 = [(SKUICardViewElement *)self->_cardElement attributes];
-    v4 = [v3 objectForKeyedSubscript:@"impressionId"];
+    attributes = [(SKUICardViewElement *)self->_cardElement attributes];
+    v4 = [attributes objectForKeyedSubscript:@"impressionId"];
   }
 
   else
@@ -1915,14 +1915,14 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
   return v4;
 }
 
-+ (double)_defaultWidthForLockupWithContext:(id)a3
++ (double)_defaultWidthForLockupWithContext:(id)context
 {
-  v3 = a3;
-  [v3 activePageWidth];
+  contextCopy = context;
+  [contextCopy activePageWidth];
   v5 = v4;
-  v6 = [v3 clientContext];
+  clientContext = [contextCopy clientContext];
 
-  v7 = SKUIUserInterfaceIdiom(v6);
+  v7 = SKUIUserInterfaceIdiom(clientContext);
   if (v7 == 1)
   {
     v8 = v5 < 500.0;
@@ -1950,14 +1950,14 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
   return 364.0;
 }
 
-- (double)_dividerHeight:(id)a3
+- (double)_dividerHeight:(id)height
 {
-  v3 = [a3 style];
-  v4 = [v3 itemHeight];
+  style = [height style];
+  itemHeight = [style itemHeight];
 
-  if (v4)
+  if (itemHeight)
   {
-    [v4 floatValue];
+    [itemHeight floatValue];
     v6 = v5;
   }
 
@@ -1969,17 +1969,17 @@ void __57__SKUICardViewElementCollectionViewCell__imageTapAction___block_invoke_
   return v6;
 }
 
-- (void)_performDefaultActionForViewElement:(id)a3
+- (void)_performDefaultActionForViewElement:(id)element
 {
-  v7 = a3;
+  elementCopy = element;
   v4 = SKUICollectionViewForView(self);
   v5 = [v4 indexPathForCell:self];
   if (v5)
   {
-    v6 = [v4 delegate];
+    delegate = [v4 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 collectionView:v4 performDefaultActionForViewElement:v7 indexPath:v5];
+      [delegate collectionView:v4 performDefaultActionForViewElement:elementCopy indexPath:v5];
     }
   }
 }

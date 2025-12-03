@@ -1,11 +1,11 @@
 @interface FMTerminalView
-- (_TtC6FindMy14FMTerminalView)initWithCoder:(id)a3;
+- (_TtC6FindMy14FMTerminalView)initWithCoder:(id)coder;
 - (void)handleAction;
 @end
 
 @implementation FMTerminalView
 
-- (_TtC6FindMy14FMTerminalView)initWithCoder:(id)a3
+- (_TtC6FindMy14FMTerminalView)initWithCoder:(id)coder
 {
   *&self->super.mediator[OBJC_IVAR____TtC6FindMy14FMTerminalView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -25,8 +25,8 @@
   {
     if (v2 == 4)
     {
-      v6 = self;
-      v4 = self;
+      selfCopy5 = self;
+      selfCopy2 = self;
       sub_10040BD04();
     }
 
@@ -37,8 +37,8 @@
         return;
       }
 
-      v6 = self;
-      v3 = self;
+      selfCopy5 = self;
+      selfCopy4 = self;
       sub_10040BE38();
     }
   }
@@ -50,8 +50,8 @@
       return;
     }
 
-    v6 = self;
-    v5 = self;
+    selfCopy5 = self;
+    selfCopy6 = self;
     sub_10040C818();
   }
 }

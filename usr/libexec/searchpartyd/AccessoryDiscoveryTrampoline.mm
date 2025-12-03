@@ -1,29 +1,29 @@
 @interface AccessoryDiscoveryTrampoline
 - (_TtC12searchpartyd28AccessoryDiscoveryTrampoline)init;
-- (void)disableFindMyPairingWithIdentifier:(id)a3;
-- (void)finalizePairingWith:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)finalizeProximityPairingForAccessoryIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)initializeProximityPairingForAccessoryIdentifier:(id)a3 completion:(id)a4;
-- (void)initiatePairingAndLocateAccessoryWithIdentifier:(id)a3 completion:(id)a4;
-- (void)initiatePairingWith:(id)a3 completion:(id)a4;
-- (void)invalidatePairingWith:(id)a3 completion:(id)a4;
-- (void)pairingStatusWithRequest:(id)a3 completion:(id)a4;
+- (void)disableFindMyPairingWithIdentifier:(id)identifier;
+- (void)finalizePairingWith:(id)with configuration:(id)configuration completion:(id)completion;
+- (void)finalizeProximityPairingForAccessoryIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion;
+- (void)initializeProximityPairingForAccessoryIdentifier:(id)identifier completion:(id)completion;
+- (void)initiatePairingAndLocateAccessoryWithIdentifier:(id)identifier completion:(id)completion;
+- (void)initiatePairingWith:(id)with completion:(id)completion;
+- (void)invalidatePairingWith:(id)with completion:(id)completion;
+- (void)pairingStatusWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AccessoryDiscoveryTrampoline
 
-- (void)initiatePairingWith:(id)a3 completion:(id)a4
+- (void)initiatePairingWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *(&self->super.isa + OBJC_IVAR____TtC12searchpartyd28AccessoryDiscoveryTrampoline_implementation);
-  v9 = a3;
-  v10 = self;
-  sub_100E12360(v9, sub_10026AE30, v7);
+  withCopy = with;
+  selfCopy = self;
+  sub_100E12360(withCopy, sub_10026AE30, v7);
 }
 
-- (void)disableFindMyPairingWithIdentifier:(id)a3
+- (void)disableFindMyPairingWithIdentifier:(id)identifier
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -31,12 +31,12 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_100E1B344(v8);
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)initiatePairingAndLocateAccessoryWithIdentifier:(id)a3 completion:(id)a4
+- (void)initiatePairingAndLocateAccessoryWithIdentifier:(id)identifier completion:(id)completion
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -45,7 +45,7 @@
   v9 = &v18 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
@@ -64,62 +64,62 @@
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)pairingStatusWithRequest:(id)a3 completion:(id)a4
+- (void)pairingStatusWithRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_100729ED8(v8, sub_1001BC108, v7);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100729ED8(requestCopy, sub_1001BC108, v7);
 }
 
-- (void)finalizePairingWith:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)finalizePairingWith:(id)with configuration:(id)configuration completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = *(&self->super.isa + OBJC_IVAR____TtC12searchpartyd28AccessoryDiscoveryTrampoline_implementation);
   _Block_copy(v8);
-  v10 = a3;
-  v12 = a4;
-  v11 = self;
-  sub_100E1B5D0(v10, v12, v9, v8);
+  withCopy = with;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100E1B5D0(withCopy, configurationCopy, v9, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)invalidatePairingWith:(id)a3 completion:(id)a4
+- (void)invalidatePairingWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = *(&self->super.isa + OBJC_IVAR____TtC12searchpartyd28AccessoryDiscoveryTrampoline_implementation);
   _Block_copy(v6);
-  v9 = a3;
-  v8 = self;
-  sub_100E1B7B8(v9, v7, v6);
+  withCopy = with;
+  selfCopy = self;
+  sub_100E1B7B8(withCopy, v7, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)initializeProximityPairingForAccessoryIdentifier:(id)a3 completion:(id)a4
+- (void)initializeProximityPairingForAccessoryIdentifier:(id)identifier completion:(id)completion
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   __chkstk_darwin(v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = *(&self->super.isa + OBJC_IVAR____TtC12searchpartyd28AccessoryDiscoveryTrampoline_implementation);
   _Block_copy(v11);
-  v13 = self;
+  selfCopy = self;
   sub_100E1BDAC(v10, v12, v11);
   _Block_release(v11);
   _Block_release(v11);
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)finalizeProximityPairingForAccessoryIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)finalizeProximityPairingForAccessoryIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion
 {
-  v25 = a4;
+  configurationCopy = configuration;
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
@@ -127,24 +127,24 @@
   v11 = &v24 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v10);
   v13 = &v24 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(completion);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = swift_allocObject();
   *(v15 + 16) = v14;
-  v16 = self;
+  selfCopy = self;
   v24 = (*(&self->super.isa + OBJC_IVAR____TtC12searchpartyd28AccessoryDiscoveryTrampoline_implementation))[14];
   (*(v8 + 16))(v11, v13, v7);
   v17 = (*(v8 + 80) + 16) & ~*(v8 + 80);
   v18 = (v9 + v17 + 7) & 0xFFFFFFFFFFFFFFF8;
   v19 = swift_allocObject();
   (*(v8 + 32))(v19 + v17, v11, v7);
-  v20 = v25;
-  *(v19 + v18) = v25;
+  v20 = configurationCopy;
+  *(v19 + v18) = configurationCopy;
   v21 = (v19 + ((v18 + 15) & 0xFFFFFFFFFFFFFFF8));
   *v21 = sub_10001E370;
   v21[1] = v15;
   v22 = v20;
-  v23 = v16;
+  v23 = selfCopy;
 
   dispatch thunk of WorkItemQueue.enqueue(_:)();
 

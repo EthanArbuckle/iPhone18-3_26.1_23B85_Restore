@@ -1,83 +1,83 @@
 @interface ICEditingTextView
-+ (id)attachmentInNote:(id)a3 range:(_NSRange)a4;
-+ (id)copyTmpFileToTmpFileInSubDirectory:(id)a3 uti:(id)a4 suggestedName:(id)a5;
-+ (id)temporaryTextStorageWithAttributedString:(id)a3 note:(id)a4 filterAttributedString:(BOOL)a5;
++ (id)attachmentInNote:(id)note range:(_NSRange)range;
++ (id)copyTmpFileToTmpFileInSubDirectory:(id)directory uti:(id)uti suggestedName:(id)name;
++ (id)temporaryTextStorageWithAttributedString:(id)string note:(id)note filterAttributedString:(BOOL)attributedString;
 - (BOOL)_accessibilityHasTextOperations;
 - (BOOL)_accessibilityOverridesInstructionsHint;
-- (BOOL)_accessibilityTextOperationAction:(id)a3;
-- (BOOL)_isDropSessionLocalDragContextViewFromSubview:(id)a3;
+- (BOOL)_accessibilityTextOperationAction:(id)action;
+- (BOOL)_isDropSessionLocalDragContextViewFromSubview:(id)subview;
 - (BOOL)accessibilityActivate;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (BOOL)attributedStringContainsICTTAttachment:(id)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (BOOL)attributedStringContainsICTTAttachment:(id)attachment;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)exceedsMaxLengthIfSelectionReplacedWithAttributedString:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleAttributedStringDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleGenericFileForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 preferredTypeIdentifier:(id)a6 outProgress:(id *)a7 completionBlock:(id)a8;
-- (BOOL)handleImageDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleInlineDrawingDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleInlinePaperDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleMapKitItemDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleMovieOrAudioDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handlePaperDocumentDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleTopotextDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)handleURLDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7;
-- (BOOL)hasFullWidthTextAttachmentAtCaretLocation:(int64_t)a3;
-- (BOOL)hasSupportedImageInItemProvider:(id)a3;
-- (BOOL)ic_allSelectedRangesContainAttributeName:(id)a3 withValue:(id)a4;
-- (BOOL)ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait:(unsigned int)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)exceedsMaxLengthIfSelectionReplacedWithAttributedString:(id)string;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleAttributedStringDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleGenericFileForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session preferredTypeIdentifier:(id)identifier outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleImageDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleInlineDrawingDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleInlinePaperDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleMapKitItemDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleMovieOrAudioDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handlePaperDocumentDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleTopotextDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)handleURLDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block;
+- (BOOL)hasFullWidthTextAttachmentAtCaretLocation:(int64_t)location;
+- (BOOL)hasSupportedImageInItemProvider:(id)provider;
+- (BOOL)ic_allSelectedRangesContainAttributeName:(id)name withValue:(id)value;
+- (BOOL)ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait:(unsigned int)trait;
 - (BOOL)ic_canChangeStyle;
-- (BOOL)ic_canIndentByDelta:(int64_t)a3;
+- (BOOL)ic_canIndentByDelta:(int64_t)delta;
 - (BOOL)ic_shouldStartDataDetectors;
 - (BOOL)isAccessibilityElement;
 - (BOOL)isDocumentCopyableSize;
 - (BOOL)isPreviewing;
 - (BOOL)isSelectionCopyableSize;
-- (BOOL)isSupportedAsGenericFile:(id)a3;
+- (BOOL)isSupportedAsGenericFile:(id)file;
 - (BOOL)selectionContainsDDResultAttribute;
 - (BOOL)selectionContainsLink;
 - (BOOL)selectionContainsNonLinkAttachment;
-- (BOOL)shouldAcceptDropSession:(id)a3;
-- (BOOL)shouldCheckURLFirstForItemProvider:(id)a3;
-- (BOOL)textDroppableView:(id)a3 dropSession:(id)a4 willMoveCaretToRange:(id)a5;
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3;
+- (BOOL)shouldAcceptDropSession:(id)session;
+- (BOOL)shouldCheckURLFirstForItemProvider:(id)provider;
+- (BOOL)textDroppableView:(id)view dropSession:(id)session willMoveCaretToRange:(id)range;
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point;
 - (CALayer)tempHighlightLayer;
 - (CGPoint)accessibilityActivationPoint;
 - (CGPoint)hitTestPoint;
-- (CGPoint)renderTextInCharacterRange:(_NSRange)a3 inTextStorage:(id)a4 temporaryAttributes:(id)a5 forceOffsetCalculation:(BOOL)a6 image:(id *)a7 boundingRectangles:(id *)a8 renderedGlyphRange:(_NSRange *)a9;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)enclosingRectForGlyphRange:(_NSRange)a3;
+- (CGPoint)renderTextInCharacterRange:(_NSRange)range inTextStorage:(id)storage temporaryAttributes:(id)attributes forceOffsetCalculation:(BOOL)calculation image:(id *)image boundingRectangles:(id *)rectangles renderedGlyphRange:(_NSRange *)glyphRange;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)enclosingRectForGlyphRange:(_NSRange)range;
 - (ICCalculateRecognitionController)calculateRecognitionController;
 - (ICHashtagController)hashtagController;
 - (ICMentionsController)mentionsController;
 - (ICNAEventReporter)eventReporter;
 - (ICNoteEditorViewController)editorController;
 - (ICTTTextStoragePersistenceHelper)persistenceHelper;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)_icaxModifiedSelectionRange;
-- (_NSRange)_icaxRangeInModifiedAttributedString:(id)a3 forRange:(_NSRange)a4;
-- (_NSRange)_icaxRangeInTextStorageForRange:(_NSRange)a3 fromModifiedString:(id)a4;
-- (_NSRange)_icaxRangeOfAttachment:(id)a3;
+- (_NSRange)_icaxRangeInModifiedAttributedString:(id)string forRange:(_NSRange)range;
+- (_NSRange)_icaxRangeInTextStorageForRange:(_NSRange)range fromModifiedString:(id)string;
+- (_NSRange)_icaxRangeOfAttachment:(id)attachment;
 - (_NSRange)selectedRangeBeforeMarking;
-- (_NSRange)willInsertText:(id)a3;
-- (double)distanceFromContentToGivenPoint:(CGPoint)a3 charIndexAtPoint:(unint64_t *)a4;
+- (_NSRange)willInsertText:(id)text;
+- (double)distanceFromContentToGivenPoint:(CGPoint)point charIndexAtPoint:(unint64_t *)atPoint;
 - (id)TTTextStorage;
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)_accessibilityTextOperations;
-- (id)_accessibilityValueForRange:(_NSRange *)a3;
+- (id)_accessibilityValueForRange:(_NSRange *)range;
 - (id)_icaxAdditionalElementsForAutomation;
 - (id)_icaxAttachmentElements;
 - (id)_icaxAttachmentElementsForRotor;
 - (id)_icaxAttachmentViewForCurrentSelectedRange;
-- (id)_icaxAttributedStringForRange:(_NSRange *)a3;
+- (id)_icaxAttributedStringForRange:(_NSRange *)range;
 - (id)_icaxCalculateAdjustString;
 - (id)_icaxCalculationErrorElementsForRotor;
 - (id)_icaxCalculationResultElementsForRotor;
@@ -87,8 +87,8 @@
 - (id)_icaxChecklistUnmarkAllItemsCompleteString;
 - (id)_icaxCurrentParagraph;
 - (id)_icaxDecreaseIndentationString;
-- (id)_icaxFirstAttachmentViewSupportingAction:(SEL)a3;
-- (id)_icaxFirstTextAttachmentInRange:(_NSRange)a3;
+- (id)_icaxFirstAttachmentViewSupportingAction:(SEL)action;
+- (id)_icaxFirstTextAttachmentInRange:(_NSRange)range;
 - (id)_icaxIncreaseIndentationString;
 - (id)_icaxInsertDrawingString;
 - (id)_icaxLinkEditActions;
@@ -108,9 +108,9 @@
 - (id)_icaxShareAttachmentString;
 - (id)_icaxTableElementsForRotor;
 - (id)_icaxTagsElementsForRotor;
-- (id)_icaxTodoButtonForParagraphStyle:(id)a3;
+- (id)_icaxTodoButtonForParagraphStyle:(id)style;
 - (id)_icaxTodoElements;
-- (id)_targetedPreviewForRange:(id)a3 withRenderingAttributes:(id)a4 includeFullDocument:(BOOL)a5;
+- (id)_targetedPreviewForRange:(id)range withRenderingAttributes:(id)attributes includeFullDocument:(BOOL)document;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityDragSourceDescriptors;
@@ -118,166 +118,166 @@
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)attachmentsInRange:(_NSRange)a3;
-- (id)attributedStringForDrawing:(id)a3 session:(id)a4;
-- (id)attributedStringForImageData:(id)a3 imageTypeUTI:(id)a4 itemProvider:(id)a5 pasteSession:(id)a6;
-- (id)attributedStringForStrokeSelection:(id)a3 session:(id)a4;
-- (id)attributedStringForURL:(id)a3 uti:(id)a4 name:(id)a5 metadata:(id)a6 synapseData:(id)a7 session:(id)a8;
+- (id)attachmentsInRange:(_NSRange)range;
+- (id)attributedStringForDrawing:(id)drawing session:(id)session;
+- (id)attributedStringForImageData:(id)data imageTypeUTI:(id)i itemProvider:(id)provider pasteSession:(id)session;
+- (id)attributedStringForStrokeSelection:(id)selection session:(id)session;
+- (id)attributedStringForURL:(id)l uti:(id)uti name:(id)name metadata:(id)metadata synapseData:(id)data session:(id)session;
 - (id)automationElements;
 - (id)childElements;
 - (id)childElementsForAccessibilityReparenting;
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 inTextStorage:(id)a4;
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 inTextStorage:(id)a4 temporaryAttributes:(id)a5 forceOffsetCalculation:(BOOL)a6 containerView:(id)a7;
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 uiRange:(id)a4;
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range inTextStorage:(id)storage;
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range inTextStorage:(id)storage temporaryAttributes:(id)attributes forceOffsetCalculation:(BOOL)calculation containerView:(id)view;
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range uiRange:(id)uiRange;
 - (id)editorContainer;
-- (id)elementsForAccessibilityRotorType:(id)a3;
-- (id)firstResponderMatchingPredicate:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)elementsForAccessibilityRotorType:(id)type;
+- (id)firstResponderMatchingPredicate:(id)predicate;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)icLayoutManager;
 - (id)icTextLayoutManager;
-- (id)ic_selectedStylesIgnoreTypingAttributes:(BOOL)a3;
+- (id)ic_selectedStylesIgnoreTypingAttributes:(BOOL)attributes;
 - (id)icaxMakeNotStrikethroughString;
 - (id)icaxMakeStrikethroughString;
 - (id)internalTypingAttributes;
-- (id)itemProviderConsumerTypesForItemProvider:(id)a3;
+- (id)itemProviderConsumerTypesForItemProvider:(id)provider;
 - (id)itemProviderPasteSessionCreateIfNecessary;
-- (id)linkTappedByGesture:(id)a3;
+- (id)linkTappedByGesture:(id)gesture;
 - (id)pasteConfigurationForCurrentTextView;
-- (id)pasteImagesDataArray:(id)a3 typesArray:(id)a4 session:(id)a5;
-- (id)pasteIntoSelectedRangeWithoutExceedingMaxLengthWithAttributedString:(id)a3 session:(id)a4;
-- (id)pasteNotePasteboardData:(id)a3 session:(id)a4 error:(id *)a5;
-- (id)pasteStringUsingBlock:(id)a3 approxPasteString:(id)a4 pasteboardTypes:(id)a5 session:(id)a6;
-- (id)pasteURL:(id)a3 uti:(id)a4 name:(id)a5 metadata:(id)a6 session:(id)a7;
-- (id)preferredFileTypeForItemProvider:(id)a3;
+- (id)pasteImagesDataArray:(id)array typesArray:(id)typesArray session:(id)session;
+- (id)pasteIntoSelectedRangeWithoutExceedingMaxLengthWithAttributedString:(id)string session:(id)session;
+- (id)pasteNotePasteboardData:(id)data session:(id)session error:(id *)error;
+- (id)pasteStringUsingBlock:(id)block approxPasteString:(id)string pasteboardTypes:(id)types session:(id)session;
+- (id)pasteURL:(id)l uti:(id)uti name:(id)name metadata:(id)metadata session:(id)session;
+- (id)preferredFileTypeForItemProvider:(id)provider;
 - (id)preferredFileTypesExtensionDictionary;
-- (id)selectionRectsForRange:(id)a3;
-- (id)standardizedAttributedString:(id)a3 attachmentIdentifiers:(id *)a4;
-- (id)targetedPreviewForPaperKitAttachment:(id)a3 textFindingResult:(id)a4;
-- (id)textAttachmentsInRange:(_NSRange)a3;
+- (id)selectionRectsForRange:(id)range;
+- (id)standardizedAttributedString:(id)string attachmentIdentifiers:(id *)identifiers;
+- (id)targetedPreviewForPaperKitAttachment:(id)attachment textFindingResult:(id)result;
+- (id)textAttachmentsInRange:(_NSRange)range;
 - (id)textController;
-- (id)textDraggableView:(id)a3 dragPreviewForLiftingItem:(id)a4 session:(id)a5;
-- (id)textDraggableView:(id)a3 itemsForDrag:(id)a4;
-- (id)textDraggableView:(id)a3 textRangeForDragFromPosition:(id)a4 defaultRange:(id)a5 session:(id)a6;
-- (id)textDroppableView:(id)a3 positionForDrop:(id)a4;
-- (id)textDroppableView:(id)a3 previewForDroppingAllItemsWithDefault:(id)a4;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
-- (id)textPasteConfigurationSupporting:(id)a3 combineItemAttributedStrings:(id)a4 forRange:(id)a5;
-- (id)textPasteConfigurationSupporting:(id)a3 performPasteOfAttributedString:(id)a4 toRange:(id)a5;
-- (id)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4;
+- (id)textDraggableView:(id)view dragPreviewForLiftingItem:(id)item session:(id)session;
+- (id)textDraggableView:(id)view itemsForDrag:(id)drag;
+- (id)textDraggableView:(id)view textRangeForDragFromPosition:(id)position defaultRange:(id)range session:(id)session;
+- (id)textDroppableView:(id)view positionForDrop:(id)drop;
+- (id)textDroppableView:(id)view previewForDroppingAllItemsWithDefault:(id)default;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
+- (id)textPasteConfigurationSupporting:(id)supporting combineItemAttributedStrings:(id)strings forRange:(id)range;
+- (id)textPasteConfigurationSupporting:(id)supporting performPasteOfAttributedString:(id)string toRange:(id)range;
+- (id)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item;
 - (id)typeIdentifiersSupportedAsGenericFiles;
 - (id)typingAttributes;
-- (id)updateIndentForChecklistDragIfNecessaryForString:(id)a3 lineUnderDrop:(id)a4;
+- (id)updateIndentForChecklistDragIfNecessaryForString:(id)string lineUnderDrop:(id)drop;
 - (int64_t)_accessibilityLineEndPosition;
 - (int64_t)_accessibilityLineStartPosition;
 - (int64_t)ic_currentWritingDirection;
-- (unint64_t)_icaxLinePositionForPosition:(unint64_t)a3 start:(BOOL)a4;
-- (unint64_t)_icaxModifiedPositionForPosition:(unint64_t)a3;
-- (unint64_t)_icaxPositionForModifiedPosition:(unint64_t)a3;
+- (unint64_t)_icaxLinePositionForPosition:(unint64_t)position start:(BOOL)start;
+- (unint64_t)_icaxModifiedPositionForPosition:(unint64_t)position;
+- (unint64_t)_icaxPositionForModifiedPosition:(unint64_t)position;
 - (unint64_t)accessibilityTraits;
-- (unint64_t)firstValidEmphasisLocationWithinSelection:(_NSRange)a3;
+- (unint64_t)firstValidEmphasisLocationWithinSelection:(_NSRange)selection;
 - (unint64_t)ic_selectedBIUS;
 - (unsigned)ic_getTextStyleForCurrentSelection;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)_addPencilKitAccessibilityElementIfNeededForTextAttachment:(id)a3 toAttachmentElements:(id)a4;
-- (void)_deleteBackwardAndNotify:(BOOL)a3;
-- (void)_getPasteboardItemFromSelection:(id)a3;
-- (void)_icaxAddParticipantEditHighlightsToString:(id)a3 forRange:(_NSRange)a4;
-- (void)_icaxAddPredictiveTextToAttributedString:(id)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)_addPencilKitAccessibilityElementIfNeededForTextAttachment:(id)attachment toAttachmentElements:(id)elements;
+- (void)_deleteBackwardAndNotify:(BOOL)notify;
+- (void)_getPasteboardItemFromSelection:(id)selection;
+- (void)_icaxAddParticipantEditHighlightsToString:(id)string forRange:(_NSRange)range;
+- (void)_icaxAddPredictiveTextToAttributedString:(id)string;
 - (void)_icaxChecklistDeleteChecked;
 - (void)_icaxChecklistMarkAllComplete;
 - (void)_icaxChecklistSortCheckedToBottom;
 - (void)_icaxChecklistUnMarkAllComplete;
-- (void)_icaxGetBoldForCurrentRange:(BOOL *)a3 italic:(BOOL *)a4 underline:(BOOL *)a5 strikethrough:(BOOL *)a6;
+- (void)_icaxGetBoldForCurrentRange:(BOOL *)range italic:(BOOL *)italic underline:(BOOL *)underline strikethrough:(BOOL *)strikethrough;
 - (void)_icaxMarkTodoCompleteForCurrentSelection;
 - (void)_icaxMarkTodoIncompleteForCurrentSelection;
 - (void)_icaxUpdateFakeTextSelectionRange;
-- (void)_insertDrawing:(id)a3;
-- (void)_reallyCut:(id)a3;
-- (void)_removeDrawingAttachment:(id)a3 withView:(id)a4 forDeletion:(BOOL)a5;
+- (void)_insertDrawing:(id)drawing;
+- (void)_reallyCut:(id)cut;
+- (void)_removeDrawingAttachment:(id)attachment withView:(id)view forDeletion:(BOOL)deletion;
 - (void)applyPendingTypingAttributesIfNeeded;
 - (void)beginDrop;
 - (void)beginSelectionChange;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)calculateRecognitionController:(id)a3 didUpdateTextSuggestions:(id)a4;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)calculateRecognitionController:(id)controller didUpdateTextSuggestions:(id)suggestions;
 - (void)commonInit;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
 - (void)deleteBackward;
-- (void)didInsertText:(id)a3 range:(_NSRange)a4;
-- (void)didPasteOrDropText:(id)a3 toRange:(id)a4;
-- (void)endHeadingRenameCommittingMarkedText:(BOOL)a3;
+- (void)didInsertText:(id)text range:(_NSRange)range;
+- (void)didPasteOrDropText:(id)text toRange:(id)range;
+- (void)endHeadingRenameCommittingMarkedText:(BOOL)text;
 - (void)endSelectionChange;
-- (void)eventReporterLostSession:(id)a3;
-- (void)finishDropWithString:(id)a3;
-- (void)ic_editAttributesInSelectedRanges:(id)a3 shouldSkipAttachments:(BOOL)a4;
-- (void)ic_enumerateAttributesInSelectedRanges:(id)a3;
-- (void)ic_enumerateTableAttachmentViewControllersInRanges:(id)a3 usingBlock:(id)a4;
-- (void)ic_indentByAmount:(int64_t)a3;
-- (void)ic_performBlock:(id)a3;
+- (void)eventReporterLostSession:(id)session;
+- (void)finishDropWithString:(id)string;
+- (void)ic_editAttributesInSelectedRanges:(id)ranges shouldSkipAttachments:(BOOL)attachments;
+- (void)ic_enumerateAttributesInSelectedRanges:(id)ranges;
+- (void)ic_enumerateTableAttachmentViewControllersInRanges:(id)ranges usingBlock:(id)block;
+- (void)ic_indentByAmount:(int64_t)amount;
+- (void)ic_performBlock:(id)block;
 - (void)ic_resetDataDetectorsResults;
-- (void)ic_setAttributeWithName:(id)a3 enabled:(BOOL)a4 withEmphasisColorType:(int64_t)a5;
-- (void)ic_setFontHint:(unsigned int)a3 enabled:(BOOL)a4;
-- (void)ic_setTextAlignmentForCurrentSelection:(int64_t)a3;
-- (void)ic_setTextStyleForCurrentSelection:(unsigned int)a3;
+- (void)ic_setAttributeWithName:(id)name enabled:(BOOL)enabled withEmphasisColorType:(int64_t)type;
+- (void)ic_setFontHint:(unsigned int)hint enabled:(BOOL)enabled;
+- (void)ic_setTextAlignmentForCurrentSelection:(int64_t)selection;
+- (void)ic_setTextStyleForCurrentSelection:(unsigned int)selection;
 - (void)ic_startDataDetectors;
-- (void)ic_toggleAttributeWithName:(id)a3 withEmphasisColorType:(int64_t)a4;
+- (void)ic_toggleAttributeWithName:(id)name withEmphasisColorType:(int64_t)type;
 - (void)ic_toggleBoldface;
-- (void)ic_toggleEmphasisWithType:(int64_t)a3;
-- (void)ic_toggleFontHint:(unsigned int)a3;
+- (void)ic_toggleEmphasisWithType:(int64_t)type;
+- (void)ic_toggleFontHint:(unsigned int)hint;
 - (void)ic_toggleItalics;
 - (void)ic_toggleStrikethrough;
 - (void)ic_toggleUnderline;
-- (void)icaxBeginEditingAtAttachment:(id)a3;
-- (void)icaxBeginEditingInStorageRange:(_NSRange)a3;
+- (void)icaxBeginEditingAtAttachment:(id)attachment;
+- (void)icaxBeginEditingInStorageRange:(_NSRange)range;
 - (void)icaxClearCachedChildrenForReparenting;
 - (void)icaxClearCaches;
 - (void)icaxSpeakIndentationLevelForCurrentSelectedRange;
 - (void)icaxTextDidChange;
 - (void)icaxUpdateLinkRanges;
-- (void)informDelegateOfAnalyticsCalloutBarButtonActionOfType:(int64_t)a3 sender:(id)a4;
-- (void)informDelegateOfPastedAttributedString:(id)a3;
-- (void)insertAttributedText:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertTextSuggestion:(id)a3;
-- (void)keyboardLocaleChanged:(id)a3;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionNatural:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)paste:(id)a3;
+- (void)informDelegateOfAnalyticsCalloutBarButtonActionOfType:(int64_t)type sender:(id)sender;
+- (void)informDelegateOfPastedAttributedString:(id)string;
+- (void)insertAttributedText:(id)text;
+- (void)insertText:(id)text;
+- (void)insertTextSuggestion:(id)suggestion;
+- (void)keyboardLocaleChanged:(id)changed;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionNatural:(id)natural;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)paste:(id)paste;
 - (void)resetViewsGhostedForDrag;
-- (void)respondToTapGesture:(id)a3;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setInternalTypingAttributes:(id)a3;
-- (void)setIsDraggingChecklistItem:(BOOL)a3;
-- (void)setIsDraggingOverChecklistItem:(BOOL)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setTypingAttributes:(id)a3;
+- (void)respondToTapGesture:(id)gesture;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setInternalTypingAttributes:(id)attributes;
+- (void)setIsDraggingChecklistItem:(BOOL)item;
+- (void)setIsDraggingOverChecklistItem:(BOOL)item;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setTypingAttributes:(id)attributes;
 - (void)setupLinkTextAttributes;
 - (void)setupTextViewDragAndDropDelegates;
-- (void)showDeleteInlineDrawingAlertWithType:(unint64_t)a3 attachments:(id)a4 completionHandler:(id)a5;
-- (void)showRemoveAttachmentAlertIfNecessaryForOperation:(unint64_t)a3 selectedRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)showRemoveAttachmentAlertWithTitle:(id)a3 message:(id)a4 primaryActionTitle:(id)a5 completionHandler:(id)a6;
-- (void)showRemoveInProgressRecordingAlertWithOperation:(unint64_t)a3 type:(unint64_t)a4 attachments:(id)a5 completionHandler:(id)a6;
-- (void)showWritingTools:(id)a3;
-- (void)speakAccessibilityAutoListItemIfNecessaryForInsertedText:(id)a3;
-- (void)textDraggableView:(id)a3 dragSessionDidEnd:(id)a4 withOperation:(unint64_t)a5;
-- (void)textDraggableView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)textDraggableView:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)textDroppableView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4;
-- (void)textStorageDidPerformMerge:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)showDeleteInlineDrawingAlertWithType:(unint64_t)type attachments:(id)attachments completionHandler:(id)handler;
+- (void)showRemoveAttachmentAlertIfNecessaryForOperation:(unint64_t)operation selectedRange:(_NSRange)range completionHandler:(id)handler;
+- (void)showRemoveAttachmentAlertWithTitle:(id)title message:(id)message primaryActionTitle:(id)actionTitle completionHandler:(id)handler;
+- (void)showRemoveInProgressRecordingAlertWithOperation:(unint64_t)operation type:(unint64_t)type attachments:(id)attachments completionHandler:(id)handler;
+- (void)showWritingTools:(id)tools;
+- (void)speakAccessibilityAutoListItemIfNecessaryForInsertedText:(id)text;
+- (void)textDraggableView:(id)view dragSessionDidEnd:(id)end withOperation:(unint64_t)operation;
+- (void)textDraggableView:(id)view dragSessionWillBegin:(id)begin;
+- (void)textDraggableView:(id)view willAnimateLiftWithAnimator:(id)animator session:(id)session;
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end;
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter;
+- (void)textDroppableView:(id)view dropSessionDidExit:(id)exit;
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop;
+- (void)textStorageDidPerformMerge:(id)merge;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)unmarkText;
-- (void)updateKeyboardSuggestions:(id)a3 hashtagController:(id)a4;
-- (void)updateKeyboardSuggestions:(id)a3 mentionsController:(id)a4 mentionString:(id)a5;
+- (void)updateKeyboardSuggestions:(id)suggestions hashtagController:(id)controller;
+- (void)updateKeyboardSuggestions:(id)suggestions mentionsController:(id)controller mentionString:(id)string;
 - (void)updateTextViewForDidChange;
 - (void)willPresentWritingTools;
 @end
@@ -286,8 +286,8 @@
 
 - (id)TTTextStorage
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  if (v3 && (v4 = v3, [(ICEditingTextView *)self textStorage], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
+  textStorage = [(ICEditingTextView *)self textStorage];
+  if (textStorage && (v4 = textStorage, [(ICEditingTextView *)self textStorage], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
   {
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -295,15 +295,15 @@
       [(ICBaseTextView *)self TTTextStorage];
     }
 
-    v7 = 0;
+    textStorage2 = 0;
   }
 
   else
   {
-    v7 = [(ICEditingTextView *)self textStorage];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
   }
 
-  return v7;
+  return textStorage2;
 }
 
 - (id)pasteConfigurationForCurrentTextView
@@ -312,18 +312,18 @@
   if ([(ICEditingTextView *)self supportsAttachments])
   {
     v17[0] = *MEMORY[0x277D35D08];
-    v3 = [*MEMORY[0x277CE1DB0] identifier];
-    v17[1] = v3;
-    v4 = [*MEMORY[0x277CE1E00] identifier];
-    v17[2] = v4;
-    v5 = [*MEMORY[0x277CE1E08] identifier];
-    v17[3] = v5;
-    v6 = [*MEMORY[0x277CE1EB8] identifier];
+    identifier = [*MEMORY[0x277CE1DB0] identifier];
+    v17[1] = identifier;
+    identifier2 = [*MEMORY[0x277CE1E00] identifier];
+    v17[2] = identifier2;
+    identifier3 = [*MEMORY[0x277CE1E08] identifier];
+    v17[3] = identifier3;
+    identifier4 = [*MEMORY[0x277CE1EB8] identifier];
     v7 = *MEMORY[0x277D6B808];
-    v17[4] = v6;
+    v17[4] = identifier4;
     v17[5] = v7;
-    v8 = [*MEMORY[0x277CE1E90] identifier];
-    v17[6] = v8;
+    identifier5 = [*MEMORY[0x277CE1E90] identifier];
+    v17[6] = identifier5;
     v17[7] = @"com.apple.iwork.keynote.key";
     v17[8] = @"com.apple.iwork.numbers.numbers";
     v17[9] = @"com.apple.iwork.pages.pages";
@@ -335,14 +335,14 @@
     v17[13] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:14];
 
-    v12 = [(ICEditingTextView *)self typeIdentifiersSupportedAsGenericFiles];
-    v13 = [v12 arrayByAddingObjectsFromArray:v11];
+    typeIdentifiersSupportedAsGenericFiles = [(ICEditingTextView *)self typeIdentifiersSupportedAsGenericFiles];
+    v13 = [typeIdentifiersSupportedAsGenericFiles arrayByAddingObjectsFromArray:v11];
   }
 
   else
   {
-    v12 = [*MEMORY[0x277CE1E88] identifier];
-    v16 = v12;
+    typeIdentifiersSupportedAsGenericFiles = [*MEMORY[0x277CE1E88] identifier];
+    v16 = typeIdentifiersSupportedAsGenericFiles;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   }
 
@@ -354,10 +354,10 @@
 - (id)typeIdentifiersSupportedAsGenericFiles
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  v2 = [*MEMORY[0x277CE1D40] identifier];
-  v6[0] = v2;
-  v3 = [*MEMORY[0x277CE1CF8] identifier];
-  v6[1] = v3;
+  identifier = [*MEMORY[0x277CE1D40] identifier];
+  v6[0] = identifier;
+  identifier2 = [*MEMORY[0x277CE1CF8] identifier];
+  v6[1] = identifier2;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:2];
 
   return v4;
@@ -370,36 +370,36 @@
   [(ICBaseTextView *)&v16 commonInit];
   [(ICEditingTextView *)self setAllowsEditingTextAttributes:1];
   v3 = objc_alloc(MEMORY[0x277D74298]);
-  v4 = [(ICEditingTextView *)self textLayoutManager];
-  v5 = [v3 initWithTextLayoutManager:v4];
+  textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+  v5 = [v3 initWithTextLayoutManager:textLayoutManager];
   [(ICEditingTextView *)self setHighlightShapeProvider:v5];
 
   [(ICEditingTextView *)self setupLinkTextAttributes];
-  v6 = [(ICEditingTextView *)self _allowedTypingAttributes];
-  v7 = [v6 mutableCopy];
+  _allowedTypingAttributes = [(ICEditingTextView *)self _allowedTypingAttributes];
+  v7 = [_allowedTypingAttributes mutableCopy];
 
   [v7 removeObject:*MEMORY[0x277D74060]];
   [v7 removeObject:*MEMORY[0x277D74068]];
-  v8 = [MEMORY[0x277D35F78] allowedTypingAttributes];
-  [v7 unionSet:v8];
+  allowedTypingAttributes = [MEMORY[0x277D35F78] allowedTypingAttributes];
+  [v7 unionSet:allowedTypingAttributes];
 
   [(ICEditingTextView *)self _setAllowedTypingAttributes:v7];
   v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_respondToTapGesture_];
   [(ICEditingTextView *)self setTapGestureRecognizer:v9];
 
-  v10 = [(ICEditingTextView *)self tapGestureRecognizer];
-  [v10 setDelegate:self];
+  tapGestureRecognizer = [(ICEditingTextView *)self tapGestureRecognizer];
+  [tapGestureRecognizer setDelegate:self];
 
-  v11 = [(ICEditingTextView *)self tapGestureRecognizer];
-  [(ICEditingTextView *)self addGestureRecognizer:v11];
+  tapGestureRecognizer2 = [(ICEditingTextView *)self tapGestureRecognizer];
+  [(ICEditingTextView *)self addGestureRecognizer:tapGestureRecognizer2];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = *MEMORY[0x277D36650];
-  v14 = [(ICEditingTextView *)self textStorage];
-  [v12 addObserver:self selector:sel_textStorageDidEndEditingNotification_ name:v13 object:v14];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  [defaultCenter addObserver:self selector:sel_textStorageDidEndEditingNotification_ name:v13 object:textStorage];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:self selector:sel_keyboardLocaleChanged_ name:*MEMORY[0x277D77200] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardLocaleChanged_ name:*MEMORY[0x277D77200] object:0];
 
   [(ICEditingTextView *)self keyboardLocaleChanged:0];
   [(ICEditingTextView *)self setMathExpressionCompletionType:ICInternalSettingsIsMathEnabled()];
@@ -416,35 +416,35 @@
 - (void)setupTextViewDragAndDropDelegates
 {
   objc_opt_class();
-  v3 = [(ICEditingTextView *)self textContainer];
+  textContainer = [(ICEditingTextView *)self textContainer];
   v4 = ICDynamicCast();
-  v5 = [v4 insideSiriSnippet];
+  insideSiriSnippet = [v4 insideSiriSnippet];
 
-  if ((v5 & 1) == 0)
+  if ((insideSiriSnippet & 1) == 0)
   {
     [(ICEditingTextView *)self setTextDragDelegate:self];
     [(ICEditingTextView *)self setTextDropDelegate:self];
     [(ICEditingTextView *)self setPasteDelegate:self];
-    v6 = [(ICEditingTextView *)self pasteConfigurationForCurrentTextView];
-    [(ICEditingTextView *)self setPasteConfiguration:v6];
+    pasteConfigurationForCurrentTextView = [(ICEditingTextView *)self pasteConfigurationForCurrentTextView];
+    [(ICEditingTextView *)self setPasteConfiguration:pasteConfigurationForCurrentTextView];
   }
 }
 
 - (void)setupLinkTextAttributes
 {
-  v3 = [(ICEditingTextView *)self linkTextAttributes];
-  v4 = v3;
+  linkTextAttributes = [(ICEditingTextView *)self linkTextAttributes];
+  v4 = linkTextAttributes;
   v5 = MEMORY[0x277CBEC10];
-  if (v3)
+  if (linkTextAttributes)
   {
-    v5 = v3;
+    v5 = linkTextAttributes;
   }
 
   v6 = v5;
 
   v11 = [v6 mutableCopy];
-  v7 = [MEMORY[0x277D36708] defaultLinkTextAttributes];
-  [v11 addEntriesFromDictionary:v7];
+  defaultLinkTextAttributes = [MEMORY[0x277D36708] defaultLinkTextAttributes];
+  [v11 addEntriesFromDictionary:defaultLinkTextAttributes];
 
   if (ICInternalSettingsIsTextKit2Enabled())
   {
@@ -455,7 +455,7 @@
   else
   {
     objc_opt_class();
-    v9 = [(ICEditingTextView *)self layoutManager];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
     v8 = ICDynamicCast();
 
     [v8 setIsSettingLinkTextAttributes:1];
@@ -484,8 +484,8 @@
 
 - (void)icaxClearCachedChildrenForReparenting
 {
-  v3 = [(ICEditingTextView *)self _icaxPencilKitAttachmentsDict];
-  [v3 removeAllObjects];
+  _icaxPencilKitAttachmentsDict = [(ICEditingTextView *)self _icaxPencilKitAttachmentsDict];
+  [_icaxPencilKitAttachmentsDict removeAllObjects];
 
   [(ICEditingTextView *)self set_icaxCachedChildrenForReparenting:0];
 }
@@ -519,12 +519,12 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-+ (id)attachmentInNote:(id)a3 range:(_NSRange)a4
++ (id)attachmentInNote:(id)note range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = v6;
+  length = range.length;
+  location = range.location;
+  noteCopy = note;
+  v7 = noteCopy;
   v8 = 0;
   v14 = 0;
   v15 = &v14;
@@ -534,14 +534,14 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
   v19 = 0;
   if (length == 1)
   {
-    v9 = [v6 textStorage];
-    v10 = [v7 managedObjectContext];
+    textStorage = [noteCopy textStorage];
+    managedObjectContext = [v7 managedObjectContext];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__ICEditingTextView_DragAndDrop__attachmentInNote_range___block_invoke;
     v13[3] = &unk_2781ABF08;
     v13[4] = &v14;
-    [v9 ic_enumerateAttachmentsInContext:v10 range:location usingBlock:{1, v13}];
+    [textStorage ic_enumerateAttachmentsInContext:managedObjectContext range:location usingBlock:{1, v13}];
 
     v8 = v15[5];
   }
@@ -552,65 +552,65 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
   return v11;
 }
 
-+ (id)copyTmpFileToTmpFileInSubDirectory:(id)a3 uti:(id)a4 suggestedName:(id)a5
++ (id)copyTmpFileToTmpFileInSubDirectory:(id)directory uti:(id)uti suggestedName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 lastPathComponent];
-  v11 = [v7 pathExtension];
-  v12 = v11;
-  if (!v11 || [v11 isEqualToString:@"tmp"])
+  directoryCopy = directory;
+  utiCopy = uti;
+  nameCopy = name;
+  lastPathComponent = [directoryCopy lastPathComponent];
+  pathExtension = [directoryCopy pathExtension];
+  v12 = pathExtension;
+  if (!pathExtension || [pathExtension isEqualToString:@"tmp"])
   {
-    v13 = [MEMORY[0x277D35E00] filenameExtensionForUTI:v8];
+    v13 = [MEMORY[0x277D35E00] filenameExtensionForUTI:utiCopy];
 
     v12 = v13;
   }
 
-  if ([v10 containsString:@"UIKit.ItemProvider"])
+  if ([lastPathComponent containsString:@"UIKit.ItemProvider"])
   {
-    if (v9)
+    if (nameCopy)
     {
-      [v9 ic_sanitizedFilenameString];
+      [nameCopy ic_sanitizedFilenameString];
     }
 
     else
     {
-      [MEMORY[0x277D35E00] filenameFromUTI:v8];
+      [MEMORY[0x277D35E00] filenameFromUTI:utiCopy];
     }
     v14 = ;
 
-    v10 = v14;
+    lastPathComponent = v14;
   }
 
   v15 = MEMORY[0x277CBEBC0];
   v16 = NSTemporaryDirectory();
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [v17 UUIDString];
-  v19 = [v16 stringByAppendingPathComponent:v18];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v19 = [v16 stringByAppendingPathComponent:uUIDString];
   v20 = [v15 fileURLWithPath:v19];
 
-  v21 = [v20 URLByAppendingPathComponent:v10 isDirectory:0];
+  v21 = [v20 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
   v22 = v21;
-  v36 = v9;
+  v36 = nameCopy;
   if (v12)
   {
-    v23 = [v21 URLByDeletingPathExtension];
-    v24 = [v23 URLByAppendingPathExtension:v12];
+    uRLByDeletingPathExtension = [v21 URLByDeletingPathExtension];
+    v24 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v12];
 
     v22 = v24;
   }
 
-  v25 = v8;
+  v25 = utiCopy;
   v26 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
     +[ICEditingTextView(DragAndDrop) copyTmpFileToTmpFileInSubDirectory:uti:suggestedName:];
   }
 
-  v27 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v38 = 0;
-  v28 = [v27 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:&v38];
+  v28 = [defaultManager createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:&v38];
   v29 = v38;
 
   if ((v28 & 1) == 0)
@@ -622,9 +622,9 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
     }
   }
 
-  v31 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v37 = v29;
-  v32 = [v31 copyItemAtURL:v7 toURL:v22 error:&v37];
+  v32 = [defaultManager2 copyItemAtURL:directoryCopy toURL:v22 error:&v37];
   v33 = v37;
 
   if ((v32 & 1) == 0)
@@ -642,36 +642,36 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
   return v22;
 }
 
-- (CGPoint)renderTextInCharacterRange:(_NSRange)a3 inTextStorage:(id)a4 temporaryAttributes:(id)a5 forceOffsetCalculation:(BOOL)a6 image:(id *)a7 boundingRectangles:(id *)a8 renderedGlyphRange:(_NSRange *)a9
+- (CGPoint)renderTextInCharacterRange:(_NSRange)range inTextStorage:(id)storage temporaryAttributes:(id)attributes forceOffsetCalculation:(BOOL)calculation image:(id *)image boundingRectangles:(id *)rectangles renderedGlyphRange:(_NSRange *)glyphRange
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v115 = *MEMORY[0x277D85DE8];
-  v89 = a4;
-  v88 = a5;
+  storageCopy = storage;
+  attributesCopy = attributes;
   if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
     v16 = objc_alloc(MEMORY[0x277D76370]);
-    v17 = [(ICEditingTextView *)self textLayoutManager];
-    v18 = [(ICEditingTextView *)self textLayoutManager];
-    v19 = [v18 ic_textRangeForRange:{location, length}];
-    v20 = [v16 initWithTextLayoutManager:v17 range:v19 unifyRects:1];
+    textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+    textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
+    v19 = [textLayoutManager2 ic_textRangeForRange:{location, length}];
+    v20 = [v16 initWithTextLayoutManager:textLayoutManager range:v19 unifyRects:1];
 
-    if (v88)
+    if (attributesCopy)
     {
-      [v20 addRenderingAttributes:v88];
+      [v20 addRenderingAttributes:attributesCopy];
     }
 
-    *a7 = [v20 image];
-    v21 = [(ICEditingTextView *)self textLayoutManager];
-    v22 = [v20 range];
-    a9->location = [v21 ic_rangeForTextRange:v22];
-    a9->length = v23;
+    *image = [v20 image];
+    textLayoutManager3 = [(ICEditingTextView *)self textLayoutManager];
+    range = [v20 range];
+    glyphRange->location = [textLayoutManager3 ic_rangeForTextRange:range];
+    glyphRange->length = v23;
 
-    if (v88)
+    if (attributesCopy)
     {
-      v24 = [v88 allKeys];
-      [v20 removeRenderingAttributes:v24];
+      allKeys = [attributesCopy allKeys];
+      [v20 removeRenderingAttributes:allKeys];
     }
 
     [v20 firstLineRect];
@@ -705,11 +705,11 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
       }
     }
 
-    *a8 = [v37 copy];
+    *rectangles = [v37 copy];
     v44 = MEMORY[0x277CBF348];
-    if ([(ICEditingTextView *)self isDraggingChecklistItem]|| a6)
+    if ([(ICEditingTextView *)self isDraggingChecklistItem]|| calculation)
     {
-      v78 = [v20 range];
+      range2 = [v20 range];
       v100[0] = 0;
       v100[1] = v100;
       v100[2] = 0x4010000000;
@@ -723,26 +723,26 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
       v79 = *(MEMORY[0x277CBF3A0] + 16);
       v98 = *MEMORY[0x277CBF3A0];
       v99 = v79;
-      v80 = [(ICEditingTextView *)self textLayoutManager];
-      v81 = [v78 location];
+      textLayoutManager4 = [(ICEditingTextView *)self textLayoutManager];
+      location = [range2 location];
       v91[0] = MEMORY[0x277D85DD0];
       v91[1] = 3221225472;
       v91[2] = __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inTextStorage_temporaryAttributes_forceOffsetCalculation_image_boundingRectangles_renderedGlyphRange___block_invoke;
       v91[3] = &unk_2781ABF30;
-      v82 = v78;
+      v82 = range2;
       v92 = v82;
       v93 = v100;
-      v83 = [v80 enumerateTextLayoutFragmentsFromLocation:v81 options:0 usingBlock:v91];
+      v83 = [textLayoutManager4 enumerateTextLayoutFragmentsFromLocation:location options:0 usingBlock:v91];
 
-      v84 = [(ICEditingTextView *)self textLayoutManager];
-      v85 = [v20 range];
+      textLayoutManager5 = [(ICEditingTextView *)self textLayoutManager];
+      range3 = [v20 range];
       v90[0] = MEMORY[0x277D85DD0];
       v90[1] = 3221225472;
       v90[2] = __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inTextStorage_temporaryAttributes_forceOffsetCalculation_image_boundingRectangles_renderedGlyphRange___block_invoke_2;
       v90[3] = &unk_2781ABF58;
       v90[4] = v100;
       v90[5] = &v94;
-      [v84 enumerateTextSegmentsInRange:v85 type:0 options:1 usingBlock:v90];
+      [textLayoutManager5 enumerateTextSegmentsInRange:range3 type:0 options:1 usingBlock:v90];
 
       MinX = CGRectGetMinX(v95[1]);
       _Block_object_dispose(&v94, 8);
@@ -760,8 +760,8 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
   else
   {
     objc_opt_class();
-    v46 = [(ICEditingTextView *)self textContainer];
-    v47 = [v46 layoutManager];
+    textContainer = [(ICEditingTextView *)self textContainer];
+    layoutManager = [textContainer layoutManager];
     v48 = ICCheckedDynamicCast();
 
     v49 = [v48 glyphRangeForCharacterRange:location actualCharacterRange:{length, 0}];
@@ -769,16 +769,16 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
     [v48 setShouldManuallyRenderSeparateSubviews:1];
     [v48 setIsRenderingPreviewForDragAndDrop:1];
     objc_opt_class();
-    v52 = [v89 styler];
+    styler = [storageCopy styler];
     v53 = ICCheckedDynamicCast();
 
-    [v53 styleText:v89 inExactRange:location fixModelAttributes:{length, 0}];
-    v54 = [objc_alloc(MEMORY[0x277D36970]) initWithLayoutManager:v48 range:location textStorage:{length, v89}];
+    [v53 styleText:storageCopy inExactRange:location fixModelAttributes:{length, 0}];
+    v54 = [objc_alloc(MEMORY[0x277D36970]) initWithLayoutManager:v48 range:location textStorage:{length, storageCopy}];
     [v54 setIsDraggingChecklistItem:{-[ICEditingTextView isDraggingChecklistItem](self, "isDraggingChecklistItem")}];
-    *a7 = [v54 image];
-    [v53 styleText:v89 inExactRange:location fixModelAttributes:{length, 0}];
-    a9->location = [v54 renderedGlyphRange];
-    a9->length = v55;
+    *image = [v54 image];
+    [v53 styleText:storageCopy inExactRange:location fixModelAttributes:{length, 0}];
+    glyphRange->location = [v54 renderedGlyphRange];
+    glyphRange->length = v55;
     [v48 setShouldManuallyRenderSeparateSubviews:0];
     [v48 setIsRenderingPreviewForDragAndDrop:0];
     [v48 invalidateDisplayForGlyphRange:{v49, v51}];
@@ -813,7 +813,7 @@ void __54__ICEditingTextView_StyleAdditions__ic_canChangeStyle__block_invoke(uin
       }
     }
 
-    *a8 = [v68 copy];
+    *rectangles = [v68 copy];
     [v54 originAdjustment];
     MinX = v75;
     v77 = v76;
@@ -888,33 +888,33 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
   return 1;
 }
 
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 inTextStorage:(id)a4
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = MEMORY[0x277D75BB0];
-  v8 = a4;
-  v9 = [(ICEditingTextView *)self window];
-  v10 = [v9 windowScene];
-  v11 = [v7 sharedTextEffectsWindowForWindowScene:v10];
+  storageCopy = storage;
+  window = [(ICEditingTextView *)self window];
+  windowScene = [window windowScene];
+  v11 = [v7 sharedTextEffectsWindowForWindowScene:windowScene];
 
-  v12 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:location inTextStorage:length temporaryAttributes:v8 forceOffsetCalculation:0 containerView:0, v11];
+  v12 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:location inTextStorage:length temporaryAttributes:storageCopy forceOffsetCalculation:0 containerView:0, v11];
 
   return v12;
 }
 
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 inTextStorage:(id)a4 temporaryAttributes:(id)a5 forceOffsetCalculation:(BOOL)a6 containerView:(id)a7
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range inTextStorage:(id)storage temporaryAttributes:(id)attributes forceOffsetCalculation:(BOOL)calculation containerView:(id)view
 {
-  v8 = a6;
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  calculationCopy = calculation;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  attributesCopy = attributes;
+  viewCopy = view;
   if ([(ICEditingTextView *)self isDraggingChecklistItem])
   {
-    v16 = [v13 string];
-    v17 = [v16 ic_isLastCharacterInRangeANewlineForRange:{location, length}] & (length != 1);
+    string = [storageCopy string];
+    v17 = [string ic_isLastCharacterInRangeANewlineForRange:{location, length}] & (length != 1);
 
     length -= v17;
   }
@@ -923,7 +923,7 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
   v39 = 0;
   v36 = 0;
   v37 = 0;
-  [(ICEditingTextView *)self renderTextInCharacterRange:location inTextStorage:length temporaryAttributes:v13 forceOffsetCalculation:v14 image:v8 boundingRectangles:&v37 renderedGlyphRange:&v36, &v38];
+  [(ICEditingTextView *)self renderTextInCharacterRange:location inTextStorage:length temporaryAttributes:storageCopy forceOffsetCalculation:attributesCopy image:calculationCopy boundingRectangles:&v37 renderedGlyphRange:&v36, &v38];
   v19 = v18;
   v21 = v20;
   v22 = v37;
@@ -933,7 +933,7 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
   v26 = [[v23 alloc] initWithImage:v25];
   [v26 setContentMode:9];
   [(ICEditingTextView *)self textOriginOffsetForGlyphRange:v38, v39];
-  [(ICEditingTextView *)self convertPoint:v15 toCoordinateSpace:?];
+  [(ICEditingTextView *)self convertPoint:viewCopy toCoordinateSpace:?];
   v28 = v27;
   v30 = v29;
   [v26 bounds];
@@ -943,23 +943,23 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
   v32 = objc_alloc(MEMORY[0x277D75488]);
   [v26 frame];
   UIRectGetCenter();
-  v33 = [v32 initWithContainer:v15 center:?];
+  v33 = [v32 initWithContainer:viewCopy center:?];
 
   v34 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v26 parameters:v31 target:v33];
 
   return v34;
 }
 
-- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)a3 uiRange:(id)a4
+- (id)correctlyPositionedPreviewForCharacterRange:(_NSRange)range uiRange:(id)uiRange
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICEditingTextView *)self editorController];
-  v9 = [v8 note];
-  v10 = [v9 textStorage];
+  length = range.length;
+  location = range.location;
+  uiRangeCopy = uiRange;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  textStorage = [note textStorage];
 
-  if (location >= [v10 length])
+  if (location >= [textStorage length])
   {
     v12 = 0;
   }
@@ -967,33 +967,33 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
   else
   {
     objc_opt_class();
-    v11 = [v10 attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
+    v11 = [textStorage attribute:*MEMORY[0x277D74060] atIndex:location effectiveRange:0];
     v12 = ICDynamicCast();
   }
 
-  v13 = [v7 _ic_textFindingResult];
+  _ic_textFindingResult = [uiRangeCopy _ic_textFindingResult];
   if (v12)
   {
     v88 = length;
-    v90 = v13;
+    v90 = _ic_textFindingResult;
     if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
     {
       objc_opt_class();
-      v15 = [(ICEditingTextView *)self textLayoutManager];
+      textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
       v16 = ICDynamicCast();
 
-      v17 = [v12 viewIdentifier];
-      v18 = [v16 existingAttachmentViewForIdentifier:v17];
+      viewIdentifier = [v12 viewIdentifier];
+      v18 = [v16 existingAttachmentViewForIdentifier:viewIdentifier];
       v19 = ICProtocolCast();
     }
 
     else
     {
       objc_opt_class();
-      v20 = [(ICEditingTextView *)self layoutManager];
+      layoutManager = [(ICEditingTextView *)self layoutManager];
       v16 = ICDynamicCast();
 
-      v17 = [v16 viewForTextAttachmentNoCreate:v12];
+      viewIdentifier = [v16 viewForTextAttachmentNoCreate:v12];
       v19 = ICProtocolCast();
     }
 
@@ -1027,24 +1027,24 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
     if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
     {
       objc_opt_class();
-      v25 = [(ICEditingTextView *)self textLayoutManager];
+      textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
       v26 = ICDynamicCast();
 
-      v27 = [v26 documentRange];
-      v28 = [v27 location];
+      documentRange = [v26 documentRange];
+      location = [documentRange location];
 
-      v29 = [(ICEditingTextView *)self textContainer];
-      v30 = [v29 textLayoutManager];
-      v31 = [v30 locationFromLocation:v28 withOffset:location];
-      v86 = v28;
+      textContainer = [(ICEditingTextView *)self textContainer];
+      textLayoutManager3 = [textContainer textLayoutManager];
+      v31 = [textLayoutManager3 locationFromLocation:location withOffset:location];
+      v86 = location;
 
-      v32 = [(ICEditingTextView *)self textContainer];
-      v33 = [v32 textLayoutManager];
-      v34 = [v33 locationFromLocation:v31 withOffset:v88];
+      textContainer2 = [(ICEditingTextView *)self textContainer];
+      textLayoutManager4 = [textContainer2 textLayoutManager];
+      v34 = [textLayoutManager4 locationFromLocation:v31 withOffset:v88];
 
-      v35 = [(ICEditingTextView *)self textLayoutManager];
+      textLayoutManager5 = [(ICEditingTextView *)self textLayoutManager];
       v36 = [objc_alloc(MEMORY[0x277D742D0]) initWithLocation:v31 endLocation:v34];
-      [v35 ensureLayoutForRange:v36];
+      [textLayoutManager5 ensureLayoutForRange:v36];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1054,21 +1054,21 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
 
       else
       {
-        v37 = [(ICEditingTextView *)self textContainer];
-        v38 = [v12 viewProviderForParentView:self location:v31 textContainer:v37];
+        textContainer3 = [(ICEditingTextView *)self textContainer];
+        v38 = [v12 viewProviderForParentView:self location:v31 textContainer:textContainer3];
       }
     }
 
     else
     {
       objc_opt_class();
-      v40 = [(ICEditingTextView *)self layoutManager];
+      layoutManager2 = [(ICEditingTextView *)self layoutManager];
       v26 = ICDynamicCast();
 
       v38 = [v12 viewProviderForParentView:self characterIndex:location layoutManager:v26];
     }
 
-    v41 = [v38 view];
+    view = [v38 view];
     v23 = 0.0;
     if (objc_opt_respondsToSelector())
     {
@@ -1078,29 +1078,29 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
 
     if (objc_opt_respondsToSelector())
     {
-      [v41 additionalXOffsetForTextDragPreviewInTextView:self];
+      [view additionalXOffsetForTextDragPreviewInTextView:self];
       v23 = v43;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v44 = [v38 viewForTextDragPreview];
+      viewForTextDragPreview = [v38 viewForTextDragPreview];
 
-      v41 = v44;
+      view = viewForTextDragPreview;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v45 = [v41 viewForTextDragPreview];
+      viewForTextDragPreview2 = [view viewForTextDragPreview];
 
-      v41 = v45;
+      view = viewForTextDragPreview2;
     }
 
     v91[0] = MEMORY[0x277D85DD0];
     v91[1] = 3221225472;
     v91[2] = __86__ICEditingTextView_DragAndDrop__correctlyPositionedPreviewForCharacterRange_uiRange___block_invoke_2;
     v91[3] = &unk_2781ABFA8;
-    v46 = v41;
+    v46 = view;
     v92 = v46;
     v47 = [v46 ic_imageRenderedFromViewHierarchyAfterScreenUpdates:0 fallback:v91];
     v48 = v97[5];
@@ -1109,14 +1109,14 @@ uint64_t __162__ICEditingTextView_DragAndDrop__renderTextInCharacterRange_inText
     if (v97[5])
     {
 LABEL_29:
-      v49 = [(ICEditingTextView *)self subviews];
-      v50 = [v49 ic_objectPassingTest:&__block_literal_global];
+      subviews = [(ICEditingTextView *)self subviews];
+      v50 = [subviews ic_objectPassingTest:&__block_literal_global];
 
       if (!v50 || ([v50 frame], (CGFloatIsValid() & 1) == 0))
       {
-        v51 = self;
+        selfCopy = self;
 
-        v50 = v51;
+        v50 = selfCopy;
       }
 
       v52 = objc_alloc(MEMORY[0x277D755E8]);
@@ -1128,8 +1128,8 @@ LABEL_29:
 
       else
       {
-        v55 = [(ICEditingTextView *)self layoutManager];
-        v56 = [v55 glyphRangeForCharacterRange:location actualCharacterRange:{v88, 0}];
+        layoutManager3 = [(ICEditingTextView *)self layoutManager];
+        v56 = [layoutManager3 glyphRangeForCharacterRange:location actualCharacterRange:{v88, 0}];
         v58 = v57;
 
         [(ICEditingTextView *)self textOriginOffsetForGlyphRange:v56, v58];
@@ -1191,7 +1191,7 @@ LABEL_29:
 
     _Block_object_dispose(&v96, 8);
 
-    v13 = v90;
+    _ic_textFindingResult = v90;
   }
 
   else
@@ -1228,10 +1228,10 @@ uint64_t __86__ICEditingTextView_DragAndDrop__correctlyPositionedPreviewForChara
   return isKindOfClass & 1;
 }
 
-- (id)targetedPreviewForPaperKitAttachment:(id)a3 textFindingResult:(id)a4
+- (id)targetedPreviewForPaperKitAttachment:(id)attachment textFindingResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  resultCopy = result;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -1253,7 +1253,7 @@ uint64_t __86__ICEditingTextView_DragAndDrop__correctlyPositionedPreviewForChara
   v40 = &v41;
   v9 = v8;
   v38 = v9;
-  [v7 generateFindPreviewImageForPaperKitAttachment:v6 completion:v37];
+  [resultCopy generateFindPreviewImageForPaperKitAttachment:attachmentCopy completion:v37];
   v10 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v9, v10);
   [(ICEditingTextView *)self bounds];
@@ -1268,9 +1268,9 @@ uint64_t __86__ICEditingTextView_DragAndDrop__correctlyPositionedPreviewForChara
   height = v55.size.height;
   objc_opt_class();
   v17 = ICDynamicCast();
-  v18 = [v7 framesForHighlightInTextView:v17];
-  v19 = [v18 firstObject];
-  [v19 CGRectValue];
+  v18 = [resultCopy framesForHighlightInTextView:v17];
+  firstObject = [v18 firstObject];
+  [firstObject CGRectValue];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -1309,39 +1309,39 @@ void __89__ICEditingTextView_DragAndDrop__targetedPreviewForPaperKitAttachment_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_targetedPreviewForRange:(id)a3 withRenderingAttributes:(id)a4 includeFullDocument:(BOOL)a5
+- (id)_targetedPreviewForRange:(id)range withRenderingAttributes:(id)attributes includeFullDocument:(BOOL)document
 {
-  v39 = a5;
+  documentCopy = document;
   v48[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 _ic_textFindingResult];
-  v10 = v9;
-  if (!v9)
+  rangeCopy = range;
+  attributesCopy = attributes;
+  _ic_textFindingResult = [rangeCopy _ic_textFindingResult];
+  v10 = _ic_textFindingResult;
+  if (!_ic_textFindingResult)
   {
-    v19 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:v7];
+    v19 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:rangeCopy];
     v21 = v20;
     objc_opt_class();
-    v22 = [(ICEditingTextView *)self textStorage];
+    textStorage = [(ICEditingTextView *)self textStorage];
     v23 = ICDynamicCast();
 
-    v24 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v19 inTextStorage:v21 temporaryAttributes:v23 forceOffsetCalculation:v8 containerView:0, self];
+    v24 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v19 inTextStorage:v21 temporaryAttributes:v23 forceOffsetCalculation:attributesCopy containerView:0, self];
 
     goto LABEL_13;
   }
 
-  v11 = [v9 range];
+  range = [_ic_textFindingResult range];
   v40 = v12;
   v13 = objc_opt_class();
-  v14 = [(ICEditingTextView *)self editorController];
-  v15 = [v14 note];
-  v16 = [v13 attachmentInNote:v15 range:{v11, v40}];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  v16 = [v13 attachmentInNote:note range:{range, v40}];
 
   objc_opt_class();
   v17 = ICDynamicCast();
   if ([v16 attachmentType] == 13 && v17)
   {
-    v18 = [(ICEditingTextView *)self targetedPreviewForPaperKitAttachment:v16 textFindingResult:v17];
+    rangeCopy = [(ICEditingTextView *)self targetedPreviewForPaperKitAttachment:v16 textFindingResult:v17];
   }
 
   else
@@ -1349,51 +1349,51 @@ void __89__ICEditingTextView_DragAndDrop__targetedPreviewForPaperKitAttachment_t
     if (![v10 isAttachmentResult])
     {
       objc_opt_class();
-      v25 = [(ICEditingTextView *)self textStorage];
+      textStorage2 = [(ICEditingTextView *)self textStorage];
       v38 = ICDynamicCast();
 
-      v37 = [v38 attribute:*MEMORY[0x277D35DA8] atIndex:v11 effectiveRange:0];
+      v37 = [v38 attribute:*MEMORY[0x277D35DA8] atIndex:range effectiveRange:0];
       v43 = 0;
       v44 = &v43;
       v45 = 0x2020000000;
       v46 = 0;
       if ([v37 isList])
       {
-        v26 = [(ICEditingTextView *)self textLayoutManager];
-        v36 = [(ICEditingTextView *)self textLayoutManager];
-        v27 = [v36 ic_textRangeForRange:{v11, v40}];
-        v28 = [v27 location];
+        textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+        textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
+        v27 = [textLayoutManager2 ic_textRangeForRange:{range, v40}];
+        location = [v27 location];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRenderingAttributes_includeFullDocument___block_invoke;
         v42[3] = &unk_2781AC018;
         v42[4] = self;
         v42[5] = &v43;
-        v42[6] = v11;
+        v42[6] = range;
         v42[7] = v40;
-        v29 = [v26 enumerateTextLayoutFragmentsFromLocation:v28 options:0 usingBlock:v42];
+        v29 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:location options:0 usingBlock:v42];
       }
 
       v47[0] = *MEMORY[0x277D740C0];
-      v30 = [MEMORY[0x277D75348] blackColor];
-      v48[0] = v30;
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v48[0] = blackColor;
       v47[1] = *MEMORY[0x277D74068];
-      v31 = [MEMORY[0x277D75348] clearColor];
-      v48[1] = v31;
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      v48[1] = clearColor;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
       v33 = *(v44 + 24);
-      v34 = [(ICEditingTextView *)self window];
-      v24 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v11 inTextStorage:v40 temporaryAttributes:v38 forceOffsetCalculation:v32 containerView:v33, v34];
+      window = [(ICEditingTextView *)self window];
+      v24 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:range inTextStorage:v40 temporaryAttributes:v38 forceOffsetCalculation:v32 containerView:v33, window];
 
       _Block_object_dispose(&v43, 8);
       goto LABEL_12;
     }
 
-    v18 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v11 uiRange:v40, v7];
+    rangeCopy = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:range uiRange:v40, rangeCopy];
   }
 
-  v24 = v18;
+  v24 = rangeCopy;
 LABEL_12:
 
 LABEL_13:
@@ -1401,7 +1401,7 @@ LABEL_13:
   {
     v41.receiver = self;
     v41.super_class = ICEditingTextView;
-    v24 = [(ICEditingTextView *)&v41 _targetedPreviewForRange:v7 withRenderingAttributes:v8 includeFullDocument:v39];
+    v24 = [(ICEditingTextView *)&v41 _targetedPreviewForRange:rangeCopy withRenderingAttributes:attributesCopy includeFullDocument:documentCopy];
   }
 
   return v24;
@@ -1419,17 +1419,17 @@ uint64_t __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRend
   return 0;
 }
 
-- (CGRect)enclosingRectForGlyphRange:(_NSRange)a3
+- (CGRect)enclosingRectForGlyphRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(ICEditingTextView *)self textLayoutManager];
-    v8 = [v7 ic_textRangeForRange:{location, length}];
+    textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+    v8 = [textLayoutManager ic_textRangeForRange:{location, length}];
 
-    v9 = [(ICEditingTextView *)self textContainer];
-    [v9 textContainerOrigin];
+    textContainer = [(ICEditingTextView *)self textContainer];
+    [textContainer textContainerOrigin];
     v11 = v10;
     v13 = v12;
 
@@ -1440,7 +1440,7 @@ uint64_t __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRend
     v14 = *(MEMORY[0x277CBF398] + 16);
     v45 = *MEMORY[0x277CBF398];
     v46 = v14;
-    v15 = [(ICEditingTextView *)self textLayoutManager];
+    textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __61__ICEditingTextView_DragAndDrop__enclosingRectForGlyphRange___block_invoke;
@@ -1448,7 +1448,7 @@ uint64_t __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRend
     v40[5] = v11;
     v40[6] = v13;
     v40[4] = &v41;
-    [v15 enumerateTextSegmentsInRange:v8 type:1 options:0 usingBlock:v40];
+    [textLayoutManager2 enumerateTextSegmentsInRange:v8 type:1 options:0 usingBlock:v40];
 
     v16 = v42[4];
     v17 = v42[5];
@@ -1466,12 +1466,12 @@ uint64_t __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRend
     v20 = *(MEMORY[0x277CBF398] + 16);
     v45 = *MEMORY[0x277CBF398];
     v46 = v20;
-    v21 = [(ICEditingTextView *)self textContainer];
-    [v21 textContainerOrigin];
+    textContainer2 = [(ICEditingTextView *)self textContainer];
+    [textContainer2 textContainerOrigin];
     v23 = v22;
     v25 = v24;
-    v26 = [(ICEditingTextView *)self layoutManager];
-    v27 = [(ICEditingTextView *)self textContainer];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
+    textContainer3 = [(ICEditingTextView *)self textContainer];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __61__ICEditingTextView_DragAndDrop__enclosingRectForGlyphRange___block_invoke_2;
@@ -1479,12 +1479,12 @@ uint64_t __103__ICEditingTextView_DragAndDrop___targetedPreviewForRange_withRend
     v33[4] = self;
     v36 = location;
     v37 = length;
-    v28 = v21;
+    v28 = textContainer2;
     v38 = v23;
     v39 = v25;
     v34 = v28;
     v35 = &v41;
-    [v26 enumerateEnclosingRectsForGlyphRange:location withinSelectedGlyphRange:length inTextContainer:location usingBlock:{length, v27, v33}];
+    [layoutManager enumerateEnclosingRectsForGlyphRange:location withinSelectedGlyphRange:length inTextContainer:location usingBlock:{length, textContainer3, v33}];
 
     v16 = v42[4];
     v17 = v42[5];
@@ -1537,62 +1537,62 @@ void __61__ICEditingTextView_DragAndDrop__enclosingRectForGlyphRange___block_inv
 
 - (void)beginDrop
 {
-  v3 = [(ICEditingTextView *)self TTTextStorage];
-  [v3 breakUndoCoalescing];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage breakUndoCoalescing];
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v4 = [(ICEditingTextView *)self TTTextStorage];
-    [v4 beginEditing];
+    tTTextStorage2 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage2 beginEditing];
   }
 }
 
-- (void)finishDropWithString:(id)a3
+- (void)finishDropWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     [(ICEditingTextView *)self icaxTextDidChange];
-    v5 = [(ICEditingTextView *)self editorController];
-    v6 = [v5 note];
-    [v6 updateChangeCountWithReason:@"Finished string drop"];
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    [note updateChangeCountWithReason:@"Finished string drop"];
   }
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v7 = [(ICEditingTextView *)self TTTextStorage];
-    [v7 endEditing];
+    tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage endEditing];
   }
 
-  v8 = [(ICEditingTextView *)self TTTextStorage];
-  [v8 fixupAfterEditing];
+  tTTextStorage2 = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage2 fixupAfterEditing];
 
-  v9 = [(ICEditingTextView *)self editorController];
-  v10 = [v9 note];
-  [v10 save];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController2 note];
+  [note2 save];
 
-  v11 = [(ICEditingTextView *)self editorController];
-  v12 = [v11 note];
-  v13 = [v12 managedObjectContext];
-  [v13 ic_save];
+  editorController3 = [(ICEditingTextView *)self editorController];
+  note3 = [editorController3 note];
+  managedObjectContext = [note3 managedObjectContext];
+  [managedObjectContext ic_save];
 
-  v14 = [(ICEditingTextView *)self editorController];
-  v15 = [v14 note];
-  [v15 setShouldAddMediaAsynchronously:0];
+  editorController4 = [(ICEditingTextView *)self editorController];
+  note4 = [editorController4 note];
+  [note4 setShouldAddMediaAsynchronously:0];
 
   objc_initWeak(&location, self);
-  v16 = [MEMORY[0x277D35F30] sharedContext];
-  v17 = [v16 snapshotManagedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  snapshotManagedObjectContext = [mEMORY[0x277D35F30] snapshotManagedObjectContext];
 
   v18 = dispatch_get_global_queue(-32768, 0);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __55__ICEditingTextView_DragAndDrop__finishDropWithString___block_invoke;
   v21[3] = &unk_2781AC0E0;
-  v22 = v17;
-  v23 = v4;
-  v19 = v4;
-  v20 = v17;
+  v22 = snapshotManagedObjectContext;
+  v23 = stringCopy;
+  v19 = stringCopy;
+  v20 = snapshotManagedObjectContext;
   objc_copyWeak(&v24, &location);
   dispatch_async(v18, v21);
 
@@ -1673,29 +1673,29 @@ void __55__ICEditingTextView_DragAndDrop__finishDropWithString___block_invoke_4(
   [v3 updatePKDrawingsWithHandwritingRecognitionEnabled:{objc_msgSend(v3, "isHandwritingRecognitionEnabled")}];
 }
 
-- (BOOL)handleTopotextDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleTopotextDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
   v16 = *MEMORY[0x277D35D08];
-  v17 = [v12 hasRepresentationConformingToTypeIdentifier:*MEMORY[0x277D35D08] fileOptions:0];
+  v17 = [providerCopy hasRepresentationConformingToTypeIdentifier:*MEMORY[0x277D35D08] fileOptions:0];
   if (v17)
   {
     objc_initWeak(&location, self);
     v18 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(ICEditingTextView *)self editorController];
-      v20 = [v23 note];
-      v21 = [v20 shortLoggingDescription];
+      editorController = [(ICEditingTextView *)self editorController];
+      note = [editorController note];
+      shortLoggingDescription = [note shortLoggingDescription];
       *buf = 138412546;
-      v22 = v21;
-      v31 = v21;
+      v22 = shortLoggingDescription;
+      v31 = shortLoggingDescription;
       v32 = 2112;
-      v33 = v13;
+      v33 = positionCopy;
       _os_log_debug_impl(&dword_2151A1000, v18, OS_LOG_TYPE_DEBUG, "Topotext drop in note: %@, position: %@", buf, 0x16u);
     }
 
@@ -1704,10 +1704,10 @@ void __55__ICEditingTextView_DragAndDrop__finishDropWithString___block_invoke_4(
     v24[2] = __124__ICEditingTextView_DragAndDrop__handleTopotextDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v24[3] = &unk_2781AC130;
     objc_copyWeak(&v28, &location);
-    v25 = v14;
-    v26 = self;
-    v27 = v15;
-    *a6 = [v12 loadDataRepresentationForTypeIdentifier:v16 completionHandler:v24];
+    v25 = sessionCopy;
+    selfCopy = self;
+    v27 = blockCopy;
+    *progress = [providerCopy loadDataRepresentationForTypeIdentifier:v16 completionHandler:v24];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
@@ -1791,19 +1791,19 @@ void __124__ICEditingTextView_DragAndDrop__handleTopotextDropForItemProvider_atT
   }
 }
 
-- (BOOL)handleInlineDrawingDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleInlineDrawingDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
   v16 = *MEMORY[0x277D35BD8];
-  if (([v12 hasRepresentationConformingToTypeIdentifier:v16 fileOptions:0] & 1) == 0)
+  if (([providerCopy hasRepresentationConformingToTypeIdentifier:v16 fileOptions:0] & 1) == 0)
   {
     v17 = *MEMORY[0x277D35BD0];
 
-    if ([v12 hasRepresentationConformingToTypeIdentifier:v17 fileOptions:0])
+    if ([providerCopy hasRepresentationConformingToTypeIdentifier:v17 fileOptions:0])
     {
       v16 = v17;
     }
@@ -1812,7 +1812,7 @@ void __124__ICEditingTextView_DragAndDrop__handleTopotextDropForItemProvider_atT
     {
       v16 = *MEMORY[0x277CD96B8];
 
-      if (([v12 hasRepresentationConformingToTypeIdentifier:v16 fileOptions:0] & 1) == 0)
+      if (([providerCopy hasRepresentationConformingToTypeIdentifier:v16 fileOptions:0] & 1) == 0)
       {
 
         goto LABEL_10;
@@ -1830,13 +1830,13 @@ LABEL_10:
   v18 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(ICEditingTextView *)self editorController];
-    v22 = [v24 note];
-    v23 = [v22 shortLoggingDescription];
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    shortLoggingDescription = [note shortLoggingDescription];
     *buf = 138412802;
-    v31 = v23;
+    v31 = shortLoggingDescription;
     v32 = 2112;
-    v33 = v13;
+    v33 = positionCopy;
     v34 = 2112;
     v35 = v16;
     _os_log_debug_impl(&dword_2151A1000, v18, OS_LOG_TYPE_DEBUG, "Inline drawing drop in note: %@, position: %@, uti: %@", buf, 0x20u);
@@ -1847,11 +1847,11 @@ LABEL_10:
   v25[2] = __129__ICEditingTextView_DragAndDrop__handleInlineDrawingDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
   v25[3] = &unk_2781AC158;
   v26 = v16;
-  v27 = self;
-  v28 = v14;
-  v29 = v15;
+  selfCopy = self;
+  v28 = sessionCopy;
+  v29 = blockCopy;
   v19 = v16;
-  *a6 = [v12 loadDataRepresentationForTypeIdentifier:v19 completionHandler:v25];
+  *progress = [providerCopy loadDataRepresentationForTypeIdentifier:v19 completionHandler:v25];
 
   v20 = 1;
 LABEL_11:
@@ -1914,22 +1914,22 @@ LABEL_11:
   }
 }
 
-- (BOOL)handleInlinePaperDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleInlinePaperDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
+  providerCopy = provider;
+  sessionCopy = session;
+  blockCopy = block;
   v13 = *MEMORY[0x277CD96B0];
-  v14 = [v10 hasRepresentationConformingToTypeIdentifier:*MEMORY[0x277CD96B0] fileOptions:0];
+  v14 = [providerCopy hasRepresentationConformingToTypeIdentifier:*MEMORY[0x277CD96B0] fileOptions:0];
   if (v14)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __127__ICEditingTextView_DragAndDrop__handleInlinePaperDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v16[3] = &unk_2781AC220;
-    v18 = v12;
-    v17 = v11;
-    *a6 = [v10 loadFileRepresentationForTypeIdentifier:v13 completionHandler:v16];
+    v18 = blockCopy;
+    v17 = sessionCopy;
+    *progress = [providerCopy loadFileRepresentationForTypeIdentifier:v13 completionHandler:v16];
   }
 
   return v14;
@@ -2123,19 +2123,19 @@ void __127__ICEditingTextView_DragAndDrop__handleInlinePaperDropForItemProvider_
   }
 }
 
-- (BOOL)handlePaperDocumentDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handlePaperDocumentDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
   if ((ICInternalSettingsIsPDFsInNotesEnabled() & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"ICInternalSettingsIsPDFsInNotesEnabled()" functionName:"-[ICEditingTextView(DragAndDrop) handlePaperDocumentDropForItemProvider:atTextPosition:pasteSession:outProgress:completionBlock:]" simulateCrash:1 showAlert:0 format:@"PDFsInNotes must be enabled"];
   }
 
-  v16 = [*MEMORY[0x277CE1E08] identifier];
-  v17 = [v12 hasRepresentationConformingToTypeIdentifier:v16 fileOptions:0];
+  identifier = [*MEMORY[0x277CE1E08] identifier];
+  v17 = [providerCopy hasRepresentationConformingToTypeIdentifier:identifier fileOptions:0];
   if (v17)
   {
     objc_initWeak(&location, self);
@@ -2144,11 +2144,11 @@ void __127__ICEditingTextView_DragAndDrop__handleInlinePaperDropForItemProvider_
     v19[2] = __129__ICEditingTextView_DragAndDrop__handlePaperDocumentDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v19[3] = &unk_2781AC298;
     objc_copyWeak(&v24, &location);
-    v20 = v16;
-    v21 = v12;
-    v23 = v15;
-    v22 = v14;
-    *a6 = [v21 loadFileRepresentationForTypeIdentifier:v20 completionHandler:v19];
+    v20 = identifier;
+    v21 = providerCopy;
+    v23 = blockCopy;
+    v22 = sessionCopy;
+    *progress = [v21 loadFileRepresentationForTypeIdentifier:v20 completionHandler:v19];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -2279,16 +2279,16 @@ LABEL_6:
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)hasSupportedImageInItemProvider:(id)a3
+- (BOOL)hasSupportedImageInItemProvider:(id)provider
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = a3;
-  v3 = [v17 registeredTypeIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  providerCopy = provider;
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  v4 = [registeredTypeIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2301,12 +2301,12 @@ LABEL_6:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v7 identifier];
-        if ([v10 isEqualToString:v11])
+        identifier = [v7 identifier];
+        if ([v10 isEqualToString:identifier])
         {
         }
 
@@ -2318,14 +2318,14 @@ LABEL_6:
           if (v13)
           {
 
-            v15 = v17;
-            v14 = [v17 canLoadObjectOfClass:objc_opt_class()];
+            v15 = providerCopy;
+            v14 = [providerCopy canLoadObjectOfClass:objc_opt_class()];
             goto LABEL_13;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [registeredTypeIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -2336,18 +2336,18 @@ LABEL_6:
   }
 
   v14 = 0;
-  v15 = v17;
+  v15 = providerCopy;
 LABEL_13:
 
   return v14;
 }
 
-- (id)attributedStringForImageData:(id)a3 imageTypeUTI:(id)a4 itemProvider:(id)a5 pasteSession:(id)a6
+- (id)attributedStringForImageData:(id)data imageTypeUTI:(id)i itemProvider:(id)provider pasteSession:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  iCopy = i;
+  providerCopy = provider;
+  sessionCopy = session;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2358,14 +2358,14 @@ LABEL_13:
   v20[1] = 3221225472;
   v20[2] = __102__ICEditingTextView_DragAndDrop__attributedStringForImageData_imageTypeUTI_itemProvider_pasteSession___block_invoke;
   v20[3] = &unk_2781AC2C0;
-  v14 = v13;
+  v14 = sessionCopy;
   v21 = v14;
-  v15 = v10;
+  v15 = dataCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = iCopy;
   v23 = v16;
-  v17 = v12;
-  v25 = self;
+  v17 = providerCopy;
+  selfCopy = self;
   v26 = &v27;
   v24 = v17;
   [v14 performBlockAndWait:v20];
@@ -2434,13 +2434,13 @@ LABEL_5:
 LABEL_11:
 }
 
-- (id)attributedStringForStrokeSelection:(id)a3 session:(id)a4
+- (id)attributedStringForStrokeSelection:(id)selection session:(id)session
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
+  selectionCopy = selection;
+  sessionCopy = session;
   v6 = objc_alloc_init(MEMORY[0x277CD95F8]);
-  [v5 boundsWithoutLasso];
+  [selectionCopy boundsWithoutLasso];
   v10 = v9;
   v11 = v9 < 760.0;
   v12 = 0.0;
@@ -2463,9 +2463,9 @@ LABEL_11:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v27 = v5;
-  v13 = [v5 strokes];
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v27 = selectionCopy;
+  strokes = [selectionCopy strokes];
+  v14 = [strokes countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2477,13 +2477,13 @@ LABEL_11:
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(strokes);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
         v20 = [v19 ink];
-        v21 = [v20 identifier];
-        v22 = [v21 isEqualToString:v17];
+        identifier = [v20 identifier];
+        v22 = [identifier isEqualToString:v17];
 
         if ((v22 & 1) == 0)
         {
@@ -2491,38 +2491,38 @@ LABEL_11:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v15 = [strokes countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v15);
   }
 
-  v23 = [(ICEditingTextView *)self attributedStringForDrawing:v6 session:v25];
+  v23 = [(ICEditingTextView *)self attributedStringForDrawing:v6 session:sessionCopy];
 
   return v23;
 }
 
-- (id)attributedStringForDrawing:(id)a3 session:(id)a4
+- (id)attributedStringForDrawing:(id)drawing session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  drawingCopy = drawing;
+  sessionCopy = session;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__1;
   v21 = __Block_byref_object_dispose__1;
   v22 = 0;
-  [v6 bounds];
-  [v6 set_canvasBounds:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), 768.0, CGRectGetMaxY(v24)}];
+  [drawingCopy bounds];
+  [drawingCopy set_canvasBounds:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), 768.0, CGRectGetMaxY(v24)}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__ICEditingTextView_DragAndDrop__attributedStringForDrawing_session___block_invoke;
   v12[3] = &unk_2781AC2E8;
-  v8 = v7;
+  v8 = sessionCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = drawingCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [v8 performBlockAndWait:v12];
   v10 = v18[5];
@@ -2579,34 +2579,34 @@ LABEL_6:
 LABEL_8:
 }
 
-- (BOOL)handleImageDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleImageDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v38 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = [*MEMORY[0x277CE1DB0] identifier];
-  if ([v11 hasRepresentationConformingToTypeIdentifier:v14 fileOptions:0])
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
+  identifier = [*MEMORY[0x277CE1DB0] identifier];
+  if ([providerCopy hasRepresentationConformingToTypeIdentifier:identifier fileOptions:0])
   {
-    LODWORD(v15) = [(ICEditingTextView *)self hasSupportedImageInItemProvider:v11];
+    LODWORD(v15) = [(ICEditingTextView *)self hasSupportedImageInItemProvider:providerCopy];
 
     if (v15)
     {
       objc_initWeak(&location, self);
       v16 = MEMORY[0x277CBEB98];
-      v17 = [*MEMORY[0x277CE1DC0] identifier];
-      v18 = [*MEMORY[0x277CE1E10] identifier];
-      v19 = [*MEMORY[0x277CE1E80] identifier];
-      v20 = [*MEMORY[0x277CE1D90] identifier];
-      v21 = [v16 setWithObjects:{v17, v18, v19, v20, 0}];
+      identifier2 = [*MEMORY[0x277CE1DC0] identifier];
+      identifier3 = [*MEMORY[0x277CE1E10] identifier];
+      identifier4 = [*MEMORY[0x277CE1E80] identifier];
+      identifier5 = [*MEMORY[0x277CE1D90] identifier];
+      v21 = [v16 setWithObjects:{identifier2, identifier3, identifier4, identifier5, 0}];
 
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v22 = [v11 registeredTypeIdentifiers];
-      v23 = [v22 countByEnumeratingWithState:&v50 objects:v61 count:16];
+      registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+      v23 = [registeredTypeIdentifiers countByEnumeratingWithState:&v50 objects:v61 count:16];
       if (v23)
       {
         v24 = *v51;
@@ -2616,7 +2616,7 @@ LABEL_8:
           {
             if (*v51 != v24)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(registeredTypeIdentifiers);
             }
 
             v26 = *(*(&v50 + 1) + 8 * i);
@@ -2627,7 +2627,7 @@ LABEL_8:
             }
           }
 
-          v23 = [v22 countByEnumeratingWithState:&v50 objects:v61 count:16];
+          v23 = [registeredTypeIdentifiers countByEnumeratingWithState:&v50 objects:v61 count:16];
           if (v23)
           {
             continue;
@@ -2642,13 +2642,13 @@ LABEL_14:
       v27 = os_log_create("com.apple.notes", "DragAndDrop");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [(ICEditingTextView *)self editorController];
-        v35 = [v34 note];
-        v36 = [v35 shortLoggingDescription];
+        editorController = [(ICEditingTextView *)self editorController];
+        note = [editorController note];
+        shortLoggingDescription = [note shortLoggingDescription];
         *buf = 138412802;
-        v56 = v36;
+        v56 = shortLoggingDescription;
         v57 = 2112;
-        v58 = v38;
+        v58 = positionCopy;
         v59 = 2112;
         v60 = v23;
         _os_log_debug_impl(&dword_2151A1000, v27, OS_LOG_TYPE_DEBUG, "Image drop in note: %@, position: %@, uti: %@", buf, 0x20u);
@@ -2663,10 +2663,10 @@ LABEL_14:
         v28 = &v49;
         objc_copyWeak(&v49, &location);
         v45 = v23;
-        v46 = v11;
-        v47 = v12;
-        v48 = v13;
-        *a6 = [v46 loadDataRepresentationForTypeIdentifier:v45 completionHandler:v44];
+        v46 = providerCopy;
+        v47 = sessionCopy;
+        v48 = blockCopy;
+        *progress = [v46 loadDataRepresentationForTypeIdentifier:v45 completionHandler:v44];
 
         v29 = &v45;
         v15 = &v46;
@@ -2682,14 +2682,14 @@ LABEL_14:
         v39[3] = &unk_2781AC338;
         v28 = &v43;
         objc_copyWeak(&v43, &location);
-        v40 = v11;
-        v41 = v12;
-        v42 = v13;
+        v40 = providerCopy;
+        v41 = sessionCopy;
+        v42 = blockCopy;
         v32 = [v40 loadObjectOfClass:v31 completionHandler:v39];
         v29 = &v40;
         v15 = &v41;
         v30 = &v42;
-        *a6 = v32;
+        *progress = v32;
       }
 
       objc_destroyWeak(v28);
@@ -2767,16 +2767,16 @@ void __121__ICEditingTextView_DragAndDrop__handleImageDropForItemProvider_atText
 LABEL_9:
 }
 
-- (BOOL)handleMovieOrAudioDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleMovieOrAudioDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v41 = a4;
-  v44 = a5;
-  v42 = a7;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
   v11 = *MEMORY[0x277CE1E00];
-  v12 = [*MEMORY[0x277CE1E00] identifier];
-  v13 = [v10 hasRepresentationConformingToTypeIdentifier:v12 fileOptions:0];
+  identifier = [*MEMORY[0x277CE1E00] identifier];
+  v13 = [providerCopy hasRepresentationConformingToTypeIdentifier:identifier fileOptions:0];
   v14 = MEMORY[0x277CE1D00];
   if (v13)
   {
@@ -2784,8 +2784,8 @@ LABEL_9:
 
   else
   {
-    v15 = [*MEMORY[0x277CE1D00] identifier];
-    v16 = [v10 hasRepresentationConformingToTypeIdentifier:v15 fileOptions:0];
+    identifier2 = [*MEMORY[0x277CE1D00] identifier];
+    v16 = [providerCopy hasRepresentationConformingToTypeIdentifier:identifier2 fileOptions:0];
 
     if (!v16)
     {
@@ -2795,8 +2795,8 @@ LABEL_9:
   }
 
   objc_initWeak(&location, self);
-  v17 = [v11 identifier];
-  v18 = [v10 hasRepresentationConformingToTypeIdentifier:v17 fileOptions:0];
+  identifier3 = [v11 identifier];
+  v18 = [providerCopy hasRepresentationConformingToTypeIdentifier:identifier3 fileOptions:0];
   v19 = *v14;
   if (v18)
   {
@@ -2805,13 +2805,13 @@ LABEL_9:
 
   v20 = v19;
 
-  v45 = [v20 identifier];
+  identifier4 = [v20 identifier];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v21 = [v10 registeredTypeIdentifiers];
-  v22 = [v21 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  v22 = [registeredTypeIdentifiers countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v22)
   {
     v23 = *v53;
@@ -2821,23 +2821,23 @@ LABEL_9:
       {
         if (*v53 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         v25 = *(*(&v52 + 1) + 8 * i);
-        v26 = [MEMORY[0x277CE1CB8] typeWithIdentifier:{v25, v41}];
+        v26 = [MEMORY[0x277CE1CB8] typeWithIdentifier:{v25, positionCopy}];
         v27 = [v26 conformsToType:v20];
 
         if (v27)
         {
           v28 = v25;
 
-          v45 = v28;
+          identifier4 = v28;
           goto LABEL_16;
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v22 = [registeredTypeIdentifiers countByEnumeratingWithState:&v52 objects:v61 count:16];
       if (v22)
       {
         continue;
@@ -2849,15 +2849,15 @@ LABEL_9:
 
 LABEL_16:
 
-  v29 = [(ICEditingTextView *)self editorController];
-  v30 = [v29 note];
-  if (![v30 isPasswordProtected])
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  if (![note isPasswordProtected])
   {
 
     goto LABEL_22;
   }
 
-  v31 = [MEMORY[0x277D35E00] isTypeUTISupportedForPasswordProtectedNotes:v45];
+  v31 = [MEMORY[0x277D35E00] isTypeUTISupportedForPasswordProtectedNotes:identifier4];
 
   if (v31)
   {
@@ -2865,13 +2865,13 @@ LABEL_22:
     v35 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [(ICEditingTextView *)self editorController];
-      v39 = [v38 note];
-      v40 = [v39 shortLoggingDescription];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      note2 = [editorController2 note];
+      shortLoggingDescription = [note2 shortLoggingDescription];
       *buf = 138412546;
-      v58 = v40;
+      v58 = shortLoggingDescription;
       v59 = 2112;
-      v60 = v41;
+      v60 = positionCopy;
       _os_log_debug_impl(&dword_2151A1000, v35, OS_LOG_TYPE_DEBUG, "Movie/audio drop in note: %@, position: %@", buf, 0x16u);
     }
 
@@ -2880,10 +2880,10 @@ LABEL_22:
     v46[2] = __128__ICEditingTextView_DragAndDrop__handleMovieOrAudioDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v46[3] = &unk_2781AC360;
     objc_copyWeak(&v51, &location);
-    v47 = v45;
-    v48 = v10;
-    v49 = v44;
-    v50 = v42;
+    v47 = identifier4;
+    v48 = providerCopy;
+    v49 = sessionCopy;
+    v50 = blockCopy;
     v36 = [v48 loadFileRepresentationForTypeIdentifier:v47 completionHandler:v46];
 
     objc_destroyWeak(&v51);
@@ -2891,13 +2891,13 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (([v44 didWarnAboutNotSupportedForPasswordProtectedNotes] & 1) == 0)
+  if (([sessionCopy didWarnAboutNotSupportedForPasswordProtectedNotes] & 1) == 0)
   {
     v32 = [MEMORY[0x277D366D8] cannotAddAttachmentsInfoAlertWithAttachmentCount:1];
-    v33 = [(ICEditingTextView *)self window];
-    [v32 presentInWindow:v33 completionHandler:0];
+    window = [(ICEditingTextView *)self window];
+    [v32 presentInWindow:window completionHandler:0];
 
-    [v44 setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
+    [sessionCopy setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
   }
 
   v34 = 0;
@@ -2943,27 +2943,27 @@ void __128__ICEditingTextView_DragAndDrop__handleMovieOrAudioDropForItemProvider
   }
 }
 
-- (BOOL)handleAttributedStringDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleAttributedStringDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v16 = [v12 canLoadObjectOfClass:objc_opt_class()];
+  v16 = [providerCopy canLoadObjectOfClass:objc_opt_class()];
   if (v16)
   {
-    [v14 setShouldFilterAttributedString:1];
+    [sessionCopy setShouldFilterAttributedString:1];
     v17 = objc_opt_class();
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __132__ICEditingTextView_DragAndDrop__handleAttributedStringDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v19[3] = &unk_2781AC388;
-    v22 = v15;
-    v20 = v12;
+    v22 = blockCopy;
+    v20 = providerCopy;
     objc_copyWeak(&v23, &location);
-    v21 = v14;
-    *a6 = [v20 loadObjectOfClass:v17 completionHandler:v19];
+    v21 = sessionCopy;
+    *progress = [v20 loadObjectOfClass:v17 completionHandler:v19];
 
     objc_destroyWeak(&v23);
   }
@@ -3060,26 +3060,26 @@ void __132__ICEditingTextView_DragAndDrop__handleAttributedStringDropForItemProv
   (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)handleMapKitItemDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleMapKitItemDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([v12 canLoadObjectOfClass:objc_opt_class()] && (v16 = *MEMORY[0x277D36028], objc_msgSend(v12, "hasRepresentationConformingToTypeIdentifier:fileOptions:", *MEMORY[0x277D36028], 0)))
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
+  if ([providerCopy canLoadObjectOfClass:objc_opt_class()] && (v16 = *MEMORY[0x277D36028], objc_msgSend(providerCopy, "hasRepresentationConformingToTypeIdentifier:fileOptions:", *MEMORY[0x277D36028], 0)))
   {
     objc_initWeak(&location, self);
     v17 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(ICEditingTextView *)self editorController];
-      v21 = [v20 note];
-      v22 = [v21 shortLoggingDescription];
+      editorController = [(ICEditingTextView *)self editorController];
+      note = [editorController note];
+      shortLoggingDescription = [note shortLoggingDescription];
       *buf = 138412546;
-      v30 = v22;
+      v30 = shortLoggingDescription;
       v31 = 2112;
-      v32 = v13;
+      v32 = positionCopy;
       _os_log_debug_impl(&dword_2151A1000, v17, OS_LOG_TYPE_DEBUG, "MapKitItem drop in note: %@, position: %@", buf, 0x16u);
     }
 
@@ -3087,11 +3087,11 @@ void __132__ICEditingTextView_DragAndDrop__handleAttributedStringDropForItemProv
     v23[1] = 3221225472;
     v23[2] = __126__ICEditingTextView_DragAndDrop__handleMapKitItemDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v23[3] = &unk_2781AC3D8;
-    v24 = v12;
+    v24 = providerCopy;
     objc_copyWeak(&v27, &location);
-    v25 = v14;
-    v26 = v15;
-    *a6 = [v24 loadDataRepresentationForTypeIdentifier:v16 completionHandler:v23];
+    v25 = sessionCopy;
+    v26 = blockCopy;
+    *progress = [v24 loadDataRepresentationForTypeIdentifier:v16 completionHandler:v23];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -3167,26 +3167,26 @@ void __126__ICEditingTextView_DragAndDrop__handleMapKitItemDropForItemProvider_a
   }
 }
 
-- (BOOL)handleURLDropForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 outProgress:(id *)a6 completionBlock:(id)a7
+- (BOOL)handleURLDropForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session outProgress:(id *)progress completionBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if ([v12 canLoadObjectOfClass:objc_opt_class()])
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  blockCopy = block;
+  if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
   {
     objc_initWeak(&location, self);
     v16 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(ICEditingTextView *)self editorController];
-      v22 = [v26 note];
-      v23 = [v22 shortLoggingDescription];
+      editorController = [(ICEditingTextView *)self editorController];
+      note = [editorController note];
+      shortLoggingDescription = [note shortLoggingDescription];
       *buf = 138412546;
-      v40 = v23;
+      v40 = shortLoggingDescription;
       v41 = 2112;
-      v42 = v13;
+      v42 = positionCopy;
       _os_log_debug_impl(&dword_2151A1000, v16, OS_LOG_TYPE_DEBUG, "Synapse drop in note: %@, position: %@", buf, 0x16u);
     }
 
@@ -3196,10 +3196,10 @@ void __126__ICEditingTextView_DragAndDrop__handleMapKitItemDropForItemProvider_a
     v33[2] = __119__ICEditingTextView_DragAndDrop__handleURLDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke;
     v33[3] = &unk_2781AC400;
     objc_copyWeak(&v37, &location);
-    v36 = v15;
-    v34 = v12;
-    v35 = v14;
-    *a6 = [v34 loadObjectOfClass:v17 completionHandler:v33];
+    v36 = blockCopy;
+    v34 = providerCopy;
+    v35 = sessionCopy;
+    *progress = [v34 loadObjectOfClass:v17 completionHandler:v33];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(&location);
@@ -3207,24 +3207,24 @@ void __126__ICEditingTextView_DragAndDrop__handleMapKitItemDropForItemProvider_a
 
   else
   {
-    if (![v12 canLoadObjectOfClass:objc_opt_class()])
+    if (![providerCopy canLoadObjectOfClass:objc_opt_class()])
     {
       v20 = 0;
       goto LABEL_11;
     }
 
-    [v14 setIsTypeURL:1];
+    [sessionCopy setIsTypeURL:1];
     objc_initWeak(&location, self);
     v18 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [(ICEditingTextView *)self editorController];
-      v24 = [v27 note];
-      v25 = [v24 shortLoggingDescription];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      note2 = [editorController2 note];
+      shortLoggingDescription2 = [note2 shortLoggingDescription];
       *buf = 138412546;
-      v40 = v25;
+      v40 = shortLoggingDescription2;
       v41 = 2112;
-      v42 = v13;
+      v42 = positionCopy;
       _os_log_debug_impl(&dword_2151A1000, v18, OS_LOG_TYPE_DEBUG, "URL drop in note: %@, position: %@", buf, 0x16u);
     }
 
@@ -3234,10 +3234,10 @@ void __126__ICEditingTextView_DragAndDrop__handleMapKitItemDropForItemProvider_a
     v28[2] = __119__ICEditingTextView_DragAndDrop__handleURLDropForItemProvider_atTextPosition_pasteSession_outProgress_completionBlock___block_invoke_153;
     v28[3] = &unk_2781AC338;
     objc_copyWeak(&v32, &location);
-    v29 = v12;
-    v30 = v14;
-    v31 = v15;
-    *a6 = [v29 loadObjectOfClass:v19 completionHandler:v28];
+    v29 = providerCopy;
+    v30 = sessionCopy;
+    v31 = blockCopy;
+    *progress = [v29 loadObjectOfClass:v19 completionHandler:v28];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
@@ -3360,8 +3360,8 @@ void __119__ICEditingTextView_DragAndDrop__handleURLDropForItemProvider_atTextPo
 - (id)preferredFileTypesExtensionDictionary
 {
   v7[5] = *MEMORY[0x277D85DE8];
-  v2 = [*MEMORY[0x277CE1E08] identifier];
-  v6[0] = v2;
+  identifier = [*MEMORY[0x277CE1E08] identifier];
+  v6[0] = identifier;
   v6[1] = @"com.apple.iwork.keynote.key";
   v7[0] = @"pdf";
   v7[1] = @"key";
@@ -3369,44 +3369,44 @@ void __119__ICEditingTextView_DragAndDrop__handleURLDropForItemProvider_atTextPo
   v6[3] = @"com.apple.iwork.numbers.numbers";
   v7[2] = @"pages";
   v7[3] = @"numbers";
-  v3 = [*MEMORY[0x277CE1EB8] identifier];
-  v6[4] = v3;
+  identifier2 = [*MEMORY[0x277CE1EB8] identifier];
+  v6[4] = identifier2;
   v7[4] = @"vcard";
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:5];
 
   return v4;
 }
 
-- (id)preferredFileTypeForItemProvider:(id)a3
+- (id)preferredFileTypeForItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self preferredFileTypesExtensionDictionary];
+  providerCopy = provider;
+  preferredFileTypesExtensionDictionary = [(ICEditingTextView *)self preferredFileTypesExtensionDictionary];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v5 allKeys];
-  v8 = [v6 setWithArray:v7];
+  allKeys = [preferredFileTypesExtensionDictionary allKeys];
+  v8 = [v6 setWithArray:allKeys];
 
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v4 registeredTypeIdentifiers];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
 
-  v11 = [v9 setWithArray:v10];
+  v11 = [v9 setWithArray:registeredTypeIdentifiers];
 
   [v11 intersectSet:v8];
-  v12 = [v11 anyObject];
-  if (v12)
+  anyObject = [v11 anyObject];
+  if (anyObject)
   {
-    v13 = [(ICEditingTextView *)self editorController];
-    v14 = [v13 note];
-    if ([v14 isPasswordProtected])
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    if ([note isPasswordProtected])
     {
-      v15 = [MEMORY[0x277D35E00] isTypeUTISupportedForPasswordProtectedNotes:v12];
+      v15 = [MEMORY[0x277D35E00] isTypeUTISupportedForPasswordProtectedNotes:anyObject];
 
       if (v15)
       {
         goto LABEL_7;
       }
 
-      v13 = v12;
-      v12 = 0;
+      editorController = anyObject;
+      anyObject = 0;
     }
 
     else
@@ -3416,32 +3416,32 @@ void __119__ICEditingTextView_DragAndDrop__handleURLDropForItemProvider_atTextPo
 
 LABEL_7:
 
-  return v12;
+  return anyObject;
 }
 
-- (BOOL)shouldCheckURLFirstForItemProvider:(id)a3
+- (BOOL)shouldCheckURLFirstForItemProvider:(id)provider
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [a3 registeredTypeIdentifiers];
-  v5 = [v3 setWithArray:v4];
+  registeredTypeIdentifiers = [provider registeredTypeIdentifiers];
+  v5 = [v3 setWithArray:registeredTypeIdentifiers];
 
   v6 = MEMORY[0x277CBEB98];
-  v7 = [*MEMORY[0x277CE1D60] identifier];
-  v8 = [v6 setWithObjects:{v7, 0}];
+  identifier = [*MEMORY[0x277CE1D60] identifier];
+  v8 = [v6 setWithObjects:{identifier, 0}];
 
-  LOBYTE(v7) = [v5 intersectsSet:v8];
-  return v7;
+  LOBYTE(identifier) = [v5 intersectsSet:v8];
+  return identifier;
 }
 
-- (id)attributedStringForURL:(id)a3 uti:(id)a4 name:(id)a5 metadata:(id)a6 synapseData:(id)a7 session:(id)a8
+- (id)attributedStringForURL:(id)l uti:(id)uti name:(id)name metadata:(id)metadata synapseData:(id)data session:(id)session
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v19 supportsAttachments];
+  lCopy = l;
+  utiCopy = uti;
+  nameCopy = name;
+  metadataCopy = metadata;
+  dataCopy = data;
+  sessionCopy = session;
+  supportsAttachments = [sessionCopy supportsAttachments];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -3452,19 +3452,19 @@ LABEL_7:
   v29[1] = 3221225472;
   v29[2] = __95__ICEditingTextView_DragAndDrop__attributedStringForURL_uti_name_metadata_synapseData_session___block_invoke;
   v29[3] = &unk_2781AC450;
-  v21 = v14;
+  v21 = lCopy;
   v30 = v21;
-  v22 = v19;
+  v22 = sessionCopy;
   v31 = v22;
-  v38 = v20;
-  v23 = v15;
+  v38 = supportsAttachments;
+  v23 = utiCopy;
   v32 = v23;
-  v24 = v17;
+  v24 = metadataCopy;
   v33 = v24;
-  v25 = v18;
+  v25 = dataCopy;
   v34 = v25;
-  v26 = v16;
-  v36 = self;
+  v26 = nameCopy;
+  selfCopy = self;
   v37 = &v39;
   v35 = v26;
   [v22 performBlockAndWait:v29];
@@ -3662,15 +3662,15 @@ LABEL_21:
 LABEL_22:
 }
 
-- (BOOL)handleGenericFileForItemProvider:(id)a3 atTextPosition:(id)a4 pasteSession:(id)a5 preferredTypeIdentifier:(id)a6 outProgress:(id *)a7 completionBlock:(id)a8
+- (BOOL)handleGenericFileForItemProvider:(id)provider atTextPosition:(id)position pasteSession:(id)session preferredTypeIdentifier:(id)identifier outProgress:(id *)progress completionBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v36 = a4;
-  v14 = a5;
-  v15 = a6;
-  v37 = a8;
-  v16 = v15;
+  providerCopy = provider;
+  positionCopy = position;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v16 = identifierCopy;
   v17 = v16;
   if (!v16)
   {
@@ -3679,8 +3679,8 @@ LABEL_22:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v26 = [v13 registeredTypeIdentifiers];
-    v27 = [v26 countByEnumeratingWithState:&v44 objects:v53 count:16];
+    registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+    v27 = [registeredTypeIdentifiers countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v27)
     {
       v28 = *v45;
@@ -3690,7 +3690,7 @@ LABEL_12:
       {
         if (*v45 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(registeredTypeIdentifiers);
         }
 
         v30 = *(*(&v44 + 1) + 8 * v29);
@@ -3701,7 +3701,7 @@ LABEL_12:
 
         if (v27 == ++v29)
         {
-          v27 = [v26 countByEnumeratingWithState:&v44 objects:v53 count:16];
+          v27 = [registeredTypeIdentifiers countByEnumeratingWithState:&v44 objects:v53 count:16];
           if (v27)
           {
             goto LABEL_12;
@@ -3733,33 +3733,33 @@ LABEL_2:
   v18 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v32 = [(ICEditingTextView *)self editorController];
-    v33 = [v32 note];
-    v34 = [v33 shortLoggingDescription];
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    shortLoggingDescription = [note shortLoggingDescription];
     *location = 138412802;
-    *&location[4] = v34;
+    *&location[4] = shortLoggingDescription;
     v49 = 2112;
-    v50 = v36;
+    v50 = positionCopy;
     v51 = 2112;
     v52 = v17;
     _os_log_debug_impl(&dword_2151A1000, v18, OS_LOG_TYPE_DEBUG, "Generic file drop in note: %@, position: %@, UTI: %@", location, 0x20u);
   }
 
-  v19 = [(ICEditingTextView *)self editorController];
-  v20 = [v19 note];
-  if ([v20 isPasswordProtected])
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController2 note];
+  if ([note2 isPasswordProtected])
   {
     v21 = [MEMORY[0x277D35E00] isTypeUTISupportedForPasswordProtectedNotes:v17];
 
     if ((v21 & 1) == 0)
     {
-      if (([v14 didWarnAboutNotSupportedForPasswordProtectedNotes] & 1) == 0)
+      if (([sessionCopy didWarnAboutNotSupportedForPasswordProtectedNotes] & 1) == 0)
       {
         v22 = [MEMORY[0x277D366D8] cannotAddAttachmentsInfoAlertWithAttachmentCount:1];
-        v23 = [(ICEditingTextView *)self window];
-        [v22 presentInWindow:v23 completionHandler:0];
+        window = [(ICEditingTextView *)self window];
+        [v22 presentInWindow:window completionHandler:0];
 
-        [v14 setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
+        [sessionCopy setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
       }
 
 LABEL_21:
@@ -3780,10 +3780,10 @@ LABEL_21:
   objc_copyWeak(&v43, location);
   v17 = v17;
   v39 = v17;
-  v40 = v13;
-  v41 = v14;
-  v42 = v37;
-  *a7 = [v40 loadFileRepresentationForTypeIdentifier:v17 completionHandler:v38];
+  v40 = providerCopy;
+  v41 = sessionCopy;
+  v42 = blockCopy;
+  *progress = [v40 loadFileRepresentationForTypeIdentifier:v17 completionHandler:v38];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(location);
@@ -3827,16 +3827,16 @@ void __147__ICEditingTextView_DragAndDrop__handleGenericFileForItemProvider_atTe
   }
 }
 
-- (BOOL)isSupportedAsGenericFile:(id)a3
+- (BOOL)isSupportedAsGenericFile:(id)file
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ICEditingTextView *)self typeIdentifiersSupportedAsGenericFiles];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  typeIdentifiersSupportedAsGenericFiles = [(ICEditingTextView *)self typeIdentifiersSupportedAsGenericFiles];
+  v6 = [typeIdentifiersSupportedAsGenericFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -3846,11 +3846,11 @@ void __147__ICEditingTextView_DragAndDrop__handleGenericFileForItemProvider_atTe
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(typeIdentifiersSupportedAsGenericFiles);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+        v10 = [MEMORY[0x277CE1CB8] typeWithIdentifier:fileCopy];
         v11 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v9];
         v12 = [v10 conformsToType:v11];
 
@@ -3861,7 +3861,7 @@ void __147__ICEditingTextView_DragAndDrop__handleGenericFileForItemProvider_atTe
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [typeIdentifiersSupportedAsGenericFiles countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -3876,13 +3876,13 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)shouldAcceptDropSession:(id)a3
+- (BOOL)shouldAcceptDropSession:(id)session
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self editorController];
-  v6 = [v5 note];
-  if (!v6)
+  sessionCopy = session;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  if (!note)
   {
 
 LABEL_14:
@@ -3890,12 +3890,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = v6;
-  v8 = [(ICEditingTextView *)self editorController];
-  v9 = [v8 note];
-  v10 = [v9 isEditable];
+  v7 = note;
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController2 note];
+  isEditable = [note2 isEditable];
 
-  if (!v10)
+  if (!isEditable)
   {
     goto LABEL_14;
   }
@@ -3904,7 +3904,7 @@ LABEL_14:
   v29[0] = @"com.apple.notes.noteitemprovider";
   v29[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
-  v13 = [v4 hasItemsConformingToTypeIdentifiers:v12];
+  v13 = [sessionCopy hasItemsConformingToTypeIdentifiers:v12];
 
   if (v13)
   {
@@ -3915,8 +3915,8 @@ LABEL_14:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v4 items];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  items = [sessionCopy items];
+  v15 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -3927,11 +3927,11 @@ LABEL_14:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(items);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * i) itemProvider];
-        v20 = [(ICEditingTextView *)self itemProviderConsumerTypesForItemProvider:v19];
+        itemProvider = [*(*(&v24 + 1) + 8 * i) itemProvider];
+        v20 = [(ICEditingTextView *)self itemProviderConsumerTypesForItemProvider:itemProvider];
         v21 = [v20 count];
 
         if (v21)
@@ -3941,7 +3941,7 @@ LABEL_14:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v16 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v16)
       {
         continue;
@@ -3958,20 +3958,20 @@ LABEL_15:
   return v22;
 }
 
-- (id)itemProviderConsumerTypesForItemProvider:(id)a3
+- (id)itemProviderConsumerTypesForItemProvider:(id)provider
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self editorController];
-  v6 = [v5 note];
-  v49 = [v6 isPasswordProtected];
+  providerCopy = provider;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  v51 = self;
-  v7 = [(ICEditingTextView *)self supportsAttachments];
+  selfCopy = self;
+  supportsAttachments = [(ICEditingTextView *)self supportsAttachments];
   v8 = MEMORY[0x277CBEB18];
-  v41 = v4;
-  v9 = [v4 registeredTypeIdentifiers];
-  v53 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v41 = providerCopy;
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  v53 = [v8 arrayWithCapacity:{objc_msgSend(registeredTypeIdentifiers, "count")}];
 
   if (itemProviderConsumerTypesForItemProvider__onceToken != -1)
   {
@@ -3982,13 +3982,13 @@ LABEL_15:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = [v4 registeredTypeIdentifiers];
+  obj = [providerCopy registeredTypeIdentifiers];
   v10 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v55;
-    v13 = !v7 | v49;
+    v13 = !supportsAttachments | isPasswordProtected;
     v43 = *MEMORY[0x277CE1DB0];
     v44 = *MEMORY[0x277CE1E08];
     v47 = *MEMORY[0x277CE1E90];
@@ -4009,7 +4009,7 @@ LABEL_15:
         }
 
         v15 = *(*(&v54 + 1) + 8 * v14);
-        if (v7)
+        if (supportsAttachments)
         {
           v16 = &itemProviderConsumerTypesForItemProvider__utiToConsumer;
         }
@@ -4048,7 +4048,7 @@ LABEL_22:
           }
         }
 
-        if (!v7)
+        if (!supportsAttachments)
         {
           goto LABEL_24;
         }
@@ -4056,7 +4056,7 @@ LABEL_22:
         v22 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v15];
         if ([v22 conformsToType:v43])
         {
-          v23 = [(ICEditingTextView *)v51 hasSupportedImageInItemProvider:v41];
+          v23 = [(ICEditingTextView *)selfCopy hasSupportedImageInItemProvider:v41];
 
           if (!v23)
           {
@@ -4078,9 +4078,9 @@ LABEL_24:
           [v53 addObject:&unk_28277E238];
         }
 
-        if (!v7)
+        if (!supportsAttachments)
         {
-          if (v49)
+          if (isPasswordProtected)
           {
             goto LABEL_35;
           }
@@ -4088,7 +4088,7 @@ LABEL_24:
           goto LABEL_34;
         }
 
-        if (v49)
+        if (isPasswordProtected)
         {
           goto LABEL_35;
         }
@@ -4111,8 +4111,8 @@ LABEL_24:
 
         [v53 addObject:&unk_28277E250];
 LABEL_34:
-        v30 = [(ICEditingTextView *)v51 preferredFileTypesExtensionDictionary];
-        v31 = [v30 objectForKeyedSubscript:v15];
+        preferredFileTypesExtensionDictionary = [(ICEditingTextView *)selfCopy preferredFileTypesExtensionDictionary];
+        v31 = [preferredFileTypesExtensionDictionary objectForKeyedSubscript:v15];
 
         if (v31)
         {
@@ -4153,7 +4153,7 @@ LABEL_42:
         v31 = 0;
 LABEL_43:
         v13 = v24;
-        if ((v24 & 1) == 0 && [(ICEditingTextView *)v51 isSupportedAsGenericFile:v15])
+        if ((v24 & 1) == 0 && [(ICEditingTextView *)selfCopy isSupportedAsGenericFile:v15])
         {
           [v53 addObject:&unk_28277E298];
         }
@@ -4172,8 +4172,8 @@ LABEL_47:
     while (v11);
   }
 
-  v37 = [(ICEditingTextView *)v51 itemProviderPasteSession];
-  if ([v37 isForDragAndDrop])
+  itemProviderPasteSession = [(ICEditingTextView *)selfCopy itemProviderPasteSession];
+  if ([itemProviderPasteSession isForDragAndDrop])
   {
   }
 
@@ -4222,10 +4222,10 @@ void __75__ICEditingTextView_DragAndDrop__itemProviderConsumerTypesForItemProvid
   itemProviderConsumerTypesForItemProvider__utiToConsumerNoAttachments = v6;
 }
 
-- (id)standardizedAttributedString:(id)a3 attachmentIdentifiers:(id *)a4
+- (id)standardizedAttributedString:(id)string attachmentIdentifiers:(id *)identifiers
 {
-  v6 = a3;
-  if (a4)
+  stringCopy = string;
+  if (identifiers)
   {
     v7 = objc_opt_new();
   }
@@ -4241,23 +4241,23 @@ void __75__ICEditingTextView_DragAndDrop__itemProviderConsumerTypesForItemProvid
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
   v27 = 0;
-  v8 = [(ICEditingTextView *)self itemProviderPasteSession];
-  v9 = [v8 workerContext];
+  itemProviderPasteSession = [(ICEditingTextView *)self itemProviderPasteSession];
+  workerContext = [itemProviderPasteSession workerContext];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __85__ICEditingTextView_DragAndDrop__standardizedAttributedString_attachmentIdentifiers___block_invoke;
   v17 = &unk_2781AC4C0;
-  v10 = v6;
+  v10 = stringCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v21 = &v22;
   v11 = v7;
   v20 = v11;
-  [v9 performBlockAndWait:&v14];
+  [workerContext performBlockAndWait:&v14];
 
-  if (a4)
+  if (identifiers)
   {
-    *a4 = [v11 copy];
+    *identifiers = [v11 copy];
   }
 
   v12 = [v23[5] copy];
@@ -4312,21 +4312,21 @@ void __85__ICEditingTextView_DragAndDrop__standardizedAttributedString_attachmen
   }
 }
 
-- (BOOL)attributedStringContainsICTTAttachment:(id)a3
+- (BOOL)attributedStringContainsICTTAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [v3 length];
+  v4 = [attachmentCopy length];
   v5 = *MEMORY[0x277D74060];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment___block_invoke;
   v8[3] = &unk_2781ABC80;
   v8[4] = &v9;
-  [v3 enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v8}];
+  [attachmentCopy enumerateAttribute:v5 inRange:0 options:v4 usingBlock:{0, v8}];
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
@@ -4346,9 +4346,9 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
   }
 }
 
-- (BOOL)textDroppableView:(id)a3 dropSession:(id)a4 willMoveCaretToRange:(id)a5
+- (BOOL)textDroppableView:(id)view dropSession:(id)session willMoveCaretToRange:(id)range
 {
-  if ([(ICEditingTextView *)self isDraggingOverChecklistItem:a3])
+  if ([(ICEditingTextView *)self isDraggingOverChecklistItem:view])
   {
     LOBYTE(v6) = 0;
   }
@@ -4362,26 +4362,26 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
   return v6;
 }
 
-- (id)textDraggableView:(id)a3 textRangeForDragFromPosition:(id)a4 defaultRange:(id)a5 session:(id)a6
+- (id)textDraggableView:(id)view textRangeForDragFromPosition:(id)position defaultRange:(id)range session:(id)session
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v59 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v11;
-  [v12 locationInView:v10];
+  viewCopy = view;
+  positionCopy = position;
+  rangeCopy = range;
+  sessionCopy = session;
+  v13 = rangeCopy;
+  [sessionCopy locationInView:viewCopy];
   v15 = v14;
   v17 = v16;
-  v18 = [(ICBaseTextView *)self containerViewForAttachments];
-  v19 = [v18 hitTest:0 forEvent:{v15, v17}];
+  containerViewForAttachments = [(ICBaseTextView *)self containerViewForAttachments];
+  v19 = [containerViewForAttachments hitTest:0 forEvent:{v15, v17}];
 
   objc_opt_class();
   v58 = v19;
   v20 = ICDynamicCast();
-  v21 = [(ICBaseTextView *)self containerViewForAttachments];
-  v22 = [v21 subviews];
-  v23 = [v22 ic_objectsPassingTest:&__block_literal_global_230];
+  containerViewForAttachments2 = [(ICBaseTextView *)self containerViewForAttachments];
+  subviews = [containerViewForAttachments2 subviews];
+  v23 = [subviews ic_objectsPassingTest:&__block_literal_global_230];
 
   v24 = v20;
   v25 = v24;
@@ -4396,18 +4396,18 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v35 = v23;
-  v39 = [v35 countByEnumeratingWithState:&v64 objects:v68 count:16];
+  trackedParagraph3 = v23;
+  v39 = [trackedParagraph3 countByEnumeratingWithState:&v64 objects:v68 count:16];
   if (!v39)
   {
     v36 = 0;
     v25 = 0;
-    v33 = v13;
+    selectedTextRange = v13;
     goto LABEL_3;
   }
 
   v40 = v39;
-  v56 = v12;
+  v56 = sessionCopy;
   v25 = 0;
   v41 = *v65;
   v63 = INFINITY;
@@ -4419,11 +4419,11 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
     {
       if (*v65 != v41)
       {
-        objc_enumerationMutation(v35);
+        objc_enumerationMutation(trackedParagraph3);
       }
 
       v43 = *(*(&v64 + 1) + 8 * i);
-      [v10 convertPoint:0 toView:{v15, v17}];
+      [viewCopy convertPoint:0 toView:{v15, v17}];
       [v43 convertPoint:0 fromView:?];
       v45 = v44;
       v47 = v46;
@@ -4459,8 +4459,8 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
         v25 = v51;
       }
 
-      v52 = [v25 trackedParagraph];
-      [v52 characterRange];
+      trackedParagraph = [v25 trackedParagraph];
+      [trackedParagraph characterRange];
       v54 = v53;
 
       v17 = v61;
@@ -4472,7 +4472,7 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
       }
     }
 
-    v40 = [v35 countByEnumeratingWithState:&v64 objects:v68 count:16];
+    v40 = [trackedParagraph3 countByEnumeratingWithState:&v64 objects:v68 count:16];
     if (v40)
     {
       continue;
@@ -4483,27 +4483,27 @@ void __73__ICEditingTextView_DragAndDrop__attributedStringContainsICTTAttachment
 
 LABEL_25:
 
-  v12 = v56;
+  sessionCopy = v56;
   v13 = v57;
   v37 = v60;
   if (v25)
   {
 LABEL_2:
-    v26 = [v25 trackedParagraph];
-    v27 = [v26 characterRange];
+    trackedParagraph2 = [v25 trackedParagraph];
+    characterRange = [trackedParagraph2 characterRange];
     v29 = v28;
 
-    [(ICEditingTextView *)self setSelectedRange:v27, v29];
-    v30 = [(ICEditingTextView *)self selectedRange];
-    v32 = [(ICEditingTextView *)self ic_textRangeFromCharacterRange:v30, v31];
+    [(ICEditingTextView *)self setSelectedRange:characterRange, v29];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
+    v32 = [(ICEditingTextView *)self ic_textRangeFromCharacterRange:selectedRange, v31];
     [(ICEditingTextView *)self setSelectedTextRange:v32];
 
-    v33 = [(ICEditingTextView *)self selectedTextRange];
+    selectedTextRange = [(ICEditingTextView *)self selectedTextRange];
 
     [v25 imageFrame];
     [(ICEditingTextView *)self setChecklistDragVerticalOffset:v34 * 0.75];
-    v35 = [v25 trackedParagraph];
-    [(ICEditingTextView *)self setDraggedChecklistTrackedParagraph:v35];
+    trackedParagraph3 = [v25 trackedParagraph];
+    [(ICEditingTextView *)self setDraggedChecklistTrackedParagraph:trackedParagraph3];
     v36 = 1;
 LABEL_3:
 
@@ -4512,11 +4512,11 @@ LABEL_3:
   }
 
   v36 = 0;
-  v33 = v57;
+  selectedTextRange = v57;
 LABEL_4:
   [(ICEditingTextView *)self setIsDraggingChecklistItem:v36];
 
-  return v33;
+  return selectedTextRange;
 }
 
 BOOL __102__ICEditingTextView_DragAndDrop__textDraggableView_textRangeForDragFromPosition_defaultRange_session___block_invoke(uint64_t a1, void *a2)
@@ -4528,19 +4528,19 @@ BOOL __102__ICEditingTextView_DragAndDrop__textDraggableView_textRangeForDragFro
   return v3 != 0;
 }
 
-- (id)textDroppableView:(id)a3 positionForDrop:(id)a4
+- (id)textDroppableView:(id)view positionForDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [v5 dropPosition];
+  dropCopy = drop;
+  dropPosition = [dropCopy dropPosition];
   if ([(ICEditingTextView *)self isDraggingChecklistItem])
   {
-    v7 = [v5 dropSession];
-    [v7 locationInView:self];
+    dropSession = [dropCopy dropSession];
+    [dropSession locationInView:self];
     v9 = v8;
     v11 = v10;
 
-    v12 = [v5 icaxValueForKeyPath:@"dropSession.sessionDestination.isAccessibilitySession"];
-    v13 = [v12 BOOLValue];
+    v12 = [dropCopy icaxValueForKeyPath:@"dropSession.sessionDestination.isAccessibilitySession"];
+    bOOLValue = [v12 BOOLValue];
 
     objc_opt_class();
     v14 = UIAccessibilityFocusedElement(*MEMORY[0x277D76498]);
@@ -4548,7 +4548,7 @@ BOOL __102__ICEditingTextView_DragAndDrop__textDraggableView_textRangeForDragFro
 
     if (v15)
     {
-      v16 = v13;
+      v16 = bOOLValue;
     }
 
     else
@@ -4572,21 +4572,21 @@ BOOL __102__ICEditingTextView_DragAndDrop__textDraggableView_textRangeForDragFro
 
     if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
     {
-      v22 = [(ICEditingTextView *)self icTextLayoutManager];
-      v23 = [v22 characterIndexForPoint:{v9, v19}];
+      icTextLayoutManager = [(ICEditingTextView *)self icTextLayoutManager];
+      v23 = [icTextLayoutManager characterIndexForPoint:{v9, v19}];
 
-      v24 = [(ICEditingTextView *)self icTextLayoutManager];
-      v25 = [v24 trackedTodoParagraphAtIndex:v23];
+      icTextLayoutManager2 = [(ICEditingTextView *)self icTextLayoutManager];
+      v25 = [icTextLayoutManager2 trackedTodoParagraphAtIndex:v23];
     }
 
     else
     {
-      v26 = [(ICEditingTextView *)self icLayoutManager];
-      v27 = [(ICEditingTextView *)self textContainer];
-      v23 = [v26 characterIndexForPoint:v27 inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{v9, v19}];
+      icLayoutManager = [(ICEditingTextView *)self icLayoutManager];
+      textContainer = [(ICEditingTextView *)self textContainer];
+      v23 = [icLayoutManager characterIndexForPoint:textContainer inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{v9, v19}];
 
-      v24 = [(ICEditingTextView *)self icLayoutManager];
-      v25 = [v24 trackedTodoParagraphAtIndexIfExists:v23];
+      icTextLayoutManager2 = [(ICEditingTextView *)self icLayoutManager];
+      v25 = [icTextLayoutManager2 trackedTodoParagraphAtIndexIfExists:v23];
     }
 
     v28 = v25;
@@ -4596,31 +4596,31 @@ BOOL __102__ICEditingTextView_DragAndDrop__textDraggableView_textRangeForDragFro
       if (v23 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v30 = [(ICEditingTextView *)self ic_textRangeFromCharacterRange:v23, 0];
-        v31 = [v30 start];
+        start = [v30 start];
 
-        v6 = v31;
+        dropPosition = start;
       }
 
       [(ICEditingTextView *)self setIsDraggingOverChecklistItem:0];
       [(ICEditingTextView *)self setTrackedParagraphCurrentlyUnderDraggedChecklist:0];
-      v32 = [(ICEditingTextView *)self tempHighlightLayerIfExists];
-      [v32 removeFromSuperlayer];
+      tempHighlightLayerIfExists = [(ICEditingTextView *)self tempHighlightLayerIfExists];
+      [tempHighlightLayerIfExists removeFromSuperlayer];
       goto LABEL_22;
     }
 
     if (v16)
     {
-      v29 = [v28 characterRange];
+      characterRange = [v28 characterRange];
     }
 
     else
     {
       v33 = [ICChecklistDragUtilities shouldDropAboveForTrackedTodoParagraph:v28 forPoint:self textView:v9, v19];
-      v34 = [v28 characterRange];
-      v29 = v34;
+      characterRange2 = [v28 characterRange];
+      characterRange = characterRange2;
       if (!v33)
       {
-        v29 = v34 + v35;
+        characterRange = characterRange2 + v35;
         goto LABEL_21;
       }
     }
@@ -4631,33 +4631,33 @@ LABEL_21:
     [(ICEditingTextView *)self setTrackedParagraphCurrentlyUnderDraggedChecklist:v28];
     [(ICEditingTextView *)self setShouldDropChecklistAbove:v33];
     [(ICEditingTextView *)self invalidateDropCaret];
-    v32 = [(ICEditingTextView *)self ic_textRangeFromCharacterRange:v29, 0];
-    v36 = [v32 start];
+    tempHighlightLayerIfExists = [(ICEditingTextView *)self ic_textRangeFromCharacterRange:characterRange, 0];
+    start2 = [tempHighlightLayerIfExists start];
 
-    [(ICEditingTextView *)self setLastChecklistDropIndex:v29];
-    v6 = v36;
+    [(ICEditingTextView *)self setLastChecklistDropIndex:characterRange];
+    dropPosition = start2;
 LABEL_22:
   }
 
-  return v6;
+  return dropPosition;
 }
 
-- (id)textDraggableView:(id)a3 itemsForDrag:(id)a4
+- (id)textDraggableView:(id)view itemsForDrag:(id)drag
 {
   v84 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dragCopy = drag;
   objc_opt_class();
-  v6 = [(ICEditingTextView *)self textContainer];
+  textContainer = [(ICEditingTextView *)self textContainer];
   v7 = ICDynamicCast();
-  v8 = [v7 insideSiriSnippet];
+  insideSiriSnippet = [v7 insideSiriSnippet];
 
-  if (v8)
+  if (insideSiriSnippet)
   {
-    v9 = MEMORY[0x277CBEBF8];
+    suggestedItems = MEMORY[0x277CBEBF8];
     goto LABEL_57;
   }
 
-  v74 = [v5 dragRange];
+  dragRange = [dragCopy dragRange];
   v10 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:?];
   v12 = v11;
   v13 = MEMORY[0x277D74060];
@@ -4667,8 +4667,8 @@ LABEL_22:
   }
 
   objc_opt_class();
-  v14 = [(ICEditingTextView *)self textStorage];
-  v15 = [v14 attribute:*v13 atIndex:v10 effectiveRange:0];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v15 = [textStorage attribute:*v13 atIndex:v10 effectiveRange:0];
   v16 = ICDynamicCast();
 
   if (v16)
@@ -4694,27 +4694,27 @@ LABEL_12:
     {
       if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
       {
-        v20 = [(ICEditingTextView *)self textLayoutManager];
-        v21 = [(ICEditingTextView *)self textLayoutManager];
-        v22 = [v21 documentRange];
-        v23 = [v22 location];
-        v24 = [v20 locationFromLocation:v23 withOffset:v10];
+        textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+        textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
+        documentRange = [textLayoutManager2 documentRange];
+        location = [documentRange location];
+        layoutManager = [textLayoutManager locationFromLocation:location withOffset:v10];
 
-        v25 = [(ICEditingTextView *)self textContainer];
-        v18 = [v16 viewProviderForParentView:self location:v24 textContainer:v25];
+        textContainer2 = [(ICEditingTextView *)self textContainer];
+        v18 = [v16 viewProviderForParentView:self location:layoutManager textContainer:textContainer2];
       }
 
       else
       {
-        v24 = [(ICEditingTextView *)self layoutManager];
-        v18 = [v16 viewProviderForParentView:self characterIndex:v10 layoutManager:v24];
+        layoutManager = [(ICEditingTextView *)self layoutManager];
+        v18 = [v16 viewProviderForParentView:self characterIndex:v10 layoutManager:layoutManager];
       }
 
-      v26 = [v18 view];
-      v27 = [v5 dragSession];
-      v28 = [v18 view];
-      [v27 locationInView:v28];
-      v29 = [v26 hitTest:0 withEvent:?];
+      view = [v18 view];
+      dragSession = [dragCopy dragSession];
+      view2 = [v18 view];
+      [dragSession locationInView:view2];
+      v29 = [view hitTest:0 withEvent:?];
 
       if (v29)
       {
@@ -4729,10 +4729,10 @@ LABEL_12:
           NSClassFromString(&cfstr_Icpaperdocumen.isa);
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v30 = [v29 superview];
+            superview = [v29 superview];
 
-            v29 = v30;
-            if (v30)
+            v29 = superview;
+            if (superview)
             {
               continue;
             }
@@ -4750,36 +4750,36 @@ LABEL_22:
     }
 
 LABEL_24:
-    v31 = [(ICEditingTextView *)self editorController];
-    v32 = [v31 note];
-    v33 = [v32 managedObjectContext];
-    [v33 ic_save];
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    managedObjectContext = [note managedObjectContext];
+    [managedObjectContext ic_save];
 
-    v34 = [(ICEditingTextView *)self editorController];
-    v35 = [v34 note];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    note2 = [editorController2 note];
 
-    v36 = [v35 textStorage];
-    v37 = [(ICEditingTextView *)self textStorage];
+    textStorage2 = [note2 textStorage];
+    textStorage3 = [(ICEditingTextView *)self textStorage];
 
-    if (v36 != v37)
+    if (textStorage2 != textStorage3)
     {
       objc_opt_class();
-      v38 = [(ICEditingTextView *)self textStorage];
+      textStorage4 = [(ICEditingTextView *)self textStorage];
       v39 = ICDynamicCast();
 
       v73 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 inTextStorage:v12, v39];
-      v40 = [v39 itemProviderForRange:v10 andNote:{v12, v35}];
+      itemProvider = [v39 itemProviderForRange:v10 andNote:{v12, note2}];
 
 LABEL_39:
-      v52 = [(ICEditingTextView *)self viewsGhostedForDrag];
+      viewsGhostedForDrag = [(ICEditingTextView *)self viewsGhostedForDrag];
 
-      if (!v52)
+      if (!viewsGhostedForDrag)
       {
-        v53 = [MEMORY[0x277CBEB18] array];
-        [(ICEditingTextView *)self setViewsGhostedForDrag:v53];
+        array = [MEMORY[0x277CBEB18] array];
+        [(ICEditingTextView *)self setViewsGhostedForDrag:array];
       }
 
-      v54 = [(ICEditingTextView *)self textStorage];
+      textStorage5 = [(ICEditingTextView *)self textStorage];
       v55 = *v13;
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
@@ -4788,21 +4788,21 @@ LABEL_39:
       v79[4] = self;
       v79[5] = v10;
       v79[6] = v12;
-      [v54 enumerateAttribute:v55 inRange:v10 options:v12 usingBlock:{0, v79}];
+      [textStorage5 enumerateAttribute:v55 inRange:v10 options:v12 usingBlock:{0, v79}];
 
       if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v57 = v56;
-        v58 = v5;
-        v59 = [(ICEditingTextView *)self icTextLayoutManager];
-        v60 = [v59 todoButtonsForCharacterRange:{v10, v12}];
+        icLayoutManager = v56;
+        v58 = dragCopy;
+        icTextLayoutManager = [(ICEditingTextView *)self icTextLayoutManager];
+        v60 = [icTextLayoutManager todoButtonsForCharacterRange:{v10, v12}];
       }
 
       else
       {
-        v58 = v5;
-        v57 = [(ICEditingTextView *)self icLayoutManager];
-        v60 = [v57 todoButtonsForCharacterRange:{v10, v12}];
+        v58 = dragCopy;
+        icLayoutManager = [(ICEditingTextView *)self icLayoutManager];
+        v60 = [icLayoutManager todoButtonsForCharacterRange:{v10, v12}];
       }
 
       v77 = 0u;
@@ -4825,8 +4825,8 @@ LABEL_39:
             }
 
             v66 = *(*(&v75 + 1) + 8 * i);
-            v67 = [(ICEditingTextView *)self viewsGhostedForDrag];
-            [v67 addObject:v66];
+            viewsGhostedForDrag2 = [(ICEditingTextView *)self viewsGhostedForDrag];
+            [viewsGhostedForDrag2 addObject:v66];
 
             [v66 setAlpha:0.2];
           }
@@ -4837,23 +4837,23 @@ LABEL_39:
         while (v63);
       }
 
-      if (v40)
+      if (itemProvider)
       {
-        v68 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v40];
+        v68 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:itemProvider];
         v69 = v73;
         [v68 setLocalObject:v73];
-        v5 = v58;
-        v70 = [v58 dragSession];
-        [v70 setLocalContext:self];
+        dragCopy = v58;
+        dragSession2 = [v58 dragSession];
+        [dragSession2 setLocalContext:self];
 
         v82 = v68;
-        v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
+        suggestedItems = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
       }
 
       else
       {
-        v5 = v58;
-        v9 = [v58 suggestedItems];
+        dragCopy = v58;
+        suggestedItems = [v58 suggestedItems];
         v69 = v73;
       }
 
@@ -4861,23 +4861,23 @@ LABEL_39:
     }
 
     v41 = objc_opt_class();
-    v42 = [(ICEditingTextView *)self editorController];
-    v43 = [v42 note];
-    v44 = [v41 attachmentInNote:v43 range:{v10, v12}];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    note3 = [editorController3 note];
+    v44 = [v41 attachmentInNote:note3 range:{v10, v12}];
 
     if (v44)
     {
-      v73 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 uiRange:v12, v74];
+      v73 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 uiRange:v12, dragRange];
       if (!v73)
       {
-        v45 = [v35 textStorage];
-        v73 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 inTextStorage:v12, v45];
+        textStorage6 = [note2 textStorage];
+        v73 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 inTextStorage:v12, textStorage6];
       }
 
-      v46 = [v44 attachmentModel];
-      v40 = [v46 itemProvider];
+      attachmentModel = [v44 attachmentModel];
+      itemProvider = [attachmentModel itemProvider];
 
-      if (v40)
+      if (itemProvider)
       {
         goto LABEL_38;
       }
@@ -4891,21 +4891,21 @@ LABEL_39:
     v47 = v13;
     v80 = 0;
     v81 = 0;
-    v48 = [v35 textStorage];
-    v49 = [v48 attribute:*MEMORY[0x277D740E8] atIndex:v10 effectiveRange:&v80];
+    textStorage7 = [note2 textStorage];
+    v49 = [textStorage7 attribute:*MEMORY[0x277D740E8] atIndex:v10 effectiveRange:&v80];
 
     if (v49 && v10 == v80 && v12 == v81)
     {
-      v40 = 0;
+      itemProvider = 0;
     }
 
     else
     {
-      v50 = [v35 textStorage];
-      v72 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 inTextStorage:v12, v50];
+      textStorage8 = [note2 textStorage];
+      v72 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v10 inTextStorage:v12, textStorage8];
 
-      v51 = [v35 textStorage];
-      v40 = [v51 itemProviderForRange:v10 andNote:{v12, v35}];
+      textStorage9 = [note2 textStorage];
+      itemProvider = [textStorage9 itemProviderForRange:v10 andNote:{v12, note2}];
 
       v73 = v72;
     }
@@ -4927,12 +4927,12 @@ LABEL_38:
 LABEL_61:
 
 LABEL_62:
-  v9 = MEMORY[0x277CBEBF8];
+  suggestedItems = MEMORY[0x277CBEBF8];
 LABEL_56:
 
 LABEL_57:
 
-  return v9;
+  return suggestedItems;
 }
 
 void __65__ICEditingTextView_DragAndDrop__textDraggableView_itemsForDrag___block_invoke(uint64_t a1, void *a2)
@@ -4991,8 +4991,8 @@ void __65__ICEditingTextView_DragAndDrop__textDraggableView_itemsForDrag___block
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(ICEditingTextView *)self viewsGhostedForDrag];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  viewsGhostedForDrag = [(ICEditingTextView *)self viewsGhostedForDrag];
+  v4 = [viewsGhostedForDrag countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5004,14 +5004,14 @@ void __65__ICEditingTextView_DragAndDrop__textDraggableView_itemsForDrag___block
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsGhostedForDrag);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setAlpha:1.0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [viewsGhostedForDrag countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -5021,14 +5021,14 @@ void __65__ICEditingTextView_DragAndDrop__textDraggableView_itemsForDrag___block
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
 }
 
-- (void)textDraggableView:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)textDraggableView:(id)view willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftWithAnimator_session___block_invoke;
   v5[3] = &unk_2781AC510;
   v5[4] = self;
-  [a4 addCompletion:v5];
+  [animator addCompletion:v5];
 }
 
 uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftWithAnimator_session___block_invoke(uint64_t result, uint64_t a2)
@@ -5041,19 +5041,19 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
   return result;
 }
 
-- (id)textDraggableView:(id)a3 dragPreviewForLiftingItem:(id)a4 session:(id)a5
+- (id)textDraggableView:(id)view dragPreviewForLiftingItem:(id)item session:(id)session
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
-  v6 = [v5 localObject];
+  localObject = [itemCopy localObject];
   v7 = ICDynamicCast();
 
-  [v5 setLocalObject:0];
+  [itemCopy setLocalObject:0];
 
   return v7;
 }
 
-- (void)textDraggableView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)textDraggableView:(id)view dragSessionWillBegin:(id)begin
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.notes", "DragAndDrop");
@@ -5066,8 +5066,8 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(ICEditingTextView *)self viewsGhostedForDrag];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewsGhostedForDrag = [(ICEditingTextView *)self viewsGhostedForDrag];
+  v7 = [viewsGhostedForDrag countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5079,28 +5079,28 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewsGhostedForDrag);
         }
 
         [*(*(&v14 + 1) + 8 * v10++) setAlpha:0.2];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [viewsGhostedForDrag countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(ICEditingTextView *)self editorController];
-  v12 = [v11 note];
-  v13 = [v12 documentMergeController];
-  [v13 beginBlockingMergeForReason:2 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController beginBlockingMergeForReason:2 textView:self];
 
   [(ICEditingTextView *)self setLastChecklistDropIndex:-1];
 }
 
-- (void)textDraggableView:(id)a3 dragSessionDidEnd:(id)a4 withOperation:(unint64_t)a5
+- (void)textDraggableView:(id)view dragSessionDidEnd:(id)end withOperation:(unint64_t)operation
 {
   v6 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -5108,13 +5108,13 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
     [ICEditingTextView(DragAndDrop) textDraggableView:? dragSessionDidEnd:? withOperation:?];
   }
 
-  v7 = [(ICEditingTextView *)self editorController];
-  v8 = [v7 note];
-  v9 = [v8 documentMergeController];
-  [v9 endBlockingMergeForReason:2 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController endBlockingMergeForReason:2 textView:self];
 
-  v10 = [(ICEditingTextView *)self editorController];
-  [v10 saveNote];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  [editorController2 saveNote];
 
   [(ICEditingTextView *)self setIsDraggingOverChecklistItem:0];
   [(ICEditingTextView *)self setTrackedParagraphCurrentlyUnderDraggedChecklist:0];
@@ -5122,17 +5122,17 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
   [(ICEditingTextView *)self resetViewsGhostedForDrag];
 }
 
-- (id)textDroppableView:(id)a3 previewForDroppingAllItemsWithDefault:(id)a4
+- (id)textDroppableView:(id)view previewForDroppingAllItemsWithDefault:(id)default
 {
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v5 = [(ICEditingTextView *)self icLayoutManager];
-    [v5 cleanupStaleTodoButtons];
+    icLayoutManager = [(ICEditingTextView *)self icLayoutManager];
+    [icLayoutManager cleanupStaleTodoButtons];
   }
 
-  v6 = [(ICEditingTextView *)self TTTextStorage];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
   objc_opt_class();
-  v7 = [v6 styler];
+  styler = [tTTextStorage styler];
   v8 = ICDynamicCast();
 
   if (![(ICEditingTextView *)self isDraggingChecklistItem]|| ![(ICEditingTextView *)self isDraggingOverChecklistItem])
@@ -5141,29 +5141,29 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
   }
 
   [(ICEditingTextView *)self lastChecklistDropIndex];
-  [v6 fixupAfterEditing];
-  v9 = [(ICEditingTextView *)self lastChecklistDropIndex];
+  [tTTextStorage fixupAfterEditing];
+  lastChecklistDropIndex = [(ICEditingTextView *)self lastChecklistDropIndex];
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v10 = [(ICEditingTextView *)self icTextLayoutManager];
-    [v10 trackedTodoParagraphAtIndex:v9];
+    icTextLayoutManager = [(ICEditingTextView *)self icTextLayoutManager];
+    [icTextLayoutManager trackedTodoParagraphAtIndex:lastChecklistDropIndex];
   }
 
   else
   {
-    v10 = [(ICEditingTextView *)self icLayoutManager];
-    [v10 trackedTodoParagraphAtIndexIfExists:v9];
+    icTextLayoutManager = [(ICEditingTextView *)self icLayoutManager];
+    [icTextLayoutManager trackedTodoParagraphAtIndexIfExists:lastChecklistDropIndex];
   }
   v11 = ;
 
   if (v11)
   {
-    v12 = [(ICEditingTextView *)self draggedChecklistTrackedParagraph];
-    v13 = [v12 characterRange];
+    draggedChecklistTrackedParagraph = [(ICEditingTextView *)self draggedChecklistTrackedParagraph];
+    characterRange = [draggedChecklistTrackedParagraph characterRange];
 
-    if (v13 < v9)
+    if (characterRange < lastChecklistDropIndex)
     {
-      v14 = [v8 expandedChecklistTrackedParagraphsInTextView:self forIndex:v9];
+      v14 = [v8 expandedChecklistTrackedParagraphsInTextView:self forIndex:lastChecklistDropIndex];
       v15 = [v14 indexOfObject:v11];
       if (v15)
       {
@@ -5173,35 +5173,35 @@ uint64_t __88__ICEditingTextView_DragAndDrop__textDraggableView_willAnimateLiftW
       }
     }
 
-    v17 = [v11 characterRange];
+    characterRange2 = [v11 characterRange];
     v19 = v18;
     if (v18 >= 2)
     {
-      v20 = [v6 string];
-      v21 = [v20 substringWithRange:{v17, v19}];
-      v22 = [v21 ic_isLastCharacterANewline];
+      string = [tTTextStorage string];
+      v21 = [string substringWithRange:{characterRange2, v19}];
+      ic_isLastCharacterANewline = [v21 ic_isLastCharacterANewline];
 
-      v19 -= v22 & 1;
+      v19 -= ic_isLastCharacterANewline & 1;
     }
 
-    v23 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:v17 inTextStorage:v19, v6];
+    v23 = [(ICEditingTextView *)self correctlyPositionedPreviewForCharacterRange:characterRange2 inTextStorage:v19, tTTextStorage];
     if (ICInternalSettingsIsTextKit2Enabled() && ([(ICEditingTextView *)self textLayoutManager], v24 = objc_claimAutoreleasedReturnValue(), v24, v24))
     {
-      v25 = [(ICEditingTextView *)self icTextLayoutManager];
-      v26 = [v25 documentRange];
-      v27 = [v26 location];
-      v28 = [v25 locationFromLocation:v27 withOffset:v17];
+      icTextLayoutManager2 = [(ICEditingTextView *)self icTextLayoutManager];
+      documentRange = [icTextLayoutManager2 documentRange];
+      location = [documentRange location];
+      v28 = [icTextLayoutManager2 locationFromLocation:location withOffset:characterRange2];
 
-      v29 = [v25 locationFromLocation:v28 withOffset:v19];
+      v29 = [icTextLayoutManager2 locationFromLocation:v28 withOffset:v19];
       v30 = [objc_alloc(MEMORY[0x277D742D0]) initWithLocation:v28 endLocation:v29];
-      v31 = [(ICEditingTextView *)self icTextLayoutManager];
-      [v31 invalidateLayoutForRange:v30];
+      icTextLayoutManager3 = [(ICEditingTextView *)self icTextLayoutManager];
+      [icTextLayoutManager3 invalidateLayoutForRange:v30];
     }
 
     else
     {
-      v25 = [(ICEditingTextView *)self icLayoutManager];
-      [v25 invalidateLayoutForCharacterRange:v17 actualCharacterRange:{v19, 0}];
+      icTextLayoutManager2 = [(ICEditingTextView *)self icLayoutManager];
+      [icTextLayoutManager2 invalidateLayoutForCharacterRange:characterRange2 actualCharacterRange:{v19, 0}];
     }
   }
 
@@ -5213,33 +5213,33 @@ LABEL_18:
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v32 = [(ICEditingTextView *)self icLayoutManager];
-    [v32 setShouldManuallyRenderSeparateSubviews:0];
+    icLayoutManager2 = [(ICEditingTextView *)self icLayoutManager];
+    [icLayoutManager2 setShouldManuallyRenderSeparateSubviews:0];
 
-    v33 = [(ICEditingTextView *)self icLayoutManager];
-    [v33 setIsRenderingPreviewForDragAndDrop:0];
+    icLayoutManager3 = [(ICEditingTextView *)self icLayoutManager];
+    [icLayoutManager3 setIsRenderingPreviewForDragAndDrop:0];
   }
 
   return v23;
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [v5 dropSession];
-  v7 = [(ICEditingTextView *)self shouldAcceptDropSession:v6];
+  dropCopy = drop;
+  dropSession = [dropCopy dropSession];
+  v7 = [(ICEditingTextView *)self shouldAcceptDropSession:dropSession];
 
   if (v7)
   {
-    if ([v5 isSameView])
+    if ([dropCopy isSameView])
     {
       v8 = 3;
     }
 
     else
     {
-      v9 = [v5 dropSession];
-      if ([(ICEditingTextView *)self _isDropSessionLocalDragContextViewFromSubview:v9])
+      dropSession2 = [dropCopy dropSession];
+      if ([(ICEditingTextView *)self _isDropSessionLocalDragContextViewFromSubview:dropSession2])
       {
         v8 = 3;
       }
@@ -5261,17 +5261,17 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)_isDropSessionLocalDragContextViewFromSubview:(id)a3
+- (BOOL)_isDropSessionLocalDragContextViewFromSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [v4 localDragSession];
-  v6 = [v5 localContext];
+  subviewCopy = subview;
+  localDragSession = [subviewCopy localDragSession];
+  localContext = [localDragSession localContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v7 = [v4 localDragSession];
-    v8 = [v7 localContext];
+    localDragSession2 = [subviewCopy localDragSession];
+    localContext2 = [localDragSession2 localContext];
     v9 = ICDynamicCast();
     v10 = [(ICEditingTextView *)self containsView:v9];
   }
@@ -5284,37 +5284,37 @@ LABEL_18:
   return v10;
 }
 
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop
 {
-  v5 = a4;
+  dropCopy = drop;
   v6 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [ICEditingTextView(DragAndDrop) textDroppableView:? willPerformDrop:?];
   }
 
-  v7 = [(ICEditingTextView *)self itemProviderPasteSessionCreateIfNecessary];
-  [v7 setIsForDragAndDrop:1];
-  v8 = [(ICEditingTextView *)self TTTextStorage];
-  [v8 setIsDropping:1];
+  itemProviderPasteSessionCreateIfNecessary = [(ICEditingTextView *)self itemProviderPasteSessionCreateIfNecessary];
+  [itemProviderPasteSessionCreateIfNecessary setIsForDragAndDrop:1];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage setIsDropping:1];
 
   [(ICEditingTextView *)self setPasteDelegate:self];
-  LODWORD(v8) = [v5 isSameView];
+  LODWORD(tTTextStorage) = [dropCopy isSameView];
 
-  if (v8)
+  if (tTTextStorage)
   {
-    v9 = [(ICEditingTextView *)self editorController];
-    [v9 setHasMadeEdits];
+    editorController = [(ICEditingTextView *)self editorController];
+    [editorController setHasMadeEdits];
 
-    v10 = [(ICEditingTextView *)self editorController];
-    v11 = [v10 note];
-    [v11 updateModificationDateAndChangeCountAndSaveAfterDelay];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    note = [editorController2 note];
+    [note updateModificationDateAndChangeCountAndSaveAfterDelay];
   }
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     objc_opt_class();
-    v12 = [(ICEditingTextView *)self layoutManager];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
     v13 = ICCheckedDynamicCast();
 
     [v13 setShouldManuallyRenderSeparateSubviews:1];
@@ -5322,7 +5322,7 @@ LABEL_18:
   }
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnter:(id)enter
 {
   v5 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -5330,13 +5330,13 @@ LABEL_18:
     [ICEditingTextView(DragAndDrop) textDroppableView:? dropSessionDidEnter:?];
   }
 
-  v6 = [(ICEditingTextView *)self editorController];
-  v7 = [v6 note];
-  v8 = [v7 documentMergeController];
-  [v8 beginBlockingMergeForReason:2 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController beginBlockingMergeForReason:2 textView:self];
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidExit:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidExit:(id)exit
 {
   v5 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -5344,16 +5344,16 @@ LABEL_18:
     [ICEditingTextView(DragAndDrop) textDroppableView:? dropSessionDidExit:?];
   }
 
-  v6 = [(ICEditingTextView *)self editorController];
-  v7 = [v6 note];
-  v8 = [v7 documentMergeController];
-  [v8 endBlockingMergeForReason:2 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController endBlockingMergeForReason:2 textView:self];
 
-  v9 = [(ICEditingTextView *)self editorController];
-  [v9 saveNote];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  [editorController2 saveNote];
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end
 {
   v5 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -5361,21 +5361,21 @@ LABEL_18:
     [ICEditingTextView(DragAndDrop) textDroppableView:? dropSessionDidEnd:?];
   }
 
-  v6 = [(ICEditingTextView *)self editorController];
-  v7 = [v6 note];
-  v8 = [v7 documentMergeController];
-  [v8 endBlockingMergeForReason:2 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController endBlockingMergeForReason:2 textView:self];
 
-  v9 = [(ICEditingTextView *)self editorController];
-  [v9 saveNote];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  [editorController2 saveNote];
 
-  v10 = [(ICEditingTextView *)self TTTextStorage];
-  [v10 setIsDropping:0];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage setIsDropping:0];
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     objc_opt_class();
-    v11 = [(ICEditingTextView *)self layoutManager];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
     v12 = ICCheckedDynamicCast();
 
     [v12 setShouldManuallyRenderSeparateSubviews:0];
@@ -5387,35 +5387,35 @@ LABEL_18:
 
 - (id)itemProviderPasteSessionCreateIfNecessary
 {
-  v3 = [(ICEditingTextView *)self itemProviderPasteSession];
-  if (!v3)
+  itemProviderPasteSession = [(ICEditingTextView *)self itemProviderPasteSession];
+  if (!itemProviderPasteSession)
   {
-    v4 = [(ICEditingTextView *)self editorController];
-    v5 = [v4 note];
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
 
-    v6 = [v5 managedObjectContext];
+    managedObjectContext = [note managedObjectContext];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __75__ICEditingTextView_DragAndDrop__itemProviderPasteSessionCreateIfNecessary__block_invoke;
     v18 = &unk_2781ABEB8;
-    v19 = v5;
-    v20 = v6;
-    v7 = v6;
-    v8 = v5;
+    v19 = note;
+    v20 = managedObjectContext;
+    v7 = managedObjectContext;
+    v8 = note;
     [v7 performBlockAndWait:&v15];
     v9 = [ICEditingTextViewItemProviderPasteSession alloc];
-    v10 = [v8 objectID];
-    v11 = [(ICEditingTextViewItemProviderPasteSession *)v9 initWithNoteObjectID:v10];
+    objectID = [v8 objectID];
+    v11 = [(ICEditingTextViewItemProviderPasteSession *)v9 initWithNoteObjectID:objectID];
     [(ICEditingTextView *)self setItemProviderPasteSession:v11];
 
-    v12 = [(ICEditingTextView *)self supportsAttachments];
-    v13 = [(ICEditingTextView *)self itemProviderPasteSession];
-    [v13 setSupportsAttachments:v12];
+    supportsAttachments = [(ICEditingTextView *)self supportsAttachments];
+    itemProviderPasteSession2 = [(ICEditingTextView *)self itemProviderPasteSession];
+    [itemProviderPasteSession2 setSupportsAttachments:supportsAttachments];
 
-    v3 = [(ICEditingTextView *)self itemProviderPasteSession];
+    itemProviderPasteSession = [(ICEditingTextView *)self itemProviderPasteSession];
   }
 
-  return v3;
+  return itemProviderPasteSession;
 }
 
 uint64_t __75__ICEditingTextView_DragAndDrop__itemProviderPasteSessionCreateIfNecessary__block_invoke(uint64_t a1)
@@ -5426,44 +5426,44 @@ uint64_t __75__ICEditingTextView_DragAndDrop__itemProviderPasteSessionCreateIfNe
   return [v2 ic_save];
 }
 
-- (id)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4
+- (id)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item
 {
   v51 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a4;
+  supportingCopy = supporting;
+  itemCopy = item;
   v7 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ICEditingTextView(DragAndDrop) textPasteConfigurationSupporting:? transformPasteItem:?];
   }
 
-  v8 = [(ICEditingTextView *)self itemProviderPasteSessionCreateIfNecessary];
-  v9 = [v6 itemProvider];
+  itemProviderPasteSessionCreateIfNecessary = [(ICEditingTextView *)self itemProviderPasteSessionCreateIfNecessary];
+  itemProvider = [itemCopy itemProvider];
   v10 = os_log_create("com.apple.notes", "DragAndDrop");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [ICEditingTextView(DragAndDrop) textPasteConfigurationSupporting:v9 transformPasteItem:?];
+    [ICEditingTextView(DragAndDrop) textPasteConfigurationSupporting:itemProvider transformPasteItem:?];
   }
 
-  v11 = [(ICEditingTextView *)self selectedTextRange];
-  v31 = [v11 end];
+  selectedTextRange = [(ICEditingTextView *)self selectedTextRange];
+  v31 = [selectedTextRange end];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_transformPasteItem___block_invoke;
   aBlock[3] = &unk_2781AC588;
-  v30 = v8;
+  v30 = itemProviderPasteSessionCreateIfNecessary;
   v47 = v30;
-  v48 = self;
-  v27 = v6;
+  selfCopy = self;
+  v27 = itemCopy;
   v49 = v27;
   v12 = _Block_copy(aBlock);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v13 = v9;
-  obj = [(ICEditingTextView *)self itemProviderConsumerTypesForItemProvider:v9];
+  v13 = itemProvider;
+  obj = [(ICEditingTextView *)self itemProviderConsumerTypesForItemProvider:itemProvider];
   v14 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v14)
   {
@@ -5479,12 +5479,12 @@ LABEL_7:
         objc_enumerationMutation(obj);
       }
 
-      v19 = [*(*(&v42 + 1) + 8 * v18) unsignedIntegerValue];
-      if (v19 > 5)
+      unsignedIntegerValue = [*(*(&v42 + 1) + 8 * v18) unsignedIntegerValue];
+      if (unsignedIntegerValue > 5)
       {
-        if (v19 <= 8)
+        if (unsignedIntegerValue <= 8)
         {
-          if (v19 == 6)
+          if (unsignedIntegerValue == 6)
           {
             v38 = 0;
             v23 = [(ICEditingTextView *)self handleMovieOrAudioDropForItemProvider:v13 atTextPosition:v31 pasteSession:v30 outProgress:&v38 completionBlock:v12];
@@ -5492,7 +5492,7 @@ LABEL_7:
             goto LABEL_34;
           }
 
-          if (v19 != 7)
+          if (unsignedIntegerValue != 7)
           {
             v39 = 0;
             v23 = [(ICEditingTextView *)self handleImageDropForItemProvider:v13 atTextPosition:v31 pasteSession:v30 outProgress:&v39 completionBlock:v12];
@@ -5503,7 +5503,7 @@ LABEL_7:
 
         else
         {
-          if ((v19 - 9) < 2)
+          if ((unsignedIntegerValue - 9) < 2)
           {
             v33 = 0;
             v23 = [(ICEditingTextView *)self handleURLDropForItemProvider:v13 atTextPosition:v31 pasteSession:v30 outProgress:&v33 completionBlock:v12];
@@ -5511,9 +5511,9 @@ LABEL_7:
             goto LABEL_34;
           }
 
-          if (v19 != 11)
+          if (unsignedIntegerValue != 11)
           {
-            if (v19 == 12)
+            if (unsignedIntegerValue == 12)
             {
               v20 = [(ICEditingTextView *)self preferredFileTypeForItemProvider:v13];
               v34 = 0;
@@ -5539,9 +5539,9 @@ LABEL_38:
         goto LABEL_34;
       }
 
-      if (v19 > 2)
+      if (unsignedIntegerValue > 2)
       {
-        if ((v19 - 3) < 2)
+        if ((unsignedIntegerValue - 3) < 2)
         {
           v35 = 0;
           v23 = [(ICEditingTextView *)self handleInlineDrawingDropForItemProvider:v13 atTextPosition:v31 pasteSession:v30 outProgress:&v35 completionBlock:v12];
@@ -5549,7 +5549,7 @@ LABEL_38:
           goto LABEL_34;
         }
 
-        if (v19 == 5)
+        if (unsignedIntegerValue == 5)
         {
           v32 = 0;
           v23 = [(ICEditingTextView *)self handleMapKitItemDropForItemProvider:v13 atTextPosition:v31 pasteSession:v30 outProgress:&v32 completionBlock:v12];
@@ -5560,7 +5560,7 @@ LABEL_38:
 
       else
       {
-        switch(v19)
+        switch(unsignedIntegerValue)
         {
           case 0:
             v41 = 0;
@@ -5691,53 +5691,53 @@ unint64_t __86__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_
   return result;
 }
 
-+ (id)temporaryTextStorageWithAttributedString:(id)a3 note:(id)a4 filterAttributedString:(BOOL)a5
++ (id)temporaryTextStorageWithAttributedString:(id)string note:(id)note filterAttributedString:(BOOL)attributedString
 {
-  v25 = a5;
-  v6 = a3;
-  v7 = a4;
+  attributedStringCopy = attributedString;
+  stringCopy = string;
+  noteCopy = note;
   v8 = objc_alloc(MEMORY[0x277D36918]);
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v8 initWithData:0 replicaID:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v10 = [v8 initWithData:0 replicaID:uUID];
 
   [v10 setShouldInhibitAddingExtraNewlinesAtEndDuringFixup:1];
   v11 = objc_alloc_init(MEMORY[0x277D36968]);
-  v12 = [v7 managedObjectContext];
+  managedObjectContext = [noteCopy managedObjectContext];
   v13 = *MEMORY[0x277D74060];
-  v14 = [v6 length];
+  v14 = [stringCopy length];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedString_note_filterAttributedString___block_invoke;
   v26[3] = &unk_2781AC5D8;
-  v15 = v12;
+  v15 = managedObjectContext;
   v27 = v15;
-  [v6 enumerateAttribute:v13 inRange:0 options:v14 usingBlock:{0, v26}];
+  [stringCopy enumerateAttribute:v13 inRange:0 options:v14 usingBlock:{0, v26}];
   objc_opt_class();
-  v16 = [v7 textStorage];
-  v17 = [v16 styler];
+  textStorage = [noteCopy textStorage];
+  styler = [textStorage styler];
   v18 = ICCheckedDynamicCast();
-  v19 = [v18 zoomController];
-  [v19 zoomFactor];
+  zoomController = [v18 zoomController];
+  [zoomController zoomFactor];
   v21 = v20;
-  v22 = [v11 zoomController];
-  [v22 setZoomFactor:v21];
+  zoomController2 = [v11 zoomController];
+  [zoomController2 setZoomFactor:v21];
 
-  v23 = [v10 styler];
+  styler2 = [v10 styler];
 
   [v10 setStyler:v11];
-  if (v25)
+  if (attributedStringCopy)
   {
     [v10 setConvertAttributes:1];
     [v10 setFilterPastedAttributes:1];
   }
 
   [v10 setWantsUndoCommands:0];
-  [v10 replaceCharactersInRange:0 withAttributedString:{objc_msgSend(v10, "length"), v6}];
-  [v7 filterAttachmentsInTextStorage:v10 range:{0, objc_msgSend(v10, "length")}];
+  [v10 replaceCharactersInRange:0 withAttributedString:{objc_msgSend(v10, "length"), stringCopy}];
+  [noteCopy filterAttachmentsInTextStorage:v10 range:{0, objc_msgSend(v10, "length")}];
   [v10 fixupAfterEditing];
   [v10 setFilterPastedAttributes:0];
   [v10 setConvertAttributes:0];
-  if (!v23)
+  if (!styler2)
   {
     [v10 setStyler:0];
   }
@@ -5777,33 +5777,33 @@ void __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedStr
   [*(a1 + 48) setAttachment:v2];
 }
 
-- (id)textPasteConfigurationSupporting:(id)a3 combineItemAttributedStrings:(id)a4 forRange:(id)a5
+- (id)textPasteConfigurationSupporting:(id)supporting combineItemAttributedStrings:(id)strings forRange:(id)range
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v8 = a4;
-  v58 = a5;
+  supportingCopy = supporting;
+  stringsCopy = strings;
+  rangeCopy = range;
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
     v78 = MEMORY[0x277D85DD0];
     v79 = 3221225472;
     v80 = __105__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_combineItemAttributedStrings_forRange___block_invoke;
     v81 = &unk_2781ABCF8;
-    v82 = self;
+    selfCopy = self;
     performBlockOnMainThreadAndWait();
   }
 
   v57 = objc_alloc_init(MEMORY[0x277CCAB48]);
-  v9 = [v8 count];
+  v9 = [stringsCopy count];
   v76[0] = 0;
   v76[1] = v76;
   v76[2] = 0x2020000000;
   v77 = 0;
-  v10 = [(ICEditingTextView *)self itemProviderPasteSession];
-  v11 = [v10 isForDragAndDrop];
+  itemProviderPasteSession = [(ICEditingTextView *)self itemProviderPasteSession];
+  isForDragAndDrop = [itemProviderPasteSession isForDragAndDrop];
   if (v9 == 2)
   {
-    v12 = v11;
+    v12 = isForDragAndDrop;
   }
 
   else
@@ -5813,54 +5813,54 @@ void __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedStr
 
   if ((v12 & 1) == 0)
   {
-    v13 = [v8 objectAtIndexedSubscript:0];
+    v13 = [stringsCopy objectAtIndexedSubscript:0];
     v75 = 0;
     v14 = [(ICEditingTextView *)self standardizedAttributedString:v13 attachmentIdentifiers:&v75];
     v55 = v75;
 
-    v15 = [v8 objectAtIndexedSubscript:1];
+    v15 = [stringsCopy objectAtIndexedSubscript:1];
     v74 = 0;
     v16 = [(ICEditingTextView *)self standardizedAttributedString:v15 attachmentIdentifiers:&v74];
     v54 = v74;
 
-    v17 = [(ICEditingTextView *)self editorController];
-    v18 = [v17 note];
-    v19 = v18;
-    if (v18)
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    v19 = note;
+    if (note)
     {
-      v20 = v18;
+      note2 = note;
     }
 
     else
     {
       objc_opt_class();
       v21 = ICDynamicCast();
-      v20 = [v21 note];
+      note2 = [v21 note];
     }
 
-    v22 = [v20 calculateDocumentController];
-    if (v22)
+    calculateDocumentController = [note2 calculateDocumentController];
+    if (calculateDocumentController)
     {
       v23 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v14];
-      v24 = [v23 ic_range];
-      [v22 formatExpressionsInAttributedString:v23 range:v24 textStorageOffset:v25 skipStaleExpressions:{0, 0}];
+      ic_range = [v23 ic_range];
+      [calculateDocumentController formatExpressionsInAttributedString:v23 range:ic_range textStorageOffset:v25 skipStaleExpressions:{0, 0}];
       v26 = [v23 copy];
 
       v14 = v26;
     }
 
-    v27 = [v14 string];
-    v28 = [v16 string];
-    v29 = [v27 isEqualToString:v28];
+    string = [v14 string];
+    string2 = [v16 string];
+    v29 = [string isEqualToString:string2];
 
-    if (v29 && (([v8 objectAtIndexedSubscript:1], v30 = objc_claimAutoreleasedReturnValue(), v31 = -[ICEditingTextView attributedStringContainsICTTAttachment:](self, "attributedStringContainsICTTAttachment:", v30), v30, objc_msgSend(v55, "count") == 0 || v31) || objc_msgSend(v55, "isEqualToArray:", v54)))
+    if (v29 && (([stringsCopy objectAtIndexedSubscript:1], v30 = objc_claimAutoreleasedReturnValue(), v31 = -[ICEditingTextView attributedStringContainsICTTAttachment:](self, "attributedStringContainsICTTAttachment:", v30), v30, objc_msgSend(v55, "count") == 0 || v31) || objc_msgSend(v55, "isEqualToArray:", v54)))
     {
-      v32 = [v8 objectAtIndexedSubscript:1];
+      v32 = [stringsCopy objectAtIndexedSubscript:1];
       v83[0] = v32;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:1];
 
       v9 = [v33 count];
-      v8 = v33;
+      stringsCopy = v33;
     }
 
     else
@@ -5869,15 +5869,15 @@ void __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedStr
     }
   }
 
-  v34 = [(ICEditingTextView *)self itemProviderPasteSession];
-  [v34 saveWorkerContext];
+  itemProviderPasteSession2 = [(ICEditingTextView *)self itemProviderPasteSession];
+  [itemProviderPasteSession2 saveWorkerContext];
 
   v66 = MEMORY[0x277D85DD0];
   v67 = 3221225472;
   v68 = __105__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_combineItemAttributedStrings_forRange___block_invoke_2;
   v69 = &unk_2781AC600;
-  v70 = self;
-  v59 = v58;
+  selfCopy2 = self;
+  v59 = rangeCopy;
   v71 = v59;
   v35 = v57;
   v72 = v35;
@@ -5887,7 +5887,7 @@ void __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedStr
   {
     for (i = 0; i != v9; ++i)
     {
-      v37 = [v8 objectAtIndexedSubscript:i];
+      v37 = [stringsCopy objectAtIndexedSubscript:i];
       [v35 appendAttributedString:v37];
       if (i < v9 - 1)
       {
@@ -5909,13 +5909,13 @@ void __103__ICEditingTextView_DragAndDrop__temporaryTextStorageWithAttributedStr
   {
     v40 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:v59];
     v42 = v41;
-    v43 = [(ICEditingTextView *)self textStorage];
-    v44 = [v43 string];
-    v45 = [v44 lineRangeForRange:{v40, v42}];
+    textStorage = [(ICEditingTextView *)self textStorage];
+    string3 = [textStorage string];
+    v45 = [string3 lineRangeForRange:{v40, v42}];
     v47 = v46;
 
-    v48 = [(ICEditingTextView *)self textStorage];
-    v49 = [v48 attributedSubstringFromRange:{v45, v47}];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v49 = [textStorage2 attributedSubstringFromRange:{v45, v47}];
 
     v50 = [(ICEditingTextView *)self updateIndentForChecklistDragIfNecessaryForString:v61[5] lineUnderDrop:v49];
     v51 = v61[5];
@@ -6065,34 +6065,34 @@ LABEL_14:
   }
 }
 
-- (id)updateIndentForChecklistDragIfNecessaryForString:(id)a3 lineUnderDrop:(id)a4
+- (id)updateIndentForChecklistDragIfNecessaryForString:(id)string lineUnderDrop:(id)drop
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stringCopy = string;
+  dropCopy = drop;
+  v8 = stringCopy;
   v9 = v8;
   if ([(ICEditingTextView *)self isDraggingChecklistItem])
   {
-    v10 = [(ICEditingTextView *)self trackedParagraphCurrentlyUnderDraggedChecklist];
+    trackedParagraphCurrentlyUnderDraggedChecklist = [(ICEditingTextView *)self trackedParagraphCurrentlyUnderDraggedChecklist];
 
-    if (v10)
+    if (trackedParagraphCurrentlyUnderDraggedChecklist)
     {
-      v11 = [(ICEditingTextView *)self trackedParagraphCurrentlyUnderDraggedChecklist];
-      v12 = [v11 paragraph];
-      v13 = [v12 indent];
+      trackedParagraphCurrentlyUnderDraggedChecklist2 = [(ICEditingTextView *)self trackedParagraphCurrentlyUnderDraggedChecklist];
+      paragraph = [trackedParagraphCurrentlyUnderDraggedChecklist2 paragraph];
+      indent = [paragraph indent];
     }
 
     else
     {
       v9 = v8;
-      if (![v7 length])
+      if (![dropCopy length])
       {
         goto LABEL_9;
       }
 
-      v19 = [v7 string];
-      v20 = [v19 ic_trimmedString];
-      v21 = [v20 length];
+      string = [dropCopy string];
+      ic_trimmedString = [string ic_trimmedString];
+      v21 = [ic_trimmedString length];
 
       v9 = v8;
       if (v21)
@@ -6100,32 +6100,32 @@ LABEL_14:
         goto LABEL_9;
       }
 
-      v23 = [v7 attribute:*MEMORY[0x277D35DA8] atIndex:0 effectiveRange:0];
-      v11 = v23;
+      v23 = [dropCopy attribute:*MEMORY[0x277D35DA8] atIndex:0 effectiveRange:0];
+      trackedParagraphCurrentlyUnderDraggedChecklist2 = v23;
       if (v23)
       {
-        v13 = [v23 indent];
+        indent = [v23 indent];
       }
 
       else
       {
-        v13 = -1;
+        indent = -1;
       }
 
-      v24 = [v7 string];
-      v25 = [ICChecklistDragUtilities tabIndentationEqualivantForString:v24];
+      string2 = [dropCopy string];
+      v25 = [ICChecklistDragUtilities tabIndentationEqualivantForString:string2];
 
       if (v25)
       {
-        v26 = [(ICEditingTextView *)self TTTextStorage];
-        [v26 setShouldRemoveLeadingWhitespaceForChecklistDrop:1];
+        tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+        [tTTextStorage setShouldRemoveLeadingWhitespaceForChecklistDrop:1];
 
-        v13 += v25;
+        indent += v25;
       }
     }
 
     v9 = v8;
-    if ((v13 & 0x8000000000000000) == 0)
+    if ((indent & 0x8000000000000000) == 0)
     {
       v9 = v8;
       if ([v8 length])
@@ -6134,7 +6134,7 @@ LABEL_14:
         v14 = MEMORY[0x277D35DA8];
         v15 = [v8 attribute:*MEMORY[0x277D35DA8] atIndex:0 effectiveRange:0];
         v16 = [v15 mutableCopy];
-        [v16 setIndent:v13];
+        [v16 setIndent:indent];
         v17 = *v14;
         v18 = [v16 copy];
         [v9 addAttribute:v17 value:v18 range:{0, objc_msgSend(v9, "length")}];
@@ -6147,52 +6147,52 @@ LABEL_9:
   return v9;
 }
 
-- (id)textPasteConfigurationSupporting:(id)a3 performPasteOfAttributedString:(id)a4 toRange:(id)a5
+- (id)textPasteConfigurationSupporting:(id)supporting performPasteOfAttributedString:(id)string toRange:(id)range
 {
   v122 = *MEMORY[0x277D85DE8];
-  v93 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ICEditingTextView *)self itemProviderPasteSession];
-  v11 = [v10 isForDragAndDrop];
+  supportingCopy = supporting;
+  stringCopy = string;
+  rangeCopy = range;
+  itemProviderPasteSession = [(ICEditingTextView *)self itemProviderPasteSession];
+  isForDragAndDrop = [itemProviderPasteSession isForDragAndDrop];
 
-  if (v11)
+  if (isForDragAndDrop)
   {
     IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-    v13 = self;
+    selfCopy2 = self;
     if ((IsTextKit2Enabled & 1) == 0)
     {
-      v14 = [(ICEditingTextView *)self icLayoutManager];
-      [v14 setShouldManuallyRenderSeparateSubviews:0];
+      icLayoutManager = [(ICEditingTextView *)self icLayoutManager];
+      [icLayoutManager setShouldManuallyRenderSeparateSubviews:0];
 
-      v15 = [(ICEditingTextView *)self icLayoutManager];
-      [v15 setIsRenderingPreviewForDragAndDrop:0];
+      icLayoutManager2 = [(ICEditingTextView *)self icLayoutManager];
+      [icLayoutManager2 setIsRenderingPreviewForDragAndDrop:0];
 
-      v13 = self;
+      selfCopy2 = self;
     }
 
-    v16 = [(ICEditingTextView *)v13 itemProviderPasteSession];
-    v17 = [v16 numberOfTrailingNewlinesStripped];
+    itemProviderPasteSession2 = [(ICEditingTextView *)selfCopy2 itemProviderPasteSession];
+    numberOfTrailingNewlinesStripped = [itemProviderPasteSession2 numberOfTrailingNewlinesStripped];
 
-    if (v17)
+    if (numberOfTrailingNewlinesStripped)
     {
-      v18 = [MEMORY[0x277CCAB68] stringWithCapacity:v17];
+      v18 = [MEMORY[0x277CCAB68] stringWithCapacity:numberOfTrailingNewlinesStripped];
       do
       {
         [v18 appendString:@"\n"];
-        --v17;
+        --numberOfTrailingNewlinesStripped;
       }
 
-      while (v17);
-      v19 = [v8 mutableCopy];
+      while (numberOfTrailingNewlinesStripped);
+      v19 = [stringCopy mutableCopy];
       [v19 ic_appendString:v18];
       v20 = [v19 copy];
 
-      v8 = v20;
+      stringCopy = v20;
     }
 
-    v21 = [(ICEditingTextView *)self itemProviderPasteSession];
-    [v21 setNumberOfTrailingNewlinesStripped:0];
+    itemProviderPasteSession3 = [(ICEditingTextView *)self itemProviderPasteSession];
+    [itemProviderPasteSession3 setNumberOfTrailingNewlinesStripped:0];
   }
 
   v22 = os_log_create("com.apple.notes", "DragAndDrop");
@@ -6206,19 +6206,19 @@ LABEL_9:
   v119[1] = 0x3032000000;
   v119[2] = __Block_byref_object_copy__1;
   v119[3] = __Block_byref_object_dispose__1;
-  v97 = v8;
-  v98 = v9;
+  v97 = stringCopy;
+  v98 = rangeCopy;
   v120 = v98;
   if ([(ICEditingTextView *)self exceedsMaxLengthIfSelectionReplacedWithAttributedString:v97])
   {
-    v23 = [(ICEditingTextView *)self editorController];
-    [v23 warnUserNoteLengthExceeded];
+    editorController = [(ICEditingTextView *)self editorController];
+    [editorController warnUserNoteLengthExceeded];
     v96 = v97;
   }
 
   else
   {
-    v94 = [(ICEditingTextView *)self TTTextStorage];
+    tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
     [(ICEditingTextView *)self setSelectedTextRange:v98];
     v24 = os_log_create("com.apple.notes", "DragAndDrop");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -6227,15 +6227,15 @@ LABEL_9:
     }
 
     [(ICEditingTextView *)self beginDrop];
-    v25 = [(ICEditingTextView *)self itemProviderPasteSession];
-    v26 = [v25 shouldFilterAttributedString];
+    itemProviderPasteSession4 = [(ICEditingTextView *)self itemProviderPasteSession];
+    shouldFilterAttributedString = [itemProviderPasteSession4 shouldFilterAttributedString];
 
     location = [(ICEditingTextView *)self ic_characterRangeFromTextRange:v98];
     v28 = v27;
-    v29 = [(ICEditingTextView *)self TTTextStorage];
-    v30 = [v29 length];
+    tTTextStorage2 = [(ICEditingTextView *)self TTTextStorage];
+    v30 = [tTTextStorage2 length];
 
-    if (v26)
+    if (shouldFilterAttributedString)
     {
       v31 = os_log_create("com.apple.notes", "DragAndDrop");
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -6243,17 +6243,17 @@ LABEL_9:
         [ICEditingTextView(DragAndDrop) textPasteConfigurationSupporting:v31 performPasteOfAttributedString:? toRange:?];
       }
 
-      v32 = [(ICEditingTextView *)self TTTextStorage];
-      [v32 setFilterPastedAttributes:1];
+      tTTextStorage3 = [(ICEditingTextView *)self TTTextStorage];
+      [tTTextStorage3 setFilterPastedAttributes:1];
 
-      v33 = [(ICEditingTextView *)self TTTextStorage];
-      [v33 setConvertAttributes:1];
+      tTTextStorage4 = [(ICEditingTextView *)self TTTextStorage];
+      [tTTextStorage4 setConvertAttributes:1];
 
-      v34 = [(ICEditingTextView *)self TTTextStorage];
-      [v34 setPasteboardTypes:0];
+      tTTextStorage5 = [(ICEditingTextView *)self TTTextStorage];
+      [tTTextStorage5 setPasteboardTypes:0];
     }
 
-    v35 = [(ICEditingTextView *)self TTTextStorage];
+    tTTextStorage6 = [(ICEditingTextView *)self TTTextStorage];
     v113[0] = MEMORY[0x277D85DD0];
     v113[1] = 3221225472;
     v113[2] = __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_performPasteOfAttributedString_toRange___block_invoke;
@@ -6262,38 +6262,38 @@ LABEL_9:
     v116 = location;
     v117 = v28;
     v114 = v36;
-    v115 = self;
-    [v35 saveSelectionDuringBlock:v113 affinity:1];
+    selfCopy3 = self;
+    [tTTextStorage6 saveSelectionDuringBlock:v113 affinity:1];
 
-    v37 = [MEMORY[0x277D35F30] sharedContext];
-    v38 = [v37 managedObjectContext];
+    mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+    managedObjectContext = [mEMORY[0x277D35F30] managedObjectContext];
     v112[0] = MEMORY[0x277D85DD0];
     v112[1] = 3221225472;
     v112[2] = __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_performPasteOfAttributedString_toRange___block_invoke_2;
     v112[3] = &unk_2781AC6A0;
     v112[4] = self;
-    [v36 ic_enumerateAttachmentsInContext:v38 usingBlock:v112];
+    [v36 ic_enumerateAttachmentsInContext:managedObjectContext usingBlock:v112];
 
-    v39 = [(ICEditingTextView *)self editorController];
-    v40 = [v39 note];
-    v41 = [v40 calculateDocumentController];
-    [v41 scheduleUpdateAffectingChangeCounts:1 isHighPriority:1];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    note = [editorController2 note];
+    calculateDocumentController = [note calculateDocumentController];
+    [calculateDocumentController scheduleUpdateAffectingChangeCounts:1 isHighPriority:1];
 
-    v42 = [(ICEditingTextView *)self TTTextStorage];
-    v43 = [v42 length];
+    tTTextStorage7 = [(ICEditingTextView *)self TTTextStorage];
+    v43 = [tTTextStorage7 length];
 
-    if (v26)
+    if (shouldFilterAttributedString)
     {
-      [v94 setPasteboardTypes:0];
-      [v94 setConvertAttributes:0];
-      [v94 setFilterPastedAttributes:0];
-      v44 = [(ICEditingTextView *)self TTTextStorage];
-      v45 = [v44 length];
+      [tTTextStorage setPasteboardTypes:0];
+      [tTTextStorage setConvertAttributes:0];
+      [tTTextStorage setFilterPastedAttributes:0];
+      tTTextStorage8 = [(ICEditingTextView *)self TTTextStorage];
+      v45 = [tTTextStorage8 length];
 
-      v46 = [v94 attributedSubstringFromRange:{location, v28 - v30 + v45}];
+      v46 = [tTTextStorage attributedSubstringFromRange:{location, v28 - v30 + v45}];
 
       objc_opt_class();
-      v47 = [v94 styler];
+      styler = [tTTextStorage styler];
       v48 = ICCheckedDynamicCast();
 
       [v48 insertedText:v46 replacementRange:location inTextView:v28 languageHasSpaces:{self, -[ICEditingTextView languageHasSpaces](self, "languageHasSpaces")}];
@@ -6331,53 +6331,53 @@ LABEL_9:
 
     if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
     {
-      v55 = [(ICEditingTextView *)self itemProviderPasteSession];
-      v56 = [v55 isForDragAndDrop];
+      itemProviderPasteSession5 = [(ICEditingTextView *)self itemProviderPasteSession];
+      isForDragAndDrop2 = [itemProviderPasteSession5 isForDragAndDrop];
 
-      if (v56)
+      if (isForDragAndDrop2)
       {
         objc_opt_class();
-        v57 = [v94 attributedString];
+        attributedString = [tTTextStorage attributedString];
         v58 = ICDynamicCast();
 
         v59 = [v58 mutableCopy];
-        v124.location = [v94 ic_range];
+        v124.location = [tTTextStorage ic_range];
         v125.length = range2;
         v125.location = location;
         v60 = NSIntersectionRange(v124, v125);
         v61 = *MEMORY[0x277D740C0];
         range2 = v60.length;
         [v58 removeAttribute:*MEMORY[0x277D740C0] range:{v60.location, v60.length}];
-        v62 = [MEMORY[0x277D75348] clearColor];
-        [v58 addAttribute:v61 value:v62 range:{v60.location, v60.length}];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v58 addAttribute:v61 value:clearColor range:{v60.location, v60.length}];
         location = v60.location;
 
         [v58 removeAttribute:*MEMORY[0x277D740E8] range:{v60.location, v60.length}];
         [v58 removeAttribute:*MEMORY[0x277D741F0] range:{v60.location, v60.length}];
         [v58 removeAttribute:*MEMORY[0x277D74178] range:{v60.location, v60.length}];
-        v63 = [(ICEditingTextView *)self editorController];
-        v64 = [v63 note];
-        v65 = [v64 documentMergeController];
-        [v65 beginBlockingMergeForReason:2 textView:self];
+        editorController3 = [(ICEditingTextView *)self editorController];
+        note2 = [editorController3 note];
+        documentMergeController = [note2 documentMergeController];
+        [documentMergeController beginBlockingMergeForReason:2 textView:self];
 
         v66 = dispatch_time(0, 700000000);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_performPasteOfAttributedString_toRange___block_invoke_258;
         block[3] = &unk_2781AC6C8;
-        v108 = v94;
+        v108 = tTTextStorage;
         v109 = v59;
-        v110 = self;
+        selfCopy4 = self;
         v111 = v60;
         v67 = v59;
         dispatch_after(v66, MEMORY[0x277D85CD0], block);
       }
 
-      v68 = [(ICEditingTextView *)self icLayoutManager];
-      [v68 updateVisibleSupplementalViews];
+      icLayoutManager3 = [(ICEditingTextView *)self icLayoutManager];
+      [icLayoutManager3 updateVisibleSupplementalViews];
 
-      v69 = [(ICEditingTextView *)self icLayoutManager];
-      v70 = [v69 todoButtonsForCharacterRange:{location, range2}];
+      icLayoutManager4 = [(ICEditingTextView *)self icLayoutManager];
+      v70 = [icLayoutManager4 todoButtonsForCharacterRange:{location, range2}];
 
       v105 = 0u;
       v106 = 0u;
@@ -6400,8 +6400,8 @@ LABEL_9:
             v74 = *(*(&v103 + 1) + 8 * i);
             [v74 setAlpha:0.0];
             v75 = MEMORY[0x277D75D18];
-            v76 = [(ICEditingTextView *)self itemProviderPasteSession];
-            if ([v76 isForDragAndDrop])
+            itemProviderPasteSession6 = [(ICEditingTextView *)self itemProviderPasteSession];
+            if ([itemProviderPasteSession6 isForDragAndDrop])
             {
               v77 = 0.5;
             }
@@ -6427,30 +6427,30 @@ LABEL_9:
 
       if ([(ICEditingTextView *)self supportsAttachments])
       {
-        v78 = [(ICEditingTextView *)self editorController];
-        v79 = [v78 visibleRange];
+        editorController4 = [(ICEditingTextView *)self editorController];
+        visibleRange = [editorController4 visibleRange];
         v81 = v80;
 
-        v82 = [(ICEditingTextView *)self textStorage];
+        textStorage = [(ICEditingTextView *)self textStorage];
         v83 = *MEMORY[0x277D74060];
         v101[0] = MEMORY[0x277D85DD0];
         v101[1] = 3221225472;
         v101[2] = __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_performPasteOfAttributedString_toRange___block_invoke_3;
         v101[3] = &unk_2781AC4E8;
-        v101[5] = v79;
+        v101[5] = visibleRange;
         v101[6] = v81;
         v101[4] = self;
-        [v82 enumerateAttribute:v83 inRange:location options:range2 usingBlock:{0, v101}];
+        [textStorage enumerateAttribute:v83 inRange:location options:range2 usingBlock:{0, v101}];
       }
     }
 
-    v23 = v94;
+    editorController = tTTextStorage;
   }
 
-  v84 = [(ICEditingTextView *)self itemProviderPasteSession];
-  v85 = [v84 isForDragAndDrop];
+  itemProviderPasteSession7 = [(ICEditingTextView *)self itemProviderPasteSession];
+  isForDragAndDrop3 = [itemProviderPasteSession7 isForDragAndDrop];
 
-  if ((v85 & 1) == 0)
+  if ((isForDragAndDrop3 & 1) == 0)
   {
     v100[0] = MEMORY[0x277D85DD0];
     v100[1] = 3221225472;
@@ -6461,25 +6461,25 @@ LABEL_9:
     dispatch_async(MEMORY[0x277D85CD0], v100);
   }
 
-  v86 = [(ICEditingTextView *)self itemProviderPasteSession];
-  v87 = [v86 errorCodes];
+  itemProviderPasteSession8 = [(ICEditingTextView *)self itemProviderPasteSession];
+  errorCodes = [itemProviderPasteSession8 errorCodes];
 
-  if ([v87 containsObject:&unk_28277E2B0])
+  if ([errorCodes containsObject:&unk_28277E2B0])
   {
-    v88 = [(ICEditingTextView *)self editorController];
-    [v88 warnUserAttachmentLimitExceeded];
+    editorController5 = [(ICEditingTextView *)self editorController];
+    [editorController5 warnUserAttachmentLimitExceeded];
   }
 
   else
   {
-    if (![v87 containsObject:&unk_28277E2C8])
+    if (![errorCodes containsObject:&unk_28277E2C8])
     {
       goto LABEL_51;
     }
 
-    v88 = [(ICEditingTextView *)self editorController];
-    v89 = [(ICEditingTextView *)self itemProviderPasteSession];
-    [v88 warnUserAttachmentSizeExceededWithAttachmentCount:{objc_msgSend(v89, "numberOfAttachmentsAttemptedAdded")}];
+    editorController5 = [(ICEditingTextView *)self editorController];
+    itemProviderPasteSession9 = [(ICEditingTextView *)self itemProviderPasteSession];
+    [editorController5 warnUserAttachmentSizeExceededWithAttachmentCount:{objc_msgSend(itemProviderPasteSession9, "numberOfAttachmentsAttemptedAdded")}];
   }
 
 LABEL_51:
@@ -6676,12 +6676,12 @@ void __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_perf
   }
 }
 
-- (void)didPasteOrDropText:(id)a3 toRange:(id)a4
+- (void)didPasteOrDropText:(id)text toRange:(id)range
 {
-  v17 = a3;
-  if ([v17 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = [v17 attribute:*MEMORY[0x277D740E8] atIndex:objc_msgSend(v17 effectiveRange:{"length") - 1, 0}];
+    v5 = [textCopy attribute:*MEMORY[0x277D740E8] atIndex:objc_msgSend(textCopy effectiveRange:{"length") - 1, 0}];
     v6 = v5 == 0;
   }
 
@@ -6690,18 +6690,18 @@ void __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_perf
     v6 = 1;
   }
 
-  v7 = [(ICEditingTextView *)self typingAttributes];
+  typingAttributes = [(ICEditingTextView *)self typingAttributes];
   v8 = *MEMORY[0x277D740C0];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
+  v9 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D740C0]];
   [v9 CGColor];
-  v10 = [MEMORY[0x277D75348] tintColor];
-  [v10 CGColor];
+  tintColor = [MEMORY[0x277D75348] tintColor];
+  [tintColor CGColor];
   v11 = ICCGColorEquivalentToColor();
 
   if (!v6 && v11)
   {
-    v12 = [(ICEditingTextView *)self typingAttributes];
-    v13 = [v12 mutableCopy];
+    typingAttributes2 = [(ICEditingTextView *)self typingAttributes];
+    v13 = [typingAttributes2 mutableCopy];
 
     [v13 setObject:0 forKeyedSubscript:v8];
     [v13 setObject:0 forKeyedSubscript:*MEMORY[0x277D35DA0]];
@@ -6710,29 +6710,29 @@ void __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_perf
     [(ICEditingTextView *)self setTypingAttributes:v14];
   }
 
-  v15 = [(ICEditingTextView *)self editorController];
-  v16 = [v15 note];
-  [v16 updateModificationDateAndChangeCountAndSaveAfterDelay];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  [note updateModificationDateAndChangeCountAndSaveAfterDelay];
 }
 
-- (void)icaxBeginEditingAtAttachment:(id)a3
+- (void)icaxBeginEditingAtAttachment:(id)attachment
 {
-  v4 = [(ICEditingTextView *)self _icaxRangeOfAttachment:a3];
+  v4 = [(ICEditingTextView *)self _icaxRangeOfAttachment:attachment];
 
   [(ICEditingTextView *)self icaxBeginEditingInStorageRange:v4 + v5, 0];
 }
 
-- (void)icaxBeginEditingInStorageRange:(_NSRange)a3
+- (void)icaxBeginEditingInStorageRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v7 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:v6 forRange:location, length];
+  length = range.length;
+  location = range.location;
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v7 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:_icaxModifiedAttributedStorageString forRange:location, length];
   v9 = v8;
 
   [(ICEditingTextView *)self _accessibilitySetSelectedTextRange:v7, v9];
-  v10 = [(ICEditingTextView *)self editorController];
-  [v10 startEditing];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController startEditing];
 }
 
 - (void)icaxTextDidChange
@@ -6747,25 +6747,25 @@ void __106__ICEditingTextView_DragAndDrop__textPasteConfigurationSupporting_perf
 
 - (void)icaxUpdateLinkRanges
 {
-  v3 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
-  v4 = [v3 length];
+  _icaxCachedModifiedAttributedString = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
+  v4 = [_icaxCachedModifiedAttributedString length];
 
   if (v4)
   {
-    v5 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
-    v6 = [v5 mutableCopy];
+    _icaxCachedModifiedAttributedString2 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
+    v6 = [_icaxCachedModifiedAttributedString2 mutableCopy];
 
-    v7 = [(ICEditingTextView *)self baseAttributedStringForAccessibility];
+    baseAttributedStringForAccessibility = [(ICEditingTextView *)self baseAttributedStringForAccessibility];
     v8 = *MEMORY[0x277D740E8];
-    v9 = [v7 length];
+    v9 = [baseAttributedStringForAccessibility length];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_invoke;
     v15 = &unk_2781AC8D0;
-    v16 = self;
+    selfCopy = self;
     v17 = v6;
     v10 = v6;
-    [v7 enumerateAttribute:v8 inRange:0 options:v9 usingBlock:{0, &v12}];
+    [baseAttributedStringForAccessibility enumerateAttribute:v8 inRange:0 options:v9 usingBlock:{0, &v12}];
     v11 = [v10 copy];
     [(ICEditingTextView *)self set_icaxCachedModifiedAttributedString:v11];
   }
@@ -6797,26 +6797,26 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
 
 - (void)icaxSpeakIndentationLevelForCurrentSelectedRange
 {
-  v3 = [(ICEditingTextView *)self selectedRange];
-  v4 = [(ICEditingTextView *)self textStorage];
-  v5 = [v4 length];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v5 = [textStorage length];
 
-  if (v3 <= v5)
+  if (selectedRange <= v5)
   {
-    v6 = [(ICEditingTextView *)self textStorage];
-    v7 = [v6 length];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v7 = [textStorage2 length];
 
-    if (v3 && v3 >= v7)
+    if (selectedRange && selectedRange >= v7)
     {
-      v8 = [(ICEditingTextView *)self textStorage];
-      v3 = [v8 length] - 1;
+      textStorage3 = [(ICEditingTextView *)self textStorage];
+      selectedRange = [textStorage3 length] - 1;
     }
 
-    v9 = [(ICEditingTextView *)self textStorage];
-    v13 = [v9 attribute:*MEMORY[0x277D35DA8] atIndex:v3 effectiveRange:0];
+    textStorage4 = [(ICEditingTextView *)self textStorage];
+    v13 = [textStorage4 attribute:*MEMORY[0x277D35DA8] atIndex:selectedRange effectiveRange:0];
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Indentation level %lu" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Indentation level %lu" value:&stru_282757698 table:0];
 
     v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v11, objc_msgSend(v13, "indent")];
     ICAccessibilityPostAnnouncementNotification();
@@ -6825,17 +6825,17 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(ICEditingTextView *)self editorController];
-  v3 = [v2 viewControllerManager];
-  v4 = [v3 isAttachmentBrowserVisible];
+  editorController = [(ICEditingTextView *)self editorController];
+  viewControllerManager = [editorController viewControllerManager];
+  isAttachmentBrowserVisible = [viewControllerManager isAttachmentBrowserVisible];
 
-  return v4 ^ 1;
+  return isAttachmentBrowserVisible ^ 1;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"note" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"note" value:&stru_282757698 table:0];
 
   return v3;
 }
@@ -6847,30 +6847,30 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
     v7 = xmmword_2154BBF20;
     v3 = objc_alloc(MEMORY[0x277CE6B98]);
     v4 = [(ICEditingTextView *)self _icaxAttributedStringForRange:&v7];
-    v5 = [v3 initWithCFAttributedString:{v4, v7}];
+    text = [v3 initWithCFAttributedString:{v4, v7}];
   }
 
   else
   {
-    v5 = [(ICEditingTextView *)self text];
+    text = [(ICEditingTextView *)self text];
   }
 
-  return v5;
+  return text;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(ICEditingTextView *)self editorController];
-  v3 = [v2 note];
-  if (v3)
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  if (note)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v5 localizedStringForKey:@"Double tap to begin editing a new note" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v4 = [mainBundle localizedStringForKey:@"Double tap to begin editing a new note" value:&stru_282757698 table:0];
   }
 
   return v4;
@@ -6881,11 +6881,11 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
   v9.receiver = self;
   v9.super_class = ICEditingTextView;
   v3 = *MEMORY[0x277D74048] | [(ICEditingTextView *)&v9 accessibilityTraits];
-  v4 = [(ICEditingTextView *)self editorController];
-  v5 = [v4 note];
-  v6 = [v5 isEditable];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  isEditable = [note isEditable];
 
-  if (v6)
+  if (isEditable)
   {
     v7 = ~*MEMORY[0x277D765A8];
   }
@@ -6900,12 +6900,12 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 isInkPickerShowing];
+  editorController = [(ICEditingTextView *)self editorController];
+  isInkPickerShowing = [editorController isInkPickerShowing];
 
   v5 = -1.0;
   v6 = -1.0;
-  if ((v4 & 1) == 0)
+  if ((isInkPickerShowing & 1) == 0)
   {
     v7 = [(ICEditingTextView *)self accessibilityTraits:-1.0];
     if ((*MEMORY[0x277D74038] & v7) != 0)
@@ -6922,12 +6922,12 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [MEMORY[0x277D74248] ic_isRTL];
+      ic_isRTL = [MEMORY[0x277D74248] ic_isRTL];
       v17 = v9;
       v18 = v11;
       v19 = v13;
       v20 = v15;
-      if (v16)
+      if (ic_isRTL)
       {
         MinX = CGRectGetMinX(*&v17);
         v22 = 5.0;
@@ -6944,8 +6944,8 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
       v26.size.width = v13;
       v26.size.height = v15;
       CGRectGetMaxY(v26);
-      v23 = [(ICEditingTextView *)self editorController];
-      [v23 ic_safeAreaDistanceFromBottom];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      [editorController2 ic_safeAreaDistanceFromBottom];
 
       UIAccessibilityFrameForBounds();
     }
@@ -6958,13 +6958,13 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 note];
-  v5 = [v4 isDeletedOrInTrash];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  v6 = [(ICEditingTextView *)self editorController];
-  v7 = [v6 note];
-  if (v7)
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController2 note];
+  if (note2)
   {
     LOBYTE(v8) = 0;
   }
@@ -6974,11 +6974,11 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
     v8 = [(ICEditingTextView *)self isEditable]^ 1;
   }
 
-  v9 = v5 | v8;
+  v9 = isDeletedOrInTrash | v8;
   if ((v9 & 1) == 0)
   {
-    v10 = [(ICEditingTextView *)self editorController];
-    [v10 startEditing];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    [editorController3 startEditing];
   }
 
   return (v9 & 1) == 0;
@@ -7002,30 +7002,30 @@ void __62__ICEditingTextView_ICAccessibility_iOS__icaxUpdateLinkRanges__block_in
 
 - (BOOL)_accessibilityOverridesInstructionsHint
 {
-  v2 = [(ICEditingTextView *)self editorController];
-  v3 = [v2 note];
-  v4 = v3 == 0;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  v4 = note == 0;
 
   return v4;
 }
 
 - (id)childElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICEditingTextView *)self _accessibleSubviews];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  _accessibleSubviews = [(ICEditingTextView *)self _accessibleSubviews];
+  [array addObjectsFromArray:_accessibleSubviews];
 
-  v5 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v6 = *MEMORY[0x277D74060];
-  v7 = [v5 length];
+  v7 = [textStorage length];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __55__ICEditingTextView_ICAccessibility_iOS__childElements__block_invoke;
   v14 = &unk_2781AC8F8;
-  v15 = self;
-  v16 = v3;
-  v8 = v3;
-  [v5 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, &v11}];
+  selfCopy = self;
+  v16 = array;
+  v8 = array;
+  [textStorage enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, &v11}];
   v9 = [v8 copy];
 
   return v9;
@@ -7080,12 +7080,12 @@ void __55__ICEditingTextView_ICAccessibility_iOS__childElements__block_invoke(ui
   }
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   [(ICEditingTextView *)self convertPoint:0 toView:x, y];
   v9 = v8;
   v11 = v10;
@@ -7130,15 +7130,15 @@ void __55__ICEditingTextView_ICAccessibility_iOS__childElements__block_invoke(ui
 
 LABEL_11:
 
-  v17 = [(ICEditingTextView *)self childElements];
-  v18 = v17;
+  childElements = [(ICEditingTextView *)self childElements];
+  v18 = childElements;
   if (!v13)
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v20 = v17;
+    v20 = childElements;
     v21 = [v20 countByEnumeratingWithState:&v53 objects:v63 count:16];
     if (v21)
     {
@@ -7201,8 +7201,8 @@ LABEL_24:
     {
       v28 = v27;
       v41 = v18;
-      v42 = self;
-      v43 = v7;
+      selfCopy = self;
+      v43 = eventCopy;
       v13 = 0;
       v29 = *v50;
       do
@@ -7215,8 +7215,8 @@ LABEL_24:
           }
 
           v31 = *(*(&v49 + 1) + 8 * j);
-          v32 = [MEMORY[0x277D73FF8] defaultVoiceOverOptions];
-          v33 = [v31 _accessibilityLeafDescendantsWithOptions:v32];
+          defaultVoiceOverOptions = [MEMORY[0x277D73FF8] defaultVoiceOverOptions];
+          v33 = [v31 _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptions];
 
           v47 = 0u;
           v48 = 0u;
@@ -7268,8 +7268,8 @@ LABEL_41:
 
       while (v28);
 
-      self = v42;
-      v7 = v43;
+      self = selfCopy;
+      eventCopy = v43;
       v18 = v41;
       if (v13)
       {
@@ -7283,7 +7283,7 @@ LABEL_41:
 
     v44.receiver = self;
     v44.super_class = ICEditingTextView;
-    v13 = [(ICEditingTextView *)&v44 _accessibilityHitTest:v7 withEvent:x, y];
+    v13 = [(ICEditingTextView *)&v44 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
 LABEL_12:
@@ -7299,20 +7299,20 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   return v3;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 3)
+  if (scroll == 3)
   {
     [(ICEditingTextView *)self contentOffset];
     v5 = v4;
-    v6 = [(ICEditingTextView *)self editorController];
-    [v6 ic_safeAreaDistanceFromTop];
+    editorController = [(ICEditingTextView *)self editorController];
+    [editorController ic_safeAreaDistanceFromTop];
     v8 = -v7;
 
     if (v5 <= v8)
     {
-      v9 = [(ICEditingTextView *)self editorController];
-      [v9 showOverscrollContentAndScrollToTop];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      [editorController2 showOverscrollContentAndScrollToTop];
     }
 
     return 0;
@@ -7326,35 +7326,35 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   }
 }
 
-- (id)_accessibilityValueForRange:(_NSRange *)a3
+- (id)_accessibilityValueForRange:(_NSRange *)range
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(ICEditingTextView *)self _icaxAttributedStringForRange:a3];
+    v5 = [(ICEditingTextView *)self _icaxAttributedStringForRange:range];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICEditingTextView;
-    v5 = [(ICEditingTextView *)&v7 _accessibilityAttributedValueForRange:a3];
+    v5 = [(ICEditingTextView *)&v7 _accessibilityAttributedValueForRange:range];
   }
 
   return v5;
 }
 
-- (id)_accessibilityAttributedValueForRange:(_NSRange *)a3
+- (id)_accessibilityAttributedValueForRange:(_NSRange *)range
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(ICEditingTextView *)self _icaxAttributedStringForRange:a3];
+    v5 = [(ICEditingTextView *)self _icaxAttributedStringForRange:range];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICEditingTextView;
-    v5 = [(ICEditingTextView *)&v7 _accessibilityAttributedValueForRange:a3];
+    v5 = [(ICEditingTextView *)&v7 _accessibilityAttributedValueForRange:range];
   }
 
   return v5;
@@ -7364,9 +7364,9 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(ICEditingTextView *)self _icaxModifiedCursorPosition];
+    _icaxModifiedCursorPosition = [(ICEditingTextView *)self _icaxModifiedCursorPosition];
 
-    return [(ICEditingTextView *)self _icaxLinePositionForPosition:v3 start:0];
+    return [(ICEditingTextView *)self _icaxLinePositionForPosition:_icaxModifiedCursorPosition start:0];
   }
 
   else
@@ -7381,9 +7381,9 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(ICEditingTextView *)self _icaxModifiedCursorPosition];
+    _icaxModifiedCursorPosition = [(ICEditingTextView *)self _icaxModifiedCursorPosition];
 
-    return [(ICEditingTextView *)self _icaxLinePositionForPosition:v3 start:1];
+    return [(ICEditingTextView *)self _icaxLinePositionForPosition:_icaxModifiedCursorPosition start:1];
   }
 
   else
@@ -7394,16 +7394,16 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   }
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
   v12.receiver = self;
   v12.super_class = ICEditingTextView;
-  v4 = [(ICEditingTextView *)&v12 _accessibilityLineNumberAndColumnForPoint:a3.x, a3.y];
+  v4 = [(ICEditingTextView *)&v12 _accessibilityLineNumberAndColumnForPoint:point.x, point.y];
   v5 = [v4 objectForKeyedSubscript:@"lineNumber"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v8 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:v7 forRange:v6, 0];
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v8 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:_icaxModifiedAttributedStorageString forRange:unsignedIntegerValue, 0];
 
   v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
@@ -7412,25 +7412,25 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   return v9;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = [a3 objectForKeyedSubscript:@"lineNumber"];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [column objectForKeyedSubscript:@"lineNumber"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [(ICEditingTextView *)self _accessibilityLineRangeForPosition:v5];
+  v6 = [(ICEditingTextView *)self _accessibilityLineRangeForPosition:unsignedIntegerValue];
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(ICEditingTextView *)self _icaxLinePositionForPosition:a3 start:1];
-    v6 = [(ICEditingTextView *)self _icaxLinePositionForPosition:a3 start:0];
-    v7 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v8 = [v7 length];
+    v5 = [(ICEditingTextView *)self _icaxLinePositionForPosition:position start:1];
+    v6 = [(ICEditingTextView *)self _icaxLinePositionForPosition:position start:0];
+    _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    v8 = [_icaxModifiedAttributedStorageString length];
     if (v6 != v5 || v5 == v8)
     {
       v10 = v6 - v5;
@@ -7446,7 +7446,7 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   {
     v14.receiver = self;
     v14.super_class = ICEditingTextView;
-    v5 = [(ICEditingTextView *)&v14 _accessibilityLineRangeForPosition:a3];
+    v5 = [(ICEditingTextView *)&v14 _accessibilityLineRangeForPosition:position];
     v10 = v11;
   }
 
@@ -7462,37 +7462,37 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   if (UIAccessibilityIsVoiceOverRunning() && ![(ICEditingTextView *)self isAccessibilityTableTextView])
   {
 
-    v3 = [(ICEditingTextView *)self _icaxModifiedSelectionRange];
+    _icaxModifiedSelectionRange = [(ICEditingTextView *)self _icaxModifiedSelectionRange];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ICEditingTextView;
-    v3 = [(ICEditingTextView *)&v5 _accessibilitySelectedTextRange];
+    _icaxModifiedSelectionRange = [(ICEditingTextView *)&v5 _accessibilitySelectedTextRange];
   }
 
   result.length = v4;
-  result.location = v3;
+  result.location = _icaxModifiedSelectionRange;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [(ICEditingTextView *)self set_icaxShouldPreventUpdatingFakeCursorRange:1];
     [(ICEditingTextView *)self set_icaxModifiedCursorPosition:location + length];
     [(ICEditingTextView *)self set_icaxModifiedSelectionRange:location, length];
-    v6 = [(ICEditingTextView *)self selectedRange];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
     v8 = v7;
-    v9 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v10 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, v9];
+    _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    v10 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, _icaxModifiedAttributedStorageString];
     [(ICEditingTextView *)self setSelectedRange:v10, v11];
 
-    if ([(ICEditingTextView *)self selectedRange]== v6 && v12 == v8)
+    if ([(ICEditingTextView *)self selectedRange]== selectedRange && v12 == v8)
     {
       UIAccessibilityPostNotification(0x3F9u, 0);
     }
@@ -7508,10 +7508,10 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
   }
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v42 = 0;
   v43 = &v42;
   v44 = 0x4010000000;
@@ -7536,11 +7536,11 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
 
   else
   {
-    v15 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v16 = v15;
+    _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    v16 = _icaxModifiedAttributedStorageString;
     if (location != 0x7FFFFFFFFFFFFFFFLL && !length)
     {
-      length = location != [v15 length];
+      length = location != [_icaxModifiedAttributedStorageString length];
     }
 
     if (length + location > [v16 length])
@@ -7548,13 +7548,13 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
       length = [v16 length] - location;
     }
 
-    v17 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v18 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, v17];
+    _icaxModifiedAttributedStorageString2 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    string = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, _icaxModifiedAttributedStorageString2];
     v20 = v19;
 
     v41.receiver = self;
     v41.super_class = ICEditingTextView;
-    [(ICEditingTextView *)&v41 _accessibilityBoundsForRange:v18, v20];
+    [(ICEditingTextView *)&v41 _accessibilityBoundsForRange:string, v20];
     v21 = 0;
     v22 = v43;
     *(v43 + 4) = v23;
@@ -7563,8 +7563,8 @@ uint64_t __74__ICEditingTextView_ICAccessibility_iOS___accessibilityHitTest_with
     *(v22 + 7) = v26;
     if (location != 0x7FFFFFFF && location != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [v16 string];
-      v21 = [v18 ic_rangeIsValid:{location, length}];
+      string = [v16 string];
+      v21 = [string ic_rangeIsValid:{location, length}];
     }
 
     if (location != 0x7FFFFFFF && location != 0x7FFFFFFFFFFFFFFFLL)
@@ -7643,11 +7643,11 @@ void __71__ICEditingTextView_ICAccessibility_iOS___accessibilityBoundsForRange__
 
 - (BOOL)_accessibilityHasTextOperations
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 note];
-  v5 = [v4 isDeletedOrInTrash];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  if ((v5 & 1) != 0 || [(ICEditingTextView *)self selectedRange]== 0x7FFFFFFFFFFFFFFFLL)
+  if ((isDeletedOrInTrash & 1) != 0 || [(ICEditingTextView *)self selectedRange]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
@@ -7660,7 +7660,7 @@ void __71__ICEditingTextView_ICAccessibility_iOS___accessibilityBoundsForRange__
 - (id)_accessibilityTextOperations
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICEditingTextView *)self selectedRange]== 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_62;
@@ -7668,15 +7668,15 @@ void __71__ICEditingTextView_ICAccessibility_iOS___accessibilityBoundsForRange__
 
   v65.receiver = self;
   v65.super_class = ICEditingTextView;
-  v4 = [(ICEditingTextView *)&v65 _accessibilityTextOperations];
-  [v3 addObjectsFromArray:v4];
+  _accessibilityTextOperations = [(ICEditingTextView *)&v65 _accessibilityTextOperations];
+  [array addObjectsFromArray:_accessibilityTextOperations];
 
-  v5 = [(ICEditingTextView *)self selectedRange];
-  v6 = [(ICEditingTextView *)self textStorage];
-  if (v5 >= [v6 length])
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  if (selectedRange >= [textStorage length])
   {
-    v8 = [(ICEditingTextView *)self textStorage];
-    v9 = [v8 length];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v9 = [textStorage2 length];
 
     if (v9 <= 1)
     {
@@ -7688,24 +7688,24 @@ void __71__ICEditingTextView_ICAccessibility_iOS___accessibilityBoundsForRange__
       v10 = v9;
     }
 
-    v7 = v10 - 1;
+    selectedRange2 = v10 - 1;
   }
 
   else
   {
-    v7 = [(ICEditingTextView *)self selectedRange];
+    selectedRange2 = [(ICEditingTextView *)self selectedRange];
   }
 
-  v11 = [(ICEditingTextView *)self textStorage];
-  v12 = [v11 length];
+  textStorage3 = [(ICEditingTextView *)self textStorage];
+  v12 = [textStorage3 length];
 
-  if (v7 < v12)
+  if (selectedRange2 < v12)
   {
-    v13 = [(ICEditingTextView *)self textStorage];
-    v14 = [v13 attribute:*MEMORY[0x277D35DA8] atIndex:v7 effectiveRange:0];
+    textStorage4 = [(ICEditingTextView *)self textStorage];
+    v14 = [textStorage4 attribute:*MEMORY[0x277D35DA8] atIndex:selectedRange2 effectiveRange:0];
 
-    v15 = [(ICEditingTextView *)self editorController];
-    v16 = [v15 icaxTextController];
+    editorController = [(ICEditingTextView *)self editorController];
+    icaxTextController = [editorController icaxTextController];
 
     if ([(ICEditingTextView *)self isAccessibilityTableTextView])
     {
@@ -7753,58 +7753,58 @@ LABEL_29:
         [(ICEditingTextView *)self icaxMakeStrikethroughString];
       }
       v44 = ;
-      [v3 addObject:v41];
-      [v3 addObject:v42];
-      [v3 addObject:v43];
-      [v3 addObject:v44];
+      [array addObject:v41];
+      [array addObject:v42];
+      [array addObject:v43];
+      [array addObject:v44];
       if (![(ICEditingTextView *)self isAccessibilityTableTextView])
       {
-        v45 = [(ICEditingTextView *)self editorController];
-        v46 = [v45 canPerformAction:sel_increaseIndentation_ withSender:0];
+        editorController2 = [(ICEditingTextView *)self editorController];
+        v46 = [editorController2 canPerformAction:sel_increaseIndentation_ withSender:0];
 
         if (v46)
         {
-          v47 = [(ICEditingTextView *)self _icaxIncreaseIndentationString];
-          [v3 addObject:v47];
+          _icaxIncreaseIndentationString = [(ICEditingTextView *)self _icaxIncreaseIndentationString];
+          [array addObject:_icaxIncreaseIndentationString];
         }
 
-        v48 = [(ICEditingTextView *)self editorController];
-        v49 = [v48 canPerformAction:sel_decreaseIndentation_ withSender:0];
+        editorController3 = [(ICEditingTextView *)self editorController];
+        v49 = [editorController3 canPerformAction:sel_decreaseIndentation_ withSender:0];
 
         if (v49)
         {
-          v50 = [(ICEditingTextView *)self _icaxDecreaseIndentationString];
-          [v3 addObject:v50];
+          _icaxDecreaseIndentationString = [(ICEditingTextView *)self _icaxDecreaseIndentationString];
+          [array addObject:_icaxDecreaseIndentationString];
         }
       }
 
       if ([(ICEditingTextView *)self canPerformAction:sel__insertDrawing_ withSender:0, v14])
       {
-        v51 = [(ICEditingTextView *)self _icaxInsertDrawingString];
-        [v3 addObject:v51];
+        _icaxInsertDrawingString = [(ICEditingTextView *)self _icaxInsertDrawingString];
+        [array addObject:_icaxInsertDrawingString];
       }
 
-      v52 = [(ICEditingTextView *)self editorController];
-      v53 = [v52 note];
+      editorController4 = [(ICEditingTextView *)self editorController];
+      note = [editorController4 note];
 
-      v54 = [v53 calculateDocumentController];
-      v55 = [v54 numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
+      calculateDocumentController = [note calculateDocumentController];
+      v55 = [calculateDocumentController numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
 
       if (v55)
       {
         if (ICInternalSettingsIsScrubbingEnabled())
         {
-          if ([v53 isEditable])
+          if ([note isEditable])
           {
-            if ([v53 isCalculateMathEnabled])
+            if ([note isCalculateMathEnabled])
             {
-              if (([v53 isDeletedOrInTrash] & 1) == 0)
+              if (([note isDeletedOrInTrash] & 1) == 0)
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v56 = [(ICEditingTextView *)self _icaxCalculateAdjustString];
-                  [v3 addObject:v56];
+                  _icaxCalculateAdjustString = [(ICEditingTextView *)self _icaxCalculateAdjustString];
+                  [array addObject:_icaxCalculateAdjustString];
                 }
               }
             }
@@ -7817,19 +7817,19 @@ LABEL_29:
 
     if ([v14 style] == 103)
     {
-      v17 = [(ICEditingTextView *)self selectedRange];
+      selectedRange3 = [(ICEditingTextView *)self selectedRange];
       v19 = v18;
-      v20 = [(ICEditingTextView *)self textStorage];
-      v21 = [v16 todoForRange:v17 inTextStorage:{v19, v20}];
+      textStorage5 = [(ICEditingTextView *)self textStorage];
+      _icaxAttachmentViewForCurrentSelectedRange = [icaxTextController todoForRange:selectedRange3 inTextStorage:{v19, textStorage5}];
 
-      if (!v21)
+      if (!_icaxAttachmentViewForCurrentSelectedRange)
       {
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      if ([v21 done])
+      if ([_icaxAttachmentViewForCurrentSelectedRange done])
       {
         [(ICEditingTextView *)self _icaxMarkAsIncompleteString];
       }
@@ -7839,66 +7839,66 @@ LABEL_28:
         [(ICEditingTextView *)self _icaxMarkAsCompletedString];
       }
       v26 = ;
-      [v3 addObject:v26];
+      [array addObject:v26];
 
-      v61 = [(ICEditingTextView *)self _icaxRemoveChecklistString];
-      [v3 addObject:?];
+      _icaxRemoveChecklistString = [(ICEditingTextView *)self _icaxRemoveChecklistString];
+      [array addObject:?];
       v27 = MEMORY[0x277CCAE60];
-      v28 = [(ICEditingTextView *)self selectedRange];
-      v30 = [v27 valueWithRange:{v28, v29}];
+      selectedRange4 = [(ICEditingTextView *)self selectedRange];
+      v30 = [v27 valueWithRange:{selectedRange4, v29}];
       v66[0] = v30;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:1];
 
-      v32 = [v16 checklistItemExistsMarkedCompleted:1 inTextView:self forRanges:v31];
-      v33 = [v16 checklistItemExistsMarkedCompleted:0 inTextView:self forRanges:v31];
-      v34 = [(ICEditingTextView *)self selectedRange];
-      v36 = [v16 canMoveCheckedChecklistsToBottomInTextView:self forRange:{v34, v35}];
+      v32 = [icaxTextController checklistItemExistsMarkedCompleted:1 inTextView:self forRanges:v31];
+      v33 = [icaxTextController checklistItemExistsMarkedCompleted:0 inTextView:self forRanges:v31];
+      selectedRange5 = [(ICEditingTextView *)self selectedRange];
+      v36 = [icaxTextController canMoveCheckedChecklistsToBottomInTextView:self forRange:{selectedRange5, v35}];
       if (v33)
       {
-        v37 = [(ICEditingTextView *)self _icaxChecklistMarkAllItemsCompleteString];
-        [v3 addObject:v37];
+        _icaxChecklistMarkAllItemsCompleteString = [(ICEditingTextView *)self _icaxChecklistMarkAllItemsCompleteString];
+        [array addObject:_icaxChecklistMarkAllItemsCompleteString];
       }
 
       if (v32)
       {
-        v38 = [(ICEditingTextView *)self _icaxChecklistUnmarkAllItemsCompleteString];
-        [v3 addObject:v38];
+        _icaxChecklistUnmarkAllItemsCompleteString = [(ICEditingTextView *)self _icaxChecklistUnmarkAllItemsCompleteString];
+        [array addObject:_icaxChecklistUnmarkAllItemsCompleteString];
       }
 
       if ((v33 & v36) == 1)
       {
-        v39 = [(ICEditingTextView *)self _icaxChecklistMoveCheckedToBottomString];
-        [v3 addObject:v39];
+        _icaxChecklistMoveCheckedToBottomString = [(ICEditingTextView *)self _icaxChecklistMoveCheckedToBottomString];
+        [array addObject:_icaxChecklistMoveCheckedToBottomString];
       }
 
       if (v32)
       {
-        v40 = [(ICEditingTextView *)self _icaxChecklistDeleteCheckedItemsString];
-        [v3 addObject:v40];
+        _icaxChecklistDeleteCheckedItemsString = [(ICEditingTextView *)self _icaxChecklistDeleteCheckedItemsString];
+        [array addObject:_icaxChecklistDeleteCheckedItemsString];
       }
 
-      v25 = v61;
+      _icaxMakeChecklistString = _icaxRemoveChecklistString;
     }
 
     else
     {
-      v21 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
-      if (v21)
+      _icaxAttachmentViewForCurrentSelectedRange = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
+      if (_icaxAttachmentViewForCurrentSelectedRange)
       {
         goto LABEL_28;
       }
 
-      v22 = [(ICEditingTextView *)self editorController];
-      v23 = [v22 navigationItemConfiguration];
-      v24 = [v23 canAddChecklist];
+      editorController5 = [(ICEditingTextView *)self editorController];
+      navigationItemConfiguration = [editorController5 navigationItemConfiguration];
+      canAddChecklist = [navigationItemConfiguration canAddChecklist];
 
-      if (!v24)
+      if (!canAddChecklist)
       {
         goto LABEL_28;
       }
 
-      v25 = [(ICEditingTextView *)self _icaxMakeChecklistString];
-      [v3 addObject:v25];
+      _icaxMakeChecklistString = [(ICEditingTextView *)self _icaxMakeChecklistString];
+      [array addObject:_icaxMakeChecklistString];
     }
 
     goto LABEL_28;
@@ -7907,49 +7907,49 @@ LABEL_28:
 LABEL_56:
   if (![(ICEditingTextView *)self isAccessibilityTableTextView])
   {
-    v57 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
-    v58 = v57;
-    if (v57)
+    _icaxAttachmentViewForCurrentSelectedRange2 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
+    v58 = _icaxAttachmentViewForCurrentSelectedRange2;
+    if (_icaxAttachmentViewForCurrentSelectedRange2)
     {
-      v59 = [v57 _accessibilityTextOperations];
-      if ([v59 count])
+      _accessibilityTextOperations2 = [_icaxAttachmentViewForCurrentSelectedRange2 _accessibilityTextOperations];
+      if ([_accessibilityTextOperations2 count])
       {
-        [v3 addObjectsFromArray:v59];
+        [array addObjectsFromArray:_accessibilityTextOperations2];
       }
     }
   }
 
 LABEL_62:
 
-  return v3;
+  return array;
 }
 
 - (id)_icaxLinkEditActions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
-  v4 = [(ICEditingTextView *)self textContainer];
+  textContainer = [(ICEditingTextView *)self textContainer];
   v5 = ICDynamicCast();
 
   if (([(ICEditingTextView *)self ic_isInSecureWindow]& 1) == 0 && ![(ICEditingTextView *)self selectionContainsNonLinkAttachment])
   {
-    v6 = [(ICEditingTextView *)self editorController];
-    v7 = [v6 note];
-    if ([v7 isSharedReadOnly])
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    if ([note isSharedReadOnly])
     {
 LABEL_4:
 
       goto LABEL_6;
     }
 
-    v8 = [v5 insideSiriSnippet];
+    insideSiriSnippet = [v5 insideSiriSnippet];
 
-    if ((v8 & 1) == 0)
+    if ((insideSiriSnippet & 1) == 0)
     {
-      v11 = [(ICEditingTextView *)self selectionContainsLink];
-      v12 = [MEMORY[0x277CCA8D8] mainBundle];
-      v13 = v12;
-      if (v11)
+      selectionContainsLink = [(ICEditingTextView *)self selectionContainsLink];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v13 = mainBundle;
+      if (selectionContainsLink)
       {
         v14 = @"Edit Link";
       }
@@ -7959,7 +7959,7 @@ LABEL_4:
         v14 = @"Add Link";
       }
 
-      v6 = [v12 localizedStringForKey:v14 value:&stru_282757698 table:0];
+      editorController = [mainBundle localizedStringForKey:v14 value:&stru_282757698 table:0];
 
       v15 = objc_alloc(MEMORY[0x277D75088]);
       v21[0] = MEMORY[0x277D85DD0];
@@ -7967,12 +7967,12 @@ LABEL_4:
       v21[2] = __62__ICEditingTextView_ICAccessibility_iOS___icaxLinkEditActions__block_invoke;
       v21[3] = &unk_2781AC968;
       v21[4] = self;
-      v7 = [v15 initWithName:v6 actionHandler:v21];
-      [v3 ic_addNonNilObject:v7];
+      note = [v15 initWithName:editorController actionHandler:v21];
+      [array ic_addNonNilObject:note];
       if ([(ICEditingTextView *)self selectionContainsLink])
       {
-        v16 = [MEMORY[0x277CCA8D8] mainBundle];
-        v17 = [v16 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v17 = [mainBundle2 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
 
         v18 = objc_alloc(MEMORY[0x277D75088]);
         v20[0] = MEMORY[0x277D85DD0];
@@ -7981,7 +7981,7 @@ LABEL_4:
         v20[3] = &unk_2781AC968;
         v20[4] = self;
         v19 = [v18 initWithName:v17 actionHandler:v20];
-        [v3 ic_addNonNilObject:v19];
+        [array ic_addNonNilObject:v19];
       }
 
       goto LABEL_4;
@@ -7989,7 +7989,7 @@ LABEL_4:
   }
 
 LABEL_6:
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -8040,29 +8040,29 @@ LABEL_4:
   return 1;
 }
 
-- (BOOL)_accessibilityTextOperationAction:(id)a3
+- (BOOL)_accessibilityTextOperationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(ICEditingTextView *)self selectedRange]== 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_2;
   }
 
-  v10 = [(ICEditingTextView *)self _icaxMarkAsIncompleteString];
-  v11 = [v4 isEqualToString:v10];
+  _icaxMarkAsIncompleteString = [(ICEditingTextView *)self _icaxMarkAsIncompleteString];
+  v11 = [actionCopy isEqualToString:_icaxMarkAsIncompleteString];
 
   if (v11)
   {
     [(ICEditingTextView *)self _icaxMarkTodoIncompleteForCurrentSelection];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = v12;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = mainBundle;
     v14 = @"Incomplete: %@";
 LABEL_13:
-    v23 = [v12 localizedStringForKey:v14 value:&stru_282757698 table:0];
+    v23 = [mainBundle localizedStringForKey:v14 value:&stru_282757698 table:0];
 
     v24 = MEMORY[0x277CCACA8];
-    v25 = [(ICEditingTextView *)self _icaxCurrentParagraph];
-    v26 = [v24 localizedStringWithFormat:v23, v25];
+    _icaxCurrentParagraph = [(ICEditingTextView *)self _icaxCurrentParagraph];
+    v26 = [v24 localizedStringWithFormat:v23, _icaxCurrentParagraph];
 
     ICAccessibilityPostAnnouncementNotification();
 LABEL_14:
@@ -8070,48 +8070,48 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = [(ICEditingTextView *)self _icaxMarkAsCompletedString];
-  v16 = [v4 isEqualToString:v15];
+  _icaxMarkAsCompletedString = [(ICEditingTextView *)self _icaxMarkAsCompletedString];
+  v16 = [actionCopy isEqualToString:_icaxMarkAsCompletedString];
 
   if (v16)
   {
     [(ICEditingTextView *)self _icaxMarkTodoCompleteForCurrentSelection];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = v12;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = mainBundle;
     v14 = @"Completed: %@";
     goto LABEL_13;
   }
 
-  v17 = [(ICEditingTextView *)self _icaxRemoveChecklistString];
-  v18 = [v4 isEqualToString:v17];
+  _icaxRemoveChecklistString = [(ICEditingTextView *)self _icaxRemoveChecklistString];
+  v18 = [actionCopy isEqualToString:_icaxRemoveChecklistString];
 
   if (v18)
   {
-    v19 = [(ICEditingTextView *)self editorController];
-    [v19 icaxToggleTodoStyle];
+    editorController = [(ICEditingTextView *)self editorController];
+    [editorController icaxToggleTodoStyle];
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = v12;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = mainBundle;
     v14 = @"Body: %@";
     goto LABEL_13;
   }
 
-  v20 = [(ICEditingTextView *)self _icaxMakeChecklistString];
-  v21 = [v4 isEqualToString:v20];
+  _icaxMakeChecklistString = [(ICEditingTextView *)self _icaxMakeChecklistString];
+  v21 = [actionCopy isEqualToString:_icaxMakeChecklistString];
 
   if (v21)
   {
-    v22 = [(ICEditingTextView *)self editorController];
-    [v22 icaxToggleTodoStyle];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    [editorController2 icaxToggleTodoStyle];
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = v12;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = mainBundle;
     v14 = @"Checklist item: %@";
     goto LABEL_13;
   }
 
-  v33 = [(ICEditingTextView *)self _icaxChecklistMarkAllItemsCompleteString];
-  v34 = [v4 isEqualToString:v33];
+  _icaxChecklistMarkAllItemsCompleteString = [(ICEditingTextView *)self _icaxChecklistMarkAllItemsCompleteString];
+  v34 = [actionCopy isEqualToString:_icaxChecklistMarkAllItemsCompleteString];
 
   if (v34)
   {
@@ -8119,8 +8119,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v35 = [(ICEditingTextView *)self _icaxChecklistUnmarkAllItemsCompleteString];
-  v36 = [v4 isEqualToString:v35];
+  _icaxChecklistUnmarkAllItemsCompleteString = [(ICEditingTextView *)self _icaxChecklistUnmarkAllItemsCompleteString];
+  v36 = [actionCopy isEqualToString:_icaxChecklistUnmarkAllItemsCompleteString];
 
   if (v36)
   {
@@ -8128,8 +8128,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v37 = [(ICEditingTextView *)self _icaxChecklistDeleteCheckedItemsString];
-  v38 = [v4 isEqualToString:v37];
+  _icaxChecklistDeleteCheckedItemsString = [(ICEditingTextView *)self _icaxChecklistDeleteCheckedItemsString];
+  v38 = [actionCopy isEqualToString:_icaxChecklistDeleteCheckedItemsString];
 
   if (v38)
   {
@@ -8137,8 +8137,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v39 = [(ICEditingTextView *)self _icaxChecklistMoveCheckedToBottomString];
-  v40 = [v4 isEqualToString:v39];
+  _icaxChecklistMoveCheckedToBottomString = [(ICEditingTextView *)self _icaxChecklistMoveCheckedToBottomString];
+  v40 = [actionCopy isEqualToString:_icaxChecklistMoveCheckedToBottomString];
 
   if (v40)
   {
@@ -8146,8 +8146,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v41 = [(ICEditingTextView *)self _icaxMakeBoldString];
-  if ([v4 isEqualToString:v41])
+  _icaxMakeBoldString = [(ICEditingTextView *)self _icaxMakeBoldString];
+  if ([actionCopy isEqualToString:_icaxMakeBoldString])
   {
 
 LABEL_32:
@@ -8155,16 +8155,16 @@ LABEL_32:
     goto LABEL_14;
   }
 
-  v42 = [(ICEditingTextView *)self _icaxMakeNotBoldString];
-  v43 = [v4 isEqualToString:v42];
+  _icaxMakeNotBoldString = [(ICEditingTextView *)self _icaxMakeNotBoldString];
+  v43 = [actionCopy isEqualToString:_icaxMakeNotBoldString];
 
   if (v43)
   {
     goto LABEL_32;
   }
 
-  v44 = [(ICEditingTextView *)self _icaxMakeItalicString];
-  if ([v4 isEqualToString:v44])
+  _icaxMakeItalicString = [(ICEditingTextView *)self _icaxMakeItalicString];
+  if ([actionCopy isEqualToString:_icaxMakeItalicString])
   {
 
 LABEL_36:
@@ -8172,16 +8172,16 @@ LABEL_36:
     goto LABEL_14;
   }
 
-  v45 = [(ICEditingTextView *)self _icaxMakeNotItalicString];
-  v46 = [v4 isEqualToString:v45];
+  _icaxMakeNotItalicString = [(ICEditingTextView *)self _icaxMakeNotItalicString];
+  v46 = [actionCopy isEqualToString:_icaxMakeNotItalicString];
 
   if (v46)
   {
     goto LABEL_36;
   }
 
-  v47 = [(ICEditingTextView *)self _icaxMakeUnderlinedString];
-  if ([v4 isEqualToString:v47])
+  _icaxMakeUnderlinedString = [(ICEditingTextView *)self _icaxMakeUnderlinedString];
+  if ([actionCopy isEqualToString:_icaxMakeUnderlinedString])
   {
 
 LABEL_40:
@@ -8189,16 +8189,16 @@ LABEL_40:
     goto LABEL_14;
   }
 
-  v48 = [(ICEditingTextView *)self _icaxMakeNotUnderlinedString];
-  v49 = [v4 isEqualToString:v48];
+  _icaxMakeNotUnderlinedString = [(ICEditingTextView *)self _icaxMakeNotUnderlinedString];
+  v49 = [actionCopy isEqualToString:_icaxMakeNotUnderlinedString];
 
   if (v49)
   {
     goto LABEL_40;
   }
 
-  v50 = [(ICEditingTextView *)self icaxMakeStrikethroughString];
-  if ([v4 isEqualToString:v50])
+  icaxMakeStrikethroughString = [(ICEditingTextView *)self icaxMakeStrikethroughString];
+  if ([actionCopy isEqualToString:icaxMakeStrikethroughString])
   {
 
 LABEL_44:
@@ -8206,38 +8206,38 @@ LABEL_44:
     goto LABEL_14;
   }
 
-  v51 = [(ICEditingTextView *)self icaxMakeNotStrikethroughString];
-  v52 = [v4 isEqualToString:v51];
+  icaxMakeNotStrikethroughString = [(ICEditingTextView *)self icaxMakeNotStrikethroughString];
+  v52 = [actionCopy isEqualToString:icaxMakeNotStrikethroughString];
 
   if (v52)
   {
     goto LABEL_44;
   }
 
-  v53 = [(ICEditingTextView *)self _icaxDecreaseIndentationString];
-  v54 = [v4 isEqualToString:v53];
+  _icaxDecreaseIndentationString = [(ICEditingTextView *)self _icaxDecreaseIndentationString];
+  v54 = [actionCopy isEqualToString:_icaxDecreaseIndentationString];
 
   if (v54)
   {
-    v55 = [(ICEditingTextView *)self targetForAction:sel_decreaseIndentation_ withSender:0];
-    [v55 decreaseIndentation:0];
+    calculateDocumentController = [(ICEditingTextView *)self targetForAction:sel_decreaseIndentation_ withSender:0];
+    [calculateDocumentController decreaseIndentation:0];
 LABEL_49:
 
     goto LABEL_14;
   }
 
-  v56 = [(ICEditingTextView *)self _icaxIncreaseIndentationString];
-  v57 = [v4 isEqualToString:v56];
+  _icaxIncreaseIndentationString = [(ICEditingTextView *)self _icaxIncreaseIndentationString];
+  v57 = [actionCopy isEqualToString:_icaxIncreaseIndentationString];
 
   if (v57)
   {
-    v55 = [(ICEditingTextView *)self targetForAction:sel_increaseIndentation_ withSender:0];
-    [v55 increaseIndentation:0];
+    calculateDocumentController = [(ICEditingTextView *)self targetForAction:sel_increaseIndentation_ withSender:0];
+    [calculateDocumentController increaseIndentation:0];
     goto LABEL_49;
   }
 
-  v58 = [(ICEditingTextView *)self _icaxInsertDrawingString];
-  v59 = [v4 isEqualToString:v58];
+  _icaxInsertDrawingString = [(ICEditingTextView *)self _icaxInsertDrawingString];
+  v59 = [actionCopy isEqualToString:_icaxInsertDrawingString];
 
   if (v59)
   {
@@ -8245,21 +8245,21 @@ LABEL_49:
     goto LABEL_14;
   }
 
-  v60 = [(ICEditingTextView *)self _icaxCalculateAdjustString];
-  v61 = [v4 isEqualToString:v60];
+  _icaxCalculateAdjustString = [(ICEditingTextView *)self _icaxCalculateAdjustString];
+  v61 = [actionCopy isEqualToString:_icaxCalculateAdjustString];
 
   if (v61)
   {
-    v62 = [(ICEditingTextView *)self editorController];
-    v63 = [v62 note];
-    v55 = [v63 calculateDocumentController];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    note = [editorController3 note];
+    calculateDocumentController = [note calculateDocumentController];
 
-    v64 = [v55 numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
+    v64 = [calculateDocumentController numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
     if (v64)
     {
-      v65 = [(ICEditingTextView *)self editorController];
-      v66 = [v65 calculateScrubberController];
-      [v66 showScrubberForNumberLiteral:v64 isCompact:0];
+      editorController4 = [(ICEditingTextView *)self editorController];
+      calculateScrubberController = [editorController4 calculateScrubberController];
+      [calculateScrubberController showScrubberForNumberLiteral:v64 isCompact:0];
     }
 
     goto LABEL_49;
@@ -8267,13 +8267,13 @@ LABEL_49:
 
   v27 = 0;
 LABEL_15:
-  v28 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
-  v29 = [v28 _accessibilityTextOperations];
-  v30 = [v29 containsObject:v4];
+  _icaxAttachmentViewForCurrentSelectedRange = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
+  _accessibilityTextOperations = [_icaxAttachmentViewForCurrentSelectedRange _accessibilityTextOperations];
+  v30 = [_accessibilityTextOperations containsObject:actionCopy];
 
   if (v30)
   {
-    v31 = [v28 _accessibilityTextOperationAction:v4];
+    v31 = [_icaxAttachmentViewForCurrentSelectedRange _accessibilityTextOperationAction:actionCopy];
 
     if (v31)
     {
@@ -8293,21 +8293,21 @@ LABEL_19:
   }
 
 LABEL_2:
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
-  v7 = [v4 isEqualToString:v6];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle2 localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
+  v7 = [actionCopy isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
-    v9 = [v8 _accessibilityTextOperationAction:v4];
+    _icaxAttachmentViewForCurrentSelectedRange2 = [(ICEditingTextView *)self _icaxAttachmentViewForCurrentSelectedRange];
+    v9 = [_icaxAttachmentViewForCurrentSelectedRange2 _accessibilityTextOperationAction:actionCopy];
   }
 
   else
   {
     v67.receiver = self;
     v67.super_class = ICEditingTextView;
-    v9 = [(ICEditingTextView *)&v67 _accessibilityTextOperationAction:v4];
+    v9 = [(ICEditingTextView *)&v67 _accessibilityTextOperationAction:actionCopy];
   }
 
 LABEL_20:
@@ -8320,22 +8320,22 @@ LABEL_20:
   v3 = MEMORY[0x277CBEB18];
   v12.receiver = self;
   v12.super_class = ICEditingTextView;
-  v4 = [(ICEditingTextView *)&v12 automationElements];
-  v5 = [v3 arrayWithArray:v4];
+  automationElements = [(ICEditingTextView *)&v12 automationElements];
+  v5 = [v3 arrayWithArray:automationElements];
 
   v6 = [(UIView *)self icaxRecursiveSubviewsPassingTest:&__block_literal_global_509];
   [v5 addObjectsFromArray:v6];
-  v7 = [(ICEditingTextView *)self _icaxLinkElements];
-  if ([v7 count])
+  _icaxLinkElements = [(ICEditingTextView *)self _icaxLinkElements];
+  if ([_icaxLinkElements count])
   {
-    [v5 addObjectsFromArray:v7];
+    [v5 addObjectsFromArray:_icaxLinkElements];
   }
 
-  v8 = [(ICEditingTextView *)self ic_pkTiledView];
-  [v5 ic_addNonNilObject:v8];
+  ic_pkTiledView = [(ICEditingTextView *)self ic_pkTiledView];
+  [v5 ic_addNonNilObject:ic_pkTiledView];
 
-  v9 = [(ICEditingTextView *)self _icaxAdditionalElementsForAutomation];
-  [v5 ic_addObjectsFromNonNilArray:v9];
+  _icaxAdditionalElementsForAutomation = [(ICEditingTextView *)self _icaxAdditionalElementsForAutomation];
+  [v5 ic_addObjectsFromNonNilArray:_icaxAdditionalElementsForAutomation];
 
   v10 = [v5 copy];
 
@@ -8353,16 +8353,16 @@ uint64_t __60__ICEditingTextView_ICAccessibility_iOS__automationElements__block_
 
 - (id)_icaxAdditionalElementsForAutomation
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 ic_addNonNilObject:NSClassFromString(&cfstr_Iccollaborator_1.isa)];
-  [v3 ic_addNonNilObject:NSClassFromString(&cfstr_Iccollaborator.isa)];
-  [v3 addObject:objc_opt_class()];
+  array = [MEMORY[0x277CBEB18] array];
+  [array ic_addNonNilObject:NSClassFromString(&cfstr_Iccollaborator_1.isa)];
+  [array ic_addNonNilObject:NSClassFromString(&cfstr_Iccollaborator.isa)];
+  [array addObject:objc_opt_class()];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__ICEditingTextView_ICAccessibility_iOS___icaxAdditionalElementsForAutomation__block_invoke;
   v7[3] = &unk_2781AC990;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(UIView *)self icaxRecursiveSubviewsPassingTest:v7];
 
   return v5;
@@ -8383,14 +8383,14 @@ uint64_t __78__ICEditingTextView_ICAccessibility_iOS___icaxAdditionalElementsFor
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__2;
   v40 = __Block_byref_object_dispose__2;
-  v41 = [MEMORY[0x277CBEB18] array];
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [v3 string];
-  v5 = [(ICEditingTextView *)self selectedRange];
-  v7 = [v4 paragraphRangeForRange:{v5, v6}];
+  array = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  string = [textStorage string];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  v7 = [string paragraphRangeForRange:{selectedRange, v6}];
   v9 = v8;
 
-  v10 = [(ICEditingTextView *)self textStorage];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
   v11 = *MEMORY[0x277D74060];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -8398,57 +8398,57 @@ uint64_t __78__ICEditingTextView_ICAccessibility_iOS___icaxAdditionalElementsFor
   v35[3] = &unk_2781AC9B8;
   v35[4] = self;
   v35[5] = &v36;
-  [v10 enumerateAttribute:v11 inRange:v7 options:v9 usingBlock:{0, v35}];
+  [textStorage2 enumerateAttribute:v11 inRange:v7 options:v9 usingBlock:{0, v35}];
 
   v12 = v37[5];
-  v13 = [(ICEditingTextView *)self _icaxLinkEditActions];
-  [v12 addObjectsFromArray:v13];
+  _icaxLinkEditActions = [(ICEditingTextView *)self _icaxLinkEditActions];
+  [v12 addObjectsFromArray:_icaxLinkEditActions];
 
   if (ICInternalSettingsIsPaperKitMathEnabled())
   {
-    v14 = [(ICEditingTextView *)self editorController];
-    v15 = [v14 note];
-    if ([v15 isEditable])
+    editorController = [(ICEditingTextView *)self editorController];
+    note = [editorController note];
+    if ([note isEditable])
     {
-      v16 = [(ICEditingTextView *)self selectedRange];
+      selectedRange2 = [(ICEditingTextView *)self selectedRange];
 
-      if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+      if (selectedRange2 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_10;
       }
 
-      v17 = [(ICEditingTextView *)self editorController];
-      v18 = [v17 calculateGraphingController];
-      v19 = [(ICEditingTextView *)self selectedRange];
-      v14 = [v18 insertionDecisionForExpressionsInRange:{v19, v20}];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      calculateGraphingController = [editorController2 calculateGraphingController];
+      selectedRange3 = [(ICEditingTextView *)self selectedRange];
+      editorController = [calculateGraphingController insertionDecisionForExpressionsInRange:{selectedRange3, v20}];
 
-      if ([v14 allowsInsertingNewGraph])
+      if ([editorController allowsInsertingNewGraph])
       {
         v21 = v37[5];
         v22 = objc_alloc(MEMORY[0x277D75088]);
-        v23 = [MEMORY[0x277CCA8D8] mainBundle];
-        v24 = [v23 localizedStringForKey:@"Insert Graph" value:&stru_282757698 table:0];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v24 = [mainBundle localizedStringForKey:@"Insert Graph" value:&stru_282757698 table:0];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions__block_invoke_2;
         v34[3] = &unk_2781AC9E0;
         v34[4] = self;
-        v34[5] = v14;
+        v34[5] = editorController;
         v25 = [v22 initWithName:v24 actionHandler:v34];
         [v21 addObject:v25];
       }
 
-      if ([v14 allowsAddingToGraph])
+      if ([editorController allowsAddingToGraph])
       {
         v26 = v37[5];
         v27 = objc_alloc(MEMORY[0x277D75088]);
-        v28 = [MEMORY[0x277CCA8D8] mainBundle];
-        v29 = [v28 localizedStringForKey:@"Add to Existing Graph" value:&stru_282757698 table:0];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v29 = [mainBundle2 localizedStringForKey:@"Add to Existing Graph" value:&stru_282757698 table:0];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions__block_invoke_3;
         v33[3] = &unk_2781AC9E0;
-        v33[4] = v14;
+        v33[4] = editorController;
         v33[5] = self;
         v30 = [v27 initWithName:v29 actionHandler:v33];
         [v26 addObject:v30];
@@ -8515,43 +8515,43 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
   return 1;
 }
 
-- (id)_icaxAttributedStringForRange:(_NSRange *)a3
+- (id)_icaxAttributedStringForRange:(_NSRange *)range
 {
-  v3 = a3;
-  if (a3)
+  rangeCopy = range;
+  if (range)
   {
-    v4 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v5 = [v4 mutableCopy];
+    _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    v5 = [_icaxModifiedAttributedStorageString mutableCopy];
 
     v11.length = [v5 length];
     v11.location = 0;
-    v6 = NSIntersectionRange(*v3, v11);
+    v6 = NSIntersectionRange(*rangeCopy, v11);
     v7 = [v5 ic_attributedSubstringFromRange:{v6.location, v6.length}];
     v8 = [v7 mutableCopy];
 
     [v8 removeAttribute:@"ICAXAdditionalTextAttribute" range:{0, objc_msgSend(v8, "length")}];
-    v3 = [v8 copy];
+    rangeCopy = [v8 copy];
   }
 
-  return v3;
+  return rangeCopy;
 }
 
 - (id)_icaxModifiedAttributedStorageString
 {
-  v3 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
+  _icaxCachedModifiedAttributedString = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
 
-  if (!v3)
+  if (!_icaxCachedModifiedAttributedString)
   {
-    v4 = [(ICEditingTextView *)self baseAttributedStringForAccessibility];
-    v5 = v4;
-    if (v4)
+    baseAttributedStringForAccessibility = [(ICEditingTextView *)self baseAttributedStringForAccessibility];
+    v5 = baseAttributedStringForAccessibility;
+    if (baseAttributedStringForAccessibility)
     {
-      v6 = [v4 mutableCopy];
-      v7 = [(ICEditingTextView *)self editorController];
-      v8 = [v7 note];
-      v9 = [v8 calculateDocumentController];
-      v10 = [v6 ic_range];
-      [v9 formatExpressionsInAttributedString:v6 range:v10 textStorageOffset:v11 skipStaleExpressions:{0, 1}];
+      v6 = [baseAttributedStringForAccessibility mutableCopy];
+      editorController = [(ICEditingTextView *)self editorController];
+      note = [editorController note];
+      calculateDocumentController = [note calculateDocumentController];
+      ic_range = [v6 ic_range];
+      [calculateDocumentController formatExpressionsInAttributedString:v6 range:ic_range textStorageOffset:v11 skipStaleExpressions:{0, 1}];
 
       [(ICEditingTextView *)self _accessibilityConvertStyleAttributesToAccessibility:v6];
       [(ICEditingTextView *)self _accessibilityAddMispellingsToAttributedString:v6];
@@ -8569,7 +8569,7 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
       v40 = v41;
       v14 = v6;
       v37 = v14;
-      v38 = self;
+      selfCopy = self;
       v15 = v5;
       v39 = v15;
       [v15 enumerateAttribute:v12 inRange:0 options:v13 usingBlock:{0, v36}];
@@ -8583,7 +8583,7 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
       v18 = v14;
       v35 = v18;
       [v15 enumerateAttribute:v17 inRange:0 options:v16 usingBlock:{0, v34}];
-      v19 = [v18 ic_range];
+      ic_range2 = [v18 ic_range];
       v21 = v20;
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
@@ -8591,8 +8591,8 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
       v32[3] = &unk_2781ACA30;
       v22 = v18;
       v33 = v22;
-      [v22 enumerateAttributesInRange:v19 options:v21 usingBlock:{0, v32}];
-      v23 = [v22 ic_range];
+      [v22 enumerateAttributesInRange:ic_range2 options:v21 usingBlock:{0, v32}];
+      ic_range3 = [v22 ic_range];
       v25 = v24;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -8601,7 +8601,7 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
       v30[4] = self;
       v26 = v22;
       v31 = v26;
-      [v26 enumerateAttribute:v17 inRange:v23 options:v25 usingBlock:{0, v30}];
+      [v26 enumerateAttribute:v17 inRange:ic_range3 options:v25 usingBlock:{0, v30}];
       v27 = [v26 copy];
       [(ICEditingTextView *)self set_icaxCachedModifiedAttributedString:v27];
 
@@ -8610,9 +8610,9 @@ uint64_t __68__ICEditingTextView_ICAccessibility_iOS__accessibilityCustomActions
     }
   }
 
-  v28 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
+  _icaxCachedModifiedAttributedString2 = [(ICEditingTextView *)self _icaxCachedModifiedAttributedString];
 
-  return v28;
+  return _icaxCachedModifiedAttributedString2;
 }
 
 void __78__ICEditingTextView_ICAccessibility_iOS___icaxModifiedAttributedStorageString__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -8988,36 +8988,36 @@ void __78__ICEditingTextView_ICAccessibility_iOS___icaxModifiedAttributedStorage
   }
 }
 
-- (void)_icaxAddParticipantEditHighlightsToString:(id)a3 forRange:(_NSRange)a4
+- (void)_icaxAddParticipantEditHighlightsToString:(id)string forRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v71[3] = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v7 = [(ICEditingTextView *)self editorController];
-  v8 = [v7 note];
+  stringCopy = string;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
 
-  v61 = v8;
-  v59 = [v8 collaborationColorManager];
+  v61 = note;
+  collaborationColorManager = [note collaborationColorManager];
   objc_opt_class();
-  v9 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v10 = ICDynamicCast();
 
-  v11 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v12 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, v11];
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v12 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:location fromModifiedString:length, _icaxModifiedAttributedStorageString];
   v14 = v13;
 
   v58 = v10;
-  v15 = [v10 mutableString];
-  v16 = [v15 copy];
+  mutableString = [v10 mutableString];
+  v16 = [mutableString copy];
 
   v54 = v14;
   v17 = v12 + v14;
   v18 = objc_alloc(MEMORY[0x277CCAB48]);
-  v52 = self;
-  v19 = [(ICEditingTextView *)self textStorage];
-  v20 = [v19 string];
-  v57 = [v18 initWithString:v20];
+  selfCopy = self;
+  textStorage2 = [(ICEditingTextView *)self textStorage];
+  string = [textStorage2 string];
+  v57 = [v18 initWithString:string];
 
   v55 = v12;
   v56 = *MEMORY[0x277CE6B88];
@@ -9030,8 +9030,8 @@ void __78__ICEditingTextView_ICAccessibility_iOS___icaxModifiedAttributedStorage
     while (1)
     {
       v24 = [v16 characterAtIndex:v23];
-      v25 = [*(v21 + 2304) newlineCharacterSet];
-      LOBYTE(v24) = [v25 characterIsMember:v24];
+      newlineCharacterSet = [*(v21 + 2304) newlineCharacterSet];
+      LOBYTE(v24) = [newlineCharacterSet characterIsMember:v24];
 
       if ((v24 & 1) == 0)
       {
@@ -9047,36 +9047,36 @@ LABEL_10:
     }
 
     v26 = [v58 editAtIndex:v23];
-    v27 = [v26 replicaID];
-    v28 = [v61 userIDForReplicaID:v27];
+    replicaID = [v26 replicaID];
+    v28 = [v61 userIDForReplicaID:replicaID];
 
-    [v59 highlightColorForUserID:v28 note:v61];
+    [collaborationColorManager highlightColorForUserID:v28 note:v61];
     v67 = v66 = v28;
-    v29 = [v59 participantAXDisplayNameForUserID:v28 forNote:v61];
-    v30 = [MEMORY[0x277CCA8D8] mainBundle];
-    v31 = [v30 localizedStringForKey:@"added by %@" value:&stru_282757698 table:0];
+    v29 = [collaborationColorManager participantAXDisplayNameForUserID:v28 forNote:v61];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v31 = [mainBundle localizedStringForKey:@"added by %@" value:&stru_282757698 table:0];
 
     v64 = v31;
     v65 = v29;
     v63 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v31, v29];
-    v32 = [MEMORY[0x277CCA8D8] mainBundle];
-    v33 = [v32 localizedStringForKey:@"at %@" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v33 = [mainBundle2 localizedStringForKey:@"at %@" value:&stru_282757698 table:0];
 
     v34 = MEMORY[0x277CCACA8];
-    v35 = [v26 timestamp];
-    v36 = [v35 ic_briefFormattedDateForAccessibility];
+    timestamp = [v26 timestamp];
+    ic_briefFormattedDateForAccessibility = [timestamp ic_briefFormattedDateForAccessibility];
     v62 = v33;
     v37 = v33;
     v38 = v26;
-    v39 = [v34 localizedStringWithFormat:v37, v36];
+    v39 = [v34 localizedStringWithFormat:v37, ic_briefFormattedDateForAccessibility];
 
-    v40 = [v67 icaxApproximateColorDescription];
-    v41 = [MEMORY[0x277CCA8D8] mainBundle];
-    v42 = [v41 localizedStringForKey:@"%@ highlight" value:&stru_282757698 table:0];
+    icaxApproximateColorDescription = [v67 icaxApproximateColorDescription];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v42 = [mainBundle3 localizedStringForKey:@"%@ highlight" value:&stru_282757698 table:0];
 
-    v43 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v42, v40];
-    v44 = [v38 timestamp];
-    if (v44 && ([v38 replicaID], v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "trustsTimestampsFromReplicaID:")))
+    v43 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v42, icaxApproximateColorDescription];
+    timestamp2 = [v38 timestamp];
+    if (timestamp2 && ([v38 replicaID], v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "trustsTimestampsFromReplicaID:")))
     {
       v45 = v63;
       v71[0] = v63;
@@ -9091,7 +9091,7 @@ LABEL_10:
       v70[0] = v63;
       v70[1] = v43;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:2];
-      if (!v44)
+      if (!timestamp2)
       {
 LABEL_9:
 
@@ -9113,9 +9113,9 @@ LABEL_11:
   v68[1] = 3221225472;
   v68[2] = __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlightsToString_forRange___block_invoke;
   v68[3] = &unk_2781AC8D0;
-  v68[4] = v52;
-  v69 = v51;
-  v50 = v51;
+  v68[4] = selfCopy;
+  v69 = stringCopy;
+  v50 = stringCopy;
   [v57 enumerateAttribute:v56 inRange:v47 options:v49 usingBlock:{0, v68}];
 }
 
@@ -9137,15 +9137,15 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
   }
 }
 
-- (_NSRange)_icaxRangeInModifiedAttributedString:(id)a3 forRange:(_NSRange)a4
+- (_NSRange)_icaxRangeInModifiedAttributedString:(id)string forRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(ICEditingTextView *)self textStorage];
-  v9 = [v8 length];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v9 = [textStorage length];
 
-  v10 = [v7 length];
+  v10 = [stringCopy length];
   v11 = v10;
   if (location == v9)
   {
@@ -9159,7 +9159,7 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
     v13 = length;
     while (v12)
     {
-      v14 = [v7 attribute:@"ICAXAdditionalTextAttribute" atIndex:v11 effectiveRange:0];
+      v14 = [stringCopy attribute:@"ICAXAdditionalTextAttribute" atIndex:v11 effectiveRange:0];
       v15 = v14 == 0;
       v16 = v14 != 0;
 
@@ -9185,7 +9185,7 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
 
       v13 += v17;
       v12 -= v15;
-      if (++v11 >= [v7 length])
+      if (++v11 >= [stringCopy length])
       {
         v11 = 0;
         break;
@@ -9202,13 +9202,13 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
   return result;
 }
 
-- (_NSRange)_icaxRangeInTextStorageForRange:(_NSRange)a3 fromModifiedString:(id)a4
+- (_NSRange)_icaxRangeInTextStorageForRange:(_NSRange)range fromModifiedString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v8 = 0;
-  if ([v7 length])
+  if ([stringCopy length])
   {
     v9 = location + length;
     if (location + length)
@@ -9217,7 +9217,7 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
       v10 = 0;
       do
       {
-        v11 = [v7 attribute:@"ICAXAdditionalTextAttribute" atIndex:v10 effectiveRange:0];
+        v11 = [stringCopy attribute:@"ICAXAdditionalTextAttribute" atIndex:v10 effectiveRange:0];
 
         v12 = length - (v10 >= location);
         if (!length)
@@ -9248,12 +9248,12 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
         ++v10;
       }
 
-      while (v10 < [v7 length] && v10 < v9);
+      while (v10 < [stringCopy length] && v10 < v9);
     }
   }
 
-  v14 = [(ICEditingTextView *)self textStorage];
-  v15 = [v14 length];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v15 = [textStorage length];
 
   if (v8 >= v15)
   {
@@ -9265,8 +9265,8 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
     v16 = v8;
   }
 
-  v17 = [(ICEditingTextView *)self textStorage];
-  v18 = [v17 length] - v16;
+  textStorage2 = [(ICEditingTextView *)self textStorage];
+  v18 = [textStorage2 length] - v16;
 
   if (length >= (v18 & ~(v18 >> 63)))
   {
@@ -9280,54 +9280,54 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
   return result;
 }
 
-- (unint64_t)_icaxModifiedPositionForPosition:(unint64_t)a3
+- (unint64_t)_icaxModifiedPositionForPosition:(unint64_t)position
 {
-  v5 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v6 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:v5 forRange:a3, 0];
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v6 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:_icaxModifiedAttributedStorageString forRange:position, 0];
 
   return v6;
 }
 
-- (unint64_t)_icaxPositionForModifiedPosition:(unint64_t)a3
+- (unint64_t)_icaxPositionForModifiedPosition:(unint64_t)position
 {
-  v5 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v6 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:a3 fromModifiedString:0, v5];
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v6 = [(ICEditingTextView *)self _icaxRangeInTextStorageForRange:position fromModifiedString:0, _icaxModifiedAttributedStorageString];
 
   return v6;
 }
 
-- (unint64_t)_icaxLinePositionForPosition:(unint64_t)a3 start:(BOOL)a4
+- (unint64_t)_icaxLinePositionForPosition:(unint64_t)position start:(BOOL)start
 {
-  v4 = a4;
-  v7 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-  v8 = [v7 length];
-  if (v8 - 1 >= a3)
+  startCopy = start;
+  _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+  v8 = [_icaxModifiedAttributedStorageString length];
+  if (v8 - 1 >= position)
   {
-    v9 = a3;
+    positionCopy = position;
   }
 
   else
   {
-    v9 = v8 - 1;
+    positionCopy = v8 - 1;
   }
 
-  v10 = [(ICEditingTextView *)self _icaxPositionForModifiedPosition:v9];
+  v10 = [(ICEditingTextView *)self _icaxPositionForModifiedPosition:positionCopy];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3010000000;
   v34 = &unk_21552D17E;
   v35 = xmmword_2154BBE70;
-  v11 = [(ICEditingTextView *)self textStorage];
-  v12 = [v11 length];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v12 = [textStorage length];
 
   v13 = v12 - v10;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v14 = [(ICEditingTextView *)self textLayoutManager];
-    v15 = [v14 ic_textRangeForRange:{v10, v13}];
+    textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+    v15 = [textLayoutManager ic_textRangeForRange:{v10, v13}];
 
-    v16 = [(ICEditingTextView *)self textLayoutManager];
-    v17 = [v15 location];
+    textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
+    location = [v15 location];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __77__ICEditingTextView_ICAccessibility_iOS___icaxLinePositionForPosition_start___block_invoke;
@@ -9335,16 +9335,16 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
     v30[4] = self;
     v30[5] = &v31;
     v30[6] = v10;
-    v18 = [v16 enumerateTextLayoutFragmentsFromLocation:v17 options:0 usingBlock:v30];
+    v18 = [textLayoutManager2 enumerateTextLayoutFragmentsFromLocation:location options:0 usingBlock:v30];
   }
 
   else
   {
-    v19 = [(ICEditingTextView *)self layoutManager];
-    v20 = [v19 glyphRangeForCharacterRange:v10 actualCharacterRange:{v13, 0}];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
+    v20 = [layoutManager glyphRangeForCharacterRange:v10 actualCharacterRange:{v13, 0}];
     v22 = v21;
 
-    v23 = [(ICEditingTextView *)self layoutManager];
+    layoutManager2 = [(ICEditingTextView *)self layoutManager];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __77__ICEditingTextView_ICAccessibility_iOS___icaxLinePositionForPosition_start___block_invoke_3;
@@ -9352,11 +9352,11 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
     v29[4] = self;
     v29[5] = &v31;
     v29[6] = v10;
-    [v23 enumerateLineFragmentsForGlyphRange:v20 usingBlock:{v22, v29}];
+    [layoutManager2 enumerateLineFragmentsForGlyphRange:v20 usingBlock:{v22, v29}];
   }
 
-  v24 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:v7 forRange:v32[4], v32[5]];
-  if (v4)
+  v24 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:_icaxModifiedAttributedStorageString forRange:v32[4], v32[5]];
+  if (startCopy)
   {
     v25 = v24;
   }
@@ -9366,15 +9366,15 @@ void __93__ICEditingTextView_ICAccessibility_iOS___icaxAddParticipantEditHighlig
     v26 = [(ICEditingTextView *)self _icaxModifiedPositionForPosition:v32[5] + v32[4]];
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v27 = [(ICEditingTextView *)self isFirstResponder];
+      isFirstResponder = [(ICEditingTextView *)self isFirstResponder];
     }
 
     else
     {
-      v27 = 1;
+      isFirstResponder = 1;
     }
 
-    v25 = v26 - ((v26 < [v7 length]) & v27);
+    v25 = v26 - ((v26 < [_icaxModifiedAttributedStorageString length]) & isFirstResponder);
   }
 
   _Block_object_dispose(&v31, 8);
@@ -9511,110 +9511,110 @@ void __77__ICEditingTextView_ICAccessibility_iOS___icaxLinePositionForPosition_s
   }
 }
 
-- (id)elementsForAccessibilityRotorType:(id)a3
+- (id)elementsForAccessibilityRotorType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeLinks"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeLinks"])
   {
-    v5 = [(ICEditingTextView *)self _icaxLinkElements];
+    _icaxLinkElements = [(ICEditingTextView *)self _icaxLinkElements];
   }
 
   else
   {
-    v5 = 0;
+    _icaxLinkElements = 0;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeChecklist"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeChecklist"])
   {
-    v6 = [(ICEditingTextView *)self _icaxTodoElements];
+    _icaxTodoElements = [(ICEditingTextView *)self _icaxTodoElements];
 
-    v5 = v6;
+    _icaxLinkElements = _icaxTodoElements;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeAttachments"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeAttachments"])
   {
-    v7 = [(ICEditingTextView *)self _icaxAttachmentElementsForRotor];
+    _icaxAttachmentElementsForRotor = [(ICEditingTextView *)self _icaxAttachmentElementsForRotor];
 
-    v5 = v7;
+    _icaxLinkElements = _icaxAttachmentElementsForRotor;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeTables"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeTables"])
   {
-    v8 = [(ICEditingTextView *)self _icaxTableElementsForRotor];
+    _icaxTableElementsForRotor = [(ICEditingTextView *)self _icaxTableElementsForRotor];
 
-    v5 = v8;
+    _icaxLinkElements = _icaxTableElementsForRotor;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeTags"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeTags"])
   {
-    v9 = [(ICEditingTextView *)self _icaxTagsElementsForRotor];
+    _icaxTagsElementsForRotor = [(ICEditingTextView *)self _icaxTagsElementsForRotor];
 
-    v5 = v9;
+    _icaxLinkElements = _icaxTagsElementsForRotor;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeMentions"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeMentions"])
   {
-    v10 = [(ICEditingTextView *)self _icaxMentionsElementsForRotor];
+    _icaxMentionsElementsForRotor = [(ICEditingTextView *)self _icaxMentionsElementsForRotor];
 
-    v5 = v10;
+    _icaxLinkElements = _icaxMentionsElementsForRotor;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeCalculationResults"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeCalculationResults"])
   {
-    v11 = [(ICEditingTextView *)self _icaxCalculationResultElementsForRotor];
+    _icaxCalculationResultElementsForRotor = [(ICEditingTextView *)self _icaxCalculationResultElementsForRotor];
 
-    v5 = v11;
+    _icaxLinkElements = _icaxCalculationResultElementsForRotor;
   }
 
-  if ([v4 isEqualToString:@"ICAccessibilityRotorTypeCalculationErrors"])
+  if ([typeCopy isEqualToString:@"ICAccessibilityRotorTypeCalculationErrors"])
   {
-    v12 = [(ICEditingTextView *)self _icaxCalculationErrorElementsForRotor];
+    _icaxCalculationErrorElementsForRotor = [(ICEditingTextView *)self _icaxCalculationErrorElementsForRotor];
 
-    v5 = v12;
+    _icaxLinkElements = _icaxCalculationErrorElementsForRotor;
   }
 
-  return v5;
+  return _icaxLinkElements;
 }
 
 - (id)accessibilityCustomRotors
 {
   v13.receiver = self;
   v13.super_class = ICEditingTextView;
-  v3 = [(ICEditingTextView *)&v13 accessibilityCustomRotors];
-  v4 = v3;
+  accessibilityCustomRotors = [(ICEditingTextView *)&v13 accessibilityCustomRotors];
+  v4 = accessibilityCustomRotors;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (accessibilityCustomRotors)
   {
-    v5 = v3;
+    v5 = accessibilityCustomRotors;
   }
 
   v6 = v5;
 
-  v7 = [(ICEditingTextView *)self editorController];
+  editorController = [(ICEditingTextView *)self editorController];
   v8 = +[ICAccessibilityCustomRotorController sharedInstance];
-  [v8 setNoteEditorViewController:v7];
+  [v8 setNoteEditorViewController:editorController];
 
   v9 = +[ICAccessibilityCustomRotorController sharedInstance];
-  v10 = [v9 sharedTextViewRotors];
-  v11 = [v6 arrayByAddingObjectsFromArray:v10];
+  sharedTextViewRotors = [v9 sharedTextViewRotors];
+  v11 = [v6 arrayByAddingObjectsFromArray:sharedTextViewRotors];
 
   return v11;
 }
 
 - (id)_icaxAttachmentElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __73__ICEditingTextView_ICAccessibility_iOS___icaxAttachmentElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9697,18 +9697,18 @@ LABEL_16:
 
 - (id)_icaxTableElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __68__ICEditingTextView_ICAccessibility_iOS___icaxTableElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9763,18 +9763,18 @@ void __68__ICEditingTextView_ICAccessibility_iOS___icaxTableElementsForRotor__bl
 
 - (id)_icaxTagsElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __67__ICEditingTextView_ICAccessibility_iOS___icaxTagsElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9812,18 +9812,18 @@ void __67__ICEditingTextView_ICAccessibility_iOS___icaxTagsElementsForRotor__blo
 
 - (id)_icaxMentionsElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __71__ICEditingTextView_ICAccessibility_iOS___icaxMentionsElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9861,18 +9861,18 @@ void __71__ICEditingTextView_ICAccessibility_iOS___icaxMentionsElementsForRotor_
 
 - (id)_icaxCalculationResultElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __80__ICEditingTextView_ICAccessibility_iOS___icaxCalculationResultElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9910,18 +9910,18 @@ void __80__ICEditingTextView_ICAccessibility_iOS___icaxCalculationResultElements
 
 - (id)_icaxCalculationErrorElementsForRotor
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v3 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __79__ICEditingTextView_ICAccessibility_iOS___icaxCalculationErrorElementsForRotor__block_invoke;
   v13 = &unk_2781ACA58;
-  v14 = self;
-  v15 = v4;
-  v7 = v4;
-  [v3 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -9968,57 +9968,57 @@ void __79__ICEditingTextView_ICAccessibility_iOS___icaxCalculationErrorElementsF
 
 - (void)_icaxMarkTodoIncompleteForCurrentSelection
 {
-  v8 = [(ICEditingTextView *)self editorController];
-  v3 = [v8 icaxTextController];
-  v4 = [(ICEditingTextView *)self selectedRange];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v6 = v5;
-  v7 = [(ICEditingTextView *)self textStorage];
-  [v3 setDone:0 range:v4 inTextStorage:{v6, v7}];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  [icaxTextController setDone:0 range:selectedRange inTextStorage:{v6, textStorage}];
 }
 
 - (void)_icaxMarkTodoCompleteForCurrentSelection
 {
-  v8 = [(ICEditingTextView *)self editorController];
-  v3 = [v8 icaxTextController];
-  v4 = [(ICEditingTextView *)self selectedRange];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v6 = v5;
-  v7 = [(ICEditingTextView *)self textStorage];
-  [v3 setDone:1 range:v4 inTextStorage:{v6, v7}];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  [icaxTextController setDone:1 range:selectedRange inTextStorage:{v6, textStorage}];
 }
 
 - (void)_icaxChecklistMarkAllComplete
 {
-  v5 = [(ICEditingTextView *)self editorController];
-  v3 = [v5 icaxTextController];
-  v4 = [(ICEditingTextView *)self ic_selectedRanges];
-  [v3 markAllChecklistItemsCompleted:1 inTextview:self forSelectedRanges:v4];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
+  [icaxTextController markAllChecklistItemsCompleted:1 inTextview:self forSelectedRanges:ic_selectedRanges];
 }
 
 - (void)_icaxChecklistUnMarkAllComplete
 {
-  v5 = [(ICEditingTextView *)self editorController];
-  v3 = [v5 icaxTextController];
-  v4 = [(ICEditingTextView *)self ic_selectedRanges];
-  [v3 markAllChecklistItemsCompleted:0 inTextview:self forSelectedRanges:v4];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
+  [icaxTextController markAllChecklistItemsCompleted:0 inTextview:self forSelectedRanges:ic_selectedRanges];
 }
 
 - (void)_icaxChecklistDeleteChecked
 {
-  v5 = [(ICEditingTextView *)self editorController];
-  v3 = [v5 icaxTextController];
-  v4 = [(ICEditingTextView *)self ic_selectedRanges];
-  [v3 removeChecklistItemsMarkedCompleted:1 inTextView:self forRanges:v4];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
+  [icaxTextController removeChecklistItemsMarkedCompleted:1 inTextView:self forRanges:ic_selectedRanges];
 }
 
 - (void)_icaxChecklistSortCheckedToBottom
 {
-  v6 = [(ICEditingTextView *)self editorController];
-  v3 = [v6 icaxTextController];
-  v4 = [(ICEditingTextView *)self selectedRange];
-  [v3 moveCheckedChecklistsToBottomInTextView:self forRange:v4 animated:{v5, 1}];
+  editorController = [(ICEditingTextView *)self editorController];
+  icaxTextController = [editorController icaxTextController];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  [icaxTextController moveCheckedChecklistsToBottomInTextView:self forRange:selectedRange animated:{v5, 1}];
 }
 
-- (void)textStorageDidPerformMerge:(id)a3
+- (void)textStorageDidPerformMerge:(id)merge
 {
   v6[1] = *MEMORY[0x277D85DE8];
   [(ICEditingTextView *)self icaxClearCaches];
@@ -10039,18 +10039,18 @@ void __79__ICEditingTextView_ICAccessibility_iOS___icaxCalculationErrorElementsF
     [(ICEditingTextView *)self icaxClearCachedChildrenForReparenting];
   }
 
-  v6 = [(ICEditingTextView *)self _icaxCachedChildrenForReparenting];
+  _icaxCachedChildrenForReparenting = [(ICEditingTextView *)self _icaxCachedChildrenForReparenting];
 
-  if (!v6)
+  if (!_icaxCachedChildrenForReparenting)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    v8 = [(ICEditingTextView *)self _accessibleSubviews];
-    [v7 addObjectsFromArray:v8];
+    _accessibleSubviews = [(ICEditingTextView *)self _accessibleSubviews];
+    [v7 addObjectsFromArray:_accessibleSubviews];
 
-    v9 = [(ICEditingTextView *)self textStorage];
+    textStorage = [(ICEditingTextView *)self textStorage];
     v10 = *MEMORY[0x277D74060];
-    v11 = [(ICEditingTextView *)self textStorage];
-    v12 = [v11 length];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v12 = [textStorage2 length];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __82__ICEditingTextView_ICAccessibility_iOS__childElementsForAccessibilityReparenting__block_invoke;
@@ -10058,19 +10058,19 @@ void __79__ICEditingTextView_ICAccessibility_iOS___icaxCalculationErrorElementsF
     v46[4] = self;
     v13 = v7;
     v47 = v13;
-    [v9 enumerateAttribute:v10 inRange:0 options:v12 usingBlock:{0, v46}];
+    [textStorage enumerateAttribute:v10 inRange:0 options:v12 usingBlock:{0, v46}];
 
     v45 = v13;
-    v14 = [v13 array];
+    array = [v13 array];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+      v15 = [array sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
 
-      v14 = v15;
+      array = v15;
     }
 
-    v44 = v14;
-    v16 = [v14 mutableCopy];
+    v44 = array;
+    v16 = [array mutableCopy];
     v17 = [v16 count];
     if (v17)
     {
@@ -10140,9 +10140,9 @@ LABEL_16:
     UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
   }
 
-  v42 = [(ICEditingTextView *)self _icaxCachedChildrenForReparenting];
+  _icaxCachedChildrenForReparenting2 = [(ICEditingTextView *)self _icaxCachedChildrenForReparenting];
 
-  return v42;
+  return _icaxCachedChildrenForReparenting2;
 }
 
 void __82__ICEditingTextView_ICAccessibility_iOS__childElementsForAccessibilityReparenting__block_invoke(uint64_t a1, void *a2)
@@ -10300,7 +10300,7 @@ LABEL_25:
   {
     v27.receiver = self;
     v27.super_class = ICEditingTextView;
-    v3 = [(ICEditingTextView *)&v27 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(ICEditingTextView *)&v27 accessibilityDragSourceDescriptors];
     goto LABEL_24;
   }
 
@@ -10326,10 +10326,10 @@ LABEL_9:
   {
     objc_opt_class();
     v7 = ICDynamicCast();
-    v8 = [v7 tableAXController];
-    v9 = [v8 hostingTableAttachmentView];
+    tableAXController = [v7 tableAXController];
+    hostingTableAttachmentView = [tableAXController hostingTableAttachmentView];
 
-    v10 = v9;
+    v10 = hostingTableAttachmentView;
   }
 
   else
@@ -10340,8 +10340,8 @@ LABEL_9:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v6;
-        v25 = [v9 accessibilityLabel];
+        hostingTableAttachmentView = v6;
+        accessibilityLabel = [hostingTableAttachmentView accessibilityLabel];
       }
 
       else
@@ -10349,58 +10349,58 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v11 = 0;
+          accessibilityLabel2 = 0;
           goto LABEL_22;
         }
 
-        v9 = v6;
-        v25 = [v9 icaxDragSourceName];
+        hostingTableAttachmentView = v6;
+        accessibilityLabel = [hostingTableAttachmentView icaxDragSourceName];
       }
 
-      v11 = v25;
-      if (v9)
+      accessibilityLabel2 = accessibilityLabel;
+      if (hostingTableAttachmentView)
       {
         goto LABEL_14;
       }
 
 LABEL_22:
-      v3 = 0;
+      accessibilityDragSourceDescriptors = 0;
       goto LABEL_23;
     }
 
     v7 = v6;
-    v9 = [v7 attachmentDrawingView];
+    hostingTableAttachmentView = [v7 attachmentDrawingView];
     v10 = v7;
   }
 
-  v11 = [v10 accessibilityLabel];
+  accessibilityLabel2 = [v10 accessibilityLabel];
 
-  if (!v9)
+  if (!hostingTableAttachmentView)
   {
     goto LABEL_22;
   }
 
 LABEL_14:
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 localizedStringForKey:@"Drag %@" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = [mainBundle localizedStringForKey:@"Drag %@" value:&stru_282757698 table:0];
 
-  v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, v11];
-  [v9 center];
+  v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, accessibilityLabel2];
+  [hostingTableAttachmentView center];
   v16 = v15;
   v18 = v17;
-  v19 = [v9 superview];
-  [(ICEditingTextView *)self convertPoint:v19 fromView:v16, v18];
+  superview = [hostingTableAttachmentView superview];
+  [(ICEditingTextView *)self convertPoint:superview fromView:v16, v18];
   v21 = v20;
   v23 = v22;
 
   v24 = [objc_alloc(MEMORY[0x277D750B8]) initWithName:v14 point:self inView:{v21, v23}];
   v28[0] = v24;
-  v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
+  accessibilityDragSourceDescriptors = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
 
 LABEL_23:
 LABEL_24:
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
@@ -10408,7 +10408,7 @@ LABEL_24:
   v23[1] = *MEMORY[0x277D85DE8];
   if (![(ICEditingTextView *)self isEditable])
   {
-    v3 = 0;
+    accessibilityDropPointDescriptors = 0;
     goto LABEL_25;
   }
 
@@ -10416,7 +10416,7 @@ LABEL_24:
   {
     v22.receiver = self;
     v22.super_class = ICEditingTextView;
-    v3 = [(ICEditingTextView *)&v22 accessibilityDropPointDescriptors];
+    accessibilityDropPointDescriptors = [(ICEditingTextView *)&v22 accessibilityDropPointDescriptors];
     goto LABEL_25;
   }
 
@@ -10444,12 +10444,12 @@ LABEL_11:
   {
     objc_opt_class();
     v9 = ICDynamicCast();
-    v10 = [v9 tableAXController];
-    v11 = [v10 hostingTableAttachmentView];
+    tableAXController = [v9 tableAXController];
+    hostingTableAttachmentView = [tableAXController hostingTableAttachmentView];
 
-    v12 = v11;
+    v12 = hostingTableAttachmentView;
 LABEL_15:
-    v13 = [v12 accessibilityLabel];
+    accessibilityLabel = [v12 accessibilityLabel];
 
     goto LABEL_16;
   }
@@ -10458,7 +10458,7 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     v9 = v6;
-    v11 = [v9 attachmentDrawingView];
+    hostingTableAttachmentView = [v9 attachmentDrawingView];
     v12 = v9;
     goto LABEL_15;
   }
@@ -10466,8 +10466,8 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v6;
-    v13 = [v11 accessibilityLabel];
+    hostingTableAttachmentView = v6;
+    accessibilityLabel = [hostingTableAttachmentView accessibilityLabel];
   }
 
   else
@@ -10475,62 +10475,62 @@ LABEL_15:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = 0;
+      accessibilityLabel = 0;
       goto LABEL_23;
     }
 
-    v11 = v6;
-    v13 = [v11 icaxDragSourceName];
-    [v11 bounds];
+    hostingTableAttachmentView = v6;
+    accessibilityLabel = [hostingTableAttachmentView icaxDragSourceName];
+    [hostingTableAttachmentView bounds];
     MidX = CGRectGetMidX(v25);
-    [v11 bounds];
-    [(ICEditingTextView *)self convertPoint:v11 fromView:MidX, CGRectGetMinY(v26)];
+    [hostingTableAttachmentView bounds];
+    [(ICEditingTextView *)self convertPoint:hostingTableAttachmentView fromView:MidX, CGRectGetMinY(v26)];
     v7 = v19;
     v8 = v20;
   }
 
 LABEL_16:
-  if (!v11)
+  if (!hostingTableAttachmentView)
   {
 LABEL_23:
-    v3 = 0;
+    accessibilityDropPointDescriptors = 0;
     goto LABEL_24;
   }
 
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:@"Drop before %@" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle localizedStringForKey:@"Drop before %@" value:&stru_282757698 table:0];
 
-  v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v15, v13];
+  v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v15, accessibilityLabel];
   v17 = [objc_alloc(MEMORY[0x277D750B8]) initWithName:v16 point:self inView:{v7, v8}];
   v23[0] = v17;
-  v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
+  accessibilityDropPointDescriptors = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
 
 LABEL_24:
 LABEL_25:
 
-  return v3;
+  return accessibilityDropPointDescriptors;
 }
 
 - (id)_icaxCurrentParagraph
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [v3 string];
-  v5 = [(ICEditingTextView *)self selectedRange];
-  v7 = [v4 paragraphRangeForRange:{v5 + v6, 0}];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  string = [textStorage string];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  v7 = [string paragraphRangeForRange:{selectedRange + v6, 0}];
   v9 = v8;
 
-  v10 = [(ICEditingTextView *)self textStorage];
-  v11 = [v10 string];
-  v12 = [v11 substringWithRange:{v7, v9}];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
+  string2 = [textStorage2 string];
+  v12 = [string2 substringWithRange:{v7, v9}];
 
   return v12;
 }
 
-- (_NSRange)_icaxRangeOfAttachment:(id)a3
+- (_NSRange)_icaxRangeOfAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 note];
-  v5 = [v4 rangeForAttachment:v3];
+  attachmentCopy = attachment;
+  note = [attachmentCopy note];
+  v5 = [note rangeForAttachment:attachmentCopy];
   v7 = v6;
 
   v8 = v5;
@@ -10540,35 +10540,35 @@ LABEL_25:
   return result;
 }
 
-- (id)_icaxFirstTextAttachmentInRange:(_NSRange)a3
+- (id)_icaxFirstTextAttachmentInRange:(_NSRange)range
 {
-  location = a3.location;
+  location = range.location;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__2;
   v18 = __Block_byref_object_dispose__2;
   v19 = 0;
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    v5 = [(ICEditingTextView *)self textStorage];
+    length = range.length;
+    textStorage = [(ICEditingTextView *)self textStorage];
     v6 = *MEMORY[0x277D74060];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__ICEditingTextView_ICAccessibility_iOS___icaxFirstTextAttachmentInRange___block_invoke;
     v13[3] = &unk_2781ABC80;
     v13[4] = &v14;
-    [v5 enumerateAttribute:v6 inRange:location options:length usingBlock:{0, v13}];
+    [textStorage enumerateAttribute:v6 inRange:location options:length usingBlock:{0, v13}];
   }
 
   else
   {
-    v7 = [(ICEditingTextView *)self textStorage];
-    v5 = [v7 attributesAtIndex:location effectiveRange:0];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    textStorage = [textStorage2 attributesAtIndex:location effectiveRange:0];
 
     objc_opt_class();
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277D74060]];
+    v8 = [textStorage objectForKeyedSubscript:*MEMORY[0x277D74060]];
     v9 = ICDynamicCast();
     v10 = v15[5];
     v15[5] = v9;
@@ -10598,24 +10598,24 @@ void __74__ICEditingTextView_ICAccessibility_iOS___icaxFirstTextAttachmentInRang
 
 - (id)_icaxAttachmentViewForCurrentSelectedRange
 {
-  v3 = [(ICEditingTextView *)self selectedRange];
-  v5 = [(ICEditingTextView *)self _icaxFirstTextAttachmentInRange:v3, v4];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  v5 = [(ICEditingTextView *)self _icaxFirstTextAttachmentInRange:selectedRange, v4];
   if (v5)
   {
     IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
     objc_opt_class();
     if (IsTextKit2Enabled)
     {
-      v7 = [(ICEditingTextView *)self icTextLayoutManager];
-      v8 = [v5 viewIdentifier];
-      v9 = [v7 existingAttachmentViewForIdentifier:v8];
+      icTextLayoutManager = [(ICEditingTextView *)self icTextLayoutManager];
+      viewIdentifier = [v5 viewIdentifier];
+      v9 = [icTextLayoutManager existingAttachmentViewForIdentifier:viewIdentifier];
       v10 = ICDynamicCast();
     }
 
     else
     {
-      v7 = [(ICEditingTextView *)self layoutManager];
-      v8 = [v7 viewForBaseTextAttachmentNoCreate:v5];
+      icTextLayoutManager = [(ICEditingTextView *)self layoutManager];
+      viewIdentifier = [icTextLayoutManager viewForBaseTextAttachmentNoCreate:v5];
       v10 = ICDynamicCast();
     }
   }
@@ -10630,19 +10630,19 @@ void __74__ICEditingTextView_ICAccessibility_iOS___icaxFirstTextAttachmentInRang
 
 - (id)_icaxAttachmentElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v5 = *MEMORY[0x277D74060];
-  v6 = [v4 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __65__ICEditingTextView_ICAccessibility_iOS___icaxAttachmentElements__block_invoke;
   v13 = &unk_2781AC8F8;
-  v14 = self;
-  v15 = v3;
-  v7 = v3;
-  [v4 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
-  v8 = [MEMORY[0x277CBEA60] arrayWithArray:{v7, v10, v11, v12, v13, v14}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  v8 = [MEMORY[0x277CBEA60] arrayWithArray:{v7, v10, v11, v12, v13, selfCopy}];
 
   return v8;
 }
@@ -10683,31 +10683,31 @@ void __65__ICEditingTextView_ICAccessibility_iOS___icaxAttachmentElements__block
 {
   if (([(ICEditingTextView *)self isEditing]& 1) != 0)
   {
-    v3 = 0;
+    _accessibilityInternalTextLinks = 0;
   }
 
   else
   {
-    v3 = [(ICEditingTextView *)self _accessibilityInternalTextLinks];
+    _accessibilityInternalTextLinks = [(ICEditingTextView *)self _accessibilityInternalTextLinks];
   }
 
-  return v3;
+  return _accessibilityInternalTextLinks;
 }
 
 - (id)_icaxTodoElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICEditingTextView *)self textStorage];
+  array = [MEMORY[0x277CBEB18] array];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v5 = *MEMORY[0x277D35DA8];
-  v6 = [v4 length];
+  v6 = [textStorage length];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __59__ICEditingTextView_ICAccessibility_iOS___icaxTodoElements__block_invoke;
   v13 = &unk_2781ACAF8;
-  v14 = self;
-  v15 = v3;
-  v7 = v3;
-  [v4 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
+  selfCopy = self;
+  v15 = array;
+  v7 = array;
+  [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, &v10}];
   v8 = [v7 copy];
 
   return v8;
@@ -10734,31 +10734,31 @@ uint64_t __59__ICEditingTextView_ICAccessibility_iOS___icaxTodoElements__block_i
 {
   if (UIAccessibilityIsVoiceOverRunning() && ![(ICEditingTextView *)self _icaxShouldPreventUpdatingFakeCursorRange])
   {
-    v3 = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
-    v4 = [(ICEditingTextView *)self selectedRange];
-    v6 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:v3 forRange:v4, v5];
+    _icaxModifiedAttributedStorageString = [(ICEditingTextView *)self _icaxModifiedAttributedStorageString];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
+    v6 = [(ICEditingTextView *)self _icaxRangeInModifiedAttributedString:_icaxModifiedAttributedStorageString forRange:selectedRange, v5];
     [(ICEditingTextView *)self set_icaxModifiedSelectionRange:v6, v7];
 
-    v8 = [(ICEditingTextView *)self _icaxModifiedSelectionRange];
+    _icaxModifiedSelectionRange = [(ICEditingTextView *)self _icaxModifiedSelectionRange];
 
-    [(ICEditingTextView *)self set_icaxModifiedCursorPosition:v8];
+    [(ICEditingTextView *)self set_icaxModifiedCursorPosition:_icaxModifiedSelectionRange];
   }
 }
 
-- (void)_icaxGetBoldForCurrentRange:(BOOL *)a3 italic:(BOOL *)a4 underline:(BOOL *)a5 strikethrough:(BOOL *)a6
+- (void)_icaxGetBoldForCurrentRange:(BOOL *)range italic:(BOOL *)italic underline:(BOOL *)underline strikethrough:(BOOL *)strikethrough
 {
-  v11 = [(ICEditingTextView *)self editorController];
-  v12 = [v11 currentBIUSForStyleSelector];
+  editorController = [(ICEditingTextView *)self editorController];
+  currentBIUSForStyleSelector = [editorController currentBIUSForStyleSelector];
 
-  *a3 = v12 & 1;
-  *a4 = (v12 & 2) != 0;
-  *a5 = (v12 & 4) != 0;
-  v14 = [(ICEditingTextView *)self typingAttributes];
-  v13 = [v14 objectForKeyedSubscript:*MEMORY[0x277D35DB0]];
-  *a6 = [v13 integerValue] != 0;
+  *range = currentBIUSForStyleSelector & 1;
+  *italic = (currentBIUSForStyleSelector & 2) != 0;
+  *underline = (currentBIUSForStyleSelector & 4) != 0;
+  typingAttributes = [(ICEditingTextView *)self typingAttributes];
+  v13 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35DB0]];
+  *strikethrough = [v13 integerValue] != 0;
 }
 
-- (id)_icaxFirstAttachmentViewSupportingAction:(SEL)a3
+- (id)_icaxFirstAttachmentViewSupportingAction:(SEL)action
 {
   v12 = 0;
   v13 = &v12;
@@ -10766,9 +10766,9 @@ uint64_t __59__ICEditingTextView_ICAccessibility_iOS___icaxTodoElements__block_i
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(ICEditingTextView *)self textStorage];
-  v6 = [(ICEditingTextView *)self textStorage];
-  v7 = [v6 length];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
+  v7 = [textStorage2 length];
   v8 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -10776,8 +10776,8 @@ uint64_t __59__ICEditingTextView_ICAccessibility_iOS___icaxTodoElements__block_i
   v11[3] = &unk_2781ACB20;
   v11[4] = self;
   v11[5] = &v12;
-  v11[6] = a3;
-  [v5 enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0, v11}];
+  v11[6] = action;
+  [textStorage enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0, v11}];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -10819,25 +10819,25 @@ void __83__ICEditingTextView_ICAccessibility_iOS___icaxFirstAttachmentViewSuppor
   }
 }
 
-- (id)_icaxTodoButtonForParagraphStyle:(id)a3
+- (id)_icaxTodoButtonForParagraphStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
-    v7 = [(ICEditingTextView *)self layoutManager];
-    v8 = [v7 icaxTodoButtonForParagraphStyle:v4];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
+    v8 = [layoutManager icaxTodoButtonForParagraphStyle:styleCopy];
     goto LABEL_5;
   }
 
-  v5 = [(ICEditingTextView *)self icTextLayoutManager];
-  v6 = [v4 todoTrackingUUID];
+  icTextLayoutManager = [(ICEditingTextView *)self icTextLayoutManager];
+  todoTrackingUUID = [styleCopy todoTrackingUUID];
 
-  v7 = [v5 trackedTodoParagraphForTrackingUUID:v6];
+  layoutManager = [icTextLayoutManager trackedTodoParagraphForTrackingUUID:todoTrackingUUID];
 
-  if (v7)
+  if (layoutManager)
   {
-    v4 = [(ICEditingTextView *)self icTextLayoutManager];
-    v8 = [v4 todoButtonForTrackedParagraph:v7];
+    styleCopy = [(ICEditingTextView *)self icTextLayoutManager];
+    v8 = [styleCopy todoButtonForTrackedParagraph:layoutManager];
 LABEL_5:
     v9 = v8;
 
@@ -10850,14 +10850,14 @@ LABEL_6:
   return v9;
 }
 
-- (void)_icaxAddPredictiveTextToAttributedString:(id)a3
+- (void)_icaxAddPredictiveTextToAttributedString:(id)string
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   v23.receiver = self;
   v23.super_class = ICEditingTextView;
-  v5 = [(ICEditingTextView *)&v23 accessibilityValue];
+  accessibilityValue = [(ICEditingTextView *)&v23 accessibilityValue];
   v6 = ICDynamicCast();
 
   v7 = *MEMORY[0x277CE6BB8];
@@ -10885,7 +10885,7 @@ LABEL_6:
 
         v12 = *(*(&v19 + 1) + 8 * v11);
         v13 = [v6 length];
-        v14 = [v4 length];
+        v14 = [stringCopy length];
         if (v13 >= v14)
         {
           v13 = v14;
@@ -10895,7 +10895,7 @@ LABEL_6:
         v16[1] = 3221225472;
         v16[2] = __83__ICEditingTextView_ICAccessibility_iOS___icaxAddPredictiveTextToAttributedString___block_invoke;
         v16[3] = &unk_2781AC8D0;
-        v17 = v4;
+        v17 = stringCopy;
         v18 = v12;
         [v6 enumerateAttribute:v12 inRange:0 options:v13 usingBlock:{0, v16}];
 
@@ -10920,187 +10920,187 @@ uint64_t __83__ICEditingTextView_ICAccessibility_iOS___icaxAddPredictiveTextToAt
   return result;
 }
 
-- (void)_addPencilKitAccessibilityElementIfNeededForTextAttachment:(id)a3 toAttachmentElements:(id)a4
+- (void)_addPencilKitAccessibilityElementIfNeededForTextAttachment:(id)attachment toAttachmentElements:(id)elements
 {
-  v6 = a4;
-  v7 = [a3 attachment];
-  v10 = [v7 identifier];
+  elementsCopy = elements;
+  attachment = [attachment attachment];
+  identifier = [attachment identifier];
 
-  v8 = [(ICEditingTextView *)self _icaxPencilKitAttachmentsDict];
-  v9 = [v8 objectForKeyedSubscript:v10];
+  _icaxPencilKitAttachmentsDict = [(ICEditingTextView *)self _icaxPencilKitAttachmentsDict];
+  v9 = [_icaxPencilKitAttachmentsDict objectForKeyedSubscript:identifier];
 
-  [v6 ic_addNonNilObject:v9];
+  [elementsCopy ic_addNonNilObject:v9];
 }
 
 - (id)_icaxMakeBoldString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set bold" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set bold" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeNotBoldString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set not bold" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set not bold" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeItalicString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set italic" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set italic" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeNotItalicString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set not italic" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set not italic" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeUnderlinedString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set underline" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set underline" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeNotUnderlinedString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set not underline" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set not underline" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)icaxMakeStrikethroughString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set strike-through" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set strike-through" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)icaxMakeNotStrikethroughString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Set not strike-through" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Set not strike-through" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMarkAsCompletedString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Mark as checked" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Mark as checked" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMarkAsIncompleteString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Mark as unchecked" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Mark as unchecked" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxMakeChecklistString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Make checklist item" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Make checklist item" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxRemoveChecklistString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Remove checklist item" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Remove checklist item" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxChecklistMarkAllItemsCompleteString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Check all items" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Check all items" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxChecklistUnmarkAllItemsCompleteString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Uncheck all items" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Uncheck all items" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxChecklistDeleteCheckedItemsString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Delete all checked items" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Delete all checked items" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxChecklistMoveCheckedToBottomString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Move Checked items to the Bottom" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Move Checked items to the Bottom" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxShareAttachmentString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxIncreaseIndentationString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Increase Indentation" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Increase Indentation" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxDecreaseIndentationString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Decrease Indentation" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Decrease Indentation" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxInsertDrawingString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Insert Drawing" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Insert Drawing" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)_icaxCalculateAdjustString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Adjust" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Adjust" value:&stru_282757698 table:0];
 
   return v3;
 }
 
-- (BOOL)ic_canIndentByDelta:(int64_t)a3
+- (BOOL)ic_canIndentByDelta:(int64_t)delta
 {
   v6 = 0;
   v7 = &v6;
@@ -11112,7 +11112,7 @@ uint64_t __83__ICEditingTextView_ICAccessibility_iOS___icaxAddPredictiveTextToAt
   v5[3] = &unk_2781AE670;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = delta;
   [(ICEditingTextView *)self ic_performBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -11155,14 +11155,14 @@ void __71__ICEditingTextView_StyleAdditions__ic_getTextStyleForCurrentSelection_
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-- (void)ic_setTextStyleForCurrentSelection:(unsigned int)a3
+- (void)ic_setTextStyleForCurrentSelection:(unsigned int)selection
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __72__ICEditingTextView_StyleAdditions__ic_setTextStyleForCurrentSelection___block_invoke;
   v3[3] = &unk_2781AE6C0;
   v3[4] = self;
-  v4 = a3;
+  selectionCopy = selection;
   [(ICEditingTextView *)self ic_performBlock:v3];
 }
 
@@ -11231,14 +11231,14 @@ void __72__ICEditingTextView_StyleAdditions__ic_setTextStyleForCurrentSelection_
   [v9 textViewDidChange:*(a1 + 32)];
 }
 
-- (void)ic_indentByAmount:(int64_t)a3
+- (void)ic_indentByAmount:(int64_t)amount
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __55__ICEditingTextView_StyleAdditions__ic_indentByAmount___block_invoke;
   v3[3] = &unk_2781AE6E8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = amount;
   [(ICEditingTextView *)self ic_performBlock:v3];
 }
 
@@ -11280,14 +11280,14 @@ void __55__ICEditingTextView_StyleAdditions__ic_indentByAmount___block_invoke(ui
   }
 }
 
-- (void)ic_setTextAlignmentForCurrentSelection:(int64_t)a3
+- (void)ic_setTextAlignmentForCurrentSelection:(int64_t)selection
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelection___block_invoke;
   v3[3] = &unk_2781AE6E8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = selection;
   [(ICEditingTextView *)self ic_performBlock:v3];
 }
 
@@ -11333,13 +11333,13 @@ void __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelect
 - (void)ic_toggleBoldface
 {
   [(ICEditingTextView *)self ic_toggleFontHint:1];
-  v3 = [(ICEditingTextView *)self ic_selectedRanges];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__ICEditingTextView_StyleAdditions__ic_toggleBoldface__block_invoke;
   v4[3] = &unk_2781AD7D8;
   v4[4] = self;
-  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:v3 usingBlock:v4];
+  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:ic_selectedRanges usingBlock:v4];
 
   [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:6 sender:self];
 }
@@ -11347,13 +11347,13 @@ void __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelect
 - (void)ic_toggleItalics
 {
   [(ICEditingTextView *)self ic_toggleFontHint:2];
-  v3 = [(ICEditingTextView *)self ic_selectedRanges];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__ICEditingTextView_StyleAdditions__ic_toggleItalics__block_invoke;
   v4[3] = &unk_2781AD7D8;
   v4[4] = self;
-  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:v3 usingBlock:v4];
+  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:ic_selectedRanges usingBlock:v4];
 
   [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:7 sender:self];
 }
@@ -11361,13 +11361,13 @@ void __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelect
 - (void)ic_toggleUnderline
 {
   [(ICEditingTextView *)self ic_toggleAttributeWithName:*MEMORY[0x277D35DC0]];
-  v3 = [(ICEditingTextView *)self ic_selectedRanges];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__ICEditingTextView_StyleAdditions__ic_toggleUnderline__block_invoke;
   v4[3] = &unk_2781AD7D8;
   v4[4] = self;
-  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:v3 usingBlock:v4];
+  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:ic_selectedRanges usingBlock:v4];
 
   [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:8 sender:self];
 }
@@ -11375,18 +11375,18 @@ void __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelect
 - (void)ic_toggleStrikethrough
 {
   [(ICEditingTextView *)self ic_toggleAttributeWithName:*MEMORY[0x277D35DB0]];
-  v3 = [(ICEditingTextView *)self ic_selectedRanges];
+  ic_selectedRanges = [(ICEditingTextView *)self ic_selectedRanges];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__ICEditingTextView_StyleAdditions__ic_toggleStrikethrough__block_invoke;
   v4[3] = &unk_2781AD7D8;
   v4[4] = self;
-  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:v3 usingBlock:v4];
+  [(ICEditingTextView *)self ic_enumerateTableAttachmentViewControllersInRanges:ic_selectedRanges usingBlock:v4];
 
   [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:9 sender:self];
 }
 
-- (void)ic_toggleEmphasisWithType:(int64_t)a3
+- (void)ic_toggleEmphasisWithType:(int64_t)type
 {
   v4 = *MEMORY[0x277D35D88];
   v5 = ic_currentEmphasisColorTypeDefault();
@@ -11394,17 +11394,17 @@ void __76__ICEditingTextView_StyleAdditions__ic_setTextAlignmentForCurrentSelect
   [(ICEditingTextView *)self ic_toggleAttributeWithName:v4 withEmphasisColorType:v5];
 }
 
-- (id)ic_selectedStylesIgnoreTypingAttributes:(BOOL)a3
+- (id)ic_selectedStylesIgnoreTypingAttributes:(BOOL)attributes
 {
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__ICEditingTextView_StyleAdditions__ic_selectedStylesIgnoreTypingAttributes___block_invoke;
   v9[3] = &unk_2781AE738;
   v9[4] = self;
-  v10 = v5;
-  v11 = a3;
-  v6 = v5;
+  v10 = indexSet;
+  attributesCopy = attributes;
+  v6 = indexSet;
   [(ICEditingTextView *)self ic_performBlock:v9];
   v7 = [v6 copy];
 
@@ -11481,31 +11481,31 @@ uint64_t __77__ICEditingTextView_StyleAdditions__ic_selectedStylesIgnoreTypingAt
 
 - (unint64_t)ic_selectedBIUS
 {
-  v3 = [(ICEditingTextView *)self selectedRange];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   if (v4)
   {
-    v5 = v3;
+    v5 = selectedRange;
     v6 = v4;
-    v7 = [(ICEditingTextView *)self textStorage];
-    v8 = [v7 attributesAtIndex:v5 longestEffectiveRange:0 inRange:{v5, v6}];
+    textStorage = [(ICEditingTextView *)self textStorage];
+    typingAttributes = [textStorage attributesAtIndex:v5 longestEffectiveRange:0 inRange:{v5, v6}];
   }
 
   else
   {
-    v8 = [(ICEditingTextView *)self typingAttributes];
+    typingAttributes = [(ICEditingTextView *)self typingAttributes];
   }
 
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35D98]];
-  v10 = [v9 intValue];
+  v9 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35D98]];
+  intValue = [v9 intValue];
 
   objc_opt_class();
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+  v11 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
   v12 = ICDynamicCast();
 
-  if ((v10 & 1) != 0 || [v12 ic_hasSymbolicBoldTrait])
+  if ((intValue & 1) != 0 || [v12 ic_hasSymbolicBoldTrait])
   {
     v13 = 1;
-    if ((v10 & 2) != 0)
+    if ((intValue & 2) != 0)
     {
       goto LABEL_10;
     }
@@ -11520,7 +11520,7 @@ LABEL_9:
   }
 
   v13 = 0;
-  if ((v10 & 2) == 0)
+  if ((intValue & 2) == 0)
   {
     goto LABEL_9;
   }
@@ -11528,26 +11528,26 @@ LABEL_9:
 LABEL_10:
   v13 |= 2uLL;
 LABEL_11:
-  v14 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35DC0]];
-  v15 = [v14 BOOLValue];
+  v14 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35DC0]];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v13 |= 4uLL;
   }
 
-  v16 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35DB0]];
-  v17 = [v16 BOOLValue];
+  v16 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35DB0]];
+  bOOLValue2 = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue2)
   {
     v13 |= 8uLL;
   }
 
-  v18 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35D88]];
-  v19 = [v18 BOOLValue];
+  v18 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x277D35D88]];
+  bOOLValue3 = [v18 BOOLValue];
 
-  if (v19)
+  if (bOOLValue3)
   {
     v20 = v13 | 0x10;
   }
@@ -11589,41 +11589,41 @@ void __63__ICEditingTextView_StyleAdditions__ic_currentWritingDirection__block_i
   *(*(*(a1 + 40) + 8) + 24) = v10;
 }
 
-- (void)ic_performBlock:(id)a3
+- (void)ic_performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_opt_class();
-  v5 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v8 = ICCheckedDynamicCast();
 
   objc_opt_class();
-  v6 = [v8 styler];
+  styler = [v8 styler];
   v7 = ICCheckedDynamicCast();
 
-  v4[2](v4, v8, v7);
+  blockCopy[2](blockCopy, v8, v7);
 }
 
-- (void)ic_enumerateTableAttachmentViewControllersInRanges:(id)a3 usingBlock:(id)a4
+- (void)ic_enumerateTableAttachmentViewControllersInRanges:(id)ranges usingBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rangesCopy = ranges;
+  blockCopy = block;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v8 = [(ICEditingTextView *)self textLayoutManager];
+    textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
     v9 = ICCheckedDynamicCast();
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v6;
+    obj = rangesCopy;
     v10 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v10)
     {
       v11 = v10;
-      v26 = v6;
+      v26 = rangesCopy;
       v12 = *v40;
       do
       {
@@ -11634,7 +11634,7 @@ void __63__ICEditingTextView_StyleAdditions__ic_currentWritingDirection__block_i
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v39 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v39 + 1) + 8 * i) rangeValue];
           v16 = v15;
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
@@ -11642,8 +11642,8 @@ void __63__ICEditingTextView_StyleAdditions__ic_currentWritingDirection__block_i
           v36[3] = &unk_2781AE760;
           v17 = v9;
           v37 = v17;
-          v38 = v7;
-          [v17 enumerateAttachmentViewsInRange:v14 usingBlock:{v16, v36}];
+          v38 = blockCopy;
+          [v17 enumerateAttachmentViewsInRange:rangeValue usingBlock:{v16, v36}];
         }
 
         v11 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -11652,26 +11652,26 @@ void __63__ICEditingTextView_StyleAdditions__ic_currentWritingDirection__block_i
       while (v11);
 LABEL_17:
       v9 = v17;
-      v6 = v26;
+      rangesCopy = v26;
     }
   }
 
   else
   {
     objc_opt_class();
-    v18 = [(ICEditingTextView *)self layoutManager];
+    layoutManager = [(ICEditingTextView *)self layoutManager];
     v9 = ICCheckedDynamicCast();
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obja = v6;
+    obja = rangesCopy;
     v19 = [obja countByEnumeratingWithState:&v32 objects:v43 count:16];
     if (v19)
     {
       v20 = v19;
-      v26 = v6;
+      v26 = rangesCopy;
       v21 = *v33;
       do
       {
@@ -11682,7 +11682,7 @@ LABEL_17:
             objc_enumerationMutation(obja);
           }
 
-          v23 = [*(*(&v32 + 1) + 8 * j) rangeValue];
+          rangeValue2 = [*(*(&v32 + 1) + 8 * j) rangeValue];
           v25 = v24;
           v29[0] = MEMORY[0x277D85DD0];
           v29[1] = 3221225472;
@@ -11690,8 +11690,8 @@ LABEL_17:
           v29[3] = &unk_2781AE760;
           v17 = v9;
           v30 = v17;
-          v31 = v7;
-          [v17 enumerateAttachmentViewsInRange:v23 usingBlock:{v25, v29}];
+          v31 = blockCopy;
+          [v17 enumerateAttachmentViewsInRange:rangeValue2 usingBlock:{v25, v29}];
         }
 
         v20 = [obja countByEnumeratingWithState:&v32 objects:v43 count:16];
@@ -11748,7 +11748,7 @@ void __99__ICEditingTextView_StyleAdditions__ic_enumerateTableAttachmentViewCont
   }
 }
 
-- (BOOL)ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait:(unsigned int)a3
+- (BOOL)ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait:(unsigned int)trait
 {
   v7 = 0;
   v8 = &v7;
@@ -11758,7 +11758,7 @@ void __99__ICEditingTextView_StyleAdditions__ic_enumerateTableAttachmentViewCont
   v5[1] = 3221225472;
   v5[2] = __98__ICEditingTextView_StyleAdditions__ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait___block_invoke;
   v5[3] = &unk_2781AE788;
-  v6 = a3;
+  traitCopy = trait;
   v5[4] = &v7;
   [(ICEditingTextView *)self ic_enumerateAttributesInSelectedRanges:v5];
   v3 = *(v8 + 24);
@@ -11785,10 +11785,10 @@ void __98__ICEditingTextView_StyleAdditions__ic_allSelectedRangesContainFontHint
   }
 }
 
-- (BOOL)ic_allSelectedRangesContainAttributeName:(id)a3 withValue:(id)a4
+- (BOOL)ic_allSelectedRangesContainAttributeName:(id)name withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -11797,17 +11797,17 @@ void __98__ICEditingTextView_StyleAdditions__ic_allSelectedRangesContainFontHint
   v16[1] = 3221225472;
   v16[2] = __88__ICEditingTextView_StyleAdditions__ic_allSelectedRangesContainAttributeName_withValue___block_invoke;
   v16[3] = &unk_2781AE7B0;
-  v8 = v7;
+  v8 = valueCopy;
   v17 = v8;
-  v9 = v6;
+  v9 = nameCopy;
   v18 = v9;
   v19 = &v20;
   [(ICEditingTextView *)self ic_enumerateAttributesInSelectedRanges:v16];
   [(ICEditingTextView *)self selectedRange];
   if (!v10)
   {
-    v11 = [(ICEditingTextView *)self typingAttributes];
-    v12 = [v11 objectForKeyedSubscript:v9];
+    typingAttributes = [(ICEditingTextView *)self typingAttributes];
+    v12 = [typingAttributes objectForKeyedSubscript:v9];
     v13 = [v12 isEqual:v8];
     *(v21 + 24) = v13;
   }
@@ -11830,16 +11830,16 @@ void __88__ICEditingTextView_StyleAdditions__ic_allSelectedRangesContainAttribut
   }
 }
 
-- (void)ic_enumerateAttributesInSelectedRanges:(id)a3
+- (void)ic_enumerateAttributesInSelectedRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__ICEditingTextView_StyleAdditions__ic_enumerateAttributesInSelectedRanges___block_invoke;
   v6[3] = &unk_2781AE800;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = rangesCopy;
+  v5 = rangesCopy;
   [(ICEditingTextView *)self ic_performBlock:v6];
 }
 
@@ -11887,29 +11887,29 @@ void __76__ICEditingTextView_StyleAdditions__ic_enumerateAttributesInSelectedRan
   }
 }
 
-- (void)ic_toggleAttributeWithName:(id)a3 withEmphasisColorType:(int64_t)a4
+- (void)ic_toggleAttributeWithName:(id)name withEmphasisColorType:(int64_t)type
 {
-  v6 = a3;
-  if (a4)
+  nameCopy = name;
+  if (type)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    v8 = [(ICEditingTextView *)self ic_allSelectedRangesContainAttributeName:v6 withValue:v7];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    v8 = [(ICEditingTextView *)self ic_allSelectedRangesContainAttributeName:nameCopy withValue:v7];
   }
 
   else
   {
-    v8 = [(ICEditingTextView *)self ic_allSelectedRangesContainAttributeName:v6 withValue:MEMORY[0x277CBEC38]];
+    v8 = [(ICEditingTextView *)self ic_allSelectedRangesContainAttributeName:nameCopy withValue:MEMORY[0x277CBEC38]];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__ICEditingTextView_StyleAdditions__ic_toggleAttributeWithName_withEmphasisColorType___block_invoke;
   v11[3] = &unk_2781AE828;
-  v9 = a4 != 0;
+  v9 = type != 0;
   v14 = v8;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
+  v12 = nameCopy;
+  typeCopy = type;
+  v10 = nameCopy;
   [(ICEditingTextView *)self ic_editAttributesInSelectedRanges:v11 shouldSkipAttachments:v9];
 }
 
@@ -11971,17 +11971,17 @@ LABEL_4:
 LABEL_13:
 }
 
-- (void)ic_setAttributeWithName:(id)a3 enabled:(BOOL)a4 withEmphasisColorType:(int64_t)a5
+- (void)ic_setAttributeWithName:(id)name enabled:(BOOL)enabled withEmphasisColorType:(int64_t)type
 {
-  v8 = a3;
+  nameCopy = name;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__ICEditingTextView_StyleAdditions__ic_setAttributeWithName_enabled_withEmphasisColorType___block_invoke;
   v10[3] = &unk_2781AE828;
-  v11 = v8;
-  v12 = a5;
-  v13 = a4;
-  v9 = v8;
+  v11 = nameCopy;
+  typeCopy = type;
+  enabledCopy = enabled;
+  v9 = nameCopy;
   [(ICEditingTextView *)self ic_editAttributesInSelectedRanges:v10];
 }
 
@@ -12016,14 +12016,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)ic_toggleFontHint:(unsigned int)a3
+- (void)ic_toggleFontHint:(unsigned int)hint
 {
   v5 = [(ICEditingTextView *)self ic_allSelectedRangesContainFontHintOrEquivalentSymbolicTrait:?];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__ICEditingTextView_StyleAdditions__ic_toggleFontHint___block_invoke;
   v6[3] = &__block_descriptor_37_e44_v32__0__NSMutableDictionary_8__NSRange_QQ_16l;
-  v7 = a3;
+  hintCopy = hint;
   v8 = v5;
   [(ICEditingTextView *)self ic_editAttributesInSelectedRanges:v6];
 }
@@ -12091,14 +12091,14 @@ void __55__ICEditingTextView_StyleAdditions__ic_toggleFontHint___block_invoke(ui
   [v18 setObject:v17 forKeyedSubscript:*v6];
 }
 
-- (void)ic_setFontHint:(unsigned int)a3 enabled:(BOOL)a4
+- (void)ic_setFontHint:(unsigned int)hint enabled:(BOOL)enabled
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__ICEditingTextView_StyleAdditions__ic_setFontHint_enabled___block_invoke;
   v4[3] = &__block_descriptor_37_e44_v32__0__NSMutableDictionary_8__NSRange_QQ_16l;
-  v6 = a4;
-  v5 = a3;
+  enabledCopy = enabled;
+  hintCopy = hint;
   [(ICEditingTextView *)self ic_editAttributesInSelectedRanges:v4];
 }
 
@@ -12127,20 +12127,20 @@ void __60__ICEditingTextView_StyleAdditions__ic_setFontHint_enabled___block_invo
   [v5 setObject:v12 forKeyedSubscript:*v3];
 }
 
-- (void)ic_editAttributesInSelectedRanges:(id)a3 shouldSkipAttachments:(BOOL)a4
+- (void)ic_editAttributesInSelectedRanges:(id)ranges shouldSkipAttachments:(BOOL)attachments
 {
-  v6 = a3;
+  rangesCopy = ranges;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __93__ICEditingTextView_StyleAdditions__ic_editAttributesInSelectedRanges_shouldSkipAttachments___block_invoke;
   v9[3] = &unk_2781AE898;
-  v11 = a4;
+  attachmentsCopy = attachments;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
+  v10 = rangesCopy;
+  v7 = rangesCopy;
   [(ICEditingTextView *)self ic_performBlock:v9];
-  v8 = [(ICEditingTextView *)self delegate];
-  [v8 textViewDidChange:self];
+  delegate = [(ICEditingTextView *)self delegate];
+  [delegate textViewDidChange:self];
 }
 
 void __93__ICEditingTextView_StyleAdditions__ic_editAttributesInSelectedRanges_shouldSkipAttachments___block_invoke(uint64_t a1, void *a2)
@@ -12282,25 +12282,25 @@ void __93__ICEditingTextView_StyleAdditions__ic_editAttributesInSelectedRanges_s
   }
 }
 
-- (unint64_t)firstValidEmphasisLocationWithinSelection:(_NSRange)a3
+- (unint64_t)firstValidEmphasisLocationWithinSelection:(_NSRange)selection
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICEditingTextView *)self textLayoutManager];
-  v7 = [v6 ic_textRangeForRange:{location, length}];
+  length = selection.length;
+  location = selection.location;
+  textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
+  v7 = [textLayoutManager ic_textRangeForRange:{location, length}];
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v8 = [(ICEditingTextView *)self textLayoutManager];
+  textLayoutManager2 = [(ICEditingTextView *)self textLayoutManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__ICEditingTextView_StyleAdditions__firstValidEmphasisLocationWithinSelection___block_invoke;
   v11[3] = &unk_2781AE8C0;
   v11[4] = self;
   v11[5] = &v12;
-  [v8 enumerateTextSegmentsInRange:v7 type:0 options:12 usingBlock:v11];
+  [textLayoutManager2 enumerateTextSegmentsInRange:v7 type:0 options:12 usingBlock:v11];
 
   v9 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -12334,58 +12334,58 @@ uint64_t __79__ICEditingTextView_StyleAdditions__firstValidEmphasisLocationWithi
   return v12;
 }
 
-- (id)pasteIntoSelectedRangeWithoutExceedingMaxLengthWithAttributedString:(id)a3 session:(id)a4
+- (id)pasteIntoSelectedRangeWithoutExceedingMaxLengthWithAttributedString:(id)string session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  sessionCopy = session;
   if (![(ICEditingTextView *)self supportsAttachments])
   {
-    v8 = [v6 ic_stringWithoutAttachments];
+    ic_stringWithoutAttachments = [stringCopy ic_stringWithoutAttachments];
 
-    v6 = v8;
+    stringCopy = ic_stringWithoutAttachments;
   }
 
-  if (![v6 length])
+  if (![stringCopy length])
   {
     goto LABEL_7;
   }
 
-  if ([(ICEditingTextView *)self exceedsMaxLengthIfSelectionReplacedWithAttributedString:v6])
+  if ([(ICEditingTextView *)self exceedsMaxLengthIfSelectionReplacedWithAttributedString:stringCopy])
   {
-    if (([v7 didWarnAboutExceedingMaxLength] & 1) == 0)
+    if (([sessionCopy didWarnAboutExceedingMaxLength] & 1) == 0)
     {
-      v9 = [(ICEditingTextView *)self editorController];
-      [v9 warnUserNoteLengthExceeded];
+      editorController = [(ICEditingTextView *)self editorController];
+      [editorController warnUserNoteLengthExceeded];
 
-      [v7 setDidWarnAboutExceedingMaxLength:1];
+      [sessionCopy setDidWarnAboutExceedingMaxLength:1];
     }
 
 LABEL_7:
 
-    v6 = 0;
+    stringCopy = 0;
     goto LABEL_10;
   }
 
-  if (v6)
+  if (stringCopy)
   {
-    [(ICEditingTextView *)self _pasteAttributedString:v6 pasteAsRichText:1];
+    [(ICEditingTextView *)self _pasteAttributedString:stringCopy pasteAsRichText:1];
   }
 
 LABEL_10:
 
-  return v6;
+  return stringCopy;
 }
 
-- (BOOL)exceedsMaxLengthIfSelectionReplacedWithAttributedString:(id)a3
+- (BOOL)exceedsMaxLengthIfSelectionReplacedWithAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  v6 = [v5 length];
-  v7 = [v4 length];
+  stringCopy = string;
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v6 = [tTTextStorage length];
+  v7 = [stringCopy length];
   [(ICEditingTextView *)self selectedRange];
   v9 = v8;
 
-  v10 = [v4 length];
+  v10 = [stringCopy length];
   [(ICEditingTextView *)self selectedRange];
   if (v10 <= v11)
   {
@@ -12395,18 +12395,18 @@ LABEL_10:
   else
   {
     v12 = v7 + v6 - v9;
-    v13 = [(ICBaseTextView *)self icDelegate];
-    v14 = [v13 allowsNewTextLength:v12] ^ 1;
+    icDelegate = [(ICBaseTextView *)self icDelegate];
+    v14 = [icDelegate allowsNewTextLength:v12] ^ 1;
   }
 
   return v14;
 }
 
-- (id)pasteNotePasteboardData:(id)a3 session:(id)a4 error:(id *)a5
+- (id)pasteNotePasteboardData:(id)data session:(id)session error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  sessionCopy = session;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -12419,43 +12419,43 @@ LABEL_10:
   v41 = __Block_byref_object_copy__13;
   v42 = __Block_byref_object_dispose__13;
   v43 = 0;
-  v10 = [v8 attributedStringData];
-  v11 = [v10 length];
-  v12 = [v8 dataPersister];
-  v13 = [v12 accumulatedDataSize];
-  v14 = [(ICEditingTextView *)self editorController];
-  v15 = [v14 note];
-  [v15 setShouldAddMediaAsynchronously:(v13 + v11) > *MEMORY[0x277D36038]];
+  attributedStringData = [dataCopy attributedStringData];
+  v11 = [attributedStringData length];
+  dataPersister = [dataCopy dataPersister];
+  accumulatedDataSize = [dataPersister accumulatedDataSize];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  [note setShouldAddMediaAsynchronously:(accumulatedDataSize + v11) > *MEMORY[0x277D36038]];
 
-  v16 = [(ICEditingTextView *)self editorController];
-  v17 = [v16 note];
-  v18 = [v8 attributedStringData];
-  LODWORD(v11) = [v17 attachmentExceedsMaxSizeAllowed:{objc_msgSend(v18, "length")}];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController2 note];
+  attributedStringData2 = [dataCopy attributedStringData];
+  LODWORD(v11) = [note2 attachmentExceedsMaxSizeAllowed:{objc_msgSend(attributedStringData2, "length")}];
 
   if (v11)
   {
-    if (([v9 didWarnAboutAttachmentSizeExceeded] & 1) == 0)
+    if (([sessionCopy didWarnAboutAttachmentSizeExceeded] & 1) == 0)
     {
-      v19 = [(ICEditingTextView *)self editorController];
-      [v19 warnUserAttachmentSizeExceededWithAttachmentCount:1];
+      editorController3 = [(ICEditingTextView *)self editorController];
+      [editorController3 warnUserAttachmentSizeExceededWithAttachmentCount:1];
 
-      [v9 setDidWarnAboutAttachmentSizeExceeded:1];
+      [sessionCopy setDidWarnAboutAttachmentSizeExceeded:1];
     }
   }
 
   else
   {
-    v20 = [(ICEditingTextView *)self TTTextStorage];
+    tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __75__ICEditingTextView_PasteUtilities__pasteNotePasteboardData_session_error___block_invoke;
     v32[3] = &unk_2781AE9A0;
     v36 = &v38;
-    v33 = v8;
-    v34 = self;
+    v33 = dataCopy;
+    selfCopy = self;
     v37 = &v44;
-    v35 = v9;
-    [v20 saveSelectionDuringBlock:v32 affinity:1];
+    v35 = sessionCopy;
+    [tTTextStorage saveSelectionDuringBlock:v32 affinity:1];
   }
 
   if (!v39[5])
@@ -12463,44 +12463,44 @@ LABEL_10:
     v23 = v45[5];
     if (v23)
     {
-      v24 = [v23 code];
-      if (v24 == 205)
+      code = [v23 code];
+      if (code == 205)
       {
-        if ([v9 didWarnAboutNotSupportedForPasswordProtectedNotes])
+        if ([sessionCopy didWarnAboutNotSupportedForPasswordProtectedNotes])
         {
           goto LABEL_6;
         }
 
-        v26 = [v45[5] userInfo];
-        v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D36108]];
+        userInfo = [v45[5] userInfo];
+        v27 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36108]];
 
         if (v27)
         {
-          v28 = [v27 unsignedIntegerValue];
+          unsignedIntegerValue = [v27 unsignedIntegerValue];
         }
 
         else
         {
-          v28 = 1;
+          unsignedIntegerValue = 1;
         }
 
-        v29 = [MEMORY[0x277D366D8] cannotAddAttachmentsInfoAlertWithAttachmentCount:v28];
-        v31 = [(ICEditingTextView *)self window];
-        [v29 presentInWindow:v31 completionHandler:0];
+        v29 = [MEMORY[0x277D366D8] cannotAddAttachmentsInfoAlertWithAttachmentCount:unsignedIntegerValue];
+        window = [(ICEditingTextView *)self window];
+        [v29 presentInWindow:window completionHandler:0];
 
-        [v9 setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
+        [sessionCopy setDidWarnAboutNotSupportedForPasswordProtectedNotes:1];
       }
 
       else
       {
-        if (v24 == 202)
+        if (code == 202)
         {
-          if (([v9 didWarnAboutAttachmentLimitExceeded] & 1) == 0)
+          if (([sessionCopy didWarnAboutAttachmentLimitExceeded] & 1) == 0)
           {
-            v25 = [(ICEditingTextView *)self editorController];
-            [v25 warnUserAttachmentLimitExceeded];
+            editorController4 = [(ICEditingTextView *)self editorController];
+            [editorController4 warnUserAttachmentLimitExceeded];
 
-            [v9 setDidWarnAboutAttachmentLimitExceeded:1];
+            [sessionCopy setDidWarnAboutAttachmentLimitExceeded:1];
           }
 
           goto LABEL_6;
@@ -12519,9 +12519,9 @@ LABEL_10:
   }
 
 LABEL_6:
-  if (a5)
+  if (error)
   {
-    *a5 = v45[5];
+    *error = v45[5];
   }
 
   v21 = v39[5];
@@ -12557,12 +12557,12 @@ void __75__ICEditingTextView_PasteUtilities__pasteNotePasteboardData_session_err
   }
 }
 
-- (id)pasteImagesDataArray:(id)a3 typesArray:(id)a4 session:(id)a5
+- (id)pasteImagesDataArray:(id)array typesArray:(id)typesArray session:(id)session
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v27 = a5;
+  arrayCopy = array;
+  typesArrayCopy = typesArray;
+  sessionCopy = session;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -12573,7 +12573,7 @@ void __75__ICEditingTextView_PasteUtilities__pasteNotePasteboardData_session_err
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v8;
+  v9 = arrayCopy;
   v10 = 0;
   v11 = [v9 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
@@ -12589,20 +12589,20 @@ void __75__ICEditingTextView_PasteUtilities__pasteNotePasteboardData_session_err
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [(ICEditingTextView *)self editorController];
-        v16 = [v15 note];
-        v17 = [v16 attachmentExceedsMaxSizeAllowed:{objc_msgSend(v14, "length")}];
+        editorController = [(ICEditingTextView *)self editorController];
+        note = [editorController note];
+        v17 = [note attachmentExceedsMaxSizeAllowed:{objc_msgSend(v14, "length")}];
 
         if (v17)
         {
-          v22 = [v27 didWarnAboutAttachmentSizeExceeded];
+          didWarnAboutAttachmentSizeExceeded = [sessionCopy didWarnAboutAttachmentSizeExceeded];
           v21 = v9;
-          if ((v22 & 1) == 0)
+          if ((didWarnAboutAttachmentSizeExceeded & 1) == 0)
           {
-            v23 = [(ICEditingTextView *)self editorController];
-            [v23 warnUserAttachmentSizeExceededWithAttachmentCount:{objc_msgSend(v9, "count")}];
+            editorController2 = [(ICEditingTextView *)self editorController];
+            [editorController2 warnUserAttachmentSizeExceededWithAttachmentCount:{objc_msgSend(v9, "count")}];
 
-            [v27 setDidWarnAboutAttachmentSizeExceeded:1];
+            [sessionCopy setDidWarnAboutAttachmentSizeExceeded:1];
             v21 = v9;
           }
 
@@ -12622,21 +12622,21 @@ void __75__ICEditingTextView_PasteUtilities__pasteNotePasteboardData_session_err
     }
   }
 
-  v18 = [(ICEditingTextView *)self editorController];
-  v19 = [v18 note];
-  [v19 setShouldAddMediaAsynchronously:v10 > *MEMORY[0x277D36038]];
+  editorController3 = [(ICEditingTextView *)self editorController];
+  note2 = [editorController3 note];
+  [note2 setShouldAddMediaAsynchronously:v10 > *MEMORY[0x277D36038]];
 
-  v20 = [(ICEditingTextView *)self TTTextStorage];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __77__ICEditingTextView_PasteUtilities__pasteImagesDataArray_typesArray_session___block_invoke;
   v28[3] = &unk_2781AEA18;
   v29 = v9;
-  v30 = v26;
-  v31 = self;
-  v32 = v27;
+  v30 = typesArrayCopy;
+  selfCopy = self;
+  v32 = sessionCopy;
   v33 = &v38;
-  [v20 saveSelectionDuringBlock:v28 affinity:1];
+  [tTTextStorage saveSelectionDuringBlock:v28 affinity:1];
 
   v21 = v29;
 LABEL_12:
@@ -12759,24 +12759,24 @@ void __77__ICEditingTextView_PasteUtilities__pasteImagesDataArray_typesArray_ses
   }
 }
 
-- (id)pasteURL:(id)a3 uti:(id)a4 name:(id)a5 metadata:(id)a6 session:(id)a7
+- (id)pasteURL:(id)l uti:(id)uti name:(id)name metadata:(id)metadata session:(id)session
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(ICEditingTextView *)self editorController];
-  v18 = [v17 note];
-  if ([v18 canAddAttachment])
+  lCopy = l;
+  utiCopy = uti;
+  nameCopy = name;
+  metadataCopy = metadata;
+  sessionCopy = session;
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  if ([note canAddAttachment])
   {
 
     goto LABEL_7;
   }
 
-  v19 = [v12 isFileURL];
+  isFileURL = [lCopy isFileURL];
 
-  if (!v19)
+  if (!isFileURL)
   {
 LABEL_7:
     v44 = 0;
@@ -12789,26 +12789,26 @@ LABEL_7:
     v41 = __Block_byref_object_copy__13;
     v42 = __Block_byref_object_dispose__13;
     v43 = 0;
-    v22 = [(ICEditingTextView *)self TTTextStorage];
+    tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
     v28 = __72__ICEditingTextView_PasteUtilities__pasteURL_uti_name_metadata_session___block_invoke;
     v29 = &unk_2781AEA40;
-    v30 = v12;
-    v31 = self;
+    v30 = lCopy;
+    selfCopy = self;
     v36 = &v44;
-    v32 = v13;
-    v33 = v15;
-    v34 = v14;
+    v32 = utiCopy;
+    v33 = metadataCopy;
+    v34 = nameCopy;
     v37 = &v38;
-    v23 = v16;
+    v23 = sessionCopy;
     v35 = v23;
-    [v22 saveSelectionDuringBlock:&v26 affinity:1];
+    [tTTextStorage saveSelectionDuringBlock:&v26 affinity:1];
 
     if (*(v45 + 24) == 1 && ([v23 didWarnAboutAttachmentSizeExceeded] & 1) == 0)
     {
-      v24 = [(ICEditingTextView *)self editorController];
-      [v24 warnUserAttachmentSizeExceededWithAttachmentCount:1];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      [editorController2 warnUserAttachmentSizeExceededWithAttachmentCount:1];
 
       [v23 setDidWarnAboutAttachmentSizeExceeded:1];
     }
@@ -12820,12 +12820,12 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (([v16 didWarnAboutAttachmentLimitExceeded] & 1) == 0)
+  if (([sessionCopy didWarnAboutAttachmentLimitExceeded] & 1) == 0)
   {
-    v20 = [(ICEditingTextView *)self editorController];
-    [v20 warnUserAttachmentLimitExceeded];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    [editorController3 warnUserAttachmentLimitExceeded];
 
-    [v16 setDidWarnAboutAttachmentLimitExceeded:1];
+    [sessionCopy setDidWarnAboutAttachmentLimitExceeded:1];
   }
 
   v21 = 0;
@@ -12974,62 +12974,62 @@ LABEL_9:
   }
 }
 
-- (id)pasteStringUsingBlock:(id)a3 approxPasteString:(id)a4 pasteboardTypes:(id)a5 session:(id)a6
+- (id)pasteStringUsingBlock:(id)block approxPasteString:(id)string pasteboardTypes:(id)types session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v47 = [(ICEditingTextView *)self selectedRange];
+  blockCopy = block;
+  stringCopy = string;
+  typesCopy = types;
+  sessionCopy = session;
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v15 = v14;
-  if ([v11 length] <= v14 || (-[ICEditingTextView TTTextStorage](self, "TTTextStorage"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v18 = objc_msgSend(v11, "length"), v16, -[ICBaseTextView icDelegate](self, "icDelegate"), v19 = objc_claimAutoreleasedReturnValue(), LOBYTE(v17) = objc_msgSend(v19, "allowsNewTextLength:", v17 - v15 + v18), v19, (v17 & 1) != 0))
+  if ([stringCopy length] <= v14 || (-[ICEditingTextView TTTextStorage](self, "TTTextStorage"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v18 = objc_msgSend(stringCopy, "length"), v16, -[ICBaseTextView icDelegate](self, "icDelegate"), v19 = objc_claimAutoreleasedReturnValue(), LOBYTE(v17) = objc_msgSend(v19, "allowsNewTextLength:", v17 - v15 + v18), v19, (v17 & 1) != 0))
   {
-    v20 = [(ICEditingTextView *)self TTTextStorage];
-    [v20 setFilterPastedAttributes:1];
+    tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage setFilterPastedAttributes:1];
 
-    v21 = [(ICEditingTextView *)self TTTextStorage];
-    [v21 setConvertAttributes:1];
+    tTTextStorage2 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage2 setConvertAttributes:1];
 
-    v22 = [(ICEditingTextView *)self TTTextStorage];
-    [v22 setPasteboardTypes:v12];
+    tTTextStorage3 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage3 setPasteboardTypes:typesCopy];
 
-    v23 = [(ICEditingTextView *)self TTTextStorage];
-    v24 = [v23 length];
+    tTTextStorage4 = [(ICEditingTextView *)self TTTextStorage];
+    v24 = [tTTextStorage4 length];
 
-    v10[2](v10);
-    v25 = [(ICEditingTextView *)self TTTextStorage];
-    v46 = v10;
-    v26 = [v25 length];
+    blockCopy[2](blockCopy);
+    tTTextStorage5 = [(ICEditingTextView *)self TTTextStorage];
+    v46 = blockCopy;
+    v26 = [tTTextStorage5 length];
 
     v27 = v26 - v24 + v15;
-    v28 = [(ICEditingTextView *)self TTTextStorage];
-    v29 = [v28 attributedSubstringFromRange:{v47, v27}];
+    tTTextStorage6 = [(ICEditingTextView *)self TTTextStorage];
+    v29 = [tTTextStorage6 attributedSubstringFromRange:{selectedRange, v27}];
 
-    v44 = [v29 string];
+    string = [v29 string];
     [(ICEditingTextView *)self TTTextStorage];
-    v30 = v45 = v12;
+    v30 = v45 = typesCopy;
     [v30 setPasteboardTypes:0];
 
-    v31 = [(ICEditingTextView *)self TTTextStorage];
-    [v31 setConvertAttributes:0];
+    tTTextStorage7 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage7 setConvertAttributes:0];
 
-    v32 = [(ICEditingTextView *)self TTTextStorage];
-    [v32 setFilterPastedAttributes:0];
+    tTTextStorage8 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage8 setFilterPastedAttributes:0];
 
     objc_opt_class();
-    v33 = [(ICEditingTextView *)self TTTextStorage];
-    [v33 styler];
-    v34 = v13;
-    v36 = v35 = v11;
+    tTTextStorage9 = [(ICEditingTextView *)self TTTextStorage];
+    [tTTextStorage9 styler];
+    v34 = sessionCopy;
+    v36 = v35 = stringCopy;
     v37 = ICCheckedDynamicCast();
 
-    v11 = v35;
-    v13 = v34;
+    stringCopy = v35;
+    sessionCopy = v34;
 
-    [v37 insertedText:v44 replacementRange:v47 inTextView:v15 languageHasSpaces:{self, -[ICEditingTextView languageHasSpaces](self, "languageHasSpaces")}];
-    if (v26 >= v27 + v47)
+    [v37 insertedText:string replacementRange:selectedRange inTextView:v15 languageHasSpaces:{self, -[ICEditingTextView languageHasSpaces](self, "languageHasSpaces")}];
+    if (v26 >= v27 + selectedRange)
     {
-      v38 = v27 + v47;
+      v38 = v27 + selectedRange;
     }
 
     else
@@ -13037,31 +13037,31 @@ LABEL_9:
       v38 = v26;
     }
 
-    v10 = v46;
+    blockCopy = v46;
     [(ICEditingTextView *)self setSelectedRange:v38, 0];
-    v39 = [(ICEditingTextView *)self selectedRange];
-    [(ICEditingTextView *)self scrollRangeToVisible:v39, v40];
+    selectedRange2 = [(ICEditingTextView *)self selectedRange];
+    [(ICEditingTextView *)self scrollRangeToVisible:selectedRange2, v40];
     [(ICEditingTextView *)self informDelegateOfPastedAttributedString:v29];
 
-    v12 = v45;
+    typesCopy = v45;
   }
 
   else
   {
-    if (([v13 didWarnAboutExceedingMaxLength] & 1) == 0)
+    if (([sessionCopy didWarnAboutExceedingMaxLength] & 1) == 0)
     {
-      v41 = [(ICEditingTextView *)self editorController];
-      [v41 warnUserNoteLengthExceeded];
+      editorController = [(ICEditingTextView *)self editorController];
+      [editorController warnUserNoteLengthExceeded];
 
-      [v13 setDidWarnAboutExceedingMaxLength:1];
+      [sessionCopy setDidWarnAboutExceedingMaxLength:1];
     }
 
-    if (([v13 didWarnAboutExceedingMaxLength] & 1) == 0)
+    if (([sessionCopy didWarnAboutExceedingMaxLength] & 1) == 0)
     {
-      v42 = [(ICEditingTextView *)self editorController];
-      [v42 warnUserNoteLengthExceeded];
+      editorController2 = [(ICEditingTextView *)self editorController];
+      [editorController2 warnUserNoteLengthExceeded];
 
-      [v13 setDidWarnAboutExceedingMaxLength:1];
+      [sessionCopy setDidWarnAboutExceedingMaxLength:1];
     }
 
     v29 = 0;
@@ -13072,8 +13072,8 @@ LABEL_9:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICEditingTextView;
@@ -13083,8 +13083,8 @@ LABEL_9:
 - (id)textController
 {
   objc_opt_class();
-  v3 = [(ICEditingTextView *)self TTTextStorage];
-  v4 = [v3 styler];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  styler = [tTTextStorage styler];
   v5 = ICCheckedDynamicCast();
 
   return v5;
@@ -13093,7 +13093,7 @@ LABEL_9:
 - (id)icLayoutManager
 {
   objc_opt_class();
-  v3 = [(ICEditingTextView *)self layoutManager];
+  layoutManager = [(ICEditingTextView *)self layoutManager];
   v4 = ICDynamicCast();
 
   return v4;
@@ -13102,7 +13102,7 @@ LABEL_9:
 - (id)icTextLayoutManager
 {
   objc_opt_class();
-  v3 = [(ICEditingTextView *)self textLayoutManager];
+  textLayoutManager = [(ICEditingTextView *)self textLayoutManager];
   v4 = ICDynamicCast();
 
   return v4;
@@ -13110,16 +13110,16 @@ LABEL_9:
 
 - (ICTTTextStoragePersistenceHelper)persistenceHelper
 {
-  v2 = [(ICEditingTextView *)self editorController];
-  v3 = [v2 note];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
 
-  return v3;
+  return note;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rangeCopy = range;
   if ([(ICEditingTextView *)self textSelectionHidden])
   {
     v5 = objc_alloc_init(ICEmptyTextSelectionRect);
@@ -13131,7 +13131,7 @@ LABEL_9:
   {
     v8.receiver = self;
     v8.super_class = ICEditingTextView;
-    v6 = [(ICEditingTextView *)&v8 selectionRectsForRange:v4];
+    v6 = [(ICEditingTextView *)&v8 selectionRectsForRange:rangeCopy];
   }
 
   return v6;
@@ -13146,12 +13146,12 @@ LABEL_9:
     v5 = self->_tempHighlightLayer;
     self->_tempHighlightLayer = v4;
 
-    v6 = [MEMORY[0x277D75348] redColor];
-    -[CALayer setBorderColor:](self->_tempHighlightLayer, "setBorderColor:", [v6 CGColor]);
+    redColor = [MEMORY[0x277D75348] redColor];
+    -[CALayer setBorderColor:](self->_tempHighlightLayer, "setBorderColor:", [redColor CGColor]);
 
     [(CALayer *)self->_tempHighlightLayer setBorderWidth:1.0];
-    v7 = [(ICEditingTextView *)self layer];
-    [v7 addSublayer:self->_tempHighlightLayer];
+    layer = [(ICEditingTextView *)self layer];
+    [layer addSublayer:self->_tempHighlightLayer];
 
     tempHighlightLayer = self->_tempHighlightLayer;
   }
@@ -13159,12 +13159,12 @@ LABEL_9:
   return tempHighlightLayer;
 }
 
-- (id)attachmentsInRange:(_NSRange)a3
+- (id)attachmentsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v8 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -13172,7 +13172,7 @@ LABEL_9:
   v11[3] = &unk_2781AC5D8;
   v9 = v6;
   v12 = v9;
-  [v7 enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v11}];
+  [textStorage enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v11}];
 
   return v9;
 }
@@ -13188,12 +13188,12 @@ void __40__ICEditingTextView_attachmentsInRange___block_invoke(uint64_t a1, void
   [v4 ic_addNonNilObject:v5];
 }
 
-- (id)textAttachmentsInRange:(_NSRange)a3
+- (id)textAttachmentsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v8 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -13201,7 +13201,7 @@ void __40__ICEditingTextView_attachmentsInRange___block_invoke(uint64_t a1, void
   v11[3] = &unk_2781AC5D8;
   v9 = v6;
   v12 = v9;
-  [v7 enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v11}];
+  [textStorage enumerateAttribute:v8 inRange:location options:length usingBlock:{0, v11}];
 
   return v9;
 }
@@ -13228,7 +13228,7 @@ void __44__ICEditingTextView_textAttachmentsInRange___block_invoke(uint64_t a1, 
   {
     v8.receiver = self;
     v8.super_class = ICEditingTextView;
-    v4 = [(ICEditingTextView *)&v8 canBecomeFirstResponder];
+    canBecomeFirstResponder = [(ICEditingTextView *)&v8 canBecomeFirstResponder];
     if (ICInternalSettingsIsTextKit2Enabled())
     {
       LOBYTE(v5) = 1;
@@ -13237,28 +13237,28 @@ void __44__ICEditingTextView_textAttachmentsInRange___block_invoke(uint64_t a1, 
     else
     {
       objc_opt_class();
-      v6 = [(ICEditingTextView *)self layoutManager];
+      layoutManager = [(ICEditingTextView *)self layoutManager];
       v7 = ICDynamicCast();
       v5 = [v7 isRenderingPreviewForDragAndDrop] ^ 1;
     }
 
-    return v4 & v5;
+    return canBecomeFirstResponder & v5;
   }
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 presentedViewController];
+  editorController = [(ICEditingTextView *)self editorController];
+  presentedViewController = [editorController presentedViewController];
 
-  v5 = [v4 modalPresentationStyle];
+  modalPresentationStyle = [presentedViewController modalPresentationStyle];
   if ([(ICEditingTextView *)self isEditable])
   {
-    v6 = [(ICEditingTextView *)self editorController];
-    v7 = [v6 note];
-    v8 = [v7 isEditable];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    note = [editorController2 note];
+    isEditable = [note isEditable];
 
-    if (!v8 || v5 == 5)
+    if (!isEditable || modalPresentationStyle == 5)
     {
       [(ICEditingTextView *)self setEditable:0];
     }
@@ -13266,101 +13266,101 @@ void __44__ICEditingTextView_textAttachmentsInRange___block_invoke(uint64_t a1, 
 
   v11.receiver = self;
   v11.super_class = ICEditingTextView;
-  v9 = [(ICEditingTextView *)&v11 becomeFirstResponder];
+  becomeFirstResponder = [(ICEditingTextView *)&v11 becomeFirstResponder];
   [(ICEditingTextView *)self keyboardLocaleChanged:0];
 
-  return v9;
+  return becomeFirstResponder;
 }
 
-- (id)firstResponderMatchingPredicate:(id)a3
+- (id)firstResponderMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self firstResponder];
-  if (v5)
+  predicateCopy = predicate;
+  firstResponder = [(ICEditingTextView *)self firstResponder];
+  if (firstResponder)
   {
     do
     {
-      if (v4[2](v4, v5))
+      if (predicateCopy[2](predicateCopy, firstResponder))
       {
         break;
       }
 
-      v6 = [v5 nextResponder];
+      nextResponder = [firstResponder nextResponder];
 
-      v5 = v6;
+      firstResponder = nextResponder;
     }
 
-    while (v6);
+    while (nextResponder);
   }
 
-  return v5;
+  return firstResponder;
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  [v5 setConvertAttributes:1];
+  rightCopy = right;
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage setConvertAttributes:1];
   v8.receiver = self;
   v8.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v8 makeTextWritingDirectionLeftToRight:v4];
-  v6 = [v5 styler];
-  [v6 setUserChangedWritingDirection:1];
-  v7 = [(ICEditingTextView *)self editorController];
-  [v7 textViewDidChange:self];
+  [(ICEditingTextView *)&v8 makeTextWritingDirectionLeftToRight:rightCopy];
+  styler = [tTTextStorage styler];
+  [styler setUserChangedWritingDirection:1];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController textViewDidChange:self];
 
-  [v5 setConvertAttributes:0];
-  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:v4];
+  [tTTextStorage setConvertAttributes:0];
+  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:rightCopy];
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  [v5 setConvertAttributes:1];
+  leftCopy = left;
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage setConvertAttributes:1];
   v8.receiver = self;
   v8.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v8 makeTextWritingDirectionRightToLeft:v4];
-  v6 = [v5 styler];
-  [v6 setUserChangedWritingDirection:1];
-  v7 = [(ICEditingTextView *)self editorController];
-  [v7 textViewDidChange:self];
+  [(ICEditingTextView *)&v8 makeTextWritingDirectionRightToLeft:leftCopy];
+  styler = [tTTextStorage styler];
+  [styler setUserChangedWritingDirection:1];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController textViewDidChange:self];
 
-  [v5 setConvertAttributes:0];
-  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:v4];
+  [tTTextStorage setConvertAttributes:0];
+  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:leftCopy];
 }
 
-- (void)makeTextWritingDirectionNatural:(id)a3
+- (void)makeTextWritingDirectionNatural:(id)natural
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  [v5 setConvertAttributes:1];
+  naturalCopy = natural;
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  [tTTextStorage setConvertAttributes:1];
   v6 = [(ICEditingTextView *)self ic_currentWritingDirection]!= -1;
   v9.receiver = self;
   v9.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v9 makeTextWritingDirectionNatural:v4];
-  v7 = [v5 styler];
-  [v7 setUserChangedWritingDirection:v6];
-  v8 = [(ICEditingTextView *)self editorController];
-  [v8 textViewDidChange:self];
+  [(ICEditingTextView *)&v9 makeTextWritingDirectionNatural:naturalCopy];
+  styler = [tTTextStorage styler];
+  [styler setUserChangedWritingDirection:v6];
+  editorController = [(ICEditingTextView *)self editorController];
+  [editorController textViewDidChange:self];
 
-  [v5 setConvertAttributes:0];
-  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:v4];
+  [tTTextStorage setConvertAttributes:0];
+  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:10 sender:naturalCopy];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
+  pasteCopy = paste;
   v5 = MEMORY[0x277D75810];
-  v6 = [(ICEditingTextView *)self _dataOwnerForPaste];
+  _dataOwnerForPaste = [(ICEditingTextView *)self _dataOwnerForPaste];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __27__ICEditingTextView_paste___block_invoke;
   v8[3] = &unk_2781ABEB8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 _performAsDataOwner:v6 block:v8];
+  v9 = pasteCopy;
+  v7 = pasteCopy;
+  [v5 _performAsDataOwner:_dataOwnerForPaste block:v8];
 }
 
 uint64_t __27__ICEditingTextView_paste___block_invoke(uint64_t a1)
@@ -13496,16 +13496,16 @@ id __27__ICEditingTextView_paste___block_invoke_2(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_paste_, v1);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(ICBaseTextView *)self icDelegate];
+  senderCopy = sender;
+  icDelegate = [(ICBaseTextView *)self icDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(ICBaseTextView *)self icDelegate];
-    v9 = [v8 shouldShowMenuItems];
+    icDelegate2 = [(ICBaseTextView *)self icDelegate];
+    shouldShowMenuItems = [icDelegate2 shouldShowMenuItems];
 
-    if (!v9)
+    if (!shouldShowMenuItems)
     {
       goto LABEL_42;
     }
@@ -13515,35 +13515,35 @@ id __27__ICEditingTextView_paste___block_invoke_2(uint64_t a1)
   {
   }
 
-  if (NSSelectorFromString(&cfstr_Showtextformat.isa) == a3)
+  if (NSSelectorFromString(&cfstr_Showtextformat.isa) == action)
   {
     goto LABEL_42;
   }
 
   LOBYTE(v10) = 0;
-  if (sel_toggleBoldface_ == a3 || sel_toggleItalics_ == a3 || sel_toggleUnderline_ == a3)
+  if (sel_toggleBoldface_ == action || sel_toggleItalics_ == action || sel_toggleUnderline_ == action)
   {
     goto LABEL_43;
   }
 
-  if (sel_copy_ == a3 || sel_cut_ == a3)
+  if (sel_copy_ == action || sel_cut_ == action)
   {
     v25.receiver = self;
     v25.super_class = ICEditingTextView;
-    if ([(ICEditingTextView *)&v25 canPerformAction:a3 withSender:v6])
+    if ([(ICEditingTextView *)&v25 canPerformAction:action withSender:senderCopy])
     {
-      v14 = [(ICEditingTextView *)self isSelectionCopyableSize];
+      isSelectionCopyableSize = [(ICEditingTextView *)self isSelectionCopyableSize];
       goto LABEL_24;
     }
 
     goto LABEL_42;
   }
 
-  if (sel__share_ == a3)
+  if (sel__share_ == action)
   {
     v24.receiver = self;
     v24.super_class = ICEditingTextView;
-    if (![(ICEditingTextView *)&v24 canPerformAction:a3 withSender:v6]|| ![(ICEditingTextView *)self isSelectionCopyableSize])
+    if (![(ICEditingTextView *)&v24 canPerformAction:action withSender:senderCopy]|| ![(ICEditingTextView *)self isSelectionCopyableSize])
     {
       goto LABEL_42;
     }
@@ -13552,11 +13552,11 @@ id __27__ICEditingTextView_paste___block_invoke_2(uint64_t a1)
     goto LABEL_43;
   }
 
-  v11 = [(ICEditingTextView *)self singleSelectedAttachment];
-  if (v11)
+  singleSelectedAttachment = [(ICEditingTextView *)self singleSelectedAttachment];
+  if (singleSelectedAttachment)
   {
-    v12 = v11;
-    if (NSSelectorFromString(&cfstr_Define.isa) == a3)
+    v12 = singleSelectedAttachment;
+    if (NSSelectorFromString(&cfstr_Define.isa) == action)
     {
 
       goto LABEL_42;
@@ -13564,7 +13564,7 @@ id __27__ICEditingTextView_paste___block_invoke_2(uint64_t a1)
 
     v13 = NSSelectorFromString(&cfstr_Promptforrepla.isa);
 
-    if (v13 == a3)
+    if (v13 == action)
     {
 LABEL_42:
       LOBYTE(v10) = 0;
@@ -13572,7 +13572,7 @@ LABEL_42:
     }
   }
 
-  if (sel__findSelected_ == a3)
+  if (sel__findSelected_ == action)
   {
     if ([(ICEditingTextView *)self selectionSupportsFindInNote])
     {
@@ -13591,26 +13591,26 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  if (sel_captureTextFromCamera_ != a3)
+  if (sel_captureTextFromCamera_ != action)
   {
-    if (sel_makeTextWritingDirectionLeftToRight_ == a3 || sel_makeTextWritingDirectionRightToLeft_ == a3 || sel_makeTextWritingDirectionNatural_ == a3)
+    if (sel_makeTextWritingDirectionLeftToRight_ == action || sel_makeTextWritingDirectionRightToLeft_ == action || sel_makeTextWritingDirectionNatural_ == action)
     {
       if ([(ICEditingTextView *)self isEditing])
       {
-        v14 = [(ICEditingTextView *)self allowsEditingTextAttributes];
+        isSelectionCopyableSize = [(ICEditingTextView *)self allowsEditingTextAttributes];
         goto LABEL_24;
       }
     }
 
     else
     {
-      if (sel_delete_ != a3)
+      if (sel_delete_ != action)
       {
         v20.receiver = self;
         v20.super_class = ICEditingTextView;
-        v14 = [(ICEditingTextView *)&v20 canPerformAction:a3 withSender:v6];
+        isSelectionCopyableSize = [(ICEditingTextView *)&v20 canPerformAction:action withSender:senderCopy];
 LABEL_24:
-        LOBYTE(v10) = v14;
+        LOBYTE(v10) = isSelectionCopyableSize;
         goto LABEL_43;
       }
 
@@ -13618,7 +13618,7 @@ LABEL_24:
       {
         v21.receiver = self;
         v21.super_class = ICEditingTextView;
-        v14 = [(ICEditingTextView *)&v21 canPerformAction:a3 withSender:v6];
+        isSelectionCopyableSize = [(ICEditingTextView *)&v21 canPerformAction:action withSender:senderCopy];
         goto LABEL_24;
       }
     }
@@ -13627,7 +13627,7 @@ LABEL_24:
   }
 
   objc_opt_class();
-  v17 = [(ICEditingTextView *)self firstResponder];
+  firstResponder = [(ICEditingTextView *)self firstResponder];
   v18 = ICDynamicCast();
 
   if (v18 && v18 != self && [(ICEditingTextView *)v18 isDescendantOfView:self]&& ([(ICEditingTextView *)v18 conformsToProtocol:&unk_2827B71A8]& 1) != 0)
@@ -13639,7 +13639,7 @@ LABEL_24:
   {
     v22.receiver = self;
     v22.super_class = ICEditingTextView;
-    LOBYTE(v10) = [(ICEditingTextView *)&v22 canPerformAction:a3 withSender:v6];
+    LOBYTE(v10) = [(ICEditingTextView *)&v22 canPerformAction:action withSender:senderCopy];
   }
 
 LABEL_43:
@@ -13648,24 +13648,24 @@ LABEL_43:
 
 - (BOOL)isDocumentCopyableSize
 {
-  v2 = [(ICEditingTextView *)self TTTextStorage];
-  v3 = [v2 mergeableString];
-  v4 = [v3 attributedString];
-  v5 = [v4 ic_isCopyableSize];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  mergeableString = [tTTextStorage mergeableString];
+  attributedString = [mergeableString attributedString];
+  ic_isCopyableSize = [attributedString ic_isCopyableSize];
 
-  return v5;
+  return ic_isCopyableSize;
 }
 
 - (BOOL)isSelectionCopyableSize
 {
-  v3 = [(ICEditingTextView *)self TTTextStorage];
-  v4 = [v3 mergeableString];
-  v5 = [v4 attributedString];
-  v6 = [(ICEditingTextView *)self selectedRange];
-  v8 = [v5 attributedSubstringFromRange:{v6, v7}];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  mergeableString = [tTTextStorage mergeableString];
+  attributedString = [mergeableString attributedString];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  v8 = [attributedString attributedSubstringFromRange:{selectedRange, v7}];
 
-  LOBYTE(v3) = [v8 ic_isCopyableSize];
-  return v3;
+  LOBYTE(tTTextStorage) = [v8 ic_isCopyableSize];
+  return tTTextStorage;
 }
 
 - (BOOL)selectionContainsDDResultAttribute
@@ -13681,7 +13681,7 @@ LABEL_43:
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v4 = [(ICEditingTextView *)self textStorage];
+    textStorage = [(ICEditingTextView *)self textStorage];
     [(ICEditingTextView *)self selectedRange];
     gotLoadHelper_x8__DDResultAttributeName(v5);
     v7 = **(v6 + 472);
@@ -13690,7 +13690,7 @@ LABEL_43:
     v11 = __55__ICEditingTextView_selectionContainsDDResultAttribute__block_invoke;
     v12 = &unk_2781ABC80;
     v13 = &v14;
-    [v4 enumerateAttribute:v7 inRange:? options:? usingBlock:?];
+    [textStorage enumerateAttribute:v7 inRange:? options:? usingBlock:?];
 
     v3 = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
@@ -13710,18 +13710,18 @@ uint64_t __55__ICEditingTextView_selectionContainsDDResultAttribute__block_invok
   return result;
 }
 
-- (void)_getPasteboardItemFromSelection:(id)a3
+- (void)_getPasteboardItemFromSelection:(id)selection
 {
   v79 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v52 = [(ICEditingTextView *)self selectionContainsDDResultAttribute];
-  if (v52)
+  selectionCopy = selection;
+  selectionContainsDDResultAttribute = [(ICEditingTextView *)self selectionContainsDDResultAttribute];
+  if (selectionContainsDDResultAttribute)
   {
     [(ICEditingTextView *)self ic_resetDataDetectorsResults];
   }
 
-  v64 = [(ICEditingTextView *)self TTTextStorage];
-  v63 = [(ICEditingTextView *)self persistenceHelper];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  persistenceHelper = [(ICEditingTextView *)self persistenceHelper];
   [(ICEditingTextView *)self selectedRanges];
   v72 = 0u;
   v73 = 0u;
@@ -13764,11 +13764,11 @@ uint64_t __55__ICEditingTextView_selectionContainsDDResultAttribute__block_invok
     location = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v13 = [(ICEditingTextView *)self textController];
-  v14 = [v13 extendedSelectionRangeForCollapsedSectionHeadingWithRange:location textView:{length, self}];
+  textController = [(ICEditingTextView *)self textController];
+  v14 = [textController extendedSelectionRangeForCollapsedSectionHeadingWithRange:location textView:{length, self}];
   v16 = v15;
 
-  v53 = self;
+  selfCopy = self;
   if (location == v14 && length == v16)
   {
     [MEMORY[0x277CBEB18] array];
@@ -13810,56 +13810,56 @@ uint64_t __55__ICEditingTextView_selectionContainsDDResultAttribute__block_invok
         }
 
         v22 = *(*(&v68 + 1) + 8 * j);
-        v23 = [MEMORY[0x277CBEB38] dictionary];
-        v24 = [v22 rangeValue];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        rangeValue = [v22 rangeValue];
         v26 = v25;
-        v27 = [v19 identifier];
-        v28 = [v64 copyDataForUTI:v27 range:v24 persistenceHelper:{v26, v63}];
+        identifier = [v19 identifier];
+        v28 = [tTTextStorage copyDataForUTI:identifier range:rangeValue persistenceHelper:{v26, persistenceHelper}];
 
         if (v28)
         {
-          v29 = [v19 identifier];
-          [v23 setObject:v28 forKeyedSubscript:v29];
+          identifier2 = [v19 identifier];
+          [dictionary setObject:v28 forKeyedSubscript:identifier2];
         }
 
-        v30 = [v20 identifier];
-        v31 = [v64 copyDataForUTI:v30 range:v24 persistenceHelper:{v26, v63}];
+        identifier3 = [v20 identifier];
+        v31 = [tTTextStorage copyDataForUTI:identifier3 range:rangeValue persistenceHelper:{v26, persistenceHelper}];
 
         if (v31)
         {
           v32 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v31 encoding:4];
-          v33 = [v20 identifier];
-          [v23 setObject:v32 forKeyedSubscript:v33];
+          identifier4 = [v20 identifier];
+          [dictionary setObject:v32 forKeyedSubscript:identifier4];
         }
 
-        v34 = [v58 identifier];
-        v35 = [v64 copyDataForUTI:v34 range:v24 persistenceHelper:{v26, v63}];
+        identifier5 = [v58 identifier];
+        v35 = [tTTextStorage copyDataForUTI:identifier5 range:rangeValue persistenceHelper:{v26, persistenceHelper}];
 
         if (v35)
         {
-          v36 = [v58 identifier];
-          [v23 setObject:v35 forKeyedSubscript:v36];
+          identifier6 = [v58 identifier];
+          [dictionary setObject:v35 forKeyedSubscript:identifier6];
         }
 
-        v37 = [v56 identifier];
-        v38 = [v64 copyDataForUTI:v37 range:v24 persistenceHelper:{v26, v63}];
+        identifier7 = [v56 identifier];
+        v38 = [tTTextStorage copyDataForUTI:identifier7 range:rangeValue persistenceHelper:{v26, persistenceHelper}];
 
         if (v38)
         {
-          v39 = [v56 identifier];
-          [v23 setObject:v38 forKeyedSubscript:v39];
+          identifier8 = [v56 identifier];
+          [dictionary setObject:v38 forKeyedSubscript:identifier8];
         }
 
-        v40 = [v64 copyDataForUTI:v55 range:v24 persistenceHelper:{v26, v63}];
+        v40 = [tTTextStorage copyDataForUTI:v55 range:rangeValue persistenceHelper:{v26, persistenceHelper}];
         if (v40)
         {
-          [v23 setObject:v40 forKeyedSubscript:v55];
+          [dictionary setObject:v40 forKeyedSubscript:v55];
         }
 
-        v41 = [MEMORY[0x277CBEA90] data];
-        [v23 setObject:v41 forKeyedSubscript:@"iOS rich content paste pasteboard type"];
+        data = [MEMORY[0x277CBEA90] data];
+        [dictionary setObject:data forKeyedSubscript:@"iOS rich content paste pasteboard type"];
 
-        v42 = [v23 copy];
+        v42 = [dictionary copy];
         [v61 addObject:v42];
 
         v19 = v59;
@@ -13873,24 +13873,24 @@ uint64_t __55__ICEditingTextView_selectionContainsDDResultAttribute__block_invok
   }
 
   v43 = MEMORY[0x277D75810];
-  v44 = [(ICEditingTextView *)v53 _dataOwnerForCopy];
+  _dataOwnerForCopy = [(ICEditingTextView *)selfCopy _dataOwnerForCopy];
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __53__ICEditingTextView__getPasteboardItemFromSelection___block_invoke;
   v65[3] = &unk_2781AEEC0;
   v66 = v61;
-  v67 = v51;
+  v67 = selectionCopy;
   v45 = v61;
-  v46 = v51;
-  [v43 _performAsDataOwner:v44 block:v65];
-  if (v52)
+  v46 = selectionCopy;
+  [v43 _performAsDataOwner:_dataOwnerForCopy block:v65];
+  if (selectionContainsDDResultAttribute)
   {
-    [(ICEditingTextView *)v53 ic_startDataDetectors];
+    [(ICEditingTextView *)selfCopy ic_startDataDetectors];
   }
 
   if (v47 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(ICEditingTextView *)v53 setSelectedRange:v47, v49];
+    [(ICEditingTextView *)selfCopy setSelectedRange:v47, v49];
   }
 }
 
@@ -13901,7 +13901,7 @@ void __53__ICEditingTextView__getPasteboardItemFromSelection___block_invoke(uint
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -13924,19 +13924,19 @@ uint64_t __26__ICEditingTextView_copy___block_invoke(uint64_t a1, void *a2)
   return [v6 _accessibilityPostPasteboardTextForOperation:v7];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self selectedRange];
+  cutCopy = cut;
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v7 = v6;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __25__ICEditingTextView_cut___block_invoke;
   v9[3] = &unk_2781AD1E8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:1 selectedRange:v5 completionHandler:v7, v9];
+  v10 = cutCopy;
+  v8 = cutCopy;
+  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:1 selectedRange:selectedRange completionHandler:v7, v9];
 }
 
 uint64_t __25__ICEditingTextView_cut___block_invoke(uint64_t result, int a2)
@@ -13949,9 +13949,9 @@ uint64_t __25__ICEditingTextView_cut___block_invoke(uint64_t result, int a2)
   return result;
 }
 
-- (void)_reallyCut:(id)a3
+- (void)_reallyCut:(id)cut
 {
-  v4 = a3;
+  cutCopy = cut;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -13964,28 +13964,28 @@ uint64_t __25__ICEditingTextView_cut___block_invoke(uint64_t result, int a2)
   v18[3] = &unk_2781AF318;
   v18[4] = v19;
   [(ICEditingTextView *)self _getPasteboardItemFromSelection:v18];
-  v5 = [MEMORY[0x277D75810] generalPasteboard];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
   v6 = MEMORY[0x277D75810];
-  v7 = [(ICEditingTextView *)self _dataOwnerForCopy];
+  _dataOwnerForCopy = [(ICEditingTextView *)self _dataOwnerForCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __32__ICEditingTextView__reallyCut___block_invoke_2;
   v16[3] = &unk_2781ABEB8;
   v16[4] = self;
-  v8 = v4;
+  v8 = cutCopy;
   v17 = v8;
-  [v6 _performAsDataOwner:v7 block:v16];
+  [v6 _performAsDataOwner:_dataOwnerForCopy block:v16];
   v9 = MEMORY[0x277D75810];
-  v10 = [(ICEditingTextView *)self _dataOwnerForCopy];
+  _dataOwnerForCopy2 = [(ICEditingTextView *)self _dataOwnerForCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __32__ICEditingTextView__reallyCut___block_invoke_3;
   v12[3] = &unk_2781AF340;
-  v11 = v5;
-  v14 = self;
+  v11 = generalPasteboard;
+  selfCopy = self;
   v15 = v19;
   v13 = v11;
-  [v9 _performAsDataOwner:v10 block:v12];
+  [v9 _performAsDataOwner:_dataOwnerForCopy2 block:v12];
 
   _Block_object_dispose(v19, 8);
 }
@@ -14030,30 +14030,30 @@ uint64_t __32__ICEditingTextView__reallyCut___block_invoke_3(uint64_t a1)
   return [v2 _accessibilityPostPasteboardTextForOperation:v3];
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 string];
-  v6 = [(ICEditingTextView *)self willInsertText:v5];
+  textCopy = text;
+  string = [textCopy string];
+  v6 = [(ICEditingTextView *)self willInsertText:string];
   v8 = v7;
 
-  v9 = [(ICEditingTextView *)self textController];
-  v10 = [v9 authorHighlightsController];
+  textController = [(ICEditingTextView *)self textController];
+  authorHighlightsController = [textController authorHighlightsController];
 
-  v11 = [(ICEditingTextView *)self selectedRange];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v13 = v12;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__ICEditingTextView_insertAttributedText___block_invoke;
   v16[3] = &unk_2781AF368;
-  v17 = v10;
-  v18 = v4;
-  v19 = self;
+  v17 = authorHighlightsController;
+  v18 = textCopy;
+  selfCopy = self;
   v20 = v6;
   v21 = v8;
-  v14 = v4;
-  v15 = v10;
-  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:2 selectedRange:v11 completionHandler:v13, v16];
+  v14 = textCopy;
+  v15 = authorHighlightsController;
+  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:2 selectedRange:selectedRange completionHandler:v13, v16];
 }
 
 void __42__ICEditingTextView_insertAttributedText___block_invoke(uint64_t a1, int a2)
@@ -14072,28 +14072,28 @@ void __42__ICEditingTextView_insertAttributedText___block_invoke(uint64_t a1, in
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self willInsertText:v4];
+  textCopy = text;
+  v5 = [(ICEditingTextView *)self willInsertText:textCopy];
   v7 = v6;
-  v8 = [(ICEditingTextView *)self textController];
-  v9 = [v8 authorHighlightsController];
+  textController = [(ICEditingTextView *)self textController];
+  authorHighlightsController = [textController authorHighlightsController];
 
-  v10 = [(ICEditingTextView *)self selectedRange];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v12 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __32__ICEditingTextView_insertText___block_invoke;
   v15[3] = &unk_2781AF368;
-  v16 = v9;
-  v17 = v4;
-  v18 = self;
+  v16 = authorHighlightsController;
+  v17 = textCopy;
+  selfCopy = self;
   v19 = v5;
   v20 = v7;
-  v13 = v4;
-  v14 = v9;
-  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:2 selectedRange:v10 completionHandler:v12, v15];
+  v13 = textCopy;
+  v14 = authorHighlightsController;
+  [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:2 selectedRange:selectedRange completionHandler:v12, v15];
 }
 
 uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int a2)
@@ -14113,84 +14113,84 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
   return result;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if ([(ICEditingTextView *)self selectedRangeBeforeMarking]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ICEditingTextView *)self selectedRange];
-    [(ICEditingTextView *)self setSelectedRangeBeforeMarking:v8, v9];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
+    [(ICEditingTextView *)self setSelectedRangeBeforeMarking:selectedRange, v9];
   }
 
   objc_opt_class();
-  v10 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v11 = ICDynamicCast();
   [v11 setIsTypingOrMarkingText:1];
 
   v14.receiver = self;
   v14.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v14 setMarkedText:v7 selectedRange:location, length];
+  [(ICEditingTextView *)&v14 setMarkedText:textCopy selectedRange:location, length];
 
   objc_opt_class();
-  v12 = [(ICEditingTextView *)self textStorage];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
   v13 = ICDynamicCast();
   [v13 setIsTypingOrMarkingText:0];
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v19[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  textCopy = text;
   if ([(ICEditingTextView *)self selectedRangeBeforeMarking]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ICEditingTextView *)self selectedRange];
-    [(ICEditingTextView *)self setSelectedRangeBeforeMarking:v8, v9];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
+    [(ICEditingTextView *)self setSelectedRangeBeforeMarking:selectedRange, v9];
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18[0] = @"ICEditingTextViewWillSetMarkedTextNotificationMarkedTextKey";
   v18[1] = @"ICEditingTextViewWillSetMarkedTextNotificationSelectedRangeKey";
-  v19[0] = v7;
+  v19[0] = textCopy;
   v11 = [MEMORY[0x277CCAE60] valueWithRange:{location, length}];
   v19[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
-  [v10 postNotificationName:@"ICEditingTextViewWillSetMarkedTextNotification" object:self userInfo:v12];
+  [defaultCenter postNotificationName:@"ICEditingTextViewWillSetMarkedTextNotification" object:self userInfo:v12];
 
   objc_opt_class();
-  v13 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v14 = ICDynamicCast();
   [v14 setIsTypingOrMarkingText:1];
 
   v17.receiver = self;
   v17.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v17 setAttributedMarkedText:v7 selectedRange:location, length];
+  [(ICEditingTextView *)&v17 setAttributedMarkedText:textCopy selectedRange:location, length];
   objc_opt_class();
 
-  v15 = [(ICEditingTextView *)self textStorage];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
   v16 = ICDynamicCast();
   [v16 setIsTypingOrMarkingText:0];
 }
 
 - (void)unmarkText
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 calculateRecognitionController];
-  [v4 discardPreviewedResult];
+  editorController = [(ICEditingTextView *)self editorController];
+  calculateRecognitionController = [editorController calculateRecognitionController];
+  [calculateRecognitionController discardPreviewedResult];
 
-  v5 = [(ICEditingTextView *)self ic_markedTextRange];
+  ic_markedTextRange = [(ICEditingTextView *)self ic_markedTextRange];
   v7 = v6;
-  v8 = [(ICEditingTextView *)self textStorage];
-  v35 = v5;
-  v9 = [v8 attributedSubstringFromRange:{v5, v7}];
-  v10 = [v9 string];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v35 = ic_markedTextRange;
+  v9 = [textStorage attributedSubstringFromRange:{ic_markedTextRange, v7}];
+  string = [v9 string];
 
   [(ICEditingTextView *)self setSelectedRangeBeforeMarking:0x7FFFFFFFFFFFFFFFLL, 0];
   objc_opt_class();
-  v11 = [(ICEditingTextView *)self textStorage];
+  textStorage2 = [(ICEditingTextView *)self textStorage];
   v12 = ICDynamicCast();
   [v12 setIsTypingOrMarkingText:1];
 
@@ -14198,55 +14198,55 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
   v36.super_class = ICEditingTextView;
   [(ICEditingTextView *)&v36 unmarkText];
   objc_opt_class();
-  v13 = [(ICEditingTextView *)self textStorage];
+  textStorage3 = [(ICEditingTextView *)self textStorage];
   v14 = ICDynamicCast();
   [v14 setIsTypingOrMarkingText:0];
 
   objc_opt_class();
-  v15 = [(ICEditingTextView *)self textStorage];
+  textStorage4 = [(ICEditingTextView *)self textStorage];
   v16 = ICDynamicCast();
 
-  v17 = [(ICEditingTextView *)self editorController];
-  v18 = [v17 mentionsController];
-  v19 = [(ICEditingTextView *)self selectedRange];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  mentionsController = [editorController2 mentionsController];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v21 = v20;
-  v22 = [(ICEditingTextView *)self editorController];
-  v23 = [v22 note];
+  editorController3 = [(ICEditingTextView *)self editorController];
+  note = [editorController3 note];
   BYTE1(v33) = [(ICEditingTextView *)self languageHasSpaces];
   LOBYTE(v33) = 0;
-  LOBYTE(v19) = [v18 checkForMentionInEditedRange:v19 ofTextStorage:v21 note:v16 textView:v23 allowAutoExplicitMention:self isEndingEditing:1 languageHasSpaces:v33 parentAttachment:0];
+  LOBYTE(selectedRange) = [mentionsController checkForMentionInEditedRange:selectedRange ofTextStorage:v21 note:v16 textView:note allowAutoExplicitMention:self isEndingEditing:1 languageHasSpaces:v33 parentAttachment:0];
 
-  if ((v19 & 1) == 0)
+  if ((selectedRange & 1) == 0)
   {
-    v24 = [(ICEditingTextView *)self editorController];
-    v25 = [v24 hashtagController];
-    v26 = [(ICEditingTextView *)self selectedRange];
+    editorController4 = [(ICEditingTextView *)self editorController];
+    hashtagController = [editorController4 hashtagController];
+    selectedRange2 = [(ICEditingTextView *)self selectedRange];
     v28 = v27;
-    v29 = [(ICEditingTextView *)self editorController];
-    v30 = [v29 note];
+    editorController5 = [(ICEditingTextView *)self editorController];
+    note2 = [editorController5 note];
     BYTE1(v34) = [(ICEditingTextView *)self languageHasSpaces];
     LOBYTE(v34) = 0;
-    [v25 checkForHashtagInEditedRange:v26 ofTextStorage:v28 note:v16 textView:v30 allowAutoExplicitHashtag:self isEndingEditing:1 languageHasSpaces:v34 parentAttachment:0];
+    [hashtagController checkForHashtagInEditedRange:selectedRange2 ofTextStorage:v28 note:v16 textView:note2 allowAutoExplicitHashtag:self isEndingEditing:1 languageHasSpaces:v34 parentAttachment:0];
   }
 
-  v31 = [(ICEditingTextView *)self editorController];
-  v32 = [v31 calculateRecognitionController];
-  [v32 didUnmarkString:v10 atRange:{v35, v7}];
+  editorController6 = [(ICEditingTextView *)self editorController];
+  calculateRecognitionController2 = [editorController6 calculateRecognitionController];
+  [calculateRecognitionController2 didUnmarkString:string atRange:{v35, v7}];
 }
 
 - (void)deleteBackward
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 calculateRecognitionController];
-  [v4 discardPreviewedResult];
+  editorController = [(ICEditingTextView *)self editorController];
+  calculateRecognitionController = [editorController calculateRecognitionController];
+  [calculateRecognitionController discardPreviewedResult];
 
   objc_opt_class();
-  v5 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v6 = ICDynamicCast();
 
-  v7 = [(ICEditingTextView *)self selectedTextRange];
-  v8 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:v7];
+  selectedTextRange = [(ICEditingTextView *)self selectedTextRange];
+  v8 = [(ICEditingTextView *)self ic_characterRangeFromTextRange:selectedTextRange];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -14255,13 +14255,13 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
 
   else
   {
-    v10 = [v6 attribute:*MEMORY[0x277D35DA8] atIndex:v8 effectiveRange:0];
-    v11 = [v10 uuid];
-    if (v11)
+    textController = [v6 attribute:*MEMORY[0x277D35DA8] atIndex:v8 effectiveRange:0];
+    uuid = [textController uuid];
+    if (uuid)
     {
-      v12 = [v6 outlineController];
-      v13 = [v10 uuid];
-      v9 = [v12 isUUIDCollapsed:v13];
+      outlineController = [v6 outlineController];
+      uuid2 = [textController uuid];
+      v9 = [outlineController isUUIDCollapsed:uuid2];
     }
 
     else
@@ -14269,28 +14269,28 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
       v9 = 0;
     }
 
-    v14 = [v10 uuid];
-    if (v14)
+    uuid3 = [textController uuid];
+    if (uuid3)
     {
-      v15 = v14;
-      v16 = [v6 outlineController];
-      v17 = [v10 uuid];
-      v18 = [v16 isUUIDHidden:v17];
+      v15 = uuid3;
+      outlineController2 = [v6 outlineController];
+      uuid4 = [textController uuid];
+      v18 = [outlineController2 isUUIDHidden:uuid4];
 
       if (v18)
       {
-        v19 = [v6 outlineController];
-        v20 = [v10 uuid];
-        v21 = [v19 closestVisibleAncestorForUUID:v20];
+        outlineController3 = [v6 outlineController];
+        uuid5 = [textController uuid];
+        v21 = [outlineController3 closestVisibleAncestorForUUID:uuid5];
 
         if (v21)
         {
-          v22 = [v6 outlineController];
+          outlineController4 = [v6 outlineController];
           v23 = MEMORY[0x277CBEB98];
           v31[0] = v21;
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
           v25 = [v23 setWithArray:v24];
-          [v22 expandUUIDs:v25];
+          [outlineController4 expandUUIDs:v25];
         }
 
         goto LABEL_18;
@@ -14298,13 +14298,13 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
     }
   }
 
-  v10 = [(ICEditingTextView *)self textController];
-  v26 = [(ICEditingTextView *)self selectedTextRange];
-  v27 = [v26 isEmpty];
+  textController = [(ICEditingTextView *)self textController];
+  selectedTextRange2 = [(ICEditingTextView *)self selectedTextRange];
+  isEmpty = [selectedTextRange2 isEmpty];
 
-  if ((v27 & 1) == 0 && !v9)
+  if ((isEmpty & 1) == 0 && !v9)
   {
-    if ([v10 deleteWordBackwardForSpecialCasesInTextView:self])
+    if ([textController deleteWordBackwardForSpecialCasesInTextView:self])
     {
       goto LABEL_18;
     }
@@ -14312,18 +14312,18 @@ uint64_t __32__ICEditingTextView_insertText___block_invoke(uint64_t result, int 
     goto LABEL_17;
   }
 
-  if (([v10 deleteBackwardForSpecialCasesInTextView:self] & 1) == 0)
+  if (([textController deleteBackwardForSpecialCasesInTextView:self] & 1) == 0)
   {
 LABEL_17:
-    v28 = [(ICEditingTextView *)self selectedRange];
+    selectedRange = [(ICEditingTextView *)self selectedRange];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __35__ICEditingTextView_deleteBackward__block_invoke;
     v30[3] = &unk_2781AC6F0;
     v30[4] = self;
-    v30[5] = v28;
+    v30[5] = selectedRange;
     v30[6] = v29;
-    [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:0 selectedRange:v28 completionHandler:v29, v30];
+    [(ICEditingTextView *)self showRemoveAttachmentAlertIfNecessaryForOperation:0 selectedRange:selectedRange completionHandler:v29, v30];
   }
 
 LABEL_18:
@@ -14349,9 +14349,9 @@ void __35__ICEditingTextView_deleteBackward__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3
+- (void)_deleteBackwardAndNotify:(BOOL)notify
 {
-  if (a3)
+  if (notify)
   {
 
     [(ICEditingTextView *)self deleteBackward];
@@ -14367,24 +14367,24 @@ void __35__ICEditingTextView_deleteBackward__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_removeDrawingAttachment:(id)a3 withView:(id)a4 forDeletion:(BOOL)a5
+- (void)_removeDrawingAttachment:(id)attachment withView:(id)view forDeletion:(BOOL)deletion
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  deletionCopy = deletion;
+  attachmentCopy = attachment;
+  viewCopy = view;
+  if (deletionCopy)
   {
     objc_opt_class();
     v10 = ICCheckedDynamicCast();
-    v11 = [v10 attachment];
-    v12 = [MEMORY[0x277CBEA60] ic_arrayFromNonNilObject:v11];
+    attachment = [v10 attachment];
+    v12 = [MEMORY[0x277CBEA60] ic_arrayFromNonNilObject:attachment];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block_invoke;
     v14[3] = &unk_2781AD198;
-    v15 = v8;
-    v16 = v9;
-    v17 = self;
+    v15 = attachmentCopy;
+    v16 = viewCopy;
+    selfCopy = self;
     [(ICEditingTextView *)self showDeleteInlineDrawingAlertWithType:1 attachments:v12 completionHandler:v14];
   }
 
@@ -14392,7 +14392,7 @@ void __35__ICEditingTextView_deleteBackward__block_invoke(uint64_t a1, int a2)
   {
     v13.receiver = self;
     v13.super_class = ICEditingTextView;
-    [(ICEditingTextView *)&v13 _removeDrawingAttachment:v8 withView:v9 forDeletion:0];
+    [(ICEditingTextView *)&v13 _removeDrawingAttachment:attachmentCopy withView:viewCopy forDeletion:0];
   }
 }
 
@@ -14423,128 +14423,128 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
   return v3;
 }
 
-- (void)_insertDrawing:(id)a3
+- (void)_insertDrawing:(id)drawing
 {
   v5.receiver = self;
   v5.super_class = ICEditingTextView;
-  v4 = a3;
+  drawingCopy = drawing;
   [(ICEditingTextView *)&v5 _insertDrawing:self];
-  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:4 sender:v4, v5.receiver, v5.super_class];
+  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:4 sender:drawingCopy, v5.receiver, v5.super_class];
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
   v5.receiver = self;
   v5.super_class = ICEditingTextView;
-  v4 = a3;
-  [(ICEditingTextView *)&v5 select:v4];
-  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:1 sender:v4, v5.receiver, v5.super_class];
+  selectCopy = select;
+  [(ICEditingTextView *)&v5 select:selectCopy];
+  [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:1 sender:selectCopy, v5.receiver, v5.super_class];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
+  allCopy = all;
   v5.receiver = self;
   v5.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v5 selectAll:v4];
+  [(ICEditingTextView *)&v5 selectAll:allCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:2 sender:v4];
+    [(ICEditingTextView *)self informDelegateOfAnalyticsCalloutBarButtonActionOfType:2 sender:allCopy];
   }
 }
 
 - (id)typingAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICEditingTextView *)v2 cachedTypingAttributes];
-  v4 = v3;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedTypingAttributes = [(ICEditingTextView *)selfCopy cachedTypingAttributes];
+  typingAttributes = cachedTypingAttributes;
+  if (!cachedTypingAttributes)
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = ICEditingTextView;
-    v4 = [(ICEditingTextView *)&v7 typingAttributes];
+    typingAttributes = [(ICEditingTextView *)&v7 typingAttributes];
   }
 
-  [(ICEditingTextView *)v2 setCachedTypingAttributes:v4];
-  if (!v3)
+  [(ICEditingTextView *)selfCopy setCachedTypingAttributes:typingAttributes];
+  if (!cachedTypingAttributes)
   {
   }
 
-  v5 = [(ICEditingTextView *)v2 cachedTypingAttributes];
-  objc_sync_exit(v2);
+  cachedTypingAttributes2 = [(ICEditingTextView *)selfCopy cachedTypingAttributes];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return cachedTypingAttributes2;
 }
 
-- (void)setTypingAttributes:(id)a3
+- (void)setTypingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v4)
+  attributesCopy = attributes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!attributesCopy)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((typingAttributes) != nil)" functionName:"-[ICEditingTextView setTypingAttributes:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "typingAttributes"}];
   }
 
   objc_opt_class();
-  v6 = [(ICEditingTextView *)v5 textStorage];
+  textStorage = [(ICEditingTextView *)selfCopy textStorage];
   v7 = ICDynamicCast();
-  v8 = [v7 isEditing];
+  isEditing = [v7 isEditing];
 
-  if (v8)
+  if (isEditing)
   {
-    [(ICEditingTextView *)v5 setPendingTypingAttributes:v4];
+    [(ICEditingTextView *)selfCopy setPendingTypingAttributes:attributesCopy];
   }
 
   else
   {
-    [(ICEditingTextView *)v5 setPendingTypingAttributes:0];
-    [(ICEditingTextView *)v5 setCachedTypingAttributes:v4];
-    v9.receiver = v5;
+    [(ICEditingTextView *)selfCopy setPendingTypingAttributes:0];
+    [(ICEditingTextView *)selfCopy setCachedTypingAttributes:attributesCopy];
+    v9.receiver = selfCopy;
     v9.super_class = ICEditingTextView;
-    [(ICEditingTextView *)&v9 setTypingAttributes:v4];
+    [(ICEditingTextView *)&v9 setTypingAttributes:attributesCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)internalTypingAttributes
 {
   v4.receiver = self;
   v4.super_class = ICEditingTextView;
-  v2 = [(ICEditingTextView *)&v4 typingAttributes];
+  typingAttributes = [(ICEditingTextView *)&v4 typingAttributes];
 
-  return v2;
+  return typingAttributes;
 }
 
-- (void)setInternalTypingAttributes:(id)a3
+- (void)setInternalTypingAttributes:(id)attributes
 {
   v3.receiver = self;
   v3.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v3 setTypingAttributes:a3];
+  [(ICEditingTextView *)&v3 setTypingAttributes:attributes];
 }
 
 - (void)applyPendingTypingAttributesIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICEditingTextView *)v2 pendingTypingAttributes];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingTypingAttributes = [(ICEditingTextView *)selfCopy pendingTypingAttributes];
 
-  if (v3)
+  if (pendingTypingAttributes)
   {
-    [(ICEditingTextView *)v2 setPendingTypingAttributes:0];
-    v4 = [(ICEditingTextView *)v2 pendingTypingAttributes];
-    [(ICEditingTextView *)v2 setCachedTypingAttributes:v4];
+    [(ICEditingTextView *)selfCopy setPendingTypingAttributes:0];
+    pendingTypingAttributes2 = [(ICEditingTextView *)selfCopy pendingTypingAttributes];
+    [(ICEditingTextView *)selfCopy setCachedTypingAttributes:pendingTypingAttributes2];
 
-    v5 = [(ICEditingTextView *)v2 pendingTypingAttributes];
-    v6.receiver = v2;
+    pendingTypingAttributes3 = [(ICEditingTextView *)selfCopy pendingTypingAttributes];
+    v6.receiver = selfCopy;
     v6.super_class = ICEditingTextView;
-    [(ICEditingTextView *)&v6 setTypingAttributes:v5];
+    [(ICEditingTextView *)&v6 setTypingAttributes:pendingTypingAttributes3];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)ic_startDataDetectors
@@ -14575,24 +14575,24 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
   return [(ICEditingTextView *)self isSelectable];
 }
 
-- (BOOL)hasFullWidthTextAttachmentAtCaretLocation:(int64_t)a3
+- (BOOL)hasFullWidthTextAttachmentAtCaretLocation:(int64_t)location
 {
-  if (a3 < 0)
+  if (location < 0)
   {
     return 0;
   }
 
-  v5 = [(ICEditingTextView *)self TTTextStorage];
-  v6 = [v5 length];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v6 = [tTTextStorage length];
 
-  if (v6 <= a3)
+  if (v6 <= location)
   {
     return 0;
   }
 
   objc_opt_class();
-  v7 = [(ICEditingTextView *)self TTTextStorage];
-  v8 = [v7 attribute:*MEMORY[0x277D74060] atIndex:a3 longestEffectiveRange:0 inRange:{a3, 1}];
+  tTTextStorage2 = [(ICEditingTextView *)self TTTextStorage];
+  v8 = [tTTextStorage2 attribute:*MEMORY[0x277D74060] atIndex:location longestEffectiveRange:0 inRange:{location, 1}];
   v9 = ICDynamicCast();
 
   objc_opt_class();
@@ -14615,26 +14615,26 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
   return v14;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self beginningOfDocument];
-  v6 = [(ICEditingTextView *)self offsetFromPosition:v5 toPosition:v4];
+  positionCopy = position;
+  beginningOfDocument = [(ICEditingTextView *)self beginningOfDocument];
+  v6 = [(ICEditingTextView *)self offsetFromPosition:beginningOfDocument toPosition:positionCopy];
 
-  v7 = [(ICEditingTextView *)self TTTextStorage];
-  v8 = [v7 logicalRangeForLocation:v6];
+  tTTextStorage = [(ICEditingTextView *)self TTTextStorage];
+  v8 = [tTTextStorage logicalRangeForLocation:v6];
   v10 = v8 + v9;
   if (v6 == v8 + v9)
   {
-    v11 = [(ICEditingTextView *)self editorController];
-    v12 = [v11 textController];
-    v13 = [(ICEditingTextView *)self typingAttributes];
-    v14 = [v12 typingAttributesForRange:v6 forSelectionChange:0 currentTypingAttributes:0 inTextStorage:{v13, v7}];
+    editorController = [(ICEditingTextView *)self editorController];
+    textController = [editorController textController];
+    typingAttributes = [(ICEditingTextView *)self typingAttributes];
+    v14 = [textController typingAttributesForRange:v6 forSelectionChange:0 currentTypingAttributes:0 inTextStorage:{typingAttributes, tTTextStorage}];
 
-    v15 = [(ICEditingTextView *)self typingAttributes];
-    LOBYTE(v12) = [v14 isEqual:v15];
+    typingAttributes2 = [(ICEditingTextView *)self typingAttributes];
+    LOBYTE(textController) = [v14 isEqual:typingAttributes2];
 
-    if ((v12 & 1) == 0)
+    if ((textController & 1) == 0)
     {
       [(ICEditingTextView *)self setTypingAttributes:v14];
     }
@@ -14642,7 +14642,7 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
 
   v95.receiver = self;
   v95.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v95 caretRectForPosition:v4];
+  [(ICEditingTextView *)&v95 caretRectForPosition:positionCopy];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -14651,22 +14651,22 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
   v25 = 0x277D74000;
   if (v6 == v10)
   {
-    v26 = [v7 styler];
-    v27 = [(ICEditingTextView *)self typingAttributes];
-    v28 = [v27 objectForKeyedSubscript:*v24];
+    styler = [tTTextStorage styler];
+    typingAttributes3 = [(ICEditingTextView *)self typingAttributes];
+    v28 = [typingAttributes3 objectForKeyedSubscript:*v24];
 
     if (v28)
     {
       v29 = v24;
-      v30 = [v28 baseWritingDirection];
-      v31 = [(ICEditingTextView *)self typingAttributes];
-      v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D35DA8]];
+      baseWritingDirection = [v28 baseWritingDirection];
+      typingAttributes4 = [(ICEditingTextView *)self typingAttributes];
+      v32 = [typingAttributes4 objectForKeyedSubscript:*MEMORY[0x277D35DA8]];
 
       if (v32)
       {
         v33 = MEMORY[0x277D36968];
-        v34 = [(ICEditingTextView *)self selectedRange];
-        [v33 indentForStyle:v32 range:v34 attributedString:v35 textView:{v7, self}];
+        selectedRange = [(ICEditingTextView *)self selectedRange];
+        [v33 indentForStyle:v32 range:selectedRange attributedString:v35 textView:{tTTextStorage, self}];
       }
 
       else
@@ -14676,7 +14676,7 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
 
       v48 = v36;
 
-      v46 = v30 == -1;
+      v46 = baseWritingDirection == -1;
       v47 = v48;
       v24 = v29;
     }
@@ -14689,13 +14689,13 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
 
     v93 = 0x7FFFFFFFFFFFFFFFLL;
     v94 = 0;
-    v49 = [v7 string];
-    v50 = [(ICEditingTextView *)self selectedRange];
-    [v49 getParagraphStart:&v94 end:0 contentsEnd:&v93 forRange:{v50, v51}];
+    string = [tTTextStorage string];
+    selectedRange2 = [(ICEditingTextView *)self selectedRange];
+    [string getParagraphStart:&v94 end:0 contentsEnd:&v93 forRange:{selectedRange2, v51}];
 
     if (v46 && v94 == v93)
     {
-      v52 = [v26 keyboardLanguageForTextView:self];
+      v52 = [styler keyboardLanguageForTextView:self];
       v25 = 0x277D74000uLL;
       if (v52)
       {
@@ -14706,8 +14706,8 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
         v90 = v57;
         v91 = v58;
         rect = v59;
-        v60 = [(ICEditingTextView *)self textContainer];
-        [v60 lineFragmentPadding];
+        textContainer = [(ICEditingTextView *)self textContainer];
+        [textContainer lineFragmentPadding];
         v62 = v61;
         [(ICEditingTextView *)self textContainerInset];
         v64 = v63;
@@ -14745,7 +14745,7 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
       goto LABEL_29;
     }
 
-    v26 = [v7 attribute:*MEMORY[0x277D74060] atIndex:v6 - 1 longestEffectiveRange:0 inRange:{v6 - 1, 1}];
+    styler = [tTTextStorage attribute:*MEMORY[0x277D74060] atIndex:v6 - 1 longestEffectiveRange:0 inRange:{v6 - 1, 1}];
     objc_opt_class();
     v37 = ICDynamicCast();
     v28 = v37;
@@ -14773,25 +14773,25 @@ id __67__ICEditingTextView__removeDrawingAttachment_withView_forDeletion___block
   }
 
 LABEL_29:
-  v71 = [*(v25 + 584) ic_isRTL];
-  v72 = [(ICEditingTextView *)self textStorage];
-  v73 = [v72 length];
+  ic_isRTL = [*(v25 + 584) ic_isRTL];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v73 = [textStorage length];
 
   if (v6 < v73)
   {
-    v74 = [(ICEditingTextView *)self textStorage];
-    v75 = [v74 attribute:*v24 atIndex:v6 effectiveRange:0];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v75 = [textStorage2 attribute:*v24 atIndex:v6 effectiveRange:0];
 
     if (v75)
     {
-      v71 = [v75 baseWritingDirection] == 1;
+      ic_isRTL = [v75 baseWritingDirection] == 1;
     }
   }
 
   [(ICEditingTextView *)self bounds];
   if (v17 >= CGRectGetMidX(v96))
   {
-    v84 = v6 - (v71 ^ 1);
+    v84 = v6 - (ic_isRTL ^ 1);
     if (v84 >= 0 && [(ICEditingTextView *)self hasFullWidthTextAttachmentAtCaretLocation:v84])
     {
       [(ICEditingTextView *)self bounds];
@@ -14801,22 +14801,22 @@ LABEL_29:
 
   else
   {
-    v76 = v6 - v71;
+    v76 = v6 - ic_isRTL;
     if (v76 >= 0)
     {
       if ([(ICEditingTextView *)self hasFullWidthTextAttachmentAtCaretLocation:v76])
       {
         v77 = [(ICEditingTextView *)self ink];
-        v78 = [v77 _isHandwritingInk];
+        _isHandwritingInk = [v77 _isHandwritingInk];
 
         v17 = 1.0;
-        if (v78)
+        if (_isHandwritingInk)
         {
-          v79 = [(ICEditingTextView *)self textStorage];
-          v80 = [v79 attribute:*MEMORY[0x277D740A8] atIndex:v76 effectiveRange:0];
+          textStorage3 = [(ICEditingTextView *)self textStorage];
+          v80 = [textStorage3 attribute:*MEMORY[0x277D740A8] atIndex:v76 effectiveRange:0];
 
-          v81 = [(ICEditingTextView *)self textContainer];
-          [v81 textContainerOrigin];
+          textContainer2 = [(ICEditingTextView *)self textContainer];
+          [textContainer2 textContainerOrigin];
           v17 = v82;
 
           if (v80)
@@ -14897,23 +14897,23 @@ void __47__ICEditingTextView_updateTextViewForDidChange__block_invoke(uint64_t a
   [*(a1 + 32) icaxTextDidChange];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(ICEditingTextView *)self tapGestureRecognizer];
+  beginCopy = begin;
+  tapGestureRecognizer = [(ICEditingTextView *)self tapGestureRecognizer];
 
-  if (v5 != v4)
+  if (tapGestureRecognizer != beginCopy)
   {
     v15.receiver = self;
     v15.super_class = ICEditingTextView;
-    v6 = [(ICEditingTextView *)&v15 gestureRecognizerShouldBegin:v4];
-    v7 = [(ICEditingTextView *)self editorController];
-    v8 = [v7 auxiliaryResponder];
+    v6 = [(ICEditingTextView *)&v15 gestureRecognizerShouldBegin:beginCopy];
+    editorController = [(ICEditingTextView *)self editorController];
+    auxiliaryResponder = [editorController auxiliaryResponder];
 
     if (v6)
     {
-      v9 = [(ICEditingTextView *)self editorController];
-      if (![v9 isEditing] || (LOBYTE(v6) = 1, v8) && v8 != self)
+      editorController2 = [(ICEditingTextView *)self editorController];
+      if (![editorController2 isEditing] || (LOBYTE(v6) = 1, auxiliaryResponder) && auxiliaryResponder != self)
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -14924,8 +14924,8 @@ void __47__ICEditingTextView_updateTextViewForDidChange__block_invoke(uint64_t a
           goto LABEL_14;
         }
 
-        v9 = [(ICEditingTextView *)self linkTappedByGesture:v4];
-        LOBYTE(v6) = v9 != 0;
+        editorController2 = [(ICEditingTextView *)self linkTappedByGesture:beginCopy];
+        LOBYTE(v6) = editorController2 != 0;
       }
     }
 
@@ -14934,9 +14934,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 numberOfTouches] && (-[ICEditingTextView editorController](self, "editorController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "shouldIgnoreTapToStartEditingTextView:", self), v11, (v12 & 1) == 0))
+  if ([beginCopy numberOfTouches] && (-[ICEditingTextView editorController](self, "editorController"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "shouldIgnoreTapToStartEditingTextView:", self), v11, (v12 & 1) == 0))
   {
-    v13 = [(ICEditingTextView *)self linkTappedByGesture:v4];
+    v13 = [(ICEditingTextView *)self linkTappedByGesture:beginCopy];
 
     LOBYTE(v6) = v13 == 0;
   }
@@ -14951,91 +14951,91 @@ LABEL_15:
   return v6;
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v31 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
-  v4 = [(ICEditingTextView *)self textContainer];
+  textContainer = [(ICEditingTextView *)self textContainer];
   v5 = ICDynamicCast();
-  v6 = [v5 insideSiriSnippet];
+  insideSiriSnippet = [v5 insideSiriSnippet];
 
-  if (v6)
+  if (insideSiriSnippet)
   {
     objc_opt_class();
     v7 = ICDynamicCast();
-    v8 = [v7 note];
+    note = [v7 note];
 
-    v9 = [MEMORY[0x277D35DF0] appURLForNote:v8];
-    if (v9)
+    tapGestureRecognizer = [MEMORY[0x277D35DF0] appURLForNote:note];
+    if (tapGestureRecognizer)
     {
-      [ICExtensionSafeAPIShims openURL:v9 originatingView:self completionHandler:0];
+      [ICExtensionSafeAPIShims openURL:tapGestureRecognizer originatingView:self completionHandler:0];
     }
 
     goto LABEL_9;
   }
 
-  v10 = [(ICEditingTextView *)self editorController];
-  v11 = [v10 calculateScrubberController];
-  v12 = [v11 isShowing];
+  editorController = [(ICEditingTextView *)self editorController];
+  calculateScrubberController = [editorController calculateScrubberController];
+  isShowing = [calculateScrubberController isShowing];
 
-  if (v12)
+  if (isShowing)
   {
-    v13 = [(ICEditingTextView *)self editorController];
-    v14 = [v13 calculateScrubberController];
-    [v14 hideScrubber];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    calculateScrubberController2 = [editorController2 calculateScrubberController];
+    [calculateScrubberController2 hideScrubber];
   }
 
   objc_opt_class();
-  v15 = [(ICEditingTextView *)self textStorage];
-  v8 = ICDynamicCast();
+  textStorage = [(ICEditingTextView *)self textStorage];
+  note = ICDynamicCast();
 
-  if ([v8 isMarkingTextForHeadingRename])
+  if ([note isMarkingTextForHeadingRename])
   {
     [(ICEditingTextView *)self endHeadingRenameCommittingMarkedText:1];
     goto LABEL_10;
   }
 
-  v9 = [(ICEditingTextView *)self tapGestureRecognizer];
-  if (v9 != v31)
+  tapGestureRecognizer = [(ICEditingTextView *)self tapGestureRecognizer];
+  if (tapGestureRecognizer != gestureCopy)
   {
     goto LABEL_9;
   }
 
-  v16 = [v31 state];
+  state = [gestureCopy state];
 
-  if (v16 == 3)
+  if (state == 3)
   {
-    v17 = [(ICEditingTextView *)self editorController];
-    v9 = [v17 note];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    tapGestureRecognizer = [editorController3 note];
 
-    if (v9)
+    if (tapGestureRecognizer)
     {
-      if ([v31 numberOfTouches])
+      if ([gestureCopy numberOfTouches])
       {
-        v18 = [(ICBaseTextView *)self icDelegate];
+        icDelegate = [(ICBaseTextView *)self icDelegate];
         v19 = objc_opt_respondsToSelector();
 
-        if ((v19 & 1) == 0 || (-[ICBaseTextView icDelegate](self, "icDelegate"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 handleTapGestureForAttribution:v31], v20, (v21 & 1) == 0))
+        if ((v19 & 1) == 0 || (-[ICBaseTextView icDelegate](self, "icDelegate"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 handleTapGestureForAttribution:gestureCopy], v20, (v21 & 1) == 0))
         {
-          v22 = [(ICEditingTextView *)self calculateRecognitionController];
-          v23 = [v22 isPreviewingResult];
+          calculateRecognitionController = [(ICEditingTextView *)self calculateRecognitionController];
+          isPreviewingResult = [calculateRecognitionController isPreviewingResult];
 
-          if (v23)
+          if (isPreviewingResult)
           {
-            v24 = [(ICEditingTextView *)self calculateRecognitionController];
-            [v24 discardPreviewedResult];
+            calculateRecognitionController2 = [(ICEditingTextView *)self calculateRecognitionController];
+            [calculateRecognitionController2 discardPreviewedResult];
           }
 
           else
           {
-            if ([v9 isEditable])
+            if ([tapGestureRecognizer isEditable])
             {
-              v26 = [(ICBaseTextView *)self icDelegate];
+              icDelegate2 = [(ICBaseTextView *)self icDelegate];
               v27 = objc_opt_respondsToSelector();
 
-              if ((v27 & 1) == 0 || (-[ICBaseTextView icDelegate](self, "icDelegate"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 shouldStartEditingForTapGesture:v31], v28, v29))
+              if ((v27 & 1) == 0 || (-[ICBaseTextView icDelegate](self, "icDelegate"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 shouldStartEditingForTapGesture:gestureCopy], v28, v29))
               {
-                [(ICEditingTextView *)self startEditingForTapGesture:v31];
+                [(ICEditingTextView *)self startEditingForTapGesture:gestureCopy];
               }
 
               goto LABEL_9;
@@ -15047,13 +15047,13 @@ LABEL_15:
               [(ICEditingTextView *)self setSelectedTextRange:0];
             }
 
-            if (![v9 isDeletedOrInTrash])
+            if (![tapGestureRecognizer isDeletedOrInTrash])
             {
               goto LABEL_9;
             }
 
-            v24 = [(ICEditingTextView *)self editorController];
-            [v24 showRecoverNoteAlert];
+            calculateRecognitionController2 = [(ICEditingTextView *)self editorController];
+            [calculateRecognitionController2 showRecoverNoteAlert];
           }
         }
       }
@@ -15061,8 +15061,8 @@ LABEL_15:
 
     else
     {
-      v25 = [(ICEditingTextView *)self editorController];
-      [v25 addNote:self];
+      editorController4 = [(ICEditingTextView *)self editorController];
+      [editorController4 addNote:self];
     }
 
 LABEL_9:
@@ -15071,16 +15071,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(ICBaseTextView *)self icDelegate];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  icDelegate = [(ICBaseTextView *)self icDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(ICBaseTextView *)self icDelegate];
-    v10 = [v9 shouldBlockHitTestOnTextView:self event:v7];
+    icDelegate2 = [(ICBaseTextView *)self icDelegate];
+    v10 = [icDelegate2 shouldBlockHitTestOnTextView:self event:eventCopy];
 
     if (v10)
     {
@@ -15096,25 +15096,25 @@ LABEL_10:
   [(ICEditingTextView *)self setHitTestPoint:x, y];
   v13.receiver = self;
   v13.super_class = ICEditingTextView;
-  v11 = [(ICEditingTextView *)&v13 hitTest:v7 withEvent:x, y];
+  v11 = [(ICEditingTextView *)&v13 hitTest:eventCopy withEvent:x, y];
 LABEL_6:
 
   return v11;
 }
 
-- (id)linkTappedByGesture:(id)a3
+- (id)linkTappedByGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 numberOfTouches])
+  gestureCopy = gesture;
+  if ([gestureCopy numberOfTouches])
   {
-    [v4 locationOfTouch:0 inView:self];
+    [gestureCopy locationOfTouch:0 inView:self];
     v10 = 0;
     [(ICEditingTextView *)self distanceFromContentToGivenPoint:&v10 charIndexAtPoint:?];
     v5 = 0;
     if (v6 < 28.2842712 && v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [(ICEditingTextView *)self textStorage];
-      v5 = [v8 attribute:*MEMORY[0x277D740E8] atIndex:v10 effectiveRange:0];
+      textStorage = [(ICEditingTextView *)self textStorage];
+      v5 = [textStorage attribute:*MEMORY[0x277D740E8] atIndex:v10 effectiveRange:0];
     }
   }
 
@@ -15126,18 +15126,18 @@ LABEL_6:
   return v5;
 }
 
-- (double)distanceFromContentToGivenPoint:(CGPoint)a3 charIndexAtPoint:(unint64_t *)a4
+- (double)distanceFromContentToGivenPoint:(CGPoint)point charIndexAtPoint:(unint64_t *)atPoint
 {
-  if (a4)
+  if (atPoint)
   {
-    *a4 = 0x7FFFFFFFFFFFFFFFLL;
+    *atPoint = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(ICEditingTextView *)self closestPositionToPoint:a3.x, a3.y];
+  v6 = [(ICEditingTextView *)self closestPositionToPoint:point.x, point.y];
   if (v6)
   {
-    v7 = [(ICEditingTextView *)self beginningOfDocument];
-    v8 = [(ICEditingTextView *)self offsetFromPosition:v7 toPosition:v6];
+    beginningOfDocument = [(ICEditingTextView *)self beginningOfDocument];
+    v8 = [(ICEditingTextView *)self offsetFromPosition:beginningOfDocument toPosition:v6];
 
     if (ICInternalSettingsIsTextKit2Enabled())
     {
@@ -15147,22 +15147,22 @@ LABEL_6:
     else
     {
       objc_opt_class();
-      v10 = [(ICEditingTextView *)self layoutManager];
+      layoutManager = [(ICEditingTextView *)self layoutManager];
       v11 = ICDynamicCast();
 
       v12 = [v11 glyphIndexForCharacterAtIndex:v8];
-      v13 = [(ICEditingTextView *)self textContainer];
-      [v11 boundingRectForGlyphRange:v12 inTextContainer:{0, v13}];
+      textContainer = [(ICEditingTextView *)self textContainer];
+      [v11 boundingRectForGlyphRange:v12 inTextContainer:{0, textContainer}];
     }
 
-    v14 = [(ICEditingTextView *)self textContainer];
-    [v14 textContainerOrigin];
+    textContainer2 = [(ICEditingTextView *)self textContainer];
+    [textContainer2 textContainerOrigin];
 
     UIDistanceBetweenPointAndRect();
     v9 = v15;
-    if (a4)
+    if (atPoint)
     {
-      *a4 = v8;
+      *atPoint = v8;
     }
   }
 
@@ -15174,21 +15174,21 @@ LABEL_6:
   return v9;
 }
 
-- (void)setIsDraggingChecklistItem:(BOOL)a3
+- (void)setIsDraggingChecklistItem:(BOOL)item
 {
-  if (self->_isDraggingChecklistItem != a3)
+  if (self->_isDraggingChecklistItem != item)
   {
-    self->_isDraggingChecklistItem = a3;
-    if (a3)
+    self->_isDraggingChecklistItem = item;
+    if (item)
     {
       v4 = objc_alloc_init(MEMORY[0x277D75A10]);
       [(ICEditingTextView *)self setChecklistDragFeedbackGenerator:v4];
 
-      v5 = [(ICEditingTextView *)self checklistDragFeedbackGenerator];
-      [v5 prepare];
+      checklistDragFeedbackGenerator = [(ICEditingTextView *)self checklistDragFeedbackGenerator];
+      [checklistDragFeedbackGenerator prepare];
 
-      v6 = [(ICEditingTextView *)self checklistDragFeedbackGenerator];
-      [v6 selectionChanged];
+      checklistDragFeedbackGenerator2 = [(ICEditingTextView *)self checklistDragFeedbackGenerator];
+      [checklistDragFeedbackGenerator2 selectionChanged];
     }
 
     else
@@ -15199,48 +15199,48 @@ LABEL_6:
   }
 }
 
-- (void)setIsDraggingOverChecklistItem:(BOOL)a3
+- (void)setIsDraggingOverChecklistItem:(BOOL)item
 {
-  if (self->_isDraggingOverChecklistItem != a3)
+  if (self->_isDraggingOverChecklistItem != item)
   {
-    self->_isDraggingOverChecklistItem = a3;
-    if (!a3)
+    self->_isDraggingOverChecklistItem = item;
+    if (!item)
     {
       [(ICEditingTextView *)self setInhibitNextDropCursorUpdateAnimation:1];
     }
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  -[ICEditingTextView setTouchIsPointer:](self, "setTouchIsPointer:", [v7 ic_containsObjectPassingTest:&__block_literal_global_23]);
+  eventCopy = event;
+  beganCopy = began;
+  -[ICEditingTextView setTouchIsPointer:](self, "setTouchIsPointer:", [beganCopy ic_containsObjectPassingTest:&__block_literal_global_23]);
   v8.receiver = self;
   v8.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v8 touchesBegan:v7 withEvent:v6];
+  [(ICEditingTextView *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v4 touchesMoved:a3 withEvent:a4];
+  [(ICEditingTextView *)&v4 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(ICEditingTextView *)&v5 touchesEnded:ended withEvent:event];
   [(ICEditingTextView *)self setTouchIsPointer:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(ICEditingTextView *)&v5 touchesCancelled:cancelled withEvent:event];
   [(ICEditingTextView *)self setTouchIsPointer:0];
 }
 
@@ -15249,28 +15249,28 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = ICEditingTextView;
   [(ICEditingTextView *)&v6 beginSelectionChange];
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 note];
-  v5 = [v4 documentMergeController];
-  [v5 beginBlockingMergeForReason:0 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController beginBlockingMergeForReason:0 textView:self];
 }
 
 - (void)endSelectionChange
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 note];
-  v5 = [v4 documentMergeController];
-  [v5 endBlockingMergeForReason:0 textView:self];
+  editorController = [(ICEditingTextView *)self editorController];
+  note = [editorController note];
+  documentMergeController = [note documentMergeController];
+  [documentMergeController endBlockingMergeForReason:0 textView:self];
 
   v6.receiver = self;
   v6.super_class = ICEditingTextView;
   [(ICEditingTextView *)&v6 endSelectionChange];
 }
 
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(ICEditingTextView *)self distanceFromContentToGivenPoint:0 charIndexAtPoint:?];
   if (v6 >= 28.2842712)
   {
@@ -15282,35 +15282,35 @@ LABEL_6:
   return [(ICEditingTextView *)&v8 willInteractWithLinkAtPoint:x, y];
 }
 
-- (void)speakAccessibilityAutoListItemIfNecessaryForInsertedText:(id)a3
+- (void)speakAccessibilityAutoListItemIfNecessaryForInsertedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v5 = [(ICEditingTextView *)self selectedRange];
-    v6 = [(ICEditingTextView *)self textStorage];
-    if (v5 >= [v6 length])
+    selectedRange = [(ICEditingTextView *)self selectedRange];
+    textStorage = [(ICEditingTextView *)self textStorage];
+    if (selectedRange >= [textStorage length])
     {
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v7 = [v4 length];
+    v7 = [textCopy length];
 
     if (v7 == 1)
     {
-      v6 = [(ICEditingTextView *)self textStorage];
-      v8 = [v6 attributesAtIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
+      textStorage = [(ICEditingTextView *)self textStorage];
+      v8 = [textStorage attributesAtIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
       v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D35DA8]];
       if (![v9 isList])
       {
         goto LABEL_18;
       }
 
-      v10 = [v4 characterAtIndex:0];
-      v11 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      LODWORD(v10) = [v11 characterIsMember:v10];
+      v10 = [textCopy characterAtIndex:0];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      LODWORD(v10) = [newlineCharacterSet characterIsMember:v10];
 
       if (!v10)
       {
@@ -15318,11 +15318,11 @@ LABEL_19:
       }
 
       UIAccessibilityPostNotification(*MEMORY[0x277D74050], self);
-      v12 = [v9 style];
+      style = [v9 style];
       v13 = 0;
-      if (v12 > 101)
+      if (style > 101)
       {
-        if (v12 == 102)
+        if (style == 102)
         {
           v18 = MEMORY[0x277CCACA8];
           v15 = [v8 objectForKeyedSubscript:*MEMORY[0x277D36018]];
@@ -15330,10 +15330,10 @@ LABEL_19:
           goto LABEL_16;
         }
 
-        if (v12 == 103)
+        if (style == 103)
         {
-          v14 = [MEMORY[0x277CCA8D8] mainBundle];
-          v15 = v14;
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v15 = mainBundle;
           v16 = @"checklist";
           goto LABEL_14;
         }
@@ -15341,28 +15341,28 @@ LABEL_19:
 
       else
       {
-        if (v12 == 100)
+        if (style == 100)
         {
-          v14 = [MEMORY[0x277CCA8D8] mainBundle];
-          v15 = v14;
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v15 = mainBundle;
           v16 = @"bullet";
           goto LABEL_14;
         }
 
-        if (v12 == 101)
+        if (style == 101)
         {
-          v14 = [MEMORY[0x277CCA8D8] mainBundle];
-          v15 = v14;
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v15 = mainBundle;
           v16 = @"dash";
 LABEL_14:
-          v17 = [v14 localizedStringForKey:v16 value:&stru_282757698 table:0];
+          v17 = [mainBundle localizedStringForKey:v16 value:&stru_282757698 table:0];
 LABEL_16:
           v13 = v17;
         }
       }
 
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"New list item" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle2 localizedStringForKey:@"New list item" value:&stru_282757698 table:0];
 
       v22 = __ICAccessibilityStringForVariables();
       v21 = v22;
@@ -15376,10 +15376,10 @@ LABEL_18:
 LABEL_20:
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v151[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  builderCopy = builder;
   v5 = NSClassFromString(&cfstr_Icpaperdocumen.isa);
   v145[0] = MEMORY[0x277D85DD0];
   v145[1] = 3221225472;
@@ -15394,37 +15394,37 @@ LABEL_20:
 
   v144.receiver = self;
   v144.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v144 buildMenuWithBuilder:v4];
+  [(ICEditingTextView *)&v144 buildMenuWithBuilder:builderCopy];
   v120 = *MEMORY[0x277D76D70];
-  [v4 replaceChildrenOfMenuForIdentifier:? fromChildrenBlock:?];
+  [builderCopy replaceChildrenOfMenuForIdentifier:? fromChildrenBlock:?];
   v7 = MEMORY[0x277D75370];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"Check All" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle localizedStringForKey:@"Check All" value:&stru_282757698 table:0];
   v10 = [MEMORY[0x277D755B8] systemImageNamed:@"checklist.checked"];
   v130 = [v7 commandWithTitle:v9 image:v10 action:sel_checkAll_ propertyList:0];
 
   v11 = MEMORY[0x277D75370];
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 localizedStringForKey:@"Uncheck All" value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v13 = [mainBundle2 localizedStringForKey:@"Uncheck All" value:&stru_282757698 table:0];
   v14 = [MEMORY[0x277D755B8] systemImageNamed:@"checklist.unchecked"];
   v129 = [v11 commandWithTitle:v13 image:v14 action:sel_uncheckAll_ propertyList:0];
 
   v15 = MEMORY[0x277D75370];
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 localizedStringForKey:@"Move Checked to Bottom" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v17 = [mainBundle3 localizedStringForKey:@"Move Checked to Bottom" value:&stru_282757698 table:0];
   v18 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.down.to.line"];
   v128 = [v15 commandWithTitle:v17 image:v18 action:sel_moveCheckedToBottom_ propertyList:0];
 
   v19 = MEMORY[0x277D75370];
-  v20 = [MEMORY[0x277CCA8D8] mainBundle];
-  v21 = [v20 localizedStringForKey:@"Delete Checked" value:&stru_282757698 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v21 = [mainBundle4 localizedStringForKey:@"Delete Checked" value:&stru_282757698 table:0];
   v22 = [MEMORY[0x277D755B8] systemImageNamed:@"trash"];
   v135 = [v19 commandWithTitle:v21 image:v22 action:sel_removeChecked_ propertyList:0];
 
   [v135 setAttributes:{objc_msgSend(v135, "attributes") | 2}];
   v23 = MEMORY[0x277D75710];
-  v24 = [MEMORY[0x277CCA8D8] mainBundle];
-  v25 = [v24 localizedStringForKey:@"Checklist" value:&stru_282757698 table:0];
+  mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+  v25 = [mainBundle5 localizedStringForKey:@"Checklist" value:&stru_282757698 table:0];
   v26 = [MEMORY[0x277D755B8] systemImageNamed:@"checklist"];
   v151[0] = v130;
   v151[1] = v129;
@@ -15434,49 +15434,49 @@ LABEL_20:
   v123 = [v23 menuWithTitle:v25 image:v26 identifier:0 options:0 children:v27];
 
   v28 = MEMORY[0x277D75370];
-  v29 = [MEMORY[0x277CCA8D8] mainBundle];
-  v30 = [v29 localizedStringForKey:@"Decrease" value:&stru_282757698 table:0];
+  mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+  v30 = [mainBundle6 localizedStringForKey:@"Decrease" value:&stru_282757698 table:0];
   v31 = [MEMORY[0x277D755B8] systemImageNamed:@"decrease.indent"];
   v134 = [v28 commandWithTitle:v30 image:v31 action:sel_decreaseIndentation_ propertyList:0];
 
   v32 = MEMORY[0x277D75370];
-  v33 = [MEMORY[0x277CCA8D8] mainBundle];
-  v34 = [v33 localizedStringForKey:@"Increase" value:&stru_282757698 table:0];
+  mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+  v34 = [mainBundle7 localizedStringForKey:@"Increase" value:&stru_282757698 table:0];
   v35 = [MEMORY[0x277D755B8] systemImageNamed:@"increase.indent"];
   v133 = [v32 commandWithTitle:v34 image:v35 action:sel_increaseIndentation_ propertyList:0];
 
   [v134 setAttributes:{objc_msgSend(v134, "attributes") | 8}];
   [v133 setAttributes:{objc_msgSend(v133, "attributes") | 8}];
   v36 = MEMORY[0x277D75710];
-  v37 = [MEMORY[0x277CCA8D8] mainBundle];
-  v38 = [v37 localizedStringForKey:@"Indentation" value:&stru_282757698 table:0];
+  mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+  v38 = [mainBundle8 localizedStringForKey:@"Indentation" value:&stru_282757698 table:0];
   v39 = [MEMORY[0x277D755B8] systemImageNamed:@"increase.indent"];
   v150[0] = v133;
   v150[1] = v134;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v150 count:2];
   v124 = [v36 menuWithTitle:v38 image:v39 identifier:0 options:0 children:v40];
 
-  v41 = [(ICEditingTextView *)self editorController];
-  v42 = [v41 calculateGraphingController];
-  v43 = [(ICEditingTextView *)self selectedRange];
-  v127 = [v42 insertionDecisionForExpressionsInRange:{v43, v44}];
+  editorController = [(ICEditingTextView *)self editorController];
+  calculateGraphingController = [editorController calculateGraphingController];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
+  v127 = [calculateGraphingController insertionDecisionForExpressionsInRange:{selectedRange, v44}];
 
-  v132 = [v127 makeMenu];
+  makeMenu = [v127 makeMenu];
   v45 = MEMORY[0x277D75370];
-  v46 = [MEMORY[0x277CCA8D8] mainBundle];
-  v47 = [v46 localizedStringForKey:@"Convert to Text" value:&stru_282757698 table:0];
+  mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+  v47 = [mainBundle9 localizedStringForKey:@"Convert to Text" value:&stru_282757698 table:0];
   v48 = [MEMORY[0x277D755B8] _systemImageNamed:@"text.replace"];
   v126 = [v45 commandWithTitle:v47 image:v48 action:sel_convertToText_ propertyList:0];
 
   v49 = MEMORY[0x277D75370];
-  v50 = [MEMORY[0x277CCA8D8] mainBundle];
-  v51 = [v50 localizedStringForKey:@"Convert to Tag" value:&stru_282757698 table:0];
+  mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+  v51 = [mainBundle10 localizedStringForKey:@"Convert to Tag" value:&stru_282757698 table:0];
   v52 = [MEMORY[0x277D755B8] systemImageNamed:@"number"];
   v131 = [v49 commandWithTitle:v51 image:v52 action:sel_convertToTag_ propertyList:0];
 
   v53 = MEMORY[0x277D75370];
-  v54 = [MEMORY[0x277CCA8D8] mainBundle];
-  v55 = [v54 localizedStringForKey:@"Add to Tags" value:&stru_282757698 table:0];
+  mainBundle11 = [MEMORY[0x277CCA8D8] mainBundle];
+  v55 = [mainBundle11 localizedStringForKey:@"Add to Tags" value:&stru_282757698 table:0];
   v56 = [MEMORY[0x277D755B8] systemImageNamed:@"number"];
   v125 = [v53 commandWithTitle:v55 image:v56 action:sel_addToTags_ propertyList:0];
 
@@ -15487,9 +15487,9 @@ LABEL_20:
   v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:3];
   v59 = [v57 arrayWithArray:v58];
 
-  v60 = [(ICEditingTextView *)self editorController];
-  v61 = [v60 note];
-  LODWORD(v58) = [v61 isPasswordProtected];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  note = [editorController2 note];
+  LODWORD(v58) = [note isPasswordProtected];
 
   if (v58)
   {
@@ -15504,26 +15504,26 @@ LABEL_20:
 
   if (ICInternalSettingsIsScrubbingEnabled())
   {
-    v63 = [(ICEditingTextView *)self editorController];
-    v64 = [v63 note];
-    if (![v64 isEditable])
+    editorController3 = [(ICEditingTextView *)self editorController];
+    note2 = [editorController3 note];
+    if (![note2 isEditable])
     {
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v65 = [(ICEditingTextView *)self editorController];
-    v66 = [v65 note];
-    if (![v66 isCalculateMathEnabled])
+    editorController4 = [(ICEditingTextView *)self editorController];
+    note3 = [editorController4 note];
+    if (![note3 isCalculateMathEnabled])
     {
 
       goto LABEL_12;
     }
 
-    v67 = [(ICEditingTextView *)self editorController];
-    v68 = [v67 note];
-    if ([v68 isDeletedOrInTrash])
+    editorController5 = [(ICEditingTextView *)self editorController];
+    note4 = [editorController5 note];
+    if ([note4 isDeletedOrInTrash])
     {
 
       goto LABEL_12;
@@ -15534,24 +15534,24 @@ LABEL_12:
 
     if ((isKindOfClass & 1) == 0)
     {
-      v100 = [(ICEditingTextView *)self editorController];
-      v101 = [v100 note];
-      v63 = [v101 calculateDocumentController];
+      editorController6 = [(ICEditingTextView *)self editorController];
+      note5 = [editorController6 note];
+      editorController3 = [note5 calculateDocumentController];
 
-      v64 = [v63 numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
-      if (v64)
+      note2 = [editorController3 numberLiteralAtLocation:{-[ICEditingTextView selectedRange](self, "selectedRange")}];
+      if (note2)
       {
         objc_initWeak(&location, self);
         v102 = MEMORY[0x277D750C8];
-        v103 = [MEMORY[0x277CCA8D8] mainBundle];
-        v104 = [v103 localizedStringForKey:@"Adjust" value:&stru_282757698 table:0];
+        mainBundle12 = [MEMORY[0x277CCA8D8] mainBundle];
+        v104 = [mainBundle12 localizedStringForKey:@"Adjust" value:&stru_282757698 table:0];
         v140[0] = MEMORY[0x277D85DD0];
         v140[1] = 3221225472;
         v140[2] = __42__ICEditingTextView_buildMenuWithBuilder___block_invoke_3;
         v140[3] = &unk_2781AF3F8;
         objc_copyWeak(&v142, &location);
-        v64 = v64;
-        v141 = v64;
+        note2 = note2;
+        v141 = note2;
         v105 = [v102 ic_actionWithTitle:v104 imageName:@"arrowtriangle.left.and.line.vertical.and.arrowtriangle.right.fill" handler:v140];
 
         v106 = MEMORY[0x277D75710];
@@ -15559,7 +15559,7 @@ LABEL_12:
         v107 = [MEMORY[0x277CBEA60] arrayWithObjects:&v148 count:1];
         v108 = [v106 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v107];
 
-        [v4 insertSiblingMenu:v108 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
+        [builderCopy insertSiblingMenu:v108 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
         objc_destroyWeak(&v142);
         objc_destroyWeak(&location);
       }
@@ -15574,34 +15574,34 @@ LABEL_13:
   v71 = [v69 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v70];
 
   objc_opt_class();
-  v72 = [(ICEditingTextView *)self textContainer];
+  textContainer = [(ICEditingTextView *)self textContainer];
   v121 = ICDynamicCast();
 
   if (([(ICEditingTextView *)self ic_isInSecureWindow]& 1) == 0)
   {
-    v73 = [(ICEditingTextView *)self editorController];
-    v74 = [v73 note];
-    if (([v74 isSharedReadOnly] & 1) != 0 || -[ICEditingTextView selectionContainsNonLinkAttachment](self, "selectionContainsNonLinkAttachment"))
+    editorController7 = [(ICEditingTextView *)self editorController];
+    note6 = [editorController7 note];
+    if (([note6 isSharedReadOnly] & 1) != 0 || -[ICEditingTextView selectionContainsNonLinkAttachment](self, "selectionContainsNonLinkAttachment"))
     {
     }
 
     else
     {
-      v98 = [v121 insideSiriSnippet];
+      insideSiriSnippet = [v121 insideSiriSnippet];
 
-      if ((v98 & 1) == 0)
+      if ((insideSiriSnippet & 1) == 0)
       {
         objc_initWeak(&location, self);
         if ([(ICEditingTextView *)self selectionContainsLink])
         {
-          v99 = [MEMORY[0x277CCA8D8] mainBundle];
-          [v99 localizedStringForKey:@"Edit Link" value:&stru_282757698 table:0];
+          mainBundle13 = [MEMORY[0x277CCA8D8] mainBundle];
+          [mainBundle13 localizedStringForKey:@"Edit Link" value:&stru_282757698 table:0];
         }
 
         else
         {
-          v99 = [MEMORY[0x277CCA8D8] mainBundle];
-          [v99 localizedStringForKey:@"Add Link" value:&stru_282757698 table:0];
+          mainBundle13 = [MEMORY[0x277CCA8D8] mainBundle];
+          [mainBundle13 localizedStringForKey:@"Add Link" value:&stru_282757698 table:0];
         }
         v118 = ;
 
@@ -15616,8 +15616,8 @@ LABEL_13:
         if ([(ICEditingTextView *)self selectionContainsLink])
         {
           v111 = MEMORY[0x277D750C8];
-          v112 = [MEMORY[0x277CCA8D8] mainBundle];
-          v113 = [v112 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
+          mainBundle14 = [MEMORY[0x277CCA8D8] mainBundle];
+          v113 = [mainBundle14 localizedStringForKey:@"Remove Link" value:&stru_282757698 table:0];
           v136[0] = MEMORY[0x277D85DD0];
           v136[1] = 3221225472;
           v136[2] = __42__ICEditingTextView_buildMenuWithBuilder___block_invoke_5;
@@ -15633,7 +15633,7 @@ LABEL_13:
         v116 = [v119 copy];
         v117 = [v115 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v116];
 
-        [v4 insertSiblingMenu:v117 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
+        [builderCopy insertSiblingMenu:v117 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
         objc_destroyWeak(&v139);
 
         objc_destroyWeak(&location);
@@ -15646,57 +15646,57 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  v75 = [(ICEditingTextView *)self editorController];
-  v76 = [v75 note];
-  if ([v76 isPasswordProtected])
+  editorController8 = [(ICEditingTextView *)self editorController];
+  note7 = [editorController8 note];
+  if ([note7 isPasswordProtected])
   {
     goto LABEL_21;
   }
 
-  v77 = [(ICEditingTextView *)self editorController];
-  v78 = [v77 note];
-  v79 = [v78 isSharedReadOnly];
+  editorController9 = [(ICEditingTextView *)self editorController];
+  note8 = [editorController9 note];
+  isSharedReadOnly = [note8 isSharedReadOnly];
 
-  if ((v79 & 1) == 0)
+  if ((isSharedReadOnly & 1) == 0)
   {
     v80 = MEMORY[0x277D75370];
-    v81 = [MEMORY[0x277CCA8D8] mainBundle];
-    v82 = [v81 localizedStringForKey:@"Attach File" value:&stru_282757698 table:0];
+    mainBundle15 = [MEMORY[0x277CCA8D8] mainBundle];
+    v82 = [mainBundle15 localizedStringForKey:@"Attach File" value:&stru_282757698 table:0];
     v83 = [MEMORY[0x277D755B8] ic_systemImageNamed:@"document"];
-    v75 = [v80 commandWithTitle:v82 image:v83 action:sel_attachFile_ propertyList:0];
+    editorController8 = [v80 commandWithTitle:v82 image:v83 action:sel_attachFile_ propertyList:0];
 
     v84 = MEMORY[0x277D75710];
-    v147 = v75;
+    v147 = editorController8;
     v85 = [MEMORY[0x277CBEA60] arrayWithObjects:&v147 count:1];
-    v76 = [v84 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v85];
+    note7 = [v84 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v85];
 
-    [v4 insertSiblingMenu:v76 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
+    [builderCopy insertSiblingMenu:note7 beforeMenuForIdentifier:*MEMORY[0x277D76CE8]];
 LABEL_21:
   }
 
 LABEL_22:
-  v86 = [(ICEditingTextView *)self editorController];
-  v87 = [v86 note];
-  v88 = [v87 isSharedReadOnly];
+  editorController10 = [(ICEditingTextView *)self editorController];
+  note9 = [editorController10 note];
+  isSharedReadOnly2 = [note9 isSharedReadOnly];
 
-  if ((v88 & 1) == 0)
+  if ((isSharedReadOnly2 & 1) == 0)
   {
-    [v4 insertSiblingMenu:v123 afterMenuForIdentifier:*MEMORY[0x277D76CE8]];
+    [builderCopy insertSiblingMenu:v123 afterMenuForIdentifier:*MEMORY[0x277D76CE8]];
   }
 
-  [v4 insertChildMenu:v124 atEndOfMenuForIdentifier:v120];
+  [builderCopy insertChildMenu:v124 atEndOfMenuForIdentifier:v120];
   v89 = *MEMORY[0x277D76D30];
-  if (v132)
+  if (makeMenu)
   {
-    [v4 insertChildMenu:v132 atEndOfMenuForIdentifier:*MEMORY[0x277D76D30]];
+    [builderCopy insertChildMenu:makeMenu atEndOfMenuForIdentifier:*MEMORY[0x277D76D30]];
   }
 
-  [v4 insertChildMenu:v71 atEndOfMenuForIdentifier:v89];
+  [builderCopy insertChildMenu:v71 atEndOfMenuForIdentifier:v89];
   if (ICInternalSettingsShouldShowImageGenerationUI() && ([(ICEditingTextView *)self ic_isInSecureWindow]& 1) == 0)
   {
     v90 = MEMORY[0x277D75370];
-    v91 = [MEMORY[0x277CCA8D8] mainBundle];
-    v92 = [v91 localizedStringForKey:@"Add to Playground" value:&stru_282757698 table:0];
+    mainBundle16 = [MEMORY[0x277CCA8D8] mainBundle];
+    v92 = [mainBundle16 localizedStringForKey:@"Add to Playground" value:&stru_282757698 table:0];
     v93 = [MEMORY[0x277D755B8] systemImageNamed:@"apple.image.playground"];
     v94 = [v90 commandWithTitle:v92 image:v93 action:sel_createImage_ propertyList:0];
 
@@ -15705,7 +15705,7 @@ LABEL_22:
     v96 = [MEMORY[0x277CBEA60] arrayWithObjects:&v146 count:1];
     v97 = [v95 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v96];
 
-    [v4 insertSiblingMenu:v97 afterMenuForIdentifier:*MEMORY[0x277D76CE8]];
+    [builderCopy insertSiblingMenu:v97 afterMenuForIdentifier:*MEMORY[0x277D76CE8]];
   }
 
 LABEL_30:
@@ -15781,8 +15781,8 @@ LABEL_5:
 
 - (BOOL)selectionContainsLink
 {
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [v3 attribute:*MEMORY[0x277D740E8] atIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  v4 = [textStorage attribute:*MEMORY[0x277D740E8] atIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
 
   if (v4)
   {
@@ -15791,13 +15791,13 @@ LABEL_5:
 
   else
   {
-    v6 = [(ICEditingTextView *)self textStorage];
-    v7 = [v6 attribute:*MEMORY[0x277D74060] atIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
+    textStorage2 = [(ICEditingTextView *)self textStorage];
+    v7 = [textStorage2 attribute:*MEMORY[0x277D74060] atIndex:-[ICEditingTextView selectedRange](self effectiveRange:{"selectedRange"), 0}];
 
     objc_opt_class();
     v8 = ICDynamicCast();
-    v9 = [v8 attachmentUTI];
-    v5 = [v9 isEqualToString:*MEMORY[0x277D35D50]];
+    attachmentUTI = [v8 attachmentUTI];
+    v5 = [attachmentUTI isEqualToString:*MEMORY[0x277D35D50]];
   }
 
   return v5;
@@ -15809,19 +15809,19 @@ LABEL_5:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(ICEditingTextView *)self textStorage];
-  v4 = [(ICEditingTextView *)self selectedRange];
+  textStorage = [(ICEditingTextView *)self textStorage];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v5 = *MEMORY[0x277D74060];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__ICEditingTextView_selectionContainsNonLinkAttachment__block_invoke;
   v8[3] = &unk_2781ABC80;
   v8[4] = &v9;
-  [v3 enumerateAttribute:v5 inRange:v4 options:v6 usingBlock:{0, v8}];
+  [textStorage enumerateAttribute:v5 inRange:selectedRange options:v6 usingBlock:{0, v8}];
 
-  LOBYTE(v3) = *(v10 + 24);
+  LOBYTE(textStorage) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v3;
+  return textStorage;
 }
 
 void __55__ICEditingTextView_selectionContainsNonLinkAttachment__block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -15847,37 +15847,37 @@ void __55__ICEditingTextView_selectionContainsNonLinkAttachment__block_invoke(ui
 
 - (void)willPresentWritingTools
 {
-  v3 = [(ICEditingTextView *)self editorController];
-  v4 = [v3 presentedViewController];
+  editorController = [(ICEditingTextView *)self editorController];
+  presentedViewController = [editorController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(ICEditingTextView *)self editorController];
-    [v6 showStyleSelector:0 animated:0 sender:0];
+    editorController2 = [(ICEditingTextView *)self editorController];
+    [editorController2 showStyleSelector:0 animated:0 sender:0];
   }
 }
 
-- (void)updateKeyboardSuggestions:(id)a3 hashtagController:(id)a4
+- (void)updateKeyboardSuggestions:(id)suggestions hashtagController:(id)controller
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICEditingTextView *)self inputDelegate];
-  v9 = v8;
-  if (v6)
+  suggestionsCopy = suggestions;
+  controllerCopy = controller;
+  inputDelegate = [(ICEditingTextView *)self inputDelegate];
+  v9 = inputDelegate;
+  if (suggestionsCopy)
   {
-    v27 = self;
-    v28 = v8;
-    v29 = v7;
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    selfCopy = self;
+    v28 = inputDelegate;
+    v29 = controllerCopy;
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v30 = v6;
-    v11 = v6;
+    v30 = suggestionsCopy;
+    v11 = suggestionsCopy;
     v12 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v12)
     {
@@ -15893,15 +15893,15 @@ void __55__ICEditingTextView_selectionContainsNonLinkAttachment__block_invoke(ui
           }
 
           v16 = *(*(&v35 + 1) + 8 * i);
-          v17 = [v16 displayText];
+          displayText = [v16 displayText];
 
-          if (v17)
+          if (displayText)
           {
             v18 = MEMORY[0x277D369A8];
-            v19 = [v16 displayText];
-            v20 = [v16 displayText];
-            v21 = [v20 ic_withHashtagPrefix];
-            v22 = [v18 hashtagTextSuggestionWithIdentifier:v19 displayText:v21];
+            displayText2 = [v16 displayText];
+            displayText3 = [v16 displayText];
+            ic_withHashtagPrefix = [displayText3 ic_withHashtagPrefix];
+            v22 = [v18 hashtagTextSuggestionWithIdentifier:displayText2 displayText:ic_withHashtagPrefix];
 
             [v10 addObject:v22];
           }
@@ -15920,24 +15920,24 @@ void __55__ICEditingTextView_selectionContainsNonLinkAttachment__block_invoke(ui
     v9 = v28;
     v32 = v28;
     v33 = v10;
-    v7 = v29;
+    controllerCopy = v29;
     v23 = v29;
     v34 = v23;
     v24 = v10;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    [(ICEditingTextView *)v27 setHashtagController:v23];
+    [(ICEditingTextView *)selfCopy setHashtagController:v23];
 
-    v6 = v30;
+    suggestionsCopy = v30;
   }
 
   else
   {
-    [v7 setIsUpdatingKeyboard:0];
-    [(ICEditingTextView *)self setHashtagController:v7];
-    v25 = [(ICEditingTextView *)self mentionsController];
-    v26 = [v25 isUpdatingKeyboard];
+    [controllerCopy setIsUpdatingKeyboard:0];
+    [(ICEditingTextView *)self setHashtagController:controllerCopy];
+    mentionsController = [(ICEditingTextView *)self mentionsController];
+    isUpdatingKeyboard = [mentionsController isUpdatingKeyboard];
 
-    if ((v26 & 1) == 0)
+    if ((isUpdatingKeyboard & 1) == 0)
     {
       [v9 setSuggestions:0];
     }
@@ -15952,19 +15952,19 @@ uint64_t __65__ICEditingTextView_updateKeyboardSuggestions_hashtagController___b
   return [v2 setIsUpdatingKeyboard:1];
 }
 
-- (void)updateKeyboardSuggestions:(id)a3 mentionsController:(id)a4 mentionString:(id)a5
+- (void)updateKeyboardSuggestions:(id)suggestions mentionsController:(id)controller mentionString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  suggestionsCopy = suggestions;
+  controllerCopy = controller;
+  stringCopy = string;
+  if (!suggestionsCopy)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((participants) != nil)" functionName:"-[ICEditingTextView updateKeyboardSuggestions:mentionsController:mentionString:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "participants"}];
   }
 
-  [(ICEditingTextView *)self setParticipants:v8];
-  v11 = [(ICEditingTextView *)self inputDelegate];
-  if (v8 && [v8 count])
+  [(ICEditingTextView *)self setParticipants:suggestionsCopy];
+  inputDelegate = [(ICEditingTextView *)self inputDelegate];
+  if (suggestionsCopy && [suggestionsCopy count])
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -15972,22 +15972,22 @@ uint64_t __65__ICEditingTextView_updateKeyboardSuggestions_hashtagController___b
     v26[3] = &__block_descriptor_48_e54___ICThumbnailConfiguration_16__0__CKShareParticipant_8l;
     v26[4] = 0x403C000000000000;
     v26[5] = 0x403C000000000000;
-    v12 = [v8 ic_compactMap:v26];
+    v12 = [suggestionsCopy ic_compactMap:v26];
     objc_initWeak(&location, self);
-    v13 = [MEMORY[0x277D36988] sharedThumbnailService];
+    mEMORY[0x277D36988] = [MEMORY[0x277D36988] sharedThumbnailService];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __80__ICEditingTextView_updateKeyboardSuggestions_mentionsController_mentionString___block_invoke_2;
     v18[3] = &unk_2781AF468;
     objc_copyWeak(&v24, &location);
-    v19 = v8;
+    v19 = suggestionsCopy;
     v14 = v12;
     v20 = v14;
-    v21 = v10;
-    v15 = v9;
+    v21 = stringCopy;
+    v15 = controllerCopy;
     v22 = v15;
-    v23 = v11;
-    [v13 thumbnailsWithConfigurations:v14 completion:v18];
+    v23 = inputDelegate;
+    [mEMORY[0x277D36988] thumbnailsWithConfigurations:v14 completion:v18];
 
     [(ICEditingTextView *)self setMentionsController:v15];
     objc_destroyWeak(&v24);
@@ -15996,14 +15996,14 @@ uint64_t __65__ICEditingTextView_updateKeyboardSuggestions_hashtagController___b
 
   else
   {
-    [v9 setIsUpdatingKeyboard:0];
-    [(ICEditingTextView *)self setMentionsController:v9];
-    v16 = [(ICEditingTextView *)self hashtagController];
-    v17 = [v16 isUpdatingKeyboard];
+    [controllerCopy setIsUpdatingKeyboard:0];
+    [(ICEditingTextView *)self setMentionsController:controllerCopy];
+    hashtagController = [(ICEditingTextView *)self hashtagController];
+    isUpdatingKeyboard = [hashtagController isUpdatingKeyboard];
 
-    if ((v17 & 1) == 0)
+    if ((isUpdatingKeyboard & 1) == 0)
     {
-      [v11 setSuggestions:0];
+      [inputDelegate setSuggestions:0];
     }
   }
 }
@@ -16136,48 +16136,48 @@ void __80__ICEditingTextView_updateKeyboardSuggestions_mentionsController_mentio
   }
 }
 
-- (void)showWritingTools:(id)a3
+- (void)showWritingTools:(id)tools
 {
-  v4 = a3;
-  v5 = [(ICBaseTextView *)self icDelegate];
+  toolsCopy = tools;
+  icDelegate = [(ICBaseTextView *)self icDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICBaseTextView *)self icDelegate];
-    [v7 startEditingForWritingTools];
+    icDelegate2 = [(ICBaseTextView *)self icDelegate];
+    [icDelegate2 startEditingForWritingTools];
   }
 
   v8.receiver = self;
   v8.super_class = ICEditingTextView;
-  [(ICEditingTextView *)&v8 showWritingTools:v4];
+  [(ICEditingTextView *)&v8 showWritingTools:toolsCopy];
 }
 
-- (void)calculateRecognitionController:(id)a3 didUpdateTextSuggestions:(id)a4
+- (void)calculateRecognitionController:(id)controller didUpdateTextSuggestions:(id)suggestions
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICEditingTextView *)self inputDelegate];
-  [v8 setSuggestions:v6];
+  suggestionsCopy = suggestions;
+  controllerCopy = controller;
+  inputDelegate = [(ICEditingTextView *)self inputDelegate];
+  [inputDelegate setSuggestions:suggestionsCopy];
 
-  [(ICEditingTextView *)self setCalculateRecognitionController:v7];
+  [(ICEditingTextView *)self setCalculateRecognitionController:controllerCopy];
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v19 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v4 = ICDynamicCast();
-    v5 = [v4 cellDelegate];
-    v6 = [v5 attachment];
+    cellDelegate = [v4 cellDelegate];
+    attachment = [cellDelegate attachment];
   }
 
   else
   {
-    v6 = 0;
+    attachment = 0;
   }
 
   objc_opt_class();
@@ -16185,63 +16185,63 @@ void __80__ICEditingTextView_updateKeyboardSuggestions_mentionsController_mentio
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 type];
-    if (v9 > 2)
+    type = [v7 type];
+    if (type > 2)
     {
-      if (v9 != 3)
+      if (type != 3)
       {
-        if (v9 == 4)
+        if (type == 4)
         {
-          v10 = [(ICEditingTextView *)self calculateRecognitionController];
-          v11 = [(ICEditingTextView *)self selectedRange];
-          v12 = v10;
+          calculateRecognitionController = [(ICEditingTextView *)self calculateRecognitionController];
+          selectedRange = [(ICEditingTextView *)self selectedRange];
+          v12 = calculateRecognitionController;
           v14 = v18;
           v15 = 0;
         }
 
         else
         {
-          if (v9 != 5)
+          if (type != 5)
           {
             goto LABEL_19;
           }
 
-          v10 = [(ICEditingTextView *)self calculateRecognitionController];
-          v11 = [(ICEditingTextView *)self selectedRange];
-          v12 = v10;
+          calculateRecognitionController = [(ICEditingTextView *)self calculateRecognitionController];
+          selectedRange = [(ICEditingTextView *)self selectedRange];
+          v12 = calculateRecognitionController;
           v14 = v13;
           v15 = 1;
         }
 
-        [v12 commitPreviewedResultAtRange:v11 asLiteral:{v14, v15}];
+        [v12 commitPreviewedResultAtRange:selectedRange asLiteral:{v14, v15}];
         goto LABEL_18;
       }
 
-      v10 = [(ICEditingTextView *)self mentionsController];
-      v16 = [v8 inputText];
-      v17 = [v8 identifier];
-      [v10 insertMentionWithText:v16 uuidString:v17 parentAttachment:v6];
+      calculateRecognitionController = [(ICEditingTextView *)self mentionsController];
+      inputText = [v8 inputText];
+      identifier = [v8 identifier];
+      [calculateRecognitionController insertMentionWithText:inputText uuidString:identifier parentAttachment:attachment];
     }
 
     else
     {
-      if (v9 < 2)
+      if (type < 2)
       {
-        v10 = [(ICEditingTextView *)self calculateRecognitionController];
-        [v10 discardPreviewedResult];
+        calculateRecognitionController = [(ICEditingTextView *)self calculateRecognitionController];
+        [calculateRecognitionController discardPreviewedResult];
 LABEL_18:
 
         goto LABEL_19;
       }
 
-      if (v9 != 2)
+      if (type != 2)
       {
         goto LABEL_19;
       }
 
-      v10 = [(ICEditingTextView *)self hashtagController];
-      v16 = [v19 displayText];
-      [v10 insertHashtagWithText:v16 viaAutoComplete:1 parentAttachment:v6];
+      calculateRecognitionController = [(ICEditingTextView *)self hashtagController];
+      inputText = [suggestionCopy displayText];
+      [calculateRecognitionController insertHashtagWithText:inputText viaAutoComplete:1 parentAttachment:attachment];
     }
 
     goto LABEL_18;
@@ -16250,26 +16250,26 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)endHeadingRenameCommittingMarkedText:(BOOL)a3
+- (void)endHeadingRenameCommittingMarkedText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   objc_opt_class();
-  v5 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v12 = ICDynamicCast();
 
   if ([v12 isMarkingTextForHeadingRename])
   {
-    v6 = [(ICEditingTextView *)self ic_markedTextRange];
+    ic_markedTextRange = [(ICEditingTextView *)self ic_markedTextRange];
     v8 = v7;
-    v9 = [(ICEditingTextView *)self markedTextRange];
+    markedTextRange = [(ICEditingTextView *)self markedTextRange];
 
-    if (v9)
+    if (markedTextRange)
     {
-      if (v3)
+      if (textCopy)
       {
-        v10 = [v12 attributedSubstringFromRange:{v6, v8}];
-        v11 = [v10 string];
-        [(ICEditingTextView *)self setMarkedText:v11 selectedRange:0x7FFFFFFFFFFFFFFFLL, 0];
+        v10 = [v12 attributedSubstringFromRange:{ic_markedTextRange, v8}];
+        string = [v10 string];
+        [(ICEditingTextView *)self setMarkedText:string selectedRange:0x7FFFFFFFFFFFFFFFLL, 0];
 
         [(ICEditingTextView *)self unmarkText];
       }
@@ -16277,7 +16277,7 @@ LABEL_19:
       else
       {
         [(ICEditingTextView *)self unmarkText];
-        [v12 deleteCharactersInRange:{v6, v8}];
+        [v12 deleteCharactersInRange:{ic_markedTextRange, v8}];
       }
     }
 
@@ -16285,113 +16285,113 @@ LABEL_19:
   }
 }
 
-- (_NSRange)willInsertText:(id)a3
+- (_NSRange)willInsertText:(id)text
 {
   [(ICEditingTextView *)self endHeadingRenameCommittingMarkedText:0];
   objc_opt_class();
-  v4 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v5 = ICDynamicCast();
 
   [v5 setIsTypingOrMarkingText:1];
-  v6 = [(ICEditingTextView *)self selectedRange];
+  selectedRange = [(ICEditingTextView *)self selectedRange];
   v8 = v7;
-  v9 = [(ICEditingTextView *)self markedTextRange];
+  markedTextRange = [(ICEditingTextView *)self markedTextRange];
 
-  if (v9)
+  if (markedTextRange)
   {
-    v6 = [(ICEditingTextView *)self selectedRangeBeforeMarking];
+    selectedRange = [(ICEditingTextView *)self selectedRangeBeforeMarking];
     v8 = v10;
   }
 
-  v11 = [(ICEditingTextView *)self textController];
-  [v11 notifyInlineAttachmentsDeletedInRange:v6 ofTextStorage:{v8, v5}];
+  textController = [(ICEditingTextView *)self textController];
+  [textController notifyInlineAttachmentsDeletedInRange:selectedRange ofTextStorage:{v8, v5}];
 
-  v12 = v6;
+  v12 = selectedRange;
   v13 = v8;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (void)didInsertText:(id)a3 range:(_NSRange)a4
+- (void)didInsertText:(id)text range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v22 = a3;
-  v7 = [(ICEditingTextView *)self textController];
-  v8 = [(ICEditingTextView *)self editorController];
-  v9 = [v8 hashtagController];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  textController = [(ICEditingTextView *)self textController];
+  editorController = [(ICEditingTextView *)self editorController];
+  hashtagController = [editorController hashtagController];
 
-  v10 = [(ICEditingTextView *)self editorController];
-  v11 = [v10 mentionsController];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  mentionsController = [editorController2 mentionsController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v12 = ICDynamicCast();
-    [v9 setHashtagTableKeyboardDelegate:v12];
+    [hashtagController setHashtagTableKeyboardDelegate:v12];
 
     objc_opt_class();
     v13 = ICDynamicCast();
-    [v11 setMentionsTableKeyboardDelegate:v13];
+    [mentionsController setMentionsTableKeyboardDelegate:v13];
 
     objc_opt_class();
-    v14 = ICDynamicCast();
-    v15 = [v14 cellDelegate];
-    v16 = [v15 attachment];
+    editorController3 = ICDynamicCast();
+    cellDelegate = [editorController3 cellDelegate];
+    attachment = [cellDelegate attachment];
 
     LOBYTE(v21) = [(ICEditingTextView *)self languageHasSpaces];
-    [v7 insertedText:v22 replacementRange:location inTextView:length hashtagController:self mentionsController:v9 languageHasSpaces:v11 parentAttachment:{v21, v16}];
+    [textController insertedText:textCopy replacementRange:location inTextView:length hashtagController:self mentionsController:hashtagController languageHasSpaces:mentionsController parentAttachment:{v21, attachment}];
   }
 
   else
   {
     objc_opt_class();
     v17 = ICDynamicCast();
-    [v9 setHashtagKeyboardDelegate:v17];
+    [hashtagController setHashtagKeyboardDelegate:v17];
 
     objc_opt_class();
     v18 = ICDynamicCast();
-    [v11 setMentionsKeyboardDelegate:v18];
+    [mentionsController setMentionsKeyboardDelegate:v18];
 
-    [v7 insertedText:v22 replacementRange:location inTextView:length languageHasSpaces:{self, -[ICEditingTextView languageHasSpaces](self, "languageHasSpaces")}];
-    v14 = [(ICEditingTextView *)self editorController];
-    v16 = [v14 calculateRecognitionController];
-    [v16 didInsertString:v22 atRange:{location, length}];
+    [textController insertedText:textCopy replacementRange:location inTextView:length languageHasSpaces:{self, -[ICEditingTextView languageHasSpaces](self, "languageHasSpaces")}];
+    editorController3 = [(ICEditingTextView *)self editorController];
+    attachment = [editorController3 calculateRecognitionController];
+    [attachment didInsertString:textCopy atRange:{location, length}];
   }
 
   objc_opt_class();
-  v19 = [(ICEditingTextView *)self textStorage];
+  textStorage = [(ICEditingTextView *)self textStorage];
   v20 = ICDynamicCast();
 
   [v20 setIsTypingOrMarkingText:0];
   [(ICEditingTextView *)self updateTextViewForDidChange];
-  [(ICEditingTextView *)self speakAccessibilityAutoListItemIfNecessaryForInsertedText:v22];
+  [(ICEditingTextView *)self speakAccessibilityAutoListItemIfNecessaryForInsertedText:textCopy];
 }
 
-- (void)informDelegateOfAnalyticsCalloutBarButtonActionOfType:(int64_t)a3 sender:(id)a4
+- (void)informDelegateOfAnalyticsCalloutBarButtonActionOfType:(int64_t)type sender:(id)sender
 {
-  v6 = [(ICBaseTextView *)self icDelegate:a3];
+  v6 = [(ICBaseTextView *)self icDelegate:type];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ICBaseTextView *)self icDelegate];
-    [v8 didInvokeAnalyticsCalloutBarButtonActionOfType:a3];
+    icDelegate = [(ICBaseTextView *)self icDelegate];
+    [icDelegate didInvokeAnalyticsCalloutBarButtonActionOfType:type];
   }
 }
 
-- (void)informDelegateOfPastedAttributedString:(id)a3
+- (void)informDelegateOfPastedAttributedString:(id)string
 {
-  v7 = a3;
-  v4 = [(ICBaseTextView *)self icDelegate];
+  stringCopy = string;
+  icDelegate = [(ICBaseTextView *)self icDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICBaseTextView *)self icDelegate];
-    [v6 didInvokePasteWithAttributedString:v7];
+    icDelegate2 = [(ICBaseTextView *)self icDelegate];
+    [icDelegate2 didInvokePasteWithAttributedString:stringCopy];
   }
 }
 
@@ -16406,8 +16406,8 @@ LABEL_19:
     eventReporter = self->_eventReporter;
     self->_eventReporter = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
   }
 
   v9 = self->_eventReporter;
@@ -16415,29 +16415,29 @@ LABEL_19:
   return v9;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
-- (void)keyboardLocaleChanged:(id)a3
+- (void)keyboardLocaleChanged:(id)changed
 {
-  v4 = [(ICEditingTextView *)self textInputMode];
-  v9 = v4;
-  if (v4)
+  textInputMode = [(ICEditingTextView *)self textInputMode];
+  v9 = textInputMode;
+  if (textInputMode)
   {
     v5 = MEMORY[0x277CBEAF8];
-    v6 = [v4 primaryLanguage];
-    v7 = [v5 localeWithLocaleIdentifier:v6];
-    v8 = [v7 languageCode];
+    primaryLanguage = [textInputMode primaryLanguage];
+    v7 = [v5 localeWithLocaleIdentifier:primaryLanguage];
+    languageCode = [v7 languageCode];
 
     [(ICEditingTextView *)self setLanguageHasSpaces:ICLanguageUsesSpaces()];
   }
@@ -16498,12 +16498,12 @@ LABEL_19:
   return result;
 }
 
-- (void)showRemoveAttachmentAlertIfNecessaryForOperation:(unint64_t)a3 selectedRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)showRemoveAttachmentAlertIfNecessaryForOperation:(unint64_t)operation selectedRange:(_NSRange)range completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v60 = *MEMORY[0x277D85DE8];
-  v51 = a5;
+  handlerCopy = handler;
   v8 = length == 0;
   v9 = location != 0x7FFFFFFFFFFFFFFFLL;
   v48 = location;
@@ -16528,9 +16528,9 @@ LABEL_19:
   }
 
   v12 = [(ICEditingTextView *)self attachmentsInRange:v10, v11, length];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v53 = [MEMORY[0x277CBEB18] array];
-  v52 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -16556,7 +16556,7 @@ LABEL_19:
         v20 = *(*(&v55 + 1) + 8 * v19);
         if ([v20 attachmentType] == 10 || objc_msgSend(v20, "attachmentType") == 13)
         {
-          v21 = v13;
+          v21 = array;
 LABEL_15:
           [v21 addObject:v20];
           goto LABEL_16;
@@ -16568,14 +16568,14 @@ LABEL_15:
           {
             [v20 audioModel];
             v23 = v22 = v18;
-            v24 = [v23 audioDocument];
-            v25 = [v24 isCallRecording];
+            audioDocument = [v23 audioDocument];
+            isCallRecording = [audioDocument isCallRecording];
 
             v18 = v22;
             v14 = v54;
-            if ((v25 & 1) == 0)
+            if ((isCallRecording & 1) == 0)
             {
-              v21 = v53;
+              v21 = array2;
               goto LABEL_15;
             }
           }
@@ -16583,20 +16583,20 @@ LABEL_15:
 
         if ([v20 attachmentType] == 4)
         {
-          v26 = [*(v18 + 1728) sharedAudioController];
-          v27 = [v26 currentAttachment];
+          sharedAudioController = [*(v18 + 1728) sharedAudioController];
+          currentAttachment = [sharedAudioController currentAttachment];
           v28 = v18;
-          v29 = v27;
-          if (v27 == v20)
+          v29 = currentAttachment;
+          if (currentAttachment == v20)
           {
-            v30 = [*(v28 + 1728) sharedAudioController];
-            v31 = [v30 isPlaying];
+            sharedAudioController2 = [*(v28 + 1728) sharedAudioController];
+            isPlaying = [sharedAudioController2 isPlaying];
 
             v18 = v28;
             v14 = v54;
-            if (v31)
+            if (isPlaying)
             {
-              v21 = v52;
+              v21 = array3;
               goto LABEL_15;
             }
           }
@@ -16621,19 +16621,19 @@ LABEL_16:
     while (v32);
   }
 
-  if (![v53 count])
+  if (![array2 count])
   {
-    v34 = v52;
-    v33 = v51;
-    if ([v52 count])
+    v34 = array3;
+    v33 = handlerCopy;
+    if ([array3 count])
     {
-      [(ICEditingTextView *)self showRemoveInProgressRecordingAlertWithOperation:a3 type:1 attachments:v52 completionHandler:v51];
+      [(ICEditingTextView *)self showRemoveInProgressRecordingAlertWithOperation:operation type:1 attachments:array3 completionHandler:handlerCopy];
       goto LABEL_34;
     }
 
-    if (!a3 && [v13 count])
+    if (!operation && [array count])
     {
-      if ([v13 count] == 1)
+      if ([array count] == 1)
       {
         [(ICEditingTextView *)self selectedRange];
         if (v35 >= 2)
@@ -16654,36 +16654,36 @@ LABEL_16:
 
       if ([(ICEditingTextView *)self selectedRange]<= 4)
       {
-        v37 = [(ICEditingTextView *)self textStorage];
-        v38 = [v37 string];
-        v39 = [v38 ic_trimmedString];
-        v40 = [v39 length];
+        textStorage = [(ICEditingTextView *)self textStorage];
+        string = [textStorage string];
+        ic_trimmedString = [string ic_trimmedString];
+        v40 = [ic_trimmedString length];
 
         v41 = v40 == 1;
-        v34 = v52;
+        v34 = array3;
         if (v41 && [v14 count] == 1)
         {
-          v42 = [v14 firstObject];
-          if ([v42 attachmentType] == 10)
+          firstObject = [v14 firstObject];
+          if ([firstObject attachmentType] == 10)
           {
 
 LABEL_50:
-            [(ICEditingTextView *)self showDeleteInlineDrawingAlertWithType:v36 attachments:v13 completionHandler:v51];
+            [(ICEditingTextView *)self showDeleteInlineDrawingAlertWithType:v36 attachments:array completionHandler:handlerCopy];
             goto LABEL_34;
           }
 
-          v43 = [v14 firstObject];
-          v44 = [v43 attachmentType];
+          firstObject2 = [v14 firstObject];
+          attachmentType = [firstObject2 attachmentType];
 
-          if (v44 == 13)
+          if (attachmentType == 13)
           {
             goto LABEL_50;
           }
         }
       }
 
-      v45 = [(ICEditingTextView *)self textStorage];
-      v46 = [v45 length];
+      textStorage2 = [(ICEditingTextView *)self textStorage];
+      v46 = [textStorage2 length];
 
       if (!v48 && v47 == v46)
       {
@@ -16691,34 +16691,34 @@ LABEL_50:
       }
     }
 
-    (*(v51 + 2))(v51, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
     goto LABEL_34;
   }
 
-  v33 = v51;
-  [(ICEditingTextView *)self showRemoveInProgressRecordingAlertWithOperation:a3 type:0 attachments:v53 completionHandler:v51];
-  v34 = v52;
+  v33 = handlerCopy;
+  [(ICEditingTextView *)self showRemoveInProgressRecordingAlertWithOperation:operation type:0 attachments:array2 completionHandler:handlerCopy];
+  v34 = array3;
 LABEL_34:
 }
 
-- (void)showDeleteInlineDrawingAlertWithType:(unint64_t)a3 attachments:(id)a4 completionHandler:(id)a5
+- (void)showDeleteInlineDrawingAlertWithType:(unint64_t)type attachments:(id)attachments completionHandler:(id)handler
 {
-  v16 = a5;
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"Delete Drawing?" value:&stru_282757698 table:0];
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle localizedStringForKey:@"Delete Drawing?" value:&stru_282757698 table:0];
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"Delete" value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle2 localizedStringForKey:@"Delete" value:&stru_282757698 table:0];
 
   v11 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 >= 2)
+    if (type >= 2)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
-        v12 = [MEMORY[0x277CCA8D8] mainBundle];
-        v11 = [v12 localizedStringForKey:@"Selection contains a drawing." value:&stru_282757698 table:0];
+        mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+        v11 = [mainBundle3 localizedStringForKey:@"Selection contains a drawing." value:&stru_282757698 table:0];
       }
 
       goto LABEL_9;
@@ -16730,127 +16730,127 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 localizedStringForKey:@"Delete Drawings?" value:&stru_282757698 table:0];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v14 = [mainBundle4 localizedStringForKey:@"Delete Drawings?" value:&stru_282757698 table:0];
 
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v15 localizedStringForKey:@"Selection contains multiple drawings." value:&stru_282757698 table:0];
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle5 localizedStringForKey:@"Selection contains multiple drawings." value:&stru_282757698 table:0];
 
     v8 = v14;
   }
 
 LABEL_9:
-  [(ICEditingTextView *)self showRemoveAttachmentAlertWithTitle:v8 message:v11 primaryActionTitle:v10 completionHandler:v16];
+  [(ICEditingTextView *)self showRemoveAttachmentAlertWithTitle:v8 message:v11 primaryActionTitle:v10 completionHandler:handlerCopy];
 }
 
-- (void)showRemoveInProgressRecordingAlertWithOperation:(unint64_t)a3 type:(unint64_t)a4 attachments:(id)a5 completionHandler:(id)a6
+- (void)showRemoveInProgressRecordingAlertWithOperation:(unint64_t)operation type:(unint64_t)type attachments:(id)attachments completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [a5 firstObject];
-  v12 = [v11 audioModel];
-  v13 = [v12 audioDocument];
-  v14 = [v13 isCallRecording];
+  handlerCopy = handler;
+  firstObject = [attachments firstObject];
+  audioModel = [firstObject audioModel];
+  audioDocument = [audioModel audioDocument];
+  isCallRecording = [audioDocument isCallRecording];
 
-  if (a3 == 2)
+  if (operation == 2)
   {
-    v23 = [MEMORY[0x277CCA8D8] mainBundle];
-    v24 = v23;
-    if (v14)
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v24 = mainBundle;
+    if (isCallRecording)
     {
-      v17 = [v23 localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
+      v17 = [mainBundle localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
 
-      v18 = [MEMORY[0x277CCA8D8] mainBundle];
-      v19 = v18;
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v19 = mainBundle2;
       v20 = @"Replacing this attachment will stop the recording and remove it from the note.";
       goto LABEL_10;
     }
 
-    v17 = [v23 localizedStringForKey:@"Delete Audio Recording?" value:&stru_282757698 table:0];
+    v17 = [mainBundle localizedStringForKey:@"Delete Audio Recording?" value:&stru_282757698 table:0];
 
-    v31 = [MEMORY[0x277CCA8D8] mainBundle];
-    v32 = v31;
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v32 = mainBundle3;
     v33 = @"Replacing this attachment will stop the recording and remove it from the note.";
     goto LABEL_15;
   }
 
-  if (a3 != 1)
+  if (operation != 1)
   {
-    if (a3)
+    if (operation)
     {
-      [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICEditingTextView(DeleteConfirmation) showRemoveInProgressRecordingAlertWithOperation:type:attachments:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Unexpected ICRemoveAttachmentOperation: %ld", a3}];
+      [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICEditingTextView(DeleteConfirmation) showRemoveInProgressRecordingAlertWithOperation:type:attachments:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Unexpected ICRemoveAttachmentOperation: %ld", operation}];
       v25 = 0;
       v29 = 0;
       v17 = 0;
       goto LABEL_17;
     }
 
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = v15;
-    if (v14)
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = mainBundle4;
+    if (isCallRecording)
     {
-      v17 = [v15 localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
+      v17 = [mainBundle4 localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
 
-      v18 = [MEMORY[0x277CCA8D8] mainBundle];
-      v19 = v18;
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v19 = mainBundle2;
       v20 = @"Deleting this attachment will stop the recording and remove it from the note.";
       goto LABEL_10;
     }
 
-    v17 = [v15 localizedStringForKey:@"Delete Audio Recording?" value:&stru_282757698 table:0];
+    v17 = [mainBundle4 localizedStringForKey:@"Delete Audio Recording?" value:&stru_282757698 table:0];
 
-    v31 = [MEMORY[0x277CCA8D8] mainBundle];
-    v32 = v31;
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v32 = mainBundle3;
     v33 = @"Deleting this attachment will stop the recording and remove it from the note.";
 LABEL_15:
-    v25 = [v31 localizedStringForKey:v33 value:&stru_282757698 table:0];
+    v25 = [mainBundle3 localizedStringForKey:v33 value:&stru_282757698 table:0];
 
-    v26 = [MEMORY[0x277CCA8D8] mainBundle];
-    v27 = v26;
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v27 = mainBundle5;
     v28 = @"Delete";
     goto LABEL_16;
   }
 
-  v21 = [MEMORY[0x277CCA8D8] mainBundle];
-  v22 = v21;
-  if (!v14)
+  mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+  v22 = mainBundle6;
+  if (!isCallRecording)
   {
-    v17 = [v21 localizedStringForKey:@"Cut Audio Recording?" value:&stru_282757698 table:0];
+    v17 = [mainBundle6 localizedStringForKey:@"Cut Audio Recording?" value:&stru_282757698 table:0];
 
-    v30 = [MEMORY[0x277CCA8D8] mainBundle];
-    v25 = [v30 localizedStringForKey:@"Cutting this attachment will stop the recording and remove it from the note." value:&stru_282757698 table:0];
+    mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+    v25 = [mainBundle7 localizedStringForKey:@"Cutting this attachment will stop the recording and remove it from the note." value:&stru_282757698 table:0];
 
-    v26 = [MEMORY[0x277CCA8D8] mainBundle];
-    v27 = v26;
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v27 = mainBundle5;
     v28 = @"Cut";
     goto LABEL_16;
   }
 
-  v17 = [v21 localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
+  v17 = [mainBundle6 localizedStringForKey:@"Stop Call Recording?" value:&stru_282757698 table:0];
 
-  v18 = [MEMORY[0x277CCA8D8] mainBundle];
-  v19 = v18;
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v19 = mainBundle2;
   v20 = @"Cutting this attachment will stop the recording and remove it from the note.";
 LABEL_10:
-  v25 = [v18 localizedStringForKey:v20 value:&stru_282757698 table:0];
+  v25 = [mainBundle2 localizedStringForKey:v20 value:&stru_282757698 table:0];
 
-  v26 = [MEMORY[0x277CCA8D8] mainBundle];
-  v27 = v26;
+  mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+  v27 = mainBundle5;
   v28 = @"OK";
 LABEL_16:
-  v29 = [v26 localizedStringForKey:v28 value:&stru_282757698 table:0];
+  v29 = [mainBundle5 localizedStringForKey:v28 value:&stru_282757698 table:0];
 
 LABEL_17:
-  if (a4 == 1)
+  if (type == 1)
   {
-    v34 = [MEMORY[0x277CCA8D8] mainBundle];
-    v35 = [v34 localizedStringForKey:@"This will stop the audio that’s playing and remove it from the note." value:&stru_282757698 table:0];
+    mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+    v35 = [mainBundle8 localizedStringForKey:@"This will stop the audio that’s playing and remove it from the note." value:&stru_282757698 table:0];
 
     v25 = v35;
   }
@@ -16859,8 +16859,8 @@ LABEL_17:
   v37[1] = 3221225472;
   v37[2] = __124__ICEditingTextView_DeleteConfirmation__showRemoveInProgressRecordingAlertWithOperation_type_attachments_completionHandler___block_invoke;
   v37[3] = &unk_2781AFC00;
-  v38 = v10;
-  v36 = v10;
+  v38 = handlerCopy;
+  v36 = handlerCopy;
   [(ICEditingTextView *)self showRemoveAttachmentAlertWithTitle:v17 message:v25 primaryActionTitle:v29 completionHandler:v37];
 }
 
@@ -16886,44 +16886,44 @@ void __124__ICEditingTextView_DeleteConfirmation__showRemoveInProgressRecordingA
   }
 }
 
-- (void)showRemoveAttachmentAlertWithTitle:(id)a3 message:(id)a4 primaryActionTitle:(id)a5 completionHandler:(id)a6
+- (void)showRemoveAttachmentAlertWithTitle:(id)title message:(id)message primaryActionTitle:(id)actionTitle completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D75110];
-  v12 = a5;
-  v13 = [v11 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
-  v14 = [(ICEditingTextView *)self editorController];
-  LOBYTE(a4) = [v14 isEditing];
+  actionTitleCopy = actionTitle;
+  v13 = [v11 alertControllerWithTitle:title message:message preferredStyle:1];
+  editorController = [(ICEditingTextView *)self editorController];
+  LOBYTE(message) = [editorController isEditing];
 
   v15 = MEMORY[0x277D750F8];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __121__ICEditingTextView_DeleteConfirmation__showRemoveAttachmentAlertWithTitle_message_primaryActionTitle_completionHandler___block_invoke;
   v31[3] = &unk_2781AFC28;
-  v16 = v10;
-  v33 = a4;
+  v16 = handlerCopy;
+  messageCopy = message;
   v31[4] = self;
   v32 = v16;
-  v17 = [v15 actionWithTitle:v12 style:2 handler:v31];
+  v17 = [v15 actionWithTitle:actionTitleCopy style:2 handler:v31];
 
   [v13 addAction:v17];
   v18 = MEMORY[0x277D750F8];
-  v19 = [MEMORY[0x277CCA8D8] mainBundle];
-  v20 = [v19 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v20 = [mainBundle localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __121__ICEditingTextView_DeleteConfirmation__showRemoveAttachmentAlertWithTitle_message_primaryActionTitle_completionHandler___block_invoke_3;
   v27 = &unk_2781AFC28;
-  v30 = a4;
-  v28 = self;
+  messageCopy2 = message;
+  selfCopy = self;
   v29 = v16;
   v21 = v16;
   v22 = [v18 actionWithTitle:v20 style:1 handler:&v24];
-  [v13 addAction:{v22, v24, v25, v26, v27, v28}];
+  [v13 addAction:{v22, v24, v25, v26, v27, selfCopy}];
 
   [(ICEditingTextView *)self resignFirstResponder];
-  v23 = [(ICEditingTextView *)self editorController];
-  [v23 presentViewController:v13 animated:1 completion:0];
+  editorController2 = [(ICEditingTextView *)self editorController];
+  [editorController2 presentViewController:v13 animated:1 completion:0];
 }
 
 uint64_t __121__ICEditingTextView_DeleteConfirmation__showRemoveAttachmentAlertWithTitle_message_primaryActionTitle_completionHandler___block_invoke(uint64_t a1)

@@ -3,27 +3,27 @@
 - (void)dealloc;
 - (void)ensureConnected;
 - (void)ensureDisconnected;
-- (void)getProperty:(id)a3 qualifier:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6;
-- (void)getSlideshowFeaturesWithOptions:(unsigned int)a3 completionQueue:(id)a4 completionBlock:(id)a5;
-- (void)getSlideshowInfoWithOptions:(unsigned int)a3 completionQueue:(id)a4 completionBlock:(id)a5;
+- (void)getProperty:(id)property qualifier:(id)qualifier completionQueue:(id)queue completionBlock:(id)block;
+- (void)getSlideshowFeaturesWithOptions:(unsigned int)options completionQueue:(id)queue completionBlock:(id)block;
+- (void)getSlideshowInfoWithOptions:(unsigned int)options completionQueue:(id)queue completionBlock:(id)block;
 - (void)invalidate;
-- (void)performRemoteAction:(id)a3 withParams:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6;
-- (void)sendPhotoData:(id)a3 options:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6;
-- (void)setEventHandlerQueue:(id)a3 eventHandlerBlock:(id)a4;
-- (void)setHost:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7;
-- (void)setSlideshowInfo:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5;
-- (void)startPresentation:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5;
+- (void)performRemoteAction:(id)action withParams:(id)params completionQueue:(id)queue completionBlock:(id)block;
+- (void)sendPhotoData:(id)data options:(id)options completionQueue:(id)queue completionBlock:(id)block;
+- (void)setEventHandlerQueue:(id)queue eventHandlerBlock:(id)block;
+- (void)setHost:(id)host;
+- (void)setPassword:(id)password;
+- (void)setProperty:(id)property qualifier:(id)qualifier value:(id)value completionQueue:(id)queue completionBlock:(id)block;
+- (void)setSlideshowInfo:(id)info completionQueue:(id)queue completionBlock:(id)block;
+- (void)startPresentation:(id)presentation completionQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation MediaControlClient
 
-- (void)setSlideshowInfo:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5
+- (void)setSlideshowInfo:(id)info completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a4)
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -32,9 +32,9 @@
   v10[2] = __71__MediaControlClient_setSlideshowInfo_completionQueue_completionBlock___block_invoke;
   v10[3] = &unk_27989A8C0;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v10[7] = a5;
+  v10[5] = info;
+  v10[6] = queue;
+  v10[7] = block;
   dispatch_async(queue, v10);
 }
 
@@ -218,11 +218,11 @@ void __71__MediaControlClient_setSlideshowInfo_completionQueue_completionBlock__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getSlideshowInfoWithOptions:(unsigned int)a3 completionQueue:(id)a4 completionBlock:(id)a5
+- (void)getSlideshowInfoWithOptions:(unsigned int)options completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a4)
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -231,8 +231,8 @@ void __71__MediaControlClient_setSlideshowInfo_completionQueue_completionBlock__
   block[2] = __82__MediaControlClient_getSlideshowInfoWithOptions_completionQueue_completionBlock___block_invoke;
   block[3] = &unk_27989A870;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = queue;
+  block[6] = block;
   dispatch_async(queue, block);
 }
 
@@ -349,11 +349,11 @@ void __82__MediaControlClient_getSlideshowInfoWithOptions_completionQueue_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getSlideshowFeaturesWithOptions:(unsigned int)a3 completionQueue:(id)a4 completionBlock:(id)a5
+- (void)getSlideshowFeaturesWithOptions:(unsigned int)options completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a4)
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -361,10 +361,10 @@ void __82__MediaControlClient_getSlideshowInfoWithOptions_completionQueue_comple
   v10[1] = 3221225472;
   v10[2] = __86__MediaControlClient_getSlideshowFeaturesWithOptions_completionQueue_completionBlock___block_invoke;
   v10[3] = &unk_27989A960;
-  v11 = a3;
+  optionsCopy = options;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a5;
+  v10[5] = queue;
+  v10[6] = block;
   dispatch_async(queue, v10);
 }
 
@@ -496,11 +496,11 @@ void __86__MediaControlClient_getSlideshowFeaturesWithOptions_completionQueue_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5 completionQueue:(id)a6 completionBlock:(id)a7
+- (void)setProperty:(id)property qualifier:(id)qualifier value:(id)value completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a6)
+  if (queue)
   {
-    dispatch_retain(a6);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -509,11 +509,11 @@ void __86__MediaControlClient_getSlideshowFeaturesWithOptions_completionQueue_co
   v14[2] = __82__MediaControlClient_setProperty_qualifier_value_completionQueue_completionBlock___block_invoke;
   v14[3] = &unk_27989A938;
   v14[4] = self;
-  v14[5] = a3;
-  v14[6] = a4;
-  v14[7] = a5;
-  v14[8] = a6;
-  v14[9] = a7;
+  v14[5] = property;
+  v14[6] = qualifier;
+  v14[7] = value;
+  v14[8] = queue;
+  v14[9] = block;
   dispatch_async(queue, v14);
 }
 
@@ -551,19 +551,19 @@ void __82__MediaControlClient_setProperty_qualifier_value_completionQueue_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getProperty:(id)a3 qualifier:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6
+- (void)getProperty:(id)property qualifier:(id)qualifier completionQueue:(id)queue completionBlock:(id)block
 {
-  dispatch_retain(a5);
+  dispatch_retain(queue);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__MediaControlClient_getProperty_qualifier_completionQueue_completionBlock___block_invoke;
   block[3] = &unk_27989A848;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = property;
+  block[6] = qualifier;
+  block[7] = queue;
+  block[8] = block;
   dispatch_async(queue, block);
 }
 
@@ -606,11 +606,11 @@ void __76__MediaControlClient_getProperty_qualifier_completionQueue_completionBl
   }
 }
 
-- (void)sendPhotoData:(id)a3 options:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6
+- (void)sendPhotoData:(id)data options:(id)options completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a5)
+  if (queue)
   {
-    dispatch_retain(a5);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -619,10 +619,10 @@ void __76__MediaControlClient_getProperty_qualifier_completionQueue_completionBl
   block[2] = __76__MediaControlClient_sendPhotoData_options_completionQueue_completionBlock___block_invoke;
   block[3] = &unk_27989A848;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = data;
+  block[6] = options;
+  block[7] = queue;
+  block[8] = block;
   dispatch_async(queue, block);
 }
 
@@ -851,11 +851,11 @@ void __76__MediaControlClient_sendPhotoData_options_completionQueue_completionBl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startPresentation:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5
+- (void)startPresentation:(id)presentation completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a4)
+  if (queue)
   {
-    dispatch_retain(a4);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -864,9 +864,9 @@ void __76__MediaControlClient_sendPhotoData_options_completionQueue_completionBl
   v10[2] = __72__MediaControlClient_startPresentation_completionQueue_completionBlock___block_invoke;
   v10[3] = &unk_27989A8C0;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  v10[7] = a5;
+  v10[5] = presentation;
+  v10[6] = queue;
+  v10[7] = block;
   dispatch_async(queue, v10);
 }
 
@@ -1011,11 +1011,11 @@ void __72__MediaControlClient_startPresentation_completionQueue_completionBlock_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setEventHandlerQueue:(id)a3 eventHandlerBlock:(id)a4
+- (void)setEventHandlerQueue:(id)queue eventHandlerBlock:(id)block
 {
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -1023,9 +1023,9 @@ void __72__MediaControlClient_startPresentation_completionQueue_completionBlock_
   block[1] = 3221225472;
   block[2] = __61__MediaControlClient_setEventHandlerQueue_eventHandlerBlock___block_invoke;
   block[3] = &unk_27989A870;
-  block[4] = a3;
+  block[4] = queue;
   block[5] = self;
-  block[6] = a4;
+  block[6] = block;
   dispatch_async(queue, block);
 }
 
@@ -1088,11 +1088,11 @@ void __61__MediaControlClient_setEventHandlerQueue_eventHandlerBlock___block_inv
   }
 }
 
-- (void)performRemoteAction:(id)a3 withParams:(id)a4 completionQueue:(id)a5 completionBlock:(id)a6
+- (void)performRemoteAction:(id)action withParams:(id)params completionQueue:(id)queue completionBlock:(id)block
 {
-  if (a5)
+  if (queue)
   {
-    dispatch_retain(a5);
+    dispatch_retain(queue);
   }
 
   queue = self->_queue;
@@ -1101,10 +1101,10 @@ void __61__MediaControlClient_setEventHandlerQueue_eventHandlerBlock___block_inv
   block[2] = __85__MediaControlClient_performRemoteAction_withParams_completionQueue_completionBlock___block_invoke;
   block[3] = &unk_27989A848;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = action;
+  block[6] = params;
+  block[7] = queue;
+  block[8] = block;
   dispatch_async(queue, block);
 }
 
@@ -1181,7 +1181,7 @@ void __85__MediaControlClient_performRemoteAction_withParams_completionQueue_com
   dispatch_async(queue, block);
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1189,7 +1189,7 @@ void __85__MediaControlClient_performRemoteAction_withParams_completionQueue_com
   v4[2] = __34__MediaControlClient_setPassword___block_invoke;
   v4[3] = &unk_27989A7F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = password;
   dispatch_async(queue, v4);
 }
 
@@ -1200,7 +1200,7 @@ uint64_t __34__MediaControlClient_setPassword___block_invoke(uint64_t a1)
   return ReplaceDifferentString();
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1208,7 +1208,7 @@ uint64_t __34__MediaControlClient_setPassword___block_invoke(uint64_t a1)
   v4[2] = __30__MediaControlClient_setHost___block_invoke;
   v4[3] = &unk_27989A7F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = host;
   dispatch_async(queue, v4);
 }
 

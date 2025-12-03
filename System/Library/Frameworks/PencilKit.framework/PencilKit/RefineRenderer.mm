@@ -1,15 +1,15 @@
 @interface RefineRenderer
 - (_TtC9PencilKit14RefineRenderer)init;
-- (void)drawInMTKView:(id)a3;
+- (void)drawInMTKView:(id)view;
 @end
 
 @implementation RefineRenderer
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  RefineRenderer.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  RefineRenderer.draw(in:)(viewCopy);
 }
 
 - (_TtC9PencilKit14RefineRenderer)init

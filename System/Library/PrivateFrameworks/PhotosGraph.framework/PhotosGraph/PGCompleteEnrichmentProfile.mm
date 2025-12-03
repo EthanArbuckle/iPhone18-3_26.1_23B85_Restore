@@ -1,30 +1,30 @@
 @interface PGCompleteEnrichmentProfile
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4;
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options;
 - (id)curationOptions;
 @end
 
 @implementation PGCompleteEnrichmentProfile
 
-- (BOOL)canEnrichHighlight:(id)a3 withOptions:(unint64_t)a4
+- (BOOL)canEnrichHighlight:(id)highlight withOptions:(unint64_t)options
 {
-  v6 = a3;
+  highlightCopy = highlight;
   v14.receiver = self;
   v14.super_class = PGCompleteEnrichmentProfile;
-  if ([(PGDefaultEnrichmentProfile *)&v14 canEnrichHighlight:v6 withOptions:a4])
+  if ([(PGDefaultEnrichmentProfile *)&v14 canEnrichHighlight:highlightCopy withOptions:options])
   {
-    if (a4 >> 31)
+    if (options >> 31)
     {
       v12 = 1;
     }
 
     else
     {
-      v7 = [(PGDefaultEnrichmentProfile *)self curationManager];
-      v8 = [v7 photoLibrary];
+      curationManager = [(PGDefaultEnrichmentProfile *)self curationManager];
+      photoLibrary = [curationManager photoLibrary];
 
-      [v6 faceAnalysisProgressForPhotoLibrary:v8];
+      [highlightCopy faceAnalysisProgressForPhotoLibrary:photoLibrary];
       v10 = v9;
-      [v6 sceneAnalysisProgressForPhotoLibrary:v8];
+      [highlightCopy sceneAnalysisProgressForPhotoLibrary:photoLibrary];
       v12 = v11 >= 0.9 && v10 >= 0.25;
     }
   }

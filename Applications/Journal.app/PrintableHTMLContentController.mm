@@ -1,16 +1,16 @@
 @interface PrintableHTMLContentController
 - (_TtC7Journal30PrintableHTMLContentController)init;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation PrintableHTMLContentController
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003C1618(v6);
+  viewCopy = view;
+  navigationCopy = navigation;
+  selfCopy = self;
+  sub_1003C1618(viewCopy);
 }
 
 - (_TtC7Journal30PrintableHTMLContentController)init

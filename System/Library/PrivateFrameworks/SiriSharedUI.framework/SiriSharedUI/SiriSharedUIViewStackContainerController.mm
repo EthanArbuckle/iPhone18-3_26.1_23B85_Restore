@@ -2,8 +2,8 @@
 - (BOOL)_canShowWhileLocked;
 - (SiriSharedUIViewStackContainer)viewStackContainer;
 - (void)loadView;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SiriSharedUIViewStackContainerController
@@ -16,18 +16,18 @@
   [(SiriSharedUIViewStackContainerController *)self setView:v4];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = SiriSharedUIViewStackContainerController;
-  v6 = a4;
-  [(SiriSharedUIViewStackContainerController *)&v8 willTransitionToTraitCollection:a3 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(SiriSharedUIViewStackContainerController *)&v8 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinatorCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __102__SiriSharedUIViewStackContainerController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_278354A18;
   v7[4] = self;
-  [v6 animateAlongsideTransition:v7 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v7 completion:0];
 }
 
 void __102__SiriSharedUIViewStackContainerController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -36,20 +36,20 @@ void __102__SiriSharedUIViewStackContainerController_willTransitionToTraitCollec
   [v1 relayout];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SiriSharedUIViewStackContainerController;
-  v7 = a4;
-  [(SiriSharedUIViewStackContainerController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SiriSharedUIViewStackContainerController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __95__SiriSharedUIViewStackContainerController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278354A18;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __95__SiriSharedUIViewStackContainerController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -60,11 +60,11 @@ void __95__SiriSharedUIViewStackContainerController_viewWillTransitionToSize_wit
 
 - (SiriSharedUIViewStackContainer)viewStackContainer
 {
-  v2 = [(SiriSharedUIViewStackContainerController *)self view];
+  view = [(SiriSharedUIViewStackContainerController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = view;
   }
 
   else
@@ -79,10 +79,10 @@ void __95__SiriSharedUIViewStackContainerController_viewWillTransitionToSize_wit
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = [MEMORY[0x277D61AB8] sharedInstance];
-  v3 = [v2 isSiriSafeForLockScreen];
+  mEMORY[0x277D61AB8] = [MEMORY[0x277D61AB8] sharedInstance];
+  isSiriSafeForLockScreen = [mEMORY[0x277D61AB8] isSiriSafeForLockScreen];
 
-  return v3;
+  return isSiriSafeForLockScreen;
 }
 
 @end

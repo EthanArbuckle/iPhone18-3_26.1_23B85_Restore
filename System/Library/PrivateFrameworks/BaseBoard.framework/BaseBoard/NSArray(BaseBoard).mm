@@ -22,29 +22,29 @@
 
 - (id)bs_array
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }
 
 - (id)bs_reverse
 {
-  v1 = [a1 reverseObjectEnumerator];
-  v2 = [v1 allObjects];
+  reverseObjectEnumerator = [self reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v2;
+  return allObjects;
 }
 
 - (id)bs_flatten
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -54,35 +54,35 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 bs_flatten];
-          [v2 addObjectsFromArray:v8];
+          bs_flatten = [v7 bs_flatten];
+          [array addObjectsFromArray:bs_flatten];
         }
 
         else
         {
-          [v2 addObject:{v7, v10}];
+          [array addObject:{v7, v10}];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
   }
 
-  return v2;
+  return array;
 }
 
 - (BOOL)bs_containsObjectPassingTest:()BaseBoard
 {
-  v3 = BSCollectionFind(a1, a3);
+  v3 = BSCollectionFind(self, a3);
   v4 = v3 != 0;
 
   return v4;
@@ -113,8 +113,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = a1;
-    v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    selfCopy = self;
+    v5 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
       v6 = *v9;
@@ -125,14 +125,14 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selfCopy);
           }
 
           (*(a3 + 16))(a3, *(*(&v8 + 1) + 8 * v7++));
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -142,7 +142,7 @@
 
 - (uint64_t)bs_first:()BaseBoard
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= a3)
   {
     v6 = a3;
@@ -153,7 +153,7 @@
     v6 = v5;
   }
 
-  return [a1 subarrayWithRange:{0, v6}];
+  return [self subarrayWithRange:{0, v6}];
 }
 
 - (id)bs_firstObjectOfClass:()BaseBoard
@@ -163,7 +163,7 @@
   v5[2] = __44__NSArray_BaseBoard__bs_firstObjectOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v5[4] = a3;
-  v3 = BSCollectionFind(a1, v5);
+  v3 = BSCollectionFind(self, v5);
 
   return v3;
 }
@@ -172,14 +172,14 @@
 {
   v4 = NSClassFromString(aClassName);
 
-  return [a1 bs_firstObjectOfClass:v4];
+  return [self bs_firstObjectOfClass:v4];
 }
 
 - (id)bs_filter:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionFilter(v5, a1, a3);
+  return BSCollectionFilter(v5, self, a3);
 }
 
 - (id)bs_objectsOfClass:()BaseBoard
@@ -190,7 +190,7 @@
   v8[2] = __40__NSArray_BaseBoard__bs_objectsOfClass___block_invoke;
   v8[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v8[4] = a3;
-  v6 = BSCollectionFilter(v5, a1, v8);
+  v6 = BSCollectionFilter(v5, self, v8);
 
   return v6;
 }
@@ -199,33 +199,33 @@
 {
   v5 = objc_opt_class();
 
-  return BSCollectionMap(v5, a1, a3);
+  return BSCollectionMap(v5, self, a3);
 }
 
 - (id)bs_compactMap:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionCompactMap(v5, a1, a3);
+  return BSCollectionCompactMap(v5, self, a3);
 }
 
 - (id)bs_mapNoNulls:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionCompactMap(v5, a1, a3);
+  return BSCollectionCompactMap(v5, self, a3);
 }
 
 - (id)bs_dictionaryByPartitioning:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return BSCollectionPartition(v5, a1, a3);
+  return BSCollectionPartition(v5, self, a3);
 }
 
 - (id)bs_differenceWithArray:()BaseBoard
 {
-  v4 = [MEMORY[0x1E695DF70] arrayWithArray:a1];
+  v4 = [MEMORY[0x1E695DF70] arrayWithArray:self];
   [v4 removeObjectsInArray:a3];
   v5 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
 
@@ -234,9 +234,9 @@
 
 - (id)bs_flattenedDifferenceWithArray:()BaseBoard
 {
-  v4 = [a1 bs_flatten];
-  v5 = [a3 bs_flatten];
-  v6 = [v4 bs_differenceWithArray:v5];
+  bs_flatten = [self bs_flatten];
+  bs_flatten2 = [a3 bs_flatten];
+  v6 = [bs_flatten bs_differenceWithArray:bs_flatten2];
 
   return v6;
 }

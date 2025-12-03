@@ -1,7 +1,7 @@
 @interface TKCTKDConnection
 - (NSXPCConnection)serverConnection;
-- (TKCTKDConnection)initWithCTKDEndpoint:(id)a3 targetUID:(id)a4;
-- (id)withError:(id *)a3 invoke:(id)a4;
+- (TKCTKDConnection)initWithCTKDEndpoint:(id)endpoint targetUID:(id)d;
+- (id)withError:(id *)error invoke:(id)invoke;
 - (void)dealloc;
 - (void)serverConnection;
 @end
@@ -11,15 +11,15 @@
 - (NSXPCConnection)serverConnection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  serverConnection = v3->_serverConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  serverConnection = selfCopy->_serverConnection;
   if (serverConnection)
   {
     goto LABEL_14;
   }
 
-  serverEndpoint = v3->_serverEndpoint;
+  serverEndpoint = selfCopy->_serverEndpoint;
   if (serverEndpoint)
   {
     v6 = serverEndpoint;
@@ -30,7 +30,7 @@
     v6 = provideEndpoint(2);
     if (!v6)
     {
-      if (v3->_targetUID)
+      if (selfCopy->_targetUID)
       {
         v15 = TK_LOG_client_2();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -39,7 +39,7 @@
         }
       }
 
-      v3->_namedConnection = 1;
+      selfCopy->_namedConnection = 1;
       v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.ctkd.token-client" options:0];
       v6 = 0;
       goto LABEL_7;
@@ -49,23 +49,23 @@
   v7 = TK_LOG_client_2();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v16 = v3->_serverEndpoint ? "external" : "EP-provided";
-    targetUID = v3->_targetUID;
+    v16 = selfCopy->_serverEndpoint ? "external" : "EP-provided";
+    targetUID = selfCopy->_targetUID;
     if (targetUID)
     {
-      v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (targetUID=%d)", -[NSNumber integerValue](v3->_targetUID, "integerValue")];
-      v18 = [v2 UTF8String];
+      v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (targetUID=%d)", -[NSNumber integerValue](selfCopy->_targetUID, "integerValue")];
+      uTF8String = [v2 UTF8String];
     }
 
     else
     {
-      v18 = "";
+      uTF8String = "";
     }
 
     *buf = 136446466;
     v20 = v16;
     v21 = 2082;
-    v22 = v18;
+    v22 = uTF8String;
     _os_log_debug_impl(&dword_1DF413000, v7, OS_LOG_TYPE_DEBUG, "creating connection to %{public}s endpoint%{public}s", buf, 0x16u);
     if (targetUID)
     {
@@ -74,61 +74,61 @@
 
   v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v6];
 LABEL_7:
-  v9 = v3->_serverConnection;
-  v3->_serverConnection = v8;
+  v9 = selfCopy->_serverConnection;
+  selfCopy->_serverConnection = v8;
 
-  v10 = v3->_targetUID;
+  v10 = selfCopy->_targetUID;
   if (v10)
   {
-    [(NSXPCConnection *)v3->_serverConnection _setTargetUserIdentifier:[(NSNumber *)v10 integerValue]];
+    [(NSXPCConnection *)selfCopy->_serverConnection _setTargetUserIdentifier:[(NSNumber *)v10 integerValue]];
   }
 
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A901D0];
-  [(NSXPCConnection *)v3->_serverConnection setRemoteObjectInterface:v11];
+  [(NSXPCConnection *)selfCopy->_serverConnection setRemoteObjectInterface:v11];
 
-  if (v3->_exportedInterface)
+  if (selfCopy->_exportedInterface)
   {
-    [(NSXPCConnection *)v3->_serverConnection setExportedInterface:?];
+    [(NSXPCConnection *)selfCopy->_serverConnection setExportedInterface:?];
   }
 
-  if (v3->_exportedObject)
+  if (selfCopy->_exportedObject)
   {
-    [(NSXPCConnection *)v3->_serverConnection setExportedObject:?];
+    [(NSXPCConnection *)selfCopy->_serverConnection setExportedObject:?];
   }
 
-  [(NSXPCConnection *)v3->_serverConnection resume];
+  [(NSXPCConnection *)selfCopy->_serverConnection resume];
 
-  serverConnection = v3->_serverConnection;
+  serverConnection = selfCopy->_serverConnection;
 LABEL_14:
   v12 = serverConnection;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (TKCTKDConnection)initWithCTKDEndpoint:(id)a3 targetUID:(id)a4
+- (TKCTKDConnection)initWithCTKDEndpoint:(id)endpoint targetUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TKCTKDConnection;
   v9 = [(TKCTKDConnection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serverEndpoint, a3);
-    objc_storeStrong(&v10->_targetUID, a4);
+    objc_storeStrong(&v9->_serverEndpoint, endpoint);
+    objc_storeStrong(&v10->_targetUID, d);
   }
 
   return v10;
 }
 
-- (id)withError:(id *)a3 invoke:(id)a4
+- (id)withError:(id *)error invoke:(id)invoke
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  invokeCopy = invoke;
   v30 = 0;
   v29 = *MEMORY[0x1E696A250];
   *&v8 = 67109120;
@@ -141,24 +141,24 @@ LABEL_14:
     v36[2] = __Block_byref_object_copy__8;
     v36[3] = __Block_byref_object_dispose__8;
     v37 = 0;
-    v9 = [(TKCTKDConnection *)self serverConnection];
+    serverConnection = [(TKCTKDConnection *)self serverConnection];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __37__TKCTKDConnection_withError_invoke___block_invoke;
     v34[3] = &unk_1E86B7B20;
     v34[4] = &v35;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v34];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v34];
 
     v33 = 0;
-    v11 = v7[2](v7, v10, &v33);
+    v11 = invokeCopy[2](invokeCopy, v10, &v33);
     v12 = v33;
     v13 = *(v36[0] + 40);
     if (!v13)
     {
-      if (a3 && !v11)
+      if (error && !v11)
       {
         v22 = v12;
-        *a3 = v12;
+        *error = v12;
       }
 
       v4 = v11;
@@ -184,8 +184,8 @@ LABEL_14:
         goto LABEL_17;
       }
 
-      v18 = [*(v36[0] + 40) domain];
-      v19 = [v18 isEqualToString:v29];
+      domain = [*(v36[0] + 40) domain];
+      v19 = [domain isEqualToString:v29];
 
       if (!v19)
       {
@@ -201,9 +201,9 @@ LABEL_14:
         }
 
 LABEL_17:
-        if (a3)
+        if (error)
         {
-          *a3 = *(v36[0] + 40);
+          *error = *(v36[0] + 40);
         }
 
         v21 = TK_LOG_client_2();
@@ -248,10 +248,10 @@ LABEL_26:
     [TKCTKDConnection withError:v25 invoke:?];
   }
 
-  if (a3)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:0];
-    *a3 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -319,7 +319,7 @@ id __41__TKCTKDConnection_configurationEndpoint__block_invoke(uint64_t a1, void 
 - (void)serverConnection
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 1024;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_1DF413000, log, OS_LOG_TYPE_DEBUG, "creating connection to %{public}@, targetUID=%d", buf, 0x12u);

@@ -1,7 +1,7 @@
 @interface SKUIMediaQueryNetworkTypeFeature
-+ (BOOL)supportsFeatureName:(id)a3;
-- (BOOL)evaluateWithValues:(id)a3;
-- (SKUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)a3 value:(id)a4;
++ (BOOL)supportsFeatureName:(id)name;
+- (BOOL)evaluateWithValues:(id)values;
+- (SKUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)name value:(id)value;
 - (id)description;
 - (id)notificationNames;
 - (id)requiredKeys;
@@ -9,10 +9,10 @@
 
 @implementation SKUIMediaQueryNetworkTypeFeature
 
-- (SKUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)a3 value:(id)a4
+- (SKUIMediaQueryNetworkTypeFeature)initWithFeatureName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaQueryNetworkTypeFeature initWithFeatureName:value:];
@@ -20,10 +20,10 @@
 
   v12.receiver = self;
   v12.super_class = SKUIMediaQueryNetworkTypeFeature;
-  v8 = [(SKUIMediaQueryFeature *)&v12 initWithFeatureName:v6 value:v7];
+  v8 = [(SKUIMediaQueryFeature *)&v12 initWithFeatureName:nameCopy value:valueCopy];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v9;
   }
@@ -31,22 +31,22 @@
   return v8;
 }
 
-+ (BOOL)supportsFeatureName:(id)a3
++ (BOOL)supportsFeatureName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIMediaQueryNetworkTypeFeature supportsFeatureName:];
   }
 
-  v4 = [v3 isEqualToString:@"network"];
+  v4 = [nameCopy isEqualToString:@"network"];
 
   return v4;
 }
 
-- (BOOL)evaluateWithValues:(id)a3
+- (BOOL)evaluateWithValues:(id)values
 {
-  v4 = [a3 objectForKey:0x2827FFD28];
+  v4 = [values objectForKey:0x2827FFD28];
   LOBYTE(self) = [v4 isEqualToString:self->_value];
 
   return self;
@@ -76,8 +76,8 @@
   v8.receiver = self;
   v8.super_class = SKUIMediaQueryNetworkTypeFeature;
   v4 = [(SKUIMediaQueryNetworkTypeFeature *)&v8 description];
-  v5 = [(SKUIMediaQueryFeature *)self featureName];
-  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, v5, self->_value];
+  featureName = [(SKUIMediaQueryFeature *)self featureName];
+  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, featureName, self->_value];
 
   return v6;
 }

@@ -1,47 +1,47 @@
 @interface PKPeerPaymentEncryptionCertificatesVersions
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentEncryptionCertificatesVersions)initWithCoder:(id)a3;
-- (PKPeerPaymentEncryptionCertificatesVersions)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentEncryptionCertificatesVersions)initWithCoder:(id)coder;
+- (PKPeerPaymentEncryptionCertificatesVersions)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)certificatesVersionForDestination:(unint64_t)a3;
+- (int64_t)certificatesVersionForDestination:(unint64_t)destination;
 @end
 
 @implementation PKPeerPaymentEncryptionCertificatesVersions
 
-- (PKPeerPaymentEncryptionCertificatesVersions)initWithDictionary:(id)a3
+- (PKPeerPaymentEncryptionCertificatesVersions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = PKPeerPaymentEncryptionCertificatesVersions;
   v5 = [(PKPeerPaymentEncryptionCertificatesVersions *)&v7 init];
   if (v5)
   {
-    v5->_recipientData = [v4 PKIntegerForKey:@"recipientData"];
+    v5->_recipientData = [dictionaryCopy PKIntegerForKey:@"recipientData"];
   }
 
   return v5;
 }
 
-- (PKPeerPaymentEncryptionCertificatesVersions)initWithCoder:(id)a3
+- (PKPeerPaymentEncryptionCertificatesVersions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPeerPaymentEncryptionCertificatesVersions;
   v5 = [(PKPeerPaymentEncryptionCertificatesVersions *)&v7 init];
   if (v5)
   {
-    v5->_recipientData = [v4 decodeIntegerForKey:@"recipientData"];
+    v5->_recipientData = [coderCopy decodeIntegerForKey:@"recipientData"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_recipientData == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_recipientData == equalCopy[1];
 
   return v5;
 }
@@ -55,16 +55,16 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[PKPeerPaymentEncryptionCertificatesVersions allocWithZone:?]];
   *(result + 1) = self->_recipientData;
   return result;
 }
 
-- (int64_t)certificatesVersionForDestination:(unint64_t)a3
+- (int64_t)certificatesVersionForDestination:(unint64_t)destination
 {
-  if (a3 == 1)
+  if (destination == 1)
   {
     return self->_recipientData;
   }

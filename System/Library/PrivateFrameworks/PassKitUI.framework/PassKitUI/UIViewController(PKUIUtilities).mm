@@ -8,32 +8,32 @@
 - (id)pkui_frontMostViewController
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 presentedViewController];
-  v4 = v3;
-  if (!v3 || v3 == a1)
+  presentedViewController = [self presentedViewController];
+  v4 = presentedViewController;
+  if (!presentedViewController || presentedViewController == self)
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
     while (1)
     {
-      v5 = [v4 presentedViewController];
-      if (!v5 || v4 == v5)
+      presentedViewController2 = [v4 presentedViewController];
+      if (!presentedViewController2 || v4 == presentedViewController2)
       {
         break;
       }
 
       v6 = v4;
-      v4 = v5;
+      v4 = presentedViewController2;
     }
 
-    v7 = v4;
-    v4 = v7;
+    selfCopy = v4;
+    v4 = selfCopy;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   objc_autoreleasePoolPop(v2);
 
@@ -42,10 +42,10 @@
 
 - (uint64_t)pkui_userInterfaceIdiomSupportsLargeLayouts
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceIdiom];
-  v3 = v2 < 7;
-  v4 = 0x62u >> v2;
+  traitCollection = [self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  v3 = userInterfaceIdiom < 7;
+  v4 = 0x62u >> userInterfaceIdiom;
 
   return v3 & v4;
 }

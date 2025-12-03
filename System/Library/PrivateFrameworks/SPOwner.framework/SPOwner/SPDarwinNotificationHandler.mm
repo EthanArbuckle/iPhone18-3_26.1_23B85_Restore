@@ -1,28 +1,28 @@
 @interface SPDarwinNotificationHandler
-- (SPDarwinNotificationHandler)initWithNotificationName:(id)a3 changeBlock:(id)a4;
+- (SPDarwinNotificationHandler)initWithNotificationName:(id)name changeBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation SPDarwinNotificationHandler
 
-- (SPDarwinNotificationHandler)initWithNotificationName:(id)a3 changeBlock:(id)a4
+- (SPDarwinNotificationHandler)initWithNotificationName:(id)name changeBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = SPDarwinNotificationHandler;
   v8 = [(SPDarwinNotificationHandler *)&v15 init];
   if (v8)
   {
-    v9 = [v6 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v10 = dispatch_get_global_queue(21, 0);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__SPDarwinNotificationHandler_initWithNotificationName_changeBlock___block_invoke;
     v12[3] = &unk_279B595C8;
-    v13 = v6;
-    v14 = v7;
-    notify_register_dispatch(v9, &v8->_notifyToken, v10, v12);
+    v13 = nameCopy;
+    v14 = blockCopy;
+    notify_register_dispatch(uTF8String, &v8->_notifyToken, v10, v12);
   }
 
   return v8;

@@ -1,23 +1,23 @@
 @interface OrgApacheLuceneIndexReaderUtil
-+ (id)getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext:(id)a3;
++ (id)getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext:(id)context;
 @end
 
 @implementation OrgApacheLuceneIndexReaderUtil
 
-+ (id)getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext:(id)a3
++ (id)getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext:(id)context
 {
   do
   {
-    if (!a3)
+    if (!context)
     {
       JreThrowNullPointerException();
     }
 
-    result = a3;
-    a3 = *(a3 + 1);
+    result = context;
+    context = *(context + 1);
   }
 
-  while (a3);
+  while (context);
   return result;
 }
 

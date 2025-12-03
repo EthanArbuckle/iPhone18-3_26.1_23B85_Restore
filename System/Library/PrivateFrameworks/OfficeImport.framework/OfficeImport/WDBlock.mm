@@ -1,18 +1,18 @@
 @interface WDBlock
-- (WDBlock)initWithText:(id)a3;
+- (WDBlock)initWithText:(id)text;
 - (id)description;
 @end
 
 @implementation WDBlock
 
-- (WDBlock)initWithText:(id)a3
+- (WDBlock)initWithText:(id)text
 {
   v5.receiver = self;
   v5.super_class = WDBlock;
   result = [(WDBlock *)&v5 init];
   if (result)
   {
-    result->mText = a3;
+    result->mText = text;
   }
 
   return result;

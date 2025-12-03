@@ -1,23 +1,23 @@
 @interface EFSQLBetweenExpression
-- (EFSQLBetweenExpression)initWithLeft:(id)a3 firstValue:(id)a4 secondValue:(id)a5 between:(BOOL)a6;
+- (EFSQLBetweenExpression)initWithLeft:(id)left firstValue:(id)value secondValue:(id)secondValue between:(BOOL)between;
 - (NSString)ef_SQLExpression;
-- (void)ef_renderSQLExpressionInto:(id)a3;
-- (void)setColumnExpression:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
+- (void)setColumnExpression:(id)expression;
 @end
 
 @implementation EFSQLBetweenExpression
 
-- (EFSQLBetweenExpression)initWithLeft:(id)a3 firstValue:(id)a4 secondValue:(id)a5 between:(BOOL)a6
+- (EFSQLBetweenExpression)initWithLeft:(id)left firstValue:(id)value secondValue:(id)secondValue between:(BOOL)between
 {
-  v11 = a3;
+  leftCopy = left;
   v15.receiver = self;
   v15.super_class = EFSQLBetweenExpression;
-  v12 = [(EFPair *)&v15 initWithFirst:a4 second:a5];
+  v12 = [(EFPair *)&v15 initWithFirst:value second:secondValue];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_left, a3);
-    v13->_between = a6;
+    objc_storeStrong(&v12->_left, left);
+    v13->_between = between;
   }
 
   return v13;
@@ -25,17 +25,17 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLBetweenExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLBetweenExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v8 = a3;
-  v4 = [(EFSQLBetweenExpression *)self left];
-  [v4 ef_renderSQLExpressionInto:v8];
+  intoCopy = into;
+  left = [(EFSQLBetweenExpression *)self left];
+  [left ef_renderSQLExpressionInto:intoCopy];
 
   if (self->_between)
   {
@@ -47,20 +47,20 @@
     v5 = @" NOT BETWEEN ";
   }
 
-  [v8 appendString:v5];
-  v6 = [(EFPair *)self first];
-  [v6 ef_renderSQLExpressionInto:v8];
+  [intoCopy appendString:v5];
+  first = [(EFPair *)self first];
+  [first ef_renderSQLExpressionInto:intoCopy];
 
-  [v8 appendString:@" AND "];
-  v7 = [(EFPair *)self second];
-  [v7 ef_renderSQLExpressionInto:v8];
+  [intoCopy appendString:@" AND "];
+  second = [(EFPair *)self second];
+  [second ef_renderSQLExpressionInto:intoCopy];
 }
 
-- (void)setColumnExpression:(id)a3
+- (void)setColumnExpression:(id)expression
 {
-  v5 = a3;
-  v4 = [(EFSQLBetweenExpression *)self left];
-  [v4 setColumnExpression:v5];
+  expressionCopy = expression;
+  left = [(EFSQLBetweenExpression *)self left];
+  [left setColumnExpression:expressionCopy];
 }
 
 @end

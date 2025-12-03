@@ -8,7 +8,7 @@
 + (id)storeConfigurationForActivity;
 + (id)storeConfigurationForDelete;
 + (id)storeConfigurationForUpdate;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -17,7 +17,7 @@
 + (id)Activity
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForActivity];
+  configurationForActivity = [self configurationForActivity];
   v3 = +[BMLifeEventIntradayActivity columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -29,7 +29,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"LifeEvent.Intraday.Activity" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Activity" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Activity" schema:v9 configuration:configurationForActivity];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -38,13 +38,13 @@
 
 + (id)configurationForActivity
 {
-  v3 = [a1 storeConfigurationForActivity];
-  v4 = [a1 syncPolicyForActivity];
+  storeConfigurationForActivity = [self storeConfigurationForActivity];
+  syncPolicyForActivity = [self syncPolicyForActivity];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"23927150-DD34-49FF-B2BE-2227E2B1D343"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Activity" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Activity" eventClass:objc_opt_class() storeConfig:storeConfigurationForActivity syncPolicy:syncPolicyForActivity legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -59,13 +59,13 @@
 
 + (id)configurationForDelete
 {
-  v3 = [a1 storeConfigurationForDelete];
-  v4 = [a1 syncPolicyForDelete];
+  storeConfigurationForDelete = [self storeConfigurationForDelete];
+  syncPolicyForDelete = [self syncPolicyForDelete];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5B7E8BEA-D8BD-4C3B-8FEF-4D3E80AB8E61"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Delete" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Delete" eventClass:objc_opt_class() storeConfig:storeConfigurationForDelete syncPolicy:syncPolicyForDelete legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -80,13 +80,13 @@
 
 + (id)configurationForUpdate
 {
-  v3 = [a1 storeConfigurationForUpdate];
-  v4 = [a1 syncPolicyForUpdate];
+  storeConfigurationForUpdate = [self storeConfigurationForUpdate];
+  syncPolicyForUpdate = [self syncPolicyForUpdate];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"AD76ADB9-A872-43D7-B670-40D9B0522148"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Update" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"LifeEvent.Intraday.Update" eventClass:objc_opt_class() storeConfig:storeConfigurationForUpdate syncPolicy:syncPolicyForUpdate legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -102,7 +102,7 @@
 + (id)Delete
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDelete];
+  configurationForDelete = [self configurationForDelete];
   v3 = +[BMLifeEventIntradayDelete columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -114,7 +114,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"LifeEvent.Intraday.Delete" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Delete" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Delete" schema:v9 configuration:configurationForDelete];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -124,7 +124,7 @@
 + (id)Update
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUpdate];
+  configurationForUpdate = [self configurationForUpdate];
   v3 = +[BMLifeEventIntradayUpdate columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -136,33 +136,33 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"LifeEvent.Intraday.Update" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Update" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"LifeEvent.Intraday.Update" schema:v9 configuration:configurationForUpdate];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Activity"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Activity"])
   {
-    v5 = [a1 Activity];
+    activity = [self Activity];
 LABEL_7:
-    v6 = v5;
+    v6 = activity;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"Delete"])
+  if ([nameCopy isEqualToString:@"Delete"])
   {
-    v5 = [a1 Delete];
+    activity = [self Delete];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Update"])
+  if ([nameCopy isEqualToString:@"Update"])
   {
-    v5 = [a1 Update];
+    activity = [self Update];
     goto LABEL_7;
   }
 

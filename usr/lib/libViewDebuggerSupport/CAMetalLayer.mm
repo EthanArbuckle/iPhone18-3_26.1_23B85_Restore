@@ -1,6 +1,6 @@
 @interface CAMetalLayer
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation CAMetalLayer
@@ -66,30 +66,30 @@
   return v8;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"deviceName"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"deviceName"])
   {
-    v10 = [v9 device];
+    device = [objectCopy device];
 LABEL_5:
-    v11 = v10;
-    a6 = [v10 name];
+    v11 = device;
+    error = [device name];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if ([v8 isEqualToString:@"preferredDeviceName"])
+  if ([nameCopy isEqualToString:@"preferredDeviceName"])
   {
-    v10 = [v9 preferredDevice];
+    device = [objectCopy preferredDevice];
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"pixelFormatName"])
+  if ([nameCopy isEqualToString:@"pixelFormatName"])
   {
-    [v9 pixelFormat];
+    [objectCopy pixelFormat];
     Name = MTLPixelFormatGetName();
     if (Name)
     {
@@ -101,21 +101,21 @@ LABEL_6:
       v14 = "Invalid";
     }
 
-    a6 = [NSString stringWithUTF8String:v14];
-    if ([a6 hasPrefix:@"MTLPixelFormat"])
+    error = [NSString stringWithUTF8String:v14];
+    if ([error hasPrefix:@"MTLPixelFormat"])
     {
-      v15 = [a6 substringFromIndex:{objc_msgSend(@"MTLPixelFormat", "length")}];
+      v15 = [error substringFromIndex:{objc_msgSend(@"MTLPixelFormat", "length")}];
 
-      a6 = v15;
+      error = v15;
     }
   }
 
   else
   {
-    if (![v8 isEqualToString:@"colorSpaceName"])
+    if (![nameCopy isEqualToString:@"colorSpaceName"])
     {
-      v11 = v9;
-      v16 = v8;
+      v11 = objectCopy;
+      v16 = nameCopy;
       if (![v16 length])
       {
         goto LABEL_30;
@@ -131,31 +131,31 @@ LABEL_6:
       {
         if ([v16 length] < 2)
         {
-          v21 = [v16 uppercaseString];
+          uppercaseString = [v16 uppercaseString];
         }
 
         else
         {
           v18 = [v16 substringToIndex:1];
-          v19 = [v18 uppercaseString];
+          uppercaseString2 = [v18 uppercaseString];
           v20 = [v16 substringFromIndex:1];
-          v21 = [v19 stringByAppendingString:v20];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v20];
         }
 
-        v22 = [@"is" stringByAppendingString:v21];
+        v22 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v22);
         v17 = (objc_opt_respondsToSelector() & 1) != 0 ? v22 : 0;
       }
 
       if (v17)
       {
-        a6 = [v11 valueForKey:v17];
+        error = [v11 valueForKey:v17];
       }
 
       else
       {
 LABEL_30:
-        if (a6)
+        if (error)
         {
           v23 = v16;
           if (v11)
@@ -189,10 +189,10 @@ LABEL_30:
           v28 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v27];
 
           v29 = v28;
-          *a6 = v28;
+          *error = v28;
 
           v17 = 0;
-          a6 = 0;
+          error = 0;
         }
 
         else
@@ -204,12 +204,12 @@ LABEL_30:
       goto LABEL_6;
     }
 
-    a6 = CGColorSpaceCopyName([v9 colorspace]);
+    error = CGColorSpaceCopyName([objectCopy colorspace]);
   }
 
 LABEL_7:
 
-  return a6;
+  return error;
 }
 
 @end

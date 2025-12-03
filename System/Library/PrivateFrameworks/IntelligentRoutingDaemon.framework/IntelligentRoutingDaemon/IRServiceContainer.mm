@@ -1,31 +1,31 @@
 @interface IRServiceContainer
-+ (BOOL)deleteDatabaseWithPersistenceManager:(id)a3;
-+ (id)createServiceWithClientIdentifier:(id)a3 serviceIdentifier:(id)a4 parameters:(id)a5 persistenceManager:(id)a6;
-+ (id)exportDatabaseWithPersistenceManager:(id)a3;
-+ (id)getServiceTokensForClientIdentifier:(id)a3 persistenceManager:(id)a4;
-+ (id)getServicesWithPersistenceManager:(id)a3;
-+ (void)deleteServiceWithToken:(id)a3 persistenceManager:(id)a4;
-- (IRServiceContainer)initWithServiceIdentifier:(id)a3 delegate:(id)a4 avOutputDeviceProvider:(id)a5 biomeProvider:(id)a6 rapportProvider:(id)a7 proximityProvider:(id)a8 persistenceManager:(id)a9 displayMonitor:(id)a10 audioAVOutputContextController:(id)a11 isLowLatencyMiLo:(BOOL)a12;
++ (BOOL)deleteDatabaseWithPersistenceManager:(id)manager;
++ (id)createServiceWithClientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier parameters:(id)parameters persistenceManager:(id)manager;
++ (id)exportDatabaseWithPersistenceManager:(id)manager;
++ (id)getServiceTokensForClientIdentifier:(id)identifier persistenceManager:(id)manager;
++ (id)getServicesWithPersistenceManager:(id)manager;
++ (void)deleteServiceWithToken:(id)token persistenceManager:(id)manager;
+- (IRServiceContainer)initWithServiceIdentifier:(id)identifier delegate:(id)delegate avOutputDeviceProvider:(id)provider biomeProvider:(id)biomeProvider rapportProvider:(id)rapportProvider proximityProvider:(id)proximityProvider persistenceManager:(id)manager displayMonitor:(id)self0 audioAVOutputContextController:(id)self1 isLowLatencyMiLo:(BOOL)self2;
 - (IRServiceContainerDelegate)delegate;
 - (id)getStatistics;
-- (id)requestCurrentContextWithBundleID:(id)a3;
+- (id)requestCurrentContextWithBundleID:(id)d;
 - (int64_t)getUpdateMode;
-- (void)_refreshServiceWithDate:(id)a3;
-- (void)addEvent:(id)a3 forCandidate:(id)a4;
+- (void)_refreshServiceWithDate:(id)date;
+- (void)addEvent:(id)event forCandidate:(id)candidate;
 - (void)clearStatistics;
-- (void)dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard:(id)a3;
+- (void)dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard:(id)discard;
 - (void)dealloc;
 - (void)deallocSync;
-- (void)deleteCandidate:(id)a3;
-- (void)policyManager:(id)a3 didSpotOnLocationCompleteForClientIds:(id)a4 withError:(id)a5;
-- (void)policyManager:(id)a3 didUpdateBundlesWithSignificantInteractionPattern:(id)a4;
-- (void)policyManager:(id)a3 didUpdateContexts:(id)a4 withReason:(id)a5;
+- (void)deleteCandidate:(id)candidate;
+- (void)policyManager:(id)manager didSpotOnLocationCompleteForClientIds:(id)ids withError:(id)error;
+- (void)policyManager:(id)manager didUpdateBundlesWithSignificantInteractionPattern:(id)pattern;
+- (void)policyManager:(id)manager didUpdateContexts:(id)contexts withReason:(id)reason;
 - (void)requestUpdatedBundlesWithSignificantInteraction;
-- (void)restartLowLatencyMiLo:(BOOL)a3;
+- (void)restartLowLatencyMiLo:(BOOL)lo;
 - (void)run;
-- (void)setSpotOnLocationWithParameters:(id)a3 andClientID:(id)a4;
-- (void)setUpdateMode:(int64_t)a3;
-- (void)updateCandidates:(id)a3;
+- (void)setSpotOnLocationWithParameters:(id)parameters andClientID:(id)d;
+- (void)setUpdateMode:(int64_t)mode;
+- (void)updateCandidates:(id)candidates;
 @end
 
 @implementation IRServiceContainer
@@ -58,8 +58,8 @@ void __35__IRServiceContainer_getUpdateMode__block_invoke(uint64_t a1, void *a2)
 
 - (void)run
 {
-  v3 = [(IRServiceContainer *)self queue];
-  IRDispatchAsyncWithStrongSelf(v3, self, &__block_literal_global_55_0);
+  queue = [(IRServiceContainer *)self queue];
+  IRDispatchAsyncWithStrongSelf(queue, self, &__block_literal_global_55_0);
 }
 
 - (int64_t)getUpdateMode
@@ -68,13 +68,13 @@ void __35__IRServiceContainer_getUpdateMode__block_invoke(uint64_t a1, void *a2)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(IRServiceContainer *)self queue];
+  queue = [(IRServiceContainer *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__IRServiceContainer_getUpdateMode__block_invoke;
   v6[3] = &unk_2797E2548;
   v6[4] = &v7;
-  IRDispatchAsyncAndWaitWithStrongSelf(v3, self, v6);
+  IRDispatchAsyncAndWaitWithStrongSelf(queue, self, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -112,47 +112,47 @@ void __25__IRServiceContainer_run__block_invoke(uint64_t a1, void *a2)
   return WeakRetained;
 }
 
-- (IRServiceContainer)initWithServiceIdentifier:(id)a3 delegate:(id)a4 avOutputDeviceProvider:(id)a5 biomeProvider:(id)a6 rapportProvider:(id)a7 proximityProvider:(id)a8 persistenceManager:(id)a9 displayMonitor:(id)a10 audioAVOutputContextController:(id)a11 isLowLatencyMiLo:(BOOL)a12
+- (IRServiceContainer)initWithServiceIdentifier:(id)identifier delegate:(id)delegate avOutputDeviceProvider:(id)provider biomeProvider:(id)biomeProvider rapportProvider:(id)rapportProvider proximityProvider:(id)proximityProvider persistenceManager:(id)manager displayMonitor:(id)self0 audioAVOutputContextController:(id)self1 isLowLatencyMiLo:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  biomeProviderCopy = biomeProvider;
+  rapportProviderCopy = rapportProvider;
+  proximityProviderCopy = proximityProvider;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  controllerCopy = controller;
   v58.receiver = self;
   v58.super_class = IRServiceContainer;
   v27 = [(IRServiceContainer *)&v58 init];
   v28 = v27;
-  v54 = v23;
+  v54 = proximityProviderCopy;
   if (!v27)
   {
     goto LABEL_6;
   }
 
-  [(IRServiceContainer *)v27 setServiceIdentifier:v18];
-  v53 = v19;
-  [(IRServiceContainer *)v28 setDelegate:v19];
-  v52 = v20;
-  [(IRServiceContainer *)v28 setAvOutputDeviceProvider:v20];
-  v51 = v21;
-  [(IRServiceContainer *)v28 setBiomeProvider:v21];
-  [(IRServiceContainer *)v28 setRapportProvider:v22];
-  [(IRServiceContainer *)v28 setPersistenceManager:v24];
-  [(IRServiceContainer *)v28 setProximityProvider:v23];
-  [(IRServiceContainer *)v28 setDisplayMonitor:v25];
-  [(IRServiceContainer *)v28 setAudioAVOutputContextController:v26];
-  v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.intelligentroutingd.serviceContainer", v18];
-  v30 = [v29 UTF8String];
+  [(IRServiceContainer *)v27 setServiceIdentifier:identifierCopy];
+  v53 = delegateCopy;
+  [(IRServiceContainer *)v28 setDelegate:delegateCopy];
+  v52 = providerCopy;
+  [(IRServiceContainer *)v28 setAvOutputDeviceProvider:providerCopy];
+  v51 = biomeProviderCopy;
+  [(IRServiceContainer *)v28 setBiomeProvider:biomeProviderCopy];
+  [(IRServiceContainer *)v28 setRapportProvider:rapportProviderCopy];
+  [(IRServiceContainer *)v28 setPersistenceManager:managerCopy];
+  [(IRServiceContainer *)v28 setProximityProvider:proximityProviderCopy];
+  [(IRServiceContainer *)v28 setDisplayMonitor:monitorCopy];
+  [(IRServiceContainer *)v28 setAudioAVOutputContextController:controllerCopy];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.intelligentroutingd.serviceContainer", identifierCopy];
+  uTF8String = [identifierCopy UTF8String];
   v31 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v32 = dispatch_queue_create(v30, v31);
+  v32 = dispatch_queue_create(uTF8String, v31);
   [(IRServiceContainer *)v28 setQueue:v32];
 
-  v33 = [(IRServiceContainer *)v28 persistenceManager];
-  LOBYTE(v32) = [v33 connectToStore];
+  persistenceManager = [(IRServiceContainer *)v28 persistenceManager];
+  LOBYTE(v32) = [persistenceManager connectToStore];
 
   if ((v32 & 1) == 0)
   {
@@ -165,15 +165,15 @@ void __25__IRServiceContainer_run__block_invoke(uint64_t a1, void *a2)
   }
 
   v34 = [IRServiceStore alloc];
-  v35 = [(IRServiceContainer *)v28 persistenceManager];
-  v36 = [(IRServiceContainer *)v28 serviceIdentifier];
-  v37 = [(IRServiceStore *)v34 initWithPersistenceManager:v35 serviceIdentifier:v36];
+  persistenceManager2 = [(IRServiceContainer *)v28 persistenceManager];
+  serviceIdentifier = [(IRServiceContainer *)v28 serviceIdentifier];
+  v37 = [(IRServiceStore *)v34 initWithPersistenceManager:persistenceManager2 serviceIdentifier:serviceIdentifier];
   [(IRServiceContainer *)v28 setServiceStore:v37];
 
-  v38 = [(IRServiceContainer *)v28 serviceStore];
-  LOBYTE(v35) = [v38 injectStatisticsRelationship];
+  serviceStore = [(IRServiceContainer *)v28 serviceStore];
+  LOBYTE(persistenceManager2) = [serviceStore injectStatisticsRelationship];
 
-  if ((v35 & 1) == 0)
+  if ((persistenceManager2 & 1) == 0)
   {
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
@@ -183,10 +183,10 @@ void __25__IRServiceContainer_run__block_invoke(uint64_t a1, void *a2)
     goto LABEL_13;
   }
 
-  v39 = [(IRServiceContainer *)v28 serviceStore];
-  v40 = [v39 fetchService];
+  serviceStore2 = [(IRServiceContainer *)v28 serviceStore];
+  fetchService = [serviceStore2 fetchService];
 
-  if (!v40)
+  if (!fetchService)
   {
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
@@ -195,37 +195,37 @@ void __25__IRServiceContainer_run__block_invoke(uint64_t a1, void *a2)
 
 LABEL_13:
     v49 = 0;
-    v20 = v52;
-    v19 = v53;
-    v21 = v51;
+    providerCopy = v52;
+    delegateCopy = v53;
+    biomeProviderCopy = v51;
     goto LABEL_14;
   }
 
   v41 = objc_alloc_init(IRServiceLogPrefix);
   [(IRServiceContainer *)v28 setServiceLogPrefix:v41];
 
-  v42 = [v40 serviceIdentifier];
-  v43 = [(IRServiceContainer *)v28 serviceLogPrefix];
-  [v43 setPrefix:v42];
+  serviceIdentifier2 = [fetchService serviceIdentifier];
+  serviceLogPrefix = [(IRServiceContainer *)v28 serviceLogPrefix];
+  [serviceLogPrefix setPrefix:serviceIdentifier2];
 
-  v44 = [(IRServiceContainer *)v28 queue];
+  queue = [(IRServiceContainer *)v28 queue];
   v45 = *MEMORY[0x277D21308];
-  v46 = [(IRServiceContainer *)v28 serviceLogPrefix];
-  dispatch_queue_set_specific(v44, v45, v46, 0);
+  serviceLogPrefix2 = [(IRServiceContainer *)v28 serviceLogPrefix];
+  dispatch_queue_set_specific(queue, v45, serviceLogPrefix2, 0);
 
-  v47 = [(IRServiceContainer *)v28 queue];
+  queue2 = [(IRServiceContainer *)v28 queue];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __210__IRServiceContainer_initWithServiceIdentifier_delegate_avOutputDeviceProvider_biomeProvider_rapportProvider_proximityProvider_persistenceManager_displayMonitor_audioAVOutputContextController_isLowLatencyMiLo___block_invoke;
   v55[3] = &unk_2797E2468;
-  v56 = v40;
-  v57 = a12;
-  v48 = v40;
-  IRDispatchSyncWithStrongSelf(v47, v28, v55);
+  v56 = fetchService;
+  loCopy = lo;
+  v48 = fetchService;
+  IRDispatchSyncWithStrongSelf(queue2, v28, v55);
 
-  v20 = v52;
-  v19 = v53;
-  v21 = v51;
+  providerCopy = v52;
+  delegateCopy = v53;
+  biomeProviderCopy = v51;
 LABEL_6:
   v49 = v28;
 LABEL_14:
@@ -267,8 +267,8 @@ void __210__IRServiceContainer_initWithServiceIdentifier_delegate_avOutputDevice
 
 - (void)deallocSync
 {
-  v3 = [(IRServiceContainer *)self queue];
-  IRDispatchSyncWithStrongSelf(v3, self, &__block_literal_global_23);
+  queue = [(IRServiceContainer *)self queue];
+  IRDispatchSyncWithStrongSelf(queue, self, &__block_literal_global_23);
 }
 
 void __33__IRServiceContainer_deallocSync__block_invoke(uint64_t a1, void *a2)
@@ -296,25 +296,25 @@ void __33__IRServiceContainer_deallocSync__block_invoke(uint64_t a1, void *a2)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createServiceWithClientIdentifier:(id)a3 serviceIdentifier:(id)a4 parameters:(id)a5 persistenceManager:(id)a6
++ (id)createServiceWithClientIdentifier:(id)identifier serviceIdentifier:(id)serviceIdentifier parameters:(id)parameters persistenceManager:(id)manager
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
+  parametersCopy = parameters;
+  managerCopy = manager;
   v13 = MEMORY[0x277D21260];
   v14 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138412546;
-    v29 = v9;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = parametersCopy;
     _os_log_impl(&dword_25543D000, v14, OS_LOG_TYPE_DEFAULT, "#service-container, Creating a service for client: %@, with parameters = %@", &v28, 0x16u);
   }
 
-  if (([MEMORY[0x277D212D8] isServicePackageSupported:{objc_msgSend(v11, "servicePackage")}] & 1) == 0)
+  if (([MEMORY[0x277D212D8] isServicePackageSupported:{objc_msgSend(parametersCopy, "servicePackage")}] & 1) == 0)
   {
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
     {
@@ -324,7 +324,7 @@ void __33__IRServiceContainer_deallocSync__block_invoke(uint64_t a1, void *a2)
     goto LABEL_13;
   }
 
-  if (([v12 connectToStore] & 1) == 0)
+  if (([managerCopy connectToStore] & 1) == 0)
   {
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
     {
@@ -336,12 +336,12 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = +[IRServiceDO serviceDOWithLastSeenDate:clientIdentifier:serviceIdentifier:servicePackage:](IRServiceDO, "serviceDOWithLastSeenDate:clientIdentifier:serviceIdentifier:servicePackage:", v15, v9, v10, [v11 servicePackage]);
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = +[IRServiceDO serviceDOWithLastSeenDate:clientIdentifier:serviceIdentifier:servicePackage:](IRServiceDO, "serviceDOWithLastSeenDate:clientIdentifier:serviceIdentifier:servicePackage:", date, identifierCopy, serviceIdentifierCopy, [parametersCopy servicePackage]);
 
   v17 = [IRServiceStore alloc];
-  v18 = [v16 serviceIdentifier];
-  v19 = [(IRServiceStore *)v17 initWithPersistenceManager:v12 serviceIdentifier:v18];
+  serviceIdentifier = [v16 serviceIdentifier];
+  v19 = [(IRServiceStore *)v17 initWithPersistenceManager:managerCopy serviceIdentifier:serviceIdentifier];
 
   if ([(IRServiceStore *)v19 addService:v16])
   {
@@ -349,15 +349,15 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277D21270], OS_LOG_TYPE_DEFAULT))
     {
       v21 = v20;
-      v22 = [v16 serviceIdentifier];
+      serviceIdentifier2 = [v16 serviceIdentifier];
       v28 = 138412290;
-      v29 = v22;
+      v29 = serviceIdentifier2;
       _os_log_impl(&dword_25543D000, v21, OS_LOG_TYPE_DEFAULT, "#service-container, Service created: %@", &v28, 0xCu);
     }
 
     v23 = objc_alloc(MEMORY[0x277D212E0]);
-    v24 = [v16 serviceIdentifier];
-    v25 = [v23 initWithServiceIdentifier:v24 servicePackage:{objc_msgSend(v11, "servicePackage")}];
+    serviceIdentifier3 = [v16 serviceIdentifier];
+    v25 = [v23 initWithServiceIdentifier:serviceIdentifier3 servicePackage:{objc_msgSend(parametersCopy, "servicePackage")}];
   }
 
   else
@@ -376,27 +376,27 @@ LABEL_18:
   return v25;
 }
 
-+ (void)deleteServiceWithToken:(id)a3 persistenceManager:(id)a4
++ (void)deleteServiceWithToken:(id)token persistenceManager:(id)manager
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 serviceIdentifier];
+  managerCopy = manager;
+  serviceIdentifier = [token serviceIdentifier];
   v7 = *MEMORY[0x277D21270];
   if (os_log_type_enabled(*MEMORY[0x277D21270], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = serviceIdentifier;
     _os_log_impl(&dword_25543D000, v7, OS_LOG_TYPE_DEFAULT, "#service-container, [%@]: Trying to delete service", &v10, 0xCu);
   }
 
-  if ([v5 connectToStore])
+  if ([managerCopy connectToStore])
   {
-    if (![IRMiLoProvider deleteServiceWithToken:v6]&& os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
+    if (![IRMiLoProvider deleteServiceWithToken:serviceIdentifier]&& os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
       +[IRServiceContainer deleteServiceWithToken:persistenceManager:];
     }
 
-    v8 = [[IRServiceStore alloc] initWithPersistenceManager:v5 serviceIdentifier:v6];
+    v8 = [[IRServiceStore alloc] initWithPersistenceManager:managerCopy serviceIdentifier:serviceIdentifier];
     if (![(IRServiceStore *)v8 deleteService]&& os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
     {
       +[IRServiceContainer deleteServiceWithToken:persistenceManager:];
@@ -411,10 +411,10 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)exportDatabaseWithPersistenceManager:(id)a3
++ (id)exportDatabaseWithPersistenceManager:(id)manager
 {
   v109[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  managerCopy = manager;
   v4 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
@@ -422,25 +422,25 @@ LABEL_18:
     _os_log_impl(&dword_25543D000, v4, OS_LOG_TYPE_DEFAULT, "#service-container, Trying to export DB", buf, 2u);
   }
 
-  if ([v3 connectToStore])
+  if ([managerCopy connectToStore])
   {
-    v5 = [MEMORY[0x277CCAA00] userLibraryDirectoryPath];
-    v6 = [v3 persistenceStore];
-    v7 = [v6 url];
+    userLibraryDirectoryPath = [MEMORY[0x277CCAA00] userLibraryDirectoryPath];
+    persistenceStore = [managerCopy persistenceStore];
+    v7 = [persistenceStore url];
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v5, @"/Logs/intelligentroutingd/intelligentroutingexport"];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", userLibraryDirectoryPath, @"/Logs/intelligentroutingd/intelligentroutingexport"];
     v108 = *MEMORY[0x277CCA180];
     v109[0] = &unk_2867692E0;
     v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v109 forKeys:&v108 count:1];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8 isDirectory:0];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v101 = 0;
       v12 = v8;
-      v13 = [v11 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:v89 error:&v101];
+      v13 = [defaultManager2 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:v89 error:&v101];
       v14 = v101;
 
       if ((v13 & 1) == 0)
@@ -469,20 +469,20 @@ LABEL_48:
     v15 = MEMORY[0x277CBEBC0];
     v16 = MEMORY[0x277CCACA8];
     v85 = v7;
-    v86 = v5;
-    v17 = [v7 lastPathComponent];
+    v86 = userLibraryDirectoryPath;
+    lastPathComponent = [v7 lastPathComponent];
     v84 = v8;
-    v18 = [v16 stringWithFormat:@"%@/%@", v8, v17];
+    v18 = [v16 stringWithFormat:@"%@/%@", v8, lastPathComponent];
     v19 = [v15 fileURLWithPath:v18 isDirectory:0];
 
     v20 = MEMORY[0x277CBEBC0];
-    v21 = [v19 path];
-    v22 = [v21 stringByAppendingString:@"-wal"];
+    path = [v19 path];
+    v22 = [path stringByAppendingString:@"-wal"];
     v23 = [v20 fileURLWithPath:v22 isDirectory:0];
 
     v24 = MEMORY[0x277CBEBC0];
-    v25 = [v19 path];
-    v26 = [v25 stringByAppendingString:@"-shm"];
+    path2 = [v19 path];
+    v26 = [path2 stringByAppendingString:@"-shm"];
     v27 = [v24 fileURLWithPath:v26 isDirectory:0];
 
     v82 = v27;
@@ -509,16 +509,16 @@ LABEL_48:
           }
 
           v33 = *(*(&v97 + 1) + 8 * i);
-          v34 = [MEMORY[0x277CCAA00] defaultManager];
-          v35 = [v33 path];
-          v36 = [v34 fileExistsAtPath:v35];
+          defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+          path3 = [v33 path];
+          v36 = [defaultManager3 fileExistsAtPath:path3];
 
           if (v36)
           {
-            v37 = [MEMORY[0x277CCAA00] defaultManager];
-            v38 = [v33 path];
+            defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+            path4 = [v33 path];
             v96 = v30;
-            v39 = [v37 removeItemAtPath:v38 error:&v96];
+            v39 = [defaultManager4 removeItemAtPath:path4 error:&v96];
             v40 = v96;
 
             if ((v39 & 1) == 0)
@@ -534,7 +534,7 @@ LABEL_48:
               v43 = obj;
               v44 = obj;
               v7 = v85;
-              v5 = v86;
+              userLibraryDirectoryPath = v86;
               v45 = v84;
               goto LABEL_47;
             }
@@ -561,17 +561,17 @@ LABEL_48:
     v80 = v30;
 
     v46 = objc_alloc(MEMORY[0x277CBE4D8]);
-    v47 = [v3 managedObjectModel];
-    v48 = [v46 initWithManagedObjectModel:v47];
+    managedObjectModel = [managerCopy managedObjectModel];
+    v48 = [v46 initWithManagedObjectModel:managedObjectModel];
 
-    v49 = [v3 persistenceStore];
-    v50 = [v49 options];
-    v51 = [v49 url];
-    v52 = [v49 options];
-    v78 = v49;
-    v53 = [v49 storeType];
+    persistenceStore2 = [managerCopy persistenceStore];
+    options = [persistenceStore2 options];
+    v51 = [persistenceStore2 url];
+    options2 = [persistenceStore2 options];
+    v78 = persistenceStore2;
+    storeType = [persistenceStore2 storeType];
     v95 = 0;
-    v54 = [v48 replacePersistentStoreAtURL:v87 destinationOptions:v50 withPersistentStoreFromURL:v51 sourceOptions:v52 storeType:v53 error:&v95];
+    v54 = [v48 replacePersistentStoreAtURL:v87 destinationOptions:options withPersistentStoreFromURL:v51 sourceOptions:options2 storeType:storeType error:&v95];
     v81 = v95;
 
     v55 = *MEMORY[0x277D21260];
@@ -582,13 +582,13 @@ LABEL_48:
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         v57 = v55;
-        v58 = [v87 path];
+        path5 = [v87 path];
         *buf = 138412290;
-        v103 = v58;
+        v103 = path5;
         _os_log_impl(&dword_25543D000, v57, OS_LOG_TYPE_DEFAULT, "#service-container, Successfully exported database to: %@", buf, 0xCu);
       }
 
-      v77 = v3;
+      v77 = managerCopy;
       v41 = objc_alloc_init(MEMORY[0x277CBEA60]);
       v91 = 0u;
       v92 = 0u;
@@ -611,16 +611,16 @@ LABEL_48:
             }
 
             v65 = *(*(&v91 + 1) + 8 * j);
-            v66 = [*(v63 + 2560) defaultManager];
-            v67 = [v65 path];
-            v68 = [v66 fileExistsAtPath:v67];
+            defaultManager5 = [*(v63 + 2560) defaultManager];
+            path6 = [v65 path];
+            v68 = [defaultManager5 fileExistsAtPath:path6];
 
             if (v68)
             {
-              v69 = [*(v63 + 2560) defaultManager];
-              v70 = [v65 path];
+              defaultManager6 = [*(v63 + 2560) defaultManager];
+              path7 = [v65 path];
               v90 = 0;
-              v71 = [v69 setAttributes:v89 ofItemAtPath:v70 error:&v90];
+              v71 = [defaultManager6 setAttributes:v89 ofItemAtPath:path7 error:&v90];
               v72 = v90;
 
               if ((v71 & 1) == 0)
@@ -649,15 +649,15 @@ LABEL_48:
         while (v61);
       }
 
-      v3 = v77;
+      managerCopy = v77;
       v7 = v85;
-      v5 = v86;
+      userLibraryDirectoryPath = v86;
     }
 
     else
     {
       v7 = v85;
-      v5 = v86;
+      userLibraryDirectoryPath = v86;
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
         +[IRServiceContainer exportDatabaseWithPersistenceManager:];
@@ -690,28 +690,28 @@ LABEL_49:
   return v41;
 }
 
-+ (BOOL)deleteDatabaseWithPersistenceManager:(id)a3
++ (BOOL)deleteDatabaseWithPersistenceManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D21260];
   v5 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v3 getLocalStoreURL];
+    getLocalStoreURL = [managerCopy getLocalStoreURL];
     *buf = 138412290;
-    v19 = v7;
+    v19 = getLocalStoreURL;
     _os_log_impl(&dword_25543D000, v6, OS_LOG_TYPE_DEFAULT, "#service-container, Attempting to delete database at: %@", buf, 0xCu);
   }
 
-  if ([v3 disconnectFromStore])
+  if ([managerCopy disconnectFromStore])
   {
-    v8 = [v3 persistentStoreCoordinator];
-    v9 = [v3 getLocalStoreURL];
+    persistentStoreCoordinator = [managerCopy persistentStoreCoordinator];
+    getLocalStoreURL2 = [managerCopy getLocalStoreURL];
     v10 = *MEMORY[0x277CBE2E8];
     v17 = 0;
-    v11 = [v8 destroyPersistentStoreAtURL:v9 withType:v10 options:0 error:&v17];
+    v11 = [persistentStoreCoordinator destroyPersistentStoreAtURL:getLocalStoreURL2 withType:v10 options:0 error:&v17];
     v12 = v17;
 
     v13 = *v4;
@@ -740,31 +740,31 @@ LABEL_49:
   return v11;
 }
 
-+ (id)getServiceTokensForClientIdentifier:(id)a3 persistenceManager:(id)a4
++ (id)getServiceTokensForClientIdentifier:(id)identifier persistenceManager:(id)manager
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v7 = MEMORY[0x277D21260];
   v8 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = identifierCopy;
     _os_log_impl(&dword_25543D000, v8, OS_LOG_TYPE_DEFAULT, "#service-container, Trying to get service tokens for client identifier: %@", buf, 0xCu);
   }
 
-  if ([v6 connectToStore])
+  if ([managerCopy connectToStore])
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [IRServiceStore fetchAllServicesContainingClientIdentifier:v5 persistenceManager:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    v10 = [IRServiceStore fetchAllServicesContainingClientIdentifier:identifierCopy persistenceManager:managerCopy];
     if (v10)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __77__IRServiceContainer_getServiceTokensForClientIdentifier_persistenceManager___block_invoke;
       v13[3] = &unk_2797E1510;
-      v14 = v9;
+      v14 = array;
       [v10 enumerateObjectsUsingBlock:v13];
     }
   }
@@ -776,12 +776,12 @@ LABEL_49:
       +[IRServiceContainer getServiceTokensForClientIdentifier:persistenceManager:];
     }
 
-    v9 = 0;
+    array = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
 void __77__IRServiceContainer_getServiceTokensForClientIdentifier_persistenceManager___block_invoke(uint64_t a1, void *a2)
@@ -796,12 +796,12 @@ void __77__IRServiceContainer_getServiceTokensForClientIdentifier_persistenceMan
   [*(a1 + 32) addObject:v8];
 }
 
-+ (id)getServicesWithPersistenceManager:(id)a3
++ (id)getServicesWithPersistenceManager:(id)manager
 {
-  v3 = a3;
-  if ([v3 connectToStore])
+  managerCopy = manager;
+  if ([managerCopy connectToStore])
   {
-    v4 = [IRServiceStore fetchAllServicesWithPersistenceManager:v3];
+    v4 = [IRServiceStore fetchAllServicesWithPersistenceManager:managerCopy];
   }
 
   else
@@ -817,17 +817,17 @@ void __77__IRServiceContainer_getServiceTokensForClientIdentifier_persistenceMan
   return v4;
 }
 
-- (void)updateCandidates:(id)a3
+- (void)updateCandidates:(id)candidates
 {
-  v4 = a3;
-  v5 = [(IRServiceContainer *)self queue];
+  candidatesCopy = candidates;
+  queue = [(IRServiceContainer *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__IRServiceContainer_updateCandidates___block_invoke;
   v7[3] = &unk_2797E24B0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = candidatesCopy;
+  v6 = candidatesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __39__IRServiceContainer_updateCandidates___block_invoke(uint64_t a1, void *a2)
@@ -836,17 +836,17 @@ void __39__IRServiceContainer_updateCandidates___block_invoke(uint64_t a1, void 
   [v3 updateCandidates:*(a1 + 32)];
 }
 
-- (void)deleteCandidate:(id)a3
+- (void)deleteCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(IRServiceContainer *)self queue];
+  candidateCopy = candidate;
+  queue = [(IRServiceContainer *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__IRServiceContainer_deleteCandidate___block_invoke;
   v7[3] = &unk_2797E24B0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = candidateCopy;
+  v6 = candidateCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __38__IRServiceContainer_deleteCandidate___block_invoke(uint64_t a1, void *a2)
@@ -855,20 +855,20 @@ void __38__IRServiceContainer_deleteCandidate___block_invoke(uint64_t a1, void *
   [v3 deleteCandidate:*(a1 + 32)];
 }
 
-- (void)addEvent:(id)a3 forCandidate:(id)a4
+- (void)addEvent:(id)event forCandidate:(id)candidate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IRServiceContainer *)self queue];
+  eventCopy = event;
+  candidateCopy = candidate;
+  queue = [(IRServiceContainer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__IRServiceContainer_addEvent_forCandidate___block_invoke;
   v11[3] = &unk_2797E24D8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  IRDispatchAsyncWithStrongSelf(v8, self, v11);
+  v12 = eventCopy;
+  v13 = candidateCopy;
+  v9 = candidateCopy;
+  v10 = eventCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v11);
 }
 
 void __44__IRServiceContainer_addEvent_forCandidate___block_invoke(uint64_t a1, void *a2)
@@ -877,24 +877,24 @@ void __44__IRServiceContainer_addEvent_forCandidate___block_invoke(uint64_t a1, 
   [v3 addEvent:*(a1 + 32) forCandidate:*(a1 + 40)];
 }
 
-- (id)requestCurrentContextWithBundleID:(id)a3
+- (id)requestCurrentContextWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__14;
   v16 = __Block_byref_object_dispose__14;
   v17 = 0;
-  v5 = [(IRServiceContainer *)self queue];
+  queue = [(IRServiceContainer *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__IRServiceContainer_requestCurrentContextWithBundleID___block_invoke;
   v9[3] = &unk_2797E2500;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  IRDispatchAsyncAndWaitWithStrongSelf(v5, self, v9);
+  IRDispatchAsyncAndWaitWithStrongSelf(queue, self, v9);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -929,20 +929,20 @@ void __56__IRServiceContainer_requestCurrentContextWithBundleID___block_invoke(u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpotOnLocationWithParameters:(id)a3 andClientID:(id)a4
+- (void)setSpotOnLocationWithParameters:(id)parameters andClientID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IRServiceContainer *)self queue];
+  parametersCopy = parameters;
+  dCopy = d;
+  queue = [(IRServiceContainer *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__IRServiceContainer_setSpotOnLocationWithParameters_andClientID___block_invoke;
   v11[3] = &unk_2797E24D8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  IRDispatchAsyncWithStrongSelf(v8, self, v11);
+  v12 = parametersCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = parametersCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v11);
 }
 
 void __66__IRServiceContainer_setSpotOnLocationWithParameters_andClientID___block_invoke(uint64_t a1, void *a2)
@@ -953,8 +953,8 @@ void __66__IRServiceContainer_setSpotOnLocationWithParameters_andClientID___bloc
 
 - (void)requestUpdatedBundlesWithSignificantInteraction
 {
-  v3 = [(IRServiceContainer *)self queue];
-  IRDispatchAsyncWithStrongSelf(v3, self, &__block_literal_global_57_0);
+  queue = [(IRServiceContainer *)self queue];
+  IRDispatchAsyncWithStrongSelf(queue, self, &__block_literal_global_57_0);
 }
 
 void __69__IRServiceContainer_requestUpdatedBundlesWithSignificantInteraction__block_invoke(uint64_t a1, void *a2)
@@ -963,17 +963,17 @@ void __69__IRServiceContainer_requestUpdatedBundlesWithSignificantInteraction__b
   [v2 requestUpdatedBundlesWithSignificantInteraction];
 }
 
-- (void)dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard:(id)a3
+- (void)dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard:(id)discard
 {
-  v4 = a3;
-  v5 = [(IRServiceContainer *)self queue];
+  discardCopy = discard;
+  queue = [(IRServiceContainer *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__IRServiceContainer_dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard___block_invoke;
   v7[3] = &unk_2797E24B0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncAndWaitWithStrongSelf(v5, self, v7);
+  v8 = discardCopy;
+  v6 = discardCopy;
+  IRDispatchAsyncAndWaitWithStrongSelf(queue, self, v7);
 }
 
 void __74__IRServiceContainer_dbCleanupWithDateIntervalOfMiLoPredictionsToDiscard___block_invoke(uint64_t a1, void *a2)
@@ -1020,15 +1020,15 @@ void __74__IRServiceContainer_dbCleanupWithDateIntervalOfMiLoPredictionsToDiscar
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)restartLowLatencyMiLo:(BOOL)a3
+- (void)restartLowLatencyMiLo:(BOOL)lo
 {
-  v5 = [(IRServiceContainer *)self queue];
+  queue = [(IRServiceContainer *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__IRServiceContainer_restartLowLatencyMiLo___block_invoke;
   v6[3] = &__block_descriptor_33_e28_v16__0__IRServiceContainer_8l;
-  v7 = a3;
-  IRDispatchAsyncWithStrongSelf(v5, self, v6);
+  loCopy = lo;
+  IRDispatchAsyncWithStrongSelf(queue, self, v6);
 }
 
 void __44__IRServiceContainer_restartLowLatencyMiLo___block_invoke(uint64_t a1, void *a2)
@@ -1065,13 +1065,13 @@ void __44__IRServiceContainer_restartLowLatencyMiLo___block_invoke(uint64_t a1, 
   v10 = __Block_byref_object_copy__14;
   v11 = __Block_byref_object_dispose__14;
   v12 = 0;
-  v3 = [(IRServiceContainer *)self queue];
+  queue = [(IRServiceContainer *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__IRServiceContainer_getStatistics__block_invoke;
   v6[3] = &unk_2797E2548;
   v6[4] = &v7;
-  IRDispatchAsyncAndWaitWithStrongSelf(v3, self, v6);
+  IRDispatchAsyncAndWaitWithStrongSelf(queue, self, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1107,8 +1107,8 @@ void __35__IRServiceContainer_getStatistics__block_invoke(uint64_t a1, void *a2)
 
 - (void)clearStatistics
 {
-  v3 = [(IRServiceContainer *)self queue];
-  IRDispatchAsyncWithStrongSelf(v3, self, &__block_literal_global_66);
+  queue = [(IRServiceContainer *)self queue];
+  IRDispatchAsyncWithStrongSelf(queue, self, &__block_literal_global_66);
 }
 
 void __37__IRServiceContainer_clearStatistics__block_invoke(uint64_t a1, void *a2)
@@ -1132,15 +1132,15 @@ void __37__IRServiceContainer_clearStatistics__block_invoke(uint64_t a1, void *a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpdateMode:(int64_t)a3
+- (void)setUpdateMode:(int64_t)mode
 {
-  v5 = [(IRServiceContainer *)self queue];
+  queue = [(IRServiceContainer *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__IRServiceContainer_setUpdateMode___block_invoke;
   v6[3] = &__block_descriptor_40_e28_v16__0__IRServiceContainer_8l;
-  v6[4] = a3;
-  IRDispatchAsyncWithStrongSelf(v5, self, v6);
+  v6[4] = mode;
+  IRDispatchAsyncWithStrongSelf(queue, self, v6);
 }
 
 void __36__IRServiceContainer_setUpdateMode___block_invoke(uint64_t a1, void *a2)
@@ -1170,14 +1170,14 @@ void __36__IRServiceContainer_setUpdateMode___block_invoke(uint64_t a1, void *a2
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshServiceWithDate:(id)a3
+- (void)_refreshServiceWithDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRServiceContainer *)self serviceStore];
-  v6 = [v5 fetchService];
+  dateCopy = date;
+  serviceStore = [(IRServiceContainer *)self serviceStore];
+  fetchService = [serviceStore fetchService];
 
-  if (!v6)
+  if (!fetchService)
   {
     v10 = dispatch_get_specific(*MEMORY[0x277D21308]);
     v12 = *MEMORY[0x277D21260];
@@ -1194,10 +1194,10 @@ void __36__IRServiceContainer_setUpdateMode___block_invoke(uint64_t a1, void *a2
     goto LABEL_8;
   }
 
-  v7 = [v6 copyWithReplacementLastSeenDate:v4];
+  v7 = [fetchService copyWithReplacementLastSeenDate:dateCopy];
 
-  v8 = [(IRServiceContainer *)self serviceStore];
-  v9 = [v8 updateService:v7];
+  serviceStore2 = [(IRServiceContainer *)self serviceStore];
+  v9 = [serviceStore2 updateService:v7];
 
   if ((v9 & 1) == 0)
   {
@@ -1210,7 +1210,7 @@ void __36__IRServiceContainer_setUpdateMode___block_invoke(uint64_t a1, void *a2
       v16 = 2112;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = dateCopy;
       _os_log_impl(&dword_25543D000, v11, OS_LOG_TYPE_ERROR, "%s[%@], [ErrorId - Service container update during refresh] Could not update service during refresh: %@", &v14, 0x20u);
     }
 
@@ -1220,36 +1220,36 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)policyManager:(id)a3 didUpdateContexts:(id)a4 withReason:(id)a5
+- (void)policyManager:(id)manager didUpdateContexts:(id)contexts withReason:(id)reason
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IRServiceContainer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  reasonCopy = reason;
+  contextsCopy = contexts;
+  queue = [(IRServiceContainer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(IRServiceContainer *)self delegate];
-  [v10 serviceContainer:self didUpdateContexts:v8 withReason:v7];
+  delegate = [(IRServiceContainer *)self delegate];
+  [delegate serviceContainer:self didUpdateContexts:contextsCopy withReason:reasonCopy];
 }
 
-- (void)policyManager:(id)a3 didSpotOnLocationCompleteForClientIds:(id)a4 withError:(id)a5
+- (void)policyManager:(id)manager didSpotOnLocationCompleteForClientIds:(id)ids withError:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IRServiceContainer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  errorCopy = error;
+  idsCopy = ids;
+  queue = [(IRServiceContainer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(IRServiceContainer *)self delegate];
-  [v10 serviceContainer:self didSpotOnLocationCompleteForClientIds:v8 withError:v7];
+  delegate = [(IRServiceContainer *)self delegate];
+  [delegate serviceContainer:self didSpotOnLocationCompleteForClientIds:idsCopy withError:errorCopy];
 }
 
-- (void)policyManager:(id)a3 didUpdateBundlesWithSignificantInteractionPattern:(id)a4
+- (void)policyManager:(id)manager didUpdateBundlesWithSignificantInteractionPattern:(id)pattern
 {
-  v5 = a4;
-  v6 = [(IRServiceContainer *)self queue];
-  dispatch_assert_queue_V2(v6);
+  patternCopy = pattern;
+  queue = [(IRServiceContainer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(IRServiceContainer *)self delegate];
-  [v7 serviceContainer:self didUpdateBundlesWithSignificantInteractionPattern:v5];
+  delegate = [(IRServiceContainer *)self delegate];
+  [delegate serviceContainer:self didUpdateBundlesWithSignificantInteractionPattern:patternCopy];
 }
 
 - (void)initWithServiceIdentifier:delegate:avOutputDeviceProvider:biomeProvider:rapportProvider:proximityProvider:persistenceManager:displayMonitor:audioAVOutputContextController:isLowLatencyMiLo:.cold.1()

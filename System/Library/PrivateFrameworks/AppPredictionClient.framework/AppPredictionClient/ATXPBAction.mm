@@ -1,26 +1,26 @@
 @interface ATXPBAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addHeuristicMetadata:(id)a3;
-- (void)addMenuItemPathComponent:(id)a3;
-- (void)addParameterKeysForToolInvocation:(id)a3;
-- (void)addPredictableParameterCombinations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCachedHash:(BOOL)a3;
-- (void)setHasIsFutureMedia:(BOOL)a3;
-- (void)setHasUserActivityHash:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHeuristicMetadata:(id)metadata;
+- (void)addMenuItemPathComponent:(id)component;
+- (void)addParameterKeysForToolInvocation:(id)invocation;
+- (void)addPredictableParameterCombinations:(id)combinations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCachedHash:(BOOL)hash;
+- (void)setHasIsFutureMedia:(BOOL)media;
+- (void)setHasUserActivityHash:(BOOL)hash;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBAction
 
-- (void)setHasIsFutureMedia:(BOOL)a3
+- (void)setHasIsFutureMedia:(BOOL)media
 {
-  if (a3)
+  if (media)
   {
     v3 = 8;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUserActivityHash:(BOOL)a3
+- (void)setHasUserActivityHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 4;
   }
@@ -48,27 +48,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addHeuristicMetadata:(id)a3
+- (void)addHeuristicMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   heuristicMetadatas = self->_heuristicMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!heuristicMetadatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_heuristicMetadatas;
     self->_heuristicMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     heuristicMetadatas = self->_heuristicMetadatas;
   }
 
-  [(NSMutableArray *)heuristicMetadatas addObject:v4];
+  [(NSMutableArray *)heuristicMetadatas addObject:metadataCopy];
 }
 
-- (void)setHasCachedHash:(BOOL)a3
+- (void)setHasCachedHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 2;
   }
@@ -81,58 +81,58 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPredictableParameterCombinations:(id)a3
+- (void)addPredictableParameterCombinations:(id)combinations
 {
-  v4 = a3;
+  combinationsCopy = combinations;
   predictableParameterCombinations = self->_predictableParameterCombinations;
-  v8 = v4;
+  v8 = combinationsCopy;
   if (!predictableParameterCombinations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predictableParameterCombinations;
     self->_predictableParameterCombinations = v6;
 
-    v4 = v8;
+    combinationsCopy = v8;
     predictableParameterCombinations = self->_predictableParameterCombinations;
   }
 
-  [(NSMutableArray *)predictableParameterCombinations addObject:v4];
+  [(NSMutableArray *)predictableParameterCombinations addObject:combinationsCopy];
 }
 
-- (void)addMenuItemPathComponent:(id)a3
+- (void)addMenuItemPathComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   menuItemPathComponents = self->_menuItemPathComponents;
-  v8 = v4;
+  v8 = componentCopy;
   if (!menuItemPathComponents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_menuItemPathComponents;
     self->_menuItemPathComponents = v6;
 
-    v4 = v8;
+    componentCopy = v8;
     menuItemPathComponents = self->_menuItemPathComponents;
   }
 
-  [(NSMutableArray *)menuItemPathComponents addObject:v4];
+  [(NSMutableArray *)menuItemPathComponents addObject:componentCopy];
 }
 
-- (void)addParameterKeysForToolInvocation:(id)a3
+- (void)addParameterKeysForToolInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   parameterKeysForToolInvocations = self->_parameterKeysForToolInvocations;
-  v8 = v4;
+  v8 = invocationCopy;
   if (!parameterKeysForToolInvocations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parameterKeysForToolInvocations;
     self->_parameterKeysForToolInvocations = v6;
 
-    v4 = v8;
+    invocationCopy = v8;
     parameterKeysForToolInvocations = self->_parameterKeysForToolInvocations;
   }
 
-  [(NSMutableArray *)parameterKeysForToolInvocations addObject:v4];
+  [(NSMutableArray *)parameterKeysForToolInvocations addObject:invocationCopy];
 }
 
 - (id)description
@@ -141,8 +141,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBAction;
   v4 = [(ATXPBAction *)&v8 description];
-  v5 = [(ATXPBAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -150,12 +150,12 @@
 - (id)dictionaryRepresentation
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   if (*&self->_has)
@@ -239,15 +239,15 @@
   criteria = self->_criteria;
   if (criteria)
   {
-    v20 = [(ATXPBActionCriteria *)criteria dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"criteria"];
+    dictionaryRepresentation = [(ATXPBActionCriteria *)criteria dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"criteria"];
   }
 
   routeInfo = self->_routeInfo;
   if (routeInfo)
   {
-    v22 = [(ATXPBAVRouteInfo *)routeInfo dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"routeInfo"];
+    dictionaryRepresentation2 = [(ATXPBAVRouteInfo *)routeInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"routeInfo"];
   }
 
   if ([(NSMutableArray *)self->_heuristicMetadatas count])
@@ -272,8 +272,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -313,8 +313,8 @@
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
-          [v31 addObject:v37];
+          dictionaryRepresentation4 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
+          [v31 addObject:dictionaryRepresentation4];
         }
 
         v34 = [(NSMutableArray *)v32 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -353,10 +353,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
@@ -577,56 +577,56 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v21 = v4;
+  toCopy = to;
+  v21 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v21;
+    [toCopy setBundleId:?];
+    toCopy = v21;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_actionType;
-    *(v4 + 188) |= 1u;
+    *(toCopy + 1) = self->_actionType;
+    *(toCopy + 188) |= 1u;
   }
 
   if (self->_intent)
   {
     [v21 setIntent:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_heuristic)
   {
     [v21 setHeuristic:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 184) = self->_isFutureMedia;
-    *(v4 + 188) |= 8u;
+    *(toCopy + 184) = self->_isFutureMedia;
+    *(toCopy + 188) |= 8u;
   }
 
   if (self->_title)
   {
     [v21 setTitle:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_subtitle)
   {
     [v21 setSubtitle:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = self->_userActivityHash;
-    *(v4 + 188) |= 4u;
+    *(toCopy + 3) = self->_userActivityHash;
+    *(toCopy + 188) |= 4u;
   }
 
   if (self->_activityString)
@@ -672,10 +672,10 @@
   if ([(ATXPBAction *)self heuristicMetadatasCount])
   {
     [v21 clearHeuristicMetadatas];
-    v5 = [(ATXPBAction *)self heuristicMetadatasCount];
-    if (v5)
+    heuristicMetadatasCount = [(ATXPBAction *)self heuristicMetadatasCount];
+    if (heuristicMetadatasCount)
     {
-      v6 = v5;
+      v6 = heuristicMetadatasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXPBAction *)self heuristicMetadataAtIndex:i];
@@ -693,10 +693,10 @@
   if ([(ATXPBAction *)self predictableParameterCombinationsCount])
   {
     [v21 clearPredictableParameterCombinations];
-    v9 = [(ATXPBAction *)self predictableParameterCombinationsCount];
-    if (v9)
+    predictableParameterCombinationsCount = [(ATXPBAction *)self predictableParameterCombinationsCount];
+    if (predictableParameterCombinationsCount)
     {
-      v10 = v9;
+      v10 = predictableParameterCombinationsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(ATXPBAction *)self predictableParameterCombinationsAtIndex:j];
@@ -708,10 +708,10 @@
   if ([(ATXPBAction *)self menuItemPathComponentsCount])
   {
     [v21 clearMenuItemPathComponents];
-    v13 = [(ATXPBAction *)self menuItemPathComponentsCount];
-    if (v13)
+    menuItemPathComponentsCount = [(ATXPBAction *)self menuItemPathComponentsCount];
+    if (menuItemPathComponentsCount)
     {
-      v14 = v13;
+      v14 = menuItemPathComponentsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(ATXPBAction *)self menuItemPathComponentAtIndex:k];
@@ -733,10 +733,10 @@
   if ([(ATXPBAction *)self parameterKeysForToolInvocationsCount])
   {
     [v21 clearParameterKeysForToolInvocations];
-    v17 = [(ATXPBAction *)self parameterKeysForToolInvocationsCount];
-    if (v17)
+    parameterKeysForToolInvocationsCount = [(ATXPBAction *)self parameterKeysForToolInvocationsCount];
+    if (parameterKeysForToolInvocationsCount)
     {
-      v18 = v17;
+      v18 = parameterKeysForToolInvocationsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(ATXPBAction *)self parameterKeysForToolInvocationAtIndex:m];
@@ -746,11 +746,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v81 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -760,11 +760,11 @@
     *(v5 + 188) |= 1u;
   }
 
-  v8 = [(NSData *)self->_intent copyWithZone:a3];
+  v8 = [(NSData *)self->_intent copyWithZone:zone];
   v9 = *(v5 + 88);
   *(v5 + 88) = v8;
 
-  v10 = [(NSString *)self->_heuristic copyWithZone:a3];
+  v10 = [(NSString *)self->_heuristic copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
@@ -774,11 +774,11 @@
     *(v5 + 188) |= 8u;
   }
 
-  v12 = [(NSString *)self->_title copyWithZone:a3];
+  v12 = [(NSString *)self->_title copyWithZone:zone];
   v13 = *(v5 + 152);
   *(v5 + 152) = v12;
 
-  v14 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v14 = [(NSString *)self->_subtitle copyWithZone:zone];
   v15 = *(v5 + 144);
   *(v5 + 144) = v14;
 
@@ -788,35 +788,35 @@
     *(v5 + 188) |= 4u;
   }
 
-  v16 = [(NSString *)self->_activityString copyWithZone:a3];
+  v16 = [(NSString *)self->_activityString copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
-  v18 = [(NSData *)self->_userActivityProxy copyWithZone:a3];
+  v18 = [(NSData *)self->_userActivityProxy copyWithZone:zone];
   v19 = *(v5 + 168);
   *(v5 + 168) = v18;
 
-  v20 = [(NSString *)self->_itemIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_itemIdentifier copyWithZone:zone];
   v21 = *(v5 + 96);
   *(v5 + 96) = v20;
 
-  v22 = [(NSString *)self->_uuid copyWithZone:a3];
+  v22 = [(NSString *)self->_uuid copyWithZone:zone];
   v23 = *(v5 + 176);
   *(v5 + 176) = v22;
 
-  v24 = [(NSString *)self->_languageCode copyWithZone:a3];
+  v24 = [(NSString *)self->_languageCode copyWithZone:zone];
   v25 = *(v5 + 104);
   *(v5 + 104) = v24;
 
-  v26 = [(NSData *)self->_contentAttributeSet copyWithZone:a3];
+  v26 = [(NSData *)self->_contentAttributeSet copyWithZone:zone];
   v27 = *(v5 + 48);
   *(v5 + 48) = v26;
 
-  v28 = [(ATXPBActionCriteria *)self->_criteria copyWithZone:a3];
+  v28 = [(ATXPBActionCriteria *)self->_criteria copyWithZone:zone];
   v29 = *(v5 + 56);
   *(v5 + 56) = v28;
 
-  v30 = [(ATXPBAVRouteInfo *)self->_routeInfo copyWithZone:a3];
+  v30 = [(ATXPBAVRouteInfo *)self->_routeInfo copyWithZone:zone];
   v31 = *(v5 + 136);
   *(v5 + 136) = v30;
 
@@ -840,7 +840,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v73 + 1) + 8 * v36) copyWithZone:a3];
+        v37 = [*(*(&v73 + 1) + 8 * v36) copyWithZone:zone];
         [v5 addHeuristicMetadata:v37];
 
         ++v36;
@@ -879,7 +879,7 @@
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v69 + 1) + 8 * v42) copyWithZone:a3];
+        v43 = [*(*(&v69 + 1) + 8 * v42) copyWithZone:zone];
         [v5 addPredictableParameterCombinations:v43];
 
         ++v42;
@@ -912,7 +912,7 @@
           objc_enumerationMutation(v44);
         }
 
-        v49 = [*(*(&v65 + 1) + 8 * v48) copyWithZone:a3];
+        v49 = [*(*(&v65 + 1) + 8 * v48) copyWithZone:zone];
         [v5 addMenuItemPathComponent:v49];
 
         ++v48;
@@ -925,11 +925,11 @@
     while (v46);
   }
 
-  v50 = [(NSString *)self->_toolInvocationID copyWithZone:a3];
+  v50 = [(NSString *)self->_toolInvocationID copyWithZone:zone];
   v51 = *(v5 + 160);
   *(v5 + 160) = v50;
 
-  v52 = [(NSData *)self->_encodedToolInvocation copyWithZone:a3];
+  v52 = [(NSData *)self->_encodedToolInvocation copyWithZone:zone];
   v53 = *(v5 + 64);
   *(v5 + 64) = v52;
 
@@ -953,7 +953,7 @@
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v61 + 1) + 8 * v58) copyWithZone:{a3, v61}];
+        v59 = [*(*(&v61 + 1) + 8 * v58) copyWithZone:{zone, v61}];
         [v5 addParameterKeysForToolInvocation:v59];
 
         ++v58;
@@ -969,16 +969,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 5))
+  if (bundleId | *(equalCopy + 5))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -988,25 +988,25 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 188) & 1) == 0 || self->_actionType != *(v4 + 1))
+    if ((*(equalCopy + 188) & 1) == 0 || self->_actionType != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 188))
+  else if (*(equalCopy + 188))
   {
     goto LABEL_23;
   }
 
   intent = self->_intent;
-  if (intent | *(v4 + 11) && ![(NSData *)intent isEqual:?])
+  if (intent | *(equalCopy + 11) && ![(NSData *)intent isEqual:?])
   {
     goto LABEL_23;
   }
 
   heuristic = self->_heuristic;
-  if (heuristic | *(v4 + 9))
+  if (heuristic | *(equalCopy + 9))
   {
     if (![(NSString *)heuristic isEqual:?])
     {
@@ -1016,38 +1016,38 @@
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 188) & 8) == 0)
+    if ((*(equalCopy + 188) & 8) == 0)
     {
       goto LABEL_23;
     }
 
     if (self->_isFutureMedia)
     {
-      if ((*(v4 + 184) & 1) == 0)
+      if ((*(equalCopy + 184) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 184))
+    else if (*(equalCopy + 184))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 188) & 8) != 0)
+  else if ((*(equalCopy + 188) & 8) != 0)
   {
     goto LABEL_23;
   }
 
   title = self->_title;
-  if (title | *(v4 + 19) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 19) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_23;
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 18))
+  if (subtitle | *(equalCopy + 18))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -1057,25 +1057,25 @@
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 188) & 4) == 0 || self->_userActivityHash != *(v4 + 3))
+    if ((*(equalCopy + 188) & 4) == 0 || self->_userActivityHash != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 188) & 4) != 0)
+  else if ((*(equalCopy + 188) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   activityString = self->_activityString;
-  if (activityString | *(v4 + 4) && ![(NSString *)activityString isEqual:?])
+  if (activityString | *(equalCopy + 4) && ![(NSString *)activityString isEqual:?])
   {
     goto LABEL_23;
   }
 
   userActivityProxy = self->_userActivityProxy;
-  if (userActivityProxy | *(v4 + 21))
+  if (userActivityProxy | *(equalCopy + 21))
   {
     if (![(NSData *)userActivityProxy isEqual:?])
     {
@@ -1084,7 +1084,7 @@
   }
 
   itemIdentifier = self->_itemIdentifier;
-  if (itemIdentifier | *(v4 + 12))
+  if (itemIdentifier | *(equalCopy + 12))
   {
     if (![(NSString *)itemIdentifier isEqual:?])
     {
@@ -1093,7 +1093,7 @@
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 22))
+  if (uuid | *(equalCopy + 22))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -1102,7 +1102,7 @@
   }
 
   languageCode = self->_languageCode;
-  if (languageCode | *(v4 + 13))
+  if (languageCode | *(equalCopy + 13))
   {
     if (![(NSString *)languageCode isEqual:?])
     {
@@ -1111,7 +1111,7 @@
   }
 
   contentAttributeSet = self->_contentAttributeSet;
-  if (contentAttributeSet | *(v4 + 6))
+  if (contentAttributeSet | *(equalCopy + 6))
   {
     if (![(NSData *)contentAttributeSet isEqual:?])
     {
@@ -1120,7 +1120,7 @@
   }
 
   criteria = self->_criteria;
-  if (criteria | *(v4 + 7))
+  if (criteria | *(equalCopy + 7))
   {
     if (![(ATXPBActionCriteria *)criteria isEqual:?])
     {
@@ -1129,7 +1129,7 @@
   }
 
   routeInfo = self->_routeInfo;
-  if (routeInfo | *(v4 + 17))
+  if (routeInfo | *(equalCopy + 17))
   {
     if (![(ATXPBAVRouteInfo *)routeInfo isEqual:?])
     {
@@ -1138,7 +1138,7 @@
   }
 
   heuristicMetadatas = self->_heuristicMetadatas;
-  if (heuristicMetadatas | *(v4 + 10))
+  if (heuristicMetadatas | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)heuristicMetadatas isEqual:?])
     {
@@ -1148,7 +1148,7 @@
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 188) & 2) == 0)
+    if ((*(equalCopy + 188) & 2) == 0)
     {
       goto LABEL_55;
     }
@@ -1158,20 +1158,20 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 188) & 2) == 0 || self->_cachedHash != *(v4 + 2))
+  if ((*(equalCopy + 188) & 2) == 0 || self->_cachedHash != *(equalCopy + 2))
   {
     goto LABEL_23;
   }
 
 LABEL_55:
   predictableParameterCombinations = self->_predictableParameterCombinations;
-  if (predictableParameterCombinations | *(v4 + 16) && ![(NSMutableArray *)predictableParameterCombinations isEqual:?])
+  if (predictableParameterCombinations | *(equalCopy + 16) && ![(NSMutableArray *)predictableParameterCombinations isEqual:?])
   {
     goto LABEL_23;
   }
 
   menuItemPathComponents = self->_menuItemPathComponents;
-  if (menuItemPathComponents | *(v4 + 14))
+  if (menuItemPathComponents | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)menuItemPathComponents isEqual:?])
     {
@@ -1180,7 +1180,7 @@ LABEL_55:
   }
 
   toolInvocationID = self->_toolInvocationID;
-  if (toolInvocationID | *(v4 + 20))
+  if (toolInvocationID | *(equalCopy + 20))
   {
     if (![(NSString *)toolInvocationID isEqual:?])
     {
@@ -1189,7 +1189,7 @@ LABEL_55:
   }
 
   encodedToolInvocation = self->_encodedToolInvocation;
-  if (encodedToolInvocation | *(v4 + 8))
+  if (encodedToolInvocation | *(equalCopy + 8))
   {
     if (![(NSData *)encodedToolInvocation isEqual:?])
     {
@@ -1198,7 +1198,7 @@ LABEL_55:
   }
 
   parameterKeysForToolInvocations = self->_parameterKeysForToolInvocations;
-  if (parameterKeysForToolInvocations | *(v4 + 15))
+  if (parameterKeysForToolInvocations | *(equalCopy + 15))
   {
     v10 = [(NSMutableArray *)parameterKeysForToolInvocations isEqual:?];
   }
@@ -1277,85 +1277,85 @@ LABEL_24:
   return v18 ^ [(NSMutableArray *)self->_parameterKeysForToolInvocations hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(ATXPBAction *)self setBundleId:?];
   }
 
-  if (*(v4 + 188))
+  if (*(fromCopy + 188))
   {
-    self->_actionType = *(v4 + 1);
+    self->_actionType = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ATXPBAction *)self setIntent:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ATXPBAction *)self setHeuristic:?];
   }
 
-  if ((*(v4 + 188) & 8) != 0)
+  if ((*(fromCopy + 188) & 8) != 0)
   {
-    self->_isFutureMedia = *(v4 + 184);
+    self->_isFutureMedia = *(fromCopy + 184);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(ATXPBAction *)self setTitle:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(ATXPBAction *)self setSubtitle:?];
   }
 
-  if ((*(v4 + 188) & 4) != 0)
+  if ((*(fromCopy + 188) & 4) != 0)
   {
-    self->_userActivityHash = *(v4 + 3);
+    self->_userActivityHash = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXPBAction *)self setActivityString:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(ATXPBAction *)self setUserActivityProxy:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ATXPBAction *)self setItemIdentifier:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(ATXPBAction *)self setUuid:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ATXPBAction *)self setLanguageCode:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ATXPBAction *)self setContentAttributeSet:?];
   }
 
   criteria = self->_criteria;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (criteria)
   {
     if (v6)
@@ -1370,7 +1370,7 @@ LABEL_24:
   }
 
   routeInfo = self->_routeInfo;
-  v8 = *(v4 + 17);
+  v8 = *(fromCopy + 17);
   if (routeInfo)
   {
     if (v8)
@@ -1388,7 +1388,7 @@ LABEL_24:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = *(v4 + 10);
+  v9 = *(fromCopy + 10);
   v10 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v10)
   {
@@ -1412,9 +1412,9 @@ LABEL_24:
     while (v11);
   }
 
-  if ((*(v4 + 188) & 2) != 0)
+  if ((*(fromCopy + 188) & 2) != 0)
   {
-    self->_cachedHash = *(v4 + 2);
+    self->_cachedHash = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -1422,7 +1422,7 @@ LABEL_24:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = *(v4 + 16);
+  v14 = *(fromCopy + 16);
   v15 = [v14 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v15)
   {
@@ -1450,7 +1450,7 @@ LABEL_24:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = *(v4 + 14);
+  v19 = *(fromCopy + 14);
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v46 count:16];
   if (v20)
   {
@@ -1474,12 +1474,12 @@ LABEL_24:
     while (v21);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(ATXPBAction *)self setToolInvocationID:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ATXPBAction *)self setEncodedToolInvocation:?];
   }
@@ -1488,7 +1488,7 @@ LABEL_24:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = *(v4 + 15);
+  v24 = *(fromCopy + 15);
   v25 = [v24 countByEnumeratingWithState:&v29 objects:v45 count:16];
   if (v25)
   {

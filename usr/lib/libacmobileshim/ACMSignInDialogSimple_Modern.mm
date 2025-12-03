@@ -16,9 +16,9 @@
 - (void)buildWidgetContentGroupVerticalConstraints;
 - (void)checkFields;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
+- (void)disableControls:(BOOL)controls;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ACMSignInDialogSimple_Modern
@@ -109,9 +109,9 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
 
-  return [v2 statusBarStyle];
+  return [mEMORY[0x29EDC7938] statusBarStyle];
 }
 
 - (void)loadView
@@ -127,15 +127,15 @@
   -[ACMSignInDialogSimple_Modern setView:](self, "setView:", [v3 initWithFrame:?]);
   if ([objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")])
   {
-    v4 = [MEMORY[0x29EDC7A00] blackColor];
+    blackColor = [MEMORY[0x29EDC7A00] blackColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x29EDC7A00] whiteColor];
+    blackColor = [MEMORY[0x29EDC7A00] whiteColor];
   }
 
-  [(ACMSignInDialogCustom *)self setBackgroundColor:v4];
+  [(ACMSignInDialogCustom *)self setBackgroundColor:blackColor];
   [-[ACMSignInDialogSimple_Modern view](self "view")];
   [-[ACMSignInDialogSimple_Modern view](self "view")];
   [-[ACMSignInDialogSimple_Modern view](self "view")];
@@ -176,15 +176,15 @@
 
   if ([objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")])
   {
-    v11 = [MEMORY[0x29EDC7A00] whiteColor];
+    whiteColor = [MEMORY[0x29EDC7A00] whiteColor];
   }
 
   else
   {
-    v11 = [MEMORY[0x29EDC7A00] blackColor];
+    whiteColor = [MEMORY[0x29EDC7A00] blackColor];
   }
 
-  v12 = v11;
+  v12 = whiteColor;
   [-[ACMSignInDialogSimple_Modern accountNameField](self "accountNameField")];
   [-[ACMSignInDialogSimple_Modern passwordField](self "passwordField")];
   [-[ACMSignInDialogSimple_Modern accountNameField](self "accountNameField")];
@@ -206,9 +206,9 @@
 - (void)buildWidgetContentGroupHorizontalConstraints
 {
   v3 = [MEMORY[0x29EDBA008] constraintWithItem:objc_msgSend(-[ACMSignInDialogSimple_Modern widget](self attribute:"widget") relatedBy:"view") toItem:7 attribute:0 multiplier:-[ACMSignInDialogSimple_Modern view](self constant:{"view"), 7, 1.0, 0.0}];
-  v4 = [(ACMSignInDialogSimple_Modern *)self view];
+  view = [(ACMSignInDialogSimple_Modern *)self view];
 
-  [v4 addConstraint:v3];
+  [view addConstraint:v3];
 }
 
 - (void)buildWidgetContentGroupVerticalConstraints
@@ -272,29 +272,29 @@
   [-[ACMSignInDialogSimple_Modern view](self "view")];
   [-[ACMSignInDialogSimple_Modern view](self "view")];
   v3 = [MEMORY[0x29EDBA008] constraintWithItem:-[ACMSignInDialogCustom signInButton](self attribute:"signInButton") relatedBy:9 toItem:0 attribute:-[ACMSignInDialogSimple_Modern view](self multiplier:"view") constant:{9, 1.0, 0.0}];
-  v4 = [(ACMSignInDialogSimple_Modern *)self view];
+  view = [(ACMSignInDialogSimple_Modern *)self view];
 
-  [v4 addConstraint:v3];
+  [view addConstraint:v3];
 }
 
 - (void)buildVerticalConstraints
 {
   [(ACMSignInDialogSimple_Modern *)self buildWidgetContentGroupVerticalConstraints];
   v3 = MEMORY[0x29EDBA008];
-  v4 = [(ACMSignInDialogSimple_Modern *)self container];
-  v5 = [(ACMSignInDialogSimple_Modern *)self view];
+  container = [(ACMSignInDialogSimple_Modern *)self container];
+  view = [(ACMSignInDialogSimple_Modern *)self view];
   [(ACMSignInDialogSimple_Modern *)self widgetConstraintMultiplier];
   v7 = v6;
   [(ACMSignInDialogSimple_Modern *)self widgetConstraintConstant];
   [-[ACMSignInDialogSimple_Modern view](self "view")];
   v9 = MEMORY[0x29EDBA008];
-  v10 = [(ACMSignInDialogSimple_Modern *)self toolbar];
-  v11 = [(ACMSignInDialogSimple_Modern *)self view];
+  toolbar = [(ACMSignInDialogSimple_Modern *)self toolbar];
+  view2 = [(ACMSignInDialogSimple_Modern *)self view];
   [(UIToolbar *)[(ACMSignInDialogSimple_Modern *)self toolbar] frame];
-  v12 = [v9 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:?];
-  v13 = [(ACMSignInDialogSimple_Modern *)self view];
+  v12 = [v9 constraintWithItem:toolbar attribute:3 relatedBy:0 toItem:view2 attribute:3 multiplier:1.0 constant:?];
+  view3 = [(ACMSignInDialogSimple_Modern *)self view];
 
-  [v13 addConstraint:v12];
+  [view3 addConstraint:v12];
 }
 
 - (void)buildConstraints
@@ -311,16 +311,16 @@
 
 - (id)accountNameField
 {
-  v2 = [(ACMSignInDialogSimple_Modern *)self widget];
+  widget = [(ACMSignInDialogSimple_Modern *)self widget];
 
-  return [v2 accountField];
+  return [widget accountField];
 }
 
 - (id)passwordField
 {
-  v2 = [(ACMSignInDialogSimple_Modern *)self widget];
+  widget = [(ACMSignInDialogSimple_Modern *)self widget];
 
-  return [v2 passwordField];
+  return [widget passwordField];
 }
 
 - (BOOL)canSignIn
@@ -336,28 +336,28 @@
 
 - (void)checkFields
 {
-  v3 = [(ACMSignInDialogSimple_Modern *)self canSignIn];
-  v4 = [(ACMSignInDialogCustom *)self signInButton];
+  canSignIn = [(ACMSignInDialogSimple_Modern *)self canSignIn];
+  signInButton = [(ACMSignInDialogCustom *)self signInButton];
 
-  [(UIButton *)v4 setEnabled:v3];
+  [(UIButton *)signInButton setEnabled:canSignIn];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ACMSignInDialogSimple_Modern;
-  [(ACMSignInDialog *)&v5 viewDidAppear:a3];
+  [(ACMSignInDialog *)&v5 viewDidAppear:appear];
   if ([objc_msgSend(-[ACMSignInDialogSimple_Modern accountNameField](self "accountNameField")])
   {
-    v4 = [(ACMSignInDialogSimple_Modern *)self passwordField];
+    passwordField = [(ACMSignInDialogSimple_Modern *)self passwordField];
   }
 
   else
   {
-    v4 = [(ACMSignInDialogSimple_Modern *)self accountNameField];
+    passwordField = [(ACMSignInDialogSimple_Modern *)self accountNameField];
   }
 
-  [v4 becomeFirstResponder];
+  [passwordField becomeFirstResponder];
   [(ACMSignInDialogSimple_Modern *)self checkFields];
 }
 
@@ -384,20 +384,20 @@
   return widget;
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  v3 = a3;
+  controlsCopy = controls;
   v16 = *MEMORY[0x29EDCA608];
   [(ACMSignInDialog *)self controlsWillChangeState:?];
   v14.receiver = self;
   v14.super_class = ACMSignInDialogSimple_Modern;
-  [(ACMSignInDialogCustom *)&v14 disableControls:v3];
+  [(ACMSignInDialogCustom *)&v14 disableControls:controlsCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(ACMSignInDialogSimple_Modern *)self burButtonItems];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  burButtonItems = [(ACMSignInDialogSimple_Modern *)self burButtonItems];
+  v6 = [(NSArray *)burButtonItems countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -409,20 +409,20 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(burButtonItems);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setEnabled:v3 ^ 1];
+        [*(*(&v10 + 1) + 8 * v9++) setEnabled:controlsCopy ^ 1];
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [(NSArray *)burButtonItems countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(ACMSignInDialog *)self controlsDidChangeState:v3];
+  [(ACMSignInDialog *)self controlsDidChangeState:controlsCopy];
 }
 
 @end

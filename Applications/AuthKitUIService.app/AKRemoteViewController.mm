@@ -4,10 +4,10 @@
 - (void)dealloc;
 - (void)dismissAndExit;
 - (void)endUIService;
-- (void)handleButtonActions:(id)a3;
-- (void)handleCancellation:(id)a3;
+- (void)handleButtonActions:(id)actions;
+- (void)handleCancellation:(id)cancellation;
 - (void)setUpHostProxy;
-- (void)setUpLookupConnection:(id)a3;
+- (void)setUpLookupConnection:(id)connection;
 - (void)setupRemoteProxy;
 @end
 
@@ -15,10 +15,10 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKRemoteViewController *)self _invalidateLookupConnection];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKRemoteViewController;
   [(AKRemoteViewController *)&v2 dealloc];
 }
@@ -26,9 +26,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [(UIDevice *)v3 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v3 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -56,12 +56,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setUpLookupConnection:(id)a3
+- (void)setUpLookupConnection:(id)connection
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v11 = _AKLogSystem();
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -77,12 +77,12 @@
   [v8 _setEndpoint:location[0]];
   v3 = [NSXPCConnection alloc];
   v7 = [v3 initWithListenerEndpoint:v8];
-  v4 = [(AKRemoteViewController *)v13 remoteObjectInterface];
+  remoteObjectInterface = [(AKRemoteViewController *)selfCopy remoteObjectInterface];
   [v7 setRemoteObjectInterface:?];
 
   [v7 resume];
-  [(AKRemoteViewController *)v13 setLookupConnection:v7];
-  [(AKRemoteViewController *)v13 setUpHostProxy];
+  [(AKRemoteViewController *)selfCopy setLookupConnection:v7];
+  [(AKRemoteViewController *)selfCopy setUpHostProxy];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -103,12 +103,12 @@
   objc_storeStrong(v2, 0);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, actions);
   memset(__b, 0, sizeof(__b));
   obj = location[0];
   v8 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
@@ -130,7 +130,7 @@
       v10 = ([v13 events] & 1) != 0;
       if (v11 || v10) && (objc_opt_respondsToSelector())
       {
-        [(AKRemoteViewController *)v15 handleCancellation:location[0]];
+        [(AKRemoteViewController *)selfCopy handleCancellation:location[0]];
       }
 
       v9 = 0;
@@ -156,18 +156,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)handleCancellation:(id)a3
+- (void)handleCancellation:(id)cancellation
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancellation);
   objc_storeStrong(location, 0);
 }
 
 - (void)dismissAndExit
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v2 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
@@ -176,7 +176,7 @@
   v6 = 0;
   v7 = sub_100003F0C;
   v8 = &unk_1000143C8;
-  v9[0] = v10;
+  v9[0] = selfCopy;
   dispatch_async(queue, &v4);
 
   objc_storeStrong(v9, 0);
@@ -184,8 +184,8 @@
 
 - (void)endUIService
 {
-  v2 = [(AKRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 invalidate];
+  _remoteViewControllerProxy = [(AKRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy invalidate];
 }
 
 - (void)_main_dismissAndExit

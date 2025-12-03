@@ -1,20 +1,20 @@
 @interface NLWorkoutControllerFactoryBridge
-+ (id)makeWithHealthStore:(id)a3 formattingManager:(id)a4 activityPausedRingsObserver:(id)a5 backgroundPermissionsChecker:(id)a6 occurrenceStore:(id)a7 locationProvider:(id)a8 workoutVoiceAvailabilityProvider:(id)a9;
++ (id)makeWithHealthStore:(id)store formattingManager:(id)manager activityPausedRingsObserver:(id)observer backgroundPermissionsChecker:(id)checker occurrenceStore:(id)occurrenceStore locationProvider:(id)provider workoutVoiceAvailabilityProvider:(id)availabilityProvider;
 - (NLWorkoutControllerFactoryBridge)init;
 @end
 
 @implementation NLWorkoutControllerFactoryBridge
 
-+ (id)makeWithHealthStore:(id)a3 formattingManager:(id)a4 activityPausedRingsObserver:(id)a5 backgroundPermissionsChecker:(id)a6 occurrenceStore:(id)a7 locationProvider:(id)a8 workoutVoiceAvailabilityProvider:(id)a9
++ (id)makeWithHealthStore:(id)store formattingManager:(id)manager activityPausedRingsObserver:(id)observer backgroundPermissionsChecker:(id)checker occurrenceStore:(id)occurrenceStore locationProvider:(id)provider workoutVoiceAvailabilityProvider:(id)availabilityProvider
 {
   type metadata accessor for NLWorkoutControllerFactory();
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  storeCopy = store;
+  managerCopy = manager;
+  observerCopy = observer;
+  checkerCopy = checker;
+  occurrenceStoreCopy = occurrenceStore;
+  providerCopy = provider;
+  availabilityProviderCopy = availabilityProvider;
   v22 = static NLWorkoutControllerFactory.make(healthStore:formattingManager:activityPausedRingsObserver:backgroundPermissionsChecker:occurrenceStore:locationProvider:workoutVoiceAvailabilityProvider:)();
 
   return v22;

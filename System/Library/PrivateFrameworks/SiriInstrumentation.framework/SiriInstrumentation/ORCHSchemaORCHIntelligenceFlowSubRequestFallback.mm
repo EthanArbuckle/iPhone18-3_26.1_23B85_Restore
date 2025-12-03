@@ -1,25 +1,25 @@
 @interface ORCHSchemaORCHIntelligenceFlowSubRequestFallback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHIntelligenceFlowSubRequestFallback
 
-- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithDictionary:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ORCHSchemaORCHIntelligenceFlowSubRequestFallback;
   v5 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originSubRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originSubRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)v5 setOriginSubRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fallbackSubRequestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fallbackSubRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithJSON:(id)a3
+- (ORCHSchemaORCHIntelligenceFlowSubRequestFallback)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_fallbackSubRequestId)
   {
-    v4 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    fallbackSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+    dictionaryRepresentation = [fallbackSubRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"fallbackSubRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fallbackSubRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"fallbackSubRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"fallbackSubRequestId"];
     }
   }
 
   if (self->_originSubRequestId)
   {
-    v7 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+    dictionaryRepresentation2 = [originSubRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originSubRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originSubRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originSubRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originSubRequestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
-  v6 = [v4 originSubRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  originSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+  originSubRequestId2 = [equalCopy originSubRequestId];
+  if ((originSubRequestId != 0) == (originSubRequestId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
-  if (v7)
+  originSubRequestId3 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+  if (originSubRequestId3)
   {
-    v8 = v7;
-    v9 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
-    v10 = [v4 originSubRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = originSubRequestId3;
+    originSubRequestId4 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+    originSubRequestId5 = [equalCopy originSubRequestId];
+    v11 = [originSubRequestId4 isEqual:originSubRequestId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
-  v6 = [v4 fallbackSubRequestId];
-  if ((v5 != 0) != (v6 == 0))
+  originSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+  originSubRequestId2 = [equalCopy fallbackSubRequestId];
+  if ((originSubRequestId != 0) != (originSubRequestId2 == 0))
   {
-    v12 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
-    if (!v12)
+    fallbackSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+    if (!fallbackSubRequestId)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
-    v15 = [v4 fallbackSubRequestId];
-    v16 = [v14 isEqual:v15];
+    v13 = fallbackSubRequestId;
+    fallbackSubRequestId2 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+    fallbackSubRequestId3 = [equalCopy fallbackSubRequestId];
+    v16 = [fallbackSubRequestId2 isEqual:fallbackSubRequestId3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+  toCopy = to;
+  originSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
 
-  if (v4)
+  if (originSubRequestId)
   {
-    v5 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+    originSubRequestId2 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+  fallbackSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
 
-  if (v6)
+  if (fallbackSubRequestId)
   {
-    v7 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+    fallbackSubRequestId2 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ORCHSchemaORCHIntelligenceFlowSubRequestFallback;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self originSubRequestId];
+  v7 = [originSubRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self deleteOriginSubRequestId];
   }
 
-  v9 = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  fallbackSubRequestId = [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self fallbackSubRequestId];
+  v10 = [fallbackSubRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHIntelligenceFlowSubRequestFallback *)self deleteFallbackSubRequestId];
   }

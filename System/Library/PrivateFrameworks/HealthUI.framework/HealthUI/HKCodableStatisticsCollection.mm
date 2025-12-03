@@ -1,32 +1,32 @@
 @interface HKCodableStatisticsCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addStatistics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addStatistics:(id)statistics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableStatisticsCollection
 
-- (void)addStatistics:(id)a3
+- (void)addStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   statistics = self->_statistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!statistics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_statistics;
     self->_statistics = v6;
 
-    v4 = v8;
+    statisticsCopy = v8;
     statistics = self->_statistics;
   }
 
-  [(NSMutableArray *)statistics addObject:v4];
+  [(NSMutableArray *)statistics addObject:statisticsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableStatisticsCollection;
   v4 = [(HKCodableStatisticsCollection *)&v8 description];
-  v5 = [(HKCodableStatisticsCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableStatisticsCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   statisticsInterval = self->_statisticsInterval;
   if (statisticsInterval)
   {
-    v5 = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"statisticsInterval"];
+    dictionaryRepresentation = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"statisticsInterval"];
   }
 
   if ([(NSMutableArray *)self->_statistics count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,16 +84,16 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"statistics"];
+    [dictionary setObject:v6 forKey:@"statistics"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_statisticsInterval)
   {
     PBDataWriterWriteSubmessage();
@@ -131,35 +131,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_statisticsInterval)
   {
-    [v8 setStatisticsInterval:?];
+    [toCopy setStatisticsInterval:?];
   }
 
   if ([(HKCodableStatisticsCollection *)self statisticsCount])
   {
-    [v8 clearStatistics];
-    v4 = [(HKCodableStatisticsCollection *)self statisticsCount];
-    if (v4)
+    [toCopy clearStatistics];
+    statisticsCount = [(HKCodableStatisticsCollection *)self statisticsCount];
+    if (statisticsCount)
     {
-      v5 = v4;
+      v5 = statisticsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableStatisticsCollection *)self statisticsAtIndex:i];
-        [v8 addStatistics:v7];
+        [toCopy addStatistics:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addStatistics:v13];
 
         ++v12;
@@ -199,13 +199,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((statisticsInterval = self->_statisticsInterval, !(statisticsInterval | v4[2])) || -[HKCodableDateComponents isEqual:](statisticsInterval, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((statisticsInterval = self->_statisticsInterval, !(statisticsInterval | equalCopy[2])) || -[HKCodableDateComponents isEqual:](statisticsInterval, "isEqual:")))
   {
     statistics = self->_statistics;
-    if (statistics | v4[1])
+    if (statistics | equalCopy[1])
     {
       v7 = [(NSMutableArray *)statistics isEqual:?];
     }
@@ -224,12 +224,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   statisticsInterval = self->_statisticsInterval;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (statisticsInterval)
   {
     if (v6)
@@ -247,7 +247,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

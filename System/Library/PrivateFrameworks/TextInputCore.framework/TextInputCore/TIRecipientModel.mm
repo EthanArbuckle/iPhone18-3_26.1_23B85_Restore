@@ -1,26 +1,26 @@
 @interface TIRecipientModel
-- (TIRecipientModel)initWithCompositeName:(id)a3 andTrainer:(id)a4;
-- (id)languageGuessForString:(id)a3;
-- (void)handleMessages:(id)a3;
+- (TIRecipientModel)initWithCompositeName:(id)name andTrainer:(id)trainer;
+- (id)languageGuessForString:(id)string;
+- (void)handleMessages:(id)messages;
 @end
 
 @implementation TIRecipientModel
 
-- (void)handleMessages:(id)a3
+- (void)handleMessages:(id)messages
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messagesCopy = messages;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  v5 = [messagesCopy countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v32;
     v28 = *v32;
-    v29 = v4;
+    v29 = messagesCopy;
     do
     {
       v8 = 0;
@@ -29,28 +29,28 @@
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messagesCopy);
         }
 
         v9 = *(*(&v31 + 1) + 8 * v8);
-        v10 = [(TIRecipientModel *)self lastMessage];
-        if (([v10 fromMe] & 1) == 0)
+        lastMessage = [(TIRecipientModel *)self lastMessage];
+        if (([lastMessage fromMe] & 1) == 0)
         {
-          v11 = [v9 fromMe];
+          fromMe = [v9 fromMe];
 
-          if (!v11)
+          if (!fromMe)
           {
             goto LABEL_19;
           }
 
-          v12 = [(TIRecipientModel *)self lastMessage];
-          v13 = [v12 body];
-          v10 = [(TIRecipientModel *)self languageGuessForString:v13];
+          lastMessage2 = [(TIRecipientModel *)self lastMessage];
+          body = [lastMessage2 body];
+          lastMessage = [(TIRecipientModel *)self languageGuessForString:body];
 
-          v14 = [v9 body];
-          v15 = [(TIRecipientModel *)self languageGuessForString:v14];
+          body2 = [v9 body];
+          v15 = [(TIRecipientModel *)self languageGuessForString:body2];
 
-          if (v15 && [v15 isEqualToString:v10])
+          if (v15 && [v15 isEqualToString:lastMessage])
           {
             if (TICanLogMessageAtLevel_onceToken != -1)
             {
@@ -63,25 +63,25 @@
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
               {
                 v22 = MEMORY[0x277CCACA8];
-                v23 = [(TIRecipientModel *)self lastMessage];
-                v24 = [v23 body];
-                v25 = [v9 body];
-                v26 = [v22 stringWithFormat:@"%s ResponseKitTrainer: training with message pair (%@), (%@) (language = %@)", "-[TIRecipientModel handleMessages:]", v24, v25, v15];
+                lastMessage3 = [(TIRecipientModel *)self lastMessage];
+                body3 = [lastMessage3 body];
+                body4 = [v9 body];
+                v26 = [v22 stringWithFormat:@"%s ResponseKitTrainer: training with message pair (%@), (%@) (language = %@)", "-[TIRecipientModel handleMessages:]", body3, body4, v15];
                 *buf = 138412290;
                 v36 = v26;
                 _os_log_debug_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
             }
 
-            v17 = [(TIRecipientModel *)self trainer];
-            v18 = [v9 body];
-            v19 = [(TIRecipientModel *)self lastMessage];
-            v20 = [v19 body];
-            v21 = [(TIRecipientModel *)self identifier];
-            [v17 registerResponse:v18 forMessage:v20 forContext:v21 withLanguage:v15];
+            trainer = [(TIRecipientModel *)self trainer];
+            body5 = [v9 body];
+            lastMessage4 = [(TIRecipientModel *)self lastMessage];
+            body6 = [lastMessage4 body];
+            identifier = [(TIRecipientModel *)self identifier];
+            [trainer registerResponse:body5 forMessage:body6 forContext:identifier withLanguage:v15];
 
             v7 = v28;
-            v4 = v29;
+            messagesCopy = v29;
             v6 = v30;
           }
         }
@@ -92,7 +92,7 @@ LABEL_19:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v6 = [messagesCopy countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v6);
@@ -101,14 +101,14 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)languageGuessForString:(id)a3
+- (id)languageGuessForString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
-    v7.length = [(__CFString *)v3 length];
+    stringCopy = string;
+    v7.length = [(__CFString *)stringCopy length];
     v7.location = 0;
-    v4 = CFStringTokenizerCopyBestStringLanguage(v3, v7);
+    v4 = CFStringTokenizerCopyBestStringLanguage(stringCopy, v7);
   }
 
   else
@@ -119,21 +119,21 @@ LABEL_19:
   return v4;
 }
 
-- (TIRecipientModel)initWithCompositeName:(id)a3 andTrainer:(id)a4
+- (TIRecipientModel)initWithCompositeName:(id)name andTrainer:(id)trainer
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  trainerCopy = trainer;
   v13.receiver = self;
   v13.super_class = TIRecipientModel;
   v8 = [(TIRecipientModel *)&v13 init];
   if (v8)
   {
     v9 = +[TICryptographer sharedCryptographer];
-    v10 = [v9 stringDigestForName:v6];
+    v10 = [v9 stringDigestForName:nameCopy];
     identifier = v8->_identifier;
     v8->_identifier = v10;
 
-    objc_storeStrong(&v8->_trainer, a4);
+    objc_storeStrong(&v8->_trainer, trainer);
   }
 
   return v8;

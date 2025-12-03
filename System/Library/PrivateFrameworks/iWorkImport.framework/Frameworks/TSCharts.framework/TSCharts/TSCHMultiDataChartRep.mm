@@ -1,7 +1,7 @@
 @interface TSCHMultiDataChartRep
 - (BOOL)isHorizontalChart;
-- (TSCHMultiDataChartRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)imageFromFill:(id)a3 forResolutionWithBounds:(CGRect)a4 toRepElementTransform:(CGAffineTransform *)a5 skipIntegral:(BOOL)a6 returningFillFrame:(CGRect *)a7;
+- (TSCHMultiDataChartRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)imageFromFill:(id)fill forResolutionWithBounds:(CGRect)bounds toRepElementTransform:(CGAffineTransform *)transform skipIntegral:(BOOL)integral returningFillFrame:(CGRect *)frame;
 - (id)layerIdToLayerMap;
 - (id)p_chartModel;
 - (id)p_elementLayers;
@@ -14,13 +14,13 @@
 
 @implementation TSCHMultiDataChartRep
 
-- (TSCHMultiDataChartRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSCHMultiDataChartRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  canvasCopy = canvas;
   v13.receiver = self;
   v13.super_class = TSCHMultiDataChartRep;
-  v8 = [(TSCHChartRep *)&v13 initWithLayout:v6 canvas:v7];
+  v8 = [(TSCHChartRep *)&v13 initWithLayout:layoutCopy canvas:canvasCopy];
   v9 = v8;
   if (v8)
   {
@@ -198,20 +198,20 @@
   return previousOutsideBodyBounds;
 }
 
-- (id)imageFromFill:(id)a3 forResolutionWithBounds:(CGRect)a4 toRepElementTransform:(CGAffineTransform *)a5 skipIntegral:(BOOL)a6 returningFillFrame:(CGRect *)a7
+- (id)imageFromFill:(id)fill forResolutionWithBounds:(CGRect)bounds toRepElementTransform:(CGAffineTransform *)transform skipIntegral:(BOOL)integral returningFillFrame:(CGRect *)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  fillCopy = fill;
   v16 = 0;
-  if (v15 && width > 0.0 && height > 0.0)
+  if (fillCopy && width > 0.0 && height > 0.0)
   {
-    v17 = *&a5->c;
-    *&transform.a = *&a5->a;
+    v17 = *&transform->c;
+    *&transform.a = *&transform->a;
     *&transform.c = v17;
-    *&transform.tx = *&a5->tx;
+    *&transform.tx = *&transform->tx;
     v18 = x;
     *&v17 = y;
     v19 = width;
@@ -219,7 +219,7 @@
     v58 = CGRectApplyAffineTransform(*(&v17 - 8), &transform);
     v22 = v58.origin.x;
     v23 = v58.origin.y;
-    if (!a6)
+    if (!integral)
     {
       objc_msgSend_integralFillRenderingRectFromElementRect_(TSCHRenderUtilities, v21, v58.origin.x, v58.origin.y, v58.size.width, v58.size.height);
       v22 = v24;
@@ -251,10 +251,10 @@
       v60.size.height = v29;
       MinY = CGRectGetMinY(v60);
       CGContextTranslateCTM(v39, -MinX, -MinY);
-      v42 = *&a5->c;
-      *&transform.a = *&a5->a;
+      v42 = *&transform->c;
+      *&transform.a = *&transform->a;
       *&transform.c = v42;
-      *&transform.tx = *&a5->tx;
+      *&transform.tx = *&transform->tx;
       CGAffineTransformInvert(&v55, &transform);
       transform = v55;
       v61.origin.x = v22;
@@ -266,12 +266,12 @@
       v44 = v62.origin.y;
       v45 = v62.size.width;
       v46 = v62.size.height;
-      *&v62.origin.y = *&a5->c;
-      *&transform.a = *&a5->a;
+      *&v62.origin.y = *&transform->c;
+      *&transform.a = *&transform->a;
       *&transform.c = *&v62.origin.y;
-      *&transform.tx = *&a5->tx;
+      *&transform.tx = *&transform->tx;
       CGContextConcatCTM(v39, &transform);
-      v47 = sub_2762A1EB8(v15, v39, v43, v44, v45, v46);
+      v47 = sub_2762A1EB8(fillCopy, v39, v43, v44, v45, v46);
 
       objc_msgSend_drawFill_inContext_frame_(TSCHRenderUtilities, v48, v43, v44, v45, v47, v39, v46);
       CGContextRestoreGState(v39);
@@ -279,18 +279,18 @@
       CGContextRelease(v39);
       v16 = objc_msgSend_imageWithCGImage_(MEMORY[0x277D811F8], v50, v51, v52, v53, Image);
       CGImageRelease(Image);
-      if (a7)
+      if (frame)
       {
-        a7->origin.x = v22;
-        a7->origin.y = v23;
-        v15 = v47;
-        a7->size.width = v27;
-        a7->size.height = v29;
+        frame->origin.x = v22;
+        frame->origin.y = v23;
+        fillCopy = v47;
+        frame->size.width = v27;
+        frame->size.height = v29;
       }
 
       else
       {
-        v15 = v47;
+        fillCopy = v47;
       }
     }
 

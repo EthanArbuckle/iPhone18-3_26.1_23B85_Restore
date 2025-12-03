@@ -1,14 +1,14 @@
 @interface CPUIAssistantCellConfiguration
-+ (id)configurationWithText:(id)a3;
++ (id)configurationWithText:(id)text;
 @end
 
 @implementation CPUIAssistantCellConfiguration
 
-+ (id)configurationWithText:(id)a3
++ (id)configurationWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_opt_new();
-  [v4 setText:v3];
+  [v4 setText:textCopy];
 
   return v4;
 }

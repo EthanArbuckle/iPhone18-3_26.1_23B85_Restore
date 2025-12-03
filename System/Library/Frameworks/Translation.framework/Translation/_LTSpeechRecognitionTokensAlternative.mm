@@ -1,35 +1,35 @@
 @interface _LTSpeechRecognitionTokensAlternative
-- (_LTSpeechRecognitionTokensAlternative)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_LTSpeechRecognitionTokensAlternative)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTSpeechRecognitionTokensAlternative
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeInteger:self->_confidence forKey:@"confidence"];
-  [v5 encodeBool:self->_lowConfidence forKey:@"lowConfidence"];
-  [v5 encodeBool:self->_hasSpaceAfter forKey:@"spaceAfter"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeInteger:self->_confidence forKey:@"confidence"];
+  [coderCopy encodeBool:self->_lowConfidence forKey:@"lowConfidence"];
+  [coderCopy encodeBool:self->_hasSpaceAfter forKey:@"spaceAfter"];
 }
 
-- (_LTSpeechRecognitionTokensAlternative)initWithCoder:(id)a3
+- (_LTSpeechRecognitionTokensAlternative)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _LTSpeechRecognitionTokensAlternative;
   v5 = [(_LTSpeechRecognitionTokensAlternative *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v5->_confidence = [v4 decodeIntegerForKey:@"confidence"];
-    v5->_lowConfidence = [v4 decodeBoolForKey:@"lowConfidence"];
-    v5->_hasSpaceAfter = [v4 decodeBoolForKey:@"spaceAfter"];
+    v5->_confidence = [coderCopy decodeIntegerForKey:@"confidence"];
+    v5->_lowConfidence = [coderCopy decodeBoolForKey:@"lowConfidence"];
+    v5->_hasSpaceAfter = [coderCopy decodeBoolForKey:@"spaceAfter"];
     v8 = v5;
   }
 

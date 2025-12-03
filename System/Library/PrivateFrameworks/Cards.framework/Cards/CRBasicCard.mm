@@ -1,18 +1,18 @@
 @interface CRBasicCard
 - (CRBasicCard)init;
-- (CRBasicCard)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadCardWithCompletion:(id)a3;
+- (CRBasicCard)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadCardWithCompletion:(id)completion;
 @end
 
 @implementation CRBasicCard
 
-- (void)loadCardWithCompletion:(id)a3
+- (void)loadCardWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, self);
+    (*(completion + 2))(completion, self);
   }
 }
 
@@ -23,18 +23,18 @@
   v2 = [(CRBasicCard *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     cardIdentifier = v2->_cardIdentifier;
-    v2->_cardIdentifier = v4;
+    v2->_cardIdentifier = uUIDString;
   }
 
   return v2;
 }
 
-- (CRBasicCard)initWithCoder:(id)a3
+- (CRBasicCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CRBasicCard;
   v5 = [(CRBasicCard *)&v19 init];
@@ -44,7 +44,7 @@
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_cardSections);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     cardSections = v5->_cardSections;
     v5->_cardSections = v10;
 
@@ -52,7 +52,7 @@
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
     v15 = NSStringFromSelector(sel_interactions);
-    v16 = [v4 decodeObjectOfClasses:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClasses:v14 forKey:v15];
     interactions = v5->_interactions;
     v5->_interactions = v16;
   }
@@ -60,28 +60,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cardSections = self->_cardSections;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_cardSections);
-  [v5 encodeObject:cardSections forKey:v6];
+  [coderCopy encodeObject:cardSections forKey:v6];
 
   interactions = self->_interactions;
   v8 = NSStringFromSelector(sel_interactions);
-  [v5 encodeObject:interactions forKey:v8];
+  [coderCopy encodeObject:interactions forKey:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRBasicCard);
-  v5 = [(CRBasicCard *)self cardSections];
-  v6 = [v5 _deepCopy];
-  [(CRBasicCard *)v4 setCardSections:v6];
+  cardSections = [(CRBasicCard *)self cardSections];
+  _deepCopy = [cardSections _deepCopy];
+  [(CRBasicCard *)v4 setCardSections:_deepCopy];
 
-  v7 = [(CRBasicCard *)self interactions];
-  v8 = [v7 _deepCopy];
-  [(CRBasicCard *)v4 setInteractions:v8];
+  interactions = [(CRBasicCard *)self interactions];
+  _deepCopy2 = [interactions _deepCopy];
+  [(CRBasicCard *)v4 setInteractions:_deepCopy2];
 
   return v4;
 }

@@ -34,8 +34,8 @@
 
 - (BOOL)isSupported
 {
-  v3 = [objc_opt_class() chargingIntervalTypes];
-  v4 = [v3 objectForKeyedSubscript:self];
+  chargingIntervalTypes = [objc_opt_class() chargingIntervalTypes];
+  v4 = [chargingIntervalTypes objectForKeyedSubscript:self];
   LOBYTE(self) = v4 != 0;
 
   return self;
@@ -43,20 +43,20 @@
 
 - (int)statePriority
 {
-  v3 = [objc_opt_class() priorities];
-  v4 = [v3 objectForKeyedSubscript:self];
-  v5 = [v4 intValue];
+  priorities = [objc_opt_class() priorities];
+  v4 = [priorities objectForKeyedSubscript:self];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 - (signed)chargingIntervalType
 {
-  v3 = [objc_opt_class() chargingIntervalTypes];
-  v4 = [v3 objectForKeyedSubscript:self];
-  v5 = [v4 shortValue];
+  chargingIntervalTypes = [objc_opt_class() chargingIntervalTypes];
+  v4 = [chargingIntervalTypes objectForKeyedSubscript:self];
+  shortValue = [v4 shortValue];
 
-  return v5;
+  return shortValue;
 }
 
 @end

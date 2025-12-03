@@ -1,20 +1,20 @@
 @interface NUMutableBufferAdapter
-- (NUMutableBufferAdapter)initWithMutableBuffer:(id)a3;
-- (NUMutableBufferAdapter)initWithSize:(id)a3 format:(id)a4 rowBytes:(int64_t)a5 bytes:(const void *)a6;
-- (NUMutableBufferAdapter)initWithSize:(id)a3 format:(id)a4 rowBytes:(int64_t)a5 mutableBytes:(void *)a6;
+- (NUMutableBufferAdapter)initWithMutableBuffer:(id)buffer;
+- (NUMutableBufferAdapter)initWithSize:(id)size format:(id)format rowBytes:(int64_t)bytes bytes:(const void *)a6;
+- (NUMutableBufferAdapter)initWithSize:(id)size format:(id)format rowBytes:(int64_t)bytes mutableBytes:(void *)mutableBytes;
 - (id)newRenderDestination;
 - (void)mutableBytes;
-- (void)mutableBytesAtPoint:(id)a3;
-- (void)provideMutableBuffer:(id)a3;
+- (void)mutableBytesAtPoint:(id)point;
+- (void)provideMutableBuffer:(id)buffer;
 @end
 
 @implementation NUMutableBufferAdapter
 
-- (void)provideMutableBuffer:(id)a3
+- (void)provideMutableBuffer:(id)buffer
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = v4;
+  bufferCopy = buffer;
+  v20 = bufferCopy;
   if (!self->super._valid)
   {
     v5 = NUAssertLogger();
@@ -34,8 +34,8 @@
       if (v9)
       {
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v14 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v12;
         v23 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,25 +56,25 @@
     _NUAssertFailHandler("[NUMutableBufferAdapter provideMutableBuffer:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 655, @"Buffer no longer valid", v15, v16, v17, v18, v19);
   }
 
-  (*(v4 + 2))(v4, self);
+  (*(bufferCopy + 2))(bufferCopy, self);
 }
 
 - (id)newRenderDestination
 {
   v3 = objc_alloc(MEMORY[0x1E695F678]);
-  v4 = [(NUMutableBufferAdapter *)self mutableBytes];
+  mutableBytes = [(NUMutableBufferAdapter *)self mutableBytes];
   v5 = [(NUBufferAdapter *)self size];
   [(NUBufferAdapter *)self size];
   v7 = v6;
-  v8 = [(NUBufferAdapter *)self rowBytes];
-  v9 = [(NUBufferAdapter *)self format];
-  v10 = [v3 initWithBitmapData:v4 width:v5 height:v7 bytesPerRow:v8 format:{objc_msgSend(v9, "CIFormat")}];
+  rowBytes = [(NUBufferAdapter *)self rowBytes];
+  format = [(NUBufferAdapter *)self format];
+  v10 = [v3 initWithBitmapData:mutableBytes width:v5 height:v7 bytesPerRow:rowBytes format:{objc_msgSend(format, "CIFormat")}];
 
   [v10 setLabel:@"NUMutableBufferAdapter-new"];
   return v10;
 }
 
-- (void)mutableBytesAtPoint:(id)a3
+- (void)mutableBytesAtPoint:(id)point
 {
   v39 = *MEMORY[0x1E69E9840];
   if (!self->super._valid)
@@ -96,8 +96,8 @@
       if (v10)
       {
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v20;
         v37 = 2114;
@@ -108,8 +108,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -118,9 +118,9 @@
     _NUAssertFailHandler("[NUMutableBufferAdapter mutableBytesAtPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 637, @"Buffer no longer valid", v23, v24, v25, v26, v34);
   }
 
-  v3 = vmovn_s64(vcgtq_s64(self->super._size, a3));
+  v3 = vmovn_s64(vcgtq_s64(self->super._size, point));
   v4 = vuzp1_s16(v3, v3);
-  v4.i32[1] = vuzp1_s16(v4, vmovn_s64(vcgezq_s64(*&a3))).i32[1];
+  v4.i32[1] = vuzp1_s16(v4, vmovn_s64(vcgezq_s64(*&point))).i32[1];
   if ((vminv_u16(v4) & 1) == 0)
   {
     v13 = NUAssertLogger();
@@ -140,8 +140,8 @@
       if (v17)
       {
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v29 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v27;
         v37 = 2114;
@@ -152,8 +152,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -162,7 +162,7 @@
     _NUAssertFailHandler("[NUMutableBufferAdapter mutableBytesAtPoint:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 639, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "NUPixelPointInRect(point, extent)");
   }
 
-  return self->_mutableBytes + self->super._rowBytes * a3.var1 + [(NUPixelFormat *)self->super._format bytesPerPixel]* a3.var0;
+  return self->_mutableBytes + self->super._rowBytes * point.var1 + [(NUPixelFormat *)self->super._format bytesPerPixel]* point.var0;
 }
 
 - (void)mutableBytes
@@ -187,8 +187,8 @@
       if (v7)
       {
         v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v12 = [v11 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v12 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v19 = v10;
         v20 = 2114;
@@ -199,8 +199,8 @@
 
     else if (v7)
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v19 = v9;
       _os_log_error_impl(&dword_1C0184000, v6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -212,10 +212,10 @@
   return self->_mutableBytes;
 }
 
-- (NUMutableBufferAdapter)initWithSize:(id)a3 format:(id)a4 rowBytes:(int64_t)a5 bytes:(const void *)a6
+- (NUMutableBufferAdapter)initWithSize:(id)size format:(id)format rowBytes:(int64_t)bytes bytes:(const void *)a6
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  formatCopy = format;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_13196);
@@ -245,8 +245,8 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v27 = v17;
       v28 = 2114;
@@ -265,8 +265,8 @@
     v14 = _NUAssertLogger;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -280,22 +280,22 @@
   _NUAssertFailHandler("[NUMutableBufferAdapter initWithSize:format:rowBytes:bytes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 628, @"Initializer not available: [%@ %@], use designated initializer instead.", v22, v23, v24, v25, v21);
 }
 
-- (NUMutableBufferAdapter)initWithSize:(id)a3 format:(id)a4 rowBytes:(int64_t)a5 mutableBytes:(void *)a6
+- (NUMutableBufferAdapter)initWithSize:(id)size format:(id)format rowBytes:(int64_t)bytes mutableBytes:(void *)mutableBytes
 {
   v8.receiver = self;
   v8.super_class = NUMutableBufferAdapter;
-  result = [(NUBufferAdapter *)&v8 initWithSize:a3.var0 format:a3.var1 rowBytes:a4 bytes:a5];
-  result->_mutableBytes = a6;
+  result = [(NUBufferAdapter *)&v8 initWithSize:size.var0 format:size.var1 rowBytes:format bytes:bytes];
+  result->_mutableBytes = mutableBytes;
   return result;
 }
 
-- (NUMutableBufferAdapter)initWithMutableBuffer:(id)a3
+- (NUMutableBufferAdapter)initWithMutableBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 size];
+  bufferCopy = buffer;
+  v5 = [bufferCopy size];
   v7 = v6;
-  v8 = [v4 format];
-  v9 = -[NUMutableBufferAdapter initWithSize:format:rowBytes:mutableBytes:](self, "initWithSize:format:rowBytes:mutableBytes:", v5, v7, v8, [v4 rowBytes], objc_msgSend(v4, "mutableBytes"));
+  format = [bufferCopy format];
+  v9 = -[NUMutableBufferAdapter initWithSize:format:rowBytes:mutableBytes:](self, "initWithSize:format:rowBytes:mutableBytes:", v5, v7, format, [bufferCopy rowBytes], objc_msgSend(bufferCopy, "mutableBytes"));
 
   return v9;
 }

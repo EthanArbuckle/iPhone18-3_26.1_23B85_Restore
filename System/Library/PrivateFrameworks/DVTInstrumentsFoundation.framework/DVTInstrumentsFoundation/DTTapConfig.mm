@@ -3,21 +3,21 @@
 - (BOOL)isDeferredDisplay;
 - (BOOL)spoolToDiskWhenPossible;
 - (DTTapConfig)init;
-- (DTTapConfig)initWithPlist:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DTTapConfig)initWithPlist:(id)plist;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)plist;
 - (unint64_t)bufferMode;
 - (unint64_t)pollingInterval;
 - (unint64_t)windowSize;
-- (void)_dispatchStatus:(unsigned int)a3 timestamp:(unint64_t)a4 notice:(id)a5 info:(id)a6;
-- (void)_runningMetadataChanged:(id)a3;
+- (void)_dispatchStatus:(unsigned int)status timestamp:(unint64_t)timestamp notice:(id)notice info:(id)info;
+- (void)_runningMetadataChanged:(id)changed;
 - (void)refreshUUID;
-- (void)setBufferMode:(unint64_t)a3;
-- (void)setIsDeferredDisplay:(BOOL)a3;
-- (void)setPollingInterval:(unint64_t)a3;
-- (void)setRunningMetadataChangedHandler:(id)a3;
-- (void)setStatusHandler:(id)a3;
-- (void)setWindowSize:(unint64_t)a3;
+- (void)setBufferMode:(unint64_t)mode;
+- (void)setIsDeferredDisplay:(BOOL)display;
+- (void)setPollingInterval:(unint64_t)interval;
+- (void)setRunningMetadataChangedHandler:(id)handler;
+- (void)setStatusHandler:(id)handler;
+- (void)setWindowSize:(unint64_t)size;
 @end
 
 @implementation DTTapConfig
@@ -43,9 +43,9 @@
   return v2;
 }
 
-- (DTTapConfig)initWithPlist:(id)a3
+- (DTTapConfig)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v12.receiver = self;
   v12.super_class = DTTapConfig;
   v5 = [(DTTapConfig *)&v12 init];
@@ -53,7 +53,7 @@
   if (v5)
   {
     v5->_serviceVersion = -1;
-    v7 = [v4 mutableCopy];
+    v7 = [plistCopy mutableCopy];
     dict = v6->_dict;
     v6->_dict = v7;
 
@@ -65,9 +65,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = objc_opt_new();
   v7 = v5[1];
   v5[1] = v6;
@@ -77,7 +77,7 @@
   v22 = 3221225472;
   v23 = sub_247FBADB0;
   v24 = &unk_278EF3018;
-  v26 = a3;
+  zoneCopy = zone;
   v9 = v5;
   v25 = v9;
   [(NSMutableDictionary *)dict enumerateKeysAndObjectsUsingBlock:&v21];
@@ -120,23 +120,23 @@
   self->_uuid = v3;
 }
 
-- (void)setRunningMetadataChangedHandler:(id)a3
+- (void)setRunningMetadataChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   runningMetadataChangedHandler = self->_runningMetadataChangedHandler;
   self->_runningMetadataChangedHandler = v4;
 }
 
-- (void)setStatusHandler:(id)a3
+- (void)setStatusHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   statusHandler = self->_statusHandler;
   self->_statusHandler = v4;
 }
 
-- (void)_runningMetadataChanged:(id)a3
+- (void)_runningMetadataChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   runningMetadataChangedHandler = self->_runningMetadataChangedHandler;
   if (runningMetadataChangedHandler)
   {
@@ -147,16 +147,16 @@
     v9[2] = sub_247FBB00C;
     v9[3] = &unk_278EF3040;
     v11 = v6;
-    v10 = v4;
+    v10 = changedCopy;
     v8 = v6;
     dispatch_async(v7, v9);
   }
 }
 
-- (void)_dispatchStatus:(unsigned int)a3 timestamp:(unint64_t)a4 notice:(id)a5 info:(id)a6
+- (void)_dispatchStatus:(unsigned int)status timestamp:(unint64_t)timestamp notice:(id)notice info:(id)info
 {
-  v10 = a5;
-  v11 = a6;
+  noticeCopy = notice;
+  infoCopy = info;
   statusHandler = self->_statusHandler;
   if (statusHandler)
   {
@@ -166,11 +166,11 @@
     block[1] = 3221225472;
     block[2] = sub_247FBB130;
     block[3] = &unk_278EF3068;
-    v21 = a3;
+    statusCopy = status;
     v19 = v13;
-    v20 = a4;
-    v17 = v10;
-    v18 = v11;
+    timestampCopy = timestamp;
+    v17 = noticeCopy;
+    v18 = infoCopy;
     v15 = v13;
     dispatch_async(v14, block);
   }
@@ -184,9 +184,9 @@
   return v3;
 }
 
-- (void)setIsDeferredDisplay:(BOOL)a3
+- (void)setIsDeferredDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
 
     MEMORY[0x2821F9670](self, sel__removeSerializableObjectForKey_);
@@ -207,25 +207,25 @@
 - (BOOL)spoolToDiskWhenPossible
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"s2d"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)discardHeartbeatsWhenPossible
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"nohb"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setPollingInterval:(unint64_t)a3
+- (void)setPollingInterval:(unint64_t)interval
 {
-  if (a3)
+  if (interval)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3 / 0xF4240];
-    [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"ur"];
+    0xF4240 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:interval / 0xF4240];
+    [(DTTapConfig *)self _setSerializableObject:0xF4240 forKey:@"ur"];
   }
 
   else
@@ -238,16 +238,16 @@
 - (unint64_t)pollingInterval
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"ur"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return 1000000 * v3;
+  return 1000000 * unsignedLongLongValue;
 }
 
-- (void)setBufferMode:(unint64_t)a3
+- (void)setBufferMode:(unint64_t)mode
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   [DTTapConfig _setSerializableObject:"_setSerializableObject:forKey:" forKey:?];
-  if (a3 - 1 <= 1)
+  if (mode - 1 <= 1)
   {
     [(DTTapConfig *)self setPollingInterval:0];
   }
@@ -256,10 +256,10 @@
 - (unint64_t)bufferMode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"bm"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
   if (v2)
   {
-    v4 = v3 > 2;
+    v4 = intValue > 2;
   }
 
   else
@@ -271,7 +271,7 @@
   {
     if (v2)
     {
-      NSLog(&cfstr_UnsupportedBuf_0.isa, v3);
+      NSLog(&cfstr_UnsupportedBuf_0.isa, intValue);
     }
 
     v5 = 1;
@@ -279,7 +279,7 @@
 
   else
   {
-    v5 = v3;
+    v5 = intValue;
   }
 
   return v5;
@@ -302,12 +302,12 @@
   return v4;
 }
 
-- (void)setWindowSize:(unint64_t)a3
+- (void)setWindowSize:(unint64_t)size
 {
-  if (a3 <= 0xF423FFFFFFFFFLL)
+  if (size <= 0xF423FFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3 / 0xF4240];
-    [(DTTapConfig *)self _setSerializableObject:v5 forKey:@"ws"];
+    0xF4240 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:size / 0xF4240];
+    [(DTTapConfig *)self _setSerializableObject:0xF4240 forKey:@"ws"];
   }
 }
 

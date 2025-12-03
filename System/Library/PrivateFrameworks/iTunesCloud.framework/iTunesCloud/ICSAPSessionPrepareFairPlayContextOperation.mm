@@ -1,5 +1,5 @@
 @interface ICSAPSessionPrepareFairPlayContextOperation
-- (void)_exchangeDataWithSAPContext:(id)a3 requestContext:(id)a4 setupURL:(id)a5 responseData:(id)a6 completionHandler:(id)a7;
+- (void)_exchangeDataWithSAPContext:(id)context requestContext:(id)requestContext setupURL:(id)l responseData:(id)data completionHandler:(id)handler;
 - (void)execute;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)execute
 {
-  v3 = [(ICSAPSession *)self->_sapSession _sapContext];
-  if (v3)
+  _sapContext = [(ICSAPSession *)self->_sapSession _sapContext];
+  if (_sapContext)
   {
     responseHandler = self->_responseHandler;
     if (responseHandler)
     {
-      responseHandler[2](responseHandler, v3, 0);
+      responseHandler[2](responseHandler, _sapContext, 0);
     }
 
     [(ICAsyncOperation *)self finishWithError:0];
@@ -21,9 +21,9 @@
 
   else
   {
-    v5 = [(ICSAPSession *)self->_sapSession _certificateURL];
-    v6 = [(ICSAPSession *)self->_sapSession _setupURL];
-    v7 = [(ICSAPSession *)self->_sapSession _requestContext];
+    _certificateURL = [(ICSAPSession *)self->_sapSession _certificateURL];
+    _setupURL = [(ICSAPSession *)self->_sapSession _setupURL];
+    _requestContext = [(ICSAPSession *)self->_sapSession _requestContext];
     v19 = 0;
     v8 = [[ICFPSAPContext alloc] initReturningError:&v19];
     v9 = v19;
@@ -40,7 +40,7 @@
 
     if (v11)
     {
-      v13 = [[ICStoreURLRequest alloc] initWithURL:v5 requestContext:v7];
+      v13 = [[ICStoreURLRequest alloc] initWithURL:_certificateURL requestContext:_requestContext];
       [(ICStoreURLRequest *)v13 setShouldUseMescalSigning:0];
       [(ICURLRequest *)v13 setPrioritize:1];
       v14 = +[ICCertificateCache shared];
@@ -50,8 +50,8 @@
       v15[3] = &unk_1E7BF7178;
       v15[4] = self;
       v16 = v8;
-      v17 = v7;
-      v18 = v6;
+      v17 = _requestContext;
+      v18 = _setupURL;
       [v14 getDataForSAPCertificateRequest:v13 withCompletionHandler:v15];
     }
 
@@ -68,25 +68,25 @@
   }
 }
 
-- (void)_exchangeDataWithSAPContext:(id)a3 requestContext:(id)a4 setupURL:(id)a5 responseData:(id)a6 completionHandler:(id)a7
+- (void)_exchangeDataWithSAPContext:(id)context requestContext:(id)requestContext setupURL:(id)l responseData:(id)data completionHandler:(id)handler
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  contextCopy = context;
+  requestContextCopy = requestContext;
+  lCopy = l;
+  handlerCopy = handler;
   v36 = -1;
   sapSession = self->_sapSession;
-  v17 = a6;
+  dataCopy = data;
   v34 = 0;
   v35 = 0;
-  LODWORD(sapSession) = [v12 exchangeWithSAPVersion:-[ICSAPSession sapVersion](sapSession data:"sapVersion") returningData:v17 exchangeStatus:&v35 error:{&v36, &v34}];
+  LODWORD(sapSession) = [contextCopy exchangeWithSAPVersion:-[ICSAPSession sapVersion](sapSession data:"sapVersion") returningData:dataCopy exchangeStatus:&v35 error:{&v36, &v34}];
 
   v18 = v35;
   v19 = v34;
   if (!sapSession)
   {
-    v15[2](v15, v19);
+    handlerCopy[2](handlerCopy, v19);
 LABEL_10:
     v22 = v19;
     goto LABEL_13;
@@ -97,12 +97,12 @@ LABEL_10:
     if (v36)
     {
       v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
-      v15[2](v15, v23);
+      handlerCopy[2](handlerCopy, v23);
     }
 
     else
     {
-      v15[2](v15, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     goto LABEL_10;
@@ -117,17 +117,17 @@ LABEL_10:
 
   if (v22)
   {
-    v15[2](v15, v22);
+    handlerCopy[2](handlerCopy, v22);
   }
 
   else
   {
-    v24 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:v14];
+    v24 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:lCopy];
     [v24 setHTTPMethod:@"POST"];
     [v24 setHTTPBody:v21];
     v26 = +[ICURLSessionManager unlimitedHighPrioritySession];
     v27 = v21;
-    v25 = [[ICStoreURLRequest alloc] initWithURLRequest:v24 requestContext:v13];
+    v25 = [[ICStoreURLRequest alloc] initWithURLRequest:v24 requestContext:requestContextCopy];
     [(ICStoreURLRequest *)v25 setShouldUseMescalSigning:0];
     [(ICURLRequest *)v25 setPrioritize:1];
     v28[0] = MEMORY[0x1E69E9820];
@@ -135,10 +135,10 @@ LABEL_10:
     v28[2] = __130__ICSAPSessionPrepareFairPlayContextOperation__exchangeDataWithSAPContext_requestContext_setupURL_responseData_completionHandler___block_invoke;
     v28[3] = &unk_1E7BF71A0;
     v28[4] = self;
-    v29 = v12;
-    v30 = v13;
-    v31 = v14;
-    v32 = v15;
+    v29 = contextCopy;
+    v30 = requestContextCopy;
+    v31 = lCopy;
+    v32 = handlerCopy;
     [v26 enqueueUploadRequest:v25 withCompletionHandler:v28];
 
     v21 = v27;

@@ -1,20 +1,20 @@
 @interface RefreshStoreQueueDownloadOperation
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4;
-- (RefreshStoreQueueDownloadOperation)initWithDownloadIdentifier:(int64_t)a3;
-- (id)_URLBagKeyForDownload:(id)a3;
+- (BOOL)_refreshDownload:(id)download error:(id *)error;
+- (RefreshStoreQueueDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier;
+- (id)_URLBagKeyForDownload:(id)download;
 - (void)run;
 @end
 
 @implementation RefreshStoreQueueDownloadOperation
 
-- (RefreshStoreQueueDownloadOperation)initWithDownloadIdentifier:(int64_t)a3
+- (RefreshStoreQueueDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = RefreshStoreQueueDownloadOperation;
   result = [(RefreshStoreQueueDownloadOperation *)&v5 init];
   if (result)
   {
-    result->_downloadID = a3;
+    result->_downloadID = identifier;
   }
 
   return result;
@@ -43,16 +43,16 @@
   _Block_object_dispose(&v6, 8);
 }
 
-- (BOOL)_refreshDownload:(id)a3 error:(id *)a4
+- (BOOL)_refreshDownload:(id)download error:(id *)error
 {
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
   v58 = 0;
   v54 = 0;
-  v7 = [a3 valueForProperty:@"store_account_id"];
-  v8 = [(RefreshStoreQueueDownloadOperation *)self _URLBagKeyForDownload:a3];
-  v9 = [a3 valueForProperty:@"store_transaction_id"];
+  v7 = [download valueForProperty:@"store_account_id"];
+  v8 = [(RefreshStoreQueueDownloadOperation *)self _URLBagKeyForDownload:download];
+  v9 = [download valueForProperty:@"store_transaction_id"];
   v10 = v9;
   if (v7)
   {
@@ -79,20 +79,20 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
-    v17 = [v15 shouldLogToDisk];
-    v18 = [v15 OSLogObject];
-    if (v17)
+    shouldLog = [v15 shouldLog];
+    shouldLogToDisk = [v15 shouldLogToDisk];
+    oSLogObject = [v15 OSLogObject];
+    if (shouldLogToDisk)
     {
-      v16 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v16 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v16)
+    if (shouldLog)
     {
       v19 = objc_opt_class();
       downloadID = self->_downloadID;
@@ -119,10 +119,10 @@
     *(v56 + 24) = v24;
     if (v24)
     {
-      v25 = [(LoadDownloadQueueOperation *)v14 downloads];
-      if ([(NSOrderedSet *)v25 count]== 1)
+      downloads = [(LoadDownloadQueueOperation *)v14 downloads];
+      if ([(NSOrderedSet *)downloads count]== 1)
       {
-        v26 = [[Download alloc] initWithStoreDownload:[(NSOrderedSet *)v25 objectAtIndex:0]];
+        v26 = [[Download alloc] initWithStoreDownload:[(NSOrderedSet *)downloads objectAtIndex:0]];
         if (v26)
         {
           v27 = +[SSLogConfig sharedDaemonConfig];
@@ -131,24 +131,24 @@
             v27 = +[SSLogConfig sharedConfig];
           }
 
-          v28 = [v27 shouldLog];
-          v29 = [v27 shouldLogToDisk];
-          v30 = [v27 OSLogObject];
-          if (v29)
+          shouldLog2 = [v27 shouldLog];
+          shouldLogToDisk2 = [v27 shouldLogToDisk];
+          oSLogObject2 = [v27 OSLogObject];
+          if (shouldLogToDisk2)
           {
-            v28 |= 2u;
+            shouldLog2 |= 2u;
           }
 
-          if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
           {
-            v28 &= 2u;
+            shouldLog2 &= 2u;
           }
 
-          if (v28)
+          if (shouldLog2)
           {
             v52 = objc_opt_class();
             v51 = self->_downloadID;
-            v31 = [a3 valueForProperty:@"store_download_key"];
+            v31 = [download valueForProperty:@"store_download_key"];
             v32 = [(Download *)v26 valueForProperty:@"store_download_key"];
             v59 = 138413058;
             v60 = v52;
@@ -190,23 +190,23 @@
           v36 = +[SSLogConfig sharedConfig];
         }
 
-        v37 = [v36 shouldLog];
-        v38 = [v36 shouldLogToDisk];
-        v39 = [v36 OSLogObject];
-        if (v38)
+        shouldLog3 = [v36 shouldLog];
+        shouldLogToDisk3 = [v36 shouldLogToDisk];
+        oSLogObject3 = [v36 OSLogObject];
+        if (shouldLogToDisk3)
         {
-          v37 |= 2u;
+          shouldLog3 |= 2u;
         }
 
-        if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v37 &= 2u;
+          shouldLog3 &= 2u;
         }
 
-        if (v37)
+        if (shouldLog3)
         {
           v40 = objc_opt_class();
-          v41 = [(NSOrderedSet *)v25 count];
+          v41 = [(NSOrderedSet *)downloads count];
           v42 = self->_downloadID;
           v59 = 138412802;
           v60 = v40;
@@ -232,9 +232,9 @@
 
   v45 = v56;
   v46 = *(v56 + 24);
-  if (a4 && (v56[3] & 1) == 0)
+  if (error && (v56[3] & 1) == 0)
   {
-    *a4 = v54;
+    *error = v54;
     v46 = *(v45 + 24);
   }
 
@@ -242,13 +242,13 @@
   return v46 & 1;
 }
 
-- (id)_URLBagKeyForDownload:(id)a3
+- (id)_URLBagKeyForDownload:(id)download
 {
   v4 = objc_alloc_init(StoreDownloadQueueRequest);
-  -[StoreDownloadQueueRequest setQueueIdentifier:](v4, "setQueueIdentifier:", sub_10012E754([a3 valueForProperty:@"kind"]));
-  v5 = [(StoreDownloadQueueRequest *)v4 queueContentsURLBagKey];
+  -[StoreDownloadQueueRequest setQueueIdentifier:](v4, "setQueueIdentifier:", sub_10012E754([download valueForProperty:@"kind"]));
+  queueContentsURLBagKey = [(StoreDownloadQueueRequest *)v4 queueContentsURLBagKey];
 
-  return v5;
+  return queueContentsURLBagKey;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface MBPlaceholderEntitlementsManifest
-- (BOOL)writeToFile:(id)a3 error:(id *)a4;
+- (BOOL)writeToFile:(id)file error:(id *)error;
 - (MBPlaceholderEntitlementsManifest)init;
-- (MBPlaceholderEntitlementsManifest)initWithFile:(id)a3 error:(id *)a4;
+- (MBPlaceholderEntitlementsManifest)initWithFile:(id)file error:(id *)error;
 - (id)propertyList;
-- (void)addEntriesForApp:(id)a3;
-- (void)addEntriesForApps:(id)a3;
+- (void)addEntriesForApp:(id)app;
+- (void)addEntriesForApps:(id)apps;
 - (void)dealloc;
 @end
 
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (MBPlaceholderEntitlementsManifest)initWithFile:(id)a3 error:(id *)a4
+- (MBPlaceholderEntitlementsManifest)initWithFile:(id)file error:(id *)error
 {
-  v6 = [NSData dataWithContentsOfFile:a3 options:0 error:a4];
+  v6 = [NSData dataWithContentsOfFile:file options:0 error:error];
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [NSPropertyListSerialization propertyListWithData:v6 options:0 format:0 error:a4];
+  v7 = [NSPropertyListSerialization propertyListWithData:v6 options:0 format:0 error:error];
   if (!v7)
   {
     return 0;
@@ -83,20 +83,20 @@
   [(MBPlaceholderEntitlementsManifest *)&v3 dealloc];
 }
 
-- (void)addEntriesForApp:(id)a3
+- (void)addEntriesForApp:(id)app
 {
-  if (([a3 isSystemApp] & 1) == 0)
+  if (([app isSystemApp] & 1) == 0)
   {
-    v5 = [objc_msgSend(a3 "bundleDir")];
-    v6 = [v5 stringByDeletingLastPathComponent];
-    v7 = -[MBPlaceholderEntitlements initWithBundleID:relativePath:entitlements:]([MBPlaceholderEntitlements alloc], "initWithBundleID:relativePath:entitlements:", [a3 bundleID], objc_msgSend(objc_msgSend(v5, "substringFromIndex:", objc_msgSend(v6, "length") + 1), "stringByAppendingPathComponent:", @"PlaceholderEntitlements.plist"), objc_msgSend(a3, "entitlements"));
+    v5 = [objc_msgSend(app "bundleDir")];
+    stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
+    v7 = -[MBPlaceholderEntitlements initWithBundleID:relativePath:entitlements:]([MBPlaceholderEntitlements alloc], "initWithBundleID:relativePath:entitlements:", [app bundleID], objc_msgSend(objc_msgSend(v5, "substringFromIndex:", objc_msgSend(stringByDeletingLastPathComponent, "length") + 1), "stringByAppendingPathComponent:", @"PlaceholderEntitlements.plist"), objc_msgSend(app, "entitlements"));
     [(NSMutableArray *)self->_entries addObject:v7];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    obj = [a3 plugins];
+    obj = [app plugins];
     v8 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -112,7 +112,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v12 = -[MBPlaceholderEntitlements initWithBundleID:relativePath:entitlements:]([MBPlaceholderEntitlements alloc], "initWithBundleID:relativePath:entitlements:", [a3 bundleID], objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(*(*(&v14 + 1) + 8 * v11), "bundleDir"), "stringByStandardizingPath"), "substringFromIndex:", objc_msgSend(v6, "length") + 1), "stringByAppendingPathComponent:", @"PlaceholderEntitlements.plist"), objc_msgSend(*(*(&v14 + 1) + 8 * v11), "entitlements"));
+          v12 = -[MBPlaceholderEntitlements initWithBundleID:relativePath:entitlements:]([MBPlaceholderEntitlements alloc], "initWithBundleID:relativePath:entitlements:", [app bundleID], objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(*(*(&v14 + 1) + 8 * v11), "bundleDir"), "stringByStandardizingPath"), "substringFromIndex:", objc_msgSend(stringByDeletingLastPathComponent, "length") + 1), "stringByAppendingPathComponent:", @"PlaceholderEntitlements.plist"), objc_msgSend(*(*(&v14 + 1) + 8 * v11), "entitlements"));
           [(NSMutableArray *)self->_entries addObject:v12];
 
           v11 = v11 + 1;
@@ -127,13 +127,13 @@
   }
 }
 
-- (void)addEntriesForApps:(id)a3
+- (void)addEntriesForApps:(id)apps
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [apps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -145,7 +145,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(apps);
         }
 
         [(MBPlaceholderEntitlementsManifest *)self addEntriesForApp:*(*(&v9 + 1) + 8 * v8)];
@@ -153,7 +153,7 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [apps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -197,13 +197,13 @@
   return v3;
 }
 
-- (BOOL)writeToFile:(id)a3 error:(id *)a4
+- (BOOL)writeToFile:(id)file error:(id *)error
 {
-  v6 = [NSPropertyListSerialization dataWithPropertyList:[(MBPlaceholderEntitlementsManifest *)self propertyList] format:200 options:0 error:a4];
+  v6 = [NSPropertyListSerialization dataWithPropertyList:[(MBPlaceholderEntitlementsManifest *)self propertyList] format:200 options:0 error:error];
   if (v6)
   {
 
-    LOBYTE(v6) = [(NSData *)v6 writeToFile:a3 options:1 error:a4];
+    LOBYTE(v6) = [(NSData *)v6 writeToFile:file options:1 error:error];
   }
 
   return v6;

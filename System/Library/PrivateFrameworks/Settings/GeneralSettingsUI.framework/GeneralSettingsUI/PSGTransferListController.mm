@@ -1,7 +1,7 @@
 @interface PSGTransferListController
 - (id)specifiers;
-- (void)beginPrebuddy:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)beginPrebuddy:(id)prebuddy;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -23,11 +23,11 @@
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"PreBuddyText" target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v6 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v8 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
 
     v9 = objc_alloc_init(MEMORY[0x277CB8F48]);
-    v10 = [v9 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v9 aa_primaryAppleAccount];
     v11 = PSUsedByManagedAccount();
     v12 = MEMORY[0x277D3FAD8];
     v13 = PSG_LocalizedStringForReset(@"GET_STARTED");
@@ -36,7 +36,7 @@
     [v14 setProperty:@"prebuddyBegin" forKey:*MEMORY[0x277D3FFB8]];
     [v14 setObject:&unk_282E8FEF0 forKeyedSubscript:*MEMORY[0x277D3FD78]];
     [v14 setButtonAction:sel_beginPrebuddy_];
-    v15 = v8 == 2 && v10 == 0;
+    v15 = v8 == 2 && aa_primaryAppleAccount == 0;
     if (v15 || v11)
     {
       [v14 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
@@ -53,15 +53,15 @@
   return v4;
 }
 
-- (void)beginPrebuddy:(id)a3
+- (void)beginPrebuddy:(id)prebuddy
 {
-  v4 = [MEMORY[0x277D28A50] sharedManager];
+  mEMORY[0x277D28A50] = [MEMORY[0x277D28A50] sharedManager];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__PSGTransferListController_beginPrebuddy___block_invoke;
   v5[3] = &unk_278325418;
   v5[4] = self;
-  [v4 followupAction:v5];
+  [mEMORY[0x277D28A50] followupAction:v5];
 }
 
 void __43__PSGTransferListController_beginPrebuddy___block_invoke(uint64_t a1, void *a2)
@@ -148,32 +148,32 @@ void __43__PSGTransferListController_beginPrebuddy___block_invoke_2(uint64_t a1,
   [v9 setPrebuddyActionHandler:0];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSGTransferListController *)self viewIfLoaded];
-  v9 = [v8 window];
+  lCopy = l;
+  completionCopy = completion;
+  viewIfLoaded = [(PSGTransferListController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v9)
+  if (window)
   {
-    v10 = [v6 objectForKeyedSubscript:@"path"];
+    v10 = [lCopy objectForKeyedSubscript:@"path"];
     if ([v10 length])
     {
       if (([v10 isEqualToString:@"exitBuddy"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"exitBuddyUpSellTradeIn"))
       {
-        -[PSGTransferListController presentExitBuddyWithUpsellTradeIn:withCompletion:](self, "presentExitBuddyWithUpsellTradeIn:withCompletion:", [v10 isEqualToString:@"exitBuddyUpSellTradeIn"], v7);
+        -[PSGTransferListController presentExitBuddyWithUpsellTradeIn:withCompletion:](self, "presentExitBuddyWithUpsellTradeIn:withCompletion:", [v10 isEqualToString:@"exitBuddyUpSellTradeIn"], completionCopy);
       }
 
       else
       {
-        [(PSGTransferListController *)&v12 handleURL:v6 withCompletion:v7, v11.receiver, v11.super_class, self, PSGTransferListController];
+        [(PSGTransferListController *)&v12 handleURL:lCopy withCompletion:completionCopy, v11.receiver, v11.super_class, self, PSGTransferListController];
       }
     }
 
     else
     {
-      [(PSGTransferListController *)&v11 handleURL:v6 withCompletion:v7, self, PSGTransferListController, v12.receiver, v12.super_class];
+      [(PSGTransferListController *)&v11 handleURL:lCopy withCompletion:completionCopy, self, PSGTransferListController, v12.receiver, v12.super_class];
     }
   }
 
@@ -181,7 +181,7 @@ void __43__PSGTransferListController_beginPrebuddy___block_invoke_2(uint64_t a1,
   {
     v13.receiver = self;
     v13.super_class = PSGTransferListController;
-    [(PSGTransferListController *)&v13 handleURL:v6 withCompletion:v7];
+    [(PSGTransferListController *)&v13 handleURL:lCopy withCompletion:completionCopy];
   }
 }
 

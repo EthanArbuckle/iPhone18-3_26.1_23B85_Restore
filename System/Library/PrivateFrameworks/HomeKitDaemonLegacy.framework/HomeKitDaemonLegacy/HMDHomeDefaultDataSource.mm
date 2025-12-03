@@ -1,15 +1,15 @@
 @interface HMDHomeDefaultDataSource
 - (HMDDeviceLockStateDataSource)deviceLockStateDataSource;
 - (HMDHomeDefaultDataSource)init;
-- (id)makeCurrentUserWithUserPrivilege:(unint64_t)a3 home:(id)a4;
-- (id)makeHomeMetricsDispatcherWithIdentifier:(id)a3 logEventSubmitter:(id)a4;
+- (id)makeCurrentUserWithUserPrivilege:(unint64_t)privilege home:(id)home;
+- (id)makeHomeMetricsDispatcherWithIdentifier:(id)identifier logEventSubmitter:(id)submitter;
 - (id)makeHomePresenceMonitor;
-- (id)makeNaturalLightingCurveWriterWithHome:(id)a3;
+- (id)makeNaturalLightingCurveWriterWithHome:(id)home;
 - (id)makeNotificationRegistry;
 - (id)makeReportingSessionManager;
-- (id)makeResidentDeviceManagerWithHomeUUID:(id)a3;
-- (id)makeSiriSecureAccessoryAccessControllerWithDataSource:(id)a3;
-- (id)makeSwiftExtensionsWithHome:(id)a3;
+- (id)makeResidentDeviceManagerWithHomeUUID:(id)d;
+- (id)makeSiriSecureAccessoryAccessControllerWithDataSource:(id)source;
+- (id)makeSwiftExtensionsWithHome:(id)home;
 @end
 
 @implementation HMDHomeDefaultDataSource
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (id)makeSwiftExtensionsWithHome:(id)a3
+- (id)makeSwiftExtensionsWithHome:(id)home
 {
   v4 = objc_allocWithZone(_s22DefaultSwiftExtensionsCMa());
-  v5 = a3;
-  v6 = sub_253208B60(v5);
+  homeCopy = home;
+  v6 = sub_253208B60(homeCopy);
 
   return v6;
 }
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (id)makeResidentDeviceManagerWithHomeUUID:(id)a3
+- (id)makeResidentDeviceManagerWithHomeUUID:(id)d
 {
   v3 = sub_253CCFF58();
   v4 = *(v3 - 8);
@@ -54,21 +54,21 @@
   sub_253CCFF38();
   v8 = objc_opt_self();
   v9 = sub_253CCFF18();
-  v10 = [v8 createManagerForHomeUUID_];
+  createManagerForHomeUUID_ = [v8 createManagerForHomeUUID_];
 
   (*(v4 + 8))(v7, v3);
 
-  return v10;
+  return createManagerForHomeUUID_;
 }
 
-- (id)makeCurrentUserWithUserPrivilege:(unint64_t)a3 home:(id)a4
+- (id)makeCurrentUserWithUserPrivilege:(unint64_t)privilege home:(id)home
 {
-  v4 = [objc_opt_self() currentUserWithPrivilege:a3 forHome:a4];
+  v4 = [objc_opt_self() currentUserWithPrivilege:privilege forHome:home];
 
   return v4;
 }
 
-- (id)makeHomeMetricsDispatcherWithIdentifier:(id)a3 logEventSubmitter:(id)a4
+- (id)makeHomeMetricsDispatcherWithIdentifier:(id)identifier logEventSubmitter:(id)submitter
 {
   v5 = sub_253CCFF58();
   v6 = *(v5 - 8);
@@ -79,7 +79,7 @@
   v10 = objc_allocWithZone(HMDHomeMetricsDispatcher);
   swift_unknownObjectRetain();
   v11 = sub_253CCFF18();
-  v12 = [v10 initWithIdentifier:v11 logEventSubmitter:a4];
+  v12 = [v10 initWithIdentifier:v11 logEventSubmitter:submitter];
   swift_unknownObjectRelease();
 
   (*(v6 + 8))(v9, v5);
@@ -94,18 +94,18 @@
   return v2;
 }
 
-- (id)makeSiriSecureAccessoryAccessControllerWithDataSource:(id)a3
+- (id)makeSiriSecureAccessoryAccessControllerWithDataSource:(id)source
 {
-  v3 = [objc_allocWithZone(HMDSiriSecureAccessoryAccessController) initWithDataSource_];
+  initWithDataSource_ = [objc_allocWithZone(HMDSiriSecureAccessoryAccessController) initWithDataSource_];
 
-  return v3;
+  return initWithDataSource_;
 }
 
-- (id)makeNaturalLightingCurveWriterWithHome:(id)a3
+- (id)makeNaturalLightingCurveWriterWithHome:(id)home
 {
-  v3 = [objc_allocWithZone(HMDHomeNaturalLightingCurveWriter) initWithHome_];
+  initWithHome_ = [objc_allocWithZone(HMDHomeNaturalLightingCurveWriter) initWithHome_];
 
-  return v3;
+  return initWithHome_;
 }
 
 - (id)makeHomePresenceMonitor

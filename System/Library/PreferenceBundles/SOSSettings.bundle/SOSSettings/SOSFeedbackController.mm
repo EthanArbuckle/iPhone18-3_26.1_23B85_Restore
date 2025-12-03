@@ -1,14 +1,14 @@
 @interface SOSFeedbackController
 - (_TtC11SOSSettings21SOSFeedbackController)init;
-- (_TtC11SOSSettings21SOSFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4;
+- (_TtC11SOSSettings21SOSFeedbackController)initWithDelegate:(id)delegate legalText:(id)text;
 - (id)getFeedbackViewController;
 @end
 
 @implementation SOSFeedbackController
 
-- (_TtC11SOSSettings21SOSFeedbackController)initWithDelegate:(id)a3 legalText:(id)a4
+- (_TtC11SOSSettings21SOSFeedbackController)initWithDelegate:(id)delegate legalText:(id)text
 {
-  if (a4)
+  if (text)
   {
     v4 = sub_146D4();
     v6 = v5;
@@ -29,7 +29,7 @@
 - (id)getFeedbackViewController
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC11SOSSettings21SOSFeedbackController_feedbackViewController) + 184);
-  v3 = self;
+  selfCopy = self;
 
   v5 = v2(v4);
 

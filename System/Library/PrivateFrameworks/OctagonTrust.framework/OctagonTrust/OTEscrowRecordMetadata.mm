@@ -1,29 +1,29 @@
 @interface OTEscrowRecordMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSecureBackupUsesMultipleIcscs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSecureBackupUsesMultipleIcscs:(BOOL)icscs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTEscrowRecordMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v9 = fromCopy;
+  if (fromCopy[3])
   {
     [(OTEscrowRecordMetadata *)self setBackupKeybagDigest:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   clientMetadata = self->_clientMetadata;
-  v6 = v4[7];
+  v6 = fromCopy[7];
   if (clientMetadata)
   {
     if (!v6)
@@ -44,58 +44,58 @@
     [(OTEscrowRecordMetadata *)self setClientMetadata:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_9:
-  if ((v4[12] & 2) != 0)
+  if ((fromCopy[12] & 2) != 0)
   {
-    self->_secureBackupUsesMultipleIcscs = v4[2];
+    self->_secureBackupUsesMultipleIcscs = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(OTEscrowRecordMetadata *)self setBottleId:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[12])
+  if (fromCopy[12])
   {
-    self->_secureBackupTimestamp = v4[1];
+    self->_secureBackupTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(OTEscrowRecordMetadata *)self setEscrowedSpki:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
     [(OTEscrowRecordMetadata *)self setPeerInfo:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(OTEscrowRecordMetadata *)self setBottleValidity:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[11])
+  if (fromCopy[11])
   {
     [(OTEscrowRecordMetadata *)self setSerial:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(OTEscrowRecordMetadata *)self setBuild:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   passcodeGeneration = self->_passcodeGeneration;
-  v8 = v4[9];
+  v8 = fromCopy[9];
   if (passcodeGeneration)
   {
     if (v8)
@@ -146,16 +146,16 @@ LABEL_9:
   return v10 ^ v13 ^ [(OTEscrowRecordMetadataPasscodeGeneration *)self->_passcodeGeneration hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   backupKeybagDigest = self->_backupKeybagDigest;
-  if (backupKeybagDigest | *(v4 + 3))
+  if (backupKeybagDigest | *(equalCopy + 3))
   {
     if (![(NSData *)backupKeybagDigest isEqual:?])
     {
@@ -164,7 +164,7 @@ LABEL_9:
   }
 
   clientMetadata = self->_clientMetadata;
-  if (clientMetadata | *(v4 + 7))
+  if (clientMetadata | *(equalCopy + 7))
   {
     if (![(OTEscrowRecordMetadataClientMetadata *)clientMetadata isEqual:?])
     {
@@ -173,22 +173,22 @@ LABEL_9:
   }
 
   has = self->_has;
-  v8 = *(v4 + 96);
+  v8 = *(equalCopy + 96);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_secureBackupUsesMultipleIcscs != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_secureBackupUsesMultipleIcscs != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   bottleId = self->_bottleId;
-  if (bottleId | *(v4 + 4))
+  if (bottleId | *(equalCopy + 4))
   {
     if (![(NSString *)bottleId isEqual:?])
     {
@@ -198,12 +198,12 @@ LABEL_31:
     }
 
     has = self->_has;
-    v8 = *(v4 + 96);
+    v8 = *(equalCopy + 96);
   }
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_secureBackupTimestamp != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_secureBackupTimestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
@@ -215,13 +215,13 @@ LABEL_31:
   }
 
   escrowedSpki = self->_escrowedSpki;
-  if (escrowedSpki | *(v4 + 8) && ![(NSData *)escrowedSpki isEqual:?])
+  if (escrowedSpki | *(equalCopy + 8) && ![(NSData *)escrowedSpki isEqual:?])
   {
     goto LABEL_31;
   }
 
   peerInfo = self->_peerInfo;
-  if (peerInfo | *(v4 + 10))
+  if (peerInfo | *(equalCopy + 10))
   {
     if (![(NSData *)peerInfo isEqual:?])
     {
@@ -230,7 +230,7 @@ LABEL_31:
   }
 
   bottleValidity = self->_bottleValidity;
-  if (bottleValidity | *(v4 + 5))
+  if (bottleValidity | *(equalCopy + 5))
   {
     if (![(NSString *)bottleValidity isEqual:?])
     {
@@ -239,7 +239,7 @@ LABEL_31:
   }
 
   serial = self->_serial;
-  if (serial | *(v4 + 11))
+  if (serial | *(equalCopy + 11))
   {
     if (![(NSString *)serial isEqual:?])
     {
@@ -248,7 +248,7 @@ LABEL_31:
   }
 
   build = self->_build;
-  if (build | *(v4 + 6))
+  if (build | *(equalCopy + 6))
   {
     if (![(NSString *)build isEqual:?])
     {
@@ -257,7 +257,7 @@ LABEL_31:
   }
 
   passcodeGeneration = self->_passcodeGeneration;
-  if (passcodeGeneration | *(v4 + 9))
+  if (passcodeGeneration | *(equalCopy + 9))
   {
     v16 = [(OTEscrowRecordMetadataPasscodeGeneration *)passcodeGeneration isEqual:?];
   }
@@ -272,14 +272,14 @@ LABEL_32:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_backupKeybagDigest copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_backupKeybagDigest copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(OTEscrowRecordMetadataClientMetadata *)self->_clientMetadata copyWithZone:a3];
+  v8 = [(OTEscrowRecordMetadataClientMetadata *)self->_clientMetadata copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
@@ -289,7 +289,7 @@ LABEL_32:
     *(v5 + 96) |= 2u;
   }
 
-  v10 = [(NSString *)self->_bottleId copyWithZone:a3];
+  v10 = [(NSString *)self->_bottleId copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -299,192 +299,192 @@ LABEL_32:
     *(v5 + 96) |= 1u;
   }
 
-  v12 = [(NSData *)self->_escrowedSpki copyWithZone:a3];
+  v12 = [(NSData *)self->_escrowedSpki copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSData *)self->_peerInfo copyWithZone:a3];
+  v14 = [(NSData *)self->_peerInfo copyWithZone:zone];
   v15 = *(v5 + 80);
   *(v5 + 80) = v14;
 
-  v16 = [(NSString *)self->_bottleValidity copyWithZone:a3];
+  v16 = [(NSString *)self->_bottleValidity copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
-  v18 = [(NSString *)self->_serial copyWithZone:a3];
+  v18 = [(NSString *)self->_serial copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
-  v20 = [(NSString *)self->_build copyWithZone:a3];
+  v20 = [(NSString *)self->_build copyWithZone:zone];
   v21 = *(v5 + 48);
   *(v5 + 48) = v20;
 
-  v22 = [(OTEscrowRecordMetadataPasscodeGeneration *)self->_passcodeGeneration copyWithZone:a3];
+  v22 = [(OTEscrowRecordMetadataPasscodeGeneration *)self->_passcodeGeneration copyWithZone:zone];
   v23 = *(v5 + 72);
   *(v5 + 72) = v22;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_backupKeybagDigest)
   {
-    [v4 setBackupKeybagDigest:?];
-    v4 = v5;
+    [toCopy setBackupKeybagDigest:?];
+    toCopy = v5;
   }
 
   if (self->_clientMetadata)
   {
     [v5 setClientMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_secureBackupUsesMultipleIcscs;
-    *(v4 + 96) |= 2u;
+    *(toCopy + 2) = self->_secureBackupUsesMultipleIcscs;
+    *(toCopy + 96) |= 2u;
   }
 
   if (self->_bottleId)
   {
     [v5 setBottleId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_secureBackupTimestamp;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = self->_secureBackupTimestamp;
+    *(toCopy + 96) |= 1u;
   }
 
   if (self->_escrowedSpki)
   {
     [v5 setEscrowedSpki:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_peerInfo)
   {
     [v5 setPeerInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bottleValidity)
   {
     [v5 setBottleValidity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serial)
   {
     [v5 setSerial:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_build)
   {
     [v5 setBuild:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_passcodeGeneration)
   {
     [v5 setPasscodeGeneration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_backupKeybagDigest)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_clientMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     secureBackupUsesMultipleIcscs = self->_secureBackupUsesMultipleIcscs;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_bottleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     secureBackupTimestamp = self->_secureBackupTimestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_escrowedSpki)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_peerInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_bottleValidity)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_serial)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_build)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_passcodeGeneration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   backupKeybagDigest = self->_backupKeybagDigest;
   if (backupKeybagDigest)
   {
-    [v3 setObject:backupKeybagDigest forKey:@"backup_keybag_digest"];
+    [dictionary setObject:backupKeybagDigest forKey:@"backup_keybag_digest"];
   }
 
   clientMetadata = self->_clientMetadata;
   if (clientMetadata)
   {
-    v7 = [(OTEscrowRecordMetadataClientMetadata *)clientMetadata dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"client_metadata"];
+    dictionaryRepresentation = [(OTEscrowRecordMetadataClientMetadata *)clientMetadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"client_metadata"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -538,8 +538,8 @@ LABEL_32:
   passcodeGeneration = self->_passcodeGeneration;
   if (passcodeGeneration)
   {
-    v17 = [(OTEscrowRecordMetadataPasscodeGeneration *)passcodeGeneration dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"passcodeGeneration"];
+    dictionaryRepresentation2 = [(OTEscrowRecordMetadataPasscodeGeneration *)passcodeGeneration dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"passcodeGeneration"];
   }
 
   return v4;
@@ -551,15 +551,15 @@ LABEL_32:
   v8.receiver = self;
   v8.super_class = OTEscrowRecordMetadata;
   v4 = [(OTEscrowRecordMetadata *)&v8 description];
-  v5 = [(OTEscrowRecordMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTEscrowRecordMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSecureBackupUsesMultipleIcscs:(BOOL)a3
+- (void)setHasSecureBackupUsesMultipleIcscs:(BOOL)icscs
 {
-  if (a3)
+  if (icscs)
   {
     v3 = 2;
   }

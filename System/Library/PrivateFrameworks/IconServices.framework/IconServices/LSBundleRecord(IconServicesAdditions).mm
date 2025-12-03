@@ -10,15 +10,15 @@
 - (id)_IS_iconProvidingLineageForRecord:()IconServicesAdditions
 {
   v4 = a3;
-  v5 = [a1 importedTypeRecords];
-  v6 = [a1 exportedTypeRecords];
+  importedTypeRecords = [self importedTypeRecords];
+  exportedTypeRecords = [self exportedTypeRecords];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __75__LSBundleRecord_IconServicesAdditions___IS_iconProvidingLineageForRecord___block_invoke_2;
   v25[3] = &unk_1E77C65C8;
-  v7 = v6;
+  v7 = exportedTypeRecords;
   v26 = v7;
-  v8 = v5;
+  v8 = importedTypeRecords;
   v27 = v8;
   v9 = MEMORY[0x1AC55B6D0](v25);
   v10 = objc_opt_new();
@@ -72,8 +72,8 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v33 = a1;
-  obj = [a1 claimRecords];
+  selfCopy = self;
+  obj = [self claimRecords];
   v36 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v36)
   {
@@ -94,8 +94,8 @@
         v41 = 0u;
         v42 = 0u;
         v38 = v9;
-        v10 = [v9 typeIdentifiers];
-        v11 = [v10 countByEnumeratingWithState:&v39 objects:v49 count:16];
+        typeIdentifiers = [v9 typeIdentifiers];
+        v11 = [typeIdentifiers countByEnumeratingWithState:&v39 objects:v49 count:16];
         if (v11)
         {
           v12 = v11;
@@ -106,12 +106,12 @@ LABEL_8:
           {
             if (*v40 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(typeIdentifiers);
             }
 
             v15 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:*(*(&v39 + 1) + 8 * v14)];
-            v16 = [v15 _ICP_filenameExtensions];
-            v17 = [v16 containsObject:v6];
+            _ICP_filenameExtensions = [v15 _ICP_filenameExtensions];
+            v17 = [_ICP_filenameExtensions containsObject:v6];
 
             if (v17)
             {
@@ -120,7 +120,7 @@ LABEL_8:
 
             if (v12 == ++v14)
             {
-              v12 = [v10 countByEnumeratingWithState:&v39 objects:v49 count:16];
+              v12 = [typeIdentifiers countByEnumeratingWithState:&v39 objects:v49 count:16];
               if (v12)
               {
                 goto LABEL_8;
@@ -165,43 +165,43 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v18 iconDictionary];
-    v20 = [v19 _IF_stringForKey:0x1F1A4DBE0];
+    iconDictionary = [v18 iconDictionary];
+    v20 = [iconDictionary _IF_stringForKey:0x1F1A4DBE0];
     if (v20)
     {
-      v21 = [v19 mutableCopy];
+      v21 = [iconDictionary mutableCopy];
       [v21 removeObjectForKey:0x1F1A4DBE0];
       [v21 setObject:v20 forKey:0x1F1A4F320];
       v22 = [v21 copy];
 
-      v19 = v22;
+      iconDictionary = v22;
     }
 
-    if (![v19 count] && objc_msgSend(v15, "isDeclared"))
+    if (![iconDictionary count] && objc_msgSend(v15, "isDeclared"))
     {
-      v23 = [v33 _IS_iconProvidingLineageForRecord:v15];
-      v24 = [v23 lastObject];
-      v25 = v24;
-      if (v24)
+      v23 = [selfCopy _IS_iconProvidingLineageForRecord:v15];
+      lastObject = [v23 lastObject];
+      v25 = lastObject;
+      if (lastObject)
       {
-        v26 = [v24 iconDictionary];
+        iconDictionary2 = [lastObject iconDictionary];
 
-        v19 = v26;
+        iconDictionary = iconDictionary2;
       }
     }
 
-    if (![v19 count])
+    if (![iconDictionary count])
     {
       v27 = v7;
-      v28 = v33;
+      v28 = selfCopy;
       if (objc_opt_respondsToSelector())
       {
-        v29 = [v28 iconDictionary];
+        iconDictionary3 = [v28 iconDictionary];
 
         v47 = 0x1F1A4F340;
         v48 = v6;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-        v19 = [v29 _IF_dictionaryAddingEntriesFromDictionary:v30];
+        iconDictionary = [iconDictionary3 _IF_dictionaryAddingEntriesFromDictionary:v30];
       }
 
       v7 = v27;
@@ -210,49 +210,49 @@ LABEL_22:
 
   else
   {
-    v19 = 0;
+    iconDictionary = 0;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return iconDictionary;
 }
 
 - (id)_IS_iconDictionaryForType:()IconServicesAdditions
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:?];
-  v3 = [a1 _IS_iconProvidingLineageForRecord:v2];
-  v4 = [v3 lastObject];
-  v5 = v4;
-  if (v4)
+  v3 = [self _IS_iconProvidingLineageForRecord:v2];
+  lastObject = [v3 lastObject];
+  v5 = lastObject;
+  if (lastObject)
   {
-    v6 = [v4 iconDictionary];
-    v7 = [v6 _IF_stringForKey:0x1F1A4DBE0];
+    iconDictionary = [lastObject iconDictionary];
+    v7 = [iconDictionary _IF_stringForKey:0x1F1A4DBE0];
     if (v7)
     {
-      v8 = [v6 mutableCopy];
+      v8 = [iconDictionary mutableCopy];
       [v8 removeObjectForKey:0x1F1A4DBE0];
       [v8 setObject:v7 forKey:0x1F1A4F360];
       v9 = [v8 copy];
 
-      v6 = v9;
+      iconDictionary = v9;
     }
   }
 
   else
   {
-    v6 = 0;
+    iconDictionary = 0;
   }
 
-  if (![v6 count])
+  if (![iconDictionary count])
   {
-    v10 = a1;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v10 iconDictionary];
+      iconDictionary2 = [selfCopy iconDictionary];
 
-      v6 = v11;
+      iconDictionary = iconDictionary2;
     }
 
     v12 = [v2 preferredTagOfClass:*MEMORY[0x1E6963710]];
@@ -262,50 +262,50 @@ LABEL_22:
       v18 = 0x1F1A4F340;
       v19[0] = v12;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      v15 = [v6 _IF_dictionaryAddingEntriesFromDictionary:v14];
+      v15 = [iconDictionary _IF_dictionaryAddingEntriesFromDictionary:v14];
 
-      v6 = v15;
+      iconDictionary = v15;
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return iconDictionary;
 }
 
 - (uint64_t)_IS_platformToIFPlatform
 {
-  if ([a1 platform] == 1)
+  if ([self platform] == 1)
   {
     return 1;
   }
 
-  if ([a1 platform] == 2 || objc_msgSend(a1, "platform") == 7)
+  if ([self platform] == 2 || objc_msgSend(self, "platform") == 7)
   {
     return 4;
   }
 
-  if ([a1 platform] == 6)
+  if ([self platform] == 6)
   {
     return 2;
   }
 
-  if ([a1 platform] == 4 || objc_msgSend(a1, "platform") == 9)
+  if ([self platform] == 4 || objc_msgSend(self, "platform") == 9)
   {
     return 8;
   }
 
-  if ([a1 platform] == 11 || objc_msgSend(a1, "platform") == 12)
+  if ([self platform] == 11 || objc_msgSend(self, "platform") == 12)
   {
     return 16;
   }
 
-  if ([a1 platform] == 3)
+  if ([self platform] == 3)
   {
     return 32;
   }
 
-  return 32 * ([a1 platform] == 8);
+  return 32 * ([self platform] == 8);
 }
 
 @end

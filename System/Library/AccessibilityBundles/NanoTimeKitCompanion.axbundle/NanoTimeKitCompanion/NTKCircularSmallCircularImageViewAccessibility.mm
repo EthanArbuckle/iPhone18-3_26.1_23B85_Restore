@@ -7,21 +7,21 @@
 - (id)accessibilityLabel
 {
   v3 = [(NTKCircularSmallCircularImageViewAccessibility *)self safeValueForKey:@"imageView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v5 = v4;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NTKCircularSmallCircularImageViewAccessibility;
-    v5 = [(NTKCircularSmallCircularImageViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel2 = [(NTKCircularSmallCircularImageViewAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel2;
 
   return v6;
 }

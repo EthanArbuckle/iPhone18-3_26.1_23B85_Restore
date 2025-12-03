@@ -4,11 +4,11 @@
 + (id)VideoOnlyVCCapabilities;
 + (id)screenSharingVCCapabilities;
 - (VCCapabilities)init;
-- (VCCapabilities)initWithCoder:(id)a3;
-- (VCCapabilities)initWithEncodedDictionary:(id)a3;
+- (VCCapabilities)initWithCoder:(id)coder;
+- (VCCapabilities)initWithEncodedDictionary:(id)dictionary;
 - (id)newEncodedDictionary;
-- (void)decodeFromNSDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)decodeFromNSDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCCapabilities
@@ -79,60 +79,60 @@
   return result;
 }
 
-- (VCCapabilities)initWithEncodedDictionary:(id)a3
+- (VCCapabilities)initWithEncodedDictionary:(id)dictionary
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = VCCapabilities;
   v4 = [(VCCapabilities *)&v6 init];
-  [(VCCapabilities *)v4 decodeFromNSDictionary:a3];
+  [(VCCapabilities *)v4 decodeFromNSDictionary:dictionary];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeBool:self->isAudioEnabled forKey:@"audioEnabled"];
-  [a3 encodeBool:self->isVideoEnabled forKey:@"videoEnabled"];
-  [a3 encodeBool:self->isVideoSourceScreen forKey:@"videoSourceScreen"];
-  [a3 encodeBool:self->isDuplexAudioOnly forKey:@"duplexAudioOnly"];
-  [a3 encodeBool:self->isDuplexVideoOnly forKey:@"duplexVideoOnly"];
-  [a3 encodeBool:self->isHalfDuplexAudio forKey:@"halfDuplexAudio"];
-  [a3 encodeBool:self->isKeyExchangeEnabled forKey:@"keyExchangeEnabled"];
-  [a3 encodeBool:self->isAudioPausedToStart forKey:@"startAudioPaused"];
-  [a3 encodeBool:self->isVideoPausedToStart forKey:@"startVideoPaused"];
-  [a3 encodeInt:self->preferredAudioCodec forKey:@"preferredAudioCodec"];
-  [a3 encodeInt:self->actualAudioCodec forKey:@"actualAudioCodec"];
-  [a3 encodeInt:self->preferredVideoCodec forKey:@"preferredVideoCodec"];
-  [a3 encodeInt:self->actualVideoCodec forKey:@"actualVideoCodec"];
-  [a3 encodeInt:self->deviceRole forKey:@"deviceRole"];
-  [a3 encodeBool:self->isRelayEnabled forKey:@"relayEnabled"];
-  [a3 encodeBool:self->isRelayForced forKey:@"relayForced"];
-  [a3 encodeBool:self->requiresWifi forKey:@"requiresWifi"];
+  [coder encodeBool:self->isAudioEnabled forKey:@"audioEnabled"];
+  [coder encodeBool:self->isVideoEnabled forKey:@"videoEnabled"];
+  [coder encodeBool:self->isVideoSourceScreen forKey:@"videoSourceScreen"];
+  [coder encodeBool:self->isDuplexAudioOnly forKey:@"duplexAudioOnly"];
+  [coder encodeBool:self->isDuplexVideoOnly forKey:@"duplexVideoOnly"];
+  [coder encodeBool:self->isHalfDuplexAudio forKey:@"halfDuplexAudio"];
+  [coder encodeBool:self->isKeyExchangeEnabled forKey:@"keyExchangeEnabled"];
+  [coder encodeBool:self->isAudioPausedToStart forKey:@"startAudioPaused"];
+  [coder encodeBool:self->isVideoPausedToStart forKey:@"startVideoPaused"];
+  [coder encodeInt:self->preferredAudioCodec forKey:@"preferredAudioCodec"];
+  [coder encodeInt:self->actualAudioCodec forKey:@"actualAudioCodec"];
+  [coder encodeInt:self->preferredVideoCodec forKey:@"preferredVideoCodec"];
+  [coder encodeInt:self->actualVideoCodec forKey:@"actualVideoCodec"];
+  [coder encodeInt:self->deviceRole forKey:@"deviceRole"];
+  [coder encodeBool:self->isRelayEnabled forKey:@"relayEnabled"];
+  [coder encodeBool:self->isRelayForced forKey:@"relayForced"];
+  [coder encodeBool:self->requiresWifi forKey:@"requiresWifi"];
   isDTLSEnabled = self->isDTLSEnabled;
 
-  [a3 encodeBool:isDTLSEnabled forKey:@"DTLSEnabled"];
+  [coder encodeBool:isDTLSEnabled forKey:@"DTLSEnabled"];
 }
 
-- (VCCapabilities)initWithCoder:(id)a3
+- (VCCapabilities)initWithCoder:(id)coder
 {
-  self->isAudioEnabled = [a3 decodeBoolForKey:@"audioEnabled"];
-  self->isVideoEnabled = [a3 decodeBoolForKey:@"videoEnabled"];
-  self->isVideoSourceScreen = [a3 decodeBoolForKey:@"videoSourceScreen"];
-  self->isDuplexAudioOnly = [a3 decodeBoolForKey:@"duplexAudioOnly"];
-  self->isDuplexVideoOnly = [a3 decodeBoolForKey:@"duplexVideoOnly"];
-  self->isHalfDuplexAudio = [a3 decodeBoolForKey:@"halfDuplexAudio"];
-  self->isKeyExchangeEnabled = [a3 decodeBoolForKey:@"keyExchangeEnabled"];
-  self->isAudioPausedToStart = [a3 decodeBoolForKey:@"startAudioPaused"];
-  self->isVideoPausedToStart = [a3 decodeBoolForKey:@"startVideoPaused"];
-  self->preferredAudioCodec = [a3 decodeIntForKey:@"preferredAudioCodec"];
-  self->actualAudioCodec = [a3 decodeIntForKey:@"actualAudioCodec"];
-  self->preferredVideoCodec = [a3 decodeIntForKey:@"preferredVideoCodec"];
-  self->actualVideoCodec = [a3 decodeIntForKey:@"actualVideoCodec"];
-  self->deviceRole = [a3 decodeIntForKey:@"deviceRole"];
-  self->isRelayEnabled = [a3 decodeBoolForKey:@"relayEnabled"];
-  self->isRelayForced = [a3 decodeBoolForKey:@"relayForced"];
-  self->requiresWifi = [a3 decodeBoolForKey:@"requiresWifi"];
-  self->isDTLSEnabled = [a3 decodeBoolForKey:@"DTLSEnabled"];
+  self->isAudioEnabled = [coder decodeBoolForKey:@"audioEnabled"];
+  self->isVideoEnabled = [coder decodeBoolForKey:@"videoEnabled"];
+  self->isVideoSourceScreen = [coder decodeBoolForKey:@"videoSourceScreen"];
+  self->isDuplexAudioOnly = [coder decodeBoolForKey:@"duplexAudioOnly"];
+  self->isDuplexVideoOnly = [coder decodeBoolForKey:@"duplexVideoOnly"];
+  self->isHalfDuplexAudio = [coder decodeBoolForKey:@"halfDuplexAudio"];
+  self->isKeyExchangeEnabled = [coder decodeBoolForKey:@"keyExchangeEnabled"];
+  self->isAudioPausedToStart = [coder decodeBoolForKey:@"startAudioPaused"];
+  self->isVideoPausedToStart = [coder decodeBoolForKey:@"startVideoPaused"];
+  self->preferredAudioCodec = [coder decodeIntForKey:@"preferredAudioCodec"];
+  self->actualAudioCodec = [coder decodeIntForKey:@"actualAudioCodec"];
+  self->preferredVideoCodec = [coder decodeIntForKey:@"preferredVideoCodec"];
+  self->actualVideoCodec = [coder decodeIntForKey:@"actualVideoCodec"];
+  self->deviceRole = [coder decodeIntForKey:@"deviceRole"];
+  self->isRelayEnabled = [coder decodeBoolForKey:@"relayEnabled"];
+  self->isRelayForced = [coder decodeBoolForKey:@"relayForced"];
+  self->requiresWifi = [coder decodeBoolForKey:@"requiresWifi"];
+  self->isDTLSEnabled = [coder decodeBoolForKey:@"DTLSEnabled"];
   return self;
 }
 
@@ -161,28 +161,28 @@
   return v4;
 }
 
-- (void)decodeFromNSDictionary:(id)a3
+- (void)decodeFromNSDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v21 = [a3 objectForKeyedSubscript:@"audioEnabled"];
-    v20 = [a3 objectForKeyedSubscript:@"videoEnabled"];
-    v19 = [a3 objectForKeyedSubscript:@"videoSourceScreen"];
-    v18 = [a3 objectForKeyedSubscript:@"duplexAudioOnly"];
-    v17 = [a3 objectForKeyedSubscript:@"duplexVideoOnly"];
-    v16 = [a3 objectForKeyedSubscript:@"halfDuplexAudio"];
-    v15 = [a3 objectForKeyedSubscript:@"keyExchangeEnabled"];
-    v14 = [a3 objectForKeyedSubscript:@"startAudioPaused"];
-    v13 = [a3 objectForKeyedSubscript:@"startVideoPaused"];
-    v4 = [a3 objectForKeyedSubscript:@"preferredAudioCodec"];
-    v5 = [a3 objectForKeyedSubscript:@"actualAudioCodec"];
-    v6 = [a3 objectForKeyedSubscript:@"preferredVideoCodec"];
-    v7 = [a3 objectForKeyedSubscript:@"actualVideoCodec"];
-    v8 = [a3 objectForKeyedSubscript:@"relayEnabled"];
-    v9 = [a3 objectForKeyedSubscript:@"relayForced"];
-    v10 = [a3 objectForKeyedSubscript:@"requiresWifi"];
-    v11 = [a3 objectForKeyedSubscript:@"DTLSEnabled"];
-    v12 = [a3 objectForKeyedSubscript:@"deviceRole"];
+    v21 = [dictionary objectForKeyedSubscript:@"audioEnabled"];
+    v20 = [dictionary objectForKeyedSubscript:@"videoEnabled"];
+    v19 = [dictionary objectForKeyedSubscript:@"videoSourceScreen"];
+    v18 = [dictionary objectForKeyedSubscript:@"duplexAudioOnly"];
+    v17 = [dictionary objectForKeyedSubscript:@"duplexVideoOnly"];
+    v16 = [dictionary objectForKeyedSubscript:@"halfDuplexAudio"];
+    v15 = [dictionary objectForKeyedSubscript:@"keyExchangeEnabled"];
+    v14 = [dictionary objectForKeyedSubscript:@"startAudioPaused"];
+    v13 = [dictionary objectForKeyedSubscript:@"startVideoPaused"];
+    v4 = [dictionary objectForKeyedSubscript:@"preferredAudioCodec"];
+    v5 = [dictionary objectForKeyedSubscript:@"actualAudioCodec"];
+    v6 = [dictionary objectForKeyedSubscript:@"preferredVideoCodec"];
+    v7 = [dictionary objectForKeyedSubscript:@"actualVideoCodec"];
+    v8 = [dictionary objectForKeyedSubscript:@"relayEnabled"];
+    v9 = [dictionary objectForKeyedSubscript:@"relayForced"];
+    v10 = [dictionary objectForKeyedSubscript:@"requiresWifi"];
+    v11 = [dictionary objectForKeyedSubscript:@"DTLSEnabled"];
+    v12 = [dictionary objectForKeyedSubscript:@"deviceRole"];
     self->isAudioEnabled = [v21 BOOLValue];
     self->isVideoEnabled = [v20 BOOLValue];
     self->isVideoSourceScreen = [v19 BOOLValue];

@@ -10,15 +10,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 alternateIconName];
+    alternateIconName = [v2 alternateIconName];
   }
 
   else
   {
-    v4 = 0;
+    alternateIconName = 0;
   }
 
-  return v4;
+  return alternateIconName;
 }
 
 @end

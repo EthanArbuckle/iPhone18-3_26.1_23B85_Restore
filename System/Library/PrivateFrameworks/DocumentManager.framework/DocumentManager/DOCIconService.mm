@@ -1,17 +1,17 @@
 @interface DOCIconService
 + (DOCIconService)shared;
 + (id)DOCLocalProviderIcon;
-+ (id)SFSymbolImageProviderIcon:(id)a3;
++ (id)SFSymbolImageProviderIcon:(id)icon;
 - (DOCIconService)init;
-- (id)_fetchIconFromDiskCacheForProviderID:(id)a3 size:(int64_t)a4;
-- (id)_fetchIconFromIconService:(id)a3 size:(int64_t)a4 triggerDiskUpdate:(BOOL)a5;
-- (id)_urlForCacheSize:(int64_t)a3;
-- (id)_urlForCacheSize:(int64_t)a3 providerBundleID:(id)a4;
-- (id)iconForFileProvider:(id)a3 size:(int64_t)a4;
-- (void)_loadIconsFromDiskForSize:(int64_t)a3 fileManager:(id)a4;
-- (void)_persistCacheForSize:(int64_t)a3 bundles:(id)a4 fileManager:(id)a5;
+- (id)_fetchIconFromDiskCacheForProviderID:(id)d size:(int64_t)size;
+- (id)_fetchIconFromIconService:(id)service size:(int64_t)size triggerDiskUpdate:(BOOL)update;
+- (id)_urlForCacheSize:(int64_t)size;
+- (id)_urlForCacheSize:(int64_t)size providerBundleID:(id)d;
+- (id)iconForFileProvider:(id)provider size:(int64_t)size;
+- (void)_loadIconsFromDiskForSize:(int64_t)size fileManager:(id)manager;
+- (void)_persistCacheForSize:(int64_t)size bundles:(id)bundles fileManager:(id)manager;
 - (void)_persistIconsOnDisk;
-- (void)_updateFileProvidersIcon:(id)a3 skipSize:(int64_t)a4;
+- (void)_updateFileProvidersIcon:(id)icon skipSize:(int64_t)size;
 - (void)loadIconsFromDiskIfNeeded;
 @end
 
@@ -50,8 +50,8 @@ uint64_t __24__DOCIconService_shared__block_invoke()
     ioQueue = v2->_ioQueue;
     v2->_ioQueue = v5;
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.DocumentManager"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.DocumentManager"];
     v9 = [v8 URLByAppendingPathComponent:@"IconService"];
     cacheFolderURL = v2->_cacheFolderURL;
     v2->_cacheFolderURL = v9;
@@ -121,19 +121,19 @@ void __43__DOCIconService_loadIconsFromDiskIfNeeded__block_invoke(uint64_t a1)
 
 + (id)DOCLocalProviderIcon
 {
-  v2 = [a1 _symbolImageDefaultConfiguration];
+  _symbolImageDefaultConfiguration = [self _symbolImageDefaultConfiguration];
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 doc_symbolName];
-  v6 = [v3 _systemImageNamed:v5 withConfiguration:v2];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  doc_symbolName = [currentDevice doc_symbolName];
+  v6 = [v3 _systemImageNamed:doc_symbolName withConfiguration:_symbolImageDefaultConfiguration];
 
   return v6;
 }
 
-+ (id)SFSymbolImageProviderIcon:(id)a3
++ (id)SFSymbolImageProviderIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  iconCopy = icon;
+  identifier = [iconCopy identifier];
   if (SFSymbolImageProviderIcon__onceToken != -1)
   {
     +[DOCIconService SFSymbolImageProviderIcon:];
@@ -141,14 +141,14 @@ void __43__DOCIconService_loadIconsFromDiskIfNeeded__block_invoke(uint64_t a1)
 
   v5 = SFSymbolImageProviderIcon__cachedImageByDomainID;
   objc_sync_enter(v5);
-  v6 = [SFSymbolImageProviderIcon__cachedImageByDomainID objectForKeyedSubscript:v4];
+  v6 = [SFSymbolImageProviderIcon__cachedImageByDomainID objectForKeyedSubscript:identifier];
   objc_sync_exit(v5);
 
   if (!v6)
   {
-    v7 = [v3 extensionBundleURL];
-    v8 = [MEMORY[0x1E696AAE8] bundleWithURL:v7];
-    v9 = [v7 URLByAppendingPathComponent:@"Info.plist"];
+    extensionBundleURL = [iconCopy extensionBundleURL];
+    v8 = [MEMORY[0x1E696AAE8] bundleWithURL:extensionBundleURL];
+    v9 = [extensionBundleURL URLByAppendingPathComponent:@"Info.plist"];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v9];
     v11 = [v10 valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleSymbolName"];
     v16 = v8;
@@ -168,13 +168,13 @@ void __43__DOCIconService_loadIconsFromDiskIfNeeded__block_invoke(uint64_t a1)
 
     v12 = SFSymbolImageProviderIcon__cachedImageByDomainID;
     objc_sync_enter(v12);
-    v13 = v6;
+    null = v6;
     if (!v6)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [SFSymbolImageProviderIcon__cachedImageByDomainID setObject:v13 forKeyedSubscript:v4];
+    [SFSymbolImageProviderIcon__cachedImageByDomainID setObject:null forKeyedSubscript:identifier];
     if (!v6)
     {
     }
@@ -205,21 +205,21 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)_urlForCacheSize:(int64_t)a3 providerBundleID:(id)a4
+- (id)_urlForCacheSize:(int64_t)size providerBundleID:(id)d
 {
-  v6 = a4;
-  v7 = [(DOCIconService *)self _urlForCacheSize:a3];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  dCopy = d;
+  v7 = [(DOCIconService *)self _urlForCacheSize:size];
+  v8 = [v7 URLByAppendingPathComponent:dCopy];
 
   return v8;
 }
 
-- (id)_urlForCacheSize:(int64_t)a3
+- (id)_urlForCacheSize:(int64_t)size
 {
-  if (a3 == 2)
+  if (size == 2)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"DOCIconService.m" lineNumber:159 description:{@"[DOCIconServcie _urlForCacheSize:] received invalid or unknown DOCDocumentSourceIconSize value: %d", 2}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCIconService.m" lineNumber:159 description:{@"[DOCIconServcie _urlForCacheSize:] received invalid or unknown DOCDocumentSourceIconSize value: %d", 2}];
 
     v6 = 0;
   }
@@ -227,12 +227,12 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
   else
   {
     v4 = @"small";
-    if (a3)
+    if (size)
     {
       v4 = 0;
     }
 
-    if (a3 == 1)
+    if (size == 1)
     {
       v5 = @"large";
     }
@@ -248,32 +248,32 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
   return v6;
 }
 
-- (void)_loadIconsFromDiskForSize:(int64_t)a3 fileManager:(id)a4
+- (void)_loadIconsFromDiskForSize:(int64_t)size fileManager:(id)manager
 {
   v56 = *MEMORY[0x1E69E9840];
-  v44 = a4;
-  if (a3 >= 2)
+  managerCopy = manager;
+  if (size >= 2)
   {
     [DOCIconService _loadIconsFromDiskForSize:fileManager:];
   }
 
-  v47 = a3;
-  v45 = [(DOCIconService *)self _urlForCacheSize:a3];
+  sizeCopy = size;
+  v45 = [(DOCIconService *)self _urlForCacheSize:size];
   if (v45)
   {
-    v6 = [v44 enumeratorAtURL:v45 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    v6 = [managerCopy enumeratorAtURL:v45 includingPropertiesForKeys:0 options:1 errorHandler:0];
     v46 = objc_opt_new();
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
-    documentSourceIconCache = v7->_documentSourceIconCache;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
+    documentSourceIconCache = selfCopy->_documentSourceIconCache;
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:sizeCopy];
     v11 = [(NSDictionary *)documentSourceIconCache objectForKeyedSubscript:v10];
-    v12 = [v11 allKeys];
-    v13 = [v8 initWithArray:v12];
+    allKeys = [v11 allKeys];
+    v13 = [v8 initWithArray:allKeys];
 
-    objc_sync_exit(v7);
-    v43 = v7;
+    objc_sync_exit(selfCopy);
+    v43 = selfCopy;
 
     v51 = 0u;
     v52 = 0u;
@@ -295,8 +295,8 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
 
           v17 = *(*(&v49 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
-          v19 = [v17 lastPathComponent];
-          if ([v13 containsObject:v19])
+          lastPathComponent = [v17 lastPathComponent];
+          if ([v13 containsObject:lastPathComponent])
           {
             v20 = *MEMORY[0x1E699A478];
             if (!*MEMORY[0x1E699A478])
@@ -310,12 +310,12 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
               v21 = MEMORY[0x1E696AEC0];
               v22 = MEMORY[0x1E696AD98];
               v23 = v20;
-              v24 = [v22 numberWithInteger:v47];
-              v25 = [v21 stringWithFormat:@"[Load-All-Disk] skipping: (%@, size: %@)", v19, v24];
+              v24 = [v22 numberWithInteger:sizeCopy];
+              v25 = [v21 stringWithFormat:@"[Load-All-Disk] skipping: (%@, size: %@)", lastPathComponent, v24];
               v26 = v25;
-              v27 = [v25 UTF8String];
+              uTF8String = [v25 UTF8String];
               *buf = 136315138;
-              v54 = v27;
+              v54 = uTF8String;
               _os_log_impl(&dword_1E57D8000, v23, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
             }
           }
@@ -335,18 +335,18 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
               v30 = MEMORY[0x1E696AEC0];
               v31 = MEMORY[0x1E696AD98];
               v32 = v29;
-              v33 = [v31 numberWithInteger:v47];
-              v34 = [v30 stringWithFormat:@"[Load-All-Disk] loading: (%@, size: %@)", v19, v33];
+              v33 = [v31 numberWithInteger:sizeCopy];
+              v34 = [v30 stringWithFormat:@"[Load-All-Disk] loading: (%@, size: %@)", lastPathComponent, v33];
               v35 = v34;
-              v36 = [v34 UTF8String];
+              uTF8String2 = [v34 UTF8String];
               *buf = 136315138;
-              v54 = v36;
+              v54 = uTF8String2;
               _os_log_impl(&dword_1E57D8000, v32, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
             }
 
             if (v28 && [v28 length])
             {
-              [v46 setObject:v28 forKeyedSubscript:v19];
+              [v46 setObject:v28 forKeyedSubscript:lastPathComponent];
             }
           }
 
@@ -362,7 +362,7 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
     v37 = v43;
     objc_sync_enter(v37);
     v38 = v43->_documentSourceIconCache;
-    v39 = [MEMORY[0x1E696AD98] numberWithInteger:v47];
+    v39 = [MEMORY[0x1E696AD98] numberWithInteger:sizeCopy];
     v40 = [(NSDictionary *)v38 objectForKeyedSubscript:v39];
     [v40 addEntriesFromDictionary:v46];
 
@@ -381,33 +381,33 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
 
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      [DOCIconService _loadIconsFromDiskForSize:a3 fileManager:v42];
+      [DOCIconService _loadIconsFromDiskForSize:size fileManager:v42];
     }
   }
 }
 
-- (void)_persistCacheForSize:(int64_t)a3 bundles:(id)a4 fileManager:(id)a5
+- (void)_persistCacheForSize:(int64_t)size bundles:(id)bundles fileManager:(id)manager
 {
   v59 = *MEMORY[0x1E69E9840];
-  v41 = a4;
-  v42 = a5;
-  if (a3 >= 2)
+  bundlesCopy = bundles;
+  managerCopy = manager;
+  if (size >= 2)
   {
     [DOCIconService _persistCacheForSize:bundles:fileManager:];
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  documentSourceIconCache = v8->_documentSourceIconCache;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentSourceIconCache = selfCopy->_documentSourceIconCache;
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:size];
   v11 = [(NSDictionary *)documentSourceIconCache objectForKeyedSubscript:v10];
   v45 = [v11 copy];
 
-  objc_sync_exit(v8);
-  v43 = a3;
-  v46 = [(DOCIconService *)v8 _urlForCacheSize:a3];
+  objc_sync_exit(selfCopy);
+  sizeCopy = size;
+  v46 = [(DOCIconService *)selfCopy _urlForCacheSize:size];
   v53 = 0;
-  LOBYTE(v10) = [v42 createDirectoryAtURL:v46 withIntermediateDirectories:1 attributes:0 error:&v53];
+  LOBYTE(v10) = [managerCopy createDirectoryAtURL:v46 withIntermediateDirectories:1 attributes:0 error:&v53];
   v12 = v53;
   if (v10)
   {
@@ -415,7 +415,7 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    obj = v41;
+    obj = bundlesCopy;
     v13 = [obj countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (!v13)
     {
@@ -448,12 +448,12 @@ uint64_t __44__DOCIconService_SFSymbolImageProviderIcon___block_invoke()
           v20 = MEMORY[0x1E696AEC0];
           v21 = MEMORY[0x1E696AD98];
           v22 = v19;
-          v23 = [v21 numberWithInteger:v43];
+          v23 = [v21 numberWithInteger:sizeCopy];
           v24 = [v20 stringWithFormat:@"[SaveToDisk] saving (%@, size: %@)", v17, v23];
           v25 = v24;
-          v26 = [v24 UTF8String];
+          uTF8String = [v24 UTF8String];
           *buf = 136315138;
-          v55 = v26;
+          v55 = uTF8String;
           _os_log_impl(&dword_1E57D8000, v22, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
         }
 
@@ -609,11 +609,11 @@ void __37__DOCIconService__persistIconsOnDisk__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_fetchIconFromDiskCacheForProviderID:(id)a3 size:(int64_t)a4
+- (id)_fetchIconFromDiskCacheForProviderID:(id)d size:(int64_t)size
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(DOCIconService *)self _urlForCacheSize:a4 providerBundleID:v6];
+  dCopy = d;
+  v7 = [(DOCIconService *)self _urlForCacheSize:size providerBundleID:dCopy];
   v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7];
   v9 = v8;
   if (!v8)
@@ -631,10 +631,10 @@ void __37__DOCIconService__persistIconsOnDisk__block_invoke(uint64_t a1)
       v23 = MEMORY[0x1E696AEC0];
       v24 = MEMORY[0x1E696AD98];
       v25 = v22;
-      v26 = [v24 numberWithInteger:a4];
-      v27 = [v23 stringWithFormat:@"[Load-One-DISK] did not find in disk cache: (%@, size: %@)", v6, v26];
+      v26 = [v24 numberWithInteger:size];
+      v27 = [v23 stringWithFormat:@"[Load-One-DISK] did not find in disk cache: (%@, size: %@)", dCopy, v26];
       *buf = 136315138;
-      v33 = [v27 UTF8String];
+      uTF8String = [v27 UTF8String];
       _os_log_impl(&dword_1E57D8000, v25, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
     }
 
@@ -654,11 +654,11 @@ void __37__DOCIconService__persistIconsOnDisk__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
     {
-      [(DOCIconService *)v29 _fetchIconFromDiskCacheForProviderID:a4 size:v6];
+      [(DOCIconService *)v29 _fetchIconFromDiskCacheForProviderID:size size:dCopy];
     }
 
-    v30 = [MEMORY[0x1E696AC08] defaultManager];
-    [v30 removeItemAtURL:v7 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v7 error:0];
 
 LABEL_17:
     v9 = 0;
@@ -678,40 +678,40 @@ LABEL_17:
     v12 = MEMORY[0x1E696AEC0];
     v13 = MEMORY[0x1E696AD98];
     v14 = v11;
-    v15 = [v13 numberWithInteger:a4];
-    v16 = [v12 stringWithFormat:@"[Load-One-DISK] loaded from disk cache: (%@, size: %@)", v6, v15];
+    v15 = [v13 numberWithInteger:size];
+    v16 = [v12 stringWithFormat:@"[Load-One-DISK] loaded from disk cache: (%@, size: %@)", dCopy, v15];
     *buf = 136315138;
-    v33 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     _os_log_impl(&dword_1E57D8000, v14, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  documentSourceIconCache = v17->_documentSourceIconCache;
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentSourceIconCache = selfCopy->_documentSourceIconCache;
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:size];
   v20 = [(NSDictionary *)documentSourceIconCache objectForKeyedSubscript:v19];
-  [v20 setObject:v9 forKeyedSubscript:v6];
+  [v20 setObject:v9 forKeyedSubscript:dCopy];
 
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
 LABEL_18:
 
   return v9;
 }
 
-- (id)_fetchIconFromIconService:(id)a3 size:(int64_t)a4 triggerDiskUpdate:(BOOL)a5
+- (id)_fetchIconFromIconService:(id)service size:(int64_t)size triggerDiskUpdate:(BOOL)update
 {
-  v30 = a5;
+  updateCopy = update;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (a4 >= 2)
+  serviceCopy = service;
+  if (size >= 2)
   {
     [DOCIconService _fetchIconFromIconService:size:triggerDiskUpdate:];
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v7];
-  if (v8)
+  genericApplicationIcon = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:serviceCopy];
+  if (genericApplicationIcon)
   {
-    if (a4)
+    if (size)
     {
       goto LABEL_5;
     }
@@ -721,21 +721,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E69A8A00] genericApplicationIcon];
-  if (!a4)
+  genericApplicationIcon = [MEMORY[0x1E69A8A00] genericApplicationIcon];
+  if (!size)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
   v9 = 0;
-  if (a4 == 2)
+  if (size == 2)
   {
-    v32 = 0;
+    bitmapData = 0;
     goto LABEL_21;
   }
 
-  if (a4 == 1)
+  if (size == 1)
   {
     v10 = MEMORY[0x1E69A8A78];
 LABEL_10:
@@ -743,8 +743,8 @@ LABEL_10:
   }
 
   [v9 setDrawBorder:1];
-  v31 = [v8 prepareImageForDescriptor:v9];
-  v32 = [v31 bitmapData];
+  v31 = [genericApplicationIcon prepareImageForDescriptor:v9];
+  bitmapData = [v31 bitmapData];
   v11 = MEMORY[0x1E699A478];
   v12 = *MEMORY[0x1E699A478];
   if (!*MEMORY[0x1E699A478])
@@ -758,25 +758,25 @@ LABEL_10:
     v13 = MEMORY[0x1E696AEC0];
     v14 = MEMORY[0x1E696AD98];
     v15 = v12;
-    v16 = [v14 numberWithInteger:a4];
-    v17 = [v13 stringWithFormat:@"[Load-One-XPC] loading: (%@, size: %@)", v7, v16];
+    v16 = [v14 numberWithInteger:size];
+    v17 = [v13 stringWithFormat:@"[Load-One-XPC] loading: (%@, size: %@)", serviceCopy, v16];
     *buf = 136315138;
-    v36 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
     _os_log_impl(&dword_1E57D8000, v15, OS_LOG_TYPE_DEFAULT, "[DOCIconServiceLog] %s\n", buf, 0xCu);
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  documentSourceIconCache = v18->_documentSourceIconCache;
-  v20 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentSourceIconCache = selfCopy->_documentSourceIconCache;
+  v20 = [MEMORY[0x1E696AD98] numberWithInteger:size];
   v21 = [(NSDictionary *)documentSourceIconCache objectForKeyedSubscript:v20];
-  [v21 setObject:v32 forKeyedSubscript:v7];
+  [v21 setObject:bitmapData forKeyedSubscript:serviceCopy];
 
-  objc_sync_exit(v18);
-  if (v30)
+  objc_sync_exit(selfCopy);
+  if (updateCopy)
   {
     v22 = dispatch_time(0, 60000000000);
-    v23 = v18;
+    v23 = selfCopy;
     objc_sync_enter(v23);
     ioTimer = v23->_ioTimer;
     if (ioTimer)
@@ -786,7 +786,7 @@ LABEL_10:
       v23->_ioTimer = 0;
     }
 
-    [(NSMutableSet *)v23->_providersToPersist addObject:v7];
+    [(NSMutableSet *)v23->_providersToPersist addObject:serviceCopy];
     v26 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v23->_ioQueue);
     v27 = v23->_ioTimer;
     v23->_ioTimer = v26;
@@ -808,7 +808,7 @@ LABEL_10:
 
 LABEL_21:
 
-  return v32;
+  return bitmapData;
 }
 
 void __67__DOCIconService__fetchIconFromIconService_size_triggerDiskUpdate___block_invoke(uint64_t a1)
@@ -829,14 +829,14 @@ void __67__DOCIconService__fetchIconFromIconService_size_triggerDiskUpdate___blo
   }
 }
 
-- (void)_updateFileProvidersIcon:(id)a3 skipSize:(int64_t)a4
+- (void)_updateFileProvidersIcon:(id)icon skipSize:(int64_t)size
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = icon;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -853,8 +853,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      v11 = [v10 identifier];
-      v12 = [v11 isEqualToString:v8];
+      identifier = [v10 identifier];
+      v12 = [identifier isEqualToString:v8];
 
       if (v12)
       {
@@ -868,7 +868,7 @@ LABEL_3:
       block[2] = __52__DOCIconService__updateFileProvidersIcon_skipSize___block_invoke;
       block[3] = &unk_1E8783988;
       objc_copyWeak(v17, &location);
-      v17[1] = a4;
+      v17[1] = size;
       block[4] = v10;
       dispatch_async(ioQueue, block);
       objc_destroyWeak(v17);
@@ -918,13 +918,13 @@ void __52__DOCIconService__updateFileProvidersIcon_skipSize___block_invoke(uint6
   }
 }
 
-- (id)iconForFileProvider:(id)a3 size:(int64_t)a4
+- (id)iconForFileProvider:(id)provider size:(int64_t)size
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  providerCopy = provider;
   [(DOCIconService *)self loadIconsFromDiskIfNeeded];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E699A390]];
+  identifier = [providerCopy identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x1E699A390]];
 
   if (v8)
   {
@@ -933,53 +933,53 @@ void __52__DOCIconService__updateFileProvidersIcon_skipSize___block_invoke(uint6
 
   else
   {
-    v10 = [DOCIconService SFSymbolImageProviderIcon:v6];
-    v11 = [objc_opt_class() _symbolImageDefaultConfiguration];
-    v9 = [v10 imageWithConfiguration:v11];
+    v10 = [DOCIconService SFSymbolImageProviderIcon:providerCopy];
+    _symbolImageDefaultConfiguration = [objc_opt_class() _symbolImageDefaultConfiguration];
+    v9 = [v10 imageWithConfiguration:_symbolImageDefaultConfiguration];
 
     if (!v9)
     {
-      if (a4 < 2)
+      if (size < 2)
       {
-        v14 = [v6 extensionBundleIdentifier];
-        v15 = self;
-        objc_sync_enter(v15);
-        documentSourceIconCache = v15->_documentSourceIconCache;
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+        extensionBundleIdentifier = [providerCopy extensionBundleIdentifier];
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        documentSourceIconCache = selfCopy->_documentSourceIconCache;
+        v17 = [MEMORY[0x1E696AD98] numberWithInteger:size];
         v18 = [(NSDictionary *)documentSourceIconCache objectForKeyedSubscript:v17];
-        v19 = [v18 objectForKeyedSubscript:v14];
+        v19 = [v18 objectForKeyedSubscript:extensionBundleIdentifier];
 
-        v20 = [(NSMutableSet *)v15->_updatedProviderDomains containsObject:v14];
+        v20 = [(NSMutableSet *)selfCopy->_updatedProviderDomains containsObject:extensionBundleIdentifier];
         if ((v20 & 1) == 0)
         {
-          [(NSMutableSet *)v15->_updatedProviderDomains addObject:v14];
+          [(NSMutableSet *)selfCopy->_updatedProviderDomains addObject:extensionBundleIdentifier];
         }
 
-        objc_sync_exit(v15);
+        objc_sync_exit(selfCopy);
 
-        if (v19 || ([(DOCIconService *)v15 _fetchIconFromDiskCacheForProviderID:v14 size:a4], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (v19 || ([(DOCIconService *)selfCopy _fetchIconFromDiskCacheForProviderID:extensionBundleIdentifier size:size], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          a4 = 2;
+          size = 2;
         }
 
         else
         {
-          v19 = [(DOCIconService *)v15 _fetchIconFromIconService:v14 size:a4 triggerDiskUpdate:0];
+          v19 = [(DOCIconService *)selfCopy _fetchIconFromIconService:extensionBundleIdentifier size:size triggerDiskUpdate:0];
           v20 = 0;
         }
 
         v21 = [objc_alloc(MEMORY[0x1E69A8988]) initWithData:v19 uuid:0];
-        v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-        v23 = [v22 traitCollection];
-        [v23 displayScale];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        traitCollection = [mainScreen traitCollection];
+        [traitCollection displayScale];
         v25 = v24;
 
         v26 = [MEMORY[0x1E69DCAB8] imageWithCGImage:objc_msgSend(v21 scale:"CGImage") orientation:{0, v25}];
         if ((v20 & 1) == 0)
         {
-          v29[0] = v6;
+          v29[0] = providerCopy;
           v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
-          [(DOCIconService *)v15 _updateFileProvidersIcon:v27 skipSize:a4];
+          [(DOCIconService *)selfCopy _updateFileProvidersIcon:v27 skipSize:size];
         }
 
         v9 = v26;
@@ -997,7 +997,7 @@ void __52__DOCIconService__updateFileProvidersIcon_skipSize___block_invoke(uint6
 
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [DOCIconService iconForFileProvider:a4 size:v13];
+          [DOCIconService iconForFileProvider:size size:v13];
         }
 
         v9 = 0;

@@ -2,12 +2,12 @@
 - (NSDirectionalEdgeInsets)collectionViewFrameInsets;
 - (_TtC12GameCenterUI13BasePresenter)dataPresenter;
 - (id)makeLayout;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)didDismissSearchController:(id)a3;
-- (void)setDataPresenter:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)didDismissSearchController:(id)controller;
+- (void)setDataPresenter:(id)presenter;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -20,23 +20,23 @@
   return v2;
 }
 
-- (void)setDataPresenter:(id)a3
+- (void)setDataPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E28990C(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_24E28990C(presenterCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E289A9C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E289B48(a3);
+  selfCopy = self;
+  sub_24E289B48(appear);
 }
 
 - (NSDirectionalEdgeInsets)collectionViewFrameInsets
@@ -51,54 +51,54 @@
 
 - (id)makeLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E28A8F4();
   v4 = v3;
 
   return v4;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_24E28B248();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_24E343518();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_24E343498();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_24E28B8BC(v12, v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_24E28B8BC(viewCopy, cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E28BAB4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_24E28BAB4(controllerCopy);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_24E28BB90();
 }
 

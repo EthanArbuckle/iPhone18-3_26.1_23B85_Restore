@@ -1,35 +1,35 @@
 @interface AVFragmentedMovie
-- (AVFragmentedMovie)initWithURL:(id)a3 options:(id)a4;
+- (AVFragmentedMovie)initWithURL:(id)l options:(id)options;
 - (AVFragmentedMovieTrack)trackWithTrackID:(CMPersistentTrackID)trackID;
 - (BOOL)isAssociatedWithFragmentMinder;
 - (NSArray)tracks;
 - (NSArray)tracksWithMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic;
 - (NSArray)tracksWithMediaType:(AVMediaType)mediaType;
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3;
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder;
 @end
 
 @implementation AVFragmentedMovie
 
-- (AVFragmentedMovie)initWithURL:(id)a3 options:(id)a4
+- (AVFragmentedMovie)initWithURL:(id)l options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (optionsCopy)
   {
-    v9 = [v7 mutableCopy];
+    dictionary = [optionsCopy mutableCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v10 = v9;
-  [v9 setValue:*MEMORY[0x1E695E4D0] forKey:0x1F0A8DA50];
+  v10 = dictionary;
+  [dictionary setValue:*MEMORY[0x1E695E4D0] forKey:0x1F0A8DA50];
   v13.receiver = self;
   v13.super_class = AVFragmentedMovie;
-  v11 = [(AVMovie *)&v13 initWithURL:v6 options:v10];
+  v11 = [(AVMovie *)&v13 initWithURL:lCopy options:v10];
 
   return v11;
 }
@@ -38,9 +38,9 @@
 {
   v4.receiver = self;
   v4.super_class = AVFragmentedMovie;
-  v2 = [(AVMovie *)&v4 tracks];
+  tracks = [(AVMovie *)&v4 tracks];
 
-  return v2;
+  return tracks;
 }
 
 - (AVFragmentedMovieTrack)trackWithTrackID:(CMPersistentTrackID)trackID
@@ -72,17 +72,17 @@
 
 - (BOOL)isAssociatedWithFragmentMinder
 {
-  v2 = [(AVMovie *)self _assetInspectorLoader];
-  v3 = [v2 isAssociatedWithFragmentMinder];
+  _assetInspectorLoader = [(AVMovie *)self _assetInspectorLoader];
+  isAssociatedWithFragmentMinder = [_assetInspectorLoader isAssociatedWithFragmentMinder];
 
-  return v3;
+  return isAssociatedWithFragmentMinder;
 }
 
-- (void)_setIsAssociatedWithFragmentMinder:(BOOL)a3
+- (void)_setIsAssociatedWithFragmentMinder:(BOOL)minder
 {
-  v3 = a3;
-  v4 = [(AVMovie *)self _assetInspectorLoader];
-  [v4 _setIsAssociatedWithFragmentMinder:v3];
+  minderCopy = minder;
+  _assetInspectorLoader = [(AVMovie *)self _assetInspectorLoader];
+  [_assetInspectorLoader _setIsAssociatedWithFragmentMinder:minderCopy];
 }
 
 @end

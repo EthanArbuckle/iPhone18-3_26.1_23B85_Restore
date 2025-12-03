@@ -1,7 +1,7 @@
 @interface CAMOverlayService
 + (CAMOverlayService)sharedService;
 - (id)_init;
-- (id)createConnectionWithClient:(id)a3 queue:(id)a4;
+- (id)createConnectionWithClient:(id)client queue:(id)queue;
 @end
 
 @implementation CAMOverlayService
@@ -32,28 +32,28 @@ uint64_t __34__CAMOverlayService_sharedService__block_invoke()
   return [(CAMOverlayService *)&v3 init];
 }
 
-- (id)createConnectionWithClient:(id)a3 queue:(id)a4
+- (id)createConnectionWithClient:(id)client queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAMOverlayService *)self _activeConnection];
-  v9 = [[CAMOverlayServiceConnection alloc] initWithClient:v7 queue:v6];
+  queueCopy = queue;
+  clientCopy = client;
+  _activeConnection = [(CAMOverlayService *)self _activeConnection];
+  v9 = [[CAMOverlayServiceConnection alloc] initWithClient:clientCopy queue:queueCopy];
 
   [(CAMOverlayService *)self _setActiveConnection:v9];
-  if (!v8 || ([v8 clientQueue], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == v6))
+  if (!_activeConnection || ([_activeConnection clientQueue], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == queueCopy))
   {
-    [v8 invalidateWithReason:0];
+    [_activeConnection invalidateWithReason:0];
   }
 
   else
   {
-    v11 = [v8 clientQueue];
+    clientQueue = [_activeConnection clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__CAMOverlayService_createConnectionWithClient_queue___block_invoke;
     block[3] = &unk_278851AF8;
-    v14 = v8;
-    dispatch_async(v11, block);
+    v14 = _activeConnection;
+    dispatch_async(clientQueue, block);
   }
 
   return v9;

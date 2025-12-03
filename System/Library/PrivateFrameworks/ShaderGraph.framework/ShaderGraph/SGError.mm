@@ -1,38 +1,38 @@
 @interface SGError
-- (_TtC11ShaderGraph7SGError)initWithCoder:(id)a3;
-- (_TtC11ShaderGraph7SGError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)isa;
+- (_TtC11ShaderGraph7SGError)initWithCoder:(id)coder;
+- (_TtC11ShaderGraph7SGError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)isa;
 @end
 
 @implementation SGError
 
-- (_TtC11ShaderGraph7SGError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)isa
+- (_TtC11ShaderGraph7SGError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)isa
 {
   ObjectType = swift_getObjectType();
   if (isa)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    v10 = a3;
+    domainCopy = domain;
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v11 = a3;
+    domainCopy2 = domain;
   }
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(SGError *)&v14 initWithDomain:a3 code:a4 userInfo:isa];
+  v12 = [(SGError *)&v14 initWithDomain:domain code:code userInfo:isa];
 
   return v12;
 }
 
-- (_TtC11ShaderGraph7SGError)initWithCoder:(id)a3
+- (_TtC11ShaderGraph7SGError)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SGError *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SGError *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

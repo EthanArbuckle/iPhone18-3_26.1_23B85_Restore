@@ -1,15 +1,15 @@
 @interface FBSExtensionInfo
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4;
-- (id)_initWithBundleProxy:(id)a3 url:(id)a4;
-- (id)_initWithPlugInKitProxy:(id)a3;
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url;
+- (id)_initWithBundleProxy:(id)proxy url:(id)url;
+- (id)_initWithPlugInKitProxy:(id)proxy;
 @end
 
 @implementation FBSExtensionInfo
 
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  urlCopy = url;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this is initializer is unavailable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -21,7 +21,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSExtensionInfo.m";
     v21 = 1024;
@@ -35,42 +35,42 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithBundleProxy:(id)a3 url:(id)a4
+- (id)_initWithBundleProxy:(id)proxy url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  urlCopy = url;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [FBSExtensionInfo _initWithBundleProxy:v7 url:a2];
+    [FBSExtensionInfo _initWithBundleProxy:proxyCopy url:a2];
   }
 
-  v9 = [(FBSExtensionInfo *)self _initWithPlugInKitProxy:v7];
+  v9 = [(FBSExtensionInfo *)self _initWithPlugInKitProxy:proxyCopy];
 
   return v9;
 }
 
-- (id)_initWithPlugInKitProxy:(id)a3
+- (id)_initWithPlugInKitProxy:(id)proxy
 {
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
     [FBSExtensionInfo _initWithPlugInKitProxy:a2];
   }
 
-  v6 = v5;
+  v6 = proxyCopy;
   v15.receiver = self;
   v15.super_class = FBSExtensionInfo;
-  v7 = [(FBSBundleInfo *)&v15 _initWithBundleProxy:v5 overrideURL:0];
+  v7 = [(FBSBundleInfo *)&v15 _initWithBundleProxy:proxyCopy overrideURL:0];
   if (v7)
   {
-    v8 = [v6 protocol];
-    v9 = [v8 copy];
+    protocol = [v6 protocol];
+    v9 = [protocol copy];
     v10 = v7[8];
     v7[8] = v9;
 
-    v11 = [v6 pluginIdentifier];
-    v12 = [v11 copy];
+    pluginIdentifier = [v6 pluginIdentifier];
+    v12 = [pluginIdentifier copy];
     v13 = v7[9];
     v7[9] = v12;
   }

@@ -1,10 +1,10 @@
 @interface CRLCalloutPathSource
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6;
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOval;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGPoint)p_adjustedCenterForPath:(id)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGPoint)p_adjustedCenterForPath:(id)path;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGPoint)p_tailCenter;
 - (CGPoint)p_tailPosition;
@@ -12,15 +12,15 @@
 - (CGPoint)tailKnobPosition;
 - (CGPoint)tailSizeKnobPosition;
 - (CGSize)naturalSize;
-- (CRLCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7;
+- (CRLCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center;
 - (double)clampedCalloutTailSize;
 - (double)clampedCornerRadius;
 - (double)maxTailSize;
 - (id)copy;
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3;
-- (id)crlaxValueForKnobTag:(unint64_t)a3;
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag;
+- (id)crlaxValueForKnobTag:(unint64_t)tag;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
 - (id)inferredAccessibilityDescription;
 - (id)inferredAccessibilityDescriptionNoShapeNames;
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder;
@@ -28,25 +28,25 @@
 - (id)p_basePath;
 - (id)p_buildPath;
 - (unint64_t)hash;
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2];
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setCornerRadius:(double)a3;
-- (void)setTailKnobPosition:(CGPoint)a3;
-- (void)setTailSize:(double)a3;
-- (void)setTailSizeKnobPosition:(CGPoint)a3;
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2];
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setCornerRadius:(double)radius;
+- (void)setTailKnobPosition:(CGPoint)position;
+- (void)setTailSize:(double)size;
+- (void)setTailSizeKnobPosition:(CGPoint)position;
 @end
 
 @implementation CRLCalloutPathSource
 
-- (CRLCalloutPathSource)initWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6 tailAtCenter:(BOOL)a7
+- (CRLCalloutPathSource)initWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize tailAtCenter:(BOOL)center
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  y = a4.y;
-  x = a4.x;
+  centerCopy = center;
+  height = naturalSize.height;
+  width = naturalSize.width;
+  y = position.y;
+  x = position.x;
   v17.receiver = self;
   v17.super_class = CRLCalloutPathSource;
   v14 = [(CRLCalloutPathSource *)&v17 init];
@@ -54,25 +54,25 @@
   if (v14)
   {
     [(CRLCalloutPathSource *)v14 p_setNaturalSize:width, height];
-    [(CRLCalloutPathSource *)v15 p_setCornerRadius:a3];
+    [(CRLCalloutPathSource *)v15 p_setCornerRadius:radius];
     [(CRLCalloutPathSource *)v15 p_setTailPosition:x, y];
-    [(CRLCalloutPathSource *)v15 p_setTailSize:a5];
-    [(CRLCalloutPathSource *)v15 p_setTailAtCenter:v7];
+    [(CRLCalloutPathSource *)v15 p_setTailSize:size];
+    [(CRLCalloutPathSource *)v15 p_setTailAtCenter:centerCopy];
   }
 
   return v15;
 }
 
-+ (id)calloutWithCornerRadius:(double)a3 tailPosition:(CGPoint)a4 tailSize:(double)a5 naturalSize:(CGSize)a6
++ (id)calloutWithCornerRadius:(double)radius tailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  v6 = [[a1 alloc] initWithCornerRadius:0 tailPosition:a3 tailSize:a4.x naturalSize:a4.y tailAtCenter:{a5, a6.width, a6.height}];
+  v6 = [[self alloc] initWithCornerRadius:0 tailPosition:radius tailSize:position.x naturalSize:position.y tailAtCenter:{size, naturalSize.width, naturalSize.height}];
 
   return v6;
 }
 
-+ (id)quoteBubbleWithTailPosition:(CGPoint)a3 tailSize:(double)a4 naturalSize:(CGSize)a5
++ (id)quoteBubbleWithTailPosition:(CGPoint)position tailSize:(double)size naturalSize:(CGSize)naturalSize
 {
-  v5 = [[a1 alloc] initWithCornerRadius:1 tailPosition:a5.width + 10.0 tailSize:a3.x naturalSize:a3.y tailAtCenter:{a4, a5.width, a5.height}];
+  v5 = [[self alloc] initWithCornerRadius:1 tailPosition:naturalSize.width + 10.0 tailSize:position.x naturalSize:position.y tailAtCenter:{size, naturalSize.width, naturalSize.height}];
 
   return v5;
 }
@@ -90,10 +90,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -102,10 +102,10 @@
   {
     v18.receiver = self;
     v18.super_class = CRLCalloutPathSource;
-    if ([(CRLPathSource *)&v18 isEqual:v4])
+    if ([(CRLPathSource *)&v18 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = sub_100014370(v5, v4);
+      v6 = sub_100014370(v5, equalCopy);
       v7 = v6;
       if (v6 && ([v6 naturalSize], sub_10011ECC8(self->_naturalSize.width, self->_naturalSize.height, v8, v9)) && ((cornerRadius = self->_cornerRadius, objc_msgSend(v7, "cornerRadius"), cornerRadius == v11) || vabdd_f64(cornerRadius, v11) < 0.00999999978) && (objc_msgSend(v7, "p_tailPosition"), sub_10011ECC8(self->_tailPosition.x, self->_tailPosition.y, v12, v13)))
       {
@@ -155,9 +155,9 @@
   return v4;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  switch(a3)
+  switch(position)
   {
     case 0xEuLL:
       [(CRLCalloutPathSource *)self tailSizeKnobPosition];
@@ -179,25 +179,25 @@
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  switch(a3)
+  switch(position)
   {
     case 0xEuLL:
-      [(CRLCalloutPathSource *)self setTailSizeKnobPosition:a4.x, a4.y];
+      [(CRLCalloutPathSource *)self setTailSizeKnobPosition:point.x, point.y];
       break;
     case 0xDuLL:
-      [(CRLCalloutPathSource *)self p_setControlKnobPointForRoundedRect:a4.x, a4.y];
+      [(CRLCalloutPathSource *)self p_setControlKnobPointForRoundedRect:point.x, point.y];
       break;
     case 0xCuLL:
-      [(CRLCalloutPathSource *)self setTailKnobPosition:a4.x, a4.y];
+      [(CRLCalloutPathSource *)self setTailKnobPosition:point.x, point.y];
       break;
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
-  if (a3 == 13)
+  if (knob == 13)
   {
     [(CRLCalloutPathSource *)self cornerRadius];
     v5 = v4;
@@ -224,9 +224,9 @@
   return v9;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  [(CRLCalloutPathSource *)self p_setCornerRadius:a3];
+  [(CRLCalloutPathSource *)self p_setCornerRadius:radius];
   cornerRadius = self->_cornerRadius;
   v5 = 0.0;
   if (cornerRadius >= 0.0)
@@ -259,9 +259,9 @@
   return fmin(v4, v5);
 }
 
-- (void)setTailSize:(double)a3
+- (void)setTailSize:(double)size
 {
-  [(CRLCalloutPathSource *)self p_setTailSize:a3];
+  [(CRLCalloutPathSource *)self p_setTailSize:size];
   height = self->_naturalSize.height;
   if (height < self->_naturalSize.width)
   {
@@ -280,8 +280,8 @@
   [(CRLCalloutPathSource *)self naturalSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLCalloutPathSource *)self p_basePath];
-  [(CRLCalloutPathSource *)self p_getTailPath:v7 center:0 tailSize:0 intersections:&v14];
+  p_basePath = [(CRLCalloutPathSource *)self p_basePath];
+  [(CRLCalloutPathSource *)self p_getTailPath:p_basePath center:0 tailSize:0 intersections:&v14];
   if (v14 + v15 >= v16 + v17)
   {
     v8 = v17;
@@ -334,8 +334,8 @@
   [(CRLCalloutPathSource *)self p_tailPosition];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLCalloutPathSource *)self p_basePath];
-  [(CRLCalloutPathSource *)self p_adjustedCenterForPath:v7];
+  p_basePath = [(CRLCalloutPathSource *)self p_basePath];
+  [(CRLCalloutPathSource *)self p_adjustedCenterForPath:p_basePath];
   v9 = v8;
   v11 = v10;
   v12 = sub_100120090(v4, v6, v8, v10);
@@ -345,21 +345,21 @@
   v39[3] = v11;
   v32 = 0.0;
   v33 = 0.0;
-  v13 = [v7 elementCount];
-  if (v13 < 1)
+  elementCount = [p_basePath elementCount];
+  if (elementCount < 1)
   {
     v25 = 0.0;
     v26 = 0.0;
     goto LABEL_11;
   }
 
-  v15 = v13;
+  v15 = elementCount;
   v16 = sub_10011F31C(v9, v11, v4);
   v18 = sub_10011F2FC(v16, v17);
   v20 = v19;
   for (i = 0; i != v15; ++i)
   {
-    v22 = [v7 elementAtIndex:i allPoints:&v34];
+    v22 = [p_basePath elementAtIndex:i allPoints:&v34];
     if (v22 == 2)
     {
       sub_100308434(v39, &v33, &v32, v34.f64[0], v34.f64[1], v18, v20, v4, v6, v12);
@@ -401,9 +401,9 @@ LABEL_11:
   return fmin(v4, v5);
 }
 
-- (void)setTailSizeKnobPosition:(CGPoint)a3
+- (void)setTailSizeKnobPosition:(CGPoint)position
 {
-  x = a3.x;
+  x = position.x;
   [(CRLCalloutPathSource *)self naturalSize];
   v6 = v5;
   if ([(CRLPathSource *)self hasHorizontalFlip])
@@ -414,8 +414,8 @@ LABEL_11:
   [(CRLPathSource *)self hasVerticalFlip];
   v29 = 0.0;
   v30 = 0.0;
-  v7 = [(CRLCalloutPathSource *)self p_basePath];
-  [(CRLCalloutPathSource *)self p_getTailPath:v7 center:&v29 tailSize:0 intersections:v31];
+  p_basePath = [(CRLCalloutPathSource *)self p_basePath];
+  [(CRLCalloutPathSource *)self p_getTailPath:p_basePath center:&v29 tailSize:0 intersections:v31];
   [(CRLCalloutPathSource *)self p_tailPosition];
   v9 = v8;
   v11 = v10;
@@ -439,10 +439,10 @@ LABEL_11:
   self->_tailSize = v27;
 }
 
-- (void)setTailKnobPosition:(CGPoint)a3
+- (void)setTailKnobPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(CRLCalloutPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -497,15 +497,15 @@ LABEL_11:
   return result;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLPathSource *)self uniformScaleForScalingToNaturalSize:?];
   v7 = v6;
   [(CRLCalloutPathSource *)self naturalSize];
   v9 = v8;
-  v10 = [(CRLCalloutPathSource *)self isOval];
+  isOval = [(CRLCalloutPathSource *)self isOval];
   p_tailPosition = &self->_tailPosition;
   x = CGPointZero.x;
   if (self->_tailPosition.x > v9 * 0.5)
@@ -523,7 +523,7 @@ LABEL_11:
   self->_tailPosition.y = v16;
   [(CRLCalloutPathSource *)self p_setNaturalSize:width, height];
   [(CRLCalloutPathSource *)self maxCornerRadius];
-  if (v10)
+  if (isOval)
   {
     v18 = v17 + 1.0;
   }
@@ -589,10 +589,10 @@ LABEL_11:
 
 - (id)name
 {
-  v2 = [(CRLCalloutPathSource *)self isTailAtCenter];
+  isTailAtCenter = [(CRLCalloutPathSource *)self isTailAtCenter];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isTailAtCenter)
   {
     v5 = @"Quote Bubble";
   }
@@ -616,9 +616,9 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)p_adjustedCenterForPath:(id)a3
+- (CGPoint)p_adjustedCenterForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(CRLCalloutPathSource *)self p_tailCenter];
   v6 = v5;
   v8 = v7;
@@ -628,12 +628,12 @@ LABEL_11:
   *&v17[2] = v6;
   *&v17[3] = v8;
   v11 = objc_alloc_init(NSMutableArray);
-  [v4 addIntersectionsWithLine:v17 to:v11];
+  [pathCopy addIntersectionsWithLine:v17 to:v11];
 
   if ([v11 count])
   {
-    v12 = [v11 lastObject];
-    [v12 point];
+    lastObject = [v11 lastObject];
+    [lastObject point];
     v6 = v13;
     v8 = v14;
   }
@@ -645,15 +645,15 @@ LABEL_11:
   return result;
 }
 
-- (void)p_getTailPath:(id)a3 center:(CGPoint *)a4 tailSize:(double *)a5 intersections:(CGPoint)a6[2]
+- (void)p_getTailPath:(id)path center:(CGPoint *)center tailSize:(double *)size intersections:(CGPoint)intersections[2]
 {
-  v10 = a3;
+  pathCopy = path;
   [(CRLCalloutPathSource *)self tailSize];
   v12 = v11;
   [(CRLCalloutPathSource *)self p_tailPosition];
   v14 = v13;
   v16 = v15;
-  [(CRLCalloutPathSource *)self p_adjustedCenterForPath:v10];
+  [(CRLCalloutPathSource *)self p_adjustedCenterForPath:pathCopy];
   v18 = v17;
   v20 = v19;
   [(CRLCalloutPathSource *)self maxTailSize];
@@ -680,8 +680,8 @@ LABEL_11:
   v88[3] = v41;
   v42 = objc_alloc_init(NSMutableArray);
   v43 = objc_alloc_init(NSMutableArray);
-  [v10 addIntersectionsWithLine:v89 to:v42];
-  [v10 addIntersectionsWithLine:v88 to:v43];
+  [pathCopy addIntersectionsWithLine:v89 to:v42];
+  [pathCopy addIntersectionsWithLine:v88 to:v43];
   if ([v42 count])
   {
     v44 = [v42 objectAtIndexedSubscript:0];
@@ -689,8 +689,8 @@ LABEL_11:
     v46 = v45;
     v48 = v47;
 
-    v49 = [v42 lastObject];
-    [v49 point];
+    lastObject = [v42 lastObject];
+    [lastObject point];
     v51 = v50;
     v53 = v52;
 
@@ -724,7 +724,7 @@ LABEL_11:
 
   else
   {
-    v62 = sub_10040907C([v10 CGPath], v89);
+    v62 = sub_10040907C([pathCopy CGPath], v89);
   }
 
   v64 = v62;
@@ -737,8 +737,8 @@ LABEL_11:
     v68 = v67;
     v70 = v69;
 
-    v71 = [v43 lastObject];
-    [v71 point];
+    lastObject2 = [v43 lastObject];
+    [lastObject2 point];
     v73 = v72;
     v84 = v18;
     v75 = v74;
@@ -765,22 +765,22 @@ LABEL_11:
 
   else
   {
-    v82 = sub_10040907C([v10 CGPath], v88);
+    v82 = sub_10040907C([pathCopy CGPath], v88);
   }
 
-  a6->x = v64;
-  a6->y = v65;
-  a6[1].x = v82;
-  a6[1].y = v83;
-  if (a4)
+  intersections->x = v64;
+  intersections->y = v65;
+  intersections[1].x = v82;
+  intersections[1].y = v83;
+  if (center)
   {
-    a4->x = v18;
-    a4->y = v87;
+    center->x = v18;
+    center->y = v87;
   }
 
-  if (a5)
+  if (size)
   {
-    *a5 = v86;
+    *size = v86;
   }
 }
 
@@ -834,23 +834,23 @@ LABEL_11:
 
 - (id)p_buildPath
 {
-  v3 = [(CRLCalloutPathSource *)self p_basePath];
+  p_basePath = [(CRLCalloutPathSource *)self p_basePath];
   [(CRLCalloutPathSource *)self p_tailPosition];
   v5 = v4;
   v7 = v6;
-  if ([v3 containsPoint:?])
+  if ([p_basePath containsPoint:?])
   {
-    v8 = v3;
+    v8 = p_basePath;
   }
 
   else
   {
-    [(CRLCalloutPathSource *)self p_getTailPath:v3 center:0 tailSize:0 intersections:v14];
+    [(CRLCalloutPathSource *)self p_getTailPath:p_basePath center:0 tailSize:0 intersections:v14];
     v9 = +[CRLBezierPath bezierPath];
     [v9 moveToPoint:{v14[0], v14[1]}];
     [v9 lineToPoint:{v5, v7}];
     [v9 lineToPoint:{v14[2], v14[3]}];
-    v10 = [NSArray arrayWithObjects:v3, v9, 0];
+    v10 = [NSArray arrayWithObjects:p_basePath, v9, 0];
     v11 = [CRLBezierPath uniteBezierPaths:v10];
 
     if ([v11 elementCount])
@@ -860,7 +860,7 @@ LABEL_11:
 
     else
     {
-      v12 = v3;
+      v12 = p_basePath;
     }
 
     v8 = v12;
@@ -869,10 +869,10 @@ LABEL_11:
   return v8;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
-  x = a3.x;
-  [(CRLCalloutPathSource *)self maxCornerRadius:a3.x];
+  x = rect.x;
+  [(CRLCalloutPathSource *)self maxCornerRadius:rect.x];
   v6 = sub_1004C3240(x, 0.0, v5);
 
   [(CRLCalloutPathSource *)self setCornerRadius:v6];
@@ -892,23 +892,23 @@ LABEL_11:
 
 - (id)inferredAccessibilityDescriptionNoShapeNames
 {
-  v3 = [(CRLPathSource *)self userDefinedName];
-  if (![v3 length])
+  userDefinedName = [(CRLPathSource *)self userDefinedName];
+  if (![userDefinedName length])
   {
-    v4 = [(CRLCalloutPathSource *)self inferredAccessibilityDescription];
+    inferredAccessibilityDescription = [(CRLCalloutPathSource *)self inferredAccessibilityDescription];
 
-    v3 = v4;
+    userDefinedName = inferredAccessibilityDescription;
   }
 
-  return v3;
+  return userDefinedName;
 }
 
 - (id)inferredAccessibilityDescription
 {
-  v2 = [(CRLCalloutPathSource *)self isTailAtCenter];
+  isTailAtCenter = [(CRLCalloutPathSource *)self isTailAtCenter];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isTailAtCenter)
   {
     v5 = @"Quote bubble";
   }
@@ -925,10 +925,10 @@ LABEL_11:
 
 - (id)inferredLocalizedAccessibilityDescriptionPlaceholder
 {
-  v2 = [(CRLCalloutPathSource *)self isTailAtCenter];
+  isTailAtCenter = [(CRLCalloutPathSource *)self isTailAtCenter];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isTailAtCenter)
   {
     v5 = @"Describe the selected quote bubble.";
   }
@@ -943,16 +943,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)crlaxLabelComponentForKnobTag:(unint64_t)a3
+- (id)crlaxLabelComponentForKnobTag:(unint64_t)tag
 {
-  if (a3 - 12 > 2)
+  if (tag - 12 > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = *(&off_101855348 + a3 - 12);
+    v3 = *(&off_101855348 + tag - 12);
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:0 table:0];
   }
@@ -960,9 +960,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)crlaxValueForKnobTag:(unint64_t)a3
+- (id)crlaxValueForKnobTag:(unint64_t)tag
 {
-  if (a3 == 14)
+  if (tag == 14)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"%d points" value:0 table:0];
@@ -972,9 +972,9 @@ LABEL_11:
 
   else
   {
-    if (a3 != 13)
+    if (tag != 13)
     {
-      v11 = 0;
+      cornerRadius = 0;
       goto LABEL_10;
     }
 
@@ -984,7 +984,7 @@ LABEL_11:
     if (v5 >= v6)
     {
       v7 = +[NSBundle mainBundle];
-      v11 = [v7 localizedStringForKey:@"Oval" value:0 table:0];
+      cornerRadius = [v7 localizedStringForKey:@"Oval" value:0 table:0];
       goto LABEL_9;
     }
 
@@ -993,12 +993,12 @@ LABEL_11:
     cornerRadius = self->_cornerRadius;
   }
 
-  v11 = [NSString localizedStringWithFormat:v8, cornerRadius];
+  cornerRadius = [NSString localizedStringWithFormat:v8, cornerRadius];
 
 LABEL_9:
 LABEL_10:
 
-  return v11;
+  return cornerRadius;
 }
 
 - (CGPoint)rawTailPosition

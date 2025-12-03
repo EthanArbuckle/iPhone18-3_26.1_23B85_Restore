@@ -1,41 +1,41 @@
 @interface HUAccessorySettingsItemModuleController
-- (BOOL)canSelectItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUAccessorySettingsItemModuleController)initWithModule:(id)a3;
-- (HUAccessorySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4;
+- (BOOL)canSelectItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUAccessorySettingsItemModuleController)initWithModule:(id)module;
+- (HUAccessorySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate;
 - (HUAccessorySettingsItemModuleControllerDelegate)delegate;
-- (id)valueDescriptionForItem:(id)a3 value:(double)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_handleButtonPress:(id)a3;
-- (void)_registerButtonActionHandler:(id)a3 item:(id)a4;
-- (void)_selectOptionItem:(id)a3;
-- (void)_setupCellAccessoryType:(id)a3 forItem:(id)a4 withKey:(id)a5;
-- (void)_setupSliderCell:(id)a3 forMinKey:(id)a4 maxKey:(id)a5;
-- (void)_setupSliderCell:(id)a3 forMinValue:(id)a4 maxValue:(id)a5 showAsInteger:(BOOL)a6 measurementUnitType:(id)a7;
-- (void)_setupSliderCell:(id)a3 withUserInfo:(id)a4 minValue:(double)a5 maxValue:(double)a6;
-- (void)_updateSettingItemWithInfo:(id)a3;
-- (void)_updateSwitchSettingItem:(id)a3 withValue:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4;
-- (void)stepperCell:(id)a3 steppedToValue:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (id)valueDescriptionForItem:(id)item value:(double)value;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_handleButtonPress:(id)press;
+- (void)_registerButtonActionHandler:(id)handler item:(id)item;
+- (void)_selectOptionItem:(id)item;
+- (void)_setupCellAccessoryType:(id)type forItem:(id)item withKey:(id)key;
+- (void)_setupSliderCell:(id)cell forMinKey:(id)key maxKey:(id)maxKey;
+- (void)_setupSliderCell:(id)cell forMinValue:(id)value maxValue:(id)maxValue showAsInteger:(BOOL)integer measurementUnitType:(id)type;
+- (void)_setupSliderCell:(id)cell withUserInfo:(id)info minValue:(double)value maxValue:(double)maxValue;
+- (void)_updateSettingItemWithInfo:(id)info;
+- (void)_updateSwitchSettingItem:(id)item withValue:(id)value;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value;
+- (void)stepperCell:(id)cell steppedToValue:(id)value;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUAccessorySettingsItemModuleController
 
-- (HUAccessorySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4
+- (HUAccessorySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HUAccessorySettingsItemModuleController;
-  v7 = [(HUItemModuleController *)&v12 initWithModule:a3];
+  v7 = [(HUItemModuleController *)&v12 initWithModule:module];
   v8 = v7;
   if (v7)
   {
-    [(HUAccessorySettingsItemModuleController *)v7 setDelegate:v6];
-    v9 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
-    [(HUAccessorySettingsItemModuleController *)v8 setCellToItemMap:v9];
+    [(HUAccessorySettingsItemModuleController *)v7 setDelegate:delegateCopy];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    [(HUAccessorySettingsItemModuleController *)v8 setCellToItemMap:weakToWeakObjectsMapTable];
 
     v10 = objc_opt_new();
     [(HUAccessorySettingsItemModuleController *)v8 setRegisteredButtonFutures:v10];
@@ -44,20 +44,20 @@
   return v8;
 }
 
-- (HUAccessorySettingsItemModuleController)initWithModule:(id)a3
+- (HUAccessorySettingsItemModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModuleController.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsItemModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModuleController.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HUAccessorySettingsItemModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13348]];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13348]];
   [v5 unsignedIntegerValue];
 
   objc_opt_class();
@@ -68,16 +68,16 @@
   return v6;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
-  [v8 setObject:v7 forKey:v6];
+  cellCopy = cell;
+  itemCopy = item;
+  cellToItemMap = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
+  [cellToItemMap setObject:itemCopy forKey:cellCopy];
 
-  [v6 setAccessoryType:0];
+  [cellCopy setAccessoryType:0];
   objc_opt_class();
-  v30 = v6;
+  v30 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v30;
@@ -94,13 +94,13 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [v7 latestResults];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13348]];
-    v13 = [v12 unsignedIntegerValue];
+    latestResults = [itemCopy latestResults];
+    v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13348]];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    if (v13 <= 4)
+    if (unsignedIntegerValue <= 4)
     {
-      if (v13 > 2)
+      if (unsignedIntegerValue > 2)
       {
         v22 = v30;
         if ([v22 conformsToProtocol:&unk_282508A00])
@@ -119,14 +119,14 @@
         goto LABEL_31;
       }
 
-      switch(v13)
+      switch(unsignedIntegerValue)
       {
         case -1:
           goto LABEL_41;
         case 0:
           v29 = MEMORY[0x277D13958];
 LABEL_40:
-          [(HUAccessorySettingsItemModuleController *)self _setupCellAccessoryType:v30 forItem:v7 withKey:*v29];
+          [(HUAccessorySettingsItemModuleController *)self _setupCellAccessoryType:v30 forItem:itemCopy withKey:*v29];
           goto LABEL_41;
         case 2:
           goto LABEL_27;
@@ -137,11 +137,11 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    if (v13 > 6)
+    if (unsignedIntegerValue > 6)
     {
-      if (v13 != 7)
+      if (unsignedIntegerValue != 7)
       {
-        if (v13 != 9)
+        if (unsignedIntegerValue != 9)
         {
           goto LABEL_39;
         }
@@ -180,14 +180,14 @@ LABEL_37:
 
       v16 = v28;
 
-      v17 = [v16 textField];
-      v18 = v17;
+      textField = [v16 textField];
+      v18 = textField;
       v19 = 1;
     }
 
     else
     {
-      if (v13 == 5)
+      if (unsignedIntegerValue == 5)
       {
 LABEL_27:
         objc_opt_class();
@@ -224,12 +224,12 @@ LABEL_31:
 
       v16 = v15;
 
-      v17 = [v16 textField];
-      v18 = v17;
+      textField = [v16 textField];
+      v18 = textField;
       v19 = 0;
     }
 
-    [v17 setSecureTextEntry:v19];
+    [textField setSecureTextEntry:v19];
 
     goto LABEL_37;
   }
@@ -237,20 +237,20 @@ LABEL_31:
 LABEL_41:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13348]];
-  v11 = [v10 unsignedIntegerValue];
+  cellCopy = cell;
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13348]];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [v8 latestResults];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-  [v7 setAccessibilityIdentifier:v13];
+  latestResults2 = [itemCopy latestResults];
+  v13 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  [cellCopy setAccessibilityIdentifier:v13];
 
   objc_opt_class();
-  v14 = v8;
+  v14 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -265,8 +265,8 @@ LABEL_41:
 
   if (v16)
   {
-    v17 = [v16 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13380]];
+    latestResults3 = [v16 latestResults];
+    v18 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13380]];
 
     objc_opt_class();
     v19 = v18;
@@ -297,12 +297,12 @@ LABEL_41:
     v24 = v23;
 
     v78 = v21;
-    if (v11 > 5)
+    if (unsignedIntegerValue > 5)
     {
-      if ((v11 - 6) < 2)
+      if ((unsignedIntegerValue - 6) < 2)
       {
         objc_opt_class();
-        v42 = v7;
+        v42 = cellCopy;
         if (objc_opt_isKindOfClass())
         {
           v43 = v42;
@@ -313,19 +313,19 @@ LABEL_41:
           v43 = 0;
         }
 
-        v28 = v43;
+        latestResults4 = v43;
 
-        v44 = [v28 textField];
-        [v44 setText:v24];
+        textField = [latestResults4 textField];
+        [textField setText:v24];
 
         goto LABEL_42;
       }
 
-      if (v11 == 8)
+      if (unsignedIntegerValue == 8)
       {
-        v59 = v7;
-        v28 = [v14 latestResults];
-        [v28 objectForKey:*MEMORY[0x277D13FE8]];
+        v59 = cellCopy;
+        latestResults4 = [v14 latestResults];
+        [latestResults4 objectForKey:*MEMORY[0x277D13FE8]];
         v58 = v48 = v24;
         if ([v58 BOOLValue])
         {
@@ -345,9 +345,9 @@ LABEL_41:
 
     else
     {
-      if ((v11 - 3) < 2)
+      if ((unsignedIntegerValue - 3) < 2)
       {
-        v25 = v7;
+        v25 = cellCopy;
         v26 = &unk_282508A00;
         if ([v25 conformsToProtocol:v26])
         {
@@ -359,19 +359,19 @@ LABEL_41:
           v27 = 0;
         }
 
-        v28 = v27;
+        latestResults4 = v27;
 
-        v29 = [v16 latestResults];
-        v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D13360]];
-        [v28 setMinimumValue:v30];
+        latestResults5 = [v16 latestResults];
+        v30 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13360]];
+        [latestResults4 setMinimumValue:v30];
 
-        v31 = [v16 latestResults];
-        v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13358]];
-        [v28 setMaximumValue:v32];
+        latestResults6 = [v16 latestResults];
+        v32 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13358]];
+        [latestResults4 setMaximumValue:v32];
 
-        v33 = [v16 latestResults];
-        v34 = [v33 objectForKeyedSubscript:*MEMORY[0x277D13368]];
-        [v28 setStepValue:v34];
+        latestResults7 = [v16 latestResults];
+        v34 = [latestResults7 objectForKeyedSubscript:*MEMORY[0x277D13368]];
+        [latestResults4 setStepValue:v34];
 
         if (v21)
         {
@@ -383,14 +383,14 @@ LABEL_41:
           v35 = &unk_282491A78;
         }
 
-        [v28 setStepperValue:v35];
+        [latestResults4 setStepperValue:v35];
         goto LABEL_42;
       }
 
-      if (v11 == 2)
+      if (unsignedIntegerValue == 2)
       {
         objc_opt_class();
-        v45 = v7;
+        v45 = cellCopy;
         if (objc_opt_isKindOfClass())
         {
           v46 = v45;
@@ -401,27 +401,27 @@ LABEL_41:
           v46 = 0;
         }
 
-        v28 = v46;
+        latestResults4 = v46;
 
-        v47 = [v16 latestResults];
-        [v47 objectForKeyedSubscript:*MEMORY[0x277D13360]];
+        latestResults8 = [v16 latestResults];
+        [latestResults8 objectForKeyedSubscript:*MEMORY[0x277D13360]];
         v49 = v48 = v24;
         [v49 floatValue];
         v51 = v50;
 
-        v52 = [v16 latestResults];
-        v53 = [v52 objectForKeyedSubscript:*MEMORY[0x277D13358]];
+        latestResults9 = [v16 latestResults];
+        v53 = [latestResults9 objectForKeyedSubscript:*MEMORY[0x277D13358]];
         [v53 floatValue];
         v55 = v54;
 
-        [v28 setMinimumValue:v51];
-        [v28 setMaximumValue:v55];
+        [latestResults4 setMinimumValue:v51];
+        [latestResults4 setMaximumValue:v55];
         [v78 floatValue];
-        [v28 setValue:v56];
-        v57 = [v14 latestResults];
-        v58 = [v57 objectForKeyedSubscript:*MEMORY[0x277D13378]];
+        [latestResults4 setValue:v56];
+        latestResults10 = [v14 latestResults];
+        v58 = [latestResults10 objectForKeyedSubscript:*MEMORY[0x277D13378]];
 
-        [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:v28 withUserInfo:v58 minValue:v51 maxValue:v55];
+        [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:latestResults4 withUserInfo:v58 minValue:v51 maxValue:v55];
 LABEL_41:
 
         v24 = v48;
@@ -429,7 +429,7 @@ LABEL_42:
       }
     }
 
-    v61 = [(HUAccessorySettingsItemModuleController *)self delegate];
+    delegate = [(HUAccessorySettingsItemModuleController *)self delegate];
     v62 = objc_opt_respondsToSelector();
 
     if (v62)
@@ -449,10 +449,10 @@ LABEL_42:
 
       v66 = v65;
 
-      v67 = [(HUAccessorySettingsItemModuleController *)self delegate];
-      v68 = [v67 moduleController:self shouldDisableItem:v66];
+      delegate2 = [(HUAccessorySettingsItemModuleController *)self delegate];
+      v68 = [delegate2 moduleController:self shouldDisableItem:v66];
 
-      v69 = v7;
+      v69 = cellCopy;
       v70 = &unk_2824BFD88;
       if ([v69 conformsToProtocol:v70])
       {
@@ -477,10 +477,10 @@ LABEL_42:
     goto LABEL_64;
   }
 
-  if (v11 == 9)
+  if (unsignedIntegerValue == 9)
   {
     objc_opt_class();
-    v36 = v7;
+    v36 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v37 = v36;
@@ -493,8 +493,8 @@ LABEL_42:
 
     v38 = v37;
 
-    v39 = [v14 latestResults];
-    v40 = [v39 objectForKeyedSubscript:*MEMORY[0x277D13D30]];
+    latestResults11 = [v14 latestResults];
+    v40 = [latestResults11 objectForKeyedSubscript:*MEMORY[0x277D13D30]];
 
     if (v40)
     {
@@ -507,10 +507,10 @@ LABEL_42:
     }
 
     objc_opt_class();
-    v73 = [v38 accessoryView];
+    accessoryView = [v38 accessoryView];
     if (objc_opt_isKindOfClass())
     {
-      v74 = v73;
+      v74 = accessoryView;
     }
 
     else
@@ -524,7 +524,7 @@ LABEL_42:
     {
       if (v75)
       {
-        v76 = v73;
+        v76 = accessoryView;
 
         [v38 setDisabled:1];
         [v76 startAnimating];
@@ -565,15 +565,15 @@ id __71__HUAccessorySettingsItemModuleController_updateCell_forItem_animated___b
   return v2;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13348]];
-  v7 = [v6 unsignedIntegerValue];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13348]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   objc_opt_class();
-  v8 = v4;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -588,7 +588,7 @@ id __71__HUAccessorySettingsItemModuleController_updateCell_forItem_animated___b
 
   if (v10)
   {
-    v11 = v7 == 0;
+    v11 = unsignedIntegerValue == 0;
   }
 
   else
@@ -598,13 +598,13 @@ id __71__HUAccessorySettingsItemModuleController_updateCell_forItem_animated___b
 
   if (v11)
   {
-    v12 = [(HUAccessorySettingsItemModuleController *)self delegate];
+    delegate = [(HUAccessorySettingsItemModuleController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(HUAccessorySettingsItemModuleController *)self delegate];
-      [v14 moduleController:self presentGroup:v10];
+      delegate2 = [(HUAccessorySettingsItemModuleController *)self delegate];
+      [delegate2 moduleController:self presentGroup:v10];
     }
 
     v15 = 1;
@@ -612,7 +612,7 @@ id __71__HUAccessorySettingsItemModuleController_updateCell_forItem_animated___b
 
   else
   {
-    if (v7 == 9)
+    if (unsignedIntegerValue == 9)
     {
       [(HUAccessorySettingsItemModuleController *)self _handleButtonPress:v8];
     }
@@ -645,33 +645,33 @@ id __71__HUAccessorySettingsItemModuleController_updateCell_forItem_animated___b
   return v15;
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v3 = [a3 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-  v5 = [v4 BOOLValue];
+  latestResults = [item latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)_selectOptionItem:(id)a3
+- (void)_selectOptionItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModuleController.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"optionItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModuleController.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"optionItem"}];
   }
 
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v5 value];
-  v8 = [v6 updateItem:v5 withValue:v7];
+  module = [(HUItemModuleController *)self module];
+  value = [itemCopy value];
+  v8 = [module updateItem:itemCopy withValue:value];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__HUAccessorySettingsItemModuleController__selectOptionItem___block_invoke;
   v12[3] = &unk_277DB7530;
-  v13 = v5;
-  v9 = v5;
+  v13 = itemCopy;
+  v9 = itemCopy;
   v10 = [v8 addCompletionBlock:v12];
 }
 
@@ -711,14 +711,14 @@ LABEL_6:
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
-  v8 = [v7 objectForKey:v6];
+  cellToItemMap = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
+  v8 = [cellToItemMap objectForKey:cellCopy];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -736,9 +736,9 @@ LABEL_6:
   {
     v12 = @"OFF";
     *buf = 138412802;
-    v26 = v6;
+    v26 = cellCopy;
     v27 = 2112;
-    if (v4)
+    if (onCopy)
     {
       v12 = @"ON";
     }
@@ -749,24 +749,24 @@ LABEL_6:
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "(Switch) '%@/%@' value changing to '%@'", buf, 0x20u);
   }
 
-  v13 = [(HUAccessorySettingsItemModuleController *)self delegate];
+  delegate = [(HUAccessorySettingsItemModuleController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(HUAccessorySettingsItemModuleController *)self delegate];
+    delegate2 = [(HUAccessorySettingsItemModuleController *)self delegate];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __64__HUAccessorySettingsItemModuleController_switchCell_didTurnOn___block_invoke;
     v20 = &unk_277DBDD10;
-    v21 = v6;
-    v24 = v4;
+    v21 = cellCopy;
+    v24 = onCopy;
     v22 = v10;
-    v23 = self;
-    [v15 moduleController:self preflightCheckToAllowSwitchingForSettingItem:v22 changingToOn:v4 withCompletion:&v17];
+    selfCopy = self;
+    [delegate2 moduleController:self preflightCheckToAllowSwitchingForSettingItem:v22 changingToOn:onCopy withCompletion:&v17];
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:{v4, v17, v18, v19, v20}];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:{onCopy, v17, v18, v19, v20}];
   [(HUAccessorySettingsItemModuleController *)self _updateSwitchSettingItem:v10 withValue:v16];
 }
 
@@ -876,21 +876,21 @@ uint64_t __64__HUAccessorySettingsItemModuleController_switchCell_didTurnOn___bl
   return [*(a1 + 40) setOn:(*(a1 + 48) & 1) == 0 animated:1];
 }
 
-- (void)_updateSwitchSettingItem:(id)a3 withValue:(id)a4
+- (void)_updateSwitchSettingItem:(id)item withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  valueCopy = value;
   objc_initWeak(&location, self);
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 updateItem:v6 withValue:v7];
+  module = [(HUItemModuleController *)self module];
+  v9 = [module updateItem:itemCopy withValue:valueCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__HUAccessorySettingsItemModuleController__updateSwitchSettingItem_withValue___block_invoke;
   v13[3] = &unk_277DC0018;
   objc_copyWeak(&v16, &location);
-  v10 = v6;
+  v10 = itemCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = valueCopy;
   v15 = v11;
   v12 = [v9 addCompletionBlock:v13];
 
@@ -957,13 +957,13 @@ LABEL_12:
   }
 }
 
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
-  v7 = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
-  v8 = [v7 objectForKey:v6];
+  cellToItemMap = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
+  v8 = [cellToItemMap objectForKey:cellCopy];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -977,10 +977,10 @@ LABEL_12:
   v10 = v9;
 
   objc_opt_class();
-  v11 = [v10 setting];
+  setting = [v10 setting];
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = setting;
   }
 
   else
@@ -990,49 +990,49 @@ LABEL_12:
 
   v13 = v12;
 
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v15 = [v10 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13378]];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:value];
+  latestResults = [v10 latestResults];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13378]];
 
   v17 = [v16 objectForKeyedSubscript:@"ShowValuesAsInteger"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue)
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithDouble:round(a4)];
+    v19 = [MEMORY[0x277CCABB0] numberWithDouble:round(value)];
 LABEL_9:
 
     goto LABEL_17;
   }
 
-  v20 = [v13 minimumValue];
-  if (v20)
+  minimumValue = [v13 minimumValue];
+  if (minimumValue)
   {
-    v21 = v20;
-    v22 = [v13 maximumValue];
-    if (v22)
+    v21 = minimumValue;
+    maximumValue = [v13 maximumValue];
+    if (maximumValue)
     {
-      v23 = v22;
-      v24 = [v13 stepValue];
+      v23 = maximumValue;
+      stepValue = [v13 stepValue];
 
-      if (v24)
+      if (stepValue)
       {
         v25 = MEMORY[0x277CCABB0];
-        v26 = [v13 minimumValue];
-        [v26 doubleValue];
+        minimumValue2 = [v13 minimumValue];
+        [minimumValue2 doubleValue];
         v28 = v27;
-        v29 = [v13 maximumValue];
-        [v29 doubleValue];
+        maximumValue2 = [v13 maximumValue];
+        [maximumValue2 doubleValue];
         v31 = v30;
-        v32 = [v13 stepValue];
-        [v32 doubleValue];
-        v19 = [v25 numberWithDouble:{HUClampWithStep(v28, v31, v33, a4)}];
+        stepValue2 = [v13 stepValue];
+        [stepValue2 doubleValue];
+        v19 = [v25 numberWithDouble:{HUClampWithStep(v28, v31, v33, value)}];
 
         v14 = HFLogForCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v38 = a4;
+          valueCopy = value;
           v39 = 2112;
           v40 = v19;
           _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "(Slider) Clamping value '%f' to '%@'", buf, 0x16u);
@@ -1054,7 +1054,7 @@ LABEL_17:
   v36[0] = v19;
   v36[1] = v10;
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-  if ([v6 isContinuous])
+  if ([cellCopy isContinuous])
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
     [(HUAccessorySettingsItemModuleController *)self performSelector:sel__updateSettingItemWithInfo_ withObject:v34 afterDelay:0.1];
@@ -1066,12 +1066,12 @@ LABEL_17:
   }
 }
 
-- (void)_updateSettingItemWithInfo:(id)a3
+- (void)_updateSettingItemWithInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"settingItem"];
-  v6 = [v4 objectForKeyedSubscript:@"value"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"settingItem"];
+  v6 = [infoCopy objectForKeyedSubscript:@"value"];
 
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1083,8 +1083,8 @@ LABEL_17:
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(Slider) Updating %@ to '%@'", buf, 0x16u);
   }
 
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 updateItem:v5 withValue:v6];
+  module = [(HUItemModuleController *)self module];
+  v9 = [module updateItem:v5 withValue:v6];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__HUAccessorySettingsItemModuleController__updateSettingItemWithInfo___block_invoke;
@@ -1127,15 +1127,15 @@ void __70__HUAccessorySettingsItemModuleController__updateSettingItemWithInfo___
   }
 }
 
-- (id)valueDescriptionForItem:(id)a3 value:(double)a4
+- (id)valueDescriptionForItem:(id)item value:(double)value
 {
-  v5 = [a3 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13378]];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13378]];
 
   v7 = [v6 objectForKeyedSubscript:@"ValueFormatterLocalizedStringKey"];
   if ([v7 isEqualToString:@"HUAccessorySettingSecondsIntegerPluralizedString"])
   {
-    LODWORD(v14) = llround(a4);
+    LODWORD(v14) = llround(value);
     v15 = HULocalizedStringWithFormat(v7, @"%d second(s)", v8, v9, v10, v11, v12, v13, v14);
   }
 
@@ -1147,13 +1147,13 @@ void __70__HUAccessorySettingsItemModuleController__updateSettingItemWithInfo___
   return v15;
 }
 
-- (void)stepperCell:(id)a3 steppedToValue:(id)a4
+- (void)stepperCell:(id)cell steppedToValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  cellCopy = cell;
   objc_opt_class();
-  v8 = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
-  v9 = [v8 objectForKey:v7];
+  cellToItemMap = [(HUAccessorySettingsItemModuleController *)self cellToItemMap];
+  v9 = [cellToItemMap objectForKey:cellCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1167,15 +1167,15 @@ void __70__HUAccessorySettingsItemModuleController__updateSettingItemWithInfo___
 
   v11 = v10;
 
-  v12 = [(HUItemModuleController *)self module];
-  v13 = [v12 updateItem:v11 withValue:v6];
+  module = [(HUItemModuleController *)self module];
+  v13 = [module updateItem:v11 withValue:valueCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__HUAccessorySettingsItemModuleController_stepperCell_steppedToValue___block_invoke;
   v17[3] = &unk_277DB7158;
   v18 = v11;
-  v19 = v6;
-  v14 = v6;
+  v19 = valueCopy;
+  v14 = valueCopy;
   v15 = v11;
   v16 = [v13 addCompletionBlock:v17];
 }
@@ -1214,83 +1214,83 @@ void __70__HUAccessorySettingsItemModuleController_stepperCell_steppedToValue___
   }
 }
 
-- (void)_setupSliderCell:(id)a3 withUserInfo:(id)a4 minValue:(double)a5 maxValue:(double)a6
+- (void)_setupSliderCell:(id)cell withUserInfo:(id)info minValue:(double)value maxValue:(double)maxValue
 {
-  v26 = a3;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:@"ShowValue"];
-  v12 = [v11 BOOLValue];
+  cellCopy = cell;
+  infoCopy = info;
+  v11 = [infoCopy objectForKeyedSubscript:@"ShowValue"];
+  bOOLValue = [v11 BOOLValue];
 
-  [v26 setShowValue:v12];
-  v13 = [v10 objectForKeyedSubscript:@"EnableContinuousSlider"];
-  v14 = [v13 BOOLValue];
+  [cellCopy setShowValue:bOOLValue];
+  v13 = [infoCopy objectForKeyedSubscript:@"EnableContinuousSlider"];
+  bOOLValue2 = [v13 BOOLValue];
 
-  [v26 setContinuous:v14];
-  v15 = [v10 objectForKeyedSubscript:@"ShowMinMaxTrackingValues"];
-  LODWORD(v14) = [v15 BOOLValue];
+  [cellCopy setContinuous:bOOLValue2];
+  v15 = [infoCopy objectForKeyedSubscript:@"ShowMinMaxTrackingValues"];
+  LODWORD(bOOLValue2) = [v15 BOOLValue];
 
-  if (v14)
+  if (bOOLValue2)
   {
-    v16 = [v10 objectForKeyedSubscript:@"ShowValuesAsInteger"];
-    v17 = [v16 BOOLValue];
+    v16 = [infoCopy objectForKeyedSubscript:@"ShowValuesAsInteger"];
+    bOOLValue3 = [v16 BOOLValue];
 
-    if (v17)
+    if (bOOLValue3)
     {
-      LODWORD(v18) = llround(a5);
+      LODWORD(v18) = llround(value);
       v20 = [MEMORY[0x277CCABB0] numberWithInt:v18];
-      LODWORD(v21) = llround(a6);
+      LODWORD(v21) = llround(maxValue);
       [MEMORY[0x277CCABB0] numberWithInt:v21];
     }
 
     else
     {
-      *&v19 = a5;
+      *&v19 = value;
       v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
-      *&v23 = a6;
+      *&v23 = maxValue;
       [MEMORY[0x277CCABB0] numberWithFloat:v23];
     }
     v22 = ;
-    v24 = [v10 objectForKeyedSubscript:@"ValueMeasurementUnitType"];
-    v25 = [v24 stringValue];
+    v24 = [infoCopy objectForKeyedSubscript:@"ValueMeasurementUnitType"];
+    stringValue = [v24 stringValue];
 
-    [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:v26 forMinValue:v20 maxValue:v22 showAsInteger:v17 measurementUnitType:v25];
+    [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:cellCopy forMinValue:v20 maxValue:v22 showAsInteger:bOOLValue3 measurementUnitType:stringValue];
   }
 
   else
   {
-    v20 = [v10 objectForKeyedSubscript:@"MaximumValueTrackingImage"];
-    v22 = [v10 objectForKeyedSubscript:@"MinimumValueTrackingImage"];
-    [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:v26 forMinKey:v22 maxKey:v20];
+    v20 = [infoCopy objectForKeyedSubscript:@"MaximumValueTrackingImage"];
+    v22 = [infoCopy objectForKeyedSubscript:@"MinimumValueTrackingImage"];
+    [(HUAccessorySettingsItemModuleController *)self _setupSliderCell:cellCopy forMinKey:v22 maxKey:v20];
   }
 }
 
-- (void)_setupSliderCell:(id)a3 forMinKey:(id)a4 maxKey:(id)a5
+- (void)_setupSliderCell:(id)cell forMinKey:(id)key maxKey:(id)maxKey
 {
-  v18 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v18 && v7 | v8)
+  cellCopy = cell;
+  keyCopy = key;
+  maxKeyCopy = maxKey;
+  if (cellCopy && keyCopy | maxKeyCopy)
   {
-    if (v8)
+    if (maxKeyCopy)
     {
       v9 = MEMORY[0x277D755B8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v11 = [v9 imageNamed:v8 inBundle:v10];
+      v11 = [v9 imageNamed:maxKeyCopy inBundle:v10];
 
-      if (v7)
+      if (keyCopy)
       {
 LABEL_5:
         v12 = MEMORY[0x277D755B8];
         v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v14 = [v12 imageNamed:v7 inBundle:v13];
+        v14 = [v12 imageNamed:keyCopy inBundle:v13];
 
 LABEL_8:
-        v15 = [MEMORY[0x277D75348] hf_keyColor];
-        v16 = [v14 _flatImageWithColor:v15];
-        [v18 setMinimumValueImage:v16];
+        hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+        v16 = [v14 _flatImageWithColor:hf_keyColor];
+        [cellCopy setMinimumValueImage:v16];
 
-        v17 = [v11 _flatImageWithColor:v15];
-        [v18 setMaximumValueImage:v17];
+        v17 = [v11 _flatImageWithColor:hf_keyColor];
+        [cellCopy setMaximumValueImage:v17];
 
         goto LABEL_9;
       }
@@ -1299,7 +1299,7 @@ LABEL_8:
     else
     {
       v11 = 0;
-      if (v7)
+      if (keyCopy)
       {
         goto LABEL_5;
       }
@@ -1312,27 +1312,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_setupSliderCell:(id)a3 forMinValue:(id)a4 maxValue:(id)a5 showAsInteger:(BOOL)a6 measurementUnitType:(id)a7
+- (void)_setupSliderCell:(id)cell forMinValue:(id)value maxValue:(id)maxValue showAsInteger:(BOOL)integer measurementUnitType:(id)type
 {
-  v8 = a6;
-  v23 = a4;
-  v11 = a5;
-  v12 = a7;
-  if (a3 && v23 && v11)
+  integerCopy = integer;
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  typeCopy = type;
+  if (cell && valueCopy && maxValueCopy)
   {
-    v13 = a3;
+    cellCopy = cell;
     v14 = objc_opt_new();
     [v14 setNumberStyle:1];
-    [v14 setMinimumFractionDigits:!v8];
-    if (v12)
+    [v14 setMinimumFractionDigits:!integerCopy];
+    if (typeCopy)
     {
       v15 = objc_opt_new();
-      v16 = [MEMORY[0x277CCAD98] unitFromSymbolString:v12];
+      v16 = [MEMORY[0x277CCAD98] unitFromSymbolString:typeCopy];
       v17 = objc_alloc(MEMORY[0x277CCAB10]);
-      [v23 doubleValue];
+      [valueCopy doubleValue];
       v18 = [v17 initWithDoubleValue:v16 unit:?];
       v19 = objc_alloc(MEMORY[0x277CCAB10]);
-      [v11 doubleValue];
+      [maxValueCopy doubleValue];
       v20 = [v19 initWithDoubleValue:v16 unit:?];
       [v15 setNumberFormatter:v14];
       [v15 setUnitStyle:1];
@@ -1342,24 +1342,24 @@ LABEL_9:
 
     else
     {
-      v21 = [v14 stringFromNumber:v23];
-      v22 = [v14 stringFromNumber:v11];
+      v21 = [v14 stringFromNumber:valueCopy];
+      v22 = [v14 stringFromNumber:maxValueCopy];
     }
 
-    [v13 setMinimumValueText:v21];
-    [v13 setMaximumValueText:v22];
+    [cellCopy setMinimumValueText:v21];
+    [cellCopy setMaximumValueText:v22];
   }
 }
 
-- (void)_handleButtonPress:(id)a3
+- (void)_handleButtonPress:(id)press
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13388]];
+  pressCopy = press;
+  latestResults = [pressCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13388]];
 
-  v7 = [v6 keyPath];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D13960]];
+  keyPath = [v6 keyPath];
+  v8 = [keyPath isEqualToString:*MEMORY[0x277D13960]];
 
   if (v8)
   {
@@ -1369,15 +1369,15 @@ LABEL_9:
       *buf = 136315394;
       v36 = "[HUAccessorySettingsItemModuleController _handleButtonPress:]";
       v37 = 2112;
-      v38 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%s(%@)initiating 'Export Analytics'", buf, 0x16u);
     }
 
-    v10 = [(HUItemModuleController *)self module];
-    v11 = [v10 homeKitSettingsVendor];
-    v12 = [v11 hf_settingsAdapterManager];
-    v13 = [v6 adapterIdentifier];
-    v14 = [v12 adapterForIdentifier:v13];
+    module = [(HUItemModuleController *)self module];
+    homeKitSettingsVendor = [module homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor hf_settingsAdapterManager];
+    adapterIdentifier = [v6 adapterIdentifier];
+    v14 = [hf_settingsAdapterManager adapterForIdentifier:adapterIdentifier];
     v15 = &unk_2825BD7E0;
     if ([v14 conformsToProtocol:v15])
     {
@@ -1406,7 +1406,7 @@ LABEL_9:
     v19 = v17;
     v33 = v19;
     v20 = [v18 flatMap:&v29];
-    [(HUAccessorySettingsItemModuleController *)self _registerButtonActionHandler:v18 item:v4, v29, v30, v31, v32];
+    [(HUAccessorySettingsItemModuleController *)self _registerButtonActionHandler:v18 item:pressCopy, v29, v30, v31, v32];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(buf);
@@ -1414,11 +1414,11 @@ LABEL_9:
 
   else
   {
-    v21 = [(HUItemModuleController *)self module];
-    v22 = [v21 homeKitSettingsVendor];
-    v23 = [v22 hf_settingsAdapterManager];
-    v24 = [v6 adapterIdentifier];
-    v25 = [v23 adapterForIdentifier:v24];
+    module2 = [(HUItemModuleController *)self module];
+    homeKitSettingsVendor2 = [module2 homeKitSettingsVendor];
+    hf_settingsAdapterManager2 = [homeKitSettingsVendor2 hf_settingsAdapterManager];
+    adapterIdentifier2 = [v6 adapterIdentifier];
+    v25 = [hf_settingsAdapterManager2 adapterForIdentifier:adapterIdentifier2];
     if ([v25 conformsToProtocol:&unk_2825BD7E0])
     {
       v26 = v25;
@@ -1437,7 +1437,7 @@ LABEL_9:
     }
 
     v28 = [v27 handleButtonPressForEntity:v6];
-    [(HUAccessorySettingsItemModuleController *)self _registerButtonActionHandler:v28 item:v4];
+    [(HUAccessorySettingsItemModuleController *)self _registerButtonActionHandler:v28 item:pressCopy];
   }
 }
 
@@ -1545,12 +1545,12 @@ void __62__HUAccessorySettingsItemModuleController__handleButtonPress___block_in
   }
 }
 
-- (void)_registerButtonActionHandler:(id)a3 item:(id)a4
+- (void)_registerButtonActionHandler:(id)handler item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUAccessorySettingsItemModuleController *)self registeredButtonFutures];
-  v10 = [v9 containsObject:v7];
+  handlerCopy = handler;
+  itemCopy = item;
+  registeredButtonFutures = [(HUAccessorySettingsItemModuleController *)self registeredButtonFutures];
+  v10 = [registeredButtonFutures containsObject:handlerCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -1560,10 +1560,10 @@ void __62__HUAccessorySettingsItemModuleController__handleButtonPress___block_in
     aBlock[2] = __77__HUAccessorySettingsItemModuleController__registerButtonActionHandler_item___block_invoke;
     aBlock[3] = &unk_277DBEE28;
     objc_copyWeak(v25, &location);
-    v24 = v8;
+    v24 = itemCopy;
     v25[1] = a2;
     v11 = _Block_copy(aBlock);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, handlerCopy);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __77__HUAccessorySettingsItemModuleController__registerButtonActionHandler_item___block_invoke_2;
@@ -1572,9 +1572,9 @@ void __62__HUAccessorySettingsItemModuleController__handleButtonPress___block_in
     v12 = v11;
     v19 = v12;
     objc_copyWeak(&v21, &from);
-    v13 = [v7 addCompletionBlock:&v15];
+    v13 = [handlerCopy addCompletionBlock:&v15];
     v14 = [(HUAccessorySettingsItemModuleController *)self registeredButtonFutures:v15];
-    [v14 na_safeAddObject:v7];
+    [v14 na_safeAddObject:handlerCopy];
 
     v12[2](v12);
     objc_destroyWeak(&v21);
@@ -1614,17 +1614,17 @@ void __77__HUAccessorySettingsItemModuleController__registerButtonActionHandler_
   [v6 removeObject:v7];
 }
 
-- (void)_setupCellAccessoryType:(id)a3 forItem:(id)a4 withKey:(id)a5
+- (void)_setupCellAccessoryType:(id)type forItem:(id)item withKey:(id)key
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  itemCopy = item;
+  keyCopy = key;
   v12 = 1;
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v9 = [v7 latestResults];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13340]];
-    v11 = [v10 isEqual:v8];
+    latestResults = [itemCopy latestResults];
+    v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13340]];
+    v11 = [v10 isEqual:keyCopy];
 
     if (v11)
     {
@@ -1632,7 +1632,7 @@ void __77__HUAccessorySettingsItemModuleController__registerButtonActionHandler_
     }
   }
 
-  [v13 setAccessoryType:v12];
+  [typeCopy setAccessoryType:v12];
 }
 
 - (HUAccessorySettingsItemModuleControllerDelegate)delegate

@@ -1,14 +1,14 @@
 @interface AAUIBadgeModel
-- (AAUIBadgeModel)initWithPath:(id)a3;
-- (void)_loadModelAtPath:(id)a3 intoVertices:(id *)a4 indices:(unsigned int *)a5 groups:(int *)a6 materials:(int *)a7 vertexCount:(int *)a8 indexCount:(int *)a9 groupCount:(int *)a10;
+- (AAUIBadgeModel)initWithPath:(id)path;
+- (void)_loadModelAtPath:(id)path intoVertices:(id *)vertices indices:(unsigned int *)indices groups:(int *)groups materials:(int *)materials vertexCount:(int *)count indexCount:(int *)indexCount groupCount:(int *)self0;
 - (void)dealloc;
 @end
 
 @implementation AAUIBadgeModel
 
-- (AAUIBadgeModel)initWithPath:(id)a3
+- (AAUIBadgeModel)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15 = 0;
   v16 = 0;
   v14 = 0;
@@ -21,7 +21,7 @@
   v6 = v5;
   if (v5)
   {
-    [(AAUIBadgeModel *)v5 _loadModelAtPath:v4 intoVertices:&v16 indices:&v15 groups:&v14 materials:&v13 vertexCount:&v12 + 4 indexCount:&v12 groupCount:&v11];
+    [(AAUIBadgeModel *)v5 _loadModelAtPath:pathCopy intoVertices:&v16 indices:&v15 groups:&v14 materials:&v13 vertexCount:&v12 + 4 indexCount:&v12 groupCount:&v11];
     v7 = v15;
     v6->_vertices = v16;
     v6->_indices = v7;
@@ -37,10 +37,10 @@
   return v6;
 }
 
-- (void)_loadModelAtPath:(id)a3 intoVertices:(id *)a4 indices:(unsigned int *)a5 groups:(int *)a6 materials:(int *)a7 vertexCount:(int *)a8 indexCount:(int *)a9 groupCount:(int *)a10
+- (void)_loadModelAtPath:(id)path intoVertices:(id *)vertices indices:(unsigned int *)indices groups:(int *)groups materials:(int *)materials vertexCount:(int *)count indexCount:(int *)indexCount groupCount:(int *)self0
 {
   *&size[1] = *MEMORY[0x277D85DE8];
-  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:a3];
+  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
   [v10 getBytes:v25 length:12];
   v12 = v25[0];
   v11 = v25[1];
@@ -56,13 +56,13 @@
   v11 *= 3;
   v19 = malloc_type_calloc(4uLL, v11, 0xBC34BC3EuLL);
   [v10 getBytes:v19 range:{v17 + 32 * v12, 4 * v11}];
-  *a8 = v12;
-  *a9 = v11;
-  *a10 = v13;
-  *a4 = v18;
-  *a5 = v19;
-  *a6 = v16;
-  *a7 = v14;
+  *count = v12;
+  *indexCount = v11;
+  *groupCount = v13;
+  *vertices = v18;
+  *indices = v19;
+  *groups = v16;
+  *materials = v14;
 }
 
 - (void)dealloc

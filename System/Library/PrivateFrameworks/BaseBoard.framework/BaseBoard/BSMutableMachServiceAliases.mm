@@ -1,6 +1,6 @@
 @interface BSMutableMachServiceAliases
 + (id)new;
-- (void)setService:(id)a3 forAlias:(id)a4;
+- (void)setService:(id)service forAlias:(id)alias;
 @end
 
 @implementation BSMutableMachServiceAliases
@@ -8,26 +8,26 @@
 + (id)new
 {
   v2 = [BSMutableMachServiceAliases alloc];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(BSMachServiceAliases *)&v2->super.super.isa _initWithAliases:v3 encoded:0 mutable:1];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = [(BSMachServiceAliases *)&v2->super.super.isa _initWithAliases:dictionary encoded:0 mutable:1];
 
   return v4;
 }
 
-- (void)setService:(id)a3 forAlias:(id)a4
+- (void)setService:(id)service forAlias:(id)alias
 {
   v50 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  aliasCopy = alias;
   if (self)
   {
     if (!self->super._mutable)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:91 description:{@"cannot mutate an immutable : %@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:91 description:{@"cannot mutate an immutable : %@", self}];
     }
 
-    v7 = v37;
+    v7 = serviceCopy;
     NSClassFromString(&cfstr_Nsstring.isa);
     if (!v7)
     {
@@ -42,7 +42,7 @@
         v40 = 2114;
         v41 = v18;
         v42 = 2048;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2114;
         v45 = @"BSMachServiceAliases.m";
         v46 = 1024;
@@ -71,7 +71,7 @@
         v40 = 2114;
         v41 = v23;
         v42 = 2048;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2114;
         v45 = @"BSMachServiceAliases.m";
         v46 = 1024;
@@ -87,7 +87,7 @@
       JUMPOUT(0x18FF4CC04);
     }
 
-    v8 = v6;
+    v8 = aliasCopy;
     NSClassFromString(&cfstr_Nsstring.isa);
     if (!v8)
     {
@@ -102,7 +102,7 @@
         v40 = 2114;
         v41 = v28;
         v42 = 2048;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2114;
         v45 = @"BSMachServiceAliases.m";
         v46 = 1024;
@@ -131,7 +131,7 @@
         v40 = 2114;
         v41 = v33;
         v42 = 2048;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2114;
         v45 = @"BSMachServiceAliases.m";
         v46 = 1024;
@@ -149,14 +149,14 @@
 
     if (![v7 length])
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:94 description:@"machService cannot be empty"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:94 description:@"machService cannot be empty"];
     }
 
     if (![v8 length])
     {
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v36 handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:95 description:@"machService cannot be empty"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__setService_forAlias_ object:self file:@"BSMachServiceAliases.m" lineNumber:95 description:@"machService cannot be empty"];
     }
 
     os_unfair_lock_lock(&self->super._lock);

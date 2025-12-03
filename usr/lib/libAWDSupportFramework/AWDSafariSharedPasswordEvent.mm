@@ -1,20 +1,20 @@
 @interface AWDSafariSharedPasswordEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInitiatedSharePasswordOutcome:(id)a3;
-- (int)StringAsReceivedSharedPasswordOutcome:(id)a3;
+- (int)StringAsInitiatedSharePasswordOutcome:(id)outcome;
+- (int)StringAsReceivedSharedPasswordOutcome:(id)outcome;
 - (int)initiatedSharePasswordOutcome;
 - (int)passwordSharingMechanism;
 - (int)receivedSharedPasswordOutcome;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInitiatedSharePasswordOutcome:(BOOL)a3;
-- (void)setHasPasswordSharingMechanism:(BOOL)a3;
-- (void)setHasReceivedSharedPasswordOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInitiatedSharePasswordOutcome:(BOOL)outcome;
+- (void)setHasPasswordSharingMechanism:(BOOL)mechanism;
+- (void)setHasReceivedSharedPasswordOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariSharedPasswordEvent
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setHasInitiatedSharePasswordOutcome:(BOOL)a3
+- (void)setHasInitiatedSharePasswordOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -47,24 +47,24 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsInitiatedSharePasswordOutcome:(id)a3
+- (int)StringAsInitiatedSharePasswordOutcome:(id)outcome
 {
-  if ([a3 isEqualToString:@"COMPLETED"])
+  if ([outcome isEqualToString:@"COMPLETED"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"CANCELLED"])
+  if ([outcome isEqualToString:@"CANCELLED"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"FAILED_WITH_ERROR"])
+  if ([outcome isEqualToString:@"FAILED_WITH_ERROR"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"ABORTED_DUE_TO_LOCKOUT"])
+  if ([outcome isEqualToString:@"ABORTED_DUE_TO_LOCKOUT"])
   {
     return 3;
   }
@@ -85,9 +85,9 @@
   }
 }
 
-- (void)setHasReceivedSharedPasswordOutcome:(BOOL)a3
+- (void)setHasReceivedSharedPasswordOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 8;
   }
@@ -100,19 +100,19 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsReceivedSharedPasswordOutcome:(id)a3
+- (int)StringAsReceivedSharedPasswordOutcome:(id)outcome
 {
-  if ([a3 isEqualToString:@"NO_CONFLICT"])
+  if ([outcome isEqualToString:@"NO_CONFLICT"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"UPDATE_EXISTING_PASSWORD_AFTER_CONFLICT"])
+  if ([outcome isEqualToString:@"UPDATE_EXISTING_PASSWORD_AFTER_CONFLICT"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"DO_NOT_UPDATE_EXISTING_PASSWORD_AFTER_CONFLICT"])
+  if ([outcome isEqualToString:@"DO_NOT_UPDATE_EXISTING_PASSWORD_AFTER_CONFLICT"])
   {
     return 2;
   }
@@ -133,9 +133,9 @@
   }
 }
 
-- (void)setHasPasswordSharingMechanism:(BOOL)a3
+- (void)setHasPasswordSharingMechanism:(BOOL)mechanism
 {
-  if (a3)
+  if (mechanism)
   {
     v3 = 4;
   }
@@ -157,11 +157,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -191,14 +191,14 @@ LABEL_3:
     v6 = off_29EE32E78[initiatedSharePasswordOutcome];
   }
 
-  [v3 setObject:v6 forKey:@"initiatedSharePasswordOutcome"];
+  [dictionary setObject:v6 forKey:@"initiatedSharePasswordOutcome"];
   has = self->_has;
   if ((has & 8) == 0)
   {
 LABEL_4:
     if ((has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_15;
@@ -216,7 +216,7 @@ LABEL_11:
     v8 = off_29EE32E98[receivedSharedPasswordOutcome];
   }
 
-  [v3 setObject:v8 forKey:@"receivedSharedPasswordOutcome"];
+  [dictionary setObject:v8 forKey:@"receivedSharedPasswordOutcome"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_15:
@@ -230,13 +230,13 @@ LABEL_15:
       v9 = @"AIRDROP";
     }
 
-    [v3 setObject:v9 forKey:@"passwordSharingMechanism"];
+    [dictionary setObject:v9 forKey:@"passwordSharingMechanism"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -289,13 +289,13 @@ LABEL_9:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -314,8 +314,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_initiatedSharePasswordOutcome;
-  *(a3 + 28) |= 2u;
+  *(to + 4) = self->_initiatedSharePasswordOutcome;
+  *(to + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -326,23 +326,23 @@ LABEL_4:
     }
 
 LABEL_9:
-    *(a3 + 5) = self->_passwordSharingMechanism;
-    *(a3 + 28) |= 4u;
+    *(to + 5) = self->_passwordSharingMechanism;
+    *(to + 28) |= 4u;
     return;
   }
 
 LABEL_8:
-  *(a3 + 6) = self->_receivedSharedPasswordOutcome;
-  *(a3 + 28) |= 8u;
+  *(to + 6) = self->_receivedSharedPasswordOutcome;
+  *(to + 28) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -394,20 +394,20 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_21:
       LOBYTE(v5) = 0;
@@ -416,34 +416,34 @@ LABEL_21:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_initiatedSharePasswordOutcome != *(a3 + 4))
+      if ((*(equal + 28) & 2) == 0 || self->_initiatedSharePasswordOutcome != *(equal + 4))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 28) & 2) != 0)
+    else if ((*(equal + 28) & 2) != 0)
     {
       goto LABEL_21;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 28) & 8) == 0 || self->_receivedSharedPasswordOutcome != *(a3 + 6))
+      if ((*(equal + 28) & 8) == 0 || self->_receivedSharedPasswordOutcome != *(equal + 6))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 28) & 8) != 0)
+    else if ((*(equal + 28) & 8) != 0)
     {
       goto LABEL_21;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 28) & 4) == 0 || self->_passwordSharingMechanism != *(a3 + 5))
+      if ((*(equal + 28) & 4) == 0 || self->_passwordSharingMechanism != *(equal + 5))
       {
         goto LABEL_21;
       }
@@ -509,14 +509,14 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -529,14 +529,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 28) & 2) == 0)
+  else if ((*(from + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_initiatedSharePasswordOutcome = *(a3 + 4);
+  self->_initiatedSharePasswordOutcome = *(from + 4);
   *&self->_has |= 2u;
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -546,15 +546,15 @@ LABEL_4:
     }
 
 LABEL_9:
-    self->_passwordSharingMechanism = *(a3 + 5);
+    self->_passwordSharingMechanism = *(from + 5);
     *&self->_has |= 4u;
     return;
   }
 
 LABEL_8:
-  self->_receivedSharedPasswordOutcome = *(a3 + 6);
+  self->_receivedSharedPasswordOutcome = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 28) & 4) != 0)
+  if ((*(from + 28) & 4) != 0)
   {
     goto LABEL_9;
   }

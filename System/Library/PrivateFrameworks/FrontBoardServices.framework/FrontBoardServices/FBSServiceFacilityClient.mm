@@ -2,32 +2,32 @@
 + (BSServiceConnectionEndpoint)defaultShellEndpoint;
 - (BOOL)_isValid;
 - (FBSServiceFacilityClient)init;
-- (FBSServiceFacilityClient)initWithConfigurator:(id)a3;
-- (FBSServiceFacilityClient)initWithIdentifier:(id)a3 calloutQueue:(id)a4;
+- (FBSServiceFacilityClient)initWithConfigurator:(id)configurator;
+- (FBSServiceFacilityClient)initWithIdentifier:(id)identifier calloutQueue:(id)queue;
 - (NSString)description;
 - (void)_lock_activate;
 - (void)_lock_invalidate;
-- (void)_queue_handleError:(id)a3;
-- (void)_queue_handleMessage:(id)a3;
+- (void)_queue_handleError:(id)error;
+- (void)_queue_handleMessage:(id)message;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendMessage:(id)a3 withType:(int64_t)a4 replyHandler:(id)a5 waitForReply:(BOOL)a6 timeout:(double)a7;
-- (void)setCalloutQueue:(id)a3;
-- (void)setEndpoint:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setInterface:(id)a3;
-- (void)setInterfaceTarget:(id)a3;
-- (void)setServiceQuality:(id)a3;
+- (void)sendMessage:(id)message withType:(int64_t)type replyHandler:(id)handler waitForReply:(BOOL)reply timeout:(double)timeout;
+- (void)setCalloutQueue:(id)queue;
+- (void)setEndpoint:(id)endpoint;
+- (void)setIdentifier:(id)identifier;
+- (void)setInterface:(id)interface;
+- (void)setInterfaceTarget:(id)target;
+- (void)setServiceQuality:(id)quality;
 @end
 
 @implementation FBSServiceFacilityClient
 
 + (BSServiceConnectionEndpoint)defaultShellEndpoint
 {
-  v2 = [off_1E76BC9E0 environmentAliases];
-  v3 = [off_1E76BCA30 defaultShellMachName];
-  v4 = [v2 resolveMachService:v3];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v4 = [environmentAliases resolveMachService:defaultShellMachName];
   v5 = +[FBSSystemServiceSpecification identifier];
   v6 = [off_1E76BCA30 endpointForMachName:v4 service:v5 instance:0];
   v7 = v6;
@@ -66,7 +66,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must be invalidated before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -83,7 +83,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"say no to re-creating a denied connection"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -187,7 +187,7 @@ void __42__FBSServiceFacilityClient__lock_activate__block_invoke(uint64_t a1, vo
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSServiceFacilityClient.m";
     v16 = 1024;
@@ -201,18 +201,18 @@ void __42__FBSServiceFacilityClient__lock_activate__block_invoke(uint64_t a1, vo
   _bs_set_crash_log_message();
 }
 
-- (FBSServiceFacilityClient)initWithIdentifier:(id)a3 calloutQueue:(id)a4
+- (FBSServiceFacilityClient)initWithIdentifier:(id)identifier calloutQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__FBSServiceFacilityClient_initWithIdentifier_calloutQueue___block_invoke;
   v12[3] = &unk_1E76BF8E0;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = identifierCopy;
+  v14 = queueCopy;
+  v8 = queueCopy;
+  v9 = identifierCopy;
   v10 = [(FBSServiceFacilityClient *)self initWithConfigurator:v12];
 
   return v10;
@@ -234,15 +234,15 @@ void __60__FBSServiceFacilityClient_initWithIdentifier_calloutQueue___block_invo
   }
 }
 
-- (FBSServiceFacilityClient)initWithConfigurator:(id)a3
+- (FBSServiceFacilityClient)initWithConfigurator:(id)configurator
 {
-  v5 = a3;
-  if (!v5)
+  configuratorCopy = configurator;
+  if (!configuratorCopy)
   {
     [FBSServiceFacilityClient initWithConfigurator:a2];
   }
 
-  v6 = v5;
+  v6 = configuratorCopy;
   v29.receiver = self;
   v29.super_class = FBSServiceFacilityClient;
   v7 = [(FBSServiceFacilityClient *)&v29 init];
@@ -270,16 +270,16 @@ void __60__FBSServiceFacilityClient_initWithIdentifier_calloutQueue___block_invo
     *(v7 + 15) = 0;
     if (!*(v7 + 3))
     {
-      v10 = [off_1E76BCA50 utility];
+      utility = [off_1E76BCA50 utility];
       v11 = *(v7 + 3);
-      *(v7 + 3) = v10;
+      *(v7 + 3) = utility;
 
       v9 = *(v7 + 2);
     }
 
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBSServiceFacilityClient:%@", v9];
-    v13 = [off_1E76BC9B8 serial];
-    v14 = [v13 serviceClass:objc_msgSend(*(v7 + 3) relativePriority:{"serviceClass"), objc_msgSend(*(v7 + 3), "relativePriority")}];
+    serial = [off_1E76BC9B8 serial];
+    v14 = [serial serviceClass:objc_msgSend(*(v7 + 3) relativePriority:{"serviceClass"), objc_msgSend(*(v7 + 3), "relativePriority")}];
 
     if (!*(v7 + 6))
     {
@@ -377,23 +377,23 @@ void __49__FBSServiceFacilityClient_initWithConfigurator___block_invoke_4(uint64
   [*(a1 + 32) _queue_handleError:v5];
 }
 
-- (void)setEndpoint:(id)a3
+- (void)setEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setEndpoint:a2];
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = endpointCopy;
+  if (!endpointCopy)
   {
     [FBSServiceFacilityClient setEndpoint:a2];
   }
 
-  v7 = [(BSServiceConnectionEndpoint *)v5 service];
+  service = [(BSServiceConnectionEndpoint *)endpointCopy service];
   v8 = +[FBSSystemServiceSpecification identifier];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [service isEqualToString:v8];
 
   if ((v9 & 1) == 0)
   {
@@ -404,99 +404,99 @@ void __49__FBSServiceFacilityClient_initWithConfigurator___block_invoke_4(uint64
   self->_endpoint = v6;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setIdentifier:a2];
   }
 
-  if (!v5)
+  if (!identifierCopy)
   {
     [FBSServiceFacilityClient setIdentifier:a2];
   }
 
-  v8 = v5;
-  v6 = [v5 copy];
+  v8 = identifierCopy;
+  v6 = [identifierCopy copy];
   facilityID = self->_facilityID;
   self->_facilityID = v6;
 }
 
-- (void)setServiceQuality:(id)a3
+- (void)setServiceQuality:(id)quality
 {
-  v5 = a3;
+  qualityCopy = quality;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setServiceQuality:a2];
   }
 
-  if (!v5)
+  if (!qualityCopy)
   {
     [FBSServiceFacilityClient setServiceQuality:a2];
   }
 
   serviceQuality = self->_serviceQuality;
-  self->_serviceQuality = v5;
+  self->_serviceQuality = qualityCopy;
 
-  MEMORY[0x1EEE66BB8](v5, serviceQuality);
+  MEMORY[0x1EEE66BB8](qualityCopy, serviceQuality);
 }
 
-- (void)setInterface:(id)a3
+- (void)setInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setInterface:a2];
   }
 
-  if (!v5)
+  if (!interfaceCopy)
   {
     [FBSServiceFacilityClient setInterface:a2];
   }
 
   interface = self->_interface;
-  self->_interface = v5;
+  self->_interface = interfaceCopy;
 
-  MEMORY[0x1EEE66BB8](v5, interface);
+  MEMORY[0x1EEE66BB8](interfaceCopy, interface);
 }
 
-- (void)setInterfaceTarget:(id)a3
+- (void)setInterfaceTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setInterfaceTarget:a2];
   }
 
-  if (!v5)
+  if (!targetCopy)
   {
     [FBSServiceFacilityClient setInterfaceTarget:a2];
   }
 
   configOnly_interfaceTarget = self->_configOnly_interfaceTarget;
-  self->_configOnly_interfaceTarget = v5;
+  self->_configOnly_interfaceTarget = targetCopy;
 
-  MEMORY[0x1EEE66BB8](v5, configOnly_interfaceTarget);
+  MEMORY[0x1EEE66BB8](targetCopy, configOnly_interfaceTarget);
 }
 
-- (void)setCalloutQueue:(id)a3
+- (void)setCalloutQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   if (self->_configured)
   {
     [FBSServiceFacilityClient setCalloutQueue:a2];
   }
 
-  if (!v5)
+  if (!queueCopy)
   {
     [FBSServiceFacilityClient setCalloutQueue:a2];
   }
 
   calloutQueue = self->_calloutQueue;
-  self->_calloutQueue = v5;
+  self->_calloutQueue = queueCopy;
 
-  MEMORY[0x1EEE66BB8](v5, calloutQueue);
+  MEMORY[0x1EEE66BB8](queueCopy, calloutQueue);
 }
 
 - (void)activate
@@ -511,22 +511,22 @@ void __49__FBSServiceFacilityClient_initWithConfigurator___block_invoke_4(uint64
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
   v4 = [v3 appendObject:self->_facilityID withName:@"facilityID"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)sendMessage:(id)a3 withType:(int64_t)a4 replyHandler:(id)a5 waitForReply:(BOOL)a6 timeout:(double)a7
+- (void)sendMessage:(id)message withType:(int64_t)type replyHandler:(id)handler waitForReply:(BOOL)reply timeout:(double)timeout
 {
-  v7 = a6;
-  v12 = a3;
-  v13 = a5;
-  if (!v12)
+  replyCopy = reply;
+  messageCopy = message;
+  handlerCopy = handler;
+  if (!messageCopy)
   {
     [FBSServiceFacilityClient sendMessage:a2 withType:? replyHandler:? waitForReply:? timeout:?];
   }
 
-  v14 = v13;
+  v14 = handlerCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated || self->_lock_connectionDenied)
   {
@@ -547,30 +547,30 @@ void __49__FBSServiceFacilityClient_initWithConfigurator___block_invoke_4(uint64
     v21[2] = __83__FBSServiceFacilityClient_sendMessage_withType_replyHandler_waitForReply_timeout___block_invoke;
     v21[3] = &unk_1E76BF9A8;
     v21[4] = self;
-    v23 = v7;
+    v23 = replyCopy;
     v22 = v14;
-    v16 = [(BSServiceConnection *)v15 createMessageWithCompletion:v21];
+    createMessage = [(BSServiceConnection *)v15 createMessageWithCompletion:v21];
   }
 
   else
   {
-    v16 = [(BSServiceConnection *)v15 createMessage];
+    createMessage = [(BSServiceConnection *)v15 createMessage];
   }
 
-  [v16 encodeInt64:a4 forKey:@"message"];
-  v17 = [v12 payload];
-  [v16 encodeXPCObject:v17 forKey:@"fbs_message"];
+  [createMessage encodeInt64:type forKey:@"message"];
+  payload = [messageCopy payload];
+  [createMessage encodeXPCObject:payload forKey:@"fbs_message"];
 
-  if (v16)
+  if (createMessage)
   {
-    if (v7)
+    if (replyCopy)
     {
-      [v16 sendSynchronously];
+      [createMessage sendSynchronously];
     }
 
     else
     {
-      [v16 send];
+      [createMessage send];
     }
   }
 
@@ -639,7 +639,7 @@ uint64_t __42__FBSServiceFacilityClient__lock_activate__block_invoke_92(uint64_t
   return [v2 invalidate];
 }
 
-- (void)_queue_handleError:(id)a3
+- (void)_queue_handleError:(id)error
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -649,9 +649,9 @@ uint64_t __42__FBSServiceFacilityClient__lock_activate__block_invoke_92(uint64_t
   v15[0] = @"Service suspended: the connection with the service host has been interrupted.";
   v15[1] = @"The connection with the service host has been interrupted.";
   v14[2] = *MEMORY[0x1E696AA08];
-  v15[2] = a3;
+  v15[2] = error;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  errorCopy = error;
   v8 = [v6 dictionaryWithObjects:v15 forKeys:v14 count:3];
   v9 = [v4 errorWithDomain:@"FBSServiceFacilityErrorDomain" code:2 userInfo:v8];
 
@@ -684,17 +684,17 @@ uint64_t __47__FBSServiceFacilityClient__queue_handleError___block_invoke(uint64
   return result;
 }
 
-- (void)_queue_handleMessage:(id)a3
+- (void)_queue_handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   calloutQueue = self->_calloutQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__FBSServiceFacilityClient__queue_handleMessage___block_invoke;
   v7[3] = &unk_1E76BCD60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(calloutQueue, v7);
 }
 

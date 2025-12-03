@@ -1,48 +1,48 @@
 @interface PKDAnnotationStore
-+ (id)confstrURL:(int)a3;
++ (id)confstrURL:(int)l;
 + (id)globalURL;
-- (BOOL)loadDb:(id)a3 error:(id *)a4;
-- (BOOL)saveDb:(id *)a3;
-- (PKDAnnotationStore)initWithDatabase:(id)a3 externalProviders:(id)a4;
-- (id)annotationForIdentifier:(id)a3;
-- (id)annotationForPlugIn:(id)a3;
+- (BOOL)loadDb:(id)db error:(id *)error;
+- (BOOL)saveDb:(id *)db;
+- (PKDAnnotationStore)initWithDatabase:(id)database externalProviders:(id)providers;
+- (id)annotationForIdentifier:(id)identifier;
+- (id)annotationForPlugIn:(id)in;
 - (id)containerURL;
 - (id)defaultDatabaseURL;
 - (void)containerURL;
 - (void)defaultDatabaseURL;
-- (void)setAnnotation:(id)a3 forPlugIn:(id)a4;
+- (void)setAnnotation:(id)annotation forPlugIn:(id)in;
 @end
 
 @implementation PKDAnnotationStore
 
-- (PKDAnnotationStore)initWithDatabase:(id)a3 externalProviders:(id)a4
+- (PKDAnnotationStore)initWithDatabase:(id)database externalProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  providersCopy = providers;
   v40.receiver = self;
   v40.super_class = PKDAnnotationStore;
   v8 = [(PKDAnnotationStore *)&v40 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (databaseCopy)
     {
-      v10 = v6;
+      defaultDatabaseURL = databaseCopy;
     }
 
     else
     {
-      v10 = [(PKDAnnotationStore *)v8 defaultDatabaseURL];
+      defaultDatabaseURL = [(PKDAnnotationStore *)v8 defaultDatabaseURL];
     }
 
     annotationsURL = v9->_annotationsURL;
-    v9->_annotationsURL = v10;
+    v9->_annotationsURL = defaultDatabaseURL;
 
-    objc_storeStrong(&v9->_external, a4);
+    objc_storeStrong(&v9->_external, providers);
     v12 = objc_autoreleasePoolPush();
-    v13 = [(PKDAnnotationStore *)v9 annotationsURL];
+    annotationsURL = [(PKDAnnotationStore *)v9 annotationsURL];
     v39 = 0;
-    v14 = [(PKDAnnotationStore *)v9 loadDb:v13 error:&v39];
+    v14 = [(PKDAnnotationStore *)v9 loadDb:annotationsURL error:&v39];
     v15 = v39;
 
     if (v14)
@@ -63,11 +63,11 @@ LABEL_28:
       }
     }
 
-    v18 = [(PKDAnnotationStore *)v9 external];
-    v19 = [v18 um];
-    v20 = [v19 isMultiUser];
+    external = [(PKDAnnotationStore *)v9 external];
+    v19 = [external um];
+    isMultiUser = [v19 isMultiUser];
 
-    if (v20)
+    if (isMultiUser)
     {
       v21 = +[PKDAnnotationStore globalURL];
       v38 = v15;
@@ -104,9 +104,9 @@ LABEL_28:
 
     else
     {
-      v27 = [(PKDAnnotationStore *)v9 containerURL];
+      containerURL = [(PKDAnnotationStore *)v9 containerURL];
       v35 = v15;
-      v28 = [(PKDAnnotationStore *)v9 loadDb:v27 error:&v35];
+      v28 = [(PKDAnnotationStore *)v9 loadDb:containerURL error:&v35];
       v16 = v35;
 
       if (!v28)
@@ -130,9 +130,9 @@ LABEL_28:
 LABEL_25:
         v16 = v25;
 LABEL_26:
-        v31 = [(PKDAnnotationStore *)v9 annotations];
+        annotations = [(PKDAnnotationStore *)v9 annotations];
 
-        if (!v31)
+        if (!annotations)
         {
           v32 = objc_opt_new();
           [(PKDAnnotationStore *)v9 setAnnotations:v32];
@@ -156,49 +156,49 @@ LABEL_29:
   return v9;
 }
 
-- (id)annotationForIdentifier:(id)a3
+- (id)annotationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKDAnnotationStore *)self annotations];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  annotations = [(PKDAnnotationStore *)self annotations];
+  v6 = [annotations objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)annotationForPlugIn:(id)a3
+- (id)annotationForPlugIn:(id)in
 {
-  v4 = a3;
-  v5 = [(PKDAnnotationStore *)self annotations];
-  v6 = [v4 annotationKey];
+  inCopy = in;
+  annotations = [(PKDAnnotationStore *)self annotations];
+  annotationKey = [inCopy annotationKey];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [annotations objectForKeyedSubscript:annotationKey];
 
   return v7;
 }
 
-- (void)setAnnotation:(id)a3 forPlugIn:(id)a4
+- (void)setAnnotation:(id)annotation forPlugIn:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 annotationKey];
-  if (v6)
+  annotationCopy = annotation;
+  inCopy = in;
+  annotationKey = [inCopy annotationKey];
+  if (annotationCopy)
   {
     v9 = PKAnnotationElectionKey;
-    v10 = [v6 objectForKeyedSubscript:PKAnnotationElectionKey];
-    if (v10)
+    annotations4 = [annotationCopy objectForKeyedSubscript:PKAnnotationElectionKey];
+    if (annotations4)
     {
-      v11 = [(PKDAnnotationStore *)self annotations];
-      v12 = [v11 objectForKeyedSubscript:v8];
+      annotations = [(PKDAnnotationStore *)self annotations];
+      v12 = [annotations objectForKeyedSubscript:annotationKey];
       v13 = [v12 objectForKeyedSubscript:v9];
 
-      v14 = [v7 attributes];
-      v15 = [v14 objectForKeyedSubscript:PKProtocolAttribute];
+      attributes = [inCopy attributes];
+      v15 = [attributes objectForKeyedSubscript:PKProtocolAttribute];
 
-      if (v15 && (!v13 || ([v13 isEqual:v10] & 1) == 0))
+      if (v15 && (!v13 || ([v13 isEqual:annotations4] & 1) == 0))
       {
-        v16 = [v7 identifier];
-        v17 = [v7 version];
-        if ([v10 integerValue] == &dword_0 + 1)
+        identifier = [inCopy identifier];
+        version = [inCopy version];
+        if ([annotations4 integerValue] == &dword_0 + 1)
         {
           v18 = 2;
         }
@@ -208,12 +208,12 @@ LABEL_29:
           v18 = 3;
         }
 
-        pkdMessageTraceStateChange(v16, v17, v15, v18);
+        pkdMessageTraceStateChange(identifier, version, v15, v18);
       }
     }
 
-    v19 = [(PKDAnnotationStore *)self annotations];
-    v20 = [v19 objectForKeyedSubscript:v8];
+    annotations2 = [(PKDAnnotationStore *)self annotations];
+    v20 = [annotations2 objectForKeyedSubscript:annotationKey];
     v21 = [v20 mutableCopy];
 
     if (!v21)
@@ -221,15 +221,15 @@ LABEL_29:
       v21 = objc_opt_new();
     }
 
-    [v21 addEntriesFromDictionary:v6];
-    v22 = [(PKDAnnotationStore *)self annotations];
-    [v22 setObject:v21 forKeyedSubscript:v8];
+    [v21 addEntriesFromDictionary:annotationCopy];
+    annotations3 = [(PKDAnnotationStore *)self annotations];
+    [annotations3 setObject:v21 forKeyedSubscript:annotationKey];
   }
 
   else
   {
-    v10 = [(PKDAnnotationStore *)self annotations];
-    [v10 removeObjectForKey:v8];
+    annotations4 = [(PKDAnnotationStore *)self annotations];
+    [annotations4 removeObjectForKey:annotationKey];
   }
 
   v23 = objc_autoreleasePoolPush();
@@ -248,19 +248,19 @@ LABEL_29:
   objc_autoreleasePoolPop(v23);
 }
 
-- (BOOL)loadDb:(id)a3 error:(id *)a4
+- (BOOL)loadDb:(id)db error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PKDAnnotationStore *)self external];
-  v8 = [v7 filesystem];
-  v9 = [v8 dataWithContentsOfURL:v6 options:0 error:a4];
+  dbCopy = db;
+  external = [(PKDAnnotationStore *)self external];
+  filesystem = [external filesystem];
+  v9 = [filesystem dataWithContentsOfURL:dbCopy options:0 error:error];
 
   if (!v9)
   {
     goto LABEL_9;
   }
 
-  v10 = [NSPropertyListSerialization propertyListWithData:v9 options:0 format:0 error:a4];
+  v10 = [NSPropertyListSerialization propertyListWithData:v9 options:0 format:0 error:error];
   v11 = v10;
   if (!v10)
   {
@@ -271,10 +271,10 @@ LABEL_9:
   }
 
   v12 = [v10 objectForKeyedSubscript:PKVersionAnnotationsKey];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  v14 = v13 == &dword_10;
-  if (v13 == &dword_10)
+  v14 = integerValue == &dword_10;
+  if (integerValue == &dword_10)
   {
     v15 = [v11 objectForKeyedSubscript:PKDataAnnotationsKey];
     [(PKDAnnotationStore *)self setAnnotations:v15];
@@ -282,10 +282,10 @@ LABEL_9:
 
   else
   {
-    v15 = [[NSString alloc] initWithFormat:@"found database version %d needed version %d", v13, 16];
-    if (a4)
+    v15 = [[NSString alloc] initWithFormat:@"found database version %d needed version %d", integerValue, 16];
+    if (error)
     {
-      *a4 = pkError();
+      *error = pkError();
     }
   }
 
@@ -299,25 +299,25 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)saveDb:(id *)a3
+- (BOOL)saveDb:(id *)db
 {
   v15[0] = &off_2A198;
   v14[0] = PKVersionAnnotationsKey;
   v14[1] = PKDataAnnotationsKey;
-  v5 = [(PKDAnnotationStore *)self annotations];
-  v15[1] = v5;
+  annotations = [(PKDAnnotationStore *)self annotations];
+  v15[1] = annotations;
   v6 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:100 options:0 error:a3];
+  v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:100 options:0 error:db];
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(PKDAnnotationStore *)self external];
-  v9 = [v8 filesystem];
-  v10 = [(PKDAnnotationStore *)self annotationsURL];
-  v11 = [v9 writeToURL:v10 withData:v7 options:268435457 error:a3];
+  external = [(PKDAnnotationStore *)self external];
+  filesystem = [external filesystem];
+  annotationsURL = [(PKDAnnotationStore *)self annotationsURL];
+  v11 = [filesystem writeToURL:annotationsURL withData:v7 options:268435457 error:db];
 
   if (v11)
   {
@@ -338,19 +338,19 @@ LABEL_4:
   v19 = NSFilePosixPermissions;
   v20 = &off_2A1B0;
   v3 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  v4 = [(PKDAnnotationStore *)self external];
-  v5 = [v4 um];
-  v6 = [v5 isMultiUser];
+  external = [(PKDAnnotationStore *)self external];
+  v5 = [external um];
+  isMultiUser = [v5 isMultiUser];
 
-  if (v6)
+  if (isMultiUser)
   {
-    v7 = [(PKDAnnotationStore *)self containerURL];
+    containerURL = [(PKDAnnotationStore *)self containerURL];
     v8 = objc_autoreleasePoolPush();
-    v9 = [[NSURL alloc] initFileURLWithPath:@"com.apple.pluginkit" isDirectory:1 relativeToURL:v7];
-    v10 = [(PKDAnnotationStore *)self external];
-    v11 = [v10 filesystem];
+    v9 = [[NSURL alloc] initFileURLWithPath:@"com.apple.pluginkit" isDirectory:1 relativeToURL:containerURL];
+    external2 = [(PKDAnnotationStore *)self external];
+    filesystem = [external2 filesystem];
     v18 = 0;
-    v12 = [v11 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:v3 error:&v18];
+    v12 = [filesystem createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:v3 error:&v18];
     v13 = v18;
 
     if ((v12 & 1) == 0)
@@ -362,11 +362,11 @@ LABEL_4:
       }
     }
 
-    v15 = [[NSURL alloc] initFileURLWithPath:@"Annotations" relativeToURL:v9];
+    globalURL = [[NSURL alloc] initFileURLWithPath:@"Annotations" relativeToURL:v9];
     v16 = pklog_handle_for_category();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [(PKDAnnotationStore *)v15 defaultDatabaseURL];
+      [(PKDAnnotationStore *)globalURL defaultDatabaseURL];
     }
 
     objc_autoreleasePoolPop(v8);
@@ -374,15 +374,15 @@ LABEL_4:
 
   else
   {
-    v15 = [objc_opt_class() globalURL];
+    globalURL = [objc_opt_class() globalURL];
   }
 
-  return v15;
+  return globalURL;
 }
 
-+ (id)confstrURL:(int)a3
++ (id)confstrURL:(int)l
 {
-  if (confstr(a3, v6, 0x400uLL) - 1024 <= 0xFFFFFFFFFFFFFC00)
+  if (confstr(l, v6, 0x400uLL) - 1024 <= 0xFFFFFFFFFFFFFC00)
   {
     v3 = pklog_handle_for_category();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -408,9 +408,9 @@ LABEL_4:
 - (id)containerURL
 {
   v8 = 1;
-  v2 = [(PKDAnnotationStore *)self external];
-  v3 = [v2 container];
-  v4 = [v3 create_or_lookup_path_for_current_user:10 identifier:"com.apple.pkd" create_if_necessary:1 transient:0 out_existed:0 out_error:&v8];
+  external = [(PKDAnnotationStore *)self external];
+  container = [external container];
+  v4 = [container create_or_lookup_path_for_current_user:10 identifier:"com.apple.pkd" create_if_necessary:1 transient:0 out_existed:0 out_error:&v8];
 
   if (v4)
   {
@@ -467,9 +467,9 @@ LABEL_4:
 
 - (void)defaultDatabaseURL
 {
-  v3 = [a1 path];
+  path = [self path];
   v4 = 138543362;
-  v5 = v3;
+  v5 = path;
   _os_log_debug_impl(&dword_0, a2, OS_LOG_TYPE_DEBUG, "annotations are stored at [%{public}@]", &v4, 0xCu);
 }
 
@@ -483,7 +483,7 @@ LABEL_4:
 
 - (void)containerURL
 {
-  v2 = *a1;
+  v2 = *self;
   v3 = 134217984;
   v4 = v2;
   _os_log_fault_impl(&dword_0, a2, OS_LOG_TYPE_FAULT, "failed to get storage container: error=%llu", &v3, 0xCu);

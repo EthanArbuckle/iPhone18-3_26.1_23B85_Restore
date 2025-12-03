@@ -1,14 +1,14 @@
 @interface CRLAnalyticsSpatialPreview
-+ (void)sendSpatialPreviewAnalyticsWithPreviewItem:(id)a3 isSharedWithSpatialParticipants:(BOOL)a4;
++ (void)sendSpatialPreviewAnalyticsWithPreviewItem:(id)item isSharedWithSpatialParticipants:(BOOL)participants;
 - (_TtC8Freeform26CRLAnalyticsSpatialPreview)init;
 @end
 
 @implementation CRLAnalyticsSpatialPreview
 
-+ (void)sendSpatialPreviewAnalyticsWithPreviewItem:(id)a3 isSharedWithSpatialParticipants:(BOOL)a4
++ (void)sendSpatialPreviewAnalyticsWithPreviewItem:(id)item isSharedWithSpatialParticipants:(BOOL)participants
 {
-  v5 = a3;
-  sub_1012CC54C(v5, a4);
+  itemCopy = item;
+  sub_1012CC54C(itemCopy, participants);
 }
 
 - (_TtC8Freeform26CRLAnalyticsSpatialPreview)init

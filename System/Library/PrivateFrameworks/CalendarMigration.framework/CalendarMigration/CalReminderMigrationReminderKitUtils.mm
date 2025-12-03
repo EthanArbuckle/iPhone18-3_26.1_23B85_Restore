@@ -1,22 +1,22 @@
 @interface CalReminderMigrationReminderKitUtils
-+ (id)hexColorStringByRemovingAlphaFromHexString:(id)a3;
++ (id)hexColorStringByRemovingAlphaFromHexString:(id)string;
 @end
 
 @implementation CalReminderMigrationReminderKitUtils
 
-+ (id)hexColorStringByRemovingAlphaFromHexString:(id)a3
++ (id)hexColorStringByRemovingAlphaFromHexString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] == 9)
+  stringCopy = string;
+  if ([stringCopy length] == 9)
   {
-    v4 = [v3 substringWithRange:{0, 7}];
+    v4 = [stringCopy substringWithRange:{0, 7}];
 
-    v3 = v4;
+    stringCopy = v4;
   }
 
-  v5 = [v3 uppercaseString];
+  uppercaseString = [stringCopy uppercaseString];
 
-  return v5;
+  return uppercaseString;
 }
 
 @end

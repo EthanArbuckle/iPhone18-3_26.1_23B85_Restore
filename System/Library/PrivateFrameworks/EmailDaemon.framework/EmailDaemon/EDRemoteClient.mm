@@ -7,7 +7,7 @@
 - (EDInteractionLogger)interactionLogger;
 - (EDMailboxRepository)mailboxRepository;
 - (EDOutgoingMessageRepository)outgoingMessageRepository;
-- (EDRemoteClient)initWithConnection:(id)a3 daemonInterfaceFactory:(id)a4 serverRemoteClientsProvider:(id)a5;
+- (EDRemoteClient)initWithConnection:(id)connection daemonInterfaceFactory:(id)factory serverRemoteClientsProvider:(id)provider;
 - (EDSearchableIndex)searchableIndex;
 - (EDSenderRepository)senderRepository;
 - (EDServerRemoteClientsProvider)serverRemoteClientsProvider;
@@ -15,22 +15,22 @@
 - (id)messageReconciliationQueries;
 - (id)threadReconciliationQueries;
 - (void)dealloc;
-- (void)getAccountRepositoryInterface:(id)a3;
-- (void)getActivityRegistryInterface:(id)a3;
-- (void)getClientStateInterface:(id)a3;
-- (void)getDiagnosticInfoGathererInterface:(id)a3;
-- (void)getFetchControllerInterface:(id)a3;
-- (void)getInteractionLoggerInterface:(id)a3;
-- (void)getMailboxRepositoryInterface:(id)a3;
-- (void)getMessageRepositoryInterface:(id)a3;
-- (void)getOutgoingMessageRepositoryInterface:(id)a3;
-- (void)getSearchableIndexInterface:(id)a3;
-- (void)getSenderRepositoryInterface:(id)a3;
-- (void)getVIPManagerInterface:(id)a3;
-- (void)launchForAppLaunch:(id)a3;
-- (void)launchForEarlyRecovery:(id)a3;
+- (void)getAccountRepositoryInterface:(id)interface;
+- (void)getActivityRegistryInterface:(id)interface;
+- (void)getClientStateInterface:(id)interface;
+- (void)getDiagnosticInfoGathererInterface:(id)interface;
+- (void)getFetchControllerInterface:(id)interface;
+- (void)getInteractionLoggerInterface:(id)interface;
+- (void)getMailboxRepositoryInterface:(id)interface;
+- (void)getMessageRepositoryInterface:(id)interface;
+- (void)getOutgoingMessageRepositoryInterface:(id)interface;
+- (void)getSearchableIndexInterface:(id)interface;
+- (void)getSenderRepositoryInterface:(id)interface;
+- (void)getVIPManagerInterface:(id)interface;
+- (void)launchForAppLaunch:(id)launch;
+- (void)launchForEarlyRecovery:(id)recovery;
 - (void)repopulateBusinessesTables;
-- (void)setAllowsBackgroundResume:(BOOL)a3;
+- (void)setAllowsBackgroundResume:(BOOL)resume;
 - (void)test_tearDown;
 @end
 
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __21__EDRemoteClient_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_82 != -1)
   {
     dispatch_once(&log_onceToken_82, block);
@@ -71,10 +71,10 @@
   accountRepository = self->_accountRepository;
   if (!accountRepository)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newAccountRepository];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newAccountRepository = [daemonInterfaceFactory newAccountRepository];
     v6 = self->_accountRepository;
-    self->_accountRepository = v5;
+    self->_accountRepository = newAccountRepository;
 
     accountRepository = self->_accountRepository;
   }
@@ -91,10 +91,10 @@
   interactionLogger = self->_interactionLogger;
   if (!interactionLogger)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 sharedInteractionLogger];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    sharedInteractionLogger = [daemonInterfaceFactory sharedInteractionLogger];
     v6 = self->_interactionLogger;
-    self->_interactionLogger = v5;
+    self->_interactionLogger = sharedInteractionLogger;
 
     interactionLogger = self->_interactionLogger;
   }
@@ -111,10 +111,10 @@
   mailboxRepository = self->_mailboxRepository;
   if (!mailboxRepository)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newMailboxRepository];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newMailboxRepository = [daemonInterfaceFactory newMailboxRepository];
     v6 = self->_mailboxRepository;
-    self->_mailboxRepository = v5;
+    self->_mailboxRepository = newMailboxRepository;
 
     mailboxRepository = self->_mailboxRepository;
   }
@@ -138,10 +138,10 @@
   activityRegistry = self->_activityRegistry;
   if (!activityRegistry)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newActivityRegistry];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newActivityRegistry = [daemonInterfaceFactory newActivityRegistry];
     v6 = self->_activityRegistry;
-    self->_activityRegistry = v5;
+    self->_activityRegistry = newActivityRegistry;
 
     activityRegistry = self->_activityRegistry;
   }
@@ -158,10 +158,10 @@
   outgoingMessageRepository = self->_outgoingMessageRepository;
   if (!outgoingMessageRepository)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newOutgoingMessageRepository];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newOutgoingMessageRepository = [daemonInterfaceFactory newOutgoingMessageRepository];
     v6 = self->_outgoingMessageRepository;
-    self->_outgoingMessageRepository = v5;
+    self->_outgoingMessageRepository = newOutgoingMessageRepository;
 
     outgoingMessageRepository = self->_outgoingMessageRepository;
   }
@@ -178,10 +178,10 @@
   fetchController = self->_fetchController;
   if (!fetchController)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newFetchController];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newFetchController = [daemonInterfaceFactory newFetchController];
     v6 = self->_fetchController;
-    self->_fetchController = v5;
+    self->_fetchController = newFetchController;
 
     fetchController = self->_fetchController;
   }
@@ -207,11 +207,11 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   exportedInterface_exportedInterface = v0;
 }
 
-- (EDRemoteClient)initWithConnection:(id)a3 daemonInterfaceFactory:(id)a4 serverRemoteClientsProvider:(id)a5
+- (EDRemoteClient)initWithConnection:(id)connection daemonInterfaceFactory:(id)factory serverRemoteClientsProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  factoryCopy = factory;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = EDRemoteClient;
   v12 = [(EDRemoteClient *)&v17 init];
@@ -219,9 +219,9 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_clientConnection, a3);
-    objc_storeStrong(&v13->_daemonInterfaceFactory, a4);
-    objc_storeWeak(&v13->_serverRemoteClientsProvider, v11);
+    objc_storeStrong(&v12->_clientConnection, connection);
+    objc_storeStrong(&v13->_daemonInterfaceFactory, factory);
+    objc_storeWeak(&v13->_serverRemoteClientsProvider, providerCopy);
     v14 = +[EDClientState sharedInstance];
     clientState = v13->_clientState;
     v13->_clientState = v14;
@@ -242,8 +242,8 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDRemoteClient.m" lineNumber:102 description:{@"%s can only be called from unit tests", "-[EDRemoteClient test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDRemoteClient.m" lineNumber:102 description:{@"%s can only be called from unit tests", "-[EDRemoteClient test_tearDown]"}];
   }
 
   messageRepository = self->_messageRepository;
@@ -257,10 +257,10 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   senderRepository = self->_senderRepository;
   if (!senderRepository)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newSenderRepository];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newSenderRepository = [daemonInterfaceFactory newSenderRepository];
     v6 = self->_senderRepository;
-    self->_senderRepository = v5;
+    self->_senderRepository = newSenderRepository;
 
     senderRepository = self->_senderRepository;
   }
@@ -277,10 +277,10 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   searchableIndex = self->_searchableIndex;
   if (!searchableIndex)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newSearchableIndex];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newSearchableIndex = [daemonInterfaceFactory newSearchableIndex];
     v6 = self->_searchableIndex;
-    self->_searchableIndex = v5;
+    self->_searchableIndex = newSearchableIndex;
 
     searchableIndex = self->_searchableIndex;
   }
@@ -297,10 +297,10 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   vipManagerInterface = self->_vipManagerInterface;
   if (!vipManagerInterface)
   {
-    v4 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v5 = [v4 newVIPManagerInterface];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    newVIPManagerInterface = [daemonInterfaceFactory newVIPManagerInterface];
     v6 = self->_vipManagerInterface;
-    self->_vipManagerInterface = v5;
+    self->_vipManagerInterface = newVIPManagerInterface;
 
     vipManagerInterface = self->_vipManagerInterface;
   }
@@ -311,16 +311,16 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   return v7;
 }
 
-- (void)getMessageRepositoryInterface:(id)a3
+- (void)getMessageRepositoryInterface:(id)interface
 {
-  v10 = a3;
+  interfaceCopy = interface;
   os_unfair_lock_lock(&self->_lock);
   messageRepository = self->_messageRepository;
   if (!messageRepository)
   {
     v5 = [[EDRemoteClientResumer alloc] initWithRemoteClient:self];
-    v6 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v7 = [v6 newMessageRepositoryWithResumable:v5];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    v7 = [daemonInterfaceFactory newMessageRepositoryWithResumable:v5];
     v8 = self->_messageRepository;
     self->_messageRepository = v7;
 
@@ -329,89 +329,89 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
 
   v9 = messageRepository;
   os_unfair_lock_unlock(&self->_lock);
-  v10[2](v10, v9);
+  interfaceCopy[2](interfaceCopy, v9);
 }
 
-- (void)getOutgoingMessageRepositoryInterface:(id)a3
+- (void)getOutgoingMessageRepositoryInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self outgoingMessageRepository];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  outgoingMessageRepository = [(EDRemoteClient *)self outgoingMessageRepository];
+  interfaceCopy[2](interfaceCopy, outgoingMessageRepository);
 }
 
-- (void)getAccountRepositoryInterface:(id)a3
+- (void)getAccountRepositoryInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self accountRepository];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  accountRepository = [(EDRemoteClient *)self accountRepository];
+  interfaceCopy[2](interfaceCopy, accountRepository);
 }
 
-- (void)getClientStateInterface:(id)a3
+- (void)getClientStateInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self clientState];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  clientState = [(EDRemoteClient *)self clientState];
+  interfaceCopy[2](interfaceCopy, clientState);
 }
 
-- (void)getFetchControllerInterface:(id)a3
+- (void)getFetchControllerInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self fetchController];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  fetchController = [(EDRemoteClient *)self fetchController];
+  interfaceCopy[2](interfaceCopy, fetchController);
 }
 
-- (void)getMailboxRepositoryInterface:(id)a3
+- (void)getMailboxRepositoryInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self mailboxRepository];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  mailboxRepository = [(EDRemoteClient *)self mailboxRepository];
+  interfaceCopy[2](interfaceCopy, mailboxRepository);
 }
 
-- (void)getSearchableIndexInterface:(id)a3
+- (void)getSearchableIndexInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self searchableIndex];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  searchableIndex = [(EDRemoteClient *)self searchableIndex];
+  interfaceCopy[2](interfaceCopy, searchableIndex);
 }
 
-- (void)getInteractionLoggerInterface:(id)a3
+- (void)getInteractionLoggerInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self interactionLogger];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  interactionLogger = [(EDRemoteClient *)self interactionLogger];
+  interfaceCopy[2](interfaceCopy, interactionLogger);
 }
 
 - (void)repopulateBusinessesTables
 {
-  v3 = [(EDDaemonInterfaceFactory *)self->_daemonInterfaceFactory persistence];
-  v2 = [v3 businessPersistence];
-  [v2 repopulateBusinessesTables];
+  persistence = [(EDDaemonInterfaceFactory *)self->_daemonInterfaceFactory persistence];
+  businessPersistence = [persistence businessPersistence];
+  [businessPersistence repopulateBusinessesTables];
 }
 
-- (void)getVIPManagerInterface:(id)a3
+- (void)getVIPManagerInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self vipManagerInterface];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  vipManagerInterface = [(EDRemoteClient *)self vipManagerInterface];
+  interfaceCopy[2](interfaceCopy, vipManagerInterface);
 }
 
-- (void)getActivityRegistryInterface:(id)a3
+- (void)getActivityRegistryInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self activityRegistry];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  activityRegistry = [(EDRemoteClient *)self activityRegistry];
+  interfaceCopy[2](interfaceCopy, activityRegistry);
 }
 
-- (void)getDiagnosticInfoGathererInterface:(id)a3
+- (void)getDiagnosticInfoGathererInterface:(id)interface
 {
-  v10 = a3;
+  interfaceCopy = interface;
   os_unfair_lock_lock(&self->_lock);
   diagnosticInfoGatherer = self->_diagnosticInfoGatherer;
   if (!diagnosticInfoGatherer)
   {
-    v5 = [(EDRemoteClient *)self daemonInterfaceFactory];
-    v6 = [(EDRemoteClient *)self serverRemoteClientsProvider];
-    v7 = [v5 newDiagnosticInfoGathererWithServerRemoteClientsProvider:v6];
+    daemonInterfaceFactory = [(EDRemoteClient *)self daemonInterfaceFactory];
+    serverRemoteClientsProvider = [(EDRemoteClient *)self serverRemoteClientsProvider];
+    v7 = [daemonInterfaceFactory newDiagnosticInfoGathererWithServerRemoteClientsProvider:serverRemoteClientsProvider];
     v8 = self->_diagnosticInfoGatherer;
     self->_diagnosticInfoGatherer = v7;
 
@@ -420,12 +420,12 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
 
   v9 = diagnosticInfoGatherer;
   os_unfair_lock_unlock(&self->_lock);
-  v10[2](v10, v9);
+  interfaceCopy[2](interfaceCopy, v9);
 }
 
-- (void)launchForAppLaunch:(id)a3
+- (void)launchForAppLaunch:(id)launch
 {
-  v4 = a3;
+  launchCopy = launch;
   v5 = +[EDRemoteClient log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -433,14 +433,14 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "app requested early daemon launch", v7, 2u);
   }
 
-  v4[2](v4);
-  v6 = [(EDDaemonInterfaceFactory *)self->_daemonInterfaceFactory persistence];
-  [EDTruncateMailboxUpgradeStep presentNeedlessAlertIfNecessaryWithPersistence:v6];
+  launchCopy[2](launchCopy);
+  persistence = [(EDDaemonInterfaceFactory *)self->_daemonInterfaceFactory persistence];
+  [EDTruncateMailboxUpgradeStep presentNeedlessAlertIfNecessaryWithPersistence:persistence];
 }
 
-- (void)launchForEarlyRecovery:(id)a3
+- (void)launchForEarlyRecovery:(id)recovery
 {
-  v3 = a3;
+  recoveryCopy = recovery;
   v4 = +[EDRemoteClient log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -448,13 +448,13 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
     _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_DEFAULT, "app requested early recovery path", v5, 2u);
   }
 
-  v3[2](v3);
+  recoveryCopy[2](recoveryCopy);
 }
 
-- (void)setAllowsBackgroundResume:(BOOL)a3
+- (void)setAllowsBackgroundResume:(BOOL)resume
 {
   clientResumer = self->_clientResumer;
-  if (a3)
+  if (resume)
   {
     if (clientResumer)
     {
@@ -462,12 +462,12 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
     }
 
     daemonInterfaceFactory = self->_daemonInterfaceFactory;
-    v9 = [(EDRemoteClient *)self clientState];
+    clientState = [(EDRemoteClient *)self clientState];
     v7 = [(EDDaemonInterfaceFactory *)daemonInterfaceFactory newClientResumerWithClientState:?];
     v8 = self->_clientResumer;
     self->_clientResumer = v7;
 
-    v5 = v9;
+    v5 = clientState;
   }
 
   else
@@ -478,27 +478,27 @@ void __35__EDRemoteClient_exportedInterface__block_invoke()
   }
 }
 
-- (void)getSenderRepositoryInterface:(id)a3
+- (void)getSenderRepositoryInterface:(id)interface
 {
-  v5 = a3;
-  v4 = [(EDRemoteClient *)self senderRepository];
-  v5[2](v5, v4);
+  interfaceCopy = interface;
+  senderRepository = [(EDRemoteClient *)self senderRepository];
+  interfaceCopy[2](interfaceCopy, senderRepository);
 }
 
 - (id)messageReconciliationQueries
 {
-  v2 = [(EDRemoteClient *)self messageRepository];
-  v3 = [v2 messageReconciliationQueries];
+  messageRepository = [(EDRemoteClient *)self messageRepository];
+  messageReconciliationQueries = [messageRepository messageReconciliationQueries];
 
-  return v3;
+  return messageReconciliationQueries;
 }
 
 - (id)threadReconciliationQueries
 {
-  v2 = [(EDRemoteClient *)self messageRepository];
-  v3 = [v2 threadReconciliationQueries];
+  messageRepository = [(EDRemoteClient *)self messageRepository];
+  threadReconciliationQueries = [messageRepository threadReconciliationQueries];
 
-  return v3;
+  return threadReconciliationQueries;
 }
 
 @end

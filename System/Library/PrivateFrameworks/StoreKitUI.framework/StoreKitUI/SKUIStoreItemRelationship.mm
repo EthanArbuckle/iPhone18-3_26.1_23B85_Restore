@@ -1,14 +1,14 @@
 @interface SKUIStoreItemRelationship
-- (SKUIStoreItemRelationship)initWithParent:(id)a3 andChildren:(id)a4;
+- (SKUIStoreItemRelationship)initWithParent:(id)parent andChildren:(id)children;
 @end
 
 @implementation SKUIStoreItemRelationship
 
-- (SKUIStoreItemRelationship)initWithParent:(id)a3 andChildren:(id)a4
+- (SKUIStoreItemRelationship)initWithParent:(id)parent andChildren:(id)children
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  childrenCopy = children;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStoreItemRelationship initWithParent:andChildren:];
@@ -19,7 +19,7 @@
   v8 = [(SKUIStoreItemRelationship *)&v25 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [parentCopy copy];
     singleParent = v8->_singleParent;
     v8->_singleParent = v9;
 
@@ -28,7 +28,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v7;
+    v12 = childrenCopy;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {

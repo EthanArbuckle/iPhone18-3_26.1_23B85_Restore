@@ -1,20 +1,20 @@
 @interface _UIDimmingKnockoutBackdropView
-- (_UIDimmingKnockoutBackdropView)initWithStyle:(int64_t)a3;
-- (id)_dimmingKnockoutBackgroundColorForBackdropStyle:(int64_t)a3;
-- (id)_dimmingKnockoutFilterForBackdropStyle:(int64_t)a3;
-- (id)_visualEffectForStyle:(int64_t)a3;
-- (void)_configureViewsWithStyle:(int64_t)a3;
-- (void)_updateBackdropViewWithStyle:(int64_t)a3 alpha:(double)a4;
+- (_UIDimmingKnockoutBackdropView)initWithStyle:(int64_t)style;
+- (id)_dimmingKnockoutBackgroundColorForBackdropStyle:(int64_t)style;
+- (id)_dimmingKnockoutFilterForBackdropStyle:(int64_t)style;
+- (id)_visualEffectForStyle:(int64_t)style;
+- (void)_configureViewsWithStyle:(int64_t)style;
+- (void)_updateBackdropViewWithStyle:(int64_t)style alpha:(double)alpha;
 - (void)_updateCornerRadius;
-- (void)setAlpha:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBounds:(CGRect)bounds;
+- (void)setRoundedCornerPosition:(unint64_t)position;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation _UIDimmingKnockoutBackdropView
 
-- (_UIDimmingKnockoutBackdropView)initWithStyle:(int64_t)a3
+- (_UIDimmingKnockoutBackdropView)initWithStyle:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = _UIDimmingKnockoutBackdropView;
@@ -24,35 +24,35 @@
   {
     [(UIView *)v4 alpha];
     v5->_alpha = v6;
-    v5->_style = a3;
+    v5->_style = style;
     [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(UIView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(UIView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v8 = [(UIView *)v5 layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer2 = [(UIView *)v5 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    [(_UIDimmingKnockoutBackdropView *)v5 _configureViewsWithStyle:a3];
+    [(_UIDimmingKnockoutBackdropView *)v5 _configureViewsWithStyle:style];
   }
 
   return v5;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(_UIDimmingKnockoutBackdropView *)self _configureViewsWithStyle:?];
   }
 }
 
-- (void)_configureViewsWithStyle:(int64_t)a3
+- (void)_configureViewsWithStyle:(int64_t)style
 {
   dimmingKnockoutView = self->dimmingKnockoutView;
-  if (!a3 || dimmingKnockoutView)
+  if (!style || dimmingKnockoutView)
   {
-    if (!a3 && dimmingKnockoutView)
+    if (!style && dimmingKnockoutView)
     {
       [(UIView *)dimmingKnockoutView removeFromSuperview];
       v8 = self->dimmingKnockoutView;
@@ -72,18 +72,18 @@
     [(UIView *)self->dimmingKnockoutView setAutoresizingMask:18];
   }
 
-  v9 = [(UIView *)self->dimmingKnockoutView layer];
-  v10 = [(_UIDimmingKnockoutBackdropView *)self _dimmingKnockoutFilterForBackdropStyle:a3];
-  [v9 setCompositingFilter:v10];
+  layer = [(UIView *)self->dimmingKnockoutView layer];
+  v10 = [(_UIDimmingKnockoutBackdropView *)self _dimmingKnockoutFilterForBackdropStyle:style];
+  [layer setCompositingFilter:v10];
 
   v11 = self->dimmingKnockoutView;
-  v12 = [(_UIDimmingKnockoutBackdropView *)self _dimmingKnockoutBackgroundColorForBackdropStyle:a3];
+  v12 = [(_UIDimmingKnockoutBackdropView *)self _dimmingKnockoutBackgroundColorForBackdropStyle:style];
   [(UIView *)v11 setBackgroundColor:v12];
 
   if (!self->backdropView)
   {
     v13 = [UIVisualEffectView alloc];
-    v14 = [(_UIDimmingKnockoutBackdropView *)self _visualEffectForStyle:a3];
+    v14 = [(_UIDimmingKnockoutBackdropView *)self _visualEffectForStyle:style];
     v15 = [(UIVisualEffectView *)v13 initWithEffect:v14];
     backdropView = self->backdropView;
     self->backdropView = v15;
@@ -96,54 +96,54 @@
 
   alpha = self->_alpha;
 
-  [(_UIDimmingKnockoutBackdropView *)self _updateBackdropViewWithStyle:a3 alpha:alpha];
+  [(_UIDimmingKnockoutBackdropView *)self _updateBackdropViewWithStyle:style alpha:alpha];
 }
 
-- (void)_updateBackdropViewWithStyle:(int64_t)a3 alpha:(double)a4
+- (void)_updateBackdropViewWithStyle:(int64_t)style alpha:(double)alpha
 {
   v15[1] = *MEMORY[0x1E69E9840];
   backdropView = self->backdropView;
-  if (a4 == 0.0)
+  if (alpha == 0.0)
   {
     [(UIVisualEffectView *)self->backdropView setEffect:0];
   }
 
   else
   {
-    v8 = [(_UIDimmingKnockoutBackdropView *)self _visualEffectForStyle:a3];
+    v8 = [(_UIDimmingKnockoutBackdropView *)self _visualEffectForStyle:style];
     [(UIVisualEffectView *)backdropView setEffect:v8];
   }
 
-  v9 = [(_UIDimmingKnockoutBackdropView *)self _vibrancyEffectForStyle:a3];
+  v9 = [(_UIDimmingKnockoutBackdropView *)self _vibrancyEffectForStyle:style];
   v10 = v9;
-  if (a4 > 0.0 && v9)
+  if (alpha > 0.0 && v9)
   {
     v15[0] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     [(UIVisualEffectView *)self->backdropView setContentEffects:v11];
 
     v12 = +[UIColor whiteColor];
-    v13 = [(UIVisualEffectView *)self->backdropView contentView];
-    [v13 setBackgroundColor:v12];
+    contentView = [(UIVisualEffectView *)self->backdropView contentView];
+    [contentView setBackgroundColor:v12];
   }
 
   else
   {
     [(UIVisualEffectView *)self->backdropView setContentEffects:MEMORY[0x1E695E0F0]];
-    v14 = [(UIVisualEffectView *)self->backdropView contentView];
-    [v14 setBackgroundColor:0];
+    contentView2 = [(UIVisualEffectView *)self->backdropView contentView];
+    [contentView2 setBackgroundColor:0];
   }
 }
 
-- (id)_visualEffectForStyle:(int64_t)a3
+- (id)_visualEffectForStyle:(int64_t)style
 {
   v3 = 0;
   v11[4] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (a3)
+    if (style)
     {
-      if (a3 != 1)
+      if (style != 1)
       {
         goto LABEL_11;
       }
@@ -159,7 +159,7 @@
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v4 = 1;
 LABEL_10:
@@ -167,7 +167,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v5 = [UIBlurEffect _effectWithBlurRadius:18.0 scale:0.25];
     v6 = [UIColorEffect _colorEffectSourceOver:0.175, 0.175, 0.175, 0.35];
@@ -186,9 +186,9 @@ LABEL_11:
   return v3;
 }
 
-- (id)_dimmingKnockoutFilterForBackdropStyle:(int64_t)a3
+- (id)_dimmingKnockoutFilterForBackdropStyle:(int64_t)style
 {
-  if ((a3 - 1) > 2)
+  if ((style - 1) > 2)
   {
     v5 = 0;
   }
@@ -201,9 +201,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_dimmingKnockoutBackgroundColorForBackdropStyle:(int64_t)a3
+- (id)_dimmingKnockoutBackgroundColorForBackdropStyle:(int64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 3:
       v4 = 0.0;
@@ -224,36 +224,36 @@ LABEL_7:
   return v3;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
-    [(_UIDimmingKnockoutBackdropView *)self _updateBackdropViewWithStyle:[(_UIDimmingKnockoutBackdropView *)self style] alpha:a3];
+    self->_alpha = alpha;
+    [(_UIDimmingKnockoutBackdropView *)self _updateBackdropViewWithStyle:[(_UIDimmingKnockoutBackdropView *)self style] alpha:alpha];
     dimmingKnockoutView = self->dimmingKnockoutView;
 
-    [(UIView *)dimmingKnockoutView setAlpha:a3];
+    [(UIView *)dimmingKnockoutView setAlpha:alpha];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UIDimmingKnockoutBackdropView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UIDimmingKnockoutBackdropView *)self _updateCornerRadius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v5 = [(UIView *)self layer];
-  [v5 setMaskedCorners:a3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:position];
 
-  v6 = [(UIView *)self->backdropView layer];
-  [v6 setMaskedCorners:a3];
+  layer2 = [(UIView *)self->backdropView layer];
+  [layer2 setMaskedCorners:position];
 
-  v7 = [(UIView *)self->dimmingKnockoutView layer];
-  [v7 setMaskedCorners:a3];
+  layer3 = [(UIView *)self->dimmingKnockoutView layer];
+  [layer3 setMaskedCorners:position];
 
   [(_UIDimmingKnockoutBackdropView *)self _updateCornerRadius];
 }
@@ -266,8 +266,8 @@ LABEL_7:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self->backdropView layer];
-  v13 = _UIClampedCornerRadius([v12 maskedCorners], currentCornerRadius, v5, v7, v9, v11);
+  layer = [(UIView *)self->backdropView layer];
+  v13 = _UIClampedCornerRadius([layer maskedCorners], currentCornerRadius, v5, v7, v9, v11);
 
   v14.receiver = self;
   v14.super_class = _UIDimmingKnockoutBackdropView;

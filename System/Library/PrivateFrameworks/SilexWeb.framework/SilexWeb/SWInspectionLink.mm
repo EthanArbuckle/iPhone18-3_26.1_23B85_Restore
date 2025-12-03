@@ -1,24 +1,24 @@
 @interface SWInspectionLink
 - (CGRect)frame;
-- (SWInspectionLink)initWithObject:(id)a3;
+- (SWInspectionLink)initWithObject:(id)object;
 @end
 
 @implementation SWInspectionLink
 
-- (SWInspectionLink)initWithObject:(id)a3
+- (SWInspectionLink)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v20.receiver = self;
   v20.super_class = SWInspectionLink;
   v5 = [(SWInspectionLink *)&v20 init];
   v6 = v5;
   v7 = 0;
-  if (v4 && v5)
+  if (objectCopy && v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v4;
+      v8 = objectCopy;
       v9 = [v8 objectForKey:@"href"];
       v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v9];
       href = v6->_href;

@@ -1,27 +1,27 @@
 @interface VSSAMLRequestFactory
-+ (id)attributeQueryWithAttributeNames:(id)a3 channelID:(id)a4 authNResponse:(id)a5 error:(id *)a6;
-+ (id)logoutRequestWithError:(id *)a3;
++ (id)attributeQueryWithAttributeNames:(id)names channelID:(id)d authNResponse:(id)response error:(id *)error;
++ (id)logoutRequestWithError:(id *)error;
 @end
 
 @implementation VSSAMLRequestFactory
 
-+ (id)attributeQueryWithAttributeNames:(id)a3 channelID:(id)a4 authNResponse:(id)a5 error:(id *)a6
++ (id)attributeQueryWithAttributeNames:(id)names channelID:(id)d authNResponse:(id)response error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  namesCopy = names;
+  dCopy = d;
+  responseCopy = response;
   v12 = VSSharedSAMLParserController();
-  v13 = [v12 newAttributeQuery:v10 error:a6];
+  v13 = [v12 newAttributeQuery:dCopy error:error];
 
   if (v13)
   {
-    [v13 setSubjectFromResponse:v11];
+    [v13 setSubjectFromResponse:responseCopy];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = v9;
+    v14 = namesCopy;
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
@@ -51,10 +51,10 @@
   return v13;
 }
 
-+ (id)logoutRequestWithError:(id *)a3
++ (id)logoutRequestWithError:(id *)error
 {
   v4 = VSSharedSAMLParserController();
-  v5 = [v4 newLogoutRequest:a3];
+  v5 = [v4 newLogoutRequest:error];
 
   return v5;
 }

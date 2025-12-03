@@ -1,7 +1,7 @@
 @interface AHTDeviceNotification
-- (BOOL)startWithDispatchQueue:(id)a3 error:(id *)a4;
-- (BOOL)startWithRunLoop:(id)a3 error:(id *)a4;
-- (BOOL)stop:(id *)a3;
+- (BOOL)startWithDispatchQueue:(id)queue error:(id *)error;
+- (BOOL)startWithRunLoop:(id)loop error:(id *)error;
+- (BOOL)stop:(id *)stop;
 - (void)dealloc;
 @end
 
@@ -15,20 +15,20 @@
   [(AHTDeviceNotification *)&v3 dealloc];
 }
 
-- (BOOL)startWithRunLoop:(id)a3 error:(id *)a4
+- (BOOL)startWithRunLoop:(id)loop error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AHTDeviceNotification *)self runLoop];
+  loopCopy = loop;
+  runLoop = [(AHTDeviceNotification *)self runLoop];
 
-  if (v7)
+  if (runLoop)
   {
     v8 = 3758097109;
 LABEL_3:
-    v9 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v8 error:a4];
+    v9 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v8 error:error];
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!loopCopy)
   {
     v8 = 3758097090;
     goto LABEL_3;
@@ -46,16 +46,16 @@ LABEL_3:
   if (RunLoopSource)
   {
     v14 = RunLoopSource;
-    CFRunLoopAddSource([v6 getCFRunLoop], RunLoopSource, kCFRunLoopDefaultMode);
+    CFRunLoopAddSource([loopCopy getCFRunLoop], RunLoopSource, kCFRunLoopDefaultMode);
     [(AHTDeviceNotification *)self setPort:v12];
-    [(AHTDeviceNotification *)self setRunLoop:v6];
+    [(AHTDeviceNotification *)self setRunLoop:loopCopy];
     [(AHTDeviceNotification *)self setRunLoopSource:v14];
     v9 = 1;
   }
 
   else
   {
-    [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097097 error:a4];
+    [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097097 error:error];
     IONotificationPortDestroy(v12);
     v9 = 0;
   }
@@ -65,25 +65,25 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)startWithDispatchQueue:(id)a3 error:(id *)a4
+- (BOOL)startWithDispatchQueue:(id)queue error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AHTDeviceNotification *)self dispatchQueue];
+  queueCopy = queue;
+  dispatchQueue = [(AHTDeviceNotification *)self dispatchQueue];
 
-  if (v7)
+  if (dispatchQueue)
   {
     v8 = 3758097109;
   }
 
-  else if (v6)
+  else if (queueCopy)
   {
     v11 = IONotificationPortCreate(0);
     if (v11)
     {
       v12 = v11;
-      IONotificationPortSetDispatchQueue(v11, v6);
+      IONotificationPortSetDispatchQueue(v11, queueCopy);
       [(AHTDeviceNotification *)self setPort:v12];
-      [(AHTDeviceNotification *)self setDispatchQueue:v6];
+      [(AHTDeviceNotification *)self setDispatchQueue:queueCopy];
       v9 = 1;
       goto LABEL_4;
     }
@@ -96,25 +96,25 @@ LABEL_4:
     v8 = 3758097090;
   }
 
-  v9 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v8 error:a4];
+  v9 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v8 error:error];
 LABEL_4:
 
   return v9;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
-  v5 = [(AHTDeviceNotification *)self runLoop];
-  if (v5)
+  runLoop = [(AHTDeviceNotification *)self runLoop];
+  if (runLoop)
   {
 
 LABEL_4:
-    v7 = [(AHTDeviceNotification *)self runLoop];
+    runLoop2 = [(AHTDeviceNotification *)self runLoop];
 
-    if (v7)
+    if (runLoop2)
     {
-      v8 = [(AHTDeviceNotification *)self runLoop];
-      CFRunLoopRemoveSource([v8 getCFRunLoop], -[AHTDeviceNotification runLoopSource](self, "runLoopSource"), kCFRunLoopDefaultMode);
+      runLoop3 = [(AHTDeviceNotification *)self runLoop];
+      CFRunLoopRemoveSource([runLoop3 getCFRunLoop], -[AHTDeviceNotification runLoopSource](self, "runLoopSource"), kCFRunLoopDefaultMode);
     }
 
     IONotificationPortDestroy([(AHTDeviceNotification *)self port]);
@@ -125,14 +125,14 @@ LABEL_4:
     return 1;
   }
 
-  v6 = [(AHTDeviceNotification *)self dispatchQueue];
+  dispatchQueue = [(AHTDeviceNotification *)self dispatchQueue];
 
-  if (v6)
+  if (dispatchQueue)
   {
     goto LABEL_4;
   }
 
-  return [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097101 error:a3];
+  return [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097101 error:stop];
 }
 
 @end

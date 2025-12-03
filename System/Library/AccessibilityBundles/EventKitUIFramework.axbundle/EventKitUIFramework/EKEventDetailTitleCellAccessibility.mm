@@ -1,41 +1,41 @@
 @interface EKEventDetailTitleCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityImageLabelforAttributedLocationName:(id)a3 andLocationStatus:(int64_t)a4;
-- (id)_accessibilityImageLabelforStatus:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityImageLabelforAttributedLocationName:(id)name andLocationStatus:(int64_t)status;
+- (id)_accessibilityImageLabelforStatus:(int64_t)status;
 - (id)_accessibilitySupplementaryFooterViews;
-- (id)_addCustomActionToActionsArray:(id)a3 forControl:(id)a4 actionBlock:(id)a5;
+- (id)_addCustomActionToActionsArray:(id)array forControl:(id)control actionBlock:(id)block;
 - (id)accessibilityCustomActions;
 - (id)accessibilityCustomContent;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateLocationViewsIfNeeded;
-- (void)addLocation:(id)a3;
+- (void)addLocation:(id)location;
 @end
 
 @implementation EKEventDetailTitleCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_titleView" withType:"UILabel"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_locationItems" withType:"NSMutableArray"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_dateTimeViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_recurrenceView" withType:"UILabel"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_statusView" withType:"UILabel"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_travelTimeView" withType:"UILabel"];
-  [v3 validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationView" withType:"EKTextViewWithLabelTextMetrics"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_suggestedLocationCell" withType:"EKEventDetailSuggestedLocationCell"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceMethod:@"editButtonTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceMethod:@"addLocation:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationStatus" withType:"q"];
-  [v3 validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_conferenceDetailView" withType:"EKEventDetailConferenceCell"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_openURLButton" withType:"UIButton"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_shareButton" withType:"UIButton"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_event" withType:"EKEvent"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_listView" withType:"UIListContentView"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_actionButtonType" withType:"Q"];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceMethod:@"_openURL" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"EKEventDetailConferenceCell" hasInstanceMethod:@"_share:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_titleView" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_locationItems" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_dateTimeViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_recurrenceView" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_statusView" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_travelTimeView" withType:"UILabel"];
+  [validationsCopy validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationView" withType:"EKTextViewWithLabelTextMetrics"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_suggestedLocationCell" withType:"EKEventDetailSuggestedLocationCell"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceMethod:@"editButtonTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceMethod:@"addLocation:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"EKEventDetailLocationItem" hasInstanceVariable:@"_locationStatus" withType:"q"];
+  [validationsCopy validateClass:@"EKEventDetailTitleCell" hasInstanceVariable:@"_conferenceDetailView" withType:"EKEventDetailConferenceCell"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_openURLButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_shareButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_event" withType:"EKEvent"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_listView" withType:"UIListContentView"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceVariable:@"_actionButtonType" withType:"Q"];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceMethod:@"_openURL" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"EKEventDetailConferenceCell" hasInstanceMethod:@"_share:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_axAnnotateLocationViewsIfNeeded
@@ -66,8 +66,8 @@
         v8 = [v7 safeValueForKey:@"_locationView"];
         v9 = __UIAccessibilityCastAsSafeCategory();
 
-        v10 = [v9 accessibilityIsLocationLink];
-        if (v10)
+        accessibilityIsLocationLink = [v9 accessibilityIsLocationLink];
+        if (accessibilityIsLocationLink)
         {
           v11 = 1;
           goto LABEL_11;
@@ -132,8 +132,8 @@ LABEL_11:
 {
   v40.receiver = self;
   v40.super_class = EKEventDetailTitleCellAccessibility;
-  v3 = [(EKEventDetailTitleCellAccessibility *)&v40 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(EKEventDetailTitleCellAccessibility *)&v40 accessibilityCustomActions];
+  v4 = [accessibilityCustomActions mutableCopy];
 
   v5 = [(EKEventDetailTitleCellAccessibility *)self safeUIViewForKey:@"_editButton"];
   objc_initWeak(&location, self);
@@ -153,22 +153,22 @@ LABEL_11:
   v9 = [(EKEventDetailTitleCellAccessibility *)self safeValueForKey:@"_event"];
   v10 = __UIAccessibilityCastAsClass();
 
-  v11 = [v10 virtualConference];
-  v12 = [v11 safeArrayForKey:@"joinMethods"];
-  v13 = [v12 firstObject];
+  virtualConference = [v10 virtualConference];
+  v12 = [virtualConference safeArrayForKey:@"joinMethods"];
+  firstObject = [v12 firstObject];
 
-  v14 = [v13 URL];
-  v15 = [v14 absoluteString];
-  v16 = [v15 lowercaseString];
+  v14 = [firstObject URL];
+  absoluteString = [v14 absoluteString];
+  lowercaseString = [absoluteString lowercaseString];
 
-  if ([v16 containsString:@"facetime.apple.com"])
+  if ([lowercaseString containsString:@"facetime.apple.com"])
   {
-    v17 = [v8 accessibilityLabel];
-    v18 = v17;
+    accessibilityLabel = [v8 accessibilityLabel];
+    v18 = accessibilityLabel;
     v19 = &stru_2A2195B98;
-    if (v17)
+    if (accessibilityLabel)
     {
-      v19 = v17;
+      v19 = accessibilityLabel;
     }
 
     v20 = v19;
@@ -211,32 +211,32 @@ void __65__EKEventDetailTitleCellAccessibility_accessibilityCustomActions__block
   [WeakRetained editButtonTapped];
 }
 
-- (id)_addCustomActionToActionsArray:(id)a3 forControl:(id)a4 actionBlock:(id)a5
+- (id)_addCustomActionToActionsArray:(id)array forControl:(id)control actionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 _accessibilityViewIsVisible];
-  if (v9 && v10)
+  arrayCopy = array;
+  controlCopy = control;
+  blockCopy = block;
+  _accessibilityViewIsVisible = [controlCopy _accessibilityViewIsVisible];
+  if (blockCopy && _accessibilityViewIsVisible)
   {
-    if (!v7)
+    if (!arrayCopy)
     {
-      v7 = [MEMORY[0x29EDB8DE8] array];
+      arrayCopy = [MEMORY[0x29EDB8DE8] array];
     }
 
     v11 = objc_alloc(MEMORY[0x29EDC78E0]);
-    v12 = [v8 accessibilityLabel];
+    accessibilityLabel = [controlCopy accessibilityLabel];
     v15[0] = MEMORY[0x29EDCA5F8];
     v15[1] = 3221225472;
     v15[2] = __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArray_forControl_actionBlock___block_invoke;
     v15[3] = &unk_29F2BCBD8;
-    v16 = v9;
-    v13 = [v11 initWithName:v12 actionHandler:v15];
+    v16 = blockCopy;
+    v13 = [v11 initWithName:accessibilityLabel actionHandler:v15];
 
-    [v7 addObject:v13];
+    [arrayCopy addObject:v13];
   }
 
-  return v7;
+  return arrayCopy;
 }
 
 uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArray_forControl_actionBlock___block_invoke(uint64_t a1)
@@ -250,8 +250,8 @@ uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArra
 - (id)accessibilityCustomContent
 {
   v79 = *MEMORY[0x29EDCA608];
-  v67 = [MEMORY[0x29EDB8DE8] array];
-  v65 = self;
+  array = [MEMORY[0x29EDB8DE8] array];
+  selfCopy = self;
   [(EKEventDetailTitleCellAccessibility *)self safeArrayForKey:@"_locationItems"];
   v73 = 0u;
   v74 = 0u;
@@ -277,16 +277,16 @@ uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArra
         if (v8 && ([v8 isAccessibilityElement] & 1) == 0)
         {
           v10 = [v7 safeIntegerForKey:@"_locationStatus"];
-          v11 = [v9 accessibilityAttributedValue];
-          v12 = [(EKEventDetailTitleCellAccessibility *)v65 _accessibilityImageLabelforAttributedLocationName:v11 andLocationStatus:v10];
+          accessibilityAttributedValue = [v9 accessibilityAttributedValue];
+          v12 = [(EKEventDetailTitleCellAccessibility *)selfCopy _accessibilityImageLabelforAttributedLocationName:accessibilityAttributedValue andLocationStatus:v10];
 
           AXCustomContentClass = getAXCustomContentClass();
           v14 = accessibilityLocalizedString(@"location.title");
-          v15 = [v9 accessibilityValue];
+          accessibilityValue = [v9 accessibilityValue];
           v16 = __UIAXStringForVariables();
           v17 = [AXCustomContentClass customContentWithLabel:v14 value:{v16, v12, @"__AXStringForVariablesSentinel"}];
 
-          [v67 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -296,7 +296,7 @@ uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArra
     while (v4);
   }
 
-  v18 = [(EKEventDetailTitleCellAccessibility *)v65 safeUIViewForKey:@"_conferenceDetailView"];
+  v18 = [(EKEventDetailTitleCellAccessibility *)selfCopy safeUIViewForKey:@"_conferenceDetailView"];
   if ([v18 _accessibilityViewIsVisible])
   {
     v72 = 0;
@@ -306,26 +306,26 @@ uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArra
 
     if ([v18 safeIntegerForKey:@"_actionButtonType"] == 3)
     {
-      v21 = [v20 configuration];
-      v22 = [v21 text];
-      v23 = [v22 length];
+      configuration = [v20 configuration];
+      text = [configuration text];
+      v23 = [text length];
 
       if (v23)
       {
         v24 = MEMORY[0x29EDBD7E8];
-        v25 = [v20 configuration];
-        v26 = [v25 text];
-        v27 = [v24 axAttributedStringWithString:v26];
+        configuration2 = [v20 configuration];
+        text2 = [configuration2 text];
+        v27 = [v24 axAttributedStringWithString:text2];
 
         [v27 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD968]];
         v28 = getAXCustomContentClass();
         v29 = objc_alloc(MEMORY[0x29EDB9F30]);
         v30 = accessibilityLocalizedString(@"phone.title");
         v31 = [v29 initWithString:v30];
-        v32 = [v27 attributedString];
-        v33 = [v28 customContentWithAttributedLabel:v31 attributedValue:v32];
+        attributedString = [v27 attributedString];
+        v33 = [v28 customContentWithAttributedLabel:v31 attributedValue:attributedString];
 
-        [v67 addObject:v33];
+        [array addObject:v33];
       }
     }
   }
@@ -335,7 +335,7 @@ uint64_t __93__EKEventDetailTitleCellAccessibility__addCustomActionToActionsArra
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v34 = [(EKEventDetailTitleCellAccessibility *)v65 safeArrayForKey:@"_dateTimeViews"];
+  v34 = [(EKEventDetailTitleCellAccessibility *)selfCopy safeArrayForKey:@"_dateTimeViews"];
   v35 = [v34 countByEnumeratingWithState:&v68 objects:v77 count:16];
   if (v35)
   {
@@ -371,11 +371,11 @@ LABEL_25:
         v43 = 0;
 LABEL_27:
         v44 = getAXCustomContentClass();
-        v45 = [v41 accessibilityLabel];
-        v46 = [v44 customContentWithLabel:v43 value:v45];
+        accessibilityLabel = [v41 accessibilityLabel];
+        v46 = [v44 customContentWithLabel:v43 value:accessibilityLabel];
 
         [v46 setImportance:1];
-        [v67 addObject:v46];
+        [array addObject:v46];
         ++v40;
 
         ++v39;
@@ -389,69 +389,69 @@ LABEL_27:
     while (v36);
   }
 
-  v47 = [(EKEventDetailTitleCellAccessibility *)v65 safeValueForKey:@"_travelTimeView"];
-  v48 = [v47 accessibilityLabel];
+  v47 = [(EKEventDetailTitleCellAccessibility *)selfCopy safeValueForKey:@"_travelTimeView"];
+  accessibilityLabel2 = [v47 accessibilityLabel];
 
-  if (v48)
+  if (accessibilityLabel2)
   {
     v49 = getAXCustomContentClass();
     v50 = accessibilityLocalizedString(@"travel.time.title");
-    v51 = [v49 customContentWithLabel:v50 value:v48];
+    v51 = [v49 customContentWithLabel:v50 value:accessibilityLabel2];
 
-    [v67 addObject:v51];
+    [array addObject:v51];
   }
 
-  v52 = [(EKEventDetailTitleCellAccessibility *)v65 safeValueForKey:@"_recurrenceView"];
-  v53 = [v52 accessibilityLabel];
+  v52 = [(EKEventDetailTitleCellAccessibility *)selfCopy safeValueForKey:@"_recurrenceView"];
+  accessibilityLabel3 = [v52 accessibilityLabel];
 
-  if (v53)
+  if (accessibilityLabel3)
   {
     v54 = getAXCustomContentClass();
     v55 = accessibilityLocalizedString(@"recurrence.title");
-    v56 = [v54 customContentWithLabel:v55 value:v53];
+    v56 = [v54 customContentWithLabel:v55 value:accessibilityLabel3];
 
-    [v67 addObject:v56];
+    [array addObject:v56];
   }
 
-  v57 = [(EKEventDetailTitleCellAccessibility *)v65 safeValueForKey:@"_statusView"];
-  v58 = [v57 accessibilityLabel];
+  v57 = [(EKEventDetailTitleCellAccessibility *)selfCopy safeValueForKey:@"_statusView"];
+  accessibilityLabel4 = [v57 accessibilityLabel];
 
-  if (v58)
+  if (accessibilityLabel4)
   {
     v59 = getAXCustomContentClass();
     v60 = accessibilityLocalizedString(@"status.title");
-    v61 = [v59 customContentWithLabel:v60 value:v58];
+    v61 = [v59 customContentWithLabel:v60 value:accessibilityLabel4];
 
-    [v67 addObject:v61];
+    [array addObject:v61];
   }
 
   v62 = *MEMORY[0x29EDCA608];
 
-  return v67;
+  return array;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(EKEventDetailTitleCellAccessibility *)self safeValueForKey:@"_titleView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (void)addLocation:(id)a3
+- (void)addLocation:(id)location
 {
   v4.receiver = self;
   v4.super_class = EKEventDetailTitleCellAccessibility;
-  [(EKEventDetailTitleCellAccessibility *)&v4 addLocation:a3];
+  [(EKEventDetailTitleCellAccessibility *)&v4 addLocation:location];
   [(EKEventDetailTitleCellAccessibility *)self _axAnnotateLocationViewsIfNeeded];
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   v3 = [(EKEventDetailTitleCellAccessibility *)self safeUIViewForKey:@"_suggestedLocationCell"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (v4)
+  if (accessibilityLabel)
   {
     v5 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v3}];
   }
@@ -465,9 +465,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)_accessibilityImageLabelforAttributedLocationName:(id)a3 andLocationStatus:(int64_t)a4
+- (id)_accessibilityImageLabelforAttributedLocationName:(id)name andLocationStatus:(int64_t)status
 {
-  v6 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -475,15 +475,15 @@ LABEL_27:
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
   v7 = *MEMORY[0x29EDBD868];
-  v8 = [v6 length];
+  v8 = [nameCopy length];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __107__EKEventDetailTitleCellAccessibility__accessibilityImageLabelforAttributedLocationName_andLocationStatus___block_invoke;
   v11[3] = &unk_29F2BCC20;
   v11[4] = self;
   v11[5] = &v12;
-  v11[6] = a4;
-  [v6 enumerateAttribute:v7 inRange:0 options:v8 usingBlock:{0, v11}];
+  v11[6] = status;
+  [nameCopy enumerateAttribute:v7 inRange:0 options:v8 usingBlock:{0, v11}];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -506,16 +506,16 @@ uint64_t __107__EKEventDetailTitleCellAccessibility__accessibilityImageLabelforA
   return result;
 }
 
-- (id)_accessibilityImageLabelforStatus:(int64_t)a3
+- (id)_accessibilityImageLabelforStatus:(int64_t)status
 {
-  if ((a3 - 2) > 2)
+  if ((status - 2) > 2)
   {
     return accessibilityLocalizedString(@"location.status.pending");
   }
 
   else
   {
-    return accessibilityLocalizedString(off_29F2BCCA0[a3 - 2]);
+    return accessibilityLocalizedString(off_29F2BCCA0[status - 2]);
   }
 }
 

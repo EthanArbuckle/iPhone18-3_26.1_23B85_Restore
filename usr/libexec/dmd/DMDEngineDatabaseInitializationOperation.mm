@@ -1,15 +1,15 @@
 @interface DMDEngineDatabaseInitializationOperation
-- (BOOL)destroyPersistentStoresWithError:(id *)a3;
+- (BOOL)destroyPersistentStoresWithError:(id *)error;
 - (BOOL)isReady;
-- (BOOL)updateMetadataForManagedObjectContext:(id)a3 error:(id *)a4;
+- (BOOL)updateMetadataForManagedObjectContext:(id)context error:(id *)error;
 - (void)dealloc;
 - (void)destroyLegacyDatabaseIfNeeded;
-- (void)fixupDatabaseWithCompletionHandler:(id)a3;
-- (void)loadPersistentStoresWithCompletionHandler:(id)a3;
+- (void)fixupDatabaseWithCompletionHandler:(id)handler;
+- (void)loadPersistentStoresWithCompletionHandler:(id)handler;
 - (void)main;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)operationWillStart;
-- (void)setDeviceStateProvider:(id)a3;
+- (void)setDeviceStateProvider:(id)provider;
 @end
 
 @implementation DMDEngineDatabaseInitializationOperation
@@ -24,12 +24,12 @@
 
 - (BOOL)isReady
 {
-  v3 = [(DMDEngineDatabaseInitializationOperation *)self deviceStateProvider];
+  deviceStateProvider = [(DMDEngineDatabaseInitializationOperation *)self deviceStateProvider];
   v7.receiver = self;
   v7.super_class = DMDEngineDatabaseInitializationOperation;
   if ([(DMDEngineDatabaseInitializationOperation *)&v7 isReady])
   {
-    v4 = v3 == 0;
+    v4 = deviceStateProvider == 0;
   }
 
   else
@@ -39,22 +39,22 @@
 
   if (v4)
   {
-    v5 = 0;
+    hasKeychainUnlockedSinceBoot = 0;
   }
 
   else
   {
-    v5 = [v3 hasKeychainUnlockedSinceBoot];
+    hasKeychainUnlockedSinceBoot = [deviceStateProvider hasKeychainUnlockedSinceBoot];
   }
 
-  return v5;
+  return hasKeychainUnlockedSinceBoot;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "DMDEngineDatabaseInitializationOperationContext")
+  if (context == "DMDEngineDatabaseInitializationOperationContext")
   {
-    if ([a3 isEqualToString:{@"hasKeychainUnlockedSinceBoot", a4, a5}])
+    if ([path isEqualToString:{@"hasKeychainUnlockedSinceBoot", object, change}])
     {
       [(DMDEngineDatabaseInitializationOperation *)self willChangeValueForKey:@"isReady"];
 
@@ -66,17 +66,17 @@
   {
     v7.receiver = self;
     v7.super_class = DMDEngineDatabaseInitializationOperation;
-    [(DMDEngineDatabaseInitializationOperation *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DMDEngineDatabaseInitializationOperation *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setDeviceStateProvider:(id)a3
+- (void)setDeviceStateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   [(DMDDeviceStateProvider *)self->_deviceStateProvider removeObserver:self forKeyPath:@"hasKeychainUnlockedSinceBoot" context:"DMDEngineDatabaseInitializationOperationContext"];
   deviceStateProvider = self->_deviceStateProvider;
-  self->_deviceStateProvider = v4;
-  v6 = v4;
+  self->_deviceStateProvider = providerCopy;
+  v6 = providerCopy;
 
   [(DMDDeviceStateProvider *)self->_deviceStateProvider addObserver:self forKeyPath:@"hasKeychainUnlockedSinceBoot" options:4 context:"DMDEngineDatabaseInitializationOperationContext"];
 }
@@ -106,12 +106,12 @@
   v3 = +[NSFileManager dmd_legacyUserConfigurationEngineDatabaseURL];
   if ([v3 checkResourceIsReachableAndReturnError:0])
   {
-    v4 = [v3 path];
-    v5 = [v4 stringByAppendingString:@"-wal"];
+    path = [v3 path];
+    v5 = [path stringByAppendingString:@"-wal"];
     v6 = [NSURL fileURLWithPath:v5 isDirectory:0];
 
-    v7 = [v3 path];
-    v8 = [v7 stringByAppendingString:@"-shm"];
+    path2 = [v3 path];
+    v8 = [path2 stringByAppendingString:@"-shm"];
     v9 = [NSURL fileURLWithPath:v8 isDirectory:0];
 
     v36[0] = v3;
@@ -203,12 +203,12 @@ LABEL_21:
   }
 }
 
-- (void)loadPersistentStoresWithCompletionHandler:(id)a3
+- (void)loadPersistentStoresWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(DMDEngineDatabaseOperation *)self database];
-  v7 = [v6 persistentStoreDescriptions];
-  v8 = [v7 mutableCopy];
+  handlerCopy = handler;
+  database = [(DMDEngineDatabaseOperation *)self database];
+  persistentStoreDescriptions = [database persistentStoreDescriptions];
+  v8 = [persistentStoreDescriptions mutableCopy];
 
   if (![v8 count])
   {
@@ -216,47 +216,47 @@ LABEL_21:
   }
 
   v9 = objc_opt_new();
-  v10 = [(DMDEngineDatabaseOperation *)self database];
+  database2 = [(DMDEngineDatabaseOperation *)self database];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10003A4CC;
   v14[3] = &unk_1000CEF28;
   v15 = v9;
   v16 = v8;
-  v17 = v5;
-  v11 = v5;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v8;
   v13 = v9;
-  [v10 loadPersistentStoresWithCompletionHandler:v14];
+  [database2 loadPersistentStoresWithCompletionHandler:v14];
 }
 
-- (void)fixupDatabaseWithCompletionHandler:(id)a3
+- (void)fixupDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMDEngineDatabaseOperation *)self database];
+  handlerCopy = handler;
+  database = [(DMDEngineDatabaseOperation *)self database];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003A800;
   v7[3] = &unk_1000CEF78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBackgroundTask:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [database performBackgroundTask:v7];
 }
 
-- (BOOL)updateMetadataForManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)updateMetadataForManagedObjectContext:(id)context error:(id *)error
 {
-  v17 = a4;
-  v18 = a3;
-  v5 = [(DMDEngineDatabaseOperation *)self database];
-  v6 = [v5 persistentStoreCoordinator];
+  errorCopy = error;
+  contextCopy = context;
+  database = [(DMDEngineDatabaseOperation *)self database];
+  persistentStoreCoordinator = [database persistentStoreCoordinator];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 persistentStores];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v8 = [persistentStores countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -267,40 +267,40 @@ LABEL_21:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(persistentStores);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v6 metadataForPersistentStore:{v12, v17}];
+        v13 = [persistentStoreCoordinator metadataForPersistentStore:{v12, errorCopy}];
         v14 = [v13 mutableCopy];
 
         [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:@"DMDEngineDatabaseFixedDigitalHealthUsageEventMetadataKey"];
-        [v6 setMetadata:v14 forPersistentStore:v12];
+        [persistentStoreCoordinator setMetadata:v14 forPersistentStore:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [persistentStores countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v18 save:v17];
+  v15 = [contextCopy save:errorCopy];
   return v15;
 }
 
-- (BOOL)destroyPersistentStoresWithError:(id *)a3
+- (BOOL)destroyPersistentStoresWithError:(id *)error
 {
   v26 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = self;
-  v4 = [(DMDEngineDatabaseOperation *)self database];
-  v5 = [v4 persistentStoreDescriptions];
+  selfCopy = self;
+  database = [(DMDEngineDatabaseOperation *)self database];
+  persistentStoreDescriptions = [database persistentStoreDescriptions];
 
-  obj = v5;
-  v30 = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
+  obj = persistentStoreDescriptions;
+  v30 = [persistentStoreDescriptions countByEnumeratingWithState:&v32 objects:v42 count:16];
   v6 = 0;
   if (v30)
   {
@@ -317,13 +317,13 @@ LABEL_21:
         }
 
         v9 = *(*(&v32 + 1) + 8 * v7);
-        v10 = [(DMDEngineDatabaseOperation *)v29 database];
-        v11 = [v10 persistentStoreCoordinator];
+        database2 = [(DMDEngineDatabaseOperation *)selfCopy database];
+        persistentStoreCoordinator = [database2 persistentStoreCoordinator];
         v12 = [v9 URL];
-        v13 = [v9 type];
-        v14 = [v9 options];
+        type = [v9 type];
+        options = [v9 options];
         v31 = v8;
-        v15 = [v11 destroyPersistentStoreAtURL:v12 withType:v13 options:v14 error:&v31];
+        v15 = [persistentStoreCoordinator destroyPersistentStoreAtURL:v12 withType:type options:options error:&v31];
         v6 = v31;
 
         if ((v15 & 1) == 0)
@@ -332,12 +332,12 @@ LABEL_21:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             v17 = [v9 URL];
-            v18 = [v17 lastPathComponent];
-            v19 = [v6 verboseDescription];
+            lastPathComponent = [v17 lastPathComponent];
+            verboseDescription = [v6 verboseDescription];
             *buf = 138543618;
-            v39 = v18;
+            v39 = lastPathComponent;
             v40 = 2114;
-            v41 = v19;
+            v41 = verboseDescription;
             _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "unable to remove persistent store %{public}@: %{public}@", buf, 0x16u);
           }
 
@@ -357,13 +357,13 @@ LABEL_21:
 
   v20 = [v26 count];
   v21 = v20;
-  if (a3 && v20)
+  if (error && v20)
   {
     v36 = DMFErrorFailedConfigurationDatabaseStoreKey;
     v22 = [v26 copy];
     v37 = v22;
     v23 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    *a3 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
   }
 
   return v21 == 0;

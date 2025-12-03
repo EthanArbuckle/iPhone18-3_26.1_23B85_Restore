@@ -1,7 +1,7 @@
 @interface IMRichCardLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMRichCardLayout)init;
-- (IMRichCardLayout)initWithOrientation:(int64_t)a3 imageAlignment:(int64_t)a4 width:(int64_t)a5 titleStyle:(id)a6 descriptionStyle:(id)a7 cardStyleUrl:(id)a8;
+- (IMRichCardLayout)initWithOrientation:(int64_t)orientation imageAlignment:(int64_t)alignment width:(int64_t)width titleStyle:(id)style descriptionStyle:(id)descriptionStyle cardStyleUrl:(id)url;
 - (NSString)cardStyleUrl;
 - (id)dictionaryRepresentation;
 - (int64_t)hash;
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (IMRichCardLayout)initWithOrientation:(int64_t)a3 imageAlignment:(int64_t)a4 width:(int64_t)a5 titleStyle:(id)a6 descriptionStyle:(id)a7 cardStyleUrl:(id)a8
+- (IMRichCardLayout)initWithOrientation:(int64_t)orientation imageAlignment:(int64_t)alignment width:(int64_t)width titleStyle:(id)style descriptionStyle:(id)descriptionStyle cardStyleUrl:(id)url
 {
-  if (a8)
+  if (url)
   {
     v14 = sub_1A88C82E8();
   }
@@ -38,24 +38,24 @@
     v15 = 0;
   }
 
-  *(self + OBJC_IVAR___IMRichCardLayout_orientation) = a3;
-  *(self + OBJC_IVAR___IMRichCardLayout_imageAlignment) = a4;
-  *(self + OBJC_IVAR___IMRichCardLayout_width) = a5;
-  *(self + OBJC_IVAR___IMRichCardLayout_titleStyle) = a6;
-  *(self + OBJC_IVAR___IMRichCardLayout_descriptionStyle) = a7;
+  *(self + OBJC_IVAR___IMRichCardLayout_orientation) = orientation;
+  *(self + OBJC_IVAR___IMRichCardLayout_imageAlignment) = alignment;
+  *(self + OBJC_IVAR___IMRichCardLayout_width) = width;
+  *(self + OBJC_IVAR___IMRichCardLayout_titleStyle) = style;
+  *(self + OBJC_IVAR___IMRichCardLayout_descriptionStyle) = descriptionStyle;
   v16 = (self + OBJC_IVAR___IMRichCardLayout_cardStyleUrl);
   *v16 = v14;
   v16[1] = v15;
   v20.receiver = self;
   v20.super_class = IMRichCardLayout;
-  v17 = a6;
-  v18 = a7;
+  styleCopy = style;
+  descriptionStyleCopy = descriptionStyle;
   return [(IMRichCardLayout *)&v20 init];
 }
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A882F3A4();
 
   v3 = sub_1A88C8188();
@@ -63,11 +63,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -76,7 +76,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IMRichCardLayout.isEqual(_:)(v8);
@@ -87,7 +87,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IMRichCardLayout.hash.getter();
 
   return v3;

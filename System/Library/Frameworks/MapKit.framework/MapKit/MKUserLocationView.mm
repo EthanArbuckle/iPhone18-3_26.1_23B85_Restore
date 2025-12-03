@@ -4,17 +4,17 @@
 - (CGPoint)leftCalloutOffset;
 - (CGPoint)rightCalloutOffset;
 - (CGRect)_mapkit_visibleRect;
-- (MKUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (MKUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_annotationTrackingInsets;
-- (void)_setMapDisplayStyle:(id)a3;
-- (void)_setMapPitchRadians:(double)a3;
-- (void)_setMapRotationRadians:(double)a3;
-- (void)_setMapType:(unint64_t)a3;
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setMapDisplayStyle:(id)style;
+- (void)_setMapPitchRadians:(double)radians;
+- (void)_setMapRotationRadians:(double)radians;
+- (void)_setMapType:(unint64_t)type;
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)_updateFromMap;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setAnnotation:(id)a3;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation MKUserLocationView
@@ -55,37 +55,37 @@
   return result;
 }
 
-- (void)_setMapRotationRadians:(double)a3
+- (void)_setMapRotationRadians:(double)radians
 {
   v5.receiver = self;
   v5.super_class = MKUserLocationView;
   [(MKAnnotationView *)&v5 _setMapRotationRadians:?];
-  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapRotationRadians:a3];
+  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapRotationRadians:radians];
 }
 
-- (void)_setMapPitchRadians:(double)a3
+- (void)_setMapPitchRadians:(double)radians
 {
   v5.receiver = self;
   v5.super_class = MKUserLocationView;
   [(MKAnnotationView *)&v5 _setMapPitchRadians:?];
-  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapPitchRadians:a3];
+  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapPitchRadians:radians];
 }
 
-- (void)_setMapDisplayStyle:(id)a3
+- (void)_setMapDisplayStyle:(id)style
 {
-  v3 = *&a3.var0;
+  v3 = *&style.var0;
   v5.receiver = self;
   v5.super_class = MKUserLocationView;
-  [(MKAnnotationView *)&v5 _setMapDisplayStyle:*&a3.var0 & 0xFFFFFFFFFFFFLL];
+  [(MKAnnotationView *)&v5 _setMapDisplayStyle:*&style.var0 & 0xFFFFFFFFFFFFLL];
   [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapDisplayStyle:v3 & 0xFFFFFFFFFFFFLL];
 }
 
-- (void)_setMapType:(unint64_t)a3
+- (void)_setMapType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = MKUserLocationView;
   [(MKAnnotationView *)&v5 _setMapType:?];
-  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapType:a3];
+  [(_MKPuckAnnotationView *)self->_mkUserLocationView _setMapType:type];
 }
 
 - (void)prepareForDisplay
@@ -104,15 +104,15 @@
   [(MKAnnotationView *)self->_mkUserLocationView prepareForReuse];
 }
 
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_selected = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
+  self->_selected = selected;
   [MKAnnotationView _setSelected:"_setSelected:animated:" animated:?];
   v7.receiver = self;
   v7.super_class = MKUserLocationView;
-  [(MKAnnotationView *)&v7 _setSelected:v5 animated:v4];
+  [(MKAnnotationView *)&v7 _setSelected:selectedCopy animated:animatedCopy];
 }
 
 - (CGPoint)rightCalloutOffset
@@ -139,25 +139,25 @@
   return result;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   mkUserLocationView = self->_mkUserLocationView;
-  v5 = a3;
-  [(_MKUserLocationView *)mkUserLocationView setAnnotation:v5];
+  annotationCopy = annotation;
+  [(_MKUserLocationView *)mkUserLocationView setAnnotation:annotationCopy];
   v6.receiver = self;
   v6.super_class = MKUserLocationView;
-  [(MKAnnotationView *)&v6 setAnnotation:v5];
+  [(MKAnnotationView *)&v6 setAnnotation:annotationCopy];
 }
 
-- (MKUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (MKUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v6 = a3;
+  annotationCopy = annotation;
   v12.receiver = self;
   v12.super_class = MKUserLocationView;
-  v7 = [(MKAnnotationView *)&v12 initWithAnnotation:v6 reuseIdentifier:a4];
+  v7 = [(MKAnnotationView *)&v12 initWithAnnotation:annotationCopy reuseIdentifier:identifier];
   if (v7)
   {
-    v8 = [(_MKUserLocationView *)[_MKUserLocationInternalView alloc] initWithAnnotation:v6 reuseIdentifier:0];
+    v8 = [(_MKUserLocationView *)[_MKUserLocationInternalView alloc] initWithAnnotation:annotationCopy reuseIdentifier:0];
     [(_MKUserLocationInternalView *)v8 bounds];
     [(_MKUserLocationInternalView *)v8 setFrame:?];
     [(_MKUserLocationInternalView *)v8 setParentView:v7];

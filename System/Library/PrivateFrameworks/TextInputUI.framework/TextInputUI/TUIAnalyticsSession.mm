@@ -1,6 +1,6 @@
 @interface TUIAnalyticsSession
 + (id)currentInputModeIdentifier;
-+ (id)preferredEventName:(id)a3;
++ (id)preferredEventName:(id)name;
 - (void)dealloc;
 @end
 
@@ -16,18 +16,18 @@
 
 + (id)currentInputModeIdentifier
 {
-  v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [v2 currentInputMode];
-  v4 = [v3 identifierWithLayouts];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
-  return v4;
+  return identifierWithLayouts;
 }
 
-+ (id)preferredEventName:(id)a3
++ (id)preferredEventName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"UIKBAnalytics", v4];
   }

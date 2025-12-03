@@ -1,34 +1,34 @@
 @interface SLDRemoteViewIdentifier
-+ (id)identifierForStyle:(id)a3 tag:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (SLDRemoteViewIdentifier)initWithStyle:(id)a3 tag:(id)a4;
++ (id)identifierForStyle:(id)style tag:(id)tag;
+- (BOOL)isEqual:(id)equal;
+- (SLDRemoteViewIdentifier)initWithStyle:(id)style tag:(id)tag;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SLDRemoteViewIdentifier
 
-+ (id)identifierForStyle:(id)a3 tag:(id)a4
++ (id)identifierForStyle:(id)style tag:(id)tag
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SLDRemoteViewIdentifier alloc] initWithStyle:v6 tag:v5];
+  tagCopy = tag;
+  styleCopy = style;
+  v7 = [[SLDRemoteViewIdentifier alloc] initWithStyle:styleCopy tag:tagCopy];
 
   return v7;
 }
 
-- (SLDRemoteViewIdentifier)initWithStyle:(id)a3 tag:(id)a4
+- (SLDRemoteViewIdentifier)initWithStyle:(id)style tag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v12.receiver = self;
   v12.super_class = SLDRemoteViewIdentifier;
   v9 = [(SLDRemoteViewIdentifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_style, a3);
-    objc_storeStrong(&v10->_tag, a4);
+    objc_storeStrong(&v9->_style, style);
+    objc_storeStrong(&v10->_tag, tag);
   }
 
   return v10;
@@ -37,20 +37,20 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SLDRemoteViewIdentifier *)self style];
+  style = [(SLDRemoteViewIdentifier *)self style];
   v5 = [(SLDRemoteViewIdentifier *)self tag];
-  v6 = [v3 stringWithFormat:@"<SLDRemoteViewIdentifier: %p> style:[%@] tag:[%@]", self, v4, v5];
+  v6 = [v3 stringWithFormat:@"<SLDRemoteViewIdentifier: %p> style:[%@] tag:[%@]", self, style, v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -59,9 +59,9 @@
 
     else
     {
-      v7 = [(SLDRemoteViewIdentifier *)v5 style];
-      v8 = [(SLDRemoteViewIdentifier *)self style];
-      if ([v7 isEqual:v8])
+      style = [(SLDRemoteViewIdentifier *)v5 style];
+      style2 = [(SLDRemoteViewIdentifier *)self style];
+      if ([style isEqual:style2])
       {
         v9 = [(SLDRemoteViewIdentifier *)v6 tag];
         v10 = [(SLDRemoteViewIdentifier *)self tag];
@@ -85,8 +85,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SLDRemoteViewIdentifier *)self style];
-  v4 = [v3 hash];
+  style = [(SLDRemoteViewIdentifier *)self style];
+  v4 = [style hash];
   v5 = [(SLDRemoteViewIdentifier *)self tag];
   v6 = [v5 hash];
 

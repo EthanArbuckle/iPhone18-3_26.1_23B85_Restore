@@ -1,9 +1,9 @@
 @interface CTLazuliGroupChatConversationID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliGroupChatConversationID:(id)a3;
-- (CTLazuliGroupChatConversationID)initWithCoder:(id)a3;
-- (CTLazuliGroupChatConversationID)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliGroupChatConversationID:(id)d;
+- (CTLazuliGroupChatConversationID)initWithCoder:(id)coder;
+- (CTLazuliGroupChatConversationID)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,69 +12,69 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliGroupChatConversationID *)self identifier];
-  [v3 appendFormat:@", identifier = %@", v4];
+  identifier = [(CTLazuliGroupChatConversationID *)self identifier];
+  [v3 appendFormat:@", identifier = %@", identifier];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliGroupChatConversationID:(id)a3
+- (BOOL)isEqualToCTLazuliGroupChatConversationID:(id)d
 {
-  v4 = a3;
-  v5 = [(CTLazuliGroupChatConversationID *)self identifier];
-  v6 = [v4 identifier];
-  if (v5 == v6)
+  dCopy = d;
+  identifier = [(CTLazuliGroupChatConversationID *)self identifier];
+  identifier2 = [dCopy identifier];
+  if (identifier == identifier2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CTLazuliGroupChatConversationID *)self identifier];
-    v8 = [v4 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier3 = [(CTLazuliGroupChatConversationID *)self identifier];
+    identifier4 = [dCopy identifier];
+    v9 = [identifier3 isEqualToString:identifier4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliGroupChatConversationID *)self isEqualToCTLazuliGroupChatConversationID:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliGroupChatConversationID *)self isEqualToCTLazuliGroupChatConversationID:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliGroupChatConversationID allocWithZone:?];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   [(CTLazuliGroupChatConversationID *)v5 setIdentifier:v6];
 
   return v5;
 }
 
-- (CTLazuliGroupChatConversationID)initWithCoder:(id)a3
+- (CTLazuliGroupChatConversationID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTLazuliGroupChatConversationID;
   v5 = [(CTLazuliGroupChatConversationID *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -82,24 +82,24 @@
   return v5;
 }
 
-- (CTLazuliGroupChatConversationID)initWithReflection:(const void *)a3
+- (CTLazuliGroupChatConversationID)initWithReflection:(const void *)reflection
 {
   v9.receiver = self;
   v9.super_class = CTLazuliGroupChatConversationID;
   v4 = [(CTLazuliGroupChatConversationID *)&v9 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     identifier = v4->_identifier;
     v4->_identifier = v6;
   }

@@ -1,52 +1,52 @@
 @interface UIWindowLayer
-- (id)actionForKey:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTransform:(CATransform3D *)a3;
+- (id)actionForKey:(id)key;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setTransform:(CATransform3D *)transform;
 @end
 
 @implementation UIWindowLayer
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = UIWindowLayer;
-  [(UIWindowLayer *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIWindowLayer *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3.receiver = self;
   v3.super_class = UIWindowLayer;
-  [(UIWindowLayer *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIWindowLayer *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
   v8.receiver = self;
   v8.super_class = UIWindowLayer;
-  v3 = *&a3->m33;
-  v7[4] = *&a3->m31;
+  v3 = *&transform->m33;
+  v7[4] = *&transform->m31;
   v7[5] = v3;
-  v4 = *&a3->m43;
-  v7[6] = *&a3->m41;
+  v4 = *&transform->m43;
+  v7[6] = *&transform->m41;
   v7[7] = v4;
-  v5 = *&a3->m13;
-  v7[0] = *&a3->m11;
+  v5 = *&transform->m13;
+  v7[0] = *&transform->m11;
   v7[1] = v5;
-  v6 = *&a3->m23;
-  v7[2] = *&a3->m21;
+  v6 = *&transform->m23;
+  v7[2] = *&transform->m21;
   v7[3] = v6;
   [(UIWindowLayer *)&v8 setTransform:v7];
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   window = self->_window;
   if (!window)
   {
-    if (!_CASupportsAnimationForKey(v4))
+    if (!_CASupportsAnimationForKey(keyCopy))
     {
       goto LABEL_6;
     }
@@ -54,9 +54,9 @@
     window = self->_window;
   }
 
-  if ([(UIView *)window _shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)window _shouldAnimatePropertyWithKey:keyCopy])
   {
-    v6 = [UIView _defaultUIViewActionForLayer:self forKey:v4];
+    v6 = [UIView _defaultUIViewActionForLayer:self forKey:keyCopy];
     goto LABEL_7;
   }
 

@@ -1,31 +1,31 @@
 @interface NRBluetoothLinkPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNotEmpty;
 - (NRBluetoothLinkPreferences)init;
 - (id)copyEncodedXPCDict;
 - (id)copyLongDescription;
 - (id)copyShortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)combinePreferences:(id)a3;
-- (void)setInputBytesPerSecond:(id)a3;
-- (void)setOutputBytesPerSecond:(id)a3;
-- (void)setPacketsPerSecond:(id)a3;
+- (void)combinePreferences:(id)preferences;
+- (void)setInputBytesPerSecond:(id)second;
+- (void)setOutputBytesPerSecond:(id)second;
+- (void)setPacketsPerSecond:(id)second;
 @end
 
 @implementation NRBluetoothLinkPreferences
 
-- (void)combinePreferences:(id)a3
+- (void)combinePreferences:(id)preferences
 {
-  v43 = a3;
-  if (![v43 isNotEmpty])
+  preferencesCopy = preferences;
+  if (![preferencesCopy isNotEmpty])
   {
     goto LABEL_11;
   }
 
-  v4 = [*&self->_reportedToABC unsignedLongLongValue];
-  v5 = [v43 inputBytesPerSecond];
-  v6 = [v5 unsignedLongLongValue] + v4;
+  unsignedLongLongValue = [*&self->_reportedToABC unsignedLongLongValue];
+  inputBytesPerSecond = [preferencesCopy inputBytesPerSecond];
+  v6 = [inputBytesPerSecond unsignedLongLongValue] + unsignedLongLongValue;
 
   if (!HIDWORD(v6))
   {
@@ -56,9 +56,9 @@ LABEL_21:
   }
 
 LABEL_5:
-  v9 = [(NSNumber *)self->_inputBytesPerSecond unsignedLongLongValue];
-  v10 = [v43 outputBytesPerSecond];
-  v11 = [v10 unsignedLongLongValue] + v9;
+  unsignedLongLongValue2 = [(NSNumber *)self->_inputBytesPerSecond unsignedLongLongValue];
+  outputBytesPerSecond = [preferencesCopy outputBytesPerSecond];
+  v11 = [outputBytesPerSecond unsignedLongLongValue] + unsignedLongLongValue2;
 
   if (HIDWORD(v11))
   {
@@ -90,9 +90,9 @@ LABEL_5:
   }
 
 LABEL_8:
-  v14 = [(NSNumber *)self->_outputBytesPerSecond unsignedLongLongValue];
-  v15 = [v43 packetsPerSecond];
-  v16 = [v15 unsignedLongLongValue] + v14;
+  unsignedLongLongValue3 = [(NSNumber *)self->_outputBytesPerSecond unsignedLongLongValue];
+  packetsPerSecond = [preferencesCopy packetsPerSecond];
+  v16 = [packetsPerSecond unsignedLongLongValue] + unsignedLongLongValue3;
 
   if (!HIDWORD(v16))
   {
@@ -125,27 +125,27 @@ LABEL_25:
 LABEL_11:
 }
 
-- (void)setPacketsPerSecond:(id)a3
+- (void)setPacketsPerSecond:(id)second
 {
-  v4 = checkAndCapValue(a3);
+  v4 = checkAndCapValue(second);
   outputBytesPerSecond = self->_outputBytesPerSecond;
   self->_outputBytesPerSecond = v4;
 
   MEMORY[0x2821F96F8](v4, outputBytesPerSecond);
 }
 
-- (void)setOutputBytesPerSecond:(id)a3
+- (void)setOutputBytesPerSecond:(id)second
 {
-  v4 = checkAndCapValue(a3);
+  v4 = checkAndCapValue(second);
   inputBytesPerSecond = self->_inputBytesPerSecond;
   self->_inputBytesPerSecond = v4;
 
   MEMORY[0x2821F96F8](v4, inputBytesPerSecond);
 }
 
-- (void)setInputBytesPerSecond:(id)a3
+- (void)setInputBytesPerSecond:(id)second
 {
-  v4 = checkAndCapValue(a3);
+  v4 = checkAndCapValue(second);
   v5 = *&self->_reportedToABC;
   *&self->_reportedToABC = v4;
 
@@ -159,10 +159,10 @@ LABEL_11:
   return v4 ^ [(NSNumber *)self->_outputBytesPerSecond hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -172,18 +172,18 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [*&self->_reportedToABC unsignedLongLongValue];
-      v7 = [(NRBluetoothLinkPreferences *)v5 inputBytesPerSecond];
-      if (v6 == [v7 unsignedLongLongValue])
+      v5 = equalCopy;
+      unsignedLongLongValue = [*&self->_reportedToABC unsignedLongLongValue];
+      inputBytesPerSecond = [(NRBluetoothLinkPreferences *)v5 inputBytesPerSecond];
+      if (unsignedLongLongValue == [inputBytesPerSecond unsignedLongLongValue])
       {
-        v8 = [(NSNumber *)self->_inputBytesPerSecond unsignedLongLongValue];
-        v9 = [(NRBluetoothLinkPreferences *)v5 outputBytesPerSecond];
-        if (v8 == [v9 unsignedLongLongValue])
+        unsignedLongLongValue2 = [(NSNumber *)self->_inputBytesPerSecond unsignedLongLongValue];
+        outputBytesPerSecond = [(NRBluetoothLinkPreferences *)v5 outputBytesPerSecond];
+        if (unsignedLongLongValue2 == [outputBytesPerSecond unsignedLongLongValue])
         {
-          v10 = [(NSNumber *)self->_outputBytesPerSecond unsignedLongLongValue];
-          v11 = [(NRBluetoothLinkPreferences *)v5 packetsPerSecond];
-          v12 = v10 == [v11 unsignedLongLongValue];
+          unsignedLongLongValue3 = [(NSNumber *)self->_outputBytesPerSecond unsignedLongLongValue];
+          packetsPerSecond = [(NRBluetoothLinkPreferences *)v5 packetsPerSecond];
+          v12 = unsignedLongLongValue3 == [packetsPerSecond unsignedLongLongValue];
         }
 
         else
@@ -210,12 +210,12 @@ LABEL_11:
 - (id)copyShortDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
-  v5 = [v4 unsignedLongLongValue];
-  v6 = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
-  v7 = [v6 unsignedLongLongValue];
-  v8 = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
-  v9 = [v3 initWithFormat:@"LinkPrefBT[%lluibps, %lluobps, %llupps]", v5, v7, objc_msgSend(v8, "unsignedLongLongValue")];
+  inputBytesPerSecond = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
+  unsignedLongLongValue = [inputBytesPerSecond unsignedLongLongValue];
+  outputBytesPerSecond = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
+  unsignedLongLongValue2 = [outputBytesPerSecond unsignedLongLongValue];
+  packetsPerSecond = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
+  v9 = [v3 initWithFormat:@"LinkPrefBT[%lluibps, %lluobps, %llupps]", unsignedLongLongValue, unsignedLongLongValue2, objc_msgSend(packetsPerSecond, "unsignedLongLongValue")];
 
   return v9;
 }
@@ -228,14 +228,14 @@ LABEL_11:
   v4 = [(NRLinkPreferences *)&v10 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
-  [v5 appendFormat:@"\nInput bytes/sec: %llu", objc_msgSend(v6, "unsignedLongLongValue")];
+  inputBytesPerSecond = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
+  [v5 appendFormat:@"\nInput bytes/sec: %llu", objc_msgSend(inputBytesPerSecond, "unsignedLongLongValue")];
 
-  v7 = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
-  [v5 appendFormat:@"\nOutput bytes/sec: %llu", objc_msgSend(v7, "unsignedLongLongValue")];
+  outputBytesPerSecond = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
+  [v5 appendFormat:@"\nOutput bytes/sec: %llu", objc_msgSend(outputBytesPerSecond, "unsignedLongLongValue")];
 
-  v8 = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
-  [v5 appendFormat:@"\nPackets/sec: %llu", objc_msgSend(v8, "unsignedLongLongValue")];
+  packetsPerSecond = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
+  [v5 appendFormat:@"\nPackets/sec: %llu", objc_msgSend(packetsPerSecond, "unsignedLongLongValue")];
 
   return v5;
 }
@@ -244,60 +244,60 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = NRBluetoothLinkPreferences;
-  v3 = [(NRLinkPreferences *)&v8 copyEncodedXPCDict];
-  v4 = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
-  NRLPAddUint64ToXPCDict(v3, "InputBPS", v4);
+  copyEncodedXPCDict = [(NRLinkPreferences *)&v8 copyEncodedXPCDict];
+  inputBytesPerSecond = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
+  NRLPAddUint64ToXPCDict(copyEncodedXPCDict, "InputBPS", inputBytesPerSecond);
 
-  v5 = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
-  NRLPAddUint64ToXPCDict(v3, "OutputBPS", v5);
+  outputBytesPerSecond = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
+  NRLPAddUint64ToXPCDict(copyEncodedXPCDict, "OutputBPS", outputBytesPerSecond);
 
-  v6 = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
-  NRLPAddUint64ToXPCDict(v3, "PacketsPerSecond", v6);
+  packetsPerSecond = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
+  NRLPAddUint64ToXPCDict(copyEncodedXPCDict, "PacketsPerSecond", packetsPerSecond);
 
-  return v3;
+  return copyEncodedXPCDict;
 }
 
 - (BOOL)isNotEmpty
 {
-  v3 = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
-  if ([v3 unsignedLongLongValue])
+  inputBytesPerSecond = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
+  if ([inputBytesPerSecond unsignedLongLongValue])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
-    if ([v5 unsignedLongLongValue])
+    outputBytesPerSecond = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
+    if ([outputBytesPerSecond unsignedLongLongValue])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
-      v4 = [v6 unsignedLongLongValue] != 0;
+      packetsPerSecond = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
+      v4 = [packetsPerSecond unsignedLongLongValue] != 0;
     }
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = NRBluetoothLinkPreferences;
   v5 = [(NRLinkPreferences *)&v13 copyWithZone:?];
-  v6 = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
-  v7 = [v6 copyWithZone:a3];
+  inputBytesPerSecond = [(NRBluetoothLinkPreferences *)self inputBytesPerSecond];
+  v7 = [inputBytesPerSecond copyWithZone:zone];
   [v5 setInputBytesPerSecond:v7];
 
-  v8 = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
-  v9 = [v8 copyWithZone:a3];
+  outputBytesPerSecond = [(NRBluetoothLinkPreferences *)self outputBytesPerSecond];
+  v9 = [outputBytesPerSecond copyWithZone:zone];
   [v5 setOutputBytesPerSecond:v9];
 
-  v10 = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
-  v11 = [v10 copyWithZone:a3];
+  packetsPerSecond = [(NRBluetoothLinkPreferences *)self packetsPerSecond];
+  v11 = [packetsPerSecond copyWithZone:zone];
   [v5 setPacketsPerSecond:v11];
 
   return v5;

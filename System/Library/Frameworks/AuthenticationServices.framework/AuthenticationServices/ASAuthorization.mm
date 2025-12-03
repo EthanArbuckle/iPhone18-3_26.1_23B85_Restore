@@ -1,11 +1,11 @@
 @interface ASAuthorization
-+ (id)authorizationCredentialForAccountRegistration:(id)a3;
-+ (id)authorizationFromCredential:(id)a3;
-+ (id)authorizationProviderForAccountRegistration:(id)a3;
++ (id)authorizationCredentialForAccountRegistration:(id)registration;
++ (id)authorizationFromCredential:(id)credential;
++ (id)authorizationProviderForAccountRegistration:(id)registration;
 - (ASAuthorization)init;
-- (ASAuthorization)initWithCorePlatformKeyCredentialAssertion:(id)a3;
-- (ASAuthorization)initWithCorePlatformKeyCredentialRegistration:(id)a3;
-- (ASAuthorization)initWithProvider:(id)a3 credential:(id)a4;
+- (ASAuthorization)initWithCorePlatformKeyCredentialAssertion:(id)assertion;
+- (ASAuthorization)initWithCorePlatformKeyCredentialRegistration:(id)registration;
+- (ASAuthorization)initWithProvider:(id)provider credential:(id)credential;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -19,62 +19,62 @@
   return 0;
 }
 
-- (ASAuthorization)initWithProvider:(id)a3 credential:(id)a4
+- (ASAuthorization)initWithProvider:(id)provider credential:(id)credential
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  credentialCopy = credential;
   v12.receiver = self;
   v12.super_class = ASAuthorization;
   v9 = [(ASAuthorization *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeStrong(&v10->_credential, a4);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeStrong(&v10->_credential, credential);
   }
 
   return v10;
 }
 
-- (ASAuthorization)initWithCorePlatformKeyCredentialAssertion:(id)a3
+- (ASAuthorization)initWithCorePlatformKeyCredentialAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = [ASAuthorizationPlatformPublicKeyCredentialProvider alloc];
-  v6 = [v4 relyingPartyIdentifier];
-  v7 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v5 initWithRelyingPartyIdentifier:v6];
+  relyingPartyIdentifier = [assertionCopy relyingPartyIdentifier];
+  v7 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v5 initWithRelyingPartyIdentifier:relyingPartyIdentifier];
 
-  v8 = [[ASAuthorizationPlatformPublicKeyCredentialAssertion alloc] initWithCoreCredential:v4];
+  v8 = [[ASAuthorizationPlatformPublicKeyCredentialAssertion alloc] initWithCoreCredential:assertionCopy];
   v9 = [(ASAuthorization *)self initWithProvider:v7 credential:v8];
 
   return v9;
 }
 
-- (ASAuthorization)initWithCorePlatformKeyCredentialRegistration:(id)a3
+- (ASAuthorization)initWithCorePlatformKeyCredentialRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   v5 = [ASAuthorizationPlatformPublicKeyCredentialProvider alloc];
-  v6 = [v4 relyingPartyIdentifier];
-  v7 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v5 initWithRelyingPartyIdentifier:v6];
+  relyingPartyIdentifier = [registrationCopy relyingPartyIdentifier];
+  v7 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v5 initWithRelyingPartyIdentifier:relyingPartyIdentifier];
 
-  v8 = [[ASAuthorizationPlatformPublicKeyCredentialRegistration alloc] initWithCoreCredential:v4];
+  v8 = [[ASAuthorizationPlatformPublicKeyCredentialRegistration alloc] initWithCoreCredential:registrationCopy];
   v9 = [(ASAuthorization *)self initWithProvider:v7 credential:v8];
 
   return v9;
 }
 
-+ (id)authorizationFromCredential:(id)a3
++ (id)authorizationFromCredential:(id)credential
 {
-  v3 = a3;
+  credentialCopy = credential;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_alloc_init(ASAuthorizationPasswordProvider);
-    v5 = v3;
+    v5 = credentialCopy;
     v6 = [ASPasswordCredential alloc];
-    v7 = [v5 user];
-    v8 = [v5 password];
+    user = [v5 user];
+    password = [v5 password];
 
-    v9 = [(ASPasswordCredential *)v6 initWithUser:v7 password:v8];
+    v9 = [(ASPasswordCredential *)v6 initWithUser:user password:password];
 LABEL_15:
 
     v21 = [[ASAuthorization alloc] initWithProvider:v4 credential:v9];
@@ -85,36 +85,36 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_alloc_init(ASAuthorizationAppleIDProvider);
-    v10 = [v3 authorization];
-    v7 = [v10 credential];
+    authorization = [credentialCopy authorization];
+    user = [authorization credential];
 
-    v11 = [v7 authenticationServicesCredential];
+    authenticationServicesCredential = [user authenticationServicesCredential];
 LABEL_14:
-    v9 = v11;
+    v9 = authenticationServicesCredential;
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
+    user = credentialCopy;
     v12 = [ASAuthorizationPlatformPublicKeyCredentialProvider alloc];
-    v13 = [v7 relyingPartyIdentifier];
-    v4 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v12 initWithRelyingPartyIdentifier:v13];
+    relyingPartyIdentifier = [user relyingPartyIdentifier];
+    v4 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v12 initWithRelyingPartyIdentifier:relyingPartyIdentifier];
 
     v14 = ASAuthorizationPlatformPublicKeyCredentialAssertion;
 LABEL_13:
-    v11 = [[v14 alloc] initWithCoreCredential:v7];
+    authenticationServicesCredential = [[v14 alloc] initWithCoreCredential:user];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
+    user = credentialCopy;
     v15 = [ASAuthorizationPlatformPublicKeyCredentialProvider alloc];
-    v16 = [v7 relyingPartyIdentifier];
-    v4 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v15 initWithRelyingPartyIdentifier:v16];
+    relyingPartyIdentifier2 = [user relyingPartyIdentifier];
+    v4 = [(ASAuthorizationPlatformPublicKeyCredentialProvider *)v15 initWithRelyingPartyIdentifier:relyingPartyIdentifier2];
 
     v14 = ASAuthorizationPlatformPublicKeyCredentialRegistration;
     goto LABEL_13;
@@ -123,10 +123,10 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
+    user = credentialCopy;
     v17 = [ASAuthorizationSecurityKeyPublicKeyCredentialProvider alloc];
-    v18 = [v7 relyingPartyIdentifier];
-    v4 = [(ASAuthorizationSecurityKeyPublicKeyCredentialProvider *)v17 initWithRelyingPartyIdentifier:v18];
+    relyingPartyIdentifier3 = [user relyingPartyIdentifier];
+    v4 = [(ASAuthorizationSecurityKeyPublicKeyCredentialProvider *)v17 initWithRelyingPartyIdentifier:relyingPartyIdentifier3];
 
     v14 = ASAuthorizationSecurityKeyPublicKeyCredentialAssertion;
     goto LABEL_13;
@@ -135,20 +135,20 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
+    user = credentialCopy;
     v19 = [ASAuthorizationSecurityKeyPublicKeyCredentialProvider alloc];
-    v20 = [v7 relyingPartyIdentifier];
-    v4 = [(ASAuthorizationSecurityKeyPublicKeyCredentialProvider *)v19 initWithRelyingPartyIdentifier:v20];
+    relyingPartyIdentifier4 = [user relyingPartyIdentifier];
+    v4 = [(ASAuthorizationSecurityKeyPublicKeyCredentialProvider *)v19 initWithRelyingPartyIdentifier:relyingPartyIdentifier4];
 
     v14 = ASAuthorizationSecurityKeyPublicKeyCredentialRegistration;
     goto LABEL_13;
   }
 
-  if ([ASAuthorization authorizationCredentialIsAccountRegistration:v3])
+  if ([ASAuthorization authorizationCredentialIsAccountRegistration:credentialCopy])
   {
-    v7 = v3;
-    v4 = [ASAuthorization authorizationProviderForAccountRegistration:v7];
-    v11 = [ASAuthorization authorizationCredentialForAccountRegistration:v7];
+    user = credentialCopy;
+    v4 = [ASAuthorization authorizationProviderForAccountRegistration:user];
+    authenticationServicesCredential = [ASAuthorization authorizationCredentialForAccountRegistration:user];
     goto LABEL_14;
   }
 
@@ -184,26 +184,26 @@ LABEL_16:
   return v6;
 }
 
-+ (id)authorizationProviderForAccountRegistration:(id)a3
++ (id)authorizationProviderForAccountRegistration:(id)registration
 {
-  v3 = a3;
+  registrationCopy = registration;
   v4 = sub_1B1D7B90C();
-  v5 = [v4 relyingPartyIdentifier];
+  relyingPartyIdentifier = [v4 relyingPartyIdentifier];
 
-  if (!v5)
+  if (!relyingPartyIdentifier)
   {
     sub_1B1D7BE4C();
-    v5 = sub_1B1D7BE1C();
+    relyingPartyIdentifier = sub_1B1D7BE1C();
   }
 
-  v6 = [objc_allocWithZone(ASAuthorizationPlatformPublicKeyCredentialProvider) initWithRelyingPartyIdentifier_];
+  initWithRelyingPartyIdentifier_ = [objc_allocWithZone(ASAuthorizationPlatformPublicKeyCredentialProvider) initWithRelyingPartyIdentifier_];
 
-  return v6;
+  return initWithRelyingPartyIdentifier_;
 }
 
-+ (id)authorizationCredentialForAccountRegistration:(id)a3
++ (id)authorizationCredentialForAccountRegistration:(id)registration
 {
-  v3 = a3;
+  registrationCopy = registration;
   v4 = sub_1B1CED6D8();
 
   return v4;

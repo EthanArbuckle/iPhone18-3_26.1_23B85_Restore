@@ -1,17 +1,17 @@
 @interface CertUIKeyDataCell
-- (CertUIKeyDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CertUIKeyDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setup;
 - (void)_setupConstraints;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CertUIKeyDataCell
 
-- (CertUIKeyDataCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertUIKeyDataCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CertUIKeyDataCell;
-  v4 = [(CertUIKeyDataCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CertUIKeyDataCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -48,8 +48,8 @@
   [(UILabel *)self->_keyLabel setFont:v15];
 
   [(UILabel *)self->_keyLabel setNumberOfLines:0];
-  v16 = [(CertUIKeyDataCell *)self contentView];
-  [v16 addSubview:self->_keyLabel];
+  contentView = [(CertUIKeyDataCell *)self contentView];
+  [contentView addSubview:self->_keyLabel];
 
   v17 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v4, v5, v6, v7}];
   v18 = self->_valueLabel;
@@ -57,35 +57,35 @@
 
   [(UILabel *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_valueLabel setTextAlignment:2];
-  v19 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_valueLabel setTextColor:v19];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_valueLabel setTextColor:systemGrayColor];
 
   v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:v14];
   [(UILabel *)self->_valueLabel setFont:v20];
 
   [(UILabel *)self->_valueLabel setNumberOfLines:0];
-  v21 = [(CertUIKeyDataCell *)self contentView];
-  [v21 addSubview:self->_valueLabel];
+  contentView2 = [(CertUIKeyDataCell *)self contentView];
+  [contentView2 addSubview:self->_valueLabel];
 
   [(CertUIKeyDataCell *)self _setupConstraints];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(CertUIKeyDataCell *)self keyLabel];
-  [v7 setText:v6];
+  valueCopy = value;
+  keyCopy = key;
+  keyLabel = [(CertUIKeyDataCell *)self keyLabel];
+  [keyLabel setText:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v13 componentsJoinedByString:@"\n"];
-    v9 = [(CertUIKeyDataCell *)self valueLabel];
-    [v9 setText:v8];
+    valueLabel4 = [valueCopy componentsJoinedByString:@"\n"];
+    valueLabel = [(CertUIKeyDataCell *)self valueLabel];
+    [valueLabel setText:valueLabel4];
 
-    v10 = [(CertUIKeyDataCell *)self valueLabel];
-    [v10 setTextAlignment:0];
+    valueLabel2 = [(CertUIKeyDataCell *)self valueLabel];
+    [valueLabel2 setTextAlignment:0];
   }
 
   else
@@ -96,12 +96,12 @@
       goto LABEL_6;
     }
 
-    v11 = [v13 CertUIHexString];
-    v12 = [(CertUIKeyDataCell *)self valueLabel];
-    [v12 setText:v11];
+    certUIHexString = [valueCopy CertUIHexString];
+    valueLabel3 = [(CertUIKeyDataCell *)self valueLabel];
+    [valueLabel3 setText:certUIHexString];
 
-    v8 = [(CertUIKeyDataCell *)self valueLabel];
-    [v8 setTextAlignment:0];
+    valueLabel4 = [(CertUIKeyDataCell *)self valueLabel];
+    [valueLabel4 setTextAlignment:0];
   }
 
 LABEL_6:
@@ -110,13 +110,13 @@ LABEL_6:
 
 - (void)_setupConstraints
 {
-  v3 = [(CertUIKeyDataCell *)self constraints];
+  constraints = [(CertUIKeyDataCell *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
-    v4 = [(CertUIKeyDataCell *)self contentView];
-    v5 = [(CertUIKeyDataCell *)self constraints];
-    [v4 removeConstraints:v5];
+    contentView = [(CertUIKeyDataCell *)self contentView];
+    constraints2 = [(CertUIKeyDataCell *)self constraints];
+    [contentView removeConstraints:constraints2];
 
     [(CertUIKeyDataCell *)self setConstraints:0];
   }
@@ -124,8 +124,8 @@ LABEL_6:
   v31 = objc_opt_new();
   v6 = MEMORY[0x277CCAAD0];
   keyLabel = self->_keyLabel;
-  v8 = [(CertUIKeyDataCell *)self contentView];
-  v9 = [v6 constraintWithItem:keyLabel attribute:3 relatedBy:0 toItem:v8 attribute:3 multiplier:1.0 constant:10.0];
+  contentView2 = [(CertUIKeyDataCell *)self contentView];
+  v9 = [v6 constraintWithItem:keyLabel attribute:3 relatedBy:0 toItem:contentView2 attribute:3 multiplier:1.0 constant:10.0];
   [v31 addObject:v9];
 
   v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_valueLabel attribute:3 relatedBy:0 toItem:self->_keyLabel attribute:4 multiplier:1.0 constant:10.0];
@@ -133,36 +133,36 @@ LABEL_6:
 
   v11 = MEMORY[0x277CCAAD0];
   v12 = self->_keyLabel;
-  v13 = [(CertUIKeyDataCell *)self contentView];
-  v14 = [v11 constraintWithItem:v12 attribute:5 relatedBy:0 toItem:v13 attribute:5 multiplier:1.0 constant:10.0];
+  contentView3 = [(CertUIKeyDataCell *)self contentView];
+  v14 = [v11 constraintWithItem:v12 attribute:5 relatedBy:0 toItem:contentView3 attribute:5 multiplier:1.0 constant:10.0];
   [v31 addObject:v14];
 
   v15 = MEMORY[0x277CCAAD0];
   valueLabel = self->_valueLabel;
-  v17 = [(CertUIKeyDataCell *)self contentView];
-  v18 = [v15 constraintWithItem:valueLabel attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:10.0];
+  contentView4 = [(CertUIKeyDataCell *)self contentView];
+  v18 = [v15 constraintWithItem:valueLabel attribute:5 relatedBy:0 toItem:contentView4 attribute:5 multiplier:1.0 constant:10.0];
   [v31 addObject:v18];
 
   v19 = MEMORY[0x277CCAAD0];
   v20 = self->_keyLabel;
-  v21 = [(CertUIKeyDataCell *)self contentView];
-  v22 = [v19 constraintWithItem:v20 attribute:6 relatedBy:0 toItem:v21 attribute:6 multiplier:1.0 constant:-10.0];
+  contentView5 = [(CertUIKeyDataCell *)self contentView];
+  v22 = [v19 constraintWithItem:v20 attribute:6 relatedBy:0 toItem:contentView5 attribute:6 multiplier:1.0 constant:-10.0];
   [v31 addObject:v22];
 
   v23 = MEMORY[0x277CCAAD0];
   v24 = self->_valueLabel;
-  v25 = [(CertUIKeyDataCell *)self contentView];
-  v26 = [v23 constraintWithItem:v24 attribute:6 relatedBy:0 toItem:v25 attribute:6 multiplier:1.0 constant:-10.0];
+  contentView6 = [(CertUIKeyDataCell *)self contentView];
+  v26 = [v23 constraintWithItem:v24 attribute:6 relatedBy:0 toItem:contentView6 attribute:6 multiplier:1.0 constant:-10.0];
   [v31 addObject:v26];
 
   v27 = MEMORY[0x277CCAAD0];
-  v28 = [(CertUIKeyDataCell *)self contentView];
-  v29 = [v27 constraintWithItem:v28 attribute:4 relatedBy:0 toItem:self->_valueLabel attribute:4 multiplier:1.0 constant:10.0];
+  contentView7 = [(CertUIKeyDataCell *)self contentView];
+  v29 = [v27 constraintWithItem:contentView7 attribute:4 relatedBy:0 toItem:self->_valueLabel attribute:4 multiplier:1.0 constant:10.0];
   [v31 addObject:v29];
 
   [(CertUIKeyDataCell *)self setConstraints:v31];
-  v30 = [(CertUIKeyDataCell *)self contentView];
-  [v30 addConstraints:v31];
+  contentView8 = [(CertUIKeyDataCell *)self contentView];
+  [contentView8 addConstraints:v31];
 }
 
 @end

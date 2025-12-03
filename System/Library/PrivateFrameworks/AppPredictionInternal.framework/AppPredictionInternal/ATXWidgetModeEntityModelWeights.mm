@@ -19,12 +19,12 @@
   v2 = [(ATXWidgetModeEntityModelWeights *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEB6A8] sharedInstance];
+    mEMORY[0x277CEB6A8] = [MEMORY[0x277CEB6A8] sharedInstance];
     v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    *(v2 + 2) = mEMORY[0x277CEB6A8];
 
-    v5 = [*(v2 + 2) widgetModeEntityModelWeights];
-    v6 = [v5 count];
+    widgetModeEntityModelWeights = [*(v2 + 2) widgetModeEntityModelWeights];
+    v6 = [widgetModeEntityModelWeights count];
 
     if (v6)
     {
@@ -34,9 +34,9 @@
         [(ATXWidgetModeEntityModelWeights *)v7 init];
       }
 
-      v8 = [*(v2 + 2) widgetModeEntityModelWeights];
+      widgetModeEntityModelWeights2 = [*(v2 + 2) widgetModeEntityModelWeights];
       v9 = *(v2 + 1);
-      *(v2 + 1) = v8;
+      *(v2 + 1) = widgetModeEntityModelWeights2;
 
       v10 = __atxlog_handle_modes();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -152,25 +152,25 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (id)abGroup
 {
   v2 = [(NSDictionary *)self->_widgetModeEntityModelWeights objectForKeyedSubscript:@"abGroup"];
-  v3 = [v2 stringValue];
-  v4 = v3;
-  if (v3)
+  stringValue = [v2 stringValue];
+  v4 = stringValue;
+  if (stringValue)
   {
-    v5 = v3;
+    v5 = stringValue;
   }
 
   else
@@ -186,7 +186,7 @@
 - (void)init
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_2263AA000, a2, OS_LOG_TYPE_DEBUG, "ATXWidgetModeEntityModelWeights: %@", &v4, 0xCu);

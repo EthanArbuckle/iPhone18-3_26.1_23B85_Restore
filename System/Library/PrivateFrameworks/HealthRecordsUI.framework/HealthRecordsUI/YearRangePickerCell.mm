@@ -1,18 +1,18 @@
 @interface YearRangePickerCell
-- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithCoder:(id)a3;
-- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithCoder:(id)coder;
+- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation YearRangePickerCell
 
-- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D139016C();
+    identifier = sub_1D139016C();
     v6 = v5;
   }
 
@@ -21,10 +21,10 @@
     v6 = 0;
   }
 
-  return sub_1D1248264(a3, a4, v6);
+  return sub_1D1248264(style, identifier, v6);
 }
 
-- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI19YearRangePickerCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI19YearRangePickerCell_dataSource) = 0;
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI19YearRangePickerCell_baseAccessibilityIdentifier);
@@ -38,7 +38,7 @@
   return result;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15HealthRecordsUI19YearRangePickerCell_dataSource);
   if (v4)
@@ -52,12 +52,12 @@
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   v5 = *(self + OBJC_IVAR____TtC15HealthRecordsUI19YearRangePickerCell_dataSource);
   if (v5)
   {
-    if (a4 < 0)
+    if (row < 0)
     {
       __break(1u);
     }
@@ -65,10 +65,10 @@
     else
     {
       v6 = *&v5[OBJC_IVAR____TtC15HealthRecordsUI25YearRangePickerDataSource_pickerRange];
-      if (*(v6 + 16) > a4)
+      if (*(v6 + 16) > row)
       {
-        v7 = *(v6 + 8 * a4 + 32);
-        v8 = self;
+        v7 = *(v6 + 8 * row + 32);
+        selfCopy = self;
 
         sub_1D11F3C64(v7);
 
@@ -87,11 +87,11 @@ LABEL_5:
   return v5;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_1D12489F0(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1D12489F0(viewCopy, row);
 }
 
 @end

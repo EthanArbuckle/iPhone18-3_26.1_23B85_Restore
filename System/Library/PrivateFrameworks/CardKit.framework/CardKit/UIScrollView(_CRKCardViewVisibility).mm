@@ -7,10 +7,10 @@
 - (BOOL)_crk_subviewIsVisible:()_CRKCardViewVisibility
 {
   v4 = a3;
-  [a1 contentOffset];
+  [self contentOffset];
   v6 = v5;
   v8 = v7;
-  [a1 bounds];
+  [self bounds];
   x = v33.origin.x;
   y = v33.origin.y;
   width = v33.size.width;

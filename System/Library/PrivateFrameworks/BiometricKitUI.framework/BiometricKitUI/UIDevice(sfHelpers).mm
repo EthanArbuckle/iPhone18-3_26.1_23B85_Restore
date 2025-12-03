@@ -17,8 +17,8 @@
 
 - (BOOL)bkui_isRTL
 {
-  v0 = [MEMORY[0x277D75128] sharedApplication];
-  v1 = [v0 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v1 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
   return v1;
 }

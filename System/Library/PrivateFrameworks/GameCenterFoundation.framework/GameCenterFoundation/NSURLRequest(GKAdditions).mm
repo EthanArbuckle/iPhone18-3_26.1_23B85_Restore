@@ -7,15 +7,15 @@
 - (id)loggableHeaders
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 allHTTPHeaderFields];
-  v3 = [v2 mutableCopy];
+  allHTTPHeaderFields = [self allHTTPHeaderFields];
+  v3 = [allHTTPHeaderFields mutableCopy];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 allHTTPHeaderFields];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allHTTPHeaderFields2 = [self allHTTPHeaderFields];
+  v5 = [allHTTPHeaderFields2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,7 +26,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allHTTPHeaderFields2);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -36,7 +36,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allHTTPHeaderFields2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

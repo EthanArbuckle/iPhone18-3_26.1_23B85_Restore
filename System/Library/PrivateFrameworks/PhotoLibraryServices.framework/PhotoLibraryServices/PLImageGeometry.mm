@@ -1,23 +1,23 @@
 @interface PLImageGeometry
-+ (id)geometryWithInputSize:(CGSize)a3 initialOrientation:(int64_t)a4;
-+ (id)geometryWithOutputSize:(CGSize)a3 appliedOrientation:(int64_t)a4;
-- (CGAffineTransform)_transformFromOrientation:(SEL)a3 toOrientation:(int64_t)a4;
++ (id)geometryWithInputSize:(CGSize)size initialOrientation:(int64_t)orientation;
++ (id)geometryWithOutputSize:(CGSize)size appliedOrientation:(int64_t)orientation;
+- (CGAffineTransform)_transformFromOrientation:(SEL)orientation toOrientation:(int64_t)toOrientation;
 - (CGAffineTransform)appliedTransform;
-- (CGAffineTransform)transformFromOrientation:(SEL)a3;
-- (CGAffineTransform)transformToOrientation:(SEL)a3;
-- (CGRect)_basisRect:(int64_t)a3;
-- (CGRect)denormalizeRect:(CGRect)a3 basis:(int64_t)a4;
+- (CGAffineTransform)transformFromOrientation:(SEL)orientation;
+- (CGAffineTransform)transformToOrientation:(SEL)orientation;
+- (CGRect)_basisRect:(int64_t)rect;
+- (CGRect)denormalizeRect:(CGRect)rect basis:(int64_t)basis;
 - (CGRect)inputRect;
-- (CGRect)inputRectForOutputRect:(CGRect)a3;
-- (CGRect)normalizeRect:(CGRect)a3 basis:(int64_t)a4;
+- (CGRect)inputRectForOutputRect:(CGRect)rect;
+- (CGRect)normalizeRect:(CGRect)rect basis:(int64_t)basis;
 - (CGRect)outputRect;
-- (CGRect)outputRectForInputRect:(CGRect)a3;
-- (PLImageGeometry)initWithInputSize:(CGSize)a3 inputOrientation:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)outputRectForInputRect:(CGRect)rect;
+- (PLImageGeometry)initWithInputSize:(CGSize)size inputOrientation:(int64_t)orientation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)appliedOrientation;
-- (void)applyOrientation:(int64_t)a3;
-- (void)setAppliedOrientation:(int64_t)a3;
+- (void)applyOrientation:(int64_t)orientation;
+- (void)setAppliedOrientation:(int64_t)orientation;
 @end
 
 @implementation PLImageGeometry
@@ -52,9 +52,9 @@
   return v4;
 }
 
-- (CGAffineTransform)_transformFromOrientation:(SEL)a3 toOrientation:(int64_t)a4
+- (CGAffineTransform)_transformFromOrientation:(SEL)orientation toOrientation:(int64_t)toOrientation
 {
-  v7 = PLOrientationBetweenOrientations(a4, a5);
+  v7 = PLOrientationBetweenOrientations(toOrientation, a5);
   v8 = 6;
   if (v7 != 8)
   {
@@ -79,34 +79,34 @@
   return PLOrientationMakeTransformWithSize(v9, retstr, v10, v11);
 }
 
-- (CGAffineTransform)transformFromOrientation:(SEL)a3
+- (CGAffineTransform)transformFromOrientation:(SEL)orientation
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v6 = [(PLImageGeometry *)self appliedOrientation];
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
 
-  return [(PLImageGeometry *)self _transformFromOrientation:a4 toOrientation:v6];
+  return [(PLImageGeometry *)self _transformFromOrientation:a4 toOrientation:appliedOrientation];
 }
 
-- (CGAffineTransform)transformToOrientation:(SEL)a3
+- (CGAffineTransform)transformToOrientation:(SEL)orientation
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v6 = [(PLImageGeometry *)self appliedOrientation];
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
 
-  return [(PLImageGeometry *)self _transformFromOrientation:v6 toOrientation:a4];
+  return [(PLImageGeometry *)self _transformFromOrientation:appliedOrientation toOrientation:a4];
 }
 
-- (CGRect)_basisRect:(int64_t)a3
+- (CGRect)_basisRect:(int64_t)rect
 {
-  if (a3 == 1)
+  if (rect == 1)
   {
     [(PLImageGeometry *)self outputRect];
   }
 
-  else if (!a3)
+  else if (!rect)
   {
     [(PLImageGeometry *)self inputRect];
   }
@@ -118,13 +118,13 @@
   return result;
 }
 
-- (CGRect)normalizeRect:(CGRect)a3 basis:(int64_t)a4
+- (CGRect)normalizeRect:(CGRect)rect basis:(int64_t)basis
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(PLImageGeometry *)self _basisRect:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(PLImageGeometry *)self _basisRect:basis];
   v10 = (x - v8) / v9;
   v13 = (y - v11) / v12;
   v14 = width / v9;
@@ -136,13 +136,13 @@
   return result;
 }
 
-- (CGRect)denormalizeRect:(CGRect)a3 basis:(int64_t)a4
+- (CGRect)denormalizeRect:(CGRect)rect basis:(int64_t)basis
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(PLImageGeometry *)self _basisRect:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(PLImageGeometry *)self _basisRect:basis];
   v10 = v8 + x * v9;
   v13 = v11 + y * v12;
   v14 = width * v9;
@@ -154,20 +154,20 @@
   return result;
 }
 
-- (CGRect)outputRectForInputRect:(CGRect)a3
+- (CGRect)outputRectForInputRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PLImageGeometry *)self appliedOrientation];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
   v9 = 6;
-  if (v8 != 8)
+  if (appliedOrientation != 8)
   {
-    v9 = v8;
+    v9 = appliedOrientation;
   }
 
-  if (v8 == 6)
+  if (appliedOrientation == 6)
   {
     v10 = 8;
   }
@@ -187,16 +187,16 @@
   return result;
 }
 
-- (CGRect)inputRectForOutputRect:(CGRect)a3
+- (CGRect)inputRectForOutputRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PLImageGeometry *)self appliedOrientation];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
   [(PLImageGeometry *)self outputRect];
 
-  v11 = PLOrientationTransformImageRect(v8, v9, v10, x, y, width, height);
+  v11 = PLOrientationTransformImageRect(appliedOrientation, v9, v10, x, y, width, height);
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -204,29 +204,29 @@
   return result;
 }
 
-- (void)applyOrientation:(int64_t)a3
+- (void)applyOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLImageGeometry.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"PLOrientationIsValid(orientation)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageGeometry.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"PLOrientationIsValid(orientation)"}];
   }
 
-  self->_userOrientation = PLOrientationConcat(self->_userOrientation, a3);
+  self->_userOrientation = PLOrientationConcat(self->_userOrientation, orientation);
 }
 
 - (CGAffineTransform)appliedTransform
 {
-  v5 = [(PLImageGeometry *)self appliedOrientation];
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
   v6 = 6;
-  if (v5 != 8)
+  if (appliedOrientation != 8)
   {
-    v6 = v5;
+    v6 = appliedOrientation;
   }
 
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  if (v5 == 6)
+  if (appliedOrientation == 6)
   {
     v7 = 8;
   }
@@ -244,13 +244,13 @@
 
 - (CGRect)outputRect
 {
-  v3 = [(PLImageGeometry *)self appliedOrientation];
+  appliedOrientation = [(PLImageGeometry *)self appliedOrientation];
   [(PLImageGeometry *)self inputRect];
   v5 = v4;
   v7 = v6;
   [(PLImageGeometry *)self inputRect];
 
-  v12 = PLOrientationTransformImageRect(v3, v5, v7, v8, v9, v10, v11);
+  v12 = PLOrientationTransformImageRect(appliedOrientation, v5, v7, v8, v9, v10, v11);
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -258,24 +258,24 @@
   return result;
 }
 
-- (void)setAppliedOrientation:(int64_t)a3
+- (void)setAppliedOrientation:(int64_t)orientation
 {
-  v4 = PLOrientationBetweenOrientations([(PLImageGeometry *)self inputOrientation], a3);
+  v4 = PLOrientationBetweenOrientations([(PLImageGeometry *)self inputOrientation], orientation);
 
   [(PLImageGeometry *)self setUserOrientation:v4];
 }
 
 - (int64_t)appliedOrientation
 {
-  v3 = [(PLImageGeometry *)self inputOrientation];
-  v4 = [(PLImageGeometry *)self userOrientation];
+  inputOrientation = [(PLImageGeometry *)self inputOrientation];
+  userOrientation = [(PLImageGeometry *)self userOrientation];
 
-  return PLOrientationConcat(v3, v4);
+  return PLOrientationConcat(inputOrientation, userOrientation);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_userOrientation;
   *(result + 1) = self->_inputOrientation;
   origin = self->_inputRect.origin;
@@ -284,14 +284,14 @@
   return result;
 }
 
-- (PLImageGeometry)initWithInputSize:(CGSize)a3 inputOrientation:(int64_t)a4
+- (PLImageGeometry)initWithInputSize:(CGSize)size inputOrientation:(int64_t)orientation
 {
-  height = a3.height;
-  width = a3.width;
-  if ((a4 - 1) >= 8)
+  height = size.height;
+  width = size.width;
+  if ((orientation - 1) >= 8)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLImageGeometry.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"PLOrientationIsValid(orientation)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageGeometry.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"PLOrientationIsValid(orientation)"}];
   }
 
   v11.receiver = self;
@@ -303,37 +303,37 @@
     result->_inputRect.origin.y = 0.0;
     result->_inputRect.size.width = width;
     result->_inputRect.size.height = height;
-    result->_inputOrientation = a4;
+    result->_inputOrientation = orientation;
     result->_userOrientation = 1;
   }
 
   return result;
 }
 
-+ (id)geometryWithOutputSize:(CGSize)a3 appliedOrientation:(int64_t)a4
++ (id)geometryWithOutputSize:(CGSize)size appliedOrientation:(int64_t)orientation
 {
-  if ((a4 - 5) >= 4)
+  if ((orientation - 5) >= 4)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
-  if ((a4 - 5) < 4)
+  if ((orientation - 5) < 4)
   {
-    a3.height = a3.width;
+    size.height = size.width;
   }
 
-  return [a1 geometryWithInputSize:width initialOrientation:a3.height];
+  return [self geometryWithInputSize:width initialOrientation:size.height];
 }
 
-+ (id)geometryWithInputSize:(CGSize)a3 initialOrientation:(int64_t)a4
++ (id)geometryWithInputSize:(CGSize)size initialOrientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] initWithInputSize:1 inputOrientation:{a3.width, a3.height}];
-  [v5 applyOrientation:a4];
+  v5 = [[self alloc] initWithInputSize:1 inputOrientation:{size.width, size.height}];
+  [v5 applyOrientation:orientation];
 
   return v5;
 }

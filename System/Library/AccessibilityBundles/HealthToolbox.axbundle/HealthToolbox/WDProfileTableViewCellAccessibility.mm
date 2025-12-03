@@ -1,5 +1,5 @@
 @interface WDProfileTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation WDProfileTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WDProfileTableViewCell" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WDProfileTableViewCell" hasInstanceMethod:@"displayValue" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WDProfileTableViewCell" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WDProfileTableViewCell" hasInstanceMethod:@"displayValue" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement

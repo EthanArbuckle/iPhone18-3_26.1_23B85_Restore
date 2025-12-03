@@ -4,13 +4,13 @@
 - (BOOL)ttrAccessibilityShouldIgnoreTintColorValue;
 - (NSArray)accessibilityUserInputLabels;
 - (NSString)accessibilityValue;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)setTtrAccessibilityShouldIgnoreAccessibilityName:(BOOL)a3;
-- (void)setTtrAccessibilityShouldIgnoreTintColorValue:(BOOL)a3;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)setTtrAccessibilityShouldIgnoreAccessibilityName:(BOOL)name;
+- (void)setTtrAccessibilityShouldIgnoreTintColorValue:(BOOL)value;
 @end
 
 @implementation TTRListBadgeView
@@ -29,21 +29,21 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  v7 = self;
-  [(TTRListBadgeView *)v7 bounds];
+  requestCopy = request;
+  selfCopy = self;
+  [(TTRListBadgeView *)selfCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [(TTRListBadgeView *)v7 hitTestInsets];
+  [(TTRListBadgeView *)selfCopy hitTestInsets];
   v18 = UIEdgeInsetsInsetRect(v9, v11, v13, v15, v16, v17);
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v6 location];
+  [requestCopy location];
   v31.x = v25;
   v31.y = v26;
   v32.origin.x = v18;
@@ -67,11 +67,11 @@
   return v28;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = _s15RemindersUICore16TTRListBadgeViewC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0jG0C_So0J6RegionCtF_0();
 
   return v9;
@@ -84,11 +84,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTtrAccessibilityShouldIgnoreAccessibilityName:(BOOL)a3
+- (void)setTtrAccessibilityShouldIgnoreAccessibilityName:(BOOL)name
 {
   v5 = OBJC_IVAR____TtC15RemindersUICore16TTRListBadgeView_ttrAccessibilityShouldIgnoreAccessibilityName;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = name;
 }
 
 - (BOOL)ttrAccessibilityShouldIgnoreTintColorValue
@@ -98,19 +98,19 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTtrAccessibilityShouldIgnoreTintColorValue:(BOOL)a3
+- (void)setTtrAccessibilityShouldIgnoreTintColorValue:(BOOL)value
 {
   v5 = OBJC_IVAR____TtC15RemindersUICore16TTRListBadgeView_ttrAccessibilityShouldIgnoreTintColorValue;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = value;
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for TTRListBadgeView();
-  [(TTRListBadgeView *)&v4 setIsAccessibilityElement:v3];
+  [(TTRListBadgeView *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityValue
@@ -132,7 +132,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21DB38960();
 
   if (v3)
@@ -153,14 +153,14 @@
   v8.receiver = self;
   v8.super_class = type metadata accessor for TTRListBadgeView();
   v2 = v8.receiver;
-  v3 = [(TTRListBadgeView *)&v8 accessibilityTraits];
+  accessibilityTraits = [(TTRListBadgeView *)&v8 accessibilityTraits];
   v4 = OBJC_IVAR____TtC15RemindersUICore16TTRListBadgeView_selected;
   swift_beginAccess();
   if (*(v2 + v4) == 1)
   {
     v5 = *MEMORY[0x277D76598];
 
-    if ((v5 & ~v3) != 0)
+    if ((v5 & ~accessibilityTraits) != 0)
     {
       v6 = v5;
     }
@@ -170,19 +170,19 @@
       v6 = 0;
     }
 
-    v3 |= v6;
+    accessibilityTraits |= v6;
   }
 
   else
   {
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21DB38D0C();
 
   return v3;

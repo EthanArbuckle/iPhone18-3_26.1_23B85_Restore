@@ -1,30 +1,30 @@
 @interface AVPlaybackContentZoomingView
-- (AVPlaybackContentZoomingView)initWithFrame:(CGRect)a3 activeContentView:(id)a4;
+- (AVPlaybackContentZoomingView)initWithFrame:(CGRect)frame activeContentView:(id)view;
 - (BOOL)canShowStatusBarBackgroundGradientWhenStatusBarVisible;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_contentRectForScale:(double)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_contentRectForScale:(double)scale;
 - (CGRect)previousBounds;
 - (CGRect)videoContentFrame;
-- (CGSize)_contentSizeForScale:(double)a3;
+- (CGSize)_contentSizeForScale:(double)scale;
 - (CGSize)contentAspectRatio;
 - (UIEdgeInsets)_contentInsets;
 - (UIWindow)lastKnownWindow;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)_updateMinMaxZoomScales:(BOOL)a3;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)_updateMinMaxZoomScales:(BOOL)scales;
 - (void)_updateZoomScaling;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3;
-- (void)setContentAspectRatio:(CGSize)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLastKnownWindow:(id)a3;
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4;
-- (void)setZoomingEnabled:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
-- (void)zoomToPoint:(CGPoint)a3;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible;
+- (void)setContentAspectRatio:(CGSize)ratio;
+- (void)setFrame:(CGRect)frame;
+- (void)setLastKnownWindow:(id)window;
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations;
+- (void)setZoomingEnabled:(BOOL)enabled;
+- (void)willMoveToWindow:(id)window;
+- (void)zoomToPoint:(CGPoint)point;
 @end
 
 @implementation AVPlaybackContentZoomingView
@@ -102,7 +102,7 @@
   return result;
 }
 
-- (void)_updateMinMaxZoomScales:(BOOL)a3
+- (void)_updateMinMaxZoomScales:(BOOL)scales
 {
   [(AVPlaybackContentZoomingView *)self _contentSizeForScale:1.0];
   v6 = v5;
@@ -148,7 +148,7 @@
   if (v18 != v9)
   {
     [(AVPlaybackContentZoomingView *)self zoomScale];
-    if (a3 || (v20 = v19, [(UIView *)self avkit_isBeingDismissed]))
+    if (scales || (v20 = v19, [(UIView *)self avkit_isBeingDismissed]))
     {
       v20 = 1.0;
     }
@@ -163,11 +163,11 @@
   }
 }
 
-- (CGRect)_contentRectForScale:(double)a3
+- (CGRect)_contentRectForScale:(double)scale
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
-  [(AVPlaybackContentZoomingView *)self _contentSizeForScale:a3];
+  [(AVPlaybackContentZoomingView *)self _contentSizeForScale:scale];
   v6 = v5;
   v8 = v7;
   v9 = v3;
@@ -179,13 +179,13 @@
   return result;
 }
 
-- (CGSize)_contentSizeForScale:(double)a3
+- (CGSize)_contentSizeForScale:(double)scale
 {
   v5 = MEMORY[0x1E695F060];
-  v6 = [(UIView *)self avkit_hasFullScreenLayoutClass];
-  v7 = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
-  v8 = v7;
-  if (!v7 || !v6)
+  avkit_hasFullScreenLayoutClass = [(UIView *)self avkit_hasFullScreenLayoutClass];
+  lastKnownWindow = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
+  v8 = lastKnownWindow;
+  if (!lastKnownWindow || !avkit_hasFullScreenLayoutClass)
   {
 
 LABEL_29:
@@ -232,22 +232,22 @@ LABEL_29:
     v22 = 1.0 / v22;
   }
 
-  v23 = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
-  [v23 bounds];
+  lastKnownWindow2 = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
+  [lastKnownWindow2 bounds];
   UIRectGetCenter();
   v25 = v24;
   v27 = v26;
 
   cacheLargestInscribedRect = self->_cacheLargestInscribedRect;
-  v29 = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
-  [(AVCacheLargestInscribedRectInBoundingPath *)cacheLargestInscribedRect getLargestInscribableRectForView:v29 withCenter:v25 aspectRatio:v27, v22];
+  lastKnownWindow3 = [(AVPlaybackContentZoomingView *)self lastKnownWindow];
+  [(AVCacheLargestInscribedRectInBoundingPath *)cacheLargestInscribedRect getLargestInscribableRectForView:lastKnownWindow3 withCenter:v25 aspectRatio:v27, v22];
   x = v30;
   y = v32;
   width = v34;
   v37 = v36;
 
-  v38 = [(UIView *)self avkit_isCounterRotatedForTransition];
-  if (v38)
+  avkit_isCounterRotatedForTransition = [(UIView *)self avkit_isCounterRotatedForTransition];
+  if (avkit_isCounterRotatedForTransition)
   {
     height = width;
   }
@@ -257,7 +257,7 @@ LABEL_29:
     height = v37;
   }
 
-  if (v38)
+  if (avkit_isCounterRotatedForTransition)
   {
     width = v37;
   }
@@ -277,13 +277,13 @@ LABEL_30:
     v66.size.height = height;
     if (!CGRectIsNull(v66))
     {
-      v54 = self;
+      selfCopy = self;
       UIPointRoundToViewScale();
       UISizeRoundToViewScale();
       v56 = v55;
       v58 = v57;
 
-      CGAffineTransformMakeScale(&v61, a3, a3);
+      CGAffineTransformMakeScale(&v61, scale, scale);
       v52 = v58 * v61.c + v61.a * v56;
       v53 = v58 * v61.d + v61.b * v56;
     }
@@ -301,15 +301,15 @@ LABEL_30:
   v18.receiver = self;
   v18.super_class = AVPlaybackContentZoomingView;
   [(AVPlaybackContentZoomingView *)&v18 layoutSubviews];
-  v3 = [(AVPlaybackContentZoomingView *)self activeContentView];
+  activeContentView = [(AVPlaybackContentZoomingView *)self activeContentView];
   [(AVPlaybackContentZoomingView *)self zoomScale];
   [(AVPlaybackContentZoomingView *)self _contentRectForScale:?];
-  [v3 setFrame:?];
+  [activeContentView setFrame:?];
 
-  v4 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  v5 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  [v5 bounds];
-  [v4 setVideoContentFrame:?];
+  activeContentView2 = [(AVPlaybackContentZoomingView *)self activeContentView];
+  activeContentView3 = [(AVPlaybackContentZoomingView *)self activeContentView];
+  [activeContentView3 bounds];
+  [activeContentView2 setVideoContentFrame:?];
 
   [(AVPlaybackContentZoomingView *)self _contentInsets];
   v7 = v6;
@@ -326,40 +326,40 @@ LABEL_30:
 
 - (void)didMoveToWindow
 {
-  v3 = [(AVPlaybackContentZoomingView *)self window];
-  if (v3)
+  window = [(AVPlaybackContentZoomingView *)self window];
+  if (window)
   {
-    v4 = v3;
-    [v3 _addBoundingPathChangeObserver:self];
-    v3 = v4;
+    v4 = window;
+    [window _addBoundingPathChangeObserver:self];
+    window = v4;
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v7.receiver = self;
   v7.super_class = AVPlaybackContentZoomingView;
-  [(AVPlaybackContentZoomingView *)&v7 willMoveToWindow:v4];
-  v5 = [(AVPlaybackContentZoomingView *)self window];
-  v6 = v5;
-  if (v5)
+  [(AVPlaybackContentZoomingView *)&v7 willMoveToWindow:windowCopy];
+  window = [(AVPlaybackContentZoomingView *)self window];
+  v6 = window;
+  if (window)
   {
-    [v5 _removeBoundingPathChangeObserver:self];
+    [window _removeBoundingPathChangeObserver:self];
   }
 
-  if (v4)
+  if (windowCopy)
   {
-    [(AVPlaybackContentZoomingView *)self setLastKnownWindow:v4];
+    [(AVPlaybackContentZoomingView *)self setLastKnownWindow:windowCopy];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AVPlaybackContentZoomingView *)self frame];
   v10 = v8;
   v11 = v9;
@@ -379,9 +379,9 @@ LABEL_30:
   }
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  [(AVCacheLargestInscribedRectInBoundingPath *)self->_cacheLargestInscribedRect clearCache:a3];
+  [(AVCacheLargestInscribedRectInBoundingPath *)self->_cacheLargestInscribedRect clearCache:view];
 
   [(AVPlaybackContentZoomingView *)self _updateZoomScaling];
 }
@@ -402,12 +402,12 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v14.receiver = self;
   v14.super_class = AVPlaybackContentZoomingView;
-  if (![(AVPlaybackContentZoomingView *)&v14 gestureRecognizerShouldBegin:v4])
+  if (![(AVPlaybackContentZoomingView *)&v14 gestureRecognizerShouldBegin:beginCopy])
   {
     goto LABEL_10;
   }
@@ -423,7 +423,7 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 velocity];
+      [beginCopy velocity];
       if (v9 < 0.0)
       {
         [(AVPlaybackContentZoomingView *)self zoomScale];
@@ -441,7 +441,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v4 translationInView:0];
+  [beginCopy translationInView:0];
   if (v5 <= 0.0)
   {
     goto LABEL_11;
@@ -462,46 +462,46 @@ LABEL_12:
   return v8;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  [a3 zoomScale];
+  [zoom zoomScale];
   [(AVPlaybackContentZoomingView *)self setScrollEnabled:v4 != 1.0];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"AVPlayerViewControllerContentViewUpdateContentIntersectionNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVPlayerViewControllerContentViewUpdateContentIntersectionNotification" object:self];
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  [(AVPlaybackContentZoomingView *)self setScrollEnabled:a5 != 1.0, a4];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"AVPlayerViewControllerContentViewUpdateContentIntersectionNotification" object:self];
+  [(AVPlaybackContentZoomingView *)self setScrollEnabled:scale != 1.0, view];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVPlayerViewControllerContentViewUpdateContentIntersectionNotification" object:self];
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  [(AVPlaybackContentZoomingView *)self setAlwaysBounceVertical:1, a4];
+  [(AVPlaybackContentZoomingView *)self setAlwaysBounceVertical:1, view];
   [(AVPlaybackContentZoomingView *)self setAlwaysBounceHorizontal:1];
   [(AVPlaybackContentZoomingView *)self setBouncesHorizontally:1];
 
   [(AVPlaybackContentZoomingView *)self setBouncesVertically:1];
 }
 
-- (void)zoomToPoint:(CGPoint)a3
+- (void)zoomToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AVPlaybackContentZoomingView *)self zoomScale];
   if (v6 == 1.0)
   {
-    v7 = [(AVPlaybackContentZoomingView *)self activeContentView];
-    [v7 frame];
+    activeContentView = [(AVPlaybackContentZoomingView *)self activeContentView];
+    [activeContentView frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(AVPlaybackContentZoomingView *)self activeContentView];
-    [v16 convertPoint:self fromView:{x, y}];
+    activeContentView2 = [(AVPlaybackContentZoomingView *)self activeContentView];
+    [activeContentView2 convertPoint:self fromView:{x, y}];
     v18 = v17;
     v39 = v19;
     v40 = v17;
@@ -549,24 +549,24 @@ LABEL_12:
 
   [(AVPlaybackContentZoomingView *)self setNeedsLayout];
   [(AVPlaybackContentZoomingView *)self layoutIfNeeded];
-  v36 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  [v36 removeAllSublayerTransformAnimations];
+  activeContentView3 = [(AVPlaybackContentZoomingView *)self activeContentView];
+  [activeContentView3 removeAllSublayerTransformAnimations];
 }
 
-- (void)setZoomingEnabled:(BOOL)a3
+- (void)setZoomingEnabled:(BOOL)enabled
 {
-  if (self->_zoomingEnabled != a3)
+  if (self->_zoomingEnabled != enabled)
   {
-    self->_zoomingEnabled = a3;
+    self->_zoomingEnabled = enabled;
     [(AVPlaybackContentZoomingView *)self _updateMinMaxZoomScales];
   }
 }
 
-- (void)setContentAspectRatio:(CGSize)a3
+- (void)setContentAspectRatio:(CGSize)ratio
 {
-  if (a3.width != self->_contentAspectRatio.width || a3.height != self->_contentAspectRatio.height)
+  if (ratio.width != self->_contentAspectRatio.width || ratio.height != self->_contentAspectRatio.height)
   {
-    self->_contentAspectRatio = a3;
+    self->_contentAspectRatio = ratio;
     [(AVPlaybackContentZoomingView *)self _updateMinMaxZoomScales];
     [(AVPlaybackContentZoomingView *)self zoomScale];
     [(AVPlaybackContentZoomingView *)self _contentSizeForScale:?];
@@ -576,37 +576,37 @@ LABEL_12:
   }
 }
 
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations
 {
-  v4 = a4;
-  v6 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  [v6 setVideoGravity:a3 removingAllSublayerTransformAnimations:v4];
+  animationsCopy = animations;
+  activeContentView = [(AVPlaybackContentZoomingView *)self activeContentView];
+  [activeContentView setVideoGravity:gravity removingAllSublayerTransformAnimations:animationsCopy];
 }
 
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  [v4 setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:v3];
+  visibleCopy = visible;
+  activeContentView = [(AVPlaybackContentZoomingView *)self activeContentView];
+  [activeContentView setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:visibleCopy];
 }
 
 - (BOOL)canShowStatusBarBackgroundGradientWhenStatusBarVisible
 {
-  v2 = [(AVPlaybackContentZoomingView *)self activeContentView];
-  v3 = [v2 canShowStatusBarBackgroundGradientWhenStatusBarVisible];
+  activeContentView = [(AVPlaybackContentZoomingView *)self activeContentView];
+  canShowStatusBarBackgroundGradientWhenStatusBarVisible = [activeContentView canShowStatusBarBackgroundGradientWhenStatusBarVisible];
 
-  return v3;
+  return canShowStatusBarBackgroundGradientWhenStatusBarVisible;
 }
 
-- (void)setLastKnownWindow:(id)a3
+- (void)setLastKnownWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   WeakRetained = objc_loadWeakRetained(&self->_lastKnownWindow);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != windowCopy)
   {
-    objc_storeWeak(&self->_lastKnownWindow, v4);
-    if (v4)
+    objc_storeWeak(&self->_lastKnownWindow, windowCopy);
+    if (windowCopy)
     {
       [(AVPlaybackContentZoomingView *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
@@ -619,39 +619,39 @@ LABEL_12:
   }
 }
 
-- (AVPlaybackContentZoomingView)initWithFrame:(CGRect)a3 activeContentView:(id)a4
+- (AVPlaybackContentZoomingView)initWithFrame:(CGRect)frame activeContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = AVPlaybackContentZoomingView;
-  v11 = [(AVPlaybackContentZoomingView *)&v18 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AVPlaybackContentZoomingView *)&v18 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    [(AVPlaybackContentZoomingView *)v11 setContentInsetAdjustmentBehavior:2];
+    [(AVPlaybackContentZoomingView *)height setContentInsetAdjustmentBehavior:2];
     v13 = objc_opt_new();
     cacheLargestInscribedRect = v12->_cacheLargestInscribedRect;
     v12->_cacheLargestInscribedRect = v13;
 
-    objc_storeStrong(&v12->_activeContentView, a4);
+    objc_storeStrong(&v12->_activeContentView, view);
     v12->_contentAspectRatio = xmmword_18B6EC4D0;
     [(AVPlaybackContentZoomingView *)v12 setBouncesZoom:1];
     [(AVPlaybackContentZoomingView *)v12 setShowsVerticalScrollIndicator:0];
     [(AVPlaybackContentZoomingView *)v12 setShowsHorizontalScrollIndicator:0];
     [(AVPlaybackContentZoomingView *)v12 _updateMinMaxZoomScales];
     [(AVPlaybackContentZoomingView *)v12 _contentRectForScale:1.0];
-    [v10 setFrame:?];
-    [(AVPlaybackContentZoomingView *)v12 addSubview:v10];
+    [viewCopy setFrame:?];
+    [(AVPlaybackContentZoomingView *)v12 addSubview:viewCopy];
     [(AVPlaybackContentZoomingView *)v12 setDelegate:v12];
     [(AVPlaybackContentZoomingView *)v12 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
     [(AVPlaybackContentZoomingView *)v12 zoomScale];
     [(AVPlaybackContentZoomingView *)v12 setScrollEnabled:v15 != 1.0];
-    v16 = [v10 backgroundColor];
-    [(AVPlaybackContentZoomingView *)v12 setBackgroundColor:v16];
+    backgroundColor = [viewCopy backgroundColor];
+    [(AVPlaybackContentZoomingView *)v12 setBackgroundColor:backgroundColor];
   }
 
   return v12;

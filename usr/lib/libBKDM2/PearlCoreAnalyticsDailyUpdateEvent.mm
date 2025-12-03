@@ -1,18 +1,18 @@
 @interface PearlCoreAnalyticsDailyUpdateEvent
-- (BOOL)postEventExtendedBy:(id)a3;
-- (PearlCoreAnalyticsDailyUpdateEvent)initWithName:(id)a3 dictionary:(id)a4;
+- (BOOL)postEventExtendedBy:(id)by;
+- (PearlCoreAnalyticsDailyUpdateEvent)initWithName:(id)name dictionary:(id)dictionary;
 - (PearlCoreAnalyticsDailyUpdateEvent)initWithPersistedData;
 - (void)calculateDailyValues;
 - (void)reset;
-- (void)updateDailyMatchValues:(id *)a3;
+- (void)updateDailyMatchValues:(id *)values;
 @end
 
 @implementation PearlCoreAnalyticsDailyUpdateEvent
 
-- (PearlCoreAnalyticsDailyUpdateEvent)initWithName:(id)a3 dictionary:(id)a4
+- (PearlCoreAnalyticsDailyUpdateEvent)initWithName:(id)name dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:a4];
+  nameCopy = name;
+  v7 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:dictionary];
   v8 = [v7 objectForKey:@"yogiErrorDate"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -28,7 +28,7 @@
 
   v17.receiver = self;
   v17.super_class = PearlCoreAnalyticsDailyUpdateEvent;
-  v10 = [(BiometricKitCoreAnalyticsEvent *)&v17 initWithName:v6 dictionary:v7];
+  v10 = [(BiometricKitCoreAnalyticsEvent *)&v17 initWithName:nameCopy dictionary:v7];
   v11 = v10;
   if (v10)
   {
@@ -144,11 +144,11 @@
   [(BiometricKitCoreAnalyticsEvent *)self updateBoundedFieldValue];
 }
 
-- (BOOL)postEventExtendedBy:(id)a3
+- (BOOL)postEventExtendedBy:(id)by
 {
   v6.receiver = self;
   v6.super_class = PearlCoreAnalyticsDailyUpdateEvent;
-  v4 = [(PearlCoreAnalyticsEvent *)&v6 postEventExtendedBy:a3];
+  v4 = [(PearlCoreAnalyticsEvent *)&v6 postEventExtendedBy:by];
   [(BiometricKitCoreAnalyticsEvent *)self persistData];
   return v4;
 }
@@ -276,19 +276,19 @@
   self->_matchAttemptsFaceDetectedFailedType1WithGlasses = &unk_2A1E03888;
 }
 
-- (void)updateDailyMatchValues:(id *)a3
+- (void)updateDailyMatchValues:(id *)values
 {
   v5 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttempts, "unsignedIntValue") + 1}];
   totalMatchAttempts = self->_totalMatchAttempts;
   self->_totalMatchAttempts = v5;
 
-  if (BYTE5(a3->var2) == 1)
+  if (BYTE5(values->var2) == 1)
   {
     v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttemptsSuccessful, "unsignedIntValue") + 1}];
     totalMatchAttemptsSuccessful = self->_totalMatchAttemptsSuccessful;
     self->_totalMatchAttemptsSuccessful = v7;
 
-    if (a3->var39.var6)
+    if (values->var39.var6)
     {
       v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_matchAttemptsType1, "unsignedIntValue") + 1}];
       matchAttemptsType1 = self->_matchAttemptsType1;
@@ -298,7 +298,7 @@
       matchAttemptsSuccessfulType1 = self->_matchAttemptsSuccessfulType1;
       self->_matchAttemptsSuccessfulType1 = v11;
 
-      if (!*(&a3->var9 + 1))
+      if (!*(&values->var9 + 1))
       {
         v13 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttemptsFaceDetected, "unsignedIntValue") + 1}];
         totalMatchAttemptsFaceDetected = self->_totalMatchAttemptsFaceDetected;
@@ -317,8 +317,8 @@
         self->_matchAttemptsFaceDetectedSuccessfulType1 = v19;
 
         v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedNoGlasses;
-        v22 = !a3->var39.var7;
-        if (a3->var39.var7)
+        v22 = !values->var39.var7;
+        if (values->var39.var7)
         {
           v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedWithGlasses;
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedSuccessfulWithGlasses;
@@ -329,7 +329,7 @@
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedSuccessfulNoGlasses;
         }
 
-        if (a3->var39.var7)
+        if (values->var39.var7)
         {
           v24 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__matchAttemptsFaceDetectedType1WithGlasses;
         }
@@ -384,7 +384,7 @@ LABEL_36:
       matchAttemptsSuccessfulType0 = self->_matchAttemptsSuccessfulType0;
       self->_matchAttemptsSuccessfulType0 = v43;
 
-      if (!*(&a3->var9 + 1))
+      if (!*(&values->var9 + 1))
       {
         v45 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttemptsFaceDetected, "unsignedIntValue") + 1}];
         v46 = self->_totalMatchAttemptsFaceDetected;
@@ -403,8 +403,8 @@ LABEL_36:
         self->_matchAttemptsFaceDetectedSuccessfulType0 = v51;
 
         v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedNoGlasses;
-        v22 = !a3->var39.var7;
-        if (a3->var39.var7)
+        v22 = !values->var39.var7;
+        if (values->var39.var7)
         {
           v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedWithGlasses;
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedSuccessfulWithGlasses;
@@ -415,7 +415,7 @@ LABEL_36:
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedSuccessfulNoGlasses;
         }
 
-        if (a3->var39.var7)
+        if (values->var39.var7)
         {
           v24 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__matchAttemptsFaceDetectedType0WithGlasses;
         }
@@ -438,7 +438,7 @@ LABEL_36:
     totalMatchAttemptsFailed = self->_totalMatchAttemptsFailed;
     self->_totalMatchAttemptsFailed = v27;
 
-    if (a3->var39.var6)
+    if (values->var39.var6)
     {
       v29 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_matchAttemptsType1, "unsignedIntValue") + 1}];
       v30 = self->_matchAttemptsType1;
@@ -448,7 +448,7 @@ LABEL_36:
       matchAttemptsFailedType1 = self->_matchAttemptsFailedType1;
       self->_matchAttemptsFailedType1 = v31;
 
-      if (!*(&a3->var9 + 1))
+      if (!*(&values->var9 + 1))
       {
         v33 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttemptsFaceDetected, "unsignedIntValue") + 1}];
         v34 = self->_totalMatchAttemptsFaceDetected;
@@ -467,8 +467,8 @@ LABEL_36:
         self->_matchAttemptsFaceDetectedFailedType1 = v39;
 
         v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedNoGlasses;
-        v22 = !a3->var39.var7;
-        if (a3->var39.var7)
+        v22 = !values->var39.var7;
+        if (values->var39.var7)
         {
           v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedWithGlasses;
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedFailedWithGlasses;
@@ -479,7 +479,7 @@ LABEL_36:
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedFailedNoGlasses;
         }
 
-        if (a3->var39.var7)
+        if (values->var39.var7)
         {
           v24 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__matchAttemptsFaceDetectedType1WithGlasses;
         }
@@ -505,7 +505,7 @@ LABEL_36:
       matchAttemptsFailedType0 = self->_matchAttemptsFailedType0;
       self->_matchAttemptsFailedType0 = v55;
 
-      if (!*(&a3->var9 + 1))
+      if (!*(&values->var9 + 1))
       {
         v57 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{-[NSNumber unsignedIntValue](self->_totalMatchAttemptsFaceDetected, "unsignedIntValue") + 1}];
         v58 = self->_totalMatchAttemptsFaceDetected;
@@ -524,8 +524,8 @@ LABEL_36:
         self->_matchAttemptsFaceDetectedFailedType0 = v63;
 
         v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedNoGlasses;
-        v22 = !a3->var39.var7;
-        if (a3->var39.var7)
+        v22 = !values->var39.var7;
+        if (values->var39.var7)
         {
           v21 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedWithGlasses;
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedFailedWithGlasses;
@@ -536,7 +536,7 @@ LABEL_36:
           v23 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__totalMatchAttemptsFaceDetectedFailedNoGlasses;
         }
 
-        if (a3->var39.var7)
+        if (values->var39.var7)
         {
           v24 = &OBJC_IVAR___PearlCoreAnalyticsDailyUpdateEvent__matchAttemptsFaceDetectedType0WithGlasses;
         }

@@ -1,5 +1,5 @@
 @interface HomeSection
-- (HomeSection)initWithType:(int64_t)a3 contents:(id)a4 showsSectionButton:(BOOL)a5 customLocalizedName:(id)a6;
+- (HomeSection)initWithType:(int64_t)type contents:(id)contents showsSectionButton:(BOOL)button customLocalizedName:(id)name;
 - (NSString)_maps_diffableDataSourceIdentifier;
 - (NSString)localizedButtonName;
 - (NSString)localizedName;
@@ -56,8 +56,8 @@ LABEL_12:
 
 LABEL_13:
   v7 = [NSNumber numberWithInteger:type];
-  v8 = [v7 stringValue];
-  v9 = [UIKeyCommand commandWithTitle:v3 image:0 action:"handleHomeSectionKeyCommand:" input:v8 modifierFlags:1572864 propertyList:0];
+  stringValue = [v7 stringValue];
+  v9 = [UIKeyCommand commandWithTitle:v3 image:0 action:"handleHomeSectionKeyCommand:" input:stringValue modifierFlags:1572864 propertyList:0];
 
   v3 = v9;
 LABEL_14:
@@ -166,23 +166,23 @@ LABEL_15:
   }
 }
 
-- (HomeSection)initWithType:(int64_t)a3 contents:(id)a4 showsSectionButton:(BOOL)a5 customLocalizedName:(id)a6
+- (HomeSection)initWithType:(int64_t)type contents:(id)contents showsSectionButton:(BOOL)button customLocalizedName:(id)name
 {
-  v10 = a4;
-  v11 = a6;
+  contentsCopy = contents;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = HomeSection;
   v12 = [(HomeSection *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_type = a3;
-    v14 = [v10 copy];
+    v12->_type = type;
+    v14 = [contentsCopy copy];
     contents = v13->_contents;
     v13->_contents = v14;
 
-    v13->_showsSectionButton = a5;
-    v16 = [v11 copy];
+    v13->_showsSectionButton = button;
+    v16 = [nameCopy copy];
     customLocalizedName = v13->_customLocalizedName;
     v13->_customLocalizedName = v16;
   }

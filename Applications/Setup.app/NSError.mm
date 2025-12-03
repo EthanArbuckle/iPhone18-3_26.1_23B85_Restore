@@ -1,26 +1,26 @@
 @interface NSError
-- (BOOL)buddy_containsErrorWithDomainInDomains:(id)a3;
+- (BOOL)buddy_containsErrorWithDomainInDomains:(id)domains;
 - (BOOL)buddy_isCloudConfigMigrationNetworkError;
 - (BOOL)buddy_isCloudConfigMigrationNoNetworkSelectedError;
-- (id)buddy_popFrom:(id)a3;
-- (void)buddy_enumerateErrorTreeWithHandler:(id)a3;
+- (id)buddy_popFrom:(id)from;
+- (void)buddy_enumerateErrorTreeWithHandler:(id)handler;
 @end
 
 @implementation NSError
 
-- (void)buddy_enumerateErrorTreeWithHandler:(id)a3
+- (void)buddy_enumerateErrorTreeWithHandler:(id)handler
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v10 = objc_opt_new();
-  v9 = [NSMutableArray arrayWithObject:v12];
+  v9 = [NSMutableArray arrayWithObject:selfCopy];
   v8 = 0;
   v7 = 0;
   while (1)
   {
-    v3 = [(NSError *)v12 buddy_popFrom:v9];
+    v3 = [(NSError *)selfCopy buddy_popFrom:v9];
     v4 = v7;
     v7 = v3;
 
@@ -39,8 +39,8 @@
       }
 
       v5 = v9;
-      v6 = [v7 underlyingErrors];
-      [v5 addObjectsFromArray:v6];
+      underlyingErrors = [v7 underlyingErrors];
+      [v5 addObjectsFromArray:underlyingErrors];
     }
   }
 
@@ -50,25 +50,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)buddy_popFrom:(id)a3
+- (id)buddy_popFrom:(id)from
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] lastObject];
+  objc_storeStrong(location, from);
+  lastObject = [location[0] lastObject];
   [location[0] removeLastObject];
-  v3 = v5;
-  objc_storeStrong(&v5, 0);
+  v3 = lastObject;
+  objc_storeStrong(&lastObject, 0);
   objc_storeStrong(location, 0);
   return v3;
 }
 
 - (BOOL)buddy_isCloudConfigMigrationNoNetworkSelectedError
 {
-  v2 = [(NSError *)self domain];
+  domain = [(NSError *)self domain];
   v3 = 0;
-  if ([(NSString *)v2 isEqualToString:@"BuddyCloudConfigMigrationNetworkErrorDomain"])
+  if ([(NSString *)domain isEqualToString:@"BuddyCloudConfigMigrationNetworkErrorDomain"])
   {
     v3 = [(NSError *)self code]== 0;
   }
@@ -78,30 +78,30 @@
 
 - (BOOL)buddy_isCloudConfigMigrationNetworkError
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v7[0] = @"BuddyCloudConfigMigrationNetworkErrorDomain";
   v7[1] = NSURLErrorDomain;
   v2 = [NSArray arrayWithObjects:v7 count:2];
   v5[0] = [NSSet setWithArray:v2];
 
-  v3 = [(NSError *)v6 buddy_containsErrorWithDomainInDomains:v5[0]];
+  v3 = [(NSError *)selfCopy buddy_containsErrorWithDomainInDomains:v5[0]];
   objc_storeStrong(v5, 0);
   return v3 & 1;
 }
 
-- (BOOL)buddy_containsErrorWithDomainInDomains:(id)a3
+- (BOOL)buddy_containsErrorWithDomainInDomains:(id)domains
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domains);
   v11 = 0;
   v12 = &v11;
   v13 = 0x20000000;
   v14 = 32;
   v15 = 0;
-  v3 = v17;
+  v3 = selfCopy;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;

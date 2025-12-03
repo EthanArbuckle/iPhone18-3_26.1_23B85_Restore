@@ -1,10 +1,10 @@
 @interface RMModelPackageDeclaration_RepairBehavior
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithCheckScript:(id)a3 repairScript:(id)a4;
-+ (id)buildWithCheckScript:(id)a3 repairScript:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithCheckScript:(id)script repairScript:(id)repairScript;
++ (id)buildWithCheckScript:(id)script repairScript:(id)repairScript;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelPackageDeclaration_RepairBehavior
@@ -23,36 +23,36 @@
   return v4;
 }
 
-+ (id)buildWithCheckScript:(id)a3 repairScript:(id)a4
++ (id)buildWithCheckScript:(id)script repairScript:(id)repairScript
 {
-  v5 = a4;
-  v6 = a3;
+  repairScriptCopy = repairScript;
+  scriptCopy = script;
   v7 = objc_opt_new();
-  [v7 setPayloadCheckScript:v6];
+  [v7 setPayloadCheckScript:scriptCopy];
 
-  [v7 setPayloadRepairScript:v5];
+  [v7 setPayloadRepairScript:repairScriptCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithCheckScript:(id)a3 repairScript:(id)a4
++ (id)buildRequiredOnlyWithCheckScript:(id)script repairScript:(id)repairScript
 {
-  v5 = a4;
-  v6 = a3;
+  repairScriptCopy = repairScript;
+  scriptCopy = script;
   v7 = objc_opt_new();
-  [v7 setPayloadCheckScript:v6];
+  [v7 setPayloadCheckScript:scriptCopy];
 
-  [v7 setPayloadRepairScript:v5];
+  [v7 setPayloadRepairScript:repairScriptCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelPackageDeclaration_RepairBehavior allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -60,9 +60,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"CheckScript" forKeyPath:@"payloadCheckScript" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CheckScript" forKeyPath:@"payloadCheckScript" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"RepairScript" forKeyPath:@"payloadRepairScript" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"RepairScript" forKeyPath:@"payloadRepairScript" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -73,25 +73,25 @@
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelPackageDeclaration_RepairBehavior *)self payloadCheckScript];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CheckScript" value:v5 isRequired:1 defaultValue:0];
+  payloadCheckScript = [(RMModelPackageDeclaration_RepairBehavior *)self payloadCheckScript];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CheckScript" value:payloadCheckScript isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelPackageDeclaration_RepairBehavior *)self payloadRepairScript];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"RepairScript" value:v6 isRequired:1 defaultValue:0];
+  payloadRepairScript = [(RMModelPackageDeclaration_RepairBehavior *)self payloadRepairScript];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"RepairScript" value:payloadRepairScript isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelPackageDeclaration_RepairBehavior;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadCheckScript copy];
   v6 = v4[2];
   v4[2] = v5;

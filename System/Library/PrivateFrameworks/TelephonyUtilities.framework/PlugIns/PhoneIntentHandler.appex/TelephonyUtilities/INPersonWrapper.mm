@@ -1,16 +1,16 @@
 @interface INPersonWrapper
-- (BOOL)isEqual:(id)a3;
-- (INPersonWrapper)initWithINPerson:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INPersonWrapper)initWithINPerson:(id)person;
 - (unint64_t)hash;
 @end
 
 @implementation INPersonWrapper
 
-- (INPersonWrapper)initWithINPerson:(id)a3
+- (INPersonWrapper)initWithINPerson:(id)person
 {
-  objc_storeStrong(&self->_inPerson, a3);
-  v5 = a3;
-  v6 = [TUHandle handleWithPerson:v5];
+  objc_storeStrong(&self->_inPerson, person);
+  personCopy = person;
+  v6 = [TUHandle handleWithPerson:personCopy];
   tuHandle = self->_tuHandle;
   self->_tuHandle = v6;
 
@@ -19,11 +19,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(INPerson *)self->_inPerson displayName];
-  v4 = v3;
-  if (v3)
+  displayName = [(INPerson *)self->_inPerson displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    v5 = displayName;
   }
 
   else
@@ -33,12 +33,12 @@
 
   v6 = v5;
 
-  v7 = [(INPerson *)self->_inPerson personHandle];
-  v8 = [v7 label];
-  v9 = v8;
-  if (v8)
+  personHandle = [(INPerson *)self->_inPerson personHandle];
+  label = [personHandle label];
+  v9 = label;
+  if (label)
   {
-    v10 = v8;
+    v10 = label;
   }
 
   else
@@ -54,22 +54,22 @@
   return v13 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4[1] displayName];
-    v6 = [(INPerson *)self->_inPerson displayName];
-    if ([v5 isEqualToString:v6])
+    displayName = [equalCopy[1] displayName];
+    displayName2 = [(INPerson *)self->_inPerson displayName];
+    if ([displayName isEqualToString:displayName2])
     {
-      v7 = [v4[1] personHandle];
-      v8 = [v7 label];
-      v9 = [(INPerson *)self->_inPerson personHandle];
-      v10 = [v9 label];
-      if ([v8 isEqualToString:v10])
+      personHandle = [equalCopy[1] personHandle];
+      label = [personHandle label];
+      personHandle2 = [(INPerson *)self->_inPerson personHandle];
+      label2 = [personHandle2 label];
+      if ([label isEqualToString:label2])
       {
-        v11 = v4[2];
+        v11 = equalCopy[2];
         tuHandle = self->_tuHandle;
         v13 = TUHandlesAreCanonicallyEqual();
       }

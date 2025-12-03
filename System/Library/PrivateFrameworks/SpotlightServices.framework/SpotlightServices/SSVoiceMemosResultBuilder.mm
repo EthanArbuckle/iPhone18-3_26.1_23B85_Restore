@@ -1,26 +1,26 @@
 @interface SSVoiceMemosResultBuilder
-- (SSVoiceMemosResultBuilder)initWithResult:(id)a3;
+- (SSVoiceMemosResultBuilder)initWithResult:(id)result;
 - (id)buildDescriptions;
 - (id)buildTitle;
 @end
 
 @implementation SSVoiceMemosResultBuilder
 
-- (SSVoiceMemosResultBuilder)initWithResult:(id)a3
+- (SSVoiceMemosResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SSVoiceMemosResultBuilder;
-  v5 = [(SSResultBuilder *)&v10 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSVoiceMemosResultBuilder *)v5 setCreationDate:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963FA0] withType:objc_opt_class()];
     [(SSVoiceMemosResultBuilder *)v5 setDurationInSeconds:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B18] withType:objc_opt_class()];
     [(SSVoiceMemosResultBuilder *)v5 setTranscription:v8];
   }
 
@@ -29,58 +29,58 @@
 
 - (id)buildTitle
 {
-  v3 = [(SSVoiceMemosResultBuilder *)self transcription];
-  v4 = [v3 length];
+  transcription = [(SSVoiceMemosResultBuilder *)self transcription];
+  v4 = [transcription length];
 
   if (v4)
   {
-    v5 = [(SSVoiceMemosResultBuilder *)self transcription];
-    v6 = [(SSResultBuilder *)self buildHighlightedTextWithString:v5 includeQuotes:1];
+    transcription2 = [(SSVoiceMemosResultBuilder *)self transcription];
+    buildTitle = [(SSResultBuilder *)self buildHighlightedTextWithString:transcription2 includeQuotes:1];
 
-    [v6 setMaxLines:2];
+    [buildTitle setMaxLines:2];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SSVoiceMemosResultBuilder;
-    v6 = [(SSResultBuilder *)&v8 buildTitle];
+    buildTitle = [(SSResultBuilder *)&v8 buildTitle];
   }
 
-  return v6;
+  return buildTitle;
 }
 
 - (id)buildDescriptions
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SSVoiceMemosResultBuilder *)self transcription];
-  v5 = [v4 length];
+  transcription = [(SSVoiceMemosResultBuilder *)self transcription];
+  v5 = [transcription length];
 
   if (v5)
   {
     v25.receiver = self;
     v25.super_class = SSVoiceMemosResultBuilder;
-    v6 = [(SSResultBuilder *)&v25 buildTitle];
-    v7 = [v6 text];
-    [v3 addObject:v7];
+    buildTitle = [(SSResultBuilder *)&v25 buildTitle];
+    text = [buildTitle text];
+    [v3 addObject:text];
   }
 
-  v8 = [(SSVoiceMemosResultBuilder *)self creationDate];
+  creationDate = [(SSVoiceMemosResultBuilder *)self creationDate];
 
-  if (v8)
+  if (creationDate)
   {
-    v9 = [(SSVoiceMemosResultBuilder *)self creationDate];
-    v10 = [SSDateFormatManager dynamicMediumStringFromDate:v9];
+    creationDate2 = [(SSVoiceMemosResultBuilder *)self creationDate];
+    v10 = [SSDateFormatManager dynamicMediumStringFromDate:creationDate2];
     [v3 addObject:v10];
   }
 
-  v11 = [(SSVoiceMemosResultBuilder *)self durationInSeconds];
+  durationInSeconds = [(SSVoiceMemosResultBuilder *)self durationInSeconds];
 
-  if (v11)
+  if (durationInSeconds)
   {
-    v12 = [(SSVoiceMemosResultBuilder *)self durationInSeconds];
-    [v12 doubleValue];
+    durationInSeconds2 = [(SSVoiceMemosResultBuilder *)self durationInSeconds];
+    [durationInSeconds2 doubleValue];
     v14 = round(v13);
 
     v15 = objc_opt_new();

@@ -1,9 +1,9 @@
 @interface _PIParallaxClockLayoutJob
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
 - (BOOL)wantsRenderStage;
-- (_PIParallaxClockLayoutJob)initWithParallaxClockLayoutRequest:(id)a3;
-- (_PIParallaxClockLayoutJob)initWithRequest:(id)a3;
+- (_PIParallaxClockLayoutJob)initWithParallaxClockLayoutRequest:(id)request;
+- (_PIParallaxClockLayoutJob)initWithRequest:(id)request;
 - (id)result;
 - (id)scalePolicy;
 @end
@@ -13,18 +13,18 @@
 - (id)result
 {
   v3 = objc_alloc_init(_PIParallaxClockLayoutResult);
-  v4 = [(_PIParallaxClockLayoutJob *)self clockLayerOrder];
-  [(_PIParallaxClockLayoutResult *)v3 setClockLayerOrder:v4];
+  clockLayerOrder = [(_PIParallaxClockLayoutJob *)self clockLayerOrder];
+  [(_PIParallaxClockLayoutResult *)v3 setClockLayerOrder:clockLayerOrder];
 
   [(_PIParallaxClockLayoutResult *)v3 setClockIntersection:[(_PIParallaxClockLayoutJob *)self clockIntersection]];
 
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = [(NURenderJob *)self renderer:a3];
+  v4 = [(NURenderJob *)self renderer:render];
   if (!v4)
   {
     v43 = NUAssertLogger_1200();
@@ -47,8 +47,8 @@
         v61 = dispatch_get_specific(*v45);
         v62 = MEMORY[0x1E696AF00];
         v63 = v61;
-        v64 = [v62 callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v62 callStackSymbols];
+        v65 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v76[0]) = 138543618;
         *(v76 + 4) = v61;
         WORD6(v76[0]) = 2114;
@@ -65,8 +65,8 @@
     }
 
 LABEL_21:
-    v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v60 = [v59 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v60 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     LODWORD(v76[0]) = 138543362;
     *(v76 + 4) = v60;
     _os_log_error_impl(&dword_1C7694000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v76, 0xCu);
@@ -74,8 +74,8 @@ LABEL_21:
     goto LABEL_30;
   }
 
-  v5 = [(_PIParallaxClockLayoutJob *)self layout];
-  if (!v5)
+  layout = [(_PIParallaxClockLayoutJob *)self layout];
+  if (!layout)
   {
     v49 = NUAssertLogger_1200();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -97,8 +97,8 @@ LABEL_21:
         v66 = dispatch_get_specific(*v51);
         v67 = MEMORY[0x1E696AF00];
         v68 = v66;
-        v69 = [v67 callStackSymbols];
-        v70 = [v69 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v67 callStackSymbols];
+        v70 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(v76[0]) = 138543618;
         *(v76 + 4) = v66;
         WORD6(v76[0]) = 2114;
@@ -117,9 +117,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v6 = [(_PIParallaxClockLayoutJob *)self layoutConfiguration];
-  v7 = [(_PIParallaxClockLayoutJob *)self matteImage];
-  if (!v7)
+  layoutConfiguration = [(_PIParallaxClockLayoutJob *)self layoutConfiguration];
+  matteImage = [(_PIParallaxClockLayoutJob *)self matteImage];
+  if (!matteImage)
   {
     v54 = NUAssertLogger_1200();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -149,8 +149,8 @@ LABEL_21:
       v71 = dispatch_get_specific(*v56);
       v72 = MEMORY[0x1E696AF00];
       v73 = v71;
-      v74 = [v72 callStackSymbols];
-      v75 = [v74 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v72 callStackSymbols];
+      v75 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(v76[0]) = 138543618;
       *(v76 + 4) = v71;
       WORD6(v76[0]) = 2114;
@@ -164,27 +164,27 @@ LABEL_30:
     __break(1u);
   }
 
-  [v5 imageSize];
-  [v5 visibleFrame];
+  [layout imageSize];
+  [layout visibleFrame];
   NURectNormalize();
-  [v7 extent];
+  [matteImage extent];
   NURectDenormalize();
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  if ([v5 layoutVariant] == 2)
+  if ([layout layoutVariant] == 2)
   {
     v16 = MEMORY[0x1E69C07A8];
-    [v5 visibleFrame];
+    [layout visibleFrame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    [v5 adaptiveVisibleFrame];
+    [layout adaptiveVisibleFrame];
     [v16 topFrameForVisibleRect:v18 adaptiveRect:{v20, v22, v24, v25, v26, v27, v28}];
     NURectNormalize();
-    [v7 extent];
+    [matteImage extent];
     NURectDenormalize();
     v9 = v29;
     v11 = v30;
@@ -193,13 +193,13 @@ LABEL_30:
   }
 
   memset(v76, 0, sizeof(v76));
-  [v5 normalizedAdaptiveTimeFrameInVisibleFrame];
+  [layout normalizedAdaptiveTimeFrameInVisibleFrame];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [v4 context];
-  [PISegmentationHelper computeClockLayerOrderWithAdaptiveTimeRect:v7 visibleFrame:v6 segmentationMatte:v41 layoutConfiguration:1 context:v34 interactive:v36, v38, v40, v9, v11, v13, v15];
+  context = [v4 context];
+  [PISegmentationHelper computeClockLayerOrderWithAdaptiveTimeRect:matteImage visibleFrame:layoutConfiguration segmentationMatte:context layoutConfiguration:1 context:v34 interactive:v36, v38, v40, v9, v11, v13, v15];
 
   [(_PIParallaxClockLayoutJob *)self setClockLayerOrder:*&v76[0]];
   [(_PIParallaxClockLayoutJob *)self setClockIntersection:0];
@@ -207,21 +207,21 @@ LABEL_30:
   return 1;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v50 = *MEMORY[0x1E69E9840];
   v45.receiver = self;
   v45.super_class = _PIParallaxClockLayoutJob;
-  v4 = [(NURenderJob *)&v45 prepare:a3];
+  v4 = [(NURenderJob *)&v45 prepare:prepare];
   if (!v4)
   {
     return v4;
   }
 
-  v5 = [(_PIParallaxClockLayoutJob *)self clockLayoutRequest];
-  v6 = [v5 segmentationItem];
+  clockLayoutRequest = [(_PIParallaxClockLayoutJob *)self clockLayoutRequest];
+  segmentationItem = [clockLayoutRequest segmentationItem];
 
-  if (!v6)
+  if (!segmentationItem)
   {
     v23 = NUAssertLogger_1200();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -232,7 +232,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_1200();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -240,11 +240,11 @@ LABEL_30:
     {
       if (v28)
       {
-        v36 = dispatch_get_specific(*v25);
+        v36 = dispatch_get_specific(*callStackSymbols);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v25 = [v37 callStackSymbols];
-        v39 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v36;
         v48 = 2114;
@@ -255,10 +255,10 @@ LABEL_30:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v47 = v25;
+      v47 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -266,10 +266,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v7 = [(_PIParallaxClockLayoutJob *)self clockLayoutRequest];
-  v8 = [v7 layout];
+  clockLayoutRequest2 = [(_PIParallaxClockLayoutJob *)self clockLayoutRequest];
+  layout = [clockLayoutRequest2 layout];
 
-  if (!v8)
+  if (!layout)
   {
     v30 = NUAssertLogger_1200();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v32 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_1200();
     v33 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -288,8 +288,8 @@ LABEL_30:
     {
       if (v33)
       {
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v35 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v47 = v35;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -301,11 +301,11 @@ LABEL_30:
 LABEL_31:
     if (v33)
     {
-      v40 = dispatch_get_specific(*v25);
+      v40 = dispatch_get_specific(*callStackSymbols);
       v41 = MEMORY[0x1E696AF00];
       v42 = v40;
-      v43 = [v41 callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v41 callStackSymbols];
+      v44 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v47 = v40;
       v48 = 2114;
@@ -318,13 +318,13 @@ LABEL_33:
     _NUAssertFailHandler();
   }
 
-  v9 = [v8 orientation];
-  v10 = [v6 layoutConfiguration];
-  v11 = v10;
-  if (v9 == 2)
+  orientation = [layout orientation];
+  layoutConfiguration = [segmentationItem layoutConfiguration];
+  v11 = layoutConfiguration;
+  if (orientation == 2)
   {
-    v12 = [v10 landscapeConfiguration];
-    if (!v12)
+    landscapeConfiguration = [layoutConfiguration landscapeConfiguration];
+    if (!landscapeConfiguration)
     {
       v13 = MEMORY[0x1E69C0790];
       v14 = 2;
@@ -337,8 +337,8 @@ LABEL_10:
 
   else
   {
-    v12 = [v10 portraitConfiguration];
-    if (!v12)
+    landscapeConfiguration = [layoutConfiguration portraitConfiguration];
+    if (!landscapeConfiguration)
     {
       v13 = MEMORY[0x1E69C0790];
       v14 = 1;
@@ -346,19 +346,19 @@ LABEL_10:
     }
   }
 
-  v15 = v12;
+  v15 = landscapeConfiguration;
   v16 = v15;
 LABEL_11:
 
-  v17 = [v6 segmentationMatte];
+  segmentationMatte = [segmentationItem segmentationMatte];
 
-  if (v17)
+  if (segmentationMatte)
   {
     v18 = MEMORY[0x1E695F658];
-    v19 = [v6 segmentationMatte];
-    v20 = [v18 imageWithNUImageBuffer:v19];
+    segmentationMatte2 = [segmentationItem segmentationMatte];
+    v20 = [v18 imageWithNUImageBuffer:segmentationMatte2];
 
-    if (([v6 classification] - 3) <= 1)
+    if (([segmentationItem classification] - 3) <= 1)
     {
       v21 = [PISegmentationHelper invertImage:v20];
 
@@ -366,7 +366,7 @@ LABEL_11:
     }
 
     [(_PIParallaxClockLayoutJob *)self setMatteImage:v20];
-    [(_PIParallaxClockLayoutJob *)self setLayout:v8];
+    [(_PIParallaxClockLayoutJob *)self setLayout:layout];
     [(_PIParallaxClockLayoutJob *)self setLayoutConfiguration:v16];
   }
 
@@ -388,23 +388,23 @@ LABEL_11:
 
 - (BOOL)wantsRenderStage
 {
-  v2 = [(_PIParallaxClockLayoutJob *)self matteImage];
-  v3 = v2 != 0;
+  matteImage = [(_PIParallaxClockLayoutJob *)self matteImage];
+  v3 = matteImage != 0;
 
   return v3;
 }
 
-- (_PIParallaxClockLayoutJob)initWithParallaxClockLayoutRequest:(id)a3
+- (_PIParallaxClockLayoutJob)initWithParallaxClockLayoutRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = _PIParallaxClockLayoutJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
-- (_PIParallaxClockLayoutJob)initWithRequest:(id)a3
+- (_PIParallaxClockLayoutJob)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -443,8 +443,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -471,8 +471,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

@@ -1,7 +1,7 @@
 @interface APMigrationContext
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)currentVersion;
 - (APMigrationContext)init;
-- (APMigrationContext)initWithStorage:(id)a3 currentVersion:(id *)a4;
+- (APMigrationContext)initWithStorage:(id)storage currentVersion:(id *)version;
 - (BOOL)hasOSVersionChanged;
 - (void)done;
 @end
@@ -16,13 +16,13 @@
   return self;
 }
 
-- (APMigrationContext)initWithStorage:(id)a3 currentVersion:(id *)a4
+- (APMigrationContext)initWithStorage:(id)storage currentVersion:(id *)version
 {
-  var0 = a4->var0;
-  var1 = a4->var1;
-  var2 = a4->var2;
-  v7 = a3;
-  v8 = sub_1001E4C54(v7, var0, var1, var2);
+  var0 = version->var0;
+  var1 = version->var1;
+  var2 = version->var2;
+  storageCopy = storage;
+  v8 = sub_1001E4C54(storageCopy, var0, var1, var2);
 
   return v8;
 }
@@ -41,7 +41,7 @@
 - (void)done
 {
   v2 = *(&self->super.isa + OBJC_IVAR___APMigrationContext_storage);
-  v3 = self;
+  selfCopy = self;
   sub_1001E37D4();
   v4 = sub_100398F28();
 

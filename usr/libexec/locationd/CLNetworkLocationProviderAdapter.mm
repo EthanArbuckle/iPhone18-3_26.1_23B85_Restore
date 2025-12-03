@@ -1,24 +1,24 @@
 @interface CLNetworkLocationProviderAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)syncgetIsBroadConnection;
 - (CLNetworkLocationProviderAdapter)init;
-- (int)syncgetBestMatchLocation:(CLDaemonLocation *)a3 forCell:(const void *)a4;
-- (int)syncgetQueryLocationsForCells:(const void *)a3 useCache:(BOOL)a4;
-- (int)syncgetQueryNearbys:(const CLDaemonLocation *)a3 forFenceKeys:(const void *)a4;
+- (int)syncgetBestMatchLocation:(CLDaemonLocation *)location forCell:(const void *)cell;
+- (int)syncgetQueryLocationsForCells:(const void *)cells useCache:(BOOL)cache;
+- (int)syncgetQueryNearbys:(const CLDaemonLocation *)nearbys forFenceKeys:(const void *)keys;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)fetchQueryLocationsForWifis:(id)a3 useCache:(BOOL)a4 piggyback:(BOOL)a5 config:(id)a6 withReply:(id)a7;
-- (void)resetRetryCounters:(id)a3;
-- (void)setCurrentReachability:(int)a3;
-- (void)setLocation_CDMA:(id)a3 forCell:(id)a4;
-- (void)setLocation_GSM:(id)a3 forCell:(id)a4;
-- (void)setLocation_LTE:(id)a3 forCell:(id)a4;
-- (void)setLocation_NR:(id)a3 forCell:(id)a4;
-- (void)setLocation_SCDMA:(id)a3 forCell:(id)a4;
+- (void)fetchQueryLocationsForWifis:(id)wifis useCache:(BOOL)cache piggyback:(BOOL)piggyback config:(id)config withReply:(id)reply;
+- (void)resetRetryCounters:(id)counters;
+- (void)setCurrentReachability:(int)reachability;
+- (void)setLocation_CDMA:(id)a forCell:(id)cell;
+- (void)setLocation_GSM:(id)m forCell:(id)cell;
+- (void)setLocation_LTE:(id)e forCell:(id)cell;
+- (void)setLocation_NR:(id)r forCell:(id)cell;
+- (void)setLocation_SCDMA:(id)a forCell:(id)cell;
 @end
 
 @implementation CLNetworkLocationProviderAdapter
@@ -35,17 +35,17 @@
 
 - (BOOL)syncgetIsBroadConnection
 {
-  v2 = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
 
-  return sub_100234858(v2);
+  return sub_100234858(adaptee);
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -82,27 +82,27 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLNetworkLocationProviderAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLNetworkLocationProviderAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLNetworkLocationProviderAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)setLocation_GSM:(id)a3 forCell:(id)a4
+- (void)setLocation_GSM:(id)m forCell:(id)cell
 {
-  if (a3)
+  if (m)
   {
-    [a3 clientLocation];
+    [m clientLocation];
   }
 
   else
@@ -121,15 +121,15 @@
   LODWORD(v16[1]) = DWORD2(v15[0]);
   *(&v16[1] + 4) = *(v15 + 12);
   v6 = [(CLNetworkLocationProviderAdapter *)self adaptee:v7];
-  (*(a4 + 2))(&v7, a4);
+  (*(cell + 2))(&v7, cell);
   sub_1006C19C4(v6);
 }
 
-- (void)setLocation_SCDMA:(id)a3 forCell:(id)a4
+- (void)setLocation_SCDMA:(id)a forCell:(id)cell
 {
-  if (a3)
+  if (a)
   {
-    [a3 clientLocation];
+    [a clientLocation];
   }
 
   else
@@ -148,15 +148,15 @@
   LODWORD(v16[1]) = DWORD2(v15[0]);
   *(&v16[1] + 4) = *(v15 + 12);
   v6 = [(CLNetworkLocationProviderAdapter *)self adaptee:v7];
-  (*(a4 + 2))(&v7, a4);
+  (*(cell + 2))(&v7, cell);
   sub_1006C1F68(v6);
 }
 
-- (void)setLocation_CDMA:(id)a3 forCell:(id)a4
+- (void)setLocation_CDMA:(id)a forCell:(id)cell
 {
-  if (a3)
+  if (a)
   {
-    [a3 clientLocation];
+    [a clientLocation];
   }
 
   else
@@ -182,16 +182,16 @@
   v21 = v12;
   v16 = *v7;
   v17 = v8;
-  v6 = [(CLNetworkLocationProviderAdapter *)self adaptee];
-  (*(a4 + 2))(v7, a4);
-  sub_1006C253C(v6, v7);
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  (*(cell + 2))(v7, cell);
+  sub_1006C253C(adaptee, v7);
 }
 
-- (void)setLocation_LTE:(id)a3 forCell:(id)a4
+- (void)setLocation_LTE:(id)e forCell:(id)cell
 {
-  if (a3)
+  if (e)
   {
-    [a3 clientLocation];
+    [e clientLocation];
   }
 
   else
@@ -210,15 +210,15 @@
   LODWORD(v16[1]) = DWORD2(v15[0]);
   *(&v16[1] + 4) = *(v15 + 12);
   v6 = [(CLNetworkLocationProviderAdapter *)self adaptee:v7];
-  (*(a4 + 2))(&v7, a4);
+  (*(cell + 2))(&v7, cell);
   sub_1006C2D48(v6);
 }
 
-- (void)setLocation_NR:(id)a3 forCell:(id)a4
+- (void)setLocation_NR:(id)r forCell:(id)cell
 {
-  if (a3)
+  if (r)
   {
-    [a3 clientLocation];
+    [r clientLocation];
   }
 
   else
@@ -237,55 +237,55 @@
   LODWORD(v16[1]) = DWORD2(v15[0]);
   *(&v16[1] + 4) = *(v15 + 12);
   v6 = [(CLNetworkLocationProviderAdapter *)self adaptee:v7];
-  (*(a4 + 2))(&v7, a4);
+  (*(cell + 2))(&v7, cell);
   sub_1006C3484(v6);
 }
 
-- (int)syncgetQueryNearbys:(const CLDaemonLocation *)a3 forFenceKeys:(const void *)a4
+- (int)syncgetQueryNearbys:(const CLDaemonLocation *)nearbys forFenceKeys:(const void *)keys
 {
-  v6 = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
 
-  return sub_1006C3D98(v6, a3, a4);
+  return sub_1006C3D98(adaptee, nearbys, keys);
 }
 
-- (void)setCurrentReachability:(int)a3
+- (void)setCurrentReachability:(int)reachability
 {
   v3 = *(**([(CLNetworkLocationProviderAdapter *)self adaptee]+ 56) + 32);
 
   v3();
 }
 
-- (void)resetRetryCounters:(id)a3
+- (void)resetRetryCounters:(id)counters
 {
-  v4 = [(CLNetworkLocationProviderAdapter *)self adaptee];
-  v5 = [a3 UTF8String];
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  uTF8String = [counters UTF8String];
 
-  sub_10010DA40(v4, v5);
+  sub_10010DA40(adaptee, uTF8String);
 }
 
-- (int)syncgetBestMatchLocation:(CLDaemonLocation *)a3 forCell:(const void *)a4
+- (int)syncgetBestMatchLocation:(CLDaemonLocation *)location forCell:(const void *)cell
 {
-  v6 = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
 
-  return sub_100080270(v6, a4, a3);
+  return sub_100080270(adaptee, cell, location);
 }
 
-- (int)syncgetQueryLocationsForCells:(const void *)a3 useCache:(BOOL)a4
+- (int)syncgetQueryLocationsForCells:(const void *)cells useCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  cacheCopy = cache;
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
 
-  return sub_1006C41E4(v6, a3, v4);
+  return sub_1006C41E4(adaptee, cells, cacheCopy);
 }
 
-- (void)fetchQueryLocationsForWifis:(id)a3 useCache:(BOOL)a4 piggyback:(BOOL)a5 config:(id)a6 withReply:(id)a7
+- (void)fetchQueryLocationsForWifis:(id)wifis useCache:(BOOL)cache piggyback:(BOOL)piggyback config:(id)config withReply:(id)reply
 {
-  v10 = a4;
-  v12 = [(CLNetworkLocationProviderAdapter *)self adaptee];
-  (*(a3 + 2))(v16, a3);
-  (*(a6 + 2))(v14, a6);
-  v13 = sub_1006CF1D8(v12, qword_101C89020, qword_101C89050, qword_101C89038, qword_101C89068, qword_101C89080, v16, v10, a5, v14);
-  (*(a7 + 2))(a7, v13);
+  cacheCopy = cache;
+  adaptee = [(CLNetworkLocationProviderAdapter *)self adaptee];
+  (*(wifis + 2))(v16, wifis);
+  (*(config + 2))(v14, config);
+  v13 = sub_1006CF1D8(adaptee, qword_101C89020, qword_101C89050, qword_101C89038, qword_101C89068, qword_101C89080, v16, cacheCopy, piggyback, v14);
+  (*(reply + 2))(reply, v13);
   if (v15 < 0)
   {
     operator delete(v14[1]);

@@ -1,15 +1,15 @@
 @interface BoundsChangeAwareView
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation BoundsChangeAwareView
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(BoundsChangeAwareView *)self bounds];
   v9 = v8;
   v11 = v10;

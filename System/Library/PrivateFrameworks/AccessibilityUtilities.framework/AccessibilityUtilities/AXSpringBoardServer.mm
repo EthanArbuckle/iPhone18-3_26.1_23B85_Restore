@@ -2,13 +2,13 @@
 + (BOOL)isAvailable;
 + (id)server;
 - (AXSpringBoardServer)init;
-- (BOOL)_isSystemAppFrontmostExcludingSiri:(BOOL)a3;
+- (BOOL)_isSystemAppFrontmostExcludingSiri:(BOOL)siri;
 - (BOOL)_shouldDispatchLocally;
 - (BOOL)areSystemGesturesDisabledByAccessibility;
 - (BOOL)areSystemGesturesDisabledNatively;
 - (BOOL)bluetoothPowerEnabled;
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3;
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3;
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view;
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view;
 - (BOOL)canSetDockIconActivationMode;
 - (BOOL)connectedDevicesRequireAssistiveTouch;
 - (BOOL)currentDevicesHaveAssistiveTouchCustomActions;
@@ -33,7 +33,7 @@
 - (BOOL)isMakingEmergencyCall;
 - (BOOL)isMenuBarModal;
 - (BOOL)isMenuBarVisible;
-- (BOOL)isNonExclusiveSystemUIFocusableIncludingPIPWindow:(BOOL)a3 includingNonDismissableElements:(BOOL)a4;
+- (BOOL)isNonExclusiveSystemUIFocusableIncludingPIPWindow:(BOOL)window includingNonDismissableElements:(BOOL)elements;
 - (BOOL)isNotificationCenterVisible;
 - (BOOL)isNotificationVisible;
 - (BOOL)isOrientationLocked;
@@ -42,7 +42,7 @@
 - (BOOL)isPurpleBuddyAppFrontmost;
 - (BOOL)isRemoteAlertVisible;
 - (BOOL)isRingerMuted;
-- (BOOL)isScreenLockedWithPasscode:(BOOL *)a3;
+- (BOOL)isScreenLockedWithPasscode:(BOOL *)passcode;
 - (BOOL)isScreenshotWindowVisible;
 - (BOOL)isSettingsAppFrontmost;
 - (BOOL)isShelfSwitcherVisible;
@@ -50,22 +50,22 @@
 - (BOOL)isShowingHomescreen;
 - (BOOL)isShowingLongLookNotification;
 - (BOOL)isShowingNonSystemApp;
-- (BOOL)isShowingRemoteView:(int64_t)a3;
+- (BOOL)isShowingRemoteView:(int64_t)view;
 - (BOOL)isSideSwitchUsedForOrientation;
 - (BOOL)isSiriVisible;
 - (BOOL)isSpeakThisTemporarilyDisabled;
 - (BOOL)isSpotlightVisible;
 - (BOOL)isStageManagerSwitcherVisible;
-- (BOOL)isStatusBarNativeFocusableIncludingNonDismissableElements:(BOOL)a3;
+- (BOOL)isStatusBarNativeFocusableIncludingNonDismissableElements:(BOOL)elements;
 - (BOOL)isSyncingRestoringResettingOrUpdating;
 - (BOOL)isSystemAppShowingAnAlert;
 - (BOOL)isSystemSleeping;
 - (BOOL)isTypeToSiriVisible;
 - (BOOL)isVoiceControlRunning;
 - (BOOL)loadGAXBundleForUnmanagedASAM;
-- (BOOL)performMedusaGesture:(unint64_t)a3;
-- (BOOL)showControlCenter:(BOOL)a3;
-- (BOOL)showNotificationCenter:(BOOL)a3;
+- (BOOL)performMedusaGesture:(unint64_t)gesture;
+- (BOOL)showControlCenter:(BOOL)center;
+- (BOOL)showNotificationCenter:(BOOL)center;
 - (BOOL)toggleDarkMode;
 - (BOOL)toggleIncomingCall;
 - (BOOL)voiceOverEnabled;
@@ -75,14 +75,14 @@
 - (id)_axSpringBoardServerInstance;
 - (id)_axSpringBoardServerInstanceDelegate;
 - (id)_axSpringBoardServerInstanceIfExists;
-- (id)_handleMediaPlayingResult:(id)a3;
-- (id)_handleReachabilityResult:(id)a3;
-- (id)_handleReplyResult:(id)a3;
-- (id)_payloadForRemoteViewType:(int64_t)a3 data:(id)a4;
+- (id)_handleMediaPlayingResult:(id)result;
+- (id)_handleReachabilityResult:(id)result;
+- (id)_handleReplyResult:(id)result;
+- (id)_payloadForRemoteViewType:(int64_t)type data:(id)data;
 - (id)allowedMedusaGestures;
-- (id)appNameFromPid:(int)a3;
-- (id)applicationWithIdentifier:(id)a3;
-- (id)displayIdentifierForSceneIdentifier:(id)a3;
+- (id)appNameFromPid:(int)pid;
+- (id)applicationWithIdentifier:(id)identifier;
+- (id)displayIdentifierForSceneIdentifier:(id)identifier;
 - (id)focusedAppPID;
 - (id)focusedAppProcess;
 - (id)focusedApps;
@@ -93,7 +93,7 @@
 - (id)medusaApps;
 - (id)runningAppPIDs;
 - (id)runningAppProcesses;
-- (id)splashImageForAppWithBundleIdentifier:(id)a3;
+- (id)splashImageForAppWithBundleIdentifier:(id)identifier;
 - (id)visibleTripleClickItems;
 - (int)nativeFocusedApplication;
 - (int)pid;
@@ -103,37 +103,37 @@
 - (int64_t)activeInterfaceOrientation;
 - (void)_didConnectToClient;
 - (void)_didConnectToServer;
-- (void)_isSystemAppFrontmostExcludingSiri:(BOOL)a3 completion:(id)a4;
-- (void)_sendRemoteViewIPCMessage:(int)a3 withRemoteViewType:(int64_t)a4 withData:(id)a5;
+- (void)_isSystemAppFrontmostExcludingSiri:(BOOL)siri completion:(id)completion;
+- (void)_sendRemoteViewIPCMessage:(int)message withRemoteViewType:(int64_t)type withData:(id)data;
 - (void)_wasDisconnectedFromClient;
 - (void)_willClearServer;
-- (void)acquireAssertionWithType:(id)a3 identifier:(id)a4;
+- (void)acquireAssertionWithType:(id)type identifier:(id)identifier;
 - (void)activateSOSMode;
-- (void)activeInterfaceOrientation:(id)a3;
+- (void)activeInterfaceOrientation:(id)orientation;
 - (void)armApplePay;
 - (void)cancelReachabilityDetection;
 - (void)cancelSiriDismissalForAssistiveTouch;
 - (void)cleanupAlertHandler;
-- (void)copyStringToPasteboard:(id)a3;
+- (void)copyStringToPasteboard:(id)pasteboard;
 - (void)didPotentiallyDismissNonExclusiveSystemUI;
 - (void)dismissAppSwitcher;
 - (void)dismissShelfSwitcher;
-- (void)freezeClarityUILoadingScreenWithCompletion:(id)a3;
+- (void)freezeClarityUILoadingScreenWithCompletion:(id)completion;
 - (void)hideAlert;
 - (void)hideNotificationCenter;
 - (void)installGuestPassAcceptDialogGesture;
 - (void)installGuestPassPINGesture;
-- (void)isMagnifierVisibleWithCompletion:(id)a3;
-- (void)isMediaPlayingForApp:(id)a3 completionHandler:(id)a4;
-- (void)isSystemSleeping:(id)a3;
+- (void)isMagnifierVisibleWithCompletion:(id)completion;
+- (void)isMediaPlayingForApp:(id)app completionHandler:(id)handler;
+- (void)isSystemSleeping:(id)sleeping;
 - (void)launchAccessibilityReader;
-- (void)launchApplication:(id)a3;
-- (void)launchFloatingApplication:(id)a3;
+- (void)launchApplication:(id)application;
+- (void)launchFloatingApplication:(id)application;
 - (void)launchMagnifierApp;
-- (void)launchOnboardingViewService:(id)a3;
-- (void)launchPinnedApplication:(id)a3 onLeadingSide:(BOOL)a4;
-- (void)launchVoiceOverImageExplorerViewServiceForResult:(id)a3 withData:(id)a4;
-- (void)launchVoiceOverQuickSettingsViewService:(id)a3;
+- (void)launchOnboardingViewService:(id)service;
+- (void)launchPinnedApplication:(id)application onLeadingSide:(BOOL)side;
+- (void)launchVoiceOverImageExplorerViewServiceForResult:(id)result withData:(id)data;
+- (void)launchVoiceOverQuickSettingsViewService:(id)service;
 - (void)openAppSwitcher;
 - (void)openAssistiveTouchCustomGestureCreation;
 - (void)openCommandAndControlCommands;
@@ -142,40 +142,40 @@
 - (void)openSCATCustomGestureCreation;
 - (void)openTypeToSiri;
 - (void)openVoiceControl;
-- (void)pauseMediaForApp:(id)a3;
-- (void)pid:(id)a3;
+- (void)pauseMediaForApp:(id)app;
+- (void)pid:(id)pid;
 - (void)presentNearbyDeviceControlPicker;
-- (void)purpleBuddyPID:(id)a3;
+- (void)purpleBuddyPID:(id)d;
 - (void)reactivateInCallService;
 - (void)rebootDevice;
-- (void)registerReachabilityHandler:(id)a3 withIdentifierCallback:(id)a4;
-- (void)relinquishAssertionWithType:(id)a3 identifier:(id)a4;
+- (void)registerReachabilityHandler:(id)handler withIdentifierCallback:(id)callback;
+- (void)relinquishAssertionWithType:(id)type identifier:(id)identifier;
 - (void)removeGuestPassAcceptDialogGesture;
-- (void)removeReachabilityHandler:(id)a3;
+- (void)removeReachabilityHandler:(id)handler;
 - (void)requestDismissJindo;
 - (void)resetDimTimer;
-- (void)resumeMediaForApp:(id)a3;
+- (void)resumeMediaForApp:(id)app;
 - (void)revealSpotlight;
-- (void)screenLockStatus:(id)a3 passcodeStatusRequired:(BOOL)a4;
-- (void)setBluetoothPowerEnabled:(BOOL)a3;
-- (void)setCancelGestureActivation:(unint64_t)a3 cancelEnabled:(BOOL)a4;
-- (void)setCaptionPanelContextId:(unsigned int)a3;
-- (void)setDockIconActivationMode:(unint64_t)a3;
-- (void)setHearingAidControlVisible:(BOOL)a3;
-- (void)setMenuBarVisible:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOrientationLocked:(BOOL)a3;
-- (void)setReachabilityActive:(BOOL)a3;
-- (void)setReachabilityEnabled:(BOOL)a3;
-- (void)setShouldFocusNonExclusiveSystemUI:(BOOL)a3;
-- (void)setShowSpeechPlaybackControls:(BOOL)a3;
-- (void)setVoiceOverEnabled:(BOOL)a3;
-- (void)setZoomEnabled:(BOOL)a3;
-- (void)showAlert:(int)a3 withHandler:(id)a4 withData:(id)a5;
+- (void)screenLockStatus:(id)status passcodeStatusRequired:(BOOL)required;
+- (void)setBluetoothPowerEnabled:(BOOL)enabled;
+- (void)setCancelGestureActivation:(unint64_t)activation cancelEnabled:(BOOL)enabled;
+- (void)setCaptionPanelContextId:(unsigned int)id;
+- (void)setDockIconActivationMode:(unint64_t)mode;
+- (void)setHearingAidControlVisible:(BOOL)visible;
+- (void)setMenuBarVisible:(BOOL)visible;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOrientationLocked:(BOOL)locked;
+- (void)setReachabilityActive:(BOOL)active;
+- (void)setReachabilityEnabled:(BOOL)enabled;
+- (void)setShouldFocusNonExclusiveSystemUI:(BOOL)i;
+- (void)setShowSpeechPlaybackControls:(BOOL)controls;
+- (void)setVoiceOverEnabled:(BOOL)enabled;
+- (void)setZoomEnabled:(BOOL)enabled;
+- (void)showAlert:(int)alert withHandler:(id)handler withData:(id)data;
 - (void)showNotificationCenter;
 - (void)simulateEdgePressHaptics;
 - (void)startHearingAidServer;
-- (void)systemAppInfoWithQuery:(unint64_t)a3 completion:(id)a4;
+- (void)systemAppInfoWithQuery:(unint64_t)query completion:(id)completion;
 - (void)takeScreenshot;
 - (void)toggleAppLibrary;
 - (void)toggleBackgroundSounds;
@@ -196,21 +196,21 @@
 
 + (id)server
 {
-  v3 = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
-  v4 = [v3 isClarityBoardEnabled];
+  mEMORY[0x1E6994660] = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x1E6994660] isClarityBoardEnabled];
 
-  if (v4 && server_onceToken_0 != -1)
+  if (isClarityBoardEnabled && server_onceToken_0 != -1)
   {
     +[AXSpringBoardServer server];
   }
 
-  if ([a1 isAvailable])
+  if ([self isAvailable])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __29__AXSpringBoardServer_server__block_invoke_434;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (server_onceToken_433 != -1)
     {
       dispatch_once(&server_onceToken_433, block);
@@ -234,10 +234,10 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
-  v3 = [v2 isClarityBoardEnabled];
+  mEMORY[0x1E6994660] = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x1E6994660] isClarityBoardEnabled];
 
-  return v3 ^ 1;
+  return isClarityBoardEnabled ^ 1;
 }
 
 - (void)didPotentiallyDismissNonExclusiveSystemUI
@@ -261,22 +261,22 @@
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 purpleBuddyPIDWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    integerValue = [_axSpringBoardServerInstanceDelegate purpleBuddyPIDWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v6 = [[AXIPCMessage alloc] initWithKey:4507 payload:0];
-    v3 = [(AXServer *)self sendMessage:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v6];
 
-    v4 = [v3 payload];
-    v7 = [v4 objectForKey:@"result"];
-    v5 = [v7 integerValue];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    v7 = [_axSpringBoardServerInstance objectForKey:@"result"];
+    integerValue = [v7 integerValue];
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)_axSpringBoardServerInstanceDelegate
@@ -285,8 +285,8 @@
   if (!_axSpringBoardServerInstanceDelegate_delegate)
   {
     [NSClassFromString(&cfstr_Axspringboards_7.isa) initialize];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
-    v5 = [v4 safeValueForKey:@"delegate"];
+    _axSpringBoardServerInstanceIfExists = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
+    v5 = [_axSpringBoardServerInstanceIfExists safeValueForKey:@"delegate"];
     v6 = _axSpringBoardServerInstanceDelegate_delegate;
     _axSpringBoardServerInstanceDelegate_delegate = v5;
 
@@ -301,17 +301,17 @@
   v3 = _axSpringBoardServerInstance_AXSBServerInstance;
   if (!_axSpringBoardServerInstance_AXSBServerInstance)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
+    _axSpringBoardServerInstanceIfExists = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
     v5 = _axSpringBoardServerInstance_AXSBServerInstance;
-    _axSpringBoardServerInstance_AXSBServerInstance = v4;
+    _axSpringBoardServerInstance_AXSBServerInstance = _axSpringBoardServerInstanceIfExists;
 
     v3 = _axSpringBoardServerInstance_AXSBServerInstance;
     if (!_axSpringBoardServerInstance_AXSBServerInstance)
     {
-      v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-      v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
+      _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+      _axSpringBoardServerInstanceIfExists2 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceIfExists];
       v8 = _axSpringBoardServerInstance_AXSBServerInstance;
-      _axSpringBoardServerInstance_AXSBServerInstance = v7;
+      _axSpringBoardServerInstance_AXSBServerInstance = _axSpringBoardServerInstanceIfExists2;
 
       v3 = _axSpringBoardServerInstance_AXSBServerInstance;
     }
@@ -354,35 +354,35 @@ uint64_t __29__AXSpringBoardServer_server__block_invoke_434(uint64_t a1)
   return v3;
 }
 
-- (id)_handleReplyResult:(id)a3
+- (id)_handleReplyResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"result"];
+  resultCopy = result;
+  payload = [resultCopy payload];
+  v6 = [payload objectForKey:@"result"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     *buf = 0;
     v16 = buf;
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__2;
     v19 = __Block_byref_object_dispose__2;
     v20 = 0;
-    v8 = [(AXSpringBoardServer *)self accessQueue];
+    accessQueue = [(AXSpringBoardServer *)self accessQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __42__AXSpringBoardServer__handleReplyResult___block_invoke;
     v14[3] = &unk_1E71EA1D8;
     v14[4] = self;
     v14[5] = buf;
-    [v8 performSynchronousWritingBlock:v14];
+    [accessQueue performSynchronousWritingBlock:v14];
 
     v9 = *(v16 + 5);
     if (v9)
     {
-      (*(v9 + 16))(v9, v7);
+      (*(v9 + 16))(v9, integerValue);
     }
 
     else
@@ -424,16 +424,16 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   return [v6 setCurrentAlertHandler:0];
 }
 
-- (id)_handleMediaPlayingResult:(id)a3
+- (id)_handleMediaPlayingResult:(id)result
 {
   v26 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v4 = [v17 payload];
+  resultCopy = result;
+  payload = [resultCopy payload];
   v5 = AXLogSpringboardServer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = payload;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_INFO, "Received is playing result: %@", buf, 0xCu);
   }
 
@@ -457,12 +457,12 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        mediaPlayingHandlers = [(AXSpringBoardServer *)self mediaPlayingHandlers];
+        v12 = [mediaPlayingHandlers objectForKeyedSubscript:v10];
 
         buf[0] = 0;
         objc_opt_class();
-        v13 = [v4 objectForKeyedSubscript:@"result"];
+        v13 = [payload objectForKeyedSubscript:@"result"];
         v14 = __UIAccessibilityCastAsClass();
 
         if (buf[0] == 1)
@@ -479,22 +479,22 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
     while (v7);
   }
 
-  v15 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
-  [v15 removeAllObjects];
+  mediaPlayingHandlers2 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
+  [mediaPlayingHandlers2 removeAllObjects];
 
   return 0;
 }
 
-- (id)_handleReachabilityResult:(id)a3
+- (id)_handleReachabilityResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 payload];
+  payload = [result payload];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AXSpringBoardServer *)self reachabilityHandlers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  reachabilityHandlers = [(AXSpringBoardServer *)self reachabilityHandlers];
+  v6 = [reachabilityHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -506,19 +506,19 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reachabilityHandlers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(AXSpringBoardServer *)self reachabilityHandlers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        reachabilityHandlers2 = [(AXSpringBoardServer *)self reachabilityHandlers];
+        v12 = [reachabilityHandlers2 objectForKeyedSubscript:v10];
 
-        (v12)[2](v12, v4);
+        (v12)[2](v12, payload);
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [reachabilityHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -532,18 +532,18 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   v5.receiver = self;
   v5.super_class = AXSpringBoardServer;
   [(AXServer *)&v5 _didConnectToServer];
-  v3 = [(AXServer *)self server];
-  [v3 setHandlerWithTarget:self selector:sel__handleReplyResult_ forKey:5000];
-  [v3 setHandlerWithTarget:self selector:sel__handleReachabilityResult_ forKey:5003];
-  [v3 setHandlerWithTarget:self selector:sel__handleMediaPlayingResult_ forKey:5004];
+  server = [(AXServer *)self server];
+  [server setHandlerWithTarget:self selector:sel__handleReplyResult_ forKey:5000];
+  [server setHandlerWithTarget:self selector:sel__handleReachabilityResult_ forKey:5003];
+  [server setHandlerWithTarget:self selector:sel__handleMediaPlayingResult_ forKey:5004];
   if ([(AXSpringBoardServer *)self _shouldValidateEntitlements])
   {
     LOBYTE(v4) = 1;
     _AXLogWithFacility();
-    [v3 addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:{5000, v4, @"Validating SB reply messages"}];
-    [v3 addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5002];
-    [v3 addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5003];
-    [v3 addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5004];
+    [server addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:{5000, v4, @"Validating SB reply messages"}];
+    [server addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5002];
+    [server addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5003];
+    [server addPossibleRequiredEntitlement:@"com.apple.accessibility.SpringBoard" forMessageWithKey:5004];
   }
 }
 
@@ -552,8 +552,8 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   v4.receiver = self;
   v4.super_class = AXSpringBoardServer;
   [(AXServer *)&v4 _willClearServer];
-  v3 = [(AXServer *)self server];
-  [v3 removeAllHandlersForTarget:self];
+  server = [(AXServer *)self server];
+  [server removeAllHandlersForTarget:self];
 }
 
 - (void)_wasDisconnectedFromClient
@@ -572,8 +572,8 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   v6[4] = self;
   [v3 performSynchronousWritingBlock:v6];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"AXSystemAppServerDiedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AXSystemAppServerDiedNotification" object:0];
 }
 
 - (void)_didConnectToClient
@@ -620,9 +620,9 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   [(AXServer *)self sendSimpleMessage:v3];
 }
 
-- (void)setCaptionPanelContextId:(unsigned int)a3
+- (void)setCaptionPanelContextId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
@@ -632,46 +632,46 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4096 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setHearingAidControlVisible:(BOOL)a3
+- (void)setHearingAidControlVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"visible";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4023 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
 - (void)startHearingAidServer
 {
   [(AXServer *)self _connectIfNecessary];
   v4 = [[AXIPCMessage alloc] initWithKey:4035 payload:0];
-  v3 = [(AXServer *)self client];
-  [v3 sendSimpleMessage:v4];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v4];
 }
 
 - (int)topEventPidOverride
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:4006 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 intValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  intValue = [v7 intValue];
 
-  return v8;
+  return intValue;
 }
 
 - (BOOL)isOrientationLocked
@@ -682,11 +682,11 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   return self;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"orientation";
-  v4 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLong:orientation];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -694,11 +694,11 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   [(AXServer *)self sendSimpleMessage:v6];
 }
 
-- (void)setOrientationLocked:(BOOL)a3
+- (void)setOrientationLocked:(BOOL)locked
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"locked";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:locked];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -742,11 +742,11 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:4017 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"result"];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"result"];
   [v7 floatValue];
   v9 = v8;
 
@@ -761,14 +761,14 @@ uint64_t __42__AXSpringBoardServer__handleReplyResult___block_invoke(uint64_t a1
   v9 = __Block_byref_object_copy__2;
   v10 = __Block_byref_object_dispose__2;
   v11 = 0;
-  v3 = [(AXSpringBoardServer *)self accessQueue];
+  accessQueue = [(AXSpringBoardServer *)self accessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__AXSpringBoardServer_cleanupAlertHandler__block_invoke;
   v5[3] = &unk_1E71EA1D8;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 performSynchronousWritingBlock:v5];
+  [accessQueue performSynchronousWritingBlock:v5];
 
   v4 = v7[5];
   if (v4)
@@ -838,23 +838,23 @@ void __32__AXSpringBoardServer_hideAlert__block_invoke_2(uint64_t a1)
 
 - (BOOL)isShowingAXAlert
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AXSpringBoardServer *)self accessQueue];
+  accessQueue = [(AXSpringBoardServer *)self accessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__AXSpringBoardServer_isShowingAXAlert__block_invoke;
   v5[3] = &unk_1E71EA1D8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performSynchronousReadingBlock:v5];
+  [accessQueue performSynchronousReadingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
@@ -863,11 +863,11 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (void)showAlert:(int)a3 withHandler:(id)a4 withData:(id)a5
+- (void)showAlert:(int)alert withHandler:(id)handler withData:(id)data
 {
-  v6 = *&a3;
-  v8 = a4;
-  v9 = a5;
+  v6 = *&alert;
+  handlerCopy = handler;
+  dataCopy = data;
   if ([(AXSpringBoardServer *)self isShowingAXAlert])
   {
     v10 = AXLogSpringboardServer();
@@ -883,27 +883,27 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
     if ([(AXServer *)self _connectIfNecessary])
     {
       [(AXServer *)self _connectServerIfNecessary];
-      v11 = [(AXSpringBoardServer *)self accessQueue];
+      accessQueue = [(AXSpringBoardServer *)self accessQueue];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __54__AXSpringBoardServer_showAlert_withHandler_withData___block_invoke_2;
       v21 = &unk_1E71EA228;
-      v22 = self;
-      v23 = v8;
-      [v11 performSynchronousWritingBlock:&v18];
+      selfCopy = self;
+      v23 = handlerCopy;
+      [accessQueue performSynchronousWritingBlock:&v18];
 
       v12 = MEMORY[0x1E695DF90];
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{v6, v18, v19, v20, v21, v22}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{v6, v18, v19, v20, v21, selfCopy}];
       v14 = [v12 dictionaryWithObject:v13 forKey:@"alertType"];
 
-      if (v9)
+      if (dataCopy)
       {
-        [v14 setObject:v9 forKey:@"data"];
+        [v14 setObject:dataCopy forKey:@"data"];
       }
 
       v15 = [[AXIPCMessage alloc] initWithKey:4002 payload:v14];
-      v16 = [(AXServer *)self client];
-      [v16 sendSimpleMessage:v15];
+      client = [(AXServer *)self client];
+      [client sendSimpleMessage:v15];
 
       v17 = v23;
     }
@@ -914,10 +914,10 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
       v25 = 3221225472;
       v26 = __54__AXSpringBoardServer_showAlert_withHandler_withData___block_invoke;
       v27 = &unk_1E71EA200;
-      v28 = self;
+      selfCopy2 = self;
       v31 = v6;
-      v30 = v8;
-      v29 = v9;
+      v30 = handlerCopy;
+      v29 = dataCopy;
       AXPerformBlockOnMainThreadAfterDelay();
 
       v17 = v30;
@@ -925,79 +925,79 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isShowingRemoteView:(int64_t)a3
+- (BOOL)isShowingRemoteView:(int64_t)view
 {
   v5 = [AXIPCMessage alloc];
-  v6 = [(AXSpringBoardServer *)self _payloadForRemoteViewType:a3 data:0];
+  v6 = [(AXSpringBoardServer *)self _payloadForRemoteViewType:view data:0];
   v7 = [(AXIPCMessage *)v5 initWithKey:4095 payload:v6];
   LOBYTE(self) = [(AXServer *)self sendSimpleMessageWithResult:v7];
 
   return self;
 }
 
-- (id)_payloadForRemoteViewType:(int64_t)a3 data:(id)a4
+- (id)_payloadForRemoteViewType:(int64_t)type data:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   v6 = MEMORY[0x1E695DF90];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v8 = [v6 dictionaryWithObject:v7 forKey:@"remoteViewType"];
 
-  if (v5)
+  if (dataCopy)
   {
-    [v8 setObject:v5 forKey:@"data"];
+    [v8 setObject:dataCopy forKey:@"data"];
   }
 
   return v8;
 }
 
-- (void)_sendRemoteViewIPCMessage:(int)a3 withRemoteViewType:(int64_t)a4 withData:(id)a5
+- (void)_sendRemoteViewIPCMessage:(int)message withRemoteViewType:(int64_t)type withData:(id)data
 {
-  v6 = *&a3;
-  v8 = a5;
+  v6 = *&message;
+  dataCopy = data;
   if ([(AXServer *)self _connectIfNecessary])
   {
     [(AXServer *)self _connectServerIfNecessary];
     v9 = [AXIPCMessage alloc];
-    v10 = [(AXSpringBoardServer *)self _payloadForRemoteViewType:a4 data:v8];
+    v10 = [(AXSpringBoardServer *)self _payloadForRemoteViewType:type data:dataCopy];
     v11 = [(AXIPCMessage *)v9 initWithKey:v6 payload:v10];
 
-    v12 = [(AXServer *)self client];
-    [v12 sendSimpleMessage:v11];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v11];
   }
 
   else
   {
-    v13 = v8;
+    v13 = dataCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }
 
-- (void)setShowSpeechPlaybackControls:(BOOL)a3
+- (void)setShowSpeechPlaybackControls:(BOOL)controls
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"show";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:controls];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = [[AXIPCMessage alloc] initWithKey:4040 payload:v5];
-  v7 = [(AXServer *)self client];
-  [v7 sendSimpleMessage:v6];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v6];
 }
 
-- (void)setCancelGestureActivation:(unint64_t)a3 cancelEnabled:(BOOL)a4
+- (void)setCancelGestureActivation:(unint64_t)activation cancelEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   if ([(AXServer *)self _connectIfNecessary])
   {
     v7 = MEMORY[0x1E695DF20];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:activation];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v12 = [v7 dictionaryWithObjectsAndKeys:{v8, @"type", v9, @"cancelEnabled", 0}];
 
     v10 = [[AXIPCMessage alloc] initWithKey:4008 payload:v12];
-    v11 = [(AXServer *)self client];
-    [v11 sendSimpleMessage:v10];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v10];
   }
 
   else
@@ -1010,42 +1010,42 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
 {
   [(AXServer *)self _connectIfNecessary];
   v4 = [[AXIPCMessage alloc] initWithKey:4058 payload:&unk_1EFE97330];
-  v3 = [(AXServer *)self client];
-  [v3 sendSimpleMessage:v4];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v4];
 }
 
-- (void)registerReachabilityHandler:(id)a3 withIdentifierCallback:(id)a4
+- (void)registerReachabilityHandler:(id)handler withIdentifierCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  callbackCopy = callback;
   if ([(AXServer *)self _connectIfNecessary])
   {
     [(AXServer *)self _connectServerIfNecessary];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v10 = [(AXSpringBoardServer *)self reachabilityHandlers];
+    reachabilityHandlers = [(AXSpringBoardServer *)self reachabilityHandlers];
 
-    if (!v10)
+    if (!reachabilityHandlers)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(AXSpringBoardServer *)self setReachabilityHandlers:v11];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(AXSpringBoardServer *)self setReachabilityHandlers:dictionary];
     }
 
     v12 = [[AXIPCMessage alloc] initWithKey:4056 payload:&unk_1EFE97358];
-    v13 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallback___block_invoke_2;
     v17[3] = &unk_1E71EA2C8;
     v17[4] = self;
-    v18 = v9;
-    v19 = v6;
-    v20 = v7;
-    v14 = v7;
-    v15 = v6;
-    v16 = v9;
-    [v13 sendAsyncMessage:v12 withReplyHandler:v17];
+    v18 = uUIDString;
+    v19 = handlerCopy;
+    v20 = callbackCopy;
+    v14 = callbackCopy;
+    v15 = handlerCopy;
+    v16 = uUIDString;
+    [client sendAsyncMessage:v12 withReplyHandler:v17];
   }
 
   else
@@ -1054,11 +1054,11 @@ void __39__AXSpringBoardServer_isShowingAXAlert__block_invoke(uint64_t a1)
     v22 = 3221225472;
     v23 = __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallback___block_invoke;
     v24 = &unk_1E71EA2A0;
-    v25 = self;
-    v26 = v6;
-    v27 = v7;
-    v16 = v7;
-    v12 = v6;
+    selfCopy = self;
+    v26 = handlerCopy;
+    v27 = callbackCopy;
+    v16 = callbackCopy;
+    v12 = handlerCopy;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 }
@@ -1092,14 +1092,14 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
   [(AXServer *)self _connectIfNecessary];
   v3 = [AXIPCMessage alloc];
   v4 = [(AXIPCMessage *)v3 initWithKey:4061 payload:MEMORY[0x1E695E0F8]];
-  v5 = [(AXServer *)self client];
-  v6 = [v5 sendMessage:v4 withError:0];
+  client = [(AXServer *)self client];
+  v6 = [client sendMessage:v4 withError:0];
 
-  v7 = [v6 payload];
-  v8 = [v7 objectForKeyedSubscript:@"result"];
-  v9 = [v8 BOOLValue];
+  payload = [v6 payload];
+  v8 = [payload objectForKeyedSubscript:@"result"];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
 - (void)toggleReachability
@@ -1109,31 +1109,31 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
   [(AXSpringBoardServer *)self setReachabilityActive:v3 == 0.0];
 }
 
-- (void)setReachabilityActive:(BOOL)a3
+- (void)setReachabilityActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"active";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:activeCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4060 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setReachabilityEnabled:(BOOL)a3
+- (void)setReachabilityEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v11 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v11 serverInstance:v5 setReachabilityEnabled:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance setReachabilityEnabled:enabledCopy];
   }
 
   else
@@ -1141,38 +1141,38 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
     [(AXServer *)self _connectIfNecessary];
     v6 = [AXIPCMessage alloc];
     v12 = @"enabled";
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v13[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v9 = [(AXIPCMessage *)v6 initWithKey:4083 payload:v8];
 
-    v10 = [(AXServer *)self client];
-    [v10 sendSimpleMessage:v9];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v9];
   }
 }
 
-- (void)removeReachabilityHandler:(id)a3
+- (void)removeReachabilityHandler:(id)handler
 {
-  v11 = a3;
-  if (v11)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     [(AXServer *)self _connectIfNecessary];
-    v4 = [(AXSpringBoardServer *)self reachabilityHandlers];
-    v5 = [v4 count];
+    reachabilityHandlers = [(AXSpringBoardServer *)self reachabilityHandlers];
+    v5 = [reachabilityHandlers count];
 
     if (v5)
     {
-      v6 = [(AXSpringBoardServer *)self reachabilityHandlers];
-      [v6 removeObjectForKey:v11];
+      reachabilityHandlers2 = [(AXSpringBoardServer *)self reachabilityHandlers];
+      [reachabilityHandlers2 removeObjectForKey:handlerCopy];
 
-      v7 = [(AXSpringBoardServer *)self reachabilityHandlers];
-      v8 = [v7 count];
+      reachabilityHandlers3 = [(AXSpringBoardServer *)self reachabilityHandlers];
+      v8 = [reachabilityHandlers3 count];
 
       if (!v8)
       {
         v9 = [[AXIPCMessage alloc] initWithKey:4056 payload:&unk_1EFE97380];
-        v10 = [(AXServer *)self client];
-        [v10 sendSimpleMessage:v9];
+        client = [(AXServer *)self client];
+        [client sendSimpleMessage:v9];
       }
     }
   }
@@ -1185,16 +1185,16 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
 
 - (BOOL)isInspectorMinimized
 {
-  v3 = [(AXServer *)self _connectIfNecessary];
-  if (v3)
+  _connectIfNecessary = [(AXServer *)self _connectIfNecessary];
+  if (_connectIfNecessary)
   {
     v4 = [[AXIPCMessage alloc] initWithKey:4052 payload:0];
     v5 = [(AXServer *)self sendSimpleMessageWithResult:v4];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_connectIfNecessary) = v5;
   }
 
-  return v3;
+  return _connectIfNecessary;
 }
 
 - (int)pid
@@ -1208,13 +1208,13 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
   if (SpringBoardPid == -1)
   {
     v4 = [[AXIPCMessage alloc] initWithKey:4001 payload:0];
-    v5 = [(AXServer *)self client];
-    v6 = [v5 sendMessage:v4 withError:0];
+    client = [(AXServer *)self client];
+    v6 = [client sendMessage:v4 withError:0];
 
     if (v6)
     {
-      v7 = [v6 payload];
-      v8 = [v7 objectForKey:@"pid"];
+      payload = [v6 payload];
+      v8 = [payload objectForKey:@"pid"];
       SpringBoardPid = [v8 intValue];
 
       if (!SpringBoardPid)
@@ -1229,22 +1229,22 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
   return result;
 }
 
-- (void)pid:(id)a3
+- (void)pid:(id)pid
 {
-  v4 = a3;
+  pidCopy = pid;
   if ([(AXServer *)self _connectIfNecessary])
   {
     v5 = SpringBoardPid;
     if (SpringBoardPid == -1)
     {
       v6 = [[AXIPCMessage alloc] initWithKey:4001 payload:0];
-      v7 = [(AXServer *)self client];
+      client = [(AXServer *)self client];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __27__AXSpringBoardServer_pid___block_invoke_3;
       v8[3] = &unk_1E71EA340;
-      v9 = v4;
-      [v7 sendAsyncMessage:v6 replyOnQueue:MEMORY[0x1E69E96A0] replyHandler:v8];
+      v9 = pidCopy;
+      [client sendAsyncMessage:v6 replyOnQueue:MEMORY[0x1E69E96A0] replyHandler:v8];
     }
 
     else
@@ -1253,7 +1253,7 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
       block[1] = 3221225472;
       block[2] = __27__AXSpringBoardServer_pid___block_invoke_2;
       block[3] = &unk_1E71EA318;
-      v11 = v4;
+      v11 = pidCopy;
       v12 = v5;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v6 = v11;
@@ -1266,7 +1266,7 @@ void __74__AXSpringBoardServer_registerReachabilityHandler_withIdentifierCallbac
     v13[1] = 3221225472;
     v13[2] = __27__AXSpringBoardServer_pid___block_invoke;
     v13[3] = &unk_1E71EA2F0;
-    v14 = v4;
+    v14 = pidCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v13);
     v6 = v14;
   }
@@ -1306,40 +1306,40 @@ uint64_t __27__AXSpringBoardServer_pid___block_invoke_3(uint64_t a1, void *a2)
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:4000 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"orientation"];
-  v8 = [v7 intValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"orientation"];
+  intValue = [v7 intValue];
 
-  return v8;
+  return intValue;
 }
 
 - (int64_t)activeInterfaceOrientation
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:4030 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"orientation"];
-  v8 = [v7 integerValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"orientation"];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-- (void)activeInterfaceOrientation:(id)a3
+- (void)activeInterfaceOrientation:(id)orientation
 {
-  v4 = a3;
+  orientationCopy = orientation;
   v5 = [[AXIPCMessage alloc] initWithKey:4030 payload:0];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke;
   v7[3] = &unk_1E71EA340;
-  v8 = v4;
-  v6 = v4;
+  v8 = orientationCopy;
+  v6 = orientationCopy;
   [(AXServer *)self sendAsynchronousMessage:v5 replyOnQueue:MEMORY[0x1E69E96A0] handler:v7];
 }
 
@@ -1351,16 +1351,16 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   (*(v2 + 16))(v2, [v3 integerValue]);
 }
 
-- (void)copyStringToPasteboard:(id)a3
+- (void)copyStringToPasteboard:(id)pasteboard
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  pasteboardCopy = pasteboard;
+  if ([pasteboardCopy length])
   {
     [(AXServer *)self _connectIfNecessary];
     v5 = [AXIPCMessage alloc];
     v9 = @"string";
-    v10[0] = v4;
+    v10[0] = pasteboardCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v7 = [(AXIPCMessage *)v5 initWithKey:4036 payload:v6];
 
@@ -1374,24 +1374,24 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   [(AXServer *)self sendSimpleMessage:v3];
 }
 
-- (id)splashImageForAppWithBundleIdentifier:(id)a3
+- (id)splashImageForAppWithBundleIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     [(AXServer *)self _connectIfNecessary];
     v5 = [AXIPCMessage alloc];
     v13 = @"bundleIdentifier";
-    v14[0] = v4;
+    v14[0] = identifierCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
     v7 = [(AXIPCMessage *)v5 initWithKey:4089 payload:v6];
-    v8 = [(AXServer *)self client];
-    v9 = [v8 sendMessage:v7 withError:0];
+    client = [(AXServer *)self client];
+    v9 = [client sendMessage:v7 withError:0];
 
-    v10 = [v9 payload];
-    v11 = [v10 objectForKey:@"splashData"];
+    payload = [v9 payload];
+    v11 = [payload objectForKey:@"splashData"];
   }
 
   else
@@ -1407,22 +1407,22 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   [(AXServer *)self _connectIfNecessary];
   v3 = [AXIPCMessage alloc];
   v4 = [(AXIPCMessage *)v3 initWithKey:4101 payload:MEMORY[0x1E695E0F8]];
-  v5 = [(AXServer *)self client];
-  v6 = [v5 sendMessage:v4 withError:0];
+  client = [(AXServer *)self client];
+  v6 = [client sendMessage:v4 withError:0];
 
-  v7 = [v6 payload];
-  v8 = [v7 objectForKeyedSubscript:@"result"];
-  v9 = [v8 BOOLValue];
+  payload = [v6 payload];
+  v8 = [payload objectForKeyedSubscript:@"result"];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
 - (BOOL)currentDevicesHaveAssistiveTouchCustomActions
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 laserEnabled];
+  laserEnabled = [v3 laserEnabled];
 
-  if (!v4)
+  if (!laserEnabled)
   {
     return 0;
   }
@@ -1430,14 +1430,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v6 = [(AXIPCMessage *)v5 initWithKey:4109 payload:MEMORY[0x1E695E0F8]];
-  v7 = [(AXServer *)self client];
-  v8 = [v7 sendMessage:v6 withError:0];
+  client = [(AXServer *)self client];
+  v8 = [client sendMessage:v6 withError:0];
 
-  v9 = [v8 payload];
-  v10 = [v9 objectForKeyedSubscript:@"result"];
-  v11 = [v10 BOOLValue];
+  payload = [v8 payload];
+  v10 = [payload objectForKeyedSubscript:@"result"];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
 - (void)cancelSiriDismissalForAssistiveTouch
@@ -1452,24 +1452,24 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   [(AXServer *)self sendSimpleMessage:v3];
 }
 
-- (BOOL)isScreenLockedWithPasscode:(BOOL *)a3
+- (BOOL)isScreenLockedWithPasscode:(BOOL *)passcode
 {
   isUILocked = _isUILocked();
-  if (a3)
+  if (passcode)
   {
-    *a3 = _isDeviceLockedWithPasscode();
+    *passcode = _isDeviceLockedWithPasscode();
   }
 
   return isUILocked;
 }
 
-- (void)screenLockStatus:(id)a3 passcodeStatusRequired:(BOOL)a4
+- (void)screenLockStatus:(id)status passcodeStatusRequired:(BOOL)required
 {
-  v4 = a3;
+  statusCopy = status;
   _isUILocked();
   _isDeviceLockedWithPasscode();
-  v6 = v4;
-  v5 = v4;
+  v6 = statusCopy;
+  v5 = statusCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -1477,27 +1477,27 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSystemSleepingWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSystemSleepingWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4016 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4016 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (void)isSystemSleeping:(id)a3
+- (void)isSystemSleeping:(id)sleeping
 {
-  if (a3)
+  if (sleeping)
   {
-    v4 = a3;
+    sleepingCopy = sleeping;
     v5 = [[AXIPCMessage alloc] initWithKey:4016 payload:0];
-    [(AXServer *)self sendAsynchronousMessage:v5 replyOnQueue:MEMORY[0x1E69E96A0] BOOLResultHandler:v4];
+    [(AXServer *)self sendAsynchronousMessage:v5 replyOnQueue:MEMORY[0x1E69E96A0] BOOLResultHandler:sleepingCopy];
   }
 }
 
@@ -1505,15 +1505,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSyncingRestoringResettingOrUpdatingWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSyncingRestoringResettingOrUpdatingWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4039 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4039 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1523,15 +1523,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 areSystemGesturesDisabledNativelyWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate areSystemGesturesDisabledNativelyWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4043 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4043 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1541,15 +1541,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 areSystemGesturesDisabledByAccessibilityWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate areSystemGesturesDisabledByAccessibilityWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4044 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4044 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1559,18 +1559,18 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v3 installedAppsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate installedAppsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v5 = [[AXIPCMessage alloc] initWithKey:4046 payload:0];
-    v3 = [(AXServer *)self sendMessage:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v5];
 
-    v4 = [v3 payload];
-    [v4 objectForKey:@"result"];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    [_axSpringBoardServerInstance objectForKey:@"result"];
   }
   v6 = ;
 
@@ -1581,18 +1581,18 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v3 internalAppsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate internalAppsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v5 = [[AXIPCMessage alloc] initWithKey:4093 payload:0];
-    v3 = [(AXServer *)self sendMessage:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v5];
 
-    v4 = [v3 payload];
-    [v4 objectForKey:@"result"];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    [_axSpringBoardServerInstance objectForKey:@"result"];
   }
   v6 = ;
 
@@ -1603,14 +1603,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 wakeUpDeviceIfNecessaryWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate wakeUpDeviceIfNecessaryWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4068 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4068 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -1619,14 +1619,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 unlockDeviceWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate unlockDeviceWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4048 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4048 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -1635,59 +1635,59 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 rebootDeviceWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate rebootDeviceWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4075 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4075 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
 
-- (void)isMediaPlayingForApp:(id)a3 completionHandler:(id)a4
+- (void)isMediaPlayingForApp:(id)app completionHandler:(id)handler
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v9 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v8 isMediaPlayingWithServerInstance:v9 forBundleId:v6 completion:v7];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate isMediaPlayingWithServerInstance:_axSpringBoardServerInstance forBundleId:appCopy completion:handlerCopy];
   }
 
   else
   {
-    v10 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
+    mediaPlayingHandlers = [(AXSpringBoardServer *)self mediaPlayingHandlers];
 
-    if (!v10)
+    if (!mediaPlayingHandlers)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(AXSpringBoardServer *)self setMediaPlayingHandlers:v11];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(AXSpringBoardServer *)self setMediaPlayingHandlers:dictionary];
     }
 
     [(AXServer *)self _connectIfNecessary];
     [(AXServer *)self _connectServerIfNecessary];
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v12 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    _axSpringBoardServerInstanceDelegate = [uUID UUIDString];
 
-    v13 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
-    v14 = _Block_copy(v7);
+    mediaPlayingHandlers2 = [(AXSpringBoardServer *)self mediaPlayingHandlers];
+    v14 = _Block_copy(handlerCopy);
 
-    [v13 setObject:v14 forKey:v8];
+    [mediaPlayingHandlers2 setObject:v14 forKey:_axSpringBoardServerInstanceDelegate];
     v15 = &stru_1EFE6D570;
-    if (v6)
+    if (appCopy)
     {
-      v15 = v6;
+      v15 = appCopy;
     }
 
     v21[0] = @"bundleId";
     v21[1] = @"uuidString";
     v22[0] = v15;
-    v22[1] = v8;
+    v22[1] = _axSpringBoardServerInstanceDelegate;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v17 = AXLogSpringboardServer();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1702,62 +1702,62 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   }
 }
 
-- (void)pauseMediaForApp:(id)a3
+- (void)pauseMediaForApp:(id)app
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v5 serverInstance:v6 pauseMedia:1 forBundleId:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance pauseMedia:1 forBundleId:appCopy];
   }
 
   else
   {
-    if (v4)
+    if (appCopy)
     {
       v8 = @"bundleId";
-      v9[0] = v4;
-      v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
+      v9[0] = appCopy;
+      _axSpringBoardServerInstanceDelegate = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     }
 
     else
     {
-      v5 = 0;
+      _axSpringBoardServerInstanceDelegate = 0;
     }
 
-    v7 = [[AXIPCMessage alloc] initWithKey:4053 payload:v5];
+    v7 = [[AXIPCMessage alloc] initWithKey:4053 payload:_axSpringBoardServerInstanceDelegate];
     [(AXServer *)self sendSimpleMessage:v7];
   }
 }
 
-- (void)resumeMediaForApp:(id)a3
+- (void)resumeMediaForApp:(id)app
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v5 serverInstance:v6 pauseMedia:0 forBundleId:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance pauseMedia:0 forBundleId:appCopy];
   }
 
   else
   {
-    if (v4)
+    if (appCopy)
     {
       v8 = @"bundleId";
-      v9[0] = v4;
-      v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
+      v9[0] = appCopy;
+      _axSpringBoardServerInstanceDelegate = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     }
 
     else
     {
-      v5 = 0;
+      _axSpringBoardServerInstanceDelegate = 0;
     }
 
-    v7 = [[AXIPCMessage alloc] initWithKey:4054 payload:v5];
+    v7 = [[AXIPCMessage alloc] initWithKey:4054 payload:_axSpringBoardServerInstanceDelegate];
     [(AXServer *)self sendSimpleMessage:v7];
   }
 }
@@ -1766,15 +1766,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 hasActiveCallWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate hasActiveCallWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4027 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4027 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1784,15 +1784,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 hasActiveEndpointCallWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate hasActiveEndpointCallWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4081 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4081 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1802,15 +1802,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 hasActiveOrPendingCallWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate hasActiveOrPendingCallWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4051 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4051 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1820,15 +1820,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 hasActiveOrPendingCallOrFaceTimeWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate hasActiveOrPendingCallOrFaceTimeWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4057 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4057 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1838,17 +1838,17 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v3 isMakingEmergencyCallWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isMakingEmergencyCallWithServerInstance:_axSpringBoardServerInstance];
 
     v5 = 0;
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4005 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4005 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1858,15 +1858,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isNotificationCenterVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isNotificationCenterVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4033 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4033 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1874,47 +1874,47 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 
 - (BOOL)isScreenshotWindowVisible
 {
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
-  if (v3)
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  if (_shouldDispatchLocally)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v6 = [v4 isScreenshotWindowVisibleWithServerInstance:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v6 = [_axSpringBoardServerInstanceDelegate isScreenshotWindowVisibleWithServerInstance:_axSpringBoardServerInstance];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_shouldDispatchLocally) = v6;
   }
 
-  return v3;
+  return _shouldDispatchLocally;
 }
 
 - (BOOL)isNotificationVisible
 {
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
-  if (v3)
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  if (_shouldDispatchLocally)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v6 = [v4 isNotificationVisibleWithServerInstance:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v6 = [_axSpringBoardServerInstanceDelegate isNotificationVisibleWithServerInstance:_axSpringBoardServerInstance];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_shouldDispatchLocally) = v6;
   }
 
-  return v3;
+  return _shouldDispatchLocally;
 }
 
 - (BOOL)isShowingLongLookNotification
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isLongLookNotificationVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isLongLookNotificationVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4111 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4111 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -1922,46 +1922,46 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 
 - (BOOL)isBannerVisible
 {
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
-  if (v3)
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  if (_shouldDispatchLocally)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v6 = [v4 isBannerVisibleWithServerInstance:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v6 = [_axSpringBoardServerInstanceDelegate isBannerVisibleWithServerInstance:_axSpringBoardServerInstance];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_shouldDispatchLocally) = v6;
   }
 
-  return v3;
+  return _shouldDispatchLocally;
 }
 
 - (BOOL)isRemoteAlertVisible
 {
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
-  if (v3)
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  if (_shouldDispatchLocally)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v6 = [v4 isRemoteTransientOverlayVisibleWithServerInstance:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v6 = [_axSpringBoardServerInstanceDelegate isRemoteTransientOverlayVisibleWithServerInstance:_axSpringBoardServerInstance];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_shouldDispatchLocally) = v6;
   }
 
-  return v3;
+  return _shouldDispatchLocally;
 }
 
 - (void)toggleNotificationCenter
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleNotificationCenterWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleNotificationCenterWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4034 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4034 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -1988,36 +1988,36 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isControlCenterVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isControlCenterVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4031 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4031 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (BOOL)showNotificationCenter:(BOOL)a3
+- (BOOL)showNotificationCenter:(BOOL)center
 {
-  v3 = a3;
+  centerCopy = center;
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 serverInstance:v6 showNotificationCenter:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance showNotificationCenter:centerCopy];
   }
 
   else
   {
     v8 = [AXIPCMessage alloc];
     v13 = @"show";
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:centerCopy];
     v14[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v11 = [(AXIPCMessage *)v8 initWithKey:4050 payload:v10];
@@ -2027,15 +2027,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   return v7;
 }
 
-- (BOOL)showControlCenter:(BOOL)a3
+- (BOOL)showControlCenter:(BOOL)center
 {
-  v3 = a3;
+  centerCopy = center;
   v13[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [(AXIPCMessage *)v5 serverInstance:v6 showControlCenter:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance showControlCenter:centerCopy];
   }
 
   else
@@ -2043,12 +2043,12 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
     [(AXServer *)self _connectIfNecessary];
     v8 = [AXIPCMessage alloc];
     v12 = @"show";
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:centerCopy];
     v13[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    v5 = [(AXIPCMessage *)v8 initWithKey:4032 payload:v10];
+    _axSpringBoardServerInstanceDelegate = [(AXIPCMessage *)v8 initWithKey:4032 payload:v10];
 
-    v7 = [(AXServer *)self sendSimpleMessageWithResult:v5];
+    v7 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v7;
@@ -2058,14 +2058,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 armApplePayWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate armApplePayWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4078 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4078 payload:0];
     [(AXServer *)self sendSimpleMessageWithResult:?];
   }
 }
@@ -2074,60 +2074,60 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v5 toggleDockWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleDockWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v5 = [[AXIPCMessage alloc] initWithKey:4077 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4077 payload:0];
     v4 = [(AXServer *)self sendMessage:?];
   }
 }
 
 - (BOOL)isStageManagerSwitcherVisible
 {
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
-  if (v3)
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  if (_shouldDispatchLocally)
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v6 = [v4 isStageManagerSwitcherVisibleWithServerInstance:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v6 = [_axSpringBoardServerInstanceDelegate isStageManagerSwitcherVisibleWithServerInstance:_axSpringBoardServerInstance];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_shouldDispatchLocally) = v6;
   }
 
-  return v3;
+  return _shouldDispatchLocally;
 }
 
 - (BOOL)isDockVisible
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isDockVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isDockVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4076 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4076 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (BOOL)isStatusBarNativeFocusableIncludingNonDismissableElements:(BOOL)a3
+- (BOOL)isStatusBarNativeFocusableIncludingNonDismissableElements:(BOOL)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 isStatusBarNativeFocusableWithServerInstance:v6 includingNonDismissableElements:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate isStatusBarNativeFocusableWithServerInstance:_axSpringBoardServerInstance includingNonDismissableElements:elementsCopy];
 
     return v7;
   }
@@ -2148,15 +2148,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isShowingNonSystemAppWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isShowingNonSystemAppWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4090 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4090 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2166,15 +2166,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isShowingHomescreenWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isShowingHomescreenWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4079 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4079 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2184,58 +2184,58 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isContinuitySessionActiveWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isContinuitySessionActiveWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4131 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4131 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (void)launchApplication:(id)a3
+- (void)launchApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [v4 launchApplication:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [_axSpringBoardServerInstanceDelegate launchApplication:applicationCopy];
   }
 }
 
-- (void)launchPinnedApplication:(id)a3 onLeadingSide:(BOOL)a4
+- (void)launchPinnedApplication:(id)application onLeadingSide:(BOOL)side
 {
-  v4 = a4;
-  v7 = a3;
+  sideCopy = side;
+  applicationCopy = application;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [v6 launchPinnedApplication:v7 onLeadingSide:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [_axSpringBoardServerInstanceDelegate launchPinnedApplication:applicationCopy onLeadingSide:sideCopy];
   }
 }
 
-- (void)launchFloatingApplication:(id)a3
+- (void)launchFloatingApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [v4 launchFloatingApplication:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [_axSpringBoardServerInstanceDelegate launchFloatingApplication:applicationCopy];
   }
 }
 
-- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsPinnedApplicationForIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [v5 canLaunchAsPinnedApplicationForIconView:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    v6 = [_axSpringBoardServerInstanceDelegate canLaunchAsPinnedApplicationForIconView:viewCopy];
   }
 
   else
@@ -2246,13 +2246,13 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
   return v6;
 }
 
-- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)a3
+- (BOOL)canLaunchAsFloatingApplicationForIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [v5 canLaunchAsFloatingApplicationForIconView:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    v6 = [_axSpringBoardServerInstanceDelegate canLaunchAsFloatingApplicationForIconView:viewCopy];
   }
 
   else
@@ -2267,15 +2267,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isAppSwitcherVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isAppSwitcherVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4011 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4011 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2285,15 +2285,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isShelfSwitcherVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isShelfSwitcherVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4007 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4007 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2302,27 +2302,27 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 - (void)openAppSwitcher
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(AXSpringBoardServer *)self _shouldDispatchLocally];
+  _shouldDispatchLocally = [(AXSpringBoardServer *)self _shouldDispatchLocally];
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:_shouldDispatchLocally];
     v8 = 138412290;
     v9 = v5;
     _os_log_impl(&dword_18B15E000, v4, OS_LOG_TYPE_DEFAULT, "Requesting SB openAppSwitcher. dispatchLocal=%@", &v8, 0xCu);
   }
 
-  if (v3)
+  if (_shouldDispatchLocally)
   {
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v6 openAppSwitcherWithServerInstance:v7];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate openAppSwitcherWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v6 = [[AXIPCMessage alloc] initWithKey:4010 payload:0];
-    [(AXServer *)self sendSimpleMessage:v6];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4010 payload:0];
+    [(AXServer *)self sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
   }
 }
 
@@ -2330,14 +2330,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 dismissAppSwitcherWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate dismissAppSwitcherWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4047 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4047 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2346,14 +2346,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 dismissShelfSwitcherWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate dismissShelfSwitcherWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4004 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4004 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2362,14 +2362,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 simulateEdgePressHaptics:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate simulateEdgePressHaptics:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4067 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4067 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2378,14 +2378,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleAppLibraryWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleAppLibraryWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4112 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4112 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2394,14 +2394,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleQuickNoteWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleQuickNoteWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4113 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4113 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2410,14 +2410,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleSpotlightWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleSpotlightWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4065 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4065 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2426,14 +2426,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 revealSpotlightWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate revealSpotlightWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4066 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4066 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2442,15 +2442,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isDarkModeActiveWithServiceInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isDarkModeActiveWithServiceInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4099 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4099 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2460,15 +2460,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 toggleDarkModeWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleDarkModeWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4100 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4100 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2478,15 +2478,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isGuidedAccessActiveWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isGuidedAccessActiveWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4038 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4038 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2496,15 +2496,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSpotlightVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSpotlightVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4098 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4098 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2514,15 +2514,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isPIPWindowVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isPIPWindowVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4102 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4102 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2532,15 +2532,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 dismissSiriWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate dismissSiriWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4049 payload:0];
-    [(AXServer *)self sendSimpleMessage:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4049 payload:0];
+    [(AXServer *)self sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
     v5 = 1;
   }
 
@@ -2551,15 +2551,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSiriVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSiriVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4037 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4037 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2569,15 +2569,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isPasscodeLockVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isPasscodeLockVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4082 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4082 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2587,15 +2587,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isLockScreenVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isLockScreenVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4104 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4104 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2605,14 +2605,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 openVoiceControlWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate openVoiceControlWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4029 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4029 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2621,15 +2621,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isTypeToSiriVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isTypeToSiriVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4133 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4133 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2639,14 +2639,14 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 openTypeToSiriWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate openTypeToSiriWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4132 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4132 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -2655,15 +2655,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isVoiceControlRunningWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isVoiceControlRunningWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4013 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4013 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2673,15 +2673,15 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSpeakThisTemporarilyDisabledWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSpeakThisTemporarilyDisabledWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4042 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4042 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2691,9 +2691,9 @@ void __50__AXSpringBoardServer_activeInterfaceOrientation___block_invoke(uint64_
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 allowedMedusaGesturesWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate allowedMedusaGesturesWithServerInstance:_axSpringBoardServerInstance];
 
 LABEL_5:
     goto LABEL_7;
@@ -2701,8 +2701,8 @@ LABEL_5:
 
   if (AXDeviceSupportsSideApp())
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4063 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4063 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:_axSpringBoardServerInstanceDelegate];
     goto LABEL_5;
   }
 
@@ -2712,22 +2712,22 @@ LABEL_7:
   return v5;
 }
 
-- (void)setMenuBarVisible:(BOOL)a3
+- (void)setMenuBarVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v10 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v10 serverInstance:v5 setMenuBarVisible:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance setMenuBarVisible:visibleCopy];
   }
 
   else
   {
     v6 = [AXIPCMessage alloc];
     v11 = @"result";
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
     v12[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = [(AXIPCMessage *)v6 initWithKey:4139 payload:v8];
@@ -2739,15 +2739,15 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isMenuBarVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isMenuBarVisibleWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4140 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4140 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2757,15 +2757,15 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isMenuBarModalWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isMenuBarModalWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4142 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4142 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2775,15 +2775,15 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isChamoisOrFlexibleWindowingEnabledWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isChamoisOrFlexibleWindowingEnabledWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4141 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4141 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -2793,33 +2793,33 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleBackgroundSoundsWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleBackgroundSoundsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4110 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4110 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
 
-- (BOOL)performMedusaGesture:(unint64_t)a3
+- (BOOL)performMedusaGesture:(unint64_t)gesture
 {
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 serverInstance:v6 performMedusaGesture:a3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance performMedusaGesture:gesture];
   }
 
   else
   {
     v8 = [AXIPCMessage alloc];
     v13 = @"gesture";
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:gesture];
     v14[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v11 = [(AXIPCMessage *)v8 initWithKey:4064 payload:v10];
@@ -2833,35 +2833,35 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 medusaAppsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate medusaAppsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4080 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4080 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (void)setDockIconActivationMode:(unint64_t)a3
+- (void)setDockIconActivationMode:(unint64_t)mode
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v10 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v10 serverInstance:v5 setDockIconActivationMode:a3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance setDockIconActivationMode:mode];
   }
 
   else
   {
     v6 = [AXIPCMessage alloc];
     v11 = @"mode";
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
     v12[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = [(AXIPCMessage *)v6 initWithKey:4091 payload:v8];
@@ -2873,29 +2873,29 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 canSetDockIconActivationModeForServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate canSetDockIconActivationModeForServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4092 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4092 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
 }
 
-- (void)systemAppInfoWithQuery:(unint64_t)a3 completion:(id)a4
+- (void)systemAppInfoWithQuery:(unint64_t)query completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v9 = [v7 serverInstance:v8 springBoardSystemInfoQuery:a3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v9 = [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance springBoardSystemInfoQuery:query];
 
     v18[1] = MEMORY[0x1E69E9820];
     v18[2] = 3221225472;
@@ -2903,8 +2903,8 @@ LABEL_7:
     v18[4] = &unk_1E71EA390;
     v10 = &v20;
     v19 = v9;
-    v20 = v6;
-    v11 = v6;
+    v20 = completionCopy;
+    v11 = completionCopy;
     v12 = v9;
     AXPerformBlockAsynchronouslyOnMainThread();
   }
@@ -2913,7 +2913,7 @@ LABEL_7:
   {
     v13 = [AXIPCMessage alloc];
     v21 = @"query";
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:query];
     v22[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v12 = [(AXIPCMessage *)v13 initWithKey:4045 payload:v15];
@@ -2923,8 +2923,8 @@ LABEL_7:
     v17[2] = __57__AXSpringBoardServer_systemAppInfoWithQuery_completion___block_invoke_2;
     v17[3] = &unk_1E71EA3B8;
     v10 = v18;
-    v18[0] = v6;
-    v16 = v6;
+    v18[0] = completionCopy;
+    v16 = completionCopy;
     [(AXServer *)self sendAsynchronousMessage:v12 replyOnQueue:MEMORY[0x1E69E96A0] objectResultHandler:v17];
   }
 }
@@ -2933,31 +2933,31 @@ LABEL_7:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 isSystemAppShowingAnAlertWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    bOOLValue = [_axSpringBoardServerInstanceDelegate isSystemAppShowingAnAlertWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v6 = [[AXIPCMessage alloc] initWithKey:4501 payload:0];
-    v3 = [(AXServer *)self sendMessage:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v6];
 
-    v4 = [v3 payload];
-    v7 = [v4 objectForKey:@"result"];
-    v5 = [v7 BOOLValue];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    v7 = [_axSpringBoardServerInstance objectForKey:@"result"];
+    bOOLValue = [v7 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setBluetoothPowerEnabled:(BOOL)a3
+- (void)setBluetoothPowerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4128 payload:v7];
@@ -2969,20 +2969,20 @@ LABEL_7:
   v3 = [[AXIPCMessage alloc] initWithKey:4129 payload:0];
   v4 = [(AXServer *)self sendMessage:v3];
 
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"result"];
-  v7 = [v6 BOOLValue];
+  payload = [v4 payload];
+  v6 = [payload objectForKey:@"result"];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setVoiceOverEnabled:(BOOL)a3
+- (void)setVoiceOverEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4126 payload:v7];
@@ -2994,20 +2994,20 @@ LABEL_7:
   v3 = [[AXIPCMessage alloc] initWithKey:4127 payload:0];
   v4 = [(AXServer *)self sendMessage:v3];
 
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"result"];
-  v7 = [v6 BOOLValue];
+  payload = [v4 payload];
+  v6 = [payload objectForKey:@"result"];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setZoomEnabled:(BOOL)a3
+- (void)setZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:4124 payload:v7];
@@ -3019,38 +3019,38 @@ LABEL_7:
   v3 = [[AXIPCMessage alloc] initWithKey:4125 payload:0];
   v4 = [(AXServer *)self sendMessage:v3];
 
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"result"];
-  v7 = [v6 BOOLValue];
+  payload = [v4 payload];
+  v6 = [payload objectForKey:@"result"];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)focusedAppPID
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v3 focusedAppPIDWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate focusedAppPIDWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v5 = [[AXIPCMessage alloc] initWithKey:4503 payload:0];
-    v3 = [(AXServer *)self sendMessage:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v5];
 
-    v4 = [v3 payload];
-    [v4 objectForKey:@"result"];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    [_axSpringBoardServerInstance objectForKey:@"result"];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)purpleBuddyPID:(id)a3
+- (void)purpleBuddyPID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -3058,8 +3058,8 @@ LABEL_7:
     block[2] = __38__AXSpringBoardServer_purpleBuddyPID___block_invoke;
     block[3] = &unk_1E71EA228;
     block[4] = self;
-    v12 = v4;
-    v5 = v4;
+    v12 = dCopy;
+    v5 = dCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v6 = v12;
   }
@@ -3071,8 +3071,8 @@ LABEL_7:
     v9[1] = 3221225472;
     v9[2] = __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2;
     v9[3] = &unk_1E71EA340;
-    v10 = v4;
-    v8 = v4;
+    v10 = dCopy;
+    v8 = dCopy;
     [(AXServer *)self sendAsynchronousMessage:v7 replyOnQueue:MEMORY[0x1E69E96A0] handler:v9];
 
     v6 = v10;
@@ -3102,36 +3102,36 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v3 runningAppPIDsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate runningAppPIDsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v5 = [[AXIPCMessage alloc] initWithKey:4504 payload:0];
-    v3 = [(AXServer *)self sendMessage:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendMessage:v5];
 
-    v4 = [v3 payload];
-    [v4 objectForKey:@"result"];
+    _axSpringBoardServerInstance = [_axSpringBoardServerInstanceDelegate payload];
+    [_axSpringBoardServerInstance objectForKey:@"result"];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)_isSystemAppFrontmostExcludingSiri:(BOOL)a3 completion:(id)a4
+- (void)_isSystemAppFrontmostExcludingSiri:(BOOL)siri completion:(id)completion
 {
-  v4 = a3;
+  siriCopy = siri;
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v7 isSystemAppFrontmostExcludingSiri:v4 withServerInstance:v8];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate isSystemAppFrontmostExcludingSiri:siriCopy withServerInstance:_axSpringBoardServerInstance];
 
-    v13 = v6;
+    v13 = completionCopy;
     AXPerformBlockAsynchronouslyOnMainThread();
     v9 = v13;
   }
@@ -3140,30 +3140,30 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
   {
     v10 = [AXIPCMessage alloc];
     v14 = @"excludeSiri";
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:siriCopy];
     v15[0] = v9;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v12 = [(AXIPCMessage *)v10 initWithKey:4500 payload:v11];
-    [(AXServer *)self sendAsynchronousMessage:v12 replyOnQueue:MEMORY[0x1E69E96A0] BOOLResultHandler:v6];
+    [(AXServer *)self sendAsynchronousMessage:v12 replyOnQueue:MEMORY[0x1E69E96A0] BOOLResultHandler:completionCopy];
   }
 }
 
-- (BOOL)_isSystemAppFrontmostExcludingSiri:(BOOL)a3
+- (BOOL)_isSystemAppFrontmostExcludingSiri:(BOOL)siri
 {
-  v3 = a3;
+  siriCopy = siri;
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 isSystemAppFrontmostExcludingSiri:v3 withServerInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate isSystemAppFrontmostExcludingSiri:siriCopy withServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v8 = [AXIPCMessage alloc];
     v13 = @"excludeSiri";
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:siriCopy];
     v14[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v11 = [(AXIPCMessage *)v8 initWithKey:4500 payload:v10];
@@ -3177,15 +3177,15 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isPurpleBuddyAppFrontmostWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isPurpleBuddyAppFrontmostWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4506 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4506 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -3203,9 +3203,9 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
   v5 = dismissBuddyIfNecessary_hasSeenNonBuddyFrontMostApp;
   if ((dismissBuddyIfNecessary_hasSeenNonBuddyFrontMostApp & 1) == 0 && v3)
   {
-    v6 = [(AXSpringBoardServer *)self isPurpleBuddyAppFrontmost];
-    v5 = !v6;
-    dismissBuddyIfNecessary_hasSeenNonBuddyFrontMostApp = !v6;
+    isPurpleBuddyAppFrontmost = [(AXSpringBoardServer *)self isPurpleBuddyAppFrontmost];
+    v5 = !isPurpleBuddyAppFrontmost;
+    dismissBuddyIfNecessary_hasSeenNonBuddyFrontMostApp = !isPurpleBuddyAppFrontmost;
   }
 
   if (v4 & v5)
@@ -3221,8 +3221,8 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
     CFRelease(AppElementWithPid);
   }
 
-  v10 = [v9 uiElement];
-  v11 = [v10 performAXAction:4019];
+  uiElement = [v9 uiElement];
+  v11 = [uiElement performAXAction:4019];
 
   return v11;
 }
@@ -3231,15 +3231,15 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 isSettingsAppFrontmostWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate isSettingsAppFrontmostWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4505 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4505 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -3249,9 +3249,9 @@ void __38__AXSpringBoardServer_purpleBuddyPID___block_invoke_2(uint64_t a1, void
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 focusedAppsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [_axSpringBoardServerInstanceDelegate focusedAppsWithServerInstance:_axSpringBoardServerInstance];
 LABEL_5:
     v10 = v5;
 
@@ -3259,15 +3259,15 @@ LABEL_5:
   }
 
   v6 = [[AXIPCMessage alloc] initWithKey:4509 payload:0];
-  v3 = [(AXServer *)self sendSimpleMessageWithObjectResult:v6];
+  _axSpringBoardServerInstanceDelegate = [(AXServer *)self sendSimpleMessageWithObjectResult:v6];
 
-  if (v3)
+  if (_axSpringBoardServerInstanceDelegate)
   {
     v7 = MEMORY[0x1E696ACD0];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
-    v4 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v5 = [v7 unarchivedObjectOfClasses:v4 fromData:v3 error:0];
+    _axSpringBoardServerInstance = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
+    v5 = [v7 unarchivedObjectOfClasses:_axSpringBoardServerInstance fromData:_axSpringBoardServerInstanceDelegate error:0];
     goto LABEL_5;
   }
 
@@ -3277,22 +3277,22 @@ LABEL_6:
   return v10;
 }
 
-- (id)displayIdentifierForSceneIdentifier:(id)a3
+- (id)displayIdentifierForSceneIdentifier:(id)identifier
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 displayIdentifierForSceneIdentifier:v4 serverInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate displayIdentifierForSceneIdentifier:identifierCopy serverInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     v8 = [AXIPCMessage alloc];
     v17 = @"sceneIdentifier";
-    v18[0] = v4;
+    v18[0] = identifierCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v10 = [(AXIPCMessage *)v8 initWithKey:4120 payload:v9];
     v11 = [(AXServer *)self sendSimpleMessageWithObjectResult:v10];
@@ -3324,9 +3324,9 @@ LABEL_6:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 focusedOccludedAppScenesWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [_axSpringBoardServerInstanceDelegate focusedOccludedAppScenesWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -3359,39 +3359,39 @@ LABEL_6:
   return v5;
 }
 
-- (void)acquireAssertionWithType:(id)a3 identifier:(id)a4
+- (void)acquireAssertionWithType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v8 acquireAssertionWithType:v6 identifier:v7 clientPort:0];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstance acquireAssertionWithType:typeCopy identifier:identifierCopy clientPort:0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AXSpringBoardServer;
-    [(AXServer *)&v9 acquireAssertionWithType:v6 identifier:v7];
+    [(AXServer *)&v9 acquireAssertionWithType:typeCopy identifier:identifierCopy];
   }
 }
 
-- (void)relinquishAssertionWithType:(id)a3 identifier:(id)a4
+- (void)relinquishAssertionWithType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v8 relinquishAssertionWithType:v6 identifier:v7 clientPort:0];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstance relinquishAssertionWithType:typeCopy identifier:identifierCopy clientPort:0];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AXSpringBoardServer;
-    [(AXServer *)&v9 relinquishAssertionWithType:v6 identifier:v7];
+    [(AXServer *)&v9 relinquishAssertionWithType:typeCopy identifier:identifierCopy];
   }
 }
 
@@ -3399,9 +3399,9 @@ LABEL_6:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v3 forceLoadGAXBundleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate forceLoadGAXBundleWithServerInstance:_axSpringBoardServerInstance];
 
     return 1;
   }
@@ -3410,9 +3410,9 @@ LABEL_6:
   {
     [(AXServer *)self _connectIfNecessary];
     v6 = [[AXIPCMessage alloc] initWithKey:4069 payload:0];
-    v7 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v10 = 0;
-    [v7 sendSimpleMessage:v6 withError:&v10];
+    [client sendSimpleMessage:v6 withError:&v10];
     v8 = v10;
 
     v5 = v8 == 0;
@@ -3425,17 +3425,17 @@ LABEL_6:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 reactivateInCallServiceWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate reactivateInCallServiceWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v4 = [[AXIPCMessage alloc] initWithKey:4084 payload:0];
-    v3 = [(AXServer *)self client];
-    [v3 sendSimpleMessage:v4];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4084 payload:0];
+    _axSpringBoardServerInstance = [(AXServer *)self client];
+    [_axSpringBoardServerInstance sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
   }
 }
 
@@ -3443,36 +3443,36 @@ LABEL_6:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 launchMagnifierAppWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate launchMagnifierAppWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v4 = [[AXIPCMessage alloc] initWithKey:4070 payload:0];
-    v3 = [(AXServer *)self client];
-    [v3 sendSimpleMessage:v4];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4070 payload:0];
+    _axSpringBoardServerInstance = [(AXServer *)self client];
+    [_axSpringBoardServerInstance sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
   }
 }
 
-- (void)isMagnifierVisibleWithCompletion:(id)a3
+- (void)isMagnifierVisibleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 isMagnifierVisibleWithServerInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate isMagnifierVisibleWithServerInstance:_axSpringBoardServerInstance];
 
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __56__AXSpringBoardServer_isMagnifierVisibleWithCompletion___block_invoke;
     v15 = &unk_1E71EA3E0;
-    v16 = v4;
+    v16 = completionCopy;
     v17 = v7;
-    v8 = v4;
+    v8 = completionCopy;
     AXPerformBlockOnMainThread();
   }
 
@@ -3480,14 +3480,14 @@ LABEL_6:
   {
     [(AXServer *)self _connectIfNecessary];
     v8 = [[AXIPCMessage alloc] initWithKey:4071 payload:0];
-    v9 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__AXSpringBoardServer_isMagnifierVisibleWithCompletion___block_invoke_2;
     v10[3] = &unk_1E71EA340;
-    v11 = v4;
-    v4 = v4;
-    [v9 sendAsyncMessage:v8 withReplyHandler:v10];
+    v11 = completionCopy;
+    completionCopy = completionCopy;
+    [client sendAsyncMessage:v8 withReplyHandler:v10];
   }
 }
 
@@ -3516,33 +3516,33 @@ LABEL_6:
   (*(*(a1 + 32) + 16))(*(a1 + 32), v7, v5);
 }
 
-- (void)launchOnboardingViewService:(id)a3
+- (void)launchOnboardingViewService:(id)service
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v8 = @"type";
-  v9[0] = v4;
+  v9[0] = serviceCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v6 launchOnboardingViewServiceWithServerInstance:v7 data:v5];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate launchOnboardingViewServiceWithServerInstance:_axSpringBoardServerInstance data:v5];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v6 = [[AXIPCMessage alloc] initWithKey:4122 payload:v5];
-    v7 = [(AXServer *)self client];
-    [v7 sendSimpleMessage:v6];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4122 payload:v5];
+    _axSpringBoardServerInstance = [(AXServer *)self client];
+    [_axSpringBoardServerInstance sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
   }
 }
 
-- (void)launchVoiceOverQuickSettingsViewService:(id)a3
+- (void)launchVoiceOverQuickSettingsViewService:(id)service
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:service requiringSecureCoding:1 error:0];
   v5 = v4;
   if (v4)
   {
@@ -3551,32 +3551,32 @@ LABEL_6:
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
     {
-      v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-      v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-      [(AXIPCMessage *)v7 launchVoiceOverQuickSettingsViewServiceWithServerInstance:v8 data:v6];
+      _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+      _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+      [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate launchVoiceOverQuickSettingsViewServiceWithServerInstance:_axSpringBoardServerInstance data:v6];
     }
 
     else
     {
       [(AXServer *)self _connectIfNecessary];
-      v7 = [[AXIPCMessage alloc] initWithKey:4094 payload:v6];
-      v8 = [(AXServer *)self client];
-      [v8 sendSimpleMessage:v7];
+      _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4094 payload:v6];
+      _axSpringBoardServerInstance = [(AXServer *)self client];
+      [_axSpringBoardServerInstance sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
     }
   }
 }
 
-- (void)launchVoiceOverImageExplorerViewServiceForResult:(id)a3 withData:(id)a4
+- (void)launchVoiceOverImageExplorerViewServiceForResult:(id)result withData:(id)data
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  dataCopy = data;
+  if (result)
   {
     v16 = 0;
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v16];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:result requiringSecureCoding:1 error:&v16];
     v8 = v16;
     v15 = 0;
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v15];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v15];
     v10 = v15;
     v11 = v10;
     if (v8 || !v7)
@@ -3606,17 +3606,17 @@ LABEL_6:
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
       if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
       {
-        v13 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-        v14 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-        [(AXIPCMessage *)v13 launchVoiceOverImageExplorerViewServiceWithServerInstance:v14 forData:v12];
+        _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+        _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+        [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate launchVoiceOverImageExplorerViewServiceWithServerInstance:_axSpringBoardServerInstance forData:v12];
       }
 
       else
       {
         [(AXServer *)self _connectIfNecessary];
-        v13 = [[AXIPCMessage alloc] initWithKey:4105 payload:v12];
-        v14 = [(AXServer *)self client];
-        [v14 sendSimpleMessage:v13];
+        _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4105 payload:v12];
+        _axSpringBoardServerInstance = [(AXServer *)self client];
+        [_axSpringBoardServerInstance sendSimpleMessage:_axSpringBoardServerInstanceDelegate];
       }
     }
   }
@@ -3635,15 +3635,15 @@ LABEL_6:
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 visibleTripleClickItemsWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate visibleTripleClickItemsWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4108 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4108 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -3667,11 +3667,11 @@ LABEL_6:
   return v2 != 0;
 }
 
-- (BOOL)isNonExclusiveSystemUIFocusableIncludingPIPWindow:(BOOL)a3 includingNonDismissableElements:(BOOL)a4
+- (BOOL)isNonExclusiveSystemUIFocusableIncludingPIPWindow:(BOOL)window includingNonDismissableElements:(BOOL)elements
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(AXSpringBoardServer *)self isNotificationVisible]|| [(AXSpringBoardServer *)self isDockVisible]|| [(AXSpringBoardServer *)self isScreenshotWindowVisible]|| [(AXSpringBoardServer *)self isSiriVisible]|| v5 && [(AXSpringBoardServer *)self isPIPWindowVisible]|| [(AXSpringBoardServer *)self isBannerVisible]|| [(AXSpringBoardServer *)self isStageManagerSwitcherVisible]|| [(AXSpringBoardServer *)self isChamoisOrFlexibleWindowingEnabled])
+  elementsCopy = elements;
+  windowCopy = window;
+  if ([(AXSpringBoardServer *)self isNotificationVisible]|| [(AXSpringBoardServer *)self isDockVisible]|| [(AXSpringBoardServer *)self isScreenshotWindowVisible]|| [(AXSpringBoardServer *)self isSiriVisible]|| windowCopy && [(AXSpringBoardServer *)self isPIPWindowVisible]|| [(AXSpringBoardServer *)self isBannerVisible]|| [(AXSpringBoardServer *)self isStageManagerSwitcherVisible]|| [(AXSpringBoardServer *)self isChamoisOrFlexibleWindowingEnabled])
   {
     return 1;
   }
@@ -3681,12 +3681,12 @@ LABEL_6:
     return 0;
   }
 
-  return [(AXSpringBoardServer *)self isStatusBarNativeFocusableIncludingNonDismissableElements:v4];
+  return [(AXSpringBoardServer *)self isStatusBarNativeFocusableIncludingNonDismissableElements:elementsCopy];
 }
 
-- (void)setShouldFocusNonExclusiveSystemUI:(BOOL)a3
+- (void)setShouldFocusNonExclusiveSystemUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v10 = *MEMORY[0x1E69E9840];
   if (![(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
@@ -3697,38 +3697,38 @@ LABEL_6:
     }
   }
 
-  if (self->_shouldFocusNonExclusiveSystemUI != v3)
+  if (self->_shouldFocusNonExclusiveSystemUI != iCopy)
   {
-    self->_shouldFocusNonExclusiveSystemUI = v3;
+    self->_shouldFocusNonExclusiveSystemUI = iCopy;
     v6 = FKALogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = iCopy;
       _os_log_impl(&dword_18B15E000, v6, OS_LOG_TYPE_INFO, "Should focus non exclusive system UI: %i", v9, 8u);
     }
 
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v8 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v7 updateFrontMostApplicationWithServerInstance:v8];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate updateFrontMostApplicationWithServerInstance:_axSpringBoardServerInstance];
   }
 }
 
-- (void)freezeClarityUILoadingScreenWithCompletion:(id)a3
+- (void)freezeClarityUILoadingScreenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [v5 freezeClarityUILoadingScreenWithServerInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [_axSpringBoardServerInstanceDelegate freezeClarityUILoadingScreenWithServerInstance:_axSpringBoardServerInstance];
 
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __66__AXSpringBoardServer_freezeClarityUILoadingScreenWithCompletion___block_invoke;
     v14 = &unk_1E71EA2F0;
-    v15 = v4;
-    v7 = v4;
+    v15 = completionCopy;
+    v7 = completionCopy;
     AXPerformBlockOnMainThread();
   }
 
@@ -3736,14 +3736,14 @@ LABEL_6:
   {
     [(AXServer *)self _connectIfNecessary];
     v7 = [[AXIPCMessage alloc] initWithKey:4116 payload:0];
-    v8 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__AXSpringBoardServer_freezeClarityUILoadingScreenWithCompletion___block_invoke_2;
     v9[3] = &unk_1E71EA340;
-    v10 = v4;
-    v4 = v4;
-    [v8 sendAsyncMessage:v7 withReplyHandler:v9];
+    v10 = completionCopy;
+    completionCopy = completionCopy;
+    [client sendAsyncMessage:v7 withReplyHandler:v9];
   }
 }
 
@@ -3765,17 +3765,17 @@ uint64_t __66__AXSpringBoardServer_freezeClarityUILoadingScreenWithCompletion___
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 presentNearbyDeviceControlPickerWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate presentNearbyDeviceControlPickerWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v4 = [[AXIPCMessage alloc] initWithKey:4117 payload:0];
-    v3 = [(AXServer *)self client];
-    [v3 sendAsyncMessage:v4 withReplyHandler:&__block_literal_global_590];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4117 payload:0];
+    _axSpringBoardServerInstance = [(AXServer *)self client];
+    [_axSpringBoardServerInstance sendAsyncMessage:_axSpringBoardServerInstanceDelegate withReplyHandler:&__block_literal_global_590];
   }
 }
 
@@ -3796,14 +3796,14 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 diminishJindoWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate diminishJindoWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4118 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4118 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -3812,15 +3812,15 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [(AXIPCMessage *)v3 jindoAppBundleIndentifiersWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate jindoAppBundleIndentifiersWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4121 payload:0];
-    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:v3];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4121 payload:0];
+    v5 = [(AXServer *)self sendSimpleMessageWithObjectResult:_axSpringBoardServerInstanceDelegate];
   }
 
   return v5;
@@ -3830,15 +3830,15 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleDetectionModeWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleDetectionModeWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v4 = [[AXIPCMessage alloc] initWithKey:4119 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4119 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -3846,9 +3846,9 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 - (void)launchAccessibilityReader
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [v3 isControlCenterVisible];
+  isControlCenterVisible = [v3 isControlCenterVisible];
 
-  if (v4)
+  if (isControlCenterVisible)
   {
     v5 = +[AXSpringBoardServer server];
     [v5 showControlCenter:0];
@@ -3856,15 +3856,15 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v7 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v7 launchAccessibilityReaderWithServerInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate launchAccessibilityReaderWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v7 = [[AXIPCMessage alloc] initWithKey:4138 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4138 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -3873,9 +3873,9 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 isMagnifierVisibleWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [_axSpringBoardServerInstanceDelegate isMagnifierVisibleWithServerInstance:_axSpringBoardServerInstance];
 
     return v5;
   }
@@ -3887,14 +3887,14 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
   }
 }
 
-- (id)applicationWithIdentifier:(id)a3
+- (id)applicationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 serverInstance:v6 appWithIdentifier:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate serverInstance:_axSpringBoardServerInstance appWithIdentifier:identifierCopy];
   }
 
   else
@@ -3910,9 +3910,9 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 focusedAppProcessWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [_axSpringBoardServerInstanceDelegate focusedAppProcessWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -3928,9 +3928,9 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v5 = [v3 runningAppProcessesWithServerInstance:v4];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v5 = [_axSpringBoardServerInstanceDelegate runningAppProcessesWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -3942,15 +3942,15 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
   return v5;
 }
 
-- (id)appNameFromPid:(int)a3
+- (id)appNameFromPid:(int)pid
 {
-  v3 = *&a3;
+  v3 = *&pid;
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v6 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    v7 = [v5 appNameFromPid:v3 withServerInstance:v6];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    v7 = [_axSpringBoardServerInstanceDelegate appNameFromPid:v3 withServerInstance:_axSpringBoardServerInstance];
   }
 
   else
@@ -3971,14 +3971,14 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleLiveTranscriptionWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleLiveTranscriptionWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4115 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4115 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -3987,14 +3987,14 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v4 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
-    [(AXIPCMessage *)v4 toggleConversationBoostWithServerInstance:v3];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    _axSpringBoardServerInstance = [(AXSpringBoardServer *)self _axSpringBoardServerInstance];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate toggleConversationBoostWithServerInstance:_axSpringBoardServerInstance];
   }
 
   else
   {
-    v4 = [[AXIPCMessage alloc] initWithKey:4130 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4130 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -4003,8 +4003,8 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    v4 = [v3 nativeFocusedApplication];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    nativeFocusedApplication = [_axSpringBoardServerInstanceDelegate nativeFocusedApplication];
   }
 
   else
@@ -4012,12 +4012,12 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
     objc_opt_class();
     v5 = [[AXIPCMessage alloc] initWithKey:4123 payload:0];
     v6 = [(AXServer *)self sendSimpleMessageWithObjectResult:v5];
-    v3 = __UIAccessibilityCastAsClass();
+    _axSpringBoardServerInstanceDelegate = __UIAccessibilityCastAsClass();
 
-    v4 = [v3 intValue];
+    nativeFocusedApplication = [_axSpringBoardServerInstanceDelegate intValue];
   }
 
-  v7 = v4;
+  v7 = nativeFocusedApplication;
 
   return v7;
 }
@@ -4026,13 +4026,13 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [(AXIPCMessage *)v3 installGuestPassPINGesture];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate installGuestPassPINGesture];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4135 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4135 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -4041,13 +4041,13 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [(AXIPCMessage *)v3 installGuestPassAcceptDialogGesture];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate installGuestPassAcceptDialogGesture];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4136 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4136 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -4056,13 +4056,13 @@ void __55__AXSpringBoardServer_presentNearbyDeviceControlPicker__block_invoke(ui
 {
   if ([(AXSpringBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
-    [(AXIPCMessage *)v3 removeGuestPassAcceptDialogGesture];
+    _axSpringBoardServerInstanceDelegate = [(AXSpringBoardServer *)self _axSpringBoardServerInstanceDelegate];
+    [(AXIPCMessage *)_axSpringBoardServerInstanceDelegate removeGuestPassAcceptDialogGesture];
   }
 
   else
   {
-    v3 = [[AXIPCMessage alloc] initWithKey:4137 payload:0];
+    _axSpringBoardServerInstanceDelegate = [[AXIPCMessage alloc] initWithKey:4137 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }

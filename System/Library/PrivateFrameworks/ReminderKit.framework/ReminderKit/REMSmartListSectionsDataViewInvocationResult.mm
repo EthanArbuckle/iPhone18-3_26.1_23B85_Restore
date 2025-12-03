@@ -1,104 +1,104 @@
 @interface REMSmartListSectionsDataViewInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMSmartListSectionsDataViewInvocationResult)initWithAccountStorages:(id)a3 smartListStorages:(id)a4 groupStorages:(id)a5 smartListSectionStorages:(id)a6;
-- (REMSmartListSectionsDataViewInvocationResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMSmartListSectionsDataViewInvocationResult)initWithAccountStorages:(id)storages smartListStorages:(id)listStorages groupStorages:(id)groupStorages smartListSectionStorages:(id)sectionStorages;
+- (REMSmartListSectionsDataViewInvocationResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMSmartListSectionsDataViewInvocationResult
 
-- (REMSmartListSectionsDataViewInvocationResult)initWithAccountStorages:(id)a3 smartListStorages:(id)a4 groupStorages:(id)a5 smartListSectionStorages:(id)a6
+- (REMSmartListSectionsDataViewInvocationResult)initWithAccountStorages:(id)storages smartListStorages:(id)listStorages groupStorages:(id)groupStorages smartListSectionStorages:(id)sectionStorages
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storagesCopy = storages;
+  listStoragesCopy = listStorages;
+  groupStoragesCopy = groupStorages;
+  sectionStoragesCopy = sectionStorages;
   v18.receiver = self;
   v18.super_class = REMSmartListSectionsDataViewInvocationResult;
   v15 = [(REMStoreInvocationValueStorage *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountStorages, a3);
-    objc_storeStrong(&v16->_smartListStorages, a4);
-    objc_storeStrong(&v16->_groupStorages, a5);
-    objc_storeStrong(&v16->_smartListSectionStorages, a6);
+    objc_storeStrong(&v15->_accountStorages, storages);
+    objc_storeStrong(&v16->_smartListStorages, listStorages);
+    objc_storeStrong(&v16->_groupStorages, groupStorages);
+    objc_storeStrong(&v16->_smartListSectionStorages, sectionStorages);
   }
 
   return v16;
 }
 
-- (REMSmartListSectionsDataViewInvocationResult)initWithCoder:(id)a3
+- (REMSmartListSectionsDataViewInvocationResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"accountStorages"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"accountStorages"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"smartListStorages"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"smartListStorages"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"groupStorages"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"groupStorages"];
 
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v5 decodeObjectOfClasses:v19 forKey:@"smartListSectionStorages"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"smartListSectionStorages"];
 
-  v21 = 0;
+  selfCopy = 0;
   if (v12 && v20)
   {
     self = [(REMSmartListSectionsDataViewInvocationResult *)self initWithAccountStorages:v8 smartListStorages:v12 groupStorages:v16 smartListSectionStorages:v20];
-    v21 = self;
+    selfCopy = self;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
-  [v4 encodeObject:v5 forKey:@"accountStorages"];
+  coderCopy = coder;
+  accountStorages = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
+  [coderCopy encodeObject:accountStorages forKey:@"accountStorages"];
 
-  v6 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
-  [v4 encodeObject:v6 forKey:@"smartListStorages"];
+  smartListStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
+  [coderCopy encodeObject:smartListStorages forKey:@"smartListStorages"];
 
-  v7 = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
-  [v4 encodeObject:v7 forKey:@"groupStorages"];
+  groupStorages = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
+  [coderCopy encodeObject:groupStorages forKey:@"groupStorages"];
 
-  v8 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
-  [v4 encodeObject:v8 forKey:@"smartListSectionStorages"];
+  smartListSectionStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
+  [coderCopy encodeObject:smartListSectionStorages forKey:@"smartListSectionStorages"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
-  v6 = [v4 accountStorages];
-  v7 = v6;
-  if (v5 == v6)
+  accountStorages = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
+  accountStorages2 = [equalCopy accountStorages];
+  v7 = accountStorages2;
+  if (accountStorages == accountStorages2)
   {
   }
 
   else
   {
-    v8 = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
-    v9 = [v4 accountStorages];
-    v10 = [v8 isEqual:v9];
+    accountStorages3 = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
+    accountStorages4 = [equalCopy accountStorages];
+    v10 = [accountStorages3 isEqual:accountStorages4];
 
     if (!v10)
     {
@@ -106,18 +106,18 @@
     }
   }
 
-  v11 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
-  v12 = [v4 smartListStorages];
-  v13 = v12;
-  if (v11 == v12)
+  smartListStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
+  smartListStorages2 = [equalCopy smartListStorages];
+  v13 = smartListStorages2;
+  if (smartListStorages == smartListStorages2)
   {
   }
 
   else
   {
-    v14 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
-    v15 = [v4 smartListStorages];
-    v16 = [v14 isEqual:v15];
+    smartListStorages3 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
+    smartListStorages4 = [equalCopy smartListStorages];
+    v16 = [smartListStorages3 isEqual:smartListStorages4];
 
     if (!v16)
     {
@@ -125,18 +125,18 @@
     }
   }
 
-  v17 = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
-  v18 = [v4 groupStorages];
-  v19 = v18;
-  if (v17 == v18)
+  groupStorages = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
+  groupStorages2 = [equalCopy groupStorages];
+  v19 = groupStorages2;
+  if (groupStorages == groupStorages2)
   {
   }
 
   else
   {
-    v20 = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
-    v21 = [v4 groupStorages];
-    v22 = [v20 isEqual:v21];
+    groupStorages3 = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
+    groupStorages4 = [equalCopy groupStorages];
+    v22 = [groupStorages3 isEqual:groupStorages4];
 
     if (!v22)
     {
@@ -146,18 +146,18 @@ LABEL_12:
     }
   }
 
-  v25 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
-  v26 = [v4 smartListSectionStorages];
-  if (v25 == v26)
+  smartListSectionStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
+  smartListSectionStorages2 = [equalCopy smartListSectionStorages];
+  if (smartListSectionStorages == smartListSectionStorages2)
   {
     v23 = 1;
   }
 
   else
   {
-    v27 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
-    v28 = [v4 smartListSectionStorages];
-    v23 = [v27 isEqual:v28];
+    smartListSectionStorages3 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
+    smartListSectionStorages4 = [equalCopy smartListSectionStorages];
+    v23 = [smartListSectionStorages3 isEqual:smartListSectionStorages4];
   }
 
 LABEL_13:
@@ -166,14 +166,14 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
-  v4 = [v3 hash];
-  v5 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
-  v8 = [v7 hash];
-  v9 = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
-  v10 = v8 ^ [v9 hash];
+  accountStorages = [(REMSmartListSectionsDataViewInvocationResult *)self accountStorages];
+  v4 = [accountStorages hash];
+  smartListStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListStorages];
+  v6 = [smartListStorages hash] ^ v4;
+  groupStorages = [(REMSmartListSectionsDataViewInvocationResult *)self groupStorages];
+  v8 = [groupStorages hash];
+  smartListSectionStorages = [(REMSmartListSectionsDataViewInvocationResult *)self smartListSectionStorages];
+  v10 = v8 ^ [smartListSectionStorages hash];
 
   return v6 ^ v10;
 }

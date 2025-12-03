@@ -1,6 +1,6 @@
 @interface WFLeaveLocationTrigger
 + (id)displayGlyphHierarchicalColors;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 - (id)localizedDescriptionWithConfigurationSummary;
 @end
 
@@ -21,39 +21,39 @@
   return v5;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Leave", @"Leave");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
 - (id)localizedDescriptionWithConfigurationSummary
 {
-  v3 = [(WFLocationTrigger *)self startTime];
-  if (v3 && (v4 = v3, [(WFLocationTrigger *)self endTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  startTime = [(WFLocationTrigger *)self startTime];
+  if (startTime && (v4 = startTime, [(WFLocationTrigger *)self endTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = +[WFLocationTrigger timestampDateFormatter];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = WFLocalizedString(@"When I leave %1$@ between %2$@ and %3$@");
-    v9 = [(WFLocationTrigger *)self region];
-    v10 = [v9 identifier];
-    v11 = [(WFLocationTrigger *)self startTime];
-    v12 = [v6 stringFromDate:v11];
-    v13 = [(WFLocationTrigger *)self endTime];
-    v14 = [v6 stringFromDate:v13];
-    v15 = [v7 localizedStringWithFormat:v8, v10, v12, v14];
+    region2 = WFLocalizedString(@"When I leave %1$@ between %2$@ and %3$@");
+    region = [(WFLocationTrigger *)self region];
+    identifier = [region identifier];
+    startTime2 = [(WFLocationTrigger *)self startTime];
+    v12 = [v6 stringFromDate:startTime2];
+    endTime = [(WFLocationTrigger *)self endTime];
+    v14 = [v6 stringFromDate:endTime];
+    v15 = [v7 localizedStringWithFormat:region2, identifier, v12, v14];
   }
 
   else
   {
     v16 = MEMORY[0x1E696AEC0];
     v6 = WFLocalizedString(@"When I leave %@");
-    v8 = [(WFLocationTrigger *)self region];
-    v9 = [v8 identifier];
-    v15 = [v16 localizedStringWithFormat:v6, v9];
+    region2 = [(WFLocationTrigger *)self region];
+    region = [region2 identifier];
+    v15 = [v16 localizedStringWithFormat:v6, region];
   }
 
   return v15;

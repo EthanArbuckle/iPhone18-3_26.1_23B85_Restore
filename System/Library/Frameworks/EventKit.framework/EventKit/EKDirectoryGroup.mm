@@ -1,18 +1,18 @@
 @interface EKDirectoryGroup
-+ (id)recordFromSearchResult:(id)a3;
++ (id)recordFromSearchResult:(id)result;
 @end
 
 @implementation EKDirectoryGroup
 
-+ (id)recordFromSearchResult:(id)a3
++ (id)recordFromSearchResult:(id)result
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___EKDirectoryGroup;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v7, sel_recordFromSearchResult_, v3);
-  v5 = [v3 principalPath];
+  resultCopy = result;
+  v4 = objc_msgSendSuper2(&v7, sel_recordFromSearchResult_, resultCopy);
+  principalPath = [resultCopy principalPath];
 
-  [v4 setPrincipalPath:v5];
+  [v4 setPrincipalPath:principalPath];
 
   return v4;
 }

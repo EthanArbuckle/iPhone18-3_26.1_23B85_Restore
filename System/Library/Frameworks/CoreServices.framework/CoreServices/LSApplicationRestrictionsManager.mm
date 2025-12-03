@@ -1,23 +1,23 @@
 @interface LSApplicationRestrictionsManager
 + (id)activeRestrictionIdentifiers;
 + (id)sharedInstance;
-- (BOOL)_LSApplyRestrictedSet:(id)a3 forRestriction:(id)a4;
-- (BOOL)forceUpdateRestrictionKnowledgeWithError:(void *)a1;
+- (BOOL)_LSApplyRestrictedSet:(id)set forRestriction:(id)restriction;
+- (BOOL)forceUpdateRestrictionKnowledgeWithError:(void *)error;
 - (BOOL)isAllowlistEnabled;
-- (BOOL)isAppExtensionRestricted:(_BOOL8)a1;
-- (BOOL)isApplicationRestricted:(int)a3 checkFeatureRestrictions:;
-- (BOOL)isApplicationRestricted:(uint64_t)a3 checkFlags:(void *)a4 stateProvider:;
-- (BOOL)isRatingAllowed:(void *)a3 forBundleIdentifier:;
+- (BOOL)isAppExtensionRestricted:(_BOOL8)restricted;
+- (BOOL)isApplicationRestricted:(int)restricted checkFeatureRestrictions:;
+- (BOOL)isApplicationRestricted:(uint64_t)restricted checkFlags:(void *)flags stateProvider:;
+- (BOOL)isRatingAllowed:(void *)allowed forBundleIdentifier:;
 - (LSApplicationRestrictionsManager)init;
-- (id)_LSResolveIdentifiers:(id)a3;
-- (id)_LSResolveIdentifiers:(id)a3 context:(LSContext *)a4;
+- (id)_LSResolveIdentifiers:(id)identifiers;
+- (id)_LSResolveIdentifiers:(id)identifiers context:(LSContext *)context;
 - (id)_MCRestrictionManager;
-- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(void *)a3 originatingAppBundleID:(uint64_t)a4 originatingAccountIsManaged:;
+- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(void *)ds originatingAppBundleID:(uint64_t)d originatingAccountIsManaged:;
 - (id)allowlistedBundleIDs;
-- (id)calculateSetDifference:(id)a3 and:(id)a4;
+- (id)calculateSetDifference:(id)difference and:(id)and;
 - (id)defaultStateProvider;
-- (id)isApplicationRestricted:(id *)a1;
-- (id)isApplicationRestricted:(uint64_t)a3 checkFlags:;
+- (id)isApplicationRestricted:(id *)restricted;
+- (id)isApplicationRestricted:(uint64_t)restricted checkFlags:;
 - (id)maximumRating;
 - (id)ratingRankExceptionBundleIDs;
 - (id)removedSystemApplicationIdentifiers;
@@ -27,21 +27,21 @@
 - (uint64_t)isLimitAdTrackingForced;
 - (uint64_t)isOpenInRestrictionInEffect;
 - (uint64_t)isSystemAppDeletionEnabled;
-- (uint64_t)reasonForApplicationRestriction:(uint64_t)a3 checkFlags:(void *)a4 stateProvider:;
-- (uint64_t)setApplication:(int)a3 removed:;
+- (uint64_t)reasonForApplicationRestriction:(uint64_t)restriction checkFlags:(void *)flags stateProvider:;
+- (uint64_t)setApplication:(int)application removed:;
 - (void)_pruneObsoleteTrustedSignerIdentities;
 - (void)beginListeningForChanges;
 - (void)clearAllValues;
 - (void)handleMCEffectiveSettingsChanged;
-- (void)handleSystemModeChangeTo:(id)a3;
-- (void)locked_setAllowlistedBundleIDs:(uint64_t)a1;
-- (void)locked_setRatingRankExceptionBundleIDs:(uint64_t)a1;
-- (void)locked_setRestrictedBundleIDs:(uint64_t)a1;
+- (void)handleSystemModeChangeTo:(id)to;
+- (void)locked_setAllowlistedBundleIDs:(uint64_t)ds;
+- (void)locked_setRatingRankExceptionBundleIDs:(uint64_t)ds;
+- (void)locked_setRestrictedBundleIDs:(uint64_t)ds;
 - (void)scanForMissedNotificationsForImportantAppsIfNecessary;
 - (void)schedulePruneObsoleteTrustedSignerIdentities;
-- (void)setRemovedSystemApplicationIdentifiers:(void *)a1;
+- (void)setRemovedSystemApplicationIdentifiers:(void *)identifiers;
 - (void)systemMode;
-- (void)willRestrictedStateOfBundleWithRatingRank:(unint64_t)a3 changeOnUpdateToRatingRank:;
+- (void)willRestrictedStateOfBundleWithRatingRank:(unint64_t)rank changeOnUpdateToRatingRank:;
 @end
 
 @implementation LSApplicationRestrictionsManager
@@ -82,7 +82,7 @@
 
 - (BOOL)isAllowlistEnabled
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -100,34 +100,34 @@
 
 - (id)restrictedBundleIDs
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_0_3();
     v6 = 3221225472;
     v7 = __55__LSApplicationRestrictionsManager_restrictedBundleIDs__block_invoke;
     v8 = &unk_1E6A19590;
     v9 = v2;
-    a1 = _LSLazyLoadObjectWithLock((v2 + 64), v3 + 2, v5);
+    self = _LSLazyLoadObjectWithLock((v2 + 64), v3 + 2, v5);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)defaultStateProvider
 {
-  if (a1)
+  if (self)
   {
-    a1 = [[LSAskManagerMCStateProvider alloc] initWithRestrictionsManager:a1];
+    self = [[LSAskManagerMCStateProvider alloc] initWithRestrictionsManager:self];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)maximumRating
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_2_2();
     if (v4 || (v5 = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/ManagedConfiguration", 2), (*(v2 + 272) = v5) != 0))
@@ -137,18 +137,18 @@
       v9 = __49__LSApplicationRestrictionsManager_maximumRating__block_invoke;
       v10 = &unk_1E6A19568;
       v11 = v1;
-      a1 = _LSLazyLoadObjectWithLock((v1 + 72), (v1 + 8), v7);
+      self = _LSLazyLoadObjectWithLock((v1 + 72), (v1 + 8), v7);
     }
 
     else
     {
-      a1 = &unk_1EEF8E978;
+      self = &unk_1EEF8E978;
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __50__LSApplicationRestrictionsManager_sharedInstance__block_invoke()
@@ -205,8 +205,8 @@ void __50__LSApplicationRestrictionsManager_sharedInstance__block_invoke()
         CFNotificationCenterAddObserver(DistributedCenter, v2, _applicationStateChangedCallback, @"com.apple.LaunchServices.applicationStateChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
       }
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 addObserver:v2 selector:v9 name:getMCEffectiveSettingsChangedNotification[0]() object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v2 selector:v9 name:getMCEffectiveSettingsChangedNotification[0]() object:0];
     }
   }
 
@@ -242,8 +242,8 @@ id __55__LSApplicationRestrictionsManager_restrictedBundleIDs__block_invoke(uint
 
 - (os_unfair_lock_s)systemMode
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (([__LSDefaultsGetSharedInstance() isServer] & 1) == 0 && !_LSCurrentProcessCanAccessManagedSettings())
     {
@@ -260,18 +260,18 @@ id __55__LSApplicationRestrictionsManager_restrictedBundleIDs__block_invoke(uint
     v4[1] = 3221225472;
     v5 = __46__LSApplicationRestrictionsManager_systemMode__block_invoke;
     v6 = &unk_1E6A195B8;
-    v7 = v1;
+    v7 = selfCopy;
     v8 = &v9;
     v2 = v4;
-    os_unfair_lock_lock(v1 + 2);
+    os_unfair_lock_lock(selfCopy + 2);
     v5(v2);
-    os_unfair_lock_unlock(v1 + 2);
+    os_unfair_lock_unlock(selfCopy + 2);
 
-    v1 = v10[5];
+    selfCopy = v10[5];
     _Block_object_dispose(&v9, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (id)activeRestrictionIdentifiers
@@ -302,8 +302,8 @@ void __40__LSApplicationRestrictionsManager_init__block_invoke(uint64_t a1)
 
 - (id)_MCRestrictionManager
 {
-  v2 = [getMCRestrictionManagerClass[0]() sharedManager];
-  if (!v2)
+  sharedManager = [getMCRestrictionManagerClass[0]() sharedManager];
+  if (!sharedManager)
   {
     v3 = _LSDefaultLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -312,16 +312,16 @@ void __40__LSApplicationRestrictionsManager_init__block_invoke(uint64_t a1)
     }
   }
 
-  return v2;
+  return sharedManager;
 }
 
-- (id)_LSResolveIdentifiers:(id)a3 context:(LSContext *)a4
+- (id)_LSResolveIdentifiers:(id)identifiers context:(LSContext *)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (identifiersCopy)
   {
-    v6 = v4;
+    v6 = identifiersCopy;
   }
 
   else
@@ -334,13 +334,13 @@ void __40__LSApplicationRestrictionsManager_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_LSResolveIdentifiers:(id)a3
+- (id)_LSResolveIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifiersCopy = identifiers;
+  v4 = identifiersCopy;
+  if (identifiersCopy)
   {
-    v5 = v3;
+    v5 = identifiersCopy;
   }
 
   else
@@ -558,7 +558,7 @@ void __89__LSApplicationRestrictionsManager_scanForMissedNotificationsForImporta
 
 - (void)beginListeningForChanges
 {
-  if (a1)
+  if (self)
   {
     v2 = _LSServer_DatabaseExecutionContext();
     [(LSDBExecutionContext *)v2 assertActiveForThisThread];
@@ -569,11 +569,11 @@ void __89__LSApplicationRestrictionsManager_scanForMissedNotificationsForImporta
       v4[1] = 3221225472;
       v5 = __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invoke;
       v6 = &unk_1E6A195E0;
-      v7 = a1;
+      selfCopy = self;
       v3 = v4;
-      os_unfair_lock_lock(a1 + 2);
+      os_unfair_lock_lock(self + 2);
       v5(v3);
-      os_unfair_lock_unlock(a1 + 2);
+      os_unfair_lock_unlock(self + 2);
     }
   }
 }
@@ -657,15 +657,15 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
   *(*(a1 + 32) + 40) = v31;
 }
 
-- (id)calculateSetDifference:(id)a3 and:(id)a4
+- (id)calculateSetDifference:(id)difference and:(id)and
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  differenceCopy = difference;
+  andCopy = and;
   v7 = _LSDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(LSApplicationRestrictionsManager *)v5 calculateSetDifference:v6 and:v7];
+    [(LSApplicationRestrictionsManager *)differenceCopy calculateSetDifference:andCopy and:v7];
   }
 
   v8 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
@@ -673,7 +673,7 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v5;
+  v9 = differenceCopy;
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
@@ -689,7 +689,7 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        if (([v6 containsObject:v14] & 1) == 0)
+        if (([andCopy containsObject:v14] & 1) == 0)
         {
           [v8 addObject:v14];
         }
@@ -705,7 +705,7 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = v6;
+  v15 = andCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
@@ -738,9 +738,9 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
   return v8;
 }
 
-- (void)handleSystemModeChangeTo:(id)a3
+- (void)handleSystemModeChangeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -752,8 +752,8 @@ void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invo
   v9 = __61__LSApplicationRestrictionsManager_handleSystemModeChangeTo___block_invoke;
   v10 = &unk_1E6A19608;
   v13 = &v14;
-  v11 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = toCopy;
   v12 = v5;
   v6 = v8;
   os_unfair_lock_lock(&self->_restrictionsAccessLock);
@@ -780,10 +780,10 @@ void __61__LSApplicationRestrictionsManager_handleSystemModeChangeTo___block_inv
 
 - (void)handleMCEffectiveSettingsChanged
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     *v2 = 0;
-    _os_log_impl(&dword_18162D000, a1, OS_LOG_TYPE_DEFAULT, "LSAppRestrictionsManager: handleMCEffectiveSettingsChanged.", v2, 2u);
+    _os_log_impl(&dword_18162D000, self, OS_LOG_TYPE_DEFAULT, "LSAppRestrictionsManager: handleMCEffectiveSettingsChanged.", v2, 2u);
   }
 }
 
@@ -807,7 +807,7 @@ void __68__LSApplicationRestrictionsManager_handleMCEffectiveSettingsChanged__bl
   v4[1] = 3221225472;
   v5 = __50__LSApplicationRestrictionsManager_clearAllValues__block_invoke;
   v6 = &unk_1E6A195E0;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_restrictionsAccessLock);
   v5(v3);
@@ -912,17 +912,17 @@ void __73__LSApplicationRestrictionsManager__pruneObsoleteTrustedSignerIdentitie
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_LSApplyRestrictedSet:(id)a3 forRestriction:(id)a4
+- (BOOL)_LSApplyRestrictedSet:(id)set forRestriction:(id)restriction
 {
   v28 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionary];
-  v10 = [v8 allObjects];
+  restrictionCopy = restriction;
+  setCopy = set;
+  dictionary = [v6 dictionary];
+  allObjects = [setCopy allObjects];
 
-  [v9 MCSetUnionRestriction:v7 values:v10];
-  v11 = [v9 copy];
+  [dictionary MCSetUnionRestriction:restrictionCopy values:allObjects];
+  v11 = [dictionary copy];
   v23 = 0;
   v12 = _LSDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -934,9 +934,9 @@ void __73__LSApplicationRestrictionsManager__pruneObsoleteTrustedSignerIdentitie
     _os_log_impl(&dword_18162D000, v12, OS_LOG_TYPE_DEFAULT, "ManagedConfiguration applyRestrictionDictionary:%@ clientType:%@", buf, 0x16u);
   }
 
-  v13 = [(LSApplicationRestrictionsManager *)self _MCProfileConnection];
+  _MCProfileConnection = [(LSApplicationRestrictionsManager *)self _MCProfileConnection];
   v22 = 0;
-  v14 = [v13 applyRestrictionDictionary:v11 clientType:@"com.apple.lsd.appremoval" clientUUID:@"com.apple.lsd.appremoval" localizedClientDescription:&stru_1EEF65710 localizedWarningMessage:0 outRestrictionChanged:&v23 + 1 outEffectiveSettingsChanged:&v23 outError:&v22];
+  v14 = [_MCProfileConnection applyRestrictionDictionary:v11 clientType:@"com.apple.lsd.appremoval" clientUUID:@"com.apple.lsd.appremoval" localizedClientDescription:&stru_1EEF65710 localizedWarningMessage:0 outRestrictionChanged:&v23 + 1 outEffectiveSettingsChanged:&v23 outError:&v22];
   v15 = v22;
 
   v16 = _LSDefaultLog();
@@ -965,70 +965,70 @@ void __73__LSApplicationRestrictionsManager__pruneObsoleteTrustedSignerIdentitie
   return v14;
 }
 
-- (BOOL)isApplicationRestricted:(uint64_t)a3 checkFlags:(void *)a4 stateProvider:
+- (BOOL)isApplicationRestricted:(uint64_t)restricted checkFlags:(void *)flags stateProvider:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
+  flagsCopy = flags;
+  v9 = flagsCopy;
   v10 = 0;
-  if (a1 && (a3 & 0x40000000000) == 0)
+  if (self && (restricted & 0x40000000000) == 0)
   {
-    v10 = computeApplicationRestrictionReasonWithMCStateProvider(v8, v7, 1) != 0;
+    v10 = computeApplicationRestrictionReasonWithMCStateProvider(flagsCopy, v7, 1) != 0;
   }
 
   return v10;
 }
 
-- (uint64_t)reasonForApplicationRestriction:(uint64_t)a3 checkFlags:(void *)a4 stateProvider:
+- (uint64_t)reasonForApplicationRestriction:(uint64_t)restriction checkFlags:(void *)flags stateProvider:
 {
-  if (!a1 || (a3 & 0x40000000000) != 0)
+  if (!self || (restriction & 0x40000000000) != 0)
   {
     return 0;
   }
 
   else
   {
-    return computeApplicationRestrictionReasonWithMCStateProvider(a4, a2, 1);
+    return computeApplicationRestrictionReasonWithMCStateProvider(flags, a2, 1);
   }
 }
 
 - (id)allowlistedBundleIDs
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([(LSApplicationRestrictionsManager *)a1 isAllowlistEnabled])
+    selfCopy = self;
+    if ([(LSApplicationRestrictionsManager *)self isAllowlistEnabled])
     {
       OUTLINED_FUNCTION_1_5();
       v5 = 3221225472;
       v6 = __56__LSApplicationRestrictionsManager_allowlistedBundleIDs__block_invoke;
       v7 = &unk_1E6A19590;
-      v8 = v2;
-      a1 = _LSLazyLoadObjectWithLock(v2 + 7, v2 + 2, v4);
+      v8 = selfCopy;
+      self = _LSLazyLoadObjectWithLock(selfCopy + 7, selfCopy + 2, v4);
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)isOpenInRestrictionInEffect
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 _MCProfileConnection];
-  v2 = [v1 isOpenInRestrictionInEffect];
+  _MCProfileConnection = [self _MCProfileConnection];
+  isOpenInRestrictionInEffect = [_MCProfileConnection isOpenInRestrictionInEffect];
 
-  if (v2)
+  if (isOpenInRestrictionInEffect)
   {
     return 1;
   }
@@ -1041,75 +1041,75 @@ void __73__LSApplicationRestrictionsManager__pruneObsoleteTrustedSignerIdentitie
   v4 = CFPreferencesCopyValue(@"LSPretendOpenInRestrictionInEffect", *MEMORY[0x1E695E890], *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)locked_setAllowlistedBundleIDs:(uint64_t)a1
+- (void)locked_setAllowlistedBundleIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner((a1 + 8));
+    os_unfair_lock_assert_owner((ds + 8));
     v4 = [v3 copy];
 
-    v5 = *(a1 + 56);
-    *(a1 + 56) = v4;
+    v5 = *(ds + 56);
+    *(ds + 56) = v4;
   }
 }
 
-- (void)locked_setRestrictedBundleIDs:(uint64_t)a1
+- (void)locked_setRestrictedBundleIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner((a1 + 8));
+    os_unfair_lock_assert_owner((ds + 8));
     v4 = [v3 copy];
 
-    v5 = *(a1 + 64);
-    *(a1 + 64) = v4;
+    v5 = *(ds + 64);
+    *(ds + 64) = v4;
   }
 }
 
 - (id)ratingRankExceptionBundleIDs
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_0_3();
     v6 = 3221225472;
     v7 = __64__LSApplicationRestrictionsManager_ratingRankExceptionBundleIDs__block_invoke;
     v8 = &unk_1E6A19590;
     v9 = v2;
-    a1 = _LSLazyLoadObjectWithLock((v2 + 80), v3 + 2, v5);
+    self = _LSLazyLoadObjectWithLock((v2 + 80), v3 + 2, v5);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)locked_setRatingRankExceptionBundleIDs:(uint64_t)a1
+- (void)locked_setRatingRankExceptionBundleIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner((a1 + 8));
+    os_unfair_lock_assert_owner((ds + 8));
     v4 = [v3 copy];
 
-    v5 = *(a1 + 80);
-    *(a1 + 80) = v4;
+    v5 = *(ds + 80);
+    *(ds + 80) = v4;
   }
 }
 
 - (void)scanForMissedNotificationsForImportantAppsIfNecessary
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_1_5();
     v3 = 3221225472;
@@ -1123,15 +1123,15 @@ void __73__LSApplicationRestrictionsManager__pruneObsoleteTrustedSignerIdentitie
   }
 }
 
-- (BOOL)isAppExtensionRestricted:(_BOOL8)a1
+- (BOOL)isAppExtensionRestricted:(_BOOL8)restricted
 {
   v3 = a2;
-  if (a1)
+  if (restricted)
   {
-    a1 = (ManagedConfigurationLibrary_frameworkLibrary || (ManagedConfigurationLibrary_frameworkLibrary = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/ManagedConfiguration", 2)) != 0) && _LSIsNewsWidgetBundleIdentifier(v3) && ![a1 isFeatureAllowed:getMCFeatureNewsTodayAllowed()];
+    restricted = (ManagedConfigurationLibrary_frameworkLibrary || (ManagedConfigurationLibrary_frameworkLibrary = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/ManagedConfiguration", 2)) != 0) && _LSIsNewsWidgetBundleIdentifier(v3) && ![restricted isFeatureAllowed:getMCFeatureNewsTodayAllowed()];
   }
 
-  return a1;
+  return restricted;
 }
 
 void __68__LSApplicationRestrictionsManager_handleMCEffectiveSettingsChanged__block_invoke_123(uint64_t a1)
@@ -1171,49 +1171,49 @@ void __50__LSApplicationRestrictionsManager_clearAllValues__block_invoke(uint64_
 
 - (void)schedulePruneObsoleteTrustedSignerIdentities
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 16));
+    dispatch_assert_queue_not_V2(*(self + 16));
     if ([__LSDefaultsGetSharedInstance() isServer])
     {
       v2 = dispatch_time(0, 1000000000);
-      v3 = *(a1 + 24);
+      v3 = *(self + 24);
 
       dispatch_source_set_timer(v3, v2, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     }
   }
 }
 
-- (void)setRemovedSystemApplicationIdentifiers:(void *)a1
+- (void)setRemovedSystemApplicationIdentifiers:(void *)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
     if (ManagedConfigurationLibrary_frameworkLibrary || (ManagedConfigurationLibrary_frameworkLibrary = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/ManagedConfiguration", 2)) != 0)
     {
-      [a1 _LSApplyRestrictedSet:v3 forRestriction:getMCFeatureRemovedSystemAppBundleIDs[0]()];
+      [identifiers _LSApplyRestrictedSet:v3 forRestriction:getMCFeatureRemovedSystemAppBundleIDs[0]()];
     }
   }
 }
 
 - (id)removedSystemApplicationIdentifiers
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 _MCProfileConnection];
-    v3 = [v2 removedSystemAppBundleIDs];
-    v1 = [v1 _LSResolveIdentifiers:v3];
+    _MCProfileConnection = [self _MCProfileConnection];
+    removedSystemAppBundleIDs = [_MCProfileConnection removedSystemAppBundleIDs];
+    selfCopy = [selfCopy _LSResolveIdentifiers:removedSystemAppBundleIDs];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (uint64_t)setApplication:(int)a3 removed:
+- (uint64_t)setApplication:(int)application removed:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_14;
   }
@@ -1223,17 +1223,17 @@ void __50__LSApplicationRestrictionsManager_clearAllValues__block_invoke(uint64_
     ManagedConfigurationLibrary_frameworkLibrary = dlopen("/System/Library/PrivateFrameworks/ManagedConfiguration.framework/ManagedConfiguration", 2);
     if (!ManagedConfigurationLibrary_frameworkLibrary)
     {
-      a1 = 0;
+      self = 0;
       goto LABEL_14;
     }
   }
 
-  v6 = [a1 _MCProfileConnection];
-  v7 = [v6 removedSystemAppBundleIDs];
-  v8 = [a1 _LSResolveIdentifiers:v7];
+  _MCProfileConnection = [self _MCProfileConnection];
+  removedSystemAppBundleIDs = [_MCProfileConnection removedSystemAppBundleIDs];
+  v8 = [self _LSResolveIdentifiers:removedSystemAppBundleIDs];
   v9 = [v8 mutableCopy];
 
-  if (a3)
+  if (application)
   {
     [v9 addObject:v5];
     v10 = _LSDefaultLog();
@@ -1260,14 +1260,14 @@ LABEL_9:
     }
   }
 
-  a1 = [a1 _LSApplyRestrictedSet:v9 forRestriction:getMCFeatureRemovedSystemAppBundleIDs[0]()];
-  if ((a1 & 1) == 0)
+  self = [self _LSApplyRestrictedSet:v9 forRestriction:getMCFeatureRemovedSystemAppBundleIDs[0]()];
+  if ((self & 1) == 0)
   {
     v12 = _LSDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = @"restore";
-      if (a3)
+      if (application)
       {
         v15 = @"remove";
       }
@@ -1282,40 +1282,40 @@ LABEL_9:
 
 LABEL_14:
   v13 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (BOOL)isRatingAllowed:(void *)a3 forBundleIdentifier:
+- (BOOL)isRatingAllowed:(void *)allowed forBundleIdentifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  allowedCopy = allowed;
+  if (self)
   {
-    v7 = [(LSApplicationRestrictionsManager *)a1 maximumRating];
-    a1 = !v7 || [v5 intValue] < 1 || (v8 = objc_msgSend(v5, "intValue"), v8 <= objc_msgSend(v7, "intValue")) || v6 && (-[LSApplicationRestrictionsManager ratingRankExceptionBundleIDs](a1), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", v6), v9, (v10 & 1) != 0);
+    maximumRating = [(LSApplicationRestrictionsManager *)self maximumRating];
+    self = !maximumRating || [v5 intValue] < 1 || (v8 = objc_msgSend(v5, "intValue"), v8 <= objc_msgSend(maximumRating, "intValue")) || allowedCopy && (-[LSApplicationRestrictionsManager ratingRankExceptionBundleIDs](self), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", allowedCopy), v9, (v10 & 1) != 0);
   }
 
-  return a1;
+  return self;
 }
 
-- (id)isApplicationRestricted:(id *)a1
+- (id)isApplicationRestricted:(id *)restricted
 {
-  if (a1)
+  if (restricted)
   {
-    return OUTLINED_FUNCTION_3_1(a1, a2);
+    return OUTLINED_FUNCTION_3_1(restricted, a2);
   }
 
-  return a1;
+  return restricted;
 }
 
-- (id)isApplicationRestricted:(uint64_t)a3 checkFlags:
+- (id)isApplicationRestricted:(uint64_t)restricted checkFlags:
 {
   if (result)
   {
     v4 = result;
     v5 = a2;
-    v6 = [(LSApplicationRestrictionsManager *)v4 defaultStateProvider];
-    v7 = [(LSApplicationRestrictionsManager *)v4 isApplicationRestricted:v5 checkFlags:a3 stateProvider:v6];
+    defaultStateProvider = [(LSApplicationRestrictionsManager *)v4 defaultStateProvider];
+    v7 = [(LSApplicationRestrictionsManager *)v4 isApplicationRestricted:v5 checkFlags:restricted stateProvider:defaultStateProvider];
 
     return v7;
   }
@@ -1323,48 +1323,48 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isApplicationRestricted:(int)a3 checkFeatureRestrictions:
+- (BOOL)isApplicationRestricted:(int)restricted checkFeatureRestrictions:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v5 = a2;
-  v6 = [(LSApplicationRestrictionsManager *)a1 defaultStateProvider];
-  v7 = computeApplicationRestrictionReasonWithMCStateProvider(v6, v5, a3);
+  defaultStateProvider = [(LSApplicationRestrictionsManager *)self defaultStateProvider];
+  v7 = computeApplicationRestrictionReasonWithMCStateProvider(defaultStateProvider, v5, restricted);
 
   v8 = v7 != 0;
   return v8;
 }
 
-- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(void *)a3 originatingAppBundleID:(uint64_t)a4 originatingAccountIsManaged:
+- (id)allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:(void *)ds originatingAppBundleID:(uint64_t)d originatingAccountIsManaged:
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v7 = a3;
+    dsCopy = ds;
     v8 = a2;
-    v9 = [v4 _MCProfileConnection];
-    v10 = [v9 allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:v8 originatingAppBundleID:v7 originatingAccountIsManaged:a4];
+    _MCProfileConnection = [selfCopy _MCProfileConnection];
+    v10 = [_MCProfileConnection allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:v8 originatingAppBundleID:dsCopy originatingAccountIsManaged:d];
 
     if (v10)
     {
-      v4 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+      selfCopy = [MEMORY[0x1E695DFD8] setWithArray:v10];
     }
 
     else
     {
-      v4 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)isAdTrackingEnabled
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1406,30 +1406,30 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)forceUpdateRestrictionKnowledgeWithError:(void *)a1
+- (BOOL)forceUpdateRestrictionKnowledgeWithError:(void *)error
 {
-  if (a1)
+  if (error)
   {
-    v2 = [a1 _MCRestrictionManager];
-    [v2 invalidateSettings];
+    _MCRestrictionManager = [error _MCRestrictionManager];
+    [_MCRestrictionManager invalidateSettings];
 
-    v3 = [a1 _MCRestrictionManager];
-    [v3 invalidateRestrictions];
+    _MCRestrictionManager2 = [error _MCRestrictionManager];
+    [_MCRestrictionManager2 invalidateRestrictions];
 
-    [a1 handleMCEffectiveSettingsChanged];
+    [error handleMCEffectiveSettingsChanged];
   }
 
-  return a1 != 0;
+  return error != 0;
 }
 
-- (void)willRestrictedStateOfBundleWithRatingRank:(unint64_t)a3 changeOnUpdateToRatingRank:
+- (void)willRestrictedStateOfBundleWithRatingRank:(unint64_t)rank changeOnUpdateToRatingRank:
 {
   if (result)
   {
-    v5 = [(LSApplicationRestrictionsManager *)result maximumRating];
-    v6 = [v5 unsignedLongLongValue];
+    maximumRating = [(LSApplicationRestrictionsManager *)result maximumRating];
+    unsignedLongLongValue = [maximumRating unsignedLongLongValue];
 
-    return ((v6 < a2) ^ (v6 < a3));
+    return ((unsignedLongLongValue < a2) ^ (unsignedLongLongValue < rank));
   }
 
   return result;
@@ -1437,8 +1437,8 @@ LABEL_14:
 
 - (void)systemMode
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"LSApplicationRestrictionsManager.m" lineNumber:660 description:@"Unable to access mannaged settings."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"LSApplicationRestrictionsManager.m" lineNumber:660 description:@"Unable to access mannaged settings."];
 }
 
 void __60__LSApplicationRestrictionsManager_beginListeningForChanges__block_invoke_cold_1(uint64_t a1, NSObject *a2)

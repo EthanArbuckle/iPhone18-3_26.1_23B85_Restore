@@ -1,5 +1,5 @@
 @interface MFUnsubscribeAndDeleteTriageInteraction
-+ (id)interactionWithMessageListItemSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 icloudMailCleanupService:(id)a6;
++ (id)interactionWithMessageListItemSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor icloudMailCleanupService:(id)service;
 + (id)log;
 - (id)shortTitle;
 - (id)title;
@@ -7,8 +7,8 @@
 - (id)unsubscribeAlertButtonText;
 - (id)unsubscribeAlertTitle;
 - (id)unsubscribeMessageAlertFormat;
-- (void)_dispatchInteractionWithCompletion:(id)a3;
-- (void)_showErrorAlert:(id)a3;
+- (void)_dispatchInteractionWithCompletion:(id)completion;
+- (void)_showErrorAlert:(id)alert;
 - (void)updateBlockRules;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_10022F550;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD718 != -1)
   {
     dispatch_once(&qword_1006DD718, block);
@@ -31,54 +31,54 @@
   return v2;
 }
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 icloudMailCleanupService:(id)a6
++ (id)interactionWithMessageListItemSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor icloudMailCleanupService:(id)service
 {
-  v10 = a3;
-  v11 = a6;
-  v49.receiver = a1;
+  selectionCopy = selection;
+  serviceCopy = service;
+  v49.receiver = self;
   v49.super_class = &OBJC_METACLASS___MFUnsubscribeAndDeleteTriageInteraction;
-  v44 = objc_msgSendSuper2(&v49, "interactionWithMessageListItemSelection:origin:actor:icloudMailCleanupService:", v10, a4, a5, v11);
-  v12 = [v10 messageListItems];
-  v13 = v12;
-  if (v12)
+  v44 = objc_msgSendSuper2(&v49, "interactionWithMessageListItemSelection:origin:actor:icloudMailCleanupService:", selectionCopy, origin, actor, serviceCopy);
+  messageListItems = [selectionCopy messageListItems];
+  v13 = messageListItems;
+  if (messageListItems)
   {
-    v14 = [v12 em_messageListItemTotalCount];
+    em_messageListItemTotalCount = [messageListItems em_messageListItemTotalCount];
     v15 = 0;
-    if (v11 && v14 == 1)
+    if (serviceCopy && em_messageListItemTotalCount == 1)
     {
-      v16 = [v13 firstObject];
-      v43 = [v16 senderList];
+      firstObject = [v13 firstObject];
+      senderList = [firstObject senderList];
 
-      if (v43 && [v43 count] == 1 && (objc_msgSend(v43, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "emailAddressValue"), v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v17, !v19))
+      if (senderList && [senderList count] == 1 && (objc_msgSend(senderList, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "emailAddressValue"), v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v17, !v19))
       {
-        v20 = [v43 firstObject];
-        v21 = [v20 emailAddressValue];
-        v22 = [v21 simpleAddress];
-        v23 = v22;
-        if (v22)
+        firstObject2 = [senderList firstObject];
+        emailAddressValue = [firstObject2 emailAddressValue];
+        simpleAddress = [emailAddressValue simpleAddress];
+        v23 = simpleAddress;
+        if (simpleAddress)
         {
-          v24 = v22;
+          stringValue = simpleAddress;
         }
 
         else
         {
-          v24 = [v20 stringValue];
+          stringValue = [firstObject2 stringValue];
         }
 
-        v30 = v24;
+        v30 = stringValue;
 
         [v44 setSender:v30];
-        v31 = [v44 sender];
-        [v44 setIsSenderAlreadyBlocked:{objc_msgSend(v11, "isSenderEmailAddressBlocked:", v31)}];
+        sender = [v44 sender];
+        [v44 setIsSenderAlreadyBlocked:{objc_msgSend(serviceCopy, "isSenderEmailAddressBlocked:", sender)}];
 
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v32 = [v13 firstObject];
-        v33 = [v32 mailboxes];
+        firstObject3 = [v13 firstObject];
+        mailboxes = [firstObject3 mailboxes];
 
-        v34 = [v33 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v34 = [mailboxes countByEnumeratingWithState:&v45 objects:v50 count:16];
         if (v34)
         {
           v35 = *v46;
@@ -88,25 +88,25 @@
             {
               if (*v46 != v35)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(mailboxes);
               }
 
               v37 = *(*(&v45 + 1) + 8 * i);
-              v38 = [v37 account];
-              v39 = [v38 supportsiCloudCleanup];
+              account = [v37 account];
+              supportsiCloudCleanup = [account supportsiCloudCleanup];
 
-              if (v39)
+              if (supportsiCloudCleanup)
               {
-                v40 = [v37 account];
-                v41 = [v40 identityEmailAddress];
-                v42 = [v41 stringValue];
-                [v44 setIdentityEmailAddress:v42];
+                account2 = [v37 account];
+                identityEmailAddress = [account2 identityEmailAddress];
+                stringValue2 = [identityEmailAddress stringValue];
+                [v44 setIdentityEmailAddress:stringValue2];
 
                 goto LABEL_28;
               }
             }
 
-            v34 = [v33 countByEnumeratingWithState:&v45 objects:v50 count:16];
+            v34 = [mailboxes countByEnumeratingWithState:&v45 objects:v50 count:16];
             if (v34)
             {
               continue;
@@ -126,9 +126,9 @@ LABEL_28:
         v25 = +[MFUnsubscribeAndDeleteTriageInteraction log];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v43 firstObject];
-          v27 = [v26 stringValue];
-          v28 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v27];
+          firstObject4 = [senderList firstObject];
+          stringValue3 = [firstObject4 stringValue];
+          v28 = [EFPrivacy fullyOrPartiallyRedactedStringForString:stringValue3];
           *buf = 138412290;
           v52 = v28;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Invalid email address for sender: %@", buf, 0xCu);
@@ -173,8 +173,8 @@ LABEL_28:
   else
   {
     v3 = _EFLocalizedStringFromTable();
-    v4 = [(MFUnsubscribeAndDeleteTriageInteraction *)self identityEmailAddress];
-    v5 = [NSString stringWithFormat:v3, v4];
+    identityEmailAddress = [(MFUnsubscribeAndDeleteTriageInteraction *)self identityEmailAddress];
+    v5 = [NSString stringWithFormat:v3, identityEmailAddress];
   }
 
   return v5;
@@ -204,7 +204,7 @@ LABEL_28:
   return v3;
 }
 
-- (void)_showErrorAlert:(id)a3
+- (void)_showErrorAlert:(id)alert
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -218,43 +218,43 @@ LABEL_28:
 - (void)updateBlockRules
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 getiCloudMailCleanupService];
+  getiCloudMailCleanupService = [v3 getiCloudMailCleanupService];
 
   if ([(MFUnsubscribeAndDeleteTriageInteraction *)self isSenderAlreadyBlocked])
   {
-    v5 = [(MFUnsubscribeTriageInteraction *)self sender];
+    sender = [(MFUnsubscribeTriageInteraction *)self sender];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100230268;
     v8[3] = &unk_10064D028;
     v8[4] = self;
-    [v4 unblockSenderWithSenderEmailAddress:v5 completionHandler:v8];
+    [getiCloudMailCleanupService unblockSenderWithSenderEmailAddress:sender completionHandler:v8];
   }
 
   else
   {
-    v5 = [(MFTriageInteraction *)self delegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    sender = [(MFTriageInteraction *)self delegate];
+    if (sender && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 dismissBannerForUnsubscribeAndDeleteTriageInteraction:self];
+      [sender dismissBannerForUnsubscribeAndDeleteTriageInteraction:self];
     }
 
-    v6 = [(MFUnsubscribeTriageInteraction *)self sender];
+    sender2 = [(MFUnsubscribeTriageInteraction *)self sender];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10023034C;
     v7[3] = &unk_10064D028;
     v7[4] = self;
-    [v4 blockSenderWithSenderEmailAddress:v6 entryPoint:@"/mail/message_detail/footer/context_menu" completionHandler:v7];
+    [getiCloudMailCleanupService blockSenderWithSenderEmailAddress:sender2 entryPoint:@"/mail/message_detail/footer/context_menu" completionHandler:v7];
   }
 }
 
-- (void)_dispatchInteractionWithCompletion:(id)a3
+- (void)_dispatchInteractionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5.receiver = self;
   v5.super_class = MFUnsubscribeAndDeleteTriageInteraction;
-  [(MFTriageInteraction *)&v5 _dispatchInteractionWithCompletion:v4];
+  [(MFTriageInteraction *)&v5 _dispatchInteractionWithCompletion:completionCopy];
   [(MFUnsubscribeAndDeleteTriageInteraction *)self updateBlockRules];
 }
 
@@ -264,8 +264,8 @@ LABEL_28:
   if (!triageAction)
   {
     v4 = [MSUnsubscribeTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:{-[MFTriageInteraction actor](self, "actor"), self}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:{-[MFTriageInteraction actor](self, "actor"), self}];
     v7 = self->_triageAction;
     self->_triageAction = v6;
 

@@ -1,9 +1,9 @@
 @interface GEORPImageUpdate
-+ (id)deleteImageUpdateWithImageId:(id)a3;
-+ (id)newImageUpdateWithClientImageId:(id)a3 responseData:(id)a4;
-+ (id)newImageUpdateWithImageId:(id)a3;
-+ (id)newImageUpdateWithImageId:(id)a3 photoMetadata:(id)a4;
-+ (id)unmodifiedImageUpdateWithImageId:(id)a3;
++ (id)deleteImageUpdateWithImageId:(id)id;
++ (id)newImageUpdateWithClientImageId:(id)id responseData:(id)data;
++ (id)newImageUpdateWithImageId:(id)id;
++ (id)newImageUpdateWithImageId:(id)id photoMetadata:(id)metadata;
++ (id)unmodifiedImageUpdateWithImageId:(id)id;
 - (NSUUID)comparisonIdentifier;
 @end
 
@@ -12,62 +12,62 @@
 - (NSUUID)comparisonIdentifier
 {
   v3 = [NSUUID alloc];
-  v4 = [(GEORPImageUpdate *)self photoMetadata];
-  v5 = [v4 clientImageUuid];
-  v6 = [v3 initWithUUIDString:v5];
+  photoMetadata = [(GEORPImageUpdate *)self photoMetadata];
+  clientImageUuid = [photoMetadata clientImageUuid];
+  v6 = [v3 initWithUUIDString:clientImageUuid];
 
   return v6;
 }
 
-+ (id)unmodifiedImageUpdateWithImageId:(id)a3
++ (id)unmodifiedImageUpdateWithImageId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc_init(GEORPImageUpdate);
   [v4 setAction:3];
-  [v4 setImageId:v3];
+  [v4 setImageId:idCopy];
 
   return v4;
 }
 
-+ (id)deleteImageUpdateWithImageId:(id)a3
++ (id)deleteImageUpdateWithImageId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc_init(GEORPImageUpdate);
   [v4 setAction:2];
-  [v4 setImageId:v3];
+  [v4 setImageId:idCopy];
 
   return v4;
 }
 
-+ (id)newImageUpdateWithClientImageId:(id)a3 responseData:(id)a4
++ (id)newImageUpdateWithClientImageId:(id)id responseData:(id)data
 {
-  v5 = a4;
-  v6 = a3;
+  dataCopy = data;
+  idCopy = id;
   v7 = [GEORPImageUpdate newImageUpdateWithImageId:0];
-  [v7 setUploadResponse:v5];
+  [v7 setUploadResponse:dataCopy];
 
   v8 = objc_alloc_init(GEORPPhotoMetadata);
-  [v8 setClientImageUuid:v6];
+  [v8 setClientImageUuid:idCopy];
 
   [v7 setPhotoMetadata:v8];
   return v7;
 }
 
-+ (id)newImageUpdateWithImageId:(id)a3 photoMetadata:(id)a4
++ (id)newImageUpdateWithImageId:(id)id photoMetadata:(id)metadata
 {
-  v5 = a4;
-  v6 = [GEORPImageUpdate newImageUpdateWithImageId:a3];
-  [v6 setPhotoMetadata:v5];
+  metadataCopy = metadata;
+  v6 = [GEORPImageUpdate newImageUpdateWithImageId:id];
+  [v6 setPhotoMetadata:metadataCopy];
 
   return v6;
 }
 
-+ (id)newImageUpdateWithImageId:(id)a3
++ (id)newImageUpdateWithImageId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc_init(GEORPImageUpdate);
   [v4 setAction:1];
-  [v4 setImageId:v3];
+  [v4 setImageId:idCopy];
 
   return v4;
 }

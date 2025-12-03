@@ -1,62 +1,62 @@
 @interface CRLiOSMultipaneSegmentedControl
 - (BOOL)isBackdropHidden;
-- (BOOL)isEnabledForSegmentAtIndex:(unint64_t)a3;
-- (CRLiOSMultipaneSegmentedControl)initWithItems:(id)a3;
+- (BOOL)isEnabledForSegmentAtIndex:(unint64_t)index;
+- (CRLiOSMultipaneSegmentedControl)initWithItems:(id)items;
 - (NSDictionary)defaultDisabledTitleAttributes;
 - (NSDictionary)defaultNormalTitleAttributes;
 - (NSDictionary)defaultSelectedTitleAttributes;
 - (UIEdgeInsets)defaultEdgeInsets;
-- (UIEdgeInsets)edgeInsetsForSegmentAtIndex:(unint64_t)a3;
+- (UIEdgeInsets)edgeInsetsForSegmentAtIndex:(unint64_t)index;
 - (double)p_fontSize;
-- (double)widthForSegmentAtIndex:(unint64_t)a3;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
-- (id)effectiveTitleAttributesForState:(unint64_t)a3;
-- (id)imageForSegmentAtIndex:(unint64_t)a3;
-- (id)p_attributedStringForTitle:(id)a3 forState:(unint64_t)a4;
+- (double)widthForSegmentAtIndex:(unint64_t)index;
+- (id)accessibilityElementAtIndex:(int64_t)index;
+- (id)effectiveTitleAttributesForState:(unint64_t)state;
+- (id)imageForSegmentAtIndex:(unint64_t)index;
+- (id)p_attributedStringForTitle:(id)title forState:(unint64_t)state;
 - (id)p_newButton;
-- (id)p_segmentForButton:(id)a3;
+- (id)p_segmentForButton:(id)button;
 - (id)p_viewControllerForPresentingAccessibilityHUD;
-- (id)titleForSegmentAtIndex:(unint64_t)a3;
-- (id)titleTextAttributesForState:(unint64_t)a3;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (id)titleForSegmentAtIndex:(unint64_t)index;
+- (id)titleTextAttributesForState:(unint64_t)state;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (void)dealloc;
-- (void)insertSegmentWithImage:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)insertSegmentWithTitle:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)p_buttonTouchCancel:(id)a3;
-- (void)p_buttonTouchDown:(id)a3;
-- (void)p_buttonTouchUpInside:(id)a3;
-- (void)p_buttonTouchUpOutside:(id)a3;
-- (void)p_insertSegment:(id)a3 atIndex:(unint64_t)a4;
+- (void)insertSegmentWithImage:(id)image atIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)insertSegmentWithTitle:(id)title atIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)p_buttonTouchCancel:(id)cancel;
+- (void)p_buttonTouchDown:(id)down;
+- (void)p_buttonTouchUpInside:(id)inside;
+- (void)p_buttonTouchUpOutside:(id)outside;
+- (void)p_insertSegment:(id)segment atIndex:(unint64_t)index;
 - (void)p_removeAllConstraints;
-- (void)p_setSelectedSegmentIndex:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5;
+- (void)p_setSelectedSegmentIndex:(int64_t)index animated:(BOOL)animated notify:(BOOL)notify;
 - (void)p_updateAllButtons;
 - (void)p_updateBackgroundImagesForAllButtons;
-- (void)p_updateBackgroundImagesForButton:(id)a3;
-- (void)p_updateButtonForSegment:(id)a3;
+- (void)p_updateBackgroundImagesForButton:(id)button;
+- (void)p_updateButtonForSegment:(id)segment;
 - (void)p_updateConstraintsHugging;
 - (void)p_updateConstraintsNormal;
 - (void)removeAllSegments;
-- (void)removeSegmentAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setAllEdgeInsets:(UIEdgeInsets)a3;
-- (void)setBackdropHidden:(BOOL)a3;
-- (void)setButtonHighlightedColorPreset:(int64_t)a3;
-- (void)setButtonSelectedColorPreset:(int64_t)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)setEnabled:(BOOL)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)setImage:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)setSegmentHuggingEnabled:(BOOL)a3;
-- (void)setTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)setWidth:(double)a3 forSegmentAtIndex:(unint64_t)a4;
+- (void)removeSegmentAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setAllEdgeInsets:(UIEdgeInsets)insets;
+- (void)setBackdropHidden:(BOOL)hidden;
+- (void)setButtonHighlightedColorPreset:(int64_t)preset;
+- (void)setButtonSelectedColorPreset:(int64_t)preset;
+- (void)setEdgeInsets:(UIEdgeInsets)insets forSegmentAtIndex:(unint64_t)index;
+- (void)setEnabled:(BOOL)enabled forSegmentAtIndex:(unint64_t)index;
+- (void)setImage:(id)image forSegmentAtIndex:(unint64_t)index;
+- (void)setSegmentHuggingEnabled:(BOOL)enabled;
+- (void)setTitle:(id)title forSegmentAtIndex:(unint64_t)index;
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)setWidth:(double)width forSegmentAtIndex:(unint64_t)index;
 - (void)tintColorDidChange;
 - (void)updateConstraints;
 @end
 
 @implementation CRLiOSMultipaneSegmentedControl
 
-- (CRLiOSMultipaneSegmentedControl)initWithItems:(id)a3
+- (CRLiOSMultipaneSegmentedControl)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v37.receiver = self;
   v37.super_class = CRLiOSMultipaneSegmentedControl;
   v5 = [(CRLiOSMultipaneSegmentedControl *)&v37 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -74,24 +74,24 @@
 
     [*(v5 + 14) setTranslatesAutoresizingMaskIntoConstraints:0];
     [v5 addSubview:*(v5 + 14)];
-    v10 = [*(v5 + 14) leadingAnchor];
-    v11 = [v5 leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [*(v5 + 14) leadingAnchor];
+    leadingAnchor2 = [v5 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v12 setActive:1];
 
-    v13 = [*(v5 + 14) trailingAnchor];
-    v14 = [v5 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [*(v5 + 14) trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v15 setActive:1];
 
-    v16 = [*(v5 + 14) topAnchor];
-    v17 = [v5 topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    topAnchor = [*(v5 + 14) topAnchor];
+    topAnchor2 = [v5 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v18 setActive:1];
 
-    v19 = [*(v5 + 14) bottomAnchor];
-    v20 = [v5 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    bottomAnchor = [*(v5 + 14) bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v21 setActive:1];
 
     v5[9] = 1;
@@ -102,8 +102,8 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v32 = v4;
-    v22 = v4;
+    v32 = itemsCopy;
+    v22 = itemsCopy;
     v23 = [v22 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v23)
     {
@@ -140,7 +140,7 @@
     v30 = +[NSNotificationCenter defaultCenter];
     [v30 addObserver:v5 selector:"p_updateBackgroundImagesForAllButtons" name:UIAccessibilityDarkerSystemColorsStatusDidChangeNotification object:0];
 
-    v4 = v32;
+    itemsCopy = v32;
   }
 
   return v5;
@@ -158,44 +158,44 @@
 
 - (BOOL)isBackdropHidden
 {
-  v2 = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
-  v3 = [v2 isHidden];
+  backdropView = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
+  isHidden = [backdropView isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setBackdropHidden:(BOOL)a3
+- (void)setBackdropHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  backdropView = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
+  [backdropView setHidden:hiddenCopy];
 }
 
-- (void)setSegmentHuggingEnabled:(BOOL)a3
+- (void)setSegmentHuggingEnabled:(BOOL)enabled
 {
-  if (self->_segmentHuggingEnabled != a3)
+  if (self->_segmentHuggingEnabled != enabled)
   {
-    self->_segmentHuggingEnabled = a3;
+    self->_segmentHuggingEnabled = enabled;
     self->_needsRemoveAllConstraints = 1;
     [(CRLiOSMultipaneSegmentedControl *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)insertSegmentWithTitle:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertSegmentWithTitle:(id)title atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v7 = [CRLiOSMultipaneSegmentedControlSegment segmentWithString:a3 edgeInsets:a4, a5, self->_defaultEdgeInsets.top, self->_defaultEdgeInsets.left, self->_defaultEdgeInsets.bottom, self->_defaultEdgeInsets.right];
-  [(CRLiOSMultipaneSegmentedControl *)self p_insertSegment:v7 atIndex:a4];
+  v7 = [CRLiOSMultipaneSegmentedControlSegment segmentWithString:title edgeInsets:index, animated, self->_defaultEdgeInsets.top, self->_defaultEdgeInsets.left, self->_defaultEdgeInsets.bottom, self->_defaultEdgeInsets.right];
+  [(CRLiOSMultipaneSegmentedControl *)self p_insertSegment:v7 atIndex:index];
 }
 
-- (void)insertSegmentWithImage:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertSegmentWithImage:(id)image atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v7 = [CRLiOSMultipaneSegmentedControlSegment segmentWithImage:a3 edgeInsets:a4, a5, self->_defaultEdgeInsets.top, self->_defaultEdgeInsets.left, self->_defaultEdgeInsets.bottom, self->_defaultEdgeInsets.right];
-  [(CRLiOSMultipaneSegmentedControl *)self p_insertSegment:v7 atIndex:a4];
+  v7 = [CRLiOSMultipaneSegmentedControlSegment segmentWithImage:image edgeInsets:index, animated, self->_defaultEdgeInsets.top, self->_defaultEdgeInsets.left, self->_defaultEdgeInsets.bottom, self->_defaultEdgeInsets.right];
+  [(CRLiOSMultipaneSegmentedControl *)self p_insertSegment:v7 atIndex:index];
 }
 
-- (void)removeSegmentAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)removeSegmentAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if ([(NSMutableArray *)self->_segments count:a3]<= a3)
+  if ([(NSMutableArray *)self->_segments count:index]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -221,16 +221,16 @@
 
     v11 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl removeSegmentAtIndex:animated:]"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:259 isFatal:0 description:"Tried to remove out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:259 isFatal:0 description:"Tried to remove out of bounds segment index: %lu", index];
   }
 
   else
   {
-    v13 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-    v6 = [v13 button];
-    [v6 removeFromSuperview];
+    v13 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    button = [v13 button];
+    [button removeFromSuperview];
 
-    [(NSMutableArray *)self->_segments removeObjectAtIndex:a3];
+    [(NSMutableArray *)self->_segments removeObjectAtIndex:index];
     if ([(NSMutableArray *)self->_segments count])
     {
       selectedSegmentIndex = self->_selectedSegmentIndex;
@@ -273,10 +273,10 @@
   }
 }
 
-- (void)setTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setTitle:(id)title forSegmentAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->_segments count]<= a4)
+  titleCopy = title;
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -302,23 +302,23 @@
 
     v9 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl setTitle:forSegmentAtIndex:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:287 isFatal:0 description:"Tried to set title for out of bounds segment index: %lu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:287 isFatal:0 description:"Tried to set title for out of bounds segment index: %lu", index];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-    [v7 setTitle:v6];
-    [v7 setAccessibilityLabel:v6];
+    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    [v7 setTitle:titleCopy];
+    [v7 setAccessibilityLabel:titleCopy];
     self->_needsUpdateTitles = 1;
     [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:v7];
     self->_needsUpdateTitles = 0;
   }
 }
 
-- (id)titleForSegmentAtIndex:(unint64_t)a3
+- (id)titleForSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -344,24 +344,24 @@
 
     v8 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl titleForSegmentAtIndex:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:302 isFatal:0 description:"Tried to get title for out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:302 isFatal:0 description:"Tried to get title for out of bounds segment index: %lu", index];
 
-    v6 = 0;
+    title = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-    v6 = [v5 title];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    title = [v5 title];
   }
 
-  return v6;
+  return title;
 }
 
-- (void)setImage:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setImage:(id)image forSegmentAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->_segments count]<= a4)
+  imageCopy = image;
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -387,20 +387,20 @@
 
     v9 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl setImage:forSegmentAtIndex:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:311 isFatal:0 description:"Tried to set image for out of bounds segment index: %lu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:311 isFatal:0 description:"Tried to set image for out of bounds segment index: %lu", index];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-    [v7 setImage:v6];
+    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    [v7 setImage:imageCopy];
     [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:v7];
   }
 }
 
-- (id)imageForSegmentAtIndex:(unint64_t)a3
+- (id)imageForSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -426,23 +426,23 @@
 
     v8 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl imageForSegmentAtIndex:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:323 isFatal:0 description:"Tried to get image for out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:323 isFatal:0 description:"Tried to get image for out of bounds segment index: %lu", index];
 
-    v6 = 0;
+    image = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-    v6 = [v5 image];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    image = [v5 image];
   }
 
-  return v6;
+  return image;
 }
 
-- (void)setWidth:(double)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setWidth:(double)width forSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a4)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -468,21 +468,21 @@
 
     v9 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl setWidth:forSegmentAtIndex:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:332 isFatal:0 description:"Tried to set width of bounds segment index: %lu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:332 isFatal:0 description:"Tried to set width of bounds segment index: %lu", index];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-    [v7 setWidth:a3];
+    v7 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    [v7 setWidth:width];
 
     [(CRLiOSMultipaneSegmentedControl *)self setNeedsUpdateConstraints];
   }
 }
 
-- (double)widthForSegmentAtIndex:(unint64_t)a3
+- (double)widthForSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -508,14 +508,14 @@
 
     v10 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl widthForSegmentAtIndex:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:343 isFatal:0 description:"Tried to get width for out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:343 isFatal:0 description:"Tried to get width for out of bounds segment index: %lu", index];
 
     return 0.0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
     [v5 width];
     v7 = v6;
 
@@ -523,13 +523,13 @@
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setEdgeInsets:(UIEdgeInsets)insets forSegmentAtIndex:(unint64_t)index
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  if ([(NSMutableArray *)self->_segments count]<= a4)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -555,20 +555,20 @@
 
     v11 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl setEdgeInsets:forSegmentAtIndex:]"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:352 isFatal:0 description:"Tried to set edge insets for out of bounds segment index: %lu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:352 isFatal:0 description:"Tried to set edge insets for out of bounds segment index: %lu", index];
   }
 
   else
   {
-    v13 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
+    v13 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
     [v13 setEdgeInsets:{top, left, bottom, right}];
     [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:v13];
   }
 }
 
-- (UIEdgeInsets)edgeInsetsForSegmentAtIndex:(unint64_t)a3
+- (UIEdgeInsets)edgeInsetsForSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -594,7 +594,7 @@
 
     v15 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl edgeInsetsForSegmentAtIndex:]"];
     v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:364 isFatal:0 description:"Tried to get edge insets for out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:364 isFatal:0 description:"Tried to get edge insets for out of bounds segment index: %lu", index];
 
     top = UIEdgeInsetsZero.top;
     left = UIEdgeInsetsZero.left;
@@ -604,7 +604,7 @@
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
     [v5 edgeInsets];
     top = v6;
     left = v8;
@@ -623,12 +623,12 @@
   return result;
 }
 
-- (void)setAllEdgeInsets:(UIEdgeInsets)a3
+- (void)setAllEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ([(NSMutableArray *)self->_segments count])
   {
     v8 = 0;
@@ -650,10 +650,10 @@
   self->_defaultEdgeInsets.right = right;
 }
 
-- (void)setEnabled:(BOOL)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setEnabled:(BOOL)enabled forSegmentAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([(NSMutableArray *)self->_segments count]<= a4)
+  enabledCopy = enabled;
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -679,20 +679,20 @@
 
     v8 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl setEnabled:forSegmentAtIndex:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:384 isFatal:0 description:"Tried to set enabled state for out of bounds segment index: %lu", a4];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:384 isFatal:0 description:"Tried to set enabled state for out of bounds segment index: %lu", index];
   }
 
   else
   {
-    v10 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a4];
-    [v10 setEnabled:v5];
+    v10 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    [v10 setEnabled:enabledCopy];
     [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:v10];
   }
 }
 
-- (BOOL)isEnabledForSegmentAtIndex:(unint64_t)a3
+- (BOOL)isEnabledForSegmentAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_segments count]<= a3)
+  if ([(NSMutableArray *)self->_segments count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -718,100 +718,100 @@
 
     v9 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl isEnabledForSegmentAtIndex:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:396 isFatal:0 description:"Tried to get enabled state for out of bounds segment index: %lu", a3];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:396 isFatal:0 description:"Tried to get enabled state for out of bounds segment index: %lu", index];
 
     return 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-    v6 = [v5 isEnabled];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    isEnabled = [v5 isEnabled];
 
-    return v6;
+    return isEnabled;
   }
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 > 1)
+  attributesCopy = attributes;
+  v7 = attributesCopy;
+  if (state > 1)
   {
-    if (a4 == 2)
+    if (state == 2)
     {
-      [(CRLiOSMultipaneSegmentedControl *)self setOverrideDisabledTitleAttributes:v6];
+      [(CRLiOSMultipaneSegmentedControl *)self setOverrideDisabledTitleAttributes:attributesCopy];
     }
 
-    else if (a4 == 4)
+    else if (state == 4)
     {
-      [(CRLiOSMultipaneSegmentedControl *)self setOverrideSelectedTitleAttributes:v6];
+      [(CRLiOSMultipaneSegmentedControl *)self setOverrideSelectedTitleAttributes:attributesCopy];
     }
   }
 
-  else if (a4)
+  else if (state)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
-      [(CRLiOSMultipaneSegmentedControl *)self setOverrideHighlightedTitleAttributes:v6];
+      [(CRLiOSMultipaneSegmentedControl *)self setOverrideHighlightedTitleAttributes:attributesCopy];
     }
   }
 
   else
   {
-    [(CRLiOSMultipaneSegmentedControl *)self setOverrideNormalTitleAttributes:v6];
+    [(CRLiOSMultipaneSegmentedControl *)self setOverrideNormalTitleAttributes:attributesCopy];
   }
 
   self->_needsUpdateTitles = 1;
   [(CRLiOSMultipaneSegmentedControl *)self p_updateAllButtons];
 }
 
-- (id)titleTextAttributesForState:(unint64_t)a3
+- (id)titleTextAttributesForState:(unint64_t)state
 {
-  v4 = 0;
-  if (a3 > 1)
+  overrideDisabledTitleAttributes = 0;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      v4 = [(CRLiOSMultipaneSegmentedControl *)self overrideDisabledTitleAttributes];
+      overrideDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self overrideDisabledTitleAttributes];
     }
 
-    else if (a3 == 4)
+    else if (state == 4)
     {
-      v4 = [(CRLiOSMultipaneSegmentedControl *)self overrideSelectedTitleAttributes];
+      overrideDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self overrideSelectedTitleAttributes];
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v4 = [(CRLiOSMultipaneSegmentedControl *)self overrideHighlightedTitleAttributes];
+      overrideDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self overrideHighlightedTitleAttributes];
     }
   }
 
   else
   {
-    v4 = [(CRLiOSMultipaneSegmentedControl *)self overrideNormalTitleAttributes];
+    overrideDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self overrideNormalTitleAttributes];
   }
 
-  return v4;
+  return overrideDisabledTitleAttributes;
 }
 
-- (void)setButtonHighlightedColorPreset:(int64_t)a3
+- (void)setButtonHighlightedColorPreset:(int64_t)preset
 {
-  if (self->_buttonHighlightedColorPreset != a3)
+  if (self->_buttonHighlightedColorPreset != preset)
   {
-    self->_buttonHighlightedColorPreset = a3;
+    self->_buttonHighlightedColorPreset = preset;
     [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForAllButtons];
   }
 }
 
-- (void)setButtonSelectedColorPreset:(int64_t)a3
+- (void)setButtonSelectedColorPreset:(int64_t)preset
 {
-  if (self->_buttonSelectedColorPreset != a3)
+  if (self->_buttonSelectedColorPreset != preset)
   {
-    self->_buttonSelectedColorPreset = a3;
+    self->_buttonSelectedColorPreset = preset;
     [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForAllButtons];
   }
 }
@@ -851,30 +851,30 @@
       v7 = v6;
       v15 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:v5];
 
-      v8 = [v15 button];
+      button = [v15 button];
       LODWORD(v9) = 1132068864;
-      [v8 setContentHuggingPriority:0 forAxis:v9];
+      [button setContentHuggingPriority:0 forAxis:v9];
 
-      v10 = [v15 leadingConstraint];
-      [v10 setActive:0];
+      leadingConstraint = [v15 leadingConstraint];
+      [leadingConstraint setActive:0];
 
       [v15 setLeadingConstraint:0];
-      v11 = [v15 trailingConstraint];
-      [v11 setActive:0];
+      trailingConstraint = [v15 trailingConstraint];
+      [trailingConstraint setActive:0];
 
       [v15 setTrailingConstraint:0];
-      v12 = [v15 widthConstraint];
-      [v12 setActive:0];
+      widthConstraint = [v15 widthConstraint];
+      [widthConstraint setActive:0];
 
       [v15 setWidthConstraint:0];
-      v13 = [v15 equalWidthConstraint];
-      [v13 setActive:0];
+      equalWidthConstraint = [v15 equalWidthConstraint];
+      [equalWidthConstraint setActive:0];
 
       [v15 setEqualWidthConstraint:0];
       [v15 setPreviousTrailingAnchor:0];
       [v15 setDistanceToPreviousTrailingAnchor:0];
-      v14 = [v15 distanceBetweenPreviousAndNextSegmentConstraint];
-      [v14 setActive:0];
+      distanceBetweenPreviousAndNextSegmentConstraint = [v15 distanceBetweenPreviousAndNextSegmentConstraint];
+      [distanceBetweenPreviousAndNextSegmentConstraint setActive:0];
 
       [v15 setDistanceBetweenPreviousAndNextSegmentConstraint:0];
       v6 = v15;
@@ -897,132 +897,132 @@
     {
       v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:i];
 
-      v7 = [v6 button];
+      button = [v6 button];
       [v6 width];
       v9 = v8;
-      v10 = [v6 leadingConstraint];
-      v11 = v10;
+      leadingConstraint = [v6 leadingConstraint];
+      v11 = leadingConstraint;
       if (i)
       {
-        if (v10)
+        if (leadingConstraint)
         {
-          v12 = [v6 leadingConstraint];
-          v13 = [v12 secondItem];
-          v14 = [v66 button];
-          v15 = [v14 trailingAnchor];
+          leadingConstraint2 = [v6 leadingConstraint];
+          secondItem = [leadingConstraint2 secondItem];
+          button2 = [v66 button];
+          trailingAnchor = [button2 trailingAnchor];
 
-          if (v13 != v15)
+          if (secondItem != trailingAnchor)
           {
-            v16 = [v6 leadingConstraint];
-            [v16 setActive:0];
+            leadingConstraint3 = [v6 leadingConstraint];
+            [leadingConstraint3 setActive:0];
 
             [v6 setLeadingConstraint:0];
           }
         }
 
-        v17 = [v6 leadingConstraint];
+        leadingConstraint4 = [v6 leadingConstraint];
 
-        if (!v17)
+        if (!leadingConstraint4)
         {
-          v18 = [v7 leadingAnchor];
-          v19 = [v66 button];
-          v20 = [v19 trailingAnchor];
-          v21 = [v18 constraintEqualToAnchor:v20];
+          leadingAnchor = [button leadingAnchor];
+          button3 = [v66 button];
+          trailingAnchor2 = [button3 trailingAnchor];
+          v21 = [leadingAnchor constraintEqualToAnchor:trailingAnchor2];
           [v6 setLeadingConstraint:v21];
 
 LABEL_14:
-          v27 = [v6 leadingConstraint];
+          leadingConstraint5 = [v6 leadingConstraint];
           LODWORD(v28) = 1148846080;
-          [v27 setPriority:v28];
+          [leadingConstraint5 setPriority:v28];
 
-          v29 = [v6 leadingConstraint];
-          [v29 setActive:1];
+          leadingConstraint6 = [v6 leadingConstraint];
+          [leadingConstraint6 setActive:1];
         }
       }
 
       else
       {
-        if (v10)
+        if (leadingConstraint)
         {
-          v22 = [v6 leadingConstraint];
-          v23 = [v22 secondItem];
-          v24 = [(CRLiOSMultipaneSegmentedControl *)self leadingAnchor];
+          leadingConstraint7 = [v6 leadingConstraint];
+          secondItem2 = [leadingConstraint7 secondItem];
+          leadingAnchor2 = [(CRLiOSMultipaneSegmentedControl *)self leadingAnchor];
 
-          if (v23 != v24)
+          if (secondItem2 != leadingAnchor2)
           {
-            v25 = [v6 leadingConstraint];
-            [v25 setActive:0];
+            leadingConstraint8 = [v6 leadingConstraint];
+            [leadingConstraint8 setActive:0];
 
             [v6 setLeadingConstraint:0];
           }
         }
 
-        v26 = [v6 leadingConstraint];
+        leadingConstraint9 = [v6 leadingConstraint];
 
-        if (!v26)
+        if (!leadingConstraint9)
         {
-          v18 = [v7 leadingAnchor];
-          v19 = [(CRLiOSMultipaneSegmentedControl *)self leadingAnchor];
-          v20 = [v18 constraintEqualToAnchor:v19];
-          [v6 setLeadingConstraint:v20];
+          leadingAnchor = [button leadingAnchor];
+          button3 = [(CRLiOSMultipaneSegmentedControl *)self leadingAnchor];
+          trailingAnchor2 = [leadingAnchor constraintEqualToAnchor:button3];
+          [v6 setLeadingConstraint:trailingAnchor2];
           goto LABEL_14;
         }
       }
 
-      v30 = [v6 trailingConstraint];
+      trailingConstraint = [v6 trailingConstraint];
 
       if (v3 == 1)
       {
-        if (!v30)
+        if (!trailingConstraint)
         {
-          v31 = [v7 trailingAnchor];
-          v32 = [(CRLiOSMultipaneSegmentedControl *)self trailingAnchor];
-          v33 = [v31 constraintEqualToAnchor:v32];
+          trailingAnchor3 = [button trailingAnchor];
+          trailingAnchor4 = [(CRLiOSMultipaneSegmentedControl *)self trailingAnchor];
+          v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
           [v6 setTrailingConstraint:v33];
 
-          v34 = [v6 trailingConstraint];
+          trailingConstraint2 = [v6 trailingConstraint];
           LODWORD(v35) = 1148846080;
-          [v34 setPriority:v35];
+          [trailingConstraint2 setPriority:v35];
 
-          v36 = [v6 trailingConstraint];
-          [v36 setActive:1];
+          trailingConstraint3 = [v6 trailingConstraint];
+          [trailingConstraint3 setActive:1];
         }
       }
 
-      else if (v30)
+      else if (trailingConstraint)
       {
-        v37 = [v6 trailingConstraint];
-        [v37 setActive:0];
+        trailingConstraint4 = [v6 trailingConstraint];
+        [trailingConstraint4 setActive:0];
 
         [v6 setTrailingConstraint:0];
       }
 
-      v38 = [v6 equalWidthConstraint];
+      equalWidthConstraint = [v6 equalWidthConstraint];
 
-      v39 = [v6 widthConstraint];
+      widthConstraint = [v6 widthConstraint];
 
       if (v9 == 0.0)
       {
-        if (v39)
+        if (widthConstraint)
         {
-          v40 = [v6 widthConstraint];
-          [v40 setActive:0];
+          widthConstraint2 = [v6 widthConstraint];
+          [widthConstraint2 setActive:0];
 
           [v6 setWidthConstraint:0];
         }
 
-        if (v38)
+        if (equalWidthConstraint)
         {
-          v41 = [v6 equalWidthConstraint];
-          v42 = [v41 firstItem];
-          v43 = [v4 button];
-          v44 = [v43 widthAnchor];
-          v45 = v42 == v44;
+          equalWidthConstraint2 = [v6 equalWidthConstraint];
+          firstItem = [equalWidthConstraint2 firstItem];
+          button4 = [v4 button];
+          widthAnchor = [button4 widthAnchor];
+          v45 = firstItem == widthAnchor;
 
-          if (v4 && v42 == v44 || ([v6 equalWidthConstraint], v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "setActive:", 0), v46, objc_msgSend(v6, "setEqualWidthConstraint:", 0), !v4))
+          if (v4 && firstItem == widthAnchor || ([v6 equalWidthConstraint], v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "setActive:", 0), v46, objc_msgSend(v6, "setEqualWidthConstraint:", 0), !v4))
           {
 LABEL_36:
-            v52 = v66;
+            widthConstraint4 = v66;
             v66 = v4;
             v4 = v6;
             goto LABEL_37;
@@ -1040,55 +1040,55 @@ LABEL_36:
 
         if (!v45)
         {
-          v53 = [v4 button];
-          v54 = [v53 widthAnchor];
-          v55 = [v7 widthAnchor];
-          v56 = [v54 constraintEqualToAnchor:v55];
+          button5 = [v4 button];
+          widthAnchor2 = [button5 widthAnchor];
+          widthAnchor3 = [button widthAnchor];
+          v56 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
           [v6 setEqualWidthConstraint:v56];
 
-          v57 = [v6 equalWidthConstraint];
+          equalWidthConstraint3 = [v6 equalWidthConstraint];
           LODWORD(v58) = 1148846080;
-          [v57 setPriority:v58];
+          [equalWidthConstraint3 setPriority:v58];
 
-          v59 = [v6 equalWidthConstraint];
-          [v59 setActive:1];
+          equalWidthConstraint4 = [v6 equalWidthConstraint];
+          [equalWidthConstraint4 setActive:1];
         }
 
         goto LABEL_36;
       }
 
-      if (v38)
+      if (equalWidthConstraint)
       {
-        v47 = [v6 equalWidthConstraint];
-        [v47 setActive:0];
+        equalWidthConstraint5 = [v6 equalWidthConstraint];
+        [equalWidthConstraint5 setActive:0];
 
         [v6 setEqualWidthConstraint:0];
       }
 
       v48 = fabs(v9);
-      if (!v39)
+      if (!widthConstraint)
       {
-        v61 = [v7 widthAnchor];
-        v62 = [v61 constraintEqualToConstant:v48];
+        widthAnchor4 = [button widthAnchor];
+        v62 = [widthAnchor4 constraintEqualToConstant:v48];
         [v6 setWidthConstraint:v62];
 
-        v63 = [v6 widthConstraint];
+        widthConstraint3 = [v6 widthConstraint];
         LODWORD(v64) = 1148829696;
-        [v63 setPriority:v64];
+        [widthConstraint3 setPriority:v64];
 
-        v52 = [v6 widthConstraint];
-        [v52 setActive:1];
+        widthConstraint4 = [v6 widthConstraint];
+        [widthConstraint4 setActive:1];
         goto LABEL_37;
       }
 
-      v49 = [v6 widthConstraint];
-      [v49 constant];
+      widthConstraint5 = [v6 widthConstraint];
+      [widthConstraint5 constant];
       v51 = v50;
 
       if (v51 != v48)
       {
-        v52 = [v6 widthConstraint];
-        [v52 setConstant:v48];
+        widthConstraint4 = [v6 widthConstraint];
+        [widthConstraint4 setConstant:v48];
 LABEL_37:
       }
 
@@ -1106,7 +1106,7 @@ LABEL_37:
 
 - (void)p_updateConstraintsHugging
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSMutableArray *)self->_segments count];
   if (v3)
   {
@@ -1114,12 +1114,12 @@ LABEL_37:
     v5 = 0;
     v6 = 0;
     v7 = 0;
-    v69 = v2;
+    v69 = selfCopy;
     while (1)
     {
-      v8 = [(NSMutableArray *)v2->_segments objectAtIndexedSubscript:v7];
+      v8 = [(NSMutableArray *)selfCopy->_segments objectAtIndexedSubscript:v7];
 
-      v9 = [v8 button];
+      button = [v8 button];
       if (v4 == 1)
       {
         v10 = 0;
@@ -1127,147 +1127,147 @@ LABEL_37:
 
       else
       {
-        v10 = [(NSMutableArray *)v2->_segments objectAtIndexedSubscript:v7 + 1];
+        v10 = [(NSMutableArray *)selfCopy->_segments objectAtIndexedSubscript:v7 + 1];
       }
 
       LODWORD(v11) = 1148846080;
-      [v9 setContentHuggingPriority:0 forAxis:v11];
+      [button setContentHuggingPriority:0 forAxis:v11];
       LODWORD(v12) = 1148829696;
-      [v9 setContentCompressionResistancePriority:0 forAxis:v12];
-      v13 = [v9 titleLabel];
-      [v13 setAdjustsFontSizeToFitWidth:1];
+      [button setContentCompressionResistancePriority:0 forAxis:v12];
+      titleLabel = [button titleLabel];
+      [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-      v14 = [v8 leadingConstraint];
-      v15 = v14;
+      leadingConstraint = [v8 leadingConstraint];
+      v15 = leadingConstraint;
       v70 = v10;
       if (v7)
       {
-        if (v14)
+        if (leadingConstraint)
         {
-          v16 = [v8 leadingConstraint];
-          v17 = [v16 secondItem];
-          v18 = [v5 button];
-          v19 = [v18 trailingAnchor];
+          leadingConstraint2 = [v8 leadingConstraint];
+          secondItem = [leadingConstraint2 secondItem];
+          button2 = [v5 button];
+          trailingAnchor = [button2 trailingAnchor];
 
-          v2 = v69;
-          v20 = v17 == v19;
+          selfCopy = v69;
+          v20 = secondItem == trailingAnchor;
           v10 = v70;
           if (!v20)
           {
-            v21 = [v8 leadingConstraint];
-            [v21 setActive:0];
+            leadingConstraint3 = [v8 leadingConstraint];
+            [leadingConstraint3 setActive:0];
 
             [v8 setLeadingConstraint:0];
           }
         }
 
-        v22 = [v8 leadingConstraint];
+        leadingConstraint4 = [v8 leadingConstraint];
 
-        if (!v22)
+        if (!leadingConstraint4)
         {
-          v23 = [v9 leadingAnchor];
-          v24 = [v5 button];
-          v25 = [v24 trailingAnchor];
-          v26 = [v23 constraintGreaterThanOrEqualToAnchor:v25];
+          leadingAnchor = [button leadingAnchor];
+          button3 = [v5 button];
+          trailingAnchor2 = [button3 trailingAnchor];
+          v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
           [v8 setLeadingConstraint:v26];
 
 LABEL_17:
-          v32 = [v8 leadingConstraint];
+          leadingConstraint5 = [v8 leadingConstraint];
           LODWORD(v33) = 1148846080;
-          [v32 setPriority:v33];
+          [leadingConstraint5 setPriority:v33];
 
-          v34 = [v8 leadingConstraint];
-          [v34 setActive:1];
+          leadingConstraint6 = [v8 leadingConstraint];
+          [leadingConstraint6 setActive:1];
 
-          v2 = v69;
+          selfCopy = v69;
           v10 = v70;
         }
       }
 
       else
       {
-        if (v14)
+        if (leadingConstraint)
         {
-          v27 = [v8 leadingConstraint];
-          v28 = [v27 secondItem];
-          v29 = [(CRLiOSMultipaneSegmentedControl *)v69 leadingAnchor];
+          leadingConstraint7 = [v8 leadingConstraint];
+          secondItem2 = [leadingConstraint7 secondItem];
+          leadingAnchor2 = [(CRLiOSMultipaneSegmentedControl *)v69 leadingAnchor];
 
           v10 = v70;
-          v20 = v28 == v29;
-          v2 = v69;
+          v20 = secondItem2 == leadingAnchor2;
+          selfCopy = v69;
           if (!v20)
           {
-            v30 = [v8 leadingConstraint];
-            [v30 setActive:0];
+            leadingConstraint8 = [v8 leadingConstraint];
+            [leadingConstraint8 setActive:0];
 
             [v8 setLeadingConstraint:0];
           }
         }
 
-        v31 = [v8 leadingConstraint];
+        leadingConstraint9 = [v8 leadingConstraint];
 
-        if (!v31)
+        if (!leadingConstraint9)
         {
-          v23 = [v9 leadingAnchor];
-          v24 = [(CRLiOSMultipaneSegmentedControl *)v2 leadingAnchor];
-          v25 = [v23 constraintEqualToAnchor:v24];
-          [v8 setLeadingConstraint:v25];
+          leadingAnchor = [button leadingAnchor];
+          button3 = [(CRLiOSMultipaneSegmentedControl *)selfCopy leadingAnchor];
+          trailingAnchor2 = [leadingAnchor constraintEqualToAnchor:button3];
+          [v8 setLeadingConstraint:trailingAnchor2];
           goto LABEL_17;
         }
       }
 
-      v35 = [v8 trailingConstraint];
+      trailingConstraint = [v8 trailingConstraint];
 
       if (v4 == 1)
       {
-        if (!v35)
+        if (!trailingConstraint)
         {
-          v36 = [v9 trailingAnchor];
-          v37 = [(CRLiOSMultipaneSegmentedControl *)v2 trailingAnchor];
-          v38 = [v36 constraintEqualToAnchor:v37];
+          trailingAnchor3 = [button trailingAnchor];
+          trailingAnchor4 = [(CRLiOSMultipaneSegmentedControl *)selfCopy trailingAnchor];
+          v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
           [v8 setTrailingConstraint:v38];
 
-          v39 = [v8 trailingConstraint];
+          trailingConstraint2 = [v8 trailingConstraint];
           LODWORD(v40) = 1148846080;
-          [v39 setPriority:v40];
+          [trailingConstraint2 setPriority:v40];
 
-          v41 = [v8 trailingConstraint];
-          [v41 setActive:1];
+          trailingConstraint3 = [v8 trailingConstraint];
+          [trailingConstraint3 setActive:1];
         }
       }
 
-      else if (v35)
+      else if (trailingConstraint)
       {
-        v42 = [v8 trailingConstraint];
-        [v42 setActive:0];
+        trailingConstraint4 = [v8 trailingConstraint];
+        [trailingConstraint4 setActive:0];
 
         [v8 setTrailingConstraint:0];
       }
 
       if (v5)
       {
-        v43 = [v8 previousTrailingAnchor];
-        if (!v43)
+        previousTrailingAnchor = [v8 previousTrailingAnchor];
+        if (!previousTrailingAnchor)
         {
           goto LABEL_27;
         }
 
-        v44 = v43;
-        v45 = [v5 button];
-        v46 = [v45 trailingAnchor];
+        trailingAnchor6 = previousTrailingAnchor;
+        button4 = [v5 button];
+        trailingAnchor5 = [button4 trailingAnchor];
 
-        if (v44 != v46)
+        if (trailingAnchor6 != trailingAnchor5)
         {
           [v8 setPreviousTrailingAnchor:0];
           [v8 setDistanceToPreviousTrailingAnchor:0];
 
 LABEL_27:
-          v47 = [v5 button];
-          v44 = [v47 trailingAnchor];
+          button5 = [v5 button];
+          trailingAnchor6 = [button5 trailingAnchor];
 
-          [v8 setPreviousTrailingAnchor:v44];
-          v48 = [v9 leadingAnchor];
-          v49 = [v44 anchorWithOffsetToAnchor:v48];
+          [v8 setPreviousTrailingAnchor:trailingAnchor6];
+          leadingAnchor3 = [button leadingAnchor];
+          v49 = [trailingAnchor6 anchorWithOffsetToAnchor:leadingAnchor3];
           [v8 setDistanceToPreviousTrailingAnchor:v49];
         }
 
@@ -1281,8 +1281,8 @@ LABEL_27:
 
       [v8 setPreviousTrailingAnchor:0];
       [v8 setDistanceToPreviousTrailingAnchor:0];
-      v66 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
-      [v66 setActive:0];
+      distanceBetweenPreviousAndNextSegmentConstraint = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
+      [distanceBetweenPreviousAndNextSegmentConstraint setActive:0];
 
       [v8 setDistanceBetweenPreviousAndNextSegmentConstraint:0];
       if (!v10)
@@ -1290,21 +1290,21 @@ LABEL_27:
 LABEL_40:
         [v8 setPreviousTrailingAnchor:0];
         [v8 setDistanceToPreviousTrailingAnchor:0];
-        v67 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
-        [v67 setActive:0];
+        distanceBetweenPreviousAndNextSegmentConstraint2 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
+        [distanceBetweenPreviousAndNextSegmentConstraint2 setActive:0];
 
         [v8 setDistanceBetweenPreviousAndNextSegmentConstraint:0];
         goto LABEL_41;
       }
 
 LABEL_29:
-      v50 = [v10 previousTrailingAnchor];
-      if (v50)
+      previousTrailingAnchor2 = [v10 previousTrailingAnchor];
+      if (previousTrailingAnchor2)
       {
-        v51 = v50;
-        v52 = [v9 trailingAnchor];
+        trailingAnchor8 = previousTrailingAnchor2;
+        trailingAnchor7 = [button trailingAnchor];
 
-        if (v51 == v52)
+        if (trailingAnchor8 == trailingAnchor7)
         {
           goto LABEL_33;
         }
@@ -1313,11 +1313,11 @@ LABEL_29:
         [v10 setDistanceToPreviousTrailingAnchor:0];
       }
 
-      v51 = [v9 trailingAnchor];
-      [v10 setPreviousTrailingAnchor:v51];
-      v53 = [v10 button];
-      v54 = [v53 leadingAnchor];
-      v55 = [v51 anchorWithOffsetToAnchor:v54];
+      trailingAnchor8 = [button trailingAnchor];
+      [v10 setPreviousTrailingAnchor:trailingAnchor8];
+      button6 = [v10 button];
+      leadingAnchor4 = [button6 leadingAnchor];
+      v55 = [trailingAnchor8 anchorWithOffsetToAnchor:leadingAnchor4];
       [v70 setDistanceToPreviousTrailingAnchor:v55];
 
       v10 = v70;
@@ -1325,40 +1325,40 @@ LABEL_33:
 
       if (v5)
       {
-        v56 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
-        if (!v56)
+        distanceBetweenPreviousAndNextSegmentConstraint3 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
+        if (!distanceBetweenPreviousAndNextSegmentConstraint3)
         {
           goto LABEL_38;
         }
 
-        v57 = v56;
-        v58 = [v56 firstItem];
-        v59 = [v8 distanceToPreviousTrailingAnchor];
-        v60 = v59;
-        if (v58 != v59)
+        v57 = distanceBetweenPreviousAndNextSegmentConstraint3;
+        firstItem = [distanceBetweenPreviousAndNextSegmentConstraint3 firstItem];
+        distanceToPreviousTrailingAnchor = [v8 distanceToPreviousTrailingAnchor];
+        v60 = distanceToPreviousTrailingAnchor;
+        if (firstItem != distanceToPreviousTrailingAnchor)
         {
-          v61 = [v57 secondItem];
-          v62 = [v70 distanceToPreviousTrailingAnchor];
+          secondItem3 = [v57 secondItem];
+          distanceToPreviousTrailingAnchor2 = [v70 distanceToPreviousTrailingAnchor];
 
-          if (v61 == v62)
+          if (secondItem3 == distanceToPreviousTrailingAnchor2)
           {
-            v2 = v69;
+            selfCopy = v69;
           }
 
           else
           {
             [v57 setActive:0];
 
-            v2 = v69;
+            selfCopy = v69;
             v10 = v70;
 LABEL_38:
-            v63 = [v8 distanceToPreviousTrailingAnchor];
-            v64 = [v10 distanceToPreviousTrailingAnchor];
-            v65 = [v63 constraintEqualToAnchor:v64];
+            distanceToPreviousTrailingAnchor3 = [v8 distanceToPreviousTrailingAnchor];
+            distanceToPreviousTrailingAnchor4 = [v10 distanceToPreviousTrailingAnchor];
+            v65 = [distanceToPreviousTrailingAnchor3 constraintEqualToAnchor:distanceToPreviousTrailingAnchor4];
             [v8 setDistanceBetweenPreviousAndNextSegmentConstraint:v65];
 
-            v58 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
-            [v58 setActive:1];
+            firstItem = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
+            [firstItem setActive:1];
             v57 = 0;
 LABEL_43:
           }
@@ -1367,13 +1367,13 @@ LABEL_43:
           goto LABEL_45;
         }
 
-        v2 = v69;
+        selfCopy = v69;
         goto LABEL_43;
       }
 
 LABEL_41:
-      v68 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
-      [v68 setActive:0];
+      distanceBetweenPreviousAndNextSegmentConstraint4 = [v8 distanceBetweenPreviousAndNextSegmentConstraint];
+      [distanceBetweenPreviousAndNextSegmentConstraint4 setActive:0];
 
       [v8 setDistanceBetweenPreviousAndNextSegmentConstraint:0];
 LABEL_45:
@@ -1415,10 +1415,10 @@ LABEL_45:
 - (double)p_fontSize
 {
   v2 = +[CRLLocale currentLocale];
-  v3 = [v2 locale];
-  v4 = [v3 languageCode];
+  locale = [v2 locale];
+  languageCode = [locale languageCode];
 
-  if ([v4 isEqualToString:@"en"])
+  if ([languageCode isEqualToString:@"en"])
   {
     v5 = 14.0;
   }
@@ -1437,8 +1437,8 @@ LABEL_45:
   if (!defaultNormalTitleAttributes)
   {
     v9[0] = NSForegroundColorAttributeName;
-    v4 = [(CRLiOSMultipaneSegmentedControl *)self tintColor];
-    v10[0] = v4;
+    tintColor = [(CRLiOSMultipaneSegmentedControl *)self tintColor];
+    v10[0] = tintColor;
     v9[1] = NSFontAttributeName;
     [(CRLiOSMultipaneSegmentedControl *)self p_fontSize];
     v5 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
@@ -1480,10 +1480,10 @@ LABEL_45:
   defaultDisabledTitleAttributes = self->_defaultDisabledTitleAttributes;
   if (!defaultDisabledTitleAttributes)
   {
-    v4 = [(CRLiOSMultipaneSegmentedControl *)self tintColor];
+    tintColor = [(CRLiOSMultipaneSegmentedControl *)self tintColor];
     v10 = 0.0;
     v11 = 0.0;
-    [v4 getWhite:&v11 alpha:&v10];
+    [tintColor getWhite:&v11 alpha:&v10];
     v5 = [UIColor colorWithWhite:v11 alpha:v10 * 0.35];
 
     v13[0] = v5;
@@ -1501,50 +1501,50 @@ LABEL_45:
   return defaultDisabledTitleAttributes;
 }
 
-- (id)effectiveTitleAttributesForState:(unint64_t)a3
+- (id)effectiveTitleAttributesForState:(unint64_t)state
 {
-  v5 = [(CRLiOSMultipaneSegmentedControl *)self titleTextAttributesForState:?];
-  if (!v5)
+  defaultDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self titleTextAttributesForState:?];
+  if (!defaultDisabledTitleAttributes)
   {
-    if (a3 > 1)
+    if (state > 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
-        v5 = [(CRLiOSMultipaneSegmentedControl *)self defaultDisabledTitleAttributes];
+        defaultDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self defaultDisabledTitleAttributes];
       }
 
-      else if (a3 == 4)
+      else if (state == 4)
       {
-        v5 = [(CRLiOSMultipaneSegmentedControl *)self defaultSelectedTitleAttributes];
+        defaultDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self defaultSelectedTitleAttributes];
       }
     }
 
-    else if (a3)
+    else if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
-        v5 = [(CRLiOSMultipaneSegmentedControl *)self defaultHighlightedTitleAttributes];
+        defaultDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self defaultHighlightedTitleAttributes];
       }
     }
 
     else
     {
-      v5 = [(CRLiOSMultipaneSegmentedControl *)self defaultNormalTitleAttributes];
+      defaultDisabledTitleAttributes = [(CRLiOSMultipaneSegmentedControl *)self defaultNormalTitleAttributes];
     }
   }
 
-  return v5;
+  return defaultDisabledTitleAttributes;
 }
 
-- (id)p_segmentForButton:(id)a3
+- (id)p_segmentForButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(CRLiOSMultipaneSegmentedControl *)self segments];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  segments = [(CRLiOSMultipaneSegmentedControl *)self segments];
+  v6 = [segments countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1555,20 +1555,20 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(segments);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [v10 button];
+      button = [v10 button];
 
-      if (v11 == v4)
+      if (button == buttonCopy)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [segments countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1623,24 +1623,24 @@ LABEL_20:
   return v12;
 }
 
-- (void)p_insertSegment:(id)a3 atIndex:(unint64_t)a4
+- (void)p_insertSegment:(id)segment atIndex:(unint64_t)index
 {
   segments = self->_segments;
-  v7 = a3;
+  segmentCopy = segment;
   v8 = [(NSMutableArray *)segments count];
-  if (v8 >= a4)
+  if (v8 >= index)
   {
-    v9 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v9 = v8;
+    indexCopy = v8;
   }
 
-  [(NSMutableArray *)self->_segments insertObject:v7 atIndex:v9];
+  [(NSMutableArray *)self->_segments insertObject:segmentCopy atIndex:indexCopy];
   self->_needsUpdateTitles = 1;
-  [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:v7];
+  [(CRLiOSMultipaneSegmentedControl *)self p_updateButtonForSegment:segmentCopy];
 
   self->_needsUpdateTitles = 0;
   self->_needsRemoveAllConstraints = 1;
@@ -1648,14 +1648,14 @@ LABEL_20:
   [(CRLiOSMultipaneSegmentedControl *)self setNeedsUpdateConstraints];
 }
 
-- (void)p_setSelectedSegmentIndex:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5
+- (void)p_setSelectedSegmentIndex:(int64_t)index animated:(BOOL)animated notify:(BOOL)notify
 {
-  if (self->_selectedSegmentIndex != a3)
+  if (self->_selectedSegmentIndex != index)
   {
-    v5 = a5;
-    v6 = a4;
+    notifyCopy = notify;
+    animatedCopy = animated;
     v9 = [(NSMutableArray *)self->_segments count];
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       v15 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1675,7 +1675,7 @@ LABEL_20:
         v23 = 1024;
         v24 = 901;
         v25 = 2048;
-        v26 = a3;
+        indexCopy = index;
         v27 = 2048;
         v28 = v9;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Selecting out of bounds segment in segmented control: %li (count: %li)", buf, 0x36u);
@@ -1694,17 +1694,17 @@ LABEL_20:
 
       v12 = [NSString stringWithUTF8String:"[CRLiOSMultipaneSegmentedControl p_setSelectedSegmentIndex:animated:notify:]"];
       v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Controls/CRLiOSMultipaneSegmentedControl.m"];
-      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:901 isFatal:0 description:"Selecting out of bounds segment in segmented control: %li (count: %li)", a3, v9];
+      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:901 isFatal:0 description:"Selecting out of bounds segment in segmented control: %li (count: %li)", index, v9];
     }
 
-    v14 = v9 - 1;
-    if (v9 - 1 >= a3)
+    indexCopy2 = v9 - 1;
+    if (v9 - 1 >= index)
     {
-      v14 = a3;
+      indexCopy2 = index;
     }
 
-    self->_selectedSegmentIndex = v14;
-    if (v6)
+    self->_selectedSegmentIndex = indexCopy2;
+    if (animatedCopy)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -1712,7 +1712,7 @@ LABEL_20:
       v16[3] = &unk_10183AB38;
       v16[4] = self;
       [UIView animateWithDuration:0 delay:v16 usingSpringWithDamping:0 initialSpringVelocity:0.2 options:0.0 animations:0.95 completion:0.0];
-      if (!v5)
+      if (!notifyCopy)
       {
         return;
       }
@@ -1722,7 +1722,7 @@ LABEL_20:
     {
       [(CRLiOSMultipaneSegmentedControl *)self p_updateAllButtons];
       [(CRLiOSMultipaneSegmentedControl *)self setNeedsUpdateConstraints];
-      if (!v5)
+      if (!notifyCopy)
       {
         return;
       }
@@ -1768,85 +1768,85 @@ LABEL_20:
   self->_needsUpdateTitles = 0;
 }
 
-- (void)p_updateButtonForSegment:(id)a3
+- (void)p_updateButtonForSegment:(id)segment
 {
-  v52 = a3;
-  v4 = [v52 button];
+  segmentCopy = segment;
+  button = [segmentCopy button];
   needsUpdateTitles = self->_needsUpdateTitles;
-  v6 = [(NSMutableArray *)self->_segments indexOfObject:v52];
-  if (!v4)
+  v6 = [(NSMutableArray *)self->_segments indexOfObject:segmentCopy];
+  if (!button)
   {
-    v4 = [(CRLiOSMultipaneSegmentedControl *)self p_newButton];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
-    [(CRLiOSMultipaneSegmentedControl *)self insertSubview:v4 aboveSubview:v7];
+    button = [(CRLiOSMultipaneSegmentedControl *)self p_newButton];
+    [button setTranslatesAutoresizingMaskIntoConstraints:0];
+    backdropView = [(CRLiOSMultipaneSegmentedControl *)self backdropView];
+    [(CRLiOSMultipaneSegmentedControl *)self insertSubview:button aboveSubview:backdropView];
 
-    v8 = [v4 titleLabel];
-    [v8 setMinimumScaleFactor:0.5];
+    titleLabel = [button titleLabel];
+    [titleLabel setMinimumScaleFactor:0.5];
 
     [(CRLiOSMultipaneSegmentedControl *)self edgeInsetsForSegmentAtIndex:v6];
-    [v4 setContentEdgeInsets:?];
+    [button setContentEdgeInsets:?];
     [(CRLiOSMultipaneSegmentedControl *)self edgeInsetsForSegmentAtIndex:v6];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v17 = objc_opt_class();
-    v18 = sub_100014370(v17, v4);
+    v18 = sub_100014370(v17, button);
     [v18 setInsets:{v10, v12, v14, v16}];
 
-    v19 = [v4 topAnchor];
-    v20 = [(CRLiOSMultipaneSegmentedControl *)self topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [button topAnchor];
+    topAnchor2 = [(CRLiOSMultipaneSegmentedControl *)self topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     needsUpdateTitles = 1;
     [v21 setActive:1];
 
-    v22 = [v4 bottomAnchor];
-    v23 = [(CRLiOSMultipaneSegmentedControl *)self bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [button bottomAnchor];
+    bottomAnchor2 = [(CRLiOSMultipaneSegmentedControl *)self bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v24 setActive:1];
 
-    [v4 addTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
-    [v4 addTarget:self action:"p_buttonTouchUpInside:" forControlEvents:64];
-    [v4 addTarget:self action:"p_buttonTouchUpOutside:" forControlEvents:128];
-    [v4 addTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
-    [v4 setShowsLargeContentViewer:1];
-    [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForButton:v4];
-    [v52 setButton:v4];
+    [button addTarget:self action:"p_buttonTouchDown:" forControlEvents:1];
+    [button addTarget:self action:"p_buttonTouchUpInside:" forControlEvents:64];
+    [button addTarget:self action:"p_buttonTouchUpOutside:" forControlEvents:128];
+    [button addTarget:self action:"p_buttonTouchCancel:" forControlEvents:256];
+    [button setShowsLargeContentViewer:1];
+    [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForButton:button];
+    [segmentCopy setButton:button];
   }
 
-  [v4 setSelected:v6 == self->_selectedSegmentIndex];
-  [v4 setEnabled:{objc_msgSend(v52, "isEnabled")}];
-  [v52 edgeInsets];
-  [v4 setContentEdgeInsets:?];
-  [v52 edgeInsets];
+  [button setSelected:v6 == self->_selectedSegmentIndex];
+  [button setEnabled:{objc_msgSend(segmentCopy, "isEnabled")}];
+  [segmentCopy edgeInsets];
+  [button setContentEdgeInsets:?];
+  [segmentCopy edgeInsets];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v33 = objc_opt_class();
-  v34 = sub_100014370(v33, v4);
+  v34 = sub_100014370(v33, button);
   [v34 setInsets:{v26, v28, v30, v32}];
 
-  if ([v52 type])
+  if ([segmentCopy type])
   {
-    [v4 setAttributedTitle:0 forState:0];
-    [v4 setAttributedTitle:0 forState:1];
-    [v4 setAttributedTitle:0 forState:4];
-    [v4 setAttributedTitle:0 forState:2];
-    v35 = [v52 image];
-    [v4 setImage:v35 forState:0];
+    [button setAttributedTitle:0 forState:0];
+    [button setAttributedTitle:0 forState:1];
+    [button setAttributedTitle:0 forState:4];
+    [button setAttributedTitle:0 forState:2];
+    image = [segmentCopy image];
+    [button setImage:image forState:0];
 
-    [v4 setAdjustsImageWhenHighlighted:1];
-    if ([v4 isEnabled])
+    [button setAdjustsImageWhenHighlighted:1];
+    if ([button isEnabled])
     {
-      if ([v4 isSelected])
+      if ([button isSelected])
       {
         v36 = [(CRLiOSMultipaneSegmentedControl *)self effectiveTitleAttributesForState:4];
         v37 = [v36 objectForKeyedSubscript:NSForegroundColorAttributeName];
-        [v4 setTintColor:v37];
+        [button setTintColor:v37];
 
-        v38 = v4;
+        v38 = button;
         v39 = 0;
       }
 
@@ -1854,9 +1854,9 @@ LABEL_20:
       {
         v44 = [(CRLiOSMultipaneSegmentedControl *)self effectiveTitleAttributesForState:0];
         v45 = [v44 objectForKeyedSubscript:NSForegroundColorAttributeName];
-        [v4 setTintColor:v45];
+        [button setTintColor:v45];
 
-        v38 = v4;
+        v38 = button;
         v39 = 1;
       }
 
@@ -1867,61 +1867,61 @@ LABEL_20:
     {
       v42 = [(CRLiOSMultipaneSegmentedControl *)self effectiveTitleAttributesForState:2];
       v43 = [v42 objectForKeyedSubscript:NSForegroundColorAttributeName];
-      [v4 setTintColor:v43];
+      [button setTintColor:v43];
     }
   }
 
   else
   {
-    [v4 setImage:0 forState:0];
+    [button setImage:0 forState:0];
     if (needsUpdateTitles)
     {
-      v40 = [v52 title];
-      if (v40)
+      title = [segmentCopy title];
+      if (title)
       {
-        v41 = [v52 title];
+        title2 = [segmentCopy title];
       }
 
       else
       {
-        v41 = &stru_1018BCA28;
+        title2 = &stru_1018BCA28;
       }
 
-      v46 = [v4 configuration];
-      [v46 setTitle:v41];
+      configuration = [button configuration];
+      [configuration setTitle:title2];
 
-      v47 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:v41 forState:0];
-      v48 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:v41 forState:1];
-      v49 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:v41 forState:4];
-      v50 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:v41 forState:2];
-      [v4 setAttributedTitle:v47 forState:0];
-      [v4 setAttributedTitle:v48 forState:1];
-      [v4 setAttributedTitle:v49 forState:4];
-      [v4 setAttributedTitle:v49 forState:5];
-      [v4 setAttributedTitle:v50 forState:2];
+      v47 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:title2 forState:0];
+      v48 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:title2 forState:1];
+      v49 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:title2 forState:4];
+      v50 = [(CRLiOSMultipaneSegmentedControl *)self p_attributedStringForTitle:title2 forState:2];
+      [button setAttributedTitle:v47 forState:0];
+      [button setAttributedTitle:v48 forState:1];
+      [button setAttributedTitle:v49 forState:4];
+      [button setAttributedTitle:v49 forState:5];
+      [button setAttributedTitle:v50 forState:2];
     }
   }
 
-  v51 = [v52 accessibilityLabel];
-  [v4 setAccessibilityLabel:v51];
+  accessibilityLabel = [segmentCopy accessibilityLabel];
+  [button setAccessibilityLabel:accessibilityLabel];
 }
 
-- (void)p_updateBackgroundImagesForButton:(id)a3
+- (void)p_updateBackgroundImagesForButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = +[CRLiOSVisualEffectHelper sharedHelper];
   buttonHighlightedColorPreset = self->_buttonHighlightedColorPreset;
-  v7 = [(CRLiOSMultipaneSegmentedControl *)self traitCollection];
-  v12 = [v5 resizableCornerImageWithRadius:5 corners:buttonHighlightedColorPreset colorPreset:v7 forTraitCollection:7.5];
+  traitCollection = [(CRLiOSMultipaneSegmentedControl *)self traitCollection];
+  v12 = [v5 resizableCornerImageWithRadius:5 corners:buttonHighlightedColorPreset colorPreset:traitCollection forTraitCollection:7.5];
 
   v8 = +[CRLiOSVisualEffectHelper sharedHelper];
   buttonSelectedColorPreset = self->_buttonSelectedColorPreset;
-  v10 = [(CRLiOSMultipaneSegmentedControl *)self traitCollection];
-  v11 = [v8 resizableCornerImageWithRadius:5 corners:buttonSelectedColorPreset colorPreset:v10 forTraitCollection:7.5];
+  traitCollection2 = [(CRLiOSMultipaneSegmentedControl *)self traitCollection];
+  v11 = [v8 resizableCornerImageWithRadius:5 corners:buttonSelectedColorPreset colorPreset:traitCollection2 forTraitCollection:7.5];
 
-  [v4 setBackgroundImage:v12 forState:1];
-  [v4 setBackgroundImage:v11 forState:4];
-  [v4 setBackgroundImage:v11 forState:5];
+  [buttonCopy setBackgroundImage:v12 forState:1];
+  [buttonCopy setBackgroundImage:v11 forState:4];
+  [buttonCopy setBackgroundImage:v11 forState:5];
 }
 
 - (void)p_updateBackgroundImagesForAllButtons
@@ -1933,34 +1933,34 @@ LABEL_20:
     for (i = 0; i != v4; ++i)
     {
       v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:i];
-      v7 = [v6 button];
-      [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForButton:v7];
+      button = [v6 button];
+      [(CRLiOSMultipaneSegmentedControl *)self p_updateBackgroundImagesForButton:button];
     }
   }
 }
 
-- (void)p_buttonTouchDown:(id)a3
+- (void)p_buttonTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   [(CRLiOSMultipaneSegmentedControl *)self sendActionsForControlEvents:1];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v7 = v4;
+    v7 = downCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [v5 applyTouchDownAnimationToViews:v6];
   }
 }
 
-- (void)p_buttonTouchUpInside:(id)a3
+- (void)p_buttonTouchUpInside:(id)inside
 {
-  v4 = a3;
+  insideCopy = inside;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v12 = v4;
+    v12 = insideCopy;
     v6 = [NSArray arrayWithObjects:&v12 count:1];
     [v5 applyTouchUpAnimationToViews:v6];
   }
@@ -1973,9 +1973,9 @@ LABEL_20:
     while (1)
     {
       v10 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:v9];
-      v11 = [v10 button];
+      button = [v10 button];
 
-      if (v11 == v4)
+      if (button == insideCopy)
       {
         break;
       }
@@ -1993,40 +1993,40 @@ LABEL_9:
   [(CRLiOSMultipaneSegmentedControl *)self sendActionsForControlEvents:64];
 }
 
-- (void)p_buttonTouchUpOutside:(id)a3
+- (void)p_buttonTouchUpOutside:(id)outside
 {
-  v4 = a3;
+  outsideCopy = outside;
   [(CRLiOSMultipaneSegmentedControl *)self sendActionsForControlEvents:128];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v7 = v4;
+    v7 = outsideCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [v5 applyTouchUpAnimationToViews:v6];
   }
 }
 
-- (void)p_buttonTouchCancel:(id)a3
+- (void)p_buttonTouchCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(CRLiOSMultipaneSegmentedControl *)self sendActionsForControlEvents:256];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v5 = +[CRLiOSVisualEffectHelper sharedHelper];
-    v7 = v4;
+    v7 = cancelCopy;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
     [v5 applyTouchUpAnimationToViews:v6];
   }
 }
 
-- (id)p_attributedStringForTitle:(id)a3 forState:(unint64_t)a4
+- (id)p_attributedStringForTitle:(id)title forState:(unint64_t)state
 {
-  v6 = a3;
+  titleCopy = title;
   v7 = [NSAttributedString alloc];
-  v8 = [(CRLiOSMultipaneSegmentedControl *)self effectiveTitleAttributesForState:a4];
-  v9 = [v7 initWithString:v6 attributes:v8];
+  v8 = [(CRLiOSMultipaneSegmentedControl *)self effectiveTitleAttributesForState:state];
+  v9 = [v7 initWithString:titleCopy attributes:v8];
 
   return v9;
 }
@@ -2038,9 +2038,9 @@ LABEL_9:
   return v2;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if ([(CRLiOSMultipaneSegmentedControl *)self numberOfSegments]< 1)
   {
 LABEL_5:
@@ -2053,9 +2053,9 @@ LABEL_5:
     while (1)
     {
       v6 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:v5];
-      v7 = [v6 button];
+      button = [v6 button];
 
-      if (v7 == v4)
+      if (button == elementCopy)
       {
         break;
       }
@@ -2070,26 +2070,26 @@ LABEL_5:
   return v5;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(CRLiOSMultipaneSegmentedControl *)self numberOfSegments]<= a3)
+  if (index < 0 || [(CRLiOSMultipaneSegmentedControl *)self numberOfSegments]<= index)
   {
-    v6 = 0;
+    button = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:a3];
-    v6 = [v5 button];
+    v5 = [(NSMutableArray *)self->_segments objectAtIndexedSubscript:index];
+    button = [v5 button];
   }
 
-  return v6;
+  return button;
 }
 
 - (id)p_viewControllerForPresentingAccessibilityHUD
 {
-  v2 = [(CRLiOSMultipaneSegmentedControl *)self nextResponder];
-  if (v2)
+  nextResponder = [(CRLiOSMultipaneSegmentedControl *)self nextResponder];
+  if (nextResponder)
   {
     do
     {
@@ -2099,40 +2099,40 @@ LABEL_5:
         break;
       }
 
-      v3 = [v2 nextResponder];
+      v2NextResponder = [nextResponder nextResponder];
 
-      v2 = v3;
+      nextResponder = v2NextResponder;
     }
 
-    while (v3);
+    while (v2NextResponder);
   }
 
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v2);
+  v5 = sub_100014370(v4, nextResponder);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    navigationController2 = v5;
 LABEL_8:
-    v8 = v6;
+    rootViewController = navigationController2;
     goto LABEL_9;
   }
 
-  v7 = [v5 navigationController];
+  navigationController = [v5 navigationController];
 
-  if (v7)
+  if (navigationController)
   {
-    v6 = [v5 navigationController];
+    navigationController2 = [v5 navigationController];
     goto LABEL_8;
   }
 
   v10 = +[UIApplication sharedApplication];
-  v11 = [v10 keyWindow];
-  v8 = [v11 rootViewController];
+  keyWindow = [v10 keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
 LABEL_9:
 
-  return v8;
+  return rootViewController;
 }
 
 - (UIEdgeInsets)defaultEdgeInsets

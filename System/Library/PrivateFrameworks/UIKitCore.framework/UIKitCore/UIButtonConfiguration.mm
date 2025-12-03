@@ -17,29 +17,29 @@
 + (id)tintedGlassButtonConfiguration;
 - (BOOL)_hasSymbolImage;
 - (BOOL)_isRoundButton;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (NSString)description;
-- (UIButtonConfiguration)initWithCoder:(id)a3;
+- (UIButtonConfiguration)initWithCoder:(id)coder;
 - (UIButtonConfiguration)updatedConfigurationForButton:(UIButton *)button;
 - (double)_resolvedIndicatorPadding;
-- (id)_initWithBehaviors:(id)a3;
+- (id)_initWithBehaviors:(id)behaviors;
 - (id)_resolvedIndicator;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)symbolStyleForSize:(int64_t)a3 hasText:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)symbolStyleForSize:(int64_t)size hasText:(BOOL)text;
 - (int64_t)_resolvedColorMaterialRenderingMode;
 - (int64_t)_resolvedMacIdiomStyle;
 - (int64_t)_resolvedMonochromaticTreatment;
 - (int64_t)_resolvedTitleAlignment;
 - (uint64_t)__updateDefaultButtonCornerRadiusIfNecessary;
 - (unint64_t)hash;
-- (void)_dci_setIndicator:(int64_t)a3;
-- (void)_resolveValuesWithButton:(id)a3;
-- (void)_setAllowGlassAdaptivity:(BOOL)a3;
-- (void)_setAlwaysApplyTitleAlignment:(BOOL)a3;
-- (void)_setSymbolContentTransition:(id)a3;
-- (void)_setSymbolContentTransitionOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_dci_setIndicator:(int64_t)indicator;
+- (void)_resolveValuesWithButton:(id)button;
+- (void)_setAllowGlassAdaptivity:(BOOL)adaptivity;
+- (void)_setAlwaysApplyTitleAlignment:(BOOL)alignment;
+- (void)_setSymbolContentTransition:(id)transition;
+- (void)_setSymbolContentTransitionOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAttributedSubtitle:(NSAttributedString *)attributedSubtitle;
 - (void)setAttributedTitle:(NSAttributedString *)attributedTitle;
 - (void)setAutomaticallyUpdateForSelection:(BOOL)automaticallyUpdateForSelection;
@@ -64,15 +64,15 @@
 
   else
   {
-    v3 = [(UIButtonConfiguration *)self _hasTitle];
-    v4 = [(UIButtonConfiguration *)self _hasSubtitle];
-    v5 = [(UIButtonConfiguration *)self _hasImage];
+    _hasTitle = [(UIButtonConfiguration *)self _hasTitle];
+    _hasSubtitle = [(UIButtonConfiguration *)self _hasSubtitle];
+    _hasImage = [(UIButtonConfiguration *)self _hasImage];
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
     flags = self->_flags;
     v9 = (flags >> 4) & 3;
-    if (v7 == 6)
+    if (userInterfaceIdiom == 6)
     {
       if (((flags >> 4) & 3) > 1)
       {
@@ -80,7 +80,7 @@
         {
           top = 12.0;
           leading = 24.0;
-          if (!v5 || v3 || v4)
+          if (!_hasImage || _hasTitle || _hasSubtitle)
           {
             trailing = 24.0;
           }
@@ -90,7 +90,7 @@
             trailing = 12.0;
           }
 
-          if (!v5 || v3 || v4)
+          if (!_hasImage || _hasTitle || _hasSubtitle)
           {
             bottom = 16.0;
           }
@@ -100,7 +100,7 @@
             bottom = 12.0;
           }
 
-          if (!v5 || v3 || v4)
+          if (!_hasImage || _hasTitle || _hasSubtitle)
           {
             top = 16.0;
           }
@@ -114,7 +114,7 @@
         else
         {
           bottom = 6.0;
-          if (!v5 || v3 || v4)
+          if (!_hasImage || _hasTitle || _hasSubtitle)
           {
             trailing = 12.0;
           }
@@ -133,7 +133,7 @@
       {
         top = 10.0;
         leading = 12.0;
-        if (!v5 || v3 || v4)
+        if (!_hasImage || _hasTitle || _hasSubtitle)
         {
           v12 = 20.0;
         }
@@ -143,7 +143,7 @@
           v12 = 10.0;
         }
 
-        if (!v5 || v3 || v4)
+        if (!_hasImage || _hasTitle || _hasSubtitle)
         {
           top = 12.0;
         }
@@ -268,9 +268,9 @@ LABEL_5:
 
 - (int64_t)_resolvedTitleAlignment
 {
-  v3 = [(UIButtonConfiguration *)self _hasTitle];
-  v4 = [(UIButtonConfiguration *)self _hasSubtitle];
-  if (!v3 && !v4)
+  _hasTitle = [(UIButtonConfiguration *)self _hasTitle];
+  _hasSubtitle = [(UIButtonConfiguration *)self _hasSubtitle];
+  if (!_hasTitle && !_hasSubtitle)
   {
     return 0;
   }
@@ -278,7 +278,7 @@ LABEL_5:
   flags = self->_flags;
   if (((*&flags >> 24) & 3) != 0)
   {
-    if (v3 && v4)
+    if (_hasTitle && _hasSubtitle)
     {
       v7 = (*&flags >> 24) & 3;
     }
@@ -301,7 +301,7 @@ LABEL_5:
 
   else
   {
-    if ((*&flags & 0x4000000) == 0 && (!v3 || !v4) || !self->_image)
+    if ((*&flags & 0x4000000) == 0 && (!_hasTitle || !_hasSubtitle) || !self->_image)
     {
       return 0;
     }
@@ -327,7 +327,7 @@ LABEL_5:
 
 + (UIButtonConfiguration)plainButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [_UIButtonConfigurationStyleBehaviors plainBehaviors:0];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -336,7 +336,7 @@ LABEL_5:
 
 + (UIButtonConfiguration)tintedButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors tintBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -345,7 +345,7 @@ LABEL_5:
 
 + (UIButtonConfiguration)filledButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors fillBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -354,7 +354,7 @@ LABEL_5:
 
 + (UIButtonConfiguration)borderlessButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [_UIButtonConfigurationStyleBehaviors plainBehaviors:1];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -374,7 +374,7 @@ LABEL_5:
 
 + (UIButtonConfiguration)grayButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors grayBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -388,8 +388,8 @@ LABEL_5:
   v3 = [(UIButtonConfiguration *)&v23 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors styleDescription];
-  [v4 appendFormat:@" baseStyle=%@", v5];
+  styleDescription = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors styleDescription];
+  [v4 appendFormat:@" baseStyle=%@", styleDescription];
 
   flags = self->_flags;
   if ((*&flags & 0xC) == 0)
@@ -418,8 +418,8 @@ LABEL_5:
   if ([(NSAttributedString *)self->_attributedTitle length])
   {
     attributedTitle = self->_attributedTitle;
-    v9 = [(NSAttributedString *)attributedTitle string];
-    [v4 appendFormat:@" title=<%p>:'%@'", attributedTitle, v9];
+    string = [(NSAttributedString *)attributedTitle string];
+    [v4 appendFormat:@" title=<%p>:'%@'", attributedTitle, string];
 
     if (self->_titleTextAttributesTransformer)
     {
@@ -430,8 +430,8 @@ LABEL_5:
   if ([(NSAttributedString *)self->_attributedSubtitle length])
   {
     attributedSubtitle = self->_attributedSubtitle;
-    v11 = [(NSAttributedString *)attributedSubtitle string];
-    [v4 appendFormat:@" subTitle=<%p>:'%@'", attributedSubtitle, v11];
+    string2 = [(NSAttributedString *)attributedSubtitle string];
+    [v4 appendFormat:@" subTitle=<%p>:'%@'", attributedSubtitle, string2];
 
     if (self->_subtitleTextAttributesTransformer)
     {
@@ -453,8 +453,8 @@ LABEL_5:
 
     v13 = objc_opt_class();
     image = self->_image;
-    v15 = [(UIImage *)image _identityDescription];
-    [v4 appendFormat:@" image%@=<%@:%p %@>", v12, v13, image, v15];
+    _identityDescription = [(UIImage *)image _identityDescription];
+    [v4 appendFormat:@" image%@=<%@:%p %@>", v12, v13, image, _identityDescription];
 
     if (self->_preferredSymbolConfigurationForImage)
     {
@@ -545,39 +545,39 @@ LABEL_31:
   return v4;
 }
 
-- (id)_initWithBehaviors:(id)a3
+- (id)_initWithBehaviors:(id)behaviors
 {
-  v5 = a3;
+  behaviorsCopy = behaviors;
   v17.receiver = self;
   v17.super_class = UIButtonConfiguration;
   v6 = [(UIButtonConfiguration *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_behaviors, a3);
+    objc_storeStrong(&v6->_behaviors, behaviors);
     v8 = +[UIBackgroundConfiguration clearConfiguration];
     background = v7->_background;
     v7->_background = v8;
 
-    v10 = [v5 cornerStyle];
+    cornerStyle = [behaviorsCopy cornerStyle];
     v11 = _UISolariumEnabled();
     v12 = 5.95;
-    if ((v11 & (v10 == 0)) != 0)
+    if ((v11 & (cornerStyle == 0)) != 0)
     {
       v12 = 17.0;
     }
 
     [(UIBackgroundConfiguration *)v7->_background _setCornerRadius:v12];
-    v7->_cornerStyle = v10;
+    v7->_cornerStyle = cornerStyle;
     v13 = +[UIColor clearColor];
     [(UIBackgroundConfiguration *)v7->_background setStrokeColor:v13];
 
     [(UIBackgroundConfiguration *)v7->_background setStrokeWidth:1.0];
     v7->_imagePlacement = 2;
     v7->_titlePadding = 1.0;
-    v14 = [v5 selectionStyle];
+    selectionStyle = [behaviorsCopy selectionStyle];
     v15 = 134348800;
-    if (v14 == -1)
+    if (selectionStyle == -1)
     {
       v15 = 0x8000000;
     }
@@ -591,16 +591,16 @@ LABEL_31:
 + (UIButtonConfiguration)borderedButtonConfiguration
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    [a1 filledButtonConfiguration];
+    [self filledButtonConfiguration];
   }
 
   else
   {
-    [a1 grayButtonConfiguration];
+    [self grayButtonConfiguration];
   }
   v5 = ;
 
@@ -609,7 +609,7 @@ LABEL_31:
 
 + (id)glassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors glassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -618,7 +618,7 @@ LABEL_31:
 
 + (id)clearGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors clearGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -627,7 +627,7 @@ LABEL_31:
 
 + (id)prominentGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors tintedGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -636,7 +636,7 @@ LABEL_31:
 
 + (id)prominentClearGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors prominentClearGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -645,7 +645,7 @@ LABEL_31:
 
 + (id)_avPlayerGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors avPlayerGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -654,7 +654,7 @@ LABEL_31:
 
 + (id)_posterSwitcherGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors posterSwitcherGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -663,7 +663,7 @@ LABEL_31:
 
 + (id)_homescreenCloseGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors homescreenCloseGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -672,7 +672,7 @@ LABEL_31:
 
 + (id)_controlCenterGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors controlCenterGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
@@ -681,54 +681,54 @@ LABEL_31:
 
 + (id)_emptyButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors emptyBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 
   return v4;
 }
 
-- (UIButtonConfiguration)initWithCoder:(id)a3
+- (UIButtonConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = UIButtonConfiguration;
   v5 = [(UIButtonConfiguration *)&v36 init];
   if (v5)
   {
-    v6 = +[_UIButtonConfigurationStyleBehaviors behaviorForStyle:](_UIButtonConfigurationStyleBehaviors, "behaviorForStyle:", [v4 decodeIntegerForKey:@"UIButtonConfigurationButtonStyle"]);
+    v6 = +[_UIButtonConfigurationStyleBehaviors behaviorForStyle:](_UIButtonConfigurationStyleBehaviors, "behaviorForStyle:", [coderCopy decodeIntegerForKey:@"UIButtonConfigurationButtonStyle"]);
     behaviors = v5->_behaviors;
     v5->_behaviors = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBackground"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBackground"];
     background = v5->_background;
     v5->_background = v8;
 
-    v5->_cornerStyle = [v4 decodeIntegerForKey:@"UIButtonConfigurationCornerStyle"];
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFFFCFLL | (16 * ([v4 decodeIntegerForKey:@"UIButtonConfigurationButtonSize"] & 3)));
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFFFF0 | [v4 decodeIntegerForKey:@"UIButtonConfigurationMacIdiomStyle"] & 0xF);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBaseBackgroundColor"];
+    v5->_cornerStyle = [coderCopy decodeIntegerForKey:@"UIButtonConfigurationCornerStyle"];
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFFFCFLL | (16 * ([coderCopy decodeIntegerForKey:@"UIButtonConfigurationButtonSize"] & 3)));
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFFFF0 | [coderCopy decodeIntegerForKey:@"UIButtonConfigurationMacIdiomStyle"] & 0xF);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBaseBackgroundColor"];
     baseBackgroundColor = v5->_baseBackgroundColor;
     v5->_baseBackgroundColor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBaseForegroundColor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationBaseForegroundColor"];
     baseForegroundColor = v5->_baseForegroundColor;
     v5->_baseForegroundColor = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationImage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationImage"];
     image = v5->_image;
     v5->_image = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationPreferredSymbolConfigurationForImage"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationPreferredSymbolConfigurationForImage"];
     preferredSymbolConfigurationForImage = v5->_preferredSymbolConfigurationForImage;
     v5->_preferredSymbolConfigurationForImage = v16;
 
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"UIButtonConfigurationSymbolContentTransition"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"UIButtonConfigurationSymbolContentTransition"];
     symbolContentTransition = v5->_symbolContentTransition;
     v5->_symbolContentTransition = v19;
 
-    v21 = [v4 decodeBoolForKey:@"UIButtonConfigurationShowsActivityIndicator"];
+    v21 = [coderCopy decodeBoolForKey:@"UIButtonConfigurationShowsActivityIndicator"];
     v22 = 64;
     if (!v21)
     {
@@ -736,19 +736,19 @@ LABEL_31:
     }
 
     v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFFFBFLL | v22);
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationTitle"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationTitle"];
     attributedTitle = v5->_attributedTitle;
     v5->_attributedTitle = v23;
 
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFC7FFLL | (([v4 decodeIntegerForKey:@"UIButtonConfigurationTitleLineBreakMode"] & 7) << 11));
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationSubtitle"];
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFFC7FFLL | (([coderCopy decodeIntegerForKey:@"UIButtonConfigurationTitleLineBreakMode"] & 7) << 11));
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIButtonConfigurationSubtitle"];
     attributedSubtitle = v5->_attributedSubtitle;
     v5->_attributedSubtitle = v25;
 
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFE3FFFLL | (([v4 decodeIntegerForKey:@"UIButtonConfigurationSubtitleLineBreakMode"] & 7) << 14));
-    if ([v4 containsValueForKey:@"UIButtonConfigurationContentInset"])
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFFE3FFFLL | (([coderCopy decodeIntegerForKey:@"UIButtonConfigurationSubtitleLineBreakMode"] & 7) << 14));
+    if ([coderCopy containsValueForKey:@"UIButtonConfigurationContentInset"])
     {
-      [v4 decodeDirectionalEdgeInsetsForKey:@"UIButtonConfigurationContentInset"];
+      [coderCopy decodeDirectionalEdgeInsetsForKey:@"UIButtonConfigurationContentInset"];
       v5->_contentInsets.top = v27;
       v5->_contentInsets.leading = v28;
       v5->_contentInsets.bottom = v29;
@@ -756,16 +756,16 @@ LABEL_31:
       *&v5->_flags |= 0x80uLL;
     }
 
-    v5->_imagePlacement = [v4 decodeIntegerForKey:@"UIButtonConfigurationImagePlacement"];
-    [v4 decodeFloatForKey:@"UIButtonConfigurationImagePadding"];
+    v5->_imagePlacement = [coderCopy decodeIntegerForKey:@"UIButtonConfigurationImagePlacement"];
+    [coderCopy decodeFloatForKey:@"UIButtonConfigurationImagePadding"];
     v5->_imagePadding = v31;
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFF3FFFFLL | (([v4 decodeIntegerForKey:@"UIButtonConfigurationIndicator"] & 3) << 18));
-    [v4 decodeFloatForKey:@"UIButtonConfigurationTitlePadding"];
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFFF3FFFFLL | (([coderCopy decodeIntegerForKey:@"UIButtonConfigurationIndicator"] & 3) << 18));
+    [coderCopy decodeFloatForKey:@"UIButtonConfigurationTitlePadding"];
     v5->_titlePadding = v32;
-    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFCFFFFFFLL | (([v4 decodeIntegerForKey:@"UIButtonConfigurationTitleAlignment"] & 3) << 24));
-    if ([v4 containsValueForKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"])
+    v5->_flags = (*&v5->_flags & 0xFFFFFFFFFCFFFFFFLL | (([coderCopy decodeIntegerForKey:@"UIButtonConfigurationTitleAlignment"] & 3) << 24));
+    if ([coderCopy containsValueForKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"])
     {
-      v33 = [v4 decodeBoolForKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"];
+      v33 = [coderCopy decodeBoolForKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"];
       v34 = 0x20000;
       if (!v33)
       {
@@ -784,73 +784,73 @@ LABEL_31:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeInteger:-[_UIButtonConfigurationStyleBehaviors style](self->_behaviors forKey:{"style"), @"UIButtonConfigurationButtonStyle"}];
-  [v11 encodeObject:self->_background forKey:@"UIButtonConfigurationBackground"];
-  [v11 encodeInteger:self->_cornerStyle forKey:@"UIButtonConfigurationCornerStyle"];
-  [v11 encodeInteger:(*&self->_flags >> 4) & 3 forKey:@"UIButtonConfigurationButtonSize"];
-  [v11 encodeInteger:*&self->_flags & 0xFLL forKey:@"UIButtonConfigurationMacIdiomStyle"];
-  [v11 encodeObject:self->_baseBackgroundColor forKey:@"UIButtonConfigurationBaseBackgroundColor"];
-  [v11 encodeObject:self->_baseForegroundColor forKey:@"UIButtonConfigurationBaseForegroundColor"];
-  [v11 encodeObject:self->_image forKey:@"UIButtonConfigurationImage"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[_UIButtonConfigurationStyleBehaviors style](self->_behaviors forKey:{"style"), @"UIButtonConfigurationButtonStyle"}];
+  [coderCopy encodeObject:self->_background forKey:@"UIButtonConfigurationBackground"];
+  [coderCopy encodeInteger:self->_cornerStyle forKey:@"UIButtonConfigurationCornerStyle"];
+  [coderCopy encodeInteger:(*&self->_flags >> 4) & 3 forKey:@"UIButtonConfigurationButtonSize"];
+  [coderCopy encodeInteger:*&self->_flags & 0xFLL forKey:@"UIButtonConfigurationMacIdiomStyle"];
+  [coderCopy encodeObject:self->_baseBackgroundColor forKey:@"UIButtonConfigurationBaseBackgroundColor"];
+  [coderCopy encodeObject:self->_baseForegroundColor forKey:@"UIButtonConfigurationBaseForegroundColor"];
+  [coderCopy encodeObject:self->_image forKey:@"UIButtonConfigurationImage"];
   v4 = (*&self->_flags >> 18) & 3;
   if (v4)
   {
-    [v11 encodeInteger:v4 forKey:@"UIButtonConfigurationIndicator"];
+    [coderCopy encodeInteger:v4 forKey:@"UIButtonConfigurationIndicator"];
   }
 
-  [v11 encodeObject:self->_preferredSymbolConfigurationForImage forKey:@"UIButtonConfigurationPreferredSymbolConfigurationForImage"];
-  [v11 encodeObject:self->_symbolContentTransition forKey:@"UIButtonConfigurationSymbolContentTransition"];
-  [v11 encodeBool:(*&self->_flags >> 6) & 1 forKey:@"UIButtonConfigurationShowsActivityIndicator"];
-  [v11 encodeObject:self->_attributedTitle forKey:@"UIButtonConfigurationTitle"];
+  [coderCopy encodeObject:self->_preferredSymbolConfigurationForImage forKey:@"UIButtonConfigurationPreferredSymbolConfigurationForImage"];
+  [coderCopy encodeObject:self->_symbolContentTransition forKey:@"UIButtonConfigurationSymbolContentTransition"];
+  [coderCopy encodeBool:(*&self->_flags >> 6) & 1 forKey:@"UIButtonConfigurationShowsActivityIndicator"];
+  [coderCopy encodeObject:self->_attributedTitle forKey:@"UIButtonConfigurationTitle"];
   v5 = (*&self->_flags >> 11) & 7;
   if (v5)
   {
-    [v11 encodeInteger:v5 forKey:@"UIButtonConfigurationTitleLineBreakMode"];
+    [coderCopy encodeInteger:v5 forKey:@"UIButtonConfigurationTitleLineBreakMode"];
   }
 
-  [v11 encodeObject:self->_attributedSubtitle forKey:@"UIButtonConfigurationSubtitle"];
+  [coderCopy encodeObject:self->_attributedSubtitle forKey:@"UIButtonConfigurationSubtitle"];
   flags = self->_flags;
   v7 = (*&flags >> 14) & 7;
   if (v7)
   {
-    [v11 encodeInteger:v7 forKey:@"UIButtonConfigurationSubtitleLineBreakMode"];
+    [coderCopy encodeInteger:v7 forKey:@"UIButtonConfigurationSubtitleLineBreakMode"];
     flags = self->_flags;
   }
 
   if ((*&flags & 0x80) != 0)
   {
-    [v11 encodeDirectionalEdgeInsets:@"UIButtonConfigurationContentInset" forKey:{self->_contentInsets.top, self->_contentInsets.leading, self->_contentInsets.bottom, self->_contentInsets.trailing}];
+    [coderCopy encodeDirectionalEdgeInsets:@"UIButtonConfigurationContentInset" forKey:{self->_contentInsets.top, self->_contentInsets.leading, self->_contentInsets.bottom, self->_contentInsets.trailing}];
   }
 
-  [v11 encodeInteger:self->_imagePlacement forKey:@"UIButtonConfigurationImagePlacement"];
+  [coderCopy encodeInteger:self->_imagePlacement forKey:@"UIButtonConfigurationImagePlacement"];
   imagePadding = self->_imagePadding;
   *&imagePadding = imagePadding;
-  [v11 encodeFloat:@"UIButtonConfigurationImagePadding" forKey:imagePadding];
+  [coderCopy encodeFloat:@"UIButtonConfigurationImagePadding" forKey:imagePadding];
   titlePadding = self->_titlePadding;
   *&titlePadding = titlePadding;
-  [v11 encodeFloat:@"UIButtonConfigurationTitlePadding" forKey:titlePadding];
-  [v11 encodeInteger:(*&self->_flags >> 24) & 3 forKey:@"UIButtonConfigurationTitleAlignment"];
+  [coderCopy encodeFloat:@"UIButtonConfigurationTitlePadding" forKey:titlePadding];
+  [coderCopy encodeInteger:(*&self->_flags >> 24) & 3 forKey:@"UIButtonConfigurationTitleAlignment"];
   v10 = self->_flags;
   if (((*&v10 & 0x20000) == 0) == ([(_UIButtonConfigurationStyleBehaviors *)self->_behaviors selectionStyle]!= -1))
   {
-    [v11 encodeBool:(*&self->_flags >> 17) & 1 forKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"];
+    [coderCopy encodeBool:(*&self->_flags >> 17) & 1 forKey:@"UIButtonConfigurationAutomaticallyUpdateForSelection"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   _UIButtonConfigurationCopy(v4, self, 1, 1);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_10;
@@ -863,7 +863,7 @@ LABEL_31:
     goto LABEL_10;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_behaviors != v5->_behaviors)
   {
@@ -1193,14 +1193,14 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)_dci_setIndicator:(int64_t)a3
+- (void)_dci_setIndicator:(int64_t)indicator
 {
-  if (a3 == 3)
+  if (indicator == 3)
   {
-    a3 = 1;
+    indicator = 1;
   }
 
-  [(UIButtonConfiguration *)self setIndicator:a3];
+  [(UIButtonConfiguration *)self setIndicator:indicator];
 }
 
 - (void)setAutomaticallyUpdateForSelection:(BOOL)automaticallyUpdateForSelection
@@ -1218,13 +1218,13 @@ LABEL_10:
   }
 }
 
-- (void)_setAllowGlassAdaptivity:(BOOL)a3
+- (void)_setAllowGlassAdaptivity:(BOOL)adaptivity
 {
   flags = self->_flags;
-  if (((*&flags >> 30) & 1) == a3)
+  if (((*&flags >> 30) & 1) == adaptivity)
   {
     v4 = 0x40000000;
-    if (a3)
+    if (adaptivity)
     {
       v4 = 0;
     }
@@ -1233,10 +1233,10 @@ LABEL_10:
   }
 }
 
-- (void)_setAlwaysApplyTitleAlignment:(BOOL)a3
+- (void)_setAlwaysApplyTitleAlignment:(BOOL)alignment
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!alignment)
   {
     v3 = 0;
   }
@@ -1244,11 +1244,11 @@ LABEL_10:
   self->_flags = (*&self->_flags & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (id)symbolStyleForSize:(int64_t)a3 hasText:(BOOL)a4
+- (id)symbolStyleForSize:(int64_t)size hasText:(BOOL)text
 {
-  if (a3 <= 1)
+  if (size <= 1)
   {
-    if (a3 == 1)
+    if (size == 1)
     {
       v4 = &UIFontTextStyleCallout;
       return *v4;
@@ -1259,19 +1259,19 @@ LABEL_9:
     return *v4;
   }
 
-  if (a3 == 2)
+  if (size == 2)
   {
     v4 = &UIFontTextStyleFootnote;
     return *v4;
   }
 
-  if (a3 != 3)
+  if (size != 3)
   {
     goto LABEL_9;
   }
 
   v4 = &UIFontTextStyleTitle1;
-  if (a4)
+  if (text)
   {
     v4 = &UIFontTextStyleTitle2;
   }
@@ -1279,16 +1279,16 @@ LABEL_9:
   return *v4;
 }
 
-- (void)_resolveValuesWithButton:(id)a3
+- (void)_resolveValuesWithButton:(id)button
 {
   v125 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _UIButtonStatesFromButton(v4);
-  v6 = [v4 role];
-  v7 = [v4 traitCollection];
-  v8 = [v4 traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = _UIContentSizeCategoryFromStringInternal(v9, buf);
+  buttonCopy = button;
+  v5 = _UIButtonStatesFromButton(buttonCopy);
+  role = [buttonCopy role];
+  traitCollection = [buttonCopy traitCollection];
+  traitCollection2 = [buttonCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  v10 = _UIContentSizeCategoryFromStringInternal(preferredContentSizeCategory, buf);
 
   if (v10 >= 65543)
   {
@@ -1298,7 +1298,7 @@ LABEL_9:
       if (os_log_type_enabled(v103, OS_LOG_TYPE_FAULT))
       {
         *buf = 134217984;
-        v122 = v10;
+        selfCopy2 = v10;
         _os_log_fault_impl(&dword_188A29000, v103, OS_LOG_TYPE_FAULT, "Unexpectedly large contentSizeCategory %lu while updating button configuration. The button this configuration is applied to will likely look wrong.", buf, 0xCu);
       }
     }
@@ -1309,7 +1309,7 @@ LABEL_9:
       if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v122 = v10;
+        selfCopy2 = v10;
         _os_log_impl(&dword_188A29000, v103, OS_LOG_TYPE_ERROR, "Unexpectedly large contentSizeCategory %lu while updating button configuration. The button this configuration is applied to will likely look wrong.", buf, 0xCu);
       }
     }
@@ -1323,11 +1323,11 @@ LABEL_9:
 
   self->_flags = (*&self->_flags & 0xFFFFFFFFFFFFF8FFLL | v11);
   v12 = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors behaviorForState:v5];
-  if (([v4 _wantsAccessibilityUnderline] & 1) == 0)
+  if (([buttonCopy _wantsAccessibilityUnderline] & 1) == 0)
   {
-    v13 = [v12 effectiveBehaviorWithoutButtonShapes];
+    effectiveBehaviorWithoutButtonShapes = [v12 effectiveBehaviorWithoutButtonShapes];
 
-    v12 = v13;
+    v12 = effectiveBehaviorWithoutButtonShapes;
   }
 
   image = self->_image;
@@ -1352,19 +1352,19 @@ LABEL_11:
 
   v16 = 1;
 LABEL_12:
-  v113 = [v12 effectiveForegroundColorFromBaseColor:self->_baseForegroundColor baseBackgroundColor:self->_baseBackgroundColor state:v5 traitCollection:v7];
-  v17 = [(UIButtonConfiguration *)self _hasTitle];
-  v18 = [(UIButtonConfiguration *)self _hasSubtitle];
-  v107 = [(UIButtonConfiguration *)self _hasImage];
+  v113 = [v12 effectiveForegroundColorFromBaseColor:self->_baseForegroundColor baseBackgroundColor:self->_baseBackgroundColor state:v5 traitCollection:traitCollection];
+  _hasTitle = [(UIButtonConfiguration *)self _hasTitle];
+  _hasSubtitle = [(UIButtonConfiguration *)self _hasSubtitle];
+  _hasImage = [(UIButtonConfiguration *)self _hasImage];
   flags = self->_flags;
   v110 = v5;
   if (((*&flags >> 18) & 3) == 0)
   {
-    if (_UIButtonCanInferIndicator() && [v4 _menuEnabled] && objc_msgSend(v4, "showsMenuAsPrimaryAction"))
+    if (_UIButtonCanInferIndicator() && [buttonCopy _menuEnabled] && objc_msgSend(buttonCopy, "showsMenuAsPrimaryAction"))
     {
-      v21 = [v4 changesSelectionAsPrimaryAction];
+      changesSelectionAsPrimaryAction = [buttonCopy changesSelectionAsPrimaryAction];
       v22 = *&self->_flags & 0xFFFFFFFFFF3FFFFFLL;
-      if (v21)
+      if (changesSelectionAsPrimaryAction)
       {
         v20 = (v22 | 0x800000);
         goto LABEL_21;
@@ -1383,10 +1383,10 @@ LABEL_12:
   v20 = (*&flags & 0xFFFFFFFFFF3FFFFFLL | (((*&flags >> 18) & 3) << 22));
 LABEL_21:
   self->_flags = v20;
-  v108 = v17;
-  v109 = v18;
-  v23 = v17 || v18;
-  if (!v17 && !v18 && (*&v20 & 0x40) == 0)
+  v108 = _hasTitle;
+  v109 = _hasSubtitle;
+  v23 = _hasTitle || _hasSubtitle;
+  if (!_hasTitle && !_hasSubtitle && (*&v20 & 0x40) == 0)
   {
     v24 = 0;
     v114 = 0;
@@ -1399,15 +1399,15 @@ LABEL_21:
   v119 = 0;
   v120 = 0;
   v118 = 0;
-  _getDefaultTitleAndSubtitleFontStylesForButtonSize((*&v20 >> 4) & 3, &v120, &v119, &v118, v7);
+  _getDefaultTitleAndSubtitleFontStylesForButtonSize((*&v20 >> 4) & 3, &v120, &v119, &v118, traitCollection);
   v24 = v120;
   v114 = v119;
   v112 = v118;
-  if (v17 || (*&self->_flags & 0x40) != 0)
+  if (_hasTitle || (*&self->_flags & 0x40) != 0)
   {
-    if ([v7 userInterfaceIdiom] != 6 || v6 == 1)
+    if ([traitCollection userInterfaceIdiom] != 6 || role == 1)
     {
-      if (v6 == 1)
+      if (role == 1)
       {
         v26 = v112;
       }
@@ -1417,7 +1417,7 @@ LABEL_21:
         v26 = v24;
       }
 
-      v25 = [off_1E70ECC18 preferredFontForTextStyle:v26 compatibleWithTraitCollection:v7];
+      v25 = [off_1E70ECC18 preferredFontForTextStyle:v26 compatibleWithTraitCollection:traitCollection];
     }
 
     else
@@ -1433,10 +1433,10 @@ LABEL_21:
     v116 = 0;
   }
 
-  if (v18)
+  if (_hasSubtitle)
   {
-    v111 = [off_1E70ECC18 preferredFontForTextStyle:v114 compatibleWithTraitCollection:v7];
-    if (!v17 && !v18)
+    v111 = [off_1E70ECC18 preferredFontForTextStyle:v114 compatibleWithTraitCollection:traitCollection];
+    if (!_hasTitle && !_hasSubtitle)
     {
       goto LABEL_37;
     }
@@ -1445,14 +1445,14 @@ LABEL_21:
   else
   {
     v111 = 0;
-    if (!v17)
+    if (!_hasTitle)
     {
 LABEL_37:
       if (v16)
       {
         v27 = (*&self->_flags >> 4) & 3;
         v117 = 0;
-        _getDefaultTitleAndSubtitleFontStylesForButtonSize(v27, &v117, 0, 0, v7);
+        _getDefaultTitleAndSubtitleFontStylesForButtonSize(v27, &v117, 0, 0, traitCollection);
         v28 = v117;
       }
 
@@ -1466,7 +1466,7 @@ LABEL_37:
   }
 
   v29 = v113;
-  v30 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v106 = v29;
   if (!v29)
   {
@@ -1476,7 +1476,7 @@ LABEL_37:
       if (os_log_type_enabled(v104, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
-        v122 = self;
+        selfCopy2 = self;
         v123 = 2112;
         v124 = v12;
         _os_log_fault_impl(&dword_188A29000, v104, OS_LOG_TYPE_FAULT, "textColor is nil resolving configuration (%@) effectiveBehavior (%@)", buf, 0x16u);
@@ -1489,7 +1489,7 @@ LABEL_37:
       if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v122 = self;
+        selfCopy2 = self;
         v123 = 2112;
         v124 = v12;
         _os_log_impl(&dword_188A29000, v104, OS_LOG_TYPE_ERROR, "textColor is nil resolving configuration (%@) effectiveBehavior (%@)", buf, 0x16u);
@@ -1499,19 +1499,19 @@ LABEL_37:
     v29 = 0;
   }
 
-  v105 = v6;
-  [v30 setObject:v29 forKeyedSubscript:*off_1E70EC920];
-  v31 = [(UIButtonConfiguration *)self _resolvedTitleAlignment];
-  if (v31)
+  v105 = role;
+  [dictionary setObject:v29 forKeyedSubscript:*off_1E70EC920];
+  _resolvedTitleAlignment = [(UIButtonConfiguration *)self _resolvedTitleAlignment];
+  if (_resolvedTitleAlignment)
   {
-    v32 = v31;
+    v32 = _resolvedTitleAlignment;
     v33 = objc_opt_new();
-    v34 = [v7 layoutDirection];
+    layoutDirection = [traitCollection layoutDirection];
     v35 = 1;
     v36 = 4;
     if (v32 == 1)
     {
-      v36 = 2 * (v34 == 1);
+      v36 = 2 * (layoutDirection == 1);
     }
 
     if (v32 != 2)
@@ -1521,7 +1521,7 @@ LABEL_37:
 
     if (v32 == 3)
     {
-      v37 = 2 * (v34 != 1);
+      v37 = 2 * (layoutDirection != 1);
     }
 
     else
@@ -1530,19 +1530,19 @@ LABEL_37:
     }
 
     [v33 setAlignment:v37];
-    [v30 setObject:v33 forKeyedSubscript:*off_1E70EC988];
+    [dictionary setObject:v33 forKeyedSubscript:*off_1E70EC988];
   }
 
   v38 = +[UILabel _tooBigChars];
   if ([(NSAttributedString *)self->_attributedTitle length])
   {
-    [v30 setObject:v116 forKeyedSubscript:*off_1E70EC918];
-    v39 = _UIButtonUpdateStringAttributes(self->_attributedTitle, v30, self->_titleTextAttributesTransformer, v7);
+    [dictionary setObject:v116 forKeyedSubscript:*off_1E70EC918];
+    v39 = _UIButtonUpdateStringAttributes(self->_attributedTitle, dictionary, self->_titleTextAttributesTransformer, traitCollection);
     resolvedTitle = self->_resolvedTitle;
     self->_resolvedTitle = v39;
 
-    v41 = [(NSAttributedString *)self->_resolvedTitle string];
-    self->_flags = (*&self->_flags & 0xFFFFFFFFFFEFFFFFLL | (([v41 rangeOfCharacterFromSet:v38] != 0x7FFFFFFFFFFFFFFFLL) << 20));
+    string = [(NSAttributedString *)self->_resolvedTitle string];
+    self->_flags = (*&self->_flags & 0xFFFFFFFFFFEFFFFFLL | (([string rangeOfCharacterFromSet:v38] != 0x7FFFFFFFFFFFFFFFLL) << 20));
   }
 
   else
@@ -1552,13 +1552,13 @@ LABEL_37:
 
   if ([(NSAttributedString *)self->_attributedSubtitle length])
   {
-    [v30 setObject:v111 forKeyedSubscript:*off_1E70EC918];
-    v42 = _UIButtonUpdateStringAttributes(self->_attributedSubtitle, v30, self->_subtitleTextAttributesTransformer, v7);
+    [dictionary setObject:v111 forKeyedSubscript:*off_1E70EC918];
+    v42 = _UIButtonUpdateStringAttributes(self->_attributedSubtitle, dictionary, self->_subtitleTextAttributesTransformer, traitCollection);
     resolvedSubtitle = self->_resolvedSubtitle;
     self->_resolvedSubtitle = v42;
 
-    v44 = [(NSAttributedString *)self->_resolvedSubtitle string];
-    self->_flags = (*&self->_flags & 0xFFFFFFFFFFDFFFFFLL | (([v44 rangeOfCharacterFromSet:v38] != 0x7FFFFFFFFFFFFFFFLL) << 21));
+    string2 = [(NSAttributedString *)self->_resolvedSubtitle string];
+    self->_flags = (*&self->_flags & 0xFFFFFFFFFFDFFFFFLL | (([string2 rangeOfCharacterFromSet:v38] != 0x7FFFFFFFFFFFFFFFLL) << 21));
   }
 
   else
@@ -1606,14 +1606,14 @@ LABEL_65:
     objc_storeStrong(&self->_resolvedSymbolConfig, resolvedSymbolConfig);
   }
 
-  if ([v7 userInterfaceIdiom] != 6)
+  if ([traitCollection userInterfaceIdiom] != 6)
   {
-    v59 = [(UIImageSymbolConfiguration *)self->_preferredSymbolConfigurationForImage _hasSpecifiedScale];
+    _hasSpecifiedScale = [(UIImageSymbolConfiguration *)self->_preferredSymbolConfigurationForImage _hasSpecifiedScale];
     if (v16)
     {
       v60 = *p_resolvedSymbolConfig;
       v57 = v110;
-      if (v59)
+      if (_hasSpecifiedScale)
       {
         [UIImageSymbolConfiguration configurationWithTextStyle:v28];
       }
@@ -1631,7 +1631,7 @@ LABEL_65:
     {
       v57 = v110;
       v58 = v113;
-      if (v59)
+      if (_hasSpecifiedScale)
       {
         goto LABEL_80;
       }
@@ -1648,7 +1648,7 @@ LABEL_80:
     if (*p_resolvedSymbolConfig)
     {
       v65 = +[UIFontMetrics defaultMetrics];
-      [v65 scaledValueForValue:v7 compatibleWithTraitCollection:self->_imageReservation];
+      [v65 scaledValueForValue:traitCollection compatibleWithTraitCollection:self->_imageReservation];
       self->_resolvedImageReservation = v66;
     }
 
@@ -1705,7 +1705,7 @@ LABEL_85:
 
   else
   {
-    if (!v107)
+    if (!_hasImage)
     {
       goto LABEL_94;
     }
@@ -1797,9 +1797,9 @@ LABEL_94:
   }
 
   background = self->_background;
-  if ((!background || (*&background->_configurationFlags & 0x10) == 0) && ([v12 effectiveBackgroundColorFromBaseColor:self->_baseBackgroundColor state:v57 traitCollection:v7], v89 = objc_claimAutoreleasedReturnValue(), -[UIBackgroundConfiguration _setBackgroundColor:](self->_background, v89), v89, (background = self->_background) == 0) || (*&background->_configurationFlags & 0x40) == 0)
+  if ((!background || (*&background->_configurationFlags & 0x10) == 0) && ([v12 effectiveBackgroundColorFromBaseColor:self->_baseBackgroundColor state:v57 traitCollection:traitCollection], v89 = objc_claimAutoreleasedReturnValue(), -[UIBackgroundConfiguration _setBackgroundColor:](self->_background, v89), v89, (background = self->_background) == 0) || (*&background->_configurationFlags & 0x40) == 0)
   {
-    v91 = [v12 effectiveBackgroundVisualEffectFromBaseColor:self->_baseBackgroundColor state:v57 traitCollection:v7];
+    v91 = [v12 effectiveBackgroundVisualEffectFromBaseColor:self->_baseBackgroundColor state:v57 traitCollection:traitCollection];
     v92 = self->_background;
     if (v92)
     {
@@ -1812,23 +1812,23 @@ LABEL_94:
     v93 = self->_background;
     if (!v93 || (*(&v93->_configurationFlags + 2) & 1) == 0)
     {
-      v94 = [v12 effectiveMaterialFromBaseColor:self->_baseBackgroundColor state:v57 adaptive:(*&self->_flags & 0x40000000) == 0 traitCollection:v7];
+      v94 = [v12 effectiveMaterialFromBaseColor:self->_baseBackgroundColor state:v57 adaptive:(*&self->_flags & 0x40000000) == 0 traitCollection:traitCollection];
       [(UIBackgroundConfiguration *)self->_background __setMaterial:v94];
     }
   }
 
-  if ([v7 userInterfaceIdiom] == 6)
+  if ([traitCollection userInterfaceIdiom] == 6)
   {
     v95 = self->_background;
     if (!v95 || (*&v95->_configurationFlags & 0x80) == 0)
     {
-      v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIVisualEffectViewCaptureGroupName(%p)", v4];
-      [(UIBackgroundConfiguration *)self->_background __setVisualEffectGroupName:v96];
+      buttonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIVisualEffectViewCaptureGroupName(%p)", buttonCopy];
+      [(UIBackgroundConfiguration *)self->_background __setVisualEffectGroupName:buttonCopy];
     }
   }
 
-  self->_resolvedIdiom = [v7 userInterfaceIdiom];
-  v97 = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors effectiveMonochromaticTreatmentFromBaseColor:self->_baseForegroundColor traitCollection:v7];
+  self->_resolvedIdiom = [traitCollection userInterfaceIdiom];
+  v97 = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors effectiveMonochromaticTreatmentFromBaseColor:self->_baseForegroundColor traitCollection:traitCollection];
   v98 = self->_flags;
   if (v97 < 0)
   {
@@ -1841,31 +1841,31 @@ LABEL_94:
   }
 
   self->_flags = v99;
-  v100 = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors contentMaterialRenderingMode];
+  contentMaterialRenderingMode = [(_UIButtonConfigurationStyleBehaviors *)self->_behaviors contentMaterialRenderingMode];
   v101 = self->_flags;
-  if (v100 <= 0)
+  if (contentMaterialRenderingMode <= 0)
   {
     v102 = (*&v101 | 0x80000000);
   }
 
   else
   {
-    v102 = (*&v101 & 0xFFFFFFFC7FFFFFFFLL | ((v100 & 3) << 32));
+    v102 = (*&v101 & 0xFFFFFFFC7FFFFFFFLL | ((contentMaterialRenderingMode & 3) << 32));
   }
 
   self->_flags = v102;
 }
 
-- (void)_setSymbolContentTransition:(id)a3
+- (void)_setSymbolContentTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   symbolContentTransition = [(UISymbolContentTransition *)self->_symbolContentTransition contentTransition];
-  v6 = v4;
+  v6 = transitionCopy;
   v11 = v6;
   if (symbolContentTransition == v6)
   {
 
-    v9 = symbolContentTransition;
+    options = symbolContentTransition;
 LABEL_9:
 
     v8 = v11;
@@ -1884,8 +1884,8 @@ LABEL_9:
   if (!v7)
   {
 LABEL_8:
-    v9 = [(UISymbolContentTransition *)self->_symbolContentTransition options];
-    v10 = [UISymbolContentTransition transitionWithContentTransition:v11 options:v9];
+    options = [(UISymbolContentTransition *)self->_symbolContentTransition options];
+    v10 = [UISymbolContentTransition transitionWithContentTransition:v11 options:options];
     symbolContentTransition = self->_symbolContentTransition;
     self->_symbolContentTransition = v10;
     goto LABEL_9;
@@ -1894,29 +1894,29 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)_setSymbolContentTransitionOptions:(id)a3
+- (void)_setSymbolContentTransitionOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   symbolContentTransition = self->_symbolContentTransition;
   if (symbolContentTransition)
   {
-    v12 = v4;
-    v6 = [(UISymbolContentTransition *)symbolContentTransition options];
+    v12 = optionsCopy;
+    options = [(UISymbolContentTransition *)symbolContentTransition options];
     v7 = v12;
     v8 = v7;
-    if (v6 == v7)
+    if (options == v7)
     {
 
-      v10 = v6;
+      contentTransition = options;
     }
 
     else
     {
-      if (v7 && v6)
+      if (v7 && options)
       {
-        v9 = [(UISymbolContentTransition *)v6 isEqual:v7];
+        v9 = [(UISymbolContentTransition *)options isEqual:v7];
 
-        v4 = v12;
+        optionsCopy = v12;
         if (v9)
         {
           goto LABEL_11;
@@ -1927,13 +1927,13 @@ LABEL_10:
       {
       }
 
-      v10 = [(UISymbolContentTransition *)self->_symbolContentTransition contentTransition];
-      v11 = [UISymbolContentTransition transitionWithContentTransition:v10 options:v8];
-      v6 = self->_symbolContentTransition;
+      contentTransition = [(UISymbolContentTransition *)self->_symbolContentTransition contentTransition];
+      v11 = [UISymbolContentTransition transitionWithContentTransition:contentTransition options:v8];
+      options = self->_symbolContentTransition;
       self->_symbolContentTransition = v11;
     }
 
-    v4 = v12;
+    optionsCopy = v12;
   }
 
 LABEL_11:
@@ -1966,7 +1966,7 @@ LABEL_11:
 
 + (id)tintedGlassButtonConfiguration
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[_UIButtonConfigurationStyleBehaviors tintedGlassBehaviors];
   v4 = [v2 _initWithBehaviors:v3];
 

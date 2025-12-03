@@ -1,21 +1,21 @@
 @interface SISchemaOpaqueClientEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaOpaqueClientEvent)initWithDictionary:(id)a3;
-- (SISchemaOpaqueClientEvent)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaOpaqueClientEvent)initWithDictionary:(id)dictionary;
+- (SISchemaOpaqueClientEvent)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)suppressMessageUnderConditions;
 - (int)componentName;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaOpaqueClientEvent
 
 - (id)getComponentId
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SISchemaOpaqueClientEvent.getComponentId()();
 
   return v3;
@@ -23,21 +23,21 @@
 
 - (int)componentName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SISchemaOpaqueClientEvent.componentName.getter();
 
   return v3;
 }
 
-- (SISchemaOpaqueClientEvent)initWithDictionary:(id)a3
+- (SISchemaOpaqueClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaOpaqueClientEvent;
   v5 = [(SISchemaOpaqueClientEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anyEventPayload"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anyEventPayload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(SISchemaOpaqueClientEvent *)v5 setAnyEventPayload:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"componentId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"componentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (SISchemaOpaqueClientEvent)initWithJSON:(id)a3
+- (SISchemaOpaqueClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaOpaqueClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaOpaqueClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaOpaqueClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,66 +95,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anyEventPayload)
   {
-    v4 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    anyEventPayload = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
+    v5 = [anyEventPayload base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"anyEventPayload"];
+      [dictionary setObject:v5 forKeyedSubscript:@"anyEventPayload"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"anyEventPayload"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"anyEventPayload"];
     }
   }
 
   if (self->_componentId)
   {
-    v7 = [(SISchemaOpaqueClientEvent *)self componentId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    componentId = [(SISchemaOpaqueClientEvent *)self componentId];
+    dictionaryRepresentation = [componentId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"componentId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"componentId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"componentId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"componentId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
-  v6 = [v4 anyEventPayload];
-  if ((v5 != 0) == (v6 == 0))
+  anyEventPayload = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
+  anyEventPayload2 = [equalCopy anyEventPayload];
+  if ((anyEventPayload != 0) == (anyEventPayload2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
-  if (v7)
+  anyEventPayload3 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
+  if (anyEventPayload3)
   {
-    v8 = v7;
-    v9 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
-    v10 = [v4 anyEventPayload];
-    v11 = [v9 isEqual:v10];
+    v8 = anyEventPayload3;
+    anyEventPayload4 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
+    anyEventPayload5 = [equalCopy anyEventPayload];
+    v11 = [anyEventPayload4 isEqual:anyEventPayload5];
 
     if (!v11)
     {
@@ -166,12 +166,12 @@
   {
   }
 
-  v5 = [(SISchemaOpaqueClientEvent *)self componentId];
-  v6 = [v4 componentId];
-  if ((v5 != 0) != (v6 == 0))
+  anyEventPayload = [(SISchemaOpaqueClientEvent *)self componentId];
+  anyEventPayload2 = [equalCopy componentId];
+  if ((anyEventPayload != 0) != (anyEventPayload2 == 0))
   {
-    v12 = [(SISchemaOpaqueClientEvent *)self componentId];
-    if (!v12)
+    componentId = [(SISchemaOpaqueClientEvent *)self componentId];
+    if (!componentId)
     {
 
 LABEL_15:
@@ -179,10 +179,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaOpaqueClientEvent *)self componentId];
-    v15 = [v4 componentId];
-    v16 = [v14 isEqual:v15];
+    v13 = componentId;
+    componentId2 = [(SISchemaOpaqueClientEvent *)self componentId];
+    componentId3 = [equalCopy componentId];
+    v16 = [componentId2 isEqual:componentId3];
 
     if (v16)
     {
@@ -202,36 +202,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
+  toCopy = to;
+  anyEventPayload = [(SISchemaOpaqueClientEvent *)self anyEventPayload];
 
-  if (v4)
+  if (anyEventPayload)
   {
     PBDataWriterWriteDataField();
   }
 
-  v5 = [(SISchemaOpaqueClientEvent *)self componentId];
+  componentId = [(SISchemaOpaqueClientEvent *)self componentId];
 
-  if (v5)
+  if (componentId)
   {
-    v6 = [(SISchemaOpaqueClientEvent *)self componentId];
+    componentId2 = [(SISchemaOpaqueClientEvent *)self componentId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaOpaqueClientEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaOpaqueClientEvent *)self componentId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaOpaqueClientEvent *)self deleteComponentId];
   }

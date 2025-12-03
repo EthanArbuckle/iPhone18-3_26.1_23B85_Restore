@@ -1,58 +1,58 @@
 @interface PLAlbumListJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSOrderedSet)albumUUIDs;
-- (id)insertAlbumListFromDataInManagedObjectContext:(id)a3;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)insertAlbumListFromDataInManagedObjectContext:(id)context;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (signed)albumListType;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)updateAlbumList:(id)a3;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)updateAlbumList:(id)list;
 @end
 
 @implementation PLAlbumListJournalEntryPayload
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v9 isEqualToKey:@"albums"])
+  valueCopy = value;
+  propertyCopy = property;
+  dictionaryValueCopy = dictionaryValue;
+  if ([propertyCopy isEqualToKey:@"albums"])
   {
-    v11 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v10];
+    v11 = [MEMORY[0x1E695DFB8] orderedSetWithArray:dictionaryValueCopy];
 
-    v12 = [v11 isEqualToOrderedSet:v8];
+    v12 = [v11 isEqualToOrderedSet:valueCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = PLAlbumListJournalEntryPayload;
-    v12 = [(PLManagedObjectJournalEntryPayload *)&v14 comparePayloadValue:v8 toObjectDictionaryValue:v10 forPayloadProperty:v9];
+    v12 = [(PLManagedObjectJournalEntryPayload *)&v14 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
   }
 
   return v12;
 }
 
-- (void)updateAlbumList:(id)a3
+- (void)updateAlbumList:(id)list
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLAlbumListJournalEntryPayload *)self albumUUIDs];
-  v6 = [v4 albums];
-  v7 = [v6 valueForKey:@"uuid"];
+  listCopy = list;
+  albumUUIDs = [(PLAlbumListJournalEntryPayload *)self albumUUIDs];
+  albums = [listCopy albums];
+  v7 = [albums valueForKey:@"uuid"];
 
-  if ([v5 isEqual:v7])
+  if ([albumUUIDs isEqual:v7])
   {
     v8 = PLMigrationGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v16 = [(PLAlbumListJournalEntryPayload *)self albumListType];
+      albumListType = [(PLAlbumListJournalEntryPayload *)self albumListType];
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Persisted albumList %d UUIDs match existing UUID ordering", buf, 8u);
     }
 
@@ -61,28 +61,28 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v5 count])
+  if ([albumUUIDs count])
   {
     v9 = PLMigrationGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v16 = [(PLAlbumListJournalEntryPayload *)self albumListType];
+      albumListType = [(PLAlbumListJournalEntryPayload *)self albumListType];
       v17 = 2112;
-      v18 = v5;
+      v18 = albumUUIDs;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Sorting albumList %d to match UUID ordering %@", buf, 0x12u);
     }
 
-    v10 = [v4 albumsSortingComparator];
-    v11 = [v4 albums];
+    albumsSortingComparator = [listCopy albumsSortingComparator];
+    albums2 = [listCopy albums];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke;
     v12[3] = &unk_1E756A6C0;
-    v14 = v10;
-    v13 = v5;
-    v8 = v10;
-    [v11 sortUsingComparator:v12];
+    v14 = albumsSortingComparator;
+    v13 = albumUUIDs;
+    v8 = albumsSortingComparator;
+    [albums2 sortUsingComparator:v12];
 
     goto LABEL_8;
   }
@@ -119,14 +119,14 @@ uint64_t __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke(uin
   return v7;
 }
 
-- (id)insertAlbumListFromDataInManagedObjectContext:(id)a3
+- (id)insertAlbumListFromDataInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([PLManagedAlbumList isValidTypeForPersistence:[(PLAlbumListJournalEntryPayload *)self albumListType]])
   {
-    v5 = [(PLAlbumListJournalEntryPayload *)self albumListType];
-    v6 = [v4 photoLibrary];
-    v7 = [PLManagedAlbumList _singletonListWithType:v5 library:v6];
+    albumListType = [(PLAlbumListJournalEntryPayload *)self albumListType];
+    photoLibrary = [contextCopy photoLibrary];
+    v7 = [PLManagedAlbumList _singletonListWithType:albumListType library:photoLibrary];
   }
 
   else
@@ -140,9 +140,9 @@ uint64_t __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke(uin
 - (signed)albumListType
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"identifier"];
-  v3 = [v2 shortValue];
+  shortValue = [v2 shortValue];
 
-  return v3;
+  return shortValue;
 }
 
 - (NSOrderedSet)albumUUIDs
@@ -153,15 +153,15 @@ uint64_t __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke(uin
   return v4;
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"albums"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"albums"])
   {
-    v8 = [v7 key];
+    v8 = [propertyCopy key];
 
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:v9];
   }
 
@@ -169,59 +169,59 @@ uint64_t __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke(uin
   {
     v12.receiver = self;
     v12.super_class = PLAlbumListJournalEntryPayload;
-    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"albums"])
+  keyCopy = key;
+  builderCopy = builder;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"albums"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self orderedSetForUUIDEncodedData:valueCopy];
 
     v13.receiver = self;
     v13.super_class = PLAlbumListJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:v8 value:v11 toDescriptionBuilder:v9];
-    v10 = v11;
+    [(PLManagedObjectJournalEntryPayload *)&v13 appendAttributeKey:keyCopy value:v11 toDescriptionBuilder:builderCopy];
+    valueCopy = v11;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PLAlbumListJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v10 toDescriptionBuilder:v9];
+    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 isEqualToKey:@"albums"];
+  attributesCopy = attributes;
+  nilAttributesCopy = nilAttributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v14 = [propertyCopy isEqualToKey:@"albums"];
   if (v14)
   {
-    v15 = [v12 albums];
-    v16 = [v13 relatedEntityPropertyNames];
-    v17 = [v16 anyObject];
-    v18 = [v15 valueForKey:v17];
+    albums = [objectCopy albums];
+    relatedEntityPropertyNames = [propertyCopy relatedEntityPropertyNames];
+    anyObject = [relatedEntityPropertyNames anyObject];
+    v18 = [albums valueForKey:anyObject];
 
     v19 = [(PLManagedObjectJournalEntryPayload *)self encodedDataForUUIDStringOrderedSet:v18];
-    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:v10 andNilAttributes:v11 forPayloadProperty:v13 withUUIDStringData:v19];
+    [(PLManagedObjectJournalEntryPayload *)self updatePayloadAttributes:attributesCopy andNilAttributes:nilAttributesCopy forPayloadProperty:propertyCopy withUUIDStringData:v19];
   }
 
   return v14;
 }
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = [a3 objectForKeyedSubscript:{@"identifier", a4}];
+  v4 = [dictionary objectForKeyedSubscript:{@"identifier", name}];
   v5 = +[PLManagedAlbumList isValidTypeForPersistence:](PLManagedAlbumList, "isValidTypeForPersistence:", [v4 integerValue]);
 
   return v5;
@@ -233,7 +233,7 @@ uint64_t __50__PLAlbumListJournalEntryPayload_updateAlbumList___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __70__PLAlbumListJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_28687 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_28687, block);
@@ -257,7 +257,7 @@ void __70__PLAlbumListJournalEntryPayload_persistedPropertyNamesForEntityNames__
   block[1] = 3221225472;
   block[2] = __49__PLAlbumListJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_28689 != -1)
   {
     dispatch_once(&modelProperties_onceToken_28689, block);

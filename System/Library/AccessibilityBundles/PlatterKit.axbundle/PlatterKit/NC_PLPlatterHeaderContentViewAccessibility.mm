@@ -1,40 +1,40 @@
 @interface NC_PLPlatterHeaderContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityTitleLabel;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureUtilityButton;
-- (void)setDate:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDate:(id)date;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NC_PLPlatterHeaderContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_iconButtons" withType:"NSArray"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_utilityButton" withType:"UIButton"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"setDate:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureUtilityButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_iconButtons" withType:"NSArray"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_utilityButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"setDate:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"setTitle:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureUtilityButton" withFullSignature:{"v", 0}];
 }
 
 - (id)_accessibilityTitleLabel
 {
   v2 = [(NC_PLPlatterHeaderContentViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(NC_PLPlatterHeaderContentViewAccessibility *)self _axAggregateTitleDateElement];
+  _axAggregateTitleDateElement = [(NC_PLPlatterHeaderContentViewAccessibility *)self _axAggregateTitleDateElement];
 
-  if (!v3)
+  if (!_axAggregateTitleDateElement)
   {
     v4 = [AXAggregateHeaderView alloc];
     v5 = [(NC_PLPlatterHeaderContentViewAccessibility *)self safeValueForKey:@"_iconButtons"];
@@ -55,8 +55,8 @@
   }
 
   v13 = MEMORY[0x29EDB8D80];
-  v14 = [(NC_PLPlatterHeaderContentViewAccessibility *)self _axAggregateTitleDateElement];
-  v15 = [v13 axArrayByIgnoringNilElementsWithCount:{2, v14, v10}];
+  _axAggregateTitleDateElement2 = [(NC_PLPlatterHeaderContentViewAccessibility *)self _axAggregateTitleDateElement];
+  v15 = [v13 axArrayByIgnoringNilElementsWithCount:{2, _axAggregateTitleDateElement2, v10}];
 
   return v15;
 }
@@ -89,19 +89,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4.receiver = self;
   v4.super_class = NC_PLPlatterHeaderContentViewAccessibility;
-  [(NC_PLPlatterHeaderContentViewAccessibility *)&v4 setDate:a3];
+  [(NC_PLPlatterHeaderContentViewAccessibility *)&v4 setDate:date];
   [(NC_PLPlatterHeaderContentViewAccessibility *)self _axSetAggregateTitleDateElement:0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = NC_PLPlatterHeaderContentViewAccessibility;
-  [(NC_PLPlatterHeaderContentViewAccessibility *)&v4 setTitle:a3];
+  [(NC_PLPlatterHeaderContentViewAccessibility *)&v4 setTitle:title];
   [(NC_PLPlatterHeaderContentViewAccessibility *)self _axSetAggregateTitleDateElement:0];
 }
 

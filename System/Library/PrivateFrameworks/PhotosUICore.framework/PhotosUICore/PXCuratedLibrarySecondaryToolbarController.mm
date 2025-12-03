@@ -1,59 +1,59 @@
 @interface PXCuratedLibrarySecondaryToolbarController
-- (BOOL)secondaryToolbarControllerToolbarRenderedExternally:(id)a3;
-- (BOOL)secondaryToolbarControllerWantsPaddingAppliedToContainerAdditionalEdgeInsets:(id)a3;
-- (BOOL)secondaryToolbarControllerWantsToolbarVisible:(id)a3;
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3;
-- (PXCuratedLibrarySecondaryToolbarController)initWithContainerView:(id)a3 legibilityContainerView:(id)a4 viewModel:(id)a5;
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3;
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3;
-- (UIEdgeInsets)secondaryToolbarControllerToolbarPadding:(id)a3;
-- (double)secondaryToolbarControllerMaximumAccessoryViewPaddingToContentView:(id)a3;
-- (int64_t)secondaryToolbarControllerToolbarPlacement:(id)a3;
+- (BOOL)secondaryToolbarControllerToolbarRenderedExternally:(id)externally;
+- (BOOL)secondaryToolbarControllerWantsPaddingAppliedToContainerAdditionalEdgeInsets:(id)insets;
+- (BOOL)secondaryToolbarControllerWantsToolbarVisible:(id)visible;
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size;
+- (PXCuratedLibrarySecondaryToolbarController)initWithContainerView:(id)view legibilityContainerView:(id)containerView viewModel:(id)model;
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding;
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets;
+- (UIEdgeInsets)secondaryToolbarControllerToolbarPadding:(id)padding;
+- (double)secondaryToolbarControllerMaximumAccessoryViewPaddingToContentView:(id)view;
+- (int64_t)secondaryToolbarControllerToolbarPlacement:(id)placement;
 - (void)isShowingGradientDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCuratedLibrarySecondaryToolbarController
 
-- (BOOL)secondaryToolbarControllerWantsPaddingAppliedToContainerAdditionalEdgeInsets:(id)a3
+- (BOOL)secondaryToolbarControllerWantsPaddingAppliedToContainerAdditionalEdgeInsets:(id)insets
 {
-  v4 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  if ([v4 secondaryToolbarPlacement])
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  if ([styleGuide secondaryToolbarPlacement])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-    v7 = [v6 extendedTraitCollection];
-    v5 = [v7 userInterfaceIdiom] != 2;
+    styleGuide2 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+    extendedTraitCollection = [styleGuide2 extendedTraitCollection];
+    v5 = [extendedTraitCollection userInterfaceIdiom] != 2;
   }
 
   return v5;
 }
 
-- (double)secondaryToolbarControllerMaximumAccessoryViewPaddingToContentView:(id)a3
+- (double)secondaryToolbarControllerMaximumAccessoryViewPaddingToContentView:(id)view
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  [v3 maximumAccessoryViewPadding];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  [styleGuide maximumAccessoryViewPadding];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)secondaryToolbarControllerWantsToolbarVisible:(id)a3
+- (BOOL)secondaryToolbarControllerWantsToolbarVisible:(id)visible
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self viewModel];
-  v4 = [v3 wantsSecondaryToolbarVisible];
+  viewModel = [(PXCuratedLibrarySecondaryToolbarController *)self viewModel];
+  wantsSecondaryToolbarVisible = [viewModel wantsSecondaryToolbarVisible];
 
-  return v4;
+  return wantsSecondaryToolbarVisible;
 }
 
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  [v3 secondaryToolbarSize];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  [styleGuide secondaryToolbarSize];
   v5 = v4;
   v7 = v6;
 
@@ -64,31 +64,31 @@
   return result;
 }
 
-- (BOOL)secondaryToolbarControllerToolbarRenderedExternally:(id)a3
+- (BOOL)secondaryToolbarControllerToolbarRenderedExternally:(id)externally
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  v4 = [v3 secondaryToolbarRenderedExternally];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  secondaryToolbarRenderedExternally = [styleGuide secondaryToolbarRenderedExternally];
 
-  return v4;
+  return secondaryToolbarRenderedExternally;
 }
 
-- (int64_t)secondaryToolbarControllerToolbarPlacement:(id)a3
+- (int64_t)secondaryToolbarControllerToolbarPlacement:(id)placement
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  v4 = [v3 secondaryToolbarPlacement];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  secondaryToolbarPlacement = [styleGuide secondaryToolbarPlacement];
 
-  if ((v4 - 1) >= 4)
+  if ((secondaryToolbarPlacement - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return v4;
+    return secondaryToolbarPlacement;
   }
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding
 {
   v3 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
@@ -101,10 +101,10 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerToolbarPadding:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerToolbarPadding:(id)padding
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  [v3 secondaryToolbarPadding];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  [styleGuide secondaryToolbarPadding];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -121,10 +121,10 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets
 {
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
-  [v3 secondaryToolbarContentInsets];
+  styleGuide = [(PXCuratedLibrarySecondaryToolbarController *)self styleGuide];
+  [styleGuide secondaryToolbarContentInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -146,13 +146,13 @@
   v5.receiver = self;
   v5.super_class = PXCuratedLibrarySecondaryToolbarController;
   [(PXSecondaryToolbarController *)&v5 isShowingGradientDidChange];
-  v3 = [(PXCuratedLibrarySecondaryToolbarController *)self viewModel];
+  viewModel = [(PXCuratedLibrarySecondaryToolbarController *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __72__PXCuratedLibrarySecondaryToolbarController_isShowingGradientDidChange__block_invoke;
   v4[3] = &unk_1E7748B68;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [viewModel performChanges:v4];
 }
 
 void __72__PXCuratedLibrarySecondaryToolbarController_isShowingGradientDidChange__block_invoke(uint64_t a1, void *a2)
@@ -162,18 +162,18 @@ void __72__PXCuratedLibrarySecondaryToolbarController_isShowingGradientDidChange
   [v3 setSecondaryToolbarLegibilityGradientIsVisible:{objc_msgSend(v2, "isShowingGradient")}];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v10 = a3;
-  if (PXStyleGuideObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXStyleGuideObservationContext == context)
   {
-    if ((v6 & 0x84) != 0)
+    if ((changeCopy & 0x84) != 0)
     {
       [(PXSecondaryToolbarController *)self invalidatePositioning];
     }
 
-    if ((v6 & 0x18) != 0)
+    if ((changeCopy & 0x18) != 0)
     {
       [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
     }
@@ -181,44 +181,44 @@ void __72__PXCuratedLibrarySecondaryToolbarController_isShowingGradientDidChange
 
   else
   {
-    if (PXViewModelObservationContext_230831 != a5)
+    if (PXViewModelObservationContext_230831 != context)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySecondaryToolbarController.m" lineNumber:63 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibrarySecondaryToolbarController.m" lineNumber:63 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 0x400000) != 0)
+    if ((changeCopy & 0x400000) != 0)
     {
       [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
     }
 
-    if ((*&v6 & 0x400040) != 0)
+    if ((*&changeCopy & 0x400040) != 0)
     {
       [(PXSecondaryToolbarController *)self setNeedsUpdate];
     }
   }
 }
 
-- (PXCuratedLibrarySecondaryToolbarController)initWithContainerView:(id)a3 legibilityContainerView:(id)a4 viewModel:(id)a5
+- (PXCuratedLibrarySecondaryToolbarController)initWithContainerView:(id)view legibilityContainerView:(id)containerView viewModel:(id)model
 {
-  v8 = a4;
-  v9 = a5;
+  containerViewCopy = containerView;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = PXCuratedLibrarySecondaryToolbarController;
-  v10 = [(PXSecondaryToolbarController *)&v15 initWithContainerView:a3 styleGuideProvider:self];
+  v10 = [(PXSecondaryToolbarController *)&v15 initWithContainerView:view styleGuideProvider:self];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_viewModel, a5);
+    objc_storeStrong(&v10->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v11->_viewModel registerChangeObserver:v11 context:PXViewModelObservationContext_230831];
-    v12 = [v9 styleGuide];
+    styleGuide = [modelCopy styleGuide];
     styleGuide = v11->_styleGuide;
-    v11->_styleGuide = v12;
+    v11->_styleGuide = styleGuide;
 
     [(PXCuratedLibraryStyleGuide *)v11->_styleGuide registerChangeObserver:v11 context:PXStyleGuideObservationContext];
-    [(PXSecondaryToolbarController *)v11 setLegibilityContainerView:v8];
+    [(PXSecondaryToolbarController *)v11 setLegibilityContainerView:containerViewCopy];
   }
 
   return v11;

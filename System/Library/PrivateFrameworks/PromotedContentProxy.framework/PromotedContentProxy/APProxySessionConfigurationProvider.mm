@@ -1,16 +1,16 @@
 @interface APProxySessionConfigurationProvider
-- (APProxySessionConfigurationProvider)initWithDefaultProxyURL:(id)a3;
+- (APProxySessionConfigurationProvider)initWithDefaultProxyURL:(id)l;
 - (id)_createConnectProxyConfig;
 - (id)connectProxyConfig;
-- (void)addProtocolClasses:(id)a3;
-- (void)setProxyURL:(id)a3;
+- (void)addProtocolClasses:(id)classes;
+- (void)setProxyURL:(id)l;
 @end
 
 @implementation APProxySessionConfigurationProvider
 
-- (APProxySessionConfigurationProvider)initWithDefaultProxyURL:(id)a3
+- (APProxySessionConfigurationProvider)initWithDefaultProxyURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10 = objc_msgSend_init(self, v6, v7, v8, v9);
   if (v10)
   {
@@ -19,7 +19,7 @@
     lock = v10->_lock;
     v10->_lock = v15;
 
-    objc_storeStrong(&v10->_defaultProxyURL, a3);
+    objc_storeStrong(&v10->_defaultProxyURL, l);
     protocolClasses = v10->_protocolClasses;
     v10->_protocolClasses = MEMORY[0x277CBEBF8];
   }
@@ -27,13 +27,13 @@
   return v10;
 }
 
-- (void)addProtocolClasses:(id)a3
+- (void)addProtocolClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v30 = objc_msgSend_lock(self, v5, v6, v7, v8);
   objc_msgSend_lock(v30, v9, v10, v11, v12);
   v17 = objc_msgSend_protocolClasses(self, v13, v14, v15, v16);
-  v21 = objc_msgSend_arrayByAddingObjectsFromArray_(v17, v18, v4, v19, v20);
+  v21 = objc_msgSend_arrayByAddingObjectsFromArray_(v17, v18, classesCopy, v19, v20);
 
   objc_msgSend_setProtocolClasses_(self, v22, v21, v23, v24);
   connectProxyConfig = self->_connectProxyConfig;
@@ -42,14 +42,14 @@
   objc_msgSend_unlock(v30, v26, v27, v28, v29);
 }
 
-- (void)setProxyURL:(id)a3
+- (void)setProxyURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v20 = objc_msgSend_lock(self, v5, v6, v7, v8);
   objc_msgSend_lock(v20, v9, v10, v11, v12);
   proxyURL = self->_proxyURL;
-  self->_proxyURL = v4;
-  v14 = v4;
+  self->_proxyURL = lCopy;
+  v14 = lCopy;
 
   connectProxyConfig = self->_connectProxyConfig;
   self->_connectProxyConfig = 0;

@@ -7,13 +7,13 @@
 
 - (id)sb_resolvedImage
 {
-  v2 = [a1 imagePath];
-  v3 = [a1 catalogPath];
-  v4 = [a1 catalogImageKey];
-  v5 = v4;
-  if (v2)
+  imagePath = [self imagePath];
+  catalogPath = [self catalogPath];
+  catalogImageKey = [self catalogImageKey];
+  v5 = catalogImageKey;
+  if (imagePath)
   {
-    v6 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:v2];
+    v6 = [objc_alloc(MEMORY[0x277D755B8]) initWithContentsOfFile:imagePath];
     if (v6)
     {
       goto LABEL_19;
@@ -30,13 +30,13 @@
   }
 
   v6 = 0;
-  if (v3 && v4)
+  if (catalogPath && catalogImageKey)
   {
     v8 = objc_alloc(MEMORY[0x277D75DE0]);
-    v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
-    v10 = [MEMORY[0x277D75418] currentDevice];
+    v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:catalogPath];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v14 = 0;
-    v11 = [v8 initWithURL:v9 idiom:objc_msgSend(v10 error:{"userInterfaceIdiom"), &v14}];
+    v11 = [v8 initWithURL:v9 idiom:objc_msgSend(currentDevice error:{"userInterfaceIdiom"), &v14}];
     v7 = v14;
 
     if (v11)

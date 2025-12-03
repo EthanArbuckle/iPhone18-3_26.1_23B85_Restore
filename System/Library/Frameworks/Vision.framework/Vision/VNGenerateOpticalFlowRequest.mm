@@ -1,13 +1,13 @@
 @interface VNGenerateOpticalFlowRequest
-- (BOOL)_internalPerformRevision:(unint64_t)a3 inContext:(id)a4 previousObservation:(id)a5 error:(id *)a6;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)_internalPerformRevision:(unint64_t)revision inContext:(id)context previousObservation:(id)observation error:(id *)error;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)keepNetworkOutput;
 - (OSType)outputPixelFormat;
 - (VNGenerateOpticalFlowRequestComputationAccuracy)computationAccuracy;
-- (id)_createGeneratorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4 images:(id)a5 previousTargetImageIsCurrentRefImage:(BOOL)a6 previousObservation:(id)a7;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (void)applyConfigurationOfRequest:(id)a3;
+- (id)_createGeneratorOptionsForRequestRevision:(unint64_t)revision session:(id)session images:(id)images previousTargetImageIsCurrentRefImage:(BOOL)image previousObservation:(id)observation;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (void)applyConfigurationOfRequest:(id)request;
 - (void)setComputationAccuracy:(VNGenerateOpticalFlowRequestComputationAccuracy)computationAccuracy;
 - (void)setKeepNetworkOutput:(BOOL)keepNetworkOutput;
 - (void)setOutputPixelFormat:(OSType)outputPixelFormat;
@@ -17,19 +17,19 @@
 
 - (void)setKeepNetworkOutput:(BOOL)keepNetworkOutput
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v4[144] = keepNetworkOutput;
+    configuration[144] = keepNetworkOutput;
   }
 }
 
 - (BOOL)keepNetworkOutput
 {
-  v2 = [(VNRequest *)self configuration];
-  if (v2)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v3 = v2[144];
+    v3 = configuration[144];
   }
 
   else
@@ -42,19 +42,19 @@
 
 - (void)setOutputPixelFormat:(OSType)outputPixelFormat
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v4[37] = outputPixelFormat;
+    configuration[37] = outputPixelFormat;
   }
 }
 
 - (OSType)outputPixelFormat
 {
-  v2 = [(VNRequest *)self configuration];
-  if (v2)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v3 = v2[37];
+    v3 = configuration[37];
   }
 
   else
@@ -67,19 +67,19 @@
 
 - (void)setComputationAccuracy:(VNGenerateOpticalFlowRequestComputationAccuracy)computationAccuracy
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v4[19] = computationAccuracy;
+    configuration[19] = computationAccuracy;
   }
 }
 
 - (VNGenerateOpticalFlowRequestComputationAccuracy)computationAccuracy
 {
-  v2 = [(VNRequest *)self configuration];
-  if (v2)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v3 = v2[19];
+    v3 = configuration[19];
   }
 
   else
@@ -90,30 +90,30 @@
   return v3;
 }
 
-- (id)_createGeneratorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4 images:(id)a5 previousTargetImageIsCurrentRefImage:(BOOL)a6 previousObservation:(id)a7
+- (id)_createGeneratorOptionsForRequestRevision:(unint64_t)revision session:(id)session images:(id)images previousTargetImageIsCurrentRefImage:(BOOL)image previousObservation:(id)observation
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(VNGenerateOpticalFlowRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  [v14 setObject:v12 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
-  if (v8)
+  imageCopy = image;
+  imagesCopy = images;
+  observationCopy = observation;
+  v14 = [(VNGenerateOpticalFlowRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  [v14 setObject:imagesCopy forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
+  if (imageCopy)
   {
-    [v14 setObject:v13 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_PreviousObservation"];
+    [v14 setObject:observationCopy forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_PreviousObservation"];
   }
 
   return v14;
 }
 
-- (BOOL)_internalPerformRevision:(unint64_t)a3 inContext:(id)a4 previousObservation:(id)a5 error:(id *)a6
+- (BOOL)_internalPerformRevision:(unint64_t)revision inContext:(id)context previousObservation:(id)observation error:(id *)error
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(VNGenerateOpticalFlowRequest *)self applicableDetectorTypeForRevision:a3 error:a6];
+  contextCopy = context;
+  observationCopy = observation;
+  v12 = [(VNGenerateOpticalFlowRequest *)self applicableDetectorTypeForRevision:revision error:error];
   if (v12)
   {
-    v13 = [v10 imageBufferAndReturnError:a6];
+    v13 = [contextCopy imageBufferAndReturnError:error];
     if (!v13)
     {
       v35 = 0;
@@ -122,7 +122,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v14 = [(VNTargetedImageRequest *)self requiredTargetedImageBufferReturningError:a6];
+    v14 = [(VNTargetedImageRequest *)self requiredTargetedImageBufferReturningError:error];
     if (!v14)
     {
       v35 = 0;
@@ -136,23 +136,23 @@ LABEL_21:
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v39 = [[VNImageSignature alloc] initWithImageBuffer:v13 regionOfInterest:a6 error:v15, v17, v19, v21];
-    v23 = [v11 targetImageSignature];
-    v24 = [(VNImageSignature *)v39 isEqual:v23];
+    v39 = [[VNImageSignature alloc] initWithImageBuffer:v13 regionOfInterest:error error:v15, v17, v19, v21];
+    targetImageSignature = [observationCopy targetImageSignature];
+    v24 = [(VNImageSignature *)v39 isEqual:targetImageSignature];
 
     if ((v24 & 1) == 0)
     {
-      [v11 setTargetImageSignature:0];
-      [v11 setOpticalFlow:0];
+      [observationCopy setTargetImageSignature:0];
+      [observationCopy setOpticalFlow:0];
     }
 
-    v41 = [v10 session];
+    session = [contextCopy session];
     v43[0] = v13;
     v43[1] = v14;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
-    v40 = [(VNGenerateOpticalFlowRequest *)self _createGeneratorOptionsForRequestRevision:a3 session:v41 images:v25 previousTargetImageIsCurrentRefImage:v24 previousObservation:v11];
+    v40 = [(VNGenerateOpticalFlowRequest *)self _createGeneratorOptionsForRequestRevision:revision session:session images:v25 previousTargetImageIsCurrentRefImage:v24 previousObservation:observationCopy];
 
-    v26 = [v41 detectorOfType:v12 configuredWithOptions:v40 error:a6];
+    v26 = [session detectorOfType:v12 configuredWithOptions:v40 error:error];
     if (!v26)
     {
       v35 = 0;
@@ -162,7 +162,7 @@ LABEL_20:
     }
 
     -[VNImageBasedRequest regionOfInterestPixelRectForWidth:height:](self, "regionOfInterestPixelRectForWidth:height:", [v14 width], objc_msgSend(v14, "height"));
-    v31 = [v26 processUsingQualityOfServiceClass:objc_msgSend(v10 options:"qosClass") regionOfInterest:v40 warningRecorder:self error:a6 progressHandler:{0, v27, v28, v29, v30}];
+    v31 = [v26 processUsingQualityOfServiceClass:objc_msgSend(contextCopy options:"qosClass") regionOfInterest:v40 warningRecorder:self error:error progressHandler:{0, v27, v28, v29, v30}];
     v32 = v31;
     if (!v31)
     {
@@ -172,9 +172,9 @@ LABEL_20:
     if ([v31 count] == 1)
     {
       v37 = [v32 objectAtIndexedSubscript:0];
-      if (a3 == 1)
+      if (revision == 1)
       {
-        v33 = [[VNImageSignature alloc] initWithImageBuffer:v14 regionOfInterest:a6 error:v16, v18, v20, v22];
+        v33 = [[VNImageSignature alloc] initWithImageBuffer:v14 regionOfInterest:error error:v16, v18, v20, v22];
         [v37 setTargetImageSignature:v33];
       }
 
@@ -186,10 +186,10 @@ LABEL_20:
       goto LABEL_19;
     }
 
-    if (a6)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot generate optical flow"];
-      *a6 = v35 = 0;
+      *error = v35 = 0;
     }
 
     else
@@ -209,13 +209,13 @@ LABEL_23:
   return v35;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 1)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (revision == 1)
   {
-    v10 = [v8 previousSequencedObservationsAcceptedByRequest:self];
+    v10 = [contextCopy previousSequencedObservationsAcceptedByRequest:self];
     if ([v10 count])
     {
       v11 = [v10 objectAtIndexedSubscript:0];
@@ -232,28 +232,28 @@ LABEL_23:
     v11 = 0;
   }
 
-  v12 = [(VNGenerateOpticalFlowRequest *)self _internalPerformRevision:a3 inContext:v9 previousObservation:v11 error:a5];
+  v12 = [(VNGenerateOpticalFlowRequest *)self _internalPerformRevision:revision inContext:v9 previousObservation:v11 error:error];
   [v11 setTargetImageSignature:0];
   [v11 setOpticalFlow:0];
 
   return v12;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v19.receiver = self;
   v19.super_class = VNGenerateOpticalFlowRequest;
-  v6 = [(VNRequest *)&v19 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v6 = [(VNRequest *)&v19 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(VNGenerateOpticalFlowRequest *)self computationAccuracy];
-  if (v8 - 1 >= 3)
+  computationAccuracy = [(VNGenerateOpticalFlowRequest *)self computationAccuracy];
+  if (computationAccuracy - 1 >= 3)
   {
     v9 = VNGenerateOpticalFlowRequestComputationAccuracyLow;
   }
 
   else
   {
-    v9 = v8;
+    v9 = computationAccuracy;
   }
 
   v10 = [v7 numberWithUnsignedInteger:v9];
@@ -262,13 +262,13 @@ LABEL_23:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VNGenerateOpticalFlowRequest outputPixelFormat](self, "outputPixelFormat")}];
   [v6 setObject:v11 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_OutputPixelFormat"];
 
-  if (a3 == 2)
+  if (revision == 2)
   {
     v18 = 0;
     v12 = [(VNTargetedImageRequest *)self requiredTargetedImageBufferReturningError:&v18];
     v13 = v18;
-    v14 = [v13 localizedDescription];
-    [VNError VNAssert:v12 != 0 log:v14];
+    localizedDescription = [v13 localizedDescription];
+    [VNError VNAssert:v12 != 0 log:localizedDescription];
 
     [(VNImageBasedRequest *)self regionOfInterest];
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "aspectForRegionOfInterest:") == 1}];
@@ -281,18 +281,18 @@ LABEL_23:
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNGenerateOpticalFlowRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNGenerateOpticalFlowRequest *)self setComputationAccuracy:[(VNGenerateOpticalFlowRequest *)v5 computationAccuracy]];
       [(VNGenerateOpticalFlowRequest *)self setOutputPixelFormat:[(VNGenerateOpticalFlowRequest *)v5 outputPixelFormat]];
       [(VNGenerateOpticalFlowRequest *)self setKeepNetworkOutput:[(VNGenerateOpticalFlowRequest *)v5 keepNetworkOutput]];
@@ -300,14 +300,14 @@ LABEL_23:
   }
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 1 > 1)
+  if (revision - 1 > 1)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-      *a4 = v4 = 0;
+      *error = v4 = 0;
     }
 
     else

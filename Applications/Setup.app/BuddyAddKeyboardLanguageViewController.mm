@@ -1,56 +1,56 @@
 @interface BuddyAddKeyboardLanguageViewController
-- (BuddyAddKeyboardLanguageViewController)initWithCompletion:(id)a3;
+- (BuddyAddKeyboardLanguageViewController)initWithCompletion:(id)completion;
 - (void)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation BuddyAddKeyboardLanguageViewController
 
-- (BuddyAddKeyboardLanguageViewController)initWithCompletion:(id)a3
+- (BuddyAddKeyboardLanguageViewController)initWithCompletion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = BuddyAddKeyboardLanguageViewController;
-  v8 = [(BuddyAddKeyboardLanguageViewController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(BuddyAddKeyboardLanguageViewController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v8 setCompletion:location[0]];
+    [selfCopy setCompletion:location[0]];
   }
 
-  v4 = v8;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = BuddyAddKeyboardLanguageViewController;
   [(BuddyAddKeyboardLanguageViewController *)&v4 viewDidLoad];
   location = objc_alloc_init(KSAddKeyboardLanguageListController);
   [location setReturnSuggestedInputModes:1];
-  [location setRootController:v6];
+  [location setRootController:selfCopy];
   v2 = objc_alloc_init(PSSpecifier);
   [location setSpecifier:v2];
 
-  [location setParentController:v6];
-  [(BuddyAddKeyboardLanguageViewController *)v6 showController:location];
-  [(BuddyAddKeyboardLanguageViewController *)v6 setController:location];
+  [location setParentController:selfCopy];
+  [(BuddyAddKeyboardLanguageViewController *)selfCopy showController:location];
+  [(BuddyAddKeyboardLanguageViewController *)selfCopy setController:location];
   objc_storeStrong(&location, 0);
 }
 
 - (void)dismiss
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v13 = 2;
@@ -63,13 +63,13 @@
   }
 
   objc_storeStrong(location, 0);
-  v4 = v15;
+  v4 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1000F192C;
   v10 = &unk_10032B0D0;
-  v11 = v15;
+  v11 = selfCopy;
   v5.receiver = v4;
   v5.super_class = BuddyAddKeyboardLanguageViewController;
   [(BuddyAddKeyboardLanguageViewController *)&v5 dismissWithCompletion:&v6];

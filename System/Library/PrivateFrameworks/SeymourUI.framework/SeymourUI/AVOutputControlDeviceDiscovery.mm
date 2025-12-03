@@ -1,6 +1,6 @@
 @interface AVOutputControlDeviceDiscovery
 - (AVOutputControlDeviceDiscovery)init;
-- (BOOL)supportsFitnessDataDestinationForDeviceIdentifier:(id)a3;
+- (BOOL)supportsFitnessDataDestinationForDeviceIdentifier:(id)identifier;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
@@ -31,18 +31,18 @@
   [(AVOutputControlDeviceDiscovery *)&v3 dealloc];
 }
 
-- (BOOL)supportsFitnessDataDestinationForDeviceIdentifier:(id)a3
+- (BOOL)supportsFitnessDataDestinationForDeviceIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(AVOutputControlDeviceDiscovery *)self session];
-  v6 = [v5 availableOutputDevices];
+  session = [(AVOutputControlDeviceDiscovery *)self session];
+  availableOutputDevices = [session availableOutputDevices];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [availableOutputDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -54,16 +54,16 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(availableOutputDevices);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 deviceID];
-        if ([v13 isEqualToString:v4])
+        deviceID = [v12 deviceID];
+        if ([deviceID isEqualToString:identifierCopy])
         {
-          v14 = [v12 supportsFitnessDataDestination];
+          supportsFitnessDataDestination = [v12 supportsFitnessDataDestination];
 
-          v9 |= v14;
+          v9 |= supportsFitnessDataDestination;
         }
 
         else
@@ -71,7 +71,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [availableOutputDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -87,14 +87,14 @@
 
 - (void)activate
 {
-  v2 = [(AVOutputControlDeviceDiscovery *)self session];
-  [v2 setDiscoveryMode:2];
+  session = [(AVOutputControlDeviceDiscovery *)self session];
+  [session setDiscoveryMode:2];
 }
 
 - (void)deactivate
 {
-  v2 = [(AVOutputControlDeviceDiscovery *)self session];
-  [v2 setDiscoveryMode:0];
+  session = [(AVOutputControlDeviceDiscovery *)self session];
+  [session setDiscoveryMode:0];
 }
 
 @end

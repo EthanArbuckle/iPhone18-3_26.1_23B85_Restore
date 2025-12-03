@@ -1,9 +1,9 @@
 @interface NTKStopwatchComplicationController
 - (void)_deactivate;
 - (void)_handleStopwatchChange;
-- (void)performTapActionForDisplayWrapper:(id)a3;
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)performTapActionForDisplayWrapper:(id)wrapper;
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NTKStopwatchComplicationController
@@ -14,20 +14,20 @@
   [v3 removeObserver:self];
 }
 
-- (void)performTapActionForDisplayWrapper:(id)a3
+- (void)performTapActionForDisplayWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v5 = [NSURL URLWithString:@"nanostopwatch://"];
-  [(NTKStopwatchComplicationController *)self _openAppWithURL:v5 forDisplayWrapper:v4];
+  [(NTKStopwatchComplicationController *)self _openAppWithURL:v5 forDisplayWrapper:wrapperCopy];
 }
 
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper
 {
   v6.receiver = self;
   v6.super_class = NTKStopwatchComplicationController;
-  [(NTKStopwatchComplicationController *)&v6 setDisplayProperties:a3 forDisplayWrapper:a4];
-  v5 = [(NTKStopwatchComplicationController *)self legacyDisplay];
-  [(NTKStopwatchComplicationController *)self _configureForLegacyDisplay:v5];
+  [(NTKStopwatchComplicationController *)&v6 setDisplayProperties:properties forDisplayWrapper:wrapper];
+  legacyDisplay = [(NTKStopwatchComplicationController *)self legacyDisplay];
+  [(NTKStopwatchComplicationController *)self _configureForLegacyDisplay:legacyDisplay];
 }
 
 - (void)_handleStopwatchChange
@@ -40,9 +40,9 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  objc_storeStrong(&self->_timeTravelDate, a3);
+  objc_storeStrong(&self->_timeTravelDate, date);
 
   [(NTKStopwatchComplicationController *)self _updateDisplay];
 }

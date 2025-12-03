@@ -1,15 +1,15 @@
 @interface HGHeadphoneMotionDataProvider
 - (NSString)description;
 - (_TtC12HeadGestures29HGHeadphoneMotionDataProvider)init;
-- (void)headphoneMotionManagerDidConnect:(id)a3;
-- (void)headphoneMotionManagerDidDisconnect:(id)a3;
+- (void)headphoneMotionManagerDidConnect:(id)connect;
+- (void)headphoneMotionManagerDidDisconnect:(id)disconnect;
 @end
 
 @implementation HGHeadphoneMotionDataProvider
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2511066C8();
 
   v3 = sub_251130EE8();
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (void)headphoneMotionManagerDidConnect:(id)a3
+- (void)headphoneMotionManagerDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
+  connectCopy = connect;
+  selfCopy = self;
   sub_2511072C8();
 }
 
-- (void)headphoneMotionManagerDidDisconnect:(id)a3
+- (void)headphoneMotionManagerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_25110741C();
 }
 

@@ -1,53 +1,53 @@
 @interface AVTCoreDataChangeTracker
-- (AVTCoreDataChangeTracker)initWithConfiguration:(id)a3 environment:(id)a4;
-- (AVTCoreDataChangeTracker)initWithConfiguration:(id)a3 recordTransformer:(id)a4 environment:(id)a5;
-- (BOOL)processChangeTransactionsWithChangeTokenLocation:(id)a3 handler:(id)a4 error:(id *)a5;
-- (BOOL)saveToken:(id)a3 location:(id)a4 error:(id *)a5;
-- (id)currentHistoryTokenForLocation:(id)a3;
-- (id)enumerateChangesAfterToken:(id)a3 managedObjectContext:(id)a4 changesHandler:(id)a5 error:(id *)a6;
-- (id)recordIdentifierForChange:(id)a3 managedObjectContext:(id)a4;
-- (id)trackerChangesFromPersistentChanges:(id)a3 managedObjectContext:(id)a4;
+- (AVTCoreDataChangeTracker)initWithConfiguration:(id)configuration environment:(id)environment;
+- (AVTCoreDataChangeTracker)initWithConfiguration:(id)configuration recordTransformer:(id)transformer environment:(id)environment;
+- (BOOL)processChangeTransactionsWithChangeTokenLocation:(id)location handler:(id)handler error:(id *)error;
+- (BOOL)saveToken:(id)token location:(id)location error:(id *)error;
+- (id)currentHistoryTokenForLocation:(id)location;
+- (id)enumerateChangesAfterToken:(id)token managedObjectContext:(id)context changesHandler:(id)handler error:(id *)error;
+- (id)recordIdentifierForChange:(id)change managedObjectContext:(id)context;
+- (id)trackerChangesFromPersistentChanges:(id)changes managedObjectContext:(id)context;
 @end
 
 @implementation AVTCoreDataChangeTracker
 
-- (AVTCoreDataChangeTracker)initWithConfiguration:(id)a3 environment:(id)a4
+- (AVTCoreDataChangeTracker)initWithConfiguration:(id)configuration environment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(AVTAvatarManagedRecordTransformer);
-  v9 = [(AVTCoreDataChangeTracker *)self initWithConfiguration:v7 recordTransformer:v8 environment:v6];
+  v9 = [(AVTCoreDataChangeTracker *)self initWithConfiguration:configurationCopy recordTransformer:v8 environment:environmentCopy];
 
   return v9;
 }
 
-- (AVTCoreDataChangeTracker)initWithConfiguration:(id)a3 recordTransformer:(id)a4 environment:(id)a5
+- (AVTCoreDataChangeTracker)initWithConfiguration:(id)configuration recordTransformer:(id)transformer environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  transformerCopy = transformer;
+  environmentCopy = environment;
   v17.receiver = self;
   v17.super_class = AVTCoreDataChangeTracker;
   v12 = [(AVTCoreDataChangeTracker *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_environment, a5);
-    v14 = [v11 logger];
+    objc_storeStrong(&v12->_environment, environment);
+    logger = [environmentCopy logger];
     logger = v13->_logger;
-    v13->_logger = v14;
+    v13->_logger = logger;
 
-    objc_storeStrong(&v13->_recordTransformer, a4);
-    objc_storeStrong(&v13->_configuration, a3);
+    objc_storeStrong(&v13->_recordTransformer, transformer);
+    objc_storeStrong(&v13->_configuration, configuration);
   }
 
   return v13;
 }
 
-- (BOOL)processChangeTransactionsWithChangeTokenLocation:(id)a3 handler:(id)a4 error:(id *)a5
+- (BOOL)processChangeTransactionsWithChangeTokenLocation:(id)location handler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  handlerCopy = handler;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -64,31 +64,31 @@
   v36 = __Block_byref_object_copy__5;
   v37 = __Block_byref_object_dispose__5;
   v38 = 0;
-  v10 = [(AVTCoreDataChangeTracker *)self currentHistoryTokenForLocation:v8];
-  v11 = [(AVTCoreDataChangeTracker *)self configuration];
-  v12 = [v11 createManagedObjectContext];
+  v10 = [(AVTCoreDataChangeTracker *)self currentHistoryTokenForLocation:locationCopy];
+  configuration = [(AVTCoreDataChangeTracker *)self configuration];
+  createManagedObjectContext = [configuration createManagedObjectContext];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeTokenLocation_handler_error___block_invoke;
   v25[3] = &unk_278CFADF8;
   v30 = &v45;
-  v13 = v12;
+  v13 = createManagedObjectContext;
   v31 = &v33;
   v32 = &v39;
   v26 = v13;
-  v27 = self;
+  selfCopy = self;
   v14 = v10;
   v28 = v14;
-  v15 = v9;
+  v15 = handlerCopy;
   v29 = v15;
   [v13 performBlockAndWait:v25];
   if ((v46[3] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v19 = 0;
-      *a5 = v34[5];
+      *error = v34[5];
       goto LABEL_11;
     }
 
@@ -102,20 +102,20 @@ LABEL_10:
   {
     v17 = (v34 + 5);
     obj = v34[5];
-    v18 = [(AVTCoreDataChangeTracker *)self saveToken:v16 location:v8 error:&obj];
+    v18 = [(AVTCoreDataChangeTracker *)self saveToken:v16 location:locationCopy error:&obj];
     objc_storeStrong(v17, obj);
     *(v46 + 24) = v18;
     if (!v18)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v34[5];
+        *error = v34[5];
       }
 
-      v20 = [(AVTCoreDataChangeTracker *)self logger];
+      logger = [(AVTCoreDataChangeTracker *)self logger];
       v21 = [v34[5] description];
-      v22 = [v8 path];
-      [v20 logErrorSavingChangeToken:v21 location:v22];
+      path = [locationCopy path];
+      [logger logErrorSavingChangeToken:v21 location:path];
 
       goto LABEL_10;
     }
@@ -187,17 +187,17 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
   return v8;
 }
 
-- (id)trackerChangesFromPersistentChanges:(id)a3 managedObjectContext:(id)a4
+- (id)trackerChangesFromPersistentChanges:(id)changes managedObjectContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v19 = a4;
-  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  changesCopy = changes;
+  contextCopy = context;
+  v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v6;
+  v7 = changesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -215,7 +215,7 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
         v12 = *(*(&v20 + 1) + 8 * i);
         if ((*(AVTIsPersistentChangeOfInterest + 2))(AVTIsPersistentChangeOfInterest, v12))
         {
-          v13 = [(AVTCoreDataChangeTracker *)self recordIdentifierForChange:v12 managedObjectContext:v19];
+          v13 = [(AVTCoreDataChangeTracker *)self recordIdentifierForChange:v12 managedObjectContext:contextCopy];
           if (v13)
           {
             v14 = -[AVTCoreDataChangeTrackerChange initWithRecordIdentifier:changeType:]([AVTCoreDataChangeTrackerChange alloc], "initWithRecordIdentifier:changeType:", v13, +[AVTCoreDataChangeTrackerChange trackerChangeTypeFromPersistentChangeType:](AVTCoreDataChangeTrackerChange, "trackerChangeTypeFromPersistentChangeType:", [v12 changeType]));
@@ -236,14 +236,14 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
   return v15;
 }
 
-- (id)currentHistoryTokenForLocation:(id)a3
+- (id)currentHistoryTokenForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [objc_opt_class() tokenFileURLForLocation:v4];
+  locationCopy = location;
+  v5 = [objc_opt_class() tokenFileURLForLocation:locationCopy];
 
   v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [v5 path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if (v8)
   {
@@ -253,22 +253,22 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
     if (v9)
     {
       v23 = v10;
-      v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v23];
+      environment2 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:&v23];
       v12 = v23;
 
-      if (v11)
+      if (environment2)
       {
-        v11 = v11;
+        environment2 = environment2;
         v10 = v12;
-        v13 = v11;
+        v13 = environment2;
       }
 
       else
       {
-        v19 = [(AVTCoreDataChangeTracker *)self environment];
-        v20 = [v19 logger];
+        environment = [(AVTCoreDataChangeTracker *)self environment];
+        logger = [environment logger];
         v21 = [v12 description];
-        [v20 logErrorReadingCurrentHistoryToken:v21];
+        [logger logErrorReadingCurrentHistoryToken:v21];
 
         v10 = v12;
         v13 = 0;
@@ -277,10 +277,10 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
 
     else
     {
-      v11 = [(AVTCoreDataChangeTracker *)self environment];
-      v17 = [v11 logger];
+      environment2 = [(AVTCoreDataChangeTracker *)self environment];
+      logger2 = [environment2 logger];
       v18 = [v10 description];
-      [v17 logErrorReadingCurrentHistoryToken:v18];
+      [logger2 logErrorReadingCurrentHistoryToken:v18];
 
       v13 = 0;
     }
@@ -288,10 +288,10 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
 
   else
   {
-    v14 = [(AVTCoreDataChangeTracker *)self environment];
-    v15 = [v14 logger];
-    v16 = [v5 path];
-    [v15 logCurrentHistoryTokenFileDoesntExist:v16];
+    environment3 = [(AVTCoreDataChangeTracker *)self environment];
+    logger3 = [environment3 logger];
+    path2 = [v5 path];
+    [logger3 logCurrentHistoryTokenFileDoesntExist:path2];
 
     v13 = 0;
   }
@@ -299,11 +299,11 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
   return v13;
 }
 
-- (BOOL)saveToken:(id)a3 location:(id)a4 error:(id *)a5
+- (BOOL)saveToken:(id)token location:(id)location error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  tokenCopy = token;
+  locationCopy = location;
+  if (tokenCopy)
   {
     v25 = 0;
     v26 = &v25;
@@ -315,32 +315,32 @@ uint64_t __91__AVTCoreDataChangeTracker_processChangeTransactionsWithChangeToken
     v22 = __Block_byref_object_copy__5;
     v23 = __Block_byref_object_dispose__5;
     v24 = 0;
-    v10 = [(AVTCoreDataChangeTracker *)self logger];
+    logger = [(AVTCoreDataChangeTracker *)self logger];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke;
     v13[3] = &unk_278CFAE20;
-    v14 = v9;
+    v14 = locationCopy;
     v17 = &v25;
     v18 = &v19;
-    v15 = v8;
-    v16 = self;
-    [v10 savingChangeTrackerToken:v13];
+    v15 = tokenCopy;
+    selfCopy = self;
+    [logger savingChangeTrackerToken:v13];
 
     v11 = *(v26 + 24);
-    if (a5 && (v26[3] & 1) == 0)
+    if (error && (v26[3] & 1) == 0)
     {
-      *a5 = v20[5];
+      *error = v20[5];
     }
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v25, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [AVTError errorWithCode:730 userInfo:0];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -382,16 +382,16 @@ void __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke(uint
   }
 }
 
-- (id)enumerateChangesAfterToken:(id)a3 managedObjectContext:(id)a4 changesHandler:(id)a5 error:(id *)a6
+- (id)enumerateChangesAfterToken:(id)token managedObjectContext:(id)context changesHandler:(id)handler error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBE4B0] fetchHistoryAfterToken:v9];
+  tokenCopy = token;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = [MEMORY[0x277CBE4B0] fetchHistoryAfterToken:tokenCopy];
   [v12 setResultType:5];
   v43 = 0;
-  v13 = [v10 executeRequest:v12 error:&v43];
+  v13 = [contextCopy executeRequest:v12 error:&v43];
   v14 = v43;
   v15 = v14;
   if (v13)
@@ -399,14 +399,14 @@ void __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke(uint
     v34 = v14;
     v35 = v13;
     v36 = v12;
-    v37 = v10;
-    v16 = [v13 result];
-    v17 = v9;
+    v37 = contextCopy;
+    result = [v13 result];
+    v17 = tokenCopy;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v18 = v16;
+    v18 = result;
     v19 = [v18 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (!v19)
     {
@@ -425,13 +425,13 @@ void __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke(uint
         }
 
         v23 = *(*(&v39 + 1) + 8 * i);
-        v24 = [v23 token];
+        token = [v23 token];
 
-        v25 = [v23 changes];
-        v26 = v25;
-        if (v24)
+        changes = [v23 changes];
+        v26 = changes;
+        if (token)
         {
-          v27 = v11[2](v11, v25);
+          v27 = handlerCopy[2](handlerCopy, changes);
 
           if (!v27)
           {
@@ -439,20 +439,20 @@ void __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke(uint
           }
 
           [v23 token];
-          v17 = v28 = v17;
+          v17 = logger = v17;
         }
 
         else
         {
-          v29 = [v25 count];
+          v29 = [changes count];
 
           if (!v29)
           {
             continue;
           }
 
-          v28 = [(AVTCoreDataChangeTracker *)self logger];
-          [v28 logTransactionHasChangesButNoToken];
+          logger = [(AVTCoreDataChangeTracker *)self logger];
+          [logger logTransactionHasChangesButNoToken];
         }
       }
 
@@ -461,7 +461,7 @@ void __53__AVTCoreDataChangeTracker_saveToken_location_error___block_invoke(uint
       {
 LABEL_15:
 
-        v10 = v37;
+        contextCopy = v37;
         v13 = v35;
         v12 = v36;
         v15 = v34;
@@ -472,12 +472,12 @@ LABEL_15:
 
   if (v14)
   {
-    if (a6)
+    if (error)
     {
 LABEL_18:
       v30 = v15;
       v17 = 0;
-      *a6 = v15;
+      *error = v15;
       goto LABEL_21;
     }
   }
@@ -489,7 +489,7 @@ LABEL_18:
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:&v45 count:1];
     v15 = [AVTError errorWithCode:1 userInfo:v31];
 
-    if (a6)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -503,46 +503,46 @@ LABEL_21:
   return v17;
 }
 
-- (id)recordIdentifierForChange:(id)a3 managedObjectContext:(id)a4
+- (id)recordIdentifierForChange:(id)change managedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 changeType] == 2)
+  changeCopy = change;
+  contextCopy = context;
+  if ([changeCopy changeType] == 2)
   {
-    v8 = [v6 tombstone];
-    [v8 objectForKeyedSubscript:@"identifier"];
+    tombstone = [changeCopy tombstone];
+    [tombstone objectForKeyedSubscript:@"identifier"];
   }
 
   else
   {
-    v9 = [v6 changedObjectID];
-    v8 = [v7 objectWithID:v9];
+    changedObjectID = [changeCopy changedObjectID];
+    tombstone = [contextCopy objectWithID:changedObjectID];
 
-    [v8 identifier];
+    [tombstone identifier];
   }
   v10 = ;
 
-  v11 = [(AVTCoreDataChangeTracker *)self logger];
+  logger = [(AVTCoreDataChangeTracker *)self logger];
   if (v10)
   {
-    v12 = [v10 UUIDString];
-    v13 = [v6 changeType];
-    v14 = [v6 changedObjectID];
-    v15 = [v14 URIRepresentation];
-    v16 = [v15 description];
-    [v11 logFoundRecordIdentifier:v12 changeType:v13 managedObjectID:v16];
+    uUIDString = [v10 UUIDString];
+    changeType = [changeCopy changeType];
+    changedObjectID2 = [changeCopy changedObjectID];
+    uRIRepresentation = [changedObjectID2 URIRepresentation];
+    v16 = [uRIRepresentation description];
+    [logger logFoundRecordIdentifier:uUIDString changeType:changeType managedObjectID:v16];
 
-    v11 = [(AVTCoreDataChangeTracker *)self recordTransformer];
-    v17 = [v11 identifierForManagedRecordIdentifier:v10];
+    logger = [(AVTCoreDataChangeTracker *)self recordTransformer];
+    v17 = [logger identifierForManagedRecordIdentifier:v10];
   }
 
   else
   {
-    v18 = [v6 changeType];
-    v19 = [v6 changedObjectID];
-    v20 = [v19 URIRepresentation];
-    v21 = [v20 description];
-    [v11 logCouldntFindRecordIdentifierForChangeType:v18 managedObjectID:v21];
+    changeType2 = [changeCopy changeType];
+    changedObjectID3 = [changeCopy changedObjectID];
+    uRIRepresentation2 = [changedObjectID3 URIRepresentation];
+    v21 = [uRIRepresentation2 description];
+    [logger logCouldntFindRecordIdentifierForChangeType:changeType2 managedObjectID:v21];
 
     v17 = 0;
   }

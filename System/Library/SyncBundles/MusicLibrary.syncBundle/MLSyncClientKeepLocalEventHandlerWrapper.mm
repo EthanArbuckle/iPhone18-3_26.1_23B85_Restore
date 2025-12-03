@@ -2,7 +2,7 @@
 + (MLSyncClientKeepLocalEventHandlerWrapper)sharedInstance;
 - (MLSyncKeepLocalEventHandler)keepLocalEventHandler;
 - (id)_init;
-- (void)initializeKeepLocalHandlerWithQueue:(id)a3 library:(id)a4;
+- (void)initializeKeepLocalHandlerWithQueue:(id)queue library:(id)library;
 - (void)startKeepLocalHandler;
 - (void)stopKeepLocalHandler;
 @end
@@ -72,10 +72,10 @@
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)initializeKeepLocalHandlerWithQueue:(id)a3 library:(id)a4
+- (void)initializeKeepLocalHandlerWithQueue:(id)queue library:(id)library
 {
-  v7 = a4;
-  v8 = a3;
+  libraryCopy = library;
+  queueCopy = queue;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_keepLocalEventHandler)
   {
@@ -83,7 +83,7 @@
     [v11 handleFailureInMethod:a2 object:self file:@"MLSyncClientKeepLocalEventHandlerWrapper.m" lineNumber:44 description:@"KeepLocal event handler is already initialized"];
   }
 
-  v9 = [[MLSyncKeepLocalEventHandler alloc] initWithQueue:v8 library:v7];
+  v9 = [[MLSyncKeepLocalEventHandler alloc] initWithQueue:queueCopy library:libraryCopy];
 
   keepLocalEventHandler = self->_keepLocalEventHandler;
   self->_keepLocalEventHandler = v9;

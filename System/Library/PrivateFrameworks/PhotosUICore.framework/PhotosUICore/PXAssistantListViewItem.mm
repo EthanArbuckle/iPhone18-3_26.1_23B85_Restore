@@ -1,26 +1,26 @@
 @interface PXAssistantListViewItem
-+ (id)itemWithTag:(int64_t)a3 title:(id)a4 enabled:(BOOL)a5;
-+ (id)itemWithTitle:(id)a3;
-+ (id)navigationItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 enabled:(BOOL)a6;
-+ (id)ruleItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 detail:(id)a6 systemImageName:(id)a7 enabled:(BOOL)a8;
-+ (id)selectionItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 selected:(BOOL)a6 enabled:(BOOL)a7;
++ (id)itemWithTag:(int64_t)tag title:(id)title enabled:(BOOL)enabled;
++ (id)itemWithTitle:(id)title;
++ (id)navigationItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle enabled:(BOOL)enabled;
++ (id)ruleItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle detail:(id)detail systemImageName:(id)name enabled:(BOOL)enabled;
++ (id)selectionItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle selected:(BOOL)selected enabled:(BOOL)enabled;
 - (PXAssistantListViewItem)init;
-- (PXAssistantListViewItem)initWithType:(int64_t)a3 tag:(int64_t)a4 representedObject:(id)a5 title:(id)a6 subtitle:(id)a7 detail:(id)a8 systemImageName:(id)a9 selected:(BOOL)a10 enabled:(BOOL)a11;
+- (PXAssistantListViewItem)initWithType:(int64_t)type tag:(int64_t)tag representedObject:(id)object title:(id)title subtitle:(id)subtitle detail:(id)detail systemImageName:(id)name selected:(BOOL)self0 enabled:(BOOL)self1;
 @end
 
 @implementation PXAssistantListViewItem
 
-- (PXAssistantListViewItem)initWithType:(int64_t)a3 tag:(int64_t)a4 representedObject:(id)a5 title:(id)a6 subtitle:(id)a7 detail:(id)a8 systemImageName:(id)a9 selected:(BOOL)a10 enabled:(BOOL)a11
+- (PXAssistantListViewItem)initWithType:(int64_t)type tag:(int64_t)tag representedObject:(id)object title:(id)title subtitle:(id)subtitle detail:(id)detail systemImageName:(id)name selected:(BOOL)self0 enabled:(BOOL)self1
 {
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  if (!v20)
+  objectCopy = object;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  detailCopy = detail;
+  nameCopy = name;
+  if (!titleCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXAssistantListViewItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantListViewItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v36.receiver = self;
@@ -29,27 +29,27 @@
   v25 = v24;
   if (v24)
   {
-    v24->_type = a3;
-    v24->_tag = a4;
-    objc_storeStrong(&v24->_representedObject, a5);
-    v26 = [v20 copy];
+    v24->_type = type;
+    v24->_tag = tag;
+    objc_storeStrong(&v24->_representedObject, object);
+    v26 = [titleCopy copy];
     title = v25->_title;
     v25->_title = v26;
 
-    v28 = [v21 copy];
+    v28 = [subtitleCopy copy];
     subtitle = v25->_subtitle;
     v25->_subtitle = v28;
 
-    v30 = [v22 copy];
+    v30 = [detailCopy copy];
     detail = v25->_detail;
     v25->_detail = v30;
 
-    v32 = [v23 copy];
+    v32 = [nameCopy copy];
     systemImageName = v25->_systemImageName;
     v25->_systemImageName = v32;
 
-    v25->_selected = a10;
-    v25->_enabled = a11;
+    v25->_selected = selected;
+    v25->_enabled = enabled;
   }
 
   return v25;
@@ -57,62 +57,62 @@
 
 - (PXAssistantListViewItem)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssistantListViewItem.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXAssistantListViewItem init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssistantListViewItem.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXAssistantListViewItem init]"}];
 
   abort();
 }
 
-+ (id)ruleItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 detail:(id)a6 systemImageName:(id)a7 enabled:(BOOL)a8
++ (id)ruleItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle detail:(id)detail systemImageName:(id)name enabled:(BOOL)enabled
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  BYTE1(v20) = a8;
+  nameCopy = name;
+  detailCopy = detail;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  BYTE1(v20) = enabled;
   LOBYTE(v20) = 0;
-  v18 = [[a1 alloc] initWithType:4 tag:a3 representedObject:0 title:v17 subtitle:v16 detail:v15 systemImageName:v14 selected:v20 enabled:?];
+  v18 = [[self alloc] initWithType:4 tag:tag representedObject:0 title:titleCopy subtitle:subtitleCopy detail:detailCopy systemImageName:nameCopy selected:v20 enabled:?];
 
   return v18;
 }
 
-+ (id)navigationItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 enabled:(BOOL)a6
++ (id)navigationItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle enabled:(BOOL)enabled
 {
-  v10 = a5;
-  v11 = a4;
-  BYTE1(v14) = a6;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  BYTE1(v14) = enabled;
   LOBYTE(v14) = 0;
-  v12 = [[a1 alloc] initWithType:2 tag:a3 representedObject:0 title:v11 subtitle:v10 detail:0 systemImageName:0 selected:v14 enabled:?];
+  v12 = [[self alloc] initWithType:2 tag:tag representedObject:0 title:titleCopy subtitle:subtitleCopy detail:0 systemImageName:0 selected:v14 enabled:?];
 
   return v12;
 }
 
-+ (id)selectionItemWithTag:(int64_t)a3 title:(id)a4 subtitle:(id)a5 selected:(BOOL)a6 enabled:(BOOL)a7
++ (id)selectionItemWithTag:(int64_t)tag title:(id)title subtitle:(id)subtitle selected:(BOOL)selected enabled:(BOOL)enabled
 {
-  v12 = a5;
-  v13 = a4;
-  BYTE1(v16) = a7;
-  LOBYTE(v16) = a6;
-  v14 = [[a1 alloc] initWithType:1 tag:a3 representedObject:0 title:v13 subtitle:v12 detail:0 systemImageName:0 selected:v16 enabled:?];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  BYTE1(v16) = enabled;
+  LOBYTE(v16) = selected;
+  v14 = [[self alloc] initWithType:1 tag:tag representedObject:0 title:titleCopy subtitle:subtitleCopy detail:0 systemImageName:0 selected:v16 enabled:?];
 
   return v14;
 }
 
-+ (id)itemWithTag:(int64_t)a3 title:(id)a4 enabled:(BOOL)a5
++ (id)itemWithTag:(int64_t)tag title:(id)title enabled:(BOOL)enabled
 {
-  v8 = a4;
-  BYTE1(v11) = a5;
+  titleCopy = title;
+  BYTE1(v11) = enabled;
   LOBYTE(v11) = 0;
-  v9 = [[a1 alloc] initWithType:0 tag:a3 representedObject:0 title:v8 subtitle:0 detail:0 systemImageName:0 selected:v11 enabled:?];
+  v9 = [[self alloc] initWithType:0 tag:tag representedObject:0 title:titleCopy subtitle:0 detail:0 systemImageName:0 selected:v11 enabled:?];
 
   return v9;
 }
 
-+ (id)itemWithTitle:(id)a3
++ (id)itemWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   LOWORD(v7) = 256;
-  v5 = [[a1 alloc] initWithType:0 tag:0 representedObject:0 title:v4 subtitle:0 detail:0 systemImageName:0 selected:v7 enabled:?];
+  v5 = [[self alloc] initWithType:0 tag:0 representedObject:0 title:titleCopy subtitle:0 detail:0 systemImageName:0 selected:v7 enabled:?];
 
   return v5;
 }

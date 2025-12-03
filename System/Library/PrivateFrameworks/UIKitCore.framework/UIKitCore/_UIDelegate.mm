@@ -1,15 +1,15 @@
 @interface _UIDelegate
-- (void)attachToObjectLifecycle:(id)a3;
+- (void)attachToObjectLifecycle:(id)lifecycle;
 - (void)detachFromObjectLifecycle;
 @end
 
 @implementation _UIDelegate
 
-- (void)attachToObjectLifecycle:(id)a3
+- (void)attachToObjectLifecycle:(id)lifecycle
 {
   key = self;
-  self->_attachedObject = a3;
-  objc_setAssociatedObject(a3, &key, self, 1);
+  self->_attachedObject = lifecycle;
+  objc_setAssociatedObject(lifecycle, &key, self, 1);
 }
 
 - (void)detachFromObjectLifecycle

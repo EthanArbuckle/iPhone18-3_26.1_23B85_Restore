@@ -1,28 +1,28 @@
 @interface HUNavigationMenuFactory
-+ (id)addMenuForHome:(id)a3 room:(id)a4 delegate:(id)a5 includeDisabledElements:(BOOL)a6;
-+ (id)homeMenuForButton:(id)a3;
-+ (id)systemImageForActionType:(int64_t)a3;
++ (id)addMenuForHome:(id)home room:(id)room delegate:(id)delegate includeDisabledElements:(BOOL)elements;
++ (id)homeMenuForButton:(id)button;
++ (id)systemImageForActionType:(int64_t)type;
 - (HUNavigationMenuFactory)init;
 @end
 
 @implementation HUNavigationMenuFactory
 
-+ (id)homeMenuForButton:(id)a3
++ (id)homeMenuForButton:(id)button
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_20CF6D3E8(v4);
+  buttonCopy = button;
+  v5 = sub_20CF6D3E8(buttonCopy);
 
   return v5;
 }
 
-+ (id)addMenuForHome:(id)a3 room:(id)a4 delegate:(id)a5 includeDisabledElements:(BOOL)a6
++ (id)addMenuForHome:(id)home room:(id)room delegate:(id)delegate includeDisabledElements:(BOOL)elements
 {
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a4;
+  homeCopy = home;
+  roomCopy = room;
   swift_unknownObjectRetain();
-  sub_20CF6D734(v10, a4, a5, a6);
+  sub_20CF6D734(homeCopy, room, delegate, elements);
 
   swift_unknownObjectRelease();
   sub_20CECF940(0, &unk_28111FFC0);
@@ -38,14 +38,14 @@
   return [(HUNavigationMenuFactory *)&v3 init];
 }
 
-+ (id)systemImageForActionType:(int64_t)a3
++ (id)systemImageForActionType:(int64_t)type
 {
-  sub_20CF72A44(a3);
+  sub_20CF72A44(type);
   v3 = sub_20D5677F8();
 
-  v4 = [objc_opt_self() systemImageNamed_];
+  systemImageNamed_ = [objc_opt_self() systemImageNamed_];
 
-  return v4;
+  return systemImageNamed_;
 }
 
 @end

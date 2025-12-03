@@ -1,25 +1,25 @@
 @interface PXVideoFormatMetadataProviderObjc
-- (PXVideoFormatMetadataProviderObjc)initWithImageManager:(id)a3;
+- (PXVideoFormatMetadataProviderObjc)initWithImageManager:(id)manager;
 - (void)cancelActiveRequest;
-- (void)requestVideoMetadataForItem:(id)a3 processingQueue:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
+- (void)requestVideoMetadataForItem:(id)item processingQueue:(id)queue callbackQueue:(id)callbackQueue completion:(id)completion;
 @end
 
 @implementation PXVideoFormatMetadataProviderObjc
 
-- (void)requestVideoMetadataForItem:(id)a3 processingQueue:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)requestVideoMetadataForItem:(id)item processingQueue:(id)queue callbackQueue:(id)callbackQueue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PXVideoFormatMetadataProviderObjc *)self metadataProvider];
+  completionCopy = completion;
+  callbackQueueCopy = callbackQueue;
+  queueCopy = queue;
+  itemCopy = item;
+  metadataProvider = [(PXVideoFormatMetadataProviderObjc *)self metadataProvider];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __106__PXVideoFormatMetadataProviderObjc_requestVideoMetadataForItem_processingQueue_callbackQueue_completion___block_invoke;
   v16[3] = &unk_1E772FEB0;
-  v17 = v10;
-  v15 = v10;
-  [v14 requestVideoMetadataFor:v13 processingQueue:v12 callbackQueue:v11 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [metadataProvider requestVideoMetadataFor:itemCopy processingQueue:queueCopy callbackQueue:callbackQueueCopy completion:v16];
 }
 
 void __106__PXVideoFormatMetadataProviderObjc_requestVideoMetadataForItem_processingQueue_callbackQueue_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -40,19 +40,19 @@ void __106__PXVideoFormatMetadataProviderObjc_requestVideoMetadataForItem_proces
 
 - (void)cancelActiveRequest
 {
-  v2 = [(PXVideoFormatMetadataProviderObjc *)self metadataProvider];
-  [v2 cancelActiveRequest];
+  metadataProvider = [(PXVideoFormatMetadataProviderObjc *)self metadataProvider];
+  [metadataProvider cancelActiveRequest];
 }
 
-- (PXVideoFormatMetadataProviderObjc)initWithImageManager:(id)a3
+- (PXVideoFormatMetadataProviderObjc)initWithImageManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PXVideoFormatMetadataProviderObjc;
   v5 = [(PXVideoFormatMetadataProviderObjc *)&v9 init];
   if (v5)
   {
-    v6 = [[_TtC12PhotosUICore29PXVideoFormatMetadataProvider alloc] initWithImageManager:v4];
+    v6 = [[_TtC12PhotosUICore29PXVideoFormatMetadataProvider alloc] initWithImageManager:managerCopy];
     metadataProvider = v5->_metadataProvider;
     v5->_metadataProvider = v6;
   }

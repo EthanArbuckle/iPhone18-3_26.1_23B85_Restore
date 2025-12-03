@@ -37,9 +37,9 @@ void __37__ICDeviceSupport_isRunningUnitTests__block_invoke()
 + (BOOL)processIsSiri
 {
   v2 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F4FD7248];
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
-  v5 = [v2 containsObject:v4];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v5 = [v2 containsObject:processName];
 
   return v5;
 }
@@ -158,7 +158,7 @@ uint64_t __35__ICDeviceSupport_notesProductType__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__ICDeviceSupport_deviceSupportsFirstGenPencil__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceSupportsFirstGenPencil_onceToken != -1)
   {
     dispatch_once(&deviceSupportsFirstGenPencil_onceToken, block);
@@ -253,26 +253,26 @@ uint64_t __29__ICDeviceSupport_deviceName__block_invoke()
 
 + (NSString)productName
 {
-  v2 = [MEMORY[0x1E69A60B8] sharedInstance];
-  v3 = [v2 productName];
+  mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+  productName = [mEMORY[0x1E69A60B8] productName];
 
-  return v3;
+  return productName;
 }
 
 + (NSString)productVersion
 {
-  v2 = [MEMORY[0x1E69A60B8] sharedInstance];
-  v3 = [v2 productVersion];
+  mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+  productVersion = [mEMORY[0x1E69A60B8] productVersion];
 
-  return v3;
+  return productVersion;
 }
 
 + (NSString)productBuildVersion
 {
-  v2 = [MEMORY[0x1E69A60B8] sharedInstance];
-  v3 = [v2 productBuildVersion];
+  mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+  productBuildVersion = [mEMORY[0x1E69A60B8] productBuildVersion];
 
-  return v3;
+  return productBuildVersion;
 }
 
 @end

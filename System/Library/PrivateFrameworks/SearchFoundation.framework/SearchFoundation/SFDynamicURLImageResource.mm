@@ -1,14 +1,14 @@
 @interface SFDynamicURLImageResource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFDynamicURLImageResource)initWithCoder:(id)a3;
-- (SFDynamicURLImageResource)initWithProtobuf:(id)a3;
-- (id)_sf_replacementStringForPropertyEntryKey:(id)a3 value:(id)a4;
-- (id)_sf_urlForSettings:(id)a3 shouldResize:(BOOL)a4 width:(double)a5 height:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFDynamicURLImageResource)initWithCoder:(id)coder;
+- (SFDynamicURLImageResource)initWithProtobuf:(id)protobuf;
+- (id)_sf_replacementStringForPropertyEntryKey:(id)key value:(id)value;
+- (id)_sf_urlForSettings:(id)settings shouldResize:(BOOL)resize width:(double)width height:(double)height;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFDynamicURLImageResource
@@ -25,28 +25,28 @@
   v7.f64[1] = NAN;
   v8 = vrndaq_f64(v6);
   v16 = vaddq_s64(vcvtq_u64_f64(vmulq_f64(vbslq_s8(vnegq_f64(v7), vmlaq_f64(v8, vdupq_n_s64(0xC3F0000000000000), vrndq_f64(vmulq_f64(v8, vdupq_n_s64(0x3BF0000000000000uLL)))), v8), vdupq_n_s64(0x41E3C6EF36200000uLL))), vcvtq_n_u64_f64(vsubq_f64(v6, v8), 0x40uLL));
-  v9 = [(SFDynamicURLImageResource *)self formatURL];
-  v10 = [v9 hash];
-  v11 = [(SFDynamicURLImageResource *)self supportsResizing];
-  v12 = [(SFDynamicURLImageResource *)self imageOptions];
-  v13 = v10 ^ v11 ^ v16.i64[0] ^ [v12 hash];
+  formatURL = [(SFDynamicURLImageResource *)self formatURL];
+  v10 = [formatURL hash];
+  supportsResizing = [(SFDynamicURLImageResource *)self supportsResizing];
+  imageOptions = [(SFDynamicURLImageResource *)self imageOptions];
+  v13 = v10 ^ supportsResizing ^ v16.i64[0] ^ [imageOptions hash];
 
   return v13 ^ v16.i64[1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
   else
   {
-    if ([(SFDynamicURLImageResource *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFDynamicURLImageResource *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
+      v6 = equalCopy;
       [(SFDynamicURLImageResource *)self pixelWidth];
       v8 = v7;
       [(SFDynamicURLImageResource *)v6 pixelWidth];
@@ -58,9 +58,9 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v13 = [(SFDynamicURLImageResource *)self formatURL];
-      v14 = [(SFDynamicURLImageResource *)v6 formatURL];
-      if ((v13 != 0) == (v14 == 0))
+      formatURL = [(SFDynamicURLImageResource *)self formatURL];
+      formatURL2 = [(SFDynamicURLImageResource *)v6 formatURL];
+      if ((formatURL != 0) == (formatURL2 == 0))
       {
         v17 = 0;
 LABEL_23:
@@ -68,35 +68,35 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v15 = [(SFDynamicURLImageResource *)self formatURL];
-      if (v15)
+      formatURL3 = [(SFDynamicURLImageResource *)self formatURL];
+      if (formatURL3)
       {
-        v16 = [(SFDynamicURLImageResource *)self formatURL];
-        v3 = [(SFDynamicURLImageResource *)v6 formatURL];
-        if (![v16 isEqual:v3])
+        formatURL4 = [(SFDynamicURLImageResource *)self formatURL];
+        formatURL5 = [(SFDynamicURLImageResource *)v6 formatURL];
+        if (![formatURL4 isEqual:formatURL5])
         {
           v17 = 0;
           goto LABEL_21;
         }
 
-        v27 = v16;
+        v27 = formatURL4;
       }
 
-      v18 = [(SFDynamicURLImageResource *)self supportsResizing];
-      if (v18 == [(SFDynamicURLImageResource *)v6 supportsResizing])
+      supportsResizing = [(SFDynamicURLImageResource *)self supportsResizing];
+      if (supportsResizing == [(SFDynamicURLImageResource *)v6 supportsResizing])
       {
-        v19 = [(SFDynamicURLImageResource *)self imageOptions];
-        v20 = [(SFDynamicURLImageResource *)v6 imageOptions];
-        v21 = v20;
-        if ((v19 != 0) != (v20 == 0))
+        imageOptions = [(SFDynamicURLImageResource *)self imageOptions];
+        imageOptions2 = [(SFDynamicURLImageResource *)v6 imageOptions];
+        v21 = imageOptions2;
+        if ((imageOptions != 0) != (imageOptions2 == 0))
         {
-          v22 = [(SFDynamicURLImageResource *)self imageOptions];
-          if (v22)
+          imageOptions3 = [(SFDynamicURLImageResource *)self imageOptions];
+          if (imageOptions3)
           {
-            v23 = v22;
-            v26 = [(SFDynamicURLImageResource *)self imageOptions];
-            v25 = [(SFDynamicURLImageResource *)v6 imageOptions];
-            v17 = [v26 isEqual:v25];
+            v23 = imageOptions3;
+            imageOptions4 = [(SFDynamicURLImageResource *)self imageOptions];
+            imageOptions5 = [(SFDynamicURLImageResource *)v6 imageOptions];
+            v17 = [imageOptions4 isEqual:imageOptions5];
           }
 
           else
@@ -106,8 +106,8 @@ LABEL_23:
           }
 
 LABEL_20:
-          v16 = v27;
-          if (!v15)
+          formatURL4 = v27;
+          if (!formatURL3)
           {
 LABEL_22:
 
@@ -132,20 +132,20 @@ LABEL_25:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SFDynamicURLImageResource *)self pixelWidth];
   [v4 setPixelWidth:?];
   [(SFDynamicURLImageResource *)self pixelHeight];
   [v4 setPixelHeight:?];
-  v5 = [(SFDynamicURLImageResource *)self formatURL];
-  v6 = [v5 copy];
+  formatURL = [(SFDynamicURLImageResource *)self formatURL];
+  v6 = [formatURL copy];
   [v4 setFormatURL:v6];
 
   [v4 setSupportsResizing:{-[SFDynamicURLImageResource supportsResizing](self, "supportsResizing")}];
-  v7 = [(SFDynamicURLImageResource *)self imageOptions];
-  v8 = [v7 copy];
+  imageOptions = [(SFDynamicURLImageResource *)self imageOptions];
+  v8 = [imageOptions copy];
   [v4 setImageOptions:v8];
 
   return v4;
@@ -154,31 +154,31 @@ LABEL_25:
 - (NSData)jsonData
 {
   v2 = [[_SFPBDynamicURLImageResource alloc] initWithFacade:self];
-  v3 = [(_SFPBDynamicURLImageResource *)v2 jsonData];
+  jsonData = [(_SFPBDynamicURLImageResource *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBDynamicURLImageResource alloc] initWithFacade:self];
-  v3 = [(_SFPBDynamicURLImageResource *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBDynamicURLImageResource *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBDynamicURLImageResource alloc] initWithFacade:self];
-  v5 = [(_SFPBDynamicURLImageResource *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBDynamicURLImageResource *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFDynamicURLImageResource)initWithCoder:(id)a3
+- (SFDynamicURLImageResource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBDynamicURLImageResource alloc] initWithData:v5];
   v7 = [(SFDynamicURLImageResource *)self initWithProtobuf:v6];
@@ -186,27 +186,27 @@ LABEL_25:
   return v7;
 }
 
-- (id)_sf_replacementStringForPropertyEntryKey:(id)a3 value:(id)a4
+- (id)_sf_replacementStringForPropertyEntryKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v8 = [(SFDynamicURLImageResource *)self imageOptions];
+  imageOptions = [(SFDynamicURLImageResource *)self imageOptions];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__SFDynamicURLImageResource_SiriSupport___sf_replacementStringForPropertyEntryKey_value___block_invoke;
   v13[3] = &unk_1E7ACDB18;
-  v9 = v6;
+  v9 = keyCopy;
   v14 = v9;
   v16 = &v17;
-  v10 = v7;
+  v10 = valueCopy;
   v15 = v10;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [imageOptions enumerateObjectsUsingBlock:v13];
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -245,14 +245,14 @@ void __89__SFDynamicURLImageResource_SiriSupport___sf_replacementStringForProper
   }
 }
 
-- (id)_sf_urlForSettings:(id)a3 shouldResize:(BOOL)a4 width:(double)a5 height:(double)a6
+- (id)_sf_urlForSettings:(id)settings shouldResize:(BOOL)resize width:(double)width height:(double)height
 {
-  v8 = a4;
-  v10 = a3;
-  if (v8 && [(SFDynamicURLImageResource *)self supportsResizing])
+  resizeCopy = resize;
+  settingsCopy = settings;
+  if (resizeCopy && [(SFDynamicURLImageResource *)self supportsResizing])
   {
-    v11 = round(a5);
-    v12 = round(a6);
+    v11 = round(width);
+    v12 = round(height);
   }
 
   else
@@ -263,28 +263,28 @@ void __89__SFDynamicURLImageResource_SiriSupport___sf_replacementStringForProper
     v12 = v14;
   }
 
-  v15 = [(SFDynamicURLImageResource *)self formatURL];
-  v16 = [v15 mutableCopy];
+  formatURL = [(SFDynamicURLImageResource *)self formatURL];
+  v16 = [formatURL mutableCopy];
 
   if ([v16 length])
   {
     v17 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\{[^}]+\\}" options:0 error:0];
-    v18 = [(SFDynamicURLImageResource *)self formatURL];
-    v19 = [v18 length];
+    formatURL2 = [(SFDynamicURLImageResource *)self formatURL];
+    v19 = [formatURL2 length];
 
-    v20 = [(SFDynamicURLImageResource *)self formatURL];
-    v21 = [v17 matchesInString:v20 options:0 range:{0, v19}];
+    formatURL3 = [(SFDynamicURLImageResource *)self formatURL];
+    v21 = [v17 matchesInString:formatURL3 options:0 range:{0, v19}];
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = __87__SFDynamicURLImageResource_SiriSupport___sf_urlForSettings_shouldResize_width_height___block_invoke;
     v28 = &unk_1E7ACDAF0;
-    v29 = v20;
+    v29 = formatURL3;
     v33 = v11;
     v34 = v12;
     v30 = v16;
-    v31 = self;
-    v32 = v10;
-    v22 = v20;
+    selfCopy = self;
+    v32 = settingsCopy;
+    v22 = formatURL3;
     [v21 enumerateObjectsWithOptions:2 usingBlock:&v25];
   }
 
@@ -378,48 +378,48 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (SFDynamicURLImageResource)initWithProtobuf:(id)a3
+- (SFDynamicURLImageResource)initWithProtobuf:(id)protobuf
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v27.receiver = self;
   v27.super_class = SFDynamicURLImageResource;
   v5 = [(SFDynamicURLImageResource *)&v27 init];
   if (v5)
   {
-    v6 = [v4 pixelWidth];
+    pixelWidth = [protobufCopy pixelWidth];
 
-    if (v6)
+    if (pixelWidth)
     {
-      v7 = [v4 pixelWidth];
-      [v7 doubleValue];
+      pixelWidth2 = [protobufCopy pixelWidth];
+      [pixelWidth2 doubleValue];
       [(SFDynamicURLImageResource *)v5 setPixelWidth:?];
     }
 
-    v8 = [v4 pixelHeight];
+    pixelHeight = [protobufCopy pixelHeight];
 
-    if (v8)
+    if (pixelHeight)
     {
-      v9 = [v4 pixelHeight];
-      [v9 doubleValue];
+      pixelHeight2 = [protobufCopy pixelHeight];
+      [pixelHeight2 doubleValue];
       [(SFDynamicURLImageResource *)v5 setPixelHeight:?];
     }
 
-    v10 = [v4 formatURL];
+    formatURL = [protobufCopy formatURL];
 
-    if (v10)
+    if (formatURL)
     {
-      v11 = [v4 formatURL];
-      [(SFDynamicURLImageResource *)v5 setFormatURL:v11];
+      formatURL2 = [protobufCopy formatURL];
+      [(SFDynamicURLImageResource *)v5 setFormatURL:formatURL2];
     }
 
-    if ([v4 supportsResizing])
+    if ([protobufCopy supportsResizing])
     {
-      -[SFDynamicURLImageResource setSupportsResizing:](v5, "setSupportsResizing:", [v4 supportsResizing]);
+      -[SFDynamicURLImageResource setSupportsResizing:](v5, "setSupportsResizing:", [protobufCopy supportsResizing]);
     }
 
-    v12 = [v4 imageOptions];
-    if (v12)
+    imageOptions = [protobufCopy imageOptions];
+    if (imageOptions)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -433,8 +433,8 @@ LABEL_6:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = [v4 imageOptions];
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    imageOptions2 = [protobufCopy imageOptions];
+    v15 = [imageOptions2 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v15)
     {
       v16 = v15;
@@ -445,7 +445,7 @@ LABEL_6:
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(imageOptions2);
           }
 
           v19 = [[SFImageOption alloc] initWithProtobuf:*(*(&v23 + 1) + 8 * i)];
@@ -455,7 +455,7 @@ LABEL_6:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v16 = [imageOptions2 countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v16);

@@ -1,65 +1,65 @@
 @interface SCLSchoolModeServerSettings
-- (SCLSchoolModeServerSettings)initWithCoder:(id)a3;
-- (SCLSchoolModeServerSettings)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SCLSchoolModeServerSettings)initWithCoder:(id)coder;
+- (SCLSchoolModeServerSettings)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLSchoolModeServerSettings
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scheduleSettings = self->_scheduleSettings;
-  v5 = a3;
-  [v5 encodeObject:scheduleSettings forKey:@"scheduleSettings"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeBool:self->_loaded forKey:@"loaded"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scheduleSettings forKey:@"scheduleSettings"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeBool:self->_loaded forKey:@"loaded"];
 }
 
-- (SCLSchoolModeServerSettings)initWithCoder:(id)a3
+- (SCLSchoolModeServerSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SCLSchoolModeServerSettings;
   v5 = [(SCLSchoolModeServerSettings *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduleSettings"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduleSettings"];
     scheduleSettings = v5->_scheduleSettings;
     v5->_scheduleSettings = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     state = v5->_state;
     v5->_state = v8;
 
-    v5->_loaded = [v4 decodeBoolForKey:@"loaded"];
+    v5->_loaded = [coderCopy decodeBoolForKey:@"loaded"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithSettings:self];
 }
 
-- (SCLSchoolModeServerSettings)initWithSettings:(id)a3
+- (SCLSchoolModeServerSettings)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = SCLSchoolModeServerSettings;
   v5 = [(SCLSchoolModeServerSettings *)&v9 init];
   if (v5)
   {
-    v6 = [v4 scheduleSettings];
-    [(SCLSchoolModeServerSettings *)v5 setScheduleSettings:v6];
+    scheduleSettings = [settingsCopy scheduleSettings];
+    [(SCLSchoolModeServerSettings *)v5 setScheduleSettings:scheduleSettings];
 
-    v7 = [v4 state];
-    [(SCLSchoolModeServerSettings *)v5 setState:v7];
+    state = [settingsCopy state];
+    [(SCLSchoolModeServerSettings *)v5 setState:state];
 
-    -[SCLSchoolModeServerSettings setLoaded:](v5, "setLoaded:", [v4 isLoaded]);
+    -[SCLSchoolModeServerSettings setLoaded:](v5, "setLoaded:", [settingsCopy isLoaded]);
   }
 
   return v5;

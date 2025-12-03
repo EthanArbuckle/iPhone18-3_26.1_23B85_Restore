@@ -1,11 +1,11 @@
 @interface AMSMetricsIdentifierInfo
-+ (BOOL)bothDatesAreNilOr:(id)a3 equals:(id)a4;
-+ (BOOL)bothStringsAreNilOr:(id)a3 equals:(id)a4;
-- (BOOL)isEqualIgnoringLastSync:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)bothDatesAreNilOr:(id)or equals:(id)equals;
++ (BOOL)bothStringsAreNilOr:(id)or equals:(id)equals;
+- (BOOL)isEqualIgnoringLastSync:(id)sync;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)specializedFieldNameForFieldName:(id)a3;
-- (void)populateDictionary:(id)a3 shouldEmitDiagnosticFields:(BOOL)a4 shouldEmitPreviousUserId:(BOOL)a5;
+- (id)specializedFieldNameForFieldName:(id)name;
+- (void)populateDictionary:(id)dictionary shouldEmitDiagnosticFields:(BOOL)fields shouldEmitPreviousUserId:(BOOL)id;
 @end
 
 @implementation AMSMetricsIdentifierInfo
@@ -28,141 +28,141 @@
   return v11;
 }
 
-- (void)populateDictionary:(id)a3 shouldEmitDiagnosticFields:(BOOL)a4 shouldEmitPreviousUserId:(BOOL)a5
+- (void)populateDictionary:(id)dictionary shouldEmitDiagnosticFields:(BOOL)fields shouldEmitPreviousUserId:(BOOL)id
 {
-  v5 = a5;
-  v6 = a4;
-  v19 = a3;
-  v8 = [(AMSMetricsIdentifierInfo *)self value];
-  v9 = [(AMSMetricsIdentifierInfo *)self name];
-  [v19 setObject:v8 forKeyedSubscript:v9];
+  idCopy = id;
+  fieldsCopy = fields;
+  dictionaryCopy = dictionary;
+  value = [(AMSMetricsIdentifierInfo *)self value];
+  name = [(AMSMetricsIdentifierInfo *)self name];
+  [dictionaryCopy setObject:value forKeyedSubscript:name];
 
   if (![(AMSMetricsIdentifierInfo *)self crossDeviceSync])
   {
     goto LABEL_11;
   }
 
-  v10 = [(AMSMetricsIdentifierInfo *)self lastSync];
-  v11 = v10 ? @"synchronized" : @"unsynchronized";
+  lastSync = [(AMSMetricsIdentifierInfo *)self lastSync];
+  v11 = lastSync ? @"synchronized" : @"unsynchronized";
   v12 = [(AMSMetricsIdentifierInfo *)self specializedFieldNameForFieldName:@"SyncState"];
-  [v19 setObject:v11 forKeyedSubscript:v12];
+  [dictionaryCopy setObject:v11 forKeyedSubscript:v12];
 
-  if (!v6)
+  if (!fieldsCopy)
   {
     goto LABEL_11;
   }
 
-  v13 = [(AMSMetricsIdentifierInfo *)self changeCounter];
+  changeCounter = [(AMSMetricsIdentifierInfo *)self changeCounter];
   v14 = [(AMSMetricsIdentifierInfo *)self specializedFieldNameForFieldName:@"ChangeCounter"];
-  [v19 setObject:v13 forKeyedSubscript:v14];
+  [dictionaryCopy setObject:changeCounter forKeyedSubscript:v14];
 
-  v15 = [(AMSMetricsIdentifierInfo *)self changeCause];
+  changeCause = [(AMSMetricsIdentifierInfo *)self changeCause];
   v16 = [(AMSMetricsIdentifierInfo *)self specializedFieldNameForFieldName:@"ChangeCause"];
-  [v19 setObject:v15 forKeyedSubscript:v16];
+  [dictionaryCopy setObject:changeCause forKeyedSubscript:v16];
 
-  if (!v5)
+  if (!idCopy)
   {
     goto LABEL_11;
   }
 
-  v17 = [(AMSMetricsIdentifierInfo *)self name];
-  if ([v17 isEqualToString:@"userId"])
+  name2 = [(AMSMetricsIdentifierInfo *)self name];
+  if ([name2 isEqualToString:@"userId"])
   {
-    v18 = [(AMSMetricsIdentifierInfo *)self value];
+    value2 = [(AMSMetricsIdentifierInfo *)self value];
 
-    if (!v18)
+    if (!value2)
     {
       goto LABEL_11;
     }
 
-    v17 = [(AMSMetricsIdentifierInfo *)self previousValue];
-    [v19 setObject:v17 forKeyedSubscript:@"xpPreviousUserId"];
+    name2 = [(AMSMetricsIdentifierInfo *)self previousValue];
+    [dictionaryCopy setObject:name2 forKeyedSubscript:@"xpPreviousUserId"];
   }
 
 LABEL_11:
 }
 
-- (id)specializedFieldNameForFieldName:(id)a3
+- (id)specializedFieldNameForFieldName:(id)name
 {
-  v4 = a3;
-  v5 = [(AMSMetricsIdentifierInfo *)self name];
-  v6 = [v5 length];
+  nameCopy = name;
+  name = [(AMSMetricsIdentifierInfo *)self name];
+  v6 = [name length];
   v7 = MEMORY[0x1E696AEC0];
   if (v6)
   {
-    v8 = [v5 substringToIndex:1];
-    v9 = [v8 uppercaseString];
-    v10 = [v5 stringByReplacingCharactersInRange:0 withString:{1, v9}];
-    v11 = [v7 stringWithFormat:@"xp%@%@", v10, v4];
+    v8 = [name substringToIndex:1];
+    uppercaseString = [v8 uppercaseString];
+    v10 = [name stringByReplacingCharactersInRange:0 withString:{1, uppercaseString}];
+    nameCopy = [v7 stringWithFormat:@"xp%@%@", v10, nameCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"xp%@", v4];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"xp%@", nameCopy];
   }
 
-  return v11;
+  return nameCopy;
 }
 
-- (BOOL)isEqualIgnoringLastSync:(id)a3
+- (BOOL)isEqualIgnoringLastSync:(id)sync
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  syncCopy = sync;
+  v5 = syncCopy;
+  if (!syncCopy)
   {
     goto LABEL_4;
   }
 
-  if (v4 == self)
+  if (syncCopy == self)
   {
     v7 = 1;
     goto LABEL_26;
   }
 
-  v6 = [(AMSMetricsIdentifierInfo *)v4 crossDeviceSync];
-  if (v6 == [(AMSMetricsIdentifierInfo *)self crossDeviceSync])
+  crossDeviceSync = [(AMSMetricsIdentifierInfo *)syncCopy crossDeviceSync];
+  if (crossDeviceSync == [(AMSMetricsIdentifierInfo *)self crossDeviceSync])
   {
     v8 = objc_opt_class();
-    v9 = [(AMSMetricsIdentifierInfo *)v5 idKey];
-    v10 = [(AMSMetricsIdentifierInfo *)self idKey];
-    if ([v8 bothStringsAreNilOr:v9 equals:v10])
+    idKey = [(AMSMetricsIdentifierInfo *)v5 idKey];
+    idKey2 = [(AMSMetricsIdentifierInfo *)self idKey];
+    if ([v8 bothStringsAreNilOr:idKey equals:idKey2])
     {
       v11 = objc_opt_class();
-      v12 = [(AMSMetricsIdentifierInfo *)v5 name];
-      v13 = [(AMSMetricsIdentifierInfo *)self name];
-      if ([v11 bothStringsAreNilOr:v12 equals:v13])
+      name = [(AMSMetricsIdentifierInfo *)v5 name];
+      name2 = [(AMSMetricsIdentifierInfo *)self name];
+      if ([v11 bothStringsAreNilOr:name equals:name2])
       {
         v14 = objc_opt_class();
-        v15 = [(AMSMetricsIdentifierInfo *)v5 storeUUID];
-        v16 = [(AMSMetricsIdentifierInfo *)self storeUUID];
-        if ([v14 bothStringsAreNilOr:v15 equals:v16])
+        storeUUID = [(AMSMetricsIdentifierInfo *)v5 storeUUID];
+        storeUUID2 = [(AMSMetricsIdentifierInfo *)self storeUUID];
+        if ([v14 bothStringsAreNilOr:storeUUID equals:storeUUID2])
         {
           v17 = objc_opt_class();
-          v18 = [(AMSMetricsIdentifierInfo *)v5 value];
-          v36 = [(AMSMetricsIdentifierInfo *)self value];
-          v37 = v18;
-          if ([v17 bothStringsAreNilOr:v18 equals:v36])
+          value = [(AMSMetricsIdentifierInfo *)v5 value];
+          value2 = [(AMSMetricsIdentifierInfo *)self value];
+          v37 = value;
+          if ([v17 bothStringsAreNilOr:value equals:value2])
           {
             v19 = objc_opt_class();
-            v20 = [(AMSMetricsIdentifierInfo *)v5 expires];
-            v21 = [(AMSMetricsIdentifierInfo *)self expires];
-            v35 = v20;
-            v22 = v20;
-            v23 = v21;
-            if ([v19 bothDatesAreNilOr:v22 equals:v21] && (v24 = -[AMSMetricsIdentifierInfo deleted](v5, "deleted"), v24 == -[AMSMetricsIdentifierInfo deleted](self, "deleted")))
+            expires = [(AMSMetricsIdentifierInfo *)v5 expires];
+            expires2 = [(AMSMetricsIdentifierInfo *)self expires];
+            v35 = expires;
+            v22 = expires;
+            v23 = expires2;
+            if ([v19 bothDatesAreNilOr:v22 equals:expires2] && (v24 = -[AMSMetricsIdentifierInfo deleted](v5, "deleted"), v24 == -[AMSMetricsIdentifierInfo deleted](self, "deleted")))
             {
               v33 = objc_opt_class();
-              v25 = [(AMSMetricsIdentifierInfo *)v5 modified];
-              v26 = [(AMSMetricsIdentifierInfo *)self modified];
+              modified = [(AMSMetricsIdentifierInfo *)v5 modified];
+              modified2 = [(AMSMetricsIdentifierInfo *)self modified];
               v27 = v33;
-              v32 = v26;
-              v34 = v25;
-              if ([v27 bothDatesAreNilOr:v25 equals:?])
+              v32 = modified2;
+              v34 = modified;
+              if ([v27 bothDatesAreNilOr:modified equals:?])
               {
                 v31 = objc_opt_class();
-                v30 = [(AMSMetricsIdentifierInfo *)v5 serverProvidedAt];
-                v28 = [(AMSMetricsIdentifierInfo *)self serverProvidedAt];
-                v7 = [v31 bothDatesAreNilOr:v30 equals:?];
+                serverProvidedAt = [(AMSMetricsIdentifierInfo *)v5 serverProvidedAt];
+                serverProvidedAt2 = [(AMSMetricsIdentifierInfo *)self serverProvidedAt];
+                v7 = [v31 bothDatesAreNilOr:serverProvidedAt equals:?];
               }
 
               else
@@ -212,11 +212,11 @@ LABEL_26:
   return v7;
 }
 
-+ (BOOL)bothStringsAreNilOr:(id)a3 equals:(id)a4
++ (BOOL)bothStringsAreNilOr:(id)or equals:(id)equals
 {
-  if (a3 | a4)
+  if (or | equals)
   {
-    return [a3 isEqualToString:a4];
+    return [or isEqualToString:equals];
   }
 
   else
@@ -225,11 +225,11 @@ LABEL_26:
   }
 }
 
-+ (BOOL)bothDatesAreNilOr:(id)a3 equals:(id)a4
++ (BOOL)bothDatesAreNilOr:(id)or equals:(id)equals
 {
-  if (a3 | a4)
+  if (or | equals)
   {
-    return [a3 isEqualToDate:a4];
+    return [or isEqualToDate:equals];
   }
 
   else
@@ -238,53 +238,53 @@ LABEL_26:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setCrossDeviceSync:{-[AMSMetricsIdentifierInfo crossDeviceSync](self, "crossDeviceSync")}];
-  v5 = [(AMSMetricsIdentifierInfo *)self idKey];
-  v6 = [v5 copy];
+  idKey = [(AMSMetricsIdentifierInfo *)self idKey];
+  v6 = [idKey copy];
   [v4 setIdKey:v6];
 
-  v7 = [(AMSMetricsIdentifierInfo *)self name];
-  v8 = [v7 copy];
+  name = [(AMSMetricsIdentifierInfo *)self name];
+  v8 = [name copy];
   [v4 setName:v8];
 
-  v9 = [(AMSMetricsIdentifierInfo *)self storeUUID];
-  v10 = [v9 copy];
+  storeUUID = [(AMSMetricsIdentifierInfo *)self storeUUID];
+  v10 = [storeUUID copy];
   [v4 setStoreUUID:v10];
 
-  v11 = [(AMSMetricsIdentifierInfo *)self value];
-  v12 = [v11 copy];
+  value = [(AMSMetricsIdentifierInfo *)self value];
+  v12 = [value copy];
   [v4 setValue:v12];
 
-  v13 = [(AMSMetricsIdentifierInfo *)self expires];
-  v14 = [v13 copy];
+  expires = [(AMSMetricsIdentifierInfo *)self expires];
+  v14 = [expires copy];
   [v4 setExpires:v14];
 
   [v4 setDeleted:{-[AMSMetricsIdentifierInfo deleted](self, "deleted")}];
-  v15 = [(AMSMetricsIdentifierInfo *)self lastSync];
-  v16 = [v15 copy];
+  lastSync = [(AMSMetricsIdentifierInfo *)self lastSync];
+  v16 = [lastSync copy];
   [v4 setLastSync:v16];
 
-  v17 = [(AMSMetricsIdentifierInfo *)self modified];
-  v18 = [v17 copy];
+  modified = [(AMSMetricsIdentifierInfo *)self modified];
+  v18 = [modified copy];
   [v4 setModified:v18];
 
-  v19 = [(AMSMetricsIdentifierInfo *)self serverProvidedAt];
-  v20 = [v19 copy];
+  serverProvidedAt = [(AMSMetricsIdentifierInfo *)self serverProvidedAt];
+  v20 = [serverProvidedAt copy];
   [v4 setServerProvidedAt:v20];
 
-  v21 = [(AMSMetricsIdentifierInfo *)self changeCounter];
-  v22 = [v21 copy];
+  changeCounter = [(AMSMetricsIdentifierInfo *)self changeCounter];
+  v22 = [changeCounter copy];
   [v4 setChangeCounter:v22];
 
-  v23 = [(AMSMetricsIdentifierInfo *)self changeCause];
-  v24 = [v23 copy];
+  changeCause = [(AMSMetricsIdentifierInfo *)self changeCause];
+  v24 = [changeCause copy];
   [v4 setChangeCause:v24];
 
-  v25 = [(AMSMetricsIdentifierInfo *)self previousValue];
-  v26 = [v25 copy];
+  previousValue = [(AMSMetricsIdentifierInfo *)self previousValue];
+  v26 = [previousValue copy];
   [v4 setPreviousValue:v26];
 
   return v4;

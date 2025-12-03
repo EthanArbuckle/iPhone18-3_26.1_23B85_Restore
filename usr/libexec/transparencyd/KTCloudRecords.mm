@@ -1,46 +1,46 @@
 @interface KTCloudRecords
-- (BOOL)addDevice:(id)a3 clientData:(id)a4 error:(id *)a5;
-- (BOOL)addOptInStateWithURI:(id)a3 smtTimestamp:(id)a4 application:(id)a5 state:(BOOL)a6 error:(id *)a7;
-- (BOOL)clearOptInStateForURI:(id)a3 application:(id)a4 error:(id *)a5;
-- (BOOL)cloudDeviceNeedUpdateWithPushToken:(id)a3 tbsRegistrationData:(id)a4;
+- (BOOL)addDevice:(id)device clientData:(id)data error:(id *)error;
+- (BOOL)addOptInStateWithURI:(id)i smtTimestamp:(id)timestamp application:(id)application state:(BOOL)state error:(id *)error;
+- (BOOL)clearOptInStateForURI:(id)i application:(id)application error:(id *)error;
+- (BOOL)cloudDeviceNeedUpdateWithPushToken:(id)token tbsRegistrationData:(id)data;
 - (BOOL)disableKTSyncabledKVSStore;
 - (BOOL)enforceCKOptInRecords;
 - (BOOL)havePendingRecords;
-- (BOOL)removeDevice:(id)a3 clientData:(id)a4 error:(id *)a5;
-- (BOOL)updateSelfCloudDeviceWithPushToken:(id)a3 tbsRegistrationData:(id)a4 applications:(id)a5;
-- (BOOL)updatedRecordWithCkrecord:(id)a3;
+- (BOOL)removeDevice:(id)device clientData:(id)data error:(id *)error;
+- (BOOL)updateSelfCloudDeviceWithPushToken:(id)token tbsRegistrationData:(id)data applications:(id)applications;
+- (BOOL)updatedRecordWithCkrecord:(id)ckrecord;
 - (_TtC13transparencyd14KTCloudRecords)init;
-- (_TtC13transparencyd14KTCloudRecords)initWithContext:(id)a3 zone:(id)a4 database:(id)a5 hostInfo:(id)a6 delegate:(id)a7;
+- (_TtC13transparencyd14KTCloudRecords)initWithContext:(id)context zone:(id)zone database:(id)database hostInfo:(id)info delegate:(id)delegate;
 - (id)cloudDevices;
 - (id)cloudKTDevices;
 - (id)cloudKitZones;
-- (id)deleteOptInIntentForApplication:(id)a3 error:(id *)a4;
-- (id)evaluateKTLogData:(id)a3 application:(id)a4 error:(id *)a5;
-- (id)fetchCloudDeviceWithPushToken:(id)a3 tbsRegistrationData:(id)a4;
-- (id)fetchSyncedLoggableDataWithPushToken:(id)a3 tbsRegistrationData:(id)a4;
-- (id)getAggregateOptInStateForApplication:(id)a3;
+- (id)deleteOptInIntentForApplication:(id)application error:(id *)error;
+- (id)evaluateKTLogData:(id)data application:(id)application error:(id *)error;
+- (id)fetchCloudDeviceWithPushToken:(id)token tbsRegistrationData:(id)data;
+- (id)fetchSyncedLoggableDataWithPushToken:(id)token tbsRegistrationData:(id)data;
+- (id)getAggregateOptInStateForApplication:(id)application;
 - (id)getAllOptInStates;
-- (id)getOptInStateWithUri:(id)a3 application:(id)a4;
+- (id)getOptInStateWithUri:(id)uri application:(id)application;
 - (id)sysdiagnose;
-- (id)updateCloudRecordsOperation:(id)a3 context:(id)a4;
+- (id)updateCloudRecordsOperation:(id)operation context:(id)context;
 - (void)clearLocalCloudState;
-- (void)deleteRecordIDWithCkrecordID:(id)a3;
-- (void)deleteRecordWithCkrecord:(id)a3;
-- (void)recordUpdateCloudStateWithType:(id)a3 records:(id)a4 newState:(id)a5;
-- (void)unknownRecordWithRecordID:(id)a3;
+- (void)deleteRecordIDWithCkrecordID:(id)d;
+- (void)deleteRecordWithCkrecord:(id)ckrecord;
+- (void)recordUpdateCloudStateWithType:(id)type records:(id)records newState:(id)state;
+- (void)unknownRecordWithRecordID:(id)d;
 @end
 
 @implementation KTCloudRecords
 
-- (_TtC13transparencyd14KTCloudRecords)initWithContext:(id)a3 zone:(id)a4 database:(id)a5 hostInfo:(id)a6 delegate:(id)a7
+- (_TtC13transparencyd14KTCloudRecords)initWithContext:(id)context zone:(id)zone database:(id)database hostInfo:(id)info delegate:(id)delegate
 {
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  v14 = a3;
-  v15 = a5;
+  contextCopy = context;
+  databaseCopy = database;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v16 = sub_1000E2FB0(v14, v11, v13, v15, a6, a7);
+  v16 = sub_1000E2FB0(contextCopy, v11, v13, databaseCopy, info, delegate);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -60,7 +60,7 @@
 - (id)sysdiagnose
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudOptIn) + 280);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   sub_100095820(&unk_100387750, &unk_1002D7630);
   inited = swift_initStackObject();
@@ -78,12 +78,12 @@
   return v6.super.isa;
 }
 
-- (BOOL)updateSelfCloudDeviceWithPushToken:(id)a3 tbsRegistrationData:(id)a4 applications:(id)a5
+- (BOOL)updateSelfCloudDeviceWithPushToken:(id)token tbsRegistrationData:(id)data applications:(id)applications
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  tokenCopy = token;
+  dataCopy = data;
+  applicationsCopy = applications;
+  selfCopy = self;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
@@ -91,30 +91,30 @@
   v17 = v16;
 
   v18 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  LOBYTE(v9) = (*(**(&v11->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 280))(v12, v14, v15, v17, v18);
+  LOBYTE(dataCopy) = (*(**(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 280))(v12, v14, v15, v17, v18);
 
   sub_1000956CC(v15, v17);
   sub_1000956CC(v12, v14);
 
-  return v9 & 1;
+  return dataCopy & 1;
 }
 
-- (BOOL)cloudDeviceNeedUpdateWithPushToken:(id)a3 tbsRegistrationData:(id)a4
+- (BOOL)cloudDeviceNeedUpdateWithPushToken:(id)token tbsRegistrationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  tokenCopy = token;
+  dataCopy = data;
+  selfCopy = self;
   v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
 
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  v15 = *(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice);
-  v16 = *(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_hostInfo);
+  v15 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice);
+  v16 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_hostInfo);
   if (v16)
   {
-    v17 = [v16 osVersion];
+    osVersion = [v16 osVersion];
     v18 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v20 = v19;
   }
@@ -133,36 +133,36 @@
   return v21 & 1;
 }
 
-- (id)fetchSyncedLoggableDataWithPushToken:(id)a3 tbsRegistrationData:(id)a4
+- (id)fetchSyncedLoggableDataWithPushToken:(id)token tbsRegistrationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  tokenCopy = token;
+  dataCopy = data;
+  selfCopy = self;
   v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
 
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  v15 = (*(**(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 296))(v9, v11, v12, v14);
+  v15 = (*(**(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 296))(v9, v11, v12, v14);
   sub_1000956CC(v12, v14);
   sub_1000956CC(v9, v11);
 
   return v15;
 }
 
-- (id)fetchCloudDeviceWithPushToken:(id)a3 tbsRegistrationData:(id)a4
+- (id)fetchCloudDeviceWithPushToken:(id)token tbsRegistrationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  tokenCopy = token;
+  dataCopy = data;
+  selfCopy = self;
   v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
 
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  v15 = (*(**(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 304))(v9, v11, v12, v14);
+  v15 = (*(**(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 304))(v9, v11, v12, v14);
   sub_1000956CC(v12, v14);
   sub_1000956CC(v9, v11);
 
@@ -172,7 +172,7 @@
 - (id)cloudKTDevices
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 312);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   sub_10009FDA0(0, &qword_100384DF8, KTLoggableData_ptr);
@@ -184,7 +184,7 @@
 - (id)cloudDevices
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 320);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   sub_10009FDA0(0, &qword_100384F48, TransparencyCloudDevice_ptr);
@@ -193,44 +193,44 @@
   return v4.super.isa;
 }
 
-- (BOOL)addDevice:(id)a3 clientData:(id)a4 error:(id *)a5
+- (BOOL)addDevice:(id)device clientData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  deviceCopy = device;
+  dataCopy = data;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  (*(**(&v9->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 328))(v10, v12, v13, v15);
+  (*(**(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 328))(v10, v12, v13, v15);
   sub_1000956CC(v13, v15);
   sub_1000956CC(v10, v12);
   return 1;
 }
 
-- (BOOL)removeDevice:(id)a3 clientData:(id)a4 error:(id *)a5
+- (BOOL)removeDevice:(id)device clientData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  deviceCopy = device;
+  dataCopy = data;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  (*(**(&v9->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 336))(v10, v12, v13, v15);
+  (*(**(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudDevice) + 336))(v10, v12, v13, v15);
   sub_1000956CC(v13, v15);
   sub_1000956CC(v10, v12);
   return 1;
 }
 
-- (BOOL)addOptInStateWithURI:(id)a3 smtTimestamp:(id)a4 application:(id)a5 state:(BOOL)a6 error:(id *)a7
+- (BOOL)addOptInStateWithURI:(id)i smtTimestamp:(id)timestamp application:(id)application state:(BOOL)state error:(id *)error
 {
-  v20[1] = a7;
-  v22 = a6;
+  v20[1] = error;
+  stateCopy = state;
   v23 = type metadata accessor for Date();
   v8 = *(v23 - 8);
   v9 = *(v8 + 64);
@@ -242,27 +242,27 @@
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
   v18 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudOptIn) + 360);
-  v21 = self;
-  v18(v12, v14, v11, v15, v17, v22);
+  selfCopy = self;
+  v18(v12, v14, v11, v15, v17, stateCopy);
   (*(v8 + 8))(v11, v23);
 
   return 1;
 }
 
-- (id)getOptInStateWithUri:(id)a3 application:(id)a4
+- (id)getOptInStateWithUri:(id)uri application:(id)application
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = KTCloudRecords.getOptInState(withUri:application:)();
 
   return v6;
 }
 
-- (id)getAggregateOptInStateForApplication:(id)a3
+- (id)getAggregateOptInStateForApplication:(id)application
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   v5 = KTCloudRecords.getAggregateOptInState(forApplication:)();
 
   return v5;
@@ -271,7 +271,7 @@
 - (id)getAllOptInStates
 {
   v2 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudOptIn) + 272);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   sub_10009FDA0(0, &qword_100384AA0, KTOptInState_ptr);
@@ -280,9 +280,9 @@
   return v4.super.isa;
 }
 
-- (BOOL)clearOptInStateForURI:(id)a3 application:(id)a4 error:(id *)a5
+- (BOOL)clearOptInStateForURI:(id)i application:(id)application error:(id *)error
 {
-  if (a3)
+  if (i)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -297,19 +297,19 @@
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   v12 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudOptIn) + 288);
-  v13 = self;
+  selfCopy = self;
   v12(v6, v8, v9, v11);
 
   return 1;
 }
 
-- (id)deleteOptInIntentForApplication:(id)a3 error:(id *)a4
+- (id)deleteOptInIntentForApplication:(id)application error:(id *)error
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = *(**(&self->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_cloudOptIn) + 336);
-  v9 = self;
-  v10 = v8(v5, v7, v9);
+  selfCopy = self;
+  v10 = v8(v5, v7, selfCopy);
 
   return v10;
 }
@@ -317,11 +317,11 @@
 - (void)clearLocalCloudState
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x160);
-  v8 = self;
+  selfCopy = self;
   v2(0);
   type metadata accessor for KTCKZone();
-  v3 = sub_1000E3B0C(*(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_context));
-  v4 = [*(&v8->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_zoneID) zoneName];
+  v3 = sub_1000E3B0C(*(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_context));
+  zoneName = [*(&selfCopy->super.isa + OBJC_IVAR____TtC13transparencyd14KTCloudRecords_zoneID) zoneName];
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -330,7 +330,7 @@
 
 - (BOOL)havePendingRecords
 {
-  v2 = self;
+  selfCopy = self;
   v3 = KTCloudRecords.havePendingRecords()();
 
   return v3;
@@ -350,37 +350,37 @@
   return v6.super.isa;
 }
 
-- (BOOL)updatedRecordWithCkrecord:(id)a3
+- (BOOL)updatedRecordWithCkrecord:(id)ckrecord
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = KTCloudRecords.updatedRecord(withCkrecord:)(v4);
+  ckrecordCopy = ckrecord;
+  selfCopy = self;
+  LOBYTE(self) = KTCloudRecords.updatedRecord(withCkrecord:)(ckrecordCopy);
 
   return self & 1;
 }
 
-- (void)deleteRecordWithCkrecord:(id)a3
+- (void)deleteRecordWithCkrecord:(id)ckrecord
 {
-  v4 = a3;
-  v5 = self;
-  KTCloudRecords.deleteRecord(withCkrecord:)(v4);
+  ckrecordCopy = ckrecord;
+  selfCopy = self;
+  KTCloudRecords.deleteRecord(withCkrecord:)(ckrecordCopy);
 }
 
-- (void)deleteRecordIDWithCkrecordID:(id)a3
+- (void)deleteRecordIDWithCkrecordID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  KTCloudRecords.deleteRecordID(withCkrecordID:)(v4);
+  dCopy = d;
+  selfCopy = self;
+  KTCloudRecords.deleteRecordID(withCkrecordID:)(dCopy);
 }
 
-- (void)unknownRecordWithRecordID:(id)a3
+- (void)unknownRecordWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  KTCloudRecords.unknownRecord(with:)(v4);
+  dCopy = d;
+  selfCopy = self;
+  KTCloudRecords.unknownRecord(with:)(dCopy);
 }
 
-- (void)recordUpdateCloudStateWithType:(id)a3 records:(id)a4 newState:(id)a5
+- (void)recordUpdateCloudStateWithType:(id)type records:(id)records newState:(id)state
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -389,7 +389,7 @@
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   v13 = *((swift_isaMask & self->super.isa) + 0x198);
-  v14 = self;
+  selfCopy = self;
   v13(&v17, v6, v8);
 
   if (v18)
@@ -410,21 +410,21 @@
   }
 }
 
-- (id)updateCloudRecordsOperation:(id)a3 context:(id)a4
+- (id)updateCloudRecordsOperation:(id)operation context:(id)context
 {
   type metadata accessor for KTUpdateCloudStorageOperation();
-  v7 = KTUpdateCloudStorageOperation.__allocating_init(deps:source:context:)(a3, self, a4);
+  v7 = KTUpdateCloudStorageOperation.__allocating_init(deps:source:context:)(operation, self, context);
 
   return v7;
 }
 
-- (id)evaluateKTLogData:(id)a3 application:(id)a4 error:(id *)a5
+- (id)evaluateKTLogData:(id)data application:(id)application error:(id *)error
 {
   sub_100095820(&qword_100384DA8, &qword_1002D7660);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   v11 = KTCloudRecords.evaluateKTLogData(_:application:)(v6, v7, v9);
 
   return v11;

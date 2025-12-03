@@ -1,23 +1,23 @@
 @interface ASDAlertPresentationResult
-- (ASDAlertPresentationResult)initWithCoder:(id)a3;
-- (ASDAlertPresentationResult)initWithError:(id)a3;
-- (ASDAlertPresentationResult)initWithSelectedActionIdentifier:(id)a3;
-- (BOOL)isSelectedAction:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDAlertPresentationResult)initWithCoder:(id)coder;
+- (ASDAlertPresentationResult)initWithError:(id)error;
+- (ASDAlertPresentationResult)initWithSelectedActionIdentifier:(id)identifier;
+- (BOOL)isSelectedAction:(id)action;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDAlertPresentationResult
 
-- (ASDAlertPresentationResult)initWithError:(id)a3
+- (ASDAlertPresentationResult)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = ASDAlertPresentationResult;
   v6 = [(ASDAlertPresentationResult *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     selectedActionIdentifier = v7->_selectedActionIdentifier;
     v7->_selectedActionIdentifier = 0;
   }
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (ASDAlertPresentationResult)initWithSelectedActionIdentifier:(id)a3
+- (ASDAlertPresentationResult)initWithSelectedActionIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = ASDAlertPresentationResult;
   v6 = [(ASDAlertPresentationResult *)&v10 init];
@@ -37,13 +37,13 @@
     error = v6->_error;
     v6->_error = 0;
 
-    objc_storeStrong(&v7->_selectedActionIdentifier, a3);
+    objc_storeStrong(&v7->_selectedActionIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)isSelectedAction:(id)a3
+- (BOOL)isSelectedAction:(id)action
 {
   if (self->_error)
   {
@@ -51,25 +51,25 @@
   }
 
   selectedActionIdentifier = self->_selectedActionIdentifier;
-  v5 = [a3 identifier];
-  LOBYTE(selectedActionIdentifier) = [(NSUUID *)selectedActionIdentifier isEqual:v5];
+  identifier = [action identifier];
+  LOBYTE(selectedActionIdentifier) = [(NSUUID *)selectedActionIdentifier isEqual:identifier];
 
   return selectedActionIdentifier;
 }
 
-- (ASDAlertPresentationResult)initWithCoder:(id)a3
+- (ASDAlertPresentationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ASDAlertPresentationResult;
   v5 = [(ASDAlertPresentationResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedActionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedActionIdentifier"];
     selectedActionIdentifier = v5->_selectedActionIdentifier;
     v5->_selectedActionIdentifier = v8;
   }
@@ -77,12 +77,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   error = self->_error;
-  v5 = a3;
-  [v5 encodeObject:error forKey:@"error"];
-  [v5 encodeObject:self->_selectedActionIdentifier forKey:@"selectedActionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:error forKey:@"error"];
+  [coderCopy encodeObject:self->_selectedActionIdentifier forKey:@"selectedActionIdentifier"];
 }
 
 @end

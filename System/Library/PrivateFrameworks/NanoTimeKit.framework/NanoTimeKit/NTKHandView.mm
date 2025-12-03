@@ -1,47 +1,47 @@
 @interface NTKHandView
 - (id)transitionContainerView;
-- (void)_initWithImage:(id)a3 forDevice:(id)a4;
-- (void)setColor:(id)a3;
-- (void)setHandDotColor:(id)a3;
-- (void)setInlayColor:(id)a3;
-- (void)setInlayInsets:(UIEdgeInsets)a3;
+- (void)_initWithImage:(id)image forDevice:(id)device;
+- (void)setColor:(id)color;
+- (void)setHandDotColor:(id)color;
+- (void)setInlayColor:(id)color;
+- (void)setInlayInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation NTKHandView
 
-- (void)_initWithImage:(id)a3 forDevice:(id)a4
+- (void)_initWithImage:(id)image forDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = NTKHandView;
-  [(CLKUIHandView *)&v4 _initWithImage:a3 forDevice:a4];
+  [(CLKUIHandView *)&v4 _initWithImage:image forDevice:device];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = NTKHandView;
-  [(CLKUIHandView *)&v3 setColor:a3];
+  [(CLKUIHandView *)&v3 setColor:color];
 }
 
-- (void)setInlayColor:(id)a3
+- (void)setInlayColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = NTKHandView;
-  [(CLKUIHandView *)&v3 setInlayColor:a3];
+  [(CLKUIHandView *)&v3 setInlayColor:color];
 }
 
-- (void)setInlayInsets:(UIEdgeInsets)a3
+- (void)setInlayInsets:(UIEdgeInsets)insets
 {
   v3.receiver = self;
   v3.super_class = NTKHandView;
-  [(CLKUIHandView *)&v3 setInlayInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(CLKUIHandView *)&v3 setInlayInsets:insets.top, insets.left, insets.bottom, insets.right];
 }
 
-- (void)setHandDotColor:(id)a3
+- (void)setHandDotColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = NTKHandView;
-  [(CLKUIHandView *)&v3 setHandDotColor:a3];
+  [(CLKUIHandView *)&v3 setHandDotColor:color];
 }
 
 - (id)transitionContainerView

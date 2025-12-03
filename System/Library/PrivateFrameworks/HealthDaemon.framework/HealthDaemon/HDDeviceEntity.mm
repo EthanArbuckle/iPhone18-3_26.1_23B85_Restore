@@ -1,19 +1,19 @@
 @interface HDDeviceEntity
-+ (BOOL)insertCodableDevices:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (HDDeviceEntity)deviceEntityWithDevice:(id)a3 syncIdentity:(int64_t)a4 healthDatabase:(id)a5 error:(id *)a6;
-+ (HDDeviceEntity)deviceEntityWithDevice:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (HDDeviceEntity)deviceEntityWithUUID:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
-+ (id)_codableDeviceWithRow:(HDSQLiteRow *)a3;
-+ (id)_deviceEntitiesWithPredicate:(void *)a3 healthDatabase:(uint64_t)a4 error:;
-+ (id)_insertDeviceWithUUID:(id)a3 creationDate:(double)a4 name:(id)a5 bluetoothIdentifier:(id)a6 manufacturer:(id)a7 model:(id)a8 hardwareVersion:(id)a9 firmwareVersion:(id)a10 softwareVersion:(id)a11 localIdentifier:(id)a12 UDIDeviceIdentifier:(id)a13 syncProvenance:(int64_t)a14 syncIdentity:(int64_t)a15 database:(id)a16 error:(id *)a17;
-+ (id)_predicateForDevice:(uint64_t)a1;
++ (BOOL)insertCodableDevices:(id)devices syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (HDDeviceEntity)deviceEntityWithDevice:(id)device syncIdentity:(int64_t)identity healthDatabase:(id)database error:(id *)error;
++ (HDDeviceEntity)deviceEntityWithDevice:(id)device transaction:(id)transaction error:(id *)error;
++ (HDDeviceEntity)deviceEntityWithUUID:(id)d healthDatabase:(id)database error:(id *)error;
++ (id)_codableDeviceWithRow:(HDSQLiteRow *)row;
++ (id)_deviceEntitiesWithPredicate:(void *)predicate healthDatabase:(uint64_t)database error:;
++ (id)_insertDeviceWithUUID:(id)d creationDate:(double)date name:(id)name bluetoothIdentifier:(id)identifier manufacturer:(id)manufacturer model:(id)model hardwareVersion:(id)version firmwareVersion:(id)self0 softwareVersion:(id)self1 localIdentifier:(id)self2 UDIDeviceIdentifier:(id)self3 syncProvenance:(int64_t)self4 syncIdentity:(int64_t)self5 database:(id)self6 error:(id *)self7;
++ (id)_predicateForDevice:(uint64_t)device;
 + (id)_propertiesForDevice;
-+ (id)deviceEntitiesWithDevice:(id)a3 healthDatabase:(id)a4 error:(id *)a5;
-+ (id)deviceEntitiesWithProperty:(id)a3 matchingValues:(id)a4 healthDatabase:(id)a5 error:(id *)a6;
++ (id)deviceEntitiesWithDevice:(id)device healthDatabase:(id)database error:(id *)error;
++ (id)deviceEntitiesWithProperty:(id)property matchingValues:(id)values healthDatabase:(id)database error:(id *)error;
 + (id)uniquedColumns;
-- (id)creationDateInHealthDatabase:(id)a3 error:(id *)a4;
-- (id)deviceInHealthDatabase:(id)a3 error:(id *)a4;
-- (id)deviceUUIDInHealthDatabase:(id)a3 error:(id *)a4;
+- (id)creationDateInHealthDatabase:(id)database error:(id *)error;
+- (id)deviceInHealthDatabase:(id)database error:(id *)error;
+- (id)deviceUUIDInHealthDatabase:(id)database error:(id *)error;
 @end
 
 @implementation HDDeviceEntity
@@ -60,10 +60,10 @@
   return v2;
 }
 
-+ (HDDeviceEntity)deviceEntityWithDevice:(id)a3 syncIdentity:(int64_t)a4 healthDatabase:(id)a5 error:(id *)a6
++ (HDDeviceEntity)deviceEntityWithDevice:(id)device syncIdentity:(int64_t)identity healthDatabase:(id)database error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  deviceCopy = device;
+  databaseCopy = database;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -81,22 +81,22 @@
   v18[1] = 3221225472;
   v18[2] = __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_error___block_invoke;
   v18[3] = &unk_27862F5E8;
-  v22 = a1;
+  selfCopy = self;
   v20 = &v25;
-  v12 = v10;
-  v23 = a4;
+  v12 = deviceCopy;
+  identityCopy = identity;
   v19 = v12;
   v21 = &v31;
-  [a1 performWriteTransactionWithHealthDatabase:v11 error:&obj block:v18];
+  [self performWriteTransactionWithHealthDatabase:databaseCopy error:&obj block:v18];
   objc_storeStrong(&v36, obj);
   v13 = v32[5];
   v14 = v13;
   if (v13)
   {
-    if (a6)
+    if (error)
     {
       v15 = v13;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -194,42 +194,42 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   return v32;
 }
 
-+ (HDDeviceEntity)deviceEntityWithUUID:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (HDDeviceEntity)deviceEntityWithUUID:(id)d healthDatabase:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  databaseCopy = database;
+  dCopy = d;
   objc_opt_self();
   v10 = MEMORY[0x277D10B18];
   v11 = _HDSQLiteValueForUUID();
 
   v12 = [v10 predicateWithProperty:@"uuid" equalToValue:v11];
 
-  v13 = [a1 anyWithPredicate:v12 healthDatabase:v8 error:a5];
+  v13 = [self anyWithPredicate:v12 healthDatabase:databaseCopy error:error];
 
   return v13;
 }
 
-+ (id)deviceEntitiesWithDevice:(id)a3 healthDatabase:(id)a4 error:(id *)a5
++ (id)deviceEntitiesWithDevice:(id)device healthDatabase:(id)database error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDDeviceEntity *)a1 _predicateForDevice:a3];
-  v10 = [(HDDeviceEntity *)a1 _deviceEntitiesWithPredicate:v9 healthDatabase:v8 error:a5];
+  databaseCopy = database;
+  v9 = [(HDDeviceEntity *)self _predicateForDevice:device];
+  v10 = [(HDDeviceEntity *)self _deviceEntitiesWithPredicate:v9 healthDatabase:databaseCopy error:error];
 
   return v10;
 }
 
-+ (id)_predicateForDevice:(uint64_t)a1
++ (id)_predicateForDevice:(uint64_t)device
 {
   v2 = a2;
   objc_opt_self();
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277D10B18];
-  v5 = [v2 name];
-  v6 = v5;
+  name = [v2 name];
+  v6 = name;
   v7 = *MEMORY[0x277CCBC38];
-  if (v5)
+  if (name)
   {
-    v8 = v5;
+    v8 = name;
   }
 
   else
@@ -241,11 +241,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277D10B18];
-  v11 = [v2 manufacturer];
-  v12 = v11;
-  if (v11)
+  manufacturer = [v2 manufacturer];
+  v12 = manufacturer;
+  if (manufacturer)
   {
-    v13 = v11;
+    v13 = manufacturer;
   }
 
   else
@@ -257,11 +257,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v14];
 
   v15 = MEMORY[0x277D10B18];
-  v16 = [v2 model];
-  v17 = v16;
-  if (v16)
+  model = [v2 model];
+  v17 = model;
+  if (model)
   {
-    v18 = v16;
+    v18 = model;
   }
 
   else
@@ -273,11 +273,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v19];
 
   v20 = MEMORY[0x277D10B18];
-  v21 = [v2 hardwareVersion];
-  v22 = v21;
-  if (v21)
+  hardwareVersion = [v2 hardwareVersion];
+  v22 = hardwareVersion;
+  if (hardwareVersion)
   {
-    v23 = v21;
+    v23 = hardwareVersion;
   }
 
   else
@@ -289,11 +289,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v24];
 
   v25 = MEMORY[0x277D10B18];
-  v26 = [v2 firmwareVersion];
-  v27 = v26;
-  if (v26)
+  firmwareVersion = [v2 firmwareVersion];
+  v27 = firmwareVersion;
+  if (firmwareVersion)
   {
-    v28 = v26;
+    v28 = firmwareVersion;
   }
 
   else
@@ -305,11 +305,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v29];
 
   v30 = MEMORY[0x277D10B18];
-  v31 = [v2 softwareVersion];
-  v32 = v31;
-  if (v31)
+  softwareVersion = [v2 softwareVersion];
+  v32 = softwareVersion;
+  if (softwareVersion)
   {
-    v33 = v31;
+    v33 = softwareVersion;
   }
 
   else
@@ -321,11 +321,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v34];
 
   v35 = MEMORY[0x277D10B18];
-  v36 = [v2 localIdentifier];
-  v37 = v36;
-  if (v36)
+  localIdentifier = [v2 localIdentifier];
+  v37 = localIdentifier;
+  if (localIdentifier)
   {
-    v38 = v36;
+    v38 = localIdentifier;
   }
 
   else
@@ -337,11 +337,11 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   [v3 addObject:v39];
 
   v40 = MEMORY[0x277D10B18];
-  v41 = [v2 UDIDeviceIdentifier];
-  v42 = v41;
-  if (v41)
+  uDIDeviceIdentifier = [v2 UDIDeviceIdentifier];
+  v42 = uDIDeviceIdentifier;
+  if (uDIDeviceIdentifier)
   {
-    v43 = v41;
+    v43 = uDIDeviceIdentifier;
   }
 
   else
@@ -352,20 +352,20 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   v44 = [v40 predicateWithProperty:@"FDAUDI" equalToValue:v43];
   [v3 addObject:v44];
 
-  v45 = [v2 bluetoothIdentifier];
+  bluetoothIdentifier = [v2 bluetoothIdentifier];
 
-  if (v45)
+  if (bluetoothIdentifier)
   {
     v46 = MEMORY[0x277D10B18];
-    v47 = [v2 bluetoothIdentifier];
-    v48 = [v46 predicateWithProperty:@"bluetooth_identifier" equalToValue:v47];
+    bluetoothIdentifier2 = [v2 bluetoothIdentifier];
+    v48 = [v46 predicateWithProperty:@"bluetooth_identifier" equalToValue:bluetoothIdentifier2];
     [v3 addObject:v48];
   }
 
   else
   {
-    v47 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"bluetooth_identifier"];
-    [v3 addObject:v47];
+    bluetoothIdentifier2 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"bluetooth_identifier"];
+    [v3 addObject:bluetoothIdentifier2];
   }
 
   if ([v3 count] < 2)
@@ -382,17 +382,17 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   return v49;
 }
 
-+ (id)_deviceEntitiesWithPredicate:(void *)a3 healthDatabase:(uint64_t)a4 error:
++ (id)_deviceEntitiesWithPredicate:(void *)predicate healthDatabase:(uint64_t)database error:
 {
   v6 = a2;
-  v7 = a3;
+  predicateCopy = predicate;
   v8 = objc_opt_self();
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__203;
   v21 = __Block_byref_object_dispose__203;
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__HDDeviceEntity__deviceEntitiesWithPredicate_healthDatabase_error___block_invoke;
@@ -401,7 +401,7 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   v9 = v6;
   v14 = v9;
   v15 = &v17;
-  if ([v8 performReadTransactionWithHealthDatabase:v7 error:a4 block:v13])
+  if ([v8 performReadTransactionWithHealthDatabase:predicateCopy error:database block:v13])
   {
     v10 = v18[5];
   }
@@ -418,14 +418,14 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
   return v11;
 }
 
-+ (id)deviceEntitiesWithProperty:(id)a3 matchingValues:(id)a4 healthDatabase:(id)a5 error:(id *)a6
++ (id)deviceEntitiesWithProperty:(id)property matchingValues:(id)values healthDatabase:(id)database error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a3;
-  v12 = a4;
+  databaseCopy = database;
+  propertyCopy = property;
+  valuesCopy = values;
   objc_opt_self();
-  v13 = v11;
+  v13 = propertyCopy;
   objc_opt_self();
   v14 = *MEMORY[0x277CCBC58];
   *&v34 = *MEMORY[0x277CCBC68];
@@ -452,14 +452,14 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
 
   if (v19)
   {
-    v31 = v10;
-    v32 = a6;
+    v31 = databaseCopy;
+    errorCopy = error;
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v21 = v12;
+    v21 = valuesCopy;
     v22 = [v21 countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v22)
     {
@@ -493,17 +493,17 @@ BOOL __75__HDDeviceEntity_deviceEntityWithDevice_syncIdentity_healthDatabase_err
     {
       [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v20];
     }
-    v27 = ;
-    v10 = v31;
-    a6 = v32;
+    falsePredicate = ;
+    databaseCopy = v31;
+    error = errorCopy;
   }
 
   else
   {
-    v27 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
   }
 
-  v28 = [(HDDeviceEntity *)a1 _deviceEntitiesWithPredicate:v27 healthDatabase:v10 error:a6];
+  v28 = [(HDDeviceEntity *)self _deviceEntitiesWithPredicate:falsePredicate healthDatabase:databaseCopy error:error];
 
   v29 = *MEMORY[0x277D85DE8];
 
@@ -537,20 +537,20 @@ uint64_t __68__HDDeviceEntity__deviceEntitiesWithPredicate_healthDatabase_error_
   return 1;
 }
 
-+ (HDDeviceEntity)deviceEntityWithDevice:(id)a3 transaction:(id)a4 error:(id *)a5
++ (HDDeviceEntity)deviceEntityWithDevice:(id)device transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  v10 = [(HDDeviceEntity *)a1 _predicateForDevice:v8];
+  deviceCopy = device;
+  v9 = [transaction databaseForEntityClass:self];
+  v10 = [(HDDeviceEntity *)self _predicateForDevice:deviceCopy];
 
-  v11 = [a1 anyInDatabase:v9 predicate:v10 error:a5];
+  v11 = [self anyInDatabase:v9 predicate:v10 error:error];
 
   return v11;
 }
 
-- (id)deviceInHealthDatabase:(id)a3 error:(id *)a4
+- (id)deviceInHealthDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = +[HDDeviceEntity _propertiesForDevice];
   v16 = 0;
   v17 = &v16;
@@ -567,7 +567,7 @@ uint64_t __68__HDDeviceEntity__deviceEntitiesWithPredicate_healthDatabase_error_
   v9 = v7;
   v14 = v9;
   v15 = &v16;
-  if ([v8 performReadTransactionWithHealthDatabase:v6 error:a4 block:v13])
+  if ([v8 performReadTransactionWithHealthDatabase:databaseCopy error:error block:v13])
   {
     v10 = v17[5];
   }
@@ -647,40 +647,40 @@ void __47__HDDeviceEntity_deviceInHealthDatabase_error___block_invoke_2(uint64_t
   *(v17 + 40) = v14;
 }
 
-- (id)deviceUUIDInHealthDatabase:(id)a3 error:(id *)a4
+- (id)deviceUUIDInHealthDatabase:(id)database error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:a3 error:a4];
+  v4 = [(HDHealthEntity *)self valueForProperty:@"uuid" healthDatabase:database error:error];
   v5 = _HDUUIDForSQLiteValue();
 
   return v5;
 }
 
-- (id)creationDateInHealthDatabase:(id)a3 error:(id *)a4
+- (id)creationDateInHealthDatabase:(id)database error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self valueForProperty:@"creation_date" healthDatabase:a3 error:a4];
+  v4 = [(HDHealthEntity *)self valueForProperty:@"creation_date" healthDatabase:database error:error];
   v5 = _HDDateForSQLiteValue();
 
   return v5;
 }
 
-+ (id)_insertDeviceWithUUID:(id)a3 creationDate:(double)a4 name:(id)a5 bluetoothIdentifier:(id)a6 manufacturer:(id)a7 model:(id)a8 hardwareVersion:(id)a9 firmwareVersion:(id)a10 softwareVersion:(id)a11 localIdentifier:(id)a12 UDIDeviceIdentifier:(id)a13 syncProvenance:(int64_t)a14 syncIdentity:(int64_t)a15 database:(id)a16 error:(id *)a17
++ (id)_insertDeviceWithUUID:(id)d creationDate:(double)date name:(id)name bluetoothIdentifier:(id)identifier manufacturer:(id)manufacturer model:(id)model hardwareVersion:(id)version firmwareVersion:(id)self0 softwareVersion:(id)self1 localIdentifier:(id)self2 UDIDeviceIdentifier:(id)self3 syncProvenance:(int64_t)self4 syncIdentity:(int64_t)self5 database:(id)self6 error:(id *)self7
 {
-  v48 = a3;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
-  v27 = a9;
-  v43 = a10;
-  v44 = a11;
-  v28 = a12;
-  v45 = a13;
-  v50 = a16;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  versionCopy = version;
+  firmwareVersionCopy = firmwareVersion;
+  softwareVersionCopy = softwareVersion;
+  localIdentifierCopy = localIdentifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  databaseCopy = database;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __224__HDDeviceEntity__insertDeviceWithUUID_creationDate_name_bluetoothIdentifier_manufacturer_model_hardwareVersion_firmwareVersion_softwareVersion_localIdentifier_UDIDeviceIdentifier_syncProvenance_syncIdentity_database_error___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D67E38 != -1)
   {
     dispatch_once(&qword_280D67E38, block);
@@ -691,38 +691,38 @@ void __47__HDDeviceEntity_deviceInHealthDatabase_error___block_invoke_2(uint64_t
   v51[1] = 3221225472;
   v51[2] = __224__HDDeviceEntity__insertDeviceWithUUID_creationDate_name_bluetoothIdentifier_manufacturer_model_hardwareVersion_firmwareVersion_softwareVersion_localIdentifier_UDIDeviceIdentifier_syncProvenance_syncIdentity_database_error___block_invoke_2;
   v51[3] = &unk_27862F638;
-  v49 = v48;
+  v49 = dCopy;
   v52 = v49;
-  v62 = a4;
-  v47 = v23;
+  dateCopy = date;
+  v47 = nameCopy;
   v53 = v47;
-  v30 = v24;
+  v30 = identifierCopy;
   v54 = v30;
-  v31 = v25;
+  v31 = manufacturerCopy;
   v55 = v31;
-  v32 = v26;
+  v32 = modelCopy;
   v56 = v32;
-  v33 = v27;
+  v33 = versionCopy;
   v57 = v33;
-  v34 = v43;
+  v34 = firmwareVersionCopy;
   v58 = v34;
-  v35 = v44;
+  v35 = softwareVersionCopy;
   v59 = v35;
-  v36 = v28;
+  v36 = localIdentifierCopy;
   v60 = v36;
-  v37 = v45;
+  v37 = deviceIdentifierCopy;
   v61 = v37;
-  v63 = a14;
-  v64 = a15;
-  v38 = v50;
-  v39 = [v50 executeSQL:v29 error:a17 bindingHandler:v51 enumerationHandler:0];
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  v38 = databaseCopy;
+  v39 = [databaseCopy executeSQL:v29 error:error bindingHandler:v51 enumerationHandler:0];
   v40 = 0;
   if (v39)
   {
-    v41 = [v50 lastInsertRowID];
-    v40 = [(HDSQLiteEntity *)HDDeviceEntity entityWithPersistentID:v41];
+    lastInsertRowID = [databaseCopy lastInsertRowID];
+    v40 = [(HDSQLiteEntity *)HDDeviceEntity entityWithPersistentID:lastInsertRowID];
 
-    v38 = v50;
+    v38 = databaseCopy;
   }
 
   return v40;
@@ -805,24 +805,24 @@ uint64_t __224__HDDeviceEntity__insertDeviceWithUUID_creationDate_name_bluetooth
   return sqlite3_bind_int64(a2, 13, v15);
 }
 
-+ (BOOL)insertCodableDevices:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)insertCodableDevices:(id)devices syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 database];
+  devicesCopy = devices;
+  profileCopy = profile;
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__HDDeviceEntity_insertCodableDevices_syncProvenance_profile_error___block_invoke;
   v16[3] = &unk_2786154B8;
-  v17 = v10;
-  v18 = v11;
-  v19 = a1;
-  v20 = a4;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [(HDHealthEntity *)HDDeviceEntity performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v17 = devicesCopy;
+  v18 = profileCopy;
+  selfCopy = self;
+  provenanceCopy = provenance;
+  v13 = profileCopy;
+  v14 = devicesCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDDeviceEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __68__HDDeviceEntity_insertCodableDevices_syncProvenance_profile_error___block_invoke(uint64_t a1, void *a2)
@@ -1090,12 +1090,12 @@ LABEL_43:
   return v33;
 }
 
-+ (id)_codableDeviceWithRow:(HDSQLiteRow *)a3
++ (id)_codableDeviceWithRow:(HDSQLiteRow *)row
 {
-  if (!a3)
+  if (!row)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"HDDeviceEntity.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"row != NULL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDeviceEntity.m" lineNumber:493 description:{@"Invalid parameter not satisfying: %@", @"row != NULL"}];
   }
 
   v3 = objc_alloc_init(HDCodableDevice);

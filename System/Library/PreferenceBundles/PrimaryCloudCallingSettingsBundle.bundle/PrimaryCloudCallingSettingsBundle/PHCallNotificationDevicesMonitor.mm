@@ -1,7 +1,7 @@
 @interface PHCallNotificationDevicesMonitor
 + (PHCallNotificationDevicesMonitor)sharedInstance;
 - (PHCallNotificationDevicesMonitor)init;
-- (void)accountDeviceListChanged:(id)a3;
+- (void)accountDeviceListChanged:(id)changed;
 - (void)getAvailableCallNotificationDevices;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_3160;
   block[3] = &unk_C578;
-  block[4] = a1;
+  block[4] = self;
   if (qword_11438 != -1)
   {
     dispatch_once(&qword_11438, block);
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (void)accountDeviceListChanged:(id)a3
+- (void)accountDeviceListChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v3[0] = _NSConcreteStackBlock;
@@ -59,8 +59,8 @@
 - (void)getAvailableCallNotificationDevices
 {
   v3 = +[ACAccountStore ams_sharedAccountStore];
-  v4 = [v3 ams_activeiCloudAccount];
-  v5 = [v4 aa_altDSID];
+  ams_activeiCloudAccount = [v3 ams_activeiCloudAccount];
+  aa_altDSID = [ams_activeiCloudAccount aa_altDSID];
 
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -68,7 +68,7 @@
   v6[2] = sub_343C;
   v6[3] = &unk_C5C8;
   objc_copyWeak(&v7, &location);
-  [TUAvailableDevicesHelper getAvailableDevicesForAccountID:v5 operatingSystem:@"tvOS" model:@"AppleTV" minimumMajorVersion:26 completion:v6];
+  [TUAvailableDevicesHelper getAvailableDevicesForAccountID:aa_altDSID operatingSystem:@"tvOS" model:@"AppleTV" minimumMajorVersion:26 completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }

@@ -1,51 +1,51 @@
 @interface CSUSceneNetV5
-- (BOOL)enumerateAestheticsAttributeScores:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateAestheticsGlobalScores:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateEntityNetClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateHierarchicalSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateLeafSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)resampleImage:(__CVBuffer *)a3 intoInputImage:(__CVBuffer *)a4 error:(id *)a5;
-- (CSUSceneNetV5)initWithConfiguration:(id)a3;
-- (__CVBuffer)pixelBufferForSaliencyMap:(id)a3 error:(id *)a4;
+- (BOOL)enumerateAestheticsAttributeScores:(id)scores usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateAestheticsGlobalScores:(id)scores usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateEntityNetClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateHierarchicalSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateLeafSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)resampleImage:(__CVBuffer *)image intoInputImage:(__CVBuffer *)inputImage error:(id *)error;
+- (CSUSceneNetV5)initWithConfiguration:(id)configuration;
+- (__CVBuffer)pixelBufferForSaliencyMap:(id)map error:(id *)error;
 - (id).cxx_construct;
-- (id)allAestheticsAttributeScores:(id)a3;
-- (id)allAestheticsAttributeScores:(id)a3 error:(id *)a4;
-- (id)allAestheticsGlobalScores:(id)a3;
-- (id)allAestheticsGlobalScores:(id)a3 error:(id *)a4;
-- (id)allEntityNetClassificationLikelihoods:(id)a3;
-- (id)allEntityNetClassificationLikelihoods:(id)a3 error:(id *)a4;
-- (id)allSceneClassificationLikelihoods:(id)a3;
-- (id)allSceneClassificationLikelihoods:(id)a3 error:(id *)a4;
-- (id)base64HashesFromFingerprintEmbedding:(id)a3;
-- (id)detectionResultFromScoreHeatMap:(id)a3 coordinateOffsetMap:(id)a4;
-- (id)detectionResultFromScoreHeatMap:(id)a3 coordinateOffsetMap:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)hashesFromFingerprintEmbedding:(id)a3;
+- (id)allAestheticsAttributeScores:(id)scores;
+- (id)allAestheticsAttributeScores:(id)scores error:(id *)error;
+- (id)allAestheticsGlobalScores:(id)scores;
+- (id)allAestheticsGlobalScores:(id)scores error:(id *)error;
+- (id)allEntityNetClassificationLikelihoods:(id)likelihoods;
+- (id)allEntityNetClassificationLikelihoods:(id)likelihoods error:(id *)error;
+- (id)allSceneClassificationLikelihoods:(id)likelihoods;
+- (id)allSceneClassificationLikelihoods:(id)likelihoods error:(id *)error;
+- (id)base64HashesFromFingerprintEmbedding:(id)embedding;
+- (id)detectionResultFromScoreHeatMap:(id)map coordinateOffsetMap:(id)offsetMap;
+- (id)detectionResultFromScoreHeatMap:(id)map coordinateOffsetMap:(id)offsetMap options:(id)options error:(id *)error;
+- (id)hashesFromFingerprintEmbedding:(id)embedding;
 - (vector<float,)computeAllSceneClassificationLikelihoods:(CSUSceneNetV5 *)self;
-- (void)_unsafeRunOnInputImage:(__CVBuffer *)a3 completion:(id)a4;
-- (void)runOnInputImage:(__CVBuffer *)a3 completion:(id)a4;
+- (void)_unsafeRunOnInputImage:(__CVBuffer *)image completion:(id)completion;
+- (void)runOnInputImage:(__CVBuffer *)image completion:(id)completion;
 @end
 
 @implementation CSUSceneNetV5
 
-- (CSUSceneNetV5)initWithConfiguration:(id)a3
+- (CSUSceneNetV5)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CSUSceneNetV5;
   v6 = [(CSUSceneNetV5 *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   v67 = *MEMORY[0x1E69E9840];
   v4 = sub_1AC090E50();
@@ -136,7 +136,7 @@
   return 1;
 }
 
-- (BOOL)resampleImage:(__CVBuffer *)a3 intoInputImage:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)resampleImage:(__CVBuffer *)image intoInputImage:(__CVBuffer *)inputImage error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   v8 = sub_1AC090E50();
@@ -159,7 +159,7 @@
     operator new();
   }
 
-  v13 = VTPixelTransferSessionTransferImage(**ptr, a3, a4);
+  v13 = VTPixelTransferSessionTransferImage(**ptr, image, inputImage);
   sub_1AC0670CC(v13, "Image Transfer");
   if (!v18)
   {
@@ -181,10 +181,10 @@
   return 1;
 }
 
-- (void)runOnInputImage:(__CVBuffer *)a3 completion:(id)a4
+- (void)runOnInputImage:(__CVBuffer *)image completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = sub_1AC090E50();
   v8 = os_signpost_id_generate(v7);
 
@@ -199,7 +199,7 @@
   *buf = &unk_1F20D0690;
   v15 = v8;
   v16 = buf;
-  objc_msgSend__unsafeRunOnInputImage_completion_(self, v11, a3, v6, v12);
+  objc_msgSend__unsafeRunOnInputImage_completion_(self, v11, image, completionCopy, v12);
   if (!v16)
   {
     sub_1AC066F88();
@@ -287,17 +287,17 @@
   return result;
 }
 
-- (BOOL)enumerateSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  likelihoodsCopy = likelihoods;
+  blockCopy = block;
+  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v46 = objc_msgSend_leafSceneClassificationVocabularyName(self->_configuration, v13, v14, v15, v16);
     v22 = objc_msgSend_hierarchicalSceneClassificationVocabularyName(self->_configuration, v18, v19, v20, v21);
-    objc_msgSend_computeAllSceneClassificationLikelihoods_(self, v23, v8, v24, v25);
+    objc_msgSend_computeAllSceneClassificationLikelihoods_(self, v23, likelihoodsCopy, v24, v25);
     v26 = v51;
     v47 = 0u;
     v48 = 0u;
@@ -321,7 +321,7 @@
 
           v37 = objc_msgSend__vocabularyNamed_(v17, v31, *(*(&v47 + 1) + 8 * i), v32, v33);
           started = objc_msgSend_startIndex(v37, v38, v39, v40, v41);
-          sub_1AC0642AC(v37, v26 + 4 * started, v9);
+          sub_1AC0642AC(v37, v26 + 4 * started, blockCopy);
         }
 
         v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v31, &v47, v53, 16);
@@ -347,9 +347,9 @@
   return v43;
 }
 
-- (id)allSceneClassificationLikelihoods:(id)a3 error:(id *)a4
+- (id)allSceneClassificationLikelihoods:(id)likelihoods error:(id *)error
 {
-  v6 = a3;
+  likelihoodsCopy = likelihoods;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -357,7 +357,7 @@
   v13[3] = &unk_1E7967D00;
   v14 = v7;
   v8 = v7;
-  if (objc_msgSend_enumerateSceneClassificationLikelihoods_usingBlock_error_(self, v9, v6, v13, a4))
+  if (objc_msgSend_enumerateSceneClassificationLikelihoods_usingBlock_error_(self, v9, likelihoodsCopy, v13, error))
   {
     v10 = v8;
   }
@@ -372,23 +372,23 @@
   return v10;
 }
 
-- (id)allSceneClassificationLikelihoods:(id)a3
+- (id)allSceneClassificationLikelihoods:(id)likelihoods
 {
-  v4 = objc_msgSend_allSceneClassificationLikelihoods_error_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_allSceneClassificationLikelihoods_error_(self, a2, likelihoods, 0, v3);
 
   return v4;
 }
 
-- (BOOL)enumerateLeafSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateLeafSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  likelihoodsCopy = likelihoods;
+  blockCopy = block;
+  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v18 = objc_msgSend_leafSceneClassificationVocabularyName(self->_configuration, v13, v14, v15, v16);
-    v19 = sub_1AC063EC8(v8);
-    sub_1AC09B578(v17, v18, v19, v9);
+    v19 = sub_1AC063EC8(likelihoodsCopy);
+    sub_1AC09B578(v17, v18, v19, blockCopy);
 
     v20 = 1;
   }
@@ -401,18 +401,18 @@
   return v20;
 }
 
-- (BOOL)enumerateHierarchicalSceneClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateHierarchicalSceneClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  likelihoodsCopy = likelihoods;
+  blockCopy = block;
+  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v18 = objc_msgSend_hierarchicalSceneClassificationVocabularyName(self->_configuration, v13, v14, v15, v16);
-    objc_msgSend_computeAllSceneClassificationLikelihoods_(self, v19, v8, v20, v21);
+    objc_msgSend_computeAllSceneClassificationLikelihoods_(self, v19, likelihoodsCopy, v20, v21);
     v25 = objc_msgSend__vocabularyNamed_(v17, v22, v18, v23, v24);
     started = objc_msgSend_startIndex(v25, v26, v27, v28, v29);
-    sub_1AC0642AC(v25, v33 + 4 * started, v9);
+    sub_1AC0642AC(v25, v33 + 4 * started, blockCopy);
 
     if (v33)
     {
@@ -430,9 +430,9 @@
   return v31;
 }
 
-- (id)allAestheticsAttributeScores:(id)a3 error:(id *)a4
+- (id)allAestheticsAttributeScores:(id)scores error:(id *)error
 {
-  v6 = a3;
+  scoresCopy = scores;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -440,7 +440,7 @@
   v13[3] = &unk_1E7967D00;
   v14 = v7;
   v8 = v7;
-  if (objc_msgSend_enumerateAestheticsAttributeScores_usingBlock_error_(self, v9, v6, v13, a4))
+  if (objc_msgSend_enumerateAestheticsAttributeScores_usingBlock_error_(self, v9, scoresCopy, v13, error))
   {
     v10 = v8;
   }
@@ -455,16 +455,16 @@
   return v10;
 }
 
-- (id)allAestheticsAttributeScores:(id)a3
+- (id)allAestheticsAttributeScores:(id)scores
 {
-  v4 = objc_msgSend_allAestheticsAttributeScores_error_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_allAestheticsAttributeScores_error_(self, a2, scores, 0, v3);
 
   return v4;
 }
 
-- (id)allAestheticsGlobalScores:(id)a3 error:(id *)a4
+- (id)allAestheticsGlobalScores:(id)scores error:(id *)error
 {
-  v6 = a3;
+  scoresCopy = scores;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -472,7 +472,7 @@
   v13[3] = &unk_1E7967D00;
   v14 = v7;
   v8 = v7;
-  if (objc_msgSend_enumerateAestheticsGlobalScores_usingBlock_error_(self, v9, v6, v13, a4))
+  if (objc_msgSend_enumerateAestheticsGlobalScores_usingBlock_error_(self, v9, scoresCopy, v13, error))
   {
     v10 = v8;
   }
@@ -487,23 +487,23 @@
   return v10;
 }
 
-- (id)allAestheticsGlobalScores:(id)a3
+- (id)allAestheticsGlobalScores:(id)scores
 {
-  v4 = objc_msgSend_allAestheticsGlobalScores_error_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_allAestheticsGlobalScores_error_(self, a2, scores, 0, v3);
 
   return v4;
 }
 
-- (BOOL)enumerateAestheticsAttributeScores:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateAestheticsAttributeScores:(id)scores usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_aestheticsTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  scoresCopy = scores;
+  blockCopy = block;
+  v17 = objc_msgSend_aestheticsTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v18 = objc_msgSend_aestheticsAttributeVocabularyName(self->_configuration, v13, v14, v15, v16);
-    v19 = sub_1AC063EC8(v8);
-    sub_1AC09B578(v17, v18, v19, v9);
+    v19 = sub_1AC063EC8(scoresCopy);
+    sub_1AC09B578(v17, v18, v19, blockCopy);
 
     v20 = 1;
   }
@@ -516,16 +516,16 @@
   return v20;
 }
 
-- (BOOL)enumerateAestheticsGlobalScores:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateAestheticsGlobalScores:(id)scores usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_aestheticsTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  scoresCopy = scores;
+  blockCopy = block;
+  v17 = objc_msgSend_aestheticsTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v18 = objc_msgSend_aestheticsGlobalScoreVocabularyName(self->_configuration, v13, v14, v15, v16);
-    v19 = sub_1AC063EC8(v8);
-    sub_1AC09B578(v17, v18, v19, v9);
+    v19 = sub_1AC063EC8(scoresCopy);
+    sub_1AC09B578(v17, v18, v19, blockCopy);
 
     v20 = 1;
   }
@@ -538,12 +538,12 @@
   return v20;
 }
 
-- (id)detectionResultFromScoreHeatMap:(id)a3 coordinateOffsetMap:(id)a4
+- (id)detectionResultFromScoreHeatMap:(id)map coordinateOffsetMap:(id)offsetMap
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  offsetMapCopy = offsetMap;
   v8 = objc_alloc_init(CSUObjectDetectionOptions);
-  v10 = objc_msgSend_detectionResultFromScoreHeatMap_coordinateOffsetMap_options_error_(self, v9, v6, v7, v8, 0);
+  v10 = objc_msgSend_detectionResultFromScoreHeatMap_coordinateOffsetMap_options_error_(self, v9, mapCopy, offsetMapCopy, v8, 0);
   v11 = v10;
   if (v10)
   {
@@ -560,29 +560,29 @@
   return v12;
 }
 
-- (id)detectionResultFromScoreHeatMap:(id)a3 coordinateOffsetMap:(id)a4 options:(id)a5 error:(id *)a6
+- (id)detectionResultFromScoreHeatMap:(id)map coordinateOffsetMap:(id)offsetMap options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v20 = objc_msgSend_detectionTaxonomyWithError_(self->_configuration, v13, a6, v14, v15);
+  mapCopy = map;
+  offsetMapCopy = offsetMap;
+  optionsCopy = options;
+  v20 = objc_msgSend_detectionTaxonomyWithError_(self->_configuration, v13, error, v14, v15);
   if (v20)
   {
     v55 = 0;
-    objc_msgSend_detectionForegroundThreshold(v12, v16, v17, v18, v19);
+    objc_msgSend_detectionForegroundThreshold(optionsCopy, v16, v17, v18, v19);
     if (v25 > 0.0)
     {
       IsSoftmax = objc_msgSend_detectionHeadIsSoftmax(self->_configuration, v21, v22, v23, v24);
       v31 = objc_msgSend_detectionVocabularyName(self->_configuration, v27, v28, v29, v30);
-      v36 = objc_msgSend_relevantClassNames(v12, v32, v33, v34, v35);
-      objc_msgSend_detectionForegroundThreshold(v12, v37, v38, v39, v40);
+      v36 = objc_msgSend_relevantClassNames(optionsCopy, v32, v33, v34, v35);
+      objc_msgSend_detectionForegroundThreshold(optionsCopy, v37, v38, v39, v40);
       sub_1AC09C0DC(IsSoftmax, v20, v31, v36, v41 | 0x100000000, v54);
       operator new();
     }
 
     v42 = objc_msgSend_detectionHeadIsSoftmax(self->_configuration, v21, v22, v23, v24);
     v47 = objc_msgSend_detectionVocabularyName(self->_configuration, v43, v44, v45, v46);
-    v52 = objc_msgSend_relevantClassNames(v12, v48, v49, v50, v51);
+    v52 = objc_msgSend_relevantClassNames(optionsCopy, v48, v49, v50, v51);
     sub_1AC09C0DC(v42, v20, v47, v52, 0, v54);
     operator new();
   }
@@ -590,10 +590,10 @@
   return 0;
 }
 
-- (__CVBuffer)pixelBufferForSaliencyMap:(id)a3 error:(id *)a4
+- (__CVBuffer)pixelBufferForSaliencyMap:(id)map error:(id *)error
 {
-  v4 = a3;
-  v5 = sub_1AC063EC8(v4);
+  mapCopy = map;
+  v5 = sub_1AC063EC8(mapCopy);
   v7 = v5[10];
   v6 = v5[11];
   v42[0] = 0;
@@ -778,10 +778,10 @@ LABEL_49:
   return v15;
 }
 
-- (id)hashesFromFingerprintEmbedding:(id)a3
+- (id)hashesFromFingerprintEmbedding:(id)embedding
 {
-  v4 = a3;
-  v5 = sub_1AC063EC8(v4);
+  embeddingCopy = embedding;
+  v5 = sub_1AC063EC8(embeddingCopy);
   v6 = *v5;
   __p = 0;
   v24 = 0;
@@ -836,10 +836,10 @@ LABEL_49:
   return v9;
 }
 
-- (id)base64HashesFromFingerprintEmbedding:(id)a3
+- (id)base64HashesFromFingerprintEmbedding:(id)embedding
 {
-  v4 = a3;
-  v5 = sub_1AC063EC8(v4);
+  embeddingCopy = embedding;
+  v5 = sub_1AC063EC8(embeddingCopy);
   v6 = *v5;
   v27 = 0;
   v28 = 0;
@@ -922,16 +922,16 @@ LABEL_49:
   return v7;
 }
 
-- (BOOL)enumerateEntityNetClassificationLikelihoods:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateEntityNetClassificationLikelihoods:(id)likelihoods usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, a5, v11, v12);
+  likelihoodsCopy = likelihoods;
+  blockCopy = block;
+  v17 = objc_msgSend_sceneTaxonomyWithError_(self->_configuration, v10, error, v11, v12);
   if (v17)
   {
     v18 = objc_msgSend_entityNetVocabularyName(self->_configuration, v13, v14, v15, v16);
-    v19 = sub_1AC063EC8(v8);
-    sub_1AC09B578(v17, v18, v19, v9);
+    v19 = sub_1AC063EC8(likelihoodsCopy);
+    sub_1AC09B578(v17, v18, v19, blockCopy);
 
     v20 = 1;
   }
@@ -944,9 +944,9 @@ LABEL_49:
   return v20;
 }
 
-- (id)allEntityNetClassificationLikelihoods:(id)a3 error:(id *)a4
+- (id)allEntityNetClassificationLikelihoods:(id)likelihoods error:(id *)error
 {
-  v6 = a3;
+  likelihoodsCopy = likelihoods;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -954,7 +954,7 @@ LABEL_49:
   v13[3] = &unk_1E7967D00;
   v14 = v7;
   v8 = v7;
-  if (objc_msgSend_enumerateEntityNetClassificationLikelihoods_usingBlock_error_(self, v9, v6, v13, a4))
+  if (objc_msgSend_enumerateEntityNetClassificationLikelihoods_usingBlock_error_(self, v9, likelihoodsCopy, v13, error))
   {
     v10 = v8;
   }
@@ -969,17 +969,17 @@ LABEL_49:
   return v10;
 }
 
-- (id)allEntityNetClassificationLikelihoods:(id)a3
+- (id)allEntityNetClassificationLikelihoods:(id)likelihoods
 {
-  v4 = objc_msgSend_allEntityNetClassificationLikelihoods_error_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_allEntityNetClassificationLikelihoods_error_(self, a2, likelihoods, 0, v3);
 
   return v4;
 }
 
-- (void)_unsafeRunOnInputImage:(__CVBuffer *)a3 completion:(id)a4
+- (void)_unsafeRunOnInputImage:(__CVBuffer *)image completion:(id)completion
 {
   v26[11] = *MEMORY[0x1E69E9840];
-  v24 = a4;
+  completionCopy = completion;
   v26[0] = 0;
   Resources = objc_msgSend_loadResources_(self, v6, v26, v7, v8);
   v10 = v26[0];
@@ -990,10 +990,10 @@ LABEL_49:
     v17 = objc_msgSend_inputImageTensorName(self->_configuration, v11, v12, v13, v14);
     v18 = v17;
     v25[7] = objc_msgSend_UTF8String(v17, v19, v20, v21, v22);
-    sub_1AC06B064(v25, a3);
+    sub_1AC06B064(v25, image);
   }
 
-  v24[2](v24, 0, v10);
+  completionCopy[2](completionCopy, 0, v10);
 
   v23 = *MEMORY[0x1E69E9840];
 }

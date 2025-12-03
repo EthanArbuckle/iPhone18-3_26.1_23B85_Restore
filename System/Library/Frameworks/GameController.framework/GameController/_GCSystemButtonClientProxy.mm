@@ -1,16 +1,16 @@
 @interface _GCSystemButtonClientProxy
 - (BOOL)handleButtonPress;
 - (_GCSystemButtonClientProxy)init;
-- (id)_initWithConnection:(void *)a3 server:;
+- (id)_initWithConnection:(void *)connection server:;
 - (id)connection;
-- (int64_t)compareTo:(id)a3;
+- (int64_t)compareTo:(id)to;
 - (void)_invalidate;
-- (void)_systemButtonAvailabilityChanged:(void *)a1;
-- (void)_systemButtonRespondersChanged:(void *)a1;
+- (void)_systemButtonAvailabilityChanged:(void *)changed;
+- (void)_systemButtonRespondersChanged:(void *)changed;
 - (void)handleButtonPress;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refresh;
-- (void)setConsumesSystemButtonPressEvents:(BOOL)a3 reason:(id)a4 atMaximumPriority:(int64_t)a5;
+- (void)setConsumesSystemButtonPressEvents:(BOOL)events reason:(id)reason atMaximumPriority:(int64_t)priority;
 @end
 
 @implementation _GCSystemButtonClientProxy
@@ -70,47 +70,47 @@
   v8.opaque[1] = 0;
   os_activity_scope_enter(v3, &v8);
   WeakRetained = objc_loadWeakRetained(&self->_server);
-  v5 = [WeakRetained activeButton];
+  activeButton = [WeakRetained activeButton];
 
-  [(_GCSystemButtonClientProxy *)self _systemButtonAvailabilityChanged:v5];
+  [(_GCSystemButtonClientProxy *)self _systemButtonAvailabilityChanged:activeButton];
   v6 = objc_loadWeakRetained(&self->_server);
-  v7 = [v6 responders];
+  responders = [v6 responders];
 
-  [(_GCSystemButtonClientProxy *)self _systemButtonRespondersChanged:v7];
+  [(_GCSystemButtonClientProxy *)self _systemButtonRespondersChanged:responders];
   os_activity_scope_leave(&v8);
 }
 
-- (void)setConsumesSystemButtonPressEvents:(BOOL)a3 reason:(id)a4 atMaximumPriority:(int64_t)a5
+- (void)setConsumesSystemButtonPressEvents:(BOOL)events reason:(id)reason atMaximumPriority:(int64_t)priority
 {
-  v6 = a3;
+  eventsCopy = events;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  reasonCopy = reason;
   v9 = _os_activity_create(&dword_1D2CD5000, "[GCSystemButtonServer/Connection] Set Consumes Press Events", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v18.opaque[0] = 0;
   v18.opaque[1] = 0;
   os_activity_scope_enter(v9, &v18);
-  v10 = [MEMORY[0x1E696B0B8] currentConnection];
-  v11 = [v10 valueForEntitlement:@"com.apple.springboard.hardware-button-service.event-consumption"];
-  v12 = [v11 BOOLValue];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v11 = [currentConnection valueForEntitlement:@"com.apple.springboard.hardware-button-service.event-consumption"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     [(_GCSystemButtonClientProxy *)self willChangeValueForKey:@"wantsPressEvents"];
-    if (v8 && v6 && (a5 & 0x8000000000000000) == 0)
+    if (reasonCopy && eventsCopy && (priority & 0x8000000000000000) == 0)
     {
       v13 = _gc_log_system_button();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
-        v22 = v8;
+        v22 = reasonCopy;
         v23 = 2048;
-        v24 = a5;
+        priorityCopy = priority;
         _os_log_impl(&dword_1D2CD5000, v13, OS_LOG_TYPE_DEFAULT, "%@ wants presses for reason '%@' [%zi].", buf, 0x20u);
       }
 
-      v14 = v8;
+      v14 = reasonCopy;
       wantsPressEventsReason = self->_wantsPressEventsReason;
       self->_wantsPressEventsReason = v14;
     }
@@ -119,10 +119,10 @@
     {
       wantsPressEventsReason = self->_wantsPressEventsReason;
       self->_wantsPressEventsReason = 0;
-      a5 = -1;
+      priority = -1;
     }
 
-    self->_wantsPressEventsAtPriority = a5;
+    self->_wantsPressEventsAtPriority = priority;
     [(_GCSystemButtonClientProxy *)self didChangeValueForKey:@"wantsPressEvents"];
   }
 
@@ -140,10 +140,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
   wantsPressEventsAtPriority = self->_wantsPressEventsAtPriority;
-  v4 = *(a3 + 7);
+  v4 = *(to + 7);
   v5 = wantsPressEventsAtPriority < v4;
   v6 = wantsPressEventsAtPriority > v4;
   if (v5)
@@ -157,42 +157,42 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"activeButton"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"activeButton"])
   {
-    [_GCSystemButtonClientProxy observeValueForKeyPath:v12 ofObject:self change:? context:?];
+    [_GCSystemButtonClientProxy observeValueForKeyPath:changeCopy ofObject:self change:? context:?];
   }
 
-  else if ([v10 isEqualToString:@"responders"])
+  else if ([pathCopy isEqualToString:@"responders"])
   {
-    [_GCSystemButtonClientProxy observeValueForKeyPath:v12 ofObject:self change:? context:?];
+    [_GCSystemButtonClientProxy observeValueForKeyPath:changeCopy ofObject:self change:? context:?];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _GCSystemButtonClientProxy;
-    [(_GCSystemButtonClientProxy *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_GCSystemButtonClientProxy *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)_initWithConnection:(void *)a3 server:
+- (id)_initWithConnection:(void *)connection server:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  connectionCopy = connection;
+  if (self)
   {
     if (!v6)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:sel__initWithConnection_server_ object:a1 file:@"GCSystemButtonServer.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %s", "connection != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithConnection_server_ object:self file:@"GCSystemButtonServer.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %s", "connection != nil"}];
     }
 
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = _GCSystemButtonClientProxy;
     v8 = objc_msgSendSuper2(&v24, sel_init);
     [v6 setExportedObject:v8];
@@ -203,7 +203,7 @@
     v9 = v8;
     v23 = v9;
     v10 = _Block_copy(aBlock);
-    objc_storeWeak(v9 + 1, v7);
+    objc_storeWeak(v9 + 1, connectionCopy);
     objc_storeStrong(v9 + 3, a2);
     v11 = [v6 addInvalidationHandler:v10];
     v12 = v9[4];
@@ -234,22 +234,22 @@
 
 - (id)connection
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getProperty(a1, sel_connection, 24, 1);
+    self = objc_getProperty(self, sel_connection, 24, 1);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_systemButtonAvailabilityChanged:(void *)a1
+- (void)_systemButtonAvailabilityChanged:(void *)changed
 {
   self = a2;
-  if (a1)
+  if (changed)
   {
-    v3 = [(_GCSystemButtonClientProxy *)a1 connection];
-    v5 = [v3 remoteProxy];
+    connection = [(_GCSystemButtonClientProxy *)changed connection];
+    remoteProxy = [connection remoteProxy];
     if (self)
     {
       v6 = objc_getProperty(self, v4, 16, 1);
@@ -262,33 +262,33 @@
       Property = 0;
     }
 
-    [v5 setSystemButtonAvailable:self != 0 localizedName:v6 sfSymbolName:Property];
+    [remoteProxy setSystemButtonAvailable:self != 0 localizedName:v6 sfSymbolName:Property];
   }
 }
 
-- (void)_systemButtonRespondersChanged:(void *)a1
+- (void)_systemButtonRespondersChanged:(void *)changed
 {
   v8 = a2;
-  if (a1)
+  if (changed)
   {
-    v3 = [(_GCSystemButtonClientProxy *)a1 connection];
-    v4 = [v3 peerValueForEntitlement:@"com.apple.springboard.hardware-button-service.event-consumption"];
-    v5 = [v4 BOOLValue];
+    connection = [(_GCSystemButtonClientProxy *)changed connection];
+    v4 = [connection peerValueForEntitlement:@"com.apple.springboard.hardware-button-service.event-consumption"];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
-      v6 = [(_GCSystemButtonClientProxy *)a1 connection];
-      v7 = [v6 remoteProxy];
-      [v7 setActiveClientsRespondingToSystemButton:v8];
+      connection2 = [(_GCSystemButtonClientProxy *)changed connection];
+      remoteProxy = [connection2 remoteProxy];
+      [remoteProxy setActiveClientsRespondingToSystemButton:v8];
     }
   }
 }
 
 - (void)handleButtonPress
 {
-  v4 = [(_GCSystemButtonClientProxy *)a1 connection];
-  v3 = [v4 remoteProxy];
-  [v3 consumeSystemButtonPressEventAtPriority:*a2];
+  connection = [(_GCSystemButtonClientProxy *)self connection];
+  remoteProxy = [connection remoteProxy];
+  [remoteProxy consumeSystemButtonPressEventAtPriority:*a2];
 }
 
 - (void)observeValueForKeyPath:(void *)a1 ofObject:(void *)a2 change:context:.cold.1(void *a1, void *a2)

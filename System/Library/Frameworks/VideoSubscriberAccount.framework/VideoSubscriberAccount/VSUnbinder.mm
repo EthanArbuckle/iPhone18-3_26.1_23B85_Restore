@@ -1,7 +1,7 @@
 @interface VSUnbinder
 - (VSUnbinder)init;
-- (void)binder:(id)a3 didEstablishBinding:(id)a4;
-- (void)binder:(id)a3 didTearDownBinding:(id)a4;
+- (void)binder:(id)binder didEstablishBinding:(id)binding;
+- (void)binder:(id)binder didTearDownBinding:(id)binding;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   v2 = [(VSUnbinder *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     bindingsByBinder = v2->_bindingsByBinder;
-    v2->_bindingsByBinder = v3;
+    v2->_bindingsByBinder = weakToStrongObjectsMapTable;
   }
 
   return v2;
@@ -25,13 +25,13 @@
 - (void)dealloc
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_invalid = 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_invalid = 1;
+  objc_sync_exit(selfCopy);
 
-  v15 = v2;
-  v3 = v2->_bindingsByBinder;
+  v15 = selfCopy;
+  v3 = selfCopy->_bindingsByBinder;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -57,8 +57,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 reverseObjectEnumerator];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -69,13 +69,13 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               [v8 tearDownBinding:*(*(&v18 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
@@ -93,65 +93,65 @@
   [(VSUnbinder *)&v17 dealloc];
 }
 
-- (void)binder:(id)a3 didEstablishBinding:(id)a4
+- (void)binder:(id)binder didEstablishBinding:(id)binding
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if ([(VSUnbinder *)v7 isInvalid])
+  binderCopy = binder;
+  bindingCopy = binding;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(VSUnbinder *)selfCopy isInvalid])
   {
-    [v11 tearDownBinding:v6];
+    [binderCopy tearDownBinding:bindingCopy];
   }
 
   else
   {
-    v8 = [(VSUnbinder *)v7 bindingsByBinder];
-    v9 = [v8 objectForKey:v11];
+    bindingsByBinder = [(VSUnbinder *)selfCopy bindingsByBinder];
+    v9 = [bindingsByBinder objectForKey:binderCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [v8 setObject:v9 forKey:v11];
+      [bindingsByBinder setObject:v9 forKey:binderCopy];
     }
 
-    v10 = [v6 copy];
+    v10 = [bindingCopy copy];
     [v9 addObject:v10];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)binder:(id)a3 didTearDownBinding:(id)a4
+- (void)binder:(id)binder didTearDownBinding:(id)binding
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (![(VSUnbinder *)v7 isInvalid])
+  binderCopy = binder;
+  bindingCopy = binding;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(VSUnbinder *)selfCopy isInvalid])
   {
-    v8 = [(VSUnbinder *)v7 bindingsByBinder];
-    v9 = [v8 objectForKey:v11];
+    bindingsByBinder = [(VSUnbinder *)selfCopy bindingsByBinder];
+    v9 = [bindingsByBinder objectForKey:binderCopy];
     v10 = v9;
     if (v9)
     {
-      if ([v9 containsObject:v6])
+      if ([v9 containsObject:bindingCopy])
       {
-        [v10 removeObject:v6];
+        [v10 removeObject:bindingCopy];
       }
 
       else
       {
-        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Attempt to tear down unknown binding %@", v6}];
+        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Attempt to tear down unknown binding %@", bindingCopy}];
       }
 
       if (![v10 count])
       {
-        [v8 removeObjectForKey:v11];
+        [bindingsByBinder removeObjectForKey:binderCopy];
       }
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 @end

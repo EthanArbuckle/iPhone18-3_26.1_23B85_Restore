@@ -1,11 +1,11 @@
 @interface FMCalloutView
-- (_TtC6FindMy13FMCalloutView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC6FindMy13FMCalloutView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation FMCalloutView
 
-- (_TtC6FindMy13FMCalloutView)initWithCoder:(id)a3
+- (_TtC6FindMy13FMCalloutView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy13FMCalloutView_path;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UIBezierPath) init];
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_10031A31C();
 }
 

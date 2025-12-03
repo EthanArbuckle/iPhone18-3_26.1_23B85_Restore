@@ -2,20 +2,20 @@
 - (CGRect)bounds;
 - (CGSize)size;
 - (CGSize)sizeInPixels;
-- (GGLImageCanvas)initWithSize:(CGSize)a3 scale:(double)a4 useMultisampling:(BOOL)a5 extraColorFormats:(const void *)a6 taskContext:(const void *)a7 device:(void *)a8 services:(void *)a9 signpostId:(unint64_t)a10;
+- (GGLImageCanvas)initWithSize:(CGSize)size scale:(double)scale useMultisampling:(BOOL)multisampling extraColorFormats:(const void *)formats taskContext:(const void *)context device:(void *)device services:(void *)services signpostId:(unint64_t)self0;
 - (GGLRenderQueueSource)renderSource;
 - (__IOSurface)flipImage;
 - (id).cxx_construct;
 - (shared_ptr<ggl::BitmapDataBase>)bitmapData;
 - (void)dealloc;
-- (void)debugConsoleForId:(int)a3;
+- (void)debugConsoleForId:(int)id;
 - (void)destroyRenderTarget;
 - (void)imageTexture;
 - (void)prepareRenderTask:;
-- (void)prepareRenderTask:(const void *)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentScale:(double)a3;
-- (void)setSize:(CGSize)a3;
+- (void)prepareRenderTask:(const void *)task;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentScale:(double)scale;
+- (void)setSize:(CGSize)size;
 - (void)willDealloc;
 - (void)willDrawView;
 @end
@@ -61,12 +61,12 @@
   return WeakRetained;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  *(self + 6) = *&a3.origin.x;
-  *(self + 7) = *&a3.origin.y;
-  *(self + 8) = *&a3.size.width;
-  *(self + 9) = *&a3.size.height;
+  *(self + 6) = *&bounds.origin.x;
+  *(self + 7) = *&bounds.origin.y;
+  *(self + 8) = *&bounds.size.width;
+  *(self + 9) = *&bounds.size.height;
 }
 
 - (CGRect)bounds
@@ -91,7 +91,7 @@
   return result;
 }
 
-- (void)debugConsoleForId:(int)a3
+- (void)debugConsoleForId:(int)id
 {
   std::mutex::lock((self + 416));
   v5 = *(self + 60);
@@ -100,7 +100,7 @@
     operator new();
   }
 
-  v6 = md::DebugConsoleManager::console(v5, a3);
+  v6 = md::DebugConsoleManager::console(v5, id);
   std::mutex::unlock((self + 416));
   return v6;
 }
@@ -117,12 +117,12 @@
   *(self + 80) = 0;
 }
 
-- (void)prepareRenderTask:(const void *)a3
+- (void)prepareRenderTask:(const void *)task
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = gdc::ServiceLocator::resolve<md::FrameService>(**(self + 61), *(*(self + 61) + 8));
   objc_initWeak(&location, self);
-  v6 = *a3;
+  v6 = *task;
   objc_copyWeak(&to, &location);
   v11 = 0;
   v9 = &unk_1F2A201A8;
@@ -136,7 +136,7 @@
 
 - (void)prepareRenderTask:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -235,21 +235,21 @@
   std::allocate_shared[abi:nn200100]<ggl::SamplerState,std::allocator<ggl::SamplerState>,ggl::Filter,ggl::Filter,0>();
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (*(self + 5) != a3)
+  if (*(self + 5) != scale)
   {
-    *(self + 5) = a3;
+    *(self + 5) = scale;
     *(self + 40) = 256;
   }
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (*(self + 3) != a3.width || *(self + 4) != a3.height)
+  if (*(self + 3) != size.width || *(self + 4) != size.height)
   {
-    *(self + 3) = *&a3.width;
-    *(self + 4) = *&a3.height;
+    *(self + 3) = *&size.width;
+    *(self + 4) = *&size.height;
     *(self + 40) = 256;
   }
 }
@@ -283,14 +283,14 @@
 - (void)imageTexture
 {
   v2 = *(self + 376);
-  v3 = [(GGLImageCanvas *)self renderTarget];
+  renderTarget = [(GGLImageCanvas *)self renderTarget];
   v4 = 88;
   if (v2)
   {
     v4 = 184;
   }
 
-  return *&v3[v4];
+  return *&renderTarget[v4];
 }
 
 - (void)dealloc
@@ -300,10 +300,10 @@
   [(GGLImageCanvas *)&v2 dealloc];
 }
 
-- (GGLImageCanvas)initWithSize:(CGSize)a3 scale:(double)a4 useMultisampling:(BOOL)a5 extraColorFormats:(const void *)a6 taskContext:(const void *)a7 device:(void *)a8 services:(void *)a9 signpostId:(unint64_t)a10
+- (GGLImageCanvas)initWithSize:(CGSize)size scale:(double)scale useMultisampling:(BOOL)multisampling extraColorFormats:(const void *)formats taskContext:(const void *)context device:(void *)device services:(void *)services signpostId:(unint64_t)self0
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v49 = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = GGLImageCanvas;
@@ -312,15 +312,15 @@
   v21 = v19;
   if (v19)
   {
-    *(v19 + 61) = a9;
+    *(v19 + 61) = services;
     *(v19 + 3) = width;
     *(v19 + 4) = height;
-    *(v19 + 5) = a4;
-    v19[376] = a5;
-    *(v19 + 50) = a10;
-    *(v19 + 51) = a8;
-    v23 = *(a8 + 1);
-    v22 = *(a8 + 2);
+    *(v19 + 5) = scale;
+    v19[376] = multisampling;
+    *(v19 + 50) = id;
+    *(v19 + 51) = device;
+    v23 = *(device + 1);
+    v22 = *(device + 2);
     if (v22)
     {
       atomic_fetch_add_explicit((v22 + 8), 1uLL, memory_order_relaxed);
@@ -334,7 +334,7 @@
       std::__shared_weak_count::__release_shared[abi:nn200100](v24);
     }
 
-    v25 = (*(**(a8 + 1) + 16))(*(a8 + 1), *(*a7 + 16), *(a8 + 3), *(v21 + 50));
+    v25 = (*(**(device + 1) + 16))(*(device + 1), *(*context + 16), *(device + 3), *(v21 + 50));
     v26 = *(v21 + 23);
     *(v21 + 23) = v25;
     if (v26)
@@ -354,7 +354,7 @@
 
     LODWORD(__dst) = *(*(v21 + 1) + 60);
     std::vector<ggl::PixelFormat>::vector[abi:nn200100](&__p, &__dst, 1uLL);
-    std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&__p, v43, *a6, *(a6 + 1), (*(a6 + 1) - *a6) >> 2);
+    std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&__p, v43, *formats, *(formats + 1), (*(formats + 1) - *formats) >> 2);
     __dst = 0uLL;
     *(&v48 + 1) = v27 | 0x1A00000000;
     v28 = v43 - __p;
@@ -375,7 +375,7 @@
     {
       LODWORD(__dst) = *(v31 + 56);
       std::vector<ggl::PixelFormat>::vector[abi:nn200100](&v45, &__dst, 1uLL);
-      std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&v45, v46, *a6, *(a6 + 1), (*(a6 + 1) - *a6) >> 2);
+      std::vector<ggl::PixelFormat>::__insert_with_size[abi:nn200100]<std::__wrap_iter<ggl::PixelFormat const*>,std::__wrap_iter<ggl::PixelFormat const*>>(&v45, v46, *formats, *(formats + 1), (*(formats + 1) - *formats) >> 2);
       v33 = v45;
       __dst = 0uLL;
       *(&v48 + 1) = v27 | 0x1A00000000;

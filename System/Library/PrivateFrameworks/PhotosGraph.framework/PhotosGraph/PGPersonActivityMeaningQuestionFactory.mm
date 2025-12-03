@@ -1,7 +1,7 @@
 @interface PGPersonActivityMeaningQuestionFactory
 - (NSSet)personActivityMeaningLabelsForWhichToGenerateQuestions;
-- (id)_questionsToAddFromMomentNodes:(id)a3 localFactoryScore:(double)a4 alreadyGeneratedQuestions:(id)a5 limit:(unint64_t)a6 graph:(id)a7 progressBlock:(id)a8;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)_questionsToAddFromMomentNodes:(id)nodes localFactoryScore:(double)score alreadyGeneratedQuestions:(id)questions limit:(unint64_t)limit graph:(id)graph progressBlock:(id)block;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGPersonActivityMeaningQuestionFactory
@@ -32,13 +32,13 @@
   return personActivityMeaningLabelsForWhichToGenerateQuestions;
 }
 
-- (id)_questionsToAddFromMomentNodes:(id)a3 localFactoryScore:(double)a4 alreadyGeneratedQuestions:(id)a5 limit:(unint64_t)a6 graph:(id)a7 progressBlock:(id)a8
+- (id)_questionsToAddFromMomentNodes:(id)nodes localFactoryScore:(double)score alreadyGeneratedQuestions:(id)questions limit:(unint64_t)limit graph:(id)graph progressBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v55 = a5;
-  v48 = a7;
-  v13 = _Block_copy(a8);
+  nodesCopy = nodes;
+  questionsCopy = questions;
+  graphCopy = graph;
+  v13 = _Block_copy(block);
   v42 = [MEMORY[0x277CBEB98] set];
   v14 = 0.0;
   if (v13)
@@ -68,7 +68,7 @@
   }
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (![v12 count])
+  if (![nodesCopy count])
   {
     if (!v13 || CFAbsoluteTimeGetCurrent() - v14 < 0.01 || (v64 = 0, v13[2](v13, &v64, 1.0), !v64))
     {
@@ -89,7 +89,7 @@
     goto LABEL_65;
   }
 
-  v18 = [v55 count];
+  v18 = [questionsCopy count];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
@@ -102,7 +102,7 @@
     v46 = *v61;
     *&v19 = 67109378;
     v41 = v19;
-    v44 = v12;
+    v44 = nodesCopy;
     v45 = v42;
     while (2)
     {
@@ -114,17 +114,17 @@
         }
 
         v21 = *(*(&v60 + 1) + 8 * i);
-        v22 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabel:v21 inGraph:v48, v41];
-        v23 = [v22 featureNodeCollection];
-        v24 = [PGGraphMomentFeaturesEdgeCollection momentFeaturesEdgesFromMomentNodes:v12 toFeatureNodes:v23];
+        v22 = [PGGraphPersonActivityMeaningNodeCollection personActivityMeaningNodesForActivityLabel:v21 inGraph:graphCopy, v41];
+        featureNodeCollection = [v22 featureNodeCollection];
+        v24 = [PGGraphMomentFeaturesEdgeCollection momentFeaturesEdgesFromMomentNodes:nodesCopy toFeatureNodes:featureNodeCollection];
 
         v51 = v24;
-        v25 = [v24 allRelevantAssetUUIDs];
+        allRelevantAssetUUIDs = [v24 allRelevantAssetUUIDs];
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v26 = v25;
+        v26 = allRelevantAssetUUIDs;
         v27 = [v26 countByEnumeratingWithState:&v56 objects:v65 count:16];
         if (v27)
         {
@@ -141,8 +141,8 @@ LABEL_16:
               objc_enumerationMutation(v26);
             }
 
-            v31 = [[PGPersonActivityMeaningQuestion alloc] initWithMeaningLabel:v21 assetUUID:*(*(&v56 + 1) + 8 * v30) localFactoryScore:a4];
-            if ([(PGSurveyQuestionFactory *)self shouldAddQuestion:v31 toAlreadyGeneratedQuestions:v55])
+            v31 = [[PGPersonActivityMeaningQuestion alloc] initWithMeaningLabel:v21 assetUUID:*(*(&v56 + 1) + 8 * v30) localFactoryScore:score];
+            if ([(PGSurveyQuestionFactory *)self shouldAddQuestion:v31 toAlreadyGeneratedQuestions:questionsCopy])
             {
               [v17 addObject:v31];
             }
@@ -155,7 +155,7 @@ LABEL_16:
               if (v34 - v14 >= 0.01)
               {
                 v64 = 0;
-                v13[2](v13, &v64, v33 / a6);
+                v13[2](v13, &v64, v33 / limit);
                 if (v64 | v52 & 1)
                 {
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -180,7 +180,7 @@ LABEL_16:
                 v34 = v14;
               }
 
-              if ([v17 count] + v18 >= a6)
+              if ([v17 count] + v18 >= limit)
               {
                 v14 = CFAbsoluteTimeGetCurrent();
                 if (v14 - v34 < 0.01)
@@ -215,7 +215,7 @@ LABEL_45:
 
                 v34 = v14;
 LABEL_47:
-                v12 = v44;
+                nodesCopy = v44;
                 i = v50;
                 v36 = v51;
 
@@ -228,7 +228,7 @@ LABEL_47:
               v14 = v34;
             }
 
-            else if ([v17 count] + v18 >= a6)
+            else if ([v17 count] + v18 >= limit)
             {
               goto LABEL_45;
             }
@@ -242,7 +242,7 @@ LABEL_47:
               }
 
               v35 = 1;
-              v12 = v44;
+              nodesCopy = v44;
               v22 = v49;
               i = v50;
               goto LABEL_34;
@@ -316,26 +316,26 @@ LABEL_70:
   return v16;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __83__PGPersonActivityMeaningQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __83__PGPersonActivityMeaningQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

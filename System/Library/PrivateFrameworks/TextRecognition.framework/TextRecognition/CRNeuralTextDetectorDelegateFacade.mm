@@ -1,17 +1,17 @@
 @interface CRNeuralTextDetectorDelegateFacade
-- (BOOL)shouldRunTileForRect:(CGRect)a3 imageSize:(CGSize)a4;
+- (BOOL)shouldRunTileForRect:(CGRect)rect imageSize:(CGSize)size;
 @end
 
 @implementation CRNeuralTextDetectorDelegateFacade
 
-- (BOOL)shouldRunTileForRect:(CGRect)a3 imageSize:(CGSize)a4
+- (BOOL)shouldRunTileForRect:(CGRect)rect imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
 
   v10 = sub_1B40E2914(x, y, v7, v6, width, height);
 

@@ -1,6 +1,6 @@
 @interface AXBuddyBundleTableCell
-- (AXBuddyBundleTableCell)initWithCoder:(id)a3;
-- (AXBuddyBundleTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXBuddyBundleTableCell)initWithCoder:(id)coder;
+- (AXBuddyBundleTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_commonInit;
 @end
 
@@ -14,24 +14,24 @@
   return self;
 }
 
-- (AXBuddyBundleTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXBuddyBundleTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXBuddyBundleTableCell;
-  v4 = [(AXBuddyBundleTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
-  v5 = [(AXBuddyBundleTableCell *)v4 _commonInit];
+  v4 = [(AXBuddyBundleTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
+  _commonInit = [(AXBuddyBundleTableCell *)v4 _commonInit];
 
-  return v5;
+  return _commonInit;
 }
 
-- (AXBuddyBundleTableCell)initWithCoder:(id)a3
+- (AXBuddyBundleTableCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXBuddyBundleTableCell;
-  v3 = [(AXBuddyBundleTableCell *)&v6 initWithCoder:a3];
-  v4 = [(AXBuddyBundleTableCell *)v3 _commonInit];
+  v3 = [(AXBuddyBundleTableCell *)&v6 initWithCoder:coder];
+  _commonInit = [(AXBuddyBundleTableCell *)v3 _commonInit];
 
-  return v4;
+  return _commonInit;
 }
 
 @end

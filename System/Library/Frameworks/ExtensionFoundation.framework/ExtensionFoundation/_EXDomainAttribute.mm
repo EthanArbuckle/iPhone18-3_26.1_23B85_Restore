@@ -1,15 +1,15 @@
 @interface _EXDomainAttribute
 - (_EXDomainAttribute)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXDomainAttribute
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _EXDomainAttribute.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _EXDomainAttribute.encode(with:)(coderCopy);
 }
 
 - (_EXDomainAttribute)init

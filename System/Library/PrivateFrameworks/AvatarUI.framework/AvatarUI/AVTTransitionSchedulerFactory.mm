@@ -1,22 +1,22 @@
 @interface AVTTransitionSchedulerFactory
-+ (id)concurrentTransitionSchedulerWithEventHandler:(id)a3 delay:(double)a4;
-+ (id)synchronousTransitionSchedulerWithEventHandler:(id)a3;
++ (id)concurrentTransitionSchedulerWithEventHandler:(id)handler delay:(double)delay;
++ (id)synchronousTransitionSchedulerWithEventHandler:(id)handler;
 @end
 
 @implementation AVTTransitionSchedulerFactory
 
-+ (id)synchronousTransitionSchedulerWithEventHandler:(id)a3
++ (id)synchronousTransitionSchedulerWithEventHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [[AVTSynchronousTransitionScheduler alloc] initWithEventHandler:v3];
+  handlerCopy = handler;
+  v4 = [[AVTSynchronousTransitionScheduler alloc] initWithEventHandler:handlerCopy];
 
   return v4;
 }
 
-+ (id)concurrentTransitionSchedulerWithEventHandler:(id)a3 delay:(double)a4
++ (id)concurrentTransitionSchedulerWithEventHandler:(id)handler delay:(double)delay
 {
-  v5 = a3;
-  v6 = [[AVTConcurrentTransitionScheduler alloc] initWithEventHandler:v5 delay:a4];
+  handlerCopy = handler;
+  v6 = [[AVTConcurrentTransitionScheduler alloc] initWithEventHandler:handlerCopy delay:delay];
 
   return v6;
 }

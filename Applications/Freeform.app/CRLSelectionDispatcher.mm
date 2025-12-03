@@ -8,13 +8,13 @@
 
 - (void)snapshotSelectionState
 {
-  v2 = self;
+  selfCopy = self;
   sub_10113E27C();
 }
 
 - (void)validateSelections
 {
-  v2 = self;
+  selfCopy = self;
   sub_10113EB48();
 }
 

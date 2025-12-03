@@ -1,8 +1,8 @@
 @interface BLTWatchKitAppList
 - (BLTWatchKitAppList)init;
 - (BLTWatchKitAppListDelegate)delegate;
-- (id)watchKitAppDefinitionWithBundleID:(id)a3;
-- (void)_fetchWatchKitInfoWithForce:(BOOL)a3 completion:(id)a4;
+- (id)watchKitAppDefinitionWithBundleID:(id)d;
+- (void)_fetchWatchKitInfoWithForce:(BOOL)force completion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(BLTWatchKitAppList *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     loadingCompletionHandlers = v2->_loadingCompletionHandlers;
-    v2->_loadingCompletionHandlers = v3;
+    v2->_loadingCompletionHandlers = array;
 
     pthread_mutex_init(&v2->_lock, 0);
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -37,13 +37,13 @@
   [(BLTWatchKitAppList *)&v4 dealloc];
 }
 
-- (id)watchKitAppDefinitionWithBundleID:(id)a3
+- (id)watchKitAppDefinitionWithBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
+    dCopy = d;
     pthread_mutex_lock(&self->_lock);
-    v5 = [(NSDictionary *)self->_appsByAppBundleID objectForKeyedSubscript:v4];
+    v5 = [(NSDictionary *)self->_appsByAppBundleID objectForKeyedSubscript:dCopy];
 
     pthread_mutex_unlock(&self->_lock);
   }
@@ -56,18 +56,18 @@
   return v5;
 }
 
-- (void)_fetchWatchKitInfoWithForce:(BOOL)a3 completion:(id)a4
+- (void)_fetchWatchKitInfoWithForce:(BOOL)force completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [BLTTransaction transactionWithDescription:@"BLTWatchKitAppList _fetchWatchKitInfoWithForce:completion:"];
-  if (!a3)
+  if (!force)
   {
     pthread_mutex_lock(&self->_lock);
-    if (v6)
+    if (completionCopy)
     {
       loadingCompletionHandlers = self->_loadingCompletionHandlers;
-      v9 = [v6 copy];
+      v9 = [completionCopy copy];
       [(NSMutableArray *)loadingCompletionHandlers addObject:v9];
     }
 
@@ -81,15 +81,15 @@
     pthread_mutex_unlock(&self->_lock);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  v12 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
   v13 = blt_general_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 valueForProperty:*MEMORY[0x277D2BBB8]];
+    v14 = [blt_boundedWaitForActivePairedDevice valueForProperty:*MEMORY[0x277D2BBB8]];
     *buf = 134218242;
-    v42 = v12;
+    v42 = blt_boundedWaitForActivePairedDevice;
     v43 = 2112;
     v44 = v14;
     _os_log_impl(&dword_241FB3000, v13, OS_LOG_TYPE_DEFAULT, "Fetching apps for paired device %p id: %@", buf, 0x16u);
@@ -111,11 +111,11 @@
   v31[1] = 3221225472;
   v31[2] = __61__BLTWatchKitAppList__fetchWatchKitInfoWithForce_completion___block_invoke_2;
   v31[3] = &unk_278D318D8;
-  v19 = v10;
+  v19 = dictionary;
   v32 = v19;
-  v33 = self;
-  v38 = a3;
-  v37 = v6;
+  selfCopy = self;
+  forceCopy = force;
+  v37 = completionCopy;
   v20 = v18;
   v34 = v20;
   v35 = v17;
@@ -132,7 +132,7 @@
   v23 = v20;
   v24 = v19;
   v25 = v22;
-  [v11 enumerateLocallyAvailableApplicationsForPairedDevice:v12 options:0 withBlock:v27];
+  [mEMORY[0x277CEAF80] enumerateLocallyAvailableApplicationsForPairedDevice:blt_boundedWaitForActivePairedDevice options:0 withBlock:v27];
 
 LABEL_10:
   v26 = *MEMORY[0x277D85DE8];

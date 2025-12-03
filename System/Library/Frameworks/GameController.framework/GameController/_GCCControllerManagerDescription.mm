@@ -1,14 +1,14 @@
 @interface _GCCControllerManagerDescription
-- (id)materializeWithContext:(id)a3;
+- (id)materializeWithContext:(id)context;
 @end
 
 @implementation _GCCControllerManagerDescription
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = _GCCControllerManagerDescription;
-  v3 = [(_GCImplicitIPCObjectDescription *)&v5 materializeWithContext:a3];
+  v3 = [(_GCImplicitIPCObjectDescription *)&v5 materializeWithContext:context];
 
   return v3;
 }

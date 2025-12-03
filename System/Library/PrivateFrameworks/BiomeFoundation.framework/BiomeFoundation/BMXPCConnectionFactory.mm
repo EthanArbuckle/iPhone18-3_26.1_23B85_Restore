@@ -1,12 +1,12 @@
 @interface BMXPCConnectionFactory
 + (BMXPCConnectionFactoryDelegate)delegate;
-+ (id)connectionToMachService:(unint64_t)a3 endpoint:(id)a4 useCase:(id)a5;
++ (id)connectionToMachService:(unint64_t)service endpoint:(id)endpoint useCase:(id)case;
 + (id)defaultQueue;
 + (id)globalStrongConnectionCache;
 + (id)globalWeakConnectionCache;
-+ (id)remoteObjectInterfaceForMachServiceType:(unint64_t)a3;
-+ (void)_configureConnection:(id)a3 serviceType:(unint64_t)a4 useCase:(id)a5;
-- (BMXPCConnectionFactory)initWithType:(unint64_t)a3 domain:(unint64_t)a4 user:(unsigned int)a5 useCase:(id)a6 options:(unsigned __int8)a7;
++ (id)remoteObjectInterfaceForMachServiceType:(unint64_t)type;
++ (void)_configureConnection:(id)connection serviceType:(unint64_t)type useCase:(id)case;
+- (BMXPCConnectionFactory)initWithType:(unint64_t)type domain:(unint64_t)domain user:(unsigned int)user useCase:(id)case options:(unsigned __int8)options;
 - (BMXPCConnectionFactoryDelegate)delegate;
 - (BOOL)connectionIsCrossUser;
 - (BOOL)currentProcessCanDirectlyConnectCrossUser;
@@ -20,7 +20,7 @@
 - (id)makeConnectionWrapper;
 - (unint64_t)_connectionFlags;
 - (unsigned)user;
-- (void)_configureConnection:(id)a3;
+- (void)_configureConnection:(id)connection;
 - (void)_newConnection;
 @end
 
@@ -32,29 +32,29 @@
   user = self->_user;
   if (user == getuid() && (-[BMXPCConnectionFactory delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 shouldCacheConnectionToMachService:self->_serviceType domain:self->_domain useCase:self->_useCase], v5, v6))
   {
-    v7 = [objc_opt_class() globalStrongConnectionCache];
-    v8 = v7;
+    globalStrongConnectionCache = [objc_opt_class() globalStrongConnectionCache];
+    v8 = globalStrongConnectionCache;
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke;
     v20 = &unk_1E796B728;
-    v21 = self;
+    selfCopy = self;
     v9 = &v17;
   }
 
   else
   {
-    v7 = [objc_opt_class() globalWeakConnectionCache];
-    v8 = v7;
+    globalStrongConnectionCache = [objc_opt_class() globalWeakConnectionCache];
+    v8 = globalStrongConnectionCache;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke_2;
     v15 = &unk_1E796B728;
-    v16 = self;
+    selfCopy2 = self;
     v9 = &v12;
   }
 
-  v10 = [v7 cachedObjectWithKey:v3 missHandler:{v9, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21}];
+  v10 = [globalStrongConnectionCache cachedObjectWithKey:v3 missHandler:{v9, v12, v13, v14, v15, selfCopy2, v17, v18, v19, v20, selfCopy}];
 
   return v10;
 }
@@ -70,8 +70,8 @@
 
   if ([(NSString *)self->_useCase isEqual:@"__coreduet__"])
   {
-    v6 = [(BMXPCConnectionFactory *)self machServiceName];
-    if ([v3 canPerformGlobalMachLookup:v6 report:1])
+    machServiceName = [(BMXPCConnectionFactory *)self machServiceName];
+    if ([v3 canPerformGlobalMachLookup:machServiceName report:1])
     {
 
 LABEL_12:
@@ -79,8 +79,8 @@ LABEL_12:
       goto LABEL_4;
     }
 
-    v8 = [(BMXPCConnectionFactory *)self coreDuetMachService];
-    v9 = [v3 canPerformGlobalMachLookup:v8 report:0];
+    coreDuetMachService = [(BMXPCConnectionFactory *)self coreDuetMachService];
+    v9 = [v3 canPerformGlobalMachLookup:coreDuetMachService report:0];
 
     v10 = (v9 & 1) == 0;
     v11 = 2;
@@ -93,8 +93,8 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v7 = [(BMXPCConnectionFactory *)self machServiceName];
-    if ([v3 canPerformGlobalMachLookup:v7 report:1])
+    machServiceName2 = [(BMXPCConnectionFactory *)self machServiceName];
+    if ([v3 canPerformGlobalMachLookup:machServiceName2 report:1])
     {
 
       goto LABEL_12;
@@ -150,14 +150,14 @@ id __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke_2(uint64_t a
     [(BMXPCConnectionFactory *)self _newConnection];
   }
 
-  v4 = [(BMXPCConnectionFactory *)self _connectionFlags];
-  if (v4)
+  _connectionFlags = [(BMXPCConnectionFactory *)self _connectionFlags];
+  if (_connectionFlags)
   {
     [(BMXPCConnectionFactory *)self _requestConnectionFromCaller];
     return objc_claimAutoreleasedReturnValue();
   }
 
-  else if ((v4 & 2) != 0)
+  else if ((_connectionFlags & 2) != 0)
   {
     [(BMXPCConnectionFactory *)self _proxyConnectionThroughCoreDuet];
     return objc_claimAutoreleasedReturnValue();
@@ -165,7 +165,7 @@ id __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke_2(uint64_t a
 
   else
   {
-    if ((v4 & 0x10000) != 0)
+    if ((_connectionFlags & 0x10000) != 0)
     {
       [(BMXPCConnectionFactory *)self _legacyUserDomainConnection];
     }
@@ -189,9 +189,9 @@ id __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke_2(uint64_t a
 - (id)_regularConnection
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = [(BMXPCConnectionFactory *)self machServiceName];
-  v5 = [objc_opt_class() defaultQueue];
-  v6 = [v3 bm_connectionWithMachServiceName:v4 queue:v5 options:4096];
+  machServiceName = [(BMXPCConnectionFactory *)self machServiceName];
+  defaultQueue = [objc_opt_class() defaultQueue];
+  v6 = [v3 bm_connectionWithMachServiceName:machServiceName queue:defaultQueue options:4096];
 
   [(BMXPCConnectionFactory *)self _configureConnection:v6];
 
@@ -256,8 +256,8 @@ LABEL_12:
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v3, &state);
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
-  if (!v4)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  if (!currentConnection)
   {
     v5 = __biome_log_for_category(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -272,22 +272,22 @@ LABEL_12:
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  v6 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_93];
+  v6 = [currentConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_93];
   domain = self->_domain;
-  v8 = [(BMXPCConnectionFactory *)self user];
+  user = [(BMXPCConnectionFactory *)self user];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__BMXPCConnectionFactory__requestConnectionFromCaller__block_invoke_94;
   v13[3] = &unk_1E796B770;
   v13[4] = &v14;
-  [v6 requestBiomeEndpointForAppScopedService:domain user:v8 reply:v13];
+  [v6 requestBiomeEndpointForAppScopedService:domain user:user reply:v13];
 
   v9 = v15[5];
   if (v9)
   {
     v10 = MEMORY[0x1E696B0B8];
-    v11 = [objc_opt_class() defaultQueue];
-    v9 = [v10 bm_connectionWithListenerEndpoint:v9 queue:v11];
+    defaultQueue = [objc_opt_class() defaultQueue];
+    v9 = [v10 bm_connectionWithListenerEndpoint:v9 queue:defaultQueue];
 
     [(BMXPCConnectionFactory *)self _configureConnection:v9];
   }
@@ -351,32 +351,32 @@ void __54__BMXPCConnectionFactory__requestConnectionFromCaller__block_invoke_94(
   }
 }
 
-+ (id)connectionToMachService:(unint64_t)a3 endpoint:(id)a4 useCase:(id)a5
++ (id)connectionToMachService:(unint64_t)service endpoint:(id)endpoint useCase:(id)case
 {
   v7 = MEMORY[0x1E696B0B8];
-  v8 = a5;
-  v9 = [v7 bm_connectionWithListenerEndpoint:a4 queue:0];
-  [BMXPCConnectionFactory _configureConnection:v9 serviceType:a3 useCase:v8];
+  caseCopy = case;
+  v9 = [v7 bm_connectionWithListenerEndpoint:endpoint queue:0];
+  [BMXPCConnectionFactory _configureConnection:v9 serviceType:service useCase:caseCopy];
 
   v10 = [[BMXPCConnectionWrapper alloc] _initWithConnection:v9];
 
   return v10;
 }
 
-- (BMXPCConnectionFactory)initWithType:(unint64_t)a3 domain:(unint64_t)a4 user:(unsigned int)a5 useCase:(id)a6 options:(unsigned __int8)a7
+- (BMXPCConnectionFactory)initWithType:(unint64_t)type domain:(unint64_t)domain user:(unsigned int)user useCase:(id)case options:(unsigned __int8)options
 {
-  v13 = a6;
+  caseCopy = case;
   v17.receiver = self;
   v17.super_class = BMXPCConnectionFactory;
   v14 = [(BMXPCConnectionFactory *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_serviceType = a3;
-    v14->_domain = a4;
-    v14->_user = a5;
-    objc_storeStrong(&v14->_useCase, a6);
-    v15->_options = a7;
+    v14->_serviceType = type;
+    v14->_domain = domain;
+    v14->_user = user;
+    objc_storeStrong(&v14->_useCase, case);
+    v15->_options = options;
   }
 
   return v15;
@@ -421,9 +421,9 @@ id __47__BMXPCConnectionFactory_makeConnectionWrapper__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)remoteObjectInterfaceForMachServiceType:(unint64_t)a3
++ (id)remoteObjectInterfaceForMachServiceType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v3 = &protocolRef_BMAccessServer;
 LABEL_10:
@@ -431,9 +431,9 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v4 = 0;
       goto LABEL_12;
@@ -539,8 +539,8 @@ LABEL_13:
     if (v11)
     {
       v12 = MEMORY[0x1E696B0B8];
-      v13 = [objc_opt_class() defaultQueue];
-      v14 = [v12 bm_connectionWithListenerEndpoint:v11 queue:v13];
+      defaultQueue = [objc_opt_class() defaultQueue];
+      v14 = [v12 bm_connectionWithListenerEndpoint:v11 queue:defaultQueue];
 
       [(BMXPCConnectionFactory *)self _configureConnection:v14];
       [v5 invalidate];
@@ -561,9 +561,9 @@ LABEL_13:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSXPCInterface *__softlink__DKDaemonInterface(void)"];
-    [v16 handleFailureInFunction:v17 file:@"BMXPCConnectionFactory.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"BMXPCConnectionFactory.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -613,40 +613,40 @@ void __54__BMXPCConnectionFactory__requestConnectionFromCaller__block_invoke(uin
 - (id)_legacyUserDomainConnection
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = [objc_opt_class() defaultQueue];
-  v5 = [v3 bm_connectionWithMachServiceName:@"com.apple.biome.PublicStreamAccessService" queue:v4 options:4096];
+  defaultQueue = [objc_opt_class() defaultQueue];
+  v5 = [v3 bm_connectionWithMachServiceName:@"com.apple.biome.PublicStreamAccessService" queue:defaultQueue options:4096];
 
   [(BMXPCConnectionFactory *)self _configureConnection:v5];
 
   return v5;
 }
 
-- (void)_configureConnection:(id)a3
+- (void)_configureConnection:(id)connection
 {
-  v4 = a3;
-  [objc_opt_class() _configureConnection:v4 serviceType:self->_serviceType useCase:self->_useCase];
+  connectionCopy = connection;
+  [objc_opt_class() _configureConnection:connectionCopy serviceType:self->_serviceType useCase:self->_useCase];
 }
 
-+ (void)_configureConnection:(id)a3 serviceType:(unint64_t)a4 useCase:(id)a5
++ (void)_configureConnection:(id)connection serviceType:(unint64_t)type useCase:(id)case
 {
-  v8 = a5;
-  v11 = a3;
-  v9 = [a1 remoteObjectInterfaceForMachServiceType:a4];
-  [v11 setRemoteObjectInterface:v9];
+  caseCopy = case;
+  connectionCopy = connection;
+  v9 = [self remoteObjectInterfaceForMachServiceType:type];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  v10 = [a1 defaultQueue];
-  [v11 _setQueue:v10];
+  defaultQueue = [self defaultQueue];
+  [connectionCopy _setQueue:defaultQueue];
 
-  [v11 activate];
-  [v11 setBm_exportedUseCase:v8];
+  [connectionCopy activate];
+  [connectionCopy setBm_exportedUseCase:caseCopy];
 }
 
 - (void)_newConnection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = BMStringForServiceDomain(*(a1 + 16));
-  v5 = [v4 lowercaseString];
-  v6 = *(a1 + 8);
+  v4 = BMStringForServiceDomain(*(self + 16));
+  lowercaseString = [v4 lowercaseString];
+  v6 = *(self + 8);
   v7 = @"file server";
   if (!v6)
   {
@@ -665,7 +665,7 @@ void __54__BMXPCConnectionFactory__requestConnectionFromCaller__block_invoke(uin
 
   v9 = v8;
   v11 = 138543618;
-  v12 = v5;
+  v12 = lowercaseString;
   v13 = 2114;
   v14 = v9;
   _os_log_debug_impl(&dword_1AC15D000, a2, OS_LOG_TYPE_DEBUG, "New connection to %{public}@ %{public}@", &v11, 0x16u);

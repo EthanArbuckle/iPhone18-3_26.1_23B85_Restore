@@ -7,9 +7,9 @@
 - (LNDateRelevantCondition)asCondition
 {
   v2 = [LNDateRelevantCondition alloc];
-  v3 = [a1 startDate];
-  v4 = [a1 endDate];
-  v5 = [(LNDateRelevantCondition *)v2 initWithStartDate:v3 endDate:v4];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v5 = [(LNDateRelevantCondition *)v2 initWithStartDate:startDate endDate:endDate];
 
   return v5;
 }

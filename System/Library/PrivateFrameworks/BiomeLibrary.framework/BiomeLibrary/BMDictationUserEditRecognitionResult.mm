@@ -1,39 +1,39 @@
 @interface BMDictationUserEditRecognitionResult
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDictationUserEditRecognitionResult)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMDictationUserEditRecognitionResult)initWithTokens:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMDictationUserEditRecognitionResult)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMDictationUserEditRecognitionResult)initWithTokens:(id)tokens;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_tokensJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDictationUserEditRecognitionResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDictationUserEditRecognitionResult *)self tokens];
-    v7 = [v5 tokens];
-    if (v6 == v7)
+    v5 = equalCopy;
+    tokens = [(BMDictationUserEditRecognitionResult *)self tokens];
+    tokens2 = [v5 tokens];
+    if (tokens == tokens2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMDictationUserEditRecognitionResult *)self tokens];
-      v9 = [v5 tokens];
-      v10 = [v8 isEqual:v9];
+      tokens3 = [(BMDictationUserEditRecognitionResult *)self tokens];
+      tokens4 = [v5 tokens];
+      v10 = [tokens3 isEqual:tokens4];
     }
   }
 
@@ -48,17 +48,17 @@
 - (id)jsonDictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMDictationUserEditRecognitionResult *)self _tokensJSONArray];
+  _tokensJSONArray = [(BMDictationUserEditRecognitionResult *)self _tokensJSONArray];
   v7 = @"tokens";
-  v3 = v2;
-  if (!v2)
+  null = _tokensJSONArray;
+  if (!_tokensJSONArray)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!_tokensJSONArray)
   {
   }
 
@@ -75,8 +75,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMDictationUserEditRecognitionResult *)self tokens];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tokens = [(BMDictationUserEditRecognitionResult *)self tokens];
+  v5 = [tokens countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,13 +87,13 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokens);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [tokens countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -104,12 +104,12 @@
   return v3;
 }
 
-- (BMDictationUserEditRecognitionResult)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMDictationUserEditRecognitionResult)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"tokens"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  v6 = [dictionary objectForKeyedSubscript:@"tokens"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
@@ -240,15 +240,15 @@ LABEL_23:
 {
   v3 = objc_opt_new();
   [(BMDictationUserEditRecognitionResult *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -284,9 +284,9 @@ LABEL_23:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMDictationUserEditRecognitionResult;
   v5 = [(BMEventBase *)&v23 init];
@@ -295,8 +295,8 @@ LABEL_23:
     v6 = objc_opt_new();
     while (1)
     {
-      v7 = [v4 position];
-      if (v7 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+      position = [fromCopy position];
+      if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
       {
         break;
       }
@@ -307,18 +307,18 @@ LABEL_23:
       while (1)
       {
         v24 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v24 & 0x7F) << v8;
@@ -335,9 +335,9 @@ LABEL_23:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_17:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -366,8 +366,8 @@ LABEL_23:
     tokens = v5->_tokens;
     v5->_tokens = v18;
 
-    v20 = [v4 hasError];
-    if ((v20 & 1) == 0)
+    hasError = [fromCopy hasError];
+    if ((hasError & 1) == 0)
     {
       goto LABEL_26;
     }
@@ -388,22 +388,22 @@ LABEL_26:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDictationUserEditRecognitionResult *)self tokens];
-  v5 = [v3 initWithFormat:@"BMDictationUserEditRecognitionResult with tokens: %@", v4];
+  tokens = [(BMDictationUserEditRecognitionResult *)self tokens];
+  v5 = [v3 initWithFormat:@"BMDictationUserEditRecognitionResult with tokens: %@", tokens];
 
   return v5;
 }
 
-- (BMDictationUserEditRecognitionResult)initWithTokens:(id)a3
+- (BMDictationUserEditRecognitionResult)initWithTokens:(id)tokens
 {
-  v5 = a3;
+  tokensCopy = tokens;
   v8.receiver = self;
   v8.super_class = BMDictationUserEditRecognitionResult;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_tokens, a3);
+    objc_storeStrong(&v6->_tokens, tokens);
   }
 
   return v6;
@@ -442,9 +442,9 @@ id __47__BMDictationUserEditRecognitionResult_columns__block_invoke(uint64_t a1,
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -452,8 +452,8 @@ id __47__BMDictationUserEditRecognitionResult_columns__block_invoke(uint64_t a1,
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDictationUserEditRecognitionResult alloc] initByReadFrom:v7];
     v4 = v8;

@@ -2,19 +2,19 @@
 - (SPPairingManager)init;
 - (SPPairingManagerXPCProtocol)proxy;
 - (id)remoteInterface;
-- (void)allPairingErrorsWithCompletion:(id)a3;
-- (void)alwaysBeaconWildStateWithCompletion:(id)a3;
-- (void)currentBeaconingKeyWithCompletion:(id)a3;
+- (void)allPairingErrorsWithCompletion:(id)completion;
+- (void)alwaysBeaconWildStateWithCompletion:(id)completion;
+- (void)currentBeaconingKeyWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)finalizePairingWithSession:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)finalizePairingWithSession:(id)a3 name:(id)a4 roleId:(int64_t)a5 roleEmoji:(id)a6 keyStatus:(id)a7 collaborativeKey:(id)a8 signature:(id)a9 completion:(id)a10;
-- (void)getLocalPairingDataWithCompletion:(id)a3;
-- (void)getOfflineFindingInfoWithCurrentData:(id)a3 completion:(id)a4;
-- (void)initiatePairingSessionWithCompletion:(id)a3;
-- (void)invalidatePairingSession:(id)a3 completion:(id)a4;
-- (void)setAlwaysBeaconWildState:(BOOL)a3 completion:(id)a4;
-- (void)unpairUUID:(id)a3 force:(BOOL)a4 completion:(id)a5;
-- (void)verifyPairingWithPairingSession:(id)a3 signature:(id)a4 attestation:(id)a5 systemPublicKey:(id)a6 refKeyPublicKey:(id)a7 systemVersion:(id)a8 vendorId:(int64_t)a9 productId:(int64_t)a10 ecid:(id)a11 chipId:(id)a12 serialNumber:(id)a13 collaborativeKey:(id)a14 completion:(id)a15;
+- (void)finalizePairingWithSession:(id)session configuration:(id)configuration completion:(id)completion;
+- (void)finalizePairingWithSession:(id)session name:(id)name roleId:(int64_t)id roleEmoji:(id)emoji keyStatus:(id)status collaborativeKey:(id)key signature:(id)signature completion:(id)self0;
+- (void)getLocalPairingDataWithCompletion:(id)completion;
+- (void)getOfflineFindingInfoWithCurrentData:(id)data completion:(id)completion;
+- (void)initiatePairingSessionWithCompletion:(id)completion;
+- (void)invalidatePairingSession:(id)session completion:(id)completion;
+- (void)setAlwaysBeaconWildState:(BOOL)state completion:(id)completion;
+- (void)unpairUUID:(id)d force:(BOOL)force completion:(id)completion;
+- (void)verifyPairingWithPairingSession:(id)session signature:(id)signature attestation:(id)attestation systemPublicKey:(id)key refKeyPublicKey:(id)publicKey systemVersion:(id)version vendorId:(int64_t)id productId:(int64_t)self0 ecid:(id)self1 chipId:(id)self2 serialNumber:(id)self3 collaborativeKey:(id)self4 completion:(id)self5;
 @end
 
 @implementation SPPairingManager
@@ -32,8 +32,8 @@
     v2->_queue = v4;
 
     v6 = objc_alloc(MEMORY[0x277D07BA0]);
-    v7 = [(SPPairingManager *)v2 remoteInterface];
-    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.pairingmanager" options:0 remoteObjectInterface:v7 interruptionHandler:0 invalidationHandler:0];
+    remoteInterface = [(SPPairingManager *)v2 remoteInterface];
+    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.pairingmanager" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
     serviceDescription = v2->_serviceDescription;
     v2->_serviceDescription = v8;
   }
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SPPairingManager *)self session];
-  [v3 invalidate];
+  session = [(SPPairingManager *)self session];
+  [session invalidate];
 
   [(SPPairingManager *)self setSession:0];
   v4.receiver = self;
@@ -55,37 +55,37 @@
 - (SPPairingManagerXPCProtocol)proxy
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SPPairingManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPPairingManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPPairingManager *)self session];
+  session = [(SPPairingManager *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPPairingManager *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPPairingManager *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPPairingManager *)self setSession:v7];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SPPairingManager *)self serviceDescription];
-      v9 = [v8 machService];
+      serviceDescription2 = [(SPPairingManager *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v15 = 138412290;
-      v16 = v9;
+      v16 = machService;
       _os_log_impl(&dword_2643D0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SPPairingManager: Establishing XPC connection to %@", &v15, 0xCu);
     }
 
-    v10 = [(SPPairingManager *)self session];
-    [v10 resume];
+    session2 = [(SPPairingManager *)self session];
+    [session2 resume];
   }
 
-  v11 = [(SPPairingManager *)self session];
-  v12 = [v11 proxy];
+  session3 = [(SPPairingManager *)self session];
+  proxy = [session3 proxy];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return proxy;
 }
 
 - (id)remoteInterface
@@ -104,10 +104,10 @@
   return v2;
 }
 
-- (void)initiatePairingSessionWithCompletion:(id)a3
+- (void)initiatePairingSessionWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -116,15 +116,15 @@
   }
 
   objc_initWeak(buf, self);
-  v5 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__SPPairingManager_initiatePairingSessionWithCompletion___block_invoke;
   v8[3] = &unk_279B59650;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v6 = v4;
-  dispatch_async(v5, v8);
+  v9 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -161,11 +161,11 @@ void __57__SPPairingManager_initiatePairingSessionWithCompletion___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidatePairingSession:(id)a3 completion:(id)a4
+- (void)invalidatePairingSession:(id)session completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -174,17 +174,17 @@ void __57__SPPairingManager_initiatePairingSessionWithCompletion___block_invoke_
   }
 
   objc_initWeak(buf, self);
-  v8 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SPPairingManager_invalidatePairingSession_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = sessionCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = sessionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -220,55 +220,55 @@ void __56__SPPairingManager_invalidatePairingSession_completion___block_invoke_2
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyPairingWithPairingSession:(id)a3 signature:(id)a4 attestation:(id)a5 systemPublicKey:(id)a6 refKeyPublicKey:(id)a7 systemVersion:(id)a8 vendorId:(int64_t)a9 productId:(int64_t)a10 ecid:(id)a11 chipId:(id)a12 serialNumber:(id)a13 collaborativeKey:(id)a14 completion:(id)a15
+- (void)verifyPairingWithPairingSession:(id)session signature:(id)signature attestation:(id)attestation systemPublicKey:(id)key refKeyPublicKey:(id)publicKey systemVersion:(id)version vendorId:(int64_t)id productId:(int64_t)self0 ecid:(id)self1 chipId:(id)self2 serialNumber:(id)self3 collaborativeKey:(id)self4 completion:(id)self5
 {
   v47 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v22 = a4;
-  v38 = a5;
-  v37 = a6;
-  v36 = a7;
-  v35 = a8;
-  v23 = v22;
-  v24 = a11;
-  v25 = self;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
+  sessionCopy = session;
+  signatureCopy = signature;
+  attestationCopy = attestation;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  versionCopy = version;
+  v23 = signatureCopy;
+  ecidCopy = ecid;
+  selfCopy = self;
+  chipIdCopy = chipId;
+  numberCopy = number;
+  collaborativeKeyCopy = collaborativeKey;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v21 identifier];
+    identifier = [sessionCopy identifier];
     *buf = 136446466;
     v44 = "[SPPairingManager verifyPairingWithPairingSession:signature:attestation:systemPublicKey:refKeyPublicKey:systemVersion:vendorId:productId:ecid:chipId:serialNumber:collaborativeKey:completion:]";
     v45 = 2114;
-    v46 = v30;
+    v46 = identifier;
     _os_log_impl(&dword_2643D0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SPPairingManager: %{public}s, with session - %{public}@", buf, 0x16u);
   }
 
-  [v21 setPayloadSignature:v23];
-  [v21 setAttestation:v38];
-  [v21 setSystemPublicKey:v37];
-  [v21 setRefKeyPublicKey:v36];
-  [v21 setCollaborativeKeyC1:v28];
-  [v21 setSystemVersion:v35];
-  [v21 setVendorId:a9];
-  [v21 setProductId:a10];
-  [v21 setEcid:v24];
-  [v21 setChipId:v26];
-  [v21 setSerialNumber:v27];
-  objc_initWeak(buf, v25);
-  v31 = [(SPPairingManager *)v25 queue];
+  [sessionCopy setPayloadSignature:v23];
+  [sessionCopy setAttestation:attestationCopy];
+  [sessionCopy setSystemPublicKey:keyCopy];
+  [sessionCopy setRefKeyPublicKey:publicKeyCopy];
+  [sessionCopy setCollaborativeKeyC1:collaborativeKeyCopy];
+  [sessionCopy setSystemVersion:versionCopy];
+  [sessionCopy setVendorId:id];
+  [sessionCopy setProductId:productId];
+  [sessionCopy setEcid:ecidCopy];
+  [sessionCopy setChipId:chipIdCopy];
+  [sessionCopy setSerialNumber:numberCopy];
+  objc_initWeak(buf, selfCopy);
+  queue = [(SPPairingManager *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __192__SPPairingManager_verifyPairingWithPairingSession_signature_attestation_systemPublicKey_refKeyPublicKey_systemVersion_vendorId_productId_ecid_chipId_serialNumber_collaborativeKey_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v42, buf);
-  v40 = v21;
-  v41 = v29;
-  v32 = v29;
-  v33 = v21;
-  dispatch_async(v31, block);
+  v40 = sessionCopy;
+  v41 = completionCopy;
+  v32 = completionCopy;
+  v33 = sessionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(buf);
@@ -289,42 +289,42 @@ void __192__SPPairingManager_verifyPairingWithPairingSession_signature_attestati
   [v3 verifyPairingInfoUsing:v4 completion:v5];
 }
 
-- (void)finalizePairingWithSession:(id)a3 name:(id)a4 roleId:(int64_t)a5 roleEmoji:(id)a6 keyStatus:(id)a7 collaborativeKey:(id)a8 signature:(id)a9 completion:(id)a10
+- (void)finalizePairingWithSession:(id)session name:(id)name roleId:(int64_t)id roleEmoji:(id)emoji keyStatus:(id)status collaborativeKey:(id)key signature:(id)signature completion:(id)self0
 {
   v36 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  sessionCopy = session;
+  nameCopy = name;
+  emojiCopy = emoji;
+  statusCopy = status;
+  keyCopy = key;
+  signatureCopy = signature;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v16 identifier];
+    identifier = [sessionCopy identifier];
     *buf = 136446466;
     v33 = "[SPPairingManager finalizePairingWithSession:name:roleId:roleEmoji:keyStatus:collaborativeKey:signature:completion:]";
     v34 = 2114;
-    v35 = v23;
+    v35 = identifier;
     _os_log_impl(&dword_2643D0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "@DEPRECATED SPPairingManager: %{public}s, with session - %{public}@", buf, 0x16u);
   }
 
-  [v16 setKeyGenerationStatus:v19];
-  [v16 setCollaborativeKeyC3:v20];
-  [v16 setConfirmSignature:v21];
-  [v16 updateName:v17 roleId:a5 roleEmoji:v18];
+  [sessionCopy setKeyGenerationStatus:statusCopy];
+  [sessionCopy setCollaborativeKeyC3:keyCopy];
+  [sessionCopy setConfirmSignature:signatureCopy];
+  [sessionCopy updateName:nameCopy roleId:id roleEmoji:emojiCopy];
   objc_initWeak(buf, self);
-  v24 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__SPPairingManager_finalizePairingWithSession_name_roleId_roleEmoji_keyStatus_collaborativeKey_signature_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v31, buf);
-  v29 = v16;
-  v30 = v22;
-  v25 = v22;
-  v26 = v16;
-  dispatch_async(v24, block);
+  v29 = sessionCopy;
+  v30 = completionCopy;
+  v25 = completionCopy;
+  v26 = sessionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(buf);
@@ -345,35 +345,35 @@ void __117__SPPairingManager_finalizePairingWithSession_name_roleId_roleEmoji_ke
   [v3 finalizePairingUsing:v4 completion:v5];
 }
 
-- (void)finalizePairingWithSession:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)finalizePairingWithSession:(id)session configuration:(id)configuration completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 identifier];
+    identifier = [sessionCopy identifier];
     *buf = 136446466;
     v21 = "[SPPairingManager finalizePairingWithSession:configuration:completion:]";
     v22 = 2114;
-    v23 = v11;
+    v23 = identifier;
     _os_log_impl(&dword_2643D0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SPPairingManager: %{public}s, with session - %{public}@", buf, 0x16u);
   }
 
-  [v8 updateWithConfiguration:v9];
+  [sessionCopy updateWithConfiguration:configurationCopy];
   objc_initWeak(buf, self);
-  v12 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SPPairingManager_finalizePairingWithSession_configuration_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v19, buf);
-  v17 = v8;
-  v18 = v10;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v12, block);
+  v17 = sessionCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = sessionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -394,11 +394,11 @@ void __72__SPPairingManager_finalizePairingWithSession_configuration_completion_
   [v3 finalizePairingUsing:v4 completion:v5];
 }
 
-- (void)unpairUUID:(id)a3 force:(BOOL)a4 completion:(id)a5
+- (void)unpairUUID:(id)d force:(BOOL)force completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -407,18 +407,18 @@ void __72__SPPairingManager_finalizePairingWithSession_configuration_completion_
   }
 
   objc_initWeak(buf, self);
-  v10 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__SPPairingManager_unpairUUID_force_completion___block_invoke;
   v14[3] = &unk_279B59678;
   objc_copyWeak(&v17, buf);
-  v18 = a4;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v14);
+  forceCopy = force;
+  v15 = dCopy;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
+  dispatch_async(queue, v14);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -455,10 +455,10 @@ void __48__SPPairingManager_unpairUUID_force_completion___block_invoke_2(uint64_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLocalPairingDataWithCompletion:(id)a3
+- (void)getLocalPairingDataWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -467,15 +467,15 @@ void __48__SPPairingManager_unpairUUID_force_completion___block_invoke_2(uint64_
   }
 
   objc_initWeak(buf, self);
-  v5 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__SPPairingManager_getLocalPairingDataWithCompletion___block_invoke;
   v8[3] = &unk_279B59650;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v6 = v4;
-  dispatch_async(v5, v8);
+  v9 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -489,10 +489,10 @@ void __54__SPPairingManager_getLocalPairingDataWithCompletion___block_invoke(uin
   [v2 getLocalPairingDataWithCompletion:*(a1 + 32)];
 }
 
-- (void)currentBeaconingKeyWithCompletion:(id)a3
+- (void)currentBeaconingKeyWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -501,15 +501,15 @@ void __54__SPPairingManager_getLocalPairingDataWithCompletion___block_invoke(uin
   }
 
   objc_initWeak(buf, self);
-  v5 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__SPPairingManager_currentBeaconingKeyWithCompletion___block_invoke;
   v8[3] = &unk_279B59650;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v6 = v4;
-  dispatch_async(v5, v8);
+  v9 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -528,10 +528,10 @@ void __54__SPPairingManager_currentBeaconingKeyWithCompletion___block_invoke(uin
   [v3 currentBeaconingKeyWithCompletion:v4];
 }
 
-- (void)allPairingErrorsWithCompletion:(id)a3
+- (void)allPairingErrorsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -540,15 +540,15 @@ void __54__SPPairingManager_currentBeaconingKeyWithCompletion___block_invoke(uin
   }
 
   objc_initWeak(buf, self);
-  v5 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__SPPairingManager_allPairingErrorsWithCompletion___block_invoke;
   v8[3] = &unk_279B59650;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v6 = v4;
-  dispatch_async(v5, v8);
+  v9 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -562,10 +562,10 @@ void __51__SPPairingManager_allPairingErrorsWithCompletion___block_invoke(uint64
   [v2 allPairingErrorsWithCompletion:*(a1 + 32)];
 }
 
-- (void)setAlwaysBeaconWildState:(BOOL)a3 completion:(id)a4
+- (void)setAlwaysBeaconWildState:(BOOL)state completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -580,9 +580,9 @@ void __51__SPPairingManager_allPairingErrorsWithCompletion___block_invoke(uint64
   v9[3] = &unk_279B596F0;
   v9[4] = self;
   objc_copyWeak(&v11, buf);
-  v12 = a3;
-  v10 = v6;
-  v7 = v6;
+  stateCopy = state;
+  v10 = completionCopy;
+  v7 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPPairingManager setAlwaysBeaconWildState:completion:", OS_ACTIVITY_FLAG_DEFAULT, v9);
 
   objc_destroyWeak(&v11);
@@ -612,10 +612,10 @@ void __56__SPPairingManager_setAlwaysBeaconWildState_completion___block_invoke_2
   [v2 setAlwaysBeaconWildState:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)alwaysBeaconWildStateWithCompletion:(id)a3
+- (void)alwaysBeaconWildStateWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -630,8 +630,8 @@ void __56__SPPairingManager_setAlwaysBeaconWildState_completion___block_invoke_2
   activity_block[3] = &unk_279B59718;
   activity_block[4] = self;
   objc_copyWeak(&v9, buf);
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPPairingManager alwaysBeaconWildStateWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v9);
@@ -660,11 +660,11 @@ void __56__SPPairingManager_alwaysBeaconWildStateWithCompletion___block_invoke_2
   [v2 alwaysBeaconWildStateWithCompletion:*(a1 + 32)];
 }
 
-- (void)getOfflineFindingInfoWithCurrentData:(id)a3 completion:(id)a4
+- (void)getOfflineFindingInfoWithCurrentData:(id)data completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -673,17 +673,17 @@ void __56__SPPairingManager_alwaysBeaconWildStateWithCompletion___block_invoke_2
   }
 
   objc_initWeak(buf, self);
-  v8 = [(SPPairingManager *)self queue];
+  queue = [(SPPairingManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SPPairingManager_getOfflineFindingInfoWithCurrentData_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = dataCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);

@@ -1,19 +1,19 @@
 @interface _BSUIProfileImageLayerConfig
 - (AAUIProfilePictureStore)profilePictureStore;
-- (_BSUIProfileImageLayerConfig)initWithSize:(CGSize)a3 contentsScale:(double)a4 cornerRadius:(double)a5 maskColor:(id)a6;
+- (_BSUIProfileImageLayerConfig)initWithSize:(CGSize)size contentsScale:(double)scale cornerRadius:(double)radius maskColor:(id)color;
 - (id)_generateImage;
-- (void)_accountStoreChanged:(id)a3;
-- (void)configureLayer:(id)a3;
+- (void)_accountStoreChanged:(id)changed;
+- (void)configureLayer:(id)layer;
 - (void)dealloc;
 @end
 
 @implementation _BSUIProfileImageLayerConfig
 
-- (_BSUIProfileImageLayerConfig)initWithSize:(CGSize)a3 contentsScale:(double)a4 cornerRadius:(double)a5 maskColor:(id)a6
+- (_BSUIProfileImageLayerConfig)initWithSize:(CGSize)size contentsScale:(double)scale cornerRadius:(double)radius maskColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = _BSUIProfileImageLayerConfig;
   v13 = [(_BSUIProfileImageLayerConfig *)&v18 init];
@@ -22,9 +22,9 @@
   {
     v13->_size.width = width;
     v13->_size.height = height;
-    v13->_contentsScale = a4;
-    v13->_cornerRadius = a5;
-    objc_storeStrong(&v13->_maskColor, a6);
+    v13->_contentsScale = scale;
+    v13->_cornerRadius = radius;
+    objc_storeStrong(&v13->_maskColor, color);
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 addObserver:v14 selector:"_accountStoreChanged:" name:AAUIProfilePictureStoreDidChangeNotification object:0];
 
@@ -48,9 +48,9 @@
   [(_BSUIProfileImageLayerConfig *)&v5 dealloc];
 }
 
-- (void)_accountStoreChanged:(id)a3
+- (void)_accountStoreChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -83,9 +83,9 @@
 - (id)_generateImage
 {
   v3 = +[BUAccountsProvider sharedProvider];
-  v4 = [v3 activeStoreAccount];
+  activeStoreAccount = [v3 activeStoreAccount];
 
-  if (!v4 || (-[_BSUIProfileImageLayerConfig profilePictureStore](self, "profilePictureStore"), v5 = objc_claimAutoreleasedReturnValue(), [v5 profilePictureForAccountOwnerWithoutMonogramFallback], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  if (!activeStoreAccount || (-[_BSUIProfileImageLayerConfig profilePictureStore](self, "profilePictureStore"), v5 = objc_claimAutoreleasedReturnValue(), [v5 profilePictureForAccountOwnerWithoutMonogramFallback], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
     if (self->_size.height >= self->_size.width)
     {
@@ -111,12 +111,12 @@
     v10 = [UIImage systemImageNamed:@"person.crop.circle"];
     v6 = [v10 imageWithConfiguration:v9];
 
-    v11 = [(_BSUIProfileImageLayerConfig *)self maskColor];
+    maskColor = [(_BSUIProfileImageLayerConfig *)self maskColor];
 
-    if (v11)
+    if (maskColor)
     {
-      v12 = [(_BSUIProfileImageLayerConfig *)self maskColor];
-      v13 = [v6 tui_imageMaskWithColor:v12];
+      maskColor2 = [(_BSUIProfileImageLayerConfig *)self maskColor];
+      v13 = [v6 tui_imageMaskWithColor:maskColor2];
 
       v6 = v13;
     }
@@ -125,37 +125,37 @@
   return v6;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
-  objc_storeStrong(&self->_layer, a3);
-  v5 = a3;
-  [v5 setRasterizationScale:self->_contentsScale];
-  [v5 setContentsGravity:kCAGravityResizeAspectFill];
-  v7 = [(_BSUIProfileImageLayerConfig *)self _generateImage];
-  v6 = v7;
-  [v5 setContents:{objc_msgSend(v7, "CGImage")}];
-  [v5 setContentsScale:self->_contentsScale];
-  [v5 setCornerRadius:self->_cornerRadius];
-  [v5 setMasksToBounds:1];
+  objc_storeStrong(&self->_layer, layer);
+  layerCopy = layer;
+  [layerCopy setRasterizationScale:self->_contentsScale];
+  [layerCopy setContentsGravity:kCAGravityResizeAspectFill];
+  _generateImage = [(_BSUIProfileImageLayerConfig *)self _generateImage];
+  v6 = _generateImage;
+  [layerCopy setContents:{objc_msgSend(_generateImage, "CGImage")}];
+  [layerCopy setContentsScale:self->_contentsScale];
+  [layerCopy setCornerRadius:self->_cornerRadius];
+  [layerCopy setMasksToBounds:1];
 }
 
 - (AAUIProfilePictureStore)profilePictureStore
 {
   v2 = +[BUAccountsProvider sharedProvider];
-  v3 = [v2 iCloudAccountName];
+  iCloudAccountName = [v2 iCloudAccountName];
 
   v4 = +[BUAccountsProvider sharedProvider];
-  v5 = [v4 activeStoreAccount];
-  v6 = [v5 username];
+  activeStoreAccount = [v4 activeStoreAccount];
+  username = [activeStoreAccount username];
 
-  if ([v3 length] && objc_msgSend(v6, "length"))
+  if ([iCloudAccountName length] && objc_msgSend(username, "length"))
   {
     v7 = +[BUAccountsProvider sharedProvider];
-    v8 = [v7 primaryAppleAccount];
+    primaryAppleAccount = [v7 primaryAppleAccount];
 
     v9 = +[ACAccountStore bu_sharedAccountStore];
-    v10 = [v9 aida_accountForPrimaryiCloudAccount];
-    v11 = [[AAUIProfilePictureStore alloc] initWithAppleAccount:v8 grandSlamAccount:v10 accountStore:v9];
+    aida_accountForPrimaryiCloudAccount = [v9 aida_accountForPrimaryiCloudAccount];
+    v11 = [[AAUIProfilePictureStore alloc] initWithAppleAccount:primaryAppleAccount grandSlamAccount:aida_accountForPrimaryiCloudAccount accountStore:v9];
     [v11 setMonogramType:2];
   }
 

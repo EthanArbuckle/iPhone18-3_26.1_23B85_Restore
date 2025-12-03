@@ -1,31 +1,31 @@
 @interface LSMIResultRegistrant
-- (LSMIResultRegistrant)initWithContext:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5 personas:(id)a6;
-- (void)_replyWithError:(id)a3 onQueue:(id)a4 block:(id)a5;
-- (void)runPostProcessingForBundleID:(id)a3 success:(BOOL)a4 isSystemApp:(BOOL)a5 isPlaceholder:(BOOL)a6 registeredBothFullAppAndPlaceholder:(BOOL)a7 notificationJournaller:(id)a8;
-- (void)runWithCompletion:(id)a3;
+- (LSMIResultRegistrant)initWithContext:(id)context operationUUID:(id)d itemInfoDict:(id)dict personas:(id)personas;
+- (void)_replyWithError:(id)error onQueue:(id)queue block:(id)block;
+- (void)runPostProcessingForBundleID:(id)d success:(BOOL)success isSystemApp:(BOOL)app isPlaceholder:(BOOL)placeholder registeredBothFullAppAndPlaceholder:(BOOL)andPlaceholder notificationJournaller:(id)journaller;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSMIResultRegistrant
 
-- (LSMIResultRegistrant)initWithContext:(id)a3 operationUUID:(id)a4 itemInfoDict:(id)a5 personas:(id)a6
+- (LSMIResultRegistrant)initWithContext:(id)context operationUUID:(id)d itemInfoDict:(id)dict personas:(id)personas
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  dCopy = d;
+  dictCopy = dict;
+  personasCopy = personas;
   v22.receiver = self;
   v22.super_class = LSMIResultRegistrant;
   v15 = [(LSMIResultRegistrant *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_strategy, a3);
-    objc_storeStrong(&v16->_uuid, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_strategy, context);
+    objc_storeStrong(&v16->_uuid, d);
+    v17 = [dictCopy copy];
     miDict = v16->_miDict;
     v16->_miDict = v17;
 
-    v19 = [v14 copy];
+    v19 = [personasCopy copy];
     personas = v16->_personas;
     v16->_personas = v19;
   }
@@ -33,44 +33,44 @@
   return v16;
 }
 
-- (void)_replyWithError:(id)a3 onQueue:(id)a4 block:(id)a5
+- (void)_replyWithError:(id)error onQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  errorCopy = error;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__LSMIResultRegistrant__replyWithError_onQueue_block___block_invoke;
   v11[3] = &unk_1E6A1E260;
-  v12 = v7;
-  v13 = v8;
-  v9 = v7;
-  v10 = v8;
-  dispatch_async(a4, v11);
+  v12 = errorCopy;
+  v13 = blockCopy;
+  v9 = errorCopy;
+  v10 = blockCopy;
+  dispatch_async(queue, v11);
 }
 
-- (void)runPostProcessingForBundleID:(id)a3 success:(BOOL)a4 isSystemApp:(BOOL)a5 isPlaceholder:(BOOL)a6 registeredBothFullAppAndPlaceholder:(BOOL)a7 notificationJournaller:(id)a8
+- (void)runPostProcessingForBundleID:(id)d success:(BOOL)success isSystemApp:(BOOL)app isPlaceholder:(BOOL)placeholder registeredBothFullAppAndPlaceholder:(BOOL)andPlaceholder notificationJournaller:(id)journaller
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  andPlaceholderCopy = andPlaceholder;
+  placeholderCopy = placeholder;
+  appCopy = app;
+  successCopy = success;
   v22[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a8;
-  if (v12)
+  dCopy = d;
+  journallerCopy = journaller;
+  if (successCopy)
   {
-    if (v11)
+    if (appCopy)
     {
       v15 = +[LSApplicationRestrictionsManager sharedInstance];
-      v16 = [(LSApplicationRestrictionsManager *)v15 setApplication:v13 removed:0];
+      v16 = [(LSApplicationRestrictionsManager *)v15 setApplication:dCopy removed:0];
 
       if (v16)
       {
-        _LSNoteSystemAppInstallOrUninstall(v13, 1u);
+        _LSNoteSystemAppInstallOrUninstall(dCopy, 1u);
       }
     }
 
-    if (v10)
+    if (placeholderCopy)
     {
       v17 = 1;
     }
@@ -80,7 +80,7 @@
       v17 = 7;
     }
 
-    if (v9)
+    if (andPlaceholderCopy)
     {
       v18 = 15;
     }
@@ -90,10 +90,10 @@
       v18 = v17;
     }
 
-    if (!v10)
+    if (!placeholderCopy)
     {
       v19 = +[_LSInstallProgressService sharedInstance];
-      [v19 installationEndedForApplication:v13 withState:5];
+      [v19 installationEndedForApplication:dCopy withState:5];
     }
   }
 
@@ -102,20 +102,20 @@
     v18 = 11;
   }
 
-  v22[0] = v13;
+  v22[0] = dCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-  [v14 sendNotification:v18 forApps:v20 withPlugins:0];
+  [journallerCopy sendNotification:v18 forApps:v20 withPlugins:0];
 
-  [v14 writeFinalJournal];
-  [v14 removeJournalAfterNotificationFence];
+  [journallerCopy writeFinalJournal];
+  [journallerCopy removeJournalAfterNotificationFence];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v33 = a3;
+  completionCopy = completion;
   v4 = self->_miDict;
   v5 = [(NSDictionary *)v4 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
   v6 = [(NSDictionary *)v4 objectForKeyedSubscript:@"Path"];
@@ -160,7 +160,7 @@
     v30 = v12;
     v14 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "[LSMIResultRegistrant runWithCompletion:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Info/LSRegistrants.mm", 183);
 
-    (*(v33 + 2))(v33, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
   else
@@ -170,16 +170,16 @@
 
     if (v15)
     {
-      v17 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v18 = [(NSDictionary *)v4 objectForKey:@"IsPlaceholder"];
-      v17 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
     }
 
-    v30 = [(LSRegistrantStrategy *)self->_strategy notificationJournallerForBundleIdentifier:v5 registeringPlaceholder:v17];
+    v30 = [(LSRegistrantStrategy *)self->_strategy notificationJournallerForBundleIdentifier:v5 registeringPlaceholder:bOOLValue];
     v14 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v6 isDirectory:1];
     if (v34)
     {
@@ -230,24 +230,24 @@
       v35[3] = &unk_1E6A1E2D8;
       v36 = v5;
       v37 = v4;
-      v46 = v17;
+      v46 = bOOLValue;
       v47 = v19;
       v38 = v28;
-      v39 = self;
+      selfCopy = self;
       v40 = v34;
       v25 = v24;
       v41 = v25;
       v42 = v20;
       v43 = v31;
       v44 = v30;
-      v45 = v33;
+      v45 = completionCopy;
       [(LSRegistrantStrategy *)strategy runSyncBlockInWriteContext:v35];
     }
 
     else
     {
-      -[LSMIResultRegistrant runPostProcessingForBundleID:success:isSystemApp:isPlaceholder:registeredBothFullAppAndPlaceholder:notificationJournaller:](self, "runPostProcessingForBundleID:success:isSystemApp:isPlaceholder:registeredBothFullAppAndPlaceholder:notificationJournaller:", v5, 0, [v31 isEqualToString:@"System"], v17, 0, v30);
-      (*(v33 + 2))(v33, 0, 0, v20);
+      -[LSMIResultRegistrant runPostProcessingForBundleID:success:isSystemApp:isPlaceholder:registeredBothFullAppAndPlaceholder:notificationJournaller:](self, "runPostProcessingForBundleID:success:isSystemApp:isPlaceholder:registeredBothFullAppAndPlaceholder:notificationJournaller:", v5, 0, [v31 isEqualToString:@"System"], bOOLValue, 0, v30);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v20);
     }
   }
 

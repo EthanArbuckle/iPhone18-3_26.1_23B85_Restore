@@ -1,13 +1,13 @@
 @interface DTThroughputViewController
-- (id)downloadSpeed:(id)a3;
-- (id)latency:(id)a3;
-- (id)packetLoss:(id)a3;
+- (id)downloadSpeed:(id)speed;
+- (id)latency:(id)latency;
+- (id)packetLoss:(id)loss;
 - (id)specifiers;
-- (id)uploadSpeed:(id)a3;
-- (void)cancelSpeedTest:(id)a3;
+- (id)uploadSpeed:(id)speed;
+- (void)cancelSpeedTest:(id)test;
 - (void)startSpeedTest;
-- (void)startSpeedTest:(id)a3;
-- (void)updateTestStatus:(int64_t)a3;
+- (void)startSpeedTest:(id)test;
+- (void)updateTestStatus:(int64_t)status;
 - (void)viewDidLoad;
 @end
 
@@ -28,8 +28,8 @@
   v3 = objc_opt_new();
   v39 = [PSSpecifier preferenceSpecifierNamed:&stru_3E0D8 target:self set:0 get:0 detail:0 cell:0 edit:0];
   [v3 addObject:?];
-  v4 = [(DTThroughputViewController *)self testStatus];
-  if (v4 == 2)
+  testStatus = [(DTThroughputViewController *)self testStatus];
+  if (testStatus == 2)
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"CANCELLING_THROUGHPUT_TEST" value:&stru_3E0D8 table:@"DTSettings"];
@@ -38,7 +38,7 @@
     goto LABEL_8;
   }
 
-  if (v4 == 1)
+  if (testStatus == 1)
   {
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"CANCEL_THROUGHPUT_TEST" value:&stru_3E0D8 table:@"DTSettings"];
@@ -49,7 +49,7 @@
   }
 
   v5 = 0;
-  if (!v4)
+  if (!testStatus)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"START_THROUGHPUT_TEST" value:&stru_3E0D8 table:@"DTSettings"];
@@ -105,14 +105,14 @@ LABEL_8:
   return v33;
 }
 
-- (id)packetLoss:(id)a3
+- (id)packetLoss:(id)loss
 {
-  v4 = [(DTThroughputViewController *)self testResults];
-  if (v4)
+  testResults = [(DTThroughputViewController *)self testResults];
+  if (testResults)
   {
-    v5 = [(DTThroughputViewController *)self testResults];
-    v6 = [v5 pingResults];
-    [v6 percentLost];
+    testResults2 = [(DTThroughputViewController *)self testResults];
+    pingResults = [testResults2 pingResults];
+    [pingResults percentLost];
     v8 = [NSString stringWithFormat:@"%.2f %%", v7];
   }
 
@@ -124,14 +124,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)latency:(id)a3
+- (id)latency:(id)latency
 {
-  v4 = [(DTThroughputViewController *)self testResults];
-  if (v4)
+  testResults = [(DTThroughputViewController *)self testResults];
+  if (testResults)
   {
-    v5 = [(DTThroughputViewController *)self testResults];
-    v6 = [v5 pingResults];
-    [v6 meanLatency];
+    testResults2 = [(DTThroughputViewController *)self testResults];
+    pingResults = [testResults2 pingResults];
+    [pingResults meanLatency];
     v8 = [NSString stringWithFormat:@"%.2f ms", v7 * 1000.0];
   }
 
@@ -143,14 +143,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)downloadSpeed:(id)a3
+- (id)downloadSpeed:(id)speed
 {
-  v4 = [(DTThroughputViewController *)self testResults];
-  if (v4)
+  testResults = [(DTThroughputViewController *)self testResults];
+  if (testResults)
   {
-    v5 = [(DTThroughputViewController *)self testResults];
-    v6 = [v5 downloadResults];
-    [v6 speed];
+    testResults2 = [(DTThroughputViewController *)self testResults];
+    downloadResults = [testResults2 downloadResults];
+    [downloadResults speed];
     v8 = [NSString stringWithFormat:@"%.2f Mbps", v7];
   }
 
@@ -162,14 +162,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)uploadSpeed:(id)a3
+- (id)uploadSpeed:(id)speed
 {
-  v4 = [(DTThroughputViewController *)self testResults];
-  if (v4)
+  testResults = [(DTThroughputViewController *)self testResults];
+  if (testResults)
   {
-    v5 = [(DTThroughputViewController *)self testResults];
-    v6 = [v5 uploadResults];
-    [v6 speed];
+    testResults2 = [(DTThroughputViewController *)self testResults];
+    uploadResults = [testResults2 uploadResults];
+    [uploadResults speed];
     v8 = [NSString stringWithFormat:@"%.2f Mbps", v7];
   }
 
@@ -181,15 +181,15 @@ LABEL_8:
   return v8;
 }
 
-- (void)cancelSpeedTest:(id)a3
+- (void)cancelSpeedTest:(id)test
 {
-  v4 = [(DTThroughputViewController *)self testObject];
+  testObject = [(DTThroughputViewController *)self testObject];
 
-  if (v4)
+  if (testObject)
   {
     [(DTThroughputViewController *)self updateTestStatus:2];
-    v5 = [(DTThroughputViewController *)self testObject];
-    [v5 cancelAllNetworking];
+    testObject2 = [(DTThroughputViewController *)self testObject];
+    [testObject2 cancelAllNetworking];
 
     objc_initWeak(&location, self);
     v6 = dispatch_time(0, 5000000000);
@@ -211,9 +211,9 @@ LABEL_8:
   }
 }
 
-- (void)startSpeedTest:(id)a3
+- (void)startSpeedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"THROUGHPUT_ALERT_TITLE" value:&stru_3E0D8 table:@"DTSettings"];
 
@@ -237,14 +237,14 @@ LABEL_8:
   v15 = [UIAlertAction actionWithTitle:v10 style:0 handler:v17];
   [v13 addAction:v15];
   [v13 setPreferredAction:v15];
-  v16 = [v4 target];
+  target = [testCopy target];
 
-  [v16 presentViewController:v13 animated:1 completion:0];
+  [target presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)updateTestStatus:(int64_t)a3
+- (void)updateTestStatus:(int64_t)status
 {
-  [(DTThroughputViewController *)self setTestStatus:a3];
+  [(DTThroughputViewController *)self setTestStatus:status];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_20E00;
@@ -266,14 +266,14 @@ LABEL_8:
   [(DTThroughputViewController *)self setTestObject:v4];
 
   objc_initWeak(&location, self);
-  v5 = [(DTThroughputViewController *)self testObject];
+  testObject = [(DTThroughputViewController *)self testObject];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_20F74;
   v6[3] = &unk_3D9D8;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  [v5 startTestWithCompletion:v6];
+  [testObject startTestWithCompletion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

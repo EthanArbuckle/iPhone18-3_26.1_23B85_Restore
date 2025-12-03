@@ -1,25 +1,25 @@
 @interface ATXInteractionEventProvider
-- (ATXInteractionEventProvider)initWithContactStore:(id)a3;
-- (BOOL)isEventFromProvider:(id)a3;
-- (id)aggregationEventsFromEvent:(id)a3;
-- (id)biomePublisherWithBookmark:(id)a3;
-- (id)contactEntityFromEvent:(id)a3;
-- (id)contactEntityFromInstantMessagingInteraction:(id)a3;
-- (id)dateIntervalFromEvent:(id)a3;
+- (ATXInteractionEventProvider)initWithContactStore:(id)store;
+- (BOOL)isEventFromProvider:(id)provider;
+- (id)aggregationEventsFromEvent:(id)event;
+- (id)biomePublisherWithBookmark:(id)bookmark;
+- (id)contactEntityFromEvent:(id)event;
+- (id)contactEntityFromInstantMessagingInteraction:(id)interaction;
+- (id)dateIntervalFromEvent:(id)event;
 - (id)eventsFromPublisher;
 @end
 
 @implementation ATXInteractionEventProvider
 
-- (ATXInteractionEventProvider)initWithContactStore:(id)a3
+- (ATXInteractionEventProvider)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = ATXInteractionEventProvider;
   v5 = [(ATXInteractionEventProvider *)&v9 init];
   if (v5)
   {
-    v6 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:v4];
+    v6 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:storeCopy];
     stableContactRepresentationProvider = v5->_stableContactRepresentationProvider;
     v5->_stableContactRepresentationProvider = v6;
   }
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (id)biomePublisherWithBookmark:(id)a3
+- (id)biomePublisherWithBookmark:(id)bookmark
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = [MEMORY[0x277CFE0C0] defaultDatabaseDirectory];
+  bookmarkCopy = bookmark;
+  defaultDatabaseDirectory = [MEMORY[0x277CFE0C0] defaultDatabaseDirectory];
   v3 = [MEMORY[0x277CFE0C0] storeWithDirectory:? readOnly:?];
   v4 = MEMORY[0x277CCAC30];
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
@@ -82,8 +82,8 @@
         if ([v22 direction] == 1)
         {
           v24 = objc_alloc(MEMORY[0x277CF1800]);
-          v25 = [v22 startDate];
-          [v25 timeIntervalSinceReferenceDate];
+          startDate = [v22 startDate];
+          [startDate timeIntervalSinceReferenceDate];
           v26 = [v24 initWithEventBody:v22 timestamp:?];
 
           [v16 addObject:v26];
@@ -143,13 +143,13 @@ void __50__ATXInteractionEventProvider_eventsFromPublisher__block_invoke_2(uint6
   }
 }
 
-- (BOOL)isEventFromProvider:(id)a3
+- (BOOL)isEventFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 eventBody];
+    eventBody = [providerCopy eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -162,17 +162,17 @@ void __50__ATXInteractionEventProvider_eventsFromPublisher__block_invoke_2(uint6
   return isKindOfClass & 1;
 }
 
-- (id)aggregationEventsFromEvent:(id)a3
+- (id)aggregationEventsFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXInteractionEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXInteractionEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 eventBody];
+    eventBody = [eventCopy eventBody];
     v6 = [ATXModeEvent alloc];
-    v7 = [v5 startDate];
-    v8 = [v5 endDate];
-    v9 = [(ATXInteractionEventProvider *)self contactEntityFromEvent:v4];
-    v10 = [(ATXModeEvent *)v6 initWithStartDate:v7 endDate:v8 entity:v9];
+    startDate = [eventBody startDate];
+    endDate = [eventBody endDate];
+    v9 = [(ATXInteractionEventProvider *)self contactEntityFromEvent:eventCopy];
+    v10 = [(ATXModeEvent *)v6 initWithStartDate:startDate endDate:endDate entity:v9];
 
     v11 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v10, 0}];
   }
@@ -185,25 +185,25 @@ void __50__ATXInteractionEventProvider_eventsFromPublisher__block_invoke_2(uint6
   return v11;
 }
 
-- (id)dateIntervalFromEvent:(id)a3
+- (id)dateIntervalFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXInteractionEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXInteractionEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 eventBody];
-    v6 = [v5 startDate];
-    [v6 timeIntervalSinceReferenceDate];
+    eventBody = [eventCopy eventBody];
+    startDate = [eventBody startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v8 = v7;
-    v9 = [v5 endDate];
-    [v9 timeIntervalSinceReferenceDate];
+    endDate = [eventBody endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v11 = v10;
 
     if (v8 <= v11)
     {
       v13 = objc_alloc(MEMORY[0x277CCA970]);
-      v14 = [v5 startDate];
-      v15 = [v5 endDate];
-      v12 = [v13 initWithStartDate:v14 endDate:v15];
+      startDate2 = [eventBody startDate];
+      endDate2 = [eventBody endDate];
+      v12 = [v13 initWithStartDate:startDate2 endDate:endDate2];
     }
 
     else
@@ -220,111 +220,111 @@ void __50__ATXInteractionEventProvider_eventsFromPublisher__block_invoke_2(uint6
   return v12;
 }
 
-- (id)contactEntityFromEvent:(id)a3
+- (id)contactEntityFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXInteractionEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXInteractionEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 eventBody];
-    if ([v5 mechanism] == 4)
+    eventBody = [eventCopy eventBody];
+    if ([eventBody mechanism] == 4)
     {
-      v6 = [(ATXInteractionEventProvider *)self contactEntityFromInstantMessagingInteraction:v5];
+      personId = [(ATXInteractionEventProvider *)self contactEntityFromInstantMessagingInteraction:eventBody];
     }
 
     else
     {
-      v7 = [v5 recipients];
-      v8 = [v7 count];
+      recipients = [eventBody recipients];
+      v8 = [recipients count];
 
       if (v8 <= 1)
       {
-        v9 = [v5 recipients];
-        v10 = [v9 firstObject];
+        recipients2 = [eventBody recipients];
+        firstObject = [recipients2 firstObject];
 
-        v6 = [v10 personId];
+        personId = [firstObject personId];
 
-        if (v6)
+        if (personId)
         {
           stableContactRepresentationProvider = self->_stableContactRepresentationProvider;
-          v12 = [v10 personId];
-          v13 = [v10 identifier];
-          v14 = [(ATXStableContactRepresentationProviderProtocol *)stableContactRepresentationProvider stableContactRepresentationForCnContactId:v12 rawIdentifier:v13];
+          personId2 = [firstObject personId];
+          identifier = [firstObject identifier];
+          v14 = [(ATXStableContactRepresentationProviderProtocol *)stableContactRepresentationProvider stableContactRepresentationForCnContactId:personId2 rawIdentifier:identifier];
 
-          v15 = [v14 stableContactIdentifier];
+          stableContactIdentifier = [v14 stableContactIdentifier];
           v16 = objc_alloc(MEMORY[0x277CEB420]);
-          v17 = [v10 displayName];
-          v18 = [v10 identifier];
-          v19 = [v10 personId];
-          v6 = [v16 initWithDisplayName:v17 rawIdentifier:v18 cnContactId:v19 stableContactIdentifier:v15];
+          displayName = [firstObject displayName];
+          identifier2 = [firstObject identifier];
+          personId3 = [firstObject personId];
+          personId = [v16 initWithDisplayName:displayName rawIdentifier:identifier2 cnContactId:personId3 stableContactIdentifier:stableContactIdentifier];
         }
       }
 
       else
       {
-        v6 = 0;
+        personId = 0;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    personId = 0;
   }
 
-  return v6;
+  return personId;
 }
 
-- (id)contactEntityFromInstantMessagingInteraction:(id)a3
+- (id)contactEntityFromInstantMessagingInteraction:(id)interaction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 recipients];
-  if ([v6 count] >= 2 && (objc_msgSend(v5, "groupName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
+  interactionCopy = interaction;
+  recipients = [interactionCopy recipients];
+  if ([recipients count] >= 2 && (objc_msgSend(interactionCopy, "groupName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
   {
-    v9 = [v5 groupName];
-    v10 = 0;
+    groupName = [interactionCopy groupName];
+    personId = 0;
   }
 
-  else if ([v6 count] == 1)
+  else if ([recipients count] == 1)
   {
-    v11 = [v6 firstObject];
-    v9 = [v11 displayName];
+    firstObject = [recipients firstObject];
+    groupName = [firstObject displayName];
 
-    v12 = [v6 firstObject];
-    v10 = [v12 personId];
+    firstObject2 = [recipients firstObject];
+    personId = [firstObject2 personId];
   }
 
   else
   {
-    v10 = 0;
-    v9 = 0;
+    personId = 0;
+    groupName = 0;
   }
 
-  v13 = [v5 bundleId];
-  v14 = [v13 isEqualToString:@"com.apple.MobileSMS"];
+  bundleId = [interactionCopy bundleId];
+  v14 = [bundleId isEqualToString:@"com.apple.MobileSMS"];
 
   if (v14)
   {
-    v15 = [v5 domainIdentifier];
+    domainIdentifier = [interactionCopy domainIdentifier];
   }
 
   else
   {
-    v16 = [v5 derivedIntentIdentifier];
+    derivedIntentIdentifier = [interactionCopy derivedIntentIdentifier];
 
-    if (!v16)
+    if (!derivedIntentIdentifier)
     {
       goto LABEL_12;
     }
 
-    v15 = [v5 derivedIntentIdentifier];
+    domainIdentifier = [interactionCopy derivedIntentIdentifier];
   }
 
-  v16 = v15;
+  derivedIntentIdentifier = domainIdentifier;
 LABEL_12:
-  if (v10 | v16)
+  if (personId | derivedIntentIdentifier)
   {
-    if (!v10)
+    if (!personId)
     {
       v17 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -340,16 +340,16 @@ LABEL_12:
       }
     }
 
-    v21 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:v9 rawIdentifier:v16 cnContactId:v10];
-    if ([v6 count] == 1)
+    v21 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:groupName rawIdentifier:derivedIntentIdentifier cnContactId:personId];
+    if ([recipients count] == 1)
     {
       stableContactRepresentationProvider = self->_stableContactRepresentationProvider;
-      v23 = [v6 firstObject];
-      v24 = [v23 identifier];
-      v25 = [(ATXStableContactRepresentationProviderProtocol *)stableContactRepresentationProvider stableContactRepresentationForCnContactId:v10 rawIdentifier:v24];
+      firstObject3 = [recipients firstObject];
+      identifier = [firstObject3 identifier];
+      v25 = [(ATXStableContactRepresentationProviderProtocol *)stableContactRepresentationProvider stableContactRepresentationForCnContactId:personId rawIdentifier:identifier];
 
-      v26 = [v25 stableContactIdentifier];
-      [v21 setStableContactIdentifier:v26];
+      stableContactIdentifier = [v25 stableContactIdentifier];
+      [v21 setStableContactIdentifier:stableContactIdentifier];
     }
   }
 

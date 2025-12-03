@@ -1,16 +1,16 @@
 @interface MFMessageBody
 - (id)attachmentURLs;
 - (id)attachments;
-- (void)setMessage:(id)a3;
+- (void)setMessage:(id)message;
 @end
 
 @implementation MFMessageBody
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   _MFLockGlobalLock();
-  objc_storeStrong(&self->_message, a3);
+  objc_storeStrong(&self->_message, message);
   _MFUnlockGlobalLock();
 }
 

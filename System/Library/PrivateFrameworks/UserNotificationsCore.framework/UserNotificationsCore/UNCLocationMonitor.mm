@@ -1,14 +1,14 @@
 @interface UNCLocationMonitor
 - (UNCLocationMonitor)init;
-- (UNCLocationMonitor)initWithQueue:(id)a3 locationManager:(id)a4;
-- (UNCLocationMonitor)initWithQueue:(id)a3 locationManager:(id)a4 observable:(id)a5;
-- (void)_queue_triggerDidFireForRegion:(id)a3;
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
+- (UNCLocationMonitor)initWithQueue:(id)queue locationManager:(id)manager;
+- (UNCLocationMonitor)initWithQueue:(id)queue locationManager:(id)manager observable:(id)observable;
+- (void)_queue_triggerDidFireForRegion:(id)region;
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
 - (void)markAsHavingReceivedLocation;
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)setMonitoredRegions:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)setMonitoredRegions:(id)regions forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler;
 @end
 
 @implementation UNCLocationMonitor
@@ -29,12 +29,12 @@
   block[2] = __26__UNCLocationMonitor_init__block_invoke;
   block[3] = &unk_1E85D6F48;
   v12 = &v13;
-  v5 = self;
-  v10 = v5;
+  selfCopy = self;
+  v10 = selfCopy;
   v6 = v4;
   v11 = v6;
   dispatch_sync(v6, block);
-  v7 = [(UNCLocationMonitor *)v5 initWithQueue:v6 locationManager:v14[5]];
+  v7 = [(UNCLocationMonitor *)selfCopy initWithQueue:v6 locationManager:v14[5]];
 
   _Block_object_dispose(&v13, 8);
   return v7;
@@ -51,72 +51,72 @@ void __26__UNCLocationMonitor_init__block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (UNCLocationMonitor)initWithQueue:(id)a3 locationManager:(id)a4
+- (UNCLocationMonitor)initWithQueue:(id)queue locationManager:(id)manager
 {
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = a4;
-  v9 = a3;
+  managerCopy = manager;
+  queueCopy = queue;
   v10 = dispatch_queue_create("com.apple.usernotificationsserver.LocationMonitor.observable", v7);
 
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v12 = dispatch_queue_create("com.apple.usernotificationsserver.LocationMonitor.call-out", v11);
 
   v13 = [[UNCKeyedObservable alloc] initWithQueue:v10 callOutQueue:v12];
-  v14 = [(UNCLocationMonitor *)self initWithQueue:v9 locationManager:v8 observable:v13];
+  v14 = [(UNCLocationMonitor *)self initWithQueue:queueCopy locationManager:managerCopy observable:v13];
 
   return v14;
 }
 
-- (UNCLocationMonitor)initWithQueue:(id)a3 locationManager:(id)a4 observable:(id)a5
+- (UNCLocationMonitor)initWithQueue:(id)queue locationManager:(id)manager observable:(id)observable
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
+  observableCopy = observable;
   v15.receiver = self;
   v15.super_class = UNCLocationMonitor;
   v12 = [(UNCLocationMonitor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_locationManager, a4);
-    objc_storeStrong(&v13->_observable, a5);
-    objc_storeStrong(&v13->_queue, a3);
+    objc_storeStrong(&v12->_locationManager, manager);
+    objc_storeStrong(&v13->_observable, observable);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;
 }
 
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__UNCLocationMonitor_addObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)removeObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__UNCLocationMonitor_removeObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
@@ -131,23 +131,23 @@ void __26__UNCLocationMonitor_init__block_invoke(void *a1)
   dispatch_async(queue, block);
 }
 
-- (void)setMonitoredRegions:(id)a3 forBundleIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)setMonitoredRegions:(id)regions forBundleIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionsCopy = regions;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__UNCLocationMonitor_setMonitoredRegions_forBundleIdentifier_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E85D7808;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = regionsCopy;
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = regionsCopy;
   dispatch_async(queue, v15);
 }
 
@@ -335,40 +335,40 @@ uint64_t __84__UNCLocationMonitor_setMonitoredRegions_forBundleIdentifier_withCo
   return v4;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = *MEMORY[0x1E6983378];
   if (os_log_type_enabled(*MEMORY[0x1E6983378], OS_LOG_TYPE_ERROR))
   {
-    [UNCLocationMonitor locationManager:v4 didFailWithError:v5];
+    [UNCLocationMonitor locationManager:errorCopy didFailWithError:v5];
   }
 }
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6983378];
   if (os_log_type_enabled(*MEMORY[0x1E6983378], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [a4 identifier];
-    v8 = [v7 un_logDigest];
+    identifier = [region identifier];
+    un_logDigest = [identifier un_logDigest];
     v10 = 138543362;
-    v11 = v8;
+    v11 = un_logDigest;
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "Did start monitoring region %{public}@", &v10, 0xCu);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_triggerDidFireForRegion:(id)a3
+- (void)_queue_triggerDidFireForRegion:(id)region
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 onBehalfOfBundleId];
-  v6 = [(UNCLocationMonitor *)self isBundleIdentifierAuthorizedForRegionMonitoring:v5];
+  onBehalfOfBundleId = [regionCopy onBehalfOfBundleId];
+  v6 = [(UNCLocationMonitor *)self isBundleIdentifierAuthorizedForRegionMonitoring:onBehalfOfBundleId];
   v7 = *MEMORY[0x1E6983378];
   v8 = os_log_type_enabled(*MEMORY[0x1E6983378], OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -376,10 +376,10 @@ uint64_t __84__UNCLocationMonitor_setMonitoredRegions_forBundleIdentifier_withCo
     if (v8)
     {
       v9 = v7;
-      v10 = [v4 identifier];
-      v11 = [v10 un_logDigest];
+      identifier = [regionCopy identifier];
+      un_logDigest = [identifier un_logDigest];
       *buf = 138543362;
-      v20 = v11;
+      v20 = un_logDigest;
       _os_log_impl(&dword_1DA7A9000, v9, OS_LOG_TYPE_DEFAULT, "Location trigger fired for region %{public}@", buf, 0xCu);
     }
 
@@ -389,17 +389,17 @@ uint64_t __84__UNCLocationMonitor_setMonitoredRegions_forBundleIdentifier_withCo
     v17[2] = __53__UNCLocationMonitor__queue_triggerDidFireForRegion___block_invoke;
     v17[3] = &unk_1E85D7C20;
     v17[4] = self;
-    v18 = v4;
-    [(UNCKeyedObservable *)observable notifyObserversKey:v5 usingBlock:v17];
+    v18 = regionCopy;
+    [(UNCKeyedObservable *)observable notifyObserversKey:onBehalfOfBundleId usingBlock:v17];
   }
 
   else if (v8)
   {
     v13 = v7;
-    v14 = [v4 identifier];
-    v15 = [v14 un_logDigest];
+    identifier2 = [regionCopy identifier];
+    un_logDigest2 = [identifier2 un_logDigest];
     *buf = 138543362;
-    v20 = v15;
+    v20 = un_logDigest2;
     _os_log_impl(&dword_1DA7A9000, v13, OS_LOG_TYPE_DEFAULT, "Location trigger fired but ignored for region %{public}@", buf, 0xCu);
   }
 

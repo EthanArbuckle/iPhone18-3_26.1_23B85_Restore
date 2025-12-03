@@ -3,12 +3,12 @@
 - (id)description;
 - (id)exportedObjectForProxyNumber:(id)result;
 - (id)interfaceForProxyNumber:(id)result;
-- (uint64_t)proxyNumberForExportedObject:(const void *)a3 interface:;
+- (uint64_t)proxyNumberForExportedObject:(const void *)object interface:;
 - (void)dealloc;
 - (void)invalidate;
 - (void)receivedReleaseForProxyNumber:(dispatch_queue_t)queue userQueue:;
-- (void)setExportedObject:(const void *)a3 forProxyNumber:;
-- (void)setInterface:(const void *)a3 forProxyNumber:;
+- (void)setExportedObject:(const void *)object forProxyNumber:;
+- (void)setInterface:(const void *)interface forProxyNumber:;
 @end
 
 @implementation _NSXPCConnectionExportedObjectTable
@@ -42,32 +42,32 @@
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    *(a1 + 68) = 0;
-    v2 = *(a1 + 40);
+    *(self + 68) = 0;
+    v2 = *(self + 40);
     if (v2)
     {
       CFDictionaryRemoveAllValues(v2);
     }
 
-    v3 = *(a1 + 24);
+    v3 = *(self + 24);
     if (v3)
     {
       CFDictionaryRemoveAllValues(v3);
     }
 
-    v4 = *(a1 + 32);
+    v4 = *(self + 32);
     if (v4)
     {
       CFDictionaryRemoveAllValues(v4);
     }
 
-    *(a1 + 8) = 0;
-    *(a1 + 16) = 0;
+    *(self + 8) = 0;
+    *(self + 16) = 0;
 
-    os_unfair_lock_unlock((a1 + 64));
+    os_unfair_lock_unlock((self + 64));
   }
 }
 
@@ -84,28 +84,28 @@
   return v2;
 }
 
-- (void)setExportedObject:(const void *)a3 forProxyNumber:
+- (void)setExportedObject:(const void *)object forProxyNumber:
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    if (a3 == 1)
+    if (object == 1)
     {
-      v6 = *(a1 + 8);
+      v6 = *(self + 8);
       if (v6 != a2)
       {
 
-        *(a1 + 8) = a2;
+        *(self + 8) = a2;
       }
     }
 
     else
     {
-      _createTablesIfNeeded_locked(a1);
-      CFDictionarySetValue(*(a1 + 24), a3, a2);
+      _createTablesIfNeeded_locked(self);
+      CFDictionarySetValue(*(self + 24), object, a2);
     }
 
-    os_unfair_lock_unlock((a1 + 64));
+    os_unfair_lock_unlock((self + 64));
   }
 }
 
@@ -135,31 +135,31 @@
   return result;
 }
 
-- (void)setInterface:(const void *)a3 forProxyNumber:
+- (void)setInterface:(const void *)interface forProxyNumber:
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    if (*(a1 + 68) == 1)
+    if (*(self + 68) == 1)
     {
-      if (a3 == 1)
+      if (interface == 1)
       {
-        v6 = *(a1 + 16);
+        v6 = *(self + 16);
         if (v6 != a2)
         {
 
-          *(a1 + 16) = a2;
+          *(self + 16) = a2;
         }
       }
 
       else
       {
-        _createTablesIfNeeded_locked(a1);
-        CFDictionarySetValue(*(a1 + 32), a3, a2);
+        _createTablesIfNeeded_locked(self);
+        CFDictionarySetValue(*(self + 32), interface, a2);
       }
     }
 
-    os_unfair_lock_unlock((a1 + 64));
+    os_unfair_lock_unlock((self + 64));
   }
 }
 
@@ -189,22 +189,22 @@
   return result;
 }
 
-- (uint64_t)proxyNumberForExportedObject:(const void *)a3 interface:
+- (uint64_t)proxyNumberForExportedObject:(const void *)object interface:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   os_unfair_lock_lock_with_options();
-  _createTablesIfNeeded_locked(a1);
-  if (*(a1 + 68) == 1)
+  _createTablesIfNeeded_locked(self);
+  if (*(self + 68) == 1)
   {
-    v6 = *(a1 + 56);
-    *(a1 + 56) = v6 + 1;
-    CFDictionarySetValue(*(a1 + 24), v6, a2);
-    CFDictionarySetValue(*(a1 + 32), v6, a3);
-    CFDictionarySetValue(*(a1 + 40), a2, v6);
+    v6 = *(self + 56);
+    *(self + 56) = v6 + 1;
+    CFDictionarySetValue(*(self + 24), v6, a2);
+    CFDictionarySetValue(*(self + 32), v6, object);
+    CFDictionarySetValue(*(self + 40), a2, v6);
   }
 
   else
@@ -212,21 +212,21 @@
     v6 = -1;
   }
 
-  os_unfair_lock_unlock((a1 + 64));
+  os_unfair_lock_unlock((self + 64));
   return v6;
 }
 
 - (void)receivedReleaseForProxyNumber:(dispatch_queue_t)queue userQueue:
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v3 = *(a1 + 48);
+    v3 = *(self + 48);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __79___NSXPCConnectionExportedObjectTable_receivedReleaseForProxyNumber_userQueue___block_invoke;
     block[3] = &unk_1E69F4618;
-    block[4] = a1;
+    block[4] = self;
     block[5] = a2;
     dispatch_group_notify(v3, queue, block);
   }

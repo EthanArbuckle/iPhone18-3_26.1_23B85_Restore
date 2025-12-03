@@ -1,21 +1,21 @@
 @interface PLCoreAnalyticsEventManager
-- (BOOL)hasEventWithName:(id)a3;
+- (BOOL)hasEventWithName:(id)name;
 - (PLCoreAnalyticsEventManager)init;
-- (id)_eventForEventName:(id)a3;
+- (id)_eventForEventName:(id)name;
 - (id)description;
-- (id)descriptionForEventName:(id)a3;
-- (id)rawEventForEventName:(id)a3;
-- (id)valueForKey:(id)a3 onEventWithName:(id)a4;
-- (void)_setPayloadValue:(id)a3 forKey:(id)a4 onEventWithName:(id)a5 eventBlock:(id)a6;
-- (void)addRecordingTimedEventSnippetWithToken:(double)a3 forKey:(id)a4 onEventWithName:(id)a5;
-- (void)mergePayload:(id)a3 onEventWithName:(id)a4;
+- (id)descriptionForEventName:(id)name;
+- (id)rawEventForEventName:(id)name;
+- (id)valueForKey:(id)key onEventWithName:(id)name;
+- (void)_setPayloadValue:(id)value forKey:(id)key onEventWithName:(id)name eventBlock:(id)block;
+- (void)addRecordingTimedEventSnippetWithToken:(double)token forKey:(id)key onEventWithName:(id)name;
+- (void)mergePayload:(id)payload onEventWithName:(id)name;
 - (void)publishAllEvents;
-- (void)publishEventWithName:(id)a3;
-- (void)removeEventWithName:(id)a3;
-- (void)removePayloadValueForKey:(id)a3 onEventWithName:(id)a4;
-- (void)setPayloadValue:(id)a3 forKey:(id)a4 onEventWithName:(id)a5;
-- (void)setPayloadValue:(id)a3 forKey:(id)a4 onlyOnExistingEventWithName:(id)a5;
-- (void)stopRecordingTimedEventWithToken:(double)a3 forKey:(id)a4 onEventWithName:(id)a5;
+- (void)publishEventWithName:(id)name;
+- (void)removeEventWithName:(id)name;
+- (void)removePayloadValueForKey:(id)key onEventWithName:(id)name;
+- (void)setPayloadValue:(id)value forKey:(id)key onEventWithName:(id)name;
+- (void)setPayloadValue:(id)value forKey:(id)key onlyOnExistingEventWithName:(id)name;
+- (void)stopRecordingTimedEventWithToken:(double)token forKey:(id)key onEventWithName:(id)name;
 @end
 
 @implementation PLCoreAnalyticsEventManager
@@ -30,7 +30,7 @@
   v14[3] = &unk_1E7932A28;
   v4 = v3;
   v15 = v4;
-  v16 = self;
+  selfCopy = self;
   PLRunWithUnfairLock(&self->_lock, v14);
   v12 = 0u;
   v13 = 0u;
@@ -74,12 +74,12 @@ uint64_t __47__PLCoreAnalyticsEventManager_publishAllEvents__block_invoke(uint64
   return [v4 removeAllObjects];
 }
 
-- (void)publishEventWithName:(id)a3
+- (void)publishEventWithName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -93,7 +93,7 @@ uint64_t __47__PLCoreAnalyticsEventManager_publishAllEvents__block_invoke(uint64
     v8[3] = &unk_1E7930738;
     v8[4] = self;
     v10 = &v11;
-    v6 = v4;
+    v6 = nameCopy;
     v9 = v6;
     PLRunWithUnfairLock(&self->_lock, v8);
     if ([(PLCoreAnalyticsEventManager *)self allowEventPublish])
@@ -135,12 +135,12 @@ uint64_t __52__PLCoreAnalyticsEventManager_publishEventWithName___block_invoke(u
   return result;
 }
 
-- (void)addRecordingTimedEventSnippetWithToken:(double)a3 forKey:(id)a4 onEventWithName:(id)a5
+- (void)addRecordingTimedEventSnippetWithToken:(double)token forKey:(id)key onEventWithName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  nameCopy = name;
   Current = CFAbsoluteTimeGetCurrent();
-  if (a3 > 0.0 && v8 != 0 && v9 != 0)
+  if (token > 0.0 && keyCopy != 0 && nameCopy != 0)
   {
     v13 = Current;
     v14[0] = MEMORY[0x1E69E9820];
@@ -148,10 +148,10 @@ uint64_t __52__PLCoreAnalyticsEventManager_publishEventWithName___block_invoke(u
     v14[2] = __93__PLCoreAnalyticsEventManager_addRecordingTimedEventSnippetWithToken_forKey_onEventWithName___block_invoke;
     v14[3] = &unk_1E7930370;
     v14[4] = self;
-    v15 = v9;
-    v16 = v8;
+    v15 = nameCopy;
+    v16 = keyCopy;
     v17 = v13;
-    v18 = a3;
+    tokenCopy = token;
     PLRunWithUnfairLock(&self->_lock, v14);
   }
 }
@@ -170,29 +170,29 @@ void __93__PLCoreAnalyticsEventManager_addRecordingTimedEventSnippetWithToken_fo
   [v9 addKey:v7 value:v8];
 }
 
-- (void)stopRecordingTimedEventWithToken:(double)a3 forKey:(id)a4 onEventWithName:(id)a5
+- (void)stopRecordingTimedEventWithToken:(double)token forKey:(id)key onEventWithName:(id)name
 {
-  v11 = a4;
-  v8 = a5;
+  keyCopy = key;
+  nameCopy = name;
   Current = CFAbsoluteTimeGetCurrent();
-  if (a3 > 0.0)
+  if (token > 0.0)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:Current - a3];
-    [(PLCoreAnalyticsEventManager *)self setPayloadValue:v10 forKey:v11 onEventWithName:v8];
+    token = [MEMORY[0x1E696AD98] numberWithDouble:Current - token];
+    [(PLCoreAnalyticsEventManager *)self setPayloadValue:token forKey:keyCopy onEventWithName:nameCopy];
   }
 }
 
-- (id)rawEventForEventName:(id)a3
+- (id)rawEventForEventName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3762;
   v16 = __Block_byref_object_dispose__3763;
   v17 = 0;
-  if (v4)
+  if (nameCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -200,7 +200,7 @@ void __93__PLCoreAnalyticsEventManager_addRecordingTimedEventSnippetWithToken_fo
     v9[3] = &unk_1E7930738;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = nameCopy;
     PLRunWithUnfairLock(&self->_lock, v9);
 
     v6 = v13[5];
@@ -224,19 +224,19 @@ uint64_t __52__PLCoreAnalyticsEventManager_rawEventForEventName___block_invoke(v
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)removeEventWithName:(id)a3
+- (void)removeEventWithName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __51__PLCoreAnalyticsEventManager_removeEventWithName___block_invoke;
     v7[3] = &unk_1E7932A28;
     v7[4] = self;
-    v8 = v4;
+    v8 = nameCopy;
     PLRunWithUnfairLock(&self->_lock, v7);
   }
 
@@ -252,10 +252,10 @@ uint64_t __52__PLCoreAnalyticsEventManager_rawEventForEventName___block_invoke(v
   }
 }
 
-- (BOOL)hasEventWithName:(id)a3
+- (BOOL)hasEventWithName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
     v3 = [(PLCoreAnalyticsEventManager *)self rawEventForEventName:?];
     v4 = v3 != 0;
@@ -277,21 +277,21 @@ uint64_t __52__PLCoreAnalyticsEventManager_rawEventForEventName___block_invoke(v
   return v4;
 }
 
-- (void)removePayloadValueForKey:(id)a3 onEventWithName:(id)a4
+- (void)removePayloadValueForKey:(id)key onEventWithName:(id)name
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  keyCopy = key;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (keyCopy && nameCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __72__PLCoreAnalyticsEventManager_removePayloadValueForKey_onEventWithName___block_invoke;
     v10[3] = &unk_1E7930348;
     v10[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = nameCopy;
+    v12 = keyCopy;
     PLRunWithUnfairLock(&self->_lock, v10);
   }
 
@@ -303,7 +303,7 @@ uint64_t __52__PLCoreAnalyticsEventManager_rawEventForEventName___block_invoke(v
       *buf = 138543618;
       v14 = v8;
       v15 = 2114;
-      v16 = v6;
+      v16 = keyCopy;
       _os_log_impl(&dword_1AA9BD000, v9, OS_LOG_TYPE_ERROR, "CoreAnalyticsEventManager: invalid parameter for event name: %{public}@ key: %{public}@", buf, 0x16u);
     }
   }
@@ -315,21 +315,21 @@ void __72__PLCoreAnalyticsEventManager_removePayloadValueForKey_onEventWithName_
   [v2 removeKey:*(a1 + 48)];
 }
 
-- (void)mergePayload:(id)a3 onEventWithName:(id)a4
+- (void)mergePayload:(id)payload onEventWithName:(id)name
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  payloadCopy = payload;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (payloadCopy && nameCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__PLCoreAnalyticsEventManager_mergePayload_onEventWithName___block_invoke;
     v10[3] = &unk_1E7930348;
     v10[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = nameCopy;
+    v12 = payloadCopy;
     PLRunWithUnfairLock(&self->_lock, v10);
   }
 
@@ -341,7 +341,7 @@ void __72__PLCoreAnalyticsEventManager_removePayloadValueForKey_onEventWithName_
       *buf = 138543618;
       v14 = v8;
       v15 = 2114;
-      v16 = v6;
+      v16 = payloadCopy;
       _os_log_impl(&dword_1AA9BD000, v9, OS_LOG_TYPE_ERROR, "CoreAnalyticsEventManager: invalid parameter for event name: %{public}@ payload: %{public}@", buf, 0x16u);
     }
   }
@@ -353,16 +353,16 @@ void __60__PLCoreAnalyticsEventManager_mergePayload_onEventWithName___block_invo
   [v2 mergePayload:*(a1 + 48)];
 }
 
-- (void)setPayloadValue:(id)a3 forKey:(id)a4 onlyOnExistingEventWithName:(id)a5
+- (void)setPayloadValue:(id)value forKey:(id)key onlyOnExistingEventWithName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onlyOnExistingEventWithName___block_invoke;
   v10[3] = &unk_1E7930320;
-  v11 = v8;
-  v9 = v8;
-  [(PLCoreAnalyticsEventManager *)self _setPayloadValue:a3 forKey:a4 onEventWithName:v9 eventBlock:v10];
+  v11 = nameCopy;
+  v9 = nameCopy;
+  [(PLCoreAnalyticsEventManager *)self _setPayloadValue:value forKey:key onEventWithName:v9 eventBlock:v10];
 }
 
 id __82__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onlyOnExistingEventWithName___block_invoke(uint64_t a1, void *a2)
@@ -373,16 +373,16 @@ id __82__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onlyOnExistingEventW
   return v4;
 }
 
-- (void)setPayloadValue:(id)a3 forKey:(id)a4 onEventWithName:(id)a5
+- (void)setPayloadValue:(id)value forKey:(id)key onEventWithName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onEventWithName___block_invoke;
   v10[3] = &unk_1E7930320;
-  v11 = v8;
-  v9 = v8;
-  [(PLCoreAnalyticsEventManager *)self _setPayloadValue:a3 forKey:a4 onEventWithName:v9 eventBlock:v10];
+  v11 = nameCopy;
+  v9 = nameCopy;
+  [(PLCoreAnalyticsEventManager *)self _setPayloadValue:value forKey:key onEventWithName:v9 eventBlock:v10];
 }
 
 id __70__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onEventWithName___block_invoke(uint64_t a1, void *a2)
@@ -393,15 +393,15 @@ id __70__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onEventWithName___bl
   return v4;
 }
 
-- (void)_setPayloadValue:(id)a3 forKey:(id)a4 onEventWithName:(id)a5 eventBlock:(id)a6
+- (void)_setPayloadValue:(id)value forKey:(id)key onEventWithName:(id)name eventBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11 || !v12)
+  valueCopy = value;
+  keyCopy = key;
+  nameCopy = name;
+  blockCopy = block;
+  v14 = blockCopy;
+  if (!keyCopy || !nameCopy)
   {
     v15 = PLBackendGetLog();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -410,11 +410,11 @@ id __70__PLCoreAnalyticsEventManager_setPayloadValue_forKey_onEventWithName___bl
     }
 
     *buf = 138543874;
-    v24 = v12;
+    v24 = nameCopy;
     v25 = 2114;
-    v26 = v11;
+    v26 = keyCopy;
     v27 = 2114;
-    v28 = v10;
+    v28 = valueCopy;
     v16 = "CoreAnalyticsEventManager: invalid parameter for event name: %{public}@ key: %{public}@ value: %{public}@";
     v17 = v15;
     v18 = 32;
@@ -423,23 +423,23 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10)
+  if (valueCopy)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __82__PLCoreAnalyticsEventManager__setPayloadValue_forKey_onEventWithName_eventBlock___block_invoke;
     v19[3] = &unk_1E7932DF8;
-    v22 = v13;
+    v22 = blockCopy;
     v19[4] = self;
-    v20 = v10;
-    v21 = v11;
+    v20 = valueCopy;
+    v21 = keyCopy;
     PLRunWithUnfairLock(&self->_lock, v19);
 
     v15 = v22;
     goto LABEL_8;
   }
 
-  if ([v11 isEqualToString:@"error"])
+  if ([keyCopy isEqualToString:@"error"])
   {
     goto LABEL_9;
   }
@@ -448,9 +448,9 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v24 = v12;
+    v24 = nameCopy;
     v25 = 2114;
-    v26 = v11;
+    v26 = keyCopy;
     v16 = "CoreAnalyticsEventManager: invalid value for event name: %{public}@ key: %{public}@";
     v17 = v15;
     v18 = 22;
@@ -486,21 +486,21 @@ void __82__PLCoreAnalyticsEventManager__setPayloadValue_forKey_onEventWithName_e
   }
 }
 
-- (id)valueForKey:(id)a3 onEventWithName:(id)a4
+- (id)valueForKey:(id)key onEventWithName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  keyCopy = key;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (keyCopy && nameCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__PLCoreAnalyticsEventManager_valueForKey_onEventWithName___block_invoke;
     v12[3] = &unk_1E79302F8;
     v12[4] = self;
-    v13 = v7;
-    v14 = v6;
+    v13 = nameCopy;
+    v14 = keyCopy;
     v9 = PLResultWithUnfairLock(&self->_lock, v12);
   }
 
@@ -512,7 +512,7 @@ void __82__PLCoreAnalyticsEventManager__setPayloadValue_forKey_onEventWithName_e
       *buf = 138543618;
       v16 = v8;
       v17 = 2114;
-      v18 = v6;
+      v18 = keyCopy;
       _os_log_impl(&dword_1AA9BD000, v10, OS_LOG_TYPE_ERROR, "CoreAnalyticsEventManager: invalid parameter for event name: %{public}@ key: %{public}@", buf, 0x16u);
     }
 
@@ -531,22 +531,22 @@ id __59__PLCoreAnalyticsEventManager_valueForKey_onEventWithName___block_invoke(
   return v4;
 }
 
-- (id)_eventForEventName:(id)a3
+- (id)_eventForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_eventMap objectForKeyedSubscript:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_eventMap objectForKeyedSubscript:nameCopy];
   if (!v5)
   {
-    v5 = [[PLCoreAnalyticsEvent alloc] initWithEvent:v4 payload:0];
-    [(NSMutableDictionary *)self->_eventMap setObject:v5 forKeyedSubscript:v4];
+    v5 = [[PLCoreAnalyticsEvent alloc] initWithEvent:nameCopy payload:0];
+    [(NSMutableDictionary *)self->_eventMap setObject:v5 forKeyedSubscript:nameCopy];
   }
 
   return v5;
 }
 
-- (id)descriptionForEventName:(id)a3
+- (id)descriptionForEventName:(id)name
 {
-  v3 = [(PLCoreAnalyticsEventManager *)self _eventForEventName:a3];
+  v3 = [(PLCoreAnalyticsEventManager *)self _eventForEventName:name];
   v4 = [v3 debugDescription];
 
   return v4;

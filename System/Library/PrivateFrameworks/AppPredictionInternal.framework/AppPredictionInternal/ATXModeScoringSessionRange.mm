@@ -1,6 +1,6 @@
 @interface ATXModeScoringSessionRange
-- (ATXModeScoringSessionRange)initWithStartDate:(id)a3 endDate:(id)a4 modeEntityStore:(id)a5;
-- (BOOL)_shouldCoaleseNextSession:(id)a3 currentBuffer:(id)a4;
+- (ATXModeScoringSessionRange)initWithStartDate:(id)date endDate:(id)endDate modeEntityStore:(id)store;
+- (BOOL)_shouldCoaleseNextSession:(id)session currentBuffer:(id)buffer;
 - (void)attachAppLaunches;
 - (void)coalesceSessions;
 - (void)filterSessions;
@@ -9,43 +9,43 @@
 
 @implementation ATXModeScoringSessionRange
 
-- (ATXModeScoringSessionRange)initWithStartDate:(id)a3 endDate:(id)a4 modeEntityStore:(id)a5
+- (ATXModeScoringSessionRange)initWithStartDate:(id)date endDate:(id)endDate modeEntityStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = ATXModeScoringSessionRange;
   v11 = [(ATXModeScoringSessionRange *)&v17 init];
   if (v11)
   {
-    if (v8)
+    if (dateCopy)
     {
-      v12 = v8;
+      distantPast = dateCopy;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
     startDate = v11->_startDate;
-    v11->_startDate = v12;
+    v11->_startDate = distantPast;
 
-    if (v9)
+    if (endDateCopy)
     {
-      v14 = v9;
+      distantFuture = endDateCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
     endDate = v11->_endDate;
-    v11->_endDate = v14;
+    v11->_endDate = distantFuture;
 
-    objc_storeStrong(&v11->_modeEntityStore, a5);
+    objc_storeStrong(&v11->_modeEntityStore, store);
   }
 
   return v11;
@@ -64,8 +64,8 @@
 {
   v3 = BiomeLibrary();
   v4 = [v3 App];
-  v5 = [v4 InFocus];
-  v6 = [v5 atx_publisherFromStartDate:self->_startDate];
+  inFocus = [v4 InFocus];
+  v6 = [inFocus atx_publisherFromStartDate:self->_startDate];
 
   v13[0] = 0;
   v13[1] = v13;
@@ -198,23 +198,23 @@ void __47__ATXModeScoringSessionRange_attachAppLaunches__block_invoke_15(uint64_
         v13 = *(*(&v48 + 1) + 8 * i);
         if (v10)
         {
-          v14 = [v10 endDate];
-          v15 = [v13 startDate];
-          if ([(ATXModeScoringSessionRange *)self _areTimesClose:v14 secondTime:v15])
+          endDate = [v10 endDate];
+          startDate = [v13 startDate];
+          if ([(ATXModeScoringSessionRange *)self _areTimesClose:endDate secondTime:startDate])
           {
-            v16 = [v13 endDate];
-            [v16 timeIntervalSinceReferenceDate];
+            endDate2 = [v13 endDate];
+            [endDate2 timeIntervalSinceReferenceDate];
             v18 = v17;
-            v19 = [v10 startDate];
-            [v19 timeIntervalSinceReferenceDate];
+            startDate2 = [v10 startDate];
+            [startDate2 timeIntervalSinceReferenceDate];
             v21 = v20;
 
             if (v18 > v21)
             {
               v22 = objc_alloc(MEMORY[0x277CCA970]);
-              v23 = [v10 startDate];
-              v24 = [v13 endDate];
-              v25 = [v22 initWithStartDate:v23 endDate:v24];
+              startDate3 = [v10 startDate];
+              endDate3 = [v13 endDate];
+              v25 = [v22 initWithStartDate:startDate3 endDate:endDate3];
 
               v10 = v25;
               continue;
@@ -226,11 +226,11 @@ void __47__ATXModeScoringSessionRange_attachAppLaunches__block_invoke_15(uint64_
           }
 
           v26 = [ATXModeScoringSession alloc];
-          v27 = [v10 startDate];
-          [v27 timeIntervalSinceReferenceDate];
+          startDate4 = [v10 startDate];
+          [startDate4 timeIntervalSinceReferenceDate];
           v29 = v28;
-          v30 = [v10 endDate];
-          [v30 timeIntervalSinceReferenceDate];
+          endDate4 = [v10 endDate];
+          [endDate4 timeIntervalSinceReferenceDate];
           v32 = [(ATXModeScoringSession *)v26 initFromStartTime:self->_modeEntityStore endTime:v29 modeEntityStore:v31];
 
           [(NSArray *)v46 addObject:v32];
@@ -256,11 +256,11 @@ void __47__ATXModeScoringSessionRange_attachAppLaunches__block_invoke_15(uint64_
   v10 = 0;
 LABEL_17:
   v34 = [ATXModeScoringSession alloc];
-  v35 = [v10 startDate];
-  [v35 timeIntervalSinceReferenceDate];
+  startDate5 = [v10 startDate];
+  [startDate5 timeIntervalSinceReferenceDate];
   v37 = v36;
-  v38 = [v10 endDate];
-  [v38 timeIntervalSinceReferenceDate];
+  endDate5 = [v10 endDate];
+  [endDate5 timeIntervalSinceReferenceDate];
   v40 = [(ATXModeScoringSession *)v34 initFromStartTime:self->_modeEntityStore endTime:v37 modeEntityStore:v39];
 
   [(NSArray *)v46 addObject:v40];
@@ -325,15 +325,15 @@ LABEL_17:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldCoaleseNextSession:(id)a3 currentBuffer:(id)a4
+- (BOOL)_shouldCoaleseNextSession:(id)session currentBuffer:(id)buffer
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  sessionCopy = session;
+  bufferCopy = buffer;
+  if ([bufferCopy count])
   {
-    v8 = [ATXModeScoringSession coalesceSessions:v7 modeEntityStore:self->_modeEntityStore];
-    v9 = [v8 topMode];
+    v8 = [ATXModeScoringSession coalesceSessions:bufferCopy modeEntityStore:self->_modeEntityStore];
+    topMode = [v8 topMode];
     if ([v8 isStronglyCorrelatedWithTopMode])
     {
       v10 = 2;
@@ -344,16 +344,16 @@ LABEL_17:
       v10 = 1;
     }
 
-    if (([v6 hasModeWithinRank:v9 rank:v10] & 1) != 0 || (objc_msgSend(v6, "duration"), v11 < 30.0))
+    if (([sessionCopy hasModeWithinRank:topMode rank:v10] & 1) != 0 || (objc_msgSend(sessionCopy, "duration"), v11 < 30.0))
     {
       v18[0] = v8;
-      v18[1] = v6;
+      v18[1] = sessionCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
       v13 = [ATXModeScoringSession coalesceSessions:v12 modeEntityStore:self->_modeEntityStore];
 
-      if ([v13 hasModeWithinRank:v9 rank:1])
+      if ([v13 hasModeWithinRank:topMode rank:1])
       {
-        [v8 secondsUntilOtherSession:v6];
+        [v8 secondsUntilOtherSession:sessionCopy];
         v15 = v14 < 3600.0;
       }
 

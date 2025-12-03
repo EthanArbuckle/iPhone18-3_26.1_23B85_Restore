@@ -1,15 +1,15 @@
 @interface GKGraphNode
 + (id)node;
 - (GKGraphNode)init;
-- (GKGraphNode)initWithCoder:(id)a3;
+- (GKGraphNode)initWithCoder:(id)coder;
 - (NSArray)findPathFromNode:(GKGraphNode *)startNode;
 - (NSArray)findPathToNode:(GKGraphNode *)goalNode;
-- (void)addConnection:(id)a3 bidirectional:(BOOL)a4;
+- (void)addConnection:(id)connection bidirectional:(BOOL)bidirectional;
 - (void)addConnectionsToNodes:(NSArray *)nodes bidirectional:(BOOL)bidirectional;
 - (void)dealloc;
 - (void)deleteCGraphNode;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeConnection:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeConnection:(id)connection;
 - (void)removeConnectionsToNodes:(NSArray *)nodes bidirectional:(BOOL)bidirectional;
 @end
 
@@ -40,13 +40,13 @@
   v2 = [(GKGraphNode *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connectedNodes = v2->_connectedNodes;
-    v2->_connectedNodes = v3;
+    v2->_connectedNodes = array;
 
-    v5 = [(GKGraphNode *)v2 makeCGraphNode];
-    v2->_cGraphNode = v5;
-    objc_storeWeak((v5 + 56), v2);
+    makeCGraphNode = [(GKGraphNode *)v2 makeCGraphNode];
+    v2->_cGraphNode = makeCGraphNode;
+    objc_storeWeak((makeCGraphNode + 56), v2);
   }
 
   return v2;
@@ -60,11 +60,11 @@
   [(GKGraphNode *)&v3 dealloc];
 }
 
-- (void)addConnection:(id)a3 bidirectional:(BOOL)a4
+- (void)addConnection:(id)connection bidirectional:(BOOL)bidirectional
 {
-  v4 = a4;
-  v6 = a3;
-  GKCGraphNode::addConnectionToNode(self->_cGraphNode, [v6 cGraphNode], v4);
+  bidirectionalCopy = bidirectional;
+  connectionCopy = connection;
+  GKCGraphNode::addConnectionToNode(self->_cGraphNode, [connectionCopy cGraphNode], bidirectionalCopy);
 }
 
 - (void)addConnectionsToNodes:(NSArray *)nodes bidirectional:(BOOL)bidirectional
@@ -103,10 +103,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v4 = a3;
-  GKCGraphNode::removeConnectionToNode(self->_cGraphNode, [v4 cGraphNode], 0);
+  connectionCopy = connection;
+  GKCGraphNode::removeConnectionToNode(self->_cGraphNode, [connectionCopy cGraphNode], 0);
 }
 
 - (void)removeConnectionsToNodes:(NSArray *)nodes bidirectional:(BOOL)bidirectional
@@ -143,10 +143,10 @@
   return v3;
 }
 
-- (GKGraphNode)initWithCoder:(id)a3
+- (GKGraphNode)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKGraphNode *)self init];
   if (v5)
   {
@@ -165,13 +165,13 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:11];
     [v6 addObjectsFromArray:{v7, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23}];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_connectedNodes"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_connectedNodes"];
     [(GKGraphNode *)v5 addConnectionsToNodes:v9 bidirectional:0];
-    v10 = [v4 decodeObjectOfClasses:v6 forKey:@"_obstacle"];
-    v11 = [v4 decodeObjectOfClasses:v6 forKey:@"_extrudedObstacle"];
+    v10 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_obstacle"];
+    v11 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_extrudedObstacle"];
     if (v10)
     {
       *(v5->_cGraphNode + 4) = [v10 cPolygonObstacle];
@@ -182,33 +182,33 @@
       *(v5->_cGraphNode + 5) = [v11 cPolygonObstacle];
     }
 
-    *(v5->_cGraphNode + 12) = [v4 decodeIntForKey:@"_vertIndex"];
+    *(v5->_cGraphNode + 12) = [coderCopy decodeIntForKey:@"_vertIndex"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_connectedNodes forKey:@"_connectedNodes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_connectedNodes forKey:@"_connectedNodes"];
   cGraphNode = self->_cGraphNode;
   v5 = cGraphNode[4];
   if (v5)
   {
-    [v7 encodeObject:*(v5 + 64) forKey:@"_obstacle"];
+    [coderCopy encodeObject:*(v5 + 64) forKey:@"_obstacle"];
     cGraphNode = self->_cGraphNode;
   }
 
   v6 = cGraphNode[5];
   if (v6)
   {
-    [v7 encodeObject:*(v6 + 64) forKey:@"_extrudedObstacle"];
+    [coderCopy encodeObject:*(v6 + 64) forKey:@"_extrudedObstacle"];
     cGraphNode = self->_cGraphNode;
   }
 
-  [v7 encodeInt:*(cGraphNode + 12) forKey:@"_vertIndex"];
+  [coderCopy encodeInt:*(cGraphNode + 12) forKey:@"_vertIndex"];
 }
 
 @end

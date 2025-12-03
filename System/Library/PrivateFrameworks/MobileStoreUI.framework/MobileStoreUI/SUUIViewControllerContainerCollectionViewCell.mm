@@ -1,33 +1,33 @@
 @interface SUUIViewControllerContainerCollectionViewCell
-- (SUUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (SUUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setManagesViewControllerContainerViewLayout:(BOOL)a3;
-- (void)setMaximumContentWidth:(double)a3;
+- (void)setManagesViewControllerContainerViewLayout:(BOOL)layout;
+- (void)setMaximumContentWidth:(double)width;
 @end
 
 @implementation SUUIViewControllerContainerCollectionViewCell
 
-- (SUUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIViewControllerContainerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIViewControllerContainerCollectionViewCell;
-  v3 = [(SUUIViewControllerContainerCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewControllerContainerCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_managesViewControllerContainerViewLayout = 1;
     [(SUUIViewControllerContainerCollectionViewCell *)v3 setPreservesSuperviewLayoutMargins:1];
-    v5 = [(SUUIViewControllerContainerCollectionViewCell *)v4 contentView];
-    [v5 setPreservesSuperviewLayoutMargins:1];
+    contentView = [(SUUIViewControllerContainerCollectionViewCell *)v4 contentView];
+    [contentView setPreservesSuperviewLayoutMargins:1];
     v6 = [SUUIViewControllerContainerView alloc];
-    [v5 bounds];
+    [contentView bounds];
     v7 = [(SUUIViewControllerContainerView *)v6 initWithFrame:?];
     viewControllerContainerView = v4->_viewControllerContainerView;
     v4->_viewControllerContainerView = v7;
 
     [(SUUIViewControllerContainerView *)v4->_viewControllerContainerView setPreservesSuperviewLayoutMargins:1];
-    [v5 addSubview:v4->_viewControllerContainerView];
+    [contentView addSubview:v4->_viewControllerContainerView];
   }
 
   return v4;
@@ -40,8 +40,8 @@
   [(SUUIViewControllerContainerCollectionViewCell *)&v22 layoutSubviews];
   if (self->_managesViewControllerContainerViewLayout)
   {
-    v3 = [(SUUIViewControllerContainerCollectionViewCell *)self contentView];
-    [v3 bounds];
+    contentView = [(SUUIViewControllerContainerCollectionViewCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -49,13 +49,13 @@
 
     if (self->_maximumContentWidth > 0.00000011920929)
     {
-      v12 = [(SUUIViewControllerContainerCollectionViewCell *)self traitCollection];
-      [v12 displayScale];
+      traitCollection = [(SUUIViewControllerContainerCollectionViewCell *)self traitCollection];
+      [traitCollection displayScale];
       v14 = v13;
       if (v13 <= 0.00000011920929)
       {
-        v15 = [MEMORY[0x277D759A0] mainScreen];
-        [v15 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v14 = v16;
       }
 
@@ -76,33 +76,33 @@
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = SUUIViewControllerContainerCollectionViewCell;
-  v4 = a3;
-  [(SUUIViewControllerContainerCollectionViewCell *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
+  attributesCopy = attributes;
+  [(SUUIViewControllerContainerCollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
 
   indexPath = self->_indexPath;
-  self->_indexPath = v5;
+  self->_indexPath = indexPath;
 }
 
-- (void)setMaximumContentWidth:(double)a3
+- (void)setMaximumContentWidth:(double)width
 {
-  if (vabdd_f64(self->_maximumContentWidth, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_maximumContentWidth, width) > 0.00000011920929)
   {
-    self->_maximumContentWidth = a3;
+    self->_maximumContentWidth = width;
     [(SUUIViewControllerContainerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setManagesViewControllerContainerViewLayout:(BOOL)a3
+- (void)setManagesViewControllerContainerViewLayout:(BOOL)layout
 {
-  if (self->_managesViewControllerContainerViewLayout != a3)
+  if (self->_managesViewControllerContainerViewLayout != layout)
   {
-    self->_managesViewControllerContainerViewLayout = a3;
-    if (a3)
+    self->_managesViewControllerContainerViewLayout = layout;
+    if (layout)
     {
       [(SUUIViewControllerContainerCollectionViewCell *)self setNeedsLayout];
     }

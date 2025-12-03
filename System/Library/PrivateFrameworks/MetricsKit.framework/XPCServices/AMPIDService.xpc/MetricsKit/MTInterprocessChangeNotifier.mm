@@ -1,6 +1,6 @@
 @interface MTInterprocessChangeNotifier
-+ (void)notify:(id)a3;
-- (MTInterprocessChangeNotifier)initWithIdentifier:(id)a3 onChange:(id)a4;
++ (void)notify:(id)notify;
+- (MTInterprocessChangeNotifier)initWithIdentifier:(id)identifier onChange:(id)change;
 - (void)dealloc;
 - (void)notify;
 - (void)stop;
@@ -8,10 +8,10 @@
 
 @implementation MTInterprocessChangeNotifier
 
-- (MTInterprocessChangeNotifier)initWithIdentifier:(id)a3 onChange:(id)a4
+- (MTInterprocessChangeNotifier)initWithIdentifier:(id)identifier onChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  changeCopy = change;
   v17.receiver = self;
   v17.super_class = MTInterprocessChangeNotifier;
   v8 = [(MTInterprocessChangeNotifier *)&v17 init];
@@ -20,21 +20,21 @@
     goto LABEL_6;
   }
 
-  v9 = [MTInterprocessChangeNotifier fullIdentifier:v6];
+  v9 = [MTInterprocessChangeNotifier fullIdentifier:identifierCopy];
   identifier = v8->_identifier;
   v8->_identifier = v9;
 
   v8->_token = -1;
-  v11 = [(NSString *)v8->_identifier UTF8String];
+  uTF8String = [(NSString *)v8->_identifier UTF8String];
   v12 = dispatch_get_global_queue(0, 0);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100002C1C;
   handler[3] = &unk_100020588;
-  v16 = v7;
-  LODWORD(v11) = notify_register_dispatch(v11, &v8->_token, v12, handler);
+  v16 = changeCopy;
+  LODWORD(uTF8String) = notify_register_dispatch(uTF8String, &v8->_token, v12, handler);
 
-  if (!v11 && v8->_token != -1)
+  if (!uTF8String && v8->_token != -1)
   {
 
 LABEL_6:
@@ -60,9 +60,9 @@ LABEL_7:
 {
   if ((self->_token & 0x80000000) == 0)
   {
-    v2 = [(NSString *)self->_identifier UTF8String];
+    uTF8String = [(NSString *)self->_identifier UTF8String];
 
-    notify_post(v2);
+    notify_post(uTF8String);
   }
 }
 
@@ -76,9 +76,9 @@ LABEL_7:
   }
 }
 
-+ (void)notify:(id)a3
++ (void)notify:(id)notify
 {
-  v4 = [a1 fullIdentifier:a3];
+  v4 = [self fullIdentifier:notify];
   v3 = v4;
   notify_post([v4 UTF8String]);
 }

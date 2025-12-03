@@ -6,7 +6,7 @@
 - (id)_kernelsWithShapes;
 - (id)_ourBlendKernelMetal;
 - (id)outputImage;
-- (id)outputImage:(BOOL)a3;
+- (id)outputImage:(BOOL)image;
 - (id)outputImageV2;
 - (id)outputImageV3;
 @end
@@ -157,9 +157,9 @@ id __38__CIPortraitBlur__ourBlendKernelMetal__block_invoke()
   return result;
 }
 
-- (id)outputImage:(BOOL)a3
+- (id)outputImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   v152[2] = *MEMORY[0x1E69E9840];
   inputImage = self->inputImage;
   inputBlurmapImage = self->inputBlurmapImage;
@@ -196,7 +196,7 @@ id __38__CIPortraitBlur__ourBlendKernelMetal__block_invoke()
   v151[0] = @"inputBlurmapImage";
   v151[1] = @"inputUseMetal";
   v152[0] = inputBlurmapImage;
-  v152[1] = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v152[1] = [MEMORY[0x1E696AD98] numberWithBool:imageCopy];
   v21 = -[CIImage imageByApplyingFilter:withInputParameters:](inputImage, "imageByApplyingFilter:withInputParameters:", @"CIPortraitBlurPreProcess", [MEMORY[0x1E695DF20] dictionaryWithObjects:v152 forKeys:v151 count:2]);
   saveImage(v21, @"/tmp/preprocessed-CI.tiff", 0);
   [(CIImage *)v21 extent];
@@ -217,20 +217,20 @@ id __38__CIPortraitBlur__ourBlendKernelMetal__block_invoke()
 
   SDOFRenderingValue(&cfstr_Maxblur.isa, self->inputTuningParameters);
   *&v134[3] = v26 * v27;
-  if (v3)
+  if (imageCopy)
   {
-    v28 = [(CIPortraitBlur *)self _kernelMetal];
+    _kernelMetal = [(CIPortraitBlur *)self _kernelMetal];
   }
 
   else
   {
-    v28 = [(CIPortraitBlur *)self _kernel];
+    _kernelMetal = [(CIPortraitBlur *)self _kernel];
   }
 
-  v29 = v28;
-  if (!v28)
+  _kernel = _kernelMetal;
+  if (!_kernelMetal)
   {
-    v29 = [(CIPortraitBlur *)self _kernel];
+    _kernel = [(CIPortraitBlur *)self _kernel];
   }
 
   [(NSNumber *)self->inputScale floatValue];
@@ -241,7 +241,7 @@ id __38__CIPortraitBlur__ourBlendKernelMetal__block_invoke()
   }
 
   v32 = [CIVector vectorWithX:v24 Y:v25 Z:v31 W:v31];
-  v125 = v29;
+  v125 = _kernel;
   SDOFRenderingValue(&cfstr_Maxblur.isa, self->inputTuningParameters);
   v34 = v33;
   SDOFRenderingValue(&cfstr_Sharpradius.isa, self->inputTuningParameters);
@@ -285,7 +285,7 @@ id __38__CIPortraitBlur__ourBlendKernelMetal__block_invoke()
   SDOFRenderingValue(&cfstr_Basepixelweigh.isa, self->inputTuningParameters);
   v127 = [CIVector vectorWithX:(1.0 / (v48 - v46)) Y:-((1.0 / (v48 - v46)) * v46) Z:v57 W:v41];
   v58 = [CIVector vectorWithX:(0.5 / (v50 / v52)) Y:(((0.5 / (v50 / v52)) * v54) / v56)];
-  v59 = [(CIImage *)v21 imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)v21 imageByClampingToExtent];
   v126 = v21;
   inputShape = self->inputShape;
   if (!inputShape || [(NSString *)self->inputShape isEqualToString:&stru_1F1040378])
@@ -300,13 +300,13 @@ LABEL_24:
     v133[2] = __30__CIPortraitBlur_outputImage___block_invoke;
     v133[3] = &unk_1E75C2528;
     v133[4] = v134;
-    v150[0] = v59;
+    v150[0] = imageByClampingToExtent;
     v150[1] = v129;
     v150[2] = v128;
     v150[3] = v127;
     v150[4] = v58;
     v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:5];
-    v67 = v3;
+    v67 = imageCopy;
     v148 = @"kCIKernelOutputFormat";
     v149 = [MEMORY[0x1E696AD98] numberWithInt:264];
     v68 = [v125 applyWithExtent:v133 roiCallback:v66 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v149, &v148, 1), v62, v63, v65, v64}];
@@ -323,32 +323,32 @@ LABEL_24:
       }
     }
 
-    v67 = v3;
-    if (v3)
+    v67 = imageCopy;
+    if (imageCopy)
     {
-      v111 = [(CIPortraitBlur *)self _kernelWithShapesMetal];
+      _kernelWithShapesMetal = [(CIPortraitBlur *)self _kernelWithShapesMetal];
     }
 
     else
     {
-      v111 = [(CIPortraitBlur *)self _kernelsWithShapes];
+      _kernelWithShapesMetal = [(CIPortraitBlur *)self _kernelsWithShapes];
     }
 
-    v112 = v111;
-    if (!v111)
+    _kernelsWithShapes = _kernelWithShapesMetal;
+    if (!_kernelWithShapesMetal)
     {
-      v112 = [(CIPortraitBlur *)self _kernelsWithShapes];
+      _kernelsWithShapes = [(CIPortraitBlur *)self _kernelsWithShapes];
     }
 
-    v113 = [(CIImage *)self->inputImage properties];
+    properties = [(CIImage *)self->inputImage properties];
     v114 = 0.0;
-    if (v113)
+    if (properties)
     {
-      v115 = [(NSDictionary *)v113 objectForKey:*MEMORY[0x1E696DE78]];
+      v115 = [(NSDictionary *)properties objectForKey:*MEMORY[0x1E696DE78]];
       if (v115)
       {
-        v116 = [v115 intValue];
-        v117 = (v116 - 9) >= 0xFFFFFFF8 ? v116 - 3 : -3;
+        intValue = [v115 intValue];
+        v117 = (intValue - 9) >= 0xFFFFFFF8 ? intValue - 3 : -3;
         if (v117 <= 5)
         {
           v114 = flt_19CF28858[v117];
@@ -367,7 +367,7 @@ LABEL_24:
     v132[2] = __30__CIPortraitBlur_outputImage___block_invoke_2;
     v132[3] = &unk_1E75C2528;
     v132[4] = v134;
-    v147[0] = v59;
+    v147[0] = imageByClampingToExtent;
     v147[1] = v129;
     v147[2] = v128;
     v147[3] = v127;
@@ -377,7 +377,7 @@ LABEL_24:
     v124 = [MEMORY[0x1E695DEC8] arrayWithObjects:v147 count:7];
     v145 = @"kCIKernelOutputFormat";
     v146 = [MEMORY[0x1E696AD98] numberWithInt:264];
-    v68 = [v112 applyWithExtent:v132 roiCallback:v124 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v146, &v145, 1), v120, v121, v123, v122}];
+    v68 = [_kernelsWithShapes applyWithExtent:v132 roiCallback:v124 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v146, &v145, 1), v120, v121, v123, v122}];
   }
 
   v69 = v68;
@@ -433,7 +433,7 @@ LABEL_24:
     saveImage([v77 imageByCroppingToRect:?], @"/tmp/blur-NoiseAddedHalfRes-CI.tiff", 0);
   }
 
-  v82 = [v77 _imageByRenderingToIntermediate];
+  _imageByRenderingToIntermediate = [v77 _imageByRenderingToIntermediate];
   [(CIImage *)self->inputImage extent];
   v84 = v83;
   [(CIImage *)inputImage extent];
@@ -444,7 +444,7 @@ LABEL_24:
   v89 = v84 / v86;
   v91 = v88 / v90;
   CGAffineTransformMakeScale(&v135, v89, v91);
-  v92 = [v82 imageByApplyingTransform:&v135];
+  v92 = [_imageByRenderingToIntermediate imageByApplyingTransform:&v135];
   [(CIImage *)self->inputImage extent];
   saveImage([v92 imageByCroppingToRect:?], @"/tmp/upsampledBlurredImage.tiff", 0);
   v93 = 1.5;
@@ -477,25 +477,25 @@ LABEL_24:
   v102 = [CIVector vectorWithX:v96 Y:v98 Z:v100 W:v101];
   if (v67)
   {
-    v103 = [(CIPortraitBlur *)self _ourBlendKernelMetal];
+    _ourBlendKernelMetal = [(CIPortraitBlur *)self _ourBlendKernelMetal];
   }
 
   else
   {
-    v103 = [(CIPortraitBlur *)self _ourBlendKernel];
+    _ourBlendKernelMetal = [(CIPortraitBlur *)self _ourBlendKernel];
   }
 
-  v104 = v103;
-  if (!v103)
+  _ourBlendKernel = _ourBlendKernelMetal;
+  if (!_ourBlendKernelMetal)
   {
-    v104 = [(CIPortraitBlur *)self _ourBlendKernel];
+    _ourBlendKernel = [(CIPortraitBlur *)self _ourBlendKernel];
   }
 
   [(CIImage *)self->inputImage extent];
   v136[0] = self->inputImage;
   v136[1] = v92;
   v136[2] = v102;
-  v109 = [v104 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v136, 3), v105, v106, v107, v108}];
+  v109 = [_ourBlendKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v136, 3), v105, v106, v107, v108}];
   [(CIImage *)self->inputImage extent];
   saveImage([v109 imageByCroppingToRect:?], @"/tmp/finalBlend.tiff", 0);
   _Block_object_dispose(v134, 8);
@@ -563,8 +563,8 @@ uint64_t __31__CIPortraitBlur_outputImageV2__block_invoke()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CIFilter *)self inputKeys];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -576,7 +576,7 @@ uint64_t __31__CIPortraitBlur_outputImageV2__block_invoke()
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputKeys);
         }
 
         [v3 setValue:-[CIPortraitBlur valueForKey:](self forKey:{"valueForKey:", *(*(&v10 + 1) + 8 * v8)), *(*(&v10 + 1) + 8 * v8)}];
@@ -584,7 +584,7 @@ uint64_t __31__CIPortraitBlur_outputImageV2__block_invoke()
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

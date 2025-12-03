@@ -2,30 +2,30 @@
 - (BOOL)pollEventUpdate;
 - (BOOL)updateEvent;
 - (IOHIDUPSClass)init;
-- (id)copyElements:(id)a3 psKey:(id)a4;
-- (id)latestElement:(id)a3 psKey:(id)a4;
-- (int)createAsyncEventSource:(const void *)a3;
-- (int)getCapabilities:(const __CFSet *)a3;
-- (int)getEvent:(const __CFDictionary *)a3;
-- (int)getProperties:(const __CFDictionary *)a3;
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)sendCommand:(id)a3;
-- (int)setEventCallback:(void *)a3 target:(void *)a4 refcon:(void *)a5;
-- (int)start:(id)a3 service:(unsigned int)a4;
+- (id)copyElements:(id)elements psKey:(id)key;
+- (id)latestElement:(id)element psKey:(id)key;
+- (int)createAsyncEventSource:(const void *)source;
+- (int)getCapabilities:(const __CFSet *)capabilities;
+- (int)getEvent:(const __CFDictionary *)event;
+- (int)getProperties:(const __CFDictionary *)properties;
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)sendCommand:(id)command;
+- (int)setEventCallback:(void *)callback target:(void *)target refcon:(void *)refcon;
+- (int)start:(id)start service:(unsigned int)service;
 - (int)stop;
 - (void)dealloc;
 - (void)initialEventUpdate;
-- (void)parseElements:(id)a3;
-- (void)parseProperties:(id)a3;
-- (void)updateElements:(id)a3;
+- (void)parseElements:(id)elements;
+- (void)parseProperties:(id)properties;
+- (void)updateElements:(id)elements;
 @end
 
 @implementation IOHIDUPSClass
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(*MEMORY[0x29EDB8EF0], 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu), CFEqual(v6, v8)))
   {
@@ -53,7 +53,7 @@
     v9 = &OBJC_IVAR___IOHIDUPSClass__ups;
   }
 
-  *a4 = self + *v9;
+  *outInterface = self + *v9;
   CFRetain(self);
   v10 = 0;
   if (v6)
@@ -65,9 +65,9 @@ LABEL_5:
   return v10;
 }
 
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score
 {
-  if (IOObjectConformsTo(a4, "IOHIDDevice"))
+  if (IOObjectConformsTo(service, "IOHIDDevice"))
   {
     return 0;
   }
@@ -78,52 +78,52 @@ LABEL_5:
   }
 }
 
-- (void)parseProperties:(id)a3
+- (void)parseProperties:(id)properties
 {
   v50 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"Transport");
+  propertiesCopy = properties;
+  v6 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v5, @"Transport");
   objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v7, v6, @"Transport Type");
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"Product");
+  v9 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v8, @"Product");
   objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v10, v9, @"Name");
 
   v12 = objc_msgSend_objectForKeyedSubscript_(self->_properties, v11, @"Name");
 
   if (!v12)
   {
-    v14 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"Manufacturer");
+    v14 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v13, @"Manufacturer");
     objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v15, v14, @"Name");
   }
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"VendorID");
+  v16 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v13, @"VendorID");
   objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v17, v16, @"Vendor ID");
 
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"ProductID");
+  v19 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v18, @"ProductID");
   objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v20, v19, @"Product ID");
 
-  v22 = objc_msgSend_objectForKeyedSubscript_(v4, v21, @"SerialNumber");
+  v22 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v21, @"SerialNumber");
   objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v23, v22, @"Accessory Identifier");
 
-  v25 = objc_msgSend_objectForKey_(v4, v24, @"ModelNumber");
+  v25 = objc_msgSend_objectForKey_(propertiesCopy, v24, @"ModelNumber");
 
   if (v25)
   {
-    v27 = objc_msgSend_objectForKey_(v4, v26, @"ModelNumber");
+    v27 = objc_msgSend_objectForKey_(propertiesCopy, v26, @"ModelNumber");
     objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v28, v27, @"Model Number");
   }
 
-  v29 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"PrimaryUsagePage");
+  v29 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v26, @"PrimaryUsagePage");
   v32 = objc_msgSend_intValue(v29, v30, v31);
 
-  v34 = objc_msgSend_objectForKeyedSubscript_(v4, v33, @"PrimaryUsage");
+  v34 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v33, @"PrimaryUsage");
   v37 = objc_msgSend_intValue(v34, v35, v36);
 
-  v39 = objc_msgSend_objectForKeyedSubscript_(v4, v38, @"Accessory Category");
+  v39 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v38, @"Accessory Category");
 
   if (v39)
   {
-    v41 = objc_msgSend_objectForKeyedSubscript_(v4, v40, @"Accessory Category");
+    v41 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v40, @"Accessory Category");
     objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v42, v41, @"Accessory Category");
   }
 
@@ -139,7 +139,7 @@ LABEL_5:
 
   else
   {
-    v43 = objc_msgSend_objectForKeyedSubscript_(v4, v40, @"GameControllerType");
+    v43 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v40, @"GameControllerType");
 
     if (v43)
     {
@@ -152,21 +152,21 @@ LABEL_5:
   {
     properties = self->_properties;
     v48 = 138412290;
-    v49 = properties;
+    propertiesCopy2 = properties;
     _os_log_impl(&dword_29D3EE000, v45, OS_LOG_TYPE_DEFAULT, "properties: %@", &v48, 0xCu);
   }
 
   v47 = *MEMORY[0x29EDCA608];
 }
 
-- (void)parseElements:(id)a3
+- (void)parseElements:(id)elements
 {
   v103 = *MEMORY[0x29EDCA608];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  obj = a3;
+  obj = elements;
   v87 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v95, v102, 16);
   if (v87)
   {
@@ -545,7 +545,7 @@ LABEL_120:
           objc_msgSend_addObjectsFromArray_(v11, v31, self->_elements.output);
           objc_msgSend_addObjectsFromArray_(v11, v32, self->_elements.feature);
           v35 = objc_msgSend_psKey(v10, v33, v34);
-          v36 = self;
+          selfCopy = self;
           v89 = v11;
           v38 = objc_msgSend_copyElements_psKey_(self, v37, v11, v35);
 
@@ -587,8 +587,8 @@ LABEL_120:
             while (v44);
           }
 
-          self = v36;
-          capabilities = v36->_capabilities;
+          self = selfCopy;
+          capabilities = selfCopy->_capabilities;
           v59 = objc_msgSend_psKey(v10, v57, v58);
           objc_msgSend_addObject_(capabilities, v60, v59);
 
@@ -615,7 +615,7 @@ LABEL_120:
                 _os_log_impl(&dword_29D3EE000, v62, OS_LOG_TYPE_DEFAULT, "Feature element (UP : %x, U : %x) added for polling", buf, 0xEu);
               }
 
-              if (!v36->_timer)
+              if (!selfCopy->_timer)
               {
                 v69 = _IOHIDLogCategory();
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
@@ -630,10 +630,10 @@ LABEL_120:
                 v90[1] = 3221225472;
                 v90[2] = sub_29D3F4AF0;
                 v90[3] = &unk_29F34D190;
-                v90[4] = v36;
+                v90[4] = selfCopy;
                 v75 = objc_msgSend_initWithFireDate_interval_repeats_block_(v70, v74, v73, 1, v90, 5.0);
-                timer = v36->_timer;
-                v36->_timer = v75;
+                timer = selfCopy->_timer;
+                selfCopy->_timer = v75;
               }
             }
 
@@ -676,17 +676,17 @@ LABEL_120:
   v83 = *MEMORY[0x29EDCA608];
 }
 
-- (id)copyElements:(id)a3 psKey:(id)a4
+- (id)copyElements:(id)elements psKey:(id)key
 {
   v27 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  elementsCopy = elements;
+  keyCopy = key;
   v7 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = elementsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v22, v26, 16);
   if (v10)
   {
@@ -703,7 +703,7 @@ LABEL_120:
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = objc_msgSend_psKey(v16, v11, v12, v22);
-        isEqualToString = objc_msgSend_isEqualToString_(v17, v18, v6);
+        isEqualToString = objc_msgSend_isEqualToString_(v17, v18, keyCopy);
 
         if (isEqualToString)
         {
@@ -721,16 +721,16 @@ LABEL_120:
   return v7;
 }
 
-- (id)latestElement:(id)a3 psKey:(id)a4
+- (id)latestElement:(id)element psKey:(id)key
 {
   v30 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  keyCopy = key;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = objc_msgSend_copyElements_psKey_(self, v8, v6, v7);
+  v9 = objc_msgSend_copyElements_psKey_(self, v8, elementCopy, keyCopy);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v25, v29, 16);
   if (v11)
   {
@@ -773,10 +773,10 @@ LABEL_120:
   return v16;
 }
 
-- (void)updateElements:(id)a3
+- (void)updateElements:(id)elements
 {
   v87 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  elementsCopy = elements;
   transaction = self->_transaction;
   if (!transaction)
   {
@@ -806,12 +806,12 @@ LABEL_7:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v8 = v4;
+  v8 = elementsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v75, v86, 16);
   if (v10)
   {
     v13 = v10;
-    v69 = v4;
+    v69 = elementsCopy;
     v14 = 0;
     v15 = *v76;
     do
@@ -854,7 +854,7 @@ LABEL_7:
 
     while (v13);
 
-    v4 = v69;
+    elementsCopy = v69;
     if (v14)
     {
       if (((*self->_transaction)->commit)(self->_transaction, 0, 0, 0, 0))
@@ -986,7 +986,7 @@ LABEL_51:
 LABEL_56:
 
             ((*self->_transaction)->clear)(self->_transaction, 0);
-            v4 = v69;
+            elementsCopy = v69;
             goto LABEL_8;
           }
 
@@ -1564,66 +1564,66 @@ LABEL_115:
   return 0;
 }
 
-- (int)getProperties:(const __CFDictionary *)a3
+- (int)getProperties:(const __CFDictionary *)properties
 {
-  if (!a3)
+  if (!properties)
   {
     return -536870206;
   }
 
   result = 0;
-  *a3 = self->_properties;
+  *properties = self->_properties;
   return result;
 }
 
-- (int)getCapabilities:(const __CFSet *)a3
+- (int)getCapabilities:(const __CFSet *)capabilities
 {
-  if (!a3)
+  if (!capabilities)
   {
     return -536870206;
   }
 
   result = 0;
-  *a3 = self->_capabilities;
+  *capabilities = self->_capabilities;
   return result;
 }
 
-- (int)getEvent:(const __CFDictionary *)a3
+- (int)getEvent:(const __CFDictionary *)event
 {
-  if (!a3)
+  if (!event)
   {
     return -536870206;
   }
 
   upsEvent = self->_upsEvent;
-  *a3 = upsEvent;
+  *event = upsEvent;
   sub_29D3F4CB8(upsEvent, @"getEvent");
   return 0;
 }
 
-- (int)setEventCallback:(void *)a3 target:(void *)a4 refcon:(void *)a5
+- (int)setEventCallback:(void *)callback target:(void *)target refcon:(void *)refcon
 {
-  self->_eventCallback = a3;
-  self->_eventTarget = a4;
-  self->_eventRefcon = a5;
+  self->_eventCallback = callback;
+  self->_eventTarget = target;
+  self->_eventRefcon = refcon;
   return 0;
 }
 
-- (int)sendCommand:(id)a3
+- (int)sendCommand:(id)command
 {
   v17 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  commandCopy = command;
   v5 = _IOHIDLogCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = commandCopy;
     _os_log_impl(&dword_29D3EE000, v5, OS_LOG_TYPE_DEFAULT, "sendCommand: %@", buf, 0xCu);
   }
 
   v6 = -536870206;
 
-  if (v4 && objc_msgSend_count(v4, v7, v8))
+  if (commandCopy && objc_msgSend_count(commandCopy, v7, v8))
   {
     transaction = self->_transaction;
     if (transaction)
@@ -1634,7 +1634,7 @@ LABEL_115:
       v14[2] = sub_29D3F67C8;
       v14[3] = &unk_29F34D1B8;
       v14[4] = self;
-      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v4, v10, v14);
+      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(commandCopy, v10, v14);
       v6 = ((*self->_transaction)->commit)(self->_transaction, 0, 0, 0, 0);
       ((*self->_transaction)->clear)(self->_transaction, 0);
     }
@@ -1655,7 +1655,7 @@ LABEL_115:
   return v6;
 }
 
-- (int)createAsyncEventSource:(const void *)a3
+- (int)createAsyncEventSource:(const void *)source
 {
   v5 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   timer = self->_timer;
@@ -1672,7 +1672,7 @@ LABEL_115:
     objc_msgSend_addObject_(v5, v9, self->_runLoopSource);
   }
 
-  *a3 = v5;
+  *source = v5;
   return 0;
 }
 
@@ -1769,14 +1769,14 @@ LABEL_115:
   [(IOHIDPlugin *)&v6 dealloc];
 }
 
-- (int)start:(id)a3 service:(unsigned int)a4
+- (int)start:(id)start service:(unsigned int)service
 {
   v90 = *MEMORY[0x29EDCA608];
   cf = 0;
   properties = 0;
   theInterface = 0;
   theScore = 0;
-  if (IORegistryEntryCreateCFProperties(a4, &properties, *MEMORY[0x29EDB8ED8], 0))
+  if (IORegistryEntryCreateCFProperties(service, &properties, *MEMORY[0x29EDB8ED8], 0))
   {
     sub_29D3F6F04();
     v46 = _IOHIDLogCategory();
@@ -1810,7 +1810,7 @@ LABEL_64:
   objc_msgSend_parseProperties_(self, v8, properties);
   v4 = CFUUIDGetConstantUUIDWithBytes(0, 0x7Du, 0xDEu, 0xECu, 0xA8u, 0xA7u, 0xB4u, 0x11u, 0xDAu, 0x8Au, 0xEu, 0, 0x14u, 0x51u, 0x97u, 0x58u, 0xEFu);
   v9 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu);
-  if (IOCreatePlugInInterfaceForService(a4, v4, v9, &theInterface, &theScore))
+  if (IOCreatePlugInInterfaceForService(service, v4, v9, &theInterface, &theScore))
   {
     sub_29D3F6F04();
     v48 = _IOHIDLogCategory();

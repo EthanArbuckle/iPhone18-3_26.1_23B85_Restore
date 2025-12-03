@@ -1,29 +1,29 @@
 @interface DIMSchemaDIMEphemeralToAggregationIdentifierMap
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithDictionary:(id)a3;
-- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)a3;
-- (void)setHasUserSamplingIdExpirationTimestampMs:(BOOL)a3;
-- (void)setHasUserSamplingIdRotationTimestampMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)ms;
+- (void)setHasUserSamplingIdExpirationTimestampMs:(BOOL)ms;
+- (void)setHasUserSamplingIdRotationTimestampMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMEphemeralToAggregationIdentifierMap
 
-- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithDictionary:(id)a3
+- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = DIMSchemaDIMEphemeralToAggregationIdentifierMap;
   v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userEphemeralId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userEphemeralId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)v5 setUserEphemeralId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userAggregationId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,21 +39,21 @@
       [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)v5 setUserAggregationId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMEphemeralToAggregationIdentifierMap setUserAggregationIdRotationTimestampMs:](v5, "setUserAggregationIdRotationTimestampMs:", [v10 unsignedLongLongValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMEphemeralToAggregationIdentifierMap setUserAggregationIdExpirationTimestampMs:](v5, "setUserAggregationIdExpirationTimestampMs:", [v11 unsignedLongLongValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"deviceAggregationId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceAggregationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)v5 setDeviceAggregationId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"userSamplingId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"userSamplingId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,14 +69,14 @@
       [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)v5 setUserSamplingId:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"userSamplingIdRotationTimestampMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"userSamplingIdRotationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMEphemeralToAggregationIdentifierMap setUserSamplingIdRotationTimestampMs:](v5, "setUserSamplingIdRotationTimestampMs:", [v16 unsignedLongLongValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"userSamplingIdExpirationTimestampMs"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"userSamplingIdExpirationTimestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithJSON:(id)a3
+- (DIMSchemaDIMEphemeralToAggregationIdentifierMap)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,36 +125,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceAggregationId)
   {
-    v4 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deviceAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+    dictionaryRepresentation = [deviceAggregationId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deviceAggregationId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceAggregationId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deviceAggregationId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deviceAggregationId"];
     }
   }
 
   if (self->_userAggregationId)
   {
-    v7 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    userAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+    dictionaryRepresentation2 = [userAggregationId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"userAggregationId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"userAggregationId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"userAggregationId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"userAggregationId"];
     }
   }
 
@@ -162,7 +162,7 @@
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DIMSchemaDIMEphemeralToAggregationIdentifierMap userAggregationIdExpirationTimestampMs](self, "userAggregationIdExpirationTimestampMs")}];
-    [v3 setObject:v11 forKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
+    [dictionary setObject:v11 forKeyedSubscript:@"userAggregationIdExpirationTimestampMs"];
 
     has = self->_has;
   }
@@ -170,38 +170,38 @@
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DIMSchemaDIMEphemeralToAggregationIdentifierMap userAggregationIdRotationTimestampMs](self, "userAggregationIdRotationTimestampMs")}];
-    [v3 setObject:v12 forKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
+    [dictionary setObject:v12 forKeyedSubscript:@"userAggregationIdRotationTimestampMs"];
   }
 
   if (self->_userEphemeralId)
   {
-    v13 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+    dictionaryRepresentation3 = [userEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"userEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"userEphemeralId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"userEphemeralId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"userEphemeralId"];
     }
   }
 
   if (self->_userSamplingId)
   {
-    v16 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    userSamplingId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+    dictionaryRepresentation4 = [userSamplingId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"userSamplingId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"userSamplingId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"userSamplingId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"userSamplingId"];
     }
   }
 
@@ -209,7 +209,7 @@
   if ((v19 & 8) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DIMSchemaDIMEphemeralToAggregationIdentifierMap userSamplingIdExpirationTimestampMs](self, "userSamplingIdExpirationTimestampMs")}];
-    [v3 setObject:v20 forKeyedSubscript:@"userSamplingIdExpirationTimestampMs"];
+    [dictionary setObject:v20 forKeyedSubscript:@"userSamplingIdExpirationTimestampMs"];
 
     v19 = self->_has;
   }
@@ -217,12 +217,12 @@
   if ((v19 & 4) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DIMSchemaDIMEphemeralToAggregationIdentifierMap userSamplingIdRotationTimestampMs](self, "userSamplingIdRotationTimestampMs")}];
-    [v3 setObject:v21 forKeyedSubscript:@"userSamplingIdRotationTimestampMs"];
+    [dictionary setObject:v21 forKeyedSubscript:@"userSamplingIdRotationTimestampMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -277,28 +277,28 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
-  v6 = [v4 userEphemeralId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+  userEphemeralId2 = [equalCopy userEphemeralId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v7 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
-  if (v7)
+  userEphemeralId3 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+  if (userEphemeralId3)
   {
-    v8 = v7;
-    v9 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
-    v10 = [v4 userEphemeralId];
-    v11 = [v9 isEqual:v10];
+    v8 = userEphemeralId3;
+    userEphemeralId4 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+    userEphemeralId5 = [equalCopy userEphemeralId];
+    v11 = [userEphemeralId4 isEqual:userEphemeralId5];
 
     if (!v11)
     {
@@ -310,20 +310,20 @@ LABEL_8:
   {
   }
 
-  v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
-  v6 = [v4 userAggregationId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+  userEphemeralId2 = [equalCopy userAggregationId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v12 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
-  if (v12)
+  userAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+  if (userAggregationId)
   {
-    v13 = v12;
-    v14 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
-    v15 = [v4 userAggregationId];
-    v16 = [v14 isEqual:v15];
+    v13 = userAggregationId;
+    userAggregationId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+    userAggregationId3 = [equalCopy userAggregationId];
+    v16 = [userAggregationId2 isEqual:userAggregationId3];
 
     if (!v16)
     {
@@ -336,7 +336,7 @@ LABEL_8:
   }
 
   has = self->_has;
-  v18 = v4[72];
+  v18 = equalCopy[72];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_29;
@@ -345,13 +345,13 @@ LABEL_8:
   if (*&has)
   {
     userAggregationIdRotationTimestampMs = self->_userAggregationIdRotationTimestampMs;
-    if (userAggregationIdRotationTimestampMs != [v4 userAggregationIdRotationTimestampMs])
+    if (userAggregationIdRotationTimestampMs != [equalCopy userAggregationIdRotationTimestampMs])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v18 = v4[72];
+    v18 = equalCopy[72];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -363,26 +363,26 @@ LABEL_8:
   if (v20)
   {
     userAggregationIdExpirationTimestampMs = self->_userAggregationIdExpirationTimestampMs;
-    if (userAggregationIdExpirationTimestampMs != [v4 userAggregationIdExpirationTimestampMs])
+    if (userAggregationIdExpirationTimestampMs != [equalCopy userAggregationIdExpirationTimestampMs])
     {
       goto LABEL_29;
     }
   }
 
-  v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
-  v6 = [v4 deviceAggregationId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+  userEphemeralId2 = [equalCopy deviceAggregationId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v22 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
-  if (v22)
+  deviceAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+  if (deviceAggregationId)
   {
-    v23 = v22;
-    v24 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
-    v25 = [v4 deviceAggregationId];
-    v26 = [v24 isEqual:v25];
+    v23 = deviceAggregationId;
+    deviceAggregationId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+    deviceAggregationId3 = [equalCopy deviceAggregationId];
+    v26 = [deviceAggregationId2 isEqual:deviceAggregationId3];
 
     if (!v26)
     {
@@ -394,22 +394,22 @@ LABEL_8:
   {
   }
 
-  v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
-  v6 = [v4 userSamplingId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+  userEphemeralId2 = [equalCopy userSamplingId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v27 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
-  if (v27)
+  userSamplingId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+  if (userSamplingId)
   {
-    v28 = v27;
-    v29 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
-    v30 = [v4 userSamplingId];
-    v31 = [v29 isEqual:v30];
+    v28 = userSamplingId;
+    userSamplingId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+    userSamplingId3 = [equalCopy userSamplingId];
+    v31 = [userSamplingId2 isEqual:userSamplingId3];
 
     if (!v31)
     {
@@ -423,25 +423,25 @@ LABEL_28:
 
   v34 = self->_has;
   v35 = (*&v34 >> 2) & 1;
-  v36 = v4[72];
+  v36 = equalCopy[72];
   if (v35 == ((v36 >> 2) & 1))
   {
     if (v35)
     {
       userSamplingIdRotationTimestampMs = self->_userSamplingIdRotationTimestampMs;
-      if (userSamplingIdRotationTimestampMs != [v4 userSamplingIdRotationTimestampMs])
+      if (userSamplingIdRotationTimestampMs != [equalCopy userSamplingIdRotationTimestampMs])
       {
         goto LABEL_29;
       }
 
       v34 = self->_has;
-      v36 = v4[72];
+      v36 = equalCopy[72];
     }
 
     v38 = (*&v34 >> 3) & 1;
     if (v38 == ((v36 >> 3) & 1))
     {
-      if (!v38 || (userSamplingIdExpirationTimestampMs = self->_userSamplingIdExpirationTimestampMs, userSamplingIdExpirationTimestampMs == [v4 userSamplingIdExpirationTimestampMs]))
+      if (!v38 || (userSamplingIdExpirationTimestampMs = self->_userSamplingIdExpirationTimestampMs, userSamplingIdExpirationTimestampMs == [equalCopy userSamplingIdExpirationTimestampMs]))
       {
         v32 = 1;
         goto LABEL_30;
@@ -456,22 +456,22 @@ LABEL_30:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+  toCopy = to;
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
 
-  if (v4)
+  if (userEphemeralId)
   {
-    v5 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+    userEphemeralId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+  userAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
 
-  if (v6)
+  if (userAggregationId)
   {
-    v7 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+    userAggregationId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -487,19 +487,19 @@ LABEL_30:
     PBDataWriterWriteUint64Field();
   }
 
-  v9 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+  deviceAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
 
-  if (v9)
+  if (deviceAggregationId)
   {
-    v10 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+    deviceAggregationId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+  userSamplingId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
 
-  if (v11)
+  if (userSamplingId)
   {
-    v12 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+    userSamplingId2 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -510,17 +510,17 @@ LABEL_30:
     v13 = self->_has;
   }
 
-  v14 = v15;
+  v14 = toCopy;
   if ((v13 & 8) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v14 = v15;
+    v14 = toCopy;
   }
 }
 
-- (void)setHasUserSamplingIdExpirationTimestampMs:(BOOL)a3
+- (void)setHasUserSamplingIdExpirationTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -533,9 +533,9 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUserSamplingIdRotationTimestampMs:(BOOL)a3
+- (void)setHasUserSamplingIdRotationTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -548,9 +548,9 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)a3
+- (void)setHasUserAggregationIdExpirationTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -563,44 +563,44 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = DIMSchemaDIMEphemeralToAggregationIdentifierMap;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  userEphemeralId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userEphemeralId];
+  v7 = [userEphemeralId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deleteUserEphemeralId];
   }
 
-  v9 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  userAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userAggregationId];
+  v10 = [userAggregationId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deleteUserAggregationId];
   }
 
-  v12 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  deviceAggregationId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deviceAggregationId];
+  v13 = [deviceAggregationId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deleteDeviceAggregationId];
   }
 
-  v15 = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  userSamplingId = [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self userSamplingId];
+  v16 = [userSamplingId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DIMSchemaDIMEphemeralToAggregationIdentifierMap *)self deleteUserSamplingId];
   }

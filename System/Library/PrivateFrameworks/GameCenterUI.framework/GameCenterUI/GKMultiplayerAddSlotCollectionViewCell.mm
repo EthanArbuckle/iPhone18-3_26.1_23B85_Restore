@@ -1,13 +1,13 @@
 @interface GKMultiplayerAddSlotCollectionViewCell
 + (NSString)reuseIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (UIButton)accessibilityAddSlotButton;
 - (id)addSlotActionHandler;
 - (void)layoutSubviews;
-- (void)setAddSlotActionHandler:(id)a3;
-- (void)setMaximumAdditionalPlayers:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAddSlotActionHandler:(id)handler;
+- (void)setMaximumAdditionalPlayers:(int64_t)players;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKMultiplayerAddSlotCollectionViewCell
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setAddSlotActionHandler:(id)a3
+- (void)setAddSlotActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -57,22 +57,22 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKMultiplayerAddSlotCollectionViewCell.addSlotActionHandler.setter(v4, v5);
 }
 
-- (void)setMaximumAdditionalPlayers:(int64_t)a3
+- (void)setMaximumAdditionalPlayers:(int64_t)players
 {
-  v4 = self;
-  GKMultiplayerAddSlotCollectionViewCell.maximumAdditionalPlayers.setter(a3);
+  selfCopy = self;
+  GKMultiplayerAddSlotCollectionViewCell.maximumAdditionalPlayers.setter(players);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24E257AD4(a4, v6);
+  selfCopy = self;
+  v7 = sub_24E257AD4(in, selfCopy);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = GKMultiplayerAddSlotCollectionViewCell.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -105,7 +105,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerAddSlotCollectionViewCell.layoutSubviews()();
 }
 
@@ -116,9 +116,9 @@
   return v2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7.value.super.isa = self;
   isa = v7.value.super.isa;
   GKMultiplayerAddSlotCollectionViewCell.traitCollectionDidChange(_:)(v7);

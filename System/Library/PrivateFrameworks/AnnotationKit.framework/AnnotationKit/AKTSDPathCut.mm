@@ -1,19 +1,19 @@
 @interface AKTSDPathCut
-- (AKTSDPathCut)initWithSegment:(int64_t)a3 atT:(double)a4 withSkew:(double)a5;
+- (AKTSDPathCut)initWithSegment:(int64_t)segment atT:(double)t withSkew:(double)skew;
 @end
 
 @implementation AKTSDPathCut
 
-- (AKTSDPathCut)initWithSegment:(int64_t)a3 atT:(double)a4 withSkew:(double)a5
+- (AKTSDPathCut)initWithSegment:(int64_t)segment atT:(double)t withSkew:(double)skew
 {
   v9.receiver = self;
   v9.super_class = AKTSDPathCut;
   result = [(AKTSDPathCut *)&v9 init];
   if (result)
   {
-    result->mSegment = a3;
-    result->mT = a4;
-    result->mSkew = a5;
+    result->mSegment = segment;
+    result->mT = t;
+    result->mSkew = skew;
   }
 
   return result;

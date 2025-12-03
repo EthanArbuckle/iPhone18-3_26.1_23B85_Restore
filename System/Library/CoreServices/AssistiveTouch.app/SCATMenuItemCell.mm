@@ -1,30 +1,30 @@
 @interface SCATMenuItemCell
-+ (CGSize)cellSizeForTitle:(id)a3;
++ (CGSize)cellSizeForTitle:(id)title;
 + (CGSize)maxCellSize;
 + (id)measuringCell;
 + (id)titleToSizeCache;
 - (BOOL)_useHighVisibilityImage;
 - (BOOL)allowsDwellScanningToAbortAfterTimeout;
-- (BOOL)scatPerformAction:(int)a3;
+- (BOOL)scatPerformAction:(int)action;
 - (NSLayoutConstraint)titleHiddenConstraint;
-- (SCATMenuItemCell)initWithFrame:(CGRect)a3;
+- (SCATMenuItemCell)initWithFrame:(CGRect)frame;
 - (SCATModernMenuItem)menuItem;
 - (UIImage)dimmedBorderImage;
-- (double)_iconImageCornerRadiusForImageSize:(CGSize)a3;
+- (double)_iconImageCornerRadiusForImageSize:(CGSize)size;
 - (id)accessibilityLabel;
 - (id)description;
 - (id)scatSpeakableDescription;
-- (void)_setBorderDimmed:(BOOL)a3 focused:(BOOL)a4 hidden:(BOOL)a5;
-- (void)_setIconDimmed:(BOOL)a3 asDimAsBorder:(BOOL)a4 focused:(BOOL)a5;
+- (void)_setBorderDimmed:(BOOL)dimmed focused:(BOOL)focused hidden:(BOOL)hidden;
+- (void)_setIconDimmed:(BOOL)dimmed asDimAsBorder:(BOOL)border focused:(BOOL)focused;
 - (void)_setupConstraints;
 - (void)didUpdateScatMenuItemStyle;
 - (void)flash;
 - (void)prepareForReuse;
-- (void)setIconImage:(id)a3;
-- (void)setIconImageAngle:(double)a3;
-- (void)setPressedBackgroundImage:(id)a3;
-- (void)setShouldIncludeTextLabels:(BOOL)a3;
-- (void)setShouldUseActivityIndicator:(BOOL)a3;
+- (void)setIconImage:(id)image;
+- (void)setIconImageAngle:(double)angle;
+- (void)setPressedBackgroundImage:(id)image;
+- (void)setShouldIncludeTextLabels:(BOOL)labels;
+- (void)setShouldUseActivityIndicator:(BOOL)indicator;
 - (void)update;
 @end
 
@@ -72,31 +72,31 @@
   return result;
 }
 
-+ (CGSize)cellSizeForTitle:(id)a3
++ (CGSize)cellSizeForTitle:(id)title
 {
-  v3 = &stru_1001DB590;
-  if (a3)
+  titleCopy = &stru_1001DB590;
+  if (title)
   {
-    v3 = a3;
+    titleCopy = title;
   }
 
-  v4 = v3;
-  v5 = [objc_opt_class() titleToSizeCache];
-  v6 = [v5 objectForKey:v4];
+  v4 = titleCopy;
+  titleToSizeCache = [objc_opt_class() titleToSizeCache];
+  v6 = [titleToSizeCache objectForKey:v4];
   if (!v6)
   {
-    v7 = [objc_opt_class() measuringCell];
-    v8 = [v7 titleLabel];
-    [v8 setAdjustsFontSizeToFitWidth:0];
+    measuringCell = [objc_opt_class() measuringCell];
+    titleLabel = [measuringCell titleLabel];
+    [titleLabel setAdjustsFontSizeToFitWidth:0];
 
-    v9 = [v7 titleLabel];
-    [v9 setText:v4];
+    titleLabel2 = [measuringCell titleLabel];
+    [titleLabel2 setText:v4];
 
-    [v7 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    [measuringCell systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v18[0] = v10;
     v18[1] = v11;
     v6 = [NSValue valueWithBytes:v18 objCType:"{CGSize=dd}"];
-    [v5 setObject:v6 forKeyedSubscript:v4];
+    [titleToSizeCache setObject:v6 forKeyedSubscript:v4];
   }
 
   [v6 CGSizeValue];
@@ -110,11 +110,11 @@
   return result;
 }
 
-- (SCATMenuItemCell)initWithFrame:(CGRect)a3
+- (SCATMenuItemCell)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = SCATMenuItemCell;
-  v3 = [(SCATMenuItemCell *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATMenuItemCell *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIBlurEffect effectWithStyle:9];
@@ -133,24 +133,24 @@
     v3->_iconContainerView = v8;
 
     [(UIVisualEffectView *)v3->_iconContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(SCATMenuItemCell *)v3 contentView];
-    v11 = [(SCATMenuItemCell *)v3 iconContainerView];
-    [v10 addSubview:v11];
+    contentView = [(SCATMenuItemCell *)v3 contentView];
+    iconContainerView = [(SCATMenuItemCell *)v3 iconContainerView];
+    [contentView addSubview:iconContainerView];
 
     v12 = objc_alloc_init(SCATMenuLabel);
     [(SCATMenuLabel *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SCATMenuItemCell *)v3 setTitleLabel:v12];
     v13 = +[UIColor whiteColor];
-    v14 = [(SCATMenuItemCell *)v3 titleLabel];
-    [v14 setTextColor:v13];
+    titleLabel = [(SCATMenuItemCell *)v3 titleLabel];
+    [titleLabel setTextColor:v13];
 
-    v15 = [(SCATMenuItemCell *)v3 iconContainerView];
-    v16 = [v15 contentView];
-    [v16 addSubview:v12];
+    iconContainerView2 = [(SCATMenuItemCell *)v3 iconContainerView];
+    contentView2 = [iconContainerView2 contentView];
+    [contentView2 addSubview:v12];
 
     v17 = [UIVisualEffectView alloc];
-    v18 = [(SCATMenuItemCell *)v3 iconEffect];
-    v19 = [v17 initWithEffect:v18];
+    iconEffect = [(SCATMenuItemCell *)v3 iconEffect];
+    v19 = [v17 initWithEffect:iconEffect];
     borderContainerView = v3->_borderContainerView;
     v3->_borderContainerView = v19;
 
@@ -158,36 +158,36 @@
     v21 = objc_alloc_init(UIImageView);
     [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SCATMenuItemCell *)v3 setBackgroundBorderImageView:v21];
-    v22 = [(SCATMenuItemCell *)v3 contentView];
-    [v22 addSubview:v3->_borderContainerView];
+    contentView3 = [(SCATMenuItemCell *)v3 contentView];
+    [contentView3 addSubview:v3->_borderContainerView];
 
-    v23 = [(UIVisualEffectView *)v3->_borderContainerView contentView];
-    v24 = [(SCATMenuItemCell *)v3 backgroundBorderImageView];
-    [v23 addSubview:v24];
+    contentView4 = [(UIVisualEffectView *)v3->_borderContainerView contentView];
+    backgroundBorderImageView = [(SCATMenuItemCell *)v3 backgroundBorderImageView];
+    [contentView4 addSubview:backgroundBorderImageView];
 
     v25 = objc_alloc_init(UIImageView);
     [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v25 setAlpha:0.0];
     [(SCATMenuItemCell *)v3 setPressedBackgroundBorderImageView:v25];
-    v26 = [(UIVisualEffectView *)v3->_borderContainerView contentView];
-    v27 = [(SCATMenuItemCell *)v3 pressedBackgroundBorderImageView];
-    [v26 addSubview:v27];
+    contentView5 = [(UIVisualEffectView *)v3->_borderContainerView contentView];
+    pressedBackgroundBorderImageView = [(SCATMenuItemCell *)v3 pressedBackgroundBorderImageView];
+    [contentView5 addSubview:pressedBackgroundBorderImageView];
 
     v28 = objc_alloc_init(UIImageView);
     [v28 setContentMode:1];
     [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SCATMenuItemCell *)v3 setIconImageView:v28];
-    v29 = [(SCATMenuItemCell *)v3 iconContainerView];
-    v30 = [v29 contentView];
-    [v30 addSubview:v28];
+    iconContainerView3 = [(SCATMenuItemCell *)v3 iconContainerView];
+    contentView6 = [iconContainerView3 contentView];
+    [contentView6 addSubview:v28];
 
     v31 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v31 setHidden:1];
     [(SCATMenuItemCell *)v3 setActivityIndicatorView:v31];
-    v32 = [(SCATMenuItemCell *)v3 iconContainerView];
-    v33 = [v32 contentView];
-    [v33 addSubview:v31];
+    iconContainerView4 = [(SCATMenuItemCell *)v3 iconContainerView];
+    contentView7 = [iconContainerView4 contentView];
+    [contentView7 addSubview:v31];
 
     [(SCATMenuItemCell *)v3 _setupConstraints];
     [(SCATMenuItemCell *)v3 didUpdateScatMenuItemStyle];
@@ -226,175 +226,175 @@
   +[SCATModernMenuItem imageSize];
   v11 = v10;
   v13 = v12;
-  v156 = [(SCATMenuItemCell *)self contentView];
-  v154 = [v156 leadingAnchor];
-  v155 = [(SCATMenuItemCell *)self iconContainerView];
-  v153 = [v155 leadingAnchor];
-  v152 = [v154 constraintEqualToAnchor:v153];
+  contentView = [(SCATMenuItemCell *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  iconContainerView = [(SCATMenuItemCell *)self iconContainerView];
+  leadingAnchor2 = [iconContainerView leadingAnchor];
+  v152 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v157[0] = v152;
-  v151 = [(SCATMenuItemCell *)self contentView];
-  v149 = [v151 trailingAnchor];
-  v150 = [(SCATMenuItemCell *)self iconContainerView];
-  v148 = [v150 trailingAnchor];
-  v147 = [v149 constraintEqualToAnchor:v148];
+  contentView2 = [(SCATMenuItemCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  iconContainerView2 = [(SCATMenuItemCell *)self iconContainerView];
+  trailingAnchor2 = [iconContainerView2 trailingAnchor];
+  v147 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v157[1] = v147;
-  v146 = [(SCATMenuItemCell *)self contentView];
-  v144 = [v146 topAnchor];
-  v145 = [(SCATMenuItemCell *)self iconContainerView];
-  v143 = [v145 topAnchor];
-  v142 = [v144 constraintEqualToAnchor:v143];
+  contentView3 = [(SCATMenuItemCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  iconContainerView3 = [(SCATMenuItemCell *)self iconContainerView];
+  topAnchor2 = [iconContainerView3 topAnchor];
+  v142 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v157[2] = v142;
-  v141 = [(SCATMenuItemCell *)self contentView];
-  v139 = [v141 bottomAnchor];
-  v140 = [(SCATMenuItemCell *)self iconContainerView];
-  v138 = [v140 bottomAnchor];
-  v137 = [v139 constraintEqualToAnchor:v138];
+  contentView4 = [(SCATMenuItemCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  iconContainerView4 = [(SCATMenuItemCell *)self iconContainerView];
+  bottomAnchor2 = [iconContainerView4 bottomAnchor];
+  v137 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v157[3] = v137;
-  v136 = [(SCATMenuItemCell *)self borderContainerView];
-  v134 = [v136 centerXAnchor];
-  v135 = [(SCATMenuItemCell *)self iconContainerView];
-  v133 = [v135 centerXAnchor];
-  v132 = [v134 constraintEqualToAnchor:v133];
+  borderContainerView = [(SCATMenuItemCell *)self borderContainerView];
+  centerXAnchor = [borderContainerView centerXAnchor];
+  iconContainerView5 = [(SCATMenuItemCell *)self iconContainerView];
+  centerXAnchor2 = [iconContainerView5 centerXAnchor];
+  v132 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v157[4] = v132;
-  v131 = [(SCATMenuItemCell *)self borderContainerView];
-  v129 = [v131 topAnchor];
-  v130 = [(SCATMenuItemCell *)self iconContainerView];
-  v128 = [v130 topAnchor];
-  v127 = [v129 constraintEqualToAnchor:v128];
+  borderContainerView2 = [(SCATMenuItemCell *)self borderContainerView];
+  topAnchor3 = [borderContainerView2 topAnchor];
+  iconContainerView6 = [(SCATMenuItemCell *)self iconContainerView];
+  topAnchor4 = [iconContainerView6 topAnchor];
+  v127 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v157[5] = v127;
-  v126 = [(SCATMenuItemCell *)self borderContainerView];
-  v124 = [v126 bottomAnchor];
-  v125 = [(SCATMenuItemCell *)self iconContainerView];
-  v123 = [v125 bottomAnchor];
-  v122 = [v124 constraintEqualToAnchor:v123];
+  borderContainerView3 = [(SCATMenuItemCell *)self borderContainerView];
+  bottomAnchor3 = [borderContainerView3 bottomAnchor];
+  iconContainerView7 = [(SCATMenuItemCell *)self iconContainerView];
+  bottomAnchor4 = [iconContainerView7 bottomAnchor];
+  v122 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v157[6] = v122;
-  v121 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v120 = [v121 heightAnchor];
-  v119 = [v120 constraintEqualToConstant:v13];
+  backgroundBorderImageView = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  heightAnchor = [backgroundBorderImageView heightAnchor];
+  v119 = [heightAnchor constraintEqualToConstant:v13];
   v157[7] = v119;
-  v118 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v117 = [v118 widthAnchor];
-  v116 = [v117 constraintEqualToConstant:v11];
+  backgroundBorderImageView2 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  widthAnchor = [backgroundBorderImageView2 widthAnchor];
+  v116 = [widthAnchor constraintEqualToConstant:v11];
   v157[8] = v116;
-  v115 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v113 = [v115 topAnchor];
-  v114 = [(SCATMenuItemCell *)self borderContainerView];
-  v112 = [v114 contentView];
-  v111 = [v112 topAnchor];
-  v110 = [v113 constraintEqualToAnchor:v111];
+  backgroundBorderImageView3 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  topAnchor5 = [backgroundBorderImageView3 topAnchor];
+  borderContainerView4 = [(SCATMenuItemCell *)self borderContainerView];
+  contentView5 = [borderContainerView4 contentView];
+  topAnchor6 = [contentView5 topAnchor];
+  v110 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v157[9] = v110;
-  v109 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-  v107 = [v109 centerXAnchor];
-  v108 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v106 = [v108 centerXAnchor];
-  v105 = [v107 constraintEqualToAnchor:v106];
+  pressedBackgroundBorderImageView = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+  centerXAnchor3 = [pressedBackgroundBorderImageView centerXAnchor];
+  backgroundBorderImageView4 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  centerXAnchor4 = [backgroundBorderImageView4 centerXAnchor];
+  v105 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v157[10] = v105;
-  v104 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-  v102 = [v104 centerYAnchor];
-  v103 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v101 = [v103 centerYAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  pressedBackgroundBorderImageView2 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+  centerYAnchor = [pressedBackgroundBorderImageView2 centerYAnchor];
+  backgroundBorderImageView5 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  centerYAnchor2 = [backgroundBorderImageView5 centerYAnchor];
+  v100 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v157[11] = v100;
-  v99 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-  v97 = [v99 heightAnchor];
-  v98 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v96 = [v98 heightAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  pressedBackgroundBorderImageView3 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+  heightAnchor2 = [pressedBackgroundBorderImageView3 heightAnchor];
+  backgroundBorderImageView6 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  heightAnchor3 = [backgroundBorderImageView6 heightAnchor];
+  v95 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v157[12] = v95;
-  v94 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-  v92 = [v94 widthAnchor];
-  v93 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v91 = [v93 widthAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91];
+  pressedBackgroundBorderImageView4 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+  widthAnchor2 = [pressedBackgroundBorderImageView4 widthAnchor];
+  backgroundBorderImageView7 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  widthAnchor3 = [backgroundBorderImageView7 widthAnchor];
+  v90 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   v157[13] = v90;
-  v89 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v87 = [v89 trailingAnchor];
-  v88 = [(SCATMenuItemCell *)self borderContainerView];
-  v86 = [v88 contentView];
-  v85 = [v86 trailingAnchor];
-  v84 = [v87 constraintEqualToAnchor:v85];
+  backgroundBorderImageView8 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  trailingAnchor3 = [backgroundBorderImageView8 trailingAnchor];
+  borderContainerView5 = [(SCATMenuItemCell *)self borderContainerView];
+  contentView6 = [borderContainerView5 contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v84 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v157[14] = v84;
-  v83 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  v81 = [v83 leadingAnchor];
-  v82 = [(SCATMenuItemCell *)self borderContainerView];
-  v80 = [v82 contentView];
-  v79 = [v80 leadingAnchor];
-  v78 = [v81 constraintEqualToAnchor:v79];
+  backgroundBorderImageView9 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  leadingAnchor3 = [backgroundBorderImageView9 leadingAnchor];
+  borderContainerView6 = [(SCATMenuItemCell *)self borderContainerView];
+  contentView7 = [borderContainerView6 contentView];
+  leadingAnchor4 = [contentView7 leadingAnchor];
+  v78 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v157[15] = v78;
-  v77 = [(SCATMenuItemCell *)self iconImageView];
-  v76 = [v77 heightAnchor];
-  v75 = [v76 constraintEqualToConstant:v13];
+  iconImageView = [(SCATMenuItemCell *)self iconImageView];
+  heightAnchor4 = [iconImageView heightAnchor];
+  v75 = [heightAnchor4 constraintEqualToConstant:v13];
   v157[16] = v75;
-  v74 = [(SCATMenuItemCell *)self iconImageView];
-  v73 = [v74 widthAnchor];
-  v72 = [v73 constraintEqualToConstant:v11];
+  iconImageView2 = [(SCATMenuItemCell *)self iconImageView];
+  widthAnchor4 = [iconImageView2 widthAnchor];
+  v72 = [widthAnchor4 constraintEqualToConstant:v11];
   v157[17] = v72;
-  v71 = [(SCATMenuItemCell *)self iconImageView];
-  v69 = [v71 leadingAnchor];
-  v70 = [(SCATMenuItemCell *)self iconContainerView];
-  v68 = [v70 contentView];
-  v67 = [v68 leadingAnchor];
-  v66 = [v69 constraintEqualToAnchor:v67 constant:v9];
+  iconImageView3 = [(SCATMenuItemCell *)self iconImageView];
+  leadingAnchor5 = [iconImageView3 leadingAnchor];
+  iconContainerView8 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView8 = [iconContainerView8 contentView];
+  leadingAnchor6 = [contentView8 leadingAnchor];
+  v66 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v9];
   v157[18] = v66;
-  v65 = [(SCATMenuItemCell *)self iconImageView];
-  v63 = [v65 topAnchor];
-  v64 = [(SCATMenuItemCell *)self iconContainerView];
-  v62 = [v64 contentView];
-  v61 = [v62 topAnchor];
-  v60 = [v63 constraintEqualToAnchor:v61];
+  iconImageView4 = [(SCATMenuItemCell *)self iconImageView];
+  topAnchor7 = [iconImageView4 topAnchor];
+  iconContainerView9 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView9 = [iconContainerView9 contentView];
+  topAnchor8 = [contentView9 topAnchor];
+  v60 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v157[19] = v60;
-  v59 = [(SCATMenuItemCell *)self iconImageView];
-  v57 = [v59 trailingAnchor];
-  v58 = [(SCATMenuItemCell *)self iconContainerView];
-  v56 = [v58 contentView];
-  v55 = [v56 trailingAnchor];
-  v54 = [v57 constraintEqualToAnchor:v55 constant:-v9];
+  iconImageView5 = [(SCATMenuItemCell *)self iconImageView];
+  trailingAnchor5 = [iconImageView5 trailingAnchor];
+  iconContainerView10 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView10 = [iconContainerView10 contentView];
+  trailingAnchor6 = [contentView10 trailingAnchor];
+  v54 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v9];
   v157[20] = v54;
-  v53 = [(SCATMenuItemCell *)self titleLabel];
-  v51 = [v53 firstBaselineAnchor];
-  v52 = [(SCATMenuItemCell *)self iconImageView];
-  v50 = [v52 bottomAnchor];
-  v49 = [v51 constraintEqualToSystemSpacingBelowAnchor:v50 multiplier:0.8];
+  titleLabel = [(SCATMenuItemCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+  iconImageView6 = [(SCATMenuItemCell *)self iconImageView];
+  bottomAnchor5 = [iconImageView6 bottomAnchor];
+  v49 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor5 multiplier:0.8];
   v157[21] = v49;
-  v48 = [(SCATMenuItemCell *)self titleLabel];
-  v46 = [v48 trailingAnchor];
-  v47 = [(SCATMenuItemCell *)self iconContainerView];
-  v45 = [v47 contentView];
-  v44 = [v45 trailingAnchor];
-  v43 = [v46 constraintLessThanOrEqualToAnchor:v44];
+  titleLabel2 = [(SCATMenuItemCell *)self titleLabel];
+  trailingAnchor7 = [titleLabel2 trailingAnchor];
+  iconContainerView11 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView11 = [iconContainerView11 contentView];
+  trailingAnchor8 = [contentView11 trailingAnchor];
+  v43 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
   v157[22] = v43;
-  v42 = [(SCATMenuItemCell *)self titleLabel];
-  v40 = [v42 leadingAnchor];
-  v41 = [(SCATMenuItemCell *)self iconContainerView];
-  v39 = [v41 contentView];
-  v38 = [v39 leadingAnchor];
-  v37 = [v40 constraintGreaterThanOrEqualToAnchor:v38];
+  titleLabel3 = [(SCATMenuItemCell *)self titleLabel];
+  leadingAnchor7 = [titleLabel3 leadingAnchor];
+  iconContainerView12 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView12 = [iconContainerView12 contentView];
+  leadingAnchor8 = [contentView12 leadingAnchor];
+  v37 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
   v157[23] = v37;
-  v36 = [(SCATMenuItemCell *)self titleLabel];
-  v34 = [v36 centerXAnchor];
-  v35 = [(SCATMenuItemCell *)self iconContainerView];
-  v33 = [v35 contentView];
-  v32 = [v33 centerXAnchor];
-  v31 = [v34 constraintEqualToAnchor:v32];
+  titleLabel4 = [(SCATMenuItemCell *)self titleLabel];
+  centerXAnchor5 = [titleLabel4 centerXAnchor];
+  iconContainerView13 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView13 = [iconContainerView13 contentView];
+  centerXAnchor6 = [contentView13 centerXAnchor];
+  v31 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v157[24] = v31;
-  v30 = [(SCATMenuItemCell *)self titleLabel];
-  v28 = [v30 bottomAnchor];
-  v29 = [(SCATMenuItemCell *)self iconContainerView];
-  v27 = [v29 contentView];
-  v26 = [v27 bottomAnchor];
-  v25 = [v28 constraintEqualToAnchor:v26];
+  titleLabel5 = [(SCATMenuItemCell *)self titleLabel];
+  bottomAnchor6 = [titleLabel5 bottomAnchor];
+  iconContainerView14 = [(SCATMenuItemCell *)self iconContainerView];
+  contentView14 = [iconContainerView14 contentView];
+  bottomAnchor7 = [contentView14 bottomAnchor];
+  v25 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v157[25] = v25;
-  v24 = [(SCATMenuItemCell *)self activityIndicatorView];
-  v14 = [v24 centerXAnchor];
-  v15 = [(SCATMenuItemCell *)self iconContainerView];
-  v16 = [v15 centerXAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  activityIndicatorView = [(SCATMenuItemCell *)self activityIndicatorView];
+  centerXAnchor7 = [activityIndicatorView centerXAnchor];
+  iconContainerView15 = [(SCATMenuItemCell *)self iconContainerView];
+  centerXAnchor8 = [iconContainerView15 centerXAnchor];
+  v17 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v157[26] = v17;
-  v18 = [(SCATMenuItemCell *)self activityIndicatorView];
-  v19 = [v18 centerYAnchor];
-  v20 = [(SCATMenuItemCell *)self iconContainerView];
-  v21 = [v20 centerYAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  activityIndicatorView2 = [(SCATMenuItemCell *)self activityIndicatorView];
+  centerYAnchor3 = [activityIndicatorView2 centerYAnchor];
+  iconContainerView16 = [(SCATMenuItemCell *)self iconContainerView];
+  centerYAnchor4 = [iconContainerView16 centerYAnchor];
+  v22 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v157[27] = v22;
   v23 = [NSArray arrayWithObjects:v157 count:28];
   [NSLayoutConstraint activateConstraints:v23];
@@ -404,73 +404,73 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SCATMenuItemCell *)self menuItem];
-  v6 = [v5 title];
+  menuItem = [(SCATMenuItemCell *)self menuItem];
+  title = [menuItem title];
   [(SCATMenuItemCell *)self frame];
   v7 = NSStringFromCGRect(v11);
-  v8 = [NSString stringWithFormat:@"%@<%p>. title:%@. frame:%@", v4, self, v6, v7];
+  v8 = [NSString stringWithFormat:@"%@<%p>. title:%@. frame:%@", v4, self, title, v7];
 
   return v8;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
-  if (self->_iconImage != v5)
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_iconImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_iconImage, image);
     v6 = +[SCATStyleProvider sharedStyleProvider];
-    v7 = [v6 menuKnockoutColor];
-    v8 = [(UIImage *)v9 imageWithTintColor:v7 renderingMode:1];
+    menuKnockoutColor = [v6 menuKnockoutColor];
+    v8 = [(UIImage *)v9 imageWithTintColor:menuKnockoutColor renderingMode:1];
     [(SCATMenuItemCell *)self setDimmedIconImage:v8];
 
     [(SCATMenuItemCell *)self setHighVisBackgroundAndIconImage:0];
     [(SCATMenuItemCell *)self didUpdateScatMenuItemStyle];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setShouldUseActivityIndicator:(BOOL)a3
+- (void)setShouldUseActivityIndicator:(BOOL)indicator
 {
-  if (self->_shouldUseActivityIndicator != a3)
+  if (self->_shouldUseActivityIndicator != indicator)
   {
-    v4 = a3;
-    self->_shouldUseActivityIndicator = a3;
-    v6 = [(SCATMenuItemCell *)self activityIndicatorView];
-    v7 = v6;
-    if (v4)
+    indicatorCopy = indicator;
+    self->_shouldUseActivityIndicator = indicator;
+    activityIndicatorView = [(SCATMenuItemCell *)self activityIndicatorView];
+    v7 = activityIndicatorView;
+    if (indicatorCopy)
     {
-      [v6 startAnimating];
+      [activityIndicatorView startAnimating];
     }
 
     else
     {
-      [v6 stopAnimating];
+      [activityIndicatorView stopAnimating];
     }
 
-    v8 = [(SCATMenuItemCell *)self activityIndicatorView];
-    [v8 setHidden:!v4];
+    activityIndicatorView2 = [(SCATMenuItemCell *)self activityIndicatorView];
+    [activityIndicatorView2 setHidden:!indicatorCopy];
 
     [(SCATMenuItemCell *)self didUpdateScatMenuItemStyle];
   }
 }
 
-- (void)setIconImageAngle:(double)a3
+- (void)setIconImageAngle:(double)angle
 {
-  if (self->_iconImageAngle != a3)
+  if (self->_iconImageAngle != angle)
   {
     v10 = v3;
     v11 = v4;
-    self->_iconImageAngle = a3;
-    CGAffineTransformMakeRotation(&v9, a3);
-    v6 = [(SCATMenuItemCell *)self iconImageView];
+    self->_iconImageAngle = angle;
+    CGAffineTransformMakeRotation(&v9, angle);
+    iconImageView = [(SCATMenuItemCell *)self iconImageView];
     v8 = v9;
-    [v6 setTransform:&v8];
+    [iconImageView setTransform:&v8];
 
-    v7 = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
+    highVisBackgroundAndIconImage = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
 
-    if (v7)
+    if (highVisBackgroundAndIconImage)
     {
       [(SCATMenuItemCell *)self setHighVisBackgroundAndIconImage:0];
       [(SCATMenuItemCell *)self didUpdateScatMenuItemStyle];
@@ -478,26 +478,26 @@
   }
 }
 
-- (void)setPressedBackgroundImage:(id)a3
+- (void)setPressedBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_pressedBackgroundImage != v5)
+  imageCopy = image;
+  if (self->_pressedBackgroundImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_pressedBackgroundImage, a3);
-    v6 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-    [v6 setImage:v7];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_pressedBackgroundImage, image);
+    pressedBackgroundBorderImageView = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+    [pressedBackgroundBorderImageView setImage:v7];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setShouldIncludeTextLabels:(BOOL)a3
+- (void)setShouldIncludeTextLabels:(BOOL)labels
 {
-  v3 = a3;
-  self->_shouldIncludeTextLabels = a3;
-  v4 = [(SCATMenuItemCell *)self titleHiddenConstraint];
-  [v4 setActive:!v3];
+  labelsCopy = labels;
+  self->_shouldIncludeTextLabels = labels;
+  titleHiddenConstraint = [(SCATMenuItemCell *)self titleHiddenConstraint];
+  [titleHiddenConstraint setActive:!labelsCopy];
 }
 
 - (NSLayoutConstraint)titleHiddenConstraint
@@ -505,9 +505,9 @@
   titleHiddenConstraint = self->_titleHiddenConstraint;
   if (!titleHiddenConstraint)
   {
-    v4 = [(SCATMenuItemCell *)self titleLabel];
-    v5 = [v4 heightAnchor];
-    v6 = [v5 constraintEqualToConstant:0.0];
+    titleLabel = [(SCATMenuItemCell *)self titleLabel];
+    heightAnchor = [titleLabel heightAnchor];
+    v6 = [heightAnchor constraintEqualToConstant:0.0];
     v7 = self->_titleHiddenConstraint;
     self->_titleHiddenConstraint = v6;
 
@@ -520,21 +520,21 @@
 - (BOOL)_useHighVisibilityImage
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
+  assistiveTouchScannerCursorHighVisibilityEnabled = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
 
-  return v3;
+  return assistiveTouchScannerCursorHighVisibilityEnabled;
 }
 
-- (void)_setBorderDimmed:(BOOL)a3 focused:(BOOL)a4 hidden:(BOOL)a5
+- (void)_setBorderDimmed:(BOOL)dimmed focused:(BOOL)focused hidden:(BOOL)hidden
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([(SCATMenuItemCell *)self _useHighVisibilityImage]&& v6)
+  hiddenCopy = hidden;
+  focusedCopy = focused;
+  dimmedCopy = dimmed;
+  if ([(SCATMenuItemCell *)self _useHighVisibilityImage]&& focusedCopy)
   {
-    v9 = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
+    highVisBackgroundAndIconImage = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
 
-    if (!v9)
+    if (!highVisBackgroundAndIconImage)
     {
       +[SCATModernMenuItem imageSize];
       v11 = v10;
@@ -560,11 +560,11 @@
       CGContextRotateCTM(v22, v23);
       v24 = UIGraphicsGetCurrentContext();
       CGContextTranslateCTM(v24, -(v11 * 0.5), -(v13 * 0.5));
-      v25 = [(SCATMenuItemCell *)self iconImage];
-      [v25 size];
+      iconImage = [(SCATMenuItemCell *)self iconImage];
+      [iconImage size];
       v27 = v26;
-      v28 = [(SCATMenuItemCell *)self iconImage];
-      [v28 size];
+      iconImage2 = [(SCATMenuItemCell *)self iconImage];
+      [iconImage2 size];
       v30 = v29;
 
       if (v27 == v30)
@@ -575,12 +575,12 @@
 
       else
       {
-        v31 = [(SCATMenuItemCell *)self iconImage];
-        [v31 size];
+        iconImage3 = [(SCATMenuItemCell *)self iconImage];
+        [iconImage3 size];
         v33 = v32;
 
-        v34 = [(SCATMenuItemCell *)self iconImage];
-        [v34 size];
+        iconImage4 = [(SCATMenuItemCell *)self iconImage];
+        [iconImage4 size];
         v36 = v35;
 
         v37 = v13 / v36;
@@ -597,8 +597,8 @@
         v13 = v39;
       }
 
-      v50 = [(SCATMenuItemCell *)self iconImage];
-      [v50 drawInRect:23 blendMode:v40 alpha:{v41, v11, v13, 1.0}];
+      iconImage5 = [(SCATMenuItemCell *)self iconImage];
+      [iconImage5 drawInRect:23 blendMode:v40 alpha:{v41, v11, v13, 1.0}];
 
       v51 = UIGraphicsGetImageFromCurrentImageContext();
       [(SCATMenuItemCell *)self setHighVisBackgroundAndIconImage:v51];
@@ -606,11 +606,11 @@
       UIGraphicsEndImageContext();
     }
 
-    v49 = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
+    highVisBackgroundAndIconImage2 = [(SCATMenuItemCell *)self highVisBackgroundAndIconImage];
     goto LABEL_21;
   }
 
-  if (v7)
+  if (dimmedCopy)
   {
     if (_UISolariumEnabled())
     {
@@ -622,19 +622,19 @@
       [(SCATMenuItemCell *)self dimmedBackgroundImage];
     }
     v44 = ;
-    v45 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-    [v45 setImage:v44];
+    backgroundBorderImageView = [(SCATMenuItemCell *)self backgroundBorderImageView];
+    [backgroundBorderImageView setImage:v44];
 
     v54 = +[SCATStyleProvider sharedStyleProvider];
     [v54 menuKnockoutBorderOpacity];
     v47 = v46;
-    v48 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-    [v48 setAlpha:v47];
+    backgroundBorderImageView2 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+    [backgroundBorderImageView2 setAlpha:v47];
 
     goto LABEL_23;
   }
 
-  if (!v5)
+  if (!hiddenCopy)
   {
     if (_UISolariumEnabled())
     {
@@ -645,85 +645,85 @@
     {
       [(SCATMenuItemCell *)self defaultBackgroundImage];
     }
-    v49 = ;
+    highVisBackgroundAndIconImage2 = ;
 LABEL_21:
-    v52 = v49;
-    v53 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-    [v53 setImage:v52];
+    v52 = highVisBackgroundAndIconImage2;
+    backgroundBorderImageView3 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+    [backgroundBorderImageView3 setImage:v52];
 
-    v42 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+    backgroundBorderImageView4 = [(SCATMenuItemCell *)self backgroundBorderImageView];
     v43 = 1.0;
     goto LABEL_22;
   }
 
-  v42 = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  backgroundBorderImageView4 = [(SCATMenuItemCell *)self backgroundBorderImageView];
   v43 = 0.0;
 LABEL_22:
-  v54 = v42;
-  [v42 setAlpha:v43];
+  v54 = backgroundBorderImageView4;
+  [backgroundBorderImageView4 setAlpha:v43];
 LABEL_23:
 }
 
-- (void)_setIconDimmed:(BOOL)a3 asDimAsBorder:(BOOL)a4 focused:(BOOL)a5
+- (void)_setIconDimmed:(BOOL)dimmed asDimAsBorder:(BOOL)border focused:(BOOL)focused
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([(SCATMenuItemCell *)self _useHighVisibilityImage]&& v5)
+  focusedCopy = focused;
+  borderCopy = border;
+  dimmedCopy = dimmed;
+  if ([(SCATMenuItemCell *)self _useHighVisibilityImage]&& focusedCopy)
   {
-    v9 = [(SCATMenuItemCell *)self iconImageView];
-    v22 = v9;
+    iconImageView = [(SCATMenuItemCell *)self iconImageView];
+    iconImageView4 = iconImageView;
 LABEL_5:
-    [v9 setHidden:1];
+    [iconImageView setHidden:1];
 LABEL_6:
-    v11 = v22;
+    v11 = iconImageView4;
 LABEL_7:
 
     return;
   }
 
-  v10 = [(SCATMenuItemCell *)self shouldUseActivityIndicator];
-  v9 = [(SCATMenuItemCell *)self iconImageView];
-  v22 = v9;
-  if (v10)
+  shouldUseActivityIndicator = [(SCATMenuItemCell *)self shouldUseActivityIndicator];
+  iconImageView = [(SCATMenuItemCell *)self iconImageView];
+  iconImageView4 = iconImageView;
+  if (shouldUseActivityIndicator)
   {
     goto LABEL_5;
   }
 
-  [v9 setHidden:0];
+  [iconImageView setHidden:0];
 
-  if (!v7)
+  if (!dimmedCopy)
   {
-    v18 = [(SCATMenuItemCell *)self iconImage];
-    v19 = [(SCATMenuItemCell *)self iconImageView];
-    [v19 setImage:v18];
+    iconImage = [(SCATMenuItemCell *)self iconImage];
+    iconImageView2 = [(SCATMenuItemCell *)self iconImageView];
+    [iconImageView2 setImage:iconImage];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v20 = [(SCATMenuItemCell *)self iconImageView];
-      [v20 _setDrawsAsBackdropOverlayWithBlendMode:0];
+      iconImageView3 = [(SCATMenuItemCell *)self iconImageView];
+      [iconImageView3 _setDrawsAsBackdropOverlayWithBlendMode:0];
     }
 
-    v22 = [(SCATMenuItemCell *)self iconImageView];
-    [v22 setAlpha:1.0];
+    iconImageView4 = [(SCATMenuItemCell *)self iconImageView];
+    [iconImageView4 setAlpha:1.0];
     goto LABEL_6;
   }
 
-  v12 = [(SCATMenuItemCell *)self dimmedIconImage];
-  v13 = [(SCATMenuItemCell *)self iconImageView];
-  [v13 setImage:v12];
+  dimmedIconImage = [(SCATMenuItemCell *)self dimmedIconImage];
+  iconImageView5 = [(SCATMenuItemCell *)self iconImageView];
+  [iconImageView5 setImage:dimmedIconImage];
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v14 = [(SCATMenuItemCell *)self iconImageView];
+    iconImageView6 = [(SCATMenuItemCell *)self iconImageView];
     v15 = +[SCATStyleProvider sharedStyleProvider];
-    [v14 _setDrawsAsBackdropOverlayWithBlendMode:{objc_msgSend(v15, "menuKnockoutBorderOverlayBlendMode")}];
+    [iconImageView6 _setDrawsAsBackdropOverlayWithBlendMode:{objc_msgSend(v15, "menuKnockoutBorderOverlayBlendMode")}];
   }
 
-  if (v6)
+  if (borderCopy)
   {
-    v22 = +[SCATStyleProvider sharedStyleProvider];
-    [v22 menuKnockoutBorderOpacity];
+    iconImageView4 = +[SCATStyleProvider sharedStyleProvider];
+    [iconImageView4 menuKnockoutBorderOpacity];
     v17 = v16;
   }
 
@@ -732,11 +732,11 @@ LABEL_7:
     v17 = 1.0;
   }
 
-  v21 = [(SCATMenuItemCell *)self iconImageView];
-  [v21 setAlpha:v17];
+  iconImageView7 = [(SCATMenuItemCell *)self iconImageView];
+  [iconImageView7 setAlpha:v17];
 
-  v11 = v22;
-  if (v6)
+  v11 = iconImageView4;
+  if (borderCopy)
   {
     goto LABEL_7;
   }
@@ -744,34 +744,34 @@ LABEL_7:
 
 - (void)didUpdateScatMenuItemStyle
 {
-  v3 = [(SCATMenuItemCell *)self scatMenuItemStyle];
-  v4 = v3;
-  if (v3 <= 1)
+  scatMenuItemStyle = [(SCATMenuItemCell *)self scatMenuItemStyle];
+  v4 = scatMenuItemStyle;
+  if (scatMenuItemStyle <= 1)
   {
-    if (!v3)
+    if (!scatMenuItemStyle)
     {
-      v5 = self;
+      selfCopy5 = self;
       v6 = 1;
       v7 = 0;
 LABEL_13:
-      [(SCATMenuItemCell *)v5 _setBorderDimmed:v6 focused:0 hidden:v7];
-      v11 = self;
+      [(SCATMenuItemCell *)selfCopy5 _setBorderDimmed:v6 focused:0 hidden:v7];
+      selfCopy7 = self;
       v12 = 0;
       v13 = 0;
       goto LABEL_14;
     }
 
-    if (v3 != 1)
+    if (scatMenuItemStyle != 1)
     {
       goto LABEL_16;
     }
 
-    v8 = self;
+    selfCopy6 = self;
     v9 = 1;
     v10 = 0;
 LABEL_11:
-    [(SCATMenuItemCell *)v8 _setBorderDimmed:v9 focused:0 hidden:v10];
-    v11 = self;
+    [(SCATMenuItemCell *)selfCopy6 _setBorderDimmed:v9 focused:0 hidden:v10];
+    selfCopy7 = self;
     v12 = 1;
     v13 = 1;
 LABEL_14:
@@ -779,40 +779,40 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v3 != 2)
+  if (scatMenuItemStyle != 2)
   {
-    if (v3 != 3)
+    if (scatMenuItemStyle != 3)
     {
-      if (v3 != 4)
+      if (scatMenuItemStyle != 4)
       {
         goto LABEL_16;
       }
 
-      v5 = self;
+      selfCopy5 = self;
       v6 = 0;
       v7 = 1;
       goto LABEL_13;
     }
 
-    v8 = self;
+    selfCopy6 = self;
     v9 = 0;
     v10 = 1;
     goto LABEL_11;
   }
 
   [(SCATMenuItemCell *)self _setBorderDimmed:0 focused:1 hidden:0];
-  v11 = self;
+  selfCopy7 = self;
   v12 = 0;
   v13 = 0;
   v14 = 1;
 LABEL_15:
-  [(SCATMenuItemCell *)v11 _setIconDimmed:v12 asDimAsBorder:v13 focused:v14];
+  [(SCATMenuItemCell *)selfCopy7 _setIconDimmed:v12 asDimAsBorder:v13 focused:v14];
 LABEL_16:
-  v15 = [(SCATMenuItemCell *)self titleLabel];
-  [v15 setScatMenuItemStyle:v4];
+  titleLabel = [(SCATMenuItemCell *)self titleLabel];
+  [titleLabel setScatMenuItemStyle:v4];
 
-  v16 = [(SCATMenuItemCell *)self titleLabel];
-  [v16 didUpdateScatMenuItemStyle];
+  titleLabel2 = [(SCATMenuItemCell *)self titleLabel];
+  [titleLabel2 didUpdateScatMenuItemStyle];
 }
 
 - (UIImage)dimmedBorderImage
@@ -865,34 +865,34 @@ LABEL_16:
   [(SCATMenuItemCell *)self setIconImage:0];
   [(SCATMenuItemCell *)self setDimmedIconImage:0];
   [(SCATMenuItemCell *)self setHighVisBackgroundAndIconImage:0];
-  v3 = [(SCATMenuItemCell *)self iconImageView];
-  [v3 setImage:0];
+  iconImageView = [(SCATMenuItemCell *)self iconImageView];
+  [iconImageView setImage:0];
 
   [(SCATMenuItemCell *)self setDefaultBackgroundImage:0];
   [(SCATMenuItemCell *)self setPressedBackgroundImage:0];
   [(SCATMenuItemCell *)self setDimmedBackgroundImage:0];
-  v4 = [(SCATMenuItemCell *)self backgroundBorderImageView];
-  [v4 setImage:0];
+  backgroundBorderImageView = [(SCATMenuItemCell *)self backgroundBorderImageView];
+  [backgroundBorderImageView setImage:0];
 
-  v5 = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
-  [v5 setImage:0];
+  pressedBackgroundBorderImageView = [(SCATMenuItemCell *)self pressedBackgroundBorderImageView];
+  [pressedBackgroundBorderImageView setImage:0];
 
   [(SCATMenuItemCell *)self setMenuItem:0];
-  v6 = [(SCATMenuItemCell *)self titleLabel];
-  [v6 setAdjustsFontSizeToFitWidth:0];
+  titleLabel = [(SCATMenuItemCell *)self titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:0];
 
-  v7 = [(SCATMenuItemCell *)self titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel2 = [(SCATMenuItemCell *)self titleLabel];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
   v8.receiver = self;
   v8.super_class = SCATMenuItemCell;
   [(SCATMenuItemCell *)&v8 prepareForReuse];
 }
 
-- (double)_iconImageCornerRadiusForImageSize:(CGSize)a3
+- (double)_iconImageCornerRadiusForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!_UISolariumEnabled())
   {
     return 15.0;
@@ -905,74 +905,74 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
-  if (a3 != 2010)
+  if (action != 2010)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = [(SCATMenuItemCell *)self menuItem];
-  LOBYTE(v3) = [v4 handleActivateWithElement:v3];
+  selfCopy = self;
+  menuItem = [(SCATMenuItemCell *)self menuItem];
+  LOBYTE(selfCopy) = [menuItem handleActivateWithElement:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)scatSpeakableDescription
 {
-  v2 = [(SCATMenuItemCell *)self menuItem];
-  v3 = [v2 accessibilityLabel];
+  menuItem = [(SCATMenuItemCell *)self menuItem];
+  accessibilityLabel = [menuItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SCATMenuItemCell *)self menuItem];
-  v3 = [v2 accessibilityLabel];
+  menuItem = [(SCATMenuItemCell *)self menuItem];
+  accessibilityLabel = [menuItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)allowsDwellScanningToAbortAfterTimeout
 {
-  v2 = [(SCATMenuItemCell *)self menuItem];
-  v3 = [v2 allowsDwellScanningToAbortAfterTimeout];
+  menuItem = [(SCATMenuItemCell *)self menuItem];
+  allowsDwellScanningToAbortAfterTimeout = [menuItem allowsDwellScanningToAbortAfterTimeout];
 
-  return v3;
+  return allowsDwellScanningToAbortAfterTimeout;
 }
 
 - (void)update
 {
-  v3 = [(SCATMenuItemCell *)self iconImage];
-  v4 = [v3 isSymbolImage];
+  iconImage = [(SCATMenuItemCell *)self iconImage];
+  isSymbolImage = [iconImage isSymbolImage];
 
-  if (v4)
+  if (isSymbolImage)
   {
-    v5 = [(SCATMenuItemCell *)self iconImageView];
-    [v5 setContentMode:4];
+    iconImageView = [(SCATMenuItemCell *)self iconImageView];
+    [iconImageView setContentMode:4];
   }
 
   if (![(SCATMenuItemCell *)self isFlashing])
   {
-    v6 = [(SCATMenuItemCell *)self menuItem];
-    -[SCATMenuItemCell setShouldUseActivityIndicator:](self, "setShouldUseActivityIndicator:", [v6 shouldUseActivityIndicator]);
+    menuItem = [(SCATMenuItemCell *)self menuItem];
+    -[SCATMenuItemCell setShouldUseActivityIndicator:](self, "setShouldUseActivityIndicator:", [menuItem shouldUseActivityIndicator]);
 
-    v7 = [(SCATMenuItemCell *)self menuItem];
-    v8 = [v7 resolvedImage];
-    [(SCATMenuItemCell *)self setIconImage:v8];
+    menuItem2 = [(SCATMenuItemCell *)self menuItem];
+    resolvedImage = [menuItem2 resolvedImage];
+    [(SCATMenuItemCell *)self setIconImage:resolvedImage];
 
-    v9 = [(SCATMenuItemCell *)self titleLabel];
-    v10 = [(SCATMenuItemCell *)self menuItem];
-    v11 = [v10 title];
-    [v9 setText:v11];
+    titleLabel = [(SCATMenuItemCell *)self titleLabel];
+    menuItem3 = [(SCATMenuItemCell *)self menuItem];
+    title = [menuItem3 title];
+    [titleLabel setText:title];
 
-    v12 = [(SCATMenuItemCell *)self menuItem];
-    -[SCATMenuItemCell setScatMenuItemStyle:](self, "setScatMenuItemStyle:", [v12 style]);
+    menuItem4 = [(SCATMenuItemCell *)self menuItem];
+    -[SCATMenuItemCell setScatMenuItemStyle:](self, "setScatMenuItemStyle:", [menuItem4 style]);
 
-    v13 = [(SCATMenuItemCell *)self menuItem];
-    [v13 iconImageAngle];
+    menuItem5 = [(SCATMenuItemCell *)self menuItem];
+    [menuItem5 iconImageAngle];
     [(SCATMenuItemCell *)self setIconImageAngle:?];
 
     [(SCATMenuItemCell *)self setNeedsDisplay];

@@ -1,9 +1,9 @@
 @interface SSFileRadarCommand
 + (id)buildVersion;
 - (NSString)problemDescription;
-- (SSFileRadarCommand)initWithQueryContext:(id)a3;
-- (SSFileRadarCommand)initWithQueryString:(id)a3;
-- (void)setSections:(id)a3;
+- (SSFileRadarCommand)initWithQueryContext:(id)context;
+- (SSFileRadarCommand)initWithQueryString:(id)string;
+- (void)setSections:(id)sections;
 @end
 
 @implementation SSFileRadarCommand
@@ -34,13 +34,13 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
   }
 }
 
-- (SSFileRadarCommand)initWithQueryString:(id)a3
+- (SSFileRadarCommand)initWithQueryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [SPSearchQueryContext alloc];
-  if (v4)
+  if (stringCopy)
   {
-    v6 = v4;
+    v6 = stringCopy;
   }
 
   else
@@ -54,32 +54,32 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
   return v8;
 }
 
-- (SSFileRadarCommand)initWithQueryContext:(id)a3
+- (SSFileRadarCommand)initWithQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = SSFileRadarCommand;
   v5 = [(SSFileRadarCommand *)&v28 init];
   if (v5)
   {
-    v6 = [v4 queryKind];
-    v7 = [v4 searchEntities];
-    v8 = [v7 firstObject];
+    queryKind = [contextCopy queryKind];
+    searchEntities = [contextCopy searchEntities];
+    firstObject = [searchEntities firstObject];
 
-    v9 = [v4 searchString];
-    v10 = v9;
-    if (v9)
+    searchString = [contextCopy searchString];
+    v10 = searchString;
+    if (searchString)
     {
-      v11 = v9;
+      v11 = searchString;
     }
 
     else
     {
-      v12 = [v8 searchString];
-      v13 = v12;
-      if (v12)
+      searchString2 = [firstObject searchString];
+      v13 = searchString2;
+      if (searchString2)
       {
-        v14 = v12;
+        v14 = searchString2;
       }
 
       else
@@ -90,11 +90,11 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
       v11 = v14;
     }
 
-    v15 = [v8 tokenText];
-    v16 = v15;
-    if (v15)
+    tokenText = [firstObject tokenText];
+    v16 = tokenText;
+    if (tokenText)
     {
-      v17 = v15;
+      v17 = tokenText;
     }
 
     else
@@ -105,18 +105,18 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
     v18 = v17;
 
     v19 = MEMORY[0x1E696AD60];
-    v20 = [objc_opt_class() internalReleaseAgreement];
-    v21 = [v19 stringWithFormat:@"*** Note: Debug info contains the titles of items in the UI. Please review for confidential information. \n\n%@ \n***\n\n===  DEBUG INFO  ===\n\n", v20];
+    internalReleaseAgreement = [objc_opt_class() internalReleaseAgreement];
+    v21 = [v19 stringWithFormat:@"*** Note: Debug info contains the titles of items in the UI. Please review for confidential information. \n\n%@ \n***\n\n===  DEBUG INFO  ===\n\n", internalReleaseAgreement];
 
-    v22 = [objc_opt_class() buildVersion];
-    [v21 appendFormat:@"Build: %@\n\n", v22];
+    buildVersion = [objc_opt_class() buildVersion];
+    [v21 appendFormat:@"Build: %@\n\n", buildVersion];
 
     [v21 appendFormat:@"Query: %@\n", v11];
     [v21 appendFormat:@"Token: %@\n", v18];
 
-    [v21 appendFormat:@"Committed search: %d\n", (v6 - 5) < 4];
-    [v21 appendFormat:@"Query kind: %lu\n\n", v6];
-    [(SSFileRadarCommand *)v5 setQueryContext:v4];
+    [v21 appendFormat:@"Committed search: %d\n", (queryKind - 5) < 4];
+    [v21 appendFormat:@"Query kind: %lu\n\n", queryKind];
+    [(SSFileRadarCommand *)v5 setQueryContext:contextCopy];
     [(SSFileRadarCommand *)v5 setComponentName:@"Spotlight (New Bugs)"];
     if (isMacOS())
     {
@@ -145,8 +145,8 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
     [(SSFileRadarCommand *)v5 setTitle:&stru_1F556FE60];
     [(SSFileRadarCommand *)v5 setProblemTemplate:@"Problem Summary: \n\nSteps to Reproduce: \n\nRegression Information:"];
     [(SSFileRadarCommand *)v5 setProblemFooter:v21];
-    v25 = [(SSFileRadarCommand *)v5 sections];
-    v26 = SSExtensionIdentifiersForSections(v25);
+    sections = [(SSFileRadarCommand *)v5 sections];
+    v26 = SSExtensionIdentifiersForSections(sections);
     [(SSFileRadarCommand *)v5 setExtensionIdentifiers:v26];
   }
 
@@ -156,21 +156,21 @@ void __34__SSFileRadarCommand_buildVersion__block_invoke()
 - (NSString)problemDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SSFileRadarCommand *)self problemTemplate];
-  v5 = [(SSFileRadarCommand *)self problemFooter];
-  v6 = [v3 stringWithFormat:@"%@\n\n%@", v4, v5];
+  problemTemplate = [(SSFileRadarCommand *)self problemTemplate];
+  problemFooter = [(SSFileRadarCommand *)self problemFooter];
+  v6 = [v3 stringWithFormat:@"%@\n\n%@", problemTemplate, problemFooter];
 
   return v6;
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  sectionsCopy = sections;
+  v5 = [sectionsCopy copy];
   sections = self->_sections;
   self->_sections = v5;
 
-  v7 = SSExtensionIdentifiersForSections(v4);
+  v7 = SSExtensionIdentifiersForSections(sectionsCopy);
 
   [(SSFileRadarCommand *)self setExtensionIdentifiers:v7];
 }

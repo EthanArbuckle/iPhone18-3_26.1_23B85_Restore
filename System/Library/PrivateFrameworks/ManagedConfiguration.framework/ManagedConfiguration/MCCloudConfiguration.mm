@@ -18,8 +18,8 @@
 - (id)skipSetupKeys;
 - (id)tvProviderUserToken;
 - (void)refreshDetailsFromDisk;
-- (void)setDetails:(id)a3;
-- (void)setSetAsideDetails:(id)a3;
+- (void)setDetails:(id)details;
+- (void)setSetAsideDetails:(id)details;
 @end
 
 @implementation MCCloudConfiguration
@@ -45,160 +45,160 @@ uint64_t __43__MCCloudConfiguration_sharedConfiguration__block_invoke()
 
 - (void)refreshDetailsFromDisk
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  [v2 refreshDetailsFromDisk];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  [mEMORY[0x1E69AD420] refreshDetailsFromDisk];
 }
 
 - (NSDictionary)details
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 details];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  details = [mEMORY[0x1E69AD420] details];
 
-  return v3;
+  return details;
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
   v3 = MEMORY[0x1E69AD420];
-  v4 = a3;
-  v5 = [v3 sharedConfiguration];
-  [v5 setDetails:v4];
+  detailsCopy = details;
+  sharedConfiguration = [v3 sharedConfiguration];
+  [sharedConfiguration setDetails:detailsCopy];
 }
 
 - (NSDictionary)setAsideDetails
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 setAsideDetails];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  setAsideDetails = [mEMORY[0x1E69AD420] setAsideDetails];
 
-  return v3;
+  return setAsideDetails;
 }
 
-- (void)setSetAsideDetails:(id)a3
+- (void)setSetAsideDetails:(id)details
 {
   v3 = MEMORY[0x1E69AD420];
-  v4 = a3;
-  v5 = [v3 sharedConfiguration];
-  [v5 setSetAsideDetails:v4];
+  detailsCopy = details;
+  sharedConfiguration = [v3 sharedConfiguration];
+  [sharedConfiguration setSetAsideDetails:detailsCopy];
 }
 
 - (BOOL)isSupervised
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isSupervised];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-  return v3;
+  return isSupervised;
 }
 
 - (BOOL)isTeslaEnrolled
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isTeslaEnrolled];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isTeslaEnrolled = [mEMORY[0x1E69AD420] isTeslaEnrolled];
 
-  return v3;
+  return isTeslaEnrolled;
 }
 
 - (BOOL)isAwaitingConfiguration
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isAwaitingConfiguration];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isAwaitingConfiguration = [mEMORY[0x1E69AD420] isAwaitingConfiguration];
 
-  return v3;
+  return isAwaitingConfiguration;
 }
 
 - (id)mdmVersionProtocol
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 mdmVersionProtocol];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  mdmVersionProtocol = [mEMORY[0x1E69AD420] mdmVersionProtocol];
 
-  return v3;
+  return mdmVersionProtocol;
 }
 
 - (id)diagnosticsUploadURL
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 diagnosticsUploadURL];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  diagnosticsUploadURL = [mEMORY[0x1E69AD420] diagnosticsUploadURL];
 
-  return v3;
+  return diagnosticsUploadURL;
 }
 
 - (id)MAIDUsername
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 MAIDUsername];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  mAIDUsername = [mEMORY[0x1E69AD420] MAIDUsername];
 
-  return v3;
+  return mAIDUsername;
 }
 
 - (BOOL)hasMAIDCredential
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 hasMAIDCredential];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  hasMAIDCredential = [mEMORY[0x1E69AD420] hasMAIDCredential];
 
-  return v3;
+  return hasMAIDCredential;
 }
 
 - (BOOL)alreadySignedIntoFaceTime
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 alreadySignedIntoFaceTime];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  alreadySignedIntoFaceTime = [mEMORY[0x1E69AD420] alreadySignedIntoFaceTime];
 
-  return v3;
+  return alreadySignedIntoFaceTime;
 }
 
 - (id)language
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 language];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  language = [mEMORY[0x1E69AD420] language];
 
-  return v3;
+  return language;
 }
 
 - (id)region
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 region];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  region = [mEMORY[0x1E69AD420] region];
 
-  return v3;
+  return region;
 }
 
 - (id)languageScript
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 languageScript];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  languageScript = [mEMORY[0x1E69AD420] languageScript];
 
-  return v3;
+  return languageScript;
 }
 
 - (BOOL)isProvisionallyEnrolled
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 isProvisionallyEnrolled];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  isProvisionallyEnrolled = [mEMORY[0x1E69AD420] isProvisionallyEnrolled];
 
-  return v3;
+  return isProvisionallyEnrolled;
 }
 
 - (id)provisionalEnrollmentExpirationDate
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 provisionalEnrollmentExpirationDate];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  provisionalEnrollmentExpirationDate = [mEMORY[0x1E69AD420] provisionalEnrollmentExpirationDate];
 
-  return v3;
+  return provisionalEnrollmentExpirationDate;
 }
 
 - (id)tvProviderUserToken
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 tvProviderUserToken];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  tvProviderUserToken = [mEMORY[0x1E69AD420] tvProviderUserToken];
 
-  return v3;
+  return tvProviderUserToken;
 }
 
 - (id)skipSetupKeys
 {
-  v2 = [MEMORY[0x1E69AD420] sharedConfiguration];
-  v3 = [v2 skipSetupKeys];
+  mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+  skipSetupKeys = [mEMORY[0x1E69AD420] skipSetupKeys];
 
-  return v3;
+  return skipSetupKeys;
 }
 
 @end

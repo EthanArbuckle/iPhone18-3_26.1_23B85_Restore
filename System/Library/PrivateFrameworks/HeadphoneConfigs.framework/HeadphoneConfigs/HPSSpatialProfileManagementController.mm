@@ -1,15 +1,15 @@
 @interface HPSSpatialProfileManagementController
 - (HPSSpatialProfileManagementController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_processDownloadHRTFAsset:(id)a3 isDownloaded:(BOOL)a4 path:(id)a5 error:(id)a6 downloadResult:(unint64_t)a7;
-- (void)presentProfileEnrollmentController:(id)a3;
-- (void)promptResetProfile:(id)a3;
-- (void)resetProfile:(id)a3;
-- (void)spatialAudioProfileUpdateHandler:(id)a3;
-- (void)startAssetDownloadAndPresentEnrollmentController:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)userDidTapSpatialProfilePrivacyLink:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_processDownloadHRTFAsset:(id)asset isDownloaded:(BOOL)downloaded path:(id)path error:(id)error downloadResult:(unint64_t)result;
+- (void)presentProfileEnrollmentController:(id)controller;
+- (void)promptResetProfile:(id)profile;
+- (void)resetProfile:(id)profile;
+- (void)spatialAudioProfileUpdateHandler:(id)handler;
+- (void)startAssetDownloadAndPresentEnrollmentController:(id)controller;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)userDidTapSpatialProfilePrivacyLink:(id)link;
 @end
 
 @implementation HPSSpatialProfileManagementController
@@ -21,8 +21,8 @@
   v2 = [(HPSSpatialProfileManagementController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_spatialAudioProfileUpdateHandler_ name:@"HPSSpatialAudioProfileUpdated" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_spatialAudioProfileUpdateHandler_ name:@"HPSSpatialAudioProfileUpdated" object:0];
 
     v2->_spatialProfileAssetState = 0;
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -39,14 +39,14 @@
 - (id)specifiers
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"HPSSpatialAudioProfileTapped" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"HPSSpatialAudioProfileTapped" object:0];
 
   v4 = MEMORY[0x277CBEB18];
   v50.receiver = self;
   v50.super_class = HPSSpatialProfileManagementController;
-  v5 = [(HPSSpatialProfileManagementController *)&v50 specifiers];
-  v6 = [v4 arrayWithArray:v5];
+  specifiers = [(HPSSpatialProfileManagementController *)&v50 specifiers];
+  v6 = [v4 arrayWithArray:specifiers];
 
   v7 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SP_TOP_GROUP_ID"];
   v8 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SP_MGMT_GROUP_ID"];
@@ -156,35 +156,35 @@
   return v44;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v13;
-    v6 = [v5 titleLabel];
-    [v6 setLineBreakMode:0];
+    v5 = cellCopy;
+    titleLabel = [v5 titleLabel];
+    [titleLabel setLineBreakMode:0];
 
-    v7 = [v5 titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel2 = [v5 titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v8 = [v5 specifier];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:@"SPATIAL_AUDIO_PROFILE_RESET"];
+    specifier = [v5 specifier];
+    identifier = [specifier identifier];
+    v10 = [identifier isEqualToString:@"SPATIAL_AUDIO_PROFILE_RESET"];
 
     if (v10)
     {
-      v11 = [MEMORY[0x277D75348] redColor];
-      v12 = [v5 textLabel];
-      [v12 setTextColor:v11];
+      redColor = [MEMORY[0x277D75348] redColor];
+      textLabel = [v5 textLabel];
+      [textLabel setTextColor:redColor];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)spatialAudioProfileUpdateHandler:(id)a3
+- (void)spatialAudioProfileUpdateHandler:(id)handler
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -194,7 +194,7 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)resetProfile:(id)a3
+- (void)resetProfile:(id)profile
 {
   v3 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -243,9 +243,9 @@ void __54__HPSSpatialProfileManagementController_resetProfile___block_invoke(uin
   [*(a1 + 32) invalidate];
 }
 
-- (void)promptResetProfile:(id)a3
+- (void)promptResetProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -267,13 +267,13 @@ void __54__HPSSpatialProfileManagementController_resetProfile___block_invoke(uin
   v22 = 3221225472;
   v23 = __60__HPSSpatialProfileManagementController_promptResetProfile___block_invoke;
   v24 = &unk_2796ADB78;
-  v25 = self;
-  v26 = v4;
-  v15 = v4;
+  selfCopy = self;
+  v26 = profileCopy;
+  v15 = profileCopy;
   v16 = [v12 actionWithTitle:v14 style:2 handler:&v21];
 
   v17 = MEMORY[0x277D750F8];
-  v18 = [MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class(), v21, v22, v23, v24, v25}];
+  v18 = [MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class(), v21, v22, v23, v24, selfCopy}];
   v19 = [v18 localizedStringForKey:@"RESET_SPATIAL_AUDIO_PROFILE_CANCEL" value:&stru_286339F58 table:@"SpatialAudioProfile"];
   v20 = [v17 actionWithTitle:v19 style:1 handler:0];
 
@@ -294,48 +294,48 @@ uint64_t __60__HPSSpatialProfileManagementController_promptResetProfile___block_
   return [*(a1 + 32) resetProfile:*(a1 + 40)];
 }
 
-- (void)userDidTapSpatialProfilePrivacyLink:(id)a3
+- (void)userDidTapSpatialProfilePrivacyLink:(id)link
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.spatialAudioProfiles"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)startAssetDownloadAndPresentEnrollmentController:(id)a3
+- (void)startAssetDownloadAndPresentEnrollmentController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   self->_spatialProfileAssetState = 1;
   [(HPSSpatialProfileManagementController *)self spatialAudioProfileUpdateHandler:0];
-  [v4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
+  [controllerCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   v5 = [objc_alloc(MEMORY[0x277D0F968]) initWithCameraSession:0];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__HPSSpatialProfileManagementController_startAssetDownloadAndPresentEnrollmentController___block_invoke;
   v7[3] = &unk_2796ADBA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllerCopy;
+  v6 = controllerCopy;
   [v5 downloadHRTFAssetV2:0 withCompletion:v7];
 }
 
-- (void)_processDownloadHRTFAsset:(id)a3 isDownloaded:(BOOL)a4 path:(id)a5 error:(id)a6 downloadResult:(unint64_t)a7
+- (void)_processDownloadHRTFAsset:(id)asset isDownloaded:(BOOL)downloaded path:(id)path error:(id)error downloadResult:(unint64_t)result
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  assetCopy = asset;
+  pathCopy = path;
+  errorCopy = error;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __106__HPSSpatialProfileManagementController__processDownloadHRTFAsset_isDownloaded_path_error_downloadResult___block_invoke;
   v18[3] = &unk_2796ADBC8;
-  v19 = v12;
-  v20 = self;
-  v24 = a4;
-  v21 = v13;
-  v22 = v14;
-  v23 = a7;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  v19 = assetCopy;
+  selfCopy = self;
+  downloadedCopy = downloaded;
+  v21 = pathCopy;
+  v22 = errorCopy;
+  resultCopy = result;
+  v15 = errorCopy;
+  v16 = pathCopy;
+  v17 = assetCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 }
 
@@ -421,7 +421,7 @@ void __106__HPSSpatialProfileManagementController__processDownloadHRTFAsset_isDo
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentProfileEnrollmentController:(id)a3
+- (void)presentProfileEnrollmentController:(id)controller
 {
   if (_os_feature_enabled_impl())
   {
@@ -435,8 +435,8 @@ void __106__HPSSpatialProfileManagementController__processDownloadHRTFAsset_isDo
   }
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelEnrollment];
-  v5 = [(HPSSpatialProfileSingeStepEnrollmentController *)v7 navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(HPSSpatialProfileSingeStepEnrollmentController *)v7 navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
   v6 = [[HPSSpatialProfileNavigationController alloc] initWithRootViewController:v7];
   [(HPSSpatialProfileNavigationController *)v6 setModalPresentationStyle:0];
@@ -444,11 +444,11 @@ void __106__HPSSpatialProfileManagementController__processDownloadHRTFAsset_isDo
   [(HPSSpatialProfileManagementController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = HPSSpatialProfileManagementController;
-  v5 = [(HPSSpatialProfileManagementController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(HPSSpatialProfileManagementController *)&v9 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 13)
   {
     v6 = objc_opt_class();

@@ -1,25 +1,25 @@
 @interface GKTTRMultiplayerParticipant
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
-- (GKTTRMultiplayerParticipant)initWithPlayerID:(id)a3 pushToken:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (GKTTRMultiplayerParticipant)initWithPlayerID:(id)d pushToken:(id)token;
 - (id)serverRepresentation;
 - (unint64_t)hash;
 @end
 
 @implementation GKTTRMultiplayerParticipant
 
-- (GKTTRMultiplayerParticipant)initWithPlayerID:(id)a3 pushToken:(id)a4
+- (GKTTRMultiplayerParticipant)initWithPlayerID:(id)d pushToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  tokenCopy = token;
   v11.receiver = self;
   v11.super_class = GKTTRMultiplayerParticipant;
   v8 = [(GKTTRMultiplayerParticipant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(GKTTRMultiplayerParticipant *)v8 setPlayerID:v6];
-    [(GKTTRMultiplayerParticipant *)v9 setPushToken:v7];
+    [(GKTTRMultiplayerParticipant *)v8 setPlayerID:dCopy];
+    [(GKTTRMultiplayerParticipant *)v9 setPushToken:tokenCopy];
   }
 
   return v9;
@@ -52,20 +52,20 @@ void __54__GKTTRMultiplayerParticipant_secureCodedPropertyKeys__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 playerID];
-    v7 = [(GKTTRMultiplayerParticipant *)self playerID];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    playerID = [v5 playerID];
+    playerID2 = [(GKTTRMultiplayerParticipant *)self playerID];
+    if ([playerID isEqualToString:playerID2])
     {
-      v8 = [v5 pushToken];
-      v9 = [(GKTTRMultiplayerParticipant *)self pushToken];
-      v10 = [v8 isEqualToData:v9];
+      pushToken = [v5 pushToken];
+      pushToken2 = [(GKTTRMultiplayerParticipant *)self pushToken];
+      v10 = [pushToken isEqualToData:pushToken2];
     }
 
     else
@@ -84,10 +84,10 @@ void __54__GKTTRMultiplayerParticipant_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(GKTTRMultiplayerParticipant *)self playerID];
-  v4 = [v3 hash];
-  v5 = [(GKTTRMultiplayerParticipant *)self pushToken];
-  v6 = [v5 hash];
+  playerID = [(GKTTRMultiplayerParticipant *)self playerID];
+  v4 = [playerID hash];
+  pushToken = [(GKTTRMultiplayerParticipant *)self pushToken];
+  v6 = [pushToken hash];
 
   return v6 ^ v4;
 }
@@ -95,25 +95,25 @@ void __54__GKTTRMultiplayerParticipant_secureCodedPropertyKeys__block_invoke()
 - (id)serverRepresentation
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = [(GKTTRMultiplayerParticipant *)self playerID];
-  if (!v3 || (v4 = v3, [(GKTTRMultiplayerParticipant *)self pushToken], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  playerID = [(GKTTRMultiplayerParticipant *)self playerID];
+  if (!playerID || (v4 = playerID, [(GKTTRMultiplayerParticipant *)self pushToken], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v8 = [v6 stringWithFormat:@"Invalid GKTTRMultiplayerParticipant for: %@. Call Stack: %@", self, v7];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v8 = [v6 stringWithFormat:@"Invalid GKTTRMultiplayerParticipant for: %@. Call Stack: %@", self, callStackSymbols];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/gamed/GKMultiplayerServiceInterface.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v6 stringWithFormat:@"%@ (self.playerID != nil && self.pushToken != nil)\n[%s (%s:%d)]", v8, "-[GKTTRMultiplayerParticipant serverRepresentation]", objc_msgSend(v10, "UTF8String"), 245];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v6 stringWithFormat:@"%@ (self.playerID != nil && self.pushToken != nil)\n[%s (%s:%d)]", v8, "-[GKTTRMultiplayerParticipant serverRepresentation]", objc_msgSend(lastPathComponent, "UTF8String"), 245];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
   }
 
   v17[0] = @"id";
-  v12 = [(GKTTRMultiplayerParticipant *)self playerID];
+  playerID2 = [(GKTTRMultiplayerParticipant *)self playerID];
   v17[1] = @"push-token";
-  v18[0] = v12;
-  v13 = [(GKTTRMultiplayerParticipant *)self pushToken];
-  v18[1] = v13;
+  v18[0] = playerID2;
+  pushToken = [(GKTTRMultiplayerParticipant *)self pushToken];
+  v18[1] = pushToken;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
   v15 = *MEMORY[0x277D85DE8];

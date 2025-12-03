@@ -1,19 +1,19 @@
 @interface DLDocumentDownloads
 - (DLDocumentDownloads)init;
-- (id)createDeleteOperation:(id)a3;
-- (id)createErrorForCode:(int64_t)a3 description:(id)a4;
-- (id)createMoveOperation:(id)a3 destinationItem:(id)a4 completionHandler:(id)a5;
-- (id)createMoveOperation:(id)a3 parentItem:(id)a4 newFileName:(id)a5 completionHandler:(id)a6;
-- (id)createTemporaryFolderURLAppropriateForURL:(id)a3 error:(id *)a4;
-- (void)_notifyDownloadCompleted:(id)a3;
-- (void)deleteItemIgnoringResult:(id)a3;
-- (void)importItemAtURL:(id)a3 toLocation:(int64_t)a4 completionHandler:(id)a5;
-- (void)importItemAtURLToDocuments:(id)a3 completionHandler:(id)a4;
-- (void)importItemAtURLToDownloads:(id)a3 completionHandler:(id)a4;
-- (void)importPlaceholderAtURLToDownloadsDirectory:(id)a3 completionHandler:(id)a4;
-- (void)namedLocationExists:(int64_t)a3 completionHandler:(id)a4;
-- (void)replaceContentsOfFile:(id)a3 withFile:(id)a4 completion:(id)a5;
-- (void)replacePlaceholder:(id)a3 withFinalFileURL:(id)a4 completionHandler:(id)a5;
+- (id)createDeleteOperation:(id)operation;
+- (id)createErrorForCode:(int64_t)code description:(id)description;
+- (id)createMoveOperation:(id)operation destinationItem:(id)item completionHandler:(id)handler;
+- (id)createMoveOperation:(id)operation parentItem:(id)item newFileName:(id)name completionHandler:(id)handler;
+- (id)createTemporaryFolderURLAppropriateForURL:(id)l error:(id *)error;
+- (void)_notifyDownloadCompleted:(id)completed;
+- (void)deleteItemIgnoringResult:(id)result;
+- (void)importItemAtURL:(id)l toLocation:(int64_t)location completionHandler:(id)handler;
+- (void)importItemAtURLToDocuments:(id)documents completionHandler:(id)handler;
+- (void)importItemAtURLToDownloads:(id)downloads completionHandler:(id)handler;
+- (void)importPlaceholderAtURLToDownloadsDirectory:(id)directory completionHandler:(id)handler;
+- (void)namedLocationExists:(int64_t)exists completionHandler:(id)handler;
+- (void)replaceContentsOfFile:(id)file withFile:(id)withFile completion:(id)completion;
+- (void)replacePlaceholder:(id)placeholder withFinalFileURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation DLDocumentDownloads
@@ -26,32 +26,32 @@
   if (v2)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 bundleIdentifier];
+    bundleIdentifier = [v3 bundleIdentifier];
 
     v5 = +[DOCManagedPermission defaultPermission];
-    [v5 setHostIdentifier:v4];
+    [v5 setHostIdentifier:bundleIdentifier];
   }
 
   return v2;
 }
 
-- (void)importPlaceholderAtURLToDownloadsDirectory:(id)a3 completionHandler:(id)a4
+- (void)importPlaceholderAtURLToDownloadsDirectory:(id)directory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  directoryCopy = directory;
+  handlerCopy = handler;
+  if (directoryCopy)
   {
-    v8 = [v6 url];
-    v9 = [v8 startAccessingSecurityScopedResource];
+    v8 = [directoryCopy url];
+    startAccessingSecurityScopedResource = [v8 startAccessingSecurityScopedResource];
     v10 = objc_opt_new();
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000010E0;
     v15[3] = &unk_100008290;
-    v18 = v7;
+    v18 = handlerCopy;
     v15[4] = self;
-    v19 = v9;
-    v16 = v6;
+    v19 = startAccessingSecurityScopedResource;
+    v16 = directoryCopy;
     v17 = v8;
     v11 = v8;
     [v10 fetchDefaultDownloadsLocationItem:v15];
@@ -63,49 +63,49 @@
     v13 = [v12 localizedStringForKey:@"Invalid URL wrapper" value:@"Invalid URL wrapper" table:@"Localizable"];
 
     v14 = [(DLDocumentDownloads *)self createErrorForCode:-1000 description:v13];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 }
 
-- (void)replacePlaceholder:(id)a3 withFinalFileURL:(id)a4 completionHandler:(id)a5
+- (void)replacePlaceholder:(id)placeholder withFinalFileURL:(id)l completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 && v8)
+  lCopy = l;
+  handlerCopy = handler;
+  if (placeholder && lCopy)
   {
-    v10 = [a3 url];
-    v11 = [v8 url];
-    v12 = [v10 startAccessingSecurityScopedResource];
-    v13 = [v11 startAccessingSecurityScopedResource];
+    v10 = [placeholder url];
+    v11 = [lCopy url];
+    startAccessingSecurityScopedResource = [v10 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource2 = [v11 startAccessingSecurityScopedResource];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100001540;
     v34[3] = &unk_1000082B8;
-    v39 = v12;
+    v39 = startAccessingSecurityScopedResource;
     v14 = v10;
-    v40 = v13;
+    v40 = startAccessingSecurityScopedResource2;
     v35 = v14;
     v36 = v11;
-    v37 = self;
-    v38 = v9;
+    selfCopy = self;
+    v38 = handlerCopy;
     v15 = v11;
     v16 = objc_retainBlock(v34);
     v17 = +[FPItemManager defaultManager];
-    v18 = [v8 url];
-    v19 = [v18 lastPathComponent];
+    v18 = [lCopy url];
+    lastPathComponent = [v18 lastPathComponent];
 
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100001634;
     v27[3] = &unk_100008358;
     v28 = v17;
-    v29 = v8;
-    v30 = self;
+    v29 = lCopy;
+    selfCopy2 = self;
     v31 = v14;
-    v32 = v19;
+    v32 = lastPathComponent;
     v33 = v16;
     v20 = v16;
-    v21 = v19;
+    v21 = lastPathComponent;
     v22 = v14;
     v23 = v17;
     [v23 fetchItemForURL:v22 completionHandler:v27];
@@ -117,13 +117,13 @@
     v25 = [v24 localizedStringForKey:@"Invalid URL wrapper" value:@"Invalid URL wrapper" table:@"Localizable"];
 
     v26 = [(DLDocumentDownloads *)self createErrorForCode:-1000 description:v25];
-    (*(v9 + 2))(v9, 0, v26);
+    (*(handlerCopy + 2))(handlerCopy, 0, v26);
   }
 }
 
-- (void)_notifyDownloadCompleted:(id)a3
+- (void)_notifyDownloadCompleted:(id)completed
 {
-  v3 = a3;
+  completedCopy = completed;
   v4 = docDownloadServiceLogHandle;
   if (!docDownloadServiceLogHandle)
   {
@@ -133,22 +133,22 @@
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100004900(v3, v4);
-    if (!v3)
+    sub_100004900(completedCopy, v4);
+    if (!completedCopy)
     {
       goto LABEL_10;
     }
   }
 
-  else if (!v3)
+  else if (!completedCopy)
   {
     goto LABEL_10;
   }
 
   v19[0] = DOCSBFolderNotificationURLKey;
-  v5 = [v3 path];
+  path = [completedCopy path];
   v19[1] = DOCSBFolderNotificationIsDownloadsFolderKey;
-  v20[0] = v5;
+  v20[0] = path;
   v20[1] = &__kCFBooleanTrue;
   v6 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
 
@@ -166,7 +166,7 @@
     v11 = 136315906;
     v12 = "[DLDocumentDownloads _notifyDownloadCompleted:]";
     v13 = 2112;
-    v14 = v3;
+    v14 = completedCopy;
     v15 = 2112;
     v16 = DOCSBFolderProgressCompletedDistributedNotification;
     v17 = 2112;
@@ -180,11 +180,11 @@
 LABEL_10:
 }
 
-- (void)replaceContentsOfFile:(id)a3 withFile:(id)a4 completion:(id)a5
+- (void)replaceContentsOfFile:(id)file withFile:(id)withFile completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  withFileCopy = withFile;
+  completionCopy = completion;
   v10 = +[NSFileManager defaultManager];
   v36 = 0;
   v37[0] = &v36;
@@ -193,17 +193,17 @@ LABEL_10:
   v37[3] = sub_1000020BC;
   v38 = 0;
   obj = 0;
-  v11 = [v10 URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&obj];
+  v11 = [v10 URLForDirectory:99 inDomain:1 appropriateForURL:fileCopy create:1 error:&obj];
   objc_storeStrong(&v38, obj);
   if (!*(v37[0] + 40))
   {
-    v13 = [v8 lastPathComponent];
-    v14 = [v11 URLByAppendingPathComponent:v13];
+    lastPathComponent = [withFileCopy lastPathComponent];
+    v14 = [v11 URLByAppendingPathComponent:lastPathComponent];
 
-    v15 = [v8 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [withFileCopy startAccessingSecurityScopedResource];
     v16 = (v37[0] + 40);
     v34 = *(v37[0] + 40);
-    v17 = [v10 copyItemAtURL:v8 toURL:v14 error:&v34];
+    v17 = [v10 copyItemAtURL:withFileCopy toURL:v14 error:&v34];
     objc_storeStrong(v16, v34);
     if (!v17 || *(v37[0] + 40))
     {
@@ -219,10 +219,10 @@ LABEL_10:
         sub_1000049A0(v37);
       }
 
-      v9[2](v9, v17, *(v37[0] + 40));
-      if (v15)
+      completionCopy[2](completionCopy, v17, *(v37[0] + 40));
+      if (startAccessingSecurityScopedResource)
       {
-        [v8 stopAccessingSecurityScopedResource];
+        [withFileCopy stopAccessingSecurityScopedResource];
       }
 
 LABEL_28:
@@ -230,14 +230,14 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v15)
+    if (startAccessingSecurityScopedResource)
     {
-      [v8 stopAccessingSecurityScopedResource];
+      [withFileCopy stopAccessingSecurityScopedResource];
     }
 
     v19 = [[NSFileCoordinator alloc] initWithFilePresenter:0];
-    v24 = [v7 startAccessingSecurityScopedResource];
-    v23 = [v14 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource2 = [fileCopy startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource3 = [v14 startAccessingSecurityScopedResource];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
@@ -252,7 +252,7 @@ LABEL_28:
     v21 = v14;
     v26 = v21;
     v28 = &v36;
-    [v19 coordinateWritingItemAtURL:v7 options:0 error:&v29 byAccessor:v25];
+    [v19 coordinateWritingItemAtURL:fileCopy options:0 error:&v29 byAccessor:v25];
     objc_storeStrong(v20, v29);
     if (!*(v37[0] + 40))
     {
@@ -269,7 +269,7 @@ LABEL_28:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       sub_100004A08(v37);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_23;
       }
@@ -278,15 +278,15 @@ LABEL_28:
     else
     {
 LABEL_21:
-      if (!v9)
+      if (!completionCopy)
       {
 LABEL_23:
-        if (v24)
+        if (startAccessingSecurityScopedResource2)
         {
-          [v7 stopAccessingSecurityScopedResource];
+          [fileCopy stopAccessingSecurityScopedResource];
         }
 
-        if (v23)
+        if (startAccessingSecurityScopedResource3)
         {
           [v21 stopAccessingSecurityScopedResource];
         }
@@ -296,7 +296,7 @@ LABEL_23:
       }
     }
 
-    v9[2](v9, *(v31 + 24), *(v37[0] + 40));
+    completionCopy[2](completionCopy, *(v31 + 24), *(v37[0] + 40));
     goto LABEL_23;
   }
 
@@ -310,7 +310,7 @@ LABEL_23:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     sub_1000049A0(v37);
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_29;
     }
@@ -318,10 +318,10 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  if (v9)
+  if (completionCopy)
   {
 LABEL_6:
-    v9[2](v9, 0, *(v37[0] + 40));
+    completionCopy[2](completionCopy, 0, *(v37[0] + 40));
   }
 
 LABEL_29:
@@ -329,19 +329,19 @@ LABEL_29:
   _Block_object_dispose(&v36, 8);
 }
 
-- (id)createMoveOperation:(id)a3 parentItem:(id)a4 newFileName:(id)a5 completionHandler:(id)a6
+- (id)createMoveOperation:(id)operation parentItem:(id)item newFileName:(id)name completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  operationCopy = operation;
+  itemCopy = item;
+  nameCopy = name;
+  handlerCopy = handler;
   v14 = [FPMoveOperation alloc];
-  v29 = v10;
+  v29 = operationCopy;
   v15 = [NSArray arrayWithObjects:&v29 count:1];
-  v16 = [v14 initWithItems:v15 destinationFolder:v11];
+  v16 = [v14 initWithItems:v15 destinationFolder:itemCopy];
 
-  v27 = v10;
-  v28 = v12;
+  v27 = operationCopy;
+  v28 = nameCopy;
   v17 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   [v16 setTargetFilenamesByItem:v17];
 
@@ -353,10 +353,10 @@ LABEL_29:
   v21[2] = sub_1000023CC;
   v21[3] = &unk_1000083D0;
   objc_copyWeak(&v25, &location);
-  v18 = v10;
+  v18 = operationCopy;
   v22 = v18;
-  v23 = self;
-  v19 = v13;
+  selfCopy = self;
+  v19 = handlerCopy;
   v24 = v19;
   [v16 setActionCompletionBlock:v21];
 
@@ -366,16 +366,16 @@ LABEL_29:
   return v16;
 }
 
-- (id)createMoveOperation:(id)a3 destinationItem:(id)a4 completionHandler:(id)a5
+- (id)createMoveOperation:(id)operation destinationItem:(id)item completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 url];
+  operationCopy = operation;
+  itemCopy = item;
+  handlerCopy = handler;
+  v11 = [operationCopy url];
   v12 = [FPMoveOperation alloc];
   v24 = v11;
   v13 = [NSArray arrayWithObjects:&v24 count:1];
-  v14 = [v12 initWithURLs:v13 destinationFolder:v9];
+  v14 = [v12 initWithURLs:v13 destinationFolder:itemCopy];
 
   [v14 setLastUsageUpdatePolicy:2];
   [v14 setShouldBounceOnCollision:1];
@@ -387,8 +387,8 @@ LABEL_29:
   objc_copyWeak(&v22, &location);
   v15 = v11;
   v19 = v15;
-  v20 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = handlerCopy;
   v21 = v16;
   [v14 setActionCompletionBlock:v18];
 
@@ -398,11 +398,11 @@ LABEL_29:
   return v14;
 }
 
-- (id)createDeleteOperation:(id)a3
+- (id)createDeleteOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v4 = [FPDeleteOperation alloc];
-  v8 = v3;
+  v8 = operationCopy;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
 
   v6 = [v4 initWithItems:v5];
@@ -411,45 +411,45 @@ LABEL_29:
   return v6;
 }
 
-- (void)importItemAtURL:(id)a3 toLocation:(int64_t)a4 completionHandler:(id)a5
+- (void)importItemAtURL:(id)l toLocation:(int64_t)location completionHandler:(id)handler
 {
-  v11 = a3;
-  v9 = a5;
-  if (a4 == 2)
+  lCopy = l;
+  handlerCopy = handler;
+  if (location == 2)
   {
-    [(DLDocumentDownloads *)self importItemAtURLToDocuments:v11 completionHandler:v9];
+    [(DLDocumentDownloads *)self importItemAtURLToDocuments:lCopy completionHandler:handlerCopy];
   }
 
-  else if (a4 == 1)
+  else if (location == 1)
   {
-    [(DLDocumentDownloads *)self importItemAtURLToDownloads:v11 completionHandler:v9];
+    [(DLDocumentDownloads *)self importItemAtURLToDownloads:lCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v10 = +[NSAssertionHandler currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"DLDocumentDownloads.m" lineNumber:344 description:{@"Unexpected _DOCFileDestination %ld", a4}];
+    [v10 handleFailureInMethod:a2 object:self file:@"DLDocumentDownloads.m" lineNumber:344 description:{@"Unexpected _DOCFileDestination %ld", location}];
   }
 }
 
-- (void)importItemAtURLToDownloads:(id)a3 completionHandler:(id)a4
+- (void)importItemAtURLToDownloads:(id)downloads completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  downloadsCopy = downloads;
+  handlerCopy = handler;
+  if (downloadsCopy)
   {
-    v8 = [v6 url];
-    v9 = [v8 startAccessingSecurityScopedResource];
+    v8 = [downloadsCopy url];
+    startAccessingSecurityScopedResource = [v8 startAccessingSecurityScopedResource];
 
     v10 = objc_opt_new();
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100002D2C;
     v14[3] = &unk_100008460;
-    v16 = v7;
+    v16 = handlerCopy;
     v14[4] = self;
-    v15 = v6;
-    v17 = v9;
+    v15 = downloadsCopy;
+    v17 = startAccessingSecurityScopedResource;
     [v10 fetchDefaultDownloadsLocationItem:v14];
   }
 
@@ -459,18 +459,18 @@ LABEL_29:
     v12 = [v11 localizedStringForKey:@"Invalid URL wrapper" value:@"Invalid URL wrapper" table:@"Localizable"];
 
     v13 = [(DLDocumentDownloads *)self createErrorForCode:-1000 description:v12];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)importItemAtURLToDocuments:(id)a3 completionHandler:(id)a4
+- (void)importItemAtURLToDocuments:(id)documents completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  documentsCopy = documents;
+  handlerCopy = handler;
+  if (documentsCopy)
   {
-    v8 = [v6 url];
-    v9 = [v8 startAccessingSecurityScopedResource];
+    v8 = [documentsCopy url];
+    startAccessingSecurityScopedResource = [v8 startAccessingSecurityScopedResource];
 
     v10 = +[FPItemManager defaultManager];
     v11 = FPIsCloudDocsWithFPFSEnabled();
@@ -486,12 +486,12 @@ LABEL_29:
     v19[2] = sub_100003144;
     v19[3] = &unk_100008488;
     v19[4] = self;
-    v20 = v6;
-    v25 = v9;
+    v20 = documentsCopy;
+    v25 = startAccessingSecurityScopedResource;
     v21 = v10;
     v22 = @"Documents";
     v23 = v13;
-    v24 = v7;
+    v24 = handlerCopy;
     v14 = v13;
     v15 = v10;
     [v15 _doc_fetchFolderNamed:@"Documents" inDomain:v14 completionHandler:v19];
@@ -503,14 +503,14 @@ LABEL_29:
     v17 = [v16 localizedStringForKey:@"Invalid URL wrapper" value:@"Invalid URL wrapper" table:@"Localizable"];
 
     v18 = [(DLDocumentDownloads *)self createErrorForCode:-1000 description:v17];
-    (*(v7 + 2))(v7, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 
-- (void)namedLocationExists:(int64_t)a3 completionHandler:(id)a4
+- (void)namedLocationExists:(int64_t)exists completionHandler:(id)handler
 {
-  v7 = a4;
-  if (a3 != 2)
+  handlerCopy = handler;
+  if (exists != 2)
   {
     sub_100004BC0(a2, self);
   }
@@ -530,37 +530,37 @@ LABEL_29:
   v14[3] = &unk_1000084B0;
   v15 = @"Documents";
   v16 = v11;
-  v17 = v7;
-  v12 = v7;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v11;
   [v8 _doc_folderNamed:@"Documents" existsInDomain:v13 completionHandler:v14];
 }
 
-- (void)deleteItemIgnoringResult:(id)a3
+- (void)deleteItemIgnoringResult:(id)result
 {
-  v4 = [(DLDocumentDownloads *)self createDeleteOperation:a3];
+  v4 = [(DLDocumentDownloads *)self createDeleteOperation:result];
   v3 = +[FPItemManager defaultManager];
   [v3 scheduleAction:v4];
 }
 
-- (id)createErrorForCode:(int64_t)a3 description:(id)a4
+- (id)createErrorForCode:(int64_t)code description:(id)description
 {
-  v5 = a4;
+  descriptionCopy = description;
   v6 = [NSError alloc];
   v10 = NSLocalizedDescriptionKey;
-  v11 = v5;
+  v11 = descriptionCopy;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
-  v8 = [v6 initWithDomain:@"com.apple.DocumentManager.DocumentDownloads" code:a3 userInfo:v7];
+  v8 = [v6 initWithDomain:@"com.apple.DocumentManager.DocumentDownloads" code:code userInfo:v7];
 
   return v8;
 }
 
-- (id)createTemporaryFolderURLAppropriateForURL:(id)a3 error:(id *)a4
+- (id)createTemporaryFolderURLAppropriateForURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:v5 create:1 error:a4];
+  v7 = [v6 URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
 
   if (!v7)
   {
@@ -573,7 +573,7 @@ LABEL_29:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100004D38(a4);
+      sub_100004D38(error);
     }
   }
 

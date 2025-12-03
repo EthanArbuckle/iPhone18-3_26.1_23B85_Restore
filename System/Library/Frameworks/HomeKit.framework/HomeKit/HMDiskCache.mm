@@ -1,25 +1,25 @@
 @interface HMDiskCache
-- (BOOL)storeCachedObjects:(id)a3 forCacheName:(id)a4;
-- (HMDiskCache)initWithCachePath:(id)a3;
-- (id)_cachePathForCacheName:(id)a1;
-- (id)loadCachedObjectsForCacheWithName:(id)a3;
+- (BOOL)storeCachedObjects:(id)objects forCacheName:(id)name;
+- (HMDiskCache)initWithCachePath:(id)path;
+- (id)_cachePathForCacheName:(id)name;
+- (id)loadCachedObjectsForCacheWithName:(id)name;
 @end
 
 @implementation HMDiskCache
 
-- (id)loadCachedObjectsForCacheWithName:(id)a3
+- (id)loadCachedObjectsForCacheWithName:(id)name
 {
   v45[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMDiskCache *)self _cachePathForCacheName:v4];
+  nameCopy = name;
+  v5 = [(HMDiskCache *)self _cachePathForCacheName:nameCopy];
   v38 = 0;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5 isDirectory:&v38];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5 isDirectory:&v38];
 
   if (!v7)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -43,7 +43,7 @@ LABEL_8:
 
   v8 = v38;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (v8 == 1)
@@ -93,7 +93,7 @@ LABEL_7:
   if (!v23 || v24)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = v10;
+    v32 = selfCopy2;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -147,48 +147,48 @@ LABEL_24:
   return v17;
 }
 
-- (id)_cachePathForCacheName:(id)a1
+- (id)_cachePathForCacheName:(id)name
 {
-  v2 = a1;
-  if (a1)
+  nameCopy = name;
+  if (name)
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = a2;
-    v5 = [v2 cachePath];
-    v2 = [v3 stringWithFormat:@"%@/_HMDiskCache_%@", v5, v4];
+    cachePath = [nameCopy cachePath];
+    nameCopy = [v3 stringWithFormat:@"%@/_HMDiskCache_%@", cachePath, v4];
   }
 
-  return v2;
+  return nameCopy;
 }
 
-- (BOOL)storeCachedObjects:(id)a3 forCacheName:(id)a4
+- (BOOL)storeCachedObjects:(id)objects forCacheName:(id)name
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDiskCache *)self _cachePathForCacheName:v7];
+  objectsCopy = objects;
+  nameCopy = name;
+  v8 = [(HMDiskCache *)self _cachePathForCacheName:nameCopy];
   v50 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [(HMDiskCache *)self cachePath];
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:&v50];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cachePath = [(HMDiskCache *)self cachePath];
+  v11 = [defaultManager fileExistsAtPath:cachePath isDirectory:&v50];
 
   if (!v11)
   {
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
-    v19 = [(HMDiskCache *)self cachePath];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    cachePath2 = [(HMDiskCache *)self cachePath];
     v49 = 0;
-    v20 = [v18 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v49];
+    v20 = [defaultManager2 createDirectoryAtPath:cachePath2 withIntermediateDirectories:1 attributes:0 error:&v49];
     v21 = v49;
 
     if ((v20 & 1) == 0)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        [(HMDiskCache *)v23 cachePath];
+        [(HMDiskCache *)selfCopy cachePath];
         v27 = v26 = v8;
         *buf = 138543874;
         v52 = v25;
@@ -206,12 +206,12 @@ LABEL_24:
 
 LABEL_11:
     v48 = 0;
-    v28 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v48];
+    v28 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectsCopy requiringSecureCoding:1 error:&v48];
     v29 = v48;
     if (v29 || !v28)
     {
       v17 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy2 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -219,7 +219,7 @@ LABEL_11:
         *buf = 138544130;
         v52 = v43;
         v53 = 2112;
-        v54 = v6;
+        v54 = objectsCopy;
         v55 = 2112;
         v56 = v8;
         v57 = 2112;
@@ -237,7 +237,7 @@ LABEL_11:
     LODWORD(v17) = [v28 writeToFile:v8 options:1 error:&v47];
     v31 = v47;
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy3 = self;
     v34 = HMFGetOSLogHandle();
     v35 = v34;
     if (v17)
@@ -249,7 +249,7 @@ LABEL_11:
         *buf = 138543874;
         v52 = v36;
         v53 = 2112;
-        v54 = v6;
+        v54 = objectsCopy;
         v55 = 2112;
         v56 = v30;
         v37 = "%{public}@Wrote cache object (%@) to disk cache at path: %@";
@@ -270,7 +270,7 @@ LABEL_21:
       *buf = 138544130;
       v52 = v36;
       v53 = 2112;
-      v54 = v6;
+      v54 = objectsCopy;
       v55 = 2112;
       v56 = v30;
       v57 = 2112;
@@ -295,16 +295,16 @@ LABEL_23:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy4 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [(HMDiskCache *)v13 cachePath];
+    cachePath3 = [(HMDiskCache *)selfCopy4 cachePath];
     *buf = 138543618;
     v52 = v15;
     v53 = 2112;
-    v54 = v16;
+    v54 = cachePath3;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@The disk cache location %@ is not a directory", buf, 0x16u);
   }
 
@@ -316,15 +316,15 @@ LABEL_24:
   return v17;
 }
 
-- (HMDiskCache)initWithCachePath:(id)a3
+- (HMDiskCache)initWithCachePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HMDiskCache;
   v5 = [(HMDiskCache *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     cachePath = v5->_cachePath;
     v5->_cachePath = v6;
   }

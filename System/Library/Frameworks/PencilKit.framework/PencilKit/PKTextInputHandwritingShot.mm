@@ -1,59 +1,59 @@
 @interface PKTextInputHandwritingShot
-+ (int)_contentTypeFromKeyboardType:(int64_t)a3;
-+ (int)_contentTypeFromTextContentType:(id)a3;
-- (BOOL)_shouldTargetFirstResponderElement:(id)a3 strokeIdentifiers:(id)a4;
-- (BOOL)isPotentiallyTargetingElement:(id)a3;
++ (int)_contentTypeFromKeyboardType:(int64_t)type;
++ (int)_contentTypeFromTextContentType:(id)type;
+- (BOOL)_shouldTargetFirstResponderElement:(id)element strokeIdentifiers:(id)identifiers;
+- (BOOL)isPotentiallyTargetingElement:(id)element;
 - (NSArray)textInputTargets;
 - (NSString)description;
-- (PKTextInputHandwritingShot)initWithCanvasController:(id)a3 elementsController:(id)a4 languageSpec:(id)a5;
+- (PKTextInputHandwritingShot)initWithCanvasController:(id)controller elementsController:(id)elementsController languageSpec:(id)spec;
 - (PKTextInputHandwritingShotDelegate)delegate;
-- (_NSRange)_correctableTextRangeIntersectingStrokesWithIdentifiers:(id)a3 inInputTarget:(id)a4 elementContent:(id)a5;
-- (_NSRange)_editingGestureCorrectableRangeForStrokeBounds:(CGRect)a3 InInputTarget:(id)a4 elementContent:(id)a5;
-- (_NSRange)_selectedTextRangeForElementContent:(id)a3 textInputTarget:(id)a4 strokeSliceIdentifiers:(id)a5;
-- (_NSRange)_substringReferenceRangeForStrokeCoveredRange:(_NSRange)a3 contentLength:(int64_t)a4 selectedRange:(_NSRange)a5;
-- (id)_closestInputElementForStrokeIdentifiers:(id)a3;
-- (id)_contentInfoFromElementContent:(id)a3 textInputTarget:(id)a4 strokeIdentifiers:(id)a5;
-- (id)_protectedCharacterIndexesInRange:(_NSRange)a3 forElementContent:(id)a4;
-- (id)_textContentSubstringInRange:(_NSRange)a3 forElementContent:(id)a4;
-- (id)recognitionManager:(id)a3 textInputTargetForItemStableIdentifier:(id)a4 strokeIdentifiers:(id)a5 simultaneousItemStableIdentifiers:(id)a6;
-- (id)submittedTargetContentInfoForRecognitionIdentifier:(id)a3;
-- (id)textInputElementContentForRecognitionIdentifier:(id)a3;
-- (id)textInputElementForRecognitionIdentifier:(id)a3;
-- (int)_autoCapitalizationModeForTextInputTraits:(id)a3;
-- (int)_autoCorrectionModeForTextInputTraits:(id)a3;
-- (int)_contentTypeForElementContent:(id)a3;
-- (int)chWritingDirectionFrom:(int64_t)a3 useDefault:(BOOL)a4;
+- (_NSRange)_correctableTextRangeIntersectingStrokesWithIdentifiers:(id)identifiers inInputTarget:(id)target elementContent:(id)content;
+- (_NSRange)_editingGestureCorrectableRangeForStrokeBounds:(CGRect)bounds InInputTarget:(id)target elementContent:(id)content;
+- (_NSRange)_selectedTextRangeForElementContent:(id)content textInputTarget:(id)target strokeSliceIdentifiers:(id)identifiers;
+- (_NSRange)_substringReferenceRangeForStrokeCoveredRange:(_NSRange)range contentLength:(int64_t)length selectedRange:(_NSRange)selectedRange;
+- (id)_closestInputElementForStrokeIdentifiers:(id)identifiers;
+- (id)_contentInfoFromElementContent:(id)content textInputTarget:(id)target strokeIdentifiers:(id)identifiers;
+- (id)_protectedCharacterIndexesInRange:(_NSRange)range forElementContent:(id)content;
+- (id)_textContentSubstringInRange:(_NSRange)range forElementContent:(id)content;
+- (id)recognitionManager:(id)manager textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers;
+- (id)submittedTargetContentInfoForRecognitionIdentifier:(id)identifier;
+- (id)textInputElementContentForRecognitionIdentifier:(id)identifier;
+- (id)textInputElementForRecognitionIdentifier:(id)identifier;
+- (int)_autoCapitalizationModeForTextInputTraits:(id)traits;
+- (int)_autoCorrectionModeForTextInputTraits:(id)traits;
+- (int)_contentTypeForElementContent:(id)content;
+- (int)chWritingDirectionFrom:(int64_t)from useDefault:(BOOL)default;
 - (void)_evaluateSubmissionReadyness;
-- (void)_fetchTextInputElementsIfNeededWithReferenceHitPoint:(CGPoint)a3 referenceSearchArea:(CGRect)a4 referenceCoordSpace:(id)a5;
-- (void)_loadAndSaveContentFocusingIfNeededForElement:(id)a3 referenceCanvasPoint:(CGPoint)a4 strokesBounds:(CGRect)a5 completion:(id)a6;
-- (void)_saveSubmittedTargetContentInfo:(id)a3;
-- (void)_setDidRequestTextInputElements:(BOOL)a3;
-- (void)_setInputElementsByRecognitionID:(id)a3;
-- (void)_setShotState:(int64_t)a3;
+- (void)_fetchTextInputElementsIfNeededWithReferenceHitPoint:(CGPoint)point referenceSearchArea:(CGRect)area referenceCoordSpace:(id)space;
+- (void)_loadAndSaveContentFocusingIfNeededForElement:(id)element referenceCanvasPoint:(CGPoint)point strokesBounds:(CGRect)bounds completion:(id)completion;
+- (void)_saveSubmittedTargetContentInfo:(id)info;
+- (void)_setDidRequestTextInputElements:(BOOL)elements;
+- (void)_setInputElementsByRecognitionID:(id)d;
+- (void)_setShotState:(int64_t)state;
 - (void)_setupStrokeProvider;
-- (void)beginRecognitionWithRecognitionManager:(id)a3;
-- (void)recognitionManager:(id)a3 fetchContentInfoForTextInputTarget:(id)a4 strokeIdentifiers:(id)a5 completion:(id)a6;
-- (void)recognitionManager:(id)a3 recognitionDidFinishWithQueryItems:(id)a4 duration:(double)a5;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)setInputDrawing:(id)a3 inputInProgressStroke:(id)a4;
+- (void)beginRecognitionWithRecognitionManager:(id)manager;
+- (void)recognitionManager:(id)manager fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion;
+- (void)recognitionManager:(id)manager recognitionDidFinishWithQueryItems:(id)items duration:(double)duration;
+- (void)reportDebugStateDescription:(id)description;
+- (void)setInputDrawing:(id)drawing inputInProgressStroke:(id)stroke;
 @end
 
 @implementation PKTextInputHandwritingShot
 
-- (PKTextInputHandwritingShot)initWithCanvasController:(id)a3 elementsController:(id)a4 languageSpec:(id)a5
+- (PKTextInputHandwritingShot)initWithCanvasController:(id)controller elementsController:(id)elementsController languageSpec:(id)spec
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  elementsControllerCopy = elementsController;
+  specCopy = spec;
   v17.receiver = self;
   v17.super_class = PKTextInputHandwritingShot;
   v12 = [(PKTextInputHandwritingShot *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_canvasController, a3);
-    objc_storeStrong(&v13->_elementsController, a4);
-    objc_storeStrong(&v13->_languageSpec, a5);
+    objc_storeStrong(&v12->_canvasController, controller);
+    objc_storeStrong(&v13->_elementsController, elementsController);
+    objc_storeStrong(&v13->_languageSpec, spec);
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     inputElementsContentByRecognitionID = v13->__inputElementsContentByRecognitionID;
     v13->__inputElementsContentByRecognitionID = v14;
@@ -73,24 +73,24 @@
   return v5;
 }
 
-- (void)setInputDrawing:(id)a3 inputInProgressStroke:(id)a4
+- (void)setInputDrawing:(id)drawing inputInProgressStroke:(id)stroke
 {
-  v37 = a3;
-  v6 = a4;
-  if (*&self->_inputDrawing != __PAIR128__(v6, v37))
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  if (*&self->_inputDrawing != __PAIR128__(strokeCopy, drawingCopy))
   {
     [(PKTextInputHandwritingShot *)self shotState];
-    if (!v6 || !self->_inputInProgressStroke)
+    if (!strokeCopy || !self->_inputInProgressStroke)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       [(PKTextInputHandwritingShot *)self set_lastDrawingUpdateTimestamp:?];
     }
 
-    v7 = [v37 copy];
+    v7 = [drawingCopy copy];
     inputDrawing = self->_inputDrawing;
     self->_inputDrawing = v7;
 
-    v9 = [v6 copy];
+    v9 = [strokeCopy copy];
     inputInProgressStroke = self->_inputInProgressStroke;
     self->_inputInProgressStroke = v9;
 
@@ -98,16 +98,16 @@
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
     height = *(MEMORY[0x1E695F050] + 24);
-    if (v37 | v6)
+    if (drawingCopy | strokeCopy)
     {
-      if (v6)
+      if (strokeCopy)
       {
-        [v6 _bounds];
+        [strokeCopy _bounds];
       }
 
       else
       {
-        [v37 bounds];
+        [drawingCopy bounds];
       }
 
       v22 = v15;
@@ -120,18 +120,18 @@
       v39.size.width = v24;
       v39.size.height = v25;
       MidY = CGRectGetMidY(v39);
-      if (v37)
+      if (drawingCopy)
       {
-        [v37 bounds];
+        [drawingCopy bounds];
         x = v26;
         y = v27;
         width = v28;
         height = v29;
       }
 
-      if (v6)
+      if (strokeCopy)
       {
-        [v6 _bounds];
+        [strokeCopy _bounds];
         v42.origin.x = v30;
         v42.origin.y = v31;
         v42.size.width = v32;
@@ -147,67 +147,67 @@
         height = v41.size.height;
       }
 
-      v34 = [(PKTextInputHandwritingShot *)self canvasController];
-      v19 = [(PKTextInputCanvasController *)v34 canvasCoordinateSpace];
+      canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+      canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
 
       v20 = v36;
     }
 
     else
     {
-      v19 = 0;
+      canvasCoordinateSpace = 0;
       v20 = *MEMORY[0x1E695EFF8];
       MidY = *(MEMORY[0x1E695EFF8] + 8);
     }
 
-    [(PKTextInputHandwritingShot *)self _fetchTextInputElementsIfNeededWithReferenceHitPoint:v19 referenceSearchArea:v20 referenceCoordSpace:MidY, x, y, width, height];
+    [(PKTextInputHandwritingShot *)self _fetchTextInputElementsIfNeededWithReferenceHitPoint:canvasCoordinateSpace referenceSearchArea:v20 referenceCoordSpace:MidY, x, y, width, height];
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
     [(PKTextInputHandwritingShot *)self _evaluateSubmissionReadyness];
   }
 }
 
-- (void)_setInputElementsByRecognitionID:(id)a3
+- (void)_setInputElementsByRecognitionID:(id)d
 {
-  v5 = a3;
-  if (self->__inputElementsByRecognitionID != v5)
+  dCopy = d;
+  if (self->__inputElementsByRecognitionID != dCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__inputElementsByRecognitionID, a3);
+    v6 = dCopy;
+    objc_storeStrong(&self->__inputElementsByRecognitionID, d);
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
     [(PKTextInputHandwritingShot *)self _evaluateSubmissionReadyness];
-    v5 = v6;
+    dCopy = v6;
   }
 }
 
-- (void)_setShotState:(int64_t)a3
+- (void)_setShotState:(int64_t)state
 {
-  self->_shotState = a3;
-  v4 = [(PKTextInputHandwritingShot *)self delegate];
-  [v4 handwritingShotDidChangeState:self];
+  self->_shotState = state;
+  delegate = [(PKTextInputHandwritingShot *)self delegate];
+  [delegate handwritingShotDidChangeState:self];
 
   +[PKTextInputDebugStateIntrospector debugStateDidChange];
 }
 
-- (void)_setDidRequestTextInputElements:(BOOL)a3
+- (void)_setDidRequestTextInputElements:(BOOL)elements
 {
-  if (self->__didRequestTextInputElements != a3)
+  if (self->__didRequestTextInputElements != elements)
   {
-    self->__didRequestTextInputElements = a3;
+    self->__didRequestTextInputElements = elements;
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
   }
 }
 
-- (void)_fetchTextInputElementsIfNeededWithReferenceHitPoint:(CGPoint)a3 referenceSearchArea:(CGRect)a4 referenceCoordSpace:(id)a5
+- (void)_fetchTextInputElementsIfNeededWithReferenceHitPoint:(CGPoint)point referenceSearchArea:(CGRect)area referenceCoordSpace:(id)space
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a5;
-  v13 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
-  if (v13)
+  height = area.size.height;
+  width = area.size.width;
+  y = area.origin.y;
+  x = area.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  spaceCopy = space;
+  _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+  if (_inputElementsByRecognitionID)
   {
   }
 
@@ -216,10 +216,10 @@
     [(PKTextInputHandwritingShot *)self _setDidRequestTextInputElements:1];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v15 = v14;
-    v16 = [(PKTextInputHandwritingShot *)self elementsController];
-    if (v16)
+    elementsController = [(PKTextInputHandwritingShot *)self elementsController];
+    if (elementsController)
     {
-      v17 = v16[6];
+      v17 = elementsController[6];
     }
 
     else
@@ -236,13 +236,13 @@
 
     else
     {
-      v23 = [(PKTextInputHandwritingShot *)self elementsController];
+      elementsController2 = [(PKTextInputHandwritingShot *)self elementsController];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithReferenceHitPoint_referenceSearchArea_referenceCoordSpace___block_invoke;
       v24[3] = &unk_1E82D7148;
       v24[4] = self;
-      [(PKTextInputElementsController *)v23 updateTextInputElementsWithReferenceHitPoint:v12 referenceSearchArea:v24 referenceCoordSpace:v10 completion:v9, x, y, width, height];
+      [(PKTextInputElementsController *)elementsController2 updateTextInputElementsWithReferenceHitPoint:spaceCopy referenceSearchArea:v24 referenceCoordSpace:v10 completion:v9, x, y, width, height];
     }
   }
 }
@@ -266,32 +266,32 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
   [*(a1 + 32) _setInputElementsByRecognitionID:v5];
 }
 
-- (void)beginRecognitionWithRecognitionManager:(id)a3
+- (void)beginRecognitionWithRecognitionManager:(id)manager
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  managerCopy = manager;
   [(PKTextInputHandwritingShot *)self _setShotState:3];
   [(PKTextInputHandwritingShot *)self _setupStrokeProvider];
-  v6 = [(PKTextInputHandwritingShot *)self languageSpec];
-  v7 = v6;
-  if (v6)
+  languageSpec = [(PKTextInputHandwritingShot *)self languageSpec];
+  v7 = languageSpec;
+  if (languageSpec)
   {
-    [(PKTextInputRecognitionManager *)v5 setRecognitionLocales:?];
+    [(PKTextInputRecognitionManager *)managerCopy setRecognitionLocales:?];
   }
 
   v8 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [(PKTextInputHandwritingShot *)self strokeProvider];
+    strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
     v15 = 134218754;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v9;
     v19 = 2112;
-    v20 = v10;
+    v20 = strokeProvider;
     v21 = 2112;
-    v22 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "HWShot %p %@, will begin recognition request, strokeProvider: %@, shot: <%@>", &v15, 0x2Au);
   }
 
@@ -312,29 +312,29 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
     _os_log_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_INFO, "BEGIN HandwritingShot", &v15, 2u);
   }
 
-  [(PKTextInputRecognitionManager *)v5 beginRecognitionRequestWithDataSource:?];
+  [(PKTextInputRecognitionManager *)managerCopy beginRecognitionRequestWithDataSource:?];
 }
 
-- (void)recognitionManager:(id)a3 recognitionDidFinishWithQueryItems:(id)a4 duration:(double)a5
+- (void)recognitionManager:(id)manager recognitionDidFinishWithQueryItems:(id)items duration:(double)duration
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = [a4 copy];
+  v8 = [items copy];
   [(PKTextInputHandwritingShot *)self _setResultQueryItems:v8];
 
-  [(PKTextInputHandwritingShot *)self setRecognitionDuration:a5];
+  [(PKTextInputHandwritingShot *)self setRecognitionDuration:duration];
   v9 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
     [(PKTextInputHandwritingShot *)self recognitionDuration];
     v18 = 134218754;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v10;
     v22 = 2048;
     v23 = v11;
     v24 = 2112;
-    v25 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "HWShot %p %@, finished recognition request in %0.3fs. Shot: <%@>", &v18, 0x2Au);
   }
 
@@ -361,7 +361,7 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
   {
     [(PKTextInputHandwritingShot *)self recognitionDuration];
     v18 = 134217984;
-    v19 = v17;
+    selfCopy = v17;
     _os_log_impl(&dword_1C7CCA000, v16, OS_LOG_TYPE_DEFAULT, "Last recognition duration: %g", &v18, 0xCu);
   }
 }
@@ -370,20 +370,20 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
 {
   if (([(PKTextInputHandwritingShot *)self shotState]- 2) >= 3)
   {
-    v3 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+    _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
 
-    if (v3)
+    if (_inputElementsByRecognitionID)
     {
-      v4 = [(PKTextInputHandwritingShot *)self inputDrawing];
-      if (v4)
+      inputDrawing = [(PKTextInputHandwritingShot *)self inputDrawing];
+      if (inputDrawing)
       {
       }
 
       else
       {
-        v5 = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
+        inputInProgressStroke = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
 
-        if (!v5)
+        if (!inputInProgressStroke)
         {
           return;
         }
@@ -395,10 +395,10 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
       }
 
       v6 = +[PKTextInputSettings sharedSettings];
-      v7 = [v6 continuousRecognition];
+      continuousRecognition = [v6 continuousRecognition];
 
       v8 = 0.0;
-      if ((v7 & 1) == 0)
+      if ((continuousRecognition & 1) == 0)
       {
         v9 = +[PKTextInputSettings sharedSettings];
         [v9 recognitionCoalescingDelay];
@@ -425,19 +425,19 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
   }
 }
 
-- (id)textInputElementForRecognitionIdentifier:(id)a3
+- (id)textInputElementForRecognitionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+  v6 = [_inputElementsByRecognitionID objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v7 = [(PKTextInputHandwritingShot *)self elementsController];
-    v8 = v7;
-    if (v7)
+    elementsController = [(PKTextInputHandwritingShot *)self elementsController];
+    v8 = elementsController;
+    if (elementsController)
     {
-      v9 = *(v7 + 40);
+      v9 = *(elementsController + 40);
     }
 
     else
@@ -446,31 +446,31 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
     }
 
     v10 = v9;
-    v6 = [v10 objectForKeyedSubscript:v4];
+    v6 = [v10 objectForKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (id)textInputElementContentForRecognitionIdentifier:(id)a3
+- (id)textInputElementContentForRecognitionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _inputElementsContentByRecognitionID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _inputElementsContentByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsContentByRecognitionID];
+  v6 = [_inputElementsContentByRecognitionID objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)isPotentiallyTargetingElement:(id)a3
+- (BOOL)isPotentiallyTargetingElement:(id)element
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
+  elementCopy = element;
+  _potentiallyTargetedElementRecognitionIDs = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
 
-  if (v5)
+  if (_potentiallyTargetedElementRecognitionIDs)
   {
-    if (v4)
+    if (elementCopy)
     {
-      v6 = v4[14];
+      v6 = elementCopy[14];
     }
 
     else
@@ -482,10 +482,10 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
 
     if (v7)
     {
-      v8 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
-      if (v4)
+      _potentiallyTargetedElementRecognitionIDs2 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
+      if (elementCopy)
       {
-        v9 = v4[14];
+        v9 = elementCopy[14];
       }
 
       else
@@ -494,7 +494,7 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
       }
 
       v10 = v9;
-      LOBYTE(v7) = [v8 containsIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
+      LOBYTE(v7) = [_potentiallyTargetedElementRecognitionIDs2 containsIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
     }
   }
 
@@ -506,15 +506,15 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
   return v7;
 }
 
-- (id)_closestInputElementForStrokeIdentifiers:(id)a3
+- (id)_closestInputElementForStrokeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
-  v6 = [(PKTextInputHandwritingShot *)self strokeProvider];
-  [v6 centroidForSlicesWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+  strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+  [strokeProvider centroidForSlicesWithIdentifiers:identifiersCopy];
   v8 = v7;
   v10 = v9;
-  [v6 boundsForSliceIdentifiers:v4];
+  [strokeProvider boundsForSliceIdentifiers:identifiersCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -538,7 +538,7 @@ void __123__PKTextInputHandwritingShot__fetchTextInputElementsIfNeededWithRefere
   v17[4] = self;
   v17[5] = &v19;
   v17[6] = v18;
-  [v5 enumerateKeysAndObjectsUsingBlock:v17];
+  [_inputElementsByRecognitionID enumerateKeysAndObjectsUsingBlock:v17];
   v15 = v20[5];
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(&v19, 8);
@@ -646,20 +646,20 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_loadAndSaveContentFocusingIfNeededForElement:(id)a3 referenceCanvasPoint:(CGPoint)a4 strokesBounds:(CGRect)a5 completion:(id)a6
+- (void)_loadAndSaveContentFocusingIfNeededForElement:(id)element referenceCanvasPoint:(CGPoint)point strokesBounds:(CGRect)bounds completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.y;
-  v12 = a4.x;
-  v14 = a3;
-  v15 = a6;
-  v16 = [(PKTextInputHandwritingShot *)self _inputElementsContentByRecognitionID];
-  if (v14)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = point.y;
+  v12 = point.x;
+  elementCopy = element;
+  completionCopy = completion;
+  _inputElementsContentByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsContentByRecognitionID];
+  if (elementCopy)
   {
-    v17 = v14[14];
+    v17 = elementCopy[14];
   }
 
   else
@@ -668,33 +668,33 @@ LABEL_21:
   }
 
   v18 = v17;
-  v19 = [v16 objectForKeyedSubscript:v18];
+  v19 = [_inputElementsContentByRecognitionID objectForKeyedSubscript:v18];
 
   if (v19)
   {
-    v15[2](v15, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
   {
-    v20 = [(PKTextInputElement *)v14 coordinateSpace];
+    coordinateSpace = [(PKTextInputElement *)elementCopy coordinateSpace];
 
-    if (v20)
+    if (coordinateSpace)
     {
-      v21 = [(PKTextInputHandwritingShot *)self delegate];
-      [v21 handwritingShot:self willFocusAndLoadDataForTargetElement:v14];
+      delegate = [(PKTextInputHandwritingShot *)self delegate];
+      [delegate handwritingShot:self willFocusAndLoadDataForTargetElement:elementCopy];
 
-      v22 = [(PKTextInputHandwritingShot *)self canvasController];
-      v23 = [(PKTextInputCanvasController *)v22 canvasCoordinateSpace];
-      v24 = [(PKTextInputElement *)v14 coordinateSpace];
-      v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v23, v24, v12, v11, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+      canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+      canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
+      coordinateSpace2 = [(PKTextInputElement *)elementCopy coordinateSpace];
+      v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(canvasCoordinateSpace, coordinateSpace2, v12, v11, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
 
-      v26 = [(PKTextInputElement *)v14 clampedReferencePoint:v25];
+      v26 = [(PKTextInputElement *)elementCopy clampedReferencePoint:v25];
       v28 = v27;
-      v29 = [(PKTextInputHandwritingShot *)self canvasController];
-      v30 = [(PKTextInputCanvasController *)v29 canvasCoordinateSpace];
-      v31 = [(PKTextInputElement *)v14 coordinateSpace];
-      v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v30, v31, x, y, width, height);
+      canvasController2 = [(PKTextInputHandwritingShot *)self canvasController];
+      canvasCoordinateSpace2 = [(PKTextInputCanvasController *)canvasController2 canvasCoordinateSpace];
+      coordinateSpace3 = [(PKTextInputElement *)elementCopy coordinateSpace];
+      v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(canvasCoordinateSpace2, coordinateSpace3, x, y, width, height);
       v34 = v33;
       v36 = v35;
       v38 = v37;
@@ -709,27 +709,27 @@ LABEL_21:
         v39 = 0;
       }
 
-      v41 = [(PKTextInputElement *)v14 isFocused];
+      isFocused = [(PKTextInputElement *)elementCopy isFocused];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __122__PKTextInputHandwritingShot__loadAndSaveContentFocusingIfNeededForElement_referenceCanvasPoint_strokesBounds_completion___block_invoke;
       v42[3] = &unk_1E82D80F8;
-      v49 = v41;
+      v49 = isFocused;
       v50 = v39;
       v42[4] = self;
       v45 = v12;
       v46 = v11;
-      v43 = v14;
+      v43 = elementCopy;
       v47 = v26;
       v48 = v28;
-      v44 = v15;
+      v44 = completionCopy;
       [(PKTextInputElement *)v43 loadContentFocusingIfNeededWithReferencePoint:v39 alwaysSetSelectionFromReferencePoint:v42 rectOfInterest:v26 completion:v28, v32, v34, v36, v38];
     }
 
     else
     {
-      v40 = [[PKTextInputElementContent alloc] initWithElement:v14];
-      v15[2](v15, v40);
+      v40 = [[PKTextInputElementContent alloc] initWithElement:elementCopy];
+      completionCopy[2](completionCopy, v40);
     }
   }
 }
@@ -837,19 +837,19 @@ void __122__PKTextInputHandwritingShot__loadAndSaveContentFocusingIfNeededForEle
 - (void)_setupStrokeProvider
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputHandwritingShot *)self inputDrawing];
-  v16 = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
-  v4 = [(PKTextInputHandwritingShot *)self delegate];
-  v5 = [v4 handwritingShotStrokeIdentifiersToExcludeFromRecognition:self];
+  inputDrawing = [(PKTextInputHandwritingShot *)self inputDrawing];
+  inputInProgressStroke = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
+  delegate = [(PKTextInputHandwritingShot *)self delegate];
+  v5 = [delegate handwritingShotStrokeIdentifiersToExcludeFromRecognition:self];
 
   v6 = objc_alloc_init(PKDrawing);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = v3;
-  v7 = [v3 strokes];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v17 = inputDrawing;
+  strokes = [inputDrawing strokes];
+  v8 = [strokes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -860,12 +860,12 @@ void __122__PKTextInputHandwritingShot__loadAndSaveContentFocusingIfNeededForEle
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(strokes);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 _strokeUUID];
-        v14 = [v5 containsObject:v13];
+        _strokeUUID = [v12 _strokeUUID];
+        v14 = [v5 containsObject:_strokeUUID];
 
         if ((v14 & 1) == 0)
         {
@@ -873,15 +873,15 @@ void __122__PKTextInputHandwritingShot__loadAndSaveContentFocusingIfNeededForEle
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [strokes countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  if (v16)
+  if (inputInProgressStroke)
   {
-    [(PKDrawing *)v6 addNewStroke:v16];
+    [(PKDrawing *)v6 addNewStroke:inputInProgressStroke];
   }
 
   v15 = [[PKTextInputStrokeProvider alloc] initWithDrawing:v6];
@@ -890,26 +890,26 @@ void __122__PKTextInputHandwritingShot__loadAndSaveContentFocusingIfNeededForEle
 
 - (NSArray)textInputTargets
 {
-  v3 = [(PKTextInputHandwritingShot *)self _submittedTextInputTargets];
+  _submittedTextInputTargets = [(PKTextInputHandwritingShot *)self _submittedTextInputTargets];
 
-  if (!v3)
+  if (!_submittedTextInputTargets)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+    array = [MEMORY[0x1E695DF70] array];
+    _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __46__PKTextInputHandwritingShot_textInputTargets__block_invoke;
     v12 = &unk_1E82D68E0;
-    v13 = self;
-    v14 = v4;
-    v6 = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v9];
-    [(PKTextInputHandwritingShot *)self set_submittedTextInputTargets:v6, v9, v10, v11, v12, v13];
+    selfCopy = self;
+    v14 = array;
+    v6 = array;
+    [_inputElementsByRecognitionID enumerateKeysAndObjectsUsingBlock:&v9];
+    [(PKTextInputHandwritingShot *)self set_submittedTextInputTargets:v6, v9, v10, v11, v12, selfCopy];
   }
 
-  v7 = [(PKTextInputHandwritingShot *)self _submittedTextInputTargets];
+  _submittedTextInputTargets2 = [(PKTextInputHandwritingShot *)self _submittedTextInputTargets];
 
-  return v7;
+  return _submittedTextInputTargets2;
 }
 
 void __46__PKTextInputHandwritingShot_textInputTargets__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -931,22 +931,22 @@ void __46__PKTextInputHandwritingShot_textInputTargets__block_invoke(uint64_t a1
   }
 }
 
-- (id)recognitionManager:(id)a3 textInputTargetForItemStableIdentifier:(id)a4 strokeIdentifiers:(id)a5 simultaneousItemStableIdentifiers:(id)a6
+- (id)recognitionManager:(id)manager textInputTargetForItemStableIdentifier:(id)identifier strokeIdentifiers:(id)identifiers simultaneousItemStableIdentifiers:(id)stableIdentifiers
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v10 count])
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  stableIdentifiersCopy = stableIdentifiers;
+  if ([identifiersCopy count])
   {
-    v12 = v10;
+    v12 = identifiersCopy;
     [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v51 = v55 = 0u;
-    v13 = [v51 allValues];
-    v14 = [v13 countByEnumeratingWithState:&v52 objects:v56 count:16];
+    allValues = [v51 allValues];
+    v14 = [allValues countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v14)
     {
       v15 = v14;
@@ -957,7 +957,7 @@ LABEL_4:
       {
         if (*v53 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v18 = *(*(&v52 + 1) + 8 * v17);
@@ -968,7 +968,7 @@ LABEL_4:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v52 objects:v56 count:16];
+          v15 = [allValues countByEnumeratingWithState:&v52 objects:v56 count:16];
           if (v15)
           {
             goto LABEL_4;
@@ -982,8 +982,8 @@ LABEL_4:
 
       if (v19)
       {
-        v20 = [v12 allObjects];
-        v21 = [(PKTextInputHandwritingShot *)self _shouldTargetFirstResponderElement:v19 strokeIdentifiers:v20];
+        allObjects = [v12 allObjects];
+        v21 = [(PKTextInputHandwritingShot *)self _shouldTargetFirstResponderElement:v19 strokeIdentifiers:allObjects];
 
         if (v21)
         {
@@ -1001,80 +1001,80 @@ LABEL_10:
       v19 = 0;
     }
 
-    v23 = [v12 allObjects];
-    v22 = [(PKTextInputHandwritingShot *)self _closestInputElementForStrokeIdentifiers:v23];
+    allObjects2 = [v12 allObjects];
+    v22 = [(PKTextInputHandwritingShot *)self _closestInputElementForStrokeIdentifiers:allObjects2];
 
 LABEL_15:
-    v24 = [(PKTextInputHandwritingShot *)self delegate];
+    delegate = [(PKTextInputHandwritingShot *)self delegate];
 
-    if (v24)
+    if (delegate)
     {
-      v25 = [(PKTextInputHandwritingShot *)self delegate];
-      v26 = [v25 handwritingShot:self preferredTargetElementForQueryItemStableIdentifier:v9 simultaneousItemStableIdentifiers:v11 proposedTargetElement:v22];
+      delegate2 = [(PKTextInputHandwritingShot *)self delegate];
+      v26 = [delegate2 handwritingShot:self preferredTargetElementForQueryItemStableIdentifier:identifierCopy simultaneousItemStableIdentifiers:stableIdentifiersCopy proposedTargetElement:v22];
 
       v22 = v26;
     }
 
     if (v22)
     {
-      v27 = [(PKTextInputElement *)v22 coordinateSpace];
+      coordinateSpace = [(PKTextInputElement *)v22 coordinateSpace];
 
-      if (v27)
+      if (coordinateSpace)
       {
-        v28 = [(PKTextInputHandwritingShot *)self canvasController];
-        v29 = [(PKTextInputElement *)v22 frame];
+        canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+        frame = [(PKTextInputElement *)v22 frame];
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        v36 = [(PKTextInputElement *)v22 coordinateSpace];
-        v37 = [(PKTextInputCanvasController *)v28 convertRect:v36 toCanvasFromCoordinateSpace:v29, v31, v33, v35];
+        coordinateSpace2 = [(PKTextInputElement *)v22 coordinateSpace];
+        v37 = [(PKTextInputCanvasController *)canvasController convertRect:coordinateSpace2 toCanvasFromCoordinateSpace:frame, v31, v33, v35];
         v39 = v38;
         v41 = v40;
         v43 = v42;
 
         v44 = objc_alloc(MEMORY[0x1E6997BD0]);
         v45 = v22[14];
-        v27 = [v44 initWithIdentifier:v45 frame:{v37, v39, v41, v43}];
+        coordinateSpace = [v44 initWithIdentifier:v45 frame:{v37, v39, v41, v43}];
 
-        v46 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
+        _potentiallyTargetedElementRecognitionIDs = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
 
-        if (!v46)
+        if (!_potentiallyTargetedElementRecognitionIDs)
         {
           v47 = objc_alloc_init(MEMORY[0x1E696AD50]);
           [(PKTextInputHandwritingShot *)self set_potentiallyTargetedElementRecognitionIDs:v47];
         }
 
-        v48 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
+        _potentiallyTargetedElementRecognitionIDs2 = [(PKTextInputHandwritingShot *)self _potentiallyTargetedElementRecognitionIDs];
         v49 = v22[14];
-        [v48 addIndex:{objc_msgSend(v49, "unsignedIntegerValue")}];
+        [_potentiallyTargetedElementRecognitionIDs2 addIndex:{objc_msgSend(v49, "unsignedIntegerValue")}];
       }
     }
 
     else
     {
-      v27 = 0;
+      coordinateSpace = 0;
     }
   }
 
   else
   {
-    v27 = 0;
+    coordinateSpace = 0;
   }
 
-  return v27;
+  return coordinateSpace;
 }
 
-- (BOOL)_shouldTargetFirstResponderElement:(id)a3 strokeIdentifiers:(id)a4
+- (BOOL)_shouldTargetFirstResponderElement:(id)element strokeIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  identifiersCopy = identifiers;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v8 = [(PKTextInputHandwritingShot *)self strokeProvider];
-  [v8 boundsForSliceIdentifiers:v7];
-  if (v29[3] & 1) != 0 || (v13 = v9, v14 = v10, v15 = v11, v16 = v12, -[PKTextInputHandwritingShot _inputElementsByRecognitionID](self, "_inputElementsByRecognitionID"), v17 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __83__PKTextInputHandwritingShot__shouldTargetFirstResponderElement_strokeIdentifiers___block_invoke, v20[3] = &unk_1E82D8120, v22 = self, v23 = &v28, v21 = v6, v24 = v13, v25 = v14, v26 = v15, v27 = v16, [v17 enumerateKeysAndObjectsUsingBlock:v20], v21, v17, (v29[3]))
+  strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+  [strokeProvider boundsForSliceIdentifiers:identifiersCopy];
+  if (v29[3] & 1) != 0 || (v13 = v9, v14 = v10, v15 = v11, v16 = v12, -[PKTextInputHandwritingShot _inputElementsByRecognitionID](self, "_inputElementsByRecognitionID"), v17 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __83__PKTextInputHandwritingShot__shouldTargetFirstResponderElement_strokeIdentifiers___block_invoke, v20[3] = &unk_1E82D8120, v22 = self, v23 = &v28, v21 = elementCopy, v24 = v13, v25 = v14, v26 = v15, v27 = v16, [v17 enumerateKeysAndObjectsUsingBlock:v20], v21, v17, (v29[3]))
   {
     if ([(PKTextInputHandwritingShot *)self cursorIsWeakAtStart])
     {
@@ -1155,36 +1155,36 @@ void __83__PKTextInputHandwritingShot__shouldTargetFirstResponderElement_strokeI
   }
 }
 
-- (void)recognitionManager:(id)a3 fetchContentInfoForTextInputTarget:(id)a4 strokeIdentifiers:(id)a5 completion:(id)a6
+- (void)recognitionManager:(id)manager fetchContentInfoForTextInputTarget:(id)target strokeIdentifiers:(id)identifiers completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
-  v14 = [v10 inputTargetIdentifier];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  targetCopy = target;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  _submittedTargetContentInfoByTargetID = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
+  inputTargetIdentifier = [targetCopy inputTargetIdentifier];
+  v15 = [_submittedTargetContentInfoByTargetID objectForKeyedSubscript:inputTargetIdentifier];
 
   if (v15)
   {
-    v12[2](v12, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
   else
   {
-    v16 = [v10 inputTargetIdentifier];
-    v17 = [(PKTextInputHandwritingShot *)self textInputElementForRecognitionIdentifier:v16];
+    inputTargetIdentifier2 = [targetCopy inputTargetIdentifier];
+    v17 = [(PKTextInputHandwritingShot *)self textInputElementForRecognitionIdentifier:inputTargetIdentifier2];
 
     if (v17 && ([(PKTextInputElement *)v17 coordinateSpace], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
     {
-      v19 = [v11 allObjects];
-      v20 = [(PKTextInputHandwritingShot *)self strokeProvider];
-      [v20 startingPointForSlicesWithIdentifiers:v19];
+      allObjects = [identifiersCopy allObjects];
+      strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+      [strokeProvider startingPointForSlicesWithIdentifiers:allObjects];
       v22 = v21;
       v24 = v23;
 
-      v25 = [(PKTextInputHandwritingShot *)self strokeProvider];
-      [v25 boundsForSliceIdentifiers:v19];
+      strokeProvider2 = [(PKTextInputHandwritingShot *)self strokeProvider];
+      [strokeProvider2 boundsForSliceIdentifiers:allObjects];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -1195,9 +1195,9 @@ void __83__PKTextInputHandwritingShot__shouldTargetFirstResponderElement_strokeI
       v36[2] = __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTextInputTarget_strokeIdentifiers_completion___block_invoke;
       v36[3] = &unk_1E82D8148;
       v36[4] = self;
-      v37 = v10;
-      v38 = v11;
-      v39 = v12;
+      v37 = targetCopy;
+      v38 = identifiersCopy;
+      v39 = completionCopy;
       [(PKTextInputHandwritingShot *)self _loadAndSaveContentFocusingIfNeededForElement:v17 referenceCanvasPoint:v36 strokesBounds:v22 completion:v24, v27, v29, v31, v33];
     }
 
@@ -1208,17 +1208,17 @@ void __83__PKTextInputHandwritingShot__shouldTargetFirstResponderElement_strokeI
       {
         v35 = NSStringFromSelector(a2);
         *buf = 134218754;
-        v41 = self;
+        selfCopy = self;
         v42 = 2112;
         v43 = v35;
         v44 = 2112;
-        v45 = v10;
+        v45 = targetCopy;
         v46 = 2112;
-        v47 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1C7CCA000, v34, OS_LOG_TYPE_ERROR, "HWShot %p %@, no element found for text input target %@. Returning nil content info. Shot: %@", buf, 0x2Au);
       }
 
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -1230,54 +1230,54 @@ void __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTex
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)submittedTargetContentInfoForRecognitionIdentifier:(id)a3
+- (id)submittedTargetContentInfoForRecognitionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _submittedTargetContentInfoByTargetID = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
+  v6 = [_submittedTargetContentInfoByTargetID objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)_saveSubmittedTargetContentInfo:(id)a3
+- (void)_saveSubmittedTargetContentInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
-  v8 = [v5 mutableCopy];
+  infoCopy = info;
+  _submittedTargetContentInfoByTargetID = [(PKTextInputHandwritingShot *)self _submittedTargetContentInfoByTargetID];
+  dictionary = [_submittedTargetContentInfoByTargetID mutableCopy];
 
-  if (!v8)
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v6 = [v4 textInputTarget];
-  v7 = [v6 inputTargetIdentifier];
-  [v8 setObject:v4 forKeyedSubscript:v7];
+  textInputTarget = [infoCopy textInputTarget];
+  inputTargetIdentifier = [textInputTarget inputTargetIdentifier];
+  [dictionary setObject:infoCopy forKeyedSubscript:inputTargetIdentifier];
 
-  [(PKTextInputHandwritingShot *)self set_submittedTargetContentInfoByTargetID:v8];
+  [(PKTextInputHandwritingShot *)self set_submittedTargetContentInfoByTargetID:dictionary];
 }
 
-- (_NSRange)_selectedTextRangeForElementContent:(id)a3 textInputTarget:(id)a4 strokeSliceIdentifiers:(id)a5
+- (_NSRange)_selectedTextRangeForElementContent:(id)content textInputTarget:(id)target strokeSliceIdentifiers:(id)identifiers
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(PKTextInputElementContent *)v9 selectedRange];
+  contentCopy = content;
+  identifiersCopy = identifiers;
+  targetCopy = target;
+  selectedRange = [(PKTextInputElementContent *)contentCopy selectedRange];
   v14 = v13;
-  v15 = [(PKTextInputHandwritingShot *)self delegate];
-  v16 = [v11 inputTargetIdentifier];
+  delegate = [(PKTextInputHandwritingShot *)self delegate];
+  inputTargetIdentifier = [targetCopy inputTargetIdentifier];
 
-  v17 = [v15 handwritingShot:self inProgressGestureInitialSelectedRangeForElementRecognitionIdentifier:v16];
+  v17 = [delegate handwritingShot:self inProgressGestureInitialSelectedRangeForElementRecognitionIdentifier:inputTargetIdentifier];
   v19 = v18;
 
-  if (v17 == 0x7FFFFFFFFFFFFFFFLL || v17 + v19 > [(PKTextInputElementContent *)v9 contentLength])
+  if (v17 == 0x7FFFFFFFFFFFFFFFLL || v17 + v19 > [(PKTextInputElementContent *)contentCopy contentLength])
   {
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    if (selectedRange == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v9)
+      if (contentCopy)
       {
-        v20 = v9[1];
+        v20 = contentCopy[1];
       }
 
       else
@@ -1286,24 +1286,24 @@ void __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTex
       }
 
       v21 = v20;
-      v22 = [(PKTextInputElement *)v21 isFocused];
+      isFocused = [(PKTextInputElement *)v21 isFocused];
 
-      if (v22)
+      if (isFocused)
       {
         goto LABEL_14;
       }
 
-      v23 = [(PKTextInputHandwritingShot *)self strokeProvider];
-      [v23 centroidForSlicesWithIdentifiers:v10];
+      strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+      [strokeProvider centroidForSlicesWithIdentifiers:identifiersCopy];
       v25 = v24;
       v27 = v26;
 
-      v28 = [(PKTextInputHandwritingShot *)self canvasController];
-      v29 = [(PKTextInputCanvasController *)v28 canvasCoordinateSpace];
-      v30 = v29;
-      if (v9)
+      canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+      canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
+      v30 = canvasCoordinateSpace;
+      if (contentCopy)
       {
-        v17 = [(PKTextInputElementContent *)v9 characterIndexClosestToPoint:v29 inCoordinateSpace:1 forInsertingText:1 adjustForLastCharacter:v25, v27];
+        v17 = [(PKTextInputElementContent *)contentCopy characterIndexClosestToPoint:canvasCoordinateSpace inCoordinateSpace:1 forInsertingText:1 adjustForLastCharacter:v25, v27];
 
         v19 = 0;
         v31 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1323,12 +1323,12 @@ void __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTex
 
     else
     {
-      v17 = v12;
+      v17 = selectedRange;
       v19 = v14;
     }
   }
 
-  if (v19 + v17 <= [(PKTextInputElementContent *)v9 contentLength])
+  if (v19 + v17 <= [(PKTextInputElementContent *)contentCopy contentLength])
   {
     v31 = v17;
     goto LABEL_16;
@@ -1341,10 +1341,10 @@ void __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTex
     v53.location = v17;
     v53.length = v19;
     v36 = NSStringFromRange(v53);
-    v37 = [(PKTextInputElementContent *)v9 contentLength];
-    if (v9)
+    contentLength = [(PKTextInputElementContent *)contentCopy contentLength];
+    if (contentCopy)
     {
-      v38 = v9[1];
+      v38 = contentCopy[1];
     }
 
     else
@@ -1354,17 +1354,17 @@ void __113__PKTextInputHandwritingShot_recognitionManager_fetchContentInfoForTex
 
     v39 = v38;
     v40 = 134219266;
-    v41 = self;
+    selfCopy = self;
     v42 = 2112;
     v43 = v35;
     v44 = 2112;
     v45 = v36;
     v46 = 2048;
-    v47 = v37;
+    v47 = contentLength;
     v48 = 2112;
     v49 = v39;
     v50 = 2112;
-    v51 = self;
+    selfCopy2 = self;
     _os_log_error_impl(&dword_1C7CCA000, v32, OS_LOG_TYPE_ERROR, "HWShot %p %@, Invalid selected range %@ for content length %ld. Reverting to undefined. Element: %@. Shot: %@.", &v40, 0x3Eu);
   }
 
@@ -1380,44 +1380,44 @@ LABEL_16:
   return result;
 }
 
-- (id)_contentInfoFromElementContent:(id)a3 textInputTarget:(id)a4 strokeIdentifiers:(id)a5
+- (id)_contentInfoFromElementContent:(id)content textInputTarget:(id)target strokeIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentCopy = content;
+  targetCopy = target;
+  identifiersCopy = identifiers;
   v11 = objc_alloc_init(MEMORY[0x1E6997B68]);
-  [v11 setTextInputTarget:v9];
-  [v11 setTextContentLength:-[PKTextInputElementContent contentLength](v8)];
+  [v11 setTextInputTarget:targetCopy];
+  [v11 setTextContentLength:-[PKTextInputElementContent contentLength](contentCopy)];
   [v11 setActivePreviewRange:{0x7FFFFFFFFFFFFFFFLL, 0}];
-  [v11 setContentType:{-[PKTextInputHandwritingShot _contentTypeForElementContent:](self, "_contentTypeForElementContent:", v8)}];
-  v12 = [(PKTextInputHandwritingShot *)self delegate];
-  v13 = [v9 inputTargetIdentifier];
-  [v11 setLastCharacterLevelPosition:{objc_msgSend(v12, "handwritingShot:lastCharacterLevelPositionForElementRecognitionIdentifier:", self, v13)}];
+  [v11 setContentType:{-[PKTextInputHandwritingShot _contentTypeForElementContent:](self, "_contentTypeForElementContent:", contentCopy)}];
+  delegate = [(PKTextInputHandwritingShot *)self delegate];
+  inputTargetIdentifier = [targetCopy inputTargetIdentifier];
+  [v11 setLastCharacterLevelPosition:{objc_msgSend(delegate, "handwritingShot:lastCharacterLevelPositionForElementRecognitionIdentifier:", self, inputTargetIdentifier)}];
 
-  v14 = [(PKTextInputElementContent *)v8 isSingleLineDocumentContent];
-  [v11 setIsSingleLine:v14];
+  isSingleLineDocumentContent = [(PKTextInputElementContent *)contentCopy isSingleLineDocumentContent];
+  [v11 setIsSingleLine:isSingleLineDocumentContent];
   if (objc_opt_respondsToSelector())
   {
-    if (v14)
+    if (isSingleLineDocumentContent)
     {
-      v15 = 0;
+      supportsAutoLineBreaks = 0;
     }
 
     else
     {
-      v15 = [(PKTextInputElementContent *)v8 supportsAutoLineBreaks];
+      supportsAutoLineBreaks = [(PKTextInputElementContent *)contentCopy supportsAutoLineBreaks];
     }
 
-    [v11 setSupportsAutoLineBreaks:v15];
+    [v11 setSupportsAutoLineBreaks:supportsAutoLineBreaks];
   }
 
   [v11 setIsCursorStrong:{-[PKTextInputHandwritingShot cursorIsWeakAtStart](self, "cursorIsWeakAtStart") ^ 1}];
-  if (v8)
+  if (contentCopy)
   {
-    v16 = v8[2];
+    v16 = contentCopy[2];
     [v11 setAutoCapitalizationMode:{-[PKTextInputHandwritingShot _autoCapitalizationModeForTextInputTraits:](self, "_autoCapitalizationModeForTextInputTraits:", v16)}];
 
-    v17 = v8[2];
+    v17 = contentCopy[2];
   }
 
   else
@@ -1429,13 +1429,13 @@ LABEL_16:
   v18 = v17;
   [v11 setAutoCorrectionMode:{-[PKTextInputHandwritingShot _autoCorrectionModeForTextInputTraits:](self, "_autoCorrectionModeForTextInputTraits:", v18)}];
 
-  v70 = [v10 allObjects];
-  v19 = [(PKTextInputHandwritingShot *)self _selectedTextRangeForElementContent:v8 textInputTarget:v9 strokeSliceIdentifiers:?];
+  allObjects = [identifiersCopy allObjects];
+  v19 = [(PKTextInputHandwritingShot *)self _selectedTextRangeForElementContent:contentCopy textInputTarget:targetCopy strokeSliceIdentifiers:?];
   [v11 setSelectedTextRange:{v19, v20}];
-  v21 = [v9 inputTargetIdentifier];
-  v22 = [(PKTextInputHandwritingShot *)self textInputElementForRecognitionIdentifier:v21];
+  inputTargetIdentifier2 = [targetCopy inputTargetIdentifier];
+  v22 = [(PKTextInputHandwritingShot *)self textInputElementForRecognitionIdentifier:inputTargetIdentifier2];
 
-  v69 = v10;
+  v69 = identifiersCopy;
   v66 = v22;
   if (v22)
   {
@@ -1448,13 +1448,13 @@ LABEL_16:
   }
 
   v24 = MEMORY[0x1E69DB7D0];
-  v25 = [MEMORY[0x1E695DF58] currentLocale];
-  v26 = [v25 languageIdentifier];
-  v27 = [v24 defaultWritingDirectionForLanguage:v26];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageIdentifier = [currentLocale languageIdentifier];
+  _isNaturallyRTL = [v24 defaultWritingDirectionForLanguage:languageIdentifier];
 
-  if (v8)
+  if (contentCopy)
   {
-    v28 = v8[1];
+    v28 = contentCopy[1];
   }
 
   else
@@ -1463,14 +1463,14 @@ LABEL_16:
   }
 
   v29 = v28;
-  v30 = [v29 activeAffectedRange];
+  activeAffectedRange = [v29 activeAffectedRange];
 
   v65 = WeakRetained;
-  if (v30 == 0x7FFFFFFFFFFFFFFFLL)
+  if (activeAffectedRange == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v8)
+    if (contentCopy)
     {
-      v31 = v8[9];
+      v31 = contentCopy[9];
     }
 
     else
@@ -1479,73 +1479,73 @@ LABEL_16:
     }
 
     v32 = v31;
-    v33 = [v32 contextBefore];
+    contextBefore = [v32 contextBefore];
 
-    v34 = [v33 length];
+    v34 = [contextBefore length];
     if (v34)
     {
-      v27 = [v33 _isNaturallyRTL];
+      _isNaturallyRTL = [contextBefore _isNaturallyRTL];
     }
 
-    [v11 setBaseWritingDirection:{-[PKTextInputHandwritingShot chWritingDirectionFrom:useDefault:](self, "chWritingDirectionFrom:useDefault:", v27, v34 == 0)}];
+    [v11 setBaseWritingDirection:{-[PKTextInputHandwritingShot chWritingDirectionFrom:useDefault:](self, "chWritingDirectionFrom:useDefault:", _isNaturallyRTL, v34 == 0)}];
   }
 
   else
   {
-    v35 = [WeakRetained beginningOfDocument];
-    v33 = [WeakRetained positionFromPosition:v35 offset:v30];
+    beginningOfDocument = [WeakRetained beginningOfDocument];
+    contextBefore = [WeakRetained positionFromPosition:beginningOfDocument offset:activeAffectedRange];
 
-    v36 = [WeakRetained tokenizer];
-    v37 = [v36 rangeEnclosingPosition:v33 withGranularity:4 inDirection:v27];
+    tokenizer = [WeakRetained tokenizer];
+    v37 = [tokenizer rangeEnclosingPosition:contextBefore withGranularity:4 inDirection:_isNaturallyRTL];
     v38 = [WeakRetained textInRange:v37];
     v39 = [v38 length];
     if (v39)
     {
-      v27 = [v38 _isNaturallyRTL];
+      _isNaturallyRTL = [v38 _isNaturallyRTL];
     }
 
-    [v11 setBaseWritingDirection:{-[PKTextInputHandwritingShot chWritingDirectionFrom:useDefault:](self, "chWritingDirectionFrom:useDefault:", v27, v39 == 0)}];
+    [v11 setBaseWritingDirection:{-[PKTextInputHandwritingShot chWritingDirectionFrom:useDefault:](self, "chWritingDirectionFrom:useDefault:", _isNaturallyRTL, v39 == 0)}];
   }
 
-  v40 = [(PKTextInputHandwritingShot *)self strokeProvider];
-  [v9 frame];
-  v41 = [v40 slicesWithIdentifiers:v70 significantlyOverlapRect:?];
+  strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+  [targetCopy frame];
+  v41 = [strokeProvider slicesWithIdentifiers:allObjects significantlyOverlapRect:?];
 
   [v11 setStrokeCoveredTextRange:{0x7FFFFFFFFFFFFFFFLL, 0}];
   if (v41)
   {
-    v42 = [(PKTextInputHandwritingShot *)self _correctableTextRangeIntersectingStrokesWithIdentifiers:v69 inInputTarget:v9 elementContent:v8];
+    v42 = [(PKTextInputHandwritingShot *)self _correctableTextRangeIntersectingStrokesWithIdentifiers:v69 inInputTarget:targetCopy elementContent:contentCopy];
     [v11 setStrokeCoveredTextRange:{v42, v43}];
   }
 
-  v67 = v9;
-  v44 = [v11 strokeCoveredTextRange];
+  v67 = targetCopy;
+  strokeCoveredTextRange = [v11 strokeCoveredTextRange];
   v46 = v45;
-  v47 = [v11 textContentLength];
-  v48 = [v11 selectedTextRange];
-  v50 = [(PKTextInputHandwritingShot *)self _substringReferenceRangeForStrokeCoveredRange:v44 contentLength:v46 selectedRange:v47, v48, v49];
+  textContentLength = [v11 textContentLength];
+  selectedTextRange = [v11 selectedTextRange];
+  v50 = [(PKTextInputHandwritingShot *)self _substringReferenceRangeForStrokeCoveredRange:strokeCoveredTextRange contentLength:v46 selectedRange:textContentLength, selectedTextRange, v49];
   v52 = v51;
-  v53 = [(PKTextInputHandwritingShot *)self _textContentSubstringInRange:v50 forElementContent:v51, v8];
-  if (v52 == [(__CFString *)v53 length])
+  contentCopy = [(PKTextInputHandwritingShot *)self _textContentSubstringInRange:v50 forElementContent:v51, contentCopy];
+  if (v52 == [(__CFString *)contentCopy length])
   {
-    v54 = 0;
+    string = 0;
   }
 
   else
   {
-    v54 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
   }
 
   v55 = malloc_type_calloc(v52, 0x20uLL, 0x1000040E0EAB150uLL);
-  v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 65532];
+  65532 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 65532];
   if (v50 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v80[0] = 0;
     v80[1] = v80;
     v80[2] = 0x2020000000;
     v80[3] = 0;
-    v56 = [(PKTextInputHandwritingShot *)self canvasController];
-    v57 = [(PKTextInputCanvasController *)v56 canvasCoordinateSpace];
+    canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+    canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __95__PKTextInputHandwritingShot__contentInfoFromElementContent_textInputTarget_strokeIdentifiers___block_invoke;
@@ -1556,22 +1556,22 @@ LABEL_16:
     v71[4] = self;
     v78 = a2;
     v79 = v55;
-    v72 = v54;
-    v73 = v8;
-    v74 = v68;
-    [(PKTextInputElementContent *)v73 enumerateBoundsForCharactersInRange:v50 inCoordinateSpace:v52 reverse:v57 block:0, v71];
+    v72 = string;
+    v73 = contentCopy;
+    v74 = 65532;
+    [(PKTextInputElementContent *)v73 enumerateBoundsForCharactersInRange:v50 inCoordinateSpace:v52 reverse:canvasCoordinateSpace block:0, v71];
 
     _Block_object_dispose(v80, 8);
   }
 
-  if (v54)
+  if (string)
   {
-    v58 = v54;
+    v58 = string;
   }
 
-  else if (v53)
+  else if (contentCopy)
   {
-    v58 = v53;
+    v58 = contentCopy;
   }
 
   else
@@ -1581,12 +1581,12 @@ LABEL_16:
 
   [v11 setReferenceSubstring:v58 range:v50 characterRects:{v52, v55}];
   free(v55);
-  v59 = [(PKTextInputHandwritingShot *)self _protectedCharacterIndexesInRange:v50 forElementContent:v52, v8];
-  [v11 setProtectedCharacterIndexes:v59];
+  contentCopy2 = [(PKTextInputHandwritingShot *)self _protectedCharacterIndexesInRange:v50 forElementContent:v52, contentCopy];
+  [v11 setProtectedCharacterIndexes:contentCopy2];
 
-  v60 = [(PKTextInputHandwritingShot *)self delegate];
-  v61 = [v67 inputTargetIdentifier];
-  [v11 setContainsCommittedStrokes:{objc_msgSend(v60, "handwritingShot:hasCommittedResultsInSessionToElementRecognitionIdentifier:", self, v61)}];
+  delegate2 = [(PKTextInputHandwritingShot *)self delegate];
+  inputTargetIdentifier3 = [v67 inputTargetIdentifier];
+  [v11 setContainsCommittedStrokes:{objc_msgSend(delegate2, "handwritingShot:hasCommittedResultsInSessionToElementRecognitionIdentifier:", self, inputTargetIdentifier3)}];
 
   v62 = [v11 copy];
 
@@ -1646,27 +1646,27 @@ void __95__PKTextInputHandwritingShot__contentInfoFromElementContent_textInputTa
   }
 }
 
-- (int)chWritingDirectionFrom:(int64_t)a3 useDefault:(BOOL)a4
+- (int)chWritingDirectionFrom:(int64_t)from useDefault:(BOOL)default
 {
   v4 = 254;
   v5 = 255;
-  if (!a4)
+  if (!default)
   {
     v5 = 1;
   }
 
   v6 = 254;
-  if (!a4)
+  if (!default)
   {
     v6 = 0;
   }
 
-  if (!a3)
+  if (!from)
   {
     v4 = v6;
   }
 
-  if (a3 == 1)
+  if (from == 1)
   {
     return v5;
   }
@@ -1677,9 +1677,9 @@ void __95__PKTextInputHandwritingShot__contentInfoFromElementContent_textInputTa
   }
 }
 
-- (_NSRange)_substringReferenceRangeForStrokeCoveredRange:(_NSRange)a3 contentLength:(int64_t)a4 selectedRange:(_NSRange)a5
+- (_NSRange)_substringReferenceRangeForStrokeCoveredRange:(_NSRange)range contentLength:(int64_t)length selectedRange:(_NSRange)selectedRange
 {
-  v8 = a3.location == 0x7FFFFFFFFFFFFFFFLL || a3.length == 0 || a3.location + a3.length > a4;
+  v8 = range.location == 0x7FFFFFFFFFFFFFFFLL || range.length == 0 || range.location + range.length > length;
   if (v8)
   {
     length = 0;
@@ -1687,7 +1687,7 @@ void __95__PKTextInputHandwritingShot__contentInfoFromElementContent_textInputTa
 
   else
   {
-    length = a3.length;
+    length = range.length;
   }
 
   if (v8)
@@ -1697,46 +1697,46 @@ void __95__PKTextInputHandwritingShot__contentInfoFromElementContent_textInputTa
 
   else
   {
-    location = a3.location;
+    location = range.location;
   }
 
-  if (a5.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (selectedRange.location == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_21:
     if (location == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = 0;
+      lengthCopy = 0;
     }
 
     else
     {
-      v11 = length;
+      lengthCopy = length;
     }
 
     if (location == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a5.location = a4;
+      selectedRange.location = length;
     }
 
     else
     {
-      a5.location = location;
+      selectedRange.location = location;
     }
 
     goto LABEL_27;
   }
 
-  v11 = 2000;
-  if (a5.length < 0x7D0)
+  lengthCopy = 2000;
+  if (selectedRange.length < 0x7D0)
   {
-    v11 = a5.length;
+    lengthCopy = selectedRange.length;
   }
 
   if (!v8)
   {
-    v18.location = a5.location;
-    v18.length = v11;
-    v12 = NSUnionRange(a3, v18);
+    v18.location = selectedRange.location;
+    v18.length = lengthCopy;
+    v12 = NSUnionRange(range, v18);
     length = v12.length;
     location = v12.location;
     goto LABEL_21;
@@ -1744,40 +1744,40 @@ LABEL_21:
 
 LABEL_27:
   v13 = 60;
-  if (a5.location < 0x3C)
+  if (selectedRange.location < 0x3C)
   {
-    v13 = a5.location;
+    v13 = selectedRange.location;
   }
 
-  v14 = a5.location - v13;
-  v15 = v11 + v13 + 60 - ((v11 + 60 - a4 + a5.location) & ~((v11 + 60 - a4 + a5.location) >> 63));
+  v14 = selectedRange.location - v13;
+  v15 = lengthCopy + v13 + 60 - ((lengthCopy + 60 - length + selectedRange.location) & ~((lengthCopy + 60 - length + selectedRange.location) >> 63));
   result.length = v15;
   result.location = v14;
   return result;
 }
 
-- (int)_contentTypeForElementContent:(id)a3
+- (int)_contentTypeForElementContent:(id)content
 {
-  v3 = a3;
-  v4 = [(PKTextInputElementContent *)v3 textContentType];
-  if (v4)
+  contentCopy = content;
+  textContentType = [(PKTextInputElementContent *)contentCopy textContentType];
+  if (textContentType)
   {
-    v5 = [objc_opt_class() _contentTypeFromTextContentType:v4];
+    v5 = [objc_opt_class() _contentTypeFromTextContentType:textContentType];
   }
 
   else
   {
-    if (v3)
+    if (contentCopy)
     {
-      v6 = [v3[2] keyboardType];
+      keyboardType = [contentCopy[2] keyboardType];
     }
 
     else
     {
-      v6 = 0;
+      keyboardType = 0;
     }
 
-    v5 = [objc_opt_class() _contentTypeFromKeyboardType:v6];
+    v5 = [objc_opt_class() _contentTypeFromKeyboardType:keyboardType];
   }
 
   v7 = v5;
@@ -1785,23 +1785,23 @@ LABEL_27:
   return v7;
 }
 
-- (int)_autoCapitalizationModeForTextInputTraits:(id)a3
+- (int)_autoCapitalizationModeForTextInputTraits:(id)traits
 {
-  v3 = [a3 autocapitalizationType];
-  if (v3 > 3)
+  autocapitalizationType = [traits autocapitalizationType];
+  if (autocapitalizationType > 3)
   {
     return 3;
   }
 
   else
   {
-    return dword_1C801CB30[v3];
+    return dword_1C801CB30[autocapitalizationType];
   }
 }
 
-- (int)_autoCorrectionModeForTextInputTraits:(id)a3
+- (int)_autoCorrectionModeForTextInputTraits:(id)traits
 {
-  if ([a3 autocorrectionType] == 1)
+  if ([traits autocorrectionType] == 1)
   {
     return 2;
   }
@@ -1812,13 +1812,13 @@ LABEL_27:
   }
 }
 
-- (id)_textContentSubstringInRange:(_NSRange)a3 forElementContent:(id)a4
+- (id)_textContentSubstringInRange:(_NSRange)range forElementContent:(id)content
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = v6;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([(PKTextInputElementContent *)v6 stringInRange:length], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  length = range.length;
+  location = range.location;
+  contentCopy = content;
+  v7 = contentCopy;
+  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([(PKTextInputElementContent *)contentCopy stringInRange:length], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = &stru_1F476BD20;
   }
@@ -1826,48 +1826,48 @@ LABEL_27:
   return v8;
 }
 
-- (id)_protectedCharacterIndexesInRange:(_NSRange)a3 forElementContent:(id)a4
+- (id)_protectedCharacterIndexesInRange:(_NSRange)range forElementContent:(id)content
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = v6;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([(PKTextInputElementContent *)v6 protectedCharacterIndexesInRange:length], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  length = range.length;
+  location = range.location;
+  contentCopy = content;
+  v7 = contentCopy;
+  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([(PKTextInputElementContent *)contentCopy protectedCharacterIndexesInRange:length], (indexSet = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  return v8;
+  return indexSet;
 }
 
-- (_NSRange)_correctableTextRangeIntersectingStrokesWithIdentifiers:(id)a3 inInputTarget:(id)a4 elementContent:(id)a5
+- (_NSRange)_correctableTextRangeIntersectingStrokesWithIdentifiers:(id)identifiers inInputTarget:(id)target elementContent:(id)content
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKTextInputHandwritingShot *)self delegate];
-  v12 = [v9 inputTargetIdentifier];
-  v13 = [v11 handwritingShot:self activePreviewRangeForElementRecognitionIdentifier:v12 queryItemStableIdentifier:0];
+  identifiersCopy = identifiers;
+  targetCopy = target;
+  contentCopy = content;
+  delegate = [(PKTextInputHandwritingShot *)self delegate];
+  inputTargetIdentifier = [targetCopy inputTargetIdentifier];
+  v13 = [delegate handwritingShot:self activePreviewRangeForElementRecognitionIdentifier:inputTargetIdentifier queryItemStableIdentifier:0];
   v15 = v14;
 
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  if ((v13 == 0x7FFFFFFFFFFFFFFFLL || !v15) && [(PKTextInputElementContent *)v10 contentLength])
+  if ((v13 == 0x7FFFFFFFFFFFFFFFLL || !v15) && [(PKTextInputElementContent *)contentCopy contentLength])
   {
-    v17 = [(PKTextInputHandwritingShot *)self strokeProvider];
-    v18 = [v8 allObjects];
-    [v17 boundsForSliceIdentifiers:v18];
+    strokeProvider = [(PKTextInputHandwritingShot *)self strokeProvider];
+    allObjects = [identifiersCopy allObjects];
+    [strokeProvider boundsForSliceIdentifiers:allObjects];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
 
-    v27 = [(PKTextInputHandwritingShot *)self canvasController];
-    v28 = [(PKTextInputCanvasController *)v27 canvasCoordinateSpace];
+    canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+    canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
 
-    v29 = [(PKTextInputHandwritingShot *)self delegate];
-    v30 = [v29 handwritingShot:self shouldSuppressGesturesForStrokesBounds:v28 coordinateSpace:{v20, v22, v24, v26}];
+    delegate2 = [(PKTextInputHandwritingShot *)self delegate];
+    v30 = [delegate2 handwritingShot:self shouldSuppressGesturesForStrokesBounds:canvasCoordinateSpace coordinateSpace:{v20, v22, v24, v26}];
 
-    if ((v30 & 1) != 0 || (!v10 ? (v31 = 0) : (v31 = v10[1]), v32 = v31, [(PKTextInputElement *)v32 coordinateSpace], v33 = objc_claimAutoreleasedReturnValue(), v33, v32, !v33))
+    if ((v30 & 1) != 0 || (!contentCopy ? (v31 = 0) : (v31 = contentCopy[1]), v32 = v31, [(PKTextInputElement *)v32 coordinateSpace], v33 = objc_claimAutoreleasedReturnValue(), v33, v32, !v33))
     {
       v35 = 0;
       v16 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1875,7 +1875,7 @@ LABEL_27:
 
     else
     {
-      v16 = [(PKTextInputHandwritingShot *)self _editingGestureCorrectableRangeForStrokeBounds:v9 InInputTarget:v10 elementContent:v20, v22, v24, v26];
+      v16 = [(PKTextInputHandwritingShot *)self _editingGestureCorrectableRangeForStrokeBounds:targetCopy InInputTarget:contentCopy elementContent:v20, v22, v24, v26];
       v35 = v34;
     }
   }
@@ -1902,19 +1902,19 @@ LABEL_27:
   return result;
 }
 
-- (_NSRange)_editingGestureCorrectableRangeForStrokeBounds:(CGRect)a3 InInputTarget:(id)a4 elementContent:(id)a5
+- (_NSRange)_editingGestureCorrectableRangeForStrokeBounds:(CGRect)bounds InInputTarget:(id)target elementContent:(id)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v104 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v12)
+  targetCopy = target;
+  contentCopy = content;
+  v13 = contentCopy;
+  if (contentCopy)
   {
-    v14 = v12[1];
+    v14 = contentCopy[1];
   }
 
   else
@@ -1923,14 +1923,14 @@ LABEL_27:
   }
 
   v15 = v14;
-  v16 = [(PKTextInputElement *)v15 coordinateSpace];
+  coordinateSpace = [(PKTextInputElement *)v15 coordinateSpace];
 
-  if (v16)
+  if (coordinateSpace)
   {
-    v17 = [(PKTextInputHandwritingShot *)self canvasController];
-    v18 = [(PKTextInputCanvasController *)v17 canvasCoordinateSpace];
+    canvasController = [(PKTextInputHandwritingShot *)self canvasController];
+    canvasCoordinateSpace = [(PKTextInputCanvasController *)canvasController canvasCoordinateSpace];
 
-    v19 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v18, v16, x, y, width, height);
+    v19 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(canvasCoordinateSpace, coordinateSpace, x, y, width, height);
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -1947,7 +1947,7 @@ LABEL_27:
     }
 
     v27 = v26;
-    v28 = [(PKTextInputElement *)v27 frame];
+    frame = [(PKTextInputElement *)v27 frame];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -1956,7 +1956,7 @@ LABEL_27:
     v106.origin.y = v21;
     v106.size.width = v23;
     v106.size.height = v25;
-    v112.origin.x = v28;
+    v112.origin.x = frame;
     v112.origin.y = v30;
     v112.size.width = v32;
     v112.size.height = v34;
@@ -1965,10 +1965,10 @@ LABEL_27:
     v36 = v107.origin.y;
     v37 = v107.size.width;
     v38 = v107.size.height;
-    v39 = [(PKTextInputElementContent *)v13 contentLength];
+    contentLength = [(PKTextInputElementContent *)v13 contentLength];
     if (v13)
     {
-      v40 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:v16 inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v35, v36];
+      v40 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:coordinateSpace inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v35, v36];
     }
 
     else
@@ -1976,7 +1976,7 @@ LABEL_27:
       v40 = 0;
     }
 
-    v71 = v18;
+    v71 = canvasCoordinateSpace;
     v108.origin.x = v35;
     v108.origin.y = v36;
     v108.size.width = v37;
@@ -1984,7 +1984,7 @@ LABEL_27:
     MaxX = CGRectGetMaxX(v108);
     if (v13)
     {
-      v42 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:v16 inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:MaxX, v36];
+      v42 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:coordinateSpace inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:MaxX, v36];
     }
 
     else
@@ -2013,12 +2013,12 @@ LABEL_27:
     MaxY = CGRectGetMaxY(v109);
     if (v13)
     {
-      v45 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:v16 inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v35, MaxY];
+      maxY = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:coordinateSpace inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v35, MaxY];
     }
 
     else
     {
-      v45 = 0;
+      maxY = 0;
     }
 
     v110.origin.x = v35;
@@ -2033,39 +2033,39 @@ LABEL_27:
     v47 = CGRectGetMaxY(v111);
     if (v13)
     {
-      v48 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:v16 inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v46, v47];
-      v49 = v11;
+      v48 = [(PKTextInputElementContent *)v13 characterIndexClosestToPoint:coordinateSpace inCoordinateSpace:0 forInsertingText:1 adjustForLastCharacter:v46, v47];
+      v49 = targetCopy;
     }
 
     else
     {
-      v49 = v11;
+      v49 = targetCopy;
       v48 = 0;
     }
 
     v93 = 0;
     v94 = &v93;
     v95 = 0x2020000000;
-    if (v45 <= v48)
+    if (maxY <= v48)
     {
       v50 = v48;
     }
 
     else
     {
-      v50 = v45;
+      v50 = maxY;
     }
 
     v96 = v50;
-    v51 = v39 - 1;
+    v51 = contentLength - 1;
     v52 = 20;
-    if (v40 == v39 - 1 && v42 == v51)
+    if (v40 == contentLength - 1 && v42 == v51)
     {
       v53 = v71;
-      if (v45 == v51)
+      if (maxY == v51)
       {
         v52 = 20;
-        if (v39 - 2 <= 0x3E5 && v48 == v45)
+        if (contentLength - 2 <= 0x3E5 && v48 == maxY)
         {
           v89 = 0;
           v90 = &v89;
@@ -2077,8 +2077,8 @@ LABEL_27:
           v84[3] = &unk_1E82D8198;
           v87 = &v89;
           v85 = v13;
-          v86 = v16;
-          v88 = v39;
+          v86 = coordinateSpace;
+          v88 = contentLength;
           [(PKTextInputElementContent *)v85 enumerateBoundsForCharactersInRange:1 inCoordinateSpace:v86 reverse:0 block:v84];
           if (*(v90 + 24) == 1)
           {
@@ -2091,16 +2091,16 @@ LABEL_27:
             }
 
             v98[3] = 0;
-            v94[3] = v45;
+            v94[3] = maxY;
           }
 
           else
           {
-            v45 = 20;
+            maxY = 20;
           }
 
           _Block_object_dispose(&v89, 8);
-          v52 = v45;
+          v52 = maxY;
         }
       }
     }
@@ -2115,7 +2115,7 @@ LABEL_27:
     if (v57 == 0x7FFFFFFFFFFFFFFFLL || v94[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v55 = 0;
-      v11 = v49;
+      targetCopy = v49;
     }
 
     else
@@ -2135,12 +2135,12 @@ LABEL_27:
       *&v83[7] = v37;
       *&v83[8] = v38;
       v83[4] = &v97;
-      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v58 inCoordinateSpace:v57 + 1 reverse:v16 block:1, v83];
+      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v58 inCoordinateSpace:v57 + 1 reverse:coordinateSpace block:1, v83];
       v59 = v94[3];
       v82[0] = MEMORY[0x1E69E9820];
-      if (v52 >= (v39 - v59))
+      if (v52 >= (contentLength - v59))
       {
-        v60 = v39 - v59;
+        v60 = contentLength - v59;
       }
 
       else
@@ -2156,7 +2156,7 @@ LABEL_27:
       *&v82[7] = v37;
       *&v82[8] = v38;
       v82[4] = &v93;
-      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v59 inCoordinateSpace:v60 reverse:v16 block:0, v82];
+      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v59 inCoordinateSpace:v60 reverse:coordinateSpace block:0, v82];
       v61 = v98[3];
       v62 = v94[3] - v61;
       v89 = 0;
@@ -2182,7 +2182,7 @@ LABEL_27:
       v77[4] = &buf;
       v77[5] = &v89;
       v77[6] = &v78;
-      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v61 inCoordinateSpace:v62 + 1 reverse:v16 block:0, v77];
+      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v61 inCoordinateSpace:v62 + 1 reverse:coordinateSpace block:0, v77];
       v73 = 0;
       v74 = &v73;
       v75 = 0x2020000000;
@@ -2198,9 +2198,9 @@ LABEL_27:
       v72[4] = &buf;
       v72[5] = &v89;
       v72[6] = &v73;
-      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v61 inCoordinateSpace:v62 + 1 reverse:v16 block:1, v72];
+      [(PKTextInputElementContent *)v13 enumerateBoundsForCharactersInRange:v61 inCoordinateSpace:v62 + 1 reverse:coordinateSpace block:1, v72];
       v63 = v74[3];
-      v11 = v49;
+      targetCopy = v49;
       v53 = v71;
       if (v63 == 0x7FFFFFFFFFFFFFFFLL || v79[3] == 0x7FFFFFFFFFFFFFFFLL || v63 >= [(PKTextInputElementContent *)v13 contentLength])
       {
@@ -2219,7 +2219,7 @@ LABEL_27:
         if (v64 <= 10.0)
         {
           v65 = v90[3];
-          if (v65 != 0x7FFFFFFFFFFFFFFFLL && v65 < v39)
+          if (v65 != 0x7FFFFFFFFFFFFFFFLL && v65 < contentLength)
           {
             v56 = [(PKTextInputElementContent *)v13 rangeOfCharacterAtIndex:v65];
             v55 = v66;
@@ -2363,35 +2363,35 @@ void __106__PKTextInputHandwritingShot__editingGestureCorrectableRangeForStrokeB
   }
 }
 
-+ (int)_contentTypeFromTextContentType:(id)a3
++ (int)_contentTypeFromTextContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69DE588]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69DE588]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DE480]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69DE480]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DE4A0]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69DE4A0]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DE580]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69DE580]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DE578]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69DE578]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E69DE4A8]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E69DE4A8]])
   {
     v4 = 7;
   }
@@ -2404,40 +2404,40 @@ void __106__PKTextInputHandwritingShot__editingGestureCorrectableRangeForStrokeB
   return v4;
 }
 
-+ (int)_contentTypeFromKeyboardType:(int64_t)a3
++ (int)_contentTypeFromKeyboardType:(int64_t)type
 {
-  if ((a3 - 1) > 0xA)
+  if ((type - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return dword_1C801CB40[a3 - 1];
+    return dword_1C801CB40[type - 1];
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v20 = a3;
-  v4 = [(PKTextInputHandwritingShot *)self shotState];
-  if (v4 > 4)
+  descriptionCopy = description;
+  shotState = [(PKTextInputHandwritingShot *)self shotState];
+  if (shotState > 4)
   {
     v5 = &stru_1F476BD20;
   }
 
   else
   {
-    v5 = off_1E82D8208[v4];
+    v5 = off_1E82D8208[shotState];
   }
 
-  v20[2](v20, @"state", v5);
-  v6 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
-  if (v6)
+  descriptionCopy[2](descriptionCopy, @"state", v5);
+  _inputElementsByRecognitionID = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+  if (_inputElementsByRecognitionID)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
-    v9 = [v7 stringWithFormat:@"%ld", objc_msgSend(v8, "count")];
+    _inputElementsByRecognitionID2 = [(PKTextInputHandwritingShot *)self _inputElementsByRecognitionID];
+    v9 = [v7 stringWithFormat:@"%ld", objc_msgSend(_inputElementsByRecognitionID2, "count")];
   }
 
   else
@@ -2445,7 +2445,7 @@ void __106__PKTextInputHandwritingShot__editingGestureCorrectableRangeForStrokeB
     v9 = @"Not ready";
   }
 
-  v20[2](v20, @"inputElements", v9);
+  descriptionCopy[2](descriptionCopy, @"inputElements", v9);
   if ([(PKTextInputHandwritingShot *)self _didRequestTextInputElements])
   {
     v10 = @"Yes";
@@ -2456,34 +2456,34 @@ void __106__PKTextInputHandwritingShot__editingGestureCorrectableRangeForStrokeB
     v10 = @"No";
   }
 
-  v20[2](v20, @"requestedElements", v10);
-  v11 = [(PKTextInputHandwritingShot *)self inputDrawing];
-  if (v11)
+  descriptionCopy[2](descriptionCopy, @"requestedElements", v10);
+  inputDrawing = [(PKTextInputHandwritingShot *)self inputDrawing];
+  if (inputDrawing)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(PKTextInputHandwritingShot *)self inputDrawing];
-    v14 = [v13 strokes];
-    v15 = [v12 stringWithFormat:@"%ld visible strokes", objc_msgSend(v14, "count")];
-    v20[2](v20, @"inputDrawing", v15);
+    inputDrawing2 = [(PKTextInputHandwritingShot *)self inputDrawing];
+    strokes = [inputDrawing2 strokes];
+    v15 = [v12 stringWithFormat:@"%ld visible strokes", objc_msgSend(strokes, "count")];
+    descriptionCopy[2](descriptionCopy, @"inputDrawing", v15);
   }
 
   else
   {
-    v20[2](v20, @"inputDrawing", @"None");
+    descriptionCopy[2](descriptionCopy, @"inputDrawing", @"None");
   }
 
-  v16 = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
-  if (v16)
+  inputInProgressStroke = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
+  if (inputInProgressStroke)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
-    v19 = [v17 stringWithFormat:@"%lu points", objc_msgSend(v18, "_pointsCount")];
-    v20[2](v20, @"inProgressStroke", v19);
+    inputInProgressStroke2 = [(PKTextInputHandwritingShot *)self inputInProgressStroke];
+    v19 = [v17 stringWithFormat:@"%lu points", objc_msgSend(inputInProgressStroke2, "_pointsCount")];
+    descriptionCopy[2](descriptionCopy, @"inProgressStroke", v19);
   }
 
   else
   {
-    v20[2](v20, @"inProgressStroke", @"None");
+    descriptionCopy[2](descriptionCopy, @"inProgressStroke", @"None");
   }
 }
 

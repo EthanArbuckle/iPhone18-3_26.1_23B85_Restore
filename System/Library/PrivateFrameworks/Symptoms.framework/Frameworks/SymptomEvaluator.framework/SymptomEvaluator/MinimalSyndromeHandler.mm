@@ -1,8 +1,8 @@
 @interface MinimalSyndromeHandler
-+ (id)getHandlerByName:(id)a3;
++ (id)getHandlerByName:(id)name;
 + (void)initialize;
 - (NSString)description;
-- (void)didReceiveSyndrome:(id)a3;
+- (void)didReceiveSyndrome:(id)syndrome;
 @end
 
 @implementation MinimalSyndromeHandler
@@ -16,31 +16,31 @@
   MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (id)getHandlerByName:(id)a3
++ (id)getHandlerByName:(id)name
 {
-  v4 = a3;
-  p_isa = [minimalSyndromeHandlerDictionary objectForKey:v4];
+  nameCopy = name;
+  p_isa = [minimalSyndromeHandlerDictionary objectForKey:nameCopy];
   if (!p_isa)
   {
     v6 = objc_alloc_init(MinimalSyndromeHandler);
     p_isa = &v6->super.isa;
     if (v6)
     {
-      objc_storeStrong(&v6->_syndromeName, a3);
-      v7 = [v4 UTF8String];
-      if (!v7)
+      objc_storeStrong(&v6->_syndromeName, name);
+      uTF8String = [nameCopy UTF8String];
+      if (!uTF8String)
       {
         [WiFiTriggerHandler getHandlerByName:?];
       }
 
-      v8 = strdup(v7);
+      v8 = strdup(uTF8String);
       if (!v8)
       {
         [WiFiTriggerHandler getHandlerByName:?];
       }
 
       p_isa[2] = v8;
-      [minimalSyndromeHandlerDictionary setObject:p_isa forKey:v4];
+      [minimalSyndromeHandlerDictionary setObject:p_isa forKey:nameCopy];
     }
   }
 
@@ -59,16 +59,16 @@
   return v6;
 }
 
-- (void)didReceiveSyndrome:(id)a3
+- (void)didReceiveSyndrome:(id)syndrome
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  syndromeCopy = syndrome;
   v5 = configurationLogHandle;
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
     v14 = 136315138;
-    v15 = [v4 reason];
+    reason = [syndromeCopy reason];
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "%s", &v14, 0xCu);
   }
 
@@ -85,7 +85,7 @@
       syndromeUTF8Name = self->_syndromeUTF8Name;
       v11 = self->_eventHandler;
       v14 = 134218242;
-      v15 = v11;
+      reason = v11;
       v16 = 2080;
       v17 = syndromeUTF8Name;
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "Minimal Syndrome Handler allocated Managed Event Handler at %p for %s", &v14, 0x16u);
@@ -94,7 +94,7 @@
     eventHandler = self->_eventHandler;
   }
 
-  [(ManagedEventHandler *)eventHandler didReceiveSyndrome:v4];
+  [(ManagedEventHandler *)eventHandler didReceiveSyndrome:syndromeCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }

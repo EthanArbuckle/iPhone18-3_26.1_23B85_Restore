@@ -1,35 +1,35 @@
 @interface OKSettingCollectionProxy
-- (OKSettingCollectionProxy)initWithObjects:(id)a3 withBlock:(id)a4;
-- (OKSettingCollectionProxy)initWithObjects:(id)a3 withKeyPath:(id)a4;
-- (id)settingObjectForKey:(id)a3;
+- (OKSettingCollectionProxy)initWithObjects:(id)objects withBlock:(id)block;
+- (OKSettingCollectionProxy)initWithObjects:(id)objects withKeyPath:(id)path;
+- (id)settingObjectForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation OKSettingCollectionProxy
 
-- (OKSettingCollectionProxy)initWithObjects:(id)a3 withBlock:(id)a4
+- (OKSettingCollectionProxy)initWithObjects:(id)objects withBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = OKSettingCollectionProxy;
   v6 = [(OKSettingCollectionProxy *)&v8 init];
   if (v6)
   {
-    v6->_listOfObjects = a3;
-    v6->_keyResolverBlock = [a4 copy];
+    v6->_listOfObjects = objects;
+    v6->_keyResolverBlock = [block copy];
   }
 
   return v6;
 }
 
-- (OKSettingCollectionProxy)initWithObjects:(id)a3 withKeyPath:(id)a4
+- (OKSettingCollectionProxy)initWithObjects:(id)objects withKeyPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = OKSettingCollectionProxy;
   v6 = [(OKSettingCollectionProxy *)&v8 init];
   if (v6)
   {
-    v6->_listOfObjects = a3;
-    v6->_keyPath = a4;
+    v6->_listOfObjects = objects;
+    v6->_keyPath = path;
   }
 
   return v6;
@@ -63,7 +63,7 @@
   [(OKSettingCollectionProxy *)&v6 dealloc];
 }
 
-- (id)settingObjectForKey:(id)a3
+- (id)settingObjectForKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
   p_keyResolverBlock = &self->_keyResolverBlock;
@@ -103,7 +103,7 @@ LABEL_10:
       }
 
       v15 = *(*(&v16 + 1) + 8 * v14);
-      if ([objc_msgSend(v15 valueForKeyPath:{self->_keyPath), "isEqualToString:", a3}])
+      if ([objc_msgSend(v15 valueForKeyPath:{self->_keyPath), "isEqualToString:", key}])
       {
         return v15;
       }

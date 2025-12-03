@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMPFSKPatternFragmentNode.description.getter();
   v5 = v4;
 

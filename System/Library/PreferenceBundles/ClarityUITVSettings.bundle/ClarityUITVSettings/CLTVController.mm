@@ -2,8 +2,8 @@
 - (CLTVController)init;
 - (id)_mediaSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_openTVApp:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_openTVApp:(id)app;
 - (void)viewDidLoad;
 @end
 
@@ -32,8 +32,8 @@
     v4 = v6;
   }
 
-  v7 = [(CLTVController *)self navigationItem];
-  [v7 setTitle:v4];
+  navigationItem = [(CLTVController *)self navigationItem];
+  [navigationItem setTitle:v4];
 }
 
 - (id)specifiers
@@ -43,8 +43,8 @@
   if (!v4)
   {
     v5 = [(CLTVController *)self loadSpecifiersFromPlistName:@"CLTVController" target:self];
-    v6 = [(CLTVController *)self _mediaSpecifiers];
-    v7 = [(CLTVController *)self specifiersWithPrivacyLinkSupport:v6];
+    _mediaSpecifiers = [(CLTVController *)self _mediaSpecifiers];
+    v7 = [(CLTVController *)self specifiersWithPrivacyLinkSupport:_mediaSpecifiers];
     v8 = *&self->AXCLFBasePrivacyLinkController_opaque[v3];
     *&self->AXCLFBasePrivacyLinkController_opaque[v3] = v7;
 
@@ -73,27 +73,27 @@
   v9 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
   [(CLTVController *)self setViewLibrarySpecifier:v9];
 
-  v10 = [(CLTVController *)self viewLibrarySpecifier];
-  [v10 setButtonAction:"_openTVApp:"];
+  viewLibrarySpecifier = [(CLTVController *)self viewLibrarySpecifier];
+  [viewLibrarySpecifier setButtonAction:"_openTVApp:"];
 
-  v11 = [(CLTVController *)self viewLibrarySpecifier];
-  [v3 addObject:v11];
+  viewLibrarySpecifier2 = [(CLTVController *)self viewLibrarySpecifier];
+  [v3 addObject:viewLibrarySpecifier2];
 
   return v3;
 }
 
-- (void)_openTVApp:(id)a3
+- (void)_openTVApp:(id)app
 {
   v4 = [[NSURL alloc] initWithString:@"https://tv.apple.com/library"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
   [v3 openURL:v4 withOptions:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CLTVController;
-  v4 = [(CLTVController *)&v6 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(CLTVController *)&v6 tableView:view cellForRowAtIndexPath:path];
 
   return v4;
 }

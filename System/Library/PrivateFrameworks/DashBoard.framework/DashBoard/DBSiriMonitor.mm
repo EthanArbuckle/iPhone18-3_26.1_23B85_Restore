@@ -1,10 +1,10 @@
 @interface DBSiriMonitor
 - (DBSiriMonitor)init;
 - (void)_updateSiriEnabled;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setSiriEnabled:(BOOL)a3;
+- (void)removeObserver:(id)observer;
+- (void)setSiriEnabled:(BOOL)enabled;
 @end
 
 @implementation DBSiriMonitor
@@ -20,11 +20,11 @@
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_handleAssistantLanguageChanged_ name:*MEMORY[0x277CEF018] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleAssistantLanguageChanged_ name:*MEMORY[0x277CEF018] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_handleAssistantPreferencesChanged_ name:*MEMORY[0x277CEF060] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_handleAssistantPreferencesChanged_ name:*MEMORY[0x277CEF060] object:0];
 
     [(DBSiriMonitor *)v2 _updateSiriEnabled];
   }
@@ -34,58 +34,58 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DBSiriMonitor;
   [(DBSiriMonitor *)&v4 dealloc];
 }
 
-- (void)setSiriEnabled:(BOOL)a3
+- (void)setSiriEnabled:(BOOL)enabled
 {
-  if (self->_siriEnabled != a3)
+  if (self->_siriEnabled != enabled)
   {
-    self->_siriEnabled = a3;
-    v5 = [(DBSiriMonitor *)self observers];
-    [v5 siriMonitorDidChangeEnabled:self];
+    self->_siriEnabled = enabled;
+    observers = [(DBSiriMonitor *)self observers];
+    [observers siriMonitorDidChangeEnabled:self];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSiriMonitor *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSiriMonitor *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSiriMonitor *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSiriMonitor *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)_updateSiriEnabled
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  if (v4)
+  if (assistantIsEnabled)
   {
-    v5 = [MEMORY[0x277CEF218] currentLanguageCode];
-    if (v5)
+    currentLanguageCode = [MEMORY[0x277CEF218] currentLanguageCode];
+    if (currentLanguageCode)
     {
-      v4 = [MEMORY[0x277CEF218] assistantIsSupportedForLanguageCode:v5 error:0];
+      assistantIsEnabled = [MEMORY[0x277CEF218] assistantIsSupportedForLanguageCode:currentLanguageCode error:0];
     }
 
     else
     {
-      v4 = 1;
+      assistantIsEnabled = 1;
     }
   }
 
-  [(DBSiriMonitor *)self setSiriEnabled:v4];
+  [(DBSiriMonitor *)self setSiriEnabled:assistantIsEnabled];
 }
 
 @end

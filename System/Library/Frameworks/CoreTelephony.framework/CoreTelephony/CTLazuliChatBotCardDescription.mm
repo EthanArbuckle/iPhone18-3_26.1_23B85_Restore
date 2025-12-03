@@ -1,9 +1,9 @@
 @interface CTLazuliChatBotCardDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotCardDescription:(id)a3;
-- (CTLazuliChatBotCardDescription)initWithCoder:(id)a3;
-- (CTLazuliChatBotCardDescription)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotCardDescription:(id)description;
+- (CTLazuliChatBotCardDescription)initWithCoder:(id)coder;
+- (CTLazuliChatBotCardDescription)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,69 +12,69 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotCardDescription *)self text];
-  [v3 appendFormat:@", text = %@", v4];
+  text = [(CTLazuliChatBotCardDescription *)self text];
+  [v3 appendFormat:@", text = %@", text];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotCardDescription:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotCardDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotCardDescription *)self text];
-  v6 = [v4 text];
-  if (v5 == v6)
+  descriptionCopy = description;
+  text = [(CTLazuliChatBotCardDescription *)self text];
+  text2 = [descriptionCopy text];
+  if (text == text2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CTLazuliChatBotCardDescription *)self text];
-    v8 = [v4 text];
-    v9 = [v7 isEqualToString:v8];
+    text3 = [(CTLazuliChatBotCardDescription *)self text];
+    text4 = [descriptionCopy text];
+    v9 = [text3 isEqualToString:text4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCardDescription *)self isEqualToCTLazuliChatBotCardDescription:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotCardDescription *)self isEqualToCTLazuliChatBotCardDescription:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotCardDescription allocWithZone:?];
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   [(CTLazuliChatBotCardDescription *)v5 setText:v6];
 
   return v5;
 }
 
-- (CTLazuliChatBotCardDescription)initWithCoder:(id)a3
+- (CTLazuliChatBotCardDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTLazuliChatBotCardDescription;
   v5 = [(CTLazuliChatBotCardDescription *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTextKey"];
     text = v5->_text;
     v5->_text = v6;
   }
@@ -82,24 +82,24 @@
   return v5;
 }
 
-- (CTLazuliChatBotCardDescription)initWithReflection:(const void *)a3
+- (CTLazuliChatBotCardDescription)initWithReflection:(const void *)reflection
 {
   v9.receiver = self;
   v9.super_class = CTLazuliChatBotCardDescription;
   v4 = [(CTLazuliChatBotCardDescription *)&v9 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     text = v4->_text;
     v4->_text = v6;
   }

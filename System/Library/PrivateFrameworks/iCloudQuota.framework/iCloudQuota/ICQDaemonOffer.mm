@@ -1,36 +1,36 @@
 @interface ICQDaemonOffer
 + (id)defaultPlaceholderKeys;
-+ (id)placeholderKeysInString:(id)a3 fromKeys:(id)a4;
-+ (id)stringWithPlaceholderFormat:(id)a3 alternateString:(id)a4;
-+ (id)stringWithPlaceholderFormat:(id)a3 substitutions:(id)a4;
-+ (id)substitutionForPlaceholderKey:(id)a3 outIsBelowMin:(BOOL *)a4;
-+ (id)substitutionsForPlaceholderKeys:(id)a3 checkIfBelowMin:(BOOL)a4 outIsMissingSubstitution:(BOOL *)a5;
++ (id)placeholderKeysInString:(id)string fromKeys:(id)keys;
++ (id)stringWithPlaceholderFormat:(id)format alternateString:(id)string;
++ (id)stringWithPlaceholderFormat:(id)format substitutions:(id)substitutions;
++ (id)substitutionForPlaceholderKey:(id)key outIsBelowMin:(BOOL *)min;
++ (id)substitutionsForPlaceholderKeys:(id)keys checkIfBelowMin:(BOOL)min outIsMissingSubstitution:(BOOL *)substitution;
 - (BOOL)isBuddyOffer;
 - (BOOL)isDefaultOffer;
 - (BOOL)isEventOffer;
 - (BOOL)isPremiumOffer;
-- (ICQDaemonOffer)initWithDictionary:(id)a3;
+- (ICQDaemonOffer)initWithDictionary:(id)dictionary;
 - (NSDictionary)lockScreenInfo;
 - (id)_eligibleAppLaunchLinks;
-- (id)_initWithAccount:(id)a3 error:(id)a4;
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4;
+- (id)_initWithAccount:(id)account error:(id)error;
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary;
 - (id)_mutablePersistenceDictionary;
-- (id)alertSpecificationForAlertKey:(id)a3;
-- (id)appLaunchLinkForBundleID:(id)a3;
+- (id)alertSpecificationForAlertKey:(id)key;
+- (id)appLaunchLinkForBundleID:(id)d;
 - (int64_t)level;
 - (int64_t)requestType;
 - (void)_addSampleAlert;
 - (void)_initSubclassFromServerDictionary;
 - (void)cacheLiftUIContent;
-- (void)setServerDictionary:(id)a3;
+- (void)setServerDictionary:(id)dictionary;
 @end
 
 @implementation ICQDaemonOffer
 
 - (int64_t)level
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"type"];
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = [serverDictionary objectForKeyedSubscript:@"type"];
   v4 = _ICQLevelForString(v3);
 
   return v4;
@@ -38,32 +38,32 @@
 
 - (BOOL)isBuddyOffer
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = _ICQIsBuddyOfferDictionary(v2);
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = _ICQIsBuddyOfferDictionary(serverDictionary);
 
   return v3;
 }
 
 - (BOOL)isDefaultOffer
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = _ICQIsDefaultOfferDictionary(v2);
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = _ICQIsDefaultOfferDictionary(serverDictionary);
 
   return v3;
 }
 
 - (BOOL)isPremiumOffer
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = _ICQIsPremiumOfferDictionary(v2);
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = _ICQIsPremiumOfferDictionary(serverDictionary);
 
   return v3;
 }
 
 - (BOOL)isEventOffer
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = _ICQIsEventOfferDictionary(v2);
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = _ICQIsEventOfferDictionary(serverDictionary);
 
   return v3;
 }
@@ -100,8 +100,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ICQDaemonOffer *)self internalAppLaunchLinks];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  internalAppLaunchLinks = [(ICQDaemonOffer *)self internalAppLaunchLinks];
+  v3 = [internalAppLaunchLinks countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -113,14 +113,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(internalAppLaunchLinks);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cacheLiftUIContentIfNeeded];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [internalAppLaunchLinks countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -129,15 +129,15 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (ICQDaemonOffer)initWithDictionary:(id)a3
+- (ICQDaemonOffer)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICQDaemonOffer;
-  v5 = [(ICQDaemonPersisted *)&v9 initWithDictionary:v4];
+  v5 = [(ICQDaemonPersisted *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eligibleAppLaunchLinks"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eligibleAppLaunchLinks"];
     savedEligibleAppLaunchLinks = v5->_savedEligibleAppLaunchLinks;
     v5->_savedEligibleAppLaunchLinks = v6;
 
@@ -147,25 +147,25 @@
   return v5;
 }
 
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary
 {
   v5.receiver = self;
   v5.super_class = ICQDaemonOffer;
-  return [(ICQDaemonPersisted *)&v5 _initWithAccount:a3 serverDictionary:a4];
+  return [(ICQDaemonPersisted *)&v5 _initWithAccount:account serverDictionary:dictionary];
 }
 
-- (id)_initWithAccount:(id)a3 error:(id)a4
+- (id)_initWithAccount:(id)account error:(id)error
 {
   v5.receiver = self;
   v5.super_class = ICQDaemonOffer;
-  return [(ICQDaemonPersisted *)&v5 _initWithAccount:a3 error:a4];
+  return [(ICQDaemonPersisted *)&v5 _initWithAccount:account error:error];
 }
 
-- (void)setServerDictionary:(id)a3
+- (void)setServerDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = ICQDaemonOffer;
-  [(ICQDaemonPersisted *)&v4 setServerDictionary:a3];
+  [(ICQDaemonPersisted *)&v4 setServerDictionary:dictionary];
   [(ICQDaemonOffer *)self _initSubclassFromServerDictionary];
 }
 
@@ -173,9 +173,9 @@
 {
   v8.receiver = self;
   v8.super_class = ICQDaemonOffer;
-  v3 = [(ICQDaemonPersisted *)&v8 _mutablePersistenceDictionary];
-  v4 = v3;
-  if (v3)
+  _mutablePersistenceDictionary = [(ICQDaemonPersisted *)&v8 _mutablePersistenceDictionary];
+  v4 = _mutablePersistenceDictionary;
+  if (_mutablePersistenceDictionary)
   {
     if (self->_notificationID)
     {
@@ -187,9 +187,9 @@
       notificationID = &stru_288431E38;
     }
 
-    [v3 setObject:notificationID forKey:@"notificationId"];
-    v6 = [(ICQDaemonOffer *)self _eligibleAppLaunchLinks];
-    [v4 setObject:v6 forKey:@"eligibleAppLaunchLinks"];
+    [_mutablePersistenceDictionary setObject:notificationID forKey:@"notificationId"];
+    _eligibleAppLaunchLinks = [(ICQDaemonOffer *)self _eligibleAppLaunchLinks];
+    [v4 setObject:_eligibleAppLaunchLinks forKey:@"eligibleAppLaunchLinks"];
   }
 
   return v4;
@@ -198,26 +198,26 @@
 - (void)_initSubclassFromServerDictionary
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = [(ICQDaemonPersisted *)self serverDictionary];
-  v4 = _ICQStringFromDictionaryKey(v3, @"offerId", &stru_288431E38);
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v4 = _ICQStringFromDictionaryKey(serverDictionary, @"offerId", &stru_288431E38);
   offerId = self->_offerId;
   self->_offerId = v4;
 
-  v6 = [(ICQDaemonPersisted *)self serverDictionary];
-  v7 = _ICQStringFromDictionaryKey(v6, @"notificationId", &stru_288431E38);
+  serverDictionary2 = [(ICQDaemonPersisted *)self serverDictionary];
+  v7 = _ICQStringFromDictionaryKey(serverDictionary2, @"notificationId", &stru_288431E38);
   notificationID = self->_notificationID;
   self->_notificationID = v7;
 
-  v9 = [(ICQDaemonPersisted *)self serverDictionary];
-  v10 = _ICQAlertSpecificationForServerDict(v9);
+  serverDictionary3 = [(ICQDaemonPersisted *)self serverDictionary];
+  v10 = _ICQAlertSpecificationForServerDict(serverDictionary3);
   internalAlertSpecification = self->_internalAlertSpecification;
   self->_internalAlertSpecification = v10;
 
-  v12 = [(ICQDaemonPersisted *)self serverDictionary];
-  v13 = [v12 objectForKeyedSubscript:@"followUpInfo"];
+  serverDictionary4 = [(ICQDaemonPersisted *)self serverDictionary];
+  v13 = [serverDictionary4 objectForKeyedSubscript:@"followUpInfo"];
   if (!v13)
   {
-    v13 = [v12 objectForKeyedSubscript:@"followupInfo"];
+    v13 = [serverDictionary4 objectForKeyedSubscript:@"followupInfo"];
     if (!v13)
     {
       v14 = _ICQGetLogSystem();
@@ -247,11 +247,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v15 = [[_ICQDetailFollowupSpecification alloc] initWithServerDictionary:v12];
+  v15 = [[_ICQDetailFollowupSpecification alloc] initWithServerDictionary:serverDictionary4];
   *buf = 0;
-  _ICQServerDictToOfferTypeAndLevel(v12, buf, 0);
+  _ICQServerDictToOfferTypeAndLevel(serverDictionary4, buf, 0);
   [(_ICQFollowupSpecification *)v15 setForAccountGroup:(*buf < 9uLL) & (0x162u >> buf[0])];
-  v16 = v12;
+  v16 = serverDictionary4;
   v17 = [v16 objectForKeyedSubscript:@"followUpInfo"];
   v18 = v17;
   if (v17)
@@ -311,8 +311,8 @@ LABEL_20:
   internalFollowupSpecification = self->_internalFollowupSpecification;
   self->_internalFollowupSpecification = &v15->super;
 
-  v37 = [(ICQDaemonPersisted *)self serverDictionary];
-  v38 = [v37 objectForKeyedSubscript:@"appLaunchLink"];
+  serverDictionary5 = [(ICQDaemonPersisted *)self serverDictionary];
+  v38 = [serverDictionary5 objectForKeyedSubscript:@"appLaunchLink"];
   if (!v38)
   {
     v39 = _ICQGetLogSystem();
@@ -340,7 +340,7 @@ LABEL_35:
     goto LABEL_40;
   }
 
-  v55 = v37;
+  v55 = serverDictionary5;
   v39 = [MEMORY[0x277CBEBF8] mutableCopy];
   v56 = 0u;
   v57 = 0u;
@@ -396,7 +396,7 @@ LABEL_35:
   v39 = v39;
   v48 = v39;
 LABEL_39:
-  v37 = v55;
+  serverDictionary5 = v55;
 LABEL_40:
 
   internalAppLaunchLinks = self->_internalAppLaunchLinks;
@@ -473,8 +473,8 @@ LABEL_40:
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 isEligible])
         {
-          v10 = [v9 appId];
-          [v3 addObject:v10];
+          appId = [v9 appId];
+          [v3 addObject:appId];
         }
       }
 
@@ -490,11 +490,11 @@ LABEL_40:
   return v11;
 }
 
-- (id)appLaunchLinkForBundleID:(id)a3
+- (id)appLaunchLinkForBundleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSArray *)self->_savedEligibleAppLaunchLinks containsObject:v4])
+  dCopy = d;
+  if ([(NSArray *)self->_savedEligibleAppLaunchLinks containsObject:dCopy])
   {
     v16 = 0u;
     v17 = 0u;
@@ -515,8 +515,8 @@ LABEL_40:
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 appId];
-          v11 = [v10 isEqualToString:v4];
+          appId = [v9 appId];
+          v11 = [appId isEqualToString:dCopy];
 
           if (v11)
           {
@@ -550,18 +550,18 @@ LABEL_13:
 
 - (NSDictionary)lockScreenInfo
 {
-  v2 = [(ICQDaemonPersisted *)self serverDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"lockScreenInfo"];
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v3 = [serverDictionary objectForKeyedSubscript:@"lockScreenInfo"];
 
   return v3;
 }
 
-- (id)alertSpecificationForAlertKey:(id)a3
+- (id)alertSpecificationForAlertKey:(id)key
 {
   v26 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v4 = [(ICQDaemonPersisted *)self serverDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"inlineAlertInfo"];
+  keyCopy = key;
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v5 = [serverDictionary objectForKeyedSubscript:@"inlineAlertInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -593,7 +593,7 @@ LABEL_13:
           {
             v13 = [v12 objectForKeyedSubscript:@"alertKey"];
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 isEqualToString:v18])
+            if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 isEqualToString:keyCopy])
             {
               v14 = _ICQAlertSpecificationForServerDict(v12);
 
@@ -664,11 +664,11 @@ void __50__ICQDaemonOffer_Internal__defaultPlaceholderKeys__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)placeholderKeysInString:(id)a3 fromKeys:(id)a4
++ (id)placeholderKeysInString:(id)string fromKeys:(id)keys
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 componentsSeparatedByString:@"%$"];
+  keysCopy = keys;
+  v6 = [string componentsSeparatedByString:@"%$"];
   if ([v6 count] >= 2)
   {
     v8 = objc_opt_new();
@@ -682,7 +682,7 @@ void __50__ICQDaemonOffer_Internal__defaultPlaceholderKeys__block_invoke()
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = v5;
+        v11 = keysCopy;
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v12)
         {
@@ -736,11 +736,11 @@ LABEL_15:
   return v7;
 }
 
-+ (id)substitutionForPlaceholderKey:(id)a3 outIsBelowMin:(BOOL *)a4
++ (id)substitutionForPlaceholderKey:(id)key outIsBelowMin:(BOOL *)min
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 isEqualToString:@"PhotoLibrarySize"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"PhotoLibrarySize"])
   {
     v6 = +[ICQDaemonOfferConditions photosLibrarySize];
 LABEL_3:
@@ -748,11 +748,11 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([v5 isEqualToString:@"PhotoLibraryUploadSize"])
+  if ([keyCopy isEqualToString:@"PhotoLibraryUploadSize"])
   {
     v9 = +[ICQDaemonOfferConditions photosLibraryUploadSize];
     v6 = v9;
-    if (!a4 || [v9 integerValue] >= 100000000)
+    if (!min || [v9 integerValue] >= 100000000)
     {
       goto LABEL_3;
     }
@@ -768,12 +768,12 @@ LABEL_3:
     }
 
     v7 = 1;
-    *a4 = 1;
+    *min = 1;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"PhotosVideosCount"])
+    if (![keyCopy isEqualToString:@"PhotosVideosCount"])
     {
       v6 = 0;
       goto LABEL_19;
@@ -781,7 +781,7 @@ LABEL_3:
 
     v13 = +[ICQDaemonOfferConditions photosVideosCount];
     v6 = v13;
-    if (a4 && [v13 integerValue] <= 0)
+    if (min && [v13 integerValue] <= 0)
     {
       v16 = _ICQGetLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -794,7 +794,7 @@ LABEL_3:
       }
 
       v7 = 0;
-      *a4 = 1;
+      *min = 1;
     }
 
     else
@@ -819,8 +819,8 @@ LABEL_19:
   else
   {
     v11 = objc_opt_new();
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v11 setLocale:v12];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v11 setLocale:currentLocale];
 
     [v11 setNumberStyle:1];
     [v11 setUsesGroupingSeparator:1];
@@ -835,17 +835,17 @@ LABEL_20:
   return v8;
 }
 
-+ (id)substitutionsForPlaceholderKeys:(id)a3 checkIfBelowMin:(BOOL)a4 outIsMissingSubstitution:(BOOL *)a5
++ (id)substitutionsForPlaceholderKeys:(id)keys checkIfBelowMin:(BOOL)min outIsMissingSubstitution:(BOOL *)substitution
 {
-  v6 = a4;
+  minCopy = min;
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  keysCopy = keys;
   v23 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v8;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v10)
   {
@@ -864,9 +864,9 @@ LABEL_20:
 
         v15 = *(*(&v25 + 1) + 8 * i);
         v24 = 0;
-        v16 = [a1 substitutionForPlaceholderKey:v15 outIsBelowMin:{&v24, v22}];
+        v16 = [self substitutionForPlaceholderKey:v15 outIsBelowMin:{&v24, v22}];
         v17 = v16;
-        if (!v6 || v24 != 1)
+        if (!minCopy || v24 != 1)
         {
           if (v16)
           {
@@ -885,9 +885,9 @@ LABEL_20:
           }
         }
 
-        if (a5)
+        if (substitution)
         {
-          *a5 = 1;
+          *substitution = 1;
         }
 
 LABEL_15:
@@ -905,27 +905,27 @@ LABEL_15:
   return v19;
 }
 
-+ (id)stringWithPlaceholderFormat:(id)a3 alternateString:(id)a4
++ (id)stringWithPlaceholderFormat:(id)format alternateString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 placeholderExistsInString:v6])
+  formatCopy = format;
+  stringCopy = string;
+  if ([self placeholderExistsInString:formatCopy])
   {
-    v8 = [a1 defaultPlaceholderKeys];
-    v9 = [a1 placeholderKeysInString:v6 fromKeys:v8];
+    defaultPlaceholderKeys = [self defaultPlaceholderKeys];
+    v9 = [self placeholderKeysInString:formatCopy fromKeys:defaultPlaceholderKeys];
 
     v15 = 0;
     v10 = [MEMORY[0x277CBEB98] setWithArray:v9];
-    v11 = [a1 substitutionsForPlaceholderKeys:v10 checkIfBelowMin:v7 != 0 outIsMissingSubstitution:&v15];
+    v11 = [self substitutionsForPlaceholderKeys:v10 checkIfBelowMin:stringCopy != 0 outIsMissingSubstitution:&v15];
 
-    if (v7 && (v15 & 1) != 0)
+    if (stringCopy && (v15 & 1) != 0)
     {
-      v12 = v7;
+      v12 = stringCopy;
     }
 
     else
     {
-      v12 = [a1 stringWithPlaceholderFormat:v6 substitutions:v11];
+      v12 = [self stringWithPlaceholderFormat:formatCopy substitutions:v11];
     }
 
     v13 = v12;
@@ -933,21 +933,21 @@ LABEL_15:
 
   else
   {
-    v13 = v6;
+    v13 = formatCopy;
   }
 
   return v13;
 }
 
-+ (id)stringWithPlaceholderFormat:(id)a3 substitutions:(id)a4
++ (id)stringWithPlaceholderFormat:(id)format substitutions:(id)substitutions
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 componentsSeparatedByString:@"%$"];
+  formatCopy = format;
+  substitutionsCopy = substitutions;
+  v7 = [formatCopy componentsSeparatedByString:@"%$"];
   if ([v7 count] > 1)
   {
-    v27 = v5;
+    v27 = formatCopy;
     v9 = [v7 objectAtIndexedSubscript:0];
     v10 = [v9 mutableCopy];
 
@@ -961,7 +961,7 @@ LABEL_15:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v13 = v6;
+        v13 = substitutionsCopy;
         v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v14)
         {
@@ -1031,12 +1031,12 @@ LABEL_19:
 
     v8 = [v10 copy];
 
-    v5 = v27;
+    formatCopy = v27;
   }
 
   else
   {
-    v8 = v5;
+    v8 = formatCopy;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1046,8 +1046,8 @@ LABEL_19:
 
 - (void)_addSampleAlert
 {
-  v3 = [(ICQDaemonPersisted *)self serverDictionary];
-  v7 = [v3 mutableCopy];
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v7 = [serverDictionary mutableCopy];
 
   if (![(ICQDaemonOffer *)self level])
   {

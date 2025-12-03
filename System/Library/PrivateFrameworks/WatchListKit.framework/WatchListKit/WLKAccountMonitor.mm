@@ -1,9 +1,9 @@
 @interface WLKAccountMonitor
 + (id)sharedInstance;
-- (BOOL)_shouldNotifyAccountChange:(id)a3 newAccount:(id)a4;
-- (BOOL)_shouldNotifyStoreFrontChange:(id)a3 newAccount:(id)a4;
+- (BOOL)_shouldNotifyAccountChange:(id)change newAccount:(id)account;
+- (BOOL)_shouldNotifyStoreFrontChange:(id)change newAccount:(id)account;
 - (WLKAccountMonitor)init;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -35,12 +35,12 @@ uint64_t __35__WLKAccountMonitor_sharedInstance__block_invoke()
   v2 = [(WLKAccountMonitor *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D6C478] activeAccount];
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
     activeAccount = v2->_activeAccount;
-    v2->_activeAccount = v3;
+    v2->_activeAccount = activeAccount;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
   }
 
   return v2;
@@ -48,54 +48,54 @@ uint64_t __35__WLKAccountMonitor_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WLKAccountMonitor;
   [(WLKAccountMonitor *)&v4 dealloc];
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
-  v5 = [v4 wlk_stringForKey:*MEMORY[0x277CB8C90]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo wlk_stringForKey:*MEMORY[0x277CB8C90]];
 
   if (([v5 isEqualToString:*MEMORY[0x277CB8D58]] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CB8D60]))
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [MEMORY[0x277D6C478] activeAccount];
-    v8 = [(WLKAccountMonitor *)v6 activeAccount];
-    v9 = [(WLKAccountMonitor *)v6 _shouldNotifyAccountChange:v8 newAccount:v7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
+    activeAccount2 = [(WLKAccountMonitor *)selfCopy activeAccount];
+    v9 = [(WLKAccountMonitor *)selfCopy _shouldNotifyAccountChange:activeAccount2 newAccount:activeAccount];
 
     if (v9)
     {
-      objc_storeStrong(&v6->_activeAccount, v7);
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 postNotificationName:@"WLKAccountMonitorAccountDidChange" object:v6];
+      objc_storeStrong(&selfCopy->_activeAccount, activeAccount);
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"WLKAccountMonitorAccountDidChange" object:selfCopy];
     }
 
-    v11 = [(WLKAccountMonitor *)v6 activeAccount];
-    v12 = [(WLKAccountMonitor *)v6 _shouldNotifyStoreFrontChange:v11 newAccount:v7];
+    activeAccount3 = [(WLKAccountMonitor *)selfCopy activeAccount];
+    v12 = [(WLKAccountMonitor *)selfCopy _shouldNotifyStoreFrontChange:activeAccount3 newAccount:activeAccount];
 
     if (v12)
     {
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 postNotificationName:@"WLKAccountMontiorStoreFrontDidChange" object:v6];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 postNotificationName:@"WLKAccountMontiorStoreFrontDidChange" object:selfCopy];
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)_shouldNotifyAccountChange:(id)a3 newAccount:(id)a4
+- (BOOL)_shouldNotifyAccountChange:(id)change newAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && !v6)
+  changeCopy = change;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (changeCopy && !accountCopy)
   {
     v8 = WLKSystemLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -111,7 +111,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v5 && v6)
+  if (!changeCopy && accountCopy)
   {
     v8 = WLKSystemLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -129,11 +129,11 @@ LABEL_10:
   }
 
   v11 = 0;
-  if (v5 && v6)
+  if (changeCopy && accountCopy)
   {
-    v13 = [v5 identifier];
-    v14 = [v7 identifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [changeCopy identifier];
+    identifier2 = [v7 identifier];
+    v15 = [identifier isEqualToString:identifier2];
 
     if (v15)
     {
@@ -158,18 +158,18 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_shouldNotifyStoreFrontChange:(id)a3 newAccount:(id)a4
+- (BOOL)_shouldNotifyStoreFrontChange:(id)change newAccount:(id)account
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  changeCopy = change;
+  accountCopy = account;
+  v7 = accountCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (changeCopy && accountCopy)
   {
-    v9 = [v5 ams_storefront];
-    v10 = [v7 ams_storefront];
-    v11 = [v9 isEqualToString:v10];
+    ams_storefront = [changeCopy ams_storefront];
+    ams_storefront2 = [v7 ams_storefront];
+    v11 = [ams_storefront isEqualToString:ams_storefront2];
 
     if (v11)
     {
@@ -181,12 +181,12 @@ LABEL_11:
       v12 = WLKSystemLogObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v5 ams_storefront];
-        v14 = [v7 ams_storefront];
+        ams_storefront3 = [changeCopy ams_storefront];
+        ams_storefront4 = [v7 ams_storefront];
         v17 = 138412546;
-        v18 = v13;
+        v18 = ams_storefront3;
         v19 = 2112;
-        v20 = v14;
+        v20 = ams_storefront4;
         _os_log_impl(&dword_272A0F000, v12, OS_LOG_TYPE_DEFAULT, "WLKAccountMonitor - Store front changed %@ - %@", &v17, 0x16u);
       }
 

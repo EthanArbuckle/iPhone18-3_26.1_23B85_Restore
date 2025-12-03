@@ -1,59 +1,59 @@
 @interface WBSCloudTabDevice
-+ (BOOL)isCloudTabDeviceDictionary:(id)a3;
-+ (unint64_t)tabCountInDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isCloudTabDeviceDictionary:(id)dictionary;
++ (unint64_t)tabCountInDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 - (NSString)disambiguatedName;
-- (WBSCloudTabDevice)initWithDeviceName:(id)a3 lastModified:(id)a4 hasDuplicateName:(BOOL)a5 tabs:(id)a6 uuid:(id)a7 isEphemeralDevice:(BOOL)a8;
-- (WBSCloudTabDevice)initWithDictionary:(id)a3 uuid:(id)a4;
-- (WBSCloudTabDevice)initWithParameters:(id)a3 uuid:(id)a4;
-- (id)deviceByRemovingTab:(id)a3;
-- (id)deviceByRemovingTabs:(id)a3;
-- (id)deviceBySettingDisambiguatedName:(id)a3;
+- (WBSCloudTabDevice)initWithDeviceName:(id)name lastModified:(id)modified hasDuplicateName:(BOOL)duplicateName tabs:(id)tabs uuid:(id)uuid isEphemeralDevice:(BOOL)device;
+- (WBSCloudTabDevice)initWithDictionary:(id)dictionary uuid:(id)uuid;
+- (WBSCloudTabDevice)initWithParameters:(id)parameters uuid:(id)uuid;
+- (id)deviceByRemovingTab:(id)tab;
+- (id)deviceByRemovingTabs:(id)tabs;
+- (id)deviceBySettingDisambiguatedName:(id)name;
 @end
 
 @implementation WBSCloudTabDevice
 
-- (WBSCloudTabDevice)initWithDictionary:(id)a3 uuid:(id)a4
+- (WBSCloudTabDevice)initWithDictionary:(id)dictionary uuid:(id)uuid
 {
-  v6 = a4;
-  v7 = [WBSCloudTabDeviceParameters parametersWithDictionary:a3];
-  v8 = [(WBSCloudTabDevice *)self initWithParameters:v7 uuid:v6];
+  uuidCopy = uuid;
+  v7 = [WBSCloudTabDeviceParameters parametersWithDictionary:dictionary];
+  v8 = [(WBSCloudTabDevice *)self initWithParameters:v7 uuid:uuidCopy];
 
   return v8;
 }
 
-- (WBSCloudTabDevice)initWithParameters:(id)a3 uuid:(id)a4
+- (WBSCloudTabDevice)initWithParameters:(id)parameters uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  uuidCopy = uuid;
   v21.receiver = self;
   v21.super_class = WBSCloudTabDevice;
   v8 = [(WBSCloudTabDevice *)&v21 init];
   if (v8)
   {
-    v8->_closeRequestSupported = [v6 closeRequestSupported];
-    v8->_cloudKitBookmarkSyncingSupported = [v6 cloudKitBookmarkSyncingSupported];
-    v9 = [v6 deviceTypeIdentifier];
+    v8->_closeRequestSupported = [parametersCopy closeRequestSupported];
+    v8->_cloudKitBookmarkSyncingSupported = [parametersCopy cloudKitBookmarkSyncingSupported];
+    deviceTypeIdentifier = [parametersCopy deviceTypeIdentifier];
     deviceTypeIdentifier = v8->_deviceTypeIdentifier;
-    v8->_deviceTypeIdentifier = v9;
+    v8->_deviceTypeIdentifier = deviceTypeIdentifier;
 
-    v8->_ephemeralDevice = [v6 isEphemeralDevice];
-    v8->_hasDuplicateName = [v6 hasDuplicateName];
-    v11 = [v6 lastModified];
+    v8->_ephemeralDevice = [parametersCopy isEphemeralDevice];
+    v8->_hasDuplicateName = [parametersCopy hasDuplicateName];
+    lastModified = [parametersCopy lastModified];
     lastModified = v8->_lastModified;
-    v8->_lastModified = v11;
+    v8->_lastModified = lastModified;
 
-    v13 = [v6 deviceName];
+    deviceName = [parametersCopy deviceName];
     name = v8->_name;
-    v8->_name = v13;
+    v8->_name = deviceName;
 
-    v15 = [v6 tabs];
+    tabs = [parametersCopy tabs];
     tabs = v8->_tabs;
-    v8->_tabs = v15;
+    v8->_tabs = tabs;
 
-    v17 = [v7 copy];
+    v17 = [uuidCopy copy];
     uuid = v8->_uuid;
     v8->_uuid = v17;
 
@@ -63,23 +63,23 @@
   return v8;
 }
 
-- (WBSCloudTabDevice)initWithDeviceName:(id)a3 lastModified:(id)a4 hasDuplicateName:(BOOL)a5 tabs:(id)a6 uuid:(id)a7 isEphemeralDevice:(BOOL)a8
+- (WBSCloudTabDevice)initWithDeviceName:(id)name lastModified:(id)modified hasDuplicateName:(BOOL)duplicateName tabs:(id)tabs uuid:(id)uuid isEphemeralDevice:(BOOL)device
 {
-  v8 = a8;
-  v10 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
+  deviceCopy = device;
+  duplicateNameCopy = duplicateName;
+  uuidCopy = uuid;
+  tabsCopy = tabs;
+  modifiedCopy = modified;
+  nameCopy = name;
   v18 = objc_alloc_init(WBSCloudTabDeviceParameters);
-  [(WBSCloudTabDeviceParameters *)v18 setDeviceName:v17];
+  [(WBSCloudTabDeviceParameters *)v18 setDeviceName:nameCopy];
 
-  [(WBSCloudTabDeviceParameters *)v18 setLastModified:v16];
-  [(WBSCloudTabDeviceParameters *)v18 setHasDuplicateName:v10];
-  [(WBSCloudTabDeviceParameters *)v18 setTabs:v15];
+  [(WBSCloudTabDeviceParameters *)v18 setLastModified:modifiedCopy];
+  [(WBSCloudTabDeviceParameters *)v18 setHasDuplicateName:duplicateNameCopy];
+  [(WBSCloudTabDeviceParameters *)v18 setTabs:tabsCopy];
 
-  [(WBSCloudTabDeviceParameters *)v18 setEphemeralDevice:v8];
-  v19 = [(WBSCloudTabDevice *)self initWithParameters:v18 uuid:v14];
+  [(WBSCloudTabDeviceParameters *)v18 setEphemeralDevice:deviceCopy];
+  v19 = [(WBSCloudTabDevice *)self initWithParameters:v18 uuid:uuidCopy];
 
   return v19;
 }
@@ -95,15 +95,15 @@
   return disambiguatedName;
 }
 
-- (id)deviceByRemovingTab:(id)a3
+- (id)deviceByRemovingTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   tabs = self->_tabs;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__WBSCloudTabDevice_deviceByRemovingTab___block_invoke;
   v12[3] = &unk_1E7FB8768;
-  v6 = v4;
+  v6 = tabCopy;
   v13 = v6;
   v7 = [(NSArray *)tabs indexOfObjectPassingTest:v12];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -122,15 +122,15 @@
   return v8;
 }
 
-- (id)deviceByRemovingTabs:(id)a3
+- (id)deviceByRemovingTabs:(id)tabs
 {
-  v4 = a3;
+  tabsCopy = tabs;
   tabs = self->_tabs;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__WBSCloudTabDevice_deviceByRemovingTabs___block_invoke;
   v11[3] = &unk_1E7FB8768;
-  v6 = v4;
+  v6 = tabsCopy;
   v12 = v6;
   v7 = [(NSArray *)tabs indexesOfObjectsPassingTest:v11];
   if ([v7 count])
@@ -192,11 +192,11 @@ LABEL_11:
   return v5;
 }
 
-- (id)deviceBySettingDisambiguatedName:(id)a3
+- (id)deviceBySettingDisambiguatedName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [[WBSCloudTabDevice alloc] initWithDeviceName:self->_name lastModified:self->_lastModified hasDuplicateName:self->_hasDuplicateName tabs:self->_tabs uuid:self->_uuid isEphemeralDevice:self->_ephemeralDevice];
-  v6 = [v4 copy];
+  v6 = [nameCopy copy];
 
   disambiguatedName = v5->_disambiguatedName;
   v5->_disambiguatedName = v6;
@@ -204,10 +204,10 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -215,11 +215,11 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (uuid = self->_uuid, [(WBSCloudTabDevice *)v4 uuid], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(uuid) = [(NSString *)uuid isEqualToString:v6], v6, uuid))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (uuid = self->_uuid, [(WBSCloudTabDevice *)equalCopy uuid], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(uuid) = [(NSString *)uuid isEqualToString:v6], v6, uuid))
     {
-      v7 = [(WBSCloudTabDevice *)self dictionaryRepresentation];
-      v8 = [(WBSCloudTabDevice *)v4 dictionaryRepresentation];
-      v9 = [v7 isEqualToDictionary:v8];
+      dictionaryRepresentation = [(WBSCloudTabDevice *)self dictionaryRepresentation];
+      dictionaryRepresentation2 = [(WBSCloudTabDevice *)equalCopy dictionaryRepresentation];
+      v9 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
     }
 
     else
@@ -249,18 +249,18 @@ LABEL_11:
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [WBSCloudTabDeviceParameters parametersWithDevice:self];
-  v3 = [v2 dictionaryRepresentation];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-+ (BOOL)isCloudTabDeviceDictionary:(id)a3
++ (BOOL)isCloudTabDeviceDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safari_stringForKey:@"DictionaryType"];
+    v4 = [dictionaryCopy safari_stringForKey:@"DictionaryType"];
     if ([v4 length])
     {
       v5 = [v4 isEqualToString:@"Device"];
@@ -280,9 +280,9 @@ LABEL_11:
   return v5;
 }
 
-+ (unint64_t)tabCountInDictionary:(id)a3
++ (unint64_t)tabCountInDictionary:(id)dictionary
 {
-  v3 = [a3 safari_arrayForKey:@"Tabs"];
+  v3 = [dictionary safari_arrayForKey:@"Tabs"];
   v4 = [v3 count];
 
   return v4;

@@ -1,28 +1,28 @@
 @interface NUObservatory
 - (NUObservatory)init;
-- (id)addObserverForKey:(int64_t)a3 queue:(id)a4 block:(id)a5;
-- (void)_notifyAllObserversForKey:(int64_t)a3 withBlock:(id)a4;
-- (void)_removeObserver:(id)a3;
-- (void)_removeObserver:(id)a3 forKey:(int64_t)a4;
-- (void)addObserver:(id)a3 forKey:(int64_t)a4 queue:(id)a5 block:(id)a6;
-- (void)notifyAllObserversForKey:(int64_t)a3 withBlock:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forKey:(int64_t)a4;
+- (id)addObserverForKey:(int64_t)key queue:(id)queue block:(id)block;
+- (void)_notifyAllObserversForKey:(int64_t)key withBlock:(id)block;
+- (void)_removeObserver:(id)observer;
+- (void)_removeObserver:(id)observer forKey:(int64_t)key;
+- (void)addObserver:(id)observer forKey:(int64_t)key queue:(id)queue block:(id)block;
+- (void)notifyAllObserversForKey:(int64_t)key withBlock:(id)block;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forKey:(int64_t)key;
 @end
 
 @implementation NUObservatory
 
-- (void)_notifyAllObserversForKey:(int64_t)a3 withBlock:(id)a4
+- (void)_notifyAllObserversForKey:(int64_t)key withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   observations = self->_observations;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __53__NUObservatory__notifyAllObserversForKey_withBlock___block_invoke;
   v13 = &unk_1E810B350;
-  v14 = v6;
-  v15 = a3;
-  v8 = v6;
+  v14 = blockCopy;
+  keyCopy = key;
+  v8 = blockCopy;
   v9 = [(NSMutableArray *)observations indexesOfObjectsPassingTest:&v10];
   [(NSMutableArray *)self->_observations removeObjectsAtIndexes:v9, v10, v11, v12, v13];
 }
@@ -39,31 +39,31 @@ BOOL __53__NUObservatory__notifyAllObserversForKey_withBlock___block_invoke(uint
   return v4 == 0;
 }
 
-- (void)notifyAllObserversForKey:(int64_t)a3 withBlock:(id)a4
+- (void)notifyAllObserversForKey:(int64_t)key withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   serializer = self->_serializer;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__NUObservatory_notifyAllObserversForKey_withBlock___block_invoke;
   block[3] = &unk_1E810B328;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  keyCopy = key;
   block[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   dispatch_sync(serializer, block);
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observations = self->_observations;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__NUObservatory__removeObserver___block_invoke;
   v8[3] = &unk_1E810B300;
-  v9 = v4;
-  v6 = v4;
+  v9 = observerCopy;
+  v6 = observerCopy;
   v7 = [(NSMutableArray *)observations indexesOfObjectsPassingTest:v8];
   [(NSMutableArray *)self->_observations removeObjectsAtIndexes:v7];
 }
@@ -84,11 +84,11 @@ BOOL __33__NUObservatory__removeObserver___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v7 = NUAssertLogger_27562();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -109,8 +109,8 @@ BOOL __33__NUObservatory__removeObserver___block_invoke(uint64_t a1, void *a2)
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v14;
         v27 = 2114;
@@ -121,8 +121,8 @@ BOOL __33__NUObservatory__removeObserver___block_invoke(uint64_t a1, void *a2)
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -137,22 +137,22 @@ BOOL __33__NUObservatory__removeObserver___block_invoke(uint64_t a1, void *a2)
   block[2] = __32__NUObservatory_removeObserver___block_invoke;
   block[3] = &unk_1E810B958;
   block[4] = self;
-  v24 = v4;
-  v6 = v4;
+  v24 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(serializer, block);
 }
 
-- (void)_removeObserver:(id)a3 forKey:(int64_t)a4
+- (void)_removeObserver:(id)observer forKey:(int64_t)key
 {
-  v6 = a3;
+  observerCopy = observer;
   observations = self->_observations;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __40__NUObservatory__removeObserver_forKey___block_invoke;
   v13 = &unk_1E810B2D8;
-  v14 = v6;
-  v15 = a4;
-  v8 = v6;
+  v14 = observerCopy;
+  keyCopy = key;
+  v8 = observerCopy;
   v9 = [(NSMutableArray *)observations indexesOfObjectsPassingTest:&v10];
   [(NSMutableArray *)self->_observations removeObjectsAtIndexes:v9, v10, v11, v12, v13];
 }
@@ -175,11 +175,11 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (void)removeObserver:(id)a3 forKey:(int64_t)a4
+- (void)removeObserver:(id)observer forKey:(int64_t)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v9 = NUAssertLogger_27562();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -200,8 +200,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v16;
         v30 = 2114;
@@ -212,8 +212,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -228,19 +228,19 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
   block[2] = __39__NUObservatory_removeObserver_forKey___block_invoke;
   block[3] = &unk_1E810B750;
   block[4] = self;
-  v26 = v6;
-  v27 = a4;
-  v8 = v6;
+  v26 = observerCopy;
+  keyCopy = key;
+  v8 = observerCopy;
   dispatch_sync(serializer, block);
 }
 
-- (void)addObserver:(id)a3 forKey:(int64_t)a4 queue:(id)a5 block:(id)a6
+- (void)addObserver:(id)observer forKey:(int64_t)key queue:(id)queue block:(id)block
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v10)
+  observerCopy = observer;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!observerCopy)
   {
     v17 = NUAssertLogger_27562();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -261,8 +261,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v31;
         v53 = 2114;
@@ -273,8 +273,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -283,8 +283,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
     _NUAssertFailHandler("[NUObservatory addObserver:forKey:queue:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUObservatory.m", 89, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "observer != nil");
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = blockCopy;
+  if (!blockCopy)
   {
     v24 = NUAssertLogger_27562();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -305,8 +305,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v40;
         v53 = 2114;
@@ -317,8 +317,8 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -327,7 +327,7 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
     _NUAssertFailHandler("[NUObservatory addObserver:forKey:queue:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUObservatory.m", 90, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "block != nil");
   }
 
-  v14 = [[_NUObservation alloc] initWithObserver:v10 key:a4 queue:v11 block:v12];
+  v14 = [[_NUObservation alloc] initWithObserver:observerCopy key:key queue:queueCopy block:blockCopy];
   serializer = self->_serializer;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -339,12 +339,12 @@ BOOL __40__NUObservatory__removeObserver_forKey___block_invoke(uint64_t a1, void
   dispatch_sync(serializer, block);
 }
 
-- (id)addObserverForKey:(int64_t)a3 queue:(id)a4 block:(id)a5
+- (id)addObserverForKey:(int64_t)key queue:(id)queue block:(id)block
 {
-  v8 = a5;
-  v9 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v10 = objc_alloc_init(_NUObserver);
-  [(NUObservatory *)self addObserver:v10 forKey:a3 queue:v9 block:v8];
+  [(NUObservatory *)self addObserver:v10 forKey:key queue:queueCopy block:blockCopy];
 
   return v10;
 }

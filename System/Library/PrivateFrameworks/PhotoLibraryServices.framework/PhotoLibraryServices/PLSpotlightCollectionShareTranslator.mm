@@ -1,45 +1,45 @@
 @interface PLSpotlightCollectionShareTranslator
-+ (id)spotlightSearchableItemFromCollectionShare:(id)a3;
++ (id)spotlightSearchableItemFromCollectionShare:(id)share;
 @end
 
 @implementation PLSpotlightCollectionShareTranslator
 
-+ (id)spotlightSearchableItemFromCollectionShare:(id)a3
++ (id)spotlightSearchableItemFromCollectionShare:(id)share
 {
-  v5 = a3;
-  if (!v5)
+  shareCopy = share;
+  if (!shareCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PLSpotlightCollectionShareTranslator.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"collectionShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSpotlightCollectionShareTranslator.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"collectionShare"}];
   }
 
   v6 = objc_opt_new();
-  v7 = [v5 title];
-  [v6 setPhotosTitle:v7];
+  title = [shareCopy title];
+  [v6 setPhotosTitle:title];
 
   [v6 setPhotosResultType:@"com.apple.photos.search.result.collection.collectionShare"];
-  v8 = [v5 photoLibrary];
-  v9 = [v8 libraryServicesManager];
-  v10 = [v9 wellKnownPhotoLibraryIdentifier];
+  photoLibrary = [shareCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v10 <= 1)
+  if (wellKnownPhotoLibraryIdentifier <= 1)
   {
-    v11 = [v6 photosTitle];
-    v12 = [v11 length];
+    photosTitle = [v6 photosTitle];
+    v12 = [photosTitle length];
 
     if (v12)
     {
-      v13 = [v5 uuid];
+      uuid = [shareCopy uuid];
       v14 = PLServicesLocalizedFrameworkString();
-      v15 = [v6 photosTitle];
-      [PLSpotlightTranslatorUtilities tagCSSearchableItem:v6 entityInstanceIdentifier:v13 typeIdentifier:@"AlbumEntity" typeDisplayName:v14 displayTitle:v15 displaySubtitle:0];
+      photosTitle2 = [v6 photosTitle];
+      [PLSpotlightTranslatorUtilities tagCSSearchableItem:v6 entityInstanceIdentifier:uuid typeIdentifier:@"AlbumEntity" typeDisplayName:v14 displayTitle:photosTitle2 displaySubtitle:0];
     }
   }
 
-  v16 = [PLSpotlightDonationUtilities domainIdentifierForPhotoLibraryIdentifier:v10];
+  v16 = [PLSpotlightDonationUtilities domainIdentifierForPhotoLibraryIdentifier:wellKnownPhotoLibraryIdentifier];
   v17 = objc_alloc(MEMORY[0x1E6964E80]);
-  v18 = [v5 uuid];
-  v19 = [v17 initWithUniqueIdentifier:v18 domainIdentifier:v16 attributeSet:v6];
+  uuid2 = [shareCopy uuid];
+  v19 = [v17 initWithUniqueIdentifier:uuid2 domainIdentifier:v16 attributeSet:v6];
 
   return v19;
 }

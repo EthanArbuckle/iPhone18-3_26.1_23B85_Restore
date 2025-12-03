@@ -1,15 +1,15 @@
 @interface HDMinorExperiencesPlugin
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 @end
 
 @implementation HDMinorExperiencesPlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[HDMinorExperiencesProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDMinorExperiencesProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else

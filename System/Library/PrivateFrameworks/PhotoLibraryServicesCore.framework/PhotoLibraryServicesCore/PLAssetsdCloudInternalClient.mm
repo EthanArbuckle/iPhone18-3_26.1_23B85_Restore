@@ -3,62 +3,62 @@
 - (BOOL)isReadyForAnalysisCPLInitialDownloadCompleted;
 - (BOOL)isReadyForAnalysisQuickCheck;
 - (BOOL)isReadyForCloudPhotoLibrary;
-- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 error:(id *)a6;
-- (BOOL)setPrefetchMode:(int64_t)a3 error:(id *)a4;
-- (BOOL)shouldAutoEnableiCPLOnOSXWithError:(id *)a3;
-- (id)activateLibraryScope:(id)a3 completionHandler:(id)a4;
-- (id)emailAddressForKey:(int64_t)a3 error:(id *)a4;
+- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets error:(id *)error;
+- (BOOL)setPrefetchMode:(int64_t)mode error:(id *)error;
+- (BOOL)shouldAutoEnableiCPLOnOSXWithError:(id *)error;
+- (id)activateLibraryScope:(id)scope completionHandler:(id)handler;
+- (id)emailAddressForKey:(int64_t)key error:(id *)error;
 - (id)getCPLSettings;
-- (id)markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:(id)a3 excludePersonUUIDs:(id)a4 completionHandler:(id)a5;
-- (id)personInfoDictionaryForPersonID:(id)a3 error:(id *)a4;
-- (int64_t)keyForEmailAddress:(id)a3 error:(id *)a4;
-- (unint64_t)cloudSharingSpaceManagementRequestWithType:(unint64_t)a3 optionalBytesToPurge:(unint64_t)a4 error:(id *)a5;
-- (unint64_t)getResetSyncStatusWithError:(id *)a3;
-- (void)acceptShare:(id)a3 completionHandler:(id)a4;
-- (void)confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope:(id)a3 completionHandler:(id)a4;
-- (void)createPhotostreamAlbumWithStreamID:(id)a3;
-- (void)deactivateLibraryScope:(id)a3 completionHandler:(id)a4;
-- (void)declineCollectionShareWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)enablePhotostreamsWithStreamID:(id)a3;
-- (void)fetchShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 completionHandler:(id)a5;
-- (void)forceParticipantAssetTrashNotificationCompletionHandler:(id)a3;
-- (void)forceSyncMomentShare:(id)a3 completionHandler:(id)a4;
-- (void)getCPLConfigurationValueForKey:(id)a3 completionHandler:(id)a4;
-- (void)getCurrentTransferProgress:(id)a3;
-- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getNotUploadedCount:(id)a3;
-- (void)getSystemBudgetsWithReply:(id)a3;
-- (void)isComputeSyncEnabledForDirection:(int64_t)a3 reply:(id)a4;
-- (void)markResourcesPurgeableWithUrgency:(int64_t)a3 assetUuids:(id)a4 completionHandler:(id)a5;
-- (void)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 completionHandler:(id)a6;
-- (void)publishShare:(id)a3 completionHandler:(id)a4;
-- (void)queryParticipantsWithEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5;
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 reply:(id)a5;
-- (void)refreshLibraryScopeWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)removeParticipantsWithParticipantUUIDs:(id)a3 fromLibraryScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7;
-- (void)reportInvitationAsSpamForCollectionShareWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)requestDeviceLibraryConfigurationChange:(int64_t)a3 completionHandler:(id)a4;
-- (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:(id)a3;
-- (void)sendInvitationsForCollectionShareWithUUID:(id)a3 participantUUIDs:(id)a4 completionHandler:(id)a5;
-- (void)setCloudPhotoLibraryEnabledState:(BOOL)a3;
-- (void)setCloudPhotoLibraryEnabledStateSync:(BOOL)a3;
-- (void)setCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4;
-- (void)setPersonInfoDictionary:(id)a3 forPersonID:(id)a4;
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3;
-- (void)startExitFromLibraryScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6;
+- (id)markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:(id)scope excludePersonUUIDs:(id)ds completionHandler:(id)handler;
+- (id)personInfoDictionaryForPersonID:(id)d error:(id *)error;
+- (int64_t)keyForEmailAddress:(id)address error:(id *)error;
+- (unint64_t)cloudSharingSpaceManagementRequestWithType:(unint64_t)type optionalBytesToPurge:(unint64_t)purge error:(id *)error;
+- (unint64_t)getResetSyncStatusWithError:(id *)error;
+- (void)acceptShare:(id)share completionHandler:(id)handler;
+- (void)confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope:(id)scope completionHandler:(id)handler;
+- (void)createPhotostreamAlbumWithStreamID:(id)d;
+- (void)deactivateLibraryScope:(id)scope completionHandler:(id)handler;
+- (void)declineCollectionShareWithUUID:(id)d completionHandler:(id)handler;
+- (void)enablePhotostreamsWithStreamID:(id)d;
+- (void)fetchShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share completionHandler:(id)handler;
+- (void)forceParticipantAssetTrashNotificationCompletionHandler:(id)handler;
+- (void)forceSyncMomentShare:(id)share completionHandler:(id)handler;
+- (void)getCPLConfigurationValueForKey:(id)key completionHandler:(id)handler;
+- (void)getCurrentTransferProgress:(id)progress;
+- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getNotUploadedCount:(id)count;
+- (void)getSystemBudgetsWithReply:(id)reply;
+- (void)isComputeSyncEnabledForDirection:(int64_t)direction reply:(id)reply;
+- (void)markResourcesPurgeableWithUrgency:(int64_t)urgency assetUuids:(id)uuids completionHandler:(id)handler;
+- (void)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets completionHandler:(id)handler;
+- (void)publishShare:(id)share completionHandler:(id)handler;
+- (void)queryParticipantsWithEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler;
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested reply:(id)reply;
+- (void)refreshLibraryScopeWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeParticipantsWithParticipantUUIDs:(id)ds fromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
+- (void)reportInvitationAsSpamForCollectionShareWithUUID:(id)d completionHandler:(id)handler;
+- (void)requestDeviceLibraryConfigurationChange:(int64_t)change completionHandler:(id)handler;
+- (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:(id)handler;
+- (void)sendInvitationsForCollectionShareWithUUID:(id)d participantUUIDs:(id)ds completionHandler:(id)handler;
+- (void)setCloudPhotoLibraryEnabledState:(BOOL)state;
+- (void)setCloudPhotoLibraryEnabledStateSync:(BOOL)sync;
+- (void)setCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason;
+- (void)setPersonInfoDictionary:(id)dictionary forPersonID:(id)d;
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler;
+- (void)startExitFromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler;
 - (void)syncCloudPhotoLibrary;
-- (void)synchronouslySetCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4;
-- (void)unsharePendingAssetsSharedToScopeWithIdentifier:(id)a3;
+- (void)synchronouslySetCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason;
+- (void)unsharePendingAssetsSharedToScopeWithIdentifier:(id)identifier;
 - (void)updateSharedAlbumsCachedServerConfigurationLimits;
-- (void)userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler:(id)a3;
+- (void)userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdCloudInternalClient
 
-- (void)isComputeSyncEnabledForDirection:(int64_t)a3 reply:(id)a4
+- (void)isComputeSyncEnabledForDirection:(int64_t)direction reply:(id)reply
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  replyCopy = reply;
   v26 = 0u;
   *sel = 0u;
   v25 = 0u;
@@ -87,15 +87,15 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __71__PLAssetsdCloudInternalClient_isComputeSyncEnabledForDirection_reply___block_invoke_152;
   v22[3] = &unk_1E7930DB8;
-  v24 = a3;
-  v17 = v7;
+  directionCopy = direction;
+  v17 = replyCopy;
   v23 = v17;
-  [v16 remoteObjectProxyWithErrorHandler:&__block_literal_global_151 handler:v22];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_151 handler:v22];
 
   if (v25 == 1)
   {
@@ -132,7 +132,7 @@ void __71__PLAssetsdCloudInternalClient_isComputeSyncEnabledForDirection_reply__
   }
 }
 
-- (BOOL)setPrefetchMode:(int64_t)a3 error:(id *)a4
+- (BOOL)setPrefetchMode:(int64_t)mode error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -159,22 +159,22 @@ void __71__PLAssetsdCloudInternalClient_isComputeSyncEnabledForDirection_reply__
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_148_6046];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_148_6046];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __54__PLAssetsdCloudInternalClient_setPrefetchMode_error___block_invoke_149;
   v20[3] = &unk_1E7932E48;
   v20[4] = &v21;
   v20[5] = &buf;
-  [v11 setPrefetchMode:a3 reply:v20];
+  [v11 setPrefetchMode:mode reply:v20];
 
   v12 = *(v22 + 24);
   v13 = *(*(&buf + 1) + 40);
-  if (a4 && (v12 & 1) != 0)
+  if (error && (v12 & 1) != 0)
   {
     v13 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = *(v22 + 24);
@@ -255,8 +255,8 @@ void __54__PLAssetsdCloudInternalClient_setPrefetchMode_error___block_invoke(uin
   v26 = __Block_byref_object_copy__6044;
   v27 = __Block_byref_object_dispose__6045;
   v28 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_144_6048];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_144_6048];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__PLAssetsdCloudInternalClient_getCPLSettings__block_invoke_145;
@@ -304,11 +304,11 @@ void __46__PLAssetsdCloudInternalClient_getCPLSettings__block_invoke(uint64_t a1
   }
 }
 
-- (void)getCPLConfigurationValueForKey:(id)a3 completionHandler:(id)a4
+- (void)getCPLConfigurationValueForKey:(id)key completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
@@ -323,21 +323,21 @@ void __46__PLAssetsdCloudInternalClient_getCPLSettings__block_invoke(uint64_t a1
     os_activity_scope_enter(v9, (&v24 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __81__PLAssetsdCloudInternalClient_getCPLConfigurationValueForKey_completionHandler___block_invoke;
   v21[3] = &unk_1E7932DA8;
-  v22 = v7;
+  v22 = handlerCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PLAssetsdCloudInternalClient_getCPLConfigurationValueForKey_completionHandler___block_invoke_142;
   v18[3] = &unk_1E7930D68;
-  v12 = v6;
+  v12 = keyCopy;
   v19 = v12;
   v13 = v22;
   v20 = v13;
-  [v11 remoteObjectProxyWithErrorHandler:v21 handler:v18];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v21 handler:v18];
 
   if (v23 == 1)
   {
@@ -374,11 +374,11 @@ void __81__PLAssetsdCloudInternalClient_getCPLConfigurationValueForKey_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)markResourcesPurgeableWithUrgency:(int64_t)a3 assetUuids:(id)a4 completionHandler:(id)a5
+- (void)markResourcesPurgeableWithUrgency:(int64_t)urgency assetUuids:(id)uuids completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  uuidsCopy = uuids;
+  handlerCopy = handler;
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
@@ -393,12 +393,12 @@ void __81__PLAssetsdCloudInternalClient_getCPLConfigurationValueForKey_completio
     os_activity_scope_enter(v12, (&v33 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __95__PLAssetsdCloudInternalClient_markResourcesPurgeableWithUrgency_assetUuids_completionHandler___block_invoke;
   v30[3] = &unk_1E7932DA8;
-  v31 = v10;
+  v31 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __95__PLAssetsdCloudInternalClient_markResourcesPurgeableWithUrgency_assetUuids_completionHandler___block_invoke_138;
@@ -408,12 +408,12 @@ void __81__PLAssetsdCloudInternalClient_getCPLConfigurationValueForKey_completio
   v26 = v33;
   v27 = v34;
   v28 = a2;
-  v29 = a3;
-  v15 = v9;
+  urgencyCopy = urgency;
+  v15 = uuidsCopy;
   v22 = v15;
   v16 = v31;
   v23 = v16;
-  [v14 remoteObjectProxyWithErrorHandler:v30 handler:v21];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v30 handler:v21];
 
   if (v32 == 1)
   {
@@ -478,10 +478,10 @@ void __95__PLAssetsdCloudInternalClient_markResourcesPurgeableWithUrgency_assetU
   [v3 markResourcesPurgeableWithUrgency:*(a1 + 104) assetUuids:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)requestDeviceLibraryConfigurationChange:(int64_t)a3 completionHandler:(id)a4
+- (void)requestDeviceLibraryConfigurationChange:(int64_t)change completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  handlerCopy = handler;
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
@@ -496,12 +496,12 @@ void __95__PLAssetsdCloudInternalClient_markResourcesPurgeableWithUrgency_assetU
     os_activity_scope_enter(v9, (&v28 + 8));
   }
 
-  v11 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __90__PLAssetsdCloudInternalClient_requestDeviceLibraryConfigurationChange_completionHandler___block_invoke;
   v25[3] = &unk_1E7932DA8;
-  v26 = v7;
+  v26 = handlerCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3254779904;
   v17[2] = __90__PLAssetsdCloudInternalClient_requestDeviceLibraryConfigurationChange_completionHandler___block_invoke_132;
@@ -511,10 +511,10 @@ void __95__PLAssetsdCloudInternalClient_markResourcesPurgeableWithUrgency_assetU
   v21 = v28;
   v22 = v29;
   v23 = a2;
-  v24 = a3;
+  changeCopy = change;
   v12 = v26;
   v18 = v12;
-  [v11 remoteObjectProxyWithErrorHandler:v25 handler:v17];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v25 handler:v17];
 
   if (v27 == 1)
   {
@@ -613,10 +613,10 @@ void __90__PLAssetsdCloudInternalClient_requestDeviceLibraryConfigurationChange_
   }
 }
 
-- (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:(id)a3
+- (void)resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -631,12 +631,12 @@ void __90__PLAssetsdCloudInternalClient_requestDeviceLibraryConfigurationChange_
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __110__PLAssetsdCloudInternalClient_resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __110__PLAssetsdCloudInternalClient_resetLocalOnlyLibraryScopesAndAllLibraryScopeAssetStatesWithCompletionHandler___block_invoke_130;
@@ -648,7 +648,7 @@ void __90__PLAssetsdCloudInternalClient_requestDeviceLibraryConfigurationChange_
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {
@@ -738,11 +738,11 @@ void __110__PLAssetsdCloudInternalClient_resetLocalOnlyLibraryScopesAndAllLibrar
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope:(id)a3 completionHandler:(id)a4
+- (void)confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope:(id)scope completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -757,12 +757,12 @@ void __110__PLAssetsdCloudInternalClient_resetLocalOnlyLibraryScopesAndAllLibrar
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __107__PLAssetsdCloudInternalClient_confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __107__PLAssetsdCloudInternalClient_confirmAllRemainingOnboardingPreviewAssetsOnLibraryScope_completionHandler___block_invoke_128;
@@ -772,11 +772,11 @@ void __110__PLAssetsdCloudInternalClient_resetLocalOnlyLibraryScopesAndAllLibrar
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = scopeCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -871,12 +871,12 @@ void __107__PLAssetsdCloudInternalClient_confirmAllRemainingOnboardingPreviewAss
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:(id)a3 excludePersonUUIDs:(id)a4 completionHandler:(id)a5
+- (id)markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope:(id)scope excludePersonUUIDs:(id)ds completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scopeCopy = scope;
+  dsCopy = ds;
+  handlerCopy = handler;
   v31 = 0u;
   *sel = 0u;
   v30 = 0u;
@@ -891,24 +891,24 @@ void __107__PLAssetsdCloudInternalClient_confirmAllRemainingOnboardingPreviewAss
     os_activity_scope_enter(v12, (&v31 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __128__PLAssetsdCloudInternalClient_markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope_excludePersonUUIDs_completionHandler___block_invoke;
   v28[3] = &unk_1E7932DA8;
-  v15 = v10;
+  v15 = handlerCopy;
   v29 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v28];
+  v16 = [proxyFactory remoteObjectProxyWithErrorHandler:v28];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __128__PLAssetsdCloudInternalClient_markOnboardingPreviewAssetsByProcessingRulesOnLibraryScope_excludePersonUUIDs_completionHandler___block_invoke_127;
   v25[3] = &unk_1E7930C50;
-  v17 = v8;
+  v17 = scopeCopy;
   v26 = v17;
   v18 = v15;
   v27 = v18;
-  v19 = [v16 markOnboardingPreviewAssetsByProcessingRulesOnLibraryScopeWithUUID:v17 excludePersonUUIDs:v9 reply:v25];
+  v19 = [v16 markOnboardingPreviewAssetsByProcessingRulesOnLibraryScopeWithUUID:v17 excludePersonUUIDs:dsCopy reply:v25];
 
   if (v30 == 1)
   {
@@ -970,10 +970,10 @@ void __128__PLAssetsdCloudInternalClient_markOnboardingPreviewAssetsByProcessing
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unsharePendingAssetsSharedToScopeWithIdentifier:(id)a3
+- (void)unsharePendingAssetsSharedToScopeWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   *sel = 0u;
   v11 = 0u;
@@ -986,9 +986,9 @@ void __128__PLAssetsdCloudInternalClient_markOnboardingPreviewAssetsByProcessing
     os_activity_scope_enter(*(&v11 + 1), (&v13 + 8));
   }
 
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_126_6069];
-  [v7 unsharePendingAssetsSharedToScopeWithIdentifier:v4];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v7 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_126_6069];
+  [v7 unsharePendingAssetsSharedToScopeWithIdentifier:identifierCopy];
 
   if (v12 == 1)
   {
@@ -1024,11 +1024,11 @@ void __80__PLAssetsdCloudInternalClient_unsharePendingAssetsSharedToScopeWithIde
   }
 }
 
-- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getLibraryScopeStatusCountsForScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -1043,12 +1043,12 @@ void __80__PLAssetsdCloudInternalClient_unsharePendingAssetsSharedToScopeWithIde
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __100__PLAssetsdCloudInternalClient_getLibraryScopeStatusCountsForScopeWithIdentifier_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __100__PLAssetsdCloudInternalClient_getLibraryScopeStatusCountsForScopeWithIdentifier_completionHandler___block_invoke_122;
@@ -1058,11 +1058,11 @@ void __80__PLAssetsdCloudInternalClient_unsharePendingAssetsSharedToScopeWithIde
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = identifierCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -1158,11 +1158,11 @@ void __100__PLAssetsdCloudInternalClient_getLibraryScopeStatusCountsForScopeWith
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)refreshLibraryScopeWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)refreshLibraryScopeWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -1177,12 +1177,12 @@ void __100__PLAssetsdCloudInternalClient_getLibraryScopeStatusCountsForScopeWith
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __84__PLAssetsdCloudInternalClient_refreshLibraryScopeWithIdentifier_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __84__PLAssetsdCloudInternalClient_refreshLibraryScopeWithIdentifier_completionHandler___block_invoke_119;
@@ -1192,11 +1192,11 @@ void __100__PLAssetsdCloudInternalClient_getLibraryScopeStatusCountsForScopeWith
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = identifierCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -1292,10 +1292,10 @@ void __84__PLAssetsdCloudInternalClient_refreshLibraryScopeWithIdentifier_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)forceParticipantAssetTrashNotificationCompletionHandler:(id)a3
+- (void)forceParticipantAssetTrashNotificationCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -1310,12 +1310,12 @@ void __84__PLAssetsdCloudInternalClient_refreshLibraryScopeWithIdentifier_comple
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __88__PLAssetsdCloudInternalClient_forceParticipantAssetTrashNotificationCompletionHandler___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __88__PLAssetsdCloudInternalClient_forceParticipantAssetTrashNotificationCompletionHandler___block_invoke_116;
@@ -1327,7 +1327,7 @@ void __84__PLAssetsdCloudInternalClient_refreshLibraryScopeWithIdentifier_comple
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {
@@ -1399,10 +1399,10 @@ void __88__PLAssetsdCloudInternalClient_forceParticipantAssetTrashNotificationCo
   [v3 forceParticipantAssetTrashNotificationWithReply:v11];
 }
 
-- (void)userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler:(id)a3
+- (void)userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -1417,12 +1417,12 @@ void __88__PLAssetsdCloudInternalClient_forceParticipantAssetTrashNotificationCo
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __110__PLAssetsdCloudInternalClient_userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __110__PLAssetsdCloudInternalClient_userViewedSharedLibraryParticipantAssetTrashNotificationWithCompletionHandler___block_invoke_114;
@@ -1434,7 +1434,7 @@ void __88__PLAssetsdCloudInternalClient_forceParticipantAssetTrashNotificationCo
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {
@@ -1524,10 +1524,10 @@ void __110__PLAssetsdCloudInternalClient_userViewedSharedLibraryParticipantAsset
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sharedLibraryRampCheckWithCompletionHandler:(id)a3
+- (void)sharedLibraryRampCheckWithCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -1542,12 +1542,12 @@ void __110__PLAssetsdCloudInternalClient_userViewedSharedLibraryParticipantAsset
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __76__PLAssetsdCloudInternalClient_sharedLibraryRampCheckWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = handlerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __76__PLAssetsdCloudInternalClient_sharedLibraryRampCheckWithCompletionHandler___block_invoke_112;
@@ -1559,7 +1559,7 @@ void __110__PLAssetsdCloudInternalClient_userViewedSharedLibraryParticipantAsset
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {
@@ -1647,12 +1647,12 @@ void __76__PLAssetsdCloudInternalClient_sharedLibraryRampCheckWithCompletionHand
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeParticipantsWithParticipantUUIDs:(id)a3 fromLibraryScopeWithIdentifier:(id)a4 retentionPolicy:(int64_t)a5 exitSource:(int64_t)a6 completionHandler:(id)a7
+- (void)removeParticipantsWithParticipantUUIDs:(id)ds fromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v41 = 0u;
   v42 = 0u;
   v40 = 0u;
@@ -1667,12 +1667,12 @@ void __76__PLAssetsdCloudInternalClient_sharedLibraryRampCheckWithCompletionHand
     os_activity_scope_enter(v17, (&v41 + 8));
   }
 
-  v19 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __147__PLAssetsdCloudInternalClient_removeParticipantsWithParticipantUUIDs_fromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   v38[3] = &unk_1E7932DA8;
-  v39 = v15;
+  v39 = handlerCopy;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3254779904;
   v27[2] = __147__PLAssetsdCloudInternalClient_removeParticipantsWithParticipantUUIDs_fromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke_107;
@@ -1682,15 +1682,15 @@ void __76__PLAssetsdCloudInternalClient_sharedLibraryRampCheckWithCompletionHand
   v33 = v41;
   v34 = v42;
   v35 = a2;
-  v20 = v13;
+  v20 = dsCopy;
   v28 = v20;
-  v21 = v14;
+  v21 = identifierCopy;
   v29 = v21;
-  v36 = a5;
-  v37 = a6;
+  policyCopy = policy;
+  sourceCopy = source;
   v22 = v39;
   v30 = v22;
-  [v19 remoteObjectProxyWithErrorHandler:v38 handler:v27];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v38 handler:v27];
 
   if (v40 == 1)
   {
@@ -1786,11 +1786,11 @@ void __147__PLAssetsdCloudInternalClient_removeParticipantsWithParticipantUUIDs_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)startExitFromLibraryScopeWithIdentifier:(id)a3 retentionPolicy:(int64_t)a4 exitSource:(int64_t)a5 completionHandler:(id)a6
+- (void)startExitFromLibraryScopeWithIdentifier:(id)identifier retentionPolicy:(int64_t)policy exitSource:(int64_t)source completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -1805,12 +1805,12 @@ void __147__PLAssetsdCloudInternalClient_removeParticipantsWithParticipantUUIDs_
     os_activity_scope_enter(v14, (&v36 + 8));
   }
 
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __117__PLAssetsdCloudInternalClient_startExitFromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke;
   v33[3] = &unk_1E7932DA8;
-  v34 = v12;
+  v34 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __117__PLAssetsdCloudInternalClient_startExitFromLibraryScopeWithIdentifier_retentionPolicy_exitSource_completionHandler___block_invoke_102;
@@ -1820,13 +1820,13 @@ void __147__PLAssetsdCloudInternalClient_removeParticipantsWithParticipantUUIDs_
   v28 = v36;
   v29 = v37;
   v30 = a2;
-  v17 = v11;
+  v17 = identifierCopy;
   v24 = v17;
-  v31 = a4;
-  v32 = a5;
+  policyCopy = policy;
+  sourceCopy = source;
   v18 = v34;
   v25 = v18;
-  [v16 remoteObjectProxyWithErrorHandler:v33 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v33 handler:v23];
 
   if (v35 == 1)
   {
@@ -1921,11 +1921,11 @@ void __117__PLAssetsdCloudInternalClient_startExitFromLibraryScopeWithIdentifier
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deactivateLibraryScope:(id)a3 completionHandler:(id)a4
+- (void)deactivateLibraryScope:(id)scope completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -1940,12 +1940,12 @@ void __117__PLAssetsdCloudInternalClient_startExitFromLibraryScopeWithIdentifier
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __73__PLAssetsdCloudInternalClient_deactivateLibraryScope_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __73__PLAssetsdCloudInternalClient_deactivateLibraryScope_completionHandler___block_invoke_100;
@@ -1955,11 +1955,11 @@ void __117__PLAssetsdCloudInternalClient_startExitFromLibraryScopeWithIdentifier
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = scopeCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -2052,11 +2052,11 @@ void __73__PLAssetsdCloudInternalClient_deactivateLibraryScope_completionHandler
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)activateLibraryScope:(id)a3 completionHandler:(id)a4
+- (id)activateLibraryScope:(id)scope completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -2071,14 +2071,14 @@ void __73__PLAssetsdCloudInternalClient_deactivateLibraryScope_completionHandler
     os_activity_scope_enter(v10, (&v36 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __71__PLAssetsdCloudInternalClient_activateLibraryScope_completionHandler___block_invoke;
   v33[3] = &unk_1E7932DA8;
-  v13 = v8;
+  v13 = handlerCopy;
   v34 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v33];
+  v14 = [proxyFactory remoteObjectProxyWithErrorHandler:v33];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3254779904;
@@ -2091,7 +2091,7 @@ void __73__PLAssetsdCloudInternalClient_deactivateLibraryScope_completionHandler
   v15 = v14;
   v25 = v15;
   v32 = a2;
-  v16 = v7;
+  v16 = scopeCopy;
   v26 = v16;
   v17 = v13;
   v27 = v17;
@@ -2190,7 +2190,7 @@ void __71__PLAssetsdCloudInternalClient_activateLibraryScope_completionHandler__
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)getResetSyncStatusWithError:(id *)a3
+- (unint64_t)getResetSyncStatusWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -2217,13 +2217,13 @@ void __71__PLAssetsdCloudInternalClient_activateLibraryScope_completionHandler__
   v28 = __Block_byref_object_copy__6044;
   v29 = __Block_byref_object_dispose__6045;
   v30 = 0;
-  v8 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __60__PLAssetsdCloudInternalClient_getResetSyncStatusWithError___block_invoke;
   v18[3] = &unk_1E7932770;
   v18[4] = &buf;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v9 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v18];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __60__PLAssetsdCloudInternalClient_getResetSyncStatusWithError___block_invoke_93;
@@ -2231,12 +2231,12 @@ void __71__PLAssetsdCloudInternalClient_activateLibraryScope_completionHandler__
   v17[4] = &v19;
   [v9 getResetSyncStatusWithReply:v17];
 
-  if (a3)
+  if (error)
   {
     v10 = *(*(&buf + 1) + 40);
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -2285,12 +2285,12 @@ void __60__PLAssetsdCloudInternalClient_getResetSyncStatusWithError___block_invo
   *(v5 + 40) = v3;
 }
 
-- (void)queryParticipantsWithEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5
+- (void)queryParticipantsWithEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  emailsCopy = emails;
+  numbersCopy = numbers;
+  handlerCopy = handler;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -2305,12 +2305,12 @@ void __60__PLAssetsdCloudInternalClient_getResetSyncStatusWithError___block_invo
     os_activity_scope_enter(v13, (&v35 + 8));
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __91__PLAssetsdCloudInternalClient_queryParticipantsWithEmails_phoneNumbers_completionHandler___block_invoke;
   v32[3] = &unk_1E7932DA8;
-  v33 = v11;
+  v33 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __91__PLAssetsdCloudInternalClient_queryParticipantsWithEmails_phoneNumbers_completionHandler___block_invoke_90;
@@ -2320,13 +2320,13 @@ void __60__PLAssetsdCloudInternalClient_getResetSyncStatusWithError___block_invo
   v29 = v35;
   v30 = v36;
   v31 = a2;
-  v16 = v9;
+  v16 = emailsCopy;
   v24 = v16;
-  v17 = v10;
+  v17 = numbersCopy;
   v25 = v17;
   v18 = v33;
   v26 = v18;
-  [v15 remoteObjectProxyWithErrorHandler:v32 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v32 handler:v23];
 
   if (v34 == 1)
   {
@@ -2423,12 +2423,12 @@ void __91__PLAssetsdCloudInternalClient_queryParticipantsWithEmails_phoneNumbers
   v7();
 }
 
-- (void)sendInvitationsForCollectionShareWithUUID:(id)a3 participantUUIDs:(id)a4 completionHandler:(id)a5
+- (void)sendInvitationsForCollectionShareWithUUID:(id)d participantUUIDs:(id)ds completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dsCopy = ds;
+  handlerCopy = handler;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -2443,12 +2443,12 @@ void __91__PLAssetsdCloudInternalClient_queryParticipantsWithEmails_phoneNumbers
     os_activity_scope_enter(v13, (&v35 + 8));
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __109__PLAssetsdCloudInternalClient_sendInvitationsForCollectionShareWithUUID_participantUUIDs_completionHandler___block_invoke;
   v32[3] = &unk_1E7932DA8;
-  v33 = v11;
+  v33 = handlerCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3254779904;
   v23[2] = __109__PLAssetsdCloudInternalClient_sendInvitationsForCollectionShareWithUUID_participantUUIDs_completionHandler___block_invoke_87;
@@ -2458,13 +2458,13 @@ void __91__PLAssetsdCloudInternalClient_queryParticipantsWithEmails_phoneNumbers
   v29 = v35;
   v30 = v36;
   v31 = a2;
-  v16 = v9;
+  v16 = dCopy;
   v24 = v16;
-  v17 = v10;
+  v17 = dsCopy;
   v25 = v17;
   v18 = v33;
   v26 = v18;
-  [v15 remoteObjectProxyWithErrorHandler:v32 handler:v23];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v32 handler:v23];
 
   if (v34 == 1)
   {
@@ -2558,11 +2558,11 @@ void __109__PLAssetsdCloudInternalClient_sendInvitationsForCollectionShareWithUU
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)reportInvitationAsSpamForCollectionShareWithUUID:(id)a3 completionHandler:(id)a4
+- (void)reportInvitationAsSpamForCollectionShareWithUUID:(id)d completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -2577,12 +2577,12 @@ void __109__PLAssetsdCloudInternalClient_sendInvitationsForCollectionShareWithUU
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __99__PLAssetsdCloudInternalClient_reportInvitationAsSpamForCollectionShareWithUUID_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __99__PLAssetsdCloudInternalClient_reportInvitationAsSpamForCollectionShareWithUUID_completionHandler___block_invoke_85;
@@ -2592,11 +2592,11 @@ void __109__PLAssetsdCloudInternalClient_sendInvitationsForCollectionShareWithUU
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = dCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -2689,11 +2689,11 @@ void __99__PLAssetsdCloudInternalClient_reportInvitationAsSpamForCollectionShare
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)declineCollectionShareWithUUID:(id)a3 completionHandler:(id)a4
+- (void)declineCollectionShareWithUUID:(id)d completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -2708,12 +2708,12 @@ void __99__PLAssetsdCloudInternalClient_reportInvitationAsSpamForCollectionShare
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __81__PLAssetsdCloudInternalClient_declineCollectionShareWithUUID_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __81__PLAssetsdCloudInternalClient_declineCollectionShareWithUUID_completionHandler___block_invoke_83;
@@ -2723,11 +2723,11 @@ void __99__PLAssetsdCloudInternalClient_reportInvitationAsSpamForCollectionShare
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = dCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -2820,11 +2820,11 @@ void __81__PLAssetsdCloudInternalClient_declineCollectionShareWithUUID_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)forceSyncMomentShare:(id)a3 completionHandler:(id)a4
+- (void)forceSyncMomentShare:(id)share completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -2839,12 +2839,12 @@ void __81__PLAssetsdCloudInternalClient_declineCollectionShareWithUUID_completio
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __71__PLAssetsdCloudInternalClient_forceSyncMomentShare_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __71__PLAssetsdCloudInternalClient_forceSyncMomentShare_completionHandler___block_invoke_81;
@@ -2854,11 +2854,11 @@ void __81__PLAssetsdCloudInternalClient_declineCollectionShareWithUUID_completio
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = shareCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -2951,11 +2951,11 @@ void __71__PLAssetsdCloudInternalClient_forceSyncMomentShare_completionHandler__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)acceptShare:(id)a3 completionHandler:(id)a4
+- (void)acceptShare:(id)share completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -2970,12 +2970,12 @@ void __71__PLAssetsdCloudInternalClient_forceSyncMomentShare_completionHandler__
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __62__PLAssetsdCloudInternalClient_acceptShare_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __62__PLAssetsdCloudInternalClient_acceptShare_completionHandler___block_invoke_79;
@@ -2985,11 +2985,11 @@ void __71__PLAssetsdCloudInternalClient_forceSyncMomentShare_completionHandler__
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = shareCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -3082,11 +3082,11 @@ void __62__PLAssetsdCloudInternalClient_acceptShare_completionHandler___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
@@ -3101,12 +3101,12 @@ void __62__PLAssetsdCloudInternalClient_acceptShare_completionHandler___block_in
     os_activity_scope_enter(v12, (&v33 + 8));
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __93__PLAssetsdCloudInternalClient_fetchShareFromShareURL_ignoreExistingShare_completionHandler___block_invoke;
   v30[3] = &unk_1E7932DA8;
-  v31 = v10;
+  v31 = handlerCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __93__PLAssetsdCloudInternalClient_fetchShareFromShareURL_ignoreExistingShare_completionHandler___block_invoke_73;
@@ -3116,12 +3116,12 @@ void __62__PLAssetsdCloudInternalClient_acceptShare_completionHandler___block_in
   v26 = v33;
   v27 = v34;
   v28 = a2;
-  v15 = v9;
+  v15 = lCopy;
   v22 = v15;
-  v29 = a4;
+  shareCopy = share;
   v16 = v31;
   v23 = v16;
-  [v14 remoteObjectProxyWithErrorHandler:v30 handler:v21];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v30 handler:v21];
 
   if (v32 == 1)
   {
@@ -3216,11 +3216,11 @@ void __93__PLAssetsdCloudInternalClient_fetchShareFromShareURL_ignoreExistingSha
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)publishShare:(id)a3 completionHandler:(id)a4
+- (void)publishShare:(id)share completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
@@ -3235,12 +3235,12 @@ void __93__PLAssetsdCloudInternalClient_fetchShareFromShareURL_ignoreExistingSha
     os_activity_scope_enter(v10, (&v30 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __63__PLAssetsdCloudInternalClient_publishShare_completionHandler___block_invoke;
   v27[3] = &unk_1E7932DA8;
-  v28 = v8;
+  v28 = handlerCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __63__PLAssetsdCloudInternalClient_publishShare_completionHandler___block_invoke_67;
@@ -3250,11 +3250,11 @@ void __93__PLAssetsdCloudInternalClient_fetchShareFromShareURL_ignoreExistingSha
   v24 = v30;
   v25 = v31;
   v26 = a2;
-  v13 = v7;
+  v13 = shareCopy;
   v20 = v13;
   v14 = v28;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:v27 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v27 handler:v19];
 
   if (v29 == 1)
   {
@@ -3348,11 +3348,11 @@ void __63__PLAssetsdCloudInternalClient_publishShare_completionHandler___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 completionHandler:(id)a6
+- (void)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v41 = 0u;
   *sel = 0u;
   v40 = 0u;
@@ -3381,12 +3381,12 @@ void __63__PLAssetsdCloudInternalClient_publishShare_completionHandler___block_i
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v21 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __112__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pauseReason_systemBudgets_completionHandler___block_invoke;
   v38[3] = &unk_1E7932DA8;
-  v39 = v12;
+  v39 = handlerCopy;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3254779904;
   v28[2] = __112__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pauseReason_systemBudgets_completionHandler___block_invoke_62;
@@ -3396,13 +3396,13 @@ void __63__PLAssetsdCloudInternalClient_publishShare_completionHandler___block_i
   v33 = v41;
   v34 = *sel;
   v35 = a2;
-  v37 = a3;
-  v22 = v11;
+  sessionCopy = session;
+  v22 = reasonCopy;
   v29 = v22;
-  v36 = a5;
+  budgetsCopy = budgets;
   v23 = v39;
   v30 = v23;
-  [v21 remoteObjectProxyWithErrorHandler:v38 handler:v28];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v38 handler:v28];
 
   if (v40 == 1)
   {
@@ -3477,11 +3477,11 @@ void __112__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pau
   [v3 overrideSystemBudgetsForSyncSession:v11 pauseReason:v13 systemBudgets:v12 reply:v14];
 }
 
-- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)a3 pauseReason:(id)a4 systemBudgets:(unint64_t)a5 error:(id *)a6
+- (BOOL)overrideSystemBudgetsForSyncSession:(BOOL)session pauseReason:(id)reason systemBudgets:(unint64_t)budgets error:(id *)error
 {
-  v8 = a3;
+  sessionCopy = session;
   v44 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  reasonCopy = reason;
   v37 = 0u;
   *sel = 0u;
   v36 = 0u;
@@ -3520,28 +3520,28 @@ void __112__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pau
   v41 = __Block_byref_object_copy__6044;
   v42 = __Block_byref_object_dispose__6045;
   v43 = 0;
-  v20 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __100__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pauseReason_systemBudgets_error___block_invoke;
   v31[3] = &unk_1E7932360;
   v31[4] = &v32;
   v31[5] = &buf;
-  v21 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v31];
+  v21 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v31];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __100__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pauseReason_systemBudgets_error___block_invoke_61;
   v30[3] = &unk_1E7932E48;
   v30[4] = &v32;
   v30[5] = &buf;
-  [v21 overrideSystemBudgetsForSyncSession:v8 pauseReason:v11 systemBudgets:a5 reply:v30];
+  [v21 overrideSystemBudgetsForSyncSession:sessionCopy pauseReason:reasonCopy systemBudgets:budgets reply:v30];
 
   v22 = *(v33 + 24);
   v23 = *(*(&buf + 1) + 40);
-  if (a6 && (v22 & 1) == 0)
+  if (error && (v22 & 1) == 0)
   {
     v23 = v23;
-    *a6 = v23;
+    *error = v23;
   }
 
   v24 = *(v33 + 24);
@@ -3590,10 +3590,10 @@ void __100__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pau
   *(v5 + 40) = v3;
 }
 
-- (void)getSystemBudgetsWithReply:(id)a3
+- (void)getSystemBudgetsWithReply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  replyCopy = reply;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
@@ -3622,14 +3622,14 @@ void __100__PLAssetsdCloudInternalClient_overrideSystemBudgetsForSyncSession_pau
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __58__PLAssetsdCloudInternalClient_getSystemBudgetsWithReply___block_invoke;
   v21[3] = &unk_1E7932DA8;
-  v15 = v5;
+  v15 = replyCopy;
   v22 = v15;
-  v16 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   [v16 getSystemBudgetsWithReply:v15];
 
   if (v23 == 1)
@@ -3669,10 +3669,10 @@ void __58__PLAssetsdCloudInternalClient_getSystemBudgetsWithReply___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getNotUploadedCount:(id)a3
+- (void)getNotUploadedCount:(id)count
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  countCopy = count;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -3687,12 +3687,12 @@ void __58__PLAssetsdCloudInternalClient_getSystemBudgetsWithReply___block_invoke
     os_activity_scope_enter(v7, (&v25 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __52__PLAssetsdCloudInternalClient_getNotUploadedCount___block_invoke;
   v22[3] = &unk_1E7932DA8;
-  v23 = v5;
+  v23 = countCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __52__PLAssetsdCloudInternalClient_getNotUploadedCount___block_invoke_57;
@@ -3704,7 +3704,7 @@ void __58__PLAssetsdCloudInternalClient_getSystemBudgetsWithReply___block_invoke
   v21 = a2;
   v10 = v23;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:v22 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v22 handler:v15];
 
   if (v24 == 1)
   {
@@ -3771,10 +3771,10 @@ void __52__PLAssetsdCloudInternalClient_getNotUploadedCount___block_invoke_57(ui
   [v3 getNotUploadedCount:*(a1 + 32)];
 }
 
-- (void)getCurrentTransferProgress:(id)a3
+- (void)getCurrentTransferProgress:(id)progress
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  progressCopy = progress;
   v24 = 0u;
   *sel = 0u;
   v23 = 0u;
@@ -3803,14 +3803,14 @@ void __52__PLAssetsdCloudInternalClient_getNotUploadedCount___block_invoke_57(ui
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __59__PLAssetsdCloudInternalClient_getCurrentTransferProgress___block_invoke;
   v21[3] = &unk_1E7932DA8;
-  v15 = v5;
+  v15 = progressCopy;
   v22 = v15;
-  v16 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v21];
   [v16 getCurrentTransferProgress:v15];
 
   if (v23 == 1)
@@ -3850,10 +3850,10 @@ void __59__PLAssetsdCloudInternalClient_getCurrentTransferProgress___block_invok
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rampingRequestForResourceType:(unint64_t)a3 numRequested:(unint64_t)a4 reply:(id)a5
+- (void)rampingRequestForResourceType:(unint64_t)type numRequested:(unint64_t)requested reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a5;
+  replyCopy = reply;
   v11 = 0u;
   *sel = 0u;
   v10 = 0u;
@@ -3866,7 +3866,7 @@ void __59__PLAssetsdCloudInternalClient_getCurrentTransferProgress___block_invok
     os_activity_scope_enter(*(&v10 + 1), (&v11 + 8));
   }
 
-  (*(v5 + 2))(v5, 1, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 1, 0, 0);
   if (v10 == 1)
   {
     os_activity_scope_leave((&v11 + 8));
@@ -3886,10 +3886,10 @@ void __59__PLAssetsdCloudInternalClient_getCurrentTransferProgress___block_invok
   }
 }
 
-- (void)synchronouslySetCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4
+- (void)synchronouslySetCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason
 {
-  v4 = a4;
-  v5 = a3;
+  reasonCopy = reason;
+  stateCopy = state;
   v24 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   *sel = 0u;
@@ -3916,9 +3916,9 @@ void __59__PLAssetsdCloudInternalClient_getCurrentTransferProgress___block_invok
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_56];
-  [v15 setCloudPhotoLibraryPauseState:v5 reason:v4];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v15 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_56];
+  [v15 setCloudPhotoLibraryPauseState:stateCopy reason:reasonCopy];
 
   if (v19 == 1)
   {
@@ -3954,7 +3954,7 @@ void __83__PLAssetsdCloudInternalClient_synchronouslySetCloudPhotoLibraryPauseSt
   }
 }
 
-- (void)setCloudPhotoLibraryPauseState:(BOOL)a3 reason:(signed __int16)a4
+- (void)setCloudPhotoLibraryPauseState:(BOOL)state reason:(signed __int16)reason
 {
   v34 = *MEMORY[0x1E69E9840];
   v30 = 0u;
@@ -3985,7 +3985,7 @@ void __83__PLAssetsdCloudInternalClient_synchronouslySetCloudPhotoLibraryPauseSt
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3254779904;
   v21[2] = __70__PLAssetsdCloudInternalClient_setCloudPhotoLibraryPauseState_reason___block_invoke_51;
@@ -3995,9 +3995,9 @@ void __83__PLAssetsdCloudInternalClient_synchronouslySetCloudPhotoLibraryPauseSt
   v24 = v30;
   v25 = *sel;
   v26 = a2;
-  v28 = a3;
-  v27 = a4;
-  [v16 remoteObjectProxyWithErrorHandler:&__block_literal_global_50 handler:v21];
+  stateCopy = state;
+  reasonCopy = reason;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_50 handler:v21];
 
   if (v29 == 1)
   {
@@ -4062,9 +4062,9 @@ void __70__PLAssetsdCloudInternalClient_setCloudPhotoLibraryPauseState_reason___
   }
 }
 
-- (void)setCloudPhotoLibraryEnabledStateSync:(BOOL)a3
+- (void)setCloudPhotoLibraryEnabledStateSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   *sel = 0u;
@@ -4091,9 +4091,9 @@ void __70__PLAssetsdCloudInternalClient_setCloudPhotoLibraryPauseState_reason___
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_48_6171];
-  [v13 setCloudPhotoLibraryEnabledState:v3];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_48_6171];
+  [v13 setCloudPhotoLibraryEnabledState:syncCopy];
 
   if (v17 == 1)
   {
@@ -4129,7 +4129,7 @@ void __69__PLAssetsdCloudInternalClient_setCloudPhotoLibraryEnabledStateSync___b
   }
 }
 
-- (void)setCloudPhotoLibraryEnabledState:(BOOL)a3
+- (void)setCloudPhotoLibraryEnabledState:(BOOL)state
 {
   v26 = *MEMORY[0x1E69E9840];
   v22 = 0u;
@@ -4146,7 +4146,7 @@ void __69__PLAssetsdCloudInternalClient_setCloudPhotoLibraryEnabledStateSync___b
     os_activity_scope_enter(v7, (&v22 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3254779904;
   v14[2] = __65__PLAssetsdCloudInternalClient_setCloudPhotoLibraryEnabledState___block_invoke_43;
@@ -4156,8 +4156,8 @@ void __69__PLAssetsdCloudInternalClient_setCloudPhotoLibraryEnabledStateSync___b
   v17 = v22;
   v18 = *sel;
   v19 = a2;
-  v20 = a3;
-  [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_42_6175 handler:v14];
+  stateCopy = state;
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_42_6175 handler:v14];
 
   if (v21 == 1)
   {
@@ -4250,8 +4250,8 @@ void __65__PLAssetsdCloudInternalClient_setCloudPhotoLibraryEnabledState___block
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_40];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_40];
   [v11 syncCloudPhotoLibrary];
 
   if (v15 == 1)
@@ -4288,11 +4288,11 @@ void __53__PLAssetsdCloudInternalClient_syncCloudPhotoLibrary__block_invoke(uint
   }
 }
 
-- (BOOL)shouldAutoEnableiCPLOnOSXWithError:(id *)a3
+- (BOOL)shouldAutoEnableiCPLOnOSXWithError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudInternalClient.m" lineNumber:188 description:@"shouldAutoEnableiCPLOnOSXWithError is only available on OSX"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudInternalClient.m" lineNumber:188 description:@"shouldAutoEnableiCPLOnOSXWithError is only available on OSX"];
 
   v31 = 0u;
   *sel = 0u;
@@ -4332,14 +4332,14 @@ void __53__PLAssetsdCloudInternalClient_syncCloudPhotoLibrary__block_invoke(uint
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __67__PLAssetsdCloudInternalClient_shouldAutoEnableiCPLOnOSXWithError___block_invoke;
   v25[3] = &unk_1E7932360;
   v25[4] = &v26;
   v25[5] = &buf;
-  v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v25];
+  v16 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v25];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __67__PLAssetsdCloudInternalClient_shouldAutoEnableiCPLOnOSXWithError___block_invoke_37;
@@ -4348,12 +4348,12 @@ void __53__PLAssetsdCloudInternalClient_syncCloudPhotoLibrary__block_invoke(uint
   v24[5] = &buf;
   [v16 shouldAutoEnableiCPLOnOSXWithReply:v24];
 
-  if (a3)
+  if (error)
   {
     v17 = *(*(&buf + 1) + 40);
     if (v17)
     {
-      *a3 = v17;
+      *error = v17;
     }
   }
 
@@ -4438,8 +4438,8 @@ void __67__PLAssetsdCloudInternalClient_shouldAutoEnableiCPLOnOSXWithError___blo
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_6198];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_30_6198];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __50__PLAssetsdCloudInternalClient_isReadyForAnalysis__block_invoke_31;
@@ -4521,8 +4521,8 @@ void __50__PLAssetsdCloudInternalClient_isReadyForAnalysis__block_invoke(uint64_
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27_6204];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27_6204];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __77__PLAssetsdCloudInternalClient_isReadyForAnalysisCPLInitialDownloadCompleted__block_invoke_28;
@@ -4604,8 +4604,8 @@ void __77__PLAssetsdCloudInternalClient_isReadyForAnalysisCPLInitialDownloadComp
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24_6209];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24_6209];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __60__PLAssetsdCloudInternalClient_isReadyForAnalysisQuickCheck__block_invoke_25;
@@ -4687,8 +4687,8 @@ void __60__PLAssetsdCloudInternalClient_isReadyForAnalysisQuickCheck__block_invo
   *(&buf + 1) = &buf;
   v25 = 0x2020000000;
   v26 = 0;
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_6214];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20_6214];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__PLAssetsdCloudInternalClient_isReadyForCloudPhotoLibrary__block_invoke_21;
@@ -4735,11 +4735,11 @@ void __59__PLAssetsdCloudInternalClient_isReadyForCloudPhotoLibrary__block_invok
   }
 }
 
-- (void)setPersonInfoDictionary:(id)a3 forPersonID:(id)a4
+- (void)setPersonInfoDictionary:(id)dictionary forPersonID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v29 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -4754,7 +4754,7 @@ void __59__PLAssetsdCloudInternalClient_isReadyForCloudPhotoLibrary__block_invok
     os_activity_scope_enter(v10, (&v28 + 8));
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3254779904;
   v19[2] = __68__PLAssetsdCloudInternalClient_setPersonInfoDictionary_forPersonID___block_invoke_17;
@@ -4764,11 +4764,11 @@ void __59__PLAssetsdCloudInternalClient_isReadyForCloudPhotoLibrary__block_invok
   v24 = v28;
   v25 = v29;
   v26 = a2;
-  v13 = v7;
+  v13 = dictionaryCopy;
   v20 = v13;
-  v14 = v8;
+  v14 = dCopy;
   v21 = v14;
-  [v12 remoteObjectProxyWithErrorHandler:&__block_literal_global_16_6218 handler:v19];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_16_6218 handler:v19];
 
   if (v27 == 1)
   {
@@ -4833,10 +4833,10 @@ void __68__PLAssetsdCloudInternalClient_setPersonInfoDictionary_forPersonID___bl
   }
 }
 
-- (id)personInfoDictionaryForPersonID:(id)a3 error:(id *)a4
+- (id)personInfoDictionaryForPersonID:(id)d error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -4877,27 +4877,27 @@ void __68__PLAssetsdCloudInternalClient_setPersonInfoDictionary_forPersonID___bl
   v30 = __Block_byref_object_copy__6044;
   v31 = __Block_byref_object_dispose__6045;
   v32 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __70__PLAssetsdCloudInternalClient_personInfoDictionaryForPersonID_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &v27;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __70__PLAssetsdCloudInternalClient_personInfoDictionaryForPersonID_error___block_invoke_2;
   v25[3] = &unk_1E7930BB0;
   v25[4] = &buf;
   v25[5] = &v27;
-  [v17 personInfoDictionaryForPersonID:v7 reply:v25];
+  [v17 personInfoDictionaryForPersonID:dCopy reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = v28[5];
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -4949,7 +4949,7 @@ void __70__PLAssetsdCloudInternalClient_personInfoDictionaryForPersonID_error___
   *(v8 + 40) = v9;
 }
 
-- (id)emailAddressForKey:(int64_t)a3 error:(id *)a4
+- (id)emailAddressForKey:(int64_t)key error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v34 = 0u;
@@ -4992,27 +4992,27 @@ void __70__PLAssetsdCloudInternalClient_personInfoDictionaryForPersonID_error___
   v30 = __Block_byref_object_copy__6044;
   v31 = __Block_byref_object_dispose__6045;
   v32 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __57__PLAssetsdCloudInternalClient_emailAddressForKey_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &v27;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __57__PLAssetsdCloudInternalClient_emailAddressForKey_error___block_invoke_2;
   v25[3] = &unk_1E7930B88;
   v25[4] = &buf;
   v25[5] = &v27;
-  [v17 emailAddressForKey:a3 reply:v25];
+  [v17 emailAddressForKey:key reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = v28[5];
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -5064,10 +5064,10 @@ void __57__PLAssetsdCloudInternalClient_emailAddressForKey_error___block_invoke_
   *(v8 + 40) = v9;
 }
 
-- (int64_t)keyForEmailAddress:(id)a3 error:(id *)a4
+- (int64_t)keyForEmailAddress:(id)address error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  addressCopy = address;
   v32 = 0u;
   v33 = 0u;
   v31 = 0u;
@@ -5106,27 +5106,27 @@ void __57__PLAssetsdCloudInternalClient_emailAddressForKey_error___block_invoke_
   v36 = __Block_byref_object_copy__6044;
   v37 = __Block_byref_object_dispose__6045;
   v38 = 0;
-  v16 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __57__PLAssetsdCloudInternalClient_keyForEmailAddress_error___block_invoke;
   v26[3] = &unk_1E7932770;
   v26[4] = &buf;
-  v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v26];
+  v17 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __57__PLAssetsdCloudInternalClient_keyForEmailAddress_error___block_invoke_2;
   v25[3] = &unk_1E7930B60;
   v25[4] = &v27;
   v25[5] = &buf;
-  [v17 keyForEmailAddress:v7 reply:v25];
+  [v17 keyForEmailAddress:addressCopy reply:v25];
 
-  if (a4)
+  if (error)
   {
     v18 = *(*(&buf + 1) + 40);
     if (v18)
     {
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -5168,7 +5168,7 @@ void __57__PLAssetsdCloudInternalClient_keyForEmailAddress_error___block_invoke_
   }
 }
 
-- (unint64_t)cloudSharingSpaceManagementRequestWithType:(unint64_t)a3 optionalBytesToPurge:(unint64_t)a4 error:(id *)a5
+- (unint64_t)cloudSharingSpaceManagementRequestWithType:(unint64_t)type optionalBytesToPurge:(unint64_t)purge error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   v34 = 0u;
@@ -5209,27 +5209,27 @@ void __57__PLAssetsdCloudInternalClient_keyForEmailAddress_error___block_invoke_
   v38 = __Block_byref_object_copy__6044;
   v39 = __Block_byref_object_dispose__6045;
   v40 = 0;
-  v18 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __102__PLAssetsdCloudInternalClient_cloudSharingSpaceManagementRequestWithType_optionalBytesToPurge_error___block_invoke;
   v28[3] = &unk_1E7932770;
   v28[4] = &buf;
-  v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v28];
+  v19 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v28];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __102__PLAssetsdCloudInternalClient_cloudSharingSpaceManagementRequestWithType_optionalBytesToPurge_error___block_invoke_2;
   v27[3] = &unk_1E7930B38;
   v27[4] = &buf;
   v27[5] = &v29;
-  [v19 cloudSharingSpaceManagementRequestWithType:a3 optionalBytesToPurge:a4 reply:v27];
+  [v19 cloudSharingSpaceManagementRequestWithType:type optionalBytesToPurge:purge reply:v27];
 
-  if (a5)
+  if (error)
   {
     v20 = *(*(&buf + 1) + 40);
     if (v20)
     {
-      *a5 = v20;
+      *error = v20;
     }
   }
 
@@ -5292,7 +5292,7 @@ void __102__PLAssetsdCloudInternalClient_cloudSharingSpaceManagementRequestWithT
     os_activity_scope_enter(v5, (&v19 + 8));
   }
 
-  v7 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3254779904;
   v12[2] = __81__PLAssetsdCloudInternalClient_updateSharedAlbumsCachedServerConfigurationLimits__block_invoke_9;
@@ -5302,7 +5302,7 @@ void __102__PLAssetsdCloudInternalClient_cloudSharingSpaceManagementRequestWithT
   v15 = v19;
   v16 = *sel;
   v17 = a2;
-  [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_8 handler:v12];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_8 handler:v12];
 
   if (v18 == 1)
   {
@@ -5367,10 +5367,10 @@ void __81__PLAssetsdCloudInternalClient_updateSharedAlbumsCachedServerConfigurat
   }
 }
 
-- (void)enablePhotostreamsWithStreamID:(id)a3
+- (void)enablePhotostreamsWithStreamID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v23 = 0u;
   *sel = 0u;
   v22 = 0u;
@@ -5385,7 +5385,7 @@ void __81__PLAssetsdCloudInternalClient_updateSharedAlbumsCachedServerConfigurat
     os_activity_scope_enter(v7, (&v23 + 8));
   }
 
-  v9 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3254779904;
   v15[2] = __63__PLAssetsdCloudInternalClient_enablePhotostreamsWithStreamID___block_invoke_3;
@@ -5395,9 +5395,9 @@ void __81__PLAssetsdCloudInternalClient_updateSharedAlbumsCachedServerConfigurat
   v19 = v23;
   v20 = *sel;
   v21 = a2;
-  v10 = v5;
+  v10 = dCopy;
   v16 = v10;
-  [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_2_6246 handler:v15];
+  [proxyFactory remoteObjectProxyWithErrorHandler:&__block_literal_global_2_6246 handler:v15];
 
   if (v22 == 1)
   {
@@ -5462,10 +5462,10 @@ void __63__PLAssetsdCloudInternalClient_enablePhotostreamsWithStreamID___block_i
   }
 }
 
-- (void)createPhotostreamAlbumWithStreamID:(id)a3
+- (void)createPhotostreamAlbumWithStreamID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -5491,9 +5491,9 @@ void __63__PLAssetsdCloudInternalClient_enablePhotostreamsWithStreamID___block_i
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6257];
-  [v13 createPhotostreamAlbumWithStreamID:v5];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6257];
+  [v13 createPhotostreamAlbumWithStreamID:dCopy];
 
   if (v17 == 1)
   {

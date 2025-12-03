@@ -1,20 +1,20 @@
 @interface MCDGenresViewController
-- (MCDGenresViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (id)contentManager:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (MCDGenresViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (id)contentManager:(id)manager titleForHeaderInSection:(int64_t)section;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDGenresViewController
 
-- (MCDGenresViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDGenresViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDGenresViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -29,16 +29,16 @@
   v4.receiver = self;
   v4.super_class = MCDGenresViewController;
   [(MCDLibraryTableViewController *)&v4 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  [v3 setTableCellConfigurationBlock:&stru_1010981C8];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setTableCellConfigurationBlock:&stru_1010981C8];
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDGenresViewController *)self traitCollection];
-  v5 = [v4 shouldLimitMusicLists];
+  traitCollection = [(MCDGenresViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v5)
+  if (shouldLimitMusicLists)
   {
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"RECENTLY_ADDED_GENRES" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -57,13 +57,13 @@
   return v7;
 }
 
-- (id)contentManager:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)contentManager:(id)manager titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(MCDGenresViewController *)self traitCollection];
-  v6 = [v5 shouldLimitMusicLists];
+  traitCollection = [(MCDGenresViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
   v7 = 0;
-  if (!a4 && v6)
+  if (!section && shouldLimitMusicLists)
   {
     v8 = MCDCarDisplayBundle();
     v7 = [v8 localizedStringForKey:@"RECENTLY_ADDED_GENRES" value:&stru_101107168 table:@"MusicCarDisplayUI"];

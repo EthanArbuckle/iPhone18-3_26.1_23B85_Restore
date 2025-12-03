@@ -1,101 +1,101 @@
 @interface STYUserScenarioCache
 + (id)sharedCache;
-- (BOOL)isAnimationScenarioWhitelisted:(id)a3 error:(id *)a4;
-- (BOOL)isResponsivenessScenarioWhitelisted:(id)a3 error:(id *)a4;
-- (BOOL)kpiIsLatency:(id)a3;
-- (BOOL)scenarioWhitelisted:(id)a3 error:(id *)a4;
-- (BOOL)setupWhitelistedAnimationScenarios:(id)a3 bundles:(id)a4;
-- (BOOL)setupWhitelistedResponsivenessScenarios:(id)a3 bundles:(id)a4;
-- (BOOL)setupWhitelistedScenarios:(id)a3 bundles:(id)a4;
-- (STYUserScenarioCache)initWithPlatform:(id)a3;
-- (float)framerateGoalsForSignpostInterval:(id)a3;
-- (float)latencyGoalsForSignpostInterval:(id)a3;
-- (id)appNameFromBundleId:(id)a3;
-- (id)bundleIdForProcessName:(id)a3;
-- (id)issueCategoryForSignpostInterval:(id)a3;
-- (id)loadWhitelist:(id)a3 platform:(id)a4 bundles:(id)a5;
-- (id)processBundleIdForSignpostInterval:(id)a3;
-- (id)scenarioForFrontboardLaunchWatchdog:(id)a3;
-- (id)scenarioFromSignpostEvent:(id)a3 error:(id *)a4;
-- (id)scenarioFromSignpostInterval:(id)a3 error:(id *)a4;
-- (id)scenarioGroupForSignpostInterval:(id)a3;
-- (id)scenarioIdForSignpostEmittedEvent:(id)a3;
-- (id)scenarioIdForSignpostInterval:(id)a3;
-- (void)setupBundleIdWhitelists:(id)a3 bundles:(id)a4;
+- (BOOL)isAnimationScenarioWhitelisted:(id)whitelisted error:(id *)error;
+- (BOOL)isResponsivenessScenarioWhitelisted:(id)whitelisted error:(id *)error;
+- (BOOL)kpiIsLatency:(id)latency;
+- (BOOL)scenarioWhitelisted:(id)whitelisted error:(id *)error;
+- (BOOL)setupWhitelistedAnimationScenarios:(id)scenarios bundles:(id)bundles;
+- (BOOL)setupWhitelistedResponsivenessScenarios:(id)scenarios bundles:(id)bundles;
+- (BOOL)setupWhitelistedScenarios:(id)scenarios bundles:(id)bundles;
+- (STYUserScenarioCache)initWithPlatform:(id)platform;
+- (float)framerateGoalsForSignpostInterval:(id)interval;
+- (float)latencyGoalsForSignpostInterval:(id)interval;
+- (id)appNameFromBundleId:(id)id;
+- (id)bundleIdForProcessName:(id)name;
+- (id)issueCategoryForSignpostInterval:(id)interval;
+- (id)loadWhitelist:(id)whitelist platform:(id)platform bundles:(id)bundles;
+- (id)processBundleIdForSignpostInterval:(id)interval;
+- (id)scenarioForFrontboardLaunchWatchdog:(id)watchdog;
+- (id)scenarioFromSignpostEvent:(id)event error:(id *)error;
+- (id)scenarioFromSignpostInterval:(id)interval error:(id *)error;
+- (id)scenarioGroupForSignpostInterval:(id)interval;
+- (id)scenarioIdForSignpostEmittedEvent:(id)event;
+- (id)scenarioIdForSignpostInterval:(id)interval;
+- (void)setupBundleIdWhitelists:(id)whitelists bundles:(id)bundles;
 @end
 
 @implementation STYUserScenarioCache
 
-- (id)bundleIdForProcessName:(id)a3
+- (id)bundleIdForProcessName:(id)name
 {
   bundleIdForAppName = self->_bundleIdForAppName;
-  v5 = a3;
-  v6 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:v5];
+  nameCopy = name;
+  v6 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {
-    [(NSDictionary *)self->_bundleIdForAppName objectForKeyedSubscript:v5];
+    [(NSDictionary *)self->_bundleIdForAppName objectForKeyedSubscript:nameCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"bundleId For %@ not available", v5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"bundleId For %@ not available", nameCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)scenarioIdForSignpostInterval:(id)a3
+- (id)scenarioIdForSignpostInterval:(id)interval
 {
   bundleIdForAppName = self->_bundleIdForAppName;
-  v4 = a3;
-  v5 = [v4 endEvent];
-  v6 = [v5 processName];
-  v7 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:v6];
+  intervalCopy = interval;
+  endEvent = [intervalCopy endEvent];
+  processName = [endEvent processName];
+  v7 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:processName];
 
   v8 = MEMORY[0x277CCACA8];
   if (v7)
   {
-    v9 = [v4 subsystem];
-    v10 = [v4 category];
-    v11 = [v4 name];
+    subsystem = [intervalCopy subsystem];
+    category = [intervalCopy category];
+    name = [intervalCopy name];
 
-    v12 = [v8 stringWithFormat:@"%@-%@-%@-%@", v7, v9, v10, v11];
+    v12 = [v8 stringWithFormat:@"%@-%@-%@-%@", v7, subsystem, category, name];
   }
 
   else
   {
-    v9 = [v4 endEvent];
-    v10 = [v9 processName];
-    v11 = [v4 subsystem];
-    v13 = [v4 category];
-    v14 = [v4 name];
+    subsystem = [intervalCopy endEvent];
+    category = [subsystem processName];
+    name = [intervalCopy subsystem];
+    category2 = [intervalCopy category];
+    name2 = [intervalCopy name];
 
-    v12 = [v8 stringWithFormat:@"%@-%@-%@-%@", v10, v11, v13, v14];
+    v12 = [v8 stringWithFormat:@"%@-%@-%@-%@", category, name, category2, name2];
   }
 
   return v12;
 }
 
-- (id)scenarioIdForSignpostEmittedEvent:(id)a3
+- (id)scenarioIdForSignpostEmittedEvent:(id)event
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 processName];
-  v6 = [v4 subsystem];
-  v7 = [v4 category];
-  v8 = [v4 name];
+  eventCopy = event;
+  processName = [eventCopy processName];
+  subsystem = [eventCopy subsystem];
+  category = [eventCopy category];
+  name = [eventCopy name];
 
-  v9 = [v3 stringWithFormat:@"%@-%@-%@-%@", v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"%@-%@-%@-%@", processName, subsystem, category, name];
 
   return v9;
 }
 
-- (STYUserScenarioCache)initWithPlatform:(id)a3
+- (STYUserScenarioCache)initWithPlatform:(id)platform
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  platformCopy = platform;
   v42.receiver = self;
   v42.super_class = STYUserScenarioCache;
   v5 = [(STYUserScenarioCache *)&v42 init];
@@ -138,15 +138,15 @@
     v41 = v13;
     v20 = 0x277CCA000uLL;
     v21 = 0x277CBE000uLL;
-    if ([(STYUserScenarioCache *)v5 setupWhitelistedScenarios:v4 bundles:v19])
+    if ([(STYUserScenarioCache *)v5 setupWhitelistedScenarios:platformCopy bundles:v19])
     {
-      [(STYUserScenarioCache *)v5 setupBundleIdWhitelists:v4 bundles:v19];
+      [(STYUserScenarioCache *)v5 setupBundleIdWhitelists:platformCopy bundles:v19];
       v22 = MEMORY[0x277CCA9B8];
       v23 = STYUserScenarioErrorDomain;
       v24 = *MEMORY[0x277CCA450];
       v45 = *MEMORY[0x277CCA450];
-      v25 = [MEMORY[0x277CCA8D8] mainBundle];
-      v26 = [v25 localizedStringForKey:@"Failed to retrieve bundle id for signpost event" value:&stru_287705D88 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v26 = [mainBundle localizedStringForKey:@"Failed to retrieve bundle id for signpost event" value:&stru_287705D88 table:0];
       v46 = v26;
       v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v28 = v22;
@@ -167,8 +167,8 @@
     v31 = *(v20 + 2488);
     v32 = STYUserScenarioErrorDomain;
     v43 = v24;
-    v33 = [*(v12 + 2264) mainBundle];
-    v34 = [v33 localizedStringForKey:@"Framework is not Configured properly. Please file a bug against Sentry | Framework" value:&stru_287705D88 table:0];
+    mainBundle2 = [*(v12 + 2264) mainBundle];
+    v34 = [mainBundle2 localizedStringForKey:@"Framework is not Configured properly. Please file a bug against Sentry | Framework" value:&stru_287705D88 table:0];
     v44 = v34;
     v35 = [*(v21 + 2752) dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     v36 = [v31 errorWithDomain:v32 code:-2007 userInfo:v35];
@@ -182,26 +182,26 @@
   return v5;
 }
 
-- (BOOL)setupWhitelistedScenarios:(id)a3 bundles:(id)a4
+- (BOOL)setupWhitelistedScenarios:(id)scenarios bundles:(id)bundles
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STYUserScenarioCache *)self setupWhitelistedResponsivenessScenarios:v7 bundles:v6];
-  LOBYTE(self) = [(STYUserScenarioCache *)self setupWhitelistedAnimationScenarios:v7 bundles:v6];
+  bundlesCopy = bundles;
+  scenariosCopy = scenarios;
+  v8 = [(STYUserScenarioCache *)self setupWhitelistedResponsivenessScenarios:scenariosCopy bundles:bundlesCopy];
+  LOBYTE(self) = [(STYUserScenarioCache *)self setupWhitelistedAnimationScenarios:scenariosCopy bundles:bundlesCopy];
 
   return (v8 | self) & 1;
 }
 
-- (id)loadWhitelist:(id)a3 platform:(id)a4 bundles:(id)a5
+- (id)loadWhitelist:(id)whitelist platform:(id)platform bundles:(id)bundles
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", a3, a4];
+  bundlesCopy = bundles;
+  platform = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", whitelist, platform];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = bundlesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -216,12 +216,12 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) pathForResource:v8 ofType:@"plist"];
+        v14 = [*(*(&v20 + 1) + 8 * i) pathForResource:platform ofType:@"plist"];
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v14];
 
         if (v15)
         {
-          v17 = v9;
+          logHandle = v9;
           goto LABEL_13;
         }
       }
@@ -237,9 +237,9 @@
   }
 
   v16 = +[STYFrameworkHelper sharedHelper];
-  v17 = [v16 logHandle];
+  logHandle = [v16 logHandle];
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
     [STYUserScenarioCache loadWhitelist:platform:bundles:];
   }
@@ -252,17 +252,17 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)setupWhitelistedResponsivenessScenarios:(id)a3 bundles:(id)a4
+- (BOOL)setupWhitelistedResponsivenessScenarios:(id)scenarios bundles:(id)bundles
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedSubsystems-Responsiveness" platform:v6 bundles:v7];
+  scenariosCopy = scenarios;
+  bundlesCopy = bundles;
+  v8 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedSubsystems-Responsiveness" platform:scenariosCopy bundles:bundlesCopy];
   responsivenessConfigForWhitelistedSubsystems = self->_responsivenessConfigForWhitelistedSubsystems;
   self->_responsivenessConfigForWhitelistedSubsystems = v8;
 
-  if (self->_responsivenessConfigForWhitelistedSubsystems && ([(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedCategories-Responsiveness" platform:v6 bundles:v7], v10 = objc_claimAutoreleasedReturnValue(), responsivenessConfigForWhitelistedCategories = self->_responsivenessConfigForWhitelistedCategories, self->_responsivenessConfigForWhitelistedCategories = v10, responsivenessConfigForWhitelistedCategories, self->_responsivenessConfigForWhitelistedCategories))
+  if (self->_responsivenessConfigForWhitelistedSubsystems && ([(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedCategories-Responsiveness" platform:scenariosCopy bundles:bundlesCopy], v10 = objc_claimAutoreleasedReturnValue(), responsivenessConfigForWhitelistedCategories = self->_responsivenessConfigForWhitelistedCategories, self->_responsivenessConfigForWhitelistedCategories = v10, responsivenessConfigForWhitelistedCategories, self->_responsivenessConfigForWhitelistedCategories))
   {
-    v12 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedNames-Responsiveness" platform:v6 bundles:v7];
+    v12 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedNames-Responsiveness" platform:scenariosCopy bundles:bundlesCopy];
     responsivenessConfigForWhitelistedNames = self->_responsivenessConfigForWhitelistedNames;
     self->_responsivenessConfigForWhitelistedNames = v12;
 
@@ -277,17 +277,17 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)setupWhitelistedAnimationScenarios:(id)a3 bundles:(id)a4
+- (BOOL)setupWhitelistedAnimationScenarios:(id)scenarios bundles:(id)bundles
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedSubsystems-Animation" platform:v6 bundles:v7];
+  scenariosCopy = scenarios;
+  bundlesCopy = bundles;
+  v8 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedSubsystems-Animation" platform:scenariosCopy bundles:bundlesCopy];
   animationConfigForWhitelistedSubsystems = self->_animationConfigForWhitelistedSubsystems;
   self->_animationConfigForWhitelistedSubsystems = v8;
 
-  if (self->_animationConfigForWhitelistedSubsystems && ([(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedCategories-Animation" platform:v6 bundles:v7], v10 = objc_claimAutoreleasedReturnValue(), animationConfigForWhitelistedCategories = self->_animationConfigForWhitelistedCategories, self->_animationConfigForWhitelistedCategories = v10, animationConfigForWhitelistedCategories, self->_animationConfigForWhitelistedCategories))
+  if (self->_animationConfigForWhitelistedSubsystems && ([(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedCategories-Animation" platform:scenariosCopy bundles:bundlesCopy], v10 = objc_claimAutoreleasedReturnValue(), animationConfigForWhitelistedCategories = self->_animationConfigForWhitelistedCategories, self->_animationConfigForWhitelistedCategories = v10, animationConfigForWhitelistedCategories, self->_animationConfigForWhitelistedCategories))
   {
-    v12 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedNames-Animation" platform:v6 bundles:v7];
+    v12 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedNames-Animation" platform:scenariosCopy bundles:bundlesCopy];
     animationConfigForWhitelistedNames = self->_animationConfigForWhitelistedNames;
     self->_animationConfigForWhitelistedNames = v12;
 
@@ -302,9 +302,9 @@ LABEL_13:
   return v14;
 }
 
-- (void)setupBundleIdWhitelists:(id)a3 bundles:(id)a4
+- (void)setupBundleIdWhitelists:(id)whitelists bundles:(id)bundles
 {
-  v5 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedBundleIds" platform:a3 bundles:a4];
+  v5 = [(STYUserScenarioCache *)self loadWhitelist:@"STYWhitelistedBundleIds" platform:whitelists bundles:bundles];
   if (v5)
   {
     objc_storeStrong(&self->_bundleIdForAppName, v5);
@@ -313,32 +313,32 @@ LABEL_13:
   MEMORY[0x2821F96F8]();
 }
 
-- (float)latencyGoalsForSignpostInterval:(id)a3
+- (float)latencyGoalsForSignpostInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [v4 name];
+  intervalCopy = interval;
+  category = [intervalCopy category];
+  name = [intervalCopy name];
   responsivenessConfigForWhitelistedSubsystems = self->_responsivenessConfigForWhitelistedSubsystems;
-  v8 = [v4 subsystem];
+  subsystem = [intervalCopy subsystem];
 
-  v9 = [(NSDictionary *)responsivenessConfigForWhitelistedSubsystems objectForKeyedSubscript:v8];
+  v9 = [(NSDictionary *)responsivenessConfigForWhitelistedSubsystems objectForKeyedSubscript:subsystem];
 
-  v10 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories objectForKeyedSubscript:v5];
+  v10 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories objectForKeyedSubscript:category];
   v11 = [v10 objectForKey:@"kSTYLatencyThresholdInMs"];
 
   if (v11)
   {
-    v12 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories objectForKeyedSubscript:v5];
+    v12 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories objectForKeyedSubscript:category];
 
     v9 = v12;
   }
 
-  v13 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:v6];
+  v13 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:name];
   v14 = [v13 objectForKey:@"kSTYLatencyThresholdInMs"];
 
   if (v14)
   {
-    v15 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:v6];
+    v15 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:name];
 
     v9 = v15;
   }
@@ -350,41 +350,41 @@ LABEL_13:
   return v18;
 }
 
-- (id)issueCategoryForSignpostInterval:(id)a3
+- (id)issueCategoryForSignpostInterval:(id)interval
 {
-  v4 = [a3 name];
-  v5 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:v4];
+  name = [interval name];
+  v5 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames objectForKeyedSubscript:name];
   v6 = [v5 objectForKeyedSubscript:@"issueCategory"];
 
   return v6;
 }
 
-- (float)framerateGoalsForSignpostInterval:(id)a3
+- (float)framerateGoalsForSignpostInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [v4 name];
+  intervalCopy = interval;
+  category = [intervalCopy category];
+  name = [intervalCopy name];
   animationConfigForWhitelistedSubsystems = self->_animationConfigForWhitelistedSubsystems;
-  v8 = [v4 subsystem];
+  subsystem = [intervalCopy subsystem];
 
-  v9 = [(NSDictionary *)animationConfigForWhitelistedSubsystems objectForKeyedSubscript:v8];
+  v9 = [(NSDictionary *)animationConfigForWhitelistedSubsystems objectForKeyedSubscript:subsystem];
 
-  v10 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:v5];
+  v10 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:category];
   v11 = [v10 objectForKey:@"kSTYFrameRateThreshold"];
 
   if (v11)
   {
-    v12 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:v5];
+    v12 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:category];
 
     v9 = v12;
   }
 
-  v13 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:v6];
+  v13 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories objectForKeyedSubscript:name];
   v14 = [v13 objectForKey:@"kSTYFrameRateThreshold"];
 
   if (v14)
   {
-    v15 = [(NSDictionary *)self->_animationConfigForWhitelistedNames objectForKeyedSubscript:v6];
+    v15 = [(NSDictionary *)self->_animationConfigForWhitelistedNames objectForKeyedSubscript:name];
 
     v9 = v15;
   }
@@ -396,77 +396,77 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)isResponsivenessScenarioWhitelisted:(id)a3 error:(id *)a4
+- (BOOL)isResponsivenessScenarioWhitelisted:(id)whitelisted error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedSubsystems allKeys];
-  v8 = [v6 subsystem];
-  v9 = [v7 containsObject:v8];
+  whitelistedCopy = whitelisted;
+  allKeys = [(NSDictionary *)self->_responsivenessConfigForWhitelistedSubsystems allKeys];
+  subsystem = [whitelistedCopy subsystem];
+  v9 = [allKeys containsObject:subsystem];
 
   if (!v9)
   {
     v23 = +[STYFrameworkHelper sharedHelper];
-    v20 = [v23 logHandle];
+    logHandle = [v23 logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:v6 error:?];
+      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:whitelistedCopy error:?];
     }
 
     goto LABEL_16;
   }
 
-  v10 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories allKeys];
-  v11 = [v6 category];
-  v12 = [v10 containsObject:v11];
+  allKeys2 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedCategories allKeys];
+  category = [whitelistedCopy category];
+  v12 = [allKeys2 containsObject:category];
 
   if (!v12)
   {
     v24 = +[STYFrameworkHelper sharedHelper];
-    v20 = [v24 logHandle];
+    logHandle = [v24 logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:v6 error:?];
+      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:whitelistedCopy error:?];
     }
 
     goto LABEL_16;
   }
 
-  v13 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames allKeys];
-  v14 = [v6 name];
-  v15 = [v13 containsObject:v14];
+  allKeys3 = [(NSDictionary *)self->_responsivenessConfigForWhitelistedNames allKeys];
+  name = [whitelistedCopy name];
+  v15 = [allKeys3 containsObject:name];
 
   if ((v15 & 1) == 0)
   {
     v25 = +[STYFrameworkHelper sharedHelper];
-    v20 = [v25 logHandle];
+    logHandle = [v25 logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:v6 error:?];
+      [STYUserScenarioCache isResponsivenessScenarioWhitelisted:whitelistedCopy error:?];
     }
 
     goto LABEL_16;
   }
 
-  v16 = [v6 subsystem];
-  if (([v16 isEqualToString:@"com.apple.app_launch_measurement"] & 1) == 0)
+  subsystem2 = [whitelistedCopy subsystem];
+  if (([subsystem2 isEqualToString:@"com.apple.app_launch_measurement"] & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  v17 = [v6 category];
-  if (([v17 isEqualToString:@"ApplicationLaunch"] & 1) == 0)
+  category2 = [whitelistedCopy category];
+  if (([category2 isEqualToString:@"ApplicationLaunch"] & 1) == 0)
   {
 
 LABEL_22:
     goto LABEL_23;
   }
 
-  v18 = [v6 name];
-  v19 = [v18 isEqualToString:@"ApplicationLaunchExtendedResponsive"];
+  name2 = [whitelistedCopy name];
+  v19 = [name2 isEqualToString:@"ApplicationLaunchExtendedResponsive"];
 
   if (!v19)
   {
@@ -475,16 +475,16 @@ LABEL_23:
     goto LABEL_20;
   }
 
-  v20 = [v6 number1Name];
-  if (([v20 isEqualToString:@"IsForeground"]& 1) == 0)
+  logHandle = [whitelistedCopy number1Name];
+  if (([logHandle isEqualToString:@"IsForeground"]& 1) == 0)
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v21 = [v6 number1Value];
-  v22 = [v21 isEqual:MEMORY[0x277CBEC38]];
+  number1Value = [whitelistedCopy number1Value];
+  v22 = [number1Value isEqual:MEMORY[0x277CBEC38]];
 
   if (v22)
   {
@@ -493,20 +493,20 @@ LABEL_16:
 
 LABEL_17:
   v26 = MEMORY[0x277CCACA8];
-  v27 = [v6 subsystem];
-  v28 = [v6 category];
-  v29 = [v6 name];
-  v30 = [v26 stringWithFormat:@"scenario %@.%@.%@ is not whitelisted", v27, v28, v29];
+  subsystem3 = [whitelistedCopy subsystem];
+  category3 = [whitelistedCopy category];
+  name3 = [whitelistedCopy name];
+  v30 = [v26 stringWithFormat:@"scenario %@.%@.%@ is not whitelisted", subsystem3, category3, name3];
 
   v37 = *MEMORY[0x277CCA450];
-  v31 = [MEMORY[0x277CCA8D8] mainBundle];
-  v32 = [v31 localizedStringForKey:v30 value:&stru_287705D88 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v32 = [mainBundle localizedStringForKey:v30 value:&stru_287705D88 table:0];
   v38[0] = v32;
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v33];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v33];
   }
 
   v34 = 0;
@@ -516,31 +516,31 @@ LABEL_20:
   return v34;
 }
 
-- (BOOL)isAnimationScenarioWhitelisted:(id)a3 error:(id *)a4
+- (BOOL)isAnimationScenarioWhitelisted:(id)whitelisted error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_animationConfigForWhitelistedSubsystems allKeys];
-  v8 = [v6 subsystem];
-  v9 = [v7 containsObject:v8];
+  whitelistedCopy = whitelisted;
+  allKeys = [(NSDictionary *)self->_animationConfigForWhitelistedSubsystems allKeys];
+  subsystem = [whitelistedCopy subsystem];
+  v9 = [allKeys containsObject:subsystem];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  v10 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories allKeys];
-  v11 = [v6 category];
-  v12 = [v10 containsObject:v11];
+  allKeys2 = [(NSDictionary *)self->_animationConfigForWhitelistedCategories allKeys];
+  category = [whitelistedCopy category];
+  v12 = [allKeys2 containsObject:category];
 
   if (!v12)
   {
     goto LABEL_5;
   }
 
-  v13 = [(NSDictionary *)self->_animationConfigForWhitelistedNames allKeys];
-  v14 = [v6 name];
-  v15 = [v13 containsObject:v14];
+  allKeys3 = [(NSDictionary *)self->_animationConfigForWhitelistedNames allKeys];
+  name = [whitelistedCopy name];
+  v15 = [allKeys3 containsObject:name];
 
   if (v15)
   {
@@ -551,20 +551,20 @@ LABEL_20:
   {
 LABEL_5:
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v6 subsystem];
-    v19 = [v6 category];
-    v20 = [v6 name];
-    v21 = [v17 stringWithFormat:@"scenario %@.%@.%@ is not whitelisted", v18, v19, v20];
+    subsystem2 = [whitelistedCopy subsystem];
+    category2 = [whitelistedCopy category];
+    name2 = [whitelistedCopy name];
+    v21 = [v17 stringWithFormat:@"scenario %@.%@.%@ is not whitelisted", subsystem2, category2, name2];
 
     v27 = *MEMORY[0x277CCA450];
-    v22 = [MEMORY[0x277CCA8D8] mainBundle];
-    v23 = [v22 localizedStringForKey:v21 value:&stru_287705D88 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v23 = [mainBundle localizedStringForKey:v21 value:&stru_287705D88 table:0];
     v28[0] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v24];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v24];
     }
 
     v16 = 0;
@@ -574,18 +574,18 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)scenarioWhitelisted:(id)a3 error:(id *)a4
+- (BOOL)scenarioWhitelisted:(id)whitelisted error:(id *)error
 {
-  v6 = a3;
+  whitelistedCopy = whitelisted;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 subsystem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.SpringBoard"), v7, (v8 & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([whitelistedCopy subsystem], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.SpringBoard"), v7, (v8 & 1) == 0))
   {
-    v9 = [(STYUserScenarioCache *)self isAnimationScenarioWhitelisted:v6 error:a4];
+    v9 = [(STYUserScenarioCache *)self isAnimationScenarioWhitelisted:whitelistedCopy error:error];
   }
 
   else
   {
-    v9 = [(STYUserScenarioCache *)self isResponsivenessScenarioWhitelisted:v6 error:a4];
+    v9 = [(STYUserScenarioCache *)self isResponsivenessScenarioWhitelisted:whitelistedCopy error:error];
   }
 
   v10 = v9;
@@ -593,10 +593,10 @@ LABEL_5:
   return v10;
 }
 
-- (id)appNameFromBundleId:(id)a3
+- (id)appNameFromBundleId:(id)id
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -618,7 +618,7 @@ LABEL_5:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSDictionary *)self->_bundleIdForAppName objectForKeyedSubscript:v10, v16];
-        v12 = [v11 isEqualToString:v4];
+        v12 = [v11 isEqualToString:idCopy];
 
         if (v12)
         {
@@ -645,48 +645,48 @@ LABEL_11:
   return v13;
 }
 
-- (id)processBundleIdForSignpostInterval:(id)a3
+- (id)processBundleIdForSignpostInterval:(id)interval
 {
-  v4 = a3;
-  if ([v4 scope] && (objc_msgSend(v4, "subsystem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"com.apple.hangtracer.signposts"), v5, !v6))
+  intervalCopy = interval;
+  if ([intervalCopy scope] && (objc_msgSend(intervalCopy, "subsystem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"com.apple.hangtracer.signposts"), v5, !v6))
   {
     v8 = MEMORY[0x277CCACA8];
     bundleIdForAppName = self->_bundleIdForAppName;
-    v10 = [v4 endEvent];
-    v11 = [v10 processName];
-    v12 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:v11];
-    v7 = [v8 stringWithFormat:@"%@", v12];
+    endEvent = [intervalCopy endEvent];
+    processName = [endEvent processName];
+    v12 = [(NSDictionary *)bundleIdForAppName objectForKeyedSubscript:processName];
+    string1Value = [v8 stringWithFormat:@"%@", v12];
   }
 
   else
   {
-    v7 = [v4 string1Value];
+    string1Value = [intervalCopy string1Value];
   }
 
-  return v7;
+  return string1Value;
 }
 
-- (id)scenarioGroupForSignpostInterval:(id)a3
+- (id)scenarioGroupForSignpostInterval:(id)interval
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 subsystem];
-  v6 = [v4 category];
-  v7 = [v4 name];
+  intervalCopy = interval;
+  subsystem = [intervalCopy subsystem];
+  category = [intervalCopy category];
+  name = [intervalCopy name];
 
-  v8 = [v3 stringWithFormat:@"%@.%@.%@", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@.%@.%@", subsystem, category, name];
 
   return v8;
 }
 
-- (BOOL)kpiIsLatency:(id)a3
+- (BOOL)kpiIsLatency:(id)latency
 {
-  v3 = a3;
+  latencyCopy = latency;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 subsystem];
-    v5 = [v4 isEqualToString:@"com.apple.SpringBoard"];
+    subsystem = [latencyCopy subsystem];
+    v5 = [subsystem isEqualToString:@"com.apple.SpringBoard"];
   }
 
   else
@@ -697,23 +697,23 @@ LABEL_11:
   return v5;
 }
 
-- (id)scenarioFromSignpostInterval:(id)a3 error:(id *)a4
+- (id)scenarioFromSignpostInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
-  if ([(STYUserScenarioCache *)self processWhitelisted:v6 error:a4]&& [(STYUserScenarioCache *)self scenarioWhitelisted:v6 error:a4])
+  intervalCopy = interval;
+  if ([(STYUserScenarioCache *)self processWhitelisted:intervalCopy error:error]&& [(STYUserScenarioCache *)self scenarioWhitelisted:intervalCopy error:error])
   {
-    v7 = [(STYUserScenarioCache *)self scenarioIdForSignpostInterval:v6];
-    v8 = [(STYUserScenarioCache *)self scenarioGroupForSignpostInterval:v6];
-    v9 = [(STYUserScenarioCache *)self processBundleIdForSignpostInterval:v6];
-    v10 = [v6 endEvent];
-    v11 = [(STYUserScenarioCache *)self processIdForSignpostEvent:v10];
+    v7 = [(STYUserScenarioCache *)self scenarioIdForSignpostInterval:intervalCopy];
+    v8 = [(STYUserScenarioCache *)self scenarioGroupForSignpostInterval:intervalCopy];
+    v9 = [(STYUserScenarioCache *)self processBundleIdForSignpostInterval:intervalCopy];
+    endEvent = [intervalCopy endEvent];
+    v11 = [(STYUserScenarioCache *)self processIdForSignpostEvent:endEvent];
 
     objc_opt_class();
     v12 = -1000;
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v6 subsystem];
-      v14 = [v13 isEqualToString:@"com.apple.SpringBoard"];
+      subsystem = [intervalCopy subsystem];
+      v14 = [subsystem isEqualToString:@"com.apple.SpringBoard"];
 
       if (v14)
       {
@@ -726,7 +726,7 @@ LABEL_11:
       }
     }
 
-    if ([(STYUserScenarioCache *)self kpiIsLatency:v6])
+    if ([(STYUserScenarioCache *)self kpiIsLatency:intervalCopy])
     {
       v15 = -1000;
     }
@@ -737,10 +737,10 @@ LABEL_11:
     }
 
     v16 = [STYUserScenario alloc];
-    v17 = [v6 beginEvent];
-    v18 = [v17 processName];
+    beginEvent = [intervalCopy beginEvent];
+    processName = [beginEvent processName];
     LODWORD(v21) = v11;
-    v19 = [(STYUserScenario *)v16 initWithConfiguration:v7 scenarioGroup:v8 kpi:v15 processBundleID:v9 titleText:0 processName:v18 processID:v21];
+    v19 = [(STYUserScenario *)v16 initWithConfiguration:v7 scenarioGroup:v8 kpi:v15 processBundleID:v9 titleText:0 processName:processName processID:v21];
   }
 
   else
@@ -751,75 +751,75 @@ LABEL_11:
   return v19;
 }
 
-- (id)scenarioForFrontboardLaunchWatchdog:(id)a3
+- (id)scenarioForFrontboardLaunchWatchdog:(id)watchdog
 {
-  v4 = a3;
-  v5 = [v4 processName];
-  v6 = [v4 attributes];
-  v7 = [v6 valueForKey:@"BundleIdOverride"];
+  watchdogCopy = watchdog;
+  processName = [watchdogCopy processName];
+  attributes = [watchdogCopy attributes];
+  v7 = [attributes valueForKey:@"BundleIdOverride"];
 
   if (v7)
   {
     v8 = v7;
 
-    v5 = v8;
+    processName = v8;
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v4 subsystem];
-  v11 = [v4 category];
-  v12 = [v4 name];
-  v13 = [v9 stringWithFormat:@"%@.%@.%@.%@", v10, v11, v12, v5];
+  subsystem = [watchdogCopy subsystem];
+  category = [watchdogCopy category];
+  name = [watchdogCopy name];
+  v13 = [v9 stringWithFormat:@"%@.%@.%@.%@", subsystem, category, name, processName];
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v4 subsystem];
-  v16 = [v4 category];
-  v17 = [v4 name];
-  v18 = [v14 stringWithFormat:@"%@.%@.%@", v15, v16, v17];
+  subsystem2 = [watchdogCopy subsystem];
+  category2 = [watchdogCopy category];
+  name2 = [watchdogCopy name];
+  v18 = [v14 stringWithFormat:@"%@.%@.%@", subsystem2, category2, name2];
 
-  LODWORD(v21) = [(STYUserScenarioCache *)self processIdForSignpostEvent:v4];
-  v19 = [[STYUserScenario alloc] initWithConfiguration:v13 scenarioGroup:v18 kpi:-1000 processBundleID:v7 titleText:0 processName:v5 processID:v21];
+  LODWORD(v21) = [(STYUserScenarioCache *)self processIdForSignpostEvent:watchdogCopy];
+  v19 = [[STYUserScenario alloc] initWithConfiguration:v13 scenarioGroup:v18 kpi:-1000 processBundleID:v7 titleText:0 processName:processName processID:v21];
 
   return v19;
 }
 
-- (id)scenarioFromSignpostEvent:(id)a3 error:(id *)a4
+- (id)scenarioFromSignpostEvent:(id)event error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 subsystem];
-  if (![v7 isEqualToString:@"com.apple.FrontBoard"])
+  eventCopy = event;
+  subsystem = [eventCopy subsystem];
+  if (![subsystem isEqualToString:@"com.apple.FrontBoard"])
   {
     goto LABEL_6;
   }
 
-  v8 = [v6 category];
-  if (([v8 isEqualToString:@"Watchdog"] & 1) == 0)
+  category = [eventCopy category];
+  if (([category isEqualToString:@"Watchdog"] & 1) == 0)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v6 name];
-  v10 = [v9 isEqualToString:@"WatchdogKill"];
+  name = [eventCopy name];
+  v10 = [name isEqualToString:@"WatchdogKill"];
 
   if (v10)
   {
-    v11 = [(STYUserScenarioCache *)self scenarioForFrontboardLaunchWatchdog:v6];
+    v11 = [(STYUserScenarioCache *)self scenarioForFrontboardLaunchWatchdog:eventCopy];
     goto LABEL_10;
   }
 
 LABEL_7:
-  if (*a4)
+  if (*error)
   {
     v17 = *MEMORY[0x277CCA450];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Signpost is not whitelisted." value:&stru_287705D88 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle localizedStringForKey:@"Signpost is not whitelisted." value:&stru_287705D88 table:0];
     v18[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v14];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:STYUserScenarioErrorDomain code:-2000 userInfo:v14];
   }
 
   v11 = 0;

@@ -1,48 +1,48 @@
 @interface WLKPlayableUtilities
-+ (BOOL)_openITunesPlayableWatchListAppAvailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7;
-+ (BOOL)_openITunesPlayableWatchListAppUnavailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7;
-+ (BOOL)_openNonITunesPlayableWatchListAppAvailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7;
-+ (BOOL)_openNonITunesPlayableWatchListAppUnavailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7;
-+ (BOOL)_openPunchoutURL:(id)a3 isPlaybackURL:(BOOL)a4;
-+ (BOOL)_playNonITunesPlayableUsingAssociatedApp:(id)a3;
-+ (BOOL)openPlayable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7;
-+ (id)_defaultPunchoutURLWithPlayable:(id)a3 URLKey:(id)a4;
-+ (id)_defaultPunchoutURLWithPlayable:(id)a3 isPlaybackURL:(BOOL *)a4;
-+ (id)_punchoutURLForDirectPlayback:(id)a3 ignoreExtras:(BOOL)a4;
-+ (id)_watchListAppPunchoutURLWithPlayable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7 allowPlayAction:(BOOL)a8 isPlaybackURL:(BOOL *)a9;
++ (BOOL)_openITunesPlayableWatchListAppAvailable:(id)available forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID;
++ (BOOL)_openITunesPlayableWatchListAppUnavailable:(id)unavailable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID;
++ (BOOL)_openNonITunesPlayableWatchListAppAvailable:(id)available forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID;
++ (BOOL)_openNonITunesPlayableWatchListAppUnavailable:(id)unavailable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID;
++ (BOOL)_openPunchoutURL:(id)l isPlaybackURL:(BOOL)rL;
++ (BOOL)_playNonITunesPlayableUsingAssociatedApp:(id)app;
++ (BOOL)openPlayable:(id)playable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID;
++ (id)_defaultPunchoutURLWithPlayable:(id)playable URLKey:(id)key;
++ (id)_defaultPunchoutURLWithPlayable:(id)playable isPlaybackURL:(BOOL *)l;
++ (id)_punchoutURLForDirectPlayback:(id)playback ignoreExtras:(BOOL)extras;
++ (id)_watchListAppPunchoutURLWithPlayable:(id)playable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID allowPlayAction:(BOOL)action isPlaybackURL:(BOOL *)l;
 @end
 
 @implementation WLKPlayableUtilities
 
-+ (BOOL)openPlayable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7
++ (BOOL)openPlayable:(id)playable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [objc_opt_class() isFullTVAppEnabled];
-  v17 = [v12 isiTunes];
-  if (v16)
+  playableCopy = playable;
+  dCopy = d;
+  iDCopy = iD;
+  canonicalIDCopy = canonicalID;
+  isFullTVAppEnabled = [objc_opt_class() isFullTVAppEnabled];
+  isiTunes = [playableCopy isiTunes];
+  if (isFullTVAppEnabled)
   {
-    if (v17)
+    if (isiTunes)
     {
-      v18 = [a1 _openITunesPlayableWatchListAppAvailable:v12 forContentType:a4 canonicalID:v13 showCanonicalID:v14 seasonCanonicalID:v15];
+      v18 = [self _openITunesPlayableWatchListAppAvailable:playableCopy forContentType:type canonicalID:dCopy showCanonicalID:iDCopy seasonCanonicalID:canonicalIDCopy];
     }
 
     else
     {
-      v18 = [a1 _openNonITunesPlayableWatchListAppAvailable:v12 forContentType:a4 canonicalID:v13 showCanonicalID:v14 seasonCanonicalID:v15];
+      v18 = [self _openNonITunesPlayableWatchListAppAvailable:playableCopy forContentType:type canonicalID:dCopy showCanonicalID:iDCopy seasonCanonicalID:canonicalIDCopy];
     }
   }
 
-  else if (v17)
+  else if (isiTunes)
   {
-    v18 = [a1 _openITunesPlayableWatchListAppUnavailable:v12 forContentType:a4 canonicalID:v13 showCanonicalID:v14 seasonCanonicalID:v15];
+    v18 = [self _openITunesPlayableWatchListAppUnavailable:playableCopy forContentType:type canonicalID:dCopy showCanonicalID:iDCopy seasonCanonicalID:canonicalIDCopy];
   }
 
   else
   {
-    v18 = [a1 _openNonITunesPlayableWatchListAppUnavailable:v12 forContentType:a4 canonicalID:v13 showCanonicalID:v14 seasonCanonicalID:v15];
+    v18 = [self _openNonITunesPlayableWatchListAppUnavailable:playableCopy forContentType:type canonicalID:dCopy showCanonicalID:iDCopy seasonCanonicalID:canonicalIDCopy];
   }
 
   v19 = v18;
@@ -51,17 +51,17 @@
   return v19;
 }
 
-+ (BOOL)_openITunesPlayableWatchListAppAvailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7
++ (BOOL)_openITunesPlayableWatchListAppAvailable:(id)available forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID
 {
   v13 = 0;
-  v8 = [a1 _watchListAppPunchoutURLWithPlayable:a3 forContentType:a4 canonicalID:a5 showCanonicalID:a6 seasonCanonicalID:a7 allowPlayAction:1 isPlaybackURL:&v13];
+  v8 = [self _watchListAppPunchoutURLWithPlayable:available forContentType:type canonicalID:d showCanonicalID:iD seasonCanonicalID:canonicalID allowPlayAction:1 isPlaybackURL:&v13];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 absoluteString];
-    NSLog(&cfstr_Wlkplayableuti_0.isa, v10);
+    absoluteString = [v8 absoluteString];
+    NSLog(&cfstr_Wlkplayableuti_0.isa, absoluteString);
 
-    v11 = [a1 _openPunchoutURL:v9 isPlaybackURL:v13];
+    v11 = [self _openPunchoutURL:v9 isPlaybackURL:v13];
   }
 
   else
@@ -72,27 +72,27 @@
   return v11;
 }
 
-+ (BOOL)_openNonITunesPlayableWatchListAppAvailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7
++ (BOOL)_openNonITunesPlayableWatchListAppAvailable:(id)available forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 isEntitled] && (objc_msgSend(a1, "_playNonITunesPlayableUsingAssociatedApp:", v12) & 1) != 0)
+  availableCopy = available;
+  dCopy = d;
+  iDCopy = iD;
+  canonicalIDCopy = canonicalID;
+  if ([availableCopy isEntitled] && (objc_msgSend(self, "_playNonITunesPlayableUsingAssociatedApp:", availableCopy) & 1) != 0)
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [a1 _watchListAppOpenPunchoutURLWithITunesPlayable:v12 forContentType:a4 canonicalID:v13 showCanonicalID:v14 seasonCanonicalID:v15];
+    v17 = [self _watchListAppOpenPunchoutURLWithITunesPlayable:availableCopy forContentType:type canonicalID:dCopy showCanonicalID:iDCopy seasonCanonicalID:canonicalIDCopy];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 absoluteString];
-      NSLog(&cfstr_Wlkplayableuti_1.isa, v19);
+      absoluteString = [v17 absoluteString];
+      NSLog(&cfstr_Wlkplayableuti_1.isa, absoluteString);
 
-      v16 = [a1 _openPunchoutURL:v18 isPlaybackURL:0];
+      v16 = [self _openPunchoutURL:v18 isPlaybackURL:0];
     }
 
     else
@@ -104,17 +104,17 @@
   return v16;
 }
 
-+ (BOOL)_openITunesPlayableWatchListAppUnavailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7
++ (BOOL)_openITunesPlayableWatchListAppUnavailable:(id)unavailable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID
 {
   v13 = 0;
-  v8 = [a1 _defaultPunchoutURLWithPlayable:a3 isPlaybackURL:{&v13, a5, a6, a7}];
+  v8 = [self _defaultPunchoutURLWithPlayable:unavailable isPlaybackURL:{&v13, d, iD, canonicalID}];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 absoluteString];
-    NSLog(&cfstr_Wlkplayableuti_2.isa, v10);
+    absoluteString = [v8 absoluteString];
+    NSLog(&cfstr_Wlkplayableuti_2.isa, absoluteString);
 
-    v11 = [a1 _openPunchoutURL:v9 isPlaybackURL:v13];
+    v11 = [self _openPunchoutURL:v9 isPlaybackURL:v13];
   }
 
   else
@@ -125,10 +125,10 @@
   return v11;
 }
 
-+ (BOOL)_openNonITunesPlayableWatchListAppUnavailable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7
++ (BOOL)_openNonITunesPlayableWatchListAppUnavailable:(id)unavailable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID
 {
-  v8 = a3;
-  if ([v8 isEntitled] && (objc_msgSend(a1, "_playNonITunesPlayableUsingAssociatedApp:", v8) & 1) != 0)
+  unavailableCopy = unavailable;
+  if ([unavailableCopy isEntitled] && (objc_msgSend(self, "_playNonITunesPlayableUsingAssociatedApp:", unavailableCopy) & 1) != 0)
   {
     v9 = 1;
   }
@@ -136,14 +136,14 @@
   else
   {
     v14 = 0;
-    v10 = [a1 _defaultPunchoutURLWithPlayable:v8 isPlaybackURL:&v14];
+    v10 = [self _defaultPunchoutURLWithPlayable:unavailableCopy isPlaybackURL:&v14];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 absoluteString];
-      NSLog(&cfstr_Wlkplayableuti_3.isa, v12);
+      absoluteString = [v10 absoluteString];
+      NSLog(&cfstr_Wlkplayableuti_3.isa, absoluteString);
 
-      v9 = [a1 _openPunchoutURL:v11 isPlaybackURL:v14];
+      v9 = [self _openPunchoutURL:v11 isPlaybackURL:v14];
     }
 
     else
@@ -155,92 +155,92 @@
   return v9;
 }
 
-+ (id)_watchListAppPunchoutURLWithPlayable:(id)a3 forContentType:(unint64_t)a4 canonicalID:(id)a5 showCanonicalID:(id)a6 seasonCanonicalID:(id)a7 allowPlayAction:(BOOL)a8 isPlaybackURL:(BOOL *)a9
++ (id)_watchListAppPunchoutURLWithPlayable:(id)playable forContentType:(unint64_t)type canonicalID:(id)d showCanonicalID:(id)iD seasonCanonicalID:(id)canonicalID allowPlayAction:(BOOL)action isPlaybackURL:(BOOL *)l
 {
-  v9 = a8;
-  v14 = a9;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  actionCopy = action;
+  lCopy2 = l;
+  playableCopy = playable;
+  dCopy = d;
+  iDCopy = iD;
+  canonicalIDCopy = canonicalID;
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v20 = 0;
-  if (a4 <= 2)
+  dCopy = 0;
+  if (type <= 2)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"/movie/%@", v16];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"/movie/%@", dCopy];
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_17;
       }
 
-      [MEMORY[0x277CCACA8] stringWithFormat:@"/show/%@", v16];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"/show/%@", dCopy];
     }
 
     goto LABEL_16;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3uLL:
-      if (v17)
+      if (iDCopy)
       {
-        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"/season/%@", v16];
-        v21 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"showId" value:v17];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/season/%@", dCopy];
+        v21 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"showId" value:iDCopy];
         [v19 addObject:v21];
 LABEL_14:
 
         break;
       }
 
-      v20 = 0;
+      dCopy = 0;
       break;
     case 4uLL:
-      v20 = 0;
-      if (v17 && v18)
+      dCopy = 0;
+      if (iDCopy && canonicalIDCopy)
       {
-        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"/episode/%@", v16];
-        v21 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"seasonId" value:v18];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/episode/%@", dCopy];
+        v21 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"seasonId" value:canonicalIDCopy];
         [v19 addObject:v21];
-        v22 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"showId" value:v17];
-        v23 = v17;
-        v24 = v18;
+        v22 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"showId" value:iDCopy];
+        v23 = iDCopy;
+        v24 = canonicalIDCopy;
         v25 = v22;
         [v19 addObject:v22];
 
-        v18 = v24;
-        v17 = v23;
+        canonicalIDCopy = v24;
+        iDCopy = v23;
         goto LABEL_14;
       }
 
       break;
     case 5uLL:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"/sportingevent/%@", v16];
-      v20 = LABEL_16:;
+      [MEMORY[0x277CCACA8] stringWithFormat:@"/sportingevent/%@", dCopy];
+      dCopy = LABEL_16:;
       break;
     default:
       break;
   }
 
 LABEL_17:
-  v26 = [v15 isEntitled] & v9;
+  v26 = [playableCopy isEntitled] & actionCopy;
   if (v26)
   {
-    v27 = v17;
-    v28 = v18;
+    v27 = iDCopy;
+    v28 = canonicalIDCopy;
     v29 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"action" value:@"play"];
     [v19 addObject:v29];
-    v30 = [v15 playEvent];
+    playEvent = [playableCopy playEvent];
 
-    if (v30)
+    if (playEvent)
     {
-      v31 = [v15 playEvent];
-      [v31 elapsedTime];
+      playEvent2 = [playableCopy playEvent];
+      [playEvent2 elapsedTime];
       v33 = v32;
 
       if (v33 > 0.00000011920929)
@@ -251,21 +251,21 @@ LABEL_17:
       }
     }
 
-    v18 = v28;
-    v17 = v27;
-    v14 = a9;
+    canonicalIDCopy = v28;
+    iDCopy = v27;
+    lCopy2 = l;
   }
 
-  if (v20)
+  if (dCopy)
   {
     v36 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v36 setScheme:@"com.apple.WatchList"];
     [v36 setHost:@"tv.apple.com"];
-    [v36 setPath:v20];
+    [v36 setPath:dCopy];
     [v36 setQueryItems:v19];
     v37 = [v36 URL];
 
-    if (!v14)
+    if (!lCopy2)
     {
       goto LABEL_25;
     }
@@ -275,10 +275,10 @@ LABEL_17:
 
   v37 = 0;
   LOBYTE(v26) = 0;
-  if (v14)
+  if (lCopy2)
   {
 LABEL_24:
-    *v14 = v26;
+    *lCopy2 = v26;
   }
 
 LABEL_25:
@@ -286,31 +286,31 @@ LABEL_25:
   return v37;
 }
 
-+ (id)_punchoutURLForDirectPlayback:(id)a3 ignoreExtras:(BOOL)a4
++ (id)_punchoutURLForDirectPlayback:(id)playback ignoreExtras:(BOOL)extras
 {
-  if (a3)
+  if (playback)
   {
-    v4 = a4;
-    v5 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-    v6 = [v5 queryItems];
-    v7 = [v6 mutableCopy];
+    extrasCopy = extras;
+    v5 = [MEMORY[0x277CCACE0] componentsWithURL:playback resolvingAgainstBaseURL:0];
+    queryItems = [v5 queryItems];
+    v7 = [queryItems mutableCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      array = v7;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v11 = v9;
+    v11 = array;
 
     v12 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"action" value:@"play"];
     [v11 addObject:v12];
 
-    if (v4)
+    if (extrasCopy)
     {
       v13 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"ignoreExtras" value:@"true"];
       [v11 addObject:v13];
@@ -328,14 +328,14 @@ LABEL_25:
   return v10;
 }
 
-+ (BOOL)_playNonITunesPlayableUsingAssociatedApp:(id)a3
++ (BOOL)_playNonITunesPlayableUsingAssociatedApp:(id)app
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEntitled])
+  appCopy = app;
+  if ([appCopy isEntitled])
   {
-    v4 = [v3 punchoutUrls];
-    v5 = [v4 objectForKey:@"play"];
+    punchoutUrls = [appCopy punchoutUrls];
+    v5 = [punchoutUrls objectForKey:@"play"];
 
     NSLog(&cfstr_Wlkplayableuti_4.isa, v5);
     if (v5)
@@ -350,10 +350,10 @@ LABEL_25:
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v8 = [v3 channelDetails];
-        v9 = [v8 appBundleIDs];
+        channelDetails = [appCopy channelDetails];
+        appBundleIDs = [channelDetails appBundleIDs];
 
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v10 = [appBundleIDs countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v10)
         {
           v11 = v10;
@@ -364,13 +364,13 @@ LABEL_6:
           {
             if (*v28 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(appBundleIDs);
             }
 
             v14 = *(*(&v27 + 1) + 8 * v13);
             v15 = +[WLKAppLibrary defaultAppLibrary];
-            v16 = [v15 allAppBundleIdentifiers];
-            v17 = [v16 containsObject:v14];
+            allAppBundleIdentifiers = [v15 allAppBundleIdentifiers];
+            v17 = [allAppBundleIdentifiers containsObject:v14];
 
             if (v17)
             {
@@ -379,7 +379,7 @@ LABEL_6:
 
             if (v11 == ++v13)
             {
-              v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+              v11 = [appBundleIDs countByEnumeratingWithState:&v27 objects:v31 count:16];
               if (v11)
               {
                 goto LABEL_6;
@@ -389,18 +389,18 @@ LABEL_6:
             }
           }
 
-          v19 = v14;
+          channelDetails2 = v14;
 
-          if (!v19)
+          if (!channelDetails2)
           {
             goto LABEL_17;
           }
 
           v18 = 1;
-          v20 = WLKLaunchOptionsForPlayback(1);
-          v21 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          appBundleIDs2 = WLKLaunchOptionsForPlayback(1);
+          defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
           v7 = v25;
-          v22 = [v21 operationToOpenResource:v25 usingApplication:v19 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v20 delegate:0];
+          v22 = [defaultWorkspace operationToOpenResource:v25 usingApplication:channelDetails2 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:appBundleIDs2 delegate:0];
 
           [v22 main];
           v5 = v26;
@@ -411,9 +411,9 @@ LABEL_6:
 LABEL_12:
 
 LABEL_17:
-          v19 = [v3 channelDetails];
-          v20 = [v19 appBundleIDs];
-          NSLog(&cfstr_Wlkplayableuti_5.isa, v20);
+          channelDetails2 = [appCopy channelDetails];
+          appBundleIDs2 = [channelDetails2 appBundleIDs];
+          NSLog(&cfstr_Wlkplayableuti_5.isa, appBundleIDs2);
           v18 = 0;
           v7 = v25;
           v5 = v26;
@@ -441,11 +441,11 @@ LABEL_17:
   return v18;
 }
 
-+ (id)_defaultPunchoutURLWithPlayable:(id)a3 URLKey:(id)a4
++ (id)_defaultPunchoutURLWithPlayable:(id)playable URLKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 punchoutUrls];
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  punchoutUrls = [playable punchoutUrls];
+  v7 = [punchoutUrls objectForKey:keyCopy];
 
   if (v7)
   {
@@ -460,44 +460,44 @@ LABEL_17:
   return v8;
 }
 
-+ (id)_defaultPunchoutURLWithPlayable:(id)a3 isPlaybackURL:(BOOL *)a4
++ (id)_defaultPunchoutURLWithPlayable:(id)playable isPlaybackURL:(BOOL *)l
 {
-  v6 = a3;
-  v7 = [v6 isEntitled];
-  v8 = v7;
-  if (v7)
+  playableCopy = playable;
+  isEntitled = [playableCopy isEntitled];
+  v8 = isEntitled;
+  if (isEntitled)
   {
-    [a1 _defaultPlayPunchoutURLWithPlayable:v6];
+    [self _defaultPlayPunchoutURLWithPlayable:playableCopy];
   }
 
   else
   {
-    [a1 _defaultOpenPunchoutURLWithPlayable:v6];
+    [self _defaultOpenPunchoutURLWithPlayable:playableCopy];
   }
   v9 = ;
 
-  if (a4)
+  if (l)
   {
-    *a4 = v8;
+    *l = v8;
   }
 
   return v9;
 }
 
-+ (BOOL)_openPunchoutURL:(id)a3 isPlaybackURL:(BOOL)a4
++ (BOOL)_openPunchoutURL:(id)l isPlaybackURL:(BOOL)rL
 {
-  v4 = a4;
+  rLCopy = rL;
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a3;
-  v7 = [v5 date];
-  v8 = WLKLaunchOptionsForPlayback(v4);
-  v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  lCopy = l;
+  date = [v5 date];
+  v8 = WLKLaunchOptionsForPlayback(rLCopy);
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v15 = 0;
-  v10 = [v9 openURL:v6 withOptions:v8 error:&v15];
+  v10 = [defaultWorkspace openURL:lCopy withOptions:v8 error:&v15];
 
   v11 = v15;
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [v12 timeIntervalSinceDate:v7];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   NSLog(&cfstr_Wlkplayableuti_6.isa, v10, v11, v13);
 
   return v10;

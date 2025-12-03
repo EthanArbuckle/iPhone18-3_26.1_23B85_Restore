@@ -1,36 +1,36 @@
 @interface BWFrameStatisticsByPortType
-- (BOOL)isEqual:(id)a3;
-- (BWFrameStatisticsByPortType)initWithCoder:(id)a3;
-- (BWFrameStatisticsByPortType)initWithPortTypes:(id)a3 autoFocusRecommendedPrimaryPortTypeEnabled:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BWFrameStatisticsByPortType)initWithCoder:(id)coder;
+- (BWFrameStatisticsByPortType)initWithPortTypes:(id)types autoFocusRecommendedPrimaryPortTypeEnabled:(BOOL)enabled;
 - (id)description;
 - (uint64_t)_updateAutoFocusRecommendedPortTypesWithFrameMetadata:(uint64_t)result;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)updateWithFrameMetadata:(id)a3 updateFocusDistance:(BOOL)a4;
+- (void)updateWithFrameMetadata:(id)metadata updateFocusDistance:(BOOL)distance;
 @end
 
 @implementation BWFrameStatisticsByPortType
 
-- (BWFrameStatisticsByPortType)initWithPortTypes:(id)a3 autoFocusRecommendedPrimaryPortTypeEnabled:(BOOL)a4
+- (BWFrameStatisticsByPortType)initWithPortTypes:(id)types autoFocusRecommendedPrimaryPortTypeEnabled:(BOOL)enabled
 {
   v10.receiver = self;
   v10.super_class = BWFrameStatisticsByPortType;
   v6 = [(BWFrameStatisticsByPortType *)&v10 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a3, "count")}];
-    v8 = malloc_type_calloc([a3 count], 0x120uLL, 0x10800402CD05F45uLL);
-    if ([a3 count])
+    v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(types, "count")}];
+    v8 = malloc_type_calloc([types count], 0x120uLL, 0x10800402CD05F45uLL);
+    if ([types count])
     {
-      [(BWFrameStatisticsByPortType *)a3 initWithPortTypes:v8 autoFocusRecommendedPrimaryPortTypeEnabled:v7];
+      [(BWFrameStatisticsByPortType *)types initWithPortTypes:v8 autoFocusRecommendedPrimaryPortTypeEnabled:v7];
     }
 
-    v6->_portTypes = a3;
+    v6->_portTypes = types;
     v6->_portTypeToFrameStatistics = [v7 copy];
     v6->_frameStatisticsStoragesForPortTypes = v8;
-    v6->_autoFocusRecommendedPrimaryPortTypeEnabled = a4;
+    v6->_autoFocusRecommendedPrimaryPortTypeEnabled = enabled;
   }
 
   return v6;
@@ -44,9 +44,9 @@
   [(BWFrameStatisticsByPortType *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -56,7 +56,7 @@
     v25 = v3;
     v26 = v4;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_frameCount == *(a3 + 4) && self->_adrcExposureRealizedGain == *(a3 + 10) && self->_autoFocusRecommendedPrimaryPortTypeEnabled == *(a3 + 44) && (v7 = -[NSDictionary count](self->_portTypeToFrameStatistics, "count"), (([*(a3 + 2) count] ^ v7) & 0x7FFFFFFFFFFFFFFLL) == 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_frameCount == *(equal + 4) && self->_adrcExposureRealizedGain == *(equal + 10) && self->_autoFocusRecommendedPrimaryPortTypeEnabled == *(equal + 44) && (v7 = -[NSDictionary count](self->_portTypeToFrameStatistics, "count"), (([*(equal + 2) count] ^ v7) & 0x7FFFFFFFFFFFFFFLL) == 0))
     {
       v23 = 0u;
       v24 = 0u;
@@ -78,14 +78,14 @@ LABEL_12:
           }
 
           v14 = *(*(&v21 + 1) + 8 * v13);
-          v8 = [*(a3 + 2) objectForKeyedSubscript:v14];
+          v8 = [*(equal + 2) objectForKeyedSubscript:v14];
           if (!v8)
           {
             break;
           }
 
           v15 = [-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics objectForKeyedSubscript:{v14), "aeStatistics"}];
-          v16 = [objc_msgSend(*(a3 + 2) objectForKeyedSubscript:{v14), "aeStatistics"}];
+          v16 = [objc_msgSend(*(equal + 2) objectForKeyedSubscript:{v14), "aeStatistics"}];
           if (v15 != v16)
           {
             LODWORD(v8) = [v15 isEqualToDictionary:v16];
@@ -96,7 +96,7 @@ LABEL_12:
           }
 
           v17 = [-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics objectForKeyedSubscript:{v14), "displayStrobeRGBEstimate"}];
-          v18 = [objc_msgSend(*(a3 + 2) objectForKeyedSubscript:{v14), "displayStrobeRGBEstimate"}];
+          v18 = [objc_msgSend(*(equal + 2) objectForKeyedSubscript:{v14), "displayStrobeRGBEstimate"}];
           if (v17 != v18)
           {
             LODWORD(v8) = [v17 isEqualToArray:v18];
@@ -122,7 +122,7 @@ LABEL_12:
       else
       {
 LABEL_22:
-        LOBYTE(v8) = memcmp(self->_frameStatisticsStoragesForPortTypes, *(a3 + 3), 288 * v7) == 0;
+        LOBYTE(v8) = memcmp(self->_frameStatisticsStoragesForPortTypes, *(equal + 3), 288 * v7) == 0;
       }
     }
 
@@ -135,14 +135,14 @@ LABEL_22:
   return v8;
 }
 
-- (BWFrameStatisticsByPortType)initWithCoder:(id)a3
+- (BWFrameStatisticsByPortType)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DFD8];
   v34[0] = objc_opt_class();
   v34[1] = objc_opt_class();
-  v6 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 2)), @"portTypes"}];
+  v6 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 2)), @"portTypes"}];
   v33 = 0;
-  v7 = [a3 decodeBytesForKey:@"frameStatisticsStoragesForPortTypes" returnedLength:&v33];
+  v7 = [coder decodeBytesForKey:@"frameStatisticsStoragesForPortTypes" returnedLength:&v33];
   v8 = v33;
   if (v8 == 288 * [v6 count])
   {
@@ -151,28 +151,28 @@ LABEL_22:
     if (v9)
     {
       memcpy(v9->_frameStatisticsStoragesForPortTypes, v7, v33);
-      v10->_frameCount = [a3 decodeInt64ForKey:@"frameCount"];
-      [a3 decodeFloatForKey:@"adrcExposureRealizedGain"];
+      v10->_frameCount = [coder decodeInt64ForKey:@"frameCount"];
+      [coder decodeFloatForKey:@"adrcExposureRealizedGain"];
       v10->_adrcExposureRealizedGain = v11;
-      v10->_autoFocusRecommendedPrimaryPortTypeEnabled = [a3 decodeBoolForKey:@"AFRecommendedPrimaryPortTypeEnabled"];
+      v10->_autoFocusRecommendedPrimaryPortTypeEnabled = [coder decodeBoolForKey:@"AFRecommendedPrimaryPortTypeEnabled"];
       v12 = MEMORY[0x1E695DFD8];
       v32[0] = objc_opt_class();
       v32[1] = objc_opt_class();
       v32[2] = objc_opt_class();
       v32[3] = objc_opt_class();
       v32[4] = objc_opt_class();
-      v13 = [a3 decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v32, 5)), @"AEStatisticsByPortType"}];
+      v13 = [coder decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v32, 5)), @"AEStatisticsByPortType"}];
       v14 = MEMORY[0x1E695DFD8];
       v31[0] = objc_opt_class();
       v31[1] = objc_opt_class();
       v31[2] = objc_opt_class();
       v31[3] = objc_opt_class();
-      v15 = [a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v31, 4)), @"DisplayStrobeRGBEstimateByPortType"}];
+      v15 = [coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v31, 4)), @"DisplayStrobeRGBEstimateByPortType"}];
       v16 = MEMORY[0x1E695DFD8];
       v30[0] = objc_opt_class();
       v30[1] = objc_opt_class();
       v30[2] = objc_opt_class();
-      v17 = [a3 decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v30, 3)), @"ColorCorrectionMatrixByPortType"}];
+      v17 = [coder decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v30, 3)), @"ColorCorrectionMatrixByPortType"}];
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
@@ -215,17 +215,17 @@ LABEL_22:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_portTypes forKey:@"portTypes"];
-  [a3 encodeBytes:self->_frameStatisticsStoragesForPortTypes length:288 * -[NSDictionary count](self->_portTypeToFrameStatistics forKey:{"count"), @"frameStatisticsStoragesForPortTypes"}];
-  [a3 encodeInt64:self->_frameCount forKey:@"frameCount"];
+  [coder encodeObject:self->_portTypes forKey:@"portTypes"];
+  [coder encodeBytes:self->_frameStatisticsStoragesForPortTypes length:288 * -[NSDictionary count](self->_portTypeToFrameStatistics forKey:{"count"), @"frameStatisticsStoragesForPortTypes"}];
+  [coder encodeInt64:self->_frameCount forKey:@"frameCount"];
   *&v5 = self->_adrcExposureRealizedGain;
-  [a3 encodeFloat:@"adrcExposureRealizedGain" forKey:v5];
-  [a3 encodeBool:self->_autoFocusRecommendedPrimaryPortTypeEnabled forKey:@"AFRecommendedPrimaryPortTypeEnabled"];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  [coder encodeFloat:@"adrcExposureRealizedGain" forKey:v5];
+  [coder encodeBool:self->_autoFocusRecommendedPrimaryPortTypeEnabled forKey:@"AFRecommendedPrimaryPortTypeEnabled"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -246,9 +246,9 @@ LABEL_22:
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        [v6 setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "aeStatistics"), v14}];
-        [v7 setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "displayStrobeRGBEstimate"), v14}];
-        [v8 setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "colorCorrectionMatrix"), v14}];
+        [dictionary setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "aeStatistics"), v14}];
+        [dictionary2 setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "displayStrobeRGBEstimate"), v14}];
+        [dictionary3 setObject:objc_msgSend(-[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics forKeyedSubscript:{"objectForKeyedSubscript:", v14), "colorCorrectionMatrix"), v14}];
       }
 
       v11 = [(NSDictionary *)portTypeToFrameStatistics countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -257,33 +257,33 @@ LABEL_22:
     while (v11);
   }
 
-  if ([v6 count])
+  if ([dictionary count])
   {
-    [a3 encodeObject:v6 forKey:@"AEStatisticsByPortType"];
+    [coder encodeObject:dictionary forKey:@"AEStatisticsByPortType"];
   }
 
-  if ([v7 count])
+  if ([dictionary2 count])
   {
-    [a3 encodeObject:v7 forKey:@"DisplayStrobeRGBEstimateByPortType"];
+    [coder encodeObject:dictionary2 forKey:@"DisplayStrobeRGBEstimateByPortType"];
   }
 
-  if ([v8 count])
+  if ([dictionary3 count])
   {
-    [a3 encodeObject:v8 forKey:@"ColorCorrectionMatrixByPortType"];
+    [coder encodeObject:dictionary3 forKey:@"ColorCorrectionMatrixByPortType"];
   }
 }
 
-- (void)updateWithFrameMetadata:(id)a3 updateFocusDistance:(BOOL)a4
+- (void)updateWithFrameMetadata:(id)metadata updateFocusDistance:(BOOL)distance
 {
-  if (a3)
+  if (metadata)
   {
     memset(&v26, 0, sizeof(v26));
-    CMTimeMakeFromDictionary(&v26, [a3 objectForKeyedSubscript:*off_1E798A420]);
-    v6 = -[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics, "objectForKeyedSubscript:", [a3 objectForKeyedSubscript:*off_1E798B540]);
+    CMTimeMakeFromDictionary(&v26, [metadata objectForKeyedSubscript:*off_1E798A420]);
+    v6 = -[NSDictionary objectForKeyedSubscript:](self->_portTypeToFrameStatistics, "objectForKeyedSubscript:", [metadata objectForKeyedSubscript:*off_1E798B540]);
     v27 = v26;
-    fs_updateFrameStatisticsWithFrameMetadata(v6, a3);
-    v20 = a3;
-    v7 = [a3 objectForKeyedSubscript:*off_1E798B730];
+    fs_updateFrameStatisticsWithFrameMetadata(v6, metadata);
+    metadataCopy = metadata;
+    v7 = [metadata objectForKeyedSubscript:*off_1E798B730];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -321,14 +321,14 @@ LABEL_22:
 
     if (self->_autoFocusRecommendedPrimaryPortTypeEnabled)
     {
-      if ([objc_msgSend(v20 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}])
+      if ([objc_msgSend(metadataCopy objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}])
       {
-        [(BWFrameStatisticsByPortType *)self _updateAutoFocusRecommendedPortTypesWithFrameMetadata:v20];
+        [(BWFrameStatisticsByPortType *)self _updateAutoFocusRecommendedPortTypesWithFrameMetadata:metadataCopy];
       }
     }
 
     ++self->_frameCount;
-    [objc_msgSend(v20 objectForKeyedSubscript:{@"ADRCExposureRealizedGain", "floatValue"}];
+    [objc_msgSend(metadataCopy objectForKeyedSubscript:{@"ADRCExposureRealizedGain", "floatValue"}];
     self->_adrcExposureRealizedGain = v16;
   }
 
@@ -484,14 +484,14 @@ LABEL_22:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   v5 = [(NSDictionary *)self->_portTypeToFrameStatistics count];
-  if (v5 == [*(a3 + 2) count])
+  if (v5 == [*(to + 2) count])
   {
-    memcpy(*(a3 + 3), self->_frameStatisticsStoragesForPortTypes, 288 * v5);
-    *(a3 + 4) = self->_frameCount;
-    *(a3 + 44) = self->_autoFocusRecommendedPrimaryPortTypeEnabled;
+    memcpy(*(to + 3), self->_frameStatisticsStoragesForPortTypes, 288 * v5);
+    *(to + 4) = self->_frameCount;
+    *(to + 44) = self->_autoFocusRecommendedPrimaryPortTypeEnabled;
     portTypes = self->_portTypes;
     OUTLINED_FUNCTION_43();
     v7 = [NSArray countByEnumeratingWithState:"countByEnumeratingWithState:objects:count:" objects:? count:?];
@@ -510,7 +510,7 @@ LABEL_22:
 
           v11 = *(8 * i);
           v12 = [(NSDictionary *)self->_portTypeToFrameStatistics objectForKeyedSubscript:v11];
-          v13 = [*(a3 + 2) objectForKeyedSubscript:v11];
+          v13 = [*(to + 2) objectForKeyedSubscript:v11];
           [v13 _setAEStatistics:{objc_msgSend(v12, "aeStatistics")}];
           [v13 _setDisplayStrobeRGBEstimate:{objc_msgSend(v12, "displayStrobeRGBEstimate")}];
           [v13 _setColorCorrectionMatrix:{objc_msgSend(v12, "colorCorrectionMatrix")}];

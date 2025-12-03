@@ -1,40 +1,40 @@
 @interface HUSafetyAndSecuritySettingsItemModule
-- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)a3;
-- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)enableUserPermissionSetting:(BOOL)a3 forItem:(id)a4;
+- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)updater;
+- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)enableUserPermissionSetting:(BOOL)setting forItem:(id)item;
 - (id)itemProviders;
 - (void)_buildItemProviders;
 @end
 
 @implementation HUSafetyAndSecuritySettingsItemModule
 
-- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsItemModule.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsItemModule.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v18.receiver = self;
   v18.super_class = HUSafetyAndSecuritySettingsItemModule;
-  v9 = [(HFItemModule *)&v18 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
     objc_initWeak(&location, v10);
-    v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v12 = [v11 homeManager];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __66__HUSafetyAndSecuritySettingsItemModule_initWithItemUpdater_home___block_invoke;
     v15[3] = &unk_277DBD078;
     objc_copyWeak(&v16, &location);
-    [v12 fetchDevicesWithCompletionHandler:v15];
+    [homeManager fetchDevicesWithCompletionHandler:v15];
 
     [(HUSafetyAndSecuritySettingsItemModule *)v10 _buildItemProviders];
     objc_destroyWeak(&v16);
@@ -63,11 +63,11 @@ void __66__HUSafetyAndSecuritySettingsItemModule_initWithItemUpdater_home___bloc
   [WeakRetained setDevices:v5];
 }
 
-- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)a3
+- (HUSafetyAndSecuritySettingsItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsItemModule.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUSafetyAndSecuritySettingsItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSafetyAndSecuritySettingsItemModule.m" lineNumber:74 description:{@"%s is unavailable; use %@ instead", "-[HUSafetyAndSecuritySettingsItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -119,12 +119,12 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__userItemComparator__block_
   [(HUSafetyAndSecuritySettingsItemModule *)self setHomeUpgradeBannerItem:v4, v33, v34, v35, v36];
 
   v5 = [HUSoundRecognitionItem alloc];
-  v6 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
-  v7 = [(HUSoundRecognitionItem *)v5 initWithHome:v6];
+  home = [(HUSafetyAndSecuritySettingsItemModule *)self home];
+  v7 = [(HUSoundRecognitionItem *)v5 initWithHome:home];
   [(HUSafetyAndSecuritySettingsItemModule *)self setListenForSoundsItem:v7];
 
-  v8 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
-  v9 = [v8 hf_hasAtleastOneSafetyAndSecuritySupportedAccessory];
+  home2 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
+  hf_hasAtleastOneSafetyAndSecuritySupportedAccessory = [home2 hf_hasAtleastOneSafetyAndSecuritySupportedAccessory];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v40[0] = *MEMORY[0x277D13F60];
@@ -135,7 +135,7 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__userItemComparator__block_
   v13 = *MEMORY[0x277D13FB8];
   v40[1] = v12;
   v40[2] = v13;
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v9 ^ 1u];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:hf_hasAtleastOneSafetyAndSecuritySupportedAccessory ^ 1u];
   v40[3] = *MEMORY[0x277D13F10];
   v41[2] = v14;
   v41[3] = MEMORY[0x277CBEC28];
@@ -144,12 +144,12 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__userItemComparator__block_
   [(HUSafetyAndSecuritySettingsItemModule *)self setNotificationsItem:v16];
 
   v17 = objc_alloc(MEMORY[0x277CBEB18]);
-  v18 = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
-  v39[0] = v18;
-  v19 = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
-  v39[1] = v19;
-  v20 = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
-  v39[2] = v20;
+  listenForSoundsItem = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
+  v39[0] = listenForSoundsItem;
+  notificationsItem = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
+  v39[1] = notificationsItem;
+  homeUpgradeBannerItem = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
+  v39[2] = homeUpgradeBannerItem;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
   v22 = [v17 initWithArray:v21];
 
@@ -159,17 +159,17 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__userItemComparator__block_
   [(HUSafetyAndSecuritySettingsItemModule *)self setStaticItemProvider:v25];
 
   v26 = objc_alloc(MEMORY[0x277D14CA0]);
-  v27 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
-  v28 = [v26 initWithHome:v27];
+  home3 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
+  v28 = [v26 initWithHome:home3];
   [(HUSafetyAndSecuritySettingsItemModule *)self setUserItemProvider:v28];
 
-  v29 = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
-  [v29 setIncludeCurrentUser:1];
+  userItemProvider = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
+  [userItemProvider setIncludeCurrentUser:1];
 
-  v30 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
-  v31 = [v30 hf_currentUserIsAdministrator];
-  v32 = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
-  [v32 setIncludeOtherUsers:v31];
+  home4 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
+  hf_currentUserIsAdministrator = [home4 hf_currentUserIsAdministrator];
+  userItemProvider2 = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
+  [userItemProvider2 setIncludeOtherUsers:hf_currentUserIsAdministrator];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
@@ -242,31 +242,31 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUSafetyAndSecuritySettingsItemModule *)self staticItemProvider];
-  v5 = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  staticItemProvider = [(HUSafetyAndSecuritySettingsItemModule *)self staticItemProvider];
+  userItemProvider = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
+  v6 = [v3 setWithObjects:{staticItemProvider, userItemProvider, 0}];
 
   return v6;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
-  v7 = [v4 containsObject:v6];
+  homeUpgradeBannerItem = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
+  v7 = [itemsCopy containsObject:homeUpgradeBannerItem];
 
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSafetyAndSecurityBannerSectionIdentifier"];
-    v9 = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
-    v42[0] = v9;
+    homeUpgradeBannerItem2 = [(HUSafetyAndSecuritySettingsItemModule *)self homeUpgradeBannerItem];
+    v42[0] = homeUpgradeBannerItem2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
     [v8 setItems:v10];
 
-    v11 = [(HUSafetyAndSecuritySettingsItemModule *)self ownerHomes];
-    if ([v11 count] <= 1)
+    ownerHomes = [(HUSafetyAndSecuritySettingsItemModule *)self ownerHomes];
+    if ([ownerHomes count] <= 1)
     {
       v12 = @"HUSafetyAndSecuritySoftwareUpdateFooter";
     }
@@ -282,8 +282,8 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
     [v5 addObject:v8];
   }
 
-  v14 = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
-  v15 = [v4 containsObject:v14];
+  listenForSoundsItem = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
+  v15 = [itemsCopy containsObject:listenForSoundsItem];
 
   if (v15)
   {
@@ -291,16 +291,16 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
     v17 = _HULocalizedStringWithDefaultValue(@"HUSafetyAndSecuritySettings_ListenForSoundsSection_Footer", @"HUSafetyAndSecuritySettings_ListenForSoundsSection_Footer", 1);
     [v16 setFooterTitle:v17];
 
-    v18 = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
-    v41 = v18;
+    listenForSoundsItem2 = [(HUSafetyAndSecuritySettingsItemModule *)self listenForSoundsItem];
+    v41 = listenForSoundsItem2;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
     [v16 setItems:v19];
 
     [v5 addObject:v16];
   }
 
-  v20 = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
-  v21 = [v4 containsObject:v20];
+  notificationsItem = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
+  v21 = [itemsCopy containsObject:notificationsItem];
 
   if (v21)
   {
@@ -308,18 +308,18 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
     v23 = _HULocalizedStringWithDefaultValue(@"HUSafetyAndSecuritySettings_Notifications_Footer", @"HUSafetyAndSecuritySettings_Notifications_Footer", 1);
     [v22 setFooterTitle:v23];
 
-    v24 = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
-    v40 = v24;
+    notificationsItem2 = [(HUSafetyAndSecuritySettingsItemModule *)self notificationsItem];
+    v40 = notificationsItem2;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
     [v22 setItems:v25];
 
     [v5 addObject:v22];
   }
 
-  v26 = [(HUSafetyAndSecuritySettingsItemModule *)self home];
-  v27 = [v26 hf_hasAtleastOneAudioAnalysisSupportedAccessory];
+  home = [(HUSafetyAndSecuritySettingsItemModule *)self home];
+  hf_hasAtleastOneAudioAnalysisSupportedAccessory = [home hf_hasAtleastOneAudioAnalysisSupportedAccessory];
 
-  if (v27)
+  if (hf_hasAtleastOneAudioAnalysisSupportedAccessory)
   {
     v28 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSafetyAndSecuritySettingsUserItemSectionIdentifier"];
     v29 = _HULocalizedStringWithDefaultValue(@"HUSafetyAndSecuritySettingsUserSection_Header", @"HUSafetyAndSecuritySettingsUserSection_Header", 1);
@@ -328,16 +328,16 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
     v30 = _HULocalizedStringWithDefaultValue(@"HUSafetyAndSecuritySettingsUserSection_Footer", @"HUSafetyAndSecuritySettingsUserSection_Footer", 1);
     [v28 setFooterTitle:v30];
 
-    v31 = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
-    v32 = [v31 items];
-    v33 = [v32 allObjects];
-    v34 = [objc_opt_class() _userItemComparator];
-    v35 = [v33 sortedArrayUsingComparator:v34];
+    userItemProvider = [(HUSafetyAndSecuritySettingsItemModule *)self userItemProvider];
+    items = [userItemProvider items];
+    allObjects = [items allObjects];
+    _userItemComparator = [objc_opt_class() _userItemComparator];
+    v35 = [allObjects sortedArrayUsingComparator:_userItemComparator];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __73__HUSafetyAndSecuritySettingsItemModule_buildSectionsWithDisplayedItems___block_invoke;
     v38[3] = &unk_277DB85D8;
-    v39 = v4;
+    v39 = itemsCopy;
     v36 = [v35 na_filter:v38];
     [v28 setItems:v36];
 
@@ -347,25 +347,25 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
   return v5;
 }
 
-- (id)enableUserPermissionSetting:(BOOL)a3 forItem:(id)a4
+- (id)enableUserPermissionSetting:(BOOL)setting forItem:(id)item
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  itemCopy = item;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v9;
     v27 = 2112;
-    v28 = v7;
+    v28 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: %@ Attempting to update DropIn permission setting for item %@", buf, 0x20u);
   }
 
   objc_opt_class();
-  v10 = v7;
+  v10 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -385,19 +385,19 @@ uint64_t __60__HUSafetyAndSecuritySettingsItemModule__buildItemProviders__block_
     v19[1] = 3221225472;
     v19[2] = __77__HUSafetyAndSecuritySettingsItemModule_enableUserPermissionSetting_forItem___block_invoke;
     v19[3] = &unk_277DBE6E8;
-    v22 = a3;
+    settingCopy = setting;
     v19[4] = self;
     v20 = v12;
     v21 = a2;
-    v17 = [v16 futureWithBlock:v19];
+    futureWithNoResult = [v16 futureWithBlock:v19];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v17;
+  return futureWithNoResult;
 }
 
 void __77__HUSafetyAndSecuritySettingsItemModule_enableUserPermissionSetting_forItem___block_invoke(uint64_t a1, void *a2)

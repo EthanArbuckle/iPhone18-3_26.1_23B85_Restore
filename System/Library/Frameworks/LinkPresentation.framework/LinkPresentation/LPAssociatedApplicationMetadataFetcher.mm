@@ -1,26 +1,26 @@
 @interface LPAssociatedApplicationMetadataFetcher
-- (void)_completedWithClipMetadata:(id)a3 iconURL:(id)a4 error:(id)a5;
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4;
+- (void)_completedWithClipMetadata:(id)metadata iconURL:(id)l error:(id)error;
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error;
 - (void)cancel;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation LPAssociatedApplicationMetadataFetcher
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rootEvent];
-  v9 = [v8 childWithType:2 subtitle:0];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  rootEvent = [configurationCopy rootEvent];
+  v9 = [rootEvent childWithType:2 subtitle:0];
   [(LPFetcher *)self set_event:v9];
 
   URL = self->_URL;
-  v11 = [(LPFetcher *)self _event];
-  [v11 setURL:URL];
+  _event = [(LPFetcher *)self _event];
+  [_event setURL:URL];
 
-  v12 = _Block_copy(v7);
+  v12 = _Block_copy(handlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v12;
 
@@ -76,7 +76,7 @@
     v21[2] = __83__LPAssociatedApplicationMetadataFetcher_fetchWithConfiguration_completionHandler___block_invoke;
     v21[3] = &unk_1E7A35C60;
     v22 = v19;
-    v23 = self;
+    selfCopy = self;
     v20 = v19;
     [v20 requestMetadataWithCompletion:v21];
   }
@@ -156,13 +156,13 @@ void __83__LPAssociatedApplicationMetadataFetcher_fetchWithConfiguration_complet
   }
 }
 
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   if (self->_completionHandler)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
       v7 = LPLogChannelFetching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -170,22 +170,22 @@ void __83__LPAssociatedApplicationMetadataFetcher_fetchWithConfiguration_complet
         v9[0] = 67109379;
         v9[1] = [(LPFetcher *)self _loggingID];
         v10 = 2117;
-        v11 = v6;
+        v11 = errorCopy;
         _os_log_impl(&dword_1AE886000, v7, OS_LOG_TYPE_DEFAULT, "LPAssociatedApplicationMetadataFetcher<%d>: failed to retrieve URL: %{sensitive}@", v9, 0x12u);
       }
     }
 
-    v8 = makeLPError(a3, v6);
+    v8 = makeLPError(code, errorCopy);
     [(LPAssociatedApplicationMetadataFetcher *)self _completedWithClipMetadata:0 iconURL:0 error:v8];
   }
 }
 
-- (void)_completedWithClipMetadata:(id)a3 iconURL:(id)a4 error:(id)a5
+- (void)_completedWithClipMetadata:(id)metadata iconURL:(id)l error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  lCopy = l;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -193,7 +193,7 @@ void __83__LPAssociatedApplicationMetadataFetcher_fetchWithConfiguration_complet
     v13 = self->_completionHandler;
     self->_completionHandler = 0;
 
-    if (!v8)
+    if (!metadataCopy)
     {
       goto LABEL_6;
     }
@@ -202,19 +202,19 @@ void __83__LPAssociatedApplicationMetadataFetcher_fetchWithConfiguration_complet
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v23 = [(LPFetcher *)self _loggingID];
+      _loggingID = [(LPFetcher *)self _loggingID];
       _os_log_impl(&dword_1AE886000, v14, OS_LOG_TYPE_DEFAULT, "LPAssociatedApplicationMetadataFetcher<%d>: successfully retrieved metadata", buf, 8u);
     }
 
-    v15 = [[LPFetcherClipMetadataResponse alloc] initWithClipMetadata:v8 iconURL:v9 fetcher:self];
+    v15 = [[LPFetcherClipMetadataResponse alloc] initWithClipMetadata:metadataCopy iconURL:lCopy fetcher:self];
     if (!v15)
     {
 LABEL_6:
-      v15 = [[LPFetcherErrorResponse alloc] initWithError:v10 fetcher:self];
+      v15 = [[LPFetcherErrorResponse alloc] initWithError:errorCopy fetcher:self];
     }
 
-    v16 = [(LPFetcher *)self _event];
-    [v16 didCompleteWithErrorCode:{objc_msgSend(v10, "code")}];
+    _event = [(LPFetcher *)self _event];
+    [_event didCompleteWithErrorCode:{objc_msgSend(errorCopy, "code")}];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;

@@ -1,5 +1,5 @@
 @interface SBSOSLockGestureObserver
-- (SBSOSLockGestureObserver)initWithConfiguration:(int64_t)a3;
+- (SBSOSLockGestureObserver)initWithConfiguration:(int64_t)configuration;
 - (SBSOSLockGestureObserverDelegate)delegate;
 - (int64_t)triggerMechanism;
 - (void)_configure;
@@ -7,18 +7,18 @@
 - (void)_noteTriggerActionRecievedResponse;
 - (void)_noteTriggerDidBecomeActive;
 - (void)_noteTriggerDidBecomeInactive;
-- (void)_setRecognizer:(id)a3;
-- (void)pressSequenceRecognizer:(id)a3 didBeginPressDownAtIndex:(unint64_t)a4;
-- (void)pressSequenceRecognizerDidCompleteSequence:(id)a3;
-- (void)registerPressDownWithTimestamp:(double)a3;
-- (void)registerPressUpWithTimestamp:(double)a3;
-- (void)resetWithNewConfiguration:(int64_t)a3;
-- (void)setSOSEnabled:(BOOL)a3;
+- (void)_setRecognizer:(id)recognizer;
+- (void)pressSequenceRecognizer:(id)recognizer didBeginPressDownAtIndex:(unint64_t)index;
+- (void)pressSequenceRecognizerDidCompleteSequence:(id)sequence;
+- (void)registerPressDownWithTimestamp:(double)timestamp;
+- (void)registerPressUpWithTimestamp:(double)timestamp;
+- (void)resetWithNewConfiguration:(int64_t)configuration;
+- (void)setSOSEnabled:(BOOL)enabled;
 @end
 
 @implementation SBSOSLockGestureObserver
 
-- (SBSOSLockGestureObserver)initWithConfiguration:(int64_t)a3
+- (SBSOSLockGestureObserver)initWithConfiguration:(int64_t)configuration
 {
   v9.receiver = self;
   v9.super_class = SBSOSLockGestureObserver;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
     [(SBSOSLockGestureObserver *)v4 _configure];
     v6 = [[SBPressSequenceObserver alloc] initWithPressName:@"Lock"];
     sosLockPressSequenceObserver = v5->_sosLockPressSequenceObserver;
@@ -36,11 +36,11 @@
   return v5;
 }
 
-- (void)setSOSEnabled:(BOOL)a3
+- (void)setSOSEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x277D85DE8];
-  self->_sosEnabled = a3;
+  self->_sosEnabled = enabled;
   v4 = SBLogButtonsCombo();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,11 +49,11 @@
     v8 = 138543618;
     v9 = v6;
     v10 = 1024;
-    v11 = v3;
+    v11 = enabledCopy;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - Set SOS Lock Gesture Enabled: %{BOOL}u", &v8, 0x12u);
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v7 = +[SBSOSEventHandler sharedInstance];
     [v7 run];
@@ -73,11 +73,11 @@
   }
 }
 
-- (void)registerPressDownWithTimestamp:(double)a3
+- (void)registerPressDownWithTimestamp:(double)timestamp
 {
   if ([(SBSOSLockGestureObserver *)self isSOSEnabled])
   {
-    [(SBPressSequenceRecognizer *)self->_recognizer registerPressDownWithTimestamp:a3];
+    [(SBPressSequenceRecognizer *)self->_recognizer registerPressDownWithTimestamp:timestamp];
     v5 = SBLogButtonsCombo();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -87,16 +87,16 @@
 
   if ([(SBSOSLockGestureObserver *)self isGestureLoggingEnabled])
   {
-    v6 = [(SBPressSequenceObserver *)self->_sosLockPressSequenceObserver pressCollector];
-    [v6 registerPressDownWithTimeStamp:a3];
+    pressCollector = [(SBPressSequenceObserver *)self->_sosLockPressSequenceObserver pressCollector];
+    [pressCollector registerPressDownWithTimeStamp:timestamp];
   }
 }
 
-- (void)registerPressUpWithTimestamp:(double)a3
+- (void)registerPressUpWithTimestamp:(double)timestamp
 {
   if ([(SBSOSLockGestureObserver *)self isSOSEnabled])
   {
-    [(SBPressSequenceRecognizer *)self->_recognizer registerPressUpWithTimestamp:a3];
+    [(SBPressSequenceRecognizer *)self->_recognizer registerPressUpWithTimestamp:timestamp];
     v5 = SBLogButtonsCombo();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -106,25 +106,25 @@
 
   if ([(SBSOSLockGestureObserver *)self isGestureLoggingEnabled])
   {
-    v6 = [(SBPressSequenceObserver *)self->_sosLockPressSequenceObserver pressCollector];
-    [v6 registerPressUpWithTimeStamp:a3];
+    pressCollector = [(SBPressSequenceObserver *)self->_sosLockPressSequenceObserver pressCollector];
+    [pressCollector registerPressUpWithTimeStamp:timestamp];
   }
 }
 
-- (void)resetWithNewConfiguration:(int64_t)a3
+- (void)resetWithNewConfiguration:(int64_t)configuration
 {
-  self->_configuration = a3;
+  self->_configuration = configuration;
   [(SBSOSLockGestureObserver *)self _configure];
   recognizer = self->_recognizer;
   validator = self->_validator;
-  v6 = [(SBPressSequenceSettings *)self->_settings numberOfPresses];
+  numberOfPresses = [(SBPressSequenceSettings *)self->_settings numberOfPresses];
 
-  [(SBPressSequenceRecognizer *)recognizer resetWithNewValidator:validator numberOfPresses:v6];
+  [(SBPressSequenceRecognizer *)recognizer resetWithNewValidator:validator numberOfPresses:numberOfPresses];
 }
 
-- (void)pressSequenceRecognizerDidCompleteSequence:(id)a3
+- (void)pressSequenceRecognizerDidCompleteSequence:(id)sequence
 {
-  v4 = a3;
+  sequenceCopy = sequence;
   if (!self->_triggerAction)
   {
     v5 = objc_alloc(MEMORY[0x277CF0B58]);
@@ -159,23 +159,23 @@ void __71__SBSOSLockGestureObserver_pressSequenceRecognizerDidCompleteSequence__
   [WeakRetained sendResponse:v1];
 }
 
-- (void)pressSequenceRecognizer:(id)a3 didBeginPressDownAtIndex:(unint64_t)a4
+- (void)pressSequenceRecognizer:(id)recognizer didBeginPressDownAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (a4 == 2)
+  recognizerCopy = recognizer;
+  if (index == 2)
   {
     self->_lastKnownActiveState = 1;
-    v7 = v6;
+    v7 = recognizerCopy;
     [(SBSOSLockGestureObserver *)self _noteTriggerDidBecomeActive];
 LABEL_3:
-    v6 = v7;
+    recognizerCopy = v7;
     goto LABEL_7;
   }
 
-  if (a4 <= 1 && self->_lastKnownActiveState)
+  if (index <= 1 && self->_lastKnownActiveState)
   {
     self->_lastKnownActiveState = 0;
-    v7 = v6;
+    v7 = recognizerCopy;
     [(SBSOSLockGestureObserver *)self _noteTriggerDidBecomeInactive];
     goto LABEL_3;
   }
@@ -274,10 +274,10 @@ LABEL_7:
   [(SBPressSequenceSettings *)v15 setPressUpVariance:v14];
 }
 
-- (void)_setRecognizer:(id)a3
+- (void)_setRecognizer:(id)recognizer
 {
-  objc_storeStrong(&self->_recognizer, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_recognizer, recognizer);
+  recognizerCopy = recognizer;
   [(SBPressSequenceRecognizer *)self->_recognizer setDelegate:self];
 }
 

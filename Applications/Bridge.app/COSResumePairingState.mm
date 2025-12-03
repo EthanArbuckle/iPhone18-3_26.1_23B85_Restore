@@ -1,9 +1,9 @@
 @interface COSResumePairingState
-- (BOOL)hasSavedValueForClassName:(id)a3;
+- (BOOL)hasSavedValueForClassName:(id)name;
 - (COSResumePairingState)init;
-- (COSResumePairingState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateSavedValuesUsingBlock:(id)a3;
+- (COSResumePairingState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateSavedValuesUsingBlock:(id)block;
 @end
 
 @implementation COSResumePairingState
@@ -23,30 +23,30 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pairingStartedDate = self->_pairingStartedDate;
-  v5 = a3;
-  [v5 encodeObject:pairingStartedDate forKey:@"pairingStartedDate"];
-  [v5 encodeBool:self->_isTinkerPairing forKey:@"isTinkerPairing"];
-  [v5 encodeObject:self->_savedValues forKey:@"savedValues"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pairingStartedDate forKey:@"pairingStartedDate"];
+  [coderCopy encodeBool:self->_isTinkerPairing forKey:@"isTinkerPairing"];
+  [coderCopy encodeObject:self->_savedValues forKey:@"savedValues"];
 }
 
-- (COSResumePairingState)initWithCoder:(id)a3
+- (COSResumePairingState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = COSResumePairingState;
   v5 = [(COSResumePairingState *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingStartedDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingStartedDate"];
     pairingStartedDate = v5->_pairingStartedDate;
     v5->_pairingStartedDate = v6;
 
-    v5->_isTinkerPairing = [v4 decodeBoolForKey:@"isTinkerPairing"];
+    v5->_isTinkerPairing = [coderCopy decodeBoolForKey:@"isTinkerPairing"];
     v8 = objc_opt_class();
-    v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"savedValues"];
+    v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"savedValues"];
     v10 = [v9 mutableCopy];
     savedValues = v5->_savedValues;
     v5->_savedValues = v10;
@@ -55,25 +55,25 @@
   return v5;
 }
 
-- (void)enumerateSavedValuesUsingBlock:(id)a3
+- (void)enumerateSavedValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   savedValues = self->_savedValues;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026A18;
   v7[3] = &unk_1002688D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)savedValues enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (BOOL)hasSavedValueForClassName:(id)a3
+- (BOOL)hasSavedValueForClassName:(id)name
 {
   savedValues = self->_savedValues;
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)savedValues allKeys];
-  v6 = [v5 containsObject:v4];
+  nameCopy = name;
+  allKeys = [(NSMutableDictionary *)savedValues allKeys];
+  v6 = [allKeys containsObject:nameCopy];
 
   return v6;
 }

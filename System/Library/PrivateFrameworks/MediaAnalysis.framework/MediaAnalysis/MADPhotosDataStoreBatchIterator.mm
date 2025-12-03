@@ -1,17 +1,17 @@
 @interface MADPhotosDataStoreBatchIterator
-+ (id)iteratorForFetchRequest:(id)a3 mangedObjectContext:(id)a4 batchSize:(unint64_t)a5;
-+ (id)iteratorForFetchRequest:(id)a3 photoLibrary:(id)a4 batchSize:(unint64_t)a5;
-- (MADPhotosDataStoreBatchIterator)initWithFetchRequest:(id)a3 mangedObjectContext:(id)a4 batchSize:(unint64_t)a5;
++ (id)iteratorForFetchRequest:(id)request mangedObjectContext:(id)context batchSize:(unint64_t)size;
++ (id)iteratorForFetchRequest:(id)request photoLibrary:(id)library batchSize:(unint64_t)size;
+- (MADPhotosDataStoreBatchIterator)initWithFetchRequest:(id)request mangedObjectContext:(id)context batchSize:(unint64_t)size;
 - (id)nextObject;
 @end
 
 @implementation MADPhotosDataStoreBatchIterator
 
-- (MADPhotosDataStoreBatchIterator)initWithFetchRequest:(id)a3 mangedObjectContext:(id)a4 batchSize:(unint64_t)a5
+- (MADPhotosDataStoreBatchIterator)initWithFetchRequest:(id)request mangedObjectContext:(id)context batchSize:(unint64_t)size
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = MADPhotosDataStoreBatchIterator;
   v10 = [(MADPhotosDataStoreBatchIterator *)&v26 init];
@@ -20,17 +20,17 @@
     goto LABEL_13;
   }
 
-  if ([v8 fetchBatchSize] && objc_msgSend(v8, "fetchBatchSize") != a5 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
+  if ([requestCopy fetchBatchSize] && objc_msgSend(requestCopy, "fetchBatchSize") != size && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 fetchBatchSize];
+    fetchBatchSize = [requestCopy fetchBatchSize];
     *buf = 134218240;
-    *&buf[4] = v11;
+    *&buf[4] = fetchBatchSize;
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = size;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADPhotosDataStoreBatchIterator] overriding fetchBatchSize of %lu with %lu", buf, 0x16u);
   }
 
-  [v8 setFetchBatchSize:a5];
+  [requestCopy setFetchBatchSize:size];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -45,9 +45,9 @@
   v17[1] = 3221225472;
   v17[2] = __86__MADPhotosDataStoreBatchIterator_initWithFetchRequest_mangedObjectContext_batchSize___block_invoke;
   v17[3] = &unk_1E8351E60;
-  v18 = v9;
+  v18 = contextCopy;
   v20 = buf;
-  v19 = v8;
+  v19 = requestCopy;
   v21 = &v22;
   v16 = 0;
   v12 = [v18 mad_performAndSaveChanges:v17 error:&v16];
@@ -55,10 +55,10 @@
   if (v12)
   {
     objc_storeStrong(&v10->_objects, *(*&buf[8] + 40));
-    objc_storeStrong(&v10->_moc, a4);
-    v10->_batchSize = a5;
+    objc_storeStrong(&v10->_moc, context);
+    v10->_batchSize = size;
     v10->_batchIdx = -1;
-    v10->_numBatches = (a5 + v23[3] - 1) / a5;
+    v10->_numBatches = (size + v23[3] - 1) / size;
   }
 
   else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -145,22 +145,22 @@ LABEL_9:
   return 1;
 }
 
-+ (id)iteratorForFetchRequest:(id)a3 mangedObjectContext:(id)a4 batchSize:(unint64_t)a5
++ (id)iteratorForFetchRequest:(id)request mangedObjectContext:(id)context batchSize:(unint64_t)size
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MADPhotosDataStoreBatchIterator alloc] initWithFetchRequest:v8 mangedObjectContext:v7 batchSize:a5];
+  contextCopy = context;
+  requestCopy = request;
+  v9 = [[MADPhotosDataStoreBatchIterator alloc] initWithFetchRequest:requestCopy mangedObjectContext:contextCopy batchSize:size];
 
   return v9;
 }
 
-+ (id)iteratorForFetchRequest:(id)a3 photoLibrary:(id)a4 batchSize:(unint64_t)a5
++ (id)iteratorForFetchRequest:(id)request photoLibrary:(id)library batchSize:(unint64_t)size
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  libraryCopy = library;
   v9 = +[MADPhotosDataStoreClient sharedClient];
-  v10 = [v9 persistentStoreCoordinatorForPhotoLibrary:v8];
+  v10 = [v9 persistentStoreCoordinatorForPhotoLibrary:libraryCopy];
 
   v11 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:1];
   v12 = v11;
@@ -168,17 +168,17 @@ LABEL_9:
   {
     [v11 setPersistentStoreCoordinator:v10];
     [v12 setMergePolicy:*MEMORY[0x1E695D370]];
-    v13 = [[MADPhotosDataStoreBatchIterator alloc] initWithFetchRequest:v7 mangedObjectContext:v12 batchSize:a5];
+    v13 = [[MADPhotosDataStoreBatchIterator alloc] initWithFetchRequest:requestCopy mangedObjectContext:v12 batchSize:size];
   }
 
   else
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v14 = [v8 photoLibraryURL];
-      v15 = [v14 path];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
+      path = [photoLibraryURL path];
       v17 = 138412290;
-      v18 = v15;
+      v18 = path;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADPhotosDataStoreBatchIterator] Failed to create managed object context for photo library at %@", &v17, 0xCu);
     }
 

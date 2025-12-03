@@ -3,50 +3,50 @@
 + (MKPolygon)polygonWithCoordinates:(const CLLocationCoordinate2D *)coords count:(NSUInteger)count interiorPolygons:(NSArray *)interiorPolygons;
 + (MKPolygon)polygonWithPoints:(const MKMapPoint *)points count:(NSUInteger)count;
 + (MKPolygon)polygonWithPoints:(const MKMapPoint *)points count:(NSUInteger)count interiorPolygons:(NSArray *)interiorPolygons;
-+ (id)_polygonWithMapRect:(id)a3;
-+ (id)polygonEnclosingMapPoints:(id *)a3 count:(unint64_t)a4;
++ (id)_polygonWithMapRect:(id)rect;
++ (id)polygonEnclosingMapPoints:(id *)points count:(unint64_t)count;
 - ($9433BFB5400FDC760880D1BFD6845728)boundingMapRect;
 - (BOOL)_determineSelfIntersecting;
-- (BOOL)intersectsMapRect:(id)a3;
+- (BOOL)intersectsMapRect:(id)rect;
 - (CLLocationCoordinate2D)coordinate;
-- (MKPolygon)initWithCoder:(id)a3;
-- (id)_initWithGeoJSONCoordinateArrays:(id)a3 error:(id *)a4;
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4;
-- (id)_initWithPointsNoCopy:(id *)a3 count:(unint64_t)a4 interiorPolygons:(id)a5;
+- (MKPolygon)initWithCoder:(id)coder;
+- (id)_initWithGeoJSONCoordinateArrays:(id)arrays error:(id *)error;
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error;
+- (id)_initWithPointsNoCopy:(id *)copy count:(unint64_t)count interiorPolygons:(id)polygons;
 - (void)_calculateBounds;
 - (void)_determineSimple;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MKPolygon
 
-- (id)_initWithGeoJSONCoordinateArrays:(id)a3 error:(id *)a4
+- (id)_initWithGeoJSONCoordinateArrays:(id)arrays error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  arraysCopy = arrays;
+  if (arraysCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 count] < 2)
+      if ([arraysCopy count] < 2)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count") - 1}];
+        v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(arraysCopy, "count") - 1}];
       }
 
-      if ([v6 count] < 2)
+      if ([arraysCopy count] < 2)
       {
 LABEL_16:
-        v11 = [v6 firstObject];
-        VerticesFromGeoJSON = _createVerticesFromGeoJSON(v11, a4);
+        firstObject = [arraysCopy firstObject];
+        VerticesFromGeoJSON = _createVerticesFromGeoJSON(firstObject, error);
         if (VerticesFromGeoJSON)
         {
-          self = -[MKPolygon _initWithPointsNoCopy:count:interiorPolygons:](self, "_initWithPointsNoCopy:count:interiorPolygons:", VerticesFromGeoJSON, [v11 count], v7);
-          v9 = self;
+          self = -[MKPolygon _initWithPointsNoCopy:count:interiorPolygons:](self, "_initWithPointsNoCopy:count:interiorPolygons:", VerticesFromGeoJSON, [firstObject count], v7);
+          selfCopy = self;
 LABEL_19:
 
           goto LABEL_20;
@@ -58,39 +58,39 @@ LABEL_19:
         v10 = 1;
         while (1)
         {
-          v11 = [v6 objectAtIndexedSubscript:v10];
-          v12 = _createVerticesFromGeoJSON(v11, a4);
+          firstObject = [arraysCopy objectAtIndexedSubscript:v10];
+          v12 = _createVerticesFromGeoJSON(firstObject, error);
           if (!v12)
           {
             break;
           }
 
-          v13 = -[MKPolygon _initWithPointsNoCopy:count:interiorPolygons:]([MKPolygon alloc], "_initWithPointsNoCopy:count:interiorPolygons:", v12, [v11 count], 0);
+          v13 = -[MKPolygon _initWithPointsNoCopy:count:interiorPolygons:]([MKPolygon alloc], "_initWithPointsNoCopy:count:interiorPolygons:", v12, [firstObject count], 0);
           [v7 addObject:v13];
 
-          if (++v10 >= [v6 count])
+          if (++v10 >= [arraysCopy count])
           {
             goto LABEL_16;
           }
         }
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_19;
     }
 
-    if (a4)
+    if (error)
     {
       v8 = @"Polygon geometry coordinates MUST be an array";
       goto LABEL_9;
     }
 
 LABEL_10:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -98,38 +98,38 @@ LABEL_10:
   v8 = @"Polygon geometry is missing value for 'coordinates'";
 LABEL_9:
   _errorWithReason(v8);
-  *a4 = v9 = 0;
+  *error = selfCopy = 0;
 LABEL_20:
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)_initWithGeoJSONObject:(id)a3 error:(id *)a4
+- (id)_initWithGeoJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v11 = @"Polygon object must be a dictionary";
 LABEL_8:
       _errorWithReason(v11);
-      *a4 = v10 = 0;
+      *error = selfCopy = 0;
       goto LABEL_10;
     }
 
 LABEL_9:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  v7 = [objectCopy objectForKeyedSubscript:@"type"];
   v8 = _geoJSONGeometryType(v7);
 
   if (v8 != 5)
   {
-    if (a4)
+    if (error)
     {
       v11 = @"Input is not a Polygon GeoJSON object";
       goto LABEL_8;
@@ -138,29 +138,29 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"coordinates"];
-  self = [(MKPolygon *)self _initWithGeoJSONCoordinateArrays:v9 error:a4];
+  v9 = [objectCopy objectForKeyedSubscript:@"coordinates"];
+  self = [(MKPolygon *)self _initWithGeoJSONCoordinateArrays:v9 error:error];
 
-  v10 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
 - (BOOL)_determineSelfIntersecting
 {
-  v3 = [(MKMultiPoint *)self points];
-  v4 = [(MKMultiPoint *)self pointCount];
-  if (v4 < 3)
+  points = [(MKMultiPoint *)self points];
+  pointCount = [(MKMultiPoint *)self pointCount];
+  if (pointCount < 3)
   {
     return 0;
   }
 
-  v6 = v4;
+  v6 = pointCount;
   v23 = 0;
   v24 = 0;
   v25 = 0;
-  std::vector<gm::Matrix<double,2,1>>::reserve(&v23, v4);
+  std::vector<gm::Matrix<double,2,1>>::reserve(&v23, pointCount);
   v7 = 0;
   v8 = v24;
   v9 = v25;
@@ -199,7 +199,7 @@ LABEL_10:
       }
 
       v14 = (16 * v11);
-      *v14 = v3[v7];
+      *v14 = points[v7];
       v15 = (v14 + 1);
       if (v10 != v8)
       {
@@ -227,7 +227,7 @@ LABEL_10:
 
     else
     {
-      *v8 = v3[v7];
+      *v8 = points[v7];
       v8 += 16;
     }
 
@@ -253,22 +253,22 @@ LABEL_10:
 
 - (void)_determineSimple
 {
-  v3 = [(MKPolygon *)self interiorPolygons];
-  v4 = [v3 count];
+  interiorPolygons = [(MKPolygon *)self interiorPolygons];
+  v4 = [interiorPolygons count];
 
   if (!v4)
   {
-    v5 = [(MKMultiPoint *)self points];
-    v6 = [(MKMultiPoint *)self pointCount];
-    v7 = v6 - 2;
-    if (v6 > 2)
+    points = [(MKMultiPoint *)self points];
+    pointCount = [(MKMultiPoint *)self pointCount];
+    v7 = pointCount - 2;
+    if (pointCount > 2)
     {
-      _Q2 = vsubq_f64(v5[1], *v5);
+      _Q2 = vsubq_f64(points[1], *points);
       _D3 = _Q2.f64[1];
       __asm { FMLA            D1, D3, V2.D[1] }
 
       _Q3 = vmulq_n_f64(_Q2, 1.0 / sqrt(_D1));
-      v16 = &v5[2];
+      v16 = &points[2];
       while (v7)
       {
         _Q4 = vsubq_f64(*v16, v16[-1]);
@@ -352,32 +352,32 @@ LABEL_10:
   [(MKMultiPoint *)self _setBounds:x, y, width, height];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MKPolygon;
-  [(MKMultiPoint *)&v7 encodeWithCoder:v4];
+  [(MKMultiPoint *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_centroid.latitude];
-  [v4 encodeObject:v5 forKey:@"MKPolygonCentroidLatitude"];
+  [coderCopy encodeObject:v5 forKey:@"MKPolygonCentroidLatitude"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_centroid.longitude];
-  [v4 encodeObject:v6 forKey:@"MKPolygonCentroidLongitude"];
+  [coderCopy encodeObject:v6 forKey:@"MKPolygonCentroidLongitude"];
 
-  [v4 encodeObject:self->_interiorPolygons forKey:@"MKPolygonInteriorPolygons"];
-  [v4 encodeBool:self->_isDefinitelyConvex forKey:@"MKPolygonIsDefinitelyConvex"];
+  [coderCopy encodeObject:self->_interiorPolygons forKey:@"MKPolygonInteriorPolygons"];
+  [coderCopy encodeBool:self->_isDefinitelyConvex forKey:@"MKPolygonIsDefinitelyConvex"];
 }
 
-- (MKPolygon)initWithCoder:(id)a3
+- (MKPolygon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MKPolygon;
-  v5 = [(MKMultiPoint *)&v17 initWithCoder:v4];
+  v5 = [(MKMultiPoint *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonCentroidLatitude"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonCentroidLongitude"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonCentroidLatitude"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonCentroidLongitude"];
     [v6 doubleValue];
     v9 = v8;
     [v7 doubleValue];
@@ -385,11 +385,11 @@ LABEL_10:
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"MKPolygonInteriorPolygons"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MKPolygonInteriorPolygons"];
     interiorPolygons = v5->_interiorPolygons;
     v5->_interiorPolygons = v14;
 
-    v5->_isDefinitelyConvex = [v4 decodeBoolForKey:@"MKPolygonIsDefinitelyConvex"];
+    v5->_isDefinitelyConvex = [coderCopy decodeBoolForKey:@"MKPolygonIsDefinitelyConvex"];
   }
 
   return v5;
@@ -407,12 +407,12 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)intersectsMapRect:(id)a3
+- (BOOL)intersectsMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v35 = *MEMORY[0x1E69E9840];
   if (![(MKPolygon *)self _isDefinitelyConvex]|| [(MKMultiPoint *)self pointCount]<= 2)
   {
@@ -527,54 +527,54 @@ LABEL_27:
   return result;
 }
 
-- (id)_initWithPointsNoCopy:(id *)a3 count:(unint64_t)a4 interiorPolygons:(id)a5
+- (id)_initWithPointsNoCopy:(id *)copy count:(unint64_t)count interiorPolygons:(id)polygons
 {
-  v8 = a5;
+  polygonsCopy = polygons;
   v14.receiver = self;
   v14.super_class = MKPolygon;
   v9 = [(MKPolygon *)&v14 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [polygonsCopy copy];
     interiorPolygons = v9->_interiorPolygons;
     v9->_interiorPolygons = v10;
 
-    [(MKMultiPoint *)v9 _assignPoints:a3 count:a4];
+    [(MKMultiPoint *)v9 _assignPoints:copy count:count];
     v12 = v9;
   }
 
   return v9;
 }
 
-+ (id)_polygonWithMapRect:(id)a3
++ (id)_polygonWithMapRect:(id)rect
 {
   v5[8] = *MEMORY[0x1E69E9840];
-  v5[0] = *&a3.var0.var0;
-  v5[1] = *&a3.var0.var1;
-  *&v5[2] = a3.var0.var0 + a3.var1.var0;
-  v5[3] = *&a3.var0.var1;
-  *&v5[4] = a3.var0.var0 + a3.var1.var0;
-  *&v5[5] = a3.var0.var1 + a3.var1.var1;
-  v5[6] = *&a3.var0.var0;
-  *&v5[7] = a3.var0.var1 + a3.var1.var1;
+  v5[0] = *&rect.var0.var0;
+  v5[1] = *&rect.var0.var1;
+  *&v5[2] = rect.var0.var0 + rect.var1.var0;
+  v5[3] = *&rect.var0.var1;
+  *&v5[4] = rect.var0.var0 + rect.var1.var0;
+  *&v5[5] = rect.var0.var1 + rect.var1.var1;
+  v5[6] = *&rect.var0.var0;
+  *&v5[7] = rect.var0.var1 + rect.var1.var1;
   v3 = [objc_opt_class() polygonWithPoints:v5 count:4];
 
   return v3;
 }
 
-+ (id)polygonEnclosingMapPoints:(id *)a3 count:(unint64_t)a4
++ (id)polygonEnclosingMapPoints:(id *)points count:(unint64_t)count
 {
-  Mutable = CFArrayCreateMutable(0, a4, 0);
-  if (a4)
+  Mutable = CFArrayCreateMutable(0, count, 0);
+  if (count)
   {
-    v8 = a4;
+    countCopy = count;
     do
     {
-      CFArrayAppendValue(Mutable, a3++);
-      --v8;
+      CFArrayAppendValue(Mutable, points++);
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   ValueAtIndex = CFArrayGetValueAtIndex(Mutable, 0);
@@ -612,7 +612,7 @@ LABEL_27:
       v14 = v16;
     }
 
-    if (CFArrayGetCount(v12) < 0 || CFArrayGetCount(v12) >= a4)
+    if (CFArrayGetCount(v12) < 0 || CFArrayGetCount(v12) >= count)
     {
       break;
     }
@@ -639,7 +639,7 @@ LABEL_27:
 
   CFRelease(Mutable);
   CFRelease(v12);
-  v26 = [a1 polygonWithPoints:v23 count:Count];
+  v26 = [self polygonWithPoints:v23 count:Count];
   [v26 set_isDefinitelyConvex:1];
   free(v23);
 

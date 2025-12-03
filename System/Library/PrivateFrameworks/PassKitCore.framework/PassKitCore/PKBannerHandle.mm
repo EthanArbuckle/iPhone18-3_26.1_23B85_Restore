@@ -1,27 +1,27 @@
 @interface PKBannerHandle
-+ (id)createHandleForRequest:(id)a3 queue:(id)a4;
++ (id)createHandleForRequest:(id)request queue:(id)queue;
 - (PKBannerHandleServerState)serverState;
 - (PKBannerHandleState)state;
-- (void)_accessTrackedRemoteTargetWithHandler:(uint64_t)a1;
-- (void)_invalidateFromRemote:(uint64_t)a1;
-- (void)detachWithFinished:(id)a3 reply:(id)a4;
-- (void)displayWithDelegate:(id)a3 completion:(id)a4;
+- (void)_accessTrackedRemoteTargetWithHandler:(uint64_t)handler;
+- (void)_invalidateFromRemote:(uint64_t)remote;
+- (void)detachWithFinished:(id)finished reply:(id)reply;
+- (void)displayWithDelegate:(id)delegate completion:(id)completion;
 - (void)invalidate;
-- (void)setState:(id)a3;
-- (void)updateState:(id)a3 withReply:(id)a4;
+- (void)setState:(id)state;
+- (void)updateState:(id)state withReply:(id)reply;
 @end
 
 @implementation PKBannerHandle
 
-+ (id)createHandleForRequest:(id)a3 queue:(id)a4
++ (id)createHandleForRequest:(id)request queue:(id)queue
 {
-  v4 = a4;
+  queueCopy = queue;
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  queueCopy2 = queue;
+  requestCopy = request;
   v8 = [PKBannerHandle alloc];
-  v9 = v7;
-  v10 = v6;
+  v9 = requestCopy;
+  v10 = queueCopy2;
   v11 = v10;
   if (!v8)
   {
@@ -39,17 +39,17 @@
       v8 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_FAULT))
       {
-        v27 = [v9 type];
+        type = [v9 type];
         LODWORD(v42) = 134217984;
-        *(&v42 + 4) = v27;
+        *(&v42 + 4) = type;
         _os_log_fault_impl(&dword_1AD337000, &v8->super, OS_LOG_TYPE_FAULT, "PKBannerHandle: failed to create handle for %ld - no handle.", &v42, 0xCu);
       }
 
       if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v9 type];
+        type2 = [v9 type];
         LODWORD(v42) = 134217984;
-        *(&v42 + 4) = v25;
+        *(&v42 + 4) = type2;
         _os_log_impl(&dword_1AD337000, &v8->super, OS_LOG_TYPE_DEFAULT, "PKBannerHandle: failed to create handle for %ld - no handle.", &v42, 0xCu);
       }
 
@@ -57,15 +57,15 @@
     }
 
     v8 = v12;
-    objc_storeStrong(v12 + 1, a3);
+    objc_storeStrong(v12 + 1, request);
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_queue, v4);
+    objc_storeStrong(&v8->_queue, queueCopy);
     v13 = dispatch_group_create();
     messageTracker = v8->_messageTracker;
     v8->_messageTracker = v13;
 
     v10 = [MEMORY[0x1E698F498] endpointForSystemMachName:@"com.apple.PassbookUISceneService.remote-ui" service:@"com.apple.wallet.banner" instance:0];
-    v4 = v10;
+    queueCopy = v10;
     if (v10)
     {
       v15 = [MEMORY[0x1E698F490] connectionWithEndpoint:v10];
@@ -92,28 +92,28 @@
         v22 = PKLogFacilityTypeGetObject(0);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v9 type];
+          type3 = [v9 type];
           v24 = v8->_connection;
           *buf = 134218496;
           v36 = v18;
           v37 = 2048;
-          v38 = v23;
+          v38 = type3;
           v39 = 2048;
           v40 = v24;
           _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "PKBannerHandle (%p): created handle for %ld with connection %p.", buf, 0x20u);
         }
 
         [(BSServiceConnectionClient *)v8->_connection activate];
-        v8 = v4;
+        v8 = queueCopy;
         goto LABEL_15;
       }
 
       v28 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
       {
-        v33 = [v9 type];
+        type4 = [v9 type];
         LODWORD(v42) = 134217984;
-        *(&v42 + 4) = v33;
+        *(&v42 + 4) = type4;
         _os_log_fault_impl(&dword_1AD337000, v28, OS_LOG_TYPE_FAULT, "PKBannerHandle: failed to create handle for %ld - no connection.", &v42, 0xCu);
       }
 
@@ -122,9 +122,9 @@
         goto LABEL_27;
       }
 
-      v31 = [v9 type];
+      type5 = [v9 type];
       LODWORD(v42) = 134217984;
-      *(&v42 + 4) = v31;
+      *(&v42 + 4) = type5;
       v30 = "PKBannerHandle: failed to create handle for %ld - no connection.";
       goto LABEL_26;
     }
@@ -138,9 +138,9 @@
   v28 = PKLogFacilityTypeGetObject(v10);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
   {
-    v32 = [v9 type];
+    type6 = [v9 type];
     LODWORD(v42) = 134217984;
-    *(&v42 + 4) = v32;
+    *(&v42 + 4) = type6;
     _os_log_fault_impl(&dword_1AD337000, v28, OS_LOG_TYPE_FAULT, "PKBannerHandle: failed to create handle for %ld - no endpoint.", &v42, 0xCu);
   }
 
@@ -149,9 +149,9 @@
     goto LABEL_27;
   }
 
-  v29 = [v9 type];
+  type7 = [v9 type];
   LODWORD(v42) = 134217984;
-  *(&v42 + 4) = v29;
+  *(&v42 + 4) = type7;
   v30 = "PKBannerHandle: failed to create handle for %ld - no endpoint.";
 LABEL_26:
   _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, v30, &v42, 0xCu);
@@ -218,12 +218,12 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)_invalidateFromRemote:(uint64_t)a1
+- (void)_invalidateFromRemote:(uint64_t)remote
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (remote)
   {
-    if (*(a1 + 52))
+    if (*(remote + 52))
     {
       v4 = 2;
     }
@@ -233,13 +233,13 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
       v4 = 0;
     }
 
-    if ((*(a1 + 52) & 1) == 0 && (a2 & 1) == 0)
+    if ((*(remote + 52) & 1) == 0 && (a2 & 1) == 0)
     {
-      v4 = *(a1 + 50);
+      v4 = *(remote + 50);
     }
 
     v5 = 0;
-    atomic_compare_exchange_strong((a1 + 48), &v5, 1u);
+    atomic_compare_exchange_strong((remote + 48), &v5, 1u);
     if (v5)
     {
       goto LABEL_32;
@@ -250,9 +250,9 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
       v6 = PKLogFacilityTypeGetObject(5uLL);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = *(a1 + 88);
+        v7 = *(remote + 88);
         *buf = 134218240;
-        v36 = a1;
+        remoteCopy4 = remote;
         v37 = 2048;
         v38 = v7;
         _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "PKBannerHandle (%p): starting local invalidation of connection %p.", buf, 0x16u);
@@ -271,7 +271,7 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
         }
 
         *buf = 134217984;
-        v36 = a1;
+        remoteCopy4 = remote;
         v10 = "PKBannerHandle (%p): banner detached.";
       }
 
@@ -283,7 +283,7 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
         }
 
         *buf = 134217984;
-        v36 = a1;
+        remoteCopy4 = remote;
         v10 = "PKBannerHandle (%p): banner finished.";
       }
     }
@@ -296,35 +296,35 @@ void __40__PKBannerHandle__initForRequest_queue___block_invoke_2(uint64_t a1, vo
       }
 
       *buf = 134217984;
-      v36 = a1;
+      remoteCopy4 = remote;
       v10 = "PKBannerHandle (%p): banner interrupted.";
     }
 
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0xCu);
 LABEL_22:
 
-    v11 = *(a1 + 88);
+    v11 = *(remote + 88);
     if (v11)
     {
       v12 = v11;
-      v13 = *(a1 + 88);
-      *(a1 + 88) = 0;
+      v13 = *(remote + 88);
+      *(remote + 88) = 0;
 
       if ((a2 & 1) == 0)
       {
-        if ((*(a1 + 51) & 1) != 0 || *(a1 + 50) != 1)
+        if ((*(remote + 51) & 1) != 0 || *(remote + 50) != 1)
         {
           v14 = 0;
         }
 
         else
         {
-          v14 = [v12 remoteTargetWithLaunchingAssertionAttributes:*(a1 + 96)];
+          v14 = [v12 remoteTargetWithLaunchingAssertionAttributes:*(remote + 96)];
           if (v14)
           {
-            v15 = *(a1 + 32);
+            v15 = *(remote + 32);
             dispatch_group_enter(v15);
-            objc_initWeak(buf, a1);
+            objc_initWeak(buf, remote);
             aBlock[0] = MEMORY[0x1E69E9820];
             aBlock[1] = 3221225472;
             aBlock[2] = __40__PKBannerHandle__invalidateFromRemote___block_invoke;
@@ -351,8 +351,8 @@ LABEL_22:
           }
         }
 
-        v20 = *(a1 + 24);
-        v19 = *(a1 + 32);
+        v20 = *(remote + 24);
+        v19 = *(remote + 32);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __40__PKBannerHandle__invalidateFromRemote___block_invoke_29;
@@ -363,14 +363,14 @@ LABEL_22:
     }
 
 LABEL_32:
-    v21 = *(a1 + 80);
+    v21 = *(remote + 80);
     if (v21)
     {
       v22 = _Block_copy(v21);
-      v23 = *(a1 + 80);
-      *(a1 + 80) = 0;
+      v23 = *(remote + 80);
+      *(remote + 80) = 0;
 
-      v24 = *(a1 + 24);
+      v24 = *(remote + 24);
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __40__PKBannerHandle__invalidateFromRemote___block_invoke_30;
@@ -489,11 +489,11 @@ void __40__PKBannerHandle__invalidateFromRemote___block_invoke_30(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)displayWithDelegate:(id)a3 completion:(id)a4
+- (void)displayWithDelegate:(id)delegate completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self->_started)
   {
@@ -509,8 +509,8 @@ void __40__PKBannerHandle__invalidateFromRemote___block_invoke_30(uint64_t a1)
   }
 
   self->_started = 1;
-  objc_storeWeak(&self->_delegate, v6);
-  v9 = _Block_copy(v7);
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v9 = _Block_copy(completionCopy);
   completion = self->_completion;
   self->_completion = v9;
 
@@ -694,12 +694,12 @@ void __49__PKBannerHandle_displayWithDelegate_completion___block_invoke_35(uint6
   }
 }
 
-- (void)_accessTrackedRemoteTargetWithHandler:(uint64_t)a1
+- (void)_accessTrackedRemoteTargetWithHandler:(uint64_t)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     if (!v3)
     {
@@ -707,17 +707,17 @@ void __49__PKBannerHandle_displayWithDelegate_completion___block_invoke_35(uint6
     }
 
     v5 = objc_autoreleasePoolPush();
-    os_unfair_lock_lock((a1 + 16));
-    v6 = *(a1 + 88);
+    os_unfair_lock_lock((handler + 16));
+    v6 = *(handler + 88);
     if (v6)
     {
-      v7 = [v6 remoteTargetWithLaunchingAssertionAttributes:*(a1 + 96)];
+      v7 = [v6 remoteTargetWithLaunchingAssertionAttributes:*(handler + 96)];
       if (v7)
       {
         v8 = v7;
-        v9 = *(a1 + 32);
+        v9 = *(handler + 32);
         dispatch_group_enter(v9);
-        os_unfair_lock_unlock((a1 + 16));
+        os_unfair_lock_unlock((handler + 16));
         v10 = [[PKDeallocationGuard alloc] initWithBlock:&__block_literal_global_53];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
@@ -739,7 +739,7 @@ LABEL_12:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v20 = a1;
+        handlerCopy2 = handler;
         v15 = "PKBannerHandle (%p): attempting to message inactive connection.";
         goto LABEL_10;
       }
@@ -751,14 +751,14 @@ LABEL_12:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v20 = a1;
+        handlerCopy2 = handler;
         v15 = "PKBannerHandle (%p): attempting to message invalidated connection.";
 LABEL_10:
         _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, v15, buf, 0xCu);
       }
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((handler + 16));
     goto LABEL_12;
   }
 
@@ -774,13 +774,13 @@ LABEL_13:
   return v3;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = a3;
-  if (self->_request && ((v6 = v5) == 0 || (v7 = [v5 type], v7 == -[PKBannerHandleRequest type](self->_request, "type"))))
+  stateCopy = state;
+  if (self->_request && ((v6 = stateCopy) == 0 || (v7 = [stateCopy type], v7 == -[PKBannerHandleRequest type](self->_request, "type"))))
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_state, a3);
+    objc_storeStrong(&self->_state, state);
     started = self->_started;
     v9 = self->_initialStateUpdateTracker;
     os_unfair_lock_unlock(&self->_lock);
@@ -791,7 +791,7 @@ LABEL_13:
       v10[2] = __27__PKBannerHandle_setState___block_invoke;
       v10[3] = &unk_1E79CDD00;
       v11 = v9;
-      v12 = self;
+      selfCopy = self;
       v13 = v6;
       [(PKBannerHandle *)self _accessTrackedRemoteTargetWithHandler:v10];
     }
@@ -872,27 +872,27 @@ void __56__PKBannerHandle__accessTrackedRemoteTargetWithHandler___block_invoke_2
   }
 }
 
-- (void)updateState:(id)a3 withReply:(id)a4
+- (void)updateState:(id)state withReply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  replyCopy = reply;
   if (!self->_request)
   {
     __break(1u);
   }
 
-  v9 = v8;
-  if (v7)
+  v9 = replyCopy;
+  if (stateCopy)
   {
-    v10 = [v7 type];
-    if (v10 != [(PKBannerHandleRequest *)self->_request type])
+    type = [stateCopy type];
+    if (type != [(PKBannerHandleRequest *)self->_request type])
     {
       v12 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 134217984;
-        v18 = self;
+        selfCopy3 = self;
         v13 = "PKBannerHandle (%p): type mismatch - ignoring state update.";
         goto LABEL_14;
       }
@@ -911,7 +911,7 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = self;
+      selfCopy3 = self;
       v13 = "PKBannerHandle (%p): ignoring state update.";
 LABEL_14:
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, v13, &v17, 0xCu);
@@ -923,18 +923,18 @@ LABEL_14:
 
   os_unfair_lock_lock(&self->_lock);
   v14 = self->_serverState;
-  objc_storeStrong(&self->_serverState, a3);
+  objc_storeStrong(&self->_serverState, state);
   os_unfair_lock_unlock(&self->_lock);
   v15 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134217984;
-    v18 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKBannerHandle (%p): state updated.", &v17, 0xCu);
   }
 
   v9[2](v9, 0);
-  if (v7 | v14)
+  if (stateCopy | v14)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained bannerHandle:self didChangeFromServerState:v14];
@@ -943,24 +943,24 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)detachWithFinished:(id)a3 reply:(id)a4
+- (void)detachWithFinished:(id)finished reply:(id)reply
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  finishedCopy = finished;
+  replyCopy = reply;
   v8 = PKLogFacilityTypeGetObject(5uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKBannerHandle (%p): received remote detach.", &v9, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   self->_detached = 1;
-  self->_finished = [v6 BOOLValue];
+  self->_finished = [finishedCopy BOOLValue];
   os_unfair_lock_unlock(&self->_lock);
-  v7[2](v7, 0);
+  replyCopy[2](replyCopy, 0);
   [(PKBannerHandle *)self invalidate];
 }
 

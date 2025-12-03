@@ -1,5 +1,5 @@
 @interface CKConversationListCellLayout
-- (BOOL)isValidForContentViewWidth:(double)a3 contentViewHeight:(double)a4 widthForDeterminingAvatarVisibility:(double)a5 showingEditControl:(BOOL)a6;
+- (BOOL)isValidForContentViewWidth:(double)width contentViewHeight:(double)height widthForDeterminingAvatarVisibility:(double)visibility showingEditControl:(BOOL)control;
 - (CGRect)avatarFrame;
 - (CGRect)chevronFrame;
 - (CGRect)dateFrame;
@@ -11,9 +11,9 @@
 - (CGRect)summaryFrameIfAccessoryIndicatorVisible;
 - (CGRect)unreadFrame;
 - (CKConversationListCellLayout)init;
-- (double)cellHeightForDisplayScale:(double)a3;
+- (double)cellHeightForDisplayScale:(double)scale;
 - (void)invalidate;
-- (void)markAsValidForContentViewWidth:(double)a3 contentViewHeight:(double)a4 widthForDeterminingAvatarVisibility:(double)a5 showingEditControl:(BOOL)a6;
+- (void)markAsValidForContentViewWidth:(double)width contentViewHeight:(double)height widthForDeterminingAvatarVisibility:(double)visibility showingEditControl:(BOOL)control;
 @end
 
 @implementation CKConversationListCellLayout
@@ -168,7 +168,7 @@
   return result;
 }
 
-- (BOOL)isValidForContentViewWidth:(double)a3 contentViewHeight:(double)a4 widthForDeterminingAvatarVisibility:(double)a5 showingEditControl:(BOOL)a6
+- (BOOL)isValidForContentViewWidth:(double)width contentViewHeight:(double)height widthForDeterminingAvatarVisibility:(double)visibility showingEditControl:(BOOL)control
 {
   if (self->_invalid)
   {
@@ -177,16 +177,16 @@
 
   else
   {
-    v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_contentViewWidth, a3, 0.00000999999975);
+    v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_contentViewWidth, width, 0.00000999999975);
     if (v6)
     {
-      v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_contentViewHeight, a4, 0.00000999999975);
+      v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_contentViewHeight, height, 0.00000999999975);
       if (v6)
       {
-        v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_widthForDeterminingAvatarVisibility, a5, 0.00000999999975);
+        v6 = CKFloatApproximatelyEqualToFloatWithTolerance(self->_widthForDeterminingAvatarVisibility, visibility, 0.00000999999975);
         if (v6)
         {
-          LOBYTE(v6) = [(CKConversationListCellLayout *)self showingEditControl]^ a6 ^ 1;
+          LOBYTE(v6) = [(CKConversationListCellLayout *)self showingEditControl]^ control ^ 1;
         }
       }
     }
@@ -195,22 +195,22 @@
   return v6;
 }
 
-- (void)markAsValidForContentViewWidth:(double)a3 contentViewHeight:(double)a4 widthForDeterminingAvatarVisibility:(double)a5 showingEditControl:(BOOL)a6
+- (void)markAsValidForContentViewWidth:(double)width contentViewHeight:(double)height widthForDeterminingAvatarVisibility:(double)visibility showingEditControl:(BOOL)control
 {
   self->_invalid = 0;
-  self->_contentViewWidth = a3;
-  self->_contentViewHeight = a4;
-  self->_widthForDeterminingAvatarVisibility = a5;
-  self->_showingEditControl = a6;
+  self->_contentViewWidth = width;
+  self->_contentViewHeight = height;
+  self->_widthForDeterminingAvatarVisibility = visibility;
+  self->_showingEditControl = control;
 }
 
-- (double)cellHeightForDisplayScale:(double)a3
+- (double)cellHeightForDisplayScale:(double)scale
 {
-  if (self->_cellHeight == 0.0 || ([(CKConversationListCellLayout *)self lastUsedDisplayScale], v5 != a3))
+  if (self->_cellHeight == 0.0 || ([(CKConversationListCellLayout *)self lastUsedDisplayScale], v5 != scale))
   {
-    [CKConversationListCell cellHeightForDisplayScale:a3];
+    [CKConversationListCell cellHeightForDisplayScale:scale];
     self->_cellHeight = v6;
-    [(CKConversationListCellLayout *)self setLastUsedDisplayScale:a3];
+    [(CKConversationListCellLayout *)self setLastUsedDisplayScale:scale];
   }
 
   return self->_cellHeight;

@@ -1,5 +1,5 @@
 @interface DispatchTimer
-- (DispatchTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerQueue:(id)a6 handlerBlock:(id)a7;
+- (DispatchTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerQueue:(id)queue handlerBlock:(id)block;
 - (void)dealloc;
 - (void)fireTimer;
 - (void)invalidate;
@@ -8,22 +8,22 @@
 
 @implementation DispatchTimer
 
-- (DispatchTimer)initWithIdentifier:(id)a3 delay:(double)a4 gracePeriod:(double)a5 handlerQueue:(id)a6 handlerBlock:(id)a7
+- (DispatchTimer)initWithIdentifier:(id)identifier delay:(double)delay gracePeriod:(double)period handlerQueue:(id)queue handlerBlock:(id)block
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = DispatchTimer;
   v16 = [(DispatchTimer *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    v17->_delay = a4;
-    v17->_gracePeriod = a5;
-    objc_storeStrong(&v17->_handlerQueue, a6);
-    v18 = objc_retainBlock(v15);
+    objc_storeStrong(&v16->_identifier, identifier);
+    v17->_delay = delay;
+    v17->_gracePeriod = period;
+    objc_storeStrong(&v17->_handlerQueue, queue);
+    v18 = objc_retainBlock(blockCopy);
     handlerBlock = v17->_handlerBlock;
     v17->_handlerBlock = v18;
 

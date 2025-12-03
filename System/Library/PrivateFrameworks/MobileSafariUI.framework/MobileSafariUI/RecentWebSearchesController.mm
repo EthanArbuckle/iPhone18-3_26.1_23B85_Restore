@@ -27,9 +27,9 @@ void __47__RecentWebSearchesController_sharedController__block_invoke()
 + (BOOL)_shouldTrackSearches
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 usesDefaultBrowsingModeInAllWindows];
+  usesDefaultBrowsingModeInAllWindows = [v2 usesDefaultBrowsingModeInAllWindows];
 
-  return v3;
+  return usesDefaultBrowsingModeInAllWindows;
 }
 
 @end

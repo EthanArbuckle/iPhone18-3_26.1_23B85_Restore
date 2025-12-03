@@ -1,14 +1,14 @@
 @interface MRUMediaControlsModuleViewController
 - (BOOL)canDismissPresentedContent;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isResizing;
 - (BOOL)providesOwnPlatter;
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
-- (BOOL)shouldExpandModuleOnTouch:(id)a3;
+- (BOOL)shouldExpandModuleOnTouch:(id)touch;
 - (BOOL)shouldPerformHoverInteraction;
 - (CCUIModuleContentMetrics)contentMetrics;
-- (MRUMediaControlsModuleViewController)initWithController:(id)a3;
-- (MRUMediaControlsModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MRUMediaControlsModuleViewController)initWithController:(id)controller;
+- (MRUMediaControlsModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)containerViewsForPlatterTreatment;
 - (double)compactContinuousCornerRadius;
 - (double)preferredExpandedContentHeight;
@@ -17,25 +17,25 @@
 - (int64_t)gridSizeClass;
 - (unint64_t)contentRenderingMode;
 - (unint64_t)implicitlyExpandedGridSizeClasses;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
 - (void)dismissModule;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setDismissModuleBlock:(id)a3;
-- (void)setExpandModuleBlock:(id)a3;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setImplicitlyExpandedGridSizeClasses:(unint64_t)a3;
-- (void)setInvalidateContainerViewsBlock:(id)a3;
-- (void)setProvidesOwnPlatter:(BOOL)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setShouldPerformHoverInteraction:(BOOL)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setDismissModuleBlock:(id)block;
+- (void)setExpandModuleBlock:(id)block;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setImplicitlyExpandedGridSizeClasses:(unint64_t)classes;
+- (void)setInvalidateContainerViewsBlock:(id)block;
+- (void)setProvidesOwnPlatter:(BOOL)platter;
+- (void)setResizing:(BOOL)resizing;
+- (void)setShouldPerformHoverInteraction:(BOOL)interaction;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation MRUMediaControlsModuleViewController
@@ -49,12 +49,12 @@
   sub_1A211C9D0();
 }
 
-- (MRUMediaControlsModuleViewController)initWithController:(id)a3
+- (MRUMediaControlsModuleViewController)initWithController:(id)controller
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for MediaControlsModulePresenter();
-  v5 = *(a3 + OBJC_IVAR___MRUMediaControlsModuleController_sessionsController + 8);
-  v6 = a3;
+  v5 = *(controller + OBJC_IVAR___MRUMediaControlsModuleController_sessionsController + 8);
+  controllerCopy = controller;
   v7 = swift_unknownObjectRetain();
   v8 = sub_1A2255888(v7, v5);
   v9 = (*(ObjectType + 440))(v8);
@@ -66,24 +66,24 @@
 - (void)loadView
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x158);
-  v4 = self;
+  selfCopy = self;
   v3 = v2();
-  [(MRUMediaControlsModuleViewController *)v4 setView:v3];
+  [(MRUMediaControlsModuleViewController *)selfCopy setView:v3];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A22A5418();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1A22A594C(a4, width, height);
+  selfCopy = self;
+  sub_1A22A594C(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -111,9 +111,9 @@
   return v4;
 }
 
-- (void)setDismissModuleBlock:(id)a3
+- (void)setDismissModuleBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -131,13 +131,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A210F5C0(v7);
 }
 
-- (void)setExpandModuleBlock:(id)a3
+- (void)setExpandModuleBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -155,13 +155,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A210F5C0(v7);
 }
 
-- (void)setInvalidateContainerViewsBlock:(id)a3
+- (void)setInvalidateContainerViewsBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -179,7 +179,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1A210F5C0(v7);
 }
 
@@ -190,13 +190,13 @@
   return *(self + v3);
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_gridSizeClass;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = class;
   v6 = *((*MEMORY[0x1E69E7D40] & *self) + 0x130);
-  v7 = self;
+  selfCopy = self;
   v6(8);
   sub_1A22A8B1C();
 }
@@ -208,12 +208,12 @@
   return *(self + v3);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_compactContinuousCornerRadius;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = radius;
+  selfCopy = self;
   sub_1A211C9D0();
 }
 
@@ -224,17 +224,17 @@
   return *(self + v3);
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_contentMetrics;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = metrics;
+  metricsCopy = metrics;
+  selfCopy = self;
 
   v9 = MEMORY[0x1E69E7D40];
-  v10 = (*((*MEMORY[0x1E69E7D40] & *v8) + 0x158))();
+  v10 = (*((*MEMORY[0x1E69E7D40] & *selfCopy) + 0x158))();
   v11 = *(self + v5);
   v12 = *((*v9 & *v10) + 0x158);
   v13 = v11;
@@ -248,10 +248,10 @@
   return *(self + v3);
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_1A22A6D08(a3);
+  selfCopy = self;
+  sub_1A22A6D08(mode);
 }
 
 - (BOOL)isResizing
@@ -261,15 +261,15 @@
   return *(self + v3);
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
-  v4 = self;
-  sub_1A22A70EC(a3);
+  selfCopy = self;
+  sub_1A22A70EC(resizing);
 }
 
 - (double)preferredExpandedContentHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A22A73C4();
 
   return v3;
@@ -279,11 +279,11 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0x158);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   LOBYTE(v3) = (*((*v2 & *v5) + 0x190))();
 
-  v6 = (*((*v2 & *v4) + 0x238))();
+  v6 = (*((*v2 & *selfCopy) + 0x238))();
   v7 = v6;
   if (v3)
   {
@@ -307,16 +307,16 @@
   return *(self + v3);
 }
 
-- (void)setProvidesOwnPlatter:(BOOL)a3
+- (void)setProvidesOwnPlatter:(BOOL)platter
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_providesOwnPlatter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = platter;
 }
 
 - (NSArray)containerViewsForPlatterTreatment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A22A79E8();
 
   if (v3)
@@ -340,23 +340,23 @@
   return *(self + v3);
 }
 
-- (void)setShouldPerformHoverInteraction:(BOOL)a3
+- (void)setShouldPerformHoverInteraction:(BOOL)interaction
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_shouldPerformHoverInteraction;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = interaction;
 }
 
-- (BOOL)shouldExpandModuleOnTouch:(id)a3
+- (BOOL)shouldExpandModuleOnTouch:(id)touch
 {
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & *self) + 0x140);
-  v6 = a3;
-  v7 = self;
+  touchCopy = touch;
+  selfCopy = self;
   if ((v5() - 3) >= 3u)
   {
-    v9 = (*((*v4 & *v7) + 0x158))();
-    v8 = (*((*v4 & *v9) + 0x188))(v6);
+    v9 = (*((*v4 & *selfCopy) + 0x158))();
+    v8 = (*((*v4 & *v9) + 0x188))(touchCopy);
   }
 
   else
@@ -369,23 +369,23 @@
 
 - (BOOL)shouldBeginTransitionToExpandedContentModule
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A22A80CC();
 
   return v3;
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = *((*MEMORY[0x1E69E7D40] & *self) + 0x100);
-  v5 = self;
-  v4(v3);
+  selfCopy = self;
+  v4(modeCopy);
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A22ABDA8();
 }
 
@@ -396,24 +396,24 @@
   return *(self + v3);
 }
 
-- (void)setImplicitlyExpandedGridSizeClasses:(unint64_t)a3
+- (void)setImplicitlyExpandedGridSizeClasses:(unint64_t)classes
 {
   v5 = OBJC_IVAR___MRUMediaControlsModuleViewController_implicitlyExpandedGridSizeClasses;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = classes;
 }
 
 - (BOOL)canDismissPresentedContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A22A8510();
 
   return v3;
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     v6 = v5;
@@ -428,7 +428,7 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_1A22ABEE0(v8, v7);
   sub_1A210F5C0(v8);
 }
@@ -436,7 +436,7 @@
 - (void)dismissModule
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x1C0);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -451,18 +451,18 @@
   }
 }
 
-- (MRUMediaControlsModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MRUMediaControlsModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A22AB0E4(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_1A22AB0E4(beginCopy);
   LOBYTE(self) = v6;
 
   return self & 1;

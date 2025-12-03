@@ -1,7 +1,7 @@
 @interface GradientView
 + (Class)layerClass;
-- (_TtC9DropletUI12GradientView)initWithCoder:(id)a3;
-- (_TtC9DropletUI12GradientView)initWithFrame:(CGRect)a3;
+- (_TtC9DropletUI12GradientView)initWithCoder:(id)coder;
+- (_TtC9DropletUI12GradientView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GradientView
@@ -13,14 +13,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC9DropletUI12GradientView)initWithCoder:(id)a3
+- (_TtC9DropletUI12GradientView)initWithCoder:(id)coder
 {
   result = sub_249ED6E50();
   __break(1u);
   return result;
 }
 
-- (_TtC9DropletUI12GradientView)initWithFrame:(CGRect)a3
+- (_TtC9DropletUI12GradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

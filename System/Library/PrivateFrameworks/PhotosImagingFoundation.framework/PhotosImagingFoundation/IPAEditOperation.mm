@@ -2,17 +2,17 @@
 + (id)_identifierForUUIDMap;
 + (id)_mapDispatchQueue;
 + (id)_uuidForIdentifierMap;
-+ (id)operationIdentifierForUUID:(id)a3;
-+ (id)operationUUIDForIdentifier:(id)a3;
-+ (id)presetifyAdjustment:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOperation:(id)a3;
++ (id)operationIdentifierForUUID:(id)d;
++ (id)operationUUIDForIdentifier:(id)identifier;
++ (id)presetifyAdjustment:(id)adjustment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOperation:(id)operation;
 - (IPAEditOperation)init;
-- (IPAEditOperation)initWithSettingsDictionary:(id)a3;
+- (IPAEditOperation)initWithSettingsDictionary:(id)dictionary;
 - (NSString)debugDescription;
 - (id)UUID;
 - (id)archivalRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
 - (id)settingsDictionary;
 @end
@@ -23,8 +23,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCAB68]);
   v4 = objc_opt_class();
-  v5 = [(IPAEditOperation *)self identifier];
-  v6 = [v3 initWithFormat:@"<%@:%p %@>", v4, self, v5];
+  identifier = [(IPAEditOperation *)self identifier];
+  v6 = [v3 initWithFormat:@"<%@:%p %@>", v4, self, identifier];
 
   return v6;
 }
@@ -97,40 +97,40 @@ void __24__IPAEditOperation_UUID__block_invoke(uint64_t a1)
   return [(IPAEditOperation *)v3 isEqualToOperation:v4, v5];
 }
 
-- (BOOL)isEqualToOperation:(id)a3
+- (BOOL)isEqualToOperation:(id)operation
 {
-  if (self == a3)
+  if (self == operation)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(IPAEditOperation *)self identifier];
-  v6 = [v4 identifier];
+  operationCopy = operation;
+  identifier = [(IPAEditOperation *)self identifier];
+  identifier2 = [operationCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(operationCopy) = [identifier isEqualToString:identifier2];
+  return operationCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAEditOperation *)self isEqualToOperation:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAEditOperation *)self isEqualToOperation:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithOperation:self];
 }
 
-- (IPAEditOperation)initWithSettingsDictionary:(id)a3
+- (IPAEditOperation)initWithSettingsDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();
@@ -202,10 +202,10 @@ uint64_t __41__IPAEditOperation__identifierForUUIDMap__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)operationUUIDForIdentifier:(id)a3
++ (id)operationUUIDForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -219,7 +219,7 @@ uint64_t __41__IPAEditOperation__identifierForUUIDMap__block_invoke()
     v7[2] = __47__IPAEditOperation_operationUUIDForIdentifier___block_invoke;
     v7[3] = &unk_279A26440;
     v9 = &v10;
-    v8 = v3;
+    v8 = identifierCopy;
     dispatch_sync(v4, v7);
 
     v5 = v11[5];
@@ -259,9 +259,9 @@ void __47__IPAEditOperation_operationUUIDForIdentifier___block_invoke(uint64_t a
   }
 }
 
-+ (id)operationIdentifierForUUID:(id)a3
++ (id)operationIdentifierForUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -273,9 +273,9 @@ void __47__IPAEditOperation_operationUUIDForIdentifier___block_invoke(uint64_t a
   v8[1] = 3221225472;
   v8[2] = __47__IPAEditOperation_operationIdentifierForUUID___block_invoke;
   v8[3] = &unk_279A26440;
-  v9 = v3;
+  v9 = dCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = dCopy;
   dispatch_sync(v4, v8);
 
   v6 = v12[5];
@@ -302,9 +302,9 @@ void __47__IPAEditOperation_operationIdentifierForUUID___block_invoke(uint64_t a
   return [(IPAEditOperation *)v3 presetifyAdjustment:v4, v5];
 }
 
-+ (id)presetifyAdjustment:(id)a3
++ (id)presetifyAdjustment:(id)adjustment
 {
-  v3 = a3;
+  adjustmentCopy = adjustment;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();

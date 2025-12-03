@@ -9,7 +9,7 @@
 + (uint64_t)dateWithSRAbsoluteTime:()SensorKit
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = SRAbsoluteTimeToCFAbsoluteTime(a1);
+  v2 = SRAbsoluteTimeToCFAbsoluteTime(self);
 
   return [v1 dateWithTimeIntervalSinceReferenceDate:v2];
 }
@@ -18,12 +18,12 @@
 {
   v3 = SRAbsoluteTimeToCFAbsoluteTime(a2);
 
-  return [a1 initWithTimeIntervalSinceReferenceDate:v3];
+  return [self initWithTimeIntervalSinceReferenceDate:v3];
 }
 
 - (double)srAbsoluteTime
 {
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
 
   return SRAbsoluteTimeFromCFAbsoluteTime(v1);
 }

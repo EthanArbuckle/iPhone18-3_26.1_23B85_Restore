@@ -1,11 +1,11 @@
 @interface SBSingleMemberKeyboardFocusCoalition
 - (SBSingleMemberKeyboardFocusCoalition)init;
-- (void)_arbitrateForReason:(id)a3;
-- (void)addedMember:(id)a3;
+- (void)_arbitrateForReason:(id)reason;
+- (void)addedMember:(id)member;
 - (void)invalidate;
-- (void)memberRequestsArbitration:(id)a3 forReason:(id)a4;
-- (void)removedMember:(id)a3;
-- (void)setNeedsArbitrationForReason:(id)a3;
+- (void)memberRequestsArbitration:(id)arbitration forReason:(id)reason;
+- (void)removedMember:(id)member;
+- (void)setNeedsArbitrationForReason:(id)reason;
 @end
 
 @implementation SBSingleMemberKeyboardFocusCoalition
@@ -17,33 +17,33 @@
   return [(SBKeyboardFocusCoalition *)&v3 _initWithDebugName:@"Single Member Coalition"];
 }
 
-- (void)addedMember:(id)a3
+- (void)addedMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v7.receiver = self;
   v7.super_class = SBSingleMemberKeyboardFocusCoalition;
-  [(SBKeyboardFocusCoalition *)&v7 addedMember:v5];
+  [(SBKeyboardFocusCoalition *)&v7 addedMember:memberCopy];
   if (self->_member)
   {
-    [(SBSingleMemberKeyboardFocusCoalition *)v5 addedMember:a2, self];
+    [(SBSingleMemberKeyboardFocusCoalition *)memberCopy addedMember:a2, self];
   }
 
   member = self->_member;
-  self->_member = v5;
+  self->_member = memberCopy;
 }
 
-- (void)removedMember:(id)a3
+- (void)removedMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v9.receiver = self;
   v9.super_class = SBSingleMemberKeyboardFocusCoalition;
-  [(SBKeyboardFocusCoalition *)&v9 removedMember:v5];
+  [(SBKeyboardFocusCoalition *)&v9 removedMember:memberCopy];
   member = self->_member;
-  if (member != v5)
+  if (member != memberCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    v8 = [(SBKeyboardFocusCoalitionMember *)v5 uniqueIdentifier];
-    [v7 handleFailureInMethod:a2 object:self file:@"SBSingleMemberKeyboardFocusCoalition.m" lineNumber:33 description:{@"Trying to remove a member: %@ that I'm not tracking", v8}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    uniqueIdentifier = [(SBKeyboardFocusCoalitionMember *)memberCopy uniqueIdentifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSingleMemberKeyboardFocusCoalition.m" lineNumber:33 description:{@"Trying to remove a member: %@ that I'm not tracking", uniqueIdentifier}];
 
     member = self->_member;
   }
@@ -51,28 +51,28 @@
   self->_member = 0;
 }
 
-- (void)setNeedsArbitrationForReason:(id)a3
+- (void)setNeedsArbitrationForReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBSingleMemberKeyboardFocusCoalition;
-  v4 = a3;
-  [(SBKeyboardFocusCoalition *)&v5 setNeedsArbitrationForReason:v4];
-  [(SBSingleMemberKeyboardFocusCoalition *)self _arbitrateForReason:v4, v5.receiver, v5.super_class];
+  reasonCopy = reason;
+  [(SBKeyboardFocusCoalition *)&v5 setNeedsArbitrationForReason:reasonCopy];
+  [(SBSingleMemberKeyboardFocusCoalition *)self _arbitrateForReason:reasonCopy, v5.receiver, v5.super_class];
 }
 
-- (void)memberRequestsArbitration:(id)a3 forReason:(id)a4
+- (void)memberRequestsArbitration:(id)arbitration forReason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_member != v7)
+  arbitrationCopy = arbitration;
+  reasonCopy = reason;
+  if (self->_member != arbitrationCopy)
   {
     [SBSingleMemberKeyboardFocusCoalition memberRequestsArbitration:a2 forReason:self];
   }
 
   v9.receiver = self;
   v9.super_class = SBSingleMemberKeyboardFocusCoalition;
-  [(SBKeyboardFocusCoalition *)&v9 memberRequestsArbitration:v7 forReason:v8];
-  [(SBSingleMemberKeyboardFocusCoalition *)self _arbitrateForReason:v8];
+  [(SBKeyboardFocusCoalition *)&v9 memberRequestsArbitration:arbitrationCopy forReason:reasonCopy];
+  [(SBSingleMemberKeyboardFocusCoalition *)self _arbitrateForReason:reasonCopy];
 }
 
 - (void)invalidate
@@ -82,23 +82,23 @@
   [(SBKeyboardFocusCoalition *)&v2 invalidate];
 }
 
-- (void)_arbitrateForReason:(id)a3
+- (void)_arbitrateForReason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(SBKeyboardFocusCoalition *)self isKeyboardFocusEvaluationSuppressed])
   {
     v5 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBKeyboardFocusCoalition *)self debugName];
-      v7 = [(SBKeyboardFocusCoalition *)self keyboardFocusEvaluationSupressionReasons];
+      debugName = [(SBKeyboardFocusCoalition *)self debugName];
+      keyboardFocusEvaluationSupressionReasons = [(SBKeyboardFocusCoalition *)self keyboardFocusEvaluationSupressionReasons];
       v16 = 138543874;
-      v17 = v6;
+      v17 = debugName;
       v18 = 2114;
-      v19 = v4;
+      v19 = reasonCopy;
       v20 = 2114;
-      v21 = v7;
+      v21 = keyboardFocusEvaluationSupressionReasons;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _abritrateForReason: %{public}@ - but we are supressing keyboard focus evaluation for reasons: %{public}@", &v16, 0x20u);
 
 LABEL_16:
@@ -116,11 +116,11 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = [(SBKeyboardFocusCoalition *)self debugName];
+    debugName2 = [(SBKeyboardFocusCoalition *)self debugName];
     v16 = 138543618;
-    v17 = v8;
+    v17 = debugName2;
     v18 = 2114;
-    v19 = v4;
+    v19 = reasonCopy;
     v9 = "[%{public}@] _abritrateForReason: %{public}@ - but we invalidated";
 LABEL_13:
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, v9, &v16, 0x16u);
@@ -131,35 +131,35 @@ LABEL_13:
   member = self->_member;
   if (member)
   {
-    v5 = [(SBKeyboardFocusCoalitionMember *)member updateCoalitionPreferencesWithReason:v4];
-    v6 = [v5 policy];
-    v11 = [(SBKeyboardFocusCoalition *)self enforcedPolicy];
-    v12 = [v11 isEqual:v6];
+    v5 = [(SBKeyboardFocusCoalitionMember *)member updateCoalitionPreferencesWithReason:reasonCopy];
+    debugName = [v5 policy];
+    enforcedPolicy = [(SBKeyboardFocusCoalition *)self enforcedPolicy];
+    v12 = [enforcedPolicy isEqual:debugName];
 
     if (v12)
     {
-      v13 = SBLogKeyboardFocus();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      delegate = SBLogKeyboardFocus();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(SBKeyboardFocusCoalition *)self debugName];
+        debugName3 = [(SBKeyboardFocusCoalition *)self debugName];
         v16 = 138543618;
-        v17 = v14;
+        v17 = debugName3;
         v18 = 2114;
-        v19 = v4;
-        _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] _abritrateForReason: %{public}@ - new policy is unchanged", &v16, 0x16u);
+        v19 = reasonCopy;
+        _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "[%{public}@] _abritrateForReason: %{public}@ - new policy is unchanged", &v16, 0x16u);
       }
     }
 
     else
     {
-      v15 = [(SBKeyboardFocusCoalition *)self policyEnforcer];
-      [v15 enforce:v6];
+      policyEnforcer = [(SBKeyboardFocusCoalition *)self policyEnforcer];
+      [policyEnforcer enforce:debugName];
 
-      [(SBKeyboardFocusCoalition *)self setEnforcedPolicy:v6];
+      [(SBKeyboardFocusCoalition *)self setEnforcedPolicy:debugName];
       [(SBKeyboardFocusCoalitionMember *)self->_member setHasFocus:1];
       [(SBKeyboardFocusCoalitionMember *)self->_member focusPolicyDidChange];
-      v13 = [(SBKeyboardFocusCoalition *)self delegate];
-      [v13 keyboardFocusCoalitionDidUpdateEnforcedPolicy:self];
+      delegate = [(SBKeyboardFocusCoalition *)self delegate];
+      [delegate keyboardFocusCoalitionDidUpdateEnforcedPolicy:self];
     }
 
     goto LABEL_16;
@@ -168,11 +168,11 @@ LABEL_13:
   v5 = SBLogKeyboardFocus();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SBKeyboardFocusCoalition *)self debugName];
+    debugName2 = [(SBKeyboardFocusCoalition *)self debugName];
     v16 = 138543618;
-    v17 = v8;
+    v17 = debugName2;
     v18 = 2114;
-    v19 = v4;
+    v19 = reasonCopy;
     v9 = "[%{public}@] _abritrateForReason: %{public}@ - but we have no member";
     goto LABEL_13;
   }

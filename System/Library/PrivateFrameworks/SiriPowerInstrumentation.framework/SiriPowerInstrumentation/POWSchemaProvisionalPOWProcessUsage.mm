@@ -1,21 +1,21 @@
 @interface POWSchemaProvisionalPOWProcessUsage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POWSchemaProvisionalPOWProcessUsage)initWithDictionary:(id)a3;
-- (POWSchemaProvisionalPOWProcessUsage)initWithJSON:(id)a3;
+- (POWSchemaProvisionalPOWProcessUsage)initWithDictionary:(id)dictionary;
+- (POWSchemaProvisionalPOWProcessUsage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setHasCpuInstructions:(BOOL)a3;
-- (void)setHasGpuCycles:(BOOL)a3;
-- (void)setHasMemoryFootprint:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCpuInstructions:(BOOL)instructions;
+- (void)setHasGpuCycles:(BOOL)cycles;
+- (void)setHasMemoryFootprint:(BOOL)footprint;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POWSchemaProvisionalPOWProcessUsage
 
-- (void)setHasCpuInstructions:(BOOL)a3
+- (void)setHasCpuInstructions:(BOOL)instructions
 {
-  if (a3)
+  if (instructions)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasGpuCycles:(BOOL)a3
+- (void)setHasGpuCycles:(BOOL)cycles
 {
-  if (a3)
+  if (cycles)
   {
     v3 = 4;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMemoryFootprint:(BOOL)a3
+- (void)setHasMemoryFootprint:(BOOL)footprint
 {
-  if (a3)
+  if (footprint)
   {
     v3 = 8;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -111,16 +111,16 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((v6 & 1) != (has & 1))
   {
     goto LABEL_18;
@@ -129,13 +129,13 @@ LABEL_6:
   if (*&self->_has)
   {
     cpuCycles = self->_cpuCycles;
-    if (cpuCycles != [v4 cpuCycles])
+    if (cpuCycles != [equalCopy cpuCycles])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = v6 ^ has;
@@ -147,13 +147,13 @@ LABEL_6:
   if ((has & 2) != 0)
   {
     cpuInstructions = self->_cpuInstructions;
-    if (cpuInstructions != [v4 cpuInstructions])
+    if (cpuInstructions != [equalCopy cpuInstructions])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v8 = v4[40] ^ has;
+    v8 = equalCopy[40] ^ has;
   }
 
   if ((v8 & 4) != 0)
@@ -164,10 +164,10 @@ LABEL_6:
   if ((has & 4) != 0)
   {
     gpuCycles = self->_gpuCycles;
-    if (gpuCycles == [v4 gpuCycles])
+    if (gpuCycles == [equalCopy gpuCycles])
     {
       has = self->_has;
-      v8 = v4[40] ^ has;
+      v8 = equalCopy[40] ^ has;
       goto LABEL_14;
     }
 
@@ -185,7 +185,7 @@ LABEL_14:
   if ((has & 8) != 0)
   {
     memoryFootprint = self->_memoryFootprint;
-    if (memoryFootprint != [v4 memoryFootprint])
+    if (memoryFootprint != [equalCopy memoryFootprint])
     {
       goto LABEL_18;
     }
@@ -253,12 +253,12 @@ LABEL_5:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[POWSchemaProvisionalPOWProcessUsage cpuCycles](self, "cpuCycles")}];
-    [v3 setObject:v7 forKeyedSubscript:@"cpuCycles"];
+    [dictionary setObject:v7 forKeyedSubscript:@"cpuCycles"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -279,7 +279,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[POWSchemaProvisionalPOWProcessUsage cpuInstructions](self, "cpuInstructions")}];
-  [v3 setObject:v8 forKeyedSubscript:@"cpuInstructions"];
+  [dictionary setObject:v8 forKeyedSubscript:@"cpuInstructions"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -295,27 +295,27 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[POWSchemaProvisionalPOWProcessUsage gpuCycles](self, "gpuCycles")}];
-  [v3 setObject:v9 forKeyedSubscript:@"gpuCycles"];
+  [dictionary setObject:v9 forKeyedSubscript:@"gpuCycles"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[POWSchemaProvisionalPOWProcessUsage memoryFootprint](self, "memoryFootprint")}];
-    [v3 setObject:v5 forKeyedSubscript:@"memoryFootprint"];
+    [dictionary setObject:v5 forKeyedSubscript:@"memoryFootprint"];
   }
 
 LABEL_6:
-  [(POWSchemaProvisionalPOWProcessUsage *)self willProduceDictionaryRepresentation:v3];
+  [(POWSchemaProvisionalPOWProcessUsage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POWSchemaProvisionalPOWProcessUsage *)self dictionaryRepresentation];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POWSchemaProvisionalPOWProcessUsage *)self dictionaryRepresentation];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -326,54 +326,54 @@ LABEL_6:
   return v3;
 }
 
-- (POWSchemaProvisionalPOWProcessUsage)initWithJSON:(id)a3
+- (POWSchemaProvisionalPOWProcessUsage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POWSchemaProvisionalPOWProcessUsage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (POWSchemaProvisionalPOWProcessUsage)initWithDictionary:(id)a3
+- (POWSchemaProvisionalPOWProcessUsage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = POWSchemaProvisionalPOWProcessUsage;
   v5 = [(POWSchemaProvisionalPOWProcessUsage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cpuCycles"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cpuCycles"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POWSchemaProvisionalPOWProcessUsage setCpuCycles:](v5, "setCpuCycles:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"cpuInstructions"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"cpuInstructions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POWSchemaProvisionalPOWProcessUsage setCpuInstructions:](v5, "setCpuInstructions:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"gpuCycles"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"gpuCycles"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POWSchemaProvisionalPOWProcessUsage setGpuCycles:](v5, "setGpuCycles:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"memoryFootprint"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"memoryFootprint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

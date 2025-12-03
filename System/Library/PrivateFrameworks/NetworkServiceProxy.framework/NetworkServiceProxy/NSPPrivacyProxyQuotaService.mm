@@ -1,32 +1,32 @@
 @interface NSPPrivacyProxyQuotaService
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSupportedUseCaseIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSupportedUseCaseIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyQuotaService
 
-- (void)addSupportedUseCaseIdentifiers:(id)a3
+- (void)addSupportedUseCaseIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   supportedUseCaseIdentifiers = self->_supportedUseCaseIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!supportedUseCaseIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedUseCaseIdentifiers;
     self->_supportedUseCaseIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     supportedUseCaseIdentifiers = self->_supportedUseCaseIdentifiers;
   }
 
-  [(NSMutableArray *)supportedUseCaseIdentifiers addObject:v4];
+  [(NSMutableArray *)supportedUseCaseIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyQuotaService;
   v4 = [(NSPPrivacyProxyQuotaService *)&v8 description];
-  v5 = [(NSPPrivacyProxyQuotaService *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyQuotaService *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   serviceURL = self->_serviceURL;
   if (serviceURL)
   {
-    [v3 setObject:serviceURL forKey:@"serviceURL"];
+    [dictionary setObject:serviceURL forKey:@"serviceURL"];
   }
 
   supportedUseCaseIdentifiers = self->_supportedUseCaseIdentifiers;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_serviceURL)
   {
     PBDataWriterWriteStringField();
@@ -104,35 +104,35 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_serviceURL)
   {
-    [v8 setServiceURL:?];
+    [toCopy setServiceURL:?];
   }
 
   if ([(NSPPrivacyProxyQuotaService *)self supportedUseCaseIdentifiersCount])
   {
-    [v8 clearSupportedUseCaseIdentifiers];
-    v4 = [(NSPPrivacyProxyQuotaService *)self supportedUseCaseIdentifiersCount];
-    if (v4)
+    [toCopy clearSupportedUseCaseIdentifiers];
+    supportedUseCaseIdentifiersCount = [(NSPPrivacyProxyQuotaService *)self supportedUseCaseIdentifiersCount];
+    if (supportedUseCaseIdentifiersCount)
     {
-      v5 = v4;
+      v5 = supportedUseCaseIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSPPrivacyProxyQuotaService *)self supportedUseCaseIdentifiersAtIndex:i];
-        [v8 addSupportedUseCaseIdentifiers:v7];
+        [toCopy addSupportedUseCaseIdentifiers:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceURL copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -156,7 +156,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addSupportedUseCaseIdentifiers:v13];
 
         ++v12;
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((serviceURL = self->_serviceURL, !(serviceURL | v4[1])) || -[NSString isEqual:](serviceURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((serviceURL = self->_serviceURL, !(serviceURL | equalCopy[1])) || -[NSString isEqual:](serviceURL, "isEqual:")))
   {
     supportedUseCaseIdentifiers = self->_supportedUseCaseIdentifiers;
-    if (supportedUseCaseIdentifiers | v4[2])
+    if (supportedUseCaseIdentifiers | equalCopy[2])
     {
       v7 = [(NSMutableArray *)supportedUseCaseIdentifiers isEqual:?];
     }
@@ -198,11 +198,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(NSPPrivacyProxyQuotaService *)self setServiceURL:?];
   }
@@ -211,7 +211,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,40 +1,40 @@
 @interface AVAssetResourceLoader
-- (AVAssetResourceLoader)initWithURLRequestHelper:(id)a3 asset:(id)a4 remoteCustomURLHandlerContext:(id)a5;
+- (AVAssetResourceLoader)initWithURLRequestHelper:(id)helper asset:(id)asset remoteCustomURLHandlerContext:(id)context;
 - (BOOL)preloadsEligibleContentKeys;
 - (BOOL)sendsCommonMediaClientDataAsHTTPHeaders;
 - (NSURLSession)URLSession;
 - (OpaqueFigCustomURLHandler)_copyContentKeySessionCustomURLHandler;
 - (dispatch_queue_t)delegateQueue;
-- (id)cachedContentInformationForURL:(id)a3;
+- (id)cachedContentInformationForURL:(id)l;
 - (id)delegate;
 - (unint64_t)allowedCommonMediaClientDataKeys;
-- (void)_cancelRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4;
-- (void)_cancelRequestWithKey:(id)a3 fallbackHandler:(id)a4;
-- (void)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4 willHandleRequest:(BOOL *)a5;
-- (void)_issueLoadingRequestWithKey:(id)a3 loadingRequest:(id)a4 isRenewalRequest:(BOOL)a5 fallbackHandler:(id)a6;
-- (void)_noteFinishingOfRequest:(id)a3;
-- (void)_performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue:(id)a3 delegateCallbackBlock:(id)a4;
-- (void)_performDelegateSelector:(SEL)a3 withObject:(id)a4 representingNewRequest:(BOOL)a5 key:(id)a6 fallbackHandler:(id)a7;
-- (void)_poseAuthenticationChallengeWithKey:(id)a3 challenge:(id)a4 fallbackHandler:(id)a5;
-- (void)_poseAuthenticationChallengeWithRequestInfo:(__CFDictionary *)a3 requestID:(unint64_t)a4 challenge:(id)a5;
-- (void)_sendAuthResponseForChallenge:(id)a3 disposition:(int64_t)a4 credential:(id)a5 error:(id)a6;
-- (void)_setContentKeySessionCustomURLHandler:(OpaqueFigCustomURLHandler *)a3;
-- (void)_setDelegateOnStateQueue:(id)a3;
-- (void)cacheContentInformation:(id)a3 forURL:(id)a4;
-- (void)cancelAuthenticationChallenge:(id)a3;
+- (void)_cancelRequest:(__CFDictionary *)request requestID:(unint64_t)d;
+- (void)_cancelRequestWithKey:(id)key fallbackHandler:(id)handler;
+- (void)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d willHandleRequest:(BOOL *)handleRequest;
+- (void)_issueLoadingRequestWithKey:(id)key loadingRequest:(id)request isRenewalRequest:(BOOL)renewalRequest fallbackHandler:(id)handler;
+- (void)_noteFinishingOfRequest:(id)request;
+- (void)_performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue:(id)queue delegateCallbackBlock:(id)block;
+- (void)_performDelegateSelector:(SEL)selector withObject:(id)object representingNewRequest:(BOOL)request key:(id)key fallbackHandler:(id)handler;
+- (void)_poseAuthenticationChallengeWithKey:(id)key challenge:(id)challenge fallbackHandler:(id)handler;
+- (void)_poseAuthenticationChallengeWithRequestInfo:(__CFDictionary *)info requestID:(unint64_t)d challenge:(id)challenge;
+- (void)_sendAuthResponseForChallenge:(id)challenge disposition:(int64_t)disposition credential:(id)credential error:(id)error;
+- (void)_setContentKeySessionCustomURLHandler:(OpaqueFigCustomURLHandler *)handler;
+- (void)_setDelegateOnStateQueue:(id)queue;
+- (void)cacheContentInformation:(id)information forURL:(id)l;
+- (void)cancelAuthenticationChallenge:(id)challenge;
 - (void)cancelLoading;
 - (void)dealloc;
-- (void)performDefaultHandlingForAuthenticationChallenge:(id)a3;
-- (void)setAllowedCommonMediaClientDataKeys:(unint64_t)a3;
+- (void)performDefaultHandlingForAuthenticationChallenge:(id)challenge;
+- (void)setAllowedCommonMediaClientDataKeys:(unint64_t)keys;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue;
 - (void)setPreloadsEligibleContentKeys:(BOOL)preloadsEligibleContentKeys;
-- (void)setSendsCommonMediaClientDataAsHTTPHeaders:(BOOL)a3;
-- (void)setURLSession:(id)a3;
+- (void)setSendsCommonMediaClientDataAsHTTPHeaders:(BOOL)headers;
+- (void)setURLSession:(id)session;
 @end
 
 @implementation AVAssetResourceLoader
 
-- (AVAssetResourceLoader)initWithURLRequestHelper:(id)a3 asset:(id)a4 remoteCustomURLHandlerContext:(id)a5
+- (AVAssetResourceLoader)initWithURLRequestHelper:(id)helper asset:(id)asset remoteCustomURLHandlerContext:(id)context
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
@@ -42,7 +42,7 @@
   v8 = [(AVAssetResourceLoader *)&v30 init];
   if (v8)
   {
-    if (!a3)
+    if (!helper)
     {
       goto LABEL_15;
     }
@@ -55,20 +55,20 @@
     }
 
     CFRetain(v9);
-    v8->_resourceLoader->URLRequestHelper = a3;
-    v8->_resourceLoader->weakReferenceToAsset = [a4 _weakReference];
+    v8->_resourceLoader->URLRequestHelper = helper;
+    v8->_resourceLoader->weakReferenceToAsset = [asset _weakReference];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8->_resourceLoader->stateQueue = dispatch_queue_create("com.apple.avfoundation.avassetresourceloader.state", v10);
     v8->_resourceLoader->pendingRequests = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8->_resourceLoader->contentInformationCachingQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avassetresourceloader.contentInformationCaching");
     [(AVAssetClientURLRequestHelper *)v8->_resourceLoader->URLRequestHelper setResourceLoader:v8];
-    v11 = [(AVAssetClientURLRequestHelper *)v8->_resourceLoader->URLRequestHelper figAsset];
-    if (!v11)
+    figAsset = [(AVAssetClientURLRequestHelper *)v8->_resourceLoader->URLRequestHelper figAsset];
+    if (!figAsset)
     {
       goto LABEL_15;
     }
 
-    v12 = v11;
+    v12 = figAsset;
     resourceLoader = v8->_resourceLoader;
     CMBaseObject = FigAssetGetCMBaseObject();
     v15 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -77,10 +77,10 @@
       goto LABEL_15;
     }
 
-    if (a5)
+    if (context)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ![a5 endpoint])
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ![context endpoint])
       {
         if ([AVAssetResourceLoader initWithURLRequestHelper:asset:remoteCustomURLHandlerContext:])
         {
@@ -90,7 +90,7 @@
         goto LABEL_15;
       }
 
-      if (FigCustomURLHandlerRemoteClientCreateWithXPCEndpoint() || avarl_createAndInstallRemoteHandler([a5 customURLHandlerObjectID], v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 600, &v8->_resourceLoader->customURLHandler) || avarl_createAndInstallRemoteHandler(objc_msgSend(a5, "authHandlerObjectID"), v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 900, &v8->_resourceLoader->authHandler) || avarl_createAndInstallRemoteHandler(objc_msgSend(a5, "contentKeySessionHandlerObjectID"), v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 400, &v8->_resourceLoader->contentKeySessionCustomURLHandler))
+      if (FigCustomURLHandlerRemoteClientCreateWithXPCEndpoint() || avarl_createAndInstallRemoteHandler([context customURLHandlerObjectID], v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 600, &v8->_resourceLoader->customURLHandler) || avarl_createAndInstallRemoteHandler(objc_msgSend(context, "authHandlerObjectID"), v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 900, &v8->_resourceLoader->authHandler) || avarl_createAndInstallRemoteHandler(objc_msgSend(context, "contentKeySessionHandlerObjectID"), v8->_resourceLoader->remoteHandlerXPCRemoteClient, v8->_resourceLoader->customURLLoader, 400, &v8->_resourceLoader->contentKeySessionCustomURLHandler))
       {
 LABEL_15:
 
@@ -102,7 +102,7 @@ LABEL_15:
     {
       v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v18 = dispatch_queue_create("com.apple.avfoundation.avassetresourceloader.handler", v17);
-      if ([a4 _clientURLLoadingRepresentsAccurateNetworkStatistics])
+      if ([asset _clientURLLoadingRepresentsAccurateNetworkStatistics])
       {
         v31 = *MEMORY[0x1E69615E0];
         v32[0] = MEMORY[0x1E695E118];
@@ -230,15 +230,15 @@ LABEL_15:
   [(AVAssetResourceLoader *)&v15 dealloc];
 }
 
-- (void)_setDelegateOnStateQueue:(id)a3
+- (void)_setDelegateOnStateQueue:(id)queue
 {
-  v3 = a3;
-  if (a3)
+  queueCopy = queue;
+  if (queue)
   {
-    v3 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+    queueCopy = [[AVWeakReference alloc] initWithReferencedObject:queue];
   }
 
-  self->_resourceLoader->weakReferenceToDelegate = v3;
+  self->_resourceLoader->weakReferenceToDelegate = queueCopy;
 }
 
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue
@@ -292,14 +292,14 @@ void __43__AVAssetResourceLoader_setDelegate_queue___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__35;
   v11 = __Block_byref_object_dispose__35;
   v12 = 0;
-  v3 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__AVAssetResourceLoader_delegate__block_invoke;
   v6[3] = &unk_1E7460E68;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -351,14 +351,14 @@ uint64_t __38__AVAssetResourceLoader_delegateQueue__block_invoke(uint64_t a1)
   v18 = __Block_byref_object_dispose__35;
   v19 = 0;
   atomic_compare_exchange_strong(&self->_resourceLoader->loadingCancelled, &v3, 1u);
-  v4 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__AVAssetResourceLoader_cancelLoading__block_invoke;
   block[3] = &unk_1E7460E68;
   block[4] = self;
   block[5] = &v14;
-  dispatch_sync(v4, block);
+  dispatch_sync(stateQueue, block);
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
@@ -397,7 +397,7 @@ uint64_t __38__AVAssetResourceLoader_cancelLoading__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)_performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue:(id)a3 delegateCallbackBlock:(id)a4
+- (void)_performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue:(id)queue delegateCallbackBlock:(id)block
 {
   v18 = 0;
   v19 = &v18;
@@ -411,7 +411,7 @@ uint64_t __38__AVAssetResourceLoader_cancelLoading__block_invoke(uint64_t a1)
   v15 = __Block_byref_object_copy__35;
   v16 = __Block_byref_object_dispose__35;
   v17 = 0;
-  v7 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __114__AVAssetResourceLoader__performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue_delegateCallbackBlock___block_invoke;
@@ -419,11 +419,11 @@ uint64_t __38__AVAssetResourceLoader_cancelLoading__block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = &v18;
   block[6] = &v12;
-  dispatch_sync(v7, block);
+  dispatch_sync(stateQueue, block);
   v8 = v13[5];
-  if (!v8 || v8 == a3)
+  if (!v8 || v8 == queue)
   {
-    (*(a4 + 2))(a4, v19[5]);
+    (*(block + 2))(block, v19[5]);
   }
 
   else
@@ -432,7 +432,7 @@ uint64_t __38__AVAssetResourceLoader_cancelLoading__block_invoke(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __114__AVAssetResourceLoader__performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue_delegateCallbackBlock___block_invoke_2;
     v10[3] = &unk_1E74659F8;
-    v10[5] = a4;
+    v10[5] = block;
     v10[6] = &v12;
     v10[4] = self;
     dispatch_async(v8, v10);
@@ -460,14 +460,14 @@ void __114__AVAssetResourceLoader__performDelegateCallbackSynchronouslyIfCurrent
   }
 }
 
-- (void)_performDelegateSelector:(SEL)a3 withObject:(id)a4 representingNewRequest:(BOOL)a5 key:(id)a6 fallbackHandler:(id)a7
+- (void)_performDelegateSelector:(SEL)selector withObject:(id)object representingNewRequest:(BOOL)request key:(id)key fallbackHandler:(id)handler
 {
-  v13 = [MEMORY[0x1E696AF00] isMainThread];
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __104__AVAssetResourceLoader__performDelegateSelector_withObject_representingNewRequest_key_fallbackHandler___block_invoke;
   v15[3] = &unk_1E7465A20;
-  if (v13)
+  if (isMainThread)
   {
     v14 = MEMORY[0x1E69E96A0];
   }
@@ -477,12 +477,12 @@ void __114__AVAssetResourceLoader__performDelegateCallbackSynchronouslyIfCurrent
     v14 = 0;
   }
 
-  v15[7] = a7;
-  v15[8] = a3;
+  v15[7] = handler;
+  v15[8] = selector;
   v15[4] = self;
-  v15[5] = a4;
-  v16 = a5;
-  v15[6] = a6;
+  v15[5] = object;
+  requestCopy = request;
+  v15[6] = key;
   [(AVAssetResourceLoader *)self _performDelegateCallbackSynchronouslyIfCurrentDelegateQueueIsQueue:v14 delegateCallbackBlock:v15];
 }
 
@@ -531,7 +531,7 @@ uint64_t __104__AVAssetResourceLoader__performDelegateSelector_withObject_repres
   return result;
 }
 
-- (void)_cancelRequestWithKey:(id)a3 fallbackHandler:(id)a4
+- (void)_cancelRequestWithKey:(id)key fallbackHandler:(id)handler
 {
   v10 = 0;
   v11 = &v10;
@@ -539,19 +539,19 @@ uint64_t __104__AVAssetResourceLoader__performDelegateSelector_withObject_repres
   v13 = __Block_byref_object_copy__35;
   v14 = __Block_byref_object_dispose__35;
   v15 = 0;
-  v7 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__AVAssetResourceLoader__cancelRequestWithKey_fallbackHandler___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v10;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(stateQueue, block);
   if ([v11[5] _shouldInformDelegateOfFigCancellation])
   {
-    v8 = [objc_opt_class() _selectorForInformingDelegateOfCancellationByFig];
-    [(AVAssetResourceLoader *)self _performDelegateSelector:v8 withObject:v11[5] representingNewRequest:0 key:a3 fallbackHandler:a4];
+    _selectorForInformingDelegateOfCancellationByFig = [objc_opt_class() _selectorForInformingDelegateOfCancellationByFig];
+    [(AVAssetResourceLoader *)self _performDelegateSelector:_selectorForInformingDelegateOfCancellationByFig withObject:v11[5] representingNewRequest:0 key:key fallbackHandler:handler];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -566,34 +566,34 @@ uint64_t __63__AVAssetResourceLoader__cancelRequestWithKey_fallbackHandler___blo
   return [v3 removeObjectForKey:v2];
 }
 
-- (void)_cancelRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4
+- (void)_cancelRequest:(__CFDictionary *)request requestID:(unint64_t)d
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
 
   [(AVAssetResourceLoader *)self _cancelRequestWithKey:v5 fallbackHandler:0];
 }
 
-- (void)_issueLoadingRequestWithKey:(id)a3 loadingRequest:(id)a4 isRenewalRequest:(BOOL)a5 fallbackHandler:(id)a6
+- (void)_issueLoadingRequestWithKey:(id)key loadingRequest:(id)request isRenewalRequest:(BOOL)renewalRequest fallbackHandler:(id)handler
 {
-  if (a4)
+  if (request)
   {
     v10 = &selRef_resourceLoader_shouldWaitForRenewalOfRequestedResource_;
-    if (!a5)
+    if (!renewalRequest)
     {
       v10 = &selRef_resourceLoader_shouldWaitForLoadingOfRequestedResource_;
     }
 
     v11 = *v10;
-    v12 = [(AVAssetResourceLoader *)self stateQueue];
+    stateQueue = [(AVAssetResourceLoader *)self stateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __101__AVAssetResourceLoader__issueLoadingRequestWithKey_loadingRequest_isRenewalRequest_fallbackHandler___block_invoke;
     block[3] = &unk_1E7460E90;
     block[4] = self;
-    block[5] = a4;
-    block[6] = a3;
-    dispatch_sync(v12, block);
-    [(AVAssetResourceLoader *)self _performDelegateSelector:v11 withObject:a4 representingNewRequest:1 key:a3 fallbackHandler:a6];
+    block[5] = request;
+    block[6] = key;
+    dispatch_sync(stateQueue, block);
+    [(AVAssetResourceLoader *)self _performDelegateSelector:v11 withObject:request representingNewRequest:1 key:key fallbackHandler:handler];
   }
 }
 
@@ -606,20 +606,20 @@ uint64_t __101__AVAssetResourceLoader__issueLoadingRequestWithKey_loadingRequest
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (void)_poseAuthenticationChallengeWithKey:(id)a3 challenge:(id)a4 fallbackHandler:(id)a5
+- (void)_poseAuthenticationChallengeWithKey:(id)key challenge:(id)challenge fallbackHandler:(id)handler
 {
-  if (a4)
+  if (challenge)
   {
-    v9 = [(AVAssetResourceLoader *)self stateQueue];
+    stateQueue = [(AVAssetResourceLoader *)self stateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __87__AVAssetResourceLoader__poseAuthenticationChallengeWithKey_challenge_fallbackHandler___block_invoke;
     block[3] = &unk_1E7460E90;
     block[4] = self;
-    block[5] = a4;
-    block[6] = a3;
-    dispatch_sync(v9, block);
-    [(AVAssetResourceLoader *)self _performDelegateSelector:sel_resourceLoader_shouldWaitForResponseToAuthenticationChallenge_ withObject:a4 representingNewRequest:1 key:a3 fallbackHandler:a5];
+    block[5] = challenge;
+    block[6] = key;
+    dispatch_sync(stateQueue, block);
+    [(AVAssetResourceLoader *)self _performDelegateSelector:sel_resourceLoader_shouldWaitForResponseToAuthenticationChallenge_ withObject:challenge representingNewRequest:1 key:key fallbackHandler:handler];
   }
 }
 
@@ -632,12 +632,12 @@ uint64_t __87__AVAssetResourceLoader__poseAuthenticationChallengeWithKey_challen
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (void)_poseAuthenticationChallengeWithRequestInfo:(__CFDictionary *)a3 requestID:(unint64_t)a4 challenge:(id)a5
+- (void)_poseAuthenticationChallengeWithRequestInfo:(__CFDictionary *)info requestID:(unint64_t)d challenge:(id)challenge
 {
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-  if (a5)
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
+  if (challenge)
   {
-    v10 = [[AVURLAuthenticationChallenge alloc] initWithAuthenticationChallenge:a5 sender:self requestInfo:a3 requestID:a4];
+    v10 = [[AVURLAuthenticationChallenge alloc] initWithAuthenticationChallenge:challenge sender:self requestInfo:info requestID:d];
   }
 
   else
@@ -658,24 +658,24 @@ uint64_t __89__AVAssetResourceLoader__poseAuthenticationChallengeWithRequestInfo
   return result;
 }
 
-- (void)_noteFinishingOfRequest:(id)a3
+- (void)_noteFinishingOfRequest:(id)request
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "_requestID")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(request, "_requestID")}];
   if (v4)
   {
     v5 = v4;
-    v6 = [(AVAssetResourceLoader *)self stateQueue];
+    stateQueue = [(AVAssetResourceLoader *)self stateQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__AVAssetResourceLoader__noteFinishingOfRequest___block_invoke;
     v7[3] = &unk_1E7460DF0;
     v7[4] = self;
     v7[5] = v5;
-    dispatch_sync(v6, v7);
+    dispatch_sync(stateQueue, v7);
   }
 }
 
-- (void)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4 willHandleRequest:(BOOL *)a5
+- (void)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d willHandleRequest:(BOOL *)handleRequest
 {
   v15 = 0;
   v16 = &v15;
@@ -684,8 +684,8 @@ uint64_t __89__AVAssetResourceLoader__poseAuthenticationChallengeWithRequestInfo
   v14 = 0;
   v9 = dispatch_semaphore_create(0);
   FigCustomURLRequestInfoGetIsRenewalRequest();
-  v10 = [[AVAssetResourceLoadingRequest alloc] initWithResourceLoader:self requestInfo:a3 requestID:a4];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v10 = [[AVAssetResourceLoadingRequest alloc] initWithResourceLoader:self requestInfo:request requestID:d];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__AVAssetResourceLoader__handleRequest_requestID_willHandleRequest___block_invoke;
@@ -703,12 +703,12 @@ uint64_t __89__AVAssetResourceLoader__poseAuthenticationChallengeWithRequestInfo
     v12 = *(v16 + 24);
   }
 
-  *a5 = v12;
+  *handleRequest = v12;
   dispatch_release(v9);
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_setContentKeySessionCustomURLHandler:(OpaqueFigCustomURLHandler *)a3
+- (void)_setContentKeySessionCustomURLHandler:(OpaqueFigCustomURLHandler *)handler
 {
   stateQueue = self->_resourceLoader->stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -716,7 +716,7 @@ uint64_t __89__AVAssetResourceLoader__poseAuthenticationChallengeWithRequestInfo
   v4[2] = __63__AVAssetResourceLoader__setContentKeySessionCustomURLHandler___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -772,34 +772,34 @@ CFTypeRef __63__AVAssetResourceLoader__copyContentKeySessionCustomURLHandler__bl
 
 - (BOOL)preloadsEligibleContentKeys
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __92__AVAssetResourceLoader_AVAssetResourceLoaderContentKeySupport__preloadsEligibleContentKeys__block_invoke;
   v5[3] = &unk_1E7460E68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  dispatch_sync(stateQueue, v5);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)setPreloadsEligibleContentKeys:(BOOL)preloadsEligibleContentKeys
 {
-  v5 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __96__AVAssetResourceLoader_AVAssetResourceLoaderContentKeySupport__setPreloadsEligibleContentKeys___block_invoke;
   v6[3] = &unk_1E7460E40;
   v7 = preloadsEligibleContentKeys;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(stateQueue, v6);
 }
 
 void *__96__AVAssetResourceLoader_AVAssetResourceLoaderContentKeySupport__setPreloadsEligibleContentKeys___block_invoke(uint64_t a1)
@@ -835,7 +835,7 @@ void *__96__AVAssetResourceLoader_AVAssetResourceLoaderContentKeySupport__setPre
   return result;
 }
 
-- (void)_sendAuthResponseForChallenge:(id)a3 disposition:(int64_t)a4 credential:(id)a5 error:(id)a6
+- (void)_sendAuthResponseForChallenge:(id)challenge disposition:(int64_t)disposition credential:(id)credential error:(id)error
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -847,7 +847,7 @@ void *__96__AVAssetResourceLoader_AVAssetResourceLoaderContentKeySupport__setPre
     goto LABEL_9;
   }
 
-  if (a5)
+  if (credential)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -862,35 +862,35 @@ LABEL_9:
     }
   }
 
-  +[AVAssetCustomURLAuthentication sendAuthResponse:requestID:disposition:credential:authHandler:](AVAssetCustomURLAuthentication, "sendAuthResponse:requestID:disposition:credential:authHandler:", [a3 _requestInfo], objc_msgSend(a3, "_requestID"), a4, a5, -[AVAssetResourceLoader _authHandler](self, "_authHandler"));
+  +[AVAssetCustomURLAuthentication sendAuthResponse:requestID:disposition:credential:authHandler:](AVAssetCustomURLAuthentication, "sendAuthResponse:requestID:disposition:credential:authHandler:", [challenge _requestInfo], objc_msgSend(challenge, "_requestID"), disposition, credential, -[AVAssetResourceLoader _authHandler](self, "_authHandler"));
 
-  [(AVAssetResourceLoader *)self _noteFinishingOfRequest:a3];
+  [(AVAssetResourceLoader *)self _noteFinishingOfRequest:challenge];
 }
 
-- (void)cancelAuthenticationChallenge:(id)a3
+- (void)cancelAuthenticationChallenge:(id)challenge
 {
   v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A978] code:-1012 userInfo:0];
 
-  [(AVAssetResourceLoader *)self _sendAuthResponseForChallenge:a3 disposition:2 credential:0 error:v5];
+  [(AVAssetResourceLoader *)self _sendAuthResponseForChallenge:challenge disposition:2 credential:0 error:v5];
 }
 
-- (void)performDefaultHandlingForAuthenticationChallenge:(id)a3
+- (void)performDefaultHandlingForAuthenticationChallenge:(id)challenge
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([a3 _requestInfo], !FigCustomURLRequestInfoCopyURL()) && (v5 = +[AVAssetCustomURLAuthentication copyKeychainCredentialForUrl:](AVAssetCustomURLAuthentication, "copyKeychainCredentialForUrl:", 0)) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([challenge _requestInfo], !FigCustomURLRequestInfoCopyURL()) && (v5 = +[AVAssetCustomURLAuthentication copyKeychainCredentialForUrl:](AVAssetCustomURLAuthentication, "copyKeychainCredentialForUrl:", 0)) != 0)
   {
     v6 = v5;
-    [(AVAssetResourceLoader *)self _sendAuthResponseForChallenge:a3 disposition:0 credential:v5 error:0];
+    [(AVAssetResourceLoader *)self _sendAuthResponseForChallenge:challenge disposition:0 credential:v5 error:0];
   }
 
   else
   {
-    [(AVAssetResourceLoader(AVAssetResourceLoaderURLAuthenticationChallengeSender) *)self performDefaultHandlingForAuthenticationChallenge:a3];
+    [(AVAssetResourceLoader(AVAssetResourceLoaderURLAuthenticationChallengeSender) *)self performDefaultHandlingForAuthenticationChallenge:challenge];
     v6 = 0;
   }
 }
 
-- (void)cacheContentInformation:(id)a3 forURL:(id)a4
+- (void)cacheContentInformation:(id)information forURL:(id)l
 {
   contentInformationCachingQueue = self->_resourceLoader->contentInformationCachingQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -898,8 +898,8 @@ LABEL_9:
   v5[2] = __102__AVAssetResourceLoader_AVAssetResourceLoaderContentInformationCache__cacheContentInformation_forURL___block_invoke;
   v5[3] = &unk_1E7460E90;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = information;
+  v5[6] = l;
   av_readwrite_dispatch_queue_write(contentInformationCachingQueue, v5);
 }
 
@@ -918,7 +918,7 @@ uint64_t __102__AVAssetResourceLoader_AVAssetResourceLoaderContentInformationCac
   return [v2 setValue:v3 forKey:v4];
 }
 
-- (id)cachedContentInformationForURL:(id)a3
+- (id)cachedContentInformationForURL:(id)l
 {
   v7 = 0;
   v8 = &v7;
@@ -931,7 +931,7 @@ uint64_t __102__AVAssetResourceLoader_AVAssetResourceLoaderContentInformationCac
   block[1] = 3221225472;
   block[2] = __102__AVAssetResourceLoader_AVAssetResourceLoaderContentInformationCache__cachedContentInformationForURL___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = l;
   block[6] = &v7;
   block[4] = self;
   av_readwrite_dispatch_queue_read(contentInformationCachingQueue, block);
@@ -975,19 +975,19 @@ id __75__AVAssetResourceLoader_AVAssetResourceLoaderURLSessionSupport__URLSessio
   return result;
 }
 
-- (void)setURLSession:(id)a3
+- (void)setURLSession:(id)session
 {
   stateQueue = self->_resourceLoader->stateQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__AVAssetResourceLoader_AVAssetResourceLoaderURLSessionSupport__setURLSession___block_invoke;
   v6[3] = &unk_1E7460DF0;
-  v6[4] = a3;
+  v6[4] = session;
   v6[5] = self;
   dispatch_sync(stateQueue, v6);
   if ([-[AVAssetResourceLoader asset](self "asset")])
   {
-    [(AVAssetCustomURLBridgeForNSURLSession *)self->_resourceLoader->bridgeBetweenHandlerAndSession setSession:a3];
+    [(AVAssetCustomURLBridgeForNSURLSession *)self->_resourceLoader->bridgeBetweenHandlerAndSession setSession:session];
   }
 }
 
@@ -1000,36 +1000,36 @@ void __79__AVAssetResourceLoader_AVAssetResourceLoaderURLSessionSupport__setURLS
 
 - (BOOL)sendsCommonMediaClientDataAsHTTPHeaders
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __115__AVAssetResourceLoader_AVAssetResourceLoaderCommonMediaClientDataSupport__sendsCommonMediaClientDataAsHTTPHeaders__block_invoke;
   v5[3] = &unk_1E7460E68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  dispatch_sync(stateQueue, v5);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setSendsCommonMediaClientDataAsHTTPHeaders:(BOOL)a3
+- (void)setSendsCommonMediaClientDataAsHTTPHeaders:(BOOL)headers
 {
-  v3 = a3;
-  v5 = [(AVAssetResourceLoader *)self stateQueue];
+  headersCopy = headers;
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __119__AVAssetResourceLoader_AVAssetResourceLoaderCommonMediaClientDataSupport__setSendsCommonMediaClientDataAsHTTPHeaders___block_invoke;
   v6[3] = &unk_1E7460E40;
   v6[4] = self;
-  v7 = v3;
-  dispatch_sync(v5, v6);
-  [(AVAssetResourceLoader *)self setAllowedCommonMediaClientDataKeys:v3 << 63 >> 63];
+  v7 = headersCopy;
+  dispatch_sync(stateQueue, v6);
+  [(AVAssetResourceLoader *)self setAllowedCommonMediaClientDataKeys:headersCopy << 63 >> 63];
 }
 
 - (unint64_t)allowedCommonMediaClientDataKeys
@@ -1038,29 +1038,29 @@ void __79__AVAssetResourceLoader_AVAssetResourceLoaderURLSessionSupport__setURLS
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __116__AVAssetResourceLoader_AVAssetResourceLoaderCommonMediaClientDataSupport_Private__allowedCommonMediaClientDataKeys__block_invoke;
   v6[3] = &unk_1E7460E68;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setAllowedCommonMediaClientDataKeys:(unint64_t)a3
+- (void)setAllowedCommonMediaClientDataKeys:(unint64_t)keys
 {
-  v5 = [(AVAssetResourceLoader *)self stateQueue];
+  stateQueue = [(AVAssetResourceLoader *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __120__AVAssetResourceLoader_AVAssetResourceLoaderCommonMediaClientDataSupport_Private__setAllowedCommonMediaClientDataKeys___block_invoke;
   v6[3] = &unk_1E7460FA8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = keys;
+  dispatch_sync(stateQueue, v6);
 }
 
 void *__120__AVAssetResourceLoader_AVAssetResourceLoaderCommonMediaClientDataSupport_Private__setAllowedCommonMediaClientDataKeys___block_invoke(uint64_t a1)

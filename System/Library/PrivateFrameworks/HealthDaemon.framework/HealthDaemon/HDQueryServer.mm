@@ -6,11 +6,11 @@
 + (id)taskIdentifier;
 - (BOOL)_shouldExecuteWhenProtectedDataIsUnavailable;
 - (BOOL)clientHasActiveWorkout;
-- (BOOL)prepareToActivateServerWithError:(id *)a3;
-- (BOOL)validateConfiguration:(id *)a3;
+- (BOOL)prepareToActivateServerWithError:(id *)error;
+- (BOOL)validateConfiguration:(id *)configuration;
 - (HDClientAuthorizationOracle)authorizationOracle;
 - (HDProfile)profile;
-- (HDQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (HDQueryServerDelegate)delegate;
 - (HKQuantityType)quantityType;
 - (HKQueryClientInterface)clientProxy;
@@ -20,23 +20,23 @@
 - (__CFString)_queryStateString;
 - (id)_queue_collectionObserverState;
 - (id)_queue_sampleTypesForObservation;
-- (id)authorizationStatusRecordForType:(id)a3 error:(id *)a4;
+- (id)authorizationStatusRecordForType:(id)type error:(id *)error;
 - (id)createDatabaseTransactionContext;
 - (id)diagnosticDescription;
 - (id)exportedInterface;
-- (id)filteredSamplesForClientWithSamples:(id)a3;
+- (id)filteredSamplesForClientWithSamples:(id)samples;
 - (id)newDataEntityEnumerator;
 - (id)predicateForQueryClient;
 - (id)remoteInterface;
 - (id)sampleAuthorizationFilter;
-- (id)sanitizedSampleForQueryClient:(id)a3;
+- (id)sanitizedSampleForQueryClient:(id)client;
 - (uint64_t)_backgroundRunningCollectionSupportedForClient;
-- (void)_queue_activateServerWithClientState:(void *)a3 error:;
+- (void)_queue_activateServerWithClientState:(void *)state error:;
 - (void)_queue_beginObservingDataTypes;
-- (void)_queue_didFinishTransitionFromState:(uint64_t)a1;
+- (void)_queue_didFinishTransitionFromState:(uint64_t)state;
 - (void)_queue_endObservingDataTypes;
 - (void)_queue_invalidateActiveQueryTransaction;
-- (void)_queue_setQueryState:(uint64_t)a1;
+- (void)_queue_setQueryState:(uint64_t)state;
 - (void)_queue_start;
 - (void)_queue_startDataCollection;
 - (void)_queue_stop;
@@ -44,19 +44,19 @@
 - (void)_queue_takeActiveQueryTransaction;
 - (void)_queue_transitionToFinished;
 - (void)_queue_transitionToPaused;
-- (void)_queue_transitionToSuspendedState:(id *)a1;
+- (void)_queue_transitionToSuspendedState:(id *)state;
 - (void)_queue_updateSampleTypeObservationAssertions;
-- (void)_setShouldPause:(uint64_t)a1;
-- (void)activateServerWithClientState:(id)a3 error:(id)a4;
-- (void)clientStateDidChange:(id)a3;
-- (void)clientStateWillChange:(id)a3;
+- (void)_setShouldPause:(uint64_t)pause;
+- (void)activateServerWithClientState:(id)state error:(id)error;
+- (void)clientStateDidChange:(id)change;
+- (void)clientStateWillChange:(id)change;
 - (void)connectionInvalidated;
-- (void)deactivateServerWithCompletion:(id)a3;
+- (void)deactivateServerWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)remote_startQueryWithCompletion:(id)a3;
-- (void)scheduleDatabaseAccessOnQueueWithBlock:(id)a3;
+- (void)remote_startQueryWithCompletion:(id)completion;
+- (void)scheduleDatabaseAccessOnQueueWithBlock:(id)block;
 - (void)schedulePause;
-- (void)setQueryDidFinishHandler:(id)a3;
+- (void)setQueryDidFinishHandler:(id)handler;
 @end
 
 @implementation HDQueryServer
@@ -106,29 +106,29 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldExecuteWhenProtectedDataIsUnavailable
 {
-  v2 = [(HDQueryServer *)self client];
-  v3 = [v2 accessibilityAssertions];
-  v4 = [v3 count] != 0;
+  client = [(HDQueryServer *)self client];
+  accessibilityAssertions = [client accessibilityAssertions];
+  v4 = [accessibilityAssertions count] != 0;
 
   return v4;
 }
 
 - (HKQueryClientInterface)clientProxy
 {
-  v2 = [(HDHealthStoreClient *)self->_client connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(HDHealthStoreClient *)self->_client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (NSString)description
 {
   queryUUID = self->_queryUUID;
-  v4 = [(HDHealthStoreClient *)self->_client process];
-  v5 = [v4 name];
-  v6 = [(HKQueryServerConfiguration *)self->_configuration debugIdentifier];
+  process = [(HDHealthStoreClient *)self->_client process];
+  name = [process name];
+  debugIdentifier = [(HKQueryServerConfiguration *)self->_configuration debugIdentifier];
   [(HKQueryServerConfiguration *)self->_configuration qualityOfService];
-  v7 = [(HDQueryServer *)self _queryStateString];
+  _queryStateString = [(HDQueryServer *)self _queryStateString];
   v8 = HKCopyQueryDescription();
 
   return v8;
@@ -138,15 +138,15 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
 {
   if (result)
   {
-    v1 = [(__CFString *)result queryState];
-    if (v1 > 4)
+    queryState = [(__CFString *)result queryState];
+    if (queryState > 4)
     {
       return @"Unknown state";
     }
 
     else
     {
-      return off_278625880[v1];
+      return off_278625880[queryState];
     }
   }
 
@@ -157,8 +157,8 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
 {
   if ([(HDQueryServer *)self queryState]!= 2)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:818 description:{@"Invalid parameter not satisfying: %@", @"self.queryState == HDQueryServerStateRunning"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:818 description:{@"Invalid parameter not satisfying: %@", @"self.queryState == HDQueryServerStateRunning"}];
   }
 
   if ([(HDQueryServer *)self _shouldListenForUpdates])
@@ -171,18 +171,18 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
 - (void)_queue_beginObservingDataTypes
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1 && (*(a1 + 77) & 1) == 0)
+  if (self && (*(self + 77) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 128));
-    v3 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 128));
+    dataManager = [WeakRetained dataManager];
 
-    v4 = objc_loadWeakRetained((a1 + 128));
-    v5 = [v4 associationManager];
+    v4 = objc_loadWeakRetained((self + 128));
+    associationManager = [v4 associationManager];
 
-    if ([a1 _shouldObserveAllSampleTypes])
+    if ([self _shouldObserveAllSampleTypes])
     {
-      [v3 addObserverForAllTypes:a1];
-      [v5 addObserverForAllTypes:a1];
+      [dataManager addObserverForAllTypes:self];
+      [associationManager addObserverForAllTypes:self];
     }
 
     else
@@ -191,8 +191,8 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [a1 objectTypes];
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      objectTypes = [self objectTypes];
+      v7 = [objectTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         v8 = v7;
@@ -203,22 +203,22 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
           {
             if (*v14 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(objectTypes);
             }
 
             v11 = *(*(&v13 + 1) + 8 * i);
-            [v3 addObserver:a1 forDataType:v11];
-            [v5 addObserver:a1 forDataType:v11];
+            [dataManager addObserver:self forDataType:v11];
+            [associationManager addObserver:self forDataType:v11];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v8 = [objectTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v8);
       }
     }
 
-    *(a1 + 77) = 1;
+    *(self + 77) = 1;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -233,43 +233,43 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke(uint64_t a1)
 
 - (void)_queue_transitionToPaused
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [a1 queryState];
-  if (v2 == 3)
+  queryState = [self queryState];
+  if (queryState == 3)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
-    [v3 handleFailureInMethod:sel__queue_transitionToPaused object:a1 file:@"HDQueryServer.m" lineNumber:503 description:{@"Invalid parameter not satisfying: %@", @"queryServerState != HDQueryServerStatePaused"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__queue_transitionToPaused object:self file:@"HDQueryServer.m" lineNumber:503 description:{@"Invalid parameter not satisfying: %@", @"queryServerState != HDQueryServerStatePaused"}];
 LABEL_9:
 
     goto LABEL_4;
   }
 
-  if (v2 == 4)
+  if (queryState == 4)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
-    [v3 handleFailureInMethod:sel__queue_transitionToPaused object:a1 file:@"HDQueryServer.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"queryServerState != HDQueryServerStateFinished"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__queue_transitionToPaused object:self file:@"HDQueryServer.m" lineNumber:504 description:{@"Invalid parameter not satisfying: %@", @"queryServerState != HDQueryServerStateFinished"}];
     goto LABEL_9;
   }
 
 LABEL_4:
 
-  [(HDQueryServer *)a1 _queue_transitionToSuspendedState:?];
+  [(HDQueryServer *)self _queue_transitionToSuspendedState:?];
 }
 
 - (void)_queue_stop
 {
-  v4 = [(HDQueryServer *)self queryState];
-  if ((v4 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+  queryState = [(HDQueryServer *)self queryState];
+  if ((queryState - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:826 description:{@"Invalid parameter not satisfying: %@", @"(queryState == HDQueryServerStateFinished) || (queryState == HDQueryServerStatePaused)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:826 description:{@"Invalid parameter not satisfying: %@", @"(queryState == HDQueryServerStateFinished) || (queryState == HDQueryServerStatePaused)"}];
   }
 
-  else if (v4 == 3 && [(HDQueryServer *)self _shouldObserveOnPause])
+  else if (queryState == 3 && [(HDQueryServer *)self _shouldObserveOnPause])
   {
 
     [(HDQueryServer *)self _queue_beginObservingDataTypes];
@@ -282,18 +282,18 @@ LABEL_4:
 - (void)_queue_endObservingDataTypes
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1 && *(a1 + 77) == 1)
+  if (self && *(self + 77) == 1)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 128));
-    v3 = [WeakRetained dataManager];
+    WeakRetained = objc_loadWeakRetained((self + 128));
+    dataManager = [WeakRetained dataManager];
 
-    v4 = objc_loadWeakRetained((a1 + 128));
-    v5 = [v4 associationManager];
+    v4 = objc_loadWeakRetained((self + 128));
+    associationManager = [v4 associationManager];
 
-    if ([a1 _shouldObserveAllSampleTypes])
+    if ([self _shouldObserveAllSampleTypes])
     {
-      [v3 removeObserverForAllTypes:a1];
-      [v5 removeObserverForAllTypes:a1];
+      [dataManager removeObserverForAllTypes:self];
+      [associationManager removeObserverForAllTypes:self];
     }
 
     else
@@ -302,8 +302,8 @@ LABEL_4:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [a1 objectTypes];
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      objectTypes = [self objectTypes];
+      v7 = [objectTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         v8 = v7;
@@ -314,22 +314,22 @@ LABEL_4:
           {
             if (*v14 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(objectTypes);
             }
 
             v11 = *(*(&v13 + 1) + 8 * i);
-            [v3 removeObserver:a1 forDataType:v11];
-            [v5 removeObserver:a1 forDataType:v11];
+            [dataManager removeObserver:self forDataType:v11];
+            [associationManager removeObserver:self forDataType:v11];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v8 = [objectTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v8);
       }
     }
 
-    *(a1 + 77) = 0;
+    *(self + 77) = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -337,16 +337,16 @@ LABEL_4:
 
 - (BOOL)clientHasActiveWorkout
 {
-  v3 = [(HDQueryServer *)self client];
-  v4 = [v3 process];
-  v5 = [v4 bundleIdentifier];
+  client = [(HDQueryServer *)self client];
+  process = [client process];
+  bundleIdentifier = [process bundleIdentifier];
 
-  v6 = [(HDQueryServer *)self profile];
-  v7 = [v6 workoutManager];
-  v8 = [v7 currentWorkoutClient];
-  v9 = [v8 process];
-  v10 = [v9 bundleIdentifier];
-  v11 = [v10 isEqualToString:v5];
+  profile = [(HDQueryServer *)self profile];
+  workoutManager = [profile workoutManager];
+  currentWorkoutClient = [workoutManager currentWorkoutClient];
+  process2 = [currentWorkoutClient process];
+  bundleIdentifier2 = [process2 bundleIdentifier];
+  v11 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
   return v11;
 }
@@ -380,23 +380,23 @@ LABEL_4:
 - (void)_queue_startDataCollection
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v19 = [WeakRetained dataCollectionManager];
+  dataCollectionManager = [WeakRetained dataCollectionManager];
 
-  v4 = [(HDQueryServer *)self _queue_sampleTypesForObservation];
+  _queue_sampleTypesForObservation = [(HDQueryServer *)self _queue_sampleTypesForObservation];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HDQueryServer *)self client];
-  v7 = [v6 process];
-  v8 = [v7 bundleIdentifier];
+  client = [(HDQueryServer *)self client];
+  process = [client process];
+  bundleIdentifier = [process bundleIdentifier];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(HDQueryServer *)self queryUUID];
-  v12 = [v11 UUIDString];
-  v13 = [v12 substringToIndex:4];
-  v14 = [v5 stringWithFormat:@"%@-%@-%@", v8, v10, v13];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  uUIDString = [queryUUID UUIDString];
+  v13 = [uUIDString substringToIndex:4];
+  v14 = [v5 stringWithFormat:@"%@-%@-%@", bundleIdentifier, v10, v13];
 
-  v15 = [MEMORY[0x277CBEB98] setWithArray:v4];
-  v16 = [(HDQueryServer *)self _queue_collectionObserverState];
-  v17 = [v19 takeCollectionAssertionWithOwnerIdentifier:v14 sampleTypes:v15 observerState:v16 collectionInterval:self->_collectionInterval];
+  v15 = [MEMORY[0x277CBEB98] setWithArray:_queue_sampleTypesForObservation];
+  _queue_collectionObserverState = [(HDQueryServer *)self _queue_collectionObserverState];
+  v17 = [dataCollectionManager takeCollectionAssertionWithOwnerIdentifier:v14 sampleTypes:v15 observerState:_queue_collectionObserverState collectionInterval:self->_collectionInterval];
 
   [(HDAssertion *)self->_dataCollectionAssertion invalidate];
   dataCollectionAssertion = self->_dataCollectionAssertion;
@@ -408,35 +408,35 @@ LABEL_4:
 
 - (void)_queue_transitionToFinished
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 queryState] == 4)
+    if ([self queryState] == 4)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:sel__queue_transitionToFinished object:a1 file:@"HDQueryServer.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"self.queryState != HDQueryServerStateFinished"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__queue_transitionToFinished object:self file:@"HDQueryServer.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"self.queryState != HDQueryServerStateFinished"}];
     }
 
-    [(HDQueryServer *)a1 _queue_transitionToSuspendedState:?];
-    v7 = _Block_copy(*(a1 + 24));
-    v2 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [(HDQueryServer *)self _queue_transitionToSuspendedState:?];
+    v7 = _Block_copy(*(self + 24));
+    v2 = *(self + 24);
+    *(self + 24) = 0;
 
     if (v7)
     {
-      v7[2](v7, a1);
+      v7[2](v7, self);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
-    [WeakRetained queryServerDidFinish:a1];
+    WeakRetained = objc_loadWeakRetained((self + 104));
+    [WeakRetained queryServerDidFinish:self];
 
-    [a1 _queue_stopDataCollection];
-    v4 = objc_loadWeakRetained((a1 + 128));
-    v5 = [v4 database];
-    [v5 removeProtectedDataObserver:a1];
+    [self _queue_stopDataCollection];
+    v4 = objc_loadWeakRetained((self + 128));
+    database = [v4 database];
+    [database removeProtectedDataObserver:self];
 
-    [(HDQueryServer *)a1 _queue_endObservingDataTypes];
-    [(HDQueryServer *)a1 _queue_invalidateActiveQueryTransaction];
-    [a1 _queue_didDeactivate];
+    [(HDQueryServer *)self _queue_endObservingDataTypes];
+    [(HDQueryServer *)self _queue_invalidateActiveQueryTransaction];
+    [self _queue_didDeactivate];
   }
 }
 
@@ -542,17 +542,17 @@ LABEL_4:
   return v2;
 }
 
-- (HDQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v14 && ([v14 conformsToProtocol:&unk_283D06608] & 1) == 0)
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  v15 = delegateCopy;
+  if (delegateCopy && ([delegateCopy conformsToProtocol:&unk_283D06608] & 1) == 0)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[delegate conformsToProtocol:@protocol(HDQueryServerDelegate)]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQueryServer.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[delegate conformsToProtocol:@protocol(HDQueryServerDelegate)]"}];
   }
 
   v43.receiver = self;
@@ -560,22 +560,22 @@ LABEL_4:
   v16 = [(HDQueryServer *)&v43 init];
   if (v16)
   {
-    v17 = [v11 copy];
+    v17 = [dCopy copy];
     queryUUID = v16->_queryUUID;
     v16->_queryUUID = v17;
 
-    objc_storeStrong(&v16->_client, a5);
-    v19 = [v13 profile];
-    objc_storeWeak(&v16->_profile, v19);
+    objc_storeStrong(&v16->_client, client);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v16->_profile, profile);
 
-    objc_storeStrong(&v16->_configuration, a4);
+    objc_storeStrong(&v16->_configuration, configuration);
     objc_storeWeak(&v16->_delegate, v15);
-    v20 = [v13 process];
+    process = [clientCopy process];
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v20 processIdentifier];
-    v23 = [v20 name];
-    v24 = [v11 UUIDString];
-    v25 = [v21 stringWithFormat:@"%d.%@.%@", v22, v23, v24];
+    processIdentifier = [process processIdentifier];
+    name = [process name];
+    uUIDString = [dCopy UUIDString];
+    v25 = [v21 stringWithFormat:@"%d.%@.%@", processIdentifier, name, uUIDString];
 
     v26 = HKCreateSerialDispatchQueue();
     queryQueue = v16->_queryQueue;
@@ -590,22 +590,22 @@ LABEL_4:
     }
 
     atomic_store(0, &v16->_queryState);
-    v31 = [v12 objectType];
+    objectType = [configurationCopy objectType];
     objectType = v16->_objectType;
-    v16->_objectType = v31;
+    v16->_objectType = objectType;
 
-    v33 = [v12 filter];
-    v34 = [v13 filterWithQueryFilter:v33 objectType:v16->_objectType];
+    filter = [configurationCopy filter];
+    v34 = [clientCopy filterWithQueryFilter:filter objectType:v16->_objectType];
     filter = v16->_filter;
     v16->_filter = v34;
 
-    v36 = [v13 baseDataEntityEncodingOptions];
+    baseDataEntityEncodingOptions = [clientCopy baseDataEntityEncodingOptions];
     baseDataEntityEncodingOptions = v16->_baseDataEntityEncodingOptions;
-    v16->_baseDataEntityEncodingOptions = v36;
+    v16->_baseDataEntityEncodingOptions = baseDataEntityEncodingOptions;
 
     v16->_collectionInterval = 5.0;
-    v38 = [v13 authorizationOracle];
-    objc_storeWeak(&v16->_authorizationOracle, v38);
+    authorizationOracle = [clientCopy authorizationOracle];
+    objc_storeWeak(&v16->_authorizationOracle, authorizationOracle);
 
     v39 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:v16 activityName:@"Activate"];
     activationTransaction = v16->_activationTransaction;
@@ -615,13 +615,13 @@ LABEL_4:
   return v16;
 }
 
-- (id)sanitizedSampleForQueryClient:(id)a3
+- (id)sanitizedSampleForQueryClient:(id)client
 {
   v30 = *MEMORY[0x277D85DE8];
   client = self->_client;
-  v5 = a3;
-  v6 = [(HDHealthStoreClient *)client entitlements];
-  v7 = [v5 sanitizedSample:v5 forEntitlements:v6];
+  clientCopy = client;
+  entitlements = [(HDHealthStoreClient *)client entitlements];
+  v7 = [clientCopy sanitizedSample:clientCopy forEntitlements:entitlements];
 
   if ([(HDHealthStoreClient *)self->_client hasPrivateMetadataAccess])
   {
@@ -637,58 +637,58 @@ LABEL_4:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = [v7 workoutEvents];
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      workoutEvents = [v7 workoutEvents];
+      v10 = [workoutEvents countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
-        v12 = 0;
+        metadata = 0;
         v13 = *v26;
         do
         {
           v14 = 0;
-          v15 = v12;
+          v15 = metadata;
           do
           {
             if (*v26 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(workoutEvents);
             }
 
             v16 = *(*(&v25 + 1) + 8 * v14);
-            v12 = [v16 metadata];
+            metadata = [v16 metadata];
 
-            if ([v12 count])
+            if ([metadata count])
             {
-              v17 = [v12 hk_copySanitizedForPublicClient];
-              v18 = v17;
-              if (v12 != v17 && (!v17 || ([v12 isEqual:v17] & 1) == 0))
+              hk_copySanitizedForPublicClient = [metadata hk_copySanitizedForPublicClient];
+              v18 = hk_copySanitizedForPublicClient;
+              if (metadata != hk_copySanitizedForPublicClient && (!hk_copySanitizedForPublicClient || ([metadata isEqual:hk_copySanitizedForPublicClient] & 1) == 0))
               {
                 [v16 _setWorkoutEventMetadata:v18];
               }
             }
 
             ++v14;
-            v15 = v12;
+            v15 = metadata;
           }
 
           while (v11 != v14);
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [workoutEvents countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v11);
       }
     }
 
-    v19 = [v7 metadata];
-    v20 = [v19 hk_copySanitizedForPublicClient];
-    v21 = v20;
-    if (v19 != v20 && (!v20 || ([v19 isEqual:v20] & 1) == 0))
+    metadata2 = [v7 metadata];
+    hk_copySanitizedForPublicClient2 = [metadata2 hk_copySanitizedForPublicClient];
+    v21 = hk_copySanitizedForPublicClient2;
+    if (metadata2 != hk_copySanitizedForPublicClient2 && (!hk_copySanitizedForPublicClient2 || ([metadata2 isEqual:hk_copySanitizedForPublicClient2] & 1) == 0))
     {
-      v22 = [v7 _copyByArchiving];
+      _copyByArchiving = [v7 _copyByArchiving];
 
-      [v22 _setMetadata:v21];
-      v7 = v22;
+      [_copyByArchiving _setMetadata:v21];
+      v7 = _copyByArchiving;
     }
 
     v8 = v7;
@@ -699,25 +699,25 @@ LABEL_4:
   return v8;
 }
 
-- (id)filteredSamplesForClientWithSamples:(id)a3
+- (id)filteredSamplesForClientWithSamples:(id)samples
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  samplesCopy = samples;
   if ([(HDHealthStoreClient *)self->_client hasEntitlement:*MEMORY[0x277CCC8B0]])
   {
-    v5 = v4;
+    v5 = samplesCopy;
   }
 
   else
   {
-    v5 = [v4 hk_filter:&__block_literal_global_161];
+    v5 = [samplesCopy hk_filter:&__block_literal_global_161];
   }
 
   v6 = v5;
   WeakRetained = objc_loadWeakRetained(&self->_authorizationOracle);
-  v8 = [WeakRetained clientHasAuthorizationForAllTypes];
+  clientHasAuthorizationForAllTypes = [WeakRetained clientHasAuthorizationForAllTypes];
 
-  if (v8)
+  if (clientHasAuthorizationForAllTypes)
   {
     v9 = v6;
   }
@@ -727,7 +727,7 @@ LABEL_4:
     v10 = [v6 hk_mapToSet:&__block_literal_global_377_0];
     if ([v10 count])
     {
-      v24 = v4;
+      v24 = samplesCopy;
       v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v11 = dispatch_group_create();
       v34 = 0u;
@@ -761,7 +761,7 @@ LABEL_4:
             v17 = [[HDObjectAuthorizationRequestContext alloc] initWithSamples:v16 metadata:0];
             [(HDObjectAuthorizationRequestContext *)v17 setPersistSession:0];
             [(HDObjectAuthorizationRequestContext *)v17 setPromptWithNoSamples:0];
-            v18 = [(HDQueryServer *)self delegate];
+            delegate = [(HDQueryServer *)self delegate];
             [v15 code];
             v19 = HKPromptForLegacyPerObjectAuthorizationDuringQueries();
             v30[0] = MEMORY[0x277D85DD0];
@@ -771,7 +771,7 @@ LABEL_4:
             v30[4] = v15;
             v31 = v27;
             v32 = v11;
-            [v18 queryServer:self requestsAuthorizationWithContext:v17 promptIfNeeded:v19 completion:v30];
+            [delegate queryServer:self requestsAuthorizationWithContext:v17 promptIfNeeded:v19 completion:v30];
           }
 
           v13 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -791,7 +791,7 @@ LABEL_4:
       v9 = [v6 hk_filter:v28];
 
       v10 = v23;
-      v4 = v24;
+      samplesCopy = v24;
     }
 
     else
@@ -910,9 +910,9 @@ uint64_t __55__HDQueryServer_authorizedSamplesForClientWithSamples___block_invok
 
 - (id)predicateForQueryClient
 {
-  v3 = [(HDQueryServer *)self filter];
+  filter = [(HDQueryServer *)self filter];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [v3 predicateWithProfile:WeakRetained];
+  v5 = [filter predicateWithProfile:WeakRetained];
 
   return v5;
 }
@@ -926,20 +926,20 @@ uint64_t __55__HDQueryServer_authorizedSamplesForClientWithSamples___block_invok
   return v3;
 }
 
-- (BOOL)prepareToActivateServerWithError:(id *)a3
+- (BOOL)prepareToActivateServerWithError:(id *)error
 {
-  v5 = [(HDQueryServer *)self queryState];
-  if (!v5)
+  queryState = [(HDQueryServer *)self queryState];
+  if (!queryState)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained database];
+    database = [WeakRetained database];
     v13[4] = self;
     v14 = 0;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__HDQueryServer_prepareToActivateServerWithError___block_invoke;
     v13[3] = &unk_278616D40;
-    v6 = [v8 performHighPriorityTransactionsWithError:&v14 block:v13];
+    v6 = [database performHighPriorityTransactionsWithError:&v14 block:v13];
     v9 = v14;
 
     if (v6)
@@ -965,10 +965,10 @@ LABEL_11:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v10;
-      *a3 = v10;
+      *error = v10;
     }
 
     else
@@ -984,15 +984,15 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:126 format:{@"Invalid query state %ld", v5}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:126 format:{@"Invalid query state %ld", queryState}];
   return 0;
 }
 
-- (void)activateServerWithClientState:(id)a3 error:(id)a4
+- (void)activateServerWithClientState:(id)state error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSuspended])
+  stateCopy = state;
+  errorCopy = error;
+  if ([stateCopy isSuspended])
   {
     [(HDQueryServer *)self _setShouldPause:?];
   }
@@ -1003,28 +1003,28 @@ LABEL_11:
   block[2] = __53__HDQueryServer_activateServerWithClientState_error___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = stateCopy;
   dispatch_sync(queryQueue, block);
 }
 
-- (void)_setShouldPause:(uint64_t)a1
+- (void)_setShouldPause:(uint64_t)pause
 {
-  if (a1)
+  if (pause)
   {
-    atomic_store(a2, (a1 + 80));
-    v4 = _Block_copy(*(a1 + 184));
+    atomic_store(a2, (pause + 80));
+    v4 = _Block_copy(*(pause + 184));
     v5 = v4;
     if (v4)
     {
-      v6 = *(a1 + 88);
+      v6 = *(pause + 88);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __33__HDQueryServer__setShouldPause___block_invoke;
       block[3] = &unk_278616460;
-      block[4] = a1;
+      block[4] = pause;
       v8 = v4;
       v9 = a2;
       dispatch_async(v6, block);
@@ -1032,71 +1032,71 @@ LABEL_11:
   }
 }
 
-- (void)_queue_activateServerWithClientState:(void *)a3 error:
+- (void)_queue_activateServerWithClientState:(void *)state error:
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v7 = [a1 queryState];
-    if (v7 != 4)
+    queryState = [self queryState];
+    if (queryState != 4)
     {
-      v8 = v7;
-      if (!v7)
+      v8 = queryState;
+      if (!queryState)
       {
-        [(HDQueryServer *)a1 _queue_setQueryState:?];
+        [(HDQueryServer *)self _queue_setQueryState:?];
       }
 
-      [a1 setClientState:v5];
-      v9 = [v5 isSuspended];
+      [self setClientState:v5];
+      isSuspended = [v5 isSuspended];
       _HKInitializeLogging();
       v10 = *MEMORY[0x277CCC308];
       if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
       {
         *buf = 138543874;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 1024;
-        *&buf[14] = v6 == 0;
+        *&buf[14] = stateCopy == 0;
         *&buf[18] = 1024;
-        *&buf[20] = v9;
+        *&buf[20] = isSuspended;
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_INFO, "%{public}@: activated successfully: %{BOOL}d, paused: %{BOOL}d", buf, 0x18u);
       }
 
-      if (v6)
+      if (stateCopy)
       {
-        [(HDQueryServer *)a1 _queue_transitionToFinished];
+        [(HDQueryServer *)self _queue_transitionToFinished];
       }
 
-      else if (v9)
+      else if (isSuspended)
       {
-        [(HDQueryServer *)a1 _queue_transitionToPaused];
+        [(HDQueryServer *)self _queue_transitionToPaused];
       }
 
       else
       {
-        [(HDQueryServer *)a1 _queue_takeActiveQueryTransaction];
-        if ((*(a1 + 78) & 1) == 0 && [a1 _shouldListenForUpdates] && (objc_msgSend(*(a1 + 16), "shouldSuppressDataCollection") & 1) == 0)
+        [(HDQueryServer *)self _queue_takeActiveQueryTransaction];
+        if ((*(self + 78) & 1) == 0 && [self _shouldListenForUpdates] && (objc_msgSend(*(self + 16), "shouldSuppressDataCollection") & 1) == 0)
         {
-          [a1 _queue_startDataCollection];
+          [self _queue_startDataCollection];
         }
 
-        dispatch_assert_queue_V2(*(a1 + 136));
-        v11 = [a1 objectTypes];
-        v12 = [v11 hk_anyObjectPassingTest:&__block_literal_global_435_0];
+        dispatch_assert_queue_V2(*(self + 136));
+        objectTypes = [self objectTypes];
+        v12 = [objectTypes hk_anyObjectPassingTest:&__block_literal_global_435_0];
 
         if (v12)
         {
-          v13 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v13 postNotificationName:@"HDQueryServerDidReceiveHealthRecordsQueryNotification" object:a1];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:@"HDQueryServerDidReceiveHealthRecordsQueryNotification" object:self];
         }
 
-        objc_initWeak(&location, a1);
+        objc_initWeak(&location, self);
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __36__HDQueryServer__scheduleStartQuery__block_invoke;
         v19 = &unk_2786177F8;
-        v20 = a1;
+        selfCopy = self;
         objc_copyWeak(v21, &location);
         v14 = _Block_copy(buf);
         v14[2]();
@@ -1105,39 +1105,39 @@ LABEL_11:
         objc_destroyWeak(&location);
       }
 
-      [*(a1 + 48) invalidate];
-      v15 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      [*(self + 48) invalidate];
+      v15 = *(self + 48);
+      *(self + 48) = 0;
 
-      [(HDQueryServer *)a1 _queue_didFinishTransitionFromState:v8];
+      [(HDQueryServer *)self _queue_didFinishTransitionFromState:v8];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setQueryState:(uint64_t)a1
+- (void)_queue_setQueryState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    dispatch_assert_queue_V2(*(a1 + 136));
-    v4 = atomic_exchange((a1 + 72), a2);
+    dispatch_assert_queue_V2(*(state + 136));
+    v4 = atomic_exchange((state + 72), a2);
     v5 = v4;
     if (v4 != a2)
     {
-      [a1 _queue_didChangeStateFromPreviousState:v4 state:a2];
+      [state _queue_didChangeStateFromPreviousState:v4 state:a2];
     }
 
-    v6 = _Block_copy(*(a1 + 192));
+    v6 = _Block_copy(*(state + 192));
     v7 = v6;
     if (v6)
     {
-      v8 = *(a1 + 88);
+      v8 = *(state + 88);
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __38__HDQueryServer__queue_setQueryState___block_invoke;
       v9[3] = &unk_278625818;
-      v9[4] = a1;
+      v9[4] = state;
       v10 = v6;
       v11 = v5;
       v12 = a2;
@@ -1148,22 +1148,22 @@ LABEL_11:
 
 - (void)_queue_takeActiveQueryTransaction
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 128));
-  v2 = [WeakRetained daemon];
-  v3 = [v2 behavior];
-  if ([v3 supportsActiveQueryDaemonTransactions])
+  WeakRetained = objc_loadWeakRetained((self + 128));
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  if ([behavior supportsActiveQueryDaemonTransactions])
   {
-    v4 = [a1 hasActiveDaemonTransaction];
+    hasActiveDaemonTransaction = [self hasActiveDaemonTransaction];
 
-    if (v4)
+    if (hasActiveDaemonTransaction)
     {
       return;
     }
 
-    WeakRetained = [MEMORY[0x277CCACA8] stringWithFormat:@"Running-%@", *(a1 + 112)];
-    v5 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:a1 activityName:?];
-    v2 = *(a1 + 56);
-    *(a1 + 56) = v5;
+    WeakRetained = [MEMORY[0x277CCACA8] stringWithFormat:@"Running-%@", *(self + 112)];
+    v5 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:?];
+    daemon = *(self + 56);
+    *(self + 56) = v5;
   }
 
   else
@@ -1171,38 +1171,38 @@ LABEL_11:
   }
 }
 
-- (void)_queue_didFinishTransitionFromState:(uint64_t)a1
+- (void)_queue_didFinishTransitionFromState:(uint64_t)state
 {
-  dispatch_assert_queue_V2(*(a1 + 136));
-  v4 = [a1 queryState];
-  v5 = _Block_copy(*(a1 + 200));
+  dispatch_assert_queue_V2(*(state + 136));
+  queryState = [state queryState];
+  v5 = _Block_copy(*(state + 200));
   v6 = v5;
   if (v5)
   {
-    v7 = *(a1 + 88);
+    v7 = *(state + 88);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __53__HDQueryServer__queue_didFinishTransitionFromState___block_invoke;
     v8[3] = &unk_278625818;
-    v8[4] = a1;
+    v8[4] = state;
     v9 = v5;
     v10 = a2;
-    v11 = v4;
+    v11 = queryState;
     dispatch_async(v7, v8);
   }
 }
 
-- (void)setQueryDidFinishHandler:(id)a3
+- (void)setQueryDidFinishHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queryQueue = self->_queryQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HDQueryServer_setQueryDidFinishHandler___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queryQueue, v7);
 }
 
@@ -1370,17 +1370,17 @@ void __36__HDQueryServer__scheduleStartQuery__block_invoke_2(uint64_t a1)
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateServerWithCompletion:(id)a3
+- (void)deactivateServerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   atomic_store(1u, &self->_shouldFinish);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__HDQueryServer_deactivateServerWithCompletion___block_invoke;
   v6[3] = &unk_278614E28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HDQueryServer *)self onQueue:v6];
 }
 
@@ -1430,27 +1430,27 @@ void __30__HDQueryServer_schedulePause__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientStateWillChange:(id)a3
+- (void)clientStateWillChange:(id)change
 {
   queryQueue = self->_queryQueue;
-  v5 = a3;
+  changeCopy = change;
   dispatch_assert_queue_not_V2(queryQueue);
-  v6 = [v5 isSuspended];
+  isSuspended = [changeCopy isSuspended];
 
-  [(HDQueryServer *)self _setShouldPause:v6];
+  [(HDQueryServer *)self _setShouldPause:isSuspended];
 }
 
-- (void)clientStateDidChange:(id)a3
+- (void)clientStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queryQueue = self->_queryQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HDQueryServer_clientStateDidChange___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_sync(queryQueue, v7);
 }
 
@@ -1497,49 +1497,49 @@ void __38__HDQueryServer_clientStateDidChange___block_invoke(uint64_t a1)
 
 - (id)_queue_collectionObserverState
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 clientState];
-    v1 = +[HDDataCollectionObserverState dataCollectionObserverStateInForeground:hasRunningWorkout:hasBackgroundObserver:shouldTakeWorkoutDatabaseAssertion:](HDDataCollectionObserverState, "dataCollectionObserverStateInForeground:hasRunningWorkout:hasBackgroundObserver:shouldTakeWorkoutDatabaseAssertion:", [v2 isForeground], 0, -[HDQueryServer _backgroundRunningCollectionSupportedForClient](v1), 0);
+    clientState = [self clientState];
+    selfCopy = +[HDDataCollectionObserverState dataCollectionObserverStateInForeground:hasRunningWorkout:hasBackgroundObserver:shouldTakeWorkoutDatabaseAssertion:](HDDataCollectionObserverState, "dataCollectionObserverStateInForeground:hasRunningWorkout:hasBackgroundObserver:shouldTakeWorkoutDatabaseAssertion:", [clientState isForeground], 0, -[HDQueryServer _backgroundRunningCollectionSupportedForClient](selfCopy), 0);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_queue_updateSampleTypeObservationAssertions
 {
   v49 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = [a1 profile];
-    v3 = [v2 sessionAssertionManager];
+    selfCopy = self;
+    profile = [self profile];
+    sessionAssertionManager = [profile sessionAssertionManager];
 
-    v37 = v3;
-    if (v3)
+    v37 = sessionAssertionManager;
+    if (sessionAssertionManager)
     {
-      v4 = [(HDQueryServer *)v1 _queue_sampleTypesForObservation];
-      if (*(v1 + 78) == 1)
+      _queue_sampleTypesForObservation = [(HDQueryServer *)selfCopy _queue_sampleTypesForObservation];
+      if (*(selfCopy + 78) == 1)
       {
-        v5 = [v1 clientState];
-        if ([v5 isForeground] & 1) != 0 || (-[HDQueryServer _backgroundRunningCollectionSupportedForClient](v1))
+        clientState = [selfCopy clientState];
+        if ([clientState isForeground] & 1) != 0 || (-[HDQueryServer _backgroundRunningCollectionSupportedForClient](selfCopy))
         {
-          v6 = [v4 count];
+          v6 = [_queue_sampleTypesForObservation count];
 
           if (v6)
           {
             v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            v8 = [v1 client];
-            v9 = [v8 process];
-            v10 = [v9 bundleIdentifier];
+            client = [selfCopy client];
+            process = [client process];
+            bundleIdentifier = [process bundleIdentifier];
 
             v41 = 0u;
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v35 = v4;
-            obj = v4;
+            v35 = _queue_sampleTypesForObservation;
+            obj = _queue_sampleTypesForObservation;
             v38 = [obj countByEnumeratingWithState:&v39 objects:v47 count:16];
             if (!v38)
             {
@@ -1559,24 +1559,24 @@ void __38__HDQueryServer_clientStateDidChange___block_invoke(uint64_t a1)
 
                 v14 = *(*(&v39 + 1) + 8 * i);
                 v15 = HDQueryServerSampleTypeObservationAssertionName(v14);
-                v16 = [objc_alloc(*(v12 + 2744)) initWithAssertionIdentifier:v15 ownerIdentifier:v10];
-                v17 = [v1 clientState];
-                if ([v17 isForeground])
+                v16 = [objc_alloc(*(v12 + 2744)) initWithAssertionIdentifier:v15 ownerIdentifier:bundleIdentifier];
+                clientState2 = [selfCopy clientState];
+                if ([clientState2 isForeground])
                 {
                 }
 
                 else
                 {
-                  [v1 _supportedTypesForBackgroundRunningCollection];
+                  [selfCopy _supportedTypesForBackgroundRunningCollection];
                   v18 = v11;
-                  v19 = v10;
-                  v20 = v1;
+                  v19 = bundleIdentifier;
+                  v20 = selfCopy;
                   v22 = v21 = v7;
                   v23 = [v22 containsObject:v14];
 
                   v7 = v21;
-                  v1 = v20;
-                  v10 = v19;
+                  selfCopy = v20;
+                  bundleIdentifier = v19;
                   v11 = v18;
                   v12 = 0x277D10000;
 
@@ -1596,7 +1596,7 @@ LABEL_16:
               {
 LABEL_18:
 
-                v4 = v35;
+                _queue_sampleTypesForObservation = v35;
                 v24 = v7;
                 goto LABEL_21;
               }
@@ -1611,11 +1611,11 @@ LABEL_18:
 
       v24 = 0;
 LABEL_21:
-      v25 = v1[4];
+      v25 = selfCopy[4];
       v26 = v24;
       v27 = [v24 copy];
-      v28 = v1[4];
-      v1[4] = v27;
+      v28 = selfCopy[4];
+      selfCopy[4] = v27;
 
       v45 = 0u;
       v46 = 0u;
@@ -1650,48 +1650,48 @@ LABEL_21:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_transitionToSuspendedState:(id *)a1
+- (void)_queue_transitionToSuspendedState:(id *)state
 {
-  v4 = [a1 queryState];
-  [(HDQueryServer *)a1 _queue_setQueryState:a2];
-  if (([a1 _shouldExecuteWhenProtectedDataIsUnavailable] & 1) != 0 || objc_msgSend(a1, "_shouldObserveDatabaseProtectedDataAvailability"))
+  queryState = [state queryState];
+  [(HDQueryServer *)state _queue_setQueryState:a2];
+  if (([state _shouldExecuteWhenProtectedDataIsUnavailable] & 1) != 0 || objc_msgSend(state, "_shouldObserveDatabaseProtectedDataAvailability"))
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 16);
-    v6 = [WeakRetained database];
-    [v6 removeProtectedDataObserver:a1];
+    WeakRetained = objc_loadWeakRetained(state + 16);
+    database = [WeakRetained database];
+    [database removeProtectedDataObserver:state];
   }
 
-  if (v4 == 2)
+  if (queryState == 2)
   {
-    [a1 _queue_stop];
-    if ([a1 _shouldListenForUpdates] && (objc_msgSend(a1, "queryState") == 4 || (objc_msgSend(a1, "_shouldObserveOnPause") & 1) == 0))
+    [state _queue_stop];
+    if ([state _shouldListenForUpdates] && (objc_msgSend(state, "queryState") == 4 || (objc_msgSend(state, "_shouldObserveOnPause") & 1) == 0))
     {
-      [a1 _queue_stopDataCollection];
+      [state _queue_stopDataCollection];
     }
 
-    [(HDQueryServer *)a1 _queue_invalidateActiveQueryTransaction];
+    [(HDQueryServer *)state _queue_invalidateActiveQueryTransaction];
   }
 
-  [(HDQueryServer *)a1 _queue_didFinishTransitionFromState:v4];
+  [(HDQueryServer *)state _queue_didFinishTransitionFromState:queryState];
 }
 
 - (void)_queue_invalidateActiveQueryTransaction
 {
-  WeakRetained = objc_loadWeakRetained(a1 + 16);
-  v2 = [WeakRetained daemon];
-  v3 = [v2 behavior];
-  if ([v3 supportsActiveQueryDaemonTransactions])
+  WeakRetained = objc_loadWeakRetained(self + 16);
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  if ([behavior supportsActiveQueryDaemonTransactions])
   {
-    v4 = [a1 hasActiveDaemonTransaction];
+    hasActiveDaemonTransaction = [self hasActiveDaemonTransaction];
 
-    if ((v4 & 1) == 0)
+    if ((hasActiveDaemonTransaction & 1) == 0)
     {
       return;
     }
 
-    [a1[7] invalidate];
-    v5 = a1[7];
-    a1[7] = 0;
+    [self[7] invalidate];
+    v5 = self[7];
+    self[7] = 0;
   }
 
   else
@@ -1703,37 +1703,37 @@ LABEL_21:
 
 - (id)_queue_sampleTypesForObservation
 {
-  v1 = a1;
+  selfCopy = self;
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if ([a1 _shouldObserveAllSampleTypes])
+    if ([self _shouldObserveAllSampleTypes])
     {
-      v2 = HKAllCollectibleTypesWithStoreDemoModeEnabled();
-      v3 = [v2 hk_map:&__block_literal_global_421_0];
-      v1 = [v3 allObjects];
+      sampleType2 = HKAllCollectibleTypesWithStoreDemoModeEnabled();
+      v3 = [sampleType2 hk_map:&__block_literal_global_421_0];
+      selfCopy = [v3 allObjects];
 
 LABEL_6:
       goto LABEL_7;
     }
 
-    v4 = [v1 sampleType];
+    sampleType = [selfCopy sampleType];
 
-    if (v4)
+    if (sampleType)
     {
-      v2 = [v1 sampleType];
-      v7[0] = v2;
-      v1 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
+      sampleType2 = [selfCopy sampleType];
+      v7[0] = sampleType2;
+      selfCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
       goto LABEL_6;
     }
 
-    v1 = MEMORY[0x277CBEBF8];
+    selfCopy = MEMORY[0x277CBEBF8];
   }
 
 LABEL_7:
   v5 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 void *__49__HDQueryServer__queue_sampleTypesForObservation__block_invoke(uint64_t a1, void *a2)
@@ -1757,10 +1757,10 @@ void *__49__HDQueryServer__queue_sampleTypesForObservation__block_invoke(uint64_
 
 - (uint64_t)_backgroundRunningCollectionSupportedForClient
 {
-  if ([a1 _supportsBackgroundDataCollection])
+  if ([self _supportsBackgroundDataCollection])
   {
-    v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if ([v2 isRealityDevice])
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if ([mEMORY[0x277CCDD30] isRealityDevice])
     {
       v3 = 0;
 LABEL_10:
@@ -1768,21 +1768,21 @@ LABEL_10:
       return v3;
     }
 
-    v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v5 = [v4 isAppleWatch];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30]2 isAppleWatch];
 
-    if ((v5 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
-      v6 = [a1 client];
-      v7 = [v6 entitlements];
-      v2 = [v7 valueForEntitlement:*MEMORY[0x277CCB820]];
+      client = [self client];
+      entitlements = [client entitlements];
+      mEMORY[0x277CCDD30] = [entitlements valueForEntitlement:*MEMORY[0x277CCB820]];
 
-      v8 = [a1 clientState];
-      v9 = [v8 isBackgroundRunning];
+      clientState = [self clientState];
+      isBackgroundRunning = [clientState isBackgroundRunning];
 
-      if (v2)
+      if (mEMORY[0x277CCDD30])
       {
-        v10 = [v2 hasPrefix:@"com.apple"] ^ 1;
+        v10 = [mEMORY[0x277CCDD30] hasPrefix:@"com.apple"] ^ 1;
       }
 
       else
@@ -1790,7 +1790,7 @@ LABEL_10:
         v10 = 0;
       }
 
-      v3 = v9 & v10;
+      v3 = isBackgroundRunning & v10;
       goto LABEL_10;
     }
   }
@@ -1798,20 +1798,20 @@ LABEL_10:
   return 0;
 }
 
-- (void)remote_startQueryWithCompletion:(id)a3
+- (void)remote_startQueryWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(HDQueryServer *)self delegate];
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  delegate = [(HDQueryServer *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    [v4 queryServer:self shouldStartWithCompletion:v7];
+    [delegate queryServer:self shouldStartWithCompletion:completionCopy];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"nil query server delegate"];
-    v7[2](v7, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
@@ -1848,21 +1848,21 @@ LABEL_10:
   return v4;
 }
 
-- (void)scheduleDatabaseAccessOnQueueWithBlock:(id)a3
+- (void)scheduleDatabaseAccessOnQueueWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained daemon];
-  v7 = [v6 queryManager];
+  daemon = [WeakRetained daemon];
+  queryManager = [daemon queryManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HDQueryServer_scheduleDatabaseAccessOnQueueWithBlock___block_invoke;
   v9[3] = &unk_27861B320;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = blockCopy;
   v10 = v8;
-  [v7 scheduleDatabaseAccessForQueryServer:self block:v9];
+  [queryManager scheduleDatabaseAccessForQueryServer:self block:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1914,11 +1914,11 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (id)authorizationStatusRecordForType:(id)a3 error:(id *)a4
+- (id)authorizationStatusRecordForType:(id)type error:(id *)error
 {
-  v6 = a3;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_authorizationOracle);
-  v8 = [WeakRetained authorizationStatusRecordForType:v6 error:a4];
+  v8 = [WeakRetained authorizationStatusRecordForType:typeCopy error:error];
 
   return v8;
 }
@@ -1931,15 +1931,15 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
   return objc_opt_class();
 }
 
-- (BOOL)validateConfiguration:(id *)a3
+- (BOOL)validateConfiguration:(id *)configuration
 {
   v43 = *MEMORY[0x277D85DE8];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [objc_opt_class() requiredEntitlements];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  requiredEntitlements = [objc_opt_class() requiredEntitlements];
+  v6 = [requiredEntitlements countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1950,17 +1950,17 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requiredEntitlements);
         }
 
-        if (![(HDHealthStoreClient *)self->_client hasRequiredEntitlement:*(*(&v33 + 1) + 8 * i) error:a3])
+        if (![(HDHealthStoreClient *)self->_client hasRequiredEntitlement:*(*(&v33 + 1) + 8 * i) error:configuration])
         {
           v12 = 0;
           goto LABEL_36;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v7 = [requiredEntitlements countByEnumeratingWithState:&v33 objects:v42 count:16];
       if (v7)
       {
         continue;
@@ -1971,15 +1971,15 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_authorizationOracle);
-  v11 = [WeakRetained clientHasAuthorizationForAllTypes];
+  clientHasAuthorizationForAllTypes = [WeakRetained clientHasAuthorizationForAllTypes];
 
-  v5 = [(HDQueryServer *)self objectTypes];
+  requiredEntitlements = [(HDQueryServer *)self objectTypes];
   v12 = 1;
-  if ([v5 count] && (v11 & 1) == 0)
+  if ([requiredEntitlements count] && (clientHasAuthorizationForAllTypes & 1) == 0)
   {
     v13 = objc_loadWeakRetained(&self->_authorizationOracle);
     v32 = 0;
-    v14 = [v13 authorizationStatusRecordsForTypes:v5 error:&v32];
+    v14 = [v13 authorizationStatusRecordsForTypes:requiredEntitlements error:&v32];
     v15 = v32;
 
     if (v14)
@@ -1988,7 +1988,7 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v16 = v5;
+      v16 = requiredEntitlements;
       v17 = [v16 countByEnumeratingWithState:&v28 objects:v37 count:16];
       if (v17)
       {
@@ -2009,7 +2009,7 @@ id __42__HDQueryServer_sampleAuthorizationFilter__block_invoke(uint64_t a1, void
             {
               v25 = @"Authorization not determined";
 LABEL_31:
-              [MEMORY[0x277CCA9B8] hk_assignError:a3 code:5 description:v25];
+              [MEMORY[0x277CCA9B8] hk_assignError:configuration code:5 description:v25];
 
               v12 = 0;
               goto LABEL_32;
@@ -2044,7 +2044,7 @@ LABEL_32:
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v39 = self;
+      selfCopy = self;
       v40 = 2114;
       v41 = v15;
       _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Error determining authorization status: %{public}@", buf, 0x16u);
@@ -2053,11 +2053,11 @@ LABEL_32:
     v14 = v15;
     if (v14)
     {
-      if (a3)
+      if (configuration)
       {
         v24 = v14;
         v12 = 0;
-        *a3 = v14;
+        *configuration = v14;
 LABEL_35:
 
         goto LABEL_36;
@@ -2078,9 +2078,9 @@ LABEL_36:
 
 + (id)taskIdentifier
 {
-  v2 = [a1 queryClass];
+  queryClass = [self queryClass];
 
-  return [v2 taskIdentifier];
+  return [queryClass taskIdentifier];
 }
 
 + (id)requiredEntitlements
@@ -2095,23 +2095,23 @@ LABEL_36:
 
 + (Class)configurationClass
 {
-  v2 = [a1 queryClass];
+  queryClass = [self queryClass];
 
-  return [v2 configurationClass];
+  return [queryClass configurationClass];
 }
 
 - (id)exportedInterface
 {
-  v2 = [objc_opt_class() queryClass];
+  queryClass = [objc_opt_class() queryClass];
 
-  return [v2 serverInterface];
+  return [queryClass serverInterface];
 }
 
 - (id)remoteInterface
 {
-  v2 = [objc_opt_class() queryClass];
+  queryClass = [objc_opt_class() queryClass];
 
-  return [v2 clientInterface];
+  return [queryClass clientInterface];
 }
 
 - (void)connectionInvalidated
@@ -2122,7 +2122,7 @@ LABEL_36:
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_228986000, v3, OS_LOG_TYPE_DEBUG, "%{public}@: connection invalidated, deactivating", &v5, 0xCu);
   }
 
@@ -2134,9 +2134,9 @@ LABEL_36:
 {
   if (self && ([(HDQueryServer *)self filter], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HDQueryServer *)self filter];
+    filter = [(HDQueryServer *)self filter];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [v4 predicateWithProfile:WeakRetained];
+    v6 = [filter predicateWithProfile:WeakRetained];
     v7 = [v6 description];
 
     v8 = [v7 componentsSeparatedByString:@"\n"];
@@ -2149,18 +2149,18 @@ LABEL_36:
     v10 = 0;
   }
 
-  v11 = [(HKQueryServerConfiguration *)self->_configuration debugIdentifier];
+  debugIdentifier = [(HKQueryServerConfiguration *)self->_configuration debugIdentifier];
   v12 = MEMORY[0x277CBEAA8];
   [(HDQueryServer *)self activationTime];
   v30 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
-  v13 = 0x277CCA000;
+  sampleType2 = 0x277CCA000;
   v28 = MEMORY[0x277CCACA8];
-  v14 = [(HDQueryServer *)self queryUUID];
-  v15 = [v14 UUIDString];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  uUIDString = [queryUUID UUIDString];
   v27 = objc_opt_class();
-  if (v11)
+  if (debugIdentifier)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", v11];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", debugIdentifier];
   }
 
   else
@@ -2169,12 +2169,12 @@ LABEL_36:
   }
 
   v29 = v10;
-  v17 = [(HDQueryServer *)self sampleType];
-  if (v17)
+  sampleType = [(HDQueryServer *)self sampleType];
+  if (sampleType)
   {
     v18 = MEMORY[0x277CCACA8];
-    v13 = [(HDQueryServer *)self sampleType];
-    v19 = [v18 stringWithFormat:@" (%@)", v13];
+    sampleType2 = [(HDQueryServer *)self sampleType];
+    v19 = [v18 stringWithFormat:@" (%@)", sampleType2];
   }
 
   else
@@ -2182,7 +2182,7 @@ LABEL_36:
     v19 = &stru_283BF39C8;
   }
 
-  v20 = [(HDQueryServer *)self _queryStateString];
+  _queryStateString = [(HDQueryServer *)self _queryStateString];
   if ([(HDQueryServer *)self _shouldStopProcessingQuery])
   {
     v21 = @" (finishing)";
@@ -2194,13 +2194,13 @@ LABEL_36:
   }
 
   v22 = HKDiagnosticStringFromDate();
-  v23 = [v28 stringWithFormat:@"%@ %@%@%@ - %@%@, activated %@", v15, v27, v16, v19, v20, v21, v22];
+  v23 = [v28 stringWithFormat:@"%@ %@%@%@ - %@%@, activated %@", uUIDString, v27, v16, v19, _queryStateString, v21, v22];
 
-  if (v17)
+  if (sampleType)
   {
   }
 
-  if (v11)
+  if (debugIdentifier)
   {
   }
 

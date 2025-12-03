@@ -1,18 +1,18 @@
 @interface FPDAppMonitor
-- (FPDAppMonitor)initWithServer:(id)a3;
+- (FPDAppMonitor)initWithServer:(id)server;
 - (FPDServer)server;
-- (id)_appMetadataIfMonitoringIsNeeded:(id)a3;
+- (id)_appMetadataIfMonitoringIsNeeded:(id)needed;
 - (id)_updateDefaultProviderDomainID;
 - (id)listOfPlaceholderApps;
-- (int)_registerForNotification:(id)a3 handler:(id)a4;
+- (int)_registerForNotification:(id)notification handler:(id)handler;
 - (void)_didChangeDefaultSaveLocationInUserDefaults;
 - (void)_didChangeListOfProviders;
-- (void)_didChangeLocale:(id)a3;
-- (void)_didRegisterApps:(id)a3;
-- (void)_didUnregisterApps:(id)a3;
+- (void)_didChangeLocale:(id)locale;
+- (void)_didRegisterApps:(id)apps;
+- (void)_didUnregisterApps:(id)apps;
 - (void)_populateListOfMonitoredApps;
 - (void)_updateDefaultProviderByAppBundleID;
-- (void)dumpStateTo:(id)a3;
+- (void)dumpStateTo:(id)to;
 - (void)listOfPlaceholderApps;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -28,10 +28,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (FPDAppMonitor)initWithServer:(id)a3
+- (FPDAppMonitor)initWithServer:(id)server
 {
-  v4 = a3;
-  if (v4)
+  serverCopy = server;
+  if (serverCopy)
   {
     v15.receiver = self;
     v15.super_class = FPDAppMonitor;
@@ -39,7 +39,7 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_server, v4);
+      objc_storeWeak(&v5->_server, serverCopy);
       v7 = objc_alloc_init(FPDAppRegistry);
       appRegistry = v6->_appRegistry;
       v6->_appRegistry = &v7->super;
@@ -54,15 +54,15 @@
     }
 
     self = v6;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)stopMonitoring
@@ -73,13 +73,13 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 write:@"apps monitor "];
-  v5 = [(FPDAppMonitor *)self isMonitoring];
-  if (v5)
+  toCopy = to;
+  [toCopy write:@"apps monitor "];
+  isMonitoring = [(FPDAppMonitor *)self isMonitoring];
+  if (isMonitoring)
   {
     v6 = 2;
   }
@@ -89,7 +89,7 @@
     v6 = 0;
   }
 
-  if (v5)
+  if (isMonitoring)
   {
     v7 = @"active";
   }
@@ -99,25 +99,25 @@
     v7 = @"not-active";
   }
 
-  [v4 startFgColor:v6 attr:2];
-  [v4 write:v7];
-  [v4 reset];
-  [v4 write:@"\n"];
-  [v4 write:@"-----------------------------------------------------\n"];
-  v8 = [(FPDAppMonitor *)self appRegistry];
-  v9 = [v8 listOfMonitoredApps];
+  [toCopy startFgColor:v6 attr:2];
+  [toCopy write:v7];
+  [toCopy reset];
+  [toCopy write:@"\n"];
+  [toCopy write:@"-----------------------------------------------------\n"];
+  appRegistry = [(FPDAppMonitor *)self appRegistry];
+  listOfMonitoredApps = [appRegistry listOfMonitoredApps];
 
-  [v4 startFgColor:7 attr:2];
-  [v4 write:{@"%lu", objc_msgSend(v9, "count")}];
-  [v4 reset];
-  [v4 write:@" apps monitored"];
-  if ([v9 count])
+  [toCopy startFgColor:7 attr:2];
+  [toCopy write:{@"%lu", objc_msgSend(listOfMonitoredApps, "count")}];
+  [toCopy reset];
+  [toCopy write:@" apps monitored"];
+  if ([listOfMonitoredApps count])
   {
-    [v4 write:@":\n"];
+    [toCopy write:@":\n"];
     v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"bundleID" ascending:1];
     v24[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-    v12 = [v9 sortedArrayUsingDescriptors:v11];
+    v12 = [listOfMonitoredApps sortedArrayUsingDescriptors:v11];
 
     v21 = 0u;
     v22 = 0u;
@@ -139,7 +139,7 @@
             objc_enumerationMutation(v13);
           }
 
-          [v4 write:{@" - %@:\n", *(*(&v19 + 1) + 8 * v17++)}];
+          [toCopy write:{@" - %@:\n", *(*(&v19 + 1) + 8 * v17++)}];
         }
 
         while (v15 != v17);
@@ -149,12 +149,12 @@
       while (v15);
     }
 
-    [v4 write:@"\n"];
+    [toCopy write:@"\n"];
   }
 
   else
   {
-    [v4 write:@".\n\n"];
+    [toCopy write:@".\n\n"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -175,13 +175,13 @@
   v10 = __Block_byref_object_copy__7;
   v11 = __Block_byref_object_dispose__7;
   v12 = objc_opt_new();
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__FPDAppMonitor_listOfPlaceholderApps__block_invoke;
   v6[3] = &unk_1E83BF738;
   v6[4] = &v7;
-  [v3 enumerateBundlesOfType:3 block:v6];
+  [defaultWorkspace enumerateBundlesOfType:3 block:v6];
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -232,15 +232,15 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_appMetadataIfMonitoringIsNeeded:(id)a3
+- (id)_appMetadataIfMonitoringIsNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 supportsOpenInPlace] && (objc_msgSend(v5, "fileSharingEnabled") & 1) != 0 || (objc_msgSend(MEMORY[0x1E695DFD8], "setWithObject:", @"UISupportsDocumentBrowser"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForInfoDictionaryKey:ofClass:", @"UISupportsDocumentBrowser", objc_opt_class()), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v6, v8)))
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (neededCopy && ([neededCopy supportsOpenInPlace] && (objc_msgSend(v5, "fileSharingEnabled") & 1) != 0 || (objc_msgSend(MEMORY[0x1E695DFD8], "setWithObject:", @"UISupportsDocumentBrowser"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForInfoDictionaryKey:ofClass:", @"UISupportsDocumentBrowser", objc_opt_class()), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLValue"), v7, v6, v8)))
   {
     defaultProviderByAppBundleID = self->_defaultProviderByAppBundleID;
-    v10 = [v5 bundleIdentifier];
-    v11 = [(NSDictionary *)defaultProviderByAppBundleID objectForKeyedSubscript:v10];
+    bundleIdentifier = [v5 bundleIdentifier];
+    v11 = [(NSDictionary *)defaultProviderByAppBundleID objectForKeyedSubscript:bundleIdentifier];
 
     v12 = [objc_alloc(MEMORY[0x1E69672B0]) initWithAppProxy:v5 providerDomainID:v11];
   }
@@ -253,15 +253,15 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
   return v12;
 }
 
-- (int)_registerForNotification:(id)a3 handler:(id)a4
+- (int)_registerForNotification:(id)notification handler:(id)handler
 {
-  v5 = a3;
+  notificationCopy = notification;
   out_token = -1;
-  v7 = a3;
-  v8 = a4;
-  LODWORD(v5) = notify_register_dispatch([v5 UTF8String], &out_token, self->_notificationQueue, v8);
+  notificationCopy2 = notification;
+  handlerCopy = handler;
+  LODWORD(notificationCopy) = notify_register_dispatch([notificationCopy UTF8String], &out_token, self->_notificationQueue, handlerCopy);
 
-  if (v5)
+  if (notificationCopy)
   {
     return -1;
   }
@@ -272,10 +272,10 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_didRegisterApps:(id)a3
+- (void)_didRegisterApps:(id)apps
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appsCopy = apps;
   if ([(FPDAppMonitor *)self isMonitoring])
   {
     section = __fp_create_section();
@@ -285,10 +285,10 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
       [FPDAppMonitor _didRegisterApps:?];
     }
 
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"bundleIDs"];
+    userInfo = [appsCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -312,7 +312,7 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
           v14 = [(FPDAppMonitor *)self _appMetadataIfMonitoringIsNeeded:v13];
           if (v14)
           {
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
 
           ++v12;
@@ -325,10 +325,10 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
       while (v10);
     }
 
-    v15 = self;
-    objc_sync_enter(v15);
-    [(FPAppRegistry *)v15->_appRegistry addApps:v8];
-    objc_sync_exit(v15);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(FPAppRegistry *)selfCopy->_appRegistry addApps:array];
+    objc_sync_exit(selfCopy);
 
     __fp_leave_section_Debug();
   }
@@ -336,9 +336,9 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didUnregisterApps:(id)a3
+- (void)_didUnregisterApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   if ([(FPDAppMonitor *)self isMonitoring])
   {
     __fp_create_section();
@@ -348,25 +348,25 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
       [FPDAppMonitor _didUnregisterApps:];
     }
 
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"bundleIDs"];
+    userInfo = [appsCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
 
-    v8 = self;
-    objc_sync_enter(v8);
-    [(FPAppRegistry *)v8->_appRegistry removeAppsWithBundleIDs:v7];
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(FPAppRegistry *)selfCopy->_appRegistry removeAppsWithBundleIDs:v7];
+    objc_sync_exit(selfCopy);
 
     __fp_leave_section_Debug();
   }
 }
 
-- (void)_didChangeLocale:(id)a3
+- (void)_didChangeLocale:(id)locale
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localeCopy = locale;
   if ([(FPDAppMonitor *)self isMonitoring])
   {
-    v19 = v4;
+    v19 = localeCopy;
     section = __fp_create_section();
     v5 = fp_current_or_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -374,16 +374,16 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
       [FPDAppMonitor _didChangeLocale:?];
     }
 
-    v6 = self;
-    objc_sync_enter(v6);
-    obj = &v6->super.isa;
-    v21 = [MEMORY[0x1E695DF70] array];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    obj = &selfCopy->super.isa;
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(FPAppRegistry *)v6->_appRegistry listOfMonitoredApps];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    listOfMonitoredApps = [(FPAppRegistry *)selfCopy->_appRegistry listOfMonitoredApps];
+    v8 = [listOfMonitoredApps countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
       v9 = *v23;
@@ -393,38 +393,38 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(listOfMonitoredApps);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          v12 = [v11 bundleID];
-          v13 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v12];
-          v14 = [v13 localizedName];
-          if (v14)
+          bundleID = [v11 bundleID];
+          v13 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:bundleID];
+          localizedName = [v13 localizedName];
+          if (localizedName)
           {
-            v15 = [v11 displayName];
-            v16 = [v15 isEqualToString:v14];
+            displayName = [v11 displayName];
+            v16 = [displayName isEqualToString:localizedName];
 
             if ((v16 & 1) == 0)
             {
               v17 = [v11 copy];
-              [v17 setDisplayName:v14];
-              [v21 addObject:v17];
+              [v17 setDisplayName:localizedName];
+              [array addObject:v17];
             }
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v8 = [listOfMonitoredApps countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v8);
     }
 
-    [obj[5] addApps:v21];
+    [obj[5] addApps:array];
     objc_sync_exit(obj);
 
     __fp_leave_section_Debug();
-    v4 = v19;
+    localeCopy = v19;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -432,7 +432,7 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
 
 - (void)_didChangeListOfProviders
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, v1, v2, "[DEBUG] ┏%llx did change list of providers", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -440,7 +440,7 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
 
 - (void)_didChangeDefaultSaveLocationInUserDefaults
 {
-  OUTLINED_FUNCTION_3(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, v1, v2, "[DEBUG] ┏%llx did change default save location", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -455,8 +455,8 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_server);
-  v4 = [WeakRetained extensionManager];
-  v5 = [v4 providerDomainsByID];
+  extensionManager = [WeakRetained extensionManager];
+  providerDomainsByID = [extensionManager providerDomainsByID];
 
   v18 = 0u;
   v19 = 0u;
@@ -479,7 +479,7 @@ void __45__FPDAppMonitor__populateListOfMonitoredApps__block_invoke(uint64_t a1,
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 hasPrefix:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
         {
-          v11 = [v5 objectForKeyedSubscript:v10];
+          v11 = [providerDomainsByID objectForKeyedSubscript:v10];
           v12 = v11;
           if (v11 && ([v11 isEnabled] & 1) != 0)
           {
@@ -523,10 +523,10 @@ void __47__FPDAppMonitor__updateDefaultProviderDomainID__block_invoke()
   v3 = [v5 dictionaryForKey:@"DOCDefaultFileProviderIdentifierKey"];
   if (v3)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    objc_storeStrong(&v4->_defaultProviderByAppBundleID, v3);
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_defaultProviderByAppBundleID, v3);
+    objc_sync_exit(selfCopy);
   }
 }
 

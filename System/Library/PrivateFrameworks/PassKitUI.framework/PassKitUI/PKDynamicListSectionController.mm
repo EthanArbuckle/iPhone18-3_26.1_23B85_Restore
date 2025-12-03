@@ -1,33 +1,33 @@
 @interface PKDynamicListSectionController
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKDynamicListSectionController
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
 
   return v4;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DC7E0];
-  v6 = a3;
+  environmentCopy = environment;
   v7 = [[v5 alloc] initWithAppearance:2];
-  v8 = [(PKDynamicListSectionController *)self headerText];
-  if (v8)
+  headerText = [(PKDynamicListSectionController *)self headerText];
+  if (headerText)
   {
   }
 
   else
   {
-    v9 = [(PKDynamicListSectionController *)self attributedHeaderText];
+    attributedHeaderText = [(PKDynamicListSectionController *)self attributedHeaderText];
 
-    if (!v9)
+    if (!attributedHeaderText)
     {
       goto LABEL_5;
     }
@@ -35,16 +35,16 @@
 
   [v7 setHeaderMode:1];
 LABEL_5:
-  v10 = [(PKDynamicListSectionController *)self footerText];
-  if (v10)
+  footerText = [(PKDynamicListSectionController *)self footerText];
+  if (footerText)
   {
   }
 
   else
   {
-    v11 = [(PKDynamicListSectionController *)self attributedFooterText];
+    attributedFooterText = [(PKDynamicListSectionController *)self attributedFooterText];
 
-    if (!v11)
+    if (!attributedFooterText)
     {
       goto LABEL_9;
     }
@@ -52,29 +52,29 @@ LABEL_5:
 
   [v7 setFooterMode:1];
 LABEL_9:
-  v12 = [(PKDynamicListSectionController *)self leadingSwipeActionsConfigurationProvider];
-  [v7 setLeadingSwipeActionsConfigurationProvider:v12];
+  leadingSwipeActionsConfigurationProvider = [(PKDynamicListSectionController *)self leadingSwipeActionsConfigurationProvider];
+  [v7 setLeadingSwipeActionsConfigurationProvider:leadingSwipeActionsConfigurationProvider];
 
-  v13 = [(PKDynamicListSectionController *)self trailingSwipeActionsConfigurationProvider];
-  [v7 setTrailingSwipeActionsConfigurationProvider:v13];
+  trailingSwipeActionsConfigurationProvider = [(PKDynamicListSectionController *)self trailingSwipeActionsConfigurationProvider];
+  [v7 setTrailingSwipeActionsConfigurationProvider:trailingSwipeActionsConfigurationProvider];
 
-  v14 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:v6];
+  v14 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:environmentCopy];
 
   return v14;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (*MEMORY[0x1E69DDC08] == v8)
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
-    v10 = [MEMORY[0x1E69DCC28] groupedHeaderConfiguration];
+    groupedHeaderConfiguration = [MEMORY[0x1E69DCC28] groupedHeaderConfiguration];
     if (self->_attributedHeaderText)
     {
 LABEL_7:
-      [v10 setAttributedText:?];
+      [groupedHeaderConfiguration setAttributedText:?];
       goto LABEL_10;
     }
 
@@ -83,13 +83,13 @@ LABEL_7:
 
   else
   {
-    if (*MEMORY[0x1E69DDC00] != v8)
+    if (*MEMORY[0x1E69DDC00] != kindCopy)
     {
-      v10 = 0;
+      groupedHeaderConfiguration = 0;
       goto LABEL_10;
     }
 
-    v10 = [MEMORY[0x1E69DCC28] groupedFooterConfiguration];
+    groupedHeaderConfiguration = [MEMORY[0x1E69DCC28] groupedFooterConfiguration];
     if (self->_attributedFooterText)
     {
       goto LABEL_7;
@@ -98,9 +98,9 @@ LABEL_7:
     headerText = self->_footerText;
   }
 
-  [v10 setText:headerText];
+  [groupedHeaderConfiguration setText:headerText];
 LABEL_10:
-  [v12 setContentConfiguration:v10];
+  [registrationCopy setContentConfiguration:groupedHeaderConfiguration];
 }
 
 @end

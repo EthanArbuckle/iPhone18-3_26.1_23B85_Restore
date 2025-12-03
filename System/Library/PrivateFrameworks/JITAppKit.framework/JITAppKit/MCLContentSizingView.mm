@@ -1,63 +1,63 @@
 @interface MCLContentSizingView
 - (CGSize)intrinsicContentSize;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation MCLContentSizingView
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(TKKeyPathObserver *)v30->_observer stopObserving];
-  [(UIScrollView *)v30->_contentView removeFromSuperview];
-  objc_storeStrong(&v30->_contentView, location[0]);
+  objc_storeStrong(location, view);
+  [(TKKeyPathObserver *)selfCopy->_observer stopObserving];
+  [(UIScrollView *)selfCopy->_contentView removeFromSuperview];
+  objc_storeStrong(&selfCopy->_contentView, location[0]);
   if (location[0])
   {
     [location[0] setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(MCLContentSizingView *)v30 addSubview:location[0]];
+    [(MCLContentSizingView *)selfCopy addSubview:location[0]];
     LODWORD(v3) = 1148846080;
-    [(MCLContentSizingView *)v30 setContentCompressionResistancePriority:1 forAxis:v3];
+    [(MCLContentSizingView *)selfCopy setContentCompressionResistancePriority:1 forAxis:v3];
     LODWORD(v4) = 1148846080;
-    [(MCLContentSizingView *)v30 setContentHuggingPriority:1 forAxis:v4];
+    [(MCLContentSizingView *)selfCopy setContentHuggingPriority:1 forAxis:v4];
     v21 = MEMORY[0x277CCAAD0];
-    v20 = [location[0] leadingAnchor];
-    v19 = [(MCLContentSizingView *)v30 leadingAnchor];
-    v18 = [v20 constraintEqualToAnchor:?];
+    leadingAnchor = [location[0] leadingAnchor];
+    leadingAnchor2 = [(MCLContentSizingView *)selfCopy leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:?];
     v31[0] = v18;
-    v17 = [location[0] trailingAnchor];
-    v16 = [(MCLContentSizingView *)v30 trailingAnchor];
-    v15 = [v17 constraintEqualToAnchor:?];
+    trailingAnchor = [location[0] trailingAnchor];
+    trailingAnchor2 = [(MCLContentSizingView *)selfCopy trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:?];
     v31[1] = v15;
-    v14 = [location[0] topAnchor];
-    v13 = [(MCLContentSizingView *)v30 topAnchor];
-    v12 = [v14 constraintEqualToAnchor:?];
+    topAnchor = [location[0] topAnchor];
+    topAnchor2 = [(MCLContentSizingView *)selfCopy topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:?];
     v31[2] = v12;
-    v11 = [location[0] bottomAnchor];
-    v10 = [(MCLContentSizingView *)v30 bottomAnchor];
-    v9 = [v11 constraintEqualToAnchor:?];
+    bottomAnchor = [location[0] bottomAnchor];
+    bottomAnchor2 = [(MCLContentSizingView *)selfCopy bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:?];
     v31[3] = v9;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
     [v21 activateConstraints:?];
     MEMORY[0x277D82BD8](v8);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](bottomAnchor);
     MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    if (!v30->_observer)
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    if (!selfCopy->_observer)
     {
-      objc_initWeak(&from, v30);
+      objc_initWeak(&from, selfCopy);
       v7 = [TKKeyPathObserver alloc];
       v22 = MEMORY[0x277D85DD0];
       v23 = -1073741824;
@@ -66,10 +66,10 @@
       v26 = &unk_2797EE820;
       objc_copyWeak(&v27, &from);
       v6 = [(TKKeyPathObserver *)v7 initWithBlock:&v22];
-      observer = v30->_observer;
-      v30->_observer = v6;
+      observer = selfCopy->_observer;
+      selfCopy->_observer = v6;
       MEMORY[0x277D82BD8](observer);
-      [(TKKeyPathObserver *)v30->_observer observe:location[0] keyPath:@"contentSize"];
+      [(TKKeyPathObserver *)selfCopy->_observer observe:location[0] keyPath:@"contentSize"];
       objc_destroyWeak(&v27);
       objc_destroyWeak(&from);
     }

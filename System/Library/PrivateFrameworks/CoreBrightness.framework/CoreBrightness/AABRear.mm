@@ -1,28 +1,28 @@
 @interface AABRear
-- (AABRear)initWithQueue:(id)a3 andGrimaldiFactory:(id)a4;
-- (BOOL)shouldUseRLux:(float)a3 rLux:(float)a4;
-- (BOOL)shouldUseRearLuxFrontLux:(float)a3 rearLux:(float)a4 andCap:(float)a5;
+- (AABRear)initWithQueue:(id)queue andGrimaldiFactory:(id)factory;
+- (BOOL)shouldUseRLux:(float)lux rLux:(float)rLux;
+- (BOOL)shouldUseRearLuxFrontLux:(float)lux rearLux:(float)rearLux andCap:(float)cap;
 - (void)dealloc;
-- (void)evaluateSamplingFrequencyWithLux:(float)a3 andCap:(float)a4;
+- (void)evaluateSamplingFrequencyWithLux:(float)lux andCap:(float)cap;
 - (void)stopSampling;
 @end
 
 @implementation AABRear
 
-- (AABRear)initWithQueue:(id)a3 andGrimaldiFactory:(id)a4
+- (AABRear)initWithQueue:(id)queue andGrimaldiFactory:(id)factory
 {
   v57 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
-  v47 = a4;
+  queueCopy = queue;
+  factoryCopy = factory;
   v46.receiver = self;
   v46.super_class = AABRear;
-  v50 = [(CBModule *)&v46 initWithQueue:a3];
-  if (v50)
+  selfCopy = [(CBModule *)&v46 initWithQueue:queue];
+  if (selfCopy)
   {
-    *(v50 + 2) = os_log_create("com.apple.CoreBrightness.AABRear", "default");
-    if (!*(v50 + 2))
+    *(selfCopy + 2) = os_log_create("com.apple.CoreBrightness.AABRear", "default");
+    if (!*(selfCopy + 2))
     {
       v23 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v45 = v23;
@@ -57,9 +57,9 @@
 
       if (!valuePtr)
       {
-        if (*(v50 + 2))
+        if (*(selfCopy + 2))
         {
-          v19 = *(v50 + 2);
+          v19 = *(selfCopy + 2);
         }
 
         else
@@ -88,19 +88,19 @@
         }
 
 LABEL_54:
-        MEMORY[0x1E69E5920](v50);
-        v50 = 0;
+        MEMORY[0x1E69E5920](selfCopy);
+        selfCopy = 0;
         v51 = 0;
         goto LABEL_55;
       }
     }
 
-    *(v50 + 4) = [[CBRearALSModule alloc] initWithQueue:v48 andGrimaldiFactory:v47, &v53, 0];
-    if (!*(v50 + 4))
+    *(selfCopy + 4) = [[CBRearALSModule alloc] initWithQueue:queueCopy andGrimaldiFactory:factoryCopy, &v53, 0];
+    if (!*(selfCopy + 4))
     {
-      if (*(v50 + 2))
+      if (*(selfCopy + 2))
       {
-        v15 = *(v50 + 2);
+        v15 = *(selfCopy + 2);
       }
 
       else
@@ -137,14 +137,14 @@ LABEL_54:
     v31 = 48;
     v32 = __Block_byref_object_copy__6;
     v33 = __Block_byref_object_dispose__6;
-    v34 = v50;
-    [*(v50 + 4) registerNotificationBlock:?];
-    *(v50 + 40) = 0;
-    *(v50 + 68) = 0;
-    *(v50 + 11) = 1120403456;
-    *(v50 + 12) = 1148846080;
-    *(v50 + 13) = 2.0;
-    *(v50 + 14) = 3.0;
+    v34 = selfCopy;
+    [*(selfCopy + 4) registerNotificationBlock:?];
+    *(selfCopy + 40) = 0;
+    *(selfCopy + 68) = 0;
+    *(selfCopy + 11) = 1120403456;
+    *(selfCopy + 12) = 1148846080;
+    *(selfCopy + 13) = 2.0;
+    *(selfCopy + 14) = 3.0;
     cf = CFPreferencesCopyValue(@"GrimaldiAABConfig", @"com.apple.CoreBrightness", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
     if (cf)
     {
@@ -156,7 +156,7 @@ LABEL_54:
         if (objc_opt_isKindOfClass())
         {
           [v24 floatValue];
-          *(v50 + 11) = v4;
+          *(selfCopy + 11) = v4;
         }
 
         v25 = [cf objectForKey:@"rearALSThreshold"];
@@ -164,7 +164,7 @@ LABEL_54:
         if (objc_opt_isKindOfClass())
         {
           [v25 floatValue];
-          *(v50 + 12) = v5;
+          *(selfCopy + 12) = v5;
         }
 
         v26 = [cf objectForKey:@"luxRatioThreshold"];
@@ -172,7 +172,7 @@ LABEL_54:
         if (objc_opt_isKindOfClass())
         {
           [v26 floatValue];
-          *(v50 + 13) = v6;
+          *(selfCopy + 13) = v6;
         }
 
         v27 = [cf objectForKey:@"nitsRatioThreshold"];
@@ -180,16 +180,16 @@ LABEL_54:
         if (objc_opt_isKindOfClass())
         {
           [v27 floatValue];
-          *(v50 + 14) = v7;
+          *(selfCopy + 14) = v7;
         }
       }
 
       CFRelease(cf);
     }
 
-    if (*(v50 + 2))
+    if (*(selfCopy + 2))
     {
-      v10 = *(v50 + 2);
+      v10 = *(selfCopy + 2);
     }
 
     else
@@ -209,14 +209,14 @@ LABEL_54:
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v52, COERCE__INT64(*(v50 + 11)), COERCE__INT64(*(v50 + 12)), COERCE__INT64(*(v50 + 13)), COERCE__INT64(*(v50 + 14)));
+      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v52, COERCE__INT64(*(selfCopy + 11)), COERCE__INT64(*(selfCopy + 12)), COERCE__INT64(*(selfCopy + 13)), COERCE__INT64(*(selfCopy + 14)));
       _os_log_debug_impl(&dword_1DE8E5000, v10, OS_LOG_TYPE_DEBUG, "AABRear: frontALSThreshold = %f, rearALSThreshold = %f, luxRatioThreshold = %f, nitsRatioThreshold = %f", v52, 0x2Au);
     }
 
     _Block_object_dispose(v29, 8);
   }
 
-  v51 = v50;
+  v51 = selfCopy;
 LABEL_55:
   *MEMORY[0x1E69E9840];
   return v51;
@@ -237,42 +237,42 @@ uint64_t __44__AABRear_initWithQueue_andGrimaldiFactory___block_invoke(uint64_t 
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   [(CBModule *)self->_rearALSModule unregisterNotificationBlock];
-  v2 = MEMORY[0x1E69E5920](v6->_rearALSModule).n128_u64[0];
-  if (v6->super._logHandle)
+  v2 = MEMORY[0x1E69E5920](selfCopy->_rearALSModule).n128_u64[0];
+  if (selfCopy->super._logHandle)
   {
     v3 = &OBJC_IVAR___CBModule__logHandle;
-    v2 = MEMORY[0x1E69E5920](v6->super._logHandle).n128_u64[0];
-    v6->super._logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->super._logHandle).n128_u64[0];
+    selfCopy->super._logHandle = 0;
   }
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = AABRear;
   [(CBModule *)&v4 dealloc:*&v2];
 }
 
-- (BOOL)shouldUseRLux:(float)a3 rLux:(float)a4
+- (BOOL)shouldUseRLux:(float)lux rLux:(float)rLux
 {
   v6 = 0;
-  if (a3 >= self->_frontALSThreshold)
+  if (lux >= self->_frontALSThreshold)
   {
-    v6 = a4 >= self->_rearALSThreshold;
+    v6 = rLux >= self->_rearALSThreshold;
   }
 
-  if (self->_activationFLux <= 0.0 || a3 >= a4 || a4 <= self->_frontALSThreshold)
+  if (self->_activationFLux <= 0.0 || lux >= rLux || rLux <= self->_frontALSThreshold)
   {
     v5 = 0;
     if (v6)
     {
-      v5 = a4 >= (self->_luxRatioThreshold * a3);
+      v5 = rLux >= (self->_luxRatioThreshold * lux);
     }
 
     v7 = v5;
     if (v5)
     {
-      self->_activationFLux = a3;
+      self->_activationFLux = lux;
     }
   }
 
@@ -289,11 +289,11 @@ uint64_t __44__AABRear_initWithQueue_andGrimaldiFactory___block_invoke(uint64_t 
   return v7;
 }
 
-- (void)evaluateSamplingFrequencyWithLux:(float)a3 andCap:(float)a4
+- (void)evaluateSamplingFrequencyWithLux:(float)lux andCap:(float)cap
 {
   if (self->_sensorEnabled)
   {
-    if (a3 < a4)
+    if (lux < cap)
     {
       if (self->_lastFrequency < 1.0)
       {
@@ -314,7 +314,7 @@ uint64_t __44__AABRear_initWithQueue_andGrimaldiFactory___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)shouldUseRearLuxFrontLux:(float)a3 rearLux:(float)a4 andCap:(float)a5
+- (BOOL)shouldUseRearLuxFrontLux:(float)lux rearLux:(float)rearLux andCap:(float)cap
 {
   v25 = *MEMORY[0x1E69E9840];
   if (self->super._logHandle)
@@ -339,15 +339,15 @@ uint64_t __44__AABRear_initWithQueue_andGrimaldiFactory___block_invoke(uint64_t 
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_0_3_8_0_8_0_8_0(v24, COERCE__INT64(a3), COERCE__INT64(a4), COERCE__INT64(a5));
+    __os_log_helper_16_0_3_8_0_8_0_8_0(v24, COERCE__INT64(lux), COERCE__INT64(rearLux), COERCE__INT64(cap));
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "AABRear: shouldUseRearLuxFrontLux called with (fLux:%f, rLux:%f, cap: %f)", v24, 0x20u);
   }
 
-  *&v5 = a3;
-  *&v6 = a4;
+  *&v5 = lux;
+  *&v6 = rearLux;
   v17 = [(AABRear *)self shouldUseRLux:v5 rLux:v6];
-  *&v7 = a4;
-  *&v8 = a5;
+  *&v7 = rearLux;
+  *&v8 = cap;
   [(AABRear *)self evaluateSamplingFrequencyWithLux:v7 andCap:v8];
   if (self->super._logHandle)
   {
@@ -410,7 +410,7 @@ uint64_t __44__AABRear_initWithQueue_andGrimaldiFactory___block_invoke(uint64_t 
         v9 = "Don't ";
       }
 
-      __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v22, v9, COERCE__INT64(a3), COERCE__INT64(a4), COERCE__INT64(a5));
+      __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v22, v9, COERCE__INT64(lux), COERCE__INT64(rearLux), COERCE__INT64(cap));
       _os_log_impl(&dword_1DE8E5000, v12, OS_LOG_TYPE_DEFAULT, "AABRear: %suse rear Lux (fLux:%f, rLux:%f, cap: %f)", v22, 0x2Au);
     }
   }

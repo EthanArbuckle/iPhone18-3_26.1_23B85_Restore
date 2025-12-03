@@ -1,68 +1,68 @@
 @interface SBSOSMigrationHomeScreenPage
-- (SBSOSMigrationHomeScreenPage)initWithCoder:(id)a3;
-- (SBSOSMigrationHomeScreenPage)initWithIdentifier:(int64_t)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5 layoutItems:(id)a6;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SBSOSMigrationHomeScreenPage)initWithCoder:(id)coder;
+- (SBSOSMigrationHomeScreenPage)initWithIdentifier:(int64_t)identifier numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns layoutItems:(id)items;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSOSMigrationHomeScreenPage
 
-- (SBSOSMigrationHomeScreenPage)initWithIdentifier:(int64_t)a3 numberOfRows:(unint64_t)a4 numberOfColumns:(unint64_t)a5 layoutItems:(id)a6
+- (SBSOSMigrationHomeScreenPage)initWithIdentifier:(int64_t)identifier numberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns layoutItems:(id)items
 {
-  v10 = a6;
+  itemsCopy = items;
   v16.receiver = self;
   v16.super_class = SBSOSMigrationHomeScreenPage;
   v11 = [(SBSOSMigrationHomeScreenPage *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_identifier = a3;
-    v13 = [v10 copy];
+    v11->_identifier = identifier;
+    v13 = [itemsCopy copy];
     layoutItems = v12->_layoutItems;
     v12->_layoutItems = v13;
 
-    v12->_numberOfRows = a4;
-    v12->_numberOfColumns = a5;
+    v12->_numberOfRows = rows;
+    v12->_numberOfColumns = columns;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[SBSOSMigrationHomeScreenPage identifier](self forKey:{"identifier"), @"identifer"}];
-  v4 = [(SBSOSMigrationHomeScreenPage *)self layoutItems];
-  [v5 encodeObject:v4 forKey:@"layoutItems"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SBSOSMigrationHomeScreenPage identifier](self forKey:{"identifier"), @"identifer"}];
+  layoutItems = [(SBSOSMigrationHomeScreenPage *)self layoutItems];
+  [coderCopy encodeObject:layoutItems forKey:@"layoutItems"];
 
-  [v5 encodeInteger:-[SBSOSMigrationHomeScreenPage numberOfRows](self forKey:{"numberOfRows"), @"numberOfRows"}];
-  [v5 encodeInteger:-[SBSOSMigrationHomeScreenPage numberOfColumns](self forKey:{"numberOfColumns"), @"numberOfColumns"}];
+  [coderCopy encodeInteger:-[SBSOSMigrationHomeScreenPage numberOfRows](self forKey:{"numberOfRows"), @"numberOfRows"}];
+  [coderCopy encodeInteger:-[SBSOSMigrationHomeScreenPage numberOfColumns](self forKey:{"numberOfColumns"), @"numberOfColumns"}];
 }
 
-- (SBSOSMigrationHomeScreenPage)initWithCoder:(id)a3
+- (SBSOSMigrationHomeScreenPage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"identifier"];
   v6 = objc_opt_self();
-  v7 = [v4 decodeArrayOfObjectsOfClass:v6 forKey:@"layoutItems"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:v6 forKey:@"layoutItems"];
 
-  v8 = [v4 decodeIntegerForKey:@"numberOfRows"];
-  v9 = [v4 decodeIntegerForKey:@"numberOfColumns"];
+  v8 = [coderCopy decodeIntegerForKey:@"numberOfRows"];
+  v9 = [coderCopy decodeIntegerForKey:@"numberOfColumns"];
 
   v10 = [(SBSOSMigrationHomeScreenPage *)self initWithIdentifier:v5 numberOfRows:v8 numberOfColumns:v9 layoutItems:v7];
   return v10;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__SBSOSMigrationHomeScreenPage_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E735F7F0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

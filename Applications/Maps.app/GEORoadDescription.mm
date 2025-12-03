@@ -6,10 +6,10 @@
 
 - (UIColor)accentColor
 {
-  v2 = [(GEORoadDescription *)self navigationFriendliness];
-  if (v2 <= 1)
+  navigationFriendliness = [(GEORoadDescription *)self navigationFriendliness];
+  if (navigationFriendliness <= 1)
   {
-    if (v2 <= 1)
+    if (navigationFriendliness <= 1)
     {
       v3 = +[UIColor systemRedColor];
       goto LABEL_9;
@@ -20,9 +20,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v2 != 2)
+  if (navigationFriendliness != 2)
   {
-    if (v2 == 3)
+    if (navigationFriendliness == 3)
     {
       v3 = +[UIColor systemGreenColor];
       goto LABEL_9;

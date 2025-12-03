@@ -1,91 +1,91 @@
 @interface PHContentEditingInputRequestContext
-+ (BOOL)shouldUseRAWResourceAsUnadjustedBaseForAsset:(id)a3 options:(id)a4;
-+ (id)contentEditingInputRequestContextForAsset:(id)a3 requestID:(int)a4 managerID:(unint64_t)a5 networkAccessAllowed:(BOOL)a6 downloadIntent:(int64_t)a7 progressHandler:(id)a8 resultHandler:(id)a9;
++ (BOOL)shouldUseRAWResourceAsUnadjustedBaseForAsset:(id)asset options:(id)options;
++ (id)contentEditingInputRequestContextForAsset:(id)asset requestID:(int)d managerID:(unint64_t)iD networkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)intent progressHandler:(id)handler resultHandler:(id)resultHandler;
 - (BOOL)_shouldRequestImage;
 - (BOOL)_shouldRequestVideo;
-- (PHContentEditingInputRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 options:(id)a6 useRAWAsUnadjustedBase:(BOOL)a7 resultHandler:(id)a8;
-- (id)_assetResourceForType:(int64_t)a3;
+- (PHContentEditingInputRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset options:(id)options useRAWAsUnadjustedBase:(BOOL)base resultHandler:(id)handler;
+- (id)_assetResourceForType:(int64_t)type;
 - (id)_assetResources;
-- (id)_baseMediaRequestsForBaseVersion:(int64_t)a3 error:(id *)a4;
+- (id)_baseMediaRequestsForBaseVersion:(int64_t)version error:(id *)error;
 - (id)_largestUnadjustedDerivativeImageResource;
 - (id)_lazyAdjustmentProgress;
 - (id)_lazyImageProgress;
 - (id)_lazyVideoProgress;
-- (id)_resourceRequestForAssetResource:(id)a3 wantsURLOnly:(BOOL)a4 progress:(id)a5;
-- (id)_videoBehaviorSpecForBaseVersion:(int64_t)a3;
+- (id)_resourceRequestForAssetResource:(id)resource wantsURLOnly:(BOOL)only progress:(id)progress;
+- (id)_videoBehaviorSpecForBaseVersion:(int64_t)version;
 - (id)initialRequests;
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6;
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result;
 - (id)progressHandler;
 - (id)progresses;
-- (int64_t)_adjustmentBaseVersionFromResult:(id)a3 request:(id)a4 canHandleAdjustmentData:(BOOL *)a5;
-- (int64_t)_assetResourceTypeForResourceType:(unsigned int)a3 withBaseVersion:(int64_t)a4;
+- (int64_t)_adjustmentBaseVersionFromResult:(id)result request:(id)request canHandleAdjustmentData:(BOOL *)data;
+- (int64_t)_assetResourceTypeForResourceType:(unsigned int)type withBaseVersion:(int64_t)version;
 - (int64_t)downloadIntent;
-- (void)_prepareAndAddMediaRequestsToChildRequests:(id)a3;
-- (void)_renderTemporaryVideoForObjectBuilder:(id)a3 resultHandler:(id)a4;
-- (void)_renderVideoFromVideoURL:(id)a3 asset:(id)a4 adjustmentData:(id)a5 canHandleAdjustmentData:(BOOL)a6 resultHandler:(id)a7;
+- (void)_prepareAndAddMediaRequestsToChildRequests:(id)requests;
+- (void)_renderTemporaryVideoForObjectBuilder:(id)builder resultHandler:(id)handler;
+- (void)_renderVideoFromVideoURL:(id)l asset:(id)asset adjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData resultHandler:(id)handler;
 - (void)cancel;
-- (void)processAndReturnResultsWithRequest:(id)a3;
-- (void)processMediaResult:(id)a3 forRequest:(id)a4;
+- (void)processAndReturnResultsWithRequest:(id)request;
+- (void)processMediaResult:(id)result forRequest:(id)request;
 - (void)start;
 @end
 
 @implementation PHContentEditingInputRequestContext
 
-- (void)processMediaResult:(id)a3 forRequest:(id)a4
+- (void)processMediaResult:(id)result forRequest:(id)request
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isInCloud])
+  resultCopy = result;
+  requestCopy = request;
+  if ([resultCopy isInCloud])
   {
-    if (([v7 containsValidData] & 1) == 0)
+    if (([resultCopy containsValidData] & 1) == 0)
     {
-      v9 = [v7 error];
+      error = [resultCopy error];
 
-      if (!v9)
+      if (!error)
       {
-        v10 = [(PHContentEditingInputRequestContext *)self options];
-        v11 = [v10 isNetworkAccessAllowed];
+        options = [(PHContentEditingInputRequestContext *)self options];
+        isNetworkAccessAllowed = [options isNetworkAccessAllowed];
 
-        if (v11)
+        if (isNetworkAccessAllowed)
         {
           v12 = MEMORY[0x1E696ABC0];
           v87 = *MEMORY[0x1E696A578];
           v88[0] = @"Download failed";
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
           v14 = [v12 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v13];
-          [v7 setError:v14];
+          [resultCopy setError:v14];
         }
 
         else
         {
           v15 = PHNetworkAccessAllowedRequiredError();
-          [v7 setError:v15];
+          [resultCopy setError:v15];
         }
       }
     }
   }
 
-  if (self->_adjustmentRequest == v8)
+  if (self->_adjustmentRequest == requestCopy)
   {
     v21 = PLImageManagerGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(PHMediaRequest *)v8 identifierString];
-      v23 = [v7 info];
+      identifierString = [(PHMediaRequest *)requestCopy identifierString];
+      info = [resultCopy info];
       *buf = 138412802;
-      v82 = v22;
+      v82 = identifierString;
       v83 = 2112;
-      v84 = v7;
+      resourceType2 = resultCopy;
       v85 = 2112;
-      v86 = v23;
+      v86 = info;
       _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEBUG, "[RM] %@ Content editing adjustment data request finished with result: %@, info: %@", buf, 0x20u);
     }
 
-    v16 = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
-    [(PHAdjustmentDataRequest *)v16 setCompletedUnitCount:[(PHAdjustmentDataRequest *)v16 totalUnitCount]];
+    _lazyAdjustmentProgress = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
+    [(PHAdjustmentDataRequest *)_lazyAdjustmentProgress setCompletedUnitCount:[(PHAdjustmentDataRequest *)_lazyAdjustmentProgress totalUnitCount]];
     os_unfair_lock_lock(&self->_lock);
-    [(PHContentEditingInputResult *)self->_contentEditingInputResult addAdjustmentDataResult:v7];
+    [(PHContentEditingInputResult *)self->_contentEditingInputResult addAdjustmentDataResult:resultCopy];
     v24 = self->_inflightMediaRequestCount - 1;
     self->_inflightMediaRequestCount = v24;
     os_unfair_lock_unlock(&self->_lock);
@@ -94,29 +94,29 @@
       goto LABEL_53;
     }
 
-    v25 = self;
-    v26 = v8;
+    selfCopy2 = self;
+    v26 = requestCopy;
     goto LABEL_52;
   }
 
-  if (self->_displayImageRequest == v8)
+  if (self->_displayImageRequest == requestCopy)
   {
     v27 = PLImageManagerGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [(PHMediaRequest *)v8 identifierString];
-      v29 = [v7 info];
+      identifierString2 = [(PHMediaRequest *)requestCopy identifierString];
+      info2 = [resultCopy info];
       *buf = 138412802;
-      v82 = v28;
+      v82 = identifierString2;
       v83 = 2112;
-      v84 = v7;
+      resourceType2 = resultCopy;
       v85 = 2112;
-      v86 = v29;
+      v86 = info2;
       _os_log_impl(&dword_19C86F000, v27, OS_LOG_TYPE_DEBUG, "[RM] %@ Content editing image request finished with result: %@, info: %@", buf, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    [(PHContentEditingInputResult *)self->_contentEditingInputResult addImageResult:v7];
+    [(PHContentEditingInputResult *)self->_contentEditingInputResult addImageResult:resultCopy];
 LABEL_67:
     v64 = self->_inflightMediaRequestCount - 1;
     self->_inflightMediaRequestCount = v64;
@@ -127,63 +127,63 @@ LABEL_67:
     }
 
 LABEL_68:
-    [(PHContentEditingInputRequestContext *)self processAndReturnResultsWithRequest:v8];
+    [(PHContentEditingInputRequestContext *)self processAndReturnResultsWithRequest:requestCopy];
     goto LABEL_69;
   }
 
-  if (self->_videoRequest != v8)
+  if (self->_videoRequest != requestCopy)
   {
-    if ([(NSMutableIndexSet *)self->_requestIndexesOfAssetResourceRequests containsIndex:[(PHMediaRequest *)v8 requestIndex]])
+    if ([(NSMutableIndexSet *)self->_requestIndexesOfAssetResourceRequests containsIndex:[(PHMediaRequest *)requestCopy requestIndex]])
     {
-      v16 = v8;
-      if (([v7 containsValidData] & 1) == 0)
+      _lazyAdjustmentProgress = requestCopy;
+      if (([resultCopy containsValidData] & 1) == 0)
       {
         v52 = PLImageManagerGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
-          v53 = [v7 error];
+          error2 = [resultCopy error];
           *buf = 138412290;
-          v82 = v53;
+          v82 = error2;
           _os_log_impl(&dword_19C86F000, v52, OS_LOG_TYPE_ERROR, "Media resource request failed to return valid data or url with error: %@", buf, 0xCu);
         }
 
-        v54 = [v7 error];
+        error3 = [resultCopy error];
 
-        if (!v54)
+        if (!error3)
         {
           v55 = MEMORY[0x1E696ABC0];
           v79 = *MEMORY[0x1E696A278];
           v56 = MEMORY[0x1E696AEC0];
-          v57 = [(PHMediaRequest *)v16 identifierString];
-          v58 = [v56 stringWithFormat:@"request %@ failed but did not provide error, ", v57];
+          identifierString3 = [(PHMediaRequest *)_lazyAdjustmentProgress identifierString];
+          v58 = [v56 stringWithFormat:@"request %@ failed but did not provide error, ", identifierString3];
           v80 = v58;
           v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
           v60 = [v55 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v59];
-          [v7 setError:v60];
+          [resultCopy setError:v60];
         }
 
-        [(PHContentEditingInputResult *)self->_contentEditingInputResult mergeInfoDictionaryFromResult:v7];
+        [(PHContentEditingInputResult *)self->_contentEditingInputResult mergeInfoDictionaryFromResult:resultCopy];
         goto LABEL_50;
       }
 
-      v17 = [(PHAdjustmentDataRequest *)v16 resourceType];
-      if (v17 > 102)
+      resourceType = [(PHAdjustmentDataRequest *)_lazyAdjustmentProgress resourceType];
+      if (resourceType > 102)
       {
-        if ((v17 - 104) < 2)
+        if ((resourceType - 104) < 2)
         {
-          v69 = PLImageManagerGetLog();
-          if (!os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
+          adjustmentData = PLImageManagerGetLog();
+          if (!os_log_type_enabled(adjustmentData, OS_LOG_TYPE_DEBUG))
           {
 LABEL_90:
 
             goto LABEL_50;
           }
 
-          v70 = [(PHMediaRequest *)v16 identifierString];
+          identifierString4 = [(PHMediaRequest *)_lazyAdjustmentProgress identifierString];
           *buf = 138412290;
-          v82 = v70;
+          v82 = identifierString4;
           v71 = "[RM] %@ Content editing found renderable media metadata";
-          v72 = v69;
+          v72 = adjustmentData;
           v73 = OS_LOG_TYPE_DEBUG;
           v74 = 12;
 LABEL_89:
@@ -192,53 +192,53 @@ LABEL_89:
           goto LABEL_90;
         }
 
-        if (v17 == 103)
+        if (resourceType == 103)
         {
 LABEL_16:
-          if ([(PHMediaRequest *)v16 requestIndex]== self->_imageBaseRequestIndex)
+          if ([(PHMediaRequest *)_lazyAdjustmentProgress requestIndex]== self->_imageBaseRequestIndex)
           {
             v18 = PLImageManagerGetLog();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
             {
-              v19 = [(PHMediaRequest *)v16 identifierString];
-              v20 = [v7 info];
+              identifierString5 = [(PHMediaRequest *)_lazyAdjustmentProgress identifierString];
+              info3 = [resultCopy info];
               *buf = 138412802;
-              v82 = v19;
+              v82 = identifierString5;
               v83 = 2112;
-              v84 = v7;
+              resourceType2 = resultCopy;
               v85 = 2112;
-              v86 = v20;
+              v86 = info3;
               _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEBUG, "[RM] %@ Content editing resource request for base image finished with result: %@, info: %@", buf, 0x20u);
             }
 
-            [(PHContentEditingInputResult *)self->_contentEditingInputResult addImageResult:v7];
+            [(PHContentEditingInputResult *)self->_contentEditingInputResult addImageResult:resultCopy];
           }
 
           goto LABEL_50;
         }
 
-        if (v17 == 110)
+        if (resourceType == 110)
         {
           os_unfair_lock_lock(&self->_lock);
-          [(PHContentEditingInputResult *)self->_contentEditingInputResult addAdjustmentSecondaryDataResult:v7];
+          [(PHContentEditingInputResult *)self->_contentEditingInputResult addAdjustmentSecondaryDataResult:resultCopy];
           os_unfair_lock_unlock(&self->_lock);
           goto LABEL_50;
         }
       }
 
-      else if (v17 <= 0x10)
+      else if (resourceType <= 0x10)
       {
-        if (((1 << v17) & 0xFE44) == 0)
+        if (((1 << resourceType) & 0xFE44) == 0)
         {
-          if (((1 << v17) & 0x132) != 0)
+          if (((1 << resourceType) & 0x132) != 0)
           {
             goto LABEL_16;
           }
 
-          if (v17 == 16)
+          if (resourceType == 16)
           {
-            v69 = [v7 adjustmentData];
-            [(PHContentEditingInputResult *)self->_contentEditingInputResult setOriginalAdjustmentData:v69];
+            adjustmentData = [resultCopy adjustmentData];
+            [(PHContentEditingInputResult *)self->_contentEditingInputResult setOriginalAdjustmentData:adjustmentData];
             goto LABEL_90;
           }
 
@@ -257,44 +257,44 @@ LABEL_53:
           goto LABEL_69;
         }
 
-        v25 = self;
-        v26 = v16;
+        selfCopy2 = self;
+        v26 = _lazyAdjustmentProgress;
 LABEL_52:
-        [(PHContentEditingInputRequestContext *)v25 processAndReturnResultsWithRequest:v26];
+        [(PHContentEditingInputRequestContext *)selfCopy2 processAndReturnResultsWithRequest:v26];
         goto LABEL_53;
       }
 
 LABEL_87:
-      v69 = PLImageManagerGetLog();
-      if (!os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+      adjustmentData = PLImageManagerGetLog();
+      if (!os_log_type_enabled(adjustmentData, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_90;
       }
 
-      v70 = [(PHMediaRequest *)v16 identifierString];
+      identifierString4 = [(PHMediaRequest *)_lazyAdjustmentProgress identifierString];
       *buf = 138412546;
-      v82 = v70;
+      v82 = identifierString4;
       v83 = 2048;
-      v84 = [(PHAdjustmentDataRequest *)v16 resourceType];
+      resourceType2 = [(PHAdjustmentDataRequest *)_lazyAdjustmentProgress resourceType];
       v71 = "[RM] %@ Content editing made request for invalid resource type for edit: %lu";
-      v72 = v69;
+      v72 = adjustmentData;
       v73 = OS_LOG_TYPE_ERROR;
       v74 = 22;
       goto LABEL_89;
     }
 
-    if (self->_repairRequest == v8)
+    if (self->_repairRequest == requestCopy)
     {
       v37 = PLImageManagerGetLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(PHMediaRequest *)v8 identifierString];
-        v39 = [v7 error];
-        if (v39)
+        identifierString6 = [(PHMediaRequest *)requestCopy identifierString];
+        error4 = [resultCopy error];
+        if (error4)
         {
           v40 = MEMORY[0x1E696AEC0];
-          v4 = [v7 error];
-          v41 = [v40 stringWithFormat:@" with error: %@", v4];
+          error5 = [resultCopy error];
+          v41 = [v40 stringWithFormat:@" with error: %@", error5];
         }
 
         else
@@ -303,11 +303,11 @@ LABEL_87:
         }
 
         *buf = 138412546;
-        v82 = v38;
+        v82 = identifierString6;
         v83 = 2112;
-        v84 = v41;
+        resourceType2 = v41;
         _os_log_impl(&dword_19C86F000, v37, OS_LOG_TYPE_DEFAULT, "[RM] %@ repair request finished%@", buf, 0x16u);
-        if (v39)
+        if (error4)
         {
         }
       }
@@ -320,39 +320,39 @@ LABEL_87:
   v30 = PLImageManagerGetLog();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
-    v31 = [(PHMediaRequest *)v8 identifierString];
-    v32 = [v7 info];
+    identifierString7 = [(PHMediaRequest *)requestCopy identifierString];
+    info4 = [resultCopy info];
     *buf = 138412802;
-    v82 = v31;
+    v82 = identifierString7;
     v83 = 2112;
-    v84 = v7;
+    resourceType2 = resultCopy;
     v85 = 2112;
-    v86 = v32;
+    v86 = info4;
     _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEBUG, "[RM] %@ Content editing video request finished with result: %@, info: %@", buf, 0x20u);
   }
 
-  if (![v7 containsValidData])
+  if (![resultCopy containsValidData])
   {
     os_unfair_lock_lock(&self->_lock);
     v42 = self->_inflightMediaRequestCount - 1;
     self->_inflightMediaRequestCount = v42;
-    v43 = [(PHMediaRequestContext *)self asset];
-    if ([v43 isPhotoIris])
+    asset = [(PHMediaRequestContext *)self asset];
+    if ([asset isPhotoIris])
     {
-      v44 = [(PHMediaRequestContext *)self asset];
-      if (![v44 canPlayPhotoIris])
+      asset2 = [(PHMediaRequestContext *)self asset];
+      if (![asset2 canPlayPhotoIris])
       {
-        v62 = [(PHVideoRequest *)self->_videoRequest behaviorSpec];
-        v63 = [v62 version];
+        behaviorSpec = [(PHVideoRequest *)self->_videoRequest behaviorSpec];
+        version = [behaviorSpec version];
 
-        if (v63 != 1)
+        if (version != 1)
         {
           v49 = PLImageManagerGetLog();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v50 = [(PHMediaRequest *)v8 identifierString];
+            identifierString8 = [(PHMediaRequest *)requestCopy identifierString];
             *buf = 138412290;
-            v82 = v50;
+            v82 = identifierString8;
             v51 = "[RM] %@ Live photo edit request continuing with missing video, reason: unplayable";
             goto LABEL_77;
           }
@@ -363,25 +363,25 @@ LABEL_78:
         }
 
 LABEL_39:
-        v45 = [(PHMediaRequestContext *)self asset];
-        if ([v45 isPhotoIris])
+        asset3 = [(PHMediaRequestContext *)self asset];
+        if ([asset3 isPhotoIris])
         {
-          v46 = [(PHVideoRequest *)self->_videoRequest behaviorSpec];
-          if ([v46 version] == 8)
+          behaviorSpec2 = [(PHVideoRequest *)self->_videoRequest behaviorSpec];
+          if ([behaviorSpec2 version] == 8)
           {
-            v47 = [v7 error];
-            if ([v47 code] == 3303)
+            error6 = [resultCopy error];
+            if ([error6 code] == 3303)
             {
-              v48 = [v7 isInCloud];
+              isInCloud = [resultCopy isInCloud];
 
-              if ((v48 & 1) == 0)
+              if ((isInCloud & 1) == 0)
               {
                 v49 = PLImageManagerGetLog();
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                 {
-                  v50 = [(PHMediaRequest *)v8 identifierString];
+                  identifierString8 = [(PHMediaRequest *)requestCopy identifierString];
                   *buf = 138412290;
-                  v82 = v50;
+                  v82 = identifierString8;
                   v51 = "[RM] %@ Live photo edit request continuing with missing video, reason: missing penultimate";
 LABEL_77:
                   _os_log_impl(&dword_19C86F000, v49, OS_LOG_TYPE_DEFAULT, v51, buf, 0xCu);
@@ -393,21 +393,21 @@ LABEL_77:
               }
 
 LABEL_73:
-              v65 = [(PHMediaRequestContext *)self asset];
-              if ([v65 isPhotoIris])
+              asset4 = [(PHMediaRequestContext *)self asset];
+              if ([asset4 isPhotoIris])
               {
-                v66 = [v7 error];
-                v67 = [v66 userInfo];
-                v68 = [v67 objectForKeyedSubscript:*MEMORY[0x1E69BF130]];
+                error7 = [resultCopy error];
+                userInfo = [error7 userInfo];
+                v68 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BF130]];
 
                 if (v68)
                 {
                   v49 = PLImageManagerGetLog();
                   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                   {
-                    v50 = [(PHMediaRequest *)v8 identifierString];
+                    identifierString8 = [(PHMediaRequest *)requestCopy identifierString];
                     *buf = 138412290;
-                    v82 = v50;
+                    v82 = identifierString8;
                     v51 = "[RM] %@ Live photo edit request continuing with missing video, reason: zero videos found";
                     goto LABEL_77;
                   }
@@ -420,7 +420,7 @@ LABEL_73:
               {
               }
 
-              [(PHContentEditingInputResult *)self->_contentEditingInputResult addVideoResult:v7];
+              [(PHContentEditingInputResult *)self->_contentEditingInputResult addVideoResult:resultCopy];
 LABEL_81:
               os_unfair_lock_unlock(&self->_lock);
               if (v42)
@@ -440,18 +440,18 @@ LABEL_81:
     goto LABEL_39;
   }
 
-  v33 = [v7 videoURL];
-  v34 = [(PHMediaRequestContext *)self asset];
-  v35 = [v7 videoAdjustmentData];
-  v36 = [(PHContentEditingInputResult *)self->_contentEditingInputResult canHandleAdjustmentData];
+  videoURL = [resultCopy videoURL];
+  asset5 = [(PHMediaRequestContext *)self asset];
+  videoAdjustmentData = [resultCopy videoAdjustmentData];
+  canHandleAdjustmentData = [(PHContentEditingInputResult *)self->_contentEditingInputResult canHandleAdjustmentData];
   v75[0] = MEMORY[0x1E69E9820];
   v75[1] = 3221225472;
   v75[2] = __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___block_invoke;
   v75[3] = &unk_1E75A9390;
-  v76 = v7;
-  v77 = self;
-  v78 = v8;
-  [(PHContentEditingInputRequestContext *)self _renderVideoFromVideoURL:v33 asset:v34 adjustmentData:v35 canHandleAdjustmentData:v36 resultHandler:v75];
+  v76 = resultCopy;
+  selfCopy3 = self;
+  v78 = requestCopy;
+  [(PHContentEditingInputRequestContext *)self _renderVideoFromVideoURL:videoURL asset:asset5 adjustmentData:videoAdjustmentData canHandleAdjustmentData:canHandleAdjustmentData resultHandler:v75];
 
 LABEL_69:
 }
@@ -475,58 +475,58 @@ void __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___b
   }
 }
 
-- (void)processAndReturnResultsWithRequest:(id)a3
+- (void)processAndReturnResultsWithRequest:(id)request
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = PLImageManagerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *v12 = 134218240;
     *&v12[4] = [(PHMediaRequestContext *)self managerID];
     v13 = 2048;
-    v14 = [(PHMediaRequestContext *)self requestID];
+    requestID = [(PHMediaRequestContext *)self requestID];
     _os_log_impl(&dword_19C86F000, v5, OS_LOG_TYPE_DEBUG, "[RM] %ld-%ld All content editing requests complete, building content editing input", v12, 0x16u);
   }
 
-  v6 = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
-  if (v6)
+  progressHandler = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
+  if (progressHandler)
   {
-    v7 = v6;
+    v7 = progressHandler;
     [(PHMediaRequestContext *)self totalProgressFraction];
     v9 = v8;
 
     if (v9 < 1.0)
     {
       v12[0] = 0;
-      v10 = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
-      (v10)[2](v10, v12, 1.0);
+      progressHandler2 = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
+      (progressHandler2)[2](progressHandler2, v12, 1.0);
     }
   }
 
   resultHandler = self->super._resultHandler;
   if (resultHandler)
   {
-    resultHandler[2](resultHandler, self->_contentEditingInputResult, v4, self);
+    resultHandler[2](resultHandler, self->_contentEditingInputResult, requestCopy, self);
   }
 }
 
 - (id)progresses
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
-  v5 = [v3 arrayWithObject:v4];
+  _lazyAdjustmentProgress = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
+  v5 = [v3 arrayWithObject:_lazyAdjustmentProgress];
 
   if ([(PHContentEditingInputRequestContext *)self _shouldRequestImage])
   {
-    v6 = [(PHContentEditingInputRequestContext *)self _lazyImageProgress];
-    [v5 addObject:v6];
+    _lazyImageProgress = [(PHContentEditingInputRequestContext *)self _lazyImageProgress];
+    [v5 addObject:_lazyImageProgress];
   }
 
   if ([(PHContentEditingInputRequestContext *)self _shouldRequestVideo])
   {
-    v7 = [(PHContentEditingInputRequestContext *)self _lazyVideoProgress];
-    [v5 addObject:v7];
+    _lazyVideoProgress = [(PHContentEditingInputRequestContext *)self _lazyVideoProgress];
+    [v5 addObject:_lazyVideoProgress];
   }
 
   return v5;
@@ -534,15 +534,15 @@ void __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___b
 
 - (id)progressHandler
 {
-  v2 = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
-  v3 = v2;
-  if (v2)
+  progressHandler = [(PHContentEditingInputRequestOptions *)self->_options progressHandler];
+  v3 = progressHandler;
+  if (progressHandler)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54__PHContentEditingInputRequestContext_progressHandler__block_invoke;
     aBlock[3] = &unk_1E75A9368;
-    v7 = v2;
+    v7 = progressHandler;
     v4 = _Block_copy(aBlock);
   }
 
@@ -554,20 +554,20 @@ void __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___b
   return v4;
 }
 
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
-  v10 = [(PHMediaRequestContext *)self isCancelled];
-  v11 = 0;
-  if (v9 && !v10)
+  requestCopy = request;
+  resultCopy = result;
+  isCancelled = [(PHMediaRequestContext *)self isCancelled];
+  array = 0;
+  if (resultCopy && !isCancelled)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    if (self->_adjustmentRequest == v8)
+    array = [MEMORY[0x1E695DF70] array];
+    if (self->_adjustmentRequest == requestCopy)
     {
       v72 = 0;
-      v25 = [(PHContentEditingInputRequestContext *)self _adjustmentBaseVersionFromResult:v9 request:v8 canHandleAdjustmentData:&v72];
+      v25 = [(PHContentEditingInputRequestContext *)self _adjustmentBaseVersionFromResult:resultCopy request:requestCopy canHandleAdjustmentData:&v72];
       contentEditingInputResult = self->_contentEditingInputResult;
       v27 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
       [(PHContentEditingInputResult *)contentEditingInputResult setBaseVersionNeeded:v27];
@@ -578,16 +578,16 @@ void __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___b
         v28 = [(PHContentEditingInputRequestContext *)self _assetResourceForType:16];
         if (v28)
         {
-          v29 = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
-          v30 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v28 wantsURLOnly:0 progress:v29];
+          _lazyAdjustmentProgress = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
+          v30 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v28 wantsURLOnly:0 progress:_lazyAdjustmentProgress];
 
-          [v11 addObject:v30];
+          [array addObject:v30];
           v31 = PLImageManagerGetLog();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
           {
-            v32 = [v30 identifierString];
+            identifierString = [v30 identifierString];
             *buf = 138412290;
-            v74 = v32;
+            v74 = identifierString;
             _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_DEBUG, "[RM] %@ Base version is unadjusted, starting request for original adjustment envelope", buf, 0xCu);
           }
         }
@@ -601,58 +601,58 @@ void __69__PHContentEditingInputRequestContext_processMediaResult_forRequest___b
         {
           v35 = v34;
           v36 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v34 wantsURLOnly:0 progress:0];
-          [v11 addObject:v36];
+          [array addObject:v36];
 
 LABEL_31:
           os_unfair_lock_lock(&self->_lock);
-          self->_inflightMediaRequestCount += [v11 count];
+          self->_inflightMediaRequestCount += [array count];
           os_unfair_lock_unlock(&self->_lock);
           goto LABEL_32;
         }
       }
     }
 
-    else if (self->_repairRequest == v8)
+    else if (self->_repairRequest == requestCopy)
     {
-      v37 = [(PHMediaRequestContext *)self asset];
-      v38 = [PHAssetResource assetResourcesForAsset:v37 includeDerivatives:1 includeMetadata:1];
+      asset = [(PHMediaRequestContext *)self asset];
+      v38 = [PHAssetResource assetResourcesForAsset:asset includeDerivatives:1 includeMetadata:1];
       assetResources = self->_assetResources;
       self->_assetResources = v38;
     }
 
-    else if (![(NSMutableIndexSet *)self->_requestIndexesOfAssetResourceRequests containsIndex:[(PHMediaRequest *)v8 requestIndex]]|| [(PHRepairRequest *)v8 resourceType]!= 104 && [(PHRepairRequest *)v8 resourceType]!= 105)
+    else if (![(NSMutableIndexSet *)self->_requestIndexesOfAssetResourceRequests containsIndex:[(PHMediaRequest *)requestCopy requestIndex]]|| [(PHRepairRequest *)requestCopy resourceType]!= 104 && [(PHRepairRequest *)requestCopy resourceType]!= 105)
     {
-      if ([(PHMediaRequest *)v8 requestIndex]== self->_imageBaseRequestIndex)
+      if ([(PHMediaRequest *)requestCopy requestIndex]== self->_imageBaseRequestIndex)
       {
-        v12 = [v9 imageURL];
+        imageURL = [resultCopy imageURL];
 
-        if (v12)
+        if (imageURL)
         {
-          v13 = v8;
+          v13 = requestCopy;
           v14 = MEMORY[0x1E6982C40];
-          v15 = [v9 uniformTypeIdentifier];
-          v16 = [v14 typeWithIdentifier:v15];
+          uniformTypeIdentifier = [resultCopy uniformTypeIdentifier];
+          v16 = [v14 typeWithIdentifier:uniformTypeIdentifier];
           v17 = [v16 conformsToType:*MEMORY[0x1E6982F88]];
 
           options = self->_options;
           if (v17)
           {
-            v19 = [(PHContentEditingInputRequestOptions *)options canHandleRAW];
+            canHandleRAW = [(PHContentEditingInputRequestOptions *)options canHandleRAW];
 
-            if (v19)
+            if (canHandleRAW)
             {
-              v20 = [v9 imagePropertiesLoadIfNeeded:1];
-              v21 = [(PHContentEditingInputRequestOptions *)self->_options canHandleRAW];
-              v22 = (v21)[2](v21, v20);
+              v20 = [resultCopy imagePropertiesLoadIfNeeded:1];
+              canHandleRAW2 = [(PHContentEditingInputRequestOptions *)self->_options canHandleRAW];
+              v22 = (canHandleRAW2)[2](canHandleRAW2, v20);
 
               if ((v22 & 1) == 0)
               {
                 v23 = PLImageManagerGetLog();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
                 {
-                  v24 = [(PHMediaRequest *)v13 identifierString];
+                  identifierString2 = [(PHMediaRequest *)v13 identifierString];
                   *buf = 138412290;
-                  v74 = v24;
+                  v74 = identifierString2;
                   _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEBUG, "[RM] %@ Image request for RAW completed, but client decided that this RAW is invalid, re-requesting JPEG", buf, 0xCu);
                 }
 
@@ -669,7 +669,7 @@ LABEL_31:
                 if (v65)
                 {
                   v66 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v65 wantsURLOnly:1 progress:0];
-                  [v11 addObject:v66];
+                  [array addObject:v66];
                   self->_imageBaseRequestIndex = [v66 requestIndex];
                 }
 
@@ -678,9 +678,9 @@ LABEL_31:
                   v66 = PLImageManagerGetLog();
                   if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
                   {
-                    v67 = [(PHMediaRequest *)v13 identifierString];
+                    identifierString3 = [(PHMediaRequest *)v13 identifierString];
                     *buf = 138412290;
-                    v74 = v67;
+                    v74 = identifierString3;
                     _os_log_impl(&dword_19C86F000, v66, OS_LOG_TYPE_ERROR, "%@ Client decided that this RAW is invalid, but no unadjusted JPEG resources available, returning the RAW anyway", buf, 0xCu);
                   }
                 }
@@ -693,45 +693,45 @@ LABEL_31:
             v41 = [PHImageDisplaySpec alloc];
             [(PHContentEditingInputRequestOptions *)self->_options targetSize];
             v71 = [(PHImageDisplaySpec *)v41 initWithTargetSize:[(PHContentEditingInputRequestOptions *)self->_options contentMode] contentMode:v42, v43];
-            v44 = [(PHContentEditingInputResult *)self->_contentEditingInputResult baseVersionNeeded];
-            v45 = [v44 integerValue];
+            baseVersionNeeded = [(PHContentEditingInputResult *)self->_contentEditingInputResult baseVersionNeeded];
+            integerValue = [baseVersionNeeded integerValue];
 
-            v46 = [(PHContentEditingInputRequestContext *)self isNetworkAccessAllowed];
+            isNetworkAccessAllowed = [(PHContentEditingInputRequestContext *)self isNetworkAccessAllowed];
             v70 = v13;
-            v47 = [(PHContentEditingInputRequestContext *)self downloadIntent];
+            downloadIntent = [(PHContentEditingInputRequestContext *)self downloadIntent];
             useRAWAsUnadjustedBase = self->_useRAWAsUnadjustedBase;
-            v49 = [(PHMediaRequestContext *)self asset];
-            v50 = [PHImageRequestBehaviorSpec contentEditingInputImageBehaviorSpecForBaseVersion:v45 isNetworkAccessAllowed:v46 downloadIntent:v47 shouldUseRAWAsUnadjustedBase:useRAWAsUnadjustedBase asset:v49];
+            asset2 = [(PHMediaRequestContext *)self asset];
+            v50 = [PHImageRequestBehaviorSpec contentEditingInputImageBehaviorSpecForBaseVersion:integerValue isNetworkAccessAllowed:isNetworkAccessAllowed downloadIntent:downloadIntent shouldUseRAWAsUnadjustedBase:useRAWAsUnadjustedBase asset:asset2];
 
             [v50 setLoadingOptions:1];
             [v50 setResizeMode:2];
             v68 = [PHImageRequest alloc];
-            v51 = [(PHMediaRequestContext *)self requestID];
-            v52 = [(PHMediaRequestContext *)self nextRequestIndex];
-            v53 = [(PHMediaRequestContext *)self managerID];
-            v54 = [(PHMediaRequestContext *)self asset];
-            v55 = [(PHMediaRequestContext *)self imageResourceChooser];
+            requestID = [(PHMediaRequestContext *)self requestID];
+            nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+            managerID = [(PHMediaRequestContext *)self managerID];
+            asset3 = [(PHMediaRequestContext *)self asset];
+            imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
             v69 = v50;
-            v56 = [(PHImageRequest *)v68 initWithRequestID:v51 requestIndex:v52 contextType:4 managerID:v53 asset:v54 displaySpec:v71 behaviorSpec:v50 chooser:v55 delegate:self];
+            v56 = [(PHImageRequest *)v68 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:4 managerID:managerID asset:asset3 displaySpec:v71 behaviorSpec:v50 chooser:imageResourceChooser delegate:self];
             displayImageRequest = self->_displayImageRequest;
             self->_displayImageRequest = v56;
 
             v13 = v70;
             v58 = MEMORY[0x1E69BE540];
-            v59 = [(PHRepairRequest *)v70 resource];
-            v60 = [v59 uniformTypeIdentifier];
-            LODWORD(v58) = [v58 isPrimaryImageFormatForUTI:v60];
+            resource = [(PHRepairRequest *)v70 resource];
+            uniformTypeIdentifier2 = [resource uniformTypeIdentifier];
+            LODWORD(v58) = [v58 isPrimaryImageFormatForUTI:uniformTypeIdentifier2];
 
             if (v58)
             {
               v61 = self->_displayImageRequest;
-              v62 = [v9 imageURL];
-              v63 = [v9 uniformTypeIdentifier];
-              v64 = [v9 exifOrientation];
-              -[PHImageRequest configureWithURL:uniformTypeIdentifier:exifOrientation:](v61, "configureWithURL:uniformTypeIdentifier:exifOrientation:", v62, v63, [v64 intValue]);
+              imageURL2 = [resultCopy imageURL];
+              uniformTypeIdentifier3 = [resultCopy uniformTypeIdentifier];
+              exifOrientation = [resultCopy exifOrientation];
+              -[PHImageRequest configureWithURL:uniformTypeIdentifier:exifOrientation:](v61, "configureWithURL:uniformTypeIdentifier:exifOrientation:", imageURL2, uniformTypeIdentifier3, [exifOrientation intValue]);
             }
 
-            [v11 addObject:self->_displayImageRequest];
+            [array addObject:self->_displayImageRequest];
           }
         }
       }
@@ -739,13 +739,13 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    [(PHContentEditingInputRequestContext *)self _prepareAndAddMediaRequestsToChildRequests:v11];
+    [(PHContentEditingInputRequestContext *)self _prepareAndAddMediaRequestsToChildRequests:array];
     goto LABEL_31;
   }
 
 LABEL_32:
 
-  return v11;
+  return array;
 }
 
 - (id)initialRequests
@@ -754,21 +754,21 @@ LABEL_32:
   v3 = objc_alloc_init(PHAdjustmentDataRequestBehaviorSpec);
   [(PHAdjustmentDataRequestBehaviorSpec *)v3 setNetworkAccessAllowed:[(PHContentEditingInputRequestOptions *)self->_options isNetworkAccessAllowed]];
   v4 = [PHAdjustmentDataRequest alloc];
-  v5 = [(PHMediaRequestContext *)self requestID];
-  v6 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v7 = [(PHContentEditingInputRequestContext *)self type];
-  v8 = [(PHMediaRequestContext *)self managerID];
-  v9 = [(PHMediaRequestContext *)self asset];
-  v10 = [(PHAdjustmentDataRequest *)v4 initWithRequestID:v5 requestIndex:v6 contextType:v7 managerID:v8 asset:v9 behaviorSpec:v3 delegate:self];
+  requestID = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+  type = [(PHContentEditingInputRequestContext *)self type];
+  managerID = [(PHMediaRequestContext *)self managerID];
+  asset = [(PHMediaRequestContext *)self asset];
+  v10 = [(PHAdjustmentDataRequest *)v4 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset behaviorSpec:v3 delegate:self];
   adjustmentRequest = self->_adjustmentRequest;
   self->_adjustmentRequest = v10;
 
   os_unfair_lock_lock(&self->_lock);
   ++self->_inflightMediaRequestCount;
   os_unfair_lock_unlock(&self->_lock);
-  v12 = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
-  v13 = [(PHMediaRequest *)self->_adjustmentRequest identifierString];
-  [(PHMediaRequestContext *)self setProgress:v12 forRequestIdentifier:v13];
+  _lazyAdjustmentProgress = [(PHContentEditingInputRequestContext *)self _lazyAdjustmentProgress];
+  identifierString = [(PHMediaRequest *)self->_adjustmentRequest identifierString];
+  [(PHMediaRequestContext *)self setProgress:_lazyAdjustmentProgress forRequestIdentifier:identifierString];
 
   v16[0] = self->_adjustmentRequest;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
@@ -803,14 +803,14 @@ LABEL_32:
   v4 = PLImageManagerGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(PHMediaRequestContext *)self managerID];
-    v16 = [(PHMediaRequestContext *)self requestID];
-    v18 = [(PHMediaRequestContext *)self asset];
-    v19 = [v18 uuid];
-    v5 = [(PHContentEditingInputRequestContext *)self options];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    requestID = [(PHMediaRequestContext *)self requestID];
+    asset = [(PHMediaRequestContext *)self asset];
+    uuid = [asset uuid];
+    options = [(PHContentEditingInputRequestContext *)self options];
     v6 = @"N";
     v7 = @"Y";
-    if ([v5 isNetworkAccessAllowed])
+    if ([options isNetworkAccessAllowed])
     {
       v8 = @"Y";
     }
@@ -820,27 +820,27 @@ LABEL_32:
       v8 = @"N";
     }
 
-    v9 = [(PHContentEditingInputRequestContext *)self options];
-    if (![v9 forceRunAsUnadjustedAsset])
+    options2 = [(PHContentEditingInputRequestContext *)self options];
+    if (![options2 forceRunAsUnadjustedAsset])
     {
       v7 = @"N";
     }
 
-    v10 = [(PHContentEditingInputRequestContext *)self options];
-    v11 = [v10 shouldForceOriginalChoice];
-    if (v11)
+    options3 = [(PHContentEditingInputRequestContext *)self options];
+    shouldForceOriginalChoice = [options3 shouldForceOriginalChoice];
+    if (shouldForceOriginalChoice)
     {
       v12 = MEMORY[0x1E696AEC0];
-      v15 = [(PHContentEditingInputRequestContext *)self options];
-      v13 = [v15 originalChoice];
-      if (v13 > 3)
+      options4 = [(PHContentEditingInputRequestContext *)self options];
+      originalChoice = [options4 originalChoice];
+      if (originalChoice > 3)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = off_1E75A71C8[v13];
+        v14 = off_1E75A71C8[originalChoice];
       }
 
       v2 = v14;
@@ -848,11 +848,11 @@ LABEL_32:
     }
 
     *buf = 134350338;
-    v22 = v17;
+    v22 = managerID;
     v23 = 2050;
-    v24 = v16;
+    v24 = requestID;
     v25 = 2114;
-    v26 = v19;
+    v26 = uuid;
     v27 = 2114;
     v28 = v8;
     v29 = 2114;
@@ -860,7 +860,7 @@ LABEL_32:
     v31 = 2114;
     v32 = v6;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_DEFAULT, "[RM] %{public}ld-%{public}ld starting edit request for asset %{public}@, net: %{public}@, force unadjusted: %{public}@, set original choice: %{public}@", buf, 0x3Eu);
-    if (v11)
+    if (shouldForceOriginalChoice)
     {
     }
   }
@@ -870,43 +870,43 @@ LABEL_32:
   [(PHMediaRequestContext *)&v20 start];
 }
 
-- (id)_resourceRequestForAssetResource:(id)a3 wantsURLOnly:(BOOL)a4 progress:(id)a5
+- (id)_resourceRequestForAssetResource:(id)resource wantsURLOnly:(BOOL)only progress:(id)progress
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  resourceCopy = resource;
+  progressCopy = progress;
+  if (resourceCopy)
   {
-    v28 = v9;
-    v10 = [(PHMediaRequestContext *)self nextRequestIndex];
-    v27 = v8;
+    v28 = progressCopy;
+    nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+    v27 = resourceCopy;
     v11 = [PHMediaResourceRequest alloc];
-    v12 = [(PHMediaRequestContext *)self requestID];
-    v13 = [(PHContentEditingInputRequestContext *)self type];
-    v14 = [(PHMediaRequestContext *)self managerID];
-    v15 = [(PHMediaRequestContext *)self asset];
-    v16 = [(PHContentEditingInputRequestContext *)self options];
-    v17 = [v16 isNetworkAccessAllowed];
-    LOWORD(v26) = a4;
-    v25 = [(PHContentEditingInputRequestContext *)self downloadIntent];
-    LOBYTE(v24) = v17;
+    requestID = [(PHMediaRequestContext *)self requestID];
+    type = [(PHContentEditingInputRequestContext *)self type];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    asset = [(PHMediaRequestContext *)self asset];
+    options = [(PHContentEditingInputRequestContext *)self options];
+    isNetworkAccessAllowed = [options isNetworkAccessAllowed];
+    LOWORD(v26) = only;
+    downloadIntent = [(PHContentEditingInputRequestContext *)self downloadIntent];
+    LOBYTE(v24) = isNetworkAccessAllowed;
     v18 = v11;
-    v8 = v27;
-    v19 = [(PHMediaResourceRequest *)v18 initWithRequestID:v12 requestIndex:v10 contextType:v13 managerID:v14 asset:v15 assetResource:v27 networkAccessAllowed:v24 downloadIntent:v25 downloadPriority:0 wantsURLOnly:v26 synchronous:self delegate:?];
+    resourceCopy = v27;
+    v19 = [(PHMediaResourceRequest *)v18 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset assetResource:v27 networkAccessAllowed:v24 downloadIntent:downloadIntent downloadPriority:0 wantsURLOnly:v26 synchronous:self delegate:?];
 
-    v20 = v10;
-    v9 = v28;
+    v20 = nextRequestIndex;
+    progressCopy = v28;
     [(NSMutableIndexSet *)self->_requestIndexesOfAssetResourceRequests addIndex:v20];
     if (v28)
     {
-      v21 = [(PHMediaRequest *)v19 identifierString];
-      [(PHMediaRequestContext *)self setProgress:v28 forRequestIdentifier:v21];
+      identifierString = [(PHMediaRequest *)v19 identifierString];
+      [(PHMediaRequestContext *)self setProgress:v28 forRequestIdentifier:identifierString];
       objc_initWeak(&location, self);
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __94__PHContentEditingInputRequestContext__resourceRequestForAssetResource_wantsURLOnly_progress___block_invoke;
       v29[3] = &unk_1E75A9340;
       objc_copyWeak(&v31, &location);
-      v22 = v21;
+      v22 = identifierString;
       v30 = v22;
       [(PHMediaResourceRequest *)v19 setProgressHandler:v29];
 
@@ -933,12 +933,12 @@ void __94__PHContentEditingInputRequestContext__resourceRequestForAssetResource_
 - (id)_largestUnadjustedDerivativeImageResource
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(PHContentEditingInputRequestContext *)self _assetResources];
+  _assetResources = [(PHContentEditingInputRequestContext *)self _assetResources];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v3 = [_assetResources countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v3)
   {
     v5 = 0;
@@ -955,14 +955,14 @@ void __94__PHContentEditingInputRequestContext__resourceRequestForAssetResource_
     {
       if (*v15 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(_assetResources);
       }
 
       v8 = *(*(&v14 + 1) + 8 * v7);
-      v9 = [v8 backingResourceIdentity];
-      v10 = [v9 version];
+      backingResourceIdentity = [v8 backingResourceIdentity];
+      version = [backingResourceIdentity version];
 
-      if (!v10)
+      if (!version)
       {
         if ([v8 cplResourceType] == 2)
         {
@@ -990,7 +990,7 @@ LABEL_8:
     }
 
     while (v4 != v7);
-    v12 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v12 = [_assetResources countByEnumeratingWithState:&v14 objects:v18 count:16];
     v4 = v12;
   }
 
@@ -1000,15 +1000,15 @@ LABEL_21:
   return v5;
 }
 
-- (id)_assetResourceForType:(int64_t)a3
+- (id)_assetResourceForType:(int64_t)type
 {
-  v4 = [(PHContentEditingInputRequestContext *)self _assetResources];
+  _assetResources = [(PHContentEditingInputRequestContext *)self _assetResources];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PHContentEditingInputRequestContext__assetResourceForType___block_invoke;
   v8[3] = &__block_descriptor_40_e32_B32__0__PHAssetResource_8Q16_B24l;
-  v8[4] = a3;
-  v5 = [v4 indexOfObjectPassingTest:v8];
+  v8[4] = type;
+  v5 = [_assetResources indexOfObjectPassingTest:v8];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -1016,7 +1016,7 @@ LABEL_21:
 
   else
   {
-    v6 = [v4 objectAtIndexedSubscript:v5];
+    v6 = [_assetResources objectAtIndexedSubscript:v5];
   }
 
   return v6;
@@ -1027,8 +1027,8 @@ LABEL_21:
   assetResources = self->_assetResources;
   if (!assetResources)
   {
-    v4 = [(PHMediaRequestContext *)self asset];
-    v5 = [PHAssetResource assetResourcesForAsset:v4 includeDerivatives:1 includeMetadata:1];
+    asset = [(PHMediaRequestContext *)self asset];
+    v5 = [PHAssetResource assetResourcesForAsset:asset includeDerivatives:1 includeMetadata:1];
     v6 = self->_assetResources;
     self->_assetResources = v5;
 
@@ -1038,48 +1038,48 @@ LABEL_21:
   return assetResources;
 }
 
-- (int64_t)_assetResourceTypeForResourceType:(unsigned int)a3 withBaseVersion:(int64_t)a4
+- (int64_t)_assetResourceTypeForResourceType:(unsigned int)type withBaseVersion:(int64_t)version
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v8 = 9;
-    if (a4 == 2)
+    if (version == 2)
     {
       v8 = 10;
     }
 
-    v9 = a4 == 1;
+    v9 = version == 1;
     v10 = 11;
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3)
+      if (type)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PHContentEditingInputRequestContext.m" lineNumber:575 description:{@"Invalid resource type, valid options are image, video, or video complement"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PHContentEditingInputRequestContext.m" lineNumber:575 description:{@"Invalid resource type, valid options are image, video, or video complement"}];
       }
 
       else
       {
-        if (a4 == 2)
+        if (version == 2)
         {
           return 5;
         }
 
-        if (a4 == 1)
+        if (version == 1)
         {
           return 8;
         }
 
-        if (!a4 && self->_useRAWAsUnadjustedBase)
+        if (!version && self->_useRAWAsUnadjustedBase)
         {
-          v5 = [(PHMediaRequestContext *)self asset];
-          v6 = [v5 isRAWPlusJPEG];
+          asset = [(PHMediaRequestContext *)self asset];
+          isRAWPlusJPEG = [asset isRAWPlusJPEG];
 
-          if (v6)
+          if (isRAWPlusJPEG)
           {
             return 4;
           }
@@ -1095,12 +1095,12 @@ LABEL_21:
     }
 
     v8 = 2;
-    if (a4 == 2)
+    if (version == 2)
     {
       v8 = 6;
     }
 
-    v9 = a4 == 1;
+    v9 = version == 1;
     v10 = 12;
   }
 
@@ -1115,15 +1115,15 @@ LABEL_21:
   }
 }
 
-- (void)_prepareAndAddMediaRequestsToChildRequests:(id)a3
+- (void)_prepareAndAddMediaRequestsToChildRequests:(id)requests
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHContentEditingInputResult *)self->_contentEditingInputResult baseVersionNeeded];
-  v6 = [v5 integerValue];
+  requestsCopy = requests;
+  baseVersionNeeded = [(PHContentEditingInputResult *)self->_contentEditingInputResult baseVersionNeeded];
+  integerValue = [baseVersionNeeded integerValue];
 
   v48 = 0;
-  v7 = [(PHContentEditingInputRequestContext *)self _baseMediaRequestsForBaseVersion:v6 error:&v48];
+  v7 = [(PHContentEditingInputRequestContext *)self _baseMediaRequestsForBaseVersion:integerValue error:&v48];
   v8 = v48;
   if (v7)
   {
@@ -1132,25 +1132,25 @@ LABEL_21:
 
   else
   {
-    v9 = v6 == 1;
+    v9 = integerValue == 1;
   }
 
   if (v9)
   {
-    v10 = [(PHContentEditingInputRequestOptions *)self->_options disallowFallbackAdjustmentBase];
+    disallowFallbackAdjustmentBase = [(PHContentEditingInputRequestOptions *)self->_options disallowFallbackAdjustmentBase];
     v11 = PLImageManagerGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
-    if (v10)
+    if (disallowFallbackAdjustmentBase)
     {
       if (v12)
       {
-        v13 = [(PHMediaRequestContext *)self managerID];
-        v14 = [(PHMediaRequestContext *)self requestID];
+        managerID = [(PHMediaRequestContext *)self managerID];
+        requestID = [(PHMediaRequestContext *)self requestID];
         v15 = @"penultimate";
         *buf = 134218754;
-        v50 = v13;
+        v50 = managerID;
         v51 = 2048;
-        v52 = v14;
+        v52 = requestID;
         v53 = 2114;
         v54 = @"penultimate";
         v55 = 2112;
@@ -1163,14 +1163,14 @@ LABEL_21:
 
     if (v12)
     {
-      v16 = [(PHMediaRequestContext *)self managerID];
-      v17 = [(PHMediaRequestContext *)self requestID];
+      managerID2 = [(PHMediaRequestContext *)self managerID];
+      requestID2 = [(PHMediaRequestContext *)self requestID];
       v18 = @"penultimate";
       v19 = @"current";
       *buf = 134218754;
-      v50 = v16;
+      v50 = managerID2;
       v51 = 2048;
-      v52 = v17;
+      v52 = requestID2;
       v53 = 2114;
       v54 = @"penultimate";
       v55 = 2114;
@@ -1189,12 +1189,12 @@ LABEL_28:
       v31 = PLImageManagerGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(PHMediaRequestContext *)self managerID];
-        v33 = [(PHMediaRequestContext *)self requestID];
+        managerID3 = [(PHMediaRequestContext *)self managerID];
+        requestID3 = [(PHMediaRequestContext *)self requestID];
         *buf = 134218240;
-        v50 = v32;
+        v50 = managerID3;
         v51 = 2048;
-        v52 = v33;
+        v52 = requestID3;
         _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_ERROR, "[RM] %ld-%ld No media requests", buf, 0x16u);
       }
 
@@ -1203,7 +1203,7 @@ LABEL_28:
     }
 
     [(PHContentEditingInputResult *)self->_contentEditingInputResult clearAdjustmentData];
-    v6 = 2;
+    integerValue = 2;
     v8 = v20;
   }
 
@@ -1213,14 +1213,14 @@ LABEL_28:
   }
 
   contentEditingInputResult = self->_contentEditingInputResult;
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
   [(PHContentEditingInputResult *)contentEditingInputResult setBaseVersionNeeded:v22];
 
-  [v4 addObjectsFromArray:v7];
+  [requestsCopy addObjectsFromArray:v7];
   if ([(PHContentEditingInputRequestContext *)self _shouldRequestVideo])
   {
-    v23 = [(PHMediaRequestContext *)self asset];
-    if ([v23 isPhotoIris])
+    asset = [(PHMediaRequestContext *)self asset];
+    if ([asset isPhotoIris])
     {
       v24 = 15;
     }
@@ -1234,13 +1234,13 @@ LABEL_28:
     if (v25)
     {
       v26 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v25 wantsURLOnly:1 progress:0];
-      [v4 addObject:v26];
+      [requestsCopy addObject:v26];
     }
 
     if ([(PHContentEditingInputRequestOptions *)self->_options requireOriginalsDownloaded])
     {
-      v27 = [(PHMediaRequestContext *)self asset];
-      if ([v27 isPhotoIris])
+      asset2 = [(PHMediaRequestContext *)self asset];
+      if ([asset2 isPhotoIris])
       {
         v28 = 9;
       }
@@ -1255,7 +1255,7 @@ LABEL_28:
       if (v29)
       {
         v30 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v29 wantsURLOnly:1 progress:0];
-        [v4 addObject:v30];
+        [requestsCopy addObject:v30];
 
         v25 = v29;
       }
@@ -1273,7 +1273,7 @@ LABEL_28:
     if (v34)
     {
       v35 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v34 wantsURLOnly:1 progress:0];
-      [v4 addObject:v35];
+      [requestsCopy addObject:v35];
     }
 
     if ([(PHContentEditingInputRequestOptions *)self->_options requireOriginalsDownloaded])
@@ -1283,20 +1283,20 @@ LABEL_28:
       if (v36)
       {
         v37 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v36 wantsURLOnly:1 progress:0];
-        [v4 addObject:v37];
+        [requestsCopy addObject:v37];
       }
 
-      v38 = [(PHMediaRequestContext *)self asset];
-      v39 = [v38 isRAWPlusJPEG];
+      asset3 = [(PHMediaRequestContext *)self asset];
+      isRAWPlusJPEG = [asset3 isRAWPlusJPEG];
 
-      if (v39)
+      if (isRAWPlusJPEG)
       {
         v34 = [(PHContentEditingInputRequestContext *)self _assetResourceForType:4];
 
         if (v34)
         {
           v40 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v34 wantsURLOnly:1 progress:0];
-          [v4 addObject:v40];
+          [requestsCopy addObject:v40];
         }
       }
 
@@ -1307,26 +1307,26 @@ LABEL_28:
     }
   }
 
-  if (v6 != 2)
+  if (integerValue != 2)
   {
     v41 = [(PHContentEditingInputRequestContext *)self _assetResourceForType:110];
     if (v41)
     {
       v42 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v41 wantsURLOnly:1 progress:0];
-      [v4 addObject:v42];
+      [requestsCopy addObject:v42];
     }
   }
 
   v43 = PLImageManagerGetLog();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [(PHMediaRequestContext *)self managerID];
-    v45 = [(PHMediaRequestContext *)self requestID];
-    v46 = [v4 count];
+    managerID4 = [(PHMediaRequestContext *)self managerID];
+    requestID4 = [(PHMediaRequestContext *)self requestID];
+    v46 = [requestsCopy count];
     *buf = 134218496;
-    v50 = v44;
+    v50 = managerID4;
     v51 = 2048;
-    v52 = v45;
+    v52 = requestID4;
     v53 = 2048;
     v54 = v46;
     _os_log_impl(&dword_19C86F000, v43, OS_LOG_TYPE_DEBUG, "[RM] %ld-%ld Starting %ld child media requests", buf, 0x20u);
@@ -1335,15 +1335,15 @@ LABEL_28:
 LABEL_51:
 }
 
-- (id)_baseMediaRequestsForBaseVersion:(int64_t)a3 error:(id *)a4
+- (id)_baseMediaRequestsForBaseVersion:(int64_t)version error:(id *)error
 {
   v128 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = PLImageManagerGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(PHMediaRequestContext *)self managerID];
-    v9 = [(PHMediaRequestContext *)self requestID];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    requestID = [(PHMediaRequestContext *)self requestID];
     if ([(PHContentEditingInputRequestContext *)self _shouldRequestImage])
     {
       v10 = @"Y";
@@ -1365,9 +1365,9 @@ LABEL_51:
       v11 = @"N";
     }
 
-    v121 = v8;
+    v121 = managerID;
     v122 = 2048;
-    v123 = v9;
+    v123 = requestID;
     v124 = 2112;
     v125 = v10;
     v126 = 2112;
@@ -1375,20 +1375,20 @@ LABEL_51:
     _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEBUG, "[RM] %ld-%ld Preparing media requests, for images: %@, video: %@", buf, 0x2Au);
   }
 
-  v12 = [(PHContentEditingInputRequestContext *)self options];
-  v13 = [v12 forcePrepareCurrentBaseVersionInAddition];
+  options = [(PHContentEditingInputRequestContext *)self options];
+  forcePrepareCurrentBaseVersionInAddition = [options forcePrepareCurrentBaseVersionInAddition];
 
-  if (a3 != 2 && v13)
+  if (version != 2 && forcePrepareCurrentBaseVersionInAddition)
   {
     v14 = PLImageManagerGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(PHMediaRequestContext *)self managerID];
-      v16 = [(PHMediaRequestContext *)self requestID];
+      managerID2 = [(PHMediaRequestContext *)self managerID];
+      requestID2 = [(PHMediaRequestContext *)self requestID];
       *buf = 134218240;
-      v121 = v15;
+      v121 = managerID2;
       v122 = 2048;
-      v123 = v16;
+      v123 = requestID2;
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_DEBUG, "[RM] %ld-%ld Can handle adjustment data, but also need adjusted FullSizeRenders for extensions (like Markup), kicking off additional requests", buf, 0x16u);
     }
 
@@ -1396,43 +1396,43 @@ LABEL_51:
     {
       v17 = [(PHContentEditingInputRequestContext *)self _videoBehaviorSpecForBaseVersion:2];
       v18 = [PHVideoRequest alloc];
-      v19 = [(PHMediaRequestContext *)self requestID];
-      v20 = [(PHMediaRequestContext *)self nextRequestIndex];
-      v21 = [(PHContentEditingInputRequestContext *)self type];
-      v22 = a3;
-      v23 = [(PHMediaRequestContext *)self managerID];
-      v24 = [(PHMediaRequestContext *)self asset];
-      v25 = v23;
-      a3 = v22;
-      v26 = [(PHVideoRequest *)v18 initWithRequestID:v19 requestIndex:v20 contextType:v21 managerID:v25 asset:v24 displaySpec:0 behaviorSpec:v17 delegate:self];
+      requestID3 = [(PHMediaRequestContext *)self requestID];
+      nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+      type = [(PHContentEditingInputRequestContext *)self type];
+      versionCopy = version;
+      managerID3 = [(PHMediaRequestContext *)self managerID];
+      asset = [(PHMediaRequestContext *)self asset];
+      v25 = managerID3;
+      version = versionCopy;
+      v26 = [(PHVideoRequest *)v18 initWithRequestID:requestID3 requestIndex:nextRequestIndex contextType:type managerID:v25 asset:asset displaySpec:0 behaviorSpec:v17 delegate:self];
 
       [v6 addObject:v26];
     }
 
     if ([(PHContentEditingInputRequestContext *)self _shouldRequestImage])
     {
-      v27 = [(PHContentEditingInputRequestContext *)self isNetworkAccessAllowed];
-      v28 = [(PHContentEditingInputRequestContext *)self downloadIntent];
+      isNetworkAccessAllowed = [(PHContentEditingInputRequestContext *)self isNetworkAccessAllowed];
+      downloadIntent = [(PHContentEditingInputRequestContext *)self downloadIntent];
       useRAWAsUnadjustedBase = self->_useRAWAsUnadjustedBase;
-      v30 = [(PHMediaRequestContext *)self asset];
-      v117 = [PHImageRequestBehaviorSpec contentEditingInputImageBehaviorSpecForBaseVersion:2 isNetworkAccessAllowed:v27 downloadIntent:v28 shouldUseRAWAsUnadjustedBase:useRAWAsUnadjustedBase asset:v30];
+      asset2 = [(PHMediaRequestContext *)self asset];
+      v117 = [PHImageRequestBehaviorSpec contentEditingInputImageBehaviorSpecForBaseVersion:2 isNetworkAccessAllowed:isNetworkAccessAllowed downloadIntent:downloadIntent shouldUseRAWAsUnadjustedBase:useRAWAsUnadjustedBase asset:asset2];
 
       v31 = [PHImageResourceChooser alloc];
-      v32 = [(PHMediaRequestContext *)self asset];
-      v33 = [(PHImageResourceChooser *)v31 initWithAsset:v32 resourceHandler:0];
+      asset3 = [(PHMediaRequestContext *)self asset];
+      v33 = [(PHImageResourceChooser *)v31 initWithAsset:asset3 resourceHandler:0];
       backupChooser = self->_backupChooser;
       self->_backupChooser = v33;
 
       v35 = [PHImageRequest alloc];
-      v36 = [(PHMediaRequestContext *)self requestID];
-      v37 = [(PHMediaRequestContext *)self nextRequestIndex];
-      v38 = [(PHContentEditingInputRequestContext *)self type];
-      v39 = [(PHMediaRequestContext *)self managerID];
+      requestID4 = [(PHMediaRequestContext *)self requestID];
+      nextRequestIndex2 = [(PHMediaRequestContext *)self nextRequestIndex];
+      type2 = [(PHContentEditingInputRequestContext *)self type];
+      managerID4 = [(PHMediaRequestContext *)self managerID];
       [(PHMediaRequestContext *)self asset];
-      v41 = v40 = a3;
-      v42 = [(PHImageRequest *)v35 initWithRequestID:v36 requestIndex:v37 contextType:v38 managerID:v39 asset:v41 displaySpec:0 behaviorSpec:v117 chooser:self->_backupChooser delegate:self];
+      v41 = v40 = version;
+      v42 = [(PHImageRequest *)v35 initWithRequestID:requestID4 requestIndex:nextRequestIndex2 contextType:type2 managerID:managerID4 asset:v41 displaySpec:0 behaviorSpec:v117 chooser:self->_backupChooser delegate:self];
 
-      a3 = v40;
+      version = v40;
       [v6 addObject:v42];
     }
   }
@@ -1449,8 +1449,8 @@ LABEL_52:
     goto LABEL_70;
   }
 
-  v43 = [(PHMediaRequestContext *)self asset];
-  if ([v43 isPhotoIris])
+  asset4 = [(PHMediaRequestContext *)self asset];
+  if ([asset4 isPhotoIris])
   {
     v44 = 3;
   }
@@ -1460,29 +1460,29 @@ LABEL_52:
     v44 = 1;
   }
 
-  v45 = [(PHContentEditingInputRequestContext *)self _assetResourceTypeForResourceType:v44 withBaseVersion:a3];
+  v45 = [(PHContentEditingInputRequestContext *)self _assetResourceTypeForResourceType:v44 withBaseVersion:version];
 
   v46 = PLImageManagerGetLog();
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
   {
-    v47 = [(PHMediaRequestContext *)self managerID];
-    v48 = [(PHMediaRequestContext *)self requestID];
+    managerID5 = [(PHMediaRequestContext *)self managerID];
+    requestID5 = [(PHMediaRequestContext *)self requestID];
     v49 = _PHAssetResourceTypeDescription(v45);
-    if (a3 > 2)
+    if (version > 2)
     {
       v50 = @"unknown";
     }
 
     else
     {
-      v50 = off_1E75A7398[a3];
+      v50 = off_1E75A7398[version];
     }
 
     v51 = v50;
     *buf = 134218754;
-    v121 = v47;
+    v121 = managerID5;
     v122 = 2048;
-    v123 = v48;
+    v123 = requestID5;
     v124 = 2112;
     v125 = v49;
     v126 = 2112;
@@ -1493,15 +1493,15 @@ LABEL_52:
   v52 = [(PHContentEditingInputRequestContext *)self _assetResourceForType:v45];
   if (!v52)
   {
-    v68 = [(PHMediaRequestContext *)self asset];
-    v69 = [v68 isPhotoIris];
+    asset5 = [(PHMediaRequestContext *)self asset];
+    isPhotoIris = [asset5 isPhotoIris];
 
-    if (v69)
+    if (isPhotoIris)
     {
-      v70 = [(PHMediaRequestContext *)self asset];
-      v71 = [v70 canPlayPhotoIris];
+      asset6 = [(PHMediaRequestContext *)self asset];
+      canPlayPhotoIris = [asset6 canPlayPhotoIris];
 
-      if (a3 && (v71 & 1) == 0)
+      if (version && (canPlayPhotoIris & 1) == 0)
       {
         v62 = PLImageManagerGetLog();
         if (!os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
@@ -1509,23 +1509,23 @@ LABEL_52:
           goto LABEL_30;
         }
 
-        v72 = [(PHMediaRequestContext *)self managerID];
-        v73 = [(PHMediaRequestContext *)self requestID];
-        if (a3 > 2)
+        managerID6 = [(PHMediaRequestContext *)self managerID];
+        requestID6 = [(PHMediaRequestContext *)self requestID];
+        if (version > 2)
         {
           v74 = @"unknown";
         }
 
         else
         {
-          v74 = off_1E75A7398[a3];
+          v74 = off_1E75A7398[version];
         }
 
         v115 = v74;
         *buf = 134218498;
-        v121 = v72;
+        v121 = managerID6;
         v122 = 2048;
-        v123 = v73;
+        v123 = requestID6;
         v124 = 2112;
         v125 = v115;
         v116 = "[RM] %ld-%ld Live photo edit request allowing missing video, reason: unplayable, base version: %@";
@@ -1536,19 +1536,19 @@ LABEL_79:
       }
 
       repairRequest = self->_repairRequest;
-      if (a3 == 1)
+      if (version == 1)
       {
         if (repairRequest)
         {
           v62 = PLImageManagerGetLog();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
           {
-            v76 = [(PHMediaRequestContext *)self managerID];
-            v77 = [(PHMediaRequestContext *)self requestID];
+            managerID7 = [(PHMediaRequestContext *)self managerID];
+            requestID7 = [(PHMediaRequestContext *)self requestID];
             *buf = 134218240;
-            v121 = v76;
+            v121 = managerID7;
             v122 = 2048;
-            v123 = v77;
+            v123 = requestID7;
             _os_log_impl(&dword_19C86F000, v62, OS_LOG_TYPE_DEFAULT, "[RM] %ld-%ld Live photo edit request allowing missing video, reason: missing penultimate", buf, 0x16u);
           }
 
@@ -1564,23 +1564,23 @@ LABEL_79:
           goto LABEL_30;
         }
 
-        v78 = [(PHMediaRequestContext *)self managerID];
-        v79 = [(PHMediaRequestContext *)self requestID];
-        if (a3 > 2)
+        managerID8 = [(PHMediaRequestContext *)self managerID];
+        requestID8 = [(PHMediaRequestContext *)self requestID];
+        if (version > 2)
         {
           v80 = @"unknown";
         }
 
         else
         {
-          v80 = off_1E75A7398[a3];
+          v80 = off_1E75A7398[version];
         }
 
         v115 = v80;
         *buf = 134218498;
-        v121 = v78;
+        v121 = managerID8;
         v122 = 2048;
-        v123 = v79;
+        v123 = requestID8;
         v124 = 2112;
         v125 = v115;
         v116 = "[RM] %ld-%ld Live photo edit request allowing missing video, reason: zero videos found, base version: %@";
@@ -1592,26 +1592,26 @@ LABEL_79:
     goto LABEL_46;
   }
 
-  v53 = [(PHContentEditingInputRequestContext *)self _videoBehaviorSpecForBaseVersion:a3];
+  v53 = [(PHContentEditingInputRequestContext *)self _videoBehaviorSpecForBaseVersion:version];
   v118 = [PHVideoRequest alloc];
-  v54 = [(PHMediaRequestContext *)self requestID];
-  v55 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v56 = [(PHContentEditingInputRequestContext *)self type];
+  requestID9 = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex3 = [(PHMediaRequestContext *)self nextRequestIndex];
+  type3 = [(PHContentEditingInputRequestContext *)self type];
   v57 = v52;
-  v58 = a3;
-  v59 = [(PHMediaRequestContext *)self managerID];
-  v60 = [(PHMediaRequestContext *)self asset];
-  v61 = v59;
-  a3 = v58;
+  versionCopy2 = version;
+  managerID9 = [(PHMediaRequestContext *)self managerID];
+  asset7 = [(PHMediaRequestContext *)self asset];
+  v61 = managerID9;
+  version = versionCopy2;
   v52 = v57;
   v62 = v53;
-  v63 = [(PHVideoRequest *)v118 initWithRequestID:v54 requestIndex:v55 contextType:v56 managerID:v61 asset:v60 displaySpec:0 behaviorSpec:v53 delegate:self];
+  v63 = [(PHVideoRequest *)v118 initWithRequestID:requestID9 requestIndex:nextRequestIndex3 contextType:type3 managerID:v61 asset:asset7 displaySpec:0 behaviorSpec:v53 delegate:self];
   videoRequest = self->_videoRequest;
   self->_videoRequest = v63;
 
-  v65 = [(PHContentEditingInputRequestContext *)self _lazyVideoProgress];
-  v66 = [(PHMediaRequest *)self->_videoRequest identifierString];
-  [(PHMediaRequestContext *)self setProgress:v65 forRequestIdentifier:v66];
+  _lazyVideoProgress = [(PHContentEditingInputRequestContext *)self _lazyVideoProgress];
+  identifierString = [(PHMediaRequest *)self->_videoRequest identifierString];
+  [(PHMediaRequestContext *)self setProgress:_lazyVideoProgress forRequestIdentifier:identifierString];
 
   [v6 addObject:self->_videoRequest];
 LABEL_30:
@@ -1620,8 +1620,8 @@ LABEL_30:
   v67 = 1;
 LABEL_46:
 
-  v81 = [(PHContentEditingInputRequestContext *)self _shouldRequestImage];
-  if (!v67 || !v81)
+  _shouldRequestImage = [(PHContentEditingInputRequestContext *)self _shouldRequestImage];
+  if (!v67 || !_shouldRequestImage)
   {
     if ((v67 & 1) == 0)
     {
@@ -1632,28 +1632,28 @@ LABEL_46:
   }
 
 LABEL_48:
-  v45 = [(PHContentEditingInputRequestContext *)self _assetResourceTypeForResourceType:0 withBaseVersion:a3];
+  v45 = [(PHContentEditingInputRequestContext *)self _assetResourceTypeForResourceType:0 withBaseVersion:version];
   v82 = PLImageManagerGetLog();
   if (os_log_type_enabled(v82, OS_LOG_TYPE_DEBUG))
   {
-    v83 = [(PHMediaRequestContext *)self managerID];
-    v84 = [(PHMediaRequestContext *)self requestID];
+    managerID10 = [(PHMediaRequestContext *)self managerID];
+    requestID10 = [(PHMediaRequestContext *)self requestID];
     v85 = _PHAssetResourceTypeDescription(v45);
-    if (a3 > 2)
+    if (version > 2)
     {
       v86 = @"unknown";
     }
 
     else
     {
-      v86 = off_1E75A7398[a3];
+      v86 = off_1E75A7398[version];
     }
 
     v88 = v86;
     *buf = 134218754;
-    v121 = v83;
+    v121 = managerID10;
     v122 = 2048;
-    v123 = v84;
+    v123 = requestID10;
     v124 = 2112;
     v125 = v85;
     v126 = 2112;
@@ -1665,8 +1665,8 @@ LABEL_48:
   if (v89)
   {
     v90 = v89;
-    v91 = [(PHContentEditingInputRequestContext *)self _lazyImageProgress];
-    v92 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v90 wantsURLOnly:1 progress:v91];
+    _lazyImageProgress = [(PHContentEditingInputRequestContext *)self _lazyImageProgress];
+    v92 = [(PHContentEditingInputRequestContext *)self _resourceRequestForAssetResource:v90 wantsURLOnly:1 progress:_lazyImageProgress];
 
     self->_imageBaseRequestIndex = [v92 requestIndex];
     [v6 addObject:v92];
@@ -1678,24 +1678,24 @@ LABEL_57:
   v93 = PLImageManagerGetLog();
   if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
   {
-    v94 = [(PHMediaRequestContext *)self managerID];
-    v95 = [(PHMediaRequestContext *)self requestID];
-    if (a3 > 2)
+    managerID11 = [(PHMediaRequestContext *)self managerID];
+    requestID11 = [(PHMediaRequestContext *)self requestID];
+    if (version > 2)
     {
       v96 = @"unknown";
     }
 
     else
     {
-      v96 = off_1E75A7398[a3];
+      v96 = off_1E75A7398[version];
     }
 
     v97 = v96;
     v98 = _PHAssetResourceTypeDescription(v45);
     *buf = 134218754;
-    v121 = v94;
+    v121 = managerID11;
     v122 = 2048;
-    v123 = v95;
+    v123 = requestID11;
     v124 = 2112;
     v125 = v97;
     v126 = 2112;
@@ -1707,14 +1707,14 @@ LABEL_57:
   {
 
     v99 = MEMORY[0x1E696ABC0];
-    if (a3 > 2)
+    if (version > 2)
     {
       v100 = @"unknown";
     }
 
     else
     {
-      v100 = off_1E75A7398[a3];
+      v100 = off_1E75A7398[version];
     }
 
     v90 = v100;
@@ -1726,16 +1726,16 @@ LABEL_57:
   }
 
   v101 = [PHRepairRequest alloc];
-  v102 = [(PHMediaRequestContext *)self requestID];
+  requestID12 = [(PHMediaRequestContext *)self requestID];
   v103 = v6;
-  v104 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v105 = [(PHContentEditingInputRequestContext *)self type];
-  v106 = [(PHMediaRequestContext *)self managerID];
-  v107 = [(PHMediaRequestContext *)self asset];
+  nextRequestIndex4 = [(PHMediaRequestContext *)self nextRequestIndex];
+  type4 = [(PHContentEditingInputRequestContext *)self type];
+  managerID12 = [(PHMediaRequestContext *)self managerID];
+  asset8 = [(PHMediaRequestContext *)self asset];
   v108 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1F102D580];
-  v109 = v104;
+  v109 = nextRequestIndex4;
   v6 = v103;
-  v110 = [(PHRepairRequest *)v101 initWithRequestID:v102 requestIndex:v109 contextType:v105 managerID:v106 asset:v107 assetResource:0 errorCodes:v108 delegate:self];
+  v110 = [(PHRepairRequest *)v101 initWithRequestID:requestID12 requestIndex:v109 contextType:type4 managerID:managerID12 asset:asset8 assetResource:0 errorCodes:v108 delegate:self];
 
   [v103 removeAllObjects];
   v111 = self->_repairRequest;
@@ -1748,26 +1748,26 @@ LABEL_66:
 LABEL_69:
 
 LABEL_70:
-  if (a4)
+  if (error)
   {
     v113 = v87;
-    *a4 = v87;
+    *error = v87;
   }
 
   return v6;
 }
 
-- (void)_renderTemporaryVideoForObjectBuilder:(id)a3 resultHandler:(id)a4
+- (void)_renderTemporaryVideoForObjectBuilder:(id)builder resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = *MEMORY[0x1E6987338];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PHContentEditingInputRequestContext__renderTemporaryVideoForObjectBuilder_resultHandler___block_invoke;
   v8[3] = &unk_1E75A92F8;
-  v9 = v5;
-  v7 = v5;
-  [a3 requestExportSessionWithExportPreset:v6 resultHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [builder requestExportSessionWithExportPreset:v6 resultHandler:v8];
 }
 
 void __91__PHContentEditingInputRequestContext__renderTemporaryVideoForObjectBuilder_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -1845,80 +1845,80 @@ LABEL_7:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_renderVideoFromVideoURL:(id)a3 asset:(id)a4 adjustmentData:(id)a5 canHandleAdjustmentData:(BOOL)a6 resultHandler:(id)a7
+- (void)_renderVideoFromVideoURL:(id)l asset:(id)asset adjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData resultHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
+  lCopy = l;
+  handlerCopy = handler;
   v14 = MEMORY[0x1E69C0910];
-  v15 = a5;
-  v16 = a4;
+  dataCopy = data;
+  assetCopy = asset;
   v17 = [v14 alloc];
-  v18 = [v15 formatIdentifier];
-  v19 = [v15 formatVersion];
-  v20 = [v15 data];
+  formatIdentifier = [dataCopy formatIdentifier];
+  formatVersion = [dataCopy formatVersion];
+  data = [dataCopy data];
 
-  v21 = [v17 initWithFormatIdentifier:v18 formatVersion:v19 data:v20 baseVersion:0 editorBundleID:0 renderTypes:0];
-  LOBYTE(v17) = [v16 isPhotoIris];
+  v21 = [v17 initWithFormatIdentifier:formatIdentifier formatVersion:formatVersion data:data baseVersion:0 editorBundleID:0 renderTypes:0];
+  LOBYTE(v17) = [assetCopy isPhotoIris];
 
-  if ((v17 & 1) != 0 || a6 || ([v21 isRecognizedFormat] & 1) == 0)
+  if ((v17 & 1) != 0 || adjustmentData || ([v21 isRecognizedFormat] & 1) == 0)
   {
-    v13[2](v13, v12, 0);
+    handlerCopy[2](handlerCopy, lCopy, 0);
   }
 
   else
   {
-    v22 = [MEMORY[0x1E6988168] assetWithURL:v12];
+    v22 = [MEMORY[0x1E6988168] assetWithURL:lCopy];
     v23 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v22 videoAdjustments:v21];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __123__PHContentEditingInputRequestContext__renderVideoFromVideoURL_asset_adjustmentData_canHandleAdjustmentData_resultHandler___block_invoke;
     v24[3] = &unk_1E75A92D0;
-    v25 = v13;
+    v25 = handlerCopy;
     [(PHContentEditingInputRequestContext *)self _renderTemporaryVideoForObjectBuilder:v23 resultHandler:v24];
   }
 }
 
-- (int64_t)_adjustmentBaseVersionFromResult:(id)a3 request:(id)a4 canHandleAdjustmentData:(BOOL *)a5
+- (int64_t)_adjustmentBaseVersionFromResult:(id)result request:(id)request canHandleAdjustmentData:(BOOL *)data
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  requestCopy = request;
   v24 = 0;
-  v10 = [(PHContentEditingInputRequestContext *)self options];
-  v11 = [v10 forceRunAsUnadjustedAsset];
+  options = [(PHContentEditingInputRequestContext *)self options];
+  forceRunAsUnadjustedAsset = [options forceRunAsUnadjustedAsset];
 
-  if (v11)
+  if (forceRunAsUnadjustedAsset)
   {
-    v12 = PLImageManagerGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    adjustmentData = PLImageManagerGetLog();
+    if (os_log_type_enabled(adjustmentData, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v9 identifierString];
+      identifierString = [requestCopy identifierString];
       *buf = 138412290;
-      v26 = v13;
-      _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEBUG, "[RM] %@ Force run as unadjusted base", buf, 0xCu);
+      v26 = identifierString;
+      _os_log_impl(&dword_19C86F000, adjustmentData, OS_LOG_TYPE_DEBUG, "[RM] %@ Force run as unadjusted base", buf, 0xCu);
     }
 
     v14 = 0;
     goto LABEL_20;
   }
 
-  v12 = [v8 adjustmentData];
-  v15 = [v8 error];
-  v16 = [v15 domain];
-  if ([v16 isEqualToString:*MEMORY[0x1E69BE900]])
+  adjustmentData = [resultCopy adjustmentData];
+  error = [resultCopy error];
+  domain = [error domain];
+  if ([domain isEqualToString:*MEMORY[0x1E69BE900]])
   {
-    if ([v15 code] == 3)
+    if ([error code] == 3)
     {
 
 LABEL_12:
-      v12 = 0;
-      v15 = 0;
+      adjustmentData = 0;
+      error = 0;
       goto LABEL_13;
     }
 
-    v18 = [v15 code];
+    code = [error code];
 
-    if (v18 == 4)
+    if (code == 4)
     {
       goto LABEL_12;
     }
@@ -1928,21 +1928,21 @@ LABEL_12:
   {
   }
 
-  if (!v12)
+  if (!adjustmentData)
   {
 LABEL_13:
     v14 = 0;
     goto LABEL_14;
   }
 
-  v17 = [(PHContentEditingInputRequestOptions *)self->_options canHandleAdjustmentData];
-  v14 = [v12 _contentEditing_requiredBaseVersionReadableByClient:&v24 verificationBlock:v17];
+  canHandleAdjustmentData = [(PHContentEditingInputRequestOptions *)self->_options canHandleAdjustmentData];
+  v14 = [adjustmentData _contentEditing_requiredBaseVersionReadableByClient:&v24 verificationBlock:canHandleAdjustmentData];
 
 LABEL_14:
   v19 = PLImageManagerGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v9 identifierString];
+    identifierString2 = [requestCopy identifierString];
     if (v14 > 2)
     {
       v21 = @"unknown";
@@ -1955,33 +1955,33 @@ LABEL_14:
 
     v22 = v21;
     *buf = 138543874;
-    v26 = v20;
+    v26 = identifierString2;
     v27 = 2114;
     v28 = v22;
     v29 = 2112;
-    v30 = v12;
+    v30 = adjustmentData;
     _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ Calculated adjustment base: %{public}@ from adjustment data: %@", buf, 0x20u);
   }
 
 LABEL_20:
-  if (a5)
+  if (data)
   {
-    *a5 = v24;
+    *data = v24;
   }
 
   return v14;
 }
 
-- (id)_videoBehaviorSpecForBaseVersion:(int64_t)a3
+- (id)_videoBehaviorSpecForBaseVersion:(int64_t)version
 {
   v5 = objc_alloc_init(PHVideoRequestBehaviorSpec);
   [(PHVideoRequestBehaviorSpec *)v5 setDeliveryMode:1];
   [(PHVideoRequestBehaviorSpec *)v5 setNetworkAccessAllowed:[(PHContentEditingInputRequestContext *)self isNetworkAccessAllowed]];
-  v6 = [(PHMediaRequestContext *)self asset];
-  -[PHVideoRequestBehaviorSpec setVideoComplementAllowed:](v5, "setVideoComplementAllowed:", [v6 isPhotoIris]);
+  asset = [(PHMediaRequestContext *)self asset];
+  -[PHVideoRequestBehaviorSpec setVideoComplementAllowed:](v5, "setVideoComplementAllowed:", [asset isPhotoIris]);
 
   [(PHVideoRequestBehaviorSpec *)v5 setDownloadIntent:[(PHContentEditingInputRequestContext *)self downloadIntent]];
-  [(PHVideoRequestBehaviorSpec *)v5 setVersion:[PHAdjustmentData videoRequestVersionFromAdjustmentBaseVersion:a3]];
+  [(PHVideoRequestBehaviorSpec *)v5 setVersion:[PHAdjustmentData videoRequestVersionFromAdjustmentBaseVersion:version]];
 
   return v5;
 }
@@ -2050,34 +2050,34 @@ LABEL_20:
 
 - (BOOL)_shouldRequestVideo
 {
-  v3 = [(PHMediaRequestContext *)self asset];
-  if ([v3 isPhotoIris])
+  asset = [(PHMediaRequestContext *)self asset];
+  if ([asset isPhotoIris])
   {
     if ([(PHContentEditingInputRequestOptions *)self->_options forceReturnFullLivePhoto])
     {
-      v4 = 1;
+      canPlayAutoloop = 1;
     }
 
     else
     {
-      v5 = [(PHMediaRequestContext *)self asset];
-      if ([v5 canPlayPhotoIris])
+      asset2 = [(PHMediaRequestContext *)self asset];
+      if ([asset2 canPlayPhotoIris])
       {
-        v4 = 1;
+        canPlayAutoloop = 1;
       }
 
       else
       {
-        v6 = [(PHMediaRequestContext *)self asset];
-        if ([v6 canPlayMirror])
+        asset3 = [(PHMediaRequestContext *)self asset];
+        if ([asset3 canPlayMirror])
         {
-          v4 = 1;
+          canPlayAutoloop = 1;
         }
 
         else
         {
-          v7 = [(PHMediaRequestContext *)self asset];
-          v4 = [v7 canPlayAutoloop];
+          asset4 = [(PHMediaRequestContext *)self asset];
+          canPlayAutoloop = [asset4 canPlayAutoloop];
         }
       }
     }
@@ -2085,35 +2085,35 @@ LABEL_20:
 
   else
   {
-    v4 = 0;
+    canPlayAutoloop = 0;
   }
 
-  v8 = [(PHMediaRequestContext *)self asset];
-  v9 = [v8 isVideo] | v4;
+  asset5 = [(PHMediaRequestContext *)self asset];
+  v9 = [asset5 isVideo] | canPlayAutoloop;
 
   return v9 & 1;
 }
 
 - (BOOL)_shouldRequestImage
 {
-  v2 = [(PHMediaRequestContext *)self asset];
-  v3 = [v2 isPhoto];
+  asset = [(PHMediaRequestContext *)self asset];
+  isPhoto = [asset isPhoto];
 
-  return v3;
+  return isPhoto;
 }
 
-- (PHContentEditingInputRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 options:(id)a6 useRAWAsUnadjustedBase:(BOOL)a7 resultHandler:(id)a8
+- (PHContentEditingInputRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset options:(id)options useRAWAsUnadjustedBase:(BOOL)base resultHandler:(id)handler
 {
-  v13 = *&a3;
-  v15 = a6;
+  v13 = *&d;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = PHContentEditingInputRequestContext;
-  v16 = [(PHMediaRequestContext *)&v23 initWithRequestID:v13 managerID:a4 asset:a5 displaySpec:0 resultHandler:a8];
+  v16 = [(PHMediaRequestContext *)&v23 initWithRequestID:v13 managerID:iD asset:asset displaySpec:0 resultHandler:handler];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_options, a6);
-    v17->_useRAWAsUnadjustedBase = a7;
+    objc_storeStrong(&v16->_options, options);
+    v17->_useRAWAsUnadjustedBase = base;
     v17->_lock._os_unfair_lock_opaque = 0;
     v18 = [(PHCompositeMediaResult *)[PHContentEditingInputResult alloc] initWithRequestID:v13];
     contentEditingInputResult = v17->_contentEditingInputResult;
@@ -2127,24 +2127,24 @@ LABEL_20:
   return v17;
 }
 
-+ (id)contentEditingInputRequestContextForAsset:(id)a3 requestID:(int)a4 managerID:(unint64_t)a5 networkAccessAllowed:(BOOL)a6 downloadIntent:(int64_t)a7 progressHandler:(id)a8 resultHandler:(id)a9
++ (id)contentEditingInputRequestContextForAsset:(id)asset requestID:(int)d managerID:(unint64_t)iD networkAccessAllowed:(BOOL)allowed downloadIntent:(int64_t)intent progressHandler:(id)handler resultHandler:(id)resultHandler
 {
-  v11 = a6;
-  v13 = *&a4;
-  v16 = a9;
-  v17 = a8;
-  v18 = a3;
+  allowedCopy = allowed;
+  v13 = *&d;
+  resultHandlerCopy = resultHandler;
+  handlerCopy = handler;
+  assetCopy = asset;
   v19 = objc_alloc_init(PHContentEditingInputRequestOptions);
-  [(PHContentEditingInputRequestOptions *)v19 setNetworkAccessAllowed:v11];
-  [(PHContentEditingInputRequestOptions *)v19 setDownloadIntent:a7];
+  [(PHContentEditingInputRequestOptions *)v19 setNetworkAccessAllowed:allowedCopy];
+  [(PHContentEditingInputRequestOptions *)v19 setDownloadIntent:intent];
   [(PHContentEditingInputRequestOptions *)v19 setCanHandleAdjustmentData:&__block_literal_global_39286];
-  [(PHContentEditingInputRequestOptions *)v19 setProgressHandler:v17];
+  [(PHContentEditingInputRequestOptions *)v19 setProgressHandler:handlerCopy];
 
   [(PHContentEditingInputRequestOptions *)v19 setForceReturnFullLivePhoto:1];
   [(PHContentEditingInputRequestOptions *)v19 setSkipDisplaySizeImage:1];
   [(PHContentEditingInputRequestOptions *)v19 setSkipLivePhotoImageAndAVAsset:1];
   [(PHContentEditingInputRequestOptions *)v19 setDisallowFallbackAdjustmentBase:1];
-  v20 = +[PHMediaRequestContext contentEditingInputRequestContextWithRequestID:managerID:asset:options:useRAWAsUnadjustedBase:resultHandler:](PHMediaRequestContext, "contentEditingInputRequestContextWithRequestID:managerID:asset:options:useRAWAsUnadjustedBase:resultHandler:", v13, a5, v18, v19, [a1 shouldUseRAWResourceAsUnadjustedBaseForAsset:v18 options:v19], v16);
+  v20 = +[PHMediaRequestContext contentEditingInputRequestContextWithRequestID:managerID:asset:options:useRAWAsUnadjustedBase:resultHandler:](PHMediaRequestContext, "contentEditingInputRequestContextWithRequestID:managerID:asset:options:useRAWAsUnadjustedBase:resultHandler:", v13, iD, assetCopy, v19, [self shouldUseRAWResourceAsUnadjustedBaseForAsset:assetCopy options:v19], resultHandlerCopy);
 
   return v20;
 }
@@ -2194,28 +2194,28 @@ LABEL_8:
   return v3;
 }
 
-+ (BOOL)shouldUseRAWResourceAsUnadjustedBaseForAsset:(id)a3 options:(id)a4
++ (BOOL)shouldUseRAWResourceAsUnadjustedBaseForAsset:(id)asset options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  optionsCopy = options;
   if (PHDeviceSupportsRAW_onceToken != -1)
   {
     dispatch_once(&PHDeviceSupportsRAW_onceToken, &__block_literal_global_19790);
   }
 
-  if (PHDeviceSupportsRAW_deviceSupportsRAW == 1 && ([v6 dontAllowRAW] & 1) == 0)
+  if (PHDeviceSupportsRAW_deviceSupportsRAW == 1 && ([optionsCopy dontAllowRAW] & 1) == 0)
   {
-    if ([v6 shouldForceOriginalChoice])
+    if ([optionsCopy shouldForceOriginalChoice])
     {
-      v8 = [v6 originalChoice];
+      originalChoice = [optionsCopy originalChoice];
     }
 
     else
     {
-      v8 = [v5 originalResourceChoice];
+      originalChoice = [assetCopy originalResourceChoice];
     }
 
-    v7 = [v5 shouldUseRAWResourceWithOriginalResourceChoice:v8];
+    v7 = [assetCopy shouldUseRAWResourceWithOriginalResourceChoice:originalChoice];
   }
 
   else

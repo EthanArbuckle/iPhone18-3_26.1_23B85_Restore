@@ -1,30 +1,30 @@
 @interface SBUIActionView
-- (SBUIActionView)initWithAction:(id)a3;
-- (SBUIActionView)initWithCoder:(id)a3;
-- (SBUIActionView)initWithFrame:(CGRect)a3;
+- (SBUIActionView)initWithAction:(id)action;
+- (SBUIActionView)initWithCoder:(id)coder;
+- (SBUIActionView)initWithFrame:(CGRect)frame;
 - (double)leadingContentMargin;
 - (void)_invalidateVisualStyling;
 - (void)_setupSubviews;
 - (void)_updateImageViewLayoutConstraints;
 - (void)_updateVisualStylingIfNecessary;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImagePosition:(int64_t)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImagePosition:(int64_t)position;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation SBUIActionView
 
-- (SBUIActionView)initWithAction:(id)a3
+- (SBUIActionView)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = SBUIActionView;
   v6 = [(SBUIActionView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     v7->_imagePosition = 0;
     v7->_highlighted = 0;
     v7->_interfaceOrientationIsPortrait = ([*MEMORY[0x277D76620] activeInterfaceOrientation] - 1) < 2;
@@ -34,7 +34,7 @@
   return v7;
 }
 
-- (SBUIActionView)initWithFrame:(CGRect)a3
+- (SBUIActionView)initWithFrame:(CGRect)frame
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE648];
@@ -45,18 +45,18 @@
   return [(SBUIActionView *)self initWithAction:0];
 }
 
-- (SBUIActionView)initWithCoder:(id)a3
+- (SBUIActionView)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v4 raise:v5 format:{@"%@ does not support unarchiving from a nib.", v8}];
 
   v11.receiver = self;
   v11.super_class = SBUIActionView;
-  v9 = [(SBUIActionView *)&v11 initWithCoder:v6];
+  v9 = [(SBUIActionView *)&v11 initWithCoder:coderCopy];
 
   return v9;
 }
@@ -69,39 +69,39 @@
   [(SBUIActionView *)self _updateVisualStylingIfNecessary];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = SBUIActionView;
-  [(SBUIActionView *)&v4 willMoveToSuperview:a3];
+  [(SBUIActionView *)&v4 willMoveToSuperview:superview];
   [(SBUIActionView *)self _invalidateVisualStyling];
 }
 
-- (void)setImagePosition:(int64_t)a3
+- (void)setImagePosition:(int64_t)position
 {
-  if (self->_imagePosition != a3)
+  if (self->_imagePosition != position)
   {
-    self->_imagePosition = a3;
+    self->_imagePosition = position;
     [(SBUIActionView *)self _updateImageViewLayoutConstraints];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
-    [(UIView *)self->_highlightView setHidden:!a3];
+    self->_highlighted = highlighted;
+    [(UIView *)self->_highlightView setHidden:!highlighted];
   }
 }
 
 - (double)leadingContentMargin
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 12.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 16.0;
   }
@@ -112,23 +112,23 @@
 - (void)_setupSubviews
 {
   v156[7] = *MEMORY[0x277D85DE8];
-  v3 = [(SBUIActionView *)self action];
-  v155 = [v3 title];
-  v4 = [v3 subtitle];
-  v5 = [v3 image];
-  v6 = [v3 systemImageName];
-  v151 = v3;
-  v7 = [v3 badgeView];
-  v154 = v4;
-  v146 = [v4 length];
+  action = [(SBUIActionView *)self action];
+  title = [action title];
+  subtitle = [action subtitle];
+  image = [action image];
+  systemImageName = [action systemImageName];
+  v151 = action;
+  badgeView = [action badgeView];
+  v154 = subtitle;
+  v146 = [subtitle length];
   v8 = *MEMORY[0x277D76918];
   v9 = *MEMORY[0x277D76968];
   v10 = *MEMORY[0x277D76828];
   if (self->_interfaceOrientationIsPortrait)
   {
-    v152 = v7;
+    v152 = badgeView;
     v11 = v8;
-    v12 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
     v13 = *MEMORY[0x277D76820];
     v14 = *MEMORY[0x277D76818];
     v156[0] = *MEMORY[0x277D76820];
@@ -141,7 +141,7 @@
     v156[5] = v16;
     v156[6] = *MEMORY[0x277D767E8];
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:7];
-    v18 = [v17 containsObject:v12];
+    v18 = [v17 containsObject:preferredContentSizeCategory];
 
     if (v18)
     {
@@ -153,7 +153,7 @@
     v153 = v9;
 
     v20 = v11;
-    v7 = v152;
+    badgeView = v152;
     v21 = v10;
   }
 
@@ -171,9 +171,9 @@
   v149 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:{v21, v146}];
   v24 = [MEMORY[0x277D74300] preferredFontForTextStyle:v20 compatibleWithTraitCollection:?];
   v150 = v20;
-  if (v5)
+  if (image)
   {
-    [v5 size];
+    [image size];
     if (v25 < v26)
     {
       v25 = v26;
@@ -192,10 +192,10 @@
     goto LABEL_14;
   }
 
-  v28 = [MEMORY[0x277D755B8] systemImageNamed:v6];
+  v28 = [MEMORY[0x277D755B8] systemImageNamed:systemImageName];
   if (v28)
   {
-    v5 = v28;
+    image = v28;
     v27 = 1;
 LABEL_14:
     v29 = objc_alloc(MEMORY[0x277D755E8]);
@@ -208,7 +208,7 @@ LABEL_14:
     self->_imageView = v34;
 
     [(UIImageView *)self->_imageView setContentMode:v27];
-    [(UIImageView *)self->_imageView setImage:v5];
+    [(UIImageView *)self->_imageView setImage:image];
     [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:0];
     LODWORD(v36) = 1148846080;
     [(UIImageView *)self->_imageView setContentHuggingPriority:0 forAxis:v36];
@@ -248,7 +248,7 @@ LABEL_15:
   }
 
   [(SBUIActionViewLabel *)self->_titleLabel setNumberOfLines:v41];
-  [(SBUIActionViewLabel *)self->_titleLabel setText:v155];
+  [(SBUIActionViewLabel *)self->_titleLabel setText:title];
   [(SBUIActionViewLabel *)self->_titleLabel setTextAlignment:4];
   [(SBUIActionViewLabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_textContainer addSubview:self->_titleLabel];
@@ -273,229 +273,229 @@ LABEL_15:
     [(UIView *)self->_textContainer addSubview:self->_subtitleLabel];
   }
 
-  if (v7)
+  if (badgeView)
   {
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)self->_textContainer addSubview:v7];
-    [v7 bounds];
+    [badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)self->_textContainer addSubview:badgeView];
+    [badgeView bounds];
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [v7 widthAnchor];
+    widthAnchor = [badgeView widthAnchor];
     v157.origin.x = v49;
     v157.origin.y = v51;
     v157.size.width = v53;
     v157.size.height = v55;
-    v57 = [v56 constraintEqualToConstant:CGRectGetWidth(v157)];
+    v57 = [widthAnchor constraintEqualToConstant:CGRectGetWidth(v157)];
     [v57 setActive:1];
 
-    v58 = [v7 heightAnchor];
+    heightAnchor = [badgeView heightAnchor];
     v158.origin.x = v49;
     v158.origin.y = v51;
     v158.size.width = v53;
     v158.size.height = v55;
-    v59 = [v58 constraintEqualToConstant:CGRectGetHeight(v158)];
+    v59 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v158)];
     [v59 setActive:1];
   }
 
   if (self->_imageView)
   {
     [(SBUIActionView *)self _updateImageViewLayoutConstraints];
-    v60 = [(UIImageView *)self->_imageView centerYAnchor];
-    v61 = [(SBUIActionView *)self centerYAnchor];
-    v62 = [v60 constraintEqualToAnchor:v61];
+    centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+    centerYAnchor2 = [(SBUIActionView *)self centerYAnchor];
+    v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v62 setActive:1];
 
-    v63 = [(UIImageView *)self->_imageView widthAnchor];
-    v64 = [v63 constraintEqualToConstant:35.0];
+    widthAnchor2 = [(UIImageView *)self->_imageView widthAnchor];
+    v64 = [widthAnchor2 constraintEqualToConstant:35.0];
     [v64 setActive:1];
 
-    v65 = [(UIImageView *)self->_imageView heightAnchor];
-    v66 = [v65 constraintEqualToConstant:35.0];
-    [v66 setActive:1];
+    heightAnchor2 = [(UIImageView *)self->_imageView heightAnchor];
+    trailingAnchor = [heightAnchor2 constraintEqualToConstant:35.0];
+    [trailingAnchor setActive:1];
   }
 
   else
   {
-    v67 = [(UIView *)self->_textContainer leadingAnchor];
-    v68 = [(SBUIActionView *)self leadingAnchor];
+    leadingAnchor = [(UIView *)self->_textContainer leadingAnchor];
+    leadingAnchor2 = [(SBUIActionView *)self leadingAnchor];
     [(SBUIActionView *)self trailingContentMargin];
-    v69 = [v67 constraintEqualToAnchor:v68 constant:?];
+    v69 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     [v69 setActive:1];
 
-    v65 = [(UIView *)self->_textContainer trailingAnchor];
-    v66 = [(SBUIActionView *)self trailingAnchor];
+    heightAnchor2 = [(UIView *)self->_textContainer trailingAnchor];
+    trailingAnchor = [(SBUIActionView *)self trailingAnchor];
     [(SBUIActionView *)self trailingContentMargin];
-    v70 = [v65 constraintEqualToAnchor:v66 constant:?];
+    v70 = [heightAnchor2 constraintEqualToAnchor:trailingAnchor constant:?];
     [v70 setActive:1];
   }
 
-  v71 = [(UIView *)self->_textContainer centerYAnchor];
-  v72 = [(SBUIActionView *)self centerYAnchor];
-  v73 = [v71 constraintEqualToAnchor:v72];
+  centerYAnchor3 = [(UIView *)self->_textContainer centerYAnchor];
+  centerYAnchor4 = [(SBUIActionView *)self centerYAnchor];
+  v73 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v73 setActive:1];
 
-  v74 = [(SBUIActionViewLabel *)self->_titleLabel leadingAnchor];
-  v75 = [(UIView *)self->_textContainer leadingAnchor];
-  v76 = [v74 constraintEqualToAnchor:v75];
+  leadingAnchor3 = [(SBUIActionViewLabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_textContainer leadingAnchor];
+  v76 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v76 setActive:1];
 
-  v77 = [(SBUIActionViewLabel *)self->_titleLabel trailingAnchor];
-  if (v7)
+  trailingAnchor2 = [(SBUIActionViewLabel *)self->_titleLabel trailingAnchor];
+  if (badgeView)
   {
-    v78 = [v7 leadingAnchor];
-    v79 = [MEMORY[0x277D75418] currentDevice];
-    v80 = [v79 userInterfaceIdiom];
+    leadingAnchor5 = [badgeView leadingAnchor];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v81 = -12.0;
-    if ((v80 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v81 = -16.0;
     }
 
-    v82 = [v77 constraintEqualToAnchor:v78 constant:v81];
+    v82 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor5 constant:v81];
   }
 
   else
   {
-    v78 = [(UIView *)self->_textContainer trailingAnchor];
-    v82 = [v77 constraintEqualToAnchor:v78];
+    leadingAnchor5 = [(UIView *)self->_textContainer trailingAnchor];
+    v82 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor5];
   }
 
   v83 = v82;
   [v82 setActive:1];
 
-  v84 = [(SBUIActionViewLabel *)self->_titleLabel font];
-  [v84 _bodyLeading];
+  font = [(SBUIActionViewLabel *)self->_titleLabel font];
+  [font _bodyLeading];
   v86 = v85;
 
   v87 = self->_subtitleLabel;
   if (v87)
   {
-    v88 = [(SBUIActionViewLabel *)v87 leadingAnchor];
-    v89 = [(UIView *)self->_textContainer leadingAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89];
+    leadingAnchor6 = [(SBUIActionViewLabel *)v87 leadingAnchor];
+    leadingAnchor7 = [(UIView *)self->_textContainer leadingAnchor];
+    v90 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v90 setActive:1];
 
-    v91 = [(SBUIActionViewLabel *)self->_subtitleLabel trailingAnchor];
-    if (v7)
+    trailingAnchor3 = [(SBUIActionViewLabel *)self->_subtitleLabel trailingAnchor];
+    if (badgeView)
     {
-      v92 = [v7 leadingAnchor];
-      v93 = [MEMORY[0x277D75418] currentDevice];
-      v94 = [v93 userInterfaceIdiom];
+      leadingAnchor8 = [badgeView leadingAnchor];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
       v95 = -12.0;
-      if ((v94 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v95 = -16.0;
       }
 
-      v96 = [v91 constraintEqualToAnchor:v92 constant:v95];
+      v96 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor8 constant:v95];
     }
 
     else
     {
-      v92 = [(UIView *)self->_textContainer trailingAnchor];
-      v96 = [v91 constraintEqualToAnchor:v92];
+      leadingAnchor8 = [(UIView *)self->_textContainer trailingAnchor];
+      v96 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor8];
     }
 
     v112 = v96;
     [v96 setActive:1];
 
-    v113 = [(SBUIActionViewLabel *)self->_subtitleLabel font];
-    [v113 _bodyLeading];
+    font2 = [(SBUIActionViewLabel *)self->_subtitleLabel font];
+    [font2 _bodyLeading];
     v115 = v114;
 
-    v116 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
-    v117 = [(SBUIActionView *)self topAnchor];
+    firstBaselineAnchor = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
+    topAnchor = [(SBUIActionView *)self topAnchor];
     v118 = 1.173913;
     if (self->_interfaceOrientationIsPortrait)
     {
       v118 = 1.125;
     }
 
-    v119 = [v116 constraintEqualToAnchor:v117 constant:v86 * v118];
-    [v119 setActive:1];
+    v118 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v86 * v118];
+    [v118 setActive:1];
 
-    v120 = [(SBUIActionViewLabel *)self->_subtitleLabel firstBaselineAnchor];
-    v121 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(SBUIActionViewLabel *)self->_subtitleLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
     v122 = 0.949999988;
     if (self->_interfaceOrientationIsPortrait)
     {
       v122 = 1.0;
     }
 
-    v123 = [v120 constraintEqualToAnchor:v121 constant:v115 * v122];
-    [v123 setActive:1];
+    v122 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:v115 * v122];
+    [v122 setActive:1];
 
-    v108 = [(SBUIActionViewLabel *)self->_subtitleLabel firstBaselineAnchor];
-    v109 = [(SBUIActionView *)self bottomAnchor];
+    firstBaselineAnchor4 = [(SBUIActionViewLabel *)self->_subtitleLabel firstBaselineAnchor];
+    bottomAnchor = [(SBUIActionView *)self bottomAnchor];
     v124 = -0.608695626;
     if (self->_interfaceOrientationIsPortrait)
     {
       v124 = -0.625;
     }
 
-    v111 = [v108 constraintEqualToAnchor:v109 constant:v86 * v124];
-    [v111 setActive:1];
+    v124 = [firstBaselineAnchor4 constraintEqualToAnchor:bottomAnchor constant:v86 * v124];
+    [v124 setActive:1];
   }
 
   else
   {
-    v97 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
-    v98 = [(SBUIActionView *)self topAnchor];
+    firstBaselineAnchor5 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
+    topAnchor2 = [(SBUIActionView *)self topAnchor];
     v99 = 1.0869565;
     if (self->_interfaceOrientationIsPortrait)
     {
       v99 = 1.04166663;
     }
 
-    v100 = [v97 constraintGreaterThanOrEqualToAnchor:v98 constant:v86 * v99];
+    v100 = [firstBaselineAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:v86 * v99];
     [v100 setActive:1];
 
-    v101 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
-    v102 = [(SBUIActionView *)self bottomAnchor];
-    v103 = [v101 constraintEqualToAnchor:v102 constant:-v86];
+    firstBaselineAnchor6 = [(SBUIActionViewLabel *)self->_titleLabel firstBaselineAnchor];
+    bottomAnchor2 = [(SBUIActionView *)self bottomAnchor];
+    v103 = [firstBaselineAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:-v86];
     __32__SBUIActionView__setupSubviews__block_invoke(250.0, v103, v103);
     objc_claimAutoreleasedReturnValue();
     [v103 setActive:1];
 
-    v104 = [(SBUIActionViewLabel *)self->_titleLabel lastBaselineAnchor];
-    v105 = [(SBUIActionView *)self bottomAnchor];
+    lastBaselineAnchor = [(SBUIActionViewLabel *)self->_titleLabel lastBaselineAnchor];
+    bottomAnchor3 = [(SBUIActionView *)self bottomAnchor];
     v106 = -0.521739125;
     if (self->_interfaceOrientationIsPortrait)
     {
       v106 = -0.541666687;
     }
 
-    v107 = [v104 constraintLessThanOrEqualToAnchor:v105 constant:v86 * v106];
-    [v107 setActive:1];
+    v106 = [lastBaselineAnchor constraintLessThanOrEqualToAnchor:bottomAnchor3 constant:v86 * v106];
+    [v106 setActive:1];
 
-    v108 = [(SBUIActionViewLabel *)self->_titleLabel lastBaselineAnchor];
-    v109 = [(SBUIActionView *)self topAnchor];
+    firstBaselineAnchor4 = [(SBUIActionViewLabel *)self->_titleLabel lastBaselineAnchor];
+    bottomAnchor = [(SBUIActionView *)self topAnchor];
     v110 = 1.60869563;
     if (self->_interfaceOrientationIsPortrait)
     {
       v110 = 1.58333337;
     }
 
-    v111 = [v108 constraintEqualToAnchor:v109 constant:v86 * v110];
-    __32__SBUIActionView__setupSubviews__block_invoke(250.0, v111, v111);
+    v124 = [firstBaselineAnchor4 constraintEqualToAnchor:bottomAnchor constant:v86 * v110];
+    __32__SBUIActionView__setupSubviews__block_invoke(250.0, v124, v124);
     objc_claimAutoreleasedReturnValue();
-    [v111 setActive:1];
+    [v124 setActive:1];
   }
 
-  if (v7)
+  if (badgeView)
   {
-    v125 = [v7 trailingAnchor];
-    v126 = [(UIView *)self->_textContainer trailingAnchor];
-    v127 = [v125 constraintEqualToAnchor:v126];
+    trailingAnchor4 = [badgeView trailingAnchor];
+    trailingAnchor5 = [(UIView *)self->_textContainer trailingAnchor];
+    v127 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     [v127 setActive:1];
 
-    v128 = [v7 centerYAnchor];
-    v129 = [(SBUIActionView *)self centerYAnchor];
-    v130 = [v128 constraintEqualToAnchor:v129];
+    centerYAnchor5 = [badgeView centerYAnchor];
+    centerYAnchor6 = [(SBUIActionView *)self centerYAnchor];
+    v130 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v130 setActive:1];
   }
 
@@ -505,24 +505,24 @@ LABEL_15:
 
   [(UIView *)self->_highlightView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(SBUIActionView *)self addSubview:self->_highlightView];
-  v133 = [(UIView *)self->_highlightView leadingAnchor];
-  v134 = [(SBUIActionView *)self leadingAnchor];
-  v135 = [v133 constraintEqualToAnchor:v134];
+  leadingAnchor9 = [(UIView *)self->_highlightView leadingAnchor];
+  leadingAnchor10 = [(SBUIActionView *)self leadingAnchor];
+  v135 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v135 setActive:1];
 
-  v136 = [(UIView *)self->_highlightView trailingAnchor];
-  v137 = [(SBUIActionView *)self trailingAnchor];
-  v138 = [v136 constraintEqualToAnchor:v137];
+  trailingAnchor6 = [(UIView *)self->_highlightView trailingAnchor];
+  trailingAnchor7 = [(SBUIActionView *)self trailingAnchor];
+  v138 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   [v138 setActive:1];
 
-  v139 = [(UIView *)self->_highlightView topAnchor];
-  v140 = [(SBUIActionView *)self topAnchor];
-  v141 = [v139 constraintEqualToAnchor:v140];
+  topAnchor3 = [(UIView *)self->_highlightView topAnchor];
+  topAnchor4 = [(SBUIActionView *)self topAnchor];
+  v141 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v141 setActive:1];
 
-  v142 = [(UIView *)self->_highlightView bottomAnchor];
-  v143 = [(SBUIActionView *)self bottomAnchor];
-  v144 = [v142 constraintEqualToAnchor:v143];
+  bottomAnchor4 = [(UIView *)self->_highlightView bottomAnchor];
+  bottomAnchor5 = [(SBUIActionView *)self bottomAnchor];
+  v144 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v144 setActive:1];
 
   [(UIView *)self->_highlightView setHidden:!self->_highlighted];
@@ -544,15 +544,15 @@ id __32__SBUIActionView__setupSubviews__block_invoke(float a1, uint64_t a2, void
   if (self->_imageView && self->_textContainer)
   {
     [MEMORY[0x277CCAAD0] deactivateConstraints:self->_imageViewLayoutConstraints];
-    v3 = [(SBUIActionView *)self imagePosition];
-    if (v3 == 1)
+    imagePosition = [(SBUIActionView *)self imagePosition];
+    if (imagePosition == 1)
     {
       v4 = 0x10000;
     }
 
     else
     {
-      v4 = (v3 == 2) << 17;
+      v4 = (imagePosition == 2) << 17;
     }
 
     v5 = MEMORY[0x277CCAAD0];

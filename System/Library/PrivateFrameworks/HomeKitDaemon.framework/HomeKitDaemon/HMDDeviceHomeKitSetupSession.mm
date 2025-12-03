@@ -1,6 +1,6 @@
 @interface HMDDeviceHomeKitSetupSession
 - (BOOL)shouldRelayRequest;
-- (HMDDeviceHomeKitSetupSession)initWithFirstResidentForHome:(BOOL)a3 clientConnection:(id)a4;
+- (HMDDeviceHomeKitSetupSession)initWithFirstResidentForHome:(BOOL)home clientConnection:(id)connection;
 - (HMDXPCClientConnection)clientConnection;
 @end
 
@@ -26,17 +26,17 @@
   }
 }
 
-- (HMDDeviceHomeKitSetupSession)initWithFirstResidentForHome:(BOOL)a3 clientConnection:(id)a4
+- (HMDDeviceHomeKitSetupSession)initWithFirstResidentForHome:(BOOL)home clientConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = HMDDeviceHomeKitSetupSession;
   v7 = [(HMDDeviceHomeKitSetupSession *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_firstResidentForHome = a3;
-    objc_storeWeak(&v7->_clientConnection, v6);
+    v7->_firstResidentForHome = home;
+    objc_storeWeak(&v7->_clientConnection, connectionCopy);
   }
 
   return v8;

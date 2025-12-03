@@ -1,24 +1,24 @@
 @interface BSAuditToken
 + (id)invalidToken;
 + (id)tokenForCurrentProcess;
-+ (id)tokenFromAuditToken:(id *)a3;
-+ (id)tokenFromAuditTokenRef:(id *)a3;
-+ (id)tokenFromMachMessage:(id *)a3;
-+ (id)tokenFromNSXPCConnection:(id)a3;
-+ (id)tokenFromXPCConnection:(id)a3;
-+ (id)tokenFromXPCMessage:(id)a3;
++ (id)tokenFromAuditToken:(id *)token;
++ (id)tokenFromAuditTokenRef:(id *)ref;
++ (id)tokenFromMachMessage:(id *)message;
++ (id)tokenFromNSXPCConnection:(id)connection;
++ (id)tokenFromXPCConnection:(id)connection;
++ (id)tokenFromXPCMessage:(id)message;
 + (void)initialize;
 - ($115C4C562B26FF47E01F9F4EA65B5887)realToken;
-- (BOOL)hasEntitlement:(id)a3;
-- (BOOL)hasSameProcessAsAuditToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BSAuditToken)initWithAuditToken:(id *)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (BOOL)hasSameProcessAsAuditToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (BSAuditToken)initWithAuditToken:(id *)token;
 - (NSString)description;
-- (id)_bundleIDGeneratingIfNeeded:(void *)a1;
+- (id)_bundleIDGeneratingIfNeeded:(void *)needed;
 - (id)membersForCoder;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (int64_t)versionedPID;
-- (void)_accessSecTask:(uint64_t)a1;
+- (void)_accessSecTask:(uint64_t)task;
 - (void)awakeFromCoder;
 @end
 
@@ -53,10 +53,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global_40);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global_40);
   }
 }
 
@@ -72,14 +72,14 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
 
 + (id)tokenForCurrentProcess
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   BSAuditTokenForCurrentProcess(v9);
   v3 = [v2 initWithAuditToken:v9];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v5 copy];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [bundleIdentifier copy];
     v7 = v3[5];
     v3[5] = v6;
   }
@@ -192,55 +192,55 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
     v19 = [v3 appendUnsignedInteger:audit_token_to_pidversion(&v22) withName:@"PIDVersion"];
   }
 
-  v20 = [v3 build];
+  build = [v3 build];
 
-  return v20;
+  return build;
 }
 
-+ (id)tokenFromAuditToken:(id *)a3
++ (id)tokenFromAuditToken:(id *)token
 {
-  v4 = [a1 alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v4 = [self alloc];
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [v4 initWithAuditToken:v8];
 
   return v6;
 }
 
-+ (id)tokenFromAuditTokenRef:(id *)a3
++ (id)tokenFromAuditTokenRef:(id *)ref
 {
-  if (!a3)
+  if (!ref)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"BSAuditToken.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"auditToken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAuditToken.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"auditToken"}];
   }
 
-  v5 = *&a3->var0[4];
-  v10[0] = *a3->var0;
+  v5 = *&ref->var0[4];
+  v10[0] = *ref->var0;
   v10[1] = v5;
-  v6 = [a1 tokenFromAuditToken:v10];
+  v6 = [self tokenFromAuditToken:v10];
 
   return v6;
 }
 
-+ (id)tokenFromXPCMessage:(id)a3
++ (id)tokenFromXPCMessage:(id)message
 {
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"BSAuditToken.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAuditToken.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  v6 = [a1 alloc];
-  v7 = v5;
+  v6 = [self alloc];
+  v7 = messageCopy;
   if (v6)
   {
-    if (!v5)
+    if (!messageCopy)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:sel_initWithXPCMessage_ object:v6 file:@"BSAuditToken.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_initWithXPCMessage_ object:v6 file:@"BSAuditToken.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"message"}];
     }
 
     *&v8 = -1;
@@ -273,16 +273,16 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-+ (id)tokenFromMachMessage:(id *)a3
++ (id)tokenFromMachMessage:(id *)message
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!message)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"BSAuditToken.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAuditToken.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  v5 = a3 + ((a3->var1 + 3) & 0x1FFFFFFFCLL);
+  v5 = message + ((message->var1 + 3) & 0x1FFFFFFFCLL);
   if (*v5 || *(v5 + 1) < 0x20u)
   {
     v7 = 0;
@@ -295,19 +295,19 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
     v13 = v6;
     v11[0] = v12;
     v11[1] = v6;
-    v7 = [[a1 alloc] initWithAuditToken:v11];
+    v7 = [[self alloc] initWithAuditToken:v11];
   }
 
   return v7;
 }
 
-+ (id)tokenFromXPCConnection:(id)a3
++ (id)tokenFromXPCConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"BSAuditToken.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAuditToken.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
   }
 
   *&v6 = -1;
@@ -317,72 +317,72 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
   xpc_connection_get_audit_token();
   v10[0] = v11;
   v10[1] = v12;
-  v7 = [a1 tokenFromAuditToken:v10];
+  v7 = [self tokenFromAuditToken:v10];
 
   return v7;
 }
 
-+ (id)tokenFromNSXPCConnection:(id)a3
++ (id)tokenFromNSXPCConnection:(id)connection
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  connectionCopy = connection;
+  v6 = connectionCopy;
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"BSAuditToken.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAuditToken.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
 
     memset(v10, 0, sizeof(v10));
   }
 
-  v7 = [a1 tokenFromAuditToken:v10];
+  v7 = [self tokenFromAuditToken:v10];
 
   return v7;
 }
 
-- (BSAuditToken)initWithAuditToken:(id *)a3
+- (BSAuditToken)initWithAuditToken:(id *)token
 {
   v9.receiver = self;
   v9.super_class = BSAuditToken;
   v4 = [(BSAuditToken *)&v9 init];
   if (v4)
   {
-    IsValid = BSAuditTokenIsValid(a3);
-    v6 = &BSInvalidAuditToken;
+    IsValid = BSAuditTokenIsValid(token);
+    tokenCopy = &BSInvalidAuditToken;
     if (IsValid)
     {
-      v6 = a3;
+      tokenCopy = token;
     }
 
-    v7 = *&v6->var0[4];
-    *(v4 + 8) = *v6->var0;
+    v7 = *&tokenCopy->var0[4];
+    *(v4 + 8) = *tokenCopy->var0;
     *(v4 + 24) = v7;
   }
 
   return v4;
 }
 
-- (id)_bundleIDGeneratingIfNeeded:(void *)a1
+- (id)_bundleIDGeneratingIfNeeded:(void *)needed
 {
-  if (a1)
+  if (needed)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    if (a2 && !*(v3 + 5) && (v3[56] & 1) == 0)
+    neededCopy = needed;
+    objc_sync_enter(neededCopy);
+    if (a2 && !*(neededCopy + 5) && (neededCopy[56] & 1) == 0)
     {
-      v3[56] = 1;
-      v4 = BSBundleIDForAuditToken((v3 + 8));
+      neededCopy[56] = 1;
+      v4 = BSBundleIDForAuditToken((neededCopy + 8));
       v5 = [v4 copy];
-      v6 = *(v3 + 5);
-      *(v3 + 5) = v5;
+      v6 = *(neededCopy + 5);
+      *(neededCopy + 5) = v5;
     }
 
-    v7 = *(v3 + 5);
-    objc_sync_exit(v3);
+    v7 = *(neededCopy + 5);
+    objc_sync_exit(neededCopy);
   }
 
   else
@@ -393,9 +393,9 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -404,9 +404,9 @@ void __26__BSAuditToken_initialize__block_invoke(uint64_t a1, void *a2)
   v7[1] = 3221225472;
   v7[2] = __31__BSAuditToken_hasEntitlement___block_invoke;
   v7[3] = &unk_1E72CC3A0;
-  v8 = v4;
+  v8 = entitlementCopy;
   v9 = &v10;
-  v5 = v4;
+  v5 = entitlementCopy;
   [(BSAuditToken *)self _accessSecTask:v7];
   LOBYTE(self) = *(v11 + 24);
 
@@ -420,38 +420,38 @@ void __31__BSAuditToken_hasEntitlement___block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = [(BSSecTask *)v3 BOOLForEntitlement:?];
 }
 
-- (void)_accessSecTask:(uint64_t)a1
+- (void)_accessSecTask:(uint64_t)task
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (task)
   {
     if (!v3)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel__accessSecTask_ object:a1 file:@"BSAuditToken.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"secTaskBlock"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__accessSecTask_ object:task file:@"BSAuditToken.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"secTaskBlock"}];
     }
 
-    v5 = *(a1 + 48);
+    v5 = *(task + 48);
     if (!v5)
     {
-      v6 = *(a1 + 24);
-      v10[0] = *(a1 + 8);
+      v6 = *(task + 24);
+      v10[0] = *(task + 8);
       v10[1] = v6;
       v7 = [BSSecTask secTaskForAuditToken:v10];
-      v8 = *(a1 + 48);
-      *(a1 + 48) = v7;
+      v8 = *(task + 48);
+      *(task + 48) = v7;
 
-      v5 = *(a1 + 48);
+      v5 = *(task + 48);
     }
 
     v4[2](v4, v5);
   }
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -462,9 +462,9 @@ void __31__BSAuditToken_hasEntitlement___block_invoke(uint64_t a1, void *a2)
   v8[1] = 3221225472;
   v8[2] = __36__BSAuditToken_valueForEntitlement___block_invoke;
   v8[3] = &unk_1E72CC3A0;
-  v9 = v4;
+  v9 = entitlementCopy;
   v10 = &v11;
-  v5 = v4;
+  v5 = entitlementCopy;
   [(BSAuditToken *)self _accessSecTask:v8];
   v6 = v12[5];
 
@@ -482,24 +482,24 @@ void __36__BSAuditToken_valueForEntitlement___block_invoke(uint64_t a1, void *a2
   *(v4 + 40) = v3;
 }
 
-- (BOOL)hasSameProcessAsAuditToken:(id)a3
+- (BOOL)hasSameProcessAsAuditToken:(id)token
 {
-  v4 = a3;
-  v6 = v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && BSEqualProcessAuditTokens(&self->_auditToken, v4 + 8);
+  tokenCopy = token;
+  v6 = tokenCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()) && BSEqualProcessAuditTokens(&self->_auditToken, tokenCopy + 8);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_4;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_18;

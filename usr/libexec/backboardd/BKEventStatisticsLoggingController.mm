@@ -1,9 +1,9 @@
 @interface BKEventStatisticsLoggingController
 + (OS_dispatch_queue)workQueue;
-- (BKEventStatisticsLoggingController)initWithLabel:(id)a3 logCategory:(id)a4;
+- (BKEventStatisticsLoggingController)initWithLabel:(id)label logCategory:(id)category;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateStatistics:(id)a3;
+- (void)updateStatistics:(id)statistics;
 @end
 
 @implementation BKEventStatisticsLoggingController
@@ -34,7 +34,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKEventStatisticsLoggingController.m";
       v17 = 1024;
@@ -67,24 +67,24 @@
   return v3;
 }
 
-- (void)updateStatistics:(id)a3
+- (void)updateStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100071784;
   v7[3] = &unk_1000FC300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statisticsCopy;
+  v6 = statisticsCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (BKEventStatisticsLoggingController)initWithLabel:(id)a3 logCategory:(id)a4
+- (BKEventStatisticsLoggingController)initWithLabel:(id)label logCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  categoryCopy = category;
   v24.receiver = self;
   v24.super_class = BKEventStatisticsLoggingController;
   v8 = [(BKEventStatisticsLoggingController *)&v24 init];
@@ -92,13 +92,13 @@
   if (v8)
   {
     v8->_resetStartTime = 1;
-    v10 = [v6 copy];
+    v10 = [labelCopy copy];
     label = v9->_label;
     v9->_label = v10;
 
-    objc_storeStrong(&v9->_logCategory, a4);
+    objc_storeStrong(&v9->_logCategory, category);
     objc_initWeak(&location, v9);
-    v12 = [@"BKEventStatistics-" stringByAppendingString:v6];
+    v12 = [@"BKEventStatistics-" stringByAppendingString:labelCopy];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_100071B18;
@@ -108,9 +108,9 @@
     transactionAssertion = v9->_transactionAssertion;
     v9->_transactionAssertion = v13;
 
-    v15 = [objc_opt_class() workQueue];
+    workQueue = [objc_opt_class() workQueue];
     workQueue = v9->_workQueue;
-    v9->_workQueue = v15;
+    v9->_workQueue = workQueue;
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);

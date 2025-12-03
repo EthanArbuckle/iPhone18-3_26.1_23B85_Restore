@@ -7,7 +7,7 @@
 
 - (id)createSpec
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B38232F8();
 
   return v3;

@@ -1,33 +1,33 @@
 @interface HMMTagProcessorCreatorObserver
-+ (void)addObserverForStartTags:(id)a3 usingCreatorBlock:(id)a4;
-- (HMMTagProcessorCreatorObserver)initWithCreationBlock:(id)a3;
-- (void)observeTaggedEvent:(id)a3 addProcessorBlock:(id)a4;
++ (void)addObserverForStartTags:(id)tags usingCreatorBlock:(id)block;
+- (HMMTagProcessorCreatorObserver)initWithCreationBlock:(id)block;
+- (void)observeTaggedEvent:(id)event addProcessorBlock:(id)block;
 @end
 
 @implementation HMMTagProcessorCreatorObserver
 
-- (void)observeTaggedEvent:(id)a3 addProcessorBlock:(id)a4
+- (void)observeTaggedEvent:(id)event addProcessorBlock:(id)block
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(HMMTagProcessorCreatorObserver *)self creationBlock];
-  v8 = (v7)[2](v7, v6);
+  blockCopy = block;
+  eventCopy = event;
+  creationBlock = [(HMMTagProcessorCreatorObserver *)self creationBlock];
+  v8 = (creationBlock)[2](creationBlock, eventCopy);
 
   if (v8)
   {
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (HMMTagProcessorCreatorObserver)initWithCreationBlock:(id)a3
+- (HMMTagProcessorCreatorObserver)initWithCreationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = HMMTagProcessorCreatorObserver;
   v5 = [(HMMTagProcessorCreatorObserver *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     creationBlock = v5->_creationBlock;
     v5->_creationBlock = v6;
   }
@@ -35,14 +35,14 @@
   return v5;
 }
 
-+ (void)addObserverForStartTags:(id)a3 usingCreatorBlock:(id)a4
++ (void)addObserverForStartTags:(id)tags usingCreatorBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [[HMMTagProcessorCreatorObserver alloc] initWithCreationBlock:v5];
+  blockCopy = block;
+  tagsCopy = tags;
+  v8 = [[HMMTagProcessorCreatorObserver alloc] initWithCreationBlock:blockCopy];
 
   v7 = +[HMMTagManager sharedInstance];
-  [v7 registerTagObserver:v8 forTags:v6];
+  [v7 registerTagObserver:v8 forTags:tagsCopy];
 }
 
 @end

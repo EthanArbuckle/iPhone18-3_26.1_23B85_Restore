@@ -1,13 +1,13 @@
 @interface CKTokenizationDateParser
-+ (id)appropriateDateTokensForSearchText:(id)a3;
-+ (id)dateFormatterForFormat:(id)a3;
-+ (id)dateFormattersForFormats:(id)a3;
++ (id)appropriateDateTokensForSearchText:(id)text;
++ (id)dateFormatterForFormat:(id)format;
++ (id)dateFormattersForFormats:(id)formats;
 + (id)parsers;
 + (id)serializationDateFormatter;
-+ (id)setToMostRecentOccurrenceForWeekdayOfDate:(id)a3;
-+ (id)setYearToMostRecentOccurrenceForDate:(id)a3;
-- (CKTokenizationDateParser)initWithMatchingDateFormatters:(id)a3 displayDateFormatter:(id)a4 filterOptions:(unint64_t)a5 createDateRangeBlock:(id)a6;
-- (id)dateTokenFiltersForSearchText:(id)a3;
++ (id)setToMostRecentOccurrenceForWeekdayOfDate:(id)date;
++ (id)setYearToMostRecentOccurrenceForDate:(id)date;
+- (CKTokenizationDateParser)initWithMatchingDateFormatters:(id)formatters displayDateFormatter:(id)formatter filterOptions:(unint64_t)options createDateRangeBlock:(id)block;
+- (id)dateTokenFiltersForSearchText:(id)text;
 @end
 
 @implementation CKTokenizationDateParser
@@ -36,26 +36,26 @@ uint64_t __54__CKTokenizationDateParser_serializationDateFormatter__block_invoke
   return [v2 setTimeStyle:3];
 }
 
-+ (id)setYearToMostRecentOccurrenceForDate:(id)a3
++ (id)setYearToMostRecentOccurrenceForDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
   v6 = [MEMORY[0x1E695DF00] now];
-  v7 = [v5 components:8204 fromDate:v6];
+  v7 = [currentCalendar components:8204 fromDate:v6];
 
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 components:28 fromDate:v4];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar2 components:28 fromDate:dateCopy];
 
   [v9 setYear:{objc_msgSend(v7, "year")}];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v11 = [v10 dateFromComponents:v9];
+  currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v11 = [currentCalendar3 dateFromComponents:v9];
 
   [v11 timeIntervalSinceNow];
   if (v12 >= 0.0)
   {
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v13 = [v14 dateByAddingUnit:4 value:-1 toDate:v11 options:0];
+    currentCalendar4 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v13 = [currentCalendar4 dateByAddingUnit:4 value:-1 toDate:v11 options:0];
   }
 
   else
@@ -66,28 +66,28 @@ uint64_t __54__CKTokenizationDateParser_serializationDateFormatter__block_invoke
   return v13;
 }
 
-+ (id)setToMostRecentOccurrenceForWeekdayOfDate:(id)a3
++ (id)setToMostRecentOccurrenceForWeekdayOfDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
   v6 = [MEMORY[0x1E695DF00] now];
-  v7 = [v5 components:8204 fromDate:v6];
+  v7 = [currentCalendar components:8204 fromDate:v6];
 
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 components:512 fromDate:v4];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar2 components:512 fromDate:dateCopy];
 
   [v9 setYear:{objc_msgSend(v7, "year")}];
   [v9 setMonth:{objc_msgSend(v7, "month")}];
   [v9 setWeekOfYear:{objc_msgSend(v7, "weekOfYear")}];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v11 = [v10 dateFromComponents:v9];
+  currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v11 = [currentCalendar3 dateFromComponents:v9];
 
   [v11 timeIntervalSinceNow];
   if (v12 >= 0.0)
   {
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v13 = [v14 dateByAddingUnit:0x2000 value:-1 toDate:v11 options:0];
+    currentCalendar4 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v13 = [currentCalendar4 dateByAddingUnit:0x2000 value:-1 toDate:v11 options:0];
   }
 
   else
@@ -98,29 +98,29 @@ uint64_t __54__CKTokenizationDateParser_serializationDateFormatter__block_invoke
   return v13;
 }
 
-+ (id)dateFormatterForFormat:(id)a3
++ (id)dateFormatterForFormat:(id)format
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  formatCopy = format;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  [v5 setLocale:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v5 setLocale:currentLocale];
 
-  [v5 setLocalizedDateFormatFromTemplate:v4];
+  [v5 setLocalizedDateFormatFromTemplate:formatCopy];
 
   return v5;
 }
 
-+ (id)dateFormattersForFormats:(id)a3
++ (id)dateFormattersForFormats:(id)formats
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  formatsCopy = formats;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = formatsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -394,14 +394,14 @@ CKTokenizationDateRange *__35__CKTokenizationDateParser_parsers__block_invoke_6(
   return v8;
 }
 
-+ (id)appropriateDateTokensForSearchText:(id)a3
++ (id)appropriateDateTokensForSearchText:(id)text
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isSearchTokensForDatesEnabled];
+  textCopy = text;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchTokensForDatesEnabled = [mEMORY[0x1E69A8070] isSearchTokensForDatesEnabled];
 
-  if (v5)
+  if (isSearchTokensForDatesEnabled)
   {
     v17 = 0u;
     v18 = 0u;
@@ -423,7 +423,7 @@ CKTokenizationDateRange *__35__CKTokenizationDateParser_parsers__block_invoke_6(
             objc_enumerationMutation(v6);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dateTokenFiltersForSearchText:v3];
+          v12 = [*(*(&v15 + 1) + 8 * i) dateTokenFiltersForSearchText:textCopy];
           if (v12)
           {
             v13 = v12;
@@ -459,21 +459,21 @@ LABEL_14:
   return v10;
 }
 
-- (CKTokenizationDateParser)initWithMatchingDateFormatters:(id)a3 displayDateFormatter:(id)a4 filterOptions:(unint64_t)a5 createDateRangeBlock:(id)a6
+- (CKTokenizationDateParser)initWithMatchingDateFormatters:(id)formatters displayDateFormatter:(id)formatter filterOptions:(unint64_t)options createDateRangeBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  formattersCopy = formatters;
+  formatterCopy = formatter;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = CKTokenizationDateParser;
   v14 = [(CKTokenizationDateParser *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_matchingDateFormatters, a3);
-    objc_storeStrong(&v15->_displayDateFormatter, a4);
-    v15->_filterOptions = a5;
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_matchingDateFormatters, formatters);
+    objc_storeStrong(&v15->_displayDateFormatter, formatter);
+    v15->_filterOptions = options;
+    v16 = _Block_copy(blockCopy);
     createDateRangeBlock = v15->_createDateRangeBlock;
     v15->_createDateRangeBlock = v16;
   }
@@ -481,10 +481,10 @@ LABEL_14:
   return v15;
 }
 
-- (id)dateTokenFiltersForSearchText:(id)a3
+- (id)dateTokenFiltersForSearchText:(id)text
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -504,7 +504,7 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v48 + 1) + 8 * i) dateFromString:v4];
+        v10 = [*(*(&v48 + 1) + 8 * i) dateFromString:textCopy];
         if (v10)
         {
           v12 = v10;
@@ -512,16 +512,16 @@ LABEL_14:
           v13 = (*(self->_createDateRangeBlock + 2))();
           if (v13 && ([MEMORY[0x1E695DEE8] currentCalendar], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695DF00], "now"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "component:fromDate:", 4, v15), v15, v14, objc_msgSend(MEMORY[0x1E695DEE8], "currentCalendar"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "startDate"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "component:fromDate:", 4, v18), v18, v17, v19 <= v16))
           {
-            v20 = [v13 serializeToStringArray];
+            serializeToStringArray = [v13 serializeToStringArray];
             displayDateFormatter = self->_displayDateFormatter;
-            v22 = [v13 startDate];
-            v23 = [(NSDateFormatter *)displayDateFormatter stringFromDate:v22];
+            startDate = [v13 startDate];
+            v23 = [(NSDateFormatter *)displayDateFormatter stringFromDate:startDate];
 
             v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
             filterOptions = self->_filterOptions;
             if ((filterOptions & 0x10) != 0)
             {
-              v26 = [[CKSearchTokenFilter alloc] initWithContentType:8 filterOptions:16 itemIdentifier:v23 tokenAddresses:v20];
+              v26 = [[CKSearchTokenFilter alloc] initWithContentType:8 filterOptions:16 itemIdentifier:v23 tokenAddresses:serializeToStringArray];
               [v24 addObject:v26];
 
               filterOptions = self->_filterOptions;
@@ -535,10 +535,10 @@ LABEL_14:
               v29 = [v28 localizedStringForKey:@"SEARCH_AFTER_DATE_TOKEN" value:&stru_1F04268F8 table:@"ChatKit"];
               v30 = [v27 stringWithFormat:v29, v23];
 
-              v31 = [MEMORY[0x1E69DC668] sharedApplication];
-              v32 = [v31 userInterfaceLayoutDirection];
+              mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+              userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-              if (v32 == 1)
+              if (userInterfaceLayoutDirection == 1)
               {
                 v33 = @"\u200F";
               }
@@ -550,7 +550,7 @@ LABEL_14:
 
               v34 = [(__CFString *)v33 stringByAppendingString:v30];
 
-              v35 = [(CKSearchTokenFilter *)v47 initWithContentType:8 filterOptions:4 itemIdentifier:v34 tokenAddresses:v20];
+              v35 = [(CKSearchTokenFilter *)v47 initWithContentType:8 filterOptions:4 itemIdentifier:v34 tokenAddresses:serializeToStringArray];
               [v24 addObject:v35];
 
               filterOptions = self->_filterOptions;
@@ -564,10 +564,10 @@ LABEL_14:
               v39 = [v38 localizedStringForKey:@"SEARCH_BEFORE_DATE_TOKEN" value:&stru_1F04268F8 table:@"ChatKit"];
               v40 = [v37 stringWithFormat:v39, v23];
 
-              v41 = [MEMORY[0x1E69DC668] sharedApplication];
-              v42 = [v41 userInterfaceLayoutDirection];
+              mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+              userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-              if (v42 == 1)
+              if (userInterfaceLayoutDirection2 == 1)
               {
                 v43 = @"\u200F";
               }
@@ -579,7 +579,7 @@ LABEL_14:
 
               v44 = [(__CFString *)v43 stringByAppendingString:v40];
 
-              v45 = [(CKSearchTokenFilter *)v36 initWithContentType:8 filterOptions:8 itemIdentifier:v44 tokenAddresses:v20];
+              v45 = [(CKSearchTokenFilter *)v36 initWithContentType:8 filterOptions:8 itemIdentifier:v44 tokenAddresses:serializeToStringArray];
               [v24 addObject:v45];
             }
 

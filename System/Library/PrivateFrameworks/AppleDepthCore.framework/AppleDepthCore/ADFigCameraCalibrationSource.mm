@@ -1,24 +1,24 @@
 @interface ADFigCameraCalibrationSource
-+ (CGRect)calcSensorCrop:(CGRect)a3 onImageWithDimensions:(CGSize)a4 metadataDictionary:(id)a5 negativeCropHandling:(int64_t)a6;
-+ (__n128)getTransformFromStream:(void *)a3 toStream:(void *)a4 usingExtrinsicsDictionary:(void *)a5;
-+ (double)figExtrinsicsToTransform:(void *)a3;
-+ (double)getMidExposureTimestampFromMetadataDictionary:(id)a3;
-+ (double)getMidExposureTimestampFromMetadataDictionary:(id)a3 timestamp:(double)a4;
-+ (float)getAngularVelocityFromMetadataDictionary:(id)a3 deviceClock:(double)a4;
-+ (void)getFrameTransformsFromMetadataDictionary:(id)a3 sensorCropRect:(CGRect *)a4 rawSensorSize:(CGSize *)a5 postReadCropRect:(CGRect *)a6;
-- (BOOL)pointFromMetadataField:(id)a3 key:(id)a4 point:(CGPoint *)a5;
-- (BOOL)rectFromMetadataField:(id)a3 key:(id)a4 rect:(CGRect *)a5;
-- (BOOL)updateForFrame:(__CVBuffer *)a3;
-- (BOOL)updateForFrameWithDimensions:(CGSize)a3 metadataDictionary:(id)a4;
-- (uint64_t)initWithPixelSize:(double)a3 gdcModel:(double)a4 cameraToPlatformTransform:(double)a5;
++ (CGRect)calcSensorCrop:(CGRect)crop onImageWithDimensions:(CGSize)dimensions metadataDictionary:(id)dictionary negativeCropHandling:(int64_t)handling;
++ (__n128)getTransformFromStream:(void *)stream toStream:(void *)toStream usingExtrinsicsDictionary:(void *)dictionary;
++ (double)figExtrinsicsToTransform:(void *)transform;
++ (double)getMidExposureTimestampFromMetadataDictionary:(id)dictionary;
++ (double)getMidExposureTimestampFromMetadataDictionary:(id)dictionary timestamp:(double)timestamp;
++ (float)getAngularVelocityFromMetadataDictionary:(id)dictionary deviceClock:(double)clock;
++ (void)getFrameTransformsFromMetadataDictionary:(id)dictionary sensorCropRect:(CGRect *)rect rawSensorSize:(CGSize *)size postReadCropRect:(CGRect *)cropRect;
+- (BOOL)pointFromMetadataField:(id)field key:(id)key point:(CGPoint *)point;
+- (BOOL)rectFromMetadataField:(id)field key:(id)key rect:(CGRect *)rect;
+- (BOOL)updateForFrame:(__CVBuffer *)frame;
+- (BOOL)updateForFrameWithDimensions:(CGSize)dimensions metadataDictionary:(id)dictionary;
+- (uint64_t)initWithPixelSize:(double)size gdcModel:(double)model cameraToPlatformTransform:(double)transform;
 @end
 
 @implementation ADFigCameraCalibrationSource
 
-- (BOOL)updateForFrame:(__CVBuffer *)a3
+- (BOOL)updateForFrame:(__CVBuffer *)frame
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   if (CMCaptureLibraryCore() && getkFigCaptureSampleBufferAttachmentKey_MetadataDictionarySymbolLoc())
   {
     v8 = getkFigCaptureSampleBufferAttachmentKey_MetadataDictionarySymbolLoc();
@@ -38,17 +38,17 @@
     v9 = @"MetadataDictionary";
   }
 
-  v10 = PixelBufferUtils::copyAttachment(a3, v9, 0, v7);
-  v11 = [(ADFigCameraCalibrationSource *)self updateForFrameWithDimensions:v10 metadataDictionary:Width, Height];
+  v10 = PixelBufferUtils::copyAttachment(frame, v9, 0, v7);
+  height = [(ADFigCameraCalibrationSource *)self updateForFrameWithDimensions:v10 metadataDictionary:Width, Height];
 
-  return v11;
+  return height;
 }
 
-- (BOOL)updateForFrameWithDimensions:(CGSize)a3 metadataDictionary:(id)a4
+- (BOOL)updateForFrameWithDimensions:(CGSize)dimensions metadataDictionary:(id)dictionary
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = dimensions.height;
+  width = dimensions.width;
+  dictionaryCopy = dictionary;
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_RawSensorWidthSymbolLoc())
   {
     v8 = getkFigCaptureStreamMetadata_RawSensorWidth();
@@ -59,8 +59,8 @@
     v8 = @"RawSensorWidth";
   }
 
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 integerValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:v8];
+  integerValue = [v9 integerValue];
 
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_RawSensorHeightSymbolLoc())
   {
@@ -72,11 +72,11 @@
     v11 = @"RawSensorHeight";
   }
 
-  v12 = [v7 objectForKeyedSubscript:v11];
-  v13 = v10;
-  v14 = [v12 integerValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
+  v13 = integerValue;
+  integerValue2 = [v12 integerValue];
 
-  [(ADMutableCameraCalibration *)self->_camera setReferenceDimensions:v10, v14];
+  [(ADMutableCameraCalibration *)self->_camera setReferenceDimensions:integerValue, integerValue2];
   *&v15 = self->_rawSensorPixelSize;
   [(ADMutableCameraCalibration *)self->_camera setPixelSize:v15];
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_SensorCropRectSymbolLoc())
@@ -89,7 +89,7 @@
     v16 = @"SensorCropRect";
   }
 
-  v17 = [v7 objectForKeyedSubscript:v16];
+  v17 = [dictionaryCopy objectForKeyedSubscript:v16];
 
   if (v17)
   {
@@ -106,13 +106,13 @@
       v19 = @"SensorCropRect";
     }
 
-    if (![(ADFigCameraCalibrationSource *)self rectFromMetadataField:v7 key:v19 rect:&v50])
+    if (![(ADFigCameraCalibrationSource *)self rectFromMetadataField:dictionaryCopy key:v19 rect:&v50])
     {
       goto LABEL_51;
     }
 
     [(ADMutableCameraCalibration *)self->_camera setReferenceDimensions:v51];
-    if (![(ADMutableCameraCalibration *)self->_camera scale:v13, v14])
+    if (![(ADMutableCameraCalibration *)self->_camera scale:v13, integerValue2])
     {
       goto LABEL_51;
     }
@@ -120,7 +120,7 @@
 
   else
   {
-    [(ADMutableCameraCalibration *)self->_camera setReferenceDimensions:v13, v14];
+    [(ADMutableCameraCalibration *)self->_camera setReferenceDimensions:v13, integerValue2];
   }
 
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_PinholeCameraFocalLengthSymbolLoc())
@@ -139,7 +139,7 @@
     v21 = @"PinholeCameraFocalLength";
   }
 
-  v22 = [v7 objectForKeyedSubscript:v21];
+  v22 = [dictionaryCopy objectForKeyedSubscript:v21];
   [v22 floatValue];
   v24 = v23;
 
@@ -152,7 +152,7 @@
   {
     v26 = @"PracticalFocalLength";
 LABEL_33:
-    v27 = [v7 objectForKeyedSubscript:v26];
+    v27 = [dictionaryCopy objectForKeyedSubscript:v26];
     [v27 floatValue];
     v24 = v28;
 
@@ -180,7 +180,7 @@ LABEL_35:
       v32 = @"DistortionOpticalCenter";
     }
 
-    if ([(ADFigCameraCalibrationSource *)self pointFromMetadataField:v7 key:v32 point:&v49])
+    if ([(ADFigCameraCalibrationSource *)self pointFromMetadataField:dictionaryCopy key:v32 point:&v49])
     {
 LABEL_47:
       *&v35 = v24 / 1000.0 / v30;
@@ -201,7 +201,7 @@ LABEL_47:
       {
         v43 = *v42;
 LABEL_53:
-        v45 = [v7 objectForKeyedSubscript:v43];
+        v45 = [dictionaryCopy objectForKeyedSubscript:v43];
         v46 = v45;
         if (v45)
         {
@@ -220,15 +220,15 @@ LABEL_53:
           v47 = @"TotalSensorCropRect";
         }
 
-        if ([(ADFigCameraCalibrationSource *)self rectFromMetadataField:v7 key:v47 rect:&v50])
+        if ([(ADFigCameraCalibrationSource *)self rectFromMetadataField:dictionaryCopy key:v47 rect:&v50])
         {
           [(ADMutableCameraCalibration *)self->_camera crop:v50, v51];
-          v44 = [(ADMutableCameraCalibration *)self->_camera scale:width, height];
+          height = [(ADMutableCameraCalibration *)self->_camera scale:width, height];
         }
 
         else
         {
-          v44 = 0;
+          height = 0;
         }
 
         goto LABEL_63;
@@ -241,13 +241,13 @@ LABEL_53:
     {
       v34 = @"OpticalCenter";
 LABEL_46:
-      if (![(ADFigCameraCalibrationSource *)self pointFromMetadataField:v7 key:v34 point:&v49])
+      if (![(ADFigCameraCalibrationSource *)self pointFromMetadataField:dictionaryCopy key:v34 point:&v49])
       {
 LABEL_51:
-        v44 = 0;
+        height = 0;
 LABEL_63:
 
-        return v44;
+        return height;
       }
 
       goto LABEL_47;
@@ -281,21 +281,21 @@ LABEL_66:
   return result;
 }
 
-- (BOOL)rectFromMetadataField:(id)a3 key:(id)a4 rect:(CGRect *)a5
+- (BOOL)rectFromMetadataField:(id)field key:(id)key rect:(CGRect *)rect
 {
-  v7 = a4;
-  v8 = [a3 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [field objectForKeyedSubscript:keyCopy];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    NSLog(&cfstr_CannotFindDict.isa, v7);
+    NSLog(&cfstr_CannotFindDict.isa, keyCopy);
 LABEL_6:
     v9 = 0;
     goto LABEL_7;
   }
 
-  if (!CGRectMakeWithDictionaryRepresentation(v8, a5))
+  if (!CGRectMakeWithDictionaryRepresentation(v8, rect))
   {
-    NSLog(&cfstr_InvalidDiction.isa, v7);
+    NSLog(&cfstr_InvalidDiction.isa, keyCopy);
     goto LABEL_6;
   }
 
@@ -305,21 +305,21 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)pointFromMetadataField:(id)a3 key:(id)a4 point:(CGPoint *)a5
+- (BOOL)pointFromMetadataField:(id)field key:(id)key point:(CGPoint *)point
 {
-  v7 = a4;
-  v8 = [a3 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  v8 = [field objectForKeyedSubscript:keyCopy];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    NSLog(&cfstr_CannotFindDict.isa, v7);
+    NSLog(&cfstr_CannotFindDict.isa, keyCopy);
 LABEL_6:
     v9 = 0;
     goto LABEL_7;
   }
 
-  if (!CGPointMakeWithDictionaryRepresentation(v8, a5))
+  if (!CGPointMakeWithDictionaryRepresentation(v8, point))
   {
-    NSLog(&cfstr_InvalidDiction.isa, v7);
+    NSLog(&cfstr_InvalidDiction.isa, keyCopy);
     goto LABEL_6;
   }
 
@@ -329,10 +329,10 @@ LABEL_7:
   return v9;
 }
 
-- (uint64_t)initWithPixelSize:(double)a3 gdcModel:(double)a4 cameraToPlatformTransform:(double)a5
+- (uint64_t)initWithPixelSize:(double)size gdcModel:(double)model cameraToPlatformTransform:(double)transform
 {
   v10 = a8;
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = ADFigCameraCalibrationSource;
   v11 = [(ADFigCameraCalibrationSource *)&v36 init];
   v12 = v11;
@@ -408,7 +408,7 @@ LABEL_19:
         camera = v12->_camera;
         v12->_camera = v25;
 
-        [(ADMutableCameraCalibration *)v12->_camera setCameraToPlatformTransform:a3, a4, a5, a6];
+        [(ADMutableCameraCalibration *)v12->_camera setCameraToPlatformTransform:size, model, transform, a6];
         [(ADMutableCameraCalibration *)v12->_camera setDistortionModel:v12->_distortion];
 
 LABEL_22:
@@ -460,17 +460,17 @@ LABEL_31:
   return result;
 }
 
-+ (CGRect)calcSensorCrop:(CGRect)a3 onImageWithDimensions:(CGSize)a4 metadataDictionary:(id)a5 negativeCropHandling:(int64_t)a6
++ (CGRect)calcSensorCrop:(CGRect)crop onImageWithDimensions:(CGSize)dimensions metadataDictionary:(id)dictionary negativeCropHandling:(int64_t)handling
 {
-  width = a4.width;
-  height = a4.height;
-  v30 = a3.size.width;
-  v31 = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  width = dimensions.width;
+  height = dimensions.height;
+  v30 = crop.size.width;
+  v31 = crop.size.height;
+  x = crop.origin.x;
+  y = crop.origin.y;
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  [ADFigCameraCalibrationSource getFrameTransformsFromMetadataDictionary:v7 sensorCropRect:&v39 rawSensorSize:&v38 postReadCropRect:&v36];
+  dictionaryCopy = dictionary;
+  [ADFigCameraCalibrationSource getFrameTransformsFromMetadataDictionary:dictionaryCopy sensorCropRect:&v39 rawSensorSize:&v38 postReadCropRect:&v36];
   v8.f64[0] = x;
   v8.f64[1] = y;
   v26 = v36;
@@ -488,9 +488,9 @@ LABEL_31:
   v15 = v12.f64[1];
   v35 = v12.f64[0];
   v16 = v14.f64[1];
-  if ((vmaxv_u16(vmovn_s32(vuzp1q_s32(vcgtq_f64(vaddq_f64(v12, v14), v10), vcltzq_f64(v12)))) & 1) != 0 && a6)
+  if ((vmaxv_u16(vmovn_s32(vuzp1q_s32(vcgtq_f64(vaddq_f64(v12, v14), v10), vcltzq_f64(v12)))) & 1) != 0 && handling)
   {
-    if (a6 == 2)
+    if (handling == 2)
     {
       v17 = height / (v31 / v30);
       if (width < v17)
@@ -506,7 +506,7 @@ LABEL_31:
 
     else
     {
-      if (a6 != 1)
+      if (handling != 1)
       {
         __assert_rtn("+[ADFigCameraCalibrationSource calcSensorCrop:onImageWithDimensions:metadataDictionary:negativeCropHandling:]", "ADFigCameraCalibrationSource.mm", 528, "false");
       }
@@ -565,9 +565,9 @@ LABEL_31:
   return result;
 }
 
-+ (float)getAngularVelocityFromMetadataDictionary:(id)a3 deviceClock:(double)a4
++ (float)getAngularVelocityFromMetadataDictionary:(id)dictionary deviceClock:(double)clock
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_ISPMotionDataSymbolLoc())
   {
     v8 = getkFigCaptureStreamMetadata_ISPMotionDataSymbolLoc();
@@ -587,19 +587,19 @@ LABEL_31:
     v9 = @"ISPMotionData";
   }
 
-  v10 = [v7 objectForKeyedSubscript:v9];
-  v11 = [v10 bytes];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
+  bytes = [v10 bytes];
   v14 = NAN;
-  if (v10 && v11)
+  if (v10 && bytes)
   {
-    v15 = *(v11 + 4);
+    v15 = *(bytes + 4);
     if (v15 < 1)
     {
       goto LABEL_19;
     }
 
     v16 = 0;
-    v17 = (v11 + 16);
+    v17 = (bytes + 16);
     v18 = 1;
     v19 = 0.0;
     v59 = vdupq_n_s64(0x3E10000000000000uLL);
@@ -664,7 +664,7 @@ LABEL_31:
       v22 = vdivq_f64(vmulq_f64(v64[0], v63), v57);
       if ((v18 & 1) == 0 && (v26 - 1) <= 1u && v5 != 0.0)
       {
-        v46.f64[0] = (v4 - v25) / a4;
+        v46.f64[0] = (v4 - v25) / clock;
         *&v47.f64[0] = v22.i64[0];
         *&v47.f64[1] = vextq_s8(v22, v22, 8uLL).u64[0];
         v48 = vsubq_f64(v47, v61);
@@ -711,9 +711,9 @@ LABEL_19:
   return v14;
 }
 
-+ (double)getMidExposureTimestampFromMetadataDictionary:(id)a3
++ (double)getMidExposureTimestampFromMetadataDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   if (!CMCaptureLibraryCore() || !getkFigCaptureSampleBufferAttachmentKey_OriginalPresentationTimeStampSymbolLoc())
   {
     v5 = @"_OriginalPresentationTimeStamp";
@@ -725,11 +725,11 @@ LABEL_19:
   {
     v5 = *v4;
 LABEL_6:
-    v6 = [v3 objectForKeyedSubscript:v5];
+    v6 = [dictionaryCopy objectForKeyedSubscript:v5];
     memset(&v11, 0, sizeof(v11));
     CMTimeMakeFromDictionary(&v11, v6);
     time = v11;
-    [ADFigCameraCalibrationSource getMidExposureTimestampFromMetadataDictionary:v3 timestamp:CMTimeGetSeconds(&time)];
+    [ADFigCameraCalibrationSource getMidExposureTimestampFromMetadataDictionary:dictionaryCopy timestamp:CMTimeGetSeconds(&time)];
     v8 = v7;
 
     return v8;
@@ -741,9 +741,9 @@ LABEL_6:
   return result;
 }
 
-+ (double)getMidExposureTimestampFromMetadataDictionary:(id)a3 timestamp:(double)a4
++ (double)getMidExposureTimestampFromMetadataDictionary:(id)dictionary timestamp:(double)timestamp
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_RollingShutterSkewSymbolLoc())
   {
     v6 = getkFigCaptureStreamMetadata_RollingShutterSkewSymbolLoc();
@@ -760,8 +760,8 @@ LABEL_6:
     v7 = @"RollingShutterSkew";
   }
 
-  v8 = [v5 objectForKeyedSubscript:v7];
-  v9 = [v8 intValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:v7];
+  intValue = [v8 intValue];
 
   if (!CMCaptureLibraryCore() || !getkFigCaptureStreamMetadata_ExposureTimeSymbolLoc())
   {
@@ -774,11 +774,11 @@ LABEL_6:
   {
     v11 = *v10;
 LABEL_11:
-    v12 = [v5 objectForKeyedSubscript:v11];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v11];
     [v12 doubleValue];
     v14 = v13;
 
-    return a4 + (v9 / 1000000.0 - v14) * 0.5;
+    return timestamp + (intValue / 1000000.0 - v14) * 0.5;
   }
 
 LABEL_12:
@@ -788,9 +788,9 @@ LABEL_12:
   return result;
 }
 
-+ (void)getFrameTransformsFromMetadataDictionary:(id)a3 sensorCropRect:(CGRect *)a4 rawSensorSize:(CGSize *)a5 postReadCropRect:(CGRect *)a6
++ (void)getFrameTransformsFromMetadataDictionary:(id)dictionary sensorCropRect:(CGRect *)rect rawSensorSize:(CGSize *)size postReadCropRect:(CGRect *)cropRect
 {
-  v19 = a3;
+  dictionaryCopy = dictionary;
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_RawSensorWidthSymbolLoc())
   {
     v9 = getkFigCaptureStreamMetadata_RawSensorWidth();
@@ -801,8 +801,8 @@ LABEL_12:
     v9 = @"RawSensorWidth";
   }
 
-  v10 = [v19 objectForKeyedSubscript:v9];
-  a5->width = [v10 intValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
+  size->width = [v10 intValue];
 
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_RawSensorHeightSymbolLoc())
   {
@@ -814,8 +814,8 @@ LABEL_12:
     v11 = @"RawSensorHeight";
   }
 
-  v12 = [v19 objectForKeyedSubscript:v11];
-  a5->height = [v12 intValue];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
+  size->height = [v12 intValue];
 
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_SensorCropRectSymbolLoc())
   {
@@ -827,7 +827,7 @@ LABEL_12:
     v13 = @"SensorCropRect";
   }
 
-  v14 = [v19 objectForKeyedSubscript:v13];
+  v14 = [dictionaryCopy objectForKeyedSubscript:v13];
 
   if (v14)
   {
@@ -841,15 +841,15 @@ LABEL_12:
       v15 = @"SensorCropRect";
     }
 
-    v16 = [v19 objectForKeyedSubscript:v15];
-    CGRectMakeWithDictionaryRepresentation(v16, a4);
+    v16 = [dictionaryCopy objectForKeyedSubscript:v15];
+    CGRectMakeWithDictionaryRepresentation(v16, rect);
   }
 
   else
   {
-    a4->origin.x = 0.0;
-    a4->origin.y = 0.0;
-    a4->size = *a5;
+    rect->origin.x = 0.0;
+    rect->origin.y = 0.0;
+    rect->size = *size;
   }
 
   if (CMCaptureLibraryCore() && getkFigCaptureStreamMetadata_TotalSensorCropRectSymbolLoc())
@@ -862,23 +862,23 @@ LABEL_12:
     v17 = @"TotalSensorCropRect";
   }
 
-  v18 = [v19 objectForKeyedSubscript:v17];
-  CGRectMakeWithDictionaryRepresentation(v18, a6);
+  v18 = [dictionaryCopy objectForKeyedSubscript:v17];
+  CGRectMakeWithDictionaryRepresentation(v18, cropRect);
 }
 
-+ (__n128)getTransformFromStream:(void *)a3 toStream:(void *)a4 usingExtrinsicsDictionary:(void *)a5
++ (__n128)getTransformFromStream:(void *)stream toStream:(void *)toStream usingExtrinsicsDictionary:(void *)dictionary
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  streamCopy = stream;
+  toStreamCopy = toStream;
+  dictionaryCopy = dictionary;
+  v10 = [dictionaryCopy objectForKeyedSubscript:toStreamCopy];
+  v11 = [v10 objectForKeyedSubscript:streamCopy];
 
   if (!v11)
   {
-    v13 = [v9 objectForKeyedSubscript:v7];
-    v14 = [v13 objectForKeyedSubscript:v8];
+    v13 = [dictionaryCopy objectForKeyedSubscript:streamCopy];
+    v14 = [v13 objectForKeyedSubscript:toStreamCopy];
 
     if (v14)
     {
@@ -891,16 +891,16 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v19 = [v9 objectForKeyedSubscript:v7];
-    v20 = [v19 allKeys];
+    v19 = [dictionaryCopy objectForKeyedSubscript:streamCopy];
+    allKeys = [v19 allKeys];
 
-    if ([v20 count] == 1)
+    if ([allKeys count] == 1)
     {
-      v21 = [v20 objectAtIndexedSubscript:0];
-      v22 = [v9 objectForKeyedSubscript:v7];
+      v21 = [allKeys objectAtIndexedSubscript:0];
+      v22 = [dictionaryCopy objectForKeyedSubscript:streamCopy];
       v23 = [v22 objectForKeyedSubscript:v21];
 
-      v24 = [v9 objectForKeyedSubscript:v8];
+      v24 = [dictionaryCopy objectForKeyedSubscript:toStreamCopy];
       v25 = [v24 objectForKeyedSubscript:v21];
 
       if (v23 && v25)
@@ -950,9 +950,9 @@ LABEL_12:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v52 = v7;
+      v52 = streamCopy;
       v53 = 2112;
-      v54 = v8;
+      v54 = toStreamCopy;
       _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not calculate transform from %@ to %@ out of Fig extrinsics dictionary", buf, 0x16u);
     }
 
@@ -966,14 +966,14 @@ LABEL_14:
   return v49;
 }
 
-+ (double)figExtrinsicsToTransform:(void *)a3
++ (double)figExtrinsicsToTransform:(void *)transform
 {
-  v3 = [a3 bytes];
+  bytes = [transform bytes];
   v4 = 0;
-  v5 = *(v3 + 16);
-  v6 = *(v3 + 32);
-  v7 = vzip1q_s32(*v3, v6);
-  v8 = vzip2q_s32(*v3, v6);
+  v5 = *(bytes + 16);
+  v6 = *(bytes + 32);
+  v7 = vzip1q_s32(*bytes, v6);
+  v8 = vzip2q_s32(*bytes, v6);
   v9 = vzip2q_s32(v5, 0);
   v10 = vzip1q_s32(v7, v5);
   v11 = vzip1q_s32(v8, v9);

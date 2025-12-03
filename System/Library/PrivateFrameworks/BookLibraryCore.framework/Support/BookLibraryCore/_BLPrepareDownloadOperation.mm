@@ -1,56 +1,56 @@
 @interface _BLPrepareDownloadOperation
-+ (BOOL)_allowsCellularAccessForAsset:(id)a3 policy:(id)a4 isCellularAllowedForRestores:(BOOL)a5;
-+ (BOOL)_isDTServiceHubIssuedRequest:(id)a3;
-+ (id)_newDownloadKeyCookieWithValue:(id)a3 URL:(id)a4;
-+ (int64_t)_URLSessionTaskPriorityForDownload:(id)a3;
-+ (int64_t)_URLSessionTaskPriorityForDownloadPriority:(int64_t)a3;
++ (BOOL)_allowsCellularAccessForAsset:(id)asset policy:(id)policy isCellularAllowedForRestores:(BOOL)restores;
++ (BOOL)_isDTServiceHubIssuedRequest:(id)request;
++ (id)_newDownloadKeyCookieWithValue:(id)value URL:(id)l;
++ (int64_t)_URLSessionTaskPriorityForDownload:(id)download;
++ (int64_t)_URLSessionTaskPriorityForDownloadPriority:(int64_t)priority;
 - (BLPrepareDownloadOperation)operation;
-- (BOOL)_assetNeedsDecryption:(id)a3;
+- (BOOL)_assetNeedsDecryption:(id)decryption;
 - (BOOL)_sendsStoreHeadersForAsset;
 - (BOOL)_shouldCancelDownload;
-- (BOOL)_shouldFailForDiskSpaceWithAsset:(id)a3 dataConsumer:(id)a4;
-- (BOOL)_usesStreamingZipDataConsumerForAsset:(id)a3;
+- (BOOL)_shouldFailForDiskSpaceWithAsset:(id)asset dataConsumer:(id)consumer;
+- (BOOL)_usesStreamingZipDataConsumerForAsset:(id)asset;
 - (NSString)downloadIdentifier;
 - (id)_bookManifest;
-- (id)_bookPathForBookWithKind:(id)a3 adamID:(id)a4 publicationVersion:(id)a5;
-- (id)_bookPathWithKind:(id)a3 permaLink:(id)a4;
-- (id)_downloadKeyCookieWithAsset:(id)a3;
-- (id)_initWithOperation:(id)a3 download:(id)a4 policy:(id)a5;
-- (id)_newDataConsumerWithAsset:(id)a3 destinationPath:(id)a4;
-- (id)_newURLRequestWithAsset:(id)a3;
+- (id)_bookPathForBookWithKind:(id)kind adamID:(id)d publicationVersion:(id)version;
+- (id)_bookPathWithKind:(id)kind permaLink:(id)link;
+- (id)_downloadKeyCookieWithAsset:(id)asset;
+- (id)_initWithOperation:(id)operation download:(id)download policy:(id)policy;
+- (id)_newDataConsumerWithAsset:(id)asset destinationPath:(id)path;
+- (id)_newURLRequestWithAsset:(id)asset;
 - (id)outputBlock;
-- (int64_t)_assetSizeFromURLResponse:(id)a3;
-- (int64_t)_loadSizeIfNecessaryForAsset:(id)a3;
+- (int64_t)_assetSizeFromURLResponse:(id)response;
+- (int64_t)_loadSizeIfNecessaryForAsset:(id)asset;
 - (void)dq_action_requestCachedURL;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation _BLPrepareDownloadOperation
 
-- (id)_initWithOperation:(id)a3 download:(id)a4 policy:(id)a5
+- (id)_initWithOperation:(id)operation download:(id)download policy:(id)policy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  downloadCopy = download;
+  policyCopy = policy;
   v17.receiver = self;
   v17.super_class = _BLPrepareDownloadOperation;
   v11 = [(_BLPrepareDownloadOperation *)&v17 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    objc_storeWeak(&v11->_operation, v8);
-    objc_storeStrong(p_isa + 4, a4);
-    v13 = [v9 isRestore];
-    v14 = [v13 BOOLValue];
+    objc_storeWeak(&v11->_operation, operationCopy);
+    objc_storeStrong(p_isa + 4, download);
+    isRestore = [downloadCopy isRestore];
+    bOOLValue = [isRestore BOOLValue];
 
-    if (v14)
+    if (bOOLValue)
     {
       v15 = +[BLRestoreManager sharedInstance];
       [p_isa setIsCellularAllowedForRestores:{objc_msgSend(v15, "isCellularAllowed")}];
     }
 
-    [p_isa setAllowsCellularAccess:{+[_BLPrepareDownloadOperation _allowsCellularAccessForAsset:policy:isCellularAllowedForRestores:](_BLPrepareDownloadOperation, "_allowsCellularAccessForAsset:policy:isCellularAllowedForRestores:", v9, v10, objc_msgSend(p_isa, "isCellularAllowedForRestores"))}];
+    [p_isa setAllowsCellularAccess:{+[_BLPrepareDownloadOperation _allowsCellularAccessForAsset:policy:isCellularAllowedForRestores:](_BLPrepareDownloadOperation, "_allowsCellularAccessForAsset:policy:isCellularAllowedForRestores:", downloadCopy, policyCopy, objc_msgSend(p_isa, "isCellularAllowedForRestores"))}];
   }
 
   return p_isa;
@@ -58,10 +58,10 @@
 
 - (NSString)downloadIdentifier
 {
-  v2 = [(_BLPrepareDownloadOperation *)self download];
-  v3 = [v2 downloadID];
+  download = [(_BLPrepareDownloadOperation *)self download];
+  downloadID = [download downloadID];
 
-  return v3;
+  return downloadID;
 }
 
 - (id)outputBlock
@@ -71,11 +71,11 @@
   return v2;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  if (self->_outputBlock != a3)
+  if (self->_outputBlock != block)
   {
-    self->_outputBlock = [a3 copy];
+    self->_outputBlock = [block copy];
 
     _objc_release_x1();
   }
@@ -97,20 +97,20 @@
   return v2;
 }
 
-- (id)_bookPathForBookWithKind:(id)a3 adamID:(id)a4 publicationVersion:(id)a5
+- (id)_bookPathForBookWithKind:(id)kind adamID:(id)d publicationVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([BLDownloadKindEBook isEqualToString:v8])
+  kindCopy = kind;
+  dCopy = d;
+  versionCopy = version;
+  if ([BLDownloadKindEBook isEqualToString:kindCopy])
   {
-    v11 = [(_BLPrepareDownloadOperation *)self _bookManifest];
-    v12 = [v11 bookPathForAdamID:v9 withPublicationVersion:v10];
+    _bookManifest = [(_BLPrepareDownloadOperation *)self _bookManifest];
+    v12 = [_bookManifest bookPathForAdamID:dCopy withPublicationVersion:versionCopy];
   }
 
-  else if ([BLDownloadKindAudiobook isEqualToString:v8])
+  else if ([BLDownloadKindAudiobook isEqualToString:kindCopy])
   {
-    v12 = [BLMediaLibraryUtilities pathOfAudiobookTrackWithStoreIdentifier:v9];
+    v12 = [BLMediaLibraryUtilities pathOfAudiobookTrackWithStoreIdentifier:dCopy];
   }
 
   else
@@ -124,9 +124,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412802;
-      v16 = v9;
+      v16 = dCopy;
       v17 = 2112;
-      v18 = v10;
+      v18 = versionCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Prepare]: Store book (%@ v%@) already exists on file system at %@. Skipping download and installation.", &v15, 0x20u);
@@ -136,13 +136,13 @@
   return v12;
 }
 
-- (id)_bookPathWithKind:(id)a3 permaLink:(id)a4
+- (id)_bookPathWithKind:(id)kind permaLink:(id)link
 {
-  v6 = a4;
-  if ([BLDownloadKindEBook isEqualToString:a3])
+  linkCopy = link;
+  if ([BLDownloadKindEBook isEqualToString:kind])
   {
-    v7 = [(_BLPrepareDownloadOperation *)self _bookManifest];
-    v8 = [v7 bookPathPermalink:v6];
+    _bookManifest = [(_BLPrepareDownloadOperation *)self _bookManifest];
+    v8 = [_bookManifest bookPathPermalink:linkCopy];
   }
 
   else
@@ -156,7 +156,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = linkCopy;
       v13 = 2112;
       v14 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[Prepare]: iTunesU book (%@) already exists on file system at %@. Skipping download and installation.", &v11, 0x16u);
@@ -169,16 +169,16 @@
 - (void)run
 {
   v3 = [BLPrepareDownloadResponse alloc];
-  v4 = [(_BLPrepareDownloadOperation *)self download];
-  v5 = [(BLPrepareDownloadResponse *)v3 initWithDownload:v4];
+  download = [(_BLPrepareDownloadOperation *)self download];
+  v5 = [(BLPrepareDownloadResponse *)v3 initWithDownload:download];
 
   [(BLPrepareDownloadResponse *)v5 setResult:0];
-  v6 = [(_BLPrepareDownloadOperation *)self downloadIdentifier];
+  downloadIdentifier = [(_BLPrepareDownloadOperation *)self downloadIdentifier];
   v7 = BLServiceLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v58 = v6;
+    v58 = downloadIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Preparing download", buf, 0xCu);
   }
 
@@ -187,35 +187,35 @@
     [(_BLPrepareDownloadOperation *)self dq_action_requestCachedURL];
   }
 
-  v8 = [(_BLPrepareDownloadOperation *)self download];
-  v9 = [v8 permlink];
-  [(BLPrepareDownloadResponse *)v5 setPermLink:v9];
+  download2 = [(_BLPrepareDownloadOperation *)self download];
+  permlink = [download2 permlink];
+  [(BLPrepareDownloadResponse *)v5 setPermLink:permlink];
 
-  v10 = [(_BLPrepareDownloadOperation *)self download];
-  v11 = [v10 storeIdentifier];
+  download3 = [(_BLPrepareDownloadOperation *)self download];
+  storeIdentifier = [download3 storeIdentifier];
 
-  v12 = [(_BLPrepareDownloadOperation *)self download];
-  v13 = [v12 permlink];
+  download4 = [(_BLPrepareDownloadOperation *)self download];
+  permlink2 = [download4 permlink];
 
-  v14 = [(_BLPrepareDownloadOperation *)self download];
-  v15 = [v14 publicationVersion];
+  download5 = [(_BLPrepareDownloadOperation *)self download];
+  publicationVersion = [download5 publicationVersion];
 
-  if (v11 && [v11 longLongValue])
+  if (storeIdentifier && [storeIdentifier longLongValue])
   {
-    v16 = [(_BLPrepareDownloadOperation *)self download];
-    v17 = [v16 kind];
-    v18 = [(_BLPrepareDownloadOperation *)self _bookPathForBookWithKind:v17 adamID:v11 publicationVersion:v15];
+    download6 = [(_BLPrepareDownloadOperation *)self download];
+    kind = [download6 kind];
+    v18 = [(_BLPrepareDownloadOperation *)self _bookPathForBookWithKind:kind adamID:storeIdentifier publicationVersion:publicationVersion];
 LABEL_10:
     v19 = v18;
 
     goto LABEL_12;
   }
 
-  if ([v13 length])
+  if ([permlink2 length])
   {
-    v16 = [(_BLPrepareDownloadOperation *)self download];
-    v17 = [v16 kind];
-    v18 = [(_BLPrepareDownloadOperation *)self _bookPathWithKind:v17 permaLink:v13];
+    download6 = [(_BLPrepareDownloadOperation *)self download];
+    kind = [download6 kind];
+    v18 = [(_BLPrepareDownloadOperation *)self _bookPathWithKind:kind permaLink:permlink2];
     goto LABEL_10;
   }
 
@@ -228,7 +228,7 @@ LABEL_12:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v58 = v6;
+      v58 = downloadIdentifier;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Cancel invalid automatic download", buf, 0xCu);
     }
 
@@ -239,15 +239,15 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v24 = [(_BLPrepareDownloadOperation *)self download];
+  download7 = [(_BLPrepareDownloadOperation *)self download];
 
-  if (!v24)
+  if (!download7)
   {
     v26 = BLServiceLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v58 = v6;
+      v58 = downloadIdentifier;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Skip prepare for download with no media asset", buf, 0xCu);
     }
 
@@ -262,7 +262,7 @@ LABEL_24:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v58 = v6;
+      v58 = downloadIdentifier;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Flagging download as finish only, already have asset", buf, 0xCu);
     }
 
@@ -272,33 +272,33 @@ LABEL_24:
   }
 
   [0 isFileURL];
-  v29 = [(_BLPrepareDownloadOperation *)self download];
-  v30 = [(_BLPrepareDownloadOperation *)self _loadSizeIfNecessaryForAsset:v29];
+  download8 = [(_BLPrepareDownloadOperation *)self download];
+  v30 = [(_BLPrepareDownloadOperation *)self _loadSizeIfNecessaryForAsset:download8];
 
   if (v30 >= 1)
   {
     [(BLPrepareDownloadResponse *)v5 setMediaAssetSize:v30];
   }
 
-  v31 = [(_BLPrepareDownloadOperation *)self download];
-  v32 = [v31 assetPath];
+  download9 = [(_BLPrepareDownloadOperation *)self download];
+  assetPath = [download9 assetPath];
 
-  [(BLPrepareDownloadResponse *)v5 setDestinationPath:v32];
+  [(BLPrepareDownloadResponse *)v5 setDestinationPath:assetPath];
   if ([(BLPrepareDownloadResponse *)v5 isRestore])
   {
     [(BLPrepareDownloadResponse *)v5 setIsCellularAllowedForRestores:[(_BLPrepareDownloadOperation *)self isCellularAllowedForRestores]];
   }
 
   [(BLPrepareDownloadResponse *)v5 setAllowsCellularAccess:[(_BLPrepareDownloadOperation *)self allowsCellularAccess]];
-  v33 = [(_BLPrepareDownloadOperation *)self download];
-  v34 = [(_BLPrepareDownloadOperation *)self _newURLRequestWithAsset:v33];
+  download10 = [(_BLPrepareDownloadOperation *)self download];
+  v34 = [(_BLPrepareDownloadOperation *)self _newURLRequestWithAsset:download10];
 
-  v54 = v32;
+  v54 = assetPath;
   v56 = v34;
   if (v34)
   {
-    v35 = [(_BLPrepareDownloadOperation *)self download];
-    v36 = [(_BLPrepareDownloadOperation *)self _newDataConsumerWithAsset:v35 destinationPath:v32];
+    download11 = [(_BLPrepareDownloadOperation *)self download];
+    v36 = [(_BLPrepareDownloadOperation *)self _newDataConsumerWithAsset:download11 destinationPath:assetPath];
 
     if ([objc_opt_class() _isDTServiceHubIssuedRequest:v34])
     {
@@ -306,7 +306,7 @@ LABEL_24:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v58 = v6;
+        v58 = downloadIdentifier;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Asking data consumer to override progress value", buf, 0xCu);
       }
 
@@ -317,9 +317,9 @@ LABEL_24:
   }
 
   [(BLPrepareDownloadResponse *)v5 setURLRequest:v34, v54];
-  v38 = [(_BLPrepareDownloadOperation *)self download];
-  v39 = [(BLPrepareDownloadResponse *)v5 dataConsumer];
-  v40 = [(_BLPrepareDownloadOperation *)self _shouldFailForDiskSpaceWithAsset:v38 dataConsumer:v39];
+  download12 = [(_BLPrepareDownloadOperation *)self download];
+  dataConsumer = [(BLPrepareDownloadResponse *)v5 dataConsumer];
+  v40 = [(_BLPrepareDownloadOperation *)self _shouldFailForDiskSpaceWithAsset:download12 dataConsumer:dataConsumer];
 
   if (v40)
   {
@@ -327,7 +327,7 @@ LABEL_24:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v58 = v6;
+      v58 = downloadIdentifier;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Prepare]: Fail download without enough disk space", buf, 0xCu);
     }
 
@@ -335,44 +335,44 @@ LABEL_24:
     [(BLPrepareDownloadResponse *)v5 setError:v42];
 
     [(BLPrepareDownloadResponse *)v5 setResult:2];
-    v43 = [(BLPrepareDownloadResponse *)v5 dataConsumer];
-    v44 = v43;
+    dataConsumer2 = [(BLPrepareDownloadResponse *)v5 dataConsumer];
+    download16 = dataConsumer2;
     v45 = v55;
     v46 = v56;
-    if (v43)
+    if (dataConsumer2)
     {
-      [v43 suspend];
+      [dataConsumer2 suspend];
       [(BLPrepareDownloadResponse *)v5 setDataConsumer:0];
     }
   }
 
   else
   {
-    v47 = [(_BLPrepareDownloadOperation *)self _clientIdentifier];
-    [(BLPrepareDownloadResponse *)v5 setClientIdentifier:v47];
+    _clientIdentifier = [(_BLPrepareDownloadOperation *)self _clientIdentifier];
+    [(BLPrepareDownloadResponse *)v5 setClientIdentifier:_clientIdentifier];
 
     [(BLPrepareDownloadResponse *)v5 setRequiresPowerPluggedIn:[(_BLPrepareDownloadOperation *)self _requiresPoweredPluggedIn]];
-    v48 = [(_BLPrepareDownloadOperation *)self download];
-    [(_BLPrepareDownloadOperation *)self _transferProgressFractionWithAsset:v48];
+    download13 = [(_BLPrepareDownloadOperation *)self download];
+    [(_BLPrepareDownloadOperation *)self _transferProgressFractionWithAsset:download13];
     [(BLPrepareDownloadResponse *)v5 setTransferProgressFraction:?];
 
-    v49 = [(_BLPrepareDownloadOperation *)self download];
-    v50 = [v49 isAutomaticDownload];
-    v51 = [v50 BOOLValue];
+    download14 = [(_BLPrepareDownloadOperation *)self download];
+    isAutomaticDownload = [download14 isAutomaticDownload];
+    bOOLValue = [isAutomaticDownload BOOLValue];
 
-    [(BLPrepareDownloadResponse *)v5 setAutomaticType:v51];
+    [(BLPrepareDownloadResponse *)v5 setAutomaticType:bOOLValue];
     [(BLPrepareDownloadResponse *)v5 setDiscretionary:0];
-    v52 = [(_BLPrepareDownloadOperation *)self download];
-    LODWORD(v49) = [BLDownloadInfo shouldBeDiscretionary:v52];
+    download15 = [(_BLPrepareDownloadOperation *)self download];
+    LODWORD(download14) = [BLDownloadInfo shouldBeDiscretionary:download15];
 
-    if (v49)
+    if (download14)
     {
       [(BLPrepareDownloadResponse *)v5 setDiscretionary:1];
     }
 
     v53 = objc_opt_class();
-    v44 = [(_BLPrepareDownloadOperation *)self download];
-    -[BLPrepareDownloadResponse setTaskPriority:](v5, "setTaskPriority:", [v53 _URLSessionTaskPriorityForDownload:v44]);
+    download16 = [(_BLPrepareDownloadOperation *)self download];
+    -[BLPrepareDownloadResponse setTaskPriority:](v5, "setTaskPriority:", [v53 _URLSessionTaskPriorityForDownload:download16]);
     v45 = v55;
     v46 = v56;
   }
@@ -383,24 +383,24 @@ LABEL_25:
     [(BLPrepareDownloadResponse *)v5 result];
   }
 
-  v27 = [(_BLPrepareDownloadOperation *)self outputBlock];
-  if (v27)
+  outputBlock = [(_BLPrepareDownloadOperation *)self outputBlock];
+  if (outputBlock)
   {
-    v28 = [(_BLPrepareDownloadOperation *)self operation];
-    (v27)[2](v27, v28, v5);
+    operation = [(_BLPrepareDownloadOperation *)self operation];
+    (outputBlock)[2](outputBlock, operation, v5);
 
     [(_BLPrepareDownloadOperation *)self setOutputBlock:0];
   }
 }
 
-+ (BOOL)_isDTServiceHubIssuedRequest:(id)a3
++ (BOOL)_isDTServiceHubIssuedRequest:(id)request
 {
-  v3 = [a3 URL];
+  v3 = [request URL];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 host];
-    v5 = [v4 isEqualToString:@"localhost"];
+    host = [v3 host];
+    v5 = [host isEqualToString:@"localhost"];
   }
 
   else
@@ -411,11 +411,11 @@ LABEL_25:
   return v5;
 }
 
-+ (BOOL)_allowsCellularAccessForAsset:(id)a3 policy:(id)a4 isCellularAllowedForRestores:(BOOL)a5
++ (BOOL)_allowsCellularAccessForAsset:(id)asset policy:(id)policy isCellularAllowedForRestores:(BOOL)restores
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 downloadID];
+  assetCopy = asset;
+  policyCopy = policy;
+  downloadID = [assetCopy downloadID];
   v10 = +[BLNetworkMonitor defaultMonitor];
   v33 = 0;
   v11 = [v10 copyCellularNetworkIdentityWithError:&v33];
@@ -427,7 +427,7 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v35 = v9;
+      v35 = downloadID;
       v36 = 2112;
       v37 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Prepare]: Error determining cellular identity, error: %@", buf, 0x16u);
@@ -435,31 +435,31 @@ LABEL_25:
   }
 
   v14 = [BUCellularSettings settingsForIdentity:v11];
-  v15 = [v14 allowAutomaticDownloads];
-  v16 = [v7 isAutomaticDownload];
-  v17 = [v16 BOOLValue];
+  allowAutomaticDownloads = [v14 allowAutomaticDownloads];
+  isAutomaticDownload = [assetCopy isAutomaticDownload];
+  bOOLValue = [isAutomaticDownload BOOLValue];
 
-  if (!v17 || v15)
+  if (!bOOLValue || allowAutomaticDownloads)
   {
-    v18 = [v7 isRestore];
-    v19 = [v18 BOOLValue];
+    isRestore = [assetCopy isRestore];
+    bOOLValue2 = [isRestore BOOLValue];
 
-    if ((v19 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
-      if ([v8 hasCellularResult])
+      if ([policyCopy hasCellularResult])
       {
-        v20 = [v8 cellularResult];
-        a5 = (v20 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-        v21 = BLServiceLog();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        cellularResult = [policyCopy cellularResult];
+        restores = (cellularResult & 0xFFFFFFFFFFFFFFFDLL) == 1;
+        kind = BLServiceLog();
+        if (os_log_type_enabled(kind, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v35 = v9;
+          v35 = downloadID;
           v36 = 2048;
-          v37 = v20;
+          v37 = cellularResult;
           v38 = 1024;
-          LODWORD(v39) = (v20 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Cellular evaluation result is %ld, setting allowsCellularAccess to %d", buf, 0x1Cu);
+          LODWORD(v39) = (cellularResult & 0xFFFFFFFFFFFFFFFDLL) == 1;
+          _os_log_impl(&_mh_execute_header, kind, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Cellular evaluation result is %ld, setting allowsCellularAccess to %d", buf, 0x1Cu);
         }
       }
 
@@ -469,23 +469,23 @@ LABEL_25:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v35 = v9;
+          v35 = downloadID;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Cellular evaluation result not found, fallback to use hard download limit for cellular", buf, 0xCu);
         }
 
-        v23 = [v7 fileSize];
-        v21 = [v7 kind];
-        if (v21)
+        fileSize = [assetCopy fileSize];
+        kind = [assetCopy kind];
+        if (kind)
         {
           v30 = +[BUBag defaultBag];
-          v24 = [AMSNetworkConstraints networkConstraintsForMediaType:v21 withBag:?];
+          v24 = [AMSNetworkConstraints networkConstraintsForMediaType:kind withBag:?];
           v32 = 0;
           v25 = [v24 resultWithError:&v32];
           v31 = v32;
           if (v25)
           {
             v26 = [v25 sizeLimitForNetworkType:AMSNetworkTypeCellular];
-            a5 = v26 != AMSSizeLimitDisabled && (v26 == AMSSizeLimitNoLimit || v23 <= v26);
+            restores = v26 != AMSSizeLimitDisabled && (v26 == AMSSizeLimitNoLimit || fileSize <= v26);
           }
 
           else
@@ -494,21 +494,21 @@ LABEL_25:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
-              v35 = v9;
+              v35 = downloadID;
               v36 = 2114;
-              v37 = v21;
+              v37 = kind;
               v38 = 2112;
               v39 = v31;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Prepare]: Constraints not found in bag, downloadKind: %{public}@, error:  %@", buf, 0x20u);
             }
 
-            a5 = 1;
+            restores = 1;
           }
         }
 
         else
         {
-          a5 = 1;
+          restores = 1;
         }
       }
     }
@@ -516,68 +516,68 @@ LABEL_25:
 
   else
   {
-    a5 = 0;
+    restores = 0;
   }
 
-  return a5;
+  return restores;
 }
 
-- (BOOL)_assetNeedsDecryption:(id)a3
+- (BOOL)_assetNeedsDecryption:(id)decryption
 {
-  v3 = [a3 dpInfo];
-  v4 = v3 != 0;
+  dpInfo = [decryption dpInfo];
+  v4 = dpInfo != 0;
 
   return v4;
 }
 
-- (int64_t)_assetSizeFromURLResponse:(id)a3
+- (int64_t)_assetSizeFromURLResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 statusCode];
-    if (v5 == 206)
+    v4 = responseCopy;
+    statusCode = [v4 statusCode];
+    if (statusCode == 206)
     {
-      v6 = [v4 allHeaderFields];
-      v7 = [v6 objectForKey:@"Content-Range"];
+      allHeaderFields = [v4 allHeaderFields];
+      v7 = [allHeaderFields objectForKey:@"Content-Range"];
 
       if (!v7 || (+[NSCharacterSet characterSetWithCharactersInString:](NSCharacterSet, "characterSetWithCharactersInString:", @"/"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 rangeOfCharacterFromSet:v8], v8, v9 == 0x7FFFFFFFFFFFFFFFLL) || (v10 = v9 + 1, v10 >= objc_msgSend(v7, "length")))
       {
-        v12 = -1;
+        longLongValue = -1;
       }
 
       else
       {
         v11 = [v7 substringFromIndex:v10];
-        v12 = [v11 longLongValue];
+        longLongValue = [v11 longLongValue];
       }
     }
 
-    else if ((v5 - 200) > 0x63)
+    else if ((statusCode - 200) > 0x63)
     {
-      v12 = -1;
+      longLongValue = -1;
     }
 
     else
     {
-      v12 = [v4 expectedContentLength];
+      longLongValue = [v4 expectedContentLength];
     }
   }
 
   else
   {
-    v12 = -1;
+    longLongValue = -1;
   }
 
-  return v12;
+  return longLongValue;
 }
 
 - (void)dq_action_requestCachedURL
 {
-  v2 = [(_BLPrepareDownloadOperation *)self download];
-  v3 = [v2 url];
+  download = [(_BLPrepareDownloadOperation *)self download];
+  v3 = [download url];
 
   if (v3)
   {
@@ -594,39 +594,39 @@ LABEL_25:
   }
 }
 
-+ (id)_newDownloadKeyCookieWithValue:(id)a3 URL:(id)a4
++ (id)_newDownloadKeyCookieWithValue:(id)value URL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  valueCopy = value;
   v7 = objc_alloc_init(NSMutableDictionary);
   v8 = [NSNumber numberWithInteger:604800];
   [v7 setObject:v8 forKey:NSHTTPCookieMaximumAge];
 
-  v9 = [v5 host];
-  [v7 setObject:v9 forKey:NSHTTPCookieDomain];
+  host = [lCopy host];
+  [v7 setObject:host forKey:NSHTTPCookieDomain];
 
   [v7 setObject:@"downloadKey" forKey:NSHTTPCookieName];
-  v10 = [v5 path];
-  [v7 setObject:v10 forKey:NSHTTPCookiePath];
+  path = [lCopy path];
+  [v7 setObject:path forKey:NSHTTPCookiePath];
 
-  [v7 setObject:v5 forKey:NSHTTPCookieOriginURL];
-  [v7 setObject:v6 forKey:NSHTTPCookieValue];
+  [v7 setObject:lCopy forKey:NSHTTPCookieOriginURL];
+  [v7 setObject:valueCopy forKey:NSHTTPCookieValue];
 
   v11 = [[NSHTTPCookie alloc] initWithProperties:v7];
   return v11;
 }
 
-- (id)_downloadKeyCookieWithAsset:(id)a3
+- (id)_downloadKeyCookieWithAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 url];
+  assetCopy = asset;
+  v4 = [assetCopy url];
   if (v4)
   {
-    v5 = [v3 downloadKey];
-    if ([v5 length])
+    downloadKey = [assetCopy downloadKey];
+    if ([downloadKey length])
     {
       v6 = [[NSURL alloc] initWithString:v4];
-      v7 = [objc_opt_class() _newDownloadKeyCookieWithValue:v5 URL:v6];
+      v7 = [objc_opt_class() _newDownloadKeyCookieWithValue:downloadKey URL:v6];
     }
 
     else
@@ -643,12 +643,12 @@ LABEL_25:
   return v7;
 }
 
-- (int64_t)_loadSizeIfNecessaryForAsset:(id)a3
+- (int64_t)_loadSizeIfNecessaryForAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 fileSize] <= 0)
+  assetCopy = asset;
+  if ([assetCopy fileSize] <= 0)
   {
-    v6 = [v4 url];
+    v6 = [assetCopy url];
     if (!v6)
     {
       v5 = -1;
@@ -660,9 +660,9 @@ LABEL_22:
     v7 = BLServiceLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 downloadID];
+      downloadID = [assetCopy downloadID];
       *buf = 138543362;
-      v36 = v8;
+      v36 = downloadID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Prepare request to load asset size", buf, 0xCu);
     }
 
@@ -674,13 +674,13 @@ LABEL_22:
     [v11 setCachePolicy:1];
     [v11 setTimeoutInterval:30.0];
     [v11 setValue:@"identity" forHTTPHeaderField:@"Accept-Encoding"];
-    v12 = [(_BLPrepareDownloadOperation *)self _downloadKeyCookieWithAsset:v4];
+    v12 = [(_BLPrepareDownloadOperation *)self _downloadKeyCookieWithAsset:assetCopy];
     if (v12)
     {
       v13 = [NSString alloc];
-      v14 = [v12 name];
-      v15 = [v12 value];
-      v16 = [v13 initWithFormat:@"%@=%@", v14, v15];
+      name = [v12 name];
+      value = [v12 value];
+      v16 = [v13 initWithFormat:@"%@=%@", name, value];
 
       [v11 setValue:v16 forHTTPHeaderField:AMSHTTPHeaderCookie];
     }
@@ -702,8 +702,8 @@ LABEL_22:
       v23 = v33;
       if (!v23)
       {
-        v31 = [v22 response];
-        v5 = [(_BLPrepareDownloadOperation *)self _assetSizeFromURLResponse:v31];
+        response = [v22 response];
+        v5 = [(_BLPrepareDownloadOperation *)self _assetSizeFromURLResponse:response];
 
         v19 = v32;
 LABEL_14:
@@ -714,9 +714,9 @@ LABEL_14:
         {
           if (v27)
           {
-            v29 = [v4 downloadID];
+            downloadID2 = [assetCopy downloadID];
             *buf = 138543362;
-            v36 = v29;
+            v36 = downloadID2;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Failed to find size for download", buf, 0xCu);
           }
         }
@@ -725,15 +725,15 @@ LABEL_14:
         {
           if (v27)
           {
-            v28 = [v4 downloadID];
+            downloadID3 = [assetCopy downloadID];
             *buf = 138543618;
-            v36 = v28;
+            v36 = downloadID3;
             v37 = 2048;
             v38 = v5;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Found size: %lld for download", buf, 0x16u);
           }
 
-          [v4 setFileSize:v5];
+          [assetCopy setFileSize:v5];
         }
 
         goto LABEL_22;
@@ -748,9 +748,9 @@ LABEL_14:
     v21 = BLServiceLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v4 downloadID];
+      downloadID4 = [assetCopy downloadID];
       *buf = 138543874;
-      v36 = v25;
+      v36 = downloadID4;
       v37 = 2114;
       v38 = v6;
       v39 = 2112;
@@ -768,72 +768,72 @@ LABEL_23:
   return v5;
 }
 
-- (id)_newDataConsumerWithAsset:(id)a3 destinationPath:(id)a4
+- (id)_newDataConsumerWithAsset:(id)asset destinationPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 numberOfBytesToHash];
-  if (v8 < 1)
+  assetCopy = asset;
+  pathCopy = path;
+  numberOfBytesToHash = [assetCopy numberOfBytesToHash];
+  if (numberOfBytesToHash < 1)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [v6 md5HashStrings];
-    v10 = [v9 componentsSeparatedByString:{@", "}];
+    md5HashStrings = [assetCopy md5HashStrings];
+    v10 = [md5HashStrings componentsSeparatedByString:{@", "}];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v10 count])
     {
 
       v10 = 0;
-      v8 = 0;
+      numberOfBytesToHash = 0;
     }
   }
 
-  if ([(_BLPrepareDownloadOperation *)self _usesStreamingZipDataConsumerForAsset:v6])
+  if ([(_BLPrepareDownloadOperation *)self _usesStreamingZipDataConsumerForAsset:assetCopy])
   {
-    v11 = [v6 hashType];
-    v12 = [BLStreamingZipHandler optionsWithHashes:v10 type:v11 size:v8];
+    hashType = [assetCopy hashType];
+    v12 = [BLStreamingZipHandler optionsWithHashes:v10 type:hashType size:numberOfBytesToHash];
 
-    v13 = [[BLStreamingZipDownloadDataConsumer alloc] initWithPath:v7 options:v12];
+    v13 = [[BLStreamingZipDownloadDataConsumer alloc] initWithPath:pathCopy options:v12];
   }
 
   else
   {
-    v13 = [[BLFilesystemDownloadDataConsumer alloc] initWithPath:v7 MD5Hashes:v10 numberOfBytesToHash:v8];
+    v13 = [[BLFilesystemDownloadDataConsumer alloc] initWithPath:pathCopy MD5Hashes:v10 numberOfBytesToHash:numberOfBytesToHash];
   }
 
   return v13;
 }
 
-- (id)_newURLRequestWithAsset:(id)a3
+- (id)_newURLRequestWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 url];
+  assetCopy = asset;
+  v5 = [assetCopy url];
   if (v5)
   {
     v6 = [[NSURL alloc] initWithString:v5];
     v7 = [[NSMutableURLRequest alloc] initWithURL:v6];
     [v7 setCachePolicy:1];
-    v8 = [(_BLPrepareDownloadOperation *)self allowsCellularAccess];
+    allowsCellularAccess = [(_BLPrepareDownloadOperation *)self allowsCellularAccess];
     v9 = BLServiceLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 downloadID];
+      downloadID = [assetCopy downloadID];
       v18 = 138543618;
-      v19 = v10;
+      v19 = downloadID;
       v20 = 1024;
-      v21 = v8;
+      v21 = allowsCellularAccess;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare] allowsCellularAccess = %d", &v18, 0x12u);
     }
 
-    [v7 setAllowsCellularAccess:v8];
-    v11 = [v4 isRestore];
-    v12 = [v11 BOOLValue];
+    [v7 setAllowsCellularAccess:allowsCellularAccess];
+    isRestore = [assetCopy isRestore];
+    bOOLValue = [isRestore BOOLValue];
 
-    if (v12 & v8)
+    if (bOOLValue & allowsCellularAccess)
     {
       [v7 setAllowsExpensiveNetworkAccess:0];
     }
@@ -863,9 +863,9 @@ LABEL_23:
 
 - (BOOL)_sendsStoreHeadersForAsset
 {
-  v2 = [(_BLPrepareDownloadOperation *)self download];
-  v3 = [v2 storeIdentifier];
-  v4 = [v3 longLongValue] != 0;
+  download = [(_BLPrepareDownloadOperation *)self download];
+  storeIdentifier = [download storeIdentifier];
+  v4 = [storeIdentifier longLongValue] != 0;
 
   return v4;
 }
@@ -873,30 +873,30 @@ LABEL_23:
 - (BOOL)_shouldCancelDownload
 {
   v3 = +[BURestrictionsProvider sharedInstance];
-  v4 = [v3 isBookStoreAllowed];
+  isBookStoreAllowed = [v3 isBookStoreAllowed];
 
-  if (v4)
+  if (isBookStoreAllowed)
   {
     return 0;
   }
 
-  v6 = [(_BLPrepareDownloadOperation *)self download];
-  v7 = [v6 isPurchase];
-  v8 = [v7 BOOLValue];
+  download = [(_BLPrepareDownloadOperation *)self download];
+  isPurchase = [download isPurchase];
+  bOOLValue = [isPurchase BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_shouldFailForDiskSpaceWithAsset:(id)a3 dataConsumer:(id)a4
+- (BOOL)_shouldFailForDiskSpaceWithAsset:(id)asset dataConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  consumerCopy = consumer;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v8 = [v6 fileSize];
-  v9 = [(_BLPrepareDownloadOperation *)self downloadIdentifier];
+  fileSize = [assetCopy fileSize];
+  downloadIdentifier = [(_BLPrepareDownloadOperation *)self downloadIdentifier];
   v10 = +[NSUserDefaults standardUserDefaults];
   v11 = [v10 BOOLForKey:@"BKSimulateDeviceOutOfSpace"];
 
@@ -906,7 +906,7 @@ LABEL_23:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v35 = v9;
+      v35 = downloadIdentifier;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Simulating a device out of space situation", buf, 0xCu);
     }
 
@@ -920,19 +920,19 @@ LABEL_23:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v35 = v9;
+      v35 = downloadIdentifier;
       v36 = 2048;
-      v37 = v8;
+      v37 = fileSize;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Determined asset size to be %llu bytes", buf, 0x16u);
     }
 
-    if (v7)
+    if (consumerCopy)
     {
-      v15 = [v7 diskUsage];
-      v16 = v15;
-      if (v15 <= v8)
+      diskUsage = [consumerCopy diskUsage];
+      v16 = diskUsage;
+      if (diskUsage <= fileSize)
       {
-        v17 = v15;
+        v17 = diskUsage;
       }
 
       else
@@ -944,20 +944,20 @@ LABEL_23:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v35 = v9;
+        v35 = downloadIdentifier;
         v36 = 2048;
         v37 = v16;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Prepare]: Discovered %llu bytes already transfered", buf, 0x16u);
       }
 
-      v8 -= v17;
+      fileSize -= v17;
     }
 
-    v19 = [v6 assetPath];
-    v20 = v19;
-    if (v8 && v19)
+    assetPath = [assetCopy assetPath];
+    v20 = assetPath;
+    if (fileSize && assetPath)
     {
-      v21 = [NSURL fileURLWithPath:v19];
+      v21 = [NSURL fileURLWithPath:assetPath];
       v22 = dispatch_semaphore_create(0);
       v23 = +[BLStorage sharedInstance];
       v26[0] = _NSConcreteStackBlock;
@@ -965,10 +965,10 @@ LABEL_23:
       v26[2] = sub_100098708;
       v26[3] = &unk_10011E1D8;
       v29 = &v30;
-      v27 = v9;
+      v27 = downloadIdentifier;
       v24 = v22;
       v28 = v24;
-      [v23 requestFreeSpace:v8 atPath:v21 withOptions:0 completionBlock:v26];
+      [v23 requestFreeSpace:fileSize atPath:v21 withOptions:0 completionBlock:v26];
 
       dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -980,65 +980,65 @@ LABEL_23:
   return v13 & 1;
 }
 
-+ (int64_t)_URLSessionTaskPriorityForDownload:(id)a3
++ (int64_t)_URLSessionTaskPriorityForDownload:(id)download
 {
-  v4 = a3;
-  v5 = [v4 isRestore];
-  v6 = [v5 BOOLValue];
+  downloadCopy = download;
+  isRestore = [downloadCopy isRestore];
+  bOOLValue = [isRestore BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = -2;
   }
 
   else
   {
-    v8 = [v4 isAutomaticDownload];
-    v9 = [v8 BOOLValue];
+    isAutomaticDownload = [downloadCopy isAutomaticDownload];
+    bOOLValue2 = [isAutomaticDownload BOOLValue];
 
-    v7 = (v9 << 63) >> 63;
+    v7 = (bOOLValue2 << 63) >> 63;
   }
 
-  v10 = [a1 _URLSessionTaskPriorityForDownloadPriority:v7];
+  v10 = [self _URLSessionTaskPriorityForDownloadPriority:v7];
 
   return v10;
 }
 
-+ (int64_t)_URLSessionTaskPriorityForDownloadPriority:(int64_t)a3
++ (int64_t)_URLSessionTaskPriorityForDownloadPriority:(int64_t)priority
 {
-  if ((a3 + 2) >= 4)
+  if ((priority + 2) >= 4)
   {
     return 400;
   }
 
   else
   {
-    return -100 * a3 + 300;
+    return -100 * priority + 300;
   }
 }
 
-- (BOOL)_usesStreamingZipDataConsumerForAsset:(id)a3
+- (BOOL)_usesStreamingZipDataConsumerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 isZipStreamable];
-  v6 = v5;
-  if (v5)
+  assetCopy = asset;
+  isZipStreamable = [assetCopy isZipStreamable];
+  v6 = isZipStreamable;
+  if (isZipStreamable)
   {
-    LOBYTE(v7) = [v5 BOOLValue];
+    LOBYTE(v7) = [isZipStreamable BOOLValue];
   }
 
   else
   {
-    v8 = [(_BLPrepareDownloadOperation *)self download];
-    v9 = [v8 storeIdentifier];
-    v10 = [v9 integerValue];
+    download = [(_BLPrepareDownloadOperation *)self download];
+    storeIdentifier = [download storeIdentifier];
+    integerValue = [storeIdentifier integerValue];
 
-    if (v10)
+    if (integerValue)
     {
       v11 = BLDownloadKindAudiobook;
-      v12 = [(_BLPrepareDownloadOperation *)self download];
-      v13 = [v12 kind];
-      v7 = [v11 isEqualToString:v13] ^ 1;
+      download2 = [(_BLPrepareDownloadOperation *)self download];
+      kind = [download2 kind];
+      v7 = [v11 isEqualToString:kind] ^ 1;
     }
 
     else
@@ -1047,7 +1047,7 @@ LABEL_23:
     }
   }
 
-  v14 = ![(_BLPrepareDownloadOperation *)self _assetNeedsDecryption:v4];
+  v14 = ![(_BLPrepareDownloadOperation *)self _assetNeedsDecryption:assetCopy];
 
   return v14 & v7;
 }

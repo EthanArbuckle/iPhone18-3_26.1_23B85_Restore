@@ -1,19 +1,19 @@
 @interface EARKeywordFinderResult
-- (id)_initWithCorrectedUtterances:(id)a3;
+- (id)_initWithCorrectedUtterances:(id)utterances;
 - (id)description;
 @end
 
 @implementation EARKeywordFinderResult
 
-- (id)_initWithCorrectedUtterances:(id)a3
+- (id)_initWithCorrectedUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   v9.receiver = self;
   v9.super_class = EARKeywordFinderResult;
   v5 = [(EARKeywordFinderResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [utterancesCopy copy];
     correctedUtterances = v5->_correctedUtterances;
     v5->_correctedUtterances = v6;
   }

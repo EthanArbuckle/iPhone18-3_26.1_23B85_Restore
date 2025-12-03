@@ -1,23 +1,23 @@
 @interface EKUIDividedGridViewCell
 - (EKUIDividedGridViewCell)init;
-- (EKUIDividedGridViewCell)initWithBackgroundColor:(id)a3;
+- (EKUIDividedGridViewCell)initWithBackgroundColor:(id)color;
 - (EKUIDividedGridViewController)viewController;
 - (NSLayoutConstraint)widthConstraint;
 - (id)selectedTextColor;
-- (void)setSelected:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setSelected:(BOOL)selected;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation EKUIDividedGridViewCell
 
-- (EKUIDividedGridViewCell)initWithBackgroundColor:(id)a3
+- (EKUIDividedGridViewCell)initWithBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = [(EKUIDividedGridViewCell *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bgColor, a3);
+    objc_storeStrong(&v6->_bgColor, color);
     [(EKUIDividedGridViewCell *)v7 setBackgroundColor:v7->_bgColor];
   }
 
@@ -36,8 +36,8 @@
     v2->_label = v3;
 
     [(UILabel *)v2->_label setTextAlignment:1];
-    v5 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v2->_label setTextColor:v5];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v2->_label setTextColor:labelColor];
 
     [(UILabel *)v2->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(EKUIDividedGridViewCell *)v2 addSubview:v2->_label];
@@ -51,38 +51,38 @@
     v11 = [v9 constraintsWithVisualFormat:@"V:|-(0)-[_label]-(0)-|" options:512 metrics:0 views:v10];
     [(EKUIDividedGridViewCell *)v2 addConstraints:v11];
 
-    v12 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-    [(EKUIDividedGridViewCell *)v2 setBackgroundColor:v12];
+    tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+    [(EKUIDividedGridViewCell *)v2 setBackgroundColor:tableCellGroupedBackgroundColor];
   }
 
   return v2;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [(EKUIDividedGridViewCell *)self viewController:a3];
+  v5 = [(EKUIDividedGridViewCell *)self viewController:began];
   [v5 cellTapped:self];
 }
 
 - (id)selectedTextColor
 {
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [(EKUIDividedGridViewCell *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  traitCollection = [(EKUIDividedGridViewCell *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
 
-    v3 = v6;
+    whiteColor = blackColor;
   }
 
-  return v3;
+  return whiteColor;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  self->_selected = a3;
+  self->_selected = selected;
   if (![(EKUIDividedGridViewCell *)self selected])
   {
     if (self->_bgColor)
@@ -91,20 +91,20 @@
       goto LABEL_9;
     }
 
-    v4 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+    tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
     goto LABEL_7;
   }
 
-  v4 = [(EKUIDividedGridViewCell *)self tintColor];
-  if (v4)
+  tableCellGroupedBackgroundColor = [(EKUIDividedGridViewCell *)self tintColor];
+  if (tableCellGroupedBackgroundColor)
   {
 LABEL_7:
-    [(EKUIDividedGridViewCell *)self setBackgroundColor:v4];
+    [(EKUIDividedGridViewCell *)self setBackgroundColor:tableCellGroupedBackgroundColor];
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x1E69DC888] darkGrayColor];
-  [(EKUIDividedGridViewCell *)self setBackgroundColor:v5];
+  darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+  [(EKUIDividedGridViewCell *)self setBackgroundColor:darkGrayColor];
 
 LABEL_8:
 LABEL_9:
@@ -118,8 +118,8 @@ LABEL_9:
     [MEMORY[0x1E69DC888] labelColor];
   }
   v7 = ;
-  v6 = [(EKUIDividedGridViewCell *)self label];
-  [v6 setTextColor:v7];
+  label = [(EKUIDividedGridViewCell *)self label];
+  [label setTextColor:v7];
 }
 
 - (EKUIDividedGridViewController)viewController

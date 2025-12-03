@@ -1,16 +1,16 @@
 @interface AFSiriAceRequest
-- (AFSiriAceRequest)initWithStartLocalRequest:(id)a3 requestOptions:(unint64_t)a4;
-- (AFSiriAceRequest)initWithStartRequest:(id)a3 requestOptions:(unint64_t)a4;
-- (void)performRequestWithCompletion:(id)a3;
+- (AFSiriAceRequest)initWithStartLocalRequest:(id)request requestOptions:(unint64_t)options;
+- (AFSiriAceRequest)initWithStartRequest:(id)request requestOptions:(unint64_t)options;
+- (void)performRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriAceRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_startRequestData)
   {
     *keys = xmmword_1E7348678;
@@ -28,7 +28,7 @@
   {
     if (!self->_startLocalRequestData)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_16;
     }
 
@@ -96,15 +96,15 @@ void __49__AFSiriAceRequest_performRequestWithCompletion___block_invoke(uint64_t
   xpc_connection_cancel(*(a1 + 32));
 }
 
-- (AFSiriAceRequest)initWithStartLocalRequest:(id)a3 requestOptions:(unint64_t)a4
+- (AFSiriAceRequest)initWithStartLocalRequest:(id)request requestOptions:(unint64_t)options
 {
-  v6 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = AFSiriAceRequest;
   v7 = [(AFSiriAceRequest *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:0];
     v9 = v8;
     if (v8)
     {
@@ -117,21 +117,21 @@ void __49__AFSiriAceRequest_performRequestWithCompletion___block_invoke(uint64_t
     startRequestData = v7->_startRequestData;
     v7->_startRequestData = 0;
 
-    v7->_requestOptions = a4;
+    v7->_requestOptions = options;
   }
 
   return v7;
 }
 
-- (AFSiriAceRequest)initWithStartRequest:(id)a3 requestOptions:(unint64_t)a4
+- (AFSiriAceRequest)initWithStartRequest:(id)request requestOptions:(unint64_t)options
 {
-  v6 = a3;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = AFSiriAceRequest;
   v7 = [(AFSiriAceRequest *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:requestCopy requiringSecureCoding:1 error:0];
     v9 = v8;
     if (v8)
     {
@@ -144,7 +144,7 @@ void __49__AFSiriAceRequest_performRequestWithCompletion___block_invoke(uint64_t
     startLocalRequestData = v7->_startLocalRequestData;
     v7->_startLocalRequestData = 0;
 
-    v7->_requestOptions = a4;
+    v7->_requestOptions = options;
   }
 
   return v7;

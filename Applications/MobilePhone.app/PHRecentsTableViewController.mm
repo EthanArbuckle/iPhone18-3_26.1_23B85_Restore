@@ -1,22 +1,22 @@
 @interface PHRecentsTableViewController
-+ (id)contactViewControllerForRecentCall:(id)a3 contact:(id)a4 recentsController:(id)a5;
-+ (id)contactViewControllerForRecentCall:(id)a3 recentsController:(id)a4;
++ (id)contactViewControllerForRecentCall:(id)call contact:(id)contact recentsController:(id)controller;
++ (id)contactViewControllerForRecentCall:(id)call recentsController:(id)controller;
 @end
 
 @implementation PHRecentsTableViewController
 
-+ (id)contactViewControllerForRecentCall:(id)a3 recentsController:(id)a4
++ (id)contactViewControllerForRecentCall:(id)call recentsController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  callCopy = call;
+  controllerCopy = controller;
   v7 = +[PHContactViewController descriptorForRequiredKeys];
   v13 = v7;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
-  v9 = [v6 contactForRecentCall:v5 keyDescriptors:v8];
+  v9 = [controllerCopy contactForRecentCall:callCopy keyDescriptors:v8];
 
   if (v9 || (v9 = objc_alloc_init(CNContact)) != 0)
   {
-    v10 = [PHRecentsTableViewController contactViewControllerForRecentCall:v5 contact:v9 recentsController:v6];
+    v10 = [PHRecentsTableViewController contactViewControllerForRecentCall:callCopy contact:v9 recentsController:controllerCopy];
   }
 
   else
@@ -24,9 +24,9 @@
     v10 = 0;
   }
 
-  v11 = [v5 imageURL];
+  imageURL = [callCopy imageURL];
 
-  if (v11)
+  if (imageURL)
   {
     [v10 setUsesBrandedCallHeaderFormat:1];
   }
@@ -34,45 +34,45 @@
   return v10;
 }
 
-+ (id)contactViewControllerForRecentCall:(id)a3 contact:(id)a4 recentsController:(id)a5
++ (id)contactViewControllerForRecentCall:(id)call contact:(id)contact recentsController:(id)controller
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  if ([v9 hasBeenPersisted])
+  callCopy = call;
+  controllerCopy = controller;
+  contactCopy = contact;
+  if ([contactCopy hasBeenPersisted])
   {
-    v10 = [PHContactViewController viewControllerForContact:v9];
+    v10 = [PHContactViewController viewControllerForContact:contactCopy];
 
     [v10 setShouldShowLinkedContacts:1];
   }
 
   else
   {
-    v10 = [PHContactViewController viewControllerForUnknownContact:v9];
+    v10 = [PHContactViewController viewControllerForUnknownContact:contactCopy];
   }
 
-  v11 = [v7 validRemoteParticipantHandles];
-  v12 = [v11 anyObject];
-  v13 = [v12 value];
-  v14 = [v13 length];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  anyObject = [validRemoteParticipantHandles anyObject];
+  value = [anyObject value];
+  v14 = [value length];
 
   if (v14)
   {
     [v10 setActions:{objc_msgSend(v10, "actions") | 0x80}];
-    v15 = [v8 suggestedContactStore];
-    [v10 setContactStore:v15];
+    suggestedContactStore = [controllerCopy suggestedContactStore];
+    [v10 setContactStore:suggestedContactStore];
 
-    [v10 setRecentCall:v7];
+    [v10 setRecentCall:callCopy];
   }
 
   else
   {
     [v10 setAllowsActions:0];
     [v10 setAllowsEditing:0];
-    v16 = [v7 callerIdIsBlocked];
+    callerIdIsBlocked = [callCopy callerIdIsBlocked];
     v17 = +[NSBundle mainBundle];
     v18 = v17;
-    if (v16)
+    if (callerIdIsBlocked)
     {
       v19 = @"NO_CALLER_ID";
     }
@@ -87,7 +87,7 @@
   }
 
   v21 = objc_alloc_init(MPRecentsContactHeaderViewController);
-  [(MPRecentsContactHeaderViewController *)v21 setRecentCall:v7];
+  [(MPRecentsContactHeaderViewController *)v21 setRecentCall:callCopy];
   [v10 setContactHeaderViewController:v21];
 
   return v10;

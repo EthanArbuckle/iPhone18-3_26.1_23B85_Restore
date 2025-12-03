@@ -1,12 +1,12 @@
 @interface MTPlaylist
-+ (id)predicateForIsHidden:(BOOL)a3;
++ (id)predicateForIsHidden:(BOOL)hidden;
 + (id)propertiesToObserveForDownloadableEpisodes;
 + (id)sortDescriptors;
-- (void)setIncludesAllPodcasts:(BOOL)a3;
-- (void)setIsItunesPlaylist:(BOOL)a3;
-- (void)setIsUngroupedList:(BOOL)a3;
-- (void)setMediaLibraryId:(int64_t)a3;
-- (void)setNeedsUpdate:(BOOL)a3;
+- (void)setIncludesAllPodcasts:(BOOL)podcasts;
+- (void)setIsItunesPlaylist:(BOOL)playlist;
+- (void)setIsUngroupedList:(BOOL)list;
+- (void)setMediaLibraryId:(int64_t)id;
+- (void)setNeedsUpdate:(BOOL)update;
 @end
 
 @implementation MTPlaylist
@@ -25,12 +25,12 @@
   return v4;
 }
 
-- (void)setMediaLibraryId:(int64_t)a3
+- (void)setMediaLibraryId:(int64_t)id
 {
-  if ([(MTPlaylist *)self mediaLibraryId]!= a3)
+  if ([(MTPlaylist *)self mediaLibraryId]!= id)
   {
     [(MTPlaylist *)self willChangeValueForKey:@"mediaLibraryId"];
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
     [(MTPlaylist *)self setPrimitiveValue:v5 forKey:@"mediaLibraryId"];
 
     [(MTPlaylist *)self didChangeValueForKey:@"mediaLibraryId"];
@@ -58,74 +58,74 @@
   return v4;
 }
 
-- (void)setIsUngroupedList:(BOOL)a3
+- (void)setIsUngroupedList:(BOOL)list
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 0x100) == 0) ^ v3) & 1) == 0)
+  listCopy = list;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 0x100) == 0) ^ listCopy) & 1) == 0)
   {
     v6 = 256;
-    if (!v3)
+    if (!listCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFEFFLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFEFFLL | v6];
   }
 }
 
-- (void)setIsItunesPlaylist:(BOOL)a3
+- (void)setIsItunesPlaylist:(BOOL)playlist
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 2) == 0) ^ v3) & 1) == 0)
+  playlistCopy = playlist;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 2) == 0) ^ playlistCopy) & 1) == 0)
   {
     v6 = 2;
-    if (!v3)
+    if (!playlistCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFFDLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFFDLL | v6];
   }
 }
 
-- (void)setIncludesAllPodcasts:(BOOL)a3
+- (void)setIncludesAllPodcasts:(BOOL)podcasts
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 0x10) == 0) ^ v3) & 1) == 0)
+  podcastsCopy = podcasts;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 0x10) == 0) ^ podcastsCopy) & 1) == 0)
   {
     v6 = 16;
-    if (!v3)
+    if (!podcastsCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFEFLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFEFLL | v6];
   }
 }
 
-- (void)setNeedsUpdate:(BOOL)a3
+- (void)setNeedsUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(MTPlaylist *)self flags];
-  if (((((v5 & 0x20) == 0) ^ v3) & 1) == 0)
+  updateCopy = update;
+  flags = [(MTPlaylist *)self flags];
+  if (((((flags & 0x20) == 0) ^ updateCopy) & 1) == 0)
   {
     v6 = 32;
-    if (!v3)
+    if (!updateCopy)
     {
       v6 = 0;
     }
 
-    [(MTPlaylist *)self setFlags:v5 & 0xFFFFFFFFFFFFFFDFLL | v6];
+    [(MTPlaylist *)self setFlags:flags & 0xFFFFFFFFFFFFFFDFLL | v6];
   }
 }
 
-+ (id)predicateForIsHidden:(BOOL)a3
++ (id)predicateForIsHidden:(BOOL)hidden
 {
   v3 = &unk_1F54BDD00;
-  if (a3)
+  if (hidden)
   {
     v3 = &unk_1F54BDCE8;
   }

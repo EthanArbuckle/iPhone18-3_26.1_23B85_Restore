@@ -1,16 +1,16 @@
 @interface IDSPendingOfflineMessageResponse
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)messageBody;
 @end
 
 @implementation IDSPendingOfflineMessageResponse
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = IDSPendingOfflineMessageResponse;
-  return [(IDSMessage *)&v4 copyWithZone:a3];
+  return [(IDSMessage *)&v4 copyWithZone:zone];
 }
 
 - (id)messageBody
@@ -18,8 +18,8 @@
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = IDSPendingOfflineMessageResponse;
-  v3 = [(IDSMessage *)&v16 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSMessage *)&v16 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
@@ -52,17 +52,17 @@
     }
   }
 
-  v10 = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
-  if (v10)
+  messageIdentifier = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
+  if (messageIdentifier)
   {
-    v11 = v10;
-    v12 = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
-    v13 = [v12 UTF8String];
+    v11 = messageIdentifier;
+    messageIdentifier2 = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
+    uTF8String = [messageIdentifier2 UTF8String];
 
-    if (v13)
+    if (uTF8String)
     {
       memset(uu, 170, sizeof(uu));
-      uuid_parse(v13, uu);
+      uuid_parse(uTF8String, uu);
       jw_uuid_to_data();
       v14 = 0;
       if (v14)
@@ -78,12 +78,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
+  messageIdentifier = [(IDSPendingOfflineMessageResponse *)self messageIdentifier];
   v5 = [(IDSPendingOfflineMessageResponse *)self ssm];
-  v6 = [v5 __imHexString];
-  v7 = [v6 lowercaseString];
-  v8 = [(IDSBaseMessage *)self retryCount];
-  v9 = [v3 stringWithFormat:@"<IDSPendingOfflineMessageResponse: %p> messageID: %@ ssm: %@ retryCount: %@", self, v4, v7, v8];
+  __imHexString = [v5 __imHexString];
+  lowercaseString = [__imHexString lowercaseString];
+  retryCount = [(IDSBaseMessage *)self retryCount];
+  v9 = [v3 stringWithFormat:@"<IDSPendingOfflineMessageResponse: %p> messageID: %@ ssm: %@ retryCount: %@", self, messageIdentifier, lowercaseString, retryCount];
 
   return v9;
 }

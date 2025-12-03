@@ -1,17 +1,17 @@
 @interface HDHealthRecordParsedHumanName
-+ (id)parsedNamesWithHumanNames:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
-+ (id)preferredNameInNames:(id)a3 FHIRVersion:(id)a4;
-- (HDHealthRecordParsedHumanName)initWithHumanNameDictionary:(id)a3 FHIRVersion:(id)a4 error:(id *)a5;
++ (id)parsedNamesWithHumanNames:(id)names FHIRVersion:(id)version error:(id *)error;
++ (id)preferredNameInNames:(id)names FHIRVersion:(id)version;
+- (HDHealthRecordParsedHumanName)initWithHumanNameDictionary:(id)dictionary FHIRVersion:(id)version error:(id *)error;
 - (NSString)fullName;
 - (id)description;
 @end
 
 @implementation HDHealthRecordParsedHumanName
 
-- (HDHealthRecordParsedHumanName)initWithHumanNameDictionary:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
+- (HDHealthRecordParsedHumanName)initWithHumanNameDictionary:(id)dictionary FHIRVersion:(id)version error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  versionCopy = version;
   v39.receiver = self;
   v39.super_class = HDHealthRecordParsedHumanName;
   v10 = [(HDHealthRecordParsedHumanName *)&v39 init];
@@ -20,57 +20,57 @@
     goto LABEL_12;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
-    v11 = [v8 objectForKeyedSubscript:@"use"];
-    v12 = [v11 hd_stringValue];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"use"];
+    hd_stringValue = [v11 hd_stringValue];
     use = v10->_use;
-    v10->_use = v12;
+    v10->_use = hd_stringValue;
 
-    v14 = [v8 objectForKeyedSubscript:@"text"];
-    v15 = [v14 hd_stringValue];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"text"];
+    hd_stringValue2 = [v14 hd_stringValue];
     text = v10->_text;
-    v10->_text = v15;
+    v10->_text = hd_stringValue2;
 
-    v17 = [v9 FHIRRelease];
+    fHIRRelease = [versionCopy FHIRRelease];
     v18 = *MEMORY[0x277CCBDC8];
 
-    v19 = [v8 objectForKeyedSubscript:@"family"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"family"];
     v20 = v19;
-    if (v17 == v18)
+    if (fHIRRelease == v18)
     {
-      v22 = [v19 hd_stringArrayValue];
-      v23 = [v22 componentsJoinedByString:@" "];
+      hd_stringArrayValue = [v19 hd_stringArrayValue];
+      v23 = [hd_stringArrayValue componentsJoinedByString:@" "];
       family = v10->_family;
       v10->_family = v23;
     }
 
     else
     {
-      v21 = [v19 hd_stringValue];
-      v22 = v10->_family;
-      v10->_family = v21;
+      hd_stringValue3 = [v19 hd_stringValue];
+      hd_stringArrayValue = v10->_family;
+      v10->_family = hd_stringValue3;
     }
 
-    v25 = [v8 objectForKeyedSubscript:@"given"];
-    v26 = [v25 hd_stringArrayValue];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"given"];
+    hd_stringArrayValue2 = [v25 hd_stringArrayValue];
     given = v10->_given;
-    v10->_given = v26;
+    v10->_given = hd_stringArrayValue2;
 
-    v28 = [v8 objectForKeyedSubscript:@"prefix"];
-    v29 = [v28 hd_stringArrayValue];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"prefix"];
+    hd_stringArrayValue3 = [v28 hd_stringArrayValue];
     prefix = v10->_prefix;
-    v10->_prefix = v29;
+    v10->_prefix = hd_stringArrayValue3;
 
-    v31 = [v8 objectForKeyedSubscript:@"suffix"];
-    v32 = [v31 hd_stringArrayValue];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"suffix"];
+    hd_stringArrayValue4 = [v31 hd_stringArrayValue];
     suffix = v10->_suffix;
-    v10->_suffix = v32;
+    v10->_suffix = hd_stringArrayValue4;
 
-    v34 = [v8 objectForKeyedSubscript:@"period"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"period"];
     if (v34)
     {
-      v35 = [HDHealthRecordsExtractionUtilities medicalDateIntervalWithPeriod:v34 error:a5];
+      v35 = [HDHealthRecordsExtractionUtilities medicalDateIntervalWithPeriod:v34 error:error];
       period = v10->_period;
       v10->_period = v35;
 
@@ -86,7 +86,7 @@ LABEL_16:
 
   if (![(NSString *)v10->_family length]&& ![(NSArray *)v10->_given count]&& ![(NSString *)v10->_text length])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Neither given nor family name nor text is present on HumanName dictionary"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Neither given nor family name nor text is present on HumanName dictionary"];
     goto LABEL_16;
   }
 
@@ -151,17 +151,17 @@ LABEL_13:
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(HDHealthRecordParsedHumanName *)self fullName];
-  v6 = [v3 initWithFormat:@"<%@:%p name: %@; use: %@>", v4, self, v5, self->_use];
+  fullName = [(HDHealthRecordParsedHumanName *)self fullName];
+  v6 = [v3 initWithFormat:@"<%@:%p name: %@; use: %@>", v4, self, fullName, self->_use];
 
   return v6;
 }
 
-+ (id)parsedNamesWithHumanNames:(id)a3 FHIRVersion:(id)a4 error:(id *)a5
++ (id)parsedNamesWithHumanNames:(id)names FHIRVersion:(id)version error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  namesCopy = names;
+  versionCopy = version;
   objc_opt_class();
   v9 = HKSafeObject();
   if (v9)
@@ -178,7 +178,7 @@ LABEL_13:
       v13 = v12;
       v14 = *v27;
       v24 = v9;
-      v25 = v7;
+      v25 = namesCopy;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -197,14 +197,14 @@ LABEL_13:
           }
 
           v18 = v17;
-          v19 = [[HDHealthRecordParsedHumanName alloc] initWithHumanNameDictionary:v17 FHIRVersion:v8 error:a5];
+          v19 = [[HDHealthRecordParsedHumanName alloc] initWithHumanNameDictionary:v17 FHIRVersion:versionCopy error:error];
           if (!v19)
           {
 
 LABEL_14:
             v21 = 0;
             v9 = v24;
-            v7 = v25;
+            namesCopy = v25;
             goto LABEL_15;
           }
 
@@ -214,7 +214,7 @@ LABEL_14:
 
         v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
         v9 = v24;
-        v7 = v25;
+        namesCopy = v25;
         if (v13)
         {
           continue;
@@ -238,14 +238,14 @@ LABEL_15:
   return v21;
 }
 
-+ (id)preferredNameInNames:(id)a3 FHIRVersion:(id)a4
++ (id)preferredNameInNames:(id)names FHIRVersion:(id)version
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namesCopy = names;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [HDHealthRecordParsedHumanName preferredNameInNames:a2 FHIRVersion:a1];
+    [HDHealthRecordParsedHumanName preferredNameInNames:a2 FHIRVersion:self];
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEAA8]);
@@ -255,11 +255,11 @@ LABEL_15:
   v41[3] = &unk_2796E2B70;
   v8 = v7;
   v42 = v8;
-  v9 = [v6 hk_filter:v41];
+  v9 = [namesCopy hk_filter:v41];
   if ([v9 count])
   {
     v31 = v8;
-    v32 = v6;
+    v32 = namesCopy;
     v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:7];
     v37 = 0u;
     v38 = 0u;
@@ -361,7 +361,7 @@ LABEL_15:
 LABEL_29:
 
     v8 = v31;
-    v6 = v32;
+    namesCopy = v32;
   }
 
   else

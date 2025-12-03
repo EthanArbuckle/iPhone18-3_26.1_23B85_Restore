@@ -1,28 +1,28 @@
 @interface CSQuickActionControlGlyphView
-- (CSQuickActionControlGlyphView)initWithControlInstance:(id)a3 symbolScaleValue:(double)a4;
+- (CSQuickActionControlGlyphView)initWithControlInstance:(id)instance symbolScaleValue:(double)value;
 - (void)_updateAppearance;
-- (void)_updateControlConfigurationColorSchemeWithTraitCollection:(id)a3 previousTraitCollection:(id)a4;
+- (void)_updateControlConfigurationColorSchemeWithTraitCollection:(id)collection previousTraitCollection:(id)traitCollection;
 - (void)layoutSubviews;
-- (void)setAppearance:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setAppearance:(int64_t)appearance;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CSQuickActionControlGlyphView
 
-- (CSQuickActionControlGlyphView)initWithControlInstance:(id)a3 symbolScaleValue:(double)a4
+- (CSQuickActionControlGlyphView)initWithControlInstance:(id)instance symbolScaleValue:(double)value
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  instanceCopy = instance;
   v18.receiver = self;
   v18.super_class = CSQuickActionControlGlyphView;
   v8 = [(CSQuickActionControlGlyphView *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controlInstance, a3);
-    v10 = [(CHUISControlInstance *)v9->_controlInstance iconView];
+    objc_storeStrong(&v8->_controlInstance, instance);
+    iconView = [(CHUISControlInstance *)v9->_controlInstance iconView];
     iconView = v9->_iconView;
-    v9->_iconView = v10;
+    v9->_iconView = iconView;
 
     if (_UISolariumEnabled())
     {
@@ -33,9 +33,9 @@
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
       v15 = [(CSQuickActionControlGlyphView *)v9 registerForTraitChanges:v14 withHandler:&__block_literal_global_23];
 
-      v16 = [(CSQuickActionControlGlyphView *)v9 traitCollection];
+      traitCollection = [(CSQuickActionControlGlyphView *)v9 traitCollection];
       v9->_cachedInterfaceStyle = 0;
-      [(CSQuickActionControlGlyphView *)v9 _updateControlConfigurationColorSchemeWithTraitCollection:v16 previousTraitCollection:0];
+      [(CSQuickActionControlGlyphView *)v9 _updateControlConfigurationColorSchemeWithTraitCollection:traitCollection previousTraitCollection:0];
     }
 
     else
@@ -45,7 +45,7 @@
 
     [(CSQuickActionControlGlyphView *)v9 addSubview:v9->_iconView];
     [(CSQuickActionControlGlyphView *)v9 _updateAppearance];
-    v9->_symbolScaleValue = a4;
+    v9->_symbolScaleValue = value;
   }
 
   return v9;
@@ -59,20 +59,20 @@ void __74__CSQuickActionControlGlyphView_initWithControlInstance_symbolScaleValu
   [v5 _updateControlConfigurationColorSchemeWithTraitCollection:v6 previousTraitCollection:v4];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(CSQuickActionControlGlyphView *)self _updateAppearance];
   }
 }
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
-  if (self->_appearance != a3)
+  if (self->_appearance != appearance)
   {
-    self->_appearance = a3;
+    self->_appearance = appearance;
     [(CSQuickActionControlGlyphView *)self _updateAppearance];
   }
 }
@@ -121,15 +121,15 @@ void __74__CSQuickActionControlGlyphView_initWithControlInstance_symbolScaleValu
   [(CHUISControlIconView *)self->_iconView setFont:v5];
 }
 
-- (void)_updateControlConfigurationColorSchemeWithTraitCollection:(id)a3 previousTraitCollection:(id)a4
+- (void)_updateControlConfigurationColorSchemeWithTraitCollection:(id)collection previousTraitCollection:(id)traitCollection
 {
-  v5 = a3;
-  if ([v5 _backlightLuminance] == 2)
+  collectionCopy = collection;
+  if ([collectionCopy _backlightLuminance] == 2)
   {
-    v6 = [v5 userInterfaceStyle];
-    if (v6 != self->_cachedInterfaceStyle)
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    if (userInterfaceStyle != self->_cachedInterfaceStyle)
     {
-      self->_cachedInterfaceStyle = v6;
+      self->_cachedInterfaceStyle = userInterfaceStyle;
       controlInstance = self->_controlInstance;
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;

@@ -1,12 +1,12 @@
 @interface PMCachedBitmapObject
-- (PMCachedBitmapObject)initWithBitmap:(const void *)a3;
+- (PMCachedBitmapObject)initWithBitmap:(const void *)bitmap;
 - (shared_ptr<PCBitmap>)bitmap;
 - (void)dealloc;
 @end
 
 @implementation PMCachedBitmapObject
 
-- (PMCachedBitmapObject)initWithBitmap:(const void *)a3
+- (PMCachedBitmapObject)initWithBitmap:(const void *)bitmap
 {
   v4.receiver = self;
   v4.super_class = PMCachedBitmapObject;

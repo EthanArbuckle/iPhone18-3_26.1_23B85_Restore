@@ -1,18 +1,18 @@
 @interface _DKEventStatsTimerCounter
-+ (id)counterInCollection:(void *)a3 withEventName:;
++ (id)counterInCollection:(void *)collection withEventName:;
 - (id)eventName;
-- (void)addTimingWithStartDate:(void *)a3 endDate:;
-- (void)addTimingWithTimeInterval:(uint64_t)a1;
+- (void)addTimingWithStartDate:(void *)date endDate:;
+- (void)addTimingWithTimeInterval:(uint64_t)interval;
 @end
 
 @implementation _DKEventStatsTimerCounter
 
-+ (id)counterInCollection:(void *)a3 withEventName:
++ (id)counterInCollection:(void *)collection withEventName:
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [_DKEventStatsCollection counterWithClass:v6 collectionName:v5 eventName:v4 eventType:0 eventTypePossibleValues:0 hasResult:0 scalar:0];
+  v7 = [_DKEventStatsCollection counterWithClass:v6 collectionName:v5 eventName:collectionCopy eventType:0 eventTypePossibleValues:0 hasResult:0 scalar:0];
 
   return v7;
 }
@@ -31,16 +31,16 @@
   }
 }
 
-- (void)addTimingWithTimeInterval:(uint64_t)a1
+- (void)addTimingWithTimeInterval:(uint64_t)interval
 {
-  if (a1)
+  if (interval)
   {
-    v4 = OUTLINED_FUNCTION_9_7(a1);
+    v4 = OUTLINED_FUNCTION_9_7(interval);
     [(_DKEventStatsCounterInternal *)v4 incrementCountByNumber:v5 typeValue:v6 success:0];
     OUTLINED_FUNCTION_3_16();
     if ((v7 & 1) == 0)
     {
-      Property = *(a1 + 8);
+      Property = *(interval + 8);
       if (Property)
       {
         OUTLINED_FUNCTION_8_8();
@@ -54,13 +54,13 @@
   }
 }
 
-- (void)addTimingWithStartDate:(void *)a3 endDate:
+- (void)addTimingWithStartDate:(void *)date endDate:
 {
-  if (a1)
+  if (self)
   {
-    [a3 timeIntervalSinceDate:a2];
+    [date timeIntervalSinceDate:a2];
 
-    [(_DKEventStatsTimerCounter *)a1 addTimingWithTimeInterval:v4];
+    [(_DKEventStatsTimerCounter *)self addTimingWithTimeInterval:v4];
   }
 }
 

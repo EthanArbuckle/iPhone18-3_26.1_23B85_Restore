@@ -1,7 +1,7 @@
 @interface DNDSXPCEventStream
 - (DNDSXPCEventStream)init;
-- (void)registerTimerHandlerWithServiceIdentifier:(id)a3 handler:(id)a4;
-- (void)setTimer:(id)a3;
+- (void)registerTimerHandlerWithServiceIdentifier:(id)identifier handler:(id)handler;
+- (void)setTimer:(id)timer;
 - (void)start;
 @end
 
@@ -14,9 +14,9 @@
   v2 = [(DNDSXPCEventStream *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     timerHandlersByToken = v2->_timerHandlersByToken;
-    v2->_timerHandlersByToken = v3;
+    v2->_timerHandlersByToken = dictionary;
 
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
@@ -66,32 +66,32 @@ void __27__DNDSXPCEventStream_start__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)registerTimerHandlerWithServiceIdentifier:(id)a3 handler:(id)a4
+- (void)registerTimerHandlerWithServiceIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = _Block_copy(a4);
-  [(NSMutableDictionary *)self->_timerHandlersByToken setObject:v7 forKeyedSubscript:v6];
+  identifierCopy = identifier;
+  v7 = _Block_copy(handler);
+  [(NSMutableDictionary *)self->_timerHandlersByToken setObject:v7 forKeyedSubscript:identifierCopy];
 }
 
-- (void)setTimer:(id)a3
+- (void)setTimer:(id)timer
 {
-  v9 = a3;
-  v3 = [v9 date];
+  timerCopy = timer;
+  date = [timerCopy date];
 
-  if (v3)
+  if (date)
   {
-    v4 = [v9 date];
-    [v4 timeIntervalSince1970];
+    date2 = [timerCopy date];
+    [date2 timeIntervalSince1970];
     v6 = ceil(v5);
 
-    v3 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_date(v3, "Date", (v6 * 1000000000.0));
-    xpc_dictionary_set_BOOL(v3, "UserVisible", 1);
+    date = xpc_dictionary_create(0, 0, 0);
+    xpc_dictionary_set_date(date, "Date", (v6 * 1000000000.0));
+    xpc_dictionary_set_BOOL(date, "UserVisible", 1);
   }
 
   v7 = +[DNDSXPCEventInterface sharedInstance];
-  v8 = [v9 serviceIdentifier];
-  [v7 setEvent:v3 forKey:v8 onStream:@"com.apple.alarm"];
+  serviceIdentifier = [timerCopy serviceIdentifier];
+  [v7 setEvent:date forKey:serviceIdentifier onStream:@"com.apple.alarm"];
 }
 
 @end

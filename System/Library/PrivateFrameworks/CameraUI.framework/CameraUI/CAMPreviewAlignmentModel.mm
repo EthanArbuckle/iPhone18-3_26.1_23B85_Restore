@@ -2,8 +2,8 @@
 - (CAMPreviewAlignmentModel)init;
 - (CAMPreviewAlignmentModelObserver)observer;
 - (CATransform3D)alignmentTransform;
-- (void)_setAlignmentTransform:(CATransform3D *)a3;
-- (void)applyDeviceMotion:(id)a3;
+- (void)_setAlignmentTransform:(CATransform3D *)transform;
+- (void)applyDeviceMotion:(id)motion;
 - (void)reset;
 @end
 
@@ -36,25 +36,25 @@
   return v3;
 }
 
-- (void)applyDeviceMotion:(id)a3
+- (void)applyDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v5 = [(CAMPreviewAlignmentModel *)self _referenceDeviceMotion];
+  motionCopy = motion;
+  _referenceDeviceMotion = [(CAMPreviewAlignmentModel *)self _referenceDeviceMotion];
 
-  if (v5)
+  if (_referenceDeviceMotion)
   {
-    v6 = [v4 attitude];
+    attitude = [motionCopy attitude];
 
-    v4 = [v6 copy];
-    v7 = [(CAMPreviewAlignmentModel *)self _referenceDeviceMotion];
-    v8 = [v7 attitude];
-    [v4 multiplyByInverseOfAttitude:v8];
+    motionCopy = [attitude copy];
+    _referenceDeviceMotion2 = [(CAMPreviewAlignmentModel *)self _referenceDeviceMotion];
+    attitude2 = [_referenceDeviceMotion2 attitude];
+    [motionCopy multiplyByInverseOfAttitude:attitude2];
 
-    [v4 pitch];
+    [motionCopy pitch];
     v10 = v9;
-    [v4 roll];
+    [motionCopy roll];
     v12 = v11;
-    [v4 yaw];
+    [motionCopy yaw];
     v14 = v13;
     v15 = sqrt(v12 * v12 + v10 * v10 + v14 * v14);
     CEKProgressClamped();
@@ -74,15 +74,15 @@
       [(CAMPreviewAlignmentModel *)self opacity];
       CEKClamp();
       [(CAMPreviewAlignmentModel *)self _setOpacity:?];
-      v25 = [(CAMPreviewAlignmentModel *)self observer];
-      [v25 previewAlignmentModelDidChangeOpacity:self];
+      observer = [(CAMPreviewAlignmentModel *)self observer];
+      [observer previewAlignmentModelDidChangeOpacity:self];
     }
 
-    v26 = [(CAMPreviewAlignmentModel *)self isAligned];
-    if (v15 >= 0.0144 || !v26)
+    isAligned = [(CAMPreviewAlignmentModel *)self isAligned];
+    if (v15 >= 0.0144 || !isAligned)
     {
-      v27 = [(CAMPreviewAlignmentModel *)self isAligned];
-      if (v15 >= 0.012 || v27)
+      isAligned2 = [(CAMPreviewAlignmentModel *)self isAligned];
+      if (v15 >= 0.012 || isAligned2)
       {
         v33 = -v12;
         [(CAMPreviewAlignmentModel *)self _setAligned:0];
@@ -128,14 +128,14 @@
       }
 
       [(CAMPreviewAlignmentModel *)self _setAlignmentTransform:v32, *&v37.m11, *&v37.m13, *&v37.m21, *&v37.m23, *&v37.m31, *&v37.m33, *&v37.m41, *&v37.m43];
-      v36 = [(CAMPreviewAlignmentModel *)self observer];
-      [v36 previewAlignmentModelDidChangeAlignmentTransform:self];
+      observer2 = [(CAMPreviewAlignmentModel *)self observer];
+      [observer2 previewAlignmentModelDidChangeAlignmentTransform:self];
     }
   }
 
   else
   {
-    [(CAMPreviewAlignmentModel *)self _setReferenceDeviceMotion:v4];
+    [(CAMPreviewAlignmentModel *)self _setReferenceDeviceMotion:motionCopy];
   }
 }
 
@@ -157,11 +157,11 @@
   [(CAMPreviewAlignmentModel *)self _setAlignmentTransform:v9];
   [(CAMPreviewAlignmentModel *)self _setAligned:1];
   [(CAMPreviewAlignmentModel *)self _setOpacity:0.0];
-  v7 = [(CAMPreviewAlignmentModel *)self observer];
-  [v7 previewAlignmentModelDidChangeAlignmentTransform:self];
+  observer = [(CAMPreviewAlignmentModel *)self observer];
+  [observer previewAlignmentModelDidChangeAlignmentTransform:self];
 
-  v8 = [(CAMPreviewAlignmentModel *)self observer];
-  [v8 previewAlignmentModelDidChangeOpacity:self];
+  observer2 = [(CAMPreviewAlignmentModel *)self observer];
+  [observer2 previewAlignmentModelDidChangeOpacity:self];
 }
 
 - (CAMPreviewAlignmentModelObserver)observer
@@ -188,19 +188,19 @@
   return self;
 }
 
-- (void)_setAlignmentTransform:(CATransform3D *)a3
+- (void)_setAlignmentTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m21;
-  *&self->_alignmentTransform.m23 = *&a3->m23;
+  v3 = *&transform->m11;
+  v4 = *&transform->m13;
+  v5 = *&transform->m21;
+  *&self->_alignmentTransform.m23 = *&transform->m23;
   *&self->_alignmentTransform.m21 = v5;
   *&self->_alignmentTransform.m13 = v4;
   *&self->_alignmentTransform.m11 = v3;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m41;
-  *&self->_alignmentTransform.m43 = *&a3->m43;
+  v6 = *&transform->m31;
+  v7 = *&transform->m33;
+  v8 = *&transform->m41;
+  *&self->_alignmentTransform.m43 = *&transform->m43;
   *&self->_alignmentTransform.m41 = v8;
   *&self->_alignmentTransform.m33 = v7;
   *&self->_alignmentTransform.m31 = v6;

@@ -1,24 +1,24 @@
 @interface CPLCloudKitFetchSharedScopeTask
-- (CPLCloudKitFetchSharedScopeTask)initWithController:(id)a3 shareURL:(id)a4 completionHandler:(id)a5;
-- (id)_scopeChangeFromShareMetadata:(id)a3 currentUserID:(id)a4 error:(id *)a5;
-- (void)_fetchSharedScopeWithCurrentUserID:(id)a3;
+- (CPLCloudKitFetchSharedScopeTask)initWithController:(id)controller shareURL:(id)l completionHandler:(id)handler;
+- (id)_scopeChangeFromShareMetadata:(id)metadata currentUserID:(id)d error:(id *)error;
+- (void)_fetchSharedScopeWithCurrentUserID:(id)d;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitFetchSharedScopeTask
 
-- (CPLCloudKitFetchSharedScopeTask)initWithController:(id)a3 shareURL:(id)a4 completionHandler:(id)a5
+- (CPLCloudKitFetchSharedScopeTask)initWithController:(id)controller shareURL:(id)l completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CPLCloudKitFetchSharedScopeTask;
-  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:a3];
+  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:controller];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_shareURL, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_shareURL, l);
+    v13 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
   }
@@ -36,9 +36,9 @@
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v2];
 }
 
-- (void)_fetchSharedScopeWithCurrentUserID:(id)a3
+- (void)_fetchSharedScopeWithCurrentUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v21 = 0;
   v5 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v21];
   v6 = v21;
@@ -71,7 +71,7 @@
       v15 = v17;
       v16 = v19;
       v13[4] = self;
-      v14 = v4;
+      v14 = dCopy;
       [v9 setPerShareMetadataBlock:v13];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -101,53 +101,53 @@
   }
 }
 
-- (id)_scopeChangeFromShareMetadata:(id)a3 currentUserID:(id)a4 error:(id *)a5
+- (id)_scopeChangeFromShareMetadata:(id)metadata currentUserID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 share];
-  if (v10)
+  metadataCopy = metadata;
+  dCopy = d;
+  share = [metadataCopy share];
+  if (share)
   {
-    v42 = a5;
-    v11 = [v8 rootRecord];
-    v12 = [v10 recordID];
-    v13 = v12;
-    if (v11)
+    errorCopy = error;
+    rootRecord = [metadataCopy rootRecord];
+    recordID = [share recordID];
+    v13 = recordID;
+    if (rootRecord)
     {
-      v45[0] = v12;
-      v46[0] = v10;
-      v14 = [v11 recordID];
-      v45[1] = v14;
-      v46[1] = v11;
+      v45[0] = recordID;
+      v46[0] = share;
+      recordID2 = [rootRecord recordID];
+      v45[1] = recordID2;
+      v46[1] = rootRecord;
       v15 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
     }
 
     else
     {
-      v43 = v12;
-      v44 = v10;
+      v43 = recordID;
+      v44 = share;
       v15 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     }
 
-    v17 = [(CPLCloudKitTransportTask *)self controller];
-    v18 = [v10 recordID];
-    v19 = [v18 zoneID];
+    controller = [(CPLCloudKitTransportTask *)self controller];
+    recordID3 = [share recordID];
+    zoneID = [recordID3 zoneID];
 
-    v20 = [(CPLCloudKitTransportTask *)self controller];
-    v21 = [v20 shouldIgnoreZoneWithZoneID:v19];
+    controller2 = [(CPLCloudKitTransportTask *)self controller];
+    v21 = [controller2 shouldIgnoreZoneWithZoneID:zoneID];
 
-    v41 = v17;
+    v41 = controller;
     if (v21)
     {
-      v22 = v9;
-      v23 = [v19 cpl_zoneName];
-      v24 = [CPLErrors cplErrorWithCode:38 description:@"Zone %@ is not supported by this engine", v23];
+      v22 = dCopy;
+      cpl_zoneName = [zoneID cpl_zoneName];
+      v24 = [CPLErrors cplErrorWithCode:38 description:@"Zone %@ is not supported by this engine", cpl_zoneName];
 
-      if (v42)
+      if (errorCopy)
       {
         v25 = v24;
         v16 = 0;
-        *v42 = v24;
+        *errorCopy = v24;
       }
 
       else
@@ -155,61 +155,61 @@
         v16 = 0;
       }
 
-      v9 = v22;
+      dCopy = v22;
     }
 
     else
     {
-      v24 = [[CPLCloudKitScope alloc] initWithZoneID:v19 currentUserID:v9];
-      v26 = [v17 scopeTypeForCloudKitScope:v24 proposedScopeType:0 fetchedRecords:v15 currentUserID:v9];
+      v24 = [[CPLCloudKitScope alloc] initWithZoneID:zoneID currentUserID:dCopy];
+      v26 = [controller scopeTypeForCloudKitScope:v24 proposedScopeType:0 fetchedRecords:v15 currentUserID:dCopy];
       if (v26)
       {
         v27 = v26;
-        v39 = [v17 scopeIdentifierFromZoneID:v19];
+        v39 = [controller scopeIdentifierFromZoneID:zoneID];
         v37 = [[CPLEngineScope alloc] initWithScopeIdentifier:v39 scopeType:v27];
-        v36 = [v17 zoneIdentificationForCloudKitScope:v24 engineScope:?];
-        v38 = v9;
-        v16 = [v36 scopeChangeFromCKRecords:v15 currentUserID:v9 previousScopeChange:0];
-        v28 = [v16 share];
+        v36 = [controller zoneIdentificationForCloudKitScope:v24 engineScope:?];
+        v38 = dCopy;
+        v16 = [v36 scopeChangeFromCKRecords:v15 currentUserID:dCopy previousScopeChange:0];
+        share2 = [v16 share];
 
-        if (!v28)
+        if (!share2)
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
             sub_1001A5018(v16);
           }
 
-          if (v42)
+          if (errorCopy)
           {
-            v31 = [v10 objectForKeyedSubscript:CKShareTypeKey];
+            v31 = [share objectForKeyedSubscript:CKShareTypeKey];
             v32 = v31;
             v33 = "with";
-            if (!v11)
+            if (!rootRecord)
             {
               v33 = "without";
             }
 
-            *v42 = [CPLErrors cplErrorWithCode:38 description:@"Share of type %@ (%s root record) is malformed or not supported in this universe", v31, v33];
+            *errorCopy = [CPLErrors cplErrorWithCode:38 description:@"Share of type %@ (%s root record) is malformed or not supported in this universe", v31, v33];
           }
 
           v16 = 0;
         }
 
-        v9 = v38;
+        dCopy = v38;
       }
 
-      else if (v42)
+      else if (errorCopy)
       {
-        v29 = [v10 objectForKeyedSubscript:CKShareTypeKey];
+        v29 = [share objectForKeyedSubscript:CKShareTypeKey];
         v30 = "with";
-        if (!v11)
+        if (!rootRecord)
         {
           v30 = "without";
         }
 
         v40 = v29;
         [CPLErrors cplErrorWithCode:38 description:@"Share of type %@ (%s root record) is malformed or not supported", v29, v30];
-        *v42 = v16 = 0;
+        *errorCopy = v16 = 0;
       }
 
       else
@@ -225,10 +225,10 @@
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     +[CPLErrors unknownError];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else

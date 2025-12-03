@@ -1,13 +1,13 @@
 @interface HNDApplication
 + (BOOL)usesScenes;
 - (BOOL)_accessibilityApplicationDidBecomeFocused;
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
 - (HNDApplication)init;
 - (id)_accessibilityMainWindow;
 - (id)_accessibilityScannerCurrentFocusContext;
 - (id)_accessibilityScannerCurrentLoopElements;
-- (id)_accessibilityScannerCurrentLoopElementsForFocusContext:(id)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
+- (id)_accessibilityScannerCurrentLoopElementsForFocusContext:(id)context;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
 - (unint64_t)_accessibilityScannerCurrentLoopIndex;
 @end
 
@@ -29,7 +29,7 @@
 
 + (BOOL)usesScenes
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___HNDApplication;
   return objc_msgSendSuper2(&v3, "usesScenes");
 }
@@ -39,67 +39,67 @@
   if (UIAccessibilityIsSwitchControlRunning())
   {
     v2 = +[SCATScannerManager sharedManager];
-    v3 = [v2 activeScannerDriver];
+    activeScannerDriver = [v2 activeScannerDriver];
 
-    if ([v3 isActive])
+    if ([activeScannerDriver isActive])
     {
-      v4 = [v3 focusContext];
+      focusContext = [activeScannerDriver focusContext];
     }
 
     else
     {
       _AXLogWithFacility();
-      v4 = 0;
+      focusContext = 0;
     }
   }
 
   else
   {
     _AXLogWithFacility();
-    v4 = 0;
+    focusContext = 0;
   }
 
-  return v4;
+  return focusContext;
 }
 
 - (id)_accessibilityScannerCurrentLoopElements
 {
-  v3 = [(HNDApplication *)self _accessibilityScannerCurrentFocusContext];
-  v4 = [(HNDApplication *)self _accessibilityScannerCurrentLoopElementsForFocusContext:v3];
+  _accessibilityScannerCurrentFocusContext = [(HNDApplication *)self _accessibilityScannerCurrentFocusContext];
+  v4 = [(HNDApplication *)self _accessibilityScannerCurrentLoopElementsForFocusContext:_accessibilityScannerCurrentFocusContext];
 
   return v4;
 }
 
-- (id)_accessibilityScannerCurrentLoopElementsForFocusContext:(id)a3
+- (id)_accessibilityScannerCurrentLoopElementsForFocusContext:(id)context
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (contextCopy)
   {
-    v5 = [v3 element];
+    element = [contextCopy element];
     if ([v4 selectBehavior] == 4)
     {
-      if (([v5 isGroup] & 1) == 0)
+      if (([element isGroup] & 1) == 0)
       {
         _AXAssert();
       }
 
-      v6 = v5;
+      v6 = element;
     }
 
     else
     {
       v18 = 0;
-      v6 = [NSMutableArray arrayWithObject:v5];
+      v6 = [NSMutableArray arrayWithObject:element];
       v17 = 0;
-      v7 = v5;
+      v7 = element;
       v8 = v7;
       do
       {
         v9 = v8;
         v10 = +[SCATScannerManager sharedManager];
-        v11 = [v10 activeElementManager];
-        v8 = [v11 siblingOfElement:v8 inDirection:0 didWrap:&v17 options:&v18];
+        activeElementManager = [v10 activeElementManager];
+        v8 = [activeElementManager siblingOfElement:v8 inDirection:0 didWrap:&v17 options:&v18];
 
         if (v17)
         {
@@ -117,8 +117,8 @@
       {
         v13 = v12;
         v14 = +[SCATScannerManager sharedManager];
-        v15 = [v14 activeElementManager];
-        v12 = [v15 siblingOfElement:v12 inDirection:1 didWrap:&v17 options:&v18];
+        activeElementManager2 = [v14 activeElementManager];
+        v12 = [activeElementManager2 siblingOfElement:v12 inDirection:1 didWrap:&v17 options:&v18];
 
         if (v17)
         {
@@ -140,19 +140,19 @@
 
 - (unint64_t)_accessibilityScannerCurrentLoopIndex
 {
-  v3 = [(HNDApplication *)self _accessibilityScannerCurrentFocusContext];
-  if (v3)
+  _accessibilityScannerCurrentFocusContext = [(HNDApplication *)self _accessibilityScannerCurrentFocusContext];
+  if (_accessibilityScannerCurrentFocusContext)
   {
-    v4 = [(HNDApplication *)self _accessibilityScannerCurrentLoopElementsForFocusContext:v3];
-    if ([v3 selectBehavior] == 4)
+    v4 = [(HNDApplication *)self _accessibilityScannerCurrentLoopElementsForFocusContext:_accessibilityScannerCurrentFocusContext];
+    if ([_accessibilityScannerCurrentFocusContext selectBehavior] == 4)
     {
       v5 = [v4 count];
     }
 
     else
     {
-      v6 = [v3 element];
-      v5 = [v4 indexOfObject:v6];
+      element = [_accessibilityScannerCurrentFocusContext element];
+      v5 = [v4 indexOfObject:element];
 
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -173,32 +173,32 @@
 - (id)_accessibilityMainWindow
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 mainWindow];
+  mainWindow = [v2 mainWindow];
 
-  return v3;
+  return mainWindow;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 appValidationTestingMode];
+  appValidationTestingMode = [v5 appValidationTestingMode];
 
-  if (v6)
+  if (appValidationTestingMode)
   {
     v7 = 0;
     goto LABEL_20;
   }
 
-  if (a3 > 1991)
+  if (value > 1991)
   {
-    switch(a3)
+    switch(value)
     {
       case 1992:
         if (_AXSAssistiveTouchScannerEnabled())
         {
           v11 = +[SCATScannerManager sharedManager];
-          v12 = [v11 pointPicker];
-          [v12 lastReceivedPoint];
+          pointPicker = [v11 pointPicker];
+          [pointPicker lastReceivedPoint];
           v14 = v13;
           v16 = v15;
         }
@@ -216,14 +216,14 @@
         v10 = AXValueCreate(kAXValueTypeCGPoint, valuePtr);
         goto LABEL_19;
       case 1993:
-        v8 = +[SCATScannerManager sharedManager];
-        v9 = [v8 recentSpeechOutputStrings];
+        _accessibilityScannerCurrentLoopElements = +[SCATScannerManager sharedManager];
+        recentSpeechOutputStrings = [_accessibilityScannerCurrentLoopElements recentSpeechOutputStrings];
         goto LABEL_15;
       case 5060:
-        v8 = +[HNDHandManager sharedManager];
-        v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 nubbitVisible]);
+        _accessibilityScannerCurrentLoopElements = +[HNDHandManager sharedManager];
+        recentSpeechOutputStrings = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_accessibilityScannerCurrentLoopElements nubbitVisible]);
 LABEL_15:
-        v7 = v9;
+        v7 = recentSpeechOutputStrings;
 
         goto LABEL_20;
     }
@@ -231,19 +231,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 == 1990)
+  if (value == 1990)
   {
-    v8 = [(HNDApplication *)self _accessibilityScannerCurrentLoopElements];
-    v9 = sub_100084884(v8);
+    _accessibilityScannerCurrentLoopElements = [(HNDApplication *)self _accessibilityScannerCurrentLoopElements];
+    recentSpeechOutputStrings = sub_100084884(_accessibilityScannerCurrentLoopElements);
     goto LABEL_15;
   }
 
-  if (a3 != 1991)
+  if (value != 1991)
   {
 LABEL_16:
     v20.receiver = self;
     v20.super_class = HNDApplication;
-    v10 = [(HNDApplication *)&v20 _iosAccessibilityAttributeValue:a3];
+    v10 = [(HNDApplication *)&v20 _iosAccessibilityAttributeValue:value];
     goto LABEL_19;
   }
 
@@ -255,22 +255,22 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
-  v5 = *&a5;
-  v6 = *&a3;
-  v8 = a4;
+  v5 = *&port;
+  v6 = *&action;
+  valueCopy = value;
   if (v6 == 6002)
   {
     objc_opt_class();
     v13 = __UIAccessibilityCastAsClass();
     v14 = [v13 objectForKey:@"buttonNumber"];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
     v20 = 0;
     objc_opt_class();
     v16 = __UIAccessibilityCastAsClass();
     v17 = [v16 objectForKey:@"isDown"];
-    v12 = +[HNDVirtualHIDMouse handleButtonNumber:isDown:](HNDVirtualHIDMouse, "handleButtonNumber:isDown:", v15, [v17 BOOLValue]);
+    v12 = +[HNDVirtualHIDMouse handleButtonNumber:isDown:](HNDVirtualHIDMouse, "handleButtonNumber:isDown:", integerValue, [v17 BOOLValue]);
   }
 
   else
@@ -291,7 +291,7 @@ LABEL_20:
       {
         v19.receiver = self;
         v19.super_class = HNDApplication;
-        v12 = [(HNDApplication *)&v19 _iosAccessibilityPerformAction:v6 withValue:v8 fencePort:v5];
+        v12 = [(HNDApplication *)&v19 _iosAccessibilityPerformAction:v6 withValue:valueCopy fencePort:v5];
         goto LABEL_9;
       }
 
@@ -313,8 +313,8 @@ LABEL_9:
 
 - (BOOL)_accessibilityApplicationDidBecomeFocused
 {
-  v3 = [(HNDApplication *)self _accessibilityNativeFocusElement];
-  if (!v3)
+  _accessibilityNativeFocusElement = [(HNDApplication *)self _accessibilityNativeFocusElement];
+  if (!_accessibilityNativeFocusElement)
   {
     v4 = FKALogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

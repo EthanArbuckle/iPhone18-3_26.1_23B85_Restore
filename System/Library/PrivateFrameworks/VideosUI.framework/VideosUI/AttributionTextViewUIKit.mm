@@ -1,22 +1,22 @@
 @interface AttributionTextViewUIKit
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleSelected:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleSelected:(id)selected;
 - (void)layoutSubviews;
 @end
 
 @implementation AttributionTextViewUIKit
 
-- (void)handleSelected:(id)a3
+- (void)handleSelected:(id)selected
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E4000460(v4);
+  selectedCopy = selected;
+  selfCopy = self;
+  sub_1E4000460(selectedCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1E4000730(width);
   v7 = v6;
 
@@ -29,7 +29,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4000EC8();
 }
 

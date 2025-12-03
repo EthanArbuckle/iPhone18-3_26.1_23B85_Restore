@@ -1,29 +1,29 @@
 @interface TSDPathFiller
-- (TSDPathFiller)initWithProperties:(id)a3 bundle:(id)a4 dataManager:(void *)a5 precedingStroker:(id)a6;
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4 inColor:(id)a5;
+- (TSDPathFiller)initWithProperties:(id)properties bundle:(id)bundle dataManager:(void *)manager precedingStroker:(id)stroker;
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context inColor:(id)color;
 @end
 
 @implementation TSDPathFiller
 
-- (TSDPathFiller)initWithProperties:(id)a3 bundle:(id)a4 dataManager:(void *)a5 precedingStroker:(id)a6
+- (TSDPathFiller)initWithProperties:(id)properties bundle:(id)bundle dataManager:(void *)manager precedingStroker:(id)stroker
 {
   v7.receiver = self;
   v7.super_class = TSDPathFiller;
-  return [(TSDPathStroker *)&v7 initWithProperties:a3 bundle:a4 dataManager:a5 precedingStroker:a6];
+  return [(TSDPathStroker *)&v7 initWithProperties:properties bundle:bundle dataManager:manager precedingStroker:stroker];
 }
 
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4 inColor:(id)a5
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context inColor:(id)color
 {
   mPrecedingStroker = self->super.mPrecedingStroker;
   if (mPrecedingStroker)
   {
-    [(TSDPathStroker *)mPrecedingStroker strokePath:a3 inContext:a4 inColor:a5];
+    [(TSDPathStroker *)mPrecedingStroker strokePath:path inContext:context inColor:color];
   }
 
-  CGContextSetFillColorWithColor(a4, [a5 CGColor]);
-  CGContextAddPath(a4, a3);
+  CGContextSetFillColorWithColor(context, [color CGColor]);
+  CGContextAddPath(context, path);
 
-  CGContextFillPath(a4);
+  CGContextFillPath(context);
 }
 
 @end

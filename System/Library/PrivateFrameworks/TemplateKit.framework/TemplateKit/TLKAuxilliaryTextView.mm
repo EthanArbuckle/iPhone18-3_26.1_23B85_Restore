@@ -6,9 +6,9 @@
 - (id)setupContentView;
 - (id)topLabelString;
 - (void)observedPropertiesChanged;
-- (void)setBottomText:(id)a3;
-- (void)setMiddleText:(id)a3;
-- (void)setTopText:(id)a3;
+- (void)setBottomText:(id)text;
+- (void)setMiddleText:(id)text;
+- (void)setTopText:(id)text;
 @end
 
 @implementation TLKAuxilliaryTextView
@@ -19,9 +19,9 @@
   [v3 setDelegate:self];
   [v3 setAxis:1];
   v4 = +[TLKLayoutUtilities isLTR];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(TLKAuxilliaryTextView *)self setUserInteractionEnabled:0];
   v8 = 2;
@@ -57,10 +57,10 @@
   return v3;
 }
 
-- (void)setTopText:(id)a3
+- (void)setTopText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_topText setObserver:0];
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -104,11 +104,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_topText, a3);
+  objc_storeStrong(&self->_topText, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_topText setObserver:self];
@@ -153,25 +153,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setMiddleText:(id)a3
+- (void)setMiddleText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_middleText setObserver:0];
@@ -182,7 +182,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -215,11 +215,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_middleText, a3);
+  objc_storeStrong(&self->_middleText, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_middleText setObserver:self];
@@ -264,25 +264,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setBottomText:(id)a3
+- (void)setBottomText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_bottomText setObserver:0];
@@ -293,7 +293,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -326,11 +326,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_bottomText, a3);
+  objc_storeStrong(&self->_bottomText, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_bottomText setObserver:self];
@@ -375,55 +375,55 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKAuxilliaryTextView *)self topText];
-  v4 = [(TLKAuxilliaryTextView *)self topLabel];
-  [v4 setRichText:v3];
+  topText = [(TLKAuxilliaryTextView *)self topText];
+  topLabel = [(TLKAuxilliaryTextView *)self topLabel];
+  [topLabel setRichText:topText];
 
-  v5 = [(TLKAuxilliaryTextView *)self middleText];
-  v6 = [(TLKAuxilliaryTextView *)self middleLabel];
-  [v6 setRichText:v5];
+  middleText = [(TLKAuxilliaryTextView *)self middleText];
+  middleLabel = [(TLKAuxilliaryTextView *)self middleLabel];
+  [middleLabel setRichText:middleText];
 
-  v7 = [(TLKAuxilliaryTextView *)self bottomText];
-  v8 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  [v8 setRichText:v7];
+  bottomText = [(TLKAuxilliaryTextView *)self bottomText];
+  bottomLabel = [(TLKAuxilliaryTextView *)self bottomLabel];
+  [bottomLabel setRichText:bottomText];
 
-  v9 = [(TLKAuxilliaryTextView *)self topText];
-  LODWORD(v8) = [v9 hasContent];
-  v10 = [(TLKAuxilliaryTextView *)self topLabel];
-  [v10 setHidden:v8 ^ 1];
+  topText2 = [(TLKAuxilliaryTextView *)self topText];
+  LODWORD(bottomLabel) = [topText2 hasContent];
+  topLabel2 = [(TLKAuxilliaryTextView *)self topLabel];
+  [topLabel2 setHidden:bottomLabel ^ 1];
 
-  v11 = [(TLKAuxilliaryTextView *)self middleText];
-  LODWORD(v8) = [v11 hasContent];
-  v12 = [(TLKAuxilliaryTextView *)self middleLabel];
-  [v12 setHidden:v8 ^ 1];
+  middleText2 = [(TLKAuxilliaryTextView *)self middleText];
+  LODWORD(bottomLabel) = [middleText2 hasContent];
+  middleLabel2 = [(TLKAuxilliaryTextView *)self middleLabel];
+  [middleLabel2 setHidden:bottomLabel ^ 1];
 
-  v13 = [(TLKAuxilliaryTextView *)self bottomText];
-  LODWORD(v8) = [v13 hasContent];
-  v14 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  [v14 setHidden:v8 ^ 1];
+  bottomText2 = [(TLKAuxilliaryTextView *)self bottomText];
+  LODWORD(bottomLabel) = [bottomText2 hasContent];
+  bottomLabel2 = [(TLKAuxilliaryTextView *)self bottomLabel];
+  [bottomLabel2 setHidden:bottomLabel ^ 1];
 
-  v15 = [(TLKAuxilliaryTextView *)self middleLabel];
-  if ([v15 isHidden])
+  middleLabel3 = [(TLKAuxilliaryTextView *)self middleLabel];
+  if ([middleLabel3 isHidden])
   {
-    v14 = [(TLKAuxilliaryTextView *)self bottomLabel];
-    if ([v14 isHidden])
+    bottomLabel2 = [(TLKAuxilliaryTextView *)self bottomLabel];
+    if ([bottomLabel2 isHidden])
     {
       v16 = 1;
     }
@@ -439,46 +439,46 @@
     v16 = 2;
   }
 
-  v17 = [(TLKAuxilliaryTextView *)self topLabel];
-  [v17 setProminence:v16];
+  topLabel3 = [(TLKAuxilliaryTextView *)self topLabel];
+  [topLabel3 setProminence:v16];
 
-  v18 = [(TLKAuxilliaryTextView *)self topLabel];
-  v19 = [v18 isHidden];
-  if (v19)
+  topLabel4 = [(TLKAuxilliaryTextView *)self topLabel];
+  isHidden = [topLabel4 isHidden];
+  if (isHidden)
   {
     v20 = 0;
   }
 
   else
   {
-    v14 = [(TLKAuxilliaryTextView *)self bottomLabel];
-    v20 = [v14 isHidden] ^ 1;
+    bottomLabel2 = [(TLKAuxilliaryTextView *)self bottomLabel];
+    v20 = [bottomLabel2 isHidden] ^ 1;
   }
 
-  v21 = [(TLKAuxilliaryTextView *)self middleLabel];
-  [v21 setProminence:v20];
+  middleLabel4 = [(TLKAuxilliaryTextView *)self middleLabel];
+  [middleLabel4 setProminence:v20];
 
-  if ((v19 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
   }
 
-  v22 = [(TLKAuxilliaryTextView *)self topLabel];
-  if ([v22 isHidden])
+  topLabel5 = [(TLKAuxilliaryTextView *)self topLabel];
+  if ([topLabel5 isHidden])
   {
-    v23 = [(TLKAuxilliaryTextView *)self bottomLabel];
-    v24 = [v23 isHidden];
+    bottomLabel3 = [(TLKAuxilliaryTextView *)self bottomLabel];
+    isHidden2 = [bottomLabel3 isHidden];
   }
 
   else
   {
-    v24 = 0;
+    isHidden2 = 0;
   }
 
-  v25 = [(TLKAuxilliaryTextView *)self topLabel];
-  if ([v25 isHidden])
+  topLabel6 = [(TLKAuxilliaryTextView *)self topLabel];
+  if ([topLabel6 isHidden])
   {
-    v26 = [(TLKAuxilliaryTextView *)self middleLabel];
-    [v26 isHidden];
+    middleLabel5 = [(TLKAuxilliaryTextView *)self middleLabel];
+    [middleLabel5 isHidden];
   }
 
   v61 = +[TLKFontUtilities footnoteFont];
@@ -491,13 +491,13 @@
 
     else
     {
-      v38 = [(TLKAuxilliaryTextView *)self topLabel];
-      if ([v38 isHidden])
+      topLabel7 = [(TLKAuxilliaryTextView *)self topLabel];
+      if ([topLabel7 isHidden])
       {
-        v39 = [(TLKAuxilliaryTextView *)self bottomLabel];
-        v40 = [v39 isHidden];
+        bottomLabel4 = [(TLKAuxilliaryTextView *)self bottomLabel];
+        isHidden3 = [bottomLabel4 isHidden];
         v41 = MEMORY[0x1E69DDDB8];
-        if (!v40)
+        if (!isHidden3)
         {
           v41 = MEMORY[0x1E69DDCF8];
         }
@@ -539,8 +539,8 @@
     v27 = v31;
     v33 = [TLKFontUtilities cachedFontForTextStyle:v27 isBold:1 isMacStyle:v29];
 
-    v34 = [(TLKAuxilliaryTextView *)self topLabel];
-    if ([v34 isHidden])
+    topLabel8 = [(TLKAuxilliaryTextView *)self topLabel];
+    if ([topLabel8 isHidden])
     {
       v35 = *v32;
     }
@@ -556,39 +556,39 @@
     v61 = v33;
   }
 
-  v42 = [(TLKAuxilliaryTextView *)self topLabel];
-  [v42 setFont:v61];
+  topLabel9 = [(TLKAuxilliaryTextView *)self topLabel];
+  [topLabel9 setFont:v61];
 
-  v43 = [(TLKAuxilliaryTextView *)self middleLabel];
-  [v43 setFont:v36];
+  middleLabel6 = [(TLKAuxilliaryTextView *)self middleLabel];
+  [middleLabel6 setFont:v36];
 
-  v44 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  [v44 setFont:v37];
+  bottomLabel5 = [(TLKAuxilliaryTextView *)self bottomLabel];
+  [bottomLabel5 setFont:v37];
 
-  v45 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  if ([v45 isHidden])
+  bottomLabel6 = [(TLKAuxilliaryTextView *)self bottomLabel];
+  if ([bottomLabel6 isHidden])
   {
     v46 = 0;
   }
 
   else
   {
-    v47 = [(TLKAuxilliaryTextView *)self middleLabel];
-    if ([v47 isHidden])
+    middleLabel7 = [(TLKAuxilliaryTextView *)self middleLabel];
+    if ([middleLabel7 isHidden])
     {
       v46 = 0;
     }
 
     else
     {
-      v48 = [(TLKAuxilliaryTextView *)self topLabel];
-      v46 = [v48 isHidden] ^ 1;
+      topLabel10 = [(TLKAuxilliaryTextView *)self topLabel];
+      v46 = [topLabel10 isHidden] ^ 1;
     }
   }
 
   v49 = +[TLKUtilities isMacOS];
-  v50 = [(TLKAuxilliaryTextView *)self useCompactMode];
-  if (v50 || v49)
+  useCompactMode = [(TLKAuxilliaryTextView *)self useCompactMode];
+  if (useCompactMode || v49)
   {
     v51 = 0.0;
   }
@@ -598,16 +598,16 @@
     v51 = 2.0;
   }
 
-  if (!v50 && (v46 & 1) == 0)
+  if (!useCompactMode && (v46 & 1) == 0)
   {
     [TLKLayoutUtilities deviceScaledRoundedValue:self forView:0.5];
     v51 = v52;
   }
 
-  v53 = [(TLKView *)self contentView];
-  [v53 setSpacing:v51];
+  contentView = [(TLKView *)self contentView];
+  [contentView setSpacing:v51];
 
-  v54 = [(TLKView *)self contentView];
+  contentView2 = [(TLKView *)self contentView];
   if (v46)
   {
     v55 = 2.0;
@@ -618,8 +618,8 @@
     v55 = *MEMORY[0x1E698B6F8];
   }
 
-  v56 = [(TLKAuxilliaryTextView *)self topLabel];
-  [v54 setCustomSpacing:v56 afterView:v55];
+  topLabel11 = [(TLKAuxilliaryTextView *)self topLabel];
+  [contentView2 setCustomSpacing:topLabel11 afterView:v55];
 
   if (v46)
   {
@@ -634,7 +634,7 @@
   else
   {
     v58 = 0.0;
-    if ((v24 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
       v59 = +[TLKUtilities isMacOS];
       v60 = -2.5;
@@ -652,42 +652,42 @@
 
 - (id)middleLabelFont
 {
-  v2 = [(TLKAuxilliaryTextView *)self middleLabel];
-  v3 = [v2 font];
+  middleLabel = [(TLKAuxilliaryTextView *)self middleLabel];
+  font = [middleLabel font];
 
-  return v3;
+  return font;
 }
 
 - (id)bottomLabelFont
 {
-  v2 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  v3 = [v2 font];
+  bottomLabel = [(TLKAuxilliaryTextView *)self bottomLabel];
+  font = [bottomLabel font];
 
-  return v3;
+  return font;
 }
 
 - (id)topLabelString
 {
-  v2 = [(TLKAuxilliaryTextView *)self topLabel];
-  v3 = [v2 text];
+  topLabel = [(TLKAuxilliaryTextView *)self topLabel];
+  text = [topLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)middleLabelString
 {
-  v2 = [(TLKAuxilliaryTextView *)self middleLabel];
-  v3 = [v2 text];
+  middleLabel = [(TLKAuxilliaryTextView *)self middleLabel];
+  text = [middleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)bottomLabelString
 {
-  v2 = [(TLKAuxilliaryTextView *)self bottomLabel];
-  v3 = [v2 text];
+  bottomLabel = [(TLKAuxilliaryTextView *)self bottomLabel];
+  text = [bottomLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

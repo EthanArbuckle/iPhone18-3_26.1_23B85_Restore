@@ -10,9 +10,9 @@
   v3 = OBJC_IVAR____TtC16KnoxClientPublic17KnoxServiceClient_session;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   [v4 finishTasksAndInvalidate];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for KnoxServiceClient();
   [(KnoxServiceClient *)&v6 dealloc];
 }

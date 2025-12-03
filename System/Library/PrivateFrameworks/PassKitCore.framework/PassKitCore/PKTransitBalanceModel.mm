@@ -1,46 +1,46 @@
 @interface PKTransitBalanceModel
 - (BOOL)hasDeviceBoundCommutePlans;
 - (BOOL)hasPositiveBalance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)balancesAndCountPlansByID;
 - (NSString)displayableCommutePlanCount;
 - (NSString)displayableListOfBalances;
 - (NSString)primaryDisplayableBalance;
-- (PKTransitBalanceModel)initWithPass:(id)a3;
-- (id)balanceForIdentifiers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKTransitBalanceModel)initWithPass:(id)pass;
+- (id)balanceForIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)filteredActionsForDisplayableEntities;
 - (void)_updateBalancesAndPlans;
-- (void)applyStoredValueBalancesFromProperties:(id)a3;
-- (void)getDisplayableCommutePlanDetailsForTitle:(id *)a3 value:(id *)a4 subtitle:(id *)a5 isExpired:(BOOL *)a6;
-- (void)setDynamicBalances:(id)a3;
-- (void)setDynamicBalancesByID:(id)a3;
-- (void)setTransitProperties:(id)a3 andApplyStoredValueBalances:(BOOL)a4;
-- (void)updateWithDynamicBalances:(id)a3;
-- (void)updateWithDynamicCommutePlans:(id)a3;
+- (void)applyStoredValueBalancesFromProperties:(id)properties;
+- (void)getDisplayableCommutePlanDetailsForTitle:(id *)title value:(id *)value subtitle:(id *)subtitle isExpired:(BOOL *)expired;
+- (void)setDynamicBalances:(id)balances;
+- (void)setDynamicBalancesByID:(id)d;
+- (void)setTransitProperties:(id)properties andApplyStoredValueBalances:(BOOL)balances;
+- (void)updateWithDynamicBalances:(id)balances;
+- (void)updateWithDynamicCommutePlans:(id)plans;
 @end
 
 @implementation PKTransitBalanceModel
 
-- (PKTransitBalanceModel)initWithPass:(id)a3
+- (PKTransitBalanceModel)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v15.receiver = self;
   v15.super_class = PKTransitBalanceModel;
   v6 = [(PKTransitBalanceModel *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
     v8 = MEMORY[0x1E695DF70];
-    v9 = [v5 balanceFields];
-    v10 = [v8 arrayWithArray:v9];
+    balanceFields = [passCopy balanceFields];
+    v10 = [v8 arrayWithArray:balanceFields];
     balanceFields = v7->_balanceFields;
     v7->_balanceFields = v10;
 
-    v12 = [v5 transitCommutePlans];
+    transitCommutePlans = [passCopy transitCommutePlans];
     transitCommutePlans = v7->_transitCommutePlans;
-    v7->_transitCommutePlans = v12;
+    v7->_transitCommutePlans = transitCommutePlans;
 
     [(PKTransitBalanceModel *)v7 _updateBalancesAndPlans];
   }
@@ -48,13 +48,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     transitProperties = self->_transitProperties;
     v7 = *(v5 + 2);
     if (transitProperties && v7)
@@ -79,10 +79,10 @@ LABEL_22:
       goto LABEL_21;
     }
 
-    v9 = [(PKObject *)self->_pass uniqueID];
-    v10 = [*(v5 + 5) uniqueID];
-    v11 = v9;
-    v12 = v10;
+    uniqueID = [(PKObject *)self->_pass uniqueID];
+    uniqueID2 = [*(v5 + 5) uniqueID];
+    v11 = uniqueID;
+    v12 = uniqueID2;
     v13 = v12;
     if (v11 == v12)
     {
@@ -145,71 +145,71 @@ LABEL_23:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKStoredValuePassProperties *)self->_transitProperties copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKStoredValuePassProperties *)self->_transitProperties copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSDictionary *)self->_balancesByID copyWithZone:a3];
+  v8 = [(NSDictionary *)self->_balancesByID copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSMutableArray *)self->_balanceFields mutableCopyWithZone:a3];
+  v10 = [(NSMutableArray *)self->_balanceFields mutableCopyWithZone:zone];
   v11 = *(v5 + 104);
   *(v5 + 104) = v10;
 
-  v12 = [(NSArray *)self->_displayableBalances copyWithZone:a3];
+  v12 = [(NSArray *)self->_displayableBalances copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSArray *)self->_displayableCurrencyBalances copyWithZone:a3];
+  v14 = [(NSArray *)self->_displayableCurrencyBalances copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
-  v16 = [(NSArray *)self->_displayablePointsBalances copyWithZone:a3];
+  v16 = [(NSArray *)self->_displayablePointsBalances copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
-  v18 = [(NSArray *)self->_transitCommutePlans copyWithZone:a3];
+  v18 = [(NSArray *)self->_transitCommutePlans copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
-  v20 = [(NSArray *)self->_displayableCommutePlanBalances copyWithZone:a3];
+  v20 = [(NSArray *)self->_displayableCommutePlanBalances copyWithZone:zone];
   v21 = *(v5 + 72);
   *(v5 + 72) = v20;
 
-  v22 = [(NSArray *)self->_displayableCommutePlans copyWithZone:a3];
+  v22 = [(NSArray *)self->_displayableCommutePlans copyWithZone:zone];
   v23 = *(v5 + 88);
   *(v5 + 88) = v22;
 
-  v24 = [(NSArray *)self->_displayableCommutePlanActions copyWithZone:a3];
+  v24 = [(NSArray *)self->_displayableCommutePlanActions copyWithZone:zone];
   v25 = *(v5 + 96);
   *(v5 + 96) = v24;
 
   objc_storeStrong((v5 + 40), self->_pass);
-  v26 = [(NSArray *)self->_dynamicPlans copyWithZone:a3];
+  v26 = [(NSArray *)self->_dynamicPlans copyWithZone:zone];
   v27 = *(v5 + 24);
   *(v5 + 24) = v26;
 
-  v28 = [(NSMutableDictionary *)self->_dynamicPlansByUniqueId mutableCopyWithZone:a3];
+  v28 = [(NSMutableDictionary *)self->_dynamicPlansByUniqueId mutableCopyWithZone:zone];
   v29 = *(v5 + 32);
   *(v5 + 32) = v28;
 
   return v5;
 }
 
-- (void)setDynamicBalances:(id)a3
+- (void)setDynamicBalances:(id)balances
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  balancesCopy = balances;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(balancesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = balancesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -225,10 +225,10 @@ LABEL_23:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v11 identifiers];
-        if (v12 && ([v11 isExpired] & 1) == 0)
+        identifiers = [v11 identifiers];
+        if (identifiers && ([v11 isExpired] & 1) == 0)
         {
-          [v5 setObject:v11 forKeyedSubscript:v12];
+          [v5 setObject:v11 forKeyedSubscript:identifiers];
         }
       }
 
@@ -242,16 +242,16 @@ LABEL_23:
   [(PKTransitBalanceModel *)self _updateBalancesAndPlans];
 }
 
-- (void)updateWithDynamicBalances:(id)a3
+- (void)updateWithDynamicBalances:(id)balances
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  balancesCopy = balances;
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:self->_balancesByID];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = balancesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -267,10 +267,10 @@ LABEL_23:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 identifiers];
-        if (v12)
+        identifiers = [v11 identifiers];
+        if (identifiers)
         {
-          [v5 setObject:v11 forKeyedSubscript:v12];
+          [v5 setObject:v11 forKeyedSubscript:identifiers];
         }
       }
 
@@ -290,14 +290,14 @@ LABEL_23:
   }
 }
 
-- (void)setDynamicBalancesByID:(id)a3
+- (void)setDynamicBalancesByID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v4;
-    v5 = [(NSDictionary *)self->_balancesByID isEqualToDictionary:v4];
-    v4 = v8;
+    v8 = dCopy;
+    v5 = [(NSDictionary *)self->_balancesByID isEqualToDictionary:dCopy];
+    dCopy = v8;
     if (!v5)
     {
       v6 = [v8 copy];
@@ -305,7 +305,7 @@ LABEL_23:
       self->_balancesByID = v6;
 
       [(PKTransitBalanceModel *)self _updateBalancesAndPlans];
-      v4 = v8;
+      dCopy = v8;
     }
   }
 }
@@ -340,9 +340,9 @@ LABEL_23:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifiers];
-        v12 = v11;
-        if (v11 && [v11 count])
+        identifiers = [v10 identifiers];
+        v12 = identifiers;
+        if (identifiers && [identifiers count])
         {
           [v4 setObject:v10 forKeyedSubscript:v12];
         }
@@ -359,30 +359,30 @@ LABEL_23:
   return v13;
 }
 
-- (id)balanceForIdentifiers:(id)a3
+- (id)balanceForIdentifiers:(id)identifiers
 {
-  v3 = [(NSDictionary *)self->_balancesByID objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_balancesByID objectForKeyedSubscript:identifiers];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)setTransitProperties:(id)a3 andApplyStoredValueBalances:(BOOL)a4
+- (void)setTransitProperties:(id)properties andApplyStoredValueBalances:(BOOL)balances
 {
-  v4 = a4;
-  v7 = a3;
+  balancesCopy = balances;
+  propertiesCopy = properties;
   transitProperties = self->_transitProperties;
-  v10 = v7;
-  if (!v7 || !transitProperties)
+  v10 = propertiesCopy;
+  if (!propertiesCopy || !transitProperties)
   {
-    if (transitProperties == v7)
+    if (transitProperties == propertiesCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_6:
-    objc_storeStrong(&self->_transitProperties, a3);
-    if (v4)
+    objc_storeStrong(&self->_transitProperties, properties);
+    if (balancesCopy)
     {
       [(PKTransitBalanceModel *)self applyStoredValueBalancesFromProperties:v10];
     }
@@ -392,12 +392,12 @@ LABEL_6:
       [(PKTransitBalanceModel *)self _updateBalancesAndPlans];
     }
 
-    v7 = v10;
+    propertiesCopy = v10;
     goto LABEL_10;
   }
 
-  v9 = [(PKStoredValuePassProperties *)transitProperties isEqual:v7];
-  v7 = v10;
+  v9 = [(PKStoredValuePassProperties *)transitProperties isEqual:propertiesCopy];
+  propertiesCopy = v10;
   if (!v9)
   {
     goto LABEL_6;
@@ -406,19 +406,19 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)applyStoredValueBalancesFromProperties:(id)a3
+- (void)applyStoredValueBalancesFromProperties:(id)properties
 {
-  v20 = self;
+  selfCopy = self;
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  propertiesCopy = properties;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v3;
-  v5 = [v3 balances];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v21 = propertiesCopy;
+  balances = [propertiesCopy balances];
+  v6 = [balances countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -429,25 +429,25 @@ LABEL_10:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(balances);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        if (v11)
+        identifier = [v10 identifier];
+        if (identifier)
         {
-          v12 = v11;
-          v13 = [v10 isCurrencyBalance];
+          v12 = identifier;
+          isCurrencyBalance = [v10 isCurrencyBalance];
 
-          if (v13)
+          if (isCurrencyBalance)
           {
-            v14 = [v10 amount];
-            v15 = [v10 currencyCode];
-            v16 = PKCurrencyAmountCreate(v14, v15, 0);
+            amount = [v10 amount];
+            currencyCode = [v10 currencyCode];
+            v16 = PKCurrencyAmountCreate(amount, currencyCode, 0);
 
             v17 = [PKPaymentBalance alloc];
-            v18 = [v10 identifier];
-            v19 = [(PKPaymentBalance *)v17 initWithIdentifier:v18 forCurrencyAmount:v16];
+            identifier2 = [v10 identifier];
+            v19 = [(PKPaymentBalance *)v17 initWithIdentifier:identifier2 forCurrencyAmount:v16];
 
             if (v19)
             {
@@ -457,19 +457,19 @@ LABEL_10:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [balances countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  [(PKTransitBalanceModel *)v20 setDynamicBalances:v4];
+  [(PKTransitBalanceModel *)selfCopy setDynamicBalances:v4];
 }
 
-- (void)updateWithDynamicCommutePlans:(id)a3
+- (void)updateWithDynamicCommutePlans:(id)plans
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [plans copy];
   dynamicPlans = self->_dynamicPlans;
   self->_dynamicPlans = v4;
 
@@ -497,8 +497,8 @@ LABEL_10:
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 uniqueIdentifier];
-        [(NSMutableDictionary *)self->_dynamicPlansByUniqueId setObject:v13 forKeyedSubscript:v14];
+        uniqueIdentifier = [v13 uniqueIdentifier];
+        [(NSMutableDictionary *)self->_dynamicPlansByUniqueId setObject:v13 forKeyedSubscript:uniqueIdentifier];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -531,12 +531,12 @@ LABEL_10:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v11 + 1) + 8 * i) value];
-        if (v6)
+        value = [*(*(&v11 + 1) + 8 * i) value];
+        if (value)
         {
-          v7 = v6;
-          v8 = [MEMORY[0x1E696AB90] zero];
-          v9 = [v8 compare:v7];
+          v7 = value;
+          zero = [MEMORY[0x1E696AB90] zero];
+          v9 = [zero compare:v7];
 
           if (v9 == -1)
           {
@@ -608,13 +608,13 @@ LABEL_11:
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKTransitBalanceModel *)self displayableCommutePlans];
+  displayableCommutePlans = [(PKTransitBalanceModel *)self displayableCommutePlans];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = displayableCommutePlans;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -629,8 +629,8 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * i) identifier];
-        [v5 addObject:v11];
+        identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+        [v5 addObject:identifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -643,8 +643,8 @@ LABEL_11:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(PKSecureElementPass *)self->_pass availableActions];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  availableActions = [(PKSecureElementPass *)self->_pass availableActions];
+  v13 = [availableActions countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -655,7 +655,7 @@ LABEL_11:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(availableActions);
         }
 
         v17 = *(*(&v21 + 1) + 8 * j);
@@ -666,15 +666,15 @@ LABEL_11:
 
         else
         {
-          v18 = [v17 associatedPlanIdentifier];
-          if ([v5 containsObject:v18])
+          associatedPlanIdentifier = [v17 associatedPlanIdentifier];
+          if ([v5 containsObject:associatedPlanIdentifier])
           {
             [v3 addObject:v17];
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v14 = [availableActions countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v14);
@@ -706,8 +706,8 @@ LABEL_11:
   v172 = 0u;
   v173 = 0u;
   v174 = 0u;
-  v4 = [(PKSecureElementPass *)self->_pass availableActions];
-  v5 = [v4 countByEnumeratingWithState:&v171 objects:v182 count:16];
+  availableActions = [(PKSecureElementPass *)self->_pass availableActions];
+  v5 = [availableActions countByEnumeratingWithState:&v171 objects:v182 count:16];
   if (v5)
   {
     v6 = v5;
@@ -718,20 +718,20 @@ LABEL_11:
       {
         if (*v172 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(availableActions);
         }
 
         v9 = *(*(&v171 + 1) + 8 * i);
-        v10 = [v9 associatedPlan];
-        v11 = v10;
-        if (v10)
+        associatedPlan = [v9 associatedPlan];
+        v11 = associatedPlan;
+        if (associatedPlan)
         {
-          v12 = [v10 identifier];
-          [v126 setObject:v9 forKeyedSubscript:v12];
+          identifier = [associatedPlan identifier];
+          [v126 setObject:v9 forKeyedSubscript:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v171 objects:v182 count:16];
+      v6 = [availableActions countByEnumeratingWithState:&v171 objects:v182 count:16];
     }
 
     while (v6);
@@ -743,7 +743,7 @@ LABEL_11:
   v168 = 0u;
   obj = self->_transitCommutePlans;
   v13 = [(NSArray *)obj countByEnumeratingWithState:&v167 objects:v181 count:16];
-  v127 = self;
+  selfCopy = self;
   v118 = v3;
   if (v13)
   {
@@ -762,12 +762,12 @@ LABEL_11:
         }
 
         v17 = *(*(&v167 + 1) + 8 * v16);
-        v18 = [v17 identifier];
-        v19 = [v17 requiresAppletSourceOfTruth];
-        v20 = [v126 objectForKeyedSubscript:v18];
+        identifier2 = [v17 identifier];
+        requiresAppletSourceOfTruth = [v17 requiresAppletSourceOfTruth];
+        v20 = [v126 objectForKeyedSubscript:identifier2];
         v134 = v17;
         [v20 setAssociatedPlan:v17];
-        if (v19)
+        if (requiresAppletSourceOfTruth)
         {
           v124 = v16;
           v131 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -776,8 +776,8 @@ LABEL_11:
           v164 = 0u;
           v165 = 0u;
           v166 = 0u;
-          v21 = [(NSMutableDictionary *)self->_dynamicPlansByUniqueId allValues];
-          v22 = [v21 countByEnumeratingWithState:&v163 objects:v180 count:16];
+          allValues = [(NSMutableDictionary *)self->_dynamicPlansByUniqueId allValues];
+          v22 = [allValues countByEnumeratingWithState:&v163 objects:v180 count:16];
           if (!v22)
           {
             goto LABEL_39;
@@ -791,13 +791,13 @@ LABEL_11:
             {
               if (*v164 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allValues);
               }
 
               v26 = *(*(&v163 + 1) + 8 * j);
-              v27 = [v26 identifier];
-              v28 = v18;
-              v29 = v27;
+              identifier3 = [v26 identifier];
+              v28 = identifier2;
+              v29 = identifier3;
               v30 = v29;
               if (v28 == v29)
               {
@@ -826,7 +826,7 @@ LABEL_36:
                 continue;
               }
 
-              if (!v18 || !v29)
+              if (!identifier2 || !v29)
               {
 
                 goto LABEL_36;
@@ -840,7 +840,7 @@ LABEL_36:
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v163 objects:v180 count:16];
+            v23 = [allValues countByEnumeratingWithState:&v163 objects:v180 count:16];
             if (!v23)
             {
 LABEL_39:
@@ -858,9 +858,9 @@ LABEL_39:
               v3 = v118;
               [v118 addObjectsFromArray:v33];
               v34 = [v134 passFieldForKey:@"amountRemaining"];
-              v35 = [v34 foreignReferenceIdentifiers];
-              self = v127;
-              v36 = [(NSDictionary *)v127->_balancesByID objectForKeyedSubscript:v35];
+              foreignReferenceIdentifiers = [v34 foreignReferenceIdentifiers];
+              self = selfCopy;
+              v36 = [(NSDictionary *)selfCopy->_balancesByID objectForKeyedSubscript:foreignReferenceIdentifiers];
 
               if (v36 && (v20 && ([v20 isActionAvailable] & 1) != 0 || objc_msgSend(v134, "isPlanDisplayable")))
               {
@@ -917,8 +917,8 @@ LABEL_52:
         v156 = 0u;
         v157 = 0u;
         v158 = 0u;
-        v39 = [v38 details];
-        v40 = [v39 countByEnumeratingWithState:&v155 objects:v178 count:16];
+        details = [v38 details];
+        v40 = [details countByEnumeratingWithState:&v155 objects:v178 count:16];
         if (v40)
         {
           v41 = v40;
@@ -929,7 +929,7 @@ LABEL_52:
             {
               if (*v156 != v42)
               {
-                objc_enumerationMutation(v39);
+                objc_enumerationMutation(details);
               }
 
               v44 = *(*(&v155 + 1) + 8 * m);
@@ -939,12 +939,12 @@ LABEL_52:
               if (v46)
               {
                 [v137 addObject:v44];
-                v47 = [v44 foreignReferenceIdentifiers];
-                [v138 setObject:v38 forKeyedSubscript:v47];
+                foreignReferenceIdentifiers2 = [v44 foreignReferenceIdentifiers];
+                [v138 setObject:v38 forKeyedSubscript:foreignReferenceIdentifiers2];
               }
             }
 
-            v41 = [v39 countByEnumeratingWithState:&v155 objects:v178 count:16];
+            v41 = [details countByEnumeratingWithState:&v155 objects:v178 count:16];
           }
 
           while (v41);
@@ -957,20 +957,20 @@ LABEL_52:
     while (v135);
   }
 
-  v48 = v127;
-  v49 = [(PKStoredValuePassProperties *)v127->_transitProperties balanceAmount];
+  v48 = selfCopy;
+  balanceAmount = [(PKStoredValuePassProperties *)selfCopy->_transitProperties balanceAmount];
   v50 = 0x1E695D000uLL;
-  v110 = v49;
-  if (v49)
+  v110 = balanceAmount;
+  if (balanceAmount)
   {
-    v51 = [[PKPaymentBalance alloc] initWithIdentifier:@"ApplicationStoredValueBalanceDefault" forCurrencyAmount:v49];
+    v51 = [[PKPaymentBalance alloc] initWithIdentifier:@"ApplicationStoredValueBalanceDefault" forCurrencyAmount:balanceAmount];
     [(NSArray *)v119 safelyAddObject:v51];
     [(NSArray *)v113 safelyAddObject:v51];
   }
 
   else
   {
-    if (![(PKSecureElementPass *)v127->_pass hasLegacyBalanceModel]|| [(NSMutableArray *)v127->_balanceFields count])
+    if (![(PKSecureElementPass *)selfCopy->_pass hasLegacyBalanceModel]|| [(NSMutableArray *)selfCopy->_balanceFields count])
     {
       goto LABEL_75;
     }
@@ -985,13 +985,13 @@ LABEL_52:
     [(PKPaymentBalance *)v51 setForeignReferenceIdentifiers:v109];
 
     [(PKPaymentBalance *)v51 setCellStyle:1];
-    [(NSMutableArray *)v127->_balanceFields addObject:v51];
+    [(NSMutableArray *)selfCopy->_balanceFields addObject:v51];
   }
 
 LABEL_75:
-  if (v127->_balancesByID)
+  if (selfCopy->_balancesByID)
   {
-    balanceFields = v127->_balanceFields;
+    balanceFields = selfCopy->_balanceFields;
     if (balanceFields)
     {
       v153 = 0u;
@@ -1018,12 +1018,12 @@ LABEL_75:
             }
 
             v58 = *(*(&v151 + 1) + 8 * v57);
-            v136 = [v58 label];
-            v59 = [v58 foreignReferenceIdentifiers];
-            v60 = [v58 foreignReferenceType];
-            if (v59)
+            label = [v58 label];
+            foreignReferenceIdentifiers3 = [v58 foreignReferenceIdentifiers];
+            foreignReferenceType = [v58 foreignReferenceType];
+            if (foreignReferenceIdentifiers3)
             {
-              v61 = (v60 - 1) > 1;
+              v61 = (foreignReferenceType - 1) > 1;
             }
 
             else
@@ -1033,10 +1033,10 @@ LABEL_75:
 
             if (!v61)
             {
-              if ([v59 count] == 1)
+              if ([foreignReferenceIdentifiers3 count] == 1)
               {
-                v62 = [(NSDictionary *)v48->_balancesByID objectForKeyedSubscript:v59];
-                PKSetBalanceLocalizedStringIfNeeded(v62, v136);
+                v62 = [(NSDictionary *)v48->_balancesByID objectForKeyedSubscript:foreignReferenceIdentifiers3];
+                PKSetBalanceLocalizedStringIfNeeded(v62, label);
                 v149[0] = MEMORY[0x1E69E9820];
                 v149[1] = 3221225472;
                 v149[2] = __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke;
@@ -1050,9 +1050,9 @@ LABEL_75:
                   if (!v64)
                   {
                     [(NSArray *)v119 addObject:v63];
-                    v65 = [v63 isCurrency];
+                    isCurrency = [v63 isCurrency];
                     v66 = v113;
-                    if ((v65 & 1) != 0 || (v67 = [v58 unitType], v66 = v111, v67 == 3))
+                    if ((isCurrency & 1) != 0 || (v67 = [v58 unitType], v66 = v111, v67 == 3))
                     {
                       [(NSArray *)v66 addObject:v63];
                     }
@@ -1066,14 +1066,14 @@ LABEL_75:
               {
                 v121 = v58;
                 v125 = v57;
-                v133 = [objc_alloc(*(v50 + 3952)) initWithCapacity:{objc_msgSend(v59, "count")}];
+                v133 = [objc_alloc(*(v50 + 3952)) initWithCapacity:{objc_msgSend(foreignReferenceIdentifiers3, "count")}];
                 v68 = objc_alloc_init(*(v50 + 3952));
                 v145 = 0u;
                 v146 = 0u;
                 v147 = 0u;
                 v148 = 0u;
-                obja = v59;
-                v69 = v59;
+                obja = foreignReferenceIdentifiers3;
+                v69 = foreignReferenceIdentifiers3;
                 v70 = [v69 countByEnumeratingWithState:&v145 objects:v176 count:16];
                 if (v70)
                 {
@@ -1090,13 +1090,13 @@ LABEL_75:
 
                       v74 = *(*(&v145 + 1) + 8 * n);
                       v75 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v74, 0}];
-                      v76 = [(NSDictionary *)v127->_balancesByID objectForKeyedSubscript:v75];
+                      v76 = [(NSDictionary *)selfCopy->_balancesByID objectForKeyedSubscript:v75];
                       v77 = [v76 copy];
 
                       if (v77)
                       {
-                        PKSetBalanceLocalizedStringIfNeeded(v77, v136);
-                        v78 = [(PKStoredValuePassProperties *)v127->_transitProperties balanceWithIdentifier:v74];
+                        PKSetBalanceLocalizedStringIfNeeded(v77, label);
+                        v78 = [(PKStoredValuePassProperties *)selfCopy->_transitProperties balanceWithIdentifier:v74];
                         if ([v78 isExpired])
                         {
                           v79 = v68;
@@ -1121,20 +1121,20 @@ LABEL_75:
                 if (v80)
                 {
                   [(NSArray *)v119 addObject:v80];
-                  v81 = [(PKPaymentBalance *)v80 isCurrency];
+                  isCurrency2 = [(PKPaymentBalance *)v80 isCurrency];
                   v82 = v113;
-                  if (v81 || (v83 = [v121 unitType], v82 = v111, v83 == 3))
+                  if (isCurrency2 || (v83 = [v121 unitType], v82 = v111, v83 == 3))
                   {
                     [(NSArray *)v82 addObject:v80];
                   }
                 }
 
-                v48 = v127;
+                v48 = selfCopy;
                 v50 = 0x1E695D000;
                 v53 = v115;
                 v55 = v117;
                 v56 = v112;
-                v59 = obja;
+                foreignReferenceIdentifiers3 = obja;
                 v57 = v125;
               }
             }
@@ -1171,12 +1171,12 @@ LABEL_75:
         }
 
         v89 = *(*(&v141 + 1) + 8 * ii);
-        v90 = [v89 foreignReferenceIdentifiers];
-        if (([v89 foreignReferenceType] - 3) >= 0xFFFFFFFFFFFFFFFELL && v90 != 0)
+        foreignReferenceIdentifiers4 = [v89 foreignReferenceIdentifiers];
+        if (([v89 foreignReferenceType] - 3) >= 0xFFFFFFFFFFFFFFFELL && foreignReferenceIdentifiers4 != 0)
         {
-          v92 = [(NSDictionary *)v127->_balancesByID objectForKeyedSubscript:v90];
-          v93 = [v89 label];
-          [v92 setLocalizedTitle:v93];
+          v92 = [(NSDictionary *)selfCopy->_balancesByID objectForKeyedSubscript:foreignReferenceIdentifiers4];
+          label2 = [v89 label];
+          [v92 setLocalizedTitle:label2];
 
           if (v92)
           {
@@ -1196,7 +1196,7 @@ LABEL_75:
 
           else
           {
-            v95 = [v138 objectForKeyedSubscript:v90];
+            v95 = [v138 objectForKeyedSubscript:foreignReferenceIdentifiers4];
             [v130 removeObject:v95];
           }
         }
@@ -1208,7 +1208,7 @@ LABEL_75:
     while (v86);
   }
 
-  self = v127;
+  self = selfCopy;
   v3 = v118;
 LABEL_132:
   displayableBalances = self->_displayableBalances;
@@ -1300,16 +1300,16 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
 {
   if ([(NSArray *)self->_displayableBalances count])
   {
-    v3 = [(NSArray *)self->_displayableBalances firstObject];
-    v4 = [v3 formattedValue];
+    firstObject = [(NSArray *)self->_displayableBalances firstObject];
+    formattedValue = [firstObject formattedValue];
   }
 
   else
   {
-    v4 = 0;
+    formattedValue = 0;
   }
 
-  return v4;
+  return formattedValue;
 }
 
 - (NSString)displayableListOfBalances
@@ -1319,7 +1319,7 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
   {
     if ([(NSArray *)self->_displayableBalances count]== 1)
     {
-      v3 = [(PKTransitBalanceModel *)self primaryDisplayableBalance];
+      primaryDisplayableBalance = [(PKTransitBalanceModel *)self primaryDisplayableBalance];
     }
 
     else
@@ -1344,8 +1344,8 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v12 + 1) + 8 * i) formattedValue];
-            [v4 safelyAddObject:v10];
+            formattedValue = [*(*(&v12 + 1) + 8 * i) formattedValue];
+            [v4 safelyAddObject:formattedValue];
           }
 
           v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1354,16 +1354,16 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
         while (v7);
       }
 
-      v3 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v4];
+      primaryDisplayableBalance = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v4];
     }
   }
 
   else
   {
-    v3 = 0;
+    primaryDisplayableBalance = 0;
   }
 
-  return v3;
+  return primaryDisplayableBalance;
 }
 
 - (NSString)displayableCommutePlanCount
@@ -1377,37 +1377,37 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
   return v3;
 }
 
-- (void)getDisplayableCommutePlanDetailsForTitle:(id *)a3 value:(id *)a4 subtitle:(id *)a5 isExpired:(BOOL *)a6
+- (void)getDisplayableCommutePlanDetailsForTitle:(id *)title value:(id *)value subtitle:(id *)subtitle isExpired:(BOOL *)expired
 {
   v23 = self->_displayableCommutePlans;
   if ([(NSArray *)v23 count]< 2)
   {
-    v16 = [(NSArray *)v23 firstObject];
-    v17 = v16;
-    if (v16)
+    firstObject = [(NSArray *)v23 firstObject];
+    v17 = firstObject;
+    if (firstObject)
     {
-      v18 = [v16 title];
-      *a3 = [v18 label];
-      *a4 = [v18 value];
-      v19 = [v17 properties];
-      if ((v19 & 3) == 1)
+      title = [firstObject title];
+      *title = [title label];
+      *value = [title value];
+      properties = [v17 properties];
+      if ((properties & 3) == 1)
       {
-        *a5 = [v17 formattedDateString];
+        *subtitle = [v17 formattedDateString];
         if ([v17 hasExpiredPlanDate])
         {
-          *a6 = 1;
+          *expired = 1;
         }
       }
 
-      else if ((v19 & 4) != 0)
+      else if ((properties & 4) != 0)
       {
         v20 = [v17 passFieldForKey:@"amountRemaining"];
         if (([v20 foreignReferenceType] - 1) <= 1)
         {
-          v21 = [v20 foreignReferenceIdentifiers];
-          v22 = [(PKTransitBalanceModel *)self balanceForIdentifiers:v21];
+          foreignReferenceIdentifiers = [v20 foreignReferenceIdentifiers];
+          v22 = [(PKTransitBalanceModel *)self balanceForIdentifiers:foreignReferenceIdentifiers];
 
-          *a4 = [v22 formattedValue];
+          *value = [v22 formattedValue];
         }
       }
     }
@@ -1415,8 +1415,8 @@ uint64_t __48__PKTransitBalanceModel__updateBalancesAndPlans__block_invoke_2(uin
 
   else
   {
-    *a3 = PKPassLocalizedStringWithFormat(@"COMMUTE_PLANS", self->_pass, 0, v11, v12, v13, v14, v15, 0);
-    *a4 = [(PKTransitBalanceModel *)self displayableCommutePlanCount];
+    *title = PKPassLocalizedStringWithFormat(@"COMMUTE_PLANS", self->_pass, 0, v11, v12, v13, v14, v15, 0);
+    *value = [(PKTransitBalanceModel *)self displayableCommutePlanCount];
   }
 }
 

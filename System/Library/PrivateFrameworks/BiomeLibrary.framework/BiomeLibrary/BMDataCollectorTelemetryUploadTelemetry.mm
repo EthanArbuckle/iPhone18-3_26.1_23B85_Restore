@@ -1,41 +1,41 @@
 @interface BMDataCollectorTelemetryUploadTelemetry
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDataCollectorTelemetryUploadTelemetry)initWithEventsProcessed:(id)a3 eventsSkippedRedactedAtUpload:(id)a4 eventsUploaded:(id)a5 bytesUploaded:(id)a6 batchesUploaded:(id)a7 batchesFailedToUpload:(id)a8 latenciesInHours:(id)a9;
-- (BMDataCollectorTelemetryUploadTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDataCollectorTelemetryUploadTelemetry)initWithEventsProcessed:(id)processed eventsSkippedRedactedAtUpload:(id)upload eventsUploaded:(id)uploaded bytesUploaded:(id)bytesUploaded batchesUploaded:(id)batchesUploaded batchesFailedToUpload:(id)toUpload latenciesInHours:(id)hours;
+- (BMDataCollectorTelemetryUploadTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_latenciesInHoursJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDataCollectorTelemetryUploadTelemetry
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ((!-[BMDataCollectorTelemetryUploadTelemetry hasEventsProcessed](self, "hasEventsProcessed") && ![v5 hasEventsProcessed] || -[BMDataCollectorTelemetryUploadTelemetry hasEventsProcessed](self, "hasEventsProcessed") && objc_msgSend(v5, "hasEventsProcessed") && (v6 = -[BMDataCollectorTelemetryUploadTelemetry eventsProcessed](self, "eventsProcessed"), v6 == objc_msgSend(v5, "eventsProcessed"))) && (!-[BMDataCollectorTelemetryUploadTelemetry hasEventsSkippedRedactedAtUpload](self, "hasEventsSkippedRedactedAtUpload") && !objc_msgSend(v5, "hasEventsSkippedRedactedAtUpload") || -[BMDataCollectorTelemetryUploadTelemetry hasEventsSkippedRedactedAtUpload](self, "hasEventsSkippedRedactedAtUpload") && objc_msgSend(v5, "hasEventsSkippedRedactedAtUpload") && (v7 = -[BMDataCollectorTelemetryUploadTelemetry eventsSkippedRedactedAtUpload](self, "eventsSkippedRedactedAtUpload"), v7 == objc_msgSend(v5, "eventsSkippedRedactedAtUpload"))) && (!-[BMDataCollectorTelemetryUploadTelemetry hasEventsUploaded](self, "hasEventsUploaded") && !objc_msgSend(v5, "hasEventsUploaded") || -[BMDataCollectorTelemetryUploadTelemetry hasEventsUploaded](self, "hasEventsUploaded") && objc_msgSend(v5, "hasEventsUploaded") && (v8 = -[BMDataCollectorTelemetryUploadTelemetry eventsUploaded](self, "eventsUploaded"), v8 == objc_msgSend(v5, "eventsUploaded"))) && (!-[BMDataCollectorTelemetryUploadTelemetry hasBytesUploaded](self, "hasBytesUploaded") && !objc_msgSend(v5, "hasBytesUploaded") || -[BMDataCollectorTelemetryUploadTelemetry hasBytesUploaded](self, "hasBytesUploaded") && objc_msgSend(v5, "hasBytesUploaded") && (v9 = -[BMDataCollectorTelemetryUploadTelemetry bytesUploaded](self, "bytesUploaded"), v9 == objc_msgSend(v5, "bytesUploaded"))) && (!-[BMDataCollectorTelemetryUploadTelemetry hasBatchesUploaded](self, "hasBatchesUploaded") && !objc_msgSend(v5, "hasBatchesUploaded") || -[BMDataCollectorTelemetryUploadTelemetry hasBatchesUploaded](self, "hasBatchesUploaded") && objc_msgSend(v5, "hasBatchesUploaded") && (v10 = -[BMDataCollectorTelemetryUploadTelemetry batchesUploaded](self, "batchesUploaded"), v10 == objc_msgSend(v5, "batchesUploaded"))) && (!-[BMDataCollectorTelemetryUploadTelemetry hasBatchesFailedToUpload](self, "hasBatchesFailedToUpload") && !objc_msgSend(v5, "hasBatchesFailedToUpload") || -[BMDataCollectorTelemetryUploadTelemetry hasBatchesFailedToUpload](self, "hasBatchesFailedToUpload") && objc_msgSend(v5, "hasBatchesFailedToUpload") && (v11 = -[BMDataCollectorTelemetryUploadTelemetry batchesFailedToUpload](self, "batchesFailedToUpload"), v11 == objc_msgSend(v5, "batchesFailedToUpload"))))
     {
-      v12 = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
-      v13 = [v5 latenciesInHours];
-      if (v12 == v13)
+      latenciesInHours = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
+      latenciesInHours2 = [v5 latenciesInHours];
+      if (latenciesInHours == latenciesInHours2)
       {
         v16 = 1;
       }
 
       else
       {
-        v14 = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
-        v15 = [v5 latenciesInHours];
-        v16 = [v14 isEqual:v15];
+        latenciesInHours3 = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
+        latenciesInHours4 = [v5 latenciesInHours];
+        v16 = [latenciesInHours3 isEqual:latenciesInHours4];
       }
     }
 
@@ -116,70 +116,70 @@
     v8 = 0;
   }
 
-  v9 = [(BMDataCollectorTelemetryUploadTelemetry *)self _latenciesInHoursJSONArray];
+  _latenciesInHoursJSONArray = [(BMDataCollectorTelemetryUploadTelemetry *)self _latenciesInHoursJSONArray];
   v25[0] = @"eventsProcessed";
-  v10 = v3;
+  null = v3;
   if (!v3)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v10;
-  v26[0] = v10;
+  v21 = null;
+  v26[0] = null;
   v25[1] = @"eventsSkippedRedactedAtUpload";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v24 = v3;
-  v20 = v11;
-  v26[1] = v11;
+  v20 = null2;
+  v26[1] = null2;
   v25[2] = @"eventsUploaded";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v4;
-  v26[2] = v12;
+  v26[2] = null3;
   v25[3] = @"bytesUploaded";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v22 = v5;
-  v26[3] = v13;
+  v26[3] = null4;
   v25[4] = @"batchesUploaded";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"batchesFailedToUpload";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"latenciesInHours";
-  v16 = v9;
-  if (!v9)
+  null7 = _latenciesInHoursJSONArray;
+  if (!_latenciesInHoursJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (v9)
+  if (_latenciesInHoursJSONArray)
   {
     if (v8)
     {
@@ -249,8 +249,8 @@ LABEL_42:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  latenciesInHours = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
+  v5 = [latenciesInHours countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -261,13 +261,13 @@ LABEL_42:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(latenciesInHours);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [latenciesInHours countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -278,17 +278,17 @@ LABEL_42:
   return v3;
 }
 
-- (BMDataCollectorTelemetryUploadTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDataCollectorTelemetryUploadTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v114[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"eventsProcessed"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"eventsProcessed"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -297,13 +297,13 @@ LABEL_42:
         v114[0] = v28;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v114 forKeys:&v113 count:1];
         v7 = 0;
-        v30 = 0;
-        *a4 = [v31 initWithDomain:v32 code:2 userInfo:v8];
+        selfCopy2 = 0;
+        *error = [v31 initWithDomain:v32 code:2 userInfo:v8];
         goto LABEL_73;
       }
 
       v7 = 0;
-      v30 = 0;
+      selfCopy2 = 0;
       goto LABEL_74;
     }
 
@@ -315,13 +315,13 @@ LABEL_42:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"eventsSkippedRedactedAtUpload"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"eventsSkippedRedactedAtUpload"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
@@ -334,13 +334,13 @@ LABEL_42:
         v38 = v34;
         v9 = v36;
         v28 = 0;
-        v30 = 0;
-        *a4 = [v37 initWithDomain:v38 code:2 userInfo:v36];
+        selfCopy2 = 0;
+        *error = [v37 initWithDomain:v38 code:2 userInfo:v36];
         goto LABEL_72;
       }
 
       v28 = 0;
-      v30 = 0;
+      selfCopy2 = 0;
       goto LABEL_73;
     }
 
@@ -352,16 +352,16 @@ LABEL_42:
     v90 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"eventsUploaded"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"eventsUploaded"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
-        v30 = 0;
+        selfCopy2 = 0;
         v28 = v90;
         goto LABEL_72;
       }
@@ -376,9 +376,9 @@ LABEL_42:
       v88 = v41;
       v43 = [v42 initWithDomain:v39 code:2 userInfo:?];
       v10 = 0;
-      v30 = 0;
-      *a4 = v43;
-      v29 = v40;
+      selfCopy2 = 0;
+      *error = v43;
+      errorCopy = v40;
       goto LABEL_78;
     }
 
@@ -390,7 +390,7 @@ LABEL_42:
     v10 = 0;
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"bytesUploaded"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"bytesUploaded"];
   v84 = v9;
   v85 = v10;
   v88 = v11;
@@ -407,8 +407,8 @@ LABEL_42:
         goto LABEL_13;
       }
 
-      v29 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v49 = objc_alloc(MEMORY[0x1E696ABC0]);
         v50 = *MEMORY[0x1E698F240];
@@ -421,14 +421,14 @@ LABEL_42:
         v9 = v84;
         v10 = v85;
         v86 = v51;
-        v30 = 0;
-        *a4 = [v52 initWithDomain:v53 code:2 userInfo:?];
-        v29 = 0;
+        selfCopy2 = 0;
+        *error = [v52 initWithDomain:v53 code:2 userInfo:?];
+        errorCopy = 0;
         v28 = v90;
         goto LABEL_70;
       }
 
-      v30 = 0;
+      selfCopy2 = 0;
 LABEL_78:
       v28 = v90;
       goto LABEL_71;
@@ -437,19 +437,19 @@ LABEL_78:
 
   v82 = 0;
 LABEL_13:
-  v13 = [v5 objectForKeyedSubscript:@"batchesUploaded"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"batchesUploaded"];
   v86 = v13;
   if (v13 && (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v87 = 0;
-        v30 = 0;
+        selfCopy2 = 0;
         v28 = v90;
-        v29 = v82;
+        errorCopy = v82;
         goto LABEL_70;
       }
 
@@ -469,8 +469,8 @@ LABEL_13:
       v81 = v60;
       v62 = [v61 initWithDomain:v56 code:2 userInfo:?];
       v87 = 0;
-      v30 = 0;
-      *a4 = v62;
+      selfCopy2 = 0;
+      *error = v62;
       v28 = v90;
       goto LABEL_81;
     }
@@ -483,7 +483,7 @@ LABEL_13:
     v87 = 0;
   }
 
-  v15 = [v5 objectForKeyedSubscript:@"batchesFailedToUpload"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"batchesFailedToUpload"];
   v80 = v8;
   v81 = v15;
   if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -495,7 +495,7 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v63 = objc_alloc(MEMORY[0x1E696ABC0]);
       v64 = v6;
@@ -508,25 +508,25 @@ LABEL_13:
       v6 = v64;
       v67 = [v63 initWithDomain:v66 code:2 userInfo:v20];
       v83 = 0;
-      v30 = 0;
-      *a4 = v67;
+      selfCopy2 = 0;
+      *error = v67;
       goto LABEL_66;
     }
 
     v83 = 0;
-    v30 = 0;
+    selfCopy2 = 0;
     v28 = v90;
 LABEL_81:
     v10 = v85;
-    v29 = v82;
+    errorCopy = v82;
     goto LABEL_69;
   }
 
   v83 = v16;
 LABEL_19:
-  v17 = [v5 objectForKeyedSubscript:@"latenciesInHours"];
-  v18 = [MEMORY[0x1E695DFB0] null];
-  v19 = [v17 isEqual:v18];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"latenciesInHours"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v19 = [v17 isEqual:null];
 
   if (!v19)
   {
@@ -541,12 +541,12 @@ LABEL_19:
       goto LABEL_31;
     }
 
-    if (!a4)
+    if (!error)
     {
-      v30 = 0;
+      selfCopy2 = 0;
       v28 = v90;
       v10 = v85;
-      v29 = v82;
+      errorCopy = v82;
       goto LABEL_68;
     }
 
@@ -559,13 +559,13 @@ LABEL_19:
     v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     v72 = v70;
     v6 = v69;
-    *a4 = [v68 initWithDomain:v72 code:2 userInfo:v71];
+    *error = [v68 initWithDomain:v72 code:2 userInfo:v71];
 
-    v30 = 0;
+    selfCopy2 = 0;
 LABEL_66:
     v28 = v90;
     v10 = v85;
-    v29 = v82;
+    errorCopy = v82;
     goto LABEL_67;
   }
 
@@ -586,11 +586,11 @@ LABEL_31:
   v22 = v21;
   v23 = *v93;
   v78 = v6;
-  v79 = v5;
+  v79 = dictionaryCopy;
   while (2)
   {
     v24 = v7;
-    v25 = self;
+    selfCopy = self;
     for (i = 0; i != v22; ++i)
     {
       if (*v93 != v23)
@@ -602,13 +602,13 @@ LABEL_31:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        self = v25;
+        self = selfCopy;
         v7 = v24;
-        v5 = v79;
+        dictionaryCopy = v79;
         v28 = v90;
-        v44 = a4;
-        v29 = v82;
-        if (a4)
+        errorCopy3 = error;
+        errorCopy = v82;
+        if (error)
         {
           v77 = objc_alloc(MEMORY[0x1E696ABC0]);
           v76 = *MEMORY[0x1E698F240];
@@ -620,12 +620,12 @@ LABEL_31:
           v48 = &v98;
 LABEL_57:
           v54 = [v46 dictionaryWithObjects:v47 forKeys:v48 count:1];
-          *v44 = [v77 initWithDomain:v76 code:2 userInfo:v54];
+          *errorCopy3 = [v77 initWithDomain:v76 code:2 userInfo:v54];
         }
 
 LABEL_58:
 
-        v30 = 0;
+        selfCopy2 = 0;
         v6 = v78;
         v10 = v85;
         goto LABEL_67;
@@ -634,13 +634,13 @@ LABEL_58:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v25;
+        self = selfCopy;
         v7 = v24;
-        v5 = v79;
+        dictionaryCopy = v79;
         v28 = v90;
-        v44 = a4;
-        v29 = v82;
-        if (a4)
+        errorCopy3 = error;
+        errorCopy = v82;
+        if (error)
         {
           v77 = objc_alloc(MEMORY[0x1E696ABC0]);
           v76 = *MEMORY[0x1E698F240];
@@ -660,10 +660,10 @@ LABEL_58:
     }
 
     v22 = [v17 countByEnumeratingWithState:&v92 objects:v100 count:16];
-    self = v25;
+    self = selfCopy;
     v7 = v24;
     v6 = v78;
-    v5 = v79;
+    dictionaryCopy = v79;
     if (v22)
     {
       continue;
@@ -676,9 +676,9 @@ LABEL_40:
 
   v28 = v90;
   v10 = v85;
-  v29 = v82;
+  errorCopy = v82;
   self = [(BMDataCollectorTelemetryUploadTelemetry *)self initWithEventsProcessed:v7 eventsSkippedRedactedAtUpload:v90 eventsUploaded:v85 bytesUploaded:v82 batchesUploaded:v87 batchesFailedToUpload:v83 latenciesInHours:v20];
-  v30 = self;
+  selfCopy2 = self;
 LABEL_67:
 
 LABEL_68:
@@ -694,22 +694,22 @@ LABEL_73:
 
 LABEL_74:
   v73 = *MEMORY[0x1E69E9840];
-  return v30;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMDataCollectorTelemetryUploadTelemetry *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasEventsProcessed)
   {
     eventsProcessed = self->_eventsProcessed;
@@ -781,9 +781,9 @@ LABEL_74:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v71.receiver = self;
   v71.super_class = BMDataCollectorTelemetryUploadTelemetry;
   v5 = [(BMEventBase *)&v71 init];
@@ -793,12 +793,12 @@ LABEL_74:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_123;
       }
@@ -809,18 +809,18 @@ LABEL_74:
       while (1)
       {
         v72 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v72 & 0x7F) << v8;
@@ -838,9 +838,9 @@ LABEL_74:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_123;
       }
@@ -862,18 +862,18 @@ LABEL_16:
           while (1)
           {
             v72 = 0;
-            v47 = [v4 position] + 1;
-            if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+            v47 = [fromCopy position] + 1;
+            if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 1, v48 <= objc_msgSend(fromCopy, "length")))
             {
-              v49 = [v4 data];
-              [v49 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v46 = (((v72 & 0x7F) << v44) | v46);
@@ -891,7 +891,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v23 = 0;
           }
@@ -915,18 +915,18 @@ LABEL_99:
           while (1)
           {
             v72 = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 = (((v72 & 0x7F) << v17) | v19);
@@ -944,7 +944,7 @@ LABEL_99:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v23 = 0;
           }
@@ -973,18 +973,18 @@ LABEL_121:
         while (1)
         {
           v72 = 0;
-          v53 = [v4 position] + 1;
-          if (v53 >= [v4 position] && (v54 = objc_msgSend(v4, "position") + 1, v54 <= objc_msgSend(v4, "length")))
+          v53 = [fromCopy position] + 1;
+          if (v53 >= [fromCopy position] && (v54 = objc_msgSend(fromCopy, "position") + 1, v54 <= objc_msgSend(fromCopy, "length")))
           {
-            v55 = [v4 data];
-            [v55 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v52 = (((v72 & 0x7F) << v50) | v52);
@@ -1002,7 +1002,7 @@ LABEL_121:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -1029,18 +1029,18 @@ LABEL_103:
       while (1)
       {
         v72 = 0;
-        v34 = [v4 position] + 1;
-        if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+        v34 = [fromCopy position] + 1;
+        if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
         {
-          v36 = [v4 data];
-          [v36 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v32 |= (v72 & 0x7F) << v30;
@@ -1058,7 +1058,7 @@ LABEL_103:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v37 = 0;
       }
@@ -1081,8 +1081,8 @@ LABEL_127:
       [v6 addObject:v63];
 
 LABEL_122:
-      v65 = [v4 position];
-      if (v65 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_123;
       }
@@ -1098,18 +1098,18 @@ LABEL_122:
         while (1)
         {
           v72 = 0;
-          v41 = [v4 position] + 1;
-          if (v41 >= [v4 position] && (v42 = objc_msgSend(v4, "position") + 1, v42 <= objc_msgSend(v4, "length")))
+          v41 = [fromCopy position] + 1;
+          if (v41 >= [fromCopy position] && (v42 = objc_msgSend(fromCopy, "position") + 1, v42 <= objc_msgSend(fromCopy, "length")))
           {
-            v43 = [v4 data];
-            [v43 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v40 = (((v72 & 0x7F) << v38) | v40);
@@ -1127,7 +1127,7 @@ LABEL_122:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -1148,18 +1148,18 @@ LABEL_95:
         while (1)
         {
           v72 = 0;
-          v59 = [v4 position] + 1;
-          if (v59 >= [v4 position] && (v60 = objc_msgSend(v4, "position") + 1, v60 <= objc_msgSend(v4, "length")))
+          v59 = [fromCopy position] + 1;
+          if (v59 >= [fromCopy position] && (v60 = objc_msgSend(fromCopy, "position") + 1, v60 <= objc_msgSend(fromCopy, "length")))
           {
-            v61 = [v4 data];
-            [v61 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v58 = (((v72 & 0x7F) << v56) | v58);
@@ -1177,7 +1177,7 @@ LABEL_95:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -1198,18 +1198,18 @@ LABEL_120:
         while (1)
         {
           v72 = 0;
-          v27 = [v4 position] + 1;
-          if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+          v27 = [fromCopy position] + 1;
+          if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
           {
-            v29 = [v4 data];
-            [v29 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v26 = (((v72 & 0x7F) << v24) | v26);
@@ -1227,7 +1227,7 @@ LABEL_120:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v23 = 0;
         }
@@ -1256,8 +1256,8 @@ LABEL_123:
   latenciesInHours = v5->_latenciesInHours;
   v5->_latenciesInHours = v66;
 
-  v68 = [v4 hasError];
-  if (v68)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_124:
     v69 = 0;
@@ -1281,106 +1281,106 @@ LABEL_125:
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMDataCollectorTelemetryUploadTelemetry bytesUploaded](self, "bytesUploaded")}];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMDataCollectorTelemetryUploadTelemetry batchesUploaded](self, "batchesUploaded")}];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMDataCollectorTelemetryUploadTelemetry batchesFailedToUpload](self, "batchesFailedToUpload")}];
-  v10 = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
-  v11 = [v3 initWithFormat:@"BMDataCollectorTelemetryUploadTelemetry with eventsProcessed: %@, eventsSkippedRedactedAtUpload: %@, eventsUploaded: %@, bytesUploaded: %@, batchesUploaded: %@, batchesFailedToUpload: %@, latenciesInHours: %@", v4, v5, v6, v7, v8, v9, v10];
+  latenciesInHours = [(BMDataCollectorTelemetryUploadTelemetry *)self latenciesInHours];
+  v11 = [v3 initWithFormat:@"BMDataCollectorTelemetryUploadTelemetry with eventsProcessed: %@, eventsSkippedRedactedAtUpload: %@, eventsUploaded: %@, bytesUploaded: %@, batchesUploaded: %@, batchesFailedToUpload: %@, latenciesInHours: %@", v4, v5, v6, v7, v8, v9, latenciesInHours];
 
   return v11;
 }
 
-- (BMDataCollectorTelemetryUploadTelemetry)initWithEventsProcessed:(id)a3 eventsSkippedRedactedAtUpload:(id)a4 eventsUploaded:(id)a5 bytesUploaded:(id)a6 batchesUploaded:(id)a7 batchesFailedToUpload:(id)a8 latenciesInHours:(id)a9
+- (BMDataCollectorTelemetryUploadTelemetry)initWithEventsProcessed:(id)processed eventsSkippedRedactedAtUpload:(id)upload eventsUploaded:(id)uploaded bytesUploaded:(id)bytesUploaded batchesUploaded:(id)batchesUploaded batchesFailedToUpload:(id)toUpload latenciesInHours:(id)hours
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  processedCopy = processed;
+  uploadCopy = upload;
+  uploadedCopy = uploaded;
+  bytesUploadedCopy = bytesUploaded;
+  batchesUploadedCopy = batchesUploaded;
+  toUploadCopy = toUpload;
+  hoursCopy = hours;
   v30.receiver = self;
   v30.super_class = BMDataCollectorTelemetryUploadTelemetry;
   v22 = [(BMEventBase *)&v30 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v15)
+    if (processedCopy)
     {
       v22->_hasEventsProcessed = 1;
-      v23 = [v15 unsignedLongLongValue];
+      unsignedLongLongValue = [processedCopy unsignedLongLongValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedLongLongValue = 0;
       v22->_hasEventsProcessed = 0;
     }
 
-    v22->_eventsProcessed = v23;
-    if (v16)
+    v22->_eventsProcessed = unsignedLongLongValue;
+    if (uploadCopy)
     {
       v22->_hasEventsSkippedRedactedAtUpload = 1;
-      v24 = [v16 unsignedLongLongValue];
+      unsignedLongLongValue2 = [uploadCopy unsignedLongLongValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedLongLongValue2 = 0;
       v22->_hasEventsSkippedRedactedAtUpload = 0;
     }
 
-    v22->_eventsSkippedRedactedAtUpload = v24;
-    if (v17)
+    v22->_eventsSkippedRedactedAtUpload = unsignedLongLongValue2;
+    if (uploadedCopy)
     {
       v22->_hasEventsUploaded = 1;
-      v25 = [v17 unsignedLongLongValue];
+      unsignedLongLongValue3 = [uploadedCopy unsignedLongLongValue];
     }
 
     else
     {
-      v25 = 0;
+      unsignedLongLongValue3 = 0;
       v22->_hasEventsUploaded = 0;
     }
 
-    v22->_eventsUploaded = v25;
-    if (v18)
+    v22->_eventsUploaded = unsignedLongLongValue3;
+    if (bytesUploadedCopy)
     {
       v22->_hasBytesUploaded = 1;
-      v26 = [v18 unsignedLongLongValue];
+      unsignedLongLongValue4 = [bytesUploadedCopy unsignedLongLongValue];
     }
 
     else
     {
-      v26 = 0;
+      unsignedLongLongValue4 = 0;
       v22->_hasBytesUploaded = 0;
     }
 
-    v22->_bytesUploaded = v26;
-    if (v19)
+    v22->_bytesUploaded = unsignedLongLongValue4;
+    if (batchesUploadedCopy)
     {
       v22->_hasBatchesUploaded = 1;
-      v27 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue5 = [batchesUploadedCopy unsignedLongLongValue];
     }
 
     else
     {
-      v27 = 0;
+      unsignedLongLongValue5 = 0;
       v22->_hasBatchesUploaded = 0;
     }
 
-    v22->_batchesUploaded = v27;
-    if (v20)
+    v22->_batchesUploaded = unsignedLongLongValue5;
+    if (toUploadCopy)
     {
       v22->_hasBatchesFailedToUpload = 1;
-      v28 = [v20 unsignedLongLongValue];
+      unsignedLongLongValue6 = [toUploadCopy unsignedLongLongValue];
     }
 
     else
     {
-      v28 = 0;
+      unsignedLongLongValue6 = 0;
       v22->_hasBatchesFailedToUpload = 0;
     }
 
-    v22->_batchesFailedToUpload = v28;
-    objc_storeStrong(&v22->_latenciesInHours, a9);
+    v22->_batchesFailedToUpload = unsignedLongLongValue6;
+    objc_storeStrong(&v22->_latenciesInHours, hours);
   }
 
   return v22;
@@ -1442,9 +1442,9 @@ id __50__BMDataCollectorTelemetryUploadTelemetry_columns__block_invoke(uint64_t 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1452,8 +1452,8 @@ id __50__BMDataCollectorTelemetryUploadTelemetry_columns__block_invoke(uint64_t 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDataCollectorTelemetryUploadTelemetry alloc] initByReadFrom:v7];
     v4 = v8;

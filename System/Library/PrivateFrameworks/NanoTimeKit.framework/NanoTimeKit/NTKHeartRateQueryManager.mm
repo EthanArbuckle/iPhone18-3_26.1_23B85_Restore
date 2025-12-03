@@ -6,13 +6,13 @@
 - (HKHeartRateSummary)latestHeartRateSummary;
 - (HKQuantitySample)latestHeartRateSample;
 - (id)_init;
-- (void)_enumerateObserversUsingBlock:(id)a3;
-- (void)_findLatestHeartRateSample:(id)a3;
+- (void)_enumerateObserversUsingBlock:(id)block;
+- (void)_findLatestHeartRateSample:(id)sample;
 - (void)_handleDeviceLockChange;
 - (void)_notifyObserversOfLatestSample;
 - (void)_notifyObserversOfLatestSummary;
-- (void)_queue_clearHeartRateSampleQueryWithError:(id)a3;
-- (void)_queue_clearHeartRateSummaryQueryWithError:(id)a3;
+- (void)_queue_clearHeartRateSampleQueryWithError:(id)error;
+- (void)_queue_clearHeartRateSummaryQueryWithError:(id)error;
 - (void)_queue_retrieveLatestHeartRateOnce;
 - (void)_queue_startObservingHeartRate;
 - (void)_queue_startObservingHeartRateSummary;
@@ -21,11 +21,11 @@
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)_stopObservingIfNeeded;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setLatestHeartRateSample:(id)a3;
-- (void)setLatestHeartRateSummary:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setLatestHeartRateSample:(id)sample;
+- (void)setLatestHeartRateSummary:(id)summary;
 - (void)startObservingIfNeeded;
 @end
 
@@ -57,12 +57,12 @@ void __42__NTKHeartRateQueryManager_sharedInstance__block_invoke()
   v2 = [(NTKHeartRateQueryManager *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBBAE8] currentDevice];
-    v2->_deviceIsLocked = [v3 isLocked];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v2->_deviceIsLocked = [currentDevice isLocked];
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v4;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_observersLock._os_unfair_lock_opaque = 0;
     v6 = dispatch_queue_create("com.apple.nanotimekit.heart-rate.healthQueue", 0);
@@ -73,8 +73,8 @@ void __42__NTKHeartRateQueryManager_sharedInstance__block_invoke()
     sampleQueue = v2->_sampleQueue;
     v2->_sampleQueue = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel__handleDeviceLockChange name:*MEMORY[0x277CBB690] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleDeviceLockChange name:*MEMORY[0x277CBB690] object:0];
 
     v11 = v2->_healthQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -98,8 +98,8 @@ void __33__NTKHeartRateQueryManager__init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   os_unfair_lock_lock(&self->_observersLock);
   [(NSHashTable *)self->_observers removeAllObjects];
@@ -156,9 +156,9 @@ void __51__NTKHeartRateQueryManager__handleDeviceLockChange__block_invoke(uint64
   }
 }
 
-- (void)_queue_clearHeartRateSampleQueryWithError:(id)a3
+- (void)_queue_clearHeartRateSampleQueryWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_healthQueue);
   v5 = _NTKLoggingObjectForDomain(38, "NTKLoggingDomainHeartRate");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -170,9 +170,9 @@ void __51__NTKHeartRateQueryManager__handleDeviceLockChange__block_invoke(uint64
   self->_heartRateQuery = 0;
 }
 
-- (void)_queue_clearHeartRateSummaryQueryWithError:(id)a3
+- (void)_queue_clearHeartRateSummaryQueryWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_healthQueue);
   v5 = _NTKLoggingObjectForDomain(38, "NTKLoggingDomainHeartRate");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -314,16 +314,16 @@ void __65__NTKHeartRateQueryManager__queue_startObservingHeartRateSummary__block
 
 - (void)_notifyObserversOfLatestSummary
 {
-  v3 = [(NTKHeartRateQueryManager *)self latestHeartRateSummary];
-  v4 = v3;
-  if (v3)
+  latestHeartRateSummary = [(NTKHeartRateQueryManager *)self latestHeartRateSummary];
+  v4 = latestHeartRateSummary;
+  if (latestHeartRateSummary)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __59__NTKHeartRateQueryManager__notifyObserversOfLatestSummary__block_invoke;
     v5[3] = &unk_27877E438;
     v5[4] = self;
-    v6 = v3;
+    v6 = latestHeartRateSummary;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -349,18 +349,18 @@ void __59__NTKHeartRateQueryManager__notifyObserversOfLatestSummary__block_invok
   }
 }
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_observersLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -377,7 +377,7 @@ LABEL_3:
 
       v11 = *(*(&v13 + 1) + 8 * v10);
       v12 = 0;
-      v4[2](v4, v11, &v12);
+      blockCopy[2](blockCopy, v11, &v12);
       if (v12)
       {
         break;
@@ -636,14 +636,14 @@ uint64_t __45__NTKHeartRateQueryManager__alreadyObserving__block_invoke_2(uint64
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    if ([(NSHashTable *)self->_observers containsObject:v4])
+    if ([(NSHashTable *)self->_observers containsObject:observerCopy])
     {
       os_unfair_lock_unlock(&self->_observersLock);
     }
@@ -659,7 +659,7 @@ uint64_t __45__NTKHeartRateQueryManager__alreadyObserving__block_invoke_2(uint64
         _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKHeartRateQueryManager: Adding observer %{public}@", v7, 0xCu);
       }
 
-      [(NSHashTable *)self->_observers addObject:v4];
+      [(NSHashTable *)self->_observers addObject:observerCopy];
       os_unfair_lock_unlock(&self->_observersLock);
       [(NTKHeartRateQueryManager *)self _notifyObserversOfLatestSample];
       [(NTKHeartRateQueryManager *)self _notifyObserversOfLatestSummary];
@@ -669,13 +669,13 @@ uint64_t __45__NTKHeartRateQueryManager__alreadyObserving__block_invoke_2(uint64
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_observersLock);
 
@@ -693,16 +693,16 @@ uint64_t __45__NTKHeartRateQueryManager__alreadyObserving__block_invoke_2(uint64
 
 - (void)_notifyObserversOfLatestSample
 {
-  v3 = [(NTKHeartRateQueryManager *)self latestHeartRateSample];
-  v4 = v3;
-  if (v3)
+  latestHeartRateSample = [(NTKHeartRateQueryManager *)self latestHeartRateSample];
+  v4 = latestHeartRateSample;
+  if (latestHeartRateSample)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __58__NTKHeartRateQueryManager__notifyObserversOfLatestSample__block_invoke;
     v5[3] = &unk_27877E438;
     v5[4] = self;
-    v6 = v3;
+    v6 = latestHeartRateSample;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -740,16 +740,16 @@ void __58__NTKHeartRateQueryManager__notifyObserversOfLatestSample__block_invoke
     objc_copyWeak(&v24, &buf);
     v4 = _Block_copy(aBlock);
     v5 = MEMORY[0x277CCAC30];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v5 predicateWithFormat:@"%K >= %@", *MEMORY[0x277CCC6C8], v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [v5 predicateWithFormat:@"%K >= %@", *MEMORY[0x277CCC6C8], date];
 
-    v8 = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
+    _predicateForObjectsFromAppleWatches = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
     v9 = MEMORY[0x277CCD838];
-    v10 = [MEMORY[0x277CCDA00] _blePeripheralSource];
-    v11 = [v9 predicateForObjectsFromSource:v10];
+    _blePeripheralSource = [MEMORY[0x277CCDA00] _blePeripheralSource];
+    v11 = [v9 predicateForObjectsFromSource:_blePeripheralSource];
 
     v12 = MEMORY[0x277CCA920];
-    v27[0] = v8;
+    v27[0] = _predicateForObjectsFromAppleWatches;
     v27[1] = v11;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v14 = [v12 orPredicateWithSubpredicates:v13];
@@ -762,8 +762,8 @@ void __58__NTKHeartRateQueryManager__notifyObserversOfLatestSample__block_invoke
 
     v18 = objc_alloc(MEMORY[0x277CCCFF0]);
     v19 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
-    v20 = [MEMORY[0x277CCD840] latestAnchor];
-    v21 = [v18 initWithType:v19 predicate:v17 anchor:v20 limit:0 resultsHandler:v4];
+    latestAnchor = [MEMORY[0x277CCD840] latestAnchor];
+    v21 = [v18 initWithType:v19 predicate:v17 anchor:latestAnchor limit:0 resultsHandler:v4];
     heartRateQuery = self->_heartRateQuery;
     self->_heartRateQuery = v21;
 
@@ -863,7 +863,7 @@ void __58__NTKHeartRateQueryManager__queue_startObservingHeartRate__block_invoke
   objc_initWeak(buf, self);
   v4 = objc_alloc(MEMORY[0x277CCD8D0]);
   v5 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCB90]];
-  v6 = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
+  _predicateForObjectsFromAppleWatches = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCCD50] ascending:0];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
@@ -872,7 +872,7 @@ void __58__NTKHeartRateQueryManager__queue_startObservingHeartRate__block_invoke
   v10[2] = __62__NTKHeartRateQueryManager__queue_retrieveLatestHeartRateOnce__block_invoke;
   v10[3] = &unk_2787861B8;
   objc_copyWeak(&v11, buf);
-  v9 = [v4 initWithSampleType:v5 predicate:v6 limit:1 sortDescriptors:v8 resultsHandler:v10];
+  v9 = [v4 initWithSampleType:v5 predicate:_predicateForObjectsFromAppleWatches limit:1 sortDescriptors:v8 resultsHandler:v10];
 
   [(HKHealthStore *)self->_healthStore executeQuery:v9];
   objc_destroyWeak(&v11);
@@ -917,10 +917,10 @@ LABEL_9:
   }
 }
 
-- (void)_findLatestHeartRateSample:(id)a3
+- (void)_findLatestHeartRateSample:(id)sample
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   v5 = _NTKLoggingObjectForDomain(38, "NTKLoggingDomainHeartRate");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -928,12 +928,12 @@ LABEL_9:
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKHeartRateQueryManager: finding latest heart rate sample", buf, 2u);
   }
 
-  v6 = [(NTKHeartRateQueryManager *)self latestHeartRateSample];
+  latestHeartRateSample = [(NTKHeartRateQueryManager *)self latestHeartRateSample];
   if ([(NTKHeartRateQueryManager *)self canUseFutureSamples])
   {
-    v7 = [v4 lastObject];
+    lastObject = [sampleCopy lastObject];
 
-    v6 = v7;
+    latestHeartRateSample = lastObject;
     goto LABEL_22;
   }
 
@@ -941,7 +941,7 @@ LABEL_9:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v4;
+  v8 = sampleCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (!v9)
   {
@@ -950,8 +950,8 @@ LABEL_9:
   }
 
   v10 = v9;
-  v27 = self;
-  v28 = v4;
+  selfCopy = self;
+  v28 = sampleCopy;
   v11 = 0;
   v12 = *v30;
   do
@@ -964,8 +964,8 @@ LABEL_9:
       }
 
       v14 = *(*(&v29 + 1) + 8 * i);
-      v15 = [v14 startDate];
-      [v15 timeIntervalSinceNow];
+      startDate = [v14 startDate];
+      [startDate timeIntervalSinceNow];
       v17 = v16;
 
       if (v17 > 60.0)
@@ -973,12 +973,12 @@ LABEL_9:
         v18 = _NTKLoggingObjectForDomain(38, "NTKLoggingDomainHeartRate");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v14 startDate];
-          v20 = [v14 quantity];
+          startDate2 = [v14 startDate];
+          quantity = [v14 quantity];
           *buf = 138543618;
-          v34 = v19;
+          v34 = startDate2;
           v35 = 2112;
-          v36 = v20;
+          v36 = quantity;
           _os_log_error_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_ERROR, "NTKHeartRateQueryManager: ignoring heart rate with future date: %{public}@ (%@).", buf, 0x16u);
         }
 
@@ -987,11 +987,11 @@ LABEL_18:
         continue;
       }
 
-      if (v6)
+      if (latestHeartRateSample)
       {
-        v21 = [v14 startDate];
-        v22 = [v6 startDate];
-        [v21 timeIntervalSinceDate:v22];
+        startDate3 = [v14 startDate];
+        startDate4 = [latestHeartRateSample startDate];
+        [startDate3 timeIntervalSinceDate:startDate4];
         v24 = v23;
 
         if (v24 <= 2.22044605e-16)
@@ -1005,14 +1005,14 @@ LABEL_18:
       v18 = _NTKLoggingObjectForDomain(38, "NTKLoggingDomainHeartRate");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v25 startDate];
+        startDate5 = [v25 startDate];
         *buf = 138543362;
-        v34 = v26;
+        v34 = startDate5;
         _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_DEFAULT, "NTKHeartRateQueryManager: updated latest heart rate sample: %{public}@", buf, 0xCu);
       }
 
       v11 = 1;
-      v6 = v25;
+      latestHeartRateSample = v25;
       goto LABEL_18;
     }
 
@@ -1021,12 +1021,12 @@ LABEL_18:
 
   while (v10);
 
-  self = v27;
-  v4 = v28;
+  self = selfCopy;
+  sampleCopy = v28;
   if (v11)
   {
 LABEL_22:
-    [(NTKHeartRateQueryManager *)self setLatestHeartRateSample:v6];
+    [(NTKHeartRateQueryManager *)self setLatestHeartRateSample:latestHeartRateSample];
     [(NTKHeartRateQueryManager *)self _notifyObserversOfLatestSample];
   }
 
@@ -1055,17 +1055,17 @@ LABEL_24:
   return v3;
 }
 
-- (void)setLatestHeartRateSample:(id)a3
+- (void)setLatestHeartRateSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   sampleQueue = self->_sampleQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__NTKHeartRateQueryManager_setLatestHeartRateSample___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sampleCopy;
+  v6 = sampleCopy;
   dispatch_barrier_async(sampleQueue, v7);
 }
 
@@ -1091,17 +1091,17 @@ LABEL_24:
   return v3;
 }
 
-- (void)setLatestHeartRateSummary:(id)a3
+- (void)setLatestHeartRateSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   sampleQueue = self->_sampleQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NTKHeartRateQueryManager_setLatestHeartRateSummary___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_barrier_async(sampleQueue, v7);
 }
 

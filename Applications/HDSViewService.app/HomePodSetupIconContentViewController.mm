@@ -1,38 +1,38 @@
 @interface HomePodSetupIconContentViewController
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5;
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error;
 - (void)feedbackDraftViewController:didCompleteWithFeedbackID:;
 - (void)feedbackDraftViewController:didFailToStartWithError:;
 - (void)feedbackDraftViewController:didFailToSubmitFeedback:;
 - (void)feedbackDraftViewControllerDidCancel:;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
-- (void)genericTermsRemoteUI:(id)a3 failedToLoadTermsWithError:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
+- (void)genericTermsRemoteUI:(id)i failedToLoadTermsWithError:(id)error;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HomePodSetupIconContentViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003E2A0();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100041150(a3);
+  selfCopy = self;
+  sub_100041150(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100041770(a3);
+  selfCopy = self;
+  sub_100041770(disappear);
 }
 
-- (void)feedbackDraftViewController:(id)a3 didFailToAttachURL:(id)a4 error:(int64_t)a5
+- (void)feedbackDraftViewController:(id)controller didFailToAttachURL:(id)l error:(int64_t)error
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -44,16 +44,16 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000461F0(a4);
+  iCopy = i;
+  selfCopy = self;
+  sub_1000461F0(success);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -63,16 +63,16 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  iCopy = i;
+  selfCopy = self;
   sub_1000465B8(v6);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 failedToLoadTermsWithError:(id)a4
+- (void)genericTermsRemoteUI:(id)i failedToLoadTermsWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  iCopy = i;
+  errorCopy = error;
+  selfCopy = self;
   sub_100046980();
 }
 

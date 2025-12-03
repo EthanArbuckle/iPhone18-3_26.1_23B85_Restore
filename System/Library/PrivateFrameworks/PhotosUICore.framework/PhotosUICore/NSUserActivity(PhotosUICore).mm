@@ -11,40 +11,40 @@
 - (void)px_setPersistentIdentifierFromAssetCollection:()PhotosUICore
 {
   v6 = a3;
-  v4 = [v6 cloudGUID];
-  if (v4)
+  cloudGUID = [v6 cloudGUID];
+  if (cloudGUID)
   {
-    [a1 setPersistentIdentifier:v4];
+    [self setPersistentIdentifier:cloudGUID];
   }
 
   else
   {
-    v5 = [v6 uuid];
-    [a1 setPersistentIdentifier:v5];
+    uuid = [v6 uuid];
+    [self setPersistentIdentifier:uuid];
   }
 }
 
 - (void)px_setPersistentIdentifierFromAsset:()PhotosUICore
 {
   v6 = a3;
-  v4 = [v6 cloudIdentifier];
-  if (v4)
+  cloudIdentifier = [v6 cloudIdentifier];
+  if (cloudIdentifier)
   {
-    [a1 setPersistentIdentifier:v4];
+    [self setPersistentIdentifier:cloudIdentifier];
   }
 
   else
   {
-    v5 = [v6 uuid];
-    [a1 setPersistentIdentifier:v5];
+    uuid = [v6 uuid];
+    [self setPersistentIdentifier:uuid];
   }
 }
 
 - (uint64_t)px_isCurrent
 {
-  v1 = [a1 _uniqueIdentifier];
-  v2 = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
-  v3 = [v1 isEqual:v2];
+  _uniqueIdentifier = [self _uniqueIdentifier];
+  _currentUserActivityUUID = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
+  v3 = [_uniqueIdentifier isEqual:_currentUserActivityUUID];
 
   return v3;
 }
@@ -75,10 +75,10 @@
 
 + (uint64_t)px_allowsDonationsForCurrentProcess
 {
-  v0 = [MEMORY[0x1E696AE30] processInfo];
-  v1 = [v0 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  v2 = [v1 isEqualToString:@"Photos"];
+  v2 = [processName isEqualToString:@"Photos"];
   return v2;
 }
 

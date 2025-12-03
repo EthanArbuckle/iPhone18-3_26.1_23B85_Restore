@@ -1,41 +1,41 @@
 @interface NoteObject
-- (void)undoablyMoveToTrashWithActionName:(id)a3;
-- (void)undoablyUndeleteTo:(id)a3 actionName:(id)a4;
+- (void)undoablyMoveToTrashWithActionName:(id)name;
+- (void)undoablyUndeleteTo:(id)to actionName:(id)name;
 @end
 
 @implementation NoteObject
 
-- (void)undoablyMoveToTrashWithActionName:(id)a3
+- (void)undoablyMoveToTrashWithActionName:(id)name
 {
-  v8 = a3;
+  nameCopy = name;
   v4 = +[ICAppDelegate sharedInstance];
-  v5 = [v4 undoManager];
+  undoManager = [v4 undoManager];
 
   if (([(NoteObject *)self isMarkedForDeletion]& 1) == 0)
   {
     [(NoteObject *)self markForDeletion];
-    v6 = [v5 prepareWithInvocationTarget:self];
-    v7 = [(NoteObject *)self store];
-    [v6 undoablyUndeleteTo:v7 actionName:v8];
+    v6 = [undoManager prepareWithInvocationTarget:self];
+    store = [(NoteObject *)self store];
+    [v6 undoablyUndeleteTo:store actionName:nameCopy];
   }
 }
 
-- (void)undoablyUndeleteTo:(id)a3 actionName:(id)a4
+- (void)undoablyUndeleteTo:(id)to actionName:(id)name
 {
-  v11 = a4;
+  nameCopy = name;
   v5 = +[ICAppDelegate sharedInstance];
-  v6 = [v5 undoManager];
+  undoManager = [v5 undoManager];
 
-  v7 = [(NoteObject *)self managedObjectContext];
-  if (v7)
+  managedObjectContext = [(NoteObject *)self managedObjectContext];
+  if (managedObjectContext)
   {
-    v8 = v7;
-    v9 = [(NoteObject *)self isMarkedForDeletion];
+    v8 = managedObjectContext;
+    isMarkedForDeletion = [(NoteObject *)self isMarkedForDeletion];
 
-    if (v9)
+    if (isMarkedForDeletion)
     {
-      v10 = [v6 prepareWithInvocationTarget:self];
-      [v10 undoablyMoveToTrashWithActionName:v11];
+      v10 = [undoManager prepareWithInvocationTarget:self];
+      [v10 undoablyMoveToTrashWithActionName:nameCopy];
     }
   }
 }

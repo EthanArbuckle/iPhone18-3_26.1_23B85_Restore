@@ -2,25 +2,25 @@
 - (ISAVPlayerLayer)init;
 - (void)dealloc;
 - (void)deferredDealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setPlayer:(id)a3;
-- (void)setWrappedPlayer:(id)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)setBounds:(CGRect)bounds;
+- (void)setPlayer:(id)player;
+- (void)setWrappedPlayer:(id)player;
 @end
 
 @implementation ISAVPlayerLayer
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ISAVPlayerLayer_setPlayer___block_invoke;
   v7[3] = &unk_279A2A348;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playerCopy;
+  v6 = playerCopy;
   dispatch_async(isolationQueue, v7);
 }
 
@@ -67,11 +67,11 @@ id __29__ISAVPlayerLayer_setPlayer___block_invoke_2(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_setPlayer_, 0);
 }
 
-- (void)setWrappedPlayer:(id)a3
+- (void)setWrappedPlayer:(id)player
 {
   v3.receiver = self;
   v3.super_class = ISAVPlayerLayer;
-  [(ISAVPlayerLayer *)&v3 setPlayer:a3];
+  [(ISAVPlayerLayer *)&v3 setPlayer:player];
 }
 
 - (void)deferredDealloc
@@ -80,12 +80,12 @@ id __29__ISAVPlayerLayer_setPlayer___block_invoke_2(uint64_t a1)
   [v3 _performDeferredDealloc:self];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(ISAVPlayerLayer *)self bounds];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -105,31 +105,31 @@ id __29__ISAVPlayerLayer_setPlayer___block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(ISAVPlayerLayer *)self player];
+  player = [(ISAVPlayerLayer *)self player];
   v4 = +[ISDeferredDealloc sharedInstance];
-  [v4 _performDeferredDealloc:v3];
+  [v4 _performDeferredDealloc:player];
 
   v5.receiver = self;
   v5.super_class = ISAVPlayerLayer;
   [(ISAVPlayerLayer *)&v5 dealloc];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v8.receiver = self;
   v8.super_class = ISAVPlayerLayer;
-  v4 = a3;
-  [(ISAVPlayerLayer *)&v8 didChangeValueForKey:v4];
-  v5 = [v4 isEqualToString:{@"readyForDisplay", v8.receiver, v8.super_class}];
+  keyCopy = key;
+  [(ISAVPlayerLayer *)&v8 didChangeValueForKey:keyCopy];
+  v5 = [keyCopy isEqualToString:{@"readyForDisplay", v8.receiver, v8.super_class}];
 
   if (v5)
   {
-    v6 = [(ISAVPlayerLayer *)self readyForDisplayChangeHandler];
+    readyForDisplayChangeHandler = [(ISAVPlayerLayer *)self readyForDisplayChangeHandler];
 
-    if (v6)
+    if (readyForDisplayChangeHandler)
     {
-      v7 = [(ISAVPlayerLayer *)self readyForDisplayChangeHandler];
-      v7[2]();
+      readyForDisplayChangeHandler2 = [(ISAVPlayerLayer *)self readyForDisplayChangeHandler];
+      readyForDisplayChangeHandler2[2]();
     }
   }
 }

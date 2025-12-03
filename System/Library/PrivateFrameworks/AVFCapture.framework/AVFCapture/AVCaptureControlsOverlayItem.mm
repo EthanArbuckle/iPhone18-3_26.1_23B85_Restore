@@ -1,5 +1,5 @@
 @interface AVCaptureControlsOverlayItem
-- (AVCaptureControlsOverlayItem)initWithControl:(id)a3 overlayControl:(id)a4;
+- (AVCaptureControlsOverlayItem)initWithControl:(id)control overlayControl:(id)overlayControl;
 - (NSString)identifier;
 - (void)dealloc;
 @end
@@ -13,15 +13,15 @@
   return v2;
 }
 
-- (AVCaptureControlsOverlayItem)initWithControl:(id)a3 overlayControl:(id)a4
+- (AVCaptureControlsOverlayItem)initWithControl:(id)control overlayControl:(id)overlayControl
 {
   v8.receiver = self;
   v8.super_class = AVCaptureControlsOverlayItem;
   v6 = [(AVCaptureControlsOverlayItem *)&v8 init];
   if (v6)
   {
-    v6->_control = a3;
-    v6->_overlayControl = a4;
+    v6->_control = control;
+    v6->_overlayControl = overlayControl;
   }
 
   return v6;

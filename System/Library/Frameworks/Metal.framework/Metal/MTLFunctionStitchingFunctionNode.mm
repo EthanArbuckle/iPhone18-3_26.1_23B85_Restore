@@ -1,9 +1,9 @@
 @interface MTLFunctionStitchingFunctionNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLFunctionStitchingFunctionNode)init;
 - (MTLFunctionStitchingFunctionNode)initWithName:(NSString *)name arguments:(NSArray *)arguments controlDependencies:(NSArray *)controlDependencies;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -30,7 +30,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setName:self->_name];
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -49,18 +49,18 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
-      v6 = -[NSString isEqualToString:](-[MTLFunctionStitchingFunctionNode name](self, "name"), "isEqualToString:", [a3 name]);
+      v6 = -[NSString isEqualToString:](-[MTLFunctionStitchingFunctionNode name](self, "name"), "isEqualToString:", [equal name]);
       if (v6)
       {
-        v6 = MTLCompareArray(-[MTLFunctionStitchingFunctionNode arguments](self, "arguments"), [a3 arguments], 1, 1);
+        v6 = MTLCompareArray(-[MTLFunctionStitchingFunctionNode arguments](self, "arguments"), [equal arguments], 1, 1);
         if (v6)
         {
-          v7 = [(MTLFunctionStitchingFunctionNode *)self controlDependencies];
-          v8 = [a3 controlDependencies];
+          controlDependencies = [(MTLFunctionStitchingFunctionNode *)self controlDependencies];
+          controlDependencies2 = [equal controlDependencies];
 
-          LOBYTE(v6) = MTLCompareArray(v7, v8, 1, 0);
+          LOBYTE(v6) = MTLCompareArray(controlDependencies, controlDependencies2, 1, 0);
         }
       }
     }
@@ -90,10 +90,10 @@
   [(MTLFunctionStitchingFunctionNode *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -125,7 +125,7 @@
           v9 = objc_opt_new();
         }
 
-        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", a3 + 4)}];
+        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", description + 4)}];
       }
 
       v8 = [(NSArray *)arguments countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -143,7 +143,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v26 = self;
+  selfCopy = self;
   controlDependencies = self->_controlDependencies;
   v14 = [(NSArray *)controlDependencies countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v14)
@@ -171,7 +171,7 @@
           v16 = objc_opt_new();
         }
 
-        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", a3 + 4)}];
+        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", description + 4)}];
       }
 
       v15 = [(NSArray *)controlDependencies countByEnumeratingWithState:&v28 objects:v37 count:16];
@@ -186,12 +186,12 @@
   }
 
   v20 = MEMORY[0x1E696AEC0];
-  v27.receiver = v26;
+  v27.receiver = selfCopy;
   v27.super_class = MTLFunctionStitchingFunctionNode;
   v21 = [(MTLFunctionStitchingFunctionNode *)&v27 description];
   v36[0] = v5;
   v36[1] = @"name =";
-  v36[2] = v26->_name;
+  v36[2] = selfCopy->_name;
   v36[3] = v5;
   if (v9)
   {

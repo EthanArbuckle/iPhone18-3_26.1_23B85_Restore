@@ -8,8 +8,8 @@
 - (double)defaultTrailingSeparatorInset
 {
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-  v4 = [(_MKTableViewController *)self view];
-  [v4 layoutMargins];
+  view = [(_MKTableViewController *)self view];
+  [view layoutMargins];
   v6 = v5;
   v8 = v7;
 
@@ -27,8 +27,8 @@
 - (double)defaultLeadingSeparatorInset
 {
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-  v4 = [(_MKTableViewController *)self view];
-  [v4 layoutMargins];
+  view = [(_MKTableViewController *)self view];
+  [view layoutMargins];
   v6 = v5;
   v8 = v7;
 

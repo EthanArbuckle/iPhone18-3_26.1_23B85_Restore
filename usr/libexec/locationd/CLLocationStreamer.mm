@@ -1,28 +1,28 @@
 @interface CLLocationStreamer
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLLocationStreamer)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)endService;
-- (void)failedToSendMessage:(id)a3 withError:(id)a4 isFatal:(BOOL)a5;
-- (void)onLocationNotification:(const int *)a3 withData:(const void *)a4;
-- (void)onMotionStateNotification:(const int *)a3 withData:(const NotificationData *)a4;
-- (void)pairedDeviceIsNearby:(BOOL)a3;
-- (void)receivedMessageOfType:(id)a3 withPayload:(id)a4;
+- (void)failedToSendMessage:(id)message withError:(id)error isFatal:(BOOL)fatal;
+- (void)onLocationNotification:(const int *)notification withData:(const void *)data;
+- (void)onMotionStateNotification:(const int *)notification withData:(const NotificationData *)data;
+- (void)pairedDeviceIsNearby:(BOOL)nearby;
+- (void)receivedMessageOfType:(id)type withPayload:(id)payload;
 - (void)reevaluateMotionSubscription;
 - (void)sendAliveAgainMessage;
 - (void)sendMotionState;
-- (void)setClientActivityTypeAirborneActive:(BOOL)a3;
-- (void)setClientActivityTypeFitnessActive:(BOOL)a3;
-- (void)setClientMapMatchingActive:(BOOL)a3;
-- (void)setEmergencyEnablementAssertionActive:(BOOL)a3;
+- (void)setClientActivityTypeAirborneActive:(BOOL)active;
+- (void)setClientActivityTypeFitnessActive:(BOOL)active;
+- (void)setClientMapMatchingActive:(BOOL)active;
+- (void)setEmergencyEnablementAssertionActive:(BOOL)active;
 - (void)startMotionAlarm;
-- (void)startUpdatingLocationWithGranularity:(int)a3 includeMotion:(BOOL)a4 inFitnessSession:(BOOL)a5 inAirborneSession:(BOOL)a6 emergencyEnablementAssertionActive:(BOOL)a7 hasMapMatching:(BOOL)a8;
+- (void)startUpdatingLocationWithGranularity:(int)granularity includeMotion:(BOOL)motion inFitnessSession:(BOOL)session inAirborneSession:(BOOL)airborneSession emergencyEnablementAssertionActive:(BOOL)active hasMapMatching:(BOOL)matching;
 - (void)stopLocation;
 - (void)stopMotionAlarm;
-- (void)successfullySentMessage:(id)a3;
+- (void)successfullySentMessage:(id)message;
 - (void)unregisterAllLocationNotifications;
 @end
 
@@ -114,17 +114,17 @@
     v6 = 2082;
     v7 = "";
     v8 = 1026;
-    v9 = [(CLLocationStreamer *)self isSubscribedForMotion];
+    isSubscribedForMotion = [(CLLocationStreamer *)self isSubscribedForMotion];
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Motion state subscription, is subscribed:%{public}d}", v5, 0x18u);
   }
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -222,11 +222,11 @@
   [(CLLocationStreamingConnectionManagerServiceProtocol *)[(CLLocationStreamer *)self streamingConnection] sendMessage:v5];
 }
 
-- (void)setEmergencyEnablementAssertionActive:(BOOL)a3
+- (void)setEmergencyEnablementAssertionActive:(BOOL)active
 {
-  if (self->_emergencyEnablementAssertionActive != a3)
+  if (self->_emergencyEnablementAssertionActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     if (qword_1025D47B0 != -1)
     {
       sub_10194FF00();
@@ -240,20 +240,20 @@
       v7 = 2082;
       v8 = "";
       v9 = 1026;
-      v10 = v3;
+      v10 = activeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLEEA change, needed:%{public}hhd}", v6, 0x18u);
     }
 
     [objc_msgSend(objc_msgSend(-[CLLocationStreamer universe](self "universe")];
-    self->_emergencyEnablementAssertionActive = v3;
+    self->_emergencyEnablementAssertionActive = activeCopy;
   }
 }
 
-- (void)setClientMapMatchingActive:(BOOL)a3
+- (void)setClientMapMatchingActive:(BOOL)active
 {
-  if (self->_clientMapMatchingActive != a3)
+  if (self->_clientMapMatchingActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     if (qword_1025D47B0 != -1)
     {
       sub_10194FF00();
@@ -267,15 +267,15 @@
       v10 = 2082;
       v11 = "";
       v12 = 1026;
-      v13 = v3;
+      v13 = activeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLMM Setting client map matching, state:%{public}hhd}", v9, 0x18u);
     }
 
-    self->_clientMapMatchingActive = v3;
+    self->_clientMapMatchingActive = activeCopy;
     ptr = self->_locationClient.__ptr_;
     v8 = *(ptr + 1);
     v7 = *(ptr + 2);
-    if (v3)
+    if (activeCopy)
     {
       [v7 register:v8 forNotification:17 registrationInfo:0];
     }
@@ -287,11 +287,11 @@
   }
 }
 
-- (void)setClientActivityTypeFitnessActive:(BOOL)a3
+- (void)setClientActivityTypeFitnessActive:(BOOL)active
 {
-  if (self->_clientActivityTypeFitnessActive != a3)
+  if (self->_clientActivityTypeFitnessActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     if (qword_1025D47B0 != -1)
     {
       sub_10194FF00();
@@ -305,15 +305,15 @@
       v10 = 2082;
       v11 = "";
       v12 = 1026;
-      v13 = v3;
+      v13 = activeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Setting fitness activity type, state:%{public}hhd}", v9, 0x18u);
     }
 
-    self->_clientActivityTypeFitnessActive = v3;
+    self->_clientActivityTypeFitnessActive = activeCopy;
     ptr = self->_locationClient.__ptr_;
     v8 = *(ptr + 1);
     v7 = *(ptr + 2);
-    if (v3)
+    if (activeCopy)
     {
       [v7 register:v8 forNotification:28 registrationInfo:0];
     }
@@ -325,11 +325,11 @@
   }
 }
 
-- (void)setClientActivityTypeAirborneActive:(BOOL)a3
+- (void)setClientActivityTypeAirborneActive:(BOOL)active
 {
-  if (self->_clientActivityTypeAirborneActive != a3)
+  if (self->_clientActivityTypeAirborneActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     if (qword_1025D47B0 != -1)
     {
       sub_10194FF00();
@@ -343,15 +343,15 @@
       v10 = 2082;
       v11 = "";
       v12 = 1026;
-      v13 = v3;
+      v13 = activeCopy;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Setting airborne activity type, state:%{public}hhd}", v9, 0x18u);
     }
 
-    self->_clientActivityTypeAirborneActive = v3;
+    self->_clientActivityTypeAirborneActive = activeCopy;
     ptr = self->_locationClient.__ptr_;
     v8 = *(ptr + 1);
     v7 = *(ptr + 2);
-    if (v3)
+    if (activeCopy)
     {
       [v7 register:v8 forNotification:29 registrationInfo:0];
     }
@@ -363,14 +363,14 @@
   }
 }
 
-- (void)startUpdatingLocationWithGranularity:(int)a3 includeMotion:(BOOL)a4 inFitnessSession:(BOOL)a5 inAirborneSession:(BOOL)a6 emergencyEnablementAssertionActive:(BOOL)a7 hasMapMatching:(BOOL)a8
+- (void)startUpdatingLocationWithGranularity:(int)granularity includeMotion:(BOOL)motion inFitnessSession:(BOOL)session inAirborneSession:(BOOL)airborneSession emergencyEnablementAssertionActive:(BOOL)active hasMapMatching:(BOOL)matching
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = *&a3;
+  matchingCopy = matching;
+  activeCopy = active;
+  airborneSessionCopy = airborneSession;
+  sessionCopy = session;
+  motionCopy = motion;
+  v13 = *&granularity;
   [-[CLLocationStreamer universe](self "universe")];
   if (qword_1025D47B0 != -1)
   {
@@ -388,18 +388,18 @@
     v23 = 2050;
     v24 = v13;
     v25 = 2050;
-    v26 = [(CLLocationStreamer *)self currentGranularity];
+    currentGranularity = [(CLLocationStreamer *)self currentGranularity];
     _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Starting, new granularity:%{public, location:CLLocationStreamingGranularity}lld, current granularity:%{public, location:CLLocationStreamingGranularity}lld}", &v19, 0x26u);
   }
 
   if (v13)
   {
-    [(CLLocationStreamer *)self setLocationUpdatesIncludeMotionState:v12];
+    [(CLLocationStreamer *)self setLocationUpdatesIncludeMotionState:motionCopy];
     [(CLLocationStreamer *)self reevaluateMotionSubscription];
-    [(CLLocationStreamer *)self setClientActivityTypeFitnessActive:v11];
-    [(CLLocationStreamer *)self setClientActivityTypeAirborneActive:v10];
-    [(CLLocationStreamer *)self setEmergencyEnablementAssertionActive:v9];
-    [(CLLocationStreamer *)self setClientMapMatchingActive:v8];
+    [(CLLocationStreamer *)self setClientActivityTypeFitnessActive:sessionCopy];
+    [(CLLocationStreamer *)self setClientActivityTypeAirborneActive:airborneSessionCopy];
+    [(CLLocationStreamer *)self setEmergencyEnablementAssertionActive:activeCopy];
+    [(CLLocationStreamer *)self setClientMapMatchingActive:matchingCopy];
     if ([(CLLocationStreamer *)self currentGranularity]== v13)
     {
       goto LABEL_9;
@@ -455,10 +455,10 @@ LABEL_9:
   }
 }
 
-- (void)onLocationNotification:(const int *)a3 withData:(const void *)a4
+- (void)onLocationNotification:(const int *)notification withData:(const void *)data
 {
   [-[CLLocationStreamer universe](self "universe")];
-  if (*a3 > 2u)
+  if (*notification > 2u)
   {
     if (qword_1025D47B0 != -1)
     {
@@ -468,7 +468,7 @@ LABEL_9:
     v10 = qword_1025D47B8;
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_FAULT))
     {
-      v11 = *a3;
+      v11 = *notification;
       *buf = 68289282;
       *&buf[4] = 0;
       *&buf[8] = 2082;
@@ -485,7 +485,7 @@ LABEL_9:
     v12 = qword_1025D47B8;
     if (os_signpost_enabled(qword_1025D47B8))
     {
-      v13 = *a3;
+      v13 = *notification;
       *buf = 68289282;
       *&buf[4] = 0;
       *&buf[8] = 2082;
@@ -498,7 +498,7 @@ LABEL_9:
 
   else
   {
-    v7 = *(a4 + 11);
+    v7 = *(data + 11);
     if (v7 <= 0.0)
     {
       v9 = 15.0;
@@ -506,7 +506,7 @@ LABEL_9:
 
     else
     {
-      v8 = v7 + *(a4 + 76);
+      v8 = v7 + *(data + 76);
       v9 = v8 - CFAbsoluteTimeGetCurrent();
     }
 
@@ -520,8 +520,8 @@ LABEL_9:
       v23 = qword_1025D47B8;
       if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = *(a4 + 76);
-        v25 = *(a4 + 11);
+        v24 = *(data + 76);
+        v25 = *(data + 11);
         *buf = 68289538;
         *&buf[4] = 0;
         *&buf[8] = 2082;
@@ -538,19 +538,19 @@ LABEL_9:
     {
       v14 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
       v15 = [CLLocation alloc];
-      v16 = *(a4 + 7);
-      v32 = *(a4 + 6);
+      v16 = *(data + 7);
+      v32 = *(data + 6);
       v33 = v16;
-      v34[0] = *(a4 + 8);
-      *(v34 + 12) = *(a4 + 140);
-      v17 = *(a4 + 3);
-      *&buf[32] = *(a4 + 2);
+      v34[0] = *(data + 8);
+      *(v34 + 12) = *(data + 140);
+      v17 = *(data + 3);
+      *&buf[32] = *(data + 2);
       v29 = v17;
-      v18 = *(a4 + 5);
-      v30 = *(a4 + 4);
+      v18 = *(data + 5);
+      v30 = *(data + 4);
       v31 = v18;
-      v19 = *(a4 + 1);
-      *buf = *a4;
+      v19 = *(data + 1);
+      *buf = *data;
       *&buf[16] = v19;
       [v14 encodeObject:objc_msgSend(v15 forKey:{"initWithClientLocation:", buf), @"kCLLocationStreamingMessageLocationKey"}];
       v20 = objc_alloc_init(NSMutableDictionary);
@@ -564,8 +564,8 @@ LABEL_9:
         }
       }
 
-      [v20 setObject:-[CLStreamedLocationPrivate data](-[CLStreamedLocationPrivate initWithDaemonLocationPrivate:]([CLStreamedLocationPrivate alloc] forKeyedSubscript:{"initWithDaemonLocationPrivate:", a4 + 160), "data"), @"kCLLocationStreamingMessageLocationPrivateKey"}];
-      [v20 setObject:-[CLStreamedLocationInternal data](-[CLStreamedLocationInternal initWithDaemonLocation:]([CLStreamedLocationInternal alloc] forKeyedSubscript:{"initWithDaemonLocation:", a4), "data"), @"kCLLocationStreamingMessageLocationInternalKey"}];
+      [v20 setObject:-[CLStreamedLocationPrivate data](-[CLStreamedLocationPrivate initWithDaemonLocationPrivate:]([CLStreamedLocationPrivate alloc] forKeyedSubscript:{"initWithDaemonLocationPrivate:", data + 160), "data"), @"kCLLocationStreamingMessageLocationPrivateKey"}];
+      [v20 setObject:-[CLStreamedLocationInternal data](-[CLStreamedLocationInternal initWithDaemonLocation:]([CLStreamedLocationInternal alloc] forKeyedSubscript:{"initWithDaemonLocation:", data), "data"), @"kCLLocationStreamingMessageLocationInternalKey"}];
       v22 = objc_alloc_init(CLLocationStreamingMessage);
       [(CLLocationStreamingMessage *)v22 setMessageType:@"kCLLocationStreamingMessageTypeLocation"];
       [(CLLocationStreamingMessage *)v22 setPayload:v20];
@@ -599,7 +599,7 @@ LABEL_9:
     v5 = 2082;
     v6 = "";
     v7 = 1026;
-    v8 = [(CLLocationStreamer *)self motionAlarmActive];
+    motionAlarmActive = [(CLLocationStreamer *)self motionAlarmActive];
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Start motion alarm, currently active:%{public}d}", v4, 0x18u);
   }
 
@@ -621,7 +621,7 @@ LABEL_9:
     v7 = 2082;
     v8 = "";
     v9 = 1026;
-    v10 = [(CLLocationStreamer *)self motionAlarmActive];
+    motionAlarmActive = [(CLLocationStreamer *)self motionAlarmActive];
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Stop motion alarm, currently active:%{public}d}", v6, 0x18u);
   }
 
@@ -659,9 +659,9 @@ LABEL_9:
   [(CLLocationStreamingConnectionManagerServiceProtocol *)[(CLLocationStreamer *)self streamingConnection] sendMessage:v4];
 }
 
-- (void)onMotionStateNotification:(const int *)a3 withData:(const NotificationData *)a4
+- (void)onMotionStateNotification:(const int *)notification withData:(const NotificationData *)data
 {
-  if (!*a3)
+  if (!*notification)
   {
     if (self->_lastMotionActivity.__ptr_)
     {
@@ -679,7 +679,7 @@ LABEL_9:
   v8 = qword_1025D47B8;
   if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_FAULT))
   {
-    v9 = *a3;
+    v9 = *notification;
     *buf = 68289282;
     *&buf[4] = 0;
     v13[0] = 2082;
@@ -696,7 +696,7 @@ LABEL_9:
   v10 = qword_1025D47B8;
   if (os_signpost_enabled(qword_1025D47B8))
   {
-    v11 = *a3;
+    v11 = *notification;
     *buf = 68289282;
     *&buf[4] = 0;
     v13[0] = 2082;
@@ -707,16 +707,16 @@ LABEL_9:
   }
 }
 
-- (void)receivedMessageOfType:(id)a3 withPayload:(id)a4
+- (void)receivedMessageOfType:(id)type withPayload:(id)payload
 {
-  if ([a3 isEqual:@"kCLLocationStreamingMessageTypeRequestLocation"])
+  if ([type isEqual:@"kCLLocationStreamingMessageTypeRequestLocation"])
   {
-    v7 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageGranularityKey"];
-    v8 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageIncludeMotionKey"];
-    v9 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageInFitnessSessionKey"];
-    v10 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageActivityTypeAirborneKey"];
-    v11 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageEmergencyEnablementKey"];
-    v12 = [a4 objectForKeyedSubscript:@"kCLLocationStreamingMessageMapMatching"];
+    v7 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageGranularityKey"];
+    v8 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageIncludeMotionKey"];
+    v9 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageInFitnessSessionKey"];
+    v10 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageActivityTypeAirborneKey"];
+    v11 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageEmergencyEnablementKey"];
+    v12 = [payload objectForKeyedSubscript:@"kCLLocationStreamingMessageMapMatching"];
     if (v7)
     {
       v13 = v12;
@@ -745,7 +745,7 @@ LABEL_9:
         v20 = 2082;
         v21 = "";
         v22 = 2082;
-        v23 = [@"kCLLocationStreamingMessageGranularityKey" UTF8String];
+        uTF8String = [@"kCLLocationStreamingMessageGranularityKey" UTF8String];
         _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Missing data, key:%{public, location:escape_only}s}", &v18, 0x1Cu);
         if (qword_1025D47B0 != -1)
         {
@@ -756,21 +756,21 @@ LABEL_9:
       v16 = qword_1025D47B8;
       if (os_signpost_enabled(qword_1025D47B8))
       {
-        v17 = [@"kCLLocationStreamingMessageGranularityKey" UTF8String];
+        uTF8String2 = [@"kCLLocationStreamingMessageGranularityKey" UTF8String];
         v18 = 68289282;
         v19 = 0;
         v20 = 2082;
         v21 = "";
         v22 = 2082;
-        v23 = v17;
+        uTF8String = uTF8String2;
         _os_signpost_emit_with_name_impl(dword_100000000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Missing data", "{msg%{public}.0s:Missing data, key:%{public, location:escape_only}s}", &v18, 0x1Cu);
       }
     }
   }
 
-  else if ([a3 isEqual:@"kCLLocationStreamingMessageTypeSetMotionAlarm"])
+  else if ([type isEqual:@"kCLLocationStreamingMessageTypeSetMotionAlarm"])
   {
-    if ([objc_msgSend(a4 objectForKeyedSubscript:{@"kCLLocationStreamingMessageMotionAlarmStateKey", "BOOLValue"}])
+    if ([objc_msgSend(payload objectForKeyedSubscript:{@"kCLLocationStreamingMessageMotionAlarmStateKey", "BOOLValue"}])
     {
 
       [(CLLocationStreamer *)self startMotionAlarm];
@@ -798,15 +798,15 @@ LABEL_9:
       v20 = 2082;
       v21 = "";
       v22 = 2082;
-      v23 = [a3 UTF8String];
+      uTF8String = [type UTF8String];
       _os_log_impl(dword_100000000, v14, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Unrecognized message type, type:%{public, location:escape_only}s}", &v18, 0x1Cu);
     }
   }
 }
 
-- (void)failedToSendMessage:(id)a3 withError:(id)a4 isFatal:(BOOL)a5
+- (void)failedToSendMessage:(id)message withError:(id)error isFatal:(BOOL)fatal
 {
-  v5 = a5;
+  fatalCopy = fatal;
   if (qword_1025D47B0 != -1)
   {
     sub_10194FF00();
@@ -820,16 +820,16 @@ LABEL_9:
     v10 = 2082;
     v11 = "";
     v12 = 2082;
-    v13 = [objc_msgSend(a3 "messageType")];
+    v13 = [objc_msgSend(message "messageType")];
     v14 = 2114;
-    v15 = a4;
+    errorCopy = error;
     v16 = 1026;
-    v17 = v5;
+    v17 = fatalCopy;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#warning Message failed to send, type:%{public, location:escape_only}s, error:%{public, location:escape_only}@, fatal:%{public}d}", v9, 0x2Cu);
   }
 }
 
-- (void)successfullySentMessage:(id)a3
+- (void)successfullySentMessage:(id)message
 {
   if (qword_1025D47B0 != -1)
   {
@@ -844,14 +844,14 @@ LABEL_9:
     v6 = 2082;
     v7 = "";
     v8 = 2082;
-    v9 = [objc_msgSend(a3 "messageType")];
+    v9 = [objc_msgSend(message "messageType")];
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Message sent, type:%{public, location:escape_only}s}", v5, 0x1Cu);
   }
 }
 
-- (void)pairedDeviceIsNearby:(BOOL)a3
+- (void)pairedDeviceIsNearby:(BOOL)nearby
 {
-  v3 = a3;
+  nearbyCopy = nearby;
   if (qword_1025D47B0 != -1)
   {
     sub_10194FF00();
@@ -865,11 +865,11 @@ LABEL_9:
     v9 = 2082;
     v10 = "";
     v11 = 1026;
-    v12 = v3;
+    v12 = nearbyCopy;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Nearby status change, is nearby:%{public}d}", &v7, 0x18u);
   }
 
-  if (!v3)
+  if (!nearbyCopy)
   {
     if (qword_1025D47B0 != -1)
     {

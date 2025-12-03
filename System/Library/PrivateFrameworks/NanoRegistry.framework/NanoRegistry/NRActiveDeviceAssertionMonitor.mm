@@ -1,8 +1,8 @@
 @interface NRActiveDeviceAssertionMonitor
 + (id)sharedInstance;
 - (BOOL)hasActiveAssertion;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NRActiveDeviceAssertionMonitor
@@ -150,17 +150,17 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__NRActiveDeviceAssertionMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E86DAF10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -210,17 +210,17 @@ void __46__NRActiveDeviceAssertionMonitor_addObserver___block_invoke(uint64_t a1
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__NRActiveDeviceAssertionMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E86DAF10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(workQueue, v7);
 }
 

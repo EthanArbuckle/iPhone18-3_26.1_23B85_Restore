@@ -1,16 +1,16 @@
 @interface PLAssetAnalysisState
-+ (BOOL)resetFaceCropAnalysisStateInLibraryAtURL:(id)a3 error:(id *)a4;
++ (BOOL)resetFaceCropAnalysisStateInLibraryAtURL:(id)l error:(id *)error;
 + (id)_batchOperationQueue;
-+ (id)_managedObjectContextForStateChangesWithLibraryURL:(id)a3;
-+ (id)_managedObjectContextForStateChangesWithPersistentStoreCoordinator:(id)a3;
++ (id)_managedObjectContextForStateChangesWithLibraryURL:(id)l;
++ (id)_managedObjectContextForStateChangesWithPersistentStoreCoordinator:(id)coordinator;
 - (id)debugLogDescription;
 @end
 
 @implementation PLAssetAnalysisState
 
-+ (BOOL)resetFaceCropAnalysisStateInLibraryAtURL:(id)a3 error:(id *)a4
++ (BOOL)resetFaceCropAnalysisStateInLibraryAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -21,8 +21,8 @@
   v19 = __Block_byref_object_copy__2459;
   v20 = __Block_byref_object_dispose__2460;
   v21 = 0;
-  v7 = [a1 _managedObjectContextForStateChangesWithLibraryURL:v6];
-  v8 = [a1 _batchOperationQueue];
+  v7 = [self _managedObjectContextForStateChangesWithLibraryURL:lCopy];
+  _batchOperationQueue = [self _batchOperationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PLAssetAnalysisState_resetFaceCropAnalysisStateInLibraryAtURL_error___block_invoke;
@@ -31,12 +31,12 @@
   v14 = &v22;
   v15 = &v16;
   v9 = v7;
-  dispatch_sync(v8, block);
+  dispatch_sync(_batchOperationQueue, block);
 
   v10 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v10 = *(v23 + 24);
   }
 
@@ -87,16 +87,16 @@ void __71__PLAssetAnalysisState_resetFaceCropAnalysisStateInLibraryAtURL_error__
   }
 }
 
-+ (id)_managedObjectContextForStateChangesWithLibraryURL:(id)a3
++ (id)_managedObjectContextForStateChangesWithLibraryURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v6 = [v5 lookupOrCreateBundleForLibraryURL:v4];
+  v6 = [v5 lookupOrCreateBundleForLibraryURL:lCopy];
 
-  v7 = [v6 persistentContainer];
+  persistentContainer = [v6 persistentContainer];
   v13 = 0;
-  v8 = [v7 sharedPersistentStoreCoordinatorWithError:&v13];
+  v8 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v13];
   v9 = v13;
 
   if (!v8)
@@ -110,17 +110,17 @@ void __71__PLAssetAnalysisState_resetFaceCropAnalysisStateInLibraryAtURL_error__
     }
   }
 
-  v11 = [a1 _managedObjectContextForStateChangesWithPersistentStoreCoordinator:v8];
+  v11 = [self _managedObjectContextForStateChangesWithPersistentStoreCoordinator:v8];
 
   return v11;
 }
 
-+ (id)_managedObjectContextForStateChangesWithPersistentStoreCoordinator:(id)a3
++ (id)_managedObjectContextForStateChangesWithPersistentStoreCoordinator:(id)coordinator
 {
   v3 = MEMORY[0x1E695D628];
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v5 = [[v3 alloc] initWithConcurrencyType:1];
-  [v5 setPersistentStoreCoordinator:v4];
+  [v5 setPersistentStoreCoordinator:coordinatorCopy];
 
   [v5 setName:@"com.apple.assetAnalysisState.managedObjectContext"];
   v6 = [objc_alloc(MEMORY[0x1E695D650]) initWithMergeType:0];
@@ -150,30 +150,30 @@ void __44__PLAssetAnalysisState__batchOperationQueue__block_invoke()
 
 - (id)debugLogDescription
 {
-  v3 = [(PLAssetAnalysisState *)self ignoreUntilDate];
+  ignoreUntilDate = [(PLAssetAnalysisState *)self ignoreUntilDate];
   v4 = MEMORY[0x1E696AD60];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(PLAssetAnalysisState *)self workerType];
+  workerType = [(PLAssetAnalysisState *)self workerType];
   v8 = @"unknown";
-  if (!v7)
+  if (!workerType)
   {
     v8 = @"graph";
   }
 
-  if (v7 == 4)
+  if (workerType == 4)
   {
     v8 = @"face";
   }
 
   v9 = v8;
   v10 = PLShortDescriptionForAnalysisState([(PLAssetAnalysisState *)self analysisState]);
-  v11 = [(PLAssetAnalysisState *)self lastIgnoredDate];
-  v12 = [v4 stringWithFormat:@"<%@: %p> - type: %@, state: %@, last-ignored: %@, ignore-until: %@", v6, self, v9, v10, v11, v3];
+  lastIgnoredDate = [(PLAssetAnalysisState *)self lastIgnoredDate];
+  v12 = [v4 stringWithFormat:@"<%@: %p> - type: %@, state: %@, last-ignored: %@, ignore-until: %@", v6, self, v9, v10, lastIgnoredDate, ignoreUntilDate];
 
-  if (v3)
+  if (ignoreUntilDate)
   {
-    [v3 timeIntervalSinceNow];
+    [ignoreUntilDate timeIntervalSinceNow];
     [v12 appendFormat:@" (%.2f seconds from now)", v13];
   }
 

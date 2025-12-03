@@ -12,13 +12,13 @@
   v9 = a5;
   [v7 scheduleEnabledSetting];
   v10 = DNDResolvedScheduleEnabledSetting();
-  v11 = [v7 timePeriod];
-  v12 = [v11 weekdays];
+  timePeriod = [v7 timePeriod];
+  weekdays = [timePeriod weekdays];
   v13 = 0;
   if (v10 == 2)
   {
-    v14 = v12;
-    if (v12 != *MEMORY[0x277D05888])
+    v14 = weekdays;
+    if (weekdays != *MEMORY[0x277D05888])
     {
       [v9 component:512 fromDate:v8];
       v27 = 0;
@@ -34,7 +34,7 @@
       v25 = __Block_byref_object_dispose__0;
       v26 = 0;
       v17 = MEMORY[0x277D85DD0];
-      v18 = v11;
+      v18 = timePeriod;
       v19 = v9;
       v20 = v8;
       DNDEnumerateDaysOfWeekStartingOnDay();
@@ -64,10 +64,10 @@
   v9 = a5;
   [v7 scheduleEnabledSetting];
   v10 = DNDResolvedScheduleEnabledSetting();
-  v11 = [v7 timePeriod];
-  v12 = [v11 weekdays];
+  timePeriod = [v7 timePeriod];
+  weekdays = [timePeriod weekdays];
   v13 = 0;
-  if (v10 == 2 && v12 != *MEMORY[0x277D05888])
+  if (v10 == 2 && weekdays != *MEMORY[0x277D05888])
   {
     [v9 component:512 fromDate:v8];
     v19 = 0;
@@ -76,7 +76,7 @@
     v22 = __Block_byref_object_copy__0;
     v23 = __Block_byref_object_dispose__0;
     v24 = 0;
-    v17 = v11;
+    v17 = timePeriod;
     v18 = v9;
     v14 = v8;
     DNDEnumerateDaysOfWeekStartingOnDay();

@@ -3,7 +3,7 @@
 + (id)settingsControllerModule;
 + (id)sharedInstance;
 + (id)transientProperties;
-+ (void)_showStackBalloonViewWithNavigationController:(id)a3;
++ (void)_showStackBalloonViewWithNavigationController:(id)controller;
 - (NSArray)horizontalOffsets;
 - (void)setDefaultValues;
 @end
@@ -55,9 +55,9 @@
   cachedHorizontalOffsets = self->_cachedHorizontalOffsets;
   if (!cachedHorizontalOffsets)
   {
-    v18 = [(PXMessagesUISettings *)self horizontalOffsetString];
-    v4 = [v18 componentsSeparatedByString:{@", "}];
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    horizontalOffsetString = [(PXMessagesUISettings *)self horizontalOffsetString];
+    v4 = [horizontalOffsetString componentsSeparatedByString:{@", "}];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
     v19 = 0u;
     v20 = 0u;
@@ -79,7 +79,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * v11) stringByTrimmingCharactersInSet:v5];
+          v12 = [*(*(&v19 + 1) + 8 * v11) stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
           [v12 doubleValue];
           v14 = v13;
 
@@ -111,7 +111,7 @@
   block[1] = 3221225472;
   block[2] = __43__PXMessagesUISettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken != -1)
   {
     dispatch_once(&transientProperties_onceToken, block);
@@ -153,18 +153,18 @@ void __38__PXMessagesUISettings_sharedInstance__block_invoke()
   sharedInstance_sharedInstance = v0;
 }
 
-+ (void)_showStackBalloonViewWithNavigationController:(id)a3
++ (void)_showStackBalloonViewWithNavigationController:(id)controller
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 dataSourceType];
-  if (v6 == 1)
+  controllerCopy = controller;
+  sharedInstance = [self sharedInstance];
+  dataSourceType = [sharedInstance dataSourceType];
+  if (dataSourceType == 1)
   {
-    v17 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v18 = [v17 pathManager];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    pathManager = [px_deprecated_appPhotoLibrary pathManager];
     v27 = 0;
-    v19 = [v18 temporaryFileBackedDebugDirectoryCreateIfNeeded:0 error:&v27];
+    v19 = [pathManager temporaryFileBackedDebugDirectoryCreateIfNeeded:0 error:&v27];
     v20 = v27;
 
     if (v19)
@@ -200,7 +200,7 @@ void __38__PXMessagesUISettings_sharedInstance__block_invoke()
 
   else
   {
-    if (v6)
+    if (dataSourceType)
     {
       v14 = 0;
       v16 = 0;
@@ -210,24 +210,24 @@ LABEL_17:
       v25 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
       [(PXMessagesStackBalloonViewController *)v24 addAction:v25];
 
-      [v4 presentViewController:v24 animated:1 completion:0];
+      [controllerCopy presentViewController:v24 animated:1 completion:0];
       goto LABEL_18;
     }
 
-    v7 = [a1 _assetCollectionItemProvider];
-    v8 = v7;
-    if (v7)
+    _assetCollectionItemProvider = [self _assetCollectionItemProvider];
+    v8 = _assetCollectionItemProvider;
+    if (_assetCollectionItemProvider)
     {
-      v9 = [v7 itemForIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"];
+      v9 = [_assetCollectionItemProvider itemForIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"];
       v10 = MEMORY[0x1E6978630];
-      v11 = [v9 photoLibrary];
-      v12 = [v11 librarySpecificFetchOptions];
-      v13 = [v10 fetchAssetsInAssetCollection:v9 options:v12];
+      photoLibrary = [v9 photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+      v13 = [v10 fetchAssetsInAssetCollection:v9 options:librarySpecificFetchOptions];
 
       LOBYTE(v26) = 0;
       v14 = [PXPhotoKitAssetsDataSourceManager dataSourceManagerForAssetCollection:v9 existingAssetsFetchResult:v13 existingKeyAssetsFetchResult:0 fetchPropertySets:0 basePredicate:0 options:0 ignoreSharedLibraryFilters:v26];
-      v15 = [v9 photoLibrary];
-      v16 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:v15];
+      photoLibrary2 = [v9 photoLibrary];
+      v16 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:photoLibrary2];
     }
 
     else
@@ -250,7 +250,7 @@ LABEL_17:
 
   v24 = [[PXMessagesStackBalloonViewController alloc] initWithDataSourceManager:v14 mediaProvider:v16];
   [(PXMessagesStackBalloonViewController *)v24 setAssetActionManager:v23];
-  [v4 pushViewController:v24 animated:1];
+  [controllerCopy pushViewController:v24 animated:1];
 LABEL_18:
 }
 
@@ -258,13 +258,13 @@ LABEL_18:
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = +[PXDiagnosticsController sharedController];
-  v3 = [v2 currentItemProviders];
+  currentItemProviders = [v2 currentItemProviders];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = currentItemProviders;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -476,7 +476,7 @@ LABEL_11:
   v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:v161 count:4];
   v130 = [v129 sectionWithRows:v79 title:@"Transition"];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__PXMessagesUISettings_UI__settingsControllerModule__block_invoke;

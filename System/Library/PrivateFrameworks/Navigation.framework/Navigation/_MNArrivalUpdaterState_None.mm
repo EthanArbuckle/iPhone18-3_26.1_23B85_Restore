@@ -1,6 +1,6 @@
 @interface _MNArrivalUpdaterState_None
-- (_MNArrivalUpdaterState_None)initWithDepartureReason:(unint64_t)a3;
-- (void)onEnterState:(id)a3;
+- (_MNArrivalUpdaterState_None)initWithDepartureReason:(unint64_t)reason;
+- (void)onEnterState:(id)state;
 - (void)updateForLocation;
 @end
 
@@ -15,9 +15,9 @@
   }
 }
 
-- (void)onEnterState:(id)a3
+- (void)onEnterState:(id)state
 {
-  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:a3];
+  [(_MNArrivalUpdaterState *)self sendArrivalInfoFromPreviousState:state];
   departureReason = self->_departureReason;
   if (departureReason)
   {
@@ -31,18 +31,18 @@
 
   if (!v5)
   {
-    v6 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-    v7 = [v6 safeDelegate];
-    v8 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-    v9 = [(_MNArrivalUpdaterState *)self targetLeg];
-    [v7 arrivalUpdater:v8 didDepartFromLegIndex:objc_msgSend(v9 withReason:{"legIndex"), self->_departureReason}];
+    arrivalUpdater = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+    safeDelegate = [arrivalUpdater safeDelegate];
+    arrivalUpdater2 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+    targetLeg = [(_MNArrivalUpdaterState *)self targetLeg];
+    [safeDelegate arrivalUpdater:arrivalUpdater2 didDepartFromLegIndex:objc_msgSend(targetLeg withReason:{"legIndex"), self->_departureReason}];
   }
 
-  v10 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
-  [v10 stopMonitoringForEV];
+  arrivalUpdater3 = [(_MNArrivalUpdaterState *)self arrivalUpdater];
+  [arrivalUpdater3 stopMonitoringForEV];
 }
 
-- (_MNArrivalUpdaterState_None)initWithDepartureReason:(unint64_t)a3
+- (_MNArrivalUpdaterState_None)initWithDepartureReason:(unint64_t)reason
 {
   v8.receiver = self;
   v8.super_class = _MNArrivalUpdaterState_None;
@@ -50,7 +50,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_departureReason = a3;
+    v4->_departureReason = reason;
     v6 = v4;
   }
 

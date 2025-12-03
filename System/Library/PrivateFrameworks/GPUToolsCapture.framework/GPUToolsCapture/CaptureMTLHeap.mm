@@ -1,37 +1,37 @@
 @interface CaptureMTLHeap
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLHeap)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLHeap)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
 - (unint64_t)currentAllocatedSize;
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (unint64_t)usedSize;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTLHeap
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLHeapSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLHeapSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -16115;
   v8 = BYTE9(v19);
@@ -51,10 +51,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLHeap *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -64,7 +64,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -72,10 +72,10 @@
   return v6;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = v6;
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
     captureDevice = self->_captureDevice;
@@ -92,7 +92,7 @@ LABEL_5:
 
   if ((dword_31F7C8 & 0x200) != 0)
   {
-    v11 = [v6 copy];
+    v11 = [descriptorCopy copy];
 
     [v11 setCompressionType:0];
     [v11 setCompressionMode:2];
@@ -116,7 +116,7 @@ LABEL_5:
   *(&v32 + 9) = 16400;
   *(&v32 + 11) = 0;
   HIBYTE(v32) = 0;
-  v18 = [(MTLHeapSPI *)self->_baseObject newTextureWithDescriptor:v7 offset:a4];
+  v18 = [(MTLHeapSPI *)self->_baseObject newTextureWithDescriptor:v7 offset:offset];
   v7 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeTextureIntoArgumentBufferForResourceIndex:v18 withDescriptor:v7];
 
   if (v18)
@@ -150,10 +150,10 @@ LABEL_5:
 
   *(v19 + 13) = v20;
   SaveMTLTextureInfo(&v30, v18);
-  v24 = [(CaptureMTLHeap *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -161,10 +161,10 @@ LABEL_5:
     var0 = 0;
   }
 
-  v26 = [(CaptureMTLTexture *)v9 traceStream];
-  if (v26)
+  traceStream2 = [(CaptureMTLTexture *)v9 traceStream];
+  if (traceStream2)
   {
-    v27 = v26->var0;
+    v27 = traceStream2->var0;
   }
 
   else
@@ -175,7 +175,7 @@ LABEL_5:
   v28 = SaveMTLTextureDescriptor(&v30, v7);
   *v21 = var0;
   *(v21 + 1) = v27;
-  *(v21 + 2) = a4;
+  *(v21 + 2) = offset;
   v21[24] = v28;
   *(v21 + 25) = 0;
   *(v21 + 7) = 0;
@@ -188,20 +188,20 @@ LABEL_6:
   return v9;
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = v4;
+  descriptorCopy = descriptor;
+  v5 = descriptorCopy;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
-    v14 = [(CaptureMTLDevice *)self->_captureDevice newTextureWithDescriptor:v4];
+    v14 = [(CaptureMTLDevice *)self->_captureDevice newTextureWithDescriptor:descriptorCopy];
   }
 
   else
   {
     if ((dword_31F7C8 & 0x200) != 0)
     {
-      v6 = [v4 copy];
+      v6 = [descriptorCopy copy];
 
       [v6 setCompressionType:0];
       [v6 setCompressionMode:2];
@@ -259,10 +259,10 @@ LABEL_6:
 
     *(v15 + 13) = v16;
     SaveMTLTextureInfo(&v27, v13);
-    v20 = [(CaptureMTLHeap *)self traceStream];
-    if (v20)
+    traceStream = [(CaptureMTLHeap *)self traceStream];
+    if (traceStream)
     {
-      var0 = v20->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -270,10 +270,10 @@ LABEL_6:
       var0 = 0;
     }
 
-    v22 = [(CaptureMTLTexture *)v14 traceStream];
-    if (v22)
+    traceStream2 = [(CaptureMTLTexture *)v14 traceStream];
+    if (traceStream2)
     {
-      v23 = v22->var0;
+      v23 = traceStream2->var0;
     }
 
     else
@@ -296,15 +296,15 @@ LABEL_6:
   return v14;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset
 {
-  v7 = self;
+  selfCopy = self;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
     self = self->_captureDevice;
 LABEL_5:
 
-    return [(CaptureMTLHeap *)self newBufferWithLength:a3 options:a4, a5];
+    return [(CaptureMTLHeap *)self newBufferWithLength:length options:options, offset];
   }
 
   if (qword_31F7B8)
@@ -328,10 +328,10 @@ LABEL_5:
   *(&v29 + 9) = 16400;
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
-  v15 = [(MTLHeapSPI *)v7->_baseObject newBufferWithLength:a3 options:a4 offset:?];
+  v15 = [(MTLHeapSPI *)selfCopy->_baseObject newBufferWithLength:length options:options offset:?];
   if (v15)
   {
-    v16 = [[CaptureMTLBuffer alloc] initWithBaseObject:v15 captureHeap:v7];
+    v16 = [[CaptureMTLBuffer alloc] initWithBaseObject:v15 captureHeap:selfCopy];
   }
 
   else
@@ -360,10 +360,10 @@ LABEL_5:
 
   *(v17 + 13) = v18;
   SaveMTLBufferInfo(&v27, v15);
-  v22 = [(CaptureMTLHeap *)v7 traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLHeap *)selfCopy traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -371,10 +371,10 @@ LABEL_5:
     var0 = 0;
   }
 
-  v24 = [(CaptureMTLBuffer *)v16 traceStream];
-  if (v24)
+  traceStream2 = [(CaptureMTLBuffer *)v16 traceStream];
+  if (traceStream2)
   {
-    v25 = v24->var0;
+    v25 = traceStream2->var0;
   }
 
   else
@@ -384,9 +384,9 @@ LABEL_5:
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a3;
-  *(v19 + 3) = a4;
-  *(v19 + 4) = a5;
+  *(v19 + 2) = length;
+  *(v19 + 3) = options;
+  *(v19 + 4) = offset;
   v26 = v28;
   *v12 = v29;
   *(v12 + 8) = BYTE8(v29);
@@ -395,7 +395,7 @@ LABEL_5:
   return v16;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   if ((dword_31F7C8 & 0x4000) != 0)
   {
@@ -422,7 +422,7 @@ LABEL_5:
     *(&v28 + 9) = 16400;
     *(&v28 + 11) = 0;
     HIBYTE(v28) = 0;
-    v12 = [(MTLHeapSPI *)self->_baseObject newBufferWithLength:a3 options:a4];
+    v12 = [(MTLHeapSPI *)self->_baseObject newBufferWithLength:length options:options];
     if (v12)
     {
       v13 = [[CaptureMTLBuffer alloc] initWithBaseObject:v12 captureHeap:self];
@@ -454,10 +454,10 @@ LABEL_5:
 
     *(v16 + 13) = v17;
     SaveMTLBufferInfo(&v26, v12);
-    v21 = [(CaptureMTLHeap *)self traceStream];
-    if (v21)
+    traceStream = [(CaptureMTLHeap *)self traceStream];
+    if (traceStream)
     {
-      var0 = v21->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -465,10 +465,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v23 = [(CaptureMTLBuffer *)v13 traceStream];
-    if (v23)
+    traceStream2 = [(CaptureMTLBuffer *)v13 traceStream];
+    if (traceStream2)
     {
-      v24 = v23->var0;
+      v24 = traceStream2->var0;
     }
 
     else
@@ -478,8 +478,8 @@ LABEL_5:
 
     *v18 = var0;
     *(v18 + 1) = v24;
-    *(v18 + 2) = a3;
-    *(v18 + 3) = a4;
+    *(v18 + 2) = length;
+    *(v18 + 3) = options;
     v25 = v27;
     *v9 = v28;
     *(v9 + 8) = BYTE8(v28);
@@ -489,7 +489,7 @@ LABEL_5:
   }
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if ((dword_31F7C8 & 0x4000) != 0)
   {
@@ -516,7 +516,7 @@ LABEL_5:
     *(&v28 + 9) = 16400;
     *(&v28 + 11) = 0;
     HIBYTE(v28) = 0;
-    v12 = [(MTLHeapSPI *)self->_baseObject newAccelerationStructureWithSize:a3 resourceIndex:a4];
+    v12 = [(MTLHeapSPI *)self->_baseObject newAccelerationStructureWithSize:size resourceIndex:index];
     if (v12)
     {
       v13 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v12 captureHeap:self];
@@ -548,10 +548,10 @@ LABEL_5:
 
     *(v16 + 13) = v17;
     SaveMTLAccelerationStructureInfo(&v26, v12);
-    v21 = [(CaptureMTLHeap *)self traceStream];
-    if (v21)
+    traceStream = [(CaptureMTLHeap *)self traceStream];
+    if (traceStream)
     {
-      var0 = v21->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -559,10 +559,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v23 = [(CaptureMTLAccelerationStructure *)v13 traceStream];
-    if (v23)
+    traceStream2 = [(CaptureMTLAccelerationStructure *)v13 traceStream];
+    if (traceStream2)
     {
-      v24 = v23->var0;
+      v24 = traceStream2->var0;
     }
 
     else
@@ -572,8 +572,8 @@ LABEL_5:
 
     *v18 = var0;
     *(v18 + 1) = v24;
-    *(v18 + 2) = a3;
-    *(v18 + 3) = a4;
+    *(v18 + 2) = size;
+    *(v18 + 3) = index;
     v25 = v27;
     *v9 = v28;
     *(v9 + 8) = BYTE8(v28);
@@ -583,15 +583,15 @@ LABEL_5:
   }
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
-  v7 = self;
+  selfCopy = self;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
     self = self->_captureDevice;
 LABEL_5:
 
-    return [(CaptureMTLHeap *)self newAccelerationStructureWithSize:a3 resourceIndex:a5];
+    return [(CaptureMTLHeap *)self newAccelerationStructureWithSize:size resourceIndex:index];
   }
 
   if (qword_31F7B8)
@@ -615,10 +615,10 @@ LABEL_5:
   *(&v29 + 9) = 16400;
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
-  v15 = [MTLHeapSPI newAccelerationStructureWithSize:"newAccelerationStructureWithSize:offset:resourceIndex:" offset:a3 resourceIndex:?];
+  v15 = [MTLHeapSPI newAccelerationStructureWithSize:"newAccelerationStructureWithSize:offset:resourceIndex:" offset:size resourceIndex:?];
   if (v15)
   {
-    v16 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v15 captureHeap:v7];
+    v16 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v15 captureHeap:selfCopy];
   }
 
   else
@@ -647,10 +647,10 @@ LABEL_5:
 
   *(v17 + 13) = v18;
   SaveMTLAccelerationStructureInfo(&v27, v15);
-  v22 = [(CaptureMTLHeap *)v7 traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLHeap *)selfCopy traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -658,10 +658,10 @@ LABEL_5:
     var0 = 0;
   }
 
-  v24 = [(CaptureMTLAccelerationStructure *)v16 traceStream];
-  if (v24)
+  traceStream2 = [(CaptureMTLAccelerationStructure *)v16 traceStream];
+  if (traceStream2)
   {
-    v25 = v24->var0;
+    v25 = traceStream2->var0;
   }
 
   else
@@ -671,9 +671,9 @@ LABEL_5:
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a3;
-  *(v19 + 3) = a4;
-  *(v19 + 4) = a5;
+  *(v19 + 2) = size;
+  *(v19 + 3) = offset;
+  *(v19 + 4) = index;
   v26 = v28;
   *v12 = v29;
   *(v12 + 8) = BYTE8(v29);
@@ -682,15 +682,15 @@ LABEL_5:
   return v16;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset
 {
-  v5 = self;
+  selfCopy = self;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
     self = self->_captureDevice;
 LABEL_5:
 
-    return [(CaptureMTLHeap *)self newAccelerationStructureWithSize:a3, a4];
+    return [(CaptureMTLHeap *)self newAccelerationStructureWithSize:size, offset];
   }
 
   if (qword_31F7B8)
@@ -714,10 +714,10 @@ LABEL_5:
   *(&v27 + 9) = 16400;
   *(&v27 + 11) = 0;
   HIBYTE(v27) = 0;
-  v13 = [(MTLHeapSPI *)v5->_baseObject newAccelerationStructureWithSize:a3 offset:?];
+  v13 = [(MTLHeapSPI *)selfCopy->_baseObject newAccelerationStructureWithSize:size offset:?];
   if (v13)
   {
-    v14 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v13 captureHeap:v5];
+    v14 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v13 captureHeap:selfCopy];
   }
 
   else
@@ -746,10 +746,10 @@ LABEL_5:
 
   *(v15 + 13) = v16;
   SaveMTLAccelerationStructureInfo(&v25, v13);
-  v20 = [(CaptureMTLHeap *)v5 traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLHeap *)selfCopy traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -757,10 +757,10 @@ LABEL_5:
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLAccelerationStructure *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLAccelerationStructure *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -770,8 +770,8 @@ LABEL_5:
 
   *v17 = var0;
   *(v17 + 1) = v23;
-  *(v17 + 2) = a3;
-  *(v17 + 3) = a4;
+  *(v17 + 2) = size;
+  *(v17 + 3) = offset;
   v24 = v26;
   *v10 = v27;
   *(v10 + 8) = BYTE8(v27);
@@ -780,7 +780,7 @@ LABEL_5:
   return v14;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   if ((dword_31F7C8 & 0x4000) != 0)
   {
@@ -807,7 +807,7 @@ LABEL_5:
     *(&v26 + 9) = 16400;
     *(&v26 + 11) = 0;
     HIBYTE(v26) = 0;
-    v10 = [(MTLHeapSPI *)self->_baseObject newAccelerationStructureWithSize:a3];
+    v10 = [(MTLHeapSPI *)self->_baseObject newAccelerationStructureWithSize:size];
     if (v10)
     {
       v11 = [[CaptureMTLAccelerationStructure alloc] initWithBaseObject:v10 captureHeap:self];
@@ -839,10 +839,10 @@ LABEL_5:
 
     *(v14 + 13) = v15;
     SaveMTLAccelerationStructureInfo(&v24, v10);
-    v19 = [(CaptureMTLHeap *)self traceStream];
-    if (v19)
+    traceStream = [(CaptureMTLHeap *)self traceStream];
+    if (traceStream)
     {
-      var0 = v19->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -850,10 +850,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v21 = [(CaptureMTLAccelerationStructure *)v11 traceStream];
-    if (v21)
+    traceStream2 = [(CaptureMTLAccelerationStructure *)v11 traceStream];
+    if (traceStream2)
     {
-      v22 = v21->var0;
+      v22 = traceStream2->var0;
     }
 
     else
@@ -863,7 +863,7 @@ LABEL_5:
 
     *v16 = var0;
     *(v16 + 1) = v22;
-    *(v16 + 2) = a3;
+    *(v16 + 2) = size;
     v23 = v25;
     *v7 = v26;
     *(v7 + 8) = BYTE8(v26);
@@ -873,9 +873,9 @@ LABEL_5:
   }
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
     captureDevice = self->_captureDevice;
@@ -886,7 +886,7 @@ LABEL_5:
   {
     captureDevice = self;
 LABEL_5:
-    v8 = [captureDevice newAccelerationStructureWithDescriptor:v6];
+    v8 = [captureDevice newAccelerationStructureWithDescriptor:descriptorCopy];
     goto LABEL_6;
   }
 
@@ -907,8 +907,8 @@ LABEL_5:
   *(&v31 + 11) = 0;
   HIBYTE(v31) = 0;
   baseObject = self->_baseObject;
-  v16 = unwrapMTLAccelerationStructureDescriptor(v6);
-  v17 = [(MTLHeapSPI *)baseObject newAccelerationStructureWithDescriptor:v16 offset:a4];
+  v16 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  v17 = [(MTLHeapSPI *)baseObject newAccelerationStructureWithDescriptor:v16 offset:offset];
 
   if (v17)
   {
@@ -941,10 +941,10 @@ LABEL_5:
 
   *(v18 + 13) = v19;
   SaveMTLAccelerationStructureInfo(&v29, v17);
-  v23 = [(CaptureMTLHeap *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -952,10 +952,10 @@ LABEL_5:
     var0 = 0;
   }
 
-  v25 = [(CaptureMTLAccelerationStructure *)v8 traceStream];
-  if (v25)
+  traceStream2 = [(CaptureMTLAccelerationStructure *)v8 traceStream];
+  if (traceStream2)
   {
-    v26 = v25->var0;
+    v26 = traceStream2->var0;
   }
 
   else
@@ -963,10 +963,10 @@ LABEL_5:
     v26 = 0;
   }
 
-  v27 = SaveMTLAccelerationStructureDescriptor(&v29, v6);
+  v27 = SaveMTLAccelerationStructureDescriptor(&v29, descriptorCopy);
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = offset;
   v20[24] = v27;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -979,12 +979,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if ((dword_31F7C8 & 0x4000) != 0)
   {
-    v13 = [(CaptureMTLDevice *)self->_captureDevice newAccelerationStructureWithDescriptor:v4];
+    v13 = [(CaptureMTLDevice *)self->_captureDevice newAccelerationStructureWithDescriptor:descriptorCopy];
   }
 
   else
@@ -1006,7 +1006,7 @@ LABEL_6:
     *(&v28 + 11) = 0;
     HIBYTE(v28) = 0;
     baseObject = self->_baseObject;
-    v11 = unwrapMTLAccelerationStructureDescriptor(v4);
+    v11 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
     v12 = [(MTLHeapSPI *)baseObject newAccelerationStructureWithDescriptor:v11];
 
     if (v12)
@@ -1040,10 +1040,10 @@ LABEL_6:
 
     *(v14 + 13) = v15;
     SaveMTLAccelerationStructureInfo(&v26, v12);
-    v19 = [(CaptureMTLHeap *)self traceStream];
-    if (v19)
+    traceStream = [(CaptureMTLHeap *)self traceStream];
+    if (traceStream)
     {
-      var0 = v19->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1051,10 +1051,10 @@ LABEL_6:
       var0 = 0;
     }
 
-    v21 = [(CaptureMTLAccelerationStructure *)v13 traceStream];
-    if (v21)
+    traceStream2 = [(CaptureMTLAccelerationStructure *)v13 traceStream];
+    if (traceStream2)
     {
-      v22 = v21->var0;
+      v22 = traceStream2->var0;
     }
 
     else
@@ -1062,7 +1062,7 @@ LABEL_6:
       v22 = 0;
     }
 
-    v23 = SaveMTLAccelerationStructureDescriptor(&v26, v4);
+    v23 = SaveMTLAccelerationStructureDescriptor(&v26, descriptorCopy);
     *v16 = var0;
     *(v16 + 1) = v22;
     v16[16] = v23;
@@ -1077,14 +1077,14 @@ LABEL_6:
   return v13;
 }
 
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLHeapSPI *)self->_baseObject maxAvailableSizeWithAlignment:a3];
+  v6 = [(MTLHeapSPI *)self->_baseObject maxAvailableSizeWithAlignment:alignment];
   v7 = v18;
   *(v18 + 8) = -16105;
   v8 = BYTE9(v19);
@@ -1104,10 +1104,10 @@ LABEL_6:
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLHeap *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1117,7 +1117,7 @@ LABEL_6:
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = alignment;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -1125,15 +1125,15 @@ LABEL_6:
   return v6;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLHeapSPI *)self->_baseObject setLabel:v4];
+  [(MTLHeapSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16119;
   v7 = BYTE9(v20);
@@ -1153,10 +1153,10 @@ LABEL_6:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLHeap *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1164,16 +1164,16 @@ LABEL_6:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1182,13 +1182,13 @@ LABEL_6:
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLHeapSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLHeapSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1270,10 +1270,10 @@ LABEL_6:
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLHeap *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1299,7 +1299,7 @@ LABEL_6:
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLHeapSPI *)self->_baseObject currentAllocatedSize];
+  currentAllocatedSize = [(MTLHeapSPI *)self->_baseObject currentAllocatedSize];
   v5 = v16;
   *(v16 + 8) = -10207;
   v6 = BYTE9(v17);
@@ -1319,10 +1319,10 @@ LABEL_6:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLHeap *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1331,12 +1331,12 @@ LABEL_6:
   }
 
   *v7 = var0;
-  *(v7 + 1) = v4;
+  *(v7 + 1) = currentAllocatedSize;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return currentAllocatedSize;
 }
 
 - (unint64_t)usedSize
@@ -1346,7 +1346,7 @@ LABEL_6:
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLHeapSPI *)self->_baseObject usedSize];
+  usedSize = [(MTLHeapSPI *)self->_baseObject usedSize];
   v5 = v16;
   *(v16 + 8) = -10208;
   v6 = BYTE9(v17);
@@ -1366,10 +1366,10 @@ LABEL_6:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLHeap *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLHeap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1378,30 +1378,30 @@ LABEL_6:
   }
 
   *v7 = var0;
-  *(v7 + 1) = v4;
+  *(v7 + 1) = usedSize;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return usedSize;
 }
 
-- (CaptureMTLHeap)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLHeap)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = CaptureMTLHeap;
   v9 = [(CaptureMTLHeap *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
 
     if ((dword_31F7C8 & 0x400000) != 0)
     {

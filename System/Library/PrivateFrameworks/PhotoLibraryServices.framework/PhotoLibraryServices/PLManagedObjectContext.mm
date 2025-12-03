@@ -1,87 +1,87 @@
 @interface PLManagedObjectContext
-+ (BOOL)_coreDataWorkWithRetryForReason:(id)a3 error:(id *)a4 retryBlock:(id)a5;
++ (BOOL)_coreDataWorkWithRetryForReason:(id)reason error:(id *)error retryBlock:(id)block;
 + (BOOL)_pl_megamoc_isInPLMocPerform;
-+ (BOOL)_shouldRetryNewPersistentStoreCoordinatorWithError:(id)a3;
-+ (BOOL)isDatabaseCreationContext:(id)a3;
-+ (id)_loadingPersistentStoreCoordinatorWithReason:(id)a3 error:(id *)a4 workBlock:(id)a5;
++ (BOOL)_shouldRetryNewPersistentStoreCoordinatorWithError:(id)error;
++ (BOOL)isDatabaseCreationContext:(id)context;
++ (id)_loadingPersistentStoreCoordinatorWithReason:(id)reason error:(id *)error workBlock:(id)block;
 + (id)changeNotificationObjectIDKeys;
 + (id)changeNotificationObjectIDMutationKeys;
 + (id)changeNotificationObjectKeys;
 + (id)changeNotificationObjectMutationKeys;
-+ (id)contextForRepairingSingletonObjectsWithReason:(id)a3 libraryURL:(id)a4 error:(id *)a5;
-+ (id)contextForUninitializedPhotoLibrary:(id)a3 automaticallyMerges:(BOOL)a4 automaticallyPinToFirstFetch:(BOOL)a5;
-+ (id)loadingPersistentStoreWithReason:(id)a3 error:(id *)a4 workBlock:(id)a5;
-+ (id)newContextForPhotoLibrary:(id)a3 automaticallyMerges:(BOOL)a4;
-+ (id)sanitizedErrorFromError:(id)a3;
++ (id)contextForRepairingSingletonObjectsWithReason:(id)reason libraryURL:(id)l error:(id *)error;
++ (id)contextForUninitializedPhotoLibrary:(id)library automaticallyMerges:(BOOL)merges automaticallyPinToFirstFetch:(BOOL)fetch;
++ (id)loadingPersistentStoreWithReason:(id)reason error:(id *)error workBlock:(id)block;
++ (id)newContextForPhotoLibrary:(id)library automaticallyMerges:(BOOL)merges;
++ (id)sanitizedErrorFromError:(id)error;
 + (void)_pl_megamoc_contextPerformDepthPop;
 + (void)_pl_megamoc_contextPerformDepthPush;
-+ (void)_pl_megamoc_runWithPerformWarningsSuppressed:(id)a3;
-+ (void)_setupInitialQueryGenerationForContext:(id)a3;
-+ (void)_setupNameForContext:(id)a3 withLibrary:(id)a4;
-+ (void)getPersistentStoreURL:(id *)a3 options:(id *)a4 forDatabasePath:(id)a5;
-- (BOOL)_adjustmentTimestampChangedChangedAttribute:(id)a3 from:(id)a4;
-- (BOOL)_tooManyAssetChangesToHandle:(unint64_t)a3;
++ (void)_pl_megamoc_runWithPerformWarningsSuppressed:(id)suppressed;
++ (void)_setupInitialQueryGenerationForContext:(id)context;
++ (void)_setupNameForContext:(id)context withLibrary:(id)library;
++ (void)getPersistentStoreURL:(id *)l options:(id *)options forDatabasePath:(id)path;
+- (BOOL)_adjustmentTimestampChangedChangedAttribute:(id)attribute from:(id)from;
+- (BOOL)_tooManyAssetChangesToHandle:(unint64_t)handle;
 - (BOOL)getAndClearSyncChangeMarker;
-- (BOOL)hasPreviouslyMergedDeleteForObject:(id)a3;
-- (BOOL)hasRecordedBackgroundWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5;
+- (BOOL)hasPreviouslyMergedDeleteForObject:(id)object;
+- (BOOL)hasRecordedBackgroundWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags;
 - (BOOL)isReadOnly;
-- (BOOL)isValidForSelector:(SEL)a3 error:(id *)a4;
-- (BOOL)obtainPermanentIDsForObjects:(id)a3 error:(id *)a4;
-- (BOOL)pl_performWithOptions:(unint64_t)a3 andBlock:(id)a4;
-- (BOOL)save:(id *)a3;
-- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 libraryBundle:(id)a4;
-- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 libraryBundle:(id)a4 changeHandlingContainer:(id)a5 coordinator:(id)a6;
+- (BOOL)isValidForSelector:(SEL)selector error:(id *)error;
+- (BOOL)obtainPermanentIDsForObjects:(id)objects error:(id *)error;
+- (BOOL)pl_performWithOptions:(unint64_t)options andBlock:(id)block;
+- (BOOL)save:(id *)save;
+- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)type libraryBundle:(id)bundle;
+- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)type libraryBundle:(id)bundle changeHandlingContainer:(id)container coordinator:(id)coordinator;
 - (PLManagedObjectContextPTPNotificationDelegate)ptpNotificationDelegate;
 - (PLPhotoLibrary)photoLibrary;
-- (id)_pl_executeFetchRequest:(id)a3 error:(id *)a4;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (id)executeRequest:(id)a3 error:(id *)a4;
-- (id)existingObjectWithID:(id)a3 error:(id *)a4;
+- (id)_pl_executeFetchRequest:(id)request error:(id *)error;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (id)executeRequest:(id)request error:(id *)error;
+- (id)existingObjectWithID:(id)d error:(id *)error;
 - (id)getAndClearRecordedAvalancheUUIDsForUpdate;
 - (id)getAndClearRecordedObjectsForCloudDeletion;
 - (id)pathManager;
-- (id)pl_fetchObjectsWithIDs:(id)a3;
-- (id)pl_fetchObjectsWithIDs:(id)a3 rootEntity:(id)a4;
+- (id)pl_fetchObjectsWithIDs:(id)ds;
+- (id)pl_fetchObjectsWithIDs:(id)ds rootEntity:(id)entity;
 - (id)pl_graphCache;
 - (id)pl_libraryBundle;
 - (id)storeUUID;
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4;
-- (void)_addCloudUUID:(id)a3 forDeletionType:(int64_t)a4;
-- (void)_createDelayedSaveActionsWithTransaction:(id)a3;
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error;
+- (void)_addCloudUUID:(id)d forDeletionType:(int64_t)type;
+- (void)_createDelayedSaveActionsWithTransaction:(id)transaction;
 - (void)_destroyDelayedSaveActions;
-- (void)_directPerformBlock:(id)a3;
-- (void)_directPerformBlockAndWait:(id)a3;
-- (void)_getInsertedIDs:(id)a3 deletedIDs:(id)a4 changedIDs:(id)a5 adjustedIDs:(id)a6 ofEntityKind:(id)a7 fromRemoteContextDidSaveObjectIDsNotification:(id)a8;
-- (void)_informPTPDelegateAboutChangesFromRemoteContextSaveNotification:(id)a3;
+- (void)_directPerformBlock:(id)block;
+- (void)_directPerformBlockAndWait:(id)wait;
+- (void)_getInsertedIDs:(id)ds deletedIDs:(id)iDs changedIDs:(id)changedIDs adjustedIDs:(id)adjustedIDs ofEntityKind:(id)kind fromRemoteContextDidSaveObjectIDsNotification:(id)notification;
+- (void)_informPTPDelegateAboutChangesFromRemoteContextSaveNotification:(id)notification;
 - (void)_logDatabaseDirectoryDiagnosticInfo;
-- (void)_mergeChangesFromDidSaveDictionary:(id)a3 usingObjectIDs:(BOOL)a4;
-- (void)_notifyALAssetsLibraryWithChanges:(id)a3 usingObjectIDs:(BOOL)a4;
+- (void)_mergeChangesFromDidSaveDictionary:(id)dictionary usingObjectIDs:(BOOL)ds;
+- (void)_notifyALAssetsLibraryWithChanges:(id)changes usingObjectIDs:(BOOL)ds;
 - (void)_resetName;
 - (void)_setNameFromCurrentQoS;
-- (void)appendDelayedDeletionsToXPCMessage:(id)a3;
+- (void)appendDelayedDeletionsToXPCMessage:(id)message;
 - (void)connectToChangeHandling;
 - (void)dealloc;
 - (void)disconnectFromChangeHandling;
-- (void)getAndClearUpdatedObjectsAttributes:(id *)a3 relationships:(id *)a4;
-- (void)invalidateWithReason:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
-- (void)pl_wrapperForPerformBlock:(id)a3;
-- (void)recordAvalancheUUIDForUpdate:(id)a3;
-- (void)recordBackgroundJobWorkItemCreated:(id)a3;
-- (void)recordChangesFromTriggerModifiedObjectIDs:(id)a3;
-- (void)recordCloudDeletionForObject:(id)a3;
-- (void)recordManagedObjectWillSave:(id)a3;
+- (void)getAndClearUpdatedObjectsAttributes:(id *)attributes relationships:(id *)relationships;
+- (void)invalidateWithReason:(id)reason;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
+- (void)pl_wrapperForPerformBlock:(id)block;
+- (void)recordAvalancheUUIDForUpdate:(id)update;
+- (void)recordBackgroundJobWorkItemCreated:(id)created;
+- (void)recordChangesFromTriggerModifiedObjectIDs:(id)ds;
+- (void)recordCloudDeletionForObject:(id)object;
+- (void)recordManagedObjectWillSave:(id)save;
 - (void)recordNeedsBackgroundJobProcessing;
-- (void)recordNeedsBackgroundJobProcessingForWorkerTypes:(id)a3;
+- (void)recordNeedsBackgroundJobProcessingForWorkerTypes:(id)types;
 - (void)refreshAllObjects;
-- (void)registerFilesystemDeletionInfo:(id)a3;
+- (void)registerFilesystemDeletionInfo:(id)info;
 - (void)reset;
 - (void)resetAllFetchingAlbums;
-- (void)setName:(id)a3;
-- (void)setPhotoLibrary:(id)a3;
-- (void)setPtpNotificationDelegate:(id)a3;
-- (void)setupDelegateWithBundle:(id)a3;
+- (void)setName:(id)name;
+- (void)setPhotoLibrary:(id)library;
+- (void)setPtpNotificationDelegate:(id)delegate;
+- (void)setupDelegateWithBundle:(id)bundle;
 - (void)updateTransactionAuthor;
 @end
 
@@ -122,8 +122,8 @@
   v4 = pthread_getspecific(_contextPerformDepthThreadKey_s_key);
   if (v4 <= 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"PLManagedObjectContext.m" lineNumber:997 description:@"unbalanced calls to PLManagedObjectContext _contextPerformDepthPush/Pop()"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:997 description:@"unbalanced calls to PLManagedObjectContext _contextPerformDepthPush/Pop()"];
   }
 
   if (_contextPerformDepthThreadKey_s_onceToken != -1)
@@ -188,19 +188,19 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "PLManagedObjectContext %p dealloc", buf, 0xCu);
   }
 
   [(PLManagedObjectContext *)self tearDownLocalChangeNotifications];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PLManagedObjectContext *)self setPtpNotificationDelegate:0];
   if (self->_avalancheUUIDsForUpdate)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:objc_opt_class() name:*MEMORY[0x1E695D368] object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:objc_opt_class() name:*MEMORY[0x1E695D368] object:self];
   }
 
   uuidsForCloudDeletion = self->_uuidsForCloudDeletion;
@@ -230,10 +230,10 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
 - (void)_setNameFromCurrentQoS
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLManagedObjectContext *)self pl_basename];
+  pl_basename = [(PLManagedObjectContext *)self pl_basename];
   qos_class_self();
   v5 = PLShortStringFromQoSClass();
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ %@", pl_basename, v5];
 
   [(PLManagedObjectContext *)self setName:v6];
 }
@@ -266,8 +266,8 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
 
 - (void)_resetName
 {
-  v3 = [(PLManagedObjectContext *)self pl_basename];
-  [(PLManagedObjectContext *)self setName:v3];
+  pl_basename = [(PLManagedObjectContext *)self pl_basename];
+  [(PLManagedObjectContext *)self setName:pl_basename];
 }
 
 - (void)_destroyDelayedSaveActions
@@ -278,21 +278,21 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
 
 - (id)pathManager
 {
-  v3 = [(PLManagedObjectContext *)self photoLibrary];
-  v4 = [v3 pathManager];
+  photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+  pathManager = [photoLibrary pathManager];
 
-  if (!v4)
+  if (!pathManager)
   {
-    v5 = self->_pathManager;
-    if (!v5)
+    systemLibraryPathManager = self->_pathManager;
+    if (!systemLibraryPathManager)
     {
-      v5 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+      systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
     }
 
-    v4 = v5;
+    pathManager = systemLibraryPathManager;
   }
 
-  return v4;
+  return pathManager;
 }
 
 + (id)changeNotificationObjectIDMutationKeys
@@ -303,24 +303,24 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   return v2;
 }
 
-- (void)setupDelegateWithBundle:(id)a3
+- (void)setupDelegateWithBundle:(id)bundle
 {
-  v4 = a3;
-  if ([PLFetchRecorder isCurrentProcessEnabledForRecordingBundle:v4])
+  bundleCopy = bundle;
+  if ([PLFetchRecorder isCurrentProcessEnabledForRecordingBundle:bundleCopy])
   {
-    v5 = [v4 fetchRecorder];
+    fetchRecorder = [bundleCopy fetchRecorder];
   }
 
   else
   {
-    v5 = 0;
+    fetchRecorder = 0;
   }
 
   v6 = objc_alloc_init(PLManagedObjectContextDelegate);
   photosDelegate = self->_photosDelegate;
   self->_photosDelegate = v6;
 
-  [(PLManagedObjectContextDelegate *)self->_photosDelegate setFetchRecorder:v5];
+  [(PLManagedObjectContextDelegate *)self->_photosDelegate setFetchRecorder:fetchRecorder];
   [(PLManagedObjectContext *)self _setDelegate:self->_photosDelegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -330,37 +330,37 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   [(PLManagedObjectContext *)self performBlockAndWait:v8];
 }
 
-- (void)appendDelayedDeletionsToXPCMessage:(id)a3
+- (void)appendDelayedDeletionsToXPCMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectContext *)self delayedDeletions];
-  [v5 appendToXPCMessage:v4 managedObjectContext:self];
+  messageCopy = message;
+  delayedDeletions = [(PLManagedObjectContext *)self delayedDeletions];
+  [delayedDeletions appendToXPCMessage:messageCopy managedObjectContext:self];
 
   [(PLManagedObjectContext *)self setDelayedDeletions:0];
 }
 
-- (void)_informPTPDelegateAboutChangesFromRemoteContextSaveNotification:(id)a3
+- (void)_informPTPDelegateAboutChangesFromRemoteContextSaveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLManagedObjectContext *)self ptpNotificationDelegate];
-  if (v6)
+  ptpNotificationDelegate = [(PLManagedObjectContext *)self ptpNotificationDelegate];
+  if (ptpNotificationDelegate)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v11 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:self];
-    [(PLManagedObjectContext *)self _getInsertedIDs:v7 deletedIDs:v8 changedIDs:v9 adjustedIDs:v10 ofEntityKind:v11 fromRemoteContextDidSaveObjectIDsNotification:v4];
-    v12 = [v7 count];
-    v13 = [v8 count] + v12;
-    v14 = v13 + [v9 count];
-    if (v14 + [v10 count])
+    [(PLManagedObjectContext *)self _getInsertedIDs:array deletedIDs:array2 changedIDs:array3 adjustedIDs:array4 ofEntityKind:v11 fromRemoteContextDidSaveObjectIDsNotification:notificationCopy];
+    v12 = [array count];
+    v13 = [array2 count] + v12;
+    v14 = v13 + [array3 count];
+    if (v14 + [array4 count])
     {
-      v15 = [(PLManagedObjectContext *)self concurrencyType];
-      if (v15 == *MEMORY[0x1E695D708])
+      concurrencyType = [(PLManagedObjectContext *)self concurrencyType];
+      if (concurrencyType == *MEMORY[0x1E695D708])
       {
-        [v6 managedObjectContext:self libraryChangedWithInsertedAssetIDs:v7 deletedAssetIDs:v8 changedAssetIDs:v9 adjustedAssetIDs:v10];
+        [ptpNotificationDelegate managedObjectContext:self libraryChangedWithInsertedAssetIDs:array deletedAssetIDs:array2 changedAssetIDs:array3 adjustedAssetIDs:array4];
       }
 
       else
@@ -369,12 +369,12 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
         v16[1] = 3221225472;
         v16[2] = __90__PLManagedObjectContext__informPTPDelegateAboutChangesFromRemoteContextSaveNotification___block_invoke;
         v16[3] = &unk_1E75768C8;
-        v17 = v6;
-        v18 = self;
-        v19 = v7;
-        v20 = v8;
-        v21 = v9;
-        v22 = v10;
+        v17 = ptpNotificationDelegate;
+        selfCopy = self;
+        v19 = array;
+        v20 = array2;
+        v21 = array3;
+        v22 = array4;
         [(PLManagedObjectContext *)self _directPerformBlockAndWait:v16];
       }
     }
@@ -383,16 +383,16 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_getInsertedIDs:(id)a3 deletedIDs:(id)a4 changedIDs:(id)a5 adjustedIDs:(id)a6 ofEntityKind:(id)a7 fromRemoteContextDidSaveObjectIDsNotification:(id)a8
+- (void)_getInsertedIDs:(id)ds deletedIDs:(id)iDs changedIDs:(id)changedIDs adjustedIDs:(id)adjustedIDs ofEntityKind:(id)kind fromRemoteContextDidSaveObjectIDsNotification:(id)notification
 {
   v53 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v41 = a4;
-  v38 = a5;
-  v37 = a6;
-  v13 = a7;
-  v31 = [a8 userInfo];
-  v36 = [v31 objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  changedIDsCopy = changedIDs;
+  adjustedIDsCopy = adjustedIDs;
+  kindCopy = kind;
+  userInfo = [notification userInfo];
+  v36 = [userInfo objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -422,7 +422,7 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v17 = [v31 objectForKey:v16];
+        v17 = [userInfo objectForKey:v16];
         v18 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v18)
         {
@@ -438,12 +438,12 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
               }
 
               v22 = *(*(&v43 + 1) + 8 * i);
-              v23 = [v22 entity];
-              v24 = [v23 isKindOfEntity:v13];
+              entity = [v22 entity];
+              v24 = [entity isKindOfEntity:kindCopy];
 
               if (v24)
               {
-                if (v25 = [v16 isEqualToString:v14], v26 = v42, (v25) || (v27 = objc_msgSend(v16, "isEqualToString:", v40), v26 = v41, (v27) || ((objc_msgSend(v16, "isEqualToString:", v39) & 1) != 0 || objc_msgSend(v16, "isEqualToString:", v34)) && (objc_msgSend(v38, "addObject:", v22), v28 = -[PLManagedObjectContext _adjustmentTimestampChangedChangedAttribute:from:](self, "_adjustmentTimestampChangedChangedAttribute:from:", v22, v36), v26 = v37, v28))
+                if (v25 = [v16 isEqualToString:v14], v26 = dsCopy, (v25) || (v27 = objc_msgSend(v16, "isEqualToString:", v40), v26 = iDsCopy, (v27) || ((objc_msgSend(v16, "isEqualToString:", v39) & 1) != 0 || objc_msgSend(v16, "isEqualToString:", v34)) && (objc_msgSend(changedIDsCopy, "addObject:", v22), v28 = -[PLManagedObjectContext _adjustmentTimestampChangedChangedAttribute:from:](self, "_adjustmentTimestampChangedChangedAttribute:from:", v22, v36), v26 = adjustedIDsCopy, v28))
                 {
                   [v26 addObject:v22];
                 }
@@ -467,28 +467,28 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   }
 }
 
-- (BOOL)_adjustmentTimestampChangedChangedAttribute:(id)a3 from:(id)a4
+- (BOOL)_adjustmentTimestampChangedChangedAttribute:(id)attribute from:(id)from
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  fromCopy = from;
   v7 = +[PLManagedAsset entityName];
-  v8 = [v5 entity];
-  v9 = [v8 name];
-  v10 = [v7 isEqualToString:v9];
+  entity = [attributeCopy entity];
+  name = [entity name];
+  v10 = [v7 isEqualToString:name];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:v5];
-    v12 = [v11 unsignedLongLongValue];
+    v11 = [fromCopy objectForKeyedSubscript:attributeCopy];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
 
     v19[0] = @"adjustmentTimestamp";
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v14 = [v5 entity];
-    v15 = [v14 name];
-    v16 = [PLPropertyIndexMapping indexValueForAttributeNames:v13 entity:v15];
+    entity2 = [attributeCopy entity];
+    name2 = [entity2 name];
+    v16 = [PLPropertyIndexMapping indexValueForAttributeNames:v13 entity:name2];
 
-    v17 = (v16 & v12) != 0;
+    v17 = (v16 & unsignedLongLongValue) != 0;
   }
 
   else
@@ -499,33 +499,33 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   return v17;
 }
 
-- (void)_mergeChangesFromDidSaveDictionary:(id)a3 usingObjectIDs:(BOOL)a4
+- (void)_mergeChangesFromDidSaveDictionary:(id)dictionary usingObjectIDs:(BOOL)ds
 {
-  v4 = a4;
+  dsCopy = ds;
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PLManagedObjectContext *)self mergingChanges];
-  if (!v8)
+  mergingChanges = [(PLManagedObjectContext *)self mergingChanges];
+  if (!mergingChanges)
   {
     self->_mergingChanges = 1;
   }
 
-  v9 = [(PLManagedObjectContext *)self userInfo];
-  v10 = [v9 objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
+  userInfo = [(PLManagedObjectContext *)self userInfo];
+  v10 = [userInfo objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
 
   if (!v10)
   {
     v10 = [MEMORY[0x1E695DFA8] set];
-    v11 = [(PLManagedObjectContext *)self userInfo];
-    [v11 setObject:v10 forKey:@"PLMOCRedundantDeleteObjectIDs"];
+    userInfo2 = [(PLManagedObjectContext *)self userInfo];
+    [userInfo2 setObject:v10 forKey:@"PLMOCRedundantDeleteObjectIDs"];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v6 objectForKey:*MEMORY[0x1E695D2F0]];
+  v12 = [dictionaryCopy objectForKey:*MEMORY[0x1E695D2F0]];
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -551,25 +551,25 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
 
   v19.receiver = self;
   v19.super_class = PLManagedObjectContext;
-  [(PLManagedObjectContext *)&v19 _mergeChangesFromDidSaveDictionary:v6 usingObjectIDs:v4];
-  v17 = [(PLManagedObjectContext *)self ptpNotificationDelegate];
+  [(PLManagedObjectContext *)&v19 _mergeChangesFromDidSaveDictionary:dictionaryCopy usingObjectIDs:dsCopy];
+  ptpNotificationDelegate = [(PLManagedObjectContext *)self ptpNotificationDelegate];
 
-  if (v17)
+  if (ptpNotificationDelegate)
   {
     [(PLManagedObjectContext *)self processPendingChanges];
   }
 
   if ([(PLManagedObjectContext *)self isBackingALAssetsLibrary])
   {
-    v18 = [(PLManagedObjectContext *)self photoLibrary];
+    photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
 
-    if (v18)
+    if (photoLibrary)
     {
-      [(PLManagedObjectContext *)self _notifyALAssetsLibraryWithChanges:v6 usingObjectIDs:v4];
+      [(PLManagedObjectContext *)self _notifyALAssetsLibraryWithChanges:dictionaryCopy usingObjectIDs:dsCopy];
     }
   }
 
-  if (!v8)
+  if (!mergingChanges)
   {
     self->_mergingChanges = 0;
   }
@@ -617,17 +617,17 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   }
 }
 
-- (void)_notifyALAssetsLibraryWithChanges:(id)a3 usingObjectIDs:(BOOL)a4
+- (void)_notifyALAssetsLibraryWithChanges:(id)changes usingObjectIDs:(BOOL)ds
 {
   v128 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changesCopy = changes;
   v6 = objc_autoreleasePoolPush();
   if (+[PLManagedObjectContext assetsLibraryLoggingEnabled])
   {
-    NSLog(&cfstr_Notifyalassets.isa, self, v5);
+    NSLog(&cfstr_Notifyalassets.isa, self, changesCopy);
   }
 
-  v7 = [v5 objectForKey:*MEMORY[0x1E695D330]];
+  v7 = [changesCopy objectForKey:*MEMORY[0x1E695D330]];
 
   if (v7)
   {
@@ -652,46 +652,46 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
   v12 = v9;
   v120 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [v5 objectForKey:*MEMORY[0x1E695D320]];
-  v99 = v14;
-  v13[2](v13, v16, v14, v15);
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v16 = [changesCopy objectForKey:*MEMORY[0x1E695D320]];
+  v99 = array;
+  v13[2](v13, v16, array, array2);
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [v5 objectForKey:*MEMORY[0x1E695D4C8]];
-  v13[2](v13, v19, v17, v18);
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  v19 = [changesCopy objectForKey:*MEMORY[0x1E695D4C8]];
+  v13[2](v13, v19, array3, array4);
 
-  v20 = [v5 objectForKey:*MEMORY[0x1E695D460]];
-  v13[2](v13, v20, v17, v18);
+  v20 = [changesCopy objectForKey:*MEMORY[0x1E695D460]];
+  v13[2](v13, v20, array3, array4);
 
-  v21 = [v5 objectForKey:*MEMORY[0x1E695D338]];
-  v107 = v17;
-  v13[2](v13, v21, v17, v18);
+  v21 = [changesCopy objectForKey:*MEMORY[0x1E695D338]];
+  v107 = array3;
+  v13[2](v13, v21, array3, array4);
 
-  v22 = [MEMORY[0x1E695DF70] array];
-  v23 = [MEMORY[0x1E695DF70] array];
-  v97 = v5;
-  v24 = [v5 objectForKey:*MEMORY[0x1E695D2F0]];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  v97 = changesCopy;
+  v24 = [changesCopy objectForKey:*MEMORY[0x1E695D2F0]];
   v93 = v13;
-  v101 = v22;
-  v106 = v23;
-  v13[2](v13, v24, v22, v23);
+  v101 = array5;
+  v106 = array6;
+  v13[2](v13, v24, array5, array6);
 
   v25 = [MEMORY[0x1E695DFA8] set];
-  v92 = v15;
-  [v25 addObjectsFromArray:v15];
-  [v25 addObjectsFromArray:v18];
-  v100 = v18;
-  v98 = -[PLManagedObjectContext _tooManyAssetChangesToHandle:](self, "_tooManyAssetChangesToHandle:", [v18 count]);
+  v92 = array2;
+  [v25 addObjectsFromArray:array2];
+  [v25 addObjectsFromArray:array4];
+  v100 = array4;
+  v98 = -[PLManagedObjectContext _tooManyAssetChangesToHandle:](self, "_tooManyAssetChangesToHandle:", [array4 count]);
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v105 = self;
-  v26 = [(PLChangeHandlingContainer *)self->_changeHandlingContainer allDidSaveObjectIDsUserInfo];
-  v27 = [v26 objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
+  selfCopy = self;
+  allDidSaveObjectIDsUserInfo = [(PLChangeHandlingContainer *)self->_changeHandlingContainer allDidSaveObjectIDsUserInfo];
+  v27 = [allDidSaveObjectIDsUserInfo objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
 
   v28 = [v27 countByEnumeratingWithState:&v113 objects:v127 count:16];
   if (v28)
@@ -708,8 +708,8 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
         }
 
         v32 = *(*(&v113 + 1) + 8 * i);
-        v33 = [v32 entity];
-        v34 = [v33 isKindOfEntity:v12];
+        entity = [v32 entity];
+        v34 = [entity isKindOfEntity:v12];
 
         if (v34)
         {
@@ -723,7 +723,7 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
     while (v29);
   }
 
-  self = v105;
+  self = selfCopy;
   v35 = v99;
   v36 = v98;
   if (!v98)
@@ -732,7 +732,7 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v37 = [(PLGenericAlbum *)PLFetchingAlbum allAlbumsRegisteredWithManagedObjectContext:v105];
+    v37 = [(PLGenericAlbum *)PLFetchingAlbum allAlbumsRegisteredWithManagedObjectContext:selfCopy];
     v38 = [v37 countByEnumeratingWithState:&v109 objects:v126 count:16];
     if (!v38)
     {
@@ -781,7 +781,7 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
           [v45 setResultType:4];
           [v45 setIncludesPropertyValues:0];
           [v45 setIncludesPendingChanges:0];
-          v51 = [(PLManagedObjectContext *)v105 countForFetchRequest:v45 error:0];
+          v51 = [(PLManagedObjectContext *)selfCopy countForFetchRequest:v45 error:0];
 
           if (v51)
           {
@@ -816,7 +816,7 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
           [v54 setResultType:4];
           [v54 setIncludesPropertyValues:0];
           [v54 setIncludesPendingChanges:0];
-          v64 = [(PLManagedObjectContext *)v105 countForFetchRequest:v54 error:0];
+          v64 = [(PLManagedObjectContext *)selfCopy countForFetchRequest:v54 error:0];
 
           v40 = v103;
           v25 = v104;
@@ -824,8 +824,8 @@ void __49__PLManagedObjectContext_updateTransactionAuthor__block_invoke(uint64_t
           if (v64)
           {
 LABEL_25:
-            v65 = [v42 objectID];
-            [v107 addObject:v65];
+            objectID = [v42 objectID];
+            [v107 addObject:objectID];
 
             [v42 updateSnapshotAndClearCaches:0];
           }
@@ -840,13 +840,13 @@ LABEL_25:
       {
 LABEL_28:
 
-        self = v105;
+        self = selfCopy;
         v35 = v99;
         if (+[PLManagedObjectContext assetsLibraryLoggingEnabled])
         {
-          NSLog(&cfstr_Insertedalbumo.isa, v105, v99);
-          NSLog(&cfstr_Updatedalbumoi.isa, v105, v107);
-          NSLog(&cfstr_Updatedassetoi.isa, v105, v100);
+          NSLog(&cfstr_Insertedalbumo.isa, selfCopy, v99);
+          NSLog(&cfstr_Updatedalbumoi.isa, selfCopy, v107);
+          NSLog(&cfstr_Updatedassetoi.isa, selfCopy, v100);
         }
 
         v66 = v100;
@@ -871,19 +871,19 @@ LABEL_28:
           v76 = [v72 andPredicateWithSubpredicates:v75];
           [v71 setPredicate:v76];
 
-          self = v105;
+          self = selfCopy;
           [v71 setResultType:1];
           [v71 setIncludesPropertyValues:0];
           [v71 setIncludesPendingChanges:0];
-          v68 = [(PLManagedObjectContext *)v105 executeFetchRequest:v71 error:0];
+          v68 = [(PLManagedObjectContext *)selfCopy executeFetchRequest:v71 error:0];
 
           if (+[PLManagedObjectContext assetsLibraryLoggingEnabled])
           {
-            NSLog(&cfstr_Updatedassetoi_0.isa, v105, v68);
+            NSLog(&cfstr_Updatedassetoi_0.isa, selfCopy, v68);
           }
         }
 
-        v77 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         if ([v99 count] || objc_msgSend(v107, "count") || objc_msgSend(v101, "count") || objc_msgSend(v68, "count"))
         {
           v108[0] = MEMORY[0x1E69E9820];
@@ -897,7 +897,7 @@ LABEL_28:
             v79 = v78[2](v78, v99, 1);
             if ([v79 count])
             {
-              [v77 setObject:v79 forKey:@"insertedAssetGroups"];
+              [dictionary setObject:v79 forKey:@"insertedAssetGroups"];
             }
           }
 
@@ -906,7 +906,7 @@ LABEL_28:
             v80 = v78[2](v78, v107, 0);
             if ([v80 count])
             {
-              [v77 setObject:v80 forKey:@"updatedAssetGroups"];
+              [dictionary setObject:v80 forKey:@"updatedAssetGroups"];
             }
           }
 
@@ -915,7 +915,7 @@ LABEL_28:
             v81 = v78[2](v78, v101, 0);
             if ([v81 count])
             {
-              [v77 setObject:v81 forKey:@"deletedAssetGroups"];
+              [dictionary setObject:v81 forKey:@"deletedAssetGroups"];
             }
           }
 
@@ -924,23 +924,23 @@ LABEL_28:
             v82 = v78[2](v78, v68, 0);
             if ([v82 count])
             {
-              [v77 setObject:v82 forKey:@"updatedAssets"];
+              [dictionary setObject:v82 forKey:@"updatedAssets"];
             }
           }
         }
 
-        if (v91 || [v77 count])
+        if (v91 || [dictionary count])
         {
           if (+[PLManagedObjectContext assetsLibraryLoggingEnabled])
           {
-            NSLog(&cfstr_Plgenericchang.isa, self, v77);
+            NSLog(&cfstr_Plgenericchang.isa, self, dictionary);
           }
 
-          v83 = [MEMORY[0x1E696AD88] defaultCenter];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
           v84 = MEMORY[0x1E696AD80];
-          v85 = [(PLManagedObjectContext *)self photoLibrary];
-          v86 = [v84 notificationWithName:@"PLGenericChangeNotification" object:v85 userInfo:v77];
-          [v83 postNotification:v86];
+          photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+          v86 = [v84 notificationWithName:@"PLGenericChangeNotification" object:photoLibrary userInfo:dictionary];
+          [defaultCenter postNotification:v86];
         }
 
         v36 = v98;
@@ -950,7 +950,7 @@ LABEL_28:
   }
 
   v6 = v96;
-  v5 = v97;
+  changesCopy = v97;
   if (v36)
   {
 LABEL_63:
@@ -960,11 +960,11 @@ LABEL_63:
       NSLog(&cfstr_Plgenericchang_0.isa, self);
     }
 
-    v87 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v88 = MEMORY[0x1E696AD80];
-    v89 = [(PLManagedObjectContext *)self photoLibrary];
-    v90 = [v88 notificationWithName:@"PLGenericChangeNotification" object:v89 userInfo:0];
-    [v87 postNotification:v90];
+    photoLibrary2 = [(PLManagedObjectContext *)self photoLibrary];
+    v90 = [v88 notificationWithName:@"PLGenericChangeNotification" object:photoLibrary2 userInfo:0];
+    [defaultCenter2 postNotification:v90];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -1105,17 +1105,17 @@ LABEL_19:
   return v6;
 }
 
-- (id)pl_fetchObjectsWithIDs:(id)a3
+- (id)pl_fetchObjectsWithIDs:(id)ds
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v31 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v49 count:16];
   if (v6)
   {
@@ -1131,36 +1131,36 @@ LABEL_19:
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [v10 entity];
-        v12 = [v11 superentity];
+        entity = [v10 entity];
+        superentity = [entity superentity];
 
-        if (v12)
+        if (superentity)
         {
           do
           {
-            v13 = [v11 superentity];
+            superentity2 = [entity superentity];
 
-            v14 = [v13 superentity];
+            v13Superentity = [superentity2 superentity];
 
-            v11 = v13;
+            entity = superentity2;
           }
 
-          while (v14);
+          while (v13Superentity);
         }
 
         else
         {
-          v13 = v11;
+          superentity2 = entity;
         }
 
-        v15 = [v4 objectForKey:v13];
-        if (!v15)
+        array2 = [strongToStrongObjectsMapTable objectForKey:superentity2];
+        if (!array2)
         {
-          v15 = [MEMORY[0x1E695DF70] array];
-          [v4 setObject:v15 forKey:v13];
+          array2 = [MEMORY[0x1E695DF70] array];
+          [strongToStrongObjectsMapTable setObject:array2 forKey:superentity2];
         }
 
-        [v15 addObject:v10];
+        [array2 addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v38 objects:v49 count:16];
@@ -1177,7 +1177,7 @@ LABEL_19:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v17 = v4;
+  v17 = strongToStrongObjectsMapTable;
   v18 = [v17 countByEnumeratingWithState:&v34 objects:v48 count:16];
   if (v18)
   {
@@ -1203,7 +1203,7 @@ LABEL_19:
         v26 = v33;
         if (v25)
         {
-          [v31 addObjectsFromArray:v25];
+          [array addObjectsFromArray:v25];
         }
 
         else
@@ -1211,9 +1211,9 @@ LABEL_19:
           v27 = PLBackendGetLog();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v22 name];
+            name = [v22 name];
             *buf = 138412802;
-            v43 = v28;
+            v43 = name;
             v44 = 2112;
             v45 = v23;
             v46 = 2112;
@@ -1229,18 +1229,18 @@ LABEL_19:
     while (v19);
   }
 
-  return v31;
+  return array;
 }
 
-- (id)pl_fetchObjectsWithIDs:(id)a3 rootEntity:(id)a4
+- (id)pl_fetchObjectsWithIDs:(id)ds rootEntity:(id)entity
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  entityCopy = entity;
   v8 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  [v8 setEntity:v7];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF in %@", v6];
-  [v8 setPredicate:v9];
+  [v8 setEntity:entityCopy];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF in %@", dsCopy];
+  [v8 setPredicate:dsCopy];
 
   v15 = 0;
   v10 = [(PLManagedObjectContext *)self executeFetchRequest:v8 error:&v15];
@@ -1250,11 +1250,11 @@ LABEL_19:
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v7 name];
+      name = [entityCopy name];
       *buf = 138412802;
-      v17 = v13;
+      v17 = name;
       v18 = 2112;
-      v19 = v6;
+      v19 = dsCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch %@ oids %@: %@", buf, 0x20u);
@@ -1264,35 +1264,35 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)hasRecordedBackgroundWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5
+- (BOOL)hasRecordedBackgroundWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags
 {
   backgroundWorkItemIdentifiers = self->_backgroundWorkItemIdentifiers;
-  v6 = [PLBackgroundJobWorkItem jobIdentifierWithIdentifier:a3 jobType:a4 jobFlags:a5];
+  v6 = [PLBackgroundJobWorkItem jobIdentifierWithIdentifier:identifier jobType:type jobFlags:flags];
   LOBYTE(backgroundWorkItemIdentifiers) = [(NSMutableSet *)backgroundWorkItemIdentifiers containsObject:v6];
 
   return backgroundWorkItemIdentifiers;
 }
 
-- (void)recordBackgroundJobWorkItemCreated:(id)a3
+- (void)recordBackgroundJobWorkItemCreated:(id)created
 {
   backgroundWorkItemIdentifiers = self->_backgroundWorkItemIdentifiers;
-  v4 = [a3 jobIdentifier];
-  [(NSMutableSet *)backgroundWorkItemIdentifiers addObject:v4];
+  jobIdentifier = [created jobIdentifier];
+  [(NSMutableSet *)backgroundWorkItemIdentifiers addObject:jobIdentifier];
 }
 
-- (void)recordNeedsBackgroundJobProcessingForWorkerTypes:(id)a3
+- (void)recordNeedsBackgroundJobProcessingForWorkerTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   workerTypesForBackgroundJobProcessing = self->_workerTypesForBackgroundJobProcessing;
-  v8 = v4;
+  v8 = typesCopy;
   if (workerTypesForBackgroundJobProcessing)
   {
-    v6 = [(PLBackgroundJobWorkerTypes *)workerTypesForBackgroundJobProcessing typesMaskByUnioningWithTypes:v4];
+    v6 = [(PLBackgroundJobWorkerTypes *)workerTypesForBackgroundJobProcessing typesMaskByUnioningWithTypes:typesCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = typesCopy;
   }
 
   v7 = self->_workerTypesForBackgroundJobProcessing;
@@ -1305,32 +1305,32 @@ LABEL_19:
   [(PLManagedObjectContext *)self recordNeedsBackgroundJobProcessingForWorkerTypes:v3];
 }
 
-- (BOOL)_tooManyAssetChangesToHandle:(unint64_t)a3
+- (BOOL)_tooManyAssetChangesToHandle:(unint64_t)handle
 {
-  v4 = [(PLChangeHandlingContainer *)self->_changeHandlingContainer isMergingCoalescedSaveNotification];
+  isMergingCoalescedSaveNotification = [(PLChangeHandlingContainer *)self->_changeHandlingContainer isMergingCoalescedSaveNotification];
   v5 = 100;
-  if (v4)
+  if (isMergingCoalescedSaveNotification)
   {
     v5 = 50;
   }
 
-  return v5 < a3;
+  return v5 < handle;
 }
 
-- (void)_addCloudUUID:(id)a3 forDeletionType:(int64_t)a4
+- (void)_addCloudUUID:(id)d forDeletionType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (type)
   {
-    if (a4 > 0x11)
+    if (type > 0x11)
     {
       v7 = @"cloudUnknownDeleteGUIDs";
     }
 
     else
     {
-      v7 = off_1E756C158[a4 - 1];
+      v7 = off_1E756C158[type - 1];
     }
 
     v9 = v7;
@@ -1342,7 +1342,7 @@ LABEL_19:
       v11 = objc_opt_new();
     }
 
-    [v11 addObject:v6];
+    [v11 addObject:dCopy];
     [(NSMutableDictionary *)self->_uuidsForCloudDeletion setObject:v11 forKey:v9];
   }
 
@@ -1354,19 +1354,19 @@ LABEL_19:
       v12 = 134218242;
       v13 = 0;
       v14 = 2112;
-      v15 = v6;
+      v15 = dCopy;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_FAULT, "unexpected cloudDeletionType %ld for cloudUUID %@", &v12, 0x16u);
     }
   }
 }
 
-- (void)recordCloudDeletionForObject:(id)a3
+- (void)recordCloudDeletionForObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 cloudDeletionType];
-  v6 = [v4 cloudUUIDForDeletion];
-  if (v6 && !-[PLManagedObjectContext isLocalOnlyDelete](self, "isLocalOnlyDelete") && (-[PLManagedObjectContext photoLibrary](self, "photoLibrary"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isCloudPhotoLibraryEnabled], v7, v8))
+  objectCopy = object;
+  cloudDeletionType = [objectCopy cloudDeletionType];
+  cloudUUIDForDeletion = [objectCopy cloudUUIDForDeletion];
+  if (cloudUUIDForDeletion && !-[PLManagedObjectContext isLocalOnlyDelete](self, "isLocalOnlyDelete") && (-[PLManagedObjectContext photoLibrary](self, "photoLibrary"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isCloudPhotoLibraryEnabled], v7, v8))
   {
     v9 = PLPersistentHistoryGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1376,13 +1376,13 @@ LABEL_19:
       v15 = 138543618;
       v16 = v11;
       v17 = 2114;
-      v18 = v6;
+      v18 = cloudUUIDForDeletion;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Marking as CPLCloudDeleteStateDeleted: %{public}@ [cloudGUID: %{public}@]", &v15, 0x16u);
     }
 
-    [v4 setCloudDeleteState:1];
+    [objectCopy setCloudDeleteState:1];
     [(PLManagedObjectContext *)self recordSyncChangeMarker];
-    [(PLManagedObjectContext *)self _addCloudUUID:v6 forDeletionType:v5];
+    [(PLManagedObjectContext *)self _addCloudUUID:cloudUUIDForDeletion forDeletionType:cloudDeletionType];
   }
 
   else
@@ -1395,7 +1395,7 @@ LABEL_19:
       v15 = 138543618;
       v16 = v14;
       v17 = 2114;
-      v18 = v6;
+      v18 = cloudUUIDForDeletion;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "NOT marking as CPLCloudDeleteStateDeleted: %{public}@ [cloudGUID: %{public}@]", &v15, 0x16u);
     }
   }
@@ -1409,11 +1409,11 @@ LABEL_19:
   return v3;
 }
 
-- (void)recordAvalancheUUIDForUpdate:(id)a3
+- (void)recordAvalancheUUIDForUpdate:(id)update
 {
-  v9 = a3;
-  v4 = [v9 avalancheUUID];
-  if (v4 && [v9 isDeleted] && (objc_msgSend(v9, "isFinderSyncedAsset") & 1) == 0)
+  updateCopy = update;
+  avalancheUUID = [updateCopy avalancheUUID];
+  if (avalancheUUID && [updateCopy isDeleted] && (objc_msgSend(updateCopy, "isFinderSyncedAsset") & 1) == 0)
   {
     avalancheUUIDsForUpdate = self->_avalancheUUIDsForUpdate;
     if (!avalancheUUIDsForUpdate)
@@ -1422,19 +1422,19 @@ LABEL_19:
       v7 = self->_avalancheUUIDsForUpdate;
       self->_avalancheUUIDsForUpdate = v6;
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:objc_opt_class() selector:sel_handleUpdatesForContextWillSave_ name:*MEMORY[0x1E695D368] object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:objc_opt_class() selector:sel_handleUpdatesForContextWillSave_ name:*MEMORY[0x1E695D368] object:self];
 
       avalancheUUIDsForUpdate = self->_avalancheUUIDsForUpdate;
     }
 
-    [(NSMutableSet *)avalancheUUIDsForUpdate addObject:v4];
+    [(NSMutableSet *)avalancheUUIDsForUpdate addObject:avalancheUUID];
   }
 }
 
-- (void)registerFilesystemDeletionInfo:(id)a3
+- (void)registerFilesystemDeletionInfo:(id)info
 {
-  v7 = a3;
+  infoCopy = info;
   if (!self->_delayedDeletions)
   {
     v4 = objc_alloc_init(PLDelayedFiledSystemDeletions);
@@ -1442,57 +1442,57 @@ LABEL_19:
     self->_delayedDeletions = v4;
   }
 
-  v6 = [(PLManagedObjectContext *)self delayedDeletions];
-  [v6 addFilesystemDeletionInfo:v7];
+  delayedDeletions = [(PLManagedObjectContext *)self delayedDeletions];
+  [delayedDeletions addFilesystemDeletionInfo:infoCopy];
 }
 
-- (BOOL)hasPreviouslyMergedDeleteForObject:(id)a3
+- (BOOL)hasPreviouslyMergedDeleteForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectContext *)self userInfo];
-  v6 = [v5 objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
+  objectCopy = object;
+  userInfo = [(PLManagedObjectContext *)self userInfo];
+  v6 = [userInfo objectForKey:@"PLMOCRedundantDeleteObjectIDs"];
 
-  v7 = [v4 objectID];
+  objectID = [objectCopy objectID];
 
-  LOBYTE(v4) = [v6 containsObject:v7];
-  return v4;
+  LOBYTE(objectCopy) = [v6 containsObject:objectID];
+  return objectCopy;
 }
 
-- (void)_createDelayedSaveActionsWithTransaction:(id)a3
+- (void)_createDelayedSaveActionsWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [[PLDelayedSaveActions alloc] initWithClientTransaction:v4];
+  transactionCopy = transaction;
+  v5 = [[PLDelayedSaveActions alloc] initWithClientTransaction:transactionCopy];
 
   delayedSaveActions = self->_delayedSaveActions;
   self->_delayedSaveActions = v5;
 }
 
-- (void)getAndClearUpdatedObjectsAttributes:(id *)a3 relationships:(id *)a4
+- (void)getAndClearUpdatedObjectsAttributes:(id *)attributes relationships:(id *)relationships
 {
-  if (a3)
+  if (attributes)
   {
-    *a3 = [(NSMutableDictionary *)self->_updatedObjectsAttributes copy];
+    *attributes = [(NSMutableDictionary *)self->_updatedObjectsAttributes copy];
     [(NSMutableDictionary *)self->_updatedObjectsAttributes removeAllObjects];
   }
 
-  if (a4)
+  if (relationships)
   {
-    *a4 = [(NSMutableDictionary *)self->_updatedObjectsRelationships copy];
+    *relationships = [(NSMutableDictionary *)self->_updatedObjectsRelationships copy];
     updatedObjectsRelationships = self->_updatedObjectsRelationships;
 
     [(NSMutableDictionary *)updatedObjectsRelationships removeAllObjects];
   }
 }
 
-- (void)recordChangesFromTriggerModifiedObjectIDs:(id)a3
+- (void)recordChangesFromTriggerModifiedObjectIDs:(id)ds
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1503,13 +1503,13 @@ LABEL_19:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 entity];
+        entity = [v9 entity];
         v11 = [(PLManagedObject *)PLPerson entityInManagedObjectContext:self];
-        v12 = [v10 isKindOfEntity:v11];
+        v12 = [entity isKindOfEntity:v11];
 
         if (v12)
         {
@@ -1520,7 +1520,7 @@ LABEL_19:
         else
         {
           v14 = [(PLManagedObject *)PLDetectedFace entityInManagedObjectContext:self];
-          v15 = [v10 isKindOfEntity:v14];
+          v15 = [entity isKindOfEntity:v14];
 
           if (!v15)
           {
@@ -1537,42 +1537,42 @@ LABEL_19:
 LABEL_11:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)recordManagedObjectWillSave:(id)a3
+- (void)recordManagedObjectWillSave:(id)save
 {
-  v10 = a3;
-  if (([v10 isInserted] & 1) == 0)
+  saveCopy = save;
+  if (([saveCopy isInserted] & 1) == 0)
   {
-    if ([v10 isDeleted])
+    if ([saveCopy isDeleted])
     {
       updatedObjectsAttributes = self->_updatedObjectsAttributes;
-      v5 = [v10 objectID];
-      [(NSMutableDictionary *)updatedObjectsAttributes removeObjectForKey:v5];
+      objectID = [saveCopy objectID];
+      [(NSMutableDictionary *)updatedObjectsAttributes removeObjectForKey:objectID];
 
       updatedObjectsRelationships = self->_updatedObjectsRelationships;
-      v7 = [v10 objectID];
-      [(NSMutableDictionary *)updatedObjectsRelationships removeObjectForKey:v7];
+      objectID2 = [saveCopy objectID];
+      [(NSMutableDictionary *)updatedObjectsRelationships removeObjectForKey:objectID2];
     }
 
     else
     {
-      if (![v10 isUpdated])
+      if (![saveCopy isUpdated])
       {
         goto LABEL_9;
       }
 
-      v7 = [v10 changedValues];
-      v8 = [v7 allKeys];
-      if ([v8 count])
+      objectID2 = [saveCopy changedValues];
+      allKeys = [objectID2 allKeys];
+      if ([allKeys count])
       {
-        v9 = [v10 objectID];
-        [(PLManagedObjectContext *)self _recordChangedKeys:v8 forObjectID:v9];
+        objectID3 = [saveCopy objectID];
+        [(PLManagedObjectContext *)self _recordChangedKeys:allKeys forObjectID:objectID3];
       }
     }
   }
@@ -1580,34 +1580,34 @@ LABEL_11:
 LABEL_9:
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = PLPhotosObjectLifecycleGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = nameCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ %p setName:%@", buf, 0x20u);
   }
 
   v6.receiver = self;
   v6.super_class = PLManagedObjectContext;
-  [(PLManagedObjectContext *)&v6 setName:v4];
+  [(PLManagedObjectContext *)&v6 setName:nameCopy];
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectContext *)self photoLibrary];
+  waitCopy = wait;
+  photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
   if (PLIsAssetsd())
   {
-    v6 = !self->_initFinished || v5 == 0;
+    v6 = !self->_initFinished || photoLibrary == 0;
     if (!v6 && !+[PLManagedObjectContext _pl_megamoc_isInPLMocPerform](PLManagedObjectContext, "_pl_megamoc_isInPLMocPerform") && !+[PLConcurrencyLimiter isRunningUnderLimiter])
     {
       v7 = PLBackendGetLog();
@@ -1619,16 +1619,16 @@ LABEL_9:
     }
   }
 
-  [(PLManagedObjectContext *)self _directPerformBlockAndWait:v4];
+  [(PLManagedObjectContext *)self _directPerformBlockAndWait:waitCopy];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectContext *)self photoLibrary];
+  blockCopy = block;
+  photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
   if (PLIsAssetsd())
   {
-    v6 = !self->_initFinished || v5 == 0;
+    v6 = !self->_initFinished || photoLibrary == 0;
     if (!v6 && !+[PLManagedObjectContext _pl_megamoc_isInPLMocPerform](PLManagedObjectContext, "_pl_megamoc_isInPLMocPerform") && !+[PLConcurrencyLimiter isRunningUnderLimiter])
     {
       v7 = PLBackendGetLog();
@@ -1640,7 +1640,7 @@ LABEL_9:
     }
   }
 
-  [(PLManagedObjectContext *)self _directPerformBlock:v4];
+  [(PLManagedObjectContext *)self _directPerformBlock:blockCopy];
 }
 
 - (void)refreshAllObjects
@@ -1661,38 +1661,38 @@ LABEL_9:
   self->_lastResetTimestamp = v3;
 }
 
-- (BOOL)obtainPermanentIDsForObjects:(id)a3 error:(id *)a4
+- (BOOL)obtainPermanentIDsForObjects:(id)objects error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = PLManagedObjectContext;
   v12 = 0;
-  v6 = [(PLManagedObjectContext *)&v11 obtainPermanentIDsForObjects:a3 error:&v12];
+  v6 = [(PLManagedObjectContext *)&v11 obtainPermanentIDsForObjects:objects error:&v12];
   v7 = v12;
   if (!v6)
   {
-    v8 = [(PLManagedObjectContext *)self photoLibrary];
-    [v8 handlePossibleCoreDataError:v7];
+    photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+    [photoLibrary handlePossibleCoreDataError:v7];
 
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return v6;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:a3])
+  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:save])
   {
     [PLUnintendedChangeChecker checkForUnintendedChangesDuringeSave:self withBlock:&__block_literal_global_17276];
     if ([objc_opt_class() shouldHavePhotoLibrary])
     {
-      v5 = [(PLManagedObjectContext *)self photoLibrary];
-      if (!v5)
+      photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+      if (!photoLibrary)
       {
         v6 = PLBackendGetLog();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1708,17 +1708,17 @@ LABEL_9:
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
         v10 = [v7 errorWithDomain:v8 code:41003 userInfo:v9];
 
-        if (a3)
+        if (save)
         {
           v11 = v10;
-          v5 = 0;
+          photoLibrary = 0;
           LOBYTE(v12) = 0;
-          *a3 = v10;
+          *save = v10;
         }
 
         else
         {
-          v5 = 0;
+          photoLibrary = 0;
           LOBYTE(v12) = 0;
         }
 
@@ -1730,38 +1730,38 @@ LABEL_32:
 
     else
     {
-      v5 = 0;
+      photoLibrary = 0;
     }
 
     if (PLIsAssetsdProxyService())
     {
       [(PLManagedObjectContext *)self hasChanges];
       v13 = 0;
-      v14 = 1;
+      isDatabaseCreationContext = 1;
     }
 
     else
     {
-      v14 = [(PLManagedObjectContext *)self isDatabaseCreationContext];
+      isDatabaseCreationContext = [(PLManagedObjectContext *)self isDatabaseCreationContext];
       v13 = 0;
-      if ([(PLManagedObjectContext *)self hasChanges]&& !v14)
+      if ([(PLManagedObjectContext *)self hasChanges]&& !isDatabaseCreationContext)
       {
         v15 = [MEMORY[0x1E695DFD8] setWithObject:@"PLTransactionScopeFileIngestion"];
-        v16 = [(PLManagedObjectContext *)self pathManager];
-        v13 = [PLClientServerTransaction beginClientTransactionWithChangeScopes:v15 pathManager:v16 identifier:"[PLManagedObjectContext save:]"];
+        pathManager = [(PLManagedObjectContext *)self pathManager];
+        v13 = [PLClientServerTransaction beginClientTransactionWithChangeScopes:v15 pathManager:pathManager identifier:"[PLManagedObjectContext save:]"];
 
-        v17 = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
-        if (v17)
+        postDelayedSaveActionsReply = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
+        if (postDelayedSaveActionsReply)
         {
-          [v13 addPostDelayedSaveActionsReply:v17];
+          [v13 addPostDelayedSaveActionsReply:postDelayedSaveActionsReply];
         }
 
         [(PLManagedObjectContext *)self setPostDelayedSaveActionsReply:0];
-        v18 = [(PLManagedObjectContext *)self userInfo];
-        [PLClientServerTransaction addTransaction:v13 toUserInfo:v18];
+        userInfo = [(PLManagedObjectContext *)self userInfo];
+        [PLClientServerTransaction addTransaction:v13 toUserInfo:userInfo];
 
         [(PLManagedObjectContext *)self _createDelayedSaveActionsWithTransaction:v13];
-        v14 = 0;
+        isDatabaseCreationContext = 0;
       }
     }
 
@@ -1775,31 +1775,31 @@ LABEL_32:
     if (!v12)
     {
       [v13 abortTransaction];
-      [v5 handlePossibleCoreDataError:v10];
-      if (a3)
+      [photoLibrary handlePossibleCoreDataError:v10];
+      if (save)
       {
         v19 = v10;
-        *a3 = v10;
+        *save = v10;
       }
     }
 
-    v20 = [(PLManagedObjectContext *)self userInfo];
-    [v20 removeObjectForKey:@"PLMOCRedundantDeleteObjectIDs"];
+    userInfo2 = [(PLManagedObjectContext *)self userInfo];
+    [userInfo2 removeObjectForKey:@"PLMOCRedundantDeleteObjectIDs"];
 
-    if (!v14)
+    if (!isDatabaseCreationContext)
     {
-      v21 = [(PLManagedObjectContext *)self userInfo];
-      [PLClientServerTransaction removeTransactionFromUserInfo:v21];
+      userInfo3 = [(PLManagedObjectContext *)self userInfo];
+      [PLClientServerTransaction removeTransactionFromUserInfo:userInfo3];
 
       [(PLManagedObjectContext *)self _destroyDelayedSaveActions];
     }
 
-    v22 = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
+    postDelayedSaveActionsReply2 = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
 
-    if (v22)
+    if (postDelayedSaveActionsReply2)
     {
-      v23 = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
-      v23[2]();
+      postDelayedSaveActionsReply3 = [(PLManagedObjectContext *)self postDelayedSaveActionsReply];
+      postDelayedSaveActionsReply3[2]();
 
       [(PLManagedObjectContext *)self setPostDelayedSaveActionsReply:0];
     }
@@ -1808,10 +1808,10 @@ LABEL_32:
     {
       if ([(PLBackgroundJobWorkerTypes *)self->_workerTypesForBackgroundJobProcessing hasWork])
       {
-        v24 = [v5 libraryServicesManager];
-        v25 = [v24 backgroundJobService];
-        v26 = [(PLManagedObjectContext *)self pl_libraryBundle];
-        [v25 signalBackgroundProcessingNeededOnBundle:v26 workerTypes:self->_workerTypesForBackgroundJobProcessing];
+        libraryServicesManager = [photoLibrary libraryServicesManager];
+        backgroundJobService = [libraryServicesManager backgroundJobService];
+        pl_libraryBundle = [(PLManagedObjectContext *)self pl_libraryBundle];
+        [backgroundJobService signalBackgroundProcessingNeededOnBundle:pl_libraryBundle workerTypes:self->_workerTypesForBackgroundJobProcessing];
 
         workerTypesForBackgroundJobProcessing = self->_workerTypesForBackgroundJobProcessing;
         self->_workerTypesForBackgroundJobProcessing = 0;
@@ -1822,18 +1822,18 @@ LABEL_32:
         [(NSMutableSet *)self->_backgroundWorkItemIdentifiers removeAllObjects];
       }
 
-      v28 = [(PLManagedObjectContext *)self userInfo];
-      v29 = [v28 objectForKeyedSubscript:@"com.apple.photos.PLCameraPreviewWellNeedsUpdate"];
-      v30 = [v29 BOOLValue];
+      userInfo4 = [(PLManagedObjectContext *)self userInfo];
+      v29 = [userInfo4 objectForKeyedSubscript:@"com.apple.photos.PLCameraPreviewWellNeedsUpdate"];
+      bOOLValue = [v29 BOOLValue];
 
-      if (v30)
+      if (bOOLValue)
       {
-        v31 = [v5 libraryServicesManager];
-        v32 = [v31 cameraPreviewWellManager];
-        [v32 refreshPreviewWellImageWithContext:self avoidNotificationIfLinkIsAlreadySet:1];
+        libraryServicesManager2 = [photoLibrary libraryServicesManager];
+        cameraPreviewWellManager = [libraryServicesManager2 cameraPreviewWellManager];
+        [cameraPreviewWellManager refreshPreviewWellImageWithContext:self avoidNotificationIfLinkIsAlreadySet:1];
 
-        v33 = [(PLManagedObjectContext *)self userInfo];
-        [v33 setObject:0 forKeyedSubscript:@"com.apple.photos.PLCameraPreviewWellNeedsUpdate"];
+        userInfo5 = [(PLManagedObjectContext *)self userInfo];
+        [userInfo5 setObject:0 forKeyedSubscript:@"com.apple.photos.PLCameraPreviewWellNeedsUpdate"];
       }
     }
 
@@ -1869,23 +1869,23 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
   [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: Unintended change during save" radarDescription:v13];
 }
 
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PLManagedObjectContext *)self isValidForSelector:a2 error:a4];
+  requestCopy = request;
+  v8 = [(PLManagedObjectContext *)self isValidForSelector:a2 error:error];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   if (v8)
   {
     v19.receiver = self;
     v19.super_class = PLManagedObjectContext;
     v20 = 0;
-    v9 = [(PLManagedObjectContext *)&v19 countForFetchRequest:v7 error:&v20];
+    v9 = [(PLManagedObjectContext *)&v19 countForFetchRequest:requestCopy error:&v20];
     v10 = v20;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(PLManagedObjectContext *)self photoLibrary];
-      [v11 handlePossibleCoreDataError:v10];
+      photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+      [photoLibrary handlePossibleCoreDataError:v10];
 
       if (!v10)
       {
@@ -1904,10 +1904,10 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
         v10 = [v13 errorWithDomain:v14 code:41001 userInfo:v15];
       }
 
-      if (a4)
+      if (error)
       {
         v16 = v10;
-        *a4 = v10;
+        *error = v10;
       }
     }
   }
@@ -1915,25 +1915,25 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
   return v9;
 }
 
-- (id)executeRequest:(id)a3 error:(id *)a4
+- (id)executeRequest:(id)request error:(id *)error
 {
-  v7 = a3;
-  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:a4])
+  requestCopy = request;
+  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:error])
   {
     v13.receiver = self;
     v13.super_class = PLManagedObjectContext;
     v14 = 0;
-    v8 = [(PLManagedObjectContext *)&v13 executeRequest:v7 error:&v14];
+    v8 = [(PLManagedObjectContext *)&v13 executeRequest:requestCopy error:&v14];
     v9 = v14;
     if (!v8)
     {
-      v10 = [(PLManagedObjectContext *)self photoLibrary];
-      [v10 handlePossibleCoreDataError:v9];
+      photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+      [photoLibrary handlePossibleCoreDataError:v9];
 
-      if (a4)
+      if (error)
       {
         v11 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -1946,23 +1946,23 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
   return v8;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v7 = a3;
-  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:a4])
+  requestCopy = request;
+  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:error])
   {
     v13 = 0;
-    v8 = [(PLManagedObjectContext *)self _pl_executeFetchRequest:v7 error:&v13];
+    v8 = [(PLManagedObjectContext *)self _pl_executeFetchRequest:requestCopy error:&v13];
     v9 = v13;
     if (!v8)
     {
-      v10 = [(PLManagedObjectContext *)self photoLibrary];
-      [v10 handlePossibleCoreDataError:v9];
+      photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+      [photoLibrary handlePossibleCoreDataError:v9];
 
-      if (a4)
+      if (error)
       {
         v11 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -1975,25 +1975,25 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
   return v8;
 }
 
-- (id)existingObjectWithID:(id)a3 error:(id *)a4
+- (id)existingObjectWithID:(id)d error:(id *)error
 {
-  v7 = a3;
-  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:a4])
+  dCopy = d;
+  if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:error])
   {
     v13.receiver = self;
     v13.super_class = PLManagedObjectContext;
     v14 = 0;
-    v8 = [(PLManagedObjectContext *)&v13 existingObjectWithID:v7 error:&v14];
+    v8 = [(PLManagedObjectContext *)&v13 existingObjectWithID:dCopy error:&v14];
     v9 = v14;
     if (!v8)
     {
-      v10 = [(PLManagedObjectContext *)self photoLibrary];
-      [v10 handlePossibleCoreDataError:v9];
+      photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+      [photoLibrary handlePossibleCoreDataError:v9];
 
-      if (a4)
+      if (error)
       {
         v11 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -2008,13 +2008,13 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
 
 - (void)_logDatabaseDirectoryDiagnosticInfo
 {
-  v2 = [(PLManagedObjectContext *)self pathManager];
-  v3 = [v2 photosDatabasePath];
-  v4 = [v3 stringByDeletingLastPathComponent];
+  pathManager = [(PLManagedObjectContext *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  stringByDeletingLastPathComponent = [photosDatabasePath stringByDeletingLastPathComponent];
 
-  if (v4)
+  if (stringByDeletingLastPathComponent)
   {
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByDeletingLastPathComponent];
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -2036,9 +2036,9 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
   }
 }
 
-- (BOOL)pl_performWithOptions:(unint64_t)a3 andBlock:(id)a4
+- (BOOL)pl_performWithOptions:(unint64_t)options andBlock:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   v8 = [(PLManagedObjectContext *)self isValidForSelector:a2 error:0];
   if (v8)
   {
@@ -2048,10 +2048,10 @@ void __31__PLManagedObjectContext_save___block_invoke(uint64_t a1, void *a2, voi
     v11[2] = __57__PLManagedObjectContext_pl_performWithOptions_andBlock___block_invoke;
     v11[3] = &unk_1E7576850;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = blockCopy;
     v10.receiver = self;
     v10.super_class = PLManagedObjectContext;
-    [(PLManagedObjectContext *)&v10 performWithOptions:a3 andBlock:v11];
+    [(PLManagedObjectContext *)&v10 performWithOptions:options andBlock:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -2066,22 +2066,22 @@ void __57__PLManagedObjectContext_pl_performWithOptions_andBlock___block_invoke(
   [WeakRetained pl_wrapperForPerformBlock:*(a1 + 32)];
 }
 
-- (void)pl_wrapperForPerformBlock:(id)a3
+- (void)pl_wrapperForPerformBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   [objc_opt_class() _pl_megamoc_contextPerformDepthPush];
-  v3[2](v3);
+  blockCopy[2](blockCopy);
   [objc_opt_class() _pl_megamoc_contextPerformDepthPop];
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:673 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:673 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
   if ([(PLManagedObjectContext *)self isValidForSelector:a2 error:0])
@@ -2090,7 +2090,7 @@ void __57__PLManagedObjectContext_pl_performWithOptions_andBlock___block_invoke(
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v5;
+      v12 = reasonCopy;
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "PLManagedObjectContext invalidateWithReason: %@", buf, 0xCu);
     }
 
@@ -2099,7 +2099,7 @@ void __57__PLManagedObjectContext_pl_performWithOptions_andBlock___block_invoke(
     aBlock[2] = __47__PLManagedObjectContext_invalidateWithReason___block_invoke;
     aBlock[3] = &unk_1E7578848;
     aBlock[4] = self;
-    v10 = v5;
+    v10 = reasonCopy;
     v7 = _Block_copy(aBlock);
     if ([(PLManagedObjectContext *)self concurrencyType]== 1)
     {
@@ -2122,7 +2122,7 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
   os_unfair_lock_unlock(v2);
 }
 
-- (BOOL)isValidForSelector:(SEL)a3 error:(id *)a4
+- (BOOL)isValidForSelector:(SEL)selector error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_invalidationStateLock);
@@ -2132,7 +2132,7 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
     v8 = PLBackendGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = NSStringFromSelector(a3);
+      v9 = NSStringFromSelector(selector);
       v10 = self->_invalidationReason;
       v12 = 138543618;
       v13 = v9;
@@ -2141,9 +2141,9 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ called after invalidate: %@", &v12, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = self->_invalidationReason;
+      *error = self->_invalidationReason;
     }
   }
 
@@ -2153,51 +2153,51 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
 
 - (id)pl_graphCache
 {
-  v2 = [(PLManagedObjectContext *)self pl_libraryBundle];
-  v3 = [v2 graphCache];
+  pl_libraryBundle = [(PLManagedObjectContext *)self pl_libraryBundle];
+  graphCache = [pl_libraryBundle graphCache];
 
-  return v3;
+  return graphCache;
 }
 
 - (id)pl_libraryBundle
 {
-  v2 = [(PLManagedObjectContext *)self photoLibrary];
-  v3 = [v2 libraryBundle];
+  photoLibrary = [(PLManagedObjectContext *)self photoLibrary];
+  libraryBundle = [photoLibrary libraryBundle];
 
-  if (!v3)
+  if (!libraryBundle)
   {
     v4 = +[PLPhotoLibraryBundleController sharedBundleController];
-    v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-    v3 = [v4 bundleForLibraryURL:v5];
+    systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+    libraryBundle = [v4 bundleForLibraryURL:systemLibraryURL];
   }
 
-  return v3;
+  return libraryBundle;
 }
 
 - (BOOL)isReadOnly
 {
-  v2 = [(PLManagedObjectContext *)self persistentStoreCoordinator];
-  v3 = [v2 persistentStores];
-  v4 = [v3 lastObject];
-  v5 = [v4 isReadOnly];
+  persistentStoreCoordinator = [(PLManagedObjectContext *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  lastObject = [persistentStores lastObject];
+  isReadOnly = [lastObject isReadOnly];
 
-  return v5;
+  return isReadOnly;
 }
 
 - (id)storeUUID
 {
-  v2 = [(PLManagedObjectContext *)self persistentStoreCoordinator];
-  v3 = [v2 persistentStores];
-  v4 = [v3 firstObject];
-  v5 = [v4 metadata];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
+  persistentStoreCoordinator = [(PLManagedObjectContext *)self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
+  metadata = [firstObject metadata];
+  v6 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695D4B8]];
 
   return v6;
 }
 
-- (void)setPtpNotificationDelegate:(id)a3
+- (void)setPtpNotificationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_ptpNotificationDelegate);
 
   v5 = obj;
@@ -2208,14 +2208,14 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
     if (obj)
     {
       v7 = objc_loadWeakRetained(&self->_photoLibrary);
-      v8 = [v7 libraryBundle];
-      [v8 beginObservingChanges];
+      libraryBundle = [v7 libraryBundle];
+      [libraryBundle beginObservingChanges];
 
       v5 = obj;
       if (!self->_isObservingChangesForPTPNotificationDelegate)
       {
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v9 addObserver:self selector:sel__informPTPDelegateAboutChangesFromRemoteContextSaveNotification_ name:@"PLManagedObjectContextsPhotoKitNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__informPTPDelegateAboutChangesFromRemoteContextSaveNotification_ name:@"PLManagedObjectContextsPhotoKitNotification" object:0];
 
         v5 = obj;
         self->_isObservingChangesForPTPNotificationDelegate = 1;
@@ -2224,13 +2224,13 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
 
     else
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 removeObserver:self name:@"PLManagedObjectContextsPhotoKitNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 removeObserver:self name:@"PLManagedObjectContextsPhotoKitNotification" object:0];
 
       self->_isObservingChangesForPTPNotificationDelegate = 0;
       v11 = objc_loadWeakRetained(&self->_photoLibrary);
-      v12 = [v11 libraryBundle];
-      [v12 endObservingChanges];
+      libraryBundle2 = [v11 libraryBundle];
+      [libraryBundle2 endObservingChanges];
 
       v5 = 0;
     }
@@ -2244,32 +2244,32 @@ void __47__PLManagedObjectContext_invalidateWithReason___block_invoke(uint64_t a
   return WeakRetained;
 }
 
-- (void)setPhotoLibrary:(id)a3
+- (void)setPhotoLibrary:(id)library
 {
-  obj = a3;
+  obj = library;
   WeakRetained = objc_loadWeakRetained(&self->_photoLibrary);
 
   if (WeakRetained)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:575 description:@"photoLibrary cannot be changed once set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:575 description:@"photoLibrary cannot be changed once set."];
   }
 
   objc_storeWeak(&self->_photoLibrary, obj);
 }
 
-- (void)_directPerformBlockAndWait:(id)a3
+- (void)_directPerformBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PLManagedObjectContext__directPerformBlockAndWait___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
+  v8 = waitCopy;
   v6.receiver = self;
   v6.super_class = PLManagedObjectContext;
-  v5 = v4;
+  v5 = waitCopy;
   [(PLManagedObjectContext *)&v6 performBlockAndWait:v7];
 }
 
@@ -2282,18 +2282,18 @@ uint64_t __53__PLManagedObjectContext__directPerformBlockAndWait___block_invoke(
   return [v2 _pl_megamoc_contextPerformDepthPop];
 }
 
-- (void)_directPerformBlock:(id)a3
+- (void)_directPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PLManagedObjectContext__directPerformBlock___block_invoke;
   v7[3] = &unk_1E7577C08;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = PLManagedObjectContext;
-  v5 = v4;
+  v5 = blockCopy;
   [(PLManagedObjectContext *)&v6 performBlock:v7];
 }
 
@@ -2306,11 +2306,11 @@ uint64_t __46__PLManagedObjectContext__directPerformBlock___block_invoke(uint64_
   return [v2 _pl_megamoc_contextPerformDepthPop];
 }
 
-- (id)_pl_executeFetchRequest:(id)a3 error:(id *)a4
+- (id)_pl_executeFetchRequest:(id)request error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [PLFetchRequest pl_importantFetchNameForFetchRequest:v6];
+  requestCopy = request;
+  v7 = [PLFetchRequest pl_importantFetchNameForFetchRequest:requestCopy];
   if (v7)
   {
     v8 = PLImportantFetchGetLog();
@@ -2334,7 +2334,7 @@ uint64_t __46__PLManagedObjectContext__directPerformBlock___block_invoke(uint64_
 
   v17.receiver = self;
   v17.super_class = PLManagedObjectContext;
-  v12 = [(PLManagedObjectContext *)&v17 executeFetchRequest:v6 error:a4];
+  v12 = [(PLManagedObjectContext *)&v17 executeFetchRequest:requestCopy error:error];
   if (v7)
   {
     v13 = v11;
@@ -2351,32 +2351,32 @@ uint64_t __46__PLManagedObjectContext__directPerformBlock___block_invoke(uint64_
   return v12;
 }
 
-- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 libraryBundle:(id)a4 changeHandlingContainer:(id)a5 coordinator:(id)a6
+- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)type libraryBundle:(id)bundle changeHandlingContainer:(id)container coordinator:(id)coordinator
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  bundleCopy = bundle;
+  containerCopy = container;
+  coordinatorCopy = coordinator;
   v37.receiver = self;
   v37.super_class = PLManagedObjectContext;
-  v13 = [(PLManagedObjectContext *)&v37 initWithConcurrencyType:a3];
+  v13 = [(PLManagedObjectContext *)&v37 initWithConcurrencyType:type];
   v14 = v13;
   if (!v13)
   {
     goto LABEL_4;
   }
 
-  if (v12)
+  if (coordinatorCopy)
   {
     v13->_changeSource = 0;
     [(PLManagedObjectContext *)v13 updateTransactionAuthor];
-    v15 = [v10 pathManager];
+    pathManager = [bundleCopy pathManager];
     pathManager = v14->_pathManager;
-    v14->_pathManager = v15;
-    v17 = v15;
+    v14->_pathManager = pathManager;
+    v17 = pathManager;
 
-    objc_storeStrong(&v14->_changeHandlingContainer, a5);
-    [(PLManagedObjectContext *)v14 setPersistentStoreCoordinator:v12];
+    objc_storeStrong(&v14->_changeHandlingContainer, container);
+    [(PLManagedObjectContext *)v14 setPersistentStoreCoordinator:coordinatorCopy];
     v18 = [(NSMergePolicy *)[PLMergePolicy alloc] initWithMergeType:2];
     [(PLManagedObjectContext *)v14 setMergePolicy:v18];
     v19 = objc_alloc(MEMORY[0x1E695DF90]);
@@ -2402,7 +2402,7 @@ uint64_t __46__PLManagedObjectContext__directPerformBlock___block_invoke(uint64_
     backgroundWorkItemIdentifiers = v14->_backgroundWorkItemIdentifiers;
     v14->_backgroundWorkItemIdentifiers = v28;
 
-    [(PLManagedObjectContext *)v14 setupDelegateWithBundle:v10];
+    [(PLManagedObjectContext *)v14 setupDelegateWithBundle:bundleCopy];
 LABEL_4:
     v30 = PLPhotosObjectLifecycleGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -2414,7 +2414,7 @@ LABEL_4:
       v40 = 2048;
       v41 = v14;
       v42 = 2048;
-      v43 = a3;
+      typeCopy = type;
       v44 = 2112;
       v45 = v32;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEBUG, "%@ %p initWithConcurrencyType:%tu pathManager:%@", buf, 0x2Au);
@@ -2441,19 +2441,19 @@ LABEL_10:
   return v33;
 }
 
-- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)a3 libraryBundle:(id)a4
+- (PLManagedObjectContext)initWithConcurrencyType:(unint64_t)type libraryBundle:(id)bundle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 changeHandlingContainer];
-  v8 = [v6 persistentContainer];
+  bundleCopy = bundle;
+  changeHandlingContainer = [bundleCopy changeHandlingContainer];
+  persistentContainer = [bundleCopy persistentContainer];
   v15 = 0;
-  v9 = [v8 sharedPersistentStoreCoordinatorWithError:&v15];
+  v9 = [persistentContainer sharedPersistentStoreCoordinatorWithError:&v15];
   v10 = v15;
   if (v9)
   {
-    self = [(PLManagedObjectContext *)self initWithConcurrencyType:a3 libraryBundle:v6 changeHandlingContainer:v7 coordinator:v9];
-    v11 = self;
+    self = [(PLManagedObjectContext *)self initWithConcurrencyType:type libraryBundle:bundleCopy changeHandlingContainer:changeHandlingContainer coordinator:v9];
+    selfCopy = self;
   }
 
   else
@@ -2471,10 +2471,10 @@ LABEL_10:
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Returning nil context, %@:%s failed to get shared PSC: %@", buf, 0x20u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 void __53__PLManagedObjectContext_assetsLibraryLoggingEnabled__block_invoke()
@@ -2539,15 +2539,15 @@ void __62__PLManagedObjectContext_changeNotificationObjectMutationKeys__block_in
   changeNotificationObjectMutationKeys_pl_once_object_42 = v1;
 }
 
-+ (void)getPersistentStoreURL:(id *)a3 options:(id *)a4 forDatabasePath:(id)a5
++ (void)getPersistentStoreURL:(id *)l options:(id *)options forDatabasePath:(id)path
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___block_invoke;
   v5[3] = &__block_descriptor_48_e32_v24__0__NSURL_8__NSDictionary_16l;
-  v5[4] = a3;
-  v5[5] = a4;
-  [PLPersistentContainer getConfigurationForDatabasePath:a5 withBlock:v5];
+  v5[4] = l;
+  v5[5] = options;
+  [PLPersistentContainer getConfigurationForDatabasePath:path withBlock:v5];
 }
 
 id __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___block_invoke(uint64_t a1, id a2, void *a3)
@@ -2559,11 +2559,11 @@ id __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___
   return result;
 }
 
-+ (BOOL)isDatabaseCreationContext:(id)a3
++ (BOOL)isDatabaseCreationContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v4 = v3;
+  v4 = contextCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -2578,38 +2578,38 @@ id __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___
 
   if (v6)
   {
-    v7 = [v6 isDatabaseCreationContext];
+    isDatabaseCreationContext = [v6 isDatabaseCreationContext];
   }
 
   else
   {
-    v7 = 0;
+    isDatabaseCreationContext = 0;
   }
 
-  return v7;
+  return isDatabaseCreationContext;
 }
 
-+ (id)sanitizedErrorFromError:(id)a3
++ (id)sanitizedErrorFromError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [v3 localizedDescription];
-    if (v5)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    localizedDescription = [errorCopy localizedDescription];
+    if (localizedDescription)
     {
-      [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A578]];
+      [dictionary setObject:localizedDescription forKeyedSubscript:*MEMORY[0x1E696A578]];
     }
 
-    v6 = [v3 localizedFailureReason];
-    if (v6)
+    localizedFailureReason = [errorCopy localizedFailureReason];
+    if (localizedFailureReason)
     {
-      [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A588]];
+      [dictionary setObject:localizedFailureReason forKeyedSubscript:*MEMORY[0x1E696A588]];
     }
 
     v7 = MEMORY[0x1E696ABC0];
-    v8 = [v3 domain];
-    v9 = [v7 errorWithDomain:v8 code:objc_msgSend(v3 userInfo:{"code"), v4}];
+    domain = [errorCopy domain];
+    v9 = [v7 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), dictionary}];
   }
 
   else
@@ -2620,39 +2620,39 @@ id __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___
   return v9;
 }
 
-+ (void)_pl_megamoc_runWithPerformWarningsSuppressed:(id)a3
++ (void)_pl_megamoc_runWithPerformWarningsSuppressed:(id)suppressed
 {
-  v3 = a3;
+  suppressedCopy = suppressed;
   [objc_opt_class() _pl_megamoc_contextPerformDepthPush];
-  v3[2](v3);
+  suppressedCopy[2](suppressedCopy);
 
   v4 = objc_opt_class();
 
   [v4 _pl_megamoc_contextPerformDepthPop];
 }
 
-+ (id)contextForRepairingSingletonObjectsWithReason:(id)a3 libraryURL:(id)a4 error:(id *)a5
++ (id)contextForRepairingSingletonObjectsWithReason:(id)reason libraryURL:(id)l error:(id *)error
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  lCopy = l;
   pl_dispatch_once();
   v10 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v11 = [v10 lookupOrCreateBundleForLibraryURL:v9];
+  v11 = [v10 lookupOrCreateBundleForLibraryURL:lCopy];
 
   if (v11)
   {
-    v12 = [v11 persistentContainer];
-    if (v12)
+    persistentContainer = [v11 persistentContainer];
+    if (persistentContainer)
     {
       v38 = 0;
       v33 = MEMORY[0x1E69E9820];
       v34 = 3221225472;
       v35 = __89__PLManagedObjectContext_contextForRepairingSingletonObjectsWithReason_libraryURL_error___block_invoke;
       v36 = &unk_1E75682E0;
-      v13 = v12;
+      v13 = persistentContainer;
       v37 = v13;
-      v14 = [a1 _loadingPersistentStoreCoordinatorWithReason:v8 error:&v38 workBlock:&v33];
+      v14 = [self _loadingPersistentStoreCoordinatorWithReason:reasonCopy error:&v38 workBlock:&v33];
       v15 = v38;
       if (v14)
       {
@@ -2661,22 +2661,22 @@ id __72__PLManagedObjectContext_getPersistentStoreURL_options_forDatabasePath___
         {
           v17 = v16;
           v18 = MEMORY[0x1E696AEC0];
-          v19 = [v9 path];
-          v20 = [v18 stringWithFormat:@"reason:%@ (%@)", v8, v19, v33, v34, v35, v36];
+          path = [lCopy path];
+          v20 = [v18 stringWithFormat:@"reason:%@ (%@)", reasonCopy, path, v33, v34, v35, v36];
           [(PLManagedObjectContext *)v17 setName:v20];
 LABEL_14:
 
           goto LABEL_16;
         }
 
-        if (a5)
+        if (error)
         {
           v30 = MEMORY[0x1E696ABC0];
           v31 = *MEMORY[0x1E69BFF48];
           v43 = *MEMORY[0x1E696A278];
           v44[0] = @"Failed to create PLDisconnectedManagedObjectContext";
-          v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-          [v30 errorWithDomain:v31 code:46502 userInfo:v19];
+          path = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
+          [v30 errorWithDomain:v31 code:46502 userInfo:path];
           v17 = 0;
           v15 = v20 = v15;
           goto LABEL_14;
@@ -2700,7 +2700,7 @@ LABEL_16:
     v41[0] = *MEMORY[0x1E696A278];
     v41[1] = @"libraryURL";
     v42[0] = @"Failed to create persistent container";
-    v42[1] = v9;
+    v42[1] = lCopy;
     v23 = MEMORY[0x1E695DF20];
     v24 = v42;
     v25 = v41;
@@ -2713,7 +2713,7 @@ LABEL_16:
     v39[0] = *MEMORY[0x1E696A278];
     v39[1] = @"libraryURL";
     v40[0] = @"Failed to create library bundle";
-    v40[1] = v9;
+    v40[1] = lCopy;
     v23 = MEMORY[0x1E695DF20];
     v24 = v40;
     v25 = v39;
@@ -2724,11 +2724,11 @@ LABEL_16:
 
   v28 = v27;
 LABEL_9:
-  if (a5)
+  if (error)
   {
     v29 = v28;
     v17 = 0;
-    *a5 = v28;
+    *error = v28;
   }
 
   else
@@ -2767,11 +2767,11 @@ id __89__PLManagedObjectContext_contextForRepairingSingletonObjectsWithReason_li
   return v4;
 }
 
-+ (id)_loadingPersistentStoreCoordinatorWithReason:(id)a3 error:(id *)a4 workBlock:(id)a5
++ (id)_loadingPersistentStoreCoordinatorWithReason:(id)reason error:(id *)error workBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2784,9 +2784,9 @@ id __89__PLManagedObjectContext_contextForRepairingSingletonObjectsWithReason_li
   v17[1] = 3221225472;
   v17[2] = __87__PLManagedObjectContext__loadingPersistentStoreCoordinatorWithReason_error_workBlock___block_invoke;
   v17[3] = &unk_1E75682B8;
-  v10 = v9;
+  v10 = blockCopy;
   v18 = v10;
-  v11 = [a1 _coreDataWorkWithRetryForReason:v8 error:&v20 retryBlock:v17];
+  v11 = [self _coreDataWorkWithRetryForReason:reasonCopy error:&v20 retryBlock:v17];
   v12 = v20;
   if ((v11 & 1) == 0)
   {
@@ -2794,16 +2794,16 @@ id __89__PLManagedObjectContext_contextForRepairingSingletonObjectsWithReason_li
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = v8;
+      v28 = reasonCopy;
       v29 = 2112;
       v30 = v12;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Failed to load coordinator (reason: %{public}@). Error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -2847,11 +2847,11 @@ BOOL __87__PLManagedObjectContext__loadingPersistentStoreCoordinatorWithReason_e
   return v14;
 }
 
-+ (id)loadingPersistentStoreWithReason:(id)a3 error:(id *)a4 workBlock:(id)a5
++ (id)loadingPersistentStoreWithReason:(id)reason error:(id *)error workBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  reasonCopy = reason;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2864,9 +2864,9 @@ BOOL __87__PLManagedObjectContext__loadingPersistentStoreCoordinatorWithReason_e
   v17[1] = 3221225472;
   v17[2] = __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlock___block_invoke;
   v17[3] = &unk_1E75682B8;
-  v10 = v9;
+  v10 = blockCopy;
   v18 = v10;
-  v11 = [a1 _coreDataWorkWithRetryForReason:v8 error:&v20 retryBlock:v17];
+  v11 = [self _coreDataWorkWithRetryForReason:reasonCopy error:&v20 retryBlock:v17];
   v12 = v20;
   if ((v11 & 1) == 0)
   {
@@ -2874,16 +2874,16 @@ BOOL __87__PLManagedObjectContext__loadingPersistentStoreCoordinatorWithReason_e
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = v8;
+      v28 = reasonCopy;
       v29 = 2112;
       v30 = v12;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Failed to load the store (reason: %{public}@). Error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -2927,11 +2927,11 @@ BOOL __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlo
   return v14;
 }
 
-+ (BOOL)_coreDataWorkWithRetryForReason:(id)a3 error:(id *)a4 retryBlock:(id)a5
++ (BOOL)_coreDataWorkWithRetryForReason:(id)reason error:(id *)error retryBlock:(id)block
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  reasonCopy = reason;
+  blockCopy = block;
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:{vcvtd_n_f64_u32(arc4random(), 0x20uLL) * 0.02 + 0.08}];
   v35[0] = v9;
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:{vcvtd_n_f64_u32(arc4random(), 0x20uLL) * 0.25 + 0.75}];
@@ -2945,7 +2945,7 @@ BOOL __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlo
   {
     v14 = v13;
     v26 = v13;
-    v15 = v8[2](v8, &v26);
+    v15 = blockCopy[2](blockCopy, &v26);
     v13 = v26;
 
     if (v15)
@@ -2954,7 +2954,7 @@ BOOL __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlo
       goto LABEL_11;
     }
 
-    if ([v11 count] <= v12 || !objc_msgSend(a1, "_shouldRetryNewPersistentStoreCoordinatorWithError:", v13))
+    if ([v11 count] <= v12 || !objc_msgSend(self, "_shouldRetryNewPersistentStoreCoordinatorWithError:", v13))
     {
       break;
     }
@@ -2967,7 +2967,7 @@ BOOL __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlo
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v28 = v7;
+      v28 = reasonCopy;
       v29 = 2048;
       v30 = v18;
       v31 = 1024;
@@ -2983,10 +2983,10 @@ BOOL __75__PLManagedObjectContext_loadingPersistentStoreWithReason_error_workBlo
   while ([v11 count] > v12++);
   v21 = v13;
   v22 = v21;
-  if (a4)
+  if (error)
   {
     v23 = v21;
-    *a4 = v22;
+    *error = v22;
   }
 
 LABEL_11:
@@ -2994,24 +2994,24 @@ LABEL_11:
   return v15;
 }
 
-+ (BOOL)_shouldRetryNewPersistentStoreCoordinatorWithError:(id)a3
++ (BOOL)_shouldRetryNewPersistentStoreCoordinatorWithError:(id)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = *MEMORY[0x1E695D488];
   v8[0] = &unk_1F0FBF610;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  errorCopy = error;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  LOBYTE(v3) = MEMORY[0x19EAEE1B0](v4, v5);
+  LOBYTE(v3) = MEMORY[0x19EAEE1B0](errorCopy, v5);
 
   return v3;
 }
 
-+ (void)_setupInitialQueryGenerationForContext:(id)a3
++ (void)_setupInitialQueryGenerationForContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695D6E0] currentQueryGenerationToken];
+  contextCopy = context;
+  currentQueryGenerationToken = [MEMORY[0x1E695D6E0] currentQueryGenerationToken];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -3022,12 +3022,12 @@ LABEL_11:
   v21 = __Block_byref_object_copy__17410;
   v22 = __Block_byref_object_dispose__17411;
   v23 = 0;
-  v6 = [v4 concurrencyType];
-  if (!v6 || *MEMORY[0x1E695D708] == v6)
+  concurrencyType = [contextCopy concurrencyType];
+  if (!concurrencyType || *MEMORY[0x1E695D708] == concurrencyType)
   {
     v7 = (v19 + 5);
     obj = v19[5];
-    v8 = [v4 setQueryGenerationFromToken:v5 error:&obj];
+    v8 = [contextCopy setQueryGenerationFromToken:currentQueryGenerationToken error:&obj];
     objc_storeStrong(v7, obj);
     *(v25 + 24) = v8;
     if (v8)
@@ -3042,9 +3042,9 @@ LABEL_11:
     v13[1] = 3221225472;
     v13[2] = __65__PLManagedObjectContext__setupInitialQueryGenerationForContext___block_invoke;
     v13[3] = &unk_1E7578898;
-    v14 = v4;
+    v14 = contextCopy;
     v16 = &v24;
-    v15 = v5;
+    v15 = currentQueryGenerationToken;
     v17 = &v18;
     [PLManagedObjectContext _pl_megamoc_runWithPerformWarningsSuppressed:v13];
 
@@ -3062,7 +3062,7 @@ LABEL_11:
     *buf = 138412802;
     v29 = v10;
     v30 = 2048;
-    v31 = a1;
+    selfCopy = self;
     v32 = 2114;
     v33 = v11;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "%@ %p unable to set query generation to current: %{public}@", buf, 0x20u);
@@ -3104,42 +3104,42 @@ void __65__PLManagedObjectContext__setupInitialQueryGenerationForContext___block
   objc_storeStrong((*(a1[7] + 8) + 40), v5);
 }
 
-+ (void)_setupNameForContext:(id)a3 withLibrary:(id)a4
++ (void)_setupNameForContext:(id)context withLibrary:(id)library
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 pathManager];
-  v16 = [v7 libraryURL];
+  libraryCopy = library;
+  contextCopy = context;
+  pathManager = [libraryCopy pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  v8 = [MEMORY[0x1E69BF238] redactedDescriptionForFileURL:v16];
-  v9 = [v5 name];
-  v10 = v9;
+  v8 = [MEMORY[0x1E69BF238] redactedDescriptionForFileURL:libraryURL];
+  name = [libraryCopy name];
+  v10 = name;
   v11 = @"anon";
-  if (v9)
+  if (name)
   {
-    v11 = v9;
+    v11 = name;
   }
 
   v12 = v11;
 
-  v13 = [v5 role];
-  v14 = [PLPhotoLibrary stringFromLibraryRole:v13];
+  role = [libraryCopy role];
+  v14 = [PLPhotoLibrary stringFromLibraryRole:role];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@) %@", v12, v8, v14];
 
-  [v6 setPl_basename:v15];
-  [v6 setName:v15];
+  [contextCopy setPl_basename:v15];
+  [contextCopy setName:v15];
 }
 
-+ (id)newContextForPhotoLibrary:(id)a3 automaticallyMerges:(BOOL)a4
++ (id)newContextForPhotoLibrary:(id)library automaticallyMerges:(BOOL)merges
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 libraryBundle];
+  mergesCopy = merges;
+  libraryCopy = library;
+  libraryBundle = [libraryCopy libraryBundle];
   v7 = objc_opt_class();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 || !v4)
+  if ((isKindOfClass & 1) != 0 || !mergesCopy)
   {
     if (isKindOfClass)
     {
@@ -3159,26 +3159,26 @@ void __65__PLManagedObjectContext__setupInitialQueryGenerationForContext___block
     v9 = 1;
   }
 
-  v10 = [[v7 alloc] initWithConcurrencyType:v9 libraryBundle:v6];
+  v10 = [[v7 alloc] initWithConcurrencyType:v9 libraryBundle:libraryBundle];
 
   return v10;
 }
 
-+ (id)contextForUninitializedPhotoLibrary:(id)a3 automaticallyMerges:(BOOL)a4 automaticallyPinToFirstFetch:(BOOL)a5
++ (id)contextForUninitializedPhotoLibrary:(id)library automaticallyMerges:(BOOL)merges automaticallyPinToFirstFetch:(BOOL)fetch
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  fetchCopy = fetch;
+  mergesCopy = merges;
+  libraryCopy = library;
   pl_dispatch_once();
-  v9 = [a1 newContextForPhotoLibrary:v8 automaticallyMerges:v6];
-  [a1 _setupNameForContext:v9 withLibrary:v8];
-  if (v5)
+  v9 = [self newContextForPhotoLibrary:libraryCopy automaticallyMerges:mergesCopy];
+  [self _setupNameForContext:v9 withLibrary:libraryCopy];
+  if (fetchCopy)
   {
-    [a1 _setupInitialQueryGenerationForContext:v9];
+    [self _setupInitialQueryGenerationForContext:v9];
   }
 
   [v9 _pl_setupStalenessInterval];
-  [v9 setPhotoLibrary:v8];
+  [v9 setPhotoLibrary:libraryCopy];
 
   return v9;
 }

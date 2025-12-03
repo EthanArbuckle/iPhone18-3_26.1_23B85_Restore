@@ -3,28 +3,28 @@
 - (CGRect)accessibilityFrame;
 - (CRLCanvasRepAccessibility)_selectableRep;
 - (CRLCanvasRepAccessibility)rep;
-- (CRLRepContainerAccessibilityElement)initWithRep:(id)a3 accessibilityParent:(id)a4;
+- (CRLRepContainerAccessibilityElement)initWithRep:(id)rep accessibilityParent:(id)parent;
 - (id)_crlaxGroupRepAncestor;
 - (id)_crlaxKnobElementsUniqueToRep;
-- (void)crlaxLoadChildrenIntoCollection:(id)a3;
+- (void)crlaxLoadChildrenIntoCollection:(id)collection;
 - (void)dealloc;
 @end
 
 @implementation CRLRepContainerAccessibilityElement
 
-- (CRLRepContainerAccessibilityElement)initWithRep:(id)a3 accessibilityParent:(id)a4
+- (CRLRepContainerAccessibilityElement)initWithRep:(id)rep accessibilityParent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  parentCopy = parent;
   v17.receiver = self;
   v17.super_class = CRLRepContainerAccessibilityElement;
-  v8 = [(CRLAccessibilityElement *)&v17 initWithAccessibilityParent:v7];
+  v8 = [(CRLAccessibilityElement *)&v17 initWithAccessibilityParent:parentCopy];
   ShouldPerformValidationChecks = CRLAccessibilityShouldPerformValidationChecks();
-  if (v6 || !ShouldPerformValidationChecks)
+  if (repCopy || !ShouldPerformValidationChecks)
   {
-    if (v6)
+    if (repCopy)
     {
-      objc_storeWeak(&v8->_rep, v6);
+      objc_storeWeak(&v8->_rep, repCopy);
     }
   }
 
@@ -46,8 +46,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRLRepContainerAccessibilityElement *)self crlaxChildren];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  crlaxChildren = [(CRLRepContainerAccessibilityElement *)self crlaxChildren];
+  v4 = [crlaxChildren countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,7 +59,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(crlaxChildren);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setAccessibilityContainer:0];
@@ -67,7 +67,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [crlaxChildren countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -93,8 +93,8 @@
     else
     {
       v6 = [(CRLRepContainerAccessibilityElement *)self rep];
-      v7 = [v6 crlaxInteractiveCanvasController];
-      if ([v7 crlaxIsTearingDown])
+      crlaxInteractiveCanvasController = [v6 crlaxInteractiveCanvasController];
+      if ([crlaxInteractiveCanvasController crlaxIsTearingDown])
       {
         v5 = 0;
       }
@@ -114,26 +114,26 @@
   return v5;
 }
 
-- (void)crlaxLoadChildrenIntoCollection:(id)a3
+- (void)crlaxLoadChildrenIntoCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(CRLRepContainerAccessibilityElement *)self rep];
-  [v4 addObject:v5];
+  [collectionCopy addObject:v5];
   if ([v5 crlaxShouldCreateKnobs])
   {
-    v6 = [(CRLRepContainerAccessibilityElement *)self _crlaxKnobElementsUniqueToRep];
-    [v4 addObjectsFromArray:v6];
+    _crlaxKnobElementsUniqueToRep = [(CRLRepContainerAccessibilityElement *)self _crlaxKnobElementsUniqueToRep];
+    [collectionCopy addObjectsFromArray:_crlaxKnobElementsUniqueToRep];
   }
 
   if ([v5 isAccessibilityElement])
   {
-    v7 = [v5 crlaxChildren];
-    v8 = [v7 count];
+    crlaxChildren = [v5 crlaxChildren];
+    v8 = [crlaxChildren count];
 
     if (v8)
     {
-      v9 = [v5 crlaxChildren];
-      [v4 addObjectsFromArray:v9];
+      crlaxChildren2 = [v5 crlaxChildren];
+      [collectionCopy addObjectsFromArray:crlaxChildren2];
     }
   }
 
@@ -141,7 +141,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = collectionCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -170,8 +170,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(CRLRepContainerAccessibilityElement *)self _selectableRep];
-  [v2 accessibilityFrame];
+  _selectableRep = [(CRLRepContainerAccessibilityElement *)self _selectableRep];
+  [_selectableRep accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -191,14 +191,14 @@
 - (CRLCanvasRepAccessibility)_selectableRep
 {
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v4 = [WeakRetained crlaxRepForSelecting];
+  crlaxRepForSelecting = [WeakRetained crlaxRepForSelecting];
 
-  if (!v4)
+  if (!crlaxRepForSelecting)
   {
-    v4 = objc_loadWeakRetained(&self->_rep);
+    crlaxRepForSelecting = objc_loadWeakRetained(&self->_rep);
   }
 
-  return v4;
+  return crlaxRepForSelecting;
 }
 
 - (id)_crlaxKnobElementsUniqueToRep
@@ -206,13 +206,13 @@
   v3 = +[NSMutableArray array];
   v4 = +[NSSet set];
   v5 = [(CRLRepContainerAccessibilityElement *)self rep];
-  v6 = [v5 crlaxIsInGroup];
+  crlaxIsInGroup = [v5 crlaxIsInGroup];
 
-  if (v6)
+  if (crlaxIsInGroup)
   {
-    v7 = [(CRLRepContainerAccessibilityElement *)self _crlaxGroupRepAncestor];
-    v8 = [v7 crlaxKnobAccessibilityElements];
-    v9 = [NSSet setWithArray:v8];
+    _crlaxGroupRepAncestor = [(CRLRepContainerAccessibilityElement *)self _crlaxGroupRepAncestor];
+    crlaxKnobAccessibilityElements = [_crlaxGroupRepAncestor crlaxKnobAccessibilityElements];
+    v9 = [NSSet setWithArray:crlaxKnobAccessibilityElements];
 
     v4 = v9;
   }
@@ -221,9 +221,9 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(CRLRepContainerAccessibilityElement *)self _selectableRep];
-  v11 = [v10 crlaxKnobAccessibilityElements];
-  v12 = [CRLCanvasKnobAccessibilityElement crlaxSortKnobElements:v11];
+  _selectableRep = [(CRLRepContainerAccessibilityElement *)self _selectableRep];
+  crlaxKnobAccessibilityElements2 = [_selectableRep crlaxKnobAccessibilityElements];
+  v12 = [CRLCanvasKnobAccessibilityElement crlaxSortKnobElements:crlaxKnobAccessibilityElements2];
 
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
@@ -257,13 +257,13 @@
 
 - (id)_crlaxGroupRepAncestor
 {
-  v2 = [(CRLRepContainerAccessibilityElement *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(CRLRepContainerAccessibilityElement *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     while (1)
     {
       v7 = 0;
-      v3 = v2;
+      v3 = accessibilityContainer;
       v4 = objc_opt_class();
       v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v7);
       if (v7 == 1)
@@ -271,16 +271,16 @@
         abort();
       }
 
-      v2 = v5;
+      accessibilityContainer = v5;
 
-      if (v2)
+      if (accessibilityContainer)
       {
         break;
       }
 
-      v2 = [v3 accessibilityContainer];
+      accessibilityContainer = [v3 accessibilityContainer];
 
-      if (!v2)
+      if (!accessibilityContainer)
       {
         goto LABEL_5;
       }
@@ -293,7 +293,7 @@ LABEL_5:
     v3 = 0;
   }
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (CRLCanvasRepAccessibility)rep

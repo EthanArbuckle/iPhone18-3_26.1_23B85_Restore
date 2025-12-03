@@ -1,41 +1,41 @@
 @interface CHBAutoStyling
-- (id)autoSeriesFill:(unint64_t)a3;
+- (id)autoSeriesFill:(unint64_t)fill;
 - (id)autoTextFill;
-- (id)fillWithColorIndex:(unint64_t)a3;
-- (id)strokeWithColorIndex:(int)a3;
-- (void)resolveAxisGraphicProperties:(id)a3;
-- (void)resolveChartAreaGraphicProperties:(id)a3;
-- (void)resolveFloorGraphicProperties:(id)a3;
-- (void)resolveGraphicPropertiesOfErrorBar:(id)a3 forSeriesIndex:(unint64_t)a4;
-- (void)resolveGraphicPropertiesOfSeries:(id)a3 forSeriesIndex:(unint64_t)a4 isLine:(BOOL)a5;
-- (void)resolveGraphicPropertiesOfTrendline:(id)a3 forSeriesIndex:(unint64_t)a4;
-- (void)resolveLegendGraphicProperties:(id)a3;
-- (void)resolveMajorGridLinesGraphicProperties:(id)a3;
-- (void)resolveMarker:(id)a3 withSeriesGraphicProperties:(id)a4 forSeriesIndex:(unint64_t)a5 clientGraphicPropertyDefaults:(id)a6;
-- (void)resolveMinorGridLinesGraphicProperties:(id)a3;
-- (void)resolvePlotAreaGraphicProperties:(id)a3;
-- (void)resolveWallGraphicProperties:(id)a3;
-- (void)resolvedGraphicProperties:(id)a3 autoFill:(id)a4 autoStroke:(id)a5 autoShadow:(BOOL)a6 nullFill:(id)a7 nullStroke:(id)a8 nullShadow:(BOOL)a9;
+- (id)fillWithColorIndex:(unint64_t)index;
+- (id)strokeWithColorIndex:(int)index;
+- (void)resolveAxisGraphicProperties:(id)properties;
+- (void)resolveChartAreaGraphicProperties:(id)properties;
+- (void)resolveFloorGraphicProperties:(id)properties;
+- (void)resolveGraphicPropertiesOfErrorBar:(id)bar forSeriesIndex:(unint64_t)index;
+- (void)resolveGraphicPropertiesOfSeries:(id)series forSeriesIndex:(unint64_t)index isLine:(BOOL)line;
+- (void)resolveGraphicPropertiesOfTrendline:(id)trendline forSeriesIndex:(unint64_t)index;
+- (void)resolveLegendGraphicProperties:(id)properties;
+- (void)resolveMajorGridLinesGraphicProperties:(id)properties;
+- (void)resolveMarker:(id)marker withSeriesGraphicProperties:(id)properties forSeriesIndex:(unint64_t)index clientGraphicPropertyDefaults:(id)defaults;
+- (void)resolveMinorGridLinesGraphicProperties:(id)properties;
+- (void)resolvePlotAreaGraphicProperties:(id)properties;
+- (void)resolveWallGraphicProperties:(id)properties;
+- (void)resolvedGraphicProperties:(id)properties autoFill:(id)fill autoStroke:(id)stroke autoShadow:(BOOL)shadow nullFill:(id)nullFill nullStroke:(id)nullStroke nullShadow:(BOOL)nullShadow;
 @end
 
 @implementation CHBAutoStyling
 
-- (void)resolvedGraphicProperties:(id)a3 autoFill:(id)a4 autoStroke:(id)a5 autoShadow:(BOOL)a6 nullFill:(id)a7 nullStroke:(id)a8 nullShadow:(BOOL)a9
+- (void)resolvedGraphicProperties:(id)properties autoFill:(id)fill autoStroke:(id)stroke autoShadow:(BOOL)shadow nullFill:(id)nullFill nullStroke:(id)nullStroke nullShadow:(BOOL)nullShadow
 {
-  v11 = a6;
-  v14 = a9;
-  v39 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (v39)
+  shadowCopy = shadow;
+  nullShadowCopy = nullShadow;
+  propertiesCopy = properties;
+  fillCopy = fill;
+  strokeCopy = stroke;
+  nullFillCopy = nullFill;
+  nullStrokeCopy = nullStroke;
+  if (propertiesCopy)
   {
-    v19 = [v39 isMergedWithParent];
-    [v39 setMergedWithParent:0];
-    if (v16)
+    isMergedWithParent = [propertiesCopy isMergedWithParent];
+    [propertiesCopy setMergedWithParent:0];
+    if (strokeCopy)
     {
-      if (v18)
+      if (nullStrokeCopy)
       {
         goto LABEL_7;
       }
@@ -43,29 +43,29 @@
 
     else
     {
-      v16 = +[OADStroke nullStroke];
-      if (v18)
+      strokeCopy = +[OADStroke nullStroke];
+      if (nullStrokeCopy)
       {
         goto LABEL_7;
       }
     }
 
-    v18 = +[OADStroke nullStroke];
+    nullStrokeCopy = +[OADStroke nullStroke];
 LABEL_7:
-    v20 = [v39 hasStroke];
-    v21 = v18;
-    if (v20)
+    hasStroke = [propertiesCopy hasStroke];
+    v21 = nullStrokeCopy;
+    if (hasStroke)
     {
-      v22 = [v39 stroke];
+      stroke = [propertiesCopy stroke];
       v23 = +[CHDAutomaticObject automaticStroke];
 
-      if (v22 != v23)
+      if (stroke != v23)
       {
         goto LABEL_13;
       }
 
-      [v39 setStroke:0];
-      v21 = v16;
+      [propertiesCopy setStroke:0];
+      v21 = strokeCopy;
     }
 
     v24 = v21;
@@ -74,21 +74,21 @@ LABEL_7:
       v25 = v24;
       v26 = [v24 copy];
 
-      if ([v39 hasStroke])
+      if ([propertiesCopy hasStroke])
       {
-        v27 = [v39 stroke];
-        [v27 setParent:v26];
+        stroke2 = [propertiesCopy stroke];
+        [stroke2 setParent:v26];
       }
 
       else
       {
-        [v39 setStroke:v26];
+        [propertiesCopy setStroke:v26];
       }
 
 LABEL_15:
-      if (v15)
+      if (fillCopy)
       {
-        if (v17)
+        if (nullFillCopy)
         {
           goto LABEL_20;
         }
@@ -96,29 +96,29 @@ LABEL_15:
 
       else
       {
-        v15 = +[OADNullFill nullFill];
-        if (v17)
+        fillCopy = +[OADNullFill nullFill];
+        if (nullFillCopy)
         {
           goto LABEL_20;
         }
       }
 
-      v17 = +[OADNullFill nullFill];
+      nullFillCopy = +[OADNullFill nullFill];
 LABEL_20:
-      v28 = [v39 hasFill];
-      v29 = v17;
-      if (v28)
+      hasFill = [propertiesCopy hasFill];
+      v29 = nullFillCopy;
+      if (hasFill)
       {
-        v30 = [v39 fill];
+        fill = [propertiesCopy fill];
         v31 = +[CHDAutomaticObject automaticFill];
 
-        if (v30 != v31)
+        if (fill != v31)
         {
           goto LABEL_28;
         }
 
-        [v39 setFill:0];
-        v29 = v15;
+        [propertiesCopy setFill:0];
+        v29 = fillCopy;
       }
 
       v32 = v29;
@@ -127,12 +127,12 @@ LABEL_20:
         v33 = v32;
         v34 = [v32 copy];
 
-        if ([v39 hasFill])
+        if ([propertiesCopy hasFill])
         {
-          v35 = [v39 fill];
+          fill2 = [propertiesCopy fill];
           if ([v34 isMemberOfClass:objc_opt_class()])
           {
-            [v35 setParent:v34];
+            [fill2 setParent:v34];
           }
         }
 
@@ -144,29 +144,29 @@ LABEL_20:
             [v34 setDefinedByStyle:1];
           }
 
-          [v39 setFill:v34];
+          [propertiesCopy setFill:v34];
         }
 
 LABEL_32:
-        if ([v39 hasEffects])
+        if ([propertiesCopy hasEffects])
         {
-          v36 = [v39 effects];
+          effects = [propertiesCopy effects];
           v37 = +[CHDAutomaticObject automaticEffects];
 
-          if (v36 != v37)
+          if (effects != v37)
           {
 LABEL_36:
-            [v39 setMergedWithParent:v19];
+            [propertiesCopy setMergedWithParent:isMergedWithParent];
 
             goto LABEL_37;
           }
 
-          [v39 setEffects:0];
-          v14 = v11;
+          [propertiesCopy setEffects:0];
+          nullShadowCopy = shadowCopy;
         }
 
-        v38 = [CHDChart binaryEffects:v14];
-        [v39 setEffects:v38];
+        v38 = [CHDChart binaryEffects:nullShadowCopy];
+        [propertiesCopy setEffects:v38];
 
         goto LABEL_36;
       }
@@ -184,18 +184,18 @@ LABEL_13:
 LABEL_37:
 }
 
-- (id)fillWithColorIndex:(unint64_t)a3
+- (id)fillWithColorIndex:(unint64_t)index
 {
-  v3 = [[OADIndexedColor alloc] initWithIndex:a3];
+  v3 = [[OADIndexedColor alloc] initWithIndex:index];
   v4 = objc_alloc_init(OADSolidFill);
   [(OADSolidFill *)v4 setColor:v3];
 
   return v4;
 }
 
-- (id)strokeWithColorIndex:(int)a3
+- (id)strokeWithColorIndex:(int)index
 {
-  v3 = [(CHBAutoStyling *)self fillWithColorIndex:a3];
+  v3 = [(CHBAutoStyling *)self fillWithColorIndex:index];
   v4 = objc_alloc_init(OADStroke);
   [(OADStroke *)v4 setFill:v3];
   LODWORD(v5) = 1.0;
@@ -204,128 +204,128 @@ LABEL_37:
   return v4;
 }
 
-- (id)autoSeriesFill:(unint64_t)a3
+- (id)autoSeriesFill:(unint64_t)fill
 {
   v3 = 16;
-  if (a3 > 7)
+  if (fill > 7)
   {
     v3 = 24;
   }
 
-  return [(CHBAutoStyling *)self fillWithColorIndex:(v3 + a3) % 0x38 + 8];
+  return [(CHBAutoStyling *)self fillWithColorIndex:(v3 + fill) % 0x38 + 8];
 }
 
-- (void)resolveChartAreaGraphicProperties:(id)a3
+- (void)resolveChartAreaGraphicProperties:(id)properties
 {
-  v7 = a3;
-  if (v7)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoFill];
-    v5 = [(CHBAutoStyling *)self autoStroke];
+    autoFill = [(CHBAutoStyling *)self autoFill];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:v4 autoStroke:v5 autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:autoFill autoStroke:autoStroke autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v6];
   }
 }
 
-- (void)resolveWallGraphicProperties:(id)a3
+- (void)resolveWallGraphicProperties:(id)properties
 {
-  v7 = a3;
-  if (v7)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoFill];
-    v5 = [(CHBAutoStyling *)self autoStroke];
+    autoFill = [(CHBAutoStyling *)self autoFill];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:v4 autoStroke:v5 autoShadow:0 nullFill:v4 nullStroke:v5 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:autoFill autoStroke:autoStroke autoShadow:0 nullFill:autoFill nullStroke:autoStroke nullShadow:v6];
   }
 }
 
-- (void)resolveFloorGraphicProperties:(id)a3
+- (void)resolveFloorGraphicProperties:(id)properties
 {
-  v7 = a3;
-  if (v7)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     v4 = [(CHBAutoStyling *)self fillWithColorIndex:23];
-    v5 = [(CHBAutoStyling *)self autoStroke];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:v4 autoStroke:v5 autoShadow:0 nullFill:v4 nullStroke:v5 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:v4 autoStroke:autoStroke autoShadow:0 nullFill:v4 nullStroke:autoStroke nullShadow:v6];
   }
 }
 
-- (void)resolvePlotAreaGraphicProperties:(id)a3
+- (void)resolvePlotAreaGraphicProperties:(id)properties
 {
-  v7 = a3;
-  if (v7)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoFill];
-    v5 = [(CHBAutoStyling *)self autoStroke];
+    autoFill = [(CHBAutoStyling *)self autoFill];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:v4 autoStroke:v5 autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:autoFill autoStroke:autoStroke autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v6];
   }
 }
 
-- (void)resolveAxisGraphicProperties:(id)a3
+- (void)resolveAxisGraphicProperties:(id)properties
 {
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoStroke];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v5) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v6 autoFill:0 autoStroke:v4 autoShadow:0 nullFill:0 nullStroke:v4 nullShadow:v5];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:0 autoStroke:autoStroke autoShadow:0 nullFill:0 nullStroke:autoStroke nullShadow:v5];
   }
 }
 
-- (void)resolveMajorGridLinesGraphicProperties:(id)a3
+- (void)resolveMajorGridLinesGraphicProperties:(id)properties
 {
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoStroke];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v5) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v6 autoFill:0 autoStroke:v4 autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v5];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:0 autoStroke:autoStroke autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v5];
   }
 }
 
-- (void)resolveMinorGridLinesGraphicProperties:(id)a3
+- (void)resolveMinorGridLinesGraphicProperties:(id)properties
 {
-  v6 = a3;
-  if (v6)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoStroke];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v5) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v6 autoFill:0 autoStroke:v4 autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v5];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:0 autoStroke:autoStroke autoShadow:0 nullFill:0 nullStroke:0 nullShadow:v5];
   }
 }
 
-- (void)resolveLegendGraphicProperties:(id)a3
+- (void)resolveLegendGraphicProperties:(id)properties
 {
-  v7 = a3;
-  if (v7)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
-    v4 = [(CHBAutoStyling *)self autoFill];
-    v5 = [(CHBAutoStyling *)self autoStroke];
+    autoFill = [(CHBAutoStyling *)self autoFill];
+    autoStroke = [(CHBAutoStyling *)self autoStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:v4 autoStroke:v5 autoShadow:0 nullFill:v4 nullStroke:v5 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:propertiesCopy autoFill:autoFill autoStroke:autoStroke autoShadow:0 nullFill:autoFill nullStroke:autoStroke nullShadow:v6];
   }
 }
 
 - (id)autoTextFill
 {
-  v2 = [(CHBAutoStyling *)self autoStroke];
-  v3 = [v2 fill];
+  autoStroke = [(CHBAutoStyling *)self autoStroke];
+  fill = [autoStroke fill];
 
-  return v3;
+  return fill;
 }
 
-- (void)resolveGraphicPropertiesOfSeries:(id)a3 forSeriesIndex:(unint64_t)a4 isLine:(BOOL)a5
+- (void)resolveGraphicPropertiesOfSeries:(id)series forSeriesIndex:(unint64_t)index isLine:(BOOL)line
 {
-  v5 = a5;
-  v11 = a3;
-  if (v11)
+  lineCopy = line;
+  seriesCopy = series;
+  if (seriesCopy)
   {
-    v8 = [(CHBAutoStyling *)self autoSeriesFill:a4];
-    if (v5)
+    v8 = [(CHBAutoStyling *)self autoSeriesFill:index];
+    if (lineCopy)
     {
-      [(CHBAutoStyling *)self autoStrokeForSeriesIndex:a4];
+      [(CHBAutoStyling *)self autoStrokeForSeriesIndex:index];
     }
 
     else
@@ -334,96 +334,96 @@ LABEL_37:
     }
     v9 = ;
     LOBYTE(v10) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v11 autoFill:v8 autoStroke:v9 autoShadow:0 nullFill:v8 nullStroke:v9 nullShadow:v10];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:seriesCopy autoFill:v8 autoStroke:v9 autoShadow:0 nullFill:v8 nullStroke:v9 nullShadow:v10];
   }
 }
 
-- (void)resolveGraphicPropertiesOfTrendline:(id)a3 forSeriesIndex:(unint64_t)a4
+- (void)resolveGraphicPropertiesOfTrendline:(id)trendline forSeriesIndex:(unint64_t)index
 {
-  v9 = a3;
-  if (v9)
+  trendlineCopy = trendline;
+  if (trendlineCopy)
   {
-    v6 = [(CHBAutoStyling *)self autoSeriesFill:a4];
-    v7 = [(CHBAutoStyling *)self autoSeriesBorderStroke];
+    v6 = [(CHBAutoStyling *)self autoSeriesFill:index];
+    autoSeriesBorderStroke = [(CHBAutoStyling *)self autoSeriesBorderStroke];
     LOBYTE(v8) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v9 autoFill:v6 autoStroke:v7 autoShadow:0 nullFill:v6 nullStroke:v7 nullShadow:v8];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:trendlineCopy autoFill:v6 autoStroke:autoSeriesBorderStroke autoShadow:0 nullFill:v6 nullStroke:autoSeriesBorderStroke nullShadow:v8];
   }
 }
 
-- (void)resolveGraphicPropertiesOfErrorBar:(id)a3 forSeriesIndex:(unint64_t)a4
+- (void)resolveGraphicPropertiesOfErrorBar:(id)bar forSeriesIndex:(unint64_t)index
 {
-  v7 = a3;
-  if (v7)
+  barCopy = bar;
+  if (barCopy)
   {
-    v5 = [(CHBAutoStyling *)self autoSeriesBorderStroke];
+    autoSeriesBorderStroke = [(CHBAutoStyling *)self autoSeriesBorderStroke];
     LOBYTE(v6) = 0;
-    [(CHBAutoStyling *)self resolvedGraphicProperties:v7 autoFill:0 autoStroke:v5 autoShadow:0 nullFill:0 nullStroke:v5 nullShadow:v6];
+    [(CHBAutoStyling *)self resolvedGraphicProperties:barCopy autoFill:0 autoStroke:autoSeriesBorderStroke autoShadow:0 nullFill:0 nullStroke:autoSeriesBorderStroke nullShadow:v6];
   }
 }
 
-- (void)resolveMarker:(id)a3 withSeriesGraphicProperties:(id)a4 forSeriesIndex:(unint64_t)a5 clientGraphicPropertyDefaults:(id)a6
+- (void)resolveMarker:(id)marker withSeriesGraphicProperties:(id)properties forSeriesIndex:(unint64_t)index clientGraphicPropertyDefaults:(id)defaults
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  markerCopy = marker;
+  propertiesCopy = properties;
+  defaultsCopy = defaults;
+  if (markerCopy)
   {
-    v13 = [v10 graphicProperties];
+    graphicProperties = [markerCopy graphicProperties];
 
-    if (v11)
+    if (propertiesCopy)
     {
-      if (v13)
+      if (graphicProperties)
       {
-        v14 = [(CHBAutoStyling *)self autoStrokeForSeriesIndex:a5];
-        if ([v11 hasFill])
+        v14 = [(CHBAutoStyling *)self autoStrokeForSeriesIndex:index];
+        if ([propertiesCopy hasFill])
         {
-          v15 = [v11 fill];
+          fill = [propertiesCopy fill];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = v15;
-            v17 = [v16 technique];
+            v16 = fill;
+            technique = [v16 technique];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
               v19 = [v16 copy];
-              v20 = [v10 graphicProperties];
-              [v20 setFill:v19];
+              graphicProperties2 = [markerCopy graphicProperties];
+              [graphicProperties2 setFill:v19];
             }
           }
         }
 
-        if (![v10 size])
+        if (![markerCopy size])
         {
-          [v10 setSize:5];
+          [markerCopy setSize:5];
         }
 
-        if ([v10 style] == -1)
+        if ([markerCopy style] == -1)
         {
-          [v10 setStyle:{-[CHAutoStyling defaultMarkerStyleForSeriesIndex:](self, "defaultMarkerStyleForSeriesIndex:", a5)}];
+          [markerCopy setStyle:{-[CHAutoStyling defaultMarkerStyleForSeriesIndex:](self, "defaultMarkerStyleForSeriesIndex:", index)}];
           v21 = v14;
-          v22 = [v21 fill];
+          fill2 = [v21 fill];
         }
 
         else
         {
           v21 = 0;
-          v22 = 0;
+          fill2 = 0;
         }
 
-        if (![v10 style])
+        if (![markerCopy style])
         {
           v26.receiver = self;
           v26.super_class = CHBAutoStyling;
-          [(CHAutoStyling *)&v26 replaceStrokeAndFillInEmptyMarker:v10 withSeriesGraphicProperties:v11];
+          [(CHAutoStyling *)&v26 replaceStrokeAndFillInEmptyMarker:markerCopy withSeriesGraphicProperties:propertiesCopy];
         }
 
-        v23 = [v10 graphicProperties];
-        v24 = [v14 fill];
+        graphicProperties3 = [markerCopy graphicProperties];
+        fill3 = [v14 fill];
         LOBYTE(v25) = 0;
-        [(CHBAutoStyling *)self resolvedGraphicProperties:v23 autoFill:v24 autoStroke:v14 autoShadow:0 nullFill:v22 nullStroke:v21 nullShadow:v25];
+        [(CHBAutoStyling *)self resolvedGraphicProperties:graphicProperties3 autoFill:fill3 autoStroke:v14 autoShadow:0 nullFill:fill2 nullStroke:v21 nullShadow:v25];
       }
     }
   }

@@ -1,9 +1,9 @@
 @interface PDXPCService
 - (NSString)remoteProcessBundleIdentifier;
 - (PDXPCApplicationInfo)remoteProcessApplicationInfo;
-- (PDXPCService)initWithConnection:(id)a3;
+- (PDXPCService)initWithConnection:(id)connection;
 - (id)connection;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)clearConnectionReference;
 - (void)serviceResumed;
 - (void)serviceSuspended;
@@ -43,9 +43,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (PDXPCService)initWithConnection:(id)a3
+- (PDXPCService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = PDXPCService;
   v6 = [(PDXPCService *)&v17 init];
@@ -53,25 +53,25 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [v9 copy];
     className = v7->_className;
     v7->_className = v10;
 
-    if (v5)
+    if (connectionCopy)
     {
-      v12 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
     }
 
     else
     {
-      v12 = -1;
+      processIdentifier = -1;
     }
 
-    v7->_remoteProcessIdentifier = v12;
-    v13 = [v5 valueForEntitlement:@"application-identifier"];
+    v7->_remoteProcessIdentifier = processIdentifier;
+    v13 = [connectionCopy valueForEntitlement:@"application-identifier"];
     v14 = [v13 copy];
     remoteProcessApplicationIdentifier = v7->_remoteProcessApplicationIdentifier;
     v7->_remoteProcessApplicationIdentifier = v14;
@@ -89,9 +89,9 @@
   return v3;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_callbacksSuspended)
   {
@@ -100,13 +100,13 @@
 
   else
   {
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:v4];
+    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v4 && !v5)
+  if (handlerCopy && !v5)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   return v5;
@@ -114,10 +114,10 @@
 
 - (PDXPCApplicationInfo)remoteProcessApplicationInfo
 {
-  v2 = [(PDXPCService *)self remoteProcessIdentifier];
-  if (v2)
+  remoteProcessIdentifier = [(PDXPCService *)self remoteProcessIdentifier];
+  if (remoteProcessIdentifier)
   {
-    v3 = [[PDXPCApplicationInfo alloc] initWithPID:v2];
+    v3 = [[PDXPCApplicationInfo alloc] initWithPID:remoteProcessIdentifier];
   }
 
   else
@@ -130,10 +130,10 @@
 
 - (NSString)remoteProcessBundleIdentifier
 {
-  v2 = [(PDXPCService *)self remoteProcessApplicationInfo];
-  v3 = [v2 displayID];
+  remoteProcessApplicationInfo = [(PDXPCService *)self remoteProcessApplicationInfo];
+  displayID = [remoteProcessApplicationInfo displayID];
 
-  return v3;
+  return displayID;
 }
 
 - (void)serviceSuspended

@@ -4,10 +4,10 @@
 + (NSString)deviceTokenServerResponseKey;
 - (AKBAADeviceTokenController)init;
 - (int64_t)shouldSendBAACertWithToken;
-- (void)fetchBAADeviceTokenWithCompletionHandler:(id)a3;
+- (void)fetchBAADeviceTokenWithCompletionHandler:(id)handler;
 - (void)markBAAOperationSuccessful;
-- (void)refreshBAADeviceTokenWithCompletionHandler:(id)a3;
-- (void)refreshCertWithTokenFeatureWithCompletionHandler:(id)a3;
+- (void)refreshBAADeviceTokenWithCompletionHandler:(id)handler;
+- (void)refreshCertWithTokenFeatureWithCompletionHandler:(id)handler;
 @end
 
 @implementation AKBAADeviceTokenController
@@ -40,7 +40,7 @@
 
 - (int64_t)shouldSendBAACertWithToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001FAFA8();
 
   return v3;
@@ -76,19 +76,19 @@
 - (void)markBAAOperationSuccessful
 {
   v2 = *(&self->super.isa + OBJC_IVAR___AKBAADeviceTokenController_haveBAAOperationsSucceeded);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 20));
   *(v2 + 16) = 1;
   os_unfair_lock_unlock((v2 + 20));
 }
 
-- (void)refreshBAADeviceTokenWithCompletionHandler:(id)a3
+- (void)refreshBAADeviceTokenWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -104,17 +104,17 @@
   v13[3] = 0;
   v13[4] = &unk_10029E060;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029E3B0, v13);
 }
 
-- (void)fetchBAADeviceTokenWithCompletionHandler:(id)a3
+- (void)fetchBAADeviceTokenWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -130,17 +130,17 @@
   v13[3] = 0;
   v13[4] = &unk_10029E040;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029E390, v13);
 }
 
-- (void)refreshCertWithTokenFeatureWithCompletionHandler:(id)a3
+- (void)refreshCertWithTokenFeatureWithCompletionHandler:(id)handler
 {
   v5 = sub_1001AD17C(&unk_100372310, &qword_10029CEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -156,7 +156,7 @@
   v13[3] = 0;
   v13[4] = &unk_10029C6A0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_100244978(0, 0, v8, &unk_10029CEE0, v13);
 }
 

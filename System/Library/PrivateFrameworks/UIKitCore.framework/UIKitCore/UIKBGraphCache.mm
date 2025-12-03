@@ -1,13 +1,13 @@
 @interface UIKBGraphCache
-+ (id)graphCacheForScreen:(id)a3;
-- (id)_initWithScreen:(id)a3 options:(id)a4;
++ (id)graphCacheForScreen:(id)screen;
+- (id)_initWithScreen:(id)screen options:(id)options;
 @end
 
 @implementation UIKBGraphCache
 
-- (id)_initWithScreen:(id)a3 options:(id)a4
+- (id)_initWithScreen:(id)screen options:(id)options
 {
-  v6 = a3;
+  screenCopy = screen;
   v11.receiver = self;
   v11.super_class = UIKBGraphCache;
   v7 = [(UIKBGraphCache *)&v11 init];
@@ -17,16 +17,16 @@
     graphCache = v7->_graphCache;
     v7->_graphCache = v8;
 
-    objc_storeStrong(&v7->_screen, a3);
+    objc_storeStrong(&v7->_screen, screen);
   }
 
   return v7;
 }
 
-+ (id)graphCacheForScreen:(id)a3
++ (id)graphCacheForScreen:(id)screen
 {
-  v3 = a3;
-  v4 = [_UIObjectPerScreen objectOfClass:objc_opt_class() forScreen:v3 withOptions:0 createIfNecessary:1];
+  screenCopy = screen;
+  v4 = [_UIObjectPerScreen objectOfClass:objc_opt_class() forScreen:screenCopy withOptions:0 createIfNecessary:1];
 
   return v4;
 }

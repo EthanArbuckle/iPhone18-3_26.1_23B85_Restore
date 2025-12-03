@@ -1,32 +1,32 @@
 @interface TSCHSelectionPathType
-+ (TSCHSelectionPathType)selectionPathTypeWithType:(id)a3 name:(id)a4;
-- (BOOL)canApplyChartStyleWithDescription:(id)a3;
++ (TSCHSelectionPathType)selectionPathTypeWithType:(id)type name:(id)name;
+- (BOOL)canApplyChartStyleWithDescription:(id)description;
 - (BOOL)canApplyParagraphStyle;
 - (BOOL)canApplyShapeStyle;
-- (BOOL)isEqual:(id)a3;
-- (TSCHSelectionPathType)initWithArchive:(const void *)a3;
-- (TSCHSelectionPathType)initWithType:(id)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSCHSelectionPathType)initWithArchive:(const void *)archive;
+- (TSCHSelectionPathType)initWithType:(id)type name:(id)name;
 - (id)description;
-- (void)saveToArchive:(void *)a3;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSCHSelectionPathType
 
-+ (TSCHSelectionPathType)selectionPathTypeWithType:(id)a3 name:(id)a4
++ (TSCHSelectionPathType)selectionPathTypeWithType:(id)type name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithType_name_(v8, v9, v10, v11, v12, v6, v7);
+  typeCopy = type;
+  nameCopy = name;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithType_name_(v8, v9, v10, v11, v12, typeCopy, nameCopy);
 
   return v13;
 }
 
-- (TSCHSelectionPathType)initWithType:(id)a3 name:(id)a4
+- (TSCHSelectionPathType)initWithType:(id)type name:(id)name
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  typeCopy = type;
+  nameCopy = name;
+  if (!typeCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHSelectionPathType initWithType:name:]");
@@ -36,7 +36,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
     v27 = MEMORY[0x277D81150];
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHSelectionPathType initWithType:name:]");
@@ -51,11 +51,11 @@
   v43 = [(TSCHSelectionPathType *)&v56 init];
   if (v43)
   {
-    v47 = objc_msgSend_copy(v6, v42, v44, v45, v46);
+    v47 = objc_msgSend_copy(typeCopy, v42, v44, v45, v46);
     type = v43->_type;
     v43->_type = v47;
 
-    v53 = objc_msgSend_copy(v8, v49, v50, v51, v52);
+    v53 = objc_msgSend_copy(nameCopy, v49, v50, v51, v52);
     name = v43->_name;
     v43->_name = v53;
   }
@@ -63,10 +63,10 @@
   return v43;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -193,15 +193,15 @@
   return isEqual;
 }
 
-- (BOOL)canApplyChartStyleWithDescription:(id)a3
+- (BOOL)canApplyChartStyleWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v9 = objc_msgSend_chartBodyType(TSCHSelectionPathType, v5, v6, v7, v8);
   isEqual = objc_msgSend_isEqual_(self, v10, v11, v12, v13, v9);
   if (isEqual)
   {
     objc_opt_class();
-    v122 = objc_msgSend_objectForKey_(v4, v19, v20, v21, v22, @"chartStyle");
+    v122 = objc_msgSend_objectForKey_(descriptionCopy, v19, v20, v21, v22, @"chartStyle");
     v121 = TSUCheckedDynamicCast();
     if (objc_msgSend_BOOLValue(v121, v23, v24, v25, v26))
     {
@@ -217,7 +217,7 @@ LABEL_24:
   if (v123)
   {
     objc_opt_class();
-    v117 = objc_msgSend_objectForKey_(v4, v37, v38, v39, v40, @"legendStyle");
+    v117 = objc_msgSend_objectForKey_(descriptionCopy, v37, v38, v39, v40, @"legendStyle");
     v116 = TSUCheckedDynamicCast();
     if (objc_msgSend_BOOLValue(v116, v41, v42, v43, v44))
     {
@@ -231,7 +231,7 @@ LABEL_24:
   if (v50)
   {
     objc_opt_class();
-    v115 = objc_msgSend_objectForKey_(v4, v54, v55, v56, v57, @"valueAxisStyles");
+    v115 = objc_msgSend_objectForKey_(descriptionCopy, v54, v55, v56, v57, @"valueAxisStyles");
     v114 = objc_msgSend_lastObject(v115, v58, v59, v60, v61);
     v62 = TSUCheckedDynamicCast();
     if (objc_msgSend_BOOLValue(v62, v63, v64, v65, v66))
@@ -250,7 +250,7 @@ LABEL_24:
   if (v73)
   {
     objc_opt_class();
-    v112 = objc_msgSend_objectForKey_(v4, v77, v78, v79, v80, @"categoryAxisStyles");
+    v112 = objc_msgSend_objectForKey_(descriptionCopy, v77, v78, v79, v80, @"categoryAxisStyles");
     v111 = objc_msgSend_lastObject(v112, v81, v82, v83, v84);
     v110 = TSUCheckedDynamicCast();
     if (objc_msgSend_BOOLValue(v110, v85, v86, v87, v88))
@@ -264,7 +264,7 @@ LABEL_24:
   if (objc_msgSend_isEqual_(self, v90, v91, v92, v93, v89))
   {
     objc_opt_class();
-    v98 = objc_msgSend_objectForKey_(v4, v94, v95, v96, v97, @"seriesStyles");
+    v98 = objc_msgSend_objectForKey_(descriptionCopy, v94, v95, v96, v97, @"seriesStyles");
     v103 = objc_msgSend_lastObject(v98, v99, v100, v101, v102);
     v104 = TSUCheckedDynamicCast();
     v27 = objc_msgSend_BOOLValue(v104, v105, v106, v107, v108);
@@ -337,11 +337,11 @@ LABEL_25:
   return v27;
 }
 
-- (TSCHSelectionPathType)initWithArchive:(const void *)a3
+- (TSCHSelectionPathType)initWithArchive:(const void *)archive
 {
-  if (*(a3 + 16))
+  if (*(archive + 16))
   {
-    v8 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, v3, v4, v5, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v8 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, v3, v4, v5, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -349,9 +349,9 @@ LABEL_25:
     v8 = 0;
   }
 
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(archive + 16) & 2) != 0)
   {
-    v9 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, v3, v4, v5, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v9 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, v3, v4, v5, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
     v10 = objc_msgSend_initWithType_name_(self, v11, v12, v13, v14, v8, v9);
   }
 
@@ -366,12 +366,12 @@ LABEL_25:
   return v15;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   TSCH::StylePasteboardDataArchive::StylePasteboardDataArchive(v25, 0);
   v9 = objc_msgSend_type(self, v5, v6, v7, v8);
   v14 = objc_msgSend_tsp_protobufString(v9, v10, v11, v12, v13);
-  *(a3 + 4) |= 1u;
+  *(archive + 4) |= 1u;
   sub_2762F3BA4(__p, v14);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (v27 < 0)
@@ -381,7 +381,7 @@ LABEL_25:
 
   v19 = objc_msgSend_name(self, v15, v16, v17, v18);
   v24 = objc_msgSend_tsp_protobufString(v19, v20, v21, v22, v23);
-  *(a3 + 4) |= 2u;
+  *(archive + 4) |= 2u;
   sub_2762F3BA4(__p, v24);
   google::protobuf::internal::ArenaStringPtr::Set();
   if (v27 < 0)

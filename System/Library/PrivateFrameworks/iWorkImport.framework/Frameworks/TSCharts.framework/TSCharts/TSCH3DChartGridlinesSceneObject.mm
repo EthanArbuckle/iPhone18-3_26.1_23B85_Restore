@@ -1,12 +1,12 @@
 @interface TSCH3DChartGridlinesSceneObject
-+ (id)partWithAxes:(id)a3;
-- (BOOL)p_shouldRenderInFrontForPipeline:(id)a3;
++ (id)partWithAxes:(id)axes;
+- (BOOL)p_shouldRenderInFrontForPipeline:(id)pipeline;
 - (TSCH3DChartGridlinesSceneObject)init;
 - (id)effects;
-- (tmat4x4<float>)p_gridlineTransformForPipeline:(SEL)a3;
-- (void)p_render:(id)a3;
-- (void)postrender:(id)a3;
-- (void)render:(id)a3;
+- (tmat4x4<float>)p_gridlineTransformForPipeline:(SEL)pipeline;
+- (void)p_render:(id)p_render;
+- (void)postrender:(id)postrender;
+- (void)render:(id)render;
 @end
 
 @implementation TSCH3DChartGridlinesSceneObject
@@ -26,17 +26,17 @@
   return v2;
 }
 
-+ (id)partWithAxes:(id)a3
++ (id)partWithAxes:(id)axes
 {
   v55 = *MEMORY[0x277D85DE8];
-  v49 = a3;
+  axesCopy = axes;
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], v3, v4, v5, v6);
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9, v10, v11);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v13 = v49;
+  v13 = axesCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, v15, v16, v17, &v50, v54, 16);
   if (v19)
   {
@@ -80,9 +80,9 @@
   return v15;
 }
 
-- (tmat4x4<float>)p_gridlineTransformForPipeline:(SEL)a3
+- (tmat4x4<float>)p_gridlineTransformForPipeline:(SEL)pipeline
 {
-  v8 = objc_msgSend_scene(a4, a3, v4, v5, v6);
+  v8 = objc_msgSend_scene(a4, pipeline, v4, v5, v6);
   v13 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v9, v10, v11, v12, v8);
 
   if (v13)
@@ -121,10 +121,10 @@
   return result;
 }
 
-- (BOOL)p_shouldRenderInFrontForPipeline:(id)a3
+- (BOOL)p_shouldRenderInFrontForPipeline:(id)pipeline
 {
-  v4 = a3;
-  v10 = objc_msgSend_processor(v4, v5, v6, v7, v8);
+  pipelineCopy = pipeline;
+  v10 = objc_msgSend_processor(pipelineCopy, v5, v6, v7, v8);
   if (!v10)
   {
     v14 = MEMORY[0x277D81150];
@@ -146,42 +146,42 @@
   v49 = 1065353216;
   v52 = 1065353216;
   objc_msgSend_copyTransformInto_(v10, v9, v11, v12, v13, &v43);
-  objc_msgSend_p_gridlineTransformForPipeline_(self, v29, v30, v31, v32, v4);
+  objc_msgSend_p_gridlineTransformForPipeline_(self, v29, v30, v31, v32, pipelineCopy);
   sub_2761558A0(&v43, v42, &v35);
   v33 = ((((v38 * 0.0) + (v35.f32[2] * 0.0)) + v41) + (((((v37 * 0.0) + (v35.f32[1] * 0.0)) + v40) * 0.0) + ((((v36 * 0.0) + (v35.f32[0] * 0.0)) + v39) * 0.0))) < 0.0;
 
   return v33;
 }
 
-- (void)p_render:(id)a3
+- (void)p_render:(id)p_render
 {
-  v4 = a3;
-  v9 = objc_msgSend_processor(v4, v5, v6, v7, v8);
+  p_renderCopy = p_render;
+  v9 = objc_msgSend_processor(p_renderCopy, v5, v6, v7, v8);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2761BE8EC;
   v15[3] = &unk_27A6B67A0;
   v15[4] = self;
-  v10 = v4;
+  v10 = p_renderCopy;
   v16 = v10;
   objc_msgSend_performBlockWithProcessor_block_(TSCH3DRenderProcessorMatrixSession, v11, v12, v13, v14, v9, v15);
 }
 
-- (void)render:(id)a3
+- (void)render:(id)render
 {
-  v12 = a3;
+  renderCopy = render;
   if ((objc_msgSend_p_shouldRenderInFrontForPipeline_(self, v4, v5, v6, v7) & 1) == 0)
   {
-    objc_msgSend_p_render_(self, v8, v9, v10, v11, v12);
+    objc_msgSend_p_render_(self, v8, v9, v10, v11, renderCopy);
   }
 }
 
-- (void)postrender:(id)a3
+- (void)postrender:(id)postrender
 {
-  v12 = a3;
+  postrenderCopy = postrender;
   if (objc_msgSend_p_shouldRenderInFrontForPipeline_(self, v4, v5, v6, v7))
   {
-    objc_msgSend_p_render_(self, v8, v9, v10, v11, v12);
+    objc_msgSend_p_render_(self, v8, v9, v10, v11, postrenderCopy);
   }
 }
 

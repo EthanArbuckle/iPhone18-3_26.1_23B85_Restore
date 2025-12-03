@@ -1,14 +1,14 @@
 @interface BRCPQLInjectionExcludingItemGlobalID
-+ (id)_createInjection:(id)a3;
-- (BRCPQLInjectionExcludingItemGlobalID)initWithExcludingItemGlobalID:(id)a3;
++ (id)_createInjection:(id)injection;
+- (BRCPQLInjectionExcludingItemGlobalID)initWithExcludingItemGlobalID:(id)d;
 @end
 
 @implementation BRCPQLInjectionExcludingItemGlobalID
 
-- (BRCPQLInjectionExcludingItemGlobalID)initWithExcludingItemGlobalID:(id)a3
+- (BRCPQLInjectionExcludingItemGlobalID)initWithExcludingItemGlobalID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _createInjection:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() _createInjection:dCopy];
 
   v8.receiver = self;
   v8.super_class = BRCPQLInjectionExcludingItemGlobalID;
@@ -17,16 +17,16 @@
   return v6;
 }
 
-+ (id)_createInjection:(id)a3
++ (id)_createInjection:(id)injection
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  injectionCopy = injection;
+  v4 = injectionCopy;
+  if (injectionCopy)
   {
     v5 = MEMORY[0x277D82C08];
-    v6 = [v3 itemID];
-    v7 = [v4 zoneRowID];
-    v8 = [v5 formatInjection:{@" AND NOT (item_id = %@ AND zone_rowid = %@)", v6, v7}];
+    itemID = [injectionCopy itemID];
+    zoneRowID = [v4 zoneRowID];
+    v8 = [v5 formatInjection:{@" AND NOT (item_id = %@ AND zone_rowid = %@)", itemID, zoneRowID}];
   }
 
   else

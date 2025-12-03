@@ -1,5 +1,5 @@
 @interface PlaybackControlsViewController
-- (_TtC11AssetViewer30PlaybackControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11AssetViewer30PlaybackControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -12,11 +12,11 @@
   v2 = v13.receiver;
   [(PlaybackControlsViewController *)&v13 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC11AssetViewer30PlaybackControlsViewController_scrubberView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    v6 = sub_241286A60(v4);
+    v5 = view;
+    v6 = sub_241286A60(view);
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -31,7 +31,7 @@
   }
 }
 
-- (_TtC11AssetViewer30PlaybackControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11AssetViewer30PlaybackControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

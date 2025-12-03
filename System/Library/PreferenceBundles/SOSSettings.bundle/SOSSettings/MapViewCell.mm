@@ -1,17 +1,17 @@
 @interface MapViewCell
-- (MapViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (MapViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)updateLastLocationSent;
-- (void)updateLastLocationSentWithLocation:(id)a3;
+- (void)updateLastLocationSentWithLocation:(id)location;
 - (void)updateMap;
 @end
 
 @implementation MapViewCell
 
-- (MapViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (MapViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v26.receiver = self;
   v26.super_class = MapViewCell;
-  v5 = [(MapViewCell *)&v26 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(MapViewCell *)&v26 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [MKMapView alloc];
@@ -42,14 +42,14 @@
     [(UILabel *)v5->_locationNotAvailableLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v5->_locationNotAvailableLabel sizeToFit];
     [(MapViewCell *)v5 addSubview:v5->_locationNotAvailableLabel];
-    v18 = [(UILabel *)v5->_locationNotAvailableLabel centerXAnchor];
-    v19 = [(MapViewCell *)v5 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UILabel *)v5->_locationNotAvailableLabel centerXAnchor];
+    centerXAnchor2 = [(MapViewCell *)v5 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UILabel *)v5->_locationNotAvailableLabel centerYAnchor];
-    v22 = [(MapViewCell *)v5 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UILabel *)v5->_locationNotAvailableLabel centerYAnchor];
+    centerYAnchor2 = [(MapViewCell *)v5 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v23 setActive:1];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -73,9 +73,9 @@
   [v3 mostRecentLocationSentWithCompletion:v4];
 }
 
-- (void)updateLastLocationSentWithLocation:(id)a3
+- (void)updateLastLocationSentWithLocation:(id)location
 {
-  objc_storeStrong(&self->_lastLocationSent, a3);
+  objc_storeStrong(&self->_lastLocationSent, location);
 
   [(MapViewCell *)self updateMap];
 }

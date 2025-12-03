@@ -2,19 +2,19 @@
 + (id)_atrialFibrillationExpandedContentItemsAlgVersionOne;
 + (id)_atrialFibrillationExpandedContentItemsAlgorithmVersionTwo;
 + (id)_highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne;
-+ (id)_highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)a3;
-+ (id)_inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:(id)a3;
-+ (id)_inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)a3 withLearnMoreDelegate:(id)a4;
-+ (id)_poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:(id)a3;
++ (id)_highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)version;
++ (id)_inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:(id)delegate;
++ (id)_inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)version withLearnMoreDelegate:(id)delegate;
++ (id)_poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:(id)delegate;
 + (id)_sinusRhythmExpandedContentItemsAlgVersionOne;
-+ (id)atrialFibrillationItemsForAlgorithmVersion:(int64_t)a3;
-+ (id)highOrLowAbove120Below50HeartRateItemsForAlgorithmVersion:(int64_t)a3;
-+ (id)highOrLowAbove150Below50HeartRateItemsForAlgorithmVersion:(int64_t)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
-+ (id)inconclusiveItemsForAlgorithmVersion:(int64_t)a3 upgradingFromAlgorithmVersion:(int64_t)a4 learnMoreDelegate:(id)a5;
-+ (id)itemWithType:(int64_t)a3 title:(id)a4;
-+ (id)poorRecordingItemsForAlgorithmVersion:(int64_t)a3 learnMoreDelegate:(id)a4;
-+ (id)sinusRhythmItemsForAlgorithmVersion:(int64_t)a3;
-- (HRExpandedContentItem)initWithType:(int64_t)a3 title:(id)a4;
++ (id)atrialFibrillationItemsForAlgorithmVersion:(int64_t)version;
++ (id)highOrLowAbove120Below50HeartRateItemsForAlgorithmVersion:(int64_t)version;
++ (id)highOrLowAbove150Below50HeartRateItemsForAlgorithmVersion:(int64_t)version upgradingFromAlgorithmVersion:(int64_t)algorithmVersion;
++ (id)inconclusiveItemsForAlgorithmVersion:(int64_t)version upgradingFromAlgorithmVersion:(int64_t)algorithmVersion learnMoreDelegate:(id)delegate;
++ (id)itemWithType:(int64_t)type title:(id)title;
++ (id)poorRecordingItemsForAlgorithmVersion:(int64_t)version learnMoreDelegate:(id)delegate;
++ (id)sinusRhythmItemsForAlgorithmVersion:(int64_t)version;
+- (HRExpandedContentItem)initWithType:(int64_t)type title:(id)title;
 @end
 
 @implementation HRExpandedContentItem
@@ -79,12 +79,12 @@
   return v26;
 }
 
-+ (id)_inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)a3 withLearnMoreDelegate:(id)a4
++ (id)_inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)version withLearnMoreDelegate:(id)delegate
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = objc_alloc_init(v5);
-  if (a3 == 1)
+  if (version == 1)
   {
     v8 = objc_opt_class();
     v9 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_UPDATED_BADGE");
@@ -110,7 +110,7 @@
   v20 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_3_SECTION_4_EXPANDED_1_LIST_3");
   v21 = [v19 itemWithType:3 title:v20];
 
-  v22 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:2 delegate:v6];
+  v22 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:2 delegate:delegateCopy];
   [v21 setLearnMore:v22];
 
   [v7 addObject:v21];
@@ -119,7 +119,7 @@
   return v23;
 }
 
-+ (id)_highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)a3
++ (id)_highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:(int64_t)version
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_3_SECTION_3_EXPANDED_1_BODY_0");
@@ -143,7 +143,7 @@
   v13 = [v11 itemWithType:2 title:v12];
 
   [v4 addObject:v13];
-  if (a3 == 1)
+  if (version == 1)
   {
     v14 = objc_opt_class();
     v15 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_UPDATED_BADGE");
@@ -160,7 +160,7 @@
   v20 = v7;
   v21 = [objc_opt_class() itemWithType:2 title:v7];
   [v4 addObject:v21];
-  if (a3 == 1)
+  if (version == 1)
   {
     v22 = objc_opt_class();
     v23 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_UPDATED_BADGE");
@@ -185,11 +185,11 @@
   return v4;
 }
 
-+ (id)_poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:(id)a3
++ (id)_poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:(id)delegate
 {
   v28[5] = *MEMORY[0x277D85DE8];
   v24 = MEMORY[0x277CBEB18];
-  v27 = a3;
+  delegateCopy = delegate;
   v3 = objc_opt_class();
   v26 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_3_SECTION_5_EXPANDED_1_HEADING");
   v25 = [v3 itemWithType:1 title:v26];
@@ -217,7 +217,7 @@
   v18 = HRUIECGLocalizedString(@"ECG_V2_ONBOARDING_3_SECTION_5_EXPANDED_1_LIST_5");
   v19 = [v17 itemWithType:3 title:v18];
 
-  v20 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:1 delegate:v27];
+  v20 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:1 delegate:delegateCopy];
   [v19 setLearnMore:v20];
 
   [v16 addObject:v19];
@@ -226,110 +226,110 @@
   return v21;
 }
 
-+ (id)itemWithType:(int64_t)a3 title:(id)a4
++ (id)itemWithType:(int64_t)type title:(id)title
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithType:a3 title:v5];
+  titleCopy = title;
+  v6 = [objc_alloc(objc_opt_class()) initWithType:type title:titleCopy];
 
   return v6;
 }
 
-- (HRExpandedContentItem)initWithType:(int64_t)a3 title:(id)a4
+- (HRExpandedContentItem)initWithType:(int64_t)type title:(id)title
 {
-  v7 = a4;
+  titleCopy = title;
   v11.receiver = self;
   v11.super_class = HRExpandedContentItem;
   v8 = [(HRExpandedContentItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_title, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_title, title);
   }
 
   return v9;
 }
 
-+ (id)sinusRhythmItemsForAlgorithmVersion:(int64_t)a3
++ (id)sinusRhythmItemsForAlgorithmVersion:(int64_t)version
 {
-  if ((a3 - 1) <= 1)
+  if ((version - 1) <= 1)
   {
-    a2 = [a1 _sinusRhythmExpandedContentItemsAlgVersionOne];
+    a2 = [self _sinusRhythmExpandedContentItemsAlgVersionOne];
   }
 
   return a2;
 }
 
-+ (id)atrialFibrillationItemsForAlgorithmVersion:(int64_t)a3
++ (id)atrialFibrillationItemsForAlgorithmVersion:(int64_t)version
 {
-  if (a3 == 2)
+  if (version == 2)
   {
-    v3 = [a1 _atrialFibrillationExpandedContentItemsAlgorithmVersionTwo];
+    _atrialFibrillationExpandedContentItemsAlgorithmVersionTwo = [self _atrialFibrillationExpandedContentItemsAlgorithmVersionTwo];
   }
 
   else
   {
-    if (a3 != 1)
+    if (version != 1)
     {
       goto LABEL_6;
     }
 
-    v3 = [a1 _atrialFibrillationExpandedContentItemsAlgVersionOne];
+    _atrialFibrillationExpandedContentItemsAlgorithmVersionTwo = [self _atrialFibrillationExpandedContentItemsAlgVersionOne];
   }
 
-  a2 = v3;
+  a2 = _atrialFibrillationExpandedContentItemsAlgorithmVersionTwo;
 LABEL_6:
 
   return a2;
 }
 
-+ (id)highOrLowAbove120Below50HeartRateItemsForAlgorithmVersion:(int64_t)a3
++ (id)highOrLowAbove120Below50HeartRateItemsForAlgorithmVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
-    v5 = [a1 _highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne];
+    _highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne = [self _highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    _highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne = MEMORY[0x277CBEBF8];
   }
 
-  return v5;
+  return _highOrLowAbove120Below50HeartRateExpandedContentItemsAlgVersionOne;
 }
 
-+ (id)inconclusiveItemsForAlgorithmVersion:(int64_t)a3 upgradingFromAlgorithmVersion:(int64_t)a4 learnMoreDelegate:(id)a5
++ (id)inconclusiveItemsForAlgorithmVersion:(int64_t)version upgradingFromAlgorithmVersion:(int64_t)algorithmVersion learnMoreDelegate:(id)delegate
 {
-  v8 = a5;
-  if (a3 == 2)
+  delegateCopy = delegate;
+  if (version == 2)
   {
-    v9 = [a1 _inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:a4 withLearnMoreDelegate:v8];
+    v9 = [self _inconclusiveExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:algorithmVersion withLearnMoreDelegate:delegateCopy];
   }
 
   else
   {
-    if (a3 != 1)
+    if (version != 1)
     {
       goto LABEL_6;
     }
 
-    v9 = [a1 _inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:v8];
+    v9 = [self _inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:delegateCopy];
   }
 
-  a4 = v9;
+  algorithmVersion = v9;
 LABEL_6:
 
-  return a4;
+  return algorithmVersion;
 }
 
-+ (id)highOrLowAbove150Below50HeartRateItemsForAlgorithmVersion:(int64_t)a3 upgradingFromAlgorithmVersion:(int64_t)a4
++ (id)highOrLowAbove150Below50HeartRateItemsForAlgorithmVersion:(int64_t)version upgradingFromAlgorithmVersion:(int64_t)algorithmVersion
 {
-  if (a3 == 2)
+  if (version == 2)
   {
-    a1 = [a1 _highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:a4];
+    self = [self _highOrLowAbove150Below50HeartRateExpandedContentItemsAlgorithmVersionTwoUpgradingFromAlgorithmVersion:algorithmVersion];
   }
 
-  else if (a3 == 1)
+  else if (version == 1)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC2D8];
@@ -338,21 +338,21 @@ LABEL_6:
       [HRExpandedContentItem highOrLowAbove150Below50HeartRateItemsForAlgorithmVersion:v4 upgradingFromAlgorithmVersion:?];
     }
 
-    a1 = MEMORY[0x277CBEBF8];
+    self = MEMORY[0x277CBEBF8];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)poorRecordingItemsForAlgorithmVersion:(int64_t)a3 learnMoreDelegate:(id)a4
++ (id)poorRecordingItemsForAlgorithmVersion:(int64_t)version learnMoreDelegate:(id)delegate
 {
-  v6 = a4;
-  if (a3 == 2)
+  delegateCopy = delegate;
+  if (version == 2)
   {
-    a1 = [a1 _poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:v6];
+    self = [self _poorRecordingExpandedContentItemsForAlgorithmVersionTwoWithLearnMoreDelegate:delegateCopy];
   }
 
-  else if (a3 == 1)
+  else if (version == 1)
   {
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC2D8];
@@ -361,10 +361,10 @@ LABEL_6:
       [HRExpandedContentItem poorRecordingItemsForAlgorithmVersion:v7 learnMoreDelegate:?];
     }
 
-    a1 = MEMORY[0x277CBEBF8];
+    self = MEMORY[0x277CBEBF8];
   }
 
-  return a1;
+  return self;
 }
 
 + (id)_sinusRhythmExpandedContentItemsAlgVersionOne
@@ -471,10 +471,10 @@ LABEL_6:
   return v17;
 }
 
-+ (id)_inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:(id)a3
++ (id)_inconclusiveExpandedContentItemsAlgVersionOneWithLearnMoreDelegate:(id)delegate
 {
   v50[5] = *MEMORY[0x277D85DE8];
-  v47 = a3;
+  delegateCopy = delegate;
   v3 = objc_opt_class();
   v44 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_SECTION_4_EXPANDED_1_HEADING");
   v4 = [v3 itemWithType:1 title:v44];
@@ -501,7 +501,7 @@ LABEL_6:
   v18 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_SECTION_4_EXPANDED_1_LIST_5");
   v45 = [v17 itemWithType:3 title:v18];
 
-  v19 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:1 delegate:v47];
+  v19 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:1 delegate:delegateCopy];
   [v45 setLearnMore:v19];
 
   v20 = objc_opt_class();
@@ -526,7 +526,7 @@ LABEL_6:
   v34 = HRUIECGLocalizedString(@"ECG_ONBOARDING_3_SECTION_4_EXPANDED_2_LIST_4");
   v35 = [v33 itemWithType:3 title:v34];
 
-  v36 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:2 delegate:v47];
+  v36 = [[HRExpandedContentItemLearnMore alloc] initWithURLIdentifier:2 delegate:delegateCopy];
   [v35 setLearnMore:v36];
 
   v37 = objc_opt_class();

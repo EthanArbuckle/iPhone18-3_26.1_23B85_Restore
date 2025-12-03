@@ -1,14 +1,14 @@
 @interface FMFMapViewController
 + (CGSize)annotationImageSize;
-- (BOOL)canSelectAnnotation:(id)a3;
+- (BOOL)canSelectAnnotation:(id)annotation;
 - (BOOL)isCompact;
 - (BOOL)isCurrentlyRotated;
-- (BOOL)isLocationAlreadyOnMap:(id)a3;
+- (BOOL)isLocationAlreadyOnMap:(id)map;
 - (BOOL)mapHasUserLocations;
-- (BOOL)sessionContainsHandle:(id)a3;
+- (BOOL)sessionContainsHandle:(id)handle;
 - (BOOL)singleAnnotationOnMap;
 - (FMFMapViewController)init;
-- (FMFMapViewController)initWithDelegate:(id)a3 handles:(id)a4;
+- (FMFMapViewController)initWithDelegate:(id)delegate handles:(id)handles;
 - (FMFMapViewControllerDelegate)delegate;
 - (FMFNoLocationView)noLocationView;
 - (FMFSession)fmfSession;
@@ -20,30 +20,30 @@
 - (id)_generateDebugContext;
 - (id)_internalAnnotationTintColor;
 - (id)_selectedHandleAnnotation;
-- (id)annotationImageForAnnotation:(id)a3 andHandle:(id)a4;
-- (id)initSimpleMapWithDelegate:(id)a3 handles:(id)a4;
+- (id)annotationImageForAnnotation:(id)annotation andHandle:(id)handle;
+- (id)initSimpleMapWithDelegate:(id)delegate handles:(id)handles;
 - (id)openInAppURL;
 - (id)titleViewForSelectedHandle;
 - (int64_t)userTrackingMode;
 - (unint64_t)defaultMapType;
 - (void)_authorizeMonitoringLocation;
-- (void)_dismiss:(id)a3;
-- (void)_enablePreloadedHandles:(id)a3;
+- (void)_dismiss:(id)_dismiss;
+- (void)_enablePreloadedHandles:(id)handles;
 - (void)_updateDirectionsButtonEnabled;
-- (void)_updateTitleViewLocation:(id)a3;
+- (void)_updateTitleViewLocation:(id)location;
 - (void)addHandlesToSession;
-- (void)applicationDidBecomeActive:(id)a3;
+- (void)applicationDidBecomeActive:(id)active;
 - (void)dealloc;
 - (void)deselectAllAnnotations;
 - (void)destroySession;
-- (void)didDeselectLocation:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didReceiveLocation:(id)a3;
-- (void)didReceiveLocationForDelegateCallback:(id)a3;
+- (void)didDeselectLocation:(id)location;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didReceiveLocation:(id)location;
+- (void)didReceiveLocationForDelegateCallback:(id)callback;
 - (void)didReceiveMemoryWarning;
-- (void)didSelectLocation:(id)a3;
-- (void)didStopAbilityToGetLocationForHandle:(id)a3;
-- (void)didUpdateUserLocation:(id)a3;
+- (void)didSelectLocation:(id)location;
+- (void)didStopAbilityToGetLocationForHandle:(id)handle;
+- (void)didUpdateUserLocation:(id)location;
 - (void)enablePreloadedHandles;
 - (void)getDirections;
 - (void)hideCachedMap;
@@ -51,41 +51,41 @@
 - (void)loadCachedLocationsForHandles;
 - (void)loadDelegate;
 - (void)loadView;
-- (void)mapTypeChanged:(unint64_t)a3;
-- (void)mapTypeChangedNotification:(id)a3;
+- (void)mapTypeChanged:(unint64_t)changed;
+- (void)mapTypeChangedNotification:(id)notification;
 - (void)mapViewDidFinishRenderingMap;
-- (void)openInMapsButtonTapped:(id)a3;
-- (void)presentMapOptionsModal:(id)a3;
+- (void)openInMapsButtonTapped:(id)tapped;
+- (void)presentMapOptionsModal:(id)modal;
 - (void)reZoomToFit;
 - (void)recenterMap;
-- (void)refreshButtonTapped:(id)a3;
+- (void)refreshButtonTapped:(id)tapped;
 - (void)removeAllFriendLocationsFromMap;
-- (void)removeAnnotationsFromMapForHandle:(id)a3;
+- (void)removeAnnotationsFromMapForHandle:(id)handle;
 - (void)removeHandlesFromSession;
 - (void)resumeRefreshingLocations;
 - (void)selectAnnotationIfSingleForMac;
-- (void)selectAnnotationIfSingleFriend:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setHandlesShowingLocations:(id)a3;
-- (void)setShowFloatingMapLocationButton:(BOOL)a3;
+- (void)selectAnnotationIfSingleFriend:(id)friend;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setHandlesShowingLocations:(id)locations;
+- (void)setShowFloatingMapLocationButton:(BOOL)button;
 - (void)setupRecenterMapTimer;
 - (void)setupToolbarItems;
-- (void)startShowingLocationsForHandles:(id)a3;
+- (void)startShowingLocationsForHandles:(id)handles;
 - (void)stopRefreshingLocations;
-- (void)stopShowingLocationsForHandles:(id)a3;
+- (void)stopShowingLocationsForHandles:(id)handles;
 - (void)updateAllAnnotationsDueToAddressBookUpdate;
-- (void)updateMapWithNewLocation:(id)a3 animated:(BOOL)a4;
-- (void)updateNoLocationView:(BOOL)a3;
-- (void)updateRefreshForLocation:(id)a3;
+- (void)updateMapWithNewLocation:(id)location animated:(BOOL)animated;
+- (void)updateNoLocationView:(BOOL)view;
+- (void)updateRefreshForLocation:(id)location;
 - (void)updateUserTrackingButtonState;
 - (void)viewDidLoad;
 - (void)viewWillAppearWillMoveToWindowSetup;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)zoomAndSelectHandle:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)zoomAndSelectHandle:(id)handle;
 - (void)zoomToFit;
-- (void)zoomToFit:(BOOL)a3;
+- (void)zoomToFit:(BOOL)fit;
 @end
 
 @implementation FMFMapViewController
@@ -101,11 +101,11 @@
 
 - (FMFMapViewController)init
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = @"FMFMapViewController_iPhone";
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = @"FMFMapViewController_iPad";
   }
@@ -121,30 +121,30 @@
   return v9;
 }
 
-- (id)initSimpleMapWithDelegate:(id)a3 handles:(id)a4
+- (id)initSimpleMapWithDelegate:(id)delegate handles:(id)handles
 {
   v20 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = FMFMapViewController;
-  v5 = a4;
-  v6 = a3;
+  handlesCopy = handles;
+  delegateCopy = delegate;
   v7 = [(FMFMapViewController *)&v13 init];
-  [(FMFMapViewController *)v7 setDelegate:v6, v13.receiver, v13.super_class];
+  [(FMFMapViewController *)v7 setDelegate:delegateCopy, v13.receiver, v13.super_class];
 
-  [(FMFMapViewController *)v7 set_preloadedHandles:v5];
+  [(FMFMapViewController *)v7 set_preloadedHandles:handlesCopy];
   [(FMFMapViewController *)v7 setIsSimpleMap:1];
   [(FMFMapViewController *)v7 initializeDefaults];
-  v8 = [(FMFMapViewController *)v7 _generateDebugContext];
-  [(FMFMapViewController *)v7 setDebugContext:v8];
+  _generateDebugContext = [(FMFMapViewController *)v7 _generateDebugContext];
+  [(FMFMapViewController *)v7 setDebugContext:_generateDebugContext];
 
   v9 = LogCategory_Daemon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(FMFMapViewController *)v7 debugContext];
+    debugContext = [(FMFMapViewController *)v7 debugContext];
     *buf = 138412802;
     v15 = v7;
     v16 = 2112;
-    v17 = v10;
+    v17 = debugContext;
     v18 = 2112;
     v19 = @"-E2E";
     _os_log_impl(&dword_24A4E3000, v9, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@ {context=#%@}: init (simple%@)", buf, 0x20u);
@@ -154,26 +154,26 @@
   return v7;
 }
 
-- (FMFMapViewController)initWithDelegate:(id)a3 handles:(id)a4
+- (FMFMapViewController)initWithDelegate:(id)delegate handles:(id)handles
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlesCopy = handles;
+  delegateCopy = delegate;
   v8 = [(FMFMapViewController *)self init];
-  [(FMFMapViewController *)v8 setDelegate:v7];
+  [(FMFMapViewController *)v8 setDelegate:delegateCopy];
 
-  [(FMFMapViewController *)v8 set_preloadedHandles:v6];
-  v9 = [(FMFMapViewController *)v8 _generateDebugContext];
-  [(FMFMapViewController *)v8 setDebugContext:v9];
+  [(FMFMapViewController *)v8 set_preloadedHandles:handlesCopy];
+  _generateDebugContext = [(FMFMapViewController *)v8 _generateDebugContext];
+  [(FMFMapViewController *)v8 setDebugContext:_generateDebugContext];
 
   v10 = LogCategory_Daemon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FMFMapViewController *)v8 debugContext];
+    debugContext = [(FMFMapViewController *)v8 debugContext];
     v14 = 138412802;
     v15 = v8;
     v16 = 2112;
-    v17 = v11;
+    v17 = debugContext;
     v18 = 2112;
     v19 = @" (-E2E)";
     _os_log_impl(&dword_24A4E3000, v10, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@ {context=#%@}: init%@", &v14, 0x20u);
@@ -185,15 +185,15 @@
 
 - (id)_generateDebugContext
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 length];
-  v6 = v3;
+  v5 = [uUIDString length];
+  v6 = uUIDString;
   if (v5 >= 0x19)
   {
-    v6 = [v3 substringFromIndex:24];
+    v6 = [uUIDString substringFromIndex:24];
   }
 
   v7 = [v4 stringWithFormat:@"%@-%d", v6, getpid()];
@@ -210,20 +210,20 @@
   v3 = LogCategory_Daemon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMFMapViewController *)self debugContext];
+    debugContext = [(FMFMapViewController *)self debugContext];
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = debugContext;
     _os_log_impl(&dword_24A4E3000, v3, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@ {context=#%@}: deinit", buf, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(FMFMapViewController *)self destroySession];
-  v6 = [(FMFMapViewController *)self mapView];
-  [v6 setDelegate:0];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapView setDelegate:0];
 
   v8.receiver = self;
   v8.super_class = FMFMapViewController;
@@ -237,14 +237,14 @@
   [(FMAnnotationView *)FMFAnnotationView setThickAnnotationBorder:1];
   [(FMFMapViewController *)self _authorizeMonitoringLocation];
   [(FMFMapViewController *)self setShouldZoomToFitNewLocations:1];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_updateAllAnnotationsDueToAddressBookUpdate name:@"AB_CHANGED_NOTIFICATION" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_updateAllAnnotationsDueToAddressBookUpdate name:@"AB_CHANGED_NOTIFICATION" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_mapTypeChangedNotification_ name:@"MAP_TYPE_DEFAULT_KEY" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_mapTypeChangedNotification_ name:@"MAP_TYPE_DEFAULT_KEY" object:0];
 
   [(FMFMapViewController *)self setEdgeInsets:60.0, 42.0, 60.0, 42.0];
 }
@@ -279,24 +279,24 @@
   if ([(FMFMapViewController *)self isSimpleMap])
   {
     v3 = objc_alloc(MEMORY[0x277CD4EC8]);
-    v4 = [(FMFMapViewController *)self view];
-    [v4 frame];
+    view = [(FMFMapViewController *)self view];
+    [view frame];
     v5 = [v3 initWithFrame:?];
     [(FMFMapViewController *)self setMapView:v5];
 
-    v6 = [(FMFMapViewController *)self mapView];
-    [v6 setShowsUserLocation:1];
+    mapView = [(FMFMapViewController *)self mapView];
+    [mapView setShowsUserLocation:1];
 
     [(MKMapView *)self->_mapView setAutoresizingMask:18];
-    v7 = [(FMFMapViewController *)self view];
-    [v7 addSubview:self->_mapView];
+    view2 = [(FMFMapViewController *)self view];
+    [view2 addSubview:self->_mapView];
 
-    v8 = [(FMFMapViewController *)self cachedMapView];
+    cachedMapView = [(FMFMapViewController *)self cachedMapView];
     v9 = LogCategory_Daemon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v8;
+      v19 = cachedMapView;
       _os_log_impl(&dword_24A4E3000, v9, OS_LOG_TYPE_DEFAULT, "cachedMapView = %@", buf, 0xCu);
     }
   }
@@ -309,22 +309,22 @@
       [(FMFMapViewController *)self setRefreshButton:v10];
     }
 
-    v11 = [(FMFMapViewController *)self titleViewForSelectedHandle];
-    v12 = [(FMFMapViewController *)self navigationItem];
-    [v12 setTitleView:v11];
+    titleViewForSelectedHandle = [(FMFMapViewController *)self titleViewForSelectedHandle];
+    navigationItem = [(FMFMapViewController *)self navigationItem];
+    [navigationItem setTitleView:titleViewForSelectedHandle];
 
     refreshButton = self->_refreshButton;
-    v8 = [(FMFMapViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:refreshButton];
+    cachedMapView = [(FMFMapViewController *)self navigationItem];
+    [cachedMapView setRightBarButtonItem:refreshButton];
   }
 
-  v14 = [(FMFMapViewController *)self mapView];
-  [v14 setShowsAttribution:0];
+  mapView2 = [(FMFMapViewController *)self mapView];
+  [mapView2 setShowsAttribution:0];
 
   if ([(FMFMapViewController *)self isSimpleMap])
   {
-    v15 = [(FMFMapViewController *)self mapView];
-    [v15 _setEdgeInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+    mapView3 = [(FMFMapViewController *)self mapView];
+    [mapView3 _setEdgeInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -356,8 +356,8 @@
 
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
   v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v10 = [(FMFMapViewController *)self userTrackingButtonItem];
-  v13[0] = v10;
+  userTrackingButtonItem = [(FMFMapViewController *)self userTrackingButtonItem];
+  v13[0] = userTrackingButtonItem;
   v13[1] = v8;
   v13[2] = self->_directionsBarButtonItem;
   v13[3] = v9;
@@ -385,37 +385,37 @@
     [(FMFMapViewController *)self setNoLocationView:v6];
 
     [(FMFNoLocationView *)self->_noLocationView setDelegate:self];
-    v7 = [(FMFMapViewController *)self view];
-    [v7 addSubview:self->_noLocationView];
+    view = [(FMFMapViewController *)self view];
+    [view addSubview:self->_noLocationView];
 
     [(FMFNoLocationView *)self->_noLocationView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(FMFMapViewController *)self view];
+    view2 = [(FMFMapViewController *)self view];
     v9 = MEMORY[0x277CCAAD0];
     v10 = self->_noLocationView;
-    v11 = [(FMFMapViewController *)self mapView];
-    v12 = [v9 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:0.0];
-    [v8 addConstraint:v12];
+    mapView = [(FMFMapViewController *)self mapView];
+    v12 = [v9 constraintWithItem:v10 attribute:3 relatedBy:0 toItem:mapView attribute:3 multiplier:1.0 constant:0.0];
+    [view2 addConstraint:v12];
 
-    v13 = [(FMFMapViewController *)self view];
+    view3 = [(FMFMapViewController *)self view];
     v14 = MEMORY[0x277CCAAD0];
     v15 = self->_noLocationView;
-    v16 = [(FMFMapViewController *)self mapView];
-    v17 = [v14 constraintWithItem:v15 attribute:4 relatedBy:0 toItem:v16 attribute:4 multiplier:1.0 constant:0.0];
-    [v13 addConstraint:v17];
+    mapView2 = [(FMFMapViewController *)self mapView];
+    v17 = [v14 constraintWithItem:v15 attribute:4 relatedBy:0 toItem:mapView2 attribute:4 multiplier:1.0 constant:0.0];
+    [view3 addConstraint:v17];
 
-    v18 = [(FMFMapViewController *)self view];
+    view4 = [(FMFMapViewController *)self view];
     v19 = MEMORY[0x277CCAAD0];
     v20 = self->_noLocationView;
-    v21 = [(FMFMapViewController *)self mapView];
-    v22 = [v19 constraintWithItem:v20 attribute:1 relatedBy:0 toItem:v21 attribute:1 multiplier:1.0 constant:0.0];
-    [v18 addConstraint:v22];
+    mapView3 = [(FMFMapViewController *)self mapView];
+    v22 = [v19 constraintWithItem:v20 attribute:1 relatedBy:0 toItem:mapView3 attribute:1 multiplier:1.0 constant:0.0];
+    [view4 addConstraint:v22];
 
-    v23 = [(FMFMapViewController *)self view];
+    view5 = [(FMFMapViewController *)self view];
     v24 = MEMORY[0x277CCAAD0];
     v25 = self->_noLocationView;
-    v26 = [(FMFMapViewController *)self mapView];
-    v27 = [v24 constraintWithItem:v25 attribute:2 relatedBy:0 toItem:v26 attribute:2 multiplier:1.0 constant:0.0];
-    [v23 addConstraint:v27];
+    mapView4 = [(FMFMapViewController *)self mapView];
+    v27 = [v24 constraintWithItem:v25 attribute:2 relatedBy:0 toItem:mapView4 attribute:2 multiplier:1.0 constant:0.0];
+    [view5 addConstraint:v27];
 
     noLocationView = self->_noLocationView;
   }
@@ -423,9 +423,9 @@
   return noLocationView;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  self->_edgeInsets = a3;
+  self->_edgeInsets = insets;
   noLocationView = self->_noLocationView;
   if (noLocationView)
   {
@@ -441,40 +441,40 @@
     v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
     [(FMFMapViewController *)self setCachedMapView:v4];
 
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIImageView *)self->_cachedMapView setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIImageView *)self->_cachedMapView setBackgroundColor:clearColor];
 
-    v6 = [(FMFMapViewController *)self view];
-    [v6 addSubview:self->_cachedMapView];
+    view = [(FMFMapViewController *)self view];
+    [view addSubview:self->_cachedMapView];
 
     [(UIImageView *)self->_cachedMapView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(FMFMapViewController *)self view];
+    view2 = [(FMFMapViewController *)self view];
     v8 = MEMORY[0x277CCAAD0];
     v9 = self->_cachedMapView;
-    v10 = [(FMFMapViewController *)self view];
-    v11 = [v8 constraintWithItem:v9 attribute:3 relatedBy:0 toItem:v10 attribute:3 multiplier:1.0 constant:0.0];
-    [v7 addConstraint:v11];
+    view3 = [(FMFMapViewController *)self view];
+    v11 = [v8 constraintWithItem:v9 attribute:3 relatedBy:0 toItem:view3 attribute:3 multiplier:1.0 constant:0.0];
+    [view2 addConstraint:v11];
 
-    v12 = [(FMFMapViewController *)self view];
+    view4 = [(FMFMapViewController *)self view];
     v13 = MEMORY[0x277CCAAD0];
     v14 = self->_cachedMapView;
-    v15 = [(FMFMapViewController *)self view];
-    v16 = [v13 constraintWithItem:v14 attribute:4 relatedBy:0 toItem:v15 attribute:4 multiplier:1.0 constant:0.0];
-    [v12 addConstraint:v16];
+    view5 = [(FMFMapViewController *)self view];
+    v16 = [v13 constraintWithItem:v14 attribute:4 relatedBy:0 toItem:view5 attribute:4 multiplier:1.0 constant:0.0];
+    [view4 addConstraint:v16];
 
-    v17 = [(FMFMapViewController *)self view];
+    view6 = [(FMFMapViewController *)self view];
     v18 = MEMORY[0x277CCAAD0];
     v19 = self->_cachedMapView;
-    v20 = [(FMFMapViewController *)self view];
-    v21 = [v18 constraintWithItem:v19 attribute:1 relatedBy:0 toItem:v20 attribute:1 multiplier:1.0 constant:0.0];
-    [v17 addConstraint:v21];
+    view7 = [(FMFMapViewController *)self view];
+    v21 = [v18 constraintWithItem:v19 attribute:1 relatedBy:0 toItem:view7 attribute:1 multiplier:1.0 constant:0.0];
+    [view6 addConstraint:v21];
 
-    v22 = [(FMFMapViewController *)self view];
+    view8 = [(FMFMapViewController *)self view];
     v23 = MEMORY[0x277CCAAD0];
     v24 = self->_cachedMapView;
-    v25 = [(FMFMapViewController *)self view];
-    v26 = [v23 constraintWithItem:v24 attribute:2 relatedBy:0 toItem:v25 attribute:2 multiplier:1.0 constant:0.0];
-    [v22 addConstraint:v26];
+    view9 = [(FMFMapViewController *)self view];
+    v26 = [v23 constraintWithItem:v24 attribute:2 relatedBy:0 toItem:view9 attribute:2 multiplier:1.0 constant:0.0];
+    [view8 addConstraint:v26];
 
     cachedMapView = self->_cachedMapView;
   }
@@ -504,17 +504,17 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"fmf1://friend/"];
-  v4 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
-  v5 = [v4 allObjects];
+  _internalHandlesShowingLocations = [(FMFMapViewController *)self _internalHandlesShowingLocations];
+  allObjects = [_internalHandlesShowingLocations allObjects];
 
-  if ([v5 count])
+  if ([allObjects count])
   {
-    v6 = [v5 valueForKey:@"identifier"];
+    v6 = [allObjects valueForKey:@"identifier"];
     v7 = [v6 componentsJoinedByString:{@", "}];
 
     v8 = MEMORY[0x277CBEBC0];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v5 count];
+    v10 = [allObjects count];
     v11 = @"fmf1://friends/";
     if (v10 == 1)
     {
@@ -542,9 +542,9 @@
 
 - (void)viewWillAppearWillMoveToWindowSetup
 {
-  v3 = [(FMFMapViewController *)self defaultMapType];
-  v4 = [(FMFMapViewController *)self mapView];
-  [v4 setMapType:v3];
+  defaultMapType = [(FMFMapViewController *)self defaultMapType];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapView setMapType:defaultMapType];
 
   [(FMFMapViewController *)self addHandlesToSession];
   [(FMFMapViewController *)self loadCachedLocationsForHandles];
@@ -565,7 +565,7 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
   [v3 zoomToFitAnnotationsForMapView:v2 includeMe:objc_msgSend(*(a1 + 32) duration:{"shouldZoomToFitMeAndLocations"), 0.0}];
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   v4 = LogCategory_Daemon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -578,39 +578,39 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
   [(FMFMapViewController *)self _updateLocationButtonEnabled];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = FMFMapViewController;
-  [(FMFMapViewController *)&v5 willMoveToParentViewController:a3];
-  v4 = [(FMFMapViewController *)self noLocationView];
-  [v4 updateConstriantsForInsets];
+  [(FMFMapViewController *)&v5 willMoveToParentViewController:controller];
+  noLocationView = [(FMFMapViewController *)self noLocationView];
+  [noLocationView updateConstriantsForInsets];
 
   [(FMFMapViewController *)self viewWillAppearWillMoveToWindowSetup];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = FMFMapViewController;
-  [(FMFMapViewController *)&v3 didMoveToParentViewController:a3];
+  [(FMFMapViewController *)&v3 didMoveToParentViewController:controller];
 }
 
 - (void)addHandlesToSession
 {
   if (![(FMFMapViewController *)self _refreshingIsPaused])
   {
-    v4 = [(FMFMapViewController *)self fmfSession];
-    v3 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
-    [v4 addHandles:v3];
+    fmfSession = [(FMFMapViewController *)self fmfSession];
+    _internalHandlesShowingLocations = [(FMFMapViewController *)self _internalHandlesShowingLocations];
+    [fmfSession addHandles:_internalHandlesShowingLocations];
   }
 }
 
 - (void)removeHandlesFromSession
 {
-  v4 = [(FMFMapViewController *)self fmfSession];
-  v3 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
-  [v4 removeHandles:v3];
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  _internalHandlesShowingLocations = [(FMFMapViewController *)self _internalHandlesShowingLocations];
+  [fmfSession removeHandles:_internalHandlesShowingLocations];
 }
 
 - (void)destroySession
@@ -626,27 +626,27 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
   v15 = *MEMORY[0x277D85DE8];
   if (!self->_mapViewDelegate)
   {
-    v3 = [(FMFMapViewController *)self view];
+    view = [(FMFMapViewController *)self view];
     v4 = LogCategory_Daemon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v3;
+      v14 = view;
       _os_log_impl(&dword_24A4E3000, v4, OS_LOG_TYPE_DEFAULT, "mapView = %@", &v13, 0xCu);
     }
 
     v5 = [FMFMapViewDelegateInternal alloc];
-    v6 = [(FMFMapViewController *)self mapView];
-    v7 = [(FMFMapViewDelegateInternal *)v5 initWithDelegate:self mapView:v6];
+    mapView = [(FMFMapViewController *)self mapView];
+    v7 = [(FMFMapViewDelegateInternal *)v5 initWithDelegate:self mapView:mapView];
     [(FMFMapViewController *)self setMapViewDelegate:v7];
 
     mapViewDelegate = self->_mapViewDelegate;
-    v9 = [(FMFMapViewController *)self mapView];
-    [v9 setDelegate:mapViewDelegate];
+    mapView2 = [(FMFMapViewController *)self mapView];
+    [mapView2 setDelegate:mapViewDelegate];
 
-    v10 = [(FMFMapViewController *)self isMapCenteringDisabled];
-    v11 = [(FMFMapViewController *)self mapViewDelegate];
-    [v11 setIsMapCenteringDisabled:v10];
+    isMapCenteringDisabled = [(FMFMapViewController *)self isMapCenteringDisabled];
+    mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+    [mapViewDelegate setIsMapCenteringDisabled:isMapCenteringDisabled];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -658,49 +658,49 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
   v3 = LogCategory_Daemon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMFMapViewController *)self _preloadedHandles];
+    _preloadedHandles = [(FMFMapViewController *)self _preloadedHandles];
     *buf = 138412290;
-    v12 = v4;
+    v12 = _preloadedHandles;
     _os_log_impl(&dword_24A4E3000, v3, OS_LOG_TYPE_DEFAULT, "enablePreloadedHandles (%@)", buf, 0xCu);
   }
 
-  v5 = [(FMFMapViewController *)self _preloadedHandles];
+  _preloadedHandles2 = [(FMFMapViewController *)self _preloadedHandles];
 
-  if (v5)
+  if (_preloadedHandles2)
   {
-    v6 = [(FMFMapViewController *)self fmfSession];
-    v7 = [v6 getHandlesSharingLocationsWithMe];
+    fmfSession = [(FMFMapViewController *)self fmfSession];
+    getHandlesSharingLocationsWithMe = [fmfSession getHandlesSharingLocationsWithMe];
 
-    if ([v7 count])
+    if ([getHandlesSharingLocationsWithMe count])
     {
-      [(FMFMapViewController *)self _enablePreloadedHandles:v7];
+      [(FMFMapViewController *)self _enablePreloadedHandles:getHandlesSharingLocationsWithMe];
     }
 
     else
     {
-      v8 = [(FMFMapViewController *)self fmfSession];
+      fmfSession2 = [(FMFMapViewController *)self fmfSession];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __46__FMFMapViewController_enablePreloadedHandles__block_invoke;
       v10[3] = &unk_278FE2A60;
       v10[4] = self;
-      [v8 getHandlesSharingLocationsWithMe:v10];
+      [fmfSession2 getHandlesSharingLocationsWithMe:v10];
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enablePreloadedHandles:(id)a3
+- (void)_enablePreloadedHandles:(id)handles
 {
   v33 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  handlesCopy = handles;
   v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = self;
+  selfCopy = self;
   obj = [(FMFMapViewController *)self _preloadedHandles];
   v21 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
@@ -720,7 +720,7 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v6 = v20;
+        v6 = handlesCopy;
         v7 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v7)
         {
@@ -736,9 +736,9 @@ void __59__FMFMapViewController_viewWillAppearWillMoveToWindowSetup__block_invok
               }
 
               v11 = *(*(&v23 + 1) + 8 * j);
-              v12 = [v5 identifier];
-              v13 = [v11 identifier];
-              v14 = [v12 isEqualToString:v13];
+              identifier = [v5 identifier];
+              identifier2 = [v11 identifier];
+              v14 = [identifier isEqualToString:identifier2];
 
               if (v14)
               {
@@ -766,14 +766,14 @@ LABEL_16:
     while (v21);
   }
 
-  [(FMFMapViewController *)v16 startShowingLocationsForHandles:v18];
-  [(FMFMapViewController *)v16 set_internalHandlesShowingLocations:v18];
-  [(FMFMapViewController *)v16 set_preloadedHandles:0];
+  [(FMFMapViewController *)selfCopy startShowingLocationsForHandles:v18];
+  [(FMFMapViewController *)selfCopy set_internalHandlesShowingLocations:v18];
+  [(FMFMapViewController *)selfCopy set_preloadedHandles:0];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__FMFMapViewController__enablePreloadedHandles___block_invoke;
   block[3] = &unk_278FE29D0;
-  block[4] = v16;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -786,8 +786,8 @@ LABEL_16:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(FMFMapViewController *)self handlesShowingLocations];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  handlesShowingLocations = [(FMFMapViewController *)self handlesShowingLocations];
+  v4 = [handlesShowingLocations countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v4)
   {
     v6 = v4;
@@ -801,18 +801,18 @@ LABEL_16:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(handlesShowingLocations);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(FMFMapViewController *)self fmfSession];
-        v11 = [v10 cachedLocationForHandle:v9];
+        fmfSession = [(FMFMapViewController *)self fmfSession];
+        v11 = [fmfSession cachedLocationForHandle:v9];
 
         v12 = LogCategory_Daemon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = v16;
-          v22 = self;
+          selfCopy = self;
           v23 = 2112;
           v24 = v9;
           v25 = 2112;
@@ -831,15 +831,15 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      v6 = [handlesShowingLocations countByEnumeratingWithState:&v17 objects:v27 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [(FMFMapViewController *)self mapViewDelegate];
-  v14 = [(FMFMapViewController *)self mapView];
-  [v13 zoomToFitAnnotationsForMapView:v14 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), 0.0}];
+  mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapViewDelegate zoomToFitAnnotationsForMapView:mapView includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), 0.0}];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -851,13 +851,13 @@ LABEL_16:
   [(FMFMapViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = FMFMapViewController;
-  [(FMFMapViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(FMFMapViewController *)self noLocationView];
-  [v5 updateConstriantsForInsets];
+  [(FMFMapViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  noLocationView = [(FMFMapViewController *)self noLocationView];
+  [noLocationView updateConstriantsForInsets];
 }
 
 - (void)viewWillLayoutSubviews
@@ -865,19 +865,19 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = FMFMapViewController;
   [(FMFMapViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(FMFMapViewController *)self noLocationView];
-  [v3 updateConstriantsForInsets];
+  noLocationView = [(FMFMapViewController *)self noLocationView];
+  [noLocationView updateConstriantsForInsets];
 }
 
-- (void)updateNoLocationView:(BOOL)a3
+- (void)updateNoLocationView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   *&v25[5] = *MEMORY[0x277D85DE8];
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v25[0] = v3;
+    v25[0] = viewCopy;
     LOWORD(v25[1]) = 1024;
     *(&v25[1] + 2) = [(FMFMapViewController *)self canShowNoLocation];
     _os_log_impl(&dword_24A4E3000, v5, OS_LOG_TYPE_DEFAULT, "updateNoLocationView appearing(%d) canShowNoLocation (%d)", buf, 0xEu);
@@ -888,20 +888,20 @@ LABEL_16:
     v6 = LogCategory_Daemon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(FMFMapViewController *)self mapHasUserLocations];
+      mapHasUserLocations = [(FMFMapViewController *)self mapHasUserLocations];
       *buf = 67109120;
-      v25[0] = v7;
+      v25[0] = mapHasUserLocations;
       _os_log_impl(&dword_24A4E3000, v6, OS_LOG_TYPE_DEFAULT, "Setting no location view visible: %d", buf, 8u);
     }
 
-    v8 = [(FMFMapViewController *)self mapHasUserLocations];
-    v9 = [(FMFMapViewController *)self noLocationView];
-    [v9 alpha];
-    if (v10 != 0.0 || v8)
+    mapHasUserLocations2 = [(FMFMapViewController *)self mapHasUserLocations];
+    noLocationView = [(FMFMapViewController *)self noLocationView];
+    [noLocationView alpha];
+    if (v10 != 0.0 || mapHasUserLocations2)
     {
-      v11 = [(FMFMapViewController *)self noLocationView];
-      [v11 alpha];
-      v13 = v12 == 1.0 && v8;
+      noLocationView2 = [(FMFMapViewController *)self noLocationView];
+      [noLocationView2 alpha];
+      v13 = v12 == 1.0 && mapHasUserLocations2;
 
       if (v13 != 1)
       {
@@ -939,7 +939,7 @@ LABEL_16:
 
     v16 = LogCategory_Daemon();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (viewCopy)
     {
       if (v17)
       {
@@ -967,7 +967,7 @@ LABEL_16:
       }
 
       v18 = 0.75;
-      if (!v8)
+      if (!mapHasUserLocations2)
       {
         [(FMFMapViewController *)self nonLiveAnimationDuration];
       }
@@ -982,8 +982,8 @@ LABEL_16:
     }
 
 LABEL_27:
-    v20 = [(FMFMapViewController *)self noLocationView];
-    [v20 updateLabel];
+    noLocationView3 = [(FMFMapViewController *)self noLocationView];
+    [noLocationView3 updateLabel];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1010,10 +1010,10 @@ void __45__FMFMapViewController_updateNoLocationView___block_invoke_110(uint64_t
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(FMFMapViewController *)self mapView];
-  v3 = [v2 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [annotations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -1023,7 +1023,7 @@ void __45__FMFMapViewController_updateNoLocationView___block_invoke_110(uint64_t
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(annotations);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -1035,7 +1035,7 @@ void __45__FMFMapViewController_updateNoLocationView___block_invoke_110(uint64_t
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [annotations countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -1051,51 +1051,51 @@ LABEL_11:
   return v4;
 }
 
-- (void)updateMapWithNewLocation:(id)a3 animated:(BOOL)a4
+- (void)updateMapWithNewLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 handle];
-  v8 = [(FMFMapViewController *)self locationOnMapForHandle:v7 enforceServerId:0];
+  locationCopy = location;
+  handle = [locationCopy handle];
+  v8 = [(FMFMapViewController *)self locationOnMapForHandle:handle enforceServerId:0];
 
-  v9 = [v6 location];
-  v10 = v9;
+  location = [locationCopy location];
+  v10 = location;
   if (!v8)
   {
-    if (v9)
+    if (location)
     {
-      v16 = [v6 handle];
-      v17 = [v16 serverId];
-      if (v17)
+      handle2 = [locationCopy handle];
+      serverId = [handle2 serverId];
+      if (serverId)
       {
-        v18 = v17;
-        v19 = [(FMFMapViewController *)self isLocationAlreadyOnMap:v6];
+        v18 = serverId;
+        v19 = [(FMFMapViewController *)self isLocationAlreadyOnMap:locationCopy];
 
         if (!v19)
         {
           v20 = LogCategory_Daemon();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v6 description];
+            v21 = [locationCopy description];
             *buf = 138412546;
-            v41 = self;
+            selfCopy5 = self;
             v42 = 2112;
             v43 = v21;
             _os_log_impl(&dword_24A4E3000, v20, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@: update map (add annotation) with: %@", buf, 0x16u);
           }
 
-          [v6 updateLocation:v6];
-          v22 = [(FMFMapViewController *)self mapView];
-          [v22 addAnnotation:v6];
+          [locationCopy updateLocation:locationCopy];
+          mapView = [(FMFMapViewController *)self mapView];
+          [mapView addAnnotation:locationCopy];
 
-          [(FMFMapViewController *)self performSelector:sel_selectAnnotationIfSingleFriend_ withObject:v6 afterDelay:0.5];
+          [(FMFMapViewController *)self performSelector:sel_selectAnnotationIfSingleFriend_ withObject:locationCopy afterDelay:0.5];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __58__FMFMapViewController_updateMapWithNewLocation_animated___block_invoke;
           block[3] = &unk_278FE2A10;
           block[4] = self;
-          v39 = v6;
+          v39 = locationCopy;
           dispatch_async(MEMORY[0x277D85CD0], block);
           v23 = v39;
           goto LABEL_26;
@@ -1108,15 +1108,15 @@ LABEL_11:
     }
 
 LABEL_18:
-    if (!v4)
+    if (!animatedCopy)
     {
-      [v8 updateLocation:v6];
+      [v8 updateLocation:locationCopy];
       v27 = LogCategory_Daemon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = [v8 description];
         *buf = 138412546;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v28;
         _os_log_impl(&dword_24A4E3000, v27, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@: update map with: %@", buf, 0x16u);
@@ -1125,7 +1125,7 @@ LABEL_18:
       goto LABEL_27;
     }
 
-    if ([v6 locationType] == 2)
+    if ([locationCopy locationType] == 2)
     {
       [(FMFMapViewController *)self liveAnimationDuration];
     }
@@ -1142,8 +1142,8 @@ LABEL_18:
     v34[2] = __58__FMFMapViewController_updateMapWithNewLocation_animated___block_invoke_114;
     v34[3] = &unk_278FE2AB0;
     v35 = v8;
-    v36 = v6;
-    v37 = self;
+    v36 = locationCopy;
+    selfCopy3 = self;
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __58__FMFMapViewController_updateMapWithNewLocation_animated___block_invoke_115;
@@ -1156,9 +1156,9 @@ LABEL_18:
 LABEL_26:
 
 LABEL_27:
-    v25 = [(FMFMapViewController *)self mapViewDelegate];
-    v31 = [(FMFMapViewController *)self mapView];
-    [v25 updateOverlaysForAnnotationMove:v6 mapView:v31];
+    mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+    mapView2 = [(FMFMapViewController *)self mapView];
+    [mapViewDelegate updateOverlaysForAnnotationMove:locationCopy mapView:mapView2];
 
     goto LABEL_28;
   }
@@ -1169,21 +1169,21 @@ LABEL_27:
   {
     if (v12)
     {
-      v13 = [v6 description];
+      v13 = [locationCopy description];
       *buf = 138412546;
-      v41 = self;
+      selfCopy5 = self;
       v42 = 2112;
       v43 = v13;
       _os_log_impl(&dword_24A4E3000, v11, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@: update map (annotation) with: %@", buf, 0x16u);
     }
 
-    v14 = [(FMFMapViewController *)self mapView];
-    v15 = [v14 viewForAnnotation:v8];
+    mapView3 = [(FMFMapViewController *)self mapView];
+    v15 = [mapView3 viewForAnnotation:v8];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v15 updateWithLocation:v6];
+      [v15 updateWithLocation:locationCopy];
     }
 
     goto LABEL_18;
@@ -1191,19 +1191,19 @@ LABEL_27:
 
   if (v12)
   {
-    v24 = [v6 description];
+    v24 = [locationCopy description];
     *buf = 138412546;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
     v43 = v24;
     _os_log_impl(&dword_24A4E3000, v11, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@: update map (remove annotation) with: %@", buf, 0x16u);
   }
 
-  v25 = [(FMFMapViewController *)self mapView];
-  [v25 removeAnnotation:v8];
+  mapViewDelegate = [(FMFMapViewController *)self mapView];
+  [mapViewDelegate removeAnnotation:v8];
 LABEL_28:
 
-  [(FMFMapViewController *)self updateNoLocationView:!v4];
+  [(FMFMapViewController *)self updateNoLocationView:!animatedCopy];
   v32 = *MEMORY[0x277D85DE8];
 }
 
@@ -1251,16 +1251,16 @@ void __58__FMFMapViewController_updateMapWithNewLocation_animated___block_invoke
 - (void)recenterMap
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(FMFMapViewController *)self mapView];
-  v4 = [v3 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = annotations;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
-  v7 = v5;
+  mapViewDelegate = v5;
   if (!v6)
   {
 LABEL_14:
@@ -1299,15 +1299,15 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24A4E3000, v13, OS_LOG_TYPE_DEFAULT, "⛳️FMFUI %@: recentering map", buf, 0xCu);
     }
 
     [(FMFMapViewController *)self nonLiveAnimationDuration];
     v15 = v14;
-    v7 = [(FMFMapViewController *)self mapViewDelegate];
-    v16 = [(FMFMapViewController *)self mapView];
-    [v7 zoomToFitAnnotationsForMapView:v16 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v15}];
+    mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+    mapView2 = [(FMFMapViewController *)self mapView];
+    [mapViewDelegate zoomToFitAnnotationsForMapView:mapView2 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v15}];
 
     goto LABEL_14;
   }
@@ -1324,18 +1324,18 @@ LABEL_15:
   [(FMFMapViewController *)self performSelector:sel_recenterMap withObject:self afterDelay:5.0];
 }
 
-- (BOOL)isLocationAlreadyOnMap:(id)a3
+- (BOOL)isLocationAlreadyOnMap:(id)map
 {
   v23 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  mapCopy = map;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(FMFMapViewController *)self mapView];
-  v5 = [v4 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [annotations countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = *v19;
@@ -1345,18 +1345,18 @@ LABEL_15:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(annotations);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 handle];
-          v11 = [v10 serverId];
-          v12 = [v17 handle];
-          v13 = [v12 serverId];
-          v14 = [v11 isEqualToString:v13];
+          handle = [v9 handle];
+          serverId = [handle serverId];
+          handle2 = [mapCopy handle];
+          serverId2 = [handle2 serverId];
+          v14 = [serverId isEqualToString:serverId2];
 
           if (v14)
           {
@@ -1366,7 +1366,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [annotations countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -1382,13 +1382,13 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)canSelectAnnotation:(id)a3
+- (BOOL)canSelectAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMFMapViewController *)self delegate];
+  annotationCopy = annotation;
+  delegate = [(FMFMapViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 canSelectAnnotation:v4];
+    v6 = [delegate canSelectAnnotation:annotationCopy];
   }
 
   else
@@ -1404,14 +1404,14 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
   if ([(FMFMapViewController *)self singleAnnotationOnMap])
   {
-    v3 = [(FMFMapViewController *)self mapView];
-    v4 = [v3 annotations];
+    mapView = [(FMFMapViewController *)self mapView];
+    annotations = [mapView annotations];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = annotations;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1430,8 +1430,8 @@ LABEL_12:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [(FMFMapViewController *)self canSelectAnnotation:v10, v14])
           {
-            v12 = [(FMFMapViewController *)self mapViewDelegate];
-            [v12 selectAnnotation:v10];
+            mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+            [mapViewDelegate selectAnnotation:v10];
 
             goto LABEL_16;
           }
@@ -1463,14 +1463,14 @@ LABEL_16:
 - (void)deselectAllAnnotations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(FMFMapViewController *)self mapView];
-  v4 = [v3 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = annotations;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1490,8 +1490,8 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [(FMFMapViewController *)self mapView];
-          [v11 deselectAnnotation:v10 animated:0];
+          mapView2 = [(FMFMapViewController *)self mapView];
+          [mapView2 deselectAnnotation:v10 animated:0];
         }
 
         ++v9;
@@ -1507,13 +1507,13 @@ LABEL_16:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)selectAnnotationIfSingleFriend:(id)a3
+- (void)selectAnnotationIfSingleFriend:(id)friend
 {
-  v5 = a3;
-  if (![(FMFMapViewController *)self isSimpleMap]&& [(FMFMapViewController *)self singleAnnotationOnMap]&& [(FMFMapViewController *)self canSelectAnnotation:v5])
+  friendCopy = friend;
+  if (![(FMFMapViewController *)self isSimpleMap]&& [(FMFMapViewController *)self singleAnnotationOnMap]&& [(FMFMapViewController *)self canSelectAnnotation:friendCopy])
   {
-    v4 = [(FMFMapViewController *)self mapViewDelegate];
-    [v4 selectAnnotation:v5];
+    mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+    [mapViewDelegate selectAnnotation:friendCopy];
   }
 
   else
@@ -1525,14 +1525,14 @@ LABEL_16:
 - (BOOL)singleAnnotationOnMap
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(FMFMapViewController *)self mapView];
-  v3 = [v2 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = annotations;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1577,32 +1577,32 @@ LABEL_11:
   return v7 & 1;
 }
 
-- (void)removeAnnotationsFromMapForHandle:(id)a3
+- (void)removeAnnotationsFromMapForHandle:(id)handle
 {
-  v4 = [(FMFMapViewController *)self locationOnMapForHandle:a3 enforceServerId:0];
+  v4 = [(FMFMapViewController *)self locationOnMapForHandle:handle enforceServerId:0];
   if (v4)
   {
     v6 = v4;
-    v5 = [(FMFMapViewController *)self mapView];
-    [v5 removeAnnotation:v6];
+    mapView = [(FMFMapViewController *)self mapView];
+    [mapView removeAnnotation:v6];
 
     [(FMFMapViewController *)self updateNoLocationView:0];
     v4 = v6;
   }
 }
 
-- (BOOL)sessionContainsHandle:(id)a3
+- (BOOL)sessionContainsHandle:(id)handle
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMFMapViewController *)self fmfSession];
-  v6 = [v5 handles];
+  handleCopy = handle;
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  handles = [fmfSession handles];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = handles;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -1618,11 +1618,11 @@ LABEL_11:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if (([v12 isEqual:{v4, v19}] & 1) == 0)
+        if (([v12 isEqual:{handleCopy, v19}] & 1) == 0)
         {
-          v13 = [v12 serverId];
-          v14 = [v4 serverId];
-          v15 = [v13 isEqual:v14];
+          serverId = [v12 serverId];
+          serverId2 = [handleCopy serverId];
+          v15 = [serverId isEqual:serverId2];
 
           if ((v15 & 1) == 0)
           {
@@ -1656,25 +1656,25 @@ LABEL_13:
   return v16;
 }
 
-- (void)refreshButtonTapped:(id)a3
+- (void)refreshButtonTapped:(id)tapped
 {
-  v4 = [(FMFMapViewController *)self handlesShowingLocations];
-  v5 = [v4 count];
+  handlesShowingLocations = [(FMFMapViewController *)self handlesShowingLocations];
+  v5 = [handlesShowingLocations count];
 
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
-    v7 = [(FMFMapViewController *)self handlesShowingLocations];
-    v8 = [v6 setWithSet:v7];
+    handlesShowingLocations2 = [(FMFMapViewController *)self handlesShowingLocations];
+    v8 = [v6 setWithSet:handlesShowingLocations2];
 
-    v9 = [(FMFMapViewController *)self fmfSession];
+    fmfSession = [(FMFMapViewController *)self fmfSession];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __44__FMFMapViewController_refreshButtonTapped___block_invoke;
     v11[3] = &unk_278FE2B00;
     v12 = v8;
     v10 = v8;
-    [v9 refreshLocationForHandles:v10 callerId:0 priority:1 completion:v11];
+    [fmfSession refreshLocationForHandles:v10 callerId:0 priority:1 completion:v11];
   }
 }
 
@@ -1699,29 +1699,29 @@ void __44__FMFMapViewController_refreshButtonTapped___block_invoke(uint64_t a1, 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openInMapsButtonTapped:(id)a3
+- (void)openInMapsButtonTapped:(id)tapped
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [(FMFMapViewController *)self fmfSession];
-  v5 = [v4 handles];
-  v6 = [v5 count];
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  handles = [fmfSession handles];
+  v6 = [handles count];
 
   if (v6)
   {
     v7 = MEMORY[0x277CBEB58];
-    v8 = [(FMFMapViewController *)self fmfSession];
-    v9 = [v8 handles];
-    v26 = [v7 setWithCapacity:{objc_msgSend(v9, "count")}];
+    fmfSession2 = [(FMFMapViewController *)self fmfSession];
+    handles2 = [fmfSession2 handles];
+    v26 = [v7 setWithCapacity:{objc_msgSend(handles2, "count")}];
 
     v10 = dispatch_group_create();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [(FMFMapViewController *)self fmfSession];
-    v12 = [v11 handles];
+    fmfSession3 = [(FMFMapViewController *)self fmfSession];
+    handles3 = [fmfSession3 handles];
 
-    v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v13 = [handles3 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1733,18 +1733,18 @@ void __44__FMFMapViewController_refreshButtonTapped___block_invoke(uint64_t a1, 
         {
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(handles3);
           }
 
           v17 = [(FMFMapViewController *)self locationOnMapForHandle:*(*(&v33 + 1) + 8 * v16) enforceServerId:0];
-          v18 = [v17 location];
+          location = [v17 location];
 
-          if (v18)
+          if (location)
           {
             dispatch_group_enter(v10);
             [v17 coordinate];
             v21 = [objc_alloc(MEMORY[0x277CD4F00]) initWithCoordinate:0 addressDictionary:{v19, v20}];
-            v22 = [v17 handle];
+            handle = [v17 handle];
             v29[0] = MEMORY[0x277D85DD0];
             v29[1] = 3221225472;
             v29[2] = __47__FMFMapViewController_openInMapsButtonTapped___block_invoke;
@@ -1753,14 +1753,14 @@ void __44__FMFMapViewController_refreshButtonTapped___block_invoke(uint64_t a1, 
             v31 = v26;
             v32 = v10;
             v23 = v21;
-            [v22 prettyNameWithCompletion:v29];
+            [handle prettyNameWithCompletion:v29];
           }
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v14 = [handles3 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v14);
@@ -1822,32 +1822,32 @@ void __47__FMFMapViewController_openInMapsButtonTapped___block_invoke_2(uint64_t
 
 - (void)_updateDirectionsButtonEnabled
 {
-  v5 = [(FMFMapViewController *)self titleView];
-  v3 = [v5 location];
-  v4 = [(FMFMapViewController *)self directionsBarButtonItem];
-  [v4 setEnabled:v3 != 0];
+  titleView = [(FMFMapViewController *)self titleView];
+  location = [titleView location];
+  directionsBarButtonItem = [(FMFMapViewController *)self directionsBarButtonItem];
+  [directionsBarButtonItem setEnabled:location != 0];
 }
 
 - (void)getDirections
 {
-  v2 = [(FMFMapViewController *)self titleView];
-  v3 = [v2 location];
+  titleView = [(FMFMapViewController *)self titleView];
+  location = [titleView location];
 
-  [v3 coordinate];
+  [location coordinate];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
+  mapItemForCurrentLocation = [MEMORY[0x277CD4E80] mapItemForCurrentLocation];
   v9 = [objc_alloc(MEMORY[0x277CD4F00]) initWithCoordinate:0 addressDictionary:{v5, v7}];
-  v10 = [v3 handle];
+  handle = [location handle];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __37__FMFMapViewController_getDirections__block_invoke;
   v13[3] = &unk_278FE2B50;
   v14 = v9;
-  v15 = v8;
-  v11 = v8;
+  v15 = mapItemForCurrentLocation;
+  v11 = mapItemForCurrentLocation;
   v12 = v9;
-  [v10 prettyNameWithCompletion:v13];
+  [handle prettyNameWithCompletion:v13];
 }
 
 void __37__FMFMapViewController_getDirections__block_invoke(uint64_t a1, void *a2)
@@ -1889,108 +1889,108 @@ void __37__FMFMapViewController_getDirections__block_invoke(uint64_t a1, void *a
 
 - (BOOL)isCompact
 {
-  v3 = [(FMFMapViewController *)self traitCollection];
+  traitCollection = [(FMFMapViewController *)self traitCollection];
   v4 = 1;
   v5 = [MEMORY[0x277D75C80] traitCollectionWithVerticalSizeClass:1];
-  if (([v3 containsTraitsInCollection:v5] & 1) == 0)
+  if (([traitCollection containsTraitsInCollection:v5] & 1) == 0)
   {
-    v6 = [(FMFMapViewController *)self traitCollection];
+    traitCollection2 = [(FMFMapViewController *)self traitCollection];
     v7 = [MEMORY[0x277D75C80] traitCollectionWithHorizontalSizeClass:1];
-    v4 = [v6 containsTraitsInCollection:v7];
+    v4 = [traitCollection2 containsTraitsInCollection:v7];
   }
 
   return v4;
 }
 
-- (void)presentMapOptionsModal:(id)a3
+- (void)presentMapOptionsModal:(id)modal
 {
   v4 = objc_alloc_init(FMFMapOptionsViewController);
   [(FMFMapViewController *)self setMapOptionsVC:v4];
 
   [(FMFMapOptionsViewController *)self->_mapOptionsVC setDelegate:self];
-  v5 = [(FMFMapViewController *)self isCompact];
+  isCompact = [(FMFMapViewController *)self isCompact];
   mapOptionsVC = self->_mapOptionsVC;
-  if (v5)
+  if (isCompact)
   {
     [(FMFMapOptionsViewController *)mapOptionsVC setModalPresentationStyle:6];
     [(UIViewController *)self fmf_presentModalViewController:self->_mapOptionsVC];
-    v9 = [(FMFMapViewController *)self navigationController];
-    [v9 setToolbarHidden:1 animated:1];
+    navigationController = [(FMFMapViewController *)self navigationController];
+    [navigationController setToolbarHidden:1 animated:1];
   }
 
   else
   {
     [(FMFMapOptionsViewController *)mapOptionsVC setModalPresentationStyle:7];
-    v7 = [(FMFMapViewController *)self navigationController];
-    [v7 presentViewController:self->_mapOptionsVC animated:1 completion:0];
+    navigationController2 = [(FMFMapViewController *)self navigationController];
+    [navigationController2 presentViewController:self->_mapOptionsVC animated:1 completion:0];
 
-    v9 = [(FMFMapOptionsViewController *)self->_mapOptionsVC popoverPresentationController];
+    navigationController = [(FMFMapOptionsViewController *)self->_mapOptionsVC popoverPresentationController];
     [(FMFMapOptionsViewController *)self->_mapOptionsVC paneSize];
-    [v9 setPopoverContentSize:?];
-    v8 = [(FMFMapViewController *)self infoBarButtonItem];
-    [v9 setBarButtonItem:v8];
+    [navigationController setPopoverContentSize:?];
+    infoBarButtonItem = [(FMFMapViewController *)self infoBarButtonItem];
+    [navigationController setBarButtonItem:infoBarButtonItem];
   }
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  _dismissCopy = _dismiss;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = _dismissCopy;
     _os_log_impl(&dword_24A4E3000, v5, OS_LOG_TYPE_DEFAULT, "FMFMapViewController: dismiss %@", &v11, 0xCu);
   }
 
-  v6 = [(FMFMapViewController *)self isCompact];
-  v7 = [(FMFMapViewController *)self mapOptionsVC];
-  v8 = v7;
-  if (v6)
+  isCompact = [(FMFMapViewController *)self isCompact];
+  mapOptionsVC = [(FMFMapViewController *)self mapOptionsVC];
+  navigationController = mapOptionsVC;
+  if (isCompact)
   {
-    [(UIViewController *)self fmf_dismissModalViewController:v7];
+    [(UIViewController *)self fmf_dismissModalViewController:mapOptionsVC];
 
-    v8 = [(FMFMapViewController *)self navigationController];
-    [v8 setToolbarHidden:0 animated:1];
+    navigationController = [(FMFMapViewController *)self navigationController];
+    [navigationController setToolbarHidden:0 animated:1];
   }
 
   else
   {
-    v9 = [v7 presentingViewController];
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [mapOptionsVC presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mapTypeChangedNotification:(id)a3
+- (void)mapTypeChangedNotification:(id)notification
 {
   [(FMFMapViewController *)self setMapTypeLoaded:0];
-  v4 = [(FMFMapViewController *)self defaultMapType];
-  v5 = [(FMFMapViewController *)self mapView];
-  [v5 setMapType:v4];
+  defaultMapType = [(FMFMapViewController *)self defaultMapType];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapView setMapType:defaultMapType];
 }
 
-- (void)mapTypeChanged:(unint64_t)a3
+- (void)mapTypeChanged:(unint64_t)changed
 {
   v12 = *MEMORY[0x277D85DE8];
   [(FMFMapViewController *)self setDefaultMapType:?];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v4 setObject:v5 forKey:@"MAP_TYPE_DEFAULT_KEY"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:changed];
+  [standardUserDefaults setObject:v5 forKey:@"MAP_TYPE_DEFAULT_KEY"];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 synchronize];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 synchronize];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"MAP_TYPE_DEFAULT_KEY" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MAP_TYPE_DEFAULT_KEY" object:0];
 
   v8 = LogCategory_Daemon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_24A4E3000, v8, OS_LOG_TYPE_DEFAULT, "FMFMapViewController: mapTypeChanged %lu", &v10, 0xCu);
   }
 
@@ -2002,8 +2002,8 @@ void __37__FMFMapViewController_getDirections__block_invoke(uint64_t a1, void *a
   if (![(FMFMapViewController *)self mapTypeLoaded])
   {
     [(FMFMapViewController *)self setMapTypeLoaded:1];
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 objectForKey:@"MAP_TYPE_DEFAULT_KEY"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"MAP_TYPE_DEFAULT_KEY"];
 
     -[FMFMapViewController setDefaultMapType:](self, "setDefaultMapType:", [v4 unsignedIntegerValue]);
     if ([(FMFMapViewController *)self defaultMapType]== 1)
@@ -2043,49 +2043,49 @@ LABEL_7:
 {
   [(FMFMapViewController *)self set_refreshingIsPaused:0];
   [(FMFMapViewController *)self addHandlesToSession];
-  v3 = [(FMFMapViewController *)self noLocationView];
-  [v3 updateLabel];
+  noLocationView = [(FMFMapViewController *)self noLocationView];
+  [noLocationView updateLabel];
 
   [(FMFMapViewController *)self performSelector:sel_selectAnnotationIfSingleForMac withObject:0 afterDelay:0.5];
 }
 
-- (void)setShowFloatingMapLocationButton:(BOOL)a3
+- (void)setShowFloatingMapLocationButton:(BOOL)button
 {
-  v3 = a3;
-  self->_showFloatingMapLocationButton = a3;
-  v4 = [(FMFMapViewController *)self mapView];
-  [v4 setShowsAttribution:!v3];
+  buttonCopy = button;
+  self->_showFloatingMapLocationButton = button;
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapView setShowsAttribution:!buttonCopy];
 }
 
 - (NSSet)handlesShowingLocations
 {
-  v2 = [(FMFMapViewController *)self fmfSession];
-  v3 = [v2 handles];
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  handles = [fmfSession handles];
 
-  return v3;
+  return handles;
 }
 
-- (void)setHandlesShowingLocations:(id)a3
+- (void)setHandlesShowingLocations:(id)locations
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  locationsCopy = locations;
+  if (locationsCopy)
   {
     [(FMFMapViewController *)self deselectAllAnnotations];
-    v5 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
-    v6 = [v5 mutableCopy];
+    _internalHandlesShowingLocations = [(FMFMapViewController *)self _internalHandlesShowingLocations];
+    v6 = [_internalHandlesShowingLocations mutableCopy];
 
-    [v6 minusSet:v4];
+    [v6 minusSet:locationsCopy];
     v7 = LogCategory_Daemon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = getpid();
-      v9 = [v4 description];
-      v10 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
-      v11 = [v10 description];
+      v9 = [locationsCopy description];
+      _internalHandlesShowingLocations2 = [(FMFMapViewController *)self _internalHandlesShowingLocations];
+      v11 = [_internalHandlesShowingLocations2 description];
       v12 = [v6 description];
       v14 = 138413314;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
       v17 = v8;
       v18 = 2112;
@@ -2098,51 +2098,51 @@ LABEL_7:
     }
 
     [(FMFMapViewController *)self stopShowingLocationsForHandles:v6];
-    [(FMFMapViewController *)self startShowingLocationsForHandles:v4];
-    [(FMFMapViewController *)self set_internalHandlesShowingLocations:v4];
+    [(FMFMapViewController *)self startShowingLocationsForHandles:locationsCopy];
+    [(FMFMapViewController *)self set_internalHandlesShowingLocations:locationsCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startShowingLocationsForHandles:(id)a3
+- (void)startShowingLocationsForHandles:(id)handles
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = handlesCopy;
     _os_log_impl(&dword_24A4E3000, v5, OS_LOG_TYPE_DEFAULT, "Start showing location for handles: %@", &v8, 0xCu);
   }
 
-  v6 = [(FMFMapViewController *)self fmfSession];
-  [v6 addHandles:v4];
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  [fmfSession addHandles:handlesCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopShowingLocationsForHandles:(id)a3
+- (void)stopShowingLocationsForHandles:(id)handles
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = handlesCopy;
     _os_log_impl(&dword_24A4E3000, v5, OS_LOG_TYPE_DEFAULT, "Stop showing location for handles: %@", buf, 0xCu);
   }
 
-  v6 = [(FMFMapViewController *)self fmfSession];
-  [v6 removeHandles:v4];
+  fmfSession = [(FMFMapViewController *)self fmfSession];
+  [fmfSession removeHandles:handlesCopy];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = handlesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -2159,8 +2159,8 @@ LABEL_7:
 
         v12 = *(*(&v15 + 1) + 8 * i);
         [(FMFMapViewController *)self removeAnnotationsFromMapForHandle:v12, v15];
-        v13 = [(FMFMapViewController *)self refreshButton];
-        [v13 removeLocationForHandle:v12];
+        refreshButton = [(FMFMapViewController *)self refreshButton];
+        [refreshButton removeLocationForHandle:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -2176,41 +2176,41 @@ LABEL_7:
 {
   [(FMFMapViewController *)self nonLiveAnimationDuration];
   v4 = v3;
-  v6 = [(FMFMapViewController *)self mapViewDelegate];
-  v5 = [(FMFMapViewController *)self mapView];
-  [v6 zoomToFitAnnotationsForMapView:v5 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
+  mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapViewDelegate zoomToFitAnnotationsForMapView:mapView includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
 }
 
-- (void)zoomToFit:(BOOL)a3
+- (void)zoomToFit:(BOOL)fit
 {
   v4 = 0.0;
-  if (a3)
+  if (fit)
   {
     [(FMFMapViewController *)self nonLiveAnimationDuration];
     v4 = v5;
   }
 
-  v7 = [(FMFMapViewController *)self mapViewDelegate];
-  v6 = [(FMFMapViewController *)self mapView];
-  [v7 zoomToFitAnnotationsForMapView:v6 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
+  mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+  mapView = [(FMFMapViewController *)self mapView];
+  [mapViewDelegate zoomToFitAnnotationsForMapView:mapView includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
 }
 
-- (void)zoomAndSelectHandle:(id)a3
+- (void)zoomAndSelectHandle:(id)handle
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMFMapViewController *)self locationOnMapForHandle:v4 enforceServerId:0];
+  handleCopy = handle;
+  v5 = [(FMFMapViewController *)self locationOnMapForHandle:handleCopy enforceServerId:0];
   if (v5)
   {
     if ([(FMFMapViewController *)self canSelectAnnotation:v5])
     {
-      v6 = [(FMFMapViewController *)self mapViewDelegate];
-      [v6 selectAnnotation:v5];
+      mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+      [mapViewDelegate selectAnnotation:v5];
     }
 
-    v7 = [(FMFMapViewController *)self mapViewDelegate];
-    v8 = [(FMFMapViewController *)self mapView];
-    [v7 zoomToFitLocation:v5 forMapView:v8];
+    mapViewDelegate2 = [(FMFMapViewController *)self mapViewDelegate];
+    mapView = [(FMFMapViewController *)self mapView];
+    [mapViewDelegate2 zoomToFitLocation:v5 forMapView:mapView];
   }
 
   else
@@ -2219,7 +2219,7 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = handleCopy;
       _os_log_impl(&dword_24A4E3000, v9, OS_LOG_TYPE_INFO, "zoomAndSelectHandle: location not found for handle: %@", &v11, 0xCu);
     }
   }
@@ -2235,9 +2235,9 @@ LABEL_7:
     v4 = [objc_alloc(MEMORY[0x277D07BE0]) initWithDelegate:self];
     [(FMFMapViewController *)self setFmfSession:v4];
 
-    v5 = [(FMFMapViewController *)self fmfSession];
-    v6 = [(FMFMapViewController *)self debugContext];
-    [v5 setDebugContext:v6];
+    fmfSession = [(FMFMapViewController *)self fmfSession];
+    debugContext = [(FMFMapViewController *)self debugContext];
+    [fmfSession setDebugContext:debugContext];
 
     fmfSession = self->_fmfSession;
   }
@@ -2245,16 +2245,16 @@ LABEL_7:
   return fmfSession;
 }
 
-- (void)didReceiveLocation:(id)a3
+- (void)didReceiveLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__FMFMapViewController_didReceiveLocation___block_invoke;
   v6[3] = &unk_278FE2A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = locationCopy;
+  v5 = locationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2328,37 +2328,37 @@ LABEL_15:
   return [v18 didReceiveLocationForDelegateCallback:v19];
 }
 
-- (void)updateRefreshForLocation:(id)a3
+- (void)updateRefreshForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(FMFMapViewController *)self refreshButton];
-  [v5 addLocation:v4];
+  locationCopy = location;
+  refreshButton = [(FMFMapViewController *)self refreshButton];
+  [refreshButton addLocation:locationCopy];
 }
 
-- (void)didStopAbilityToGetLocationForHandle:(id)a3
+- (void)didStopAbilityToGetLocationForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__FMFMapViewController_didStopAbilityToGetLocationForHandle___block_invoke;
   v6[3] = &unk_278FE2A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handleCopy;
+  v5 = handleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
 - (void)removeAllFriendLocationsFromMap
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(FMFMapViewController *)self mapView];
-  v4 = [v3 annotations];
+  mapView = [(FMFMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = annotations;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2409,25 +2409,25 @@ void __55__FMFMapViewController_removeAllFriendLocationsFromMap__block_invoke(ui
 
 - (int64_t)userTrackingMode
 {
-  v2 = [(FMFMapViewController *)self currentTrackingMode];
-  if (v2 == 1)
+  currentTrackingMode = [(FMFMapViewController *)self currentTrackingMode];
+  if (currentTrackingMode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 2);
+    return 2 * (currentTrackingMode == 2);
   }
 }
 
 - (BOOL)isCurrentlyRotated
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"FMFMapViewController.m" lineNumber:1306 description:@"FIXME: Test this code path.  As of Whitetail MapKit was never calling this method and it was just added for protocol conformance."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FMFMapViewController.m" lineNumber:1306 description:@"FIXME: Test this code path.  As of Whitetail MapKit was never calling this method and it was just added for protocol conformance."];
 
-  v5 = [(FMFMapViewController *)self mapView];
-  LOBYTE(self) = [v5 isCurrentlyRotated];
+  mapView = [(FMFMapViewController *)self mapView];
+  LOBYTE(self) = [mapView isCurrentlyRotated];
 
   return self;
 }
@@ -2435,31 +2435,31 @@ void __55__FMFMapViewController_removeAllFriendLocationsFromMap__block_invoke(ui
 - (void)updateUserTrackingButtonState
 {
   v2 = hasUserLocation;
-  v3 = [(FMFMapViewController *)self userTrackingButton];
-  [v3 setEnabled:v2];
+  userTrackingButton = [(FMFMapViewController *)self userTrackingButton];
+  [userTrackingButton setEnabled:v2];
 }
 
-- (void)didSelectLocation:(id)a3
+- (void)didSelectLocation:(id)location
 {
-  v6 = a3;
+  locationCopy = location;
   [(FMFMapViewController *)self _updateTitleViewLocation:?];
-  v4 = [(FMFMapViewController *)self delegate];
+  delegate = [(FMFMapViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 handle];
-    [v4 fmfMapViewController:self didSelectHandle:v5];
+    handle = [locationCopy handle];
+    [delegate fmfMapViewController:self didSelectHandle:handle];
   }
 }
 
-- (void)didDeselectLocation:(id)a3
+- (void)didDeselectLocation:(id)location
 {
-  v6 = a3;
+  locationCopy = location;
   [(FMFMapViewController *)self _updateTitleViewLocation:?];
-  v4 = [(FMFMapViewController *)self delegate];
+  delegate = [(FMFMapViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 handle];
-    [v4 fmfMapViewController:self didDeselectHandle:v5];
+    handle = [locationCopy handle];
+    [delegate fmfMapViewController:self didDeselectHandle:handle];
   }
 }
 
@@ -2469,27 +2469,27 @@ void __55__FMFMapViewController_removeAllFriendLocationsFromMap__block_invoke(ui
   {
     [(FMFMapViewController *)self nonLiveAnimationDuration];
     v4 = v3;
-    v6 = [(FMFMapViewController *)self mapViewDelegate];
-    v5 = [(FMFMapViewController *)self mapView];
-    [v6 zoomToFitAnnotationsForMapView:v5 includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
+    mapViewDelegate = [(FMFMapViewController *)self mapViewDelegate];
+    mapView = [(FMFMapViewController *)self mapView];
+    [mapViewDelegate zoomToFitAnnotationsForMapView:mapView includeMe:-[FMFMapViewController shouldZoomToFitMeAndLocations](self duration:{"shouldZoomToFitMeAndLocations"), v4}];
   }
 }
 
-- (void)didUpdateUserLocation:(id)a3
+- (void)didUpdateUserLocation:(id)location
 {
   hasUserLocation = 1;
-  v4 = a3;
+  locationCopy = location;
   [(FMFMapViewController *)self updateUserTrackingButtonState];
-  [(FMFMapViewController *)self didReceiveLocationForDelegateCallback:v4];
+  [(FMFMapViewController *)self didReceiveLocationForDelegateCallback:locationCopy];
 }
 
-- (void)didReceiveLocationForDelegateCallback:(id)a3
+- (void)didReceiveLocationForDelegateCallback:(id)callback
 {
-  v5 = a3;
-  v4 = [(FMFMapViewController *)self delegate];
+  callbackCopy = callback;
+  delegate = [(FMFMapViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 fmfMapViewController:self didReceiveLocation:v5];
+    [delegate fmfMapViewController:self didReceiveLocation:callbackCopy];
   }
 }
 
@@ -2525,14 +2525,14 @@ void __37__FMFMapViewController_hideCachedMap__block_invoke(uint64_t a1)
   [v1 setAlpha:0.0];
 }
 
-- (id)annotationImageForAnnotation:(id)a3 andHandle:(id)a4
+- (id)annotationImageForAnnotation:(id)annotation andHandle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMFMapViewController *)self delegate];
+  handleCopy = handle;
+  annotationCopy = annotation;
+  delegate = [(FMFMapViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 annotationContactForHandle:v6];
+    v9 = [delegate annotationContactForHandle:handleCopy];
   }
 
   else
@@ -2543,17 +2543,17 @@ void __37__FMFMapViewController_hideCachedMap__block_invoke(uint64_t a1)
   v19 = 0;
   +[FMFMapViewController annotationImageSize];
   v11 = v10;
-  v12 = [(FMFMapViewController *)self _internalAnnotationTintColor];
-  v13 = [FMFMonogramUtility monogramImageOfDiameter:v9 forContact:v12 useTintColor:1 useCustomFont:&v19 isPersonImage:v11];
+  _internalAnnotationTintColor = [(FMFMapViewController *)self _internalAnnotationTintColor];
+  v13 = [FMFMonogramUtility monogramImageOfDiameter:v9 forContact:_internalAnnotationTintColor useTintColor:1 useCustomFont:&v19 isPersonImage:v11];
 
-  [v7 setIsBorderEnabled:(v19 & 1) == 0];
+  [annotationCopy setIsBorderEnabled:(v19 & 1) == 0];
   if (!v13)
   {
     v14 = MEMORY[0x277D755B8];
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v14 imageNamed:@"person" inBundle:v15];
-    v17 = [(FMFMapViewController *)self _internalAnnotationTintColor];
-    v13 = [v16 tintedImageWithColor:v17];
+    _internalAnnotationTintColor2 = [(FMFMapViewController *)self _internalAnnotationTintColor];
+    v13 = [v16 tintedImageWithColor:_internalAnnotationTintColor2];
   }
 
   return v13;
@@ -2561,37 +2561,37 @@ void __37__FMFMapViewController_hideCachedMap__block_invoke(uint64_t a1)
 
 - (id)titleViewForSelectedHandle
 {
-  v3 = [(FMFMapViewController *)self titleView];
-  v4 = [(FMFMapViewController *)self _selectedHandleAnnotation];
-  [v3 updateLocation:v4];
+  titleView = [(FMFMapViewController *)self titleView];
+  _selectedHandleAnnotation = [(FMFMapViewController *)self _selectedHandleAnnotation];
+  [titleView updateLocation:_selectedHandleAnnotation];
 
   return [(FMFMapViewController *)self titleView];
 }
 
-- (void)_updateTitleViewLocation:(id)a3
+- (void)_updateTitleViewLocation:(id)location
 {
-  v13 = a3;
-  v4 = [(FMFMapViewController *)self handlesShowingLocations];
-  v5 = [v13 handle];
-  if ([v4 containsObject:v5])
+  locationCopy = location;
+  handlesShowingLocations = [(FMFMapViewController *)self handlesShowingLocations];
+  handle = [locationCopy handle];
+  if ([handlesShowingLocations containsObject:handle])
   {
-    v6 = [(FMFMapViewController *)self handlesShowingLocations];
-    if ([v6 count] == 1)
+    handlesShowingLocations2 = [(FMFMapViewController *)self handlesShowingLocations];
+    if ([handlesShowingLocations2 count] == 1)
     {
 
-      v7 = v13;
+      _selectedHandleAnnotation2 = locationCopy;
 LABEL_9:
-      v8 = [(FMFMapViewController *)self titleView];
-      [v8 updateLocation:v7];
+      titleView = [(FMFMapViewController *)self titleView];
+      [titleView updateLocation:_selectedHandleAnnotation2];
       goto LABEL_10;
     }
 
-    v9 = [(FMFMapViewController *)self _selectedHandleAnnotation];
-    v10 = [v9 handle];
-    v11 = [v13 handle];
-    v12 = [v10 isEqual:v11];
+    _selectedHandleAnnotation = [(FMFMapViewController *)self _selectedHandleAnnotation];
+    handle2 = [_selectedHandleAnnotation handle];
+    handle3 = [locationCopy handle];
+    v12 = [handle2 isEqual:handle3];
 
-    v7 = v13;
+    _selectedHandleAnnotation2 = locationCopy;
     if (v12)
     {
       goto LABEL_9;
@@ -2602,12 +2602,12 @@ LABEL_9:
   {
   }
 
-  v8 = [(FMFMapViewController *)self handlesShowingLocations];
-  if ([v8 count] >= 2)
+  titleView = [(FMFMapViewController *)self handlesShowingLocations];
+  if ([titleView count] >= 2)
   {
-    v7 = [(FMFMapViewController *)self _selectedHandleAnnotation];
+    _selectedHandleAnnotation2 = [(FMFMapViewController *)self _selectedHandleAnnotation];
 
-    if (v7)
+    if (_selectedHandleAnnotation2)
     {
       goto LABEL_11;
     }
@@ -2623,14 +2623,14 @@ LABEL_11:
 
 - (id)_selectedHandleAnnotation
 {
-  v2 = [(FMFMapViewController *)self mapView];
-  v3 = [v2 selectedAnnotations];
-  v4 = [v3 lastObject];
+  mapView = [(FMFMapViewController *)self mapView];
+  selectedAnnotations = [mapView selectedAnnotations];
+  lastObject = [selectedAnnotations lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = lastObject;
   }
 
   else
@@ -2645,19 +2645,19 @@ LABEL_11:
 
 - (id)_internalAnnotationTintColor
 {
-  v2 = [(FMFMapViewController *)self annotationTintColor];
-  v3 = v2;
-  if (v2)
+  annotationTintColor = [(FMFMapViewController *)self annotationTintColor];
+  v3 = annotationTintColor;
+  if (annotationTintColor)
   {
-    v4 = v2;
+    fmfOrangeColor = annotationTintColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75348] fmfOrangeColor];
+    fmfOrangeColor = [MEMORY[0x277D75348] fmfOrangeColor];
   }
 
-  v5 = v4;
+  v5 = fmfOrangeColor;
 
   return v5;
 }
@@ -2735,8 +2735,8 @@ void __66__FMFMapViewController_updateAllAnnotationsDueToAddressBookUpdate__bloc
   titleView = self->_titleView;
   if (!titleView)
   {
-    v4 = [[FMFTitleView alloc] initFromNib];
-    [(FMFMapViewController *)self setTitleView:v4];
+    initFromNib = [[FMFTitleView alloc] initFromNib];
+    [(FMFMapViewController *)self setTitleView:initFromNib];
 
     titleView = self->_titleView;
   }

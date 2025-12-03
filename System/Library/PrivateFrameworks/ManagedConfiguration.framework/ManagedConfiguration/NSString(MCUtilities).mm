@@ -12,25 +12,25 @@
 
 - (id)MCHashedIdentifier
 {
-  v1 = [a1 MCSHA256DigestWithSalt:0];
-  v2 = [v1 MCHexString];
+  v1 = [self MCSHA256DigestWithSalt:0];
+  mCHexString = [v1 MCHexString];
 
-  return v2;
+  return mCHexString;
 }
 
 - (id)MCHashedFilenameWithPrefix:()MCUtilities extension:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 MCHashedIdentifier];
+  mCHashedIdentifier = [self MCHashedIdentifier];
   if (v6)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v8];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, mCHashedIdentifier];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v8, v13];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", mCHashedIdentifier, v13];
   }
   v9 = ;
   v10 = v9;
@@ -47,12 +47,12 @@
 - (id)MCOldStyleSafeFilenameHashWithExtension:()MCUtilities
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [a1 componentsSeparatedByCharactersInSet:v6];
+  alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v7 = [self componentsSeparatedByCharactersInSet:invertedSet];
   v8 = [v7 componentsJoinedByString:@"_"];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%u", v8, objc_msgSend(a1, "MCHash")];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@+%u", v8, objc_msgSend(self, "MCHash")];
 
   if (v4)
   {
@@ -78,14 +78,14 @@
 
   v2 = MCSHA256DigestWithPasscodeSalt_salt;
 
-  return [a1 MCSHA256DigestWithSalt:v2];
+  return [self MCSHA256DigestWithSalt:v2];
 }
 
 - (id)MCSHA256DigestWithSalt:()MCUtilities
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 cStringUsingEncoding:4];
+  v5 = [self cStringUsingEncoding:4];
   v6 = strlen(v5);
   memset(&v10, 0, sizeof(v10));
   CC_SHA256_Init(&v10);
@@ -106,13 +106,13 @@
 - (uint64_t)MCHash
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v10;
   if (v2 >= 0x61)
   {
-    [a1 getCharacters:v10 range:{0, 32}];
-    [a1 getCharacters:&v11 range:{(v2 >> 1) - 16, 32}];
-    [a1 getCharacters:&v12 range:{v2 - 32, 32}];
+    [self getCharacters:v10 range:{0, 32}];
+    [self getCharacters:&v11 range:{(v2 >> 1) - 16, 32}];
+    [self getCharacters:&v12 range:{v2 - 32, 32}];
     v4 = &v13;
     v5 = &v13;
 LABEL_5:
@@ -128,7 +128,7 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  [a1 getCharacters:v10 range:{0, v2}];
+  [self getCharacters:v10 range:{0, v2}];
   v4 = &v10[v2];
   if ((v2 & 0x7C) != 0)
   {

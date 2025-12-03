@@ -1,17 +1,17 @@
 @interface TUIDrawingView
-- (void)setPath:(id)a3;
+- (void)setPath:(id)path;
 @end
 
 @implementation TUIDrawingView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  objc_storeStrong(&self->_path, a3);
-  v5 = a3;
-  v7 = [(TUIDrawingView *)self shapeLayer];
-  v6 = [v5 CGPath];
+  objc_storeStrong(&self->_path, path);
+  pathCopy = path;
+  shapeLayer = [(TUIDrawingView *)self shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v7 setPath:v6];
+  [shapeLayer setPath:cGPath];
 }
 
 @end

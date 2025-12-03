@@ -7,9 +7,9 @@
 - (UIKeyboardCameraViewControllerDelegate)delegate;
 - (void)keyboardCameraDidAccept;
 - (void)keyboardCameraDidCancel;
-- (void)keyboardCameraDidUpdateString:(id)a3;
-- (void)prepareWithCompletion:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)keyboardCameraDidUpdateString:(id)string;
+- (void)prepareWithCompletion:(id)completion;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -18,9 +18,9 @@
 + (BOOL)isLiveTextEnabled
 {
   v2 = +[_UIKeyboardCameraLiveTextEnabledObserver sharedInstance];
-  v3 = [v2 isLiveTextEnabled];
+  isLiveTextEnabled = [v2 isLiveTextEnabled];
 
-  return v3;
+  return isLiveTextEnabled;
 }
 
 + (BOOL)isCameraRestricted
@@ -28,8 +28,8 @@
   v8[1] = *MEMORY[0x1E69E9840];
   if (!qword_1ED4994C8)
   {
-    [a1 _updateIsCameraRestricted];
-    objc_initWeak(&location, a1);
+    [self _updateIsCameraRestricted];
+    objc_initWeak(&location, self);
     v8[0] = @"cameraRestriction";
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     v4 = MEMORY[0x1E69E96A0];
@@ -82,17 +82,17 @@ uint64_t __53__UIKeyboardCameraViewController_isSupportedByDevice__block_invoke(
 
 + (BOOL)isEnabled
 {
-  v3 = [a1 isSupportedByDevice];
-  if (v3)
+  isSupportedByDevice = [self isSupportedByDevice];
+  if (isSupportedByDevice)
   {
-    v3 = [a1 isLiveTextEnabled];
-    if (v3)
+    isSupportedByDevice = [self isLiveTextEnabled];
+    if (isSupportedByDevice)
     {
-      LOBYTE(v3) = [a1 isCameraRestricted] ^ 1;
+      LOBYTE(isSupportedByDevice) = [self isCameraRestricted] ^ 1;
     }
   }
 
-  return v3;
+  return isSupportedByDevice;
 }
 
 - (UIKeyboardCameraViewController)init
@@ -108,47 +108,47 @@ uint64_t __53__UIKeyboardCameraViewController_isSupportedByDevice__block_invoke(
   v5.super_class = UIKeyboardCameraViewController;
   [(UIViewController *)&v5 viewDidLoad];
   v3 = +[UIColor blackColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardCameraViewController;
-  [(UIViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(UIKeyboardCameraViewController *)self remoteViewController];
-  [v4 removeFromParentViewController];
+  [(UIViewController *)&v5 viewDidDisappear:disappear];
+  remoteViewController = [(UIKeyboardCameraViewController *)self remoteViewController];
+  [remoteViewController removeFromParentViewController];
 
   [(UIKeyboardCameraViewController *)self setRemoteViewController:0];
   [(UIKeyboardCameraViewController *)self setExtension:0];
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (+[UIKeyboardCameraViewController isSupportedByDevice])
   {
     v5 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:@"com.apple.VisionKit.KeyboardCamera" error:0];
     [(UIKeyboardCameraViewController *)self setExtension:v5];
 
     objc_initWeak(&location, self);
-    v6 = [(UIKeyboardCameraViewController *)self extension];
+    extension = [(UIKeyboardCameraViewController *)self extension];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __56__UIKeyboardCameraViewController_prepareWithCompletion___block_invoke;
     v7[3] = &unk_1E7102760;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v6 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v7];
+    v8 = completionCopy;
+    [extension instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -221,23 +221,23 @@ void __56__UIKeyboardCameraViewController_prepareWithCompletion___block_invoke(u
   }
 }
 
-- (void)keyboardCameraDidUpdateString:(id)a3
+- (void)keyboardCameraDidUpdateString:(id)string
 {
-  v4 = a3;
-  v5 = [(UIKeyboardCameraViewController *)self delegate];
-  [v5 keyboardCameraDidUpdateString:v4];
+  stringCopy = string;
+  delegate = [(UIKeyboardCameraViewController *)self delegate];
+  [delegate keyboardCameraDidUpdateString:stringCopy];
 }
 
 - (void)keyboardCameraDidAccept
 {
-  v2 = [(UIKeyboardCameraViewController *)self delegate];
-  [v2 keyboardCameraDidAccept];
+  delegate = [(UIKeyboardCameraViewController *)self delegate];
+  [delegate keyboardCameraDidAccept];
 }
 
 - (void)keyboardCameraDidCancel
 {
-  v2 = [(UIKeyboardCameraViewController *)self delegate];
-  [v2 keyboardCameraDidCancel];
+  delegate = [(UIKeyboardCameraViewController *)self delegate];
+  [delegate keyboardCameraDidCancel];
 }
 
 - (UIKeyboardCameraViewControllerDelegate)delegate

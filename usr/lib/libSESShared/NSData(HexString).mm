@@ -7,16 +7,16 @@
 
 - (id)asHexString
 {
-  v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(a1, "length")}];
-  if ([a1 length])
+  v2 = [MEMORY[0x1E696AD60] stringWithCapacity:{2 * objc_msgSend(self, "length")}];
+  if ([self length])
   {
     v3 = 0;
     do
     {
-      [v2 appendFormat:@"%02X", *(objc_msgSend(a1, "bytes") + v3++)];
+      [v2 appendFormat:@"%02X", *(objc_msgSend(self, "bytes") + v3++)];
     }
 
-    while (v3 < [a1 length]);
+    while (v3 < [self length]);
   }
 
   return v2;
@@ -25,12 +25,12 @@
 + (id)dataWithHexString:()HexString
 {
   v3 = a3;
-  v4 = [v3 UTF8String];
+  uTF8String = [v3 UTF8String];
   v5 = 0;
   if (v3)
   {
-    v6 = v4;
-    if (v4)
+    v6 = uTF8String;
+    if (uTF8String)
     {
       if (([v3 length] & 1) == 0)
       {

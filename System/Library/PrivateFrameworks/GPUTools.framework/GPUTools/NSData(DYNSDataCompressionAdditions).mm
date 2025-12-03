@@ -73,10 +73,10 @@
 
 - (uint64_t)dy_compressedDataWithAlgorithm:()DYNSDataCompressionAdditions
 {
-  v3 = a1;
+  selfCopy = self;
   if (!a3)
   {
-    return v3;
+    return selfCopy;
   }
 
   if (a3 == 1)
@@ -99,11 +99,11 @@
     v5 = v4;
   }
 
-  v6 = [a1 length];
-  v7 = [v3 bytes];
+  v6 = [self length];
+  bytes = [selfCopy bytes];
   v8 = malloc_type_malloc(v6 + 128, 0x100004077774924uLL);
   mach_absolute_time();
-  v9 = compression_encode_buffer(v8, v6 + 128, v7, v6, 0, v5);
+  v9 = compression_encode_buffer(v8, v6 + 128, bytes, v6, 0, v5);
   if (!v9 || (v10 = v9, (v11 = malloc_type_realloc(v8, v9, 0xF6907C2BuLL)) == 0))
   {
     free(v8);
@@ -118,10 +118,10 @@
 
 - (uint64_t)dy_decompressedDataWithAlgorithm:()DYNSDataCompressionAdditions outputLength:
 {
-  v4 = a1;
+  selfCopy = self;
   if (!a3)
   {
-    return v4;
+    return selfCopy;
   }
 
   if (a3 == 1)
@@ -144,17 +144,17 @@
     v7 = v6;
   }
 
-  v8 = [a1 length];
+  v8 = [self length];
   if (!v8)
   {
     return 0;
   }
 
   v9 = v8;
-  v10 = [v4 bytes];
+  bytes = [selfCopy bytes];
   v11 = malloc_type_malloc(a4, 0x100004077774924uLL);
   mach_absolute_time();
-  v12 = compression_decode_buffer(v11, a4, v10, v9, 0, v7);
+  v12 = compression_decode_buffer(v11, a4, bytes, v9, 0, v7);
   if (a4 && !v12)
   {
     free(v11);

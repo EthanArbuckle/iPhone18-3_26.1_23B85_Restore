@@ -1,68 +1,68 @@
 @interface _MKMapItemAttribution
-+ (id)attributionFromEncyclopedicInfo:(id)a3;
-- (_MKMapItemAttribution)initWithGEOMapItemAttribution:(id)a3;
-- (id)providerImageAtPath:(id)a3 scale:(double)a4 isTemplate:(BOOL)a5;
-- (id)providerLogoImageForScale:(double)a3;
-- (id)providerSnippetLogoImageForScale:(double)a3;
++ (id)attributionFromEncyclopedicInfo:(id)info;
+- (_MKMapItemAttribution)initWithGEOMapItemAttribution:(id)attribution;
+- (id)providerImageAtPath:(id)path scale:(double)scale isTemplate:(BOOL)template;
+- (id)providerLogoImageForScale:(double)scale;
+- (id)providerSnippetLogoImageForScale:(double)scale;
 @end
 
 @implementation _MKMapItemAttribution
 
-+ (id)attributionFromEncyclopedicInfo:(id)a3
++ (id)attributionFromEncyclopedicInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [_MKMapItemAttribution alloc];
-  v5 = [v3 encyclopedicAttribution];
+  encyclopedicAttribution = [infoCopy encyclopedicAttribution];
 
-  v6 = [(_MKMapItemAttribution *)v4 initWithGEOMapItemAttribution:v5];
+  v6 = [(_MKMapItemAttribution *)v4 initWithGEOMapItemAttribution:encyclopedicAttribution];
 
   return v6;
 }
 
-- (id)providerSnippetLogoImageForScale:(double)a3
+- (id)providerSnippetLogoImageForScale:(double)scale
 {
   v5 = [(GEOMapItemAttribution *)self->_geoAttribution providerSnippetLogoPathForScale:?];
   v6 = v5;
-  if (a3 > 2.0 && v5 == 0)
+  if (scale > 2.0 && v5 == 0)
   {
     [(_MKMapItemAttribution *)self providerSnippetLogoImageForScale:?];
   }
 
   else
   {
-    [(_MKMapItemAttribution *)self providerImageAtPath:v5 scale:1 isTemplate:a3];
+    [(_MKMapItemAttribution *)self providerImageAtPath:v5 scale:1 isTemplate:scale];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)providerLogoImageForScale:(double)a3
+- (id)providerLogoImageForScale:(double)scale
 {
   v5 = [(GEOMapItemAttribution *)self->_geoAttribution providerLogoPathForScale:?];
   v6 = v5;
-  if (a3 > 2.0 && v5 == 0)
+  if (scale > 2.0 && v5 == 0)
   {
     [(_MKMapItemAttribution *)self providerLogoImageForScale:?];
   }
 
   else
   {
-    [(_MKMapItemAttribution *)self providerImageAtPath:v5 scale:0 isTemplate:a3];
+    [(_MKMapItemAttribution *)self providerImageAtPath:v5 scale:0 isTemplate:scale];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)providerImageAtPath:(id)a3 scale:(double)a4 isTemplate:(BOOL)a5
+- (id)providerImageAtPath:(id)path scale:(double)scale isTemplate:(BOOL)template
 {
-  v5 = a5;
-  v7 = a3;
-  if (v7)
+  templateCopy = template;
+  pathCopy = path;
+  if (pathCopy)
   {
     v8 = +[_MKMapItemAttributionProviderLogoImageCache sharedInstance];
-    v9 = [v8 imageForKey:v7];
+    v9 = [v8 imageForKey:pathCopy];
 
     if (v9)
     {
@@ -71,12 +71,12 @@
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7];
+      v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy];
       if (v11)
       {
-        v12 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v11 scale:a4];
+        v12 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v11 scale:scale];
         v13 = v12;
-        if (v5)
+        if (templateCopy)
         {
           v14 = [v12 imageWithRenderingMode:2];
 
@@ -84,7 +84,7 @@
         }
 
         v15 = +[_MKMapItemAttributionProviderLogoImageCache sharedInstance];
-        [v15 setImage:v13 forKey:v7];
+        [v15 setImage:v13 forKey:pathCopy];
 
         v10 = v13;
       }
@@ -104,16 +104,16 @@
   return v10;
 }
 
-- (_MKMapItemAttribution)initWithGEOMapItemAttribution:(id)a3
+- (_MKMapItemAttribution)initWithGEOMapItemAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v11.receiver = self;
   v11.super_class = _MKMapItemAttribution;
   v6 = [(_MKMapItemAttribution *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    v8 = v5 == 0;
+    v8 = attributionCopy == 0;
   }
 
   else
@@ -128,7 +128,7 @@
 
   else
   {
-    objc_storeStrong(&v6->_geoAttribution, a3);
+    objc_storeStrong(&v6->_geoAttribution, attribution);
     v9 = v7;
   }
 

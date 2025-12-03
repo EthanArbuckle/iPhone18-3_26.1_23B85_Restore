@@ -1,12 +1,12 @@
 @interface _MRVolumeDidChangeMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRVolumeDidChangeMessageProtobuf
@@ -17,87 +17,87 @@
   v8.receiver = self;
   v8.super_class = _MRVolumeDidChangeMessageProtobuf;
   v4 = [(_MRVolumeDidChangeMessageProtobuf *)&v8 description];
-  v5 = [(_MRVolumeDidChangeMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRVolumeDidChangeMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     *&v4 = self->_volume;
     v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v5 forKey:@"volume"];
+    [dictionary setObject:v5 forKey:@"volume"];
   }
 
   endpointUID = self->_endpointUID;
   if (endpointUID)
   {
-    [v3 setObject:endpointUID forKey:@"endpointUID"];
+    [dictionary setObject:endpointUID forKey:@"endpointUID"];
   }
 
   outputDeviceUID = self->_outputDeviceUID;
   if (outputDeviceUID)
   {
-    [v3 setObject:outputDeviceUID forKey:@"outputDeviceUID"];
+    [dictionary setObject:outputDeviceUID forKey:@"outputDeviceUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     volume = self->_volume;
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endpointUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_outputDeviceUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = LODWORD(self->_volume);
-    *(v4 + 28) |= 1u;
+    toCopy[6] = LODWORD(self->_volume);
+    *(toCopy + 28) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_endpointUID)
   {
-    [v4 setEndpointUID:?];
-    v4 = v5;
+    [toCopy setEndpointUID:?];
+    toCopy = v5;
   }
 
   if (self->_outputDeviceUID)
   {
     [v5 setOutputDeviceUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -105,35 +105,35 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_endpointUID copyWithZone:a3];
+  v7 = [(NSString *)self->_endpointUID copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_outputDeviceUID copyWithZone:a3];
+  v9 = [(NSString *)self->_outputDeviceUID copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_volume != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_volume != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -141,13 +141,13 @@ LABEL_11:
   }
 
   endpointUID = self->_endpointUID;
-  if (endpointUID | *(v4 + 1) && ![(NSString *)endpointUID isEqual:?])
+  if (endpointUID | *(equalCopy + 1) && ![(NSString *)endpointUID isEqual:?])
   {
     goto LABEL_11;
   }
 
   outputDeviceUID = self->_outputDeviceUID;
-  if (outputDeviceUID | *(v4 + 2))
+  if (outputDeviceUID | *(equalCopy + 2))
   {
     v8 = [(NSString *)outputDeviceUID isEqual:?];
   }
@@ -201,26 +201,26 @@ LABEL_12:
   return v9 ^ [(NSString *)self->_outputDeviceUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[7])
+  fromCopy = from;
+  if (fromCopy[7])
   {
-    self->_volume = v4[6];
+    self->_volume = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(_MRVolumeDidChangeMessageProtobuf *)self setEndpointUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRVolumeDidChangeMessageProtobuf *)self setOutputDeviceUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

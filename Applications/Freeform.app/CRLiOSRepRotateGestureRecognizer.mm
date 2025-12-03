@@ -1,33 +1,33 @@
 @interface CRLiOSRepRotateGestureRecognizer
-- (BOOL)p_touchIsInRep:(id)a3;
+- (BOOL)p_touchIsInRep:(id)rep;
 - (BOOL)touchesAreInRep;
-- (CRLiOSRepRotateGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (CRLiOSRepRotateGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (double)rotation;
 - (void)cancelBecauseOfRotation;
 - (void)dealloc;
 - (void)operationDidEnd;
 - (void)p_beginTracking;
-- (void)p_recognizeAfterDelay:(double)a3;
+- (void)p_recognizeAfterDelay:(double)delay;
 - (void)p_updateTracker;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLiOSRepRotateGestureRecognizer
 
-- (CRLiOSRepRotateGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSRepRotateGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CRLiOSRepRotateGestureRecognizer;
   v5 = [(CRLiOSRepRotateGestureRecognizer *)&v10 initWithTarget:0 action:0];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -56,7 +56,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:56 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->mICC, v4);
+    objc_storeWeak(&v5->mICC, controllerCopy);
     v5->mAdditionalRotateInRadians = 0.0;
   }
 
@@ -71,12 +71,12 @@
   [(CRLiOSRepRotateGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   [(CRLiOSRepRotateGestureRecognizer *)self state];
   v5.receiver = self;
   v5.super_class = CRLiOSRepRotateGestureRecognizer;
-  [(CRLiOSRepRotateGestureRecognizer *)&v5 setState:a3];
+  [(CRLiOSRepRotateGestureRecognizer *)&v5 setState:state];
 }
 
 - (void)reset
@@ -101,16 +101,16 @@
   self->mLastAngle = 0.0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v77.receiver = self;
   v77.super_class = CRLiOSRepRotateGestureRecognizer;
-  v72 = a4;
-  [(CRLiOSRepRotateGestureRecognizer *)&v77 touchesBegan:v6 withEvent:?];
+  eventCopy = event;
+  [(CRLiOSRepRotateGestureRecognizer *)&v77 touchesBegan:beganCopy withEvent:?];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v8 = [WeakRetained layerHost];
-  v71 = [v8 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
   if (-[CRLiOSRepRotateGestureRecognizer state](self, "state") || ![WeakRetained currentlyScrolling])
   {
@@ -118,8 +118,8 @@
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v70 = v6;
-    v9 = v6;
+    v70 = beganCopy;
+    v9 = beganCopy;
     v10 = [v9 countByEnumeratingWithState:&v73 objects:v78 count:16];
     if (!v10)
     {
@@ -144,7 +144,7 @@
         {
           if ([(CRLiOSRepRotateGestureRecognizer *)self state]!= 2)
           {
-            [(CRLiOSRepRotateGestureRecognizer *)self ignoreTouch:v15 forEvent:v72];
+            [(CRLiOSRepRotateGestureRecognizer *)self ignoreTouch:v15 forEvent:eventCopy];
             goto LABEL_26;
           }
 
@@ -157,8 +157,8 @@
 LABEL_25:
             v21 = (&self->super.super.isa + v18);
             v22 = *(&self->super.super.isa + v16);
-            v23 = [WeakRetained canvasView];
-            [v22 locationInView:v23];
+            canvasView = [WeakRetained canvasView];
+            [v22 locationInView:canvasView];
             [WeakRetained convertBoundsToUnscaledPoint:?];
             *v21 = v24;
             v21[1] = v25;
@@ -200,8 +200,8 @@ LABEL_19:
             if ([(CRLiOSRepRotateGestureRecognizer *)self p_touchIsInRep:self->mTouch2])
             {
               v33 = self->mTouch2;
-              v34 = [WeakRetained canvasView];
-              [(UITouch *)v33 locationInView:v34];
+              canvasView2 = [WeakRetained canvasView];
+              [(UITouch *)v33 locationInView:canvasView2];
               v36 = v35;
               v38 = v37;
 
@@ -216,15 +216,15 @@ LABEL_19:
               [(CRLCanvasRep *)mRep convertNaturalPointToUnscaledCanvas:?];
               self->mUnscaledRotationCenter.x = v44;
               self->mUnscaledRotationCenter.y = v45;
-              v46 = self;
+              selfCopy2 = self;
               v47 = 0.4;
             }
 
             else
             {
               v48 = *(&self->super.super.isa + v19);
-              v49 = [WeakRetained canvasView];
-              [v48 locationInView:v49];
+              canvasView3 = [WeakRetained canvasView];
+              [v48 locationInView:canvasView3];
               v51 = v50;
               v53 = v52;
 
@@ -241,8 +241,8 @@ LABEL_19:
 
               self->mPinningTouchIsPresent = 1;
               v59 = self->mTouch2;
-              v60 = [WeakRetained canvasView];
-              [(UITouch *)v59 locationInView:v60];
+              canvasView4 = [WeakRetained canvasView];
+              [(UITouch *)v59 locationInView:canvasView4];
               v62 = v61;
               v64 = v63;
 
@@ -252,21 +252,21 @@ LABEL_19:
               self->mLastProcessedTouchUnscaledPoint2 = self->mOriginalUnscaledPoint2;
               [WeakRetained convertUnscaledToBoundsPoint:{self->mOriginalUnscaledPoint1.x, self->mOriginalUnscaledPoint1.y}];
               self->mOriginalBoundsDistance = sub_100120090(v67, v68, v62, v64);
-              v46 = self;
+              selfCopy2 = self;
               v47 = 0.2;
             }
 
-            [(CRLiOSRepRotateGestureRecognizer *)v46 p_recognizeAfterDelay:v47];
+            [(CRLiOSRepRotateGestureRecognizer *)selfCopy2 p_recognizeAfterDelay:v47];
           }
 
           else
           {
             self->mAdditionalRotateInRadians = 0.0;
             objc_storeStrong((&self->super.super.isa + v19), v15);
-            v26 = [v71 hitRepWithTouch:*(&self->super.super.isa + v19)];
-            v27 = [v26 repForRotating];
+            v26 = [asUIKitHost hitRepWithTouch:*(&self->super.super.isa + v19)];
+            repForRotating = [v26 repForRotating];
             v28 = self->mRep;
-            self->mRep = v27;
+            self->mRep = repForRotating;
 
             if (!self->mRep)
             {
@@ -274,8 +274,8 @@ LABEL_19:
             }
 
             v29 = *(&self->super.super.isa + v19);
-            v30 = [WeakRetained canvasView];
-            [v29 locationInView:v30];
+            canvasView5 = [WeakRetained canvasView];
+            [v29 locationInView:canvasView5];
             [WeakRetained convertBoundsToUnscaledPoint:?];
             self->mOriginalUnscaledPoint1.x = v31;
             self->mOriginalUnscaledPoint1.y = v32;
@@ -295,7 +295,7 @@ LABEL_26:
       {
 LABEL_36:
 
-        v6 = v70;
+        beganCopy = v70;
         goto LABEL_37;
       }
     }
@@ -305,12 +305,12 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
+  movedCopy = moved;
   v147.receiver = self;
   v147.super_class = CRLiOSRepRotateGestureRecognizer;
-  [(CRLiOSRepRotateGestureRecognizer *)&v147 touchesMoved:v6 withEvent:a4];
+  [(CRLiOSRepRotateGestureRecognizer *)&v147 touchesMoved:movedCopy withEvent:event];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
   p_mTouch1 = &self->mTouch1;
   mTouch1 = self->mTouch1;
@@ -335,7 +335,7 @@ LABEL_37:
           v146 = 0u;
           v143 = 0u;
           v144 = 0u;
-          obj = v6;
+          obj = movedCopy;
           v11 = [(UITouch *)obj countByEnumeratingWithState:&v143 objects:v148 count:16];
           if (!v11)
           {
@@ -343,7 +343,7 @@ LABEL_37:
           }
 
           v12 = v11;
-          v136 = v6;
+          v136 = movedCopy;
           v13 = *v144;
           while (1)
           {
@@ -372,17 +372,17 @@ LABEL_37:
                 v17 = 2;
               }
 
-              v18 = [WeakRetained canvasView];
-              [v15 locationInView:v18];
+              canvasView = [WeakRetained canvasView];
+              [v15 locationInView:canvasView];
               v20 = v19;
               v22 = v21;
 
               [WeakRetained convertUnscaledToBoundsPoint:{*(&self->super.super.isa + *v16), *(&self->mICC + *v16)}];
               v24 = v23;
               v26 = v25;
-              v27 = [(CRLiOSRepRotateGestureRecognizer *)self state];
+              state = [(CRLiOSRepRotateGestureRecognizer *)self state];
               v28 = sub_100120090(v20, v22, v24, v26);
-              if (v27 || v28 < 14.0)
+              if (state || v28 < 14.0)
               {
                 if (v28 >= 3.0)
                 {
@@ -400,7 +400,7 @@ LABEL_37:
             v12 = [(UITouch *)obj countByEnumeratingWithState:&v143 objects:v148 count:16];
             if (!v12)
             {
-              v6 = v136;
+              movedCopy = v136;
               v8 = &OBJC_IVAR___CRLMediaRep_mGlyphRenderable;
               goto LABEL_36;
             }
@@ -424,13 +424,13 @@ LABEL_37:
       v134 = v35[1];
       if ([v31 phase] != 3)
       {
-        v36 = [WeakRetained canvasView];
-        [(UITouch *)obj locationInView:v36];
+        canvasView2 = [WeakRetained canvasView];
+        [(UITouch *)obj locationInView:canvasView2];
         v38 = v37;
         v40 = v39;
 
-        v41 = [WeakRetained canvasView];
-        [v31 locationInView:v41];
+        canvasView3 = [WeakRetained canvasView];
+        [v31 locationInView:canvasView3];
         v43 = v42;
         v45 = v44;
 
@@ -488,8 +488,8 @@ LABEL_36:
     v65 = *p_mTouch1;
     if (*p_mTouch1)
     {
-      v66 = [WeakRetained canvasView];
-      [(UITouch *)v65 locationInView:v66];
+      canvasView4 = [WeakRetained canvasView];
+      [(UITouch *)v65 locationInView:canvasView4];
       [WeakRetained convertBoundsToUnscaledPoint:?];
       self->mLastProcessedTouchUnscaledPoint1.x = v67;
       self->mLastProcessedTouchUnscaledPoint1.y = v68;
@@ -500,8 +500,8 @@ LABEL_36:
   mTouch2 = self->mTouch2;
   if (mTouch2)
   {
-    v71 = [WeakRetained canvasView];
-    [(UITouch *)mTouch2 locationInView:v71];
+    canvasView5 = [WeakRetained canvasView];
+    [(UITouch *)mTouch2 locationInView:canvasView5];
     [WeakRetained convertBoundsToUnscaledPoint:?];
     self->mLastProcessedTouchUnscaledPoint2.x = v72;
     self->mLastProcessedTouchUnscaledPoint2.y = v73;
@@ -527,8 +527,8 @@ LABEL_36:
     v79 = *v78;
     if (v77)
     {
-      v80 = [WeakRetained canvasView];
-      [(UITouch *)v77 locationInView:v80];
+      canvasView6 = [WeakRetained canvasView];
+      [(UITouch *)v77 locationInView:canvasView6];
       v82 = v81;
       v84 = v83;
 
@@ -604,7 +604,7 @@ LABEL_36:
     }
   }
 
-  if (*(&self->super.super.isa + v74) && (*p_mTouch1 && ([v6 containsObject:?] & 1) != 0 || *v69 && objc_msgSend(v6, "containsObject:")) && -[CRLiOSRepRotateGestureRecognizer state](self, "state") - 1 <= 1)
+  if (*(&self->super.super.isa + v74) && (*p_mTouch1 && ([movedCopy containsObject:?] & 1) != 0 || *v69 && objc_msgSend(movedCopy, "containsObject:")) && -[CRLiOSRepRotateGestureRecognizer state](self, "state") - 1 <= 1)
   {
     [(CRLiOSRepRotateGestureRecognizer *)self setState:2];
     [(CRLiOSRepRotateGestureRecognizer *)self p_updateTracker];
@@ -613,18 +613,18 @@ LABEL_36:
 LABEL_78:
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v34.receiver = self;
   v34.super_class = CRLiOSRepRotateGestureRecognizer;
-  [(CRLiOSRepRotateGestureRecognizer *)&v34 touchesEnded:v6 withEvent:a4];
+  [(CRLiOSRepRotateGestureRecognizer *)&v34 touchesEnded:endedCopy withEvent:event];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = endedCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (!v9)
   {
@@ -689,8 +689,8 @@ LABEL_26:
       }
 
       self->mMovingTouchIndex = v18;
-      v19 = [WeakRetained canvasView];
-      [(UITouch *)v17 locationInView:v19];
+      canvasView = [WeakRetained canvasView];
+      [(UITouch *)v17 locationInView:canvasView];
       [WeakRetained convertBoundsToUnscaledPoint:?];
       v21 = v20;
       v23 = v22;
@@ -720,17 +720,17 @@ LABEL_26:
 LABEL_30:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v18.receiver = self;
   v18.super_class = CRLiOSRepRotateGestureRecognizer;
-  [(CRLiOSRepRotateGestureRecognizer *)&v18 touchesCancelled:v6 withEvent:a4];
+  [(CRLiOSRepRotateGestureRecognizer *)&v18 touchesCancelled:cancelledCopy withEvent:event];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
@@ -801,8 +801,8 @@ LABEL_30:
 
   v6 = *(&self->super.super.isa + *v4);
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v8 = [WeakRetained canvasView];
-  [v6 locationInView:v8];
+  canvasView = [WeakRetained canvasView];
+  [v6 locationInView:canvasView];
   v10 = v9;
   v12 = v11;
 
@@ -876,20 +876,20 @@ LABEL_30:
   if (self->mTracker)
   {
     WeakRetained = objc_loadWeakRetained(&self->mICC);
-    v4 = [WeakRetained dynamicOperationController];
-    [(CRLiOSRepRotateGestureRecognizer *)self removeTarget:v4 action:"handleGestureRecognizer:"];
+    dynamicOperationController = [WeakRetained dynamicOperationController];
+    [(CRLiOSRepRotateGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 
     mTracker = self->mTracker;
     self->mTracker = 0;
   }
 }
 
-- (BOOL)p_touchIsInRep:(id)a3
+- (BOOL)p_touchIsInRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v6 = [WeakRetained canvasView];
-  [v4 locationInView:v6];
+  canvasView = [WeakRetained canvasView];
+  [repCopy locationInView:canvasView];
   v8 = v7;
   v10 = v9;
 
@@ -906,18 +906,18 @@ LABEL_30:
 - (void)p_beginTracking
 {
   WeakRetained = objc_loadWeakRetained(&self->mICC);
-  v4 = [WeakRetained dynamicOperationController];
-  v5 = [WeakRetained tmCoordinator];
+  dynamicOperationController = [WeakRetained dynamicOperationController];
+  tmCoordinator = [WeakRetained tmCoordinator];
   if (!self->mTracker)
   {
-    if ([v4 isInPossibleDynamicOperation])
+    if ([dynamicOperationController isInPossibleDynamicOperation])
     {
-      [v4 endOperation];
+      [dynamicOperationController endOperation];
     }
 
-    v6 = [WeakRetained customRotateTrackerForCurrentSelection];
+    customRotateTrackerForCurrentSelection = [WeakRetained customRotateTrackerForCurrentSelection];
     mTracker = self->mTracker;
-    self->mTracker = v6;
+    self->mTracker = customRotateTrackerForCurrentSelection;
 
     v8 = self->mTracker;
     if (v8)
@@ -934,10 +934,10 @@ LABEL_30:
       self->mTracker = v11;
     }
 
-    v13 = [(CRLCanvasRepRotateTracking *)self->mTracker repsBeingRotated];
-    [(CRLiOSRepRotateGestureRecognizer *)self addTarget:v4 action:"handleGestureRecognizer:"];
-    [v5 registerTrackerManipulator:self];
-    if (([v5 takeControlWithTrackerManipulator:self] & 1) == 0)
+    repsBeingRotated = [(CRLCanvasRepRotateTracking *)self->mTracker repsBeingRotated];
+    [(CRLiOSRepRotateGestureRecognizer *)self addTarget:dynamicOperationController action:"handleGestureRecognizer:"];
+    [tmCoordinator registerTrackerManipulator:self];
+    if (([tmCoordinator takeControlWithTrackerManipulator:self] & 1) == 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -966,22 +966,22 @@ LABEL_30:
       [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:542 isFatal:0 description:"rotate GR did not successfully take control"];
     }
 
-    if (([v4 isInOperation] & 1) == 0)
+    if (([dynamicOperationController isInOperation] & 1) == 0)
     {
-      [v4 beginOperation];
+      [dynamicOperationController beginOperation];
     }
 
-    [v4 startTransformingReps:v13];
+    [dynamicOperationController startTransformingReps:repsBeingRotated];
     self->mLastAngle = 0.0;
-    if ([v13 count] == 1)
+    if ([repsBeingRotated count] == 1)
     {
-      v17 = [WeakRetained canvasEditor];
-      v18 = [v13 anyObject];
-      v19 = [v18 info];
-      v20 = [v17 selectionPathWithInfo:v19];
+      canvasEditor = [WeakRetained canvasEditor];
+      anyObject = [repsBeingRotated anyObject];
+      info = [anyObject info];
+      v20 = [canvasEditor selectionPathWithInfo:info];
 
-      v21 = [WeakRetained editorController];
-      [v21 setSelectionPath:v20];
+      editorController = [WeakRetained editorController];
+      [editorController setSelectionPath:v20];
     }
   }
 
@@ -989,12 +989,12 @@ LABEL_30:
   self->mRecognitionIsBeingDelayed = 0;
 }
 
-- (void)p_recognizeAfterDelay:(double)a3
+- (void)p_recognizeAfterDelay:(double)delay
 {
   if (!self->mRecognitionIsBeingDelayed)
   {
     self->mRecognitionIsBeingDelayed = 1;
-    [(CRLiOSRepRotateGestureRecognizer *)self performSelector:"p_beginTracking" withObject:0 afterDelay:a3];
+    [(CRLiOSRepRotateGestureRecognizer *)self performSelector:"p_beginTracking" withObject:0 afterDelay:delay];
   }
 }
 
@@ -1015,15 +1015,15 @@ LABEL_30:
 
   v17 = *(&self->super.super.isa + *v5);
   v6 = objc_loadWeakRetained(&self->mICC);
-  v7 = [v6 canvasView];
-  [v17 locationInView:v7];
+  canvasView = [v6 canvasView];
+  [v17 locationInView:canvasView];
   [v6 convertBoundsToUnscaledPoint:?];
   v9 = v8;
   v11 = v10;
 
   v12 = sub_100120090(v9, v11, self->mUnscaledRotationCenter.x, self->mUnscaledRotationCenter.y);
-  v13 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  [v13 viewScale];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v15 = v12 * v14;
 
   v16 = 2.0;

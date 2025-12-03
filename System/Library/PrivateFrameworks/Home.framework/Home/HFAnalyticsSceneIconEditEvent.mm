@@ -1,20 +1,20 @@
 @interface HFAnalyticsSceneIconEditEvent
-- (HFAnalyticsSceneIconEditEvent)initWithData:(id)a3;
+- (HFAnalyticsSceneIconEditEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsSceneIconEditEvent
 
-- (HFAnalyticsSceneIconEditEvent)initWithData:(id)a3
+- (HFAnalyticsSceneIconEditEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = HFAnalyticsSceneIconEditEvent;
   v5 = [(HFAnalyticsEvent *)&v15 initWithEventType:38];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"sceneIconDidChange"];
+    v6 = [dataCopy objectForKeyedSubscript:@"sceneIconDidChange"];
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -28,7 +28,7 @@
     objc_storeStrong(&v5->_didChange, v7);
 
     objc_opt_class();
-    v8 = [v4 objectForKeyedSubscript:@"sceneIconColorDescription"];
+    v8 = [dataCopy objectForKeyedSubscript:@"sceneIconColorDescription"];
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -42,7 +42,7 @@
     objc_storeStrong(&v5->_colorStr, v9);
 
     objc_opt_class();
-    v10 = [v4 objectForKeyedSubscript:@"sceneIconIdentifier"];
+    v10 = [dataCopy objectForKeyedSubscript:@"sceneIconIdentifier"];
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -56,7 +56,7 @@
     objc_storeStrong(&v5->_sfSymbolStr, v11);
 
     objc_opt_class();
-    v12 = [v4 objectForKeyedSubscript:@"isNewScene"];
+    v12 = [dataCopy objectForKeyedSubscript:@"isNewScene"];
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -77,20 +77,20 @@
 {
   v10.receiver = self;
   v10.super_class = HFAnalyticsSceneIconEditEvent;
-  v3 = [(HFAnalyticsEvent *)&v10 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v10 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsSceneIconEditEvent *)self didChange];
-  [v4 na_safeSetObject:v5 forKey:@"sceneIconEditDidChange"];
+  didChange = [(HFAnalyticsSceneIconEditEvent *)self didChange];
+  [v4 na_safeSetObject:didChange forKey:@"sceneIconEditDidChange"];
 
-  v6 = [(HFAnalyticsSceneIconEditEvent *)self colorStr];
-  [v4 na_safeSetObject:v6 forKey:@"sceneIconEditColorString"];
+  colorStr = [(HFAnalyticsSceneIconEditEvent *)self colorStr];
+  [v4 na_safeSetObject:colorStr forKey:@"sceneIconEditColorString"];
 
-  v7 = [(HFAnalyticsSceneIconEditEvent *)self sfSymbolStr];
-  [v4 na_safeSetObject:v7 forKey:@"sceneIconEditSFSymbolString"];
+  sfSymbolStr = [(HFAnalyticsSceneIconEditEvent *)self sfSymbolStr];
+  [v4 na_safeSetObject:sfSymbolStr forKey:@"sceneIconEditSFSymbolString"];
 
-  v8 = [(HFAnalyticsSceneIconEditEvent *)self isNewScene];
-  [v4 na_safeSetObject:v8 forKey:@"isNewScene"];
+  isNewScene = [(HFAnalyticsSceneIconEditEvent *)self isNewScene];
+  [v4 na_safeSetObject:isNewScene forKey:@"isNewScene"];
 
   [v4 setObject:&unk_2825250B0 forKeyedSubscript:@"homeAppEventCount"];
 

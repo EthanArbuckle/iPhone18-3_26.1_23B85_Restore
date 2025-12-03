@@ -1,6 +1,6 @@
 @interface PPTTestRunner
 - (PPTTestRunner)init;
-- (id)createSafeBlock:(id)a3;
+- (id)createSafeBlock:(id)block;
 - (void)prepareTestToStart;
 - (void)removeTestFromQueue;
 - (void)start;
@@ -12,20 +12,20 @@
 
 - (void)removeTestFromQueue
 {
-  v2 = [(PPTTestRunner *)self testQueue];
-  [v2 removeObjectAtIndex:0];
+  testQueue = [(PPTTestRunner *)self testQueue];
+  [testQueue removeObjectAtIndex:0];
 }
 
 - (void)start
 {
-  v2 = [(PPTTestRunner *)self machine];
-  [v2 start];
+  machine = [(PPTTestRunner *)self machine];
+  [machine start];
 }
 
 - (void)stop
 {
-  v2 = [(PPTTestRunner *)self machine];
-  [v2 stop];
+  machine = [(PPTTestRunner *)self machine];
+  [machine stop];
 }
 
 - (PPTTestRunner)init
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (id)createSafeBlock:(id)a3
+- (id)createSafeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   testSequence = self->_testSequence;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
@@ -62,8 +62,8 @@
   v9[3] = &unk_100A0A478;
   objc_copyWeak(&v11, &location);
   v12 = testSequence;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = objc_retainBlock(v9);
 
   objc_destroyWeak(&v11);
@@ -74,8 +74,8 @@
 
 - (void)prepareTestToStart
 {
-  v3 = [(PPTTestRunner *)self testQueue];
-  v4 = [v3 objectAtIndex:0];
+  testQueue = [(PPTTestRunner *)self testQueue];
+  v4 = [testQueue objectAtIndex:0];
   testDelegate = self->_testDelegate;
   self->_testDelegate = v4;
 

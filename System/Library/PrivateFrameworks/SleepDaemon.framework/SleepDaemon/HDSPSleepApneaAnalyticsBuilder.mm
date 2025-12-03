@@ -3,70 +3,70 @@
 - (BOOL)_areHealthNotificationsAuthorized;
 - (BOOL)_isEnabledBD;
 - (BOOL)_isOnboardedBD;
-- (HDSPSleepApneaAnalyticsBuilder)initWithBreathingDisturbanceSamples:(id)a3 sleepApneaEventSamples:(id)a4 sleepApneaFeatureOnboardingRecord:(id)a5 morningIndexRange:(id)a6 gregorianCalendar:(id)a7 dateOfLastAnalysis:(id)a8 currentDateProvider:(id)a9;
+- (HDSPSleepApneaAnalyticsBuilder)initWithBreathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record morningIndexRange:(id)range gregorianCalendar:(id)calendar dateOfLastAnalysis:(id)analysis currentDateProvider:(id)provider;
 - (id)_breathingDisturbanceSamplesInPastNight;
 - (id)_maxBDValueInPast30Days;
-- (id)_maxTimeBetweenBDSessionsPastNight:(id)a3;
-- (id)_meanTimeBetweenBDSessionsPastNight:(id)a3;
-- (id)_minTimeBetweenBDSessionsPastNight:(id)a3;
-- (id)_numBDNotifications:(id)a3;
+- (id)_maxTimeBetweenBDSessionsPastNight:(id)night;
+- (id)_meanTimeBetweenBDSessionsPastNight:(id)night;
+- (id)_minTimeBetweenBDSessionsPastNight:(id)night;
+- (id)_numBDNotifications:(id)notifications;
 - (id)_numBDValuesInPast30Days;
-- (id)_numBDValuesInPastNight:(id)a3;
+- (id)_numBDValuesInPastNight:(id)night;
 - (id)_numDaysSinceLastAnalysis;
 - (id)_numDaysSinceLastBDNotification;
 - (id)_numSleepDaysWithBDsOverThresholdLast30Days;
 - (id)_numSleepDaysWithMultipleBDsInTheLast30Days;
 - (id)_numSleepSessionsWithBDsOverThresholdLast30Days;
 - (id)_onboardedCountryCode;
-- (id)_sleepApneaEventSamplesInPastNights:(int64_t)a3;
-- (id)_timesBetweenBDSessions:(id)a3;
+- (id)_sleepApneaEventSamplesInPastNights:(int64_t)nights;
+- (id)_timesBetweenBDSessions:(id)sessions;
 - (id)_weeksSinceOnboardedBD;
 - (void)_calculateBreathingDisturbanceValueDependentMetrics;
-- (void)updateDailyReportWithSleepApneaAnalytics:(id)a3;
+- (void)updateDailyReportWithSleepApneaAnalytics:(id)analytics;
 @end
 
 @implementation HDSPSleepApneaAnalyticsBuilder
 
-- (HDSPSleepApneaAnalyticsBuilder)initWithBreathingDisturbanceSamples:(id)a3 sleepApneaEventSamples:(id)a4 sleepApneaFeatureOnboardingRecord:(id)a5 morningIndexRange:(id)a6 gregorianCalendar:(id)a7 dateOfLastAnalysis:(id)a8 currentDateProvider:(id)a9
+- (HDSPSleepApneaAnalyticsBuilder)initWithBreathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record morningIndexRange:(id)range gregorianCalendar:(id)calendar dateOfLastAnalysis:(id)analysis currentDateProvider:(id)provider
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  var1 = range.var1;
+  var0 = range.var0;
+  samplesCopy = samples;
+  eventSamplesCopy = eventSamples;
+  recordCopy = record;
+  calendarCopy = calendar;
+  analysisCopy = analysis;
+  providerCopy = provider;
   v36.receiver = self;
   v36.super_class = HDSPSleepApneaAnalyticsBuilder;
   v21 = [(HDSPSleepApneaAnalyticsBuilder *)&v36 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [samplesCopy copy];
     breathingDisturbanceSamples = v21->_breathingDisturbanceSamples;
     v21->_breathingDisturbanceSamples = v22;
 
-    v24 = [v16 copy];
+    v24 = [eventSamplesCopy copy];
     sleepApneaEventSamples = v21->_sleepApneaEventSamples;
     v21->_sleepApneaEventSamples = v24;
 
-    v26 = [v17 copy];
+    v26 = [recordCopy copy];
     sleepApneaFeatureOnboardingRecord = v21->_sleepApneaFeatureOnboardingRecord;
     v21->_sleepApneaFeatureOnboardingRecord = v26;
 
     v21->_morningIndexRange.start = var0;
     v21->_morningIndexRange.duration = var1;
-    v28 = [v18 copy];
+    v28 = [calendarCopy copy];
     gregorianCalendar = v21->_gregorianCalendar;
     v21->_gregorianCalendar = v28;
 
-    v30 = [v20 copy];
+    v30 = [providerCopy copy];
     currentDateProvider = v21->_currentDateProvider;
     v21->_currentDateProvider = v30;
 
-    if (v19)
+    if (analysisCopy)
     {
-      v32 = [v19 copy];
+      v32 = [analysisCopy copy];
       dateOfLastAnalysis = v21->_dateOfLastAnalysis;
       v21->_dateOfLastAnalysis = v32;
     }
@@ -77,154 +77,154 @@
   return v21;
 }
 
-- (void)updateDailyReportWithSleepApneaAnalytics:(id)a3
+- (void)updateDailyReportWithSleepApneaAnalytics:(id)analytics
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
+    breathingDisturbanceSamples = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
     v33 = 138543618;
     v34 = v6;
     v35 = 2050;
-    v36 = [v8 count];
+    v36 = [breathingDisturbanceSamples count];
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Building daily analytics report from %{public}lu bd samples", &v33, 0x16u);
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HDSPSleepApneaAnalyticsBuilder _isEnabledBD](self, "_isEnabledBD")}];
-  [v4 setIsOnboardedBD:v9];
+  [analyticsCopy setIsOnboardedBD:v9];
 
-  v10 = [(HDSPSleepApneaAnalyticsBuilder *)self _onboardedCountryCode];
-  [v4 setBDOnboardingCountryCode:v10];
+  _onboardedCountryCode = [(HDSPSleepApneaAnalyticsBuilder *)self _onboardedCountryCode];
+  [analyticsCopy setBDOnboardingCountryCode:_onboardedCountryCode];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[HDSPSleepApneaAnalyticsBuilder _areHealthNotificationsAuthorized](self, "_areHealthNotificationsAuthorized")}];
-  [v4 setAreHealthNotificationsAuthorized:v11];
+  [analyticsCopy setAreHealthNotificationsAuthorized:v11];
 
-  v12 = [(HDSPSleepApneaAnalyticsBuilder *)self _breathingDisturbanceSamplesInPastNight];
+  _breathingDisturbanceSamplesInPastNight = [(HDSPSleepApneaAnalyticsBuilder *)self _breathingDisturbanceSamplesInPastNight];
   v13 = [(HDSPSleepApneaAnalyticsBuilder *)self _sleepApneaEventSamplesInPastNights:0];
   v14 = [(HDSPSleepApneaAnalyticsBuilder *)self _sleepApneaEventSamplesInPastNights:30];
   v15 = [(HDSPSleepApneaAnalyticsBuilder *)self _sleepApneaEventSamplesInPastNights:180];
-  v16 = [(HDSPSleepApneaAnalyticsBuilder *)self _timesBetweenBDSessions:v12];
-  v17 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDValuesInPastNight:v12];
-  [v4 setNumBDValuesInPastNight:v17];
+  v16 = [(HDSPSleepApneaAnalyticsBuilder *)self _timesBetweenBDSessions:_breathingDisturbanceSamplesInPastNight];
+  v17 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDValuesInPastNight:_breathingDisturbanceSamplesInPastNight];
+  [analyticsCopy setNumBDValuesInPastNight:v17];
 
   v18 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDNotifications:v13];
-  [v4 setNumBDNotificationsInPastNight:v18];
+  [analyticsCopy setNumBDNotificationsInPastNight:v18];
 
   v19 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDNotifications:v14];
-  [v4 setNumBDNotificationsInPast30Nights:v19];
+  [analyticsCopy setNumBDNotificationsInPast30Nights:v19];
 
   v20 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDNotifications:v15];
-  [v4 setNumBDNotificationsInPast180Nights:v20];
+  [analyticsCopy setNumBDNotificationsInPast180Nights:v20];
 
   v21 = [(HDSPSleepApneaAnalyticsBuilder *)self _meanTimeBetweenBDSessionsPastNight:v16];
-  [v4 setMeanTimeBetweenBDSessionsPastNight:v21];
+  [analyticsCopy setMeanTimeBetweenBDSessionsPastNight:v21];
 
   v22 = [(HDSPSleepApneaAnalyticsBuilder *)self _minTimeBetweenBDSessionsPastNight:v16];
-  [v4 setMinTimeBetweenBDSessionsPastNight:v22];
+  [analyticsCopy setMinTimeBetweenBDSessionsPastNight:v22];
 
   v23 = [(HDSPSleepApneaAnalyticsBuilder *)self _maxTimeBetweenBDSessionsPastNight:v16];
-  [v4 setMaxTimeBetweenBDSessionsPastNight:v23];
+  [analyticsCopy setMaxTimeBetweenBDSessionsPastNight:v23];
 
-  v24 = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDValuesInPast30Days];
-  [v4 setNumBDValuesInPast30Days:v24];
+  _numBDValuesInPast30Days = [(HDSPSleepApneaAnalyticsBuilder *)self _numBDValuesInPast30Days];
+  [analyticsCopy setNumBDValuesInPast30Days:_numBDValuesInPast30Days];
 
   [(HDSPSleepApneaAnalyticsBuilder *)self _calculateBreathingDisturbanceValueDependentMetrics];
-  v25 = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepDaysWithBDsOverThresholdLast30Days];
-  [v4 setNumSleepDaysWithBDsOverThresholdLast30Days:v25];
+  _numSleepDaysWithBDsOverThresholdLast30Days = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepDaysWithBDsOverThresholdLast30Days];
+  [analyticsCopy setNumSleepDaysWithBDsOverThresholdLast30Days:_numSleepDaysWithBDsOverThresholdLast30Days];
 
-  v26 = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepDaysWithMultipleBDsInTheLast30Days];
-  [v4 setNumSleepDaysWithMultipleBDinPast30Days:v26];
+  _numSleepDaysWithMultipleBDsInTheLast30Days = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepDaysWithMultipleBDsInTheLast30Days];
+  [analyticsCopy setNumSleepDaysWithMultipleBDinPast30Days:_numSleepDaysWithMultipleBDsInTheLast30Days];
 
-  v27 = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepSessionsWithBDsOverThresholdLast30Days];
-  [v4 setNumSleepSessionsWithBDsOverThresholdLast30Days:v27];
+  _numSleepSessionsWithBDsOverThresholdLast30Days = [(HDSPSleepApneaAnalyticsBuilder *)self _numSleepSessionsWithBDsOverThresholdLast30Days];
+  [analyticsCopy setNumSleepSessionsWithBDsOverThresholdLast30Days:_numSleepSessionsWithBDsOverThresholdLast30Days];
 
-  v28 = [(HDSPSleepApneaAnalyticsBuilder *)self _maxBDValueInPast30Days];
-  [v4 setMaxBDValueInPast30Days:v28];
+  _maxBDValueInPast30Days = [(HDSPSleepApneaAnalyticsBuilder *)self _maxBDValueInPast30Days];
+  [analyticsCopy setMaxBDValueInPast30Days:_maxBDValueInPast30Days];
 
-  v29 = [(HDSPSleepApneaAnalyticsBuilder *)self _numDaysSinceLastBDNotification];
-  [v4 setNumDaysSinceLastBDNotification:v29];
+  _numDaysSinceLastBDNotification = [(HDSPSleepApneaAnalyticsBuilder *)self _numDaysSinceLastBDNotification];
+  [analyticsCopy setNumDaysSinceLastBDNotification:_numDaysSinceLastBDNotification];
 
-  v30 = [(HDSPSleepApneaAnalyticsBuilder *)self _numDaysSinceLastAnalysis];
-  [v4 setNumDaysSinceLastAnalysis:v30];
+  _numDaysSinceLastAnalysis = [(HDSPSleepApneaAnalyticsBuilder *)self _numDaysSinceLastAnalysis];
+  [analyticsCopy setNumDaysSinceLastAnalysis:_numDaysSinceLastAnalysis];
 
-  v31 = [(HDSPSleepApneaAnalyticsBuilder *)self _weeksSinceOnboardedBD];
-  [v4 setWeeksSinceOnboardedBD:v31];
+  _weeksSinceOnboardedBD = [(HDSPSleepApneaAnalyticsBuilder *)self _weeksSinceOnboardedBD];
+  [analyticsCopy setWeeksSinceOnboardedBD:_weeksSinceOnboardedBD];
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)_isOnboardedBD
 {
-  v3 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+  sleepApneaFeatureOnboardingRecord = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
 
-  if (!v3)
+  if (!sleepApneaFeatureOnboardingRecord)
   {
     return 0;
   }
 
-  v4 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
-  v5 = [v4 isOnboardingPresent];
+  sleepApneaFeatureOnboardingRecord2 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+  isOnboardingPresent = [sleepApneaFeatureOnboardingRecord2 isOnboardingPresent];
 
-  return v5;
+  return isOnboardingPresent;
 }
 
 - (BOOL)_areHealthNotificationsAuthorized
 {
   v2 = objc_alloc(MEMORY[0x277CE2028]);
   v3 = [v2 initWithBundleIdentifier:*MEMORY[0x277CCE3A8]];
-  v4 = [v3 notificationSettings];
+  notificationSettings = [v3 notificationSettings];
 
-  LOBYTE(v3) = [v4 authorizationStatus] == 2;
+  LOBYTE(v3) = [notificationSettings authorizationStatus] == 2;
   return v3;
 }
 
 - (BOOL)_isEnabledBD
 {
-  v3 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+  sleepApneaFeatureOnboardingRecord = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
 
-  if (!v3)
+  if (!sleepApneaFeatureOnboardingRecord)
   {
     return 0;
   }
 
-  v4 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
-  v5 = [v4 featureSettings];
-  v6 = [v5 numberForKey:*MEMORY[0x277CCC120]];
-  v7 = [v6 BOOLValue];
+  sleepApneaFeatureOnboardingRecord2 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+  featureSettings = [sleepApneaFeatureOnboardingRecord2 featureSettings];
+  v6 = [featureSettings numberForKey:*MEMORY[0x277CCC120]];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)_onboardedCountryCode
 {
-  v3 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+  sleepApneaFeatureOnboardingRecord = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
 
-  if (v3 && [(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
+  if (sleepApneaFeatureOnboardingRecord && [(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
   {
-    v4 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
-    v5 = [v4 onboardedCountryCodesForOnboardingState];
-    v6 = [v5 allObjects];
-    v7 = [v6 firstObject];
+    sleepApneaFeatureOnboardingRecord2 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+    onboardedCountryCodesForOnboardingState = [sleepApneaFeatureOnboardingRecord2 onboardedCountryCodesForOnboardingState];
+    allObjects = [onboardedCountryCodesForOnboardingState allObjects];
+    firstObject = [allObjects firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_numBDValuesInPastNight:(id)a3
+- (id)_numBDValuesInPastNight:(id)night
 {
-  v4 = a3;
+  nightCopy = night;
   if ([(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(nightCopy, "count")}];
   }
 
   else
@@ -235,14 +235,14 @@
   return v5;
 }
 
-- (id)_numBDNotifications:(id)a3
+- (id)_numBDNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD];
+  notificationsCopy = notifications;
+  _isOnboardedBD = [(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD];
   v6 = 0;
-  if (v4 && v5)
+  if (notificationsCopy && _isOnboardedBD)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(notificationsCopy, "count")}];
   }
 
   return v6;
@@ -253,8 +253,8 @@
   if ([(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD]&& ([(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
-    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    breathingDisturbanceSamples = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
+    v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(breathingDisturbanceSamples, "count")}];
   }
 
   else
@@ -265,12 +265,12 @@
   return v6;
 }
 
-- (id)_meanTimeBetweenBDSessionsPastNight:(id)a3
+- (id)_meanTimeBetweenBDSessionsPastNight:(id)night
 {
-  v4 = a3;
-  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [v4 count])
+  nightCopy = night;
+  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [nightCopy count])
   {
-    v5 = [v4 valueForKeyPath:@"@avg.doubleValue"];
+    v5 = [nightCopy valueForKeyPath:@"@avg.doubleValue"];
     [v5 doubleValue];
     v7 = v6;
 
@@ -285,12 +285,12 @@
   return v8;
 }
 
-- (id)_maxTimeBetweenBDSessionsPastNight:(id)a3
+- (id)_maxTimeBetweenBDSessionsPastNight:(id)night
 {
-  v4 = a3;
-  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [v4 count])
+  nightCopy = night;
+  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [nightCopy count])
   {
-    v5 = [v4 valueForKeyPath:@"@max.doubleValue"];
+    v5 = [nightCopy valueForKeyPath:@"@max.doubleValue"];
     [v5 doubleValue];
     v7 = v6;
 
@@ -305,12 +305,12 @@
   return v8;
 }
 
-- (id)_minTimeBetweenBDSessionsPastNight:(id)a3
+- (id)_minTimeBetweenBDSessionsPastNight:(id)night
 {
-  v4 = a3;
-  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [v4 count])
+  nightCopy = night;
+  if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && [nightCopy count])
   {
-    v5 = [v4 valueForKeyPath:@"@min.doubleValue"];
+    v5 = [nightCopy valueForKeyPath:@"@min.doubleValue"];
     [v5 doubleValue];
     v7 = v6;
 
@@ -385,10 +385,10 @@
   return v5;
 }
 
-- (id)_timesBetweenBDSessions:(id)a3
+- (id)_timesBetweenBDSessions:(id)sessions
 {
-  v3 = a3;
-  if ([v3 count] <= 1)
+  sessionsCopy = sessions;
+  if ([sessionsCopy count] <= 1)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEA60]);
   }
@@ -396,18 +396,18 @@
   else
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([v3 count] >= 2)
+    if ([sessionsCopy count] >= 2)
     {
       v5 = 1;
       do
       {
-        v6 = [v3 objectAtIndexedSubscript:v5 - 1];
-        v7 = [v6 endDate];
+        v6 = [sessionsCopy objectAtIndexedSubscript:v5 - 1];
+        endDate = [v6 endDate];
 
-        v8 = [v3 objectAtIndexedSubscript:v5];
-        v9 = [v8 startDate];
+        v8 = [sessionsCopy objectAtIndexedSubscript:v5];
+        startDate = [v8 startDate];
 
-        [v9 timeIntervalSinceDate:v7];
+        [startDate timeIntervalSinceDate:endDate];
         if (v10 < 0.0)
         {
           v10 = 0.0;
@@ -419,7 +419,7 @@
         ++v5;
       }
 
-      while ([v3 count] > v5);
+      while ([sessionsCopy count] > v5);
     }
 
     v12 = [v4 copy];
@@ -432,22 +432,22 @@
 {
   if ([(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
   {
-    v3 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
-    v4 = [v3 earliestDateOfAnyOnboardingCompletion];
+    sleepApneaFeatureOnboardingRecord = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaFeatureOnboardingRecord];
+    earliestDateOfAnyOnboardingCompletion = [sleepApneaFeatureOnboardingRecord earliestDateOfAnyOnboardingCompletion];
 
-    if (v4)
+    if (earliestDateOfAnyOnboardingCompletion)
     {
-      v5 = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
-      v6 = v5[2]();
+      currentDateProvider = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
+      v6 = currentDateProvider[2]();
 
-      v7 = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
-      v8 = [v7 components:0x2000 fromDate:v4 toDate:v6 options:0];
+      gregorianCalendar = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
+      v8 = [gregorianCalendar components:0x2000 fromDate:earliestDateOfAnyOnboardingCompletion toDate:v6 options:0];
 
-      v9 = [v8 weekOfYear];
-      v10 = v9;
-      if (v9 >= 100)
+      weekOfYear = [v8 weekOfYear];
+      v10 = weekOfYear;
+      if (weekOfYear >= 100)
       {
-        v10 = 10 * ((v9 + 5) / 0xAuLL);
+        v10 = 10 * ((weekOfYear + 5) / 0xAuLL);
       }
 
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
@@ -469,35 +469,35 @@
 
 - (void)_calculateBreathingDisturbanceValueDependentMetrics
 {
-  v2 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x277D85DE8];
   if ([(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
   {
-    v3 = [(HDSPSleepApneaAnalyticsBuilder *)v2 breathingDisturbanceSamples];
+    breathingDisturbanceSamples = [(HDSPSleepApneaAnalyticsBuilder *)selfCopy breathingDisturbanceSamples];
 
-    if (v3)
+    if (breathingDisturbanceSamples)
     {
-      v4 = [(HDSPSleepApneaAnalyticsBuilder *)v2 breathingDisturbanceSamples];
-      v5 = [v4 count];
+      breathingDisturbanceSamples2 = [(HDSPSleepApneaAnalyticsBuilder *)selfCopy breathingDisturbanceSamples];
+      v5 = [breathingDisturbanceSamples2 count];
 
       if (v5)
       {
         v6 = HKAppleSleepingBreathingDisturbancesMinimumQuantityForClassification();
-        v7 = [MEMORY[0x277CCDAB0] countUnit];
-        [v6 doubleValueForUnit:v7];
+        countUnit = [MEMORY[0x277CCDAB0] countUnit];
+        [v6 doubleValueForUnit:countUnit];
         v9 = v8;
 
         v10 = objc_alloc(MEMORY[0x277CBEB38]);
-        v11 = [(HDSPSleepApneaAnalyticsBuilder *)v2 breathingDisturbanceSamples];
-        v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+        breathingDisturbanceSamples3 = [(HDSPSleepApneaAnalyticsBuilder *)selfCopy breathingDisturbanceSamples];
+        v12 = [v10 initWithCapacity:{objc_msgSend(breathingDisturbanceSamples3, "count")}];
 
         v62 = 0u;
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        obj = [(HDSPSleepApneaAnalyticsBuilder *)v2 breathingDisturbanceSamples];
+        obj = [(HDSPSleepApneaAnalyticsBuilder *)selfCopy breathingDisturbanceSamples];
         v13 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
-        v51 = v2;
+        v51 = selfCopy;
         if (v13)
         {
           v14 = v13;
@@ -514,8 +514,8 @@
               }
 
               v18 = *(*(&v60 + 1) + 8 * i);
-              v19 = [v18 quantity];
-              [v19 _value];
+              quantity = [v18 quantity];
+              [quantity _value];
               v21 = v20;
 
               if (v21 >= v9)
@@ -529,9 +529,9 @@
               }
 
               v22 = MEMORY[0x277CCABB0];
-              v23 = [v18 endDate];
-              v24 = [(HDSPSleepApneaAnalyticsBuilder *)v2 gregorianCalendar];
-              v25 = [v22 numberWithInteger:{objc_msgSend(v23, "hk_morningIndexWithCalendar:", v24)}];
+              endDate = [v18 endDate];
+              gregorianCalendar = [(HDSPSleepApneaAnalyticsBuilder *)selfCopy gregorianCalendar];
+              v25 = [v22 numberWithInteger:{objc_msgSend(endDate, "hk_morningIndexWithCalendar:", gregorianCalendar)}];
 
               v26 = [v12 objectForKeyedSubscript:v25];
               if (!v26)
@@ -542,12 +542,12 @@
 
               v28 = [v12 objectForKeyedSubscript:v25];
               v29 = MEMORY[0x277CCABB0];
-              v30 = [v18 quantity];
-              [v30 _value];
+              quantity2 = [v18 quantity];
+              [quantity2 _value];
               v31 = [v29 numberWithDouble:?];
               [v28 addObject:v31];
 
-              v2 = v51;
+              selfCopy = v51;
             }
 
             v14 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
@@ -562,14 +562,14 @@
           v16 = 2.22507386e-308;
         }
 
-        v2->_numSleepSessionsWithBDsOverThresholdLast30Days = v15;
-        v2->_maximumBDValueInPast30Days = v16;
+        selfCopy->_numSleepSessionsWithBDsOverThresholdLast30Days = v15;
+        selfCopy->_maximumBDValueInPast30Days = v16;
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v50 = [v12 allKeys];
-        v32 = [v50 countByEnumeratingWithState:&v56 objects:v65 count:16];
+        allKeys = [v12 allKeys];
+        v32 = [allKeys countByEnumeratingWithState:&v56 objects:v65 count:16];
         if (v32)
         {
           v33 = v32;
@@ -582,7 +582,7 @@
             {
               if (*v57 != v36)
               {
-                objc_enumerationMutation(v50);
+                objc_enumerationMutation(allKeys);
               }
 
               v38 = MEMORY[0x277CBEA60];
@@ -634,7 +634,7 @@
 LABEL_36:
             }
 
-            v33 = [v50 countByEnumeratingWithState:&v56 objects:v65 count:16];
+            v33 = [allKeys countByEnumeratingWithState:&v56 objects:v65 count:16];
           }
 
           while (v33);
@@ -657,11 +657,11 @@ LABEL_36:
 
 - (id)_breathingDisturbanceSamplesInPastNight
 {
-  v3 = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
+  breathingDisturbanceSamples = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
 
-  if (v3)
+  if (breathingDisturbanceSamples)
   {
-    v4 = [(HDSPSleepApneaAnalyticsBuilder *)self morningIndexRange];
+    morningIndexRange = [(HDSPSleepApneaAnalyticsBuilder *)self morningIndexRange];
     if (v5 <= 0)
     {
       v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -669,17 +669,17 @@ LABEL_36:
 
     else
     {
-      v6 = v5 + v4 - 1;
+      v6 = v5 + morningIndexRange - 1;
     }
 
-    v7 = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
+    breathingDisturbanceSamples2 = [(HDSPSleepApneaAnalyticsBuilder *)self breathingDisturbanceSamples];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __73__HDSPSleepApneaAnalyticsBuilder__breathingDisturbanceSamplesInPastNight__block_invoke;
     v10[3] = &unk_279C7B2A8;
     v10[4] = self;
     v10[5] = v6;
-    v8 = [v7 hk_filter:v10];
+    v8 = [breathingDisturbanceSamples2 hk_filter:v10];
   }
 
   else
@@ -699,44 +699,44 @@ BOOL __73__HDSPSleepApneaAnalyticsBuilder__breathingDisturbanceSamplesInPastNigh
   return v5;
 }
 
-- (id)_sleepApneaEventSamplesInPastNights:(int64_t)a3
+- (id)_sleepApneaEventSamplesInPastNights:(int64_t)nights
 {
   if (![(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD])
   {
     goto LABEL_7;
   }
 
-  v5 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
+  sleepApneaEventSamples = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
 
-  if (!v5)
+  if (!sleepApneaEventSamples)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEA60]);
     goto LABEL_9;
   }
 
-  if (a3 < 0)
+  if (nights < 0)
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_9;
   }
 
-  v6 = [(HDSPSleepApneaAnalyticsBuilder *)self morningIndexRange];
-  v8 = v7 + v6 - 1;
+  morningIndexRange = [(HDSPSleepApneaAnalyticsBuilder *)self morningIndexRange];
+  v8 = v7 + morningIndexRange - 1;
   if (v7 <= 0)
   {
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = v8 - a3;
-  v10 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
+  v9 = v8 - nights;
+  sleepApneaEventSamples2 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__HDSPSleepApneaAnalyticsBuilder__sleepApneaEventSamplesInPastNights___block_invoke;
   v13[3] = &unk_279C7B2A8;
   v13[4] = self;
   v13[5] = v9;
-  v11 = [v10 hk_filter:v13];
+  v11 = [sleepApneaEventSamples2 hk_filter:v13];
 
 LABEL_9:
 
@@ -756,13 +756,13 @@ BOOL __70__HDSPSleepApneaAnalyticsBuilder__sleepApneaEventSamplesInPastNights___
 {
   if (-[HDSPSleepApneaAnalyticsBuilder _isOnboardedBD](self, "_isOnboardedBD") && (-[HDSPSleepApneaAnalyticsBuilder sleepApneaEventSamples](self, "sleepApneaEventSamples"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
-    v6 = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
-    v7 = [v6 lastObject];
-    v8 = [v7 _creationDate];
-    v9 = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
-    v10 = v9[2]();
-    v11 = [v5 components:16 fromDate:v8 toDate:v10 options:0];
+    gregorianCalendar = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
+    sleepApneaEventSamples = [(HDSPSleepApneaAnalyticsBuilder *)self sleepApneaEventSamples];
+    lastObject = [sleepApneaEventSamples lastObject];
+    _creationDate = [lastObject _creationDate];
+    currentDateProvider = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
+    v10 = currentDateProvider[2]();
+    v11 = [gregorianCalendar components:16 fromDate:_creationDate toDate:v10 options:0];
 
     v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "day")}];
   }
@@ -779,11 +779,11 @@ BOOL __70__HDSPSleepApneaAnalyticsBuilder__sleepApneaEventSamplesInPastNights___
 {
   if ([(HDSPSleepApneaAnalyticsBuilder *)self _isOnboardedBD]&& ([(HDSPSleepApneaAnalyticsBuilder *)self dateOfLastAnalysis], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
-    v5 = [(HDSPSleepApneaAnalyticsBuilder *)self dateOfLastAnalysis];
-    v6 = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
-    v7 = v6[2]();
-    v8 = [v4 components:16 fromDate:v5 toDate:v7 options:0];
+    gregorianCalendar = [(HDSPSleepApneaAnalyticsBuilder *)self gregorianCalendar];
+    dateOfLastAnalysis = [(HDSPSleepApneaAnalyticsBuilder *)self dateOfLastAnalysis];
+    currentDateProvider = [(HDSPSleepApneaAnalyticsBuilder *)self currentDateProvider];
+    v7 = currentDateProvider[2]();
+    v8 = [gregorianCalendar components:16 fromDate:dateOfLastAnalysis toDate:v7 options:0];
 
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "day")}];
   }

@@ -1,12 +1,12 @@
 @interface FedStatsCohortQueryInstalledAppsPhone
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4;
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error;
 @end
 
 @implementation FedStatsCohortQueryInstalledAppsPhone
 
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error
 {
-  if ([(FedStatsCohortQueryInstalledApps *)self numOfPhoneApps:a3]<= 9)
+  if ([(FedStatsCohortQueryInstalledApps *)self numOfPhoneApps:parameters]<= 9)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[FedStatsCohortQueryInstalledApps numOfPhoneApps](self, "numOfPhoneApps")];
   }

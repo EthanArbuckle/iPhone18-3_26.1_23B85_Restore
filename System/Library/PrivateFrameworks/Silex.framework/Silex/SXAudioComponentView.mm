@@ -1,7 +1,7 @@
 @interface SXAudioComponentView
 - (BOOL)allowHierarchyRemoval;
 - (BOOL)shouldAutoStartPlayback;
-- (SXAudioComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 resourceDataSource:(id)a9 host:(id)a10;
+- (SXAudioComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor resourceDataSource:(id)source host:(id)self0;
 - (void)discardContents;
 - (void)hidePlaybackControls;
 - (void)layoutViews;
@@ -9,63 +9,63 @@
 - (void)loadImage;
 - (void)pauseMediaPlayback;
 - (void)pauseMediaPlaybackForDisappearance;
-- (void)playButtonTapped:(id)a3;
+- (void)playButtonTapped:(id)tapped;
 - (void)playbackResumed;
 - (void)playbackStarted;
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
-- (void)setupPlayerViewControllerWithPlayer:(id)a3;
+- (void)setupPlayerViewControllerWithPlayer:(id)player;
 - (void)showPlaybackControls;
 - (void)submitMediaEngageCompleteEvent;
-- (void)submitMediaEngageEventForUserAction:(unint64_t)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
+- (void)submitMediaEngageEventForUserAction:(unint64_t)action;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
 @end
 
 @implementation SXAudioComponentView
 
-- (SXAudioComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 resourceDataSource:(id)a9 host:(id)a10
+- (SXAudioComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor resourceDataSource:(id)source host:(id)self0
 {
-  v16 = a4;
-  v28 = a9;
-  v17 = a10;
+  viewportCopy = viewport;
+  sourceCopy = source;
+  hostCopy = host;
   v29.receiver = self;
   v29.super_class = SXAudioComponentView;
-  v18 = [(SXMediaComponentView *)&v29 initWithDOMObjectProvider:a3 viewport:v16 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:a8];
+  v18 = [(SXMediaComponentView *)&v29 initWithDOMObjectProvider:provider viewport:viewportCopy presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitor];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_host, a10);
-    objc_storeStrong(&v19->_resourceDataSource, a9);
+    objc_storeStrong(&v18->_host, host);
+    objc_storeStrong(&v19->_resourceDataSource, source);
     v20 = [SXAudioComponentOverlayView alloc];
-    v21 = [(SXComponentView *)v19 contentView];
-    [v21 bounds];
+    contentView = [(SXComponentView *)v19 contentView];
+    [contentView bounds];
     v22 = [(SXAudioComponentOverlayView *)v20 initWithFrame:?];
     overlayView = v19->_overlayView;
     v19->_overlayView = v22;
 
     [(SXAudioComponentOverlayView *)v19->_overlayView setAutoresizingMask:18];
     v24 = v19->_overlayView;
-    v25 = [MEMORY[0x1E69DC888] blackColor];
-    [(SXAudioComponentOverlayView *)v24 setBackgroundColor:v25];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(SXAudioComponentOverlayView *)v24 setBackgroundColor:blackColor];
 
     [(SXAudioComponentOverlayView *)v19->_overlayView setUserInteractionEnabled:1];
-    v26 = [(SXAudioComponentOverlayView *)v19->_overlayView playButton];
-    [v26 addTarget:v19 action:sel_playButtonTapped_ forControlEvents:64];
+    playButton = [(SXAudioComponentOverlayView *)v19->_overlayView playButton];
+    [playButton addTarget:v19 action:sel_playButtonTapped_ forControlEvents:64];
 
-    [v16 addViewportChangeListener:v19 forOptions:8];
+    [viewportCopy addViewportChangeListener:v19 forOptions:8];
   }
 
   return v19;
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  var0 = a3.var0;
+  var0 = changes.var0;
   v5.receiver = self;
   v5.super_class = SXAudioComponentView;
-  [(SXComponentView *)&v5 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v5 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if (var0)
   {
     [(SXAudioComponentView *)self layoutViews];
@@ -77,27 +77,27 @@
   v9.receiver = self;
   v9.super_class = SXAudioComponentView;
   [(SXComponentView *)&v9 renderContents];
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 stillImageIdentifier];
+  component = [(SXComponentView *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
 
-  if (v4)
+  if (stillImageIdentifier)
   {
-    v5 = [(SXComponentView *)self contentView];
-    v6 = [(SXAudioComponentView *)self overlayView];
-    [v5 addSubview:v6];
+    contentView = [(SXComponentView *)self contentView];
+    overlayView = [(SXAudioComponentView *)self overlayView];
+    [contentView addSubview:overlayView];
 
     [(SXAudioComponentView *)self loadImage];
   }
 
   else
   {
-    v7 = [(SXAudioComponentView *)self player];
+    player = [(SXAudioComponentView *)self player];
 
-    if (!v7)
+    if (!player)
     {
       [(SXAudioComponentView *)self loadAudio];
-      v8 = [(SXAudioComponentView *)self player];
-      [(SXAudioComponentView *)self setupPlayerViewControllerWithPlayer:v8];
+      player2 = [(SXAudioComponentView *)self player];
+      [(SXAudioComponentView *)self setupPlayerViewControllerWithPlayer:player2];
     }
   }
 
@@ -109,41 +109,41 @@
   v15.receiver = self;
   v15.super_class = SXAudioComponentView;
   [(SXComponentView *)&v15 discardContents];
-  v3 = [(SXAudioComponentView *)self player];
-  v4 = [v3 playbackStatus];
+  player = [(SXAudioComponentView *)self player];
+  playbackStatus = [player playbackStatus];
 
-  if (v4 != 2)
+  if (playbackStatus != 2)
   {
-    v5 = [(SXAudioComponentView *)self cancelHandler];
+    cancelHandler = [(SXAudioComponentView *)self cancelHandler];
 
-    if (v5)
+    if (cancelHandler)
     {
-      v6 = [(SXAudioComponentView *)self cancelHandler];
-      v6[2]();
+      cancelHandler2 = [(SXAudioComponentView *)self cancelHandler];
+      cancelHandler2[2]();
 
       [(SXAudioComponentView *)self setCancelHandler:0];
     }
 
-    v7 = [(SXAudioComponentView *)self overlayView];
-    [v7 setImage:0];
+    overlayView = [(SXAudioComponentView *)self overlayView];
+    [overlayView setImage:0];
 
-    v8 = [(SXAudioComponentView *)self overlayView];
-    [v8 removeFromSuperview];
+    overlayView2 = [(SXAudioComponentView *)self overlayView];
+    [overlayView2 removeFromSuperview];
 
-    v9 = [(SXAudioComponentView *)self overlayView];
-    v10 = [v9 playButton];
-    [v10 setHidden:0];
+    overlayView3 = [(SXAudioComponentView *)self overlayView];
+    playButton = [overlayView3 playButton];
+    [playButton setHidden:0];
 
     [(SXAudioComponentView *)self setPlayer:0];
-    v11 = [(SXAudioComponentView *)self playerViewController];
-    [v11 willMoveToParentViewController:0];
+    playerViewController = [(SXAudioComponentView *)self playerViewController];
+    [playerViewController willMoveToParentViewController:0];
 
-    v12 = [(SXAudioComponentView *)self playerViewController];
-    v13 = [v12 view];
-    [v13 removeFromSuperview];
+    playerViewController2 = [(SXAudioComponentView *)self playerViewController];
+    view = [playerViewController2 view];
+    [view removeFromSuperview];
 
-    v14 = [(SXAudioComponentView *)self playerViewController];
-    [v14 removeFromParentViewController];
+    playerViewController3 = [(SXAudioComponentView *)self playerViewController];
+    [playerViewController3 removeFromParentViewController];
 
     [(SXAudioComponentView *)self setPlayerViewController:0];
     [(SXAudioComponentView *)self setStartPlaybackWhenReady:0];
@@ -152,53 +152,53 @@
 
 - (void)layoutViews
 {
-  v3 = [(SXAudioComponentView *)self overlayView];
-  v4 = [v3 superview];
-  v5 = [(SXAudioComponentView *)self playerViewController];
-  v6 = [v5 contentOverlayView];
+  overlayView = [(SXAudioComponentView *)self overlayView];
+  superview = [overlayView superview];
+  playerViewController = [(SXAudioComponentView *)self playerViewController];
+  contentOverlayView = [playerViewController contentOverlayView];
 
-  v7 = [(SXAudioComponentView *)self overlayView];
-  v8 = v7;
-  if (v4 == v6)
+  overlayView2 = [(SXAudioComponentView *)self overlayView];
+  overlayView3 = overlayView2;
+  if (superview == contentOverlayView)
   {
-    v10 = [(SXAudioComponentView *)self playerViewController];
-    v11 = [v10 contentOverlayView];
-    [v11 bounds];
-    [v8 setFrame:?];
+    playerViewController2 = [(SXAudioComponentView *)self playerViewController];
+    contentOverlayView2 = [playerViewController2 contentOverlayView];
+    [contentOverlayView2 bounds];
+    [overlayView3 setFrame:?];
   }
 
   else
   {
-    v9 = [v7 superview];
+    superview2 = [overlayView2 superview];
 
-    if (!v9)
+    if (!superview2)
     {
       goto LABEL_6;
     }
 
-    v8 = [(SXAudioComponentView *)self overlayView];
+    overlayView3 = [(SXAudioComponentView *)self overlayView];
     [(SXComponentView *)self contentFrame];
-    [v8 setFrame:?];
+    [overlayView3 setFrame:?];
   }
 
 LABEL_6:
-  v12 = [(SXAudioComponentView *)self playerViewController];
-  v13 = [v12 view];
-  v14 = [v13 superview];
+  playerViewController3 = [(SXAudioComponentView *)self playerViewController];
+  view = [playerViewController3 view];
+  superview3 = [view superview];
 
-  if (v14)
+  if (superview3)
   {
-    v16 = [(SXAudioComponentView *)self playerViewController];
-    v15 = [v16 view];
+    playerViewController4 = [(SXAudioComponentView *)self playerViewController];
+    view2 = [playerViewController4 view];
     [(SXComponentView *)self contentFrame];
-    [v15 setFrame:?];
+    [view2 setFrame:?];
   }
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
-  v4 = [(SXAudioComponentView *)self overlayView];
-  [v4 startActivityIndicator];
+  overlayView = [(SXAudioComponentView *)self overlayView];
+  [overlayView startActivityIndicator];
 
   [(SXAudioComponentView *)self setStartPlaybackWhenReady:1];
   [(SXAudioComponentView *)self submitMediaEngageEventForUserAction:4];
@@ -234,50 +234,50 @@ void __41__SXAudioComponentView_playButtonTapped___block_invoke(uint64_t a1)
   [v11 setFrame:?];
 }
 
-- (void)setupPlayerViewControllerWithPlayer:(id)a3
+- (void)setupPlayerViewControllerWithPlayer:(id)player
 {
   if (!self->_playerViewController)
   {
-    v4 = a3;
+    playerCopy = player;
     v5 = objc_alloc_init(SXAudioPlayerViewController);
     playerViewController = self->_playerViewController;
     self->_playerViewController = &v5->super;
 
     [(AVPlayerViewController *)self->_playerViewController setAllowsPictureInPicturePlayback:0];
-    [(AVPlayerViewController *)self->_playerViewController setPlayer:v4];
+    [(AVPlayerViewController *)self->_playerViewController setPlayer:playerCopy];
 
     [(AVPlayerViewController *)self->_playerViewController setDelegate:self];
-    v7 = [(SXComponentView *)self presentationDelegate];
-    v19 = [v7 presentingContentViewController];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    presentingContentViewController = [presentationDelegate presentingContentViewController];
 
-    [v19 addChildViewController:self->_playerViewController];
-    v8 = [(AVPlayerViewController *)self->_playerViewController view];
+    [presentingContentViewController addChildViewController:self->_playerViewController];
+    view = [(AVPlayerViewController *)self->_playerViewController view];
     [(SXComponentView *)self contentFrame];
-    [v8 setFrame:?];
+    [view setFrame:?];
 
-    v9 = [(SXComponentView *)self contentView];
-    v10 = [(AVPlayerViewController *)self->_playerViewController view];
-    [v9 addSubview:v10];
+    contentView = [(SXComponentView *)self contentView];
+    view2 = [(AVPlayerViewController *)self->_playerViewController view];
+    [contentView addSubview:view2];
 
-    [(AVPlayerViewController *)self->_playerViewController didMoveToParentViewController:v19];
-    v11 = [(SXAudioComponentView *)self playerViewController];
-    v12 = [v11 view];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v12 setBackgroundColor:v13];
+    [(AVPlayerViewController *)self->_playerViewController didMoveToParentViewController:presentingContentViewController];
+    playerViewController = [(SXAudioComponentView *)self playerViewController];
+    view3 = [playerViewController view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view3 setBackgroundColor:clearColor];
 
-    v14 = [(SXAudioComponentView *)self playerViewController];
-    LOBYTE(v12) = objc_opt_respondsToSelector();
+    playerViewController2 = [(SXAudioComponentView *)self playerViewController];
+    LOBYTE(view3) = objc_opt_respondsToSelector();
 
-    if (v12)
+    if (view3)
     {
-      v15 = [(SXAudioComponentView *)self playerViewController];
-      v16 = [v15 contentView];
+      playerViewController3 = [(SXAudioComponentView *)self playerViewController];
+      contentView2 = [playerViewController3 contentView];
 
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v16 audioOnlyIndicatorView];
-        v18 = [MEMORY[0x1E69DC888] clearColor];
-        [v17 setBackgroundColor:v18];
+        audioOnlyIndicatorView = [contentView2 audioOnlyIndicatorView];
+        clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+        [audioOnlyIndicatorView setBackgroundColor:clearColor2];
       }
     }
   }
@@ -285,10 +285,10 @@ void __41__SXAudioComponentView_playButtonTapped___block_invoke(uint64_t a1)
 
 - (void)loadImage
 {
-  v3 = [(SXComponentView *)self DOMObjectProvider];
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 stillImageIdentifier];
-  v6 = [v3 imageResourceForIdentifier:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
+  v6 = [dOMObjectProvider imageResourceForIdentifier:stillImageIdentifier];
 
   if ([(SXComponentView *)self visibilityState]== 1)
   {
@@ -300,17 +300,17 @@ void __41__SXAudioComponentView_playButtonTapped___block_invoke(uint64_t a1)
     v7 = 4;
   }
 
-  v8 = [v6 wideColorSpace];
+  wideColorSpace = [v6 wideColorSpace];
   objc_initWeak(&location, self);
   v9 = [SXImageRequest alloc];
-  v10 = [v6 imageIdentifier];
+  imageIdentifier = [v6 imageIdentifier];
   v11 = [v6 URL];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __33__SXAudioComponentView_loadImage__block_invoke;
   v18 = &unk_1E84FEF88;
   objc_copyWeak(&v19, &location);
-  v12 = [(SXImageRequest *)v9 initWithImageIdentifier:v10 imageQualities:v7 url:v11 size:v8 preserveColorspace:&v15 loadingBlock:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v12 = [(SXImageRequest *)v9 initWithImageIdentifier:imageIdentifier imageQualities:v7 url:v11 size:wideColorSpace preserveColorspace:&v15 loadingBlock:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 
   v13 = [(SXAudioComponentView *)self resourceDataSource:v15];
   v14 = [v13 loadImagesForImageRequest:v12 completionBlock:0];
@@ -352,14 +352,14 @@ void __33__SXAudioComponentView_loadImage__block_invoke_2(uint64_t a1)
 - (void)loadAudio
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SXComponentView *)self DOMObjectProvider];
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 resourceIdentifier];
-  v6 = [v3 resourceForIdentifier:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  resourceIdentifier = [component resourceIdentifier];
+  v6 = [dOMObjectProvider resourceForIdentifier:resourceIdentifier];
 
-  v7 = [(SXAudioComponentView *)self player];
+  player = [(SXAudioComponentView *)self player];
 
-  if (!v7)
+  if (!player)
   {
     v8 = objc_alloc(MEMORY[0x1E6988168]);
     v9 = [v6 URL];
@@ -373,13 +373,13 @@ void __33__SXAudioComponentView_loadImage__block_invoke_2(uint64_t a1)
     [(SXAudioComponentView *)self setPlayer:v13];
 
     objc_initWeak(&location, self);
-    v14 = [(SXAudioComponentView *)self player];
+    player2 = [(SXAudioComponentView *)self player];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __33__SXAudioComponentView_loadAudio__block_invoke;
     v15[3] = &unk_1E8500ED0;
     objc_copyWeak(&v16, &location);
-    [v14 setPlaybackStatusBlock:v15];
+    [player2 setPlaybackStatusBlock:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -438,69 +438,69 @@ void __33__SXAudioComponentView_loadAudio__block_invoke(uint64_t a1, void *a2, i
 
 - (BOOL)shouldAutoStartPlayback
 {
-  v3 = [(SXAudioComponentView *)self startPlaybackWhenReady];
-  if (v3)
+  startPlaybackWhenReady = [(SXAudioComponentView *)self startPlaybackWhenReady];
+  if (startPlaybackWhenReady)
   {
-    v4 = [(SXAudioComponentView *)self host];
-    v5 = [v4 active];
+    host = [(SXAudioComponentView *)self host];
+    active = [host active];
 
-    if (!v5 || [(SXAudioComponentView *)self audioHasPlayed])
+    if (!active || [(SXAudioComponentView *)self audioHasPlayed])
     {
       goto LABEL_10;
     }
 
-    v6 = [(SXAudioComponentView *)self player];
-    if (![v6 playbackStatus])
+    player = [(SXAudioComponentView *)self player];
+    if (![player playbackStatus])
     {
       goto LABEL_9;
     }
 
-    v7 = [(SXAudioComponentView *)self player];
-    if ([v7 playbackStatus] == 5)
+    player2 = [(SXAudioComponentView *)self player];
+    if ([player2 playbackStatus] == 5)
     {
 LABEL_8:
 
 LABEL_9:
 LABEL_10:
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(startPlaybackWhenReady) = 0;
+      return startPlaybackWhenReady;
     }
 
-    v8 = [(SXAudioComponentView *)self player];
-    if ([v8 playbackStatus] == 2)
+    player3 = [(SXAudioComponentView *)self player];
+    if ([player3 playbackStatus] == 2)
     {
 
       goto LABEL_8;
     }
 
-    v9 = [(SXAudioComponentView *)self player];
-    v10 = [v9 playbackStatus];
+    player4 = [(SXAudioComponentView *)self player];
+    playbackStatus = [player4 playbackStatus];
 
-    if (v10 == 4)
+    if (playbackStatus == 4)
     {
       goto LABEL_10;
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(startPlaybackWhenReady) = 1;
   }
 
-  return v3;
+  return startPlaybackWhenReady;
 }
 
 - (void)playbackResumed
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  v4 = [v3 mediaPlaybackController];
-  [(SXMediaPlaybackController *)v4 registerMediaPlayBack:?];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  mediaPlaybackController = [presentationDelegate mediaPlaybackController];
+  [(SXMediaPlaybackController *)mediaPlaybackController registerMediaPlayBack:?];
 
   [(SXAudioComponentView *)self submitMediaEngageEventForUserAction:3];
 }
 
 - (void)playbackStarted
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  v4 = [v3 mediaPlaybackController];
-  [(SXMediaPlaybackController *)v4 registerMediaPlayBack:?];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  mediaPlaybackController = [presentationDelegate mediaPlaybackController];
+  [(SXMediaPlaybackController *)mediaPlaybackController registerMediaPlayBack:?];
 
   [(SXAudioComponentView *)self setAudioHasPlayed:1];
 
@@ -509,37 +509,37 @@ LABEL_10:
 
 - (void)pauseMediaPlayback
 {
-  v2 = [(SXAudioComponentView *)self player];
-  [v2 pause];
+  player = [(SXAudioComponentView *)self player];
+  [player pause];
 }
 
 - (void)pauseMediaPlaybackForDisappearance
 {
-  v2 = [(SXAudioComponentView *)self player];
-  [v2 pause];
+  player = [(SXAudioComponentView *)self player];
+  [player pause];
 }
 
 - (void)showPlaybackControls
 {
-  v2 = [(SXAudioComponentView *)self playerViewController];
-  [v2 setShowsPlaybackControls:1];
+  playerViewController = [(SXAudioComponentView *)self playerViewController];
+  [playerViewController setShowsPlaybackControls:1];
 }
 
 - (void)hidePlaybackControls
 {
-  v2 = [(SXAudioComponentView *)self playerViewController];
-  [v2 setShowsPlaybackControls:0];
+  playerViewController = [(SXAudioComponentView *)self playerViewController];
+  [playerViewController setShowsPlaybackControls:0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v15 = [a3 anyObject];
+  anyObject = [ended anyObject];
   [(SXAudioComponentView *)self bounds];
   Width = CGRectGetWidth(v18);
   [(SXAudioComponentView *)self bounds];
   v6 = CGRectGetHeight(v19) + -50.0;
-  v7 = [(SXAudioComponentView *)self overlayView];
-  [v15 locationInView:v7];
+  overlayView = [(SXAudioComponentView *)self overlayView];
+  [anyObject locationInView:overlayView];
   v9 = v8;
   v11 = v10;
 
@@ -551,14 +551,14 @@ LABEL_10:
   v17.y = v11;
   if (CGRectContainsPoint(v20, v17))
   {
-    v12 = [(SXAudioComponentView *)self playerViewController];
+    playerViewController = [(SXAudioComponentView *)self playerViewController];
 
-    if (v12)
+    if (playerViewController)
     {
-      v13 = [(SXAudioComponentView *)self playerViewController];
-      v14 = [v13 showsPlaybackControls];
+      playerViewController2 = [(SXAudioComponentView *)self playerViewController];
+      showsPlaybackControls = [playerViewController2 showsPlaybackControls];
 
-      if (v14)
+      if (showsPlaybackControls)
       {
         [(SXAudioComponentView *)self hidePlaybackControls];
         [(SXAudioComponentView *)self performSelector:sel_showPlaybackControls withObject:0 afterDelay:3.0];
@@ -573,13 +573,13 @@ LABEL_10:
   }
 }
 
-- (void)submitMediaEngageEventForUserAction:(unint64_t)a3
+- (void)submitMediaEngageEventForUserAction:(unint64_t)action
 {
-  v5 = [(SXAudioComponentView *)self player];
-  v6 = v5;
-  if (v5)
+  player = [(SXAudioComponentView *)self player];
+  v6 = player;
+  if (player)
   {
-    [v5 currentTime];
+    [player currentTime];
   }
 
   else
@@ -590,31 +590,31 @@ LABEL_10:
   Seconds = CMTimeGetSeconds(&time);
 
   v8 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
-  [v8 setUserAction:a3];
-  v9 = [(SXAudioComponentView *)self player];
-  [v9 totalTimePlayed];
+  [v8 setUserAction:action];
+  player2 = [(SXAudioComponentView *)self player];
+  [player2 totalTimePlayed];
   v11 = v10;
 
-  if (a3 != 4)
+  if (action != 4)
   {
     v12 = Seconds;
-    v13 = [(SXAudioComponentView *)self player];
-    [v13 duration];
+    player3 = [(SXAudioComponentView *)self player];
+    [player3 duration];
     v15 = v14;
 
-    v16 = [(SXAudioComponentView *)self player];
-    [v16 frameRate];
+    player4 = [(SXAudioComponentView *)self player];
+    [player4 frameRate];
     v18 = v17;
 
     [v8 setMediaDuration:v15];
     [v8 setMediaFrameRate:v18];
-    if (a3 == 3)
+    if (action == 3)
     {
       [v8 setMediaResumePosition:v12];
       goto LABEL_9;
     }
 
-    if (a3 == 2)
+    if (action == 2)
     {
       [v8 setMediaPausePosition:v12];
 LABEL_9:
@@ -623,22 +623,22 @@ LABEL_9:
   }
 
   [v8 determineEndDate];
-  v19 = [(SXMediaComponentView *)self analyticsReporting];
-  [v19 reportEvent:v8];
+  analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+  [analyticsReporting reportEvent:v8];
 }
 
 - (void)submitMediaEngageCompleteEvent
 {
-  v3 = [(SXAudioComponentView *)self player];
-  [v3 duration];
+  player = [(SXAudioComponentView *)self player];
+  [player duration];
   v5 = v4;
 
-  v6 = [(SXAudioComponentView *)self player];
-  [v6 frameRate];
+  player2 = [(SXAudioComponentView *)self player];
+  [player2 frameRate];
   v8 = v7;
 
-  v9 = [(SXAudioComponentView *)self player];
-  [v9 totalTimePlayed];
+  player3 = [(SXAudioComponentView *)self player];
+  [player3 totalTimePlayed];
   v11 = v10;
 
   v13 = [(SXMediaComponentView *)self mediaEventForClass:objc_opt_class()];
@@ -646,55 +646,55 @@ LABEL_9:
   [v13 setMediaFrameRate:v8];
   [v13 setMediaTimePlayed:v11];
   [v13 determineEndDate];
-  v12 = [(SXMediaComponentView *)self analyticsReporting];
-  [v12 reportEvent:v13];
+  analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+  [analyticsReporting reportEvent:v13];
 }
 
 - (BOOL)allowHierarchyRemoval
 {
   v8.receiver = self;
   v8.super_class = SXAudioComponentView;
-  v3 = [(SXComponentView *)&v8 allowHierarchyRemoval];
-  if (v3)
+  allowHierarchyRemoval = [(SXComponentView *)&v8 allowHierarchyRemoval];
+  if (allowHierarchyRemoval)
   {
-    v4 = [(SXAudioComponentView *)self player];
-    if ([v4 playbackStatus] == 2)
+    player = [(SXAudioComponentView *)self player];
+    if ([player playbackStatus] == 2)
     {
     }
 
     else
     {
-      v5 = [(SXAudioComponentView *)self player];
-      v6 = [v5 playbackStatus];
+      player2 = [(SXAudioComponentView *)self player];
+      playbackStatus = [player2 playbackStatus];
 
-      if (v6 != 1)
+      if (playbackStatus != 1)
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(allowHierarchyRemoval) = 1;
+        return allowHierarchyRemoval;
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(allowHierarchyRemoval) = 0;
   }
 
-  return v3;
+  return allowHierarchyRemoval;
 }
 
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured
 {
-  if (!a4)
+  if (!occured)
   {
     v7 = [MEMORY[0x1E69CE0F8] sharedSessionForMode:1];
-    v6 = [(SXAudioComponentView *)self player];
-    [v7 addInterestForPlayer:v6 withMode:1];
+    player = [(SXAudioComponentView *)self player];
+    [v7 addInterestForPlayer:player withMode:1];
   }
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  v5 = [a3 appearState] != 0;
-  v6 = [(SXAudioComponentView *)self playerViewController];
-  [v6 setUpdatesNowPlayingInfoCenter:v5];
+  v5 = [viewport appearState] != 0;
+  playerViewController = [(SXAudioComponentView *)self playerViewController];
+  [playerViewController setUpdatesNowPlayingInfoCenter:v5];
 }
 
 @end

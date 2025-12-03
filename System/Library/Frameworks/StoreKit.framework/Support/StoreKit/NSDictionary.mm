@@ -1,83 +1,83 @@
 @interface NSDictionary
-- (BOOL)tcr_BOOLForKey:(id)a3 missingValue:(BOOL)a4;
-- (BOOL)tcr_BOOLForKeyPath:(id)a3 missingValue:(BOOL)a4;
-- (BOOL)tcr_nullForKey:(id)a3;
-- (BOOL)tcr_nullForKeyPath:(id)a3;
-- (float)tcr_floatForKey:(id)a3;
+- (BOOL)tcr_BOOLForKey:(id)key missingValue:(BOOL)value;
+- (BOOL)tcr_BOOLForKeyPath:(id)path missingValue:(BOOL)value;
+- (BOOL)tcr_nullForKey:(id)key;
+- (BOOL)tcr_nullForKeyPath:(id)path;
+- (float)tcr_floatForKey:(id)key;
 - (id)_tcr_associatedReader;
-- (id)_tcr_valueOfClass:(Class)a3 forKey:(id)a4;
-- (id)tcr_arrayForKey:(id)a3;
-- (id)tcr_arrayForKeyPath:(id)a3;
-- (id)tcr_dataForKey:(id)a3;
-- (id)tcr_dataForKeyPath:(id)a3;
-- (id)tcr_dateForKey:(id)a3;
-- (id)tcr_dateForKeyPath:(id)a3;
-- (id)tcr_dictionaryForKey:(id)a3;
-- (id)tcr_dictionaryForKeyPath:(id)a3;
-- (id)tcr_integerValueForKey:(id)a3;
-- (id)tcr_integerValueForKeyPath:(id)a3;
-- (id)tcr_numberForKey:(id)a3;
-- (id)tcr_numberForKeyPath:(id)a3;
-- (id)tcr_stringForKey:(id)a3;
-- (id)tcr_stringForKeyPath:(id)a3;
-- (id)tcr_urlForKey:(id)a3;
-- (id)tcr_urlForKeyPath:(id)a3;
-- (int64_t)tcr_integerValueForKey:(id)a3 missingValue:(int64_t)a4;
-- (int64_t)tcr_integerValueForKeyPath:(id)a3 missingValue:(int64_t)a4;
-- (unint64_t)tcr_unsignedLongLongForKey:(id)a3;
-- (unint64_t)tcr_unsignedLongLongForKeyPath:(id)a3;
+- (id)_tcr_valueOfClass:(Class)class forKey:(id)key;
+- (id)tcr_arrayForKey:(id)key;
+- (id)tcr_arrayForKeyPath:(id)path;
+- (id)tcr_dataForKey:(id)key;
+- (id)tcr_dataForKeyPath:(id)path;
+- (id)tcr_dateForKey:(id)key;
+- (id)tcr_dateForKeyPath:(id)path;
+- (id)tcr_dictionaryForKey:(id)key;
+- (id)tcr_dictionaryForKeyPath:(id)path;
+- (id)tcr_integerValueForKey:(id)key;
+- (id)tcr_integerValueForKeyPath:(id)path;
+- (id)tcr_numberForKey:(id)key;
+- (id)tcr_numberForKeyPath:(id)path;
+- (id)tcr_stringForKey:(id)key;
+- (id)tcr_stringForKeyPath:(id)path;
+- (id)tcr_urlForKey:(id)key;
+- (id)tcr_urlForKeyPath:(id)path;
+- (int64_t)tcr_integerValueForKey:(id)key missingValue:(int64_t)value;
+- (int64_t)tcr_integerValueForKeyPath:(id)path missingValue:(int64_t)value;
+- (unint64_t)tcr_unsignedLongLongForKey:(id)key;
+- (unint64_t)tcr_unsignedLongLongForKeyPath:(id)path;
 @end
 
 @implementation NSDictionary
 
-- (id)tcr_arrayForKey:(id)a3
+- (id)tcr_arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)tcr_arrayForKeyPath:(id)a3
+- (id)tcr_arrayForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
 
   return v6;
 }
 
-- (BOOL)tcr_BOOLForKey:(id)a3 missingValue:(BOOL)a4
+- (BOOL)tcr_BOOLForKey:(id)key missingValue:(BOOL)value
 {
-  v5 = [(NSDictionary *)self tcr_numberForKey:a3];
+  v5 = [(NSDictionary *)self tcr_numberForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (BOOL)tcr_BOOLForKeyPath:(id)a3 missingValue:(BOOL)a4
+- (BOOL)tcr_BOOLForKeyPath:(id)path missingValue:(BOOL)value
 {
-  v5 = [(NSDictionary *)self tcr_numberForKeyPath:a3];
+  v5 = [(NSDictionary *)self tcr_numberForKeyPath:path];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)tcr_dataForKey:(id)a3
+- (id)tcr_dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
   if (!v5)
   {
-    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
     if (v6)
     {
       v5 = [[NSData alloc] initWithBase64EncodedString:v6 options:0];
@@ -92,14 +92,14 @@
   return v5;
 }
 
-- (id)tcr_dataForKeyPath:(id)a3
+- (id)tcr_dataForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
   if (!v6)
   {
-    v7 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+    v7 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
     if (v7)
     {
       v6 = [[NSData alloc] initWithBase64EncodedString:v7 options:0];
@@ -114,56 +114,56 @@
   return v6;
 }
 
-- (id)tcr_dateForKey:(id)a3
+- (id)tcr_dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)tcr_dateForKeyPath:(id)a3
+- (id)tcr_dateForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
 
   return v6;
 }
 
-- (id)tcr_dictionaryForKey:(id)a3
+- (id)tcr_dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)tcr_dictionaryForKeyPath:(id)a3
+- (id)tcr_dictionaryForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
 
   return v6;
 }
 
-- (float)tcr_floatForKey:(id)a3
+- (float)tcr_floatForKey:(id)key
 {
-  v3 = [(NSDictionary *)self tcr_numberForKey:a3];
+  v3 = [(NSDictionary *)self tcr_numberForKey:key];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)tcr_integerValueForKey:(id)a3
+- (id)tcr_integerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
   if (!v5)
   {
-    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
     if (v6)
     {
       v9 = 0;
@@ -184,31 +184,31 @@
   return v5;
 }
 
-- (int64_t)tcr_integerValueForKey:(id)a3 missingValue:(int64_t)a4
+- (int64_t)tcr_integerValueForKey:(id)key missingValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v6];
+  keyCopy = key;
+  v7 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
   if (!v7)
   {
-    v7 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v6];
+    v7 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    a4 = [v7 integerValue];
+    value = [v7 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)tcr_integerValueForKeyPath:(id)a3
+- (id)tcr_integerValueForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
   if (!v6)
   {
-    v7 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+    v7 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
     if (v7)
     {
       v10 = 0;
@@ -229,28 +229,28 @@
   return v6;
 }
 
-- (int64_t)tcr_integerValueForKeyPath:(id)a3 missingValue:(int64_t)a4
+- (int64_t)tcr_integerValueForKeyPath:(id)path missingValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self _tcr_associatedReader];
-  v8 = [v7 valueOfClass:objc_opt_class() forKeyPath:v6];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v8 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
   if (!v8)
   {
-    v8 = [v7 valueOfClass:objc_opt_class() forKeyPath:v6];
+    v8 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    a4 = [v8 integerValue];
+    value = [v8 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (BOOL)tcr_nullForKey:(id)a3
+- (BOOL)tcr_nullForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
 
   v6 = +[NSNull null];
   v7 = v5 == v6;
@@ -258,25 +258,25 @@
   return v7;
 }
 
-- (BOOL)tcr_nullForKeyPath:(id)a3
+- (BOOL)tcr_nullForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
 
   v7 = +[NSNull null];
-  LOBYTE(v4) = v6 == v7;
+  LOBYTE(pathCopy) = v6 == v7;
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)tcr_numberForKey:(id)a3
+- (id)tcr_numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
   if (!v5)
   {
-    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+    v6 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
     if (v6)
     {
       v7 = objc_alloc_init(NSNumberFormatter);
@@ -293,14 +293,14 @@
   return v5;
 }
 
-- (id)tcr_numberForKeyPath:(id)a3
+- (id)tcr_numberForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
   if (!v6)
   {
-    v7 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+    v7 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
     if (v7)
     {
       v8 = objc_alloc_init(NSNumberFormatter);
@@ -317,42 +317,42 @@
   return v6;
 }
 
-- (id)tcr_stringForKey:(id)a3
+- (id)tcr_stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(NSDictionary *)self _tcr_valueOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)tcr_stringForKeyPath:(id)a3
+- (id)tcr_stringForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self _tcr_associatedReader];
-  v6 = [v5 valueOfClass:objc_opt_class() forKeyPath:v4];
+  pathCopy = path;
+  _tcr_associatedReader = [(NSDictionary *)self _tcr_associatedReader];
+  v6 = [_tcr_associatedReader valueOfClass:objc_opt_class() forKeyPath:pathCopy];
 
   return v6;
 }
 
-- (unint64_t)tcr_unsignedLongLongForKey:(id)a3
+- (unint64_t)tcr_unsignedLongLongForKey:(id)key
 {
-  v3 = [(NSDictionary *)self tcr_numberForKey:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSDictionary *)self tcr_numberForKey:key];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (unint64_t)tcr_unsignedLongLongForKeyPath:(id)a3
+- (unint64_t)tcr_unsignedLongLongForKeyPath:(id)path
 {
-  v3 = [(NSDictionary *)self tcr_numberForKeyPath:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSDictionary *)self tcr_numberForKeyPath:path];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (id)tcr_urlForKey:(id)a3
+- (id)tcr_urlForKey:(id)key
 {
-  v3 = [(NSDictionary *)self tcr_stringForKey:a3];
+  v3 = [(NSDictionary *)self tcr_stringForKey:key];
   if (v3)
   {
     v4 = [NSURL URLWithString:v3];
@@ -366,9 +366,9 @@
   return v4;
 }
 
-- (id)tcr_urlForKeyPath:(id)a3
+- (id)tcr_urlForKeyPath:(id)path
 {
-  v3 = [(NSDictionary *)self tcr_stringForKeyPath:a3];
+  v3 = [(NSDictionary *)self tcr_stringForKeyPath:path];
   if (v3)
   {
     v4 = [NSURL URLWithString:v3];
@@ -382,9 +382,9 @@
   return v4;
 }
 
-- (id)_tcr_valueOfClass:(Class)a3 forKey:(id)a4
+- (id)_tcr_valueOfClass:(Class)class forKey:(id)key
 {
-  v4 = [(NSDictionary *)self objectForKeyedSubscript:a4];
+  v4 = [(NSDictionary *)self objectForKeyedSubscript:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -404,17 +404,17 @@
 {
   v6.receiver = self;
   v6.super_class = NSDictionary;
-  v3 = [(NSDictionary *)&v6 _tcr_associatedReader];
+  _tcr_associatedReader = [(NSDictionary *)&v6 _tcr_associatedReader];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v4 = [[TypeCheckedDictionaryReader alloc] initWithDictionary:self];
 
     [(NSDictionary *)self _tcr_associateWithReader:v4];
-    v3 = v4;
+    _tcr_associatedReader = v4;
   }
 
-  return v3;
+  return _tcr_associatedReader;
 }
 
 @end

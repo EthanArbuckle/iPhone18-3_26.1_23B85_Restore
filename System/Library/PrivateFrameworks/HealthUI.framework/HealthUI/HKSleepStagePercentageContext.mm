@@ -1,41 +1,41 @@
 @interface HKSleepStagePercentageContext
-+ (double)roundedSleepStageDurationPercentageFromDurations:(id)a3 withCategoryValue:(int64_t)a4;
++ (double)roundedSleepStageDurationPercentageFromDurations:(id)durations withCategoryValue:(int64_t)value;
 - (HKOverlaySleepRoomContextChangeDelegate)contextChangeDelegate;
-- (HKSleepStagePercentageContext)initWithSleepStage:(int64_t)a3 baseDisplayType:(id)a4 overlayDisplayType:(id)a5 overlayChartController:(id)a6 contextChangeDelegate:(id)a7;
-- (double)_computePercentageValueFromChartPoints:(id)a3;
-- (id)_contextItemWithPercentageString:(id)a3 timeScope:(int64_t)a4;
-- (id)_percentageStringFromValue:(double)a3;
-- (void)overlayStateDidChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (HKSleepStagePercentageContext)initWithSleepStage:(int64_t)stage baseDisplayType:(id)type overlayDisplayType:(id)displayType overlayChartController:(id)controller contextChangeDelegate:(id)delegate;
+- (double)_computePercentageValueFromChartPoints:(id)points;
+- (id)_contextItemWithPercentageString:(id)string timeScope:(int64_t)scope;
+- (id)_percentageStringFromValue:(double)value;
+- (void)overlayStateDidChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKSleepStagePercentageContext
 
-- (HKSleepStagePercentageContext)initWithSleepStage:(int64_t)a3 baseDisplayType:(id)a4 overlayDisplayType:(id)a5 overlayChartController:(id)a6 contextChangeDelegate:(id)a7
+- (HKSleepStagePercentageContext)initWithSleepStage:(int64_t)stage baseDisplayType:(id)type overlayDisplayType:(id)displayType overlayChartController:(id)controller contextChangeDelegate:(id)delegate
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = HKSleepStagePercentageContext;
   v17 = [(HKSleepStagePercentageContext *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    v17->_sleepStage = a3;
-    objc_storeStrong(&v17->_baseDisplayType, a4);
-    objc_storeStrong(&v18->_overlayDisplayType, a5);
-    objc_storeStrong(&v18->_overlayChartController, a6);
-    objc_storeWeak(&v18->_contextChangeDelegate, v16);
+    v17->_sleepStage = stage;
+    objc_storeStrong(&v17->_baseDisplayType, type);
+    objc_storeStrong(&v18->_overlayDisplayType, displayType);
+    objc_storeStrong(&v18->_overlayChartController, controller);
+    objc_storeWeak(&v18->_contextChangeDelegate, delegateCopy);
     v19 = [(HKSleepStagePercentageContext *)v18 _contextItemWithPercentageString:&stru_1F42FFBE0 timeScope:5];
     lastUpdatedItem = v18->_lastUpdatedItem;
     v18->_lastUpdatedItem = v19;
 
-    v21 = [MEMORY[0x1E696ADA0] hk_percentNumberFormatter];
+    hk_percentNumberFormatter = [MEMORY[0x1E696ADA0] hk_percentNumberFormatter];
     percentageFormatter = v18->_percentageFormatter;
-    v18->_percentageFormatter = v21;
+    v18->_percentageFormatter = hk_percentNumberFormatter;
 
     [(NSNumberFormatter *)v18->_percentageFormatter setRoundingMode:2];
   }
@@ -43,43 +43,43 @@
   return v18;
 }
 
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v6 = [(HKSleepStagePercentageContext *)self contextChangeDelegate:a3];
-  [v6 setStagePercentageContextWillBeSelected:v5];
+  changeCopy = change;
+  v6 = [(HKSleepStagePercentageContext *)self contextChangeDelegate:change];
+  [v6 setStagePercentageContextWillBeSelected:changeCopy];
 }
 
-- (void)overlayStateDidChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateDidChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v6 = [(HKSleepStagePercentageContext *)self contextChangeDelegate:a3];
-  [v6 setStagePercentageContextSelected:v5];
+  changeCopy = change;
+  v6 = [(HKSleepStagePercentageContext *)self contextChangeDelegate:change];
+  [v6 setStagePercentageContextSelected:changeCopy];
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(HKSleepStagePercentageContext *)self baseDisplayType];
+  intervalCopy = interval;
+  completionCopy = completion;
+  baseDisplayType = [(HKSleepStagePercentageContext *)self baseDisplayType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [(HKSleepStagePercentageContext *)self baseDisplayType];
-    v15 = [(HKSleepStagePercentageContext *)self overlayChartController];
-    v16 = [v14 graphSeriesForTimeScope:a5];
-    v17 = [v10 startDate];
-    v18 = [v10 endDate];
+    baseDisplayType2 = [(HKSleepStagePercentageContext *)self baseDisplayType];
+    overlayChartController = [(HKSleepStagePercentageContext *)self overlayChartController];
+    v16 = [baseDisplayType2 graphSeriesForTimeScope:scope];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
     v19[3] = &unk_1E81B6E70;
     v19[4] = self;
-    v21 = a5;
-    v20 = v11;
-    [v15 cachedDataForCustomGraphSeries:v16 timeScope:a5 resolution:0 startDate:v17 endDate:v18 completion:v19];
+    scopeCopy = scope;
+    v20 = completionCopy;
+    [overlayChartController cachedDataForCustomGraphSeries:v16 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v19];
   }
 }
 
@@ -103,16 +103,16 @@ void __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overl
   }
 }
 
-- (id)_contextItemWithPercentageString:(id)a3 timeScope:(int64_t)a4
+- (id)_contextItemWithPercentageString:(id)string timeScope:(int64_t)scope
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = objc_alloc_init(HKDisplayTypeContextItem);
-  v8 = [HKSleepUtilities sleepStageContextTitleForSleepValue:[(HKSleepStagePercentageContext *)self sleepStage] timeScope:a4];
+  v8 = [HKSleepUtilities sleepStageContextTitleForSleepValue:[(HKSleepStagePercentageContext *)self sleepStage] timeScope:scope];
   [(HKDisplayTypeContextItem *)v7 setTitle:v8];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(HKDisplayTypeContextItem *)v7 title];
-  v11 = [v9 hk_chartOverlayAccessibilityIdentifier:v10];
+  title = [(HKDisplayTypeContextItem *)v7 title];
+  v11 = [v9 hk_chartOverlayAccessibilityIdentifier:title];
   [(HKDisplayTypeContextItem *)v7 setAccessibilityIdentifier:v11];
 
   v12 = [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:{-[HKSleepStagePercentageContext sleepStage](self, "sleepStage")}];
@@ -126,12 +126,12 @@ void __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overl
   [(HKDisplayTypeContextItem *)v7 setInfoHidden:1];
   [(HKDisplayTypeContextItem *)v7 setUseTightSpacingBetweenValueAndUnit:1];
   [(HKDisplayTypeContextItem *)v7 setIsUnitIncludedInValue:1];
-  v16 = [(NSNumberFormatter *)self->_percentageFormatter percentSymbol];
-  [(HKDisplayTypeContextItem *)v7 setUnit:v16];
+  percentSymbol = [(NSNumberFormatter *)self->_percentageFormatter percentSymbol];
+  [(HKDisplayTypeContextItem *)v7 setUnit:percentSymbol];
 
-  [(HKDisplayTypeContextItem *)v7 setValue:v6];
-  v17 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-  v18 = [HKUIMetricColors defaultContextViewColorsUsingColor:v17];
+  [(HKDisplayTypeContextItem *)v7 setValue:stringCopy];
+  tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+  v18 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
   [(HKDisplayTypeContextItem *)v7 setMetricColors:v18];
 
   v19 = [HKUIMetricColors sleepColorsForSleepAnalysis:[(HKSleepStagePercentageContext *)self sleepStage]];
@@ -140,16 +140,16 @@ void __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overl
   return v7;
 }
 
-- (double)_computePercentageValueFromChartPoints:(id)a3
+- (double)_computePercentageValueFromChartPoints:(id)points
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pointsCopy = points;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v4;
+  v6 = pointsCopy;
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v7)
   {
@@ -164,10 +164,10 @@ void __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overl
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v48 + 1) + 8 * i) userInfo];
-        v12 = [v11 chartPointInfoProvider];
-        v13 = [v12 sleepDaySummaries];
-        [v5 addObjectsFromArray:v13];
+        userInfo = [*(*(&v48 + 1) + 8 * i) userInfo];
+        chartPointInfoProvider = [userInfo chartPointInfoProvider];
+        sleepDaySummaries = [chartPointInfoProvider sleepDaySummaries];
+        [v5 addObjectsFromArray:sleepDaySummaries];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -262,17 +262,17 @@ void __116__HKSleepStagePercentageContext_updateContextItemForDateInterval_overl
   return v42;
 }
 
-+ (double)roundedSleepStageDurationPercentageFromDurations:(id)a3 withCategoryValue:(int64_t)a4
++ (double)roundedSleepStageDurationPercentageFromDurations:(id)durations withCategoryValue:(int64_t)value
 {
   v73 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  durationsCopy = durations;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v8 = v5;
+  v8 = durationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (!v9)
   {
@@ -427,28 +427,28 @@ LABEL_29:
   return v20;
 }
 
-- (id)_percentageStringFromValue:(double)a3
+- (id)_percentageStringFromValue:(double)value
 {
-  if (a3 == -1.0)
+  if (value == -1.0)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:{@"com.apple.HealthUI", -1.0}];
-    v5 = v4;
+    percentageFormatter = v4;
     v6 = @"NO_DATA_PERCENT";
   }
 
   else
   {
-    if (a3 <= 2.22507386e-308 || a3 >= 1.0)
+    if (value <= 2.22507386e-308 || value >= 1.0)
     {
-      v5 = [(HKSleepStagePercentageContext *)self percentageFormatter];
-      v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3 / 100.0];
-      v9 = [v5 stringFromNumber:v8];
+      percentageFormatter = [(HKSleepStagePercentageContext *)self percentageFormatter];
+      v8 = [MEMORY[0x1E696AD98] numberWithDouble:value / 100.0];
+      v9 = [percentageFormatter stringFromNumber:v8];
 
       goto LABEL_10;
     }
 
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v5 = v4;
+    percentageFormatter = v4;
     v6 = @"LESS_THAN_1_PERCENT";
   }
 

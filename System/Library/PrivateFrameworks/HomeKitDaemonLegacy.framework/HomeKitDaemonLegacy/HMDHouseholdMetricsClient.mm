@@ -1,13 +1,13 @@
 @interface HMDHouseholdMetricsClient
 + (id)logCategory;
-- (HMDHouseholdMetricsClient)initWithCountersManager:(id)a3 dateProvider:(id)a4 remoteMessageDispatcher:(id)a5 requestCountProvider:(id)a6 logEventFactories:(id)a7 isDNUEnabledBlock:(id)a8;
+- (HMDHouseholdMetricsClient)initWithCountersManager:(id)manager dateProvider:(id)provider remoteMessageDispatcher:(id)dispatcher requestCountProvider:(id)countProvider logEventFactories:(id)factories isDNUEnabledBlock:(id)block;
 - (HMDHouseholdMetricsMessaging)remoteMessageDispatcher;
 - (HMDHouseholdMetricsRequestCountProvider)requestCountProvider;
-- (id)handleRequestMessageWithPayload:(id)a3 outError:(id *)a4;
-- (id)householdMetricsForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
+- (id)handleRequestMessageWithPayload:(id)payload outError:(id *)error;
+- (id)householdMetricsForHomeWithUUID:(id)d associatedWithDate:(id)date;
 - (void)dealloc;
 - (void)deleteExpiredCounters;
-- (void)handleRequest:(id)a3;
+- (void)handleRequest:(id)request;
 @end
 
 @implementation HMDHouseholdMetricsClient
@@ -29,20 +29,20 @@
 - (void)deleteExpiredCounters
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHouseholdMetricsClient *)self dateProvider];
-  v4 = [v3 startOfDayByAddingDayCount:-3];
+  dateProvider = [(HMDHouseholdMetricsClient *)self dateProvider];
+  v4 = [dateProvider startOfDayByAddingDayCount:-3];
 
-  v5 = [(HMDHouseholdMetricsClient *)self dateProvider];
-  v6 = [v5 startOfDayByAddingDayCount:1];
+  dateProvider2 = [(HMDHouseholdMetricsClient *)self dateProvider];
+  v6 = [dateProvider2 startOfDayByAddingDayCount:1];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(HMDHouseholdMetricsClient *)self logEventFactories];
-  v8 = [v7 objectEnumerator];
+  logEventFactories = [(HMDHouseholdMetricsClient *)self logEventFactories];
+  objectEnumerator = [logEventFactories objectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -53,7 +53,7 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -61,7 +61,7 @@
         [v13 deleteCountersAfterDate:v6];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -70,29 +70,29 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)householdMetricsForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)householdMetricsForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHouseholdMetricsClient *)self requestCountProvider];
-  [v8 incrementRequestCountForHomeUUID:v6 date:v7];
+  dCopy = d;
+  dateCopy = date;
+  requestCountProvider = [(HMDHouseholdMetricsClient *)self requestCountProvider];
+  [requestCountProvider incrementRequestCountForHomeUUID:dCopy date:dateCopy];
 
   v9 = objc_alloc(MEMORY[0x277CBEB38]);
-  v10 = [(HMDHouseholdMetricsClient *)self logEventFactories];
-  v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+  logEventFactories = [(HMDHouseholdMetricsClient *)self logEventFactories];
+  v11 = [v9 initWithCapacity:{objc_msgSend(logEventFactories, "count")}];
 
-  v12 = [(HMDHouseholdMetricsClient *)self logEventFactories];
+  logEventFactories2 = [(HMDHouseholdMetricsClient *)self logEventFactories];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedWithDate___block_invoke;
   v18[3] = &unk_279720CA8;
-  v19 = v6;
-  v20 = v7;
+  v19 = dCopy;
+  v20 = dateCopy;
   v21 = v11;
   v13 = v11;
-  v14 = v7;
-  v15 = v6;
-  [v12 enumerateKeysAndObjectsUsingBlock:v18];
+  v14 = dateCopy;
+  v15 = dCopy;
+  [logEventFactories2 enumerateKeysAndObjectsUsingBlock:v18];
 
   v16 = [v13 copy];
 
@@ -109,12 +109,12 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
   }
 }
 
-- (id)handleRequestMessageWithPayload:(id)a3 outError:(id *)a4
+- (id)handleRequestMessageWithPayload:(id)payload outError:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  payloadCopy = payload;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -122,18 +122,18 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
     *buf = 138543618;
     v45 = v10;
     v46 = 2112;
-    v47 = v6;
+    v47 = payloadCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Processing request, payload=%@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDHouseholdMetricsClient *)v8 isDNUEnabledBlock];
-  v12 = v11[2]();
+  isDNUEnabledBlock = [(HMDHouseholdMetricsClient *)selfCopy isDNUEnabledBlock];
+  v12 = isDNUEnabledBlock[2]();
 
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    v14 = [v6 objectForKeyedSubscript:@"homeUUID"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v14 = [payloadCopy objectForKeyedSubscript:@"homeUUID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -157,7 +157,7 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
       v17 = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"date"];
+    v23 = [payloadCopy objectForKeyedSubscript:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,29 +173,29 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
 
     if (v17 && v25)
     {
-      v26 = [(HMDHouseholdMetricsClient *)v8 householdMetricsForHomeWithUUID:v17 associatedWithDate:v25];
+      v26 = [(HMDHouseholdMetricsClient *)selfCopy householdMetricsForHomeWithUUID:v17 associatedWithDate:v25];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __70__HMDHouseholdMetricsClient_handleRequestMessageWithPayload_outError___block_invoke;
       v42[3] = &unk_279733E68;
-      v42[4] = v8;
-      v27 = v13;
+      v42[4] = selfCopy;
+      v27 = dictionary;
       v43 = v27;
       [v26 enumerateKeysAndObjectsUsingBlock:v42];
       v28 = objc_autoreleasePoolPush();
-      v29 = v8;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v31 = v41 = v13;
+        v31 = v41 = dictionary;
         *buf = 138543618;
         v45 = v31;
         v46 = 2112;
         v47 = v27;
         _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_DEBUG, "%{public}@Responding with payload=%@", buf, 0x16u);
 
-        v13 = v41;
+        dictionary = v41;
       }
 
       objc_autoreleasePoolPop(v28);
@@ -205,7 +205,7 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
     else
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = v8;
+      v33 = selfCopy;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -236,10 +236,10 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
       }
 
       objc_autoreleasePoolPop(v32);
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:20 userInfo:0];
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -252,7 +252,7 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v8;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -263,10 +263,10 @@ void __80__HMDHouseholdMetricsClient_householdMetricsForHomeWithUUID_associatedW
     }
 
     objc_autoreleasePoolPop(v18);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:17 userInfo:0];
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -361,14 +361,14 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 messagePayload];
+  requestCopy = request;
+  messagePayload = [requestCopy messagePayload];
   v8 = 0;
-  v6 = [(HMDHouseholdMetricsClient *)self handleRequestMessageWithPayload:v5 outError:&v8];
+  v6 = [(HMDHouseholdMetricsClient *)self handleRequestMessageWithPayload:messagePayload outError:&v8];
   v7 = v8;
-  [v4 respondWithPayload:v6 error:v7];
+  [requestCopy respondWithPayload:v6 error:v7];
 }
 
 - (void)dealloc
@@ -381,30 +381,30 @@ LABEL_16:
   [(HMDHouseholdMetricsClient *)&v4 dealloc];
 }
 
-- (HMDHouseholdMetricsClient)initWithCountersManager:(id)a3 dateProvider:(id)a4 remoteMessageDispatcher:(id)a5 requestCountProvider:(id)a6 logEventFactories:(id)a7 isDNUEnabledBlock:(id)a8
+- (HMDHouseholdMetricsClient)initWithCountersManager:(id)manager dateProvider:(id)provider remoteMessageDispatcher:(id)dispatcher requestCountProvider:(id)countProvider logEventFactories:(id)factories isDNUEnabledBlock:(id)block
 {
-  v26 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  managerCopy = manager;
+  providerCopy = provider;
+  dispatcherCopy = dispatcher;
+  countProviderCopy = countProvider;
+  factoriesCopy = factories;
+  blockCopy = block;
   v27.receiver = self;
   v27.super_class = HMDHouseholdMetricsClient;
   v20 = [(HMDHouseholdMetricsClient *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_countersManager, a3);
-    objc_storeStrong(&v21->_dateProvider, a4);
-    objc_storeWeak(&v21->_remoteMessageDispatcher, v16);
-    objc_storeWeak(&v21->_requestCountProvider, v17);
-    objc_storeStrong(&v21->_logEventFactories, a7);
-    v22 = _Block_copy(v19);
+    objc_storeStrong(&v20->_countersManager, manager);
+    objc_storeStrong(&v21->_dateProvider, provider);
+    objc_storeWeak(&v21->_remoteMessageDispatcher, dispatcherCopy);
+    objc_storeWeak(&v21->_requestCountProvider, countProviderCopy);
+    objc_storeStrong(&v21->_logEventFactories, factories);
+    v22 = _Block_copy(blockCopy);
     isDNUEnabledBlock = v21->_isDNUEnabledBlock;
     v21->_isDNUEnabledBlock = v22;
 
-    [v16 registerForMessage:@"HMDHouseholdMetricsHomeDataLogEventRequest" selector:sel_handleRequest_];
+    [dispatcherCopy registerForMessage:@"HMDHouseholdMetricsHomeDataLogEventRequest" selector:sel_handleRequest_];
     v24 = v21;
   }
 

@@ -13,23 +13,23 @@
   v4 = [v2 initWithBagContext:v3];
 
   [v4 start];
-  v5 = [v4 URLBag];
-  if (!v5)
+  uRLBag = [v4 URLBag];
+  if (!uRLBag)
   {
-    v6 = [MEMORY[0x1E69D4938] sharedConfig];
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -52,9 +52,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v17, v16, *v17, *&v17[16], v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v17, v16, *v17, *&v17[16], v18}];
       free(v11);
-      v15 = v9;
+      v15 = oSLogObject;
       SSFileLog();
     }
 
@@ -62,7 +62,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v12 = [v5 valueForKey:{@"appleMusicDeviceOfferDeepLink", v15}];
+  v12 = [uRLBag valueForKey:{@"appleMusicDeviceOfferDeepLink", v15}];
   v13 = [MEMORY[0x1E698C7E8] frozenBagValueWithKey:@"appleMusicDeviceOfferDeepLink" value:v12 valueType:5];
 
   return v13;
@@ -76,23 +76,23 @@ LABEL_12:
   v4 = [v2 initWithBagContext:v3];
 
   [v4 start];
-  v5 = [v4 URLBag];
-  if (!v5)
+  uRLBag = [v4 URLBag];
+  if (!uRLBag)
   {
-    v6 = [MEMORY[0x1E69D4938] sharedConfig];
-    v7 = [v6 shouldLog];
-    if ([v6 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 &= 2u;
     }
@@ -115,9 +115,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v17, v16, *v17, *&v17[16], v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, v17, v16, *v17, *&v17[16], v18}];
       free(v11);
-      v15 = v9;
+      v15 = oSLogObject;
       SSFileLog();
     }
 
@@ -125,7 +125,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  v12 = [v5 valueForKey:{@"iCloudDeviceOfferDeepLink", v15}];
+  v12 = [uRLBag valueForKey:{@"iCloudDeviceOfferDeepLink", v15}];
   v13 = [MEMORY[0x1E698C7E8] frozenBagValueWithKey:@"iCloudDeviceOfferDeepLink" value:v12 valueType:5];
 
   return v13;

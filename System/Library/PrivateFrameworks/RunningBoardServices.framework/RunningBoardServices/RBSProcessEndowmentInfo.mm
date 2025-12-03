@@ -1,9 +1,9 @@
 @interface RBSProcessEndowmentInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSProcessEndowmentInfo)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithNamespace:(id)a3 environment:(id)a4 encodedEndowment:(id)a5;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSProcessEndowmentInfo)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithNamespace:(id)namespace environment:(id)environment encodedEndowment:(id)endowment;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessEndowmentInfo
@@ -24,12 +24,12 @@
   return v7;
 }
 
-- (id)_initWithNamespace:(id)a3 environment:(id)a4 encodedEndowment:(id)a5
+- (id)_initWithNamespace:(id)namespace environment:(id)environment encodedEndowment:(id)endowment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  namespaceCopy = namespace;
+  environmentCopy = environment;
+  endowmentCopy = endowment;
+  if (!namespaceCopy)
   {
     v11 = rbs_state_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -43,15 +43,15 @@
   v12 = [(RBSProcessEndowmentInfo *)&v20 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [namespaceCopy copy];
     endowmentNamespace = v12->_endowmentNamespace;
     v12->_endowmentNamespace = v13;
 
-    v15 = [v9 copy];
+    v15 = [environmentCopy copy];
     environment = v12->_environment;
     v12->_environment = v15;
 
-    objc_storeStrong(&v12->_encodedEndowment, a5);
+    objc_storeStrong(&v12->_encodedEndowment, endowment);
     v17 = [(OS_xpc_object *)v12->_encodedEndowment description];
     v12->_encodedEndowmentHash = [v17 hash];
 
@@ -62,10 +62,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_17;
   }
@@ -76,17 +76,17 @@
     goto LABEL_16;
   }
 
-  if (self->_hash != v4->_hash)
+  if (self->_hash != equalCopy->_hash)
   {
     goto LABEL_16;
   }
 
   if (self->_encodedEndowment)
   {
-    if (v4->_encodedEndowment)
+    if (equalCopy->_encodedEndowment)
     {
       v6 = MEMORY[0x193AD5A20]();
-      if (v6 != MEMORY[0x193AD5A20](v4->_encodedEndowment) || !xpc_equal(self->_encodedEndowment, v4->_encodedEndowment))
+      if (v6 != MEMORY[0x193AD5A20](equalCopy->_encodedEndowment) || !xpc_equal(self->_encodedEndowment, equalCopy->_encodedEndowment))
       {
         goto LABEL_16;
       }
@@ -94,7 +94,7 @@
   }
 
   environment = self->_environment;
-  v8 = v4->_environment;
+  v8 = equalCopy->_environment;
   if (environment != v8)
   {
     v9 = 0;
@@ -112,7 +112,7 @@ LABEL_16:
   }
 
   endowmentNamespace = self->_endowmentNamespace;
-  v11 = v4->_endowmentNamespace;
+  v11 = equalCopy->_endowmentNamespace;
   if (endowmentNamespace == v11)
   {
 LABEL_17:
@@ -131,22 +131,22 @@ LABEL_18:
   return v9;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   endowmentNamespace = self->_endowmentNamespace;
-  v5 = a3;
-  [v5 encodeObject:endowmentNamespace forKey:@"namespace"];
-  [v5 encodeObject:self->_environment forKey:@"environment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:endowmentNamespace forKey:@"namespace"];
+  [coderCopy encodeObject:self->_environment forKey:@"environment"];
   v6 = RBSXPCPackObject(self->_encodedEndowment);
-  [v5 encodeXPCObject:v6 forKey:@"encodedEndowment"];
+  [coderCopy encodeXPCObject:v6 forKey:@"encodedEndowment"];
 }
 
-- (RBSProcessEndowmentInfo)initWithRBSXPCCoder:(id)a3
+- (RBSProcessEndowmentInfo)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
-  v7 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"encodedEndowment"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"encodedEndowment"];
 
   v8 = RBSXPCUnpackObject(v7);
   v9 = [(RBSProcessEndowmentInfo *)self _initWithNamespace:v5 environment:v6 encodedEndowment:v8];

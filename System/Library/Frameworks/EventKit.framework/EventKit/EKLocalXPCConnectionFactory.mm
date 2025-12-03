@@ -1,21 +1,21 @@
 @interface EKLocalXPCConnectionFactory
 - (EKLocalXPCConnectionFactory)init;
-- (EKLocalXPCConnectionFactory)initWithTCCPermissionChecker:(id)a3;
-- (id)tryNewConnectionWithExportedObject:(id)a3 interruptionHandler:(id)a4;
+- (EKLocalXPCConnectionFactory)initWithTCCPermissionChecker:(id)checker;
+- (id)tryNewConnectionWithExportedObject:(id)object interruptionHandler:(id)handler;
 @end
 
 @implementation EKLocalXPCConnectionFactory
 
-- (EKLocalXPCConnectionFactory)initWithTCCPermissionChecker:(id)a3
+- (EKLocalXPCConnectionFactory)initWithTCCPermissionChecker:(id)checker
 {
-  v5 = a3;
+  checkerCopy = checker;
   v9.receiver = self;
   v9.super_class = EKLocalXPCConnectionFactory;
   v6 = [(EKLocalXPCConnectionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tccPermissionChecker, a3);
+    objc_storeStrong(&v6->_tccPermissionChecker, checker);
   }
 
   return v7;
@@ -29,16 +29,16 @@
   return v4;
 }
 
-- (id)tryNewConnectionWithExportedObject:(id)a3 interruptionHandler:(id)a4
+- (id)tryNewConnectionWithExportedObject:(id)object interruptionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E69930A8]) initWithWrappedObject:v6];
+  objectCopy = object;
+  handlerCopy = handler;
+  v8 = [objc_alloc(MEMORY[0x1E69930A8]) initWithWrappedObject:objectCopy];
   v9 = [objc_alloc(MEMORY[0x1E6992370]) initWithRemoteObject:v8];
   v10 = [objc_alloc(MEMORY[0x1E6992400]) initWithXPCConnection:v9 tccPermissionChecker:self->_tccPermissionChecker];
   v11 = objc_alloc(MEMORY[0x1E6992370]);
-  v12 = [v10 cadOperationProxy];
-  v13 = [v11 initWithRemoteObject:v12];
+  cadOperationProxy = [v10 cadOperationProxy];
+  v13 = [v11 initWithRemoteObject:cadOperationProxy];
 
   objc_initWeak(&location, v9);
   objc_initWeak(&from, v10);

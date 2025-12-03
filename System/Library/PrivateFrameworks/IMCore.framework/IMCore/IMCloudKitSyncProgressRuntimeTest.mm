@@ -1,15 +1,15 @@
 @interface IMCloudKitSyncProgressRuntimeTest
-- (id)createSyncStatisticsForMockSyncState:(id)a3;
-- (void)cloudKitEventNotificationManager:(id)a3 syncProgressDidUpdate:(id)a4;
+- (id)createSyncStatisticsForMockSyncState:(id)state;
+- (void)cloudKitEventNotificationManager:(id)manager syncProgressDidUpdate:(id)update;
 - (void)setUp;
 - (void)startTest;
 @end
 
 @implementation IMCloudKitSyncProgressRuntimeTest
 
-- (void)cloudKitEventNotificationManager:(id)a3 syncProgressDidUpdate:(id)a4
+- (void)cloudKitEventNotificationManager:(id)manager syncProgressDidUpdate:(id)update
 {
-  objc_msgSend_testLog_(self, a2, @"Test got syncState progress: %@", a4);
+  objc_msgSend_testLog_(self, a2, @"Test got syncState progress: %@", update);
   objc_msgSend_progressRescheduleDelay(self, v5, v6);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -26,11 +26,11 @@
   MEMORY[0x1EEE66B58](self, sel_sendSyncStateChangedEvent, v3);
 }
 
-- (id)createSyncStatisticsForMockSyncState:(id)a3
+- (id)createSyncStatisticsForMockSyncState:(id)state
 {
-  v4 = a3;
-  v7 = objc_msgSend_IMCloudKitSyncControllerSyncState(v4, v5, v6);
-  objc_msgSend_IMCloudKitSyncControllerSyncRecordType(v4, v8, v9);
+  stateCopy = state;
+  v7 = objc_msgSend_IMCloudKitSyncControllerSyncState(stateCopy, v5, v6);
+  objc_msgSend_IMCloudKitSyncControllerSyncRecordType(stateCopy, v8, v9);
 
   objc_msgSend_progressCount(self, v10, v11);
   objc_msgSend_maxProgressCount(self, v12, v13);

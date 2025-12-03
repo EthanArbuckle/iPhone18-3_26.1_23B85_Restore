@@ -1,26 +1,26 @@
 @interface PlayerTimeControl
 - (BOOL)isEnabled;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)bounds;
 - (CGRect)thumbHitRect;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TtC12NowPlayingUI17PlayerTimeControl)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI17PlayerTimeControl)initWithFrame:(CGRect)frame;
 - (double)accessibilityElapsedDuration;
 - (double)accessibilityTotalDuration;
 - (float)value;
-- (void)accessibilityUpdateWithElapsedDuration:(double)a3;
+- (void)accessibilityUpdateWithElapsedDuration:(double)duration;
 - (void)dealloc;
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4;
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4;
-- (void)detailScrubControllerDidBeginScrubbing:(id)a3;
-- (void)detailScrubControllerDidEndScrubbing:(id)a3;
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed;
+- (void)detailScrubController:(id)controller didChangeValue:(float)value;
+- (void)detailScrubControllerDidBeginScrubbing:(id)scrubbing;
+- (void)detailScrubControllerDidEndScrubbing:(id)scrubbing;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)panGestureRecognized:(id)a3;
-- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)panGestureRecognized:(id)recognized;
+- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)category;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEnabled:(BOOL)enabled;
 - (void)tintColorDidChange;
 @end
 
@@ -31,9 +31,9 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI17PlayerTimeControl_displayLink);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for PlayerTimeControl();
     [(PlayerTimeControl *)&v4 dealloc];
   }
@@ -46,13 +46,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4BEE0();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C04C();
 }
 
@@ -81,19 +81,19 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_4C22C(x, y, width, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4C3CC();
   v5 = v4;
 
@@ -106,20 +106,20 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C4BC();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_4C694(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_4C694(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
 - (BOOL)isEnabled
@@ -129,31 +129,31 @@
   return [(PlayerTimeControl *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for PlayerTimeControl();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(PlayerTimeControl *)&v9 isEnabled];
-  v8.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(PlayerTimeControl *)&v9 isEnabled];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(PlayerTimeControl *)&v8 setEnabled:v3];
-  sub_4C95C(v7);
+  [(PlayerTimeControl *)&v8 setEnabled:enabledCopy];
+  sub_4C95C(isEnabled);
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_4CBB0(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_4CBB0(recognizedCopy);
 }
 
-- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)a3
+- (void)preferredContentSizeDidChangeWithNewContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = self;
+  categoryCopy = category;
+  selfCopy = self;
   sub_50468();
 }
 
@@ -162,10 +162,10 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI17PlayerTimeControl_knobViewXConstraint);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 constant];
     v5 = v4;
-    [(PlayerTimeControl *)v3 bounds];
+    [(PlayerTimeControl *)selfCopy bounds];
     Width = CGRectGetWidth(v8);
 
     return v5 / Width;
@@ -181,7 +181,7 @@
 
 - (CGRect)thumbHitRect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4D0A0();
   v5 = v4;
   v7 = v6;
@@ -198,31 +198,31 @@
   return result;
 }
 
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4
+- (void)detailScrubController:(id)controller didChangeValue:(float)value
 {
-  v6 = a3;
-  v7 = self;
-  sub_508EC(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_508EC(value);
 }
 
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed
 {
-  v6 = a3;
-  v7 = self;
-  sub_50BCC(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_50BCC(speed);
 }
 
-- (void)detailScrubControllerDidBeginScrubbing:(id)a3
+- (void)detailScrubControllerDidBeginScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = self;
+  scrubbingCopy = scrubbing;
+  selfCopy = self;
   sub_50CDC();
 }
 
-- (void)detailScrubControllerDidEndScrubbing:(id)a3
+- (void)detailScrubControllerDidEndScrubbing:(id)scrubbing
 {
-  v4 = a3;
-  v5 = self;
+  scrubbingCopy = scrubbing;
+  selfCopy = self;
   sub_50E0C();
 }
 
@@ -246,7 +246,7 @@
   {
     v5 = *(v2 + 5);
     v6 = *(v2 + 4);
-    v7 = self;
+    selfCopy = self;
     v10 = *(v2 + 1);
     v11 = *v2;
     sub_140A5C();
@@ -264,13 +264,13 @@
   return result;
 }
 
-- (void)accessibilityUpdateWithElapsedDuration:(double)a3
+- (void)accessibilityUpdateWithElapsedDuration:(double)duration
 {
-  v4 = self;
-  sub_4E87C(a3);
+  selfCopy = self;
+  sub_4E87C(duration);
 }
 
-- (_TtC12NowPlayingUI17PlayerTimeControl)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI17PlayerTimeControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

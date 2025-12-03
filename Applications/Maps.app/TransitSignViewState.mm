@@ -1,13 +1,13 @@
 @interface TransitSignViewState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation TransitSignViewState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -17,39 +17,39 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v8 = [(TransitSignViewState *)v7 imageSource];
-      v9 = [(TransitSignViewState *)self imageSource];
-      if ([v8 isEqual:v9])
+      v7 = equalCopy;
+      imageSource = [(TransitSignViewState *)v7 imageSource];
+      imageSource2 = [(TransitSignViewState *)self imageSource];
+      if ([imageSource isEqual:imageSource2])
       {
-        v10 = [(TransitSignViewState *)v7 majorAttributedString];
-        v11 = [(TransitSignViewState *)self majorAttributedString];
-        if ([v10 isEqualToAttributedString:v11])
+        majorAttributedString = [(TransitSignViewState *)v7 majorAttributedString];
+        majorAttributedString2 = [(TransitSignViewState *)self majorAttributedString];
+        if ([majorAttributedString isEqualToAttributedString:majorAttributedString2])
         {
-          v12 = [(TransitSignViewState *)v7 minorAttributedString];
-          v13 = [(TransitSignViewState *)self minorAttributedString];
-          if ([v12 isEqualToAttributedString:v13])
+          minorAttributedString = [(TransitSignViewState *)v7 minorAttributedString];
+          minorAttributedString2 = [(TransitSignViewState *)self minorAttributedString];
+          if ([minorAttributedString isEqualToAttributedString:minorAttributedString2])
           {
-            v14 = [(TransitSignViewState *)v7 tertiaryAttributedString];
-            v26 = [(TransitSignViewState *)self tertiaryAttributedString];
-            v27 = v14;
-            if ([v14 isEqualToAttributedString:v26])
+            tertiaryAttributedString = [(TransitSignViewState *)v7 tertiaryAttributedString];
+            tertiaryAttributedString2 = [(TransitSignViewState *)self tertiaryAttributedString];
+            v27 = tertiaryAttributedString;
+            if ([tertiaryAttributedString isEqualToAttributedString:tertiaryAttributedString2])
             {
-              v15 = [(TransitSignViewState *)v7 incidentAttributedString];
-              v24 = [(TransitSignViewState *)self incidentAttributedString];
-              v25 = v15;
-              if ([v15 isEqualToAttributedString:v24])
+              incidentAttributedString = [(TransitSignViewState *)v7 incidentAttributedString];
+              incidentAttributedString2 = [(TransitSignViewState *)self incidentAttributedString];
+              v25 = incidentAttributedString;
+              if ([incidentAttributedString isEqualToAttributedString:incidentAttributedString2])
               {
-                v16 = [(TransitSignViewState *)v7 incidents];
-                v17 = [(TransitSignViewState *)self incidents];
-                v23 = v16;
-                v18 = v16;
-                v19 = v17;
-                if ([v18 isEqualToArray:v17])
+                incidents = [(TransitSignViewState *)v7 incidents];
+                incidents2 = [(TransitSignViewState *)self incidents];
+                v23 = incidents;
+                v18 = incidents;
+                v19 = incidents2;
+                if ([v18 isEqualToArray:incidents2])
                 {
-                  v22 = [(TransitSignViewState *)v7 clusteredRouteOptionLabelItems];
-                  v21 = [(TransitSignViewState *)self clusteredRouteOptionLabelItems];
-                  v6 = [v22 isEqualToArray:v21];
+                  clusteredRouteOptionLabelItems = [(TransitSignViewState *)v7 clusteredRouteOptionLabelItems];
+                  clusteredRouteOptionLabelItems2 = [(TransitSignViewState *)self clusteredRouteOptionLabelItems];
+                  v6 = [clusteredRouteOptionLabelItems isEqualToArray:clusteredRouteOptionLabelItems2];
                 }
 
                 else

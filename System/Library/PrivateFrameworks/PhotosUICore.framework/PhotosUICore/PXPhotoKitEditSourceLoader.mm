@@ -1,35 +1,35 @@
 @interface PXPhotoKitEditSourceLoader
 - (NSString)contentIdentifier;
-- (PXPhotoKitEditSourceLoader)initWithAsset:(id)a3;
+- (PXPhotoKitEditSourceLoader)initWithAsset:(id)asset;
 - (void)_cancelContentInputRequest;
 - (void)_handleCancellation;
-- (void)_handleContentEditingInputRequestCompletion:(id)a3 info:(id)a4 asset:(id)a5;
-- (void)_mainQueue_handleEditSource:(id)a3 compositionController:(id)a4 originalCompositionController:(id)a5 error:(id)a6;
+- (void)_handleContentEditingInputRequestCompletion:(id)completion info:(id)info asset:(id)asset;
+- (void)_mainQueue_handleEditSource:(id)source compositionController:(id)controller originalCompositionController:(id)compositionController error:(id)error;
 - (void)_resetProgress;
 - (void)beginLoading;
 @end
 
 @implementation PXPhotoKitEditSourceLoader
 
-- (void)_mainQueue_handleEditSource:(id)a3 compositionController:(id)a4 originalCompositionController:(id)a5 error:(id)a6
+- (void)_mainQueue_handleEditSource:(id)source compositionController:(id)controller originalCompositionController:(id)compositionController error:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  objc_storeStrong(&self->_editSource, a3);
-  objc_storeStrong(&self->_compositionController, a4);
-  objc_storeStrong(&self->_originalCompositionController, a5);
+  sourceCopy = source;
+  controllerCopy = controller;
+  compositionControllerCopy = compositionController;
+  errorCopy = error;
+  objc_storeStrong(&self->_editSource, source);
+  objc_storeStrong(&self->_compositionController, controller);
+  objc_storeStrong(&self->_originalCompositionController, compositionController);
   [(NSProgress *)self->_editSourceCreationProgress setCompletedUnitCount:[(NSProgress *)self->_editSourceCreationProgress totalUnitCount]];
   v15 = MEMORY[0x1E696AD98];
-  v16 = [MEMORY[0x1E695DF00] date];
-  [v16 timeIntervalSinceDate:self->_mainQueue_loadingStartDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_mainQueue_loadingStartDate];
   v17 = [v15 numberWithDouble:?];
   loadDuration = self->_loadDuration;
   self->_loadDuration = v17;
 
-  objc_storeStrong(&self->_error, a6);
+  objc_storeStrong(&self->_error, error);
   v19 = PLUIGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -38,26 +38,26 @@
     v22 = 138412546;
     v23 = editSource;
     v24 = 2112;
-    v25 = compositionController;
+    compositionControllerCopy2 = compositionController;
     _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_DEFAULT, "_handleContentEditingInputRequestCompletion - editSource: %@\ncomposition:%@", &v22, 0x16u);
   }
 }
 
-- (void)_handleContentEditingInputRequestCompletion:(id)a3 info:(id)a4 asset:(id)a5
+- (void)_handleContentEditingInputRequestCompletion:(id)completion info:(id)info asset:(id)asset
 {
-  v8 = a3;
-  v9 = a4;
+  completionCopy = completion;
+  infoCopy = info;
   loadingQueue = self->_loadingQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__PXPhotoKitEditSourceLoader__handleContentEditingInputRequestCompletion_info_asset___block_invoke;
   v13[3] = &unk_1E774A768;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = completionCopy;
+  v15 = infoCopy;
   v16 = a2;
-  v11 = v9;
-  v12 = v8;
+  v11 = infoCopy;
+  v12 = completionCopy;
   dispatch_async(loadingQueue, v13);
 }
 
@@ -155,8 +155,8 @@ void __85__PXPhotoKitEditSourceLoader__handleContentEditingInputRequestCompletio
 
 - (void)_cancelContentInputRequest
 {
-  v3 = [(PXPhotoKitEditSourceLoader *)self asset];
-  [v3 cancelContentEditingInputRequest:self->_loadingQueue_imageRequestID];
+  asset = [(PXPhotoKitEditSourceLoader *)self asset];
+  [asset cancelContentEditingInputRequest:self->_loadingQueue_imageRequestID];
 }
 
 - (void)_resetProgress
@@ -212,9 +212,9 @@ void __49__PXPhotoKitEditSourceLoader__handleCancellation__block_invoke_2(uint64
   objc_storeStrong(&self->_editSourceCreationProgress, v3);
   if (!self->_mainQueue_loadingStartDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     mainQueue_loadingStartDate = self->_mainQueue_loadingStartDate;
-    self->_mainQueue_loadingStartDate = v4;
+    self->_mainQueue_loadingStartDate = date;
 
     loadingQueue = self->_loadingQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -303,22 +303,22 @@ BOOL __42__PXPhotoKitEditSourceLoader_beginLoading__block_invoke_2(uint64_t a1, 
 
 - (NSString)contentIdentifier
 {
-  v2 = [(PXPhotoKitEditSourceLoader *)self asset];
-  v3 = [v2 localIdentifier];
+  asset = [(PXPhotoKitEditSourceLoader *)self asset];
+  localIdentifier = [asset localIdentifier];
 
-  return v3;
+  return localIdentifier;
 }
 
-- (PXPhotoKitEditSourceLoader)initWithAsset:(id)a3
+- (PXPhotoKitEditSourceLoader)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = PXPhotoKitEditSourceLoader;
   v6 = [(PXPhotoKitEditSourceLoader *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
     v8 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
     progress = v7->_progress;
     v7->_progress = v8;

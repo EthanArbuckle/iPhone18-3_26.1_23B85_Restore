@@ -1,22 +1,22 @@
 @interface SearchUIFirstTimeExperienceViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (SearchUIFirstTimeExperienceDelegate)delegate;
-- (SearchUIFirstTimeExperienceViewController)initWithDomains:(id)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6;
-- (SearchUIFirstTimeExperienceViewController)initWithSupportedDomains:(unint64_t)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6;
+- (SearchUIFirstTimeExperienceViewController)initWithDomains:(id)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title;
+- (SearchUIFirstTimeExperienceViewController)initWithSupportedDomains:(unint64_t)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title;
 - (void)continueButtonPressed;
 - (void)makeViews;
 - (void)showPrivacyView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchUIFirstTimeExperienceViewController
 
-- (SearchUIFirstTimeExperienceViewController)initWithSupportedDomains:(unint64_t)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6
+- (SearchUIFirstTimeExperienceViewController)initWithSupportedDomains:(unint64_t)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title
 {
   v19[6] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  moreTextCopy = moreText;
+  titleCopy = title;
   v19[0] = @"web";
   v19[1] = @"itunes";
   v19[2] = @"app_store";
@@ -30,7 +30,7 @@
     v15 = 0;
     do
     {
-      if (((1 << v15) & a3) != 0)
+      if (((1 << v15) & domains) != 0)
       {
         v16 = [v13 objectAtIndexedSubscript:v15];
         [v14 addObject:v16];
@@ -42,40 +42,40 @@
     while (v15 < [v13 count]);
   }
 
-  v17 = [(SearchUIFirstTimeExperienceViewController *)self initWithDomains:v14 explanationText:v10 learnMoreText:v11 continueButtonTitle:v12];
+  v17 = [(SearchUIFirstTimeExperienceViewController *)self initWithDomains:v14 explanationText:textCopy learnMoreText:moreTextCopy continueButtonTitle:titleCopy];
 
   return v17;
 }
 
-- (SearchUIFirstTimeExperienceViewController)initWithDomains:(id)a3 explanationText:(id)a4 learnMoreText:(id)a5 continueButtonTitle:(id)a6
+- (SearchUIFirstTimeExperienceViewController)initWithDomains:(id)domains explanationText:(id)text learnMoreText:(id)moreText continueButtonTitle:(id)title
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  domainsCopy = domains;
+  textCopy = text;
+  moreTextCopy = moreText;
+  titleCopy = title;
   v18.receiver = self;
   v18.super_class = SearchUIFirstTimeExperienceViewController;
   v14 = [(SearchUIFirstTimeExperienceViewController *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(SearchUIFirstTimeExperienceViewController *)v14 setSupportedDomains:v10];
-    [(SearchUIFirstTimeExperienceViewController *)v15 setExplanationText:v11];
-    v16 = [v12 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [(SearchUIFirstTimeExperienceViewController *)v14 setSupportedDomains:domainsCopy];
+    [(SearchUIFirstTimeExperienceViewController *)v15 setExplanationText:textCopy];
+    v16 = [moreTextCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
     [(SearchUIFirstTimeExperienceViewController *)v15 setLearnMoreText:v16];
 
-    [(SearchUIFirstTimeExperienceViewController *)v15 setContinueButtonTitle:v13];
+    [(SearchUIFirstTimeExperienceViewController *)v15 setContinueButtonTitle:titleCopy];
     [(SearchUIFirstTimeExperienceViewController *)v15 makeViews];
   }
 
   return v15;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = SearchUIFirstTimeExperienceViewController;
-  [(SearchUIFirstTimeExperienceViewController *)&v9 traitCollectionDidChange:a3];
+  [(SearchUIFirstTimeExperienceViewController *)&v9 traitCollectionDidChange:change];
   [(SearchUIFirstTimeExperienceViewController *)self updateTraitsIfNeeded];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -84,10 +84,10 @@
   v8[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
   v4 = MEMORY[0x1E69D9108];
-  v5 = [(SearchUIFirstTimeExperienceViewController *)self view];
-  v6 = [v4 bestAppearanceForView:v5];
-  v7 = [(SearchUIFirstTimeExperienceViewController *)self view];
-  [v6 enableAppearanceForContainer:v7];
+  view = [(SearchUIFirstTimeExperienceViewController *)self view];
+  v6 = [v4 bestAppearanceForView:view];
+  view2 = [(SearchUIFirstTimeExperienceViewController *)self view];
+  [v6 enableAppearanceForContainer:view2];
 }
 
 void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___block_invoke(uint64_t a1)
@@ -104,10 +104,10 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
-  v3 = [(SearchUIFirstTimeExperienceViewController *)self view];
-  v4 = [v3 subviews];
+  view = [(SearchUIFirstTimeExperienceViewController *)self view];
+  subviews = [view subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v130 objects:v144 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v130 objects:v144 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,21 +118,21 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
       {
         if (*v131 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v130 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v130 objects:v144 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v130 objects:v144 count:16];
     }
 
     while (v6);
   }
 
   v9 = MEMORY[0x1E69D9108];
-  v10 = [(SearchUIFirstTimeExperienceViewController *)self traitCollection];
-  v11 = [v9 bestAppearanceForTraitCollection:v10];
+  traitCollection = [(SearchUIFirstTimeExperienceViewController *)self traitCollection];
+  v11 = [v9 bestAppearanceForTraitCollection:traitCollection];
 
   v142[0] = @"web";
   v142[1] = @"itunes";
@@ -162,12 +162,12 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   v143[12] = @"translate";
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v143 forKeys:v142 count:13];
   v13 = +[SearchUIUtilities isIpad];
-  v14 = [(SearchUIFirstTimeExperienceViewController *)self traitCollection];
-  v15 = [v14 horizontalSizeClass] == 1 && v13;
+  traitCollection2 = [(SearchUIFirstTimeExperienceViewController *)self traitCollection];
+  v15 = [traitCollection2 horizontalSizeClass] == 1 && v13;
 
   if ([v11 style] == 3)
   {
-    v16 = [v11 platterColor];
+    platterColor = [v11 platterColor];
   }
 
   else
@@ -181,10 +181,10 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
     {
       [MEMORY[0x1E69DC888] tertiarySystemFillColor];
     }
-    v16 = ;
+    platterColor = ;
   }
 
-  v115 = v16;
+  v115 = platterColor;
   v17 = MEMORY[0x1E69DB878];
   v108 = __PAIR64__(v13, v15);
   if (v15 & 1 | !v13)
@@ -199,12 +199,12 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
     v117 = [MEMORY[0x1E69DB878] systemFontOfSize:48.0];
   }
 
-  v116 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v111 = self;
+  selfCopy = self;
   obj = [(SearchUIFirstTimeExperienceViewController *)self supportedDomains];
   v20 = [obj countByEnumeratingWithState:&v126 objects:v141 count:16];
   v114 = v12;
@@ -275,23 +275,23 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
             v124 = v33;
             if ([v11 style] == 3 && (v33 & 1) != 0)
             {
-              v35 = [v11 primaryColor];
+              primaryColor = [v11 primaryColor];
             }
 
             else
             {
-              v35 = [v11 secondaryColor];
+              primaryColor = [v11 secondaryColor];
             }
 
-            v36 = v35;
+            v36 = primaryColor;
             v37 = v115;
             if (!v34)
             {
-              v37 = v35;
+              v37 = primaryColor;
             }
 
             v38 = MEMORY[0x1E69DCAD8];
-            v140[0] = v35;
+            v140[0] = primaryColor;
             v140[1] = v37;
             v140[2] = v37;
             v39 = MEMORY[0x1E695DEC8];
@@ -319,7 +319,7 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
             [v44 setSymbolScale:v45];
             LODWORD(v46) = 1148846080;
             [v44 setContentHuggingPriority:0 forAxis:v46];
-            [v116 addObject:v44];
+            [array addObject:v44];
             [v44 tlk_updateForAppearance:v112];
 
             v11 = v112;
@@ -350,7 +350,7 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
     while (v21);
   }
 
-  v47 = [v116 count];
+  v47 = [array count];
   if (v47 >= 6)
   {
     v48 = 6;
@@ -361,22 +361,22 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
     v48 = v47;
   }
 
-  v49 = [v116 subarrayWithRange:{0, v48}];
+  v49 = [array subarrayWithRange:{0, v48}];
   v50 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v49];
   [v50 setDistribution:0];
   v125 = v49;
   if (v110)
   {
     v51 = 0;
-    v52 = v111;
+    v52 = selfCopy;
   }
 
   else
   {
-    v52 = v111;
-    v53 = [(SearchUIFirstTimeExperienceViewController *)v111 view];
-    v54 = [v53 tlks_screen];
-    [v54 _referenceBounds];
+    v52 = selfCopy;
+    view2 = [(SearchUIFirstTimeExperienceViewController *)selfCopy view];
+    tlks_screen = [view2 tlks_screen];
+    [tlks_screen _referenceBounds];
     v51 = CGRectGetWidth(v146) <= 320.0;
   }
 
@@ -400,11 +400,11 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   }
 
   [v50 setSpacing:v56];
-  v58 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  [v58 addSubview:v50];
+  view3 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  [view3 addSubview:v50];
 
-  v59 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v60 = [SearchUIAutoLayout alignView:v50 toView:v59 withAttribute:9];
+  view4 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v60 = [SearchUIAutoLayout alignView:v50 toView:view4 withAttribute:9];
 
   if (+[SearchUIUtilities isWideScreen])
   {
@@ -416,20 +416,20 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
     v61 = 21.0;
   }
 
-  v62 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v63 = [SearchUIAutoLayout baselineAlignBottomView:v50 toTopView:v62 spacing:v61];
+  view5 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v63 = [SearchUIAutoLayout baselineAlignBottomView:v50 toTopView:view5 spacing:v61];
 
   v64 = objc_alloc(MEMORY[0x1E696AD40]);
-  v65 = [(SearchUIFirstTimeExperienceViewController *)v52 explanationText];
-  v66 = [v64 initWithString:v65];
+  explanationText = [(SearchUIFirstTimeExperienceViewController *)v52 explanationText];
+  v66 = [v64 initWithString:explanationText];
 
   v67 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v68 = [(SearchUIFirstTimeExperienceViewController *)v52 learnMoreText];
+  learnMoreText = [(SearchUIFirstTimeExperienceViewController *)v52 learnMoreText];
   v136 = *MEMORY[0x1E69DB670];
   v69 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1F55BC4E8];
   v137 = v69;
   v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
-  v71 = [v67 initWithString:v68 attributes:v70];
+  v71 = [v67 initWithString:learnMoreText attributes:v70];
 
   [v66 appendAttributedString:v71];
   obja = v71;
@@ -457,8 +457,8 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   v75 = objc_opt_new();
   [v75 setAttributedText:v66];
   [v75 setDelegate:v52];
-  v76 = [v11 primaryColor];
-  [v75 setTextColor:v76];
+  primaryColor2 = [v11 primaryColor];
+  [v75 setTextColor:primaryColor2];
 
   v134 = *MEMORY[0x1E69DB650];
   v119 = v73;
@@ -472,8 +472,8 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   v81 = [v79 fontWithDescriptor:v80 size:0.0];
   [v75 setFont:v81];
 
-  v82 = [v75 textContainer];
-  [v82 setLineFragmentPadding:0.0];
+  textContainer = [v75 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v75 _setInteractiveTextSelectionDisabled:1];
   [v75 setScrollEnabled:0];
@@ -481,8 +481,8 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   [v75 setTextAlignment:1];
   [v75 setEditable:0];
   [v11 enableAppearanceForView:v75];
-  v83 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  [v83 addSubview:v75];
+  view6 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  [view6 addSubview:v75];
 
   v84 = [SearchUISymbolImage uiImageWithSymbolName:@"safari" font:v117 scale:3];
   [v84 size];
@@ -490,14 +490,14 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
 
   [v50 spacing];
   v88 = v87 * 5.0 + v86 * 6.0;
-  v89 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v90 = [SearchUIAutoLayout alignView:v75 toView:v89 withAttribute:9];
+  view7 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v90 = [SearchUIAutoLayout alignView:v75 toView:view7 withAttribute:9];
 
-  v91 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v92 = [SearchUIAutoLayout alignLeadingView:v91 toTrailingView:v75 spacing:1 minimum:16.0];
+  view8 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v92 = [SearchUIAutoLayout alignLeadingView:view8 toTrailingView:v75 spacing:1 minimum:16.0];
 
-  v93 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v94 = [SearchUIAutoLayout alignLeadingView:v75 toTrailingView:v93 spacing:1 minimum:16.0];
+  view9 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v94 = [SearchUIAutoLayout alignLeadingView:v75 toTrailingView:view9 spacing:1 minimum:16.0];
 
   v95 = [SearchUIAutoLayout setWidth:v75 forView:v88];
   LODWORD(v96) = 1148829696;
@@ -506,26 +506,26 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
   v123 = v66;
   if (_UISolariumEnabled())
   {
-    v98 = [MEMORY[0x1E69DC740] _tintedGlassButtonConfiguration];
+    _tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] _tintedGlassButtonConfiguration];
   }
 
   else
   {
-    v98 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-    [v98 setCornerStyle:4];
-    [v98 setBaseBackgroundColor:v115];
+    _tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    [_tintedGlassButtonConfiguration setCornerStyle:4];
+    [_tintedGlassButtonConfiguration setBaseBackgroundColor:v115];
   }
 
-  v99 = [(SearchUIFirstTimeExperienceViewController *)v52 continueButtonTitle];
-  [v98 setTitle:v99];
+  continueButtonTitle = [(SearchUIFirstTimeExperienceViewController *)v52 continueButtonTitle];
+  [_tintedGlassButtonConfiguration setTitle:continueButtonTitle];
 
   v100 = objc_opt_new();
   [v100 setRole:1];
-  [v100 setConfiguration:v98];
+  [v100 setConfiguration:_tintedGlassButtonConfiguration];
   if ([v11 style] == 3)
   {
-    v101 = [v11 primaryColor];
-    [v100 setTintColor:v101];
+    primaryColor3 = [v11 primaryColor];
+    [v100 setTintColor:primaryColor3];
   }
 
   else
@@ -535,31 +535,31 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
 
   [v11 enableAppearanceForView:v100];
   [v100 addTarget:v52 action:sel_continueButtonPressed forControlEvents:64];
-  v102 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  [v102 addSubview:v100];
+  view10 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  [view10 addSubview:v100];
 
-  v103 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v104 = [SearchUIAutoLayout alignView:v100 toView:v103 withAttribute:9];
+  view11 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v104 = [SearchUIAutoLayout alignView:v100 toView:view11 withAttribute:9];
 
   v105 = [SearchUIAutoLayout alignView:v100 attribute:3 toView:v75 attribute:4 constant:30.0];
-  v106 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
-  v107 = [SearchUIAutoLayout baselineAlignBottomView:v106 toTopView:v100 spacing:1 minimum:v61];
+  view12 = [(SearchUIFirstTimeExperienceViewController *)v52 view];
+  v107 = [SearchUIAutoLayout baselineAlignBottomView:view12 toTopView:v100 spacing:1 minimum:v61];
 }
 
 - (void)continueButtonPressed
 {
-  v2 = [(SearchUIFirstTimeExperienceViewController *)self delegate];
-  [v2 firstTimeExperienceContinueButtonPressed];
+  delegate = [(SearchUIFirstTimeExperienceViewController *)self delegate];
+  [delegate firstTimeExperienceContinueButtonPressed];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  if (!a6)
+  if (!interaction)
   {
-    [(SearchUIFirstTimeExperienceViewController *)self showPrivacyView:a3];
+    [(SearchUIFirstTimeExperienceViewController *)self showPrivacyView:view];
   }
 
-  return a6 == 0;
+  return interaction == 0;
 }
 
 - (void)showPrivacyView
@@ -572,11 +572,11 @@ void __70__SearchUIFirstTimeExperienceViewController_traitCollectionDidChange___
 
   else
   {
-    v4 = [(SearchUIFirstTimeExperienceViewController *)self delegate];
+    delegate = [(SearchUIFirstTimeExperienceViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SearchUIFirstTimeExperienceViewController *)self delegate];
-      if ([v5 firstTimeExperienceIsInPopoverPresentation])
+      delegate2 = [(SearchUIFirstTimeExperienceViewController *)self delegate];
+      if ([delegate2 firstTimeExperienceIsInPopoverPresentation])
       {
         v3 = 0;
       }

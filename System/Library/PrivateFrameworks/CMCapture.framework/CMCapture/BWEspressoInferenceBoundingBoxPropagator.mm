@@ -1,46 +1,46 @@
 @interface BWEspressoInferenceBoundingBoxPropagator
-- (BWEspressoInferenceBoundingBoxPropagator)initWithBoxRequirement:(id)a3 scoreRequirement:(id)a4 angularOffsetRequirement:(id)a5 fontSizeRequirement:(id)a6 configuration:(id)a7 toInferenceResultKey:(id)a8;
+- (BWEspressoInferenceBoundingBoxPropagator)initWithBoxRequirement:(id)requirement scoreRequirement:(id)scoreRequirement angularOffsetRequirement:(id)offsetRequirement fontSizeRequirement:(id)sizeRequirement configuration:(id)configuration toInferenceResultKey:(id)key;
 - (void)dealloc;
-- (void)matchCurRegions:(uint64_t)a3 curCount:;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
+- (void)matchCurRegions:(uint64_t)regions curCount:;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
 @end
 
 @implementation BWEspressoInferenceBoundingBoxPropagator
 
-- (BWEspressoInferenceBoundingBoxPropagator)initWithBoxRequirement:(id)a3 scoreRequirement:(id)a4 angularOffsetRequirement:(id)a5 fontSizeRequirement:(id)a6 configuration:(id)a7 toInferenceResultKey:(id)a8
+- (BWEspressoInferenceBoundingBoxPropagator)initWithBoxRequirement:(id)requirement scoreRequirement:(id)scoreRequirement angularOffsetRequirement:(id)offsetRequirement fontSizeRequirement:(id)sizeRequirement configuration:(id)configuration toInferenceResultKey:(id)key
 {
   v25.receiver = self;
   v25.super_class = BWEspressoInferenceBoundingBoxPropagator;
   v14 = [(BWEspressoInferenceBoundingBoxPropagator *)&v25 init];
   if (v14)
   {
-    *(v14 + 1) = a3;
-    *(v14 + 2) = a4;
-    *(v14 + 3) = a5;
-    *(v14 + 4) = a6;
-    *(v14 + 5) = a8;
-    v14[48] = [a7 interiorSuppression];
-    [a7 interiorSuppressionPadding];
+    *(v14 + 1) = requirement;
+    *(v14 + 2) = scoreRequirement;
+    *(v14 + 3) = offsetRequirement;
+    *(v14 + 4) = sizeRequirement;
+    *(v14 + 5) = key;
+    v14[48] = [configuration interiorSuppression];
+    [configuration interiorSuppressionPadding];
     *(v14 + 13) = v15;
-    [a7 maxMatchCost];
+    [configuration maxMatchCost];
     *(v14 + 14) = v16;
-    [a7 angularOffsetExponentialSmoothing];
+    [configuration angularOffsetExponentialSmoothing];
     *(v14 + 15) = v17;
     if (*(v14 + 4))
     {
-      [a7 fontSizeStartReportingThreshold];
+      [configuration fontSizeStartReportingThreshold];
       *(v14 + 16) = v18;
-      [a7 fontSizeStopReportingThreshold];
+      [configuration fontSizeStopReportingThreshold];
       *(v14 + 17) = v19;
     }
 
     *(v14 + 10) = [objc_alloc(getFTBipartiteMatcherClass()) initWithInitialSize:10];
-    v14[96] = [a7 inferenceInputUsesPortraitOrientation];
-    [a7 trackingThreshold];
+    v14[96] = [configuration inferenceInputUsesPortraitOrientation];
+    [configuration trackingThreshold];
     *(v14 + 25) = v20;
-    if (a7)
+    if (configuration)
     {
-      [a7 confidenceFilterSettings];
+      [configuration confidenceFilterSettings];
     }
 
     else
@@ -53,7 +53,7 @@
     *(v14 + 104) = v22;
     *(v14 + 120) = v23;
     *(v14 + 17) = v24;
-    *(v14 + 9) = [a7 logger];
+    *(v14 + 9) = [configuration logger];
   }
 
   return v14;
@@ -67,7 +67,7 @@
   [(BWEspressoInferenceBoundingBoxPropagator *)&v3 dealloc];
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -75,13 +75,13 @@
     return;
   }
 
-  v147 = a6;
-  v148 = a5;
-  v11 = [a4 tensorForRequirement:self->_boxRequirement];
-  v12 = [a4 tensorForRequirement:self->_scoreRequirement];
+  sampleBufferCopy = sampleBuffer;
+  bufferCopy = buffer;
+  v11 = [storage tensorForRequirement:self->_boxRequirement];
+  v12 = [storage tensorForRequirement:self->_scoreRequirement];
   if (self->_angularOffsetRequirement)
   {
-    v13 = [a4 tensorForRequirement:?];
+    v13 = [storage tensorForRequirement:?];
   }
 
   else
@@ -91,7 +91,7 @@
 
   if (self->_fontSizeRequirement)
   {
-    v14 = [a4 tensorForRequirement:?];
+    v14 = [storage tensorForRequirement:?];
   }
 
   else
@@ -135,7 +135,7 @@
     v25 = 0;
   }
 
-  v140 = a3;
+  dictionaryCopy = dictionary;
   v26 = 0;
   if (v16)
   {
@@ -167,7 +167,7 @@
     goto LABEL_80;
   }
 
-  v145 = self;
+  selfCopy = self;
   v32 = 0;
   v33 = 0;
   *&v157 = v29 + 12 * v30;
@@ -244,8 +244,8 @@ LABEL_25:
   }
 
   while (v26 != v33);
-  self = v145;
-  [(BWEspressoInferenceBoundingBoxPropagator *)v145 matchCurRegions:v26 curCount:?];
+  self = selfCopy;
+  [(BWEspressoInferenceBoundingBoxPropagator *)selfCopy matchCurRegions:v26 curCount:?];
   v59 = v154;
   if (self->_suppressInterior)
   {
@@ -409,10 +409,10 @@ LABEL_25:
   }
 
 LABEL_80:
-  CMSampleBufferGetPresentationTimeStamp(&v164, v147);
+  CMSampleBufferGetPresentationTimeStamp(&v164, sampleBufferCopy);
   v94 = CMTimeCopyAsDictionary(&v164, *MEMORY[0x1E695E480]);
-  v95 = v148;
-  ImageBuffer = CMSampleBufferGetImageBuffer(v148);
+  v95 = bufferCopy;
+  ImageBuffer = CMSampleBufferGetImageBuffer(bufferCopy);
   Width = CVPixelBufferGetWidth(ImageBuffer);
   Height = CVPixelBufferGetHeight(ImageBuffer);
   v99 = CMGetAttachment(v95, *off_1E798A430, 0);
@@ -463,10 +463,10 @@ LABEL_80:
     v106 = (v146[10] / v146[11]) / (Height / v105);
     v143 = (1.0 / v106);
     v144 = v106;
-    v148 = *off_1E798CD40;
-    v147 = *off_1E798CD28;
+    bufferCopy = *off_1E798CD40;
+    sampleBufferCopy = *off_1E798CD28;
     v146 = *off_1E798CD30;
-    v145 = *off_1E798CD38;
+    selfCopy = *off_1E798CD38;
     v107 = *off_1E798CD18;
     v108 = *off_1E798CD20;
     v109 = *&v154 + 52;
@@ -570,14 +570,14 @@ LABEL_80:
         v170.size.width = v123;
         v170.size.height = v125;
         v133 = CGRectCreateDictionaryRepresentation(v170);
-        v159[0] = v148;
-        v159[1] = v147;
+        v159[0] = bufferCopy;
+        v159[1] = sampleBufferCopy;
         v160[0] = v94;
         v160[1] = DictionaryRepresentation;
         v159[2] = v146;
         LODWORD(v134) = *(v109 + 52);
         v160[2] = [MEMORY[0x1E696AD98] numberWithFloat:v134];
-        v159[3] = v145;
+        v159[3] = selfCopy;
         v160[3] = [MEMORY[0x1E696AD98] numberWithInteger:*(v109 - 52)];
         v159[4] = v107;
         LODWORD(v135) = v157;
@@ -612,7 +612,7 @@ LABEL_80:
 
   if (self->_inferenceResultKey)
   {
-    [v140 setObject:v149 forKeyedSubscript:?];
+    [dictionaryCopy setObject:v149 forKeyedSubscript:?];
   }
 
   v138 = self->_maxRegionID;
@@ -622,17 +622,17 @@ LABEL_80:
   }
 }
 
-- (void)matchCurRegions:(uint64_t)a3 curCount:
+- (void)matchCurRegions:(uint64_t)regions curCount:
 {
-  if (a1)
+  if (self)
   {
     v44[1] = v44;
-    v6 = v44 - ((4 * *(a1 + 152) * a3 + 19) & 0xFFFFFFFFFFFFFFF0);
-    if (a3)
+    v6 = v44 - ((4 * *(self + 152) * regions + 19) & 0xFFFFFFFFFFFFFFF0);
+    if (regions)
     {
       v7 = 0;
       v8 = 0;
-      v9 = *(a1 + 152);
+      v9 = *(self + 152);
       do
       {
         if (v9)
@@ -661,7 +661,7 @@ LABEL_80:
             v21 = v19 - MidY;
             *&v6[4 * v8++] = hypotf(v20, v21) + v15;
             ++v10;
-            v9 = *(a1 + 152);
+            v9 = *(self + 152);
             v12 += 136;
           }
 
@@ -671,22 +671,22 @@ LABEL_80:
         ++v7;
       }
 
-      while (v7 != a3);
-      v22 = [*(a1 + 80) computeMatchingForCostMatrix:v6 withRowCount:a3 columnCount:*(a1 + 152)];
+      while (v7 != regions);
+      v22 = [*(self + 80) computeMatchingForCostMatrix:v6 withRowCount:regions columnCount:*(self + 152)];
       [v22 count];
       v23 = 0;
       v24 = a2 + 88;
       do
       {
         v25 = [objc_msgSend(v22 objectAtIndexedSubscript:{v23), "integerValue"}];
-        if ((v25 & 0x8000000000000000) != 0 || (v26 = *(a1 + 152), v25 >= v26) || *&v6[4 * v26 * v23 + 4 * v25] > *(a1 + 56))
+        if ((v25 & 0x8000000000000000) != 0 || (v26 = *(self + 152), v25 >= v26) || *&v6[4 * v26 * v23 + 4 * v25] > *(self + 56))
         {
-          v27 = *(a1 + 88) + 1;
-          *(a1 + 88) = v27;
+          v27 = *(self + 88) + 1;
+          *(self + 88) = v27;
           *(v24 - 88) = v27;
-          v28 = *(a1 + 120);
-          v29 = *(a1 + 136);
-          *(v24 + 8) = *(a1 + 104);
+          v28 = *(self + 120);
+          v29 = *(self + 136);
+          *(v24 + 8) = *(self + 104);
           *(v24 + 40) = v29;
           *(v24 + 24) = v28;
           v30 = *(v24 - 40);
@@ -695,7 +695,7 @@ LABEL_80:
 
         else
         {
-          v37 = *(a1 + 144) + 136 * v25;
+          v37 = *(self + 144) + 136 * v25;
           *(v24 - 88) = *v37;
           v38 = *(v37 + 96);
           v39 = *(v37 + 112);
@@ -703,19 +703,19 @@ LABEL_80:
           *(v24 + 24) = v39;
           *(v24 + 8) = v38;
           v40 = *(v24 - 40);
-          v41 = *(*(a1 + 144) + 136 * v25 + 52);
+          v41 = *(*(self + 144) + 136 * v25 + 52);
           v42 = v41 + 90.0;
           v43 = vabds_f32(v40, v41);
           if (vabds_f32(v40, v41 + 90.0) >= v43)
           {
-            v42 = *(*(a1 + 144) + 136 * v25 + 52);
+            v42 = *(*(self + 144) + 136 * v25 + 52);
             if (vabds_f32(v40, v41 + -90.0) < v43)
             {
               v42 = v41 + -90.0;
             }
           }
 
-          v30 = (v42 * (1.0 - *(a1 + 60))) + (v40 * *(a1 + 60));
+          v30 = (v42 * (1.0 - *(self + 60))) + (v40 * *(self + 60));
         }
 
         v31 = *(v24 + 8);
@@ -725,7 +725,7 @@ LABEL_80:
         {
           v33 = *v24;
           BWSmartCameraSceneUpdateWithConfidence(v24 + 8, *(v24 - 44));
-          if (v33 < *(a1 + 64) && !v32 || v33 < *(a1 + 68) && v32)
+          if (v33 < *(self + 64) && !v32 || v33 < *(self + 68) && v32)
           {
             *(v24 + 9) = 0;
             *(v24 + 32) = 0;
@@ -743,11 +743,11 @@ LABEL_80:
 
           else
           {
-            v35 = *(a1 + 64);
+            v35 = *(self + 64);
             v36 = *v24 >= v35;
             if (*v24 < v35 && v32)
             {
-              v36 = *v24 >= *(a1 + 68);
+              v36 = *v24 >= *(self + 68);
             }
           }
 
@@ -758,12 +758,12 @@ LABEL_80:
         v24 += 136;
       }
 
-      while (a3 != v23);
+      while (regions != v23);
     }
 
-    free(*(a1 + 144));
-    *(a1 + 144) = a2;
-    *(a1 + 152) = a3;
+    free(*(self + 144));
+    *(self + 144) = a2;
+    *(self + 152) = regions;
   }
 }
 

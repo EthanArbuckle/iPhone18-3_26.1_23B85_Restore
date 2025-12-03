@@ -1,12 +1,12 @@
 @interface BWStillImageDisparitySplitterNode
 - (BWStillImageDisparitySplitterNode)init;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageDisparitySplitterNode
@@ -19,10 +19,10 @@
   if (v2)
   {
     v3 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v2];
-    v4 = [(BWNodeInput *)v3 primaryMediaConfiguration];
-    [(BWNodeInputMediaConfiguration *)v4 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+    primaryMediaConfiguration = [(BWNodeInput *)v3 primaryMediaConfiguration];
+    [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     v5 = 1;
-    [(BWNodeInputMediaConfiguration *)v4 setPassthroughMode:1];
+    [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:1];
     [(BWNode *)v2 addInput:v3];
     v6 = 0;
     v2->_outputs = malloc_type_malloc(0x10uLL, 0x80040B8603338uLL);
@@ -31,9 +31,9 @@
     {
       v7 = v5;
       v8 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v2];
-      v9 = [(BWNodeOutput *)v8 primaryMediaConfiguration];
-      [(BWNodeOutputMediaConfiguration *)v9 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-      [(BWNodeOutputMediaConfiguration *)v9 setPassthroughMode:1];
+      primaryMediaConfiguration2 = [(BWNodeOutput *)v8 primaryMediaConfiguration];
+      [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+      [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setPassthroughMode:1];
       [(BWNode *)v2 addOutput:v8];
       v5 = 0;
       v2->_outputs[v6] = v8;
@@ -62,35 +62,35 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     if (self->_numberOfOutputs)
     {
       v9 = 0;
       do
       {
-        [self->_outputs[v9++] setFormat:a3];
+        [self->_outputs[v9++] setFormat:format];
       }
 
       while (v9 < self->_numberOfOutputs);
     }
   }
 
-  else if ([a5 isEqualToString:0x1F21AAB10])
+  else if ([key isEqualToString:0x1F21AAB10])
   {
-    v10 = [(BWStillImageDisparitySplitterNode *)self disparityOutput];
-    if (!-[BWNodeOutput attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:](v10, "attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:", a5, [a4 index]))
+    disparityOutput = [(BWStillImageDisparitySplitterNode *)self disparityOutput];
+    if (!-[BWNodeOutput attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:](disparityOutput, "attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:", key, [input index]))
     {
-      v11 = [(BWNodeOutput *)v10 mediaPropertiesForAttachedMediaKey:0];
+      v11 = [(BWNodeOutput *)disparityOutput mediaPropertiesForAttachedMediaKey:0];
       if (!v11)
       {
         v11 = objc_alloc_init(BWNodeOutputMediaProperties);
-        [(BWNodeOutput *)v10 _setMediaProperties:v11 forAttachedMediaKey:0];
+        [(BWNodeOutput *)disparityOutput _setMediaProperties:v11 forAttachedMediaKey:0];
       }
 
-      [(BWNodeOutputMediaProperties *)v11 setResolvedFormat:a3];
+      [(BWNodeOutputMediaProperties *)v11 setResolvedFormat:format];
     }
   }
 
@@ -98,11 +98,11 @@
   {
     v12.receiver = self;
     v12.super_class = BWStillImageDisparitySplitterNode;
-    [(BWNode *)&v12 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v12 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_numberOfOutputs)
   {
@@ -116,7 +116,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if (self->_numberOfOutputs)
   {
@@ -130,45 +130,45 @@
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if (self->_numberOfOutputs)
   {
     v6 = 0;
     do
     {
-      [self->_outputs[v6++] emitNodeError:{a3, a4}];
+      [self->_outputs[v6++] emitNodeError:{error, input}];
     }
 
     while (v6 < self->_numberOfOutputs);
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_numberOfOutputs)
   {
     v6 = 0;
     do
     {
-      [self->_outputs[v6++] emitDroppedSample:{a3, a4}];
+      [self->_outputs[v6++] emitDroppedSample:{sample, input}];
     }
 
     while (v6 < self->_numberOfOutputs);
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (a3)
+  if (buffer)
   {
-    v6 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
-    v7 = [v6 captureType];
-    v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v6 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
+    captureType = [v6 captureType];
+    v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     v9 = [v8 objectForKeyedSubscript:*off_1E798A830];
     v10 = [v8 objectForKeyedSubscript:*off_1E798B1B8];
-    v11 = CMGetAttachment(a3, @"HasUnreliableBracketingMetadata", 0);
-    v12 = [CMGetAttachment(a3 @"StillImageProcessingFlags"];
+    v11 = CMGetAttachment(buffer, @"HasUnreliableBracketingMetadata", 0);
+    v12 = [CMGetAttachment(buffer @"StillImageProcessingFlags"];
     v13 = [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
     if ((v12 & 0x400) != 0)
     {
@@ -180,9 +180,9 @@
       v14 = v13;
     }
 
-    v15 = [v11 BOOLValue];
-    v16 = v15;
-    if (v7 == 3)
+    bOOLValue = [v11 BOOLValue];
+    v16 = bOOLValue;
+    if (captureType == 3)
     {
       v18 = v9 && ([v9 doubleValue], v17 == 0.0) && objc_msgSend(v10, "intValue") > 0;
     }
@@ -194,34 +194,34 @@
 
     else
     {
-      v18 = (v7 == 10) & ~v15 & ~v14;
+      v18 = (captureType == 10) & ~bOOLValue & ~v14;
     }
 
-    v19 = [v6 captureFlags];
-    v21 = v7 != 3 && v7 != 10;
-    if ((v19 & 0x20000) == 0)
+    captureFlags = [v6 captureFlags];
+    v21 = captureType != 3 && captureType != 10;
+    if ((captureFlags & 0x20000) == 0)
     {
       v21 = 1;
     }
 
     if (((v21 | v14) & 1) == 0)
     {
-      MEMORY[0x1EEE9AC00](v19);
+      MEMORY[0x1EEE9AC00](captureFlags);
       outputs = &v29;
       if ((v27 & ~v16 | v18))
       {
-        v28 = [(BWStillImageDisparitySplitterNode *)self disparityOutput];
+        disparityOutput = [(BWStillImageDisparitySplitterNode *)self disparityOutput];
       }
 
       else
       {
-        v28 = [(BWStillImageDisparitySplitterNode *)self processedOutput];
+        disparityOutput = [(BWStillImageDisparitySplitterNode *)self processedOutput];
       }
 
       v24 = 0;
-      v29 = v28;
+      v29 = disparityOutput;
 LABEL_36:
-      [outputs[v24] emitSampleBuffer:{a3, v29}];
+      [outputs[v24] emitSampleBuffer:{buffer, v29}];
       return;
     }
 
@@ -238,7 +238,7 @@ LABEL_36:
           do
           {
             sampleBufferOut = 0;
-            BWCMSampleBufferCreateCopyIncludingMetadata(a3, &sampleBufferOut);
+            BWCMSampleBufferCreateCopyIncludingMetadata(buffer, &sampleBufferOut);
             v26 = outputs[v25];
             if (v26 != [(BWStillImageDisparitySplitterNode *)self disparityOutput])
             {

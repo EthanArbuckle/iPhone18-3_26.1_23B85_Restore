@@ -1,12 +1,12 @@
 @interface ARRemoteSensor
-- (ARRemoteSensor)initWithListenerEndpoint:(id)a3;
-- (ARRemoteSensor)initWithServerConnection:(id)a3;
-- (ARRemoteSensor)initWithServiceName:(id)a3;
+- (ARRemoteSensor)initWithListenerEndpoint:(id)endpoint;
+- (ARRemoteSensor)initWithServerConnection:(id)connection;
+- (ARRemoteSensor)initWithServiceName:(id)name;
 - (ARSensorDelegate)delegate;
 - (unint64_t)providedDataTypes;
 - (void)dealloc;
-- (void)sensorDidFailWithError:(id)a3;
-- (void)sensorDidOutputSensorData:(id)a3;
+- (void)sensorDidFailWithError:(id)error;
+- (void)sensorDidOutputSensorData:(id)data;
 - (void)sensorDidPause;
 - (void)sensorDidRestart;
 - (void)sensorDidStart;
@@ -16,25 +16,25 @@
 
 @implementation ARRemoteSensor
 
-- (ARRemoteSensor)initWithListenerEndpoint:(id)a3
+- (ARRemoteSensor)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [[ARServerConnection alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[ARServerConnection alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = [(ARRemoteSensor *)self initWithServerConnection:v5];
   return v6;
 }
 
-- (ARRemoteSensor)initWithServerConnection:(id)a3
+- (ARRemoteSensor)initWithServerConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = ARRemoteSensor;
   v6 = [(ARRemoteSensor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverConnection, a3);
+    objc_storeStrong(&v6->_serverConnection, connection);
     [(ARServerConnection *)v7->_serverConnection setDelegate:v7];
     v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4276460];
     [(ARServerConnection *)v7->_serverConnection setExportedInterface:v8];
@@ -49,10 +49,10 @@
   return v7;
 }
 
-- (ARRemoteSensor)initWithServiceName:(id)a3
+- (ARRemoteSensor)initWithServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [[ARServerConnection alloc] initWithServiceName:v4];
+  nameCopy = name;
+  v5 = [[ARServerConnection alloc] initWithServiceName:nameCopy];
 
   v6 = [(ARRemoteSensor *)self initWithServerConnection:v5];
   return v6;
@@ -69,7 +69,7 @@
     *buf = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -78,53 +78,53 @@
   [(ARRemoteSensor *)&v6 dealloc];
 }
 
-- (void)sensorDidFailWithError:(id)a3
+- (void)sensorDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ARRemoteSensor *)self delegate];
-  [v5 sensor:self didFailWithError:v4];
+  errorCopy = error;
+  delegate = [(ARRemoteSensor *)self delegate];
+  [delegate sensor:self didFailWithError:errorCopy];
 }
 
-- (void)sensorDidOutputSensorData:(id)a3
+- (void)sensorDidOutputSensorData:(id)data
 {
-  v4 = a3;
-  v5 = [(ARRemoteSensor *)self delegate];
-  [v5 sensor:self didOutputSensorData:v4];
+  dataCopy = data;
+  delegate = [(ARRemoteSensor *)self delegate];
+  [delegate sensor:self didOutputSensorData:dataCopy];
 }
 
 - (void)sensorDidPause
 {
-  v3 = [(ARRemoteSensor *)self delegate];
+  delegate = [(ARRemoteSensor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ARRemoteSensor *)self delegate];
-    [v5 sensorDidPause:self];
+    delegate2 = [(ARRemoteSensor *)self delegate];
+    [delegate2 sensorDidPause:self];
   }
 }
 
 - (void)sensorDidRestart
 {
-  v3 = [(ARRemoteSensor *)self delegate];
+  delegate = [(ARRemoteSensor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ARRemoteSensor *)self delegate];
-    [v5 sensorDidRestart:self];
+    delegate2 = [(ARRemoteSensor *)self delegate];
+    [delegate2 sensorDidRestart:self];
   }
 }
 
 - (void)sensorDidStart
 {
-  v3 = [(ARRemoteSensor *)self delegate];
+  delegate = [(ARRemoteSensor *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ARRemoteSensor *)self delegate];
-    [v5 sensorDidStart:self];
+    delegate2 = [(ARRemoteSensor *)self delegate];
+    [delegate2 sensorDidStart:self];
   }
 }
 

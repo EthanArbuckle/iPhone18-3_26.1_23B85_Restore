@@ -1,7 +1,7 @@
 @interface _CDInteractionStoreNotificationReceiver
 - (_CDInteractionStoreNotificationReceiver)init;
 - (void)dealloc;
-- (void)postPackedMechanisms:(unint64_t)a3;
+- (void)postPackedMechanisms:(unint64_t)mechanisms;
 @end
 
 @implementation _CDInteractionStoreNotificationReceiver
@@ -15,9 +15,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     v8 = *(v2 + 2);
     *(v2 + 2) = v7;
 
@@ -50,86 +50,86 @@
   [(_CDInteractionStoreNotificationReceiver *)&v4 dealloc];
 }
 
-- (void)postPackedMechanisms:(unint64_t)a3
+- (void)postPackedMechanisms:(unint64_t)mechanisms
 {
-  v3 = a3;
+  mechanismsCopy = mechanisms;
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
-  if ((v3 & 0x10000) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = array;
+  if ((mechanismsCopy & 0x10000) != 0)
   {
-    [v5 addObject:&unk_1F05EED18];
+    [array addObject:&unk_1F05EED18];
   }
 
-  if ((v3 & 2) != 0)
+  if ((mechanismsCopy & 2) != 0)
   {
     [v6 addObject:&unk_1F05EED30];
   }
 
-  if ((v3 & 4) != 0)
+  if ((mechanismsCopy & 4) != 0)
   {
     [v6 addObject:&unk_1F05EED48];
   }
 
-  if ((v3 & 8) != 0)
+  if ((mechanismsCopy & 8) != 0)
   {
     [v6 addObject:&unk_1F05EED60];
   }
 
-  if ((v3 & 0x10) != 0)
+  if ((mechanismsCopy & 0x10) != 0)
   {
     [v6 addObject:&unk_1F05EED78];
   }
 
-  if ((v3 & 0x20) != 0)
+  if ((mechanismsCopy & 0x20) != 0)
   {
     [v6 addObject:&unk_1F05EED90];
   }
 
-  if ((v3 & 0x40) != 0)
+  if ((mechanismsCopy & 0x40) != 0)
   {
     [v6 addObject:&unk_1F05EEDA8];
   }
 
-  if ((v3 & 0x80) != 0)
+  if ((mechanismsCopy & 0x80) != 0)
   {
     [v6 addObject:&unk_1F05EEDC0];
   }
 
-  if ((v3 & 0x100) != 0)
+  if ((mechanismsCopy & 0x100) != 0)
   {
     [v6 addObject:&unk_1F05EEDD8];
   }
 
-  if ((v3 & 0x200) != 0)
+  if ((mechanismsCopy & 0x200) != 0)
   {
     [v6 addObject:&unk_1F05EEDF0];
   }
 
-  if ((v3 & 0x400) != 0)
+  if ((mechanismsCopy & 0x400) != 0)
   {
     [v6 addObject:&unk_1F05EEE08];
   }
 
-  if ((v3 & 0x800) != 0)
+  if ((mechanismsCopy & 0x800) != 0)
   {
     [v6 addObject:&unk_1F05EEE20];
   }
 
-  if ((v3 & 0x20000) != 0)
+  if ((mechanismsCopy & 0x20000) != 0)
   {
     [v6 addObject:&unk_1F05EEE38];
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = @"kPSStoreChangedMechanismsKey";
   v11[0] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v7 postNotificationName:@"PSStoreChangedNotification" object:0 userInfo:v8];
+  [defaultCenter postNotificationName:@"PSStoreChangedNotification" object:0 userInfo:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 }
 

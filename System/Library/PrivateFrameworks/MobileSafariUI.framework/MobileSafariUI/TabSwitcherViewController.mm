@@ -1,69 +1,69 @@
 @interface TabSwitcherViewController
-- (BOOL)_canAddItemOnPage:(id)a3;
-- (BOOL)_itemWithIdentifier:(id)a3 matchesSearchQuery:(id)a4;
-- (BOOL)_switchToItemToActivateAnimated:(BOOL)a3;
-- (BOOL)_validateDismissalToPage:(id)a3;
+- (BOOL)_canAddItemOnPage:(id)page;
+- (BOOL)_itemWithIdentifier:(id)identifier matchesSearchQuery:(id)query;
+- (BOOL)_switchToItemToActivateAnimated:(BOOL)animated;
+- (BOOL)_validateDismissalToPage:(id)page;
 - (CGRect)capsuleReferenceFrame;
-- (CGRect)frameForItemLinkedToCapsuleAtIndex:(int64_t)a3;
+- (CGRect)frameForItemLinkedToCapsuleAtIndex:(int64_t)index;
 - (CGSize)snapshotSizeForSuggestedSize:(CGSize)result;
 - (CollectionViewTabIndexProviding)capsuleIndexProvider;
-- (TabSwitcherViewController)initWithTabController:(id)a3;
+- (TabSwitcherViewController)initWithTabController:(id)controller;
 - (TabSwitcherViewControllerContaining)container;
 - (TabThumbnailCollectionViewDelegate)delegate;
 - (UIEdgeInsets)browserContentInsets;
 - (WBTabGroup)visibleTabGroup;
 - (id)_activeTab;
-- (id)_borrowCapsuleViewForItem:(id)a3;
-- (id)_defaultTabToSelectOnPage:(id)a3;
-- (id)_dragItemsForItem:(id)a3;
-- (id)_dropDestinationForSession:(id)a3 proposedDestination:(id)a4;
+- (id)_borrowCapsuleViewForItem:(id)item;
+- (id)_defaultTabToSelectOnPage:(id)page;
+- (id)_dragItemsForItem:(id)item;
+- (id)_dropDestinationForSession:(id)session proposedDestination:(id)destination;
 - (id)_itemForActiveTab;
-- (id)_itemForTab:(id)a3;
+- (id)_itemForTab:(id)tab;
 - (id)_makeContent;
 - (id)_manageTabGroupsMenu;
-- (id)_menuElementsForPage:(id)a3 withSuggestedActions:(id)a4;
-- (id)_menuForTabGroup:(id)a3 withSuggestedActions:(id)a4;
-- (id)_tabForItem:(id)a3;
-- (id)_tabGroupForPage:(id)a3;
+- (id)_menuElementsForPage:(id)page withSuggestedActions:(id)actions;
+- (id)_menuForTabGroup:(id)group withSuggestedActions:(id)actions;
+- (id)_tabForItem:(id)item;
+- (id)_tabGroupForPage:(id)page;
 - (id)_tabGroups;
-- (id)_tabsForItems:(id)a3;
-- (id)_titleForTab:(id)a3;
+- (id)_tabsForItems:(id)items;
+- (id)_titleForTab:(id)tab;
 - (int64_t)presentationState;
-- (void)_addItemOnPage:(id)a3;
-- (void)_addPage:(id)a3;
+- (void)_addItemOnPage:(id)page;
+- (void)_addPage:(id)page;
 - (void)_applyContent;
-- (void)_closeItems:(id)a3 action:(id)a4;
-- (void)_didScrollToPage:(id)a3;
+- (void)_closeItems:(id)items action:(id)action;
+- (void)_didScrollToPage:(id)page;
 - (void)_dismiss;
-- (void)_dismissToPage:(id)a3;
-- (void)_isInSteadyStateDidChange:(BOOL)a3;
-- (void)_moveSections:(id)a3 toPage:(id)a4;
-- (void)_performDropWithIntent:(id)a3;
-- (void)_performIgnoringContentUpdates:(id)a3;
-- (void)_presentTabGroupPickerSheet:(id)a3;
-- (void)_selectTabWithUUID:(id)a3;
-- (void)_setItems:(id)a3 arePinned:(BOOL)a4;
-- (void)_setTitle:(id)a3 forPage:(id)a4;
-- (void)_updateShareConfigurationForPage:(id)a3;
-- (void)animateSwitchingToItemAtIndex:(int64_t)a3;
+- (void)_dismissToPage:(id)page;
+- (void)_isInSteadyStateDidChange:(BOOL)change;
+- (void)_moveSections:(id)sections toPage:(id)page;
+- (void)_performDropWithIntent:(id)intent;
+- (void)_performIgnoringContentUpdates:(id)updates;
+- (void)_presentTabGroupPickerSheet:(id)sheet;
+- (void)_selectTabWithUUID:(id)d;
+- (void)_setItems:(id)items arePinned:(BOOL)pinned;
+- (void)_setTitle:(id)title forPage:(id)page;
+- (void)_updateShareConfigurationForPage:(id)page;
+- (void)animateSwitchingToItemAtIndex:(int64_t)index;
 - (void)applyContentIfNeeded;
 - (void)detachCapsuleForActiveTab;
 - (void)didCancelDismissal;
 - (void)didCompleteLaunch;
 - (void)didDismiss;
 - (void)didPresent;
-- (void)dismissAnimated:(BOOL)a3;
-- (void)dismissForUnlockingAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
+- (void)dismissForUnlockingAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)presentAnimated:(BOOL)a3;
-- (void)scrollToTabGroup:(id)a3;
-- (void)setDismissesOnUnlock:(BOOL)a3;
-- (void)setNeedsApplyContentAnimated:(BOOL)a3;
-- (void)setNeedsApplyContentWithAnimationSettings:(id)a3;
-- (void)setNeedsScrollToTabGroup:(id)a3;
+- (void)presentAnimated:(BOOL)animated;
+- (void)scrollToTabGroup:(id)group;
+- (void)setDismissesOnUnlock:(BOOL)unlock;
+- (void)setNeedsApplyContentAnimated:(BOOL)animated;
+- (void)setNeedsApplyContentWithAnimationSettings:(id)settings;
+- (void)setNeedsScrollToTabGroup:(id)group;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willDismiss;
 - (void)willPresent;
 @end
@@ -76,12 +76,12 @@
   v5.super_class = TabSwitcherViewController;
   [(TabSwitcherViewController *)&v5 loadView];
   [(TabSwitcherViewController *)self addChildViewController:self->_tabSwitcher];
-  v3 = [(TabSwitcherViewController *)self view];
-  v4 = [(SFTabSwitcher *)self->_tabSwitcher view];
-  [v3 addSubview:v4];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
+  view = [(TabSwitcherViewController *)self view];
+  view2 = [(SFTabSwitcher *)self->_tabSwitcher view];
+  [view addSubview:view2];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   [(SFTabSwitcher *)self->_tabSwitcher didMoveToParentViewController:self];
 }
 
@@ -319,8 +319,8 @@
   v5.super_class = TabSwitcherViewController;
   [(TabSwitcherViewController *)&v5 viewWillLayoutSubviews];
   WeakRetained = objc_loadWeakRetained(&self->_container);
-  v4 = [WeakRetained transitionViewForReducedMotion];
-  [(SFTabSwitcher *)self->_tabSwitcher setTransitionViewForReducedMotion:v4];
+  transitionViewForReducedMotion = [WeakRetained transitionViewForReducedMotion];
+  [(SFTabSwitcher *)self->_tabSwitcher setTransitionViewForReducedMotion:transitionViewForReducedMotion];
 
   [(TabSwitcherViewController *)self applyContentIfNeeded];
 }
@@ -369,8 +369,8 @@ uint64_t __40__TabSwitcherViewController_viewDidLoad__block_invoke_4(uint64_t a1
       [(TabSwitcherViewController *)self _applyContent];
     }
 
-    v3 = [(SFTabSwitcher *)self->_tabSwitcher visiblePage];
-    [(TabSwitcherViewController *)self _dismissToPage:v3];
+    visiblePage = [(SFTabSwitcher *)self->_tabSwitcher visiblePage];
+    [(TabSwitcherViewController *)self _dismissToPage:visiblePage];
   }
 }
 
@@ -449,17 +449,17 @@ void __42__TabSwitcherViewController__applyContent__block_invoke(uint64_t a1)
   v3 = objc_alloc_init(MEMORY[0x277D28DD8]);
   if ([(TabController *)self->_tabController hasMultipleProfiles])
   {
-    v4 = [(TabController *)self->_tabController activeProfile];
+    activeProfile = [(TabController *)self->_tabController activeProfile];
     v5 = objc_alloc(MEMORY[0x277D28E08]);
-    v6 = [v4 title];
-    v7 = [v5 initWithTitle:v6];
+    title = [activeProfile title];
+    v7 = [v5 initWithTitle:title];
 
-    v8 = [v4 symbolImage];
-    [v7 setImage:v8];
+    symbolImage = [activeProfile symbolImage];
+    [v7 setImage:symbolImage];
 
     v9 = MEMORY[0x277D75348];
-    v10 = [v4 color];
-    v11 = [v9 safari_colorWithWBSNamedColorOption:v10];
+    color = [activeProfile color];
+    v11 = [v9 safari_colorWithWBSNamedColorOption:color];
     [v7 setTintColor:v11];
   }
 
@@ -468,37 +468,37 @@ void __42__TabSwitcherViewController__applyContent__block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  v12 = [(TabSwitcherViewController *)self _tabGroups];
+  _tabGroups = [(TabSwitcherViewController *)self _tabGroups];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __41__TabSwitcherViewController__makeContent__block_invoke;
   v20 = &unk_2781DC170;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   v13 = v7;
-  v14 = [v12 safari_mapAndFilterObjectsUsingBlock:&v17];
+  v14 = [_tabGroups safari_mapAndFilterObjectsUsingBlock:&v17];
   [v3 setPages:{v14, v17, v18, v19, v20}];
 
   [v3 setProfileForInsertedPages:v13];
-  v15 = [(TabSwitcherViewController *)self _itemForActiveTab];
-  [v3 setSelectedItem:v15];
+  _itemForActiveTab = [(TabSwitcherViewController *)self _itemForActiveTab];
+  [v3 setSelectedItem:_itemForActiveTab];
 
   return v3;
 }
 
 - (id)_tabGroups
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TabController *)self->_tabController privateTabGroupIfAvailable];
-  [v3 safari_addObjectUnlessNil:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  privateTabGroupIfAvailable = [(TabController *)self->_tabController privateTabGroupIfAvailable];
+  [array safari_addObjectUnlessNil:privateTabGroupIfAvailable];
 
-  v5 = [(TabController *)self->_tabController unnamedTabGroup];
-  [v3 safari_addObjectUnlessNil:v5];
+  unnamedTabGroup = [(TabController *)self->_tabController unnamedTabGroup];
+  [array safari_addObjectUnlessNil:unnamedTabGroup];
 
-  v6 = [(TabController *)self->_tabController namedTabGroups];
-  [v3 addObjectsFromArray:v6];
+  namedTabGroups = [(TabController *)self->_tabController namedTabGroups];
+  [array addObjectsFromArray:namedTabGroups];
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
@@ -644,10 +644,10 @@ void __41__TabSwitcherViewController__makeContent__block_invoke_3(uint64_t a1)
 
 - (id)_itemForActiveTab
 {
-  v3 = [(TabSwitcherViewController *)self _activeTab];
-  if (v3)
+  _activeTab = [(TabSwitcherViewController *)self _activeTab];
+  if (_activeTab)
   {
-    v4 = [(TabSwitcherViewController *)self _itemForTab:v3];
+    v4 = [(TabSwitcherViewController *)self _itemForTab:_activeTab];
   }
 
   else
@@ -660,45 +660,45 @@ void __41__TabSwitcherViewController__makeContent__block_invoke_3(uint64_t a1)
 
 - (id)_activeTab
 {
-  v2 = [(TabController *)self->_tabController activeTabDocument];
-  v3 = [v2 tabGroupTab];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  tabGroupTab = [activeTabDocument tabGroupTab];
 
-  return v3;
+  return tabGroupTab;
 }
 
-- (TabSwitcherViewController)initWithTabController:(id)a3
+- (TabSwitcherViewController)initWithTabController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = TabSwitcherViewController;
   v6 = [(TabSwitcherViewController *)&v23 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277D28F08] settings];
-    v8 = [v5 browserWindowUUID];
-    v6->_dismissesOnUnlock = [v7 tabViewDismissesOnUnlockForWindowWithUUID:v8];
+    settings = [MEMORY[0x277D28F08] settings];
+    browserWindowUUID = [controllerCopy browserWindowUUID];
+    v6->_dismissesOnUnlock = [settings tabViewDismissesOnUnlockForWindowWithUUID:browserWindowUUID];
 
     v9 = [[TabDocumentDropHandler alloc] initWithAlertPresentationViewController:v6];
     dropHandler = v6->_dropHandler;
     v6->_dropHandler = v9;
 
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     presentationObservers = v6->_presentationObservers;
-    v6->_presentationObservers = v11;
+    v6->_presentationObservers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_tabController, a3);
+    objc_storeStrong(&v6->_tabController, controller);
     v13 = objc_alloc(MEMORY[0x277D28DC8]);
-    v14 = [v5 tabCollectionViewProvider];
-    v15 = [v14 iconPool];
-    v16 = [v5 tabCollectionViewProvider];
-    v17 = [v16 snapshotPool];
-    v18 = [v13 initWithTabIconPool:v15 tabSnapshotPool:v17];
+    tabCollectionViewProvider = [controllerCopy tabCollectionViewProvider];
+    iconPool = [tabCollectionViewProvider iconPool];
+    tabCollectionViewProvider2 = [controllerCopy tabCollectionViewProvider];
+    snapshotPool = [tabCollectionViewProvider2 snapshotPool];
+    v18 = [v13 initWithTabIconPool:iconPool tabSnapshotPool:snapshotPool];
     tabSwitcher = v6->_tabSwitcher;
     v6->_tabSwitcher = v18;
 
     [(SFTabSwitcher *)v6->_tabSwitcher setPresentationObserver:v6];
-    v20 = [v5 tabGroupManager];
-    [v20 addTabGroupObserver:v6];
+    tabGroupManager = [controllerCopy tabGroupManager];
+    [tabGroupManager addTabGroupObserver:v6];
 
     v21 = v6;
   }
@@ -1042,11 +1042,11 @@ uint64_t __40__TabSwitcherViewController_viewDidLoad__block_invoke_31(uint64_t a
   return v5;
 }
 
-- (id)_borrowCapsuleViewForItem:(id)a3
+- (id)_borrowCapsuleViewForItem:(id)item
 {
   tabController = self->_tabController;
-  v5 = [a3 identifier];
-  v6 = [(TabController *)tabController tabWithUUID:v5];
+  identifier = [item identifier];
+  v6 = [(TabController *)tabController tabWithUUID:identifier];
 
   if (v6)
   {
@@ -1064,27 +1064,27 @@ uint64_t __40__TabSwitcherViewController_viewDidLoad__block_invoke_31(uint64_t a
 
 - (void)detachCapsuleForActiveTab
 {
-  v3 = [(TabSwitcherViewController *)self _itemForActiveTab];
-  if (v3)
+  _itemForActiveTab = [(TabSwitcherViewController *)self _itemForActiveTab];
+  if (_itemForActiveTab)
   {
-    v4 = v3;
-    [(SFTabSwitcher *)self->_tabSwitcher detachBorrowedCapsuleForItem:v3];
-    v3 = v4;
+    v4 = _itemForActiveTab;
+    [(SFTabSwitcher *)self->_tabSwitcher detachBorrowedCapsuleForItem:_itemForActiveTab];
+    _itemForActiveTab = v4;
   }
 }
 
-- (void)setNeedsApplyContentAnimated:(BOOL)a3
+- (void)setNeedsApplyContentAnimated:(BOOL)animated
 {
   animated = self->_updateInfo.animated;
-  if (a3 && !self->_updateInfo.animated)
+  if (animated && !self->_updateInfo.animated)
   {
     animated = self->_hasCompletedLaunch;
   }
 
   self->_updateInfo.animated = animated;
   [(TabSwitcherViewController *)self _setNeedsApplyContent];
-  v5 = [(TabSwitcherViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(TabSwitcherViewController *)self view];
+  [view setNeedsLayout];
 
   objc_initWeak(&location, self);
   v6 = *MEMORY[0x277D76620];
@@ -1109,31 +1109,31 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
   }
 }
 
-- (void)setNeedsApplyContentWithAnimationSettings:(id)a3
+- (void)setNeedsApplyContentWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(TabSwitcherViewController *)self setNeedsApplyContentAnimated:1];
   animationSettings = self->_updateInfo.animationSettings;
-  self->_updateInfo.animationSettings = v4;
+  self->_updateInfo.animationSettings = settingsCopy;
 }
 
-- (id)_itemForTab:(id)a3
+- (id)_itemForTab:(id)tab
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tabCopy = tab;
   v5 = objc_alloc(MEMORY[0x277CCAD78]);
-  v6 = [v4 uuid];
-  v7 = [v5 initWithUUIDString:v6];
+  uuid = [tabCopy uuid];
+  v7 = [v5 initWithUUIDString:uuid];
 
   if (v7)
   {
-    v8 = [(TabController *)self->_tabController tabDocumentWithUUID:v7];
+    uuid2 = [(TabController *)self->_tabController tabDocumentWithUUID:v7];
     v9 = [objc_alloc(MEMORY[0x277D28DE8]) initWithIdentifier:v7];
-    [v9 setCanBeClosed:{-[TabController canCloseWBTab:](self->_tabController, "canCloseWBTab:", v4)}];
-    [v9 setCanBeCopied:{objc_msgSend(v4, "hasLinkToCopy")}];
-    [v9 setCanBePinned:{-[TabController isTabPinnable:](self->_tabController, "isTabPinnable:", v4)}];
-    [v9 setIsInteractivelyInserted:{objc_msgSend(v8, "isInteractivelyInserted")}];
-    [v9 setMediaStateIcon:{objc_msgSend(v8, "mediaStateIcon")}];
+    [v9 setCanBeClosed:{-[TabController canCloseWBTab:](self->_tabController, "canCloseWBTab:", tabCopy)}];
+    [v9 setCanBeCopied:{objc_msgSend(tabCopy, "hasLinkToCopy")}];
+    [v9 setCanBePinned:{-[TabController isTabPinnable:](self->_tabController, "isTabPinnable:", tabCopy)}];
+    [v9 setIsInteractivelyInserted:{objc_msgSend(uuid2, "isInteractivelyInserted")}];
+    [v9 setMediaStateIcon:{objc_msgSend(uuid2, "mediaStateIcon")}];
     objc_initWeak(location, self);
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
@@ -1145,10 +1145,10 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
     [v9 setSearchPredicate:&v26];
     v11 = [(TabController *)self->_tabController tabWithUUID:v10, v26, v27, v28, v29];
     [v9 setIsUnread:{objc_msgSend(v11, "isUnread")}];
-    v12 = [v11 shareParticipants];
-    [v9 setShareParticipants:v12];
+    shareParticipants = [v11 shareParticipants];
+    [v9 setShareParticipants:shareParticipants];
 
-    v13 = [(TabSwitcherViewController *)self _titleForTab:v4];
+    v13 = [(TabSwitcherViewController *)self _titleForTab:tabCopy];
     [v9 setTitle:v13];
 
     objc_destroyWeak(&v31);
@@ -1157,10 +1157,10 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
 
   else
   {
-    v8 = [v4 uuid];
-    if (v8)
+    uuid2 = [tabCopy uuid];
+    if (uuid2)
     {
-      v14 = [(TabController *)self->_tabController tabGroupRelatedToTabWithUUID:v8];
+      v14 = [(TabController *)self->_tabController tabGroupRelatedToTabWithUUID:uuid2];
     }
 
     else
@@ -1172,7 +1172,7 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
       v17 = v15;
-      if ([v4 isInUnnamedTabGroup])
+      if ([tabCopy isInUnnamedTabGroup])
       {
         v18 = @"YES";
       }
@@ -1183,7 +1183,7 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
       }
 
       v19 = v18;
-      if ([v4 isPinned])
+      if ([tabCopy isPinned])
       {
         v20 = @"YES";
       }
@@ -1194,7 +1194,7 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
       }
 
       v21 = v20;
-      if ([v4 isPrivateBrowsing])
+      if ([tabCopy isPrivateBrowsing])
       {
         v22 = @"YES";
       }
@@ -1205,10 +1205,10 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
       }
 
       v23 = v22;
-      v24 = [v14 profileIdentifier];
-      v25 = [v14 uuid];
+      profileIdentifier = [v14 profileIdentifier];
+      uuid3 = [v14 uuid];
       *location = 138544642;
-      *&location[4] = v8;
+      *&location[4] = uuid2;
       v33 = 2114;
       v34 = v19;
       v35 = 2114;
@@ -1216,9 +1216,9 @@ void __58__TabSwitcherViewController_setNeedsApplyContentAnimated___block_invoke
       v37 = 2114;
       v38 = v23;
       v39 = 2114;
-      v40 = v24;
+      v40 = profileIdentifier;
       v41 = 2114;
-      v42 = v25;
+      v42 = uuid3;
       _os_log_fault_impl(&dword_215819000, v17, OS_LOG_TYPE_FAULT, "Unexpectedly found tab with invalid UUID %{public}@. inUnnamedGroup = %{public}@; pinned = %{public}@; private = %{public}@; profileIdentifier = %{public}@; tabGroupUUID = %{public}@", location, 0x3Eu);
     }
 
@@ -1253,52 +1253,52 @@ id __41__TabSwitcherViewController__makeContent__block_invoke_2(uint64_t a1, voi
   return v6;
 }
 
-- (void)_performIgnoringContentUpdates:(id)a3
+- (void)_performIgnoringContentUpdates:(id)updates
 {
   p_updateInfo = &self->_updateInfo;
   ++self->_updateInfo.ignoreCount;
-  (*(a3 + 2))(a3, a2);
+  (*(updates + 2))(updates, a2);
   --p_updateInfo->ignoreCount;
 }
 
-- (id)_titleForTab:(id)a3
+- (id)_titleForTab:(id)tab
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v4 length];
+  tabCopy = tab;
+  title = [tabCopy title];
+  v5 = [title length];
 
   if (v5)
   {
-    v6 = [v3 title];
+    title2 = [tabCopy title];
   }
 
   else
   {
-    v7 = [v3 url];
+    v7 = [tabCopy url];
 
-    v3 = [v7 absoluteString];
+    tabCopy = [v7 absoluteString];
 
-    if ([v3 length])
+    if ([tabCopy length])
     {
-      [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:URLSimplificationOptionsForTabTitle forDisplayOnly:1 simplifiedStringOffset:0];
+      [tabCopy safari_simplifiedUserVisibleURLStringWithSimplifications:URLSimplificationOptionsForTabTitle forDisplayOnly:1 simplifiedStringOffset:0];
     }
 
     else
     {
       _WBSLocalizedString();
     }
-    v6 = ;
+    title2 = ;
   }
 
-  v8 = v6;
+  v8 = title2;
 
   return v8;
 }
 
-- (id)_dragItemsForItem:(id)a3
+- (id)_dragItemsForItem:(id)item
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [(TabSwitcherViewController *)self _tabForItem:a3];
+  v4 = [(TabSwitcherViewController *)self _tabForItem:item];
   if (v4)
   {
     v5 = [(TabController *)self->_tabController dragItemForTab:v4 tabItem:0];
@@ -1314,31 +1314,31 @@ id __41__TabSwitcherViewController__makeContent__block_invoke_2(uint64_t a1, voi
   return v6;
 }
 
-- (id)_dropDestinationForSession:(id)a3 proposedDestination:(id)a4
+- (id)_dropDestinationForSession:(id)session proposedDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if ([v8 isPinned])
+  sessionCopy = session;
+  destinationCopy = destination;
+  section = [destinationCopy section];
+  if ([section isPinned])
   {
-    v9 = [TabDocumentDropHandler canPinAllItemsInSession:v6];
+    v9 = [TabDocumentDropHandler canPinAllItemsInSession:sessionCopy];
 
     if (!v9)
     {
-      v10 = [v7 page];
-      v11 = [(TabSwitcherViewController *)self _tabGroupForPage:v10];
+      page = [destinationCopy page];
+      v11 = [(TabSwitcherViewController *)self _tabGroupForPage:page];
 
       v12 = objc_alloc(MEMORY[0x277D28E18]);
-      v13 = [v7 section];
-      v14 = [v13 identifier];
-      v15 = [v12 initWithIdentifier:v14];
+      section2 = [destinationCopy section];
+      identifier = [section2 identifier];
+      v15 = [v12 initWithIdentifier:identifier];
 
-      v16 = [v11 firstUnpinnedTab];
-      v17 = [(TabSwitcherViewController *)self _itemForTab:v16];
+      firstUnpinnedTab = [v11 firstUnpinnedTab];
+      v17 = [(TabSwitcherViewController *)self _itemForTab:firstUnpinnedTab];
 
       v18 = objc_alloc(MEMORY[0x277D28DE0]);
-      v19 = [v7 page];
-      v20 = [v18 initWithPage:v19 section:v15 droppingBefore:v17];
+      page2 = [destinationCopy page];
+      v20 = [v18 initWithPage:page2 section:v15 droppingBefore:v17];
 
       goto LABEL_6;
     }
@@ -1348,33 +1348,33 @@ id __41__TabSwitcherViewController__makeContent__block_invoke_2(uint64_t a1, voi
   {
   }
 
-  v20 = v7;
+  v20 = destinationCopy;
 LABEL_6:
 
   return v20;
 }
 
-- (void)_performDropWithIntent:(id)a3
+- (void)_performDropWithIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 destination];
-  v6 = [v5 page];
-  v7 = [v6 identifier];
-  v8 = [v7 UUIDString];
-  [(TabController *)self->_tabController setActiveTabGroupUUID:v8];
+  intentCopy = intent;
+  destination = [intentCopy destination];
+  page = [destination page];
+  identifier = [page identifier];
+  uUIDString = [identifier UUIDString];
+  [(TabController *)self->_tabController setActiveTabGroupUUID:uUIDString];
 
   dropHandler = self->_dropHandler;
-  v10 = [v4 session];
+  session = [intentCopy session];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__TabSwitcherViewController__performDropWithIntent___block_invoke;
   v13[3] = &unk_2781DC198;
-  v14 = v5;
-  v15 = self;
-  v16 = v4;
-  v11 = v4;
-  v12 = v5;
-  [(TabDocumentDropHandler *)dropHandler dropItemsForSession:v10 withInsertionHandler:v13];
+  v14 = destination;
+  selfCopy = self;
+  v16 = intentCopy;
+  v11 = intentCopy;
+  v12 = destination;
+  [(TabDocumentDropHandler *)dropHandler dropItemsForSession:session withInsertionHandler:v13];
 
   [(TabSwitcherViewController *)self applyContentIfNeeded];
 }
@@ -1419,27 +1419,27 @@ void __52__TabSwitcherViewController__performDropWithIntent___block_invoke(uint6
   v16 = [v14 dropTabsAtIndex:v11 pinned:v5 dropSession:v15 dragItems:v17];
 }
 
-- (void)_addItemOnPage:(id)a3
+- (void)_addItemOnPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v5 = +[Application sharedApplication];
-  if ([v4 isLocked] && objc_msgSend(v5, "isPrivateBrowsingLocked"))
+  if ([pageCopy isLocked] && objc_msgSend(v5, "isPrivateBrowsingLocked"))
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __44__TabSwitcherViewController__addItemOnPage___block_invoke;
     v21[3] = &unk_2781D76C0;
     v21[4] = self;
-    v22 = v4;
+    v22 = pageCopy;
     [v5 authenticateToUnlockPrivateBrowsingWithCompletionHandler:v21];
   }
 
   else
   {
     tabController = self->_tabController;
-    v7 = [v4 identifier];
-    v8 = [v7 UUIDString];
-    v9 = [(TabController *)tabController appendWBTabInTabGroupWithUUID:v8];
+    identifier = [pageCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v9 = [(TabController *)tabController appendWBTabInTabGroupWithUUID:uUIDString];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -1449,15 +1449,15 @@ void __52__TabSwitcherViewController__performDropWithIntent___block_invoke(uint6
     v20 = v9;
     v10 = v9;
     [(TabSwitcherViewController *)self _performIgnoringContentUpdates:v19];
-    v11 = [(TabController *)self->_tabController activeTabDocument];
-    v12 = [v11 webExtensionsController];
-    [v12 didOpenTab:v11];
+    activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+    webExtensionsController = [activeTabDocument webExtensionsController];
+    [webExtensionsController didOpenTab:activeTabDocument];
 
-    [v11 displayNewTabOverridePageIfNecessary];
+    [activeTabDocument displayNewTabOverridePageIfNecessary];
     v13 = [(TabSwitcherViewController *)self _itemForTab:v10];
     v14 = objc_alloc_init(MEMORY[0x277D28E28]);
-    v15 = [MEMORY[0x277D28BB0] tabOverviewScroll];
-    [v14 setAnimationSettings:v15];
+    tabOverviewScroll = [MEMORY[0x277D28BB0] tabOverviewScroll];
+    [v14 setAnimationSettings:tabOverviewScroll];
 
     [v14 setInsertedItemToDismissTo:v13];
     v16 = [MEMORY[0x277D28E10] scrollPositionWithItem:v13];
@@ -1489,27 +1489,27 @@ void __44__TabSwitcherViewController__addItemOnPage___block_invoke_2(uint64_t a1
   [*(*(a1 + 32) + 1112) setActiveTabUUID:v2];
 }
 
-- (void)_addPage:(id)a3
+- (void)_addPage:(id)page
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  pageCopy = page;
+  identifier = [pageCopy identifier];
+  uUIDString = [identifier UUIDString];
 
   v7 = objc_alloc(MEMORY[0x277D7B540]);
-  v8 = [v4 title];
-  v9 = [(TabController *)self->_tabController deviceIdentifier];
-  v10 = [v7 initWithTitle:v8 uuid:v6 deviceIdentifier:v9];
+  title = [pageCopy title];
+  deviceIdentifier = [(TabController *)self->_tabController deviceIdentifier];
+  v10 = [v7 initWithTitle:title uuid:uUIDString deviceIdentifier:deviceIdentifier];
 
-  v11 = [(TabController *)self->_tabController activeProfileIdentifier];
-  [v10 setProfileIdentifier:v11];
+  activeProfileIdentifier = [(TabController *)self->_tabController activeProfileIdentifier];
+  [v10 setProfileIdentifier:activeProfileIdentifier];
 
-  v12 = [(TabSwitcherViewController *)self _tabGroups];
-  v13 = [v12 lastObject];
+  _tabGroups = [(TabSwitcherViewController *)self _tabGroups];
+  lastObject = [_tabGroups lastObject];
 
-  v14 = [(TabController *)self->_tabController tabGroupManager];
-  if ([v13 isNamed])
+  tabGroupManager = [(TabController *)self->_tabController tabGroupManager];
+  if ([lastObject isNamed])
   {
-    v15 = v13;
+    v15 = lastObject;
   }
 
   else
@@ -1517,31 +1517,31 @@ void __44__TabSwitcherViewController__addItemOnPage___block_invoke_2(uint64_t a1
     v15 = 0;
   }
 
-  v16 = [v14 insertTabGroup:v10 afterTabGroup:v15];
+  v16 = [tabGroupManager insertTabGroup:v10 afterTabGroup:v15];
 
-  v17 = [v4 sections];
-  v18 = [v17 count];
+  sections = [pageCopy sections];
+  v18 = [sections count];
 
   if (v18)
   {
-    v19 = [v4 sections];
-    [(TabSwitcherViewController *)self _moveSections:v19 toPage:v4];
+    sections2 = [pageCopy sections];
+    [(TabSwitcherViewController *)self _moveSections:sections2 toPage:pageCopy];
   }
 
   else
   {
-    v19 = [(TabController *)self->_tabController tabGroupManager];
+    sections2 = [(TabController *)self->_tabController tabGroupManager];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __38__TabSwitcherViewController__addPage___block_invoke;
     v21[3] = &unk_2781D97D0;
     v21[4] = self;
-    [v19 updateTabsInTabGroupWithUUID:v6 persist:1 usingBlock:v21];
+    [sections2 updateTabsInTabGroupWithUUID:uUIDString persist:1 usingBlock:v21];
   }
 
-  [(TabSwitcherViewController *)self _updateShareConfigurationForPage:v4];
-  v20 = [v10 uuid];
-  [(TabController *)self->_tabController setActiveTabGroupUUID:v20];
+  [(TabSwitcherViewController *)self _updateShareConfigurationForPage:pageCopy];
+  uuid = [v10 uuid];
+  [(TabController *)self->_tabController setActiveTabGroupUUID:uuid];
 }
 
 void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *a2)
@@ -1557,13 +1557,13 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
   [v4 appendTabs:v7];
 }
 
-- (BOOL)_canAddItemOnPage:(id)a3
+- (BOOL)_canAddItemOnPage:(id)page
 {
-  v4 = a3;
-  v5 = [(TabSwitcherViewController *)self _tabGroupForPage:v4];
+  pageCopy = page;
+  v5 = [(TabSwitcherViewController *)self _tabGroupForPage:pageCopy];
   if (v5)
   {
-    v6 = -[TabController canAddNewTabInTabGroup:withTabCount:](self->_tabController, "canAddNewTabInTabGroup:withTabCount:", v5, [v4 itemCount]);
+    v6 = -[TabController canAddNewTabInTabGroup:withTabCount:](self->_tabController, "canAddNewTabInTabGroup:withTabCount:", v5, [pageCopy itemCount]);
   }
 
   else
@@ -1574,26 +1574,26 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (void)_closeItems:(id)a3 action:(id)a4
+- (void)_closeItems:(id)items action:(id)action
 {
-  v6 = a4;
-  v7 = [a3 allObjects];
-  v8 = [(TabSwitcherViewController *)self _tabsForItems:v7];
+  actionCopy = action;
+  allObjects = [items allObjects];
+  v8 = [(TabSwitcherViewController *)self _tabsForItems:allObjects];
 
-  [(TabController *)self->_tabController closeWBTabs:v8 action:v6];
+  [(TabController *)self->_tabController closeWBTabs:v8 action:actionCopy];
 }
 
-- (void)_moveSections:(id)a3 toPage:(id)a4
+- (void)_moveSections:(id)sections toPage:(id)page
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  sectionsCopy = sections;
+  pageCopy = page;
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = sectionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -1609,9 +1609,9 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v22 + 1) + 8 * v13) items];
-        v15 = [(TabSwitcherViewController *)self _tabsForItems:v14];
-        [v8 addObjectsFromArray:v15];
+        items = [*(*(&v22 + 1) + 8 * v13) items];
+        v15 = [(TabSwitcherViewController *)self _tabsForItems:items];
+        [array addObjectsFromArray:v15];
 
         ++v13;
       }
@@ -1623,45 +1623,45 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
     while (v11);
   }
 
-  v16 = [(TabSwitcherViewController *)self _tabGroupForPage:v7];
+  v16 = [(TabSwitcherViewController *)self _tabGroupForPage:pageCopy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __50__TabSwitcherViewController__moveSections_toPage___block_invoke;
   v19[3] = &unk_2781D58E8;
   v19[4] = self;
-  v20 = v8;
+  v20 = array;
   v21 = v16;
   v17 = v16;
-  v18 = v8;
+  v18 = array;
   [(TabSwitcherViewController *)self _performIgnoringContentUpdates:v19];
   [(TabSwitcherViewController *)self applyContentIfNeeded];
 }
 
-- (void)_setItems:(id)a3 arePinned:(BOOL)a4
+- (void)_setItems:(id)items arePinned:(BOOL)pinned
 {
-  v4 = a4;
+  pinnedCopy = pinned;
   tabController = self->_tabController;
-  v6 = [(TabSwitcherViewController *)self _tabsForItems:a3];
-  [(TabController *)tabController setWBTabs:v6 arePinned:v4];
+  v6 = [(TabSwitcherViewController *)self _tabsForItems:items];
+  [(TabController *)tabController setWBTabs:v6 arePinned:pinnedCopy];
 }
 
-- (void)_setTitle:(id)a3 forPage:(id)a4
+- (void)_setTitle:(id)title forPage:(id)page
 {
   tabController = self->_tabController;
-  v6 = a3;
-  v8 = [a4 identifier];
-  v7 = [v8 UUIDString];
-  [(TabController *)tabController setTitle:v6 forTabGroupWithUUID:v7];
+  titleCopy = title;
+  identifier = [page identifier];
+  uUIDString = [identifier UUIDString];
+  [(TabController *)tabController setTitle:titleCopy forTabGroupWithUUID:uUIDString];
 }
 
-- (BOOL)_itemWithIdentifier:(id)a3 matchesSearchQuery:(id)a4
+- (BOOL)_itemWithIdentifier:(id)identifier matchesSearchQuery:(id)query
 {
-  v6 = a4;
-  v7 = [a3 UUIDString];
-  v8 = [(TabSwitcherViewController *)self _tabWithUUID:v7];
+  queryCopy = query;
+  uUIDString = [identifier UUIDString];
+  v8 = [(TabSwitcherViewController *)self _tabWithUUID:uUIDString];
 
-  v9 = [(TabController *)self->_tabController tabCollectionViewProvider];
-  LOBYTE(self) = [v9 tabItem:v8 matchesSearchText:v6];
+  tabCollectionViewProvider = [(TabController *)self->_tabController tabCollectionViewProvider];
+  LOBYTE(self) = [tabCollectionViewProvider tabItem:v8 matchesSearchText:queryCopy];
 
   return self;
 }
@@ -1686,22 +1686,22 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)setDismissesOnUnlock:(BOOL)a3
+- (void)setDismissesOnUnlock:(BOOL)unlock
 {
-  if (self->_dismissesOnUnlock != a3)
+  if (self->_dismissesOnUnlock != unlock)
   {
-    v4 = a3;
-    self->_dismissesOnUnlock = a3;
-    v7 = [MEMORY[0x277D28F08] settings];
-    v6 = [(TabController *)self->_tabController browserWindowUUID];
-    [v7 setTabViewDismissesOnUnlock:v4 forWindowWithUUID:v6];
+    unlockCopy = unlock;
+    self->_dismissesOnUnlock = unlock;
+    settings = [MEMORY[0x277D28F08] settings];
+    browserWindowUUID = [(TabController *)self->_tabController browserWindowUUID];
+    [settings setTabViewDismissesOnUnlock:unlockCopy forWindowWithUUID:browserWindowUUID];
   }
 }
 
-- (void)dismissForUnlockingAnimated:(BOOL)a3
+- (void)dismissForUnlockingAnimated:(BOOL)animated
 {
   [(TabSwitcherViewController *)self setDismissesOnUnlock:0];
-  if (a3)
+  if (animated)
   {
     v5 = objc_alloc_init(MEMORY[0x277D28E28]);
     [v5 setPrefersDetachedTransition:1];
@@ -1721,20 +1721,20 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)_menuElementsForPage:(id)a3 withSuggestedActions:(id)a4
+- (id)_menuElementsForPage:(id)page withSuggestedActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TabSwitcherViewController *)self _tabGroupForPage:v6];
+  pageCopy = page;
+  actionsCopy = actions;
+  v8 = [(TabSwitcherViewController *)self _tabGroupForPage:pageCopy];
   if (v8)
   {
     v9 = MEMORY[0x277CBEB18];
-    v10 = [(TabSwitcherViewController *)self _manageTabGroupsMenu];
-    v11 = [v9 arrayWithObject:v10];
+    _manageTabGroupsMenu = [(TabSwitcherViewController *)self _manageTabGroupsMenu];
+    v11 = [v9 arrayWithObject:_manageTabGroupsMenu];
 
-    if (([v6 isLocked] & 1) == 0)
+    if (([pageCopy isLocked] & 1) == 0)
     {
-      v12 = [(TabSwitcherViewController *)self _menuForTabGroup:v8 withSuggestedActions:v7];
+      v12 = [(TabSwitcherViewController *)self _menuForTabGroup:v8 withSuggestedActions:actionsCopy];
       [v11 addObject:v12];
     }
   }
@@ -1749,9 +1749,9 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
 
 - (id)_manageTabGroupsMenu
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TabController *)self->_tabController submenuForSwitchingProfiles];
-  [v3 safari_addObjectUnlessNil:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  submenuForSwitchingProfiles = [(TabController *)self->_tabController submenuForSwitchingProfiles];
+  [array safari_addObjectUnlessNil:submenuForSwitchingProfiles];
 
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D750C8];
@@ -1763,12 +1763,12 @@ void __38__TabSwitcherViewController__addPage___block_invoke(uint64_t a1, void *
   v15 = &unk_2781D5B80;
   objc_copyWeak(&v16, &location);
   v8 = [v5 actionWithTitle:v6 image:v7 identifier:0 handler:&v12];
-  [v3 addObject:{v8, v12, v13, v14, v15}];
+  [array addObject:{v8, v12, v13, v14, v15}];
 
-  v9 = [(SFTabSwitcher *)self->_tabSwitcher makeEditAction];
-  [v3 addObject:v9];
+  makeEditAction = [(SFTabSwitcher *)self->_tabSwitcher makeEditAction];
+  [array addObject:makeEditAction];
 
-  v10 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v3];
+  v10 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 
@@ -1782,32 +1782,32 @@ void __49__TabSwitcherViewController__manageTabGroupsMenu__block_invoke(uint64_t
   [WeakRetained _presentTabGroupPickerSheet:v3];
 }
 
-- (id)_menuForTabGroup:(id)a3 withSuggestedActions:(id)a4
+- (id)_menuForTabGroup:(id)group withSuggestedActions:(id)actions
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  [v9 addObjectsFromArray:v7];
+  actionsCopy = actions;
+  groupCopy = group;
+  array = [v6 array];
+  [array addObjectsFromArray:actionsCopy];
 
-  v10 = [TabMenuProvider sortMenuForTabGroup:v8 dataSource:self->_tabController];
-  [v9 safari_addObjectUnlessNil:v10];
+  v10 = [TabMenuProvider sortMenuForTabGroup:groupCopy dataSource:self->_tabController];
+  [array safari_addObjectUnlessNil:v10];
 
-  v11 = [TabMenuProvider copyLinksActionForTabGroup:v8];
-  [v9 safari_addObjectUnlessNil:v11];
+  v11 = [TabMenuProvider copyLinksActionForTabGroup:groupCopy];
+  [array safari_addObjectUnlessNil:v11];
 
-  v12 = [(TabController *)self->_tabController tabMenuProviderDataSource];
-  v13 = [TabMenuProvider bookmarkActionForTabGroup:v8 dataSource:v12];
+  tabMenuProviderDataSource = [(TabController *)self->_tabController tabMenuProviderDataSource];
+  v13 = [TabMenuProvider bookmarkActionForTabGroup:groupCopy dataSource:tabMenuProviderDataSource];
 
-  [v9 safari_addObjectUnlessNil:v13];
-  v14 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v9];
+  [array safari_addObjectUnlessNil:v13];
+  v14 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
 
   return v14;
 }
 
-- (void)_isInSteadyStateDidChange:(BOOL)a3
+- (void)_isInSteadyStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
@@ -1832,7 +1832,7 @@ void __49__TabSwitcherViewController__manageTabGroupsMenu__block_invoke(uint64_t
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 tabCollectionView:self didChangeSteadyState:{v3, v11}];
+          [v10 tabCollectionView:self didChangeSteadyState:{changeCopy, v11}];
         }
 
         ++v9;
@@ -1846,11 +1846,11 @@ void __49__TabSwitcherViewController__manageTabGroupsMenu__block_invoke(uint64_t
   }
 }
 
-- (void)_presentTabGroupPickerSheet:(id)a3
+- (void)_presentTabGroupPickerSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   WeakRetained = objc_loadWeakRetained(&self->_container);
-  v6 = [WeakRetained showTabGroupPicker:v4];
+  v6 = [WeakRetained showTabGroupPicker:sheetCopy];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -1878,18 +1878,18 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
   }
 }
 
-- (void)_dismissToPage:(id)a3
+- (void)_dismissToPage:(id)page
 {
-  v4 = a3;
-  if ([(SFTabSwitcher *)self->_tabSwitcher isVisible]&& [(TabSwitcherViewController *)self _validateDismissalToPage:v4])
+  pageCopy = page;
+  if ([(SFTabSwitcher *)self->_tabSwitcher isVisible]&& [(TabSwitcherViewController *)self _validateDismissalToPage:pageCopy])
   {
-    v5 = [(TabSwitcherViewController *)self _defaultTabToSelectOnPage:v4];
+    v5 = [(TabSwitcherViewController *)self _defaultTabToSelectOnPage:pageCopy];
     v6 = v5;
     if (v5)
     {
       tabController = self->_tabController;
-      v8 = [v5 uuid];
-      LODWORD(tabController) = [(TabController *)tabController isTabWithUUIDBeingHiddenFromTabView:v8];
+      uuid = [v5 uuid];
+      LODWORD(tabController) = [(TabController *)tabController isTabWithUUIDBeingHiddenFromTabView:uuid];
 
       if (tabController)
       {
@@ -1897,8 +1897,8 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
         [(TabSwitcherViewController *)self _applyContent];
       }
 
-      v9 = [v6 uuid];
-      [(TabSwitcherViewController *)self _selectTabWithUUID:v9];
+      uuid2 = [v6 uuid];
+      [(TabSwitcherViewController *)self _selectTabWithUUID:uuid2];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if ((objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained tabCollectionViewCanDismiss:self] & 1) == 0)
@@ -1921,9 +1921,9 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
   }
 }
 
-- (id)_defaultTabToSelectOnPage:(id)a3
+- (id)_defaultTabToSelectOnPage:(id)page
 {
-  v4 = [(TabSwitcherViewController *)self _tabGroupForPage:a3];
+  v4 = [(TabSwitcherViewController *)self _tabGroupForPage:page];
   if (v4)
   {
     v5 = [(TabController *)self->_tabController defaultTabToSelectInTabGroup:v4];
@@ -1937,7 +1937,7 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
   return v5;
 }
 
-- (BOOL)_switchToItemToActivateAnimated:(BOOL)a3
+- (BOOL)_switchToItemToActivateAnimated:(BOOL)animated
 {
   itemToActivate = self->_itemToActivate;
   if (!itemToActivate)
@@ -1945,45 +1945,45 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
     return 0;
   }
 
-  v5 = a3;
+  animatedCopy = animated;
   tabController = self->_tabController;
-  v7 = [(TabCollectionItem *)itemToActivate UUID];
-  v8 = [(TabController *)tabController tabWithUUID:v7];
-  v9 = [v8 wbTab];
+  uUID = [(TabCollectionItem *)itemToActivate UUID];
+  v8 = [(TabController *)tabController tabWithUUID:uUID];
+  wbTab = [v8 wbTab];
 
   v10 = self->_itemToActivate;
   self->_itemToActivate = 0;
 
-  v11 = v9 != 0;
-  if (v9)
+  v11 = wbTab != 0;
+  if (wbTab)
   {
-    if (v5)
+    if (animatedCopy)
     {
       [(TabSwitcherViewController *)self _applyContent];
       tabSwitcher = self->_tabSwitcher;
-      v13 = [(TabSwitcherViewController *)self _itemForTab:v9];
+      v13 = [(TabSwitcherViewController *)self _itemForTab:wbTab];
       [(SFTabSwitcher *)tabSwitcher animateSwitchingToItem:v13];
     }
 
-    v14 = [v9 uuid];
-    [(TabController *)self->_tabController setActiveTabUUID:v14];
+    uuid = [wbTab uuid];
+    [(TabController *)self->_tabController setActiveTabUUID:uuid];
   }
 
   return v11;
 }
 
-- (BOOL)_validateDismissalToPage:(id)a3
+- (BOOL)_validateDismissalToPage:(id)page
 {
-  v3 = [(TabSwitcherViewController *)self _tabGroupForPage:a3];
+  v3 = [(TabSwitcherViewController *)self _tabGroupForPage:page];
   v4 = v3;
   if (v3)
   {
     if ([v3 isPrivateBrowsing])
     {
       v5 = +[Application sharedApplication];
-      v6 = [v5 isPrivateBrowsingLocked];
+      isPrivateBrowsingLocked = [v5 isPrivateBrowsingLocked];
 
-      v7 = v6 ^ 1;
+      v7 = isPrivateBrowsingLocked ^ 1;
     }
 
     else
@@ -2000,14 +2000,14 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
   return v7 & 1;
 }
 
-- (void)_didScrollToPage:(id)a3
+- (void)_didScrollToPage:(id)page
 {
-  v9 = a3;
+  pageCopy = page;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_lastSettledPage, a3);
+    objc_storeStrong(&self->_lastSettledPage, page);
     [(TabController *)self->_tabController persistActiveTabGroupOrTabGroupVisibleInSwitcher];
-    v5 = [(TabSwitcherViewController *)self _tabGroupForPage:v9];
+    v5 = [(TabSwitcherViewController *)self _tabGroupForPage:pageCopy];
     v6 = v5;
     if (v5)
     {
@@ -2016,8 +2016,8 @@ void __57__TabSwitcherViewController__presentTabGroupPickerSheet___block_invoke(
         [(TabSwitcherViewController *)self setDismissesOnUnlock:0];
       }
 
-      v7 = self;
-      if ([(TabSwitcherViewController *)v7 presentationState]== 1)
+      selfCopy = self;
+      if ([(TabSwitcherViewController *)selfCopy presentationState]== 1)
       {
 
 LABEL_8:
@@ -2025,9 +2025,9 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v8 = [(TabSwitcherViewController *)v7 presentationState];
+      presentationState = [(TabSwitcherViewController *)selfCopy presentationState];
 
-      if (v8 == 2)
+      if (presentationState == 2)
       {
         goto LABEL_8;
       }
@@ -2037,26 +2037,26 @@ LABEL_9:
   }
 }
 
-- (void)scrollToTabGroup:(id)a3
+- (void)scrollToTabGroup:(id)group
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
+  groupCopy = group;
   v6 = [v4 alloc];
-  v7 = [v5 uuid];
+  uuid = [groupCopy uuid];
 
-  v9 = [v6 initWithUUIDString:v7];
+  v9 = [v6 initWithUUIDString:uuid];
   v8 = [objc_alloc(MEMORY[0x277D28DF0]) initWithIdentifier:v9];
   [(SFTabSwitcher *)self->_tabSwitcher scrollToPage:v8];
 }
 
-- (void)setNeedsScrollToTabGroup:(id)a3
+- (void)setNeedsScrollToTabGroup:(id)group
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
+  groupCopy = group;
   v6 = [v4 alloc];
-  v7 = [v5 uuid];
+  uuid = [groupCopy uuid];
 
-  v8 = [v6 initWithUUIDString:v7];
+  v8 = [v6 initWithUUIDString:uuid];
   identifierOfPageToScrollTo = self->_updateInfo.identifierOfPageToScrollTo;
   self->_updateInfo.identifierOfPageToScrollTo = v8;
 
@@ -2065,14 +2065,14 @@ LABEL_9:
 
 - (WBTabGroup)visibleTabGroup
 {
-  v3 = [(SFTabSwitcher *)self->_tabSwitcher visiblePage];
-  v4 = [v3 identifier];
+  visiblePage = [(SFTabSwitcher *)self->_tabSwitcher visiblePage];
+  identifier = [visiblePage identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(TabController *)self->_tabController tabGroupManager];
-    v6 = [v4 UUIDString];
-    v7 = [v5 tabGroupWithUUID:v6];
+    tabGroupManager = [(TabController *)self->_tabController tabGroupManager];
+    uUIDString = [identifier UUIDString];
+    v7 = [tabGroupManager tabGroupWithUUID:uUIDString];
   }
 
   else
@@ -2083,9 +2083,9 @@ LABEL_9:
   return v7;
 }
 
-- (void)_updateShareConfigurationForPage:(id)a3
+- (void)_updateShareConfigurationForPage:(id)page
 {
-  v4 = [(TabSwitcherViewController *)self _tabGroupForPage:a3];
+  v4 = [(TabSwitcherViewController *)self _tabGroupForPage:page];
   if (v4)
   {
     v5 = [(TabController *)self->_tabController cachedTabSwitcherShareConfigurationForTabGroup:v4];
@@ -2113,73 +2113,73 @@ uint64_t __62__TabSwitcherViewController__updateShareConfigurationForPage___bloc
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   tabSwitcher = self->_tabSwitcher;
-  v6 = a4;
+  coordinatorCopy = coordinator;
   [(SFTabSwitcher *)tabSwitcher beginAnimatedSizeTransition];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__TabSwitcherViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_2781DC1C0;
   v7[4] = self;
-  [v6 animateAlongsideTransition:0 completion:v7];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v7];
 }
 
-- (void)_selectTabWithUUID:(id)a3
+- (void)_selectTabWithUUID:(id)d
 {
-  objc_storeStrong(&self->_uuidOfTabBeingSelected, a3);
-  v6 = a3;
-  [(TabController *)self->_tabController setActiveTabUUID:v6];
+  objc_storeStrong(&self->_uuidOfTabBeingSelected, d);
+  dCopy = d;
+  [(TabController *)self->_tabController setActiveTabUUID:dCopy];
   uuidOfTabBeingSelected = self->_uuidOfTabBeingSelected;
   self->_uuidOfTabBeingSelected = 0;
 }
 
-- (id)_tabForItem:(id)a3
+- (id)_tabForItem:(id)item
 {
-  v4 = [a3 identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(TabSwitcherViewController *)self _tabWithUUID:v5];
+  identifier = [item identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [(TabSwitcherViewController *)self _tabWithUUID:uUIDString];
 
   return v6;
 }
 
-- (id)_tabGroupForPage:(id)a3
+- (id)_tabGroupForPage:(id)page
 {
   tabController = self->_tabController;
-  v4 = [a3 identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(TabController *)tabController tabGroupWithUUID:v5];
+  identifier = [page identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [(TabController *)tabController tabGroupWithUUID:uUIDString];
 
   return v6;
 }
 
-- (id)_tabsForItems:(id)a3
+- (id)_tabsForItems:(id)items
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__TabSwitcherViewController__tabsForItems___block_invoke;
   v5[3] = &unk_2781DC1E8;
   v5[4] = self;
-  v3 = [a3 safari_mapAndFilterObjectsUsingBlock:v5];
+  v3 = [items safari_mapAndFilterObjectsUsingBlock:v5];
 
   return v3;
 }
 
-- (void)animateSwitchingToItemAtIndex:(int64_t)a3
+- (void)animateSwitchingToItemAtIndex:(int64_t)index
 {
-  v5 = [(TabSwitcherViewController *)self capsuleIndexProvider];
-  v6 = [v5 tabAtCollectionViewIndex:a3];
+  capsuleIndexProvider = [(TabSwitcherViewController *)self capsuleIndexProvider];
+  v6 = [capsuleIndexProvider tabAtCollectionViewIndex:index];
 
-  v7 = [v6 wbTab];
-  v8 = [(TabSwitcherViewController *)self _itemForTab:v7];
+  wbTab = [v6 wbTab];
+  v8 = [(TabSwitcherViewController *)self _itemForTab:wbTab];
 
   if (v8)
   {
     if (UIAccessibilityIsReduceMotionEnabled())
     {
       WeakRetained = objc_loadWeakRetained(&self->_container);
-      v10 = [WeakRetained transitionViewForReducedMotion];
+      transitionViewForReducedMotion = [WeakRetained transitionViewForReducedMotion];
 
       v11 = MEMORY[0x277D75D18];
       v15[0] = MEMORY[0x277D85DD0];
@@ -2188,17 +2188,17 @@ uint64_t __62__TabSwitcherViewController__updateShareConfigurationForPage___bloc
       v15[3] = &unk_2781D58E8;
       v15[4] = self;
       v16 = v6;
-      v17 = v10;
-      v12 = v10;
+      v17 = transitionViewForReducedMotion;
+      v12 = transitionViewForReducedMotion;
       [v11 transitionWithView:v12 duration:5242880 options:v15 animations:0 completion:0.25];
     }
 
     else
     {
       [(SFTabSwitcher *)self->_tabSwitcher animateSwitchingToItem:v8];
-      v13 = [v6 wbTab];
-      v14 = [v13 uuid];
-      [(TabController *)self->_tabController setActiveTabUUID:v14];
+      wbTab2 = [v6 wbTab];
+      uuid = [wbTab2 uuid];
+      [(TabController *)self->_tabController setActiveTabUUID:uuid];
     }
   }
 }
@@ -2228,15 +2228,15 @@ uint64_t __59__TabSwitcherViewController_animateSwitchingToItemAtIndex___block_i
   return [v4 layoutIfNeeded];
 }
 
-- (CGRect)frameForItemLinkedToCapsuleAtIndex:(int64_t)a3
+- (CGRect)frameForItemLinkedToCapsuleAtIndex:(int64_t)index
 {
-  v5 = [(TabSwitcherViewController *)self capsuleIndexProvider];
-  v6 = [v5 tabAtCollectionViewIndex:a3];
+  capsuleIndexProvider = [(TabSwitcherViewController *)self capsuleIndexProvider];
+  v6 = [capsuleIndexProvider tabAtCollectionViewIndex:index];
 
-  v7 = [v6 uuid];
-  if (v7)
+  uuid = [v6 uuid];
+  if (uuid)
   {
-    [(SFTabSwitcher *)self->_tabSwitcher frameForLinkedPanningItemWithIdentifier:v7];
+    [(SFTabSwitcher *)self->_tabSwitcher frameForLinkedPanningItemWithIdentifier:uuid];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -2295,9 +2295,9 @@ uint64_t __59__TabSwitcherViewController_animateSwitchingToItemAtIndex___block_i
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__TabSwitcherViewController_dismissAnimated___block_invoke;
@@ -2305,7 +2305,7 @@ uint64_t __59__TabSwitcherViewController_animateSwitchingToItemAtIndex___block_i
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     (*(v4 + 2))(v4);
   }
@@ -2316,9 +2316,9 @@ uint64_t __59__TabSwitcherViewController_animateSwitchingToItemAtIndex___block_i
   }
 }
 
-- (void)presentAnimated:(BOOL)a3
+- (void)presentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(TabSwitcherViewController *)self _switchToItemToActivateAnimated:?])
   {
     if (self->_updateInfo.needsApplyContent)
@@ -2338,7 +2338,7 @@ uint64_t __59__TabSwitcherViewController_animateSwitchingToItemAtIndex___block_i
     v7[4] = self;
     v5 = _Block_copy(v7);
     v6 = v5;
-    if (v3)
+    if (animatedCopy)
     {
       (*(v5 + 2))(v5);
     }

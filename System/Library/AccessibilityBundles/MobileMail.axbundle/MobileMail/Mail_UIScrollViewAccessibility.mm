@@ -13,8 +13,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(Mail_UIScrollViewAccessibility *)self accessibilityIdentification];
-  v12 = [v11 isEqualToString:@"kAXMailContentViewWebViewIdentifier"];
+  accessibilityIdentification = [(Mail_UIScrollViewAccessibility *)self accessibilityIdentification];
+  v12 = [accessibilityIdentification isEqualToString:@"kAXMailContentViewWebViewIdentifier"];
 
   v13 = 0.0;
   if (!v12)

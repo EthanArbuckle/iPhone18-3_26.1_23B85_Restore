@@ -1,16 +1,16 @@
 @interface UGCNearbyPhotosAvailibility
-+ (id)fetchNearbyAssetsForMapItemCoordinate:(CLLocationCoordinate2D)a3 withOptions:(id)a4;
-+ (void)hasTakenPhotosForMapItem:(id)a3 completion:(id)a4;
-+ (void)numberOfPhotosTakenForMapItem:(id)a3 lastVisitedDate:(id)a4 completion:(id)a5;
++ (id)fetchNearbyAssetsForMapItemCoordinate:(CLLocationCoordinate2D)coordinate withOptions:(id)options;
++ (void)hasTakenPhotosForMapItem:(id)item completion:(id)completion;
++ (void)numberOfPhotosTakenForMapItem:(id)item lastVisitedDate:(id)date completion:(id)completion;
 @end
 
 @implementation UGCNearbyPhotosAvailibility
 
-+ (id)fetchNearbyAssetsForMapItemCoordinate:(CLLocationCoordinate2D)a3 withOptions:(id)a4
++ (id)fetchNearbyAssetsForMapItemCoordinate:(CLLocationCoordinate2D)coordinate withOptions:(id)options
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  optionsCopy = options;
   UInteger = GEOConfigGetUInteger();
   v17.latitude = latitude;
   v17.longitude = longitude;
@@ -21,34 +21,34 @@
   v11 = CLLocationCoordinate2DMake(latitude - latitudeDelta, longitudeDelta + longitude);
   v12 = [[CLLocation alloc] initWithLatitude:v10.latitude longitude:v10.longitude];
   v13 = [[CLLocation alloc] initWithLatitude:v11.latitude longitude:v11.longitude];
-  v14 = [PHAsset fetchAssetsInBoundingBoxWithTopLeftLocation:v12 bottomRightLocation:v13 options:v6];
+  v14 = [PHAsset fetchAssetsInBoundingBoxWithTopLeftLocation:v12 bottomRightLocation:v13 options:optionsCopy];
 
   return v14;
 }
 
-+ (void)hasTakenPhotosForMapItem:(id)a3 completion:(id)a4
++ (void)hasTakenPhotosForMapItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = dispatch_queue_create("com.apple.maps.UGCNearbyPhotosAvailibility", 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100C3191C;
   block[3] = &unk_1016589F8;
-  v12 = v6;
-  v13 = v7;
-  v14 = a1;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = completionCopy;
+  selfCopy = self;
+  v9 = completionCopy;
+  v10 = itemCopy;
   dispatch_async(v8, block);
 }
 
-+ (void)numberOfPhotosTakenForMapItem:(id)a3 lastVisitedDate:(id)a4 completion:(id)a5
++ (void)numberOfPhotosTakenForMapItem:(id)item lastVisitedDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  itemCopy = item;
+  dateCopy = date;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = sub_1007996E8();
     v12 = sub_1007996E8();
@@ -65,10 +65,10 @@
     v15[1] = 3221225472;
     v15[2] = sub_100C31C74;
     v15[3] = &unk_10164E210;
-    v16 = v9;
-    v19 = a1;
-    v17 = v8;
-    v18 = v10;
+    v16 = dateCopy;
+    selfCopy = self;
+    v17 = itemCopy;
+    v18 = completionCopy;
     dispatch_async(v14, v15);
   }
 

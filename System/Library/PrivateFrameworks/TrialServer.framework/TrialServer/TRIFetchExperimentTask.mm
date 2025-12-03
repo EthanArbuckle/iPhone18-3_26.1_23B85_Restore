@@ -1,46 +1,46 @@
 @interface TRIFetchExperimentTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithExperimentDeployment:(id)a3 taskAttributing:(id)a4;
++ (id)parseFromData:(id)data;
++ (id)taskWithExperimentDeployment:(id)deployment taskAttributing:(id)attributing;
 - (NSString)description;
-- (TRIFetchExperimentTask)initWithCoder:(id)a3;
-- (TRIFetchExperimentTask)initWithExperimentDeployment:(id)a3 taskAttributing:(id)a4;
+- (TRIFetchExperimentTask)initWithCoder:(id)coder;
+- (TRIFetchExperimentTask)initWithExperimentDeployment:(id)deployment taskAttributing:(id)attributing;
 - (id)_asPersistedTask;
-- (id)_nextTasksForRunStatus:(int)a3;
+- (id)_nextTasksForRunStatus:(int)status;
 - (id)dimensions;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
-- (void)runDequeueHandlerUsingContext:(id)a3;
-- (void)runEnqueueHandlerUsingContext:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)runDequeueHandlerUsingContext:(id)context;
+- (void)runEnqueueHandlerUsingContext:(id)context;
 @end
 
 @implementation TRIFetchExperimentTask
 
-+ (id)taskWithExperimentDeployment:(id)a3 taskAttributing:(id)a4
++ (id)taskWithExperimentDeployment:(id)deployment taskAttributing:(id)attributing
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TRIFetchExperimentTask alloc] initWithExperimentDeployment:v6 taskAttributing:v5];
+  attributingCopy = attributing;
+  deploymentCopy = deployment;
+  v7 = [[TRIFetchExperimentTask alloc] initWithExperimentDeployment:deploymentCopy taskAttributing:attributingCopy];
 
   return v7;
 }
 
-- (TRIFetchExperimentTask)initWithExperimentDeployment:(id)a3 taskAttributing:(id)a4
+- (TRIFetchExperimentTask)initWithExperimentDeployment:(id)deployment taskAttributing:(id)attributing
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deploymentCopy = deployment;
+  attributingCopy = attributing;
+  if (!deploymentCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
   }
 
-  if ([v7 hasDeploymentId])
+  if ([deploymentCopy hasDeploymentId])
   {
-    if (v8)
+    if (attributingCopy)
     {
       goto LABEL_5;
     }
@@ -48,26 +48,26 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment.hasDeploymentId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment.hasDeploymentId"}];
 
-    if (v8)
+    if (attributingCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"taskAttributing"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"taskAttributing"}];
 
 LABEL_5:
   v16.receiver = self;
   v16.super_class = TRIFetchExperimentTask;
-  v9 = [(TRIExperimentBaseTask *)&v16 initWithExperiment:v7];
+  v9 = [(TRIExperimentBaseTask *)&v16 initWithExperiment:deploymentCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_taskAttributing, a4);
+    objc_storeStrong(&v9->_taskAttributing, attributing);
     trialSystemTelemetry = v10->_trialSystemTelemetry;
     v10->_trialSystemTelemetry = 0;
   }
@@ -75,36 +75,36 @@ LABEL_5:
   return v10;
 }
 
-- (void)runEnqueueHandlerUsingContext:(id)a3
+- (void)runEnqueueHandlerUsingContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v7 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:v5];
+  contextCopy = context;
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  v7 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:experiment];
 
-  v6 = [v4 contentTracker];
+  contentTracker = [contextCopy contentTracker];
 
-  [v6 addRefWithContentIdentifier:v7];
+  [contentTracker addRefWithContentIdentifier:v7];
 }
 
-- (void)runDequeueHandlerUsingContext:(id)a3
+- (void)runDequeueHandlerUsingContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v6 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:v5];
+  contextCopy = context;
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  v6 = [TRIContentTracker contentIdentifierForExperimentArtifactWithDeployment:experiment];
 
-  v7 = [v4 contentTracker];
+  contentTracker = [contextCopy contentTracker];
 
-  LOBYTE(v4) = [v7 dropRefWithContentIdentifier:v6];
-  if ((v4 & 1) == 0)
+  LOBYTE(contextCopy) = [contentTracker dropRefWithContentIdentifier:v6];
+  if ((contextCopy & 1) == 0)
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(TRIExperimentBaseTask *)self experiment];
-      v11 = [v10 shortDesc];
+      experiment2 = [(TRIExperimentBaseTask *)self experiment];
+      shortDesc = [experiment2 shortDesc];
       v12 = 138543362;
-      v13 = v11;
+      v13 = shortDesc;
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Failed to drop reference on artifact for experiment %{public}@", &v12, 0xCu);
     }
   }
@@ -112,15 +112,15 @@ LABEL_5:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nextTasksForRunStatus:(int)a3
+- (id)_nextTasksForRunStatus:(int)status
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 3)
+  if (status == 3)
   {
-    v4 = [(TRIExperimentBaseTask *)self experiment];
-    v5 = [v4 experimentId];
-    v6 = [(TRIExperimentBaseTask *)self experiment];
-    v7 = +[TRIDeactivateTreatmentTask taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:](TRIDeactivateTreatmentTask, "taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:", v5, [v6 deploymentId], 0, 3, self->_taskAttributing);
+    experiment = [(TRIExperimentBaseTask *)self experiment];
+    experimentId = [experiment experimentId];
+    experiment2 = [(TRIExperimentBaseTask *)self experiment];
+    v7 = +[TRIDeactivateTreatmentTask taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:](TRIDeactivateTreatmentTask, "taskWithExperimentId:deploymentId:failOnUnrecognizedExperiment:triggerEvent:taskAttribution:", experimentId, [experiment2 deploymentId], 0, 3, self->_taskAttributing);
     v11[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   }
@@ -135,67 +135,67 @@ LABEL_5:
   return v8;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v97 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v56 = a4;
-  if (![TRIUserAdjustableSettings getExperimentOptOut:v6])
+  contextCopy = context;
+  queueCopy = queue;
+  if (![TRIUserAdjustableSettings getExperimentOptOut:contextCopy])
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v50 = os_transaction_create();
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v42 = objc_opt_class();
-      v43 = [(TRIExperimentBaseTask *)v9 experiment];
-      v44 = [v43 shortDesc];
+      experiment = [(TRIExperimentBaseTask *)selfCopy experiment];
+      shortDesc = [experiment shortDesc];
       *buf = 138412546;
       *&buf[4] = v42;
       *&buf[12] = 2114;
-      *&buf[14] = v44;
+      *&buf[14] = shortDesc;
       _os_log_debug_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEBUG, "starting %@ with experiment %{public}@", buf, 0x16u);
     }
 
-    v11 = [v6 experimentDatabase];
-    v12 = [(TRIExperimentBaseTask *)v9 experiment];
-    v55 = [v11 experimentRecordWithExperimentDeployment:v12];
+    experimentDatabase = [contextCopy experimentDatabase];
+    experiment2 = [(TRIExperimentBaseTask *)selfCopy experiment];
+    v55 = [experimentDatabase experimentRecordWithExperimentDeployment:experiment2];
 
     if (v55)
     {
-      v52 = [v55 artifact];
+      artifact = [v55 artifact];
     }
 
     else
     {
-      v52 = 0;
+      artifact = 0;
     }
 
-    v13 = [v6 keyValueStore];
-    v54 = [TRIFetchDateManager managerWithKeyValueStore:v13];
+    keyValueStore = [contextCopy keyValueStore];
+    v54 = [TRIFetchDateManager managerWithKeyValueStore:keyValueStore];
 
-    v14 = [v6 namespaceDatabase];
-    v15 = [v6 paths];
-    v16 = [v15 namespaceDescriptorsDefaultDir];
-    v53 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v14 defaultDescriptorDirectoryPath:v16];
+    namespaceDatabase = [contextCopy namespaceDatabase];
+    paths = [contextCopy paths];
+    namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+    v53 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-    v17 = [(TRITaskAttributing *)v9->_taskAttributing triCloudKitContainer];
-    v18 = [(TRITaskAttributing *)v9->_taskAttributing teamIdentifier];
-    v19 = [(TRITaskAttributing *)v9->_taskAttributing applicationBundleIdentifier];
-    v51 = [TRICKNativeArtifactProvider providerForContainer:v17 teamId:v18 bundleId:v19 dateProvider:v54 namespaceDescriptorProvider:v53 serverContext:v6];
+    triCloudKitContainer = [(TRITaskAttributing *)selfCopy->_taskAttributing triCloudKitContainer];
+    teamIdentifier = [(TRITaskAttributing *)selfCopy->_taskAttributing teamIdentifier];
+    applicationBundleIdentifier = [(TRITaskAttributing *)selfCopy->_taskAttributing applicationBundleIdentifier];
+    v51 = [TRICKNativeArtifactProvider providerForContainer:triCloudKitContainer teamId:teamIdentifier bundleId:applicationBundleIdentifier dateProvider:v54 namespaceDescriptorProvider:v53 serverContext:contextCopy];
 
-    v20 = [(TRITaskAttributing *)v9->_taskAttributing networkOptions];
-    if ([v20 allowsCellularAccess])
+    networkOptions = [(TRITaskAttributing *)selfCopy->_taskAttributing networkOptions];
+    if ([networkOptions allowsCellularAccess])
     {
-      v21 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(v20, "allowsCellularAccess")}];
-      [(TRIExperimentBaseTask *)v9 addMetric:v21];
+      v21 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(networkOptions, "allowsCellularAccess")}];
+      [(TRIExperimentBaseTask *)selfCopy addMetric:v21];
     }
 
-    if ([v20 discretionaryBehavior])
+    if ([networkOptions discretionaryBehavior])
     {
-      v22 = [(TRIBaseTask *)v9 stateProvider];
-      v23 = [v22 activeActivityGrantingCapability:{objc_msgSend(v20, "requiredCapability")}];
+      stateProvider = [(TRIBaseTask *)selfCopy stateProvider];
+      v23 = [stateProvider activeActivityGrantingCapability:{objc_msgSend(networkOptions, "requiredCapability")}];
 
       if (!v23)
       {
@@ -210,10 +210,10 @@ LABEL_5:
         goto LABEL_33;
       }
 
-      [v20 setActivity:v23];
+      [networkOptions setActivity:v23];
     }
 
-    v24 = [[TRIFetchOptions alloc] initWithDownloadOptions:v20 cacheDeleteAvailableSpaceClass:&unk_287FC4CC0];
+    v24 = [[TRIFetchOptions alloc] initWithDownloadOptions:networkOptions cacheDeleteAvailableSpaceClass:&unk_287FC4CC0];
     v25 = dispatch_semaphore_create(0);
     v82 = 0;
     v83 = &v82;
@@ -237,7 +237,7 @@ LABEL_5:
     v73 = __Block_byref_object_copy__47;
     v74 = __Block_byref_object_dispose__47;
     v75 = 0;
-    v26 = [(TRIExperimentBaseTask *)v9 experiment];
+    experiment3 = [(TRIExperimentBaseTask *)selfCopy experiment];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __56__TRIFetchExperimentTask_runUsingContext_withTaskQueue___block_invoke;
@@ -246,20 +246,20 @@ LABEL_5:
     v67 = buf;
     v68 = &v76;
     v69 = &v70;
-    v62 = v52;
-    v63 = v9;
-    v64 = v6;
+    v62 = artifact;
+    v63 = selfCopy;
+    v64 = contextCopy;
     v27 = v25;
     v65 = v27;
-    [v51 fetchExperimentWithExperimentDeployment:v26 options:v24 completion:v61];
+    [v51 fetchExperimentWithExperimentDeployment:experiment3 options:v24 completion:v61];
 
     dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
     v28 = TRILogCategory_Server();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
       v45 = objc_opt_class();
-      v46 = [(TRIExperimentBaseTask *)v9 experiment];
-      v47 = [v46 shortDesc];
+      experiment4 = [(TRIExperimentBaseTask *)selfCopy experiment];
+      shortDesc2 = [experiment4 shortDesc];
       v48 = *(v83 + 6);
       if (v48 >= 5)
       {
@@ -274,26 +274,26 @@ LABEL_5:
       *v87 = 138412802;
       v88 = v45;
       v89 = 2114;
-      v90 = v47;
+      v90 = shortDesc2;
       v91 = 2114;
       v92 = v49;
       _os_log_debug_impl(&dword_26F567000, v28, OS_LOG_TYPE_DEBUG, "finished %@ with experiment %{public}@ - %{public}@", v87, 0x20u);
     }
 
-    trialSystemTelemetry = v9->_trialSystemTelemetry;
+    trialSystemTelemetry = selfCopy->_trialSystemTelemetry;
     if (!trialSystemTelemetry)
     {
       v30 = objc_opt_new();
-      v31 = v9->_trialSystemTelemetry;
-      v9->_trialSystemTelemetry = v30;
+      v31 = selfCopy->_trialSystemTelemetry;
+      selfCopy->_trialSystemTelemetry = v30;
 
-      trialSystemTelemetry = v9->_trialSystemTelemetry;
+      trialSystemTelemetry = selfCopy->_trialSystemTelemetry;
     }
 
     [(TRITrialSystemTelemetry *)trialSystemTelemetry setClientDeploymentEnv:v71[5]];
     if (v77[5])
     {
-      v9->wasDeferred = [TRICKNativeArtifactProvider isActivityDeferralError:?];
+      selfCopy->wasDeferred = [TRICKNativeArtifactProvider isActivityDeferralError:?];
       v32 = TRIFetchErrorParseToMetrics(v77[5]);
       if ([v32 count])
       {
@@ -315,7 +315,7 @@ LABEL_5:
                 objc_enumerationMutation(v33);
               }
 
-              [(TRIExperimentBaseTask *)v9 addMetric:*(*(&v57 + 1) + 8 * i)];
+              [(TRIExperimentBaseTask *)selfCopy addMetric:*(*(&v57 + 1) + 8 * i)];
             }
 
             v34 = [v33 countByEnumeratingWithState:&v57 objects:v86 count:16];
@@ -327,7 +327,7 @@ LABEL_5:
     }
 
     v37 = *(v83 + 6);
-    v38 = [(TRIFetchExperimentTask *)v9 _nextTasksForRunStatus:v37];
+    v38 = [(TRIFetchExperimentTask *)selfCopy _nextTasksForRunStatus:v37];
     v8 = [TRITaskRunResult resultWithRunStatus:v37 reportResultToServer:0 nextTasks:v38 earliestRetryDate:0];
 
     _Block_object_dispose(&v70, 8);
@@ -337,7 +337,7 @@ LABEL_5:
     _Block_object_dispose(&v82, 8);
 
 LABEL_33:
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_34;
   }
@@ -596,15 +596,15 @@ LABEL_34:
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRIExperimentBaseTask *)self experiment];
-  v5 = [v4 experimentId];
-  [v3 setExperimentId:v5];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  experimentId = [experiment experimentId];
+  [v3 setExperimentId:experimentId];
 
-  v6 = [(TRIExperimentBaseTask *)self experiment];
-  [v3 setDeploymentId:{objc_msgSend(v6, "deploymentId")}];
+  experiment2 = [(TRIExperimentBaseTask *)self experiment];
+  [v3 setDeploymentId:{objc_msgSend(experiment2, "deploymentId")}];
 
-  v7 = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v7];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttributing asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   [v3 setRetryCount:{-[TRIFetchExperimentTask retryCount](self, "retryCount")}];
 
@@ -613,25 +613,25 @@ LABEL_34:
 
 - (id)serialize
 {
-  v4 = [(TRIFetchExperimentTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIFetchExperimentTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:267 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:267 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v31 = *MEMORY[0x277D85DE8];
   v28 = 0;
-  v3 = [(TRIPBMessage *)TRIFetchExperimentPersistedTask parseFromData:a3 error:&v28];
+  v3 = [(TRIPBMessage *)TRIFetchExperimentPersistedTask parseFromData:data error:&v28];
   v4 = v28;
   if (!v3)
   {
@@ -679,8 +679,8 @@ LABEL_12:
     goto LABEL_23;
   }
 
-  v5 = [v3 experimentId];
-  v6 = [v5 length];
+  experimentId = [v3 experimentId];
+  v6 = [experimentId length];
 
   if (!v6)
   {
@@ -748,27 +748,27 @@ LABEL_23:
     goto LABEL_12;
   }
 
-  v7 = [v3 taskAttribution];
-  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v7];
+  taskAttribution = [v3 taskAttribution];
+  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D736C0]);
-    v10 = [v3 experimentId];
-    v11 = [v9 initWithExperimentId:v10 deploymentId:{objc_msgSend(v3, "deploymentId")}];
+    experimentId2 = [v3 experimentId];
+    v11 = [v9 initWithExperimentId:experimentId2 deploymentId:{objc_msgSend(v3, "deploymentId")}];
 
     v12 = [objc_opt_class() taskWithExperimentDeployment:v11 taskAttributing:v8];
     if ([v3 hasRetryCount])
     {
-      v13 = [v3 retryCount];
+      retryCount = [v3 retryCount];
     }
 
     else
     {
-      v13 = 0;
+      retryCount = 0;
     }
 
-    [v12 setRetryCount:v13];
+    [v12 setRetryCount:retryCount];
   }
 
   else
@@ -791,17 +791,17 @@ LABEL_26:
 
 - (unint64_t)requiredCapabilities
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
-  v4 = [v3 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttributing networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
 
   if ([(TRIFetchExperimentTask *)self retryCount])
   {
-    return v4 | 4;
+    return requiredCapability | 4;
   }
 
   else
   {
-    return v4;
+    return requiredCapability;
   }
 }
 
@@ -809,9 +809,9 @@ LABEL_26:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRIExperimentBaseTask *)self experiment];
-  v6 = [v5 shortDesc];
-  v7 = [v3 stringWithFormat:@"<%@:%@, r:%d>", v4, v6, -[TRIFetchExperimentTask retryCount](self, "retryCount")];
+  experiment = [(TRIExperimentBaseTask *)self experiment];
+  shortDesc = [experiment shortDesc];
+  v7 = [v3 stringWithFormat:@"<%@:%@, r:%d>", v4, shortDesc, -[TRIFetchExperimentTask retryCount](self, "retryCount")];
 
   return v7;
 }
@@ -820,56 +820,56 @@ LABEL_26:
 {
   v4.receiver = self;
   v4.super_class = TRIFetchExperimentTask;
-  v2 = [(TRIExperimentBaseTask *)&v4 metrics];
+  metrics = [(TRIExperimentBaseTask *)&v4 metrics];
 
-  return v2;
+  return metrics;
 }
 
 - (id)dimensions
 {
   v4.receiver = self;
   v4.super_class = TRIFetchExperimentTask;
-  v2 = [(TRIExperimentBaseTask *)&v4 dimensions];
+  dimensions = [(TRIExperimentBaseTask *)&v4 dimensions];
 
-  return v2;
+  return dimensions;
 }
 
 - (id)trialSystemTelemetry
 {
   v7.receiver = self;
   v7.super_class = TRIFetchExperimentTask;
-  v3 = [(TRIExperimentBaseTask *)&v7 trialSystemTelemetry];
-  if (!v3)
+  trialSystemTelemetry = [(TRIExperimentBaseTask *)&v7 trialSystemTelemetry];
+  if (!trialSystemTelemetry)
   {
-    v3 = objc_opt_new();
+    trialSystemTelemetry = objc_opt_new();
   }
 
-  v4 = [(TRITaskAttributing *)self->_taskAttributing teamIdentifier];
-  [v3 setClientTeamId:v4];
+  teamIdentifier = [(TRITaskAttributing *)self->_taskAttributing teamIdentifier];
+  [trialSystemTelemetry setClientTeamId:teamIdentifier];
 
   if (self->_trialSystemTelemetry)
   {
-    [v3 mergeFrom:?];
+    [trialSystemTelemetry mergeFrom:?];
   }
 
-  if (([v3 hasContainerOriginFields] & 1) == 0)
+  if (([trialSystemTelemetry hasContainerOriginFields] & 1) == 0)
   {
     v5 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:self->_taskAttributing];
-    [v3 mergeFrom:v5];
+    [trialSystemTelemetry mergeFrom:v5];
   }
 
-  return v3;
+  return trialSystemTelemetry;
 }
 
-- (TRIFetchExperimentTask)initWithCoder:(id)a3
+- (TRIFetchExperimentTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIFetchExperimentTask;
   v5 = [(TRIFetchExperimentTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -889,18 +889,18 @@ LABEL_26:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:343 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchExperimentTask.m" lineNumber:343 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIFetchExperimentTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIFetchExperimentTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

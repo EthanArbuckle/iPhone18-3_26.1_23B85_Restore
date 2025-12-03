@@ -1,20 +1,20 @@
 @interface BMSource
-- (BMSource)initWithIdentifier:(id)a3;
+- (BMSource)initWithIdentifier:(id)identifier;
 - (id)description;
-- (void)sendEvent:(id)a3 date:(id)a4;
+- (void)sendEvent:(id)event date:(id)date;
 @end
 
 @implementation BMSource
 
-- (BMSource)initWithIdentifier:(id)a3
+- (BMSource)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BMSource;
   v5 = [(BMSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -22,11 +22,11 @@
   return v5;
 }
 
-- (void)sendEvent:(id)a3 date:(id)a4
+- (void)sendEvent:(id)event date:(id)date
 {
-  v6 = a3;
-  [a4 timeIntervalSinceReferenceDate];
-  [(BMSource *)self sendEvent:v6 timestamp:?];
+  eventCopy = event;
+  [date timeIntervalSinceReferenceDate];
+  [(BMSource *)self sendEvent:eventCopy timestamp:?];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = BMSource;
   v4 = [(BMSource *)&v8 description];
-  v5 = [(BMSource *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  identifier = [(BMSource *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   return v6;
 }

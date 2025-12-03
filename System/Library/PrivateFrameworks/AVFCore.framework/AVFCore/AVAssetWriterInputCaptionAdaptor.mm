@@ -11,14 +11,14 @@
 
 + (AVAssetWriterInputCaptionAdaptor)assetWriterInputCaptionAdaptorWithAssetWriterInput:(AVAssetWriterInput *)input
 {
-  v3 = [[a1 alloc] initWithAssetWriterInput:input];
+  v3 = [[self alloc] initWithAssetWriterInput:input];
 
   return v3;
 }
 
 - (AVAssetWriterInputCaptionAdaptor)init
 {
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D920];
   v7 = NSStringFromSelector(sel_initWithAssetWriterInput_);
@@ -151,11 +151,11 @@ LABEL_15:
   {
     v19 = [objc_msgSend(v28 "userInfo")];
     v20 = MEMORY[0x1E695DF30];
-    v21 = [v19 name];
-    v22 = [v19 reason];
-    v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot append caption: %@", v23, v24, v25, v26, v27, v22);
+    name = [v19 name];
+    reason = [v19 reason];
+    v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot append caption: %@", v23, v24, v25, v26, v27, reason);
     v17 = v20;
-    v18 = v21;
+    v18 = name;
 LABEL_16:
     objc_exception_throw([v17 exceptionWithName:v18 reason:v16 userInfo:0]);
   }
@@ -210,11 +210,11 @@ LABEL_15:
   {
     v19 = [objc_msgSend(v28 "userInfo")];
     v20 = MEMORY[0x1E695DF30];
-    v21 = [v19 name];
-    v22 = [v19 reason];
-    v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot append caption group: %@", v23, v24, v25, v26, v27, v22);
+    name = [v19 name];
+    reason = [v19 reason];
+    v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot append caption group: %@", v23, v24, v25, v26, v27, reason);
     v17 = v20;
-    v18 = v21;
+    v18 = name;
 LABEL_16:
     objc_exception_throw([v17 exceptionWithName:v18 reason:v16 userInfo:0]);
   }

@@ -1,6 +1,6 @@
 @interface JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_$1
 - (BOOL)hasNext;
-- (JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_$1)initWithJavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet:(id)a3;
+- (JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_$1)initWithJavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet:(id)set;
 - (id)next;
 - (void)dealloc;
 @end
@@ -26,16 +26,16 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilIterator *)iterator next];
+  next = [(JavaUtilIterator *)iterator next];
   v4 = [JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_UnmodifiableMapEntry alloc];
-  JreStrongAssign(&v4->mapEntry_, v3);
+  JreStrongAssign(&v4->mapEntry_, next);
 
   return v4;
 }
 
-- (JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_$1)initWithJavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet:(id)a3
+- (JavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet_$1)initWithJavaUtilCollections_UnmodifiableMap_UnmodifiableEntrySet:(id)set
 {
-  v4 = *(a3 + 1);
+  v4 = *(set + 1);
   if (!v4)
   {
     JreThrowNullPointerException();

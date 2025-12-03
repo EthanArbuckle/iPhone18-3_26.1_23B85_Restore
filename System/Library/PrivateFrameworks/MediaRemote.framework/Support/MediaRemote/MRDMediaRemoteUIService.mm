@@ -1,41 +1,41 @@
 @interface MRDMediaRemoteUIService
 - (BOOL)isValid;
-- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)a3 configuration:(id)a4 endpoint:(id)a5;
-- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)a3 configurationData:(id)a4 endpoint:(id)a5;
+- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)identifier configuration:(id)configuration endpoint:(id)endpoint;
+- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)identifier configurationData:(id)data endpoint:(id)endpoint;
 - (void)_createRemoteAlertHandleIfNeeded;
 - (void)dealloc;
-- (void)presentWithCompletion:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentWithCompletion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation MRDMediaRemoteUIService
 
-- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)a3 configuration:(id)a4 endpoint:(id)a5
+- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)identifier configuration:(id)configuration endpoint:(id)endpoint
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [NSKeyedArchiver archivedDataWithRootObject:a4 requiringSecureCoding:1 error:0];
-  v11 = [(MRDMediaRemoteUIService *)self initWithClientBundleIdentifier:v9 configurationData:v10 endpoint:v8];
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
+  v10 = [NSKeyedArchiver archivedDataWithRootObject:configuration requiringSecureCoding:1 error:0];
+  v11 = [(MRDMediaRemoteUIService *)self initWithClientBundleIdentifier:identifierCopy configurationData:v10 endpoint:endpointCopy];
 
   return v11;
 }
 
-- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)a3 configurationData:(id)a4 endpoint:(id)a5
+- (MRDMediaRemoteUIService)initWithClientBundleIdentifier:(id)identifier configurationData:(id)data endpoint:(id)endpoint
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  endpointCopy = endpoint;
   v15.receiver = self;
   v15.super_class = MRDMediaRemoteUIService;
   v12 = [(MRDMediaRemoteUIService *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configurationData, a4);
-    objc_storeStrong(&v13->_endpoint, a5);
-    objc_storeStrong(&v13->_clientBundleIdentifier, a3);
+    objc_storeStrong(&v12->_configurationData, data);
+    objc_storeStrong(&v13->_endpoint, endpoint);
+    objc_storeStrong(&v13->_clientBundleIdentifier, identifier);
     v13->_lock._os_unfair_lock_opaque = 0;
     [(MRDMediaRemoteUIService *)v13 _createRemoteAlertHandleIfNeeded];
   }
@@ -48,11 +48,11 @@
   v3 = _MRLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+    clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
     *buf = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = clientBundleIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDMediaRemoteUIService] <%p|%{public}@> dealloc", buf, 0x16u);
   }
 
@@ -69,16 +69,16 @@
 - (BOOL)isValid
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(SBSRemoteAlertHandle *)self->_remoteAlertHandle isValid];
+  isValid = [(SBSRemoteAlertHandle *)self->_remoteAlertHandle isValid];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return isValid;
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MRDMediaRemoteUIService *)self isActivated];
+  isActivated = [(MRDMediaRemoteUIService *)self isActivated];
   v6 = objc_retainBlock(self->_completion);
   if (v6)
   {
@@ -86,11 +86,11 @@
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+      clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
       v18 = 134218242;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2114;
-      v21 = v8;
+      v21 = clientBundleIdentifier;
       v9 = "[MRDMediaRemoteUIService] <%p|%{public}@> presentWithCompletion - dropping because we are already activating";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v9, &v18, 0x16u);
@@ -101,36 +101,36 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = objc_retainBlock(v4);
+  v10 = objc_retainBlock(completionCopy);
   completion = self->_completion;
   self->_completion = v10;
 
   [(MRDMediaRemoteUIService *)self _createRemoteAlertHandleIfNeeded];
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (isActivated)
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+      clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
       v18 = 134218242;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2114;
-      v21 = v8;
+      v21 = clientBundleIdentifier;
       v9 = "[MRDMediaRemoteUIService] <%p|%{public}@> presentWithCompletion - dropping because we are already activated";
       goto LABEL_7;
     }
 
 LABEL_8:
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_9;
   }
 
   v12 = objc_alloc_init(SBSRemoteAlertActivationContext);
-  v13 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
-  v14 = [v13 lowercaseString];
-  v15 = [v14 isEqualToString:@"com.apple.siri"];
+  clientBundleIdentifier2 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+  lowercaseString = [clientBundleIdentifier2 lowercaseString];
+  v15 = [lowercaseString isEqualToString:@"com.apple.siri"];
 
   if (v15)
   {
@@ -140,11 +140,11 @@ LABEL_8:
   v16 = _MRLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+    clientBundleIdentifier3 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
     v18 = 134218242;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2114;
-    v21 = v17;
+    v21 = clientBundleIdentifier3;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDMediaRemoteUIService] <%p|%{public}@> presentWithCompletion - activating", &v18, 0x16u);
   }
 
@@ -152,16 +152,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+    clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v5;
+    v11 = clientBundleIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDMediaRemoteUIService] <%p|%{public}@> remoteAlertHandleDidActivate", &v8, 0x16u);
   }
 
@@ -178,16 +178,16 @@ LABEL_9:
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+    clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v5;
+    v10 = clientBundleIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[MRDMediaRemoteUIService] <%p|%{public}@> remoteAlertHandleDidDeactivate", &v7, 0x16u);
   }
 
@@ -200,19 +200,19 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+    clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v7;
+    v14 = clientBundleIdentifier;
     v15 = 2112;
-    v16 = v5;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDMediaRemoteUIService] <%p|%{public}@> remoteAlertHandleDidInvalidate - error: %@", &v11, 0x20u);
   }
 
@@ -228,7 +228,7 @@ LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
   if (v9)
   {
-    v9[2](v9, v5);
+    v9[2](v9, errorCopy);
   }
 }
 
@@ -240,11 +240,11 @@ LABEL_9:
     v4 = _MRLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
+      clientBundleIdentifier = [(MRDMediaRemoteUIService *)self clientBundleIdentifier];
       v12 = 134218754;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v5;
+      v15 = clientBundleIdentifier;
       v16 = 2114;
       v17 = @"com.apple.MediaRemoteUIService";
       v18 = 2114;

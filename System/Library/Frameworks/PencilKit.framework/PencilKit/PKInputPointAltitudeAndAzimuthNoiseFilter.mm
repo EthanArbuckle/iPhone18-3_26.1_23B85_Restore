@@ -1,6 +1,6 @@
 @interface PKInputPointAltitudeAndAzimuthNoiseFilter
 - (void)_recalculateOffsets;
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 - (void)resetFilter;
 @end
 
@@ -37,7 +37,7 @@
   [(PKInputPointAltitudeAndAzimuthNoiseFilter *)self _recalculateOffsets];
 }
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -45,7 +45,7 @@
     v5 = 1.0;
     if (self->_noiseIsHeightBased)
     {
-      v5 = a3->var6 / 12.0;
+      v5 = point->var6 / 12.0;
     }
 
     v6 = v5 * self->_azimuthJitterNoise;
@@ -54,7 +54,7 @@
       v15 = 0;
       v16 = v6;
       v17 = 0;
-      v7 = a3->var2 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(&v15, &self->generator.__x_, &v15) * 0.0174532925 + self->currentAzimuthOffsetValue * v5;
+      v7 = point->var2 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(&v15, &self->generator.__x_, &v15) * 0.0174532925 + self->currentAzimuthOffsetValue * v5;
       v8 = fmod(v7, 6.28318531);
       if (v7 <= 6.28318531 && v7 >= 0.0)
       {
@@ -71,7 +71,7 @@
         v8 = 0.0;
       }
 
-      a3->var2 = v8;
+      point->var2 = v8;
     }
 
     v10 = v5 * self->_altitudeJitterNoise;
@@ -80,7 +80,7 @@
       v15 = 0;
       v16 = v10;
       v17 = 0;
-      v11 = a3->var3 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(&v15, &self->generator.__x_, &v15) * 0.0174532925 + self->currentAltitudeOffsetValue * v5;
+      v11 = point->var3 + std::normal_distribution<double>::operator()<std::linear_congruential_engine<unsigned int,48271u,0u,2147483647u>>(&v15, &self->generator.__x_, &v15) * 0.0174532925 + self->currentAltitudeOffsetValue * v5;
       v12 = fmod(v11, 6.28318531);
       v13 = 0.0;
       if (v11 <= 6.28318531 && v11 >= 0.0)
@@ -107,10 +107,10 @@
         }
       }
 
-      a3->var3 = v13;
+      point->var3 = v13;
     }
 
-    memmove(&self->super._filteredPoint, a3, 0x88uLL);
+    memmove(&self->super._filteredPoint, point, 0x88uLL);
   }
 }
 

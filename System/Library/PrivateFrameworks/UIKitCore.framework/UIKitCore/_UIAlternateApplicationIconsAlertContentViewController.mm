@@ -1,70 +1,70 @@
 @interface _UIAlternateApplicationIconsAlertContentViewController
 - (NSString)messageText;
-- (void)__updateWithVisualStyle:(id)a3;
-- (void)_containingAlertControllerDidChangeVisualStyle:(id)a3;
+- (void)__updateWithVisualStyle:(id)style;
+- (void)_containingAlertControllerDidChangeVisualStyle:(id)style;
 - (void)_updateWithContainingAlertControllerVisualStyle;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)setMessageText:(id)a3;
+- (void)setMessageText:(id)text;
 @end
 
 @implementation _UIAlternateApplicationIconsAlertContentViewController
 
 - (NSString)messageText
 {
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   messageLabel = self->_messageLabel;
 
   return [(UILabel *)messageLabel text];
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v5 = a3;
-  v4 = [(UIViewController *)self view];
-  [(UILabel *)self->_messageLabel setText:v5];
+  textCopy = text;
+  view = [(UIViewController *)self view];
+  [(UILabel *)self->_messageLabel setText:textCopy];
 }
 
-- (void)_containingAlertControllerDidChangeVisualStyle:(id)a3
+- (void)_containingAlertControllerDidChangeVisualStyle:(id)style
 {
   v5.receiver = self;
   v5.super_class = _UIAlternateApplicationIconsAlertContentViewController;
-  v4 = a3;
-  [(UIViewController *)&v5 _containingAlertControllerDidChangeVisualStyle:v4];
-  [(_UIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:v4, v5.receiver, v5.super_class];
+  styleCopy = style;
+  [(UIViewController *)&v5 _containingAlertControllerDidChangeVisualStyle:styleCopy];
+  [(_UIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:styleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)__updateWithVisualStyle:(id)a3
+- (void)__updateWithVisualStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 messageLabelFont];
-  [(UILabel *)self->_messageLabel setFont:v5];
+  styleCopy = style;
+  messageLabelFont = [styleCopy messageLabelFont];
+  [(UILabel *)self->_messageLabel setFont:messageLabelFont];
 
-  v6 = [v4 messageLabelColor];
-  [(UILabel *)self->_messageLabel setTextColor:v6];
+  messageLabelColor = [styleCopy messageLabelColor];
+  [(UILabel *)self->_messageLabel setTextColor:messageLabelColor];
 
-  v7 = [v4 maximumNumberOfLinesInMessageLabel];
+  maximumNumberOfLinesInMessageLabel = [styleCopy maximumNumberOfLinesInMessageLabel];
   messageLabel = self->_messageLabel;
 
-  [(UILabel *)messageLabel setNumberOfLines:v7];
+  [(UILabel *)messageLabel setNumberOfLines:maximumNumberOfLinesInMessageLabel];
 }
 
 - (void)_updateWithContainingAlertControllerVisualStyle
 {
-  v3 = [(UIViewController *)self _visualStyleOfContainingAlertController];
-  if (v3)
+  _visualStyleOfContainingAlertController = [(UIViewController *)self _visualStyleOfContainingAlertController];
+  if (_visualStyleOfContainingAlertController)
   {
-    v4 = v3;
-    [(_UIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:v3];
-    v3 = v4;
+    v4 = _visualStyleOfContainingAlertController;
+    [(_UIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:_visualStyleOfContainingAlertController];
+    _visualStyleOfContainingAlertController = v4;
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = _UIAlternateApplicationIconsAlertContentViewController;
-  [(UIViewController *)&v4 didMoveToParentViewController:a3];
+  [(UIViewController *)&v4 didMoveToParentViewController:controller];
   [(_UIAlternateApplicationIconsAlertContentViewController *)self _updateWithContainingAlertControllerVisualStyle];
 }
 
@@ -74,15 +74,15 @@
   v3 = objc_opt_new();
   [(_UIAlternateApplicationIconsAlertContentViewController *)self _updateWithContainingAlertControllerVisualStyle];
   [(UIView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = self;
-  v36 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   messageLabel = self->_messageLabel;
-  v4->_messageLabel = v3;
+  selfCopy->_messageLabel = v3;
   v34 = v3;
 
   v6 = _UIMainBundleIdentifier();
-  v7 = [objc_opt_self() mainScreen];
-  [v7 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v35 = [UIImage _applicationIconImageForBundleIdentifier:v6 format:2 scale:?];
 
   v8 = [[UIImageView alloc] initWithImage:v35];
@@ -123,13 +123,13 @@
   v38 = @"hStackView";
   v39 = v19;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-  v21 = [(UIView *)v19 centerXAnchor];
-  v22 = [v20 centerXAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerXAnchor = [(UIView *)v19 centerXAnchor];
+  centerXAnchor2 = [v20 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v37[0] = v23;
-  v24 = [(UIView *)v19 centerYAnchor];
-  v25 = [v20 centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerYAnchor = [(UIView *)v19 centerYAnchor];
+  centerYAnchor2 = [v20 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v37[1] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
   v28 = [v27 mutableCopy];
@@ -141,7 +141,7 @@
   [v28 addObjectsFromArray:v30];
 
   [MEMORY[0x1E69977A0] activateConstraints:v28];
-  [(UIViewController *)v36 setView:v20];
+  [(UIViewController *)selfCopy2 setView:v20];
 }
 
 @end

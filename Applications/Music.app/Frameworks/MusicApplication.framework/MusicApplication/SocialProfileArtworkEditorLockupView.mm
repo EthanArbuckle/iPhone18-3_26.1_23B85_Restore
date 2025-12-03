@@ -1,5 +1,5 @@
 @interface SocialProfileArtworkEditorLockupView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4C8304();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width > 128.0)
+  if (fits.width > 128.0)
   {
-    a3.width = 128.0;
+    fits.width = 128.0;
   }
 
-  v3 = a3.width + 32.0;
+  v3 = fits.width + 32.0;
   v4 = v3;
   result.height = v4;
   result.width = v3;

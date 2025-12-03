@@ -1,17 +1,17 @@
 @interface PXCALayerPromise
 - (CGRect)bounds;
 - (PXCALayerPromise)init;
-- (void)_handlePreparedLayer:(id)a3;
+- (void)_handlePreparedLayer:(id)layer;
 - (void)_realizeLayer;
-- (void)_setLayer:(id)a3;
+- (void)_setLayer:(id)layer;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)drawLayerContentInContext:(CGContext *)a3;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)drawLayerContentInContext:(CGContext *)context;
 - (void)invalidateLayer;
-- (void)performChanges:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setRendersAsynchronously:(BOOL)a3;
+- (void)performChanges:(id)changes;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setRendersAsynchronously:(BOOL)asynchronously;
 - (void)startLayerRealization;
 @end
 
@@ -30,12 +30,12 @@
   return result;
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   if (![(PXCALayerPromise *)self shouldCancel])
   {
 
-    [(PXCALayerPromise *)self drawLayerContentInContext:a4];
+    [(PXCALayerPromise *)self drawLayerContentInContext:context];
   }
 }
 
@@ -43,37 +43,37 @@
 {
   if (self->_startedLayerRealization)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXCALayerPromise.m" lineNumber:164 description:@"can't change layer promise attributes after realization has started"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCALayerPromise.m" lineNumber:164 description:@"can't change layer promise attributes after realization has started"];
   }
 }
 
-- (void)setRendersAsynchronously:(BOOL)a3
+- (void)setRendersAsynchronously:(BOOL)asynchronously
 {
-  if (self->_rendersAsynchronously != a3)
+  if (self->_rendersAsynchronously != asynchronously)
   {
-    self->_rendersAsynchronously = a3;
+    self->_rendersAsynchronously = asynchronously;
     [(PXCALayerPromise *)self invalidateLayer];
   }
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
-  if (self->_contentsScale != a3)
+  if (self->_contentsScale != scale)
   {
-    self->_contentsScale = a3;
+    self->_contentsScale = scale;
     [(PXCALayerPromise *)self invalidateLayer];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_bounds = &self->_bounds;
-  if (!CGRectEqualToRect(a3, self->_bounds))
+  if (!CGRectEqualToRect(bounds, self->_bounds))
   {
     p_bounds->origin.x = x;
     p_bounds->origin.y = y;
@@ -84,38 +84,38 @@
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCALayerPromise;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
-- (void)drawLayerContentInContext:(CGContext *)a3
+- (void)drawLayerContentInContext:(CGContext *)context
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXCALayerPromise.m" lineNumber:124 description:{@"Method %s is a responsibility of subclass %@", "-[PXCALayerPromise drawLayerContentInContext:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCALayerPromise.m" lineNumber:124 description:{@"Method %s is a responsibility of subclass %@", "-[PXCALayerPromise drawLayerContentInContext:]", v7}];
 
   abort();
 }
 
-- (void)_setLayer:(id)a3
+- (void)_setLayer:(id)layer
 {
-  v5 = a3;
-  if (self->_layer != v5)
+  layerCopy = layer;
+  if (self->_layer != layerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layer, a3);
+    v6 = layerCopy;
+    objc_storeStrong(&self->_layer, layer);
     [(PXObservable *)self signalChange:1];
-    v5 = v6;
+    layerCopy = v6;
   }
 }
 
-- (void)_handlePreparedLayer:(id)a3
+- (void)_handlePreparedLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if (![(PXCALayerPromise *)self shouldCancel])
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -123,7 +123,7 @@
     v5[2] = __41__PXCALayerPromise__handlePreparedLayer___block_invoke;
     v5[3] = &unk_1E7BB7D80;
     v5[4] = self;
-    v6 = v4;
+    v6 = layerCopy;
     [(PXCALayerPromise *)self performChanges:v5];
   }
 }
@@ -133,12 +133,12 @@
   v13 = *MEMORY[0x1E69E9840];
   if (![(PXCALayerPromise *)self shouldCancel])
   {
-    v3 = [(PXCALayerPromise *)self createCustomLayer];
-    if (!v3)
+    createCustomLayer = [(PXCALayerPromise *)self createCustomLayer];
+    if (!createCustomLayer)
     {
       if ([(PXCALayerPromise *)self shouldCancel])
       {
-        v3 = 0;
+        createCustomLayer = 0;
       }
 
       else
@@ -150,7 +150,7 @@
           if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v12 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1B3F73000, v5, OS_LOG_TYPE_DEFAULT, "Invalid contentsScale for layer promise %@. Failing gracefully.", buf, 0xCu);
           }
 
@@ -163,13 +163,13 @@
         }
 
         [MEMORY[0x1E6979518] begin];
-        v3 = [MEMORY[0x1E6979398] layer];
-        [v3 setDelegate:self];
+        createCustomLayer = [MEMORY[0x1E6979398] layer];
+        [createCustomLayer setDelegate:self];
         [(PXCALayerPromise *)self bounds];
-        [v3 setBounds:?];
-        [v3 setContentsScale:v6];
-        [v3 setNeedsDisplay];
-        [v3 displayIfNeeded];
+        [createCustomLayer setBounds:?];
+        [createCustomLayer setContentsScale:v6];
+        [createCustomLayer setNeedsDisplay];
+        [createCustomLayer displayIfNeeded];
         [MEMORY[0x1E6979518] commit];
         [MEMORY[0x1E6979518] flush];
       }
@@ -184,7 +184,7 @@
       v8[2] = __33__PXCALayerPromise__realizeLayer__block_invoke;
       v8[3] = &unk_1E7BB6C78;
       objc_copyWeak(&v10, buf);
-      v9 = v3;
+      v9 = createCustomLayer;
       [v7 dispatchInMainTransaction:v8];
 
       objc_destroyWeak(&v10);
@@ -193,7 +193,7 @@
 
     else
     {
-      [(PXCALayerPromise *)self _handlePreparedLayer:v3];
+      [(PXCALayerPromise *)self _handlePreparedLayer:createCustomLayer];
     }
   }
 }

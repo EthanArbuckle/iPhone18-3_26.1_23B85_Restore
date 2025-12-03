@@ -1,28 +1,28 @@
 @interface RTVisitLocationPoints
 - (RTLocation)centroid;
-- (RTVisitLocationPoints)initWithLocations:(id)a3;
+- (RTVisitLocationPoints)initWithLocations:(id)locations;
 - (double)duration;
 - (id)description;
 - (id)firstDate;
 - (id)lastDate;
-- (void)enumerateLowSpeedSegementsUsingBlock:(id)a3 block:(id)a4;
+- (void)enumerateLowSpeedSegementsUsingBlock:(id)block block:(id)a4;
 @end
 
 @implementation RTVisitLocationPoints
 
 - (id)lastDate
 {
-  v2 = [(NSArray *)self->_locations lastObject];
-  v3 = [v2 date];
+  lastObject = [(NSArray *)self->_locations lastObject];
+  date = [lastObject date];
 
-  return v3;
+  return date;
 }
 
-- (RTVisitLocationPoints)initWithLocations:(id)a3
+- (RTVisitLocationPoints)initWithLocations:(id)locations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  locationsCopy = locations;
+  if (![locationsCopy count])
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -35,37 +35,37 @@
     }
   }
 
-  if ([v4 count])
+  if ([locationsCopy count])
   {
     v11.receiver = self;
     v11.super_class = RTVisitLocationPoints;
     v6 = [(RTVisitLocationPoints *)&v11 init];
     if (v6)
     {
-      v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v4 copyItems:0];
+      v7 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:locationsCopy copyItems:0];
       locations = v6->_locations;
       v6->_locations = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [(NSArray *)self->_locations count];
-  v5 = [(NSArray *)self->_locations firstObject];
-  v6 = [(NSArray *)self->_locations lastObject];
-  v7 = [v3 stringWithFormat:@"n_points, %lu, first location, %@, last location, %@", v4, v5, v6];
+  firstObject = [(NSArray *)self->_locations firstObject];
+  lastObject = [(NSArray *)self->_locations lastObject];
+  v7 = [v3 stringWithFormat:@"n_points, %lu, first location, %@, last location, %@", v4, firstObject, lastObject];
 
   return v7;
 }
@@ -119,8 +119,8 @@
     v14 = v9 / [(NSArray *)self->_locations count];
     v15 = v8 / [(NSArray *)self->_locations count];
     v16 = objc_alloc(MEMORY[0x277D01160]);
-    v17 = [(RTVisitLocationPoints *)self firstDate];
-    v18 = [v16 initWithLatitude:v17 longitude:v14 horizontalUncertainty:v15 date:0.0];
+    firstDate = [(RTVisitLocationPoints *)self firstDate];
+    v18 = [v16 initWithLatitude:firstDate longitude:v14 horizontalUncertainty:v15 date:0.0];
     v19 = self->_centroid;
     self->_centroid = v18;
 
@@ -130,19 +130,19 @@
   return centroid;
 }
 
-- (void)enumerateLowSpeedSegementsUsingBlock:(id)a3 block:(id)a4
+- (void)enumerateLowSpeedSegementsUsingBlock:(id)block block:(id)a4
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  blockCopy = block;
   v7 = a4;
   v8 = v7;
-  if (v6)
+  if (blockCopy)
   {
     if (v7)
     {
       v38 = 0;
       v9 = objc_opt_new();
-      v10 = [(NSArray *)self->_locations firstObject];
+      firstObject = [(NSArray *)self->_locations firstObject];
       v32 = objc_opt_new();
       v34 = 0u;
       v35 = 0u;
@@ -164,7 +164,7 @@
         {
           for (i = 0; i != v13; ++i)
           {
-            v18 = v10;
+            v18 = firstObject;
             if (*v35 != v31)
             {
               objc_enumerationMutation(obj);
@@ -173,7 +173,7 @@
             v19 = *(*(&v34 + 1) + 8 * i);
             [v19 speed];
             v21 = v20;
-            [v6 minSpeedToFilter];
+            [blockCopy minSpeedToFilter];
             if (v21 >= v22)
             {
               ++v15;
@@ -199,12 +199,12 @@
               }
             }
 
-            if ((v15 >= [v6 movingWindowSizeForSpeed] || v24 >= objc_msgSend(v6, "maxDistanceBetweenAdjacentPoints")) && -[NSObject count](v9, "count"))
+            if ((v15 >= [blockCopy movingWindowSizeForSpeed] || v24 >= objc_msgSend(blockCopy, "maxDistanceBetweenAdjacentPoints")) && -[NSObject count](v9, "count"))
             {
               v29[2](v29, v9, v16, &v38);
               if (v38)
               {
-                v10 = v18;
+                firstObject = v18;
                 goto LABEL_31;
               }
 
@@ -214,7 +214,7 @@
             }
 
             [v9 addObject:v19];
-            v10 = v19;
+            firstObject = v19;
 
             ++v16;
           }
@@ -282,9 +282,9 @@ LABEL_35:
 
 - (double)duration
 {
-  v3 = [(RTVisitLocationPoints *)self lastDate];
-  v4 = [(RTVisitLocationPoints *)self firstDate];
-  [v3 timeIntervalSinceDate:v4];
+  lastDate = [(RTVisitLocationPoints *)self lastDate];
+  firstDate = [(RTVisitLocationPoints *)self firstDate];
+  [lastDate timeIntervalSinceDate:firstDate];
   v6 = v5;
 
   return v6;
@@ -292,10 +292,10 @@ LABEL_35:
 
 - (id)firstDate
 {
-  v2 = [(NSArray *)self->_locations firstObject];
-  v3 = [v2 date];
+  firstObject = [(NSArray *)self->_locations firstObject];
+  date = [firstObject date];
 
-  return v3;
+  return date;
 }
 
 @end

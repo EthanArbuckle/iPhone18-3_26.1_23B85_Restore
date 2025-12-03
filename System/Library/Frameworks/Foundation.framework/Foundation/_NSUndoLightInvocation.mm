@@ -1,5 +1,5 @@
 @interface _NSUndoLightInvocation
-- (_NSUndoLightInvocation)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
+- (_NSUndoLightInvocation)initWithTarget:(id)target selector:(SEL)selector object:(id)object;
 - (id)description;
 - (void)dealloc;
 - (void)invoke;
@@ -7,24 +7,24 @@
 
 @implementation _NSUndoLightInvocation
 
-- (_NSUndoLightInvocation)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (_NSUndoLightInvocation)initWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = _NSUndoLightInvocation;
-  v7 = [(_NSUndoObject *)&v10 initWithTarget:a3];
-  if (a4)
+  v7 = [(_NSUndoObject *)&v10 initWithTarget:target];
+  if (selector)
   {
-    v8 = a4;
+    selectorCopy = selector;
   }
 
   else
   {
-    v8 = 0;
+    selectorCopy = 0;
   }
 
-  v7->_selector = v8;
-  v7->_arg = a5;
+  v7->_selector = selectorCopy;
+  v7->_arg = object;
   return v7;
 }
 

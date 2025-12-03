@@ -1,5 +1,5 @@
 @interface UPLoadedModelConfiguration
-- (UPLoadedModelConfiguration)initWithModelConfiguration:(id)a3;
+- (UPLoadedModelConfiguration)initWithModelConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
@@ -59,10 +59,10 @@
   [(UPLoadedModelConfiguration *)&v11 dealloc];
 }
 
-- (UPLoadedModelConfiguration)initWithModelConfiguration:(id)a3
+- (UPLoadedModelConfiguration)initWithModelConfiguration:(id)configuration
 {
   v36 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  configurationCopy = configuration;
   v4 = SNLPOSLoggerForCategory(7);
   v5 = os_signpost_id_generate(v4);
 
@@ -87,17 +87,17 @@
 
   if (v9)
   {
-    v10 = [v31 intentVocabPath];
+    intentVocabPath = [configurationCopy intentVocabPath];
     intentVocabPath = v9->_intentVocabPath;
-    v9->_intentVocabPath = v10;
+    v9->_intentVocabPath = intentVocabPath;
 
-    v12 = [v31 bioLabelsVocabPath];
+    bioLabelsVocabPath = [configurationCopy bioLabelsVocabPath];
     bioLabelsVocabPath = v9->_bioLabelsVocabPath;
-    v9->_bioLabelsVocabPath = v12;
+    v9->_bioLabelsVocabPath = bioLabelsVocabPath;
 
     v14 = MEMORY[0x277CBEAC0];
-    v15 = [v31 configPath];
-    v30 = [v14 dictionaryWithContentsOfFile:v15];
+    configPath = [configurationCopy configPath];
+    v30 = [v14 dictionaryWithContentsOfFile:configPath];
 
     [v30 objectForKeyedSubscript:@"locale"];
     v16 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:objc_claimAutoreleasedReturnValue()];
@@ -108,13 +108,13 @@
     bundleId = v9->_bundleId;
     v9->_bundleId = v18;
 
-    v20 = [v31 spanVocabPath];
-    v21 = v20;
-    std::string::basic_string[abi:ne200100]<0>(&v34, [v20 UTF8String]);
+    spanVocabPath = [configurationCopy spanVocabPath];
+    v21 = spanVocabPath;
+    std::string::basic_string[abi:ne200100]<0>(&v34, [spanVocabPath UTF8String]);
 
-    v22 = [v31 grammarPath];
-    v23 = v22;
-    std::string::basic_string[abi:ne200100]<0>(v33, [v22 UTF8String]);
+    grammarPath = [configurationCopy grammarPath];
+    v23 = grammarPath;
+    std::string::basic_string[abi:ne200100]<0>(v33, [grammarPath UTF8String]);
 
     uaap_orchestration::grammar::UaapGrammar::fromFile(v33);
   }

@@ -10,7 +10,7 @@
   *(&self->super.isa + OBJC_IVAR____TtC4Maps28FindMyHandleMapServiceTicket_isCancelled) = 1;
   v3 = OBJC_IVAR____TtC4Maps28FindMyHandleMapServiceTicket_ticket;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps28FindMyHandleMapServiceTicket_ticket);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 cancel];

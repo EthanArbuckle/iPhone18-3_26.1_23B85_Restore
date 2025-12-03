@@ -1,24 +1,24 @@
 @interface SBMatchMoveToDropletSwitcherEventResponse
-- (SBMatchMoveToDropletSwitcherEventResponse)initWithAppLayout:(id)a3 active:(BOOL)a4;
+- (SBMatchMoveToDropletSwitcherEventResponse)initWithAppLayout:(id)layout active:(BOOL)active;
 @end
 
 @implementation SBMatchMoveToDropletSwitcherEventResponse
 
-- (SBMatchMoveToDropletSwitcherEventResponse)initWithAppLayout:(id)a3 active:(BOOL)a4
+- (SBMatchMoveToDropletSwitcherEventResponse)initWithAppLayout:(id)layout active:(BOOL)active
 {
-  v8 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBMatchMoveToDropletSwitcherEventResponse;
   v9 = [(SBChainableModifierEventResponse *)&v11 init];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBMatchMoveToDropletSwitcherEventResponse initWithAppLayout:a2 active:v9];
     }
 
-    objc_storeStrong(&v9->_appLayout, a3);
-    v9->_active = a4;
+    objc_storeStrong(&v9->_appLayout, layout);
+    v9->_active = active;
   }
 
   return v9;

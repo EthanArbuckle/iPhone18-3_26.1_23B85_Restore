@@ -1,26 +1,26 @@
 @interface MIStagingRootAbsolute
-- (BOOL)isEqual:(id)a3;
-- (MIStagingRootAbsolute)initWithCoder:(id)a3;
-- (MIStagingRootAbsolute)initWithStagingSubsystem:(unint64_t)a3 contentType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MIStagingRootAbsolute)initWithCoder:(id)coder;
+- (MIStagingRootAbsolute)initWithStagingSubsystem:(unint64_t)subsystem contentType:(unint64_t)type;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resolveRootWithError:(id *)a3;
-- (void)_runWithLock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resolveRootWithError:(id *)error;
+- (void)_runWithLock:(id)lock;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIStagingRootAbsolute
 
-- (MIStagingRootAbsolute)initWithStagingSubsystem:(unint64_t)a3 contentType:(unint64_t)a4
+- (MIStagingRootAbsolute)initWithStagingSubsystem:(unint64_t)subsystem contentType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = MIStagingRootAbsolute;
   result = [(MIStagingRootAbsolute *)&v7 init];
   if (result)
   {
-    result->_stagingSubsystem = a3;
-    result->_stagingContentType = a4;
+    result->_stagingSubsystem = subsystem;
+    result->_stagingContentType = type;
     result->_extensionHandle = -1;
     result->_lock._os_unfair_lock_opaque = 0;
   }
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (MIStagingRootAbsolute)initWithCoder:(id)a3
+- (MIStagingRootAbsolute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MIStagingRootAbsolute;
   v5 = [(MIStagingRootAbsolute *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingContentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingContentType"];
     v5->_stagingContentType = [v6 unsignedLongLongValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagingSubsystem"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagingSubsystem"];
     v5->_stagingSubsystem = [v7 unsignedLongLongValue];
   }
 
@@ -48,10 +48,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -61,13 +61,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIStagingRootAbsolute *)v5 stagingSubsystem];
+      v5 = equalCopy;
+      stagingSubsystem = [(MIStagingRootAbsolute *)v5 stagingSubsystem];
       v8 = 0;
-      if (v6 == [(MIStagingRootAbsolute *)self stagingSubsystem])
+      if (stagingSubsystem == [(MIStagingRootAbsolute *)self stagingSubsystem])
       {
-        v7 = [(MIStagingRootAbsolute *)v5 stagingContentType];
-        if (v7 == [(MIStagingRootAbsolute *)self stagingContentType])
+        stagingContentType = [(MIStagingRootAbsolute *)v5 stagingContentType];
+        if (stagingContentType == [(MIStagingRootAbsolute *)self stagingContentType])
         {
           v8 = 1;
         }
@@ -93,36 +93,36 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MIStagingRootAbsolute *)self stagingSubsystem];
-  v6 = [(MIStagingRootAbsolute *)self stagingContentType];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  stagingSubsystem = [(MIStagingRootAbsolute *)self stagingSubsystem];
+  stagingContentType = [(MIStagingRootAbsolute *)self stagingContentType];
 
-  return [v4 initWithStagingSubsystem:v5 contentType:v6];
+  return [v4 initWithStagingSubsystem:stagingSubsystem contentType:stagingContentType];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[MIStagingRootAbsolute stagingSubsystem](self, "stagingSubsystem")}];
-  [v5 encodeObject:v6 forKey:@"stagingSubsystem"];
+  [coderCopy encodeObject:v6 forKey:@"stagingSubsystem"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MIStagingRootAbsolute stagingContentType](self, "stagingContentType")}];
-  [v5 encodeObject:v7 forKey:@"stagingContentType"];
+  [coderCopy encodeObject:v7 forKey:@"stagingContentType"];
 }
 
-- (void)_runWithLock:(id)a3
+- (void)_runWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)resolveRootWithError:(id *)a3
+- (id)resolveRootWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -145,9 +145,9 @@
   v7[6] = &v14;
   [(MIStagingRootAbsolute *)self _runWithLock:v7];
   v4 = v15[5];
-  if (a3 && !v4)
+  if (error && !v4)
   {
-    *a3 = v9[5];
+    *error = v9[5];
     v4 = v15[5];
   }
 

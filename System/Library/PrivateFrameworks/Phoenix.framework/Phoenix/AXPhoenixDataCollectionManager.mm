@@ -3,11 +3,11 @@
 - (AXPhoenixDataCollectionManager)init;
 - (AXPhoenixDataCollectionManagerDelegate)delegate;
 - (void)removeOldData;
-- (void)reportFalsePositive:(id)a3;
+- (void)reportFalsePositive:(id)positive;
 - (void)start;
 - (void)stop;
 - (void)timerTick;
-- (void)updateUploadStatus:(int64_t)a3 error:(id)a4;
+- (void)updateUploadStatus:(int64_t)status error:(id)error;
 - (void)uploadPackages;
 @end
 
@@ -72,24 +72,24 @@ uint64_t __48__AXPhoenixDataCollectionManager_sharedInstance__block_invoke()
 - (void)stop
 {
   [(AXPhoenixDataCollectionManager *)self setIsRunning:0];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 removeObserver:self];
-  MEMORY[0x277D82BD8](v2);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
+  MEMORY[0x277D82BD8](defaultCenter);
 }
 
 - (void)timerTick
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   [(AXPhoenixDataCollectionManager *)self uploadPackages];
   when = dispatch_time(0, 600000000000);
-  queue = [(AXPhoenixDataCollectionManager *)v10 queue];
+  queue = [(AXPhoenixDataCollectionManager *)selfCopy queue];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __43__AXPhoenixDataCollectionManager_timerTick__block_invoke;
   v8 = &unk_279A20BD8;
-  v9[0] = MEMORY[0x277D82BE0](v10);
+  v9[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_after(when, queue, &v4);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v9, 0);
@@ -156,32 +156,32 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
       if (v29 && !v34)
       {
         v24 = [v29 objectForKeyedSubscript:*MEMORY[0x277CBE8E8]];
-        v23 = [v24 pathExtension];
+        pathExtension = [v24 pathExtension];
         v22 = [v29 objectForKeyedSubscript:*MEMORY[0x277CBE7C0]];
         v20 = 0;
         v4 = 0;
-        if ([v23 isEqualToString:@"json"])
+        if ([pathExtension isEqualToString:@"json"])
         {
-          v21 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           v20 = 1;
-          [v21 timeIntervalSinceDate:v22];
+          [date timeIntervalSinceDate:v22];
           v4 = v2 > 172800.0;
         }
 
         if (v20)
         {
-          MEMORY[0x277D82BD8](v21);
+          MEMORY[0x277D82BD8](date);
         }
 
         if (v4)
         {
-          v3 = [v31 path];
+          path = [v31 path];
           [AXPhoenixDataCollectionUtils deleteItem:?];
-          MEMORY[0x277D82BD8](v3);
+          MEMORY[0x277D82BD8](path);
         }
 
         objc_storeStrong(&v22, 0);
-        objc_storeStrong(&v23, 0);
+        objc_storeStrong(&pathExtension, 0);
         objc_storeStrong(&v24, 0);
         v25 = 0;
       }
@@ -226,7 +226,7 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
 - (void)uploadPackages
 {
   v69[4] = *MEMORY[0x277D85DE8];
-  v61 = self;
+  selfCopy = self;
   v60[1] = a2;
   [(AXPhoenixDataCollectionManager *)self removeOldData];
   v60[0] = [MEMORY[0x277CCAA00] defaultManager];
@@ -280,23 +280,23 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
       if (v50 && !v59)
       {
         v45 = [v50 objectForKeyedSubscript:*MEMORY[0x277CBE8E8]];
-        v44 = [v45 pathExtension];
+        pathExtension = [v45 pathExtension];
         v15 = [v50 objectForKeyedSubscript:*MEMORY[0x277CBE838]];
-        v16 = [v15 unsignedLongLongValue];
+        unsignedLongLongValue = [v15 unsignedLongLongValue];
         MEMORY[0x277D82BD8](v15);
-        v43 = v16;
+        v43 = unsignedLongLongValue;
         v17 = [v50 objectForKeyedSubscript:*MEMORY[0x277CBE868]];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
         MEMORY[0x277D82BD8](v17);
-        v42 = v18;
-        if (v18)
+        v42 = bOOLValue;
+        if (bOOLValue)
         {
-          v10 = [v52 path];
+          path = [v52 path];
           [AXPhoenixDataCollectionUtils deleteItem:?];
-          MEMORY[0x277D82BD8](v10);
+          MEMORY[0x277D82BD8](path);
         }
 
-        else if ([v44 isEqualToString:@"tgz"])
+        else if ([pathExtension isEqualToString:@"tgz"])
         {
           v12 = v56;
           v11 = MEMORY[0x277CCACA8];
@@ -315,7 +315,7 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
           v53 += v43;
         }
 
-        objc_storeStrong(&v44, 0);
+        objc_storeStrong(&pathExtension, 0);
         objc_storeStrong(&v45, 0);
         v46 = 0;
       }
@@ -352,12 +352,12 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
 
   MEMORY[0x277D82BD8](v32);
   v2 = [v56 count];
-  [(AXPhoenixDataCollectionManager *)v61 setPackagesRemaining:v2];
+  [(AXPhoenixDataCollectionManager *)selfCopy setPackagesRemaining:v2];
   if ([v55 count] < 2 && v53 <= 0x19000)
   {
     if ([v55 count])
     {
-      [(AXPhoenixDataCollectionManager *)v61 setPackagesRemaining:[(AXPhoenixDataCollectionManager *)v61 packagesRemaining]+ 1];
+      [(AXPhoenixDataCollectionManager *)selfCopy setPackagesRemaining:[(AXPhoenixDataCollectionManager *)selfCopy packagesRemaining]+ 1];
     }
   }
 
@@ -382,7 +382,7 @@ uint64_t __43__AXPhoenixDataCollectionManager_timerTick__block_invoke(uint64_t a
 
         v40 = *(v39[1] + 8 * v6);
         [v56 addObject:v40];
-        [(AXPhoenixDataCollectionManager *)v61 setPackagesRemaining:[(AXPhoenixDataCollectionManager *)v61 packagesRemaining]+ 1];
+        [(AXPhoenixDataCollectionManager *)selfCopy setPackagesRemaining:[(AXPhoenixDataCollectionManager *)selfCopy packagesRemaining]+ 1];
         ++v6;
         if (v4 + 1 >= v7)
         {
@@ -452,18 +452,18 @@ void __48__AXPhoenixDataCollectionManager_uploadPackages__block_invoke(NSObject 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)updateUploadStatus:(int64_t)a3 error:(id)a4
+- (void)updateUploadStatus:(int64_t)status error:(id)error
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  statusCopy = status;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(AXPhoenixDataCollectionManager *)v18 setPackagesRemaining:v16];
-  [(AXPhoenixDataCollectionManager *)v18 setUploadErrorMessage:location];
-  v7 = [(AXPhoenixDataCollectionManager *)v18 delegate];
-  MEMORY[0x277D82BD8](v7);
-  if (v7)
+  objc_storeStrong(&location, error);
+  [(AXPhoenixDataCollectionManager *)selfCopy setPackagesRemaining:statusCopy];
+  [(AXPhoenixDataCollectionManager *)selfCopy setUploadErrorMessage:location];
+  delegate = [(AXPhoenixDataCollectionManager *)selfCopy delegate];
+  MEMORY[0x277D82BD8](delegate);
+  if (delegate)
   {
     v5 = MEMORY[0x277D85CD0];
     v4 = MEMORY[0x277D85CD0];
@@ -473,8 +473,8 @@ void __48__AXPhoenixDataCollectionManager_uploadPackages__block_invoke(NSObject 
     v10 = 0;
     v11 = __59__AXPhoenixDataCollectionManager_updateUploadStatus_error___block_invoke;
     v12 = &unk_279A20C00;
-    v13 = MEMORY[0x277D82BE0](v18);
-    v14[1] = v16;
+    v13 = MEMORY[0x277D82BE0](selfCopy);
+    v14[1] = statusCopy;
     v14[0] = MEMORY[0x277D82BE0](location);
     dispatch_async(queue, &v8);
     MEMORY[0x277D82BD8](queue);
@@ -492,13 +492,13 @@ uint64_t __59__AXPhoenixDataCollectionManager_updateUploadStatus_error___block_i
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (void)reportFalsePositive:(id)a3
+- (void)reportFalsePositive:(id)positive
 {
   v11 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, positive);
   v7 = AXLogBackTap();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

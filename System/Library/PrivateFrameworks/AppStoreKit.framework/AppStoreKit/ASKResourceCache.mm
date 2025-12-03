@@ -1,43 +1,43 @@
 @interface ASKResourceCache
-- (ASKResourceCache)initWithGroupOfCache:(id)a3;
+- (ASKResourceCache)initWithGroupOfCache:(id)cache;
 - (BOOL)evictsObjectsWhenApplicationEntersBackground;
 - (BOOL)isGroupMember;
-- (id)resourcesForKey:(id)a3;
+- (id)resourcesForKey:(id)key;
 - (unint64_t)limit;
-- (void)addResource:(id)a3 forKey:(id)a4;
+- (void)addResource:(id)resource forKey:(id)key;
 - (void)dealloc;
 - (void)removeAllResources;
-- (void)replaceResourcesForKey:(id)a3 withResource:(id)a4;
-- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)a3;
-- (void)setLimit:(unint64_t)a3;
+- (void)replaceResourcesForKey:(id)key withResource:(id)resource;
+- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)background;
+- (void)setLimit:(unint64_t)limit;
 @end
 
 @implementation ASKResourceCache
 
-- (ASKResourceCache)initWithGroupOfCache:(id)a3
+- (ASKResourceCache)initWithGroupOfCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = ASKResourceCache;
   v5 = [(ASKResourceCache *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (cacheCopy)
     {
-      v6 = [v4 group];
+      group = [cacheCopy group];
     }
 
     else
     {
-      v6 = objc_alloc_init(_ASKResourceCacheGroup);
+      group = objc_alloc_init(_ASKResourceCacheGroup);
     }
 
     group = v5->_group;
-    v5->_group = v6;
+    v5->_group = group;
 
-    v8 = [(_ASKResourceCacheGroup *)v5->_group makeMemberContents];
+    makeMemberContents = [(_ASKResourceCacheGroup *)v5->_group makeMemberContents];
     contents = v5->_contents;
-    v5->_contents = v8;
+    v5->_contents = makeMemberContents;
   }
 
   return v5;
@@ -45,9 +45,9 @@
 
 - (void)dealloc
 {
-  v3 = [(ASKResourceCache *)self group];
-  v4 = [(ASKResourceCache *)self contents];
-  [v3 discardMemberContents:v4];
+  group = [(ASKResourceCache *)self group];
+  contents = [(ASKResourceCache *)self contents];
+  [group discardMemberContents:contents];
 
   v5.receiver = self;
   v5.super_class = ASKResourceCache;
@@ -56,58 +56,58 @@
 
 - (BOOL)isGroupMember
 {
-  v2 = [(ASKResourceCache *)self group];
-  v3 = [v2 hasMultipleMembers];
+  group = [(ASKResourceCache *)self group];
+  hasMultipleMembers = [group hasMultipleMembers];
 
-  return v3;
+  return hasMultipleMembers;
 }
 
 - (unint64_t)limit
 {
-  v2 = [(ASKResourceCache *)self contents];
-  v3 = [v2 countLimit];
+  contents = [(ASKResourceCache *)self contents];
+  countLimit = [contents countLimit];
 
-  return v3;
+  return countLimit;
 }
 
-- (void)setLimit:(unint64_t)a3
+- (void)setLimit:(unint64_t)limit
 {
-  v4 = [(ASKResourceCache *)self contents];
-  [v4 setCountLimit:a3];
+  contents = [(ASKResourceCache *)self contents];
+  [contents setCountLimit:limit];
 }
 
 - (BOOL)evictsObjectsWhenApplicationEntersBackground
 {
-  v2 = [(ASKResourceCache *)self contents];
-  v3 = [v2 evictsObjectsWhenApplicationEntersBackground];
+  contents = [(ASKResourceCache *)self contents];
+  evictsObjectsWhenApplicationEntersBackground = [contents evictsObjectsWhenApplicationEntersBackground];
 
-  return v3;
+  return evictsObjectsWhenApplicationEntersBackground;
 }
 
-- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)a3
+- (void)setEvictsObjectsWhenApplicationEntersBackground:(BOOL)background
 {
-  v3 = a3;
-  v4 = [(ASKResourceCache *)self contents];
-  [v4 setEvictsObjectsWhenApplicationEntersBackground:v3];
+  backgroundCopy = background;
+  contents = [(ASKResourceCache *)self contents];
+  [contents setEvictsObjectsWhenApplicationEntersBackground:backgroundCopy];
 }
 
-- (id)resourcesForKey:(id)a3
+- (id)resourcesForKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ASKResourceCache *)self group];
-  v6 = [v5 hasMultipleMembers];
+  keyCopy = key;
+  group = [(ASKResourceCache *)self group];
+  hasMultipleMembers = [group hasMultipleMembers];
 
-  if (v6)
+  if (hasMultipleMembers)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(ASKResourceCache *)self group];
-    v8 = [v7 snapshotMemberContents];
+    group2 = [(ASKResourceCache *)self group];
+    snapshotMemberContents = [group2 snapshotMemberContents];
 
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [snapshotMemberContents countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -119,10 +119,10 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(snapshotMemberContents);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) objectForKey:v4];
+          v14 = [*(*(&v18 + 1) + 8 * i) objectForKey:keyCopy];
           if (v14)
           {
             if (v11)
@@ -137,7 +137,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [snapshotMemberContents countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -151,46 +151,46 @@
 
   else
   {
-    v15 = [(ASKResourceCache *)self group];
-    v16 = [v15 onlyMemberContents];
+    group3 = [(ASKResourceCache *)self group];
+    onlyMemberContents = [group3 onlyMemberContents];
 
-    v11 = [v16 objectForKey:v4];
+    v11 = [onlyMemberContents objectForKey:keyCopy];
   }
 
   return v11;
 }
 
-- (void)addResource:(id)a3 forKey:(id)a4
+- (void)addResource:(id)resource forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(ASKResourceCache *)self contents];
-  v8 = [v7 objectForKey:v6];
+  resourceCopy = resource;
+  keyCopy = key;
+  contents = [(ASKResourceCache *)self contents];
+  v8 = [contents objectForKey:keyCopy];
 
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    v9 = [(ASKResourceCache *)self contents];
-    [v9 setObject:v8 forKey:v6];
+    contents2 = [(ASKResourceCache *)self contents];
+    [contents2 setObject:v8 forKey:keyCopy];
   }
 
-  [v8 addObject:v10];
+  [v8 addObject:resourceCopy];
 }
 
-- (void)replaceResourcesForKey:(id)a3 withResource:(id)a4
+- (void)replaceResourcesForKey:(id)key withResource:(id)resource
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ASKResourceCache *)self contents];
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v6, 0}];
+  resourceCopy = resource;
+  keyCopy = key;
+  contents = [(ASKResourceCache *)self contents];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{resourceCopy, 0}];
 
-  [v9 setObject:v8 forKey:v7];
+  [contents setObject:v8 forKey:keyCopy];
 }
 
 - (void)removeAllResources
 {
-  v2 = [(ASKResourceCache *)self contents];
-  [v2 removeAllObjects];
+  contents = [(ASKResourceCache *)self contents];
+  [contents removeAllObjects];
 }
 
 @end

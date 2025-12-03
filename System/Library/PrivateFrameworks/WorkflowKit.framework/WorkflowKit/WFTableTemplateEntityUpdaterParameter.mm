@@ -15,7 +15,7 @@
 
 - (WFPropertyListObject)defaultSerializedRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA50FB88();
 
   return v3;

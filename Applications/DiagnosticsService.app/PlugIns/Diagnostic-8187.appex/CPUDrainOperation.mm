@@ -1,5 +1,5 @@
 @interface CPUDrainOperation
-- (CPUDrainOperation)initWithMatrixLength:(id)a3 iterationDelay:(id)a4;
+- (CPUDrainOperation)initWithMatrixLength:(id)length iterationDelay:(id)delay;
 - (void)cancel;
 - (void)main;
 - (void)thermalSGEMMEnergyObjC;
@@ -7,18 +7,18 @@
 
 @implementation CPUDrainOperation
 
-- (CPUDrainOperation)initWithMatrixLength:(id)a3 iterationDelay:(id)a4
+- (CPUDrainOperation)initWithMatrixLength:(id)length iterationDelay:(id)delay
 {
-  v7 = a3;
-  v8 = a4;
+  lengthCopy = length;
+  delayCopy = delay;
   v12.receiver = self;
   v12.super_class = CPUDrainOperation;
   v9 = [(CPUDrainOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_matrixLength, a3);
-    objc_storeStrong(&v10->_iterationDelay, a4);
+    objc_storeStrong(&v9->_matrixLength, length);
+    objc_storeStrong(&v10->_iterationDelay, delay);
   }
 
   return v10;
@@ -43,21 +43,21 @@
 
 - (void)thermalSGEMMEnergyObjC
 {
-  v3 = [(CPUDrainOperation *)self matrixLength];
-  v4 = [v3 unsignedLongValue];
+  matrixLength = [(CPUDrainOperation *)self matrixLength];
+  unsignedLongValue = [matrixLength unsignedLongValue];
 
   v5 = detect_cpu();
   PhysicalCPUs = GetPhysicalCPUs();
   v7 = 2048;
-  if (v4 < 0x800)
+  if (unsignedLongValue < 0x800)
   {
-    v7 = v4;
+    v7 = unsignedLongValue;
   }
 
   v33 = PhysicalCPUs;
   if (PhysicalCPUs >= 3)
   {
-    v8 = v4;
+    v8 = unsignedLongValue;
   }
 
   else
@@ -190,12 +190,12 @@
       {
         cblas_sgemm_NEWLAPACK_ILP64();
         v27 = [(CPUDrainOperation *)self iterationDelay:v14];
-        v28 = [v27 unsignedIntegerValue];
+        unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-        if (v28)
+        if (unsignedIntegerValue)
         {
-          v29 = [(CPUDrainOperation *)self iterationDelay];
-          usleep(1000 * [v29 unsignedIntValue]);
+          iterationDelay = [(CPUDrainOperation *)self iterationDelay];
+          usleep(1000 * [iterationDelay unsignedIntValue]);
         }
 
         [(DrainOperation *)self waitIfPaused];

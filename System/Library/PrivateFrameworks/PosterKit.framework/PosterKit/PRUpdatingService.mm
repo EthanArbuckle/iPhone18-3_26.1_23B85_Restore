@@ -1,40 +1,40 @@
 @interface PRUpdatingService
 + (NSXPCInterface)interfaceToExtension;
-+ (id)updatingServiceWithProcess:(id)a3 auditToken:(id)a4 target:(id)a5;
++ (id)updatingServiceWithProcess:(id)process auditToken:(id)token target:(id)target;
 - (BOOL)_hasActiveSessions;
-- (id)_acquireSessionForUUID:(id)a3 errorHandler:(id)a4;
-- (id)_initWithProcess:(id)a3 auditToken:(id)a4 target:(id)a5;
-- (void)_accessUpdatingService:(id)a3 errorHandler:(id)a4;
-- (void)_invalidateSession:(id)a3;
+- (id)_acquireSessionForUUID:(id)d errorHandler:(id)handler;
+- (id)_initWithProcess:(id)process auditToken:(id)token target:(id)target;
+- (void)_accessUpdatingService:(id)service errorHandler:(id)handler;
+- (void)_invalidateSession:(id)session;
 - (void)_updateActiveSessions;
-- (void)addUpdatingServiceObserver:(id)a3;
+- (void)addUpdatingServiceObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeUpdatingServiceObserver:(id)a3;
-- (void)updateConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)updateDescriptors:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)updateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4 sessionInfo:(id)a5 completion:(id)a6;
+- (void)removeUpdatingServiceObserver:(id)observer;
+- (void)updateConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion;
+- (void)updateDescriptors:(id)descriptors sessionInfo:(id)info completion:(id)completion;
+- (void)updateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion;
 @end
 
 @implementation PRUpdatingService
 
-- (id)_initWithProcess:(id)a3 auditToken:(id)a4 target:(id)a5
+- (id)_initWithProcess:(id)process auditToken:(id)token target:(id)target
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  processCopy = process;
+  tokenCopy = token;
+  targetCopy = target;
+  if (!processCopy)
   {
     [PRUpdatingService _initWithProcess:a2 auditToken:? target:?];
   }
 
-  if (!v11)
+  if (!tokenCopy)
   {
     [PRUpdatingService _initWithProcess:a2 auditToken:? target:?];
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = targetCopy;
+  if (!targetCopy)
   {
     [PRUpdatingService _initWithProcess:a2 auditToken:? target:?];
   }
@@ -48,33 +48,33 @@
     invalidationFlag = v14->_invalidationFlag;
     v14->_invalidationFlag = v15;
 
-    objc_storeStrong(&v14->_process, a3);
-    objc_storeStrong(&v14->_auditToken, a4);
-    objc_storeStrong(&v14->_target, a5);
-    v17 = [v10 configuration];
-    v18 = [v17 extensionIdentity];
-    v19 = [v18 bundleIdentifier];
+    objc_storeStrong(&v14->_process, process);
+    objc_storeStrong(&v14->_auditToken, token);
+    objc_storeStrong(&v14->_target, target);
+    configuration = [processCopy configuration];
+    extensionIdentity = [configuration extensionIdentity];
+    bundleIdentifier = [extensionIdentity bundleIdentifier];
     bundleIdentifier = v14->_bundleIdentifier;
-    v14->_bundleIdentifier = v19;
+    v14->_bundleIdentifier = bundleIdentifier;
 
     v21 = objc_opt_new();
     activeSessions = v14->_activeSessions;
     v14->_activeSessions = v21;
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v14->_observers;
-    v14->_observers = v23;
+    v14->_observers = weakObjectsHashTable;
   }
 
   return v14;
 }
 
-+ (id)updatingServiceWithProcess:(id)a3 auditToken:(id)a4 target:(id)a5
++ (id)updatingServiceWithProcess:(id)process auditToken:(id)token target:(id)target
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PRUpdatingService alloc] _initWithProcess:v9 auditToken:v8 target:v7];
+  targetCopy = target;
+  tokenCopy = token;
+  processCopy = process;
+  v10 = [[PRUpdatingService alloc] _initWithProcess:processCopy auditToken:tokenCopy target:targetCopy];
 
   return v10;
 }
@@ -112,44 +112,44 @@ void __41__PRUpdatingService_interfaceToExtension__block_invoke()
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSHashTable *)v2->_observers removeAllObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeAllObjects];
+  objc_sync_exit(selfCopy);
 
-  [(PRUpdatingService *)v2 invalidate];
-  v3.receiver = v2;
+  [(PRUpdatingService *)selfCopy invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = PRUpdatingService;
   [(PRUpdatingService *)&v3 dealloc];
 }
 
-- (void)addUpdatingServiceObserver:(id)a3
+- (void)addUpdatingServiceObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeUpdatingServiceObserver:(id)a3
+- (void)removeUpdatingServiceObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateDescriptors:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)updateDescriptors:(id)descriptors sessionInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorsCopy = descriptors;
+  infoCopy = info;
+  completionCopy = completion;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
-    v11 = [(PRUpdatingService *)self invalidationError];
-    v10[2](v10, 0, v11);
+    invalidationError = [(PRUpdatingService *)self invalidationError];
+    completionCopy[2](completionCopy, 0, invalidationError);
   }
 
   else
@@ -160,16 +160,16 @@ void __41__PRUpdatingService_interfaceToExtension__block_invoke()
     v22[2] = __62__PRUpdatingService_updateDescriptors_sessionInfo_completion___block_invoke;
     v22[3] = &unk_1E7845028;
     v23 = v12;
-    v24 = self;
-    v25 = v10;
+    selfCopy = self;
+    v25 = completionCopy;
     v13 = v12;
     v14 = MEMORY[0x1AC574C60](v22);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __62__PRUpdatingService_updateDescriptors_sessionInfo_completion___block_invoke_2;
     v18[3] = &unk_1E7845078;
-    v19 = v8;
-    v20 = v9;
+    v19 = descriptorsCopy;
+    v20 = infoCopy;
     v21 = v14;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -288,15 +288,15 @@ uint64_t __62__PRUpdatingService_updateDescriptors_sessionInfo_completion___bloc
   }
 }
 
-- (void)updateConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)updateConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  infoCopy = info;
+  completionCopy = completion;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
-    v11 = [(PRUpdatingService *)self invalidationError];
-    v10[2](v10, 0, v11);
+    invalidationError = [(PRUpdatingService *)self invalidationError];
+    completionCopy[2](completionCopy, 0, invalidationError);
   }
 
   else
@@ -307,16 +307,16 @@ uint64_t __62__PRUpdatingService_updateDescriptors_sessionInfo_completion___bloc
     v22[2] = __64__PRUpdatingService_updateConfiguration_sessionInfo_completion___block_invoke;
     v22[3] = &unk_1E7845028;
     v23 = v12;
-    v24 = self;
-    v25 = v10;
+    selfCopy = self;
+    v25 = completionCopy;
     v13 = v12;
     v14 = MEMORY[0x1AC574C60](v22);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __64__PRUpdatingService_updateConfiguration_sessionInfo_completion___block_invoke_2;
     v18[3] = &unk_1E7845078;
-    v19 = v8;
-    v20 = v9;
+    v19 = configurationCopy;
+    v20 = infoCopy;
     v21 = v14;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -396,16 +396,16 @@ uint64_t __64__PRUpdatingService_updateConfiguration_sessionInfo_completion___bl
   return [v2 noteSessionIsComplete];
 }
 
-- (void)updateSuggestionDescriptors:(id)a3 forConfiguration:(id)a4 sessionInfo:(id)a5 completion:(id)a6
+- (void)updateSuggestionDescriptors:(id)descriptors forConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorsCopy = descriptors;
+  configurationCopy = configuration;
+  infoCopy = info;
+  completionCopy = completion;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
-    v14 = [(PRUpdatingService *)self invalidationError];
-    v13[2](v13, 0, v14);
+    invalidationError = [(PRUpdatingService *)self invalidationError];
+    completionCopy[2](completionCopy, 0, invalidationError);
   }
 
   else
@@ -416,17 +416,17 @@ uint64_t __64__PRUpdatingService_updateConfiguration_sessionInfo_completion___bl
     v26[2] = __89__PRUpdatingService_updateSuggestionDescriptors_forConfiguration_sessionInfo_completion___block_invoke;
     v26[3] = &unk_1E7845028;
     v27 = v15;
-    v28 = self;
-    v29 = v13;
+    selfCopy = self;
+    v29 = completionCopy;
     v16 = v15;
     v17 = MEMORY[0x1AC574C60](v26);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __89__PRUpdatingService_updateSuggestionDescriptors_forConfiguration_sessionInfo_completion___block_invoke_2;
     v21[3] = &unk_1E78450C8;
-    v22 = v11;
-    v23 = v10;
-    v24 = v12;
+    v22 = configurationCopy;
+    v23 = descriptorsCopy;
+    v24 = infoCopy;
     v25 = v17;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -555,22 +555,22 @@ uint64_t __89__PRUpdatingService_updateSuggestionDescriptors_forConfiguration_se
   return [v2 noteSessionIsComplete];
 }
 
-- (void)_accessUpdatingService:(id)a3 errorHandler:(id)a4
+- (void)_accessUpdatingService:(id)service errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__PRUpdatingService__accessUpdatingService_errorHandler___block_invoke;
   v12[3] = &unk_1E7844E98;
-  v8 = v7;
+  v8 = handlerCopy;
   v13 = v8;
   v9 = MEMORY[0x1AC574C60](v12);
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(PRUpdatingService *)self _acquireSessionForUUID:v10 errorHandler:v9];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(PRUpdatingService *)self _acquireSessionForUUID:uUID errorHandler:v9];
   if (v11)
   {
-    v6[2](v6, self->_proxy, v11);
+    serviceCopy[2](serviceCopy, self->_proxy, v11);
   }
 }
 
@@ -591,34 +591,34 @@ uint64_t __57__PRUpdatingService__accessUpdatingService_errorHandler___block_inv
   if ([(BSAtomicSignal *)self->_invalidationFlag signal])
   {
     v3 = [MEMORY[0x1E696ABC0] pr_errorWithCode:5];
-    v4 = self;
-    objc_sync_enter(v4);
-    [(NSMutableDictionary *)v4->_activeSessions enumerateKeysAndObjectsUsingBlock:&__block_literal_global_83];
-    [(NSMutableDictionary *)v4->_activeSessions removeAllObjects];
-    [(NSXPCConnection *)v4->_connection invalidate];
-    connection = v4->_connection;
-    v4->_connection = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_activeSessions enumerateKeysAndObjectsUsingBlock:&__block_literal_global_83];
+    [(NSMutableDictionary *)selfCopy->_activeSessions removeAllObjects];
+    [(NSXPCConnection *)selfCopy->_connection invalidate];
+    connection = selfCopy->_connection;
+    selfCopy->_connection = 0;
 
-    process = v4->_process;
-    v4->_process = 0;
+    process = selfCopy->_process;
+    selfCopy->_process = 0;
 
-    auditToken = v4->_auditToken;
-    v4->_auditToken = 0;
+    auditToken = selfCopy->_auditToken;
+    selfCopy->_auditToken = 0;
 
-    target = v4->_target;
-    v4->_target = 0;
+    target = selfCopy->_target;
+    selfCopy->_target = 0;
 
-    v9 = [(NSHashTable *)v4->_observers allObjects];
-    v10 = [v9 objectEnumerator];
+    allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+    objectEnumerator = [allObjects objectEnumerator];
 
-    [(PRUpdatingService *)v4 setInvalidationError:v3];
-    objc_sync_exit(v4);
+    [(PRUpdatingService *)selfCopy setInvalidationError:v3];
+    objc_sync_exit(selfCopy);
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = v10;
+    v11 = objectEnumerator;
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
@@ -636,7 +636,7 @@ uint64_t __57__PRUpdatingService__accessUpdatingService_errorHandler___block_inv
           v15 = *(*(&v16 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 updatingService:v4 didInvalidateWithError:{v3, v16}];
+            [v15 updatingService:selfCopy didInvalidateWithError:{v3, v16}];
           }
 
           ++v14;
@@ -649,24 +649,24 @@ uint64_t __57__PRUpdatingService__accessUpdatingService_errorHandler___block_inv
       while (v12);
     }
 
-    [(PRUpdatingService *)v4 _updateActiveSessions];
+    [(PRUpdatingService *)selfCopy _updateActiveSessions];
   }
 }
 
 - (BOOL)_hasActiveSessions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_activeSessions count]&& v2->_connection && v2->_proxy != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_activeSessions count]&& selfCopy->_connection && selfCopy->_proxy != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_acquireSessionForUUID:(id)a3 errorHandler:(id)a4
+- (id)_acquireSessionForUUID:(id)d errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v31 = 0;
   v32 = &v31;
@@ -674,64 +674,64 @@ uint64_t __57__PRUpdatingService__accessUpdatingService_errorHandler___block_inv
   v34 = __Block_byref_object_copy__6;
   v35 = __Block_byref_object_dispose__6;
   v36 = 0;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_proxy)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_proxy)
   {
     goto LABEL_2;
   }
 
-  process = v8->_process;
+  process = selfCopy->_process;
   v30 = 0;
   v17 = [(_EXExtensionProcess *)process newXPCConnectionWithError:&v30];
   v18 = v30;
-  connection = v8->_connection;
-  v8->_connection = v17;
+  connection = selfCopy->_connection;
+  selfCopy->_connection = v17;
 
   if (!v18)
   {
-    v21 = v8->_connection;
+    v21 = selfCopy->_connection;
     v22 = +[PRUpdatingService interfaceToExtension];
     [(NSXPCConnection *)v21 setRemoteObjectInterface:v22];
 
-    v23 = v8->_connection;
+    v23 = selfCopy->_connection;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __57__PRUpdatingService__acquireSessionForUUID_errorHandler___block_invoke;
     v29[3] = &unk_1E7845110;
     v29[4] = &v31;
     v24 = [(NSXPCConnection *)v23 synchronousRemoteObjectProxyWithErrorHandler:v29];
-    proxy = v8->_proxy;
-    v8->_proxy = v24;
+    proxy = selfCopy->_proxy;
+    selfCopy->_proxy = v24;
 
-    [(NSXPCConnection *)v8->_connection resume];
+    [(NSXPCConnection *)selfCopy->_connection resume];
 LABEL_2:
     v9 = objc_alloc(MEMORY[0x1E698E778]);
-    v10 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __57__PRUpdatingService__acquireSessionForUUID_errorHandler___block_invoke_2;
     v26[3] = &unk_1E7845138;
     objc_copyWeak(&v28, &location);
-    v11 = v6;
+    v11 = dCopy;
     v27 = v11;
-    v12 = [v9 initWithIdentifier:v10 forReason:@"accessUpdatingService" invalidationBlock:v26];
+    v12 = [v9 initWithIdentifier:uUIDString forReason:@"accessUpdatingService" invalidationBlock:v26];
 
-    v13 = [[_PRUpdatingSession alloc] initWithConnectionAssertion:v12 errorHandler:v7];
+    v13 = [[_PRUpdatingSession alloc] initWithConnectionAssertion:v12 errorHandler:handlerCopy];
     v14 = v32[5];
     v32[5] = v13;
 
-    [(NSMutableDictionary *)v8->_activeSessions setObject:v32[5] forKey:v11];
+    [(NSMutableDictionary *)selfCopy->_activeSessions setObject:v32[5] forKey:v11];
     objc_destroyWeak(&v28);
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     v15 = v32[5];
     goto LABEL_5;
   }
 
-  v7[2](v7, v18);
+  handlerCopy[2](handlerCopy, v18);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = 0;
 LABEL_5:
   _Block_object_dispose(&v31, 8);
@@ -752,14 +752,14 @@ void __57__PRUpdatingService__acquireSessionForUUID_errorHandler___block_invoke_
   }
 }
 
-- (void)_invalidateSession:(id)a3
+- (void)_invalidateSession:(id)session
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_activeSessions removeObjectForKey:v5];
-  [(PRUpdatingService *)v4 _updateActiveSessions];
-  objc_sync_exit(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_activeSessions removeObjectForKey:sessionCopy];
+  [(PRUpdatingService *)selfCopy _updateActiveSessions];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_updateActiveSessions

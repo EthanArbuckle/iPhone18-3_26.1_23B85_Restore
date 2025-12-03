@@ -1,29 +1,29 @@
 @interface SafariWebExtensionPermissionsExplanationSection
-- (SafariWebExtensionPermissionsExplanationSection)initWithType:(int64_t)a3 sites:(id)a4 allowedOnAllSites:(BOOL)a5 includesCurrentTab:(BOOL)a6 extensionName:(id)a7;
+- (SafariWebExtensionPermissionsExplanationSection)initWithType:(int64_t)type sites:(id)sites allowedOnAllSites:(BOOL)allSites includesCurrentTab:(BOOL)tab extensionName:(id)name;
 - (id)subtitle;
 - (id)title;
 @end
 
 @implementation SafariWebExtensionPermissionsExplanationSection
 
-- (SafariWebExtensionPermissionsExplanationSection)initWithType:(int64_t)a3 sites:(id)a4 allowedOnAllSites:(BOOL)a5 includesCurrentTab:(BOOL)a6 extensionName:(id)a7
+- (SafariWebExtensionPermissionsExplanationSection)initWithType:(int64_t)type sites:(id)sites allowedOnAllSites:(BOOL)allSites includesCurrentTab:(BOOL)tab extensionName:(id)name
 {
-  v12 = a4;
-  v13 = a7;
+  sitesCopy = sites;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = SafariWebExtensionPermissionsExplanationSection;
   v14 = [(SafariWebExtensionPermissionsExplanationSection *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    v16 = [v12 copy];
+    v14->_type = type;
+    v16 = [sitesCopy copy];
     sites = v15->_sites;
     v15->_sites = v16;
 
-    v15->_appliesToAllSites = a5;
-    v15->_includesCurrentTab = a6;
-    v18 = [v13 copy];
+    v15->_appliesToAllSites = allSites;
+    v15->_includesCurrentTab = tab;
+    v18 = [nameCopy copy];
     extensionName = v15->_extensionName;
     v15->_extensionName = v18;
 

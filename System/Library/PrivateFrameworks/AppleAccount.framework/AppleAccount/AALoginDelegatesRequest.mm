@@ -1,25 +1,25 @@
 @interface AALoginDelegatesRequest
-- (AALoginDelegatesRequest)initWithAccount:(id)a3 parameters:(id)a4;
+- (AALoginDelegatesRequest)initWithAccount:(id)account parameters:(id)parameters;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AALoginDelegatesRequest
 
-- (AALoginDelegatesRequest)initWithAccount:(id)a3 parameters:(id)a4
+- (AALoginDelegatesRequest)initWithAccount:(id)account parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = AALoginDelegatesRequest;
   v9 = [(AALoginDelegatesRequest *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [parametersCopy copy];
     loginParameters = v9->_loginParameters;
     v9->_loginParameters = v10;
 
-    objc_storeStrong(&v9->_account, a3);
+    objc_storeStrong(&v9->_account, account);
   }
 
   return v9;
@@ -28,9 +28,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 loginDelegatesURL];
+  loginDelegatesURL = [v2 loginDelegatesURL];
 
-  return v3;
+  return loginDelegatesURL;
 }
 
 - (id)urlRequest
@@ -38,18 +38,18 @@
   v20 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = AALoginDelegatesRequest;
-  v3 = [(AARequest *)&v17 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v17 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setValue:self->_loginParameters forKey:@"delegates"];
-  v6 = [(ACAccount *)self->_account username];
-  [v5 setValue:v6 forKey:@"apple-id"];
+  username = [(ACAccount *)self->_account username];
+  [v5 setValue:username forKey:@"apple-id"];
 
-  v7 = [(ACAccount *)self->_account credential];
-  v8 = [v7 password];
-  [v5 setValue:v8 forKey:@"password"];
+  credential = [(ACAccount *)self->_account credential];
+  password = [credential password];
+  [v5 setValue:password forKey:@"password"];
 
   v9 = +[AADeviceInfo appleIDClientIdentifier];
   [v5 setValue:v9 forKey:@"client-id"];

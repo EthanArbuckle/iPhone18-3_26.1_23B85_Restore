@@ -1,6 +1,6 @@
 @interface HKGymKitDataSource
-+ (id)defaultConfigurationWithWorkoutConfiguration:(id)a3;
-- (HKGymKitDataSource)initWithHealthStore:(id)a3 workoutConfiguration:(id)a4;
++ (id)defaultConfigurationWithWorkoutConfiguration:(id)configuration;
+- (HKGymKitDataSource)initWithHealthStore:(id)store workoutConfiguration:(id)configuration;
 - (void)_startTaskServerIfNeeded;
 - (void)connectionInterrupted;
 - (void)workoutBuilderDidFinish;
@@ -8,21 +8,21 @@
 
 @implementation HKGymKitDataSource
 
-- (HKGymKitDataSource)initWithHealthStore:(id)a3 workoutConfiguration:(id)a4
+- (HKGymKitDataSource)initWithHealthStore:(id)store workoutConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HKGymKitDataSource;
   v9 = [(HKGymKitDataSource *)&v16 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = uUID;
 
-    objc_storeStrong(&v9->_healthStore, a3);
-    v12 = [HKGymKitDataSource defaultConfigurationWithWorkoutConfiguration:v8];
+    objc_storeStrong(&v9->_healthStore, store);
+    v12 = [HKGymKitDataSource defaultConfigurationWithWorkoutConfiguration:configurationCopy];
     v13 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v9->_healthStore taskIdentifier:@"HKGymKitDataSourceServerIdentifier" exportedObject:v9 taskUUID:v9->_identifier];
     proxyProvider = v9->_proxyProvider;
     v9->_proxyProvider = v13;
@@ -34,13 +34,13 @@
   return v9;
 }
 
-+ (id)defaultConfigurationWithWorkoutConfiguration:(id)a3
++ (id)defaultConfigurationWithWorkoutConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = +[HKWorkoutDataSource observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:](HKWorkoutDataSource, "observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:", [v3 activityType], objc_msgSend(v3, "locationType") == 2, 1, 1);
+  configurationCopy = configuration;
+  v4 = +[HKWorkoutDataSource observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:](HKWorkoutDataSource, "observedTypesForActivityType:isIndoor:connectedToFitnessMachine:activityMode:", [configurationCopy activityType], objc_msgSend(configurationCopy, "locationType") == 2, 1, 1);
   v5 = [HKWorkoutDataSourceConfiguration alloc];
   v6 = [MEMORY[0x1E695DFD8] set];
-  v7 = [(HKWorkoutDataSourceConfiguration *)v5 initWithWorkoutConfiguration:v3 sampleTypesToCollect:v4 filters:MEMORY[0x1E695E0F8] eventTypesToCollect:v6 collectsDefaultTypes:1];
+  v7 = [(HKWorkoutDataSourceConfiguration *)v5 initWithWorkoutConfiguration:configurationCopy sampleTypesToCollect:v4 filters:MEMORY[0x1E695E0F8] eventTypesToCollect:v6 collectsDefaultTypes:1];
 
   return v7;
 }

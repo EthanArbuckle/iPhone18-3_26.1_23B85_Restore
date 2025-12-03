@@ -1,12 +1,12 @@
 @interface TNPdfHyperlinkController
 - (CGRect)canvasRect;
-- (TNPdfHyperlinkController)initWithDocumentRoot:(id)a3;
-- (id)destinationFromUrl:(id)a3;
+- (TNPdfHyperlinkController)initWithDocumentRoot:(id)root;
+- (id)destinationFromUrl:(id)url;
 @end
 
 @implementation TNPdfHyperlinkController
 
-- (TNPdfHyperlinkController)initWithDocumentRoot:(id)a3
+- (TNPdfHyperlinkController)initWithDocumentRoot:(id)root
 {
   v4.receiver = self;
   v4.super_class = TNPdfHyperlinkController;
@@ -26,10 +26,10 @@
   return result;
 }
 
-- (id)destinationFromUrl:(id)a3
+- (id)destinationFromUrl:(id)url
 {
-  v3 = a3;
-  if ((objc_msgSend_isSheetURL(v3, v4, v5) & 1) == 0)
+  urlCopy = url;
+  if ((objc_msgSend_isSheetURL(urlCopy, v4, v5) & 1) == 0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TNPdfHyperlinkController destinationFromUrl:]");
@@ -39,7 +39,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  v15 = objc_msgSend_absoluteString(v3, v6, v7);
+  v15 = objc_msgSend_absoluteString(urlCopy, v6, v7);
   v16 = *MEMORY[0x277D80FF8];
   v20 = &stru_2884F65E0;
   if (objc_msgSend_hasPrefix_(v15, v17, *MEMORY[0x277D80FF8]))
@@ -53,7 +53,7 @@
     v24 = MEMORY[0x277D81150];
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "[TNPdfHyperlinkController destinationFromUrl:]");
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v26, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/numbers/Classes/TNPdfHyperlinkController.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v28, v25, v27, 51, 0, "No destination returned for URL: %@", v3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v28, v25, v27, 51, 0, "No destination returned for URL: %@", urlCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30);
   }

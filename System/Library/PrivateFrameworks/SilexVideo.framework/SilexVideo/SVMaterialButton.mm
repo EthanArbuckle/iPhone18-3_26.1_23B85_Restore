@@ -1,15 +1,15 @@
 @interface SVMaterialButton
-- (SVMaterialButton)initWithFrame:(CGRect)a3;
+- (SVMaterialButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SVMaterialButton
 
-- (SVMaterialButton)initWithFrame:(CGRect)a3
+- (SVMaterialButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SVMaterialButton;
-  v3 = [(SVButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CB8590]);
@@ -29,9 +29,9 @@
   v4.receiver = self;
   v4.super_class = SVMaterialButton;
   [(SVMaterialButton *)&v4 layoutSubviews];
-  v3 = [(SVMaterialButton *)self backgroundView];
+  backgroundView = [(SVMaterialButton *)self backgroundView];
   [(SVMaterialButton *)self bounds];
-  [v3 setFrame:?];
+  [backgroundView setFrame:?];
 }
 
 @end

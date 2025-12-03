@@ -1,15 +1,15 @@
 @interface AMKSerializedDataMetrics
 - (AMKSerializedDataMetrics)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMKSerializedDataMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EAB7460(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EAB7460(coderCopy);
 }
 
 - (AMKSerializedDataMetrics)init

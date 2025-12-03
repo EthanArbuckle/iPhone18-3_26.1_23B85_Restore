@@ -1,21 +1,21 @@
 @interface LogFileWriter
-- (BOOL)_log:(id)a3;
-- (id)initFor:(id)a3 fileLabel:(id)a4;
+- (BOOL)_log:(id)_log;
+- (id)initFor:(id)for fileLabel:(id)label;
 - (void)_flush;
 - (void)createFilePath;
 - (void)dealloc;
 - (void)flush;
-- (void)log:(id)a3;
-- (void)log:(id)a3 data:(id)a4;
-- (void)logRawData:(id)a3;
+- (void)log:(id)log;
+- (void)log:(id)log data:(id)data;
+- (void)logRawData:(id)data;
 - (void)scheduleFlush;
-- (void)timerFlush:(id)a3;
+- (void)timerFlush:(id)flush;
 - (void)unscheduleFlush;
 @end
 
 @implementation LogFileWriter
 
-- (id)initFor:(id)a3 fileLabel:(id)a4
+- (id)initFor:(id)for fileLabel:(id)label
 {
   v8.receiver = self;
   v8.super_class = LogFileWriter;
@@ -35,10 +35,10 @@
       v6->_logQueue = result;
       if (((v6 + 16) & 7) == 0)
       {
-        v6->_filenamePrefix = a3;
+        v6->_filenamePrefix = for;
         if ((&v6->_fileLabel & 7) == 0)
         {
-          v6->_fileLabel = a4;
+          v6->_fileLabel = label;
           return v6;
         }
       }
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)logRawData:(id)a3
+- (void)logRawData:(id)data
 {
   v8 = 0;
   v9 = &v8;
@@ -92,7 +92,7 @@ LABEL_9:
   block[2] = sub_1000DF860;
   block[3] = &unk_100114638;
   block[4] = self;
-  block[5] = a3;
+  block[5] = data;
   block[6] = &v8;
   dispatch_sync(v5, block);
   v6 = *(v9 + 24);
@@ -116,9 +116,9 @@ LABEL_10:
   _Block_object_dispose(&v8, 8);
 }
 
-- (BOOL)_log:(id)a3
+- (BOOL)_log:(id)_log
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [_log dataUsingEncoding:4];
   if (!v4)
   {
     NSLog(@"ERROR!!!: _log: dataUsingEncoding returned nil!");
@@ -154,7 +154,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v11 = 0;
   v12 = &v11;
@@ -164,7 +164,7 @@ LABEL_7:
   [v5 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSSSSS ZZZ"];
   v6 = [v5 stringFromDate:{+[NSDate date](NSDate, "date")}];
 
-  v7 = [NSString stringWithFormat:@"%@ %@\n", v6, a3];
+  v7 = [NSString stringWithFormat:@"%@ %@\n", v6, log];
   if ((&self->_logQueue & 7) != 0)
   {
     __break(0x5516u);
@@ -208,7 +208,7 @@ LABEL_10:
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)log:(id)a3 data:(id)a4
+- (void)log:(id)log data:(id)data
 {
   v13 = 0;
   v14 = &v13;
@@ -238,8 +238,8 @@ LABEL_9:
   block[2] = sub_1000DFC9C;
   block[3] = &unk_100119B08;
   block[4] = v8;
-  block[5] = a3;
-  block[7] = a4;
+  block[5] = log;
+  block[7] = data;
   block[8] = &v13;
   block[6] = self;
   dispatch_sync(v10, block);
@@ -376,7 +376,7 @@ LABEL_10:
   __break(0x5510u);
 }
 
-- (void)timerFlush:(id)a3
+- (void)timerFlush:(id)flush
 {
   p_logQueue = &self->_logQueue;
   if ((&self->_logQueue & 7) != 0)
@@ -393,7 +393,7 @@ LABEL_10:
       v6[1] = 3221225472;
       v6[2] = sub_1000E0480;
       v6[3] = &unk_100114558;
-      v6[4] = a3;
+      v6[4] = flush;
       v6[5] = self;
       dispatch_sync(v5, v6);
       [(LogFileWriter *)self performSelectorInBackground:"_flush" withObject:0];

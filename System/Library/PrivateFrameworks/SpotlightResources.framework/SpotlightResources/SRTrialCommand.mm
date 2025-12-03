@@ -1,21 +1,21 @@
 @interface SRTrialCommand
-+ (id)runTrialCommand:(id)a3;
-+ (id)usageInformationForSubcommand:(id)a3;
++ (id)runTrialCommand:(id)command;
++ (id)usageInformationForSubcommand:(id)subcommand;
 @end
 
 @implementation SRTrialCommand
 
-+ (id)usageInformationForSubcommand:(id)a3
++ (id)usageInformationForSubcommand:(id)subcommand
 {
-  v3 = a3;
+  subcommandCopy = subcommand;
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"\n"];
-  if ([v3 isEqualToString:@"factor"])
+  if ([subcommandCopy isEqualToString:@"factor"])
   {
     [v4 appendFormat:@"searchutil -c trial:factor:fetch:<factorName>\n\tDump all trial factor values for factors with the name <factorName>.\n"];
     v5 = @"searchutil -c trial:factor:override:<factorName>:<client>:<type>:<value>\n\tOverride factor for <client> and <factorName> with (<type>, <value>)\n";
   }
 
-  else if ([v3 isEqualToString:@"namespace"])
+  else if ([subcommandCopy isEqualToString:@"namespace"])
   {
     [v4 appendFormat:@"searchutil -c trial:namespace:load:<namespaceID>\n\tReload trial namespace <namespaceID>.\n"];
     [v4 appendFormat:@"searchutil -c trial:namespace:factors:<namespaceID>\n\tDump all factors for namespace <namespaceID>.\n"];
@@ -29,7 +29,7 @@
     v5 = @"\t\t337 (SPOTLIGHT_MAIL_APP)\n";
   }
 
-  else if ([v3 isEqualToString:@"trigger"])
+  else if ([subcommandCopy isEqualToString:@"trigger"])
   {
     v5 = @"searchutil -c trial:trigger:<client>:<queryID>:<codepathID>\n\tEmit a log trigger for <queryID> if the value of 'codepathIDs' for <client> includes <codepathID>.\n";
   }
@@ -44,28 +44,28 @@
   return v4;
 }
 
-+ (id)runTrialCommand:(id)a3
++ (id)runTrialCommand:(id)command
 {
-  v4 = a3;
-  if ([v4 count] < 2)
+  commandCopy = command;
+  if ([commandCopy count] < 2)
   {
     goto LABEL_30;
   }
 
-  v5 = [v4 objectAtIndexedSubscript:1];
-  v6 = [v5 lowercaseString];
+  v5 = [commandCopy objectAtIndexedSubscript:1];
+  lowercaseString = [v5 lowercaseString];
 
-  if ([v6 isEqualToString:@"factor"])
+  if ([lowercaseString isEqualToString:@"factor"])
   {
-    if ([v4 count] > 3)
+    if ([commandCopy count] > 3)
     {
-      v7 = [v4 objectAtIndexedSubscript:2];
-      v8 = [v7 lowercaseString];
+      v7 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString2 = [v7 lowercaseString];
 
-      v9 = [v4 objectAtIndexedSubscript:3];
-      v10 = [v9 lowercaseString];
+      v9 = [commandCopy objectAtIndexedSubscript:3];
+      lowercaseString3 = [v9 lowercaseString];
 
-      if ([v8 isEqualToString:@"fetch"])
+      if ([lowercaseString2 isEqualToString:@"fetch"])
       {
         v51 = 0;
         v52 = &v51;
@@ -78,7 +78,7 @@
         v48[1] = 3221225472;
         v48[2] = __34__SRTrialCommand_runTrialCommand___block_invoke;
         v48[3] = &unk_1E7A2AD48;
-        v12 = v10;
+        v12 = lowercaseString3;
         v49 = v12;
         v50 = &v51;
         [v11 enumerateKeysAndObjectsUsingBlock:v48];
@@ -110,23 +110,23 @@
         goto LABEL_38;
       }
 
-      if ([v8 isEqualToString:@"override"])
+      if ([lowercaseString2 isEqualToString:@"override"])
       {
-        if ([v4 count] <= 6)
+        if ([commandCopy count] <= 6)
         {
-          v20 = [a1 usageInformationForSubcommand:v6];
+          v20 = [self usageInformationForSubcommand:lowercaseString];
           goto LABEL_17;
         }
 
-        v34 = [v4 objectAtIndexedSubscript:4];
-        v30 = [v34 capitalizedString];
+        v34 = [commandCopy objectAtIndexedSubscript:4];
+        capitalizedString = [v34 capitalizedString];
 
-        v35 = [v4 objectAtIndexedSubscript:5];
-        v32 = [v35 capitalizedString];
+        v35 = [commandCopy objectAtIndexedSubscript:5];
+        capitalizedString2 = [v35 capitalizedString];
 
-        v36 = [v4 objectAtIndexedSubscript:6];
+        v36 = [commandCopy objectAtIndexedSubscript:6];
         v37 = +[SRResourcesManager sharedResourcesManager];
-        v38 = [v37 overrideFactor:v10 client:v30 type:v32 value:v36];
+        v38 = [v37 overrideFactor:lowercaseString3 client:capitalizedString type:capitalizedString2 value:v36];
 
         if (v38)
         {
@@ -139,7 +139,7 @@
           v39 = @"failed";
         }
 
-        v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nOverride for factor %@ %@.\n", v10, v39];
+        v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nOverride for factor %@ %@.\n", lowercaseString3, v39];
 
         goto LABEL_36;
       }
@@ -148,22 +148,22 @@
     }
   }
 
-  else if ([v6 isEqualToString:@"namespace"])
+  else if ([lowercaseString isEqualToString:@"namespace"])
   {
-    if ([v4 count] > 3)
+    if ([commandCopy count] > 3)
     {
-      v17 = [v4 objectAtIndexedSubscript:2];
-      v8 = [v17 lowercaseString];
+      v17 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString2 = [v17 lowercaseString];
 
-      v18 = [v4 objectAtIndexedSubscript:3];
-      v10 = [v18 lowercaseString];
+      v18 = [commandCopy objectAtIndexedSubscript:3];
+      lowercaseString3 = [v18 lowercaseString];
 
-      if ([v8 isEqualToString:@"load"])
+      if ([lowercaseString2 isEqualToString:@"load"])
       {
         v19 = +[SRResourcesManager sharedResourcesManager];
-        [v19 loadDataSource:v10 force:1];
+        [v19 loadDataSource:lowercaseString3 force:1];
 
-        v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nLoaded namespace %@.\n", v10];
+        v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nLoaded namespace %@.\n", lowercaseString3];
 LABEL_17:
         v29 = v20;
 LABEL_38:
@@ -171,44 +171,44 @@ LABEL_38:
         goto LABEL_39;
       }
 
-      if ([v8 isEqualToString:@"factors"])
+      if ([lowercaseString2 isEqualToString:@"factors"])
       {
-        v30 = +[SRResourcesManager trialParameterList];
+        capitalizedString = +[SRResourcesManager trialParameterList];
         v31 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v32 = [v30 objectForKeyedSubscript:v10];
-        v33 = [v31 initWithFormat:@"\n%@\n", v32];
+        capitalizedString2 = [capitalizedString objectForKeyedSubscript:lowercaseString3];
+        v33 = [v31 initWithFormat:@"\n%@\n", capitalizedString2];
       }
 
       else
       {
-        if (![v8 isEqualToString:@"experiment"])
+        if (![lowercaseString2 isEqualToString:@"experiment"])
         {
 LABEL_28:
 
           goto LABEL_29;
         }
 
-        v30 = [SSTrialManager trialManagerForNamespaceId:v10];
-        if (!v30)
+        capitalizedString = [SSTrialManager trialManagerForNamespaceId:lowercaseString3];
+        if (!capitalizedString)
         {
-          v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nInvalid namespaceID %@\n", v10];
+          v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nInvalid namespaceID %@\n", lowercaseString3];
           goto LABEL_37;
         }
 
-        v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v40 = [v30 experimentId];
-        [v32 setObject:v40 forKeyedSubscript:@"Experiment ID"];
+        capitalizedString2 = objc_alloc_init(MEMORY[0x1E695DF90]);
+        experimentId = [capitalizedString experimentId];
+        [capitalizedString2 setObject:experimentId forKeyedSubscript:@"Experiment ID"];
 
-        v41 = [v30 treatmentId];
-        [v32 setObject:v41 forKeyedSubscript:@"Treatment ID"];
+        treatmentId = [capitalizedString treatmentId];
+        [capitalizedString2 setObject:treatmentId forKeyedSubscript:@"Treatment ID"];
 
-        v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v30, "experimentDeploymentId")}];
-        [v32 setObject:v42 forKeyedSubscript:@"Deployment ID"];
+        v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(capitalizedString, "experimentDeploymentId")}];
+        [capitalizedString2 setObject:v42 forKeyedSubscript:@"Deployment ID"];
 
-        v43 = [v30 rolloutId];
-        [v32 setObject:v43 forKeyedSubscript:@"Rollout ID"];
+        rolloutId = [capitalizedString rolloutId];
+        [capitalizedString2 setObject:rolloutId forKeyedSubscript:@"Rollout ID"];
 
-        v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@\n", v32];
+        v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\n%@\n", capitalizedString2];
       }
 
       v29 = v33;
@@ -221,39 +221,39 @@ LABEL_37:
 
   else
   {
-    if (![v6 isEqualToString:@"trigger"])
+    if (![lowercaseString isEqualToString:@"trigger"])
     {
 LABEL_29:
 
 LABEL_30:
-      if ([v4 count] <= 1)
+      if ([commandCopy count] <= 1)
       {
-        v29 = [a1 usageInformationForSubcommand:0];
+        v29 = [self usageInformationForSubcommand:0];
         goto LABEL_41;
       }
 
-      v6 = [v4 objectAtIndexedSubscript:1];
+      lowercaseString = [commandCopy objectAtIndexedSubscript:1];
       goto LABEL_32;
     }
 
-    if ([v4 count] > 4)
+    if ([commandCopy count] > 4)
     {
-      v21 = [v4 objectAtIndexedSubscript:2];
-      v8 = [v21 capitalizedString];
+      v21 = [commandCopy objectAtIndexedSubscript:2];
+      lowercaseString2 = [v21 capitalizedString];
 
-      v22 = [v4 objectAtIndexedSubscript:3];
-      v23 = [v22 unsignedLongLongValue];
+      v22 = [commandCopy objectAtIndexedSubscript:3];
+      unsignedLongLongValue = [v22 unsignedLongLongValue];
 
-      v24 = [v4 objectAtIndexedSubscript:4];
-      v25 = [v24 uppercaseString];
+      v24 = [commandCopy objectAtIndexedSubscript:4];
+      uppercaseString = [v24 uppercaseString];
 
       v26 = +[SRResourcesManager sharedResourcesManager];
-      v27 = [v26 resourcesForClient:v8 options:&unk_1F2427B98];
+      v27 = [v26 resourcesForClient:lowercaseString2 options:&unk_1F2427B98];
 
-      v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v25];
-      [v27 logForTrigger:v28 queryID:v23];
+      v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:uppercaseString];
+      [v27 logForTrigger:v28 queryID:unsignedLongLongValue];
 
-      v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nInvoked log trigger logic for (%@, %llu, %@); check feedback stream with 'parsec_tool feedback --dump --pretty'.\n", v8, v23, v25];
+      v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"\nInvoked log trigger logic for (%@, %llu, %@); check feedback stream with 'parsec_tool feedback --dump --pretty'.\n", lowercaseString2, unsignedLongLongValue, uppercaseString];
 LABEL_39:
 
       goto LABEL_40;
@@ -261,7 +261,7 @@ LABEL_39:
   }
 
 LABEL_32:
-  v29 = [a1 usageInformationForSubcommand:v6];
+  v29 = [self usageInformationForSubcommand:lowercaseString];
 LABEL_40:
 
 LABEL_41:

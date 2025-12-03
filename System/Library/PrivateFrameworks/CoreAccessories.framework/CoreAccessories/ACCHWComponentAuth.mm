@@ -3,13 +3,13 @@
 - (ACCHWComponentAuth)init;
 - (id)_init;
 - (void)_init;
-- (void)authenticateBatteryWithChallenge:(id)a3 completionHandler:(id)a4;
-- (void)authenticateLASWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5;
-- (void)authenticateTouchControllerWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5;
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4;
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5 updateUIProperty:(BOOL)a6 logToAnalytics:(BOOL)a7;
-- (void)signVeridianChallenge:(id)a3 completionHandler:(id)a4;
-- (void)verifyBatteryMatch:(id)a3 completionHandler:(id)a4;
+- (void)authenticateBatteryWithChallenge:(id)challenge completionHandler:(id)handler;
+- (void)authenticateLASWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry;
+- (void)authenticateTouchControllerWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry;
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler;
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics;
+- (void)signVeridianChallenge:(id)challenge completionHandler:(id)handler;
+- (void)verifyBatteryMatch:(id)match completionHandler:(id)handler;
 @end
 
 @implementation ACCHWComponentAuth
@@ -100,11 +100,11 @@
   return v6;
 }
 
-- (void)authenticateBatteryWithChallenge:(id)a3 completionHandler:(id)a4
+- (void)authenticateBatteryWithChallenge:(id)challenge completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -134,7 +134,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "YES";
-    if (!v7)
+    if (!handlerCopy)
     {
       v11 = "NO";
     }
@@ -149,11 +149,11 @@
   block[1] = 3221225472;
   block[2] = __73__ACCHWComponentAuth_authenticateBatteryWithChallenge_completionHandler___block_invoke;
   block[3] = &unk_278487778;
-  v17 = v6;
-  v18 = v7;
+  v17 = challengeCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = challengeCopy;
+  v14 = handlerCopy;
   dispatch_sync(v12, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -289,11 +289,11 @@ void __73__ACCHWComponentAuth_authenticateBatteryWithChallenge_completionHandler
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticateTouchControllerWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5
+- (void)authenticateTouchControllerWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 4;
@@ -323,7 +323,7 @@ void __73__ACCHWComponentAuth_authenticateBatteryWithChallenge_completionHandler
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = "YES";
-    if (!v9)
+    if (!handlerCopy)
     {
       v13 = "NO";
     }
@@ -338,12 +338,12 @@ void __73__ACCHWComponentAuth_authenticateBatteryWithChallenge_completionHandler
   v18[1] = 3221225472;
   v18[2] = __96__ACCHWComponentAuth_authenticateTouchControllerWithChallenge_completionHandler_updateRegistry___block_invoke;
   v18[3] = &unk_2784877A0;
-  v19 = v8;
-  v20 = v9;
+  v19 = challengeCopy;
+  v20 = handlerCopy;
   v18[4] = self;
-  v21 = a5;
-  v15 = v8;
-  v16 = v9;
+  registryCopy = registry;
+  v15 = challengeCopy;
+  v16 = handlerCopy;
   dispatch_sync(v14, v18);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -479,11 +479,11 @@ void __96__ACCHWComponentAuth_authenticateTouchControllerWithChallenge_completio
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticateLASWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5
+- (void)authenticateLASWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 4;
@@ -513,7 +513,7 @@ void __96__ACCHWComponentAuth_authenticateTouchControllerWithChallenge_completio
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = "YES";
-    if (!v9)
+    if (!handlerCopy)
     {
       v13 = "NO";
     }
@@ -528,12 +528,12 @@ void __96__ACCHWComponentAuth_authenticateTouchControllerWithChallenge_completio
   v18[1] = 3221225472;
   v18[2] = __84__ACCHWComponentAuth_authenticateLASWithChallenge_completionHandler_updateRegistry___block_invoke;
   v18[3] = &unk_2784877A0;
-  v19 = v8;
-  v20 = v9;
+  v19 = challengeCopy;
+  v20 = handlerCopy;
   v18[4] = self;
-  v21 = a5;
-  v15 = v8;
-  v16 = v9;
+  registryCopy = registry;
+  v15 = challengeCopy;
+  v16 = handlerCopy;
   dispatch_sync(v14, v18);
 
   v17 = *MEMORY[0x277D85DE8];
@@ -669,11 +669,11 @@ void __84__ACCHWComponentAuth_authenticateLASWithChallenge_completionHandler_upd
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -703,7 +703,7 @@ void __84__ACCHWComponentAuth_authenticateLASWithChallenge_completionHandler_upd
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "YES";
-    if (!v7)
+    if (!handlerCopy)
     {
       v11 = "NO";
     }
@@ -718,11 +718,11 @@ void __84__ACCHWComponentAuth_authenticateLASWithChallenge_completionHandler_upd
   block[1] = 3221225472;
   block[2] = __74__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandler___block_invoke;
   block[3] = &unk_278487778;
-  v17 = v6;
-  v18 = v7;
+  v17 = challengeCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = challengeCopy;
+  v14 = handlerCopy;
   dispatch_sync(v12, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -858,11 +858,11 @@ void __74__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandle
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticateVeridianWithChallenge:(id)a3 completionHandler:(id)a4 updateRegistry:(BOOL)a5 updateUIProperty:(BOOL)a6 logToAnalytics:(BOOL)a7
+- (void)authenticateVeridianWithChallenge:(id)challenge completionHandler:(id)handler updateRegistry:(BOOL)registry updateUIProperty:(BOOL)property logToAnalytics:(BOOL)analytics
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 4;
@@ -892,7 +892,7 @@ void __74__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandle
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = "YES";
-    if (!v13)
+    if (!handlerCopy)
     {
       v17 = "NO";
     }
@@ -907,14 +907,14 @@ void __74__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandle
   v22[1] = 3221225472;
   v22[2] = __121__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandler_updateRegistry_updateUIProperty_logToAnalytics___block_invoke;
   v22[3] = &unk_2784877C8;
-  v23 = v12;
-  v24 = v13;
+  v23 = challengeCopy;
+  v24 = handlerCopy;
   v22[4] = self;
-  v25 = a5;
-  v26 = a6;
-  v27 = a7;
-  v19 = v12;
-  v20 = v13;
+  registryCopy = registry;
+  propertyCopy = property;
+  analyticsCopy = analytics;
+  v19 = challengeCopy;
+  v20 = handlerCopy;
   dispatch_sync(v18, v22);
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1050,11 +1050,11 @@ void __121__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandl
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signVeridianChallenge:(id)a3 completionHandler:(id)a4
+- (void)signVeridianChallenge:(id)challenge completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -1084,7 +1084,7 @@ void __121__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandl
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "YES";
-    if (!v7)
+    if (!handlerCopy)
     {
       v11 = "NO";
     }
@@ -1099,11 +1099,11 @@ void __121__ACCHWComponentAuth_authenticateVeridianWithChallenge_completionHandl
   block[1] = 3221225472;
   block[2] = __62__ACCHWComponentAuth_signVeridianChallenge_completionHandler___block_invoke;
   block[3] = &unk_278487778;
-  v17 = v6;
-  v18 = v7;
+  v17 = challengeCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = challengeCopy;
+  v14 = handlerCopy;
   dispatch_sync(v12, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1235,11 +1235,11 @@ void __62__ACCHWComponentAuth_signVeridianChallenge_completionHandler___block_in
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyBatteryMatch:(id)a3 completionHandler:(id)a4
+- (void)verifyBatteryMatch:(id)match completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -1269,7 +1269,7 @@ void __62__ACCHWComponentAuth_signVeridianChallenge_completionHandler___block_in
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "YES";
-    if (!v7)
+    if (!handlerCopy)
     {
       v11 = "NO";
     }
@@ -1284,11 +1284,11 @@ void __62__ACCHWComponentAuth_signVeridianChallenge_completionHandler___block_in
   block[1] = 3221225472;
   block[2] = __59__ACCHWComponentAuth_verifyBatteryMatch_completionHandler___block_invoke;
   block[3] = &unk_278487778;
-  v17 = v6;
-  v18 = v7;
+  v17 = matchCopy;
+  v18 = handlerCopy;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = matchCopy;
+  v14 = handlerCopy;
   dispatch_sync(v12, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1424,7 +1424,7 @@ void __59__ACCHWComponentAuth_verifyBatteryMatch_completionHandler___block_invok
   block[1] = 3221225472;
   block[2] = __35__ACCHWComponentAuth_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_1 != -1)
   {
     dispatch_once(&sharedManager_once_1, block);

@@ -1,8 +1,8 @@
 @interface MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     pendingDataset = v2->_pendingDataset;
-    v2->_pendingDataset = v3;
+    v2->_pendingDataset = data;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams);
-  v5 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self pendingDataset];
-  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setPendingDataset:v5];
+  pendingDataset = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self pendingDataset];
+  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setPendingDataset:pendingDataset];
 
-  v6 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self serverSideProcessingTimeout];
-  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self serverSideProcessingTimeout];
+  [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -55,14 +55,14 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v21 = 0uLL;
   v20[0] = 0;
   v20[1] = 0;
   v19 = v20;
-  v4 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self pendingDataset];
-  sub_238DB6950(v13, [v4 bytes], objc_msgSend(v4, "length"));
+  pendingDataset = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self pendingDataset];
+  sub_238DB6950(v13, [pendingDataset bytes], objc_msgSend(pendingDataset, "length"));
 
   v21 = v13[0];
   sub_2393D9C18(0x62FuLL, 0, &v18);
@@ -84,8 +84,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v18);
-      v5 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v18);
+      v5 = sub_2393C7114(reader, 21, 256);
       v8 = v12;
       v7 = v5;
     }
@@ -113,19 +113,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRThreadBorderRouterManagementClusterSetPendingDatasetRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -136,7 +136,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x6AB100000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

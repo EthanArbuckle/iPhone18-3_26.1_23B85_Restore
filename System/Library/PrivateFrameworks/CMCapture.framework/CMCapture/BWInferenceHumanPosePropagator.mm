@@ -1,24 +1,24 @@
 @interface BWInferenceHumanPosePropagator
-- (BWInferenceHumanPosePropagator)initWithOutputRequirement:(id)a3 rotateOutput:(BOOL)a4;
-- (__IOSurface)backingMemoryForMetadataRequirement:(id)a3 bindingName:(id)a4 surfaceProperties:(id)a5;
-- (double)calculateIOU:(double)a3 with:(double)a4;
+- (BWInferenceHumanPosePropagator)initWithOutputRequirement:(id)requirement rotateOutput:(BOOL)output;
+- (__IOSurface)backingMemoryForMetadataRequirement:(id)requirement bindingName:(id)name surfaceProperties:(id)properties;
+- (double)calculateIOU:(double)u with:(double)with;
 - (void)dealloc;
 - (void)keypointsFromModelOutput:width:height:persons:;
 - (void)newMatchesOfHumanPoses:toTracks:;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
 @end
 
 @implementation BWInferenceHumanPosePropagator
 
-- (BWInferenceHumanPosePropagator)initWithOutputRequirement:(id)a3 rotateOutput:(BOOL)a4
+- (BWInferenceHumanPosePropagator)initWithOutputRequirement:(id)requirement rotateOutput:(BOOL)output
 {
   v8.receiver = self;
   v8.super_class = BWInferenceHumanPosePropagator;
   v6 = [(BWInferenceHumanPosePropagator *)&v8 init];
   if (v6)
   {
-    v6->_outputRequirement = [a3 copy];
-    v6->_rotateOutput = a4;
+    v6->_outputRequirement = [requirement copy];
+    v6->_rotateOutput = output;
   }
 
   return v6;
@@ -38,19 +38,19 @@
   [(BWInferenceHumanPosePropagator *)&v4 dealloc];
 }
 
-- (__IOSurface)backingMemoryForMetadataRequirement:(id)a3 bindingName:(id)a4 surfaceProperties:(id)a5
+- (__IOSurface)backingMemoryForMetadataRequirement:(id)requirement bindingName:(id)name surfaceProperties:(id)properties
 {
   result = self->_tensorBackingSurface;
   if (!result)
   {
-    result = IOSurfaceCreate(a5);
+    result = IOSurfaceCreate(properties);
     self->_tensorBackingSurface = result;
   }
 
   return result;
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   v9 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -58,10 +58,10 @@
     OUTLINED_FUNCTION_7_48();
   }
 
-  if (a4)
+  if (storage)
   {
     outputRequirement = self->_outputRequirement;
-    v11 = [a4 tensorForRequirement:outputRequirement];
+    v11 = [storage tensorForRequirement:outputRequirement];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __136__BWInferenceHumanPosePropagator_propagateInferenceResultsToInferenceDictionary_usingStorage_inputSampleBuffer_propagationSampleBuffer___block_invoke;
@@ -73,8 +73,8 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [(BWInferenceMetadataRequirement *)outputRequirement metadataKeys];
-    v14 = [(NSArray *)v13 countByEnumeratingWithState:&v21 objects:v20 count:16];
+    metadataKeys = [(BWInferenceMetadataRequirement *)outputRequirement metadataKeys];
+    v14 = [(NSArray *)metadataKeys countByEnumeratingWithState:&v21 objects:v20 count:16];
     if (v14)
     {
       v15 = v14;
@@ -85,15 +85,15 @@
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(metadataKeys);
           }
 
           v18 = *(*(&v21 + 1) + 8 * i);
           v19 = v12;
-          [a3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}];
+          [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}];
         }
 
-        v15 = [(NSArray *)v13 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v15 = [(NSArray *)metadataKeys countByEnumeratingWithState:&v21 objects:v20 count:16];
       }
 
       while (v15);
@@ -199,11 +199,11 @@ uint64_t __136__BWInferenceHumanPosePropagator_propagateInferenceResultsToInfere
       v7 = *(v163 + 24);
       if (v7 || (v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:34 * v5 * v6], (*(v163 + 24) = v7) != 0))
       {
-        v8 = [v7 mutableBytes];
-        if (v8)
+        mutableBytes = [v7 mutableBytes];
+        if (mutableBytes)
         {
-          v9 = v8;
-          memcpy(v8, __src, 34 * v5 * v6);
+          v9 = mutableBytes;
+          memcpy(mutableBytes, __src, 34 * v5 * v6);
           v10 = 0;
           v169 = v5 * v6;
           LOWORD(v11) = COERCE_UNSIGNED_INT(-1.0);
@@ -281,8 +281,8 @@ LABEL_28:
 
           while (v10 != 17);
           v160 = v9;
-          v30 = [MEMORY[0x1E695DF70] array];
-          v38 = v30;
+          array = [MEMORY[0x1E695DF70] array];
+          v38 = array;
           v184 = 0;
           v39 = 0x1E696A000;
           v40 = 0x1E695D000;
@@ -385,11 +385,11 @@ LABEL_52:
                         v234[1] = &unk_1F224A890;
                         [*(v40 + 3784) arrayWithObjects:v234 count:2];
                         [OUTLINED_FUNCTION_15() addObject:?];
-                        v75 = [MEMORY[0x1E695DF70] array];
+                        array2 = [MEMORY[0x1E695DF70] array];
                         v76 = 17;
                         do
                         {
-                          [v75 addObject:&unk_1F2249000];
+                          [array2 addObject:&unk_1F2249000];
                           --v76;
                         }
 
@@ -401,10 +401,10 @@ LABEL_52:
                         __asm { FCVT            S0, H0 }
 
                         v233[2] = [*(v39 + 3480) numberWithFloat:_D0];
-                        [v75 setObject:objc_msgSend(*(v40 + 3784) atIndexedSubscript:{"arrayWithObjects:count:", v233, 3), v184}];
-                        v79 = v75;
+                        [array2 setObject:objc_msgSend(*(v40 + 3784) atIndexedSubscript:{"arrayWithObjects:count:", v233, 3), v184}];
+                        v79 = array2;
                         v43 = v187;
-                        v30 = [obj addObject:v79];
+                        array = [obj addObject:v79];
                       }
 
                       else
@@ -425,7 +425,7 @@ LABEL_52:
                         _H0 = *(v175 + 2 * v41);
                         __asm { FCVT            S8, H0 }
 
-                        v30 = [objc_msgSend(objc_msgSend(v62 objectAtIndexedSubscript:{v184), "objectAtIndexedSubscript:", 2), "floatValue"}];
+                        array = [objc_msgSend(objc_msgSend(v62 objectAtIndexedSubscript:{v184), "objectAtIndexedSubscript:", 2), "floatValue"}];
                         v43 = v187;
                         if (v72 < _S8)
                         {
@@ -435,7 +435,7 @@ LABEL_52:
                           __asm { FCVT            S0, H0 }
 
                           v235[2] = [MEMORY[0x1E696AD98] numberWithFloat:_D0];
-                          v30 = [v62 setObject:objc_msgSend(MEMORY[0x1E695DEC8] atIndexedSubscript:{"arrayWithObjects:count:", v235, 3), v184}];
+                          array = [v62 setObject:objc_msgSend(MEMORY[0x1E695DEC8] atIndexedSubscript:{"arrayWithObjects:count:", v235, 3), v184}];
                         }
                       }
                     }
@@ -461,7 +461,7 @@ LABEL_52:
           v232 = 0u;
           v229 = 0u;
           v230 = 0u;
-          v80 = OUTLINED_FUNCTION_8_41(v30, v31, v32, v33, v34, v35, v36, v37, v154, v157, v160, v163, __src, v169, v172, v175, obj, v181, 17, v187, v190, v191, v192, v193, v194, v195, v196, v197, v198, v199, v200, v201, v202, v203, v204, v205, v206, v207, v208, v209, v210, v211, v212, *(&v212 + 1), v213, *(&v213 + 1), v214, *(&v214 + 1), v215, *(&v215 + 1), v216, v217, v218, v219, v220, v221, v222, v223, v224, v225, v226, v227, v228);
+          v80 = OUTLINED_FUNCTION_8_41(array, v31, v32, v33, v34, v35, v36, v37, v154, v157, v160, v163, __src, v169, v172, v175, obj, v181, 17, v187, v190, v191, v192, v193, v194, v195, v196, v197, v198, v199, v200, v201, v202, v203, v204, v205, v206, v207, v208, v209, v210, v211, v212, *(&v212 + 1), v213, *(&v213 + 1), v214, *(&v214 + 1), v215, *(&v215 + 1), v216, v217, v218, v219, v220, v221, v222, v223, v224, v225, v226, v227, v228);
           if (v80)
           {
             v88 = v80;
@@ -838,20 +838,20 @@ LABEL_108:
   OUTLINED_FUNCTION_5_5();
 }
 
-- (double)calculateIOU:(double)a3 with:(double)a4
+- (double)calculateIOU:(double)u with:(double)with
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v9 = fmax(a2, a6);
-  v10 = fmax(a3, a7);
-  v11 = fmin(a2 + a4, a6 + a8);
-  v12 = fmin(a3 + a5, a7 + a9);
+  v10 = fmax(u, a7);
+  v11 = fmin(a2 + with, a6 + a8);
+  v12 = fmin(u + a5, a7 + a9);
   result = fmax((v11 - v9), 0.0) * fmax((v12 - v10), 0.0);
   *&result = result;
-  v13 = a4 * a5;
+  v13 = with * a5;
   v14 = a8 * a9;
   *&result = *&result / (((v13 + v14) - *&result) + 1.0e-12);
   return result;

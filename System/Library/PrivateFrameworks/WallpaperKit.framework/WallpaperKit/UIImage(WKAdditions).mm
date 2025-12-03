@@ -13,26 +13,26 @@
 + (id)wk_imageWithContentsOfURL:()WKAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
-    v7 = [v3 lastPathComponent];
-    v8 = [v7 lowercaseString];
-    v9 = [v8 hasSuffix:@"cpbitmap"];
+    lastPathComponent = [v3 lastPathComponent];
+    lowercaseString = [lastPathComponent lowercaseString];
+    v9 = [lowercaseString hasSuffix:@"cpbitmap"];
 
     v10 = MEMORY[0x1E69DCAB8];
-    v11 = [v3 path];
+    path2 = [v3 path];
     if (v9)
     {
-      [v10 imageWithContentsOfCPBitmapFile:v11 flags:0];
+      [v10 imageWithContentsOfCPBitmapFile:path2 flags:0];
     }
 
     else
     {
-      [v10 imageWithContentsOfFile:v11];
+      [v10 imageWithContentsOfFile:path2];
     }
     v12 = ;
   }
@@ -52,9 +52,9 @@
   v9.height = 1.0;
   UIGraphicsBeginImageContext(v9);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [v3 CGColor];
+  cGColor = [v3 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v5);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
@@ -78,15 +78,15 @@
     {
       if (v6)
       {
-        v9 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-        v10 = [v9 traitCollectionByModifyingTraits:&__block_literal_global_12];
-        v11 = [v9 traitCollectionByModifyingTraits:&__block_literal_global_5_3];
+        currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+        v10 = [currentTraitCollection traitCollectionByModifyingTraits:&__block_literal_global_12];
+        v11 = [currentTraitCollection traitCollectionByModifyingTraits:&__block_literal_global_5_3];
         v17[0] = v10;
         v17[1] = v11;
         v18[0] = v6;
         v18[1] = v8;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-        v13 = [a1 wk_dynamicImageWithTraitCollectionToImageMap:v12 baseImage:v6];
+        v13 = [self wk_dynamicImageWithTraitCollectionToImageMap:v12 baseImage:v6];
 
         goto LABEL_9;
       }
@@ -265,8 +265,8 @@ LABEL_9:
           v8 = v13;
         }
 
-        v15 = [v8 imageAsset];
-        [v15 registerImage:v14 withTraitCollection:v12];
+        imageAsset = [v8 imageAsset];
+        [imageAsset registerImage:v14 withTraitCollection:v12];
       }
 
       v9 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -282,12 +282,12 @@ LABEL_9:
 
 - (id)wk_cropImageToRect:()WKAdditions
 {
-  v9 = [a1 CGImage];
+  cGImage = [self CGImage];
   v14.origin.x = a2;
   v14.origin.y = a3;
   v14.size.width = a4;
   v14.size.height = a5;
-  v10 = CGImageCreateWithImageInRect(v9, v14);
+  v10 = CGImageCreateWithImageInRect(cGImage, v14);
   v11 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v10];
   CGImageRelease(v10);
 

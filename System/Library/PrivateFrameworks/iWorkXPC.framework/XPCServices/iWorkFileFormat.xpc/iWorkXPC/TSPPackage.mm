@@ -1,45 +1,45 @@
 @interface TSPPackage
-+ (BOOL)isValidPackageAtURL:(id)a3;
-+ (BOOL)isZeroLengthFileOrEmptyDirectory:(id)a3 isDirectory:(BOOL *)a4;
-+ (id)dataEntryPathForFilename:(id)a3;
-+ (id)objectArchiveEntryPathForPackageLocator:(id)a3;
-+ (id)zipArchiveURLFromPackageURL:(id)a3;
++ (BOOL)isValidPackageAtURL:(id)l;
++ (BOOL)isZeroLengthFileOrEmptyDirectory:(id)directory isDirectory:(BOOL *)isDirectory;
++ (id)dataEntryPathForFilename:(id)filename;
++ (id)objectArchiveEntryPathForPackageLocator:(id)locator;
++ (id)zipArchiveURLFromPackageURL:(id)l;
 + (unint64_t)zipArchiveOptions;
-- (BOOL)checkPassword:(id)a3;
-- (BOOL)hasDataAtRelativePath:(id)a3;
-- (BOOL)reloadZipArchiveIfNeededWithURLImpl:(id)a3 isLazyLoading:(BOOL)a4 forceReload:(BOOL)a5 error:(id *)a6;
+- (BOOL)checkPassword:(id)password;
+- (BOOL)hasDataAtRelativePath:(id)path;
+- (BOOL)reloadZipArchiveIfNeededWithURLImpl:(id)impl isLazyLoading:(BOOL)loading forceReload:(BOOL)reload error:(id *)error;
 - (NSError)lastReloadError;
 - (NSString)passwordHint;
 - (TSPDocumentProperties)documentProperties;
 - (TSPFileCoordinatorDelegate)fileCoordinatorDelegate;
 - (TSPPackage)init;
-- (TSPPackage)initWithPackageIdentifier:(unsigned __int8)a3 documentProperties:(id)a4 fileFormatVersion:(unint64_t)a5 decryptionKey:(id)a6 fileCoordinatorDelegate:(id)a7 isLazyLoading:(BOOL)a8;
+- (TSPPackage)initWithPackageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties fileFormatVersion:(unint64_t)version decryptionKey:(id)key fileCoordinatorDelegate:(id)delegate isLazyLoading:(BOOL)loading;
 - (TSUZipFileArchive)zipArchive;
 - (id)componentLocators;
-- (id)keyFromPassword:(id)a3;
-- (id)keyFromPassword:(id)a3 passwordVerifier:(id)a4;
-- (id)newCompressionReadChannelWithReadChannel:(id)a3 compressionAlgorithm:(int64_t)a4;
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5;
-- (id)newRawDataReadChannelAtRelativePath:(id)a3;
-- (id)newRawReadChannelForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 error:(id *)a5;
-- (id)newZipArchiveFromPackageURL:(id)a3 isLazyLoading:(BOOL)a4 error:(id *)a5;
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4;
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4;
+- (id)keyFromPassword:(id)password;
+- (id)keyFromPassword:(id)password passwordVerifier:(id)verifier;
+- (id)newCompressionReadChannelWithReadChannel:(id)channel compressionAlgorithm:(int64_t)algorithm;
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error;
+- (id)newRawDataReadChannelAtRelativePath:(id)path;
+- (id)newRawReadChannelForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive error:(id *)error;
+- (id)newZipArchiveFromPackageURL:(id)l isLazyLoading:(BOOL)loading error:(id *)error;
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error;
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive;
 - (int64_t)packageType;
-- (void)copyComponent:(id)a3 toPackageURL:(id)a4 packageLocator:(id)a5 zipFileWriter:(id)a6 encryptionKey:(id)a7 canLink:(BOOL)a8 completion:(id)a9;
-- (void)didReadFileFormatVersion:(unint64_t)a3;
-- (void)didRetrieveDecryptionKey:(id)a3;
-- (void)enumerateDataUsingBlock:(id)a3;
-- (void)peformSynchronousAccessToZipArchive:(id)a3;
-- (void)prepareForDocumentReplacementWithSuccess:(BOOL)a3 forSafeSave:(BOOL)a4 originalURL:(id)a5;
-- (void)setZipArchive:(id)a3 fileCoordinatorDelegate:(id)a4;
+- (void)copyComponent:(id)component toPackageURL:(id)l packageLocator:(id)locator zipFileWriter:(id)writer encryptionKey:(id)key canLink:(BOOL)link completion:(id)completion;
+- (void)didReadFileFormatVersion:(unint64_t)version;
+- (void)didRetrieveDecryptionKey:(id)key;
+- (void)enumerateDataUsingBlock:(id)block;
+- (void)peformSynchronousAccessToZipArchive:(id)archive;
+- (void)prepareForDocumentReplacementWithSuccess:(BOOL)success forSafeSave:(BOOL)save originalURL:(id)l;
+- (void)setZipArchive:(id)archive fileCoordinatorDelegate:(id)delegate;
 @end
 
 @implementation TSPPackage
 
-+ (BOOL)isValidPackageAtURL:(id)a3
++ (BOOL)isValidPackageAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -80,17 +80,17 @@
   objc_exception_throw(v15);
 }
 
-+ (id)objectArchiveEntryPathForPackageLocator:(id)a3
++ (id)objectArchiveEntryPathForPackageLocator:(id)locator
 {
-  v3 = [@"Index" stringByAppendingPathComponent:a3];
+  v3 = [@"Index" stringByAppendingPathComponent:locator];
   v4 = [v3 stringByAppendingPathExtension:@"iwa"];
 
   return v4;
 }
 
-+ (id)dataEntryPathForFilename:(id)a3
++ (id)dataEntryPathForFilename:(id)filename
 {
-  v3 = [@"Data" stringByAppendingPathComponent:a3];
+  v3 = [@"Data" stringByAppendingPathComponent:filename];
 
   return v3;
 }
@@ -129,12 +129,12 @@
   objc_exception_throw(v7);
 }
 
-- (TSPPackage)initWithPackageIdentifier:(unsigned __int8)a3 documentProperties:(id)a4 fileFormatVersion:(unint64_t)a5 decryptionKey:(id)a6 fileCoordinatorDelegate:(id)a7 isLazyLoading:(BOOL)a8
+- (TSPPackage)initWithPackageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties fileFormatVersion:(unint64_t)version decryptionKey:(id)key fileCoordinatorDelegate:(id)delegate isLazyLoading:(BOOL)loading
 {
-  v8 = a8;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  loadingCopy = loading;
+  propertiesCopy = properties;
+  keyCopy = key;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = TSPPackage;
   v18 = [(TSPPackage *)&v26 init];
@@ -145,16 +145,16 @@
     accessQueue = v18->_accessQueue;
     v18->_accessQueue = v20;
 
-    v18->_packageIdentifier = a3;
-    objc_storeStrong(&v18->_documentProperties, a4);
-    v18->_fileFormatVersion = a5;
-    objc_storeStrong(&v18->_decryptionKey, a6);
-    objc_storeWeak(&v18->_fileCoordinatorDelegate, v17);
+    v18->_packageIdentifier = identifier;
+    objc_storeStrong(&v18->_documentProperties, properties);
+    v18->_fileFormatVersion = version;
+    objc_storeStrong(&v18->_decryptionKey, key);
+    objc_storeWeak(&v18->_fileCoordinatorDelegate, delegateCopy);
     v22 = [[NSHashTable alloc] initWithOptions:512 capacity:0];
     packageDatas = v18->_packageDatas;
     v18->_packageDatas = v22;
 
-    if (v8)
+    if (loadingCopy)
     {
       v24 = 2;
     }
@@ -164,7 +164,7 @@
       v24 = 0;
     }
 
-    *&v18->_flags = v24 | v8 | *&v18->_flags & 0xFC;
+    *&v18->_flags = v24 | loadingCopy | *&v18->_flags & 0xFC;
   }
 
   return v18;
@@ -265,9 +265,9 @@
   return v3;
 }
 
-- (void)didRetrieveDecryptionKey:(id)a3
+- (void)didRetrieveDecryptionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self->_decryptionKey)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -288,7 +288,7 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v4)
+  if (!keyCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -309,10 +309,10 @@
   }
 
   decryptionKey = self->_decryptionKey;
-  self->_decryptionKey = v4;
+  self->_decryptionKey = keyCopy;
 }
 
-- (void)didReadFileFormatVersion:(unint64_t)a3
+- (void)didReadFileFormatVersion:(unint64_t)version
 {
   if (self->_fileFormatVersion)
   {
@@ -334,24 +334,24 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  self->_fileFormatVersion = a3;
+  self->_fileFormatVersion = version;
 }
 
-+ (BOOL)isZeroLengthFileOrEmptyDirectory:(id)a3 isDirectory:(BOOL *)a4
++ (BOOL)isZeroLengthFileOrEmptyDirectory:(id)directory isDirectory:(BOOL *)isDirectory
 {
-  v5 = a3;
-  *a4 = 0;
+  directoryCopy = directory;
+  *isDirectory = 0;
   v15 = 0;
-  v6 = [v5 getResourceValue:&v15 forKey:NSURLIsDirectoryKey error:0];
+  v6 = [directoryCopy getResourceValue:&v15 forKey:NSURLIsDirectoryKey error:0];
   v7 = v15;
   v8 = v7;
   if (v6)
   {
-    *a4 = [v7 BOOLValue];
+    *isDirectory = [v7 BOOLValue];
     if ([v8 BOOLValue])
     {
       v9 = +[NSFileManager defaultManager];
-      v10 = [v9 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:1 error:0];
+      v10 = [v9 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:1 error:0];
 
       if (!v10)
       {
@@ -359,13 +359,13 @@
         goto LABEL_9;
       }
 
-      v11 = [v10 count];
+      longLongValue = [v10 count];
     }
 
     else
     {
       v14 = 0;
-      v6 = [v5 getResourceValue:&v14 forKey:NSURLFileSizeKey error:0];
+      v6 = [directoryCopy getResourceValue:&v14 forKey:NSURLFileSizeKey error:0];
       v12 = v14;
       v10 = v12;
       if (!v6)
@@ -375,10 +375,10 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v11 = [v12 longLongValue];
+      longLongValue = [v12 longLongValue];
     }
 
-    LOBYTE(v6) = v11 == 0;
+    LOBYTE(v6) = longLongValue == 0;
     goto LABEL_9;
   }
 
@@ -387,10 +387,10 @@ LABEL_10:
   return v6;
 }
 
-- (id)newZipArchiveFromPackageURL:(id)a3 isLazyLoading:(BOOL)a4 error:(id *)a5
+- (id)newZipArchiveFromPackageURL:(id)l isLazyLoading:(BOOL)loading error:(id *)error
 {
-  v8 = a3;
-  v9 = [objc_opt_class() zipArchiveURLFromPackageURL:v8];
+  lCopy = l;
+  v9 = [objc_opt_class() zipArchiveURLFromPackageURL:lCopy];
   v10 = [objc_opt_class() zipArchiveOptions] | self->_additionalZipArchiveOptions;
   v28 = 0;
   v11 = [TSUZipFileArchive zipArchiveFromURL:v9 options:v10 | 4 error:&v28];
@@ -400,7 +400,7 @@ LABEL_10:
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!loading)
   {
     if (TSUDefaultCat_init_token != -1)
     {
@@ -412,16 +412,16 @@ LABEL_10:
     {
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
-      v26 = [v12 domain];
-      v27 = [v12 code];
+      domain = [v12 domain];
+      code = [v12 code];
       *buf = 138413314;
       v30 = v9;
       v31 = 2114;
       v32 = v25;
       v33 = 2114;
-      v34 = v26;
+      v34 = domain;
       v35 = 2048;
-      v36 = v27;
+      v36 = code;
       v37 = 2112;
       v38 = v12;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Couldn't read zip file archive from URL %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -438,8 +438,8 @@ LABEL_10:
     {
       if ([v12 tsp_isReadError])
       {
-        v20 = [v12 userInfo];
-        v21 = [NSError tsp_readCorruptedDocumentErrorWithUserInfo:v20];
+        userInfo = [v12 userInfo];
+        v21 = [NSError tsp_readCorruptedDocumentErrorWithUserInfo:userInfo];
 
         v12 = v21;
       }
@@ -453,13 +453,13 @@ LABEL_10:
     {
       buf[0] = 0;
       v15 = +[NSFileManager defaultManager];
-      v16 = [v9 path];
-      v17 = [v15 fileExistsAtPath:v16 isDirectory:buf];
+      path = [v9 path];
+      v17 = [v15 fileExistsAtPath:path isDirectory:buf];
 
       if (v17 && (buf[0] & 1) == 0 && [TSUZipFileArchive isZipSignatureAllZerosAtURL:v9])
       {
-        v18 = [v12 userInfo];
-        v19 = [NSError tsp_readCorruptedDocumentErrorWithUserInfo:v18];
+        userInfo2 = [v12 userInfo];
+        v19 = [NSError tsp_readCorruptedDocumentErrorWithUserInfo:userInfo2];
 
         v13 = [NSError tsp_errorWithError:v19 hints:&off_1001D7190];
       }
@@ -476,10 +476,10 @@ LABEL_10:
 
   v13 = v12;
 LABEL_21:
-  if (a5)
+  if (error)
   {
     v22 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   v12 = v13;
@@ -508,11 +508,11 @@ LABEL_24:
   return v2;
 }
 
-- (void)peformSynchronousAccessToZipArchive:(id)a3
+- (void)peformSynchronousAccessToZipArchive:(id)archive
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  archiveCopy = archive;
+  v5 = archiveCopy;
+  if (archiveCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -520,19 +520,19 @@ LABEL_24:
     v7[2] = sub_100026E38;
     v7[3] = &unk_1001C6FB0;
     v7[4] = self;
-    v8 = v4;
+    v8 = archiveCopy;
     dispatch_sync(accessQueue, v7);
   }
 }
 
-- (BOOL)reloadZipArchiveIfNeededWithURLImpl:(id)a3 isLazyLoading:(BOOL)a4 forceReload:(BOOL)a5 error:(id *)a6
+- (BOOL)reloadZipArchiveIfNeededWithURLImpl:(id)impl isLazyLoading:(BOOL)loading forceReload:(BOOL)reload error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
+  reloadCopy = reload;
+  implCopy = impl;
   dispatch_assert_queue_V2(self->_accessQueue);
   if ([(TSUZipFileArchive *)self->_zipArchive isValid])
   {
-    v11 = !v7;
+    v11 = !reloadCopy;
   }
 
   else
@@ -567,16 +567,16 @@ LABEL_24:
     v22[1] = 3221225472;
     v22[2] = sub_10002716C;
     v22[3] = &unk_1001C7080;
-    v23 = a4;
+    loadingCopy = loading;
     v22[4] = self;
     v22[5] = &v30;
     v22[6] = &v36;
     v22[7] = &v24;
     v12 = objc_retainBlock(v22);
     v13 = v12;
-    if (v10)
+    if (implCopy)
     {
-      (v12[2])(v12, v10);
+      (v12[2])(v12, implCopy);
     }
 
     else
@@ -603,9 +603,9 @@ LABEL_24:
     }
 
     *(v16 + 24) = v14;
-    if (a6 && (v14 & 1) == 0)
+    if (error && (v14 & 1) == 0)
     {
-      *a6 = v31[5];
+      *error = v31[5];
       v14 = *(v37 + 24);
     }
 
@@ -618,20 +618,20 @@ LABEL_24:
   return v14 & 1;
 }
 
-- (void)setZipArchive:(id)a3 fileCoordinatorDelegate:(id)a4
+- (void)setZipArchive:(id)archive fileCoordinatorDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  archiveCopy = archive;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000279D0;
   block[3] = &unk_1001C70A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = archiveCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = archiveCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -659,24 +659,24 @@ LABEL_24:
 
 - (id)componentLocators
 {
-  v2 = [(TSPPackage *)self componentZipArchive];
+  componentZipArchive = [(TSPPackage *)self componentZipArchive];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100027C40;
   v6[3] = &unk_1001C70D0;
   v3 = objc_opt_new();
   v7 = v3;
-  [v2 enumerateEntriesUsingBlock:v6];
+  [componentZipArchive enumerateEntriesUsingBlock:v6];
   v4 = [NSArray arrayWithArray:v3];
 
   return v4;
 }
 
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  archiveCopy = archive;
+  locatorCopy = locator;
+  if (!locatorCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -696,7 +696,7 @@ LABEL_24:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v4)
+  if (archiveCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -716,15 +716,15 @@ LABEL_24:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [(TSPPackage *)self componentZipArchive];
-  v12 = [TSPPackage objectArchiveEntryPathForPackageLocator:v6];
-  v13 = [v11 entryForName:v12];
+  componentZipArchive = [(TSPPackage *)self componentZipArchive];
+  v12 = [TSPPackage objectArchiveEntryPathForPackageLocator:locatorCopy];
+  v13 = [componentZipArchive entryForName:v12];
   if (v13)
   {
     v14 = [TSPPackageEntryInfo alloc];
     v15 = [v13 size];
-    v16 = [v13 lastModificationDate];
-    v17 = -[TSPPackageEntryInfo initWithEncodedLength:lastModificationDate:CRC:](v14, "initWithEncodedLength:lastModificationDate:CRC:", v15, v16, [v13 CRC]);
+    lastModificationDate = [v13 lastModificationDate];
+    v17 = -[TSPPackageEntryInfo initWithEncodedLength:lastModificationDate:CRC:](v14, "initWithEncodedLength:lastModificationDate:CRC:", v15, lastModificationDate, [v13 CRC]);
   }
 
   else
@@ -735,18 +735,18 @@ LABEL_24:
   return v17;
 }
 
-- (id)newCompressionReadChannelWithReadChannel:(id)a3 compressionAlgorithm:(int64_t)a4
+- (id)newCompressionReadChannelWithReadChannel:(id)channel compressionAlgorithm:(int64_t)algorithm
 {
-  v5 = a3;
-  v6 = v5;
+  channelCopy = channel;
+  v6 = channelCopy;
   v7 = 0;
-  if (a4 <= 2)
+  if (algorithm <= 2)
   {
-    if (a4)
+    if (algorithm)
     {
-      if (a4 != 1)
+      if (algorithm != 1)
       {
-        if (a4 == 2)
+        if (algorithm == 2)
         {
           v8 = [TSUCompressionReadChannel alloc];
           v9 = 256;
@@ -758,12 +758,12 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v10 = v5;
+      v10 = channelCopy;
     }
 
     else
     {
-      v10 = [[TSPSnappyReadChannel alloc] initWithReadChannel:v5];
+      v10 = [[TSPSnappyReadChannel alloc] initWithReadChannel:channelCopy];
     }
 
 LABEL_15:
@@ -771,7 +771,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  switch(a4)
+  switch(algorithm)
   {
     case 3:
       v8 = [TSUCompressionReadChannel alloc];
@@ -792,11 +792,11 @@ LABEL_16:
   return v7;
 }
 
-- (id)newRawReadChannelForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 error:(id *)a5
+- (id)newRawReadChannelForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (!v8)
+  archiveCopy = archive;
+  locatorCopy = locator;
+  if (!locatorCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -816,7 +816,7 @@ LABEL_16:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v6)
+  if (archiveCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -836,12 +836,12 @@ LABEL_16:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v13 = [(TSPPackage *)self componentZipArchive];
-  v14 = [TSPPackage objectArchiveEntryPathForPackageLocator:v8];
-  v15 = [v13 entryForName:v14];
+  componentZipArchive = [(TSPPackage *)self componentZipArchive];
+  v14 = [TSPPackage objectArchiveEntryPathForPackageLocator:locatorCopy];
+  v15 = [componentZipArchive entryForName:v14];
   if (v15)
   {
-    v16 = [v13 streamReadChannelForEntry:v15];
+    v16 = [componentZipArchive streamReadChannelForEntry:v15];
     if (v16)
     {
       v17 = 0;
@@ -874,11 +874,11 @@ LABEL_16:
 
   v18 = [NSError tsp_readCorruptedDocumentErrorWithUserInfo:0];
   v17 = v18;
-  if (a5)
+  if (error)
   {
     v19 = v18;
     v16 = 0;
-    *a5 = v17;
+    *error = v17;
   }
 
   else
@@ -891,16 +891,16 @@ LABEL_27:
   return v16;
 }
 
-- (void)copyComponent:(id)a3 toPackageURL:(id)a4 packageLocator:(id)a5 zipFileWriter:(id)a6 encryptionKey:(id)a7 canLink:(BOOL)a8 completion:(id)a9
+- (void)copyComponent:(id)component toPackageURL:(id)l packageLocator:(id)locator zipFileWriter:(id)writer encryptionKey:(id)key canLink:(BOOL)link completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v36 = a5;
-  v35 = a6;
-  v37 = a7;
-  v16 = a9;
-  v34 = v15;
-  if (!v14)
+  componentCopy = component;
+  lCopy = l;
+  locatorCopy = locator;
+  writerCopy = writer;
+  keyCopy = key;
+  completionCopy = completion;
+  v34 = lCopy;
+  if (!componentCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -920,8 +920,8 @@ LABEL_27:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v19 = [v14 isStoredOutsideObjectArchive];
-  if (v19)
+  isStoredOutsideObjectArchive = [componentCopy isStoredOutsideObjectArchive];
+  if (isStoredOutsideObjectArchive)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -941,8 +941,8 @@ LABEL_27:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v22 = [v14 locator];
-  if (!v22)
+  locator = [componentCopy locator];
+  if (!locator)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -962,15 +962,15 @@ LABEL_27:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v25 = [(TSPPackage *)self componentZipArchive];
-  v26 = [TSPPackage objectArchiveEntryPathForPackageLocator:v22];
-  v27 = [v25 entryForName:v26];
+  componentZipArchive = [(TSPPackage *)self componentZipArchive];
+  v26 = [TSPPackage objectArchiveEntryPathForPackageLocator:locator];
+  v27 = [componentZipArchive entryForName:v26];
   v28 = v27;
-  if (!v25 || v27)
+  if (!componentZipArchive || v27)
   {
-    if (v25)
+    if (componentZipArchive)
     {
-      v29 = [v25 streamReadChannelForEntry:v27];
+      v29 = [componentZipArchive streamReadChannelForEntry:v27];
       v33 = 0;
       if (!v29)
       {
@@ -981,7 +981,7 @@ LABEL_27:
     else
     {
       v38 = 0;
-      v29 = [(TSPPackage *)self newRawReadChannelForComponentLocator:v22 isStoredOutsideObjectArchive:v19 error:&v38];
+      v29 = [(TSPPackage *)self newRawReadChannelForComponentLocator:locator isStoredOutsideObjectArchive:isStoredOutsideObjectArchive error:&v38];
       v33 = v38;
       if (!v29)
       {
@@ -989,11 +989,11 @@ LABEL_27:
       }
     }
 
-    if (SFUEqualCryptoKeys(v37, self->_decryptionKey) || (v30 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v29 decryptionInfo:self->_decryptionKey encryptionInfo:v37], v29, v28, v28 = 0, (v29 = v30) != 0))
+    if (SFUEqualCryptoKeys(keyCopy, self->_decryptionKey) || (v30 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v29 decryptionInfo:self->_decryptionKey encryptionInfo:keyCopy], v29, v28, v28 = 0, (v29 = v30) != 0))
     {
-      v31 = [TSPPackage objectArchiveEntryPathForPackageLocator:v36];
-      v32 = [v14 lastModificationDate];
-      [v35 writeEntryWithName:v31 force32BitSize:1 lastModificationDate:v32 size:objc_msgSend(v28 CRC:"size") fromReadChannel:objc_msgSend(v28 completion:{"CRC"), v29, v16}];
+      v31 = [TSPPackage objectArchiveEntryPathForPackageLocator:locatorCopy];
+      lastModificationDate = [componentCopy lastModificationDate];
+      [writerCopy writeEntryWithName:v31 force32BitSize:1 lastModificationDate:lastModificationDate size:objc_msgSend(v28 CRC:"size") fromReadChannel:objc_msgSend(v28 completion:{"CRC"), v29, completionCopy}];
 
       goto LABEL_38;
     }
@@ -1007,7 +1007,7 @@ LABEL_33:
     if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
     {
       sub_1001548D0();
-      if (!v16)
+      if (!completionCopy)
       {
         goto LABEL_38;
       }
@@ -1015,10 +1015,10 @@ LABEL_33:
       goto LABEL_37;
     }
 
-    if (v16)
+    if (completionCopy)
     {
 LABEL_37:
-      v16[2](v16, 0, v33);
+      completionCopy[2](completionCopy, 0, v33);
     }
 
 LABEL_38:
@@ -1034,7 +1034,7 @@ LABEL_38:
   if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
   {
     sub_1001545E4();
-    if (!v16)
+    if (!completionCopy)
     {
       goto LABEL_39;
     }
@@ -1042,19 +1042,19 @@ LABEL_38:
     goto LABEL_25;
   }
 
-  if (v16)
+  if (completionCopy)
   {
 LABEL_25:
-    v16[2](v16, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
 LABEL_39:
 }
 
-- (void)enumerateDataUsingBlock:(id)a3
+- (void)enumerateDataUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v13 = 0;
     v9 = 0u;
@@ -1075,7 +1075,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v9 + 1) + 8 * v8), &v13);
+        blockCopy[2](blockCopy, *(*(&v9 + 1) + 8 * v8), &v13);
         if (v13)
         {
           break;
@@ -1096,9 +1096,9 @@ LABEL_4:
   }
 }
 
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1139,9 +1139,9 @@ LABEL_4:
   objc_exception_throw(v16);
 }
 
-- (BOOL)hasDataAtRelativePath:(id)a3
+- (BOOL)hasDataAtRelativePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1190,40 +1190,40 @@ LABEL_4:
   return v3;
 }
 
-- (id)keyFromPassword:(id)a3
+- (id)keyFromPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(TSPPackage *)self passwordVerifier];
-  v6 = [(TSPPackage *)self keyFromPassword:v4 passwordVerifier:v5];
+  passwordCopy = password;
+  passwordVerifier = [(TSPPackage *)self passwordVerifier];
+  v6 = [(TSPPackage *)self keyFromPassword:passwordCopy passwordVerifier:passwordVerifier];
 
   return v6;
 }
 
-- (id)keyFromPassword:(id)a3 passwordVerifier:(id)a4
+- (id)keyFromPassword:(id)password passwordVerifier:(id)verifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  passwordCopy = password;
+  verifierCopy = verifier;
+  v7 = verifierCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (passwordCopy && verifierCopy)
   {
     v9 = [SFUCryptoKey alloc];
     v10 = [SFUCryptoUtils iterationCountFromPassphraseVerifier:v7];
     v11 = [SFUCryptoUtils saltFromVerifier:v7 saltLength:16];
-    v8 = [(SFUCryptoKey *)v9 initAes128KeyFromPassphrase:v5 iterationCount:v10 saltData:v11];
+    v8 = [(SFUCryptoKey *)v9 initAes128KeyFromPassphrase:passwordCopy iterationCount:v10 saltData:v11];
   }
 
   return v8;
 }
 
-- (BOOL)checkPassword:(id)a3
+- (BOOL)checkPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(TSPPackage *)self passwordVerifier];
-  v6 = [(TSPPackage *)self keyFromPassword:v4 passwordVerifier:v5];
+  passwordCopy = password;
+  passwordVerifier = [(TSPPackage *)self passwordVerifier];
+  v6 = [(TSPPackage *)self keyFromPassword:passwordCopy passwordVerifier:passwordVerifier];
   if (v6)
   {
-    v7 = [SFUCryptoUtils checkKey:v6 againstPassphraseVerifier:v5];
+    v7 = [SFUCryptoUtils checkKey:v6 againstPassphraseVerifier:passwordVerifier];
   }
 
   else
@@ -1234,9 +1234,9 @@ LABEL_4:
   return v7;
 }
 
-+ (id)zipArchiveURLFromPackageURL:(id)a3
++ (id)zipArchiveURLFromPackageURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1319,9 +1319,9 @@ LABEL_4:
   objc_exception_throw(v13);
 }
 
-- (id)newRawDataReadChannelAtRelativePath:(id)a3
+- (id)newRawDataReadChannelAtRelativePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1362,10 +1362,10 @@ LABEL_4:
   objc_exception_throw(v15);
 }
 
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  providerCopy = provider;
   v8 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -1406,9 +1406,9 @@ LABEL_4:
   objc_exception_throw(v19);
 }
 
-- (void)prepareForDocumentReplacementWithSuccess:(BOOL)a3 forSafeSave:(BOOL)a4 originalURL:(id)a5
+- (void)prepareForDocumentReplacementWithSuccess:(BOOL)success forSafeSave:(BOOL)save originalURL:(id)l
 {
-  v5 = a5;
+  lCopy = l;
   v6 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {

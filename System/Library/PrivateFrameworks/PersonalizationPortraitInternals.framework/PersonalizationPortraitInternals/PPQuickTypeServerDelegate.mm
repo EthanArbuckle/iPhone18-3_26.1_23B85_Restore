@@ -1,14 +1,14 @@
 @interface PPQuickTypeServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPQuickTypeServerDelegate)init;
 @end
 
 @implementation PPQuickTypeServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v21 = a3;
-  v20 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847A1158];
   context = objc_autoreleasePoolPush();
   v18 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -26,7 +26,7 @@
   [v5 setClasses:v15 forSelector:sel_quickTypeItemsWithLanguageModelingTokens_localeIdentifier_recipients_bundleIdentifier_limit_completion_ argumentIndex:0 ofReply:0];
 
   v16 = objc_opt_new();
-  LOBYTE(v15) = [PPXPCServerHelper shouldAcceptConnection:v20 serviceName:@"com.apple.proactive.PersonalizationPortrait.QuickType" allowedServerInterface:v5 allowedClientInterface:0 requestHandler:v16 validateConnection:&__block_literal_global_16026 setupClientProxy:0 interruptionHandler:&__block_literal_global_95_16041 invalidationHandler:&__block_literal_global_97_16042];
+  LOBYTE(v15) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.QuickType" allowedServerInterface:v5 allowedClientInterface:0 requestHandler:v16 validateConnection:&__block_literal_global_16026 setupClientProxy:0 interruptionHandler:&__block_literal_global_95_16041 invalidationHandler:&__block_literal_global_97_16042];
 
   return v15;
 }

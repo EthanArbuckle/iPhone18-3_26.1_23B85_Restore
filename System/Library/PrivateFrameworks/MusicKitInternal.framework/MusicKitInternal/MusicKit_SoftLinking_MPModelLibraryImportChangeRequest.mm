@@ -1,7 +1,7 @@
 @interface MusicKit_SoftLinking_MPModelLibraryImportChangeRequest
 - (MusicKit_SoftLinking_MPModelLibraryImportChangeRequest)init;
-- (void)setModelObjects:(id)a3;
-- (void)setReferralObject:(id)a3;
+- (void)setModelObjects:(id)objects;
+- (void)setReferralObject:(id)object;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryImportChangeRequest
@@ -39,10 +39,10 @@
   return v2;
 }
 
-- (void)setModelObjects:(id)a3
+- (void)setModelObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  objectsCopy = objects;
+  v5 = [objectsCopy copy];
   modelObjects = self->_modelObjects;
   self->_modelObjects = v5;
 
@@ -66,19 +66,19 @@
   _Block_object_dispose(&v12, 8);
   v9 = objc_alloc_init(v7);
   [v9 appendSection:&stru_1F50C75D0];
-  v10 = [v4 msv_map:&__block_literal_global_10];
+  v10 = [objectsCopy msv_map:&__block_literal_global_10];
   [v9 appendItems:v10];
 
   [(MPModelLibraryImportChangeRequest *)self->_underlyingLibraryImportChangeRequest setModelObjects:v9];
 }
 
-- (void)setReferralObject:(id)a3
+- (void)setReferralObject:(id)object
 {
-  objc_storeStrong(&self->_referralObject, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_referralObject, object);
+  objectCopy = object;
   underlyingLibraryImportChangeRequest = self->_underlyingLibraryImportChangeRequest;
-  v7 = [(MusicKit_SoftLinking_MPModelObject *)self->_referralObject _underlyingModelObject];
-  [(MPModelLibraryImportChangeRequest *)underlyingLibraryImportChangeRequest setReferralObject:v7];
+  _underlyingModelObject = [(MusicKit_SoftLinking_MPModelObject *)self->_referralObject _underlyingModelObject];
+  [(MPModelLibraryImportChangeRequest *)underlyingLibraryImportChangeRequest setReferralObject:_underlyingModelObject];
 }
 
 @end

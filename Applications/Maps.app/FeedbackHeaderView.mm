@@ -1,14 +1,14 @@
 @interface FeedbackHeaderView
 - (FeedbackHeaderView)init;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation FeedbackHeaderView
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   subtitle = self->_subtitle;
   self->_subtitle = v4;
 
@@ -18,9 +18,9 @@
   [(UILabel *)subtitleLabel setText:v6];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
@@ -61,40 +61,40 @@
 
     [DynamicTypeWizard autorefreshLabel:v2->_subtitleLabel withFontProvider:&stru_10165EC28];
     [(FeedbackHeaderView *)v2 addSubview:v2->_subtitleLabel];
-    v42 = [(FeedbackHeaderView *)v2 titleLabel];
-    v41 = [v42 leadingAnchor];
-    v40 = [(FeedbackHeaderView *)v2 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    titleLabel = [(FeedbackHeaderView *)v2 titleLabel];
+    leadingAnchor = [titleLabel leadingAnchor];
+    leadingAnchor2 = [(FeedbackHeaderView *)v2 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v44[0] = v39;
-    v38 = [(FeedbackHeaderView *)v2 titleLabel];
-    v37 = [v38 trailingAnchor];
-    v36 = [(FeedbackHeaderView *)v2 trailingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    titleLabel2 = [(FeedbackHeaderView *)v2 titleLabel];
+    trailingAnchor = [titleLabel2 trailingAnchor];
+    trailingAnchor2 = [(FeedbackHeaderView *)v2 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v44[1] = v35;
-    v34 = [(UILabel *)v2->_titleLabel firstBaselineAnchor];
-    v33 = [(FeedbackHeaderView *)v2 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    firstBaselineAnchor = [(UILabel *)v2->_titleLabel firstBaselineAnchor];
+    topAnchor = [(FeedbackHeaderView *)v2 topAnchor];
+    v32 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
     v31 = [DynamicTypeWizard autoscaledConstraint:v32 constant:&stru_10165EC48 withFontProvider:35.0];
     v44[2] = v31;
-    v30 = [(FeedbackHeaderView *)v2 subtitleLabel];
-    v29 = [v30 leadingAnchor];
-    v28 = [(FeedbackHeaderView *)v2 leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    subtitleLabel = [(FeedbackHeaderView *)v2 subtitleLabel];
+    leadingAnchor3 = [subtitleLabel leadingAnchor];
+    leadingAnchor4 = [(FeedbackHeaderView *)v2 leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v44[3] = v27;
-    v25 = [(FeedbackHeaderView *)v2 trailingAnchor];
-    v26 = [(FeedbackHeaderView *)v2 subtitleLabel];
-    v24 = [v26 trailingAnchor];
-    v23 = [v25 constraintGreaterThanOrEqualToAnchor:v24];
+    trailingAnchor3 = [(FeedbackHeaderView *)v2 trailingAnchor];
+    subtitleLabel2 = [(FeedbackHeaderView *)v2 subtitleLabel];
+    trailingAnchor4 = [subtitleLabel2 trailingAnchor];
+    v23 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
     v44[4] = v23;
-    v13 = [(UILabel *)v2->_subtitleLabel firstBaselineAnchor];
-    v14 = [(UILabel *)v2->_titleLabel lastBaselineAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    firstBaselineAnchor2 = [(UILabel *)v2->_subtitleLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v2->_titleLabel lastBaselineAnchor];
+    v15 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
     v16 = [DynamicTypeWizard autoscaledConstraint:v15 constant:&stru_10165EC28 withFontProvider:21.0];
     v44[5] = v16;
-    v17 = [(FeedbackHeaderView *)v2 bottomAnchor];
-    v18 = [(FeedbackHeaderView *)v2 subtitleLabel];
-    v19 = [v18 firstBaselineAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:22.0];
+    bottomAnchor = [(FeedbackHeaderView *)v2 bottomAnchor];
+    subtitleLabel3 = [(FeedbackHeaderView *)v2 subtitleLabel];
+    firstBaselineAnchor3 = [subtitleLabel3 firstBaselineAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor3 constant:22.0];
     v44[6] = v20;
     v21 = [NSArray arrayWithObjects:v44 count:7];
     [NSLayoutConstraint activateConstraints:v21];

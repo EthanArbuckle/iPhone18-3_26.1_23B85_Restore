@@ -2,41 +2,41 @@
 + (BOOL)shouldDisplayRecentActionsOnHomeScreen;
 + (BOOL)shouldDisplayValidParameterCombinations;
 + (id)_demoModeActionResponse;
-+ (id)_recentDonationProactiveSuggestionFromScoredAction:(id)a3 withClientModelId:(id)a4;
-+ (id)_unarchiveATXHeroDataFromSuggestion:(id)a3;
-+ (id)_unarchiveObjectFromSuggestion:(id)a3;
++ (id)_recentDonationProactiveSuggestionFromScoredAction:(id)action withClientModelId:(id)id;
++ (id)_unarchiveATXHeroDataFromSuggestion:(id)suggestion;
++ (id)_unarchiveObjectFromSuggestion:(id)suggestion;
 + (id)actionResponseForDeveloperMode;
-+ (id)actionResponseForDeveloperModeWithClientId:(id)a3 shouldShowRecentDonations:(BOOL)a4;
-+ (id)actionResponseForDeveloperModeWithShouldShowRecentDonations:(BOOL)a3 shouldShowParameterCombinations:(BOOL)a4 shouldShowUpcomingMedia:(BOOL)a5 withClientModelId:(id)a6;
-+ (id)actionSearchResultFromProactiveSuggestion:(id)a3 actionResponse:(id)a4 avRoutingSessionHelper:(id)a5 nowPlayingDataProvider:(id)a6;
-+ (id)actionSearchResultFromScoredAction:(id)a3 actionResponse:(id)a4 avRoutingSessionHelper:(id)a5 nowPlayingDataProvider:(id)a6;
-+ (id)generatedSearchResultForAction:(id)a3 actionResponse:(id)a4;
-+ (id)generatedSearchResultForProactiveSuggestion:(id)a3 actionResponse:(id)a4;
++ (id)actionResponseForDeveloperModeWithClientId:(id)id shouldShowRecentDonations:(BOOL)donations;
++ (id)actionResponseForDeveloperModeWithShouldShowRecentDonations:(BOOL)donations shouldShowParameterCombinations:(BOOL)combinations shouldShowUpcomingMedia:(BOOL)media withClientModelId:(id)id;
++ (id)actionSearchResultFromProactiveSuggestion:(id)suggestion actionResponse:(id)response avRoutingSessionHelper:(id)helper nowPlayingDataProvider:(id)provider;
++ (id)actionSearchResultFromScoredAction:(id)action actionResponse:(id)response avRoutingSessionHelper:(id)helper nowPlayingDataProvider:(id)provider;
++ (id)generatedSearchResultForAction:(id)action actionResponse:(id)response;
++ (id)generatedSearchResultForProactiveSuggestion:(id)suggestion actionResponse:(id)response;
 + (id)mostRecentDonationParameterCombinations;
-+ (id)predictedActionSearchResultsWithLimit:(int64_t)a3 forBundleIdentifiers:(id)a4;
-+ (id)recentDonationsStarting:(id)a3 end:(id)a4 number:(unint64_t)a5;
++ (id)predictedActionSearchResultsWithLimit:(int64_t)limit forBundleIdentifiers:(id)identifiers;
++ (id)recentDonationsStarting:(id)starting end:(id)end number:(unint64_t)number;
 + (id)recentUpcomingMedia;
 - (ATXActionSearchResult)init;
-- (ATXActionSearchResult)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionSearchResult:(id)a3;
+- (ATXActionSearchResult)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionSearchResult:(id)result;
 - (unint64_t)hash;
-- (void)_updateInlineCardWithContent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAtxAction:(id)a3;
-- (void)setHeroApp:(id)a3;
+- (void)_updateInlineCardWithContent:(id)content;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAtxAction:(id)action;
+- (void)setHeroApp:(id)app;
 @end
 
 @implementation ATXActionSearchResult
 
-+ (id)predictedActionSearchResultsWithLimit:(int64_t)a3 forBundleIdentifiers:(id)a4
++ (id)predictedActionSearchResultsWithLimit:(int64_t)limit forBundleIdentifiers:(id)identifiers
 {
   v46 = *MEMORY[0x1E69E9840];
   v6 = __atxlog_handle_blending();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v45 = a3;
+    limitCopy = limit;
     _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "predictedActionSearchResultsWithLimit %lu.", buf, 0xCu);
   }
 
@@ -46,18 +46,18 @@
     goto LABEL_41;
   }
 
-  if ([a1 _demoModeEnabled])
+  if ([self _demoModeEnabled])
   {
-    v7 = [a1 _demoModeActionResponse];
+    _demoModeActionResponse = [self _demoModeActionResponse];
     goto LABEL_11;
   }
 
-  if (([a1 shouldDisplayRecentDonationsForTesting] & 1) != 0 || (objc_msgSend(a1, "shouldDisplayUpcomingMediaForTesting") & 1) != 0 || objc_msgSend(a1, "shouldDisplayValidParameterCombinations"))
+  if (([self shouldDisplayRecentDonationsForTesting] & 1) != 0 || (objc_msgSend(self, "shouldDisplayUpcomingMediaForTesting") & 1) != 0 || objc_msgSend(self, "shouldDisplayValidParameterCombinations"))
   {
-    v7 = [a1 actionResponseForDeveloperMode];
+    _demoModeActionResponse = [self actionResponseForDeveloperMode];
 LABEL_11:
-    v9 = v7;
-    if (v7)
+    v9 = _demoModeActionResponse;
+    if (_demoModeActionResponse)
     {
       goto LABEL_12;
     }
@@ -69,17 +69,17 @@ LABEL_39:
 
   v30 = objc_opt_new();
   v31 = v30;
-  if (a3 >= 3)
+  if (limit >= 3)
   {
-    v32 = 3;
+    limitCopy2 = 3;
   }
 
   else
   {
-    v32 = a3;
+    limitCopy2 = limit;
   }
 
-  v9 = [v30 actionPredictionsForConsumerSubType:21 limit:v32];
+  v9 = [v30 actionPredictionsForConsumerSubType:21 limit:limitCopy2];
 
   if (!v9)
   {
@@ -92,26 +92,26 @@ LABEL_12:
   v12 = [(ATXAVRoutingSessionHelper *)v10 initWithAcceptThreshold:0 avRoutingSessionManager:v11];
   v13 = objc_opt_new();
   v14 = objc_alloc(MEMORY[0x1E695DF70]);
-  v15 = [v9 scoredActions];
-  v16 = [v14 initWithCapacity:{objc_msgSend(v15, "count")}];
+  scoredActions = [v9 scoredActions];
+  v16 = [v14 initWithCapacity:{objc_msgSend(scoredActions, "count")}];
 
-  v17 = [v9 scoredActions];
-  if (v17)
+  scoredActions2 = [v9 scoredActions];
+  if (scoredActions2)
   {
   }
 
   else
   {
-    v24 = [v9 proactiveSuggestions];
+    proactiveSuggestions = [v9 proactiveSuggestions];
 
-    if (v24)
+    if (proactiveSuggestions)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v18 = [v9 proactiveSuggestions];
-      v25 = [v18 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      proactiveSuggestions2 = [v9 proactiveSuggestions];
+      v25 = [proactiveSuggestions2 countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v25)
       {
         v26 = v25;
@@ -122,17 +122,17 @@ LABEL_12:
           {
             if (*v39 != v27)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(proactiveSuggestions2);
             }
 
-            v29 = [a1 actionSearchResultFromProactiveSuggestion:*(*(&v38 + 1) + 8 * i) actionResponse:v9 avRoutingSessionHelper:v12 nowPlayingDataProvider:v13];
+            v29 = [self actionSearchResultFromProactiveSuggestion:*(*(&v38 + 1) + 8 * i) actionResponse:v9 avRoutingSessionHelper:v12 nowPlayingDataProvider:v13];
             if (v29)
             {
               [v16 addObject:v29];
             }
           }
 
-          v26 = [v18 countByEnumeratingWithState:&v38 objects:v43 count:16];
+          v26 = [proactiveSuggestions2 countByEnumeratingWithState:&v38 objects:v43 count:16];
         }
 
         while (v26);
@@ -146,8 +146,8 @@ LABEL_12:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = [v9 scoredActions];
-  v19 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  proactiveSuggestions2 = [v9 scoredActions];
+  v19 = [proactiveSuggestions2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v19)
   {
     v20 = v19;
@@ -158,17 +158,17 @@ LABEL_12:
       {
         if (*v35 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(proactiveSuggestions2);
         }
 
-        v23 = [a1 actionSearchResultFromScoredAction:*(*(&v34 + 1) + 8 * j) actionResponse:v9 avRoutingSessionHelper:v12 nowPlayingDataProvider:v13];
+        v23 = [self actionSearchResultFromScoredAction:*(*(&v34 + 1) + 8 * j) actionResponse:v9 avRoutingSessionHelper:v12 nowPlayingDataProvider:v13];
         if (v23)
         {
           [v16 addObject:v23];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v20 = [proactiveSuggestions2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v20);
@@ -184,15 +184,15 @@ LABEL_41:
   return v8;
 }
 
-+ (id)actionSearchResultFromScoredAction:(id)a3 actionResponse:(id)a4 avRoutingSessionHelper:(id)a5 nowPlayingDataProvider:(id)a6
++ (id)actionSearchResultFromScoredAction:(id)action actionResponse:(id)response avRoutingSessionHelper:(id)helper nowPlayingDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 predictedItem];
-  v14 = [v13 bundleId];
-  v15 = [ATXApplicationRecord isDeviceManagementPolicyOkForBundleId:v14];
+  actionCopy = action;
+  responseCopy = response;
+  helperCopy = helper;
+  providerCopy = provider;
+  predictedItem = [actionCopy predictedItem];
+  bundleId = [predictedItem bundleId];
+  v15 = [ATXApplicationRecord isDeviceManagementPolicyOkForBundleId:bundleId];
 
   if (!v15)
   {
@@ -200,26 +200,26 @@ LABEL_41:
     goto LABEL_17;
   }
 
-  v16 = [v9 predictedItem];
-  if ([v16 isTVWhiteListedLongFormMedia])
+  predictedItem2 = [actionCopy predictedItem];
+  if ([predictedItem2 isTVWhiteListedLongFormMedia])
   {
-    if (([v12 isTVExperienceAppNowPlaying] & 1) == 0)
+    if (([providerCopy isTVExperienceAppNowPlaying] & 1) == 0)
     {
-      v17 = [v11 predictedRouteInfo];
-      v18 = [v16 actionWithRouteInfo:v17];
+      predictedRouteInfo = [helperCopy predictedRouteInfo];
+      v18 = [predictedItem2 actionWithRouteInfo:predictedRouteInfo];
 
-      if (([v10 containsExternalRoute] & 1) == 0)
+      if (([responseCopy containsExternalRoute] & 1) == 0)
       {
-        v19 = [v11 predictedRouteInfo];
-        if (v19)
+        predictedRouteInfo2 = [helperCopy predictedRouteInfo];
+        if (predictedRouteInfo2)
         {
-          v20 = v19;
-          v21 = [v11 predictedRouteInfo];
-          v22 = [v21 isExternalRoute];
+          v20 = predictedRouteInfo2;
+          predictedRouteInfo3 = [helperCopy predictedRouteInfo];
+          isExternalRoute = [predictedRouteInfo3 isExternalRoute];
 
-          if (v22)
+          if (isExternalRoute)
           {
-            [v10 setContainsExternalRoute:1];
+            [responseCopy setContainsExternalRoute:1];
           }
         }
       }
@@ -230,12 +230,12 @@ LABEL_41:
 
   else
   {
-    if (![v16 isTVAction])
+    if (![predictedItem2 isTVAction])
     {
-      v18 = v16;
+      v18 = predictedItem2;
 LABEL_15:
-      v23 = [ATXActionSearchResult generatedSearchResultForAction:v18 actionResponse:v10];
-      v16 = v18;
+      v23 = [ATXActionSearchResult generatedSearchResultForAction:v18 actionResponse:responseCopy];
+      predictedItem2 = v18;
       goto LABEL_16;
     }
 
@@ -254,44 +254,44 @@ LABEL_17:
   return v23;
 }
 
-+ (id)generatedSearchResultForAction:(id)a3 actionResponse:(id)a4
++ (id)generatedSearchResultForAction:(id)action actionResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  actionCopy = action;
   v7 = objc_alloc_init(ATXActionSearchResult);
-  [(ATXActionSearchResult *)v7 setAtxAction:v6];
+  [(ATXActionSearchResult *)v7 setAtxAction:actionCopy];
 
-  [(ATXActionSearchResult *)v7 setActionResponse:v5];
+  [(ATXActionSearchResult *)v7 setActionResponse:responseCopy];
 
   return v7;
 }
 
-+ (id)actionSearchResultFromProactiveSuggestion:(id)a3 actionResponse:(id)a4 avRoutingSessionHelper:(id)a5 nowPlayingDataProvider:(id)a6
++ (id)actionSearchResultFromProactiveSuggestion:(id)suggestion actionResponse:(id)response avRoutingSessionHelper:(id)helper nowPlayingDataProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 executableSpecification];
-  v15 = [v14 executableClassString];
+  suggestionCopy = suggestion;
+  responseCopy = response;
+  helperCopy = helper;
+  providerCopy = provider;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
 
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v18 = [v15 isEqualToString:v17];
+  v18 = [executableClassString isEqualToString:v17];
 
   if (v18)
   {
-    v19 = [v10 atxActionExecutableObject];
-    if (v19)
+    atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
+    if (atxActionExecutableObject)
     {
       v20 = [ATXScoredPrediction alloc];
-      v21 = [v10 scoreSpecification];
-      [v21 rawScore];
+      scoreSpecification = [suggestionCopy scoreSpecification];
+      [scoreSpecification rawScore];
       *&v22 = v22;
-      v23 = [(ATXScoredPrediction *)v20 initWithPredictedItem:v19 score:v22];
+      v23 = [(ATXScoredPrediction *)v20 initWithPredictedItem:atxActionExecutableObject score:v22];
 
-      v24 = [a1 actionSearchResultFromScoredAction:v23 actionResponse:v11 avRoutingSessionHelper:v12 nowPlayingDataProvider:v13];
-      [(ATXSuggestionSearchResult *)v24 setProactiveSuggestion:v10];
+      v24 = [self actionSearchResultFromScoredAction:v23 actionResponse:responseCopy avRoutingSessionHelper:helperCopy nowPlayingDataProvider:providerCopy];
+      [(ATXSuggestionSearchResult *)v24 setProactiveSuggestion:suggestionCopy];
 
 LABEL_8:
       goto LABEL_10;
@@ -302,17 +302,17 @@ LABEL_8:
 
   v25 = objc_opt_class();
   v26 = NSStringFromClass(v25);
-  v27 = [v15 isEqualToString:v26];
+  v27 = [executableClassString isEqualToString:v26];
 
   if (v27)
   {
-    v19 = [a1 _unarchiveATXHeroDataFromSuggestion:v10];
-    if (v19)
+    atxActionExecutableObject = [self _unarchiveATXHeroDataFromSuggestion:suggestionCopy];
+    if (atxActionExecutableObject)
     {
       v24 = objc_alloc_init(ATXActionSearchResult);
-      [(ATXActionSearchResult *)v24 setHeroApp:v19];
-      [(ATXActionSearchResult *)v24 setActionResponse:v11];
-      [(ATXSuggestionSearchResult *)v24 setProactiveSuggestion:v10];
+      [(ATXActionSearchResult *)v24 setHeroApp:atxActionExecutableObject];
+      [(ATXActionSearchResult *)v24 setActionResponse:responseCopy];
+      [(ATXSuggestionSearchResult *)v24 setProactiveSuggestion:suggestionCopy];
       goto LABEL_8;
     }
 
@@ -321,24 +321,24 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v24 = [a1 generatedSearchResultForProactiveSuggestion:v10 actionResponse:v11];
+  v24 = [self generatedSearchResultForProactiveSuggestion:suggestionCopy actionResponse:responseCopy];
 LABEL_10:
 
   return v24;
 }
 
-+ (id)_unarchiveObjectFromSuggestion:(id)a3
++ (id)_unarchiveObjectFromSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v4 = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E696ACD0];
-  v6 = [v3 executableSpecification];
-  v7 = [v6 executableClassString];
-  v8 = NSClassFromString(v7);
-  v9 = [v3 executableSpecification];
-  v10 = [v9 executable];
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
+  v8 = NSClassFromString(executableClassString);
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  executable = [executableSpecification2 executable];
   v16 = 0;
-  v11 = [v5 unarchivedObjectOfClass:v8 fromData:v10 error:&v16];
+  v11 = [v5 unarchivedObjectOfClass:v8 fromData:executable error:&v16];
   v12 = v16;
 
   objc_autoreleasePoolPop(v4);
@@ -361,9 +361,9 @@ LABEL_10:
   return v14;
 }
 
-+ (id)_unarchiveATXHeroDataFromSuggestion:(id)a3
++ (id)_unarchiveATXHeroDataFromSuggestion:(id)suggestion
 {
-  v3 = [a1 _unarchiveObjectFromSuggestion:a3];
+  v3 = [self _unarchiveObjectFromSuggestion:suggestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -378,14 +378,14 @@ LABEL_10:
   return v4;
 }
 
-+ (id)generatedSearchResultForProactiveSuggestion:(id)a3 actionResponse:(id)a4
++ (id)generatedSearchResultForProactiveSuggestion:(id)suggestion actionResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  suggestionCopy = suggestion;
   v7 = objc_alloc_init(ATXActionSearchResult);
-  [(ATXSuggestionSearchResult *)v7 setProactiveSuggestion:v6];
+  [(ATXSuggestionSearchResult *)v7 setProactiveSuggestion:suggestionCopy];
 
-  [(ATXActionSearchResult *)v7 setActionResponse:v5];
+  [(ATXActionSearchResult *)v7 setActionResponse:responseCopy];
 
   return v7;
 }
@@ -397,66 +397,66 @@ LABEL_10:
   v2 = [(ATXActionSearchResult *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [(ATXActionSearchResult *)v2 setIdentifier:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(ATXActionSearchResult *)v2 setIdentifier:uUIDString];
   }
 
   return v2;
 }
 
-- (void)setAtxAction:(id)a3
+- (void)setAtxAction:(id)action
 {
-  v5 = a3;
-  if (self->_atxAction != v5)
+  actionCopy = action;
+  if (self->_atxAction != actionCopy)
   {
-    objc_storeStrong(&self->_atxAction, a3);
-    v6 = [(ATXAction *)self->_atxAction _bundleIdForDisplay];
-    [(ATXActionSearchResult *)self setApplicationBundleIdentifier:v6];
+    objc_storeStrong(&self->_atxAction, action);
+    _bundleIdForDisplay = [(ATXAction *)self->_atxAction _bundleIdForDisplay];
+    [(ATXActionSearchResult *)self setApplicationBundleIdentifier:_bundleIdForDisplay];
 
     [(ATXActionSearchResult *)self _updateInlineCardWithContent:self->_atxAction];
-    v7 = [(ATXAction *)self->_atxAction _spotlightContentType];
-    [(ATXActionSearchResult *)self setContentType:v7];
+    _spotlightContentType = [(ATXAction *)self->_atxAction _spotlightContentType];
+    [(ATXActionSearchResult *)self setContentType:_spotlightContentType];
 
     v8 = objc_alloc_init(MEMORY[0x1E69CA320]);
     [(ATXActionSearchResult *)self setPunchout:v8];
 
-    v9 = [(ATXAction *)self->_atxAction actionType];
+    actionType = [(ATXAction *)self->_atxAction actionType];
     atxAction = self->_atxAction;
-    if (v9 == 1)
+    if (actionType == 1)
     {
-      v11 = [(ATXAction *)atxAction userActivityString];
-      [(ATXActionSearchResult *)self setUserActivityRequiredString:v11];
+      userActivityString = [(ATXAction *)atxAction userActivityString];
+      [(ATXActionSearchResult *)self setUserActivityRequiredString:userActivityString];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v12 = [(ATXAction *)atxAction intent];
+    intent = [(ATXAction *)atxAction intent];
 
     v13 = self->_atxAction;
-    if (v12)
+    if (intent)
     {
-      v11 = [(ATXAction *)v13 intent];
-      v14 = [v11 _supportsBackgroundExecution];
-      v15 = [(ATXActionSearchResult *)self punchout];
-      [v15 setIsRunnableInBackground:v14];
+      userActivityString = [(ATXAction *)v13 intent];
+      _supportsBackgroundExecution = [userActivityString _supportsBackgroundExecution];
+      punchout = [(ATXActionSearchResult *)self punchout];
+      [punchout setIsRunnableInBackground:_supportsBackgroundExecution];
 
       goto LABEL_6;
     }
 
     if ([(ATXAction *)v13 actionType]== 5)
     {
-      v16 = [(ATXActionSearchResult *)self punchout];
-      [v16 setIsRunnableInBackground:1];
+      punchout2 = [(ATXActionSearchResult *)self punchout];
+      [punchout2 setIsRunnableInBackground:1];
     }
 
     else
     {
-      v16 = __atxlog_handle_default();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+      punchout2 = __atxlog_handle_default();
+      if (os_log_type_enabled(punchout2, OS_LOG_TYPE_FAULT))
       {
-        [ATXActionSearchResult setAtxAction:v16];
+        [ATXActionSearchResult setAtxAction:punchout2];
       }
     }
   }
@@ -464,25 +464,25 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHeroApp:(id)a3
+- (void)setHeroApp:(id)app
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_heroApp != v5)
+  appCopy = app;
+  if (self->_heroApp != appCopy)
   {
-    objc_storeStrong(&self->_heroApp, a3);
-    v6 = [(ATXHeroData *)v5 clipMetadata];
+    objc_storeStrong(&self->_heroApp, app);
+    clipMetadata = [(ATXHeroData *)appCopy clipMetadata];
 
-    if (v6)
+    if (clipMetadata)
     {
       [(ATXActionSearchResult *)self setApplicationBundleIdentifier:@"com.apple.application"];
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [(ATXHeroData *)self->_heroApp clipMetadata];
-      v9 = [v8 webClipID];
-      v10 = v9;
-      if (v9)
+      clipMetadata2 = [(ATXHeroData *)self->_heroApp clipMetadata];
+      webClipID = [clipMetadata2 webClipID];
+      v10 = webClipID;
+      if (webClipID)
       {
-        v11 = v9;
+        v11 = webClipID;
       }
 
       else
@@ -498,15 +498,15 @@ LABEL_7:
       v13 = objc_alloc_init(MEMORY[0x1E69CA320]);
       [(ATXActionSearchResult *)self setPunchout:v13];
 
-      v14 = [(ATXHeroData *)v5 clipMetadata];
-      v15 = [v14 clipURL];
-      v21[0] = v15;
+      clipMetadata3 = [(ATXHeroData *)appCopy clipMetadata];
+      clipURL = [clipMetadata3 clipURL];
+      v21[0] = clipURL;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-      v17 = [(ATXActionSearchResult *)self punchout];
-      [v17 setUrls:v16];
+      punchout = [(ATXActionSearchResult *)self punchout];
+      [punchout setUrls:v16];
 
-      v18 = [(ATXActionSearchResult *)self punchout];
-      [v18 setHasClip:1];
+      punchout2 = [(ATXActionSearchResult *)self punchout];
+      [punchout2 setHasClip:1];
 
       v19 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"Nearby" value:&stru_1F3E050C8 table:0];
@@ -515,9 +515,9 @@ LABEL_7:
   }
 }
 
-- (void)_updateInlineCardWithContent:(id)a3
+- (void)_updateInlineCardWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -588,7 +588,7 @@ LABEL_7:
   _Block_object_dispose(&v21, 8);
   v11 = objc_opt_new();
   [v11 setFormat:2];
-  [v11 setContent:v4];
+  [v11 setContent:contentCopy];
   [v11 setLoadsBundleServices:0];
   v12 = dispatch_semaphore_create(0);
   v14[0] = MEMORY[0x1E69E9820];
@@ -755,12 +755,12 @@ intptr_t __54__ATXActionSearchResult__updateInlineCardWithContent___block_invoke
   return v57;
 }
 
-+ (id)actionResponseForDeveloperModeWithShouldShowRecentDonations:(BOOL)a3 shouldShowParameterCombinations:(BOOL)a4 shouldShowUpcomingMedia:(BOOL)a5 withClientModelId:(id)a6
++ (id)actionResponseForDeveloperModeWithShouldShowRecentDonations:(BOOL)donations shouldShowParameterCombinations:(BOOL)combinations shouldShowUpcomingMedia:(BOOL)media withClientModelId:(id)id
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  mediaCopy = media;
+  combinationsCopy = combinations;
+  donationsCopy = donations;
+  idCopy = id;
   v11 = __atxlog_handle_default();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -771,19 +771,19 @@ intptr_t __54__ATXActionSearchResult__updateInlineCardWithContent___block_invoke
   v12 = objc_opt_new();
   v13 = [v12 dateByAddingTimeInterval:-3600.0];
   v26 = v13;
-  if (v8)
+  if (donationsCopy)
   {
-    v14 = [a1 recentDonationsStarting:v13 end:v12 number:10];
+    v14 = [self recentDonationsStarting:v13 end:v12 number:10];
     v15 = [v14 count];
-    if (!v7)
+    if (!combinationsCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
-    v16 = [a1 mostRecentDonationParameterCombinations];
-    v15 += [v16 count];
-    if (!v6)
+    mostRecentDonationParameterCombinations = [self mostRecentDonationParameterCombinations];
+    v15 += [mostRecentDonationParameterCombinations count];
+    if (!mediaCopy)
     {
       goto LABEL_6;
     }
@@ -793,23 +793,23 @@ LABEL_8:
 
   v14 = 0;
   v15 = 0;
-  if (v7)
+  if (combinationsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  v16 = 0;
-  if (!v6)
+  mostRecentDonationParameterCombinations = 0;
+  if (!mediaCopy)
   {
 LABEL_6:
-    v17 = 0;
+    recentUpcomingMedia = 0;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v17 = [a1 recentUpcomingMedia];
-  v15 += [v17 count];
+  recentUpcomingMedia = [self recentUpcomingMedia];
+  v15 += [recentUpcomingMedia count];
 LABEL_10:
   v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v15];
   if ([v14 count])
@@ -817,23 +817,23 @@ LABEL_10:
     [v18 addObjectsFromArray:v14];
   }
 
-  if ([v16 count])
+  if ([mostRecentDonationParameterCombinations count])
   {
-    [v18 addObjectsFromArray:v16];
+    [v18 addObjectsFromArray:mostRecentDonationParameterCombinations];
   }
 
-  if ([v17 count])
+  if ([recentUpcomingMedia count])
   {
-    [v18 addObjectsFromArray:v17];
+    [v18 addObjectsFromArray:recentUpcomingMedia];
   }
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __159__ATXActionSearchResult_actionResponseForDeveloperModeWithShouldShowRecentDonations_shouldShowParameterCombinations_shouldShowUpcomingMedia_withClientModelId___block_invoke;
   v27[3] = &unk_1E80C2788;
-  v28 = v10;
-  v29 = a1;
-  v19 = v10;
+  v28 = idCopy;
+  selfCopy = self;
+  v19 = idCopy;
   v20 = [v18 _pas_mappedArrayWithTransform:v27];
   v21 = [ATXActionResponse alloc];
   v22 = objc_opt_new();
@@ -851,11 +851,11 @@ id __159__ATXActionSearchResult_actionResponseForDeveloperModeWithShouldShowRece
   return v4;
 }
 
-+ (id)_recentDonationProactiveSuggestionFromScoredAction:(id)a3 withClientModelId:(id)a4
++ (id)_recentDonationProactiveSuggestionFromScoredAction:(id)action withClientModelId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E69C5BC0]) initWithClientModelId:v6 clientModelVersion:@"1.0" engagementResetPolicy:0];
+  actionCopy = action;
+  idCopy = id;
+  v7 = [objc_alloc(MEMORY[0x1E69C5BC0]) initWithClientModelId:idCopy clientModelVersion:@"1.0" engagementResetPolicy:0];
   v8 = [objc_alloc(MEMORY[0x1E69C5BD8]) initWithRawScore:4 suggestedConfidenceCategory:0.0];
   v34 = 0;
   v35 = &v34;
@@ -880,37 +880,37 @@ id __159__ATXActionSearchResult_actionResponseForDeveloperModeWithShouldShowRece
     +[ATXActionSearchResult _recentDonationProactiveSuggestionFromScoredAction:withClientModelId:];
   }
 
-  v11 = [v9 _uiSpecForScoredAction:v5 scoreSpec:v8 clientModelSpec:v7 predictionReason:0 shouldClearOnEngagement:0 allowedOnLockscreen:1];
-  v12 = [v5 predictedItem];
-  v13 = [v12 archivedDataForAction];
+  v11 = [v9 _uiSpecForScoredAction:actionCopy scoreSpec:v8 clientModelSpec:v7 predictionReason:0 shouldClearOnEngagement:0 allowedOnLockscreen:1];
+  predictedItem = [actionCopy predictedItem];
+  archivedDataForAction = [predictedItem archivedDataForAction];
 
-  if (v13)
+  if (archivedDataForAction)
   {
-    v32 = v6;
+    v32 = idCopy;
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v15 = [v5 predictedItem];
-    v16 = [v15 json];
-    v31 = [v14 initWithFormat:@"%@", v16];
+    predictedItem2 = [actionCopy predictedItem];
+    json = [predictedItem2 json];
+    v31 = [v14 initWithFormat:@"%@", json];
 
     v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v18 = [v5 predictedItem];
-    v19 = [v18 actionKey];
+    predictedItem3 = [actionCopy predictedItem];
+    actionKey = [predictedItem3 actionKey];
     v20 = MEMORY[0x1E696AD98];
-    [v5 predictedItem];
+    [actionCopy predictedItem];
     v21 = v8;
     v23 = v22 = v7;
     v24 = [v20 numberWithUnsignedInteger:{objc_msgSend(v23, "paramHash")}];
-    v25 = [v17 initWithFormat:@"%@:%lld", v19, objc_msgSend(v24, "longLongValue")];
+    v25 = [v17 initWithFormat:@"%@:%lld", actionKey, objc_msgSend(v24, "longLongValue")];
 
     v26 = objc_alloc(MEMORY[0x1E69C5BC8]);
-    v27 = [v5 predictedItem];
-    v28 = [v26 initWithExecutableObject:v27 executableDescription:v31 executableIdentifier:v25 suggestionExecutableType:2];
+    predictedItem4 = [actionCopy predictedItem];
+    v28 = [v26 initWithExecutableObject:predictedItem4 executableDescription:v31 executableIdentifier:v25 suggestionExecutableType:2];
 
     v7 = v22;
     v8 = v21;
     v29 = [objc_alloc(MEMORY[0x1E69C5BB0]) initWithClientModelSpecification:v7 executableSpecification:v28 uiSpecification:v11 scoreSpecification:v21];
 
-    v6 = v32;
+    idCopy = v32;
   }
 
   else
@@ -923,43 +923,43 @@ id __159__ATXActionSearchResult_actionResponseForDeveloperModeWithShouldShowRece
 
 + (id)actionResponseForDeveloperMode
 {
-  v3 = [a1 shouldDisplayRecentDonationsForTesting];
-  v4 = [a1 shouldDisplayValidParameterCombinations];
-  v5 = [a1 shouldDisplayUpcomingMediaForTesting];
+  shouldDisplayRecentDonationsForTesting = [self shouldDisplayRecentDonationsForTesting];
+  shouldDisplayValidParameterCombinations = [self shouldDisplayValidParameterCombinations];
+  shouldDisplayUpcomingMediaForTesting = [self shouldDisplayUpcomingMediaForTesting];
 
-  return [a1 actionResponseForDeveloperModeWithShouldShowRecentDonations:v3 shouldShowParameterCombinations:v4 shouldShowUpcomingMedia:v5 withClientModelId:@"developerModeRecentDonations"];
+  return [self actionResponseForDeveloperModeWithShouldShowRecentDonations:shouldDisplayRecentDonationsForTesting shouldShowParameterCombinations:shouldDisplayValidParameterCombinations shouldShowUpcomingMedia:shouldDisplayUpcomingMediaForTesting withClientModelId:@"developerModeRecentDonations"];
 }
 
-+ (id)actionResponseForDeveloperModeWithClientId:(id)a3 shouldShowRecentDonations:(BOOL)a4
++ (id)actionResponseForDeveloperModeWithClientId:(id)id shouldShowRecentDonations:(BOOL)donations
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 actionResponseForDeveloperModeWithShouldShowRecentDonations:v4 shouldShowParameterCombinations:objc_msgSend(a1 shouldShowUpcomingMedia:"shouldDisplayValidParameterCombinations") withClientModelId:{objc_msgSend(a1, "shouldDisplayUpcomingMediaForTesting"), v6}];
+  donationsCopy = donations;
+  idCopy = id;
+  v7 = [self actionResponseForDeveloperModeWithShouldShowRecentDonations:donationsCopy shouldShowParameterCombinations:objc_msgSend(self shouldShowUpcomingMedia:"shouldDisplayValidParameterCombinations") withClientModelId:{objc_msgSend(self, "shouldDisplayUpcomingMediaForTesting"), idCopy}];
 
   return v7;
 }
 
-+ (id)recentDonationsStarting:(id)a3 end:(id)a4 number:(unint64_t)a5
++ (id)recentDonationsStarting:(id)starting end:(id)end number:(unint64_t)number
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  startingCopy = starting;
+  endCopy = end;
   v9 = objc_alloc_init(ATXCombinedIntentStream);
-  v24 = v7;
-  v10 = [(ATXCombinedIntentStream *)v9 getSortedCombinedIntentEventsBetweenStartDate:v7 endDate:v8 bundleIdFilter:0 comparator:&__block_literal_global_33];
+  v24 = startingCopy;
+  v10 = [(ATXCombinedIntentStream *)v9 getSortedCombinedIntentEventsBetweenStartDate:startingCopy endDate:endCopy bundleIdFilter:0 comparator:&__block_literal_global_33];
 
   v11 = [v10 count];
-  if (v11 >= a5)
+  if (v11 >= number)
   {
-    v12 = a5;
+    numberCopy = number;
   }
 
   else
   {
-    v12 = v11;
+    numberCopy = v11;
   }
 
-  v13 = [v10 subarrayWithRange:{0, v12}];
+  v13 = [v10 subarrayWithRange:{0, numberCopy}];
   v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
   v25 = 0u;
   v26 = 0u;
@@ -980,10 +980,10 @@ id __159__ATXActionSearchResult_actionResponseForDeveloperModeWithShouldShowRece
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v25 + 1) + 8 * i) action];
-        if (v20)
+        action = [*(*(&v25 + 1) + 8 * i) action];
+        if (action)
         {
-          v21 = [[ATXScoredPrediction alloc] initWithPredictedItem:v20 score:0.0];
+          v21 = [[ATXScoredPrediction alloc] initWithPredictedItem:action score:0.0];
           [v14 addObject:v21];
         }
       }
@@ -1012,14 +1012,14 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
 + (id)mostRecentDonationParameterCombinations
 {
   v31 = *MEMORY[0x1E69E9840];
-  v20 = [MEMORY[0x1E695DF00] date];
-  v19 = [v20 dateByAddingTimeInterval:-7200.0];
-  v18 = [a1 recentDonationsStarting:v19 end:v20 number:1];
-  v3 = [v18 firstObject];
-  v4 = [v3 predictedItem];
+  date = [MEMORY[0x1E695DF00] date];
+  v19 = [date dateByAddingTimeInterval:-7200.0];
+  v18 = [self recentDonationsStarting:v19 end:date number:1];
+  firstObject = [v18 firstObject];
+  predictedItem = [firstObject predictedItem];
 
   v5 = objc_opt_new();
-  if (v4)
+  if (predictedItem)
   {
     v26 = 0;
     v27 = &v26;
@@ -1039,7 +1039,7 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
 
     v7 = v6;
     _Block_object_dispose(&v26, 8);
-    v8 = [v6 slotSetsForAction:v4 intentCache:0];
+    v8 = [v6 slotSetsForAction:predictedItem intentCache:0];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -1059,8 +1059,8 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
 
           v12 = *(*(&v21 + 1) + 8 * i);
           v13 = [ATXScoredPrediction alloc];
-          v14 = [v12 parameters];
-          v15 = [v4 copyWithParameterWhitelist:v14];
+          parameters = [v12 parameters];
+          v15 = [predictedItem copyWithParameterWhitelist:parameters];
           v16 = [(ATXScoredPrediction *)v13 initWithPredictedItem:v15 score:0.0];
           [v5 addObject:v16];
         }
@@ -1080,13 +1080,13 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
   v42 = *MEMORY[0x1E69E9840];
   v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
   v30 = +[ATXUpcomingMediaQuery getAllUpcomingMedia];
-  v2 = [v30 sortedUpcomingMedia];
+  sortedUpcomingMedia = [v30 sortedUpcomingMedia];
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v4 = v2;
+  v4 = sortedUpcomingMedia;
   v5 = [v4 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v5)
   {
@@ -1101,8 +1101,8 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v36 + 1) + 8 * i) first];
-        [v3 addObject:v9];
+        first = [*(*(&v36 + 1) + 8 * i) first];
+        [v3 addObject:first];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -1147,15 +1147,15 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
         }
 
         v19 = *(*(&v32 + 1) + 8 * j);
-        v20 = [v19 launchId];
+        launchId = [v19 launchId];
 
-        if (v20)
+        if (launchId)
         {
           v21 = [ATXAction alloc];
           v22 = objc_opt_new();
-          v23 = [v19 launchId];
+          launchId2 = [v19 launchId];
           LOBYTE(v28) = 0;
-          v24 = [(ATXAction *)v21 initWithIntent:v19 actionUUID:v22 bundleId:v23 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v28 title:0 subtitle:0, v29];
+          v24 = [(ATXAction *)v21 initWithIntent:v19 actionUUID:v22 bundleId:launchId2 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v28 title:0 subtitle:0, v29];
 
           if (v24)
           {
@@ -1194,40 +1194,40 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
 
 - (unint64_t)hash
 {
-  v2 = [(ATXActionResponse *)self->_actionResponse uuid];
-  v3 = [v2 hash];
+  uuid = [(ATXActionResponse *)self->_actionResponse uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionSearchResult *)self isEqualToActionSearchResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionSearchResult *)self isEqualToActionSearchResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToActionSearchResult:(id)a3
+- (BOOL)isEqualToActionSearchResult:(id)result
 {
-  v5 = a3;
-  v6 = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
-  if (v6 || ([v5 proactiveSuggestion], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  resultCopy = result;
+  proactiveSuggestion = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
+  if (proactiveSuggestion || ([resultCopy proactiveSuggestion], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
-    v8 = [v5 proactiveSuggestion];
-    v9 = [v7 isEqual:v8];
+    proactiveSuggestion2 = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
+    proactiveSuggestion3 = [resultCopy proactiveSuggestion];
+    v9 = [proactiveSuggestion2 isEqual:proactiveSuggestion3];
 
-    if (v6)
+    if (proactiveSuggestion)
     {
       goto LABEL_7;
     }
@@ -1239,9 +1239,9 @@ uint64_t __60__ATXActionSearchResult_recentDonationsStarting_end_number___block_
   }
 
 LABEL_7:
-  if ([(ATXAction *)self->_atxAction isEqual:v5[103]])
+  if ([(ATXAction *)self->_atxAction isEqual:resultCopy[103]])
   {
-    v10 = [(ATXActionResponse *)self->_actionResponse isEqual:v5[102]]& v9;
+    v10 = [(ATXActionResponse *)self->_actionResponse isEqual:resultCopy[102]]& v9;
   }
 
   else
@@ -1252,19 +1252,19 @@ LABEL_7:
   return v10;
 }
 
-- (ATXActionSearchResult)initWithCoder:(id)a3
+- (ATXActionSearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ATXActionSearchResult;
-  v5 = [(ATXSuggestionSearchResult *)&v11 initWithCoder:v4];
+  v5 = [(ATXSuggestionSearchResult *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_atxAction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_atxAction"];
     atxAction = v5->_atxAction;
     v5->_atxAction = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_atxActionResponse"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_atxActionResponse"];
     actionResponse = v5->_actionResponse;
     v5->_actionResponse = v8;
   }
@@ -1272,15 +1272,15 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   atxAction = self->_atxAction;
-  v5 = a3;
-  [v5 encodeObject:atxAction forKey:@"_atxAction"];
-  [v5 encodeObject:self->_actionResponse forKey:@"_atxActionResponse"];
+  coderCopy = coder;
+  [coderCopy encodeObject:atxAction forKey:@"_atxAction"];
+  [coderCopy encodeObject:self->_actionResponse forKey:@"_atxActionResponse"];
   v6.receiver = self;
   v6.super_class = ATXActionSearchResult;
-  [(ATXSuggestionSearchResult *)&v6 encodeWithCoder:v5];
+  [(ATXSuggestionSearchResult *)&v6 encodeWithCoder:coderCopy];
 }
 
 + (void)_unarchiveObjectFromSuggestion:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

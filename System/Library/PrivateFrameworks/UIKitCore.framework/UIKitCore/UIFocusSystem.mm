@@ -4,26 +4,26 @@
 + (UIFocusSystem)focusSystemForEnvironment:(id)environment;
 + (void)initialize;
 + (void)registerURL:(NSURL *)soundFileURL forSoundIdentifier:(UIFocusSoundIdentifier)identifier;
-- (BOOL)_focusedItemIsContainedInEnvironment:(id)a3 includeSelf:(BOOL)a4;
-- (BOOL)_handleFailedFocusMovementRequest:(id)a3 withPerformer:(id)a4;
+- (BOOL)_focusedItemIsContainedInEnvironment:(id)environment includeSelf:(BOOL)self;
+- (BOOL)_handleFailedFocusMovementRequest:(id)request withPerformer:(id)performer;
 - (BOOL)_hasValidItemForCurrentDeferralState;
-- (BOOL)_isEnvironmentEligibleForFocusUpdate:(id)a3 fallbackToEnvironment:(id *)a4 debugReport:(id)a5;
-- (BOOL)_isEnvironmentLocked:(id)a3;
-- (BOOL)_isScrollingScrollableContainer:(id)a3 targetContentOffset:(CGPoint *)a4;
+- (BOOL)_isEnvironmentEligibleForFocusUpdate:(id)update fallbackToEnvironment:(id *)environment debugReport:(id)report;
+- (BOOL)_isEnvironmentLocked:(id)locked;
+- (BOOL)_isScrollingScrollableContainer:(id)container targetContentOffset:(CGPoint *)offset;
 - (BOOL)_performDeferredFocusUpdateIfAvailable;
-- (BOOL)_performFocusMovement:(id)a3;
-- (BOOL)_prefersDeferralForFocusUpdateInContext:(id)a3;
+- (BOOL)_performFocusMovement:(id)movement;
+- (BOOL)_prefersDeferralForFocusUpdateInContext:(id)context;
 - (BOOL)_safari_moveFocusToNextGroup;
 - (BOOL)_safari_moveFocusToPreviousGroup;
-- (BOOL)_shouldRestoreFocusInContext:(id)a3;
-- (BOOL)_shouldReverseLayoutDirectionForEnvironment:(id)a3;
-- (BOOL)_shouldReverseLinearWrappingForEnvironment:(id)a3;
-- (BOOL)_uiktest_performFocusMovement:(id)a3 withSearchInfo:(id)a4;
-- (BOOL)_uiktest_updateFocusToItem:(id)a3;
-- (BOOL)_updateFocusImmediatelyToEnvironment:(id)a3 startDeferringOnLostFocus:(BOOL)a4 suppressLostFocusUpdate:(BOOL)a5;
-- (BOOL)_updateFocusImmediatelyWithContext:(id)a3;
-- (BOOL)_updateFocusWithContext:(id)a3 report:(id)a4;
-- (CGRect)_clippingRectInCoordinateSpace:(id)a3;
+- (BOOL)_shouldRestoreFocusInContext:(id)context;
+- (BOOL)_shouldReverseLayoutDirectionForEnvironment:(id)environment;
+- (BOOL)_shouldReverseLinearWrappingForEnvironment:(id)environment;
+- (BOOL)_uiktest_performFocusMovement:(id)movement withSearchInfo:(id)info;
+- (BOOL)_uiktest_updateFocusToItem:(id)item;
+- (BOOL)_updateFocusImmediatelyToEnvironment:(id)environment startDeferringOnLostFocus:(BOOL)focus suppressLostFocusUpdate:(BOOL)update;
+- (BOOL)_updateFocusImmediatelyWithContext:(id)context;
+- (BOOL)_updateFocusWithContext:(id)context report:(id)report;
+- (CGRect)_clippingRectInCoordinateSpace:(id)space;
 - (NSArray)preferredFocusEnvironments;
 - (NSString)description;
 - (UIFocusEnvironment)_deepestPreferredFocusEnvironment;
@@ -32,18 +32,18 @@
 - (UIFocusItemContainer)focusItemContainer;
 - (UIFocusSystem)_preferredFirstResponderFocusSystem;
 - (UIFocusSystem)init;
-- (UIFocusSystem)initWithFocusBehavior:(id)a3 enabled:(BOOL)a4;
+- (UIFocusSystem)initWithFocusBehavior:(id)behavior enabled:(BOOL)enabled;
 - (UIResponder)_preferredFirstResponder;
 - (_UIFocusEnvironmentPreferenceCache)_deepestPreferredFocusableItemCacheForCurrentUpdate;
 - (_UIFocusGroupHistory)_focusGroupHistory;
 - (_UIFocusRegionContainer)_focusMapContainer;
 - (_UIFocusSystemDelegate)delegate;
-- (id)_closestFocusableItemToPoint:(CGPoint)a3 inEnvironment:(id)a4 constrainedToRect:(CGRect)a5 distanceMeasuringUnitPoint:(CGPoint)a6 itemFilter:(id)a7;
-- (id)_configureFocusDeferralIfNecessaryForContext:(id)a3 report:(id)a4;
-- (id)_contextForUpdateToEnvironment:(id)a3 allowsOverridingPreferedFocusEnvironments:(BOOL)a4 allowsDeferral:(BOOL)a5;
+- (id)_closestFocusableItemToPoint:(CGPoint)point inEnvironment:(id)environment constrainedToRect:(CGRect)rect distanceMeasuringUnitPoint:(CGPoint)unitPoint itemFilter:(id)filter;
+- (id)_configureFocusDeferralIfNecessaryForContext:(id)context report:(id)report;
+- (id)_contextForUpdateToEnvironment:(id)environment allowsOverridingPreferedFocusEnvironments:(BOOL)environments allowsDeferral:(BOOL)deferral;
 - (id)_focusItemForValidation;
 - (id)_overridingPreferredFocusEnvironment;
-- (id)_preferredFirstResponderFocusSystemForFocusedItem:(id)a3;
+- (id)_preferredFirstResponderFocusSystemForFocusedItem:(id)item;
 - (id)_topEnvironment;
 - (id)_validatedAppearingFocusEnvironmentRequest;
 - (id)_validatedPendingFocusUpdateRequest;
@@ -51,37 +51,37 @@
 - (int64_t)_effectiveFocusDeferralBehavior;
 - (void)_buildFocusItemAncestorCacheIfNecessary;
 - (void)_clearFocusItemAncestorCache;
-- (void)_didFinishUpdatingFocusInContext:(id)a3;
+- (void)_didFinishUpdatingFocusInContext:(id)context;
 - (void)_enableWithoutFocusRestoration;
 - (void)_focusBehaviorDidChange;
-- (void)_focusEnvironmentDidAppear:(id)a3;
-- (void)_focusEnvironmentDidBecomeVisible:(id)a3;
-- (void)_focusEnvironmentWillBecomeInvisible:(id)a3;
-- (void)_focusEnvironmentWillDisappear:(id)a3 remainingInHierarchy:(BOOL)a4;
-- (void)_handleFocusMovementAction:(id)a3;
-- (void)_lockEnvironment:(id)a3;
-- (void)_notifyEnvironment:(id)a3 didUpdateFocusInContext:(id)a4;
-- (void)_performWithoutFocusUpdates:(id)a3;
+- (void)_focusEnvironmentDidAppear:(id)appear;
+- (void)_focusEnvironmentDidBecomeVisible:(id)visible;
+- (void)_focusEnvironmentWillBecomeInvisible:(id)invisible;
+- (void)_focusEnvironmentWillDisappear:(id)disappear remainingInHierarchy:(BOOL)hierarchy;
+- (void)_handleFocusMovementAction:(id)action;
+- (void)_lockEnvironment:(id)environment;
+- (void)_notifyEnvironment:(id)environment didUpdateFocusInContext:(id)context;
+- (void)_performWithoutFocusUpdates:(id)updates;
 - (void)_reevaluateLockedEnvironments;
-- (void)_requestFocusUpdate:(id)a3;
+- (void)_requestFocusUpdate:(id)update;
 - (void)_resetFocusDeferral;
-- (void)_sendDidUpdateFocusNotificationsInContext:(id)a3;
-- (void)_sendNotificationsForFocusUpdateInContext:(id)a3 usingBlock:(id)a4;
-- (void)_sendWillUpdateFocusNotificationsInContext:(id)a3;
-- (void)_setDeferredFocusUpdateTarget:(id)a3;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setFocusCasting:(id)a3;
-- (void)_setOverrideFocusDeferralBehavior:(id)a3;
+- (void)_sendDidUpdateFocusNotificationsInContext:(id)context;
+- (void)_sendNotificationsForFocusUpdateInContext:(id)context usingBlock:(id)block;
+- (void)_sendWillUpdateFocusNotificationsInContext:(id)context;
+- (void)_setDeferredFocusUpdateTarget:(id)target;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setFocusCasting:(id)casting;
+- (void)_setOverrideFocusDeferralBehavior:(id)behavior;
 - (void)_startDeferringFocusIfSupported;
-- (void)_tickHasSeenFocusedItemTimer:(BOOL)a3;
+- (void)_tickHasSeenFocusedItemTimer:(BOOL)timer;
 - (void)_uiktest_disableFocusDeferral;
 - (void)_uiktest_disableThrottle;
-- (void)_unlockEnvironment:(id)a3;
+- (void)_unlockEnvironment:(id)environment;
 - (void)_updateFocusUpdateThrottle;
 - (void)_updateWantsTreeLocking;
 - (void)requestFocusUpdateToEnvironment:(id)environment;
-- (void)setBehavior:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setBehavior:(id)behavior;
+- (void)setDelegate:(id)delegate;
 - (void)updateFocusIfNeeded;
 @end
 
@@ -113,10 +113,10 @@
 
 - (id)_topEnvironment
 {
-  v2 = self;
-  v3 = v2;
-  v4 = v2;
-  if ((*&v2->_flags & 0x40) == 0 || (-[UIFocusSystem delegate](v2, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 _topEnvironmentForFocusSystem:v3], v4 = objc_claimAutoreleasedReturnValue(), v3, v6, v4) && ((disappearingFocusEnvironment = v3->_disappearingFocusEnvironment) != 0 && (_UIFocusEnvironmentIsAncestorOfEnvironment(disappearingFocusEnvironment, v4) & 1) != 0 || !_UIFocusEnvironmentIsAncestorOfEnvironment(v3, v4)))
+  selfCopy = self;
+  v3 = selfCopy;
+  v4 = selfCopy;
+  if ((*&selfCopy->_flags & 0x40) == 0 || (-[UIFocusSystem delegate](selfCopy, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), [v6 _topEnvironmentForFocusSystem:v3], v4 = objc_claimAutoreleasedReturnValue(), v3, v6, v4) && ((disappearingFocusEnvironment = v3->_disappearingFocusEnvironment) != 0 && (_UIFocusEnvironmentIsAncestorOfEnvironment(disappearingFocusEnvironment, v4) & 1) != 0 || !_UIFocusEnvironmentIsAncestorOfEnvironment(v3, v4)))
   {
     v5 = v3;
   }
@@ -139,10 +139,10 @@
 
 - (id)_focusItemForValidation
 {
-  v3 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
-  if (v3 || [(UIFocusSystem *)self _isEnabled])
+  _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+  if (_focusedItemOrDeferralTarget || [(UIFocusSystem *)self _isEnabled])
   {
-    WeakRetained = v3;
+    WeakRetained = _focusedItemOrDeferralTarget;
   }
 
   else
@@ -157,11 +157,11 @@
 
 - (UIFocusItem)_focusedItemOrDeferralTarget
 {
-  v3 = [(UIFocusSystem *)self focusedItem];
-  v4 = v3;
-  if (v3)
+  focusedItem = [(UIFocusSystem *)self focusedItem];
+  v4 = focusedItem;
+  if (focusedItem)
   {
-    WeakRetained = v3;
+    WeakRetained = focusedItem;
   }
 
   else
@@ -176,20 +176,20 @@
 
 - (int64_t)_effectiveFocusDeferralBehavior
 {
-  v3 = [(UIFocusSystem *)self _overrideFocusDeferralBehavior];
-  v4 = v3;
-  if (v3)
+  _overrideFocusDeferralBehavior = [(UIFocusSystem *)self _overrideFocusDeferralBehavior];
+  v4 = _overrideFocusDeferralBehavior;
+  if (_overrideFocusDeferralBehavior)
   {
-    v5 = [v3 integerValue];
+    integerValue = [_overrideFocusDeferralBehavior integerValue];
   }
 
   else
   {
-    v6 = [(UIFocusSystem *)self behavior];
-    v5 = [v6 focusDeferral];
+    behavior = [(UIFocusSystem *)self behavior];
+    integerValue = [behavior focusDeferral];
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (id)_validatedPendingFocusUpdateRequest
@@ -202,13 +202,13 @@
     v6 = *(__UILogGetCategoryCachedImpl("UIFocus", &_validatedPendingFocusUpdateRequest___s_category) + 8);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(_UIFocusUpdateRequest *)v4 environment];
-      if (v7)
+      environment = [(_UIFocusUpdateRequest *)v4 environment];
+      if (environment)
       {
         v8 = MEMORY[0x1E696AEC0];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v8 stringWithFormat:@"<%@: %p>", v10, v7];
+        v11 = [v8 stringWithFormat:@"<%@: %p>", v10, environment];
       }
 
       else
@@ -217,16 +217,16 @@
       }
 
       v12 = MEMORY[0x1E696AEC0];
-      v13 = self;
+      selfCopy = self;
       v14 = v11;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v12 stringWithFormat:@"<%@: %p>", v16, v13];
+      selfCopy = [v12 stringWithFormat:@"<%@: %p>", v16, selfCopy];
 
       *buf = 138543618;
       v21 = v11;
       v22 = 2114;
-      v23 = v17;
+      v23 = selfCopy;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Found invalid pending focus update request for environment %{public}@ in focus system %{public}@.", buf, 0x16u);
     }
 
@@ -277,12 +277,12 @@
   if ((*&flags & 2) == 0)
   {
     self->_flags = (*&flags | 0x20);
-    v6 = [(UIFocusSystem *)self _validatedPendingFocusUpdateRequest];
-    v7 = [(UIFocusSystem *)self _validatedAppearingFocusEnvironmentRequest];
-    if (v6 | v7)
+    _validatedPendingFocusUpdateRequest = [(UIFocusSystem *)self _validatedPendingFocusUpdateRequest];
+    _validatedAppearingFocusEnvironmentRequest = [(UIFocusSystem *)self _validatedAppearingFocusEnvironmentRequest];
+    if (_validatedPendingFocusUpdateRequest | _validatedAppearingFocusEnvironmentRequest)
     {
-      v8 = [(UIFocusSystem *)self _topEnvironment];
-      if (!v8)
+      _topEnvironment = [(UIFocusSystem *)self _topEnvironment];
+      if (!_topEnvironment)
       {
         pendingFocusUpdateRequest = self->_pendingFocusUpdateRequest;
         self->_pendingFocusUpdateRequest = 0;
@@ -298,24 +298,24 @@ LABEL_60:
         return;
       }
 
-      v9 = v8;
-      if (v6)
+      v9 = _topEnvironment;
+      if (_validatedPendingFocusUpdateRequest)
       {
-        v10 = [v6 environment];
-        IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v9, v10);
+        environment = [_validatedPendingFocusUpdateRequest environment];
+        IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v9, environment);
 
         if ((IsAncestorOfEnvironment & 1) == 0)
         {
-          v12 = [v6 requestByRedirectingRequestToEnvironment:v9];
+          v12 = [_validatedPendingFocusUpdateRequest requestByRedirectingRequestToEnvironment:v9];
 
-          v6 = v12;
+          _validatedPendingFocusUpdateRequest = v12;
         }
       }
 
-      if (v7)
+      if (_validatedAppearingFocusEnvironmentRequest)
       {
-        v13 = [v7 environment];
-        v14 = _UIFocusEnvironmentFirstCommonAncestor(v9, v13);
+        environment2 = [_validatedAppearingFocusEnvironmentRequest environment];
+        v14 = _UIFocusEnvironmentFirstCommonAncestor(v9, environment2);
 
         if (v14 != v9)
         {
@@ -324,36 +324,36 @@ LABEL_60:
           v9 = v15;
         }
 
-        if (v6)
+        if (_validatedPendingFocusUpdateRequest)
         {
-          v16 = [v6 environment];
-          v17 = [v7 environment];
-          v18 = _UIFocusEnvironmentFirstCommonAncestor(v16, v17);
+          environment3 = [_validatedPendingFocusUpdateRequest environment];
+          environment4 = [_validatedAppearingFocusEnvironmentRequest environment];
+          v18 = _UIFocusEnvironmentFirstCommonAncestor(environment3, environment4);
 
           if (!v18)
           {
-            v66 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v66 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1215 description:@"The appearing environment and the requested environment are not part of the same focus system."];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1215 description:@"The appearing environment and the requested environment are not part of the same focus system."];
           }
 
-          v19 = [v6 environment];
+          environment5 = [_validatedPendingFocusUpdateRequest environment];
 
-          if (v18 != v19)
+          if (v18 != environment5)
           {
-            v20 = [v6 requestByRedirectingRequestToEnvironment:v18];
+            v20 = [_validatedPendingFocusUpdateRequest requestByRedirectingRequestToEnvironment:v18];
 
-            v6 = v20;
+            _validatedPendingFocusUpdateRequest = v20;
           }
         }
 
         else
         {
-          v6 = v7;
+          _validatedPendingFocusUpdateRequest = _validatedAppearingFocusEnvironmentRequest;
         }
       }
 
-      v25 = [v6 environment];
-      v26 = [(UIFocusSystem *)self _isEnvironmentLocked:v25];
+      environment6 = [_validatedPendingFocusUpdateRequest environment];
+      v26 = [(UIFocusSystem *)self _isEnvironmentLocked:environment6];
 
       if (v26)
       {
@@ -364,9 +364,9 @@ LABEL_60:
           if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
           {
             v62 = v61;
-            v63 = [v6 environment];
+            environment7 = [_validatedPendingFocusUpdateRequest environment];
             *buf = 138412290;
-            v76 = v63;
+            v76 = environment7;
             _os_log_impl(&dword_188A29000, v62, OS_LOG_TYPE_ERROR, "Postponing update for locked environment %@", buf, 0xCu);
           }
         }
@@ -383,7 +383,7 @@ LABEL_60:
       v29 = self->_appearingFocusEnvironment;
       self->_appearingFocusEnvironment = 0;
 
-      v30 = [[UIFocusUpdateContext alloc] _initWithFocusUpdateRequest:v6];
+      v30 = [[UIFocusUpdateContext alloc] _initWithFocusUpdateRequest:_validatedPendingFocusUpdateRequest];
       if (*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE50))
       {
         v64 = objc_alloc_init(_UIDebugIssueReport);
@@ -393,42 +393,42 @@ LABEL_60:
         [v30 _setPreferredFocusReport:v65];
       }
 
-      v31 = [v30 nextFocusedItem];
-      v74 = v7;
-      if (v31 || !v9)
+      nextFocusedItem = [v30 nextFocusedItem];
+      v74 = _validatedAppearingFocusEnvironmentRequest;
+      if (nextFocusedItem || !v9)
       {
         v44 = v30;
-        v43 = v6;
+        v43 = _validatedPendingFocusUpdateRequest;
 LABEL_55:
 
         v30 = v44;
-        v6 = v43;
+        _validatedPendingFocusUpdateRequest = v43;
       }
 
       else
       {
         while (1)
         {
-          v32 = [v6 environment];
-          if (!v32)
+          environment8 = [_validatedPendingFocusUpdateRequest environment];
+          if (!environment8)
           {
             break;
           }
 
-          v33 = v32;
-          v34 = [v6 environment];
+          v33 = environment8;
+          environment9 = [_validatedPendingFocusUpdateRequest environment];
 
-          if (v34 == v9)
+          if (environment9 == v9)
           {
             break;
           }
 
-          v35 = [v6 environment];
-          if (_UIFocusEnvironmentPrefersFocusContainment(v35))
+          environment10 = [_validatedPendingFocusUpdateRequest environment];
+          if (_UIFocusEnvironmentPrefersFocusContainment(environment10))
           {
-            v36 = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
+            _effectiveFocusDeferralBehavior = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
 
-            if (v36 == 3)
+            if (_effectiveFocusDeferralBehavior == 3)
             {
               [(UIFocusSystem *)self _resetFocusDeferral];
             }
@@ -438,10 +438,10 @@ LABEL_55:
           {
           }
 
-          v37 = [v6 requestByRedirectingRequestToNextContainerEnvironment];
+          requestByRedirectingRequestToNextContainerEnvironment = [_validatedPendingFocusUpdateRequest requestByRedirectingRequestToNextContainerEnvironment];
           if (os_variant_has_internal_diagnostics())
           {
-            if (!v37)
+            if (!requestByRedirectingRequestToNextContainerEnvironment)
             {
               v70 = __UIFaultDebugAssertLog();
               if (os_log_type_enabled(v70, OS_LOG_TYPE_FAULT))
@@ -454,7 +454,7 @@ LABEL_55:
             }
           }
 
-          else if (!v37)
+          else if (!requestByRedirectingRequestToNextContainerEnvironment)
           {
             v60 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49DE58) + 8);
             if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
@@ -466,22 +466,22 @@ LABEL_55:
             break;
           }
 
-          v38 = [(_UIFocusUpdateRequest *)v37 environment];
-          v39 = _UIFocusEnvironmentIsAncestorOfEnvironment(v9, v38);
+          environment11 = [(_UIFocusUpdateRequest *)requestByRedirectingRequestToNextContainerEnvironment environment];
+          v39 = _UIFocusEnvironmentIsAncestorOfEnvironment(v9, environment11);
 
           if ((v39 & 1) == 0)
           {
-            v40 = [v6 requestByRedirectingRequestToEnvironment:v9];
+            v40 = [_validatedPendingFocusUpdateRequest requestByRedirectingRequestToEnvironment:v9];
 
-            v37 = v40;
+            requestByRedirectingRequestToNextContainerEnvironment = v40;
             if (!v40)
             {
               break;
             }
           }
 
-          v41 = [(_UIFocusUpdateRequest *)v37 environment];
-          v42 = [(UIFocusSystem *)self _isEnvironmentLocked:v41];
+          environment12 = [(_UIFocusUpdateRequest *)requestByRedirectingRequestToNextContainerEnvironment environment];
+          v42 = [(UIFocusSystem *)self _isEnvironmentLocked:environment12];
 
           if (v42)
           {
@@ -492,63 +492,63 @@ LABEL_55:
               if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
               {
                 v68 = v67;
-                v69 = [(_UIFocusUpdateRequest *)v37 environment];
+                environment13 = [(_UIFocusUpdateRequest *)requestByRedirectingRequestToNextContainerEnvironment environment];
                 *buf = 138412290;
-                v76 = v69;
+                v76 = environment13;
                 _os_log_impl(&dword_188A29000, v68, OS_LOG_TYPE_ERROR, "Postponing update for locked environment %@", buf, 0xCu);
               }
             }
 
             *&self->_flags |= 8u;
             v56 = self->_pendingFocusUpdateRequest;
-            self->_pendingFocusUpdateRequest = v37;
-            v57 = v37;
+            self->_pendingFocusUpdateRequest = requestByRedirectingRequestToNextContainerEnvironment;
+            v57 = requestByRedirectingRequestToNextContainerEnvironment;
 
             v58 = self->_appearingFocusEnvironment;
             self->_appearingFocusEnvironment = v73;
             v59 = v73;
 
-            v7 = v74;
+            _validatedAppearingFocusEnvironmentRequest = v74;
             goto LABEL_60;
           }
 
-          v43 = v37;
+          v43 = requestByRedirectingRequestToNextContainerEnvironment;
 
           v44 = [[UIFocusUpdateContext alloc] _initWithFocusUpdateRequest:v43];
           if (*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE68))
           {
-            v45 = [v30 _preferredFocusReport];
-            [v45 addLineBreak];
+            _preferredFocusReport = [v30 _preferredFocusReport];
+            [_preferredFocusReport addLineBreak];
 
-            v46 = [v30 _preferredFocusReport];
-            [v46 addMessage:@" === unable to find focused item in context. retrying with updated request. === "];
+            _preferredFocusReport2 = [v30 _preferredFocusReport];
+            [_preferredFocusReport2 addMessage:@" === unable to find focused item in context. retrying with updated request. === "];
 
-            v47 = [v30 _preferredFocusReport];
-            [v47 addLineBreak];
+            _preferredFocusReport3 = [v30 _preferredFocusReport];
+            [_preferredFocusReport3 addLineBreak];
 
-            v48 = [v30 _validationReport];
-            [v44 _setValidationReport:v48];
+            _validationReport = [v30 _validationReport];
+            [v44 _setValidationReport:_validationReport];
 
-            v49 = [v30 _preferredFocusReport];
-            [v44 _setPreferredFocusReport:v49];
+            _preferredFocusReport4 = [v30 _preferredFocusReport];
+            [v44 _setPreferredFocusReport:_preferredFocusReport4];
           }
 
-          v31 = [v44 nextFocusedItem];
-          v6 = v43;
+          nextFocusedItem = [v44 nextFocusedItem];
+          _validatedPendingFocusUpdateRequest = v43;
           v30 = v44;
-          if (v31)
+          if (nextFocusedItem)
           {
             goto LABEL_55;
           }
         }
       }
 
-      v7 = v74;
+      _validatedAppearingFocusEnvironmentRequest = v74;
       disappearingFocusEnvironment = self->_disappearingFocusEnvironment;
       self->_disappearingFocusEnvironment = 0;
 
-      v51 = [(UIFocusSystem *)self updateThrottle];
-      [v51 didCreateProgrammaticFocusUpdateContext:v30];
+      updateThrottle = [(UIFocusSystem *)self updateThrottle];
+      [updateThrottle didCreateProgrammaticFocusUpdateContext:v30];
 
       v52 = 0;
       if (*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE70))
@@ -564,7 +564,7 @@ LABEL_55:
 
     else
     {
-      v6 = 0;
+      _validatedPendingFocusUpdateRequest = 0;
     }
 
     self->_flags = (*&self->_flags & 0xFFFFFFDF | (32 * ((*&flags >> 5) & 1)));
@@ -611,8 +611,8 @@ LABEL_55:
     }
   }
 
-  v5 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
-  if (v5)
+  _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+  if (_focusedItemOrDeferralTarget)
   {
     v6 = _UIFocusEnvironmentRootAncestorEnvironment(v3);
 
@@ -625,7 +625,7 @@ LABEL_55:
         {
 LABEL_9:
           v9 = [[_UIFocusMap alloc] initWithFocusSystem:self rootContainer:v8 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
-          if ([(_UIFocusMap *)v9 verifyFocusabilityForItem:v5])
+          if ([(_UIFocusMap *)v9 verifyFocusabilityForItem:_focusedItemOrDeferralTarget])
           {
             appearingFocusEnvironment = self->_appearingFocusEnvironment;
             self->_appearingFocusEnvironment = 0;
@@ -687,10 +687,10 @@ LABEL_14:
 {
   if (!self->_deepestPreferredFocusableItemCacheForCurrentUpdate && (*&self->_flags & 0x20) != 0)
   {
-    v3 = [(UIFocusSystem *)self behavior];
-    v4 = [v3 cachesPreferredEnvironmentEnumerationResults];
+    behavior = [(UIFocusSystem *)self behavior];
+    cachesPreferredEnvironmentEnumerationResults = [behavior cachesPreferredEnvironmentEnumerationResults];
 
-    if (v4)
+    if (cachesPreferredEnvironmentEnumerationResults)
     {
       v5 = objc_opt_new();
       deepestPreferredFocusableItemCacheForCurrentUpdate = self->_deepestPreferredFocusableItemCacheForCurrentUpdate;
@@ -736,18 +736,18 @@ LABEL_14:
 
 - (NSArray)preferredFocusEnvironments
 {
-  v4 = [(UIFocusSystem *)self delegate];
-  v5 = v4;
-  if (!v4 || (*&self->_flags & 0x80) == 0)
+  delegate = [(UIFocusSystem *)self delegate];
+  v5 = delegate;
+  if (!delegate || (*&self->_flags & 0x80) == 0)
   {
     goto LABEL_3;
   }
 
-  v6 = [v4 _preferredFocusEnvironmentsForFocusSystem:self];
+  v6 = [delegate _preferredFocusEnvironmentsForFocusSystem:self];
   if (!v6)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:616 description:@"Returning nil for a focus system's preferred focus environments is not allowed."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:616 description:@"Returning nil for a focus system's preferred focus environments is not allowed."];
 
 LABEL_3:
     v6 = 0;
@@ -788,8 +788,8 @@ LABEL_3:
 - (_UIFocusRegionContainer)_focusMapContainer
 {
   v3 = [_UIFocusRegionContainerProxy alloc];
-  v4 = [(UIFocusSystem *)self focusItemContainer];
-  v5 = [(_UIFocusRegionContainerProxy *)v3 initWithOwningEnvironment:self itemContainer:v4];
+  focusItemContainer = [(UIFocusSystem *)self focusItemContainer];
+  v5 = [(_UIFocusRegionContainerProxy *)v3 initWithOwningEnvironment:self itemContainer:focusItemContainer];
 
   [(_UIFocusRegionContainerProxy *)v5 setAllowsLazyLoading:0];
   [(_UIFocusRegionContainerProxy *)v5 setShouldCreateRegionForOwningItem:0];
@@ -807,8 +807,8 @@ LABEL_3:
 
 - (void)_updateFocusUpdateThrottle
 {
-  v3 = [(UIFocusSystem *)self behavior];
-  if ([v3 throttlesProgrammaticFocusUpdates])
+  behavior = [(UIFocusSystem *)self behavior];
+  if ([behavior throttlesProgrammaticFocusUpdates])
   {
     updateThrottle = self->_updateThrottle;
 
@@ -835,10 +835,10 @@ LABEL_3:
   {
   }
 
-  v10 = [(UIFocusSystem *)self behavior];
-  if (([(_UIFocusUpdateThrottle *)v10 throttlesProgrammaticFocusUpdates]& 1) != 0)
+  behavior2 = [(UIFocusSystem *)self behavior];
+  if (([(_UIFocusUpdateThrottle *)behavior2 throttlesProgrammaticFocusUpdates]& 1) != 0)
   {
-    v8 = v10;
+    v8 = behavior2;
   }
 
   else
@@ -858,11 +858,11 @@ LABEL_3:
 
 - (void)_updateWantsTreeLocking
 {
-  v3 = [(UIFocusSystem *)self behavior];
-  v4 = [v3 wantsTreeLocking];
+  behavior = [(UIFocusSystem *)self behavior];
+  wantsTreeLocking = [behavior wantsTreeLocking];
 
   treeLock = self->_treeLock;
-  if (v4)
+  if (wantsTreeLocking)
   {
     if (!treeLock)
     {
@@ -919,7 +919,7 @@ LABEL_3:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     NSClassFromString(&cfstr_Uifocusdebugge_0.isa);
@@ -928,23 +928,23 @@ LABEL_3:
 
 - (UIFocusSystem)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:127 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:127 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (UIFocusSystem)initWithFocusBehavior:(id)a3 enabled:(BOOL)a4
+- (UIFocusSystem)initWithFocusBehavior:(id)behavior enabled:(BOOL)enabled
 {
-  v7 = a3;
+  behaviorCopy = behavior;
   v16.receiver = self;
   v16.super_class = UIFocusSystem;
   v8 = [(UIFocusSystem *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_behavior, a3);
-    v9->_enabled = a4;
+    objc_storeStrong(&v8->_behavior, behavior);
+    v9->_enabled = enabled;
     v10 = objc_opt_new();
     [(_UIFocusMovementPerformer *)v10 setDelegate:v9];
     movementPerformer = v9->_movementPerformer;
@@ -966,28 +966,28 @@ LABEL_3:
   return v9;
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!enabled)
   {
 LABEL_10:
     [(UIFocusSystem *)self setWaitingForFocusMovementAction:0];
-    if (self->_enabled == v3)
+    if (self->_enabled == enabledCopy)
     {
       return;
     }
 
-    v9 = [(UIFocusSystem *)self _hostFocusSystem];
+    _hostFocusSystem = [(UIFocusSystem *)self _hostFocusSystem];
 
-    if (!v9)
+    if (!_hostFocusSystem)
     {
       v10 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DDA0) + 8);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = @"disabled";
-        if (v3)
+        if (enabledCopy)
         {
           v11 = @"enabled";
         }
@@ -998,12 +998,12 @@ LABEL_10:
       }
     }
 
-    self->_enabled = v3;
-    if (!v3)
+    self->_enabled = enabledCopy;
+    if (!enabledCopy)
     {
-      v24 = [(UIFocusSystem *)self focusedItem];
+      focusedItem = [(UIFocusSystem *)self focusedItem];
 
-      if (v24)
+      if (focusedItem)
       {
         [(UIFocusSystem *)self _setNeedsFocusRestoration];
       }
@@ -1023,31 +1023,31 @@ LABEL_10:
       goto LABEL_32;
     }
 
-    v12 = [(UIFocusSystem *)self pendingFocusMovementAction];
-    if (v12)
+    pendingFocusMovementAction = [(UIFocusSystem *)self pendingFocusMovementAction];
+    if (pendingFocusMovementAction)
     {
-      v13 = v12;
-      v14 = [(UIFocusSystem *)self pendingFocusMovementAction];
-      v15 = [v14 focusMovementInfo];
-      v16 = [v15 heading];
+      v13 = pendingFocusMovementAction;
+      pendingFocusMovementAction2 = [(UIFocusSystem *)self pendingFocusMovementAction];
+      focusMovementInfo = [pendingFocusMovementAction2 focusMovementInfo];
+      heading = [focusMovementInfo heading];
 
-      if (v16)
+      if (heading)
       {
         v17 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:self];
-        v18 = [(UIFocusSystem *)self pendingFocusMovementAction];
-        v19 = [v18 focusMovementInfo];
-        [(_UIFocusMovementRequest *)v17 setMovementInfo:v19];
+        pendingFocusMovementAction3 = [(UIFocusSystem *)self pendingFocusMovementAction];
+        focusMovementInfo2 = [pendingFocusMovementAction3 focusMovementInfo];
+        [(_UIFocusMovementRequest *)v17 setMovementInfo:focusMovementInfo2];
 
-        LOBYTE(v18) = [(UIFocusSystem *)self _performFocusMovement:v17];
+        LOBYTE(pendingFocusMovementAction3) = [(UIFocusSystem *)self _performFocusMovement:v17];
         [(UIFocusSystem *)self setPendingFocusMovementAction:0];
 
-        if (v18)
+        if (pendingFocusMovementAction3)
         {
 LABEL_31:
           [(UIFocusSystem *)self _tickHasSeenFocusedItemTimer:0];
 LABEL_32:
-          v30 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v30 postNotificationName:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter postNotificationName:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self];
 
           return;
         }
@@ -1058,8 +1058,8 @@ LABEL_32:
     if ((*&flags & 4) != 0)
     {
       self->_flags = (*&flags & 0xFFFFFFFB);
-      v21 = [(UIFocusSystem *)self _previousFocusedItem];
-      v22 = [(UIFocusSystem *)self _contextForUpdateToEnvironment:v21];
+      _previousFocusedItem = [(UIFocusSystem *)self _previousFocusedItem];
+      v22 = [(UIFocusSystem *)self _contextForUpdateToEnvironment:_previousFocusedItem];
 
       if ([(UIFocusSystem *)self _shouldRestoreFocusInContext:v22])
       {
@@ -1089,7 +1089,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v5 = [(UIFocusSystem *)self delegate];
+  delegate = [(UIFocusSystem *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_9:
@@ -1097,16 +1097,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [(UIFocusSystem *)self delegate];
-  if (([v6 _shouldWaitForFocusMovementActionToEnableFocusSystem:self] & 1) == 0)
+  delegate2 = [(UIFocusSystem *)self delegate];
+  if (([delegate2 _shouldWaitForFocusMovementActionToEnableFocusSystem:self] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [(UIFocusSystem *)self pendingFocusMovementAction];
+  pendingFocusMovementAction4 = [(UIFocusSystem *)self pendingFocusMovementAction];
 
-  if (v7)
+  if (pendingFocusMovementAction4)
   {
     goto LABEL_10;
   }
@@ -1126,49 +1126,49 @@ LABEL_9:
   if (!self->_enabled)
   {
     self->_enabled = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIFocusSystemEnabledStateDidChangeNotification" object:self];
   }
 }
 
 - (BOOL)_hasValidItemForCurrentDeferralState
 {
-  v4 = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
-  if ((v4 - 1) < 4)
+  _effectiveFocusDeferralBehavior = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
+  if ((_effectiveFocusDeferralBehavior - 1) < 4)
   {
-    v5 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+    _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
 LABEL_5:
-    v2 = v5 != 0;
+    v2 = _focusedItemOrDeferralTarget != 0;
 
     return v2;
   }
 
-  if (!v4)
+  if (!_effectiveFocusDeferralBehavior)
   {
-    v5 = [(UIFocusSystem *)self focusedItem];
+    _focusedItemOrDeferralTarget = [(UIFocusSystem *)self focusedItem];
     goto LABEL_5;
   }
 
   return v2;
 }
 
-- (void)_setFocusCasting:(id)a3
+- (void)_setFocusCasting:(id)casting
 {
-  v5 = a3;
+  castingCopy = casting;
   focusCasting = self->_focusCasting;
-  if (focusCasting != v5)
+  if (focusCasting != castingCopy)
   {
-    v7 = v5;
+    v7 = castingCopy;
     if (focusCasting)
     {
       [(_UIFocusCasting *)focusCasting setFocusSystem:0];
       [(_UIFocusCasting *)self->_focusCasting teardown];
-      v5 = v7;
+      castingCopy = v7;
     }
 
-    [(_UIFocusCasting *)v5 setFocusSystem:self];
-    objc_storeStrong(&self->_focusCasting, a3);
-    v5 = v7;
+    [(_UIFocusCasting *)castingCopy setFocusSystem:self];
+    objc_storeStrong(&self->_focusCasting, casting);
+    castingCopy = v7;
   }
 }
 
@@ -1187,100 +1187,100 @@ LABEL_5:
   return focusGroupHistory;
 }
 
-- (BOOL)_prefersDeferralForFocusUpdateInContext:(id)a3
+- (BOOL)_prefersDeferralForFocusUpdateInContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
-  if (v6 > 2)
+  _effectiveFocusDeferralBehavior = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
+  if (_effectiveFocusDeferralBehavior > 2)
   {
-    if (v6 == 3)
+    if (_effectiveFocusDeferralBehavior == 3)
     {
-      v8 = [v5 _request];
-      if ([v8 allowsDeferral])
+      _request = [contextCopy _request];
+      if ([_request allowsDeferral])
       {
-        v10 = [v5 nextFocusedItem];
-        if (_UIFocusItemDeferralModeForItem(v10) == 1)
+        nextFocusedItem = [contextCopy nextFocusedItem];
+        if (_UIFocusItemDeferralModeForItem(nextFocusedItem) == 1)
         {
-          v7 = 1;
+          allowsDeferral = 1;
         }
 
         else if ((*&self->_flags & 0x10) != 0)
         {
-          v7 = 0;
+          allowsDeferral = 0;
         }
 
         else
         {
-          v11 = [v5 nextFocusedItem];
-          v7 = _UIFocusItemDeferralModeForItem(v11) != 2;
+          nextFocusedItem2 = [contextCopy nextFocusedItem];
+          allowsDeferral = _UIFocusItemDeferralModeForItem(nextFocusedItem2) != 2;
         }
       }
 
       else
       {
-        v7 = 0;
+        allowsDeferral = 0;
       }
 
       goto LABEL_9;
     }
 
-    if (v6 != 4)
+    if (_effectiveFocusDeferralBehavior != 4)
     {
-      v7 = 0;
+      allowsDeferral = 0;
       goto LABEL_10;
     }
 
 LABEL_8:
-    v8 = [v5 _request];
-    v7 = [v8 allowsDeferral];
+    _request = [contextCopy _request];
+    allowsDeferral = [_request allowsDeferral];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (v6 == 1)
+  if (_effectiveFocusDeferralBehavior == 1)
   {
     goto LABEL_8;
   }
 
-  v7 = v6 == 2;
+  allowsDeferral = _effectiveFocusDeferralBehavior == 2;
 LABEL_10:
 
-  return v7;
+  return allowsDeferral;
 }
 
-- (id)_configureFocusDeferralIfNecessaryForContext:(id)a3 report:(id)a4
+- (id)_configureFocusDeferralIfNecessaryForContext:(id)context report:(id)report
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 nextFocusedItem];
-  if (!v9 || (v10 = v9, v11 = [(UIFocusSystem *)self _prefersDeferralForFocusUpdateInContext:v8], v10, !v11))
+  contextCopy = context;
+  reportCopy = report;
+  v8 = contextCopy;
+  nextFocusedItem = [v8 nextFocusedItem];
+  if (!nextFocusedItem || (v10 = nextFocusedItem, v11 = [(UIFocusSystem *)self _prefersDeferralForFocusUpdateInContext:v8], v10, !v11))
   {
     [(UIFocusSystem *)self _setDeferredFocusUpdateTarget:0];
     v18 = v8;
     goto LABEL_17;
   }
 
-  if ([v7 shouldLog])
+  if ([reportCopy shouldLog])
   {
     v12 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DDA8) + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 nextFocusedItem];
-      if (v13)
+      nextFocusedItem2 = [v8 nextFocusedItem];
+      if (nextFocusedItem2)
       {
         v14 = MEMORY[0x1E696AEC0];
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        v17 = [v14 stringWithFormat:@"<%@: %p>", v16, v13];
+        v17 = [v14 stringWithFormat:@"<%@: %p>", v16, nextFocusedItem2];
       }
 
       else
@@ -1290,7 +1290,7 @@ LABEL_10:
 
       v23 = v17;
       v24 = +[(_UIDebugReportFormatter *)_UIFocusUpdateReportFormatter];
-      v25 = [v24 stringFromReport:v7];
+      v25 = [v24 stringFromReport:reportCopy];
       *buf = 138543618;
       v29 = v17;
       v30 = 2114;
@@ -1306,13 +1306,13 @@ LABEL_15:
     v12 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DDB0) + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v8 nextFocusedItem];
-      if (v19)
+      nextFocusedItem3 = [v8 nextFocusedItem];
+      if (nextFocusedItem3)
       {
         v20 = MEMORY[0x1E696AEC0];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        v23 = [v20 stringWithFormat:@"<%@: %p>", v22, v19];
+        v23 = [v20 stringWithFormat:@"<%@: %p>", v22, nextFocusedItem3];
       }
 
       else
@@ -1328,8 +1328,8 @@ LABEL_15:
     }
   }
 
-  v26 = [v8 nextFocusedItem];
-  [(UIFocusSystem *)self _setDeferredFocusUpdateTarget:v26];
+  nextFocusedItem4 = [v8 nextFocusedItem];
+  [(UIFocusSystem *)self _setDeferredFocusUpdateTarget:nextFocusedItem4];
 
   v18 = [(UIFocusSystem *)self _simulatedNonDeferredProgrammaticFocusUpdateToEnvironment:0];
 
@@ -1382,19 +1382,19 @@ LABEL_17:
   return v4;
 }
 
-- (void)_tickHasSeenFocusedItemTimer:(BOOL)a3
+- (void)_tickHasSeenFocusedItemTimer:(BOOL)timer
 {
-  v3 = a3;
+  timerCopy = timer;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
+  _effectiveFocusDeferralBehavior = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
   WeakRetained = objc_loadWeakRetained(&self->_hasSeenFocusedItemDidExpireTimer);
   [WeakRetained invalidate];
 
-  v7 = [(UIFocusSystem *)self focusedItem];
+  focusedItem = [(UIFocusSystem *)self focusedItem];
 
-  if (v7 && v5 == 3)
+  if (focusedItem && _effectiveFocusDeferralBehavior == 3)
   {
-    if (v3)
+    if (timerCopy)
     {
       if (*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DDB8))
       {
@@ -1406,9 +1406,9 @@ LABEL_17:
           {
             v13 = MEMORY[0x1E696AF00];
             v14 = v12;
-            v15 = [v13 callStackSymbols];
+            callStackSymbols = [v13 callStackSymbols];
             *buf = 138543362;
-            v19 = v15;
+            v19 = callStackSymbols;
             _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Disabling focus deferral.\n%{public}@", buf, 0xCu);
           }
         }
@@ -1464,9 +1464,9 @@ void __46__UIFocusSystem__tickHasSeenFocusedItemTimer___block_invoke(uint64_t a1
         {
           v10 = MEMORY[0x1E696AF00];
           v11 = v9;
-          v12 = [v10 callStackSymbols];
+          callStackSymbols = [v10 callStackSymbols];
           v13 = 138543362;
-          v14 = v12;
+          v14 = callStackSymbols;
           _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Starting to defer focus updates.\n%{public}@", &v13, 0xCu);
 
           v3 = 0x1E696A000;
@@ -1487,23 +1487,23 @@ void __46__UIFocusSystem__tickHasSeenFocusedItemTimer___block_invoke(uint64_t a1
 
   [*(v3 + 3840) cancelPreviousPerformRequestsWithTarget:self selector:sel__hasSeenFocusedItemDidExpire object:0];
   *&self->_flags &= ~0x10u;
-  v5 = [(UIFocusSystem *)self behavior];
-  v6 = [v5 focusCastingMode];
+  behavior = [(UIFocusSystem *)self behavior];
+  focusCastingMode = [behavior focusCastingMode];
 
-  if (v6 == 2)
+  if (focusCastingMode == 2)
   {
-    v7 = [(UIFocusSystem *)self _focusCasting];
-    [v7 forgetEntryPoint];
+    _focusCasting = [(UIFocusSystem *)self _focusCasting];
+    [_focusCasting forgetEntryPoint];
   }
 }
 
 - (void)_startDeferringFocusIfSupported
 {
   [(UIFocusSystem *)self _resetFocusDeferral];
-  v3 = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
-  if ((v3 - 1) >= 2)
+  _effectiveFocusDeferralBehavior = [(UIFocusSystem *)self _effectiveFocusDeferralBehavior];
+  if ((_effectiveFocusDeferralBehavior - 1) >= 2)
   {
-    if (v3 != 3)
+    if (_effectiveFocusDeferralBehavior != 3)
     {
       WeakRetained = objc_loadWeakRetained(&self->_focusedItem);
       goto LABEL_10;
@@ -1532,9 +1532,9 @@ void __46__UIFocusSystem__tickHasSeenFocusedItemTimer___block_invoke(uint64_t a1
 LABEL_10:
 }
 
-- (void)_setDeferredFocusUpdateTarget:(id)a3
+- (void)_setDeferredFocusUpdateTarget:(id)target
 {
-  obj = a3;
+  obj = target;
   WeakRetained = objc_loadWeakRetained(&self->_deferredFocusUpdateTarget);
 
   if (WeakRetained != obj)
@@ -1542,19 +1542,19 @@ LABEL_10:
     objc_storeWeak(&self->_deferredFocusUpdateTarget, obj);
     if ((*(&self->_flags + 2) & 8) != 0)
     {
-      v5 = [(UIFocusSystem *)self delegate];
-      [v5 _focusSystem:self didUpdateDeferralTarget:obj];
+      delegate = [(UIFocusSystem *)self delegate];
+      [delegate _focusSystem:self didUpdateDeferralTarget:obj];
     }
   }
 }
 
-- (void)_setOverrideFocusDeferralBehavior:(id)a3
+- (void)_setOverrideFocusDeferralBehavior:(id)behavior
 {
-  v5 = a3;
-  if (self->_overrideFocusDeferralBehavior != v5)
+  behaviorCopy = behavior;
+  if (self->_overrideFocusDeferralBehavior != behaviorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_overrideFocusDeferralBehavior, a3);
+    v7 = behaviorCopy;
+    objc_storeStrong(&self->_overrideFocusDeferralBehavior, behavior);
     if ([(UIFocusSystem *)self _effectiveFocusDeferralBehavior])
     {
       [(UIFocusSystem *)self _startDeferringFocusIfSupported];
@@ -1562,9 +1562,9 @@ LABEL_10:
 
     else
     {
-      v6 = [(UIFocusSystem *)self _performDeferredFocusUpdateIfAvailable];
-      v5 = v7;
-      if (v6)
+      _performDeferredFocusUpdateIfAvailable = [(UIFocusSystem *)self _performDeferredFocusUpdateIfAvailable];
+      behaviorCopy = v7;
+      if (_performDeferredFocusUpdateIfAvailable)
       {
         goto LABEL_7;
       }
@@ -1573,7 +1573,7 @@ LABEL_10:
       [(UIFocusSystem *)self updateFocusIfNeeded];
     }
 
-    v5 = v7;
+    behaviorCopy = v7;
   }
 
 LABEL_7:
@@ -1584,8 +1584,8 @@ LABEL_7:
   v5 = environment;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem.m" lineNumber:540 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:540 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   v6 = qword_1ED49DDE8;
@@ -1624,11 +1624,11 @@ LABEL_7:
 
 + (NSArray)_allFocusSystems
 {
-  v2 = [qword_1ED49DDE8 allObjects];
-  v3 = v2;
-  if (v2)
+  allObjects = [qword_1ED49DDE8 allObjects];
+  v3 = allObjects;
+  if (allObjects)
   {
-    v4 = v2;
+    v4 = allObjects;
   }
 
   else
@@ -1641,13 +1641,13 @@ LABEL_7:
   return v4;
 }
 
-- (CGRect)_clippingRectInCoordinateSpace:(id)a3
+- (CGRect)_clippingRectInCoordinateSpace:(id)space
 {
   if ((*(&self->_flags + 2) & 4) != 0)
   {
-    v8 = a3;
-    v9 = [(UIFocusSystem *)self delegate];
-    [v9 _clippingRectForFocusSystem:self inCoordinateSpace:v8];
+    spaceCopy = space;
+    delegate = [(UIFocusSystem *)self delegate];
+    [delegate _clippingRectForFocusSystem:self inCoordinateSpace:spaceCopy];
     v3 = v10;
     v4 = v11;
     v5 = v12;
@@ -1675,11 +1675,11 @@ LABEL_7:
 
 - (id)_overridingPreferredFocusEnvironment
 {
-  v3 = [(UIFocusSystem *)self delegate];
-  v4 = v3;
-  if (v3 && (*(&self->_flags + 1) & 1) != 0)
+  delegate = [(UIFocusSystem *)self delegate];
+  v4 = delegate;
+  if (delegate && (*(&self->_flags + 1) & 1) != 0)
   {
-    v5 = [v3 _overridingPreferredFocusEnvironmentForFocusSystem:self];
+    v5 = [delegate _overridingPreferredFocusEnvironmentForFocusSystem:self];
   }
 
   else
@@ -1697,8 +1697,8 @@ LABEL_7:
   v9 = v8;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
 
     if (v9)
     {
@@ -1706,8 +1706,8 @@ LABEL_7:
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"otherEnvironment"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:659 description:{@"Invalid parameter not satisfying: %@", @"otherEnvironment"}];
 
     goto LABEL_3;
   }
@@ -1728,27 +1728,27 @@ LABEL_3:
   v7 = environment;
   if (!v7)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   v5 = [[_UIFocusUpdateRequest alloc] initWithEnvironment:v7];
   [(UIFocusSystem *)self _requestFocusUpdate:v5];
 }
 
-- (void)_requestFocusUpdate:(id)a3
+- (void)_requestFocusUpdate:(id)update
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  updateCopy = update;
+  if (!updateCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:675 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:675 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
-  if (([v5 isFocusRemovalRequest] & 1) == 0)
+  if (([updateCopy isFocusRemovalRequest] & 1) == 0)
   {
-    v6 = [v5 copy];
+    v6 = [updateCopy copy];
 
     [v6 cacheCurrentFocusSystem];
     if (![v6 isValidInFocusSystem:self])
@@ -1756,9 +1756,9 @@ LABEL_3:
       goto LABEL_28;
     }
 
-    v7 = [(UIFocusSystem *)self _validatedPendingFocusUpdateRequest];
-    v8 = v7;
-    if (v7 && [v7 canMergeWithRequest:v6])
+    _validatedPendingFocusUpdateRequest = [(UIFocusSystem *)self _validatedPendingFocusUpdateRequest];
+    v8 = _validatedPendingFocusUpdateRequest;
+    if (_validatedPendingFocusUpdateRequest && [_validatedPendingFocusUpdateRequest canMergeWithRequest:v6])
     {
       v9 = [v8 requestByMergingWithRequest:v6];
 
@@ -1767,7 +1767,7 @@ LABEL_3:
       goto LABEL_22;
     }
 
-    v11 = [v6 environment];
+    environment = [v6 environment];
     if (*__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DDF0))
     {
       v12 = objc_opt_new();
@@ -1779,7 +1779,7 @@ LABEL_3:
     }
 
     v50 = 0;
-    v13 = [(UIFocusSystem *)self _isEnvironmentEligibleForFocusUpdate:v11 fallbackToEnvironment:&v50 debugReport:v12];
+    v13 = [(UIFocusSystem *)self _isEnvironmentEligibleForFocusUpdate:environment fallbackToEnvironment:&v50 debugReport:v12];
     v14 = v50;
     v15 = v14;
     if (v13)
@@ -1797,8 +1797,8 @@ LABEL_3:
 
 LABEL_22:
       objc_storeStrong(&self->_pendingFocusUpdateRequest, v6);
-      v19 = [(UIFocusSystem *)self updateThrottle];
-      v20 = v19 == 0;
+      updateThrottle = [(UIFocusSystem *)self updateThrottle];
+      v20 = updateThrottle == 0;
 
       if (v20)
       {
@@ -1819,20 +1819,20 @@ LABEL_22:
 
       else
       {
-        v21 = [(UIFocusSystem *)self updateThrottle];
-        [v21 scheduleProgrammaticFocusUpdate];
+        updateThrottle2 = [(UIFocusSystem *)self updateThrottle];
+        [updateThrottle2 scheduleProgrammaticFocusUpdate];
 
         if ([v6 resetsUpdateThrottle])
         {
-          v22 = [(UIFocusSystem *)self updateThrottle];
-          [v22 reset];
+          updateThrottle3 = [(UIFocusSystem *)self updateThrottle];
+          [updateThrottle3 reset];
         }
       }
 
       goto LABEL_27;
     }
 
-    if (!v14 || v11 == v14)
+    if (!v14 || environment == v14)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE00);
       if ((*CategoryCachedImpl & 1) == 0)
@@ -1843,7 +1843,7 @@ LABEL_22:
       v17 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v25 = v11;
+        v25 = environment;
         if (v25)
         {
           v26 = MEMORY[0x1E696AEC0];
@@ -1876,7 +1876,7 @@ LABEL_22:
         v47 = *(v16 + 8);
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
-          v30 = v11;
+          v30 = environment;
           if (v30)
           {
             v31 = MEMORY[0x1E696AEC0];
@@ -1920,7 +1920,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v6 = v5;
+  v6 = updateCopy;
 LABEL_28:
 }
 
@@ -1930,9 +1930,9 @@ void __37__UIFocusSystem__requestFocusUpdate___block_invoke(uint64_t a1)
   [WeakRetained updateFocusIfNeeded];
 }
 
-- (void)_focusEnvironmentWillBecomeInvisible:(id)a3
+- (void)_focusEnvironmentWillBecomeInvisible:(id)invisible
 {
-  v4 = a3;
+  invisibleCopy = invisible;
   if ([(UIFocusSystem *)self _focusSystemIsValid])
   {
     v5 = UIApp;
@@ -1941,7 +1941,7 @@ void __37__UIFocusSystem__requestFocusUpdate___block_invoke(uint64_t a1)
     v6[2] = __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke;
     v6[3] = &unk_1E70F35B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = invisibleCopy;
     [v5 _performBlockAfterCATransactionCommits:v6];
   }
 }
@@ -1971,23 +1971,23 @@ void __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke(uin
   }
 }
 
-- (void)_focusEnvironmentWillDisappear:(id)a3 remainingInHierarchy:(BOOL)a4
+- (void)_focusEnvironmentWillDisappear:(id)disappear remainingInHierarchy:(BOOL)hierarchy
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  disappearCopy = disappear;
   if ([(UIFocusSystem *)self _focusSystemIsValid])
   {
-    if (a4 || !dyld_program_sdk_at_least())
+    if (hierarchy || !dyld_program_sdk_at_least())
     {
       v10 = 0;
     }
 
     else
     {
-      v9 = [(UIFocusSystem *)self focusedItem];
-      if (v9)
+      focusedItem = [(UIFocusSystem *)self focusedItem];
+      if (focusedItem)
       {
-        v10 = [(UIFocusSystem *)self _focusedItemIsContainedInEnvironment:v8 includeSelf:1];
+        v10 = [(UIFocusSystem *)self _focusedItemIsContainedInEnvironment:disappearCopy includeSelf:1];
       }
 
       else
@@ -2007,7 +2007,7 @@ void __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke(uin
     }
 
     v55 = 0;
-    v12 = [(UIFocusSystem *)self _isEnvironmentEligibleForFocusUpdate:v8 fallbackToEnvironment:&v55 debugReport:v11];
+    v12 = [(UIFocusSystem *)self _isEnvironmentEligibleForFocusUpdate:disappearCopy fallbackToEnvironment:&v55 debugReport:v11];
     v13 = v55;
     if (v12)
     {
@@ -2015,10 +2015,10 @@ void __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke(uin
       v52[1] = 3221225472;
       v52[2] = __69__UIFocusSystem__focusEnvironmentWillDisappear_remainingInHierarchy___block_invoke;
       v52[3] = &unk_1E71087B0;
-      v53 = v8;
-      v54 = self;
+      v53 = disappearCopy;
+      selfCopy = self;
       _UIFocusEnvironmentEnumerateAncestorEnvironments(v53, v52);
-      objc_storeStrong(&self->_disappearingFocusEnvironment, a3);
+      objc_storeStrong(&self->_disappearingFocusEnvironment, disappear);
     }
 
     else if (v13)
@@ -2030,7 +2030,7 @@ void __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke(uin
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           log = v25;
-          v26 = v8;
+          v26 = disappearCopy;
           if (v26)
           {
             v27 = MEMORY[0x1E696AEC0];
@@ -2077,7 +2077,7 @@ void __54__UIFocusSystem__focusEnvironmentWillBecomeInvisible___block_invoke(uin
         v31 = *(v15 + 8);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = v8;
+          v32 = disappearCopy;
           if (v32)
           {
             v33 = MEMORY[0x1E696AEC0];
@@ -2122,9 +2122,9 @@ LABEL_35:
 
     if (dyld_program_sdk_at_least() && (_UIIsPrivateMainBundle() & 1) == 0)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      v24 = [(UIFocusSystem *)self focusedItem];
-      [v23 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:834 description:{@"The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@.", v24, v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      focusedItem2 = [(UIFocusSystem *)self focusedItem];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:834 description:{@"The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@.", focusedItem2, disappearCopy}];
 
       goto LABEL_35;
     }
@@ -2140,11 +2140,11 @@ LABEL_35:
         }
 
         v19 = v18;
-        v20 = [(UIFocusSystem *)self focusedItem];
+        focusedItem3 = [(UIFocusSystem *)self focusedItem];
         *buf = 138412546;
-        v57 = v20;
+        v57 = focusedItem3;
         v58 = 2112;
-        v59 = v8;
+        v59 = disappearCopy;
         v21 = "The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@. This is a hard assert for other clients and requires immediate attention.";
         goto LABEL_31;
       }
@@ -2155,11 +2155,11 @@ LABEL_35:
         goto LABEL_33;
       }
 
-      v20 = [(UIFocusSystem *)self focusedItem];
+      focusedItem3 = [(UIFocusSystem *)self focusedItem];
       *buf = 138412546;
-      v57 = v20;
+      v57 = focusedItem3;
       v58 = 2112;
-      v59 = v8;
+      v59 = disappearCopy;
       v37 = "The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@. This is a hard assert for other clients and requires immediate attention.";
     }
 
@@ -2174,11 +2174,11 @@ LABEL_35:
         }
 
         v19 = v22;
-        v20 = [(UIFocusSystem *)self focusedItem];
+        focusedItem3 = [(UIFocusSystem *)self focusedItem];
         *buf = 138412546;
-        v57 = v20;
+        v57 = focusedItem3;
         v58 = 2112;
-        v59 = v8;
+        v59 = disappearCopy;
         v21 = "The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@. This will become an assert in a future version.";
 LABEL_31:
         _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, v21, buf, 0x16u);
@@ -2194,11 +2194,11 @@ LABEL_33:
         goto LABEL_33;
       }
 
-      v20 = [(UIFocusSystem *)self focusedItem];
+      focusedItem3 = [(UIFocusSystem *)self focusedItem];
       *buf = 138412546;
-      v57 = v20;
+      v57 = focusedItem3;
       v58 = 2112;
-      v59 = v8;
+      v59 = disappearCopy;
       v37 = "The newly focused item or one of its parent environments is getting removed from the hierarchy in response of that item becoming focused. This is a client bug that leaves the focus system in an undefined state. Focused item: %@; environment being removed: %@. This will become an assert in a future version.";
     }
 
@@ -2269,33 +2269,33 @@ void __69__UIFocusSystem__focusEnvironmentWillDisappear_remainingInHierarchy___b
   }
 }
 
-- (void)_focusEnvironmentDidBecomeVisible:(id)a3
+- (void)_focusEnvironmentDidBecomeVisible:(id)visible
 {
-  v6 = a3;
+  visibleCopy = visible;
   if ([(UIFocusSystem *)self _focusSystemIsValid])
   {
-    if ((*&self->_flags & 2) == 0 || ([(UIFocusSystem *)self _focusedItemOrDeferralTarget], v4 = objc_claimAutoreleasedReturnValue(), HaveCommonHierarchy = _UIFocusEnvironmentsHaveCommonHierarchy(v6, v4), v4, !HaveCommonHierarchy))
+    if ((*&self->_flags & 2) == 0 || ([(UIFocusSystem *)self _focusedItemOrDeferralTarget], v4 = objc_claimAutoreleasedReturnValue(), HaveCommonHierarchy = _UIFocusEnvironmentsHaveCommonHierarchy(visibleCopy, v4), v4, !HaveCommonHierarchy))
     {
-      [(UIFocusSystem *)self _focusEnvironmentDidAppear:v6];
+      [(UIFocusSystem *)self _focusEnvironmentDidAppear:visibleCopy];
     }
   }
 }
 
-- (void)_focusEnvironmentDidAppear:(id)a3
+- (void)_focusEnvironmentDidAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   if ([(UIFocusSystem *)self _focusSystemIsValid])
   {
-    if ([(NSHashTable *)self->_focusItemAncestorCache containsObject:v4])
+    if ([(NSHashTable *)self->_focusItemAncestorCache containsObject:appearCopy])
     {
       [(UIFocusSystem *)self _clearFocusItemAncestorCache];
     }
 
     if ([(UIFocusSystem *)self _effectiveFocusDeferralBehavior]&& (*&self->_flags & 2) == 0)
     {
-      if (v4)
+      if (appearCopy)
       {
-        v5 = _UIFocusEnvironmentRootAncestorEnvironment(v4);
+        v5 = _UIFocusEnvironmentRootAncestorEnvironment(appearCopy);
       }
 
       else
@@ -2309,9 +2309,9 @@ void __69__UIFocusSystem__focusEnvironmentWillDisappear_remainingInHierarchy___b
       }
 
       objc_storeWeak(&self->_deepestPreferredFocusEnvironment, 0);
-      v6 = [(UIFocusSystem *)self _focusItemForValidation];
-      v7 = v6;
-      if (!v6)
+      _focusItemForValidation = [(UIFocusSystem *)self _focusItemForValidation];
+      v7 = _focusItemForValidation;
+      if (!_focusItemForValidation)
       {
         if (!self->_pendingFocusUpdateRequest && [(UIFocusSystem *)self _isEnabled])
         {
@@ -2321,23 +2321,23 @@ void __69__UIFocusSystem__focusEnvironmentWillDisappear_remainingInHierarchy___b
         goto LABEL_28;
       }
 
-      v8 = _UIFocusEnvironmentFirstCommonAncestor(v6, v4);
+      v8 = _UIFocusEnvironmentFirstCommonAncestor(_focusItemForValidation, appearCopy);
       v9 = v8;
       if (v8 && v8 != v7)
       {
-        if (!_UIFocusItemIsViewOrRespondsToSelector(v4))
+        if (!_UIFocusItemIsViewOrRespondsToSelector(appearCopy))
         {
           goto LABEL_18;
         }
 
-        v10 = [v9 focusItemContainer];
-        v11 = [v10 coordinateSpace];
+        focusItemContainer = [v9 focusItemContainer];
+        coordinateSpace = [focusItemContainer coordinateSpace];
 
-        v12 = _UIFocusItemFrameInCoordinateSpace(v4, v11);
+        v12 = _UIFocusItemFrameInCoordinateSpace(appearCopy, coordinateSpace);
         v14 = v13;
         v16 = v15;
         v18 = v17;
-        v19 = _UIFocusItemFrameInCoordinateSpace(v7, v11);
+        v19 = _UIFocusItemFrameInCoordinateSpace(v7, coordinateSpace);
         v21 = v20;
         v23 = v22;
         v25 = v24;
@@ -2417,38 +2417,38 @@ void __44__UIFocusSystem__focusEnvironmentDidAppear___block_invoke(uint64_t a1)
   [WeakRetained updateFocusIfNeeded];
 }
 
-- (BOOL)_isEnvironmentEligibleForFocusUpdate:(id)a3 fallbackToEnvironment:(id *)a4 debugReport:(id)a5
+- (BOOL)_isEnvironmentEligibleForFocusUpdate:(id)update fallbackToEnvironment:(id *)environment debugReport:(id)report
 {
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  reportCopy = report;
   if (![(UIFocusSystem *)self _isEnabled])
   {
     v10 = [_UIDebugIssue issueWithDescription:@"Focus is not currently enabled in this environment's focus system, updates will be delayed."];
-    [v9 addIssue:v10];
+    [reportCopy addIssue:v10];
   }
 
-  v11 = [(UIFocusSystem *)self _topEnvironment];
-  v12 = v11;
-  if (!v11)
+  _topEnvironment = [(UIFocusSystem *)self _topEnvironment];
+  v12 = _topEnvironment;
+  if (!_topEnvironment)
   {
-    v15 = [_UIDebugIssue issueWithDescription:@"The current first responder is not a focus environment, no focus updates are allowed as that would force the first responder to change."];
-    [v9 addIssue:v15];
+    _focusItemForValidation = [_UIDebugIssue issueWithDescription:@"The current first responder is not a focus environment, no focus updates are allowed as that would force the first responder to change."];
+    [reportCopy addIssue:_focusItemForValidation];
     v23 = 0;
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v11, v8);
-  if (v12 != v8)
+  IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(_topEnvironment, updateCopy);
+  if (v12 != updateCopy)
   {
     v14 = IsAncestorOfEnvironment;
-    v15 = [(UIFocusSystem *)self _focusItemForValidation];
+    _focusItemForValidation = [(UIFocusSystem *)self _focusItemForValidation];
     v16 = self->_pendingFocusUpdateRequest;
     v17 = v16;
     if (v16)
     {
-      if (v15)
+      if (_focusItemForValidation)
       {
         v18 = 1;
       }
@@ -2458,12 +2458,12 @@ LABEL_22:
         v18 = v14;
       }
 
-      if (v18 != 1 || ([(_UIFocusUpdateRequest *)v16 environment], v19 = objc_claimAutoreleasedReturnValue(), v20 = _UIFocusEnvironmentIsAncestorOfEnvironment(v8, v19), v19, (v20 & 1) == 0))
+      if (v18 != 1 || ([(_UIFocusUpdateRequest *)v16 environment], v19 = objc_claimAutoreleasedReturnValue(), v20 = _UIFocusEnvironmentIsAncestorOfEnvironment(updateCopy, v19), v19, (v20 & 1) == 0))
       {
         v21 = @"An ancestor of this environment has already requested a focus update, which takes priority.";
 LABEL_12:
         v22 = [_UIDebugIssue issueWithDescription:v21];
-        [v9 addIssue:v22];
+        [reportCopy addIssue:v22];
 
 LABEL_13:
         v23 = 0;
@@ -2473,9 +2473,9 @@ LABEL_21:
       }
     }
 
-    else if (v15)
+    else if (_focusItemForValidation)
     {
-      if ((_UIFocusEnvironmentIsAncestorOfEnvironment(v8, v15) & 1) == 0)
+      if ((_UIFocusEnvironmentIsAncestorOfEnvironment(updateCopy, _focusItemForValidation) & 1) == 0)
       {
         v21 = @"This environment does not contain the currently focused item.";
         goto LABEL_12;
@@ -2495,13 +2495,13 @@ LABEL_21:
       }
 
       v26 = [_UIDebugIssue issueWithDescription:v25];
-      [v9 addIssue:v26];
+      [reportCopy addIssue:v26];
 
-      if (a4)
+      if (environment)
       {
         v27 = v12;
         v23 = 0;
-        *a4 = v12;
+        *environment = v12;
         goto LABEL_21;
       }
 
@@ -2518,14 +2518,14 @@ LABEL_23:
   return v23;
 }
 
-- (BOOL)_isEnvironmentLocked:(id)a3
+- (BOOL)_isEnvironmentLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(UIFocusSystem *)self treeLock];
-  v6 = v5;
-  if (v5)
+  lockedCopy = locked;
+  treeLock = [(UIFocusSystem *)self treeLock];
+  v6 = treeLock;
+  if (treeLock)
   {
-    v7 = [v5 isEnvironmentLocked:v4];
+    v7 = [treeLock isEnvironmentLocked:lockedCopy];
   }
 
   else
@@ -2536,46 +2536,46 @@ LABEL_23:
   return v7;
 }
 
-- (void)_lockEnvironment:(id)a3
+- (void)_lockEnvironment:(id)environment
 {
-  v6 = a3;
-  v4 = [(UIFocusSystem *)self treeLock];
-  v5 = v4;
-  if (v4)
+  environmentCopy = environment;
+  treeLock = [(UIFocusSystem *)self treeLock];
+  v5 = treeLock;
+  if (treeLock)
   {
-    [v4 lockEnvironmentTree:v6];
+    [treeLock lockEnvironmentTree:environmentCopy];
   }
 }
 
-- (void)_unlockEnvironment:(id)a3
+- (void)_unlockEnvironment:(id)environment
 {
-  v6 = a3;
-  v4 = [(UIFocusSystem *)self treeLock];
-  v5 = v4;
-  if (!v4 || [v4 unlockEnvironmentTree:v6])
+  environmentCopy = environment;
+  treeLock = [(UIFocusSystem *)self treeLock];
+  v5 = treeLock;
+  if (!treeLock || [treeLock unlockEnvironmentTree:environmentCopy])
   {
     [(UIFocusSystem *)self _reevaluateLockedEnvironments];
   }
 }
 
-- (BOOL)_updateFocusWithContext:(id)a3 report:(id)a4
+- (BOOL)_updateFocusWithContext:(id)context report:(id)report
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  contextCopy = context;
+  reportCopy = report;
+  if (!contextCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1315 description:@"Attempting to initiate a focus update with a nil context."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1315 description:@"Attempting to initiate a focus update with a nil context."];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_focusedItem);
-  [v7 _willUpdateFocusFromFocusedItem:WeakRetained];
-  v10 = [v7 _isValidInFocusSystem:self];
-  v11 = [v8 shouldLog];
+  [contextCopy _willUpdateFocusFromFocusedItem:WeakRetained];
+  v10 = [contextCopy _isValidInFocusSystem:self];
+  shouldLog = [reportCopy shouldLog];
   if (v10)
   {
-    if (v11)
+    if (shouldLog)
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE88);
       if (*CategoryCachedImpl)
@@ -2585,9 +2585,9 @@ LABEL_23:
         {
           v38 = v37;
           v39 = +[(_UIDebugReportFormatter *)_UIFocusUpdateReportFormatter];
-          v40 = [v39 stringFromReport:v8];
+          v40 = [v39 stringFromReport:reportCopy];
           v41 = 138543618;
-          v42 = v7;
+          v42 = contextCopy;
           v43 = 2114;
           v44 = v40;
           _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_ERROR, "Updating focus with context %{public}@:\n%{public}@", &v41, 0x16u);
@@ -2598,8 +2598,8 @@ LABEL_23:
     flags = self->_flags;
     if ((*&flags & 2) != 0)
     {
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v36 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1336 description:@"_ignoreFocusUpdateIfNeeded should never be YES at the beginning of a focus update."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1336 description:@"_ignoreFocusUpdateIfNeeded should never be YES at the beginning of a focus update."];
 
       flags = self->_flags;
     }
@@ -2607,14 +2607,14 @@ LABEL_23:
     self->_flags = (*&flags | 2);
     if ((*&flags & 0x400) != 0)
     {
-      v14 = [(UIFocusSystem *)self delegate];
-      [v14 _focusSystem:self willUpdateFocusInContext:v7];
+      delegate = [(UIFocusSystem *)self delegate];
+      [delegate _focusSystem:self willUpdateFocusInContext:contextCopy];
     }
 
-    [(UIFocusSystem *)self _sendWillUpdateFocusNotificationsInContext:v7];
+    [(UIFocusSystem *)self _sendWillUpdateFocusNotificationsInContext:contextCopy];
     objc_storeWeak(&self->_previousFocusedItem, WeakRetained);
-    v15 = [v7 nextFocusedItem];
-    objc_storeWeak(&self->_focusedItem, v15);
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    objc_storeWeak(&self->_focusedItem, nextFocusedItem);
     objc_storeWeak(&self->_deepestPreferredFocusEnvironment, 0);
     pendingFocusUpdateRequest = self->_pendingFocusUpdateRequest;
     self->_pendingFocusUpdateRequest = 0;
@@ -2623,65 +2623,65 @@ LABEL_23:
     self->_appearingFocusEnvironment = 0;
 
     [(UIFocusSystem *)self _clearFocusItemAncestorCache];
-    [(UIFocusSystem *)self _sendDidUpdateFocusNotificationsInContext:v7];
+    [(UIFocusSystem *)self _sendDidUpdateFocusNotificationsInContext:contextCopy];
     if ((*(&self->_flags + 1) & 8) != 0)
     {
-      v18 = [(UIFocusSystem *)self delegate];
-      [v18 _focusSystem:self didUpdateFocusInContext:v7];
+      delegate2 = [(UIFocusSystem *)self delegate];
+      [delegate2 _focusSystem:self didUpdateFocusInContext:contextCopy];
     }
 
-    v19 = [(UIFocusSystem *)self _focusCasting];
+    _focusCasting = [(UIFocusSystem *)self _focusCasting];
 
-    if (v19)
+    if (_focusCasting)
     {
-      v20 = [(UIFocusSystem *)self _focusCasting];
-      [v20 updateFocusCastingWithContext:v7];
+      _focusCasting2 = [(UIFocusSystem *)self _focusCasting];
+      [_focusCasting2 updateFocusCastingWithContext:contextCopy];
     }
 
-    [(UIFocusSystem *)self _didFinishUpdatingFocusInContext:v7];
-    [v7 _didUpdateFocus];
+    [(UIFocusSystem *)self _didFinishUpdatingFocusInContext:contextCopy];
+    [contextCopy _didUpdateFocus];
     *&self->_flags &= ~2u;
-    if (v15 && v15 != WeakRetained)
+    if (nextFocusedItem && nextFocusedItem != WeakRetained)
     {
-      v21 = [v7 _focusMovement];
-      if (v21)
+      _focusMovement = [contextCopy _focusMovement];
+      if (_focusMovement)
       {
-        v22 = 1;
+        _isDeferredUpdate = 1;
       }
 
       else
       {
-        v22 = [v7 _isDeferredUpdate];
+        _isDeferredUpdate = [contextCopy _isDeferredUpdate];
       }
 
-      [(UIFocusSystem *)self _tickHasSeenFocusedItemTimer:v22];
+      [(UIFocusSystem *)self _tickHasSeenFocusedItemTimer:_isDeferredUpdate];
     }
 
     v28 = objc_loadWeakRetained(&self->_previousFocusedItem);
-    v29 = [v7 _previouslyFocusedGroupIdentifier];
-    v30 = v29;
-    if (v28 && v29)
+    _previouslyFocusedGroupIdentifier = [contextCopy _previouslyFocusedGroupIdentifier];
+    v30 = _previouslyFocusedGroupIdentifier;
+    if (v28 && _previouslyFocusedGroupIdentifier)
     {
-      v31 = [v7 _nextFocusedGroupIdentifier];
-      v32 = v31;
-      if (!v31 || ([v31 isEqualToString:v30] & 1) == 0)
+      _nextFocusedGroupIdentifier = [contextCopy _nextFocusedGroupIdentifier];
+      v32 = _nextFocusedGroupIdentifier;
+      if (!_nextFocusedGroupIdentifier || ([_nextFocusedGroupIdentifier isEqualToString:v30] & 1) == 0)
       {
-        v33 = [(UIFocusSystem *)self _focusGroupHistory];
-        [v33 setLastFocusedItem:v28 forGroupIdentifier:v30];
+        _focusGroupHistory = [(UIFocusSystem *)self _focusGroupHistory];
+        [_focusGroupHistory setLastFocusedItem:v28 forGroupIdentifier:v30];
       }
     }
   }
 
-  else if (v11)
+  else if (shouldLog)
   {
     v23 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DE78) + 8);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
       v25 = +[(_UIDebugReportFormatter *)_UIFocusUpdateReportFormatter];
-      v26 = [v25 stringFromReport:v8];
+      v26 = [v25 stringFromReport:reportCopy];
       v41 = 138543618;
-      v42 = v7;
+      v42 = contextCopy;
       v43 = 2114;
       v44 = v26;
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "Failed to update focus with context %{public}@:\n%{public}@", &v41, 0x16u);
@@ -2694,7 +2694,7 @@ LABEL_23:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v41 = 138543362;
-      v42 = v7;
+      v42 = contextCopy;
       _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_DEFAULT, "Failed to update focus with context %{public}@. No additional info available.", &v41, 0xCu);
     }
   }
@@ -2702,37 +2702,37 @@ LABEL_23:
   return v10;
 }
 
-- (void)_notifyEnvironment:(id)a3 didUpdateFocusInContext:(id)a4
+- (void)_notifyEnvironment:(id)environment didUpdateFocusInContext:(id)context
 {
-  v8 = a3;
-  v6 = a4;
+  environmentCopy = environment;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    [v8 _didUpdateFocusInContext:v6];
+    [environmentCopy _didUpdateFocusInContext:contextCopy];
   }
 
   else if ((*(&self->_flags + 1) & 0x80) != 0)
   {
-    v7 = [(UIFocusSystem *)self delegate];
-    [v7 _focusSystem:self environment:v8 didUpdateFocusInContext:v6];
+    delegate = [(UIFocusSystem *)self delegate];
+    [delegate _focusSystem:self environment:environmentCopy didUpdateFocusInContext:contextCopy];
   }
 }
 
-- (void)_sendWillUpdateFocusNotificationsInContext:(id)a3
+- (void)_sendWillUpdateFocusNotificationsInContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1425 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1425 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__UIFocusSystem__sendWillUpdateFocusNotificationsInContext___block_invoke;
   v8[3] = &unk_1E7108B70;
-  v9 = v5;
-  v6 = v5;
+  v9 = contextCopy;
+  v6 = contextCopy;
   [(UIFocusSystem *)self _sendNotificationsForFocusUpdateInContext:v6 usingBlock:v8];
 }
 
@@ -2745,13 +2745,13 @@ void __60__UIFocusSystem__sendWillUpdateFocusNotificationsInContext___block_invo
   }
 }
 
-- (void)_sendDidUpdateFocusNotificationsInContext:(id)a3
+- (void)_sendDidUpdateFocusNotificationsInContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1436 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1436 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -2759,19 +2759,19 @@ void __60__UIFocusSystem__sendWillUpdateFocusNotificationsInContext___block_invo
   v8[2] = __59__UIFocusSystem__sendDidUpdateFocusNotificationsInContext___block_invoke;
   v8[3] = &unk_1E7108B98;
   v8[4] = self;
-  v9 = v5;
-  v6 = v5;
+  v9 = contextCopy;
+  v6 = contextCopy;
   [(UIFocusSystem *)self _sendNotificationsForFocusUpdateInContext:v6 usingBlock:v8];
 }
 
-- (void)_sendNotificationsForFocusUpdateInContext:(id)a3 usingBlock:(id)a4
+- (void)_sendNotificationsForFocusUpdateInContext:(id)context usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  contextCopy = context;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (contextCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -2779,8 +2779,8 @@ void __60__UIFocusSystem__sendWillUpdateFocusNotificationsInContext___block_invo
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1446 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1446 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
     if (v9)
     {
@@ -2788,36 +2788,36 @@ void __60__UIFocusSystem__sendWillUpdateFocusNotificationsInContext___block_invo
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1447 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1447 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
-  v10 = [v7 previouslyFocusedItem];
-  v11 = [v7 nextFocusedItem];
-  v12 = [v7 _commonAncestorEnvironment];
-  if (v10)
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  _commonAncestorEnvironment = [contextCopy _commonAncestorEnvironment];
+  if (previouslyFocusedItem)
   {
     if ((*(&self->_flags + 1) & 0x20) != 0)
     {
-      v13 = [(UIFocusSystem *)self delegate];
-      [v13 _focusSystem:self willMessageOldFocusNodes:v7];
+      delegate = [(UIFocusSystem *)self delegate];
+      [delegate _focusSystem:self willMessageOldFocusNodes:contextCopy];
     }
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __70__UIFocusSystem__sendNotificationsForFocusUpdateInContext_usingBlock___block_invoke;
     v19[3] = &unk_1E7108BC0;
-    v20 = v12;
+    v20 = _commonAncestorEnvironment;
     v21 = v9;
-    _UIFocusEnvironmentEnumerateAncestorEnvironments(v10, v19);
+    _UIFocusEnvironmentEnumerateAncestorEnvironments(previouslyFocusedItem, v19);
   }
 
-  if (v11)
+  if (nextFocusedItem)
   {
     if ((*(&self->_flags + 1) & 0x40) != 0)
     {
-      v14 = [(UIFocusSystem *)self delegate];
-      [v14 _focusSystem:self willMessageNewFocusNodes:v7];
+      delegate2 = [(UIFocusSystem *)self delegate];
+      [delegate2 _focusSystem:self willMessageNewFocusNodes:contextCopy];
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -2825,7 +2825,7 @@ LABEL_3:
     v17[2] = __70__UIFocusSystem__sendNotificationsForFocusUpdateInContext_usingBlock___block_invoke_2;
     v17[3] = &unk_1E7108BE8;
     v18 = v9;
-    _UIFocusEnvironmentEnumerateAncestorEnvironments(v11, v17);
+    _UIFocusEnvironmentEnumerateAncestorEnvironments(nextFocusedItem, v17);
   }
 }
 
@@ -2840,51 +2840,51 @@ uint64_t __70__UIFocusSystem__sendNotificationsForFocusUpdateInContext_usingBloc
   return result;
 }
 
-- (void)_performWithoutFocusUpdates:(id)a3
+- (void)_performWithoutFocusUpdates:(id)updates
 {
-  if (a3)
+  if (updates)
   {
     flags = self->_flags;
     self->_flags = (*&flags | 2);
-    (*(a3 + 2))(a3, a2);
+    (*(updates + 2))(updates, a2);
     self->_flags = (*&self->_flags & 0xFFFFFFFD | (2 * ((*&flags >> 1) & 1)));
   }
 }
 
-- (BOOL)_updateFocusImmediatelyWithContext:(id)a3
+- (BOOL)_updateFocusImmediatelyWithContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1501 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1501 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   if (*__UILogGetCategoryCachedImpl("UIFocus", &_updateFocusImmediatelyWithContext____s_category))
   {
-    v6 = [v5 _focusMovement];
+    _focusMovement = [contextCopy _focusMovement];
 
-    if (v6)
+    if (_focusMovement)
     {
-      v6 = [[_UIFocusUpdateReport alloc] initWithFocusSystem:self];
-      [(_UIFocusUpdateReport *)v6 setContext:v5];
+      _focusMovement = [[_UIFocusUpdateReport alloc] initWithFocusSystem:self];
+      [(_UIFocusUpdateReport *)_focusMovement setContext:contextCopy];
     }
   }
 
   else
   {
-    v6 = 0;
+    _focusMovement = 0;
   }
 
-  v7 = [(UIFocusSystem *)self _configureFocusDeferralIfNecessaryForContext:v5 report:v6];
+  v7 = [(UIFocusSystem *)self _configureFocusDeferralIfNecessaryForContext:contextCopy report:_focusMovement];
 
-  v8 = [(UIFocusSystem *)self _updateFocusWithContext:v7 report:v6];
+  v8 = [(UIFocusSystem *)self _updateFocusWithContext:v7 report:_focusMovement];
   return v8;
 }
 
-- (BOOL)_updateFocusImmediatelyToEnvironment:(id)a3 startDeferringOnLostFocus:(BOOL)a4 suppressLostFocusUpdate:(BOOL)a5
+- (BOOL)_updateFocusImmediatelyToEnvironment:(id)environment startDeferringOnLostFocus:(BOOL)focus suppressLostFocusUpdate:(BOOL)update
 {
-  v8 = a3;
+  environmentCopy = environment;
   if ((*&self->_flags & 2) != 0)
   {
     if (os_variant_has_internal_diagnostics())
@@ -2916,25 +2916,25 @@ uint64_t __70__UIFocusSystem__sendNotificationsForFocusUpdateInContext_usingBloc
       v25[1] = 3221225472;
       v25[2] = __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferringOnLostFocus_suppressLostFocusUpdate___block_invoke;
       v25[3] = &unk_1E70F8A10;
-      v26 = a4;
+      focusCopy = focus;
       v25[4] = self;
-      v27 = a5;
+      updateCopy = update;
       v9 = _Block_copy(v25);
-      v10 = [(UIFocusSystem *)self _contextForUpdateToEnvironment:v8 allowsOverridingPreferedFocusEnvironments:0 allowsDeferral:1];
+      v10 = [(UIFocusSystem *)self _contextForUpdateToEnvironment:environmentCopy allowsOverridingPreferedFocusEnvironments:0 allowsDeferral:1];
       v11 = v10;
-      if (v8 && ([v10 nextFocusedItem], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+      if (environmentCopy && ([v10 nextFocusedItem], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
       {
-        v18 = [(UIFocusSystem *)self _topEnvironment];
-        v19 = v18;
-        if (v18 == self)
+        _topEnvironment = [(UIFocusSystem *)self _topEnvironment];
+        v19 = _topEnvironment;
+        if (_topEnvironment == self)
         {
 
           v19 = 0;
         }
 
-        v20 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
-        v21 = v20;
-        if (v19 && v20 && (_UIFocusEnvironmentIsAncestorOfEnvironment(v19, v20) & 1) == 0)
+        _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+        v21 = _focusedItemOrDeferralTarget;
+        if (v19 && _focusedItemOrDeferralTarget && (_UIFocusEnvironmentIsAncestorOfEnvironment(v19, _focusedItemOrDeferralTarget) & 1) == 0)
         {
           v9[2](v9);
         }
@@ -2944,8 +2944,8 @@ uint64_t __70__UIFocusSystem__sendNotificationsForFocusUpdateInContext_usingBloc
       {
         if (![(UIFocusSystem *)self _isEnabled])
         {
-          v15 = [v11 nextFocusedItem];
-          objc_storeWeak(&self->_previousFocusedItem, v15);
+          nextFocusedItem = [v11 nextFocusedItem];
+          objc_storeWeak(&self->_previousFocusedItem, nextFocusedItem);
 
           pendingFocusUpdateRequest = self->_pendingFocusUpdateRequest;
           self->_pendingFocusUpdateRequest = 0;
@@ -3019,14 +3019,14 @@ uint64_t __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferrin
   return result;
 }
 
-- (id)_contextForUpdateToEnvironment:(id)a3 allowsOverridingPreferedFocusEnvironments:(BOOL)a4 allowsDeferral:(BOOL)a5
+- (id)_contextForUpdateToEnvironment:(id)environment allowsOverridingPreferedFocusEnvironments:(BOOL)environments allowsDeferral:(BOOL)deferral
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  deferralCopy = deferral;
+  environmentsCopy = environments;
+  environmentCopy = environment;
+  if (environmentCopy)
   {
-    v9 = [[_UIFocusUpdateRequest alloc] initWithFocusSystem:self environment:v8];
+    v9 = [[_UIFocusUpdateRequest alloc] initWithFocusSystem:self environment:environmentCopy];
   }
 
   else
@@ -3035,51 +3035,51 @@ uint64_t __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferrin
   }
 
   v10 = v9;
-  [(_UIFocusUpdateRequest *)v9 setAllowsOverridingPreferedFocusEnvironments:v6];
-  [(_UIFocusUpdateRequest *)v10 setAllowsDeferral:v5];
+  [(_UIFocusUpdateRequest *)v9 setAllowsOverridingPreferedFocusEnvironments:environmentsCopy];
+  [(_UIFocusUpdateRequest *)v10 setAllowsDeferral:deferralCopy];
   v11 = [[UIFocusUpdateContext alloc] _initWithFocusUpdateRequest:v10];
 
   return v11;
 }
 
-- (BOOL)_performFocusMovement:(id)a3
+- (BOOL)_performFocusMovement:(id)movement
 {
-  v4 = a3;
-  v5 = [(UIFocusSystem *)self _movementPerformer];
-  v6 = [v5 performFocusMovement:v4];
+  movementCopy = movement;
+  _movementPerformer = [(UIFocusSystem *)self _movementPerformer];
+  v6 = [_movementPerformer performFocusMovement:movementCopy];
 
   return v6;
 }
 
-- (id)_closestFocusableItemToPoint:(CGPoint)a3 inEnvironment:(id)a4 constrainedToRect:(CGRect)a5 distanceMeasuringUnitPoint:(CGPoint)a6 itemFilter:(id)a7
+- (id)_closestFocusableItemToPoint:(CGPoint)point inEnvironment:(id)environment constrainedToRect:(CGRect)rect distanceMeasuringUnitPoint:(CGPoint)unitPoint itemFilter:(id)filter
 {
-  y = a6.y;
-  x = a6.x;
-  height = a5.size.height;
-  width = a5.size.width;
-  v12 = a5.origin.y;
-  v13 = a5.origin.x;
-  v14 = a3.y;
-  v15 = a3.x;
-  v17 = a4;
-  v18 = a7;
-  v19 = [v17 focusItemContainer];
-  if (v19)
+  y = unitPoint.y;
+  x = unitPoint.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  v14 = point.y;
+  v15 = point.x;
+  environmentCopy = environment;
+  filterCopy = filter;
+  focusItemContainer = [environmentCopy focusItemContainer];
+  if (focusItemContainer)
   {
-    v20 = [(UIFocusSystem *)self focusItemContainer];
-    v21 = [v20 coordinateSpace];
+    focusItemContainer2 = [(UIFocusSystem *)self focusItemContainer];
+    coordinateSpace = [focusItemContainer2 coordinateSpace];
 
-    v22 = [v19 coordinateSpace];
-    [v22 convertPoint:v21 toCoordinateSpace:{v15, v14}];
+    coordinateSpace2 = [focusItemContainer coordinateSpace];
+    [coordinateSpace2 convertPoint:coordinateSpace toCoordinateSpace:{v15, v14}];
     v24 = v23;
     v26 = v25;
-    [v22 convertRect:v21 toCoordinateSpace:{v13, v12, width, height}];
+    [coordinateSpace2 convertRect:coordinateSpace toCoordinateSpace:{v13, v12, width, height}];
     v28 = v27;
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [[_UIFocusMap alloc] initWithFocusSystem:self rootEnvironment:v17 coordinateSpace:v21 searchInfo:0 ignoresRootContainerClippingRect:1];
-    v36 = [(_UIFocusMap *)v35 _closestFocusableItemToPoint:v18 inRect:v24 itemFilter:v26 distanceMeasuringUnitPoint:v28, v30, v32, v34, x, y];
+    v35 = [[_UIFocusMap alloc] initWithFocusSystem:self rootEnvironment:environmentCopy coordinateSpace:coordinateSpace searchInfo:0 ignoresRootContainerClippingRect:1];
+    v36 = [(_UIFocusMap *)v35 _closestFocusableItemToPoint:filterCopy inRect:v24 itemFilter:v26 distanceMeasuringUnitPoint:v28, v30, v32, v34, x, y];
   }
 
   else
@@ -3090,12 +3090,12 @@ uint64_t __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferrin
   return v36;
 }
 
-- (BOOL)_focusedItemIsContainedInEnvironment:(id)a3 includeSelf:(BOOL)a4
+- (BOOL)_focusedItemIsContainedInEnvironment:(id)environment includeSelf:(BOOL)self
 {
-  v7 = a3;
+  environmentCopy = environment;
   if (_UIFocusEnvironmentUseLegacyIsFocusedOrContainsFocusLogic())
   {
-    if (!a4 && (a2 = objc_loadWeakRetained(&self->_focusedItem), a2 == v7))
+    if (!self && (a2 = objc_loadWeakRetained(&self->_focusedItem), a2 == environmentCopy))
     {
       IsAncestorOfEnvironment = 0;
     }
@@ -3103,9 +3103,9 @@ uint64_t __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferrin
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_focusedItem);
-      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v7, WeakRetained);
+      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(environmentCopy, WeakRetained);
 
-      if (a4)
+      if (self)
       {
         goto LABEL_16;
       }
@@ -3114,29 +3114,29 @@ uint64_t __104__UIFocusSystem__updateFocusImmediatelyToEnvironment_startDeferrin
 
   else
   {
-    if (!v7)
+    if (!environmentCopy)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1704 description:{@"Invalid parameter not satisfying: %@", @"environment != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1704 description:{@"Invalid parameter not satisfying: %@", @"environment != nil"}];
     }
 
     [(UIFocusSystem *)self _buildFocusItemAncestorCacheIfNecessary];
-    if (a4)
+    if (self)
     {
-      IsAncestorOfEnvironment = [(NSHashTable *)self->_focusItemAncestorCache containsObject:v7];
+      IsAncestorOfEnvironment = [(NSHashTable *)self->_focusItemAncestorCache containsObject:environmentCopy];
     }
 
     else
     {
       v10 = objc_loadWeakRetained(&self->_focusedItem);
-      if (v10 == v7)
+      if (v10 == environmentCopy)
       {
         IsAncestorOfEnvironment = 0;
       }
 
       else
       {
-        IsAncestorOfEnvironment = [(NSHashTable *)self->_focusItemAncestorCache containsObject:v7];
+        IsAncestorOfEnvironment = [(NSHashTable *)self->_focusItemAncestorCache containsObject:environmentCopy];
       }
     }
   }
@@ -3152,9 +3152,9 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
   [WeakRetained updateFocusIfNeeded];
 }
 
-- (void)_handleFocusMovementAction:(id)a3
+- (void)_handleFocusMovementAction:(id)action
 {
-  [(UIFocusSystem *)self setPendingFocusMovementAction:a3];
+  [(UIFocusSystem *)self setPendingFocusMovementAction:action];
   if ([(UIFocusSystem *)self waitingForFocusMovementAction])
   {
     [(UIFocusSystem *)self _setEnabled:1];
@@ -3165,11 +3165,11 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
 
 - (UIFocusEnvironment)_deepestPreferredFocusEnvironment
 {
-  v3 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
-  v4 = v3;
-  if (v3)
+  _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+  v4 = _focusedItemOrDeferralTarget;
+  if (_focusedItemOrDeferralTarget)
   {
-    v5 = v3;
+    v5 = _focusedItemOrDeferralTarget;
   }
 
   else
@@ -3191,49 +3191,49 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
   return v9;
 }
 
-- (BOOL)_shouldReverseLayoutDirectionForEnvironment:(id)a3
+- (BOOL)_shouldReverseLayoutDirectionForEnvironment:(id)environment
 {
   if ((*(&self->_flags + 2) & 0x20) == 0)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(UIFocusSystem *)v4 delegate];
-  LOBYTE(v4) = [v6 _focusSystem:v4 shouldReverseLayoutDirectionForEnvironment:v5];
+  selfCopy = self;
+  environmentCopy = environment;
+  delegate = [(UIFocusSystem *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _focusSystem:selfCopy shouldReverseLayoutDirectionForEnvironment:environmentCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)_shouldReverseLinearWrappingForEnvironment:(id)a3
+- (BOOL)_shouldReverseLinearWrappingForEnvironment:(id)environment
 {
   if ((*(&self->_flags + 2) & 0x40) == 0)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(UIFocusSystem *)v4 delegate];
-  LOBYTE(v4) = [v6 _focusSystem:v4 shouldReverseLinearWrappingForEnvironment:v5];
+  selfCopy = self;
+  environmentCopy = environment;
+  delegate = [(UIFocusSystem *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _focusSystem:selfCopy shouldReverseLinearWrappingForEnvironment:environmentCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)_uiktest_updateFocusToItem:(id)a3
+- (BOOL)_uiktest_updateFocusToItem:(id)item
 {
-  v3 = self;
-  v4 = [(UIFocusSystem *)self _simulatedNonDeferredProgrammaticFocusUpdateToEnvironment:a3];
-  LOBYTE(v3) = [(UIFocusSystem *)v3 _updateFocusWithContext:v4 report:0];
+  selfCopy = self;
+  v4 = [(UIFocusSystem *)self _simulatedNonDeferredProgrammaticFocusUpdateToEnvironment:item];
+  LOBYTE(selfCopy) = [(UIFocusSystem *)selfCopy _updateFocusWithContext:v4 report:0];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_uiktest_disableFocusDeferral
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1826 description:@"This method is only to be used during UIKit tests."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1826 description:@"This method is only to be used during UIKit tests."];
 }
 
 - (void)_uiktest_disableThrottle
@@ -3243,17 +3243,17 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
   self->_updateThrottle = 0;
 }
 
-- (BOOL)_uiktest_performFocusMovement:(id)a3 withSearchInfo:(id)a4
+- (BOOL)_uiktest_performFocusMovement:(id)movement withSearchInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1847 description:@"This method is only to be used during UIKit tests."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1847 description:@"This method is only to be used during UIKit tests."];
 
   return 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -3460,65 +3460,65 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)_shouldRestoreFocusInContext:(id)a3
+- (BOOL)_shouldRestoreFocusInContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1888 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1888 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [(UIFocusSystem *)self delegate];
-  v7 = v6;
-  if (v6 && (*(&self->_flags + 1) & 2) != 0)
+  delegate = [(UIFocusSystem *)self delegate];
+  v7 = delegate;
+  if (delegate && (*(&self->_flags + 1) & 2) != 0)
   {
-    IsAncestorOfEnvironment = [v6 _focusSystem:self shouldRestoreFocusInContext:v5];
+    IsAncestorOfEnvironment = [delegate _focusSystem:self shouldRestoreFocusInContext:contextCopy];
   }
 
   else
   {
-    v8 = [v5 nextFocusedItem];
-    IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(self, v8);
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(self, nextFocusedItem);
   }
 
   return IsAncestorOfEnvironment;
 }
 
-- (void)_didFinishUpdatingFocusInContext:(id)a3
+- (void)_didFinishUpdatingFocusInContext:(id)context
 {
-  v5 = a3;
-  v11 = v5;
-  if (!v5)
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!contextCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1900 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem.m" lineNumber:1900 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
-    v5 = 0;
+    contextCopy = 0;
   }
 
-  v6 = [v5 _sourceItemInfo];
-  [v6 invalidateFocusedRegion];
+  _sourceItemInfo = [contextCopy _sourceItemInfo];
+  [_sourceItemInfo invalidateFocusedRegion];
 
-  v7 = [v11 _destinationItemInfo];
-  [v7 invalidateFocusedRegion];
+  _destinationItemInfo = [v11 _destinationItemInfo];
+  [_destinationItemInfo invalidateFocusedRegion];
 
-  v8 = [(UIFocusSystem *)self delegate];
-  v9 = v8;
-  if (v8 && (*(&self->_flags + 1) & 0x10) != 0)
+  delegate = [(UIFocusSystem *)self delegate];
+  v9 = delegate;
+  if (delegate && (*(&self->_flags + 1) & 0x10) != 0)
   {
-    [v8 _focusSystem:self didFinishUpdatingFocusInContext:v11];
+    [delegate _focusSystem:self didFinishUpdatingFocusInContext:v11];
   }
 }
 
-- (BOOL)_isScrollingScrollableContainer:(id)a3 targetContentOffset:(CGPoint *)a4
+- (BOOL)_isScrollingScrollableContainer:(id)container targetContentOffset:(CGPoint *)offset
 {
-  v6 = a3;
-  v7 = [(UIFocusSystem *)self delegate];
-  v8 = v7;
-  if (v7 && (*(&self->_flags + 2) & 0x80) != 0)
+  containerCopy = container;
+  delegate = [(UIFocusSystem *)self delegate];
+  v8 = delegate;
+  if (delegate && (*(&self->_flags + 2) & 0x80) != 0)
   {
-    v9 = [v7 _focusSystem:self isScrollingScrollableContainer:v6 targetContentOffset:a4];
+    v9 = [delegate _focusSystem:self isScrollingScrollableContainer:containerCopy targetContentOffset:offset];
   }
 
   else
@@ -3529,30 +3529,30 @@ void __46__UIFocusSystem__reevaluateLockedEnvironments__block_invoke(uint64_t a1
   return v9;
 }
 
-- (BOOL)_handleFailedFocusMovementRequest:(id)a3 withPerformer:(id)a4
+- (BOOL)_handleFailedFocusMovementRequest:(id)request withPerformer:(id)performer
 {
   if ((*(&self->_flags + 2) & 0x10) == 0)
   {
     return 0;
   }
 
-  v5 = self;
-  v6 = a3;
-  v7 = [(UIFocusSystem *)v5 delegate];
-  LOBYTE(v5) = [v7 _focusSystem:v5 handleFailedMovementRequest:v6];
+  selfCopy = self;
+  requestCopy = request;
+  delegate = [(UIFocusSystem *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _focusSystem:selfCopy handleFailedMovementRequest:requestCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setBehavior:(id)a3
+- (void)setBehavior:(id)behavior
 {
-  v5 = a3;
-  if (self->_behavior != v5)
+  behaviorCopy = behavior;
+  if (self->_behavior != behaviorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_behavior, a3);
+    v6 = behaviorCopy;
+    objc_storeStrong(&self->_behavior, behavior);
     [(UIFocusSystem *)self _focusBehaviorDidChange];
-    v5 = v6;
+    behaviorCopy = v6;
   }
 }
 
@@ -3623,9 +3623,9 @@ void __43__UIFocusSystem__updateFocusUpdateThrottle__block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 + (void)registerURL:(NSURL *)soundFileURL forSoundIdentifier:(UIFocusSoundIdentifier)identifier
@@ -3642,8 +3642,8 @@ void __43__UIFocusSystem__updateFocusUpdateThrottle__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"soundFileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"soundFileURL"}];
 
     if (v7)
     {
@@ -3651,20 +3651,20 @@ void __43__UIFocusSystem__updateFocusUpdateThrottle__block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_3:
   if ([(NSString *)v7 isEqual:@"UIFocusSoundIdentifierDefault"])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:31 description:@"UIFocusSoundIdentifierDefault is reserved for system use."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:31 description:@"UIFocusSoundIdentifierDefault is reserved for system use."];
   }
 
   if ([(NSString *)v7 isEqual:@"UIFocusSoundIdentifierNone"])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:32 description:@"UIFocusSoundIdentifierNone is reserved for system use."];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIFocusSystem+UIKitAdditions.m" lineNumber:32 description:@"UIFocusSoundIdentifierNone is reserved for system use."];
   }
 
   [_UIFocusSoundGenerator registerURL:v12 forIdentifier:v7];
@@ -3672,29 +3672,29 @@ LABEL_3:
 
 - (UIFocusSystem)_preferredFirstResponderFocusSystem
 {
-  v3 = [(UIFocusSystem *)self focusedItem];
-  v4 = [(UIFocusSystem *)self _preferredFirstResponderFocusSystemForFocusedItem:v3];
+  focusedItem = [(UIFocusSystem *)self focusedItem];
+  v4 = [(UIFocusSystem *)self _preferredFirstResponderFocusSystemForFocusedItem:focusedItem];
 
   return v4;
 }
 
-- (id)_preferredFirstResponderFocusSystemForFocusedItem:(id)a3
+- (id)_preferredFirstResponderFocusSystemForFocusedItem:(id)item
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
-    v9 = self;
+    selfCopy = self;
     goto LABEL_27;
   }
 
-  v6 = _UIHostedFocusSystemsForHostEnvironment(v4);
+  v6 = _UIHostedFocusSystemsForHostEnvironment(itemCopy);
   if ([v6 count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [v7 focusedItem];
-    if (!v7)
+    anyObject = [v6 anyObject];
+    focusedItem = [anyObject focusedItem];
+    if (!anyObject)
     {
       goto LABEL_25;
     }
@@ -3704,14 +3704,14 @@ LABEL_3:
   {
     if ([v6 count] < 2)
     {
-      v7 = 0;
-      v8 = 0;
+      anyObject = 0;
+      focusedItem = 0;
 LABEL_25:
-      v18 = self;
+      selfCopy2 = self;
       goto LABEL_26;
     }
 
-    v20 = self;
+    selfCopy3 = self;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -3721,8 +3721,8 @@ LABEL_25:
     if (v11)
     {
       v12 = v11;
-      v8 = 0;
-      v7 = 0;
+      focusedItem = 0;
+      anyObject = 0;
       v13 = *v22;
       while (2)
       {
@@ -3734,19 +3734,19 @@ LABEL_25:
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 focusedItem];
-          if (v16)
+          focusedItem2 = [v15 focusedItem];
+          if (focusedItem2)
           {
-            if (v7)
+            if (anyObject)
             {
 
               goto LABEL_21;
             }
 
-            v7 = v15;
-            v17 = v16;
+            anyObject = v15;
+            v17 = focusedItem2;
 
-            v8 = v17;
+            focusedItem = v17;
           }
         }
 
@@ -3762,30 +3762,30 @@ LABEL_25:
 
     else
     {
-      v8 = 0;
+      focusedItem = 0;
 LABEL_21:
-      v7 = 0;
+      anyObject = 0;
     }
 
-    self = v20;
-    if (!v7)
+    self = selfCopy3;
+    if (!anyObject)
     {
       goto LABEL_25;
     }
   }
 
-  if (!v8)
+  if (!focusedItem)
   {
     goto LABEL_25;
   }
 
-  v18 = [v7 _preferredFirstResponderFocusSystemForFocusedItem:v8];
+  selfCopy2 = [anyObject _preferredFirstResponderFocusSystemForFocusedItem:focusedItem];
 LABEL_26:
-  v9 = v18;
+  selfCopy = selfCopy2;
 
 LABEL_27:
 
-  return v9;
+  return selfCopy;
 }
 
 - (UIResponder)_preferredFirstResponder
@@ -3798,38 +3798,38 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v6 = [(UIFocusSystem *)self focusedItem];
-  v7 = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
-  v8 = v7;
-  if (v6)
+  focusedItem = [(UIFocusSystem *)self focusedItem];
+  _focusedItemOrDeferralTarget = [(UIFocusSystem *)self _focusedItemOrDeferralTarget];
+  v8 = _focusedItemOrDeferralTarget;
+  if (focusedItem)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v7 == 0;
+    v9 = _focusedItemOrDeferralTarget == 0;
   }
 
   v10 = !v9;
   if (v9)
   {
-    if (v6)
+    if (focusedItem)
     {
 LABEL_14:
-      v11 = [(UIFocusSystem *)self _preferredFirstResponderFocusSystemForFocusedItem:v6];
+      v11 = [(UIFocusSystem *)self _preferredFirstResponderFocusSystemForFocusedItem:focusedItem];
       v12 = v11;
       if (v11 == self || ([(UIFocusSystem *)v11 _preferredFirstResponder], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v5 = _UIFirstResponderCandidateForEnvironment(v6);
+        v5 = _UIFirstResponderCandidateForEnvironment(focusedItem);
       }
 
       if (v10)
       {
-        v13 = _UIFocusEnvironmentContainingView(v6);
-        v14 = [v13 _window];
+        v13 = _UIFocusEnvironmentContainingView(focusedItem);
+        _window = [v13 _window];
 
-        if (!v14 || ([UIApp _physicalKeyboardEventForWindow:v14], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, objc_setAssociatedObject(self, &_overridePreferredFirstResponderKey, v5, 0x301), objc_msgSend(v5, "_keyboardShortcutInvocationForKeyboardEvent:", v16), v17 = objc_claimAutoreleasedReturnValue(), objc_setAssociatedObject(self, &_overridePreferredFirstResponderKey, 0, 0x301), v16, !v17))
+        if (!_window || ([UIApp _physicalKeyboardEventForWindow:_window], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, objc_setAssociatedObject(self, &_overridePreferredFirstResponderKey, v5, 0x301), objc_msgSend(v5, "_keyboardShortcutInvocationForKeyboardEvent:", v16), v17 = objc_claimAutoreleasedReturnValue(), objc_setAssociatedObject(self, &_overridePreferredFirstResponderKey, 0, 0x301), v16, !v17))
         {
 
           v17 = 0;
@@ -3843,13 +3843,13 @@ LABEL_14:
 
   else
   {
-    if (_UIFocusItemIsViewOrRespondsToSelector(v7) && [v8 _wantsKeyCommandsWhenDeferred])
+    if (_UIFocusItemIsViewOrRespondsToSelector(_focusedItemOrDeferralTarget) && [v8 _wantsKeyCommandsWhenDeferred])
     {
-      v6 = v8;
+      focusedItem = v8;
       goto LABEL_14;
     }
 
-    v6 = 0;
+    focusedItem = 0;
   }
 
   v5 = 0;

@@ -1,21 +1,21 @@
 @interface WDBookmark
-- (WDBookmark)initWithParagraph:(id)a3 name:(id)a4 type:(int)a5;
+- (WDBookmark)initWithParagraph:(id)paragraph name:(id)name type:(int)type;
 - (id)description;
 @end
 
 @implementation WDBookmark
 
-- (WDBookmark)initWithParagraph:(id)a3 name:(id)a4 type:(int)a5
+- (WDBookmark)initWithParagraph:(id)paragraph name:(id)name type:(int)type
 {
-  v9 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = WDBookmark;
-  v10 = [(WDRun *)&v13 initWithParagraph:a3];
+  v10 = [(WDRun *)&v13 initWithParagraph:paragraph];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->mName, a4);
-    v11->mBookmarkType = a5;
+    objc_storeStrong(&v10->mName, name);
+    v11->mBookmarkType = type;
   }
 
   return v11;

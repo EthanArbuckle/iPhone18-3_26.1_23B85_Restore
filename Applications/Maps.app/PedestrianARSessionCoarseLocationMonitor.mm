@@ -1,18 +1,18 @@
 @interface PedestrianARSessionCoarseLocationMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
-- (PedestrianARSessionCoarseLocationMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
+- (PedestrianARSessionCoarseLocationMonitor)initWithObserver:(id)observer locationManager:(id)manager;
 - (id)debugDescription;
 - (void)_startAuthorizationDelayTimer;
-- (void)applicationDidBecomeActiveNotification:(id)a3;
-- (void)applicationWillResignActiveNotification:(id)a3;
+- (void)applicationDidBecomeActiveNotification:(id)notification;
+- (void)applicationWillResignActiveNotification:(id)notification;
 - (void)dealloc;
-- (void)locationManagerApprovalDidChange:(id)a3;
+- (void)locationManagerApprovalDidChange:(id)change;
 - (void)updateState;
 @end
 
 @implementation PedestrianARSessionCoarseLocationMonitor
 
-- (void)locationManagerApprovalDidChange:(id)a3
+- (void)locationManagerApprovalDidChange:(id)change
 {
   [(PedestrianARSessionCoarseLocationMonitor *)self setAuthorizedDelayTimer:0];
   [(PedestrianARSessionCoarseLocationMonitor *)self setIsDelayingStateChange:0];
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Authorization changed; updating state", &v10, 0xCu);
     }
 
@@ -31,15 +31,15 @@
 
   else
   {
-    v6 = [(PedestrianARSessionCoarseLocationMonitor *)self isInBackground];
+    isInBackground = [(PedestrianARSessionCoarseLocationMonitor *)self isInBackground];
     v7 = sub_100076400();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v6)
+    if (isInBackground)
     {
       if (v8)
       {
         v10 = 134349056;
-        v11 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Detected change from not authorized to authorized but we're in the background, waiting to re-foreground", &v10, 0xCu);
       }
 
@@ -51,7 +51,7 @@
       if (v8)
       {
         v10 = 134349056;
-        v11 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Detected change from not authorized to authorized while foregrounded", &v10, 0xCu);
       }
 
@@ -60,13 +60,13 @@
   }
 }
 
-- (void)applicationDidBecomeActiveNotification:(id)a3
+- (void)applicationDidBecomeActiveNotification:(id)notification
 {
   v4 = sub_100076400();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Detected app foreground", &v5, 0xCu);
   }
 
@@ -78,13 +78,13 @@
   }
 }
 
-- (void)applicationWillResignActiveNotification:(id)a3
+- (void)applicationWillResignActiveNotification:(id)notification
 {
   v4 = sub_100076400();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Detected app background", &v5, 0xCu);
   }
 
@@ -93,16 +93,16 @@
 
 - (id)debugDescription
 {
-  v3 = [objc_opt_class() friendlyName];
-  v4 = [(PedestrianARSessionCoarseLocationMonitor *)self locationManager];
-  v5 = [v4 isAuthorizedForPreciseLocation];
+  friendlyName = [objc_opt_class() friendlyName];
+  locationManager = [(PedestrianARSessionCoarseLocationMonitor *)self locationManager];
+  isAuthorizedForPreciseLocation = [locationManager isAuthorizedForPreciseLocation];
   v6 = @"NO";
-  if (v5)
+  if (isAuthorizedForPreciseLocation)
   {
     v6 = @"YES";
   }
 
-  v7 = [NSString stringWithFormat:@"%@\nauthorized for precise location: %@\n", v3, v6];
+  v7 = [NSString stringWithFormat:@"%@\nauthorized for precise location: %@\n", friendlyName, v6];
 
   return v7;
 }
@@ -115,7 +115,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Starting authorization delay timer for %f seconds before changing state", buf, 0x16u);
@@ -137,17 +137,17 @@
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionCoarseLocationMonitor *)self locationManager];
-  v4 = [v3 isAuthorizedForPreciseLocation];
+  locationManager = [(PedestrianARSessionCoarseLocationMonitor *)self locationManager];
+  isAuthorizedForPreciseLocation = [locationManager isAuthorizedForPreciseLocation];
 
   v5 = sub_100076400();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isAuthorizedForPreciseLocation)
   {
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v7 = "[%{public}p] Precise location authorization has been allowed; changing state";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v7, &v8, 0xCu);
@@ -157,12 +157,12 @@ LABEL_6:
   else if (v6)
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy2 = self;
     v7 = "[%{public}p] Precise location authorization has been denied; changing state";
     goto LABEL_6;
   }
 
-  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:v4];
+  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:isAuthorizedForPreciseLocation];
 }
 
 - (void)dealloc
@@ -171,7 +171,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -180,11 +180,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionCoarseLocationMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (PedestrianARSessionCoarseLocationMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!managerCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -215,7 +215,7 @@ LABEL_6:
 
   v17.receiver = self;
   v17.super_class = PedestrianARSessionCoarseLocationMonitor;
-  v8 = [(PedestrianARSessionMonitor *)&v17 initWithObserver:v6];
+  v8 = [(PedestrianARSessionMonitor *)&v17 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = sub_100076400();
@@ -226,7 +226,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v8 selector:"locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 

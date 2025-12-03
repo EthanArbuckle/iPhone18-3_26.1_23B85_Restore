@@ -1,33 +1,33 @@
 @interface GCControllerTouchpad
-- (BOOL)determineTouchStateWithDigitizerX:(float)a3 digitizerY:(float)a4 touchDown:(BOOL)a5;
-- (CGPoint)addCGPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-- (CGPoint)clampPoint:(CGPoint)a3 toLength:(double)a4;
-- (CGPoint)mulCGPoint:(CGPoint)a3 byScalar:(double)a4;
-- (CGPoint)normalizeCGPoint:(CGPoint)a3;
-- (CGPoint)scaleCGPoint:(CGPoint)a3 toLength:(double)a4;
-- (CGPoint)subCGPoint:(CGPoint)a3 fromPoint:(CGPoint)a4;
-- (GCControllerTouchpad)initWithCoder:(id)a3;
-- (GCControllerTouchpad)initWithDescriptionName:(id)a3;
+- (BOOL)determineTouchStateWithDigitizerX:(float)x digitizerY:(float)y touchDown:(BOOL)down;
+- (CGPoint)addCGPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
+- (CGPoint)clampPoint:(CGPoint)point toLength:(double)length;
+- (CGPoint)mulCGPoint:(CGPoint)point byScalar:(double)scalar;
+- (CGPoint)normalizeCGPoint:(CGPoint)point;
+- (CGPoint)scaleCGPoint:(CGPoint)point toLength:(double)length;
+- (CGPoint)subCGPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint;
+- (GCControllerTouchpad)initWithCoder:(id)coder;
+- (GCControllerTouchpad)initWithDescriptionName:(id)name;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)reportDigitizerChange:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)reportDigitizerChange:(id)change;
 @end
 
 @implementation GCControllerTouchpad
 
-- (GCControllerTouchpad)initWithDescriptionName:(id)a3
+- (GCControllerTouchpad)initWithDescriptionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = GCControllerTouchpad;
   v5 = [(GCControllerElement *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (nameCopy)
     {
-      v7 = v4;
+      v7 = nameCopy;
     }
 
     else
@@ -61,36 +61,36 @@
   return v6;
 }
 
-- (GCControllerTouchpad)initWithCoder:(id)a3
+- (GCControllerTouchpad)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GCControllerTouchpad;
   v5 = [(GCControllerElement *)&v9 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"_touchpadRelativeWindowSize"];
+    [coderCopy decodeFloatForKey:@"_touchpadRelativeWindowSize"];
     v5->_touchpadRelativeWindowSize = v6;
-    [v4 decodeFloatForKey:@"_touchpadRelativeOriginBufferRadius"];
+    [coderCopy decodeFloatForKey:@"_touchpadRelativeOriginBufferRadius"];
     v5->_touchpadRelativeOriginBufferSize = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   touchpadRelativeWindowSize = self->_touchpadRelativeWindowSize;
-  v7 = a3;
+  coderCopy = coder;
   *&v5 = touchpadRelativeWindowSize;
-  [v7 encodeFloat:@"_touchpadRelativeWindowSize" forKey:v5];
+  [coderCopy encodeFloat:@"_touchpadRelativeWindowSize" forKey:v5];
   *&v6 = self->_touchpadRelativeOriginBufferSize;
-  [v7 encodeFloat:@"_touchpadRelativeOriginBufferSize" forKey:v6];
+  [coderCopy encodeFloat:@"_touchpadRelativeOriginBufferSize" forKey:v6];
 }
 
-- (void)reportDigitizerChange:(id)a3
+- (void)reportDigitizerChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_reportsAbsoluteTouchSurfaceValues)
   {
     v5 = &OBJC_IVAR___GCControllerTouchpad__absolutePosition;
@@ -106,17 +106,17 @@
   v8 = v6[1];
   [(GCControllerButtonInput *)self->_button value];
   v10 = v9;
-  v11 = [(GCControllerButtonInput *)self->_button isPressed];
+  isPressed = [(GCControllerButtonInput *)self->_button isPressed];
   self->_previousButtonState = v10;
   touchState = self->_touchState;
   switch(touchState)
   {
     case 0:
-      v23 = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
-      [v23 _setValue:v4 queue:0.0];
+      xAxis = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
+      [xAxis _setValue:changeCopy queue:0.0];
 
-      v24 = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
-      [v24 _setValue:v4 queue:0.0];
+      yAxis = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
+      [yAxis _setValue:changeCopy queue:0.0];
 
       v17 = v25;
       v25[0] = MEMORY[0x1E69E9820];
@@ -124,13 +124,13 @@
       v18 = __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3;
       goto LABEL_10;
     case 2:
-      v19 = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
+      xAxis2 = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
       *&v20 = v7;
-      [v19 _setValue:v4 queue:v20];
+      [xAxis2 _setValue:changeCopy queue:v20];
 
-      v21 = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
+      yAxis2 = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
       *&v22 = v8;
-      [v21 _setValue:v4 queue:v22];
+      [yAxis2 _setValue:changeCopy queue:v22];
 
       v17 = v26;
       v26[0] = MEMORY[0x1E69E9820];
@@ -138,13 +138,13 @@
       v18 = __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_2;
       goto LABEL_10;
     case 1:
-      v13 = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
+      xAxis3 = [(GCControllerDirectionPad *)self->_touchSurface xAxis];
       *&v14 = v7;
-      [v13 _setValue:v4 queue:v14];
+      [xAxis3 _setValue:changeCopy queue:v14];
 
-      v15 = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
+      yAxis3 = [(GCControllerDirectionPad *)self->_touchSurface yAxis];
       *&v16 = v8;
-      [v15 _setValue:v4 queue:v16];
+      [yAxis3 _setValue:changeCopy queue:v16];
 
       v17 = v27;
       v27[0] = MEMORY[0x1E69E9820];
@@ -157,8 +157,8 @@ LABEL_10:
       v17[5] = v7;
       v17[6] = v8;
       *(v17 + 14) = v10;
-      *(v17 + 60) = v11;
-      dispatch_async(v4, v17);
+      *(v17 + 60) = isPressed;
+      dispatch_async(changeCopy, v17);
       break;
   }
 }
@@ -202,21 +202,21 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
   }
 }
 
-- (BOOL)determineTouchStateWithDigitizerX:(float)a3 digitizerY:(float)a4 touchDown:(BOOL)a5
+- (BOOL)determineTouchStateWithDigitizerX:(float)x digitizerY:(float)y touchDown:(BOOL)down
 {
   touchState = self->_touchState;
   if (touchState)
   {
-    v6 = 0;
+    downCopy = 0;
   }
 
   else
   {
-    v6 = a5;
+    downCopy = down;
   }
 
-  v7 = touchState == 1 && a5;
-  if (v6 || v7 || (v8 = self->_touchState, !a5))
+  v7 = touchState == 1 && down;
+  if (downCopy || v7 || (v8 = self->_touchState, !down))
   {
     v9 = !v7;
     v10 = 1;
@@ -225,7 +225,7 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
       v10 = 2;
     }
 
-    if (a5)
+    if (down)
     {
       v8 = v10;
     }
@@ -245,16 +245,16 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
 
   else
   {
-    v11 = !a5;
+    v11 = !down;
   }
 
-  return !v11 && (v8 != 2 || self->_absolutePosition.x != a3 || self->_absolutePosition.y != a4);
+  return !v11 && (v8 != 2 || self->_absolutePosition.x != x || self->_absolutePosition.y != y);
 }
 
-- (CGPoint)normalizeCGPoint:(CGPoint)a3
+- (CGPoint)normalizeCGPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(GCControllerTouchpad *)self magnitudeForCGPoint:?];
   v6 = y / v5;
   v7 = x / v5;
@@ -263,52 +263,52 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
   return result;
 }
 
-- (CGPoint)scaleCGPoint:(CGPoint)a3 toLength:(double)a4
+- (CGPoint)scaleCGPoint:(CGPoint)point toLength:(double)length
 {
-  [(GCControllerTouchpad *)self normalizeCGPoint:a3.x, a3.y];
-  v6 = v5 * a4;
-  v8 = v7 * a4;
+  [(GCControllerTouchpad *)self normalizeCGPoint:point.x, point.y];
+  v6 = v5 * length;
+  v8 = v7 * length;
   result.y = v8;
   result.x = v6;
   return result;
 }
 
-- (CGPoint)addCGPoint:(CGPoint)a3 toPoint:(CGPoint)a4
+- (CGPoint)addCGPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = point.x + toPoint.x;
+  v5 = point.y + toPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)subCGPoint:(CGPoint)a3 fromPoint:(CGPoint)a4
+- (CGPoint)subCGPoint:(CGPoint)point fromPoint:(CGPoint)fromPoint
 {
-  v4 = a4.x - a3.x;
-  v5 = a4.y - a3.y;
+  v4 = fromPoint.x - point.x;
+  v5 = fromPoint.y - point.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)mulCGPoint:(CGPoint)a3 byScalar:(double)a4
+- (CGPoint)mulCGPoint:(CGPoint)point byScalar:(double)scalar
 {
-  v4 = a3.x * a4;
-  v5 = a3.y * a4;
+  v4 = point.x * scalar;
+  v5 = point.y * scalar;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)clampPoint:(CGPoint)a3 toLength:(double)a4
+- (CGPoint)clampPoint:(CGPoint)point toLength:(double)length
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(GCControllerTouchpad *)self magnitudeForCGPoint:?];
-  if (v7 > a4)
+  if (v7 > length)
   {
-    x = x / v7 * a4;
-    y = y / v7 * a4;
+    x = x / v7 * length;
+    y = y / v7 * length;
   }
 
   v8 = x;
@@ -333,8 +333,8 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
 
   v5 = MEMORY[0x1E696AEC0];
   descriptionName = self->_descriptionName;
-  v7 = [(GCControllerTouchpad *)self button];
-  if ([v7 isPressed])
+  button = [(GCControllerTouchpad *)self button];
+  if ([button isPressed])
   {
     v8 = @"Pressed";
   }
@@ -344,8 +344,8 @@ void __46__GCControllerTouchpad_reportDigitizerChange___block_invoke_3(uint64_t 
     v8 = @"Not Pressed";
   }
 
-  v9 = [(GCControllerTouchpad *)self touchSurface];
-  v10 = [v5 stringWithFormat:@"%@ (%@, %@, %@)", descriptionName, v4, v8, v9];
+  touchSurface = [(GCControllerTouchpad *)self touchSurface];
+  v10 = [v5 stringWithFormat:@"%@ (%@, %@, %@)", descriptionName, v4, v8, touchSurface];
 
   return v10;
 }

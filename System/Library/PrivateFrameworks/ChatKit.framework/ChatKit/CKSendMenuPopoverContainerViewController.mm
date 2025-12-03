@@ -1,8 +1,8 @@
 @interface CKSendMenuPopoverContainerViewController
 - (CKSendMenuPopoverPresentationDelegate)delegate;
-- (_TtC7ChatKit40CKSendMenuPopoverContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)updateChildViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC7ChatKit40CKSendMenuPopoverContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)updateChildViewController:(id)controller style:(unint64_t)style completion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKSendMenuPopoverContainerViewController
@@ -15,24 +15,24 @@
   return Strong;
 }
 
-- (void)updateChildViewController:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)updateChildViewController:(id)controller style:(unint64_t)style completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = self;
-  sub_190AEDF68(v9, a4, v10, v8);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_190AEDF68(controllerCopy, style, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_190AED8AC(a3);
+  selfCopy = self;
+  sub_190AED8AC(appear);
 }
 
-- (_TtC7ChatKit40CKSendMenuPopoverContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7ChatKit40CKSendMenuPopoverContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

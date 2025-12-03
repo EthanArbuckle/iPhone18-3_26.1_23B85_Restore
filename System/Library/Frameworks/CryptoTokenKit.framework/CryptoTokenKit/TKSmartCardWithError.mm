@@ -1,22 +1,22 @@
 @interface TKSmartCardWithError
-- (TKSmartCardWithError)initWithCard:(id)a3 error:(id)a4;
+- (TKSmartCardWithError)initWithCard:(id)card error:(id)error;
 @end
 
 @implementation TKSmartCardWithError
 
-- (TKSmartCardWithError)initWithCard:(id)a3 error:(id)a4
+- (TKSmartCardWithError)initWithCard:(id)card error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 slot];
+  cardCopy = card;
+  errorCopy = error;
+  slot = [cardCopy slot];
   v12.receiver = self;
   v12.super_class = TKSmartCardWithError;
-  v10 = [(TKSmartCard *)&v12 initWithSlot:v9];
+  v10 = [(TKSmartCard *)&v12 initWithSlot:slot];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_parentCard, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v10->_parentCard, card);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;

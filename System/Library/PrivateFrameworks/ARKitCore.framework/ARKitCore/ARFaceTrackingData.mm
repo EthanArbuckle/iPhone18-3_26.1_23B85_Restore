@@ -1,18 +1,18 @@
 @interface ARFaceTrackingData
 + (id)sharedNeutralGeometry;
-- (ARFaceTrackingData)initWithCoder:(id)a3;
-- (ARFaceTrackingData)initWithTrackingData:(id)a3 transformToMirrored:(BOOL)a4 anchorIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ARFaceTrackingData)initWithCoder:(id)coder;
+- (ARFaceTrackingData)initWithTrackingData:(id)data transformToMirrored:(BOOL)mirrored anchorIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (__n128)setLeftEyeTransform:(__n128)a3;
-- (__n128)setRightEyeTransform:(__n128)a3;
+- (__n128)setLeftEyeTransform:(__n128)transform;
+- (__n128)setRightEyeTransform:(__n128)transform;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initPrivate;
 - (uint64_t)imageVertices;
 - (uint64_t)normals;
-- (void)_extractMetaDataAndTransformToMirrored:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_extractMetaDataAndTransformToMirrored:(BOOL)mirrored;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARFaceTrackingData
@@ -56,26 +56,26 @@ void __43__ARFaceTrackingData_sharedNeutralGeometry__block_invoke()
   return v2;
 }
 
-- (ARFaceTrackingData)initWithTrackingData:(id)a3 transformToMirrored:(BOOL)a4 anchorIdentifier:(id)a5
+- (ARFaceTrackingData)initWithTrackingData:(id)data transformToMirrored:(BOOL)mirrored anchorIdentifier:(id)identifier
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(ARFaceTrackingData *)self initPrivate];
-  v12 = v11;
-  if (v11)
+  mirroredCopy = mirrored;
+  dataCopy = data;
+  identifierCopy = identifier;
+  initPrivate = [(ARFaceTrackingData *)self initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    objc_storeStrong(v11 + 28, a3);
-    objc_storeStrong(&v12->_anchorIdentifier, a5);
-    [(ARFaceTrackingData *)v12 _extractMetaDataAndTransformToMirrored:v6];
+    objc_storeStrong(initPrivate + 28, data);
+    objc_storeStrong(&v12->_anchorIdentifier, identifier);
+    [(ARFaceTrackingData *)v12 _extractMetaDataAndTransformToMirrored:mirroredCopy];
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initPrivate"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initPrivate"}];
   objc_storeStrong((v4 + 224), self->_trackingData);
   objc_storeStrong((v4 + 192), self->_anchorIdentifier);
   objc_storeStrong((v4 + 208), self->_trackingError);
@@ -114,37 +114,37 @@ void __43__ARFaceTrackingData_sharedNeutralGeometry__block_invoke()
 
 - (BOOL)isValid
 {
-  v3 = [(ARFaceTrackingData *)self trackingData];
+  trackingData = [(ARFaceTrackingData *)self trackingData];
   v4 = *MEMORY[0x1E698BFD0];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
+  v5 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
 
   if (v5)
   {
-    v6 = [(ARFaceTrackingData *)self trackingData];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    trackingData2 = [(ARFaceTrackingData *)self trackingData];
+    v7 = [trackingData2 objectForKeyedSubscript:v4];
     v8 = *MEMORY[0x1E698C030];
     v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698C030]];
 
     if (v9)
     {
-      v10 = [(ARFaceTrackingData *)self trackingData];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      trackingData3 = [(ARFaceTrackingData *)self trackingData];
+      v11 = [trackingData3 objectForKeyedSubscript:v4];
       v12 = [v11 objectForKeyedSubscript:v8];
       v13 = *MEMORY[0x1E698C0A0];
       v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E698C0A0]];
 
       if (v14)
       {
-        v15 = [(ARFaceTrackingData *)self trackingData];
-        v16 = [v15 objectForKeyedSubscript:v4];
+        trackingData4 = [(ARFaceTrackingData *)self trackingData];
+        v16 = [trackingData4 objectForKeyedSubscript:v4];
         v17 = [v16 objectForKeyedSubscript:v8];
         v18 = *MEMORY[0x1E698C0C8];
         v19 = [v17 objectForKeyedSubscript:*MEMORY[0x1E698C0C8]];
 
         if (v19)
         {
-          v20 = [(ARFaceTrackingData *)self trackingData];
-          v21 = [v20 objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
+          trackingData5 = [(ARFaceTrackingData *)self trackingData];
+          v21 = [trackingData5 objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
 
           if (!v21)
           {
@@ -214,19 +214,19 @@ LABEL_16:
   return v27;
 }
 
-- (void)_extractMetaDataAndTransformToMirrored:(BOOL)a3
+- (void)_extractMetaDataAndTransformToMirrored:(BOOL)mirrored
 {
-  v3 = a3;
-  v5 = [(ARFaceTrackingData *)self trackingData];
+  mirroredCopy = mirrored;
+  trackingData = [(ARFaceTrackingData *)self trackingData];
   v6 = *MEMORY[0x1E698C040];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C040]];
+  v7 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698C040]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(ARFaceTrackingData *)self trackingData];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    trackingData2 = [(ARFaceTrackingData *)self trackingData];
+    v10 = [trackingData2 objectForKeyedSubscript:v6];
 
     v11 = objc_opt_new();
     v12 = ARKitCoreBundle();
@@ -253,8 +253,8 @@ LABEL_16:
     self->_trackingError = v17;
   }
 
-  v19 = [(ARFaceTrackingData *)self trackingData];
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
+  trackingData3 = [(ARFaceTrackingData *)self trackingData];
+  v20 = [trackingData3 objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
 
   if (v20)
   {
@@ -273,7 +273,7 @@ LABEL_16:
     ARMatrix4x4FromRotationAndTranslation();
     v189 = v29;
     v192 = v31;
-    if (v3)
+    if (mirroredCopy)
     {
       *&v32 = AREulerAnglesFromMatrix(v28, v29, v30);
       v190 = v32;
@@ -364,18 +364,18 @@ LABEL_16:
       v183 = v30;
     }
 
-    v63 = [(ARFaceTrackingData *)self trackingData];
-    v188 = self;
+    trackingData4 = [(ARFaceTrackingData *)self trackingData];
+    selfCopy = self;
     v64 = *MEMORY[0x1E698BFD0];
-    v65 = [v63 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
+    v65 = [trackingData4 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
     v66 = *MEMORY[0x1E698C030];
     v67 = [v65 objectForKeyedSubscript:*MEMORY[0x1E698C030]];
     v68 = [v67 objectForKeyedSubscript:v23];
     ARMatrix3x3FromArray(v68);
 
-    v69 = self;
-    v70 = [(ARFaceTrackingData *)self trackingData];
-    v71 = [v70 objectForKeyedSubscript:v64];
+    selfCopy2 = self;
+    trackingData5 = [(ARFaceTrackingData *)self trackingData];
+    v71 = [trackingData5 objectForKeyedSubscript:v64];
     v72 = [v71 objectForKeyedSubscript:v66];
     v73 = [v72 objectForKeyedSubscript:v26];
     v171 = ARVector3FromArray(v73);
@@ -420,13 +420,13 @@ LABEL_16:
     v191 = v85;
     v86 = [v85 length];
     _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(self->_anon_8, (v86 / 0xC));
-    v87 = [v85 bytes];
+    bytes = [v85 bytes];
     if ((v86 / 0xC) >= 1)
     {
       v89 = 0;
       v91 = *(MEMORY[0x1E69E9B10] + 16);
       v90 = *(MEMORY[0x1E69E9B10] + 32);
-      v92 = (v87 + 8);
+      v92 = (bytes + 8);
       do
       {
         v88.f32[0] = *(v92 - 2) / 1000.0;
@@ -434,7 +434,7 @@ LABEL_16:
         v93.f32[1] = *(v92 - 1) / 1000.0;
         v94 = v93;
         v94.f32[2] = *v92 / 1000.0;
-        if (v3)
+        if (mirroredCopy)
         {
           v88 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(xmmword_1C25C9080, v88.f32[0]), v91, *v93.f32, 1), v90, v94, 2);
           v94 = v88;
@@ -453,24 +453,24 @@ LABEL_16:
 
     v193 = v97;
     v98 = [v97 length];
-    v99 = [v97 bytes];
+    bytes2 = [v97 bytes];
     v198 = 0uLL;
     *&v199 = 0;
-    std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&v198, v99, v99 + ((v98 >> 2 << 32) >> 30), (v98 >> 2));
-    p_blendShapeCoefficients = &v69->_blendShapeCoefficients;
-    begin = v69->_blendShapeCoefficients.__begin_;
+    std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&v198, bytes2, bytes2 + ((v98 >> 2 << 32) >> 30), (v98 >> 2));
+    p_blendShapeCoefficients = &selfCopy2->_blendShapeCoefficients;
+    begin = selfCopy2->_blendShapeCoefficients.__begin_;
     if (begin)
     {
-      v69->_blendShapeCoefficients.__end_ = begin;
+      selfCopy2->_blendShapeCoefficients.__end_ = begin;
       operator delete(begin);
       p_blendShapeCoefficients->__begin_ = 0;
-      v69->_blendShapeCoefficients.__end_ = 0;
-      v69->_blendShapeCoefficients.__cap_ = 0;
+      selfCopy2->_blendShapeCoefficients.__end_ = 0;
+      selfCopy2->_blendShapeCoefficients.__cap_ = 0;
     }
 
-    *&v69->_blendShapeCoefficients.__begin_ = v198;
-    v69->_blendShapeCoefficients.__cap_ = v199;
-    if (v3)
+    *&selfCopy2->_blendShapeCoefficients.__begin_ = v198;
+    selfCopy2->_blendShapeCoefficients.__cap_ = v199;
+    if (mirroredCopy)
     {
       v184 = v20;
       v102 = v83;
@@ -483,15 +483,15 @@ LABEL_16:
         {
           v106 = [MEMORY[0x1E696AD98] numberWithInt:v104];
           v107 = [v103 objectForKeyedSubscript:v106];
-          v108 = [v107 integerValue];
+          integerValue = [v107 integerValue];
 
-          p_blendShapeCoefficients->__begin_[v108] = *(v99 + 4 * v104++);
+          p_blendShapeCoefficients->__begin_[integerValue] = *(bytes2 + 4 * v104++);
         }
 
         while (v105 != v104);
       }
 
-      v69 = v188;
+      selfCopy2 = selfCopy;
       v83 = v102;
       v20 = v184;
     }
@@ -536,10 +536,10 @@ LABEL_16:
 
     while (v129 != 12);
     ARMatrix4x4FromRotationAndTranslation();
-    *v69->_anon_100 = v130;
-    *&v69->_anon_100[16] = v131;
-    *&v69->_anon_100[32] = v132;
-    *&v69->_anon_100[48] = v133;
+    *selfCopy2->_anon_100 = v130;
+    *&selfCopy2->_anon_100[16] = v131;
+    *&selfCopy2->_anon_100[32] = v132;
+    *&selfCopy2->_anon_100[48] = v133;
     v134 = [v20 objectForKeyedSubscript:v83];
     v135 = [v134 objectForKeyedSubscript:*MEMORY[0x1E698C058]];
     ARVector3FromArray(v135);
@@ -580,16 +580,16 @@ LABEL_16:
 
     while (v154 != 12);
     ARMatrix4x4FromRotationAndTranslation();
-    *&v69[1].super.isa = v155;
-    *&v69[1]._anon_8[8] = v156;
-    *v69[1]._anon_20 = v157;
-    *&v69[1]._anon_20[16] = v158;
+    *&selfCopy2[1].super.isa = v155;
+    *&selfCopy2[1]._anon_8[8] = v156;
+    *selfCopy2[1]._anon_20 = v157;
+    *&selfCopy2[1]._anon_20[16] = v158;
     v159 = [v20 objectForKeyedSubscript:v95];
     v160 = [v159 objectForKeyedSubscript:*MEMORY[0x1E698BF88]];
 
     if ([v160 count])
     {
-      *v69->_gazePoint = vdivq_f32(ARVector3FromArray(v160), vdupq_n_s32(0x447A0000u));
+      *selfCopy2->_gazePoint = vdivq_f32(ARVector3FromArray(v160), vdupq_n_s32(0x447A0000u));
     }
 
     v161 = [v20 objectForKeyedSubscript:v95];
@@ -601,7 +601,7 @@ LABEL_16:
       v164 = [v20 objectForKeyedSubscript:v95];
       v165 = [v164 objectForKeyedSubscript:v162];
       [v165 floatValue];
-      v69->_tongueOut = v166;
+      selfCopy2->_tongueOut = v166;
     }
 
     v167 = *MEMORY[0x1E698C0B8];
@@ -611,44 +611,44 @@ LABEL_16:
     {
       v169 = [v20 objectForKeyedSubscript:v167];
       [v169 doubleValue];
-      v69->_timestamp = v170;
+      selfCopy2->_timestamp = v170;
     }
   }
 }
 
 - (uint64_t)normals
 {
-  dispatch_semaphore_wait(*(a1 + 176), 0xFFFFFFFFFFFFFFFFLL);
-  v2 = (a1 + 56);
-  if (*(a1 + 64) - *(a1 + 56) != *(a1 + 16) - *(a1 + 8))
+  dispatch_semaphore_wait(*(self + 176), 0xFFFFFFFFFFFFFFFFLL);
+  v2 = (self + 56);
+  if (*(self + 64) - *(self + 56) != *(self + 16) - *(self + 8))
   {
     kdebug_trace();
     v3 = +[ARFaceTrackingData sharedNeutralGeometry];
-    v4 = [v3 triangleIndices];
-    v5 = [a1 vertices];
-    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v21, (*(a1 + 16) - *(a1 + 8)) >> 4);
+    triangleIndices = [v3 triangleIndices];
+    vertices = [self vertices];
+    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v21, (*(self + 16) - *(self + 8)) >> 4);
     v6 = *v2;
     if (*v2)
     {
-      *(a1 + 64) = v6;
+      *(self + 64) = v6;
       operator delete(v6);
       *v2 = 0;
-      *(a1 + 64) = 0;
-      *(a1 + 72) = 0;
+      *(self + 64) = 0;
+      *(self + 72) = 0;
     }
 
     v7 = 0;
-    *(a1 + 56) = v21;
-    *(a1 + 72) = v22;
-    v8 = (v4 + 4);
+    *(self + 56) = v21;
+    *(self + 72) = v22;
+    v8 = (triangleIndices + 4);
     while ([v3 triangleCount] > v7)
     {
       v9 = *(v8 - 2);
       v10 = *(v8 - 1);
       v11 = *v8;
-      v12 = *(v5 + 16 * v9);
-      v13 = vsubq_f32(*(v5 + 16 * v10), v12);
-      v14 = vsubq_f32(*(v5 + 16 * v11), v12);
+      v12 = *(vertices + 16 * v9);
+      v13 = vsubq_f32(*(vertices + 16 * v10), v12);
+      v14 = vsubq_f32(*(vertices + 16 * v11), v12);
       v15 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v14, v14), v14, 0xCuLL), vnegq_f32(v13)), v14, vextq_s8(vuzp1q_s32(v13, v13), v13, 0xCuLL));
       v16 = vmulq_f32(v15, v15);
       *&v17 = v16.f32[1] + (v16.f32[2] + v16.f32[0]);
@@ -666,39 +666,39 @@ LABEL_16:
     kdebug_trace();
   }
 
-  dispatch_semaphore_signal(*(a1 + 176));
-  return *(a1 + 56);
+  dispatch_semaphore_signal(*(self + 176));
+  return *(self + 56);
 }
 
 - (uint64_t)imageVertices
 {
   v76 = *MEMORY[0x1E69E9840];
-  dispatch_semaphore_wait(*(a1 + 184), 0xFFFFFFFFFFFFFFFFLL);
-  v2 = (a1 + 32);
-  v3 = *(a1 + 40) - *(a1 + 32);
-  if ([a1 vertexCount] == v3 >> 3)
+  dispatch_semaphore_wait(*(self + 184), 0xFFFFFFFFFFFFFFFFLL);
+  v2 = (self + 32);
+  v3 = *(self + 40) - *(self + 32);
+  if ([self vertexCount] == v3 >> 3)
   {
-    dispatch_semaphore_signal(*(a1 + 184));
-    return *(a1 + 32);
+    dispatch_semaphore_signal(*(self + 184));
+    return *(self + 32);
   }
 
   else
   {
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(buf, [a1 vertexCount]);
-    v5 = *(a1 + 32);
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(buf, [self vertexCount]);
+    v5 = *(self + 32);
     if (v5)
     {
-      *(a1 + 40) = v5;
+      *(self + 40) = v5;
       operator delete(v5);
       *v2 = 0;
-      *(a1 + 40) = 0;
-      *(a1 + 48) = 0;
+      *(self + 40) = 0;
+      *(self + 48) = 0;
     }
 
-    *(a1 + 32) = *buf;
-    *(a1 + 48) = *&buf[16];
-    v6 = [a1 trackingData];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
+    *(self + 32) = *buf;
+    *(self + 48) = *&buf[16];
+    trackingData = [self trackingData];
+    v7 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698C0B0]];
 
     if (v7)
     {
@@ -719,24 +719,24 @@ LABEL_16:
       v63 = v15;
       v65 = v18;
       v67 = v17;
-      v19 = [a1 trackingData];
+      trackingData2 = [self trackingData];
       v20 = *MEMORY[0x1E698BFD0];
-      v21 = [v19 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
+      v21 = [trackingData2 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
       v22 = [v21 objectForKeyedSubscript:*MEMORY[0x1E698C068]];
       v23 = ARMatrix3x3FromArray(v22);
       v58 = v24;
       v59 = v23;
       v57 = v25;
 
-      v26 = [a1 trackingData];
-      v27 = [v26 objectForKeyedSubscript:v20];
+      trackingData3 = [self trackingData];
+      v27 = [trackingData3 objectForKeyedSubscript:v20];
       v28 = *MEMORY[0x1E698C030];
       v29 = [v27 objectForKeyedSubscript:*MEMORY[0x1E698C030]];
       v30 = [v29 objectForKeyedSubscript:v10];
       ARMatrix3x3FromArray(v30);
 
-      v31 = [a1 trackingData];
-      v32 = [v31 objectForKeyedSubscript:v20];
+      trackingData4 = [self trackingData];
+      v32 = [trackingData4 objectForKeyedSubscript:v20];
       v33 = [v32 objectForKeyedSubscript:v28];
       v34 = [v33 objectForKeyedSubscript:v13];
       v56 = ARVector3FromArray(v34);
@@ -776,15 +776,15 @@ LABEL_16:
       v68 = *buf;
       v62 = v75;
       v64 = v74;
-      while ([a1 vertexCount] > v45)
+      while ([self vertexCount] > v45)
       {
-        v46 = [a1 vertices];
-        v47 = vaddq_f32(v62, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v68, COERCE_FLOAT(*(v46 + 16 * v45))), v66, *(v46 + 16 * v45), 1), v64, *(v46 + 16 * v45), 2));
+        vertices = [self vertices];
+        v47 = vaddq_f32(v62, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v68, COERCE_FLOAT(*(vertices + 16 * v45))), v66, *(vertices + 16 * v45), 1), v64, *(vertices + 16 * v45), 2));
         *(*v2 + 8 * v45++) = vdiv_f32(*v47.i8, vdup_laneq_s32(v47, 2));
       }
 
-      dispatch_semaphore_signal(*(a1 + 184));
-      v4 = *(a1 + 32);
+      dispatch_semaphore_signal(*(self + 184));
+      v4 = *(self + 32);
     }
 
     else
@@ -806,7 +806,7 @@ LABEL_16:
           *buf = 138543618;
           *&buf[4] = v52;
           *&buf[12] = 2048;
-          *&buf[14] = a1;
+          *&buf[14] = self;
           _os_log_impl(&dword_1C241C000, v50, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: No smoothed data available in tracking data", buf, 0x16u);
         }
       }
@@ -818,11 +818,11 @@ LABEL_16:
         *buf = 138543618;
         *&buf[4] = v54;
         *&buf[12] = 2048;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         _os_log_impl(&dword_1C241C000, v50, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: No smoothed data available in tracking data", buf, 0x16u);
       }
 
-      dispatch_semaphore_signal(*(a1 + 184));
+      dispatch_semaphore_signal(*(self + 184));
       v4 = 0;
     }
   }
@@ -830,18 +830,18 @@ LABEL_16:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_trackingData forKey:@"trackingData"];
-  [v4 encodeObject:self->_anchorIdentifier forKey:@"anchorIdentifier"];
-  [v4 encodeDouble:@"timestamp" forKey:self->_timestamp];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_trackingData forKey:@"trackingData"];
+  [coderCopy encodeObject:self->_anchorIdentifier forKey:@"anchorIdentifier"];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
 }
 
-- (ARFaceTrackingData)initWithCoder:(id)a3
+- (ARFaceTrackingData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"trackingData"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"trackingData"])
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
@@ -849,15 +849,15 @@ LABEL_16:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v5 setWithObjects:{v6, v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"trackingData"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchorIdentifier"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"trackingData"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchorIdentifier"];
     anchorIdentifier = self->_anchorIdentifier;
     self->_anchorIdentifier = v12;
 
     v14 = [(ARFaceTrackingData *)self initWithTrackingData:v11 anchorIdentifier:self->_anchorIdentifier];
     if (v14)
     {
-      [v4 decodeDoubleForKey:@"timestamp"];
+      [coderCopy decodeDoubleForKey:@"timestamp"];
       v14->_timestamp = v15;
     }
 
@@ -866,136 +866,136 @@ LABEL_16:
 
   else
   {
-    v17 = [(ARFaceTrackingData *)self initPrivate];
-    if (v17)
+    initPrivate = [(ARFaceTrackingData *)self initPrivate];
+    if (initPrivate)
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vertexData"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vertexData"];
       v19 = v18;
       if (v18)
       {
         v20 = [v18 length];
-        v21 = [v19 bytes];
+        bytes = [v19 bytes];
         v53 = 0uLL;
         v54 = 0;
-        _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, v21, v21 + 16 * (v20 >> 4), (v20 >> 4));
-        v22 = *(v17 + 1);
+        _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, bytes, bytes + 16 * (v20 >> 4), (v20 >> 4));
+        v22 = *(initPrivate + 1);
         if (v22)
         {
-          *(v17 + 2) = v22;
+          *(initPrivate + 2) = v22;
           operator delete(v22);
-          *(v17 + 1) = 0;
-          *(v17 + 2) = 0;
-          *(v17 + 3) = 0;
+          *(initPrivate + 1) = 0;
+          *(initPrivate + 2) = 0;
+          *(initPrivate + 3) = 0;
         }
 
-        *(v17 + 8) = v53;
-        *(v17 + 3) = v54;
+        *(initPrivate + 8) = v53;
+        *(initPrivate + 3) = v54;
       }
 
-      v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vertexData2D"];
+      v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vertexData2D"];
       v24 = v23;
       if (v23)
       {
         v25 = [v23 length];
-        v26 = [v24 bytes];
+        bytes2 = [v24 bytes];
         v53 = 0uLL;
         v54 = 0;
-        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, v26, v26 + 8 * (v25 >> 3), (v25 >> 3));
-        v27 = *(v17 + 4);
+        _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, bytes2, bytes2 + 8 * (v25 >> 3), (v25 >> 3));
+        v27 = *(initPrivate + 4);
         if (v27)
         {
-          *(v17 + 5) = v27;
+          *(initPrivate + 5) = v27;
           operator delete(v27);
-          *(v17 + 4) = 0;
-          *(v17 + 5) = 0;
-          *(v17 + 6) = 0;
+          *(initPrivate + 4) = 0;
+          *(initPrivate + 5) = 0;
+          *(initPrivate + 6) = 0;
         }
 
-        *(v17 + 2) = v53;
-        *(v17 + 6) = v54;
+        *(initPrivate + 2) = v53;
+        *(initPrivate + 6) = v54;
       }
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"normalsData"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"normalsData"];
       v29 = v28;
       if (v28)
       {
         v30 = [v28 length];
-        v31 = [v29 bytes];
+        bytes3 = [v29 bytes];
         v53 = 0uLL;
         v54 = 0;
-        _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, v31, v31 + 16 * (v30 >> 4), (v30 >> 4));
-        v32 = *(v17 + 7);
+        _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v53, bytes3, bytes3 + 16 * (v30 >> 4), (v30 >> 4));
+        v32 = *(initPrivate + 7);
         if (v32)
         {
-          *(v17 + 8) = v32;
+          *(initPrivate + 8) = v32;
           operator delete(v32);
-          *(v17 + 7) = 0;
-          *(v17 + 8) = 0;
-          *(v17 + 9) = 0;
+          *(initPrivate + 7) = 0;
+          *(initPrivate + 8) = 0;
+          *(initPrivate + 9) = 0;
         }
 
-        *(v17 + 56) = v53;
-        *(v17 + 9) = v54;
+        *(initPrivate + 56) = v53;
+        *(initPrivate + 9) = v54;
       }
 
-      v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendShapeCoefficientsData"];
+      v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendShapeCoefficientsData"];
       v34 = v33;
       if (v33)
       {
         v35 = [v33 length];
-        v36 = [v34 bytes];
+        bytes4 = [v34 bytes];
         v53 = 0uLL;
         v54 = 0;
-        std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&v53, v36, v36 + 4 * (v35 >> 2), (v35 >> 2));
-        v37 = *(v17 + 10);
+        std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>(&v53, bytes4, bytes4 + 4 * (v35 >> 2), (v35 >> 2));
+        v37 = *(initPrivate + 10);
         if (v37)
         {
-          *(v17 + 11) = v37;
+          *(initPrivate + 11) = v37;
           operator delete(v37);
-          *(v17 + 10) = 0;
-          *(v17 + 11) = 0;
-          *(v17 + 12) = 0;
+          *(initPrivate + 10) = 0;
+          *(initPrivate + 11) = 0;
+          *(initPrivate + 12) = 0;
         }
 
-        *(v17 + 5) = v53;
-        *(v17 + 12) = v54;
+        *(initPrivate + 5) = v53;
+        *(initPrivate + 12) = v54;
       }
 
-      [v4 ar_decodeMatrix4x4ForKey:@"transform"];
-      *(v17 + 7) = v38;
-      *(v17 + 8) = v39;
-      *(v17 + 9) = v40;
-      *(v17 + 10) = v41;
-      [v4 ar_decodeMatrix4x4ForKey:@"leftEyeTransform"];
-      *(v17 + 16) = v42;
-      *(v17 + 17) = v43;
-      *(v17 + 18) = v44;
-      *(v17 + 19) = v45;
-      [v4 ar_decodeMatrix4x4ForKey:@"rightEyeTransform"];
-      *(v17 + 20) = v46;
-      *(v17 + 21) = v47;
-      *(v17 + 22) = v48;
-      *(v17 + 23) = v49;
-      [v4 ar_decodeVector3ForKey:@"gaze"];
-      *(v17 + 15) = v50;
-      *(v17 + 50) = [v4 decodeBoolForKey:@"tongueOut"];
-      [v4 decodeDoubleForKey:@"timestamp"];
-      *(v17 + 27) = v51;
+      [coderCopy ar_decodeMatrix4x4ForKey:@"transform"];
+      *(initPrivate + 7) = v38;
+      *(initPrivate + 8) = v39;
+      *(initPrivate + 9) = v40;
+      *(initPrivate + 10) = v41;
+      [coderCopy ar_decodeMatrix4x4ForKey:@"leftEyeTransform"];
+      *(initPrivate + 16) = v42;
+      *(initPrivate + 17) = v43;
+      *(initPrivate + 18) = v44;
+      *(initPrivate + 19) = v45;
+      [coderCopy ar_decodeMatrix4x4ForKey:@"rightEyeTransform"];
+      *(initPrivate + 20) = v46;
+      *(initPrivate + 21) = v47;
+      *(initPrivate + 22) = v48;
+      *(initPrivate + 23) = v49;
+      [coderCopy ar_decodeVector3ForKey:@"gaze"];
+      *(initPrivate + 15) = v50;
+      *(initPrivate + 50) = [coderCopy decodeBoolForKey:@"tongueOut"];
+      [coderCopy decodeDoubleForKey:@"timestamp"];
+      *(initPrivate + 27) = v51;
     }
 
-    v16 = v17;
+    v16 = initPrivate;
   }
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[2] - v5[1] != *&self->_anon_8[8] - *self->_anon_8)
     {
@@ -1090,19 +1090,19 @@ LABEL_23:
   return v19;
 }
 
-- (__n128)setLeftEyeTransform:(__n128)a3
+- (__n128)setLeftEyeTransform:(__n128)transform
 {
   result[16] = a2;
-  result[17] = a3;
+  result[17] = transform;
   result[18] = a4;
   result[19] = a5;
   return result;
 }
 
-- (__n128)setRightEyeTransform:(__n128)a3
+- (__n128)setRightEyeTransform:(__n128)transform
 {
   result[20] = a2;
-  result[21] = a3;
+  result[21] = transform;
   result[22] = a4;
   result[23] = a5;
   return result;

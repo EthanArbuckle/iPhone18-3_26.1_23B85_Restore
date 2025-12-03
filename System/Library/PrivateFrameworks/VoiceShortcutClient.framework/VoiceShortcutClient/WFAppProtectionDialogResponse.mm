@@ -1,56 +1,56 @@
 @interface WFAppProtectionDialogResponse
-- (WFAppProtectionDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFAppProtectionDialogResponse)initWithCoder:(id)a3;
-- (WFAppProtectionDialogResponse)initWithResponseCode:(unint64_t)a3;
+- (WFAppProtectionDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFAppProtectionDialogResponse)initWithCoder:(id)coder;
+- (WFAppProtectionDialogResponse)initWithResponseCode:(unint64_t)code;
 - (id)description;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppProtectionDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFAppProtectionDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v5 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[WFAppProtectionDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v5.receiver, v5.super_class), @"requestResponseCode"}];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v5 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[WFAppProtectionDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v5.receiver, v5.super_class), @"requestResponseCode"}];
 }
 
-- (WFAppProtectionDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFAppProtectionDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFAppProtectionDialogResponse;
-  v5 = [(WFDialogResponse *)&v8 initWithBSXPCCoder:v4];
+  v5 = [(WFDialogResponse *)&v8 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_requestResponseCode = [v4 decodeInt64ForKey:@"requestResponseCode"];
+    v5->_requestResponseCode = [coderCopy decodeInt64ForKey:@"requestResponseCode"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFAppProtectionDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFAppProtectionDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v5.receiver, v5.super_class), @"requestResponseCode"}];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFAppProtectionDialogResponse requestResponseCode](self forKey:{"requestResponseCode", v5.receiver, v5.super_class), @"requestResponseCode"}];
 }
 
-- (WFAppProtectionDialogResponse)initWithCoder:(id)a3
+- (WFAppProtectionDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFAppProtectionDialogResponse;
-  v5 = [(WFDialogResponse *)&v8 initWithCoder:v4];
+  v5 = [(WFDialogResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_requestResponseCode = [v4 decodeIntegerForKey:@"requestResponseCode"];
+    v5->_requestResponseCode = [coderCopy decodeIntegerForKey:@"requestResponseCode"];
     v6 = v5;
   }
 
@@ -67,15 +67,15 @@
   return v6;
 }
 
-- (WFAppProtectionDialogResponse)initWithResponseCode:(unint64_t)a3
+- (WFAppProtectionDialogResponse)initWithResponseCode:(unint64_t)code
 {
   v8.receiver = self;
   v8.super_class = WFAppProtectionDialogResponse;
-  v4 = [(WFDialogResponse *)&v8 initWithCancelled:a3 == 0];
+  v4 = [(WFDialogResponse *)&v8 initWithCancelled:code == 0];
   v5 = v4;
   if (v4)
   {
-    v4->_requestResponseCode = a3;
+    v4->_requestResponseCode = code;
     v6 = v4;
   }
 

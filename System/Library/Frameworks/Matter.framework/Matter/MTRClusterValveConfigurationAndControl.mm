@@ -1,256 +1,256 @@
 @interface MTRClusterValveConfigurationAndControl
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3;
-- (id)readAttributeAttributeListWithParams:(id)a3;
-- (id)readAttributeAutoCloseTimeWithParams:(id)a3;
-- (id)readAttributeClusterRevisionWithParams:(id)a3;
-- (id)readAttributeCurrentLevelWithParams:(id)a3;
-- (id)readAttributeCurrentStateWithParams:(id)a3;
-- (id)readAttributeDefaultOpenDurationWithParams:(id)a3;
-- (id)readAttributeDefaultOpenLevelWithParams:(id)a3;
-- (id)readAttributeFeatureMapWithParams:(id)a3;
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3;
-- (id)readAttributeLevelStepWithParams:(id)a3;
-- (id)readAttributeOpenDurationWithParams:(id)a3;
-- (id)readAttributeRemainingDurationWithParams:(id)a3;
-- (id)readAttributeTargetLevelWithParams:(id)a3;
-- (id)readAttributeTargetStateWithParams:(id)a3;
-- (id)readAttributeValveFaultWithParams:(id)a3;
-- (void)closeWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6;
-- (void)openWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6;
-- (void)writeAttributeDefaultOpenDurationWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5;
-- (void)writeAttributeDefaultOpenLevelWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5;
+- (id)readAttributeAcceptedCommandListWithParams:(id)params;
+- (id)readAttributeAttributeListWithParams:(id)params;
+- (id)readAttributeAutoCloseTimeWithParams:(id)params;
+- (id)readAttributeClusterRevisionWithParams:(id)params;
+- (id)readAttributeCurrentLevelWithParams:(id)params;
+- (id)readAttributeCurrentStateWithParams:(id)params;
+- (id)readAttributeDefaultOpenDurationWithParams:(id)params;
+- (id)readAttributeDefaultOpenLevelWithParams:(id)params;
+- (id)readAttributeFeatureMapWithParams:(id)params;
+- (id)readAttributeGeneratedCommandListWithParams:(id)params;
+- (id)readAttributeLevelStepWithParams:(id)params;
+- (id)readAttributeOpenDurationWithParams:(id)params;
+- (id)readAttributeRemainingDurationWithParams:(id)params;
+- (id)readAttributeTargetLevelWithParams:(id)params;
+- (id)readAttributeTargetStateWithParams:(id)params;
+- (id)readAttributeValveFaultWithParams:(id)params;
+- (void)closeWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion;
+- (void)openWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion;
+- (void)writeAttributeDefaultOpenDurationWithValue:(id)value expectedValueInterval:(id)interval params:(id)params;
+- (void)writeAttributeDefaultOpenLevelWithValue:(id)value expectedValueInterval:(id)interval params:(id)params;
 @end
 
 @implementation MTRClusterValveConfigurationAndControl
 
-- (void)openWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6
+- (void)openWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  paramsCopy = params;
+  valuesCopy = values;
+  intervalCopy = interval;
+  completionCopy = completion;
+  if (!paramsCopy)
   {
-    v10 = objc_alloc_init(MTRValveConfigurationAndControlClusterOpenParams);
+    paramsCopy = objc_alloc_init(MTRValveConfigurationAndControlClusterOpenParams);
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_23931A0C4;
   v21[3] = &unk_278A73118;
-  v14 = v13;
+  v14 = completionCopy;
   v22 = v14;
   v15 = MEMORY[0x23EE78590](v21);
-  v16 = [(MTRValveConfigurationAndControlClusterOpenParams *)v10 timedInvokeTimeoutMs];
-  v17 = [(MTRGenericCluster *)self device];
-  v18 = [(MTRCluster *)self endpointID];
-  v19 = [(MTRValveConfigurationAndControlClusterOpenParams *)v10 serverSideProcessingTimeout];
-  v20 = [(MTRCluster *)self callbackQueue];
-  [v17 _invokeKnownCommandWithEndpointID:v18 clusterID:&unk_284C42578 commandID:&unk_284C41660 commandPayload:v10 expectedValues:v11 expectedValueInterval:v12 timedInvokeTimeout:v16 serverSideProcessingTimeout:v19 responseClass:0 queue:v20 completion:v15];
+  timedInvokeTimeoutMs = [(MTRValveConfigurationAndControlClusterOpenParams *)paramsCopy timedInvokeTimeoutMs];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  serverSideProcessingTimeout = [(MTRValveConfigurationAndControlClusterOpenParams *)paramsCopy serverSideProcessingTimeout];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _invokeKnownCommandWithEndpointID:endpointID clusterID:&unk_284C42578 commandID:&unk_284C41660 commandPayload:paramsCopy expectedValues:valuesCopy expectedValueInterval:intervalCopy timedInvokeTimeout:timedInvokeTimeoutMs serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:callbackQueue completion:v15];
 }
 
-- (void)closeWithParams:(id)a3 expectedValues:(id)a4 expectedValueInterval:(id)a5 completion:(id)a6
+- (void)closeWithParams:(id)params expectedValues:(id)values expectedValueInterval:(id)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  paramsCopy = params;
+  valuesCopy = values;
+  intervalCopy = interval;
+  completionCopy = completion;
+  if (!paramsCopy)
   {
-    v10 = objc_alloc_init(MTRValveConfigurationAndControlClusterCloseParams);
+    paramsCopy = objc_alloc_init(MTRValveConfigurationAndControlClusterCloseParams);
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_23931A2F8;
   v21[3] = &unk_278A73118;
-  v14 = v13;
+  v14 = completionCopy;
   v22 = v14;
   v15 = MEMORY[0x23EE78590](v21);
-  v16 = [(MTRValveConfigurationAndControlClusterCloseParams *)v10 timedInvokeTimeoutMs];
-  v17 = [(MTRGenericCluster *)self device];
-  v18 = [(MTRCluster *)self endpointID];
-  v19 = [(MTRValveConfigurationAndControlClusterCloseParams *)v10 serverSideProcessingTimeout];
-  v20 = [(MTRCluster *)self callbackQueue];
-  [v17 _invokeKnownCommandWithEndpointID:v18 clusterID:&unk_284C42578 commandID:&unk_284C41768 commandPayload:v10 expectedValues:v11 expectedValueInterval:v12 timedInvokeTimeout:v16 serverSideProcessingTimeout:v19 responseClass:0 queue:v20 completion:v15];
+  timedInvokeTimeoutMs = [(MTRValveConfigurationAndControlClusterCloseParams *)paramsCopy timedInvokeTimeoutMs];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  serverSideProcessingTimeout = [(MTRValveConfigurationAndControlClusterCloseParams *)paramsCopy serverSideProcessingTimeout];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _invokeKnownCommandWithEndpointID:endpointID clusterID:&unk_284C42578 commandID:&unk_284C41768 commandPayload:paramsCopy expectedValues:valuesCopy expectedValueInterval:intervalCopy timedInvokeTimeout:timedInvokeTimeoutMs serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:callbackQueue completion:v15];
 }
 
-- (id)readAttributeOpenDurationWithParams:(id)a3
+- (id)readAttributeOpenDurationWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C416A8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C416A8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeDefaultOpenDurationWithParams:(id)a3
+- (id)readAttributeDefaultOpenDurationWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C416C0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C416C0 params:paramsCopy];
 
   return v7;
 }
 
-- (void)writeAttributeDefaultOpenDurationWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5
+- (void)writeAttributeDefaultOpenDurationWithValue:(id)value expectedValueInterval:(id)interval params:(id)params
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [a5 timedWriteTimeout];
-  v10 = [(MTRGenericCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  [v10 writeAttributeWithEndpointID:v11 clusterID:&unk_284C42590 attributeID:&unk_284C416C0 value:v12 expectedValueInterval:v8 timedWriteTimeout:v9];
+  valueCopy = value;
+  intervalCopy = interval;
+  timedWriteTimeout = [params timedWriteTimeout];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  [device writeAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C416C0 value:valueCopy expectedValueInterval:intervalCopy timedWriteTimeout:timedWriteTimeout];
 }
 
-- (id)readAttributeAutoCloseTimeWithParams:(id)a3
+- (id)readAttributeAutoCloseTimeWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41930 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41930 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeRemainingDurationWithParams:(id)a3
+- (id)readAttributeRemainingDurationWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41690 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41690 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeCurrentStateWithParams:(id)a3
+- (id)readAttributeCurrentStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C417E0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C417E0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeTargetStateWithParams:(id)a3
+- (id)readAttributeTargetStateWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41948 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41948 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeCurrentLevelWithParams:(id)a3
+- (id)readAttributeCurrentLevelWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41840 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41840 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeTargetLevelWithParams:(id)a3
+- (id)readAttributeTargetLevelWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41B10 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41B10 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeDefaultOpenLevelWithParams:(id)a3
+- (id)readAttributeDefaultOpenLevelWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41918 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41918 params:paramsCopy];
 
   return v7;
 }
 
-- (void)writeAttributeDefaultOpenLevelWithValue:(id)a3 expectedValueInterval:(id)a4 params:(id)a5
+- (void)writeAttributeDefaultOpenLevelWithValue:(id)value expectedValueInterval:(id)interval params:(id)params
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [a5 timedWriteTimeout];
-  v10 = [(MTRGenericCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  [v10 writeAttributeWithEndpointID:v11 clusterID:&unk_284C42590 attributeID:&unk_284C41918 value:v12 expectedValueInterval:v8 timedWriteTimeout:v9];
+  valueCopy = value;
+  intervalCopy = interval;
+  timedWriteTimeout = [params timedWriteTimeout];
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  [device writeAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41918 value:valueCopy expectedValueInterval:intervalCopy timedWriteTimeout:timedWriteTimeout];
 }
 
-- (id)readAttributeValveFaultWithParams:(id)a3
+- (id)readAttributeValveFaultWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41B28 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41B28 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeLevelStepWithParams:(id)a3
+- (id)readAttributeLevelStepWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41B40 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41B40 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3
+- (id)readAttributeGeneratedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C416D8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C416D8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3
+- (id)readAttributeAcceptedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C416F0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C416F0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAttributeListWithParams:(id)a3
+- (id)readAttributeAttributeListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41708 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41708 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeFeatureMapWithParams:(id)a3
+- (id)readAttributeFeatureMapWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41720 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41720 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeClusterRevisionWithParams:(id)a3
+- (id)readAttributeClusterRevisionWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C42590 attributeID:&unk_284C41738 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C42590 attributeID:&unk_284C41738 params:paramsCopy];
 
   return v7;
 }

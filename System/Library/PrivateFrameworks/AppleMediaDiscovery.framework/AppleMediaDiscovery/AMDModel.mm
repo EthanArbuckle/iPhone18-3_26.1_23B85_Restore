@@ -1,22 +1,22 @@
 @interface AMDModel
-+ (id)deleteAllModelUrls:(id *)a3;
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4;
-+ (id)fetchAll:(id *)a3;
++ (id)deleteAllModelUrls:(id *)urls;
++ (id)deleteWithPredicate:(id)predicate error:(id *)error;
++ (id)fetchAll:(id *)all;
 + (id)getCurrentModelInfoByModelId;
-+ (id)getModelInfo:(id)a3 error:(id *)a4;
-+ (id)getModelPath:(id)a3 error:(id *)a4;
-+ (id)getModelPathForUsecase:(id)a3 inDomain:(id)a4 forModelId:(id)a5 withTreatmentId:(id)a6 error:(id *)a7;
-+ (void)deleteModels:(id)a3 error:(id *)a4;
-+ (void)saveModels:(id)a3 error:(id *)a4;
++ (id)getModelInfo:(id)info error:(id *)error;
++ (id)getModelPath:(id)path error:(id *)error;
++ (id)getModelPathForUsecase:(id)usecase inDomain:(id)domain forModelId:(id)id withTreatmentId:(id)treatmentId error:(id *)error;
++ (void)deleteModels:(id)models error:(id *)error;
++ (void)saveModels:(id)models error:(id *)error;
 @end
 
 @implementation AMDModel
 
-+ (id)fetchAll:(id *)a3
++ (id)fetchAll:(id *)all
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  allCopy = all;
   v23 = 0;
   v24 = &v23;
   v25 = 838860800;
@@ -32,23 +32,23 @@
   v21 = __Block_byref_object_dispose__9;
   v22 = 0;
   v8 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v8 getManagedObjectContext];
+  getManagedObjectContext = [v8 getManagedObjectContext];
   MEMORY[0x277D82BD8](v8);
-  v7 = v15;
+  v7 = getManagedObjectContext;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
   v12 = __21__AMDModel_fetchAll___block_invoke;
   v13 = &unk_278CB5AD0;
   v14[1] = &v16;
-  v14[0] = MEMORY[0x277D82BE0](v15);
+  v14[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[2] = &v23;
   [v7 performBlockAndWait:&v9];
   if (v24[5])
   {
     v6 = v24[5];
     v3 = v6;
-    *v30 = v6;
+    *allCopy = v6;
     v33 = 0;
   }
 
@@ -58,7 +58,7 @@
   }
 
   objc_storeStrong(v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v16, 8);
   objc_storeStrong(&v22, 0);
   _Block_object_dispose(&v23, 8);
@@ -91,13 +91,13 @@ void __21__AMDModel_fetchAll___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (void)deleteModels:(id)a3 error:(id *)a4
++ (void)deleteModels:(id)models error:(id *)error
 {
-  v26 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, models);
+  errorCopy = error;
   v17 = 0;
   v18 = &v17;
   v19 = 838860800;
@@ -106,15 +106,15 @@ void __21__AMDModel_fetchAll___block_invoke(void *a1)
   v22 = __Block_byref_object_dispose__9;
   v23 = 0;
   v16 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v16 getManagedObjectContext];
-  v6 = v15;
+  getManagedObjectContext = [v16 getManagedObjectContext];
+  v6 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __31__AMDModel_deleteModels_error___block_invoke;
   v12 = &unk_278CB5DB0;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14[2] = v26;
+  v14[2] = selfCopy;
   v14[1] = &v17;
   v14[0] = MEMORY[0x277D82BE0](v16);
   [v6 performBlockAndWait:&v8];
@@ -122,12 +122,12 @@ void __21__AMDModel_fetchAll___block_invoke(void *a1)
   {
     v5 = v18[5];
     v4 = v5;
-    *v24 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v16, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
@@ -203,11 +203,11 @@ LABEL_8:
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteAllModelUrls:(id *)a3
++ (id)deleteAllModelUrls:(id *)urls
 {
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  urlsCopy = urls;
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -223,14 +223,14 @@ LABEL_8:
   v22 = __Block_byref_object_dispose__9;
   v23 = 0;
   v16 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v16 getManagedObjectContext];
-  v7 = v15;
+  getManagedObjectContext = [v16 getManagedObjectContext];
+  v7 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __31__AMDModel_deleteAllModelUrls___block_invoke;
   v12 = &unk_278CB5AA8;
-  v13 = MEMORY[0x277D82BE0](v15);
+  v13 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[1] = &v24;
   v14[0] = MEMORY[0x277D82BE0](v16);
   v14[2] = &v17;
@@ -239,7 +239,7 @@ LABEL_8:
   {
     v6 = v25[5];
     v3 = v6;
-    *v31 = v6;
+    *urlsCopy = v6;
     v34 = 0;
   }
 
@@ -250,7 +250,7 @@ LABEL_8:
 
   objc_storeStrong(v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v16, 0);
   _Block_object_dispose(&v17, 8);
   objc_storeStrong(&v23, 0);
@@ -304,13 +304,13 @@ void __31__AMDModel_deleteAllModelUrls___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (void)saveModels:(id)a3 error:(id *)a4
++ (void)saveModels:(id)models error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, models);
+  errorCopy = error;
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -319,15 +319,15 @@ void __31__AMDModel_deleteAllModelUrls___block_invoke(void *a1)
   v23 = __Block_byref_object_dispose__9;
   v24 = 0;
   v17 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v16 = [v17 getManagedObjectContext];
-  v6 = v16;
+  getManagedObjectContext = [v17 getManagedObjectContext];
+  v6 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __29__AMDModel_saveModels_error___block_invoke;
   v12 = &unk_278CB5A08;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v16);
+  v14 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v15[0] = MEMORY[0x277D82BE0](v17);
   v15[1] = &v18;
   [v6 performBlockAndWait:&v8];
@@ -335,13 +335,13 @@ void __31__AMDModel_deleteAllModelUrls___block_invoke(void *a1)
   {
     v5 = v19[5];
     v4 = v5;
-    *v25 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v15, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v17, 0);
   _Block_object_dispose(&v18, 8);
   objc_storeStrong(&v24, 0);
@@ -423,13 +423,13 @@ void __29__AMDModel_saveModels_error___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)getModelInfo:(id)a3 error:(id *)a4
++ (id)getModelInfo:(id)info error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, info);
+  errorCopy = error;
   v26 = 0;
   v27 = &v26;
   v28 = 838860800;
@@ -445,16 +445,16 @@ void __29__AMDModel_saveModels_error___block_invoke(uint64_t a1)
   v24 = __Block_byref_object_dispose__9;
   v25 = 0;
   v9 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v9 getManagedObjectContext];
+  getManagedObjectContext = [v9 getManagedObjectContext];
   MEMORY[0x277D82BD8](v9);
-  v8 = v18;
+  v8 = getManagedObjectContext;
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
   v14 = __31__AMDModel_getModelInfo_error___block_invoke;
   v15 = &unk_278CB5A80;
   v16 = MEMORY[0x277D82BE0](location[0]);
-  v17[0] = MEMORY[0x277D82BE0](v18);
+  v17[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v26;
   v17[2] = &v19;
   [v8 performBlockAndWait:&v11];
@@ -462,7 +462,7 @@ void __29__AMDModel_saveModels_error___block_invoke(uint64_t a1)
   {
     v7 = v27[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -473,7 +473,7 @@ void __29__AMDModel_saveModels_error___block_invoke(uint64_t a1)
 
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v19, 8);
   objc_storeStrong(&v25, 0);
   _Block_object_dispose(&v26, 8);
@@ -517,16 +517,16 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   objc_storeStrong(v14, 0);
 }
 
-+ (id)getModelPath:(id)a3 error:(id *)a4
++ (id)getModelPath:(id)path error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v28 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
-  v25 = [v28 getModelInfo:location[0] error:a4];
-  if (*a4)
+  objc_storeStrong(location, path);
+  errorCopy = error;
+  v25 = [selfCopy getModelInfo:location[0] error:error];
+  if (*error)
   {
     v24 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v23 = 16;
@@ -535,11 +535,11 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
       log = v24;
       type = v23;
       v13 = location[0];
-      v16 = [*v26 localizedDescription];
-      v22 = MEMORY[0x277D82BE0](v16);
+      localizedDescription = [*errorCopy localizedDescription];
+      v22 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_2_8_64_8_64(v33, v13, v22);
       _os_log_error_impl(&dword_240CB9000, log, type, "Model: %@ could not be fetched. Error: %@", v33, 0x16u);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v22, 0);
     }
 
@@ -557,12 +557,12 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
     MEMORY[0x277D82BD8](v9);
     MEMORY[0x277D82BD8](v10);
     v11 = v18;
-    v12 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
     v4 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:?];
     v5 = v18;
     v18 = v4;
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](uRLQueryAllowedCharacterSet);
     v30 = @"path";
     v31 = v18;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
@@ -593,20 +593,20 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   return v6;
 }
 
-+ (id)getModelPathForUsecase:(id)a3 inDomain:(id)a4 forModelId:(id)a5 withTreatmentId:(id)a6 error:(id *)a7
++ (id)getModelPathForUsecase:(id)usecase inDomain:(id)domain forModelId:(id)id withTreatmentId:(id)treatmentId error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v53 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, usecase);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
+  objc_storeStrong(&v51, domain);
   v50 = 0;
-  objc_storeStrong(&v50, a5);
+  objc_storeStrong(&v50, id);
   v49 = 0;
-  objc_storeStrong(&v49, a6);
-  v48 = a7;
+  objc_storeStrong(&v49, treatmentId);
+  errorCopy = error;
   if (location[0] || v50)
   {
     if (v51)
@@ -616,14 +616,14 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
       {
         if (v50)
         {
-          v54 = [v53 getModelPath:v50 error:v48];
+          v54 = [selfCopy getModelPath:v50 error:errorCopy];
           v44 = 1;
         }
 
         else if (location[0])
         {
-          v33 = [AMDWorkflow getCurrentWorkflowForDomain:v40 andTreatmentId:v49 andUseCaseId:location[0] error:v48];
-          if (*v48)
+          v33 = [AMDWorkflow getCurrentWorkflowForDomain:v40 andTreatmentId:v49 andUseCaseId:location[0] error:errorCopy];
+          if (*errorCopy)
           {
             v32 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             v31 = OS_LOG_TYPE_ERROR;
@@ -633,11 +633,11 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
               v14 = v31;
               v11 = v51;
               v12 = location[0];
-              v15 = [*v48 localizedDescription];
-              v30 = MEMORY[0x277D82BE0](v15);
+              localizedDescription = [*errorCopy localizedDescription];
+              v30 = MEMORY[0x277D82BE0](localizedDescription);
               __os_log_helper_16_2_3_8_64_8_64_8_64(v56, v11, v12, v30);
               _os_log_error_impl(&dword_240CB9000, v13, v14, "Workflow fetch failed for domain: %@, usecase: %@ error: %@", v56, 0x20u);
-              MEMORY[0x277D82BD8](v15);
+              MEMORY[0x277D82BD8](localizedDescription);
               objc_storeStrong(&v30, 0);
             }
 
@@ -648,8 +648,8 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
 
           else
           {
-            v29 = [v33 second];
-            v7 = [v29 objectForKey:@"model_id"];
+            second = [v33 second];
+            v7 = [second objectForKey:@"model_id"];
             v8 = v50;
             v50 = v7;
             MEMORY[0x277D82BD8](v8);
@@ -665,9 +665,9 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
               objc_storeStrong(&oslog, 0);
             }
 
-            v54 = [v53 getModelPath:v50 error:v48];
+            v54 = [selfCopy getModelPath:v50 error:errorCopy];
             v44 = 1;
-            objc_storeStrong(&v29, 0);
+            objc_storeStrong(&second, 0);
           }
 
           objc_storeStrong(&v33, 0);
@@ -754,13 +754,13 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   return v9;
 }
 
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4
++ (id)deleteWithPredicate:(id)predicate error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicate);
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -776,15 +776,15 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   v25 = __Block_byref_object_dispose__9;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __38__AMDModel_deleteWithPredicate_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -793,7 +793,7 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -805,7 +805,7 @@ void __31__AMDModel_getModelInfo_error___block_invoke(void *a1)
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
@@ -868,11 +868,11 @@ void __38__AMDModel_deleteWithPredicate_error___block_invoke(void *a1)
 + (id)getCurrentModelInfoByModelId
 {
   v31 = *MEMORY[0x277D85DE8];
-  v27[2] = a1;
+  v27[2] = self;
   v27[1] = a2;
   v27[0] = 0;
   v25 = 0;
-  v17 = [a1 fetchAll:&v25];
+  v17 = [self fetchAll:&v25];
   objc_storeStrong(v27, v25);
   v26 = v17;
   if (v27[0])
@@ -883,11 +883,11 @@ void __38__AMDModel_deleteWithPredicate_error___block_invoke(void *a1)
     {
       log = v24;
       type = v23;
-      v16 = [v27[0] localizedDescription];
-      v22 = MEMORY[0x277D82BE0](v16);
+      localizedDescription = [v27[0] localizedDescription];
+      v22 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v30, v22);
       _os_log_error_impl(&dword_240CB9000, log, type, "Error fetching all model urls: '%@'", v30, 0xCu);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v22, 0);
     }
 

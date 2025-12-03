@@ -2,21 +2,21 @@
 - (BOOL)_isForcingPause;
 - (BOOL)isDrawableAvailable;
 - (CGSize)drawableSize;
-- (LAUIMetalRenderLoop)initWithPixelFormat:(unint64_t)a3 forDevice:(id)a4;
+- (LAUIMetalRenderLoop)initWithPixelFormat:(unint64_t)format forDevice:(id)device;
 - (id)currentDrawable;
 - (void)_didDraw;
 - (void)_didInvalidate;
 - (void)_willDraw;
 - (void)dealloc;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setDrawableSize:(CGSize)a3;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setDrawableSize:(CGSize)size;
 @end
 
 @implementation LAUIMetalRenderLoop
 
-- (LAUIMetalRenderLoop)initWithPixelFormat:(unint64_t)a3 forDevice:(id)a4
+- (LAUIMetalRenderLoop)initWithPixelFormat:(unint64_t)format forDevice:(id)device
 {
-  v8 = a4;
+  deviceCopy = device;
   {
     v18.receiver = self;
     v18.super_class = LAUIMetalRenderLoop;
@@ -24,8 +24,8 @@
     v11 = v10;
     if (v10)
     {
-      v10->_pixel_format = a3;
-      objc_storeStrong(&v10->_device, a4);
+      v10->_pixel_format = format;
+      objc_storeStrong(&v10->_device, device);
       *(v11 + 104) = default_color_space;
       v12 = objc_alloc_init(MEMORY[0x277CD9F10]);
       v13 = *(v11 + 72);
@@ -47,15 +47,15 @@
     }
 
     self = v11;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -97,9 +97,9 @@
   {
     if (self->super._drawing && !self->_current_drawable)
     {
-      v6 = [(CAMetalLayer *)self->_layer nextDrawable];
+      nextDrawable = [(CAMetalLayer *)self->_layer nextDrawable];
       current_drawable = self->_current_drawable;
-      self->_current_drawable = v6;
+      self->_current_drawable = nextDrawable;
     }
 
     v3 = self->_current_drawable;
@@ -108,14 +108,14 @@
   return v3;
 }
 
-- (void)setDrawableSize:(CGSize)a3
+- (void)setDrawableSize:(CGSize)size
 {
   p_drawable_size = &self->_drawable_size;
-  if (self->_drawable_size.width != a3.width || self->_drawable_size.height != a3.height)
+  if (self->_drawable_size.width != size.width || self->_drawable_size.height != size.height)
   {
-    p_drawable_size->width = a3.width;
-    self->_drawable_size.height = a3.height;
-    if (a3.width == *MEMORY[0x277CBF3A8] && a3.height == *(MEMORY[0x277CBF3A8] + 8))
+    p_drawable_size->width = size.width;
+    self->_drawable_size.height = size.height;
+    if (size.width == *MEMORY[0x277CBF3A8] && size.height == *(MEMORY[0x277CBF3A8] + 8))
     {
       self->_drawable_size_dirty = 0;
       [(CAMetalLayer *)self->_layer setDrawableSize:?];
@@ -132,12 +132,12 @@
   }
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  if (a3)
+  if (space)
   {
-    default_color_space = a3;
-    CGColorSpaceRetain(a3);
+    default_color_space = space;
+    CGColorSpaceRetain(space);
   }
 
   else

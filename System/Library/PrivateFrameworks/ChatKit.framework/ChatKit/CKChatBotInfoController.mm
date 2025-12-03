@@ -1,11 +1,11 @@
 @interface CKChatBotInfoController
-- (CKChatBotInfoController)initWithCoder:(id)a3;
-- (CKChatBotInfoController)initWithHandle:(id)a3 fallbackHandle:(id)a4;
-- (CKChatBotInfoController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKChatBotInfoController)initWithCoder:(id)coder;
+- (CKChatBotInfoController)initWithHandle:(id)handle fallbackHandle:(id)fallbackHandle;
+- (CKChatBotInfoController)initWithNibName:(id)name bundle:(id)bundle;
 - (IMHandle)handle;
 - (NSString)fallbackHandle;
-- (void)setFallbackHandle:(id)a3;
-- (void)setHandle:(id)a3;
+- (void)setFallbackHandle:(id)handle;
+- (void)setHandle:(id)handle;
 - (void)viewDidLoad;
 @end
 
@@ -18,13 +18,13 @@
   return *(self + v3);
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
   v5 = OBJC_IVAR___CKChatBotInfoController_handle;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = handle;
+  handleCopy = handle;
 }
 
 - (NSString)fallbackHandle
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (void)setFallbackHandle:(id)a3
+- (void)setFallbackHandle:(id)handle
 {
   v4 = sub_190D56F10();
   v6 = v5;
@@ -46,20 +46,20 @@
   v7[1] = v6;
 }
 
-- (CKChatBotInfoController)initWithHandle:(id)a3 fallbackHandle:(id)a4
+- (CKChatBotInfoController)initWithHandle:(id)handle fallbackHandle:(id)fallbackHandle
 {
   v6 = sub_190D56F10();
-  *(self + OBJC_IVAR___CKChatBotInfoController_handle) = a3;
+  *(self + OBJC_IVAR___CKChatBotInfoController_handle) = handle;
   v7 = (self + OBJC_IVAR___CKChatBotInfoController_fallbackHandle);
   *v7 = v6;
   v7[1] = v8;
   v11.receiver = self;
   v11.super_class = type metadata accessor for ChatBotInfoController();
-  v9 = a3;
+  handleCopy = handle;
   return [(CKChatBotInfoController *)&v11 initWithNibName:0 bundle:0];
 }
 
-- (CKChatBotInfoController)initWithCoder:(id)a3
+- (CKChatBotInfoController)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);
@@ -68,11 +68,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908B47A4();
 }
 
-- (CKChatBotInfoController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKChatBotInfoController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

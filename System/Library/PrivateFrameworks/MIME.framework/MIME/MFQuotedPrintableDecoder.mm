@@ -1,13 +1,13 @@
 @interface MFQuotedPrintableDecoder
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation MFQuotedPrintableDecoder
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v3 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v3 = MEMORY[0x1EEE9AC00](self, a2, data);
   v31 = *MEMORY[0x1E69E9840];
   v23 = v4;
   v24 = [v23 length];
@@ -22,13 +22,13 @@
 
   if (v24)
   {
-    v5 = [v23 bytes];
+    bytes = [v23 bytes];
     if (v24 >= 1)
     {
-      v6 = v5;
+      v6 = bytes;
       v7 = 0;
-      v8 = v5 + v24;
-      v9 = v5 + v24 - 1;
+      v8 = bytes + v24;
+      v9 = bytes + v24 - 1;
       while (1)
       {
         if (*(v3 + 33) == 1)

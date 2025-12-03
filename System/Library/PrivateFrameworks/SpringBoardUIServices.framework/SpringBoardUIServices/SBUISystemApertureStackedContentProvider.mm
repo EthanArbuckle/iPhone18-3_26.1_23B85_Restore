@@ -1,20 +1,20 @@
 @interface SBUISystemApertureStackedContentProvider
 - (SBUISystemApertureContentViewContaining)contentContainer;
-- (SBUISystemApertureStackedContentProvider)initWithContentViewProviders:(id)a3;
+- (SBUISystemApertureStackedContentProvider)initWithContentViewProviders:(id)providers;
 - (double)contentSpacing;
 - (int64_t)contentAxis;
 - (int64_t)contentDistribution;
-- (void)setContentAxis:(int64_t)a3;
-- (void)setContentDistribution:(int64_t)a3;
-- (void)setContentSpacing:(double)a3;
+- (void)setContentAxis:(int64_t)axis;
+- (void)setContentDistribution:(int64_t)distribution;
+- (void)setContentSpacing:(double)spacing;
 @end
 
 @implementation SBUISystemApertureStackedContentProvider
 
-- (SBUISystemApertureStackedContentProvider)initWithContentViewProviders:(id)a3
+- (SBUISystemApertureStackedContentProvider)initWithContentViewProviders:(id)providers
 {
-  v5 = a3;
-  if (!v5)
+  providersCopy = providers;
+  if (!providersCopy)
   {
     [(SBUISystemApertureStackedContentProvider *)a2 initWithContentViewProviders:?];
   }
@@ -24,7 +24,7 @@
   v6 = [(SBUISystemApertureStackedContentProvider *)&v11 init];
   if (v6)
   {
-    v7 = [v5 bs_compactMap:&__block_literal_global_32];
+    v7 = [providersCopy bs_compactMap:&__block_literal_global_32];
     v8 = [[_SBUISystemApertureStackView alloc] initWithArrangedSubviews:v7];
     [(_SBUISystemApertureStackView *)v8 setDistribution:1];
     [(_SBUISystemApertureStackView *)v8 setAlignment:0];
@@ -39,45 +39,45 @@
 
 - (int64_t)contentDistribution
 {
-  v2 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  v3 = [v2 distribution];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  distribution = [_providedView distribution];
 
-  return v3;
+  return distribution;
 }
 
-- (void)setContentDistribution:(int64_t)a3
+- (void)setContentDistribution:(int64_t)distribution
 {
-  v4 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  [v4 setDistribution:a3];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  [_providedView setDistribution:distribution];
 }
 
 - (int64_t)contentAxis
 {
-  v2 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  v3 = [v2 axis];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  axis = [_providedView axis];
 
-  return v3;
+  return axis;
 }
 
-- (void)setContentAxis:(int64_t)a3
+- (void)setContentAxis:(int64_t)axis
 {
-  v4 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  [v4 setAxis:a3];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  [_providedView setAxis:axis];
 }
 
 - (double)contentSpacing
 {
-  v2 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  [v2 spacing];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  [_providedView spacing];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setContentSpacing:(double)a3
+- (void)setContentSpacing:(double)spacing
 {
-  v4 = [(SBUISystemApertureStackedContentProvider *)self _providedView];
-  [v4 setSpacing:a3];
+  _providedView = [(SBUISystemApertureStackedContentProvider *)self _providedView];
+  [_providedView setSpacing:spacing];
 }
 
 - (SBUISystemApertureContentViewContaining)contentContainer

@@ -1,21 +1,21 @@
 @interface PDImageReconstruct
-- (BOOL)pushFrames:(id)a3;
+- (BOOL)pushFrames:(id)frames;
 - (PDImageReconstruct)init;
-- (__CVBuffer)createImageForBank:(unint64_t)a3 pixelFormat:(unsigned int)a4 normalizeByExposure:(BOOL)a5;
+- (__CVBuffer)createImageForBank:(unint64_t)bank pixelFormat:(unsigned int)format normalizeByExposure:(BOOL)exposure;
 - (void)reset;
 @end
 
 @implementation PDImageReconstruct
 
-- (__CVBuffer)createImageForBank:(unint64_t)a3 pixelFormat:(unsigned int)a4 normalizeByExposure:(BOOL)a5
+- (__CVBuffer)createImageForBank:(unint64_t)bank pixelFormat:(unsigned int)format normalizeByExposure:(BOOL)exposure
 {
-  v5 = a5;
-  v7 = a3;
-  if (a3 >= 8)
+  exposureCopy = exposure;
+  bankCopy = bank;
+  if (bank >= 8)
   {
-    if (a3 == -1)
+    if (bank == -1)
     {
-      v7 = 0;
+      bankCopy = 0;
       v9 = 1;
       v11 = 8;
       v10 = 108;
@@ -23,14 +23,14 @@
 
     else
     {
-      if (a3 != -2)
+      if (bank != -2)
       {
-        peridot_depth_log("Requested to generate an image for an invalid bank: %lu", a3);
+        peridot_depth_log("Requested to generate an image for an invalid bank: %lu", bank);
         return 0;
       }
 
       v9 = 0;
-      v7 = 0;
+      bankCopy = 0;
       v11 = 8;
       v10 = 864;
     }
@@ -43,9 +43,9 @@
     v11 = 1;
   }
 
-  if (a4 != 875704422 && a4 != 1278226534)
+  if (format != 875704422 && format != 1278226534)
   {
-    PixelBufferUtils::pixelFormatAsString(*&a4, pixelBufferOut);
+    PixelBufferUtils::pixelFormatAsString(*&format, pixelBufferOut);
     if (v69 >= 0)
     {
       v33 = pixelBufferOut;
@@ -79,7 +79,7 @@
   }
 
   LODWORD(v14) = 1.0;
-  if (v5)
+  if (exposureCopy)
   {
     LODWORD(v14) = self->_exposure;
     v14 = 1.0 / *&v14;
@@ -91,7 +91,7 @@
   BaseAddress = CVPixelBufferGetBaseAddress(v15);
   BytesPerRow = CVPixelBufferGetBytesPerRow(v15);
   bzero(BaseAddress, BytesPerRow * v10);
-  if (v7 < v11)
+  if (bankCopy < v11)
   {
     bankImages = self->_bankImages;
     v19 = vdupq_lane_s32(v67, 0);
@@ -99,7 +99,7 @@
     {
       do
       {
-        v20 = bankImages[v7];
+        v20 = bankImages[bankCopy];
         v21 = BaseAddress + 10;
         v22 = 108;
         do
@@ -141,18 +141,18 @@
         }
 
         while (v22);
-        ++v7;
+        ++bankCopy;
       }
 
-      while (v7 != v11);
+      while (bankCopy != v11);
     }
 
     else
     {
-      v35 = &BaseAddress[10] + 108 * BytesPerRow * v7;
+      v35 = &BaseAddress[10] + 108 * BytesPerRow * bankCopy;
       do
       {
-        v36 = bankImages[v7];
+        v36 = bankImages[bankCopy];
         v37 = v35;
         v38 = 108;
         do
@@ -194,22 +194,22 @@
         }
 
         while (v38);
-        ++v7;
+        ++bankCopy;
         v35 += 108 * BytesPerRow;
       }
 
-      while (v7 != v11);
+      while (bankCopy != v11);
     }
   }
 
-  if (a4 == 1278226534)
+  if (format == 1278226534)
   {
     v34 = v15;
   }
 
   else
   {
-    if (a4 != 875704422)
+    if (format != 875704422)
     {
       __assert_rtn("[PDImageReconstruct createImageForBank:pixelFormat:normalizeByExposure:]", "PDImageReconstruct.mm", 253, "false");
     }
@@ -314,12 +314,12 @@
   return v34;
 }
 
-- (BOOL)pushFrames:(id)a3
+- (BOOL)pushFrames:(id)frames
 {
-  v3 = (MEMORY[0x28223BE20])(self, a2, a3);
+  v3 = (MEMORY[0x28223BE20])(self, a2, frames);
   v50 = *MEMORY[0x277D85DE8];
   v5 = v4;
-  v37 = [v5 bytes];
+  bytes = [v5 bytes];
   v6 = [v5 length];
   v49 = 0;
   v7 = 1;
@@ -331,7 +331,7 @@
     do
     {
       v45 = 0;
-      if ((PeridotSuperFrame::loadFromBuffer(v46, v37, v6, &v45) & 1) == 0)
+      if ((PeridotSuperFrame::loadFromBuffer(v46, bytes, v6, &v45) & 1) == 0)
       {
         v7 = 0;
         goto LABEL_31;
@@ -340,7 +340,7 @@
       v8 = v6;
       v9 = 0;
       v36 = v8 - v45;
-      v37 += v45;
+      bytes += v45;
       v41 = v46[0];
       v10 = v47;
       v44 = v47 - 8032;

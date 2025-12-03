@@ -1,14 +1,14 @@
 @interface ListOfLanguagesController
-- (_TtC20SiriMessagesSettings25ListOfLanguagesController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20SiriMessagesSettings25ListOfLanguagesController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ListOfLanguagesController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1795C();
 
   if (v3)
@@ -24,7 +24,7 @@
   return v4.super.isa;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21CC4();
   v7 = *(v6 - 8);
@@ -32,21 +32,21 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB4();
-  v11 = a3;
-  v12 = self;
-  sub_18E88(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_18E88(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (_TtC20SiriMessagesSettings25ListOfLanguagesController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20SiriMessagesSettings25ListOfLanguagesController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21EF4();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   return sub_19340();
 }
 

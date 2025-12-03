@@ -1,11 +1,11 @@
 @interface _DASPluginPrediction
-- (_DASPluginPrediction)initWithDuration:(double)a3 withConfidence:(double)a4;
+- (_DASPluginPrediction)initWithDuration:(double)duration withConfidence:(double)confidence;
 - (unint64_t)getpredictionWindowID;
 @end
 
 @implementation _DASPluginPrediction
 
-- (_DASPluginPrediction)initWithDuration:(double)a3 withConfidence:(double)a4
+- (_DASPluginPrediction)initWithDuration:(double)duration withConfidence:(double)confidence
 {
   v11.receiver = self;
   v11.super_class = _DASPluginPrediction;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_duration = a3;
-    v6->_confidence = a4;
+    v6->_duration = duration;
+    v6->_confidence = confidence;
     v8 = +[NSDate now];
     predictionDate = v7->_predictionDate;
     v7->_predictionDate = v8;
@@ -27,8 +27,8 @@
 
 - (unint64_t)getpredictionWindowID
 {
-  v2 = [(_DASPluginPrediction *)self predictionDate];
-  v3 = [v2 hash];
+  predictionDate = [(_DASPluginPrediction *)self predictionDate];
+  v3 = [predictionDate hash];
 
   return v3 & 0x7FFFFFFF;
 }

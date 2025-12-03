@@ -3,44 +3,44 @@
 - (MSDDemoPeerResponder)init;
 - (id)_constructMessageHandlerTable;
 - (id)_getDeviceAddresses;
-- (id)_handleAdjustVolumeRequestMessage:(id)a3;
-- (id)_handleChangeWiFiSettingsRequestMessage:(id)a3;
-- (id)_handleEnableMuseBuddyReset:(id)a3;
-- (id)_handleEnumerateScriptsRequestMessage:(id)a3;
-- (id)_handleFetchDeviceInfoRequestMessage:(id)a3;
-- (id)_handleGetAXSettingsRequestMessage:(id)a3;
-- (id)_handleGetEnableMuseBuddyResetValue:(id)a3;
-- (id)_handleGetIconImagesOfVisibleAppsRequestMessage:(id)a3;
-- (id)_handleInitiateAirPlayAssistedRequestMessage:(id)a3;
-- (id)_handleInitiateIPDResetRequestMessage:(id)a3;
-- (id)_handleInvokeInputRecoveryRequestMessage:(id)a3;
-- (id)_handleLaunchAppRequestMessage:(id)a3;
-- (id)_handleLaunchScriptRequestMessage:(id)a3;
-- (id)_handleListAppsRequestMessage:(id)a3;
-- (id)_handleListAvailableEnvironmentsRequestMessage:(id)a3;
-- (id)_handleLoadLSMeasurementsRequestMessage:(id)a3;
-- (id)_handleObtainGKMetricsRequestMessage:(id)a3;
-- (id)_handleObtainGKResultsRequestMessage:(id)a3;
-- (id)_handleQueryIPDResetStageRequestMessage:(id)a3;
-- (id)_handleReadIPDStatusRequestMessage:(id)a3;
-- (id)_handleResetToPassThroughRequestMessage:(id)a3;
-- (id)_handleRetrieveHSCoachingSuggestionRequestMessage:(id)a3;
-- (id)_handleSetAXSettingsRequestMessage:(id)a3;
-- (id)_handleSetActiveEnvironmentRequestMessage:(id)a3;
-- (id)_handleSetImmersionLevelRequestMessage:(id)a3;
-- (id)_handleSetLanguageAndRegion:(id)a3;
-- (id)_handleSkipAutoIPDAdjustmentRequestMessage:(id)a3;
-- (id)_handleSubscribeDeviceInfoRequestMessage:(id)a3;
-- (id)_handleTerminateAppRequestMessage:(id)a3;
-- (id)_handleTriggerSnapshotRevertRequestMessage:(id)a3;
-- (id)_handleWipeCustomerAssetsRequestMessage:(id)a3;
-- (id)_prepareDeviceInfoDictionaryForRequest:(id)a3;
-- (id)didReceiveRequestMessage:(id)a3 fromDevice:(id)a4;
+- (id)_handleAdjustVolumeRequestMessage:(id)message;
+- (id)_handleChangeWiFiSettingsRequestMessage:(id)message;
+- (id)_handleEnableMuseBuddyReset:(id)reset;
+- (id)_handleEnumerateScriptsRequestMessage:(id)message;
+- (id)_handleFetchDeviceInfoRequestMessage:(id)message;
+- (id)_handleGetAXSettingsRequestMessage:(id)message;
+- (id)_handleGetEnableMuseBuddyResetValue:(id)value;
+- (id)_handleGetIconImagesOfVisibleAppsRequestMessage:(id)message;
+- (id)_handleInitiateAirPlayAssistedRequestMessage:(id)message;
+- (id)_handleInitiateIPDResetRequestMessage:(id)message;
+- (id)_handleInvokeInputRecoveryRequestMessage:(id)message;
+- (id)_handleLaunchAppRequestMessage:(id)message;
+- (id)_handleLaunchScriptRequestMessage:(id)message;
+- (id)_handleListAppsRequestMessage:(id)message;
+- (id)_handleListAvailableEnvironmentsRequestMessage:(id)message;
+- (id)_handleLoadLSMeasurementsRequestMessage:(id)message;
+- (id)_handleObtainGKMetricsRequestMessage:(id)message;
+- (id)_handleObtainGKResultsRequestMessage:(id)message;
+- (id)_handleQueryIPDResetStageRequestMessage:(id)message;
+- (id)_handleReadIPDStatusRequestMessage:(id)message;
+- (id)_handleResetToPassThroughRequestMessage:(id)message;
+- (id)_handleRetrieveHSCoachingSuggestionRequestMessage:(id)message;
+- (id)_handleSetAXSettingsRequestMessage:(id)message;
+- (id)_handleSetActiveEnvironmentRequestMessage:(id)message;
+- (id)_handleSetImmersionLevelRequestMessage:(id)message;
+- (id)_handleSetLanguageAndRegion:(id)region;
+- (id)_handleSkipAutoIPDAdjustmentRequestMessage:(id)message;
+- (id)_handleSubscribeDeviceInfoRequestMessage:(id)message;
+- (id)_handleTerminateAppRequestMessage:(id)message;
+- (id)_handleTriggerSnapshotRevertRequestMessage:(id)message;
+- (id)_handleWipeCustomerAssetsRequestMessage:(id)message;
+- (id)_prepareDeviceInfoDictionaryForRequest:(id)request;
+- (id)didReceiveRequestMessage:(id)message fromDevice:(id)device;
 - (void)_uploadPairingPassword;
 - (void)advertiserDidHidePairingPassword;
-- (void)advertiserDidShowPairingPassword:(id)a3;
-- (void)advertiserDidUpdateLocalDevicePublicIDFrom:(id)a3 to:(id)a4;
-- (void)didReceiveEventMessage:(id)a3 fromDevice:(id)a4;
+- (void)advertiserDidShowPairingPassword:(id)password;
+- (void)advertiserDidUpdateLocalDevicePublicIDFrom:(id)from to:(id)to;
+- (void)didReceiveEventMessage:(id)message fromDevice:(id)device;
 - (void)start;
 - (void)stop;
 @end
@@ -67,8 +67,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MSDDemoPeerResponder *)v2 _constructMessageHandlerTable];
-    [(MSDDemoPeerResponder *)v3 setMessageHandlerTable:v4];
+    _constructMessageHandlerTable = [(MSDDemoPeerResponder *)v2 _constructMessageHandlerTable];
+    [(MSDDemoPeerResponder *)v3 setMessageHandlerTable:_constructMessageHandlerTable];
 
     v5 = [NSMutableArray arrayWithCapacity:0];
     [(MSDDemoPeerResponder *)v3 setSubscribers:v5];
@@ -79,8 +79,8 @@
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,34 +88,34 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerResponder: Starting responder...", buf, 2u);
   }
 
-  v4 = [(MSDDemoPeerResponder *)v2 rpDeviceAdvertiser];
-  v5 = v4 == 0;
+  rpDeviceAdvertiser = [(MSDDemoPeerResponder *)selfCopy rpDeviceAdvertiser];
+  v5 = rpDeviceAdvertiser == 0;
 
   if (v5)
   {
-    v6 = [[MSDRapportDeviceAdvertiser alloc] initWithObserver:v2];
-    [(MSDDemoPeerResponder *)v2 setRpDeviceAdvertiser:v6];
+    v6 = [[MSDRapportDeviceAdvertiser alloc] initWithObserver:selfCopy];
+    [(MSDDemoPeerResponder *)selfCopy setRpDeviceAdvertiser:v6];
 
-    v7 = [(MSDDemoPeerResponder *)v2 rpDeviceAdvertiser];
-    [v7 activate];
+    rpDeviceAdvertiser2 = [(MSDDemoPeerResponder *)selfCopy rpDeviceAdvertiser];
+    [rpDeviceAdvertiser2 activate];
   }
 
-  v8 = [(MSDDemoPeerResponder *)v2 rpMessageHandler];
-  v9 = v8 == 0;
+  rpMessageHandler = [(MSDDemoPeerResponder *)selfCopy rpMessageHandler];
+  v9 = rpMessageHandler == 0;
 
   if (v9)
   {
-    v10 = [(MSDDemoPeerResponder *)v2 messageHandlerTable];
-    v11 = [v10 allKeys];
+    messageHandlerTable = [(MSDDemoPeerResponder *)selfCopy messageHandlerTable];
+    allKeys = [messageHandlerTable allKeys];
 
-    v12 = [[MSDRapportMessageHandler alloc] initWithObserver:v2];
-    [(MSDDemoPeerResponder *)v2 setRpMessageHandler:v12];
+    v12 = [[MSDRapportMessageHandler alloc] initWithObserver:selfCopy];
+    [(MSDDemoPeerResponder *)selfCopy setRpMessageHandler:v12];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = v11;
+    v13 = allKeys;
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v14)
     {
@@ -131,8 +131,8 @@
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
-          v18 = [(MSDDemoPeerResponder *)v2 rpMessageHandler];
-          [v18 listenForIncomingRequestMessageOfID:v17];
+          rpMessageHandler2 = [(MSDDemoPeerResponder *)selfCopy rpMessageHandler];
+          [rpMessageHandler2 listenForIncomingRequestMessageOfID:v17];
 
           v16 = v16 + 1;
         }
@@ -145,13 +145,13 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stop
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,24 +159,24 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerResponder: Stopping responder...", v7, 2u);
   }
 
-  v4 = [(MSDDemoPeerResponder *)v2 rpDeviceAdvertiser];
+  rpDeviceAdvertiser = [(MSDDemoPeerResponder *)selfCopy rpDeviceAdvertiser];
 
-  if (v4)
+  if (rpDeviceAdvertiser)
   {
-    v5 = [(MSDDemoPeerResponder *)v2 rpDeviceAdvertiser];
-    [v5 deactivate];
+    rpDeviceAdvertiser2 = [(MSDDemoPeerResponder *)selfCopy rpDeviceAdvertiser];
+    [rpDeviceAdvertiser2 deactivate];
 
-    [(MSDDemoPeerResponder *)v2 setRpDeviceAdvertiser:0];
+    [(MSDDemoPeerResponder *)selfCopy setRpDeviceAdvertiser:0];
   }
 
-  v6 = [(MSDDemoPeerResponder *)v2 rpMessageHandler];
+  rpMessageHandler = [(MSDDemoPeerResponder *)selfCopy rpMessageHandler];
 
-  if (v6)
+  if (rpMessageHandler)
   {
-    [(MSDDemoPeerResponder *)v2 setRpMessageHandler:0];
+    [(MSDDemoPeerResponder *)selfCopy setRpMessageHandler:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_constructMessageHandlerTable
@@ -283,11 +283,11 @@
 {
   v6 = objc_alloc_init(MSDKVStoreRequest);
   [(MSDKVStoreRequest *)v6 setIsPost:1];
-  v3 = [(MSDDemoPeerResponder *)self devicePublicID];
-  [(MSDKVStoreRequest *)v6 setKey:v3];
+  devicePublicID = [(MSDDemoPeerResponder *)self devicePublicID];
+  [(MSDKVStoreRequest *)v6 setKey:devicePublicID];
 
-  v4 = [(MSDDemoPeerResponder *)self pairingPassword];
-  [(MSDKVStoreRequest *)v6 setValue:v4];
+  pairingPassword = [(MSDDemoPeerResponder *)self pairingPassword];
+  [(MSDKVStoreRequest *)v6 setValue:pairingPassword];
 
   [(MSDServerRequest *)v6 setCompletion:&stru_10016C4F8];
   v5 = +[MSDServerRequestHandler sharedInstance];
@@ -352,22 +352,22 @@
   return v11;
 }
 
-- (id)_prepareDeviceInfoDictionaryForRequest:(id)a3
+- (id)_prepareDeviceInfoDictionaryForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = +[MSDTargetDevice sharedInstance];
   v6 = +[MSDAudioController sharedInstance];
   v7 = +[MSDWiFiHelper sharedInstance];
   v8 = +[MSDAccountManager sharedInstance];
   v45 = +[MSDAirPlayAssistedSender sharedInstance];
-  v44 = [v3 extractProtocolVersion];
+  extractProtocolVersion = [requestCopy extractProtocolVersion];
 
-  v9 = [v5 name];
-  v41 = v9;
-  if (v9)
+  name = [v5 name];
+  v41 = name;
+  if (name)
   {
-    [v4 setObject:v9 forKeyedSubscript:kMSDKPeerDemoDevicePropertyDeviceName];
+    [v4 setObject:name forKeyedSubscript:kMSDKPeerDemoDevicePropertyDeviceName];
   }
 
   else
@@ -376,11 +376,11 @@
     [v4 setObject:v10 forKeyedSubscript:kMSDKPeerDemoDevicePropertyDeviceName];
   }
 
-  v11 = [v5 productType];
-  v40 = v11;
-  if (v11)
+  productType = [v5 productType];
+  v40 = productType;
+  if (productType)
   {
-    [v4 setObject:v11 forKeyedSubscript:kMSDKPeerDemoDevicePropertyProductType];
+    [v4 setObject:productType forKeyedSubscript:kMSDKPeerDemoDevicePropertyProductType];
   }
 
   else
@@ -389,10 +389,10 @@
     [v4 setObject:v12 forKeyedSubscript:kMSDKPeerDemoDevicePropertyProductType];
   }
 
-  v13 = [v5 serialNumber];
-  if (v13)
+  serialNumber = [v5 serialNumber];
+  if (serialNumber)
   {
-    [v4 setObject:v13 forKeyedSubscript:kMSDKPeerDemoDevicePropertySerialNumber];
+    [v4 setObject:serialNumber forKeyedSubscript:kMSDKPeerDemoDevicePropertySerialNumber];
   }
 
   else
@@ -401,10 +401,10 @@
     [v4 setObject:v14 forKeyedSubscript:kMSDKPeerDemoDevicePropertySerialNumber];
   }
 
-  v15 = [v5 OSVersion];
-  if (v15)
+  oSVersion = [v5 OSVersion];
+  if (oSVersion)
   {
-    [v4 setObject:v15 forKeyedSubscript:kMSDKPeerDemoDevicePropertyOSVersion];
+    [v4 setObject:oSVersion forKeyedSubscript:kMSDKPeerDemoDevicePropertyOSVersion];
   }
 
   else
@@ -416,10 +416,10 @@
   v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 batteryCapacity]);
   [v4 setObject:v17 forKeyedSubscript:kMSDKPeerDemoDevicePropertyBatteryCapacity];
 
-  v18 = [v7 getCurrentWiFiSsid];
-  if (v18)
+  getCurrentWiFiSsid = [v7 getCurrentWiFiSsid];
+  if (getCurrentWiFiSsid)
   {
-    [v4 setObject:v18 forKeyedSubscript:kMSDKPeerDemoDevicePropertyWiFiNetworkName];
+    [v4 setObject:getCurrentWiFiSsid forKeyedSubscript:kMSDKPeerDemoDevicePropertyWiFiNetworkName];
   }
 
   else
@@ -432,8 +432,8 @@
   [v4 setObject:v20 forKeyedSubscript:kMSDKPeerDemoDevicePropertyWiFiSignalStrength];
 
   v42 = v8;
-  v21 = [v8 existingAccounts];
-  v22 = [v21 objectForKeyedSubscript:@"iCloud"];
+  existingAccounts = [v8 existingAccounts];
+  v22 = [existingAccounts objectForKeyedSubscript:@"iCloud"];
 
   if (v22)
   {
@@ -472,12 +472,12 @@
   v30 = [NSNumber numberWithBool:[(MSDDemoPeerResponder *)self _queryThermalMitigationStatus]];
   [v4 setObject:v30 forKeyedSubscript:kMSDKPeerDemoDevicePropertyThermalMitigationNeeded];
 
-  if (v44 >= 2)
+  if (extractProtocolVersion >= 2)
   {
-    v31 = [(MSDDemoPeerResponder *)self _getDeviceAddresses];
-    if (v31)
+    _getDeviceAddresses = [(MSDDemoPeerResponder *)self _getDeviceAddresses];
+    if (_getDeviceAddresses)
     {
-      [v4 setObject:v31 forKeyedSubscript:kMSDKPeerDemoDevicePropertyIpAddresses];
+      [v4 setObject:_getDeviceAddresses forKeyedSubscript:kMSDKPeerDemoDevicePropertyIpAddresses];
     }
 
     else
@@ -489,7 +489,7 @@
     v33 = [NSNumber numberWithBool:BYSetupAssistantNeedsToRun()];
     [v4 setObject:v33 forKeyedSubscript:kMSDKPeerDemoDevicePropertyBuddyInProgress];
 
-    if (v44 != 2)
+    if (extractProtocolVersion != 2)
     {
       v34 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 batteryCharging]);
       [v4 setObject:v34 forKeyedSubscript:kMSDKPeerDemoDevicePropertyBatteryCharging];
@@ -510,56 +510,56 @@
   return v37;
 }
 
-- (id)_handleSubscribeDeviceInfoRequestMessage:(id)a3
+- (id)_handleSubscribeDeviceInfoRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [NSMutableDictionary dictionaryWithCapacity:0];
   v6 = [MSDRapportDevice alloc];
-  v7 = [v4 options];
-  v8 = [(MSDRapportDevice *)v6 initWithIncomingOptions:v7];
+  options = [messageCopy options];
+  v8 = [(MSDRapportDevice *)v6 initWithIncomingOptions:options];
 
-  v9 = [(MSDDemoPeerResponder *)self subscribers];
-  v10 = [v9 containsObject:v8];
+  subscribers = [(MSDDemoPeerResponder *)self subscribers];
+  v10 = [subscribers containsObject:v8];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MSDDemoPeerResponder *)self subscribers];
-    [v11 addObject:v8];
+    subscribers2 = [(MSDDemoPeerResponder *)self subscribers];
+    [subscribers2 addObject:v8];
   }
 
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Result"];
   v12 = [MSDRapportMessage alloc];
-  v13 = [v4 identifier];
-  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:v13 andPayload:v5 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:identifier andPayload:v5 usingOptions:0];
 
   return v14;
 }
 
-- (id)_handleFetchDeviceInfoRequestMessage:(id)a3
+- (id)_handleFetchDeviceInfoRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v6 = [(MSDDemoPeerResponder *)self _prepareDeviceInfoDictionaryForRequest:v4];
+  v6 = [(MSDDemoPeerResponder *)self _prepareDeviceInfoDictionaryForRequest:messageCopy];
   [v5 setObject:v6 forKeyedSubscript:@"DeviceInfo"];
 
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Result"];
   v7 = [MSDRapportMessage alloc];
-  v8 = [v4 identifier];
+  identifier = [messageCopy identifier];
 
-  v9 = [(MSDRapportMessage *)v7 initWithIdentifier:v8 andPayload:v5 usingOptions:0];
+  v9 = [(MSDRapportMessage *)v7 initWithIdentifier:identifier andPayload:v5 usingOptions:0];
 
   return v9;
 }
 
-- (id)_handleInitiateAirPlayAssistedRequestMessage:(id)a3
+- (id)_handleInitiateAirPlayAssistedRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[MSDAirPlayAssistedSender sharedInstance];
-  v5 = [v3 payload];
-  v6 = [v5 objectForKeyedSubscript:@"APParameters"];
+  payload = [messageCopy payload];
+  v6 = [payload objectForKeyedSubscript:@"APParameters"];
 
-  v7 = [v3 payload];
-  v8 = [v7 objectForKeyedSubscript:@"APDiscoveryMode"];
+  payload2 = [messageCopy payload];
+  v8 = [payload2 objectForKeyedSubscript:@"APDiscoveryMode"];
 
   v9 = [NSMutableDictionary dictionaryWithCapacity:0];
   v10 = [v4 activateSenderUsingParametersData:v6 discoveryMode:{objc_msgSend(v8, "unsignedIntegerValue")}];
@@ -578,18 +578,18 @@
 
   [v9 setObject:v12 forKeyedSubscript:v11];
   v13 = [MSDRapportMessage alloc];
-  v14 = [v3 identifier];
-  v15 = [(MSDRapportMessage *)v13 initWithIdentifier:v14 andPayload:v9 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v15 = [(MSDRapportMessage *)v13 initWithIdentifier:identifier andPayload:v9 usingOptions:0];
 
   return v15;
 }
 
-- (id)_handleTriggerSnapshotRevertRequestMessage:(id)a3
+- (id)_handleTriggerSnapshotRevertRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[MSDTargetDevice sharedInstance];
-  v5 = [v3 payload];
-  v6 = [v5 objectForKeyedSubscript:@"RebootAfterRevert"];
+  payload = [messageCopy payload];
+  v6 = [payload objectForKeyedSubscript:@"RebootAfterRevert"];
 
   v7 = [NSMutableDictionary dictionaryWithCapacity:0];
   if ([v4 canRevertSnapshot])
@@ -613,15 +613,15 @@
   }
 
   v10 = [MSDRapportMessage alloc];
-  v11 = [v3 identifier];
-  v12 = [(MSDRapportMessage *)v10 initWithIdentifier:v11 andPayload:v7 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v12 = [(MSDRapportMessage *)v10 initWithIdentifier:identifier andPayload:v7 usingOptions:0];
 
   return v12;
 }
 
-- (id)_handleInvokeInputRecoveryRequestMessage:(id)a3
+- (id)_handleInvokeInputRecoveryRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -632,29 +632,29 @@
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleAdjustVolumeRequestMessage:(id)a3
+- (id)_handleAdjustVolumeRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[MSDAudioController sharedInstance];
-  v5 = [v3 payload];
-  v6 = [v5 objectForKeyedSubscript:@"VolumeValue"];
+  payload = [messageCopy payload];
+  v6 = [payload objectForKeyedSubscript:@"VolumeValue"];
 
-  v7 = [v3 payload];
-  v8 = [v7 objectForKeyedSubscript:@"VolumeCategory"];
+  payload2 = [messageCopy payload];
+  v8 = [payload2 objectForKeyedSubscript:@"VolumeCategory"];
 
   v9 = [NSMutableDictionary dictionaryWithCapacity:0];
   [v6 floatValue];
   v11 = v10;
-  v12 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   LODWORD(v13) = v11;
-  v14 = [v4 setVolumeTo:v12 forCategory:v13];
+  v14 = [v4 setVolumeTo:unsignedIntegerValue forCategory:v13];
   v15 = @"Result";
   if (v14)
   {
@@ -670,30 +670,30 @@
 
   [v9 setObject:v16 forKeyedSubscript:v15];
   v17 = [MSDRapportMessage alloc];
-  v18 = [v3 identifier];
-  v19 = [(MSDRapportMessage *)v17 initWithIdentifier:v18 andPayload:v9 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v19 = [(MSDRapportMessage *)v17 initWithIdentifier:identifier andPayload:v9 usingOptions:0];
 
   return v19;
 }
 
-- (id)_handleListAppsRequestMessage:(id)a3
+- (id)_handleListAppsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v37 = +[MSDAppHelper sharedInstance];
-  v35 = v3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"AppListKind"];
+  v35 = messageCopy;
+  payload = [messageCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"AppListKind"];
 
   v6 = [NSMutableDictionary dictionaryWithCapacity:0];
   v7 = [NSMutableArray arrayWithCapacity:0];
-  v8 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
   v34 = v5;
-  if (v8 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v9 = [v37 runningApps:1];
+    visibleApps = [v37 runningApps:1];
   }
 
-  else if (v8)
+  else if (unsignedIntegerValue)
   {
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -701,12 +701,12 @@
       sub_1000EA0B0();
     }
 
-    v9 = +[NSArray array];
+    visibleApps = +[NSArray array];
   }
 
   else
   {
-    v9 = [v37 visibleApps];
+    visibleApps = [v37 visibleApps];
   }
 
   v11 = v7;
@@ -715,7 +715,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = v9;
+  v12 = visibleApps;
   v13 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v13)
   {
@@ -752,11 +752,11 @@
           v12 = obj;
           v24 = v33;
           [v33 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
-          v25 = [v15 localizedDescription];
-          v26 = v25;
-          if (v25)
+          localizedDescription = [v15 localizedDescription];
+          v26 = localizedDescription;
+          if (localizedDescription)
           {
-            v27 = v25;
+            v27 = localizedDescription;
           }
 
           else
@@ -800,17 +800,17 @@
 LABEL_25:
 
   v29 = [MSDRapportMessage alloc];
-  v30 = [v35 identifier];
-  v31 = [(MSDRapportMessage *)v29 initWithIdentifier:v30 andPayload:v24 usingOptions:0];
+  identifier = [v35 identifier];
+  v31 = [(MSDRapportMessage *)v29 initWithIdentifier:identifier andPayload:v24 usingOptions:0];
 
   return v31;
 }
 
-- (id)_handleLaunchAppRequestMessage:(id)a3
+- (id)_handleLaunchAppRequestMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"AppIdentifier"];
+  messageCopy = message;
+  payload = [messageCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"AppIdentifier"];
 
   v6 = [NSMutableDictionary dictionaryWithCapacity:0];
   v16 = 0;
@@ -824,11 +824,11 @@ LABEL_25:
   else
   {
     [v6 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
-    v9 = [v8 localizedDescription];
-    v10 = v9;
-    if (v9)
+    localizedDescription = [v8 localizedDescription];
+    v10 = localizedDescription;
+    if (localizedDescription)
     {
-      v11 = v9;
+      v11 = localizedDescription;
     }
 
     else
@@ -840,18 +840,18 @@ LABEL_25:
   }
 
   v12 = [MSDRapportMessage alloc];
-  v13 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:v13 andPayload:v6 usingOptions:0];
+  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:identifier andPayload:v6 usingOptions:0];
 
   return v14;
 }
 
-- (id)_handleTerminateAppRequestMessage:(id)a3
+- (id)_handleTerminateAppRequestMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"AppIdentifier"];
+  messageCopy = message;
+  payload = [messageCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"AppIdentifier"];
 
   v6 = [NSMutableDictionary dictionaryWithCapacity:0];
   v16 = 0;
@@ -865,11 +865,11 @@ LABEL_25:
   else
   {
     [v6 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
-    v9 = [v8 localizedDescription];
-    v10 = v9;
-    if (v9)
+    localizedDescription = [v8 localizedDescription];
+    v10 = localizedDescription;
+    if (localizedDescription)
     {
-      v11 = v9;
+      v11 = localizedDescription;
     }
 
     else
@@ -881,24 +881,24 @@ LABEL_25:
   }
 
   v12 = [MSDRapportMessage alloc];
-  v13 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:v13 andPayload:v6 usingOptions:0];
+  v14 = [(MSDRapportMessage *)v12 initWithIdentifier:identifier andPayload:v6 usingOptions:0];
 
   return v14;
 }
 
-- (id)_handleGetIconImagesOfVisibleAppsRequestMessage:(id)a3
+- (id)_handleGetIconImagesOfVisibleAppsRequestMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"AppIconWidth"];
+  messageCopy = message;
+  payload = [messageCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"AppIconWidth"];
 
-  v6 = [v3 payload];
-  v7 = [v6 objectForKeyedSubscript:@"AppIconHeight"];
+  payload2 = [messageCopy payload];
+  v7 = [payload2 objectForKeyedSubscript:@"AppIconHeight"];
 
-  v8 = [v3 payload];
-  v9 = [v8 objectForKeyedSubscript:@"AppIconScale"];
+  payload3 = [messageCopy payload];
+  v9 = [payload3 objectForKeyedSubscript:@"AppIconScale"];
 
   [v5 floatValue];
   v11 = v10;
@@ -940,11 +940,11 @@ LABEL_25:
   if (v22 || !v21)
   {
     [v20 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
-    v24 = [v22 localizedDescription];
-    v25 = v24;
-    if (v24)
+    localizedDescription = [v22 localizedDescription];
+    v25 = localizedDescription;
+    if (localizedDescription)
     {
-      v26 = v24;
+      v26 = localizedDescription;
     }
 
     else
@@ -975,15 +975,15 @@ LABEL_25:
   }
 
   v27 = [MSDRapportMessage alloc];
-  v28 = [v3 identifier];
-  v29 = [(MSDRapportMessage *)v27 initWithIdentifier:v28 andPayload:v20 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v29 = [(MSDRapportMessage *)v27 initWithIdentifier:identifier andPayload:v20 usingOptions:0];
 
   return v29;
 }
 
-- (id)_handleListAvailableEnvironmentsRequestMessage:(id)a3
+- (id)_handleListAvailableEnvironmentsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -994,16 +994,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleSetActiveEnvironmentRequestMessage:(id)a3
+- (id)_handleSetActiveEnvironmentRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1014,16 +1014,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleSetImmersionLevelRequestMessage:(id)a3
+- (id)_handleSetImmersionLevelRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1034,16 +1034,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleResetToPassThroughRequestMessage:(id)a3
+- (id)_handleResetToPassThroughRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1054,16 +1054,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleEnumerateScriptsRequestMessage:(id)a3
+- (id)_handleEnumerateScriptsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1074,16 +1074,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleLaunchScriptRequestMessage:(id)a3
+- (id)_handleLaunchScriptRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1094,16 +1094,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleObtainGKResultsRequestMessage:(id)a3
+- (id)_handleObtainGKResultsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1114,16 +1114,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleObtainGKMetricsRequestMessage:(id)a3
+- (id)_handleObtainGKMetricsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1134,16 +1134,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleLoadLSMeasurementsRequestMessage:(id)a3
+- (id)_handleLoadLSMeasurementsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1154,16 +1154,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleRetrieveHSCoachingSuggestionRequestMessage:(id)a3
+- (id)_handleRetrieveHSCoachingSuggestionRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1174,16 +1174,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleReadIPDStatusRequestMessage:(id)a3
+- (id)_handleReadIPDStatusRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1194,16 +1194,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleSkipAutoIPDAdjustmentRequestMessage:(id)a3
+- (id)_handleSkipAutoIPDAdjustmentRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1214,16 +1214,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleInitiateIPDResetRequestMessage:(id)a3
+- (id)_handleInitiateIPDResetRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1234,16 +1234,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleQueryIPDResetStageRequestMessage:(id)a3
+- (id)_handleQueryIPDResetStageRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1254,16 +1254,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleGetAXSettingsRequestMessage:(id)a3
+- (id)_handleGetAXSettingsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1274,16 +1274,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleSetAXSettingsRequestMessage:(id)a3
+- (id)_handleSetAXSettingsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1294,16 +1294,16 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleWipeCustomerAssetsRequestMessage:(id)a3
+- (id)_handleWipeCustomerAssetsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1314,20 +1314,20 @@ LABEL_25:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [messageCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleChangeWiFiSettingsRequestMessage:(id)a3
+- (id)_handleChangeWiFiSettingsRequestMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = objc_opt_class();
-  v6 = [v3 payload];
-  v7 = [v6 objectForKeyedSubscript:@"WiFiSettingsArchive"];
+  payload = [messageCopy payload];
+  v7 = [payload objectForKeyedSubscript:@"WiFiSettingsArchive"];
   v22 = 0;
   v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:v5 fromData:v7 error:&v22];
   v9 = v22;
@@ -1344,19 +1344,19 @@ LABEL_25:
   }
 
   v10 = +[MSDWiFiHelper sharedInstance];
-  v11 = [v8 ssid];
-  v12 = [v8 password];
-  if ([v12 length])
+  ssid = [v8 ssid];
+  password = [v8 password];
+  if ([password length])
   {
-    v13 = [v8 password];
+    password2 = [v8 password];
   }
 
   else
   {
-    v13 = 0;
+    password2 = 0;
   }
 
-  if (([v10 configureWiFi:v11 password:v13]& 1) == 0)
+  if (([v10 configureWiFi:ssid password:password2]& 1) == 0)
   {
     v14 = [NSError errorDomainMSDWithCode:3727741072 message:@"Failed to configure WiFi."];
 
@@ -1364,11 +1364,11 @@ LABEL_25:
 LABEL_10:
 
     [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
-    v15 = [v9 localizedDescription];
-    v16 = v15;
-    if (v15)
+    localizedDescription = [v9 localizedDescription];
+    v16 = localizedDescription;
+    if (localizedDescription)
     {
-      v17 = v15;
+      v17 = localizedDescription;
     }
 
     else
@@ -1384,20 +1384,20 @@ LABEL_10:
   [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Result"];
 LABEL_14:
   v18 = [MSDRapportMessage alloc];
-  v19 = [v3 identifier];
-  v20 = [(MSDRapportMessage *)v18 initWithIdentifier:v19 andPayload:v4 usingOptions:0];
+  identifier = [messageCopy identifier];
+  v20 = [(MSDRapportMessage *)v18 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v20;
 }
 
-- (id)_handleSetLanguageAndRegion:(id)a3
+- (id)_handleSetLanguageAndRegion:(id)region
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"LanguageCode"];
+  regionCopy = region;
+  payload = [regionCopy payload];
+  v5 = [payload objectForKeyedSubscript:@"LanguageCode"];
 
-  v6 = [v3 payload];
-  v7 = [v6 objectForKeyedSubscript:@"RegionCode"];
+  payload2 = [regionCopy payload];
+  v7 = [payload2 objectForKeyedSubscript:@"RegionCode"];
 
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1427,15 +1427,15 @@ LABEL_14:
   }
 
   v13 = [MSDRapportMessage alloc];
-  v14 = [v3 identifier];
-  v15 = [(MSDRapportMessage *)v13 initWithIdentifier:v14 andPayload:v9 usingOptions:0];
+  identifier = [regionCopy identifier];
+  v15 = [(MSDRapportMessage *)v13 initWithIdentifier:identifier andPayload:v9 usingOptions:0];
 
   return v15;
 }
 
-- (id)_handleEnableMuseBuddyReset:(id)a3
+- (id)_handleEnableMuseBuddyReset:(id)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1446,16 +1446,16 @@ LABEL_14:
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v4 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v6 = [MSDRapportMessage alloc];
-  v7 = [v3 identifier];
+  identifier = [resetCopy identifier];
 
-  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:v7 andPayload:v4 usingOptions:0];
+  v8 = [(MSDRapportMessage *)v6 initWithIdentifier:identifier andPayload:v4 usingOptions:0];
 
   return v8;
 }
 
-- (id)_handleGetEnableMuseBuddyResetValue:(id)a3
+- (id)_handleGetEnableMuseBuddyResetValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1474,44 +1474,44 @@ LABEL_14:
   [v5 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Result"];
   [v5 setObject:@"Operation not supported" forKeyedSubscript:@"Reason"];
   v7 = [MSDRapportMessage alloc];
-  v8 = [v3 identifier];
+  identifier = [valueCopy identifier];
 
-  v9 = [(MSDRapportMessage *)v7 initWithIdentifier:v8 andPayload:v5 usingOptions:0];
+  v9 = [(MSDRapportMessage *)v7 initWithIdentifier:identifier andPayload:v5 usingOptions:0];
 
   return v9;
 }
 
-- (void)advertiserDidUpdateLocalDevicePublicIDFrom:(id)a3 to:(id)a4
+- (void)advertiserDidUpdateLocalDevicePublicIDFrom:(id)from to:(id)to
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(MSDDemoPeerResponder *)v7 setDevicePublicID:v6];
-  v8 = [(MSDDemoPeerResponder *)v7 pairingPassword];
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSDDemoPeerResponder *)selfCopy setDevicePublicID:toCopy];
+  pairingPassword = [(MSDDemoPeerResponder *)selfCopy pairingPassword];
 
-  if (v8)
+  if (pairingPassword)
   {
-    [(MSDDemoPeerResponder *)v7 _uploadPairingPassword];
+    [(MSDDemoPeerResponder *)selfCopy _uploadPairingPassword];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)advertiserDidShowPairingPassword:(id)a3
+- (void)advertiserDidShowPairingPassword:(id)password
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MSDDemoPeerResponder *)v4 setPairingPassword:v6];
-  v5 = [(MSDDemoPeerResponder *)v4 devicePublicID];
+  passwordCopy = password;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSDDemoPeerResponder *)selfCopy setPairingPassword:passwordCopy];
+  devicePublicID = [(MSDDemoPeerResponder *)selfCopy devicePublicID];
 
-  if (v5)
+  if (devicePublicID)
   {
-    [(MSDDemoPeerResponder *)v4 _uploadPairingPassword];
+    [(MSDDemoPeerResponder *)selfCopy _uploadPairingPassword];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)advertiserDidHidePairingPassword
@@ -1522,13 +1522,13 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (id)didReceiveRequestMessage:(id)a3 fromDevice:(id)a4
+- (id)didReceiveRequestMessage:(id)message fromDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(MSDDemoPeerResponder *)self messageHandlerTable];
-  v10 = [v9 objectForKey:v8];
+  messageCopy = message;
+  deviceCopy = device;
+  identifier = [messageCopy identifier];
+  messageHandlerTable = [(MSDDemoPeerResponder *)self messageHandlerTable];
+  v10 = [messageHandlerTable objectForKey:identifier];
   v11 = NSSelectorFromString(v10);
 
   if (!v11)
@@ -1560,22 +1560,22 @@ LABEL_12:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543618;
-    v19 = v6;
+    v19 = messageCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerResponder: Received request message: %{public}@ from device: %{public}@", &v18, 0x16u);
   }
 
-  v15 = v12(self, v11, v6);
+  v15 = v12(self, v11, messageCopy);
 LABEL_13:
 
   return v15;
 }
 
-- (void)didReceiveEventMessage:(id)a3 fromDevice:(id)a4
+- (void)didReceiveEventMessage:(id)message fromDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {

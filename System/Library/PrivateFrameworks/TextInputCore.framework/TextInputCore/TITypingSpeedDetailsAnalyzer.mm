@@ -1,5 +1,5 @@
 @interface TITypingSpeedDetailsAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 - (TITypingSpeedDetailsAnalyzer)init;
 - (void)registerEventSpec;
 @end
@@ -106,36 +106,36 @@
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:36];
   v52 = [v51 eventSpecWithName:@"typingSpeedDetails" inputModeRequired:0 fieldSpecs:v25];
 
-  v26 = [MEMORY[0x277D6F318] sharedInstance];
-  [v26 registerEventSpec:v52];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:v52];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  sessionCopy = session;
+  alignedSessionCopy = alignedSession;
+  if (confidence)
   {
-    v9 = [v7 applicationID];
-    v10 = [v9 isEqualToString:@"com.apple.MobileSMS"];
+    applicationID = [sessionCopy applicationID];
+    v10 = [applicationID isEqualToString:@"com.apple.MobileSMS"];
 
     if (v10)
     {
-      v49 = v8;
+      v49 = alignedSessionCopy;
       v50 = objc_opt_new();
       v11 = objc_alloc(MEMORY[0x277CCAB00]);
-      v12 = [v7 userActionHistory];
-      v13 = [v11 initWithKeyOptions:0 valueOptions:5 capacity:{objc_msgSend(v12, "count")}];
+      userActionHistory = [sessionCopy userActionHistory];
+      v13 = [v11 initWithKeyOptions:0 valueOptions:5 capacity:{objc_msgSend(userActionHistory, "count")}];
 
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v14 = [v7 userActionHistory];
-      v15 = [v14 countByEnumeratingWithState:&v61 objects:v67 count:16];
+      userActionHistory2 = [sessionCopy userActionHistory];
+      v15 = [userActionHistory2 countByEnumeratingWithState:&v61 objects:v67 count:16];
       if (v15)
       {
         v16 = v15;
@@ -148,14 +148,14 @@
           {
             if (*v62 != v18)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(userActionHistory2);
             }
 
             v20 = *(*(&v61 + 1) + 8 * i);
-            v21 = [v20 documentState];
-            v22 = [v21 documentIsEmpty];
+            documentState = [v20 documentState];
+            documentIsEmpty = [documentState documentIsEmpty];
 
-            if (v22)
+            if (documentIsEmpty)
             {
 
               v17 = 0;
@@ -172,13 +172,13 @@
 
               [v17 analyzeWordEntry:v23];
               [v13 setObject:v17 forKey:v23];
-              v24 = [v23 keyboardState];
+              keyboardState = [v23 keyboardState];
 
-              v52 = v24;
+              v52 = keyboardState;
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v61 objects:v67 count:16];
+          v16 = [userActionHistory2 countByEnumeratingWithState:&v61 objects:v67 count:16];
         }
 
         while (v16);
@@ -190,15 +190,15 @@
         v17 = 0;
       }
 
-      v51 = v7;
+      v51 = sessionCopy;
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v8 = v49;
-      v25 = [v49 alignedEntries];
-      v26 = [v25 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      alignedSessionCopy = v49;
+      alignedEntries = [v49 alignedEntries];
+      v26 = [alignedEntries countByEnumeratingWithState:&v57 objects:v66 count:16];
       if (v26)
       {
         v27 = v26;
@@ -209,31 +209,31 @@
           {
             if (*v58 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(alignedEntries);
             }
 
             v30 = *(*(&v57 + 1) + 8 * j);
-            v31 = [v30 originalWord];
-            v32 = [v13 objectForKey:v31];
+            originalWord = [v30 originalWord];
+            v32 = [v13 objectForKey:originalWord];
 
             [v32 analyzeWordEntryAligned:v30];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v57 objects:v66 count:16];
+          v27 = [alignedEntries countByEnumeratingWithState:&v57 objects:v66 count:16];
         }
 
         while (v27);
       }
 
-      a5 = v50;
+      confidence = v50;
       if ([v50 count])
       {
         v33 = [TIKBAnalyticsMetricsContext alloc];
-        v34 = [v51 sessionParams];
-        v35 = [v34 activeInputModes];
-        v36 = [v51 sessionParams];
-        v37 = [v36 testingParameters];
-        v38 = [(TIKBAnalyticsMetricsContext *)v33 initWithKeyboardState:v52 activeInputModes:v35 testingParameters:v37];
+        sessionParams = [v51 sessionParams];
+        activeInputModes = [sessionParams activeInputModes];
+        sessionParams2 = [v51 sessionParams];
+        testingParameters = [sessionParams2 testingParameters];
+        v38 = [(TIKBAnalyticsMetricsContext *)v33 initWithKeyboardState:v52 activeInputModes:activeInputModes testingParameters:testingParameters];
 
         v55 = 0u;
         v56 = 0u;
@@ -255,9 +255,9 @@
               }
 
               v44 = *(*(&v53 + 1) + 8 * k);
-              v45 = [v51 featureUsageMetricsCache];
-              v46 = [v51 sessionParams];
-              [v44 dispatchWithFeatureUsageMetricsCache:v45 andContext:v38 assetAvailabilityStatus:{objc_msgSend(v46, "assetAvailabilityStatus")}];
+              featureUsageMetricsCache = [v51 featureUsageMetricsCache];
+              sessionParams3 = [v51 sessionParams];
+              [v44 dispatchWithFeatureUsageMetricsCache:featureUsageMetricsCache andContext:v38 assetAvailabilityStatus:{objc_msgSend(sessionParams3, "assetAvailabilityStatus")}];
             }
 
             v41 = [v39 countByEnumeratingWithState:&v53 objects:v65 count:16];
@@ -266,22 +266,22 @@
           while (v41);
         }
 
-        v8 = v49;
-        a5 = v50;
+        alignedSessionCopy = v49;
+        confidence = v50;
       }
 
-      LOBYTE(a5) = 1;
-      v7 = v51;
+      LOBYTE(confidence) = 1;
+      sessionCopy = v51;
     }
 
     else
     {
-      LOBYTE(a5) = 0;
+      LOBYTE(confidence) = 0;
     }
   }
 
   v47 = *MEMORY[0x277D85DE8];
-  return a5;
+  return confidence;
 }
 
 - (TITypingSpeedDetailsAnalyzer)init

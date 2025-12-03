@@ -11,13 +11,13 @@
   v2 = [(VUIMediaShowcasingConfig *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DF6F0] isPhone];
+    isPhone = [MEMORY[0x1E69DF6F0] isPhone];
     v4 = 0.5;
-    if ((v3 & 1) == 0)
+    if ((isPhone & 1) == 0)
     {
-      v5 = [MEMORY[0x1E69DF6F0] isTV];
+      isTV = [MEMORY[0x1E69DF6F0] isTV];
       v4 = 2.0;
-      if (v5)
+      if (isTV)
       {
         v4 = 1.0;
       }
@@ -34,13 +34,13 @@
     *(v2 + 88) = xmmword_1E4297300;
     *(v2 + 13) = 5;
     *(v2 + 14) = 0x3FD3333333333333;
-    v12 = [MEMORY[0x1E69DF6F0] isTV];
+    isTV2 = [MEMORY[0x1E69DF6F0] isTV];
     v13 = 1.0;
-    if ((v12 & 1) == 0)
+    if ((isTV2 & 1) == 0)
     {
-      v14 = [MEMORY[0x1E69DF6F0] isMac];
+      isMac = [MEMORY[0x1E69DF6F0] isMac];
       v13 = 0.400000006;
-      if (!v14)
+      if (!isMac)
       {
         v13 = 0.75;
       }

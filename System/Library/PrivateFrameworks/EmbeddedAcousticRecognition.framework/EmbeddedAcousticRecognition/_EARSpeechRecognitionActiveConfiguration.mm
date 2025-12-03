@@ -2,8 +2,8 @@
 + (id)activeConfigurationForEverything;
 + (id)activeConfigurationForNothing;
 - (SpeechRecognizerActiveConfiguration)speechRecognizerActiveConfiguration;
-- (id)_initWithActiveConfiguration:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithActiveConfiguration:(const void *)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -46,86 +46,86 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(_EARSpeechRecognitionActiveConfiguration *)self samplingRateFilter];
-  [v4 setSamplingRateFilter:v5];
+  samplingRateFilter = [(_EARSpeechRecognitionActiveConfiguration *)self samplingRateFilter];
+  [v4 setSamplingRateFilter:samplingRateFilter];
 
-  v6 = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
-  [v4 setTaskTypeFilter:v6];
+  taskTypeFilter = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
+  [v4 setTaskTypeFilter:taskTypeFilter];
 
-  v7 = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
-  [v4 setFarFieldFilter:v7];
+  farFieldFilter = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
+  [v4 setFarFieldFilter:farFieldFilter];
 
-  v8 = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
-  [v4 setDeviceIdFilter:v8];
+  deviceIdFilter = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
+  [v4 setDeviceIdFilter:deviceIdFilter];
 
-  v9 = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
-  [v4 setAneContextFilter:v9];
+  aneContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
+  [v4 setAneContextFilter:aneContextFilter];
 
-  v10 = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
-  [v4 setCpuContextFilter:v10];
+  cpuContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
+  [v4 setCpuContextFilter:cpuContextFilter];
 
-  v11 = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
-  [v4 setGpuContextFilter:v11];
+  gpuContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
+  [v4 setGpuContextFilter:gpuContextFilter];
 
-  v12 = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
-  [v4 setAtypicalSpeechFilter:v12];
+  atypicalSpeechFilter = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
+  [v4 setAtypicalSpeechFilter:atypicalSpeechFilter];
 
   return v4;
 }
 
-- (id)_initWithActiveConfiguration:(const void *)a3
+- (id)_initWithActiveConfiguration:(const void *)configuration
 {
   v14.receiver = self;
   v14.super_class = _EARSpeechRecognitionActiveConfiguration;
   v4 = [(_EARSpeechRecognitionActiveConfiguration *)&v14 init];
-  if (*(a3 + 24) == 1)
+  if (*(configuration + 24) == 1)
   {
-    v5 = EARHelpers::ContainerToNSSet<std::set<unsigned int>>(a3);
+    v5 = EARHelpers::ContainerToNSSet<std::set<unsigned int>>(configuration);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setSamplingRateFilter:v5];
   }
 
-  if (*(a3 + 56) == 1)
+  if (*(configuration + 56) == 1)
   {
-    v6 = EARHelpers::ContainerToNSSet<std::set<std::string>>(a3 + 4);
+    v6 = EARHelpers::ContainerToNSSet<std::set<std::string>>(configuration + 4);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setTaskTypeFilter:v6];
   }
 
-  if (*(a3 + 120) == 1)
+  if (*(configuration + 120) == 1)
   {
-    v7 = EARHelpers::ContainerToNSSet<std::set<BOOL>>(a3 + 12);
+    v7 = EARHelpers::ContainerToNSSet<std::set<BOOL>>(configuration + 12);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setFarFieldFilter:v7];
   }
 
-  if (*(a3 + 88) == 1)
+  if (*(configuration + 88) == 1)
   {
-    v8 = EARHelpers::ContainerToNSSet<std::set<std::string>>(a3 + 8);
+    v8 = EARHelpers::ContainerToNSSet<std::set<std::string>>(configuration + 8);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setDeviceIdFilter:v8];
   }
 
-  if (*(a3 + 152) == 1)
+  if (*(configuration + 152) == 1)
   {
-    v9 = EARHelpers::ContainerToNSSet<std::set<BOOL>>(a3 + 16);
+    v9 = EARHelpers::ContainerToNSSet<std::set<BOOL>>(configuration + 16);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setAtypicalSpeechFilter:v9];
   }
 
-  if (*(a3 + 184) == 1)
+  if (*(configuration + 184) == 1)
   {
-    v10 = EARHelpers::ContainerToNSSet<std::set<std::string>>(a3 + 20);
+    v10 = EARHelpers::ContainerToNSSet<std::set<std::string>>(configuration + 20);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setAneContextFilter:v10];
   }
 
-  if (*(a3 + 216) == 1)
+  if (*(configuration + 216) == 1)
   {
-    v11 = EARHelpers::ContainerToNSSet<std::set<std::string>>(a3 + 24);
+    v11 = EARHelpers::ContainerToNSSet<std::set<std::string>>(configuration + 24);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setCpuContextFilter:v11];
   }
 
-  if (*(a3 + 248) == 1)
+  if (*(configuration + 248) == 1)
   {
-    v12 = EARHelpers::ContainerToNSSet<std::set<std::string>>(a3 + 28);
+    v12 = EARHelpers::ContainerToNSSet<std::set<std::string>>(configuration + 28);
     [(_EARSpeechRecognitionActiveConfiguration *)v4 setGpuContextFilter:v12];
   }
 
@@ -158,9 +158,9 @@
   retstr->var7.var0.var0 = 0;
   p_var7 = &retstr->var7;
   retstr->var7.var1 = 0;
-  v8 = [(_EARSpeechRecognitionActiveConfiguration *)self samplingRateFilter];
+  samplingRateFilter = [(_EARSpeechRecognitionActiveConfiguration *)self samplingRateFilter];
 
-  if (v8)
+  if (samplingRateFilter)
   {
     [(_EARSpeechRecognitionActiveConfiguration *)self samplingRateFilter];
     v51 = 0;
@@ -185,8 +185,8 @@
           }
 
           v13 = *(*(&v54 + 1) + 8 * v12);
-          v53 = [v13 unsignedIntegerValue];
-          std::__tree<unsigned int>::__emplace_unique_key_args<unsigned int,unsigned int>(&v50, &v53);
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
+          std::__tree<unsigned int>::__emplace_unique_key_args<unsigned int,unsigned int>(&v50, &unsignedIntegerValue);
 
           ++v12;
         }
@@ -202,23 +202,23 @@
     std::__tree<int>::destroy(&v50, v51);
   }
 
-  v14 = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
-  v15 = v14 == 0;
+  taskTypeFilter = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
+  v15 = taskTypeFilter == 0;
 
   if (!v15)
   {
-    v16 = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
-    EARHelpers::StdSetOfStringsFromNSSet(v16, &v58);
+    taskTypeFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self taskTypeFilter];
+    EARHelpers::StdSetOfStringsFromNSSet(taskTypeFilter2, &v58);
     std::optional<std::set<std::string>>::operator=[abi:ne200100]<std::set<std::string>,void>(p_var1, &v58);
     std::__tree<std::string>::destroy(&v58, v59);
   }
 
-  v17 = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
-  v18 = v17 == 0;
+  farFieldFilter = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
+  v18 = farFieldFilter == 0;
 
   if (!v18)
   {
-    v19 = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
+    farFieldFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self farFieldFilter];
     v51 = 0;
     v52 = 0;
     v50 = &v51;
@@ -226,7 +226,7 @@
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v20 = v19;
+    v20 = farFieldFilter2;
     v21 = [v20 countByEnumeratingWithState:&v54 objects:&v58 count:16];
     if (v21)
     {
@@ -242,8 +242,8 @@
           }
 
           v24 = *(*(&v54 + 1) + 8 * v23);
-          LOBYTE(v53) = [v24 BOOLValue];
-          std::__tree<BOOL>::__emplace_unique_key_args<BOOL,BOOL>(&v50, &v53);
+          LOBYTE(unsignedIntegerValue) = [v24 BOOLValue];
+          std::__tree<BOOL>::__emplace_unique_key_args<BOOL,BOOL>(&v50, &unsignedIntegerValue);
 
           ++v23;
         }
@@ -259,23 +259,23 @@
     std::__tree<int>::destroy(&v50, v51);
   }
 
-  v25 = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
-  v26 = v25 == 0;
+  deviceIdFilter = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
+  v26 = deviceIdFilter == 0;
 
   if (!v26)
   {
-    v27 = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
-    EARHelpers::StdSetOfStringsFromNSSet(v27, &v58);
+    deviceIdFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self deviceIdFilter];
+    EARHelpers::StdSetOfStringsFromNSSet(deviceIdFilter2, &v58);
     std::optional<std::set<std::string>>::operator=[abi:ne200100]<std::set<std::string>,void>(p_var2, &v58);
     std::__tree<std::string>::destroy(&v58, v59);
   }
 
-  v28 = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
-  v29 = v28 == 0;
+  atypicalSpeechFilter = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
+  v29 = atypicalSpeechFilter == 0;
 
   if (!v29)
   {
-    v30 = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
+    atypicalSpeechFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self atypicalSpeechFilter];
     v51 = 0;
     v52 = 0;
     v50 = &v51;
@@ -283,7 +283,7 @@
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v31 = v30;
+    v31 = atypicalSpeechFilter2;
     v32 = [v31 countByEnumeratingWithState:&v54 objects:&v58 count:16];
     if (v32)
     {
@@ -299,8 +299,8 @@
           }
 
           v35 = *(*(&v54 + 1) + 8 * v34);
-          LOBYTE(v53) = [v35 BOOLValue];
-          std::__tree<BOOL>::__emplace_unique_key_args<BOOL,BOOL>(&v50, &v53);
+          LOBYTE(unsignedIntegerValue) = [v35 BOOLValue];
+          std::__tree<BOOL>::__emplace_unique_key_args<BOOL,BOOL>(&v50, &unsignedIntegerValue);
 
           ++v34;
         }
@@ -316,35 +316,35 @@
     std::__tree<int>::destroy(&v50, v51);
   }
 
-  v36 = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
-  v37 = v36 == 0;
+  aneContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
+  v37 = aneContextFilter == 0;
 
   if (!v37)
   {
-    v38 = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
-    EARHelpers::StdSetOfStringsFromNSSet(v38, &v58);
+    aneContextFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self aneContextFilter];
+    EARHelpers::StdSetOfStringsFromNSSet(aneContextFilter2, &v58);
     std::optional<std::set<std::string>>::operator=[abi:ne200100]<std::set<std::string>,void>(p_var5, &v58);
     std::__tree<std::string>::destroy(&v58, v59);
   }
 
-  v39 = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
-  v40 = v39 == 0;
+  cpuContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
+  v40 = cpuContextFilter == 0;
 
   if (!v40)
   {
-    v41 = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
-    EARHelpers::StdSetOfStringsFromNSSet(v41, &v58);
+    cpuContextFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self cpuContextFilter];
+    EARHelpers::StdSetOfStringsFromNSSet(cpuContextFilter2, &v58);
     std::optional<std::set<std::string>>::operator=[abi:ne200100]<std::set<std::string>,void>(p_var6, &v58);
     std::__tree<std::string>::destroy(&v58, v59);
   }
 
-  v42 = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
-  v43 = v42 == 0;
+  gpuContextFilter = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
+  v43 = gpuContextFilter == 0;
 
   if (!v43)
   {
-    v45 = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
-    EARHelpers::StdSetOfStringsFromNSSet(v45, &v58);
+    gpuContextFilter2 = [(_EARSpeechRecognitionActiveConfiguration *)self gpuContextFilter];
+    EARHelpers::StdSetOfStringsFromNSSet(gpuContextFilter2, &v58);
     std::optional<std::set<std::string>>::operator=[abi:ne200100]<std::set<std::string>,void>(p_var7, &v58);
     std::__tree<std::string>::destroy(&v58, v59);
   }

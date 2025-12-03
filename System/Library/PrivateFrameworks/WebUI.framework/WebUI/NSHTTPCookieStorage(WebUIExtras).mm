@@ -9,13 +9,13 @@
 
 - (void)webui_applySafariCookieAcceptPolicy
 {
-  v2 = [a1 webui_safariCookieAcceptPolicy];
-  v4 = v2;
-  if (!v2 || ([v2 isEqualToString:@"only from main document domain"] & 1) != 0)
+  webui_safariCookieAcceptPolicy = [self webui_safariCookieAcceptPolicy];
+  v4 = webui_safariCookieAcceptPolicy;
+  if (!webui_safariCookieAcceptPolicy || ([webui_safariCookieAcceptPolicy isEqualToString:@"only from main document domain"] & 1) != 0)
   {
     v3 = 2;
 LABEL_4:
-    [a1 setCookieAcceptPolicy:v3];
+    [self setCookieAcceptPolicy:v3];
     goto LABEL_5;
   }
 
@@ -36,7 +36,7 @@ LABEL_5:
 
 - (__CFString)webui_safariCookieAcceptPolicy
 {
-  [a1 _safariCookieAcceptPolicyFloatValue];
+  [self _safariCookieAcceptPolicyFloatValue];
   v2 = @"only from main document domain";
   v3 = @"never";
   if (v1 == 1.0)
@@ -62,8 +62,8 @@ LABEL_5:
 
 - (float)_safariCookieAcceptPolicyFloatValue
 {
-  v0 = [MEMORY[0x277D262A0] sharedConnection];
-  v1 = [v0 effectiveValueForSetting:*MEMORY[0x277D26020]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v1 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D26020]];
   v2 = v1;
   if (v1)
   {
@@ -86,7 +86,7 @@ LABEL_5:
 
 - (uint64_t)webui_safariCookieAcceptPolicyEnumValue
 {
-  [a1 _safariCookieAcceptPolicyFloatValue];
+  [self _safariCookieAcceptPolicyFloatValue];
   if (v1 == 2.0)
   {
     return 0;

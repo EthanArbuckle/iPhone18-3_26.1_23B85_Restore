@@ -7,8 +7,8 @@
 - (void)main
 {
   v3 = [HDCloudSyncSharedSummaryPushPrepareOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncOperation *)v3 initWithConfiguration:v4 cloudState:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v5 = [(HDCloudSyncOperation *)v3 initWithConfiguration:configuration cloudState:0];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

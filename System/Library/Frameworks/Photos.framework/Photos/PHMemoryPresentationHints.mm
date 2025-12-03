@@ -1,7 +1,7 @@
 @interface PHMemoryPresentationHints
-+ (int64_t)tripTypeFromMemory:(id)a3;
++ (int64_t)tripTypeFromMemory:(id)memory;
 - (NSString)description;
-- (PHMemoryPresentationHints)initWithMemory:(id)a3;
+- (PHMemoryPresentationHints)initWithMemory:(id)memory;
 @end
 
 @implementation PHMemoryPresentationHints
@@ -21,19 +21,19 @@
   return v8;
 }
 
-- (PHMemoryPresentationHints)initWithMemory:(id)a3
+- (PHMemoryPresentationHints)initWithMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v13.receiver = self;
   v13.super_class = PHMemoryPresentationHints;
   v5 = [(PHMemoryPresentationHints *)&v13 init];
   if (v5)
   {
-    v5->_tripType = [objc_opt_class() tripTypeFromMemory:v4];
-    v5->_socialRelationships = [objc_opt_class() socialRelationshipsFromMemory:v4];
-    v6 = [v4 photosGraphProperties];
+    v5->_tripType = [objc_opt_class() tripTypeFromMemory:memoryCopy];
+    v5->_socialRelationships = [objc_opt_class() socialRelationshipsFromMemory:memoryCopy];
+    photosGraphProperties = [memoryCopy photosGraphProperties];
     v5->_recommendedMoods = 0;
-    v7 = [v6 objectForKeyedSubscript:@"recommendedMoods"];
+    v7 = [photosGraphProperties objectForKeyedSubscript:@"recommendedMoods"];
     v8 = v7;
     if (v7)
     {
@@ -41,7 +41,7 @@
     }
 
     v5->_forbiddenMoods = 0;
-    v9 = [v6 objectForKeyedSubscript:@"forbiddenMoods"];
+    v9 = [photosGraphProperties objectForKeyedSubscript:@"forbiddenMoods"];
     v10 = v9;
     if (v9)
     {
@@ -49,19 +49,19 @@
     }
 
     v5->_qualityCategory = 0;
-    if ([v4 isMustSee])
+    if ([memoryCopy isMustSee])
     {
       v11 = 3;
     }
 
-    else if ([v4 isStellar])
+    else if ([memoryCopy isStellar])
     {
       v11 = 2;
     }
 
     else
     {
-      if (![v4 isGreat])
+      if (![memoryCopy isGreat])
       {
 LABEL_13:
 
@@ -80,20 +80,20 @@ LABEL_14:
   return v5;
 }
 
-+ (int64_t)tripTypeFromMemory:(id)a3
++ (int64_t)tripTypeFromMemory:(id)memory
 {
-  v3 = a3;
-  if ([v3 category] == 301)
+  memoryCopy = memory;
+  if ([memoryCopy category] == 301)
   {
-    v4 = [v3 subcategory];
-    if (v4 == 215)
+    subcategory = [memoryCopy subcategory];
+    if (subcategory == 215)
     {
       v5 = 2;
     }
 
     else
     {
-      v5 = v4 == 205;
+      v5 = subcategory == 205;
     }
   }
 

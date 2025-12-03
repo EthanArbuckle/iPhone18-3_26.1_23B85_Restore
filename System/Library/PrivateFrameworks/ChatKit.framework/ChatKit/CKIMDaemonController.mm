@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 + (void)beginSimulatingDaemon;
 - (CKIMDaemonController)init;
-- (void)sendBalloonPayload:(id)a3 attachments:(id)a4 withMessageGUID:(id)a5 bundleID:(id)a6;
+- (void)sendBalloonPayload:(id)payload attachments:(id)attachments withMessageGUID:(id)d bundleID:(id)iD;
 @end
 
 @implementation CKIMDaemonController
@@ -68,19 +68,19 @@ void __45__CKIMDaemonController_beginSimulatingDaemon__block_invoke()
   return v2;
 }
 
-- (void)sendBalloonPayload:(id)a3 attachments:(id)a4 withMessageGUID:(id)a5 bundleID:(id)a6
+- (void)sendBalloonPayload:(id)payload attachments:(id)attachments withMessageGUID:(id)d bundleID:(id)iD
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  payloadCopy = payload;
+  attachmentsCopy = attachments;
+  dCopy = d;
+  iDCopy = iD;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(CKIMDaemonController *)self listeners];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  listeners = [(CKIMDaemonController *)self listeners];
+  v15 = [listeners countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -92,14 +92,14 @@ void __45__CKIMDaemonController_beginSimulatingDaemon__block_invoke()
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(listeners);
         }
 
-        [*(*(&v19 + 1) + 8 * v18++) simulatedDaemon:self willSendBalloonPayload:v10 attachments:v11 messageGUID:v12 bundleID:v13];
+        [*(*(&v19 + 1) + 8 * v18++) simulatedDaemon:self willSendBalloonPayload:payloadCopy attachments:attachmentsCopy messageGUID:dCopy bundleID:iDCopy];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [listeners countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);

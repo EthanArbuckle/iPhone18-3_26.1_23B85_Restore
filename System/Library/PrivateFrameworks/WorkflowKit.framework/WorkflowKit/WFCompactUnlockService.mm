@@ -1,32 +1,32 @@
 @interface WFCompactUnlockService
 - (void)dealloc;
-- (void)requestUnlockIfNeeded:(id)a3;
+- (void)requestUnlockIfNeeded:(id)needed;
 @end
 
 @implementation WFCompactUnlockService
 
-- (void)requestUnlockIfNeeded:(id)a3
+- (void)requestUnlockIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = MKBGetDeviceLockState();
   if (v5 != 3 && v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69D4260]);
     [(WFCompactUnlockService *)self setService:v6];
 
-    v7 = [(WFCompactUnlockService *)self service];
+    service = [(WFCompactUnlockService *)self service];
     v8 = objc_opt_new();
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__WFCompactUnlockService_requestUnlockIfNeeded___block_invoke;
     v9[3] = &unk_1E837BA78;
-    v10 = v4;
-    [v7 requestPasscodeUnlockUIWithOptions:v8 withCompletion:v9];
+    v10 = neededCopy;
+    [service requestPasscodeUnlockUIWithOptions:v8 withCompletion:v9];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(neededCopy + 2))(neededCopy, 1);
   }
 }
 
@@ -43,8 +43,8 @@ void __48__WFCompactUnlockService_requestUnlockIfNeeded___block_invoke(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [(WFCompactUnlockService *)self service];
-  [v3 invalidate];
+  service = [(WFCompactUnlockService *)self service];
+  [service invalidate];
 
   v4.receiver = self;
   v4.super_class = WFCompactUnlockService;

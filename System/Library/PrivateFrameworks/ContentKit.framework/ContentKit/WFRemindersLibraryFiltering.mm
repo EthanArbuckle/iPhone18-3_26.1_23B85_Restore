@@ -1,48 +1,48 @@
 @interface WFRemindersLibraryFiltering
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 resultHandler:(id)a5;
-+ (void)performCustomFilteringUsingContentPredicates:(id)a3 compoundPredicateType:(unint64_t)a4 forQuery:(id)a5 withInput:(id)a6 resultHandler:(id)a7;
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input resultHandler:(id)handler;
++ (void)performCustomFilteringUsingContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type forQuery:(id)query withInput:(id)input resultHandler:(id)handler;
 @end
 
 @implementation WFRemindersLibraryFiltering
 
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 resultHandler:(id)a5
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input resultHandler:(id)handler
 {
-  v8 = a4;
-  if (v8)
+  inputCopy = input;
+  if (inputCopy)
   {
-    v9 = a5;
-    v10 = a3;
+    handlerCopy = handler;
+    queryCopy = query;
     v11 = +[WFContentItem contentPropertySubstitutor];
-    [v10 runWithObjects:v8 propertySubstitutor:v11 completionHandler:v9];
+    [queryCopy runWithObjects:inputCopy propertySubstitutor:v11 completionHandler:handlerCopy];
   }
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___WFRemindersLibraryFiltering;
-    v12 = a5;
-    v13 = a3;
-    objc_msgSendSuper2(&v14, sel_getItemsMatchingQuery_withInput_resultHandler_, v13, 0, v12);
+    handlerCopy2 = handler;
+    queryCopy2 = query;
+    objc_msgSendSuper2(&v14, sel_getItemsMatchingQuery_withInput_resultHandler_, queryCopy2, 0, handlerCopy2);
   }
 }
 
-+ (void)performCustomFilteringUsingContentPredicates:(id)a3 compoundPredicateType:(unint64_t)a4 forQuery:(id)a5 withInput:(id)a6 resultHandler:(id)a7
++ (void)performCustomFilteringUsingContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type forQuery:(id)query withInput:(id)input resultHandler:(id)handler
 {
   v107 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v79 = a5;
-  v74 = a6;
-  v77 = a7;
-  v78 = a4;
-  if (!a4)
+  predicatesCopy = predicates;
+  queryCopy = query;
+  inputCopy = input;
+  handlerCopy = handler;
+  typeCopy = type;
+  if (!type)
   {
-    v12 = [v11 firstObject];
-    v13 = [WFContentCompoundPredicate notPredicateWithSubpredicate:v12];
+    firstObject = [predicatesCopy firstObject];
+    v13 = [WFContentCompoundPredicate notPredicateWithSubpredicate:firstObject];
     v103 = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v103 count:1];
 
-    v78 = 1;
-    v11 = v14;
+    typeCopy = 1;
+    predicatesCopy = v14;
   }
 
   if (getWFRemindersLibraryFilteringLogObject_onceToken != -1)
@@ -56,7 +56,7 @@
     v16 = @"OR";
     *&buf[4] = "+[WFRemindersLibraryFiltering performCustomFilteringUsingContentPredicates:compoundPredicateType:forQuery:withInput:resultHandler:]";
     *buf = 136315650;
-    if (v78 == 1)
+    if (typeCopy == 1)
     {
       v16 = @"AND";
     }
@@ -64,7 +64,7 @@
     *&buf[12] = 2114;
     *&buf[14] = v16;
     *&buf[22] = 2112;
-    v105 = v11;
+    v105 = predicatesCopy;
     _os_log_impl(&dword_21E1BD000, v15, OS_LOG_TYPE_INFO, "%s Filtering using predicate of type %{public}@ and subpredicates %@", buf, 0x20u);
   }
 
@@ -74,7 +74,7 @@
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v18 = v11;
+  v18 = predicatesCopy;
   v19 = [v18 countByEnumeratingWithState:&v93 objects:v102 count:16];
   if (v19)
   {
@@ -107,20 +107,20 @@
     while (v19);
   }
 
-  if (v78 == 2 && [v80 count])
+  if (typeCopy == 2 && [v80 count])
   {
     v92[0] = MEMORY[0x277D85DD0];
     v92[1] = 3221225472;
     v92[2] = __131__WFRemindersLibraryFiltering_performCustomFilteringUsingContentPredicates_compoundPredicateType_forQuery_withInput_resultHandler___block_invoke;
     v92[3] = &__block_descriptor_40_e60_v32__0__WFContentPredicate_8Q16___v____NSArray___NSError__24l;
-    v92[4] = a1;
+    v92[4] = self;
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
     v88[2] = __131__WFRemindersLibraryFiltering_performCustomFilteringUsingContentPredicates_compoundPredicateType_forQuery_withInput_resultHandler___block_invoke_3;
     v88[3] = &unk_278346FE0;
-    v91 = a1;
-    v89 = v79;
-    v90 = v77;
+    selfCopy = self;
+    v89 = queryCopy;
+    v90 = handlerCopy;
     [v18 if_flatMapAsynchronously:v92 completionHandler:v88];
 
     v24 = v89;
@@ -128,7 +128,7 @@
 
   else
   {
-    if ([v80 count] || (objc_msgSend(v79, "sortDescriptors"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "count") == 0, v26, v27))
+    if ([v80 count] || (objc_msgSend(queryCopy, "sortDescriptors"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "count") == 0, v26, v27))
     {
       v72 = 0;
       v25 = 1;
@@ -136,13 +136,13 @@
 
     else
     {
-      v28 = [v79 sortDescriptors];
+      sortDescriptors = [queryCopy sortDescriptors];
       v29 = objc_opt_new();
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      obj = v28;
+      obj = sortDescriptors;
       v75 = [obj countByEnumeratingWithState:&v97 objects:buf count:16];
       if (v75)
       {
@@ -157,9 +157,9 @@
             }
 
             v31 = *(*(&v97 + 1) + 8 * j);
-            v32 = [v31 comparator];
+            comparator = [v31 comparator];
 
-            if (v32)
+            if (comparator)
             {
 LABEL_41:
 
@@ -168,10 +168,10 @@ LABEL_42:
               goto LABEL_43;
             }
 
-            v33 = [v31 property];
-            v34 = [v33 name];
+            property = [v31 property];
+            name = [property name];
             v35 = @"Creation Date";
-            v36 = [v34 isEqualToString:@"Creation Date"];
+            v36 = [name isEqualToString:@"Creation Date"];
 
             if (v36)
             {
@@ -180,10 +180,10 @@ LABEL_42:
 
             else
             {
-              v38 = [v31 property];
-              v39 = [v38 name];
+              property2 = [v31 property];
+              name2 = [property2 name];
               v40 = WFLocalizedContentPropertyNameMarker(@"Due Date");
-              v41 = [v39 isEqualToString:v40];
+              v41 = [name2 isEqualToString:v40];
 
               if (v41)
               {
@@ -192,10 +192,10 @@ LABEL_42:
 
               else
               {
-                v42 = [v31 property];
-                v43 = [v42 name];
+                property3 = [v31 property];
+                name3 = [property3 name];
                 v44 = WFLocalizedContentPropertyNameMarker(@"Priority");
-                v45 = [v43 isEqualToString:v44];
+                v45 = [name3 isEqualToString:v44];
 
                 if (!v45)
                 {
@@ -243,7 +243,7 @@ LABEL_43:
     }
 
     v68 = v47;
-    if (v79)
+    if (queryCopy)
     {
       v48 = v47;
     }
@@ -256,7 +256,7 @@ LABEL_43:
     v49 = WFGetWorkflowReminderStore();
     if ([v17 count])
     {
-      v50 = WFCompoundReminderPredicateDescriptorWithSubpredicates(v17, v78);
+      v50 = WFCompoundReminderPredicateDescriptorWithSubpredicates(v17, typeCopy);
       *&v97 = 0;
       *(&v97 + 1) = &v97;
       *&v98 = 0x2050000000;
@@ -297,13 +297,13 @@ LABEL_43:
 
     if (v76)
     {
-      v55 = [v79 slice];
+      slice = [queryCopy slice];
       v57 = v56;
       v58 = v76;
       v59 = v58;
       if (v48)
       {
-        v60 = WFIndexSetFromContentSlice(v55, v57, [v58 count]);
+        v60 = WFIndexSetFromContentSlice(slice, v57, [v58 count]);
         v61 = [v59 objectsAtIndexes:v60];
 
         v59 = v61;
@@ -340,18 +340,18 @@ LABEL_43:
 
       if (v68)
       {
-        (*(v77 + 2))(v77, v62, 0);
+        (*(handlerCopy + 2))(handlerCopy, v62, 0);
       }
 
       else
       {
-        [a1 performFallbackFilteringWithItems:v62 withContentPredicates:v80 compoundPredicateType:v78 originalQuery:v79 resultHandler:v77];
+        [self performFallbackFilteringWithItems:v62 withContentPredicates:v80 compoundPredicateType:typeCopy originalQuery:queryCopy resultHandler:handlerCopy];
       }
     }
 
     else
     {
-      (*(v77 + 2))(v77, 0, obja);
+      (*(handlerCopy + 2))(handlerCopy, 0, obja);
     }
 
     v24 = v72;

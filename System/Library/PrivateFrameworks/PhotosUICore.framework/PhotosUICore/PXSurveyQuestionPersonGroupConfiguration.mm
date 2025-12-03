@@ -1,36 +1,36 @@
 @interface PXSurveyQuestionPersonGroupConfiguration
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionPersonGroupConfiguration)init;
-- (PXSurveyQuestionPersonGroupConfiguration)initWithTitle:(id)a3 personGroup:(id)a4;
-- (id)contentViewForDisplayScale:(double)a3;
-- (void)layoutContentViewInRect:(CGRect)a3;
+- (PXSurveyQuestionPersonGroupConfiguration)initWithTitle:(id)title personGroup:(id)group;
+- (id)contentViewForDisplayScale:(double)scale;
+- (void)layoutContentViewInRect:(CGRect)rect;
 @end
 
 @implementation PXSurveyQuestionPersonGroupConfiguration
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
   if (![(NSArray *)self->_personGroup count])
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   personGroup = self->_personGroup;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PXSurveyQuestionPersonGroupConfiguration_needsQuestionInvalidationForChange___block_invoke;
   v14[3] = &unk_1E773D250;
-  v15 = v4;
-  v6 = v4;
+  v15 = array;
+  v6 = array;
   [(NSArray *)personGroup enumerateObjectsUsingBlock:v14];
-  v7 = [(NSArray *)self->_personGroup firstObject];
-  v8 = [v7 photoLibrary];
+  firstObject = [(NSArray *)self->_personGroup firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  v9 = [v8 librarySpecificFetchOptions];
-  [v9 setPersonContext:1];
-  v10 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v6 options:v9];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v10 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v6 options:librarySpecificFetchOptions];
   v11 = [v10 count];
   v12 = v11 != [(NSArray *)self->_personGroup count];
 
@@ -57,21 +57,21 @@ void __79__PXSurveyQuestionPersonGroupConfiguration_needsQuestionInvalidationFor
   return result;
 }
 
-- (void)layoutContentViewInRect:(CGRect)a3
+- (void)layoutContentViewInRect:(CGRect)rect
 {
-  v4 = a3.size.height * 0.75;
-  [(UIView *)self->_personGroupContentView setFrame:(a3.size.width - a3.size.height * 0.75) * 0.5, (a3.size.height - a3.size.height * 0.75) * 0.75, a3.size.height * 0.75, a3.size.height * 0.75];
+  v4 = rect.size.height * 0.75;
+  [(UIView *)self->_personGroupContentView setFrame:(rect.size.width - rect.size.height * 0.75) * 0.5, (rect.size.height - rect.size.height * 0.75) * 0.75, rect.size.height * 0.75, rect.size.height * 0.75];
   personGroupContentView = self->_personGroupContentView;
 
   [PXPeopleSocialGroupViewGenerator resizeThumbnailSizeForSocialGroupView:personGroupContentView withSize:v4, v4];
 }
 
-- (id)contentViewForDisplayScale:(double)a3
+- (id)contentViewForDisplayScale:(double)scale
 {
-  v5 = [(PXSurveyQuestionPersonGroupConfiguration *)self personGroup];
-  v6 = [PXPeopleSocialGroupViewGenerator generateViewForSocialGroup:v5 withSize:50.0 displayScale:50.0, a3];
+  personGroup = [(PXSurveyQuestionPersonGroupConfiguration *)self personGroup];
+  scale = [PXPeopleSocialGroupViewGenerator generateViewForSocialGroup:personGroup withSize:50.0 displayScale:50.0, scale];
   personGroupContentView = self->_personGroupContentView;
-  self->_personGroupContentView = v6;
+  self->_personGroupContentView = scale;
 
   v8 = self->_personGroupContentView;
 
@@ -80,26 +80,26 @@ void __79__PXSurveyQuestionPersonGroupConfiguration_needsQuestionInvalidationFor
 
 - (PXSurveyQuestionPersonGroupConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPersonGroupConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionPersonGroupConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPersonGroupConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionPersonGroupConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionPersonGroupConfiguration)initWithTitle:(id)a3 personGroup:(id)a4
+- (PXSurveyQuestionPersonGroupConfiguration)initWithTitle:(id)title personGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = PXSurveyQuestionPersonGroupConfiguration;
   v8 = [(PXSurveyQuestionPersonGroupConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    objc_storeStrong(&v8->_personGroup, a4);
+    objc_storeStrong(&v8->_personGroup, group);
     v8->_isStale = 0;
   }
 

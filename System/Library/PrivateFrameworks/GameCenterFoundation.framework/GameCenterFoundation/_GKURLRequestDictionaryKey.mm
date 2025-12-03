@@ -1,22 +1,22 @@
 @interface _GKURLRequestDictionaryKey
-+ (id)keyWithRequest:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_GKURLRequestDictionaryKey)initWithRequest:(id)a3;
++ (id)keyWithRequest:(id)request;
+- (BOOL)isEqual:(id)equal;
+- (_GKURLRequestDictionaryKey)initWithRequest:(id)request;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _GKURLRequestDictionaryKey
 
-- (_GKURLRequestDictionaryKey)initWithRequest:(id)a3
+- (_GKURLRequestDictionaryKey)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = _GKURLRequestDictionaryKey;
   v5 = [(_GKURLRequestDictionaryKey *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     request = v5->_request;
     v5->_request = v6;
   }
@@ -24,10 +24,10 @@
   return v5;
 }
 
-+ (id)keyWithRequest:(id)a3
++ (id)keyWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] initWithRequest:requestCopy];
 
   return v5;
 }
@@ -39,36 +39,36 @@
   request = self->_request;
   v6 = objc_opt_class();
   v7 = [(NSURLRequest *)self->_request URL];
-  v8 = [v7 absoluteString];
-  v9 = [v3 stringWithFormat:@"<%@ %p> %@ %@", v4, self, v6, v8];
+  absoluteString = [v7 absoluteString];
+  v9 = [v3 stringWithFormat:@"<%@ %p> %@ %@", v4, self, v6, absoluteString];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 request];
-    v6 = [v5 URL];
+    request = [equalCopy request];
+    v6 = [request URL];
     v7 = [(NSURLRequest *)self->_request URL];
     v8 = [v6 isEqual:v7];
 
     if (v8)
     {
-      v9 = [(NSURLRequest *)self->_request HTTPMethod];
-      v10 = [(NSURLRequest *)self->_request HTTPMethod];
-      if (v9 == v10 || [v9 isEqual:v10])
+      hTTPMethod = [(NSURLRequest *)self->_request HTTPMethod];
+      hTTPMethod2 = [(NSURLRequest *)self->_request HTTPMethod];
+      if (hTTPMethod == hTTPMethod2 || [hTTPMethod isEqual:hTTPMethod2])
       {
-        v11 = [v5 allHTTPHeaderFields];
-        v12 = [(NSURLRequest *)self->_request allHTTPHeaderFields];
-        if (v11 == v12 || [v11 isEqual:v12])
+        allHTTPHeaderFields = [request allHTTPHeaderFields];
+        allHTTPHeaderFields2 = [(NSURLRequest *)self->_request allHTTPHeaderFields];
+        if (allHTTPHeaderFields == allHTTPHeaderFields2 || [allHTTPHeaderFields isEqual:allHTTPHeaderFields2])
         {
-          v13 = [v5 HTTPBody];
-          v14 = [(NSURLRequest *)self->_request HTTPBody];
-          v15 = v13 == v14 || [v13 isEqual:v14];
+          hTTPBody = [request HTTPBody];
+          hTTPBody2 = [(NSURLRequest *)self->_request HTTPBody];
+          v15 = hTTPBody == hTTPBody2 || [hTTPBody isEqual:hTTPBody2];
         }
 
         else

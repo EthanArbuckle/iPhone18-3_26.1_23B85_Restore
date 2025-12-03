@@ -1,11 +1,11 @@
 @interface IDSRegistrationEventTracingConstructKTClientDataEvent
 - (IDSRegistrationEventTracingConstructKTClientDataEvent)init;
-- (IDSRegistrationEventTracingConstructKTClientDataEvent)initWithRegisterID:(id)a3;
+- (IDSRegistrationEventTracingConstructKTClientDataEvent)initWithRegisterID:(id)d;
 @end
 
 @implementation IDSRegistrationEventTracingConstructKTClientDataEvent
 
-- (IDSRegistrationEventTracingConstructKTClientDataEvent)initWithRegisterID:(id)a3
+- (IDSRegistrationEventTracingConstructKTClientDataEvent)initWithRegisterID:(id)d
 {
   v4 = sub_1A7E22290();
   v5 = self + OBJC_IVAR___IDSRegistrationEventTracingConstructKTClientDataEvent_name;

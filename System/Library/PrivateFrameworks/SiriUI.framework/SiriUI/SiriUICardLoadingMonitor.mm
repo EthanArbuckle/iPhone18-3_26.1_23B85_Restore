@@ -1,9 +1,9 @@
 @interface SiriUICardLoadingMonitor
 + (id)sharedInstance;
 - (SiriUICardLoadingMonitor)init;
-- (void)addObserver:(id)a3;
-- (void)broadcastCardSnippet:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)broadcastCardSnippet:(id)snippet;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SiriUICardLoadingMonitor
@@ -44,28 +44,28 @@ uint64_t __42__SiriUICardLoadingMonitor_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (![(SiriUICardLoadingMonitor *)self isTrackingObserver:?])
   {
-    [(NSMutableArray *)self->_observers addObject:v4];
+    [(NSMutableArray *)self->_observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(SiriUICardLoadingMonitor *)self isTrackingObserver:?])
   {
-    [(NSMutableArray *)self->_observers removeObject:v4];
+    [(NSMutableArray *)self->_observers removeObject:observerCopy];
   }
 }
 
-- (void)broadcastCardSnippet:(id)a3
+- (void)broadcastCardSnippet:(id)snippet
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snippetCopy = snippet;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -86,7 +86,7 @@ uint64_t __42__SiriUICardLoadingMonitor_sharedInstance__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) cardLoadingMonitor:self didReceiveCardSnippet:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) cardLoadingMonitor:self didReceiveCardSnippet:{snippetCopy, v10}];
       }
 
       while (v7 != v9);

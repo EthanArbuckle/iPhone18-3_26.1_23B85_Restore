@@ -2,7 +2,7 @@
 + (id)_serverConnection;
 + (void)clearAllCloudTabDevices;
 + (void)clearTabsForCurrentDevice;
-+ (void)didToggleCloudTabs:(BOOL)a3 terminateAfterUpdating:(BOOL)a4;
++ (void)didToggleCloudTabs:(BOOL)tabs terminateAfterUpdating:(BOOL)updating;
 @end
 
 @implementation CloudTabServices
@@ -17,25 +17,25 @@
 
 + (void)clearAllCloudTabDevices
 {
-  v3 = [a1 _serverConnection];
-  v2 = [v3 messageWithName:kWebBookmarksClearAllCloudTabDevicesMessageName];
-  [v3 sendMessage:v2];
+  _serverConnection = [self _serverConnection];
+  v2 = [_serverConnection messageWithName:kWebBookmarksClearAllCloudTabDevicesMessageName];
+  [_serverConnection sendMessage:v2];
 }
 
 + (void)clearTabsForCurrentDevice
 {
-  v3 = [a1 _serverConnection];
-  v2 = [v3 messageWithName:kWebBookmarksClearCloudTabsForCurrentDeviceMessageName];
-  [v3 sendMessage:v2];
+  _serverConnection = [self _serverConnection];
+  v2 = [_serverConnection messageWithName:kWebBookmarksClearCloudTabsForCurrentDeviceMessageName];
+  [_serverConnection sendMessage:v2];
 }
 
-+ (void)didToggleCloudTabs:(BOOL)a3 terminateAfterUpdating:(BOOL)a4
++ (void)didToggleCloudTabs:(BOOL)tabs terminateAfterUpdating:(BOOL)updating
 {
-  v7 = [a1 _serverConnection];
-  v6 = [v7 messageWithName:kWebBookmarksDidToggleCloudTabsMessageName];
-  xpc_dictionary_set_BOOL(v6, kWebBookmarksEnabledKey, a3);
-  xpc_dictionary_set_BOOL(v6, kWebBookmarksTerminateAfterUpdatingKey, a4);
-  [v7 sendMessage:v6];
+  _serverConnection = [self _serverConnection];
+  v6 = [_serverConnection messageWithName:kWebBookmarksDidToggleCloudTabsMessageName];
+  xpc_dictionary_set_BOOL(v6, kWebBookmarksEnabledKey, tabs);
+  xpc_dictionary_set_BOOL(v6, kWebBookmarksTerminateAfterUpdatingKey, updating);
+  [_serverConnection sendMessage:v6];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SKRemoteAPFSFormatTask
-- (BOOL)waitWithError:(id *)a3;
-- (SKRemoteAPFSFormatTask)initWithName:(id)a3 disk:(id)a4 caseSensitive:(BOOL)a5 password:(id)a6;
-- (void)sendStderr:(id)a3;
-- (void)sendStdout:(id)a3;
+- (BOOL)waitWithError:(id *)error;
+- (SKRemoteAPFSFormatTask)initWithName:(id)name disk:(id)disk caseSensitive:(BOOL)sensitive password:(id)password;
+- (void)sendStderr:(id)stderr;
+- (void)sendStdout:(id)stdout;
 @end
 
 @implementation SKRemoteAPFSFormatTask
 
-- (SKRemoteAPFSFormatTask)initWithName:(id)a3 disk:(id)a4 caseSensitive:(BOOL)a5 password:(id)a6
+- (SKRemoteAPFSFormatTask)initWithName:(id)name disk:(id)disk caseSensitive:(BOOL)sensitive password:(id)password
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  diskCopy = disk;
+  passwordCopy = password;
   v22.receiver = self;
   v22.super_class = SKRemoteAPFSFormatTask;
   v14 = [(SKRemoteAPFSFormatTask *)&v22 init];
@@ -21,10 +21,10 @@
     progress = v14->_progress;
     v14->_progress = v15;
 
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v14->_disk, a4);
-    v14->_caseSensitive = a5;
-    objc_storeStrong(&v14->_password, a6);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v14->_disk, disk);
+    v14->_caseSensitive = sensitive;
+    objc_storeStrong(&v14->_password, password);
     v17 = [[NSXPCConnection alloc] initWithServiceName:@"com.apple.storagekitfsrunner" options:4096];
     connectionToService = v14->_connectionToService;
     v14->_connectionToService = v17;
@@ -44,7 +44,7 @@
   return v14;
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -58,34 +58,34 @@
   v20 = sub_100024584;
   v21 = sub_100024594;
   v22 = 0;
-  v5 = [(SKRemoteAPFSFormatTask *)self connectionToService];
+  connectionToService = [(SKRemoteAPFSFormatTask *)self connectionToService];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10002459C;
   v16[3] = &unk_1000496B0;
   v16[4] = &v17;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v6 = [connectionToService synchronousRemoteObjectProxyWithErrorHandler:v16];
 
-  v7 = [(SKRemoteAPFSFormatTask *)self name];
-  v8 = [(SKRemoteAPFSFormatTask *)self disk];
-  v9 = [v8 diskIdentifier];
-  v10 = [(SKRemoteAPFSFormatTask *)self caseSensitive];
-  v11 = [(SKRemoteAPFSFormatTask *)self password];
+  name = [(SKRemoteAPFSFormatTask *)self name];
+  disk = [(SKRemoteAPFSFormatTask *)self disk];
+  diskIdentifier = [disk diskIdentifier];
+  caseSensitive = [(SKRemoteAPFSFormatTask *)self caseSensitive];
+  password = [(SKRemoteAPFSFormatTask *)self password];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000245AC;
   v15[3] = &unk_1000496D8;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v6 formatAPFSWithName:v7 diskIdentifier:v9 caseSensitive:v10 password:v11 withReply:v15];
+  [v6 formatAPFSWithName:name diskIdentifier:diskIdentifier caseSensitive:caseSensitive password:password withReply:v15];
 
   v12 = v18[5];
   if (v12)
   {
     v13 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v12;
+      *error = v12;
     }
   }
 
@@ -94,7 +94,7 @@
     [(NSXPCConnection *)self->_connectionToService invalidate];
     if ([v24[5] integerValue])
     {
-      v13 = +[SKError failWithPOSIXCode:error:](SKError, "failWithPOSIXCode:error:", [v24[5] integerValue], a3);
+      v13 = +[SKError failWithPOSIXCode:error:](SKError, "failWithPOSIXCode:error:", [v24[5] integerValue], error);
     }
 
     else
@@ -109,27 +109,27 @@
   return v13;
 }
 
-- (void)sendStdout:(id)a3
+- (void)sendStdout:(id)stdout
 {
-  v6 = a3;
-  v4 = [(SKRemoteAPFSFormatTask *)self stdoutParser];
+  stdoutCopy = stdout;
+  stdoutParser = [(SKRemoteAPFSFormatTask *)self stdoutParser];
 
-  if (v4)
+  if (stdoutParser)
   {
-    v5 = [(SKRemoteAPFSFormatTask *)self stdoutParser];
-    [v5 parseData:v6];
+    stdoutParser2 = [(SKRemoteAPFSFormatTask *)self stdoutParser];
+    [stdoutParser2 parseData:stdoutCopy];
   }
 }
 
-- (void)sendStderr:(id)a3
+- (void)sendStderr:(id)stderr
 {
-  v6 = a3;
-  v4 = [(SKRemoteAPFSFormatTask *)self stderrParser];
+  stderrCopy = stderr;
+  stderrParser = [(SKRemoteAPFSFormatTask *)self stderrParser];
 
-  if (v4)
+  if (stderrParser)
   {
-    v5 = [(SKRemoteAPFSFormatTask *)self stderrParser];
-    [v5 parseData:v6];
+    stderrParser2 = [(SKRemoteAPFSFormatTask *)self stderrParser];
+    [stderrParser2 parseData:stderrCopy];
   }
 }
 

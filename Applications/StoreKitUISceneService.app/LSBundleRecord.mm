@@ -13,7 +13,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_100071470(v6);
 
   v8 = type metadata accessor for URL();
@@ -30,7 +30,7 @@
 
 - (BOOL)sk_allowExternalLink
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100071D30(4);
 
   return v3 & 1;
@@ -38,7 +38,7 @@
 
 - (BOOL)sk_allowExternalPurchase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100071D30(5);
 
   return v3 & 1;
@@ -46,7 +46,7 @@
 
 - (BOOL)sk_getTaskAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100071DCC();
 
   return v3 & 1;

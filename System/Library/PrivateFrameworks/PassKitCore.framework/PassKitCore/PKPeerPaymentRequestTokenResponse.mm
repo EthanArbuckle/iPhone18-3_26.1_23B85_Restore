@@ -1,26 +1,26 @@
 @interface PKPeerPaymentRequestTokenResponse
-- (PKPeerPaymentRequestTokenResponse)initWithCoder:(id)a3;
-- (PKPeerPaymentRequestTokenResponse)initWithData:(id)a3 deviceScoreIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKPeerPaymentRequestTokenResponse)initWithCoder:(id)coder;
+- (PKPeerPaymentRequestTokenResponse)initWithData:(id)data deviceScoreIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentRequestTokenResponse
 
-- (PKPeerPaymentRequestTokenResponse)initWithData:(id)a3 deviceScoreIdentifier:(id)a4
+- (PKPeerPaymentRequestTokenResponse)initWithData:(id)data deviceScoreIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentRequestTokenResponse;
-  v7 = [(PKWebServiceResponse *)&v20 initWithData:a3];
+  v7 = [(PKWebServiceResponse *)&v20 initWithData:data];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PKWebServiceResponse *)v7 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v7 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = jSONObject;
       v11 = [v10 PKBoolForKey:@"success"];
       v8->_success = v11;
       if (v11)
@@ -28,7 +28,7 @@
         v12 = [v10 PKStringForKey:@"requestToken"];
         v13 = [v10 PKStringForKey:@"expiryDate"];
         v14 = PKISO8601DateFromDateStringContainingFractionalSeconds(v13);
-        v15 = [[PKPeerPaymentRequestToken alloc] initWithRequestToken:v12 deviceScoreIdentifier:v6 expiryDate:v14];
+        v15 = [[PKPeerPaymentRequestToken alloc] initWithRequestToken:v12 deviceScoreIdentifier:identifierCopy expiryDate:v14];
         requestToken = v8->_requestToken;
         v8->_requestToken = v15;
 
@@ -58,15 +58,15 @@ LABEL_7:
   return v8;
 }
 
-- (PKPeerPaymentRequestTokenResponse)initWithCoder:(id)a3
+- (PKPeerPaymentRequestTokenResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentRequestTokenResponse;
-  v5 = [(PKWebServiceResponse *)&v9 initWithCoder:v4];
+  v5 = [(PKWebServiceResponse *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
     requestToken = v5->_requestToken;
     v5->_requestToken = v6;
   }
@@ -74,13 +74,13 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentRequestTokenResponse;
-  v4 = a3;
-  [(PKWebServiceResponse *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_requestToken forKey:{@"requestToken", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKWebServiceResponse *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_requestToken forKey:{@"requestToken", v5.receiver, v5.super_class}];
 }
 
 @end

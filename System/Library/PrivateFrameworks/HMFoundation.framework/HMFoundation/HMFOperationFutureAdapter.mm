@@ -1,20 +1,20 @@
 @interface HMFOperationFutureAdapter
-- (uint64_t)_handleFinishedOperation:(uint64_t)a1;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (uint64_t)_handleFinishedOperation:(uint64_t)operation;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation HMFOperationFutureAdapter
 
-- (uint64_t)_handleFinishedOperation:(uint64_t)a1
+- (uint64_t)_handleFinishedOperation:(uint64_t)operation
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (operation)
   {
     v10 = v3;
-    v5 = [v3 isCancelled];
-    v6 = *(a1 + 8);
-    if (v5)
+    isCancelled = [v3 isCancelled];
+    v6 = *(operation + 8);
+    if (isCancelled)
     {
       v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
       v8 = [v6 rejectWithError:v7];
@@ -28,7 +28,7 @@
 
     else
     {
-      v3 = [*(a1 + 8) fulfillWithValue:v10];
+      v3 = [*(operation + 8) fulfillWithValue:v10];
       v4 = v10;
       if (!v3)
       {
@@ -36,7 +36,7 @@
       }
     }
 
-    v3 = [v4 removeObserver:a1 forKeyPath:@"isFinished" context:HMFOperationFutureAdapterKVOContext];
+    v3 = [v4 removeObserver:operation forKeyPath:@"isFinished" context:HMFOperationFutureAdapterKVOContext];
     v4 = v10;
   }
 
@@ -45,25 +45,25 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a4;
-  v10 = v9;
-  if (HMFOperationFutureAdapterKVOContext == a6)
+  objectCopy = object;
+  v10 = objectCopy;
+  if (HMFOperationFutureAdapterKVOContext == context)
   {
-    v13 = v9;
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v12 = [v11 BOOLValue];
+    v13 = objectCopy;
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v11 BOOLValue];
 
     v10 = v13;
-    if (v12)
+    if (bOOLValue)
     {
-      v9 = [(HMFOperationFutureAdapter *)self _handleFinishedOperation:v13];
+      objectCopy = [(HMFOperationFutureAdapter *)self _handleFinishedOperation:v13];
       v10 = v13;
     }
   }
 
-  MEMORY[0x2821F96F8](v9, v10);
+  MEMORY[0x2821F96F8](objectCopy, v10);
 }
 
 @end

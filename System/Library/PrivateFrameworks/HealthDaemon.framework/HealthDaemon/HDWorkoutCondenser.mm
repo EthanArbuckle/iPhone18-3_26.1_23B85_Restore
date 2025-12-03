@@ -1,39 +1,39 @@
 @interface HDWorkoutCondenser
-+ (BOOL)_condenseAndUpdateWorkout:(void *)a3 configuration:(void *)a4 error:;
-+ (BOOL)coalesceCumulativeDatumsInDatumsCollection:(id)a3;
-+ (BOOL)coalesceHeartRateDatumsInDatumsCollection:(id)a3;
-+ (id)_insertValuesForSeries:(void *)a3 quantityType:(void *)a4 startTime:(void *)a5 values:(void *)a6 provenance:(void *)a7 configuration:(void *)a8 transaction:(void *)a9 countOut:(uint64_t)a10 error:;
-+ (id)_workoutEntitiesRequiringCondensationWithProfile:(uint64_t)a3 limit:(char)a4 allowRecondensation:(void *)a5 analyticsAccumulator:(uint64_t)a6 error:;
++ (BOOL)_condenseAndUpdateWorkout:(void *)workout configuration:(void *)configuration error:;
++ (BOOL)coalesceCumulativeDatumsInDatumsCollection:(id)collection;
++ (BOOL)coalesceHeartRateDatumsInDatumsCollection:(id)collection;
++ (id)_insertValuesForSeries:(void *)series quantityType:(void *)type startTime:(void *)time values:(void *)values provenance:(void *)provenance configuration:(void *)configuration transaction:(void *)transaction countOut:(uint64_t)self0 error:;
++ (id)_workoutEntitiesRequiringCondensationWithProfile:(uint64_t)profile limit:(char)limit allowRecondensation:(void *)recondensation analyticsAccumulator:(uint64_t)accumulator error:;
 + (id)condensableQuantityTypes;
-+ (id)seriesSyncIdentifierForEntity:(id)a3 workout:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (uint64_t)_condenseSamplesWithQuantityType:(void *)a3 workout:(void *)a4 entity:(void *)a5 configuration:(void *)a6 transaction:(double *)a7 error:;
-+ (uint64_t)_deleteSamplesWithUUIDData:(void *)a3 configuration:(uint64_t)a4 error:;
-+ (uint64_t)_finishSeries:(uint64_t)a1 quantityType:(void *)a2 baseMetadata:(void *)a3 workout:(void *)a4 UUIDDataToDelete:(void *)a5 configuration:(void *)a6 transaction:(void *)a7 error:(void *)a8;
-+ (void)_predicateForFirstPartyWorkoutSources:(uint64_t)a3 error:;
-+ (void)_workoutEntitiesRequiringCondensationWithPredicate:(uint64_t)a3 limit:(void *)a4 orderingTerms:(void *)a5 transaction:(uint64_t)a6 error:;
-- (BOOL)condenseWorkout:(id)a3 error:(id *)a4;
-- (HDWorkoutCondenser)initWithProfile:(id)a3;
-- (id)condensableWorkoutsWithError:(id *)a3;
-- (id)condensedWorkoutsWithError:(id *)a3;
-- (void)_performPeriodicActivityWithBatchLimit:(void *)a3 completion:;
-- (void)condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5;
++ (id)seriesSyncIdentifierForEntity:(id)entity workout:(id)workout transaction:(id)transaction error:(id *)error;
++ (uint64_t)_condenseSamplesWithQuantityType:(void *)type workout:(void *)workout entity:(void *)entity configuration:(void *)configuration transaction:(double *)transaction error:;
++ (uint64_t)_deleteSamplesWithUUIDData:(void *)data configuration:(uint64_t)configuration error:;
++ (uint64_t)_finishSeries:(uint64_t)series quantityType:(void *)type baseMetadata:(void *)metadata workout:(void *)workout UUIDDataToDelete:(void *)delete configuration:(void *)configuration transaction:(void *)transaction error:(void *)error;
++ (void)_predicateForFirstPartyWorkoutSources:(uint64_t)sources error:;
++ (void)_workoutEntitiesRequiringCondensationWithPredicate:(uint64_t)predicate limit:(void *)limit orderingTerms:(void *)terms transaction:(uint64_t)transaction error:;
+- (BOOL)condenseWorkout:(id)workout error:(id *)error;
+- (HDWorkoutCondenser)initWithProfile:(id)profile;
+- (id)condensableWorkoutsWithError:(id *)error;
+- (id)condensedWorkoutsWithError:(id *)error;
+- (void)_performPeriodicActivityWithBatchLimit:(void *)limit completion:;
+- (void)condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion;
 - (void)dealloc;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
 @end
 
 @implementation HDWorkoutCondenser
 
-- (HDWorkoutCondenser)initWithProfile:(id)a3
+- (HDWorkoutCondenser)initWithProfile:(id)profile
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v36.receiver = self;
   v36.super_class = HDWorkoutCondenser;
   v5 = [(HDWorkoutCondenser *)&v36 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     *&v6->_minimumSeriesSize = xmmword_2291816A0;
     v6->_deletedSamplesThreshold = 30000;
     v7 = HKCreateSerialDispatchQueue();
@@ -41,12 +41,12 @@
     v6->_queue = v7;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v10 = [WeakRetained daemon];
-    v11 = [v10 behavior];
-    v12 = [v11 features];
-    v13 = [v12 workoutCondensationOnLocking];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    features = [behavior features];
+    workoutCondensationOnLocking = [features workoutCondensationOnLocking];
 
-    if (v13)
+    if (workoutCondensationOnLocking)
     {
       objc_initWeak(&location, v6);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -57,25 +57,25 @@
       v14 = _Block_copy(aBlock);
       v15 = objc_alloc(MEMORY[0x277D10B10]);
       v16 = HKLogCondenser();
-      v17 = [v4 daemon];
-      v18 = [v17 systemScheduler];
-      v19 = [v15 initWithName:@"com.apple.healthd.HDWorkoutCondenser-activity" loggingCategory:v16 scheduler:v18 handler:v14 condition:0];
+      daemon2 = [profileCopy daemon];
+      systemScheduler = [daemon2 systemScheduler];
+      v19 = [v15 initWithName:@"com.apple.healthd.HDWorkoutCondenser-activity" loggingCategory:v16 scheduler:systemScheduler handler:v14 condition:0];
       repeatingBackgroundTask = v6->_repeatingBackgroundTask;
       v6->_repeatingBackgroundTask = v19;
 
-      v21 = [(HDRepeatingBackgroundTask *)v6->_repeatingBackgroundTask getRequest];
-      if (!v21)
+      getRequest = [(HDRepeatingBackgroundTask *)v6->_repeatingBackgroundTask getRequest];
+      if (!getRequest)
       {
-        v21 = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.HDWorkoutCondenser-activity"];
-        [v21 setRequiresProtectionClass:2];
-        [v21 setInterval:14400.0];
-        [v21 interval];
-        [v21 setMinDurationBetweenInstances:v22 * 0.8];
-        [v21 setPriority:2];
-        [v21 setRequiresNetworkConnectivity:1];
+        getRequest = [objc_alloc(MEMORY[0x277CF07D8]) initWithIdentifier:@"com.apple.healthd.HDWorkoutCondenser-activity"];
+        [getRequest setRequiresProtectionClass:2];
+        [getRequest setInterval:14400.0];
+        [getRequest interval];
+        [getRequest setMinDurationBetweenInstances:v22 * 0.8];
+        [getRequest setPriority:2];
+        [getRequest setRequiresNetworkConnectivity:1];
         v23 = v6->_repeatingBackgroundTask;
         v32 = 0;
-        [(HDRepeatingBackgroundTask *)v23 submitRequest:v21 error:&v32];
+        [(HDRepeatingBackgroundTask *)v23 submitRequest:getRequest error:&v32];
         v24 = v32;
         if (v24)
         {
@@ -100,7 +100,7 @@
     {
       v26 = [HDPeriodicActivity alloc];
       v27 = HKLogCondenser();
-      v28 = [(HDPeriodicActivity *)v26 initWithProfile:v4 name:@"com.apple.healthd.HDWorkoutCondenser-activity" interval:v6 delegate:v27 loggingCategory:*MEMORY[0x277D86298]];
+      v28 = [(HDPeriodicActivity *)v26 initWithProfile:profileCopy name:@"com.apple.healthd.HDWorkoutCondenser-activity" interval:v6 delegate:v27 loggingCategory:*MEMORY[0x277D86298]];
       periodicActivity = v6->_periodicActivity;
       v6->_periodicActivity = v28;
     }
@@ -161,18 +161,18 @@ void __38__HDWorkoutCondenser_initWithProfile___block_invoke_2(uint64_t a1, unin
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performPeriodicActivityWithBatchLimit:(void *)a3 completion:
+- (void)_performPeriodicActivityWithBatchLimit:(void *)limit completion:
 {
-  v5 = a3;
-  if (a1)
+  limitCopy = limit;
+  if (self)
   {
-    dispatch_assert_queue_not_V2(*(a1 + 8));
-    v6 = *(a1 + 8);
+    dispatch_assert_queue_not_V2(*(self + 8));
+    v6 = *(self + 8);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__HDWorkoutCondenser__performPeriodicActivityWithBatchLimit_completion___block_invoke;
     block[3] = &unk_278613968;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v6, block);
     _HKInitializeLogging();
     v7 = HKLogCondenser();
@@ -192,14 +192,14 @@ void __38__HDWorkoutCondenser_initWithProfile___block_invoke_2(uint64_t a1, unin
     v14[1] = 3221225472;
     v14[2] = __72__HDWorkoutCondenser__performPeriodicActivityWithBatchLimit_completion___block_invoke_400;
     v14[3] = &unk_27862E460;
-    v14[4] = a1;
+    v14[4] = self;
     v16 = a2;
-    v15 = v5;
+    v15 = limitCopy;
     v10 = [HDMaintenanceOperation maintenanceOperationWithName:@"Workout Condensing" asynchronousBlock:v14];
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    v12 = [WeakRetained daemon];
-    v13 = [v12 maintenanceWorkCoordinator];
-    [v13 enqueueMaintenanceOperation:v10];
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    daemon = [WeakRetained daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v10];
   }
 }
 
@@ -211,19 +211,19 @@ void __38__HDWorkoutCondenser_initWithProfile___block_invoke_2(uint64_t a1, unin
   [(HDWorkoutCondenser *)&v3 dealloc];
 }
 
-- (void)condenseWorkoutsForReason:(int64_t)a3 workoutBatchLimit:(int64_t)a4 completion:(id)a5
+- (void)condenseWorkoutsForReason:(int64_t)reason workoutBatchLimit:(int64_t)limit completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__HDWorkoutCondenser_condenseWorkoutsForReason_workoutBatchLimit_completion___block_invoke;
   v11[3] = &unk_27862E280;
-  v13 = a4;
-  v14 = a3;
+  limitCopy = limit;
+  reasonCopy = reason;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
@@ -518,38 +518,38 @@ LABEL_16:
   v73 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)condenseWorkout:(id)a3 error:(id *)a4
+- (BOOL)condenseWorkout:(id)workout error:(id *)error
 {
-  v6 = a3;
+  workoutCopy = workout;
   v7 = objc_alloc_init(_HDWorkoutCondenserAnalyticsAccumulator);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [_HDWorkoutCondensationConfiguration configurationWithProfile:self->_minimumSeriesSize minimumSeriesSize:self->_maximumSeriesSize maximumSeriesSize:self->_deletedSamplesThreshold deletedSampleThreshold:v7 analyticsAccumulator:a4 error:?];
+  v9 = [_HDWorkoutCondensationConfiguration configurationWithProfile:self->_minimumSeriesSize minimumSeriesSize:self->_maximumSeriesSize maximumSeriesSize:self->_deletedSamplesThreshold deletedSampleThreshold:v7 analyticsAccumulator:error error:?];
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(v9 + 1);
-    v11 = [v10 daemon];
-    v12 = [v11 behavior];
-    v13 = [v12 features];
-    v32 = [v13 condenseFirstPartyiOSWorkouts];
+    daemon = [v10 daemon];
+    behavior = [daemon behavior];
+    features = [behavior features];
+    condenseFirstPartyiOSWorkouts = [features condenseFirstPartyiOSWorkouts];
 
     v14 = objc_loadWeakRetained(&self->_profile);
-    v15 = [HDWorkoutCondenser _predicateForFirstPartyWorkoutSources:v14 error:a4];
+    v15 = [HDWorkoutCondenser _predicateForFirstPartyWorkoutSources:v14 error:error];
 
     v16 = MEMORY[0x277D10B70];
-    v17 = [v6 UUID];
+    uUID = [workoutCopy UUID];
     v18 = HDDataEntityPredicateForDataUUID();
     v19 = [v16 compoundPredicateWithPredicate:v18 otherPredicate:v15];
 
     v20 = objc_loadWeakRetained(v9 + 1);
-    v21 = [v20 database];
+    database = [v20 database];
     v35 = 0;
-    v22 = [(HDHealthEntity *)HDWorkoutEntity anyWithPredicate:v19 healthDatabase:v21 error:&v35];
+    v22 = [(HDHealthEntity *)HDWorkoutEntity anyWithPredicate:v19 healthDatabase:database error:&v35];
     v23 = v35;
 
     if (v22)
     {
-      v24 = [HDWorkoutCondenser _condenseAndUpdateWorkout:v22 configuration:v9 error:a4];
+      v24 = [HDWorkoutCondenser _condenseAndUpdateWorkout:v22 configuration:v9 error:error];
 LABEL_15:
 
       goto LABEL_16;
@@ -563,17 +563,17 @@ LABEL_15:
     else
     {
       v25 = @"Unable to locate 1st Party Apple Watch workout entity for condensation with workout with UUID %@ from source %@";
-      if (v32)
+      if (condenseFirstPartyiOSWorkouts)
       {
         v25 = @"Unable to locate 1st Party Apple Watch or 1st party fitnessAppSource workout entity for condensation with workout with UUID %@ from source %@";
       }
 
       v31 = MEMORY[0x277CCA9B8];
       v33 = v25;
-      v26 = [v6 UUID];
-      v27 = [v26 UUIDString];
-      v28 = [v6 sourceRevision];
-      v34 = [v31 hk_error:100 format:{v33, v27, v28}];
+      uUID2 = [workoutCopy UUID];
+      uUIDString = [uUID2 UUIDString];
+      sourceRevision = [workoutCopy sourceRevision];
+      v34 = [v31 hk_error:100 format:{v33, uUIDString, sourceRevision}];
 
       v23 = v34;
       if (!v23)
@@ -582,10 +582,10 @@ LABEL_15:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v29 = v23;
-      *a4 = v23;
+      *error = v23;
     }
 
     else
@@ -604,21 +604,21 @@ LABEL_16:
   return v24;
 }
 
-+ (void)_predicateForFirstPartyWorkoutSources:(uint64_t)a3 error:
++ (void)_predicateForFirstPartyWorkoutSources:(uint64_t)sources error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 daemon];
-  v6 = [v5 behavior];
-  v7 = [v6 features];
-  v8 = [v7 condenseFirstPartyiOSWorkouts];
+  daemon = [v4 daemon];
+  behavior = [daemon behavior];
+  features = [behavior features];
+  condenseFirstPartyiOSWorkouts = [features condenseFirstPartyiOSWorkouts];
 
   v9 = HDDataEntityPredicateForObjectsFromAppleWatchSources(1);
   v10 = v4;
   objc_opt_self();
-  v11 = [v10 sourceManager];
+  sourceManager = [v10 sourceManager];
 
-  v12 = [v11 allSourcesForBundleIdentifier:*MEMORY[0x277CCE340] error:a3];
+  v12 = [sourceManager allSourcesForBundleIdentifier:*MEMORY[0x277CCE340] error:sources];
 
   if ([v12 count])
   {
@@ -632,7 +632,7 @@ LABEL_16:
 
   v14 = [MEMORY[0x277D10B70] disjunctionWithPredicate:v9 otherPredicate:v13];
   v15 = v14;
-  if (v8)
+  if (condenseFirstPartyiOSWorkouts)
   {
     v16 = v14;
   }
@@ -647,16 +647,16 @@ LABEL_16:
   return v16;
 }
 
-+ (BOOL)_condenseAndUpdateWorkout:(void *)a3 configuration:(void *)a4 error:
++ (BOOL)_condenseAndUpdateWorkout:(void *)workout configuration:(void *)configuration error:
 {
   v72[13] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  workoutCopy = workout;
   objc_opt_self();
   v8 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "persistentID")}];
-  if (v7)
+  if (workoutCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v7 + 1);
+    WeakRetained = objc_loadWeakRetained(workoutCopy + 1);
   }
 
   else
@@ -672,11 +672,11 @@ LABEL_16:
   {
     v12 = v10;
     v13 = v6;
-    v14 = v7;
+    v14 = workoutCopy;
     v58 = objc_opt_self();
     v59 = v12;
     [v12 duration];
-    if (v7)
+    if (workoutCopy)
     {
       v16 = v14[3];
     }
@@ -690,7 +690,7 @@ LABEL_16:
     v56 = v10;
     if (v15 >= v16)
     {
-      v53 = v7;
+      v53 = workoutCopy;
       v54 = v6;
       v68 = 0u;
       v69 = 0u;
@@ -724,19 +724,19 @@ LABEL_16:
             v65 = v58;
             v31 = v13;
             v64 = v31;
-            v32 = a4;
+            configurationCopy = configuration;
             v33 = HKWithAutoreleasePool();
 
             if (!v33)
             {
 
               v22 = 0;
-              v7 = v53;
+              workoutCopy = v53;
               v6 = v54;
               goto LABEL_34;
             }
 
-            a4 = v32;
+            configuration = configurationCopy;
           }
 
           v25 = [obj countByEnumeratingWithState:&v66 objects:buf count:16];
@@ -749,7 +749,7 @@ LABEL_16:
         }
       }
 
-      v7 = v53;
+      workoutCopy = v53;
       v6 = v54;
     }
 
@@ -760,7 +760,7 @@ LABEL_16:
     v34 = v13;
     v35 = v14;
     objc_opt_self();
-    if (v7)
+    if (workoutCopy)
     {
       v36 = objc_loadWeakRetained(v35 + 1);
     }
@@ -770,14 +770,14 @@ LABEL_16:
       v36 = 0;
     }
 
-    v37 = [v36 database];
+    database = [v36 database];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __76__HDWorkoutCondenser__updateCondenserVersionForWorkout_configuration_error___block_invoke;
     v71 = &unk_278616048;
     v72[0] = v34;
     v38 = v34;
-    v39 = [(HDHealthEntity *)HDWorkoutEntity performWriteTransactionWithHealthDatabase:v37 error:a4 block:buf];
+    v39 = [(HDHealthEntity *)HDWorkoutEntity performWriteTransactionWithHealthDatabase:database error:configuration block:buf];
 
     if (v39)
     {
@@ -794,14 +794,14 @@ LABEL_16:
         v43 = HKLogCondenser();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
-          v44 = [v40 UUID];
-          [v44 UUIDString];
-          v46 = v45 = v7;
+          uUID = [v40 UUID];
+          [uUID UUIDString];
+          v46 = v45 = workoutCopy;
           [v40 workoutActivityType];
           v47 = _HKWorkoutActivityNameForActivityType();
           [v40 duration];
           v48 = HKDiagnosticStringFromDuration();
-          v49 = [v40 _creationDate];
+          _creationDate = [v40 _creationDate];
           v50 = HKDiagnosticStringFromDate();
           *buf = 138544130;
           *&buf[4] = v46;
@@ -813,7 +813,7 @@ LABEL_16:
           *(v72 + 2) = v50;
           _os_log_impl(&dword_228986000, v43, OS_LOG_TYPE_INFO, "Condensed workout with UUID: %{public}@, type: %{public}@, duration: %{public}@, added: %{public}@", buf, 0x2Au);
 
-          v7 = v45;
+          workoutCopy = v45;
           v11 = v55;
           v10 = v56;
         }
@@ -842,9 +842,9 @@ LABEL_34:
       v19 = HKLogCondenser();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v6 persistentID];
+        persistentID = [v6 persistentID];
         *buf = 134218242;
-        *&buf[4] = v20;
+        *&buf[4] = persistentID;
         *&buf[12] = 2114;
         *&buf[14] = v11;
         _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_INFO, "Failed to lookup workout with persistentID %lld: %{public}@", buf, 0x16u);
@@ -855,10 +855,10 @@ LABEL_34:
     v22 = v21 == 0;
     if (v21)
     {
-      if (a4)
+      if (configuration)
       {
         v23 = v21;
-        *a4 = v21;
+        *configuration = v21;
       }
 
       else
@@ -872,7 +872,7 @@ LABEL_34:
   return v22;
 }
 
-- (id)condensedWorkoutsWithError:(id *)a3
+- (id)condensedWorkoutsWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CCD158]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -882,9 +882,9 @@ LABEL_34:
   v11[3] = &unk_27862E2A8;
   v12 = v5;
   v7 = v5;
-  LODWORD(a3) = [HDWorkoutEntity enumerateCondensedWorkoutsWithPredicate:0 profile:WeakRetained error:a3 handler:v11];
+  LODWORD(error) = [HDWorkoutEntity enumerateCondensedWorkoutsWithPredicate:0 profile:WeakRetained error:error handler:v11];
 
-  if (a3)
+  if (error)
   {
     v8 = v7;
   }
@@ -899,17 +899,17 @@ LABEL_34:
   return v8;
 }
 
-- (id)condensableWorkoutsWithError:(id *)a3
+- (id)condensableWorkoutsWithError:(id *)error
 {
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [v5 workoutEntitiesRequiringCondensationWithProfile:WeakRetained limit:0 allowRecondensation:0 error:a3];
+  v7 = [v5 workoutEntitiesRequiringCondensationWithProfile:WeakRetained limit:0 allowRecondensation:0 error:error];
 
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CCD158]);
     v9 = objc_loadWeakRetained(&self->_profile);
-    v10 = [v9 database];
+    database = [v9 database];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __51__HDWorkoutCondenser_condensableWorkoutsWithError___block_invoke;
@@ -917,7 +917,7 @@ LABEL_34:
     v17 = v7;
     v18 = v8;
     v11 = v8;
-    v12 = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:v10 error:a3 block:v16];
+    v12 = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:database error:error block:v16];
 
     if (v12)
     {
@@ -995,13 +995,13 @@ LABEL_11:
   return v13;
 }
 
-+ (id)_workoutEntitiesRequiringCondensationWithProfile:(uint64_t)a3 limit:(char)a4 allowRecondensation:(void *)a5 analyticsAccumulator:(uint64_t)a6 error:
++ (id)_workoutEntitiesRequiringCondensationWithProfile:(uint64_t)profile limit:(char)limit allowRecondensation:(void *)recondensation analyticsAccumulator:(uint64_t)accumulator error:
 {
   v41[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  recondensationCopy = recondensation;
   v9 = a2;
   v28 = objc_opt_self();
-  v10 = [HDWorkoutCondenser _predicateForFirstPartyWorkoutSources:v9 error:a6];
+  v10 = [HDWorkoutCondenser _predicateForFirstPartyWorkoutSources:v9 error:accumulator];
   v11 = HDWorkoutEntityPredicateForWorkoutCondenserVersionLessThan(6);
   v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-10368000.0];
   v13 = HDDataEntityPredicateForCreationDate(3);
@@ -1019,24 +1019,24 @@ LABEL_11:
 
   v18 = HDWorkoutEntityPredicateForWorkoutCondenserVersionEqualTo(6);
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v20 = [v9 database];
+  database = [v9 database];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __124__HDWorkoutCondenser__workoutEntitiesRequiringCondensationWithProfile_limit_allowRecondensation_analyticsAccumulator_error___block_invoke;
   v33[3] = &unk_27862E320;
   v38 = v28;
-  v39 = a3;
+  profileCopy = profile;
   v34 = v17;
-  v35 = v8;
+  v35 = recondensationCopy;
   v21 = v19;
-  v40 = a4;
+  limitCopy = limit;
   v36 = v21;
   v37 = v18;
   v22 = v18;
-  v23 = v8;
+  v23 = recondensationCopy;
   v24 = v17;
-  LODWORD(v16) = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:v20 error:a6 block:v33];
+  LODWORD(v16) = [(HDHealthEntity *)HDWorkoutEntity performReadTransactionWithHealthDatabase:database error:accumulator block:v33];
 
   if (v16)
   {
@@ -1053,11 +1053,11 @@ LABEL_11:
   return v25;
 }
 
-+ (id)seriesSyncIdentifierForEntity:(id)a3 workout:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)seriesSyncIdentifierForEntity:(id)entity workout:(id)workout transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entityCopy = entity;
+  workoutCopy = workout;
+  transactionCopy = transaction;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1069,10 +1069,10 @@ LABEL_11:
   v16[2] = __78__HDWorkoutCondenser_seriesSyncIdentifierForEntity_workout_transaction_error___block_invoke;
   v16[3] = &unk_27862E2D0;
   v18 = &v20;
-  v19 = a1;
-  v13 = v11;
+  selfCopy = self;
+  v13 = workoutCopy;
   v17 = v13;
-  if ([v10 startTimeEndTimeCountForSeriesWithTransaction:v12 error:a6 handler:v16])
+  if ([entityCopy startTimeEndTimeCountForSeriesWithTransaction:transactionCopy error:error handler:v16])
   {
     v14 = v21[5];
   }
@@ -1343,16 +1343,16 @@ LABEL_17:
   return v26;
 }
 
-+ (void)_workoutEntitiesRequiringCondensationWithPredicate:(uint64_t)a3 limit:(void *)a4 orderingTerms:(void *)a5 transaction:(uint64_t)a6 error:
++ (void)_workoutEntitiesRequiringCondensationWithPredicate:(uint64_t)predicate limit:(void *)limit orderingTerms:(void *)terms transaction:(uint64_t)transaction error:
 {
-  v10 = a5;
-  v11 = a4;
+  termsCopy = terms;
+  limitCopy = limit;
   v12 = a2;
   objc_opt_self();
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [v10 databaseForEntityClass:objc_opt_class()];
+  v14 = [termsCopy databaseForEntityClass:objc_opt_class()];
 
-  v15 = [(HDSQLiteEntity *)HDWorkoutEntity queryWithDatabase:v14 predicate:v12 limit:a3 orderingTerms:v11 groupBy:0];
+  v15 = [(HDSQLiteEntity *)HDWorkoutEntity queryWithDatabase:v14 predicate:v12 limit:predicate orderingTerms:limitCopy groupBy:0];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1360,7 +1360,7 @@ LABEL_17:
   v20[3] = &unk_278615128;
   v21 = v13;
   v16 = v13;
-  if ([v15 enumeratePersistentIDsAndProperties:0 error:a6 enumerationHandler:v20])
+  if ([v15 enumeratePersistentIDsAndProperties:0 error:transaction enumerationHandler:v20])
   {
     v17 = v16;
   }
@@ -1586,14 +1586,14 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
   return v15;
 }
 
-+ (uint64_t)_condenseSamplesWithQuantityType:(void *)a3 workout:(void *)a4 entity:(void *)a5 configuration:(void *)a6 transaction:(double *)a7 error:
++ (uint64_t)_condenseSamplesWithQuantityType:(void *)type workout:(void *)workout entity:(void *)entity configuration:(void *)configuration transaction:(double *)transaction error:
 {
   v332 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v207 = a3;
-  v12 = a4;
-  v13 = a5;
-  v221 = a6;
+  typeCopy = type;
+  workoutCopy = workout;
+  entityCopy = entity;
+  configurationCopy = configuration;
   v230 = objc_opt_self();
   v253 = 0;
   v254 = &v253;
@@ -1601,10 +1601,10 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
   v256 = __Block_byref_object_copy__194;
   v257 = __Block_byref_object_dispose__194;
   v258 = 0;
-  v243 = v13;
-  if (v13)
+  v243 = entityCopy;
+  if (entityCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v13 + 1);
+    WeakRetained = objc_loadWeakRetained(entityCopy + 1);
   }
 
   else
@@ -1612,7 +1612,7 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
     WeakRetained = 0;
   }
 
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v248[0] = MEMORY[0x277D85DD0];
   v248[1] = 3221225472;
   v248[2] = __102__HDWorkoutCondenser__condenseSamplesWithQuantityType_workout_entity_configuration_transaction_error___block_invoke;
@@ -1621,9 +1621,9 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
   v252 = v230;
   v223 = v11;
   v249 = v223;
-  v222 = v12;
+  v222 = workoutCopy;
   v250 = v222;
-  v16 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v15 error:a7 block:v248];
+  v16 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:transaction block:v248];
 
   if (v16)
   {
@@ -1661,13 +1661,13 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
           [MEMORY[0x277D10B18] predicateWithProperty:@"provenance" equalToValue:v19];
           v22 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
-          v23 = [v20 persistentID];
-          v24 = HDAssociationEntityPredicateForChildObjectsAssociatedWithParentObject(v23);
+          persistentID = [v20 persistentID];
+          v24 = HDAssociationEntityPredicateForChildObjectsAssociatedWithParentObject(persistentID);
           v25 = MEMORY[0x277D10B18];
           v26 = MEMORY[0x277CCABB0];
-          v27 = [v21 code];
+          code = [v21 code];
 
-          v28 = [v26 numberWithInteger:v27];
+          v28 = [v26 numberWithInteger:code];
           v29 = [v25 predicateWithProperty:@"data_type" value:v28 comparisonType:1 influenceIndexUsage:0];
 
           v30 = MEMORY[0x277D10B20];
@@ -1695,7 +1695,7 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
           v234 = v21;
           v36 = v35;
           v37 = v18;
-          v38 = v221;
+          v38 = configurationCopy;
           v39 = v19;
           objc_opt_self();
           v227 = [MEMORY[0x277CCACA8] stringWithFormat:@"Checking if workoutEntity (%@) requires processing for quantity type %@ collected by data provenance with ID %@", v239, v234, v39];
@@ -1754,7 +1754,7 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
           v308 = &v259;
           v309 = &v299;
           v310 = v289;
-          if ([v47 enumeratePersistentIDsAndProperties:0 error:a7 enumerationHandler:buf])
+          if ([v47 enumeratePersistentIDsAndProperties:0 error:transaction enumerationHandler:buf])
           {
             if (*(*&v289[8] + 24))
             {
@@ -1815,10 +1815,10 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
             v58 = 0;
           }
 
-          v59 = [v58 daemon];
-          v60 = [v59 behavior];
-          v61 = [v60 features];
-          v62 = [v61 coalesceCumulativeTypesInWorkoutSeries];
+          daemon = [v58 daemon];
+          behavior = [daemon behavior];
+          features = [behavior features];
+          coalesceCumulativeTypesInWorkoutSeries = [features coalesceCumulativeTypesInWorkoutSeries];
 
           if (v243)
           {
@@ -1830,10 +1830,10 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
             v63 = 0;
           }
 
-          v64 = [v63 daemon];
-          v65 = [v64 behavior];
-          v66 = [v65 features];
-          v67 = [v66 coalesceHeartRatesInWorkoutSeries];
+          daemon2 = [v63 daemon];
+          behavior2 = [daemon2 behavior];
+          features2 = [behavior2 features];
+          coalesceHeartRatesInWorkoutSeries = [features2 coalesceHeartRatesInWorkoutSeries];
 
           v68 = 0.0;
           if (![v239 isCondenserVersionLessThan:6 transaction:v45])
@@ -1841,12 +1841,12 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
             goto LABEL_46;
           }
 
-          if (v62)
+          if (coalesceCumulativeTypesInWorkoutSeries)
           {
-            v69 = [v234 aggregationStyle];
-            if (((v69 != 0) & v67) == 0)
+            aggregationStyle = [v234 aggregationStyle];
+            if (((aggregationStyle != 0) & coalesceHeartRatesInWorkoutSeries) == 0)
             {
-              if (v69)
+              if (aggregationStyle)
               {
                 goto LABEL_46;
               }
@@ -1855,7 +1855,7 @@ BOOL __66__HDWorkoutCondenser__condenseWorkout_entity_configuration_error___bloc
             }
           }
 
-          else if ((v67 & 1) == 0)
+          else if ((coalesceHeartRatesInWorkoutSeries & 1) == 0)
           {
             goto LABEL_46;
           }
@@ -1905,7 +1905,7 @@ LABEL_36:
           v309 = &v326;
           v311 = v76;
           v310 = &v299;
-          if ([HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v74 transaction:v75 options:0 error:a7 handler:buf])
+          if ([HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v74 transaction:v75 options:0 error:transaction handler:buf])
           {
             if (*(*(&v299 + 1) + 24))
             {
@@ -1965,22 +1965,22 @@ LABEL_46:
             v87 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"hfd_key"];
             v88 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v86 otherPredicate:v87];
 
-            v89 = [v85 protectedDatabase];
+            protectedDatabase = [v85 protectedDatabase];
 
             *buf = 0;
-            v90 = [(HDSQLiteEntity *)HDQuantitySampleSeriesEntity countValueForProperty:v203 predicate:v88 database:v89 error:buf];
+            v90 = [(HDSQLiteEntity *)HDQuantitySampleSeriesEntity countValueForProperty:v203 predicate:v88 database:protectedDatabase error:buf];
             v91 = *buf;
 
             if (v90)
             {
-              v92 = [v90 integerValue];
+              integerValue = [v90 integerValue];
               v93 = v243;
               if (v243)
               {
                 v93 = v243[4];
               }
 
-              if (v92 >= v93)
+              if (integerValue >= v93)
               {
                 v52 = 1;
               }
@@ -2003,10 +2003,10 @@ LABEL_46:
             if (v91)
             {
 LABEL_55:
-              if (a7)
+              if (transaction)
               {
                 v94 = v91;
-                *a7 = v91;
+                *transaction = v91;
               }
 
               else
@@ -2058,8 +2058,8 @@ LABEL_60:
               *&v259 = 0;
               *(&v259 + 1) = &v259;
               *&v260 = 0x2020000000;
-              v102 = [MEMORY[0x277CBEAA8] distantPast];
-              [v102 timeIntervalSinceReferenceDate];
+              distantPast = [MEMORY[0x277CBEAA8] distantPast];
+              [distantPast timeIntervalSinceReferenceDate];
               v104 = v103;
 
               *(&v260 + 1) = v104;
@@ -2072,7 +2072,7 @@ LABEL_60:
               v308 = v289;
               v105 = v100;
               *&v306 = v105;
-              if ([HDQuantitySampleValueEnumerator orderedQuantityValuesBySeriesForPredicate:v99 transaction:v101 options:0 error:a7 handler:buf])
+              if ([HDQuantitySampleValueEnumerator orderedQuantityValuesBySeriesForPredicate:v99 transaction:v101 options:0 error:transaction handler:buf])
               {
                 v106 = v243;
                 if (v243)
@@ -2165,7 +2165,7 @@ LABEL_78:
           }
 
           v115 = v234;
-          v116 = v207;
+          v116 = typeCopy;
           v235 = v242;
           v117 = v236;
           v118 = v45;
@@ -2220,10 +2220,10 @@ LABEL_78:
             v124 = 0;
           }
 
-          v125 = [v124 daemon];
-          v126 = [v125 behavior];
-          v127 = [v126 features];
-          v128 = [v127 coalesceCumulativeTypesInWorkoutSeries];
+          daemon3 = [v124 daemon];
+          behavior3 = [daemon3 behavior];
+          features3 = [behavior3 features];
+          coalesceCumulativeTypesInWorkoutSeries2 = [features3 coalesceCumulativeTypesInWorkoutSeries];
 
           if (v243)
           {
@@ -2235,10 +2235,10 @@ LABEL_78:
             v129 = 0;
           }
 
-          v130 = [v129 daemon];
-          v131 = [v130 behavior];
-          v132 = [v131 features];
-          v133 = [v132 coalesceHeartRatesInWorkoutSeries];
+          daemon4 = [v129 daemon];
+          behavior4 = [daemon4 behavior];
+          features4 = [behavior4 features];
+          coalesceHeartRatesInWorkoutSeries2 = [features4 coalesceHeartRatesInWorkoutSeries];
 
           v267 = 0;
           v268 = &v267;
@@ -2278,13 +2278,13 @@ LABEL_78:
           v313 = v238;
           v320 = &v272;
           v136 = v218;
-          v323 = v128;
+          v323 = coalesceCumulativeTypesInWorkoutSeries2;
           v219 = v136;
           v314 = v136;
           v321 = &v263;
-          v324 = v133;
+          v324 = coalesceHeartRatesInWorkoutSeries2;
           v215 = v134;
-          if (![HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v235 transaction:v134 options:0 error:a7 handler:buf])
+          if (![HDQuantitySampleValueEnumerator orderedQuantityValuesForPredicate:v235 transaction:v134 options:0 error:transaction handler:buf])
           {
             _HKInitializeLogging();
             v143 = HKLogCondenser();
@@ -2308,7 +2308,7 @@ LABEL_78:
           if (v243)
           {
             v204 = v243[4];
-            if (v128)
+            if (coalesceCumulativeTypesInWorkoutSeries2)
             {
               goto LABEL_94;
             }
@@ -2317,11 +2317,11 @@ LABEL_78:
           else
           {
             v204 = 0;
-            if (v128)
+            if (coalesceCumulativeTypesInWorkoutSeries2)
             {
 LABEL_94:
               v141 = [v238 aggregationStyle] == 0;
-              if (!v133)
+              if (!coalesceHeartRatesInWorkoutSeries2)
               {
                 goto LABEL_95;
               }
@@ -2331,7 +2331,7 @@ LABEL_94:
           }
 
           v141 = 0;
-          if (!v133)
+          if (!coalesceHeartRatesInWorkoutSeries2)
           {
 LABEL_95:
             v142 = 0;
@@ -2441,7 +2441,7 @@ LABEL_131:
                 v173 = v135;
                 v174 = v164;
                 v175 = objc_opt_self();
-                v176 = [(HDWorkoutCondenser *)v166 _insertValuesForSeries:v175 quantityType:v174 startTime:v168 values:v173 provenance:v172 configuration:v170 transaction:v171 countOut:0 error:a7];
+                v176 = [(HDWorkoutCondenser *)v166 _insertValuesForSeries:v175 quantityType:v174 startTime:v168 values:v173 provenance:v172 configuration:v170 transaction:v171 countOut:0 error:transaction];
 
                 if (v176)
                 {
@@ -2449,7 +2449,7 @@ LABEL_131:
 
                   if (v177)
                   {
-                    [v205 setLength:{0, a7}];
+                    [v205 setLength:{0, transaction}];
                     break;
                   }
                 }
@@ -2462,7 +2462,7 @@ LABEL_131:
                 v143 = HKLogCondenser();
                 if (os_log_type_enabled(v143, OS_LOG_TYPE_ERROR))
                 {
-                  v192 = *a7;
+                  v192 = *transaction;
                   *v289 = 138544130;
                   *&v289[4] = v228;
                   *&v289[12] = 2048;
@@ -2488,7 +2488,7 @@ LABEL_150:
             }
           }
 
-          if ([v232 hk_countOfUUIDs] && (+[HDWorkoutCondenser _deleteSamplesWithUUIDData:configuration:error:](v228, v232, v220, a7) & 1) == 0)
+          if ([v232 hk_countOfUUIDs] && (+[HDWorkoutCondenser _deleteSamplesWithUUIDData:configuration:error:](v228, v232, v220, transaction) & 1) == 0)
           {
             _HKInitializeLogging();
             v143 = HKLogCondenser();
@@ -2517,13 +2517,13 @@ LABEL_98:
             v182 = v179 / v178;
             if (os_log_type_enabled(v180, OS_LOG_TYPE_DEFAULT))
             {
-              v183 = [v219 UUID];
-              v184 = [v183 UUIDString];
+              uUID = [v219 UUID];
+              uUIDString = [uUID UUIDString];
               v185 = v268[3];
-              v186 = [v327[5] sourceID];
-              v187 = [v327[5] deviceID];
+              sourceID = [v327[5] sourceID];
+              deviceID = [v327[5] deviceID];
               *v289 = 138413826;
-              *&v289[4] = v184;
+              *&v289[4] = uUIDString;
               *&v289[12] = 2048;
               *&v289[14] = v182;
               *&v289[22] = 2112;
@@ -2533,9 +2533,9 @@ LABEL_98:
               v293 = 2048;
               v294 = v181;
               v295 = 2112;
-              v296 = v186;
+              v296 = sourceID;
               v297 = 2112;
-              v298 = v187;
+              v298 = deviceID;
               _os_log_impl(&dword_228986000, v180, OS_LOG_TYPE_DEFAULT, "Workout with UUID %@ had a compression rate of %.2f for %@ (%ld samples before, %ld samples after) for data provenance with sourceID %@ and deviceID %@", v289, 0x48u);
             }
 
@@ -2549,10 +2549,10 @@ LABEL_98:
               v143 = 0;
             }
 
-            v188 = [v143 daemon];
-            v189 = [v188 analyticsSubmissionCoordinator];
-            v190 = [v238 identifier];
-            [v189 workout_reportWorkoutCondenserCoalescingCompressionRate:v190 numberOfSamplesBeforeCoalescing:*(v268 + 3) numberOfSamplesAfterCoalescing:v181 compressionRate:v182];
+            daemon5 = [v143 daemon];
+            analyticsSubmissionCoordinator = [daemon5 analyticsSubmissionCoordinator];
+            identifier = [v238 identifier];
+            [analyticsSubmissionCoordinator workout_reportWorkoutCondenserCoalescingCompressionRate:identifier numberOfSamplesBeforeCoalescing:*(v268 + 3) numberOfSamplesAfterCoalescing:v181 compressionRate:v182];
 
             v191 = 1;
             goto LABEL_150;
@@ -2603,13 +2603,13 @@ LABEL_152:
     obj = HKLogCondenser();
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
-      v195 = [v207 UUID];
-      v196 = [v195 UUIDString];
-      v197 = *a7;
+      uUID2 = [typeCopy UUID];
+      uUIDString2 = [uUID2 UUIDString];
+      v197 = *transaction;
       *buf = 138412802;
       *&buf[4] = v223;
       *&buf[12] = 2112;
-      *&buf[14] = v196;
+      *&buf[14] = uUIDString2;
       *&buf[22] = 2114;
       v305 = v197;
       _os_log_error_impl(&dword_228986000, obj, OS_LOG_TYPE_ERROR, "Failed to get data provenances for type %@ in workout with UUID %@ with error: %{public}@", buf, 0x20u);
@@ -3248,20 +3248,20 @@ LABEL_75:
   return v59;
 }
 
-+ (id)_insertValuesForSeries:(void *)a3 quantityType:(void *)a4 startTime:(void *)a5 values:(void *)a6 provenance:(void *)a7 configuration:(void *)a8 transaction:(void *)a9 countOut:(uint64_t)a10 error:
++ (id)_insertValuesForSeries:(void *)series quantityType:(void *)type startTime:(void *)time values:(void *)values provenance:(void *)provenance configuration:(void *)configuration transaction:(void *)transaction countOut:(uint64_t)self0 error:
 {
-  v16 = a10;
+  outCopy2 = out;
   v64[1] = *MEMORY[0x277D85DE8];
-  WeakRetained = a3;
-  v18 = a4;
-  v19 = a5;
-  v62 = a6;
-  v20 = a7;
-  v21 = a8;
+  WeakRetained = series;
+  typeCopy = type;
+  timeCopy = time;
+  valuesCopy = values;
+  provenanceCopy = provenance;
+  configurationCopy = configuration;
   objc_opt_self();
   if (!WeakRetained)
   {
-    v57 = v21;
+    v57 = configurationCopy;
     _HKInitializeLogging();
     v22 = HKLogCondenser();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
@@ -3272,18 +3272,18 @@ LABEL_75:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        *&buf[4] = v18;
+        *&buf[4] = typeCopy;
         *&buf[12] = 2048;
-        *&buf[14] = [v19 count];
+        *&buf[14] = [timeCopy count];
         _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_INFO, "Create series quantityType %{public}@ with %lu values", buf, 0x16u);
       }
     }
 
-    v58 = v20;
-    v59 = v19;
-    if (v20)
+    v58 = provenanceCopy;
+    v59 = timeCopy;
+    if (provenanceCopy)
     {
-      WeakRetained = objc_loadWeakRetained(v20 + 1);
+      WeakRetained = objc_loadWeakRetained(provenanceCopy + 1);
     }
 
     else
@@ -3291,29 +3291,29 @@ LABEL_75:
       WeakRetained = 0;
     }
 
-    v25 = [v18 dataObjectClass];
+    dataObjectClass = [typeCopy dataObjectClass];
     v26 = MEMORY[0x277CCD7E8];
-    v27 = [v18 canonicalUnit];
-    v28 = [v26 quantityWithUnit:v27 doubleValue:0.0];
-    v29 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a1];
-    v60 = v18;
-    v30 = [v25 _unfrozenQuantitySampleWithQuantityType:v18 quantity:v28 startDate:v29 device:0];
+    canonicalUnit = [typeCopy canonicalUnit];
+    v28 = [v26 quantityWithUnit:canonicalUnit doubleValue:0.0];
+    v29 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self];
+    v60 = typeCopy;
+    v30 = [dataObjectClass _unfrozenQuantitySampleWithQuantityType:typeCopy quantity:v28 startDate:v29 device:0];
 
-    v31 = [WeakRetained dataManager];
+    dataManager = [WeakRetained dataManager];
     v64[0] = v30;
     v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:1];
     v32 = [HDSourceEntity alloc];
-    v55 = [v62 sourceID];
-    v33 = -[HDSQLiteEntity initWithPersistentID:](v32, "initWithPersistentID:", [v55 longLongValue]);
+    sourceID = [valuesCopy sourceID];
+    v33 = -[HDSQLiteEntity initWithPersistentID:](v32, "initWithPersistentID:", [sourceID longLongValue]);
     v34 = [HDDeviceEntity alloc];
-    v35 = [v62 deviceID];
-    v36 = -[HDSQLiteEntity initWithPersistentID:](v34, "initWithPersistentID:", [v35 longLongValue]);
-    v37 = [v62 sourceVersion];
+    deviceID = [valuesCopy deviceID];
+    v36 = -[HDSQLiteEntity initWithPersistentID:](v34, "initWithPersistentID:", [deviceID longLongValue]);
+    sourceVersion = [valuesCopy sourceVersion];
     Current = CFAbsoluteTimeGetCurrent();
-    v39 = [v62 timeZoneName];
-    if (v62)
+    timeZoneName = [valuesCopy timeZoneName];
+    if (valuesCopy)
     {
-      [v62 operatingSystemVersion];
+      [valuesCopy operatingSystemVersion];
     }
 
     else
@@ -3321,39 +3321,39 @@ LABEL_75:
       memset(buf, 0, 24);
     }
 
-    v40 = [v31 insertDataObjects:v56 sourceEntity:v33 deviceEntity:v36 sourceVersion:v37 creationDate:v39 timeZone:buf OSVersion:Current error:a10];
+    v40 = [dataManager insertDataObjects:v56 sourceEntity:v33 deviceEntity:v36 sourceVersion:sourceVersion creationDate:timeZoneName timeZone:buf OSVersion:Current error:out];
 
     if (!v40)
     {
       v51 = 0;
-      v19 = v59;
+      timeCopy = v59;
       v42 = v60;
       v45 = v57;
-      v20 = v58;
+      provenanceCopy = v58;
       goto LABEL_26;
     }
 
-    v41 = [v30 UUID];
+    uUID = [v30 UUID];
 
-    WeakRetained = v41;
-    v19 = v59;
-    v18 = v60;
-    v21 = v57;
-    v20 = v58;
-    v16 = a10;
+    WeakRetained = uUID;
+    timeCopy = v59;
+    typeCopy = v60;
+    configurationCopy = v57;
+    provenanceCopy = v58;
+    outCopy2 = out;
   }
 
-  v42 = v18;
-  v43 = [v21 protectedDatabase];
+  v42 = typeCopy;
+  protectedDatabase = [configurationCopy protectedDatabase];
   v44 = HDDataEntityPredicateForDataUUID();
-  v30 = [(HDDataEntity *)HDQuantitySampleSeriesEntity anyInDatabase:v43 predicate:v44 error:v16];
+  v30 = [(HDDataEntity *)HDQuantitySampleSeriesEntity anyInDatabase:protectedDatabase predicate:v44 error:outCopy2];
 
-  v45 = v21;
+  v45 = configurationCopy;
   if (!v30)
   {
     v51 = 0;
 LABEL_26:
-    v49 = v62;
+    v49 = valuesCopy;
     goto LABEL_27;
   }
 
@@ -3366,26 +3366,26 @@ LABEL_26:
     v48 = HKLogCondenser();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
     {
-      v54 = [v19 count];
+      v54 = [timeCopy count];
       *buf = 134217984;
       *&buf[4] = v54;
       _os_log_debug_impl(&dword_228986000, v48, OS_LOG_TYPE_DEBUG, "Insert %lu values into series", buf, 0xCu);
     }
   }
 
-  v49 = v62;
-  if ([v30 insertValues:v19 transaction:v21 error:v16])
+  v49 = valuesCopy;
+  if ([v30 insertValues:timeCopy transaction:configurationCopy error:outCopy2])
   {
-    if (a9)
+    if (transaction)
     {
-      v50 = [v30 countForSeriesWithTransaction:v21 error:v16];
+      v50 = [v30 countForSeriesWithTransaction:configurationCopy error:outCopy2];
       v51 = v50;
       if (!v50)
       {
         goto LABEL_27;
       }
 
-      *a9 = [v50 integerValue];
+      *transaction = [v50 integerValue];
     }
 
     WeakRetained = WeakRetained;
@@ -3404,41 +3404,41 @@ LABEL_27:
   return v51;
 }
 
-+ (uint64_t)_finishSeries:(uint64_t)a1 quantityType:(void *)a2 baseMetadata:(void *)a3 workout:(void *)a4 UUIDDataToDelete:(void *)a5 configuration:(void *)a6 transaction:(void *)a7 error:(void *)a8
++ (uint64_t)_finishSeries:(uint64_t)series quantityType:(void *)type baseMetadata:(void *)metadata workout:(void *)workout UUIDDataToDelete:(void *)delete configuration:(void *)configuration transaction:(void *)transaction error:(void *)error
 {
-  v14 = a2;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  typeCopy = type;
+  metadataCopy = metadata;
+  workoutCopy = workout;
+  deleteCopy = delete;
+  configurationCopy = configuration;
+  transactionCopy = transaction;
+  errorCopy = error;
   objc_opt_self();
-  v30 = v19;
-  v31 = v20;
-  v32 = v14;
-  v33 = v16;
-  v34 = v15;
-  v35 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v15;
-  v24 = v16;
-  v25 = v14;
-  v26 = v20;
-  v27 = v19;
+  v30 = transactionCopy;
+  v31 = errorCopy;
+  v32 = typeCopy;
+  v33 = workoutCopy;
+  v34 = metadataCopy;
+  v35 = deleteCopy;
+  v21 = configurationCopy;
+  v22 = deleteCopy;
+  v23 = metadataCopy;
+  v24 = workoutCopy;
+  v25 = typeCopy;
+  v26 = errorCopy;
+  v27 = transactionCopy;
   v28 = HKWithAutoreleasePool();
 
   return v28;
 }
 
-+ (uint64_t)_deleteSamplesWithUUIDData:(void *)a3 configuration:(uint64_t)a4 error:
++ (uint64_t)_deleteSamplesWithUUIDData:(void *)data configuration:(uint64_t)configuration error:
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
+  dataCopy = data;
   objc_opt_self();
-  v8 = [v6 hk_countOfUUIDs];
+  hk_countOfUUIDs = [v6 hk_countOfUUIDs];
   _HKInitializeLogging();
   v9 = HKLogCondenser();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -3449,26 +3449,26 @@ LABEL_27:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v19 = 134217984;
-      v20 = v8;
+      v20 = hk_countOfUUIDs;
       _os_log_debug_impl(&dword_228986000, v11, OS_LOG_TYPE_DEBUG, "Delete %ld condensed samples", &v19, 0xCu);
     }
   }
 
-  if (v7)
+  if (dataCopy)
   {
-    v12 = v7[7];
+    v12 = dataCopy[7];
     if (v12)
     {
-      v12[7] += v8;
+      v12[7] += hk_countOfUUIDs;
     }
   }
 
   v13 = objc_alloc_init(HDDataDeletionConfiguration);
   [(HDDataDeletionConfiguration *)v13 setFailIfNotFound:0];
   [(HDDataDeletionConfiguration *)v13 setPreserveExactStartAndEndDates:1];
-  if (v7)
+  if (dataCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v7 + 1);
+    WeakRetained = objc_loadWeakRetained(dataCopy + 1);
   }
 
   else
@@ -3476,8 +3476,8 @@ LABEL_27:
     WeakRetained = 0;
   }
 
-  v15 = [WeakRetained dataManager];
-  v16 = [v15 deleteObjectsWithUUIDCollection:v6 configuration:v13 error:a4];
+  dataManager = [WeakRetained dataManager];
+  v16 = [dataManager deleteObjectsWithUUIDCollection:v6 configuration:v13 error:configuration];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
@@ -3696,21 +3696,21 @@ uint64_t __76__HDWorkoutCondenser__updateCondenserVersionForWorkout_configuratio
   return v14;
 }
 
-+ (BOOL)coalesceCumulativeDatumsInDatumsCollection:(id)a3
++ (BOOL)coalesceCumulativeDatumsInDatumsCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 count];
+  collectionCopy = collection;
+  v4 = [collectionCopy count];
   v5 = v4 - 2;
   if (v4 >= 2)
   {
-    v7 = [v3 lastObject];
-    [v7 timeInterval];
+    lastObject = [collectionCopy lastObject];
+    [lastObject timeInterval];
     v9 = v8;
-    [v7 value];
+    [lastObject value];
     v11 = v10;
-    [v7 duration];
+    [lastObject duration];
     v13 = v9 + v12;
-    v14 = [v3 objectAtIndex:v5];
+    v14 = [collectionCopy objectAtIndex:v5];
     [v14 timeInterval];
     v16 = v15;
     [v14 value];
@@ -3737,9 +3737,9 @@ uint64_t __76__HDWorkoutCondenser__updateCondenserVersionForWorkout_configuratio
             v22 = v13;
           }
 
-          [v3 removeObjectsInRange:{objc_msgSend(v3, "count") - 2, 2}];
+          [collectionCopy removeObjectsInRange:{objc_msgSend(collectionCopy, "count") - 2, 2}];
           v23 = [MEMORY[0x277CCD180] datumWithStartTime:v16 value:v11 + v18 endTime:v22];
-          [v3 addObject:v23];
+          [collectionCopy addObject:v23];
 
           v6 = 1;
         }
@@ -3755,21 +3755,21 @@ uint64_t __76__HDWorkoutCondenser__updateCondenserVersionForWorkout_configuratio
   return v6;
 }
 
-+ (BOOL)coalesceHeartRateDatumsInDatumsCollection:(id)a3
++ (BOOL)coalesceHeartRateDatumsInDatumsCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 count];
+  collectionCopy = collection;
+  v4 = [collectionCopy count];
   v5 = v4 - 2;
   if (v4 >= 2)
   {
-    v7 = [v3 lastObject];
-    [v7 timeInterval];
+    lastObject = [collectionCopy lastObject];
+    [lastObject timeInterval];
     v9 = v8;
-    [v7 value];
+    [lastObject value];
     v11 = v10;
-    [v7 duration];
+    [lastObject duration];
     v13 = v12;
-    v14 = [v3 objectAtIndex:v5];
+    v14 = [collectionCopy objectAtIndex:v5];
     [v14 timeInterval];
     v16 = v15;
     [v14 value];
@@ -3791,9 +3791,9 @@ uint64_t __76__HDWorkoutCondenser__updateCondenserVersionForWorkout_configuratio
         v22 = v9 + v13;
       }
 
-      [v3 removeObjectsInRange:{objc_msgSend(v3, "count") - 2, 2}];
+      [collectionCopy removeObjectsInRange:{objc_msgSend(collectionCopy, "count") - 2, 2}];
       v23 = [MEMORY[0x277CCD180] datumWithStartTime:v16 value:v18 endTime:v22];
-      [v3 addObject:v23];
+      [collectionCopy addObject:v23];
     }
   }
 
@@ -3820,10 +3820,10 @@ BOOL __112__HDWorkoutCondenser__queue_submitAnalyticEventForReason_batchSize_suc
   return *(*(*(a1 + 32) + 8) + 40) != 0;
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v4 = *MEMORY[0x277D86230];
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_BOOL(xdict, v4, 1);
   xpc_dictionary_set_string(xdict, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86378], 1);

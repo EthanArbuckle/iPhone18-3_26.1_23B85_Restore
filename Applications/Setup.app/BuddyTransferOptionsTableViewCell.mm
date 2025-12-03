@@ -1,5 +1,5 @@
 @interface BuddyTransferOptionsTableViewCell
-- (BuddyTransferOptionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BuddyTransferOptionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CALayer)iconLayer;
 - (double)_chevronWidth;
 - (double)_imageLeadingMargin;
@@ -9,55 +9,55 @@
 - (id)_footnoteFont;
 - (id)_titleFont;
 - (void)prepareForReuse;
-- (void)setIconLayer:(id)a3;
+- (void)setIconLayer:(id)layer;
 @end
 
 @implementation BuddyTransferOptionsTableViewCell
 
-- (BuddyTransferOptionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BuddyTransferOptionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v78 = self;
+  selfCopy = self;
   v77 = a2;
-  v76 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v78;
-  v78 = 0;
+  objc_storeStrong(&location, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v74.receiver = v4;
   v74.super_class = BuddyTransferOptionsTableViewCell;
-  v5 = [(BuddyTransferOptionsTableViewCell *)&v74 initWithStyle:v76 reuseIdentifier:location];
-  v78 = v5;
-  objc_storeStrong(&v78, v5);
+  v5 = [(BuddyTransferOptionsTableViewCell *)&v74 initWithStyle:styleCopy reuseIdentifier:location];
+  selfCopy = v5;
+  objc_storeStrong(&selfCopy, v5);
   if (v5)
   {
-    [v78 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = [[BuddyAspectFitLayerView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v7 = *(v78 + 4);
-    *(v78 + 4) = v6;
+    v7 = *(selfCopy + 4);
+    *(selfCopy + 4) = v6;
 
-    [*(v78 + 4) setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v78 contentView];
-    [v8 addSubview:*(v78 + 4)];
+    [*(selfCopy + 4) setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [selfCopy contentView];
+    [contentView addSubview:*(selfCopy + 4)];
 
-    v68 = [*(v78 + 4) leadingAnchor];
-    v70 = [v78 contentView];
-    v66 = [v70 leadingAnchor];
-    [v78 _imageLeadingMargin];
-    v64 = [v68 constraintEqualToAnchor:v66 constant:?];
+    leadingAnchor = [*(selfCopy + 4) leadingAnchor];
+    contentView2 = [selfCopy contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    [selfCopy _imageLeadingMargin];
+    v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v81[0] = v64;
-    v62 = [v78 contentView];
-    v9 = [v62 topAnchor];
-    v10 = [*(v78 + 4) topAnchor];
-    v11 = [v9 constraintLessThanOrEqualToAnchor:v10];
+    contentView3 = [selfCopy contentView];
+    topAnchor = [contentView3 topAnchor];
+    topAnchor2 = [*(selfCopy + 4) topAnchor];
+    v11 = [topAnchor constraintLessThanOrEqualToAnchor:topAnchor2];
     v81[1] = v11;
-    v12 = [v78 contentView];
-    v13 = [v12 bottomAnchor];
-    v14 = [*(v78 + 4) bottomAnchor];
-    v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
+    contentView4 = [selfCopy contentView];
+    bottomAnchor = [contentView4 bottomAnchor];
+    bottomAnchor2 = [*(selfCopy + 4) bottomAnchor];
+    v15 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v81[2] = v15;
-    v16 = [*(v78 + 4) widthAnchor];
-    [v78 _imageWidth];
-    v17 = [v16 constraintEqualToConstant:?];
+    widthAnchor = [*(selfCopy + 4) widthAnchor];
+    [selfCopy _imageWidth];
+    v17 = [widthAnchor constraintEqualToConstant:?];
     v81[3] = v17;
     v18 = [NSArray arrayWithObjects:v81 count:4];
     [NSLayoutConstraint activateConstraints:v18];
@@ -65,23 +65,23 @@
     v73 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v73 setAxis:1];
     [v73 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v78 contentView];
-    [v19 addSubview:v73];
+    contentView5 = [selfCopy contentView];
+    [contentView5 addSubview:v73];
 
-    v61 = [v73 leadingAnchor];
-    v60 = [*(v78 + 4) trailingAnchor];
-    [v78 _imageTrailingMargin];
-    v20 = [v61 constraintEqualToAnchor:v60 constant:?];
+    leadingAnchor3 = [v73 leadingAnchor];
+    trailingAnchor = [*(selfCopy + 4) trailingAnchor];
+    [selfCopy _imageTrailingMargin];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
     v80[0] = v20;
-    v21 = [v73 topAnchor];
-    v22 = [v78 contentView];
-    v23 = [v22 topAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23 constant:40.0];
+    topAnchor3 = [v73 topAnchor];
+    contentView6 = [selfCopy contentView];
+    topAnchor4 = [contentView6 topAnchor];
+    v24 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:40.0];
     v80[1] = v24;
-    v25 = [v78 contentView];
-    v26 = [v25 bottomAnchor];
-    v27 = [v73 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:30.0];
+    contentView7 = [selfCopy contentView];
+    bottomAnchor3 = [contentView7 bottomAnchor];
+    bottomAnchor4 = [v73 bottomAnchor];
+    v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:30.0];
     v80[2] = v28;
     v29 = [NSArray arrayWithObjects:v80 count:3];
     [NSLayoutConstraint activateConstraints:v29];
@@ -90,130 +90,130 @@
     [v72 setAxis:1];
     [v72 setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v31 = *(v78 + 1);
-    *(v78 + 1) = v30;
+    v31 = *(selfCopy + 1);
+    *(selfCopy + 1) = v30;
 
-    v32 = [v78 _titleFont];
-    [*(v78 + 1) setFont:v32];
+    _titleFont = [selfCopy _titleFont];
+    [*(selfCopy + 1) setFont:_titleFont];
 
-    [*(v78 + 1) setNumberOfLines:0];
-    [*(v78 + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v72 addArrangedSubview:*(v78 + 1)];
-    [v72 setCustomSpacing:*(v78 + 1) afterView:2.0];
+    [*(selfCopy + 1) setNumberOfLines:0];
+    [*(selfCopy + 1) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v72 addArrangedSubview:*(selfCopy + 1)];
+    [v72 setCustomSpacing:*(selfCopy + 1) afterView:2.0];
     v33 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v34 = *(v78 + 2);
-    *(v78 + 2) = v33;
+    v34 = *(selfCopy + 2);
+    *(selfCopy + 2) = v33;
 
-    v35 = [v78 _descriptionFont];
-    [*(v78 + 2) setFont:v35];
+    _descriptionFont = [selfCopy _descriptionFont];
+    [*(selfCopy + 2) setFont:_descriptionFont];
 
-    [*(v78 + 2) setNumberOfLines:0];
-    [*(v78 + 2) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v72 addArrangedSubview:*(v78 + 2)];
+    [*(selfCopy + 2) setNumberOfLines:0];
+    [*(selfCopy + 2) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v72 addArrangedSubview:*(selfCopy + 2)];
     [v73 addArrangedSubview:v72];
     [v73 setCustomSpacing:v72 afterView:16.0];
-    v36 = [*(v78 + 4) centerYAnchor];
-    v37 = [v72 centerYAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerYAnchor = [*(selfCopy + 4) centerYAnchor];
+    centerYAnchor2 = [v72 centerYAnchor];
+    v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v38 setActive:1];
 
     v39 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    v40 = *(v78 + 3);
-    *(v78 + 3) = v39;
+    v40 = *(selfCopy + 3);
+    *(selfCopy + 3) = v39;
 
-    v41 = [v78 _footnoteFont];
-    [*(v78 + 3) setFont:v41];
+    _footnoteFont = [selfCopy _footnoteFont];
+    [*(selfCopy + 3) setFont:_footnoteFont];
 
-    [*(v78 + 3) setNumberOfLines:0];
-    [*(v78 + 3) setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v73 addArrangedSubview:*(v78 + 3)];
+    [*(selfCopy + 3) setNumberOfLines:0];
+    [*(selfCopy + 3) setTranslatesAutoresizingMaskIntoConstraints:0];
+    [v73 addArrangedSubview:*(selfCopy + 3)];
     v42 = [UIImage systemImageNamed:@"chevron.forward"];
     v43 = +[UIColor tertiaryLabelColor];
     v71 = [(UIImage *)v42 imageWithTintColor:v43 renderingMode:1];
 
     v44 = [[UIImageView alloc] initWithImage:v71];
-    v45 = *(v78 + 5);
-    *(v78 + 5) = v44;
+    v45 = *(selfCopy + 5);
+    *(selfCopy + 5) = v44;
 
-    [*(v78 + 5) setContentMode:1];
-    [*(v78 + 5) setTranslatesAutoresizingMaskIntoConstraints:0];
-    v46 = [v78 contentView];
-    [v46 addSubview:*(v78 + 5)];
+    [*(selfCopy + 5) setContentMode:1];
+    [*(selfCopy + 5) setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView8 = [selfCopy contentView];
+    [contentView8 addSubview:*(selfCopy + 5)];
 
-    v67 = [*(v78 + 5) centerYAnchor];
-    v69 = [v78 contentView];
-    v65 = [v69 centerYAnchor];
-    v63 = [v67 constraintEqualToAnchor:?];
+    centerYAnchor3 = [*(selfCopy + 5) centerYAnchor];
+    contentView9 = [selfCopy contentView];
+    centerYAnchor4 = [contentView9 centerYAnchor];
+    v63 = [centerYAnchor3 constraintEqualToAnchor:?];
     v79[0] = v63;
-    v47 = [*(v78 + 5) widthAnchor];
-    [v78 _chevronWidth];
-    v48 = [v47 constraintEqualToConstant:?];
+    widthAnchor2 = [*(selfCopy + 5) widthAnchor];
+    [selfCopy _chevronWidth];
+    v48 = [widthAnchor2 constraintEqualToConstant:?];
     v79[1] = v48;
-    v49 = [*(v78 + 5) leadingAnchor];
-    v50 = [v73 trailingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:10.0];
+    leadingAnchor4 = [*(selfCopy + 5) leadingAnchor];
+    trailingAnchor2 = [v73 trailingAnchor];
+    v51 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:10.0];
     v79[2] = v51;
-    v52 = [v78 contentView];
-    v53 = [v52 trailingAnchor];
-    v54 = [*(v78 + 5) trailingAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:8.0];
+    contentView10 = [selfCopy contentView];
+    trailingAnchor3 = [contentView10 trailingAnchor];
+    trailingAnchor4 = [*(selfCopy + 5) trailingAnchor];
+    v55 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
     v79[3] = v55;
     v56 = [NSArray arrayWithObjects:v79 count:4];
     [NSLayoutConstraint activateConstraints:v56];
 
     LODWORD(v57) = 1148846080;
-    [*(v78 + 5) setContentHuggingPriority:0 forAxis:v57];
+    [*(selfCopy + 5) setContentHuggingPriority:0 forAxis:v57];
     objc_storeStrong(&v71, 0);
     objc_storeStrong(&v72, 0);
     objc_storeStrong(&v73, 0);
   }
 
-  v58 = v78;
+  v58 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v78, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v58;
 }
 
 - (void)prepareForReuse
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyTransferOptionsTableViewCell;
   [(BuddyTransferOptionsTableViewCell *)&v7 prepareForReuse];
-  v2 = [(BuddyTransferOptionsTableViewCell *)v9 imageView];
-  [v2 setImage:0];
+  imageView = [(BuddyTransferOptionsTableViewCell *)selfCopy imageView];
+  [imageView setImage:0];
 
-  v3 = [(BuddyTransferOptionsTableViewCell *)v9 iconLayerView];
-  [(BuddyAspectFitLayerView *)v3 setManagedLayer:0];
+  iconLayerView = [(BuddyTransferOptionsTableViewCell *)selfCopy iconLayerView];
+  [(BuddyAspectFitLayerView *)iconLayerView setManagedLayer:0];
 
-  v4 = [(BuddyTransferOptionsTableViewCell *)v9 nameLabel];
-  [(UILabel *)v4 setText:0];
+  nameLabel = [(BuddyTransferOptionsTableViewCell *)selfCopy nameLabel];
+  [(UILabel *)nameLabel setText:0];
 
-  v5 = [(BuddyTransferOptionsTableViewCell *)v9 descriptionLabel];
-  [(UILabel *)v5 setText:0];
+  descriptionLabel = [(BuddyTransferOptionsTableViewCell *)selfCopy descriptionLabel];
+  [(UILabel *)descriptionLabel setText:0];
 
-  v6 = [(BuddyTransferOptionsTableViewCell *)v9 footnoteLabel];
-  [(UILabel *)v6 setText:0];
+  footnoteLabel = [(BuddyTransferOptionsTableViewCell *)selfCopy footnoteLabel];
+  [(UILabel *)footnoteLabel setText:0];
 }
 
 - (CALayer)iconLayer
 {
   v2 = [(BuddyTransferOptionsTableViewCell *)self iconLayerView:a2];
-  v3 = [(BuddyAspectFitLayerView *)v2 managedLayer];
+  managedLayer = [(BuddyAspectFitLayerView *)v2 managedLayer];
 
-  return v3;
+  return managedLayer;
 }
 
-- (void)setIconLayer:(id)a3
+- (void)setIconLayer:(id)layer
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, layer);
   v3 = location[0];
-  v4 = [(BuddyTransferOptionsTableViewCell *)v6 iconLayerView];
-  [(BuddyAspectFitLayerView *)v4 setManagedLayer:v3];
+  iconLayerView = [(BuddyTransferOptionsTableViewCell *)selfCopy iconLayerView];
+  [(BuddyAspectFitLayerView *)iconLayerView setManagedLayer:v3];
 
   objc_storeStrong(location, 0);
 }

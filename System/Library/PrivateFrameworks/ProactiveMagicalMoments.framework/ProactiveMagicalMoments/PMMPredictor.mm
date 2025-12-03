@@ -1,29 +1,29 @@
 @interface PMMPredictor
-+ (BOOL)_predictionPopulatesContinuity:(id)a3;
-+ (BOOL)_predictionPopulatesSpringboard:(id)a3;
-+ (BOOL)_predictionPopulatesStark:(id)a3;
-+ (BOOL)bundleSupportsINPlayMediaIntentForBundleId:(id)a3 fromUnitTest:(BOOL)a4;
++ (BOOL)_predictionPopulatesContinuity:(id)continuity;
++ (BOOL)_predictionPopulatesSpringboard:(id)springboard;
++ (BOOL)_predictionPopulatesStark:(id)stark;
++ (BOOL)bundleSupportsINPlayMediaIntentForBundleId:(id)id fromUnitTest:(BOOL)test;
 + (id)sharedInstance;
-- (BOOL)_recommendingAudioWhileAlreadyPlaying:(id)a3;
+- (BOOL)_recommendingAudioWhileAlreadyPlaying:(id)playing;
 - (PMMPredictor)init;
-- (id)expirationForReason:(int64_t)a3;
-- (id)notifyNonNowPlayingConsumersOfPredictionItem:(id)a3;
-- (id)preprocessPrediction:(id)a3 predictionSource:(unint64_t)a4 mmReason:(int64_t)a5 decReason:(int64_t)a6 reasonSingle:(int64_t)a7 reasonMetadata:(id)a8;
+- (id)expirationForReason:(int64_t)reason;
+- (id)notifyNonNowPlayingConsumersOfPredictionItem:(id)item;
+- (id)preprocessPrediction:(id)prediction predictionSource:(unint64_t)source mmReason:(int64_t)reason decReason:(int64_t)decReason reasonSingle:(int64_t)single reasonMetadata:(id)metadata;
 - (void)_clearAllRecommendations;
 - (void)_clearAllRecommendationsExceptAppPredictions;
 - (void)_handleNowPlayingInfoDidChange;
-- (void)_notifyAppPredictionAboutMMUpdate:(id)a3;
-- (void)_updatePredictionBasedOnPreviousDataProtectionStatus:(int64_t)a3 previousEncryptedDataAvailability:(int64_t)a4;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
-- (void)dataProtectionMonitor:(id)a3 dataProtectionStatusDidChange:(int64_t)a4;
-- (void)dataProtectionMonitor:(id)a3 encryptedDataAvailbilityDidChange:(int64_t)a4;
-- (void)dataProtectionMonitor:(id)a3 unlockedSinceBoot:(BOOL)a4;
-- (void)fetchMediaRemoteNowPlayingApplicationBundleId:(id)a3;
-- (void)fetchMediaRemoteNowPlayingApplicationPlaybackState:(id)a3;
+- (void)_notifyAppPredictionAboutMMUpdate:(id)update;
+- (void)_updatePredictionBasedOnPreviousDataProtectionStatus:(int64_t)status previousEncryptedDataAvailability:(int64_t)availability;
+- (void)callObserver:(id)observer callChanged:(id)changed;
+- (void)dataProtectionMonitor:(id)monitor dataProtectionStatusDidChange:(int64_t)change;
+- (void)dataProtectionMonitor:(id)monitor encryptedDataAvailbilityDidChange:(int64_t)change;
+- (void)dataProtectionMonitor:(id)monitor unlockedSinceBoot:(BOOL)boot;
+- (void)fetchMediaRemoteNowPlayingApplicationBundleId:(id)id;
+- (void)fetchMediaRemoteNowPlayingApplicationPlaybackState:(id)state;
 - (void)handleNowPlayingInfoDidChange;
-- (void)handlePredictedApplications:(id)a3;
-- (void)logPrediction:(id)a3 predictionSource:(unint64_t)a4 mmReason:(int64_t)a5 decReason:(int64_t)a6 reasonSingle:(int64_t)a7 reasonMetadata:(id)a8;
-- (void)notifyNowPlayingConsumerOfPredictionItem:(id)a3;
+- (void)handlePredictedApplications:(id)applications;
+- (void)logPrediction:(id)prediction predictionSource:(unint64_t)source mmReason:(int64_t)reason decReason:(int64_t)decReason reasonSingle:(int64_t)single reasonMetadata:(id)metadata;
+- (void)notifyNowPlayingConsumerOfPredictionItem:(id)item;
 @end
 
 @implementation PMMPredictor
@@ -85,7 +85,7 @@ void __30__PMMPredictor_sharedInstance__block_invoke()
     v2->_callObserver = v14;
 
     [(CXCallObserver *)v2->_callObserver setDelegate:v2 queue:v2->_queue];
-    v16 = [(PMMPredictor *)v2 nowPlayingStatusQueue];
+    nowPlayingStatusQueue = [(PMMPredictor *)v2 nowPlayingStatusQueue];
     MRMediaRemoteRegisterForNowPlayingNotifications();
 
     LocalCenter = CFNotificationCenterGetLocalCenter();
@@ -110,16 +110,16 @@ void __30__PMMPredictor_sharedInstance__block_invoke()
     v21->_ctConnection = v24;
 
     v26 = MEMORY[0x277D41DA0];
-    v27 = [MEMORY[0x277CEB628] mmConsumerMapping];
-    v28 = [v26 propertyWithName:@"consumer" enumMapping:v27 autoSanitizeValues:1];
+    mmConsumerMapping = [MEMORY[0x277CEB628] mmConsumerMapping];
+    v28 = [v26 propertyWithName:@"consumer" enumMapping:mmConsumerMapping autoSanitizeValues:1];
 
     v29 = MEMORY[0x277D41DA0];
-    v30 = [MEMORY[0x277CEB628] mmEventTypeMapping];
-    v31 = [v29 propertyWithName:@"event" enumMapping:v30 autoSanitizeValues:1];
+    mmEventTypeMapping = [MEMORY[0x277CEB628] mmEventTypeMapping];
+    v31 = [v29 propertyWithName:@"event" enumMapping:mmEventTypeMapping autoSanitizeValues:1];
 
     v32 = MEMORY[0x277D41DA0];
-    v33 = [MEMORY[0x277CEB628] predictionReasonMapping];
-    v34 = [v32 propertyWithName:@"reason" enumMapping:v33 autoSanitizeValues:1];
+    predictionReasonMapping = [MEMORY[0x277CEB628] predictionReasonMapping];
+    v34 = [v32 propertyWithName:@"reason" enumMapping:predictionReasonMapping autoSanitizeValues:1];
 
     v35 = [MEMORY[0x277D41DA0] propertyWithName:@"category" possibleValues:&unk_28398B510 autoSanitizeValues:1];
     v36 = objc_alloc(MEMORY[0x277D41DB8]);
@@ -232,18 +232,18 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePredictedApplications:(id)a3
+- (void)handlePredictedApplications:(id)applications
 {
-  v4 = a3;
-  v5 = [(PMMPredictor *)self queue];
+  applicationsCopy = applications;
+  queue = [(PMMPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PMMPredictor_handlePredictedApplications___block_invoke;
   v7[3] = &unk_2785922E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = applicationsCopy;
+  selfCopy = self;
+  v6 = applicationsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __44__PMMPredictor_handlePredictedApplications___block_invoke(uint64_t a1)
@@ -294,17 +294,17 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   }
 }
 
-- (void)_notifyAppPredictionAboutMMUpdate:(id)a3
+- (void)_notifyAppPredictionAboutMMUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PMMPredictor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  queue = [(PMMPredictor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 count])
+  if ([updateCopy count])
   {
     v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:300.0];
-    v7 = [[PMMPrediction alloc] initWithPredictedItems:v4 expirationDate:v6];
+    v7 = [[PMMPrediction alloc] initWithPredictedItems:updateCopy expirationDate:v6];
     v8 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -319,7 +319,7 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPrediction:(id)a3 predictionSource:(unint64_t)a4 mmReason:(int64_t)a5 decReason:(int64_t)a6 reasonSingle:(int64_t)a7 reasonMetadata:(id)a8
+- (void)logPrediction:(id)prediction predictionSource:(unint64_t)source mmReason:(int64_t)reason decReason:(int64_t)decReason reasonSingle:(int64_t)single reasonMetadata:(id)metadata
 {
   v26 = *MEMORY[0x277D85DE8];
   v11 = __atxlog_handle_pmm();
@@ -333,32 +333,32 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = [MEMORY[0x277CEB628] stringForMMConsumerType:0];
-    v14 = [MEMORY[0x277CEB628] stringForPredictionReason:a7];
+    v14 = [MEMORY[0x277CEB628] stringForPredictionReason:single];
     *buf = 138412802;
     v21 = v13;
     v22 = 2112;
     v23 = v14;
     v24 = 2048;
-    v25 = a6;
+    decReasonCopy = decReason;
     _os_log_impl(&dword_22639A000, v12, OS_LOG_TYPE_DEFAULT, "com.apple.MagicalMoments metrics: MM, consumer %@, reasonSingle %@, reason %ld, suggested", buf, 0x20u);
   }
 
-  v15 = [(PMMPredictor *)self mmAppSuggestion];
+  mmAppSuggestion = [(PMMPredictor *)self mmAppSuggestion];
   v19[0] = &unk_28398B480;
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:single];
   v19[1] = v16;
   v19[2] = &unk_28398B480;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-  [v15 trackEventWithPropertyValues:v17];
+  [mmAppSuggestion trackEventWithPropertyValues:v17];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)preprocessPrediction:(id)a3 predictionSource:(unint64_t)a4 mmReason:(int64_t)a5 decReason:(int64_t)a6 reasonSingle:(int64_t)a7 reasonMetadata:(id)a8
+- (id)preprocessPrediction:(id)prediction predictionSource:(unint64_t)source mmReason:(int64_t)reason decReason:(int64_t)decReason reasonSingle:(int64_t)single reasonMetadata:(id)metadata
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if ([(PMMPredictor *)self _recommendingAudioWhileAlreadyPlaying:v10])
+  predictionCopy = prediction;
+  if ([(PMMPredictor *)self _recommendingAudioWhileAlreadyPlaying:predictionCopy])
   {
     v11 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -367,20 +367,20 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
       _os_log_impl(&dword_22639A000, v11, OS_LOG_TYPE_DEFAULT, "suppressing suggestion since audio is already playing", v18, 2u);
     }
 
-    v12 = [(PMMPredictor *)self mmAppSuggestion];
+    mmAppSuggestion = [(PMMPredictor *)self mmAppSuggestion];
     v19[0] = &unk_28398B480;
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:single];
     v19[1] = v13;
     v19[2] = &unk_28398B498;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-    [v12 trackEventWithPropertyValues:v14];
+    [mmAppSuggestion trackEventWithPropertyValues:v14];
 
     v15 = 0;
   }
 
   else
   {
-    v15 = v10;
+    v15 = predictionCopy;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -388,12 +388,12 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   return v15;
 }
 
-- (id)notifyNonNowPlayingConsumersOfPredictionItem:(id)a3
+- (id)notifyNonNowPlayingConsumersOfPredictionItem:(id)item
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
-  if ([PMMPredictor _predictionPopulatesContinuity:v4])
+  if ([PMMPredictor _predictionPopulatesContinuity:itemCopy])
   {
     v6 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -402,13 +402,13 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
       _os_log_impl(&dword_22639A000, v6, OS_LOG_TYPE_DEFAULT, "prediction populates continuity", buf, 2u);
     }
 
-    v7 = -[PMMPredictor expirationForReason:](self, "expirationForReason:", [v4 reason]);
+    v7 = -[PMMPredictor expirationForReason:](self, "expirationForReason:", [itemCopy reason]);
     v8 = [PMMPrediction alloc];
-    v24[0] = v4;
+    v24[0] = itemCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     v10 = [(PMMPrediction *)v8 initWithPredictedItems:v9 expirationDate:v7];
 
-    if ([PMMPredictor _predictionPopulatesSpringboard:v4])
+    if ([PMMPredictor _predictionPopulatesSpringboard:itemCopy])
     {
       v11 = __atxlog_handle_pmm();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -427,7 +427,7 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
     }
   }
 
-  if ([PMMPredictor _predictionPopulatesStark:v4])
+  if ([PMMPredictor _predictionPopulatesStark:itemCopy])
   {
     v14 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -438,7 +438,7 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
 
     v15 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:30.0];
     v16 = [PMMPrediction alloc];
-    v21 = v4;
+    v21 = itemCopy;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     v18 = [(PMMPrediction *)v16 initWithPredictedItems:v17 expirationDate:v15];
 
@@ -451,11 +451,11 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   return v5;
 }
 
-- (void)notifyNowPlayingConsumerOfPredictionItem:(id)a3
+- (void)notifyNowPlayingConsumerOfPredictionItem:(id)item
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(PMMPredictor *)self setMostRecentNowPlayingPrediction:v4];
+  itemCopy = item;
+  [(PMMPredictor *)self setMostRecentNowPlayingPrediction:itemCopy];
   v5 = __atxlog_handle_pmm();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -465,7 +465,7 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
 
   v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:30.0];
   v7 = [PMMPrediction alloc];
-  v12[0] = v4;
+  v12[0] = itemCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v9 = [(PMMPrediction *)v7 initWithPredictedItems:v8 expirationDate:v6];
 
@@ -509,14 +509,14 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   [(PMMPredictor *)self setMostRecentPrediction:0];
 }
 
-- (id)expirationForReason:(int64_t)a3
+- (id)expirationForReason:(int64_t)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(PMMPredictor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(PMMPredictor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ((v3 & 0x10) == 0 && (v3 & 8) != 0)
+  if ((reasonCopy & 0x10) == 0 && (reasonCopy & 8) != 0)
   {
     v5 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -533,17 +533,17 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
   return v6;
 }
 
-+ (BOOL)_predictionPopulatesSpringboard:(id)a3
++ (BOOL)_predictionPopulatesSpringboard:(id)springboard
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
+  springboardCopy = springboard;
+  keyPathForAppDataDictionary = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
   v5 = +[PMMContextHelper sharedInstance];
-  v6 = [v5 fetchDataDictionaryForKeyPath:v4];
+  v6 = [v5 fetchDataDictionaryForKeyPath:keyPathForAppDataDictionary];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CFE338] appBundleIdKey];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    appBundleIdKey = [MEMORY[0x277CFE338] appBundleIdKey];
+    v8 = [v6 objectForKeyedSubscript:appBundleIdKey];
   }
 
   else
@@ -551,28 +551,28 @@ void __44__PMMPredictor_handlePredictedApplications___block_invoke_67(uint64_t a
     v8 = 0;
   }
 
-  v9 = [v3 bundleId];
-  v10 = [v8 isEqualToString:v9];
+  bundleId = [springboardCopy bundleId];
+  v10 = [v8 isEqualToString:bundleId];
 
   return v10 ^ 1;
 }
 
-+ (BOOL)_predictionPopulatesContinuity:(id)a3
++ (BOOL)_predictionPopulatesContinuity:(id)continuity
 {
-  v3 = a3;
-  if ([v3 reason] == 8 || !objc_msgSend(v3, "reason") || objc_msgSend(v3, "reason") == 512)
+  continuityCopy = continuity;
+  if ([continuityCopy reason] == 8 || !objc_msgSend(continuityCopy, "reason") || objc_msgSend(continuityCopy, "reason") == 512)
   {
     goto LABEL_4;
   }
 
-  [v3 confidence];
+  [continuityCopy confidence];
   if (v6 >= 0.25)
   {
     v4 = 1;
     goto LABEL_5;
   }
 
-  if (([v3 reason] & 0x86) == 0)
+  if (([continuityCopy reason] & 0x86) == 0)
   {
 LABEL_4:
     v4 = 0;
@@ -581,8 +581,8 @@ LABEL_4:
   else
   {
     v7 = objc_opt_class();
-    v8 = [v3 bundleId];
-    v4 = [v7 bundleSupportsINPlayMediaIntentForBundleId:v8 fromUnitTest:0];
+    bundleId = [continuityCopy bundleId];
+    v4 = [v7 bundleSupportsINPlayMediaIntentForBundleId:bundleId fromUnitTest:0];
   }
 
 LABEL_5:
@@ -590,18 +590,18 @@ LABEL_5:
   return v4;
 }
 
-+ (BOOL)bundleSupportsINPlayMediaIntentForBundleId:(id)a3 fromUnitTest:(BOOL)a4
++ (BOOL)bundleSupportsINPlayMediaIntentForBundleId:(id)id fromUnitTest:(BOOL)test
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CEB3B8] appInfoForBundle:a3];
+  v5 = [MEMORY[0x277CEB3B8] appInfoForBundle:id];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 supportedActions];
-  v9 = [v8 containsObject:v7];
+  supportedActions = [v5 supportedActions];
+  v9 = [supportedActions containsObject:v7];
 
   if (v9)
   {
-    if (a4 || ([v5 actionsRestrictedWhileLocked], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v7), v10, !v11))
+    if (test || ([v5 actionsRestrictedWhileLocked], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v7), v10, !v11))
     {
       v14 = 1;
       goto LABEL_11;
@@ -637,18 +637,18 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_recommendingAudioWhileAlreadyPlaying:(id)a3
+- (BOOL)_recommendingAudioWhileAlreadyPlaying:(id)playing
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 reason] & 0x86) != 0)
+  playingCopy = playing;
+  if (([playingCopy reason] & 0x86) != 0)
   {
     *buf = 0;
     v17 = buf;
     v18 = 0x2020000000;
     v19 = 0;
     v5 = dispatch_semaphore_create(0);
-    v6 = [(PMMPredictor *)self nowPlayingStatusQueue];
+    nowPlayingStatusQueue = [(PMMPredictor *)self nowPlayingStatusQueue];
     v15 = MEMORY[0x277D85DD0];
     v7 = v5;
     MRMediaRemoteGetNowPlayingApplicationPlaybackState();
@@ -697,12 +697,12 @@ LABEL_11:
   return v9 & 1;
 }
 
-+ (BOOL)_predictionPopulatesStark:(id)a3
++ (BOOL)_predictionPopulatesStark:(id)stark
 {
-  v3 = [a3 reason];
+  reason = [stark reason];
   v4 = __atxlog_handle_pmm();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if ((v3 & 0x80) != 0)
+  if ((reason & 0x80) != 0)
   {
     if (v5)
     {
@@ -722,18 +722,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  return (v3 >> 7) & 1;
+  return (reason >> 7) & 1;
 }
 
-- (void)_updatePredictionBasedOnPreviousDataProtectionStatus:(int64_t)a3 previousEncryptedDataAvailability:(int64_t)a4
+- (void)_updatePredictionBasedOnPreviousDataProtectionStatus:(int64_t)status previousEncryptedDataAvailability:(int64_t)availability
 {
-  v5 = [(PMMPredictor *)self queue:a3];
+  v5 = [(PMMPredictor *)self queue:status];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(PMMPredictor *)self mostRecentPrediction];
-  v7 = [v6 reason];
+  mostRecentPrediction = [(PMMPredictor *)self mostRecentPrediction];
+  reason = [mostRecentPrediction reason];
 
-  if ((v7 & 8) != 0)
+  if ((reason & 8) != 0)
   {
     v8 = __atxlog_handle_pmm();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -768,16 +768,16 @@ LABEL_6:
   }
 }
 
-- (void)dataProtectionMonitor:(id)a3 encryptedDataAvailbilityDidChange:(int64_t)a4
+- (void)dataProtectionMonitor:(id)monitor encryptedDataAvailbilityDidChange:(int64_t)change
 {
-  v6 = [(PMMPredictor *)self queue];
+  queue = [(PMMPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__PMMPredictor_dataProtectionMonitor_encryptedDataAvailbilityDidChange___block_invoke;
   v7[3] = &unk_278592330;
   v7[4] = self;
-  v7[5] = a4;
-  dispatch_async(v6, v7);
+  v7[5] = change;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __72__PMMPredictor_dataProtectionMonitor_encryptedDataAvailbilityDidChange___block_invoke(uint64_t a1)
@@ -790,28 +790,28 @@ uint64_t __72__PMMPredictor_dataProtectionMonitor_encryptedDataAvailbilityDidCha
   return [v3 _updatePredictionBasedOnPreviousDataProtectionStatus:v4 previousEncryptedDataAvailability:v2];
 }
 
-- (void)dataProtectionMonitor:(id)a3 unlockedSinceBoot:(BOOL)a4
+- (void)dataProtectionMonitor:(id)monitor unlockedSinceBoot:(BOOL)boot
 {
-  v6 = [(PMMPredictor *)self queue];
+  queue = [(PMMPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__PMMPredictor_dataProtectionMonitor_unlockedSinceBoot___block_invoke;
   v7[3] = &unk_278592358;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  bootCopy = boot;
+  dispatch_async(queue, v7);
 }
 
-- (void)dataProtectionMonitor:(id)a3 dataProtectionStatusDidChange:(int64_t)a4
+- (void)dataProtectionMonitor:(id)monitor dataProtectionStatusDidChange:(int64_t)change
 {
-  v6 = [(PMMPredictor *)self queue];
+  queue = [(PMMPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__PMMPredictor_dataProtectionMonitor_dataProtectionStatusDidChange___block_invoke;
   v7[3] = &unk_278592330;
   v7[4] = self;
-  v7[5] = a4;
-  dispatch_async(v6, v7);
+  v7[5] = change;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __68__PMMPredictor_dataProtectionMonitor_dataProtectionStatusDidChange___block_invoke(uint64_t a1)
@@ -838,13 +838,13 @@ uint64_t __68__PMMPredictor_dataProtectionMonitor_dataProtectionStatusDidChange_
 - (void)handleNowPlayingInfoDidChange
 {
   objc_initWeak(&location, self);
-  v3 = [(PMMPredictor *)self nowPlayingStatusQueue];
+  nowPlayingStatusQueue = [(PMMPredictor *)self nowPlayingStatusQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__PMMPredictor_handleNowPlayingInfoDidChange__block_invoke;
   v4[3] = &unk_278592380;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(nowPlayingStatusQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -858,8 +858,8 @@ void __45__PMMPredictor_handleNowPlayingInfoDidChange__block_invoke(uint64_t a1)
 
 - (void)_handleNowPlayingInfoDidChange
 {
-  v3 = [(PMMPredictor *)self nowPlayingStatusQueue];
-  dispatch_assert_queue_V2(v3);
+  nowPlayingStatusQueue = [(PMMPredictor *)self nowPlayingStatusQueue];
+  dispatch_assert_queue_V2(nowPlayingStatusQueue);
 
   v4 = dispatch_group_create();
   v11[0] = 0;
@@ -877,14 +877,14 @@ void __45__PMMPredictor_handleNowPlayingInfoDidChange__block_invoke(uint64_t a1)
   v5 = v4;
   v9 = v5;
   [(PMMPredictor *)self fetchMediaRemoteNowPlayingApplicationBundleId:v8];
-  v6 = [(PMMPredictor *)self queue];
+  queue = [(PMMPredictor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PMMPredictor__handleNowPlayingInfoDidChange__block_invoke_2;
   v7[3] = &unk_2785923D0;
   v7[4] = self;
   v7[5] = v11;
-  dispatch_group_notify(v5, v6, v7);
+  dispatch_group_notify(v5, queue, v7);
 
   _Block_object_dispose(v11, 8);
 }
@@ -921,24 +921,24 @@ void __46__PMMPredictor__handleNowPlayingInfoDidChange__block_invoke_2(uint64_t 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchMediaRemoteNowPlayingApplicationPlaybackState:(id)a3
+- (void)fetchMediaRemoteNowPlayingApplicationPlaybackState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v5 = [(PMMPredictor *)self nowPlayingStatusQueue];
-    v6 = v4;
+    nowPlayingStatusQueue = [(PMMPredictor *)self nowPlayingStatusQueue];
+    v6 = stateCopy;
     MRMediaRemoteGetNowPlayingApplicationPlaybackState();
   }
 }
 
-- (void)fetchMediaRemoteNowPlayingApplicationBundleId:(id)a3
+- (void)fetchMediaRemoteNowPlayingApplicationBundleId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = [(PMMPredictor *)self nowPlayingStatusQueue];
-    v6 = v4;
+    nowPlayingStatusQueue = [(PMMPredictor *)self nowPlayingStatusQueue];
+    v6 = idCopy;
     MRMediaRemoteGetClientProperties();
   }
 }
@@ -952,18 +952,18 @@ uint64_t __62__PMMPredictor_fetchMediaRemoteNowPlayingApplicationBundleId___bloc
   return v3(v1, BundleIdentifier);
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(PMMPredictor *)self queue];
+  observerCopy = observer;
+  queue = [(PMMPredictor *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__PMMPredictor_callObserver_callChanged___block_invoke;
   v8[3] = &unk_2785922E0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = observerCopy;
+  v7 = observerCopy;
+  dispatch_async(queue, v8);
 }
 
 void __41__PMMPredictor_callObserver_callChanged___block_invoke(uint64_t a1)

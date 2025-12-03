@@ -15,7 +15,7 @@
   v9 = a3;
   v10 = [[v8 alloc] initWithBundleIdentifier:v9 error:0];
 
-  v11 = [a1 fpui_extensionRecordByFiltering:v10 useCase:a4 isUIExtension:a5];
+  v11 = [self fpui_extensionRecordByFiltering:v10 useCase:a4 isUIExtension:a5];
 
   return v11;
 }
@@ -26,7 +26,7 @@
   v9 = a3;
   v10 = [[v8 alloc] initWithURL:v9 error:0];
 
-  v11 = [a1 fpui_extensionRecordByFiltering:v10 useCase:a4 isUIExtension:a5];
+  v11 = [self fpui_extensionRecordByFiltering:v10 useCase:a4 isUIExtension:a5];
 
   return v11;
 }
@@ -34,7 +34,7 @@
 + (id)fpui_extensionRecordByFiltering:()FPUIAdditions useCase:isUIExtension:
 {
   v8 = a3;
-  if (v8 && ((v9 = [a1 _fpui_exactPlatformRequiredExtensionUseCase:a4 isUIExtension:a5]) == 0 || objc_msgSend(v8, "platform") == v9))
+  if (v8 && ((v9 = [self _fpui_exactPlatformRequiredExtensionUseCase:a4 isUIExtension:a5]) == 0 || objc_msgSend(v8, "platform") == v9))
   {
     v10 = v8;
   }
@@ -54,28 +54,28 @@
     return 0;
   }
 
-  v4 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
-  if (!v4)
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  if (!bundleRecordForCurrentProcess)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [v4 platform];
+  v5 = bundleRecordForCurrentProcess;
+  platform = [bundleRecordForCurrentProcess platform];
 
-  if ((v6 - 13) <= 0xFFFFFFFD)
+  if ((platform - 13) <= 0xFFFFFFFD)
   {
     return 0;
   }
 
-  return v6;
+  return platform;
 }
 
 - (id)fpui_extensionInfoForKey:()FPUIAdditions ofClass:
 {
   v4 = a3;
-  v5 = [a1 infoDictionary];
-  v6 = [v5 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+  infoDictionary = [self infoDictionary];
+  v6 = [infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
   v7 = [v6 objectForKey:v4];
 
@@ -95,8 +95,8 @@
 - (id)fpui_entitlementValueForKey:()FPUIAdditions ofClass:
 {
   v6 = a3;
-  v7 = [a1 entitlements];
-  v8 = [v7 objectForKey:v6 ofClass:a4];
+  entitlements = [self entitlements];
+  v8 = [entitlements objectForKey:v6 ofClass:a4];
 
   return v8;
 }

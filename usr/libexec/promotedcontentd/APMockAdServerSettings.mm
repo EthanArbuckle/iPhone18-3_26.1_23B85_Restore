@@ -1,12 +1,12 @@
 @interface APMockAdServerSettings
-+ (BOOL)isAdResponseMockedForPlacementType:(int64_t)a3;
-+ (id)adResponseDataForPlacementType:(int64_t)a3;
-+ (id)storageWithDefaultValues:(id)a3;
++ (BOOL)isAdResponseMockedForPlacementType:(int64_t)type;
++ (id)adResponseDataForPlacementType:(int64_t)type;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation APMockAdServerSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
   v3 = NSStringFromSelector("latencyInMilliseconds");
   v8[0] = v3;
@@ -21,45 +21,45 @@
   return v6;
 }
 
-+ (BOOL)isAdResponseMockedForPlacementType:(int64_t)a3
++ (BOOL)isAdResponseMockedForPlacementType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseVideo];
+        adResponseVideo = [v4 adResponseVideo];
         goto LABEL_14;
       case 4:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseNative];
+        adResponseVideo = [v4 adResponseNative];
         goto LABEL_14;
       case 7:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseSponsorship];
+        adResponseVideo = [v4 adResponseSponsorship];
         goto LABEL_14;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseBanner];
+        adResponseVideo = [v4 adResponseBanner];
         goto LABEL_14;
       case 1:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseInterstitial];
+        adResponseVideo = [v4 adResponseInterstitial];
         goto LABEL_14;
       case 2:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseAudio];
+        adResponseVideo = [v4 adResponseAudio];
 LABEL_14:
-        v3 = v5 != 0;
+        v3 = adResponseVideo != 0;
 
         break;
     }
@@ -68,57 +68,57 @@ LABEL_14:
   return v3;
 }
 
-+ (id)adResponseDataForPlacementType:(int64_t)a3
++ (id)adResponseDataForPlacementType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseVideo];
+        adResponseVideo = [v4 adResponseVideo];
         break;
       case 4:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseNative];
+        adResponseVideo = [v4 adResponseNative];
         break;
       case 7:
         v4 = +[APMockAdServerSettings settings];
-        v5 = [v4 adResponseSponsorship];
+        adResponseVideo = [v4 adResponseSponsorship];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = +[APMockAdServerSettings settings];
-      v5 = [v4 adResponseInterstitial];
+      adResponseVideo = [v4 adResponseInterstitial];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_15;
       }
 
       v4 = +[APMockAdServerSettings settings];
-      v5 = [v4 adResponseAudio];
+      adResponseVideo = [v4 adResponseAudio];
     }
   }
 
   else
   {
     v4 = +[APMockAdServerSettings settings];
-    v5 = [v4 adResponseBanner];
+    adResponseVideo = [v4 adResponseBanner];
   }
 
-  v3 = v5;
+  v3 = adResponseVideo;
 
 LABEL_15:
 

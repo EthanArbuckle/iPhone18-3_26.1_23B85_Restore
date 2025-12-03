@@ -1,25 +1,25 @@
 @interface MSCMSAuthEnvelopedData
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error;
 - (MSCMSAuthEnvelopedData)init;
-- (MSCMSAuthEnvelopedData)initWithDataContent:(id)a3 recipient:(id)a4;
-- (MSCMSAuthEnvelopedData)initWithDataContent:(id)a3 recipient:(id)a4 encryptionAlgorithm:(id)a5;
-- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)a3 recipient:(id)a4;
-- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)a3 recipient:(id)a4 encryptionAlgorithm:(id)a5;
-- (MSCMSAuthEnvelopedData)initWithEncryptionAlgorithm:(id)a3;
+- (MSCMSAuthEnvelopedData)initWithDataContent:(id)content recipient:(id)recipient;
+- (MSCMSAuthEnvelopedData)initWithDataContent:(id)content recipient:(id)recipient encryptionAlgorithm:(id)algorithm;
+- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)content recipient:(id)recipient;
+- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)content recipient:(id)recipient encryptionAlgorithm:(id)algorithm;
+- (MSCMSAuthEnvelopedData)initWithEncryptionAlgorithm:(id)algorithm;
 - (MSCMSMessage)embeddedContent;
 - (MSOID)contentType;
 - (MSOID)encryptionAlgorithm;
 - (MSOID)type;
 - (NSArray)originatorCertificates;
 - (NSData)dataContent;
-- (id)encodeMessageSecurityObject:(id *)a3;
-- (id)getAttributesWithOID:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setDataContent:(id)a3;
-- (void)setEmbeddedContent:(id)a3;
-- (void)setEncryptionAlgorithm:(id)a3;
-- (void)setOriginatorCertificates:(id)a3;
-- (void)setType:(id)a3;
+- (id)encodeMessageSecurityObject:(id *)object;
+- (id)getAttributesWithOID:(id)d;
+- (void)setContentType:(id)type;
+- (void)setDataContent:(id)content;
+- (void)setEmbeddedContent:(id)content;
+- (void)setEncryptionAlgorithm:(id)algorithm;
+- (void)setOriginatorCertificates:(id)certificates;
+- (void)setType:(id)type;
 @end
 
 @implementation MSCMSAuthEnvelopedData
@@ -31,13 +31,13 @@
   return *(self + v3);
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v5 = OBJC_IVAR___MSCMSAuthEnvelopedData_type;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = type;
+  typeCopy = type;
 }
 
 - (NSData)dataContent
@@ -58,20 +58,20 @@
   return v3;
 }
 
-- (void)setDataContent:(id)a3
+- (void)setDataContent:(id)content
 {
-  v3 = a3;
-  if (a3)
+  contentCopy = content;
+  if (content)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_258CBEA80();
+    selfCopy = self;
+    v6 = contentCopy;
+    contentCopy = sub_258CBEA80();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -79,7 +79,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = contentCopy;
   v10[1] = v8;
   sub_258CA8728(v11, v12);
 }
@@ -91,13 +91,13 @@
   return *(self + v3);
 }
 
-- (void)setEncryptionAlgorithm:(id)a3
+- (void)setEncryptionAlgorithm:(id)algorithm
 {
   v5 = OBJC_IVAR___MSCMSAuthEnvelopedData_encryptionAlgorithm;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = algorithm;
+  algorithmCopy = algorithm;
 }
 
 - (NSArray)originatorCertificates
@@ -112,7 +112,7 @@
   return v5;
 }
 
-- (void)setOriginatorCertificates:(id)a3
+- (void)setOriginatorCertificates:(id)certificates
 {
   type metadata accessor for SecCertificate();
   v4 = sub_258CBEB30();
@@ -129,13 +129,13 @@
   return *(self + v3);
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
   v5 = OBJC_IVAR___MSCMSAuthEnvelopedData_contentType;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = type;
+  typeCopy = type;
 }
 
 - (MSCMSMessage)embeddedContent
@@ -148,79 +148,79 @@
   return v5;
 }
 
-- (void)setEmbeddedContent:(id)a3
+- (void)setEmbeddedContent:(id)content
 {
   v5 = OBJC_IVAR___MSCMSAuthEnvelopedData_embeddedContent;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = content;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (MSCMSAuthEnvelopedData)initWithEncryptionAlgorithm:(id)a3
+- (MSCMSAuthEnvelopedData)initWithEncryptionAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  v4 = sub_258CAF340(v3);
+  algorithmCopy = algorithm;
+  v4 = sub_258CAF340(algorithmCopy);
 
   return v4;
 }
 
-- (MSCMSAuthEnvelopedData)initWithDataContent:(id)a3 recipient:(id)a4
+- (MSCMSAuthEnvelopedData)initWithDataContent:(id)content recipient:(id)recipient
 {
-  v5 = a3;
-  v6 = a4;
+  contentCopy = content;
+  recipientCopy = recipient;
   v7 = sub_258CBEA80();
   v9 = v8;
 
-  v10 = sub_258CAF4E4(v7, v9, a4);
+  v10 = sub_258CAF4E4(v7, v9, recipient);
   sub_258CA82B8(v7, v9);
   return v10;
 }
 
-- (MSCMSAuthEnvelopedData)initWithDataContent:(id)a3 recipient:(id)a4 encryptionAlgorithm:(id)a5
+- (MSCMSAuthEnvelopedData)initWithDataContent:(id)content recipient:(id)recipient encryptionAlgorithm:(id)algorithm
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  recipientCopy = recipient;
+  algorithmCopy = algorithm;
   v10 = sub_258CBEA80();
   v12 = v11;
 
-  v13 = sub_258CAF7BC(v10, v12, a4, v9);
+  v13 = sub_258CAF7BC(v10, v12, recipient, algorithmCopy);
   sub_258CA82B8(v10, v12);
   return v13;
 }
 
-- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)a3 recipient:(id)a4
+- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)content recipient:(id)recipient
 {
   swift_unknownObjectRetain();
-  v7 = a4;
+  recipientCopy = recipient;
   v8 = @"2.16.840.1.101.3.4.1.46";
   sub_258CBEAE0();
   v9 = objc_allocWithZone(MSOID);
   v10 = sub_258CAEABC();
-  v11 = [(MSCMSAuthEnvelopedData *)self initWithEmbeddedContent:a3 recipient:v7 encryptionAlgorithm:v10];
+  v11 = [(MSCMSAuthEnvelopedData *)self initWithEmbeddedContent:content recipient:recipientCopy encryptionAlgorithm:v10];
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)a3 recipient:(id)a4 encryptionAlgorithm:(id)a5
+- (MSCMSAuthEnvelopedData)initWithEmbeddedContent:(id)content recipient:(id)recipient encryptionAlgorithm:(id)algorithm
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_258CAFA50(a3, a4, v9);
+  recipientCopy = recipient;
+  algorithmCopy = algorithm;
+  v10 = sub_258CAFA50(content, recipient, algorithmCopy);
   swift_unknownObjectRelease();
 
   return v10;
 }
 
-- (id)getAttributesWithOID:(id)a3
+- (id)getAttributesWithOID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  v6 = MSCMSAuthEnvelopedData.getAttributes(OID:)(v4);
+  dCopy = d;
+  selfCopy = self;
+  v6 = MSCMSAuthEnvelopedData.getAttributes(OID:)(dCopy);
 
   if (v6)
   {
@@ -236,9 +236,9 @@
   return v7;
 }
 
-- (id)encodeMessageSecurityObject:(id *)a3
+- (id)encodeMessageSecurityObject:(id *)object
 {
-  v3 = self;
+  selfCopy = self;
   MSCMSAuthEnvelopedData.encodeSecurityObject()();
   v5 = v4;
   v7 = v6;
@@ -249,15 +249,15 @@
   return v8;
 }
 
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  optionsCopy = options;
   v8 = sub_258CBEA80();
   v10 = v9;
 
   swift_getObjCClassMetadata();
-  static MSCMSAuthEnvelopedData.decodeSecurityObject(_:options:)(v8, v10, a4);
+  static MSCMSAuthEnvelopedData.decodeSecurityObject(_:options:)(v8, v10, options);
   v12 = v11;
 
   sub_258CA82B8(v8, v10);

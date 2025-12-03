@@ -12,9 +12,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     publicString = v2->_publicString;
-    v2->_publicString = v4;
+    v2->_publicString = uUIDString;
 
     privateString = v2->_privateString;
     v2->_privateString = &stru_4EB10;

@@ -1,44 +1,44 @@
 @interface ODDSiriSchemaODDiOSAssistantProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDiOSAssistantProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDiOSAssistantProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDiOSAssistantProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDiOSAssistantProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3;
+- (int)activeSubscriptionsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addActiveSubscriptions:(int)a3;
-- (void)setHasIsAllowSiriWhenLockedEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveSubscriptions:(int)subscriptions;
+- (void)setHasIsAllowSiriWhenLockedEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDiOSAssistantProperties
 
-- (ODDSiriSchemaODDiOSAssistantProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDiOSAssistantProperties)initWithDictionary:(id)dictionary
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = ODDSiriSchemaODDiOSAssistantProperties;
   v5 = [(ODDSiriSchemaODDiOSAssistantProperties *)&v43 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isPressSideButtonForSiriEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isPressSideButtonForSiriEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAssistantProperties setIsPressSideButtonForSiriEnabled:](v5, "setIsPressSideButtonForSiriEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isAllowSiriWhenLockedEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isAllowSiriWhenLockedEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSAssistantProperties setIsAllowSiriWhenLockedEnabled:](v5, "setIsAllowSiriWhenLockedEnabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"response"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"response"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(ODDSiriSchemaODDiOSAssistantProperties *)v5 setResponse:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"accessibility"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"accessibility"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(ODDSiriSchemaODDiOSAssistantProperties *)v5 setAccessibility:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"carPlay"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"carPlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(ODDSiriSchemaODDiOSAssistantProperties *)v5 setCarPlay:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"siriInCall"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"siriInCall"];
     objc_opt_class();
     v38 = v14;
     if (objc_opt_isKindOfClass())
@@ -72,7 +72,7 @@
     }
 
     v37 = v12;
-    v16 = [v4 objectForKeyedSubscript:@"announce"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"announce"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v36 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"autoSendMessage"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"autoSendMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       [(ODDSiriSchemaODDiOSAssistantProperties *)v5 setAutoSendMessage:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"activeSubscriptions"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"activeSubscriptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
       v8 = v33;
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"headGestures"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"headGestures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDiOSAssistantProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDiOSAssistantProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDiOSAssistantProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDiOSAssistantProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,91 +189,91 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accessibility)
   {
-    v4 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    accessibility = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+    dictionaryRepresentation = [accessibility dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"accessibility"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accessibility"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"accessibility"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"accessibility"];
     }
   }
 
   if ([(NSArray *)self->_activeSubscriptions count])
   {
-    v7 = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"activeSubscriptions"];
+    activeSubscriptions = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
+    v8 = [activeSubscriptions copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"activeSubscriptions"];
   }
 
   if (self->_announce)
   {
-    v9 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    announce = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+    dictionaryRepresentation2 = [announce dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"announce"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"announce"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"announce"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"announce"];
     }
   }
 
   if (self->_autoSendMessage)
   {
-    v12 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    autoSendMessage = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+    dictionaryRepresentation3 = [autoSendMessage dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"autoSendMessage"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"autoSendMessage"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"autoSendMessage"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"autoSendMessage"];
     }
   }
 
   if (self->_carPlay)
   {
-    v15 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    carPlay = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+    dictionaryRepresentation4 = [carPlay dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"carPlay"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"carPlay"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"carPlay"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"carPlay"];
     }
   }
 
   if (self->_headGestures)
   {
-    v18 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    headGestures = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+    dictionaryRepresentation5 = [headGestures dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"headGestures"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"headGestures"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"headGestures"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"headGestures"];
     }
   }
 
@@ -281,7 +281,7 @@
   if ((has & 2) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAssistantProperties isAllowSiriWhenLockedEnabled](self, "isAllowSiriWhenLockedEnabled")}];
-    [v3 setObject:v22 forKeyedSubscript:@"isAllowSiriWhenLockedEnabled"];
+    [dictionary setObject:v22 forKeyedSubscript:@"isAllowSiriWhenLockedEnabled"];
 
     has = self->_has;
   }
@@ -289,44 +289,44 @@
   if (has)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSAssistantProperties isPressSideButtonForSiriEnabled](self, "isPressSideButtonForSiriEnabled")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isPressSideButtonForSiriEnabled"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isPressSideButtonForSiriEnabled"];
   }
 
   if (self->_response)
   {
-    v24 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    response = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+    dictionaryRepresentation6 = [response dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"response"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"response"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"response"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"response"];
     }
   }
 
   if (self->_siriInCall)
   {
-    v27 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    siriInCall = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+    dictionaryRepresentation7 = [siriInCall dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"siriInCall"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"siriInCall"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"siriInCall"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"siriInCall"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -363,16 +363,16 @@ LABEL_6:
   return v10 ^ v11 ^ [(ODDSiriSchemaODDHeadGestureProperties *)self->_headGestures hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v6 = v4[80];
+  v6 = equalCopy[80];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_49;
@@ -381,13 +381,13 @@ LABEL_6:
   if (*&has)
   {
     isPressSideButtonForSiriEnabled = self->_isPressSideButtonForSiriEnabled;
-    if (isPressSideButtonForSiriEnabled != [v4 isPressSideButtonForSiriEnabled])
+    if (isPressSideButtonForSiriEnabled != [equalCopy isPressSideButtonForSiriEnabled])
     {
       goto LABEL_49;
     }
 
     has = self->_has;
-    v6 = v4[80];
+    v6 = equalCopy[80];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -399,26 +399,26 @@ LABEL_6:
   if (v8)
   {
     isAllowSiriWhenLockedEnabled = self->_isAllowSiriWhenLockedEnabled;
-    if (isAllowSiriWhenLockedEnabled != [v4 isAllowSiriWhenLockedEnabled])
+    if (isAllowSiriWhenLockedEnabled != [equalCopy isAllowSiriWhenLockedEnabled])
     {
       goto LABEL_49;
     }
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
-  v11 = [v4 response];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+  response2 = [equalCopy response];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v12 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
-  if (v12)
+  response3 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+  if (response3)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
-    v15 = [v4 response];
-    v16 = [v14 isEqual:v15];
+    v13 = response3;
+    response4 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+    response5 = [equalCopy response];
+    v16 = [response4 isEqual:response5];
 
     if (!v16)
     {
@@ -430,20 +430,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
-  v11 = [v4 accessibility];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+  response2 = [equalCopy accessibility];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v17 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
-  if (v17)
+  accessibility = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+  if (accessibility)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
-    v20 = [v4 accessibility];
-    v21 = [v19 isEqual:v20];
+    v18 = accessibility;
+    accessibility2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+    accessibility3 = [equalCopy accessibility];
+    v21 = [accessibility2 isEqual:accessibility3];
 
     if (!v21)
     {
@@ -455,20 +455,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
-  v11 = [v4 carPlay];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+  response2 = [equalCopy carPlay];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v22 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
-  if (v22)
+  carPlay = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+  if (carPlay)
   {
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
-    v25 = [v4 carPlay];
-    v26 = [v24 isEqual:v25];
+    v23 = carPlay;
+    carPlay2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+    carPlay3 = [equalCopy carPlay];
+    v26 = [carPlay2 isEqual:carPlay3];
 
     if (!v26)
     {
@@ -480,20 +480,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
-  v11 = [v4 siriInCall];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+  response2 = [equalCopy siriInCall];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v27 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
-  if (v27)
+  siriInCall = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+  if (siriInCall)
   {
-    v28 = v27;
-    v29 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
-    v30 = [v4 siriInCall];
-    v31 = [v29 isEqual:v30];
+    v28 = siriInCall;
+    siriInCall2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+    siriInCall3 = [equalCopy siriInCall];
+    v31 = [siriInCall2 isEqual:siriInCall3];
 
     if (!v31)
     {
@@ -505,20 +505,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
-  v11 = [v4 announce];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+  response2 = [equalCopy announce];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v32 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
-  if (v32)
+  announce = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+  if (announce)
   {
-    v33 = v32;
-    v34 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
-    v35 = [v4 announce];
-    v36 = [v34 isEqual:v35];
+    v33 = announce;
+    announce2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+    announce3 = [equalCopy announce];
+    v36 = [announce2 isEqual:announce3];
 
     if (!v36)
     {
@@ -530,20 +530,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
-  v11 = [v4 autoSendMessage];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+  response2 = [equalCopy autoSendMessage];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v37 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
-  if (v37)
+  autoSendMessage = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+  if (autoSendMessage)
   {
-    v38 = v37;
-    v39 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
-    v40 = [v4 autoSendMessage];
-    v41 = [v39 isEqual:v40];
+    v38 = autoSendMessage;
+    autoSendMessage2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+    autoSendMessage3 = [equalCopy autoSendMessage];
+    v41 = [autoSendMessage2 isEqual:autoSendMessage3];
 
     if (!v41)
     {
@@ -555,20 +555,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
-  v11 = [v4 activeSubscriptions];
-  if ((v10 != 0) == (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
+  response2 = [equalCopy activeSubscriptions];
+  if ((response != 0) == (response2 == 0))
   {
     goto LABEL_48;
   }
 
-  v42 = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
-  if (v42)
+  activeSubscriptions = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
+  if (activeSubscriptions)
   {
-    v43 = v42;
-    v44 = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
-    v45 = [v4 activeSubscriptions];
-    v46 = [v44 isEqual:v45];
+    v43 = activeSubscriptions;
+    activeSubscriptions2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self activeSubscriptions];
+    activeSubscriptions3 = [equalCopy activeSubscriptions];
+    v46 = [activeSubscriptions2 isEqual:activeSubscriptions3];
 
     if (!v46)
     {
@@ -580,12 +580,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
-  v11 = [v4 headGestures];
-  if ((v10 != 0) != (v11 == 0))
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+  response2 = [equalCopy headGestures];
+  if ((response != 0) != (response2 == 0))
   {
-    v47 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
-    if (!v47)
+    headGestures = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+    if (!headGestures)
     {
 
 LABEL_52:
@@ -593,10 +593,10 @@ LABEL_52:
       goto LABEL_50;
     }
 
-    v48 = v47;
-    v49 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
-    v50 = [v4 headGestures];
-    v51 = [v49 isEqual:v50];
+    v48 = headGestures;
+    headGestures2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+    headGestures3 = [equalCopy headGestures];
+    v51 = [headGestures2 isEqual:headGestures3];
 
     if (v51)
     {
@@ -616,10 +616,10 @@ LABEL_50:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -632,51 +632,51 @@ LABEL_50:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
 
-  if (v6)
+  if (response)
   {
-    v7 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+    response2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+  accessibility = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
 
-  if (v8)
+  if (accessibility)
   {
-    v9 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+    accessibility2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+  carPlay = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
 
-  if (v10)
+  if (carPlay)
   {
-    v11 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+    carPlay2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+  siriInCall = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
 
-  if (v12)
+  if (siriInCall)
   {
-    v13 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+    siriInCall2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+  announce = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
 
-  if (v14)
+  if (announce)
   {
-    v15 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+    announce2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+  autoSendMessage = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
 
-  if (v16)
+  if (autoSendMessage)
   {
-    v17 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+    autoSendMessage2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
     PBDataWriterWriteSubmessage();
   }
 
@@ -709,32 +709,32 @@ LABEL_50:
     while (v20);
   }
 
-  v23 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+  headGestures = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
 
-  if (v23)
+  if (headGestures)
   {
-    v24 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+    headGestures2 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3
+- (int)activeSubscriptionsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addActiveSubscriptions:(int)a3
+- (void)addActiveSubscriptions:(int)subscriptions
 {
-  v3 = *&a3;
+  v3 = *&subscriptions;
   activeSubscriptions = self->_activeSubscriptions;
   if (!activeSubscriptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeSubscriptions;
-    self->_activeSubscriptions = v6;
+    self->_activeSubscriptions = array;
 
     activeSubscriptions = self->_activeSubscriptions;
   }
@@ -743,9 +743,9 @@ LABEL_50:
   [(NSArray *)activeSubscriptions addObject:v8];
 }
 
-- (void)setHasIsAllowSiriWhenLockedEnabled:(BOOL)a3
+- (void)setHasIsAllowSiriWhenLockedEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -758,71 +758,71 @@ LABEL_50:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = ODDSiriSchemaODDiOSAssistantProperties;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  response = [(ODDSiriSchemaODDiOSAssistantProperties *)self response];
+  v7 = [response applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteResponse];
   }
 
-  v9 = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  accessibility = [(ODDSiriSchemaODDiOSAssistantProperties *)self accessibility];
+  v10 = [accessibility applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteAccessibility];
   }
 
-  v12 = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  carPlay = [(ODDSiriSchemaODDiOSAssistantProperties *)self carPlay];
+  v13 = [carPlay applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteCarPlay];
   }
 
-  v15 = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  siriInCall = [(ODDSiriSchemaODDiOSAssistantProperties *)self siriInCall];
+  v16 = [siriInCall applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteSiriInCall];
   }
 
-  v18 = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  announce = [(ODDSiriSchemaODDiOSAssistantProperties *)self announce];
+  v19 = [announce applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteAnnounce];
   }
 
-  v21 = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  autoSendMessage = [(ODDSiriSchemaODDiOSAssistantProperties *)self autoSendMessage];
+  v22 = [autoSendMessage applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteAutoSendMessage];
   }
 
-  v24 = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  headGestures = [(ODDSiriSchemaODDiOSAssistantProperties *)self headGestures];
+  v25 = [headGestures applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(ODDSiriSchemaODDiOSAssistantProperties *)self deleteHeadGestures];
   }

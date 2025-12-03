@@ -1,8 +1,8 @@
 @interface HMDUserDataController
 + (id)logCategory;
 - (HMBModel)assistantAccessControlModelToReset;
-- (HMDUserDataController)initWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 isCurrentUser:(BOOL)a10;
-- (HMDUserDataController)initWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 timerCreator:(id)a10 isCurrentUser:(BOOL)a11;
+- (HMDUserDataController)initWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController isCurrentUser:(BOOL)self0;
+- (HMDUserDataController)initWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController timerCreator:(id)self0 isCurrentUser:(BOOL)self1;
 - (HMDUserDataControllerDataSource)dataSource;
 - (HMDUserDataControllerDelegate)delegate;
 - (NSArray)assistantAccessControlAccessoriesToEncode;
@@ -16,27 +16,27 @@
 - (void)_invalidateSharedZoneFirstLoadTimer;
 - (void)_startPrivateZoneFirstLoadTimer;
 - (void)_startSharedZoneFirstLoadTimer;
-- (void)assistantAccessControlModelRemoved:(id)a3;
-- (void)assistantAccessControlModelUpdated:(id)a3 previousModel:(id)a4;
+- (void)assistantAccessControlModelRemoved:(id)removed;
+- (void)assistantAccessControlModelUpdated:(id)updated previousModel:(id)model;
 - (void)configure;
-- (void)enableUserListeningHistoryForAccessory:(id)a3;
+- (void)enableUserListeningHistoryForAccessory:(id)accessory;
 - (void)eventDidInitializePrivateZone;
 - (void)eventDidInitializeSharedZone;
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 requireAuthenticationForSecureRequests:(BOOL)a4 activityNotificationsEnabledForPersonalRequests:(BOOL)a5 completion:(id)a6;
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
-- (void)handleStartForZoneController:(id)a3;
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
-- (void)initializePrivateZoneController:(id)a3 userDataModel:(id)a4;
-- (void)initializeSharedZoneController:(id)a3 userDataModel:(id)a4;
-- (void)mediaContentProfileAccessControlModelRemoved:(id)a3;
-- (void)mediaContentProfileAccessControlModelUpdated:(id)a3 previousModel:(id)a4;
-- (void)performFirstRunOperationsOnPrivateZoneController:(id)a3;
-- (void)performFirstRunOperationsOnSharedZoneController:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)sharedUserDataModelUpdated:(id)a3 previousModel:(id)a4;
-- (void)timerDidFire:(id)a3;
-- (void)userListeningHistoryUpdateControlModelRemoved:(id)a3;
-- (void)userListeningHistoryUpdateControlModelUpdated:(id)a3 previousModel:(id)a4;
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated requireAuthenticationForSecureRequests:(BOOL)requests activityNotificationsEnabledForPersonalRequests:(BOOL)personalRequests completion:(id)completion;
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
+- (void)handleStartForZoneController:(id)controller;
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
+- (void)initializePrivateZoneController:(id)controller userDataModel:(id)model;
+- (void)initializeSharedZoneController:(id)controller userDataModel:(id)model;
+- (void)mediaContentProfileAccessControlModelRemoved:(id)removed;
+- (void)mediaContentProfileAccessControlModelUpdated:(id)updated previousModel:(id)model;
+- (void)performFirstRunOperationsOnPrivateZoneController:(id)controller;
+- (void)performFirstRunOperationsOnSharedZoneController:(id)controller;
+- (void)setState:(unint64_t)state;
+- (void)sharedUserDataModelUpdated:(id)updated previousModel:(id)model;
+- (void)timerDidFire:(id)fire;
+- (void)userListeningHistoryUpdateControlModelRemoved:(id)removed;
+- (void)userListeningHistoryUpdateControlModelUpdated:(id)updated previousModel:(id)model;
 @end
 
 @implementation HMDUserDataController
@@ -57,24 +57,24 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDUserDataController *)self userUUID];
-  v3 = [v2 UUIDString];
+  userUUID = [(HMDUserDataController *)self userUUID];
+  uUIDString = [userUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self clientQueue];
+  fireCopy = fire;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HMDUserDataController_timerDidFire___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = fireCopy;
+  selfCopy = self;
+  v6 = fireCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
@@ -145,15 +145,15 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userListeningHistoryUpdateControlModelRemoved:(id)a3
+- (void)userListeningHistoryUpdateControlModelRemoved:(id)removed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  removedCopy = removed;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -165,23 +165,23 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
 
   objc_autoreleasePoolPop(v6);
   v10 = [MEMORY[0x277CBEB58] set];
-  [(HMDUserDataController *)v7 setUserListeningHistoryUpdateControlModelAccessories:v10];
+  [(HMDUserDataController *)selfCopy setUserListeningHistoryUpdateControlModelAccessories:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userListeningHistoryUpdateControlModelUpdated:(id)a3 previousModel:(id)a4
+- (void)userListeningHistoryUpdateControlModelUpdated:(id)updated previousModel:(id)model
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  updatedCopy = updated;
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v9 = [v6 accessories];
-  if (v9)
+  accessories = [updatedCopy accessories];
+  if (accessories)
   {
-    [v6 accessories];
+    [updatedCopy accessories];
   }
 
   else
@@ -191,13 +191,13 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
   v10 = ;
 
   v11 = [MEMORY[0x277CBEB58] setWithArray:v10];
-  v12 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
-  v13 = [v12 isEqualToSet:v11];
+  userListeningHistoryUpdateControlModelAccessories = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
+  v13 = [userListeningHistoryUpdateControlModelAccessories isEqualToSet:v11];
 
   if ((v13 & 1) == 0)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -210,23 +210,23 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMDUserDataController *)v15 setUserListeningHistoryUpdateControlModelAccessories:v11];
-    v18 = [(HMDUserDataController *)v15 delegate];
-    [v18 userDataControllerDidUpdateUserListeningHistoryUpdateControl:v15];
+    [(HMDUserDataController *)selfCopy setUserListeningHistoryUpdateControlModelAccessories:v11];
+    delegate = [(HMDUserDataController *)selfCopy delegate];
+    [delegate userDataControllerDidUpdateUserListeningHistoryUpdateControl:selfCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaContentProfileAccessControlModelRemoved:(id)a3
+- (void)mediaContentProfileAccessControlModelRemoved:(id)removed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  removedCopy = removed;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -238,30 +238,30 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
 
   objc_autoreleasePoolPop(v6);
   v10 = [MEMORY[0x277CBEB58] set];
-  [(HMDUserDataController *)v7 setMediaContentProfileAccessControlAccessories:v10];
+  [(HMDUserDataController *)selfCopy setMediaContentProfileAccessControlAccessories:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaContentProfileAccessControlModelUpdated:(id)a3 previousModel:(id)a4
+- (void)mediaContentProfileAccessControlModelUpdated:(id)updated previousModel:(id)model
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  updatedCopy = updated;
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v6 accessories];
-  v11 = [v9 setWithArray:v10];
+  accessories = [updatedCopy accessories];
+  v11 = [v9 setWithArray:accessories];
 
-  v12 = [(HMDUserDataController *)self mediaContentProfileAccessControlAccessories];
-  v13 = [v12 isEqualToSet:v11];
+  mediaContentProfileAccessControlAccessories = [(HMDUserDataController *)self mediaContentProfileAccessControlAccessories];
+  v13 = [mediaContentProfileAccessControlAccessories isEqualToSet:v11];
 
   if ((v13 & 1) == 0)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -274,9 +274,9 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMDUserDataController *)v15 setMediaContentProfileAccessControlAccessories:v11];
-    v18 = [(HMDUserDataController *)v15 delegate];
-    [v18 userDataControllerDidUpdateMediaContentProfile:v15];
+    [(HMDUserDataController *)selfCopy setMediaContentProfileAccessControlAccessories:v11];
+    delegate = [(HMDUserDataController *)selfCopy delegate];
+    [delegate userDataControllerDidUpdateMediaContentProfile:selfCopy];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -284,22 +284,22 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
 
 - (int64_t)sharedUserSettingsLogEventBackingStoreControllerRunState
 {
-  v3 = [(HMDUserDataController *)self delegate];
-  v4 = [v3 sharedZoneControllerForUserDataController:self];
-  v5 = [v4 logEventRunState];
+  delegate = [(HMDUserDataController *)self delegate];
+  v4 = [delegate sharedZoneControllerForUserDataController:self];
+  logEventRunState = [v4 logEventRunState];
 
-  return v5;
+  return logEventRunState;
 }
 
-- (void)assistantAccessControlModelRemoved:(id)a3
+- (void)assistantAccessControlModelRemoved:(id)removed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  removedCopy = removed;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -313,75 +313,75 @@ void __38__HMDUserDataController_timerDidFire___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assistantAccessControlModelUpdated:(id)a3 previousModel:(id)a4
+- (void)assistantAccessControlModelUpdated:(id)updated previousModel:(id)model
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  updatedCopy = updated;
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  if ([v6 hmbPropertyWasSet:@"activityNotificationsEnabledForPersonalRequests"])
+  if ([updatedCopy hmbPropertyWasSet:@"activityNotificationsEnabledForPersonalRequests"])
   {
-    v9 = [v6 activityNotificationsEnabledForPersonalRequests];
-    v10 = [v9 BOOLValue];
+    activityNotificationsEnabledForPersonalRequests = [updatedCopy activityNotificationsEnabledForPersonalRequests];
+    bOOLValue = [activityNotificationsEnabledForPersonalRequests BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
-  v11 = [v6 requiresAuthenticationForSecureRequests];
-  v12 = [v11 BOOLValue];
+  requiresAuthenticationForSecureRequests = [updatedCopy requiresAuthenticationForSecureRequests];
+  bOOLValue2 = [requiresAuthenticationForSecureRequests BOOLValue];
 
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [v6 accessoryUUIDs];
-  [v13 na_safeAddObjectsFromArray:v14];
+  accessoryUUIDs = [updatedCopy accessoryUUIDs];
+  [v13 na_safeAddObjectsFromArray:accessoryUUIDs];
 
-  v15 = [v6 siriEndpointAccessoryUUIDs];
-  [v13 na_safeAddObjectsFromArray:v15];
+  siriEndpointAccessoryUUIDs = [updatedCopy siriEndpointAccessoryUUIDs];
+  [v13 na_safeAddObjectsFromArray:siriEndpointAccessoryUUIDs];
 
-  v16 = [(HMDUserDataController *)self assistantAccessControlAccessoryUUIDs];
-  if (![v16 isEqualToSet:v13] || v10 != -[HMDUserDataController assistantAccessControlActivityNotificationsEnabledForPersonalRequests](self, "assistantAccessControlActivityNotificationsEnabledForPersonalRequests"))
+  assistantAccessControlAccessoryUUIDs = [(HMDUserDataController *)self assistantAccessControlAccessoryUUIDs];
+  if (![assistantAccessControlAccessoryUUIDs isEqualToSet:v13] || bOOLValue != -[HMDUserDataController assistantAccessControlActivityNotificationsEnabledForPersonalRequests](self, "assistantAccessControlActivityNotificationsEnabledForPersonalRequests"))
   {
 
 LABEL_7:
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v6 requiresAuthenticationForSecureRequests];
+      requiresAuthenticationForSecureRequests2 = [updatedCopy requiresAuthenticationForSecureRequests];
       v29 = 138543874;
       v30 = v20;
       v31 = 2112;
-      v32 = v21;
+      v32 = requiresAuthenticationForSecureRequests2;
       v33 = 2112;
       v34 = v13;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Updating assistant access control on zone update to require auth: %@, accessories:%@", &v29, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
-    [(HMDUserDataController *)v18 setAssistantAccessControlAccessoryUUIDs:v13];
-    [(HMDUserDataController *)v18 setAssistantAccessControlRequiresAuthenticationForSecureRequests:v12];
-    [(HMDUserDataController *)v18 setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:v10];
-    v22 = [(HMDUserDataController *)v18 delegate];
-    [v22 userDataControllerDidUpdateAssistantAccessControl:v18];
+    [(HMDUserDataController *)selfCopy setAssistantAccessControlAccessoryUUIDs:v13];
+    [(HMDUserDataController *)selfCopy setAssistantAccessControlRequiresAuthenticationForSecureRequests:bOOLValue2];
+    [(HMDUserDataController *)selfCopy setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:bOOLValue];
+    delegate = [(HMDUserDataController *)selfCopy delegate];
+    [delegate userDataControllerDidUpdateAssistantAccessControl:selfCopy];
 
     goto LABEL_10;
   }
 
-  v24 = [(HMDUserDataController *)self assistantAccessControlRequiresAuthenticationForSecureRequests];
+  assistantAccessControlRequiresAuthenticationForSecureRequests = [(HMDUserDataController *)self assistantAccessControlRequiresAuthenticationForSecureRequests];
 
-  if (v12 != v24)
+  if (bOOLValue2 != assistantAccessControlRequiresAuthenticationForSecureRequests)
   {
     goto LABEL_7;
   }
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy2 = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
@@ -389,7 +389,7 @@ LABEL_7:
     v29 = 138543618;
     v30 = v28;
     v31 = 2112;
-    v32 = v6;
+    v32 = updatedCopy;
     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Model in zone update has no changes %@", &v29, 0x16u);
   }
 
@@ -399,22 +399,22 @@ LABEL_10:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharedUserDataModelUpdated:(id)a3 previousModel:(id)a4
+- (void)sharedUserDataModelUpdated:(id)updated previousModel:(id)model
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  updatedCopy = updated;
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v9 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
-  v10 = [v6 userListeningHistoryUpdateControlModelUUID];
-  v11 = [v9 isEqual:v10];
+  userListeningHistoryUpdateControlModelUUID = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
+  userListeningHistoryUpdateControlModelUUID2 = [updatedCopy userListeningHistoryUpdateControlModelUUID];
+  v11 = [userListeningHistoryUpdateControlModelUUID isEqual:userListeningHistoryUpdateControlModelUUID2];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -429,42 +429,42 @@ LABEL_10:
 
   else
   {
-    v16 = [(HMDUserDataController *)self delegate];
-    v17 = [v16 sharedZoneControllerForUserDataController:self];
+    delegate = [(HMDUserDataController *)self delegate];
+    v17 = [delegate sharedZoneControllerForUserDataController:self];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [(HMDUserDataController *)v19 userListeningHistoryUpdateControlModelUUID];
-      [v6 userListeningHistoryUpdateControlModelUUID];
-      v24 = v23 = v7;
+      userListeningHistoryUpdateControlModelUUID3 = [(HMDUserDataController *)selfCopy2 userListeningHistoryUpdateControlModelUUID];
+      [updatedCopy userListeningHistoryUpdateControlModelUUID];
+      v24 = v23 = modelCopy;
       *buf = 138543874;
       v46 = v21;
       v47 = 2112;
-      v48 = v22;
+      v48 = userListeningHistoryUpdateControlModelUUID3;
       v49 = 2112;
       v50 = v24;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Registering and Loading user listening history update since the UUID flipped from =%@, to =%@", buf, 0x20u);
 
-      v7 = v23;
+      modelCopy = v23;
     }
 
     objc_autoreleasePoolPop(v18);
-    v25 = [v6 userListeningHistoryUpdateControlModelUUID];
-    [(HMDUserDataController *)v19 setUserListeningHistoryUpdateControlModelUUID:v25];
+    userListeningHistoryUpdateControlModelUUID4 = [updatedCopy userListeningHistoryUpdateControlModelUUID];
+    [(HMDUserDataController *)selfCopy2 setUserListeningHistoryUpdateControlModelUUID:userListeningHistoryUpdateControlModelUUID4];
 
-    v26 = [(HMDUserDataController *)v19 userListeningHistoryUpdateControlModelUUID];
+    userListeningHistoryUpdateControlModelUUID5 = [(HMDUserDataController *)selfCopy2 userListeningHistoryUpdateControlModelUUID];
     v44 = 0;
-    v27 = [v17 loadUserListeningHistoryUpdateControlModelWithModelID:v26 error:&v44];
+    v27 = [v17 loadUserListeningHistoryUpdateControlModelWithModelID:userListeningHistoryUpdateControlModelUUID5 error:&v44];
     v28 = v44;
 
-    v29 = [(HMDUserDataController *)v19 userListeningHistoryUpdateControlModelUUID];
-    [v17 registerForUserListeningHistoryUpdateControlModelUpdates:v19 modelID:v29];
+    userListeningHistoryUpdateControlModelUUID6 = [(HMDUserDataController *)selfCopy2 userListeningHistoryUpdateControlModelUUID];
+    [v17 registerForUserListeningHistoryUpdateControlModelUpdates:selfCopy2 modelID:userListeningHistoryUpdateControlModelUUID6];
 
     v30 = objc_autoreleasePoolPush();
-    v31 = v19;
+    v31 = selfCopy2;
     v32 = HMFGetOSLogHandle();
     v33 = v32;
     if (v27)
@@ -472,28 +472,28 @@ LABEL_10:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v43 = v16;
+        v43 = delegate;
         v34 = v28;
-        v36 = v35 = v7;
-        v37 = [v27 accessories];
+        v36 = v35 = modelCopy;
+        accessories = [v27 accessories];
         *buf = 138543618;
         v46 = v36;
         v47 = 2112;
-        v48 = v37;
+        v48 = accessories;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Loaded user listening history update accessories %@", buf, 0x16u);
 
-        v7 = v35;
+        modelCopy = v35;
         v28 = v34;
-        v16 = v43;
+        delegate = v43;
       }
 
       objc_autoreleasePoolPop(v30);
       v38 = MEMORY[0x277CBEB58];
-      v39 = [v27 accessories];
-      v40 = [v38 setWithArray:v39];
+      accessories2 = [v27 accessories];
+      v40 = [v38 setWithArray:accessories2];
       [(HMDUserDataController *)v31 setUserListeningHistoryUpdateControlModelAccessories:v40];
 
-      [v16 userDataControllerDidUpdateUserListeningHistoryUpdateControl:v31];
+      [delegate userDataControllerDidUpdateUserListeningHistoryUpdateControl:v31];
     }
 
     else
@@ -517,14 +517,14 @@ LABEL_10:
 
 - (id)updateListeningHistoryModelToReset
 {
-  v3 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
+  userListeningHistoryUpdateControlModelUUID = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
 
-  if (v3)
+  if (userListeningHistoryUpdateControlModelUUID)
   {
     v4 = [HMDUserListeningHistoryUpdateControlModel alloc];
-    v5 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
-    v6 = [(HMDUserDataController *)self userUUID];
-    v7 = [(HMBModel *)v4 initWithModelID:v5 parentModelID:v6];
+    userListeningHistoryUpdateControlModelUUID2 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
+    userUUID = [(HMDUserDataController *)self userUUID];
+    v7 = [(HMBModel *)v4 initWithModelID:userListeningHistoryUpdateControlModelUUID2 parentModelID:userUUID];
 
     [(HMDUserListeningHistoryUpdateControlModel *)v7 setAccessories:MEMORY[0x277CBEBF8]];
   }
@@ -539,14 +539,14 @@ LABEL_10:
 
 - (HMBModel)assistantAccessControlModelToReset
 {
-  v3 = [(HMDUserDataController *)self assistantAccessControlModelUUID];
+  assistantAccessControlModelUUID = [(HMDUserDataController *)self assistantAccessControlModelUUID];
 
-  if (v3)
+  if (assistantAccessControlModelUUID)
   {
     v4 = [HMDAssistantAccessControlModelV2 alloc];
-    v5 = [(HMDUserDataController *)self assistantAccessControlModelUUID];
-    v6 = [(HMDUserDataController *)self userUUID];
-    v7 = [(HMBModel *)v4 initWithModelID:v5 parentModelID:v6];
+    assistantAccessControlModelUUID2 = [(HMDUserDataController *)self assistantAccessControlModelUUID];
+    userUUID = [(HMDUserDataController *)self userUUID];
+    v7 = [(HMBModel *)v4 initWithModelID:assistantAccessControlModelUUID2 parentModelID:userUUID];
 
     v8 = MEMORY[0x277CBEBF8];
     [(HMDAssistantAccessControlModelV2 *)v7 setAccessoryUUIDs:MEMORY[0x277CBEBF8]];
@@ -561,15 +561,15 @@ LABEL_10:
   return v7;
 }
 
-- (void)enableUserListeningHistoryForAccessory:(id)a3
+- (void)enableUserListeningHistoryForAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
-  if ([v5 containsObject:v4])
+  accessoryCopy = accessory;
+  userListeningHistoryUpdateControlModelAccessories = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
+  if ([userListeningHistoryUpdateControlModelAccessories containsObject:accessoryCopy])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -577,7 +577,7 @@ LABEL_10:
       *buf = 138543618;
       v17 = v9;
       v18 = 2112;
-      v19 = v4;
+      v19 = accessoryCopy;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@ULH for accessory %@ is already enabled", buf, 0x16u);
     }
 
@@ -586,17 +586,17 @@ LABEL_10:
 
   else
   {
-    [v5 addObject:v4];
+    [userListeningHistoryUpdateControlModelAccessories addObject:accessoryCopy];
     v10 = MEMORY[0x277CBEA60];
-    v11 = [v5 allObjects];
-    v12 = [v10 arrayWithObjects:{v11, 0}];
+    allObjects = [userListeningHistoryUpdateControlModelAccessories allObjects];
+    v12 = [v10 arrayWithObjects:{allObjects, 0}];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_invoke;
     v14[3] = &unk_27868A1D8;
     v14[4] = self;
-    v15 = v4;
+    v15 = accessoryCopy;
     [(HMDUserDataController *)self handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:v12 completion:v14];
   }
 
@@ -631,9 +631,9 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v6 = v4;
@@ -644,9 +644,9 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   }
 }
 
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v6 = v4;
@@ -657,9 +657,9 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   }
 }
 
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 requireAuthenticationForSecureRequests:(BOOL)a4 activityNotificationsEnabledForPersonalRequests:(BOOL)a5 completion:(id)a6
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated requireAuthenticationForSecureRequests:(BOOL)requests activityNotificationsEnabledForPersonalRequests:(BOOL)personalRequests completion:(id)completion
 {
-  v6 = _Block_copy(a6);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v8 = v6;
@@ -670,27 +670,27 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   }
 }
 
-- (void)handleStartForZoneController:(id)a3
+- (void)handleStartForZoneController:(id)controller
 {
-  v8 = a3;
-  v4 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v4);
+  controllerCopy = controller;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v5 = [(HMDUserDataController *)self delegate];
-  if (v8)
+  delegate = [(HMDUserDataController *)self delegate];
+  if (controllerCopy)
   {
-    v6 = [v5 sharedZoneControllerForUserDataController:self];
+    v6 = [delegate sharedZoneControllerForUserDataController:self];
 
-    if (v6 == v8)
+    if (v6 == controllerCopy)
     {
       [(HMDUserDataController *)self _startupSharedZone];
     }
 
     else
     {
-      v7 = [v5 privateZoneControllerForUserDataController:self];
+      v7 = [delegate privateZoneControllerForUserDataController:self];
 
-      if (v7 == v8)
+      if (v7 == controllerCopy)
       {
         [(HMDUserDataController *)self _startupPrivateZone];
       }
@@ -700,8 +700,8 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
 
 - (void)_invalidatePrivateZoneFirstLoadTimer
 {
-  v3 = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
-  [v3 cancel];
+  privateZoneFirstLoadTimer = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
+  [privateZoneFirstLoadTimer cancel];
 
   [(HMDUserDataController *)self setPrivateZoneFirstLoadTimer:0];
 }
@@ -709,51 +709,51 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
 - (void)_startPrivateZoneFirstLoadTimer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v4 = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
+  privateZoneFirstLoadTimer = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
 
-  if (!v4)
+  if (!privateZoneFirstLoadTimer)
   {
-    v5 = [(HMDUserDataController *)self timerCreator];
-    v6 = [v5 createExponentialBackoffTimerForZoneFetch];
-    [(HMDUserDataController *)self setPrivateZoneFirstLoadTimer:v6];
+    timerCreator = [(HMDUserDataController *)self timerCreator];
+    createExponentialBackoffTimerForZoneFetch = [timerCreator createExponentialBackoffTimerForZoneFetch];
+    [(HMDUserDataController *)self setPrivateZoneFirstLoadTimer:createExponentialBackoffTimerForZoneFetch];
 
-    v7 = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
-    [v7 setDelegate:self];
+    privateZoneFirstLoadTimer2 = [(HMDUserDataController *)self privateZoneFirstLoadTimer];
+    [privateZoneFirstLoadTimer2 setDelegate:self];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDUserDataController *)v9 privateZoneFirstLoadTimer];
+      privateZoneFirstLoadTimer3 = [(HMDUserDataController *)selfCopy privateZoneFirstLoadTimer];
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = privateZoneFirstLoadTimer3;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Starting timer to perform first run operations on shared zone. %@", &v15, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDUserDataController *)v9 privateZoneFirstLoadTimer];
-    [v13 resume];
+    privateZoneFirstLoadTimer4 = [(HMDUserDataController *)selfCopy privateZoneFirstLoadTimer];
+    [privateZoneFirstLoadTimer4 resume];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performFirstRunOperationsOnPrivateZoneController:(id)a3
+- (void)performFirstRunOperationsOnPrivateZoneController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  controllerCopy = controller;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -769,8 +769,8 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
 
 - (void)_invalidateSharedZoneFirstLoadTimer
 {
-  v3 = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
-  [v3 cancel];
+  sharedZoneFirstLoadTimer = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
+  [sharedZoneFirstLoadTimer cancel];
 
   [(HMDUserDataController *)self setSharedZoneFirstLoadTimer:0];
 }
@@ -778,48 +778,48 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
 - (void)_startSharedZoneFirstLoadTimer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v4 = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
+  sharedZoneFirstLoadTimer = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
 
-  if (!v4)
+  if (!sharedZoneFirstLoadTimer)
   {
-    v5 = [(HMDUserDataController *)self timerCreator];
-    v6 = [v5 createExponentialBackoffTimerForZoneFetch];
-    [(HMDUserDataController *)self setSharedZoneFirstLoadTimer:v6];
+    timerCreator = [(HMDUserDataController *)self timerCreator];
+    createExponentialBackoffTimerForZoneFetch = [timerCreator createExponentialBackoffTimerForZoneFetch];
+    [(HMDUserDataController *)self setSharedZoneFirstLoadTimer:createExponentialBackoffTimerForZoneFetch];
 
-    v7 = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
-    [v7 setDelegate:self];
+    sharedZoneFirstLoadTimer2 = [(HMDUserDataController *)self sharedZoneFirstLoadTimer];
+    [sharedZoneFirstLoadTimer2 setDelegate:self];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDUserDataController *)v9 sharedZoneFirstLoadTimer];
+      sharedZoneFirstLoadTimer3 = [(HMDUserDataController *)selfCopy sharedZoneFirstLoadTimer];
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = sharedZoneFirstLoadTimer3;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Starting timer to perform first run operations on shared zone. %@", &v15, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDUserDataController *)v9 sharedZoneFirstLoadTimer];
-    [v13 resume];
+    sharedZoneFirstLoadTimer4 = [(HMDUserDataController *)selfCopy sharedZoneFirstLoadTimer];
+    [sharedZoneFirstLoadTimer4 resume];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performFirstRunOperationsOnSharedZoneController:(id)a3
+- (void)performFirstRunOperationsOnSharedZoneController:(id)controller
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -833,71 +833,71 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializePrivateZoneController:(id)a3 userDataModel:(id)a4
+- (void)initializePrivateZoneController:(id)controller userDataModel:(id)model
 {
-  v5 = a4;
-  v6 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v6);
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v7 = [v5 settingsRootUUID];
+  settingsRootUUID = [modelCopy settingsRootUUID];
 
-  [(HMDUserDataController *)self setPrivateSettingsRootUUID:v7];
+  [(HMDUserDataController *)self setPrivateSettingsRootUUID:settingsRootUUID];
 }
 
-- (void)initializeSharedZoneController:(id)a3 userDataModel:(id)a4
+- (void)initializeSharedZoneController:(id)controller userDataModel:(id)model
 {
   v91 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  controllerCopy = controller;
+  modelCopy = model;
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v9 = [v7 assistantAccessControlModelUUID];
-  [(HMDUserDataController *)self setAssistantAccessControlModelUUID:v9];
+  assistantAccessControlModelUUID = [modelCopy assistantAccessControlModelUUID];
+  [(HMDUserDataController *)self setAssistantAccessControlModelUUID:assistantAccessControlModelUUID];
 
-  v10 = [v7 mediaContentProfileAccessControlModelUUID];
-  [(HMDUserDataController *)self setMediaContentProfileAccessControlModelUUID:v10];
+  mediaContentProfileAccessControlModelUUID = [modelCopy mediaContentProfileAccessControlModelUUID];
+  [(HMDUserDataController *)self setMediaContentProfileAccessControlModelUUID:mediaContentProfileAccessControlModelUUID];
 
-  v11 = [(HMDUserDataController *)self userUUID];
-  [v6 registerForSharedUserDataModelUpdates:self modelID:v11];
+  userUUID = [(HMDUserDataController *)self userUUID];
+  [controllerCopy registerForSharedUserDataModelUpdates:self modelID:userUUID];
 
-  v12 = [v7 userListeningHistoryUpdateControlModelUUID];
-  [(HMDUserDataController *)self setUserListeningHistoryUpdateControlModelUUID:v12];
+  userListeningHistoryUpdateControlModelUUID = [modelCopy userListeningHistoryUpdateControlModelUUID];
+  [(HMDUserDataController *)self setUserListeningHistoryUpdateControlModelUUID:userListeningHistoryUpdateControlModelUUID];
 
-  v13 = [v7 settingsRootUUID];
-  [(HMDUserDataController *)self setSharedSettingsRootUUID:v13];
+  settingsRootUUID = [modelCopy settingsRootUUID];
+  [(HMDUserDataController *)self setSharedSettingsRootUUID:settingsRootUUID];
 
-  v14 = [(HMDUserDataController *)self assistantAccessControlModelUUID];
-  [v6 registerForAssistantAccessControlModelUpdates:self modelID:v14];
+  assistantAccessControlModelUUID2 = [(HMDUserDataController *)self assistantAccessControlModelUUID];
+  [controllerCopy registerForAssistantAccessControlModelUpdates:self modelID:assistantAccessControlModelUUID2];
 
-  v15 = [(HMDUserDataController *)self mediaContentProfileAccessControlModelUUID];
-  [v6 registerForMediaContentAccessControlModelUpdates:self modelID:v15];
+  mediaContentProfileAccessControlModelUUID2 = [(HMDUserDataController *)self mediaContentProfileAccessControlModelUUID];
+  [controllerCopy registerForMediaContentAccessControlModelUpdates:self modelID:mediaContentProfileAccessControlModelUUID2];
 
-  v16 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
-  [v6 registerForUserListeningHistoryUpdateControlModelUpdates:self modelID:v16];
+  userListeningHistoryUpdateControlModelUUID2 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelUUID];
+  [controllerCopy registerForUserListeningHistoryUpdateControlModelUpdates:self modelID:userListeningHistoryUpdateControlModelUUID2];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [(HMDUserDataController *)v18 assistantAccessControlModelUUID];
+    assistantAccessControlModelUUID3 = [(HMDUserDataController *)selfCopy assistantAccessControlModelUUID];
     *buf = 138543618;
     v84 = v20;
     v85 = 2112;
-    v86 = v21;
+    v86 = assistantAccessControlModelUUID3;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Loading assistant access control model %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v22 = [(HMDUserDataController *)v18 assistantAccessControlModelUUID];
+  assistantAccessControlModelUUID4 = [(HMDUserDataController *)selfCopy assistantAccessControlModelUUID];
   v82 = 0;
-  v23 = [v6 loadAssistantAccessControlModelWithModelID:v22 error:&v82];
+  v23 = [controllerCopy loadAssistantAccessControlModelWithModelID:assistantAccessControlModelUUID4 error:&v82];
   v24 = v82;
 
   v25 = objc_autoreleasePoolPush();
-  v26 = v18;
+  v26 = selfCopy;
   v27 = HMFGetOSLogHandle();
   v28 = v27;
   v29 = 0x277CBE000;
@@ -907,43 +907,43 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
     {
       v30 = HMFGetLogIdentifier();
       [v23 requiresAuthenticationForSecureRequests];
-      v79 = v6;
+      v79 = controllerCopy;
       v31 = v24;
-      v33 = v32 = v7;
-      v34 = [v23 activityNotificationsEnabledForPersonalRequests];
-      v35 = [v23 accessoryUUIDs];
+      v33 = v32 = modelCopy;
+      activityNotificationsEnabledForPersonalRequests = [v23 activityNotificationsEnabledForPersonalRequests];
+      accessoryUUIDs = [v23 accessoryUUIDs];
       *buf = 138544130;
       v84 = v30;
       v85 = 2112;
       v86 = v33;
       v87 = 2112;
-      v88 = v34;
+      v88 = activityNotificationsEnabledForPersonalRequests;
       v89 = 2112;
-      v90 = v35;
+      v90 = accessoryUUIDs;
       _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@Loaded assistant access control requires auth: %@, activity notifications enabled for personal requests: %@, accessories: %@", buf, 0x2Au);
 
       v29 = 0x277CBE000uLL;
-      v7 = v32;
+      modelCopy = v32;
       v24 = v31;
-      v6 = v79;
+      controllerCopy = v79;
     }
 
     objc_autoreleasePoolPop(v25);
     v36 = [*(v29 + 2904) set];
-    v37 = [v23 accessoryUUIDs];
-    [v36 na_safeAddObjectsFromArray:v37];
+    accessoryUUIDs2 = [v23 accessoryUUIDs];
+    [v36 na_safeAddObjectsFromArray:accessoryUUIDs2];
 
-    v38 = [v23 siriEndpointAccessoryUUIDs];
-    [v36 na_safeAddObjectsFromArray:v38];
+    siriEndpointAccessoryUUIDs = [v23 siriEndpointAccessoryUUIDs];
+    [v36 na_safeAddObjectsFromArray:siriEndpointAccessoryUUIDs];
 
     [(HMDUserDataController *)v26 setAssistantAccessControlAccessoryUUIDs:v36];
-    v39 = [v23 requiresAuthenticationForSecureRequests];
-    -[HMDUserDataController setAssistantAccessControlRequiresAuthenticationForSecureRequests:](v26, "setAssistantAccessControlRequiresAuthenticationForSecureRequests:", [v39 BOOLValue]);
+    requiresAuthenticationForSecureRequests = [v23 requiresAuthenticationForSecureRequests];
+    -[HMDUserDataController setAssistantAccessControlRequiresAuthenticationForSecureRequests:](v26, "setAssistantAccessControlRequiresAuthenticationForSecureRequests:", [requiresAuthenticationForSecureRequests BOOLValue]);
 
     if ([v23 hmbPropertyWasSet:@"activityNotificationsEnabledForPersonalRequests"])
     {
-      v40 = [v23 activityNotificationsEnabledForPersonalRequests];
-      -[HMDUserDataController setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:](v26, "setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:", [v40 BOOLValue]);
+      activityNotificationsEnabledForPersonalRequests2 = [v23 activityNotificationsEnabledForPersonalRequests];
+      -[HMDUserDataController setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:](v26, "setAssistantAccessControlActivityNotificationsEnabledForPersonalRequests:", [activityNotificationsEnabledForPersonalRequests2 BOOLValue]);
     }
 
     else
@@ -973,18 +973,18 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
   {
     v45 = HMFGetLogIdentifier();
-    v46 = [(HMDUserDataController *)v43 mediaContentProfileAccessControlModelUUID];
+    mediaContentProfileAccessControlModelUUID3 = [(HMDUserDataController *)v43 mediaContentProfileAccessControlModelUUID];
     *buf = 138543618;
     v84 = v45;
     v85 = 2112;
-    v86 = v46;
+    v86 = mediaContentProfileAccessControlModelUUID3;
     _os_log_impl(&dword_229538000, v44, OS_LOG_TYPE_INFO, "%{public}@Loading media content profile access control model %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v42);
-  v47 = [(HMDUserDataController *)v43 mediaContentProfileAccessControlModelUUID];
+  mediaContentProfileAccessControlModelUUID4 = [(HMDUserDataController *)v43 mediaContentProfileAccessControlModelUUID];
   v81 = 0;
-  v48 = [v6 loadMediaContentAccessControlModelWithModelID:v47 error:&v81];
+  v48 = [controllerCopy loadMediaContentAccessControlModelWithModelID:mediaContentProfileAccessControlModelUUID4 error:&v81];
   v49 = v81;
 
   v50 = objc_autoreleasePoolPush();
@@ -996,18 +996,18 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
       v54 = HMFGetLogIdentifier();
-      v55 = [v48 accessories];
+      accessories = [v48 accessories];
       *buf = 138543618;
       v84 = v54;
       v85 = 2112;
-      v86 = v55;
+      v86 = accessories;
       _os_log_impl(&dword_229538000, v53, OS_LOG_TYPE_INFO, "%{public}@Loaded media content profile access control accessories %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v50);
     v56 = *(v29 + 2904);
-    v57 = [v48 accessories];
-    v58 = [v56 setWithArray:v57];
+    accessories2 = [v48 accessories];
+    v58 = [v56 setWithArray:accessories2];
     [(HMDUserDataController *)v51 setMediaContentProfileAccessControlAccessories:v58];
   }
 
@@ -1032,18 +1032,18 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
   if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
   {
     v63 = HMFGetLogIdentifier();
-    v64 = [(HMDUserDataController *)v61 userListeningHistoryUpdateControlModelUUID];
+    userListeningHistoryUpdateControlModelUUID3 = [(HMDUserDataController *)v61 userListeningHistoryUpdateControlModelUUID];
     *buf = 138543618;
     v84 = v63;
     v85 = 2112;
-    v86 = v64;
+    v86 = userListeningHistoryUpdateControlModelUUID3;
     _os_log_impl(&dword_229538000, v62, OS_LOG_TYPE_INFO, "%{public}@Loading user listening history update model %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v60);
-  v65 = [(HMDUserDataController *)v61 userListeningHistoryUpdateControlModelUUID];
+  userListeningHistoryUpdateControlModelUUID4 = [(HMDUserDataController *)v61 userListeningHistoryUpdateControlModelUUID];
   v80 = 0;
-  v66 = [v6 loadUserListeningHistoryUpdateControlModelWithModelID:v65 error:&v80];
+  v66 = [controllerCopy loadUserListeningHistoryUpdateControlModelWithModelID:userListeningHistoryUpdateControlModelUUID4 error:&v80];
   v67 = v80;
 
   v68 = objc_autoreleasePoolPush();
@@ -1055,18 +1055,18 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
     if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
     {
       v72 = HMFGetLogIdentifier();
-      v73 = [v66 accessories];
+      accessories3 = [v66 accessories];
       *buf = 138543618;
       v84 = v72;
       v85 = 2112;
-      v86 = v73;
+      v86 = accessories3;
       _os_log_impl(&dword_229538000, v71, OS_LOG_TYPE_INFO, "%{public}@Loaded user listening history update accessories %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v68);
     v74 = *(v29 + 2904);
-    v75 = [v66 accessories];
-    v76 = [v74 setWithArray:v75];
+    accessories4 = [v66 accessories];
+    v76 = [v74 setWithArray:accessories4];
     [(HMDUserDataController *)v69 setUserListeningHistoryUpdateControlModelAccessories:v76];
   }
 
@@ -1091,16 +1091,16 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
 - (void)eventDidInitializeSharedZone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   self->_isModifyingState = 1;
-  v4 = [(HMDUserDataController *)self state];
-  if (v4 > 1)
+  state = [(HMDUserDataController *)self state];
+  if (state > 1)
   {
-    if (v4 != 2)
+    if (state != 2)
     {
-      if (v4 != 3)
+      if (state != 3)
       {
         goto LABEL_17;
       }
@@ -1109,7 +1109,7 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -1120,17 +1120,17 @@ void __64__HMDUserDataController_enableUserListeningHistoryForAccessory___block_
     }
 
     objc_autoreleasePoolPop(v16);
-    v14 = v17;
+    v14 = selfCopy;
     v15 = 1;
 LABEL_16:
     [(HMDUserDataController *)v14 setState:v15];
     goto LABEL_17;
   }
 
-  if (!v4)
+  if (!state)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1141,24 +1141,24 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = v11;
+    v14 = selfCopy2;
     v15 = 3;
     goto LABEL_16;
   }
 
-  if (v4 != 1)
+  if (state != 1)
   {
     goto LABEL_17;
   }
 
 LABEL_7:
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy3 = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserDataController state](v6, "state")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserDataController state](selfCopy3, "state")}];
     v21 = 138543618;
     v22 = v8;
     v23 = 2112;
@@ -1175,20 +1175,20 @@ LABEL_17:
 - (void)eventDidInitializePrivateZone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   self->_isModifyingState = 1;
-  v4 = [(HMDUserDataController *)self state];
-  if (v4 - 1 < 2)
+  state = [(HMDUserDataController *)self state];
+  if (state - 1 < 2)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserDataController state](v12, "state")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserDataController state](selfCopy, "state")}];
       v21 = 138543618;
       v22 = v14;
       v23 = 2112;
@@ -1201,10 +1201,10 @@ LABEL_17:
 
   else
   {
-    if (v4 == 3)
+    if (state == 3)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -1215,15 +1215,15 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v16);
-      v9 = v17;
+      v9 = selfCopy2;
       v10 = 1;
       goto LABEL_13;
     }
 
-    if (!v4)
+    if (!state)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy3 = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -1234,7 +1234,7 @@ LABEL_17:
       }
 
       objc_autoreleasePoolPop(v5);
-      v9 = v6;
+      v9 = selfCopy3;
       v10 = 2;
 LABEL_13:
       [(HMDUserDataController *)v9 setState:v10];
@@ -1245,14 +1245,14 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserDataController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientQueue = [(HMDUserDataController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   os_unfair_lock_lock_with_options();
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     v6 = *MEMORY[0x277D85DE8];
 
@@ -1262,13 +1262,13 @@ LABEL_13:
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
       v11 = HMDUserDataControllerStateAsString(self->_state);
-      v12 = HMDUserDataControllerStateAsString(a3);
+      v12 = HMDUserDataControllerStateAsString(state);
       v15 = 138543874;
       v16 = v10;
       v17 = 2112;
@@ -1279,12 +1279,12 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v7);
-    self->_state = a3;
+    self->_state = state;
     os_unfair_lock_unlock(&self->_lock);
-    if (a3 == 1)
+    if (state == 1)
     {
-      v13 = [(HMDUserDataController *)v8 notificationCenter];
-      [v13 postNotificationName:@"HMDUserDataControllerInitializedNotificationKey" object:v8];
+      notificationCenter = [(HMDUserDataController *)selfCopy notificationCenter];
+      [notificationCenter postNotificationName:@"HMDUserDataControllerInitializedNotificationKey" object:selfCopy];
     }
 
     v14 = *MEMORY[0x277D85DE8];
@@ -1301,18 +1301,18 @@ LABEL_13:
 
 - (NSArray)userListeningHistoryUpdateControlModelAccessoriesToEncode
 {
-  v2 = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
-  v3 = [v2 allObjects];
-  v4 = [v3 copy];
+  userListeningHistoryUpdateControlModelAccessories = [(HMDUserDataController *)self userListeningHistoryUpdateControlModelAccessories];
+  allObjects = [userListeningHistoryUpdateControlModelAccessories allObjects];
+  v4 = [allObjects copy];
 
   return v4;
 }
 
 - (NSArray)mediaContentProfileAccessControlAccessoriesToEncode
 {
-  v2 = [(HMDUserDataController *)self mediaContentProfileAccessControlAccessories];
-  v3 = [v2 allObjects];
-  v4 = [v3 copy];
+  mediaContentProfileAccessControlAccessories = [(HMDUserDataController *)self mediaContentProfileAccessControlAccessories];
+  allObjects = [mediaContentProfileAccessControlAccessories allObjects];
+  v4 = [allObjects copy];
 
   return v4;
 }
@@ -1321,9 +1321,9 @@ LABEL_13:
 {
   if ([(HMDUserDataController *)self isInitialized])
   {
-    v3 = [(HMDUserDataController *)self assistantAccessControlAccessoryUUIDs];
-    v4 = [v3 allObjects];
-    v5 = [v4 copy];
+    assistantAccessControlAccessoryUUIDs = [(HMDUserDataController *)self assistantAccessControlAccessoryUUIDs];
+    allObjects = [assistantAccessControlAccessoryUUIDs allObjects];
+    v5 = [allObjects copy];
   }
 
   else
@@ -1336,13 +1336,13 @@ LABEL_13:
 
 - (void)configure
 {
-  v3 = [(HMDUserDataController *)self clientQueue];
+  clientQueue = [(HMDUserDataController *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__HMDUserDataController_configure__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __34__HMDUserDataController_configure__block_invoke(uint64_t a1)
@@ -1355,42 +1355,42 @@ void __34__HMDUserDataController_configure__block_invoke(uint64_t a1)
   [v3 start];
 }
 
-- (HMDUserDataController)initWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 isCurrentUser:(BOOL)a10
+- (HMDUserDataController)initWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController isCurrentUser:(BOOL)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  settingsControllerCopy = settingsController;
+  controllerCopy = controller;
+  iDCopy = iD;
+  dCopy = d;
+  queueCopy = queue;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v24 = objc_opt_new();
-  LOBYTE(v27) = a10;
-  v25 = [(HMDUserDataController *)self initWithDelegate:v23 dataSource:v22 queue:v21 userID:v20 homeID:v19 sharedSettingsController:v18 privateSettingsController:v17 timerCreator:v24 isCurrentUser:v27];
+  LOBYTE(v27) = user;
+  v25 = [(HMDUserDataController *)self initWithDelegate:delegateCopy dataSource:sourceCopy queue:queueCopy userID:dCopy homeID:iDCopy sharedSettingsController:controllerCopy privateSettingsController:settingsControllerCopy timerCreator:v24 isCurrentUser:v27];
 
   return v25;
 }
 
-- (HMDUserDataController)initWithDelegate:(id)a3 dataSource:(id)a4 queue:(id)a5 userID:(id)a6 homeID:(id)a7 sharedSettingsController:(id)a8 privateSettingsController:(id)a9 timerCreator:(id)a10 isCurrentUser:(BOOL)a11
+- (HMDUserDataController)initWithDelegate:(id)delegate dataSource:(id)source queue:(id)queue userID:(id)d homeID:(id)iD sharedSettingsController:(id)controller privateSettingsController:(id)settingsController timerCreator:(id)self0 isCurrentUser:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v31 = a5;
-  v30 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  queueCopy = queue;
+  dCopy = d;
+  iDCopy = iD;
+  settingsControllerCopy = settingsController;
+  creatorCopy = creator;
   v32.receiver = self;
   v32.super_class = HMDUserDataController;
   v21 = [(HMDUserDataController *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    v21->_state = 2 * (v19 == 0);
+    v21->_state = 2 * (settingsControllerCopy == 0);
     v21->_isModifyingState = 0;
-    objc_storeStrong(&v21->_clientQueue, a5);
-    objc_storeWeak(&v22->_delegate, v16);
-    objc_storeStrong(&v22->_timerCreator, a10);
+    objc_storeStrong(&v21->_clientQueue, queue);
+    objc_storeWeak(&v22->_delegate, delegateCopy);
+    objc_storeStrong(&v22->_timerCreator, creator);
     v23 = [MEMORY[0x277CBEB58] set];
     assistantAccessControlAccessoryUUIDs = v22->_assistantAccessControlAccessoryUUIDs;
     v22->_assistantAccessControlAccessoryUUIDs = v23;
@@ -1400,14 +1400,14 @@ void __34__HMDUserDataController_configure__block_invoke(uint64_t a1)
     mediaContentProfileAccessControlAccessories = v22->_mediaContentProfileAccessControlAccessories;
     v22->_mediaContentProfileAccessControlAccessories = v25;
 
-    objc_storeStrong(&v22->_userUUID, a6);
-    objc_storeStrong(&v22->_homeUUID, a7);
-    objc_storeWeak(&v22->_dataSource, v17);
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v22->_userUUID, d);
+    objc_storeStrong(&v22->_homeUUID, iD);
+    objc_storeWeak(&v22->_dataSource, sourceCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v22->_notificationCenter;
-    v22->_notificationCenter = v27;
+    v22->_notificationCenter = defaultCenter;
 
-    v22->_isCurrentUser = a11;
+    v22->_isCurrentUser = user;
   }
 
   return v22;

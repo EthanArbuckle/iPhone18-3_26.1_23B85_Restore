@@ -1,33 +1,33 @@
 @interface VNImageRegistrationRequest
-- (BOOL)getReferenceImageBuffer:(id *)a3 registrationSignature:(id *)a4 forRequestPerformingContext:(id)a5 error:(id *)a6;
-- (id)cachedFloatingImageBufferReturningError:(id *)a3;
-- (id)cachedFloatingImageRegistrationSignatureReturningError:(id *)a3;
+- (BOOL)getReferenceImageBuffer:(id *)buffer registrationSignature:(id *)signature forRequestPerformingContext:(id)context error:(id *)error;
+- (id)cachedFloatingImageBufferReturningError:(id *)error;
+- (id)cachedFloatingImageRegistrationSignatureReturningError:(id *)error;
 @end
 
 @implementation VNImageRegistrationRequest
 
-- (BOOL)getReferenceImageBuffer:(id *)a3 registrationSignature:(id *)a4 forRequestPerformingContext:(id)a5 error:(id *)a6
+- (BOOL)getReferenceImageBuffer:(id *)buffer registrationSignature:(id *)signature forRequestPerformingContext:(id)context error:(id *)error
 {
-  v10 = a5;
-  v11 = [v10 previousSequencedObservationsAcceptedByRequest:self];
+  contextCopy = context;
+  v11 = [contextCopy previousSequencedObservationsAcceptedByRequest:self];
   if (!v11)
   {
-    v13 = [v10 imageBufferAndReturnError:0];
-    v12 = v13;
+    v13 = [contextCopy imageBufferAndReturnError:0];
+    firstObject = v13;
     if (v13)
     {
-      if (a3)
+      if (buffer)
       {
         v14 = v13;
-        *a3 = v12;
+        *buffer = firstObject;
       }
 
-      if (a4)
+      if (signature)
       {
         v15 = [VNImageRegistrationSignature alloc];
         [(VNImageBasedRequest *)self regionOfInterest];
-        v16 = [(VNImageSignature *)v15 initWithImageBuffer:v12 regionOfInterest:a6 error:?];
-        *a4 = v16;
+        v16 = [(VNImageSignature *)v15 initWithImageBuffer:firstObject regionOfInterest:error error:?];
+        *signature = v16;
         if (!v16)
         {
           goto LABEL_24;
@@ -37,15 +37,15 @@
 
     else
     {
-      if (a3 && ([(VNImageRegistrationRequest *)self cachedFloatingImageBufferReturningError:a6], v18 = objc_claimAutoreleasedReturnValue(), (*a3 = v18) == 0) || a4 && ([(VNImageRegistrationRequest *)self cachedFloatingImageRegistrationSignatureReturningError:a6], v19 = objc_claimAutoreleasedReturnValue(), (*a4 = v19) == 0))
+      if (buffer && ([(VNImageRegistrationRequest *)self cachedFloatingImageBufferReturningError:error], v18 = objc_claimAutoreleasedReturnValue(), (*buffer = v18) == 0) || signature && ([(VNImageRegistrationRequest *)self cachedFloatingImageRegistrationSignatureReturningError:error], v19 = objc_claimAutoreleasedReturnValue(), (*signature = v19) == 0))
       {
-        v12 = 0;
+        firstObject = 0;
 LABEL_24:
         v17 = 0;
         goto LABEL_20;
       }
 
-      v12 = 0;
+      firstObject = 0;
     }
 
 LABEL_19:
@@ -55,21 +55,21 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([VNValidationUtilities validateArray:v11 named:@"previous request results" hasElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:a6])
+  if ([VNValidationUtilities validateArray:v11 named:@"previous request results" hasElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:error])
   {
-    if (a3)
+    if (buffer)
     {
-      *a3 = 0;
+      *buffer = 0;
     }
 
-    if (!a4)
+    if (!signature)
     {
       v17 = 1;
       goto LABEL_21;
     }
 
-    v12 = [v11 firstObject];
-    *a4 = [v12 floatingImageSignature];
+    firstObject = [v11 firstObject];
+    *signature = [firstObject floatingImageSignature];
     goto LABEL_19;
   }
 
@@ -79,7 +79,7 @@ LABEL_21:
   return v17;
 }
 
-- (id)cachedFloatingImageRegistrationSignatureReturningError:(id *)a3
+- (id)cachedFloatingImageRegistrationSignatureReturningError:(id *)error
 {
   cachedFloatingImageSignature = self->_cachedFloatingImageSignature;
   if (!cachedFloatingImageSignature)
@@ -93,7 +93,7 @@ LABEL_21:
     v7 = v6;
     v8 = [VNImageRegistrationSignature alloc];
     [(VNImageBasedRequest *)self regionOfInterest];
-    v9 = [(VNImageSignature *)v8 initWithImageBuffer:v7 regionOfInterest:a3 error:?];
+    v9 = [(VNImageSignature *)v8 initWithImageBuffer:v7 regionOfInterest:error error:?];
     v10 = self->_cachedFloatingImageSignature;
     self->_cachedFloatingImageSignature = v9;
 
@@ -106,12 +106,12 @@ LABEL_5:
   return v6;
 }
 
-- (id)cachedFloatingImageBufferReturningError:(id *)a3
+- (id)cachedFloatingImageBufferReturningError:(id *)error
 {
   cachedFloatingImageBuffer = self->_cachedFloatingImageBuffer;
   if (!cachedFloatingImageBuffer)
   {
-    v5 = [(VNTargetedImageRequest *)self requiredTargetedImageBufferReturningError:a3];
+    v5 = [(VNTargetedImageRequest *)self requiredTargetedImageBufferReturningError:error];
     if (!v5)
     {
       goto LABEL_5;

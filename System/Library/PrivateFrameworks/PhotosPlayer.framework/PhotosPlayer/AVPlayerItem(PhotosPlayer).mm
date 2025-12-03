@@ -13,8 +13,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a1 tracks];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tracks = [self tracks];
+  v5 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,31 +26,31 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracks);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 assetTrack];
-        v12 = [v11 mediaType];
-        v13 = [v12 isEqualToString:v8];
+        assetTrack = [v10 assetTrack];
+        mediaType = [assetTrack mediaType];
+        v13 = [mediaType isEqualToString:v8];
 
         if (v13)
         {
           if (a3)
           {
-            v14 = [v11 isEnabled];
+            isEnabled = [assetTrack isEnabled];
           }
 
           else
           {
-            v14 = 0;
+            isEnabled = 0;
           }
 
-          [v10 setEnabled:v14];
+          [v10 setEnabled:isEnabled];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -66,8 +66,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 tracks];
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  tracks = [self tracks];
+  v2 = [tracks countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = v2;
@@ -79,14 +79,14 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(tracks);
         }
 
         [*(*(&v7 + 1) + 8 * v5++) setDisableColorMatching:0];
       }
 
       while (v3 != v5);
-      v3 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [tracks countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v3);
@@ -97,11 +97,11 @@
 
 - (BOOL)is_isHighFramerate
 {
-  v1 = [a1 asset];
-  v2 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:v1];
-  v3 = [v2 firstObject];
+  asset = [self asset];
+  v2 = [MEMORY[0x277D3B450] tracksWithMediaType:*MEMORY[0x277CE5EA8] forAsset:asset];
+  firstObject = [v2 firstObject];
 
-  [v3 nominalFrameRate];
+  [firstObject nominalFrameRate];
   v5 = v4 >= 30.0;
 
   return v5;

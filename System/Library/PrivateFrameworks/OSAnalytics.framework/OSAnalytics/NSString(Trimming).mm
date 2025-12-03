@@ -8,20 +8,20 @@
 
 - (id)stringByTrimming
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v3;
 }
 
 - (id)stringByTrimmingColumnSensitive
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v3 isEqualToString:@"^"])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{column %lu}", objc_msgSend(a1, "length")];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{column %lu}", objc_msgSend(self, "length")];
 
     v3 = v4;
   }
@@ -37,8 +37,8 @@
   if (a3 && v6)
   {
     v9 = a3;
-    v10 = [a1 pathComponents];
-    v11 = [v10 indexOfObject:v9];
+    pathComponents = [self pathComponents];
+    v11 = [pathComponents indexOfObject:v9];
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -47,14 +47,14 @@
 
     else
     {
-      v12 = [v10 subarrayWithRange:{v11, objc_msgSend(v10, "count") - v11}];
+      v12 = [pathComponents subarrayWithRange:{v11, objc_msgSend(pathComponents, "count") - v11}];
 
-      v13 = [v7 pathComponents];
+      pathComponents2 = [v7 pathComponents];
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v13 arrayByAddingObjectsFromArray:v12];
+      v15 = [pathComponents2 arrayByAddingObjectsFromArray:v12];
       v8 = [v14 pathWithComponents:v15];
 
-      v10 = v12;
+      pathComponents = v12;
     }
   }
 

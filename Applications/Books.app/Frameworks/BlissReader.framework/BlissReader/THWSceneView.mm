@@ -1,24 +1,24 @@
 @interface THWSceneView
-- (THWSceneView)initWithFrame:(CGRect)a3 options:(id)a4;
+- (THWSceneView)initWithFrame:(CGRect)frame options:(id)options;
 - (id)p_cameraGroup;
 - (id)p_duplicateCameraAndAddToGroupAtSceneCenter;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeCameraAnimation;
 - (void)rotateCameraContinuously;
 - (void)rotateCameraContinuouslyWithEaseIn;
-- (void)scnWarmUpScene:(id)a3 abortHandler:(id)a4;
-- (void)setEventHandlerStickyAxis:(unint64_t)a3;
-- (void)setScene:(id)a3;
+- (void)scnWarmUpScene:(id)scene abortHandler:(id)handler;
+- (void)setEventHandlerStickyAxis:(unint64_t)axis;
+- (void)setScene:(id)scene;
 @end
 
 @implementation THWSceneView
 
-- (THWSceneView)initWithFrame:(CGRect)a3 options:(id)a4
+- (THWSceneView)initWithFrame:(CGRect)frame options:(id)options
 {
   v6.receiver = self;
   v6.super_class = THWSceneView;
-  v4 = [(THWSceneView *)&v6 initWithFrame:a4 options:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(THWSceneView *)&v6 initWithFrame:options options:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     -[THWSceneView setBackgroundColor:](v4, "setBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
@@ -29,26 +29,26 @@
   return v4;
 }
 
-- (void)setEventHandlerStickyAxis:(unint64_t)a3
+- (void)setEventHandlerStickyAxis:(unint64_t)axis
 {
-  v4 = [(THWSceneView *)self eventHandler];
+  eventHandler = [(THWSceneView *)self eventHandler];
 
-  [v4 setStickyAxis:a3];
+  [eventHandler setStickyAxis:axis];
 }
 
 - (void)removeCameraAnimation
 {
-  v3 = [(THWSceneView *)self p_cameraGroup];
+  p_cameraGroup = [(THWSceneView *)self p_cameraGroup];
   if (self->mFnObserving)
   {
     [-[THWSceneView renderer](self "renderer")];
     self->mFnObserving = 0;
   }
 
-  if ([v3 hasContinuousRotationAnimation])
+  if ([p_cameraGroup hasContinuousRotationAnimation])
   {
 
-    [v3 removeContinuousRotationAnimations];
+    [p_cameraGroup removeContinuousRotationAnimations];
   }
 }
 
@@ -70,18 +70,18 @@
   [(THWSceneView *)&v3 dealloc];
 }
 
-- (void)scnWarmUpScene:(id)a3 abortHandler:(id)a4
+- (void)scnWarmUpScene:(id)scene abortHandler:(id)handler
 {
-  v6 = [(THWSceneView *)self renderer];
+  renderer = [(THWSceneView *)self renderer];
 
-  [v6 prepareObject:a3 shouldAbortBlock:a4];
+  [renderer prepareObject:scene shouldAbortBlock:handler];
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v7.receiver = self;
   v7.super_class = THWSceneView;
-  [(THWSceneView *)&v7 setScene:a3];
+  [(THWSceneView *)&v7 setScene:scene];
   v4 = [-[THWSceneView pointOfView](self "pointOfView")];
   [v4 xFov];
   if (v5 != 0.0)
@@ -103,10 +103,10 @@
 
 - (id)p_duplicateCameraAndAddToGroupAtSceneCenter
 {
-  v3 = [(THWSceneView *)self pointOfView];
-  if (v3 || (v10 = [objc_msgSend(-[THWSceneView scene](self "scene")]) != 0 && (v11 = v10, objc_msgSend(v10, "count")) && (v3 = objc_msgSend(v11, "objectAtIndex:", 0)) != 0)
+  pointOfView = [(THWSceneView *)self pointOfView];
+  if (pointOfView || (v10 = [objc_msgSend(-[THWSceneView scene](self "scene")]) != 0 && (v11 = v10, objc_msgSend(v10, "count")) && (pointOfView = objc_msgSend(v11, "objectAtIndex:", 0)) != 0)
   {
-    v4 = v3;
+    v4 = pointOfView;
     v23 = 0.0;
     v22 = 0;
     v21 = 0.0;
@@ -153,16 +153,16 @@
 
 - (void)rotateCameraContinuously
 {
-  v3 = [(THWSceneView *)self p_cameraGroup];
-  if (!v3)
+  p_cameraGroup = [(THWSceneView *)self p_cameraGroup];
+  if (!p_cameraGroup)
   {
-    v3 = [(THWSceneView *)self p_duplicateCameraAndAddToGroupAtSceneCenter];
+    p_cameraGroup = [(THWSceneView *)self p_duplicateCameraAndAddToGroupAtSceneCenter];
     [objc_msgSend(-[THWSceneView scene](self "scene")];
   }
 
   LODWORD(v4) = 1.0;
-  [v3 addContinuousRotationWithInitialRotation:{0.0, v4, 0.0, 0.0}];
-  -[THWSceneView setPointOfView:](self, "setPointOfView:", [objc_msgSend(v3 "childNodes")]);
+  [p_cameraGroup addContinuousRotationWithInitialRotation:{0.0, v4, 0.0, 0.0}];
+  -[THWSceneView setPointOfView:](self, "setPointOfView:", [objc_msgSend(p_cameraGroup "childNodes")]);
   if (!self->mFnObserving)
   {
     [-[THWSceneView renderer](self "renderer")];
@@ -172,15 +172,15 @@
 
 - (void)rotateCameraContinuouslyWithEaseIn
 {
-  v3 = [(THWSceneView *)self p_cameraGroup];
-  if (!v3)
+  p_cameraGroup = [(THWSceneView *)self p_cameraGroup];
+  if (!p_cameraGroup)
   {
-    v3 = [(THWSceneView *)self p_duplicateCameraAndAddToGroupAtSceneCenter];
+    p_cameraGroup = [(THWSceneView *)self p_duplicateCameraAndAddToGroupAtSceneCenter];
     [objc_msgSend(-[THWSceneView scene](self "scene")];
   }
 
-  [v3 addContinuousRotationWithEaseIn];
-  -[THWSceneView setPointOfView:](self, "setPointOfView:", [objc_msgSend(v3 "childNodes")]);
+  [p_cameraGroup addContinuousRotationWithEaseIn];
+  -[THWSceneView setPointOfView:](self, "setPointOfView:", [objc_msgSend(p_cameraGroup "childNodes")]);
   if (!self->mFnObserving)
   {
     [-[THWSceneView renderer](self "renderer")];
@@ -188,9 +188,9 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"pointOfView"] && -[THWSceneView renderer](self, "renderer") == a4)
+  if ([path isEqualToString:@"pointOfView"] && -[THWSceneView renderer](self, "renderer") == object)
   {
 
     [(THWSceneView *)self removeCameraAnimation];
@@ -200,7 +200,7 @@
   {
     v11.receiver = self;
     v11.super_class = THWSceneView;
-    [(THWSceneView *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(THWSceneView *)&v11 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 

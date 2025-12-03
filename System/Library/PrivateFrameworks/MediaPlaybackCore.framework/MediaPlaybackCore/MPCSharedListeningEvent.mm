@@ -1,10 +1,10 @@
 @interface MPCSharedListeningEvent
-+ (id)eventWithCustomEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithPlaybackEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithQueueEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithReactionEvent:(id)a3 participant:(id)a4;
-+ (id)eventWithSessionEvent:(id)a3 participant:(id)a4;
-- (id)_initWithType:(int64_t)a3 participant:(id)a4;
++ (id)eventWithCustomEvent:(id)event participant:(id)participant;
++ (id)eventWithPlaybackEvent:(id)event participant:(id)participant;
++ (id)eventWithQueueEvent:(id)event participant:(id)participant;
++ (id)eventWithReactionEvent:(id)event participant:(id)participant;
++ (id)eventWithSessionEvent:(id)event participant:(id)participant;
+- (id)_initWithType:(int64_t)type participant:(id)participant;
 - (id)description;
 @end
 
@@ -64,17 +64,17 @@ LABEL_12:
   return v3;
 }
 
-- (id)_initWithType:(int64_t)a3 participant:(id)a4
+- (id)_initWithType:(int64_t)type participant:(id)participant
 {
-  v6 = a4;
+  participantCopy = participant;
   v12.receiver = self;
   v12.super_class = MPCSharedListeningEvent;
   v7 = [(MPCSharedListeningEvent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [participantCopy copy];
     participant = v8->_participant;
     v8->_participant = v9;
   }
@@ -82,62 +82,62 @@ LABEL_12:
   return v8;
 }
 
-+ (id)eventWithCustomEvent:(id)a3 participant:(id)a4
++ (id)eventWithCustomEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPCSharedListeningEvent alloc] _initWithType:5 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[MPCSharedListeningEvent alloc] _initWithType:5 participant:participantCopy];
 
   v8 = v7[7];
-  v7[7] = v5;
+  v7[7] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithReactionEvent:(id)a3 participant:(id)a4
++ (id)eventWithReactionEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPCSharedListeningEvent alloc] _initWithType:4 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[MPCSharedListeningEvent alloc] _initWithType:4 participant:participantCopy];
 
   v8 = v7[6];
-  v7[6] = v5;
+  v7[6] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithQueueEvent:(id)a3 participant:(id)a4
++ (id)eventWithQueueEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPCSharedListeningEvent alloc] _initWithType:3 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[MPCSharedListeningEvent alloc] _initWithType:3 participant:participantCopy];
 
   v8 = v7[5];
-  v7[5] = v5;
+  v7[5] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithPlaybackEvent:(id)a3 participant:(id)a4
++ (id)eventWithPlaybackEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPCSharedListeningEvent alloc] _initWithType:2 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[MPCSharedListeningEvent alloc] _initWithType:2 participant:participantCopy];
 
   v8 = v7[4];
-  v7[4] = v5;
+  v7[4] = eventCopy;
 
   return v7;
 }
 
-+ (id)eventWithSessionEvent:(id)a3 participant:(id)a4
++ (id)eventWithSessionEvent:(id)event participant:(id)participant
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPCSharedListeningEvent alloc] _initWithType:1 participant:v6];
+  eventCopy = event;
+  participantCopy = participant;
+  v7 = [[MPCSharedListeningEvent alloc] _initWithType:1 participant:participantCopy];
 
   v8 = v7[3];
-  v7[3] = v5;
+  v7[3] = eventCopy;
 
   return v7;
 }

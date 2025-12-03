@@ -1,71 +1,71 @@
 @interface SXTextComponentSizer
-- (SXTextComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textComponentLayoutHosting:(id)a8 textSourceFactory:(id)a9;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
-- (double)verticalPositionForRange:(_NSRange)a3;
-- (id)additionsForTextSource:(id)a3;
-- (id)componentTextStyleForTextSource:(id)a3 inheritingFromDefaultStyles:(BOOL)a4;
-- (id)contentSizeCategoryForTextSource:(id)a3;
-- (id)defaultComponentTextStyleForTextSource:(id)a3;
-- (id)defaultComponentTextStylesForTextSource:(id)a3;
-- (id)existingExclusionPathForComponentWithIdentifier:(id)a3;
-- (id)inlineTextStylesForTextSource:(id)a3;
+- (SXTextComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
+- (double)verticalPositionForRange:(_NSRange)range;
+- (id)additionsForTextSource:(id)source;
+- (id)componentTextStyleForTextSource:(id)source inheritingFromDefaultStyles:(BOOL)styles;
+- (id)contentSizeCategoryForTextSource:(id)source;
+- (id)defaultComponentTextStyleForTextSource:(id)source;
+- (id)defaultComponentTextStylesForTextSource:(id)source;
+- (id)existingExclusionPathForComponentWithIdentifier:(id)identifier;
+- (id)inlineTextStylesForTextSource:(id)source;
 - (id)snapLines;
-- (id)textResizerForTextSource:(id)a3;
-- (id)textRulesForTextSource:(id)a3;
-- (id)textStyleForIdentifier:(id)a3;
+- (id)textResizerForTextSource:(id)source;
+- (id)textRulesForTextSource:(id)source;
+- (id)textStyleForIdentifier:(id)identifier;
 - (unint64_t)stringLength;
-- (void)addExclusionPath:(id)a3;
+- (void)addExclusionPath:(id)path;
 - (void)removeAllExclusionPaths;
 @end
 
 @implementation SXTextComponentSizer
 
-- (SXTextComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textComponentLayoutHosting:(id)a8 textSourceFactory:(id)a9
+- (SXTextComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory
 {
-  v15 = a3;
-  v16 = a8;
-  v17 = a9;
+  componentCopy = component;
+  hostingCopy = hosting;
+  factoryCopy = factory;
   v27.receiver = self;
   v27.super_class = SXTextComponentSizer;
-  v18 = [(SXComponentSizer *)&v27 initWithComponent:v15 componentLayout:a4 componentStyle:a5 DOMObjectProvider:a6 layoutOptions:a7];
+  v18 = [(SXComponentSizer *)&v27 initWithComponent:componentCopy componentLayout:layout componentStyle:style DOMObjectProvider:provider layoutOptions:options];
   if (v18)
   {
-    v19 = [v15 text];
-    v20 = [v17 createTextSourceWithString:v19 dataSource:v18];
+    text = [componentCopy text];
+    v20 = [factoryCopy createTextSourceWithString:text dataSource:v18];
 
     v21 = [SXTextLayouter alloc];
-    v22 = [v16 documentRoot];
-    v23 = [(SXTextLayouter *)v21 initWithTextSource:v20 andDocumentRoot:v22];
+    documentRoot = [hostingCopy documentRoot];
+    v23 = [(SXTextLayouter *)v21 initWithTextSource:v20 andDocumentRoot:documentRoot];
     textLayouter = v18->_textLayouter;
     v18->_textLayouter = v23;
 
-    v25 = [(SXTextComponentSizer *)v18 textLayouter];
-    [(SXComponentSizer *)v18 saveInfo:v25 forRenderingPhaseWithIdentifier:@"TextLayouter"];
+    textLayouter = [(SXTextComponentSizer *)v18 textLayouter];
+    [(SXComponentSizer *)v18 saveInfo:textLayouter forRenderingPhaseWithIdentifier:@"TextLayouter"];
   }
 
   return v18;
 }
 
-- (void)addExclusionPath:(id)a3
+- (void)addExclusionPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SXTextComponentSizer *)self textLayouter];
-  [v5 addExclusionPath:v4];
+  pathCopy = path;
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  [textLayouter addExclusionPath:pathCopy];
 }
 
 - (void)removeAllExclusionPaths
 {
-  v2 = [(SXTextComponentSizer *)self textLayouter];
-  [v2 removeAllExclusionPaths];
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  [textLayouter removeAllExclusionPaths];
 }
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = [(SXTextComponentSizer *)self textLayouter];
-  [v6 reset];
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  [textLayouter reset];
 
-  v7 = [(SXTextComponentSizer *)self textLayouter];
-  [v7 calculateHeightForWidth:a3];
+  textLayouter2 = [(SXTextComponentSizer *)self textLayouter];
+  [textLayouter2 calculateHeightForWidth:width];
   v9 = v8;
 
   return v9;
@@ -73,28 +73,28 @@
 
 - (id)snapLines
 {
-  v2 = [(SXTextComponentSizer *)self textLayouter];
-  v3 = [v2 firstColumn];
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  firstColumn = [textLayouter firstColumn];
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v3 frameBounds];
+  array = [MEMORY[0x1E695DF70] array];
+  [firstColumn frameBounds];
   if (CGRectGetHeight(v17) > 100.0)
   {
-    v5 = [v3 storage];
-    v6 = [v3 range];
-    v8 = [v5 paragraphIndexRangeForCharRange:{v6, v7}];
+    storage = [firstColumn storage];
+    range = [firstColumn range];
+    v8 = [storage paragraphIndexRangeForCharRange:{range, v7}];
     if (v8 < v8 + v9)
     {
       v10 = v8;
       v11 = v9;
       do
       {
-        v12 = [v5 textRangeForParagraphAtIndex:v10];
+        v12 = [storage textRangeForParagraphAtIndex:v10];
         if (v13 >= 2)
         {
-          [v3 topOfLineAtCharIndex:v12];
+          [firstColumn topOfLineAtCharIndex:v12];
           v14 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-          [v4 addObject:v14];
+          [array addObject:v14];
         }
 
         ++v10;
@@ -105,15 +105,15 @@
     }
   }
 
-  return v4;
+  return array;
 }
 
-- (double)verticalPositionForRange:(_NSRange)a3
+- (double)verticalPositionForRange:(_NSRange)range
 {
-  location = a3.location;
-  v4 = [(SXTextComponentSizer *)self textLayouter:a3.location];
-  v5 = [v4 firstColumn];
-  [v5 topOfLineAtCharIndex:location];
+  location = range.location;
+  v4 = [(SXTextComponentSizer *)self textLayouter:range.location];
+  firstColumn = [v4 firstColumn];
+  [firstColumn topOfLineAtCharIndex:location];
   v7 = v6;
 
   return v7;
@@ -121,26 +121,26 @@
 
 - (unint64_t)stringLength
 {
-  v2 = [(SXTextComponentSizer *)self textLayouter];
-  v3 = [v2 textSource];
-  v4 = [v3 string];
-  v5 = [v4 length];
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  textSource = [textLayouter textSource];
+  string = [textSource string];
+  v5 = [string length];
 
   return v5;
 }
 
-- (id)existingExclusionPathForComponentWithIdentifier:(id)a3
+- (id)existingExclusionPathForComponentWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SXTextComponentSizer *)self textLayouter];
-  v6 = [v5 exclusionPaths];
+  textLayouter = [(SXTextComponentSizer *)self textLayouter];
+  exclusionPaths = [textLayouter exclusionPaths];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [exclusionPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -150,12 +150,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(exclusionPaths);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [(SXTangierTextRenderCollectorItem *)v10 componentIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        componentIdentifier = [(SXTangierTextRenderCollectorItem *)v10 componentIdentifier];
+        v12 = [componentIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -164,7 +164,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [exclusionPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -179,105 +179,105 @@ LABEL_11:
   return v7;
 }
 
-- (id)textResizerForTextSource:(id)a3
+- (id)textResizerForTextSource:(id)source
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = [(SXComponentSizer *)self DOMObjectProvider];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
   v5 = SXDefaultTextStyleIdentifierForRole(@"body");
   v26[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v7 = [(SXComponentSizer *)self component];
-  v8 = [v4 componentTextStyleForIdentifiers:v6 component:v7];
+  component = [(SXComponentSizer *)self component];
+  v8 = [dOMObjectProvider componentTextStyleForIdentifiers:v6 component:component];
 
   if (!v8)
   {
-    v9 = [(SXComponentSizer *)self DOMObjectProvider];
+    dOMObjectProvider2 = [(SXComponentSizer *)self DOMObjectProvider];
     v25 = @"default";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v11 = [(SXComponentSizer *)self component];
-    v8 = [v9 componentTextStyleForIdentifiers:v10 component:v11];
+    component2 = [(SXComponentSizer *)self component];
+    v8 = [dOMObjectProvider2 componentTextStyleForIdentifiers:v10 component:component2];
   }
 
-  v12 = [(SXComponentSizer *)self DOMObjectProvider];
-  v13 = [(SXComponentSizer *)self component];
-  v14 = [v13 textStyle];
-  v15 = [(SXComponentSizer *)self component];
-  v16 = [v15 classification];
-  v17 = [(SXComponentSizer *)self component];
-  v18 = [v12 componentTextStyleForIdentifier:v14 classification:v16 component:v17];
+  dOMObjectProvider3 = [(SXComponentSizer *)self DOMObjectProvider];
+  component3 = [(SXComponentSizer *)self component];
+  textStyle = [component3 textStyle];
+  component4 = [(SXComponentSizer *)self component];
+  classification = [component4 classification];
+  component5 = [(SXComponentSizer *)self component];
+  v18 = [dOMObjectProvider3 componentTextStyleForIdentifier:textStyle classification:classification component:component5];
 
   if (v18)
   {
-    v19 = [v18 fontScaling];
+    fontScaling = [v18 fontScaling];
   }
 
   else
   {
-    v19 = 1;
+    fontScaling = 1;
   }
 
   v20 = [SXTextResizer alloc];
-  v21 = [(SXComponentSizer *)self layoutOptions];
-  v22 = [v21 columnLayout];
-  v23 = [(SXTextResizer *)&v20->super.isa initWithColumnLayout:v22 defaultTextStyle:v8 fontScalingEnabled:v19];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  columnLayout = [layoutOptions columnLayout];
+  v23 = [(SXTextResizer *)&v20->super.isa initWithColumnLayout:columnLayout defaultTextStyle:v8 fontScalingEnabled:fontScaling];
 
   return v23;
 }
 
-- (id)componentTextStyleForTextSource:(id)a3 inheritingFromDefaultStyles:(BOOL)a4
+- (id)componentTextStyleForTextSource:(id)source inheritingFromDefaultStyles:(BOOL)styles
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  if (v4)
+  stylesCopy = styles;
+  array = [MEMORY[0x1E695DF70] array];
+  if (stylesCopy)
   {
-    v7 = [(SXComponentSizer *)self component];
-    v8 = [v7 classification];
-    v9 = [v8 defaultTextStyleIdentifiers];
-    [v6 addObjectsFromArray:v9];
+    component = [(SXComponentSizer *)self component];
+    classification = [component classification];
+    defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+    [array addObjectsFromArray:defaultTextStyleIdentifiers];
   }
 
-  v10 = [(SXComponentSizer *)self component];
-  v11 = [v10 textStyle];
+  component2 = [(SXComponentSizer *)self component];
+  textStyle = [component2 textStyle];
 
-  if (v11)
+  if (textStyle)
   {
-    v12 = [(SXComponentSizer *)self component];
-    v13 = [v12 textStyle];
-    [v6 addObject:v13];
+    component3 = [(SXComponentSizer *)self component];
+    textStyle2 = [component3 textStyle];
+    [array addObject:textStyle2];
   }
 
-  v14 = [(SXComponentSizer *)self DOMObjectProvider];
-  v15 = [(SXComponentSizer *)self component];
-  v16 = [v14 componentTextStyleForIdentifiers:v6 component:v15];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component4 = [(SXComponentSizer *)self component];
+  v16 = [dOMObjectProvider componentTextStyleForIdentifiers:array component:component4];
 
   return v16;
 }
 
-- (id)defaultComponentTextStyleForTextSource:(id)a3
+- (id)defaultComponentTextStyleForTextSource:(id)source
 {
-  v4 = [(SXComponentSizer *)self DOMObjectProvider];
-  v5 = [(SXComponentSizer *)self component];
-  v6 = [v5 classification];
-  v7 = [v6 defaultTextStyleIdentifiers];
-  v8 = [(SXComponentSizer *)self component];
-  v9 = [v4 componentTextStyleForIdentifiers:v7 component:v8];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
+  component2 = [(SXComponentSizer *)self component];
+  v9 = [dOMObjectProvider componentTextStyleForIdentifiers:defaultTextStyleIdentifiers component:component2];
 
   return v9;
 }
 
-- (id)defaultComponentTextStylesForTextSource:(id)a3
+- (id)defaultComponentTextStylesForTextSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SXComponentSizer *)self component];
-  v5 = [v4 classification];
-  v6 = [v5 defaultTextStyleIdentifiers];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  defaultTextStyleIdentifiers = [classification defaultTextStyleIdentifiers];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v7 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -288,71 +288,71 @@ LABEL_11:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(defaultTextStyleIdentifiers);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(SXComponentSizer *)self DOMObjectProvider];
+        dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
         v22 = v11;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-        v14 = [(SXComponentSizer *)self component];
-        v15 = [v12 componentTextStyleForIdentifiers:v13 component:v14];
+        component2 = [(SXComponentSizer *)self component];
+        v15 = [dOMObjectProvider componentTextStyleForIdentifiers:v13 component:component2];
 
         if (v15)
         {
-          [v17 addObject:v15];
+          [array addObject:v15];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [defaultTextStyleIdentifiers countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  return v17;
+  return array;
 }
 
-- (id)inlineTextStylesForTextSource:(id)a3
+- (id)inlineTextStylesForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 inlineTextStyles];
+  component = [(SXComponentSizer *)self component];
+  inlineTextStyles = [component inlineTextStyles];
 
-  return v4;
+  return inlineTextStyles;
 }
 
-- (id)additionsForTextSource:(id)a3
+- (id)additionsForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 additions];
-  v5 = [v4 NSArray];
+  component = [(SXComponentSizer *)self component];
+  additions = [component additions];
+  nSArray = [additions NSArray];
 
-  return v5;
+  return nSArray;
 }
 
-- (id)textRulesForTextSource:(id)a3
+- (id)textRulesForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentSizer *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)contentSizeCategoryForTextSource:(id)a3
+- (id)contentSizeCategoryForTextSource:(id)source
 {
-  v3 = [(SXComponentSizer *)self layoutOptions];
-  v4 = [v3 contentSizeCategory];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  contentSizeCategory = [layoutOptions contentSizeCategory];
 
-  return v4;
+  return contentSizeCategory;
 }
 
-- (id)textStyleForIdentifier:(id)a3
+- (id)textStyleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentSizer *)self DOMObjectProvider];
-  v6 = [(SXComponentSizer *)self component];
-  v7 = [v5 textStyleForIdentifier:v4 component:v6];
+  identifierCopy = identifier;
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  component = [(SXComponentSizer *)self component];
+  v7 = [dOMObjectProvider textStyleForIdentifier:identifierCopy component:component];
 
   return v7;
 }

@@ -1,35 +1,35 @@
 @interface MPCPlayerAudioFormat
 + (id)lossyHighQualityStereoFormat;
 + (id)lossyLowQualityStereoFormat;
-+ (id)payloadValueFromJSONValue:(id)a3;
-- (BOOL)_isBinauralFormat:(id)a3;
-- (BOOL)_isDerivedFromSpatialFormat:(id)a3;
-- (BOOL)_isHLSVersion:(id)a3 greatherThanOrEqualTo:(id)a4;
-- (BOOL)_isMultichannelFormat:(id)a3;
-- (BOOL)_isSpatialFormat:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPCPlayerAudioFormat)audioFormatWithRenderingMode:(int64_t)a3;
-- (MPCPlayerAudioFormat)initWithDictionaryRepresentation:(id)a3;
-- (MPCPlayerAudioFormat)initWithJSONDictionaryRepresentation:(id)a3 stableVariantID:(id)a4;
-- (MPCPlayerAudioFormat)initWithNowPlayingInfoAudioFormat:(id)a3;
-- (MPCPlayerAudioFormat)initWithTier:(int64_t)a3 codec:(unsigned int)a4 spatialized:(BOOL)a5 multiChannel:(BOOL)a6 channelLayout:(unsigned int)a7 sampleRate:(int64_t)a8 stableVariantID:(id)a9;
++ (id)payloadValueFromJSONValue:(id)value;
+- (BOOL)_isBinauralFormat:(id)format;
+- (BOOL)_isDerivedFromSpatialFormat:(id)format;
+- (BOOL)_isHLSVersion:(id)version greatherThanOrEqualTo:(id)to;
+- (BOOL)_isMultichannelFormat:(id)format;
+- (BOOL)_isSpatialFormat:(id)format;
+- (BOOL)isEqual:(id)equal;
+- (MPCPlayerAudioFormat)audioFormatWithRenderingMode:(int64_t)mode;
+- (MPCPlayerAudioFormat)initWithDictionaryRepresentation:(id)representation;
+- (MPCPlayerAudioFormat)initWithJSONDictionaryRepresentation:(id)representation stableVariantID:(id)d;
+- (MPCPlayerAudioFormat)initWithNowPlayingInfoAudioFormat:(id)format;
+- (MPCPlayerAudioFormat)initWithTier:(int64_t)tier codec:(unsigned int)codec spatialized:(BOOL)spatialized multiChannel:(BOOL)channel channelLayout:(unsigned int)layout sampleRate:(int64_t)rate stableVariantID:(id)d;
 - (MPNowPlayingInfoAudioFormat)nowPlayingAudioFormat;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)debugCodecDescription;
 - (NSString)description;
 - (NSString)humanDescription;
-- (id)_descriptionForChannelLayoutTag:(unsigned int)a3;
+- (id)_descriptionForChannelLayoutTag:(unsigned int)tag;
 - (id)analyticsFormatInfo;
-- (int64_t)_computedTierFromHLSDataWithChannelCount:(int64_t)a3;
-- (unsigned)_computedChannelLayoutTagFromHLSData:(id)a3 channelCount:(int64_t)a4;
+- (int64_t)_computedTierFromHLSDataWithChannelCount:(int64_t)count;
+- (unsigned)_computedChannelLayoutTagFromHLSData:(id)data channelCount:(int64_t)count;
 @end
 
 @implementation MPCPlayerAudioFormat
 
-+ (id)payloadValueFromJSONValue:(id)a3
++ (id)payloadValueFromJSONValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionaryRepresentation:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithDictionaryRepresentation:valueCopy];
 
   return v5;
 }
@@ -39,20 +39,20 @@
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
   if ([(MPCPlayerAudioFormat *)self bitrate])
   {
-    v4 = [(MPCPlayerAudioFormat *)self debugBitRateDescription];
-    [v3 setObject:v4 forKeyedSubscript:@"bitrate"];
+    debugBitRateDescription = [(MPCPlayerAudioFormat *)self debugBitRateDescription];
+    [v3 setObject:debugBitRateDescription forKeyedSubscript:@"bitrate"];
   }
 
   if ([(MPCPlayerAudioFormat *)self codec])
   {
-    v5 = [(MPCPlayerAudioFormat *)self debugCodecDescription];
-    [v3 setObject:v5 forKeyedSubscript:@"codec"];
+    debugCodecDescription = [(MPCPlayerAudioFormat *)self debugCodecDescription];
+    [v3 setObject:debugCodecDescription forKeyedSubscript:@"codec"];
   }
 
   if ([(MPCPlayerAudioFormat *)self bitDepth])
   {
-    v6 = [(MPCPlayerAudioFormat *)self debugBitDepthDescription];
-    [v3 setObject:v6 forKeyedSubscript:@"bitDepth"];
+    debugBitDepthDescription = [(MPCPlayerAudioFormat *)self debugBitDepthDescription];
+    [v3 setObject:debugBitDepthDescription forKeyedSubscript:@"bitDepth"];
   }
 
   if ([(MPCPlayerAudioFormat *)self channelLayout]!= -1 && [(MPCPlayerAudioFormat *)self channelLayout])
@@ -60,34 +60,34 @@
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MPCPlayerAudioFormat channelLayout](self, "channelLayout")}];
     [v3 setObject:v7 forKeyedSubscript:@"channelCount"];
 
-    v8 = [(MPCPlayerAudioFormat *)self debugChannelLayoutDescription];
-    [v3 setObject:v8 forKeyedSubscript:@"layout"];
+    debugChannelLayoutDescription = [(MPCPlayerAudioFormat *)self debugChannelLayoutDescription];
+    [v3 setObject:debugChannelLayoutDescription forKeyedSubscript:@"layout"];
   }
 
   if ([(MPCPlayerAudioFormat *)self sampleRate])
   {
-    v9 = [(MPCPlayerAudioFormat *)self debugSampleRateDescription];
-    [v3 setObject:v9 forKeyedSubscript:@"sampleRate"];
+    debugSampleRateDescription = [(MPCPlayerAudioFormat *)self debugSampleRateDescription];
+    [v3 setObject:debugSampleRateDescription forKeyedSubscript:@"sampleRate"];
   }
 
   return v3;
 }
 
-- (id)_descriptionForChannelLayoutTag:(unsigned int)a3
+- (id)_descriptionForChannelLayoutTag:(unsigned int)tag
 {
   result = @"unknown";
-  if (a3 > 8323079)
+  if (tag > 8323079)
   {
-    if (a3 > 12648463)
+    if (tag > 12648463)
     {
       v4 = 12779529;
       v12 = @"7.1.2";
-      if (a3 != 12845066)
+      if (tag != 12845066)
       {
         v12 = @"unknown";
       }
 
-      if (a3 == 12779530)
+      if (tag == 12779530)
       {
         v6 = @"5.1.4";
       }
@@ -98,7 +98,7 @@
       }
 
       v7 = @"9.1.6";
-      v8 = a3 == 12713992;
+      v8 = tag == 12713992;
       v9 = @"5.1.2";
       v10 = 12648464;
     }
@@ -107,12 +107,12 @@
     {
       v4 = 11796488;
       v5 = @"7.1.4";
-      if (a3 != 12582924)
+      if (tag != 12582924)
       {
         v5 = @"unknown";
       }
 
-      if (a3 == 11796489)
+      if (tag == 11796489)
       {
         v6 = @"8.1";
       }
@@ -123,7 +123,7 @@
       }
 
       v7 = @"7.1";
-      v8 = a3 == 9306119;
+      v8 = tag == 9306119;
       v9 = @"6.1";
       v10 = 8323080;
     }
@@ -131,16 +131,16 @@
     goto LABEL_26;
   }
 
-  if (a3 > 7471106)
+  if (tag > 7471106)
   {
     v4 = 7864324;
     v11 = @"5.1";
-    if (a3 != 8126470)
+    if (tag != 8126470)
     {
       v11 = @"unknown";
     }
 
-    if (a3 == 7864325)
+    if (tag == 7864325)
     {
       v6 = @"5.0";
     }
@@ -151,7 +151,7 @@
     }
 
     v7 = @"3.0";
-    v8 = a3 == 7602180;
+    v8 = tag == 7602180;
     v9 = @"4.0";
     v10 = 7471107;
 LABEL_26:
@@ -160,12 +160,12 @@ LABEL_26:
       v9 = @"unknown";
     }
 
-    if (a3 != v10)
+    if (tag != v10)
     {
       v7 = v9;
     }
 
-    if (a3 <= v4)
+    if (tag <= v4)
     {
       return v7;
     }
@@ -176,11 +176,11 @@ LABEL_26:
     }
   }
 
-  if (a3 > 6684673)
+  if (tag > 6684673)
   {
-    if (a3 != 6684674)
+    if (tag != 6684674)
     {
-      if (a3 == 6946818)
+      if (tag == 6946818)
       {
         return @"Binaural";
       }
@@ -191,12 +191,12 @@ LABEL_26:
     return @"Stereo";
   }
 
-  if (a3 == 6553601)
+  if (tag == 6553601)
   {
     return @"Mono";
   }
 
-  if (a3 == 6619138)
+  if (tag == 6619138)
   {
     return @"Stereo";
   }
@@ -204,13 +204,13 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)_isHLSVersion:(id)a3 greatherThanOrEqualTo:(id)a4
+- (BOOL)_isHLSVersion:(id)version greatherThanOrEqualTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 compare:v6])
+  versionCopy = version;
+  toCopy = to;
+  if ([versionCopy compare:toCopy])
   {
-    v7 = [v5 compare:v6] == 1;
+    v7 = [versionCopy compare:toCopy] == 1;
   }
 
   else
@@ -221,38 +221,38 @@ LABEL_26:
   return v7;
 }
 
-- (unsigned)_computedChannelLayoutTagFromHLSData:(id)a3 channelCount:(int64_t)a4
+- (unsigned)_computedChannelLayoutTagFromHLSData:(id)data channelCount:(int64_t)count
 {
-  v6 = a3;
-  if ([(MPCPlayerAudioFormat *)self _isSpatialFormat:v6])
+  dataCopy = data;
+  if ([(MPCPlayerAudioFormat *)self _isSpatialFormat:dataCopy])
   {
-    if (a4 < 3)
+    if (count < 3)
     {
       goto LABEL_8;
     }
 
 LABEL_6:
-    if ((a4 - 3) >= 0xE)
+    if ((count - 3) >= 0xE)
     {
       goto LABEL_24;
     }
 
-    v8 = dword_1C6045500[a4 - 3];
+    v8 = dword_1C6045500[count - 3];
     goto LABEL_25;
   }
 
-  v7 = [(MPCPlayerAudioFormat *)self _isDerivedFromSpatialFormat:v6];
-  if (a4 >= 3 && v7)
+  v7 = [(MPCPlayerAudioFormat *)self _isDerivedFromSpatialFormat:dataCopy];
+  if (count >= 3 && v7)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  if (a4 <= 4)
+  if (count <= 4)
   {
-    if (a4 > 2)
+    if (count > 2)
     {
-      if (a4 == 3)
+      if (count == 3)
       {
         v8 = 7471107;
       }
@@ -265,18 +265,18 @@ LABEL_8:
 
     else
     {
-      if (a4 == 1)
+      if (count == 1)
       {
         v8 = 6553601;
         goto LABEL_25;
       }
 
-      if (a4 != 2)
+      if (count != 2)
       {
         goto LABEL_24;
       }
 
-      if ([(MPCPlayerAudioFormat *)self _isBinauralFormat:v6])
+      if ([(MPCPlayerAudioFormat *)self _isBinauralFormat:dataCopy])
       {
         v8 = 6946818;
       }
@@ -290,9 +290,9 @@ LABEL_8:
 
   else
   {
-    if (a4 > 6)
+    if (count > 6)
     {
-      switch(a4)
+      switch(count)
       {
         case 7:
           v8 = 9306119;
@@ -310,7 +310,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (a4 == 5)
+    if (count == 5)
     {
       v8 = 7864325;
     }
@@ -326,7 +326,7 @@ LABEL_25:
   return v8;
 }
 
-- (int64_t)_computedTierFromHLSDataWithChannelCount:(int64_t)a3
+- (int64_t)_computedTierFromHLSDataWithChannelCount:(int64_t)count
 {
   if (self->_codec == 1634492771)
   {
@@ -341,7 +341,7 @@ LABEL_25:
     }
   }
 
-  else if (a3 > 2 || self->_spatialized)
+  else if (count > 2 || self->_spatialized)
   {
     return 4;
   }
@@ -352,56 +352,56 @@ LABEL_25:
   }
 }
 
-- (BOOL)_isBinauralFormat:(id)a3
+- (BOOL)_isBinauralFormat:(id)format
 {
-  v3 = [a3 objectForKeyedSubscript:@"CHANNEL-USAGE"];
+  v3 = [format objectForKeyedSubscript:@"CHANNEL-USAGE"];
   v4 = [v3 isEqualToString:@"BINAURAL"];
 
   return v4;
 }
 
-- (BOOL)_isDerivedFromSpatialFormat:(id)a3
+- (BOOL)_isDerivedFromSpatialFormat:(id)format
 {
-  v3 = [a3 objectForKeyedSubscript:@"ORIGIN-IS-ATMOS"];
-  v4 = [v3 BOOLValue];
+  v3 = [format objectForKeyedSubscript:@"ORIGIN-IS-ATMOS"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_isMultichannelFormat:(id)a3
+- (BOOL)_isMultichannelFormat:(id)format
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CHANNEL-COUNT"];
-  v5 = [v4 integerValue];
+  formatCopy = format;
+  v4 = [formatCopy objectForKeyedSubscript:@"CHANNEL-COUNT"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"ORIGIN-CHANNEL-COUNT"];
+  v6 = [formatCopy objectForKeyedSubscript:@"ORIGIN-CHANNEL-COUNT"];
 
-  v7 = [v6 integerValue];
-  v8 = v5 == 2;
-  if (v7 <= 2)
+  integerValue2 = [v6 integerValue];
+  v8 = integerValue == 2;
+  if (integerValue2 <= 2)
   {
     v8 = 0;
   }
 
-  v9 = v5 > 2 || v8;
+  v9 = integerValue > 2 || v8;
 
   return v9;
 }
 
-- (BOOL)_isSpatialFormat:(id)a3
+- (BOOL)_isSpatialFormat:(id)format
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IS-ATMOS"];
-  v6 = [v5 BOOLValue];
+  formatCopy = format;
+  v5 = [formatCopy objectForKeyedSubscript:@"IS-ATMOS"];
+  bOOLValue = [v5 BOOLValue];
 
-  LOBYTE(self) = [(MPCPlayerAudioFormat *)self _isDerivedFromSpatialFormat:v4];
-  return (v6 | self) & 1;
+  LOBYTE(self) = [(MPCPlayerAudioFormat *)self _isDerivedFromSpatialFormat:formatCopy];
+  return (bOOLValue | self) & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -411,12 +411,12 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MPCPlayerAudioFormat *)v5 tier];
-      if (v6 == [(MPCPlayerAudioFormat *)self tier]&& (v7 = [(MPCPlayerAudioFormat *)v5 bitrate], v7 == [(MPCPlayerAudioFormat *)self bitrate]) && (v8 = [(MPCPlayerAudioFormat *)v5 sampleRate], v8 == [(MPCPlayerAudioFormat *)self sampleRate]) && (v9 = [(MPCPlayerAudioFormat *)v5 bitDepth], v9 == [(MPCPlayerAudioFormat *)self bitDepth]) && (v10 = [(MPCPlayerAudioFormat *)v5 codec], v10 == [(MPCPlayerAudioFormat *)self codec]) && (v11 = [(MPCPlayerAudioFormat *)v5 isSpatialized], v11 == [(MPCPlayerAudioFormat *)self isSpatialized]) && (v12 = [(MPCPlayerAudioFormat *)v5 isMultiChannel], v12 == [(MPCPlayerAudioFormat *)self isMultiChannel]) && (v13 = [(MPCPlayerAudioFormat *)v5 channelLayout], v13 == [(MPCPlayerAudioFormat *)self channelLayout]))
+      v5 = equalCopy;
+      tier = [(MPCPlayerAudioFormat *)v5 tier];
+      if (tier == [(MPCPlayerAudioFormat *)self tier]&& (v7 = [(MPCPlayerAudioFormat *)v5 bitrate], v7 == [(MPCPlayerAudioFormat *)self bitrate]) && (v8 = [(MPCPlayerAudioFormat *)v5 sampleRate], v8 == [(MPCPlayerAudioFormat *)self sampleRate]) && (v9 = [(MPCPlayerAudioFormat *)v5 bitDepth], v9 == [(MPCPlayerAudioFormat *)self bitDepth]) && (v10 = [(MPCPlayerAudioFormat *)v5 codec], v10 == [(MPCPlayerAudioFormat *)self codec]) && (v11 = [(MPCPlayerAudioFormat *)v5 isSpatialized], v11 == [(MPCPlayerAudioFormat *)self isSpatialized]) && (v12 = [(MPCPlayerAudioFormat *)v5 isMultiChannel], v12 == [(MPCPlayerAudioFormat *)self isMultiChannel]) && (v13 = [(MPCPlayerAudioFormat *)v5 channelLayout], v13 == [(MPCPlayerAudioFormat *)self channelLayout]))
       {
-        v14 = [(MPCPlayerAudioFormat *)v5 renderingMode];
-        v15 = v14 == [(MPCPlayerAudioFormat *)self renderingMode];
+        renderingMode = [(MPCPlayerAudioFormat *)v5 renderingMode];
+        v15 = renderingMode == [(MPCPlayerAudioFormat *)self renderingMode];
       }
 
       else
@@ -439,8 +439,8 @@ LABEL_25:
   v6 = bswap32(self->_codec);
   v7 = 0;
   v2 = [MEMORY[0x1E696AEC0] stringWithCString:&v6 encoding:1];
-  v3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }
@@ -449,15 +449,15 @@ LABEL_25:
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MPCPlayerAudioFormat *)self debugTierDescription];
-  v6 = [v4 stringWithFormat:@"tier: %@", v5];
+  debugTierDescription = [(MPCPlayerAudioFormat *)self debugTierDescription];
+  v6 = [v4 stringWithFormat:@"tier: %@", debugTierDescription];
   [v3 addObject:v6];
 
   if (self->_bitrate)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPCPlayerAudioFormat *)self debugBitRateDescription];
-    v9 = [v7 stringWithFormat:@"bitrate: %@", v8];
+    debugBitRateDescription = [(MPCPlayerAudioFormat *)self debugBitRateDescription];
+    v9 = [v7 stringWithFormat:@"bitrate: %@", debugBitRateDescription];
     [v3 addObject:v9];
   }
 
@@ -470,24 +470,24 @@ LABEL_25:
   if (self->_bitDepth)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(MPCPlayerAudioFormat *)self debugBitDepthDescription];
-    v13 = [v11 stringWithFormat:@"bitDepth: %@", v12];
+    debugBitDepthDescription = [(MPCPlayerAudioFormat *)self debugBitDepthDescription];
+    v13 = [v11 stringWithFormat:@"bitDepth: %@", debugBitDepthDescription];
     [v3 addObject:v13];
   }
 
   if (self->_sampleRate)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(MPCPlayerAudioFormat *)self debugSampleRateDescription];
-    v16 = [v14 stringWithFormat:@"sampleRate: %@", v15];
+    debugSampleRateDescription = [(MPCPlayerAudioFormat *)self debugSampleRateDescription];
+    v16 = [v14 stringWithFormat:@"sampleRate: %@", debugSampleRateDescription];
     [v3 addObject:v16];
   }
 
   if (self->_codec)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(MPCPlayerAudioFormat *)self debugCodecDescription];
-    v19 = [v17 stringWithFormat:@"codec: %@", v18];
+    debugCodecDescription = [(MPCPlayerAudioFormat *)self debugCodecDescription];
+    v19 = [v17 stringWithFormat:@"codec: %@", debugCodecDescription];
     [v3 addObject:v19];
   }
 
@@ -495,33 +495,33 @@ LABEL_25:
   if (channelLayout != -65536 && channelLayout)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [(MPCPlayerAudioFormat *)self debugChannelCountDescription];
-    v23 = [v21 stringWithFormat:@"channels: %@", v22];
+    debugChannelCountDescription = [(MPCPlayerAudioFormat *)self debugChannelCountDescription];
+    v23 = [v21 stringWithFormat:@"channels: %@", debugChannelCountDescription];
     [v3 addObject:v23];
   }
 
   if (self->_audioChannelLayoutDescription)
   {
     v24 = MEMORY[0x1E696AEC0];
-    v25 = [(MPCPlayerAudioFormat *)self debugChannelLayoutDescription];
-    v26 = [v24 stringWithFormat:@"layout: %@", v25];
+    debugChannelLayoutDescription = [(MPCPlayerAudioFormat *)self debugChannelLayoutDescription];
+    v26 = [v24 stringWithFormat:@"layout: %@", debugChannelLayoutDescription];
     [v3 addObject:v26];
   }
 
   if (self->_originChannelLayout)
   {
-    v27 = [(MPCPlayerAudioFormat *)self debugOriginChannelLayoutDescription];
+    debugOriginChannelLayoutDescription = [(MPCPlayerAudioFormat *)self debugOriginChannelLayoutDescription];
     v28 = MEMORY[0x1E696AEC0];
-    v29 = [(MPCPlayerAudioFormat *)self debugOriginChannelCountDescription];
-    v30 = v29;
-    if (v27)
+    debugOriginChannelCountDescription = [(MPCPlayerAudioFormat *)self debugOriginChannelCountDescription];
+    v30 = debugOriginChannelCountDescription;
+    if (debugOriginChannelLayoutDescription)
     {
-      [v28 stringWithFormat:@"origin channels: %@ [%@]", v29, v27];
+      [v28 stringWithFormat:@"origin channels: %@ [%@]", debugOriginChannelCountDescription, debugOriginChannelLayoutDescription];
     }
 
     else
     {
-      [v28 stringWithFormat:@"origin channels: %@", v29, v38];
+      [v28 stringWithFormat:@"origin channels: %@", debugOriginChannelCountDescription, v38];
     }
     v31 = ;
     [v3 addObject:v31];
@@ -569,8 +569,8 @@ LABEL_25:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPCPlayerAudioFormat *)self humanDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  humanDescription = [(MPCPlayerAudioFormat *)self humanDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, humanDescription];
 
   return v6;
 }
@@ -624,45 +624,45 @@ LABEL_25:
   return v13;
 }
 
-- (MPCPlayerAudioFormat)audioFormatWithRenderingMode:(int64_t)a3
+- (MPCPlayerAudioFormat)audioFormatWithRenderingMode:(int64_t)mode
 {
-  if ([(MPCPlayerAudioFormat *)self renderingMode]== a3)
+  if ([(MPCPlayerAudioFormat *)self renderingMode]== mode)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = objc_opt_new();
-    v5->_tier = [(MPCPlayerAudioFormat *)self tier];
-    v6 = [(MPCPlayerAudioFormat *)self groupID];
-    groupID = v5->_groupID;
-    v5->_groupID = v6;
+    selfCopy = objc_opt_new();
+    selfCopy->_tier = [(MPCPlayerAudioFormat *)self tier];
+    groupID = [(MPCPlayerAudioFormat *)self groupID];
+    groupID = selfCopy->_groupID;
+    selfCopy->_groupID = groupID;
 
-    v5->_bitrate = [(MPCPlayerAudioFormat *)self bitrate];
-    v5->_sampleRate = [(MPCPlayerAudioFormat *)self sampleRate];
-    v5->_bitDepth = [(MPCPlayerAudioFormat *)self bitDepth];
-    v5->_codec = [(MPCPlayerAudioFormat *)self codec];
-    v5->_channelLayout = [(MPCPlayerAudioFormat *)self channelLayout];
-    v8 = [(MPCPlayerAudioFormat *)self stableVariantID];
-    stableVariantID = v5->_stableVariantID;
-    v5->_stableVariantID = v8;
+    selfCopy->_bitrate = [(MPCPlayerAudioFormat *)self bitrate];
+    selfCopy->_sampleRate = [(MPCPlayerAudioFormat *)self sampleRate];
+    selfCopy->_bitDepth = [(MPCPlayerAudioFormat *)self bitDepth];
+    selfCopy->_codec = [(MPCPlayerAudioFormat *)self codec];
+    selfCopy->_channelLayout = [(MPCPlayerAudioFormat *)self channelLayout];
+    stableVariantID = [(MPCPlayerAudioFormat *)self stableVariantID];
+    stableVariantID = selfCopy->_stableVariantID;
+    selfCopy->_stableVariantID = stableVariantID;
 
-    v10 = [(MPCPlayerAudioFormat *)self audioChannelLayoutDescription];
-    audioChannelLayoutDescription = v5->_audioChannelLayoutDescription;
-    v5->_audioChannelLayoutDescription = v10;
+    audioChannelLayoutDescription = [(MPCPlayerAudioFormat *)self audioChannelLayoutDescription];
+    audioChannelLayoutDescription = selfCopy->_audioChannelLayoutDescription;
+    selfCopy->_audioChannelLayoutDescription = audioChannelLayoutDescription;
 
-    v5->_spatialized = [(MPCPlayerAudioFormat *)self isSpatialized];
-    v5->_multiChannel = [(MPCPlayerAudioFormat *)self isMultiChannel];
-    v5->_renderingMode = a3;
+    selfCopy->_spatialized = [(MPCPlayerAudioFormat *)self isSpatialized];
+    selfCopy->_multiChannel = [(MPCPlayerAudioFormat *)self isMultiChannel];
+    selfCopy->_renderingMode = mode;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (MPCPlayerAudioFormat)initWithDictionaryRepresentation:(id)a3
+- (MPCPlayerAudioFormat)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v24.receiver = self;
   v24.super_class = MPCPlayerAudioFormat;
   v5 = [(MPCPlayerAudioFormat *)&v24 init];
@@ -671,50 +671,50 @@ LABEL_25:
     goto LABEL_4;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"tier"];
+  v6 = [representationCopy objectForKeyedSubscript:@"tier"];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"tier"];
+    v7 = [representationCopy objectForKeyedSubscript:@"tier"];
     v5->_tier = [v7 integerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"grp"];
+    v8 = [representationCopy objectForKeyedSubscript:@"grp"];
     groupID = v5->_groupID;
     v5->_groupID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"br"];
+    v10 = [representationCopy objectForKeyedSubscript:@"br"];
     v5->_bitrate = [v10 integerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"sr"];
+    v11 = [representationCopy objectForKeyedSubscript:@"sr"];
     v5->_sampleRate = [v11 integerValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"bd"];
+    v12 = [representationCopy objectForKeyedSubscript:@"bd"];
     v5->_bitDepth = [v12 integerValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"codec"];
+    v13 = [representationCopy objectForKeyedSubscript:@"codec"];
     v5->_codec = [v13 unsignedIntValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"chlay"];
+    v14 = [representationCopy objectForKeyedSubscript:@"chlay"];
     v5->_channelLayout = [v14 unsignedIntValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"ochlay"];
+    v15 = [representationCopy objectForKeyedSubscript:@"ochlay"];
     v5->_originChannelLayout = [v15 unsignedIntValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"var"];
+    v16 = [representationCopy objectForKeyedSubscript:@"var"];
     stableVariantID = v5->_stableVariantID;
     v5->_stableVariantID = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"chlayd"];
+    v18 = [representationCopy objectForKeyedSubscript:@"chlayd"];
     audioChannelLayoutDescription = v5->_audioChannelLayoutDescription;
     v5->_audioChannelLayoutDescription = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"spz"];
+    v20 = [representationCopy objectForKeyedSubscript:@"spz"];
     v5->_spatialized = [v20 BOOLValue];
 
-    v21 = [v4 objectForKeyedSubscript:@"mul"];
+    v21 = [representationCopy objectForKeyedSubscript:@"mul"];
     v5->_multiChannel = [v21 BOOLValue];
 
-    v22 = [v4 objectForKeyedSubscript:@"rdm"];
+    v22 = [representationCopy objectForKeyedSubscript:@"rdm"];
     v5->_renderingMode = [v22 integerValue];
 
 LABEL_4:
@@ -724,28 +724,28 @@ LABEL_4:
   return v6;
 }
 
-- (MPCPlayerAudioFormat)initWithTier:(int64_t)a3 codec:(unsigned int)a4 spatialized:(BOOL)a5 multiChannel:(BOOL)a6 channelLayout:(unsigned int)a7 sampleRate:(int64_t)a8 stableVariantID:(id)a9
+- (MPCPlayerAudioFormat)initWithTier:(int64_t)tier codec:(unsigned int)codec spatialized:(BOOL)spatialized multiChannel:(BOOL)channel channelLayout:(unsigned int)layout sampleRate:(int64_t)rate stableVariantID:(id)d
 {
-  v10 = *&a7;
-  v16 = a9;
+  v10 = *&layout;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = MPCPlayerAudioFormat;
   v17 = [(MPCPlayerAudioFormat *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    v17->_tier = a3;
-    v17->_spatialized = a5;
-    v17->_multiChannel = a6;
-    v17->_codec = a4;
+    v17->_tier = tier;
+    v17->_spatialized = spatialized;
+    v17->_multiChannel = channel;
+    v17->_codec = codec;
     v17->_channelLayout = v10;
     v19 = [(MPCPlayerAudioFormat *)v17 _descriptionForChannelLayoutTag:v10];
     v20 = [v19 copy];
     audioChannelLayoutDescription = v18->_audioChannelLayoutDescription;
     v18->_audioChannelLayoutDescription = v20;
 
-    v18->_sampleRate = a8;
-    objc_storeStrong(&v18->_stableVariantID, a9);
+    v18->_sampleRate = rate;
+    objc_storeStrong(&v18->_stableVariantID, d);
     v18->_renderingMode = 0;
   }
 
@@ -767,58 +767,58 @@ LABEL_4:
 
   [v3 setMultiChannel:{-[MPCPlayerAudioFormat isMultiChannel](self, "isMultiChannel")}];
   [v3 setChannelLayout:{-[MPCPlayerAudioFormat channelLayout](self, "channelLayout")}];
-  v4 = [(MPCPlayerAudioFormat *)self audioChannelLayoutDescription];
-  [v3 setAudioChannelLayoutDescription:v4];
+  audioChannelLayoutDescription = [(MPCPlayerAudioFormat *)self audioChannelLayoutDescription];
+  [v3 setAudioChannelLayoutDescription:audioChannelLayoutDescription];
 
-  v5 = [(MPCPlayerAudioFormat *)self groupID];
-  [v3 setGroupID:v5];
+  groupID = [(MPCPlayerAudioFormat *)self groupID];
+  [v3 setGroupID:groupID];
 
-  v6 = [(MPCPlayerAudioFormat *)self stableVariantID];
-  [v3 setStableVariantID:v6];
+  stableVariantID = [(MPCPlayerAudioFormat *)self stableVariantID];
+  [v3 setStableVariantID:stableVariantID];
 
   [v3 setRenderingMode:{-[MPCPlayerAudioFormat renderingMode](self, "renderingMode")}];
 
   return v3;
 }
 
-- (MPCPlayerAudioFormat)initWithNowPlayingInfoAudioFormat:(id)a3
+- (MPCPlayerAudioFormat)initWithNowPlayingInfoAudioFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v13.receiver = self;
   v13.super_class = MPCPlayerAudioFormat;
   v5 = [(MPCPlayerAudioFormat *)&v13 init];
   if (v5)
   {
-    v5->_tier = [v4 tier];
-    v6 = [v4 groupID];
+    v5->_tier = [formatCopy tier];
+    groupID = [formatCopy groupID];
     groupID = v5->_groupID;
-    v5->_groupID = v6;
+    v5->_groupID = groupID;
 
-    v5->_bitrate = [v4 bitrate];
-    v5->_sampleRate = [v4 sampleRate];
-    v5->_bitDepth = [v4 bitDepth];
-    v5->_codec = [v4 codec];
-    v5->_channelLayout = [v4 channelLayout];
-    v8 = [v4 stableVariantID];
+    v5->_bitrate = [formatCopy bitrate];
+    v5->_sampleRate = [formatCopy sampleRate];
+    v5->_bitDepth = [formatCopy bitDepth];
+    v5->_codec = [formatCopy codec];
+    v5->_channelLayout = [formatCopy channelLayout];
+    stableVariantID = [formatCopy stableVariantID];
     stableVariantID = v5->_stableVariantID;
-    v5->_stableVariantID = v8;
+    v5->_stableVariantID = stableVariantID;
 
-    v10 = [v4 audioChannelLayoutDescription];
+    audioChannelLayoutDescription = [formatCopy audioChannelLayoutDescription];
     audioChannelLayoutDescription = v5->_audioChannelLayoutDescription;
-    v5->_audioChannelLayoutDescription = v10;
+    v5->_audioChannelLayoutDescription = audioChannelLayoutDescription;
 
-    v5->_spatialized = [v4 isSpatialized];
-    v5->_multiChannel = [v4 isMultiChannel];
-    v5->_renderingMode = [v4 renderingMode];
+    v5->_spatialized = [formatCopy isSpatialized];
+    v5->_multiChannel = [formatCopy isMultiChannel];
+    v5->_renderingMode = [formatCopy renderingMode];
   }
 
   return v5;
 }
 
-- (MPCPlayerAudioFormat)initWithJSONDictionaryRepresentation:(id)a3 stableVariantID:(id)a4
+- (MPCPlayerAudioFormat)initWithJSONDictionaryRepresentation:(id)representation stableVariantID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  dCopy = d;
   v33.receiver = self;
   v33.super_class = MPCPlayerAudioFormat;
   v8 = [(MPCPlayerAudioFormat *)&v33 init];
@@ -827,18 +827,18 @@ LABEL_4:
     goto LABEL_18;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"VERSION"];
+  v9 = [representationCopy objectForKeyedSubscript:@"VERSION"];
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:@"AUDIO-FORMAT-ID"];
+    v10 = [representationCopy objectForKeyedSubscript:@"AUDIO-FORMAT-ID"];
 
     if (v10)
     {
-      v11 = [v7 copy];
+      v11 = [dCopy copy];
       stableVariantID = v8->_stableVariantID;
       v8->_stableVariantID = v11;
 
-      v13 = [v6 objectForKeyedSubscript:@"VERSION"];
+      v13 = [representationCopy objectForKeyedSubscript:@"VERSION"];
       if (![(MPCPlayerAudioFormat *)v8 _isHLSVersion:v13 greatherThanOrEqualTo:&unk_1F4599730])
       {
 LABEL_17:
@@ -848,19 +848,19 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v14 = [v6 objectForKeyedSubscript:@"AUDIO-FORMAT-ID"];
+      v14 = [representationCopy objectForKeyedSubscript:@"AUDIO-FORMAT-ID"];
       if ([v14 length] == 4)
       {
-        v15 = [v14 UTF8String];
-        v8->_codec = (v15[1] << 16) | (*v15 << 24) | (v15[2] << 8) | v15[3];
-        v16 = [v6 objectForKeyedSubscript:@"GROUP-ID"];
+        uTF8String = [v14 UTF8String];
+        v8->_codec = (uTF8String[1] << 16) | (*uTF8String << 24) | (uTF8String[2] << 8) | uTF8String[3];
+        v16 = [representationCopy objectForKeyedSubscript:@"GROUP-ID"];
         v17 = [v16 copy];
         groupID = v8->_groupID;
         v8->_groupID = v17;
 
         if (v8->_codec == 1634492771)
         {
-          v19 = [v6 objectForKeyedSubscript:@"SAMPLE-RATE"];
+          v19 = [representationCopy objectForKeyedSubscript:@"SAMPLE-RATE"];
           v8->_sampleRate = [v19 integerValue];
 
           v20 = @"BIT-DEPTH";
@@ -873,27 +873,27 @@ LABEL_18:
           v21 = 32;
         }
 
-        v22 = [v6 objectForKeyedSubscript:v20];
+        v22 = [representationCopy objectForKeyedSubscript:v20];
         *(&v8->super.isa + v21) = [v22 integerValue];
 
-        v8->_spatialized = [(MPCPlayerAudioFormat *)v8 _isSpatialFormat:v6];
-        v23 = [v6 objectForKeyedSubscript:@"CHANNEL-COUNT"];
-        v24 = [v23 integerValue];
+        v8->_spatialized = [(MPCPlayerAudioFormat *)v8 _isSpatialFormat:representationCopy];
+        v23 = [representationCopy objectForKeyedSubscript:@"CHANNEL-COUNT"];
+        integerValue = [v23 integerValue];
 
-        v8->_tier = [(MPCPlayerAudioFormat *)v8 _computedTierFromHLSDataWithChannelCount:v24];
-        v25 = [(MPCPlayerAudioFormat *)v8 _computedChannelLayoutTagFromHLSData:v6 channelCount:v24];
+        v8->_tier = [(MPCPlayerAudioFormat *)v8 _computedTierFromHLSDataWithChannelCount:integerValue];
+        v25 = [(MPCPlayerAudioFormat *)v8 _computedChannelLayoutTagFromHLSData:representationCopy channelCount:integerValue];
         v8->_channelLayout = v25;
         v26 = [(MPCPlayerAudioFormat *)v8 _descriptionForChannelLayoutTag:v25];
         v27 = [v26 copy];
         audioChannelLayoutDescription = v8->_audioChannelLayoutDescription;
         v8->_audioChannelLayoutDescription = v27;
 
-        v29 = [v6 objectForKeyedSubscript:@"ORIGIN-CHANNEL-COUNT"];
-        v30 = [v29 integerValue];
+        v29 = [representationCopy objectForKeyedSubscript:@"ORIGIN-CHANNEL-COUNT"];
+        integerValue2 = [v29 integerValue];
 
-        if (v30)
+        if (integerValue2)
         {
-          v8->_originChannelLayout = [(MPCPlayerAudioFormat *)v8 _computedChannelLayoutTagFromHLSData:v6 channelCount:v30];
+          v8->_originChannelLayout = [(MPCPlayerAudioFormat *)v8 _computedChannelLayoutTagFromHLSData:representationCopy channelCount:integerValue2];
         }
 
         if (v8->_spatialized)
@@ -903,7 +903,7 @@ LABEL_18:
 
         else
         {
-          v31 = [(MPCPlayerAudioFormat *)v8 _isMultichannelFormat:v6];
+          v31 = [(MPCPlayerAudioFormat *)v8 _isMultichannelFormat:representationCopy];
         }
 
         v8->_multiChannel = v31;

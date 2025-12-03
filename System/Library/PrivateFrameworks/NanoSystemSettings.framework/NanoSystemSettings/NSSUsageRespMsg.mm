@@ -1,55 +1,55 @@
 @interface NSSUsageRespMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAppBundleUsage:(id)a3;
-- (void)addAppUsages:(id)a3;
-- (void)addBundleUsage:(id)a3;
-- (void)addCategories:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAudioPodcastsUsage:(BOOL)a3;
-- (void)setHasAudiobooksUsage:(BOOL)a3;
-- (void)setHasCameralRollUsage:(BOOL)a3;
-- (void)setHasCapacityInBytes:(BOOL)a3;
-- (void)setHasHomeVideosUsage:(BOOL)a3;
-- (void)setHasMovieRentalsUsage:(BOOL)a3;
-- (void)setHasMoviesUsage:(BOOL)a3;
-- (void)setHasMusicVideosUsage:(BOOL)a3;
-- (void)setHasPhotoLibraryUsage:(BOOL)a3;
-- (void)setHasPhotoStreamUsage:(BOOL)a3;
-- (void)setHasSongsUsage:(BOOL)a3;
-- (void)setHasTvShowsUsage:(BOOL)a3;
-- (void)setHasVideoCoursesUsage:(BOOL)a3;
-- (void)setHasVideoPodcastsUsage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppBundleUsage:(id)usage;
+- (void)addAppUsages:(id)usages;
+- (void)addBundleUsage:(id)usage;
+- (void)addCategories:(id)categories;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAudioPodcastsUsage:(BOOL)usage;
+- (void)setHasAudiobooksUsage:(BOOL)usage;
+- (void)setHasCameralRollUsage:(BOOL)usage;
+- (void)setHasCapacityInBytes:(BOOL)bytes;
+- (void)setHasHomeVideosUsage:(BOOL)usage;
+- (void)setHasMovieRentalsUsage:(BOOL)usage;
+- (void)setHasMoviesUsage:(BOOL)usage;
+- (void)setHasMusicVideosUsage:(BOOL)usage;
+- (void)setHasPhotoLibraryUsage:(BOOL)usage;
+- (void)setHasPhotoStreamUsage:(BOOL)usage;
+- (void)setHasSongsUsage:(BOOL)usage;
+- (void)setHasTvShowsUsage:(BOOL)usage;
+- (void)setHasVideoCoursesUsage:(BOOL)usage;
+- (void)setHasVideoPodcastsUsage:(BOOL)usage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSUsageRespMsg
 
-- (void)addAppUsages:(id)a3
+- (void)addAppUsages:(id)usages
 {
-  v4 = a3;
+  usagesCopy = usages;
   appUsages = self->_appUsages;
-  v8 = v4;
+  v8 = usagesCopy;
   if (!appUsages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appUsages;
     self->_appUsages = v6;
 
-    v4 = v8;
+    usagesCopy = v8;
     appUsages = self->_appUsages;
   }
 
-  [(NSMutableArray *)appUsages addObject:v4];
+  [(NSMutableArray *)appUsages addObject:usagesCopy];
 }
 
-- (void)setHasMoviesUsage:(BOOL)a3
+- (void)setHasMoviesUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 128;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasMovieRentalsUsage:(BOOL)a3
+- (void)setHasMovieRentalsUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTvShowsUsage:(BOOL)a3
+- (void)setHasTvShowsUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 4096;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasVideoCoursesUsage:(BOOL)a3
+- (void)setHasVideoCoursesUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 0x2000;
   }
@@ -107,9 +107,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasMusicVideosUsage:(BOOL)a3
+- (void)setHasMusicVideosUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 256;
   }
@@ -122,9 +122,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasAudioPodcastsUsage:(BOOL)a3
+- (void)setHasAudioPodcastsUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 2;
   }
@@ -137,9 +137,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasVideoPodcastsUsage:(BOOL)a3
+- (void)setHasVideoPodcastsUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 0x4000;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasSongsUsage:(BOOL)a3
+- (void)setHasSongsUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 2048;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAudiobooksUsage:(BOOL)a3
+- (void)setHasAudiobooksUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 4;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHomeVideosUsage:(BOOL)a3
+- (void)setHasHomeVideosUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 32;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCameralRollUsage:(BOOL)a3
+- (void)setHasCameralRollUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 8;
   }
@@ -212,9 +212,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasPhotoLibraryUsage:(BOOL)a3
+- (void)setHasPhotoLibraryUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 512;
   }
@@ -227,9 +227,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPhotoStreamUsage:(BOOL)a3
+- (void)setHasPhotoStreamUsage:(BOOL)usage
 {
-  if (a3)
+  if (usage)
   {
     v3 = 1024;
   }
@@ -242,63 +242,63 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addBundleUsage:(id)a3
+- (void)addBundleUsage:(id)usage
 {
-  v4 = a3;
+  usageCopy = usage;
   bundleUsages = self->_bundleUsages;
-  v8 = v4;
+  v8 = usageCopy;
   if (!bundleUsages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bundleUsages;
     self->_bundleUsages = v6;
 
-    v4 = v8;
+    usageCopy = v8;
     bundleUsages = self->_bundleUsages;
   }
 
-  [(NSMutableArray *)bundleUsages addObject:v4];
+  [(NSMutableArray *)bundleUsages addObject:usageCopy];
 }
 
-- (void)addAppBundleUsage:(id)a3
+- (void)addAppBundleUsage:(id)usage
 {
-  v4 = a3;
+  usageCopy = usage;
   appBundleUsages = self->_appBundleUsages;
-  v8 = v4;
+  v8 = usageCopy;
   if (!appBundleUsages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appBundleUsages;
     self->_appBundleUsages = v6;
 
-    v4 = v8;
+    usageCopy = v8;
     appBundleUsages = self->_appBundleUsages;
   }
 
-  [(NSMutableArray *)appBundleUsages addObject:v4];
+  [(NSMutableArray *)appBundleUsages addObject:usageCopy];
 }
 
-- (void)addCategories:(id)a3
+- (void)addCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   categories = self->_categories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!categories)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_categories;
     self->_categories = v6;
 
-    v4 = v8;
+    categoriesCopy = v8;
     categories = self->_categories;
   }
 
-  [(NSMutableArray *)categories addObject:v4];
+  [(NSMutableArray *)categories addObject:categoriesCopy];
 }
 
-- (void)setHasCapacityInBytes:(BOOL)a3
+- (void)setHasCapacityInBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 16;
   }
@@ -317,8 +317,8 @@
   v8.receiver = self;
   v8.super_class = NSSUsageRespMsg;
   v4 = [(NSSUsageRespMsg *)&v8 description];
-  v5 = [(NSSUsageRespMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSUsageRespMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -326,26 +326,26 @@
 - (id)dictionaryRepresentation
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_usedStorageInBytes];
-  [v3 setObject:v4 forKey:@"usedStorageInBytes"];
+  [dictionary setObject:v4 forKey:@"usedStorageInBytes"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_availableStorageInBytes];
-  [v3 setObject:v5 forKey:@"availableStorageInBytes"];
+  [dictionary setObject:v5 forKey:@"availableStorageInBytes"];
 
   *&v6 = self->_usageTimeInSeconds;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"usageTimeInSeconds"];
+  [dictionary setObject:v7 forKey:@"usageTimeInSeconds"];
 
   *&v8 = self->_standbyTimeInSeconds;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
-  [v3 setObject:v9 forKey:@"standbyTimeInSeconds"];
+  [dictionary setObject:v9 forKey:@"standbyTimeInSeconds"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_trusted];
-  [v3 setObject:v10 forKey:@"trusted"];
+  [dictionary setObject:v10 forKey:@"trusted"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_partiallyCharged];
-  [v3 setObject:v11 forKey:@"partiallyCharged"];
+  [dictionary setObject:v11 forKey:@"partiallyCharged"];
 
   if ([(NSMutableArray *)self->_appUsages count])
   {
@@ -369,8 +369,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v73 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v73 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v73 objects:v80 count:16];
@@ -379,14 +379,14 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"appUsages"];
+    [dictionary setObject:v12 forKey:@"appUsages"];
   }
 
   has = self->_has;
   if ((has & 0x80) != 0)
   {
     v48 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_moviesUsage];
-    [v3 setObject:v48 forKey:@"moviesUsage"];
+    [dictionary setObject:v48 forKey:@"moviesUsage"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -407,7 +407,7 @@ LABEL_12:
   }
 
   v49 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_movieRentalsUsage];
-  [v3 setObject:v49 forKey:@"movieRentalsUsage"];
+  [dictionary setObject:v49 forKey:@"movieRentalsUsage"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -423,7 +423,7 @@ LABEL_13:
 
 LABEL_65:
   v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_tvShowsUsage];
-  [v3 setObject:v50 forKey:@"tvShowsUsage"];
+  [dictionary setObject:v50 forKey:@"tvShowsUsage"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -439,7 +439,7 @@ LABEL_14:
 
 LABEL_66:
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_audioCoursesUsage];
-  [v3 setObject:v51 forKey:@"audioCoursesUsage"];
+  [dictionary setObject:v51 forKey:@"audioCoursesUsage"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -455,7 +455,7 @@ LABEL_15:
 
 LABEL_67:
   v52 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_videoCoursesUsage];
-  [v3 setObject:v52 forKey:@"videoCoursesUsage"];
+  [dictionary setObject:v52 forKey:@"videoCoursesUsage"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -471,7 +471,7 @@ LABEL_16:
 
 LABEL_68:
   v53 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_musicVideosUsage];
-  [v3 setObject:v53 forKey:@"musicVideosUsage"];
+  [dictionary setObject:v53 forKey:@"musicVideosUsage"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -487,7 +487,7 @@ LABEL_17:
 
 LABEL_69:
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_audioPodcastsUsage];
-  [v3 setObject:v54 forKey:@"audioPodcastsUsage"];
+  [dictionary setObject:v54 forKey:@"audioPodcastsUsage"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -503,7 +503,7 @@ LABEL_18:
 
 LABEL_70:
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_videoPodcastsUsage];
-  [v3 setObject:v55 forKey:@"videoPodcastsUsage"];
+  [dictionary setObject:v55 forKey:@"videoPodcastsUsage"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -519,7 +519,7 @@ LABEL_19:
 
 LABEL_71:
   v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_songsUsage];
-  [v3 setObject:v56 forKey:@"songsUsage"];
+  [dictionary setObject:v56 forKey:@"songsUsage"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -535,7 +535,7 @@ LABEL_20:
 
 LABEL_72:
   v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_audiobooksUsage];
-  [v3 setObject:v57 forKey:@"audiobooksUsage"];
+  [dictionary setObject:v57 forKey:@"audiobooksUsage"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -551,7 +551,7 @@ LABEL_21:
 
 LABEL_73:
   v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_homeVideosUsage];
-  [v3 setObject:v58 forKey:@"homeVideosUsage"];
+  [dictionary setObject:v58 forKey:@"homeVideosUsage"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -567,7 +567,7 @@ LABEL_22:
 
 LABEL_74:
   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_cameralRollUsage];
-  [v3 setObject:v59 forKey:@"cameralRollUsage"];
+  [dictionary setObject:v59 forKey:@"cameralRollUsage"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -583,13 +583,13 @@ LABEL_23:
 
 LABEL_75:
   v60 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_photoLibraryUsage];
-  [v3 setObject:v60 forKey:@"photoLibraryUsage"];
+  [dictionary setObject:v60 forKey:@"photoLibraryUsage"];
 
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_24:
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_photoStreamUsage];
-    [v3 setObject:v20 forKey:@"photoStreamUsage"];
+    [dictionary setObject:v20 forKey:@"photoStreamUsage"];
   }
 
 LABEL_25:
@@ -615,8 +615,8 @@ LABEL_25:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v69 + 1) + 8 * j) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation2 = [*(*(&v69 + 1) + 8 * j) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation2];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v69 objects:v79 count:16];
@@ -625,25 +625,25 @@ LABEL_25:
       while (v24);
     }
 
-    [v3 setObject:v21 forKey:@"bundleUsage"];
+    [dictionary setObject:v21 forKey:@"bundleUsage"];
   }
 
   musicBundleIdentifier = self->_musicBundleIdentifier;
   if (musicBundleIdentifier)
   {
-    [v3 setObject:musicBundleIdentifier forKey:@"musicBundleIdentifier"];
+    [dictionary setObject:musicBundleIdentifier forKey:@"musicBundleIdentifier"];
   }
 
   photosBundleIdentifier = self->_photosBundleIdentifier;
   if (photosBundleIdentifier)
   {
-    [v3 setObject:photosBundleIdentifier forKey:@"photosBundleIdentifier"];
+    [dictionary setObject:photosBundleIdentifier forKey:@"photosBundleIdentifier"];
   }
 
   podcastsBundleIdentifier = self->_podcastsBundleIdentifier;
   if (podcastsBundleIdentifier)
   {
-    [v3 setObject:podcastsBundleIdentifier forKey:@"podcastsBundleIdentifier"];
+    [dictionary setObject:podcastsBundleIdentifier forKey:@"podcastsBundleIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_appBundleUsages count])
@@ -668,8 +668,8 @@ LABEL_25:
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v65 + 1) + 8 * k) dictionaryRepresentation];
-          [v31 addObject:v37];
+          dictionaryRepresentation3 = [*(*(&v65 + 1) + 8 * k) dictionaryRepresentation];
+          [v31 addObject:dictionaryRepresentation3];
         }
 
         v34 = [(NSMutableArray *)v32 countByEnumeratingWithState:&v65 objects:v78 count:16];
@@ -678,7 +678,7 @@ LABEL_25:
       while (v34);
     }
 
-    [v3 setObject:v31 forKey:@"appBundleUsage"];
+    [dictionary setObject:v31 forKey:@"appBundleUsage"];
   }
 
   if ([(NSMutableArray *)self->_categories count])
@@ -703,8 +703,8 @@ LABEL_25:
             objc_enumerationMutation(v39);
           }
 
-          v44 = [*(*(&v61 + 1) + 8 * m) dictionaryRepresentation];
-          [v38 addObject:v44];
+          dictionaryRepresentation4 = [*(*(&v61 + 1) + 8 * m) dictionaryRepresentation];
+          [v38 addObject:dictionaryRepresentation4];
         }
 
         v41 = [(NSMutableArray *)v39 countByEnumeratingWithState:&v61 objects:v77 count:16];
@@ -713,24 +713,24 @@ LABEL_25:
       while (v41);
     }
 
-    [v3 setObject:v38 forKey:@"categories"];
+    [dictionary setObject:v38 forKey:@"categories"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_capacityInBytes];
-    [v3 setObject:v45 forKey:@"capacityInBytes"];
+    [dictionary setObject:v45 forKey:@"capacityInBytes"];
   }
 
   v46 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   usedStorageInBytes = self->_usedStorageInBytes;
   PBDataWriterWriteUint64Field();
   availableStorageInBytes = self->_availableStorageInBytes;
@@ -1081,23 +1081,23 @@ LABEL_23:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[15] = self->_usedStorageInBytes;
-  v4[4] = self->_availableStorageInBytes;
-  *(v4 + 51) = LODWORD(self->_usageTimeInSeconds);
-  *(v4 + 50) = LODWORD(self->_standbyTimeInSeconds);
-  *(v4 + 209) = self->_trusted;
-  v22 = v4;
-  *(v4 + 208) = self->_partiallyCharged;
+  toCopy = to;
+  toCopy[15] = self->_usedStorageInBytes;
+  toCopy[4] = self->_availableStorageInBytes;
+  *(toCopy + 51) = LODWORD(self->_usageTimeInSeconds);
+  *(toCopy + 50) = LODWORD(self->_standbyTimeInSeconds);
+  *(toCopy + 209) = self->_trusted;
+  v22 = toCopy;
+  *(toCopy + 208) = self->_partiallyCharged;
   if ([(NSSUsageRespMsg *)self appUsagesCount])
   {
     [v22 clearAppUsages];
-    v5 = [(NSSUsageRespMsg *)self appUsagesCount];
-    if (v5)
+    appUsagesCount = [(NSSUsageRespMsg *)self appUsagesCount];
+    if (appUsagesCount)
     {
-      v6 = v5;
+      v6 = appUsagesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSSUsageRespMsg *)self appUsagesAtIndex:i];
@@ -1307,10 +1307,10 @@ LABEL_20:
   if ([(NSSUsageRespMsg *)self bundleUsagesCount])
   {
     [v22 clearBundleUsages];
-    v10 = [(NSSUsageRespMsg *)self bundleUsagesCount];
-    if (v10)
+    bundleUsagesCount = [(NSSUsageRespMsg *)self bundleUsagesCount];
+    if (bundleUsagesCount)
     {
-      v11 = v10;
+      v11 = bundleUsagesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(NSSUsageRespMsg *)self bundleUsageAtIndex:j];
@@ -1337,10 +1337,10 @@ LABEL_20:
   if ([(NSSUsageRespMsg *)self appBundleUsagesCount])
   {
     [v22 clearAppBundleUsages];
-    v14 = [(NSSUsageRespMsg *)self appBundleUsagesCount];
-    if (v14)
+    appBundleUsagesCount = [(NSSUsageRespMsg *)self appBundleUsagesCount];
+    if (appBundleUsagesCount)
     {
-      v15 = v14;
+      v15 = appBundleUsagesCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(NSSUsageRespMsg *)self appBundleUsageAtIndex:k];
@@ -1352,10 +1352,10 @@ LABEL_20:
   if ([(NSSUsageRespMsg *)self categoriesCount])
   {
     [v22 clearCategories];
-    v18 = [(NSSUsageRespMsg *)self categoriesCount];
-    if (v18)
+    categoriesCount = [(NSSUsageRespMsg *)self categoriesCount];
+    if (categoriesCount)
     {
-      v19 = v18;
+      v19 = categoriesCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(NSSUsageRespMsg *)self categoriesAtIndex:m];
@@ -1371,10 +1371,10 @@ LABEL_20:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 120) = self->_usedStorageInBytes;
   *(v5 + 32) = self->_availableStorageInBytes;
   *(v5 + 204) = self->_usageTimeInSeconds;
@@ -1400,7 +1400,7 @@ LABEL_20:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v51 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v51 + 1) + 8 * i) copyWithZone:zone];
         [v5 addAppUsages:v11];
       }
 
@@ -1627,7 +1627,7 @@ LABEL_23:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v47 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v47 + 1) + 8 * j) copyWithZone:zone];
         [v5 addBundleUsage:v18];
       }
 
@@ -1637,15 +1637,15 @@ LABEL_23:
     while (v15);
   }
 
-  v19 = [(NSString *)self->_musicBundleIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_musicBundleIdentifier copyWithZone:zone];
   v20 = *(v5 + 176);
   *(v5 + 176) = v19;
 
-  v21 = [(NSString *)self->_photosBundleIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_photosBundleIdentifier copyWithZone:zone];
   v22 = *(v5 + 184);
   *(v5 + 184) = v21;
 
-  v23 = [(NSString *)self->_podcastsBundleIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_podcastsBundleIdentifier copyWithZone:zone];
   v24 = *(v5 + 192);
   *(v5 + 192) = v23;
 
@@ -1668,7 +1668,7 @@ LABEL_23:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v43 + 1) + 8 * k) copyWithZone:a3];
+        v30 = [*(*(&v43 + 1) + 8 * k) copyWithZone:zone];
         [v5 addAppBundleUsage:v30];
       }
 
@@ -1697,7 +1697,7 @@ LABEL_23:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v39 + 1) + 8 * m) copyWithZone:{a3, v39}];
+        v36 = [*(*(&v39 + 1) + 8 * m) copyWithZone:{zone, v39}];
         [v5 addCategories:v36];
       }
 
@@ -1717,32 +1717,32 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_usedStorageInBytes != *(v4 + 15) || self->_availableStorageInBytes != *(v4 + 4) || self->_usageTimeInSeconds != *(v4 + 51) || self->_standbyTimeInSeconds != *(v4 + 50))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_usedStorageInBytes != *(equalCopy + 15) || self->_availableStorageInBytes != *(equalCopy + 4) || self->_usageTimeInSeconds != *(equalCopy + 51) || self->_standbyTimeInSeconds != *(equalCopy + 50))
   {
     goto LABEL_103;
   }
 
-  v5 = *(v4 + 209);
+  v5 = *(equalCopy + 209);
   if (self->_trusted)
   {
-    if ((*(v4 + 209) & 1) == 0)
+    if ((*(equalCopy + 209) & 1) == 0)
     {
       goto LABEL_103;
     }
   }
 
-  else if (*(v4 + 209))
+  else if (*(equalCopy + 209))
   {
     goto LABEL_103;
   }
 
-  v6 = *(v4 + 208);
+  v6 = *(equalCopy + 208);
   if (!self->_partiallyCharged)
   {
-    if ((*(v4 + 208) & 1) == 0)
+    if ((*(equalCopy + 208) & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -1752,23 +1752,23 @@ LABEL_103:
     goto LABEL_104;
   }
 
-  if ((*(v4 + 208) & 1) == 0)
+  if ((*(equalCopy + 208) & 1) == 0)
   {
     goto LABEL_103;
   }
 
 LABEL_14:
   appUsages = self->_appUsages;
-  if (appUsages | *(v4 + 19) && ![(NSMutableArray *)appUsages isEqual:?])
+  if (appUsages | *(equalCopy + 19) && ![(NSMutableArray *)appUsages isEqual:?])
   {
     goto LABEL_103;
   }
 
   has = self->_has;
-  v9 = *(v4 + 106);
+  v9 = *(equalCopy + 106);
   if ((has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_moviesUsage != *(v4 + 9))
+    if ((v9 & 0x80) == 0 || self->_moviesUsage != *(equalCopy + 9))
     {
       goto LABEL_103;
     }
@@ -1781,7 +1781,7 @@ LABEL_14:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_movieRentalsUsage != *(v4 + 8))
+    if ((v9 & 0x40) == 0 || self->_movieRentalsUsage != *(equalCopy + 8))
     {
       goto LABEL_103;
     }
@@ -1794,20 +1794,20 @@ LABEL_14:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 106) & 0x1000) == 0 || self->_tvShowsUsage != *(v4 + 14))
+    if ((*(equalCopy + 106) & 0x1000) == 0 || self->_tvShowsUsage != *(equalCopy + 14))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x1000) != 0)
+  else if ((*(equalCopy + 106) & 0x1000) != 0)
   {
     goto LABEL_103;
   }
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_audioCoursesUsage != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_audioCoursesUsage != *(equalCopy + 1))
     {
       goto LABEL_103;
     }
@@ -1820,33 +1820,33 @@ LABEL_14:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 106) & 0x2000) == 0 || self->_videoCoursesUsage != *(v4 + 16))
+    if ((*(equalCopy + 106) & 0x2000) == 0 || self->_videoCoursesUsage != *(equalCopy + 16))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x2000) != 0)
+  else if ((*(equalCopy + 106) & 0x2000) != 0)
   {
     goto LABEL_103;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 106) & 0x100) == 0 || self->_musicVideosUsage != *(v4 + 10))
+    if ((*(equalCopy + 106) & 0x100) == 0 || self->_musicVideosUsage != *(equalCopy + 10))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x100) != 0)
+  else if ((*(equalCopy + 106) & 0x100) != 0)
   {
     goto LABEL_103;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_audioPodcastsUsage != *(v4 + 2))
+    if ((v9 & 2) == 0 || self->_audioPodcastsUsage != *(equalCopy + 2))
     {
       goto LABEL_103;
     }
@@ -1859,33 +1859,33 @@ LABEL_14:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 106) & 0x4000) == 0 || self->_videoPodcastsUsage != *(v4 + 17))
+    if ((*(equalCopy + 106) & 0x4000) == 0 || self->_videoPodcastsUsage != *(equalCopy + 17))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x4000) != 0)
+  else if ((*(equalCopy + 106) & 0x4000) != 0)
   {
     goto LABEL_103;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 106) & 0x800) == 0 || self->_songsUsage != *(v4 + 13))
+    if ((*(equalCopy + 106) & 0x800) == 0 || self->_songsUsage != *(equalCopy + 13))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x800) != 0)
+  else if ((*(equalCopy + 106) & 0x800) != 0)
   {
     goto LABEL_103;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_audiobooksUsage != *(v4 + 3))
+    if ((v9 & 4) == 0 || self->_audiobooksUsage != *(equalCopy + 3))
     {
       goto LABEL_103;
     }
@@ -1898,7 +1898,7 @@ LABEL_14:
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_homeVideosUsage != *(v4 + 7))
+    if ((v9 & 0x20) == 0 || self->_homeVideosUsage != *(equalCopy + 7))
     {
       goto LABEL_103;
     }
@@ -1911,7 +1911,7 @@ LABEL_14:
 
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_cameralRollUsage != *(v4 + 5))
+    if ((v9 & 8) == 0 || self->_cameralRollUsage != *(equalCopy + 5))
     {
       goto LABEL_103;
     }
@@ -1924,38 +1924,38 @@ LABEL_14:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 106) & 0x200) == 0 || self->_photoLibraryUsage != *(v4 + 11))
+    if ((*(equalCopy + 106) & 0x200) == 0 || self->_photoLibraryUsage != *(equalCopy + 11))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x200) != 0)
+  else if ((*(equalCopy + 106) & 0x200) != 0)
   {
     goto LABEL_103;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 106) & 0x400) == 0 || self->_photoStreamUsage != *(v4 + 12))
+    if ((*(equalCopy + 106) & 0x400) == 0 || self->_photoStreamUsage != *(equalCopy + 12))
     {
       goto LABEL_103;
     }
   }
 
-  else if ((*(v4 + 106) & 0x400) != 0)
+  else if ((*(equalCopy + 106) & 0x400) != 0)
   {
     goto LABEL_103;
   }
 
   bundleUsages = self->_bundleUsages;
-  if (bundleUsages | *(v4 + 20) && ![(NSMutableArray *)bundleUsages isEqual:?])
+  if (bundleUsages | *(equalCopy + 20) && ![(NSMutableArray *)bundleUsages isEqual:?])
   {
     goto LABEL_103;
   }
 
   musicBundleIdentifier = self->_musicBundleIdentifier;
-  if (musicBundleIdentifier | *(v4 + 22))
+  if (musicBundleIdentifier | *(equalCopy + 22))
   {
     if (![(NSString *)musicBundleIdentifier isEqual:?])
     {
@@ -1964,7 +1964,7 @@ LABEL_14:
   }
 
   photosBundleIdentifier = self->_photosBundleIdentifier;
-  if (photosBundleIdentifier | *(v4 + 23))
+  if (photosBundleIdentifier | *(equalCopy + 23))
   {
     if (![(NSString *)photosBundleIdentifier isEqual:?])
     {
@@ -1973,7 +1973,7 @@ LABEL_14:
   }
 
   podcastsBundleIdentifier = self->_podcastsBundleIdentifier;
-  if (podcastsBundleIdentifier | *(v4 + 24))
+  if (podcastsBundleIdentifier | *(equalCopy + 24))
   {
     if (![(NSString *)podcastsBundleIdentifier isEqual:?])
     {
@@ -1982,7 +1982,7 @@ LABEL_14:
   }
 
   appBundleUsages = self->_appBundleUsages;
-  if (appBundleUsages | *(v4 + 18))
+  if (appBundleUsages | *(equalCopy + 18))
   {
     if (![(NSMutableArray *)appBundleUsages isEqual:?])
     {
@@ -1991,7 +1991,7 @@ LABEL_14:
   }
 
   categories = self->_categories;
-  if (categories | *(v4 + 21))
+  if (categories | *(equalCopy + 21))
   {
     if (![(NSMutableArray *)categories isEqual:?])
     {
@@ -1999,10 +1999,10 @@ LABEL_14:
     }
   }
 
-  v16 = *(v4 + 106);
+  v16 = *(equalCopy + 106);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v16 & 0x10) == 0 || self->_capacityInBytes != *(v4 + 6))
+    if ((v16 & 0x10) == 0 || self->_capacityInBytes != *(equalCopy + 6))
     {
       goto LABEL_103;
     }
@@ -2293,21 +2293,21 @@ LABEL_43:
   return (2654435761u * availableStorageInBytes) ^ (2654435761u * usedStorageInBytes) ^ v48 ^ v47 ^ (2654435761 * trusted) ^ (2654435761 * partiallyCharged) ^ v45 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_usedStorageInBytes = *(v4 + 15);
-  self->_availableStorageInBytes = *(v4 + 4);
-  self->_usageTimeInSeconds = *(v4 + 51);
-  self->_standbyTimeInSeconds = *(v4 + 50);
-  self->_trusted = *(v4 + 209);
-  self->_partiallyCharged = *(v4 + 208);
+  fromCopy = from;
+  self->_usedStorageInBytes = *(fromCopy + 15);
+  self->_availableStorageInBytes = *(fromCopy + 4);
+  self->_usageTimeInSeconds = *(fromCopy + 51);
+  self->_standbyTimeInSeconds = *(fromCopy + 50);
+  self->_trusted = *(fromCopy + 209);
+  self->_partiallyCharged = *(fromCopy + 208);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = *(v4 + 19);
+  v5 = *(fromCopy + 19);
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v6)
   {
@@ -2331,12 +2331,12 @@ LABEL_43:
     while (v7);
   }
 
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x80) != 0)
   {
-    self->_moviesUsage = *(v4 + 9);
+    self->_moviesUsage = *(fromCopy + 9);
     *&self->_has |= 0x80u;
-    v10 = *(v4 + 106);
+    v10 = *(fromCopy + 106);
     if ((v10 & 0x40) == 0)
     {
 LABEL_10:
@@ -2354,9 +2354,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  self->_movieRentalsUsage = *(v4 + 8);
+  self->_movieRentalsUsage = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x1000) == 0)
   {
 LABEL_11:
@@ -2369,9 +2369,9 @@ LABEL_11:
   }
 
 LABEL_55:
-  self->_tvShowsUsage = *(v4 + 14);
+  self->_tvShowsUsage = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 1) == 0)
   {
 LABEL_12:
@@ -2384,9 +2384,9 @@ LABEL_12:
   }
 
 LABEL_56:
-  self->_audioCoursesUsage = *(v4 + 1);
+  self->_audioCoursesUsage = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x2000) == 0)
   {
 LABEL_13:
@@ -2399,9 +2399,9 @@ LABEL_13:
   }
 
 LABEL_57:
-  self->_videoCoursesUsage = *(v4 + 16);
+  self->_videoCoursesUsage = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x100) == 0)
   {
 LABEL_14:
@@ -2414,9 +2414,9 @@ LABEL_14:
   }
 
 LABEL_58:
-  self->_musicVideosUsage = *(v4 + 10);
+  self->_musicVideosUsage = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 2) == 0)
   {
 LABEL_15:
@@ -2429,9 +2429,9 @@ LABEL_15:
   }
 
 LABEL_59:
-  self->_audioPodcastsUsage = *(v4 + 2);
+  self->_audioPodcastsUsage = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x4000) == 0)
   {
 LABEL_16:
@@ -2444,9 +2444,9 @@ LABEL_16:
   }
 
 LABEL_60:
-  self->_videoPodcastsUsage = *(v4 + 17);
+  self->_videoPodcastsUsage = *(fromCopy + 17);
   *&self->_has |= 0x4000u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x800) == 0)
   {
 LABEL_17:
@@ -2459,9 +2459,9 @@ LABEL_17:
   }
 
 LABEL_61:
-  self->_songsUsage = *(v4 + 13);
+  self->_songsUsage = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 4) == 0)
   {
 LABEL_18:
@@ -2474,9 +2474,9 @@ LABEL_18:
   }
 
 LABEL_62:
-  self->_audiobooksUsage = *(v4 + 3);
+  self->_audiobooksUsage = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x20) == 0)
   {
 LABEL_19:
@@ -2489,9 +2489,9 @@ LABEL_19:
   }
 
 LABEL_63:
-  self->_homeVideosUsage = *(v4 + 7);
+  self->_homeVideosUsage = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 8) == 0)
   {
 LABEL_20:
@@ -2504,9 +2504,9 @@ LABEL_20:
   }
 
 LABEL_64:
-  self->_cameralRollUsage = *(v4 + 5);
+  self->_cameralRollUsage = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v10 = *(v4 + 106);
+  v10 = *(fromCopy + 106);
   if ((v10 & 0x200) == 0)
   {
 LABEL_21:
@@ -2519,12 +2519,12 @@ LABEL_21:
   }
 
 LABEL_65:
-  self->_photoLibraryUsage = *(v4 + 11);
+  self->_photoLibraryUsage = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 106) & 0x400) != 0)
+  if ((*(fromCopy + 106) & 0x400) != 0)
   {
 LABEL_22:
-    self->_photoStreamUsage = *(v4 + 12);
+    self->_photoStreamUsage = *(fromCopy + 12);
     *&self->_has |= 0x400u;
   }
 
@@ -2533,7 +2533,7 @@ LABEL_23:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = *(v4 + 20);
+  v11 = *(fromCopy + 20);
   v12 = [v11 countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v12)
   {
@@ -2557,17 +2557,17 @@ LABEL_23:
     while (v13);
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(NSSUsageRespMsg *)self setMusicBundleIdentifier:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(NSSUsageRespMsg *)self setPhotosBundleIdentifier:?];
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(NSSUsageRespMsg *)self setPodcastsBundleIdentifier:?];
   }
@@ -2576,7 +2576,7 @@ LABEL_23:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v16 = *(v4 + 18);
+  v16 = *(fromCopy + 18);
   v17 = [v16 countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (v17)
   {
@@ -2604,7 +2604,7 @@ LABEL_23:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = *(v4 + 21);
+  v21 = *(fromCopy + 21);
   v22 = [v21 countByEnumeratingWithState:&v27 objects:v43 count:16];
   if (v22)
   {
@@ -2628,9 +2628,9 @@ LABEL_23:
     while (v23);
   }
 
-  if ((*(v4 + 106) & 0x10) != 0)
+  if ((*(fromCopy + 106) & 0x10) != 0)
   {
-    self->_capacityInBytes = *(v4 + 6);
+    self->_capacityInBytes = *(fromCopy + 6);
     *&self->_has |= 0x10u;
   }
 

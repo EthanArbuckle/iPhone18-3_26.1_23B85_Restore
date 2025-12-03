@@ -1,46 +1,46 @@
 @interface PatternSectionDecorationView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PatternSectionDecorationView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PatternSectionDecorationView.layoutSubviews()();
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  PatternSectionDecorationView.willMove(toSuperview:)(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  PatternSectionDecorationView.willMove(toSuperview:)(superview);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   PatternSectionDecorationView.didMoveToSuperview()();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  PatternSectionDecorationView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  PatternSectionDecorationView.apply(_:)(attributesCopy);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PatternSectionDecorationView.traitCollectionDidChange(_:)(v9);
 }
 

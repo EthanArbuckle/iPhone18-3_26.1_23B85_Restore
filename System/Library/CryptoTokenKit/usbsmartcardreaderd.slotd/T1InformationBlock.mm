@@ -1,16 +1,16 @@
 @interface T1InformationBlock
-+ (id)informationBlockWithNad:(unsigned __int8)a3 sequence:(char)a4 moreData:(BOOL)a5 informationField:(id)a6 redundancyCode:(char)a7;
-- (T1InformationBlock)initWithData:(id)a3;
++ (id)informationBlockWithNad:(unsigned __int8)nad sequence:(char)sequence moreData:(BOOL)data informationField:(id)field redundancyCode:(char)code;
+- (T1InformationBlock)initWithData:(id)data;
 - (id)description;
 @end
 
 @implementation T1InformationBlock
 
-- (T1InformationBlock)initWithData:(id)a3
+- (T1InformationBlock)initWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = T1InformationBlock;
-  return [(T1TPDUBlock *)&v4 initWithData:a3 needAck:1];
+  return [(T1TPDUBlock *)&v4 initWithData:data needAck:1];
 }
 
 - (id)description
@@ -26,31 +26,31 @@
   return v3;
 }
 
-+ (id)informationBlockWithNad:(unsigned __int8)a3 sequence:(char)a4 moreData:(BOOL)a5 informationField:(id)a6 redundancyCode:(char)a7
++ (id)informationBlockWithNad:(unsigned __int8)nad sequence:(char)sequence moreData:(BOOL)data informationField:(id)field redundancyCode:(char)code
 {
-  v7 = a7;
-  v8 = a5;
-  v9 = a4 != 0;
-  v22 = a3;
-  v10 = a6;
+  codeCopy = code;
+  dataCopy = data;
+  v9 = sequence != 0;
+  nadCopy = nad;
+  fieldCopy = field;
   v11 = +[NSMutableData data];
-  [v11 appendBytes:&v22 length:1];
+  [v11 appendBytes:&nadCopy length:1];
   v12 = v9 << 6;
-  if (v8)
+  if (dataCopy)
   {
     v12 = ((v9 & 1) << 6) | 0x20;
   }
 
   v21 = v12;
   [v11 appendBytes:&v21 length:1];
-  v20 = [v10 length];
+  v20 = [fieldCopy length];
   [v11 appendBytes:&v20 length:1];
-  if ([v10 length])
+  if ([fieldCopy length])
   {
-    [v11 appendData:v10];
+    [v11 appendData:fieldCopy];
   }
 
-  if (v7)
+  if (codeCopy)
   {
     v18 = [RedundancyCheck crc16:v11];
     v13 = &v18;

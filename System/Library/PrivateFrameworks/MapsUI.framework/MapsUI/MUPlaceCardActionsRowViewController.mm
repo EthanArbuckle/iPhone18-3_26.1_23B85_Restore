@@ -1,9 +1,9 @@
 @interface MUPlaceCardActionsRowViewController
 - (MKPlaceActionManagerProtocol)actionManager;
-- (MUPlaceCardActionsRowViewController)initWithStyle:(unint64_t)a3;
+- (MUPlaceCardActionsRowViewController)initWithStyle:(unint64_t)style;
 - (MUPlaceCardActionsRowViewMenuProvider)menuProvider;
-- (void)setActionManager:(id)a3;
-- (void)setMenuProvider:(id)a3;
+- (void)setActionManager:(id)manager;
+- (void)setMenuProvider:(id)provider;
 - (void)viewDidLoad;
 @end
 
@@ -36,37 +36,37 @@
   v27.receiver = self;
   v27.super_class = MUPlaceCardActionsRowViewController;
   [(MUPlaceCardActionsRowViewController *)&v27 viewDidLoad];
-  v4 = [(MUPlaceCardActionsRowViewController *)self view];
-  [v4 setPreservesSuperviewLayoutMargins:1];
+  view = [(MUPlaceCardActionsRowViewController *)self view];
+  [view setPreservesSuperviewLayoutMargins:1];
 
   [(MUPlaceCardActionsRowView *)self->_actionsRowView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUPlaceCardActionsRowView *)self->_actionsRowView setPreservesSuperviewLayoutMargins:1];
   WeakRetained = objc_loadWeakRetained(&self->_actionManager);
   [(MUPlaceCardActionsRowView *)self->_actionsRowView setActionManager:WeakRetained];
 
-  v6 = [(MUPlaceCardActionsRowViewController *)self view];
-  [v6 addSubview:self->_actionsRowView];
+  view2 = [(MUPlaceCardActionsRowViewController *)self view];
+  [view2 addSubview:self->_actionsRowView];
 
   v19 = MEMORY[0x1E696ACD8];
-  v25 = [(MUPlaceCardActionsRowView *)self->_actionsRowView topAnchor];
-  v26 = [(MUPlaceCardActionsRowViewController *)self view];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [(MUPlaceCardActionsRowView *)self->_actionsRowView topAnchor];
+  view3 = [(MUPlaceCardActionsRowViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v23;
-  v21 = [(MUPlaceCardActionsRowView *)self->_actionsRowView leadingAnchor];
-  v22 = [(MUPlaceCardActionsRowViewController *)self view];
-  v20 = [v22 leadingAnchor];
-  v7 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor = [(MUPlaceCardActionsRowView *)self->_actionsRowView leadingAnchor];
+  view4 = [(MUPlaceCardActionsRowViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[1] = v7;
-  v8 = [(MUPlaceCardActionsRowView *)self->_actionsRowView trailingAnchor];
-  v9 = [(MUPlaceCardActionsRowViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(MUPlaceCardActionsRowView *)self->_actionsRowView trailingAnchor];
+  view5 = [(MUPlaceCardActionsRowViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[2] = v11;
-  v12 = [(MUPlaceCardActionsRowView *)self->_actionsRowView bottomAnchor];
-  v13 = [(MUPlaceCardActionsRowViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(MUPlaceCardActionsRowView *)self->_actionsRowView bottomAnchor];
+  view6 = [(MUPlaceCardActionsRowViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v19 activateConstraints:v16];
@@ -81,36 +81,36 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMenuProvider:(id)a3
+- (void)setMenuProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_menuProvider, v4);
-  [(MUPlaceCardActionsRowView *)self->_actionsRowView setMenuProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_menuProvider, providerCopy);
+  [(MUPlaceCardActionsRowView *)self->_actionsRowView setMenuProvider:providerCopy];
 }
 
-- (void)setActionManager:(id)a3
+- (void)setActionManager:(id)manager
 {
-  v4 = a3;
-  objc_storeWeak(&self->_actionManager, v4);
-  [(MUPlaceCardActionsRowView *)self->_actionsRowView setActionManager:v4];
+  managerCopy = manager;
+  objc_storeWeak(&self->_actionManager, managerCopy);
+  [(MUPlaceCardActionsRowView *)self->_actionsRowView setActionManager:managerCopy];
 }
 
-- (MUPlaceCardActionsRowViewController)initWithStyle:(unint64_t)a3
+- (MUPlaceCardActionsRowViewController)initWithStyle:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = MUPlaceCardActionsRowViewController;
   v4 = [(MUPlaceCardActionsRowViewController *)&v10 initWithNibName:0 bundle:0];
   if (v4)
   {
-    if (!a3)
+    if (!style)
     {
-      v5 = [MEMORY[0x1E696F3B8] sharedInstance];
-      v6 = [v5 userInterfaceIdiom] == 2;
+      mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+      v6 = [mEMORY[0x1E696F3B8] userInterfaceIdiom] == 2;
 
-      a3 = 2 * v6;
+      style = 2 * v6;
     }
 
-    v7 = [[MUPlaceCardActionsRowView alloc] initWithStyle:a3];
+    v7 = [[MUPlaceCardActionsRowView alloc] initWithStyle:style];
     actionsRowView = v4->_actionsRowView;
     v4->_actionsRowView = v7;
   }

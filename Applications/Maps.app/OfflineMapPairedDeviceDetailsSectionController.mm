@@ -1,5 +1,5 @@
 @interface OfflineMapPairedDeviceDetailsSectionController
-- (OfflineMapPairedDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3 device:(id)a4;
+- (OfflineMapPairedDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info device:(id)device;
 - (id)_actions;
 - (id)_subscriptionState;
 - (void)_didStopDownload;
@@ -10,21 +10,21 @@
 - (void)_didStopDownload
 {
   [GEOAPPortal captureUserAction:483 target:112 value:0];
-  v4 = [(OfflineMapDeviceDetailsSectionController *)self actionDelegate];
-  v3 = [(OfflineMapSectionController *)self subscriptionInfo];
-  [v4 offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:v3];
+  actionDelegate = [(OfflineMapDeviceDetailsSectionController *)self actionDelegate];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  [actionDelegate offlineMapDetailsActionSectionControllerDidSelectRemoveFromPairedDevice:subscriptionInfo];
 }
 
 - (id)_actions
 {
   v3 = +[NSMutableArray array];
   objc_initWeak(&location, self);
-  v4 = [(OfflineMapPairedDeviceDetailsSectionController *)self _subscriptionState];
-  v5 = v4;
-  if (v4)
+  _subscriptionState = [(OfflineMapPairedDeviceDetailsSectionController *)self _subscriptionState];
+  v5 = _subscriptionState;
+  if (_subscriptionState)
   {
-    v6 = [v4 loadState];
-    if ((v6 - 1) < 2)
+    loadState = [_subscriptionState loadState];
+    if ((loadState - 1) < 2)
     {
       v11 = objc_alloc_init(FooterContaineeAction);
       v19 = +[NSBundle mainBundle];
@@ -41,37 +41,37 @@
       objc_copyWeak(&v29, &location);
       [(FooterContaineeAction *)v11 setActionBlock:v28];
       [(SimpleContaineeAction *)v11 setAccessibilityIdentifier:@"DeleteFromWatchButton"];
-      v21 = [(SimpleContaineeAction *)v11 title];
-      [(FooterContaineeAction *)v11 setAccessibilityLabel:v21];
+      title = [(SimpleContaineeAction *)v11 title];
+      [(FooterContaineeAction *)v11 setAccessibilityLabel:title];
 
       [v3 addObject:v11];
     }
 
     else
     {
-      if (v6 && v6 != 3)
+      if (loadState && loadState != 3)
       {
         goto LABEL_13;
       }
 
-      v7 = [v5 downloadState];
-      if (v7 > 5)
+      downloadState = [v5 downloadState];
+      if (downloadState > 5)
       {
         goto LABEL_13;
       }
 
-      if (((1 << v7) & 0x39) == 0)
+      if (((1 << downloadState) & 0x39) == 0)
       {
         goto LABEL_13;
       }
 
       if ([v5 downloadState] == 5)
       {
-        v8 = [v5 userInfo];
-        v9 = [v8 objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingReasonKey];
-        v10 = [v9 unsignedIntegerValue];
+        userInfo = [v5 userInfo];
+        v9 = [userInfo objectForKeyedSubscript:GEOMapDataSubscriptionStateWaitingReasonKey];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-        if ((v10 & 8) != 0)
+        if ((unsignedIntegerValue & 8) != 0)
         {
           goto LABEL_13;
         }
@@ -92,8 +92,8 @@
       objc_copyWeak(&v31, &location);
       [(FooterContaineeAction *)v11 setActionBlock:v30];
       [(SimpleContaineeAction *)v11 setAccessibilityIdentifier:@"DownloadNowWatchButton"];
-      v15 = [(SimpleContaineeAction *)v11 title];
-      [(FooterContaineeAction *)v11 setAccessibilityLabel:v15];
+      title2 = [(SimpleContaineeAction *)v11 title];
+      [(FooterContaineeAction *)v11 setAccessibilityLabel:title2];
 
       [v3 addObject:v11];
     }
@@ -116,8 +116,8 @@
     objc_copyWeak(&v27, &location);
     [(FooterContaineeAction *)v11 setActionBlock:&v23];
     [(SimpleContaineeAction *)v11 setAccessibilityIdentifier:@"DownloadToWatchButton", v23, v24, v25, v26];
-    v18 = [(SimpleContaineeAction *)v11 title];
-    [(FooterContaineeAction *)v11 setAccessibilityLabel:v18];
+    title3 = [(SimpleContaineeAction *)v11 title];
+    [(FooterContaineeAction *)v11 setAccessibilityLabel:title3];
 
     [v3 addObject:v11];
   }
@@ -132,25 +132,25 @@ LABEL_13:
 
 - (id)_subscriptionState
 {
-  v2 = [(OfflineMapSectionController *)self subscriptionInfo];
-  v3 = [v2 pairedDeviceState];
+  subscriptionInfo = [(OfflineMapSectionController *)self subscriptionInfo];
+  pairedDeviceState = [subscriptionInfo pairedDeviceState];
 
-  return v3;
+  return pairedDeviceState;
 }
 
-- (OfflineMapPairedDeviceDetailsSectionController)initWithSubscriptionInfo:(id)a3 device:(id)a4
+- (OfflineMapPairedDeviceDetailsSectionController)initWithSubscriptionInfo:(id)info device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v8 = NRDevicePropertyName;
-  v9 = a3;
-  v10 = [v7 valueForProperty:v8];
+  infoCopy = info;
+  v10 = [deviceCopy valueForProperty:v8];
   v14.receiver = self;
   v14.super_class = OfflineMapPairedDeviceDetailsSectionController;
-  v11 = [(OfflineMapDeviceDetailsSectionController *)&v14 initWithSubscriptionInfo:v9 deviceName:v10];
+  v11 = [(OfflineMapDeviceDetailsSectionController *)&v14 initWithSubscriptionInfo:infoCopy deviceName:v10];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&v11->_device, device);
     v12 = v11;
   }
 

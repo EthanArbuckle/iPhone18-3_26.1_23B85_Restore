@@ -1,11 +1,11 @@
 @interface PBFPosterRackCollectionViewController
-+ (id)simplifiedHomeScreenSwitcherFor:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5;
-+ (id)simplifiedHomeScreenSwitcherWithFilter:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5;
-+ (id)simplifiedHomeScreenSwitcherWithFilter:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5 homeScreenPortalView:(id)a6;
++ (id)simplifiedHomeScreenSwitcherFor:(id)for delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout;
++ (id)simplifiedHomeScreenSwitcherWithFilter:(id)filter delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout;
++ (id)simplifiedHomeScreenSwitcherWithFilter:(id)filter delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout homeScreenPortalView:(id)view;
 - (BOOL)allowsEnteringFullscreenLayout;
 - (BOOL)allowsLeavingHomeConfiguringLayout;
 - (BOOL)enteredPosterRackFromHomeScreen;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)managesLiveWidgetHosting;
 - (BOOL)shouldDisplayAddButton;
 - (BOOL)shouldDisplayGalleryAffordance;
@@ -13,89 +13,89 @@
 - (NSIndexPath)centeredPosterIndexPath;
 - (PBFPosterPair)centeredPoster;
 - (PBFPosterRackCollectionViewController)init;
-- (PBFPosterRackCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (PBFPosterRackCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PBFPosterRackCollectionViewController)initWithPosterFilter:(id)a3;
+- (PBFPosterRackCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (PBFPosterRackCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PBFPosterRackCollectionViewController)initWithPosterFilter:(id)filter;
 - (PBFPosterRackCollectionViewControllerDelegate)posterRackDelegate;
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
 - (_UIPortalView)homeScreenPortalView;
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3;
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5;
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view;
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action;
 - (id)posterExtensionDataStore;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)layoutOrientationProviderForView:(id)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)layoutOrientationProviderForView:(id)view;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)dateProvider:(id)a3 didUpdateDate:(id)a4;
-- (void)didTapEmptyViewArea:(id)a3;
-- (void)dismissPresentedViewControllersAnimated:(BOOL)a3 dismissHandler:(id)a4 completion:(id)a5;
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)focusSelectionViewController:(id)a3 hasSelected:(BOOL)a4 activity:(id)a5;
-- (void)fontAndColorPickerViewController:(id)a3 didUpdateDesiredDetent:(double)a4;
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5;
-- (void)homeScreenServiceLayoutDidChange:(id)a3;
-- (void)pageControlDidChangePage:(id)a3;
-- (void)posterSectionRemovalView:(id)a3 didRequestRemovalOfPosterWithID:(id)a4;
-- (void)presentPosterGallery:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)reset:(id)a3;
-- (void)scrollToFirstPoster:(BOOL)a3 completion:(id)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(void *)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAllowsEnteringFullscreenLayout:(BOOL)a3;
-- (void)setAllowsLeavingHomeConfiguringLayout:(BOOL)a3;
-- (void)setEnteredPosterRackFromHomeScreen:(BOOL)a3;
-- (void)setHomeScreenPortalView:(id)a3;
-- (void)setLayoutMode:(unint64_t)a3;
-- (void)setManagesLiveWidgetHosting:(BOOL)a3;
-- (void)setPageControl:(id)a3;
-- (void)setShouldDisplayAddButton:(BOOL)a3;
-- (void)setShouldDisplayGalleryAffordance:(BOOL)a3;
-- (void)setShouldTransitionLayoutToConfiguringHomeForFirstPoster:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)dateProvider:(id)provider didUpdateDate:(id)date;
+- (void)didTapEmptyViewArea:(id)area;
+- (void)dismissPresentedViewControllersAnimated:(BOOL)animated dismissHandler:(id)handler completion:(id)completion;
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)focusSelectionViewController:(id)controller hasSelected:(BOOL)selected activity:(id)activity;
+- (void)fontAndColorPickerViewController:(id)controller didUpdateDesiredDetent:(double)detent;
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view;
+- (void)homeScreenServiceLayoutDidChange:(id)change;
+- (void)pageControlDidChangePage:(id)page;
+- (void)posterSectionRemovalView:(id)view didRequestRemovalOfPosterWithID:(id)d;
+- (void)presentPosterGallery:(id)gallery;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)reset:(id)reset;
+- (void)scrollToFirstPoster:(BOOL)poster completion:(id)completion;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(void *)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAllowsEnteringFullscreenLayout:(BOOL)layout;
+- (void)setAllowsLeavingHomeConfiguringLayout:(BOOL)layout;
+- (void)setEnteredPosterRackFromHomeScreen:(BOOL)screen;
+- (void)setHomeScreenPortalView:(id)view;
+- (void)setLayoutMode:(unint64_t)mode;
+- (void)setManagesLiveWidgetHosting:(BOOL)hosting;
+- (void)setPageControl:(id)control;
+- (void)setShouldDisplayAddButton:(BOOL)button;
+- (void)setShouldDisplayGalleryAffordance:(BOOL)affordance;
+- (void)setShouldTransitionLayoutToConfiguringHomeForFirstPoster:(BOOL)poster;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PBFPosterRackCollectionViewController
 
-- (void)scrollViewDidEndScrollingAnimation:(void *)a3
+- (void)scrollViewDidEndScrollingAnimation:(void *)animation
 {
-  v4 = a3;
-  v5 = a1;
+  animationCopy = animation;
+  selfCopy = self;
   sub_21B69BCC0();
 }
 
-+ (id)simplifiedHomeScreenSwitcherFor:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5
++ (id)simplifiedHomeScreenSwitcherFor:(id)for delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout
 {
-  size = a5->leadingTopButtonFrame.size;
-  v17[0] = a5->leadingTopButtonFrame.origin;
+  size = layout->leadingTopButtonFrame.size;
+  v17[0] = layout->leadingTopButtonFrame.origin;
   v17[1] = size;
-  v8 = a5->trailingTopButtonFrame.size;
-  v17[2] = a5->trailingTopButtonFrame.origin;
+  v8 = layout->trailingTopButtonFrame.size;
+  v17[2] = layout->trailingTopButtonFrame.origin;
   v17[3] = v8;
   v9 = type metadata accessor for SinglePosterConfigurationFilter();
   v10 = objc_allocWithZone(v9);
-  *&v10[OBJC_IVAR___PBFSinglePosterConfigurationFilter_configuration] = a3;
+  *&v10[OBJC_IVAR___PBFSinglePosterConfigurationFilter_configuration] = for;
   v16.receiver = v10;
   v16.super_class = v9;
-  v11 = a3;
+  forCopy = for;
   swift_unknownObjectRetain();
   v12 = objc_msgSendSuper2(&v16, sel_init);
-  sub_21B6142E4(v12, a4, v17, 0);
+  sub_21B6142E4(v12, delegate, v17, 0);
   v14 = v13;
 
   swift_unknownObjectRelease();
@@ -103,19 +103,19 @@
   return v14;
 }
 
-+ (id)simplifiedHomeScreenSwitcherWithFilter:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5
++ (id)simplifiedHomeScreenSwitcherWithFilter:(id)filter delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout
 {
-  size = a5->leadingTopButtonFrame.size;
-  v12[0] = a5->leadingTopButtonFrame.origin;
+  size = layout->leadingTopButtonFrame.size;
+  v12[0] = layout->leadingTopButtonFrame.origin;
   v12[1] = size;
-  v8 = a5->trailingTopButtonFrame.size;
-  v12[2] = a5->trailingTopButtonFrame.origin;
+  v8 = layout->trailingTopButtonFrame.size;
+  v12[2] = layout->trailingTopButtonFrame.origin;
   v12[3] = v8;
   swift_getObjCClassMetadata();
   swift_getObjectType();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  sub_21B614558(a3, a4, v12, 0);
+  sub_21B614558(filter, delegate, v12, 0);
   v10 = v9;
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -123,20 +123,20 @@
   return v10;
 }
 
-+ (id)simplifiedHomeScreenSwitcherWithFilter:(id)a3 delegate:(id)a4 topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)a5 homeScreenPortalView:(id)a6
++ (id)simplifiedHomeScreenSwitcherWithFilter:(id)filter delegate:(id)delegate topButtonLayout:(PREditingSceneViewControllerTopButtonLayout *)layout homeScreenPortalView:(id)view
 {
-  size = a5->leadingTopButtonFrame.size;
-  v15[0] = a5->leadingTopButtonFrame.origin;
+  size = layout->leadingTopButtonFrame.size;
+  v15[0] = layout->leadingTopButtonFrame.origin;
   v15[1] = size;
-  v10 = a5->trailingTopButtonFrame.size;
-  v15[2] = a5->trailingTopButtonFrame.origin;
+  v10 = layout->trailingTopButtonFrame.size;
+  v15[2] = layout->trailingTopButtonFrame.origin;
   v15[3] = v10;
   swift_getObjCClassMetadata();
   swift_getObjectType();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = a6;
-  sub_21B614558(a3, a4, v15, a6);
+  viewCopy = view;
+  sub_21B614558(filter, delegate, v15, view);
   v13 = v12;
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -159,7 +159,7 @@
   return v4;
 }
 
-- (PBFPosterRackCollectionViewController)initWithPosterFilter:(id)a3
+- (PBFPosterRackCollectionViewController)initWithPosterFilter:(id)filter
 {
   v3 = objc_allocWithZone(type metadata accessor for PosterStore());
   swift_getObjectType();
@@ -175,40 +175,40 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PosterRackCollectionViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  PosterRackCollectionViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  PosterRackCollectionViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v7 = a3;
-  v8 = self;
-  PosterRackCollectionViewController.viewDidMove(to:shouldAppearOrDisappear:)(a3, a4);
+  windowCopy = window;
+  selfCopy = self;
+  PosterRackCollectionViewController.viewDidMove(to:shouldAppearOrDisappear:)(window, disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  PosterRackCollectionViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  PosterRackCollectionViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(PBFPosterRackCollectionViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(PBFPosterRackCollectionViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -230,14 +230,14 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PosterRackCollectionViewController.viewDidLayoutSubviews()();
 }
 
-- (void)dismissPresentedViewControllersAnimated:(BOOL)a3 dismissHandler:(id)a4 completion:(id)a5
+- (void)dismissPresentedViewControllersAnimated:(BOOL)animated dismissHandler:(id)handler completion:(id)completion
 {
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(completion);
   v10 = v9;
   if (v8)
   {
@@ -265,8 +265,8 @@ LABEL_3:
 
   v12 = 0;
 LABEL_6:
-  v13 = self;
-  PosterRackCollectionViewController.dismissPresentedViewControllers(animated:dismissHandler:completion:)(a3, v8, v11, v10, v12);
+  selfCopy = self;
+  PosterRackCollectionViewController.dismissPresentedViewControllers(animated:dismissHandler:completion:)(animated, v8, v11, v10, v12);
   sub_21B52B410(v10);
   sub_21B52B410(v8);
 }
@@ -286,11 +286,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setManagesLiveWidgetHosting:(BOOL)a3
+- (void)setManagesLiveWidgetHosting:(BOOL)hosting
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_managesLiveWidgetHosting;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = hosting;
 }
 
 - (BOOL)shouldDisplayGalleryAffordance
@@ -300,11 +300,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setShouldDisplayGalleryAffordance:(BOOL)a3
+- (void)setShouldDisplayGalleryAffordance:(BOOL)affordance
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_shouldDisplayGalleryAffordance;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = affordance;
 }
 
 - (BOOL)shouldDisplayAddButton
@@ -314,11 +314,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setShouldDisplayAddButton:(BOOL)a3
+- (void)setShouldDisplayAddButton:(BOOL)button
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_shouldDisplayAddButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (BOOL)allowsLeavingHomeConfiguringLayout
@@ -328,11 +328,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setAllowsLeavingHomeConfiguringLayout:(BOOL)a3
+- (void)setAllowsLeavingHomeConfiguringLayout:(BOOL)layout
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_allowsLeavingHomeConfiguringLayout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = layout;
 }
 
 - (BOOL)allowsEnteringFullscreenLayout
@@ -342,11 +342,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setAllowsEnteringFullscreenLayout:(BOOL)a3
+- (void)setAllowsEnteringFullscreenLayout:(BOOL)layout
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_allowsEnteringFullscreenLayout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = layout;
 }
 
 - (BOOL)enteredPosterRackFromHomeScreen
@@ -356,11 +356,11 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setEnteredPosterRackFromHomeScreen:(BOOL)a3
+- (void)setEnteredPosterRackFromHomeScreen:(BOOL)screen
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_enteredPosterRackFromHomeScreen;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = screen;
 }
 
 - (_UIPortalView)homeScreenPortalView
@@ -370,13 +370,13 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setHomeScreenPortalView:(id)a3
+- (void)setHomeScreenPortalView:(id)view
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_homeScreenPortalView;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = view;
+  viewCopy = view;
 }
 
 - (BOOL)shouldTransitionLayoutToConfiguringHomeForFirstPoster
@@ -386,43 +386,43 @@ LABEL_6:
   return *(self + v3);
 }
 
-- (void)setShouldTransitionLayoutToConfiguringHomeForFirstPoster:(BOOL)a3
+- (void)setShouldTransitionLayoutToConfiguringHomeForFirstPoster:(BOOL)poster
 {
   v5 = OBJC_IVAR___PBFPosterRackCollectionViewController_shouldTransitionLayoutToConfiguringHomeForFirstPoster;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = poster;
 }
 
-- (void)setPageControl:(id)a3
+- (void)setPageControl:(id)control
 {
   v4 = *(self + OBJC_IVAR___PBFPosterRackCollectionViewController_pageControl);
-  *(self + OBJC_IVAR___PBFPosterRackCollectionViewController_pageControl) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___PBFPosterRackCollectionViewController_pageControl) = control;
+  controlCopy = control;
 }
 
-- (void)pageControlDidChangePage:(id)a3
+- (void)pageControlDidChangePage:(id)page
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B690260([v4 currentPage], 1, 0);
+  pageCopy = page;
+  selfCopy = self;
+  sub_21B690260([pageCopy currentPage], 1, 0);
 }
 
-- (void)didTapEmptyViewArea:(id)a3
+- (void)didTapEmptyViewArea:(id)area
 {
-  v4 = a3;
-  v5 = self;
+  areaCopy = area;
+  selfCopy = self;
   sub_21B69B610();
 }
 
-- (void)setLayoutMode:(unint64_t)a3
+- (void)setLayoutMode:(unint64_t)mode
 {
-  v4 = self;
-  sub_21B67C6D4(a3);
+  selfCopy = self;
+  sub_21B67C6D4(mode);
 }
 
-- (void)reset:(id)a3
+- (void)reset:(id)reset
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reset);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -434,7 +434,7 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   PosterRackCollectionViewController.transitionLayout(to:animated:options:completion:)(0, 0, 0, 0, 0);
   sub_21B69A120();
   if (v4)
@@ -449,14 +449,14 @@ LABEL_6:
   }
 }
 
-- (void)scrollToFirstPoster:(BOOL)a3 completion:(id)a4
+- (void)scrollToFirstPoster:(BOOL)poster completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
-    v7 = self;
-    sub_21B690260(0, a3, 0);
+    selfCopy = self;
+    sub_21B690260(0, poster, 0);
     sub_21B69ECE0();
 
     sub_21B52B410(sub_21B69ECE0);
@@ -464,44 +464,44 @@ LABEL_6:
 
   else
   {
-    v8 = self;
-    sub_21B690260(0, a3, 0);
+    selfCopy2 = self;
+    sub_21B690260(0, poster, 0);
   }
 }
 
 - (id)posterExtensionDataStore
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 dataStore];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  dataStore = [sharedInstance dataStore];
 
-  return v3;
+  return dataStore;
 }
 
-- (void)presentPosterGallery:(id)a3
+- (void)presentPosterGallery:(id)gallery
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(gallery);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
   v6[2] = self;
   v6[3] = sub_21B69ECCC;
   v6[4] = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_21B67AF40(0, sub_21B69FA68, v6);
 }
 
-- (int64_t)layoutOrientationProviderForView:(id)a3
+- (int64_t)layoutOrientationProviderForView:(id)view
 {
-  v3 = self;
-  if ([(PBFPosterRackCollectionViewController *)v3 bs_isAppearingOrAppeared])
+  selfCopy = self;
+  if ([(PBFPosterRackCollectionViewController *)selfCopy bs_isAppearingOrAppeared])
   {
-    v4 = [(UIViewController *)v3 pbf_layoutOrientation];
+    pbf_layoutOrientation = [(UIViewController *)selfCopy pbf_layoutOrientation];
   }
 
   else
   {
-    v5 = v3 + OBJC_IVAR___PBFPosterRackCollectionViewController_lastKnownLayoutOrientation;
+    v5 = selfCopy + OBJC_IVAR___PBFPosterRackCollectionViewController_lastKnownLayoutOrientation;
     swift_beginAccess();
     if ((v5[8] & 1) == 0)
     {
@@ -509,18 +509,18 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v8.receiver = v3;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for PosterRackCollectionViewController();
-    v4 = [(UIViewController *)&v8 pbf_layoutOrientation];
+    pbf_layoutOrientation = [(UIViewController *)&v8 pbf_layoutOrientation];
   }
 
-  v6 = v4;
+  v6 = pbf_layoutOrientation;
 LABEL_7:
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   v4 = *(self + OBJC_IVAR___PBFPosterRackCollectionViewController_posterStore);
   v5 = OBJC_IVAR____TtC11PosterBoard11PosterStore_allPosters;
@@ -548,32 +548,32 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_21B69B730(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_21B69B730(section);
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_21B6C8A04();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = (&v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_21B6C8994();
-  v10 = a3;
-  v11 = self;
-  v12 = PosterRackCollectionViewController.collectionView(_:cellForItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = PosterRackCollectionViewController.collectionView(_:cellForItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_21B6C8A04();
   v8 = *(v7 - 8);
@@ -582,30 +582,30 @@ LABEL_7:
   v11 = sub_21B6C8DA4();
   v13 = v12;
   sub_21B6C8994();
-  v14 = a3;
-  v15 = self;
-  v16 = PosterRackCollectionViewController.collectionView(_:viewForSupplementaryElementOfKind:at:)(v14, v11, v13, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = PosterRackCollectionViewController.collectionView(_:viewForSupplementaryElementOfKind:at:)(viewCopy, v11, v13, v10);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_21B6C8A04();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v10 = a3;
-  v11 = self;
-  PosterRackCollectionViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  PosterRackCollectionViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = sub_21B6C8A04();
   v8 = *(v7 - 8);
@@ -615,8 +615,8 @@ LABEL_7:
   type metadata accessor for LockScreenPosterCollectionViewCell();
   if (swift_dynamicCastClass())
   {
-    v11 = a4;
-    v12 = self;
+    cellCopy = cell;
+    selfCopy = self;
     sub_21B667B2C();
 
 LABEL_3:
@@ -632,40 +632,40 @@ LABEL_3:
   }
 
   v14 = v13;
-  v15 = a4;
-  v16 = self;
+  cellCopy2 = cell;
+  selfCopy2 = self;
   sub_21B69FEF0(v14);
 
   (*(v8 + 8))(v10, v7);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_21B6C8A04();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_21B69B90C(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21B69B90C(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  if (a4)
+  if (layout)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v9 = self;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    selfCopy = self;
     v10 = objc_allocWithZone(type metadata accessor for PosterRackCollectionView());
-    v11 = v9;
-    v12 = [v10 initWithFrame:a4 collectionViewLayout:{x, y, width, height}];
+    v11 = selfCopy;
+    v12 = [v10 initWithFrame:layout collectionViewLayout:{x, y, width, height}];
     *&v12[OBJC_IVAR____TtC11PosterBoard24PosterRackCollectionView_posterRackDelegate + 8] = &off_282CD2398;
     swift_unknownObjectWeakAssign();
 
@@ -680,14 +680,14 @@ LABEL_3:
   return self;
 }
 
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD93500);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v16 - v6;
-  v8 = a3;
-  v9 = self;
-  PosterRackCollectionViewController._indexPathOfReferenceItemForLayoutTransition(in:)(a3, v7);
+  viewCopy = view;
+  selfCopy = self;
+  PosterRackCollectionViewController._indexPathOfReferenceItemForLayoutTransition(in:)(view, v7);
 
   v10 = sub_21B6C8A04();
   v11 = *(v10 - 8);
@@ -703,83 +703,83 @@ LABEL_3:
   return v13;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  PosterRackCollectionViewController.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  PosterRackCollectionViewController.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  sub_21B69BAB0(&a5->x, x);
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_21B69BAB0(&offset->x, x);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_21B69BD38(v4);
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_21B69BD38(decelerateCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21B69BDB8(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  sub_21B69BDB8(touchCopy);
   v10 = v9;
 
   return v10 & 1;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 presentedViewController];
-  sub_21B67F6DC(v5);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  presentedViewController = [dismissCopy presentedViewController];
+  sub_21B67F6DC(presentedViewController);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [(PBFPosterRackCollectionViewController *)v4 presentedViewController];
+  dismissCopy = dismiss;
+  selfCopy = self;
+  presentedViewController = [(PBFPosterRackCollectionViewController *)dismissCopy presentedViewController];
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
   if (v6)
   {
     sub_21B694118(v6);
-    v7 = v5;
+    v7 = presentedViewController;
   }
 
   else
   {
-    v7 = v4;
-    v4 = v8;
-    v8 = v5;
+    v7 = dismissCopy;
+    dismissCopy = selfCopy;
+    selfCopy = presentedViewController;
   }
 }
 
-- (void)fontAndColorPickerViewController:(id)a3 didUpdateDesiredDetent:(double)a4
+- (void)fontAndColorPickerViewController:(id)controller didUpdateDesiredDetent:(double)detent
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   _s11PosterBoard0A28RackCollectionViewControllerC018fontAndColorPickereF0_22didUpdateDesiredDetentySo013PREditingFonthijeF0C_12CoreGraphics7CGFloatVtF_0();
 }
 
-- (void)posterSectionRemovalView:(id)a3 didRequestRemovalOfPosterWithID:(id)a4
+- (void)posterSectionRemovalView:(id)view didRequestRemovalOfPosterWithID:(id)d
 {
   v6 = sub_21B6C8DA4();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_21B687C20(v9, v6, v8);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21B687C20(viewCopy, v6, v8);
 }
 
 - (NSIndexPath)centeredPosterIndexPath
@@ -787,7 +787,7 @@ LABEL_3:
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CD93500);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_21B68C3A0(v5);
 
   v7 = sub_21B6C8A04();
@@ -806,32 +806,32 @@ LABEL_3:
 
 - (PBFPosterPair)centeredPoster
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21B68C674();
 
   return v3;
 }
 
-- (void)dateProvider:(id)a3 didUpdateDate:(id)a4
+- (void)dateProvider:(id)provider didUpdateDate:(id)date
 {
   v5 = sub_21B6C8854();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8814();
-  v9 = self;
+  selfCopy = self;
   sub_21B68D5D8(v8);
 
   (*(v6 + 8))(v8, v5);
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
-  v6 = self;
+  selfCopy = self;
   [a4 addObserver_];
-  v7 = v6 + OBJC_IVAR___PBFPosterRackCollectionViewController_leadingTopButtonFrame;
+  v7 = selfCopy + OBJC_IVAR___PBFPosterRackCollectionViewController_leadingTopButtonFrame;
   swift_beginAccess();
-  v8 = v6 + OBJC_IVAR___PBFPosterRackCollectionViewController_trailingTopButtonFrame;
+  v8 = selfCopy + OBJC_IVAR___PBFPosterRackCollectionViewController_trailingTopButtonFrame;
   v12 = *(v7 + 1);
   v13 = *v7;
   swift_beginAccess();
@@ -845,63 +845,63 @@ LABEL_3:
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(completion);
   _Block_copy(v12);
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = self;
-  sub_21B69C99C(v13, a4, a5, a6, v16, v12);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  selfCopy = self;
+  sub_21B69C99C(controllerCopy, action, configuration, properties, selfCopy, v12);
   _Block_release(v12);
   _Block_release(v12);
 }
 
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v8 = [objc_msgSend(a4 posterDescriptorLookupInfo)];
+  viewCopy = view;
+  v8 = [objc_msgSend(preview posterDescriptorLookupInfo)];
   swift_unknownObjectRelease();
 
-  [v7 presentPreview:a4 withMode:2 fromView:v9];
+  [controllerCopy presentPreview:preview withMode:2 fromView:viewCopy];
   swift_unknownObjectRelease();
 }
 
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action
 {
   v5 = swift_unknownObjectRetain();
 
   return v5;
 }
 
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  PosterRackCollectionViewController.editingIngestionManager(_:didAccept:userChoice:)(v8, v9, a5);
+  managerCopy = manager;
+  acceptCopy = accept;
+  selfCopy = self;
+  PosterRackCollectionViewController.editingIngestionManager(_:didAccept:userChoice:)(managerCopy, acceptCopy, choice);
 }
 
-- (void)focusSelectionViewController:(id)a3 hasSelected:(BOOL)a4 activity:(id)a5
+- (void)focusSelectionViewController:(id)controller hasSelected:(BOOL)selected activity:(id)activity
 {
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = self;
-  PosterRackCollectionViewController.focusSelectionViewController(_:hasSelected:activity:)(v8, a4, a5);
+  selfCopy = self;
+  PosterRackCollectionViewController.focusSelectionViewController(_:hasSelected:activity:)(controllerCopy, selected, activity);
 
   swift_unknownObjectRelease();
 }
 
-- (void)homeScreenServiceLayoutDidChange:(id)a3
+- (void)homeScreenServiceLayoutDidChange:(id)change
 {
-  v7 = self;
-  v3 = [(PBFPosterRackCollectionViewController *)v7 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(PBFPosterRackCollectionViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
+    v4 = collectionView;
     v5 = swift_allocObject();
     *(v5 + 16) = v4;
     v6 = v4;
@@ -909,14 +909,14 @@ LABEL_3:
   }
 }
 
-- (PBFPosterRackCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (PBFPosterRackCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (PBFPosterRackCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBFPosterRackCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

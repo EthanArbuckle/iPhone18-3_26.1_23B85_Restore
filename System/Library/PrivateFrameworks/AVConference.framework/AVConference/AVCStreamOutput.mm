@@ -1,30 +1,30 @@
 @interface AVCStreamOutput
-+ (id)errorWithStreamOutputError:(int64_t)a3;
-- (AVCStreamOutput)initWithStreamToken:(int64_t)a3 delegate:(id)a4 queue:(id)a5 error:(id *)a6;
++ (id)errorWithStreamOutputError:(int64_t)error;
+- (AVCStreamOutput)initWithStreamToken:(int64_t)token delegate:(id)delegate queue:(id)queue error:(id *)error;
 - (BOOL)validateAccess;
-- (BOOL)validateAccessWithProcessName:(id)a3 accessControlPlist:(id)a4;
+- (BOOL)validateAccessWithProcessName:(id)name accessControlPlist:(id)plist;
 - (int)createReceiverQueue;
-- (int)setupRemoteQueueWithSenderQueue:(id)a3;
+- (int)setupRemoteQueueWithSenderQueue:(id)queue;
 - (int)setupXPCConnection;
 - (void)createReceiverQueue;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)didDegrade:(BOOL)a3;
+- (void)didDegrade:(BOOL)degrade;
 - (void)didInvalidate;
-- (void)didPause:(BOOL)a3;
-- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)didStall:(BOOL)a3;
-- (void)didSuspend:(BOOL)a3;
-- (void)didUpdateAttachments:(__CFDictionary *)a3;
+- (void)didPause:(BOOL)pause;
+- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)didStall:(BOOL)stall;
+- (void)didSuspend:(BOOL)suspend;
+- (void)didUpdateAttachments:(__CFDictionary *)attachments;
 - (void)registerBlocksForNotification;
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4;
-- (void)serviceHandlerDidDegradeWithArguments:(id)a3 error:(id)a4;
-- (void)serviceHandlerDidDieWithArguments:(id)a3 error:(id)a4;
-- (void)serviceHandlerDidPauseWithArguments:(id)a3 error:(id)a4;
-- (void)serviceHandlerDidReceiveFrameWithArguments:(id)a3 error:(id)a4;
-- (void)serviceHandlerDidStallWithArguments:(id)a3 error:(id)a4;
-- (void)serviceHandlerDidSuspendWithArguments:(id)a3 error:(id)a4;
-- (void)setSynchronizationTimeOffset:(float)a3;
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation;
+- (void)serviceHandlerDidDegradeWithArguments:(id)arguments error:(id)error;
+- (void)serviceHandlerDidDieWithArguments:(id)arguments error:(id)error;
+- (void)serviceHandlerDidPauseWithArguments:(id)arguments error:(id)error;
+- (void)serviceHandlerDidReceiveFrameWithArguments:(id)arguments error:(id)error;
+- (void)serviceHandlerDidStallWithArguments:(id)arguments error:(id)error;
+- (void)serviceHandlerDidSuspendWithArguments:(id)arguments error:(id)error;
+- (void)setSynchronizationTimeOffset:(float)offset;
 - (void)setupDelegateQueue:(id)internalReceiverQueue;
 - (void)setupXPCConnection;
 - (void)terminateConnection;
@@ -33,10 +33,10 @@
 
 @implementation AVCStreamOutput
 
-- (AVCStreamOutput)initWithStreamToken:(int64_t)a3 delegate:(id)a4 queue:(id)a5 error:(id *)a6
+- (AVCStreamOutput)initWithStreamToken:(int64_t)token delegate:(id)delegate queue:(id)queue error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v21 = 0;
+  createReceiverQueue = 0;
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCStreamOutput-init");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -44,9 +44,9 @@
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a6)
+      if (error)
       {
-        v13 = *a6;
+        v13 = *error;
       }
 
       else
@@ -61,13 +61,13 @@
       v26 = 1024;
       v27 = 122;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
-      v31 = a3;
+      tokenCopy = token;
       v32 = 2112;
-      v33 = a4;
+      delegateCopy = delegate;
       v34 = 2112;
-      v35 = a5;
+      queueCopy = queue;
       v36 = 2112;
       v37 = v13;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d @:@ AVCStreamOutput-init (%p) streamToken=%ld, delegate=%@, queue=%@, error=%@", buf, 0x4Eu);
@@ -86,27 +86,27 @@
   if ([v14 validateAccess])
   {
     v14[120] = VRTraceGetErrorLogLevelForModule() > 7;
-    *(v14 + 4) = a3;
-    objc_storeWeak(v14 + 3, a4);
+    *(v14 + 4) = token;
+    objc_storeWeak(v14 + 3, delegate);
     v14[40] = 1;
     *(v14 + 12) = [objc_msgSend(MEMORY[0x1E696AE30] "processInfo")];
-    v21 = [v14 createReceiverQueue];
-    if (v21)
+    createReceiverQueue = [v14 createReceiverQueue];
+    if (createReceiverQueue)
     {
       [AVCStreamOutput initWithStreamToken:delegate:queue:error:];
     }
 
     else
     {
-      [v14 setupDelegateQueue:a5];
+      [v14 setupDelegateQueue:queue];
       if ([+[VCStreamOutputManager sourceExistsForStreamToken:"sourceExistsForStreamToken:"]
       {
         v15 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v14, @"vcStreamOutputInProcessDelegate", *(v14 + 20), @"vcStreamOutputInProcessDelegateQueue", 0}];
-        *(v14 + 14) = [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager allocStreamOutputWithStreamToken:"allocStreamOutputWithStreamToken:clientPid:options:errorCode:" clientPid:*(v14 + 4) options:getpid() errorCode:v15, &v21];
+        *(v14 + 14) = [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager allocStreamOutputWithStreamToken:"allocStreamOutputWithStreamToken:clientPid:options:errorCode:" clientPid:*(v14 + 4) options:getpid() errorCode:v15, &createReceiverQueue];
 
         if (*(v14 + 14))
         {
-          [VCRemoteVideoManager_DefaultManager() notifyCachedStateForStreamToken:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)}];
+          [VCRemoteVideoManager_DefaultManager() notifyCachedStateForStreamToken:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)}];
 LABEL_14:
           v16 = MEMORY[0x1E6960C70];
           v17 = *MEMORY[0x1E6960C70];
@@ -125,8 +125,8 @@ LABEL_14:
 
       else
       {
-        v21 = [v14 setupXPCConnection];
-        if (!v21)
+        createReceiverQueue = [v14 setupXPCConnection];
+        if (!createReceiverQueue)
         {
           goto LABEL_14;
         }
@@ -136,7 +136,7 @@ LABEL_14:
     }
 
 LABEL_15:
-    if (!v21)
+    if (!createReceiverQueue)
     {
       return v14;
     }
@@ -144,13 +144,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v21 = -7;
+  createReceiverQueue = -7;
 LABEL_16:
 
   v14 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = [AVCStreamOutput errorWithStreamOutputError:v21];
+    *error = [AVCStreamOutput errorWithStreamOutputError:createReceiverQueue];
   }
 
   return v14;
@@ -173,7 +173,7 @@ LABEL_16:
       v13 = 1024;
       v14 = 174;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d @:@ AVCStreamOutput-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -285,7 +285,7 @@ LABEL_19:
         v25 = 2112;
         v26 = v15;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2112;
         v30 = v3;
         _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, "AVCStreamOutput [%s] %s:%d %@(%p) Access denied for process=%@", buf, 0x3Au);
@@ -356,7 +356,7 @@ LABEL_19:
     v25 = 2112;
     v26 = v6;
     v27 = 2048;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2112;
     v30 = v3;
     v9 = "AVCStreamOutput [%s] %s:%d %@(%p) Access granted for process=%@";
@@ -446,9 +446,9 @@ LABEL_17:
   return 0;
 }
 
-- (void)remoteQueueOperationHandlerWithError:(int)a3 operation:(FigRemoteOperation *)a4
+- (void)remoteQueueOperationHandlerWithError:(int)error operation:(FigRemoteOperation *)operation
 {
-  if (a3)
+  if (error)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -460,22 +460,22 @@ LABEL_17:
     }
   }
 
-  else if (a4->var0 == 1)
+  else if (operation->var0 == 1)
   {
-    var0 = a4->var4.var0.var0;
+    var0 = operation->var4.var0.var0;
 
     [(AVCStreamOutput *)self didUpdateAttachments:var0];
   }
 
-  else if (a4->var0 == 3)
+  else if (operation->var0 == 3)
   {
-    v4 = a4->var4.var0.var0;
+    v4 = operation->var4.var0.var0;
 
     [(AVCStreamOutput *)self didReceiveSampleBuffer:v4];
   }
 }
 
-- (int)setupRemoteQueueWithSenderQueue:(id)a3
+- (int)setupRemoteQueueWithSenderQueue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
@@ -484,7 +484,7 @@ LABEL_17:
   v7[2] = __51__AVCStreamOutput_setupRemoteQueueWithSenderQueue___block_invoke;
   v7[3] = &unk_1E85F5340;
   v7[4] = v5;
-  VCRemoteImageQueue_CreateReceiverQueue(a3, v7, self->_internalReceiverQueue, &self->_receiverQueue);
+  VCRemoteImageQueue_CreateReceiverQueue(queue, v7, self->_internalReceiverQueue, &self->_receiverQueue);
   if (self->_receiverQueue)
   {
     return 0;
@@ -501,7 +501,7 @@ uint64_t __51__AVCStreamOutput_setupRemoteQueueWithSenderQueue___block_invoke(ui
   return [v5 remoteQueueOperationHandlerWithError:a2 operation:a3];
 }
 
-- (void)setSynchronizationTimeOffset:(float)a3
+- (void)setSynchronizationTimeOffset:(float)offset
 {
   v6 = *MEMORY[0x1E69E9840];
   internalReceiverQueue = self->_internalReceiverQueue;
@@ -510,7 +510,7 @@ uint64_t __51__AVCStreamOutput_setupRemoteQueueWithSenderQueue___block_invoke(ui
   block[2] = __48__AVCStreamOutput_setSynchronizationTimeOffset___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  offsetCopy = offset;
   dispatch_async(internalReceiverQueue, block);
 }
 
@@ -571,9 +571,9 @@ void __48__AVCStreamOutput_setSynchronizationTimeOffset___block_invoke(uint64_t 
   }
 }
 
-- (void)didPause:(BOOL)a3
+- (void)didPause:(BOOL)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -589,7 +589,7 @@ void __48__AVCStreamOutput_setSynchronizationTimeOffset___block_invoke(uint64_t 
       v15 = 1024;
       v16 = 362;
       v17 = 1024;
-      v18 = v3;
+      v18 = pauseCopy;
       v19 = 1024;
       v20 = streamToken;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d AVCStreamOutput callback: didPause=%d for streamToken=%u", buf, 0x28u);
@@ -597,7 +597,7 @@ void __48__AVCStreamOutput_setSynchronizationTimeOffset___block_invoke(uint64_t 
   }
 
   kdebug_trace();
-  self->_isPaused = v3;
+  self->_isPaused = pauseCopy;
   [(AVCStreamOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -607,7 +607,7 @@ void __48__AVCStreamOutput_setSynchronizationTimeOffset___block_invoke(uint64_t 
     v9[2] = __28__AVCStreamOutput_didPause___block_invoke;
     v9[3] = &unk_1E85F37A0;
     v9[4] = self;
-    v10 = v3;
+    v10 = pauseCopy;
     dispatch_async(delegateQueue, v9);
   }
 }
@@ -621,9 +621,9 @@ uint64_t __28__AVCStreamOutput_didPause___block_invoke(uint64_t a1)
   return [v2 streamOutput:v3 didPause:v4];
 }
 
-- (void)didStall:(BOOL)a3
+- (void)didStall:(BOOL)stall
 {
-  v3 = a3;
+  stallCopy = stall;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -639,7 +639,7 @@ uint64_t __28__AVCStreamOutput_didPause___block_invoke(uint64_t a1)
       v15 = 1024;
       v16 = 373;
       v17 = 1024;
-      v18 = v3;
+      v18 = stallCopy;
       v19 = 1024;
       v20 = streamToken;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d AVCStreamOutput callback: didStall=%d for streamToken=%u", buf, 0x28u);
@@ -647,7 +647,7 @@ uint64_t __28__AVCStreamOutput_didPause___block_invoke(uint64_t a1)
   }
 
   kdebug_trace();
-  self->_isStalled = v3;
+  self->_isStalled = stallCopy;
   [(AVCStreamOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -657,7 +657,7 @@ uint64_t __28__AVCStreamOutput_didPause___block_invoke(uint64_t a1)
     v9[2] = __28__AVCStreamOutput_didStall___block_invoke;
     v9[3] = &unk_1E85F37A0;
     v9[4] = self;
-    v10 = v3;
+    v10 = stallCopy;
     dispatch_async(delegateQueue, v9);
   }
 }
@@ -671,9 +671,9 @@ uint64_t __28__AVCStreamOutput_didStall___block_invoke(uint64_t a1)
   return [v2 streamOutput:v3 didStall:v4];
 }
 
-- (void)didDegrade:(BOOL)a3
+- (void)didDegrade:(BOOL)degrade
 {
-  v3 = a3;
+  degradeCopy = degrade;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -689,7 +689,7 @@ uint64_t __28__AVCStreamOutput_didStall___block_invoke(uint64_t a1)
       v15 = 1024;
       v16 = 384;
       v17 = 1024;
-      v18 = v3;
+      v18 = degradeCopy;
       v19 = 1024;
       v20 = streamToken;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d AVCStreamOutput callback: didDegrade=%d for streamToken=%u", buf, 0x28u);
@@ -697,7 +697,7 @@ uint64_t __28__AVCStreamOutput_didStall___block_invoke(uint64_t a1)
   }
 
   kdebug_trace();
-  self->_isDegraded = v3;
+  self->_isDegraded = degradeCopy;
   [(AVCStreamOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -707,7 +707,7 @@ uint64_t __28__AVCStreamOutput_didStall___block_invoke(uint64_t a1)
     v9[2] = __30__AVCStreamOutput_didDegrade___block_invoke;
     v9[3] = &unk_1E85F37A0;
     v9[4] = self;
-    v10 = v3;
+    v10 = degradeCopy;
     dispatch_async(delegateQueue, v9);
   }
 }
@@ -721,9 +721,9 @@ uint64_t __30__AVCStreamOutput_didDegrade___block_invoke(uint64_t a1)
   return [v2 streamOutput:v3 didDegrade:v4];
 }
 
-- (void)didSuspend:(BOOL)a3
+- (void)didSuspend:(BOOL)suspend
 {
-  v3 = a3;
+  suspendCopy = suspend;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -739,7 +739,7 @@ uint64_t __30__AVCStreamOutput_didDegrade___block_invoke(uint64_t a1)
       v15 = 1024;
       v16 = 395;
       v17 = 1024;
-      v18 = v3;
+      v18 = suspendCopy;
       v19 = 1024;
       v20 = streamToken;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d AVCStreamOutput callback: didSuspend=%d for streamToken=%u", buf, 0x28u);
@@ -747,7 +747,7 @@ uint64_t __30__AVCStreamOutput_didDegrade___block_invoke(uint64_t a1)
   }
 
   kdebug_trace();
-  self->_isSuspended = v3;
+  self->_isSuspended = suspendCopy;
   [(AVCStreamOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -757,7 +757,7 @@ uint64_t __30__AVCStreamOutput_didDegrade___block_invoke(uint64_t a1)
     v9[2] = __30__AVCStreamOutput_didSuspend___block_invoke;
     v9[3] = &unk_1E85F37A0;
     v9[4] = self;
-    v10 = v3;
+    v10 = suspendCopy;
     dispatch_async(delegateQueue, v9);
   }
 }
@@ -794,15 +794,15 @@ uint64_t __30__AVCStreamOutput_didSuspend___block_invoke(uint64_t a1)
   }
 
   self->_isValid = 0;
-  v6 = [(VCWeakObjectHolder *)self->_weakSelf strong];
-  if (v6)
+  strong = [(VCWeakObjectHolder *)self->_weakSelf strong];
+  if (strong)
   {
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __32__AVCStreamOutput_didInvalidate__block_invoke;
     block[3] = &unk_1E85F3778;
-    block[4] = v6;
+    block[4] = strong;
     dispatch_async(delegateQueue, block);
   }
 }
@@ -815,7 +815,7 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
   return [v2 streamOutputDidBecomeInvalid:v3];
 }
 
-- (void)didUpdateAttachments:(__CFDictionary *)a3
+- (void)didUpdateAttachments:(__CFDictionary *)attachments
 {
   attachments = self->_attachments;
   if (attachments)
@@ -823,9 +823,9 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
     CFRelease(attachments);
   }
 
-  if (a3)
+  if (attachments)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(attachments);
   }
 
   else
@@ -836,13 +836,13 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
   self->_attachments = v6;
 }
 
-- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (buffer)
   {
     memset(&v30, 170, sizeof(v30));
-    CMSampleBufferGetPresentationTimeStamp(&v30, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v30, buffer);
     time = v30;
     CMTimeGetSeconds(&time);
     kdebug_trace();
@@ -852,7 +852,7 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
     }
 
     streamToken = self->_streamToken;
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(buffer);
     if (CMFormatDescriptionGetMediaType(FormatDescription) == 1835365473)
     {
       v44 = -86;
@@ -862,7 +862,7 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
       v43[3] = v7;
       v43[0] = v7;
       v43[1] = v7;
-      DataBuffer = CMSampleBufferGetDataBuffer(a3);
+      DataBuffer = CMSampleBufferGetDataBuffer(buffer);
       VideoUtil_BlockBufferToString(DataBuffer, v43, 65);
       if (VRTraceGetErrorLogLevelForModule() < 8)
       {
@@ -884,15 +884,15 @@ uint64_t __32__AVCStreamOutput_didInvalidate__block_invoke(uint64_t a1)
           HIWORD(time.epoch) = 1024;
           v32 = 82;
           v33 = 2048;
-          v34 = self;
+          selfCopy5 = self;
           v35 = 1024;
           v36 = streamToken;
           v37 = 2048;
-          v38 = DataLength;
+          bufferCopy4 = DataLength;
           v39 = 2080;
           v40 = v43;
           v41 = 2112;
-          v42 = a3;
+          bufferCopy2 = buffer;
           v13 = "AVCStreamOutput [%s] %s:%d streamOutput=%p streamToken=%u length=%zu data=%s sampleBuffer=%@";
           v14 = v10;
           v15 = 74;
@@ -917,15 +917,15 @@ LABEL_15:
       HIWORD(time.epoch) = 1024;
       v32 = 82;
       v33 = 2048;
-      v34 = self;
+      selfCopy5 = self;
       v35 = 1024;
       v36 = streamToken;
       v37 = 2048;
-      v38 = v22;
+      bufferCopy4 = v22;
       v39 = 2080;
       v40 = v43;
       v41 = 2112;
-      v42 = a3;
+      bufferCopy2 = buffer;
       v23 = "AVCStreamOutput [%s] %s:%d streamOutput=%p streamToken=%u length=%zu data=%s sampleBuffer=%@";
       v24 = v10;
       v25 = 74;
@@ -952,11 +952,11 @@ LABEL_15:
           HIWORD(time.epoch) = 1024;
           v32 = 84;
           v33 = 2048;
-          v34 = self;
+          selfCopy5 = self;
           v35 = 1024;
           v36 = streamToken;
           v37 = 2112;
-          v38 = a3;
+          bufferCopy4 = buffer;
           v13 = "AVCStreamOutput [%s] %s:%d streamOutput=%p streamToken=%u sampleBuffer=%@";
           v14 = v20;
           v15 = 54;
@@ -967,17 +967,17 @@ LABEL_19:
         attachments = self->_attachments;
         if (attachments)
         {
-          CMSetAttachments(a3, attachments, 1u);
+          CMSetAttachments(buffer, attachments, 1u);
         }
 
-        CFRetain(a3);
+        CFRetain(buffer);
         delegateQueue = self->_delegateQueue;
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __42__AVCStreamOutput_didReceiveSampleBuffer___block_invoke;
         v28[3] = &unk_1E85F7FD0;
         v28[4] = self;
-        v28[5] = a3;
+        v28[5] = buffer;
         v29 = v30;
         dispatch_async(delegateQueue, v28);
         return;
@@ -995,11 +995,11 @@ LABEL_19:
       HIWORD(time.epoch) = 1024;
       v32 = 84;
       v33 = 2048;
-      v34 = self;
+      selfCopy5 = self;
       v35 = 1024;
       v36 = streamToken;
       v37 = 2112;
-      v38 = a3;
+      bufferCopy4 = buffer;
       v23 = "AVCStreamOutput [%s] %s:%d streamOutput=%p streamToken=%u sampleBuffer=%@";
       v24 = v20;
       v25 = 54;
@@ -1023,7 +1023,7 @@ LABEL_19:
       HIWORD(time.epoch) = 1024;
       v32 = 424;
       v33 = 2048;
-      v34 = self;
+      selfCopy5 = self;
       v35 = 1024;
       v36 = v18;
       _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, "AVCStreamOutput [%s] %s:%d streamOutput=%p streamToken=%u Received NULL sample buffer", &time, 0x2Cu);
@@ -1167,7 +1167,7 @@ LABEL_17:
   }
 }
 
-- (void)serviceHandlerDidDieWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidDieWithArguments:(id)arguments error:(id)error
 {
   v6[5] = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1196,37 +1196,37 @@ uint64_t __59__AVCStreamOutput_serviceHandlerDidDieWithArguments_error___block_i
   return [v2 streamOutputServerDidDie:v3];
 }
 
-- (void)serviceHandlerDidPauseWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidPauseWithArguments:(id)arguments error:(id)error
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"conferenceVideoPause", a4), "BOOLValue"}];
+  v5 = [objc_msgSend(arguments objectForKeyedSubscript:{@"conferenceVideoPause", error), "BOOLValue"}];
 
   [(AVCStreamOutput *)self didPause:v5];
 }
 
-- (void)serviceHandlerDidStallWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidStallWithArguments:(id)arguments error:(id)error
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"conferenceIsRemoteMediaStalled", a4), "BOOLValue"}];
+  v5 = [objc_msgSend(arguments objectForKeyedSubscript:{@"conferenceIsRemoteMediaStalled", error), "BOOLValue"}];
 
   [(AVCStreamOutput *)self didStall:v5];
 }
 
-- (void)serviceHandlerDidDegradeWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidDegradeWithArguments:(id)arguments error:(id)error
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"conferenceIsVideoDegraded", a4), "BOOLValue"}];
+  v5 = [objc_msgSend(arguments objectForKeyedSubscript:{@"conferenceIsVideoDegraded", error), "BOOLValue"}];
 
   [(AVCStreamOutput *)self didDegrade:v5];
 }
 
-- (void)serviceHandlerDidSuspendWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidSuspendWithArguments:(id)arguments error:(id)error
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"conferenceIsVideoSuspended", a4), "BOOLValue"}];
+  v5 = [objc_msgSend(arguments objectForKeyedSubscript:{@"conferenceIsVideoSuspended", error), "BOOLValue"}];
 
   [(AVCStreamOutput *)self didSuspend:v5];
 }
 
-- (void)serviceHandlerDidReceiveFrameWithArguments:(id)a3 error:(id)a4
+- (void)serviceHandlerDidReceiveFrameWithArguments:(id)arguments error:(id)error
 {
-  if (a4)
+  if (error)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -1240,7 +1240,7 @@ uint64_t __59__AVCStreamOutput_serviceHandlerDidDieWithArguments_error___block_i
 
   else
   {
-    v5 = VCStreamInputUtil_DecodeSampleBuffer([a3 objectForKeyedSubscript:@"USERXPCARGUMENTS"]);
+    v5 = VCStreamInputUtil_DecodeSampleBuffer([arguments objectForKeyedSubscript:@"USERXPCARGUMENTS"]);
     if (v5)
     {
       v6 = v5;
@@ -1498,9 +1498,9 @@ void __48__AVCStreamOutput_registerBlocksForNotification__block_invoke_80(uint64
   }
 }
 
-+ (id)errorWithStreamOutputError:(int64_t)a3
++ (id)errorWithStreamOutputError:(int64_t)error
 {
-  if (a3 < 0xFFFFFFFFFFFFFFF9)
+  if (error < 0xFFFFFFFFFFFFFFF9)
   {
     v6 = 0;
     v5 = 32000;
@@ -1508,23 +1508,23 @@ void __48__AVCStreamOutput_registerBlocksForNotification__block_invoke_80(uint64
 
   else
   {
-    v4 = 8 * a3 + 56;
+    v4 = 8 * error + 56;
     v5 = *(&unk_1DBD49E38 + v4);
     v6 = *(off_1E85F7FF0 + v4);
   }
 
-  return [MEMORY[0x1E696ABC0] AVConferenceServiceError:v5 detailCode:a3 description:v6];
+  return [MEMORY[0x1E696ABC0] AVConferenceServiceError:v5 detailCode:error description:v6];
 }
 
-- (BOOL)validateAccessWithProcessName:(id)a3 accessControlPlist:(id)a4
+- (BOOL)validateAccessWithProcessName:(id)name accessControlPlist:(id)plist
 {
   v73 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!plist)
   {
     goto LABEL_36;
   }
 
-  v5 = [a4 objectForKeyedSubscript:kAVCStreamOutputProcessAllowEntry];
+  v5 = [plist objectForKeyedSubscript:kAVCStreamOutputProcessAllowEntry];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -1582,7 +1582,7 @@ LABEL_36:
       v63 = 2112;
       v64 = v39;
       v65 = 2048;
-      v66 = self;
+      selfCopy2 = self;
       v41 = &dword_1DB56E000;
       v44 = "AVCStreamOutput [%s] %s:%d %@(%p) Failed to retrieve the allow process name list";
       v45 = buf;
@@ -1599,7 +1599,7 @@ LABEL_36:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v14 = OUTLINED_FUNCTION_2_9(isKindOfClass, v7, v8, v9, v10, v11, v12, v13, v50, v52, v53, v55, v56, a3);
+  v14 = OUTLINED_FUNCTION_2_9(isKindOfClass, v7, v8, v9, v10, v11, v12, v13, v50, v52, v53, v55, v56, name);
   if (!v14)
   {
     return v14;
@@ -1680,7 +1680,7 @@ LABEL_36:
             OUTLINED_FUNCTION_3_30();
             v64 = v30;
             v65 = 2048;
-            v66 = self;
+            selfCopy2 = self;
             v67 = v33;
             v68 = v21;
             v34 = v32;

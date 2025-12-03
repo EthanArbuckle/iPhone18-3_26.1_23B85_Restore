@@ -1,28 +1,28 @@
 @interface ICLegacyAttachmentUtilities
-+ (id)attachmentWithContentID:(id)a3 context:(id)a4;
-+ (id)contentIDStringFromCIDURL:(id)a3;
-+ (id)typeUTIFromFileURL:(id)a3 mimeType:(id)a4;
-+ (void)importFileAtURL:(id)a3 toAttachment:(id)a4 attachmentPreviewGenerator:(id)a5;
-+ (void)importLegacyAttachment:(id)a3 toNote:(id)a4 attachmentPreviewGenerator:(id)a5;
++ (id)attachmentWithContentID:(id)d context:(id)context;
++ (id)contentIDStringFromCIDURL:(id)l;
++ (id)typeUTIFromFileURL:(id)l mimeType:(id)type;
++ (void)importFileAtURL:(id)l toAttachment:(id)attachment attachmentPreviewGenerator:(id)generator;
++ (void)importLegacyAttachment:(id)attachment toNote:(id)note attachmentPreviewGenerator:(id)generator;
 @end
 
 @implementation ICLegacyAttachmentUtilities
 
-+ (id)contentIDStringFromCIDURL:(id)a3
++ (id)contentIDStringFromCIDURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"cid"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"cid"])
   {
-    v5 = [v3 absoluteString];
-    if ([v5 length] < 5)
+    absoluteString = [lCopy absoluteString];
+    if ([absoluteString length] < 5)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [v5 substringFromIndex:4];
+      v6 = [absoluteString substringFromIndex:4];
     }
   }
 
@@ -34,11 +34,11 @@
   return v6;
 }
 
-+ (void)importLegacyAttachment:(id)a3 toNote:(id)a4 attachmentPreviewGenerator:(id)a5
++ (void)importLegacyAttachment:(id)attachment toNote:(id)note attachmentPreviewGenerator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attachmentCopy = attachment;
+  noteCopy = note;
+  generatorCopy = generator;
   v37 = 0;
   v38[0] = &v37;
   v38[1] = 0x3032000000;
@@ -57,21 +57,21 @@
   v28 = __Block_byref_object_copy__60;
   v29 = __Block_byref_object_dispose__60;
   v30 = 0;
-  v11 = [v8 managedObjectContext];
+  managedObjectContext = [attachmentCopy managedObjectContext];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __88__ICLegacyAttachmentUtilities_importLegacyAttachment_toNote_attachmentPreviewGenerator___block_invoke;
   v20 = &unk_278198478;
   v22 = &v37;
-  v12 = v8;
+  v12 = attachmentCopy;
   v21 = v12;
   v23 = &v31;
   v24 = &v25;
-  [v11 performBlockAndWait:&v17];
+  [managedObjectContext performBlockAndWait:&v17];
 
   v13 = *(v38[0] + 40);
-  v14 = [v9 managedObjectContext];
-  v15 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:v13 context:v14];
+  managedObjectContext2 = [noteCopy managedObjectContext];
+  v15 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:v13 context:managedObjectContext2];
 
   if (!v15)
   {
@@ -81,15 +81,15 @@
       [ICLegacyAttachmentUtilities importLegacyAttachment:v38 toNote:v16 attachmentPreviewGenerator:?];
     }
 
-    v15 = [v9 addAttachmentWithIdentifier:*(v38[0] + 40)];
+    v15 = [noteCopy addAttachmentWithIdentifier:*(v38[0] + 40)];
     [v15 updateChangeCountWithReason:@"Imported HTML attachment"];
   }
 
   [v15 setIdentifier:*(v38[0] + 40)];
   [v15 setTypeUTI:v32[5]];
-  [v15 setNote:v9];
-  [v9 addAttachmentsObject:v15];
-  [a1 importFileAtURL:v26[5] toAttachment:v15 attachmentPreviewGenerator:v10];
+  [v15 setNote:noteCopy];
+  [noteCopy addAttachmentsObject:v15];
+  [self importFileAtURL:v26[5] toAttachment:v15 attachmentPreviewGenerator:generatorCopy];
 
   _Block_object_dispose(&v25, 8);
   _Block_object_dispose(&v31, 8);
@@ -115,18 +115,18 @@ void __88__ICLegacyAttachmentUtilities_importLegacyAttachment_toNote_attachmentP
   *(v9 + 40) = v8;
 }
 
-+ (void)importFileAtURL:(id)a3 toAttachment:(id)a4 attachmentPreviewGenerator:(id)a5
++ (void)importFileAtURL:(id)l toAttachment:(id)attachment attachmentPreviewGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  lCopy = l;
+  attachmentCopy = attachment;
+  generatorCopy = generator;
+  if (!lCopy)
   {
     goto LABEL_9;
   }
 
   v25 = 0;
-  v10 = [v7 checkResourceIsReachableAndReturnError:&v25];
+  v10 = [lCopy checkResourceIsReachableAndReturnError:&v25];
   v11 = v25;
   v12 = v11;
   if (v10)
@@ -134,36 +134,36 @@ void __88__ICLegacyAttachmentUtilities_importLegacyAttachment_toNote_attachmentP
     v24 = 0;
     v13 = *MEMORY[0x277CBE8D0];
     v23 = 0;
-    v14 = [v7 getResourceValue:&v24 forKey:v13 error:&v23];
+    v14 = [lCopy getResourceValue:&v24 forKey:v13 error:&v23];
     v15 = v24;
     v16 = v23;
     if (v14)
     {
-      [v8 setTitle:v15];
+      [attachmentCopy setTitle:v15];
     }
 
     else
     {
-      v17 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v7 resolvingAgainstBaseURL:0];
-      v18 = [v17 path];
-      v19 = [v18 lastPathComponent];
-      [v8 setTitle:v19];
+      v17 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
+      path = [v17 path];
+      lastPathComponent = [path lastPathComponent];
+      [attachmentCopy setTitle:lastPathComponent];
     }
 
-    v20 = [v8 media];
+    media = [attachmentCopy media];
 
-    if (!v20)
+    if (!media)
     {
       v21 = os_log_create("com.apple.notes", "HTML");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [ICLegacyAttachmentUtilities importFileAtURL:v8 toAttachment:? attachmentPreviewGenerator:?];
+        [ICLegacyAttachmentUtilities importFileAtURL:attachmentCopy toAttachment:? attachmentPreviewGenerator:?];
       }
 
-      v22 = [v8 addMediaWithURL:v7 updateFileBasedAttributes:1];
-      [v8 updateChangeCountWithReason:@"Imported HTML media"];
+      v22 = [attachmentCopy addMediaWithURL:lCopy updateFileBasedAttributes:1];
+      [attachmentCopy updateChangeCountWithReason:@"Imported HTML media"];
       [v22 updateChangeCountWithReason:@"Imported HTML media"];
-      [v8 ic_postNotificationOnMainThreadWithName:@"ICAttachmentDidLoadNotification"];
+      [attachmentCopy ic_postNotificationOnMainThreadWithName:@"ICAttachmentDidLoadNotification"];
     }
 
     goto LABEL_18;
@@ -174,7 +174,7 @@ void __88__ICLegacyAttachmentUtilities_importLegacyAttachment_toNote_attachmentP
     v15 = os_log_create("com.apple.notes", "HTML");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [ICLegacyAttachmentUtilities importFileAtURL:v8 toAttachment:v12 attachmentPreviewGenerator:v15];
+      [ICLegacyAttachmentUtilities importFileAtURL:attachmentCopy toAttachment:v12 attachmentPreviewGenerator:v15];
     }
   }
 
@@ -184,7 +184,7 @@ LABEL_9:
     v15 = os_log_create("com.apple.notes", "HTML");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [ICLegacyAttachmentUtilities importFileAtURL:v8 toAttachment:? attachmentPreviewGenerator:?];
+      [ICLegacyAttachmentUtilities importFileAtURL:attachmentCopy toAttachment:? attachmentPreviewGenerator:?];
     }
 
     v12 = v15;
@@ -192,19 +192,19 @@ LABEL_9:
 
 LABEL_18:
 
-  [v9 generatePreviewIfNeededForAttachment:v8];
+  [generatorCopy generatePreviewIfNeededForAttachment:attachmentCopy];
 }
 
-+ (id)typeUTIFromFileURL:(id)a3 mimeType:(id)a4
++ (id)typeUTIFromFileURL:(id)l mimeType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  lCopy = l;
+  typeCopy = type;
+  v7 = typeCopy;
+  if (!lCopy)
   {
     v11 = 0;
-    v10 = 0;
-    if (!v6)
+    preferredMIMEType = 0;
+    if (!typeCopy)
     {
       goto LABEL_11;
     }
@@ -215,8 +215,8 @@ LABEL_18:
   v25 = 0;
   v8 = *MEMORY[0x277CBE918];
   v24 = 0;
-  v9 = [v5 getResourceValue:&v25 forKey:v8 error:&v24];
-  v10 = v25;
+  v9 = [lCopy getResourceValue:&v25 forKey:v8 error:&v24];
+  preferredMIMEType = v25;
   v11 = v24;
   if ((v9 & 1) == 0)
   {
@@ -230,36 +230,36 @@ LABEL_18:
   if (v7)
   {
 LABEL_9:
-    if (!v10)
+    if (!preferredMIMEType)
     {
       v13 = [MEMORY[0x277CE1CB8] typeWithMIMEType:v7];
-      v10 = [v13 preferredMIMEType];
+      preferredMIMEType = [v13 preferredMIMEType];
     }
   }
 
 LABEL_11:
-  if (v5)
+  if (lCopy)
   {
-    if (v10)
+    if (preferredMIMEType)
     {
-      v14 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v10];
+      v14 = [MEMORY[0x277CE1CB8] typeWithIdentifier:preferredMIMEType];
       if ([v14 isEqual:*MEMORY[0x277CE1D48]])
       {
       }
 
       else
       {
-        v15 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v10];
-        v16 = [v15 isDynamic];
+        v15 = [MEMORY[0x277CE1CB8] typeWithIdentifier:preferredMIMEType];
+        isDynamic = [v15 isDynamic];
 
-        if (!v16)
+        if (!isDynamic)
         {
           goto LABEL_22;
         }
       }
     }
 
-    v17 = CGImageSourceCreateWithURL(v5, 0);
+    v17 = CGImageSourceCreateWithURL(lCopy, 0);
     if (v17)
     {
       v18 = v17;
@@ -271,32 +271,32 @@ LABEL_11:
       {
         v22 = v20;
 
-        v10 = v22;
+        preferredMIMEType = v22;
       }
     }
   }
 
-  if (!v10)
+  if (!preferredMIMEType)
   {
-    v10 = [*MEMORY[0x277CE1D48] identifier];
+    preferredMIMEType = [*MEMORY[0x277CE1D48] identifier];
   }
 
 LABEL_22:
 
-  return v10;
+  return preferredMIMEType;
 }
 
-+ (id)attachmentWithContentID:(id)a3 context:(id)a4
++ (id)attachmentWithContentID:(id)d context:(id)context
 {
   v5 = MEMORY[0x277CBE428];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  dCopy = d;
   v8 = [[v5 alloc] initWithEntityName:@"NoteAttachment"];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"contentID", v7];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"contentID", dCopy];
 
-  [v8 setPredicate:v9];
+  [v8 setPredicate:dCopy];
   v15 = 0;
-  v10 = [v6 executeFetchRequest:v8 error:&v15];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v15];
 
   v11 = v15;
   if (v11)
@@ -308,9 +308,9 @@ LABEL_22:
     }
   }
 
-  v13 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v13;
+  return firstObject;
 }
 
 + (void)importLegacyAttachment:(uint64_t)a1 toNote:(NSObject *)a2 attachmentPreviewGenerator:.cold.1(uint64_t a1, NSObject *a2)

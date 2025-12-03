@@ -1,104 +1,104 @@
 @interface CNUIDataCollector
 + (id)sharedCollector;
 - (CNUIDataCollector)init;
-- (CNUIDataCollector)initWithEnvironment:(id)a3;
-- (void)logContactActionType:(id)a3 attributes:(id)a4;
-- (void)logContactCreated:(id)a3 originalContact:(id)a4;
-- (void)logContactShown:(id)a3;
+- (CNUIDataCollector)initWithEnvironment:(id)environment;
+- (void)logContactActionType:(id)type attributes:(id)attributes;
+- (void)logContactCreated:(id)created originalContact:(id)contact;
+- (void)logContactShown:(id)shown;
 - (void)logPresentation;
-- (void)logSearchResultSelected:(id)a3;
-- (void)logSearchResultsFetchedSuggested:(BOOL)a3;
+- (void)logSearchResultSelected:(id)selected;
+- (void)logSearchResultsFetchedSuggested:(BOOL)suggested;
 - (void)logSearchUsage;
 @end
 
 @implementation CNUIDataCollector
 
-- (void)logContactCreated:(id)a3 originalContact:(id)a4
+- (void)logContactCreated:(id)created originalContact:(id)contact
 {
-  v11 = a4;
-  v6 = a3;
-  if ([v11 isSuggested])
+  contactCopy = contact;
+  createdCopy = created;
+  if ([contactCopy isSuggested])
   {
-    v7 = [v11 suggestionRecordId];
+    suggestionRecordId = [contactCopy suggestionRecordId];
   }
 
   else
   {
-    v7 = 0;
+    suggestionRecordId = 0;
   }
 
-  v8 = [(CNUIDataCollector *)self sgLogger];
-  v9 = [v6 identifier];
+  sgLogger = [(CNUIDataCollector *)self sgLogger];
+  identifier = [createdCopy identifier];
 
-  v10 = [(CNUIDataCollector *)self appIdentifier];
-  [v8 logContactCreated:v7 contactIdentifier:v9 bundleID:v10];
+  appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+  [sgLogger logContactCreated:suggestionRecordId contactIdentifier:identifier bundleID:appIdentifier];
 }
 
-- (void)logContactShown:(id)a3
+- (void)logContactShown:(id)shown
 {
-  v9 = a3;
-  v4 = _suggestedContact(v9);
+  shownCopy = shown;
+  v4 = _suggestedContact(shownCopy);
   if (v4)
   {
-    if (v4 == v9)
+    if (v4 == shownCopy)
     {
-      v5 = 0;
+      identifier = 0;
     }
 
     else
     {
-      v5 = [v9 identifier];
+      identifier = [shownCopy identifier];
     }
 
-    v6 = [(CNUIDataCollector *)self sgLogger];
-    v7 = [v4 suggestionRecordId];
-    v8 = [(CNUIDataCollector *)self appIdentifier];
-    [v6 logSuggestedContactDetailShown:v7 contactIdentifier:v5 bundleID:v8];
+    sgLogger = [(CNUIDataCollector *)self sgLogger];
+    suggestionRecordId = [v4 suggestionRecordId];
+    appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+    [sgLogger logSuggestedContactDetailShown:suggestionRecordId contactIdentifier:identifier bundleID:appIdentifier];
   }
 }
 
-- (void)logSearchResultSelected:(id)a3
+- (void)logSearchResultSelected:(id)selected
 {
-  v11 = a3;
+  selectedCopy = selected;
   if (+[CNUIDataCollector isEnabled])
   {
-    v4 = _suggestedContact(v11);
-    if (v4 == v11)
+    v4 = _suggestedContact(selectedCopy);
+    if (v4 == selectedCopy)
     {
-      v5 = 0;
+      identifier = 0;
     }
 
     else
     {
-      v5 = [v11 identifier];
+      identifier = [selectedCopy identifier];
     }
 
-    v6 = [(CNUIDataCollector *)self sgLogger];
-    v7 = [v4 suggestionRecordId];
-    v8 = [(CNUIDataCollector *)self appIdentifier];
-    [v6 logContactSearchResultSelected:v7 contactIdentifier:v5 bundleID:v8];
+    sgLogger = [(CNUIDataCollector *)self sgLogger];
+    suggestionRecordId = [v4 suggestionRecordId];
+    appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+    [sgLogger logContactSearchResultSelected:suggestionRecordId contactIdentifier:identifier bundleID:appIdentifier];
 
-    v9 = [(CNUIDataCollector *)self metricsReporter];
-    v10 = [(CNUIDataCollector *)self appIdentifier];
-    [v9 logSearchResultsSelectedforApplication:v10 fromSuggestions:{objc_msgSend(v11, "isSuggested")}];
+    metricsReporter = [(CNUIDataCollector *)self metricsReporter];
+    appIdentifier2 = [(CNUIDataCollector *)self appIdentifier];
+    [metricsReporter logSearchResultsSelectedforApplication:appIdentifier2 fromSuggestions:{objc_msgSend(selectedCopy, "isSuggested")}];
   }
 }
 
-- (void)logSearchResultsFetchedSuggested:(BOOL)a3
+- (void)logSearchResultsFetchedSuggested:(BOOL)suggested
 {
-  v3 = a3;
+  suggestedCopy = suggested;
   if (+[CNUIDataCollector isEnabled])
   {
-    if (v3)
+    if (suggestedCopy)
     {
-      v5 = [(CNUIDataCollector *)self sgLogger];
-      v6 = [(CNUIDataCollector *)self appIdentifier];
-      [v5 logSearchResultsIncludedPureSuggestionsWithBundleID:v6];
+      sgLogger = [(CNUIDataCollector *)self sgLogger];
+      appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+      [sgLogger logSearchResultsIncludedPureSuggestionsWithBundleID:appIdentifier];
     }
 
-    v8 = [(CNUIDataCollector *)self metricsReporter];
-    v7 = [(CNUIDataCollector *)self appIdentifier];
-    [v8 logSearchResultsFetchedforApplication:v7 fromSuggestions:v3];
+    metricsReporter = [(CNUIDataCollector *)self metricsReporter];
+    appIdentifier2 = [(CNUIDataCollector *)self appIdentifier];
+    [metricsReporter logSearchResultsFetchedforApplication:appIdentifier2 fromSuggestions:suggestedCopy];
   }
 }
 
@@ -106,9 +106,9 @@
 {
   if (+[CNUIDataCollector isEnabled])
   {
-    v4 = [(CNUIDataCollector *)self metricsReporter];
-    v3 = [(CNUIDataCollector *)self appIdentifier];
-    [v4 logSearchUsageforApplication:v3];
+    metricsReporter = [(CNUIDataCollector *)self metricsReporter];
+    appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+    [metricsReporter logSearchUsageforApplication:appIdentifier];
   }
 }
 
@@ -116,38 +116,38 @@
 {
   if (+[CNUIDataCollector isEnabled])
   {
-    v4 = [(CNUIDataCollector *)self metricsReporter];
-    v3 = [(CNUIDataCollector *)self appIdentifier];
-    [v4 logContactShownforApplication:v3];
+    metricsReporter = [(CNUIDataCollector *)self metricsReporter];
+    appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+    [metricsReporter logContactShownforApplication:appIdentifier];
   }
 }
 
-- (void)logContactActionType:(id)a3 attributes:(id)a4
+- (void)logContactActionType:(id)type attributes:(id)attributes
 {
-  v27 = a3;
-  v6 = a4;
+  typeCopy = type;
+  attributesCopy = attributes;
   if (!+[CNUIDataCollector isEnabled])
   {
     goto LABEL_23;
   }
 
-  v7 = [(CNUIDataCollector *)self metricsReporter];
-  v8 = [(CNUIDataCollector *)self appIdentifier];
-  v9 = [v7 emptyDictionaryForAction:v27 andApplication:v8];
+  metricsReporter = [(CNUIDataCollector *)self metricsReporter];
+  appIdentifier = [(CNUIDataCollector *)self appIdentifier];
+  v9 = [metricsReporter emptyDictionaryForAction:typeCopy andApplication:appIdentifier];
 
   v10 = *MEMORY[0x1E6996568];
-  v11 = [v6 objectForKeyedSubscript:CNUIContactActionDestinationType];
+  v11 = [attributesCopy objectForKeyedSubscript:CNUIContactActionDestinationType];
   LOBYTE(v10) = (*(v10 + 16))(v10, v11);
 
   if ((v10 & 1) == 0)
   {
-    v12 = [v6 objectForKeyedSubscript:CNUIContactActionDestinationType];
+    v12 = [attributesCopy objectForKeyedSubscript:CNUIContactActionDestinationType];
     [v9 setValue:v12 forKey:*MEMORY[0x1E6996898]];
   }
 
-  if ([v27 isEqualToString:CNUIContactActionTypeShare])
+  if ([typeCopy isEqualToString:CNUIContactActionTypeShare])
   {
-    v13 = [v6 objectForKeyedSubscript:CNUIContactActionShareActivityType];
+    v13 = [attributesCopy objectForKeyedSubscript:CNUIContactActionShareActivityType];
     if (!v13)
     {
       goto LABEL_14;
@@ -168,61 +168,61 @@
     }
   }
 
-  else if ([v27 isEqualToString:CNUIContactActionTypeTapProperty])
+  else if ([typeCopy isEqualToString:CNUIContactActionTypeTapProperty])
   {
-    v14 = [v6 objectForKeyedSubscript:CNUIContactActionTapPropertyIdentifier];
+    v14 = [attributesCopy objectForKeyedSubscript:CNUIContactActionTapPropertyIdentifier];
     v16 = MEMORY[0x1E69968A8];
   }
 
   else
   {
-    if (![v27 isEqualToString:CNUIContactActionTypeFaceTime])
+    if (![typeCopy isEqualToString:CNUIContactActionTypeFaceTime])
     {
       goto LABEL_14;
     }
 
-    v14 = [v6 objectForKeyedSubscript:CNUIContactActionFaceTimeMediaType];
+    v14 = [attributesCopy objectForKeyedSubscript:CNUIContactActionFaceTimeMediaType];
     v16 = MEMORY[0x1E69968A0];
   }
 
   [v9 setValue:v14 forKey:*v16];
 
 LABEL_14:
-  v17 = [(CNUIDataCollector *)self metricsReporter];
-  [v17 logActionDictionary:v9];
+  metricsReporter2 = [(CNUIDataCollector *)self metricsReporter];
+  [metricsReporter2 logActionDictionary:v9];
 
-  v18 = [v6 objectForKeyedSubscript:CNUIDataCollectorActionTypeAttributeLabeledValue];
+  v18 = [attributesCopy objectForKeyedSubscript:CNUIDataCollectorActionTypeAttributeLabeledValue];
   v19 = v18;
   if (v18 && [v18 isSuggested])
   {
-    v20 = [v6 objectForKeyedSubscript:CNUIDataCollectorActionTypeAttributeContact];
+    v20 = [attributesCopy objectForKeyedSubscript:CNUIDataCollectorActionTypeAttributeContact];
     v21 = v20;
     if (v20)
     {
       v22 = _suggestedContact(v20);
       if (v21 == v22)
       {
-        v23 = 0;
+        identifier = 0;
       }
 
       else
       {
-        v23 = [v21 identifier];
+        identifier = [v21 identifier];
       }
 
-      v24 = [(CNUIDataCollector *)self sgLogger];
-      v25 = [v22 suggestionRecordId];
-      v26 = [(CNUIDataCollector *)self appIdentifier];
-      [v24 logSuggestedContactDetailUsed:v25 contactIdentifier:v23 bundleID:v26];
+      sgLogger = [(CNUIDataCollector *)self sgLogger];
+      suggestionRecordId = [v22 suggestionRecordId];
+      appIdentifier2 = [(CNUIDataCollector *)self appIdentifier];
+      [sgLogger logSuggestedContactDetailUsed:suggestionRecordId contactIdentifier:identifier bundleID:appIdentifier2];
     }
   }
 
 LABEL_23:
 }
 
-- (CNUIDataCollector)initWithEnvironment:(id)a3
+- (CNUIDataCollector)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = CNUIDataCollector;
   v5 = [(CNUIDataCollector *)&v16 init];
@@ -232,14 +232,14 @@ LABEL_23:
     metricsReporter = v5->_metricsReporter;
     v5->_metricsReporter = v6;
 
-    v8 = [v4 defaultSchedulerProvider];
-    v9 = [CNUIDataCollectorSGLogger loggerWithSGSuggestionsServiceProvider:&__block_literal_global_62_40729 schedulerProvider:v8];
+    defaultSchedulerProvider = [environmentCopy defaultSchedulerProvider];
+    v9 = [CNUIDataCollectorSGLogger loggerWithSGSuggestionsServiceProvider:&__block_literal_global_62_40729 schedulerProvider:defaultSchedulerProvider];
     sgLogger = v5->_sgLogger;
     v5->_sgLogger = v9;
 
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v12 stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v13 = [bundleIdentifier stringByReplacingOccurrencesOfString:@"." withString:@"-"];
     appIdentifier = v5->_appIdentifier;
     v5->_appIdentifier = v13;
   }

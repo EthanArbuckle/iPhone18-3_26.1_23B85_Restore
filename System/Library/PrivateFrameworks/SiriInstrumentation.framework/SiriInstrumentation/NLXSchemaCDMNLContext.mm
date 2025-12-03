@@ -1,31 +1,31 @@
 @interface NLXSchemaCDMNLContext
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMNLContext)initWithDictionary:(id)a3;
-- (NLXSchemaCDMNLContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMNLContext)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMNLContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addActiveTasks:(id)a3;
-- (void)addExecutedTasks:(id)a3;
-- (void)addSalientEntities:(id)a3;
-- (void)addSystemDialogActs:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveTasks:(id)tasks;
+- (void)addExecutedTasks:(id)tasks;
+- (void)addSalientEntities:(id)entities;
+- (void)addSystemDialogActs:(id)acts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMNLContext
 
-- (NLXSchemaCDMNLContext)initWithDictionary:(id)a3
+- (NLXSchemaCDMNLContext)initWithDictionary:(id)dictionary
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v59.receiver = self;
   v59.super_class = NLXSchemaCDMNLContext;
   v5 = [(NLXSchemaCDMNLContext *)&v59 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"activeTasks"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"activeTasks"];
     objc_opt_class();
     v42 = v6;
     if (objc_opt_isKindOfClass())
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"executedTasks"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"executedTasks"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
       v14 = v15;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"salientEntities"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"salientEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
       }
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"systemDialogActs"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"systemDialogActs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -194,30 +194,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMNLContext)initWithJSON:(id)a3
+- (NLXSchemaCDMNLContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMNLContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMNLContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMNLContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -231,10 +231,10 @@
 - (id)dictionaryRepresentation
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activeTasks count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -254,16 +254,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -273,12 +273,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"activeTasks"];
+    [dictionary setObject:array forKeyedSubscript:@"activeTasks"];
   }
 
   if ([(NSArray *)self->_executedTasks count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -298,16 +298,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -317,12 +317,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"executedTasks"];
+    [dictionary setObject:array2 forKeyedSubscript:@"executedTasks"];
   }
 
   if ([(NSArray *)self->_salientEntities count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -342,16 +342,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -361,12 +361,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"salientEntities"];
+    [dictionary setObject:array3 forKeyedSubscript:@"salientEntities"];
   }
 
   if ([(NSArray *)self->_systemDialogActs count])
   {
-    v28 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -386,16 +386,16 @@
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v37 + 1) + 8 * m) dictionaryRepresentation];
-          if (v34)
+          dictionaryRepresentation4 = [*(*(&v37 + 1) + 8 * m) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v28 addObject:v34];
+            [array4 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v35 = [MEMORY[0x1E695DFB0] null];
-            [v28 addObject:v35];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array4 addObject:null4];
           }
         }
 
@@ -405,12 +405,12 @@
       while (v31);
     }
 
-    [v3 setObject:v28 forKeyedSubscript:@"systemDialogActs"];
+    [dictionary setObject:array4 forKeyedSubscript:@"systemDialogActs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v37];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v37];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -421,28 +421,28 @@
   return v4 ^ v5 ^ [(NSArray *)self->_systemDialogActs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(NLXSchemaCDMNLContext *)self activeTasks];
-  v6 = [v4 activeTasks];
-  if ((v5 != 0) == (v6 == 0))
+  activeTasks = [(NLXSchemaCDMNLContext *)self activeTasks];
+  activeTasks2 = [equalCopy activeTasks];
+  if ((activeTasks != 0) == (activeTasks2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(NLXSchemaCDMNLContext *)self activeTasks];
-  if (v7)
+  activeTasks3 = [(NLXSchemaCDMNLContext *)self activeTasks];
+  if (activeTasks3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMNLContext *)self activeTasks];
-    v10 = [v4 activeTasks];
-    v11 = [v9 isEqual:v10];
+    v8 = activeTasks3;
+    activeTasks4 = [(NLXSchemaCDMNLContext *)self activeTasks];
+    activeTasks5 = [equalCopy activeTasks];
+    v11 = [activeTasks4 isEqual:activeTasks5];
 
     if (!v11)
     {
@@ -454,20 +454,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMNLContext *)self executedTasks];
-  v6 = [v4 executedTasks];
-  if ((v5 != 0) == (v6 == 0))
+  activeTasks = [(NLXSchemaCDMNLContext *)self executedTasks];
+  activeTasks2 = [equalCopy executedTasks];
+  if ((activeTasks != 0) == (activeTasks2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(NLXSchemaCDMNLContext *)self executedTasks];
-  if (v12)
+  executedTasks = [(NLXSchemaCDMNLContext *)self executedTasks];
+  if (executedTasks)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMNLContext *)self executedTasks];
-    v15 = [v4 executedTasks];
-    v16 = [v14 isEqual:v15];
+    v13 = executedTasks;
+    executedTasks2 = [(NLXSchemaCDMNLContext *)self executedTasks];
+    executedTasks3 = [equalCopy executedTasks];
+    v16 = [executedTasks2 isEqual:executedTasks3];
 
     if (!v16)
     {
@@ -479,20 +479,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMNLContext *)self salientEntities];
-  v6 = [v4 salientEntities];
-  if ((v5 != 0) == (v6 == 0))
+  activeTasks = [(NLXSchemaCDMNLContext *)self salientEntities];
+  activeTasks2 = [equalCopy salientEntities];
+  if ((activeTasks != 0) == (activeTasks2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(NLXSchemaCDMNLContext *)self salientEntities];
-  if (v17)
+  salientEntities = [(NLXSchemaCDMNLContext *)self salientEntities];
+  if (salientEntities)
   {
-    v18 = v17;
-    v19 = [(NLXSchemaCDMNLContext *)self salientEntities];
-    v20 = [v4 salientEntities];
-    v21 = [v19 isEqual:v20];
+    v18 = salientEntities;
+    salientEntities2 = [(NLXSchemaCDMNLContext *)self salientEntities];
+    salientEntities3 = [equalCopy salientEntities];
+    v21 = [salientEntities2 isEqual:salientEntities3];
 
     if (!v21)
     {
@@ -504,12 +504,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMNLContext *)self systemDialogActs];
-  v6 = [v4 systemDialogActs];
-  if ((v5 != 0) != (v6 == 0))
+  activeTasks = [(NLXSchemaCDMNLContext *)self systemDialogActs];
+  activeTasks2 = [equalCopy systemDialogActs];
+  if ((activeTasks != 0) != (activeTasks2 == 0))
   {
-    v22 = [(NLXSchemaCDMNLContext *)self systemDialogActs];
-    if (!v22)
+    systemDialogActs = [(NLXSchemaCDMNLContext *)self systemDialogActs];
+    if (!systemDialogActs)
     {
 
 LABEL_25:
@@ -517,10 +517,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(NLXSchemaCDMNLContext *)self systemDialogActs];
-    v25 = [v4 systemDialogActs];
-    v26 = [v24 isEqual:v25];
+    v23 = systemDialogActs;
+    systemDialogActs2 = [(NLXSchemaCDMNLContext *)self systemDialogActs];
+    systemDialogActs3 = [equalCopy systemDialogActs];
+    v26 = [systemDialogActs2 isEqual:systemDialogActs3];
 
     if (v26)
     {
@@ -540,10 +540,10 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -669,98 +669,98 @@ LABEL_23:
   }
 }
 
-- (void)addSystemDialogActs:(id)a3
+- (void)addSystemDialogActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   systemDialogActs = self->_systemDialogActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!systemDialogActs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_systemDialogActs;
-    self->_systemDialogActs = v6;
+    self->_systemDialogActs = array;
 
-    v4 = v8;
+    actsCopy = v8;
     systemDialogActs = self->_systemDialogActs;
   }
 
-  [(NSArray *)systemDialogActs addObject:v4];
+  [(NSArray *)systemDialogActs addObject:actsCopy];
 }
 
-- (void)addSalientEntities:(id)a3
+- (void)addSalientEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   salientEntities = self->_salientEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!salientEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_salientEntities;
-    self->_salientEntities = v6;
+    self->_salientEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     salientEntities = self->_salientEntities;
   }
 
-  [(NSArray *)salientEntities addObject:v4];
+  [(NSArray *)salientEntities addObject:entitiesCopy];
 }
 
-- (void)addExecutedTasks:(id)a3
+- (void)addExecutedTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   executedTasks = self->_executedTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!executedTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_executedTasks;
-    self->_executedTasks = v6;
+    self->_executedTasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     executedTasks = self->_executedTasks;
   }
 
-  [(NSArray *)executedTasks addObject:v4];
+  [(NSArray *)executedTasks addObject:tasksCopy];
 }
 
-- (void)addActiveTasks:(id)a3
+- (void)addActiveTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   activeTasks = self->_activeTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!activeTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeTasks;
-    self->_activeTasks = v6;
+    self->_activeTasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     activeTasks = self->_activeTasks;
   }
 
-  [(NSArray *)activeTasks addObject:v4];
+  [(NSArray *)activeTasks addObject:tasksCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v15.receiver = self;
   v15.super_class = NLXSchemaCDMNLContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMNLContext *)self activeTasks:v15.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaCDMNLContext *)self setActiveTasks:v7];
 
-  v8 = [(NLXSchemaCDMNLContext *)self executedTasks];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  executedTasks = [(NLXSchemaCDMNLContext *)self executedTasks];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:executedTasks underConditions:policyCopy];
   [(NLXSchemaCDMNLContext *)self setExecutedTasks:v9];
 
-  v10 = [(NLXSchemaCDMNLContext *)self salientEntities];
-  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v10 underConditions:v4];
+  salientEntities = [(NLXSchemaCDMNLContext *)self salientEntities];
+  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:salientEntities underConditions:policyCopy];
   [(NLXSchemaCDMNLContext *)self setSalientEntities:v11];
 
-  v12 = [(NLXSchemaCDMNLContext *)self systemDialogActs];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  systemDialogActs = [(NLXSchemaCDMNLContext *)self systemDialogActs];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:systemDialogActs underConditions:policyCopy];
 
   [(NLXSchemaCDMNLContext *)self setSystemDialogActs:v13];
 

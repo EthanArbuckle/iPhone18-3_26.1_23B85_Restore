@@ -1,17 +1,17 @@
 @interface WeatherImageLoader
-+ (id)cachedImageNamed:(id)a3 completion:(id)a4;
-+ (id)colorForImageColor:(id)a3 lighter:(BOOL)a4;
-+ (id)conditionImageNameWithConditionIndex:(int64_t)a3;
-+ (id)conditionImageNamed:(id)a3 size:(CGSize)a4 cloudAligned:(BOOL)a5 stroke:(BOOL)a6 strokeAlpha:(double)a7 lighterColors:(BOOL)a8;
-+ (id)conditionImageNamed:(id)a3 style:(int64_t)a4;
-+ (id)conditionImageWithConditionIndex:(int64_t)a3;
-+ (id)conditionImageWithConditionIndex:(int64_t)a3 style:(int64_t)a4;
++ (id)cachedImageNamed:(id)named completion:(id)completion;
++ (id)colorForImageColor:(id)color lighter:(BOOL)lighter;
++ (id)conditionImageNameWithConditionIndex:(int64_t)index;
++ (id)conditionImageNamed:(id)named size:(CGSize)size cloudAligned:(BOOL)aligned stroke:(BOOL)stroke strokeAlpha:(double)alpha lighterColors:(BOOL)colors;
++ (id)conditionImageNamed:(id)named style:(int64_t)style;
++ (id)conditionImageWithConditionIndex:(int64_t)index;
++ (id)conditionImageWithConditionIndex:(int64_t)index style:(int64_t)style;
 + (id)sharedImageLoader;
-+ (void)cacheImageIfNecessary:(id)a3;
++ (void)cacheImageIfNecessary:(id)necessary;
 + (void)preloadImages;
 - (WeatherImageLoader)init;
-- (id)cachedImageForKey:(id)a3;
-- (void)setImage:(id)a3 forKey:(id)a4;
+- (id)cachedImageForKey:(id)key;
+- (void)setImage:(id)image forKey:(id)key;
 @end
 
 @implementation WeatherImageLoader
@@ -26,27 +26,27 @@
   {
     v3 = +[WeatherPreferences sharedPreferences];
     v4 = [v3 readDefaultValueForKey:@"HasMigratedDataProtectionClassTake2"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    if ((v5 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v6 = [MEMORY[0x277D75128] sharedApplication];
-      v7 = [v6 userLibraryDirectory];
-      MigrateDataProtectionClassOfPath(v7);
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userLibraryDirectory = [mEMORY[0x277D75128] userLibraryDirectory];
+      MigrateDataProtectionClassOfPath(userLibraryDirectory);
 
-      v8 = [MEMORY[0x277D75128] sharedApplication];
-      v9 = [v8 userCachesDirectory];
-      MigrateDataProtectionClassOfPath(v9);
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      userCachesDirectory = [mEMORY[0x277D75128]2 userCachesDirectory];
+      MigrateDataProtectionClassOfPath(userCachesDirectory);
 
-      v10 = [MEMORY[0x277D75128] sharedApplication];
-      v11 = [v10 userCachesDirectory];
-      v12 = [v11 stringByAppendingPathComponent:@"Weather"];
+      mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+      userCachesDirectory2 = [mEMORY[0x277D75128]3 userCachesDirectory];
+      v12 = [userCachesDirectory2 stringByAppendingPathComponent:@"Weather"];
       MigrateDataProtectionClassOfPath(v12);
 
       v13 = _WAWeatherIconCachePath();
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v39 = 0;
-      [v14 removeItemAtPath:v13 error:&v39];
+      [defaultManager removeItemAtPath:v13 error:&v39];
       v15 = v39;
       v16 = WALogForCategory(0);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -58,12 +58,12 @@
         _os_log_impl(&dword_272ACF000, v16, OS_LOG_TYPE_DEFAULT, "Removed: %@ Error: %@", buf, 0x16u);
       }
 
-      v17 = [MEMORY[0x277D75128] sharedApplication];
-      v18 = [v17 userCachesDirectory];
-      v19 = [v18 stringByAppendingPathComponent:@"Weather/Labels"];
+      mEMORY[0x277D75128]4 = [MEMORY[0x277D75128] sharedApplication];
+      userCachesDirectory3 = [mEMORY[0x277D75128]4 userCachesDirectory];
+      v19 = [userCachesDirectory3 stringByAppendingPathComponent:@"Weather/Labels"];
 
       v38 = 0;
-      [v14 removeItemAtPath:v19 error:&v38];
+      [defaultManager removeItemAtPath:v19 error:&v38];
       v20 = v38;
       v21 = WALogForCategory(0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -84,15 +84,15 @@
     store = v2->_store;
     v2->_store = v24;
 
-    v26 = [(CPBitmapStore *)v2->_store version];
+    version = [(CPBitmapStore *)v2->_store version];
     v27 = v2->_store;
-    if (v26 == 13)
+    if (version == 13)
     {
       if ([(CPBitmapStore *)v27 version]!= -1)
       {
 LABEL_13:
-        v32 = [MEMORY[0x277D759A0] mainScreen];
-        [v32 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v2->_scale = v33;
 
         v34 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -131,21 +131,21 @@ LABEL_14:
   }
 }
 
-- (id)cachedImageForKey:(id)a3
+- (id)cachedImageForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WeatherImageLoader *)self conditionImagesCache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  conditionImagesCache = [(WeatherImageLoader *)self conditionImagesCache];
+  v6 = [conditionImagesCache objectForKey:keyCopy];
 
   if (!v6)
   {
-    v7 = [(CPBitmapStore *)self->_store copyImageForKey:v4 inGroup:&stru_2882270E8];
+    v7 = [(CPBitmapStore *)self->_store copyImageForKey:keyCopy inGroup:&stru_2882270E8];
     if (v7)
     {
       v8 = v7;
       v6 = [MEMORY[0x277D755B8] imageWithCGImage:v7 scale:0 orientation:self->_scale];
-      v9 = [(WeatherImageLoader *)self conditionImagesCache];
-      [v9 setObject:v6 forKey:v4];
+      conditionImagesCache2 = [(WeatherImageLoader *)self conditionImagesCache];
+      [conditionImagesCache2 setObject:v6 forKey:keyCopy];
 
       CGImageRelease(v8);
     }
@@ -159,14 +159,14 @@ LABEL_14:
   return v6;
 }
 
-- (void)setImage:(id)a3 forKey:(id)a4
+- (void)setImage:(id)image forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = v8;
-  if ([v8 CGImage])
+  imageCopy = image;
+  keyCopy = key;
+  v7 = imageCopy;
+  if ([imageCopy CGImage])
   {
-    -[CPBitmapStore storeImageForKey:inGroup:opaque:image:](self->_store, "storeImageForKey:inGroup:opaque:image:", v6, &stru_2882270E8, 0, [v8 CGImage]);
+    -[CPBitmapStore storeImageForKey:inGroup:opaque:image:](self->_store, "storeImageForKey:inGroup:opaque:image:", keyCopy, &stru_2882270E8, 0, [imageCopy CGImage]);
   }
 }
 
@@ -185,54 +185,54 @@ LABEL_14:
   return v2;
 }
 
-+ (void)cacheImageIfNecessary:(id)a3
++ (void)cacheImageIfNecessary:(id)necessary
 {
-  v10 = a3;
+  necessaryCopy = necessary;
   v4 = +[WeatherImageLoader sharedImageLoader];
-  v5 = [v4 cachedImageForKey:v10];
+  v5 = [v4 cachedImageForKey:necessaryCopy];
 
   if (!v5)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = [a1 conditionImageBundle];
-    v8 = [v6 imageNamed:v10 inBundle:v7];
-    v9 = [v8 WAImageLoaderPreCacheImage];
+    conditionImageBundle = [self conditionImageBundle];
+    v8 = [v6 imageNamed:necessaryCopy inBundle:conditionImageBundle];
+    wAImageLoaderPreCacheImage = [v8 WAImageLoaderPreCacheImage];
 
-    [v4 setImage:v9 forKey:v10];
+    [v4 setImage:wAImageLoaderPreCacheImage forKey:necessaryCopy];
   }
 }
 
-+ (id)conditionImageWithConditionIndex:(int64_t)a3
++ (id)conditionImageWithConditionIndex:(int64_t)index
 {
-  v3 = [a1 conditionImageNameWithConditionIndex:a3];
+  v3 = [self conditionImageNameWithConditionIndex:index];
   v4 = [WeatherImageLoader conditionImageNamed:v3 style:4];
 
   return v4;
 }
 
-+ (id)conditionImageWithConditionIndex:(int64_t)a3 style:(int64_t)a4
++ (id)conditionImageWithConditionIndex:(int64_t)index style:(int64_t)style
 {
-  v5 = [a1 conditionImageNameWithConditionIndex:a3];
-  v6 = [WeatherImageLoader conditionImageNamed:v5 style:a4];
+  v5 = [self conditionImageNameWithConditionIndex:index];
+  v6 = [WeatherImageLoader conditionImageNamed:v5 style:style];
 
   return v6;
 }
 
-+ (id)conditionImageNamed:(id)a3 style:(int64_t)a4
++ (id)conditionImageNamed:(id)named style:(int64_t)style
 {
-  v6 = a3;
+  namedCopy = named;
   v7 = UIAccessibilityDarkerSystemColorsEnabled();
   v8 = 0;
   v9 = 40.0;
   v10 = 0.58;
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-  if (a4 <= 1)
+  if (style <= 1)
   {
-    if (a4)
+    if (style)
     {
       v7 = 0;
       v12 = 0;
-      if (a4 != 1)
+      if (style != 1)
       {
         goto LABEL_13;
       }
@@ -248,7 +248,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  switch(a4)
+  switch(style)
   {
     case 2:
 LABEL_11:
@@ -272,21 +272,21 @@ LABEL_12:
   v7 = 0;
   v12 = 0;
 LABEL_13:
-  v14 = [a1 conditionImageNamed:v6 size:v12 cloudAligned:v7 stroke:v8 & 1 strokeAlpha:v9 lighterColors:{v9, v10}];
+  v14 = [self conditionImageNamed:namedCopy size:v12 cloudAligned:v7 stroke:v8 & 1 strokeAlpha:v9 lighterColors:{v9, v10}];
 
   return v14;
 }
 
-+ (id)conditionImageNamed:(id)a3 size:(CGSize)a4 cloudAligned:(BOOL)a5 stroke:(BOOL)a6 strokeAlpha:(double)a7 lighterColors:(BOOL)a8
++ (id)conditionImageNamed:(id)named size:(CGSize)size cloudAligned:(BOOL)aligned stroke:(BOOL)stroke strokeAlpha:(double)alpha lighterColors:(BOOL)colors
 {
-  v8 = a8;
-  v10 = a6;
-  v11 = a5;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
+  colorsCopy = colors;
+  strokeCopy = stroke;
+  alignedCopy = aligned;
+  height = size.height;
+  width = size.width;
+  namedCopy = named;
   v16 = WASmallWeatherIconsMap();
-  v17 = [v16 objectForKey:v15];
+  v17 = [v16 objectForKey:namedCopy];
 
   v18 = [v17 objectForKey:@"WeatherMapColors"];
   if ([v18 count])
@@ -300,25 +300,25 @@ LABEL_13:
     v19 = MEMORY[0x277D755B8];
     v20 = MEMORY[0x277CCACA8];
     v53 = v18;
-    v21 = [v18 firstObject];
-    v22 = [v20 stringWithFormat:@"%@_%@", v15, v21];
-    v23 = a1;
-    [a1 conditionImageBundle];
-    v25 = v24 = v8;
+    firstObject = [v18 firstObject];
+    v22 = [v20 stringWithFormat:@"%@_%@", namedCopy, firstObject];
+    selfCopy = self;
+    [self conditionImageBundle];
+    v25 = v24 = colorsCopy;
     v71 = [v19 imageNamed:v22 inBundle:v25];
 
     v26 = MEMORY[0x277CCACA8];
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:width];
     v28 = v27;
     v29 = @"vert";
-    if (v11)
+    if (alignedCopy)
     {
       v29 = @"hor";
     }
 
     v30 = &stru_2882270E8;
     v31 = @"-stroke";
-    if (!v10)
+    if (!strokeCopy)
     {
       v31 = &stru_2882270E8;
     }
@@ -328,7 +328,7 @@ LABEL_13:
       v30 = @"l";
     }
 
-    v32 = [v26 stringWithFormat:@"%@-%@-%@%@%@", v15, v29, v27, v31, v30];
+    v32 = [v26 stringWithFormat:@"%@-%@-%@%@%@", namedCopy, v29, v27, v31, v30];
 
     v33 = +[WeatherImageLoader sharedImageLoader];
     v34 = [v33 cachedImageForKey:v32];
@@ -356,10 +356,10 @@ LABEL_13:
       v54[1] = 3221225472;
       v54[2] = __93__WeatherImageLoader_conditionImageNamed_size_cloudAligned_stroke_strokeAlpha_lighterColors___block_invoke;
       v54[3] = &unk_279E680B8;
-      v64 = v10;
-      v55 = v15;
-      v58 = v23;
-      v59 = a7;
+      v64 = strokeCopy;
+      v55 = namedCopy;
+      v58 = selfCopy;
+      alphaCopy = alpha;
       v60 = v43;
       v61 = v47;
       v62 = v45;
@@ -368,12 +368,12 @@ LABEL_13:
       v57 = &v66;
       v65 = v24;
       v48 = [v42 imageWithActions:v54];
-      v49 = [v48 WAImageLoaderPreCacheImage];
+      wAImageLoaderPreCacheImage = [v48 WAImageLoaderPreCacheImage];
 
       v50 = +[WeatherImageLoader sharedImageLoader];
-      [v50 setImage:v49 forKey:v32];
+      [v50 setImage:wAImageLoaderPreCacheImage forKey:v32];
 
-      v35 = v49;
+      v35 = wAImageLoaderPreCacheImage;
     }
 
     v17 = v52;
@@ -453,31 +453,31 @@ void __93__WeatherImageLoader_conditionImageNamed_size_cloudAligned_stroke_strok
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)colorForImageColor:(id)a3 lighter:(BOOL)a4
++ (id)colorForImageColor:(id)color lighter:(BOOL)lighter
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 containsString:@"white"])
+  lighterCopy = lighter;
+  colorCopy = color;
+  if ([colorCopy containsString:@"white"])
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     goto LABEL_6;
   }
 
-  if ([v5 containsString:@"blue"])
+  if ([colorCopy containsString:@"blue"])
   {
     v7 = MEMORY[0x277D75348];
     v8 = 0.352941176;
     v9 = 0.784313725;
     v10 = 0.980392157;
 LABEL_5:
-    v6 = [v7 colorWithRed:v8 green:v9 blue:v10 alpha:1.0];
+    whiteColor = [v7 colorWithRed:v8 green:v9 blue:v10 alpha:1.0];
     goto LABEL_6;
   }
 
-  if ([v5 containsString:@"yellow"])
+  if ([colorCopy containsString:@"yellow"])
   {
     v7 = MEMORY[0x277D75348];
-    if (v4)
+    if (lighterCopy)
     {
       v8 = 0.984313725;
       v9 = 0.91372549;
@@ -494,7 +494,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = [v5 containsString:@"red"];
+  v13 = [colorCopy containsString:@"red"];
   v7 = MEMORY[0x277D75348];
   if (v13)
   {
@@ -504,38 +504,38 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x277D75348] clearColor];
+  whiteColor = [MEMORY[0x277D75348] clearColor];
 LABEL_6:
-  v11 = v6;
+  v11 = whiteColor;
 
   return v11;
 }
 
-+ (id)cachedImageNamed:(id)a3 completion:(id)a4
++ (id)cachedImageNamed:(id)named completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  completionCopy = completion;
   v7 = +[WeatherImageLoader sharedImageLoader];
-  v8 = [v7 cachedImageForKey:v5];
+  v8 = [v7 cachedImageForKey:namedCopy];
   v9 = v8;
-  if (v6 && !v8)
+  if (completionCopy && !v8)
   {
-    v9 = v6[2](v6);
-    [v7 setImage:v9 forKey:v5];
+    v9 = completionCopy[2](completionCopy);
+    [v7 setImage:v9 forKey:namedCopy];
   }
 
   return v9;
 }
 
-+ (id)conditionImageNameWithConditionIndex:(int64_t)a3
++ (id)conditionImageNameWithConditionIndex:(int64_t)index
 {
-  v3 = 44;
-  if (a3 <= 0x2F)
+  indexCopy = 44;
+  if (index <= 0x2F)
   {
-    v3 = a3;
+    indexCopy = index;
   }
 
-  return *(&smallWeatherIcons + v3);
+  return *(&smallWeatherIcons + indexCopy);
 }
 
 @end

@@ -1,65 +1,65 @@
 @interface MOSuggestionAssetWorkout
-- (MOSuggestionAssetWorkout)initWithCoder:(id)a3;
-- (id)init:(id)a3 route:(id)a4 renderedRouteMap:(id)a5 icon:(id)a6 iconURL:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (MOSuggestionAssetWorkout)initWithCoder:(id)coder;
+- (id)init:(id)init route:(id)route renderedRouteMap:(id)map icon:(id)icon iconURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAssetWorkout
 
-- (id)init:(id)a3 route:(id)a4 renderedRouteMap:(id)a5 icon:(id)a6 iconURL:(id)a7
+- (id)init:(id)init route:(id)route renderedRouteMap:(id)map icon:(id)icon iconURL:(id)l
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  initCopy = init;
+  routeCopy = route;
+  mapCopy = map;
+  iconCopy = icon;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = MOSuggestionAssetWorkout;
   v17 = [(MOSuggestionAssetWorkout *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_activityRings, a3);
-    objc_storeStrong(p_isa + 5, a4);
-    objc_storeStrong(p_isa + 6, a6);
-    objc_storeStrong(p_isa + 8, a5);
-    objc_storeStrong(p_isa + 7, a7);
+    objc_storeStrong(&v17->_activityRings, init);
+    objc_storeStrong(p_isa + 5, route);
+    objc_storeStrong(p_isa + 6, icon);
+    objc_storeStrong(p_isa + 8, map);
+    objc_storeStrong(p_isa + 7, l);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   activityRings = self->_activityRings;
-  v5 = a3;
-  [v5 encodeObject:activityRings forKey:@"coderKeyMOSuggestionAssetWorkoutActivitySummary"];
-  [v5 encodeObject:self->_route forKey:@"coderKeyMOSuggestionAssetWorkoutRoute"];
-  [v5 encodeObject:self->_icon forKey:@"coderKeyMOSuggestionAssetWorkoutIcon"];
-  [v5 encodeObject:self->_iconURL forKey:@"coderKeyMOSuggestionAssetWorkoutIconURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:activityRings forKey:@"coderKeyMOSuggestionAssetWorkoutActivitySummary"];
+  [coderCopy encodeObject:self->_route forKey:@"coderKeyMOSuggestionAssetWorkoutRoute"];
+  [coderCopy encodeObject:self->_icon forKey:@"coderKeyMOSuggestionAssetWorkoutIcon"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"coderKeyMOSuggestionAssetWorkoutIconURL"];
 }
 
-- (MOSuggestionAssetWorkout)initWithCoder:(id)a3
+- (MOSuggestionAssetWorkout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MOSuggestionAssetWorkout;
   v5 = [(MOSuggestionAssetWorkout *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutActivitySummary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutActivitySummary"];
     activityRings = v5->_activityRings;
     v5->_activityRings = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutRoute"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutRoute"];
     route = v5->_route;
     v5->_route = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutIcon"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutIcon"];
     icon = v5->_icon;
     v5->_icon = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutIconURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetWorkoutIconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v12;
   }

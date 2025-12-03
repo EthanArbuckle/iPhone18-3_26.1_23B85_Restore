@@ -1,29 +1,29 @@
 @interface SWActionFactory
-- (SWActionFactory)initWithNavigationManager:(id)a3;
-- (id)actionForDictionary:(id)a3;
+- (SWActionFactory)initWithNavigationManager:(id)manager;
+- (id)actionForDictionary:(id)dictionary;
 @end
 
 @implementation SWActionFactory
 
-- (SWActionFactory)initWithNavigationManager:(id)a3
+- (SWActionFactory)initWithNavigationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SWActionFactory;
   v6 = [(SWActionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationManager, a3);
+    objc_storeStrong(&v6->_navigationManager, manager);
   }
 
   return v7;
 }
 
-- (id)actionForDictionary:(id)a3
+- (id)actionForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"type"];
   v6 = [v5 isEqualToString:@"url"];
   if (v6)
   {
@@ -45,7 +45,7 @@
     v7 = 0;
   }
 
-  v8 = [v4 objectForKey:@"info"];
+  v8 = [dictionaryCopy objectForKey:@"info"];
   v9 = v8;
   if (v6)
   {
@@ -54,8 +54,8 @@
     {
       v12 = v11;
       v13 = [SWURLAction alloc];
-      v14 = [(SWActionFactory *)self navigationManager];
-      v15 = [(SWURLAction *)v13 initWithURL:v12 navigationManager:v14];
+      navigationManager = [(SWActionFactory *)self navigationManager];
+      v15 = [(SWURLAction *)v13 initWithURL:v12 navigationManager:navigationManager];
     }
 
     else

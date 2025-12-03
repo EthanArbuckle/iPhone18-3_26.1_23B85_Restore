@@ -1,22 +1,22 @@
 @interface LAPSNewPasscodeService
-- (LAPSNewPasscodeService)initWithPersistence:(id)a3;
+- (LAPSNewPasscodeService)initWithPersistence:(id)persistence;
 - (id)allowedPasscodeTypes;
 - (id)passcodeType;
-- (void)verifyPasscode:(id)a3 completion:(id)a4;
+- (void)verifyPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPSNewPasscodeService
 
-- (LAPSNewPasscodeService)initWithPersistence:(id)a3
+- (LAPSNewPasscodeService)initWithPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = LAPSNewPasscodeService;
   v6 = [(LAPSNewPasscodeService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistence, a3);
+    objc_storeStrong(&v6->_persistence, persistence);
   }
 
   return v7;
@@ -24,75 +24,75 @@
 
 - (id)allowedPasscodeTypes
 {
-  v2 = [(LAPSNewPasscodeService *)self persistence];
-  v3 = [v2 simplestAllowedNewPasscodeType];
+  persistence = [(LAPSNewPasscodeService *)self persistence];
+  simplestAllowedNewPasscodeType = [persistence simplestAllowedNewPasscodeType];
 
-  if (![v3 identifier])
+  if (![simplestAllowedNewPasscodeType identifier])
   {
     [LAPSNewPasscodeService allowedPasscodeTypes];
   }
 
-  v4 = +[LAPSPasscodeTypeCollection allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:](LAPSPasscodeTypeCollection, "allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:", [v3 complexityRating]);
+  v4 = +[LAPSPasscodeTypeCollection allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:](LAPSPasscodeTypeCollection, "allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:", [simplestAllowedNewPasscodeType complexityRating]);
 
   return v4;
 }
 
 - (id)passcodeType
 {
-  v2 = [(LAPSNewPasscodeService *)self persistence];
-  v3 = [v2 defaultNewPasscodeType];
+  persistence = [(LAPSNewPasscodeService *)self persistence];
+  defaultNewPasscodeType = [persistence defaultNewPasscodeType];
 
-  return v3;
+  return defaultNewPasscodeType;
 }
 
-- (void)verifyPasscode:(id)a3 completion:(id)a4
+- (void)verifyPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LAPSNewPasscodeService *)self persistence];
+  passcodeCopy = passcode;
+  completionCopy = completion;
+  persistence = [(LAPSNewPasscodeService *)self persistence];
   v25 = 0;
-  v9 = [v8 verifyNewPasscodeMeetsPlatformRequirements:v6 error:&v25];
+  v9 = [persistence verifyNewPasscodeMeetsPlatformRequirements:passcodeCopy error:&v25];
   v10 = v25;
 
   if ((v9 & 1) == 0)
   {
-    v16 = [v10 localizedDescription];
-    v17 = v16;
-    if (v16)
+    localizedDescription = [v10 localizedDescription];
+    v17 = localizedDescription;
+    if (localizedDescription)
     {
-      v18 = v16;
+      v18 = localizedDescription;
     }
 
     else
     {
-      v20 = [(LAPSNewPasscodeService *)self persistence];
-      v21 = [v20 localizedPasscodeRequirements];
-      v22 = v21;
+      persistence2 = [(LAPSNewPasscodeService *)self persistence];
+      localizedPasscodeRequirements = [persistence2 localizedPasscodeRequirements];
+      v22 = localizedPasscodeRequirements;
       v23 = &stru_284B7B4C0;
-      if (v21)
+      if (localizedPasscodeRequirements)
       {
-        v23 = v21;
+        v23 = localizedPasscodeRequirements;
       }
 
       v18 = v23;
     }
 
     v24 = [LAPSErrorBuilder newPasscodeDoesNotMeetRequirementsErrorWithLocalizedDescription:v18];
-    v7[2](v7, v24);
+    completionCopy[2](completionCopy, v24);
 
     goto LABEL_16;
   }
 
-  v11 = [v6 type];
-  if ([v11 hasFixedLength])
+  type = [passcodeCopy type];
+  if ([type hasFixedLength])
   {
-    v12 = [v6 type];
-    v13 = [v12 identifier];
+    type2 = [passcodeCopy type];
+    identifier = [type2 identifier];
 
-    if (v13 != 4)
+    if (identifier != 4)
     {
-      v14 = [(LAPSNewPasscodeService *)self persistence];
-      v15 = [v14 verifyFixedLengthNumericPasscodeIsStrong:v6];
+      persistence3 = [(LAPSNewPasscodeService *)self persistence];
+      v15 = [persistence3 verifyFixedLengthNumericPasscodeIsStrong:passcodeCopy];
       goto LABEL_9;
     }
   }
@@ -101,21 +101,21 @@
   {
   }
 
-  v14 = [(LAPSNewPasscodeService *)self persistence];
-  v15 = [v14 verifyVariableLengthAlphanumericPasscodeIsStrong:v6];
+  persistence3 = [(LAPSNewPasscodeService *)self persistence];
+  v15 = [persistence3 verifyVariableLengthAlphanumericPasscodeIsStrong:passcodeCopy];
 LABEL_9:
   v19 = v15;
 
   if ((v19 & 1) == 0)
   {
     v18 = +[LAPSErrorBuilder newPasscodeIsTooEasyError];
-    v7[2](v7, v18);
+    completionCopy[2](completionCopy, v18);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_17:
 }
 

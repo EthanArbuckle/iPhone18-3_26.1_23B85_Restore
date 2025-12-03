@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMSiriExecution_v2;
-  v2 = [(BMSiriExecution *)&v4 taskStep];
-  if (v2 < 0x5E)
+  taskStep = [(BMSiriExecution *)&v4 taskStep];
+  if (taskStep < 0x5E)
   {
-    return v2 + 1;
+    return taskStep + 1;
   }
 
   else

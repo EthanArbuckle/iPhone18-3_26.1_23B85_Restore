@@ -1,9 +1,9 @@
 @interface NSAttributedString
-+ (NSAttributedString)attributedStringWithText:(id)a3 highlightRanges:(id)a4 font:(id)a5 highlightedFont:(id)a6 highlightedTextColor:(id)a7 unhighlightedTextColor:(id)a8;
++ (NSAttributedString)attributedStringWithText:(id)text highlightRanges:(id)ranges font:(id)font highlightedFont:(id)highlightedFont highlightedTextColor:(id)color unhighlightedTextColor:(id)textColor;
 + (id)unsafeBoldCharacterSet;
 - (NSAttributedString)_maps_attributedStringByReplacingWhitespaceToAvoidOrphanWords;
-- (id)_maps_attributedStringByAppendingRidesharingSpecialPricingBadge:(id)a3 representativeContentFont:(id)a4;
-- (id)_maps_attributedStringWithExcessiveHeightCharacterSupport:(double)a3;
+- (id)_maps_attributedStringByAppendingRidesharingSpecialPricingBadge:(id)badge representativeContentFont:(id)font;
+- (id)_maps_attributedStringWithExcessiveHeightCharacterSupport:(double)support;
 @end
 
 @implementation NSAttributedString
@@ -11,7 +11,7 @@
 - (NSAttributedString)_maps_attributedStringByReplacingWhitespaceToAvoidOrphanWords
 {
   v2 = [(NSAttributedString *)self mutableCopy];
-  v3 = [v2 string];
+  string = [v2 string];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -28,19 +28,19 @@
   v13[2] = sub_10007F988;
   v13[3] = &unk_10164FDD0;
   v13[4] = &v14;
-  [v3 enumerateSubstringsInRange:0 options:objc_msgSend(v3 usingBlock:{"length"), 3, v13}];
+  [string enumerateSubstringsInRange:0 options:objc_msgSend(string usingBlock:{"length"), 3, v13}];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007F9A0;
   v12[3] = &unk_10164FDD0;
   v12[4] = &v18;
-  [v3 enumerateSubstringsInRange:0 options:objc_msgSend(v3 usingBlock:{"length"), 259, v12}];
+  [string enumerateSubstringsInRange:0 options:objc_msgSend(string usingBlock:{"length"), 259, v12}];
   v5 = v19[4];
   if (v5 && v5 != 0x7FFFFFFFFFFFFFFFLL && v19[5] <= 1 && v15[3] > 2)
   {
     v9 = +[NSCharacterSet whitespaceCharacterSet];
     v10 = v5 - 1;
-    v11 = [v3 rangeOfCharacterFromSet:v9 options:0 range:{v10, 1}];
+    v11 = [string rangeOfCharacterFromSet:v9 options:0 range:{v10, 1}];
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -62,13 +62,13 @@
   return v7;
 }
 
-- (id)_maps_attributedStringWithExcessiveHeightCharacterSupport:(double)a3
+- (id)_maps_attributedStringWithExcessiveHeightCharacterSupport:(double)support
 {
-  v5 = [(NSAttributedString *)self string];
-  if ([v5 _maps_containsExcessiveHeightCharacters])
+  string = [(NSAttributedString *)self string];
+  if ([string _maps_containsExcessiveHeightCharacters])
   {
     v6 = [(NSAttributedString *)self mutableCopy];
-    v7 = [v5 length];
+    v7 = [string length];
     v8 = [v6 attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:0];
     v9 = v8;
     if (v8)
@@ -82,35 +82,35 @@
       v10 = [v12 mutableCopy];
     }
 
-    [v10 setLineHeightMultiple:a3];
+    [v10 setLineHeightMultiple:support];
     [v6 addAttribute:NSParagraphStyleAttributeName value:v10 range:{0, v7}];
-    v11 = [v6 copy];
+    selfCopy = [v6 copy];
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)_maps_attributedStringByAppendingRidesharingSpecialPricingBadge:(id)a3 representativeContentFont:(id)a4
+- (id)_maps_attributedStringByAppendingRidesharingSpecialPricingBadge:(id)badge representativeContentFont:(id)font
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 lineHeight];
-  v8 = [v7 badgeImageWithMaximumDimension:?];
+  fontCopy = font;
+  badgeCopy = badge;
+  [fontCopy lineHeight];
+  v8 = [badgeCopy badgeImageWithMaximumDimension:?];
 
   if (v8)
   {
     v9 = [[NSTextAttachment alloc] initWithData:0 ofType:0];
     [v9 setImage:v8];
-    [v6 lineHeight];
+    [fontCopy lineHeight];
     v11 = v10;
     [v8 size];
     v13 = v11 - v12;
-    [v6 descender];
+    [fontCopy descender];
     v15 = v14 + v13 * 0.5;
     [v8 size];
     [v9 setBounds:{0.0, v15, v16, v17}];
@@ -123,51 +123,51 @@
     v26[0] = self;
     v26[1] = v18;
     v22 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v23 = [v19 _mapkit_attributedStringWithBindingFormat:v21 replacements:v22 attributes:0];
+    selfCopy = [v19 _mapkit_attributedStringWithBindingFormat:v21 replacements:v22 attributes:0];
   }
 
   else
   {
-    v23 = self;
+    selfCopy = self;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-+ (NSAttributedString)attributedStringWithText:(id)a3 highlightRanges:(id)a4 font:(id)a5 highlightedFont:(id)a6 highlightedTextColor:(id)a7 unhighlightedTextColor:(id)a8
++ (NSAttributedString)attributedStringWithText:(id)text highlightRanges:(id)ranges font:(id)font highlightedFont:(id)highlightedFont highlightedTextColor:(id)color unhighlightedTextColor:(id)textColor
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v37 = a7;
-  v17 = a8;
-  if ([v13 length])
+  textCopy = text;
+  rangesCopy = ranges;
+  fontCopy = font;
+  highlightedFontCopy = highlightedFont;
+  colorCopy = color;
+  textColorCopy = textColor;
+  if ([textCopy length])
   {
     v18 = +[NSAttributedString unsafeBoldCharacterSet];
     v19 = [NSMutableAttributedString alloc];
     v43 = NSFontAttributeName;
-    v44 = v15;
+    v44 = fontCopy;
     v20 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-    v21 = [v19 initWithString:v13 attributes:v20];
+    v21 = [v19 initWithString:textCopy attributes:v20];
 
-    if (v17)
+    if (textColorCopy)
     {
-      [v21 addAttribute:NSForegroundColorAttributeName value:v17 range:{0, objc_msgSend(v13, "length")}];
+      [v21 addAttribute:NSForegroundColorAttributeName value:textColorCopy range:{0, objc_msgSend(textCopy, "length")}];
     }
 
-    if ([v14 count] && objc_msgSend(v13, "rangeOfCharacterFromSet:", v18) == 0x7FFFFFFFFFFFFFFFLL)
+    if ([rangesCopy count] && objc_msgSend(textCopy, "rangeOfCharacterFromSet:", v18) == 0x7FFFFFFFFFFFFFFFLL)
     {
       v32 = v18;
-      v33 = v17;
-      v34 = v15;
-      v35 = v14;
-      v36 = v13;
+      v33 = textColorCopy;
+      v34 = fontCopy;
+      v35 = rangesCopy;
+      v36 = textCopy;
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v22 = v14;
+      v22 = rangesCopy;
       v23 = [v22 countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v23)
       {
@@ -182,21 +182,21 @@
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v38 + 1) + 8 * i) rangeValue];
-            if (v27 != 0x7FFFFFFFFFFFFFFFLL)
+            rangeValue = [*(*(&v38 + 1) + 8 * i) rangeValue];
+            if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v29 = v27;
+              v29 = rangeValue;
               v30 = v28;
-              if (&v27[v28] <= [v21 length])
+              if (&rangeValue[v28] <= [v21 length])
               {
-                if (v16)
+                if (highlightedFontCopy)
                 {
-                  [v21 addAttribute:NSFontAttributeName value:v16 range:{v29, v30}];
+                  [v21 addAttribute:NSFontAttributeName value:highlightedFontCopy range:{v29, v30}];
                 }
 
-                if (v37)
+                if (colorCopy)
                 {
-                  [v21 addAttribute:NSForegroundColorAttributeName value:v37 range:{v29, v30}];
+                  [v21 addAttribute:NSForegroundColorAttributeName value:colorCopy range:{v29, v30}];
                 }
               }
             }
@@ -208,10 +208,10 @@
         while (v24);
       }
 
-      v14 = v35;
-      v13 = v36;
-      v17 = v33;
-      v15 = v34;
+      rangesCopy = v35;
+      textCopy = v36;
+      textColorCopy = v33;
+      fontCopy = v34;
       v18 = v32;
     }
   }

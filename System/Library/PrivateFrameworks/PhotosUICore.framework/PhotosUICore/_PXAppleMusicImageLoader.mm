@@ -1,12 +1,12 @@
 @interface _PXAppleMusicImageLoader
 - (CGSize)targetSize;
 - (_PXAppleMusicImageLoader)init;
-- (_PXAppleMusicImageLoader)initWithAsset:(id)a3 targetSize:(CGSize)a4;
-- (void)_beginDownloadFromURL:(id)a3;
-- (void)_handleRequestData:(id)a3 response:(id)a4 error:(id)a5;
-- (void)_handleURLFetchFailureWithError:(id)a3;
+- (_PXAppleMusicImageLoader)initWithAsset:(id)asset targetSize:(CGSize)size;
+- (void)_beginDownloadFromURL:(id)l;
+- (void)_handleRequestData:(id)data response:(id)response error:(id)error;
+- (void)_handleURLFetchFailureWithError:(id)error;
 - (void)dealloc;
-- (void)startWithCompletion:(id)a3;
+- (void)startWithCompletion:(id)completion;
 @end
 
 @implementation _PXAppleMusicImageLoader
@@ -28,22 +28,22 @@
   [(_PXAppleMusicImageLoader *)&v3 dealloc];
 }
 
-- (void)_handleURLFetchFailureWithError:(id)a3
+- (void)_handleURLFetchFailureWithError:(id)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = [(_PXAppleMusicImageLoader *)self asset];
-  v7 = [v5 initWithFormat:@"Failed to fetch artwork URL for Apple Music asset %@", v6];
+  asset = [(_PXAppleMusicImageLoader *)self asset];
+  v7 = [v5 initWithFormat:@"Failed to fetch artwork URL for Apple Music asset %@", asset];
 
   v13 = *MEMORY[0x1E696A278];
   v14[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v9 = v8;
-  if (v4)
+  if (errorCopy)
   {
     v10 = [v8 mutableCopy];
-    [v10 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v10 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
     v11 = [v10 copy];
 
     v9 = v11;
@@ -53,19 +53,19 @@
   px_dispatch_on_main_queue();
 }
 
-- (void)_handleRequestData:(id)a3 response:(id)a4 error:(id)a5
+- (void)_handleRequestData:(id)data response:(id)response error:(id)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  if (dataCopy)
   {
     [(_PXAppleMusicImageLoader *)self targetSize];
     v26 = *MEMORY[0x1E696E0A8];
     v27[0] = MEMORY[0x1E695E110];
     v11 = MEMORY[0x1E695DF20];
-    v12 = v8;
+    v12 = dataCopy;
     v13 = [v11 dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v14 = CGImageSourceCreateWithData(v12, v13);
 
@@ -75,7 +75,7 @@
     }
 
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [v9 URL];
+    v16 = [responseCopy URL];
     v17 = [v15 initWithFormat:@"Finished download data from Apple Music artwork URL, but we could not use it to create an image: %@", v16];
 
     v18 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -87,10 +87,10 @@
 
   else
   {
-    if (v10)
+    if (errorCopy)
     {
       v24 = *MEMORY[0x1E696AA08];
-      v25 = v10;
+      v25 = errorCopy;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     }
 
@@ -106,24 +106,24 @@
   px_dispatch_on_main_queue();
 }
 
-- (void)_beginDownloadFromURL:(id)a3
+- (void)_beginDownloadFromURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (self->_dataTask)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"_dataTask == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"_dataTask == nil"}];
   }
 
   objc_initWeak(&location, self);
-  v6 = [objc_alloc(MEMORY[0x1E696AF68]) initWithURL:v5];
-  v7 = [MEMORY[0x1E696AF78] sharedSession];
+  v6 = [objc_alloc(MEMORY[0x1E696AF68]) initWithURL:lCopy];
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50___PXAppleMusicImageLoader__beginDownloadFromURL___block_invoke;
   v11[3] = &unk_1E77431E8;
   objc_copyWeak(&v12, &location);
-  v8 = [v7 dataTaskWithRequest:v6 completionHandler:v11];
+  v8 = [mEMORY[0x1E696AF78] dataTaskWithRequest:v6 completionHandler:v11];
   dataTask = self->_dataTask;
   self->_dataTask = v8;
 
@@ -133,25 +133,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   if (self->_completionHandler)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_completionHandler == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_completionHandler == nil"}];
   }
 
-  v6 = [v5 copy];
+  v6 = [completionCopy copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
 
-  v8 = [(_PXAppleMusicImageLoader *)self asset];
-  v9 = [v8 musicAsset];
+  asset = [(_PXAppleMusicImageLoader *)self asset];
+  musicAsset = [asset musicAsset];
 
   [(_PXAppleMusicImageLoader *)self targetSize];
-  v10 = [v9 artworkURLForTargetPixelSize:?];
+  v10 = [musicAsset artworkURLForTargetPixelSize:?];
   if (v10)
   {
     [(_PXAppleMusicImageLoader *)self _beginDownloadFromURL:v10];
@@ -161,7 +161,7 @@
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v17 = *MEMORY[0x1E696A278];
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to fetch missing artwork URL for asset without Photo Library: %@", v9, v17];
+    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unable to fetch missing artwork URL for asset without Photo Library: %@", musicAsset, v17];
     v18[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = [v11 initWithDomain:@"PXAudioAssetImageProviderErrorDomain" code:2 userInfo:v13];
@@ -172,18 +172,18 @@
   }
 }
 
-- (_PXAppleMusicImageLoader)initWithAsset:(id)a3 targetSize:(CGSize)a4
+- (_PXAppleMusicImageLoader)initWithAsset:(id)asset targetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = _PXAppleMusicImageLoader;
   v9 = [(_PXAppleMusicImageLoader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_asset, a3);
+    objc_storeStrong(&v9->_asset, asset);
     v10->_targetSize.width = width;
     v10->_targetSize.height = height;
   }
@@ -193,8 +193,8 @@
 
 - (_PXAppleMusicImageLoader)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:80 description:{@"%s is not available as initializer", "-[_PXAppleMusicImageLoader init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicImageProvider.m" lineNumber:80 description:{@"%s is not available as initializer", "-[_PXAppleMusicImageLoader init]"}];
 
   abort();
 }

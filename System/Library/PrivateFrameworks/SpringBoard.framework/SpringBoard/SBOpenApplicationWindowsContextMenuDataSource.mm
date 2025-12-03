@@ -1,20 +1,20 @@
 @interface SBOpenApplicationWindowsContextMenuDataSource
-- (id)openApplicationWindowsContextMenuProvider:(id)a3 contextMenuSectionsForBundleIdentifier:(id)a4;
+- (id)openApplicationWindowsContextMenuProvider:(id)provider contextMenuSectionsForBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBOpenApplicationWindowsContextMenuDataSource
 
-- (id)openApplicationWindowsContextMenuProvider:(id)a3 contextMenuSectionsForBundleIdentifier:(id)a4
+- (id)openApplicationWindowsContextMenuProvider:(id)provider contextMenuSectionsForBundleIdentifier:(id)identifier
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    v31 = v4;
-    [v26 knownWindowsForAppBundleIdentifier:v4];
+    v31 = identifierCopy;
+    [v26 knownWindowsForAppBundleIdentifier:identifierCopy];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -38,7 +38,7 @@
           v10 = [v8 objectForKey:@"SBSwitcherCoordinatorOpenWindowForAppTitleUserInfoKey"];
           v11 = [v8 objectForKey:@"SBSwitcherCoordinatorOpenWindowForAppSceneIDUserInfoKey"];
           v12 = [v8 objectForKey:@"kSBSwitcherCoordinatorOpenWindowForAppIsMenuBarRecipientKey"];
-          v13 = [v12 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
 
           v14 = MEMORY[0x277D750C8];
           v32[0] = MEMORY[0x277D85DD0];
@@ -49,7 +49,7 @@
           v34 = v11;
           v15 = v11;
           v16 = [v14 actionWithTitle:v10 image:v9 identifier:0 handler:v32];
-          [v16 setState:v13];
+          [v16 setState:bOOLValue];
           [v30 addObject:v16];
         }
 
@@ -63,8 +63,8 @@
     if ([v30 count])
     {
       v18 = MEMORY[0x277D75710];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"OPEN_WINDOWS_MENU_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle localizedStringForKey:@"OPEN_WINDOWS_MENU_TITLE" value:&stru_283094718 table:@"SpringBoard"];
       v21 = [v18 menuWithTitle:v20 image:0 identifier:0 options:1 children:v30];
 
       v22 = MEMORY[0x277D75710];
@@ -75,7 +75,7 @@
       [v27 addObject:v24];
     }
 
-    v4 = v31;
+    identifierCopy = v31;
   }
 
   else

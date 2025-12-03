@@ -1,38 +1,38 @@
 @interface SXPhoneNumberActionFactory
-- (id)actionForAddition:(id)a3;
-- (id)actionForURL:(id)a3;
+- (id)actionForAddition:(id)addition;
+- (id)actionForURL:(id)l;
 @end
 
 @implementation SXPhoneNumberActionFactory
 
-- (id)actionForAddition:(id)a3
+- (id)actionForAddition:(id)addition
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  additionCopy = addition;
+  if (additionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 phoneNumber];
+    phoneNumber = [additionCopy phoneNumber];
 
-    if (v4)
+    if (phoneNumber)
     {
       v5 = [SXPhoneNumberAction alloc];
-      v6 = [v3 phoneNumber];
-      v4 = [(SXPhoneNumberAction *)v5 initWithPhoneNumber:v6];
+      phoneNumber2 = [additionCopy phoneNumber];
+      phoneNumber = [(SXPhoneNumberAction *)v5 initWithPhoneNumber:phoneNumber2];
     }
   }
 
   else
   {
-    v4 = 0;
+    phoneNumber = 0;
   }
 
-  return v4;
+  return phoneNumber;
 }
 
-- (id)actionForURL:(id)a3
+- (id)actionForURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
     v4 = [v3 queryValueForName:@"phoneNumber"];
     if (v4)
     {

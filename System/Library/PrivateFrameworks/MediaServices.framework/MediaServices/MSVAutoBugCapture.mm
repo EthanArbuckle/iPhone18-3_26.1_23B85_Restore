@@ -1,32 +1,32 @@
 @interface MSVAutoBugCapture
-+ (void)snapshotWithDomain:(id)a3 type:(id)a4 subType:(id)a5 context:(id)a6 triggerThresholdValues:(id)a7 events:(id)a8 completion:(id)a9;
++ (void)snapshotWithDomain:(id)domain type:(id)type subType:(id)subType context:(id)context triggerThresholdValues:(id)values events:(id)events completion:(id)completion;
 @end
 
 @implementation MSVAutoBugCapture
 
-+ (void)snapshotWithDomain:(id)a3 type:(id)a4 subType:(id)a5 context:(id)a6 triggerThresholdValues:(id)a7 events:(id)a8 completion:(id)a9
++ (void)snapshotWithDomain:(id)domain type:(id)type subType:(id)subType context:(id)context triggerThresholdValues:(id)values events:(id)events completion:(id)completion
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v30 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if ([a1 _isReporterEnabled])
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  valuesCopy = values;
+  eventsCopy = events;
+  completionCopy = completion;
+  if ([self _isReporterEnabled])
   {
     v20 = os_log_create("com.apple.amp.MediaServices", "Analytics");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      *&buf[4] = v30;
+      *&buf[4] = typeCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v15;
+      *&buf[14] = subTypeCopy;
       *&buf[22] = 2112;
-      v38 = v16;
+      v38 = contextCopy;
       LOWORD(v39[0]) = 2112;
-      *(v39 + 2) = v17;
+      *(v39 + 2) = valuesCopy;
       _os_log_impl(&dword_1AC81F000, v20, OS_LOG_TYPE_DEFAULT, "SymptomDiagnosticReporter starting to report a snapshot with type:%@ subType:%@ context:%@ thresholdValues:%@", buf, 0x2Au);
     }
 
@@ -49,22 +49,22 @@
     v22 = v21;
     _Block_object_dispose(&v33, 8);
     v23 = objc_alloc_init(v21);
-    v24 = [MEMORY[0x1E696AE30] processInfo];
-    v25 = [v24 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    v26 = [v23 signatureWithDomain:v29 type:v30 subType:v15 subtypeContext:v16 detectedProcess:v25 triggerThresholdValues:v17];
-    v27 = _MSVTransformStateValue(v18);
+    v26 = [v23 signatureWithDomain:domainCopy type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:processName triggerThresholdValues:valuesCopy];
+    v27 = _MSVTransformStateValue(eventsCopy);
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __102__MSVAutoBugCapture_snapshotWithDomain_type_subType_context_triggerThresholdValues_events_completion___block_invoke;
     v31[3] = &unk_1E7982590;
-    v32 = v19;
+    v32 = completionCopy;
     [v23 snapshotWithSignature:v26 delay:v27 events:0 payload:MEMORY[0x1E695E0F8] actions:v31 reply:0.0];
   }
 
-  else if (v19)
+  else if (completionCopy)
   {
-    v19[2](v19);
+    completionCopy[2](completionCopy);
   }
 
   v28 = *MEMORY[0x1E69E9840];

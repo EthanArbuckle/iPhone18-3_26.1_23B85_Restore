@@ -1,38 +1,38 @@
 @interface BMAppEventEngagement
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppEventEngagement)initWithAppId:(id)a3 purchased:(id)a4 priceBucket:(id)a5 usage:(id)a6 frequency:(id)a7 recency:(id)a8 normalizedUsage:(id)a9 eventImpression:(id)a10 eventClick:(id)a11 appIsDownloaded:(id)a12;
-- (BMAppEventEngagement)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppEventEngagement)initWithAppId:(id)id purchased:(id)purchased priceBucket:(id)bucket usage:(id)usage frequency:(id)frequency recency:(id)recency normalizedUsage:(id)normalizedUsage eventImpression:(id)self0 eventClick:(id)self1 appIsDownloaded:(id)self2;
+- (BMAppEventEngagement)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppEventEngagement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppEventEngagement *)self appId];
-    v7 = [v5 appId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    appId = [(BMAppEventEngagement *)self appId];
+    appId2 = [v5 appId];
+    v8 = appId2;
+    if (appId == appId2)
     {
     }
 
     else
     {
-      v9 = [(BMAppEventEngagement *)self appId];
-      v10 = [v5 appId];
-      v11 = [v9 isEqual:v10];
+      appId3 = [(BMAppEventEngagement *)self appId];
+      appId4 = [v5 appId];
+      v11 = [appId3 isEqual:appId4];
 
       if (!v11)
       {
@@ -64,8 +64,8 @@
 
                     if (-[BMAppEventEngagement hasAppIsDownloaded](self, "hasAppIsDownloaded") && [v5 hasAppIsDownloaded])
                     {
-                      v31 = [(BMAppEventEngagement *)self appIsDownloaded];
-                      v12 = v31 ^ [v5 appIsDownloaded] ^ 1;
+                      appIsDownloaded = [(BMAppEventEngagement *)self appIsDownloaded];
+                      v12 = appIsDownloaded ^ [v5 appIsDownloaded] ^ 1;
 LABEL_53:
 
                       goto LABEL_54;
@@ -93,7 +93,7 @@ LABEL_54:
 - (id)jsonDictionary
 {
   v45[10] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppEventEngagement *)self appId];
+  appId = [(BMAppEventEngagement *)self appId];
   if ([(BMAppEventEngagement *)self hasPurchased])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppEventEngagement purchased](self, "purchased")}];
@@ -200,93 +200,93 @@ LABEL_54:
   }
 
   v44[0] = @"appId";
-  v20 = v3;
-  if (!v3)
+  null = appId;
+  if (!appId)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v20;
-  v45[0] = v20;
+  v36 = null;
+  v45[0] = null;
   v44[1] = @"purchased";
-  v21 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v21;
-  v45[1] = v21;
+  v35 = null2;
+  v45[1] = null2;
   v44[2] = @"priceBucket";
-  v22 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v3;
-  v34 = v22;
-  v45[2] = v22;
+  v40 = appId;
+  v34 = null3;
+  v45[2] = null3;
   v44[3] = @"usage";
-  v23 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v39 = v4;
-  v33 = v23;
-  v45[3] = v23;
+  v33 = null4;
+  v45[3] = null4;
   v44[4] = @"frequency";
-  v24 = v13;
+  null5 = v13;
   if (!v13)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v38 = v7;
-  v45[4] = v24;
+  v45[4] = null5;
   v44[5] = @"recency";
-  v25 = v43;
+  null6 = v43;
   if (!v43)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v37 = v10;
-  v45[5] = v25;
+  v45[5] = null6;
   v44[6] = @"normalizedUsage";
-  v26 = v42;
+  null7 = v42;
   if (!v42)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[6] = v26;
+  v45[6] = null7;
   v44[7] = @"eventImpression";
-  v27 = v41;
+  null8 = v41;
   if (!v41)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[7] = v27;
+  v45[7] = null8;
   v44[8] = @"eventClick";
-  v28 = v18;
+  null9 = v18;
   if (!v18)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[8] = v28;
+  v45[8] = null9;
   v44[9] = @"appIsDownloaded";
-  v29 = v19;
+  null10 = v19;
   if (!v19)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45[9] = v29;
+  v45[9] = null10;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:10];
   if (v19)
   {
@@ -362,22 +362,22 @@ LABEL_68:
   return v30;
 }
 
-- (BMAppEventEngagement)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppEventEngagement)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v135[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"appId"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"appId"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v113 = 0;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"purchased"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"purchased"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           v28 = 0;
@@ -385,7 +385,7 @@ LABEL_4:
           goto LABEL_50;
         }
 
-        v37 = a4;
+        errorCopy = error;
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v39 = *MEMORY[0x1E698F240];
         v132 = *MEMORY[0x1E696A578];
@@ -397,7 +397,7 @@ LABEL_4:
         v9 = v40;
         v8 = 0;
         v28 = 0;
-        *v37 = [v38 initWithDomain:v41 code:2 userInfo:v40];
+        *errorCopy = [v38 initWithDomain:v41 code:2 userInfo:v40];
         goto LABEL_49;
       }
 
@@ -409,13 +409,13 @@ LABEL_4:
       v8 = 0;
     }
 
-    v9 = [v5 objectForKeyedSubscript:@"priceBucket"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"priceBucket"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v22 = 0;
           v28 = 0;
@@ -424,7 +424,7 @@ LABEL_4:
         }
 
         v112 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v42 = a4;
+        errorCopy2 = error;
         v43 = *MEMORY[0x1E698F240];
         v130 = *MEMORY[0x1E696A578];
         v44 = v8;
@@ -436,7 +436,7 @@ LABEL_4:
         v131 = v47;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
         v28 = 0;
-        *v42 = [v112 initWithDomain:v43 code:2 userInfo:v29];
+        *errorCopy2 = [v112 initWithDomain:v43 code:2 userInfo:v29];
         v19 = v47;
         v22 = 0;
         v31 = v113;
@@ -458,13 +458,13 @@ LABEL_49:
       v12 = 0;
     }
 
-    v13 = [v5 objectForKeyedSubscript:@"usage"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"usage"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v28 = 0;
           v31 = v113;
@@ -476,7 +476,7 @@ LABEL_49:
           goto LABEL_48;
         }
 
-        v101 = a4;
+        errorCopy3 = error;
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
         v97 = v9;
         v49 = *MEMORY[0x1E698F240];
@@ -495,7 +495,7 @@ LABEL_49:
         v9 = v97;
         v108 = v53;
         v28 = 0;
-        *v101 = [v54 initWithDomain:v55 code:2 userInfo:?];
+        *errorCopy3 = [v54 initWithDomain:v55 code:2 userInfo:?];
         v31 = v113;
         v22 = v12;
         v7 = v11;
@@ -514,14 +514,14 @@ LABEL_49:
       v111 = 0;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"frequency"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"frequency"];
     v108 = v14;
     if (v14 && (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v110 = 0;
           v28 = 0;
@@ -534,7 +534,7 @@ LABEL_49:
           goto LABEL_47;
         }
 
-        v102 = a4;
+        errorCopy4 = error;
         v56 = objc_alloc(MEMORY[0x1E696ABC0]);
         v57 = v9;
         v58 = *MEMORY[0x1E698F240];
@@ -552,7 +552,7 @@ LABEL_49:
         v105 = v62;
         v110 = 0;
         v28 = 0;
-        *v102 = [v56 initWithDomain:v63 code:2 userInfo:?];
+        *errorCopy4 = [v56 initWithDomain:v63 code:2 userInfo:?];
         v29 = v106;
         v22 = v12;
         v7 = v11;
@@ -573,7 +573,7 @@ LABEL_47:
       v110 = 0;
     }
 
-    v16 = [v5 objectForKeyedSubscript:@"recency"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"recency"];
     v109 = v12;
     v105 = v16;
     if (v16)
@@ -587,7 +587,7 @@ LABEL_47:
         v6 = v10;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v107 = 0;
             v28 = 0;
@@ -598,7 +598,7 @@ LABEL_47:
             goto LABEL_46;
           }
 
-          v64 = a4;
+          errorCopy5 = error;
           v65 = objc_alloc(MEMORY[0x1E696ABC0]);
           v66 = v9;
           v67 = *MEMORY[0x1E698F240];
@@ -615,7 +615,7 @@ LABEL_47:
           v9 = v66;
           v107 = 0;
           v28 = 0;
-          *v64 = [v65 initWithDomain:v71 code:2 userInfo:v30];
+          *errorCopy5 = [v65 initWithDomain:v71 code:2 userInfo:v30];
           v29 = v106;
           v19 = v111;
           goto LABEL_92;
@@ -623,15 +623,15 @@ LABEL_47:
 
         v107 = v17;
 LABEL_29:
-        v18 = [v5 objectForKeyedSubscript:@"normalizedUsage"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"normalizedUsage"];
         v19 = v111;
-        v100 = a4;
+        errorCopy6 = error;
         v98 = v18;
         if (!v18 || (v20 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v104 = 0;
 LABEL_32:
-          v21 = [v5 objectForKeyedSubscript:@"eventImpression"];
+          v21 = [dictionaryCopy objectForKeyedSubscript:@"eventImpression"];
           v22 = v109;
           v99 = v8;
           if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -639,7 +639,7 @@ LABEL_32:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v103 = 0;
                 v28 = 0;
@@ -659,7 +659,7 @@ LABEL_32:
               v84 = [v83 initWithDomain:v82 code:2 userInfo:v23];
               v103 = 0;
               v28 = 0;
-              *v100 = v84;
+              *errorCopy6 = v84;
               goto LABEL_43;
             }
 
@@ -671,21 +671,21 @@ LABEL_32:
             v103 = 0;
           }
 
-          v23 = [v5 objectForKeyedSubscript:@"eventClick"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"eventClick"];
           v96 = v9;
           if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v25 = 0;
                 v28 = 0;
                 goto LABEL_43;
               }
 
-              v24 = self;
+              selfCopy3 = self;
               v94 = objc_alloc(MEMORY[0x1E696ABC0]);
               v85 = *MEMORY[0x1E698F240];
               v118 = *MEMORY[0x1E696A578];
@@ -695,27 +695,27 @@ LABEL_32:
               v86 = [v94 initWithDomain:v85 code:2 userInfo:v26];
               v25 = 0;
               v28 = 0;
-              *v100 = v86;
+              *errorCopy6 = v86;
               goto LABEL_42;
             }
 
-            v24 = self;
+            selfCopy3 = self;
             v25 = v23;
           }
 
           else
           {
-            v24 = self;
+            selfCopy3 = self;
             v25 = 0;
           }
 
-          v26 = [v5 objectForKeyedSubscript:@"appIsDownloaded"];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"appIsDownloaded"];
           if (v26 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v100)
+              if (errorCopy6)
               {
                 v115 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v95 = *MEMORY[0x1E698F240];
@@ -723,7 +723,7 @@ LABEL_32:
                 v87 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"appIsDownloaded"];
                 v117 = v87;
                 v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v117 forKeys:&v116 count:1];
-                *v100 = [v115 initWithDomain:v95 code:2 userInfo:v88];
+                *errorCopy6 = [v115 initWithDomain:v95 code:2 userInfo:v88];
               }
 
               v27 = 0;
@@ -739,10 +739,10 @@ LABEL_32:
             v27 = 0;
           }
 
-          v28 = [(BMAppEventEngagement *)v24 initWithAppId:v113 purchased:v99 priceBucket:v109 usage:v111 frequency:v110 recency:v107 normalizedUsage:v104 eventImpression:v103 eventClick:v25 appIsDownloaded:v27];
-          v24 = v28;
+          v28 = [(BMAppEventEngagement *)selfCopy3 initWithAppId:v113 purchased:v99 priceBucket:v109 usage:v111 frequency:v110 recency:v107 normalizedUsage:v104 eventImpression:v103 eventClick:v25 appIsDownloaded:v27];
+          selfCopy3 = v28;
 LABEL_42:
-          self = v24;
+          self = selfCopy3;
 
           v9 = v96;
           v22 = v109;
@@ -767,9 +767,9 @@ LABEL_45:
           goto LABEL_32;
         }
 
-        if (a4)
+        if (error)
         {
-          v72 = a4;
+          errorCopy7 = error;
           v73 = objc_alloc(MEMORY[0x1E696ABC0]);
           v74 = v9;
           v75 = *MEMORY[0x1E698F240];
@@ -787,7 +787,7 @@ LABEL_45:
           v19 = v111;
           v104 = 0;
           v28 = 0;
-          *v72 = [v73 initWithDomain:v79 code:2 userInfo:v21];
+          *errorCopy7 = [v73 initWithDomain:v79 code:2 userInfo:v21];
           v22 = v109;
           goto LABEL_44;
         }
@@ -821,14 +821,14 @@ LABEL_92:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v31 = 0;
     v28 = 0;
     goto LABEL_51;
   }
 
-  v34 = a4;
+  errorCopy8 = error;
   v35 = objc_alloc(MEMORY[0x1E696ABC0]);
   v36 = *MEMORY[0x1E698F240];
   v134 = *MEMORY[0x1E696A578];
@@ -837,7 +837,7 @@ LABEL_92:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v135 forKeys:&v134 count:1];
   v31 = 0;
   v28 = 0;
-  *v34 = [v35 initWithDomain:v36 code:2 userInfo:v7];
+  *errorCopy8 = [v35 initWithDomain:v36 code:2 userInfo:v7];
 LABEL_50:
 
 LABEL_51:
@@ -849,88 +849,88 @@ LABEL_51:
 {
   v3 = objc_opt_new();
   [(BMAppEventEngagement *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_appId)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasPurchased)
   {
     purchased = self->_purchased;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasPriceBucket)
   {
     priceBucket = self->_priceBucket;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasUsage)
   {
     usage = self->_usage;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasFrequency)
   {
     frequency = self->_frequency;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasRecency)
   {
     recency = self->_recency;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasNormalizedUsage)
   {
     normalizedUsage = self->_normalizedUsage;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasEventImpression)
   {
     eventImpression = self->_eventImpression;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasEventClick)
   {
     eventClick = self->_eventClick;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_hasAppIsDownloaded)
   {
     appIsDownloaded = self->_appIsDownloaded;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v64.receiver = self;
   v64.super_class = BMAppEventEngagement;
   v5 = [(BMEventBase *)&v64 init];
@@ -939,12 +939,12 @@ LABEL_51:
     goto LABEL_108;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_106;
       }
@@ -955,18 +955,18 @@ LABEL_51:
       while (1)
       {
         LOBYTE(v65) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v65 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v65 & 0x7F) << v7;
@@ -984,9 +984,9 @@ LABEL_51:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_106;
       }
@@ -1004,18 +1004,18 @@ LABEL_16:
           case 3:
             v5->_hasPriceBucket = 1;
             v65 = 0;
-            v37 = [v4 position] + 8;
-            if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 8, v38 <= objc_msgSend(v4, "length")))
+            v37 = [fromCopy position] + 8;
+            if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 8, v38 <= objc_msgSend(fromCopy, "length")))
             {
-              v58 = [v4 data];
-              [v58 getBytes:&v65 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v55 = v65;
@@ -1024,18 +1024,18 @@ LABEL_16:
           case 4:
             v5->_hasUsage = 1;
             v65 = 0;
-            v45 = [v4 position] + 8;
-            if (v45 >= [v4 position] && (v46 = objc_msgSend(v4, "position") + 8, v46 <= objc_msgSend(v4, "length")))
+            v45 = [fromCopy position] + 8;
+            if (v45 >= [fromCopy position] && (v46 = objc_msgSend(fromCopy, "position") + 8, v46 <= objc_msgSend(fromCopy, "length")))
             {
-              v60 = [v4 data];
-              [v60 getBytes:&v65 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v55 = v65;
@@ -1044,18 +1044,18 @@ LABEL_16:
           case 5:
             v5->_hasFrequency = 1;
             v65 = 0;
-            v16 = [v4 position] + 8;
-            if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+            v16 = [fromCopy position] + 8;
+            if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
             {
-              v59 = [v4 data];
-              [v59 getBytes:&v65 range:{objc_msgSend(v4, "position"), 8}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v55 = v65;
@@ -1084,18 +1084,18 @@ LABEL_104:
         while (1)
         {
           LOBYTE(v65) = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v65 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v65 & 0x7F) << v25;
@@ -1113,7 +1113,7 @@ LABEL_104:
           }
         }
 
-        v24 = (v27 != 0) & ~[v4 hasError];
+        v24 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_86:
         v53 = 16;
 LABEL_93:
@@ -1126,8 +1126,8 @@ LABEL_93:
       v5->_appId = v33;
 
 LABEL_105:
-      v61 = [v4 position];
-      if (v61 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_106;
       }
@@ -1139,18 +1139,18 @@ LABEL_105:
       {
         v5->_hasRecency = 1;
         v65 = 0;
-        v35 = [v4 position] + 8;
-        if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 8, v36 <= objc_msgSend(v4, "length")))
+        v35 = [fromCopy position] + 8;
+        if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 8, v36 <= objc_msgSend(fromCopy, "length")))
         {
-          v57 = [v4 data];
-          [v57 getBytes:&v65 range:{objc_msgSend(v4, "position"), 8}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v55 = v65;
@@ -1172,18 +1172,18 @@ LABEL_83:
 
         v5->_hasNormalizedUsage = 1;
         v65 = 0;
-        v31 = [v4 position] + 8;
-        if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 8, v32 <= objc_msgSend(v4, "length")))
+        v31 = [fromCopy position] + 8;
+        if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 8, v32 <= objc_msgSend(fromCopy, "length")))
         {
-          v54 = [v4 data];
-          [v54 getBytes:&v65 range:{objc_msgSend(v4, "position"), 8}];
+          data7 = [fromCopy data];
+          [data7 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v55 = v65;
@@ -1203,18 +1203,18 @@ LABEL_83:
         while (1)
         {
           LOBYTE(v65) = 0;
-          v42 = [v4 position] + 1;
-          if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+          v42 = [fromCopy position] + 1;
+          if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
           {
-            v44 = [v4 data];
-            [v44 getBytes:&v65 range:{objc_msgSend(v4, "position"), 1}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v41 |= (v65 & 0x7F) << v39;
@@ -1232,7 +1232,7 @@ LABEL_83:
           }
         }
 
-        v24 = (v41 != 0) & ~[v4 hasError];
+        v24 = (v41 != 0) & ~[fromCopy hasError];
 LABEL_88:
         v53 = 23;
         break;
@@ -1244,18 +1244,18 @@ LABEL_88:
         while (1)
         {
           LOBYTE(v65) = 0;
-          v50 = [v4 position] + 1;
-          if (v50 >= [v4 position] && (v51 = objc_msgSend(v4, "position") + 1, v51 <= objc_msgSend(v4, "length")))
+          v50 = [fromCopy position] + 1;
+          if (v50 >= [fromCopy position] && (v51 = objc_msgSend(fromCopy, "position") + 1, v51 <= objc_msgSend(fromCopy, "length")))
           {
-            v52 = [v4 data];
-            [v52 getBytes:&v65 range:{objc_msgSend(v4, "position"), 1}];
+            data9 = [fromCopy data];
+            [data9 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v49 |= (v65 & 0x7F) << v47;
@@ -1273,7 +1273,7 @@ LABEL_88:
           }
         }
 
-        v24 = (v49 != 0) & ~[v4 hasError];
+        v24 = (v49 != 0) & ~[fromCopy hasError];
 LABEL_92:
         v53 = 25;
         break;
@@ -1285,18 +1285,18 @@ LABEL_92:
         while (1)
         {
           LOBYTE(v65) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:&v65 range:{objc_msgSend(v4, "position"), 1}];
+            data10 = [fromCopy data];
+            [data10 getBytes:&v65 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (v65 & 0x7F) << v18;
@@ -1314,7 +1314,7 @@ LABEL_92:
           }
         }
 
-        v24 = (v20 != 0) & ~[v4 hasError];
+        v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_90:
         v53 = 27;
         break;
@@ -1326,7 +1326,7 @@ LABEL_90:
   }
 
 LABEL_106:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_107:
     v62 = 0;
@@ -1344,7 +1344,7 @@ LABEL_108:
 - (NSString)description
 {
   v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v18 = [(BMAppEventEngagement *)self appId];
+  appId = [(BMAppEventEngagement *)self appId];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppEventEngagement purchased](self, "purchased")}];
   v4 = MEMORY[0x1E696AD98];
   [(BMAppEventEngagement *)self priceBucket];
@@ -1364,34 +1364,34 @@ LABEL_108:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppEventEngagement eventImpression](self, "eventImpression")}];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppEventEngagement eventClick](self, "eventClick")}];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppEventEngagement appIsDownloaded](self, "appIsDownloaded")}];
-  v20 = [v19 initWithFormat:@"BMAppEventEngagement with appId: %@, purchased: %@, priceBucket: %@, usage: %@, frequency: %@, recency: %@, normalizedUsage: %@, eventImpression: %@, eventClick: %@, appIsDownloaded: %@", v18, v3, v5, v7, v9, v11, v13, v14, v15, v16];
+  v20 = [v19 initWithFormat:@"BMAppEventEngagement with appId: %@, purchased: %@, priceBucket: %@, usage: %@, frequency: %@, recency: %@, normalizedUsage: %@, eventImpression: %@, eventClick: %@, appIsDownloaded: %@", appId, v3, v5, v7, v9, v11, v13, v14, v15, v16];
 
   return v20;
 }
 
-- (BMAppEventEngagement)initWithAppId:(id)a3 purchased:(id)a4 priceBucket:(id)a5 usage:(id)a6 frequency:(id)a7 recency:(id)a8 normalizedUsage:(id)a9 eventImpression:(id)a10 eventClick:(id)a11 appIsDownloaded:(id)a12
+- (BMAppEventEngagement)initWithAppId:(id)id purchased:(id)purchased priceBucket:(id)bucket usage:(id)usage frequency:(id)frequency recency:(id)recency normalizedUsage:(id)normalizedUsage eventImpression:(id)self0 eventClick:(id)self1 appIsDownloaded:(id)self2
 {
-  v35 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  idCopy = id;
+  purchasedCopy = purchased;
+  bucketCopy = bucket;
+  usageCopy = usage;
+  frequencyCopy = frequency;
+  recencyCopy = recency;
+  normalizedUsageCopy = normalizedUsage;
+  impressionCopy = impression;
+  clickCopy = click;
+  downloadedCopy = downloaded;
   v36.receiver = self;
   v36.super_class = BMAppEventEngagement;
   v26 = [(BMEventBase *)&v36 init];
   if (v26)
   {
     v26->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v26->_appId, a3);
-    if (v17)
+    objc_storeStrong(&v26->_appId, id);
+    if (purchasedCopy)
     {
       v26->_hasPurchased = 1;
-      v26->_purchased = [v17 BOOLValue];
+      v26->_purchased = [purchasedCopy BOOLValue];
     }
 
     else
@@ -1400,10 +1400,10 @@ LABEL_108:
       v26->_purchased = 0;
     }
 
-    if (v18)
+    if (bucketCopy)
     {
       v26->_hasPriceBucket = 1;
-      [v18 doubleValue];
+      [bucketCopy doubleValue];
     }
 
     else
@@ -1413,10 +1413,10 @@ LABEL_108:
     }
 
     v26->_priceBucket = v27;
-    if (v19)
+    if (usageCopy)
     {
       v26->_hasUsage = 1;
-      [v19 doubleValue];
+      [usageCopy doubleValue];
     }
 
     else
@@ -1426,10 +1426,10 @@ LABEL_108:
     }
 
     v26->_usage = v28;
-    if (v20)
+    if (frequencyCopy)
     {
       v26->_hasFrequency = 1;
-      [v20 doubleValue];
+      [frequencyCopy doubleValue];
     }
 
     else
@@ -1439,10 +1439,10 @@ LABEL_108:
     }
 
     v26->_frequency = v29;
-    if (v21)
+    if (recencyCopy)
     {
       v26->_hasRecency = 1;
-      [v21 doubleValue];
+      [recencyCopy doubleValue];
     }
 
     else
@@ -1452,10 +1452,10 @@ LABEL_108:
     }
 
     v26->_recency = v30;
-    if (v22)
+    if (normalizedUsageCopy)
     {
       v26->_hasNormalizedUsage = 1;
-      [v22 doubleValue];
+      [normalizedUsageCopy doubleValue];
     }
 
     else
@@ -1465,10 +1465,10 @@ LABEL_108:
     }
 
     v26->_normalizedUsage = v31;
-    if (v23)
+    if (impressionCopy)
     {
       v26->_hasEventImpression = 1;
-      v26->_eventImpression = [v23 BOOLValue];
+      v26->_eventImpression = [impressionCopy BOOLValue];
     }
 
     else
@@ -1477,10 +1477,10 @@ LABEL_108:
       v26->_eventImpression = 0;
     }
 
-    if (v24)
+    if (clickCopy)
     {
       v26->_hasEventClick = 1;
-      v26->_eventClick = [v24 BOOLValue];
+      v26->_eventClick = [clickCopy BOOLValue];
     }
 
     else
@@ -1489,10 +1489,10 @@ LABEL_108:
       v26->_eventClick = 0;
     }
 
-    if (v25)
+    if (downloadedCopy)
     {
       v26->_hasAppIsDownloaded = 1;
-      v26->_appIsDownloaded = [v25 BOOLValue];
+      v26->_appIsDownloaded = [downloadedCopy BOOLValue];
     }
 
     else
@@ -1565,9 +1565,9 @@ LABEL_108:
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1575,8 +1575,8 @@ LABEL_108:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppEventEngagement alloc] initByReadFrom:v7];
     v4 = v8;

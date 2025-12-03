@@ -1,11 +1,11 @@
 @interface _UISceneHostingGraph
 + (id)sharedInstance;
 - (id)_init;
-- (id)_localWindowGraphHostingContextID:(unsigned int)a3;
-- (id)_rawWindowHostingContextID:(unsigned int)a3;
-- (id)localWindowGraphHostingContextID:(unsigned int)a3;
-- (id)observeLocalWindowGraphHostingContextID:(unsigned int)a3 withHandler:(id)a4;
-- (void)_noteContextID:(unsigned int)a3 hostedByWindow:(id)a4;
+- (id)_localWindowGraphHostingContextID:(unsigned int)d;
+- (id)_rawWindowHostingContextID:(unsigned int)d;
+- (id)localWindowGraphHostingContextID:(unsigned int)d;
+- (id)observeLocalWindowGraphHostingContextID:(unsigned int)d withHandler:(id)handler;
+- (void)_noteContextID:(unsigned int)d hostedByWindow:(id)window;
 @end
 
 @implementation _UISceneHostingGraph
@@ -29,33 +29,33 @@
   v2 = [(_UISceneHostingGraph *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     hostingGraph = v2->_hostingGraph;
-    v2->_hostingGraph = v3;
+    v2->_hostingGraph = strongToWeakObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)localWindowGraphHostingContextID:(unsigned int)a3
+- (id)localWindowGraphHostingContextID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   BSDispatchQueueAssertMain();
 
   return [(_UISceneHostingGraph *)self _localWindowGraphHostingContextID:v3];
 }
 
-- (id)observeLocalWindowGraphHostingContextID:(unsigned int)a3 withHandler:(id)a4
+- (id)observeLocalWindowGraphHostingContextID:(unsigned int)d withHandler:(id)handler
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&d;
+  handlerCopy = handler;
   BSDispatchQueueAssertMain();
   v7 = [(_UISceneHostingGraph *)self localWindowGraphHostingContextID:v4];
   if (!self->_lazy_contextTrackingAssertions)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lazy_contextTrackingAssertions = self->_lazy_contextTrackingAssertions;
-    self->_lazy_contextTrackingAssertions = v8;
+    self->_lazy_contextTrackingAssertions = weakObjectsHashTable;
   }
 
   objc_initWeak(&location, self);
@@ -65,7 +65,7 @@
   v15 = __76___UISceneHostingGraph_observeLocalWindowGraphHostingContextID_withHandler___block_invoke;
   v16 = &unk_1E70FA170;
   objc_copyWeak(&v17, &location);
-  v11 = [(_UIContextGraphTrackingAssertion *)v10 initWithContextID:v4 windowGraph:v7 clientHandlerBlock:v6 invalidationBlock:&v13];
+  v11 = [(_UIContextGraphTrackingAssertion *)v10 initWithContextID:v4 windowGraph:v7 clientHandlerBlock:handlerCopy invalidationBlock:&v13];
   [(NSHashTable *)self->_lazy_contextTrackingAssertions addObject:v11, v13, v14, v15, v16];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -73,17 +73,17 @@
   return v11;
 }
 
-- (void)_noteContextID:(unsigned int)a3 hostedByWindow:(id)a4
+- (void)_noteContextID:(unsigned int)d hostedByWindow:(id)window
 {
-  v4 = *&a3;
+  v4 = *&d;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  windowCopy = window;
   BSDispatchQueueAssertMain();
   hostingGraph = self->_hostingGraph;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-  if (v6)
+  if (windowCopy)
   {
-    [(NSMapTable *)hostingGraph setObject:v6 forKey:v8];
+    [(NSMapTable *)hostingGraph setObject:windowCopy forKey:v8];
   }
 
   else
@@ -125,23 +125,23 @@
   }
 }
 
-- (id)_rawWindowHostingContextID:(unsigned int)a3
+- (id)_rawWindowHostingContextID:(unsigned int)d
 {
   hostingGraph = self->_hostingGraph;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&d];
   v5 = [(NSMapTable *)hostingGraph objectForKey:v4];
 
   return v5;
 }
 
-- (id)_localWindowGraphHostingContextID:(unsigned int)a3
+- (id)_localWindowGraphHostingContextID:(unsigned int)d
 {
-  v3 = *&a3;
+  _contextId = *&d;
   v22 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
   v5 = 0;
   v6 = 0;
-  v7 = 0;
+  array = 0;
   while (1)
   {
     v8 = v6;
@@ -167,7 +167,7 @@
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          if ([v13 _contextId] == v3)
+          if ([v13 _contextId] == _contextId)
           {
             v5 = v13;
             goto LABEL_12;
@@ -196,7 +196,7 @@ LABEL_12:
     }
 
     hostingGraph = self->_hostingGraph;
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:_contextId];
     v5 = [(NSMapTable *)hostingGraph objectForKey:v15];
 
     if (!v5)
@@ -205,18 +205,18 @@ LABEL_12:
     }
 
 LABEL_17:
-    if (!v7)
+    if (!array)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    [v7 addObject:v5];
-    v3 = [v5 _contextId];
+    [array addObject:v5];
+    _contextId = [v5 _contextId];
   }
 
   [0 _contextId];
 
-  return v7;
+  return array;
 }
 
 @end

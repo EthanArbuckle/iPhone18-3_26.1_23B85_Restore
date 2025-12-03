@@ -1,17 +1,17 @@
 @interface VNContoursObservation
-- (BOOL)isEqual:(id)a3;
-- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation;
 - (CGPathRef)normalizedPath;
 - (NSArray)topLevelContours;
 - (VNContour)contourAtIndex:(NSInteger)contourIndex error:(NSError *)error;
 - (VNContour)contourAtIndexPath:(NSIndexPath *)indexPath error:(NSError *)error;
-- (VNContoursObservation)initWithCoder:(id)a3;
-- (VNContoursObservation)initWithOriginatingRequestSpecifier:(id)a3 compressedPoints:(id)a4 imageSize:(CGSize)a5;
+- (VNContoursObservation)initWithCoder:(id)coder;
+- (VNContoursObservation)initWithOriginatingRequestSpecifier:(id)specifier compressedPoints:(id)points imageSize:(CGSize)size;
 - (id).cxx_construct;
 - (id)debugQuickLookObject;
 - (id)vn_cloneObject;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNContoursObservation
@@ -34,14 +34,14 @@
   v10 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VNContoursObservation;
-  v3 = [(VNObservation *)&v8 debugQuickLookObject];
-  if (v3)
+  debugQuickLookObject = [(VNObservation *)&v8 debugQuickLookObject];
+  if (debugQuickLookObject)
   {
-    v4 = [(VNContoursObservation *)self normalizedPath];
+    normalizedPath = [(VNContoursObservation *)self normalizedPath];
     v9[0] = xmmword_1A6052400;
     v9[1] = unk_1A6052410;
     v5 = VNDebugColorFromValues(v9);
-    VNDebugImageRenderNormalizedCGPathOnImage(v4, v3, v5);
+    VNDebugImageRenderNormalizedCGPathOnImage(normalizedPath, debugQuickLookObject, v5);
   }
 
   else
@@ -53,31 +53,31 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNContoursObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNCntsObs"];
-  [v4 encodeObject:self->_compressedPoints forKey:@"Points"];
-  [v4 vn_encodeSize:@"Size" forKey:{self->_imageSize.width, self->_imageSize.height}];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNCntsObs"];
+  [coderCopy encodeObject:self->_compressedPoints forKey:@"Points"];
+  [coderCopy vn_encodeSize:@"Size" forKey:{self->_imageSize.width, self->_imageSize.height}];
 }
 
-- (VNContoursObservation)initWithCoder:(id)a3
+- (VNContoursObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VNContoursObservation;
-  v5 = [(VNObservation *)&v12 initWithCoder:v4];
-  if (!v5 || [v4 vn_decodeCodingVersionForKey:@"VNCntsObs"] || (objc_msgSend(v4, "decodeObjectOfClass:forKey:", objc_opt_class(), @"Points"), v8 = objc_claimAutoreleasedReturnValue(), compressedPoints = v5->_compressedPoints, v5->_compressedPoints = v8, compressedPoints, !v5->_compressedPoints))
+  v5 = [(VNObservation *)&v12 initWithCoder:coderCopy];
+  if (!v5 || [coderCopy vn_decodeCodingVersionForKey:@"VNCntsObs"] || (objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", objc_opt_class(), @"Points"), v8 = objc_claimAutoreleasedReturnValue(), compressedPoints = v5->_compressedPoints, v5->_compressedPoints = v8, compressedPoints, !v5->_compressedPoints))
   {
 LABEL_3:
     v6 = 0;
     goto LABEL_4;
   }
 
-  [v4 vn_decodeSizeForKey:@"Size"];
+  [coderCopy vn_decodeSizeForKey:@"Size"];
   v6 = 0;
   v5->_imageSize.width = v11;
   v5->_imageSize.height = v10;
@@ -101,14 +101,14 @@ LABEL_4:
 {
   v10.receiver = self;
   v10.super_class = VNContoursObservation;
-  v3 = [(VNObservation *)&v10 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v10 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSData *)self->_compressedPoints copy];
-    v5 = *(v3 + 96);
-    *(v3 + 96) = v4;
+    v5 = *(vn_cloneObject + 96);
+    *(vn_cloneObject + 96) = v4;
 
-    *(v3 + 104) = self->_imageSize;
+    *(vn_cloneObject + 104) = self->_imageSize;
     ptr = self->_polygonList.__ptr_;
     cntrl = self->_polygonList.__cntrl_;
     if (cntrl)
@@ -116,28 +116,28 @@ LABEL_4:
       atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
     }
 
-    v8 = *(v3 + 144);
-    *(v3 + 136) = ptr;
-    *(v3 + 144) = cntrl;
+    v8 = *(vn_cloneObject + 144);
+    *(vn_cloneObject + 136) = ptr;
+    *(vn_cloneObject + 144) = cntrl;
     if (v8)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v8);
     }
 
-    if (v3 != self)
+    if (vn_cloneObject != self)
     {
-      std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>((v3 + 152), self->_topLevelContoursIndices.__begin_, self->_topLevelContoursIndices.__end_, self->_topLevelContoursIndices.__end_ - self->_topLevelContoursIndices.__begin_);
-      std::vector<std::vector<unsigned int>>::__assign_with_size[abi:ne200100]<std::vector<unsigned int>*,std::vector<unsigned int>*>((v3 + 176), self->_contourChildrenIndices.__begin_, self->_contourChildrenIndices.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_contourChildrenIndices.__end_ - self->_contourChildrenIndices.__begin_) >> 3));
+      std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>((vn_cloneObject + 152), self->_topLevelContoursIndices.__begin_, self->_topLevelContoursIndices.__end_, self->_topLevelContoursIndices.__end_ - self->_topLevelContoursIndices.__begin_);
+      std::vector<std::vector<unsigned int>>::__assign_with_size[abi:ne200100]<std::vector<unsigned int>*,std::vector<unsigned int>*>((vn_cloneObject + 176), self->_contourChildrenIndices.__begin_, self->_contourChildrenIndices.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_contourChildrenIndices.__end_ - self->_contourChildrenIndices.__begin_) >> 3));
     }
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -145,9 +145,9 @@ LABEL_4:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_imageSize.width == v4->_imageSize.width ? (v5 = self->_imageSize.height == v4->_imageSize.height) : (v5 = 0), v5))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_imageSize.width == equalCopy->_imageSize.width ? (v5 = self->_imageSize.height == equalCopy->_imageSize.height) : (v5 = 0), v5))
     {
-      v6 = [(NSData *)self->_compressedPoints isEqual:v4->_compressedPoints];
+      v6 = [(NSData *)self->_compressedPoints isEqual:equalCopy->_compressedPoints];
     }
 
     else
@@ -1239,38 +1239,38 @@ LABEL_160:
   [(VNContoursObservation *)&v3 dealloc];
 }
 
-- (VNContoursObservation)initWithOriginatingRequestSpecifier:(id)a3 compressedPoints:(id)a4 imageSize:(CGSize)a5
+- (VNContoursObservation)initWithOriginatingRequestSpecifier:(id)specifier compressedPoints:(id)points imageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
-  v11 = 0;
+  height = size.height;
+  width = size.width;
+  specifierCopy = specifier;
+  pointsCopy = points;
+  selfCopy = 0;
   if (width > 0.0 && height > 0.0)
   {
     v14.receiver = self;
     v14.super_class = VNContoursObservation;
-    v12 = [(VNObservation *)&v14 initWithOriginatingRequestSpecifier:v9];
+    v12 = [(VNObservation *)&v14 initWithOriginatingRequestSpecifier:specifierCopy];
     self = v12;
-    if (v12 && (objc_storeStrong(&v12->_compressedPoints, a4), self->_imageSize.width = width, self->_imageSize.height = height, self->_pathLock._os_unfair_lock_opaque = 0, [(VNContoursObservation *)self _initializePolygonContainers]))
+    if (v12 && (objc_storeStrong(&v12->_compressedPoints, points), self->_imageSize.width = width, self->_imageSize.height = height, self->_pathLock._os_unfair_lock_opaque = 0, [(VNContoursObservation *)self _initializePolygonContainers]))
     {
       self = self;
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)a3 orientation:(unsigned int)a4
+- (CGPath)normalizedPathInTopLeftOrigin:(BOOL)origin orientation:(unsigned int)orientation
 {
   memset(v7, 0, sizeof(v7));
-  v4 = [(VNContoursObservation *)self normalizedPath:VNAffineTransformForVisionToTopLeftOriginOrientation(a3];
+  v4 = [(VNContoursObservation *)self normalizedPath:VNAffineTransformForVisionToTopLeftOriginOrientation(origin];
   v5 = MEMORY[0x1AC555C10](v4, v7);
   CFAutorelease(v5);
   return v5;

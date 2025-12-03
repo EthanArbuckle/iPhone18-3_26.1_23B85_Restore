@@ -3,7 +3,7 @@
 - (NSArray)preferredFocusEnvironments;
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (_TtC7SwiftUIP33_60C465D0E37117769FC505C04DE5239A24UIKitFocusableFillerItem)init;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation UIKitFocusableFillerItem
@@ -44,11 +44,11 @@
   return Strong;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
   specialized UIKitFocusableFillerItem.didUpdateFocus(in:with:)();
 }
 

@@ -1,13 +1,13 @@
 @interface ODDTransitionPoint
-- (void)setType:(int)a3;
+- (void)setType:(int)type;
 @end
 
 @implementation ODDTransitionPoint
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
-  v3 = *&a3;
-  if (a3 != 3 && a3 != 5)
+  v3 = *&type;
+  if (type != 3 && type != 5)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODDException" format:@"Bad point type"];
   }

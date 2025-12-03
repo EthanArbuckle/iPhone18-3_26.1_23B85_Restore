@@ -1,43 +1,43 @@
 @interface MLPModelConvolutionDataSource
 - (BOOL)load;
-- (MLPModelConvolutionDataSource)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 stride:(unint64_t)a7 kernelParamsBinaryName:(id)a8 initialWeights:(const void *)a9 initialBias:(const void *)a10 deviceHandler:(id)a11 optimizerOptions:(MLPModelOptimizerOptions)a12;
+- (MLPModelConvolutionDataSource)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels stride:(unint64_t)stride kernelParamsBinaryName:(id)name initialWeights:(const void *)weights initialBias:(const void *)self0 deviceHandler:(id)self1 optimizerOptions:(MLPModelOptimizerOptions)self2;
 - (MLPModelOptimizerOptions)optimizerOptions;
 - (NSData)weightsInWHIOOrder;
 - (float)biasTerms;
-- (id)updateWithCommandBuffer:(id)a3 gradientState:(id)a4;
-- (id)updateWithCommandBuffer:(id)a3 gradientState:(id)a4 sourceState:(id)a5;
-- (void)bootstrapBias:(id *)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6 values:(const void *)a7;
-- (void)bootstrapBuffer:(id)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6;
-- (void)bootstrapWeights:(id *)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6 values:(const void *)a7;
+- (id)updateWithCommandBuffer:(id)buffer gradientState:(id)state;
+- (id)updateWithCommandBuffer:(id)buffer gradientState:(id)state sourceState:(id)sourceState;
+- (void)bootstrapBias:(id *)bias length:(unint64_t)length device:(id)device stdDev:(float)dev values:(const void *)values;
+- (void)bootstrapBuffer:(id)buffer length:(unint64_t)length device:(id)device stdDev:(float)dev;
+- (void)bootstrapWeights:(id *)weights length:(unint64_t)length device:(id)device stdDev:(float)dev values:(const void *)values;
 - (void)weights;
 @end
 
 @implementation MLPModelConvolutionDataSource
 
-- (MLPModelConvolutionDataSource)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 stride:(unint64_t)a7 kernelParamsBinaryName:(id)a8 initialWeights:(const void *)a9 initialBias:(const void *)a10 deviceHandler:(id)a11 optimizerOptions:(MLPModelOptimizerOptions)a12
+- (MLPModelConvolutionDataSource)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels stride:(unint64_t)stride kernelParamsBinaryName:(id)name initialWeights:(const void *)weights initialBias:(const void *)self0 deviceHandler:(id)self1 optimizerOptions:(MLPModelOptimizerOptions)self2
 {
-  v19 = a8;
-  v113 = a11;
+  nameCopy = name;
+  handlerCopy = handler;
   v114.receiver = self;
   v114.super_class = MLPModelConvolutionDataSource;
   v20 = [(MLPModelConvolutionDataSource *)&v114 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_deviceHandler, a11);
+    objc_storeStrong(&v20->_deviceHandler, handler);
     v21->_optimizerOptions = *v115;
-    v21->_outputFeatureChannels = a6;
-    v21->_inputFeatureChannels = a5;
-    v21->_kernelHeight = a4;
-    v21->_kernelWidth = a3;
-    objc_storeStrong(&v21->_kernelParamsBinaryName, a8);
-    v21->_initialWeights = a9;
-    v21->_initialBias = a10;
-    v23 = objc_msgSend_cnnConvolutionDescriptorWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(MEMORY[0x1E69748E8], v22, a3, a4, a5, a6);
+    v21->_outputFeatureChannels = featureChannels;
+    v21->_inputFeatureChannels = channels;
+    v21->_kernelHeight = height;
+    v21->_kernelWidth = width;
+    objc_storeStrong(&v21->_kernelParamsBinaryName, name);
+    v21->_initialWeights = weights;
+    v21->_initialBias = bias;
+    v23 = objc_msgSend_cnnConvolutionDescriptorWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(MEMORY[0x1E69748E8], v22, width, height, channels, featureChannels);
     convDesc = v21->_convDesc;
     v21->_convDesc = v23;
 
-    objc_msgSend_setStrideInPixelsX_(v21->_convDesc, v25, a7, v26);
+    objc_msgSend_setStrideInPixelsX_(v21->_convDesc, v25, stride, v26);
     objc_msgSend_setStrideInPixelsY_(v21->_convDesc, v27, 1, v28);
     outputFeatureChannels = v21->_outputFeatureChannels;
     v30 = v21->_inputFeatureChannels * outputFeatureChannels * v21->_kernelHeight * v21->_kernelWidth;
@@ -108,22 +108,22 @@
   return v9;
 }
 
-- (void)bootstrapBuffer:(id)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6
+- (void)bootstrapBuffer:(id)buffer length:(unint64_t)length device:(id)device stdDev:(float)dev
 {
-  v9 = a3;
-  v10 = v9;
+  bufferCopy = buffer;
+  v10 = bufferCopy;
   v17 = objc_msgSend_contents(v10, v11, v12, v13);
-  if (a6 <= 0.0)
+  if (dev <= 0.0)
   {
-    v20 = objc_msgSend_length(v9, v14, v15, v16);
+    v20 = objc_msgSend_length(bufferCopy, v14, v15, v16);
     bzero(v17, v20);
   }
 
   else
   {
     LODWORD(v21) = 0;
-    *(&v21 + 1) = a6;
-    for (i = 0; a4; --a4)
+    *(&v21 + 1) = dev;
+    for (i = 0; length; --length)
     {
       v18 = objc_msgSend_deviceHandler(self, v14, v15, v16, v21);
       v19 = sub_19D36472C(&v21, v18 + 8, &v21);
@@ -133,16 +133,16 @@
   }
 }
 
-- (void)bootstrapWeights:(id *)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6 values:(const void *)a7
+- (void)bootstrapWeights:(id *)weights length:(unint64_t)length device:(id)device stdDev:(float)dev values:(const void *)values
 {
-  v36 = a5;
-  v13 = objc_msgSend_newBufferWithLength_options_(v36, v12, 4 * a4, 0);
-  v14 = *a3;
-  *a3 = v13;
+  deviceCopy = device;
+  v13 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v12, 4 * length, 0);
+  v14 = *weights;
+  *weights = v13;
 
-  v15 = *a3;
+  v15 = *weights;
   v19 = objc_msgSend_contents(v15, v16, v17, v18);
-  if (a7)
+  if (values)
   {
     outputFeatureChannels = self->_outputFeatureChannels;
     if (outputFeatureChannels)
@@ -159,12 +159,12 @@
             for (i = 0; i != outputFeatureChannels; ++i)
             {
               v27 = 0;
-              v28 = a7;
+              valuesCopy = values;
               v29 = v19;
               do
               {
                 v30 = 0;
-                v31 = v28;
+                v31 = valuesCopy;
                 v32 = v29;
                 do
                 {
@@ -187,12 +187,12 @@
                 while (v30 != kernelWidth);
                 ++v27;
                 v29 += 4 * kernelWidth * inputFeatureChannels;
-                v28 += 4 * kernelWidth;
+                valuesCopy += 4 * kernelWidth;
               }
 
               while (v27 != kernelHeight);
               v19 += 4 * kernelWidth * inputFeatureChannels * kernelHeight;
-              a7 = a7 + 4 * kernelHeight * kernelWidth * inputFeatureChannels;
+              values = values + 4 * kernelHeight * kernelWidth * inputFeatureChannels;
             }
           }
         }
@@ -202,32 +202,32 @@
 
   else
   {
-    *&v21 = a6;
-    objc_msgSend_bootstrapBuffer_length_device_stdDev_(self, v20, *a3, a4, v36, v21);
+    *&v21 = dev;
+    objc_msgSend_bootstrapBuffer_length_device_stdDev_(self, v20, *weights, length, deviceCopy, v21);
   }
 }
 
-- (void)bootstrapBias:(id *)a3 length:(unint64_t)a4 device:(id)a5 stdDev:(float)a6 values:(const void *)a7
+- (void)bootstrapBias:(id *)bias length:(unint64_t)length device:(id)device stdDev:(float)dev values:(const void *)values
 {
-  v26 = a5;
-  v13 = objc_msgSend_newBufferWithLength_options_(v26, v12, 4 * a4, 0);
-  v14 = *a3;
-  *a3 = v13;
+  deviceCopy = device;
+  v13 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v12, 4 * length, 0);
+  v14 = *bias;
+  *bias = v13;
 
-  v15 = *a3;
+  v15 = *bias;
   v19 = objc_msgSend_contents(v15, v16, v17, v18);
-  v23 = *a3;
-  if (a7)
+  v23 = *bias;
+  if (values)
   {
     v24 = v19;
-    v25 = objc_msgSend_length(*a3, v20, v23, v21);
-    memcpy(v24, a7, v25);
+    v25 = objc_msgSend_length(*bias, v20, v23, v21);
+    memcpy(v24, values, v25);
   }
 
   else
   {
-    *&v22 = a6;
-    objc_msgSend_bootstrapBuffer_length_device_stdDev_(self, v20, v23, a4, v26, v22);
+    *&v22 = dev;
+    objc_msgSend_bootstrapBuffer_length_device_stdDev_(self, v20, v23, length, deviceCopy, v22);
   }
 }
 
@@ -331,11 +331,11 @@
   return 1;
 }
 
-- (id)updateWithCommandBuffer:(id)a3 gradientState:(id)a4
+- (id)updateWithCommandBuffer:(id)buffer gradientState:(id)state
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v45 = a4;
+  bufferCopy = buffer;
+  stateCopy = state;
   v9 = objc_msgSend_optimizer(self, v6, v7, v8);
   v13 = objc_msgSend_state(self, v10, v11, v12);
   v17 = objc_msgSend_weightMomentumVector(self, v14, v15, v16);
@@ -349,16 +349,16 @@
   v46[1] = v31;
   v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v32, v46, 2);
   v37 = objc_msgSend_state(self, v34, v35, v36);
-  objc_msgSend_encodeToCommandBuffer_convolutionGradientState_convolutionSourceState_inputMomentumVectors_inputVelocityVectors_resultState_(v9, v38, v44, v45, v13, v23, v33, v37);
+  objc_msgSend_encodeToCommandBuffer_convolutionGradientState_convolutionSourceState_inputMomentumVectors_inputVelocityVectors_resultState_(v9, v38, bufferCopy, stateCopy, v13, v23, v33, v37);
 
   v42 = objc_msgSend_state(self, v39, v40, v41);
 
   return v42;
 }
 
-- (id)updateWithCommandBuffer:(id)a3 gradientState:(id)a4 sourceState:(id)a5
+- (id)updateWithCommandBuffer:(id)buffer gradientState:(id)state sourceState:(id)sourceState
 {
-  v5 = objc_msgSend_updateWithCommandBuffer_gradientState_(self, a2, a3, a4, a5);
+  v5 = objc_msgSend_updateWithCommandBuffer_gradientState_(self, a2, buffer, state, sourceState);
 
   return v5;
 }

@@ -2,17 +2,17 @@
 - (BOOL)supportsPrefixNavigationalIntent;
 - (LoadProgressObserver)loadProgressObserver;
 - (UniversalSearchSession)universalSearchSession;
-- (id)initForPrivateBrowsing:(BOOL)a3;
+- (id)initForPrivateBrowsing:(BOOL)browsing;
 - (void)dealloc;
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 - (void)stop;
 @end
 
 @implementation SearchSuggestionProvider
 
-- (id)initForPrivateBrowsing:(BOOL)a3
+- (id)initForPrivateBrowsing:(BOOL)browsing
 {
-  v3 = a3;
+  browsingCopy = browsing;
   v17.receiver = self;
   v17.super_class = SearchSuggestionProvider;
   v4 = [(CompletionProvider *)&v17 init];
@@ -25,32 +25,32 @@
     v4->_userAgentString = v7;
 
     v9 = objc_alloc(MEMORY[0x277D4A810]);
-    v10 = [MEMORY[0x277CDB8A8] sharedInstance];
-    v11 = [v10 defaultSearchEngineForPrivateBrowsing:v3];
-    v12 = [v11 suggestionsURLTemplate];
-    v13 = [v9 initWithSuggestionsURLTemplate:v12];
+    mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+    v11 = [mEMORY[0x277CDB8A8] defaultSearchEngineForPrivateBrowsing:browsingCopy];
+    suggestionsURLTemplate = [v11 suggestionsURLTemplate];
+    v13 = [v9 initWithSuggestionsURLTemplate:suggestionsURLTemplate];
     searchSuggestionsFetcher = v4->_searchSuggestionsFetcher;
     v4->_searchSuggestionsFetcher = v13;
 
-    v4->_forPrivateBrowsing = v3;
+    v4->_forPrivateBrowsing = browsingCopy;
     v15 = v4;
   }
 
   return v4;
 }
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v5 = a3;
+  completeCopy = complete;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_currentCompletionQuery, a3);
-    v6 = [v5 queryString];
-    v7 = [v6 copy];
+    objc_storeStrong(&self->_currentCompletionQuery, complete);
+    queryString = [completeCopy queryString];
+    v7 = [queryString copy];
 
     forPrivateBrowsing = self->_forPrivateBrowsing;
-    v9 = [MEMORY[0x277D499B8] sharedLogger];
-    [v9 didRequestSearchSuggestions];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didRequestSearchSuggestions];
 
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_loadProgressObserver);
@@ -64,7 +64,7 @@
     v13 = WeakRetained;
     v16 = v13;
     objc_copyWeak(&v19, &location);
-    v17 = v5;
+    v17 = completeCopy;
     v20 = forPrivateBrowsing;
     v14 = v7;
     v18 = v14;
@@ -164,15 +164,15 @@ SearchSuggestion *__47__SearchSuggestionProvider_setQueryToComplete___block_invo
     return 0;
   }
 
-  v3 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v4 = [v3 defaultSearchEngineForPrivateBrowsing:0];
-  v5 = [v4 searchEngineIdentifier];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  v4 = [mEMORY[0x277CDB8A8] defaultSearchEngineForPrivateBrowsing:0];
+  searchEngineIdentifier = [v4 searchEngineIdentifier];
   v2 = 0;
-  if ([v5 isEqualToString:*MEMORY[0x277D4A940]])
+  if ([searchEngineIdentifier isEqualToString:*MEMORY[0x277D4A940]])
   {
-    v6 = [MEMORY[0x277D4A030] searchParameters];
-    v7 = [v6 prefixNavigationalIntentThreshold];
-    v2 = v7 != 0;
+    searchParameters = [MEMORY[0x277D4A030] searchParameters];
+    prefixNavigationalIntentThreshold = [searchParameters prefixNavigationalIntentThreshold];
+    v2 = prefixNavigationalIntentThreshold != 0;
   }
 
   return v2;

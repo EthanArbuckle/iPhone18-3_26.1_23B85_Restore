@@ -1,34 +1,34 @@
 @interface HFRoomSuggestion
-+ (id)suggestionWithName:(id)a3 priority:(int64_t)a4;
-+ (id)suggestionWithName:(id)a3 priority:(int64_t)a4 aliases:(id)a5;
++ (id)suggestionWithName:(id)name priority:(int64_t)priority;
++ (id)suggestionWithName:(id)name priority:(int64_t)priority aliases:(id)aliases;
 @end
 
 @implementation HFRoomSuggestion
 
-+ (id)suggestionWithName:(id)a3 priority:(int64_t)a4
++ (id)suggestionWithName:(id)name priority:(int64_t)priority
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a3;
+  nameCopy = name;
   v8 = [v6 set];
-  v9 = [a1 suggestionWithName:v7 priority:a4 aliases:v8];
+  v9 = [self suggestionWithName:nameCopy priority:priority aliases:v8];
 
   return v9;
 }
 
-+ (id)suggestionWithName:(id)a3 priority:(int64_t)a4 aliases:(id)a5
++ (id)suggestionWithName:(id)name priority:(int64_t)priority aliases:(id)aliases
 {
-  v7 = a5;
-  v8 = a3;
+  aliasesCopy = aliases;
+  nameCopy = name;
   v9 = objc_opt_new();
-  v10 = [v8 copy];
+  v10 = [nameCopy copy];
 
   v11 = v9[1];
   v9[1] = v10;
 
-  v9[3] = a4;
-  if (v7)
+  v9[3] = priority;
+  if (aliasesCopy)
   {
-    v12 = v7;
+    v12 = aliasesCopy;
   }
 
   else

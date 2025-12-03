@@ -1,8 +1,8 @@
 @interface RTIMessageConsumer
 - (_TtC16ScreenSharingKit18RTIMessageConsumer)init;
-- (void)inputSystemService:(id)a3 didCreateInputSession:(id)a4;
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 documentStateDidChange:(id)a5;
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4;
+- (void)inputSystemService:(id)service didCreateInputSession:(id)session;
+- (void)inputSystemService:(id)service inputSession:(id)session documentStateDidChange:(id)change;
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin;
 @end
 
 @implementation RTIMessageConsumer
@@ -15,29 +15,29 @@
   return result;
 }
 
-- (void)inputSystemService:(id)a3 didCreateInputSession:(id)a4
+- (void)inputSystemService:(id)service didCreateInputSession:(id)session
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  sessionCopy = session;
 
-  sub_264A693FC(a4);
+  sub_264A693FC(session);
 }
 
-- (void)inputSystemService:(id)a3 inputSessionDidBegin:(id)a4
+- (void)inputSystemService:(id)service inputSessionDidBegin:(id)begin
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  beginCopy = begin;
 
-  sub_264A69594(v6);
+  sub_264A69594(beginCopy);
 }
 
-- (void)inputSystemService:(id)a3 inputSession:(id)a4 documentStateDidChange:(id)a5
+- (void)inputSystemService:(id)service inputSession:(id)session documentStateDidChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  sessionCopy = session;
+  changeCopy = change;
 
-  sub_264A69B10(a4);
+  sub_264A69B10(session);
 }
 
 @end

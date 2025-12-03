@@ -1,24 +1,24 @@
 @interface EPSagaTransactionPairIDSDevice
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)checkIfIDSIsPaired;
 - (void)idsTimerTimedOut;
-- (void)remoteObjectIDSServiceAvailable:(id)a3 withIDSDevice:(id)a4;
+- (void)remoteObjectIDSServiceAvailable:(id)available withIDSDevice:(id)device;
 - (void)transactionDidComplete;
 @end
 
 @implementation EPSagaTransactionPairIDSDevice
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"coreBluetoothID"];
+  entryCopy = entry;
+  registryCopy = registry;
+  v9 = [entryCopy objectForKeyedSubscript:@"coreBluetoothID"];
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
   self->_idsDeviceIdentifier = v9;
 
-  v11 = [v7 objectForKeyedSubscript:@"useNetworkRelayPairing"];
+  v11 = [entryCopy objectForKeyedSubscript:@"useNetworkRelayPairing"];
   v40 = v11;
   if (v11)
   {
@@ -26,37 +26,37 @@
   }
 
   self->_useNetworkRelayPairing = v11;
-  v12 = [(NSUUID *)self->_idsDeviceIdentifier UUIDString];
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  objc_storeStrong(&self->_serviceRegistry, a4);
-  v13 = [v8 serviceFromClass:objc_opt_class()];
+  uUIDString = [(NSUUID *)self->_idsDeviceIdentifier UUIDString];
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  objc_storeStrong(&self->_serviceRegistry, registry);
+  v13 = [registryCopy serviceFromClass:objc_opt_class()];
   oobKeyStash = self->_oobKeyStash;
   self->_oobKeyStash = v13;
 
-  v15 = [v7 objectForKeyedSubscript:@"supportsDirectIPSecPairing"];
-  v16 = [v7 objectForKeyedSubscript:@"destinationIsAltAccount"];
-  v17 = [v7 queue];
+  v15 = [entryCopy objectForKeyedSubscript:@"supportsDirectIPSecPairing"];
+  v16 = [entryCopy objectForKeyedSubscript:@"destinationIsAltAccount"];
+  queue = [entryCopy queue];
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = sub_10001A068;
   v56[3] = &unk_100175660;
   v56[4] = self;
-  v18 = [TimerFactory timerWithIdentifier:@"com.apple.nanoregistry.ep.idsmigrationtimeout" delay:1 gracePeriod:v17 waking:v56 handlerQueue:200.0 handlerBlock:0.0];
+  v18 = [TimerFactory timerWithIdentifier:@"com.apple.nanoregistry.ep.idsmigrationtimeout" delay:1 gracePeriod:queue waking:v56 handlerQueue:200.0 handlerBlock:0.0];
   idsTimer = self->_idsTimer;
   self->_idsTimer = v18;
 
   v37 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   [v37 addConnectivityObserver:self];
-  v20 = [(EPSagaServiceOOBStash *)self->_oobKeyStash oobKey];
-  v21 = v20;
+  oobKey = [(EPSagaServiceOOBStash *)self->_oobKeyStash oobKey];
+  v21 = oobKey;
   if (self->_useNetworkRelayPairing)
   {
     v22 = +[NSData data];
   }
 
-  else if (v20)
+  else if (oobKey)
   {
-    v22 = v20;
+    v22 = oobKey;
   }
 
   else
@@ -78,12 +78,12 @@
   v49[3] = &unk_100175F28;
   v26 = v24;
   v50 = v26;
-  v27 = v12;
+  v27 = uUIDString;
   v51 = v27;
-  v28 = v7;
+  v28 = entryCopy;
   v52 = v28;
-  v53 = self;
-  v29 = v8;
+  selfCopy = self;
+  v29 = registryCopy;
   v54 = v29;
   v30 = v25;
   v55 = v30;
@@ -132,9 +132,9 @@
     v5 = nr_daemon_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(EPRoutingSlipEntry *)self->_routingSlipEntry shortDescription];
+      shortDescription = [(EPRoutingSlipEntry *)self->_routingSlipEntry shortDescription];
       v8 = 138412290;
-      v9 = v6;
+      v9 = shortDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ idsTimerTimedOut", &v8, 0xCu);
     }
   }
@@ -150,14 +150,14 @@
   v3 = [(EPServiceRegistry *)self->_serviceRegistry serviceFromClass:objc_opt_class()];
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
   v9 = v3;
-  v5 = [v3 defaultPairedDevice];
-  v6 = [v5 nsuuid];
-  if (([(NSUUID *)idsDeviceIdentifier isEqual:v6]& 1) != 0)
+  defaultPairedDevice = [v3 defaultPairedDevice];
+  nsuuid = [defaultPairedDevice nsuuid];
+  if (([(NSUUID *)idsDeviceIdentifier isEqual:nsuuid]& 1) != 0)
   {
-    v7 = [v9 defaultPairedDevice];
-    v8 = [v7 isConnected];
+    defaultPairedDevice2 = [v9 defaultPairedDevice];
+    isConnected = [defaultPairedDevice2 isConnected];
 
-    if (v8)
+    if (isConnected)
     {
       self->_success = 1;
       [(EPSagaTransactionPairIDSDevice *)self transactionDidComplete];
@@ -169,10 +169,10 @@
   }
 }
 
-- (void)remoteObjectIDSServiceAvailable:(id)a3 withIDSDevice:(id)a4
+- (void)remoteObjectIDSServiceAvailable:(id)available withIDSDevice:(id)device
 {
-  v7 = a3;
-  v6 = a4;
+  availableCopy = available;
+  deviceCopy = device;
   if (self->_finished && !self->_transactionComplete)
   {
     [(EPSagaTransactionPairIDSDevice *)self checkIfIDSIsPaired];
@@ -192,8 +192,8 @@
     [v4 removeConnectivityObserver:self];
     if (self->_success)
     {
-      v5 = [(EPSagaTransactionPairIDSDevice *)self delegate];
-      [v5 transactionDidComplete:self];
+      delegate = [(EPSagaTransactionPairIDSDevice *)self delegate];
+      [delegate transactionDidComplete:self];
     }
 
     else
@@ -210,22 +210,22 @@
         }
       }
 
-      v9 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+      errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
       v12 = NSLocalizedDescriptionKey;
       v13 = @"IDS migration pairing timed out";
       v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
       v11 = [NSError errorWithDomain:@"com.apple.nanoregistry.saga.EPSagaTransactionPairIDSDevice" code:2 userInfo:v10];
-      [v9 addObject:v11];
+      [errors addObject:v11];
 
       [(EPSagaTransactionPairIDSDevice *)self beginRollbackWithRoutingSlipEntry:self->_routingSlipEntry serviceRegistry:self->_serviceRegistry];
     }
   }
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"coreBluetoothID"];
+  entryCopy = entry;
+  v6 = [entryCopy objectForKeyedSubscript:@"coreBluetoothID"];
   objc_initWeak(&location, self);
   v7 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
@@ -235,10 +235,10 @@
   v12 = v6;
   v8 = v6;
   objc_copyWeak(&v15, &location);
-  v13 = v5;
+  v13 = entryCopy;
   v14 = v7;
   v9 = v7;
-  v10 = v5;
+  v10 = entryCopy;
   dispatch_async(v9, block);
 
   objc_destroyWeak(&v15);

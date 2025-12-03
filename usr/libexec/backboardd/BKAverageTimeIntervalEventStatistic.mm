@@ -1,12 +1,12 @@
 @interface BKAverageTimeIntervalEventStatistic
-+ (id)statisticWithLabel:(id)a3 scale:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)statisticWithLabel:(id)label scale:(int64_t)scale;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)end;
 - (void)reset;
-- (void)setValue:(double)a3;
+- (void)setValue:(double)value;
 @end
 
 @implementation BKAverageTimeIntervalEventStatistic
@@ -33,35 +33,35 @@
   [(BKEventStatistic *)self setNeedsLogging:1];
 }
 
-+ (id)statisticWithLabel:(id)a3 scale:(int64_t)a4
++ (id)statisticWithLabel:(id)label scale:(int64_t)scale
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___BKAverageTimeIntervalEventStatistic;
-  v5 = objc_msgSendSuper2(&v7, "statisticWithLabel:", a3);
-  v5[4] = a4;
+  v5 = objc_msgSendSuper2(&v7, "statisticWithLabel:", label);
+  v5[4] = scale;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = BKAverageTimeIntervalEventStatistic;
-  result = [(BKEventStatistic *)&v5 copyWithZone:a3];
+  result = [(BKEventStatistic *)&v5 copyWithZone:zone];
   *(result + 8) = *&self->_value;
   return result;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(BKEventStatistic *)self setNeedsLogging:1];
   }
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   value = self->_value;
   if (value != 0.0)
@@ -100,22 +100,22 @@
     }
 
     v13 = value * v12;
-    v14 = a3;
-    v15 = [(BKEventStatistic *)self label];
-    v16 = [v15 stringByAppendingString:v11];
-    v17 = [v14 appendDouble:v16 withName:2 decimalPrecision:v13];
+    formatterCopy = formatter;
+    label = [(BKEventStatistic *)self label];
+    v16 = [label stringByAppendingString:v11];
+    v17 = [formatterCopy appendDouble:v16 withName:2 decimalPrecision:v13];
 
     v18.receiver = self;
     v18.super_class = BKAverageTimeIntervalEventStatistic;
-    [(BKEventStatistic *)&v18 appendDescriptionToFormatter:v14];
+    [(BKEventStatistic *)&v18 appendDescriptionToFormatter:formatterCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

@@ -1,19 +1,19 @@
 @interface EGStillImageProcessorControllerDelegateNode
 + (id)newProcessorControllerInput;
 + (id)newSbufInput;
-+ (id)newSbufInputWithIndex:(int)a3;
++ (id)newSbufInputWithIndex:(int)index;
 + (id)newSbufOutput;
-+ (id)newSbufOutputWithIndex:(int)a3;
-- (EGStillImageProcessorControllerDelegateNode)initWithName:(id)a3 delegate:(id)a4;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8 dimensionAlignment:(int)a9;
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 dimensions:(id)a6;
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4;
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4;
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4 inferenceInputBufferType:(unint64_t)a5;
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5;
++ (id)newSbufOutputWithIndex:(int)index;
+- (EGStillImageProcessorControllerDelegateNode)initWithName:(id)name delegate:(id)delegate;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions dimensionAlignment:(int)alignment;
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type dimensions:(id)dimensions;
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format;
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input;
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input inferenceInputBufferType:(unint64_t)type;
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err;
 @end
 
 @implementation EGStillImageProcessorControllerDelegateNode
@@ -32,9 +32,9 @@
   return [(EGInput *)v2 initWithName:@"sbuf"];
 }
 
-+ (id)newSbufInputWithIndex:(int)a3
++ (id)newSbufInputWithIndex:(int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v4 = [EGInput alloc];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sbuf%d", v3];
 
@@ -48,34 +48,34 @@
   return [(EGOutput *)v2 initWithName:@"sbuf"];
 }
 
-+ (id)newSbufOutputWithIndex:(int)a3
++ (id)newSbufOutputWithIndex:(int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v4 = [EGStillImageOutput alloc];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sbuf%d", v3];
 
   return [(EGOutput *)v4 initWithName:v5];
 }
 
-- (EGStillImageProcessorControllerDelegateNode)initWithName:(id)a3 delegate:(id)a4
+- (EGStillImageProcessorControllerDelegateNode)initWithName:(id)name delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = EGStillImageProcessorControllerDelegateNode;
-  v5 = [(EGNode *)&v8 initWithName:a3];
+  v5 = [(EGNode *)&v8 initWithName:name];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processingCoordinatorDelegate, a4);
+    objc_storeWeak(&v5->_processingCoordinatorDelegate, delegate);
   }
 
   return v6;
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err
 {
-  if (a5)
+  if (err)
   {
-    v5 = *&a5;
+    v5 = *&err;
     v7 = EGStillImageGraphManagerForGraphElement(self);
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Encountered err:%d in %s", v5, "-[EGStillImageProcessorControllerDelegateNode processorController:didFinishProcessingInput:err:]"];
 
@@ -83,27 +83,27 @@
   }
 }
 
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input
 {
   Weak = objc_loadWeak(&self->_processingCoordinatorDelegate);
 
-  return [Weak processorController:a3 newInferencesForProcessorInput:a4];
+  return [Weak processorController:controller newInferencesForProcessorInput:input];
 }
 
-- (id)processorController:(id)a3 newInferencesForProcessorInput:(id)a4 inferenceInputBufferType:(unint64_t)a5
+- (id)processorController:(id)controller newInferencesForProcessorInput:(id)input inferenceInputBufferType:(unint64_t)type
 {
   Weak = objc_loadWeak(&self->_processingCoordinatorDelegate);
 
-  return [Weak processorController:a3 newInferencesForProcessorInput:a4 inferenceInputBufferType:a5];
+  return [Weak processorController:controller newInferencesForProcessorInput:input inferenceInputBufferType:type];
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_processingCoordinatorDelegate);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = [WeakRetained processorController:a3 newOutputPixelBufferForProcessorInput:a4 type:a5];
+    v10 = [WeakRetained processorController:controller newOutputPixelBufferForProcessorInput:input type:type];
   }
 
   else
@@ -114,7 +114,7 @@
   return v10;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 dimensions:(id)a6
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type dimensions:(id)dimensions
 {
   OUTLINED_FUNCTION_3_46();
   WeakRetained = objc_loadWeakRetained((v6 + 104));
@@ -131,7 +131,7 @@
   return v8;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key
 {
   OUTLINED_FUNCTION_3_46();
   WeakRetained = objc_loadWeakRetained((v6 + 104));
@@ -148,7 +148,7 @@
   return v8;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions
 {
   OUTLINED_FUNCTION_1_61();
   WeakRetained = objc_loadWeakRetained((v8 + 104));
@@ -165,13 +165,13 @@
   return v10;
 }
 
-- (__CVBuffer)processorController:(id)a3 newOutputPixelBufferForProcessorInput:(id)a4 type:(unint64_t)a5 attachedMediaKey:(id)a6 pixelFormat:(unsigned int)a7 dimensions:(id)a8 dimensionAlignment:(int)a9
+- (__CVBuffer)processorController:(id)controller newOutputPixelBufferForProcessorInput:(id)input type:(unint64_t)type attachedMediaKey:(id)key pixelFormat:(unsigned int)format dimensions:(id)dimensions dimensionAlignment:(int)alignment
 {
   OUTLINED_FUNCTION_1_61();
   WeakRetained = objc_loadWeakRetained((v9 + 104));
   if (WeakRetained)
   {
-    LODWORD(v13) = a9;
+    LODWORD(v13) = alignment;
     v11 = [OUTLINED_FUNCTION_0_50() processorController:v13 newOutputPixelBufferForProcessorInput:? type:? attachedMediaKey:? pixelFormat:? dimensions:? dimensionAlignment:?];
   }
 
@@ -183,13 +183,13 @@
   return v11;
 }
 
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format
 {
   WeakRetained = objc_loadWeakRetained(&self->_processingCoordinatorDelegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v8 = [WeakRetained preparedOutputPixelBufferPoolForAttachedMediaKey:a3 format:a4];
+    v8 = [WeakRetained preparedOutputPixelBufferPoolForAttachedMediaKey:key format:format];
   }
 
   else

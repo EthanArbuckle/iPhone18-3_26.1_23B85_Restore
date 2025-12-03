@@ -1,18 +1,18 @@
 @interface UIKeyboardEmojiGraphics
 + (BOOL)isWildcatKeyboard;
-+ (CGPoint)margin:(BOOL)a3;
-+ (CGPoint)padding:(BOOL)a3;
-+ (CGSize)emojiSize:(BOOL)a3;
-+ (double)emojiPageControlYOffset:(BOOL)a3;
-+ (double)optionalDescriptionPadding:(BOOL)a3;
-+ (double)recentLableVerticalPadding:(BOOL)a3;
-+ (id)emojiCategoryImageName:(id)a3 forRenderConfig:(id)a4;
-+ (id)emojiCategoryImagePath:(id)a3 forRenderConfig:(id)a4;
++ (CGPoint)margin:(BOOL)margin;
++ (CGPoint)padding:(BOOL)padding;
++ (CGSize)emojiSize:(BOOL)size;
++ (double)emojiPageControlYOffset:(BOOL)offset;
++ (double)optionalDescriptionPadding:(BOOL)padding;
++ (double)recentLableVerticalPadding:(BOOL)padding;
++ (id)emojiCategoryImageName:(id)name forRenderConfig:(id)config;
++ (id)emojiCategoryImagePath:(id)path forRenderConfig:(id)config;
 + (id)emojiFontAttributes;
-+ (id)emojiFontAttributesForPortrait:(BOOL)a3;
++ (id)emojiFontAttributesForPortrait:(BOOL)portrait;
 + (id)sharedInstance;
-+ (unsigned)colCount:(BOOL)a3;
-+ (unsigned)rowCount:(BOOL)a3;
++ (unsigned)colCount:(BOOL)count;
++ (unsigned)rowCount:(BOOL)count;
 - (UIKeyboardEmojiGraphics)init;
 @end
 
@@ -47,15 +47,15 @@
   return v2;
 }
 
-+ (id)emojiFontAttributesForPortrait:(BOOL)a3
++ (id)emojiFontAttributesForPortrait:(BOOL)portrait
 {
-  v3 = a3;
+  portraitCopy = portrait;
   [UIKeyboardEmojiGraphics emojiSize:1];
   v6 = CTFontCreateWithName(@"AppleColorEmoji", v5, 0);
   v7 = MEMORY[0x1E695DF20];
   v8 = *MEMORY[0x1E6965658];
   v9 = MEMORY[0x1E696AD98];
-  [a1 padding:v3];
+  [self padding:portraitCopy];
   *&v10 = v10;
   v11 = [v9 numberWithFloat:v10];
   v12 = [v7 dictionaryWithObjectsAndKeys:{v6, v8, v11, *MEMORY[0x1E6965A18], 0}];
@@ -70,7 +70,7 @@
   v3 = +[UIKeyboard activeKeyboard];
   v4 = ([v3 interfaceOrientation] - 5) < 0xFFFFFFFFFFFFFFFELL;
 
-  v5 = [a1 emojiFontAttributesForPortrait:v4];
+  v5 = [self emojiFontAttributesForPortrait:v4];
   v6 = emojiFontAttributes_attributes;
   emojiFontAttributes_attributes = v5;
 
@@ -92,11 +92,11 @@
   }
 }
 
-+ (CGSize)emojiSize:(BOOL)a3
++ (CGSize)emojiSize:(BOOL)size
 {
-  v3 = [a1 isWildcatKeyboard];
+  isWildcatKeyboard = [self isWildcatKeyboard];
   v4 = 32.0;
-  if (v3)
+  if (isWildcatKeyboard)
   {
     v4 = 48.0;
   }
@@ -107,14 +107,14 @@
   return result;
 }
 
-+ (unsigned)rowCount:(BOOL)a3
++ (unsigned)rowCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     return 3;
   }
 
-  if ([a1 isWildcatKeyboard])
+  if ([self isWildcatKeyboard])
   {
     return 3;
   }
@@ -122,9 +122,9 @@
   return 2;
 }
 
-+ (unsigned)colCount:(BOOL)a3
++ (unsigned)colCount:(BOOL)count
 {
-  if ([a1 isWildcatKeyboard])
+  if ([self isWildcatKeyboard])
   {
     return 11;
   }
@@ -138,8 +138,8 @@
   else
   {
     v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v7 = [v6 containerView];
-    [v7 bounds];
+    containerView = [v6 containerView];
+    [containerView bounds];
     v5 = v8;
   }
 
@@ -152,12 +152,12 @@
   return llround(v5 / v9);
 }
 
-+ (CGPoint)margin:(BOOL)a3
++ (CGPoint)margin:(BOOL)margin
 {
-  v3 = a3;
-  if ([a1 isWildcatKeyboard])
+  marginCopy = margin;
+  if ([self isWildcatKeyboard])
   {
-    if (v3)
+    if (marginCopy)
     {
       v4 = 20.0;
     }
@@ -168,7 +168,7 @@
     }
 
     v5 = 33.0;
-    if (v3)
+    if (marginCopy)
     {
       v5 = 20.0;
     }
@@ -176,25 +176,25 @@
 
   else
   {
-    v6 = [objc_opt_class() colCount:v3];
+    v6 = [objc_opt_class() colCount:marginCopy];
     v4 = 22.0;
     v5 = 16.0;
     if (v6 <= 0xE)
     {
-      v7 = [objc_opt_class() colCount:v3];
+      v7 = [objc_opt_class() colCount:marginCopy];
       v5 = 29.0;
       if (v7 <= 0xC)
       {
         v4 = 20.0;
-        if ([objc_opt_class() colCount:v3] <= 0xA)
+        if ([objc_opt_class() colCount:marginCopy] <= 0xA)
         {
-          v8 = [objc_opt_class() colCount:v3];
+          v8 = [objc_opt_class() colCount:marginCopy];
           v5 = 7.5;
           if (v8 <= 9)
           {
-            if ([objc_opt_class() colCount:v3] <= 8)
+            if ([objc_opt_class() colCount:marginCopy] <= 8)
             {
-              v9 = [objc_opt_class() colCount:v3];
+              v9 = [objc_opt_class() colCount:marginCopy];
               if (v9 <= 7)
               {
                 v4 = 20.0;
@@ -234,36 +234,36 @@
   return result;
 }
 
-+ (double)recentLableVerticalPadding:(BOOL)a3
++ (double)recentLableVerticalPadding:(BOOL)padding
 {
-  v3 = a3;
-  v4 = [a1 isWildcatKeyboard];
+  paddingCopy = padding;
+  isWildcatKeyboard = [self isWildcatKeyboard];
   result = 0.0;
-  if ((v4 & 1) == 0)
+  if ((isWildcatKeyboard & 1) == 0)
   {
-    if ([objc_opt_class() colCount:v3] > 0xE)
+    if ([objc_opt_class() colCount:paddingCopy] > 0xE)
     {
       return 1.0;
     }
 
-    v6 = [objc_opt_class() colCount:v3];
+    v6 = [objc_opt_class() colCount:paddingCopy];
     result = 2.0;
     if (v6 <= 0xC)
     {
-      if ([objc_opt_class() colCount:v3] > 0xA)
+      if ([objc_opt_class() colCount:paddingCopy] > 0xA)
       {
         return 1.0;
       }
 
-      v7 = [objc_opt_class() colCount:v3];
+      v7 = [objc_opt_class() colCount:paddingCopy];
       result = 1.0;
       if (v7 <= 9)
       {
-        v8 = [objc_opt_class() colCount:v3];
+        v8 = [objc_opt_class() colCount:paddingCopy];
         result = 5.0;
         if (v8 <= 8)
         {
-          v9 = [objc_opt_class() colCount:v3];
+          v9 = [objc_opt_class() colCount:paddingCopy];
           result = 1.0;
           if (v9 > 7)
           {
@@ -277,25 +277,25 @@
   return result;
 }
 
-+ (CGPoint)padding:(BOOL)a3
++ (CGPoint)padding:(BOOL)padding
 {
-  v3 = a3;
-  v4 = [a1 isWildcatKeyboard];
+  paddingCopy = padding;
+  isWildcatKeyboard = [self isWildcatKeyboard];
   v5 = 9.0;
-  if (!v3)
+  if (!paddingCopy)
   {
     v5 = 28.0;
   }
 
   v6 = 43.0;
-  if (v3)
+  if (paddingCopy)
   {
     v6 = 20.0;
   }
 
   v7 = 19.0;
   v8 = 13.0;
-  if (v3)
+  if (paddingCopy)
   {
     v7 = 13.0;
   }
@@ -305,7 +305,7 @@
     v8 = 16.0;
   }
 
-  if (!v4)
+  if (!isWildcatKeyboard)
   {
     v6 = v8;
     v5 = v7;
@@ -316,17 +316,17 @@
   return result;
 }
 
-+ (double)optionalDescriptionPadding:(BOOL)a3
++ (double)optionalDescriptionPadding:(BOOL)padding
 {
-  v3 = a3;
-  v4 = [a1 isWildcatKeyboard];
+  paddingCopy = padding;
+  isWildcatKeyboard = [self isWildcatKeyboard];
   result = 24.0;
-  if (v3)
+  if (paddingCopy)
   {
     result = 8.0;
   }
 
-  if (!v4)
+  if (!isWildcatKeyboard)
   {
     return 9.0;
   }
@@ -334,17 +334,17 @@
   return result;
 }
 
-+ (double)emojiPageControlYOffset:(BOOL)a3
++ (double)emojiPageControlYOffset:(BOOL)offset
 {
-  v3 = a3;
-  v4 = [a1 isWildcatKeyboard];
+  offsetCopy = offset;
+  isWildcatKeyboard = [self isWildcatKeyboard];
   result = 8.0;
-  if (v3)
+  if (offsetCopy)
   {
     result = 4.0;
   }
 
-  if (!v4)
+  if (!isWildcatKeyboard)
   {
     return 4.0;
   }
@@ -352,24 +352,24 @@
   return result;
 }
 
-+ (id)emojiCategoryImagePath:(id)a3 forRenderConfig:(id)a4
++ (id)emojiCategoryImagePath:(id)path forRenderConfig:(id)config
 {
-  v5 = a3;
-  v6 = [a4 lightKeyboard];
-  v7 = [v5 categoryType];
+  pathCopy = path;
+  lightKeyboard = [config lightKeyboard];
+  categoryType = [pathCopy categoryType];
 
   v8 = 0;
-  if (v7 <= 4)
+  if (categoryType <= 4)
   {
-    if (v7 <= 1)
+    if (categoryType <= 1)
     {
-      if (!v7)
+      if (!categoryType)
       {
         v8 = @"emoji_recents.png";
         goto LABEL_28;
       }
 
-      if (v7 != 1)
+      if (categoryType != 1)
       {
         goto LABEL_28;
       }
@@ -379,7 +379,7 @@
       goto LABEL_25;
     }
 
-    if (v7 == 2)
+    if (categoryType == 2)
     {
       v9 = @"emoji_nature_dark.png";
       v10 = @"emoji_nature.png";
@@ -387,9 +387,9 @@
 
     else
     {
-      if (v7 != 3)
+      if (categoryType != 3)
       {
-        v11 = v7 == 4;
+        v11 = categoryType == 4;
         v12 = @"emoji_celebration.png";
         goto LABEL_13;
       }
@@ -401,15 +401,15 @@
 
   else
   {
-    if (v7 <= 7)
+    if (categoryType <= 7)
     {
-      if (v7 == 5)
+      if (categoryType == 5)
       {
         v9 = @"emoji_activity_dark.png";
         v10 = @"emoji_activity.png";
       }
 
-      else if (v7 == 6)
+      else if (categoryType == 6)
       {
         v9 = @"emoji_travel-and-places_dark.png";
         v10 = @"emoji_travel-and-places.png";
@@ -424,15 +424,15 @@
       goto LABEL_25;
     }
 
-    if (v7 == 8)
+    if (categoryType == 8)
     {
       v8 = @"emoji_symbols.png";
       goto LABEL_28;
     }
 
-    if (v7 != 10)
+    if (categoryType != 10)
     {
-      v11 = v7 == 11;
+      v11 = categoryType == 11;
       v12 = @"emoji_symbols.png";
 LABEL_13:
       if (v11)
@@ -453,7 +453,7 @@ LABEL_13:
   }
 
 LABEL_25:
-  if (v6)
+  if (lightKeyboard)
   {
     v9 = v10;
   }
@@ -464,23 +464,23 @@ LABEL_28:
   return v8;
 }
 
-+ (id)emojiCategoryImageName:(id)a3 forRenderConfig:(id)a4
++ (id)emojiCategoryImageName:(id)name forRenderConfig:(id)config
 {
-  v5 = a3;
-  v6 = [a4 lightKeyboard];
-  v7 = [v5 categoryType];
+  nameCopy = name;
+  lightKeyboard = [config lightKeyboard];
+  categoryType = [nameCopy categoryType];
 
-  if (v7 <= 4)
+  if (categoryType <= 4)
   {
-    if (v7 <= 1)
+    if (categoryType <= 1)
     {
-      if (!v7)
+      if (!categoryType)
       {
         v12 = @"clock";
         goto LABEL_29;
       }
 
-      if (v7 != 1)
+      if (categoryType != 1)
       {
         v12 = 0;
         goto LABEL_29;
@@ -492,16 +492,16 @@ LABEL_28:
 
     else
     {
-      if (v7 != 2)
+      if (categoryType != 2)
       {
         v8 = @"emoji.apple";
         v9 = @"emoji.soccer.ball";
-        if (v7 != 4)
+        if (categoryType != 4)
         {
           v9 = 0;
         }
 
-        v10 = v7 == 3;
+        v10 = categoryType == 3;
         goto LABEL_17;
       }
 
@@ -512,35 +512,35 @@ LABEL_28:
 
   else
   {
-    if (v7 > 7)
+    if (categoryType > 7)
     {
       v8 = @"lightbulb";
       v9 = @"lightbulb";
       v11 = @"emoji.heart";
-      if (v7 != 11)
+      if (categoryType != 11)
       {
         v11 = 0;
       }
 
-      if (v7 != 10)
+      if (categoryType != 10)
       {
         v9 = v11;
       }
 
-      v10 = v7 == 8;
+      v10 = categoryType == 8;
       goto LABEL_17;
     }
 
-    if (v7 != 5)
+    if (categoryType != 5)
     {
       v8 = @"emoji.automobile";
       v9 = @"flag";
-      if (v7 != 7)
+      if (categoryType != 7)
       {
         v9 = 0;
       }
 
-      v10 = v7 == 6;
+      v10 = categoryType == 6;
 LABEL_17:
       if (v10)
       {
@@ -559,7 +559,7 @@ LABEL_17:
     v14 = @"emoji.soccer.ball";
   }
 
-  if (v6)
+  if (lightKeyboard)
   {
     v13 = v14;
   }

@@ -1,21 +1,21 @@
 @interface AMSMetricsConsumerIDRotate
-+ (void)rotateWithAccountID:(AMSAccountIdentity *)a3 bag:(AMSBagProtocol *)a4 namespaceList:(NSArray *)a5 completionHandler:(id)a6;
++ (void)rotateWithAccountID:(AMSAccountIdentity *)d bag:(AMSBagProtocol *)bag namespaceList:(NSArray *)list completionHandler:(id)handler;
 @end
 
 @implementation AMSMetricsConsumerIDRotate
 
-+ (void)rotateWithAccountID:(AMSAccountIdentity *)a3 bag:(AMSBagProtocol *)a4 namespaceList:(NSArray *)a5 completionHandler:(id)a6
++ (void)rotateWithAccountID:(AMSAccountIdentity *)d bag:(AMSBagProtocol *)bag namespaceList:(NSArray *)list completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = d;
+  v11[3] = bag;
+  v11[4] = list;
   v11[5] = v10;
-  v11[6] = a1;
-  v12 = a3;
+  v11[6] = self;
+  dCopy = d;
   swift_unknownObjectRetain();
-  v13 = a5;
+  listCopy = list;
 
   sub_1928FB3BC(&unk_192FC6598, v11);
 }

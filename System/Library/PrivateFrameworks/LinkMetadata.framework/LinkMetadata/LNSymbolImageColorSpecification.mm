@@ -1,22 +1,22 @@
 @interface LNSymbolImageColorSpecification
-- (BOOL)isEqual:(id)a3;
-- (LNSymbolImageColorSpecification)initWithCoder:(id)a3;
-- (LNSymbolImageColorSpecification)initWithPlatformSpecificData:(id)a3 platform:(id)a4;
-- (LNSymbolImageColorSpecification)initWithSystemNamedColor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNSymbolImageColorSpecification)initWithCoder:(id)coder;
+- (LNSymbolImageColorSpecification)initWithPlatformSpecificData:(id)data platform:(id)platform;
+- (LNSymbolImageColorSpecification)initWithSystemNamedColor:(id)color;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSymbolImageColorSpecification
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -25,10 +25,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNSymbolImageColorSpecification *)self systemNamedColor];
-    v8 = [(LNSymbolImageColorSpecification *)v6 systemNamedColor];
-    v9 = v7;
-    v10 = v8;
+    systemNamedColor = [(LNSymbolImageColorSpecification *)self systemNamedColor];
+    systemNamedColor2 = [(LNSymbolImageColorSpecification *)v6 systemNamedColor];
+    v9 = systemNamedColor;
+    v10 = systemNamedColor2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -55,10 +55,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNSymbolImageColorSpecification *)self platform];
-    v17 = [(LNSymbolImageColorSpecification *)v6 platform];
-    v14 = v16;
-    v18 = v17;
+    platform = [(LNSymbolImageColorSpecification *)self platform];
+    platform2 = [(LNSymbolImageColorSpecification *)v6 platform];
+    v14 = platform;
+    v18 = platform2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -85,10 +85,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
-    v22 = [(LNSymbolImageColorSpecification *)v6 platformSpecificData];
-    v20 = v21;
-    v23 = v22;
+    platformSpecificData = [(LNSymbolImageColorSpecification *)self platformSpecificData];
+    platformSpecificData2 = [(LNSymbolImageColorSpecification *)v6 platformSpecificData];
+    v20 = platformSpecificData;
+    v23 = platformSpecificData2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -115,12 +115,12 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNSymbolImageColorSpecification *)self systemNamedColor];
-  v4 = [v3 hash];
-  v5 = [(LNSymbolImageColorSpecification *)self platform];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
-  v8 = [v7 hash];
+  systemNamedColor = [(LNSymbolImageColorSpecification *)self systemNamedColor];
+  v4 = [systemNamedColor hash];
+  platform = [(LNSymbolImageColorSpecification *)self platform];
+  v6 = [platform hash] ^ v4;
+  platformSpecificData = [(LNSymbolImageColorSpecification *)self platformSpecificData];
+  v8 = [platformSpecificData hash];
 
   return v6 ^ v8;
 }
@@ -130,41 +130,41 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSymbolImageColorSpecification *)self systemNamedColor];
-  v7 = [(LNSymbolImageColorSpecification *)self platform];
-  v8 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
-  v9 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
-  v10 = [v3 stringWithFormat:@"<%@: %p, systemNamedColor: %@, platform: %@, has platformSpecificData: %d, bytes %lu>", v5, self, v6, v7, v8 != 0, objc_msgSend(v9, "length")];
+  systemNamedColor = [(LNSymbolImageColorSpecification *)self systemNamedColor];
+  platform = [(LNSymbolImageColorSpecification *)self platform];
+  platformSpecificData = [(LNSymbolImageColorSpecification *)self platformSpecificData];
+  platformSpecificData2 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
+  v10 = [v3 stringWithFormat:@"<%@: %p, systemNamedColor: %@, platform: %@, has platformSpecificData: %d, bytes %lu>", v5, self, systemNamedColor, platform, platformSpecificData != 0, objc_msgSend(platformSpecificData2, "length")];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSymbolImageColorSpecification *)self systemNamedColor];
-  [v4 encodeObject:v5 forKey:@"systemNamedColor"];
+  coderCopy = coder;
+  systemNamedColor = [(LNSymbolImageColorSpecification *)self systemNamedColor];
+  [coderCopy encodeObject:systemNamedColor forKey:@"systemNamedColor"];
 
-  v6 = [(LNSymbolImageColorSpecification *)self platformSpecificData];
-  [v4 encodeObject:v6 forKey:@"platformSpecificData"];
+  platformSpecificData = [(LNSymbolImageColorSpecification *)self platformSpecificData];
+  [coderCopy encodeObject:platformSpecificData forKey:@"platformSpecificData"];
 
-  v7 = [(LNSymbolImageColorSpecification *)self platform];
-  [v4 encodeObject:v7 forKey:@"platform"];
+  platform = [(LNSymbolImageColorSpecification *)self platform];
+  [coderCopy encodeObject:platform forKey:@"platform"];
 }
 
-- (LNSymbolImageColorSpecification)initWithCoder:(id)a3
+- (LNSymbolImageColorSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemNamedColor"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformSpecificData"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemNamedColor"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformSpecificData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
 
   if (v5)
   {
     v8 = [(LNSymbolImageColorSpecification *)self initWithSystemNamedColor:v5];
 LABEL_9:
     self = v8;
-    v10 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -184,39 +184,39 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (LNSymbolImageColorSpecification)initWithPlatformSpecificData:(id)a3 platform:(id)a4
+- (LNSymbolImageColorSpecification)initWithPlatformSpecificData:(id)data platform:(id)platform
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  platformCopy = platform;
   v12.receiver = self;
   v12.super_class = LNSymbolImageColorSpecification;
   v9 = [(LNSymbolImageColorSpecification *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_platformSpecificData, a3);
-    objc_storeStrong(&v10->_platform, a4);
+    objc_storeStrong(&v9->_platformSpecificData, data);
+    objc_storeStrong(&v10->_platform, platform);
   }
 
   return v10;
 }
 
-- (LNSymbolImageColorSpecification)initWithSystemNamedColor:(id)a3
+- (LNSymbolImageColorSpecification)initWithSystemNamedColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = LNSymbolImageColorSpecification;
   v6 = [(LNSymbolImageColorSpecification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemNamedColor, a3);
+    objc_storeStrong(&v6->_systemNamedColor, color);
   }
 
   return v7;

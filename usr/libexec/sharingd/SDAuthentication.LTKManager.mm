@@ -14,10 +14,10 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _StringGuts.grow(_:)(45);
 
-  String.append(_:)(*(&v2->super.isa + OBJC_IVAR____TtCV16DaemoniOSLibrary16SDAuthentication10LTKManager_localDeviceID));
+  String.append(_:)(*(&selfCopy->super.isa + OBJC_IVAR____TtCV16DaemoniOSLibrary16SDAuthentication10LTKManager_localDeviceID));
   v3._countAndFlagsBits = 10;
   v3._object = 0xE100000000000000;
   String.append(_:)(v3);

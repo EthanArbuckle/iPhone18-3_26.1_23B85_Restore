@@ -1,10 +1,10 @@
 @interface CRXCPrescriptionRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCPrescriptionRecord)init;
 - (NSData)accPayload;
 - (NSDate)enrollmentDate;
 - (NSString)enrollmentName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCPrescriptionRecord
@@ -52,11 +52,11 @@
   return v8.super.isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -65,7 +65,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCPrescriptionRecord.isEqual(_:)(v8);
@@ -74,11 +74,11 @@
   return v6 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCPrescriptionRecord.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCPrescriptionRecord.encode(with:)(coderCopy);
 }
 
 - (CRXCPrescriptionRecord)init

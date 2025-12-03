@@ -1,56 +1,56 @@
 @interface DDSTrialExperimentIdentifiers
-- (DDSTrialExperimentIdentifiers)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DDSTrialExperimentIdentifiers)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDSTrialExperimentIdentifiers
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[TRIExperimentIdentifiers deploymentId](self forKey:{"deploymentId"), @"deploymentId"}];
-  v5 = [(TRIExperimentIdentifiers *)self experimentId];
-  [v4 encodeObject:v5 forKey:@"experimentId"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[TRIExperimentIdentifiers deploymentId](self forKey:{"deploymentId"), @"deploymentId"}];
+  experimentId = [(TRIExperimentIdentifiers *)self experimentId];
+  [coderCopy encodeObject:experimentId forKey:@"experimentId"];
 
-  v6 = [(TRIExperimentIdentifiers *)self treatmentId];
-  [v4 encodeObject:v6 forKey:@"treatmentId"];
+  treatmentId = [(TRIExperimentIdentifiers *)self treatmentId];
+  [coderCopy encodeObject:treatmentId forKey:@"treatmentId"];
 }
 
-- (DDSTrialExperimentIdentifiers)initWithCoder:(id)a3
+- (DDSTrialExperimentIdentifiers)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"deploymentId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"deploymentId"];
   if (v5 < 1)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v6 = v5;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"treatmentId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"treatmentId"];
     if (v7)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
       if (v8)
       {
         self = [(DDSTrialExperimentIdentifiers *)self initWithExperimentId:v8 treatmentId:v7 deploymentId:v6];
-        v9 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v9 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface CHIDSServiceDelegate
-- (CHIDSServiceDelegate)initWithDatabase:(id)a3;
+- (CHIDSServiceDelegate)initWithDatabase:(id)database;
 - (void)checkForBootstrapDeviceChanges;
 - (void)dealloc;
-- (void)devicesChanged:(id)a3 shouldRemoveUnregisteredDevices:(BOOL)a4;
-- (void)handleTransactionData:(id)a3 withConfigurationData:(id)a4;
-- (void)rememberBootstrappedDevices:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)devicesChanged:(id)changed shouldRemoveUnregisteredDevices:(BOOL)devices;
+- (void)handleTransactionData:(id)data withConfigurationData:(id)configurationData;
+- (void)rememberBootstrappedDevices:(id)devices;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
 - (void)setupBootstrappedDevices;
 - (void)startInitialSync;
 - (void)startReunionSync;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation CHIDSServiceDelegate
 
-- (CHIDSServiceDelegate)initWithDatabase:(id)a3
+- (CHIDSServiceDelegate)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v22.receiver = self;
   v22.super_class = CHIDSServiceDelegate;
   v6 = [(CHIDSServiceDelegate *)&v22 initWithName:"IDSService"];
   v7 = v6;
   if (v6)
   {
-    v8 = [(CHIDSServiceDelegate *)v6 logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHIDSServiceDelegate *)v6 logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v24 = @"com.apple.private.alloy.callhistorysync";
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating service with identifier %{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Creating service with identifier %{public}@", buf, 0xCu);
     }
 
     v9 = [NSString stringWithFormat:@"%@.devices", @"com.apple.private.alloy.callhistorysync"];
@@ -43,7 +43,7 @@
     v7->_peerDevices = v10;
 
     v7->_configuration = sub_100017700();
-    objc_storeStrong(&v7->_database, a3);
+    objc_storeStrong(&v7->_database, database);
     v12 = [[CHPairedSyncCoordinator alloc] initWithDelegate:v7];
     coordinator = v7->_coordinator;
     v7->_coordinator = v12;
@@ -53,18 +53,18 @@
     v7->_service = v14;
 
     v16 = v7->_service;
-    v17 = [(CHIDSServiceDelegate *)v7 queue];
-    [(IDSService *)v16 addDelegate:v7 queue:v17];
+    queue = [(CHIDSServiceDelegate *)v7 queue];
+    [(IDSService *)v16 addDelegate:v7 queue:queue];
 
     xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, &stru_100051658);
     [(CHIDSServiceDelegate *)v7 setupBootstrappedDevices];
-    v18 = [(CHIDSServiceDelegate *)v7 queue];
+    queue2 = [(CHIDSServiceDelegate *)v7 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001958C;
     block[3] = &unk_100050FA0;
     v21 = v7;
-    dispatch_async(v18, block);
+    dispatch_async(queue2, block);
   }
 
   return v7;
@@ -78,16 +78,16 @@
   [(CHIDSServiceDelegate *)&v3 dealloc];
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100019BD8;
   v4[3] = &unk_100050E90;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CHIDSServiceDelegate *)v5 execute:v4];
+  selfCopy = self;
+  updateCopy = update;
+  v3 = updateCopy;
+  [(CHIDSServiceDelegate *)selfCopy execute:v4];
 }
 
 - (void)setupBootstrappedDevices
@@ -95,54 +95,54 @@
   if (self->_configuration == 1)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
-    v4 = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
-    v13 = v4;
+    persistedDeviceListKey = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
+    v13 = persistedDeviceListKey;
     v14 = &__NSArray0__struct;
     v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     [v3 registerDefaults:v5];
 
-    v6 = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
-    v7 = [v3 arrayForKey:v6];
+    persistedDeviceListKey2 = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
+    v7 = [v3 arrayForKey:persistedDeviceListKey2];
     [(CHIDSServiceDelegate *)self setBootstrappedDeviceUuids:v7];
 
-    v8 = [(CHIDSServiceDelegate *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CHIDSServiceDelegate *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
+      bootstrappedDeviceUuids = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
       v11 = 134217984;
-      v12 = [v9 count];
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Initial set of bootstrapped uuids %lu", &v11, 0xCu);
+      v12 = [bootstrappedDeviceUuids count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Initial set of bootstrapped uuids %lu", &v11, 0xCu);
     }
 
-    v10 = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
-    sub_100019F14(v10);
+    bootstrappedDeviceUuids2 = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
+    sub_100019F14(bootstrappedDeviceUuids2);
   }
 }
 
-- (void)rememberBootstrappedDevices:(id)a3
+- (void)rememberBootstrappedDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  devicesCopy = devices;
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = [v4 count];
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remembering %lu bootstrapped devices", &v8, 0xCu);
+    v9 = [devicesCopy count];
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Remembering %lu bootstrapped devices", &v8, 0xCu);
   }
 
-  sub_100019F14(v4);
-  [(CHIDSServiceDelegate *)self setBootstrappedDeviceUuids:v4];
+  sub_100019F14(devicesCopy);
+  [(CHIDSServiceDelegate *)self setBootstrappedDeviceUuids:devicesCopy];
   v6 = +[NSUserDefaults standardUserDefaults];
-  v7 = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
-  [v6 setObject:v4 forKey:v7];
+  persistedDeviceListKey = [(CHIDSServiceDelegate *)self persistedDeviceListKey];
+  [v6 setObject:devicesCopy forKey:persistedDeviceListKey];
 
   [v6 synchronize];
 }
 
 - (void)checkForBootstrapDeviceChanges
 {
-  v3 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_configuration == 1)
   {
@@ -172,26 +172,26 @@
         }
 
         v9 = [(NSMutableDictionary *)self->_peerDevices objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i), v19];
-        v10 = [v9 device];
-        v11 = [v10 uniqueIDOverride];
-        v12 = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
-        v13 = [v12 containsObject:v11];
+        device = [v9 device];
+        uniqueIDOverride = [device uniqueIDOverride];
+        bootstrappedDeviceUuids = [(CHIDSServiceDelegate *)self bootstrappedDeviceUuids];
+        v13 = [bootstrappedDeviceUuids containsObject:uniqueIDOverride];
 
         if (v13)
         {
-          [v21 addObject:v11];
-          v14 = [(CHIDSServiceDelegate *)self logHandle];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          [v21 addObject:uniqueIDOverride];
+          logHandle = [(CHIDSServiceDelegate *)self logHandle];
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v10 name];
-            v16 = [v10 modelIdentifier];
+            name = [device name];
+            modelIdentifier = [device modelIdentifier];
             *buf = 138412802;
-            v27 = v11;
+            v27 = uniqueIDOverride;
             v28 = 2112;
-            v29 = v15;
+            v29 = name;
             v30 = 2112;
-            v31 = v16;
-            _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Already sent bootstrap data store device(%@) to name(%@) model(%@)", buf, 0x20u);
+            v31 = modelIdentifier;
+            _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Already sent bootstrap data store device(%@) to name(%@) model(%@)", buf, 0x20u);
           }
 
 LABEL_16:
@@ -199,16 +199,16 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v17 = [(CHPairedSyncCoordinator *)self->_coordinator isSessionActive];
-        v14 = [(CHIDSServiceDelegate *)self logHandle];
-        v18 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-        if (!v17)
+        isSessionActive = [(CHPairedSyncCoordinator *)self->_coordinator isSessionActive];
+        logHandle = [(CHIDSServiceDelegate *)self logHandle];
+        v18 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT);
+        if (!isSessionActive)
         {
           if (v18)
           {
             *buf = v19;
-            v27 = v11;
-            _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Delaying bootstrapping of device %{public}@ until Paired Sync Coordinator starts", buf, 0xCu);
+            v27 = uniqueIDOverride;
+            _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Delaying bootstrapping of device %{public}@ until Paired Sync Coordinator starts", buf, 0xCu);
           }
 
           goto LABEL_16;
@@ -217,10 +217,10 @@ LABEL_16:
         if (v18)
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Paired Sync Coordinator already requested a full sync, starting sync now", buf, 2u);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Paired Sync Coordinator already requested a full sync, starting sync now", buf, 2u);
         }
 
-        [v21 addObject:v11];
+        [v21 addObject:uniqueIDOverride];
         [v9 sendBootstrapDataStoreWithService:self->_service];
 LABEL_17:
       }
@@ -237,15 +237,15 @@ LABEL_19:
   }
 }
 
-- (void)handleTransactionData:(id)a3 withConfigurationData:(id)a4
+- (void)handleTransactionData:(id)data withConfigurationData:(id)configurationData
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  dataCopy = data;
+  configurationDataCopy = configurationData;
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "handling transaction data", buf, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "handling transaction data", buf, 2u);
   }
 
   objc_opt_class();
@@ -254,21 +254,21 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v7 intValue] == 1 && self->_configuration == 1)
+      if ([configurationDataCopy intValue] == 1 && self->_configuration == 1)
       {
-        v9 = [(CHIDSServiceDelegate *)self logHandle];
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
         {
           *v29 = 0;
-          _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Dropping transaction from peer IDS device configured as server", v29, 2u);
+          _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Dropping transaction from peer IDS device configured as server", v29, 2u);
         }
       }
 
       else
       {
-        v9 = [[PBDataReader alloc] initWithData:v6];
+        logHandle2 = [[PBDataReader alloc] initWithData:dataCopy];
         v24 = objc_opt_new();
-        sub_100009474(v24, v9);
+        sub_100009474(v24, logHandle2);
         v25 = sub_10001CB84(v24);
         v26 = objc_opt_new();
         [v26 setObject:v25 forKeyedSubscript:@"kCHRemoteTransactionsKey"];
@@ -282,53 +282,53 @@ LABEL_19:
 
     else
     {
-      v9 = [(CHIDSServiceDelegate *)self logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
-        sub_100033CA0(v9, v17, v18, v19, v20, v21, v22, v23);
+        sub_100033CA0(logHandle2, v17, v18, v19, v20, v21, v22, v23);
       }
     }
   }
 
   else
   {
-    v9 = [(CHIDSServiceDelegate *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
-      sub_100033C28(v9, v10, v11, v12, v13, v14, v15, v16);
+      sub_100033C28(logHandle2, v10, v11, v12, v13, v14, v15, v16);
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v17);
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v18 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v38 = 138544386;
-    v39 = v12;
+    v39 = serviceCopy;
     v40 = 2114;
-    v41 = v13;
+    v41 = accountCopy;
     v42 = 2114;
-    v43 = v14;
+    v43 = messageCopy;
     v44 = 2114;
-    v45 = v15;
+    v45 = dCopy;
     v46 = 2114;
-    v47 = v16;
-    _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Received service %{public}@ account %{public}@ incoming message: %{public}@ fromID: %{public}@ context: %{public}@", &v38, 0x34u);
+    v47 = contextCopy;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received service %{public}@ account %{public}@ incoming message: %{public}@ fromID: %{public}@ context: %{public}@", &v38, 0x34u);
   }
 
   if (self->_configuration)
   {
-    v19 = [v14 objectForKeyedSubscript:@"ProtobufTransactions"];
+    v19 = [messageCopy objectForKeyedSubscript:@"ProtobufTransactions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -337,22 +337,22 @@ LABEL_19:
 
     else
     {
-      v22 = [(CHIDSServiceDelegate *)self logHandle];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
-        sub_100033D18(v14, v22, v23, v24, v25, v26, v27, v28);
+        sub_100033D18(messageCopy, logHandle2, v23, v24, v25, v26, v27, v28);
       }
 
       v20 = 0;
     }
 
-    v29 = [v14 objectForKeyedSubscript:@"Configuration"];
+    v29 = [messageCopy objectForKeyedSubscript:@"Configuration"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v30 = v29;
-      v21 = v30;
+      logHandle4 = v30;
       if (v20 && v30)
       {
         [(CHIDSServiceDelegate *)self handleTransactionData:v20 withConfigurationData:v30];
@@ -361,50 +361,50 @@ LABEL_19:
 
     else
     {
-      v31 = [(CHIDSServiceDelegate *)self logHandle];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+      logHandle3 = [(CHIDSServiceDelegate *)self logHandle];
+      if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
       {
-        sub_100033D84(v14, v31, v32, v33, v34, v35, v36, v37);
+        sub_100033D84(messageCopy, logHandle3, v32, v33, v34, v35, v36, v37);
       }
 
-      v21 = 0;
+      logHandle4 = 0;
     }
   }
 
   else
   {
-    v21 = [(CHIDSServiceDelegate *)self logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    logHandle4 = [(CHIDSServiceDelegate *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v38) = 0;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "IDS service disabled, dropping message!", &v38, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "IDS service disabled, dropping message!", &v38, 2u);
     }
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  changedCopy = changed;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     peerDevices = self->_peerDevices;
     if (peerDevices)
     {
       v9 = [(NSMutableDictionary *)peerDevices count];
-      if (v5)
+      if (changedCopy)
       {
 LABEL_4:
-        v10 = [v5 count];
+        v10 = [changedCopy count];
 LABEL_7:
         v11 = 134218240;
         v12 = v9;
         v13 = 2048;
         v14 = v10;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Device registration change: had %lu devices, now have %lu devices", &v11, 0x16u);
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Device registration change: had %lu devices, now have %lu devices", &v11, 0x16u);
         goto LABEL_8;
       }
     }
@@ -412,7 +412,7 @@ LABEL_7:
     else
     {
       v9 = 0;
-      if (v5)
+      if (changedCopy)
       {
         goto LABEL_4;
       }
@@ -424,32 +424,32 @@ LABEL_7:
 
 LABEL_8:
 
-  [(CHIDSServiceDelegate *)self devicesChanged:v5 shouldRemoveUnregisteredDevices:1];
+  [(CHIDSServiceDelegate *)self devicesChanged:changedCopy shouldRemoveUnregisteredDevices:1];
   [(CHIDSServiceDelegate *)self checkForBootstrapDeviceChanges];
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  changedCopy = changed;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Nearby devices changed", v8, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Nearby devices changed", v8, 2u);
   }
 
-  [(CHIDSServiceDelegate *)self devicesChanged:v5 shouldRemoveUnregisteredDevices:0];
+  [(CHIDSServiceDelegate *)self devicesChanged:changedCopy shouldRemoveUnregisteredDevices:0];
   [(CHIDSServiceDelegate *)self checkForBootstrapDeviceChanges];
 }
 
-- (void)devicesChanged:(id)a3 shouldRemoveUnregisteredDevices:(BOOL)a4
+- (void)devicesChanged:(id)changed shouldRemoveUnregisteredDevices:(BOOL)devices
 {
-  v67 = a3;
-  v5 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v80 = 0u;
   v81 = 0u;
@@ -468,7 +468,7 @@ LABEL_8:
   v65 = *v79;
   *&v7 = 138543618;
   v61 = v7;
-  v66 = self;
+  selfCopy = self;
   obj = v6;
   do
   {
@@ -484,8 +484,8 @@ LABEL_8:
       v75 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v10 = v67;
-      v11 = [v10 countByEnumeratingWithState:&v74 objects:v87 count:16];
+      logHandle = changedCopy;
+      v11 = [logHandle countByEnumeratingWithState:&v74 objects:v87 count:16];
       if (v11)
       {
         v12 = v11;
@@ -496,23 +496,23 @@ LABEL_8:
           {
             if (*v75 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(logHandle);
             }
 
             v15 = *(*(&v74 + 1) + 8 * j);
-            v16 = [v9 device];
-            v17 = [v16 uniqueIDOverride];
-            v18 = [v15 uniqueIDOverride];
-            v19 = [v17 isEqualToString:v18];
+            device = [v9 device];
+            uniqueIDOverride = [device uniqueIDOverride];
+            uniqueIDOverride2 = [v15 uniqueIDOverride];
+            v19 = [uniqueIDOverride isEqualToString:uniqueIDOverride2];
 
             if (v19)
             {
-              self = v66;
+              self = selfCopy;
               goto LABEL_23;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v74 objects:v87 count:16];
+          v12 = [logHandle countByEnumeratingWithState:&v74 objects:v87 count:16];
           if (v12)
           {
             continue;
@@ -522,49 +522,49 @@ LABEL_8:
         }
       }
 
-      if (!a4)
+      if (!devices)
       {
         [v9 setStatus:0];
-        self = v66;
-        v10 = [(CHIDSServiceDelegate *)v66 logHandle];
-        if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        self = selfCopy;
+        logHandle = [(CHIDSServiceDelegate *)selfCopy logHandle];
+        if (!os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_23;
         }
 
-        v23 = [v9 device];
-        v24 = [v23 uniqueIDOverride];
+        device2 = [v9 device];
+        uniqueIDOverride3 = [device2 uniqueIDOverride];
         v28 = sub_10001D0E0([v9 status]);
         *buf = v61;
-        v84 = v24;
+        v84 = uniqueIDOverride3;
         v85 = 2082;
         v86 = v28;
-        v25 = v10;
+        v25 = logHandle;
         v26 = "Device %{public}@ disappeared, set status to %{public}s";
         v27 = 22;
         goto LABEL_22;
       }
 
-      self = v66;
+      self = selfCopy;
       v20 = v63;
       if (!v63)
       {
         v20 = objc_opt_new();
       }
 
-      v21 = [v9 device];
-      v22 = [v21 uniqueIDOverride];
+      device3 = [v9 device];
+      uniqueIDOverride4 = [device3 uniqueIDOverride];
       v63 = v20;
-      [v20 addObject:v22];
+      [v20 addObject:uniqueIDOverride4];
 
-      v10 = [(CHIDSServiceDelegate *)v66 logHandle];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(CHIDSServiceDelegate *)selfCopy logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v9 device];
-        v24 = [v23 uniqueIDOverride];
+        device2 = [v9 device];
+        uniqueIDOverride3 = [device2 uniqueIDOverride];
         *buf = 138543362;
-        v84 = v24;
-        v25 = v10;
+        v84 = uniqueIDOverride3;
+        v25 = logHandle;
         v26 = "Device %{public}@ unregistered, removing from bootstrap list";
         v27 = 12;
 LABEL_22:
@@ -594,7 +594,7 @@ LABEL_29:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v29 = v67;
+  v29 = changedCopy;
   v30 = [v29 countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v30)
   {
@@ -616,24 +616,24 @@ LABEL_29:
         if ([v35 isDefaultPairedDevice])
         {
           peerDevices = self->_peerDevices;
-          v37 = [v35 uniqueIDOverride];
-          v38 = [(NSMutableDictionary *)peerDevices objectForKeyedSubscript:v37];
+          uniqueIDOverride5 = [v35 uniqueIDOverride];
+          logHandle5 = [(NSMutableDictionary *)peerDevices objectForKeyedSubscript:uniqueIDOverride5];
 
-          if (v38)
+          if (logHandle5)
           {
-            if ([v38 status])
+            if ([logHandle5 status])
             {
-              v39 = [(CHIDSServiceDelegate *)self logHandle];
-              if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+              logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+              if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
               {
-                v40 = [v35 uniqueIDOverride];
-                v41 = sub_10001D0E0([v38 status]);
+                uniqueIDOverride6 = [v35 uniqueIDOverride];
+                v41 = sub_10001D0E0([logHandle5 status]);
                 *buf = 138543618;
-                v84 = v40;
+                v84 = uniqueIDOverride6;
                 v85 = 2082;
                 v86 = v41;
                 v42 = v32;
-                v43 = v39;
+                v43 = logHandle2;
                 v44 = "Device %{public}@ status remaining at %{public}s";
                 goto LABEL_50;
               }
@@ -643,17 +643,17 @@ LABEL_29:
 
             if (![v35 isNearby])
             {
-              v39 = [(CHIDSServiceDelegate *)self logHandle];
-              if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+              logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+              if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
               {
-                v40 = [v35 uniqueIDOverride];
-                v60 = sub_10001D0E0([v38 status]);
+                uniqueIDOverride6 = [v35 uniqueIDOverride];
+                v60 = sub_10001D0E0([logHandle5 status]);
                 *buf = 138543618;
-                v84 = v40;
+                v84 = uniqueIDOverride6;
                 v85 = 2082;
                 v86 = v60;
                 v42 = v32;
-                v43 = v39;
+                v43 = logHandle2;
                 v44 = "Device %{public}@ is NOT nearby, leaving status as %{public}s";
 LABEL_50:
                 _os_log_impl(v42, v43, OS_LOG_TYPE_DEFAULT, v44, buf, 0x16u);
@@ -664,33 +664,33 @@ LABEL_51:
               goto LABEL_52;
             }
 
-            [v38 setStatus:2];
-            v57 = [(CHIDSServiceDelegate *)self logHandle];
-            if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+            [logHandle5 setStatus:2];
+            logHandle3 = [(CHIDSServiceDelegate *)self logHandle];
+            if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
             {
-              v58 = [v35 uniqueIDOverride];
-              v59 = sub_10001D0E0([v38 status]);
+              uniqueIDOverride7 = [v35 uniqueIDOverride];
+              v59 = sub_10001D0E0([logHandle5 status]);
               *buf = 138543618;
-              v84 = v58;
+              v84 = uniqueIDOverride7;
               v85 = 2082;
               v86 = v59;
-              _os_log_impl(v32, v57, OS_LOG_TYPE_DEFAULT, "Device %{public}@ is nearby, changing status to %{public}s", buf, 0x16u);
+              _os_log_impl(v32, logHandle3, OS_LOG_TYPE_DEFAULT, "Device %{public}@ is nearby, changing status to %{public}s", buf, 0x16u);
             }
 
-            [v38 flushTransactionsWithService:self->_service];
+            [logHandle5 flushTransactionsWithService:self->_service];
           }
 
           else
           {
             v47 = v33;
             v48 = v29;
-            v49 = [(CHIDSServiceDelegate *)self logHandle];
-            if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
+            logHandle4 = [(CHIDSServiceDelegate *)self logHandle];
+            if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v35 uniqueIDOverride];
+              uniqueIDOverride8 = [v35 uniqueIDOverride];
               *buf = 138543362;
-              v84 = v50;
-              _os_log_impl(v32, v49, OS_LOG_TYPE_DEFAULT, "Adding new peer device %{public}@", buf, 0xCu);
+              v84 = uniqueIDOverride8;
+              _os_log_impl(v32, logHandle4, OS_LOG_TYPE_DEFAULT, "Adding new peer device %{public}@", buf, 0xCu);
             }
 
             v51 = [[CHIDSPeerDevice alloc] initWithDevice:v35 withPairedSyncCoordinator:self->_coordinator withConfiguration:self->_configuration];
@@ -701,8 +701,8 @@ LABEL_51:
 
             v32 = v53;
             v55 = self->_peerDevices;
-            v56 = [v35 uniqueIDOverride];
-            [(NSMutableDictionary *)v55 setObject:v51 forKey:v56];
+            uniqueIDOverride9 = [v35 uniqueIDOverride];
+            [(NSMutableDictionary *)v55 setObject:v51 forKey:uniqueIDOverride9];
 
             v29 = v48;
             v33 = v47;
@@ -712,16 +712,16 @@ LABEL_51:
 
         else
         {
-          v38 = [(CHIDSServiceDelegate *)self logHandle];
-          if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+          logHandle5 = [(CHIDSServiceDelegate *)self logHandle];
+          if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
           {
-            v45 = [v35 name];
-            v46 = [v35 uniqueIDOverride];
+            name = [v35 name];
+            uniqueIDOverride10 = [v35 uniqueIDOverride];
             *buf = 138543618;
-            v84 = v45;
+            v84 = name;
             v85 = 2114;
-            v86 = v46;
-            _os_log_impl(v32, v38, OS_LOG_TYPE_DEFAULT, "Skipping device (not default-paired) name(%{public}@) id(%{public}@)", buf, 0x16u);
+            v86 = uniqueIDOverride10;
+            _os_log_impl(v32, logHandle5, OS_LOG_TYPE_DEFAULT, "Skipping device (not default-paired) name(%{public}@) id(%{public}@)", buf, 0x16u);
           }
         }
 
@@ -740,21 +740,21 @@ LABEL_52:
   sub_100019894(self->_peerDevices);
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  changedCopy = changed;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CHIDSServiceDelegate *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v33 = [v5 count];
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "activeAccountsChanged: %lu", buf, 0xCu);
+    v33 = [changedCopy count];
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "activeAccountsChanged: %lu", buf, 0xCu);
   }
 
-  v8 = v5;
+  v8 = changedCopy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -783,15 +783,15 @@ LABEL_52:
         v17 = v16;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v14 loginID];
-          v19 = [v14 serviceName];
-          v20 = [v14 isActive];
+          loginID = [v14 loginID];
+          serviceName = [v14 serviceName];
+          isActive = [v14 isActive];
           *v26 = v21;
-          v27 = v18;
+          v27 = loginID;
           v28 = 2112;
-          v29 = v19;
+          v29 = serviceName;
           v30 = 1024;
-          v31 = v20;
+          v31 = isActive;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "loginID(%@) serviceName(%@) isActive(%d)", v26, 0x1Cu);
         }
 
@@ -806,65 +806,65 @@ LABEL_52:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CHIDSServiceDelegate *)self queue];
-  dispatch_assert_queue_V2(v11);
+  lCopy = l;
+  dCopy = d;
+  queue = [(CHIDSServiceDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   configuration = self->_configuration;
-  v13 = [(CHIDSServiceDelegate *)self logHandle];
-  v14 = v13;
+  logHandle = [(CHIDSServiceDelegate *)self logHandle];
+  v14 = logHandle;
   if (configuration == 2)
   {
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543618;
-      v17 = v9;
+      v17 = lCopy;
       v18 = 2114;
-      v19 = v10;
+      v19 = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "incomingResourceAtURL(%{public}@) from %{public}@", &v16, 0x16u);
     }
 
     v14 = os_transaction_create();
-    if ([(CallHistoryDBClientHandle *)self->_database moveCallRecordsFromDatabaseAtURL:v9])
+    if ([(CallHistoryDBClientHandle *)self->_database moveCallRecordsFromDatabaseAtURL:lCopy])
     {
-      v15 = [(CHIDSServiceDelegate *)self logHandle];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(CHIDSServiceDelegate *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v16) = 0;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Successfully migrated bootstrap data store", &v16, 2u);
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Successfully migrated bootstrap data store", &v16, 2u);
       }
     }
   }
 
-  else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
-    sub_100033DF0(v9, &self->_configuration, v14);
+    sub_100033DF0(lCopy, &self->_configuration, v14);
   }
 }
 
 - (void)startInitialSync
 {
-  v3 = [(CHIDSServiceDelegate *)self queue];
+  queue = [(CHIDSServiceDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B8C0;
   block[3] = &unk_100050FA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)startReunionSync
 {
-  v3 = [(CHIDSServiceDelegate *)self queue];
+  queue = [(CHIDSServiceDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BD6C;
   block[3] = &unk_100050FA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 @end

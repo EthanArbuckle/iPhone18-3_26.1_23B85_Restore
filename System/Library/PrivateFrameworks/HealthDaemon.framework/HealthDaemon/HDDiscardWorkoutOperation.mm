@@ -1,19 +1,19 @@
 @interface HDDiscardWorkoutOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDDiscardWorkoutOperation)initWithBuilderIdentifier:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDDiscardWorkoutOperation)initWithBuilderIdentifier:(id)identifier;
 @end
 
 @implementation HDDiscardWorkoutOperation
 
-- (HDDiscardWorkoutOperation)initWithBuilderIdentifier:(id)a3
+- (HDDiscardWorkoutOperation)initWithBuilderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HDDiscardWorkoutOperation;
   v5 = [(HDDiscardWorkoutOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     builderIdentifier = v5->_builderIdentifier;
     v5->_builderIdentifier = v6;
   }
@@ -21,16 +21,16 @@
   return v5;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   builderIdentifier = self->_builderIdentifier;
-  v7 = a3;
+  profileCopy = profile;
   v8 = HDPredicateForWorkoutBuilderWithIdentifier(builderIdentifier);
   v9 = objc_opt_class();
-  v10 = [v7 database];
+  database = [profileCopy database];
 
-  LOBYTE(a5) = [v9 deleteEntitiesWithPredicate:v8 healthDatabase:v10 error:a5];
-  return a5;
+  LOBYTE(error) = [v9 deleteEntitiesWithPredicate:v8 healthDatabase:database error:error];
+  return error;
 }
 
 @end

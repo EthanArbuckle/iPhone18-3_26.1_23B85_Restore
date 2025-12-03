@@ -1,10 +1,10 @@
 @interface _LSCurrentBundleProxyQuery
 + (id)currentBundleProxyQuery;
-- (BOOL)isEqual:(id)a3;
-- (_LSCurrentBundleProxyQuery)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LSCurrentBundleProxyQuery)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSCurrentBundleProxyQuery
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __53___LSCurrentBundleProxyQuery_currentBundleProxyQuery__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[_LSCurrentBundleProxyQuery currentBundleProxyQuery]::once != -1)
   {
     dispatch_once(&+[_LSCurrentBundleProxyQuery currentBundleProxyQuery]::once, block);
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  connectionCopy = connection;
+  blockCopy = block;
+  if (!connectionCopy)
   {
     v8 = _LSGetMainBundleURL();
     if (v8)
@@ -44,8 +44,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v5 _xpcConnection];
-  v8 = _LSCopyBundleURLForXPCConnection(v7, 1);
+  _xpcConnection = [connectionCopy _xpcConnection];
+  v8 = _LSCopyBundleURLForXPCConnection(_xpcConnection, 1);
 
   if (!v8)
   {
@@ -58,15 +58,15 @@ LABEL_3:
   v10 = v12;
   v11 = v9;
 LABEL_6:
-  v6[2](v6, v11, v10);
+  blockCopy[2](blockCopy, v11, v10);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _LSCurrentBundleProxyQuery;
-  if ([(_LSQuery *)&v7 isEqual:v4])
+  if ([(_LSQuery *)&v7 isEqual:equalCopy])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -88,18 +88,18 @@ LABEL_6:
   return [(_LSQuery *)&v5 hash]^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = _LSCurrentBundleProxyQuery;
-  [(_LSQuery *)&v3 encodeWithCoder:a3];
+  [(_LSQuery *)&v3 encodeWithCoder:coder];
 }
 
-- (_LSCurrentBundleProxyQuery)initWithCoder:(id)a3
+- (_LSCurrentBundleProxyQuery)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _LSCurrentBundleProxyQuery;
-  return [(_LSQuery *)&v4 initWithCoder:a3];
+  return [(_LSQuery *)&v4 initWithCoder:coder];
 }
 
 @end

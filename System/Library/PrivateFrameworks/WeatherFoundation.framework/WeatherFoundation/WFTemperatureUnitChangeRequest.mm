@@ -1,15 +1,15 @@
 @interface WFTemperatureUnitChangeRequest
-- (void)startWithService:(id)a3;
+- (void)startWithService:(id)service;
 @end
 
 @implementation WFTemperatureUnitChangeRequest
 
-- (void)startWithService:(id)a3
+- (void)startWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(WFTemperatureUnitChangeRequest *)self temperatureUnit];
-  v6 = [(WFTask *)self identifier];
-  [v4 replaceTemperatureUnitWith:v5 identifier:v6];
+  serviceCopy = service;
+  temperatureUnit = [(WFTemperatureUnitChangeRequest *)self temperatureUnit];
+  identifier = [(WFTask *)self identifier];
+  [serviceCopy replaceTemperatureUnitWith:temperatureUnit identifier:identifier];
 }
 
 @end

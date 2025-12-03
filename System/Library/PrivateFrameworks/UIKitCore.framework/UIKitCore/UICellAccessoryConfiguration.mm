@@ -1,8 +1,8 @@
 @interface UICellAccessoryConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UICellAccessoryConfiguration)init;
-- (void)setLeadingAccessories:(id)a3;
-- (void)setTrailingAccessories:(id)a3;
+- (void)setLeadingAccessories:(id)accessories;
+- (void)setTrailingAccessories:(id)accessories;
 @end
 
 @implementation UICellAccessoryConfiguration
@@ -22,17 +22,17 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UICellAccessoryConfiguration *)self leadingAccessories];
-    v7 = [v5 leadingAccessories];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    leadingAccessories = [(UICellAccessoryConfiguration *)self leadingAccessories];
+    leadingAccessories2 = [v5 leadingAccessories];
+    v8 = leadingAccessories;
+    v9 = leadingAccessories2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -59,10 +59,10 @@ LABEL_16:
       }
     }
 
-    v14 = [(UICellAccessoryConfiguration *)self trailingAccessories];
-    v15 = [v5 trailingAccessories];
-    v13 = v14;
-    v16 = v15;
+    trailingAccessories = [(UICellAccessoryConfiguration *)self trailingAccessories];
+    trailingAccessories2 = [v5 trailingAccessories];
+    v13 = trailingAccessories;
+    v16 = trailingAccessories2;
     v12 = v16;
     if (v13 == v16)
     {
@@ -87,10 +87,10 @@ LABEL_17:
   return v11;
 }
 
-- (void)setLeadingAccessories:(id)a3
+- (void)setLeadingAccessories:(id)accessories
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [accessories copy];
   leadingAccessories = self->_leadingAccessories;
   self->_leadingAccessories = v4;
 
@@ -135,10 +135,10 @@ LABEL_11:
   self->_leadingAlwaysNeedsLayout = v8;
 }
 
-- (void)setTrailingAccessories:(id)a3
+- (void)setTrailingAccessories:(id)accessories
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [accessories copy];
   trailingAccessories = self->_trailingAccessories;
   self->_trailingAccessories = v4;
 

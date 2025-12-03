@@ -1,12 +1,12 @@
 @interface DRSProtoTaskingConfigMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoTaskingConfigMetadata
@@ -17,108 +17,108 @@
   v8.receiver = self;
   v8.super_class = DRSProtoTaskingConfigMetadata;
   v4 = [(DRSProtoTaskingConfigMetadata *)&v8 description];
-  v5 = [(DRSProtoTaskingConfigMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoTaskingConfigMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   taskingDeviceMetadata = self->_taskingDeviceMetadata;
   if (taskingDeviceMetadata)
   {
-    v5 = [(DRSProtoTaskingDeviceMetadata *)taskingDeviceMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"tasking_device_metadata"];
+    dictionaryRepresentation = [(DRSProtoTaskingDeviceMetadata *)taskingDeviceMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"tasking_device_metadata"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   teamId = self->_teamId;
   if (teamId)
   {
-    [v3 setObject:teamId forKey:@"team_id"];
+    [dictionary setObject:teamId forKey:@"team_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskingDeviceMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_teamId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskingDeviceMetadata)
   {
-    [v4 setTaskingDeviceMetadata:?];
-    v4 = v5;
+    [toCopy setTaskingDeviceMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_uuid)
   {
     [v5 setUuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_teamId)
   {
     [v5 setTeamId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoTaskingDeviceMetadata *)self->_taskingDeviceMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoTaskingDeviceMetadata *)self->_taskingDeviceMetadata copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_uuid copyWithZone:a3];
+  v8 = [(NSString *)self->_uuid copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_teamId copyWithZone:a3];
+  v10 = [(NSString *)self->_teamId copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((taskingDeviceMetadata = self->_taskingDeviceMetadata, !(taskingDeviceMetadata | v4[1])) || -[DRSProtoTaskingDeviceMetadata isEqual:](taskingDeviceMetadata, "isEqual:")) && ((uuid = self->_uuid, !(uuid | v4[3])) || -[NSString isEqual:](uuid, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((taskingDeviceMetadata = self->_taskingDeviceMetadata, !(taskingDeviceMetadata | equalCopy[1])) || -[DRSProtoTaskingDeviceMetadata isEqual:](taskingDeviceMetadata, "isEqual:")) && ((uuid = self->_uuid, !(uuid | equalCopy[3])) || -[NSString isEqual:](uuid, "isEqual:")))
   {
     teamId = self->_teamId;
-    if (teamId | v4[2])
+    if (teamId | equalCopy[2])
     {
       v8 = [(NSString *)teamId isEqual:?];
     }
@@ -144,12 +144,12 @@
   return v4 ^ [(NSString *)self->_teamId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   taskingDeviceMetadata = self->_taskingDeviceMetadata;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (taskingDeviceMetadata)
   {
     if (!v6)
@@ -170,18 +170,18 @@
     [(DRSProtoTaskingConfigMetadata *)self setTaskingDeviceMetadata:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(DRSProtoTaskingConfigMetadata *)self setUuid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(DRSProtoTaskingConfigMetadata *)self setTeamId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

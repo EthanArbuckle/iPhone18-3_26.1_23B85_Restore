@@ -1,23 +1,23 @@
 @interface HUDashboardCameraItemModule
 - (HMHome)home;
 - (HMRoom)room;
-- (HUDashboardCameraItemModule)initWithContext:(id)a3 itemUpdater:(id)a4;
+- (HUDashboardCameraItemModule)initWithContext:(id)context itemUpdater:(id)updater;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUDashboardCameraItemModule
 
-- (HUDashboardCameraItemModule)initWithContext:(id)a3 itemUpdater:(id)a4
+- (HUDashboardCameraItemModule)initWithContext:(id)context itemUpdater:(id)updater
 {
-  v7 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HUDashboardCameraItemModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v9;
@@ -27,15 +27,15 @@
 {
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = objc_alloc(MEMORY[0x277D144A8]);
-  v5 = [(HUDashboardCameraItemModule *)self context];
-  v6 = [v5 home];
-  v7 = [v4 initWithHome:v6];
+  context = [(HUDashboardCameraItemModule *)self context];
+  home = [context home];
+  v7 = [v4 initWithHome:home];
   [(HUDashboardCameraItemModule *)self setCameraItemProvider:v7];
 
-  v8 = [(HUDashboardCameraItemModule *)self context];
-  v9 = [v8 room];
-  v10 = [(HUDashboardCameraItemModule *)self cameraItemProvider];
-  [v10 setRoom:v9];
+  context2 = [(HUDashboardCameraItemModule *)self context];
+  room = [context2 room];
+  cameraItemProvider = [(HUDashboardCameraItemModule *)self cameraItemProvider];
+  [cameraItemProvider setRoom:room];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277D85DD0];
@@ -43,8 +43,8 @@
   v11 = [(HUDashboardCameraItemModule *)self cameraItemProvider:v14];
   [v11 setFilter:&v14];
 
-  v12 = [(HUDashboardCameraItemModule *)self cameraItemProvider];
-  [v3 na_safeAddObject:v12];
+  cameraItemProvider2 = [(HUDashboardCameraItemModule *)self cameraItemProvider];
+  [v3 na_safeAddObject:cameraItemProvider2];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -62,17 +62,17 @@ uint64_t __49__HUDashboardCameraItemModule_buildItemProviders__block_invoke(uint
   return v6 ^ 1u;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"camerasSection"];
-  v7 = [(HUDashboardCameraItemModule *)self cameraItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [(HFItemModule *)self _itemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  cameraItemProvider = [(HUDashboardCameraItemModule *)self cameraItemProvider];
+  items = [cameraItemProvider items];
+  allObjects = [items allObjects];
+  _itemComparator = [(HFItemModule *)self _itemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:_itemComparator];
 
   v12 = _HULocalizedStringWithDefaultValue(@"HUDashboardCamerasSectionTitle", @"HUDashboardCamerasSectionTitle", 1);
   [v6 setHeaderTitle:v12];
@@ -81,25 +81,25 @@ uint64_t __49__HUDashboardCameraItemModule_buildItemProviders__block_invoke(uint
   v13 = MEMORY[0x277D14778];
   v17[0] = v6;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v15 = [v13 filterSections:v14 toDisplayedItems:v5];
+  v15 = [v13 filterSections:v14 toDisplayedItems:itemsCopy];
 
   return v15;
 }
 
 - (HMHome)home
 {
-  v2 = [(HUDashboardCameraItemModule *)self context];
-  v3 = [v2 home];
+  context = [(HUDashboardCameraItemModule *)self context];
+  home = [context home];
 
-  return v3;
+  return home;
 }
 
 - (HMRoom)room
 {
-  v2 = [(HUDashboardCameraItemModule *)self context];
-  v3 = [v2 room];
+  context = [(HUDashboardCameraItemModule *)self context];
+  room = [context room];
 
-  return v3;
+  return room;
 }
 
 @end

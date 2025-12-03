@@ -1,90 +1,90 @@
 @interface FCFeedCursor
 + (id)cursorForCurrentDate;
-+ (id)cursorForDate:(id)a3;
-+ (id)cursorForOrder:(unint64_t)a3;
-+ (id)cursorForTimeIntervalBeforeNow:(double)a3;
-- (BOOL)hasReachedCursor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCursor:(id)a3;
-- (FCFeedCursor)initWithCoder:(id)a3;
++ (id)cursorForDate:(id)date;
++ (id)cursorForOrder:(unint64_t)order;
++ (id)cursorForTimeIntervalBeforeNow:(double)now;
+- (BOOL)hasReachedCursor:(id)cursor;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCursor:(id)cursor;
+- (FCFeedCursor)initWithCoder:(id)coder;
 - (NSDate)date;
-- (id)bottommostCursor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)bottommostCursor:(id)cursor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)topmostCursor:(id)a3;
-- (int64_t)compareToCursor:(id)a3;
+- (id)topmostCursor:(id)cursor;
+- (int64_t)compareToCursor:(id)cursor;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCFeedCursor
 
-+ (id)cursorForOrder:(unint64_t)a3
++ (id)cursorForOrder:(unint64_t)order
 {
   v4 = objc_alloc_init(FCFeedCursor);
-  [(FCFeedCursor *)v4 setOrder:a3];
+  [(FCFeedCursor *)v4 setOrder:order];
 
   return v4;
 }
 
-+ (id)cursorForDate:(id)a3
++ (id)cursorForDate:(id)date
 {
-  v4 = [a3 fc_millisecondTimeIntervalSince1970];
+  fc_millisecondTimeIntervalSince1970 = [date fc_millisecondTimeIntervalSince1970];
 
-  return [a1 cursorForOrder:v4];
+  return [self cursorForOrder:fc_millisecondTimeIntervalSince1970];
 }
 
 + (id)cursorForCurrentDate
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 cursorForDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self cursorForDate:date];
 
   return v4;
 }
 
-+ (id)cursorForTimeIntervalBeforeNow:(double)a3
++ (id)cursorForTimeIntervalBeforeNow:(double)now
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v5 fc_dateBySubtractingTimeInterval:a3];
-  v7 = [a1 cursorForDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [date fc_dateBySubtractingTimeInterval:now];
+  v7 = [self cursorForDate:v6];
 
   return v7;
 }
 
-- (FCFeedCursor)initWithCoder:(id)a3
+- (FCFeedCursor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(FCFeedCursor);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"order"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"order"];
 
   -[FCFeedCursor setOrder:](v5, "setOrder:", [v6 unsignedLongLongValue]);
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:{-[FCFeedCursor order](self, "order")}];
-  [v5 encodeObject:v6 forKey:@"order"];
+  [coderCopy encodeObject:v6 forKey:@"order"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(FCFeedCursor);
   [(FCFeedCursor *)v4 setOrder:[(FCFeedCursor *)self order]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -100,19 +100,19 @@
 
   v6 = v5;
 
-  v7 = [(FCFeedCursor *)self order];
-  LOBYTE(v7) = v7 == [v6 order];
+  order = [(FCFeedCursor *)self order];
+  LOBYTE(order) = order == [v6 order];
 
-  return v7;
+  return order;
 }
 
-- (BOOL)isEqualToCursor:(id)a3
+- (BOOL)isEqualToCursor:(id)cursor
 {
-  v4 = a3;
-  v5 = [(FCFeedCursor *)self order];
-  v6 = [v4 order];
+  cursorCopy = cursor;
+  order = [(FCFeedCursor *)self order];
+  order2 = [cursorCopy order];
 
-  return v5 == v6;
+  return order == order2;
 }
 
 - (unint64_t)hash
@@ -123,36 +123,36 @@
   return v3;
 }
 
-- (int64_t)compareToCursor:(id)a3
+- (int64_t)compareToCursor:(id)cursor
 {
-  v4 = a3;
-  v5 = [(FCFeedCursor *)self order];
-  v6 = [v4 order];
+  cursorCopy = cursor;
+  order = [(FCFeedCursor *)self order];
+  order2 = [cursorCopy order];
 
-  if (v5 < v6)
+  if (order < order2)
   {
     return -1;
   }
 
   else
   {
-    return v5 > v6;
+    return order > order2;
   }
 }
 
 - (NSDate)date
 {
   v2 = MEMORY[0x1E695DF00];
-  v3 = [(FCFeedCursor *)self order];
+  order = [(FCFeedCursor *)self order];
 
-  return [v2 fc_dateWithMillisecondTimeIntervalSince1970:v3];
+  return [v2 fc_dateWithMillisecondTimeIntervalSince1970:order];
 }
 
-- (BOOL)hasReachedCursor:(id)a3
+- (BOOL)hasReachedCursor:(id)cursor
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  cursorCopy = cursor;
+  if (!cursorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"other cursor must be non-nil"];
     v9 = 136315906;
@@ -166,34 +166,34 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v9, 0x26u);
   }
 
-  v5 = [(FCFeedCursor *)self compareToCursor:v4]!= 1;
+  v5 = [(FCFeedCursor *)self compareToCursor:cursorCopy]!= 1;
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (id)topmostCursor:(id)a3
+- (id)topmostCursor:(id)cursor
 {
-  v4 = a3;
-  if (v4 && [(FCFeedCursor *)self compareToCursor:v4]!= 1)
+  cursorCopy = cursor;
+  if (cursorCopy && [(FCFeedCursor *)self compareToCursor:cursorCopy]!= 1)
   {
-    self = v4;
+    self = cursorCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)bottommostCursor:(id)a3
+- (id)bottommostCursor:(id)cursor
 {
-  v4 = a3;
-  if (v4 && [(FCFeedCursor *)self compareToCursor:v4]== 1)
+  cursorCopy = cursor;
+  if (cursorCopy && [(FCFeedCursor *)self compareToCursor:cursorCopy]== 1)
   {
-    self = v4;
+    self = cursorCopy;
   }
 
-  v5 = self;
+  selfCopy = self;
 
   return self;
 }

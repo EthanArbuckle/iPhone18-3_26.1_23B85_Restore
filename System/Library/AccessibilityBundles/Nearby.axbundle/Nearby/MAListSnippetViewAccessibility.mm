@@ -1,16 +1,16 @@
 @interface MAListSnippetViewAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation MAListSnippetViewAccessibility
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = MAListSnippetViewAccessibility;
-  v4 = [(MAListSnippetViewAccessibility *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 reuseIdentifier];
-  v6 = [v5 isEqualToString:@"YelpAttribution"];
+  v4 = [(MAListSnippetViewAccessibility *)&v11 tableView:view cellForRowAtIndexPath:path];
+  reuseIdentifier = [v4 reuseIdentifier];
+  v6 = [reuseIdentifier isEqualToString:@"YelpAttribution"];
 
   if (v6)
   {
@@ -24,8 +24,8 @@
     v7 = v8;
     if (v8)
     {
-      v9 = [v8 accessibilityLabel];
-      [v4 setAccessibilityLabel:v9];
+      accessibilityLabel = [v8 accessibilityLabel];
+      [v4 setAccessibilityLabel:accessibilityLabel];
     }
   }
 

@@ -1,21 +1,21 @@
 @interface SiriSharedUIPhPicker
-- (BOOL)_isPickerViewControllerPresentedBy:(id)a3;
-- (id)_createPhotoPickerViewController:(id)a3 withSelectionLimit:(id)a4;
+- (BOOL)_isPickerViewControllerPresentedBy:(id)by;
+- (id)_createPhotoPickerViewController:(id)controller withSelectionLimit:(id)limit;
 - (id)_getPhotoLibrary;
-- (id)_getPhotoPickerConfig:(id)a3 withSearchString:(id)a4 withSelectionLimit:(id)a5;
-- (void)_dismissWithAnimation:(BOOL)a3;
+- (id)_getPhotoPickerConfig:(id)config withSearchString:(id)string withSelectionLimit:(id)limit;
+- (void)_dismissWithAnimation:(BOOL)animation;
 - (void)_getPhotoLibrary;
-- (void)dismissPhotoPickerIfExistsWithAnimation:(BOOL)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)presentPhotoPicker:(id)a3 withSearchString:(id)a4 withSelectionLimit:(id)a5 completion:(id)a6;
+- (void)dismissPhotoPickerIfExistsWithAnimation:(BOOL)animation;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)presentPhotoPicker:(id)picker withSearchString:(id)string withSelectionLimit:(id)limit completion:(id)completion;
 @end
 
 @implementation SiriSharedUIPhPicker
 
-- (BOOL)_isPickerViewControllerPresentedBy:(id)a3
+- (BOOL)_isPickerViewControllerPresentedBy:(id)by
 {
-  v4 = [a3 presentedViewController];
-  LOBYTE(self) = v4 == self->_pickerViewController;
+  presentedViewController = [by presentedViewController];
+  LOBYTE(self) = presentedViewController == self->_pickerViewController;
 
   return self;
 }
@@ -44,29 +44,29 @@
   return v5;
 }
 
-- (id)_getPhotoPickerConfig:(id)a3 withSearchString:(id)a4 withSelectionLimit:(id)a5
+- (id)_getPhotoPickerConfig:(id)config withSearchString:(id)string withSelectionLimit:(id)limit
 {
   v7 = MEMORY[0x277CD9D68];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithPhotoLibrary:v10];
+  limitCopy = limit;
+  stringCopy = string;
+  configCopy = config;
+  v11 = [[v7 alloc] initWithPhotoLibrary:configCopy];
 
-  v12 = [v8 integerValue];
-  [v11 setSelectionLimit:v12];
-  [v11 set_searchText:v9];
+  integerValue = [limitCopy integerValue];
+  [v11 setSelectionLimit:integerValue];
+  [v11 set_searchText:stringCopy];
 
   return v11;
 }
 
-- (id)_createPhotoPickerViewController:(id)a3 withSelectionLimit:(id)a4
+- (id)_createPhotoPickerViewController:(id)controller withSelectionLimit:(id)limit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SiriSharedUIPhPicker *)self _getPhotoLibrary];
-  if (v8)
+  controllerCopy = controller;
+  limitCopy = limit;
+  _getPhotoLibrary = [(SiriSharedUIPhPicker *)self _getPhotoLibrary];
+  if (_getPhotoLibrary)
   {
-    v9 = [(SiriSharedUIPhPicker *)self _getPhotoPickerConfig:v8 withSearchString:v6 withSelectionLimit:v7];
+    v9 = [(SiriSharedUIPhPicker *)self _getPhotoPickerConfig:_getPhotoLibrary withSearchString:controllerCopy withSelectionLimit:limitCopy];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CD9D78]) initWithConfiguration:v9];
@@ -87,63 +87,63 @@
   return v10;
 }
 
-- (void)presentPhotoPicker:(id)a3 withSearchString:(id)a4 withSelectionLimit:(id)a5 completion:(id)a6
+- (void)presentPhotoPicker:(id)picker withSearchString:(id)string withSelectionLimit:(id)limit completion:(id)completion
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (self->_pickerViewController && [(SiriSharedUIPhPicker *)self _isPickerViewControllerPresentedBy:v17])
+  pickerCopy = picker;
+  stringCopy = string;
+  limitCopy = limit;
+  completionCopy = completion;
+  if (self->_pickerViewController && [(SiriSharedUIPhPicker *)self _isPickerViewControllerPresentedBy:pickerCopy])
   {
-    [(PHPickerViewController *)self->_pickerViewController _searchWithString:v10];
+    [(PHPickerViewController *)self->_pickerViewController _searchWithString:stringCopy];
   }
 
   else
   {
-    v13 = [(SiriSharedUIPhPicker *)self _createPhotoPickerViewController:v10 withSelectionLimit:v11];
+    v13 = [(SiriSharedUIPhPicker *)self _createPhotoPickerViewController:stringCopy withSelectionLimit:limitCopy];
     pickerViewController = self->_pickerViewController;
     self->_pickerViewController = v13;
 
     if (self->_pickerViewController)
     {
-      v15 = _Block_copy(v12);
+      v15 = _Block_copy(completionCopy);
       completionHandler = self->_completionHandler;
       self->_completionHandler = v15;
 
-      [v17 presentViewController:self->_pickerViewController animated:1 completion:0];
+      [pickerCopy presentViewController:self->_pickerViewController animated:1 completion:0];
     }
   }
 }
 
-- (void)dismissPhotoPickerIfExistsWithAnimation:(BOOL)a3
+- (void)dismissPhotoPickerIfExistsWithAnimation:(BOOL)animation
 {
   if (self->_pickerViewController)
   {
-    [(SiriSharedUIPhPicker *)self _dismissWithAnimation:a3];
+    [(SiriSharedUIPhPicker *)self _dismissWithAnimation:animation];
   }
 }
 
-- (void)_dismissWithAnimation:(BOOL)a3
+- (void)_dismissWithAnimation:(BOOL)animation
 {
-  [(PHPickerViewController *)self->_pickerViewController dismissViewControllerAnimated:a3 completion:0];
+  [(PHPickerViewController *)self->_pickerViewController dismissViewControllerAnimated:animation completion:0];
   pickerViewController = self->_pickerViewController;
   self->_pickerViewController = 0;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SiriSharedUIPhPicker *)self completionHandler];
+  pickingCopy = picking;
+  completionHandler = [(SiriSharedUIPhPicker *)self completionHandler];
 
-  if (v6)
+  if (completionHandler)
   {
     v7 = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = pickingCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -159,8 +159,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * v12) assetIdentifier];
-          [v7 addObject:v13];
+          assetIdentifier = [*(*(&v15 + 1) + 8 * v12) assetIdentifier];
+          [v7 addObject:assetIdentifier];
 
           ++v12;
         }
@@ -172,8 +172,8 @@
       while (v10);
     }
 
-    v14 = [(SiriSharedUIPhPicker *)self completionHandler];
-    (v14)[2](v14, v7);
+    completionHandler2 = [(SiriSharedUIPhPicker *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, v7);
   }
 
   [(SiriSharedUIPhPicker *)self _dismissWithAnimation:1, v15];
@@ -185,7 +185,7 @@
   v2 = 136315394;
   v3 = "[SiriSharedUIPhPicker _getPhotoLibrary]";
   v4 = 2112;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21E3EB000, a2, OS_LOG_TYPE_ERROR, "%s #PhotoPicker: Error opening user photo library:%@", &v2, 0x16u);
 }
 

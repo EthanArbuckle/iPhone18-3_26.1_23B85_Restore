@@ -1,12 +1,12 @@
 @interface VUIMetricsJetEngine
 + (VUIMetricsJetEngine)sharedInstance;
-- (BOOL)isSharedContent:(id)a3;
+- (BOOL)isSharedContent:(id)content;
 - (NSObject)wrappedPipeline;
-- (id)recordEventWithTopic:(id)a3 eventType:(id)a4 eventData:(id)a5 pageData:(id)a6;
+- (id)recordEventWithTopic:(id)topic eventType:(id)type eventData:(id)data pageData:(id)pageData;
 - (void)flushMetrics;
-- (void)flushMetricsWithCompletion:(id)a3;
-- (void)setMonitorsLifecycleEvents:(BOOL)a3;
-- (void)setWrappedPipeline:(id)a3;
+- (void)flushMetricsWithCompletion:(id)completion;
+- (void)setMonitorsLifecycleEvents:(BOOL)events;
+- (void)setWrappedPipeline:(id)pipeline;
 @end
 
 @implementation VUIMetricsJetEngine
@@ -18,13 +18,13 @@
   return v2;
 }
 
-- (id)recordEventWithTopic:(id)a3 eventType:(id)a4 eventData:(id)a5 pageData:(id)a6
+- (id)recordEventWithTopic:(id)topic eventType:(id)type eventData:(id)data pageData:(id)pageData
 {
   sub_1E4205F14();
   sub_1E4205F14();
   sub_1E4205C64();
   sub_1E4205C64();
-  v6 = self;
+  selfCopy = self;
   MetricsJetEngine.recordEvent(topic:eventType:eventData:pageData:)();
   v8 = v7;
 
@@ -38,22 +38,22 @@
   return v2;
 }
 
-- (void)setWrappedPipeline:(id)a3
+- (void)setWrappedPipeline:(id)pipeline
 {
-  v4 = a3;
-  v5 = self;
-  MetricsJetEngine.wrappedPipeline.setter(v4);
+  pipelineCopy = pipeline;
+  selfCopy = self;
+  MetricsJetEngine.wrappedPipeline.setter(pipelineCopy);
 }
 
 - (void)flushMetrics
 {
-  v2 = self;
+  selfCopy = self;
   MetricsJetEngine.flushMetrics()();
 }
 
-- (BOOL)isSharedContent:(id)a3
+- (BOOL)isSharedContent:(id)content
 {
-  if (a3)
+  if (content)
   {
     v4 = sub_1E4205F14();
     v6 = v5;
@@ -65,7 +65,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   v9 = MetricsJetEngine.isSharedContent(_:)(v8);
@@ -73,19 +73,19 @@
   return v9;
 }
 
-- (void)flushMetricsWithCompletion:(id)a3
+- (void)flushMetricsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   MetricsJetEngine.flushMetricsWithCompletion(_:)(sub_1E37951AC, v5);
 }
 
-- (void)setMonitorsLifecycleEvents:(BOOL)a3
+- (void)setMonitorsLifecycleEvents:(BOOL)events
 {
-  v4 = self;
-  MetricsJetEngine.setMonitorsLifecycleEvents(_:)(a3);
+  selfCopy = self;
+  MetricsJetEngine.setMonitorsLifecycleEvents(_:)(events);
 }
 
 @end

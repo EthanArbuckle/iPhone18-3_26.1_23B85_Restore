@@ -1,31 +1,31 @@
 @interface CRXCEnrollmentData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCEnrollmentData)init;
-- (CRXCEnrollmentData)initWithAccPayload:(id)a3 accPayloadLeft:(id)a4 accPayloadRight:(id)a5 enrollmentName:(id)a6 issueDate:(id)a7 calibrationDataLeft:(id)a8 calibrationDataRight:(id)a9;
-- (CRXCEnrollmentData)initWithAccPayload:(id)a3 enrollmentName:(id)a4 issueDate:(id)a5 calibrationDataLeft:(id)a6 calibrationDataRight:(id)a7;
-- (CRXCEnrollmentData)initWithAccPayloadLeft:(id)a3 accPayloadRight:(id)a4 enrollmentName:(id)a5 issueDate:(id)a6 calibrationDataLeft:(id)a7 calibrationDataRight:(id)a8;
+- (CRXCEnrollmentData)initWithAccPayload:(id)payload accPayloadLeft:(id)left accPayloadRight:(id)right enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)dataLeft calibrationDataRight:(id)dataRight;
+- (CRXCEnrollmentData)initWithAccPayload:(id)payload enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)left calibrationDataRight:(id)right;
+- (CRXCEnrollmentData)initWithAccPayloadLeft:(id)left accPayloadRight:(id)right enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)dataLeft calibrationDataRight:(id)dataRight;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCEnrollmentData
 
-- (CRXCEnrollmentData)initWithAccPayload:(id)a3 enrollmentName:(id)a4 issueDate:(id)a5 calibrationDataLeft:(id)a6 calibrationDataRight:(id)a7
+- (CRXCEnrollmentData)initWithAccPayload:(id)payload enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)left calibrationDataRight:(id)right
 {
   v34[1] = self;
   v12 = *(*(sub_247365B94() - 8) + 64);
   MEMORY[0x28223BE20]();
   v14 = v34 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = a3;
-  v16 = a5;
-  v17 = a4;
-  v18 = a6;
-  v34[0] = a7;
-  v19 = a7;
+  payloadCopy = payload;
+  dateCopy = date;
+  nameCopy = name;
+  leftCopy = left;
+  v34[0] = right;
+  rightCopy = right;
   v20 = sub_247365B44();
   v22 = v21;
 
-  if (v17)
+  if (nameCopy)
   {
     v23 = sub_247365C64();
     v25 = v24;
@@ -39,11 +39,11 @@
 
   sub_247365B74();
 
-  if (!v18)
+  if (!leftCopy)
   {
     v26 = 0;
     v28 = 0;
-    if (v19)
+    if (rightCopy)
     {
       goto LABEL_6;
     }
@@ -57,7 +57,7 @@ LABEL_8:
   v26 = sub_247365C64();
   v28 = v27;
 
-  if (!v19)
+  if (!rightCopy)
   {
     goto LABEL_8;
   }
@@ -72,27 +72,27 @@ LABEL_9:
   return v32;
 }
 
-- (CRXCEnrollmentData)initWithAccPayloadLeft:(id)a3 accPayloadRight:(id)a4 enrollmentName:(id)a5 issueDate:(id)a6 calibrationDataLeft:(id)a7 calibrationDataRight:(id)a8
+- (CRXCEnrollmentData)initWithAccPayloadLeft:(id)left accPayloadRight:(id)right enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)dataLeft calibrationDataRight:(id)dataRight
 {
-  v43 = self;
+  selfCopy = self;
   v14 = *(*(sub_247365B94() - 8) + 64);
   MEMORY[0x28223BE20]();
   v16 = v40 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a5;
-  v40[1] = a7;
-  v21 = a7;
-  v40[2] = a8;
-  v22 = a8;
+  leftCopy = left;
+  rightCopy = right;
+  dateCopy = date;
+  nameCopy = name;
+  v40[1] = dataLeft;
+  dataLeftCopy = dataLeft;
+  v40[2] = dataRight;
+  dataRightCopy = dataRight;
   v23 = sub_247365B44();
   v42 = v24;
 
   v25 = sub_247365B44();
   v27 = v26;
 
-  if (v20)
+  if (nameCopy)
   {
     v28 = sub_247365C64();
     v41 = v29;
@@ -106,11 +106,11 @@ LABEL_9:
 
   sub_247365B74();
 
-  if (!v21)
+  if (!dataLeftCopy)
   {
     v30 = 0;
     v32 = 0;
-    if (v22)
+    if (dataRightCopy)
     {
       goto LABEL_6;
     }
@@ -124,7 +124,7 @@ LABEL_8:
   v30 = sub_247365C64();
   v32 = v31;
 
-  if (!v22)
+  if (!dataRightCopy)
   {
     goto LABEL_8;
   }
@@ -142,7 +142,7 @@ LABEL_9:
   return v37;
 }
 
-- (CRXCEnrollmentData)initWithAccPayload:(id)a3 accPayloadLeft:(id)a4 accPayloadRight:(id)a5 enrollmentName:(id)a6 issueDate:(id)a7 calibrationDataLeft:(id)a8 calibrationDataRight:(id)a9
+- (CRXCEnrollmentData)initWithAccPayload:(id)payload accPayloadLeft:(id)left accPayloadRight:(id)right enrollmentName:(id)name issueDate:(id)date calibrationDataLeft:(id)dataLeft calibrationDataRight:(id)dataRight
 {
   v16 = sub_247365B94();
   v67 = *(v16 - 8);
@@ -150,20 +150,20 @@ LABEL_9:
   v17 = *(v67 + 64);
   MEMORY[0x28223BE20]();
   v19 = &v61 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (payload)
   {
-    v20 = a4;
-    v21 = a5;
-    v22 = a6;
-    v23 = a7;
-    v24 = a8;
-    v25 = a9;
-    v26 = a3;
+    leftCopy = left;
+    rightCopy = right;
+    nameCopy = name;
+    dateCopy = date;
+    dataLeftCopy = dataLeft;
+    dataRightCopy = dataRight;
+    payloadCopy = payload;
     v27 = sub_247365B44();
     v65 = v28;
     v66 = v27;
 
-    if (a4)
+    if (left)
     {
       goto LABEL_3;
     }
@@ -171,22 +171,22 @@ LABEL_9:
 
   else
   {
-    v36 = a4;
-    v37 = a5;
-    v38 = a6;
-    v39 = a7;
-    v40 = a8;
-    v41 = a9;
+    leftCopy2 = left;
+    rightCopy2 = right;
+    nameCopy2 = name;
+    dateCopy2 = date;
+    dataLeftCopy2 = dataLeft;
+    dataRightCopy2 = dataRight;
     v65 = 0xF000000000000000;
     v66 = 0;
-    if (a4)
+    if (left)
     {
 LABEL_3:
       v29 = sub_247365B44();
       v63 = v30;
       v64 = v29;
 
-      if (a5)
+      if (right)
       {
         goto LABEL_4;
       }
@@ -194,7 +194,7 @@ LABEL_3:
 LABEL_8:
       v62 = 0;
       v32 = 0xF000000000000000;
-      if (a6)
+      if (name)
       {
         goto LABEL_5;
       }
@@ -205,7 +205,7 @@ LABEL_8:
 
   v63 = 0xF000000000000000;
   v64 = 0;
-  if (!a5)
+  if (!right)
   {
     goto LABEL_8;
   }
@@ -214,7 +214,7 @@ LABEL_4:
   v62 = sub_247365B44();
   v32 = v31;
 
-  if (a6)
+  if (name)
   {
 LABEL_5:
     v33 = sub_247365C64();
@@ -229,11 +229,11 @@ LABEL_9:
 LABEL_10:
   sub_247365B74();
 
-  if (!a8)
+  if (!dataLeft)
   {
     v42 = 0;
     v44 = 0;
-    if (a9)
+    if (dataRight)
     {
       goto LABEL_12;
     }
@@ -247,7 +247,7 @@ LABEL_14:
   v42 = sub_247365C64();
   v44 = v43;
 
-  if (!a9)
+  if (!dataRight)
   {
     goto LABEL_14;
   }
@@ -288,11 +288,11 @@ LABEL_15:
   return v59;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_247365DC4();
     swift_unknownObjectRelease();
@@ -301,7 +301,7 @@ LABEL_15:
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_24734E274(v8);
@@ -312,7 +312,7 @@ LABEL_15:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24734E79C();
 
   v3 = sub_247365C44();
@@ -320,11 +320,11 @@ LABEL_15:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24734EB78(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24734EB78(coderCopy);
 }
 
 - (CRXCEnrollmentData)init

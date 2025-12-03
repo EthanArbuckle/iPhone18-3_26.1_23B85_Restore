@@ -1,11 +1,11 @@
 @interface MRUnregisterGameControllerMessage
-- (MRUnregisterGameControllerMessage)initWithControllerID:(unint64_t)a3;
+- (MRUnregisterGameControllerMessage)initWithControllerID:(unint64_t)d;
 - (unint64_t)controllerID;
 @end
 
 @implementation MRUnregisterGameControllerMessage
 
-- (MRUnregisterGameControllerMessage)initWithControllerID:(unint64_t)a3
+- (MRUnregisterGameControllerMessage)initWithControllerID:(unint64_t)d
 {
   v7.receiver = self;
   v7.super_class = MRUnregisterGameControllerMessage;
@@ -13,7 +13,7 @@
   if (v4)
   {
     v5 = objc_alloc_init(_MRUnregisterGameControllerMessageProtobuf);
-    [(_MRUnregisterGameControllerMessageProtobuf *)v5 setControllerID:a3];
+    [(_MRUnregisterGameControllerMessageProtobuf *)v5 setControllerID:d];
     [(MRProtocolMessage *)v4 setUnderlyingCodableMessage:v5];
   }
 
@@ -22,10 +22,10 @@
 
 - (unint64_t)controllerID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 controllerID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  controllerID = [underlyingCodableMessage controllerID];
 
-  return v3;
+  return controllerID;
 }
 
 @end

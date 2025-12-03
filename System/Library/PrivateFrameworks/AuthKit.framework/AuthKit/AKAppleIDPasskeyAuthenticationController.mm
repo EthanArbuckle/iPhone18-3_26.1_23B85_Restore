@@ -1,17 +1,17 @@
 @interface AKAppleIDPasskeyAuthenticationController
 - (AKAppleIDPasskeyAuthenticationController)init;
-- (id)_authorizationControllerForAccount:(id)a3;
-- (id)_popPasskeyRequestStateForController:(id)a3;
-- (void)_onqueue_authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4 error:(id)a5;
-- (void)_onqueue_createPasskeyWithContext:(id)a3 completion:(id)a4;
-- (void)_pushPasskeyRequestState:(id)a3 forController:(id)a4;
-- (void)appleIDPasskeyStatusForAccount:(id)a3 withCompletion:(id)a4;
-- (void)appleIDPasskeysForAccount:(id)a3 withCompletion:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
-- (void)canCreateiCloudKeychainPasskeyForAccount:(id)a3 withCompletion:(id)a4;
-- (void)createPasskeyWithContext:(id)a3 completion:(id)a4;
-- (void)deleteAllPasskeysForAccount:(id)a3 withCompletion:(id)a4;
+- (id)_authorizationControllerForAccount:(id)account;
+- (id)_popPasskeyRequestStateForController:(id)controller;
+- (void)_onqueue_authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization error:(id)error;
+- (void)_onqueue_createPasskeyWithContext:(id)context completion:(id)completion;
+- (void)_pushPasskeyRequestState:(id)state forController:(id)controller;
+- (void)appleIDPasskeyStatusForAccount:(id)account withCompletion:(id)completion;
+- (void)appleIDPasskeysForAccount:(id)account withCompletion:(id)completion;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
+- (void)canCreateiCloudKeychainPasskeyForAccount:(id)account withCompletion:(id)completion;
+- (void)createPasskeyWithContext:(id)context completion:(id)completion;
+- (void)deleteAllPasskeysForAccount:(id)account withCompletion:(id)completion;
 @end
 
 @implementation AKAppleIDPasskeyAuthenticationController
@@ -28,9 +28,9 @@
   if (v14)
   {
     v17->_stateByControllerLock._os_unfair_lock_opaque = 0;
-    v2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     stateByController = v17->_stateByController;
-    v17->_stateByController = v2;
+    v17->_stateByController = strongToStrongObjectsMapTable;
     MEMORY[0x1E69E5920](stateByController);
     v4 = dispatch_group_create();
     serializationGroup = v17->_serializationGroup;
@@ -55,21 +55,21 @@
   return v11;
 }
 
-- (void)createPasskeyWithContext:(id)a3 completion:(id)a4
+- (void)createPasskeyWithContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_serializationQueue;
+  objc_storeStrong(&v14, completion);
+  queue = selfCopy->_serializationQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __80__AKAppleIDPasskeyAuthenticationController_createPasskeyWithContext_completion___block_invoke;
   v10 = &unk_1E73D6640;
-  v11 = MEMORY[0x1E69E5928](v16);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v13 = MEMORY[0x1E69E5928](v14);
   dispatch_async(queue, &v6);
@@ -136,15 +136,15 @@ void __80__AKAppleIDPasskeyAuthenticationController_createPasskeyWithContext_com
   objc_storeStrong(location, 0);
 }
 
-- (void)appleIDPasskeyStatusForAccount:(id)a3 withCompletion:(id)a4
+- (void)appleIDPasskeyStatusForAccount:(id)account withCompletion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = v15;
+  objc_storeStrong(&v13, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
@@ -176,16 +176,16 @@ void __90__AKAppleIDPasskeyAuthenticationController_appleIDPasskeyStatusForAccou
   objc_storeStrong(location, 0);
 }
 
-- (void)canCreateiCloudKeychainPasskeyForAccount:(id)a3 withCompletion:(id)a4
+- (void)canCreateiCloudKeychainPasskeyForAccount:(id)account withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v18);
-  queue = v18->_passkeyRequestQueue;
+  objc_storeStrong(&v16, completion);
+  objc_initWeak(&v15, selfCopy);
+  queue = selfCopy->_passkeyRequestQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -193,7 +193,7 @@ void __90__AKAppleIDPasskeyAuthenticationController_appleIDPasskeyStatusForAccou
   v10 = &unk_1E73D8DA0;
   objc_copyWeak(&v14, &v15);
   v11 = MEMORY[0x1E69E5928](location[0]);
-  v12 = MEMORY[0x1E69E5928](v18);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](v16);
   dispatch_async(queue, &v6);
   objc_storeStrong(&v13, 0);
@@ -356,16 +356,16 @@ void __100__AKAppleIDPasskeyAuthenticationController_canCreateiCloudKeychainPass
   *MEMORY[0x1E69E9840];
 }
 
-- (void)appleIDPasskeysForAccount:(id)a3 withCompletion:(id)a4
+- (void)appleIDPasskeysForAccount:(id)account withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v18);
-  queue = v18->_passkeyRequestQueue;
+  objc_storeStrong(&v16, completion);
+  objc_initWeak(&v15, selfCopy);
+  queue = selfCopy->_passkeyRequestQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -373,7 +373,7 @@ void __100__AKAppleIDPasskeyAuthenticationController_canCreateiCloudKeychainPass
   v10 = &unk_1E73D8DA0;
   objc_copyWeak(&v14, &v15);
   v11 = MEMORY[0x1E69E5928](location[0]);
-  v12 = MEMORY[0x1E69E5928](v18);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](v16);
   dispatch_async(queue, &v6);
   objc_storeStrong(&v13, 0);
@@ -552,16 +552,16 @@ void __85__AKAppleIDPasskeyAuthenticationController_appleIDPasskeysForAccount_wi
   *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteAllPasskeysForAccount:(id)a3 withCompletion:(id)a4
+- (void)deleteAllPasskeysForAccount:(id)account withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v18);
-  queue = v18->_passkeyRequestQueue;
+  objc_storeStrong(&v16, completion);
+  objc_initWeak(&v15, selfCopy);
+  queue = selfCopy->_passkeyRequestQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
@@ -569,7 +569,7 @@ void __85__AKAppleIDPasskeyAuthenticationController_appleIDPasskeysForAccount_wi
   v10 = &unk_1E73D8DA0;
   objc_copyWeak(&v14, &v15);
   v11 = MEMORY[0x1E69E5928](location[0]);
-  v12 = MEMORY[0x1E69E5928](v18);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](v16);
   dispatch_async(queue, &v6);
   objc_storeStrong(&v13, 0);
@@ -721,20 +721,20 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_createPasskeyWithContext:(id)a3 completion:(id)a4
+- (void)_onqueue_createPasskeyWithContext:(id)context completion:(id)completion
 {
   v58 = *MEMORY[0x1E69E9840];
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
-  v48 = [location[0] relyingPartyIdentifier];
-  v47 = [location[0] credentialName];
-  v46 = [location[0] challenge];
-  v45 = [location[0] userID];
-  if (v48 && v47 && v46 && v45)
+  objc_storeStrong(&v49, completion);
+  relyingPartyIdentifier = [location[0] relyingPartyIdentifier];
+  credentialName = [location[0] credentialName];
+  challenge = [location[0] challenge];
+  userID = [location[0] userID];
+  if (relyingPartyIdentifier && credentialName && challenge && userID)
   {
     if (AuthenticationServicesLibraryCore(0))
     {
@@ -746,8 +746,8 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
       v4 = [0 alloc];
     }
 
-    v41 = [v4 initWithRelyingPartyIdentifier:v48];
-    v40 = [v41 createCredentialRegistrationRequestWithChallenge:v46 name:v47 userID:v45];
+    v41 = [v4 initWithRelyingPartyIdentifier:relyingPartyIdentifier];
+    v40 = [v41 createCredentialRegistrationRequestWithChallenge:challenge name:credentialName userID:userID];
     if (v40)
     {
       v55 = v40;
@@ -765,8 +765,8 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
       v33 = [v5 initWithAuthorizationRequests:v34];
       if (v33)
       {
-        [v33 setDelegate:v51];
-        v53 = v48;
+        [v33 setDelegate:selfCopy];
+        v53 = relyingPartyIdentifier;
         v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
         [v33 setProxiedAssociatedDomains:?];
         MEMORY[0x1E69E5920](v10);
@@ -782,7 +782,7 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
 
           objc_storeStrong(&v27, 0);
           v25 = [_AKAppleIDPasskeyRequestState stateWithContext:location[0] completion:v49];
-          [(AKAppleIDPasskeyAuthenticationController *)v51 _pushPasskeyRequestState:v25 forController:v33];
+          [(AKAppleIDPasskeyAuthenticationController *)selfCopy _pushPasskeyRequestState:v25 forController:v33];
           [v33 performSilentRequests];
           objc_storeStrong(&v25, 0);
         }
@@ -818,7 +818,7 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
         v31 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_2_3_8_64_8_64_8_64(v54, v51, v40, location[0]);
+          __os_log_helper_16_2_3_8_64_8_64_8_64(v54, selfCopy, v40, location[0]);
           _os_log_error_impl(&dword_193225000, v32, v31, "%@: Failed to create authorization controller with request (%@) for context (%@)", v54, 0x20u);
         }
 
@@ -855,7 +855,7 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
       v38 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_3_8_64_8_64_8_64(v56, v51, location[0], v41);
+        __os_log_helper_16_2_3_8_64_8_64_8_64(v56, selfCopy, location[0], v41);
         _os_log_error_impl(&dword_193225000, oslog, v38, "%@: Failed to create passkey request with context (%@) using provider (%@)", v56, 0x20u);
       }
 
@@ -892,7 +892,7 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
     v43 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v57, v51, location[0]);
+      __os_log_helper_16_2_2_8_64_8_64(v57, selfCopy, location[0]);
       _os_log_error_impl(&dword_193225000, v44, v43, "%@: Unable to create passkey with invalid context (%@) missing required parameters", v57, 0x16u);
     }
 
@@ -908,28 +908,28 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
     v42 = 1;
   }
 
-  objc_storeStrong(&v45, 0);
-  objc_storeStrong(&v46, 0);
-  objc_storeStrong(&v47, 0);
-  objc_storeStrong(&v48, 0);
+  objc_storeStrong(&userID, 0);
+  objc_storeStrong(&challenge, 0);
+  objc_storeStrong(&credentialName, 0);
+  objc_storeStrong(&relyingPartyIdentifier, 0);
   objc_storeStrong(&v49, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_pushPasskeyRequestState:(id)a3 forController:(id)a4
+- (void)_pushPasskeyRequestState:(id)state forController:(id)controller
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, state);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, controller);
   if (v10)
   {
-    os_unfair_lock_lock(&v12->_stateByControllerLock);
-    [(NSMapTable *)v12->_stateByController setObject:location[0] forKey:v10];
-    os_unfair_lock_unlock(&v12->_stateByControllerLock);
+    os_unfair_lock_lock(&selfCopy->_stateByControllerLock);
+    [(NSMapTable *)selfCopy->_stateByController setObject:location[0] forKey:v10];
+    os_unfair_lock_unlock(&selfCopy->_stateByControllerLock);
   }
 
   else
@@ -951,18 +951,18 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   objc_storeStrong(location, 0);
 }
 
-- (id)_popPasskeyRequestStateForController:(id)a3
+- (id)_popPasskeyRequestStateForController:(id)controller
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if (location[0])
   {
-    os_unfair_lock_lock(&v13->_stateByControllerLock);
-    v7 = [(NSMapTable *)v13->_stateByController objectForKey:location[0]];
+    os_unfair_lock_lock(&selfCopy->_stateByControllerLock);
+    v7 = [(NSMapTable *)selfCopy->_stateByController objectForKey:location[0]];
     [NSMapTable setObject:"setObject:forKey:" forKey:?];
-    os_unfair_lock_unlock(&v13->_stateByControllerLock);
+    os_unfair_lock_unlock(&selfCopy->_stateByControllerLock);
     v14 = MEMORY[0x1E69E5928](v7);
     v8 = 1;
     objc_storeStrong(&v7, 0);
@@ -991,19 +991,19 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   return v3;
 }
 
-- (void)_onqueue_authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4 error:(id)a5
+- (void)_onqueue_authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization error:(id)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, authorization);
   v52 = 0;
-  objc_storeStrong(&v52, a5);
-  dispatch_assert_queue_V2(v55[2]);
-  v51 = [(dispatch_queue_t *)v55 _popPasskeyRequestStateForController:location[0]];
+  objc_storeStrong(&v52, error);
+  dispatch_assert_queue_V2(selfCopy[2]);
+  v51 = [(dispatch_queue_t *)selfCopy _popPasskeyRequestStateForController:location[0]];
   if (v51)
   {
     v44 = 0;
@@ -1013,9 +1013,9 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
     }
 
     v28 = objc_opt_class();
-    v29 = [v53 credential];
-    v43 = _AKSafeCast_24(v28, v29);
-    MEMORY[0x1E69E5920](v29);
+    credential = [v53 credential];
+    v43 = _AKSafeCast_24(v28, credential);
+    MEMORY[0x1E69E5920](credential);
     if (v43)
     {
       v42 = _AKLogPasskey();
@@ -1028,40 +1028,40 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
 
       objc_storeStrong(&v42, 0);
       v16 = [AKAppleIDPasskeyCredential alloc];
-      v27 = [v51 context];
-      v26 = [v27 relyingPartyIdentifier];
-      v25 = [v43 rawAttestationObject];
-      v24 = [v43 rawClientDataJSON];
-      v23 = [v43 credentialID];
-      v22 = [v51 context];
-      v21 = [v22 originalChallenge];
-      v20 = [v51 context];
-      v19 = [v20 userID];
-      v18 = [v51 context];
-      v17 = [v18 credentialName];
-      v5 = [(AKAppleIDPasskeyCredential *)v16 initWithRelyingPartyIdentifier:v26 attestationData:v25 clientData:v24 credentialID:v23 originalChallenge:v21 userID:v19 credentialName:v17];
+      context = [v51 context];
+      relyingPartyIdentifier = [context relyingPartyIdentifier];
+      rawAttestationObject = [v43 rawAttestationObject];
+      rawClientDataJSON = [v43 rawClientDataJSON];
+      credentialID = [v43 credentialID];
+      context2 = [v51 context];
+      originalChallenge = [context2 originalChallenge];
+      context3 = [v51 context];
+      userID = [context3 userID];
+      context4 = [v51 context];
+      credentialName = [context4 credentialName];
+      v5 = [(AKAppleIDPasskeyCredential *)v16 initWithRelyingPartyIdentifier:relyingPartyIdentifier attestationData:rawAttestationObject clientData:rawClientDataJSON credentialID:credentialID originalChallenge:originalChallenge userID:userID credentialName:credentialName];
       v6 = v44;
       v44 = v5;
       MEMORY[0x1E69E5920](v6);
-      MEMORY[0x1E69E5920](v17);
-      MEMORY[0x1E69E5920](v18);
-      MEMORY[0x1E69E5920](v19);
-      MEMORY[0x1E69E5920](v20);
-      MEMORY[0x1E69E5920](v21);
-      MEMORY[0x1E69E5920](v22);
-      MEMORY[0x1E69E5920](v23);
-      MEMORY[0x1E69E5920](v24);
-      MEMORY[0x1E69E5920](v25);
-      MEMORY[0x1E69E5920](v26);
-      MEMORY[0x1E69E5920](v27);
+      MEMORY[0x1E69E5920](credentialName);
+      MEMORY[0x1E69E5920](context4);
+      MEMORY[0x1E69E5920](userID);
+      MEMORY[0x1E69E5920](context3);
+      MEMORY[0x1E69E5920](originalChallenge);
+      MEMORY[0x1E69E5920](context2);
+      MEMORY[0x1E69E5920](credentialID);
+      MEMORY[0x1E69E5920](rawClientDataJSON);
+      MEMORY[0x1E69E5920](rawAttestationObject);
+      MEMORY[0x1E69E5920](relyingPartyIdentifier);
+      MEMORY[0x1E69E5920](context);
       v40 = _AKLogPasskey();
       v39 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [v51 context];
-        __os_log_helper_16_2_1_8_64(v59, v15);
+        context5 = [v51 context];
+        __os_log_helper_16_2_1_8_64(v59, context5);
         _os_log_debug_impl(&dword_193225000, v40, v39, "AppleID passkey was created successfully with context: %@", v59, 0xCu);
-        MEMORY[0x1E69E5920](v15);
+        MEMORY[0x1E69E5920](context5);
       }
 
       objc_storeStrong(&v40, 0);
@@ -1074,10 +1074,10 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v13 = v53;
-        v14 = [v53 credential];
-        __os_log_helper_16_2_2_8_64_8_64(v58, v13, v14);
+        credential2 = [v53 credential];
+        __os_log_helper_16_2_2_8_64_8_64(v58, v13, credential2);
         _os_log_error_impl(&dword_193225000, v38, v37, "Authorization (%@) is not of desired credential type: %@", v58, 0x16u);
-        MEMORY[0x1E69E5920](v14);
+        MEMORY[0x1E69E5920](credential2);
       }
 
       objc_storeStrong(&v38, 0);
@@ -1103,22 +1103,22 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
     v34 = _AKLogPasskey();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v51 completion];
+      completion = [v51 completion];
       v11 = MEMORY[0x193B165F0]();
       __os_log_helper_16_2_3_8_64_8_64_8_64(v56, v11, v44, v52);
       _os_log_debug_impl(&dword_193225000, v34, OS_LOG_TYPE_DEBUG, "Calling completion block (%@) with passkey (%@) and error (%@)", v56, 0x20u);
       MEMORY[0x1E69E5920](v11);
-      MEMORY[0x1E69E5920](v12);
+      MEMORY[0x1E69E5920](completion);
     }
 
     objc_storeStrong(&v34, 0);
-    v10 = [v51 completion];
-    MEMORY[0x1E69E5920](v10);
-    if (v10)
+    completion2 = [v51 completion];
+    MEMORY[0x1E69E5920](completion2);
+    if (completion2)
     {
-      v9 = [v51 completion];
-      v9[2](v9, v44, v52);
-      MEMORY[0x1E69E5920](v9);
+      completion3 = [v51 completion];
+      completion3[2](completion3, v44, v52);
+      MEMORY[0x1E69E5920](completion3);
     }
 
     objc_storeStrong(&v43, 0);
@@ -1158,13 +1158,13 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_authorizationControllerForAccount:(id)a3
+- (id)_authorizationControllerForAccount:(id)account
 {
   v22 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (AuthenticationServicesLibraryCore(0))
   {
     v3 = objc_alloc(getASAuthorizationPlatformPublicKeyCredentialProviderClass());
@@ -1177,11 +1177,11 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
 
   v17 = [v3 initWithRelyingPartyIdentifier:@"apple.com"];
   v11 = objc_opt_new();
-  v10 = [location[0] username];
+  username = [location[0] username];
   v9 = objc_opt_new();
-  v16 = [v17 createCredentialRegistrationRequestWithChallenge:v11 name:v10 userID:?];
+  v16 = [v17 createCredentialRegistrationRequestWithChallenge:v11 name:username userID:?];
   MEMORY[0x1E69E5920](v9);
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](username);
   MEMORY[0x1E69E5920](v11);
   if (v16)
   {
@@ -1229,21 +1229,21 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   return v5;
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_serializationQueue;
+  objc_storeStrong(&v14, authorization);
+  queue = selfCopy->_serializationQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __97__AKAppleIDPasskeyAuthenticationController_authorizationController_didCompleteWithAuthorization___block_invoke;
   v10 = &unk_1E73D60B0;
-  v11 = MEMORY[0x1E69E5928](v16);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v13 = MEMORY[0x1E69E5928](v14);
   dispatch_async(queue, &v6);
@@ -1254,21 +1254,21 @@ void __87__AKAppleIDPasskeyAuthenticationController_deleteAllPasskeysForAccount_
   objc_storeStrong(location, 0);
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  queue = v16->_serializationQueue;
+  objc_storeStrong(&v14, error);
+  queue = selfCopy->_serializationQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __89__AKAppleIDPasskeyAuthenticationController_authorizationController_didCompleteWithError___block_invoke;
   v10 = &unk_1E73D60B0;
-  v11 = MEMORY[0x1E69E5928](v16);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v13 = MEMORY[0x1E69E5928](v14);
   dispatch_async(queue, &v6);

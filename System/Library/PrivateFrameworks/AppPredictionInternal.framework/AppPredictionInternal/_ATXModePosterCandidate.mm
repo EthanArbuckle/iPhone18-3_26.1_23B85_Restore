@@ -1,25 +1,25 @@
 @interface _ATXModePosterCandidate
-- (_ATXModePosterCandidate)initWithDescriptor:(id)a3 fontName:(id)a4 isPreferredForGallery:(BOOL)a5;
+- (_ATXModePosterCandidate)initWithDescriptor:(id)descriptor fontName:(id)name isPreferredForGallery:(BOOL)gallery;
 @end
 
 @implementation _ATXModePosterCandidate
 
-- (_ATXModePosterCandidate)initWithDescriptor:(id)a3 fontName:(id)a4 isPreferredForGallery:(BOOL)a5
+- (_ATXModePosterCandidate)initWithDescriptor:(id)descriptor fontName:(id)name isPreferredForGallery:(BOOL)gallery
 {
-  v9 = a3;
-  v10 = a4;
+  descriptorCopy = descriptor;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = _ATXModePosterCandidate;
   v11 = [(_ATXModePosterCandidate *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_descriptor, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_descriptor, descriptor);
+    v13 = [nameCopy copy];
     fontName = v12->_fontName;
     v12->_fontName = v13;
 
-    v12->_isPreferredForGallery = a5;
+    v12->_isPreferredForGallery = gallery;
     v15 = v12;
   }
 

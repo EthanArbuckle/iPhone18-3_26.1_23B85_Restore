@@ -1,27 +1,27 @@
 @interface CosmeticAssessmentBackCaptureViewController
-- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CosmeticAssessmentBackCaptureViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100081EA8();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CosmeticAssessmentBackCaptureViewController();
   v4 = v8.receiver;
-  [(CosmeticAssessmentBackCaptureViewController *)&v8 viewIsAppearing:v3];
+  [(CosmeticAssessmentBackCaptureViewController *)&v8 viewIsAppearing:appearingCopy];
   v5 = *&v4[OBJC_IVAR____TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController_deviceMotionProvider];
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -34,23 +34,23 @@
   sub_100044A9C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CosmeticAssessmentBackCaptureViewController();
   v4 = v5.receiver;
-  [(CosmeticAssessmentBackCaptureViewController *)&v5 viewDidAppear:v3];
+  [(CosmeticAssessmentBackCaptureViewController *)&v5 viewDidAppear:appearCopy];
   sub_1000EBDFC(7);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CosmeticAssessmentBackCaptureViewController();
   v4 = v8.receiver;
-  [(CosmeticAssessmentBackCaptureViewController *)&v8 viewWillDisappear:v3];
+  [(CosmeticAssessmentBackCaptureViewController *)&v8 viewWillDisappear:disappearCopy];
   v5 = OBJC_IVAR____TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController_deviceMotionProvider;
   [*(*&v4[OBJC_IVAR____TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController_deviceMotionProvider] + 16) stopDeviceMotionUpdates];
   v6 = *&v4[v5];
@@ -60,14 +60,14 @@
   sub_10003C52C(v7);
 }
 
-- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics43CosmeticAssessmentBackCaptureViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

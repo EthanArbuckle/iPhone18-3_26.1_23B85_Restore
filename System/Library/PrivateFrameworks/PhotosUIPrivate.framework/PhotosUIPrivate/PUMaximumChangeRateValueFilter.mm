@@ -1,27 +1,27 @@
 @interface PUMaximumChangeRateValueFilter
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4 timeInterval:(double)a5;
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue timeInterval:(double)interval;
 @end
 
 @implementation PUMaximumChangeRateValueFilter
 
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4 timeInterval:(double)a5
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue timeInterval:(double)interval
 {
   [(PUMaximumChangeRateValueFilter *)self maximumChangeRate];
-  v9 = a3 - v8 * a5;
-  if (v9 < a4)
+  targetValueCopy = value - v8 * interval;
+  if (targetValueCopy < targetValue)
   {
-    v9 = a4;
+    targetValueCopy = targetValue;
   }
 
-  result = a3 + v8 * a5;
-  if (result >= a4)
+  result = value + v8 * interval;
+  if (result >= targetValue)
   {
-    result = a4;
+    result = targetValue;
   }
 
-  if (a3 >= a4)
+  if (value >= targetValue)
   {
-    return v9;
+    return targetValueCopy;
   }
 
   return result;

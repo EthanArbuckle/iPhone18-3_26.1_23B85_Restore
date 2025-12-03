@@ -1,25 +1,25 @@
 @interface AppTelemetryInvestigation
 - (AppTelemetryInvestigation)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)_daysSinceLastOSUpdate;
-- (double)_dbAgeFromDbCreationDate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_dbAgeFromDbCreationDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasEventTimestamp:(BOOL)a3;
-- (void)setHasHasForegroundClients:(BOOL)a3;
-- (void)setHasIsConsolidated:(BOOL)a3;
-- (void)setHasIsEnhancedDrivePrivacyEnabled:(BOOL)a3;
-- (void)setHasIsPCSChained:(BOOL)a3;
-- (void)setHasLastOSUpdate:(BOOL)a3;
-- (void)setHasNonDiscretionary:(BOOL)a3;
-- (void)setHasSharedZone:(BOOL)a3;
-- (void)setHasUnderlyingErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasEventTimestamp:(BOOL)timestamp;
+- (void)setHasHasForegroundClients:(BOOL)clients;
+- (void)setHasIsConsolidated:(BOOL)consolidated;
+- (void)setHasIsEnhancedDrivePrivacyEnabled:(BOOL)enabled;
+- (void)setHasIsPCSChained:(BOOL)chained;
+- (void)setHasLastOSUpdate:(BOOL)update;
+- (void)setHasNonDiscretionary:(BOOL)discretionary;
+- (void)setHasSharedZone:(BOOL)zone;
+- (void)setHasUnderlyingErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryInvestigation
@@ -30,20 +30,20 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryInvestigation;
   v4 = [(AppTelemetryInvestigation *)&v8 description];
-  v5 = [(AppTelemetryInvestigation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryInvestigation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   zoneName = self->_zoneName;
   if (zoneName)
   {
-    [v3 setObject:zoneName forKey:@"zoneName"];
+    [dictionary setObject:zoneName forKey:@"zoneName"];
   }
 
   if ((*&self->_has & 0x400) != 0)
@@ -144,22 +144,22 @@ LABEL_23:
   qbsInvestigation = self->_qbsInvestigation;
   if (qbsInvestigation)
   {
-    v19 = [(AppTelemetryQBSInvestigation *)qbsInvestigation dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"qbsInvestigation"];
+    dictionaryRepresentation = [(AppTelemetryQBSInvestigation *)qbsInvestigation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"qbsInvestigation"];
   }
 
   qbsPerformance = self->_qbsPerformance;
   if (qbsPerformance)
   {
-    v21 = [(AppTelemetryQBSPerformance *)qbsPerformance dictionaryRepresentation];
-    [v4 setObject:v21 forKey:@"qbsPerformance"];
+    dictionaryRepresentation2 = [(AppTelemetryQBSPerformance *)qbsPerformance dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"qbsPerformance"];
   }
 
   fpfsMigrationInvestigation = self->_fpfsMigrationInvestigation;
   if (fpfsMigrationInvestigation)
   {
-    v23 = [(AppTelemetryFPFSMigrationInvestigation *)fpfsMigrationInvestigation dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"fpfsMigrationInvestigation"];
+    dictionaryRepresentation3 = [(AppTelemetryFPFSMigrationInvestigation *)fpfsMigrationInvestigation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"fpfsMigrationInvestigation"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -171,15 +171,15 @@ LABEL_23:
   itemStatsInvestigation = self->_itemStatsInvestigation;
   if (itemStatsInvestigation)
   {
-    v26 = [(AppTelemetryItemStatsInvestigation *)itemStatsInvestigation dictionaryRepresentation];
-    [v4 setObject:v26 forKey:@"itemStatsInvestigation"];
+    dictionaryRepresentation4 = [(AppTelemetryItemStatsInvestigation *)itemStatsInvestigation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"itemStatsInvestigation"];
   }
 
   stuckStatus = self->_stuckStatus;
   if (stuckStatus)
   {
-    v28 = [(AppTelemetryStuckStatus *)stuckStatus dictionaryRepresentation];
-    [v4 setObject:v28 forKey:@"stuckStatus"];
+    dictionaryRepresentation5 = [(AppTelemetryStuckStatus *)stuckStatus dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"stuckStatus"];
   }
 
   if ((*&self->_has & 0x80) != 0)
@@ -254,64 +254,64 @@ LABEL_48:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_zoneName)
   {
     PBDataWriterWriteDataField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
     sharedZone = self->_sharedZone;
     PBDataWriterWriteBOOLField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt64Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_lastStep)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_itemID)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_reason)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_operationType)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   has = self->_has;
@@ -319,7 +319,7 @@ LABEL_48:
   {
     nonDiscretionary = self->_nonDiscretionary;
     PBDataWriterWriteBOOLField();
-    v4 = v18;
+    toCopy = v18;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -340,76 +340,76 @@ LABEL_21:
 
   hasForegroundClients = self->_hasForegroundClients;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_22:
     isPCSChained = self->_isPCSChained;
     PBDataWriterWriteBOOLField();
-    v4 = v18;
+    toCopy = v18;
   }
 
 LABEL_23:
   if (self->_eventGroupUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_migrationUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_qbsInvestigation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_qbsPerformance)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_fpfsMigrationInvestigation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     eventTimestamp = self->_eventTimestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_itemStatsInvestigation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_stuckStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
     isEnhancedDrivePrivacyEnabled = self->_isEnhancedDrivePrivacyEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_underlyingErrorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 
   v11 = self->_has;
@@ -417,7 +417,7 @@ LABEL_23:
   {
     underlyingErrorCode = self->_underlyingErrorCode;
     PBDataWriterWriteInt64Field();
-    v4 = v18;
+    toCopy = v18;
     v11 = self->_has;
     if ((v11 & 8) == 0)
     {
@@ -438,7 +438,7 @@ LABEL_45:
 
   lastOSUpdate = self->_lastOSUpdate;
   PBDataWriterWriteInt64Field();
-  v4 = v18;
+  toCopy = v18;
   v11 = self->_has;
   if ((v11 & 0x40) == 0)
   {
@@ -454,86 +454,86 @@ LABEL_46:
 LABEL_58:
   isConsolidated = self->_isConsolidated;
   PBDataWriterWriteBOOLField();
-  v4 = v18;
+  toCopy = v18;
   if (*&self->_has)
   {
 LABEL_47:
     dbAge = self->_dbAge;
     PBDataWriterWriteInt64Field();
-    v4 = v18;
+    toCopy = v18;
   }
 
 LABEL_48:
   if (self->_errorsChain)
   {
     PBDataWriterWriteStringField();
-    v4 = v18;
+    toCopy = v18;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_zoneName)
   {
-    [v4 setZoneName:?];
-    v4 = v7;
+    [toCopy setZoneName:?];
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    *(v4 + 181) = self->_sharedZone;
-    *(v4 + 92) |= 0x400u;
+    *(toCopy + 181) = self->_sharedZone;
+    *(toCopy + 92) |= 0x400u;
   }
 
   if (self->_errorDomain)
   {
     [v7 setErrorDomain:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_errorCode;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 2) = self->_errorCode;
+    *(toCopy + 92) |= 2u;
   }
 
   if (self->_errorDescription)
   {
     [v7 setErrorDescription:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_lastStep)
   {
     [v7 setLastStep:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_itemID)
   {
     [v7 setItemID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_reason)
   {
     [v7 setReason:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_operationType)
   {
     [v7 setOperationType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(v4 + 180) = self->_nonDiscretionary;
-    *(v4 + 92) |= 0x200u;
+    *(toCopy + 180) = self->_nonDiscretionary;
+    *(toCopy + 92) |= 0x200u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -552,81 +552,81 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *(v4 + 176) = self->_hasForegroundClients;
-  *(v4 + 92) |= 0x20u;
+  *(toCopy + 176) = self->_hasForegroundClients;
+  *(toCopy + 92) |= 0x20u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_22:
-    *(v4 + 179) = self->_isPCSChained;
-    *(v4 + 92) |= 0x100u;
+    *(toCopy + 179) = self->_isPCSChained;
+    *(toCopy + 92) |= 0x100u;
   }
 
 LABEL_23:
   if (self->_eventGroupUUID)
   {
     [v7 setEventGroupUUID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_migrationUUID)
   {
     [v7 setMigrationUUID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_qbsInvestigation)
   {
     [v7 setQbsInvestigation:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_qbsPerformance)
   {
     [v7 setQbsPerformance:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_fpfsMigrationInvestigation)
   {
     [v7 setFpfsMigrationInvestigation:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = self->_eventTimestamp;
-    *(v4 + 92) |= 4u;
+    *(toCopy + 3) = self->_eventTimestamp;
+    *(toCopy + 92) |= 4u;
   }
 
   if (self->_itemStatsInvestigation)
   {
     [v7 setItemStatsInvestigation:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_stuckStatus)
   {
     [v7 setStuckStatus:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    *(v4 + 178) = self->_isEnhancedDrivePrivacyEnabled;
-    *(v4 + 92) |= 0x80u;
+    *(toCopy + 178) = self->_isEnhancedDrivePrivacyEnabled;
+    *(toCopy + 92) |= 0x80u;
   }
 
   if (self->_underlyingErrorDomain)
   {
     [v7 setUnderlyingErrorDomain:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 5) = self->_underlyingErrorCode;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 5) = self->_underlyingErrorCode;
+    *(toCopy + 92) |= 0x10u;
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -645,8 +645,8 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  *(v4 + 4) = self->_lastOSUpdate;
-  *(v4 + 92) |= 8u;
+  *(toCopy + 4) = self->_lastOSUpdate;
+  *(toCopy + 92) |= 8u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -660,27 +660,27 @@ LABEL_46:
   }
 
 LABEL_58:
-  *(v4 + 177) = self->_isConsolidated;
-  *(v4 + 92) |= 0x40u;
+  *(toCopy + 177) = self->_isConsolidated;
+  *(toCopy + 92) |= 0x40u;
   if (*&self->_has)
   {
 LABEL_47:
-    *(v4 + 1) = self->_dbAge;
-    *(v4 + 92) |= 1u;
+    *(toCopy + 1) = self->_dbAge;
+    *(toCopy + 92) |= 1u;
   }
 
 LABEL_48:
   if (self->_errorsChain)
   {
     [v7 setErrorsChain:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_zoneName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_zoneName copyWithZone:zone];
   v7 = *(v5 + 168);
   *(v5 + 168) = v6;
 
@@ -690,7 +690,7 @@ LABEL_48:
     *(v5 + 184) |= 0x400u;
   }
 
-  v8 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
@@ -700,23 +700,23 @@ LABEL_48:
     *(v5 + 184) |= 2u;
   }
 
-  v10 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(NSString *)self->_lastStep copyWithZone:a3];
+  v12 = [(NSString *)self->_lastStep copyWithZone:zone];
   v13 = *(v5 + 104);
   *(v5 + 104) = v12;
 
-  v14 = [(NSString *)self->_itemID copyWithZone:a3];
+  v14 = [(NSString *)self->_itemID copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
-  v16 = [(NSString *)self->_reason copyWithZone:a3];
+  v16 = [(NSString *)self->_reason copyWithZone:zone];
   v17 = *(v5 + 144);
   *(v5 + 144) = v16;
 
-  v18 = [(NSString *)self->_operationType copyWithZone:a3];
+  v18 = [(NSString *)self->_operationType copyWithZone:zone];
   v19 = *(v5 + 120);
   *(v5 + 120) = v18;
 
@@ -753,23 +753,23 @@ LABEL_8:
   }
 
 LABEL_9:
-  v21 = [(NSString *)self->_eventGroupUUID copyWithZone:a3];
+  v21 = [(NSString *)self->_eventGroupUUID copyWithZone:zone];
   v22 = *(v5 + 72);
   *(v5 + 72) = v21;
 
-  v23 = [(NSString *)self->_migrationUUID copyWithZone:a3];
+  v23 = [(NSString *)self->_migrationUUID copyWithZone:zone];
   v24 = *(v5 + 112);
   *(v5 + 112) = v23;
 
-  v25 = [(AppTelemetryQBSInvestigation *)self->_qbsInvestigation copyWithZone:a3];
+  v25 = [(AppTelemetryQBSInvestigation *)self->_qbsInvestigation copyWithZone:zone];
   v26 = *(v5 + 128);
   *(v5 + 128) = v25;
 
-  v27 = [(AppTelemetryQBSPerformance *)self->_qbsPerformance copyWithZone:a3];
+  v27 = [(AppTelemetryQBSPerformance *)self->_qbsPerformance copyWithZone:zone];
   v28 = *(v5 + 136);
   *(v5 + 136) = v27;
 
-  v29 = [(AppTelemetryFPFSMigrationInvestigation *)self->_fpfsMigrationInvestigation copyWithZone:a3];
+  v29 = [(AppTelemetryFPFSMigrationInvestigation *)self->_fpfsMigrationInvestigation copyWithZone:zone];
   v30 = *(v5 + 80);
   *(v5 + 80) = v29;
 
@@ -779,11 +779,11 @@ LABEL_9:
     *(v5 + 184) |= 4u;
   }
 
-  v31 = [(AppTelemetryItemStatsInvestigation *)self->_itemStatsInvestigation copyWithZone:a3];
+  v31 = [(AppTelemetryItemStatsInvestigation *)self->_itemStatsInvestigation copyWithZone:zone];
   v32 = *(v5 + 96);
   *(v5 + 96) = v31;
 
-  v33 = [(AppTelemetryStuckStatus *)self->_stuckStatus copyWithZone:a3];
+  v33 = [(AppTelemetryStuckStatus *)self->_stuckStatus copyWithZone:zone];
   v34 = *(v5 + 152);
   *(v5 + 152) = v33;
 
@@ -793,7 +793,7 @@ LABEL_9:
     *(v5 + 184) |= 0x80u;
   }
 
-  v35 = [(NSString *)self->_underlyingErrorDomain copyWithZone:a3];
+  v35 = [(NSString *)self->_underlyingErrorDomain copyWithZone:zone];
   v36 = *(v5 + 160);
   *(v5 + 160) = v35;
 
@@ -845,23 +845,23 @@ LABEL_17:
   }
 
 LABEL_18:
-  v38 = [(NSString *)self->_errorsChain copyWithZone:a3];
+  v38 = [(NSString *)self->_errorsChain copyWithZone:zone];
   v39 = *(v5 + 64);
   *(v5 + 64) = v38;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   zoneName = self->_zoneName;
-  if (zoneName | *(v4 + 21))
+  if (zoneName | *(equalCopy + 21))
   {
     if (![(NSData *)zoneName isEqual:?])
     {
@@ -870,36 +870,36 @@ LABEL_18:
   }
 
   has = self->_has;
-  v7 = *(v4 + 92);
+  v7 = *(equalCopy + 92);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 92) & 0x400) == 0)
+    if ((*(equalCopy + 92) & 0x400) == 0)
     {
       goto LABEL_48;
     }
 
-    v10 = *(v4 + 181);
+    v10 = *(equalCopy + 181);
     if (self->_sharedZone)
     {
-      if ((*(v4 + 181) & 1) == 0)
+      if ((*(equalCopy + 181) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 181))
+    else if (*(equalCopy + 181))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 92) & 0x400) != 0)
+  else if ((*(equalCopy + 92) & 0x400) != 0)
   {
     goto LABEL_48;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 7))
+  if (errorDomain | *(equalCopy + 7))
   {
     if (![(NSString *)errorDomain isEqual:?])
     {
@@ -909,10 +909,10 @@ LABEL_18:
     has = self->_has;
   }
 
-  v9 = *(v4 + 92);
+  v9 = *(equalCopy + 92);
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_errorCode != *(v4 + 2))
+    if ((v9 & 2) == 0 || self->_errorCode != *(equalCopy + 2))
     {
       goto LABEL_48;
     }
@@ -924,13 +924,13 @@ LABEL_18:
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 6) && ![(NSString *)errorDescription isEqual:?])
+  if (errorDescription | *(equalCopy + 6) && ![(NSString *)errorDescription isEqual:?])
   {
     goto LABEL_48;
   }
 
   lastStep = self->_lastStep;
-  if (lastStep | *(v4 + 13))
+  if (lastStep | *(equalCopy + 13))
   {
     if (![(NSString *)lastStep isEqual:?])
     {
@@ -939,7 +939,7 @@ LABEL_18:
   }
 
   itemID = self->_itemID;
-  if (itemID | *(v4 + 11))
+  if (itemID | *(equalCopy + 11))
   {
     if (![(NSString *)itemID isEqual:?])
     {
@@ -948,7 +948,7 @@ LABEL_18:
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 18))
+  if (reason | *(equalCopy + 18))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -957,7 +957,7 @@ LABEL_18:
   }
 
   operationType = self->_operationType;
-  if (operationType | *(v4 + 15))
+  if (operationType | *(equalCopy + 15))
   {
     if (![(NSString *)operationType isEqual:?])
     {
@@ -966,30 +966,30 @@ LABEL_18:
   }
 
   v16 = self->_has;
-  v17 = *(v4 + 92);
+  v17 = *(equalCopy + 92);
   if ((v16 & 0x200) != 0)
   {
-    if ((*(v4 + 92) & 0x200) == 0)
+    if ((*(equalCopy + 92) & 0x200) == 0)
     {
       goto LABEL_48;
     }
 
-    v26 = *(v4 + 180);
+    v26 = *(equalCopy + 180);
     if (self->_nonDiscretionary)
     {
-      if ((*(v4 + 180) & 1) == 0)
+      if ((*(equalCopy + 180) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 180))
+    else if (*(equalCopy + 180))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 92) & 0x200) != 0)
+  else if ((*(equalCopy + 92) & 0x200) != 0)
   {
     goto LABEL_48;
   }
@@ -1001,16 +1001,16 @@ LABEL_18:
       goto LABEL_48;
     }
 
-    v27 = *(v4 + 176);
+    v27 = *(equalCopy + 176);
     if (self->_hasForegroundClients)
     {
-      if ((*(v4 + 176) & 1) == 0)
+      if ((*(equalCopy + 176) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 176))
+    else if (*(equalCopy + 176))
     {
       goto LABEL_48;
     }
@@ -1023,39 +1023,39 @@ LABEL_18:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 92) & 0x100) == 0)
+    if ((*(equalCopy + 92) & 0x100) == 0)
     {
       goto LABEL_48;
     }
 
-    v28 = *(v4 + 179);
+    v28 = *(equalCopy + 179);
     if (self->_isPCSChained)
     {
-      if ((*(v4 + 179) & 1) == 0)
+      if ((*(equalCopy + 179) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 179))
+    else if (*(equalCopy + 179))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 92) & 0x100) != 0)
+  else if ((*(equalCopy + 92) & 0x100) != 0)
   {
     goto LABEL_48;
   }
 
   eventGroupUUID = self->_eventGroupUUID;
-  if (eventGroupUUID | *(v4 + 9) && ![(NSString *)eventGroupUUID isEqual:?])
+  if (eventGroupUUID | *(equalCopy + 9) && ![(NSString *)eventGroupUUID isEqual:?])
   {
     goto LABEL_48;
   }
 
   migrationUUID = self->_migrationUUID;
-  if (migrationUUID | *(v4 + 14))
+  if (migrationUUID | *(equalCopy + 14))
   {
     if (![(NSString *)migrationUUID isEqual:?])
     {
@@ -1064,7 +1064,7 @@ LABEL_18:
   }
 
   qbsInvestigation = self->_qbsInvestigation;
-  if (qbsInvestigation | *(v4 + 16))
+  if (qbsInvestigation | *(equalCopy + 16))
   {
     if (![(AppTelemetryQBSInvestigation *)qbsInvestigation isEqual:?])
     {
@@ -1073,7 +1073,7 @@ LABEL_18:
   }
 
   qbsPerformance = self->_qbsPerformance;
-  if (qbsPerformance | *(v4 + 17))
+  if (qbsPerformance | *(equalCopy + 17))
   {
     if (![(AppTelemetryQBSPerformance *)qbsPerformance isEqual:?])
     {
@@ -1082,7 +1082,7 @@ LABEL_18:
   }
 
   fpfsMigrationInvestigation = self->_fpfsMigrationInvestigation;
-  if (fpfsMigrationInvestigation | *(v4 + 10))
+  if (fpfsMigrationInvestigation | *(equalCopy + 10))
   {
     if (![(AppTelemetryFPFSMigrationInvestigation *)fpfsMigrationInvestigation isEqual:?])
     {
@@ -1090,10 +1090,10 @@ LABEL_18:
     }
   }
 
-  v23 = *(v4 + 92);
+  v23 = *(equalCopy + 92);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v23 & 4) == 0 || self->_eventTimestamp != *(v4 + 3))
+    if ((v23 & 4) == 0 || self->_eventTimestamp != *(equalCopy + 3))
     {
       goto LABEL_48;
     }
@@ -1105,13 +1105,13 @@ LABEL_18:
   }
 
   itemStatsInvestigation = self->_itemStatsInvestigation;
-  if (itemStatsInvestigation | *(v4 + 12) && ![(AppTelemetryItemStatsInvestigation *)itemStatsInvestigation isEqual:?])
+  if (itemStatsInvestigation | *(equalCopy + 12) && ![(AppTelemetryItemStatsInvestigation *)itemStatsInvestigation isEqual:?])
   {
     goto LABEL_48;
   }
 
   stuckStatus = self->_stuckStatus;
-  if (stuckStatus | *(v4 + 19))
+  if (stuckStatus | *(equalCopy + 19))
   {
     if (![(AppTelemetryStuckStatus *)stuckStatus isEqual:?])
     {
@@ -1120,7 +1120,7 @@ LABEL_18:
   }
 
   v31 = self->_has;
-  v32 = *(v4 + 92);
+  v32 = *(equalCopy + 92);
   if ((v31 & 0x80) != 0)
   {
     if ((v32 & 0x80) == 0)
@@ -1128,16 +1128,16 @@ LABEL_18:
       goto LABEL_48;
     }
 
-    v35 = *(v4 + 178);
+    v35 = *(equalCopy + 178);
     if (self->_isEnhancedDrivePrivacyEnabled)
     {
-      if ((*(v4 + 178) & 1) == 0)
+      if ((*(equalCopy + 178) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 178))
+    else if (*(equalCopy + 178))
     {
       goto LABEL_48;
     }
@@ -1149,7 +1149,7 @@ LABEL_18:
   }
 
   underlyingErrorDomain = self->_underlyingErrorDomain;
-  if (underlyingErrorDomain | *(v4 + 20))
+  if (underlyingErrorDomain | *(equalCopy + 20))
   {
     if (![(NSString *)underlyingErrorDomain isEqual:?])
     {
@@ -1159,10 +1159,10 @@ LABEL_18:
     v31 = self->_has;
   }
 
-  v34 = *(v4 + 92);
+  v34 = *(equalCopy + 92);
   if ((v31 & 0x10) != 0)
   {
-    if ((v34 & 0x10) == 0 || self->_underlyingErrorCode != *(v4 + 5))
+    if ((v34 & 0x10) == 0 || self->_underlyingErrorCode != *(equalCopy + 5))
     {
       goto LABEL_48;
     }
@@ -1175,7 +1175,7 @@ LABEL_18:
 
   if ((v31 & 8) != 0)
   {
-    if ((v34 & 8) == 0 || self->_lastOSUpdate != *(v4 + 4))
+    if ((v34 & 8) == 0 || self->_lastOSUpdate != *(equalCopy + 4))
     {
       goto LABEL_48;
     }
@@ -1193,16 +1193,16 @@ LABEL_18:
       goto LABEL_48;
     }
 
-    v36 = *(v4 + 177);
+    v36 = *(equalCopy + 177);
     if (self->_isConsolidated)
     {
-      if ((*(v4 + 177) & 1) == 0)
+      if ((*(equalCopy + 177) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 177))
+    else if (*(equalCopy + 177))
     {
       goto LABEL_48;
     }
@@ -1225,14 +1225,14 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if ((v34 & 1) == 0 || self->_dbAge != *(v4 + 1))
+  if ((v34 & 1) == 0 || self->_dbAge != *(equalCopy + 1))
   {
     goto LABEL_48;
   }
 
 LABEL_106:
   errorsChain = self->_errorsChain;
-  if (errorsChain | *(v4 + 8))
+  if (errorsChain | *(equalCopy + 8))
   {
     v24 = [(NSString *)errorsChain isEqual:?];
   }
@@ -1394,70 +1394,70 @@ LABEL_24:
   return v30 ^ v31 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ v15 ^ v16 ^ [(NSString *)self->_errorsChain hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v17 = v4;
-  if (*(v4 + 21))
+  fromCopy = from;
+  v17 = fromCopy;
+  if (*(fromCopy + 21))
   {
     [(AppTelemetryInvestigation *)self setZoneName:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if ((*(v4 + 92) & 0x400) != 0)
+  if ((*(fromCopy + 92) & 0x400) != 0)
   {
-    self->_sharedZone = *(v4 + 181);
+    self->_sharedZone = *(fromCopy + 181);
     *&self->_has |= 0x400u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(AppTelemetryInvestigation *)self setErrorDomain:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if ((*(v4 + 92) & 2) != 0)
+  if ((*(fromCopy + 92) & 2) != 0)
   {
-    self->_errorCode = *(v4 + 2);
+    self->_errorCode = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(AppTelemetryInvestigation *)self setErrorDescription:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(AppTelemetryInvestigation *)self setLastStep:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(AppTelemetryInvestigation *)self setItemID:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(AppTelemetryInvestigation *)self setReason:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(AppTelemetryInvestigation *)self setOperationType:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(fromCopy + 92);
   if ((v5 & 0x200) != 0)
   {
-    self->_nonDiscretionary = *(v4 + 180);
+    self->_nonDiscretionary = *(fromCopy + 180);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 92);
+    v5 = *(fromCopy + 92);
     if ((v5 & 0x20) == 0)
     {
 LABEL_21:
@@ -1475,30 +1475,30 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  self->_hasForegroundClients = *(v4 + 176);
+  self->_hasForegroundClients = *(fromCopy + 176);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 92) & 0x100) != 0)
+  if ((*(fromCopy + 92) & 0x100) != 0)
   {
 LABEL_22:
-    self->_isPCSChained = *(v4 + 179);
+    self->_isPCSChained = *(fromCopy + 179);
     *&self->_has |= 0x100u;
   }
 
 LABEL_23:
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(AppTelemetryInvestigation *)self setEventGroupUUID:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(AppTelemetryInvestigation *)self setMigrationUUID:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
   qbsInvestigation = self->_qbsInvestigation;
-  v7 = *(v4 + 16);
+  v7 = *(fromCopy + 16);
   if (qbsInvestigation)
   {
     if (!v7)
@@ -1519,10 +1519,10 @@ LABEL_23:
     [(AppTelemetryInvestigation *)self setQbsInvestigation:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_36:
   qbsPerformance = self->_qbsPerformance;
-  v9 = *(v4 + 17);
+  v9 = *(fromCopy + 17);
   if (qbsPerformance)
   {
     if (!v9)
@@ -1543,10 +1543,10 @@ LABEL_36:
     [(AppTelemetryInvestigation *)self setQbsPerformance:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_42:
   fpfsMigrationInvestigation = self->_fpfsMigrationInvestigation;
-  v11 = *(v4 + 10);
+  v11 = *(fromCopy + 10);
   if (fpfsMigrationInvestigation)
   {
     if (!v11)
@@ -1567,16 +1567,16 @@ LABEL_42:
     [(AppTelemetryInvestigation *)self setFpfsMigrationInvestigation:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_48:
-  if ((*(v4 + 92) & 4) != 0)
+  if ((*(fromCopy + 92) & 4) != 0)
   {
-    self->_eventTimestamp = *(v4 + 3);
+    self->_eventTimestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
   itemStatsInvestigation = self->_itemStatsInvestigation;
-  v13 = *(v4 + 12);
+  v13 = *(fromCopy + 12);
   if (itemStatsInvestigation)
   {
     if (!v13)
@@ -1597,10 +1597,10 @@ LABEL_48:
     [(AppTelemetryInvestigation *)self setItemStatsInvestigation:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_56:
   stuckStatus = self->_stuckStatus;
-  v15 = *(v4 + 19);
+  v15 = *(fromCopy + 19);
   if (stuckStatus)
   {
     if (!v15)
@@ -1621,26 +1621,26 @@ LABEL_56:
     [(AppTelemetryInvestigation *)self setStuckStatus:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_62:
-  if ((*(v4 + 92) & 0x80) != 0)
+  if ((*(fromCopy + 92) & 0x80) != 0)
   {
-    self->_isEnhancedDrivePrivacyEnabled = *(v4 + 178);
+    self->_isEnhancedDrivePrivacyEnabled = *(fromCopy + 178);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(AppTelemetryInvestigation *)self setUnderlyingErrorDomain:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  v16 = *(v4 + 92);
+  v16 = *(fromCopy + 92);
   if ((v16 & 0x10) != 0)
   {
-    self->_underlyingErrorCode = *(v4 + 5);
+    self->_underlyingErrorCode = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v16 = *(v4 + 92);
+    v16 = *(fromCopy + 92);
     if ((v16 & 8) == 0)
     {
 LABEL_68:
@@ -1658,9 +1658,9 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  self->_lastOSUpdate = *(v4 + 4);
+  self->_lastOSUpdate = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v16 = *(v4 + 92);
+  v16 = *(fromCopy + 92);
   if ((v16 & 0x40) == 0)
   {
 LABEL_69:
@@ -1673,17 +1673,17 @@ LABEL_69:
   }
 
 LABEL_78:
-  self->_isConsolidated = *(v4 + 177);
+  self->_isConsolidated = *(fromCopy + 177);
   *&self->_has |= 0x40u;
-  if (*(v4 + 92))
+  if (*(fromCopy + 92))
   {
 LABEL_70:
-    self->_dbAge = *(v4 + 1);
+    self->_dbAge = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_71:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(AppTelemetryInvestigation *)self setErrorsChain:?];
   }
@@ -1691,9 +1691,9 @@ LABEL_71:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setHasSharedZone:(BOOL)a3
+- (void)setHasSharedZone:(BOOL)zone
 {
-  if (a3)
+  if (zone)
   {
     v3 = 1024;
   }
@@ -1706,9 +1706,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -1721,9 +1721,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNonDiscretionary:(BOOL)a3
+- (void)setHasNonDiscretionary:(BOOL)discretionary
 {
-  if (a3)
+  if (discretionary)
   {
     v3 = 512;
   }
@@ -1736,9 +1736,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasHasForegroundClients:(BOOL)a3
+- (void)setHasHasForegroundClients:(BOOL)clients
 {
-  if (a3)
+  if (clients)
   {
     v3 = 32;
   }
@@ -1751,9 +1751,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsPCSChained:(BOOL)a3
+- (void)setHasIsPCSChained:(BOOL)chained
 {
-  if (a3)
+  if (chained)
   {
     v3 = 256;
   }
@@ -1766,9 +1766,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEventTimestamp:(BOOL)a3
+- (void)setHasEventTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -1781,9 +1781,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsEnhancedDrivePrivacyEnabled:(BOOL)a3
+- (void)setHasIsEnhancedDrivePrivacyEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -1796,9 +1796,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasUnderlyingErrorCode:(BOOL)a3
+- (void)setHasUnderlyingErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -1811,9 +1811,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLastOSUpdate:(BOOL)a3
+- (void)setHasLastOSUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v3 = 8;
   }
@@ -1826,9 +1826,9 @@ LABEL_71:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasIsConsolidated:(BOOL)a3
+- (void)setHasIsConsolidated:(BOOL)consolidated
 {
-  if (a3)
+  if (consolidated)
   {
     v3 = 64;
   }
@@ -1849,14 +1849,14 @@ LABEL_71:
   if (v2)
   {
     v3 = +[BRCAccountsManager sharedManager];
-    v4 = [v3 accountHandlerForCurrentPersona];
-    v5 = [v4 session];
+    accountHandlerForCurrentPersona = [v3 accountHandlerForCurrentPersona];
+    session = [accountHandlerForCurrentPersona session];
 
-    if (v5)
+    if (session)
     {
-      -[AppTelemetryInvestigation setIsConsolidated:](v2, "setIsConsolidated:", [v5 isConsolidatedAccount]);
-      v6 = [v5 dbCreationDate];
-      [(AppTelemetryInvestigation *)v2 _dbAgeFromDbCreationDate:v6];
+      -[AppTelemetryInvestigation setIsConsolidated:](v2, "setIsConsolidated:", [session isConsolidatedAccount]);
+      dbCreationDate = [session dbCreationDate];
+      [(AppTelemetryInvestigation *)v2 _dbAgeFromDbCreationDate:dbCreationDate];
       [(AppTelemetryInvestigation *)v2 setDbAge:v7];
     }
 
@@ -1896,13 +1896,13 @@ LABEL_71:
   return v6;
 }
 
-- (double)_dbAgeFromDbCreationDate:(id)a3
+- (double)_dbAgeFromDbCreationDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    [v3 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     v6 = -1.0;
     if (ceil(v5 / -86400.0) != -1.0)
     {

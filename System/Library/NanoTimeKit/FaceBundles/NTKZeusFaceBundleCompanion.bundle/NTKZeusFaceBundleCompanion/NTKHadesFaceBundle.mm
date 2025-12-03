@@ -1,25 +1,25 @@
 @interface NTKHadesFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKHadesFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKHadesFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKHadesFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_47838;
   v6 = &off_47850;
@@ -28,19 +28,19 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = NTKHadesFaceBundle;
-  v3 = [(NTKHadesFaceBundle *)&v5 galleryFacesForDevice:a3];
+  v3 = [(NTKHadesFaceBundle *)&v5 galleryFacesForDevice:device];
   [v3 enumerateObjectsUsingBlock:&stru_45378];
 
   return v3;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &off_47868;
     v6 = &off_48040;
@@ -55,9 +55,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = @"hades.noir";
     v5[1] = @"hades.biscuit";
@@ -73,22 +73,22 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(v4, "supportsPDRCapability:", 4094027452))
+  deviceCopy = device;
+  if (([deviceCopy supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(deviceCopy, "supportsPDRCapability:", 4094027452))
   {
     v6 = &__NSArray0__struct;
   }
 
   else
   {
-    if ([v4 deviceCategory] == &dword_4)
+    if ([deviceCopy deviceCategory] == &dword_4)
     {
       v5 = 600;
     }
 
-    else if ([v4 deviceCategory] == &dword_0 + 3)
+    else if ([deviceCopy deviceCategory] == &dword_0 + 3)
     {
       v5 = 600;
     }
@@ -98,7 +98,7 @@
       v5 = 400;
     }
 
-    v7 = [(NTKHadesFaceBundle *)self defaultFaceForDevice:v4];
+    v7 = [(NTKHadesFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v8 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v7 priority:v5];
     v9 = v8;
     if (v8)

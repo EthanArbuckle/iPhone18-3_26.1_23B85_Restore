@@ -1,15 +1,15 @@
 @interface BKBadgedButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)badgeWidth;
 - (void)layoutSubviews;
-- (void)setValue:(unint64_t)a3;
+- (void)setValue:(unint64_t)value;
 @end
 
 @implementation BKBadgedButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(BKBadgedButton *)self badgeWidth:a3.width];
+  [(BKBadgedButton *)self badgeWidth:fits.width];
   v4 = 18.0;
   result.height = v4;
   result.width = v3;
@@ -32,9 +32,9 @@
   v33.receiver = self;
   v33.super_class = BKBadgedButton;
   [(BKBadgedButton *)&v33 layoutSubviews];
-  v3 = [(BKBadgedButton *)self value];
+  value = [(BKBadgedButton *)self value];
   badgeBackground = self->_badgeBackground;
-  if (v3)
+  if (value)
   {
     if (!badgeBackground)
     {
@@ -70,9 +70,9 @@
     [(BKBadgedButton *)self addSubview:self->_badgeLabel];
     [(BKBadgedButton *)self badgeWidth];
     v15 = v14;
-    v16 = [(BKBadgedButton *)self window];
-    v17 = [v16 windowScene];
-    if ([v17 interfaceOrientation] - 3 >= 2)
+    window = [(BKBadgedButton *)self window];
+    windowScene = [window windowScene];
+    if ([windowScene interfaceOrientation] - 3 >= 2)
     {
       v18 = 0.0;
     }
@@ -129,11 +129,11 @@
   }
 }
 
-- (void)setValue:(unint64_t)a3
+- (void)setValue:(unint64_t)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(BKBadgedButton *)self setNeedsLayout];
   }
 }

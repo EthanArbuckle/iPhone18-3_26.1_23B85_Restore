@@ -1,10 +1,10 @@
 @interface UARPUploader
-- (BOOL)setController:(id)a3;
+- (BOOL)setController:(id)controller;
 - (UARPController)controller;
 - (UARPUploader)init;
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4;
-- (void)stagedFirmwareRescindComplete:(id)a3 withStatus:(unint64_t)a4;
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status;
+- (void)stagedFirmwareRescindComplete:(id)complete withStatus:(unint64_t)status;
 @end
 
 @implementation UARPUploader
@@ -24,55 +24,55 @@
   return v2;
 }
 
-- (BOOL)setController:(id)a3
+- (BOOL)setController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
 
   if (!WeakRetained)
   {
-    objc_storeWeak(&self->_controller, v4);
+    objc_storeWeak(&self->_controller, controllerCopy);
   }
 
   return WeakRetained == 0;
 }
 
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  completeCopy = complete;
+  dCopy = d;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     v11 = xpcLog;
     v14 = 136315650;
-    v15 = UARPFirmwareStagingCompletionStatusToString(a5);
+    v15 = UARPFirmwareStagingCompletionStatusToString(status);
     v16 = 2112;
-    v17 = v9;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = completeCopy;
     _os_log_impl(&dword_247AA7000, v11, OS_LOG_TYPE_INFO, "Firmware Staging Complete Status = %s for Asset = %@ Accessory = %@", &v14, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained firmwareStagingComplete:v8 assetID:v9 withStatus:a5];
+  [WeakRetained firmwareStagingComplete:completeCopy assetID:dCopy withStatus:status];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status
 {
-  v6 = a3;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained stagedFirmwareApplicationComplete:v6 withStatus:a4];
+  [WeakRetained stagedFirmwareApplicationComplete:completeCopy withStatus:status];
 }
 
-- (void)stagedFirmwareRescindComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareRescindComplete:(id)complete withStatus:(unint64_t)status
 {
-  v5 = a3;
+  completeCopy = complete;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained stagedFirmwareRescindComplete:v5 withStatus:6];
+  [WeakRetained stagedFirmwareRescindComplete:completeCopy withStatus:6];
 }
 
 - (UARPController)controller

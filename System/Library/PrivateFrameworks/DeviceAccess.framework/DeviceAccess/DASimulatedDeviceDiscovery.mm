@@ -1,15 +1,15 @@
 @interface DASimulatedDeviceDiscovery
 - (DASimulatedDeviceDiscovery)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_bluetoothEnsureStarted;
 - (void)_bluetoothEnsureStopped;
-- (void)_bluetoothFoundDevice:(id)a3;
-- (void)_bluetoothLostDevice:(id)a3;
+- (void)_bluetoothFoundDevice:(id)device;
+- (void)_bluetoothLostDevice:(id)device;
 - (void)_bonjourEnsureStarted;
 - (void)_bonjourEnsureStopped;
-- (void)_bonjourFoundDevice:(id)a3;
-- (void)_bonjourLostDevice:(id)a3;
+- (void)_bonjourFoundDevice:(id)device;
+- (void)_bonjourLostDevice:(id)device;
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   objc_opt_class();
   deviceBonjourServiceType = self->_deviceBonjourServiceType;
@@ -156,14 +156,14 @@ uint64_t __40__DASimulatedDeviceDiscovery_invalidate__block_invoke(uint64_t resu
     v15[3] = &unk_278F582C0;
     v9 = v7;
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     [(CBDiscovery *)v9 setDeviceFoundHandler:v15];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__DASimulatedDeviceDiscovery__bluetoothEnsureStarted__block_invoke_2;
     v12[3] = &unk_278F582C0;
     v13 = v9;
-    v14 = self;
+    selfCopy2 = self;
     v10 = v9;
     [(CBDiscovery *)v10 setDeviceLostHandler:v12];
     v11[0] = MEMORY[0x277D85DD0];
@@ -234,23 +234,23 @@ void __53__DASimulatedDeviceDiscovery__bluetoothEnsureStarted__block_invoke_3(ui
   }
 }
 
-- (void)_bluetoothFoundDevice:(id)a3
+- (void)_bluetoothFoundDevice:(id)device
 {
-  v14 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(DADevice);
-  v5 = [v14 identifier];
-  [(DADevice *)v4 setIdentifier:v5];
+  identifier = [deviceCopy identifier];
+  [(DADevice *)v4 setIdentifier:identifier];
 
-  v6 = [v14 name];
-  if (v6)
+  name = [deviceCopy name];
+  if (name)
   {
-    [(DADevice *)v4 setName:v6];
+    [(DADevice *)v4 setName:name];
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v14 identifier];
+    identifier2 = [deviceCopy identifier];
     v9 = CUPrintNSObject();
     v10 = [v7 initWithFormat:@"Unknown device %@", v9];
     [(DADevice *)v4 setName:v10];
@@ -270,23 +270,23 @@ void __53__DASimulatedDeviceDiscovery__bluetoothEnsureStarted__block_invoke_3(ui
   }
 }
 
-- (void)_bluetoothLostDevice:(id)a3
+- (void)_bluetoothLostDevice:(id)device
 {
-  v14 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(DADevice);
-  v5 = [v14 identifier];
-  [(DADevice *)v4 setIdentifier:v5];
+  identifier = [deviceCopy identifier];
+  [(DADevice *)v4 setIdentifier:identifier];
 
-  v6 = [v14 name];
-  if (v6)
+  name = [deviceCopy name];
+  if (name)
   {
-    [(DADevice *)v4 setName:v6];
+    [(DADevice *)v4 setName:name];
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [v14 identifier];
+    identifier2 = [deviceCopy identifier];
     v9 = CUPrintNSObject();
     v10 = [v7 initWithFormat:@"Unknown device %@", v9];
     [(DADevice *)v4 setName:v10];
@@ -415,34 +415,34 @@ void *__51__DASimulatedDeviceDiscovery__bonjourEnsureStarted__block_invoke_3(uin
   }
 }
 
-- (void)_bonjourFoundDevice:(id)a3
+- (void)_bonjourFoundDevice:(id)device
 {
-  v23 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(DADevice);
-  v5 = [v23 identifier];
-  v6 = [v5 UUIDString];
-  [(DADevice *)v4 setIdentifier:v6];
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [(DADevice *)v4 setIdentifier:uUIDString];
 
   nameTXTKey = self->_nameTXTKey;
-  if (!nameTXTKey || (v8 = nameTXTKey, [v23 txtDictionary], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v8), v10 = objc_claimAutoreleasedReturnValue(), v8, v9, !v10))
+  if (!nameTXTKey || (v8 = nameTXTKey, [deviceCopy txtDictionary], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v8), name = objc_claimAutoreleasedReturnValue(), v8, v9, !name))
   {
-    v10 = [v23 name];
+    name = [deviceCopy name];
   }
 
-  [(DADevice *)v4 setName:v10];
-  v11 = [v23 txtDictionary];
-  if (v11)
+  [(DADevice *)v4 setName:name];
+  txtDictionary = [deviceCopy txtDictionary];
+  if (txtDictionary)
   {
-    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:0 error:0];
+    v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:txtDictionary requiringSecureCoding:0 error:0];
     [(DADevice *)v4 setTxtRecordData:v12];
   }
 
   [(DADevice *)v4 setProtocolType:*MEMORY[0x277CE1F30]];
-  v13 = [v23 name];
-  v14 = [v13 UTF8String];
-  if (v14)
+  name2 = [deviceCopy name];
+  uTF8String = [name2 UTF8String];
+  if (uTF8String)
   {
-    v15 = v14;
+    v15 = uTF8String;
   }
 
   else
@@ -450,11 +450,11 @@ void *__51__DASimulatedDeviceDiscovery__bonjourEnsureStarted__block_invoke_3(uin
     v15 = "?";
   }
 
-  v16 = [(CUBonjourBrowser *)self->_bonjourBrowser serviceType];
-  v17 = [v16 UTF8String];
-  if (v17)
+  serviceType = [(CUBonjourBrowser *)self->_bonjourBrowser serviceType];
+  uTF8String2 = [serviceType UTF8String];
+  if (uTF8String2)
   {
-    v18 = v17;
+    v18 = uTF8String2;
   }
 
   else
@@ -479,21 +479,21 @@ void *__51__DASimulatedDeviceDiscovery__bonjourEnsureStarted__block_invoke_3(uin
   }
 }
 
-- (void)_bonjourLostDevice:(id)a3
+- (void)_bonjourLostDevice:(id)device
 {
-  v13 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(DADevice);
-  v5 = [v13 identifier];
-  v6 = [v5 UUIDString];
-  [(DADevice *)v4 setIdentifier:v6];
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [(DADevice *)v4 setIdentifier:uUIDString];
 
-  v7 = [v13 name];
-  [(DADevice *)v4 setName:v7];
+  name = [deviceCopy name];
+  [(DADevice *)v4 setName:name];
 
-  v8 = [v13 txtDictionary];
-  if (v8)
+  txtDictionary = [deviceCopy txtDictionary];
+  if (txtDictionary)
   {
-    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:0 error:0];
+    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:txtDictionary requiringSecureCoding:0 error:0];
     [(DADevice *)v4 setTxtRecordData:v9];
   }
 

@@ -16,7 +16,7 @@
   v12 = v7;
   v8 = v7;
   v9 = v6;
-  [a1 addFinishBlock:v10];
+  [self addFinishBlock:v10];
 }
 
 @end

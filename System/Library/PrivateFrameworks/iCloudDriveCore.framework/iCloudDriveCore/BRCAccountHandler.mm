@@ -1,39 +1,39 @@
 @interface BRCAccountHandler
 + (id)currentiCloudAccount;
 + (id)currentiCloudAccountID;
-+ (void)_migrateAccountIfNecessaryForAccountDSID:(id)a3;
++ (void)_migrateAccountIfNecessaryForAccountDSID:(id)d;
 + (void)currentiCloudAccount;
 - (BOOL)_cleanupAPFSSnapshotWhenNoSessionExists;
-- (BOOL)_createCurrentAccountSessionWithID:(id)a3 error:(id *)a4;
-- (BOOL)_loadOnDiskAccountSessionSecondTry:(id)a3 prevError:(id)a4;
-- (BOOL)_loadOnDiskAccountSessionWithError:(id *)a3;
-- (BOOL)_waitForSessionLoadingWhenNowStarting:(BOOL)a3;
+- (BOOL)_createCurrentAccountSessionWithID:(id)d error:(id *)error;
+- (BOOL)_loadOnDiskAccountSessionSecondTry:(id)try prevError:(id)error;
+- (BOOL)_loadOnDiskAccountSessionWithError:(id *)error;
+- (BOOL)_waitForSessionLoadingWhenNowStarting:(BOOL)starting;
 - (BOOL)checkEnoughDiskSpaceToBeFunctional;
-- (BOOL)createAccountSessionWithDSID:(id)a3 error:(id *)a4;
+- (BOOL)createAccountSessionWithDSID:(id)d error:(id *)error;
 - (BOOL)destroyCurrentAccountSynchronously;
 - (BOOL)destroySessionSynchronously;
-- (BOOL)setDBAccountDSID:(id)a3;
-- (BRCAccountHandler)initWithACAccountID:(id)a3;
+- (BOOL)setDBAccountDSID:(id)d;
+- (BRCAccountHandler)initWithACAccountID:(id)d;
 - (id)ubiquityTokenSalt;
 - (id)waitForSessionDBLoadingBarrier;
-- (int64_t)syncPolicyforSyncedFolderType:(unint64_t)a3;
-- (unsigned)_handleOpenError:(id)a3;
-- (unsigned)_tryToOpenSession:(id)a3 error:(id *)a4;
+- (int64_t)syncPolicyforSyncedFolderType:(unint64_t)type;
+- (unsigned)_handleOpenError:(id)error;
+- (unsigned)_tryToOpenSession:(id)session error:(id *)error;
 - (void)__destroySession;
 - (void)_cleanupPushAndActivitiesStatesWhenNoSessionExists;
 - (void)_destroyCurrentSessionSynchronously;
 - (void)_handleAccountDidChange;
 - (void)_handleAccountWillChange;
-- (void)_updateAccountToDSID:(id)a3;
+- (void)_updateAccountToDSID:(id)d;
 - (void)checkEnoughDiskSpaceToBeFunctional;
 - (void)dealloc;
 - (void)jetsamCloudDocsApps;
-- (void)markMigrationCompletedForDSID:(id)a3;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)reloadSyncedFolderPoliciesDisableiCloudDesktop:(BOOL)a3;
-- (void)setMigrationStatus:(char)a3 forDSID:(id)a4 shouldUpdateAccount:(BOOL)a5 shouldPostAccountChangedNotification:(BOOL)a6 completion:(id)a7;
-- (void)setSyncPolicy:(int64_t)a3 forSyncedFolderType:(unint64_t)a4;
-- (void)startAndLoadAccountSynchronously:(id)a3;
+- (void)markMigrationCompletedForDSID:(id)d;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
+- (void)reloadSyncedFolderPoliciesDisableiCloudDesktop:(BOOL)desktop;
+- (void)setMigrationStatus:(char)status forDSID:(id)d shouldUpdateAccount:(BOOL)account shouldPostAccountChangedNotification:(BOOL)notification completion:(id)completion;
+- (void)setSyncPolicy:(int64_t)policy forSyncedFolderType:(unint64_t)type;
+- (void)startAndLoadAccountSynchronously:(id)synchronously;
 - (void)ubiquityTokenSalt;
 @end
 
@@ -41,8 +41,8 @@
 
 + (id)currentiCloudAccount
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 br_accountForCurrentPersona];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  br_accountForCurrentPersona = [defaultStore br_accountForCurrentPersona];
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -50,9 +50,9 @@
     +[BRCAccountHandler currentiCloudAccount];
   }
 
-  if (v4)
+  if (br_accountForCurrentPersona)
   {
-    if (([v4 isEnabledForDataclass:*MEMORY[0x277CB91D8]] & 1) == 0)
+    if (([br_accountForCurrentPersona isEnabledForDataclass:*MEMORY[0x277CB91D8]] & 1) == 0)
     {
       v7 = brc_bread_crumbs();
       v8 = brc_default_log();
@@ -62,7 +62,7 @@
       }
     }
 
-    if (([v4 br_isEnabledForCloudDocs] & 1) == 0)
+    if (([br_accountForCurrentPersona br_isEnabledForCloudDocs] & 1) == 0)
     {
       v9 = brc_bread_crumbs();
       v10 = brc_default_log();
@@ -72,19 +72,19 @@
       }
     }
 
-    v11 = [v4 br_dsid];
-    [a1 _migrateAccountIfNecessaryForAccountDSID:v11];
+    br_dsid = [br_accountForCurrentPersona br_dsid];
+    [self _migrateAccountIfNecessaryForAccountDSID:br_dsid];
   }
 
-  return v4;
+  return br_accountForCurrentPersona;
 }
 
 - (id)ubiquityTokenSalt
 {
   v50 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  ubiquityTokenSalt = v2->_ubiquityTokenSalt;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ubiquityTokenSalt = selfCopy->_ubiquityTokenSalt;
   if (ubiquityTokenSalt)
   {
     v4 = ubiquityTokenSalt;
@@ -94,19 +94,19 @@ LABEL_5:
   }
 
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [(BRCAccountHandler *)v2 accountPath];
-  v7 = [v5 fileURLWithPath:v6 isDirectory:1];
+  accountPath = [(BRCAccountHandler *)selfCopy accountPath];
+  v7 = [v5 fileURLWithPath:accountPath isDirectory:1];
 
-  v8 = [MEMORY[0x277CCACA8] ubiquityTokenSaltFilename];
-  v9 = [v7 URLByAppendingPathComponent:v8];
+  ubiquityTokenSaltFilename = [MEMORY[0x277CCACA8] ubiquityTokenSaltFilename];
+  v9 = [v7 URLByAppendingPathComponent:ubiquityTokenSaltFilename];
 
   v43 = 0;
   v10 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:v9 encoding:4 error:&v43];
   v11 = v43;
-  v12 = v2->_ubiquityTokenSalt;
-  v2->_ubiquityTokenSalt = v10;
+  v12 = selfCopy->_ubiquityTokenSalt;
+  selfCopy->_ubiquityTokenSalt = v10;
 
-  v13 = v2->_ubiquityTokenSalt;
+  v13 = selfCopy->_ubiquityTokenSalt;
   if (v13)
   {
     v4 = v13;
@@ -114,8 +114,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v17 = [v11 domain];
-  if (![v17 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [v11 domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCA050]])
   {
 
     goto LABEL_15;
@@ -150,19 +150,19 @@ LABEL_15:
     _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEFAULT, "[NOTICE] generating new ubiquity token%@", buf, 0xCu);
   }
 
-  v25 = [MEMORY[0x277CCAD78] UUID];
-  v26 = [v25 UUIDString];
-  v27 = v2->_ubiquityTokenSalt;
-  v2->_ubiquityTokenSalt = v26;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v27 = selfCopy->_ubiquityTokenSalt;
+  selfCopy->_ubiquityTokenSalt = uUIDString;
 
-  v28 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = v11;
-  v29 = [v28 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v42];
+  v29 = [defaultManager createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v42];
   v4 = v42;
 
   if (v29)
   {
-    v30 = v2->_ubiquityTokenSalt;
+    v30 = selfCopy->_ubiquityTokenSalt;
     v41 = v4;
     v31 = [(NSString *)v30 writeToURL:v9 atomically:1 encoding:4 error:&v41];
     v32 = v41;
@@ -185,9 +185,9 @@ LABEL_15:
       v36 = brc_default_log();
       if (os_log_type_enabled(v36, 0x90u))
       {
-        v38 = [v9 path];
+        path = [v9 path];
         *buf = 138412802;
-        v45 = v38;
+        v45 = path;
         v46 = 2112;
         v47 = v32;
         v48 = 2112;
@@ -203,9 +203,9 @@ LABEL_15:
     v35 = brc_default_log();
     if (os_log_type_enabled(v35, 0x90u))
     {
-      v37 = [v7 path];
+      path2 = [v7 path];
       *buf = 138412802;
-      v45 = v37;
+      v45 = path2;
       v46 = 2112;
       v47 = v4;
       v48 = 2112;
@@ -216,11 +216,11 @@ LABEL_15:
 
   v14 = 1;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v14)
   {
-    v4 = v2->_ubiquityTokenSalt;
+    v4 = selfCopy->_ubiquityTokenSalt;
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -228,19 +228,19 @@ LABEL_6:
   return v4;
 }
 
-- (BRCAccountHandler)initWithACAccountID:(id)a3
+- (BRCAccountHandler)initWithACAccountID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v36.receiver = self;
   v36.super_class = BRCAccountHandler;
   v6 = [(BRCAccountHandler *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_acAccountID, a3);
-    v8 = [MEMORY[0x277CCACA8] br_currentSupportDir];
+    objc_storeStrong(&v6->_acAccountID, d);
+    br_currentSupportDir = [MEMORY[0x277CCACA8] br_currentSupportDir];
     accountPath = v7->_accountPath;
-    v7->_accountPath = v8;
+    v7->_accountPath = br_currentSupportDir;
 
     if (!v7->_accountPath)
     {
@@ -255,18 +255,18 @@ LABEL_6:
       }
 
       brc_append_system_info_to_message();
-      v35 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCAccountHandler initWithACAccountID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 293, v35);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCAccountHandler initWithACAccountID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 293, uTF8String);
     }
 
-    v10 = [MEMORY[0x277D77BF8] sharedManager];
-    v11 = [v10 br_currentPersonaID];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
     v12 = BRPersonaSpecificName();
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(v14, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v13, v15);
+    v16 = dispatch_queue_create(uTF8String2, v15);
 
     queue = v7->_queue;
     v7->_queue = v16;
@@ -277,10 +277,10 @@ LABEL_6:
     v7->_pushWorkloop = v19;
 
     v21 = BRPersonaSpecificName();
-    v22 = [v21 UTF8String];
+    uTF8String3 = [v21 UTF8String];
     v23 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(v23, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v25 = dispatch_queue_create(v22, v24);
+    v25 = dispatch_queue_create(uTF8String3, v24);
 
     migrationStatusSetterQueue = v7->_migrationStatusSetterQueue;
     v7->_migrationStatusSetterQueue = v25;
@@ -289,12 +289,12 @@ LABEL_6:
     accountLoadingBarrier = v7->_accountLoadingBarrier;
     v7->_accountLoadingBarrier = v27;
 
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     syncPolicyByFolderType = v7->_syncPolicyByFolderType;
-    v7->_syncPolicyByFolderType = v29;
+    v7->_syncPolicyByFolderType = dictionary;
 
-    v31 = [MEMORY[0x277D262A0] sharedConnection];
-    [v31 addObserver:v7];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] addObserver:v7];
   }
 
   return v7;
@@ -302,18 +302,18 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 removeObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BRCAccountHandler;
   [(BRCAccountHandler *)&v4 dealloc];
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  infoCopy = info;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -321,16 +321,16 @@ LABEL_6:
     [BRCAccountHandler profileConnectionDidReceiveRestrictionChangedNotification:userInfo:];
   }
 
-  v20 = v4;
+  v20 = infoCopy;
 
   v7 = +[BRCCloudDocsAppsMonitor cloudDocsAppsMonitor];
-  v8 = [v7 allApplicationIdentifiers];
+  allApplicationIdentifiers = [v7 allApplicationIdentifiers];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v8;
+  v9 = allApplicationIdentifiers;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v10)
   {
@@ -348,8 +348,8 @@ LABEL_6:
         v14 = *(*(&v21 + 1) + 8 * i);
         if (([v14 isEqualToString:@"com.apple.Preferences"] & 1) == 0)
         {
-          v15 = [MEMORY[0x277D262A0] sharedConnection];
-          v16 = [v15 isCloudSyncAllowed:v14];
+          mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+          v16 = [mEMORY[0x277D262A0] isCloudSyncAllowed:v14];
 
           if ((v16 & 1) == 0)
           {
@@ -378,19 +378,19 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setDBAccountDSID:(id)a3
+- (BOOL)setDBAccountDSID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  dCopy = d;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(BRCAccountHandler *)self accountPath];
-  v8 = [v6 brc_accountIDPathForAccountPath:v7];
+  accountPath = [(BRCAccountHandler *)self accountPath];
+  v8 = [v6 brc_accountIDPathForAccountPath:accountPath];
 
-  if (v4)
+  if (dCopy)
   {
-    v9 = [(BRCAccountHandler *)self accountPath];
+    accountPath2 = [(BRCAccountHandler *)self accountPath];
     v24 = 0;
-    v10 = [v5 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v24];
+    v10 = [defaultManager createDirectoryAtPath:accountPath2 withIntermediateDirectories:1 attributes:0 error:&v24];
     v11 = v24;
 
     if ((v10 & 1) == 0)
@@ -405,7 +405,7 @@ LABEL_6:
 
     v23 = v11;
     v14 = 1;
-    v15 = [v4 writeToFile:v8 atomically:1 encoding:4 error:&v23];
+    v15 = [dCopy writeToFile:v8 atomically:1 encoding:4 error:&v23];
     v16 = v23;
 
     if ((v15 & 1) == 0)
@@ -449,8 +449,8 @@ LABEL_6:
 {
   v9 = *MEMORY[0x277D85DE8];
   memset(&v8.f_mntonname[392], 0, 32);
-  v3 = [MEMORY[0x277CFAE38] cloudDocsAppSupportURL];
-  v4 = statfs([v3 fileSystemRepresentation], &v8);
+  cloudDocsAppSupportURL = [MEMORY[0x277CFAE38] cloudDocsAppSupportURL];
+  v4 = statfs([cloudDocsAppSupportURL fileSystemRepresentation], &v8);
 
   if ((v4 & 0x80000000) == 0)
   {
@@ -464,7 +464,7 @@ LABEL_6:
 
 - (void)_cleanupPushAndActivitiesStatesWhenNoSessionExists
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -522,21 +522,21 @@ void __71__BRCAccountHandler__cleanupPushAndActivitiesStatesWhenNoSessionExists_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAndLoadAccountSynchronously:(id)a3
+- (void)startAndLoadAccountSynchronously:(id)synchronously
 {
-  v4 = a3;
+  synchronouslyCopy = synchronously;
   queue = self->_queue;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __54__BRCAccountHandler_startAndLoadAccountSynchronously___block_invoke;
   v11 = &unk_2784FF478;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = synchronouslyCopy;
+  v6 = synchronouslyCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, &v8);
   dispatch_async(queue, v7);
 
-  [(BRCAccountHandler *)self _waitForSessionLoadingWhenNowStarting:1, v8, v9, v10, v11, v12];
+  [(BRCAccountHandler *)self _waitForSessionLoadingWhenNowStarting:1, v8, v9, v10, v11, selfCopy];
 }
 
 void __54__BRCAccountHandler_startAndLoadAccountSynchronously___block_invoke(uint64_t a1)
@@ -895,7 +895,7 @@ void __54__BRCAccountHandler_startAndLoadAccountSynchronously___block_invoke_176
 
 - (void)jetsamCloudDocsApps
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -933,7 +933,7 @@ intptr_t __37__BRCAccountHandler___destroySession__block_invoke_2(uint64_t a1)
 
 - (void)_destroyCurrentSessionSynchronously
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
@@ -972,9 +972,9 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
 
 - (BOOL)checkEnoughDiskSpaceToBeFunctional
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [MEMORY[0x277CCACA8] br_currentSupportDir];
-  v4 = [v2 attributesOfFileSystemForPath:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  br_currentSupportDir = [MEMORY[0x277CCACA8] br_currentSupportDir];
+  v4 = [defaultManager attributesOfFileSystemForPath:br_currentSupportDir error:0];
 
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA1D0]];
   v6 = brc_bread_crumbs();
@@ -988,9 +988,9 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
   if (v5)
   {
     v8 = [BRCUserDefaults defaultsForMangledID:0];
-    v9 = [v8 minimumDiskSpaceRequiredToBeFunctional];
+    minimumDiskSpaceRequiredToBeFunctional = [v8 minimumDiskSpaceRequiredToBeFunctional];
 
-    if ([v5 unsignedLongLongValue] < v9)
+    if ([v5 unsignedLongLongValue] < minimumDiskSpaceRequiredToBeFunctional)
     {
       v10 = 0;
     }
@@ -999,11 +999,11 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (unsigned)_handleOpenError:(id)a3
+- (unsigned)_handleOpenError:(id)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 brc_isOutOfSpaceError] & 1) != 0 || (objc_msgSend(v4, "br_isCloudDocsErrorCode:", 85) & 1) != 0 || !-[BRCAccountHandler checkEnoughDiskSpaceToBeFunctional](self, "checkEnoughDiskSpaceToBeFunctional"))
+  errorCopy = error;
+  if (([errorCopy brc_isOutOfSpaceError] & 1) != 0 || (objc_msgSend(errorCopy, "br_isCloudDocsErrorCode:", 85) & 1) != 0 || !-[BRCAccountHandler checkEnoughDiskSpaceToBeFunctional](self, "checkEnoughDiskSpaceToBeFunctional"))
   {
     v8 = brc_bread_crumbs();
     v7 = 1;
@@ -1017,7 +1017,7 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if ([v4 br_isCloudDocsErrorCode:121])
+  if ([errorCopy br_isCloudDocsErrorCode:121])
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -1030,7 +1030,7 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if ([v4 br_isCloudDocsErrorCode:99])
+  if ([errorCopy br_isCloudDocsErrorCode:99])
   {
     v12 = brc_bread_crumbs();
     v13 = brc_default_log();
@@ -1043,7 +1043,7 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (([v4 br_isCloudDocsErrorCode:81] & 1) == 0 && !objc_msgSend(v4, "br_isCloudDocsErrorCode:", 92))
+  if (([errorCopy br_isCloudDocsErrorCode:81] & 1) == 0 && !objc_msgSend(errorCopy, "br_isCloudDocsErrorCode:", 92))
   {
     goto LABEL_29;
   }
@@ -1052,8 +1052,8 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v14 = [v4 underlyingErrors];
-  v15 = [v14 countByEnumeratingWithState:&v50 objects:v60 count:16];
+  underlyingErrors = [errorCopy underlyingErrors];
+  v15 = [underlyingErrors countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (!v15)
   {
     goto LABEL_28;
@@ -1067,7 +1067,7 @@ void __38__BRCAccountHandler_ubiquityTokenSalt__block_invoke(uint64_t a1)
     {
       if (*v51 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(underlyingErrors);
       }
 
       v19 = *(*(&v50 + 1) + 8 * i);
@@ -1114,21 +1114,21 @@ LABEL_49:
       }
     }
 
-    v16 = [v14 countByEnumeratingWithState:&v50 objects:v60 count:16];
+    v16 = [underlyingErrors countByEnumeratingWithState:&v50 objects:v60 count:16];
   }
 
   while (v16);
 LABEL_28:
 
 LABEL_29:
-  if ([v4 br_isCloudDocsErrorCode:116])
+  if ([errorCopy br_isCloudDocsErrorCode:116])
   {
     v20 = brc_bread_crumbs();
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v57 = v4;
+      v57 = errorCopy;
       v58 = 2112;
       v59 = v20;
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[NOTICE] Got %@ while opening account. Exiting without an error%@", buf, 0x16u);
@@ -1138,7 +1138,7 @@ LABEL_29:
     goto LABEL_11;
   }
 
-  if (![v4 br_isCloudDocsErrorCode:100])
+  if (![errorCopy br_isCloudDocsErrorCode:100])
   {
     goto LABEL_64;
   }
@@ -1147,8 +1147,8 @@ LABEL_29:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v14 = [v4 underlyingErrors];
-  v22 = [v14 countByEnumeratingWithState:&v46 objects:v55 count:16];
+  underlyingErrors = [errorCopy underlyingErrors];
+  v22 = [underlyingErrors countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (!v22)
   {
     goto LABEL_63;
@@ -1162,7 +1162,7 @@ LABEL_36:
   {
     if (*v47 != v24)
     {
-      objc_enumerationMutation(v14);
+      objc_enumerationMutation(underlyingErrors);
     }
 
     v26 = *(*(&v46 + 1) + 8 * v25);
@@ -1173,7 +1173,7 @@ LABEL_36:
 
     if (v23 == ++v25)
     {
-      v23 = [v14 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      v23 = [underlyingErrors countByEnumeratingWithState:&v46 objects:v55 count:16];
       if (!v23)
       {
         goto LABEL_63;
@@ -1282,8 +1282,8 @@ LABEL_11:
 
   objc_sync_exit(v3);
   v6 = objc_loadWeakRetained(&location);
-  v7 = [v6 dbLoadingBarrier];
-  [v7 waitForBarrier];
+  dbLoadingBarrier = [v6 dbLoadingBarrier];
+  [dbLoadingBarrier waitForBarrier];
 
   v8 = objc_loadWeakRetained(&location);
   objc_destroyWeak(&location);
@@ -1291,18 +1291,18 @@ LABEL_11:
   return v8;
 }
 
-- (unsigned)_tryToOpenSession:(id)a3 error:(id *)a4
+- (unsigned)_tryToOpenSession:(id)session error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v7 = self->_accountLoadingBarrier;
   objc_sync_enter(v7);
-  objc_storeWeak(&self->_loadingSession, v6);
+  objc_storeWeak(&self->_loadingSession, sessionCopy);
   objc_sync_exit(v7);
 
   [(BRCBarrier *)self->_accountLoadingBarrier signalBarrier];
   v19[0] = 0;
-  v8 = [v6 openWithError:v19 pushWorkloop:self->_pushWorkloop];
+  v8 = [sessionCopy openWithError:v19 pushWorkloop:self->_pushWorkloop];
   v9 = v19[0];
   if (v8)
   {
@@ -1330,7 +1330,7 @@ LABEL_11:
         *buf = 136315906;
         v21 = "[BRCAccountHandler _tryToOpenSession:error:]";
         v22 = 2080;
-        if (!a4)
+        if (!error)
         {
           v18 = "(ignored by caller)";
         }
@@ -1344,10 +1344,10 @@ LABEL_11:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -1355,16 +1355,16 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_loadOnDiskAccountSessionWithError:(id *)a3
+- (BOOL)_loadOnDiskAccountSessionWithError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = [BRCAccountSession alloc];
   acAccountID = self->_acAccountID;
   v6 = MEMORY[0x277CFAE30];
-  v7 = [(BRCAccountHandler *)self accountPath];
-  v8 = [v6 brc_dbAccountDSIDForPath:v7];
-  v9 = [(BRCAccountHandler *)self ubiquityTokenSalt];
-  v10 = [(BRCAccountSession *)v4 initWithACAccountID:acAccountID dbAccountDSID:v8 salt:v9 accountHandler:self];
+  accountPath = [(BRCAccountHandler *)self accountPath];
+  v8 = [v6 brc_dbAccountDSIDForPath:accountPath];
+  ubiquityTokenSalt = [(BRCAccountHandler *)self ubiquityTokenSalt];
+  v10 = [(BRCAccountSession *)v4 initWithACAccountID:acAccountID dbAccountDSID:v8 salt:ubiquityTokenSalt accountHandler:self];
 
   v33 = 0;
   v11 = [(BRCAccountHandler *)self _tryToOpenSession:v10 error:&v33];
@@ -1412,11 +1412,11 @@ LABEL_11:
 
     if (v11 == 3)
     {
-      v20 = [v12 userInfo];
-      v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [v12 userInfo];
+      v21 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-      v22 = [v12 userInfo];
-      v23 = [v22 objectForKeyedSubscript:@"SqliteSQL"];
+      userInfo2 = [v12 userInfo];
+      v23 = [userInfo2 objectForKeyedSubscript:@"SqliteSQL"];
 
       abc_report_panic_with_signature();
       [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to open account: %@ (underlying: %@, sql: %@)\n", v12, v21, v23];
@@ -1429,8 +1429,8 @@ LABEL_11:
       }
 
       brc_append_system_info_to_message();
-      v26 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCAccountHandler _loadOnDiskAccountSessionWithError:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 924, v26);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCAccountHandler _loadOnDiskAccountSessionWithError:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 924, uTF8String);
     }
 
     if (v11 != 1)
@@ -1464,7 +1464,7 @@ LABEL_4:
   objc_storeWeak(&self->_loadingSession, 0);
   objc_sync_exit(v13);
 
-  v14 = [(BRCAccountHandler *)self ubiquityTokenSalt];
+  ubiquityTokenSalt2 = [(BRCAccountHandler *)self ubiquityTokenSalt];
   [(BRCAccountHandler *)self reloadSyncedFolderPolicies];
   v15 = brc_bread_crumbs();
   v16 = brc_default_log();
@@ -1480,16 +1480,16 @@ LABEL_22:
   return v17;
 }
 
-- (BOOL)_loadOnDiskAccountSessionSecondTry:(id)a3 prevError:(id)a4
+- (BOOL)_loadOnDiskAccountSessionSecondTry:(id)try prevError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  tryCopy = try;
+  errorCopy = error;
+  if (!errorCopy)
   {
     [BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:];
   }
 
-  if ([v7 br_isCloudDocsErrorCode:81])
+  if ([errorCopy br_isCloudDocsErrorCode:81])
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -1502,7 +1502,7 @@ LABEL_22:
     v11 = @"CreateFPFSDomain";
   }
 
-  else if ([v7 br_isCloudDocsErrorCode:92])
+  else if ([errorCopy br_isCloudDocsErrorCode:92])
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -1517,7 +1517,7 @@ LABEL_22:
 
   else
   {
-    [v6 closeAndResetLocalStateWithDescription:@"Cannot open account session" error:v7];
+    [tryCopy closeAndResetLocalStateWithDescription:@"Cannot open account session" error:errorCopy];
     v8 = brc_bread_crumbs();
     v10 = 1;
     v9 = brc_default_log();
@@ -1530,13 +1530,13 @@ LABEL_22:
   }
 
   v46 = 0;
-  v12 = [(BRCAccountHandler *)self _tryToOpenSession:v6 error:&v46];
+  v12 = [(BRCAccountHandler *)self _tryToOpenSession:tryCopy error:&v46];
   v13 = v46;
   if (v12)
   {
-    v43 = v7;
+    v43 = errorCopy;
     v44 = v11;
-    v45 = v6;
+    v45 = tryCopy;
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, 0x90u))
@@ -1544,9 +1544,9 @@ LABEL_22:
       [BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:];
     }
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    v17 = [(BRCAccountHandler *)self accountPath];
-    v18 = [v17 stringByAppendingPathComponent:*MEMORY[0x277CFACE8]];
+    array = [MEMORY[0x277CBEB18] array];
+    accountPath = [(BRCAccountHandler *)self accountPath];
+    v18 = [accountPath stringByAppendingPathComponent:*MEMORY[0x277CFACE8]];
 
     for (i = 0; i != 5; ++i)
     {
@@ -1563,10 +1563,10 @@ LABEL_22:
         [MEMORY[0x277CCACA8] stringWithFormat:@"#%lu fd = %d", i, v20];
       }
       v23 = ;
-      [v16 addObject:v23];
+      [array addObject:v23];
     }
 
-    v24 = self;
+    selfCopy2 = self;
     v25 = v44;
     if (v10)
     {
@@ -1590,20 +1590,20 @@ LABEL_22:
     [v26 captureLogsForOperationType:@"OpenAccountSession" ofSubtype:v25 forError:v13 underlyingError:0 waitForCompletion:1];
 
 LABEL_28:
-    v27 = [v13 userInfo];
-    v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [v13 userInfo];
+    v28 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v29 = [v13 userInfo];
-    v30 = [v29 objectForKeyedSubscript:@"SqliteSQL"];
+    userInfo2 = [v13 userInfo];
+    v30 = [userInfo2 objectForKeyedSubscript:@"SqliteSQL"];
 
     if ([(BRCAccountHandler *)self _shouldResetLocalData:v13])
     {
-      [v6 closeAndResetLocalStateWithDescription:@"Reset Local State" error:v13];
+      [tryCopy closeAndResetLocalStateWithDescription:@"Reset Local State" error:v13];
     }
 
     else
     {
-      [v6 close];
+      [tryCopy close];
       v31 = brc_bread_crumbs();
       v32 = brc_default_log();
       if (os_log_type_enabled(v32, 0x90u))
@@ -1611,8 +1611,8 @@ LABEL_28:
         [BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:];
       }
 
-      [v6 captureSessionOpenFailedInfoWithError:v13];
-      v24 = self;
+      [tryCopy captureSessionOpenFailedInfoWithError:v13];
+      selfCopy2 = self;
     }
 
     if (v12 <= 6)
@@ -1620,7 +1620,7 @@ LABEL_28:
       if (((1 << v12) & 0x12) != 0)
       {
 LABEL_40:
-        if (v24->_doesNotHaveEnoughDiskSpaceToBeFunctional)
+        if (selfCopy2->_doesNotHaveEnoughDiskSpaceToBeFunctional)
         {
           v35 = brc_bread_crumbs();
           v36 = brc_default_log();
@@ -1630,7 +1630,7 @@ LABEL_40:
           }
         }
 
-        v7 = v43;
+        errorCopy = v43;
         goto LABEL_45;
       }
 
@@ -1649,7 +1649,7 @@ LABEL_40:
       if (((1 << v12) & 0x48) != 0)
       {
         abc_report_panic_with_signature();
-        [MEMORY[0x277CCACA8] stringWithFormat:@"Still unable to open account after attempted reset: %@ (underlying: %@, sql: %@)\nopen result: %@", v13, v28, v30, v16];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"Still unable to open account after attempted reset: %@ (underlying: %@, sql: %@)\nopen result: %@", v13, v28, v30, array];
         objc_claimAutoreleasedReturnValue();
         v40 = brc_bread_crumbs();
         v41 = brc_default_log();
@@ -1659,8 +1659,8 @@ LABEL_40:
         }
 
         brc_append_system_info_to_message();
-        v42 = [objc_claimAutoreleasedReturnValue() UTF8String];
-        __assert_rtn("[BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 1020, v42);
+        uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+        __assert_rtn("[BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/notifs/BRCAccountHandler.m", 1020, uTF8String);
       }
     }
 
@@ -1671,7 +1671,7 @@ LABEL_40:
       [BRCAccountHandler _loadOnDiskAccountSessionSecondTry:prevError:];
     }
 
-    v6 = v45;
+    tryCopy = v45;
     goto LABEL_40;
   }
 
@@ -1680,10 +1680,10 @@ LABEL_45:
   return v12 == 0;
 }
 
-- (BOOL)_createCurrentAccountSessionWithID:(id)a3 error:(id *)a4
+- (BOOL)_createCurrentAccountSessionWithID:(id)d error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   memset(v24, 0, sizeof(v24));
   __brc_create_section(0, "[BRCAccountHandler _createCurrentAccountSessionWithID:error:]", 1037, 0, v24);
@@ -1694,7 +1694,7 @@ LABEL_45:
     *buf = 134218498;
     v26 = v24[0];
     v27 = 2112;
-    v28 = v6;
+    v28 = dCopy;
     v29 = 2112;
     v30 = v7;
     _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx creating account session for %@%@", buf, 0x20u);
@@ -1728,21 +1728,21 @@ LABEL_45:
   }
 
   v9 = MEMORY[0x277CFAE30];
-  v10 = [(BRCAccountHandler *)self accountPath];
-  v11 = [v9 brc_dbAccountDSIDForPath:v10];
+  accountPath = [(BRCAccountHandler *)self accountPath];
+  v11 = [v9 brc_dbAccountDSIDForPath:accountPath];
   if (v11)
   {
     v12 = MEMORY[0x277CFAE30];
-    v13 = [(BRCAccountHandler *)self accountPath];
-    v14 = [v12 brc_dbAccountDSIDForPath:v13];
-    LOBYTE(v12) = [v14 isEqualToString:v6];
+    accountPath2 = [(BRCAccountHandler *)self accountPath];
+    v14 = [v12 brc_dbAccountDSIDForPath:accountPath2];
+    LOBYTE(v12) = [v14 isEqualToString:dCopy];
 
     if (v12)
     {
       goto LABEL_10;
     }
 
-    v10 = brc_bread_crumbs();
+    accountPath = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
@@ -1751,9 +1751,9 @@ LABEL_45:
   }
 
 LABEL_10:
-  if ([(BRCAccountHandler *)self setDBAccountDSID:v6])
+  if ([(BRCAccountHandler *)self setDBAccountDSID:dCopy])
   {
-    v16 = [(BRCAccountHandler *)self _loadOnDiskAccountSessionWithError:a4];
+    v16 = [(BRCAccountHandler *)self _loadOnDiskAccountSessionWithError:error];
   }
 
   else
@@ -1783,10 +1783,10 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_migrateAccountIfNecessaryForAccountDSID:(id)a3
++ (void)_migrateAccountIfNecessaryForAccountDSID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (BRGetMigrationStatusForDSID() <= 1)
   {
     v4 = brc_bread_crumbs();
@@ -1794,13 +1794,13 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v3;
+      v12 = dCopy;
       v13 = 2112;
       v14 = v4;
       _os_log_impl(&dword_223E7A000, v5, OS_LOG_TYPE_DEFAULT, "[WARNING] Asking account status for %@%@", &v11, 0x16u);
     }
 
-    v6 = [(BRCAccountOnlinePerformer *)[BRCAccountMigrationChecker alloc] initWithDSID:v3];
+    v6 = [(BRCAccountOnlinePerformer *)[BRCAccountMigrationChecker alloc] initWithDSID:dCopy];
     [(BRCAccountOnlinePerformer *)v6 resumeAndAutoClose];
   }
 
@@ -1811,13 +1811,13 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = v3;
+      v12 = dCopy;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Triggering migration for %@%@", &v11, 0x16u);
     }
 
-    v9 = [(BRCAccountOnlinePerformer *)[BRCAccountMigrator alloc] initWithDSID:v3];
+    v9 = [(BRCAccountOnlinePerformer *)[BRCAccountMigrator alloc] initWithDSID:dCopy];
     [(BRCAccountOnlinePerformer *)v9 resumeAndAutoClose];
   }
 
@@ -1826,13 +1826,13 @@ LABEL_10:
 
 + (id)currentiCloudAccountID
 {
-  v2 = [a1 currentiCloudAccount];
-  v3 = [v2 br_dsid];
+  currentiCloudAccount = [self currentiCloudAccount];
+  br_dsid = [currentiCloudAccount br_dsid];
 
-  return v3;
+  return br_dsid;
 }
 
-- (BOOL)_waitForSessionLoadingWhenNowStarting:(BOOL)a3
+- (BOOL)_waitForSessionLoadingWhenNowStarting:(BOOL)starting
 {
   dispatch_assert_queue_not_V2(self->_queue);
   if (self->_finishedLoading)
@@ -1840,7 +1840,7 @@ LABEL_10:
     return 1;
   }
 
-  if (!a3 && !self->_startedLoading)
+  if (!starting && !self->_startedLoading)
   {
     return 0;
   }
@@ -1864,8 +1864,8 @@ LABEL_10:
     v4 = [[BRCAccountSession alloc] initWithACAccountID:self->_acAccountID dbAccountDSID:v3 salt:0 accountHandler:0];
     [(BRCAccountSession *)v4 preventDatabaseFromBeingReused];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(BRCAccountHandler *)self accountPath];
-    v7 = [v5 brc_accountIDPathForAccountPath:v6];
+    accountPath = [(BRCAccountHandler *)self accountPath];
+    v7 = [v5 brc_accountIDPathForAccountPath:accountPath];
 
     if ([v7 length] && (BRCRecursiveRemove(v7) & 0x80000000) != 0)
     {
@@ -1905,12 +1905,12 @@ LABEL_10:
   return v8;
 }
 
-- (void)_updateAccountToDSID:(id)a3
+- (void)_updateAccountToDSID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   dbAccountDSID = self->_dbAccountDSID;
-  if (dbAccountDSID == v5 || [(BRDSIDString *)dbAccountDSID isEqualToString:v5])
+  if (dbAccountDSID == dCopy || [(BRDSIDString *)dbAccountDSID isEqualToString:dCopy])
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -1924,15 +1924,15 @@ LABEL_10:
   {
     [(BRCAccountHandler *)self _handleAccountWillChange];
     v9 = MEMORY[0x277CFAE30];
-    v10 = [(BRCAccountHandler *)self accountPath];
-    v7 = [v9 brc_dbAccountDSIDForPath:v10];
+    accountPath = [(BRCAccountHandler *)self accountPath];
+    v7 = [v9 brc_dbAccountDSIDForPath:accountPath];
 
-    if (!v7 || ([v7 isEqualToString:v5] & 1) != 0)
+    if (!v7 || ([v7 isEqualToString:dCopy] & 1) != 0)
     {
       goto LABEL_14;
     }
 
-    if (v5)
+    if (dCopy)
     {
       v11 = brc_bread_crumbs();
       v12 = brc_default_log();
@@ -1941,7 +1941,7 @@ LABEL_10:
         v14 = 138412802;
         v15 = v7;
         v16 = 2112;
-        v17 = v5;
+        v17 = dCopy;
         v18 = 2112;
         v19 = v11;
         _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] Cleaning up previous session belonging to account %@, to make room for new account %@%@", &v14, 0x20u);
@@ -1962,7 +1962,7 @@ LABEL_10:
     if ([(BRCAccountHandler *)self destroyCurrentAccountSynchronously])
     {
 LABEL_14:
-      objc_storeStrong(&self->_dbAccountDSID, a3);
+      objc_storeStrong(&self->_dbAccountDSID, d);
       self->_hasSetMigrationComplete = 0;
       [(BRCAccountHandler *)self _handleAccountDidChange];
     }
@@ -1986,17 +1986,17 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)createAccountSessionWithDSID:(id)a3 error:(id *)a4
+- (BOOL)createAccountSessionWithDSID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__BRCAccountHandler_createAccountSessionWithDSID_error___block_invoke;
   v10[3] = &unk_2784FF478;
   v10[4] = self;
-  v11 = v5;
-  v7 = v5;
+  v11 = dCopy;
+  v7 = dCopy;
   v8 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, v10);
   dispatch_async(queue, v8);
 
@@ -2004,29 +2004,29 @@ LABEL_14:
   return 1;
 }
 
-- (void)setMigrationStatus:(char)a3 forDSID:(id)a4 shouldUpdateAccount:(BOOL)a5 shouldPostAccountChangedNotification:(BOOL)a6 completion:(id)a7
+- (void)setMigrationStatus:(char)status forDSID:(id)d shouldUpdateAccount:(BOOL)account shouldPostAccountChangedNotification:(BOOL)notification completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a7;
+  dCopy = d;
+  completionCopy = completion;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x2020000000;
   v44 = 0;
   v13 = dispatch_group_create();
-  v14 = [MEMORY[0x277CB8F48] defaultStore];
-  [v14 invalidateAccountForPersonaCache];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  [defaultStore invalidateAccountForPersonaCache];
   migrationStatusSetterQueue = self->_migrationStatusSetterQueue;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __116__BRCAccountHandler_setMigrationStatus_forDSID_shouldUpdateAccount_shouldPostAccountChangedNotification_completion___block_invoke;
   v36[3] = &unk_2784FFDA8;
   v40 = v43;
-  v30 = v11;
+  v30 = dCopy;
   v37 = v30;
-  v41 = a3;
-  v42 = a5;
-  v16 = v14;
+  statusCopy = status;
+  accountCopy = account;
+  v16 = defaultStore;
   v38 = v16;
   v39 = v13;
   v17 = v39;
@@ -2069,11 +2069,11 @@ LABEL_14:
   v32[1] = 3221225472;
   v32[2] = __116__BRCAccountHandler_setMigrationStatus_forDSID_shouldUpdateAccount_shouldPostAccountChangedNotification_completion___block_invoke_240;
   v32[3] = &unk_2784FFDD0;
-  v33 = v12;
+  v33 = completionCopy;
   v34 = v43;
-  v35 = a6;
+  notificationCopy = notification;
   v32[4] = self;
-  v26 = v12;
+  v26 = completionCopy;
   dispatch_group_notify(v17, v25, v32);
 
   _Block_object_dispose(v43, 8);
@@ -2213,17 +2213,17 @@ uint64_t __116__BRCAccountHandler_setMigrationStatus_forDSID_shouldUpdateAccount
   return result;
 }
 
-- (void)markMigrationCompletedForDSID:(id)a3
+- (void)markMigrationCompletedForDSID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_get_global_queue(0, 0);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __51__BRCAccountHandler_markMigrationCompletedForDSID___block_invoke;
   v17[3] = &unk_2784FF478;
   v17[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v18 = v6;
   v7 = v5;
   v8 = v17;
@@ -2393,22 +2393,22 @@ void __51__BRCAccountHandler_markMigrationCompletedForDSID___block_invoke_241(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadSyncedFolderPoliciesDisableiCloudDesktop:(BOOL)a3
+- (void)reloadSyncedFolderPoliciesDisableiCloudDesktop:(BOOL)desktop
 {
   [(BRCAccountHandler *)self setSyncPolicy:-1 forSyncedFolderType:1];
 
   BRPostAccountTokenChangedNotification();
 }
 
-- (int64_t)syncPolicyforSyncedFolderType:(unint64_t)a3
+- (int64_t)syncPolicyforSyncedFolderType:(unint64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     [BRCAccountHandler syncPolicyforSyncedFolderType:];
   }
 
   syncPolicyByFolderType = self->_syncPolicyByFolderType;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v7 = [(NSMutableDictionary *)syncPolicyByFolderType objectForKeyedSubscript:v6];
 
   if (!v7)
@@ -2416,14 +2416,14 @@ void __51__BRCAccountHandler_markMigrationCompletedForDSID___block_invoke_241(ui
     [BRCAccountHandler syncPolicyforSyncedFolderType:];
   }
 
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (void)setSyncPolicy:(int64_t)a3 forSyncedFolderType:(unint64_t)a4
+- (void)setSyncPolicy:(int64_t)policy forSyncedFolderType:(unint64_t)type
 {
-  if (a3 != -1 && a3 != 1)
+  if (policy != -1 && policy != 1)
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -2433,14 +2433,14 @@ void __51__BRCAccountHandler_markMigrationCompletedForDSID___block_invoke_241(ui
     }
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     [BRCAccountHandler setSyncPolicy:forSyncedFolderType:];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:policy];
   syncPolicyByFolderType = self->_syncPolicyByFolderType;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)syncPolicyByFolderType setObject:v9 forKeyedSubscript:v11];
 }
 

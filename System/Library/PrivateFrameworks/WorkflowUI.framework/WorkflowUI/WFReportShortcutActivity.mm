@@ -1,13 +1,13 @@
 @interface WFReportShortcutActivity
 + (NSString)activityType;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIActivityViewController)activityControler;
 - (UIViewController)activityViewController;
-- (WFReportShortcutActivity)initWithWorkflow:(id)a3 completion:(id)a4;
+- (WFReportShortcutActivity)initWithWorkflow:(id)workflow completion:(id)completion;
 - (id)_systemImageName;
-- (void)setActivityControler:(id)a3;
+- (void)setActivityControler:(id)controler;
 @end
 
 @implementation WFReportShortcutActivity
@@ -26,24 +26,24 @@
   return v2;
 }
 
-- (void)setActivityControler:(id)a3
+- (void)setActivityControler:(id)controler
 {
-  v5 = a3;
-  v6 = self;
-  sub_2748659CC(a3);
+  controlerCopy = controler;
+  selfCopy = self;
+  sub_2748659CC(controler);
 }
 
-- (WFReportShortcutActivity)initWithWorkflow:(id)a3 completion:(id)a4
+- (WFReportShortcutActivity)initWithWorkflow:(id)workflow completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v5;
-  v6 = a3;
+  workflowCopy = workflow;
   return ReportShortcutActivity.init(workflow:completion:)();
 }
 
 - (NSString)activityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_274865C88();
 
   return v3;
@@ -51,7 +51,7 @@
 
 - (NSString)activityTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_274865D4C();
   v4 = v3;
 
@@ -76,10 +76,10 @@
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_2749FCF84();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_274865ECC(v4);
 
   return v6;
@@ -87,7 +87,7 @@
 
 - (UIViewController)activityViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27486649C();
 
   return v3;

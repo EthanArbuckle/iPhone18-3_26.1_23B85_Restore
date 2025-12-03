@@ -1,14 +1,14 @@
 @interface DMPluginSpecificUtilitiesManager
-+ (id)_uniqueNameFromPluginIdentifier:(id)a3;
-+ (id)utilitiesForPluginIdentifier:(id)a3;
++ (id)_uniqueNameFromPluginIdentifier:(id)identifier;
++ (id)utilitiesForPluginIdentifier:(id)identifier;
 @end
 
 @implementation DMPluginSpecificUtilitiesManager
 
-+ (id)utilitiesForPluginIdentifier:(id)a3
++ (id)utilitiesForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _uniqueNameFromPluginIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self _uniqueNameFromPluginIdentifier:identifierCopy];
   if (v5)
   {
     v6 = [@"DMPlugin" stringByAppendingString:v5];
@@ -44,9 +44,9 @@
   return v10;
 }
 
-+ (id)_uniqueNameFromPluginIdentifier:(id)a3
++ (id)_uniqueNameFromPluginIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [identifier componentsSeparatedByString:@"."];
   if ([v3 count] >= 3)
   {
     v5 = [v3 subarrayWithRange:{2, objc_msgSend(v3, "count") - 2}];

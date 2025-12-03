@@ -1,11 +1,11 @@
 @interface CVACMMotionData
 + (id)classes;
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CVACMMotionData)init;
-- (CVACMMotionData)initWithCoder:(id)a3;
+- (CVACMMotionData)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACMMotionData
@@ -49,11 +49,11 @@
   return v2;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACMMotionData classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -71,72 +71,72 @@
   return v6;
 }
 
-- (CVACMMotionData)initWithCoder:(id)a3
+- (CVACMMotionData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CVACMMotionData *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    [v4 decodeDoubleForKey:@"qx"];
+    [coderCopy decodeDoubleForKey:@"qx"];
     [(CVACLMotionTypeDoubleVector4 *)v5->_quaternion setX:?];
-    [v4 decodeDoubleForKey:@"qy"];
+    [coderCopy decodeDoubleForKey:@"qy"];
     [(CVACLMotionTypeDoubleVector4 *)v5->_quaternion setY:?];
-    [v4 decodeDoubleForKey:@"qz"];
+    [coderCopy decodeDoubleForKey:@"qz"];
     [(CVACLMotionTypeDoubleVector4 *)v5->_quaternion setZ:?];
-    [v4 decodeDoubleForKey:@"qw"];
+    [coderCopy decodeDoubleForKey:@"qw"];
     [(CVACLMotionTypeDoubleVector4 *)v5->_quaternion setW:?];
-    [v4 decodeFloatForKey:@"ax"];
+    [coderCopy decodeFloatForKey:@"ax"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setX:?];
-    [v4 decodeFloatForKey:@"ay"];
+    [coderCopy decodeFloatForKey:@"ay"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setY:?];
-    [v4 decodeFloatForKey:@"az"];
+    [coderCopy decodeFloatForKey:@"az"];
     [(CVACLMotionTypeVector3 *)v5->_acceleration setZ:?];
-    [v4 decodeFloatForKey:@"rx"];
+    [coderCopy decodeFloatForKey:@"rx"];
     [(CVACLMotionTypeVector3 *)v5->_rotationRate setX:?];
-    [v4 decodeFloatForKey:@"ry"];
+    [coderCopy decodeFloatForKey:@"ry"];
     [(CVACLMotionTypeVector3 *)v5->_rotationRate setY:?];
-    [v4 decodeFloatForKey:@"rz"];
+    [coderCopy decodeFloatForKey:@"rz"];
     [(CVACLMotionTypeVector3 *)v5->_rotationRate setZ:?];
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_sequenceNumber = [v4 decodeInt64ForKey:@"sn"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_sequenceNumber = [coderCopy decodeInt64ForKey:@"sn"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   [(CVACLMotionTypeDoubleVector4 *)self->_quaternion x];
-  [v5 encodeDouble:@"qx" forKey:?];
+  [coderCopy encodeDouble:@"qx" forKey:?];
   [(CVACLMotionTypeDoubleVector4 *)self->_quaternion y];
-  [v5 encodeDouble:@"qy" forKey:?];
+  [coderCopy encodeDouble:@"qy" forKey:?];
   [(CVACLMotionTypeDoubleVector4 *)self->_quaternion z];
-  [v5 encodeDouble:@"qz" forKey:?];
+  [coderCopy encodeDouble:@"qz" forKey:?];
   [(CVACLMotionTypeDoubleVector4 *)self->_quaternion w];
-  [v5 encodeDouble:@"qw" forKey:?];
+  [coderCopy encodeDouble:@"qw" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_acceleration x];
-  [v5 encodeFloat:@"ax" forKey:?];
+  [coderCopy encodeFloat:@"ax" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_acceleration y];
-  [v5 encodeFloat:@"ay" forKey:?];
+  [coderCopy encodeFloat:@"ay" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_acceleration z];
-  [v5 encodeFloat:@"az" forKey:?];
+  [coderCopy encodeFloat:@"az" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_rotationRate x];
-  [v5 encodeFloat:@"rx" forKey:?];
+  [coderCopy encodeFloat:@"rx" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_rotationRate y];
-  [v5 encodeFloat:@"ry" forKey:?];
+  [coderCopy encodeFloat:@"ry" forKey:?];
   [(CVACLMotionTypeVector3 *)self->_rotationRate z];
-  [v5 encodeFloat:@"rz" forKey:?];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v5 encodeInt64:self->_sequenceNumber forKey:@"sn"];
-  [v5 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeFloat:@"rz" forKey:?];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_sequenceNumber forKey:@"sn"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -216,8 +216,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACMMotionData *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACMMotionData *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

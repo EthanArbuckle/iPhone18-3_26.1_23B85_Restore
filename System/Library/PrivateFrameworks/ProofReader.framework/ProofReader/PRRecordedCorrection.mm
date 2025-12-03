@@ -1,20 +1,20 @@
 @interface PRRecordedCorrection
-- (PRRecordedCorrection)initWithCorrectionResult:(id)a3 correctedString:(id)a4;
+- (PRRecordedCorrection)initWithCorrectionResult:(id)result correctedString:(id)string;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation PRRecordedCorrection
 
-- (PRRecordedCorrection)initWithCorrectionResult:(id)a3 correctedString:(id)a4
+- (PRRecordedCorrection)initWithCorrectionResult:(id)result correctedString:(id)string
 {
   v8.receiver = self;
   v8.super_class = PRRecordedCorrection;
   v6 = [(PRRecordedCorrection *)&v8 init];
   if (v6)
   {
-    v6->_correctionResult = [a3 copy];
-    v6->_correctedString = [a4 copy];
+    v6->_correctionResult = [result copy];
+    v6->_correctedString = [string copy];
     v6->_hasRecordedResponse = 0;
   }
 

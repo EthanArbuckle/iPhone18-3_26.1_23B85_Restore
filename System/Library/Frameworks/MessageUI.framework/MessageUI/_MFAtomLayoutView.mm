@@ -1,37 +1,37 @@
 @interface _MFAtomLayoutView
-+ (id)layoutViewWithDelegateView:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
++ (id)layoutViewWithDelegateView:(id)view;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (CGRect)selectionBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)atomInsets;
-- (_MFAtomLayoutView)initWithCoder:(id)a3;
-- (_MFAtomLayoutView)initWithDelegateView:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_MFAtomLayoutView)initWithCoder:(id)coder;
+- (_MFAtomLayoutView)initWithDelegateView:(id)view;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)layoutSubviews;
-- (void)setMaskBounds:(CGRect)a3;
+- (void)setMaskBounds:(CGRect)bounds;
 @end
 
 @implementation _MFAtomLayoutView
 
-+ (id)layoutViewWithDelegateView:(id)a3
++ (id)layoutViewWithDelegateView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDelegateView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithDelegateView:viewCopy];
 
   return v5;
 }
 
-- (_MFAtomLayoutView)initWithDelegateView:(id)a3
+- (_MFAtomLayoutView)initWithDelegateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _MFAtomLayoutView;
   v6 = [(_MFAtomLayoutView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegateView, a3);
+    objc_storeStrong(&v6->_delegateView, view);
     [(MFAtomTextViewAtomLayout *)v7->_delegateView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_MFAtomLayoutView *)v7 setAutoresizesSubviews:0];
     [(_MFAtomLayoutView *)v7 addSubview:v7->_delegateView];
@@ -41,14 +41,14 @@
   return v7;
 }
 
-- (_MFAtomLayoutView)initWithCoder:(id)a3
+- (_MFAtomLayoutView)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(_MFAtomLayoutView *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[_MFAtomLayoutView initWithCoder:]", "MFAtomTextView.m", 1966, "0");
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = _MFAtomLayoutView;
@@ -65,50 +65,50 @@
   return v3 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = _MFAtomLayoutView;
   v5 = [(_MFAtomLayoutView *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(MFAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:a3];
+    v5 = [(MFAtomTextViewAtomLayout *)self->_delegateView methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (void)setMaskBounds:(CGRect)a3
+- (void)setMaskBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_MFAtomLayoutView *)self bounds];
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
   v8 = CGRectEqualToRect(v17, v18);
-  v9 = [(_MFAtomLayoutView *)self layer];
-  v14 = v9;
+  layer = [(_MFAtomLayoutView *)self layer];
+  v14 = layer;
   if (v8)
   {
-    [v9 setMask:0];
+    [layer setMask:0];
   }
 
   else
   {
-    v10 = [v9 mask];
+    mask = [layer mask];
 
-    v11 = v10;
-    if (!v10)
+    v11 = mask;
+    if (!mask)
     {
-      v15 = [MEMORY[0x1E69794A0] layer];
-      v12 = [(_MFAtomLayoutView *)self layer];
-      [v12 setMask:v15];
+      layer2 = [MEMORY[0x1E69794A0] layer];
+      layer3 = [(_MFAtomLayoutView *)self layer];
+      [layer3 setMask:layer2];
 
-      v11 = v15;
+      v11 = layer2;
     }
 
     v14 = v11;
@@ -131,9 +131,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MFAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(MFAtomTextViewAtomLayout *)self->_delegateView systemLayoutSizeFittingSize:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(_MFAtomLayoutView *)self atomInsets];
@@ -174,21 +174,21 @@
   return result;
 }
 
-- (CGRect)boundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)boundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  [(_MFAtomLayoutView *)self layoutIfNeeded:a3];
+  height = fragment.size.height;
+  [(_MFAtomLayoutView *)self layoutIfNeeded:container];
   [(_MFAtomLayoutView *)self sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v9 = v8;
   v11 = v10;
-  v12 = [(_MFAtomLayoutView *)self viewForLastBaselineLayout];
-  [v12 bounds];
-  [(_MFAtomLayoutView *)self convertRect:v12 fromView:?];
+  viewForLastBaselineLayout = [(_MFAtomLayoutView *)self viewForLastBaselineLayout];
+  [viewForLastBaselineLayout bounds];
+  [(_MFAtomLayoutView *)self convertRect:viewForLastBaselineLayout fromView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v12 _baselineOffsetFromBottom];
+  [viewForLastBaselineLayout _baselineOffsetFromBottom];
   v22 = v21;
   v30.origin.x = v14;
   v30.origin.y = v16;

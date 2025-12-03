@@ -1,99 +1,99 @@
 @interface _DASGroupRecorder
-+ (id)predicateForUniqueRecord:(id)a3;
-- (id)createGroup:(id)a3;
-- (id)createOrUpdateGroup:(id)a3 context:(id)a4;
-- (id)fetchGroupsUsingPredicate:(id)a3 context:(id)a4;
-- (id)getGroupFromManagedObject:(id)a3;
-- (void)copyGroup:(id)a3 toManagedObject:(id)a4;
++ (id)predicateForUniqueRecord:(id)record;
+- (id)createGroup:(id)group;
+- (id)createOrUpdateGroup:(id)group context:(id)context;
+- (id)fetchGroupsUsingPredicate:(id)predicate context:(id)context;
+- (id)getGroupFromManagedObject:(id)object;
+- (void)copyGroup:(id)group toManagedObject:(id)object;
 @end
 
 @implementation _DASGroupRecorder
 
-+ (id)predicateForUniqueRecord:(id)a3
++ (id)predicateForUniqueRecord:(id)record
 {
-  v3 = [a3 name];
-  v4 = [NSPredicate predicateWithFormat:@"name == %@", v3];
+  name = [record name];
+  v4 = [NSPredicate predicateWithFormat:@"name == %@", name];
 
   return v4;
 }
 
-- (id)getGroupFromManagedObject:(id)a3
+- (id)getGroupFromManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 maxConcurrent];
+  objectCopy = object;
+  name = [objectCopy name];
+  maxConcurrent = [objectCopy maxConcurrent];
 
-  v6 = [_DASActivityGroup groupWithName:v4 maxConcurrent:v5];
+  v6 = [_DASActivityGroup groupWithName:name maxConcurrent:maxConcurrent];
 
   return v6;
 }
 
-- (void)copyGroup:(id)a3 toManagedObject:(id)a4
+- (void)copyGroup:(id)group toManagedObject:(id)object
 {
-  v8 = a4;
-  v5 = a3;
-  v6 = [v5 name];
-  [v8 setName:v6];
+  objectCopy = object;
+  groupCopy = group;
+  name = [groupCopy name];
+  [objectCopy setName:name];
 
-  v7 = [v5 maxConcurrent];
-  [v8 setMaxConcurrent:v7];
+  maxConcurrent = [groupCopy maxConcurrent];
+  [objectCopy setMaxConcurrent:maxConcurrent];
 }
 
-- (id)createGroup:(id)a3
+- (id)createGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(_DASGroupRecorder *)self entityName];
-  v6 = [NSEntityDescription insertNewObjectForEntityForName:v5 inManagedObjectContext:v4];
+  groupCopy = group;
+  entityName = [(_DASGroupRecorder *)self entityName];
+  v6 = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:groupCopy];
 
   return v6;
 }
 
-- (id)createOrUpdateGroup:(id)a3 context:(id)a4
+- (id)createOrUpdateGroup:(id)group context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  groupCopy = group;
+  contextCopy = context;
+  if (groupCopy)
   {
     v8 = objc_opt_new();
-    v9 = [(_DASGroupRecorder *)self entityName];
-    v10 = [NSEntityDescription entityForName:v9 inManagedObjectContext:v7];
+    entityName = [(_DASGroupRecorder *)self entityName];
+    v10 = [NSEntityDescription entityForName:entityName inManagedObjectContext:contextCopy];
     [v8 setEntity:v10];
 
-    v11 = [_DASGroupRecorder predicateForUniqueRecord:v6];
+    v11 = [_DASGroupRecorder predicateForUniqueRecord:groupCopy];
     [v8 setPredicate:v11];
 
     v15 = 0;
-    v12 = [v7 executeFetchRequest:v8 error:&v15];
-    v13 = [v12 lastObject];
+    v12 = [contextCopy executeFetchRequest:v8 error:&v15];
+    lastObject = [v12 lastObject];
 
-    if (!v13)
+    if (!lastObject)
     {
-      v13 = [(_DASGroupRecorder *)self createGroup:v7];
+      lastObject = [(_DASGroupRecorder *)self createGroup:contextCopy];
     }
 
-    [(_DASGroupRecorder *)self copyGroup:v6 toManagedObject:v13];
+    [(_DASGroupRecorder *)self copyGroup:groupCopy toManagedObject:lastObject];
   }
 
   else
   {
-    v13 = 0;
+    lastObject = 0;
   }
 
-  return v13;
+  return lastObject;
 }
 
-- (id)fetchGroupsUsingPredicate:(id)a3 context:(id)a4
+- (id)fetchGroupsUsingPredicate:(id)predicate context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v8 = objc_opt_new();
-  v9 = [(_DASGroupRecorder *)self entityName];
-  v10 = [NSEntityDescription entityForName:v9 inManagedObjectContext:v6];
+  entityName = [(_DASGroupRecorder *)self entityName];
+  v10 = [NSEntityDescription entityForName:entityName inManagedObjectContext:contextCopy];
   [v8 setEntity:v10];
 
-  [v8 setPredicate:v7];
+  [v8 setPredicate:predicateCopy];
   v13 = 0;
-  v11 = [v6 executeFetchRequest:v8 error:&v13];
+  v11 = [contextCopy executeFetchRequest:v8 error:&v13];
 
   return v11;
 }

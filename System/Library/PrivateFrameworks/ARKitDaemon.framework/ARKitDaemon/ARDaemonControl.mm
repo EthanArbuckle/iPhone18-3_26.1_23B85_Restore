@@ -1,5 +1,5 @@
 @interface ARDaemonControl
-- (ARDaemonControl)initWithConnection:(id)a3;
+- (ARDaemonControl)initWithConnection:(id)connection;
 - (ARServer)server;
 - (ARServerStatusLogging)statusLogger;
 - (void)interruptionHandler;
@@ -8,22 +8,22 @@
 
 @implementation ARDaemonControl
 
-- (ARDaemonControl)initWithConnection:(id)a3
+- (ARDaemonControl)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v16.receiver = self;
     v16.super_class = ARDaemonControl;
     v6 = [(ARDaemonControl *)&v16 init];
     if (v6)
     {
-      [v5 setExportedObject:v6];
-      v7 = [MEMORY[0x277CE5358] controlInterface];
-      [v5 setExportedInterface:v7];
+      [connectionCopy setExportedObject:v6];
+      controlInterface = [MEMORY[0x277CE5358] controlInterface];
+      [connectionCopy setExportedInterface:controlInterface];
 
-      v8 = [MEMORY[0x277CE5358] controlProxyInterface];
-      [v5 setRemoteObjectInterface:v8];
+      controlProxyInterface = [MEMORY[0x277CE5358] controlProxyInterface];
+      [connectionCopy setRemoteObjectInterface:controlProxyInterface];
 
       objc_initWeak(&location, v6);
       v13[0] = MEMORY[0x277D85DD0];
@@ -31,29 +31,29 @@
       v13[2] = __38__ARDaemonControl_initWithConnection___block_invoke;
       v13[3] = &unk_278BCBB68;
       objc_copyWeak(&v14, &location);
-      [v5 setInterruptionHandler:v13];
+      [connectionCopy setInterruptionHandler:v13];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __38__ARDaemonControl_initWithConnection___block_invoke_2;
       v11[3] = &unk_278BCBB68;
       objc_copyWeak(&v12, &location);
-      [v5 setInvalidationHandler:v11];
-      objc_storeStrong(&v6->_connection, a3);
+      [connectionCopy setInvalidationHandler:v11];
+      objc_storeStrong(&v6->_connection, connection);
       objc_destroyWeak(&v12);
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 void __38__ARDaemonControl_initWithConnection___block_invoke(uint64_t a1)
@@ -79,7 +79,7 @@ void __38__ARDaemonControl_initWithConnection___block_invoke_2(uint64_t a1)
     v7 = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Control interrupted", &v7, 0x16u);
   }
 
@@ -97,7 +97,7 @@ void __38__ARDaemonControl_initWithConnection___block_invoke_2(uint64_t a1)
     v8 = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Control invalidated", &v8, 0x16u);
   }
 

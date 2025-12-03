@@ -1,28 +1,28 @@
 @interface PXCloudQuotaPremiumOfferProvider
 + (PXCloudQuotaPremiumOfferProvider)currentPremiumOfferProvider;
 - (PXCloudQuotaPremiumOfferProvider)init;
-- (void)_currentPremiumOfferChangedNotification:(id)a3;
+- (void)_currentPremiumOfferChangedNotification:(id)notification;
 - (void)_queue_getCurrentPremiumOffer;
 - (void)_queue_initialSetup;
-- (void)_updateCurrentPremiumOffer:(id)a3;
+- (void)_updateCurrentPremiumOffer:(id)offer;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
-- (void)setPremiumOffer:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setPremiumOffer:(id)offer;
 @end
 
 @implementation PXCloudQuotaPremiumOfferProvider
 
-- (void)_currentPremiumOfferChangedNotification:(id)a3
+- (void)_currentPremiumOfferChangedNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PLUserStatusGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v6 = v11;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Current premium offer did change notification", buf, 0x16u);
   }
@@ -53,9 +53,9 @@ void __76__PXCloudQuotaPremiumOfferProvider__currentPremiumOfferChangedNotificat
     dispatch_once(&_queue_initialSetup_predicate_198997, &__block_literal_global_198998);
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getICQCurrentPremiumOfferChangedNotification();
-  [v3 addObserver:self selector:sel__currentPremiumOfferChangedNotification_ name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel__currentPremiumOfferChangedNotification_ name:v4 object:0];
 
   [(PXCloudQuotaPremiumOfferProvider *)self _queue_getCurrentPremiumOffer];
 }
@@ -77,20 +77,20 @@ id __55__PXCloudQuotaPremiumOfferProvider__queue_initialSetup__block_invoke()
     *buf = 138543618;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v4 = v9;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Will get current cloud premium offer", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v5 = [getICQOfferManagerClass_199016() sharedOfferManager];
+  sharedOfferManager = [getICQOfferManagerClass_199016() sharedOfferManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block_invoke;
   v6[3] = &unk_1E7743288;
   v6[4] = self;
   objc_copyWeak(&v7, buf);
-  [v5 getPremiumOfferWithCompletion:v6];
+  [sharedOfferManager getPremiumOfferWithCompletion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
@@ -134,12 +134,12 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
   [WeakRetained _updateCurrentPremiumOffer:*(a1 + 32)];
 }
 
-- (void)_updateCurrentPremiumOffer:(id)a3
+- (void)_updateCurrentPremiumOffer:(id)offer
 {
-  v5 = a3;
-  if ([getICQTileViewClass() shouldShowForPremiumOffer:v5])
+  offerCopy = offer;
+  if ([getICQTileViewClass() shouldShowForPremiumOffer:offerCopy])
   {
-    v6 = v5;
+    v6 = offerCopy;
   }
 
   else
@@ -152,26 +152,26 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
   v9[1] = 3221225472;
   v9[2] = __63__PXCloudQuotaPremiumOfferProvider__updateCurrentPremiumOffer___block_invoke;
   v9[3] = &unk_1E7743260;
-  v11 = self;
+  selfCopy = self;
   v12 = a2;
   v10 = v7;
   v8 = v7;
   [(PXCloudQuotaPremiumOfferProvider *)self performChanges:v9];
 }
 
-- (void)setPremiumOffer:(id)a3
+- (void)setPremiumOffer:(id)offer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  offerCopy = offer;
   premiumOffer = self->_premiumOffer;
-  if (premiumOffer != v5)
+  if (premiumOffer != offerCopy)
   {
     v7 = premiumOffer != 0;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    PXCloudQuotaSendAnalyticsForOfferChange(v5 != 0, v7, v9);
+    PXCloudQuotaSendAnalyticsForOfferChange(offerCopy != 0, v7, v9);
 
-    objc_storeStrong(&self->_premiumOffer, a3);
+    objc_storeStrong(&self->_premiumOffer, offer);
     v10 = self->_premiumOffer;
     v11 = PLUserStatusGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -186,7 +186,7 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
         v18 = 138543874;
         v19 = v13;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2114;
         v23 = v16;
         _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Did set premium offer:%{public}@", &v18, 0x20u);
@@ -198,7 +198,7 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
       v18 = 138543618;
       v19 = objc_opt_class();
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v17 = v19;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Did clear premium offer", &v18, 0x16u);
     }
@@ -207,11 +207,11 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCloudQuotaPremiumOfferProvider;
-  [(PXCloudQuotaPremiumOfferProvider *)&v3 performChanges:a3];
+  [(PXCloudQuotaPremiumOfferProvider *)&v3 performChanges:changes];
 }
 
 - (void)dealloc
@@ -223,7 +223,7 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
     *buf = 138543618;
     v7 = objc_opt_class();
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v4 = v7;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> dealloc", buf, 0x16u);
   }
@@ -242,7 +242,7 @@ void __65__PXCloudQuotaPremiumOfferProvider__queue_getCurrentPremiumOffer__block
     *buf = 138543618;
     v10 = objc_opt_class();
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v4 = v10;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> init", buf, 0x16u);
   }
@@ -294,7 +294,7 @@ void __40__PXCloudQuotaPremiumOfferProvider_init__block_invoke_2(uint64_t a1)
     }
 
     v10 = 138412546;
-    v11 = a1;
+    selfCopy2 = self;
     v12 = 2048;
     v13 = v4;
     v6 = "%@ Reusing existing premium offer provider: %p";
@@ -304,7 +304,7 @@ void __40__PXCloudQuotaPremiumOfferProvider_init__block_invoke_2(uint64_t a1)
 
   else
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     objc_storeWeak(&currentPremiumOfferProvider__sharedPremiumOfferProvider, v4);
     v5 = PLUserStatusGetLog();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -313,7 +313,7 @@ void __40__PXCloudQuotaPremiumOfferProvider_init__block_invoke_2(uint64_t a1)
     }
 
     v10 = 138412546;
-    v11 = a1;
+    selfCopy2 = self;
     v12 = 2048;
     v13 = v4;
     v6 = "%@ Creating new premium offer provider: %p";

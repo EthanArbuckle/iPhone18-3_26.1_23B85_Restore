@@ -1,9 +1,9 @@
 @interface SafeDomainsPane
 - (PSListController)parentListController;
-- (id)_domainsListWithSpecifier:(id)a3;
+- (id)_domainsListWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setDomainsList:(id)a3 withSpecifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setDomainsList:(id)list withSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -19,19 +19,19 @@
   [(SafeDomainsPane *)self setTitle:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = SafeDomainsPane;
-  v8 = [(SafeDomainsPane *)&v15 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(SafeDomainsPane *)&v15 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   v9 = v8;
   if (!self->_textField && [v8 tag] == &dword_8)
   {
-    v10 = [v9 textField];
+    textField = [v9 textField];
     textField = self->_textField;
-    self->_textField = v10;
+    self->_textField = textField;
 
     [(UITextField *)self->_textField setAutocapitalizationType:0];
     [(UITextField *)self->_textField setAutocorrectionType:1];
@@ -75,14 +75,14 @@
   return v4;
 }
 
-- (id)_domainsListWithSpecifier:(id)a3
+- (id)_domainsListWithSpecifier:(id)specifier
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 managedEmailDomains];
+  managedEmailDomains = [v3 managedEmailDomains];
 
-  if (v4)
+  if (managedEmailDomains)
   {
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    v5 = [managedEmailDomains componentsJoinedByString:{@", "}];
   }
 
   else
@@ -93,13 +93,13 @@
   return v5;
 }
 
-- (void)_setDomainsList:(id)a3 withSpecifier:(id)a4
+- (void)_setDomainsList:(id)list withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  listCopy = list;
+  specifierCopy = specifier;
+  if (listCopy && [listCopy length])
   {
-    v16 = [v5 componentsSeparatedByString:{@", "}];
+    v16 = [listCopy componentsSeparatedByString:{@", "}];
     v7 = objc_opt_new();
     v19 = 0u;
     v20 = 0u;

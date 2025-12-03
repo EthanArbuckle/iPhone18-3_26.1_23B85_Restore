@@ -1,16 +1,16 @@
 @interface SBUIPasscodeLockViewInstallTonightWithKeyboard
-- (SBUIPasscodeLockViewInstallTonightWithKeyboard)initWithLightStyle:(BOOL)a3;
+- (SBUIPasscodeLockViewInstallTonightWithKeyboard)initWithLightStyle:(BOOL)style;
 - (void)_actionButtonHit;
 - (void)_configureActionButton;
 - (void)_layoutActionButton;
 - (void)_layoutStatusView;
-- (void)setShowsCancelButton:(BOOL)a3;
-- (void)setShowsEmergencyCallButton:(BOOL)a3;
+- (void)setShowsCancelButton:(BOOL)button;
+- (void)setShowsEmergencyCallButton:(BOOL)button;
 @end
 
 @implementation SBUIPasscodeLockViewInstallTonightWithKeyboard
 
-- (SBUIPasscodeLockViewInstallTonightWithKeyboard)initWithLightStyle:(BOOL)a3
+- (SBUIPasscodeLockViewInstallTonightWithKeyboard)initWithLightStyle:(BOOL)style
 {
   v15.receiver = self;
   v15.super_class = SBUIPasscodeLockViewInstallTonightWithKeyboard;
@@ -24,11 +24,11 @@
     [(SBUIButton *)v4->_actionButton setUserInteractionEnabled:1];
     [(SBUIButton *)v4->_actionButton setClipsToBounds:1];
     v7 = v4->_actionButton;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBUIButton *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBUIButton *)v7 setBackgroundColor:clearColor];
 
     v9 = v4->_actionButton;
-    if (a3)
+    if (style)
     {
       [MEMORY[0x1E69DC888] blackColor];
     }
@@ -42,15 +42,15 @@
 
     [(SBUIButton *)v4->_actionButton addTarget:v4 action:sel__actionButtonHit forControlEvents:64];
     [(SBUIButton *)v4->_actionButton setTranslatesAutoresizingMaskIntoConstraints:1];
-    v11 = [(SBUIButton *)v4->_actionButton titleLabel];
+    titleLabel = [(SBUIButton *)v4->_actionButton titleLabel];
     v12 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
-    [v11 setLineBreakMode:5];
-    [v11 setAdjustsFontSizeToFitWidth:1];
-    [v11 setMinimumScaleFactor:2.0];
-    v13 = [(SBUIPasscodeLockViewBase *)v4 passcodeAuthenticationView];
-    [v13 addSubview:v4->_actionButton];
+    [titleLabel setLineBreakMode:5];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
+    [titleLabel setMinimumScaleFactor:2.0];
+    passcodeAuthenticationView = [(SBUIPasscodeLockViewBase *)v4 passcodeAuthenticationView];
+    [passcodeAuthenticationView addSubview:v4->_actionButton];
 
     [(SBUIPasscodeLockViewInstallTonightWithKeyboard *)v4 _configureActionButton];
   }
@@ -58,11 +58,11 @@
   return v4;
 }
 
-- (void)setShowsEmergencyCallButton:(BOOL)a3
+- (void)setShowsEmergencyCallButton:(BOOL)button
 {
-  LODWORD(v3) = a3;
-  v5 = [MEMORY[0x1E698E730] sharedInstance];
-  if ([v5 deviceClass])
+  LODWORD(v3) = button;
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  if ([mEMORY[0x1E698E730] deviceClass])
   {
     v3 = 0;
   }
@@ -83,13 +83,13 @@
   [(SBUIPasscodeLockViewInstallTonightWithKeyboard *)self _configureActionButton];
 }
 
-- (void)setShowsCancelButton:(BOOL)a3
+- (void)setShowsCancelButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5.receiver = self;
   v5.super_class = SBUIPasscodeLockViewInstallTonightWithKeyboard;
   [(SBUIPasscodeLockViewBase *)&v5 setShowsCancelButton:?];
-  if (v3)
+  if (buttonCopy)
   {
     [(SBUIPasscodeLockViewInstallTonightWithKeyboard *)self setShowsEmergencyCallButton:0];
   }
@@ -106,9 +106,9 @@
 
   else
   {
-    v4 = [(SBUIPasscodeLockViewBase *)self showsCancelButton];
+    showsCancelButton = [(SBUIPasscodeLockViewBase *)self showsCancelButton];
     v5 = self->_actionButton;
-    if (v4)
+    if (showsCancelButton)
     {
       v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"SOFTWARE_UPDATE_PASSCODE_REMIND_LATER" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
@@ -130,11 +130,11 @@ LABEL_7:
 
 - (void)_layoutStatusView
 {
-  v3 = [(SBUIPasscodeLockViewWithKeyboard *)self _statusTitleView];
-  [v3 setLineBreakMode:0];
-  [v3 setNumberOfLines:2];
-  v4 = [(SBUIPasscodeLockViewWithKeyboard *)self _statusSubtitleView];
-  [v4 setNumberOfLines:2];
+  _statusTitleView = [(SBUIPasscodeLockViewWithKeyboard *)self _statusTitleView];
+  [_statusTitleView setLineBreakMode:0];
+  [_statusTitleView setNumberOfLines:2];
+  _statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self _statusSubtitleView];
+  [_statusSubtitleView setNumberOfLines:2];
   v5.receiver = self;
   v5.super_class = SBUIPasscodeLockViewInstallTonightWithKeyboard;
   [(SBUIPasscodeLockViewWithKeyboard *)&v5 _layoutStatusView];
@@ -143,8 +143,8 @@ LABEL_7:
 
 - (void)_layoutActionButton
 {
-  v5 = [(SBUIButton *)self->_actionButton titleLabel];
-  [v5 sizeToFit];
+  titleLabel = [(SBUIButton *)self->_actionButton titleLabel];
+  [titleLabel sizeToFit];
 
   [(SBUIButton *)self->_actionButton sizeToFit];
   [(SBUIPasscodeLockViewInstallTonightWithKeyboard *)self bounds];
@@ -163,8 +163,8 @@ LABEL_7:
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 LABEL_12:
 
@@ -181,8 +181,8 @@ LABEL_12:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -204,18 +204,18 @@ LABEL_13:
 
 - (void)_actionButtonHit
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
   if ([(SBUIPasscodeLockViewBase *)self showsEmergencyCallButton])
   {
-    if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v3 passcodeLockViewEmergencyCallButtonPressed:self];
+      [delegate passcodeLockViewEmergencyCallButtonPressed:self];
     }
   }
 
-  else if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 passcodeLockViewCancelButtonPressed:self];
+    [delegate passcodeLockViewCancelButtonPressed:self];
   }
 
   MEMORY[0x1EEE66BE0]();

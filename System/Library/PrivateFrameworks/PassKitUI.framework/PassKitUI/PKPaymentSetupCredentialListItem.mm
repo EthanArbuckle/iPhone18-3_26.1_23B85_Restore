@@ -1,35 +1,35 @@
 @interface PKPaymentSetupCredentialListItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKPaymentSetupCredentialListItem)initWithCredential:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentSetupCredentialListItem)initWithCredential:(id)credential;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentSetupCredentialListItem
 
-- (PKPaymentSetupCredentialListItem)initWithCredential:(id)a3
+- (PKPaymentSetupCredentialListItem)initWithCredential:(id)credential
 {
-  v5 = a3;
+  credentialCopy = credential;
   v9.receiver = self;
   v9.super_class = PKPaymentSetupCredentialListItem;
   v6 = [(PKPaymentSetupListItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_credential, a3);
+    objc_storeStrong(&v6->_credential, credential);
     v7->_isCellDisabled = 0;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8.receiver = self;
     v8.super_class = PKPaymentSetupCredentialListItem;
     v6 = [(PKPaymentSetupListItem *)&v8 isEqual:v5]&& self->_lastCheckedCredentialHash == v5[10] && PKEqualObjects() && self->_isAvailable == *(v5 + 64) && self->_isUnavailable == *(v5 + 65) && self->_isRefund == *(v5 + 66) && self->_isBeingProvisioned == *(v5 + 67) && self->_isCellDisabled == *(v5 + 68);
@@ -60,11 +60,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupCredentialListItem;
-  v4 = [(PKPaymentSetupListItem *)&v6 copyWithZone:a3];
+  v4 = [(PKPaymentSetupListItem *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 9, self->_credential);
   objc_storeStrong(v4 + 11, self->_passSnapshot);
   *(v4 + 64) = self->_isAvailable;

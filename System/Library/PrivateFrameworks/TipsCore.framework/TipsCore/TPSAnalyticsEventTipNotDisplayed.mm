@@ -1,44 +1,44 @@
 @interface TPSAnalyticsEventTipNotDisplayed
-- (TPSAnalyticsEventTipNotDisplayed)initWithCoder:(id)a3;
-- (TPSAnalyticsEventTipNotDisplayed)initWithReason:(id)a3 lastOfferedTipID:(id)a4 lastOfferedCorrelationID:(id)a5 lastOfferedBundleID:(id)a6 lastOfferedContext:(id)a7 date:(id)a8;
-- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)a3 correlationID:(id)a4 bundleID:(id)a5 reason:(id)a6 context:(id)a7 date:(id)a8 displayType:(id)a9;
-- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)a3 correlationID:(id)a4 bundleID:(id)a5 reason:(int64_t)a6 context:(id)a7 date:(id)a8;
+- (TPSAnalyticsEventTipNotDisplayed)initWithCoder:(id)coder;
+- (TPSAnalyticsEventTipNotDisplayed)initWithReason:(id)reason lastOfferedTipID:(id)d lastOfferedCorrelationID:(id)iD lastOfferedBundleID:(id)bundleID lastOfferedContext:(id)context date:(id)date;
+- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)d correlationID:(id)iD bundleID:(id)bundleID reason:(id)reason context:(id)context date:(id)date displayType:(id)type;
+- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)d correlationID:(id)iD bundleID:(id)bundleID reason:(int64_t)reason context:(id)context date:(id)date;
 - (id)mutableAnalyticsEventRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDataProvider:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDataProvider:(id)provider;
 @end
 
 @implementation TPSAnalyticsEventTipNotDisplayed
 
-- (TPSAnalyticsEventTipNotDisplayed)initWithCoder:(id)a3
+- (TPSAnalyticsEventTipNotDisplayed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = TPSAnalyticsEventTipNotDisplayed;
-  v5 = [(TPSAnalyticsEvent *)&v19 initWithCoder:v4];
+  v5 = [(TPSAnalyticsEvent *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
     tipID = v5->_tipID;
     v5->_tipID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
     correlationID = v5->_correlationID;
     v5->_correlationID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundle_ID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundle_ID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     context = v5->_context;
     v5->_context = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display_type"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display_type"];
     displayType = v5->_displayType;
     v5->_displayType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v16;
   }
@@ -46,90 +46,90 @@
   return v5;
 }
 
-- (TPSAnalyticsEventTipNotDisplayed)initWithReason:(id)a3 lastOfferedTipID:(id)a4 lastOfferedCorrelationID:(id)a5 lastOfferedBundleID:(id)a6 lastOfferedContext:(id)a7 date:(id)a8
+- (TPSAnalyticsEventTipNotDisplayed)initWithReason:(id)reason lastOfferedTipID:(id)d lastOfferedCorrelationID:(id)iD lastOfferedBundleID:(id)bundleID lastOfferedContext:(id)context date:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v19)
+  reasonCopy = reason;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  contextCopy = context;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v19 = [MEMORY[0x1E695DF00] date];
+    dateCopy = [MEMORY[0x1E695DF00] date];
   }
 
-  v20 = [(TPSAnalyticsEventTipNotDisplayed *)self initWithTipID:v15 correlationID:v16 bundleID:v17 reason:v14 context:v18 date:v19 displayType:0];
+  v20 = [(TPSAnalyticsEventTipNotDisplayed *)self initWithTipID:dCopy correlationID:iDCopy bundleID:bundleIDCopy reason:reasonCopy context:contextCopy date:dateCopy displayType:0];
 
   return v20;
 }
 
-- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)a3 correlationID:(id)a4 bundleID:(id)a5 reason:(int64_t)a6 context:(id)a7 date:(id)a8
+- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)d correlationID:(id)iD bundleID:(id)bundleID reason:(int64_t)reason context:(id)context date:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!v18)
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  contextCopy = context;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v18 = [MEMORY[0x1E695DF00] date];
+    dateCopy = [MEMORY[0x1E695DF00] date];
   }
 
-  v19 = [TPSAnalyticsCommonDefines ineligibleReasonStringForReason:a6];
-  v20 = [(TPSAnalyticsEventTipNotDisplayed *)self initWithTipID:v14 correlationID:v15 bundleID:v16 reason:v19 context:v17 date:v18 displayType:0];
+  v19 = [TPSAnalyticsCommonDefines ineligibleReasonStringForReason:reason];
+  v20 = [(TPSAnalyticsEventTipNotDisplayed *)self initWithTipID:dCopy correlationID:iDCopy bundleID:bundleIDCopy reason:v19 context:contextCopy date:dateCopy displayType:0];
 
   return v20;
 }
 
-- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)a3 correlationID:(id)a4 bundleID:(id)a5 reason:(id)a6 context:(id)a7 date:(id)a8 displayType:(id)a9
+- (TPSAnalyticsEventTipNotDisplayed)initWithTipID:(id)d correlationID:(id)iD bundleID:(id)bundleID reason:(id)reason context:(id)context date:(id)date displayType:(id)type
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v22 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (!v17)
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  reasonCopy = reason;
+  contextCopy = context;
+  dateCopy = date;
+  typeCopy = type;
+  if (!dateCopy)
   {
-    v17 = [MEMORY[0x1E695DF00] date];
+    dateCopy = [MEMORY[0x1E695DF00] date];
   }
 
   v27.receiver = self;
   v27.super_class = TPSAnalyticsEventTipNotDisplayed;
-  v19 = [(TPSAnalyticsEvent *)&v27 initWithDate:v17, v22];
-  v20 = v19;
-  if (v19)
+  reasonCopy = [(TPSAnalyticsEvent *)&v27 initWithDate:dateCopy, reasonCopy];
+  v20 = reasonCopy;
+  if (reasonCopy)
   {
-    objc_storeStrong(&v19->_tipID, a3);
-    objc_storeStrong(&v20->_correlationID, a4);
-    objc_storeStrong(&v20->_bundleID, a5);
-    objc_storeStrong(&v20->_context, a7);
-    objc_storeStrong(&v20->_displayType, a9);
-    objc_storeStrong(&v20->_reason, a6);
+    objc_storeStrong(&reasonCopy->_tipID, d);
+    objc_storeStrong(&v20->_correlationID, iD);
+    objc_storeStrong(&v20->_bundleID, bundleID);
+    objc_storeStrong(&v20->_context, context);
+    objc_storeStrong(&v20->_displayType, type);
+    objc_storeStrong(&v20->_reason, reason);
   }
 
   return v20;
 }
 
-- (void)setDataProvider:(id)a3
+- (void)setDataProvider:(id)provider
 {
   v19.receiver = self;
   v19.super_class = TPSAnalyticsEventTipNotDisplayed;
-  [(TPSAnalyticsEvent *)&v19 setDataProvider:a3];
+  [(TPSAnalyticsEvent *)&v19 setDataProvider:provider];
   context = self->_context;
   if (context)
   {
     v5 = context;
-    v6 = self->_context;
+    dataProvider = self->_context;
     self->_context = v5;
   }
 
   else
   {
-    v6 = [(TPSAnalyticsEvent *)self dataProvider];
-    v7 = [v6 contextForIdentifier:self->_tipID];
+    dataProvider = [(TPSAnalyticsEvent *)self dataProvider];
+    v7 = [dataProvider contextForIdentifier:self->_tipID];
     v8 = self->_context;
     self->_context = v7;
   }
@@ -138,14 +138,14 @@
   if (correlationID)
   {
     v10 = correlationID;
-    v11 = self->_correlationID;
+    dataProvider2 = self->_correlationID;
     self->_correlationID = v10;
   }
 
   else
   {
-    v11 = [(TPSAnalyticsEvent *)self dataProvider];
-    v12 = [v11 correlationIDForIdentifier:self->_tipID];
+    dataProvider2 = [(TPSAnalyticsEvent *)self dataProvider];
+    v12 = [dataProvider2 correlationIDForIdentifier:self->_tipID];
     v13 = self->_correlationID;
     self->_correlationID = v12;
   }
@@ -154,31 +154,31 @@
   if (displayType)
   {
     v15 = displayType;
-    v16 = self->_displayType;
+    dataProvider3 = self->_displayType;
     self->_displayType = v15;
   }
 
   else
   {
-    v16 = [(TPSAnalyticsEvent *)self dataProvider];
-    v17 = [v16 displayTypeForIdentifier:self->_tipID];
+    dataProvider3 = [(TPSAnalyticsEvent *)self dataProvider];
+    v17 = [dataProvider3 displayTypeForIdentifier:self->_tipID];
     v18 = self->_displayType;
     self->_displayType = v17;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSAnalyticsEventTipNotDisplayed;
-  v4 = a3;
-  [(TPSAnalyticsEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_tipID forKey:{@"tip_ID", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_correlationID forKey:@"tip_correlation_ID"];
-  [v4 encodeObject:self->_bundleID forKey:@"bundle_ID"];
-  [v4 encodeObject:self->_context forKey:@"context"];
-  [v4 encodeObject:self->_displayType forKey:@"display_type"];
-  [v4 encodeObject:self->_reason forKey:@"reason"];
+  coderCopy = coder;
+  [(TPSAnalyticsEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_tipID forKey:{@"tip_ID", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_correlationID forKey:@"tip_correlation_ID"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"bundle_ID"];
+  [coderCopy encodeObject:self->_context forKey:@"context"];
+  [coderCopy encodeObject:self->_displayType forKey:@"display_type"];
+  [coderCopy encodeObject:self->_reason forKey:@"reason"];
 }
 
 - (id)mutableAnalyticsEventRepresentation

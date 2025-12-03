@@ -1,27 +1,27 @@
 @interface BKPictureBookCurlPageView
-- (BKPictureBookCurlPageView)initWithFrame:(CGRect)a3;
+- (BKPictureBookCurlPageView)initWithFrame:(CGRect)frame;
 - (BOOL)isNightMode;
 - (UIView)topView;
 - (id)description;
-- (void)addGutter:(BOOL)a3;
+- (void)addGutter:(BOOL)gutter;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)pageCurlWillCancel;
 - (void)reset;
-- (void)setImage:(id)a3;
-- (void)setMirror:(BOOL)a3;
-- (void)setShouldHaveGradient:(BOOL)a3;
-- (void)setTopView:(id)a3 isRightPage:(BOOL)a4;
-- (void)updateCurlPercent:(double)a3;
+- (void)setImage:(id)image;
+- (void)setMirror:(BOOL)mirror;
+- (void)setShouldHaveGradient:(BOOL)gradient;
+- (void)setTopView:(id)view isRightPage:(BOOL)page;
+- (void)updateCurlPercent:(double)percent;
 @end
 
 @implementation BKPictureBookCurlPageView
 
-- (BKPictureBookCurlPageView)initWithFrame:(CGRect)a3
+- (BKPictureBookCurlPageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = BKPictureBookCurlPageView;
-  v3 = [(BKPictureBookCurlPageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKPictureBookCurlPageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -57,8 +57,8 @@
 
 - (BOOL)isNightMode
 {
-  v2 = [(BKPictureBookCurlPageView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == &dword_0 + 2 || UIAccessibilityIsInvertColorsEnabled();
+  traitCollection = [(BKPictureBookCurlPageView *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == &dword_0 + 2 || UIAccessibilityIsInvertColorsEnabled();
 
   return v3;
 }
@@ -68,11 +68,11 @@
   v9.receiver = self;
   v9.super_class = BKPictureBookCurlPageView;
   [(BKPictureBookCurlPageView *)&v9 layoutSubviews];
-  v3 = [(UIImageView *)self->_gutter image];
-  v4 = v3;
-  if (v3)
+  image = [(UIImageView *)self->_gutter image];
+  v4 = image;
+  if (image)
   {
-    [v3 size];
+    [image size];
     v6 = v5 * self->_scale;
     [(UIImageView *)self->_gutter frame];
     v8 = v7;
@@ -86,14 +86,14 @@
   [(UIImageView *)self->_imageView setFrame:?];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  v10 = v4;
+  imageCopy = image;
+  v5 = imageCopy;
+  v10 = imageCopy;
   if (self->_imageView)
   {
-    if (v4)
+    if (imageCopy)
     {
       goto LABEL_3;
     }
@@ -109,8 +109,8 @@
 
     [(UIImageView *)self->_imageView setAutoresizingMask:18];
     [(UIImageView *)self->_imageView setContentMode:2];
-    v9 = [(UIImageView *)self->_imageView layer];
-    [v9 setMagnificationFilter:kCAFilterLinear];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setMagnificationFilter:kCAFilterLinear];
 
     [(BKPictureBookCurlPageView *)self insertSubview:self->_imageView atIndex:0];
     v5 = v10;
@@ -129,35 +129,35 @@ LABEL_3:
 - (void)reset
 {
   [(UIImageView *)self->_imageView setImage:0];
-  v3 = [(BKPictureBookCurlPageView *)self layer];
-  [v3 setMask:0];
+  layer = [(BKPictureBookCurlPageView *)self layer];
+  [layer setMask:0];
 
   [(UIImageView *)self->_gutter removeFromSuperview];
   gutter = self->_gutter;
   self->_gutter = 0;
 }
 
-- (void)setTopView:(id)a3 isRightPage:(BOOL)a4
+- (void)setTopView:(id)view isRightPage:(BOOL)page
 {
-  v4 = a4;
-  self->_right = a4;
-  obj = a3;
+  pageCopy = page;
+  self->_right = page;
+  obj = view;
   [(BKPictureBookCurlPageView *)self bounds];
   [obj setFrame:?];
   [(BKPictureBookCurlPageView *)self addSubview:obj];
-  [(BKPictureBookCurlPageView *)self addGutter:v4];
+  [(BKPictureBookCurlPageView *)self addGutter:pageCopy];
   [(BKPictureBookCurlPageView *)self setClipsToBounds:1];
   objc_storeWeak(&self->_topView, obj);
 }
 
-- (void)setMirror:(BOOL)a3
+- (void)setMirror:(BOOL)mirror
 {
-  self->_mirror = a3;
-  v4 = [(BKPictureBookCurlPageView *)self layer];
-  v5 = v4;
-  if (v4)
+  self->_mirror = mirror;
+  layer = [(BKPictureBookCurlPageView *)self layer];
+  v5 = layer;
+  if (layer)
   {
-    [v4 sublayerTransform];
+    [layer sublayerTransform];
   }
 
   else
@@ -166,16 +166,16 @@ LABEL_3:
   }
 
   CATransform3DScale(&v8, &v7, -1.0, 1.0, 1.0);
-  v6 = [(BKPictureBookCurlPageView *)self layer];
+  layer2 = [(BKPictureBookCurlPageView *)self layer];
   v7 = v8;
-  [v6 setSublayerTransform:&v7];
+  [layer2 setSublayerTransform:&v7];
 }
 
-- (void)addGutter:(BOOL)a3
+- (void)addGutter:(BOOL)gutter
 {
   if (!self->_gutter && self->_drawsSpine)
   {
-    v4 = a3;
+    gutterCopy = gutter;
     v10 = [UIImage imageNamed:@"PictureBookSpine.png"];
     v5 = [[UIImageView alloc] initWithImage:v10];
     gutter = self->_gutter;
@@ -184,7 +184,7 @@ LABEL_3:
     [(BKPictureBookCurlPageView *)self addSubview:self->_gutter];
     [v10 size];
     v8 = v7 * self->_scale;
-    if (v4)
+    if (gutterCopy)
     {
       v9 = v8 * -0.5;
     }
@@ -217,13 +217,13 @@ LABEL_3:
 
   WeakRetained = objc_loadWeakRetained(&self->_topView);
   pageOffset = self->_pageOffset;
-  v7 = [(BKPictureBookCurlPageView *)self layer];
-  v8 = [v7 mask];
-  if (v8)
+  layer = [(BKPictureBookCurlPageView *)self layer];
+  mask = [layer mask];
+  if (mask)
   {
-    v9 = [(BKPictureBookCurlPageView *)self layer];
-    v10 = [v9 mask];
-    v11 = [v10 description];
+    layer2 = [(BKPictureBookCurlPageView *)self layer];
+    mask2 = [layer2 mask];
+    v11 = [mask2 description];
     v12 = [NSString stringWithFormat:@"%@ isRight=%@ topView=%p pageOffset=%ld mask=%@", v3, v4, WeakRetained, pageOffset, v11];
   }
 
@@ -235,10 +235,10 @@ LABEL_3:
   return v12;
 }
 
-- (void)setShouldHaveGradient:(BOOL)a3
+- (void)setShouldHaveGradient:(BOOL)gradient
 {
   largeGradientLayer = self->_largeGradientLayer;
-  if (a3)
+  if (gradient)
   {
     if (!largeGradientLayer)
     {
@@ -251,20 +251,20 @@ LABEL_3:
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(BKPictureBookCurlPageView *)self isRight];
-      v17 = [(BKPictureBookCurlPageView *)self useNightColors];
+      isRight = [(BKPictureBookCurlPageView *)self isRight];
+      useNightColors = [(BKPictureBookCurlPageView *)self useNightColors];
       v18 = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
-      if (v16)
+      if (isRight)
       {
-        if (v17)
+        if (useNightColors)
         {
           v19 = [UIColor colorWithWhite:0.519999981 alpha:0.219999999];
-          v20 = [v19 CGColor];
+          cGColor = [v19 CGColor];
           v21 = [UIColor colorWithWhite:0.529999971 alpha:0.389999986];
-          v22 = [v21 CGColor];
+          cGColor2 = [v21 CGColor];
           v23 = 0.0;
           v24 = [UIColor colorWithWhite:1.0 alpha:0.0];
-          v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v20, v22, [v24 CGColor], 0);
+          v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, cGColor2, [v24 CGColor], 0);
           v26 = 0.639999986;
           v27 = 1036831949;
         }
@@ -273,15 +273,15 @@ LABEL_3:
         {
           v55 = +[UIColor blackColor];
           v21 = [v55 colorWithAlphaComponent:0.129999995];
-          v30 = [v21 CGColor];
+          cGColor3 = [v21 CGColor];
           v24 = +[UIColor blackColor];
           v31 = [v24 colorWithAlphaComponent:0.0500000007];
-          v32 = [v31 CGColor];
+          cGColor4 = [v31 CGColor];
           v33 = +[UIColor blackColor];
           v34 = [v33 colorWithAlphaComponent:0.230000004];
-          v54 = v32;
+          v54 = cGColor4;
           v18 = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
-          v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v30, v54, [v34 CGColor], 0);
+          v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor3, v54, [v34 CGColor], 0);
 
           v19 = v55;
           v23 = 0.0;
@@ -290,15 +290,15 @@ LABEL_3:
         }
       }
 
-      else if (v17)
+      else if (useNightColors)
       {
         v26 = 1.0;
         v19 = [UIColor colorWithWhite:1.0 alpha:0.0];
-        v28 = [v19 CGColor];
+        cGColor5 = [v19 CGColor];
         v21 = [UIColor colorWithWhite:0.529999971 alpha:0.389999986];
-        v29 = [v21 CGColor];
+        cGColor6 = [v21 CGColor];
         v24 = [UIColor colorWithWhite:0.519999981 alpha:0.219999999];
-        v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v28, v29, [v24 CGColor], 0);
+        v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor5, cGColor6, [v24 CGColor], 0);
         v23 = 0.360000014;
         v27 = 1063675494;
         v18 = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
@@ -308,13 +308,13 @@ LABEL_3:
       {
         v56 = +[UIColor blackColor];
         v21 = [v56 colorWithAlphaComponent:0.230000004];
-        v57 = [v21 CGColor];
+        cGColor7 = [v21 CGColor];
         v24 = +[UIColor blackColor];
         v35 = [v24 colorWithAlphaComponent:0.0500000007];
-        v36 = [v35 CGColor];
+        cGColor8 = [v35 CGColor];
         v37 = +[UIColor blackColor];
         v38 = [v37 colorWithAlphaComponent:0.129999995];
-        v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v57, v36, [v38 CGColor], 0);
+        v25 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor7, cGColor8, [v38 CGColor], 0);
 
         v23 = 0.0;
         v26 = 1.0;
@@ -360,8 +360,8 @@ LABEL_3:
         [(CAGradientLayer *)self->_largeGradientLayer setOpacity:0.0];
       }
 
-      v53 = [(BKPictureBookCurlPageView *)self layer];
-      [v53 addSublayer:self->_largeGradientLayer];
+      layer = [(BKPictureBookCurlPageView *)self layer];
+      [layer addSublayer:self->_largeGradientLayer];
 
       goto LABEL_16;
     }
@@ -375,10 +375,10 @@ LABEL_3:
 LABEL_16:
   }
 
-  self->_hasGradient = a3;
+  self->_hasGradient = gradient;
 }
 
-- (void)updateCurlPercent:(double)a3
+- (void)updateCurlPercent:(double)percent
 {
   v3 = 0.5;
   if (!self->_useNightColors)
@@ -386,7 +386,7 @@ LABEL_16:
     v3 = 1.0;
   }
 
-  v4 = v3 * a3;
+  v4 = v3 * percent;
   if (self->_hasGradient && v4 < 1.0)
   {
     *&v4 = v4;

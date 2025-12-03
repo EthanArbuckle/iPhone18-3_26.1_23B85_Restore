@@ -1,16 +1,16 @@
 @interface SBUIBackgroundContentTouchAction
 - (CGPoint)location;
-- (SBUIBackgroundContentTouchAction)initWithLocation:(CGPoint)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (SBUIBackgroundContentTouchAction)initWithLocation:(CGPoint)location;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 @end
 
 @implementation SBUIBackgroundContentTouchAction
 
-- (SBUIBackgroundContentTouchAction)initWithLocation:(CGPoint)a3
+- (SBUIBackgroundContentTouchAction)initWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
   v7 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
   [v6 setObject:v7 forSetting:1];
@@ -24,8 +24,8 @@
 
 - (CGPoint)location
 {
-  v2 = [(SBUIBackgroundContentTouchAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(SBUIBackgroundContentTouchAction *)self info];
+  v3 = [info objectForSetting:1];
   [v3 CGPointValue];
   v5 = v4;
   v7 = v6;
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"location";
   }
@@ -50,11 +50,11 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 1)
+  if (setting == 1)
   {
-    [a4 CGPointValue];
+    [object CGPointValue];
     v7 = NSStringFromCGPoint(v9);
   }
 

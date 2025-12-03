@@ -1,5 +1,5 @@
 @interface _NTKCGalleryCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axFace;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,15 +7,15 @@
 
 @implementation _NTKCGalleryCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_faceContainerView" withType:"NTKCFaceContainerView"];
-  [v3 validateClass:@"NTKCFaceContainerView" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_NTKCGalleryCollectionCell" hasInstanceVariable:@"_faceContainerView" withType:"NTKCFaceContainerView"];
+  [validationsCopy validateClass:@"NTKCFaceContainerView" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
 - (id)_axFace
@@ -31,19 +31,19 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(_NTKCGalleryCollectionCellAccessibility *)self _axFace];
-  v3 = AXNTKFaceComplicationOverviewDescription(v2);
+  _axFace = [(_NTKCGalleryCollectionCellAccessibility *)self _axFace];
+  v3 = AXNTKFaceComplicationOverviewDescription(_axFace);
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(_NTKCGalleryCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_NTKCGalleryCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(_NTKCGalleryCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_NTKCGalleryCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
@@ -64,18 +64,18 @@
       v13 = [v12 safeValueForKey:@"face"];
       v14 = __UIAccessibilityCastAsSafeCategory();
 
-      v15 = [v6 accessibilityLabel];
-      v17 = [v14 _accessibilityFaceEditOptionsDescription];
-      v4 = __UIAXStringForVariables();
+      accessibilityLabel = [v6 accessibilityLabel];
+      _accessibilityFaceEditOptionsDescription = [v14 _accessibilityFaceEditOptionsDescription];
+      accessibilityUserDefinedLabel2 = __UIAXStringForVariables();
     }
 
     else
     {
-      v4 = 0;
+      accessibilityUserDefinedLabel2 = 0;
     }
   }
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 @end

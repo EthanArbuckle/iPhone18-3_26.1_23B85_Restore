@@ -1,13 +1,13 @@
 @interface WDCategorySampleUndeterminedDurationListDataProvider
-- (id)secondaryTextForObject:(id)a3;
+- (id)secondaryTextForObject:(id)object;
 @end
 
 @implementation WDCategorySampleUndeterminedDurationListDataProvider
 
-- (id)secondaryTextForObject:(id)a3
+- (id)secondaryTextForObject:(id)object
 {
-  v4 = a3;
-  if ([v4 hasUndeterminedDuration])
+  objectCopy = object;
+  if ([objectCopy hasUndeterminedDuration])
   {
     v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v6 = [v5 localizedStringForKey:@"ONGOING_DATE" value:&stru_28641D9B8 table:@"HealthUI-Localizable"];
@@ -17,7 +17,7 @@
   {
     v8.receiver = self;
     v8.super_class = WDCategorySampleUndeterminedDurationListDataProvider;
-    v6 = [(WDSampleListDataProvider *)&v8 secondaryTextForObject:v4];
+    v6 = [(WDSampleListDataProvider *)&v8 secondaryTextForObject:objectCopy];
   }
 
   return v6;

@@ -1,39 +1,39 @@
 @interface CPLShare
-- (CPLShare)initWithCKShare:(id)a3 currentUserID:(id)a4;
+- (CPLShare)initWithCKShare:(id)share currentUserID:(id)d;
 @end
 
 @implementation CPLShare
 
-- (CPLShare)initWithCKShare:(id)a3 currentUserID:(id)a4
+- (CPLShare)initWithCKShare:(id)share currentUserID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  dCopy = d;
   v8 = [(CPLShare *)self init];
   if (v8)
   {
-    v9 = [v6 publicPermission];
-    if ((v9 - 1) >= 3)
+    publicPermission = [shareCopy publicPermission];
+    if ((publicPermission - 1) >= 3)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = publicPermission;
     }
 
     [(CPLShare *)v8 setPublicPermission:v10];
-    v11 = [v6 URL];
+    v11 = [shareCopy URL];
     [(CPLShare *)v8 setURL:v11];
 
-    v12 = [v6 participants];
-    v13 = [CPLShareParticipant shareParticipantsFromCKShareParticipants:v12 currentUserID:v7];
+    participants = [shareCopy participants];
+    v13 = [CPLShareParticipant shareParticipantsFromCKShareParticipants:participants currentUserID:dCopy];
     [(CPLShare *)v8 setParticipants:v13];
 
-    v14 = [v6 creationDate];
-    [(CPLShare *)v8 setCreationDate:v14];
+    creationDate = [shareCopy creationDate];
+    [(CPLShare *)v8 setCreationDate:creationDate];
 
-    v15 = [NSKeyedArchiver cpl_archivedDataWithRootObject:v6];
+    v15 = [NSKeyedArchiver cpl_archivedDataWithRootObject:shareCopy];
     [(CPLShare *)v8 setTransportShare:v15];
   }
 

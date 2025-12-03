@@ -1,30 +1,30 @@
 @interface SWProviderAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SWProviderAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F524D7B8 factory:&__block_literal_global_3];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F524D7B8 factory:&__block_literal_global_3];
 
-  v6 = [v3 privateContainer];
-  v7 = [v6 registerProtocol:&unk_1F524FF30 factory:&__block_literal_global_56_0];
+  privateContainer = [registryCopy privateContainer];
+  v7 = [privateContainer registerProtocol:&unk_1F524FF30 factory:&__block_literal_global_56_0];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F5269F40 factory:&__block_literal_global_75];
+  publicContainer2 = [registryCopy publicContainer];
+  v9 = [publicContainer2 registerProtocol:&unk_1F5269F40 factory:&__block_literal_global_75];
 
-  v10 = [v3 privateContainer];
-  v11 = [v10 registerProtocol:&unk_1F524F4A0 factory:&__block_literal_global_83_0];
+  privateContainer2 = [registryCopy privateContainer];
+  v11 = [privateContainer2 registerProtocol:&unk_1F524F4A0 factory:&__block_literal_global_83_0];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_1F5259AD0 factory:&__block_literal_global_89_0];
+  publicContainer3 = [registryCopy publicContainer];
+  v13 = [publicContainer3 registerProtocol:&unk_1F5259AD0 factory:&__block_literal_global_89_0];
 
-  v15 = [v3 publicContainer];
+  publicContainer4 = [registryCopy publicContainer];
 
-  v14 = [v15 registerProtocol:&unk_1F526B978 factory:&__block_literal_global_99];
+  v14 = [publicContainer4 registerProtocol:&unk_1F526B978 factory:&__block_literal_global_99];
 }
 
 SWActionProvider *__37__SWProviderAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

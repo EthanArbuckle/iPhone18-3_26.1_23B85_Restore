@@ -6,7 +6,7 @@
 - (id)p_groupInfo;
 - (id)p_groupedChildReps;
 - (id)p_nonGroupedChildReps;
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 - (void)updateChildrenFromLayout;
 - (void)updateFromLayout;
 @end
@@ -122,9 +122,9 @@
   return result;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   memset(&v78, 0, sizeof(v78));
   v9 = objc_msgSend_layout(self, v7, v8);
   v12 = objc_msgSend_geometry(v9, v10, v11);
@@ -142,7 +142,7 @@
   if (TSUCGAffineTransformIsValid())
   {
     transform = v78;
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
     objc_opt_class();
     v19 = objc_msgSend_layout(self, v17, v18);
     v20 = TSUCheckedDynamicCast();
@@ -153,7 +153,7 @@
       v26 = v25;
       objc_msgSend_i_clampingScaleForChildLayouts(v20, v27, v28);
       CGAffineTransformMakeScale(&transform, v26, v29);
-      CGContextConcatCTM(a3, &transform);
+      CGContextConcatCTM(context, &transform);
     }
 
     objc_msgSend_clipRect(self, v23, v24);
@@ -165,9 +165,9 @@
     if (TSURectHasNaNComponents() & 1) != 0 || (TSUSizeIsEmpty())
     {
       v74 = MEMORY[0x277D81150];
-      v75 = a3;
+      contextCopy = context;
       objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v41, "[TSDGroupRep recursivelyDrawInContext:keepingChildrenPassingTest:]");
-      v42 = v76 = v6;
+      v42 = v76 = testCopy;
       v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDGroupRep.m");
       v79.origin.x = v31;
       v79.origin.y = v33;
@@ -182,8 +182,8 @@
       v60 = v73 = v40;
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v74, v61, v42, v44, 115, 0, "Group had unsafe clip rect %{public}@ childCount %lu infoGeom %{public}@", v45, v54, v60);
 
-      a3 = v75;
-      v6 = v76;
+      context = contextCopy;
+      testCopy = v76;
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v62, v63);
       if (v73)
       {
@@ -196,20 +196,20 @@
       if (v40)
       {
         CGContextClipToRectSafe();
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
       }
 
       else
       {
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         CGContextClipToRectSafe();
       }
 
-      objc_msgSend_drawInContext_(self, v72, a3);
-      CGContextRestoreGState(a3);
+      objc_msgSend_drawInContext_(self, v72, context);
+      CGContextRestoreGState(context);
     }
 
-    objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v64, a3, v6);
+    objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v64, context, testCopy);
 LABEL_17:
 
     goto LABEL_18;

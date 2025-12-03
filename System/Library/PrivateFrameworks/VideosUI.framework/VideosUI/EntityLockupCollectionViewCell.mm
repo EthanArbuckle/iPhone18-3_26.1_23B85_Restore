@@ -1,18 +1,18 @@
 @interface EntityLockupCollectionViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (id)zoomSourceView;
 - (void)prepareForReuse;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation EntityLockupCollectionViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E3AC2874(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E3AC2874(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -22,21 +22,21 @@
   return result;
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E3AC3840(a3);
+  selfCopy = self;
+  sub_1E3AC3840(highlighted);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3AC3900();
 }
 
 - (id)zoomSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3AC3B20();
 
   return v3;

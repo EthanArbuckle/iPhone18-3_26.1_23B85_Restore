@@ -1,30 +1,30 @@
 @interface WFGetCurrentSongAction
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
 - (id)origin;
 - (id)outputContentClasses;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetCurrentSongAction
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(WFGetCurrentSongAction *)self parameterStateForKey:@"Subject"];
-  v6 = [v5 value];
-  v7 = [v6 isEqualToString:@"Current Playback Time"];
+  value = [v5 value];
+  v7 = [value isEqualToString:@"Current Playback Time"];
 
   if (v7)
   {
     v8 = WFLocalizedStringResourceWithKey(@"Current Playback Time", @"Current Playback Time");
-    v9 = [v4 localize:v8];
+    v9 = [contextCopy localize:v8];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFGetCurrentSongAction;
-    v9 = [(WFGetCurrentSongAction *)&v11 localizedDefaultOutputNameWithContext:v4];
+    v9 = [(WFGetCurrentSongAction *)&v11 localizedDefaultOutputNameWithContext:contextCopy];
   }
 
   return v9;
@@ -34,18 +34,18 @@
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = [(WFGetCurrentSongAction *)self parameterStateForKey:@"Subject"];
-  v4 = [v3 value];
-  if ([v4 isEqualToString:@"Current Song"])
+  value = [v3 value];
+  if ([value isEqualToString:@"Current Song"])
   {
     v13[0] = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
     v6 = v13;
 LABEL_5:
-    v7 = [v5 arrayWithObjects:v6 count:1];
+    outputContentClasses = [v5 arrayWithObjects:v6 count:1];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Current Playback Time"])
+  if ([value isEqualToString:@"Current Playback Time"])
   {
     v12 = objc_opt_class();
     v5 = MEMORY[0x277CBEA60];
@@ -55,9 +55,9 @@ LABEL_5:
 
   v11.receiver = self;
   v11.super_class = WFGetCurrentSongAction;
-  v7 = [(WFGetCurrentSongAction *)&v11 outputContentClasses];
+  outputContentClasses = [(WFGetCurrentSongAction *)&v11 outputContentClasses];
 LABEL_7:
-  v8 = v7;
+  v8 = outputContentClasses;
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -72,7 +72,7 @@ LABEL_7:
   return v3;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = objc_alloc_init(WFMediaPlaybackController);
   v5[0] = MEMORY[0x277D85DD0];

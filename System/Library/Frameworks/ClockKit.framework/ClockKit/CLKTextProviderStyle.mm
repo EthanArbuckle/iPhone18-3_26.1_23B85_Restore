@@ -1,60 +1,60 @@
 @interface CLKTextProviderStyle
-+ (id)otherAttributesWithParagraphStyle:(id)a3 kerning:(double)a4;
-+ (id)styleWithFont:(id)a3 smallCapsBaseFont:(id)a4 uppercase:(BOOL)a5 otherAttributes:(id)a6 minimumScaleFactor:(double)a7 shouldEmbedTintColor:(BOOL)a8;
-+ (id)styleWithFont:(id)a3 smallCapsBaseFont:(id)a4 uppercase:(BOOL)a5 otherAttributes:(id)a6 minimumScaleFactor:(double)a7 shouldEmbedTintColor:(BOOL)a8 shouldStyleForTritium:(BOOL)a9;
-- (BOOL)isEqual:(id)a3;
++ (id)otherAttributesWithParagraphStyle:(id)style kerning:(double)kerning;
++ (id)styleWithFont:(id)font smallCapsBaseFont:(id)baseFont uppercase:(BOOL)uppercase otherAttributes:(id)attributes minimumScaleFactor:(double)factor shouldEmbedTintColor:(BOOL)color;
++ (id)styleWithFont:(id)font smallCapsBaseFont:(id)baseFont uppercase:(BOOL)uppercase otherAttributes:(id)attributes minimumScaleFactor:(double)factor shouldEmbedTintColor:(BOOL)color shouldStyleForTritium:(BOOL)tritium;
+- (BOOL)isEqual:(id)equal;
 - (CLKFont)monospacedDigitsFont;
 - (CLKFont)smallCapsBaseFont;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CLKTextProviderStyle
 
-+ (id)styleWithFont:(id)a3 smallCapsBaseFont:(id)a4 uppercase:(BOOL)a5 otherAttributes:(id)a6 minimumScaleFactor:(double)a7 shouldEmbedTintColor:(BOOL)a8 shouldStyleForTritium:(BOOL)a9
++ (id)styleWithFont:(id)font smallCapsBaseFont:(id)baseFont uppercase:(BOOL)uppercase otherAttributes:(id)attributes minimumScaleFactor:(double)factor shouldEmbedTintColor:(BOOL)color shouldStyleForTritium:(BOOL)tritium
 {
-  v9 = a9;
-  v10 = [a1 styleWithFont:a3 smallCapsBaseFont:a4 uppercase:a5 otherAttributes:a6 minimumScaleFactor:a8 shouldEmbedTintColor:a7];
-  [v10 setShouldStyleForTritium:v9];
+  tritiumCopy = tritium;
+  v10 = [self styleWithFont:font smallCapsBaseFont:baseFont uppercase:uppercase otherAttributes:attributes minimumScaleFactor:color shouldEmbedTintColor:factor];
+  [v10 setShouldStyleForTritium:tritiumCopy];
 
   return v10;
 }
 
-+ (id)styleWithFont:(id)a3 smallCapsBaseFont:(id)a4 uppercase:(BOOL)a5 otherAttributes:(id)a6 minimumScaleFactor:(double)a7 shouldEmbedTintColor:(BOOL)a8
++ (id)styleWithFont:(id)font smallCapsBaseFont:(id)baseFont uppercase:(BOOL)uppercase otherAttributes:(id)attributes minimumScaleFactor:(double)factor shouldEmbedTintColor:(BOOL)color
 {
-  v8 = a8;
-  v10 = a5;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  colorCopy = color;
+  uppercaseCopy = uppercase;
+  attributesCopy = attributes;
+  baseFontCopy = baseFont;
+  fontCopy = font;
   v16 = objc_opt_new();
-  [v16 setFont:v15];
+  [v16 setFont:fontCopy];
 
-  [v16 setSmallCapsBaseFont:v14];
-  [v16 setUppercase:v10];
-  [v16 setOtherAttributes:v13];
+  [v16 setSmallCapsBaseFont:baseFontCopy];
+  [v16 setUppercase:uppercaseCopy];
+  [v16 setOtherAttributes:attributesCopy];
 
-  [v16 setMinimumScaleFactor:a7];
-  [v16 setShouldEmbedTintColors:v8];
+  [v16 setMinimumScaleFactor:factor];
+  [v16 setShouldEmbedTintColors:colorCopy];
 
   return v16;
 }
 
-+ (id)otherAttributesWithParagraphStyle:(id)a3 kerning:(double)a4
++ (id)otherAttributesWithParagraphStyle:(id)style kerning:(double)kerning
 {
-  v5 = a3;
+  styleCopy = style;
   v6 = objc_opt_new();
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D74118]];
+  [v6 setObject:styleCopy forKeyedSubscript:*MEMORY[0x277D74118]];
 
-  v7 = -a4;
-  if (a4 >= 0.0)
+  kerningCopy = -kerning;
+  if (kerning >= 0.0)
   {
-    v7 = a4;
+    kerningCopy = kerning;
   }
 
-  if (v7 > 0.00000011920929)
+  if (kerningCopy > 0.00000011920929)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:kerning];
     [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277D740D0]];
   }
 
@@ -96,24 +96,24 @@
   return v7 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_11;
   }
 
-  if ([(CLKFont *)v4->_font isEqual:self->_font]&& CLKEqualObjects(v4->_smallCapsBaseFont, self->_smallCapsBaseFont) && v4->_shouldStyleForTritium == self->_shouldStyleForTritium && v4->_uppercase == self->_uppercase && CLKEqualObjects(v4->_otherAttributes, self->_otherAttributes) && CLKFloatEqualsFloat(v4->_minimumScaleFactor, self->_minimumScaleFactor))
+  if ([(CLKFont *)equalCopy->_font isEqual:self->_font]&& CLKEqualObjects(equalCopy->_smallCapsBaseFont, self->_smallCapsBaseFont) && equalCopy->_shouldStyleForTritium == self->_shouldStyleForTritium && equalCopy->_uppercase == self->_uppercase && CLKEqualObjects(equalCopy->_otherAttributes, self->_otherAttributes) && CLKFloatEqualsFloat(equalCopy->_minimumScaleFactor, self->_minimumScaleFactor))
   {
-    v5 = v4->_shouldEmbedTintColors == self->_shouldEmbedTintColors;
+    v5 = equalCopy->_shouldEmbedTintColors == self->_shouldEmbedTintColors;
   }
 
   else
@@ -127,7 +127,7 @@ LABEL_11:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CLKTextProviderStyle allocWithZone:?]];
   v5 = [(CLKFont *)self->_font copy];

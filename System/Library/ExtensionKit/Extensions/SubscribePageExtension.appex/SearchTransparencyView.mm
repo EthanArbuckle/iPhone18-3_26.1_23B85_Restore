@@ -1,12 +1,12 @@
 @interface SearchTransparencyView
-- (_TtC22SubscribePageExtension22SearchTransparencyView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension22SearchTransparencyView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchTransparencyView
 
-- (_TtC22SubscribePageExtension22SearchTransparencyView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension22SearchTransparencyView)initWithCoder:(id)coder
 {
   v4 = sub_100750534();
   v5 = *(v4 - 8);

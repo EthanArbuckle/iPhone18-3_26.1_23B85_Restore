@@ -1,28 +1,28 @@
 @interface CPLContainerRelationChange
-+ (id)ckValueForRelatedRecord:(id)a3;
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
++ (id)ckValueForRelatedRecord:(id)record;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLContainerRelationChange
 
-+ (id)ckValueForRelatedRecord:(id)a3
++ (id)ckValueForRelatedRecord:(id)record
 {
-  v3 = [a3 recordID];
-  v4 = [v3 recordName];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
 
-  return v4;
+  return recordName;
 }
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [v5 objectForKey:@"itemId"];
-  [(CPLContainerRelationChange *)v4 setItemIdentifier:v6];
+  selfCopy = self;
+  recordCopy = record;
+  v6 = [recordCopy objectForKey:@"itemId"];
+  [(CPLContainerRelationChange *)selfCopy setItemIdentifier:v6];
 
   v11 = objc_alloc_init(CPLContainerRelation);
-  v7 = [v5 cpl_objectForKey:@"position" validateClass:objc_opt_class()];
+  v7 = [recordCopy cpl_objectForKey:@"position" validateClass:objc_opt_class()];
   v8 = v7;
   if (!v7)
   {
@@ -31,41 +31,41 @@
 
   [v11 setPosition:{objc_msgSend(v7, "integerValue")}];
 
-  v9 = [v5 objectForKeyedSubscript:@"containerId"];
+  v9 = [recordCopy objectForKeyedSubscript:@"containerId"];
   [v11 setContainerIdentifier:v9];
 
-  v10 = [v5 cpl_objectForKey:@"isKeyAsset" validateClass:objc_opt_class()];
+  v10 = [recordCopy cpl_objectForKey:@"isKeyAsset" validateClass:objc_opt_class()];
 
   [v11 setKeyAsset:{objc_msgSend(v10, "BOOLValue")}];
-  [(CPLContainerRelationChange *)v4 setRelation:v11];
+  [(CPLContainerRelationChange *)selfCopy setRelation:v11];
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v15 = a3;
-  v6 = self;
-  v7 = [a4 fingerprintContext];
-  if ([(CPLContainerRelationChange *)v6 hasChangeType:2])
+  builderCopy = builder;
+  selfCopy = self;
+  fingerprintContext = [provider fingerprintContext];
+  if ([(CPLContainerRelationChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLContainerRelationChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"itemIdentifier")])
+    if ([(CPLContainerRelationChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"itemIdentifier")])
     {
-      v8 = [(CPLContainerRelationChange *)v6 itemIdentifier];
-      [v15 setObject:v8 forKey:@"itemId"];
+      itemIdentifier = [(CPLContainerRelationChange *)selfCopy itemIdentifier];
+      [builderCopy setObject:itemIdentifier forKey:@"itemId"];
     }
 
-    if ([(CPLContainerRelationChange *)v6 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"relation")])
+    if ([(CPLContainerRelationChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"relation")])
     {
-      v9 = [(CPLContainerRelationChange *)v6 relation];
-      v10 = [v9 containerIdentifier];
-      [v15 setObject:v10 forKey:@"containerId"];
+      relation = [(CPLContainerRelationChange *)selfCopy relation];
+      containerIdentifier = [relation containerIdentifier];
+      [builderCopy setObject:containerIdentifier forKey:@"containerId"];
 
-      v11 = [(CPLContainerRelationChange *)v6 relation];
-      v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 position]);
-      [v15 setObject:v12 forKey:@"position"];
+      relation2 = [(CPLContainerRelationChange *)selfCopy relation];
+      v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [relation2 position]);
+      [builderCopy setObject:v12 forKey:@"position"];
 
-      v13 = [(CPLContainerRelationChange *)v6 relation];
-      v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 isKeyAsset]);
-      [v15 setObject:v14 forKey:@"isKeyAsset"];
+      relation3 = [(CPLContainerRelationChange *)selfCopy relation];
+      v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [relation3 isKeyAsset]);
+      [builderCopy setObject:v14 forKey:@"isKeyAsset"];
     }
   }
 }

@@ -1,20 +1,20 @@
 @interface DNDSMutableBehaviorSettingsRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setInterruptionBehaviorSetting:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setInterruptionBehaviorSetting:(id)setting;
 @end
 
 @implementation DNDSMutableBehaviorSettingsRecord
 
-- (void)setInterruptionBehaviorSetting:(id)a3
+- (void)setInterruptionBehaviorSetting:(id)setting
 {
-  v4 = [a3 copy];
+  v4 = [setting copy];
   interruptionBehaviorSetting = self->super._interruptionBehaviorSetting;
   self->super._interruptionBehaviorSetting = v4;
 
   MEMORY[0x2821F96F8](v4, interruptionBehaviorSetting);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSBehaviorSettingsRecord alloc];
 

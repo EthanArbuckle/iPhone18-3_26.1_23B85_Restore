@@ -1,5 +1,5 @@
 @interface AVCCaptionsToken
-- (AVCCaptionsToken)initWithText:(id)a3 confidence:(double)a4 range:(_NSRange)a5;
+- (AVCCaptionsToken)initWithText:(id)text confidence:(double)confidence range:(_NSRange)range;
 - (_NSRange)range;
 - (id)description;
 - (void)dealloc;
@@ -7,20 +7,20 @@
 
 @implementation AVCCaptionsToken
 
-- (AVCCaptionsToken)initWithText:(id)a3 confidence:(double)a4 range:(_NSRange)a5
+- (AVCCaptionsToken)initWithText:(id)text confidence:(double)confidence range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = AVCCaptionsToken;
   v9 = [(AVCCaptionsToken *)&v12 init];
   if (v9)
   {
-    if (a3)
+    if (text)
     {
-      v9->_text = [a3 copy];
-      v9->_confidence = a4;
+      v9->_text = [text copy];
+      v9->_confidence = confidence;
       v9->_range.location = location;
       v9->_range.length = length;
     }

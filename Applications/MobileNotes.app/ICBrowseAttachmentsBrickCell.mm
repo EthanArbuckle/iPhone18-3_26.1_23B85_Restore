@@ -1,43 +1,43 @@
 @interface ICBrowseAttachmentsBrickCell
-- (ICBrowseAttachmentsBrickCell)initWithFrame:(CGRect)a3;
+- (ICBrowseAttachmentsBrickCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setAttachment:(id)a3;
+- (void)setAttachment:(id)attachment;
 - (void)updateFocusEffect;
 @end
 
 @implementation ICBrowseAttachmentsBrickCell
 
-- (ICBrowseAttachmentsBrickCell)initWithFrame:(CGRect)a3
+- (ICBrowseAttachmentsBrickCell)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = ICBrowseAttachmentsBrickCell;
-  v3 = [(ICBrowseAttachmentsBrickCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICBrowseAttachmentsBrickCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[ICAttachmentBrickView alloc] initWithType:4];
     [(ICBrowseAttachmentsBrickCell *)v3 setAttachmentBrickView:v4];
 
-    v5 = [(ICBrowseAttachmentsBrickCell *)v3 attachmentBrickView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
-    [v6 addSubview:v5];
+    attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)v3 attachmentBrickView];
+    [attachmentBrickView setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
+    [contentView addSubview:attachmentBrickView];
 
-    v7 = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
+    contentView2 = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
     v17 = @"brick";
-    v18 = v5;
+    v18 = attachmentBrickView;
     v8 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-0-[brick]-0-|", 0, 0, v8);
-    [v7 addConstraints:v9];
+    [contentView2 addConstraints:v9];
 
-    v10 = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
+    contentView3 = [(ICBrowseAttachmentsBrickCell *)v3 contentView];
     v15 = @"brick";
-    v16 = v5;
+    v16 = attachmentBrickView;
     v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-0-[brick]-0-|", 0, 0, v11);
-    [v10 addConstraints:v12];
+    [contentView3 addConstraints:v12];
   }
 
   return v3;
@@ -49,29 +49,29 @@
   v4.super_class = ICBrowseAttachmentsBrickCell;
   [(ICBrowseAttachmentsBaseCell *)&v4 prepareForReuse];
   [(ICBrowseAttachmentsBrickCell *)self setAttachment:0];
-  v3 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-  [v3 prepareForReuse];
+  attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+  [attachmentBrickView prepareForReuse];
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  attachmentCopy = attachment;
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
 
-  if (v5 != v4)
+  if (attachment != attachmentCopy)
   {
     v7.receiver = self;
     v7.super_class = ICBrowseAttachmentsBrickCell;
-    [(ICBrowseAttachmentsBaseCell *)&v7 setAttachment:v4];
-    v6 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-    [v6 setAttachment:v4];
+    [(ICBrowseAttachmentsBaseCell *)&v7 setAttachment:attachmentCopy];
+    attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+    [attachmentBrickView setAttachment:attachmentCopy];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
-  v6 = [v5 isEqual:self];
+  nextFocusedItem = [context nextFocusedItem];
+  v6 = [nextFocusedItem isEqual:self];
 
   if (v6)
   {
@@ -82,33 +82,33 @@
 
 - (void)updateFocusEffect
 {
-  v15 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-  [v15 frame];
+  attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+  [attachmentBrickView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-  v12 = [v11 layer];
-  [v12 cornerRadius];
+  attachmentBrickView2 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+  layer = [attachmentBrickView2 layer];
+  [layer cornerRadius];
   v14 = [UIFocusHaloEffect effectWithRoundedRect:kCACornerCurveContinuous cornerRadius:v4 curve:v6, v8, v10, v13];
   [(ICBrowseAttachmentsBrickCell *)self setFocusEffect:v14];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-  v3 = [v2 accessibilityLabel];
+  attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+  accessibilityLabel = [attachmentBrickView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
-  v3 = [v2 accessibilityValue];
+  attachmentBrickView = [(ICBrowseAttachmentsBrickCell *)self attachmentBrickView];
+  accessibilityValue = [attachmentBrickView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

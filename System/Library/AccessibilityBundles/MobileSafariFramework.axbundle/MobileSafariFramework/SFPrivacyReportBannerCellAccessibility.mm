@@ -1,20 +1,20 @@
 @interface SFPrivacyReportBannerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
-- (SFPrivacyReportBannerCellAccessibility)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportBannerCellAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axMarkupTrackerLabel;
 @end
 
 @implementation SFPrivacyReportBannerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFInteractiveBannerCell" hasInstanceMethod:@"leadingLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFPrivacyReportBannerCell" isKindOfClass:@"SFInteractiveBannerCell"];
-  [v3 validateClass:@"SFPrivacyReportBannerCell" hasInstanceVariable:@"_numberOfTrackers" withType:"q"];
-  [v3 validateClass:@"SFPrivacyReportBannerCell" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFInteractiveBannerCell" hasInstanceMethod:@"leadingLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFPrivacyReportBannerCell" isKindOfClass:@"SFInteractiveBannerCell"];
+  [validationsCopy validateClass:@"SFPrivacyReportBannerCell" hasInstanceVariable:@"_numberOfTrackers" withType:"q"];
+  [validationsCopy validateClass:@"SFPrivacyReportBannerCell" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -37,11 +37,11 @@
   return [(SFPrivacyReportBannerCellAccessibility *)&v4 isAccessibilityElement];
 }
 
-- (SFPrivacyReportBannerCellAccessibility)initWithFrame:(CGRect)a3
+- (SFPrivacyReportBannerCellAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFPrivacyReportBannerCellAccessibility;
-  v3 = [(SFPrivacyReportBannerCellAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportBannerCellAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,31 +1,31 @@
 @interface AVMetricEventStream
-+ (id)contentKeyRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)downloadSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)errorEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
++ (id)contentKeyRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)downloadSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)errorEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
 + (id)eventStream;
-+ (id)initialLikelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)likelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)mediaSegmentRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)metricEventForFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)playbackSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)playlistRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)rateChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)resourceRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)seekDidCompleteEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)seekEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)stallEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)variantChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
-+ (id)variantChangeStartEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3;
++ (id)initialLikelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)likelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)mediaSegmentRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)metricEventForFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)playbackSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)playlistRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)rateChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)resourceRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)seekDidCompleteEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)seekEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)stallEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)variantChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
++ (id)variantChangeStartEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event;
 - (AVMetricEventStream)init;
-- (BOOL)addPublisher:(id)a3;
-- (BOOL)setSubscriber:(id)a3 queue:(id)a4;
-- (int64_t)getFigMetricEventIDForAVMetricClass:(Class)a3;
-- (void)addPublisher:(id)a3 eventTimeline:(OpaqueFigMetricEventTimeline *)a4;
+- (BOOL)addPublisher:(id)publisher;
+- (BOOL)setSubscriber:(id)subscriber queue:(id)queue;
+- (int64_t)getFigMetricEventIDForAVMetricClass:(Class)class;
+- (void)addPublisher:(id)publisher eventTimeline:(OpaqueFigMetricEventTimeline *)timeline;
 - (void)dealloc;
-- (void)didReceiveEventForMetricEventTimeline:(OpaqueFigMetricEventTimeline *)a3 event:(OpaqueFigMetricEvent *)a4;
+- (void)didReceiveEventForMetricEventTimeline:(OpaqueFigMetricEventTimeline *)timeline event:(OpaqueFigMetricEvent *)event;
 - (void)subscribeToAllMetricEvents;
-- (void)subscribeToMetricEvent:(Class)a3;
-- (void)subscribeToMetricEvents:(id)a3;
+- (void)subscribeToMetricEvent:(Class)event;
+- (void)subscribeToMetricEvents:(id)events;
 @end
 
 @implementation AVMetricEventStream
@@ -81,12 +81,12 @@
   return v2;
 }
 
-+ (id)errorEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)errorEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -99,7 +99,7 @@
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v18, a3);
+    v6(&v18, event);
   }
 
   else
@@ -111,7 +111,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -124,7 +124,7 @@
   v11 = *(*(CMBaseObjectGetVTable() + 24) + 16);
   if (v11)
   {
-    v12 = v11(a3) != 0;
+    v12 = v11(event) != 0;
   }
 
   else
@@ -135,7 +135,7 @@
   v13 = *(*(CMBaseObjectGetVTable() + 24) + 8);
   if (v13)
   {
-    v14 = v13(a3);
+    v14 = v13(event);
   }
 
   else
@@ -148,12 +148,12 @@
   return [(AVMetricErrorEvent *)v10 initWithDate:v5 mediaTime:&v16 sessionID:v9 didRecover:v12 error:v14];
 }
 
-+ (id)resourceRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)resourceRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v37 = v4(a3);
+    v37 = v4(event);
   }
 
   else
@@ -166,7 +166,7 @@
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v5)
   {
-    v5(&v40, a3);
+    v5(&v40, event);
   }
 
   else
@@ -178,7 +178,7 @@
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v6)
   {
-    v7 = v6(a3);
+    v7 = v6(event);
   }
 
   else
@@ -190,7 +190,7 @@
   v8 = *(*(CMBaseObjectGetVTable() + 32) + 8);
   if (v8)
   {
-    v35 = v8(a3);
+    v35 = v8(event);
   }
 
   else
@@ -201,7 +201,7 @@
   v9 = *(*(CMBaseObjectGetVTable() + 32) + 16);
   if (v9)
   {
-    v10 = v9(a3);
+    v10 = v9(event);
   }
 
   else
@@ -212,7 +212,7 @@
   v11 = *(*(CMBaseObjectGetVTable() + 32) + 24);
   if (v11)
   {
-    v12 = v11(a3);
+    v12 = v11(event);
   }
 
   else
@@ -223,7 +223,7 @@
   v13 = *(*(CMBaseObjectGetVTable() + 32) + 32);
   if (v13)
   {
-    v14 = v13(a3);
+    v14 = v13(event);
   }
 
   else
@@ -234,7 +234,7 @@
   v15 = *(*(CMBaseObjectGetVTable() + 32) + 40);
   if (v15)
   {
-    v16 = v15(a3);
+    v16 = v15(event);
   }
 
   else
@@ -245,7 +245,7 @@
   v17 = *(*(CMBaseObjectGetVTable() + 32) + 48);
   if (v17)
   {
-    v18 = v17(a3);
+    v18 = v17(event);
   }
 
   else
@@ -256,7 +256,7 @@
   v19 = *(*(CMBaseObjectGetVTable() + 32) + 56);
   if (v19)
   {
-    v20 = v19(a3);
+    v20 = v19(event);
     v22 = v21;
   }
 
@@ -269,7 +269,7 @@
   v23 = *(*(CMBaseObjectGetVTable() + 32) + 64);
   if (v23)
   {
-    v24 = v23(a3) != 0;
+    v24 = v23(event) != 0;
   }
 
   else
@@ -278,13 +278,13 @@
   }
 
   v25 = *(*(CMBaseObjectGetVTable() + 32) + 72);
-  if (v25 && v25(a3))
+  if (v25 && v25(event))
   {
     v26 = [AVMetricErrorEvent alloc];
     v27 = *(*(CMBaseObjectGetVTable() + 32) + 72);
     if (v27)
     {
-      v28 = v27(a3);
+      v28 = v27(event);
     }
 
     else
@@ -305,7 +305,7 @@
   v30 = *(*(CMBaseObjectGetVTable() + 32) + 80);
   if (v30)
   {
-    v31 = v30(a3);
+    v31 = v30(event);
   }
 
   else
@@ -320,12 +320,12 @@
   return [(AVMetricMediaResourceRequestEvent *)v32 initWithDate:v37 mediaTime:&v38 sessionID:v36 url:v35 serverAddress:v10 requestStartTime:v12 requestEndTime:v14 responseStartTime:v16 responseEndTime:v18 byteRange:v20 readFromCache:v22 errorEvent:v34 networkTransactionMetrics:v29, v31];
 }
 
-+ (id)playlistRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)playlistRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v5)
   {
-    v6 = v5(a3);
+    v6 = v5(event);
   }
 
   else
@@ -338,7 +338,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(&v23, a3);
+    v7(&v23, event);
   }
 
   else
@@ -350,7 +350,7 @@
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v8)
   {
-    v9 = v8(a3);
+    v9 = v8(event);
   }
 
   else
@@ -362,7 +362,7 @@
   v11 = *(*(CMBaseObjectGetVTable() + 32) + 8);
   if (v11)
   {
-    v12 = v11(a3);
+    v12 = v11(event);
   }
 
   else
@@ -374,16 +374,16 @@
   v14 = *(*(CMBaseObjectGetVTable() + 32) + 96);
   if (v14)
   {
-    v13 = v14(a3);
+    v13 = v14(event);
   }
 
   v15 = AVMediaTypeFromCMMediaType(v13);
-  v16 = [a1 resourceRequestEventWithFigMetricEvent:a3];
+  v16 = [self resourceRequestEventWithFigMetricEvent:event];
   v17 = [AVMetricHLSPlaylistRequestEvent alloc];
   v18 = *(*(CMBaseObjectGetVTable() + 32) + 88);
   if (v18)
   {
-    v19 = v18(a3) != 0;
+    v19 = v18(event) != 0;
   }
 
   else
@@ -396,12 +396,12 @@
   return [(AVMetricHLSPlaylistRequestEvent *)v17 initWithDate:v6 mediaTime:&v21 sessionID:v10 url:v12 isMultivariantPlaylist:v19 mediaType:v15 mediaResourceRequestEvent:v16];
 }
 
-+ (id)mediaSegmentRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)mediaSegmentRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v5)
   {
-    v6 = v5(a3);
+    v6 = v5(event);
   }
 
   else
@@ -414,7 +414,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(&v29, a3);
+    v7(&v29, event);
   }
 
   else
@@ -426,7 +426,7 @@
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v8)
   {
-    v9 = v8(a3);
+    v9 = v8(event);
   }
 
   else
@@ -438,7 +438,7 @@
   v11 = *(*(CMBaseObjectGetVTable() + 32) + 128);
   if (v11)
   {
-    v12 = v11(a3);
+    v12 = v11(event);
   }
 
   else
@@ -449,7 +449,7 @@
   v13 = *(*(CMBaseObjectGetVTable() + 32) + 56);
   if (v13)
   {
-    v14 = v13(a3);
+    v14 = v13(event);
     v16 = v15;
   }
 
@@ -460,11 +460,11 @@
   }
 
   v17 = 1836415096;
-  v18 = [a1 resourceRequestEventWithFigMetricEvent:a3];
+  v18 = [self resourceRequestEventWithFigMetricEvent:event];
   v19 = *(*(CMBaseObjectGetVTable() + 32) + 96);
   if (v19)
   {
-    v17 = v19(a3);
+    v17 = v19(event);
   }
 
   v20 = AVMediaTypeFromCMMediaType(v17);
@@ -472,14 +472,14 @@
   v22 = 0.0;
   if (v21)
   {
-    v22 = v21(a3);
+    v22 = v21(event);
   }
 
   v23 = [AVMetricHLSMediaSegmentRequestEvent alloc];
   v24 = *(*(CMBaseObjectGetVTable() + 32) + 104);
   if (v24)
   {
-    LOBYTE(v24) = v24(a3) != 0;
+    LOBYTE(v24) = v24(event) != 0;
   }
 
   v27 = v29;
@@ -488,12 +488,12 @@
   return [(AVMetricHLSMediaSegmentRequestEvent *)v23 initWithDate:v6 mediaTime:&v27 sessionID:v10 indexFileURL:v12 byteRange:v14 isMapSegment:v16 mediaType:v22 segmentDuration:v26 mediaResourceRequestEvent:v20, v18];
 }
 
-+ (id)contentKeyRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)contentKeyRequestEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v5)
   {
-    v6 = v5(a3);
+    v6 = v5(event);
   }
 
   else
@@ -506,7 +506,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(&v25, a3);
+    v7(&v25, event);
   }
 
   else
@@ -518,7 +518,7 @@
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v8)
   {
-    v9 = v8(a3);
+    v9 = v8(event);
   }
 
   else
@@ -528,18 +528,18 @@
 
   v10 = 1836415096;
   v11 = v9;
-  v12 = [a1 resourceRequestEventWithFigMetricEvent:a3];
+  v12 = [self resourceRequestEventWithFigMetricEvent:event];
   v13 = *(*(CMBaseObjectGetVTable() + 32) + 96);
   if (v13)
   {
-    v10 = v13(a3);
+    v10 = v13(event);
   }
 
   v14 = AVMediaTypeFromCMMediaType(v10);
   v15 = *(*(CMBaseObjectGetVTable() + 32) + 112);
   if (v15)
   {
-    v15(a3);
+    v15(event);
   }
 
   if (FigContentKeySpecifierGetKeySystem() == 1)
@@ -562,7 +562,7 @@
   v20 = *(*(CMBaseObjectGetVTable() + 32) + 120);
   if (v20)
   {
-    v21 = v20(a3) != 0;
+    v21 = v20(event) != 0;
   }
 
   else
@@ -575,12 +575,12 @@
   return [(AVMetricContentKeyRequestEvent *)v19 initWithDate:v6 mediaTime:&v23 sessionID:v11 contentKeySpecifier:v18 mediaType:v14 isClientInitiated:v21 mediaResourceRequestEvent:v12];
 }
 
-+ (id)likelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)likelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -593,7 +593,7 @@
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v20, a3);
+    v6(&v20, event);
   }
 
   else
@@ -605,7 +605,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -617,7 +617,7 @@
   v10 = *(*(CMBaseObjectGetVTable() + 40) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v11 = [[AVAssetVariant alloc] initWithFigAlternate:v11];
@@ -634,13 +634,13 @@
   v14 = 0.0;
   if (v13)
   {
-    v14 = v13(a3);
+    v14 = v13(event);
   }
 
   v15 = *(*(CMBaseObjectGetVTable() + 40) + 16);
   if (v15)
   {
-    v16 = v15(a3);
+    v16 = v15(event);
   }
 
   else
@@ -653,12 +653,12 @@
   return [(AVMetricPlayerItemLikelyToKeepUpEvent *)v12 initWithDate:v5 mediaTime:&v18 sessionID:v9 variant:v11 timeTaken:v16 loadedTimeRanges:v14];
 }
 
-+ (id)initialLikelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)initialLikelyToKeepUpEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v5)
   {
-    v6 = v5(a3);
+    v6 = v5(event);
   }
 
   else
@@ -671,7 +671,7 @@
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(&v36, a3);
+    v7(&v36, event);
   }
 
   else
@@ -683,7 +683,7 @@
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v8)
   {
-    v9 = v8(a3);
+    v9 = v8(event);
   }
 
   else
@@ -692,13 +692,13 @@
   }
 
   v10 = v9;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v14 = *(*(CMBaseObjectGetVTable() + 40) + 8);
   if (v14)
   {
-    v15 = v14(a3);
+    v15 = v14(event);
     if (v15)
     {
       v15 = [[AVAssetVariant alloc] initWithFigAlternate:v15];
@@ -713,7 +713,7 @@
   v16 = *(*(CMBaseObjectGetVTable() + 40) + 24);
   if (v16)
   {
-    v17 = v16(a3);
+    v17 = v16(event);
   }
 
   else
@@ -730,7 +730,7 @@
 LABEL_18:
   for (i = CFArrayGetCount(v17); v18 < i; i = 0)
   {
-    [v11 addObject:{objc_msgSend(a1, "playlistRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v17, v18++))}];
+    [array addObject:{objc_msgSend(self, "playlistRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v17, v18++))}];
     if (v17)
     {
       goto LABEL_18;
@@ -743,7 +743,7 @@ LABEL_19:
   v20 = *(*(CMBaseObjectGetVTable() + 40) + 32);
   if (v20)
   {
-    v21 = v20(a3);
+    v21 = v20(event);
   }
 
   else
@@ -760,7 +760,7 @@ LABEL_19:
 LABEL_27:
   for (j = CFArrayGetCount(v21); v22 < j; j = 0)
   {
-    [v12 addObject:{objc_msgSend(a1, "mediaSegmentRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v21, v22++))}];
+    [array2 addObject:{objc_msgSend(self, "mediaSegmentRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v21, v22++))}];
     if (v21)
     {
       goto LABEL_27;
@@ -773,7 +773,7 @@ LABEL_28:
   v24 = *(*(CMBaseObjectGetVTable() + 40) + 40);
   if (v24)
   {
-    v25 = v24(a3);
+    v25 = v24(event);
   }
 
   else
@@ -790,7 +790,7 @@ LABEL_28:
 LABEL_36:
   for (k = CFArrayGetCount(v25); v26 < k; k = 0)
   {
-    [v13 addObject:{objc_msgSend(a1, "contentKeyRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v25, v26++))}];
+    [array3 addObject:{objc_msgSend(self, "contentKeyRequestEventWithFigMetricEvent:", CFArrayGetValueAtIndex(v25, v26++))}];
     if (v25)
     {
       goto LABEL_36;
@@ -805,13 +805,13 @@ LABEL_37:
   v30 = 0.0;
   if (v29)
   {
-    v30 = v29(a3);
+    v30 = v29(event);
   }
 
   v31 = *(*(CMBaseObjectGetVTable() + 40) + 16);
   if (v31)
   {
-    v32 = v31(a3);
+    v32 = v31(event);
   }
 
   else
@@ -821,15 +821,15 @@ LABEL_37:
 
   v34 = v36;
   v35 = v37;
-  return [(AVMetricPlayerItemInitialLikelyToKeepUpEvent *)v28 initWithDate:v6 mediaTime:&v34 sessionID:v10 variant:v15 timeTaken:v32 loadedTimeRanges:v11 playlistRequestEvents:v30 mediaSegmentRequestEvents:v12 contentKeyRequestEvents:v13];
+  return [(AVMetricPlayerItemInitialLikelyToKeepUpEvent *)v28 initWithDate:v6 mediaTime:&v34 sessionID:v10 variant:v15 timeTaken:v32 loadedTimeRanges:array playlistRequestEvents:v30 mediaSegmentRequestEvents:array2 contentKeyRequestEvents:array3];
 }
 
-+ (id)rateChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)rateChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -842,7 +842,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v20, a3);
+    v6(&v20, event);
   }
 
   else
@@ -854,7 +854,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -866,7 +866,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 48) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v11 = [[AVAssetVariant alloc] initWithFigAlternate:v11];
@@ -884,13 +884,13 @@ LABEL_37:
   v15 = 0.0;
   if (v13)
   {
-    v15 = v13(a3);
+    v15 = v13(event);
   }
 
   v16 = *(*(CMBaseObjectGetVTable() + 48) + 24);
   if (v16)
   {
-    v14 = v16(a3);
+    v14 = v16(event);
   }
 
   v18 = v20;
@@ -898,12 +898,12 @@ LABEL_37:
   return [(AVMetricPlayerItemRateChangeEvent *)v12 initWithDate:v5 mediaTime:&v18 sessionID:v9 variant:v11 rate:v15 previousRate:v14];
 }
 
-+ (id)stallEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)stallEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -916,7 +916,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v20, a3);
+    v6(&v20, event);
   }
 
   else
@@ -928,7 +928,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -940,7 +940,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 48) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v11 = [[AVAssetVariant alloc] initWithFigAlternate:v11];
@@ -958,13 +958,13 @@ LABEL_37:
   v15 = 0.0;
   if (v13)
   {
-    v15 = v13(a3);
+    v15 = v13(event);
   }
 
   v16 = *(*(CMBaseObjectGetVTable() + 48) + 24);
   if (v16)
   {
-    v14 = v16(a3);
+    v14 = v16(event);
   }
 
   v18 = v20;
@@ -972,12 +972,12 @@ LABEL_37:
   return [(AVMetricPlayerItemRateChangeEvent *)v12 initWithDate:v5 mediaTime:&v18 sessionID:v9 variant:v11 rate:v15 previousRate:v14];
 }
 
-+ (id)seekEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)seekEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -990,7 +990,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v20, a3);
+    v6(&v20, event);
   }
 
   else
@@ -1002,7 +1002,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -1014,7 +1014,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 48) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v11 = [[AVAssetVariant alloc] initWithFigAlternate:v11];
@@ -1032,13 +1032,13 @@ LABEL_37:
   v15 = 0.0;
   if (v13)
   {
-    v15 = v13(a3);
+    v15 = v13(event);
   }
 
   v16 = *(*(CMBaseObjectGetVTable() + 48) + 24);
   if (v16)
   {
-    v14 = v16(a3);
+    v14 = v16(event);
   }
 
   v18 = v20;
@@ -1046,12 +1046,12 @@ LABEL_37:
   return [(AVMetricPlayerItemRateChangeEvent *)v12 initWithDate:v5 mediaTime:&v18 sessionID:v9 variant:v11 rate:v15 previousRate:v14];
 }
 
-+ (id)seekDidCompleteEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)seekDidCompleteEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -1064,7 +1064,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v22, a3);
+    v6(&v22, event);
   }
 
   else
@@ -1076,7 +1076,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -1088,7 +1088,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 48) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v11 = [[AVAssetVariant alloc] initWithFigAlternate:v11];
@@ -1104,7 +1104,7 @@ LABEL_37:
   v13 = *(*(CMBaseObjectGetVTable() + 48) + 32);
   if (v13)
   {
-    v14 = v13(a3) != 0;
+    v14 = v13(event) != 0;
   }
 
   else
@@ -1117,13 +1117,13 @@ LABEL_37:
   v17 = 0.0;
   if (v15)
   {
-    v17 = v15(a3);
+    v17 = v15(event);
   }
 
   v18 = *(*(CMBaseObjectGetVTable() + 48) + 24);
   if (v18)
   {
-    v16 = v18(a3);
+    v16 = v18(event);
   }
 
   v20 = v22;
@@ -1131,12 +1131,12 @@ LABEL_37:
   return [(AVMetricPlayerItemSeekDidCompleteEvent *)v12 initWithDate:v5 mediaTime:&v20 sessionID:v9 variant:v11 didSeekInBuffer:v14 rate:v17 previousRate:v16];
 }
 
-+ (id)variantChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)variantChangeEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -1149,7 +1149,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v37, a3);
+    v6(&v37, event);
   }
 
   else
@@ -1161,7 +1161,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -1173,7 +1173,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 56) + 16);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
   }
 
   else
@@ -1184,7 +1184,7 @@ LABEL_37:
   v12 = *(*(CMBaseObjectGetVTable() + 56) + 8);
   if (v12)
   {
-    v13 = v12(a3);
+    v13 = v12(event);
   }
 
   else
@@ -1195,7 +1195,7 @@ LABEL_37:
   v14 = *(*(CMBaseObjectGetVTable() + 56) + 32);
   if (v14)
   {
-    v15 = v14(a3);
+    v15 = v14(event);
     v17 = v16;
   }
 
@@ -1209,7 +1209,7 @@ LABEL_37:
   v19 = *(*(CMBaseObjectGetVTable() + 56) + 40);
   if (v19)
   {
-    v20 = v19(a3);
+    v20 = v19(event);
     v22 = v21;
   }
 
@@ -1223,7 +1223,7 @@ LABEL_37:
   v24 = *(*(CMBaseObjectGetVTable() + 56) + 48);
   if (v24)
   {
-    v25 = v24(a3);
+    v25 = v24(event);
     v27 = v26;
   }
 
@@ -1248,7 +1248,7 @@ LABEL_37:
   v30 = *(*(CMBaseObjectGetVTable() + 56) + 24);
   if (v30)
   {
-    v31 = v30(a3);
+    v31 = v30(event);
   }
 
   else
@@ -1259,7 +1259,7 @@ LABEL_37:
   v32 = *(*(CMBaseObjectGetVTable() + 56) + 56);
   if (v32)
   {
-    LOBYTE(v32) = v32(a3) != 0;
+    LOBYTE(v32) = v32(event) != 0;
   }
 
   v35 = v37;
@@ -1268,12 +1268,12 @@ LABEL_37:
   return [(AVMetricPlayerItemVariantSwitchEvent *)v29 initWithDate:v5 mediaTime:&v35 sessionID:v9 fromVariant:v11 toVariant:v13 videoRendition:v18 audioRendition:v23 subtitleRendition:v28 loadedTimeRanges:v31 didSucceed:v34];
 }
 
-+ (id)variantChangeStartEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)variantChangeStartEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -1286,7 +1286,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v35, a3);
+    v6(&v35, event);
   }
 
   else
@@ -1298,7 +1298,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -1310,7 +1310,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 80) + 16);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
   }
 
   else
@@ -1321,7 +1321,7 @@ LABEL_37:
   v12 = *(*(CMBaseObjectGetVTable() + 80) + 8);
   if (v12)
   {
-    v13 = v12(a3);
+    v13 = v12(event);
   }
 
   else
@@ -1332,7 +1332,7 @@ LABEL_37:
   v14 = *(*(CMBaseObjectGetVTable() + 80) + 32);
   if (v14)
   {
-    v15 = v14(a3);
+    v15 = v14(event);
     v17 = v16;
   }
 
@@ -1346,7 +1346,7 @@ LABEL_37:
   v19 = *(*(CMBaseObjectGetVTable() + 80) + 40);
   if (v19)
   {
-    v20 = v19(a3);
+    v20 = v19(event);
     v22 = v21;
   }
 
@@ -1360,7 +1360,7 @@ LABEL_37:
   v24 = *(*(CMBaseObjectGetVTable() + 80) + 48);
   if (v24)
   {
-    v25 = v24(a3);
+    v25 = v24(event);
     v27 = v26;
   }
 
@@ -1385,7 +1385,7 @@ LABEL_37:
   v30 = *(*(CMBaseObjectGetVTable() + 80) + 24);
   if (v30)
   {
-    v31 = v30(a3);
+    v31 = v30(event);
   }
 
   else
@@ -1398,12 +1398,12 @@ LABEL_37:
   return [(AVMetricPlayerItemVariantSwitchStartEvent *)v29 initWithDate:v5 mediaTime:&v33 sessionID:v9 fromVariant:v11 toVariant:v13 videoRendition:v18 audioRendition:v23 subtitleRendition:v28 loadedTimeRanges:v31];
 }
 
-+ (id)playbackSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)playbackSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v5)
   {
-    v33 = v5(a3);
+    v33 = v5(event);
   }
 
   else
@@ -1416,7 +1416,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(&v36, a3);
+    v6(&v36, event);
   }
 
   else
@@ -1428,7 +1428,7 @@ LABEL_37:
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v7)
   {
-    v8 = v7(a3);
+    v8 = v7(event);
   }
 
   else
@@ -1438,9 +1438,9 @@ LABEL_37:
 
   v9 = v8;
   v10 = *(*(CMBaseObjectGetVTable() + 72) + 8);
-  if (v10 && (v11 = v10(a3)) != 0)
+  if (v10 && (v11 = v10(event)) != 0)
   {
-    v12 = [a1 errorEventWithFigMetricEvent:v11];
+    v12 = [self errorEventWithFigMetricEvent:v11];
   }
 
   else
@@ -1452,7 +1452,7 @@ LABEL_37:
   v14 = *(*(CMBaseObjectGetVTable() + 72) + 16);
   if (v14)
   {
-    v15 = v14(a3);
+    v15 = v14(event);
   }
 
   else
@@ -1463,7 +1463,7 @@ LABEL_37:
   v16 = *(*(CMBaseObjectGetVTable() + 72) + 24);
   if (v16)
   {
-    v17 = v16(a3);
+    v17 = v16(event);
   }
 
   else
@@ -1474,7 +1474,7 @@ LABEL_37:
   v18 = *(*(CMBaseObjectGetVTable() + 72) + 32);
   if (v18)
   {
-    v19 = v18(a3);
+    v19 = v18(event);
   }
 
   else
@@ -1485,7 +1485,7 @@ LABEL_37:
   v20 = *(*(CMBaseObjectGetVTable() + 72) + 40);
   if (v20)
   {
-    v21 = v20(a3);
+    v21 = v20(event);
   }
 
   else
@@ -1496,7 +1496,7 @@ LABEL_37:
   v22 = *(*(CMBaseObjectGetVTable() + 72) + 48);
   if (v22)
   {
-    v23 = v22(a3);
+    v23 = v22(event);
   }
 
   else
@@ -1509,19 +1509,19 @@ LABEL_37:
   v26 = 0.0;
   if (v24)
   {
-    v26 = v24(a3);
+    v26 = v24(event);
   }
 
   v27 = *(*(CMBaseObjectGetVTable() + 72) + 64);
   if (v27)
   {
-    v25 = v27(a3);
+    v25 = v27(event);
   }
 
   v28 = *(*(CMBaseObjectGetVTable() + 72) + 72);
   if (v28)
   {
-    v29 = v28(a3);
+    v29 = v28(event);
   }
 
   else
@@ -1532,7 +1532,7 @@ LABEL_37:
   v30 = *(*(CMBaseObjectGetVTable() + 72) + 80);
   if (v30)
   {
-    v31 = v30(a3);
+    v31 = v30(event);
   }
 
   else
@@ -1545,12 +1545,12 @@ LABEL_37:
   return [(AVMetricPlayerItemPlaybackSummaryEvent *)v13 initWithDate:v33 mediaTime:&v34 sessionID:v9 errorEvent:v12 recoverableErrorCount:v15 stallCount:v17 variantSwitchCount:v26 playbackDuration:v25 mediaResourceRequestCount:v19 timeSpentRecoveringFromStall:v21 timeSpentInInitialStartup:v23 timeWeightedAverageBitrate:v29 timeWeightedPeakBitrate:v31];
 }
 
-+ (id)downloadSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)downloadSummaryEventWithFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 32);
   if (v4)
   {
-    v5 = v4(a3);
+    v5 = v4(event);
   }
 
   else
@@ -1561,7 +1561,7 @@ LABEL_37:
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v6)
   {
-    v7 = v6(a3);
+    v7 = v6(event);
   }
 
   else
@@ -1575,7 +1575,7 @@ LABEL_37:
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v9)
   {
-    v9(&v32, a3);
+    v9(&v32, event);
   }
 
   else
@@ -1587,7 +1587,7 @@ LABEL_37:
   v10 = *(*(CMBaseObjectGetVTable() + 24) + 8);
   if (v10)
   {
-    v11 = v10(a3);
+    v11 = v10(event);
     if (v11)
     {
       v12 = [AVMetricErrorEvent alloc];
@@ -1602,11 +1602,11 @@ LABEL_37:
     v11 = 0;
   }
 
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = *(*(CMBaseObjectGetVTable() + 24) + 48);
   if (v14)
   {
-    v15 = v14(a3);
+    v15 = v14(event);
     if (v15)
     {
       v16 = v15;
@@ -1616,7 +1616,7 @@ LABEL_37:
         v18 = Count;
         for (i = 0; i != v18; ++i)
         {
-          [v13 addObject:{-[AVAssetVariant initWithFigAlternate:]([AVAssetVariant alloc], "initWithFigAlternate:", CFArrayGetValueAtIndex(v16, i))}];
+          [array addObject:{-[AVAssetVariant initWithFigAlternate:]([AVAssetVariant alloc], "initWithFigAlternate:", CFArrayGetValueAtIndex(v16, i))}];
         }
       }
     }
@@ -1626,7 +1626,7 @@ LABEL_37:
   v21 = *(*(CMBaseObjectGetVTable() + 24) + 16);
   if (v21)
   {
-    v22 = v21(a3);
+    v22 = v21(event);
   }
 
   else
@@ -1637,7 +1637,7 @@ LABEL_37:
   v23 = *(*(CMBaseObjectGetVTable() + 24) + 24);
   if (v23)
   {
-    v24 = v23(a3);
+    v24 = v23(event);
   }
 
   else
@@ -1648,7 +1648,7 @@ LABEL_37:
   v25 = *(*(CMBaseObjectGetVTable() + 24) + 32);
   if (v25)
   {
-    v26 = v25(a3);
+    v26 = v25(event);
   }
 
   else
@@ -1660,15 +1660,15 @@ LABEL_37:
   v28.n128_u64[0] = 0;
   if (v27)
   {
-    v27(a3, v28);
+    v27(event, v28);
   }
 
   v30 = v32;
   v31 = v33;
-  return [(AVMetricDownloadSummaryEvent *)v20 initWithDate:v5 mediaTime:&v30 sessionID:v8 errorEvent:v11 recoverableErrorCount:v22 mediaResourceRequestCount:v24 bytesDownloadedCount:v28.n128_f64[0] downloadDuration:v26 variants:v13];
+  return [(AVMetricDownloadSummaryEvent *)v20 initWithDate:v5 mediaTime:&v30 sessionID:v8 errorEvent:v11 recoverableErrorCount:v22 mediaResourceRequestCount:v24 bytesDownloadedCount:v28.n128_f64[0] downloadDuration:v26 variants:array];
 }
 
-+ (id)metricEventForFigMetricEvent:(OpaqueFigMetricEvent *)a3
++ (id)metricEventForFigMetricEvent:(OpaqueFigMetricEvent *)event
 {
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (!v5)
@@ -1676,28 +1676,28 @@ LABEL_37:
     return 0;
   }
 
-  v6 = v5(a3);
+  v6 = v5(event);
   switch(v6)
   {
     case 0:
       v7 = objc_opt_class();
 
-      result = [v7 resourceRequestEventWithFigMetricEvent:a3];
+      result = [v7 resourceRequestEventWithFigMetricEvent:event];
       break;
     case 1:
       v13 = objc_opt_class();
 
-      result = [v13 playlistRequestEventWithFigMetricEvent:a3];
+      result = [v13 playlistRequestEventWithFigMetricEvent:event];
       break;
     case 2:
       v18 = objc_opt_class();
 
-      result = [v18 mediaSegmentRequestEventWithFigMetricEvent:a3];
+      result = [v18 mediaSegmentRequestEventWithFigMetricEvent:event];
       break;
     case 3:
       v12 = objc_opt_class();
 
-      result = [v12 contentKeyRequestEventWithFigMetricEvent:a3];
+      result = [v12 contentKeyRequestEventWithFigMetricEvent:event];
       break;
     case 4:
     case 14:
@@ -1705,51 +1705,51 @@ LABEL_37:
     case 5:
       v19 = objc_opt_class();
 
-      result = [v19 initialLikelyToKeepUpEventWithFigMetricEvent:a3];
+      result = [v19 initialLikelyToKeepUpEventWithFigMetricEvent:event];
       break;
     case 6:
       v11 = objc_opt_class();
 
-      result = [v11 likelyToKeepUpEventWithFigMetricEvent:a3];
+      result = [v11 likelyToKeepUpEventWithFigMetricEvent:event];
       break;
     case 7:
       v20 = objc_opt_class();
 
-      result = [v20 variantChangeEventWithFigMetricEvent:a3];
+      result = [v20 variantChangeEventWithFigMetricEvent:event];
       break;
     case 8:
       v15 = objc_opt_class();
 
-      result = [v15 variantChangeStartEventWithFigMetricEvent:a3];
+      result = [v15 variantChangeStartEventWithFigMetricEvent:event];
       break;
     case 9:
       v14 = objc_opt_class();
 
-      result = [v14 stallEventWithFigMetricEvent:a3];
+      result = [v14 stallEventWithFigMetricEvent:event];
       break;
     case 10:
       v21 = objc_opt_class();
 
-      result = [v21 rateChangeEventWithFigMetricEvent:a3];
+      result = [v21 rateChangeEventWithFigMetricEvent:event];
       break;
     case 11:
       v10 = objc_opt_class();
 
-      result = [v10 seekEventWithFigMetricEvent:a3];
+      result = [v10 seekEventWithFigMetricEvent:event];
       break;
     case 12:
       v17 = objc_opt_class();
 
-      result = [v17 seekDidCompleteEventWithFigMetricEvent:a3];
+      result = [v17 seekDidCompleteEventWithFigMetricEvent:event];
       break;
     case 13:
 
-      result = [a1 errorEventWithFigMetricEvent:a3];
+      result = [self errorEventWithFigMetricEvent:event];
       break;
     case 15:
       v16 = objc_opt_class();
 
-      result = [v16 playbackSummaryEventWithFigMetricEvent:a3];
+      result = [v16 playbackSummaryEventWithFigMetricEvent:event];
       break;
     default:
       if (v6 != 0x100000000000000)
@@ -1759,81 +1759,81 @@ LABEL_37:
 
       v9 = objc_opt_class();
 
-      result = [v9 downloadSummaryEventWithFigMetricEvent:a3];
+      result = [v9 downloadSummaryEventWithFigMetricEvent:event];
       break;
   }
 
   return result;
 }
 
-- (int64_t)getFigMetricEventIDForAVMetricClass:(Class)a3
+- (int64_t)getFigMetricEventIDForAVMetricClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 13;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 0;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 2;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 1;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 3;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 6;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 5;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 10;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 9;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 11;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 12;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 7;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 15;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 8;
   }
@@ -1841,14 +1841,14 @@ LABEL_37:
   return -1;
 }
 
-- (void)didReceiveEventForMetricEventTimeline:(OpaqueFigMetricEventTimeline *)a3 event:(OpaqueFigMetricEvent *)a4
+- (void)didReceiveEventForMetricEventTimeline:(OpaqueFigMetricEventTimeline *)timeline event:(OpaqueFigMetricEvent *)event
 {
-  if (a3)
+  if (timeline)
   {
-    if (a4)
+    if (event)
     {
-      v6 = [objc_opt_class() metricEventForFigMetricEvent:a4];
-      v7 = [CFDictionaryGetValue(self->_publisherByEventTimeline a3)];
+      v6 = [objc_opt_class() metricEventForFigMetricEvent:event];
+      v7 = [CFDictionaryGetValue(self->_publisherByEventTimeline timeline)];
       delegateStorage = self->_delegateStorage;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -1875,7 +1875,7 @@ uint64_t __67__AVMetricEventStream_didReceiveEventForMetricEventTimeline_event__
   return result;
 }
 
-- (void)addPublisher:(id)a3 eventTimeline:(OpaqueFigMetricEventTimeline *)a4
+- (void)addPublisher:(id)publisher eventTimeline:(OpaqueFigMetricEventTimeline *)timeline
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1883,8 +1883,8 @@ uint64_t __67__AVMetricEventStream_didReceiveEventForMetricEventTimeline_event__
   block[2] = __50__AVMetricEventStream_addPublisher_eventTimeline___block_invoke;
   block[3] = &unk_1E7460FF0;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = timeline;
+  block[4] = publisher;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1963,7 +1963,7 @@ void __50__AVMetricEventStream_addPublisher_eventTimeline___block_invoke(uint64_
   }
 }
 
-- (BOOL)addPublisher:(id)a3
+- (BOOL)addPublisher:(id)publisher
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -1971,8 +1971,8 @@ void __50__AVMetricEventStream_addPublisher_eventTimeline___block_invoke(uint64_
   v5[2] = __36__AVMetricEventStream_addPublisher___block_invoke;
   v5[3] = &unk_1E7465168;
   objc_copyWeak(&v6, &location);
-  v5[4] = a3;
-  [a3 getEventTimelineWithCompletionHandler:v5];
+  v5[4] = publisher;
+  [publisher getEventTimelineWithCompletionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
   return 1;
@@ -1991,7 +1991,7 @@ id __36__AVMetricEventStream_addPublisher___block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (BOOL)setSubscriber:(id)a3 queue:(id)a4
+- (BOOL)setSubscriber:(id)subscriber queue:(id)queue
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1999,8 +1999,8 @@ id __36__AVMetricEventStream_addPublisher___block_invoke(uint64_t a1, uint64_t a
   block[2] = __43__AVMetricEventStream_setSubscriber_queue___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = subscriber;
+  block[6] = queue;
   dispatch_sync(internalQueue, block);
   return 1;
 }
@@ -2020,7 +2020,7 @@ uint64_t __43__AVMetricEventStream_setSubscriber_queue___block_invoke(void *a1)
   return [v2 setDelegate:v3 queue:v4];
 }
 
-- (void)subscribeToMetricEvent:(Class)a3
+- (void)subscribeToMetricEvent:(Class)event
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2028,7 +2028,7 @@ uint64_t __43__AVMetricEventStream_setSubscriber_queue___block_invoke(void *a1)
   v4[2] = __46__AVMetricEventStream_subscribeToMetricEvent___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(internalQueue, v4);
 }
 
@@ -2061,14 +2061,14 @@ const __CFArray *__46__AVMetricEventStream_subscribeToMetricEvent___block_invoke
   return result;
 }
 
-- (void)subscribeToMetricEvents:(id)a3
+- (void)subscribeToMetricEvents:(id)events
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [events countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2080,14 +2080,14 @@ const __CFArray *__46__AVMetricEventStream_subscribeToMetricEvent___block_invoke
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(events);
         }
 
         [(AVMetricEventStream *)self subscribeToMetricEvent:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [events countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

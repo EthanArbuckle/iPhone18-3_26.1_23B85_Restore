@@ -2,16 +2,16 @@
 + (id)createWithDockConfiguration;
 - (BOOL)isTranslucent;
 - (_TtC9DashBoard20DBDashboardGlassView)init;
-- (_TtC9DashBoard20DBDashboardGlassView)initWithCoder:(id)a3;
-- (_TtC9DashBoard20DBDashboardGlassView)initWithFrame:(CGRect)a3;
-- (void)setIsTranslucent:(BOOL)a3;
+- (_TtC9DashBoard20DBDashboardGlassView)initWithCoder:(id)coder;
+- (_TtC9DashBoard20DBDashboardGlassView)initWithFrame:(CGRect)frame;
+- (void)setIsTranslucent:(BOOL)translucent;
 @end
 
 @implementation DBDashboardGlassView
 
 - (BOOL)isTranslucent
 {
-  v2 = self;
+  selfCopy = self;
   sub_248383F60();
 
   v3 = v6 != 0;
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (void)setIsTranslucent:(BOOL)a3
+- (void)setIsTranslucent:(BOOL)translucent
 {
-  v4 = self;
-  DBDashboardGlassView.isTranslucent.setter(a3);
+  selfCopy = self;
+  DBDashboardGlassView.isTranslucent.setter(translucent);
 }
 
 - (_TtC9DashBoard20DBDashboardGlassView)init
@@ -33,14 +33,14 @@
   return v3;
 }
 
-- (_TtC9DashBoard20DBDashboardGlassView)initWithCoder:(id)a3
+- (_TtC9DashBoard20DBDashboardGlassView)initWithCoder:(id)coder
 {
   result = sub_248384580();
   __break(1u);
   return result;
 }
 
-- (_TtC9DashBoard20DBDashboardGlassView)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard20DBDashboardGlassView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

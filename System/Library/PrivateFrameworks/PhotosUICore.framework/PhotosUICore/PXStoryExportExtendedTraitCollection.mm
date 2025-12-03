@@ -1,8 +1,8 @@
 @interface PXStoryExportExtendedTraitCollection
 - (CGRect)fullScreenReferenceRect;
 - (CGRect)overrideFullScreenReferenceRect;
-- (PXStoryExportExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)a3 displayScale:(double)a4 overrideFullScreenReferenceRect:(CGRect)a5;
-- (void)performChanges:(id)a3;
+- (PXStoryExportExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)size displayScale:(double)scale overrideFullScreenReferenceRect:(CGRect)rect;
+- (void)performChanges:(id)changes;
 @end
 
 @implementation PXStoryExportExtendedTraitCollection
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryExportExtendedTraitCollection;
-  [(PXStoryExtendedTraitCollection *)&v3 performChanges:a3];
+  [(PXStoryExtendedTraitCollection *)&v3 performChanges:changes];
 }
 
 - (CGRect)fullScreenReferenceRect
@@ -56,15 +56,15 @@
   return result;
 }
 
-- (PXStoryExportExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)a3 displayScale:(double)a4 overrideFullScreenReferenceRect:(CGRect)a5
+- (PXStoryExportExtendedTraitCollection)initWithLayoutReferenceSize:(CGSize)size displayScale:(double)scale overrideFullScreenReferenceRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = PXStoryExportExtendedTraitCollection;
-  result = [(PXStoryExtendedTraitCollection *)&v10 initWithLayoutReferenceSize:a3.width displayScale:a3.height, a4];
+  result = [(PXStoryExtendedTraitCollection *)&v10 initWithLayoutReferenceSize:size.width displayScale:size.height, scale];
   if (result)
   {
     result->_overrideFullScreenReferenceRect.origin.x = x;

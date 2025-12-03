@@ -1,15 +1,15 @@
 @interface NanoCalendarPreferences
 + (NSUserDefaults)mobileCalDefaults;
-+ (id)_calendarsThatAreVisible:(BOOL)a3 source:(id)a4;
-+ (id)_selectedCalendarsFromAllCalendars:(id)a3 deselectedCalendarIdentifier:(id)a4 deselectedCalendarSyncIdentifiers:(id)a5 deselectedCalendarSyncHashes:(id)a6;
++ (id)_calendarsThatAreVisible:(BOOL)visible source:(id)source;
++ (id)_selectedCalendarsFromAllCalendars:(id)calendars deselectedCalendarIdentifier:(id)identifier deselectedCalendarSyncIdentifiers:(id)identifiers deselectedCalendarSyncHashes:(id)hashes;
 + (id)appDefaults;
-+ (id)calendarSyncIdentifiersFrom:(id)a3;
-+ (id)currentSelectedCalendarsForEventStore:(id)a3 filteredForFocus:(BOOL)a4;
-+ (id)hiddenCalendarsInSource:(id)a3;
++ (id)calendarSyncIdentifiersFrom:(id)from;
++ (id)currentSelectedCalendarsForEventStore:(id)store filteredForFocus:(BOOL)focus;
++ (id)hiddenCalendarsInSource:(id)source;
 + (id)overlayCalendarLocaleDisplayNames;
 + (id)overlayCalendarLocaleIDs;
 + (id)sharedPreferences;
-+ (id)visibleCalendarsInSource:(id)a3;
++ (id)visibleCalendarsInSource:(id)source;
 - (BOOL)chineseOverlayCalendarIsEnabled;
 - (BOOL)overlayCalendarIsEnabled;
 - (NSArray)customDeselectedCalendarHashes;
@@ -27,9 +27,9 @@
 - (void)_stopObserving;
 - (void)_updateOverlayCalendarCache;
 - (void)dealloc;
-- (void)setCustomDeselectedCalendarHashes:(id)a3;
-- (void)setCustomDeselectedCalendarIdentifiers:(id)a3;
-- (void)setOverlayCalendarID:(id)a3 deviceHasCompanion:(BOOL)a4;
+- (void)setCustomDeselectedCalendarHashes:(id)hashes;
+- (void)setCustomDeselectedCalendarIdentifiers:(id)identifiers;
+- (void)setOverlayCalendarID:(id)d deviceHasCompanion:(BOOL)companion;
 @end
 
 @implementation NanoCalendarPreferences
@@ -102,7 +102,7 @@
 
 - (id)lastViewedDate
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   domainAccessor = self->_domainAccessor;
 
   return [(NPSDomainAccessor *)domainAccessor objectForKey:@"LastViewedDate"];
@@ -110,7 +110,7 @@
 
 - (id)lastSuspendTime
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   domainAccessor = self->_domainAccessor;
 
   return [(NPSDomainAccessor *)domainAccessor objectForKey:@"LastSuspendTime"];
@@ -118,25 +118,25 @@
 
 - (id)customDeselectedCalendarSyncIdentifiers
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   domainAccessor = self->_domainAccessor;
 
   return [(NPSDomainAccessor *)domainAccessor objectForKey:@"CustomDeselectedCalendarIdentifiers"];
 }
 
-- (void)setCustomDeselectedCalendarIdentifiers:(id)a3
+- (void)setCustomDeselectedCalendarIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v4;
+    v14 = identifiersCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "NanoCalendarPreferences: Set Custom Deselected Identifiers = %{public}@", &v13, 0xCu);
   }
 
-  [(NPSDomainAccessor *)self->_domainAccessor setObject:v4 forKey:@"CustomDeselectedCalendarIdentifiers"];
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)self->_domainAccessor setObject:identifiersCopy forKey:@"CustomDeselectedCalendarIdentifiers"];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   npsManager = self->_npsManager;
   v8 = [NSSet setWithObject:@"CustomDeselectedCalendarIdentifiers"];
   [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.mobilecal" keys:v8];
@@ -151,39 +151,39 @@
 
 - (NSArray)customDeselectedCalendarHashes
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   domainAccessor = self->_domainAccessor;
 
   return [(NPSDomainAccessor *)domainAccessor objectForKey:@"CustomDeselectedCalendarHashes"];
 }
 
-- (void)setCustomDeselectedCalendarHashes:(id)a3
+- (void)setCustomDeselectedCalendarHashes:(id)hashes
 {
-  v4 = a3;
+  hashesCopy = hashes;
   v5 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = hashesCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "NanoCalendarPreferences: Set Custom Deselected Hashes = %{public}@", &v9, 0xCu);
   }
 
-  [(NPSDomainAccessor *)self->_domainAccessor setObject:v4 forKey:@"CustomDeselectedCalendarHashes"];
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)self->_domainAccessor setObject:hashesCopy forKey:@"CustomDeselectedCalendarHashes"];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   npsManager = self->_npsManager;
   v8 = [NSSet setWithObject:@"CustomDeselectedCalendarHashes"];
   [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.mobilecal" keys:v8];
 }
 
-+ (id)calendarSyncIdentifiersFrom:(id)a3
++ (id)calendarSyncIdentifiersFrom:(id)from
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  fromCopy = from;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(fromCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = fromCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -198,8 +198,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) selectionSyncIdentifier];
-        [v4 addObject:v10];
+        selectionSyncIdentifier = [*(*(&v12 + 1) + 8 * i) selectionSyncIdentifier];
+        [v4 addObject:selectionSyncIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -213,10 +213,10 @@
 
 - (BOOL)overlayCalendarIsEnabled
 {
-  v2 = [(NanoCalendarPreferences *)self overlayCalendarID];
-  v3 = [v2 isEqualToString:&stru_20EF0] ^ 1;
+  overlayCalendarID = [(NanoCalendarPreferences *)self overlayCalendarID];
+  v3 = [overlayCalendarID isEqualToString:&stru_20EF0] ^ 1;
 
-  return (v2 != 0) & v3;
+  return (overlayCalendarID != 0) & v3;
 }
 
 - (id)overlayCalendarID
@@ -233,8 +233,8 @@
 
 - (BOOL)chineseOverlayCalendarIsEnabled
 {
-  v2 = [(NanoCalendarPreferences *)self overlayCalendarID];
-  v3 = [v2 isEqualToString:@"chinese"];
+  overlayCalendarID = [(NanoCalendarPreferences *)self overlayCalendarID];
+  v3 = [overlayCalendarID isEqualToString:@"chinese"];
 
   return v3;
 }
@@ -242,31 +242,31 @@
 - (id)overlayCalendar
 {
   v2 = +[NanoCalendarPreferences sharedPreferences];
-  v3 = [v2 overlayCalendarID];
+  overlayCalendarID = [v2 overlayCalendarID];
 
   v4 = +[CalChronometry activeTimeZone];
-  v5 = [CUIKOverlayCalendar overlayCalendarForCalendarIdentifier:v3 timezone:v4];
+  v5 = [CUIKOverlayCalendar overlayCalendarForCalendarIdentifier:overlayCalendarID timezone:v4];
 
   return v5;
 }
 
 - (NSString)customOverlayCalendarID
 {
-  v3 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   domainAccessor = self->_domainAccessor;
 
   return [(NPSDomainAccessor *)domainAccessor objectForKey:@"CustomOverlayCalendarID"];
 }
 
-- (void)setOverlayCalendarID:(id)a3 deviceHasCompanion:(BOOL)a4
+- (void)setOverlayCalendarID:(id)d deviceHasCompanion:(BOOL)companion
 {
-  v4 = a4;
-  v9 = a3;
+  companionCopy = companion;
+  dCopy = d;
   [NanoCalendarPreferences _reportOverlayCalendarID:"_reportOverlayCalendarID:mirroringCompanion:" mirroringCompanion:?];
-  if (v4)
+  if (companionCopy)
   {
-    [(NPSDomainAccessor *)self->_domainAccessor setObject:v9 forKey:@"CustomOverlayCalendarID"];
-    v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+    [(NPSDomainAccessor *)self->_domainAccessor setObject:dCopy forKey:@"CustomOverlayCalendarID"];
+    synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
     npsManager = self->_npsManager;
     v8 = [NSSet setWithObject:@"CustomOverlayCalendarID"];
     [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.mobilecal" keys:v8];
@@ -275,7 +275,7 @@
   else
   {
     v8 = +[CUIKPreferences sharedPreferences];
-    [v8 setOverlayCalendarID:v9];
+    [v8 setOverlayCalendarID:dCopy];
   }
 
   [(NanoCalendarPreferences *)self _updateOverlayCalendarCache];
@@ -284,21 +284,21 @@
 
 - (void)_updateOverlayCalendarCache
 {
-  v3 = [(NanoCalendarPreferences *)self customOverlayCalendarID];
+  customOverlayCalendarID = [(NanoCalendarPreferences *)self customOverlayCalendarID];
 
-  if (v3)
+  if (customOverlayCalendarID)
   {
-    v4 = [(NanoCalendarPreferences *)self customOverlayCalendarID];
+    customOverlayCalendarID2 = [(NanoCalendarPreferences *)self customOverlayCalendarID];
     cachedOverlayCalendarID = self->_cachedOverlayCalendarID;
-    self->_cachedOverlayCalendarID = v4;
+    self->_cachedOverlayCalendarID = customOverlayCalendarID2;
   }
 
   else
   {
     +[CUIKPreferences sharedPreferences];
-    v6 = [objc_claimAutoreleasedReturnValue() overlayCalendarID];
+    overlayCalendarID = [objc_claimAutoreleasedReturnValue() overlayCalendarID];
     v7 = self->_cachedOverlayCalendarID;
-    self->_cachedOverlayCalendarID = v6;
+    self->_cachedOverlayCalendarID = overlayCalendarID;
   }
 
   _objc_release_x1();
@@ -307,8 +307,8 @@
 + (id)overlayCalendarLocaleIDs
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [IntlUtility lunarCalendarsForLocaleID:v3];
+  localeIdentifier = [v2 localeIdentifier];
+  v4 = [IntlUtility lunarCalendarsForLocaleID:localeIdentifier];
 
   v5 = [NSMutableArray arrayWithArray:v4];
 
@@ -329,130 +329,130 @@
   return v3;
 }
 
-+ (id)currentSelectedCalendarsForEventStore:(id)a3 filteredForFocus:(BOOL)a4
++ (id)currentSelectedCalendarsForEventStore:(id)store filteredForFocus:(BOOL)focus
 {
-  v4 = a4;
-  v5 = [a3 calendarsForEntityType:0];
-  if (v4)
+  focusCopy = focus;
+  v5 = [store calendarsForEntityType:0];
+  if (focusCopy)
   {
     v6 = +[EKPreferences shared];
-    v7 = [v6 unselectedCalendarIdentifiersForFocusMode];
+    unselectedCalendarIdentifiersForFocusMode = [v6 unselectedCalendarIdentifiersForFocusMode];
   }
 
   else
   {
-    v7 = &__NSArray0__struct;
+    unselectedCalendarIdentifiersForFocusMode = &__NSArray0__struct;
   }
 
   v8 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v24 = 138543362;
-    v25 = v7;
+    v25 = unselectedCalendarIdentifiersForFocusMode;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "NanoCalendarPreferences: unselectedCalendarIdentifiersForFocusMode = %{public}@", &v24, 0xCu);
   }
 
-  v9 = [objc_opt_class() sharedPreferences];
-  v10 = [v9 customDeselectedCalendarSyncIdentifiers];
+  sharedPreferences = [objc_opt_class() sharedPreferences];
+  customDeselectedCalendarSyncIdentifiers = [sharedPreferences customDeselectedCalendarSyncIdentifiers];
 
   v11 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v24 = 138543362;
-    v25 = v10;
+    v25 = customDeselectedCalendarSyncIdentifiers;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "NanoCalendarPreferences: customDeselectedCalendarSyncIdentifiers = %{public}@", &v24, 0xCu);
   }
 
-  if (v10)
+  if (customDeselectedCalendarSyncIdentifiers)
   {
     goto LABEL_9;
   }
 
-  v13 = [objc_opt_class() sharedPreferences];
-  v12 = [v13 customDeselectedCalendarHashes];
+  sharedPreferences2 = [objc_opt_class() sharedPreferences];
+  customDeselectedCalendarHashes = [sharedPreferences2 customDeselectedCalendarHashes];
 
   v14 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v24 = 138543362;
-    v25 = v12;
+    v25 = customDeselectedCalendarHashes;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_INFO, "NanoCalendarPreferences: customDeselectedCalendarHashes = %{public}@", &v24, 0xCu);
   }
 
-  if (!v12)
+  if (!customDeselectedCalendarHashes)
   {
     v20 = +[EKPreferences shared];
-    v10 = [v20 deselectedCalendarSyncIdentifiers];
+    customDeselectedCalendarSyncIdentifiers = [v20 deselectedCalendarSyncIdentifiers];
 
     v21 = ncs_log_selected_calendars();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v24 = 138543362;
-      v25 = v10;
+      v25 = customDeselectedCalendarSyncIdentifiers;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "NanoCalendarPreferences: deselectedCalendarSyncIdentifiers = %{public}@", &v24, 0xCu);
     }
 
-    if (v10)
+    if (customDeselectedCalendarSyncIdentifiers)
     {
 LABEL_9:
-      v12 = 0;
+      customDeselectedCalendarHashes = 0;
       goto LABEL_14;
     }
 
     v22 = +[EKPreferences shared];
-    v12 = [v22 deselectedCalendarSyncHashes];
+    customDeselectedCalendarHashes = [v22 deselectedCalendarSyncHashes];
 
     v23 = ncs_log_selected_calendars();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = 138543362;
-      v25 = v12;
+      v25 = customDeselectedCalendarHashes;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "NanoCalendarPreferences: deselectedCalendarSyncHashes = %{public}@", &v24, 0xCu);
     }
   }
 
-  v10 = 0;
+  customDeselectedCalendarSyncIdentifiers = 0;
 LABEL_14:
-  v15 = [objc_opt_class() _selectedCalendarsFromAllCalendars:v5 deselectedCalendarIdentifier:v7 deselectedCalendarSyncIdentifiers:v10 deselectedCalendarSyncHashes:v12];
+  v15 = [objc_opt_class() _selectedCalendarsFromAllCalendars:v5 deselectedCalendarIdentifier:unselectedCalendarIdentifiersForFocusMode deselectedCalendarSyncIdentifiers:customDeselectedCalendarSyncIdentifiers deselectedCalendarSyncHashes:customDeselectedCalendarHashes];
   v16 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v5 nanoPrivacyAwareDescriptionForCalendars];
-    v18 = [v15 nanoPrivacyAwareDescriptionForCalendars];
+    nanoPrivacyAwareDescriptionForCalendars = [v5 nanoPrivacyAwareDescriptionForCalendars];
+    nanoPrivacyAwareDescriptionForCalendars2 = [v15 nanoPrivacyAwareDescriptionForCalendars];
     v24 = 138544386;
-    v25 = v17;
+    v25 = nanoPrivacyAwareDescriptionForCalendars;
     v26 = 2114;
-    v27 = v18;
+    v27 = nanoPrivacyAwareDescriptionForCalendars2;
     v28 = 2114;
-    v29 = v7;
+    v29 = unselectedCalendarIdentifiersForFocusMode;
     v30 = 2114;
-    v31 = v10;
+    v31 = customDeselectedCalendarSyncIdentifiers;
     v32 = 2114;
-    v33 = v12;
+    v33 = customDeselectedCalendarHashes;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "NanoCalendarPreferences: Computed selected calendars (All Calendars = %{public}@; Selected Calendars = %{public}@; Deselected for Focus IDs = %{public}@; Deselected Identifiers = %{public}@);  Deselected Hashes = %{public}@)", &v24, 0x34u);
   }
 
   return v15;
 }
 
-+ (id)_selectedCalendarsFromAllCalendars:(id)a3 deselectedCalendarIdentifier:(id)a4 deselectedCalendarSyncIdentifiers:(id)a5 deselectedCalendarSyncHashes:(id)a6
++ (id)_selectedCalendarsFromAllCalendars:(id)calendars deselectedCalendarIdentifier:(id)identifier deselectedCalendarSyncIdentifiers:(id)identifiers deselectedCalendarSyncHashes:(id)hashes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v28 = a6;
-  v27 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v9 count]);
+  calendarsCopy = calendars;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  hashesCopy = hashes;
+  v27 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [calendarsCopy count]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v9;
+  v12 = calendarsCopy;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v31;
-    v26 = v11;
+    v26 = identifiersCopy;
     obj = v12;
     do
     {
@@ -464,27 +464,27 @@ LABEL_14:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 calendarIdentifier];
-        v19 = [v17 selectionSyncIdentifier];
-        v20 = [v17 syncHash];
+        calendarIdentifier = [v17 calendarIdentifier];
+        selectionSyncIdentifier = [v17 selectionSyncIdentifier];
+        syncHash = [v17 syncHash];
         v21 = ncs_log_selected_calendars();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v22 = [v17 nanoPrivacyAwareDescription];
+          nanoPrivacyAwareDescription = [v17 nanoPrivacyAwareDescription];
           *buf = 138544130;
-          v35 = v22;
+          v35 = nanoPrivacyAwareDescription;
           v36 = 2114;
-          v37 = v18;
+          v37 = calendarIdentifier;
           v38 = 2114;
-          v39 = v20;
+          v39 = syncHash;
           v40 = 2114;
-          v41 = v19;
+          v41 = selectionSyncIdentifier;
           _os_log_debug_impl(&dword_0, v21, OS_LOG_TYPE_DEBUG, "Calendar: %{public}@, calendarIdentifier: %{public}@, calendarSyncHash: %{public}@, selectionSyncIdentifier: %{public}@", buf, 0x2Au);
 
-          v11 = v26;
+          identifiersCopy = v26;
         }
 
-        if (([v10 containsObject:v18] & 1) == 0 && (objc_msgSend(v11, "containsObject:", v19) & 1) == 0 && (objc_msgSend(v28, "containsObject:", v20) & 1) == 0)
+        if (([identifierCopy containsObject:calendarIdentifier] & 1) == 0 && (objc_msgSend(identifiersCopy, "containsObject:", selectionSyncIdentifier) & 1) == 0 && (objc_msgSend(hashesCopy, "containsObject:", syncHash) & 1) == 0)
         {
           [v27 addObject:v17];
         }
@@ -500,45 +500,45 @@ LABEL_14:
   v23 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    sub_12E48(a1, v27, v23);
+    sub_12E48(self, v27, v23);
   }
 
   return v27;
 }
 
-+ (id)visibleCalendarsInSource:(id)a3
++ (id)visibleCalendarsInSource:(id)source
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _calendarsThatAreVisible:1 source:v3];
+  sourceCopy = source;
+  v4 = [objc_opt_class() _calendarsThatAreVisible:1 source:sourceCopy];
 
   return v4;
 }
 
-+ (id)hiddenCalendarsInSource:(id)a3
++ (id)hiddenCalendarsInSource:(id)source
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _calendarsThatAreVisible:0 source:v3];
+  sourceCopy = source;
+  v4 = [objc_opt_class() _calendarsThatAreVisible:0 source:sourceCopy];
 
   return v4;
 }
 
-+ (id)_calendarsThatAreVisible:(BOOL)a3 source:(id)a4
++ (id)_calendarsThatAreVisible:(BOOL)visible source:(id)source
 {
-  v4 = a3;
-  v5 = [a4 allCalendars];
-  v6 = [objc_opt_class() sharedPreferences];
-  v7 = [v6 customDeselectedCalendarSyncIdentifiers];
+  visibleCopy = visible;
+  allCalendars = [source allCalendars];
+  sharedPreferences = [objc_opt_class() sharedPreferences];
+  customDeselectedCalendarSyncIdentifiers = [sharedPreferences customDeselectedCalendarSyncIdentifiers];
 
-  v21 = v7;
-  v8 = [[NSSet alloc] initWithArray:v7];
-  v9 = [v5 allObjects];
-  v22 = v5;
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  v21 = customDeselectedCalendarSyncIdentifiers;
+  v8 = [[NSSet alloc] initWithArray:customDeselectedCalendarSyncIdentifiers];
+  allObjects = [allCalendars allObjects];
+  v22 = allCalendars;
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allCalendars count]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v9;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v12)
   {
@@ -554,10 +554,10 @@ LABEL_14:
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 selectionSyncIdentifier];
-        if (v17)
+        selectionSyncIdentifier = [v16 selectionSyncIdentifier];
+        if (selectionSyncIdentifier)
         {
-          if ([v8 containsObject:v17] != v4)
+          if ([v8 containsObject:selectionSyncIdentifier] != visibleCopy)
           {
             [v10 addObject:v16];
           }
@@ -568,9 +568,9 @@ LABEL_14:
           v18 = ncs_log_selected_calendars();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v16 calendarIdentifier];
+            calendarIdentifier = [v16 calendarIdentifier];
             *buf = 138543362;
-            v28 = v19;
+            v28 = calendarIdentifier;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Calendar has no sync identifier: %{public}@", buf, 0xCu);
           }
         }

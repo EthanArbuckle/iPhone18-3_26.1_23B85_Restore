@@ -1,22 +1,22 @@
 @interface WFPencilSqueezeWorkflowRunnerClient
 + (id)defaultContextualActionContext;
 - (BOOL)hasCompletedRun;
-- (WFPencilSqueezeWorkflowRunnerClient)initWithSystemAction:(id)a3 preciseTimeStamp:(id)a4;
+- (WFPencilSqueezeWorkflowRunnerClient)initWithSystemAction:(id)action preciseTimeStamp:(id)stamp;
 - (void)start;
-- (void)startWithPreciseTimeStamp:(id)a3;
+- (void)startWithPreciseTimeStamp:(id)stamp;
 @end
 
 @implementation WFPencilSqueezeWorkflowRunnerClient
 
 - (BOOL)hasCompletedRun
 {
-  v3 = [(WFPencilSqueezeWorkflowRunnerClient *)self hasStartedRun];
-  if (v3)
+  hasStartedRun = [(WFPencilSqueezeWorkflowRunnerClient *)self hasStartedRun];
+  if (hasStartedRun)
   {
-    LOBYTE(v3) = ![(WFWorkflowRunnerClient *)self isRunning];
+    LOBYTE(hasStartedRun) = ![(WFWorkflowRunnerClient *)self isRunning];
   }
 
-  return v3;
+  return hasStartedRun;
 }
 
 - (void)start
@@ -27,15 +27,15 @@
   [(WFPencilSqueezeWorkflowRunnerClient *)self setHasStartedRun:1];
 }
 
-- (void)startWithPreciseTimeStamp:(id)a3
+- (void)startWithPreciseTimeStamp:(id)stamp
 {
-  v6 = a3;
-  v4 = [(WFSystemActionRunnerClient *)self actionContext];
+  stampCopy = stamp;
+  actionContext = [(WFSystemActionRunnerClient *)self actionContext];
 
-  if (v4)
+  if (actionContext)
   {
-    v5 = [(WFSystemActionRunnerClient *)self actionContext];
-    [v5 setPreciseTimestamp:v6];
+    actionContext2 = [(WFSystemActionRunnerClient *)self actionContext];
+    [actionContext2 setPreciseTimestamp:stampCopy];
   }
 
   if (![(WFPencilSqueezeWorkflowRunnerClient *)self hasStartedRun])
@@ -44,15 +44,15 @@
   }
 }
 
-- (WFPencilSqueezeWorkflowRunnerClient)initWithSystemAction:(id)a3 preciseTimeStamp:(id)a4
+- (WFPencilSqueezeWorkflowRunnerClient)initWithSystemAction:(id)action preciseTimeStamp:(id)stamp
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  actionCopy = action;
+  stampCopy = stamp;
+  v9 = stampCopy;
+  if (actionCopy)
   {
-    if (v8)
+    if (stampCopy)
     {
       goto LABEL_3;
     }
@@ -60,8 +60,8 @@
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFPencilSqueezeWorkflowRunnerClient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"systemAction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPencilSqueezeWorkflowRunnerClient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"systemAction"}];
 
     if (v9)
     {
@@ -69,8 +69,8 @@
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"WFPencilSqueezeWorkflowRunnerClient.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"preciseTimestamp"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFPencilSqueezeWorkflowRunnerClient.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"preciseTimestamp"}];
 
 LABEL_3:
   v10 = getWFStaccatoLogObject();
@@ -81,25 +81,25 @@ LABEL_3:
     v25 = 2048;
     v26 = v9;
     v27 = 2112;
-    v28 = v7;
+    v28 = actionCopy;
     _os_log_impl(&dword_1B1DE3000, v10, OS_LOG_TYPE_DEFAULT, "%s Initializing B532 runner - preciseTimestamp: %p, action: %@", buf, 0x20u);
   }
 
   v22.receiver = self;
   v22.super_class = WFPencilSqueezeWorkflowRunnerClient;
-  v11 = [(WFSystemActionRunnerClient *)&v22 initWithSystemAction:v7];
-  v12 = [(WFWorkflowRunnerClient *)v11 runRequest];
-  [v12 setRunSource:@"pencil-squeeze"];
+  v11 = [(WFSystemActionRunnerClient *)&v22 initWithSystemAction:actionCopy];
+  runRequest = [(WFWorkflowRunnerClient *)v11 runRequest];
+  [runRequest setRunSource:@"pencil-squeeze"];
 
-  v13 = [(WFSystemActionRunnerClient *)v11 actionContext];
-  [v13 setSurface:13];
+  actionContext = [(WFSystemActionRunnerClient *)v11 actionContext];
+  [actionContext setSurface:13];
 
-  v14 = [(WFSystemActionRunnerClient *)v11 actionContext];
-  [v14 setPreciseTimestamp:v9];
+  actionContext2 = [(WFSystemActionRunnerClient *)v11 actionContext];
+  [actionContext2 setPreciseTimestamp:v9];
 
-  v15 = [(WFWorkflowRunnerClient *)v11 runRequest];
-  v16 = [(WFWorkflowRunnerClient *)v11 descriptor];
-  v17 = [(WFWorkflowRunnerClient *)v11 createRunningContextFromRequestIfNecessary:v15 descriptor:v16];
+  runRequest2 = [(WFWorkflowRunnerClient *)v11 runRequest];
+  descriptor = [(WFWorkflowRunnerClient *)v11 descriptor];
+  v17 = [(WFWorkflowRunnerClient *)v11 createRunningContextFromRequestIfNecessary:runRequest2 descriptor:descriptor];
 
   v18 = *MEMORY[0x1E69E9840];
   return v11;

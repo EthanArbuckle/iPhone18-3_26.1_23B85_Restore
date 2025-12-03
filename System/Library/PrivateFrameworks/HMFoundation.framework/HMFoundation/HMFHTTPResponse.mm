@@ -1,10 +1,10 @@
 @interface HMFHTTPResponse
 - (HMFHTTPResponse)init;
-- (HMFHTTPResponse)initWithRequest:(id)a3 internalResponse:(id)a4;
+- (HMFHTTPResponse)initWithRequest:(id)request internalResponse:(id)response;
 - (NSData)body;
 - (NSDictionary)headerFields;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)statusCode;
 @end
 
@@ -23,18 +23,18 @@
   objc_exception_throw(v7);
 }
 
-- (HMFHTTPResponse)initWithRequest:(id)a3 internalResponse:(id)a4
+- (HMFHTTPResponse)initWithRequest:(id)request internalResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  responseCopy = response;
   v12.receiver = self;
   v12.super_class = HMFHTTPResponse;
   v9 = [(HMFHTTPResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_internal, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_internal, response);
   }
 
   return v10;
@@ -48,16 +48,16 @@
   v5 = [(HMFAttributeDescription *)v3 initWithName:@"Status Code" value:v4];
   v18[0] = v5;
   v6 = [HMFAttributeDescription alloc];
-  v7 = [(HMFHTTPResponse *)self headerFields];
-  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Headers" value:v7];
+  headerFields = [(HMFHTTPResponse *)self headerFields];
+  v8 = [(HMFAttributeDescription *)v6 initWithName:@"Headers" value:headerFields];
   v18[1] = v8;
   v9 = [HMFAttributeDescription alloc];
-  v10 = [(HMFHTTPResponse *)self body];
-  v11 = [(HMFAttributeDescription *)v9 initWithName:@"Body" value:v10 options:1 formatter:0];
+  body = [(HMFHTTPResponse *)self body];
+  v11 = [(HMFAttributeDescription *)v9 initWithName:@"Body" value:body options:1 formatter:0];
   v18[2] = v11;
   v12 = [HMFAttributeDescription alloc];
-  v13 = [(HMFHTTPResponse *)self request];
-  v14 = [(HMFAttributeDescription *)v12 initWithName:@"Request" value:v13 options:1 formatter:0];
+  request = [(HMFHTTPResponse *)self request];
+  v14 = [(HMFAttributeDescription *)v12 initWithName:@"Request" value:request options:1 formatter:0];
   v18[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
 
@@ -66,39 +66,39 @@
   return v15;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMFMutableHTTPResponse allocWithZone:a3];
-  v5 = [(HMFHTTPResponse *)self request];
-  v6 = [(HMFHTTPResponse *)self internal];
-  v7 = [v6 copy];
-  v8 = [(HMFHTTPResponse *)v4 initWithRequest:v5 internalResponse:v7];
+  v4 = [HMFMutableHTTPResponse allocWithZone:zone];
+  request = [(HMFHTTPResponse *)self request];
+  internal = [(HMFHTTPResponse *)self internal];
+  v7 = [internal copy];
+  v8 = [(HMFHTTPResponse *)v4 initWithRequest:request internalResponse:v7];
 
   return v8;
 }
 
 - (int64_t)statusCode
 {
-  v2 = [(HMFHTTPResponse *)self internal];
-  v3 = [v2 statusCode];
+  internal = [(HMFHTTPResponse *)self internal];
+  statusCode = [internal statusCode];
 
-  return v3;
+  return statusCode;
 }
 
 - (NSDictionary)headerFields
 {
-  v2 = [(HMFHTTPResponse *)self internal];
-  v3 = [v2 headerFields];
+  internal = [(HMFHTTPResponse *)self internal];
+  headerFields = [internal headerFields];
 
-  return v3;
+  return headerFields;
 }
 
 - (NSData)body
 {
-  v2 = [(HMFHTTPResponse *)self internal];
-  v3 = [v2 body];
+  internal = [(HMFHTTPResponse *)self internal];
+  body = [internal body];
 
-  return v3;
+  return body;
 }
 
 @end

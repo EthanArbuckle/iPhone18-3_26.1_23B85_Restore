@@ -1,48 +1,48 @@
 @interface ICRequestContext
-- (BOOL)isEqual:(id)a3;
-- (ICRequestContext)initWithBlock:(id)a3;
-- (ICRequestContext)initWithClientInfo:(id)a3;
-- (ICRequestContext)initWithClientInfo:(id)a3 authenticationProvider:(id)a4;
-- (ICRequestContext)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICRequestContext)initWithBlock:(id)block;
+- (ICRequestContext)initWithClientInfo:(id)info;
+- (ICRequestContext)initWithClientInfo:(id)info authenticationProvider:(id)provider;
+- (ICRequestContext)initWithCoder:(id)coder;
 - (NSString)userAgent;
 - (id)_genericUserAgent;
 - (id)_userAgentWithPlatformVersion;
 - (id)_webkitUserAgentVersion;
-- (id)copyWithBlock:(id)a3;
+- (id)copyWithBlock:(id)block;
 - (id)description;
 - (unint64_t)hash;
 - (void)enableRequestNotifications;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAuthenticationProvider:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setDeviceInfo:(id)a3;
-- (void)setNetworkConstraints:(id)a3;
-- (void)setTag:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAuthenticationProvider:(id)provider;
+- (void)setClientInfo:(id)info;
+- (void)setDeviceInfo:(id)info;
+- (void)setNetworkConstraints:(id)constraints;
+- (void)setTag:(id)tag;
 @end
 
 @implementation ICRequestContext
 
 - (id)_userAgentWithPlatformVersion
 {
-  v3 = [(ICRequestContext *)self _genericUserAgent];
-  v4 = [v3 mutableCopy];
+  _genericUserAgent = [(ICRequestContext *)self _genericUserAgent];
+  v4 = [_genericUserAgent mutableCopy];
 
-  v5 = [(ICDeviceInfo *)self->_deviceInfo productPlatform];
-  v6 = [(ICDeviceInfo *)self->_deviceInfo productVersion];
+  productPlatform = [(ICDeviceInfo *)self->_deviceInfo productPlatform];
+  productVersion = [(ICDeviceInfo *)self->_deviceInfo productVersion];
   v7 = +[ICDeviceInfo currentDeviceInfo];
-  v8 = [v7 isMac];
+  isMac = [v7 isMac];
 
-  if (v8)
+  if (isMac)
   {
-    if ([v6 length])
+    if ([productVersion length])
     {
-      [v4 appendFormat:@" (Macintosh; OS X %@)", v6];
+      [v4 appendFormat:@" (Macintosh; OS X %@)", productVersion];
     }
 
-    v9 = [(ICRequestContext *)self _webkitUserAgentVersion];
-    if ([v9 length])
+    _webkitUserAgentVersion = [(ICRequestContext *)self _webkitUserAgentVersion];
+    if ([_webkitUserAgentVersion length])
     {
-      [v4 appendFormat:@" AppleWebKit/%@", v9];
+      [v4 appendFormat:@" AppleWebKit/%@", _webkitUserAgentVersion];
     }
 
 LABEL_14:
@@ -51,25 +51,25 @@ LABEL_14:
   }
 
   v10 = +[ICDeviceInfo currentDeviceInfo];
-  v11 = [v10 isAppleTV];
+  isAppleTV = [v10 isAppleTV];
 
-  if (v11)
+  if (isAppleTV)
   {
 
-    v5 = @"iOS";
+    productPlatform = @"iOS";
   }
 
-  if (-[__CFString length](v5, "length") && [v6 length])
+  if (-[__CFString length](productPlatform, "length") && [productVersion length])
   {
-    [v4 appendFormat:@" %@/%@", v5, v6];
+    [v4 appendFormat:@" %@/%@", productPlatform, productVersion];
   }
 
   if ([(ICDeviceInfo *)self->_deviceInfo isAppleTV])
   {
-    v9 = [(ICDeviceInfo *)self->_deviceInfo productVersion];
-    if ([v9 length])
+    _webkitUserAgentVersion = [(ICDeviceInfo *)self->_deviceInfo productVersion];
+    if ([_webkitUserAgentVersion length])
     {
-      [v4 appendFormat:@" AppleTV/%@", v9];
+      [v4 appendFormat:@" AppleTV/%@", _webkitUserAgentVersion];
     }
 
     goto LABEL_14;
@@ -83,9 +83,9 @@ LABEL_15:
 - (id)_genericUserAgent
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ICClientInfo *)self->_clientInfo _clientIdentifierForUserAgent];
-  v5 = [(ICClientInfo *)self->_clientInfo clientVersion];
-  v6 = [v3 initWithFormat:@"%@/%@", v4, v5];
+  _clientIdentifierForUserAgent = [(ICClientInfo *)self->_clientInfo _clientIdentifierForUserAgent];
+  clientVersion = [(ICClientInfo *)self->_clientInfo clientVersion];
+  v6 = [v3 initWithFormat:@"%@/%@", _clientIdentifierForUserAgent, clientVersion];
 
   return v6;
 }
@@ -175,94 +175,94 @@ void __43__ICRequestContext__webkitUserAgentVersion__block_invoke(uint64_t a1, v
 {
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:207 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:207 description:@"Mutation not allowed beyond initialization."];
   }
 
   self->_requestNotificationsEnabled = 1;
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  v5 = a3;
+  tagCopy = tag;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:202 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:202 description:@"Mutation not allowed beyond initialization."];
   }
 
   tag = self->_tag;
-  self->_tag = v5;
+  self->_tag = tagCopy;
 }
 
-- (void)setNetworkConstraints:(id)a3
+- (void)setNetworkConstraints:(id)constraints
 {
-  v8 = a3;
+  constraintsCopy = constraints;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:197 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:197 description:@"Mutation not allowed beyond initialization."];
   }
 
-  v5 = [v8 copy];
+  v5 = [constraintsCopy copy];
   networkConstraints = self->_networkConstraints;
   self->_networkConstraints = v5;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:192 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:192 description:@"Mutation not allowed beyond initialization."];
   }
 
   deviceInfo = self->_deviceInfo;
-  self->_deviceInfo = v5;
+  self->_deviceInfo = infoCopy;
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:187 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:187 description:@"Mutation not allowed beyond initialization."];
   }
 
-  v5 = [v8 copy];
+  v5 = [infoCopy copy];
   clientInfo = self->_clientInfo;
   self->_clientInfo = v5;
 }
 
-- (void)setAuthenticationProvider:(id)a3
+- (void)setAuthenticationProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:182 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICRequestContext.m" lineNumber:182 description:@"Mutation not allowed beyond initialization."];
   }
 
   authenticationProvider = self->_authenticationProvider;
-  self->_authenticationProvider = v5;
+  self->_authenticationProvider = providerCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeObject:self->_clientInfo forKey:@"clientInfo"];
-  [v4 encodeObject:self->_networkConstraints forKey:@"networkConstraints"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_clientInfo forKey:@"clientInfo"];
+  [coderCopy encodeObject:self->_networkConstraints forKey:@"networkConstraints"];
   if (self->_authenticationProvider)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (_ICURLResponseAuthenticationProviderIsAllowedForClassName(v6))
     {
-      [v4 encodeObject:v6 forKey:@"authenticationProviderClassName"];
-      [v4 encodeObject:self->_authenticationProvider forKey:@"authenticationProvider"];
+      [coderCopy encodeObject:v6 forKey:@"authenticationProviderClassName"];
+      [coderCopy encodeObject:self->_authenticationProvider forKey:@"authenticationProvider"];
     }
 
     else
@@ -271,27 +271,27 @@ void __43__ICRequestContext__webkitUserAgentVersion__block_invoke(uint64_t a1, v
       v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v7 msv_description];
+        msv_description = [v7 msv_description];
         *buf = 138543362;
-        v11 = v9;
+        v11 = msv_description;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
       }
 
-      [v4 failWithError:v7];
+      [coderCopy failWithError:v7];
     }
   }
 }
 
-- (ICRequestContext)initWithCoder:(id)a3
+- (ICRequestContext)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ICRequestContext;
   v5 = [(ICRequestContext *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientInfo"];
     v7 = [v6 copy];
     clientInfo = v5->_clientInfo;
     v5->_clientInfo = v7;
@@ -300,18 +300,18 @@ void __43__ICRequestContext__webkitUserAgentVersion__block_invoke(uint64_t a1, v
     deviceInfo = v5->_deviceInfo;
     v5->_deviceInfo = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"networkConstraints"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"networkConstraints"];
     v12 = [v11 copy];
     networkConstraints = v5->_networkConstraints;
     v5->_networkConstraints = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationProviderClassName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationProviderClassName"];
     if (_ICURLResponseAuthenticationProviderIsAllowedForClassName(v14))
     {
       v15 = NSClassFromString(v14);
       if (v15)
       {
-        v16 = [v4 decodeObjectOfClass:v15 forKey:@"authenticationProvider"];
+        v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"authenticationProvider"];
         authenticationProvider = v5->_authenticationProvider;
         v5->_authenticationProvider = v16;
 
@@ -333,13 +333,13 @@ void __43__ICRequestContext__webkitUserAgentVersion__block_invoke(uint64_t a1, v
       v21 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v20 msv_description];
+        msv_description = [v20 msv_description];
         *buf = 138543362;
-        v27 = v22;
+        v27 = msv_description;
         _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
       }
 
-      [v4 failWithError:v20];
+      [coderCopy failWithError:v20];
       v5 = 0;
       goto LABEL_13;
     }
@@ -365,19 +365,19 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICRequestContext *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICRequestContext *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       clientInfo = v5->_clientInfo;
       v7 = self->_clientInfo;
       v8 = v7;
@@ -595,24 +595,24 @@ LABEL_26:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(ICClientInfo *)self->_clientInfo clientIdentifier];
-  v6 = [(ICClientInfo *)self->_clientInfo clientVersion];
-  v7 = [v3 stringWithFormat:@"<%@: %p [%@/%@]>", v4, self, v5, v6];
+  clientIdentifier = [(ICClientInfo *)self->_clientInfo clientIdentifier];
+  clientVersion = [(ICClientInfo *)self->_clientInfo clientVersion];
+  v7 = [v3 stringWithFormat:@"<%@: %p [%@/%@]>", v4, self, clientIdentifier, clientVersion];
 
   return v7;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc(objc_opt_class());
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__ICRequestContext_copyWithBlock___block_invoke;
   v9[3] = &unk_1E7BF60C8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = [v5 initWithBlock:v9];
 
   return v7;
@@ -630,9 +630,9 @@ void __34__ICRequestContext_copyWithBlock___block_invoke(uint64_t a1, id *a2)
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICRequestContext)initWithBlock:(id)a3
+- (ICRequestContext)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = ICRequestContext;
   v5 = [(ICRequestContext *)&v14 init];
@@ -652,25 +652,25 @@ void __34__ICRequestContext_copyWithBlock___block_invoke(uint64_t a1, id *a2)
     deviceInfo = v6->_deviceInfo;
     v6->_deviceInfo = v11;
 
-    (v4)[2](v4, v6);
+    (blockCopy)[2](blockCopy, v6);
     *(v6 + 8) &= ~1u;
   }
 
   return v6;
 }
 
-- (ICRequestContext)initWithClientInfo:(id)a3 authenticationProvider:(id)a4
+- (ICRequestContext)initWithClientInfo:(id)info authenticationProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  providerCopy = provider;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__ICRequestContext_initWithClientInfo_authenticationProvider___block_invoke;
   v12[3] = &unk_1E7BF60A0;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = infoCopy;
+  v14 = providerCopy;
+  v8 = providerCopy;
+  v9 = infoCopy;
   v10 = [(ICRequestContext *)self initWithBlock:v12];
 
   return v10;
@@ -684,11 +684,11 @@ void __62__ICRequestContext_initWithClientInfo_authenticationProvider___block_in
   [v4 setAuthenticationProvider:*(a1 + 40)];
 }
 
-- (ICRequestContext)initWithClientInfo:(id)a3
+- (ICRequestContext)initWithClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[ICURLResponseAuthenticationProvider defaultProvider];
-  v6 = [(ICRequestContext *)self initWithClientInfo:v4 authenticationProvider:v5];
+  v6 = [(ICRequestContext *)self initWithClientInfo:infoCopy authenticationProvider:v5];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface SNClassification
 + (SNClassification)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SNClassification)init;
-- (SNClassification)initWithCoder:(id)a3;
-- (SNClassification)initWithIdentifier:(id)a3 confidence:(double)a4;
-- (SNClassification)initWithImpl:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SNClassification)initWithCoder:(id)coder;
+- (SNClassification)initWithIdentifier:(id)identifier confidence:(double)confidence;
+- (SNClassification)initWithImpl:(id)impl;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SNClassification
@@ -23,15 +23,15 @@
   objc_exception_throw(v2);
 }
 
-- (SNClassification)initWithIdentifier:(id)a3 confidence:(double)a4
+- (SNClassification)initWithIdentifier:(id)identifier confidence:(double)confidence
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SNClassification;
   v7 = [(SNClassification *)&v11 init];
   if (v7)
   {
-    v8 = [[_SNClassification alloc] initWithIdentifier:v6 confidence:a4];
+    v8 = [[_SNClassification alloc] initWithIdentifier:identifierCopy confidence:confidence];
     impl = v7->_impl;
     v7->_impl = v8;
 
@@ -45,40 +45,40 @@
   return v7;
 }
 
-- (SNClassification)initWithImpl:(id)a3
+- (SNClassification)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = SNClassification;
   v6 = [(SNClassification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(_SNClassification *)self->_impl copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(_SNClassification *)self->_impl copyWithZone:zone];
   v7 = [v5 initWithImpl:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -101,14 +101,14 @@ LABEL_7:
   return v6;
 }
 
-- (SNClassification)initWithCoder:(id)a3
+- (SNClassification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SNClassification;
   v5 = [(SNClassification *)&v10 init];
   v6 = v5;
-  if (!v4 || v5 && (v7 = [[_SNClassification alloc] initWithCoder:v4], impl = v6->_impl, v6->_impl = v7, impl, !v6->_impl))
+  if (!coderCopy || v5 && (v7 = [[_SNClassification alloc] initWithCoder:coderCopy], impl = v6->_impl, v6->_impl = v7, impl, !v6->_impl))
   {
 
     v6 = 0;
@@ -117,9 +117,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     MEMORY[0x1EEE66B58](self->_impl, sel_encodeWithCoder_);
   }

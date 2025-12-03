@@ -1,13 +1,13 @@
 @interface MRUProductKit
-+ (void)assetHardwareModel:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7;
++ (void)assetHardwareModel:(id)model color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion;
 - (MRUProductKit)init;
 @end
 
 @implementation MRUProductKit
 
-+ (void)assetHardwareModel:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7
++ (void)assetHardwareModel:(id)model color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion
 {
-  v7 = _Block_copy(a7);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   sub_1A22330F8(sub_1A22335A8, v8);

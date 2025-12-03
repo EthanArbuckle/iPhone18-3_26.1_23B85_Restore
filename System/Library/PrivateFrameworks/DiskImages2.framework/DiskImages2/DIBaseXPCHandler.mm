@@ -1,12 +1,12 @@
 @interface DIBaseXPCHandler
-- (BOOL)completeCommandWithError:(id *)a3;
-- (BOOL)connectWithError:(id *)a3;
-- (BOOL)dupStderrWithError:(id *)a3;
+- (BOOL)completeCommandWithError:(id *)error;
+- (BOOL)connectWithError:(id *)error;
+- (BOOL)dupStderrWithError:(id *)error;
 - (DIBaseXPCHandler)init;
 - (void)closeConnection;
 - (void)createConnection;
 - (void)dealloc;
-- (void)signalCommandCompletedWithXpcError:(id)a3;
+- (void)signalCommandCompletedWithXpcError:(id)error;
 @end
 
 @implementation DIBaseXPCHandler
@@ -76,24 +76,24 @@
   [(DIBaseXPCHandler *)&v4 dealloc];
 }
 
-- (BOOL)connectWithError:(id *)a3
+- (BOOL)connectWithError:(id *)error
 {
   objc_initWeak(&location, self);
   [(DIBaseXPCHandler *)self createConnection];
-  v5 = [(DIBaseXPCHandler *)self connection];
+  connection = [(DIBaseXPCHandler *)self connection];
 
-  if (v5)
+  if (connection)
   {
-    v6 = [(DIBaseXPCHandler *)self connection];
-    [v6 resume];
+    connection2 = [(DIBaseXPCHandler *)self connection];
+    [connection2 resume];
 
-    v7 = [(DIBaseXPCHandler *)self connection];
+    connection3 = [(DIBaseXPCHandler *)self connection];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __37__DIBaseXPCHandler_connectWithError___block_invoke;
     v14 = &unk_278F80AA0;
     objc_copyWeak(&v15, &location);
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&v11];
+    v8 = [connection3 remoteObjectProxyWithErrorHandler:&v11];
     [(DIBaseXPCHandler *)self setRemoteProxy:v8, v11, v12, v13, v14];
 
     objc_destroyWeak(&v15);
@@ -102,7 +102,7 @@
 
   else
   {
-    v9 = [DIError failWithEnumValue:151 verboseInfo:@"Failed to create XPC connection object" error:a3];
+    v9 = [DIError failWithEnumValue:151 verboseInfo:@"Failed to create XPC connection object" error:error];
   }
 
   objc_destroyWeak(&location);
@@ -116,32 +116,32 @@ void __37__DIBaseXPCHandler_connectWithError___block_invoke(uint64_t a1, void *a
   [WeakRetained signalCommandCompletedWithXpcError:v3];
 }
 
-- (void)signalCommandCompletedWithXpcError:(id)a3
+- (void)signalCommandCompletedWithXpcError:(id)error
 {
-  [(DIBaseXPCHandler *)self setXpcError:a3];
-  v4 = [(DIBaseXPCHandler *)self semaphore];
-  dispatch_semaphore_signal(v4);
+  [(DIBaseXPCHandler *)self setXpcError:error];
+  semaphore = [(DIBaseXPCHandler *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
-- (BOOL)completeCommandWithError:(id *)a3
+- (BOOL)completeCommandWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(DIBaseXPCHandler *)self semaphore];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  semaphore = [(DIBaseXPCHandler *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(DIBaseXPCHandler *)self xpcError];
+  xpcError = [(DIBaseXPCHandler *)self xpcError];
   [(DIBaseXPCHandler *)self setXpcError:0];
-  v7 = [(DIBaseXPCHandler *)self connection];
+  connection = [(DIBaseXPCHandler *)self connection];
 
-  if (!v7)
+  if (!connection)
   {
-    v11 = [DIError failWithEnumValue:151 verboseInfo:@"XPC connection failed" error:a3];
+    v11 = [DIError failWithEnumValue:151 verboseInfo:@"XPC connection failed" error:error];
 LABEL_12:
     v12 = v11;
     goto LABEL_13;
   }
 
-  if (v6)
+  if (xpcError)
   {
     v8 = *__error();
     if (DIForwardLogs())
@@ -153,7 +153,7 @@ LABEL_12:
       v18 = 2080;
       v19 = "[DIBaseXPCHandler completeCommandWithError:]";
       v20 = 2114;
-      v21 = v6;
+      v21 = xpcError;
       v10 = _os_log_send_and_compose_impl();
 
       if (v10)
@@ -173,13 +173,13 @@ LABEL_12:
         v18 = 2080;
         v19 = "[DIBaseXPCHandler completeCommandWithError:]";
         v20 = 2114;
-        v21 = v6;
+        v21 = xpcError;
         _os_log_impl(&dword_248DE0000, v13, OS_LOG_TYPE_DEFAULT, "%.*s: Got error from last XPC command: %{public}@", buf, 0x1Cu);
       }
     }
 
     *__error() = v8;
-    v11 = [DIError failWithInError:v6 outError:a3];
+    v11 = [DIError failWithInError:xpcError outError:error];
     goto LABEL_12;
   }
 
@@ -192,30 +192,30 @@ LABEL_13:
 
 - (void)closeConnection
 {
-  v3 = [(DIBaseXPCHandler *)self connection];
-  [v3 invalidate];
+  connection = [(DIBaseXPCHandler *)self connection];
+  [connection invalidate];
 
   [(DIBaseXPCHandler *)self setConnection:0];
 }
 
-- (BOOL)dupStderrWithError:(id *)a3
+- (BOOL)dupStderrWithError:(id *)error
 {
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CCA9F8]);
   v6 = [v5 initWithFileDescriptor:fileno(*MEMORY[0x277D85DF8])];
-  v7 = [(DIBaseXPCHandler *)self remoteProxy];
+  remoteProxy = [(DIBaseXPCHandler *)self remoteProxy];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __39__DIBaseXPCHandler_dupStderrWithError___block_invoke;
   v12 = &unk_278F80AA0;
   objc_copyWeak(&v13, &location);
-  [v7 dupWithStderrHandle:v6 reply:&v9];
+  [remoteProxy dupWithStderrHandle:v6 reply:&v9];
 
-  LOBYTE(a3) = [(DIBaseXPCHandler *)self completeCommandWithError:a3, v9, v10, v11, v12];
+  LOBYTE(error) = [(DIBaseXPCHandler *)self completeCommandWithError:error, v9, v10, v11, v12];
   objc_destroyWeak(&v13);
 
   objc_destroyWeak(&location);
-  return a3;
+  return error;
 }
 
 void __39__DIBaseXPCHandler_dupStderrWithError___block_invoke(uint64_t a1, void *a2)
@@ -253,26 +253,26 @@ void __39__DIBaseXPCHandler_dupStderrWithError___block_invoke(uint64_t a1, void 
     v6 = getDIOSLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DIBaseXPCHandler *)self serviceName];
+      serviceName = [(DIBaseXPCHandler *)self serviceName];
       *buf = 68158210;
       v15 = 36;
       v16 = 2080;
       v17 = "[DIBaseXPCHandler createConnection]";
       v18 = 2114;
-      v19 = v7;
+      v19 = serviceName;
       _os_log_impl(&dword_248DE0000, v6, OS_LOG_TYPE_DEFAULT, "%.*s: Creating connection with %{public}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v3;
   v8 = objc_alloc(MEMORY[0x277CCAE80]);
-  v9 = [(DIBaseXPCHandler *)self serviceName];
-  v10 = [v8 initWithServiceName:v9];
+  serviceName2 = [(DIBaseXPCHandler *)self serviceName];
+  v10 = [v8 initWithServiceName:serviceName2];
   [(DIBaseXPCHandler *)self setConnection:v10];
 
-  v11 = [(DIBaseXPCHandler *)self remoteObjectInterface];
-  v12 = [(DIBaseXPCHandler *)self connection];
-  [v12 setRemoteObjectInterface:v11];
+  remoteObjectInterface = [(DIBaseXPCHandler *)self remoteObjectInterface];
+  connection = [(DIBaseXPCHandler *)self connection];
+  [connection setRemoteObjectInterface:remoteObjectInterface];
 
   v13 = *MEMORY[0x277D85DE8];
 }

@@ -20,19 +20,19 @@
   {
     v9.receiver = self;
     v9.super_class = SUItemOfferButtonAccessibility;
-    v4 = [(SUItemOfferButtonAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(SUItemOfferButtonAccessibility *)&v9 accessibilityLabel];
     v7 = accessibilityLocalizedString(@"iTunesPlus");
-    v5 = __UIAXStringForVariables();
+    accessibilityLabel2 = __UIAXStringForVariables();
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SUItemOfferButtonAccessibility;
-    v5 = [(SUItemOfferButtonAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel2 = [(SUItemOfferButtonAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel2;
 }
 
 @end

@@ -22,7 +22,7 @@
     return 0;
   }
 
-  return [a1 _swiftUI_platformViewDefinition];
+  return [self _swiftUI_platformViewDefinition];
 }
 
 @end

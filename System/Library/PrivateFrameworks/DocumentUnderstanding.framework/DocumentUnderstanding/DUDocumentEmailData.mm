@@ -1,11 +1,11 @@
 @interface DUDocumentEmailData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)dateReceived;
 - (NSDictionary)headers;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDateReceived:(id)a3;
-- (void)setHeaders:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDateReceived:(id)received;
+- (void)setHeaders:(id)headers;
 @end
 
 @implementation DUDocumentEmailData
@@ -28,13 +28,13 @@
   return v7;
 }
 
-- (void)setDateReceived:(id)a3
+- (void)setDateReceived:(id)received
 {
   v5 = sub_232B124A8(&qword_27DDC6A80, &qword_232CF6D30);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (received)
   {
     sub_232CE8CF0();
     v9 = sub_232CE8D10();
@@ -48,7 +48,7 @@
   }
 
   sub_232B12504(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_232B2FC5C(v8);
 }
 
@@ -67,9 +67,9 @@
   return v2;
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
-  if (a3)
+  if (headers)
   {
     v4 = sub_232CE9C40();
   }
@@ -79,20 +79,20 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_232B2FF58(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B302F8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B302F8(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B305F8(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -101,11 +101,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_232CEA420();
     swift_unknownObjectRelease();
@@ -114,7 +114,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_232B31308();

@@ -1,6 +1,6 @@
 @interface ATXModeEntityTrialClientWrapper
 + (id)sharedInstance;
-- (ATXModeEntityTrialClientWrapper)initWithClientIdentifier:(int)a3;
+- (ATXModeEntityTrialClientWrapper)initWithClientIdentifier:(int)identifier;
 - (id)modeAffinityAppCategoryScores;
 - (id)modeAffinityModelsConstants;
 - (id)notificationModeEntityModelWeights;
@@ -32,11 +32,11 @@ void __49__ATXModeEntityTrialClientWrapper_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (ATXModeEntityTrialClientWrapper)initWithClientIdentifier:(int)a3
+- (ATXModeEntityTrialClientWrapper)initWithClientIdentifier:(int)identifier
 {
   v9.receiver = self;
   v9.super_class = ATXModeEntityTrialClientWrapper;
-  v3 = [(ATXTrialClientWrapper *)&v9 initWithClientIdentifier:*&a3 namespaceName:@"SYSTEM_SPACE_INTELLIGENCE_FOCUS_MODES"];
+  v3 = [(ATXTrialClientWrapper *)&v9 initWithClientIdentifier:*&identifier namespaceName:@"SYSTEM_SPACE_INTELLIGENCE_FOCUS_MODES"];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69C5D60]);

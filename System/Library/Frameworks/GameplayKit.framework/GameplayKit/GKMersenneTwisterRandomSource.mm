@@ -2,10 +2,10 @@
 - (GKMersenneTwisterRandomSource)init;
 - (GKMersenneTwisterRandomSource)initWithSeed:(uint64_t)seed;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)nextBits:(int)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)nextBits:(int)bits;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSeed:(uint64_t)seed;
 @end
 
@@ -47,18 +47,18 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   memcpy((v4 + 16), &self->_engine, 0x9C8uLL);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GKMersenneTwisterRandomSource;
-  [(GKRandomSource *)&v3 encodeWithCoder:a3];
+  [(GKRandomSource *)&v3 encodeWithCoder:coder];
 }
 
 - (void)setSeed:(uint64_t)seed
@@ -74,7 +74,7 @@
   self->_engine.__i_ = 0;
 }
 
-- (unint64_t)nextBits:(int)a3
+- (unint64_t)nextBits:(int)bits
 {
   i = self->_engine.__i_;
   v4 = (i + 1) % 0x138;
@@ -88,24 +88,24 @@
   self->_engine.__x_[i] = v6;
   self->_engine.__i_ = v4;
   v7 = (((v6 >> 29) & 0x5555555555555555 ^ v6) << 17) & 0x71D67FFFEDA60000 ^ (v6 >> 29) & 0x5555555555555555 ^ v6;
-  return ((v7 << 37) & 0xFFF7EEE000000000 ^ v7 ^ (((v7 << 37) & 0xFFF7EEE000000000 ^ v7) >> 43)) >> -a3;
+  return ((v7 << 37) & 0xFFF7EEE000000000 ^ v7 ^ (((v7 << 37) & 0xFFF7EEE000000000 ^ v7) >> 43)) >> -bits;
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  v5 = a3 - 1;
-  if ((a3 & (a3 - 1)) == 0)
+  v5 = bound - 1;
+  if ((bound & (bound - 1)) == 0)
   {
-    return ([(GKMersenneTwisterRandomSource *)self nextBits:32]* a3) >> 32;
+    return ([(GKMersenneTwisterRandomSource *)self nextBits:32]* bound) >> 32;
   }
 
   do
   {
     v7 = [(GKMersenneTwisterRandomSource *)self nextBits:32];
-    result = v7 % a3;
+    result = v7 % bound;
   }
 
-  while (v5 + v7 < v7 % a3);
+  while (v5 + v7 < v7 % bound);
   return result;
 }
 

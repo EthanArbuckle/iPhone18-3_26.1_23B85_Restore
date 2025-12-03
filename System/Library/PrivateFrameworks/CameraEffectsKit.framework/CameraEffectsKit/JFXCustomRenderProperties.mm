@@ -1,20 +1,20 @@
 @interface JFXCustomRenderProperties
-+ (id)newCustomRenderProperties:(id)a3 metadata:(id)a4;
++ (id)newCustomRenderProperties:(id)properties metadata:(id)metadata;
 @end
 
 @implementation JFXCustomRenderProperties
 
-+ (id)newCustomRenderProperties:(id)a3 metadata:(id)a4
++ (id)newCustomRenderProperties:(id)properties metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  v8 = objc_alloc_init(self);
   v9 = v8[2];
-  v8[2] = v6;
-  v10 = v6;
+  v8[2] = propertiesCopy;
+  v10 = propertiesCopy;
 
   v11 = v8[3];
-  v8[3] = v7;
+  v8[3] = metadataCopy;
 
   *(v8 + 8) = 0;
   return v8;

@@ -22,124 +22,124 @@
 
 - (uint64_t)hdmc_legacyOnboardingVersionCompletedWithError:()HKMCSyncedProtected
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_legacyOnboardingVersionCompletedWithError:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_legacyOnboardingVersionCompletedWithError:];
   }
 
   v7 = *MEMORY[0x277D11888];
 
-  return [a1 numberForKey:v7 error:a3];
+  return [self numberForKey:v7 error:a3];
 }
 
 - (uint64_t)hdmc_legacyOnboardingFirstCompletedDateWithError:()HKMCSyncedProtected
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_legacyOnboardingFirstCompletedDateWithError:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_legacyOnboardingFirstCompletedDateWithError:];
   }
 
   v7 = *MEMORY[0x277D11890];
 
-  return [a1 dateForKey:v7 error:a3];
+  return [self dateForKey:v7 error:a3];
 }
 
 - (uint64_t)hdmc_setLastLoggedInCycleTrackingDate:()HKMCSyncedProtected error:
 {
   v6 = a3;
-  v7 = [a1 domainName];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v8 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v8 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_setLastLoggedInCycleTrackingDate:error:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_setLastLoggedInCycleTrackingDate:error:];
   }
 
-  v9 = [a1 setDate:v6 forKey:*MEMORY[0x277D11880] error:a4];
+  v9 = [self setDate:v6 forKey:*MEMORY[0x277D11880] error:a4];
 
   return v9;
 }
 
 - (uint64_t)hdmc_lastLoggedInCycleTrackingDateWithError:()HKMCSyncedProtected
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_lastLoggedInCycleTrackingDateWithError:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_lastLoggedInCycleTrackingDateWithError:];
   }
 
   v7 = *MEMORY[0x277D11880];
 
-  return [a1 dateForKey:v7 error:a3];
+  return [self dateForKey:v7 error:a3];
 }
 
 - (uint64_t)hdmc_setUnconfirmedDeviationDismissalDayIndex:()HKMCSyncedProtected error:
 {
   v6 = a3;
-  v7 = [a1 domainName];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v8 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v8 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_setUnconfirmedDeviationDismissalDayIndex:error:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_setUnconfirmedDeviationDismissalDayIndex:error:];
   }
 
-  v9 = [a1 setNumber:v6 forKey:*MEMORY[0x277D11940] error:a4];
+  v9 = [self setNumber:v6 forKey:*MEMORY[0x277D11940] error:a4];
 
   return v9;
 }
 
 - (uint64_t)hdmc_unconfirmedDeviationDismissalDayIndexWithError:()HKMCSyncedProtected
 {
-  v5 = [a1 domainName];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D11898]];
+  domainName = [self domainName];
+  v6 = [domainName isEqualToString:*MEMORY[0x277D11898]];
 
   if ((v6 & 1) == 0)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_unconfirmedDeviationDismissalDayIndexWithError:];
   }
 
-  if ([a1 category] != 105)
+  if ([self category] != 105)
   {
     [HDKeyValueDomain(HKMCSyncedProtected) hdmc_unconfirmedDeviationDismissalDayIndexWithError:];
   }
 
   v7 = *MEMORY[0x277D11940];
 
-  return [a1 numberForKey:v7 error:a3];
+  return [self numberForKey:v7 error:a3];
 }
 
 - (void)hdmc_legacyOnboardingVersionCompletedWithError:()HKMCSyncedProtected .cold.1()

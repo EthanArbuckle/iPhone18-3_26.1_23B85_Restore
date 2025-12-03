@@ -1,17 +1,17 @@
 @interface WBSPasswordManagerWebsiteMetadataEntry
-- (BOOL)updateWebsiteName:(id)a3;
+- (BOOL)updateWebsiteName:(id)name;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordManagerWebsiteMetadataEntry)initWithKeychainDictionary:(id)a3 forDomain:(id)a4;
+- (WBSPasswordManagerWebsiteMetadataEntry)initWithKeychainDictionary:(id)dictionary forDomain:(id)domain;
 - (id)description;
-- (id)keychainItemLabelForDomain:(id)a3;
+- (id)keychainItemLabelForDomain:(id)domain;
 @end
 
 @implementation WBSPasswordManagerWebsiteMetadataEntry
 
-- (WBSPasswordManagerWebsiteMetadataEntry)initWithKeychainDictionary:(id)a3 forDomain:(id)a4
+- (WBSPasswordManagerWebsiteMetadataEntry)initWithKeychainDictionary:(id)dictionary forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  domainCopy = domain;
   v31.receiver = self;
   v31.super_class = WBSPasswordManagerWebsiteMetadataEntry;
   v8 = [(WBSPasswordManagerWebsiteMetadataEntry *)&v31 init];
@@ -22,12 +22,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!dictionaryCopy)
   {
     v28 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      [WBSPasswordManagerWebsiteMetadataEntry initWithKeychainDictionary:v7 forDomain:v28];
+      [WBSPasswordManagerWebsiteMetadataEntry initWithKeychainDictionary:domainCopy forDomain:v28];
     }
 
     goto LABEL_9;
@@ -39,13 +39,13 @@ LABEL_9:
     v29 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
     {
-      [WBSPasswordManagerWebsiteMetadataEntry initWithKeychainDictionary:v7 forDomain:v29];
+      [WBSPasswordManagerWebsiteMetadataEntry initWithKeychainDictionary:domainCopy forDomain:v29];
     }
 
     goto LABEL_9;
   }
 
-  v9 = [v6 copy];
+  v9 = [dictionaryCopy copy];
   originalBackingDictionary = v8->_originalBackingDictionary;
   v8->_originalBackingDictionary = v9;
 
@@ -94,19 +94,19 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)updateWebsiteName:(id)a3
+- (BOOL)updateWebsiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x1E695DF00] now];
   websiteName = self->_websiteName;
-  if (websiteName && [(NSString *)websiteName isEqualToString:v4])
+  if (websiteName && [(NSString *)websiteName isEqualToString:nameCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     v9 = self->_websiteName;
     self->_websiteName = v8;
 
@@ -126,15 +126,15 @@ LABEL_10:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    dictionary = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
 
   if ([(NSString *)self->_websiteName length])
   {
@@ -162,15 +162,15 @@ LABEL_10:
   enrollPasskeyURL = self->_enrollPasskeyURL;
   if (enrollPasskeyURL)
   {
-    v11 = [(NSURL *)enrollPasskeyURL absoluteString];
-    [v6 setObject:v11 forKeyedSubscript:@"enrollPasskeyURL"];
+    absoluteString = [(NSURL *)enrollPasskeyURL absoluteString];
+    [v6 setObject:absoluteString forKeyedSubscript:@"enrollPasskeyURL"];
   }
 
   managePasskeyURL = self->_managePasskeyURL;
   if (managePasskeyURL)
   {
-    v13 = [(NSURL *)managePasskeyURL absoluteString];
-    [v6 setObject:v13 forKeyedSubscript:@"managePasskeyURL"];
+    absoluteString2 = [(NSURL *)managePasskeyURL absoluteString];
+    [v6 setObject:absoluteString2 forKeyedSubscript:@"managePasskeyURL"];
   }
 
   passkeyEndpointsDateLastRefreshed = self->_passkeyEndpointsDateLastRefreshed;
@@ -184,14 +184,14 @@ LABEL_10:
   return v15;
 }
 
-- (id)keychainItemLabelForDomain:(id)a3
+- (id)keychainItemLabelForDomain:(id)domain
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  domainCopy = domain;
   v5 = _WBSLocalizedString(@"Website Metadata for %@", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  domainCopy = [v3 localizedStringWithFormat:v5, domainCopy];
 
-  return v6;
+  return domainCopy;
 }
 
 - (void)initWithKeychainDictionary:(uint64_t)a1 forDomain:(void *)a2 .cold.1(uint64_t a1, void *a2)

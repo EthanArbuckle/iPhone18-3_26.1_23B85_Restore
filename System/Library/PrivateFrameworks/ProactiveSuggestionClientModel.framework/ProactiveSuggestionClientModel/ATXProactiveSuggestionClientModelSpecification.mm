@@ -1,18 +1,18 @@
 @interface ATXProactiveSuggestionClientModelSpecification
-- (ATXProactiveSuggestionClientModelSpecification)initWithClientModelId:(id)a3 clientModelVersion:(id)a4 engagementResetPolicy:(unint64_t)a5;
-- (ATXProactiveSuggestionClientModelSpecification)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionClientModelSpecification)initWithProto:(id)a3;
-- (ATXProactiveSuggestionClientModelSpecification)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXProactiveSuggestionClientModelSpecification)initWithClientModelId:(id)id clientModelVersion:(id)version engagementResetPolicy:(unint64_t)policy;
+- (ATXProactiveSuggestionClientModelSpecification)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionClientModelSpecification)initWithProto:(id)proto;
+- (ATXProactiveSuggestionClientModelSpecification)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonRawData;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXProactiveSuggestionClientModelSpecification
@@ -73,38 +73,38 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXProactiveSuggestionClientModelSpecification *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXProactiveSuggestionClientModelSpecification *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXProactiveSuggestionClientModelSpecification)initWithClientModelId:(id)a3 clientModelVersion:(id)a4 engagementResetPolicy:(unint64_t)a5
+- (ATXProactiveSuggestionClientModelSpecification)initWithClientModelId:(id)id clientModelVersion:(id)version engagementResetPolicy:(unint64_t)policy
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  versionCopy = version;
   v16.receiver = self;
   v16.super_class = ATXProactiveSuggestionClientModelSpecification;
   v10 = [(ATXProactiveSuggestionClientModelSpecification *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [idCopy copy];
     clientModelId = v10->_clientModelId;
     v10->_clientModelId = v11;
 
-    v13 = [v9 copy];
+    v13 = [versionCopy copy];
     clientModelVersion = v10->_clientModelVersion;
     v10->_clientModelVersion = v13;
 
-    v10->_engagementResetPolicy = a5;
+    v10->_engagementResetPolicy = policy;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXProactiveSuggestionClientModelSpecification allocWithZone:a3];
+  v4 = [ATXProactiveSuggestionClientModelSpecification allocWithZone:zone];
   v5 = [(NSString *)self->_clientModelId copy];
   v6 = [(NSString *)self->_clientModelVersion copy];
   v7 = [(ATXProactiveSuggestionClientModelSpecification *)v4 initWithClientModelId:v5 clientModelVersion:v6 engagementResetPolicy:self->_engagementResetPolicy];
@@ -112,10 +112,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_clientModelId;
       v7 = v6;
       if (v6 == v5->_clientModelId)
@@ -175,32 +175,32 @@ LABEL_15:
   return v9;
 }
 
-- (ATXProactiveSuggestionClientModelSpecification)initWithProtoData:(id)a3
+- (ATXProactiveSuggestionClientModelSpecification)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestionClientModelSpecification alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestionClientModelSpecification alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestionClientModelSpecification *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionClientModelSpecification)initWithProto:(id)a3
+- (ATXProactiveSuggestionClientModelSpecification)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -216,20 +216,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 clientModelId];
-  v7 = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 clientModelVersion];
-  v8 = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 engagementResetPolicy];
-  if (v8)
+  v5 = protoCopy;
+  clientModelId = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 clientModelId];
+  clientModelVersion = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 clientModelVersion];
+  engagementResetPolicy = [(ATXPBProactiveSuggestionClientModelSpecification *)v5 engagementResetPolicy];
+  if (engagementResetPolicy)
   {
-    if (v8 == 1)
+    if (engagementResetPolicy == 1)
     {
       v9 = @"WhenNotPredicted";
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", engagementResetPolicy];
     }
   }
 
@@ -249,40 +249,40 @@ LABEL_9:
     v13 = [(__CFString *)v12 isEqualToString:@"WhenNotPredicted"];
   }
 
-  self = [(ATXProactiveSuggestionClientModelSpecification *)self initWithClientModelId:v6 clientModelVersion:v7 engagementResetPolicy:v13];
-  v11 = self;
+  self = [(ATXProactiveSuggestionClientModelSpecification *)self initWithClientModelId:clientModelId clientModelVersion:clientModelVersion engagementResetPolicy:v13];
+  selfCopy = self;
 LABEL_16:
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -294,33 +294,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -332,17 +332,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestionClientModelSpecification *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestionClientModelSpecification *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestionClientModelSpecification)initWithCoder:(id)a3
+- (ATXProactiveSuggestionClientModelSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestionClientModelSpecification *)self initWithProtoData:v5];
   return v6;

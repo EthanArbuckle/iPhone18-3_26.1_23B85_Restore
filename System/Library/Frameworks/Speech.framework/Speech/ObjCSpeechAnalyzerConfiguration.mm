@@ -1,6 +1,6 @@
 @interface ObjCSpeechAnalyzerConfiguration
 - (AVAudioFormat)audioFormat;
-- (void)setAudioFormat:(id)a3;
+- (void)setAudioFormat:(id)format;
 @end
 
 @implementation ObjCSpeechAnalyzerConfiguration
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setAudioFormat:(id)a3
+- (void)setAudioFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  sub_1AC732FCC(a3);
+  formatCopy = format;
+  selfCopy = self;
+  sub_1AC732FCC(format);
 }
 
 @end

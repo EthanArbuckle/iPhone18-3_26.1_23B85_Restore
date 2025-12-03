@@ -1,6 +1,6 @@
 @interface IStvOSRoundedRect
 - (IStvOSRoundedRect)init;
-- (double)_cornerRadiusForSize:(CGSize)a3;
+- (double)_cornerRadiusForSize:(CGSize)size;
 @end
 
 @implementation IStvOSRoundedRect
@@ -12,14 +12,14 @@
   return [(ISShapeCompositorResource *)&v3 _init];
 }
 
-- (double)_cornerRadiusForSize:(CGSize)a3
+- (double)_cornerRadiusForSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  return a3.width * 0.2;
+  return size.width * 0.2;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface BTHighlightButton
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation BTHighlightButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = BTHighlightButton;
   [(BTHighlightButton *)&v6 setHighlighted:?];
   v5 = 1.0;
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.5;
   }

@@ -1,47 +1,47 @@
 @interface ACUIDataclassActionPicker
 - (ACDataclassAction)firstDestructiveAction;
-- (ACUIDataclassActionPicker)initWithActions:(id)a3 affectingAccount:(id)a4;
-- (BOOL)hasActionOfType:(int64_t)a3;
+- (ACUIDataclassActionPicker)initWithActions:(id)actions affectingAccount:(id)account;
+- (BOOL)hasActionOfType:(int64_t)type;
 - (BOOL)hasDestructiveActions;
-- (id)_stringForMessage:(id)a3 withAccountType:(id)a4 dataclassDescription:(id)a5;
-- (id)actionOfType:(int64_t)a3;
-- (id)descriptionForDataclassAction:(id)a3;
+- (id)_stringForMessage:(id)message withAccountType:(id)type dataclassDescription:(id)description;
+- (id)actionOfType:(int64_t)type;
+- (id)descriptionForDataclassAction:(id)action;
 - (id)message;
-- (id)showInViewController:(id)a3;
+- (id)showInViewController:(id)controller;
 - (id)title;
 - (int64_t)priorityIndex;
-- (void)addAffectedDataclass:(id)a3;
+- (void)addAffectedDataclass:(id)dataclass;
 @end
 
 @implementation ACUIDataclassActionPicker
 
-- (ACUIDataclassActionPicker)initWithActions:(id)a3 affectingAccount:(id)a4
+- (ACUIDataclassActionPicker)initWithActions:(id)actions affectingAccount:(id)account
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, actions);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, account);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = ACUIDataclassActionPicker;
-  v13 = [(ACUIDataclassActionPicker *)&v10 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(ACUIDataclassActionPicker *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v13->_affectedAccount, v11);
+    objc_storeStrong(&selfCopy->_affectedAccount, v11);
     v5 = [location[0] sortedArrayUsingComparator:&__block_literal_global_1];
-    actions = v13->_actions;
-    v13->_actions = v5;
+    actions = selfCopy->_actions;
+    selfCopy->_actions = v5;
     MEMORY[0x277D82BD8](actions);
   }
 
-  v8 = MEMORY[0x277D82BE0](v13);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
@@ -88,23 +88,23 @@ uint64_t __62__ACUIDataclassActionPicker_initWithActions_affectingAccount___bloc
   return v10;
 }
 
-- (void)addAffectedDataclass:(id)a3
+- (void)addAffectedDataclass:(id)dataclass
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_affectedDataclasses)
+  objc_storeStrong(location, dataclass);
+  if (!selfCopy->_affectedDataclasses)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    affectedDataclasses = v6->_affectedDataclasses;
-    v6->_affectedDataclasses = v3;
+    affectedDataclasses = selfCopy->_affectedDataclasses;
+    selfCopy->_affectedDataclasses = v3;
     MEMORY[0x277D82BD8](affectedDataclasses);
   }
 
   if (location[0])
   {
-    [(NSMutableArray *)v6->_affectedDataclasses addObject:location[0]];
+    [(NSMutableArray *)selfCopy->_affectedDataclasses addObject:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -112,19 +112,19 @@ uint64_t __62__ACUIDataclassActionPicker_initWithActions_affectingAccount___bloc
 
 - (BOOL)hasDestructiveActions
 {
-  v2 = [(ACUIDataclassActionPicker *)self firstDestructiveAction];
-  v4 = v2 != 0;
-  MEMORY[0x277D82BD8](v2);
+  firstDestructiveAction = [(ACUIDataclassActionPicker *)self firstDestructiveAction];
+  v4 = firstDestructiveAction != 0;
+  MEMORY[0x277D82BD8](firstDestructiveAction);
   return v4;
 }
 
 - (ACDataclassAction)firstDestructiveAction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(ACUIDataclassActionPicker *)v14 actions];
+  obj = [(ACUIDataclassActionPicker *)selfCopy actions];
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v16 count:16];
   if (v9)
   {
@@ -179,14 +179,14 @@ LABEL_9:
   return v2;
 }
 
-- (id)actionOfType:(int64_t)a3
+- (id)actionOfType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  typeCopy = type;
   memset(__b, 0, sizeof(__b));
-  obj = [(ACUIDataclassActionPicker *)v17 actions];
+  obj = [(ACUIDataclassActionPicker *)selfCopy actions];
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v19 count:16];
   if (v11)
   {
@@ -202,8 +202,8 @@ LABEL_9:
       }
 
       v14 = *(__b[1] + 8 * v8);
-      v3 = [v14 type];
-      if (v3 == v15)
+      type = [v14 type];
+      if (type == typeCopy)
       {
         break;
       }
@@ -242,9 +242,9 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)hasActionOfType:(int64_t)a3
+- (BOOL)hasActionOfType:(int64_t)type
 {
-  v3 = [(ACUIDataclassActionPicker *)self actionOfType:a3];
+  v3 = [(ACUIDataclassActionPicker *)self actionOfType:type];
   v5 = v3 != 0;
   MEMORY[0x277D82BD8](v3);
   return v5;
@@ -253,22 +253,22 @@ LABEL_9:
 - (int64_t)priorityIndex
 {
   v3 = 10 * [(ACUIDataclassActionPicker *)self hasDestructiveActions];
-  v4 = [(ACUIDataclassActionPicker *)self actions];
-  v5 = v3 - [(NSArray *)v4 count];
-  MEMORY[0x277D82BD8](v4);
+  actions = [(ACUIDataclassActionPicker *)self actions];
+  v5 = v3 - [(NSArray *)actions count];
+  MEMORY[0x277D82BD8](actions);
   return v5;
 }
 
-- (id)showInViewController:(id)a3
+- (id)showInViewController:(id)controller
 {
   v43 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
-  obj = [(ACUIDataclassActionPicker *)v39 actions];
+  obj = [(ACUIDataclassActionPicker *)selfCopy actions];
   v14 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v42 count:16];
   if (v14)
   {
@@ -285,7 +285,7 @@ LABEL_9:
 
       v36 = *(__b[1] + 8 * v11);
       v8 = v37;
-      v7 = [(ACUIDataclassActionPicker *)v39 descriptionForDataclassAction:v36];
+      v7 = [(ACUIDataclassActionPicker *)selfCopy descriptionForDataclassAction:v36];
       [v8 addObject:?];
       MEMORY[0x277D82BD8](v7);
       ++v11;
@@ -318,7 +318,7 @@ LABEL_9:
   v21 = __50__ACUIDataclassActionPicker_showInViewController___block_invoke;
   v22 = &unk_278BFA548;
   v26[1] = &v27;
-  v23 = MEMORY[0x277D82BE0](v39);
+  v23 = MEMORY[0x277D82BE0](selfCopy);
   v24 = MEMORY[0x277D82BE0](v34);
   v25 = MEMORY[0x277D82BE0](location[0]);
   v26[0] = MEMORY[0x277D82BE0](v37);
@@ -412,19 +412,19 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
 - (id)title
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v23 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
-  v24 = [(NSArray *)v23 count];
-  MEMORY[0x277D82BD8](v23);
+  affectedDataclasses = [(ACUIDataclassActionPicker *)self affectedDataclasses];
+  v24 = [(NSArray *)affectedDataclasses count];
+  MEMORY[0x277D82BD8](affectedDataclasses);
   if (v24 == 1)
   {
-    v22 = [(ACUIDataclassActionPicker *)v28 affectedDataclasses];
-    v26 = [(NSArray *)v22 lastObject];
-    MEMORY[0x277D82BD8](v22);
-    v25 = [ACUILocalization localizedTitleForDataclass:v26];
-    if ([(ACUIDataclassActionPicker *)v28 hasActionOfType:4]|| [(ACUIDataclassActionPicker *)v28 hasActionOfType:5]|| [(ACUIDataclassActionPicker *)v28 hasActionOfType:6])
+    affectedDataclasses2 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
+    lastObject = [(NSArray *)affectedDataclasses2 lastObject];
+    MEMORY[0x277D82BD8](affectedDataclasses2);
+    v25 = [ACUILocalization localizedTitleForDataclass:lastObject];
+    if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:4]|| [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:5]|| [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:6])
     {
       v19 = MEMORY[0x277CCACA8];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -437,9 +437,9 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
       MEMORY[0x277D82BD8](v21);
     }
 
-    else if ([(ACUIDataclassActionPicker *)v28 hasActionOfType:3]|| [(ACUIDataclassActionPicker *)v28 hasActionOfType:2])
+    else if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:3]|| [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:2])
     {
-      if (-[ACUIDataclassActionPicker hasActionOfType:](v28, "hasActionOfType:", 3) && ([v26 isEqualToString:*MEMORY[0x277CB91D8]] & 1) != 0)
+      if (-[ACUIDataclassActionPicker hasActionOfType:](selfCopy, "hasActionOfType:", 3) && ([lastObject isEqualToString:*MEMORY[0x277CB91D8]] & 1) != 0)
       {
         objc_storeStrong(location, 0);
       }
@@ -458,7 +458,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
       }
     }
 
-    else if (-[ACUIDataclassActionPicker hasActionOfType:](v28, "hasActionOfType:", 8) && ([v26 isEqualToString:*MEMORY[0x277CB91D8]] & 1) != 0)
+    else if (-[ACUIDataclassActionPicker hasActionOfType:](selfCopy, "hasActionOfType:", 8) && ([lastObject isEqualToString:*MEMORY[0x277CB91D8]] & 1) != 0)
     {
       v13 = MEMORY[0x277CCACA8];
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -472,7 +472,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
     }
 
     objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
+    objc_storeStrong(&lastObject, 0);
   }
 
   else
@@ -493,19 +493,19 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
 - (id)message
 {
-  v92 = self;
+  selfCopy = self;
   v91[1] = a2;
   v91[0] = 0;
-  v84 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
-  v83 = [(ACUIDataclassActionPicker *)v92 affectedAccount];
-  v90 = [ACUILocalization localizedTextForDataclasses:v84 usedAtBeginningOfSentence:0 forAccount:?];
-  MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  v86 = [(ACUIDataclassActionPicker *)v92 affectedAccount];
-  v85 = [(ACAccount *)v86 accountType];
-  v89 = [(ACAccountType *)v85 accountTypeDescription];
-  MEMORY[0x277D82BD8](v85);
-  MEMORY[0x277D82BD8](v86);
+  affectedDataclasses = [(ACUIDataclassActionPicker *)self affectedDataclasses];
+  affectedAccount = [(ACUIDataclassActionPicker *)selfCopy affectedAccount];
+  v90 = [ACUILocalization localizedTextForDataclasses:affectedDataclasses usedAtBeginningOfSentence:0 forAccount:?];
+  MEMORY[0x277D82BD8](affectedAccount);
+  MEMORY[0x277D82BD8](affectedDataclasses);
+  affectedAccount2 = [(ACUIDataclassActionPicker *)selfCopy affectedAccount];
+  accountType = [(ACAccount *)affectedAccount2 accountType];
+  accountTypeDescription = [(ACAccountType *)accountType accountTypeDescription];
+  MEMORY[0x277D82BD8](accountType);
+  MEMORY[0x277D82BD8](affectedAccount2);
   if (![v90 length])
   {
     v82 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -516,19 +516,19 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
     MEMORY[0x277D82BD8](v82);
   }
 
-  v80 = [(ACUIDataclassActionPicker *)v92 affectedDataclasses];
-  v81 = [(NSArray *)v80 count];
-  MEMORY[0x277D82BD8](v80);
+  affectedDataclasses2 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
+  v81 = [(NSArray *)affectedDataclasses2 count];
+  MEMORY[0x277D82BD8](affectedDataclasses2);
   if (v81 == 1)
   {
-    v88 = [(ACUIDataclassActionPicker *)v92 actionOfType:8];
+    v88 = [(ACUIDataclassActionPicker *)selfCopy actionOfType:8];
     if (v88)
     {
-      v78 = [(ACUIDataclassActionPicker *)v92 affectedDataclasses];
-      v77 = [(NSArray *)v78 firstObject];
-      v79 = [v77 isEqualToString:*MEMORY[0x277CB91D8]];
-      MEMORY[0x277D82BD8](v77);
-      MEMORY[0x277D82BD8](v78);
+      affectedDataclasses3 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
+      firstObject = [(NSArray *)affectedDataclasses3 firstObject];
+      v79 = [firstObject isEqualToString:*MEMORY[0x277CB91D8]];
+      MEMORY[0x277D82BD8](firstObject);
+      MEMORY[0x277D82BD8](affectedDataclasses3);
       if (v79)
       {
         v74 = MEMORY[0x277CCACA8];
@@ -555,7 +555,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
               v69 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v68 = [v69 localizedStringForKey:@"LOSE_NON_UPLOADED_DATA_IN_ONE_APP_WARNING" value:&stru_2850054A0 table:@"Localizable"];
               v67 = [location objectAtIndexedSubscript:0];
-              v8 = [v66 stringWithFormat:v68, v90, v89, v67];
+              v8 = [v66 stringWithFormat:v68, v90, accountTypeDescription, v67];
               v9 = v91[0];
               v91[0] = v8;
               MEMORY[0x277D82BD8](v9);
@@ -569,7 +569,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
               v64 = [v65 localizedStringForKey:@"LOSE_NON_UPLOADED_DATA_IN_TWO_APPS_WARNING" value:&stru_2850054A0 table:@"Localizable"];
               v63 = [location objectAtIndexedSubscript:0];
               v62 = [location objectAtIndexedSubscript:1];
-              v10 = [v61 stringWithFormat:v64, v90, v89, v63, v62];
+              v10 = [v61 stringWithFormat:v64, v90, accountTypeDescription, v63, v62];
               v11 = v91[0];
               v91[0] = v10;
               MEMORY[0x277D82BD8](v11);
@@ -585,7 +585,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
               v58 = [location objectAtIndexedSubscript:0];
               v57 = [location objectAtIndexedSubscript:1];
               v56 = [location objectAtIndexedSubscript:2];
-              v12 = [v55 stringWithFormat:v59, v90, v89, v58, v57, v56];
+              v12 = [v55 stringWithFormat:v59, v90, accountTypeDescription, v58, v57, v56];
               v13 = v91[0];
               v91[0] = v12;
               MEMORY[0x277D82BD8](v13);
@@ -603,7 +603,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
               v51 = [location objectAtIndexedSubscript:1];
               v50 = [location objectAtIndexedSubscript:2];
               v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(location, "count") - 3}];
-              v14 = [v48 stringWithFormat:v53, v90, v89, v52, v51, v50, v49];
+              v14 = [v48 stringWithFormat:v53, v90, accountTypeDescription, v52, v51, v50, v49];
               v15 = v91[0];
               v91[0] = v14;
               MEMORY[0x277D82BD8](v15);
@@ -622,7 +622,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
           v70 = MEMORY[0x277CCACA8];
           v72 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v71 = [v72 localizedStringForKey:@"LOSE_NON_UPLOADED_DATA_WARNING" value:&stru_2850054A0 table:@"Localizable"];
-          v6 = [v70 stringWithFormat:v90, v89];
+          v6 = [v70 stringWithFormat:v90, accountTypeDescription];
           v7 = v91[0];
           v91[0] = v6;
           MEMORY[0x277D82BD8](v7);
@@ -634,7 +634,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
       }
     }
 
-    else if ([(ACUIDataclassActionPicker *)v92 hasActionOfType:4]|| [(ACUIDataclassActionPicker *)v92 hasActionOfType:5]|| [(ACUIDataclassActionPicker *)v92 hasActionOfType:6])
+    else if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:4]|| [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:5]|| [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:6])
     {
       v45 = MEMORY[0x277CCACA8];
       v47 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -647,21 +647,21 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
       MEMORY[0x277D82BD8](v47);
     }
 
-    else if ([(ACUIDataclassActionPicker *)v92 hasActionOfType:3]&& [(ACUIDataclassActionPicker *)v92 hasActionOfType:2])
+    else if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:3]&& [(ACUIDataclassActionPicker *)selfCopy hasActionOfType:2])
     {
-      v18 = [(ACUIDataclassActionPicker *)v92 _stringForMessage:@"DISABLE_OTA_WITH_MERGE_OPTION_WARNING" withAccountType:v89 dataclassDescription:v90];
+      v18 = [(ACUIDataclassActionPicker *)selfCopy _stringForMessage:@"DISABLE_OTA_WITH_MERGE_OPTION_WARNING" withAccountType:accountTypeDescription dataclassDescription:v90];
       v19 = v91[0];
       v91[0] = v18;
       MEMORY[0x277D82BD8](v19);
     }
 
-    else if ([(ACUIDataclassActionPicker *)v92 hasActionOfType:3])
+    else if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:3])
     {
-      v43 = [(ACUIDataclassActionPicker *)v92 affectedDataclasses];
-      v42 = [(NSArray *)v43 firstObject];
-      v44 = [v42 isEqualToString:*MEMORY[0x277CB91C0]];
-      MEMORY[0x277D82BD8](v42);
-      MEMORY[0x277D82BD8](v43);
+      affectedDataclasses4 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
+      firstObject2 = [(NSArray *)affectedDataclasses4 firstObject];
+      v44 = [firstObject2 isEqualToString:*MEMORY[0x277CB91C0]];
+      MEMORY[0x277D82BD8](firstObject2);
+      MEMORY[0x277D82BD8](affectedDataclasses4);
       if (v44)
       {
         v41 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -674,11 +674,11 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
       else
       {
-        v39 = [(ACUIDataclassActionPicker *)v92 affectedDataclasses];
-        v38 = [(NSArray *)v39 firstObject];
-        v40 = [v38 isEqualToString:*MEMORY[0x277CB91D8]];
-        MEMORY[0x277D82BD8](v38);
-        MEMORY[0x277D82BD8](v39);
+        affectedDataclasses5 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
+        firstObject3 = [(NSArray *)affectedDataclasses5 firstObject];
+        v40 = [firstObject3 isEqualToString:*MEMORY[0x277CB91D8]];
+        MEMORY[0x277D82BD8](firstObject3);
+        MEMORY[0x277D82BD8](affectedDataclasses5);
         if (v40)
         {
           v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -691,7 +691,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
         else
         {
-          v24 = [(ACUIDataclassActionPicker *)v92 _stringForMessage:@"DELETE_EXISTING_DATA_WARNING" withAccountType:v89 dataclassDescription:v90];
+          v24 = [(ACUIDataclassActionPicker *)selfCopy _stringForMessage:@"DELETE_EXISTING_DATA_WARNING" withAccountType:accountTypeDescription dataclassDescription:v90];
           v25 = v91[0];
           v91[0] = v24;
           MEMORY[0x277D82BD8](v25);
@@ -702,9 +702,9 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
     objc_storeStrong(&v88, 0);
   }
 
-  else if ([(ACUIDataclassActionPicker *)v92 hasActionOfType:2])
+  else if ([(ACUIDataclassActionPicker *)selfCopy hasActionOfType:2])
   {
-    v26 = [(ACUIDataclassActionPicker *)v92 _stringForMessage:@"DELETE_ACCOUNT_MERGE_WARNING" withAccountType:v89 dataclassDescription:v90];
+    v26 = [(ACUIDataclassActionPicker *)selfCopy _stringForMessage:@"DELETE_ACCOUNT_MERGE_WARNING" withAccountType:accountTypeDescription dataclassDescription:v90];
     v27 = v91[0];
     v91[0] = v26;
     MEMORY[0x277D82BD8](v27);
@@ -732,60 +732,60 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
   }
 
   v33 = MEMORY[0x277D82BE0](v91[0]);
-  objc_storeStrong(&v89, 0);
+  objc_storeStrong(&accountTypeDescription, 0);
   objc_storeStrong(&v90, 0);
   objc_storeStrong(v91, 0);
 
   return v33;
 }
 
-- (id)_stringForMessage:(id)a3 withAccountType:(id)a4 dataclassDescription:(id)a5
+- (id)_stringForMessage:(id)message withAccountType:(id)type dataclassDescription:(id)description
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, type);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, description);
   v28 = 0;
-  v27 = [MEMORY[0x277CCAB68] string];
-  [v27 appendString:location[0]];
-  v19 = [(ACUIDataclassActionPicker *)v32 affectedAccount];
-  v20 = [(ACAccount *)v19 accountType];
-  v21 = [(ACAccountType *)v20 identifier];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:location[0]];
+  affectedAccount = [(ACUIDataclassActionPicker *)selfCopy affectedAccount];
+  accountType = [(ACAccount *)affectedAccount accountType];
+  identifier = [(ACAccountType *)accountType identifier];
   v25 = 0;
   v23 = 0;
   v22 = 0;
-  if ([(NSString *)v21 isEqualToString:*MEMORY[0x277CB8BA0]])
+  if ([(NSString *)identifier isEqualToString:*MEMORY[0x277CB8BA0]])
   {
-    v26 = [(ACUIDataclassActionPicker *)v32 affectedDataclasses];
+    affectedDataclasses = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
     v25 = 1;
-    v24 = [(NSArray *)v26 firstObject];
+    firstObject = [(NSArray *)affectedDataclasses firstObject];
     v23 = 1;
-    v22 = [v24 isEqualToString:*MEMORY[0x277CB91D8]];
+    v22 = [firstObject isEqualToString:*MEMORY[0x277CB91D8]];
   }
 
   if (v23)
   {
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](firstObject);
   }
 
   if (v25)
   {
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](affectedDataclasses);
   }
 
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](accountType);
+  MEMORY[0x277D82BD8](affectedAccount);
   if ((v22 & 1) == 0 && v30)
   {
-    [v27 appendString:@"_FORMAT"];
+    [string appendString:@"_FORMAT"];
     v11 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v13 localizedStringForKey:v27 value:&stru_2850054A0 table:@"Localizable"];
+    v12 = [v13 localizedStringForKey:string value:&stru_2850054A0 table:@"Localizable"];
     v7 = [v11 stringWithFormat:v30, v29];
     v8 = v28;
     v28 = v7;
@@ -796,10 +796,10 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
   else
   {
-    [v27 appendString:@"_NO_ACCOUNT_TYPE_FORMAT"];
+    [string appendString:@"_NO_ACCOUNT_TYPE_FORMAT"];
     v14 = MEMORY[0x277CCACA8];
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v16 localizedStringForKey:v27 value:&stru_2850054A0 table:@"Localizable"];
+    v15 = [v16 localizedStringForKey:string value:&stru_2850054A0 table:@"Localizable"];
     v5 = [v14 stringWithFormat:v29];
     v6 = v28;
     v28 = v5;
@@ -809,7 +809,7 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
   }
 
   v10 = MEMORY[0x277D82BE0](v28);
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&string, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
@@ -818,40 +818,40 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
   return v10;
 }
 
-- (id)descriptionForDataclassAction:(id)a3
+- (id)descriptionForDataclassAction:(id)action
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   if ([location[0] type])
   {
     if ([location[0] type] == 3)
     {
-      v18 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+      affectedDataclasses = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
       v31 = 0;
       v29 = 0;
       v19 = 0;
-      if ([(NSArray *)v18 count]== 1)
+      if ([(NSArray *)affectedDataclasses count]== 1)
       {
-        v32 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+        affectedDataclasses2 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
         v31 = 1;
-        v30 = [(NSArray *)v32 firstObject];
+        firstObject = [(NSArray *)affectedDataclasses2 firstObject];
         v29 = 1;
-        v19 = [v30 isEqualToString:*MEMORY[0x277CB91C0]];
+        v19 = [firstObject isEqualToString:*MEMORY[0x277CB91C0]];
       }
 
       if (v29)
       {
-        MEMORY[0x277D82BD8](v30);
+        MEMORY[0x277D82BD8](firstObject);
       }
 
       if (v31)
       {
-        MEMORY[0x277D82BD8](v32);
+        MEMORY[0x277D82BD8](affectedDataclasses2);
       }
 
-      MEMORY[0x277D82BD8](v18);
+      MEMORY[0x277D82BD8](affectedDataclasses);
       if (v19)
       {
         v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -861,30 +861,30 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
       else
       {
-        v15 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+        affectedDataclasses3 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
         v27 = 0;
         v25 = 0;
         v16 = 0;
-        if ([(NSArray *)v15 count]== 1)
+        if ([(NSArray *)affectedDataclasses3 count]== 1)
         {
-          v28 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+          affectedDataclasses4 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
           v27 = 1;
-          v26 = [(NSArray *)v28 firstObject];
+          firstObject2 = [(NSArray *)affectedDataclasses4 firstObject];
           v25 = 1;
-          v16 = [v26 isEqualToString:*MEMORY[0x277CB91D8]];
+          v16 = [firstObject2 isEqualToString:*MEMORY[0x277CB91D8]];
         }
 
         if (v25)
         {
-          MEMORY[0x277D82BD8](v26);
+          MEMORY[0x277D82BD8](firstObject2);
         }
 
         if (v27)
         {
-          MEMORY[0x277D82BD8](v28);
+          MEMORY[0x277D82BD8](affectedDataclasses4);
         }
 
-        MEMORY[0x277D82BD8](v15);
+        MEMORY[0x277D82BD8](affectedDataclasses3);
         if (v16)
         {
           v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -931,30 +931,30 @@ intptr_t __50__ACUIDataclassActionPicker_showInViewController___block_invoke_2(u
 
     else if ([location[0] type] == 8)
     {
-      v7 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+      affectedDataclasses5 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
       v23 = 0;
       v21 = 0;
       v8 = 0;
-      if ([(NSArray *)v7 count]== 1)
+      if ([(NSArray *)affectedDataclasses5 count]== 1)
       {
-        v24 = [(ACUIDataclassActionPicker *)v34 affectedDataclasses];
+        affectedDataclasses6 = [(ACUIDataclassActionPicker *)selfCopy affectedDataclasses];
         v23 = 1;
-        v22 = [(NSArray *)v24 firstObject];
+        firstObject3 = [(NSArray *)affectedDataclasses6 firstObject];
         v21 = 1;
-        v8 = [v22 isEqualToString:*MEMORY[0x277CB91D8]];
+        v8 = [firstObject3 isEqualToString:*MEMORY[0x277CB91D8]];
       }
 
       if (v21)
       {
-        MEMORY[0x277D82BD8](v22);
+        MEMORY[0x277D82BD8](firstObject3);
       }
 
       if (v23)
       {
-        MEMORY[0x277D82BD8](v24);
+        MEMORY[0x277D82BD8](affectedDataclasses6);
       }
 
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](affectedDataclasses5);
       if (v8)
       {
         v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];

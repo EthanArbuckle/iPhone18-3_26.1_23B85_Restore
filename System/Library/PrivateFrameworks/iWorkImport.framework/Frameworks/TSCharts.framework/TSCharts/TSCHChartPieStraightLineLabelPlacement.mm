@@ -1,15 +1,15 @@
 @interface TSCHChartPieStraightLineLabelPlacement
 - (BOOL)conflictsExist;
-- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)a3;
-- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)a3;
-- (CGPoint)cellForPoint:(CGPoint)a3;
-- (double)shiftAmountForWedgeLayoutInfo:(id)a3;
-- (id)newCalloutLinePaths:(id)a3 startLineEnd:(id)a4 outStartLineEndPath:(id *)a5 endLineEnd:(id)a6 outEndLineEndPath:(id *)a7 stroke:(id)a8 outStroke:(id *)a9 context:(CGContext *)a10 contextScale:(float)a11;
-- (id)setOfKeysForWedgeLayoutInfo:(id)a3;
+- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)info;
+- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)info;
+- (CGPoint)cellForPoint:(CGPoint)point;
+- (double)shiftAmountForWedgeLayoutInfo:(id)info;
+- (id)newCalloutLinePaths:(id)paths startLineEnd:(id)end outStartLineEndPath:(id *)path endLineEnd:(id)lineEnd outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)self0 contextScale:(float)self1;
+- (id)setOfKeysForWedgeLayoutInfo:(id)info;
 - (id)updateLabelTransformsToPreventOverlap;
-- (id)wedgeLayoutInfo:(id)a3 conflictsWithWedgeLayoutInfos:(id)a4;
-- (id)wedgeLayoutInfosThatShareCellsWithWedgeLayoutInfo:(id)a3;
-- (id)wedgeLayoutInfosToTheLeftOfWedgeLayoutInfo:(id)a3;
+- (id)wedgeLayoutInfo:(id)info conflictsWithWedgeLayoutInfos:(id)infos;
+- (id)wedgeLayoutInfosThatShareCellsWithWedgeLayoutInfo:(id)info;
+- (id)wedgeLayoutInfosToTheLeftOfWedgeLayoutInfo:(id)info;
 - (unint64_t)spatialMapCellSize;
 - (void)createSeriesIndexToAllWedgeLayoutInfosToTheLeftMap;
 - (void)createSeriesIndexToConflictingWedgeLayoutInfosMap;
@@ -17,12 +17,12 @@
 - (void)createSpatialMap;
 - (void)fixConflictsForWedgeLayoutInfos;
 - (void)fixTitleConflictsIfNeeded;
-- (void)invalidateWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4;
+- (void)invalidateWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo;
 - (void)setUpCaches;
-- (void)shiftLabelOutwards:(id)a3 shiftAmount:(double)a4 invalidateCahes:(BOOL)a5;
-- (void)updateConflictsForWedgeLayoutInfo:(id)a3 wedgeLayoutInfosThatShareCells:(id)a4;
-- (void)updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4;
-- (void)updateSpatialMapWithInvalidatedWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4;
+- (void)shiftLabelOutwards:(id)outwards shiftAmount:(double)amount invalidateCahes:(BOOL)cahes;
+- (void)updateConflictsForWedgeLayoutInfo:(id)info wedgeLayoutInfosThatShareCells:(id)cells;
+- (void)updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo;
+- (void)updateSpatialMapWithInvalidatedWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo;
 @end
 
 @implementation TSCHChartPieStraightLineLabelPlacement
@@ -53,7 +53,7 @@
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v48 = self;
+  selfCopy = self;
   v7 = objc_msgSend_allWedgeLayoutInfos(self, v4, 0.0, v5, v6);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, v9, v10, v11, &v49, v53, 16);
   if (v12)
@@ -85,8 +85,8 @@
   }
 
   v46 = objc_msgSend_copy(v3, v42, v43, v44, v45);
-  seriesIndexToWedgeLayoutInfo = v48->_seriesIndexToWedgeLayoutInfo;
-  v48->_seriesIndexToWedgeLayoutInfo = v46;
+  seriesIndexToWedgeLayoutInfo = selfCopy->_seriesIndexToWedgeLayoutInfo;
+  selfCopy->_seriesIndexToWedgeLayoutInfo = v46;
 }
 
 - (void)createSeriesIndexToAllWedgeLayoutInfosToTheLeftMap
@@ -215,28 +215,28 @@
   }
 }
 
-- (void)invalidateWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4
+- (void)invalidateWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo
 {
-  v6 = a4;
-  v15 = a3;
-  objc_msgSend_updateSpatialMapWithInvalidatedWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v7, v8, v9, v10, v15, v6);
-  objc_msgSend_updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v11, v12, v13, v14, v15, v6);
+  layoutInfoCopy = layoutInfo;
+  infoCopy = info;
+  objc_msgSend_updateSpatialMapWithInvalidatedWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v7, v8, v9, v10, infoCopy, layoutInfoCopy);
+  objc_msgSend_updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v11, v12, v13, v14, infoCopy, layoutInfoCopy);
 }
 
-- (void)updateSpatialMapWithInvalidatedWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4
+- (void)updateSpatialMapWithInvalidatedWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo
 {
   v113 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v8, v9, v10, v11, v6);
+  infoCopy = info;
+  layoutInfoCopy = layoutInfo;
+  v12 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v8, v9, v10, v11, infoCopy);
   v13 = MEMORY[0x277CBEB58];
-  v18 = objc_msgSend_copy(v7, v14, v15, v16, v17);
+  v18 = objc_msgSend_copy(layoutInfoCopy, v14, v15, v16, v17);
   v23 = objc_msgSend_setWithSet_(v13, v19, v20, v21, v22, v18);
 
   objc_msgSend_intersectSet_(v23, v24, v25, v26, v27, v12);
   v28 = MEMORY[0x277CBEB58];
-  v102 = v7;
-  v33 = objc_msgSend_copy(v7, v29, v30, v31, v32);
+  v102 = layoutInfoCopy;
+  v33 = objc_msgSend_copy(layoutInfoCopy, v29, v30, v31, v32);
   v38 = objc_msgSend_setWithSet_(v28, v34, v35, v36, v37, v33);
 
   objc_msgSend_minusSet_(v38, v39, v40, v41, v42, v23);
@@ -260,7 +260,7 @@
         }
 
         v56 = objc_msgSend_objectForKey_(self->_spatialMap, v49, v50, v51, v52, *(*(&v107 + 1) + 8 * i));
-        objc_msgSend_removeObject_(v56, v57, v58, v59, v60, v6);
+        objc_msgSend_removeObject_(v56, v57, v58, v59, v60, infoCopy);
       }
 
       v53 = objc_msgSend_countByEnumeratingWithState_objects_count_(v43, v49, v50, v51, v52, &v107, v112, 16);
@@ -305,7 +305,7 @@
           objc_msgSend_setObject_forKey_(self->_spatialMap, v95, v96, v97, v98, v91, v89);
         }
 
-        objc_msgSend_addObject_(v91, v90, v92, v93, v94, v6);
+        objc_msgSend_addObject_(v91, v90, v92, v93, v94, infoCopy);
       }
 
       v86 = objc_msgSend_countByEnumeratingWithState_objects_count_(v76, v82, v83, v84, v85, &v103, v111, 16);
@@ -315,15 +315,15 @@
   }
 }
 
-- (void)updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo:(id)a3 oldSetOfKeysForWedgeLayoutInfo:(id)a4
+- (void)updateSeriesIndexToConflictingWedgeLayoutInfosMapForInvalidatedWedgeLayoutInfo:(id)info oldSetOfKeysForWedgeLayoutInfo:(id)layoutInfo
 {
   v93[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v11 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v7, v8, v9, v10, a3);
+  layoutInfoCopy = layoutInfo;
+  v11 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v7, v8, v9, v10, info);
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v74 = v11;
-  v75 = v6;
-  v93[0] = v6;
+  v75 = layoutInfoCopy;
+  v93[0] = layoutInfoCopy;
   v93[1] = v11;
   v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v13, v14, v15, v16, v93, 2);
   if (objc_msgSend_count(v17, v18, v19, v20, v21))
@@ -425,16 +425,16 @@
   }
 }
 
-- (void)updateConflictsForWedgeLayoutInfo:(id)a3 wedgeLayoutInfosThatShareCells:(id)a4
+- (void)updateConflictsForWedgeLayoutInfo:(id)info wedgeLayoutInfosThatShareCells:(id)cells
 {
   v6 = MEMORY[0x277CBEB58];
-  v7 = a3;
-  v12 = objc_msgSend_wedgeLayoutInfo_conflictsWithWedgeLayoutInfos_(self, v8, v9, v10, v11, v7, a4);
+  infoCopy = info;
+  v12 = objc_msgSend_wedgeLayoutInfo_conflictsWithWedgeLayoutInfos_(self, v8, v9, v10, v11, infoCopy, cells);
   v43 = objc_msgSend_setWithSet_(v6, v13, v14, v15, v16, v12);
 
   seriesIndexToConflictingWedgeLayoutInfos = self->_seriesIndexToConflictingWedgeLayoutInfos;
   v18 = MEMORY[0x277CCABB0];
-  v23 = objc_msgSend_wedgeElement(v7, v19, v20, v21, v22);
+  v23 = objc_msgSend_wedgeElement(infoCopy, v19, v20, v21, v22);
 
   v28 = objc_msgSend_series(v23, v24, v25, v26, v27);
   v33 = objc_msgSend_seriesIndex(v28, v29, v30, v31, v32);
@@ -442,13 +442,13 @@
   objc_msgSend_setObject_forKey_(seriesIndexToConflictingWedgeLayoutInfos, v39, v40, v41, v42, v43, v38);
 }
 
-- (id)setOfKeysForWedgeLayoutInfo:(id)a3
+- (id)setOfKeysForWedgeLayoutInfo:(id)info
 {
   v78[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v77 = v4;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(v4, v6, v7, v8, v9);
+  v77 = infoCopy;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(infoCopy, v6, v7, v8, v9);
   x = v80.origin.x;
   y = v80.origin.y;
   width = v80.size.width;
@@ -525,12 +525,12 @@
   return v74;
 }
 
-- (CGPoint)cellForPoint:(CGPoint)a3
+- (CGPoint)cellForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   CGPointCellSize = self->_CGPointCellSize;
-  if (CGPointCellSize || (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3.x, a3.y, v3, "[TSCHChartPieStraightLineLabelPlacement cellForPoint:]"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartPieStraightLineLabelPlacement.m"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 155, 0, "Invalid cell point size. Using default (0,0) as the cell"), v14, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22), (CGPointCellSize = self->_CGPointCellSize) != 0))
+  if (CGPointCellSize || (v8 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, point.x, point.y, v3, "[TSCHChartPieStraightLineLabelPlacement cellForPoint:]"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartPieStraightLineLabelPlacement.m"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 155, 0, "Invalid cell point size. Using default (0,0) as the cell"), v14, v9, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22), (CGPointCellSize = self->_CGPointCellSize) != 0))
   {
     v23 = (x / CGPointCellSize);
     v24 = (y / CGPointCellSize);
@@ -604,10 +604,10 @@
   return vcvtmd_u64_f64(v17 / v35 + v17 / v35);
 }
 
-- (id)wedgeLayoutInfosToTheLeftOfWedgeLayoutInfo:(id)a3
+- (id)wedgeLayoutInfosToTheLeftOfWedgeLayoutInfo:(id)info
 {
   v79[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc(MEMORY[0x277CCAC98]);
   v10 = objc_msgSend_initWithKey_ascending_(v5, v6, v7, v8, v9, @"wedgeElement.series.seriesIndex", 1);
   v15 = objc_msgSend_allValues(self->_seriesIndexToWedgeLayoutInfo, v11, v12, v13, v14);
@@ -620,7 +620,7 @@
   v40 = objc_msgSend_count(v35, v36, v37, v38, v39) >> 1;
 
   v45 = objc_msgSend_tsu_rangeCheckedObjectAtIndex_(v30, v41, v42, v43, v44, v40);
-  if (objc_msgSend_isEqual_(v4, v46, v47, v48, v49, v45))
+  if (objc_msgSend_isEqual_(infoCopy, v46, v47, v48, v49, v45))
   {
     v54 = v45;
   }
@@ -637,7 +637,7 @@
       v45 = v54;
     }
 
-    while (!objc_msgSend_isEqual_(v4, v68, v69, v70, v71, v54));
+    while (!objc_msgSend_isEqual_(infoCopy, v68, v69, v70, v71, v54));
   }
 
   v72 = objc_msgSend_subarrayWithRange_(v30, v50, v51, v52, v53, 0, v40);
@@ -831,12 +831,12 @@
   }
 }
 
-- (double)shiftAmountForWedgeLayoutInfo:(id)a3
+- (double)shiftAmountForWedgeLayoutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   seriesIndexToConflictingWedgeLayoutInfos = self->_seriesIndexToConflictingWedgeLayoutInfos;
   v6 = MEMORY[0x277CCABB0];
-  v11 = objc_msgSend_wedgeElement(v4, v7, v8, v9, v10);
+  v11 = objc_msgSend_wedgeElement(infoCopy, v7, v8, v9, v10);
   v16 = objc_msgSend_series(v11, v12, v13, v14, v15);
   v21 = objc_msgSend_seriesIndex(v16, v17, v18, v19, v20);
   v26 = objc_msgSend_numberWithUnsignedInteger_(v6, v22, v23, v24, v25, v21);
@@ -844,7 +844,7 @@
 
   seriesIndexToAllWedgeLayoutInfosToTheLeft = self->_seriesIndexToAllWedgeLayoutInfosToTheLeft;
   v33 = MEMORY[0x277CCABB0];
-  v38 = objc_msgSend_wedgeElement(v4, v34, v35, v36, v37);
+  v38 = objc_msgSend_wedgeElement(infoCopy, v34, v35, v36, v37);
   v43 = objc_msgSend_series(v38, v39, v40, v41, v42);
   v48 = objc_msgSend_seriesIndex(v43, v44, v45, v46, v47);
   v53 = objc_msgSend_numberWithUnsignedInteger_(v33, v49, v50, v51, v52, v48);
@@ -858,7 +858,7 @@
   if (objc_msgSend_count(v69, v74, v75, v76, v77))
   {
     v82 = objc_msgSend_lastObject(v69, v78, v79, v80, v81);
-    objc_msgSend_combinedLabelRectInChartCoordinateSpace(v4, v83, v84, v85, v86);
+    objc_msgSend_combinedLabelRectInChartCoordinateSpace(infoCopy, v83, v84, v85, v86);
     objc_msgSend_paddedLabelRectWithRect_(self, v87, v88, v89, v90);
     v92 = v91;
     v94 = v93;
@@ -894,10 +894,10 @@
   return height;
 }
 
-- (void)shiftLabelOutwards:(id)a3 shiftAmount:(double)a4 invalidateCahes:(BOOL)a5
+- (void)shiftLabelOutwards:(id)outwards shiftAmount:(double)amount invalidateCahes:(BOOL)cahes
 {
-  v7 = a3;
-  v12 = objc_msgSend_wedgeElement(v7, v8, v9, v10, v11);
+  outwardsCopy = outwards;
+  v12 = objc_msgSend_wedgeElement(outwardsCopy, v8, v9, v10, v11);
   objc_msgSend_normalizedWedgeBisectionVector(v12, v13, v14, v15, v16);
   TSUMultiplyPointScalar();
   v18 = v17;
@@ -905,24 +905,24 @@
 
   memset(&v43, 0, sizeof(v43));
   CGAffineTransformMakeTranslation(&v43, v18, v20);
-  if (objc_msgSend_enableCalloutLineSetting(v7, v21, v22, v23, v24))
+  if (objc_msgSend_enableCalloutLineSetting(outwardsCopy, v21, v22, v23, v24))
   {
     v26 = objc_alloc_init(MEMORY[0x277CBEB98]);
-    if (a5)
+    if (cahes)
     {
-      v30 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v25, v27, v28, v29, v7);
+      v30 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v25, v27, v28, v29, outwardsCopy);
       v35 = objc_msgSend_copy(v30, v31, v32, v33, v34);
 
       v42 = v43;
-      objc_msgSend_concatenateCombinedLabelTransformWithTransform_(v7, v36, v43.tx, v43.c, v37, &v42);
-      objc_msgSend_invalidateWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v38, v39, v40, v41, v7, v35);
+      objc_msgSend_concatenateCombinedLabelTransformWithTransform_(outwardsCopy, v36, v43.tx, v43.c, v37, &v42);
+      objc_msgSend_invalidateWedgeLayoutInfo_oldSetOfKeysForWedgeLayoutInfo_(self, v38, v39, v40, v41, outwardsCopy, v35);
       v26 = v35;
     }
 
     else
     {
       v42 = v43;
-      objc_msgSend_concatenateCombinedLabelTransformWithTransform_(v7, v25, v43.tx, v43.c, v29, &v42);
+      objc_msgSend_concatenateCombinedLabelTransformWithTransform_(outwardsCopy, v25, v43.tx, v43.c, v29, &v42);
     }
   }
 }
@@ -970,11 +970,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)wedgeLayoutInfosThatShareCellsWithWedgeLayoutInfo:(id)a3
+- (id)wedgeLayoutInfosThatShareCellsWithWedgeLayoutInfo:(id)info
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v5, v6, v7, v8, v4);
+  infoCopy = info;
+  v9 = objc_msgSend_setOfKeysForWedgeLayoutInfo_(self, v5, v6, v7, v8, infoCopy);
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v39 = 0u;
   v40 = 0u;
@@ -1005,23 +1005,23 @@ LABEL_11:
     while (v21);
   }
 
-  objc_msgSend_removeObject_(v10, v29, v30, v31, v32, v4);
+  objc_msgSend_removeObject_(v10, v29, v30, v31, v32, infoCopy);
   v37 = objc_msgSend_copy(v10, v33, v34, v35, v36);
 
   return v37;
 }
 
-- (id)wedgeLayoutInfo:(id)a3 conflictsWithWedgeLayoutInfos:(id)a4
+- (id)wedgeLayoutInfo:(id)info conflictsWithWedgeLayoutInfos:(id)infos
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  infosCopy = infos;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = v7;
+  v9 = infosCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, v11, v12, v13, &v50, v54, 16);
   if (v14)
   {
@@ -1037,9 +1037,9 @@ LABEL_11:
         }
 
         v22 = *(*(&v50 + 1) + 8 * i);
-        if (objc_msgSend_enableCalloutLineSetting(v6, v15, v16, v17, v18, v50) || objc_msgSend_enableCalloutLineSetting(v22, v15, v16, v17, v18))
+        if (objc_msgSend_enableCalloutLineSetting(infoCopy, v15, v16, v17, v18, v50) || objc_msgSend_enableCalloutLineSetting(v22, v15, v16, v17, v18))
         {
-          objc_msgSend_combinedLabelRectInChartCoordinateSpace(v6, v15, v16, v17, v18);
+          objc_msgSend_combinedLabelRectInChartCoordinateSpace(infoCopy, v15, v16, v17, v18);
           objc_msgSend_paddedLabelRectWithRect_(self, v23, v24, v25, v26);
           v28 = v27;
           v30 = v29;
@@ -1073,59 +1073,59 @@ LABEL_11:
   return v48;
 }
 
-- (id)newCalloutLinePaths:(id)a3 startLineEnd:(id)a4 outStartLineEndPath:(id *)a5 endLineEnd:(id)a6 outEndLineEndPath:(id *)a7 stroke:(id)a8 outStroke:(id *)a9 context:(CGContext *)a10 contextScale:(float)a11
+- (id)newCalloutLinePaths:(id)paths startLineEnd:(id)end outStartLineEndPath:(id *)path endLineEnd:(id)lineEnd outEndLineEndPath:(id *)endPath stroke:(id)stroke outStroke:(id *)outStroke context:(CGContext *)self0 contextScale:(float)self1
 {
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  v20 = a3;
-  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v21, v22, v23, v24, v20);
+  endCopy = end;
+  lineEndCopy = lineEnd;
+  strokeCopy = stroke;
+  pathsCopy = paths;
+  objc_msgSend_calloutLineStartpointForWedgeLayoutInfo_(self, v21, v22, v23, v24, pathsCopy);
   v26 = v25;
   v28 = v27;
-  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v29, v25, v27, v30, v20);
+  objc_msgSend_calloutLineEndpointForWedgeLayoutInfo_(self, v29, v25, v27, v30, pathsCopy);
   v32 = v31;
   v34 = v33;
 
   v36 = objc_msgSend_bezierPathWithStart_end_(MEMORY[0x277D81160], v35, v26, v28, v32, v34);
-  v37 = v18;
-  v38 = v17;
+  v37 = lineEndCopy;
+  v38 = endCopy;
   v56 = 0;
   v54 = 0u;
   v55 = 0u;
-  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v39, v32, v34, v26, v36, 1, v37, v38, v19, v28);
+  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v39, v32, v34, v26, v36, 1, v37, v38, strokeCopy, v28);
   v53 = 0;
   v51 = 0u;
   v52 = 0u;
-  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v40, v32, v34, v26, v36, 0, v37, v38, v19, v28);
+  objc_msgSend_lineEndPositioningOnPath_atHead_headPoint_tailPoint_headLineEnd_tailLineEnd_stroke_(MEMORY[0x277D81160], v40, v32, v34, v26, v36, 0, v37, v38, strokeCopy, v28);
   v49[0] = v54;
   v49[1] = v55;
   v50 = v56;
   v47[0] = v51;
   v47[1] = v52;
   v48 = v53;
-  v44 = objc_msgSend_createClippedPath_headPositioning_tailPositioning_stroke_(MEMORY[0x277D81160], v41, *&v51, *&v52, v42, v36, v49, v47, v19);
-  if (a5)
+  v44 = objc_msgSend_createClippedPath_headPositioning_tailPositioning_stroke_(MEMORY[0x277D81160], v41, *&v51, *&v52, v42, v36, v49, v47, strokeCopy);
+  if (path)
   {
-    *a5 = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v43, *(&v51 + 1), *&v52, *&v51, v38, v19);
+    *path = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v43, *(&v51 + 1), *&v52, *&v51, v38, strokeCopy);
   }
 
-  if (a7)
+  if (endPath)
   {
-    *a7 = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v43, *(&v54 + 1), *&v55, *&v54, v37, v19);
+    *endPath = objc_msgSend_newPathForLineEnd_startPoint_angle_stroke_(self, v43, *(&v54 + 1), *&v55, *&v54, v37, strokeCopy);
   }
 
-  if (*a9)
+  if (*outStroke)
   {
-    v45 = v19;
-    *a9 = v19;
+    v45 = strokeCopy;
+    *outStroke = strokeCopy;
   }
 
   return v44;
 }
 
-- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)a3
+- (CGPoint)calloutLineStartpointForWedgeLayoutInfo:(id)info
 {
-  v6 = objc_msgSend_wedgeElement(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_wedgeElement(info, a2, v3, v4, v5);
   objc_msgSend_pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip_(v6, v7, 1.05, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -1137,9 +1137,9 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)a3
+- (CGPoint)calloutLineEndpointForWedgeLayoutInfo:(id)info
 {
-  (MEMORY[0x2821F9670])(a3, sel_pointAtLabelInChartCoordinateSpace);
+  (MEMORY[0x2821F9670])(info, sel_pointAtLabelInChartCoordinateSpace);
   result.y = v4;
   result.x = v3;
   return result;

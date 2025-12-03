@@ -1,32 +1,32 @@
 @interface PSSubtitleDisclosureTableCell
 + (Class)alternativeCellClass;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_valueLabelForSpecifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_valueLabelForSpecifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSubtitleDisclosureTableCell
 
-- (void)_valueLabelForSpecifier:(id)a3
+- (void)_valueLabelForSpecifier:(id)specifier
 {
-  if (!a3)
+  if (!specifier)
   {
     return;
   }
 
-  v4 = [a3 propertyForKey:@"cellSubtitleText"];
-  v5 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
-  [v5 setText:v4];
+  v4 = [specifier propertyForKey:@"cellSubtitleText"];
+  detailTextLabel = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
+  [detailTextLabel setText:v4];
 
-  v6 = [(PSTableCell *)self value];
+  value = [(PSTableCell *)self value];
   valueLabel = self->_valueLabel;
-  v20 = v6;
+  v20 = value;
   if (valueLabel)
   {
-    v8 = [(UILabel *)valueLabel text];
-    v6 = v20;
-    v9 = v8;
+    text = [(UILabel *)valueLabel text];
+    value = v20;
+    v9 = text;
   }
 
   else
@@ -34,7 +34,7 @@
     v9 = 0;
   }
 
-  if (v6 != v9 && ([v6 isEqualToString:v9] & 1) == 0)
+  if (value != v9 && ([value isEqualToString:v9] & 1) == 0)
   {
     v10 = [v20 length];
     v11 = self->_valueLabel;
@@ -48,15 +48,15 @@
         self->_valueLabel = v13;
 
         v15 = objc_opt_new();
-        v16 = [v15 detailTextLabel];
-        v17 = [v16 font];
-        [(UILabel *)self->_valueLabel setFont:v17];
+        detailTextLabel2 = [v15 detailTextLabel];
+        font = [detailTextLabel2 font];
+        [(UILabel *)self->_valueLabel setFont:font];
 
         [(UILabel *)self->_valueLabel setNumberOfLines:0];
         [(UILabel *)self->_valueLabel setLineBreakMode:0];
         [(UILabel *)self->_valueLabel setEnabled:0];
-        v18 = [(PSSubtitleDisclosureTableCell *)self contentView];
-        [v18 addSubview:self->_valueLabel];
+        contentView = [(PSSubtitleDisclosureTableCell *)self contentView];
+        [contentView addSubview:self->_valueLabel];
 
         v11 = self->_valueLabel;
       }
@@ -95,8 +95,8 @@ LABEL_14:
     if (valueLabel)
     {
       [(UILabel *)valueLabel sizeToFit];
-      v4 = [(PSSubtitleDisclosureTableCell *)self layoutManager];
-      [v4 contentRectForCell:self forState:0];
+      layoutManager = [(PSSubtitleDisclosureTableCell *)self layoutManager];
+      [layoutManager contentRectForCell:self forState:0];
       v6 = v5;
       v8 = v7;
 
@@ -104,35 +104,35 @@ LABEL_14:
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [(PSSubtitleDisclosureTableCell *)self _shouldReverseLayoutDirection];
-      v16 = [(PSSubtitleDisclosureTableCell *)self traitCollection];
-      v17 = [v16 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+      _shouldReverseLayoutDirection = [(PSSubtitleDisclosureTableCell *)self _shouldReverseLayoutDirection];
+      traitCollection = [(PSSubtitleDisclosureTableCell *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
-        v19 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
-        [v19 frame];
+        detailTextLabel = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
+        [detailTextLabel frame];
         MaxX = v20;
-        if (v15)
+        if (_shouldReverseLayoutDirection)
         {
           MaxX = CGRectGetMaxX(*&v20);
         }
 
         v25 = self->_valueLabel;
-        v26 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-        [v26 frame];
+        textLabel = [(PSSubtitleDisclosureTableCell *)self textLabel];
+        [textLabel frame];
         [(UILabel *)v25 sizeThatFits:CGRectGetWidth(v79), 1.79769313e308];
         v28 = v27;
         v30 = v29;
 
-        if (v15)
+        if (_shouldReverseLayoutDirection)
         {
           MaxX = MaxX - v28;
         }
 
-        v31 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-        [v31 frame];
+        textLabel2 = [(PSSubtitleDisclosureTableCell *)self textLabel];
+        [textLabel2 frame];
         v33 = v32;
         v35 = v34;
         v37 = v36;
@@ -143,11 +143,11 @@ LABEL_14:
         v80.size.width = v28;
         v80.size.height = v30;
         v40 = v35 - CGRectGetHeight(v80) * 0.5;
-        v41 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-        [v41 setFrame:{v33, v40, v37, v39}];
+        textLabel3 = [(PSSubtitleDisclosureTableCell *)self textLabel];
+        [textLabel3 setFrame:{v33, v40, v37, v39}];
 
-        v42 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
-        [v42 frame];
+        detailTextLabel2 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
+        [detailTextLabel2 frame];
         v44 = v43;
         v46 = v45;
         v48 = v47;
@@ -158,11 +158,11 @@ LABEL_14:
         v81.size.width = v28;
         v81.size.height = v30;
         v51 = v46 - CGRectGetHeight(v81) * 0.5;
-        v52 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
-        [v52 setFrame:{v44, v51, v48, v50}];
+        detailTextLabel3 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
+        [detailTextLabel3 setFrame:{v44, v51, v48, v50}];
 
-        v53 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
-        [v53 frame];
+        detailTextLabel4 = [(PSSubtitleDisclosureTableCell *)self detailTextLabel];
+        [detailTextLabel4 frame];
         MaxY = CGRectGetMaxY(v82);
 
         [(UILabel *)self->_valueLabel setFrame:MaxX, MaxY, v28, v30];
@@ -170,7 +170,7 @@ LABEL_14:
 
       else
       {
-        if (v15)
+        if (_shouldReverseLayoutDirection)
         {
           v55 = 0.0;
         }
@@ -183,15 +183,15 @@ LABEL_14:
         v56 = (v8 - v14) * 0.5;
         v57 = floorf(v56);
         [(UILabel *)self->_valueLabel setFrame:v55, v57, v12, v14];
-        v58 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-        [v58 frame];
+        textLabel4 = [(PSSubtitleDisclosureTableCell *)self textLabel];
+        [textLabel4 frame];
         v60 = v59;
         v62 = v61;
         v64 = v63;
         v66 = v65;
 
         v76 = v62;
-        if (v15)
+        if (_shouldReverseLayoutDirection)
         {
           v83.origin.x = v55;
           v83.origin.y = v57;
@@ -225,7 +225,7 @@ LABEL_14:
           v71 = v68 + v70;
           v72 = v64 - v71;
           v73 = v60 + v71;
-          if (v15)
+          if (_shouldReverseLayoutDirection)
           {
             v74 = v73;
           }
@@ -235,42 +235,42 @@ LABEL_14:
             v74 = v60;
           }
 
-          v75 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-          [v75 setFrame:{v74, v76, v72, v66}];
+          textLabel5 = [(PSSubtitleDisclosureTableCell *)self textLabel];
+          [textLabel5 setFrame:{v74, v76, v72, v66}];
         }
       }
     }
   }
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = PSSubtitleDisclosureTableCell;
-  v4 = a3;
-  [(PSTableCell *)&v5 refreshCellContentsWithSpecifier:v4];
-  [(PSSubtitleDisclosureTableCell *)self _valueLabelForSpecifier:v4, v5.receiver, v5.super_class];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v5 refreshCellContentsWithSpecifier:specifierCopy];
+  [(PSSubtitleDisclosureTableCell *)self _valueLabelForSpecifier:specifierCopy, v5.receiver, v5.super_class];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v17.receiver = self;
   v17.super_class = PSSubtitleDisclosureTableCell;
   [(PSSubtitleDisclosureTableCell *)&v17 sizeThatFits:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(PSSubtitleDisclosureTableCell *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v11))
+  traitCollection = [(PSSubtitleDisclosureTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     valueLabel = self->_valueLabel;
 
     if (valueLabel)
     {
-      v13 = [(PSSubtitleDisclosureTableCell *)self textLabel];
-      [v13 frame];
+      textLabel = [(PSSubtitleDisclosureTableCell *)self textLabel];
+      [textLabel frame];
       CGRectGetMinX(v19);
 
       [(UILabel *)self->_valueLabel sizeThatFits:width, height];
@@ -291,7 +291,7 @@ LABEL_14:
 
 + (Class)alternativeCellClass
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_class();
   }

@@ -1,10 +1,10 @@
 @interface SKUIMutableApplicationControllerOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIMutableApplicationControllerOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(SKUIApplicationControllerOptions);
   *(result + 8) = self->super._supportsFullApplicationReload;

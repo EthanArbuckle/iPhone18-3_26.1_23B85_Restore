@@ -1,21 +1,21 @@
 @interface SMCryptoUtilities
-+ (id)decryptSafetyCache:(id)a3 key:(id)a4 sessionID:(id)a5 role:(id)a6 device:(int64_t)a7 metricsDict:(id *)a8 hashString:(id *)a9;
-+ (id)decryptSafetyCache:(id)a3 withKey:(id)a4;
-+ (id)encryptSafetyCache:(id)a3 withKey:(id)a4;
-+ (id)getDeserializedJsonDict:(id)a3;
-+ (id)getRandomBytes:(unint64_t)a3;
-+ (id)getSerializedJsonData:(id)a3;
++ (id)decryptSafetyCache:(id)cache key:(id)key sessionID:(id)d role:(id)role device:(int64_t)device metricsDict:(id *)dict hashString:(id *)string;
++ (id)decryptSafetyCache:(id)cache withKey:(id)key;
++ (id)encryptSafetyCache:(id)cache withKey:(id)key;
++ (id)getDeserializedJsonDict:(id)dict;
++ (id)getRandomBytes:(unint64_t)bytes;
++ (id)getSerializedJsonData:(id)data;
 @end
 
 @implementation SMCryptoUtilities
 
-+ (id)getSerializedJsonData:(id)a3
++ (id)getSerializedJsonData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
     v10 = 0;
-    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:&v10];
+    v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:data options:0 error:&v10];
     v4 = v10;
     if (v4)
     {
@@ -57,13 +57,13 @@
   return v6;
 }
 
-+ (id)getDeserializedJsonDict:(id)a3
++ (id)getDeserializedJsonDict:(id)dict
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (dict)
   {
     v8 = 0;
-    v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:1 error:&v8];
+    v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dict options:1 error:&v8];
     v4 = v8;
     if (v4)
     {
@@ -99,11 +99,11 @@
   return v6;
 }
 
-+ (id)getRandomBytes:(unint64_t)a3
++ (id)getRandomBytes:(unint64_t)bytes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a3];
-  v5 = SecRandomCopyBytes(*MEMORY[0x277CDC540], a3, [v4 mutableBytes]);
+  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:bytes];
+  v5 = SecRandomCopyBytes(*MEMORY[0x277CDC540], bytes, [v4 mutableBytes]);
   if (v5)
   {
     v6 = v5;
@@ -126,13 +126,13 @@
   return v8;
 }
 
-+ (id)encryptSafetyCache:(id)a3 withKey:(id)a4
++ (id)encryptSafetyCache:(id)cache withKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  cacheCopy = cache;
+  keyCopy = key;
+  v7 = keyCopy;
+  if (!cacheCopy || !keyCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -151,7 +151,7 @@ LABEL_26:
     goto LABEL_12;
   }
 
-  if ([v6 length] != 32)
+  if ([keyCopy length] != 32)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -167,7 +167,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v8 = [v5 length];
+  v8 = [cacheCopy length];
   v9 = [SMCryptoUtilities getRandomBytes:16];
   if (v9)
   {
@@ -177,7 +177,7 @@ LABEL_26:
     [v7 bytes];
     [v7 length];
     [v10 mutableBytes];
-    [v5 bytes];
+    [cacheCopy bytes];
     v11 = CCCryptorGCMOneshotEncrypt();
     if (!v11)
     {
@@ -224,13 +224,13 @@ LABEL_22:
   return v17;
 }
 
-+ (id)decryptSafetyCache:(id)a3 withKey:(id)a4
++ (id)decryptSafetyCache:(id)cache withKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  cacheCopy = cache;
+  keyCopy = key;
+  v7 = keyCopy;
+  if (!cacheCopy || !keyCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -247,13 +247,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v5 length] <= 0x20)
+  if ([cacheCopy length] <= 0x20)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v20 = [v5 length];
+      v20 = [cacheCopy length];
       v9 = "#SafetyCache,SMCU,decryptSafetyCache,encryptedData is too short,length,%d";
       v10 = v8;
       v11 = 8;
@@ -265,9 +265,9 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v12 = [v5 length] - 32;
+  v12 = [cacheCopy length] - 32;
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v12];
-  [v5 bytes];
+  [cacheCopy bytes];
   [v7 bytes];
   [v7 length];
   [v8 mutableBytes];
@@ -303,14 +303,14 @@ LABEL_14:
   return v16;
 }
 
-+ (id)decryptSafetyCache:(id)a3 key:(id)a4 sessionID:(id)a5 role:(id)a6 device:(int64_t)a7 metricsDict:(id *)a8 hashString:(id *)a9
++ (id)decryptSafetyCache:(id)cache key:(id)key sessionID:(id)d role:(id)role device:(int64_t)device metricsDict:(id *)dict hashString:(id *)string
 {
   v77 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  if (!v15)
+  cacheCopy = cache;
+  keyCopy = key;
+  dCopy = d;
+  roleCopy = role;
+  if (!cacheCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -329,7 +329,7 @@ LABEL_66:
     goto LABEL_17;
   }
 
-  if (!v17)
+  if (!dCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -342,9 +342,9 @@ LABEL_66:
     goto LABEL_66;
   }
 
-  if (v16)
+  if (keyCopy)
   {
-    v19 = [SMCryptoUtilities decryptSafetyCache:v15 withKey:v16];
+    v19 = [SMCryptoUtilities decryptSafetyCache:cacheCopy withKey:keyCopy];
     v64 = v19;
     if (!v19)
     {
@@ -354,36 +354,36 @@ LABEL_66:
         v51 = objc_opt_class();
         v52 = NSStringFromClass(v51);
         NSStringFromSelector(a2);
-        v54 = v53 = a7;
+        v54 = v53 = device;
         *buf = 138413058;
-        v66 = v18;
+        v66 = roleCopy;
         v67 = 2112;
-        v68 = v17;
+        v68 = dCopy;
         v69 = 2112;
         v70 = v52;
         v71 = 2112;
         v72 = v54;
         _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,sessionID:%@,%@,%@,decryption failed", buf, 0x2Au);
 
-        a7 = v53;
+        device = v53;
       }
 
-      if (a7 == 1 && a8)
+      if (device == 1 && dict)
       {
-        v36 = *a8;
+        v36 = *dict;
         v37 = @"phoneCacheDecryptionResult";
       }
 
       else
       {
-        v42 = a7;
+        deviceCopy = device;
         v21 = 0;
-        if (v42 != 2 || !a8)
+        if (deviceCopy != 2 || !dict)
         {
           goto LABEL_58;
         }
 
-        v36 = *a8;
+        v36 = *dict;
         v37 = @"watchCacheDecryptionResult";
       }
 
@@ -404,36 +404,36 @@ LABEL_58:
         v55 = objc_opt_class();
         v56 = NSStringFromClass(v55);
         NSStringFromSelector(a2);
-        v58 = v57 = a7;
+        v58 = v57 = device;
         *buf = 138413058;
-        v66 = v18;
+        v66 = roleCopy;
         v67 = 2112;
-        v68 = v17;
+        v68 = dCopy;
         v69 = 2112;
         v70 = v56;
         v71 = 2112;
         v72 = v58;
         _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,sessionID:%@,%@,%@,deserialization failed", buf, 0x2Au);
 
-        a7 = v57;
+        device = v57;
       }
 
-      if (a7 == 1 && a8)
+      if (device == 1 && dict)
       {
-        v40 = *a8;
+        v40 = *dict;
         v41 = @"phoneCacheDecryptionResult";
       }
 
       else
       {
-        v45 = a7;
+        deviceCopy2 = device;
         v21 = 0;
-        if (v45 != 2 || !a8)
+        if (deviceCopy2 != 2 || !dict)
         {
           goto LABEL_57;
         }
 
-        v40 = *a8;
+        v40 = *dict;
         v41 = @"watchCacheDecryptionResult";
       }
 
@@ -444,7 +444,7 @@ LABEL_57:
       goto LABEL_58;
     }
 
-    v63 = a7;
+    deviceCopy3 = device;
     v62 = v20;
     v21 = [objc_alloc(MEMORY[0x277D4AA70]) initWithDictionary:v20];
     if (!v21)
@@ -456,9 +456,9 @@ LABEL_57:
         v60 = NSStringFromClass(v59);
         v61 = NSStringFromSelector(a2);
         *buf = 138413058;
-        v66 = v18;
+        v66 = roleCopy;
         v67 = 2112;
-        v68 = v17;
+        v68 = dCopy;
         v69 = 2112;
         v70 = v60;
         v71 = 2112;
@@ -466,28 +466,28 @@ LABEL_57:
         _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,sessionID:%@,%@,%@,initialization of SMCache object failed", buf, 0x2Au);
       }
 
-      if (v63 == 1 && a8)
+      if (deviceCopy3 == 1 && dict)
       {
-        [*a8 setValue:&unk_28459E730 forKey:@"phoneCacheDecryptionResult"];
+        [*dict setValue:&unk_28459E730 forKey:@"phoneCacheDecryptionResult"];
         v29 = v62;
       }
 
       else
       {
         v29 = v62;
-        if (v63 == 2 && a8)
+        if (deviceCopy3 == 2 && dict)
         {
-          [*a8 setValue:&unk_28459E730 forKey:@"watchCacheDecryptionResult"];
+          [*dict setValue:&unk_28459E730 forKey:@"watchCacheDecryptionResult"];
         }
       }
 
       goto LABEL_52;
     }
 
-    if (a9)
+    if (string)
     {
       v22 = [v64 md5];
-      *a9 = [v22 hexString];
+      *string = [v22 hexString];
     }
 
     v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -496,23 +496,23 @@ LABEL_57:
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = NSStringFromSelector(a2);
-      v27 = [v21 identifier];
+      identifier = [v21 identifier];
       *buf = 138413570;
-      v66 = v18;
+      v66 = roleCopy;
       v67 = 2112;
-      v68 = v17;
+      v68 = dCopy;
       v69 = 2112;
       v70 = v25;
       v71 = 2112;
       v72 = v26;
       v73 = 2112;
-      v74 = v27;
+      v74 = identifier;
       v75 = 2048;
-      v76 = [v21 identifierHash];
+      identifierHash = [v21 identifierHash];
       _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_DEFAULT, "#SafetyCache,%@,sessionID:%@,%@,%@,successfully decrypted safety cache data,cacheIdentifier %@, hash %lu", buf, 0x3Eu);
     }
 
-    if (v63 == 1 && a8)
+    if (deviceCopy3 == 1 && dict)
     {
       v28 = @"phoneCacheDecryptionResult";
       v29 = v62;
@@ -521,7 +521,7 @@ LABEL_57:
     else
     {
       v29 = v62;
-      if (v63 != 2 || !a8)
+      if (deviceCopy3 != 2 || !dict)
       {
         goto LABEL_51;
       }
@@ -529,7 +529,7 @@ LABEL_57:
       v28 = @"watchCacheDecryptionResult";
     }
 
-    [*a8 setValue:&unk_28459E748 forKey:v28];
+    [*dict setValue:&unk_28459E748 forKey:v28];
 LABEL_51:
     v44 = v21;
 LABEL_52:
@@ -543,34 +543,34 @@ LABEL_52:
     v47 = objc_opt_class();
     v48 = NSStringFromClass(v47);
     NSStringFromSelector(a2);
-    v50 = v49 = a7;
+    v50 = v49 = device;
     *buf = 138413058;
-    v66 = v18;
+    v66 = roleCopy;
     v67 = 2112;
-    v68 = v17;
+    v68 = dCopy;
     v69 = 2112;
     v70 = v48;
     v71 = 2112;
     v72 = v50;
     _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,sessionID:%@,%@,%@,no safety cache key available", buf, 0x2Au);
 
-    a7 = v49;
+    device = v49;
   }
 
-  if (a7 == 1 && a8)
+  if (device == 1 && dict)
   {
-    v33 = *a8;
+    v33 = *dict;
     v34 = @"phoneCacheDecryptionResult";
 LABEL_32:
     [v33 setValue:&unk_28459E6E8 forKey:v34];
     goto LABEL_18;
   }
 
-  v38 = a7;
+  deviceCopy4 = device;
   v21 = 0;
-  if (v38 == 2 && a8)
+  if (deviceCopy4 == 2 && dict)
   {
-    v33 = *a8;
+    v33 = *dict;
     v34 = @"watchCacheDecryptionResult";
     goto LABEL_32;
   }

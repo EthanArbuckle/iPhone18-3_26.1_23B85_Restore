@@ -1,5 +1,5 @@
 @interface NEAppProxyTCPFlow
-- (NEAppProxyTCPFlow)initWithNEFlow:(_NEFlow *)a3 queue:(id)a4;
+- (NEAppProxyTCPFlow)initWithNEFlow:(_NEFlow *)flow queue:(id)queue;
 - (NWEndpoint)remoteEndpoint;
 - (id)description;
 - (void)readDataWithCompletionHandler:(void *)completionHandler;
@@ -11,17 +11,17 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEAppProxyFlow *)self metaData];
-  v5 = [(NEAppProxyTCPFlow *)self remoteFlowEndpoint];
-  v6 = [(NEAppProxyFlow *)self networkInterface];
-  v7 = [(NEAppProxyFlow *)self isBound];
+  metaData = [(NEAppProxyFlow *)self metaData];
+  remoteFlowEndpoint = [(NEAppProxyTCPFlow *)self remoteFlowEndpoint];
+  networkInterface = [(NEAppProxyFlow *)self networkInterface];
+  isBound = [(NEAppProxyFlow *)self isBound];
   v8 = &stru_1F3880810;
-  if (v7)
+  if (isBound)
   {
     v8 = @"(bound)";
   }
 
-  v9 = [v3 stringWithFormat:@"TCP %@ remote: %@ interface %@%@", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"TCP %@ remote: %@ interface %@%@", metaData, remoteFlowEndpoint, networkInterface, v8];
 
   return v9;
 }
@@ -29,8 +29,8 @@
 - (NWEndpoint)remoteEndpoint
 {
   v2 = MEMORY[0x1E6977E20];
-  v3 = [(NEAppProxyTCPFlow *)self remoteFlowEndpoint];
-  v4 = [v2 endpointWithCEndpoint:v3];
+  remoteFlowEndpoint = [(NEAppProxyTCPFlow *)self remoteFlowEndpoint];
+  v4 = [v2 endpointWithCEndpoint:remoteFlowEndpoint];
 
   return v4;
 }
@@ -216,12 +216,12 @@ void __51__NEAppProxyTCPFlow_readDataWithCompletionHandler___block_invoke_2(uint
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (NEAppProxyTCPFlow)initWithNEFlow:(_NEFlow *)a3 queue:(id)a4
+- (NEAppProxyTCPFlow)initWithNEFlow:(_NEFlow *)flow queue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = NEAppProxyTCPFlow;
-  v7 = [(NEAppProxyFlow *)&v11 initWithNEFlow:a3 queue:v6];
+  v7 = [(NEAppProxyFlow *)&v11 initWithNEFlow:flow queue:queueCopy];
   if (v7)
   {
     v8 = +[NEAppProxyFlow copyRemoteEndpointFromFlow:];

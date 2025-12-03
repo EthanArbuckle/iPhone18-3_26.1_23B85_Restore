@@ -1,122 +1,122 @@
 @interface ODNServices
-- (void)cacheData:(id)a3 forKey:(id)a4 andCategory:(int64_t)a5 completion:(id)a6;
-- (void)dKsJLlNX54lzKt5n:(id)a3 eqF2XJh3hHBJQf2K:(id)a4;
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4;
-- (void)fetchConfigThrowingWithCompletion:(id)a3;
-- (void)fetchConfigWithCompletion:(id)a3;
-- (void)fetchDataForKey:(id)a3 andCategory:(int64_t)a4 completion:(id)a5;
-- (void)fetchGeoCodingsForAddresses:(id)a3 completion:(id)a4;
-- (void)lJIqliFcwusu4FxD:(id)a3 be2xk53Wn161LTDz:(id)a4 completion:(id)a5;
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5;
-- (void)registerICloudLoginWithCompletion:(id)a3;
-- (void)unregisterICloudLoginWithCompletion:(id)a3;
-- (void)updateGeoCodingsForAddresses:(id)a3 locations:(id)a4 completion:(id)a5;
+- (void)cacheData:(id)data forKey:(id)key andCategory:(int64_t)category completion:(id)completion;
+- (void)dKsJLlNX54lzKt5n:(id)kt5n eqF2XJh3hHBJQf2K:(id)k;
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion;
+- (void)fetchConfigThrowingWithCompletion:(id)completion;
+- (void)fetchConfigWithCompletion:(id)completion;
+- (void)fetchDataForKey:(id)key andCategory:(int64_t)category completion:(id)completion;
+- (void)fetchGeoCodingsForAddresses:(id)addresses completion:(id)completion;
+- (void)lJIqliFcwusu4FxD:(id)d be2xk53Wn161LTDz:(id)dz completion:(id)completion;
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion;
+- (void)registerICloudLoginWithCompletion:(id)completion;
+- (void)unregisterICloudLoginWithCompletion:(id)completion;
+- (void)updateGeoCodingsForAddresses:(id)addresses locations:(id)locations completion:(id)completion;
 @end
 
 @implementation ODNServices
 
-- (void)updateGeoCodingsForAddresses:(id)a3 locations:(id)a4 completion:(id)a5
+- (void)updateGeoCodingsForAddresses:(id)addresses locations:(id)locations completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  locationsCopy = locations;
+  addressesCopy = addresses;
   v10 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v10 updateGeoCodingsForAddresses:v9 locations:v8];
+  [v10 updateGeoCodingsForAddresses:addressesCopy locations:locationsCopy];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)fetchGeoCodingsForAddresses:(id)a3 completion:(id)a4
+- (void)fetchGeoCodingsForAddresses:(id)addresses completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  addressesCopy = addresses;
   v7 = +[Lt10zus2DOk3OfFf sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__ODNServices_fetchGeoCodingsForAddresses_completion___block_invoke;
   v9[3] = &unk_1E85EE098;
-  v10 = v5;
-  v8 = v5;
-  [v7 fetchGeoCodingsForAddresses:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 fetchGeoCodingsForAddresses:addressesCopy completion:v9];
 }
 
-- (void)fetchConfigThrowingWithCompletion:(id)a3
+- (void)fetchConfigThrowingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v4 fetchConfigThrowingWithCompletion:v3];
+  [v4 fetchConfigThrowingWithCompletion:completionCopy];
 }
 
-- (void)fetchConfigWithCompletion:(id)a3
+- (void)fetchConfigWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v4 fetchConfigWithCompletion:v3];
+  [v4 fetchConfigWithCompletion:completionCopy];
 }
 
-- (void)dKsJLlNX54lzKt5n:(id)a3 eqF2XJh3hHBJQf2K:(id)a4
+- (void)dKsJLlNX54lzKt5n:(id)kt5n eqF2XJh3hHBJQf2K:(id)k
 {
-  v5 = a4;
-  v6 = a3;
+  kCopy = k;
+  kt5nCopy = kt5n;
   v7 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v7 dKsJLlNX54lzKt5n:v6 eqF2XJh3hHBJQf2K:v5];
+  [v7 dKsJLlNX54lzKt5n:kt5nCopy eqF2XJh3hHBJQf2K:kCopy];
 }
 
-- (void)lJIqliFcwusu4FxD:(id)a3 be2xk53Wn161LTDz:(id)a4 completion:(id)a5
+- (void)lJIqliFcwusu4FxD:(id)d be2xk53Wn161LTDz:(id)dz completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  dzCopy = dz;
+  dCopy = d;
   v10 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v10 lJIqliFcwusu4FxD:v9 be2xk53Wn161LTDz:v8 completion:v7];
+  [v10 lJIqliFcwusu4FxD:dCopy be2xk53Wn161LTDz:dzCopy completion:completionCopy];
 }
 
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  ozkCopy = ozk;
   v7 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v7 evrtH713YbFfEOzk:v6 completion:v5];
+  [v7 evrtH713YbFfEOzk:ozkCopy completion:completionCopy];
 }
 
-- (void)cacheData:(id)a3 forKey:(id)a4 andCategory:(int64_t)a5 completion:(id)a6
+- (void)cacheData:(id)data forKey:(id)key andCategory:(int64_t)category completion:(id)completion
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  keyCopy = key;
+  dataCopy = data;
   v12 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v12 cacheData:v11 forKey:v10 andCategory:a5 completion:v9];
+  [v12 cacheData:dataCopy forKey:keyCopy andCategory:category completion:completionCopy];
 }
 
-- (void)fetchDataForKey:(id)a3 andCategory:(int64_t)a4 completion:(id)a5
+- (void)fetchDataForKey:(id)key andCategory:(int64_t)category completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  keyCopy = key;
   v9 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v9 fetchDataForKey:v8 andCategory:a4 completion:v7];
+  [v9 fetchDataForKey:keyCopy andCategory:category completion:completionCopy];
 }
 
-- (void)registerICloudLoginWithCompletion:(id)a3
+- (void)registerICloudLoginWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v4 registerICloudLoginWithCompletion:v3];
+  [v4 registerICloudLoginWithCompletion:completionCopy];
 }
 
-- (void)unregisterICloudLoginWithCompletion:(id)a3
+- (void)unregisterICloudLoginWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v4 unregisterICloudLoginWithCompletion:v3];
+  [v4 unregisterICloudLoginWithCompletion:completionCopy];
 }
 
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  ndCopy = nd;
+  hCopy = h;
   v10 = +[Lt10zus2DOk3OfFf sharedInstance];
-  [v10 ofLBc0SV56ddaijH:v9 i7D0Lridvo8oYoNd:v8 completion:v7];
+  [v10 ofLBc0SV56ddaijH:hCopy i7D0Lridvo8oYoNd:ndCopy completion:completionCopy];
 }
 
 @end

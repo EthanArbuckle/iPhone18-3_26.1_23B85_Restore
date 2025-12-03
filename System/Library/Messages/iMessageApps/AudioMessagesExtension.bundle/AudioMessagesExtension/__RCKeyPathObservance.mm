@@ -1,15 +1,15 @@
 @interface __RCKeyPathObservance
 - (NSObject)object;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)remove;
 @end
 
 @implementation __RCKeyPathObservance
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &unk_82458)
+  if (context == &unk_82458)
   {
     (*(self->_observer + 2))();
   }

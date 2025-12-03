@@ -1,6 +1,6 @@
 @interface BWDeferredDataIntermediate
-- (id)fetchWithCustomClassesAndRetain:(id)a3 err:(int *)a4;
-- (uint64_t)_setURL:(NSObject *)a3 prefetchQueue:;
+- (id)fetchWithCustomClassesAndRetain:(id)retain err:(int *)err;
+- (uint64_t)_setURL:(NSObject *)l prefetchQueue:;
 - (void)dealloc;
 @end
 
@@ -33,17 +33,17 @@ uint64_t __52__BWDeferredDataIntermediate__setURL_prefetchQueue___block_invoke(u
   return pthread_mutex_unlock((*(a1 + 32) + 8));
 }
 
-- (id)fetchWithCustomClassesAndRetain:(id)a3 err:(int *)a4
+- (id)fetchWithCustomClassesAndRetain:(id)retain err:(int *)err
 {
-  if (a4)
+  if (err)
   {
-    *a4 = -16136;
+    *err = -16136;
   }
 
   return 0;
 }
 
-- (uint64_t)_setURL:(NSObject *)a3 prefetchQueue:
+- (uint64_t)_setURL:(NSObject *)l prefetchQueue:
 {
   if (result)
   {
@@ -60,7 +60,7 @@ uint64_t __52__BWDeferredDataIntermediate__setURL_prefetchQueue___block_invoke(u
       else
       {
         *(result + 128) = [a2 copy];
-        if (a3)
+        if (l)
         {
           *(v3 + 144) = 1;
           block[0] = MEMORY[0x1E69E9820];
@@ -68,7 +68,7 @@ uint64_t __52__BWDeferredDataIntermediate__setURL_prefetchQueue___block_invoke(u
           block[2] = __52__BWDeferredDataIntermediate__setURL_prefetchQueue___block_invoke;
           block[3] = &unk_1E798F870;
           block[4] = v3;
-          dispatch_async(a3, block);
+          dispatch_async(l, block);
         }
 
         return 0;

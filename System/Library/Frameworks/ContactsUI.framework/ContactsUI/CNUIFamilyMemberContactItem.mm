@@ -1,10 +1,10 @@
 @interface CNUIFamilyMemberContactItem
-+ (id)familyMemberContactItemFromCoreFamilyMemberContactItem:(id)a3;
-+ (id)typeLabelStringFromContactType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)familyMemberContactItemFromCoreFamilyMemberContactItem:(id)item;
++ (id)typeLabelStringFromContactType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (CNUIFamilyMemberContactItem)init;
-- (CNUIFamilyMemberContactItem)initWithContactIdentifier:(id)a3 label:(id)a4 detailLabel:(id)a5 unreachable:(BOOL)a6;
-- (CNUIFamilyMemberContactItem)initWithLabel:(id)a3 detailLabel:(id)a4 unreachable:(BOOL)a5;
+- (CNUIFamilyMemberContactItem)initWithContactIdentifier:(id)identifier label:(id)label detailLabel:(id)detailLabel unreachable:(BOOL)unreachable;
+- (CNUIFamilyMemberContactItem)initWithLabel:(id)label detailLabel:(id)detailLabel unreachable:(BOOL)unreachable;
 - (unint64_t)hash;
 @end
 
@@ -13,24 +13,24 @@
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E6996730];
-  v4 = [(CNUIFamilyMemberContactItem *)self contactIdentifier];
-  v5 = [v3 objectHash:v4];
+  contactIdentifier = [(CNUIFamilyMemberContactItem *)self contactIdentifier];
+  v5 = [v3 objectHash:contactIdentifier];
 
   v6 = MEMORY[0x1E6996730];
-  v7 = [(CNUIFamilyMemberContactItem *)self label];
-  v8 = [v6 objectHash:v7] - v5 + 32 * v5;
+  label = [(CNUIFamilyMemberContactItem *)self label];
+  v8 = [v6 objectHash:label] - v5 + 32 * v5;
 
   v9 = MEMORY[0x1E6996730];
-  v10 = [(CNUIFamilyMemberContactItem *)self detailLabel];
-  v11 = 31 * ([v9 objectHash:v10] - v8 + 32 * v8);
+  detailLabel = [(CNUIFamilyMemberContactItem *)self detailLabel];
+  v11 = 31 * ([v9 objectHash:detailLabel] - v8 + 32 * v8);
 
   return v11 + [(CNUIFamilyMemberContactItem *)self isUnreachable]+ 15699857;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
@@ -38,10 +38,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNUIFamilyMemberContactItem contactIdentifier](self, "contactIdentifier"), v6 = -[CNUIFamilyMemberContactItem contactIdentifier](v4, "contactIdentifier"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNUIFamilyMemberContactItem label](self, "label"), v8 = -[CNUIFamilyMemberContactItem label](v4, "label"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNUIFamilyMemberContactItem detailLabel](self, "detailLabel"), v10 = -[CNUIFamilyMemberContactItem detailLabel](v4, "detailLabel"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNUIFamilyMemberContactItem contactIdentifier](self, "contactIdentifier"), v6 = -[CNUIFamilyMemberContactItem contactIdentifier](equalCopy, "contactIdentifier"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNUIFamilyMemberContactItem label](self, "label"), v8 = -[CNUIFamilyMemberContactItem label](equalCopy, "label"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNUIFamilyMemberContactItem detailLabel](self, "detailLabel"), v10 = -[CNUIFamilyMemberContactItem detailLabel](equalCopy, "detailLabel"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)))
     {
-      v11 = [(CNUIFamilyMemberContactItem *)self isUnreachable];
-      v12 = v11 ^ [(CNUIFamilyMemberContactItem *)v4 isUnreachable]^ 1;
+      isUnreachable = [(CNUIFamilyMemberContactItem *)self isUnreachable];
+      v12 = isUnreachable ^ [(CNUIFamilyMemberContactItem *)equalCopy isUnreachable]^ 1;
     }
 
     else
@@ -53,56 +53,56 @@
   return v12;
 }
 
-- (CNUIFamilyMemberContactItem)initWithContactIdentifier:(id)a3 label:(id)a4 detailLabel:(id)a5 unreachable:(BOOL)a6
+- (CNUIFamilyMemberContactItem)initWithContactIdentifier:(id)identifier label:(id)label detailLabel:(id)detailLabel unreachable:(BOOL)unreachable
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  labelCopy = label;
+  detailLabelCopy = detailLabel;
   v18.receiver = self;
   v18.super_class = CNUIFamilyMemberContactItem;
   v14 = [(CNUIFamilyMemberContactItem *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contactIdentifier, a3);
-    objc_storeStrong(&v15->_label, a4);
-    objc_storeStrong(&v15->_detailLabel, a5);
-    v15->_unreachable = a6;
+    objc_storeStrong(&v14->_contactIdentifier, identifier);
+    objc_storeStrong(&v15->_label, label);
+    objc_storeStrong(&v15->_detailLabel, detailLabel);
+    v15->_unreachable = unreachable;
     v16 = v15;
   }
 
   return v15;
 }
 
-- (CNUIFamilyMemberContactItem)initWithLabel:(id)a3 detailLabel:(id)a4 unreachable:(BOOL)a5
+- (CNUIFamilyMemberContactItem)initWithLabel:(id)label detailLabel:(id)detailLabel unreachable:(BOOL)unreachable
 {
-  v5 = a5;
+  unreachableCopy = unreachable;
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [v11 UUIDString];
-  v13 = [(CNUIFamilyMemberContactItem *)self initWithContactIdentifier:v12 label:v10 detailLabel:v9 unreachable:v5];
+  detailLabelCopy = detailLabel;
+  labelCopy = label;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [(CNUIFamilyMemberContactItem *)self initWithContactIdentifier:uUIDString label:labelCopy detailLabel:detailLabelCopy unreachable:unreachableCopy];
 
   return v13;
 }
 
 - (CNUIFamilyMemberContactItem)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-+ (id)typeLabelStringFromContactType:(int64_t)a3
++ (id)typeLabelStringFromContactType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"PARENT_OR_GUARDIAN";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"ME";
 LABEL_5:
@@ -118,16 +118,16 @@ LABEL_7:
   return v5;
 }
 
-+ (id)familyMemberContactItemFromCoreFamilyMemberContactItem:(id)a3
++ (id)familyMemberContactItemFromCoreFamilyMemberContactItem:(id)item
 {
-  v4 = a3;
-  v5 = [objc_opt_class() typeLabelStringFromContactType:{objc_msgSend(v4, "contactType")}];
-  v6 = [a1 alloc];
-  v7 = [v4 contactIdentifier];
-  v8 = [v4 formattedName];
-  v9 = [v4 isUnreachable];
+  itemCopy = item;
+  v5 = [objc_opt_class() typeLabelStringFromContactType:{objc_msgSend(itemCopy, "contactType")}];
+  v6 = [self alloc];
+  contactIdentifier = [itemCopy contactIdentifier];
+  formattedName = [itemCopy formattedName];
+  isUnreachable = [itemCopy isUnreachable];
 
-  v10 = [v6 initWithContactIdentifier:v7 label:v8 detailLabel:v5 unreachable:v9];
+  v10 = [v6 initWithContactIdentifier:contactIdentifier label:formattedName detailLabel:v5 unreachable:isUnreachable];
 
   return v10;
 }

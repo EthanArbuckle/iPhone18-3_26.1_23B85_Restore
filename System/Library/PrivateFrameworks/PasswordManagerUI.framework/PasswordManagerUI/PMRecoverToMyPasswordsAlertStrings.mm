@@ -1,29 +1,29 @@
 @interface PMRecoverToMyPasswordsAlertStrings
-+ (id)alertMessageForRecoveringSavedAccountToMyPasswords:(id)a3;
-+ (id)alertMessageForRecoveringSavedAccountsToMyPasswords:(id)a3;
-+ (id)alertTitleAndMessageForRecoveringSavedAccountToMyPasswords:(id)a3;
-+ (id)alertTitleAndMessageForRecoveringSavedAccountsToMyPasswords:(id)a3;
-+ (id)alertTitleForRecoveringSavedAccountToMyPasswords:(id)a3;
-+ (id)alertTitleForRecoveringSavedAccountsToMyPasswords:(id)a3;
++ (id)alertMessageForRecoveringSavedAccountToMyPasswords:(id)passwords;
++ (id)alertMessageForRecoveringSavedAccountsToMyPasswords:(id)passwords;
++ (id)alertTitleAndMessageForRecoveringSavedAccountToMyPasswords:(id)passwords;
++ (id)alertTitleAndMessageForRecoveringSavedAccountsToMyPasswords:(id)passwords;
++ (id)alertTitleForRecoveringSavedAccountToMyPasswords:(id)passwords;
++ (id)alertTitleForRecoveringSavedAccountsToMyPasswords:(id)passwords;
 - (PMRecoverToMyPasswordsAlertStrings)init;
 @end
 
 @implementation PMRecoverToMyPasswordsAlertStrings
 
-+ (id)alertTitleForRecoveringSavedAccountToMyPasswords:(id)a3
++ (id)alertTitleForRecoveringSavedAccountToMyPasswords:(id)passwords
 {
-  v3 = a3;
-  sub_21CAF35AC(v3);
+  passwordsCopy = passwords;
+  sub_21CAF35AC(passwordsCopy);
 
   v4 = sub_21CB85584();
 
   return v4;
 }
 
-+ (id)alertMessageForRecoveringSavedAccountToMyPasswords:(id)a3
++ (id)alertMessageForRecoveringSavedAccountToMyPasswords:(id)passwords
 {
-  v3 = a3;
-  sub_21CAF3718(v3);
+  passwordsCopy = passwords;
+  sub_21CAF3718(passwordsCopy);
   v5 = v4;
 
   if (v5)
@@ -39,16 +39,16 @@
   return v6;
 }
 
-+ (id)alertTitleAndMessageForRecoveringSavedAccountToMyPasswords:(id)a3
++ (id)alertTitleAndMessageForRecoveringSavedAccountToMyPasswords:(id)passwords
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_21CAF0CB4(v4);
+  passwordsCopy = passwords;
+  v5 = sub_21CAF0CB4(passwordsCopy);
 
   return v5;
 }
 
-+ (id)alertTitleForRecoveringSavedAccountsToMyPasswords:(id)a3
++ (id)alertTitleForRecoveringSavedAccountsToMyPasswords:(id)passwords
 {
   sub_21C6E8F4C(0, &qword_27CDF76E0, 0x277D49B20);
   v3 = sub_21CB85824();
@@ -60,7 +60,7 @@
   return v4;
 }
 
-+ (id)alertMessageForRecoveringSavedAccountsToMyPasswords:(id)a3
++ (id)alertMessageForRecoveringSavedAccountsToMyPasswords:(id)passwords
 {
   sub_21C6E8F4C(0, &qword_27CDF76E0, 0x277D49B20);
   v3 = sub_21CB85824();
@@ -81,7 +81,7 @@
   return v6;
 }
 
-+ (id)alertTitleAndMessageForRecoveringSavedAccountsToMyPasswords:(id)a3
++ (id)alertTitleAndMessageForRecoveringSavedAccountsToMyPasswords:(id)passwords
 {
   sub_21C6E8F4C(0, &qword_27CDF76E0, 0x277D49B20);
   sub_21CB85824();

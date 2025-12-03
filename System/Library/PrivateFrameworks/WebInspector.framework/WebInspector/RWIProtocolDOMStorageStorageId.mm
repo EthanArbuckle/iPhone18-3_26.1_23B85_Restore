@@ -1,16 +1,16 @@
 @interface RWIProtocolDOMStorageStorageId
 - (BOOL)isLocalStorage;
 - (NSString)securityOrigin;
-- (void)setSecurityOrigin:(id)a3;
+- (void)setSecurityOrigin:(id)origin;
 @end
 
 @implementation RWIProtocolDOMStorageStorageId
 
-- (void)setSecurityOrigin:(id)a3
+- (void)setSecurityOrigin:(id)origin
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMStorageStorageId;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"securityOrigin"];
+  [(RWIProtocolJSONObject *)&v3 setString:origin forKey:@"securityOrigin"];
 }
 
 - (NSString)securityOrigin

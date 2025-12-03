@@ -1,27 +1,27 @@
 @interface PXPhotoLibraryLocalDefaults
-- (BOOL)BOOLForKey:(id)a3;
-- (PXPhotoLibraryLocalDefaults)initWithPhotoLibrary:(id)a3;
-- (double)doubleForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (PXPhotoLibraryLocalDefaults)initWithPhotoLibrary:(id)library;
+- (double)doubleForKey:(id)key;
 - (id)_appPrivateData;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dateForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)dictionaryWithValuesForKeys:(id)a3;
-- (id)identifiersForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)registeredNumberForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (id)valueForKey:(id)a3;
-- (void)_notifyObserversDidChangeValueForKey:(id)a3;
-- (void)addIdentifier:(id)a3 forKey:(id)a4;
-- (void)registerBool:(BOOL)a3 forKey:(id)a4;
-- (void)removeIdentifier:(id)a3 forKey:(id)a4;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setDictionary:(id)a3 forKey:(id)a4;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setIdentifiers:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dateForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)dictionaryWithValuesForKeys:(id)keys;
+- (id)identifiersForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)registeredNumberForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (id)valueForKey:(id)key;
+- (void)_notifyObserversDidChangeValueForKey:(id)key;
+- (void)addIdentifier:(id)identifier forKey:(id)key;
+- (void)registerBool:(BOOL)bool forKey:(id)key;
+- (void)removeIdentifier:(id)identifier forKey:(id)key;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setDictionary:(id)dictionary forKey:(id)key;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setIdentifiers:(id)identifiers forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation PXPhotoLibraryLocalDefaults
@@ -29,27 +29,27 @@
 - (id)_appPrivateData
 {
   WeakRetained = objc_loadWeakRetained(&self->_photoLibrary);
-  v3 = [WeakRetained appPrivateData];
+  appPrivateData = [WeakRetained appPrivateData];
 
-  return v3;
+  return appPrivateData;
 }
 
-- (void)removeIdentifier:(id)a3 forKey:(id)a4
+- (void)removeIdentifier:(id)identifier forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotoLibraryLocalDefaults *)self identifiersForKey:v6];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v8 = [(PXPhotoLibraryLocalDefaults *)self identifiersForKey:keyCopy];
   v9 = [v8 mutableCopy];
 
-  [v9 removeObject:v7];
-  [(PXPhotoLibraryLocalDefaults *)self setIdentifiers:v9 forKey:v6];
+  [v9 removeObject:identifierCopy];
+  [(PXPhotoLibraryLocalDefaults *)self setIdentifiers:v9 forKey:keyCopy];
 }
 
-- (void)addIdentifier:(id)a3 forKey:(id)a4
+- (void)addIdentifier:(id)identifier forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotoLibraryLocalDefaults *)self identifiersForKey:v6];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v8 = [(PXPhotoLibraryLocalDefaults *)self identifiersForKey:keyCopy];
   v9 = v8;
   if (v8)
   {
@@ -63,14 +63,14 @@
 
   v11 = v10;
 
-  v12 = [v11 setByAddingObject:v7];
+  v12 = [v11 setByAddingObject:identifierCopy];
 
-  [(PXPhotoLibraryLocalDefaults *)self setIdentifiers:v12 forKey:v6];
+  [(PXPhotoLibraryLocalDefaults *)self setIdentifiers:v12 forKey:keyCopy];
 }
 
-- (id)identifiersForKey:(id)a3
+- (id)identifiersForKey:(id)key
 {
-  v3 = [(PXPhotoLibraryLocalDefaults *)self arrayForKey:a3];
+  v3 = [(PXPhotoLibraryLocalDefaults *)self arrayForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
@@ -84,18 +84,18 @@
   return v4;
 }
 
-- (void)setIdentifiers:(id)a3 forKey:(id)a4
+- (void)setIdentifiers:(id)identifiers forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 allObjects];
-  [(PXPhotoLibraryLocalDefaults *)self setValue:v7 forKey:v6];
+  keyCopy = key;
+  allObjects = [identifiers allObjects];
+  [(PXPhotoLibraryLocalDefaults *)self setValue:allObjects forKey:keyCopy];
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -113,14 +113,14 @@
   return v7;
 }
 
-- (void)setDictionary:(id)a3 forKey:(id)a4
+- (void)setDictionary:(id)dictionary forKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
   v12 = 0;
-  v9 = [v8 setValue:v6 forKey:v7 error:&v12];
+  v9 = [_appPrivateData setValue:dictionaryCopy forKey:keyCopy error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
@@ -129,21 +129,21 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v6;
+      v14 = dictionaryCopy;
       v15 = 2114;
-      v16 = v7;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "PXPhotoLibraryLocalDefaults - setting dictionary %@ on defaultName %{public}@ failed. Error: %@", buf, 0x20u);
     }
   }
 
-  [(PXPhotoLibraryLocalDefaults *)self _notifyObserversDidChangeValueForKey:v7];
+  [(PXPhotoLibraryLocalDefaults *)self _notifyObserversDidChangeValueForKey:keyCopy];
 }
 
-- (id)registeredNumberForKey:(id)a3
+- (id)registeredNumberForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -157,7 +157,7 @@
   block[3] = &unk_1E7746448;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v11 = v6;
   dispatch_sync(isolationQueue, block);
   objc_opt_class();
@@ -186,11 +186,11 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   *(v3 + 40) = v2;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -208,11 +208,11 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v7;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -230,11 +230,11 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v7;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -252,11 +252,11 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v7;
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -274,11 +274,11 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v7;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -296,9 +296,9 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v7;
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v3 = [(PXPhotoLibraryLocalDefaults *)self numberForKey:a3];
+  v3 = [(PXPhotoLibraryLocalDefaults *)self numberForKey:key];
   v4 = v3;
   if (v3)
   {
@@ -314,53 +314,53 @@ void __54__PXPhotoLibraryLocalDefaults_registeredNumberForKey___block_invoke(voi
   return v6;
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(PXPhotoLibraryLocalDefaults *)self setValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(PXPhotoLibraryLocalDefaults *)self setValue:v8 forKey:keyCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self numberForKey:v4];
-  if (v5 || ([(PXPhotoLibraryLocalDefaults *)self registeredNumberForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  keyCopy = key;
+  v5 = [(PXPhotoLibraryLocalDefaults *)self numberForKey:keyCopy];
+  if (v5 || ([(PXPhotoLibraryLocalDefaults *)self registeredNumberForKey:keyCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(PXPhotoLibraryLocalDefaults *)self setValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithBool:boolCopy];
+  [(PXPhotoLibraryLocalDefaults *)self setValue:v8 forKey:keyCopy];
 }
 
-- (void)registerBool:(BOOL)a3 forKey:(id)a4
+- (void)registerBool:(BOOL)bool forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   isolationQueue = self->_isolationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__PXPhotoLibraryLocalDefaults_registerBool_forKey___block_invoke;
   block[3] = &unk_1E774B368;
-  v11 = a3;
+  boolCopy = bool;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = keyCopy;
+  v8 = keyCopy;
   dispatch_async(isolationQueue, block);
 }
 
@@ -371,33 +371,33 @@ void __51__PXPhotoLibraryLocalDefaults_registerBool_forKey___block_invoke(uint64
   [v2 setValue:v3 forKey:*(a1 + 40)];
 }
 
-- (id)dictionaryWithValuesForKeys:(id)a3
+- (id)dictionaryWithValuesForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 dictionaryWithValuesForKeys:v4];
+  keysCopy = keys;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData dictionaryWithValuesForKeys:keysCopy];
 
   return v6;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  v6 = [_appPrivateData valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PXPhotoLibraryLocalDefaults *)self willChangeValueForKey:v7];
-  v8 = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
+  valueCopy = value;
+  keyCopy = key;
+  [(PXPhotoLibraryLocalDefaults *)self willChangeValueForKey:keyCopy];
+  _appPrivateData = [(PXPhotoLibraryLocalDefaults *)self _appPrivateData];
   v12 = 0;
-  v9 = [v8 setValue:v6 forKey:v7 error:&v12];
+  v9 = [_appPrivateData setValue:valueCopy forKey:keyCopy error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
@@ -406,42 +406,42 @@ void __51__PXPhotoLibraryLocalDefaults_registerBool_forKey___block_invoke(uint64
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v6;
+      v14 = valueCopy;
       v15 = 2114;
-      v16 = v7;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "PXPhotoLibraryLocalDefaults - setting value %@ on key %{public}@ failed. Error: %@", buf, 0x20u);
     }
   }
 
-  [(PXPhotoLibraryLocalDefaults *)self didChangeValueForKey:v7];
-  [(PXPhotoLibraryLocalDefaults *)self _notifyObserversDidChangeValueForKey:v7];
+  [(PXPhotoLibraryLocalDefaults *)self didChangeValueForKey:keyCopy];
+  [(PXPhotoLibraryLocalDefaults *)self _notifyObserversDidChangeValueForKey:keyCopy];
 }
 
-- (void)_notifyObserversDidChangeValueForKey:(id)a3
+- (void)_notifyObserversDidChangeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PXPhotoLibraryLocalDefaults__notifyObserversDidChangeValueForKey___block_invoke;
   v6[3] = &unk_1E7736248;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(PXPhotoLibraryLocalDefaults *)self enumerateObserversUsingBlock:v6];
 }
 
-- (PXPhotoLibraryLocalDefaults)initWithPhotoLibrary:(id)a3
+- (PXPhotoLibraryLocalDefaults)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = PXPhotoLibraryLocalDefaults;
   v5 = [(PXPhotoLibraryLocalDefaults *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     registeredValues = v6->_registeredValues;
     v6->_registeredValues = v7;

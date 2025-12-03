@@ -1,17 +1,17 @@
 @interface PXUIPeopleBootstrapNamingViewController
 - (PHPerson)person;
 - (PXPeopleFlowViewControllerActionDelegate)actionDelegate;
-- (PXUIPeopleBootstrapNamingViewController)initWithContext:(id)a3;
+- (PXUIPeopleBootstrapNamingViewController)initWithContext:(id)context;
 - (id)_localizedTitleString;
 - (unint64_t)type;
 - (void)_captureStringSelectionIfNeeded;
 - (void)_updateNavigationBarForCurrentTraitCollection;
-- (void)namePickerController:(id)a3 didPickContact:(id)a4;
-- (void)namePickerController:(id)a3 didPickPerson:(id)a4;
-- (void)namePickerController:(id)a3 didPickString:(id)a4;
-- (void)namePickerControllerWillChangeText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)namePickerController:(id)controller didPickContact:(id)contact;
+- (void)namePickerController:(id)controller didPickPerson:(id)person;
+- (void)namePickerController:(id)controller didPickString:(id)string;
+- (void)namePickerControllerWillChangeText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)willTransitionToNextInFlow;
 @end
@@ -25,96 +25,96 @@
   return WeakRetained;
 }
 
-- (void)namePickerControllerWillChangeText:(id)a3
+- (void)namePickerControllerWillChangeText:(id)text
 {
   [(PXUIPeopleBootstrapNamingViewController *)self setSelection:0];
 
   [(PXUIPeopleBootstrapNamingViewController *)self setTextDidChange:1];
 }
 
-- (void)namePickerController:(id)a3 didPickString:(id)a4
+- (void)namePickerController:(id)controller didPickString:(id)string
 {
-  v5 = a4;
-  v6 = [[PXPeopleNameSelection alloc] initWithName:v5];
+  stringCopy = string;
+  v6 = [[PXPeopleNameSelection alloc] initWithName:stringCopy];
   [(PXUIPeopleBootstrapNamingViewController *)self setSelection:v6];
 
-  v7 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-  v8 = [v7 titleView];
+  namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+  titleView = [namePicker titleView];
 
-  [v8 setLocalizedName:v5];
-  [v8 finishEditing];
+  [titleView setLocalizedName:stringCopy];
+  [titleView finishEditing];
 }
 
-- (void)namePickerController:(id)a3 didPickContact:(id)a4
+- (void)namePickerController:(id)controller didPickContact:(id)contact
 {
-  v11 = a4;
-  v5 = [[PXPeopleNameSelection alloc] initWithContact:v11];
+  contactCopy = contact;
+  v5 = [[PXPeopleNameSelection alloc] initWithContact:contactCopy];
   [(PXUIPeopleBootstrapNamingViewController *)self setSelection:v5];
 
-  v6 = [v11 identifier];
-  if (v6)
+  identifier = [contactCopy identifier];
+  if (identifier)
   {
-    v7 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-    v8 = [v7 titleView];
+    namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+    titleView = [namePicker titleView];
 
-    v9 = [MEMORY[0x1E6978980] px_localizedNameFromContact:v11];
-    [v8 setLocalizedName:v9];
-    [v8 finishEditing];
+    v9 = [MEMORY[0x1E6978980] px_localizedNameFromContact:contactCopy];
+    [titleView setLocalizedName:v9];
+    [titleView finishEditing];
   }
 
-  v10 = [(PXUIPeopleBootstrapNamingViewController *)self actionDelegate];
-  [v10 requestAdvanceToNextInFlow];
+  actionDelegate = [(PXUIPeopleBootstrapNamingViewController *)self actionDelegate];
+  [actionDelegate requestAdvanceToNextInFlow];
 }
 
-- (void)namePickerController:(id)a3 didPickPerson:(id)a4
+- (void)namePickerController:(id)controller didPickPerson:(id)person
 {
-  v10 = a4;
-  v5 = [[PXPeopleNameSelection alloc] initWithSelectedPerson:v10];
+  personCopy = person;
+  v5 = [[PXPeopleNameSelection alloc] initWithSelectedPerson:personCopy];
   [(PXUIPeopleBootstrapNamingViewController *)self setSelection:v5];
 
-  if (v10)
+  if (personCopy)
   {
-    v6 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-    v7 = [v6 titleView];
+    namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+    titleView = [namePicker titleView];
 
-    v8 = [v10 px_localizedName];
-    [v7 setLocalizedName:v8];
+    px_localizedName = [personCopy px_localizedName];
+    [titleView setLocalizedName:px_localizedName];
 
-    [v7 finishEditing];
+    [titleView finishEditing];
   }
 
-  v9 = [(PXUIPeopleBootstrapNamingViewController *)self actionDelegate];
-  [v9 requestAdvanceToNextInFlow];
+  actionDelegate = [(PXUIPeopleBootstrapNamingViewController *)self actionDelegate];
+  [actionDelegate requestAdvanceToNextInFlow];
 }
 
 - (void)willTransitionToNextInFlow
 {
-  v7 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-  v3 = [v7 titleView];
-  v4 = [v3 nameField];
-  [v4 resignFirstResponder];
+  namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+  titleView = [namePicker titleView];
+  nameField = [titleView nameField];
+  [nameField resignFirstResponder];
 
-  [v7 endNamingSession];
+  [namePicker endNamingSession];
   [(PXUIPeopleBootstrapNamingViewController *)self _captureStringSelectionIfNeeded];
-  v5 = [(PXUIPeopleBootstrapNamingViewController *)self selection];
-  v6 = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
-  [v6 setNameSelection:v5];
+  selection = [(PXUIPeopleBootstrapNamingViewController *)self selection];
+  bootstrapContext = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
+  [bootstrapContext setNameSelection:selection];
 }
 
 - (void)_captureStringSelectionIfNeeded
 {
   if ([(PXUIPeopleBootstrapNamingViewController *)self textDidChange])
   {
-    v3 = [(PXUIPeopleBootstrapNamingViewController *)self selection];
+    selection = [(PXUIPeopleBootstrapNamingViewController *)self selection];
 
-    if (!v3)
+    if (!selection)
     {
-      v8 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-      v4 = [v8 titleView];
-      v5 = [v4 nameField];
-      v6 = [v5 text];
+      namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+      titleView = [namePicker titleView];
+      nameField = [titleView nameField];
+      text = [nameField text];
 
-      v7 = [[PXPeopleNameSelection alloc] initWithName:v6];
+      v7 = [[PXPeopleNameSelection alloc] initWithName:text];
       [(PXUIPeopleBootstrapNamingViewController *)self setSelection:v7];
     }
   }
@@ -122,15 +122,15 @@
 
 - (id)_localizedTitleString
 {
-  v2 = [(PXUIPeopleBootstrapNamingViewController *)self type];
-  if (v2 > 2)
+  type = [(PXUIPeopleBootstrapNamingViewController *)self type];
+  if (type > 2)
   {
     v3 = @"PXPeopleAddNameNoPlus";
   }
 
   else
   {
-    v3 = off_1E772DBF0[v2];
+    v3 = off_1E772DBF0[type];
   }
 
   v4 = PXLocalizedStringFromTable(v3, @"PhotosUICore");
@@ -140,27 +140,27 @@
 
 - (void)_updateNavigationBarForCurrentTraitCollection
 {
-  v3 = [(PXUIPeopleBootstrapNamingViewController *)self _localizedTitleString];
-  [(PXUIPeopleBootstrapNamingViewController *)self setTitle:v3];
+  _localizedTitleString = [(PXUIPeopleBootstrapNamingViewController *)self _localizedTitleString];
+  [(PXUIPeopleBootstrapNamingViewController *)self setTitle:_localizedTitleString];
 }
 
 - (unint64_t)type
 {
-  v2 = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
-  v3 = [v2 bootstrapType];
+  bootstrapContext = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
+  bootstrapType = [bootstrapContext bootstrapType];
 
-  return v3;
+  return bootstrapType;
 }
 
 - (PHPerson)person
 {
-  v2 = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
-  v3 = [v2 sourcePerson];
+  bootstrapContext = [(PXUIPeopleBootstrapNamingViewController *)self bootstrapContext];
+  sourcePerson = [bootstrapContext sourcePerson];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourcePerson;
   }
 
   else
@@ -171,23 +171,23 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PXUIPeopleBootstrapNamingViewController;
-  [(PXUIPeopleBootstrapNamingViewController *)&v4 traitCollectionDidChange:a3];
+  [(PXUIPeopleBootstrapNamingViewController *)&v4 traitCollectionDidChange:change];
   [(PXUIPeopleBootstrapNamingViewController *)self _updateNavigationBarForCurrentTraitCollection];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PXUIPeopleBootstrapNamingViewController;
-  [(PXUIPeopleBootstrapNamingViewController *)&v7 viewDidAppear:a3];
-  v4 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-  v5 = [v4 titleView];
-  v6 = [v5 nameField];
-  [v6 becomeFirstResponder];
+  [(PXUIPeopleBootstrapNamingViewController *)&v7 viewDidAppear:appear];
+  namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+  titleView = [namePicker titleView];
+  nameField = [titleView nameField];
+  [nameField becomeFirstResponder];
 }
 
 - (void)viewDidLoad
@@ -196,115 +196,115 @@
   v62.receiver = self;
   v62.super_class = PXUIPeopleBootstrapNamingViewController;
   [(PXUIPeopleBootstrapNamingViewController *)&v62 viewDidLoad];
-  v3 = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
-  [(PXUIPeopleBootstrapNamingViewController *)self addChildViewController:v3];
-  [v3 didMoveToParentViewController:self];
-  v4 = [v3 titleView];
-  v5 = [(PXUIPeopleBootstrapNamingViewController *)self view];
-  v61 = [v3 view];
-  [v5 addSubview:v61];
-  [v3 adjustForAccessoryViewYOffset:80.0];
+  namePicker = [(PXUIPeopleBootstrapNamingViewController *)self namePicker];
+  [(PXUIPeopleBootstrapNamingViewController *)self addChildViewController:namePicker];
+  [namePicker didMoveToParentViewController:self];
+  titleView = [namePicker titleView];
+  view = [(PXUIPeopleBootstrapNamingViewController *)self view];
+  view2 = [namePicker view];
+  [view addSubview:view2];
+  [namePicker adjustForAccessoryViewYOffset:80.0];
   v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v60 = v3;
-  v7 = [v3 resultsController];
-  v8 = [v7 tableView];
-  v9 = [v8 backgroundColor];
-  [v6 setBackgroundColor:v9];
+  v60 = namePicker;
+  resultsController = [namePicker resultsController];
+  tableView = [resultsController tableView];
+  backgroundColor = [tableView backgroundColor];
+  [v6 setBackgroundColor:backgroundColor];
 
-  [v5 addSubview:v6];
-  v59 = self;
+  [view addSubview:v6];
+  selfCopy = self;
   [(PXUIPeopleBootstrapNamingViewController *)self setPickerBackgroundView:v6];
   v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  [v5 addSubview:v10];
+  [view addSubview:v10];
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [v3 resultsController];
-  v12 = [v11 tableView];
-  v13 = [v12 separatorColor];
-  [v10 setBackgroundColor:v13];
+  resultsController2 = [namePicker resultsController];
+  tableView2 = [resultsController2 tableView];
+  separatorColor = [tableView2 separatorColor];
+  [v10 setBackgroundColor:separatorColor];
 
-  [v6 addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [v5 leadingAnchor];
-  v15 = [v5 trailingAnchor];
-  v16 = [(PXUIPeopleBootstrapNamingViewController *)self px_screen];
-  [v16 scale];
+  [v6 addSubview:titleView];
+  [titleView setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [view leadingAnchor];
+  trailingAnchor = [view trailingAnchor];
+  px_screen = [(PXUIPeopleBootstrapNamingViewController *)self px_screen];
+  [px_screen scale];
   v18 = 1.0 / v17;
 
-  v58 = [v6 heightAnchor];
-  v57 = [v58 constraintEqualToConstant:80.0];
+  heightAnchor = [v6 heightAnchor];
+  v57 = [heightAnchor constraintEqualToConstant:80.0];
   v63[0] = v57;
-  v55 = [v4 centerYAnchor];
-  v54 = [v6 centerYAnchor];
-  v52 = [v55 constraintEqualToAnchor:v54];
+  centerYAnchor = [titleView centerYAnchor];
+  centerYAnchor2 = [v6 centerYAnchor];
+  v52 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v63[1] = v52;
-  v50 = [v6 topAnchor];
-  v51 = [v5 safeAreaLayoutGuide];
-  v49 = [v51 topAnchor];
-  v47 = [v50 constraintEqualToAnchor:v49];
+  topAnchor = [v6 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v63[2] = v47;
-  v56 = v4;
-  v44 = [v4 leadingAnchor];
-  v48 = v5;
-  v45 = [v5 safeAreaLayoutGuide];
-  v43 = [v45 leadingAnchor];
-  v41 = [v44 constraintEqualToAnchor:v43];
+  v56 = titleView;
+  leadingAnchor2 = [titleView leadingAnchor];
+  v48 = view;
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  leadingAnchor3 = [safeAreaLayoutGuide2 leadingAnchor];
+  v41 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v63[3] = v41;
   v46 = v10;
-  v40 = [v10 leadingAnchor];
-  v53 = v14;
-  v39 = [v40 constraintEqualToAnchor:v14];
+  leadingAnchor4 = [v10 leadingAnchor];
+  v53 = leadingAnchor;
+  v39 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor];
   v63[4] = v39;
-  v38 = [v6 leadingAnchor];
-  v37 = [v38 constraintEqualToAnchor:v14];
+  leadingAnchor5 = [v6 leadingAnchor];
+  v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor];
   v63[5] = v37;
-  v34 = [v4 trailingAnchor];
-  v35 = [v5 safeAreaLayoutGuide];
-  v33 = [v35 trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  trailingAnchor2 = [titleView trailingAnchor];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  trailingAnchor3 = [safeAreaLayoutGuide3 trailingAnchor];
+  v32 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v63[6] = v32;
-  v19 = [v10 trailingAnchor];
-  v20 = v15;
-  v42 = v15;
-  v21 = [v19 constraintEqualToAnchor:v15];
+  trailingAnchor4 = [v10 trailingAnchor];
+  v20 = trailingAnchor;
+  v42 = trailingAnchor;
+  v21 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor];
   v63[7] = v21;
-  v22 = [v10 bottomAnchor];
-  v23 = [v6 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor = [v10 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v63[8] = v24;
-  v25 = [v10 heightAnchor];
-  v26 = [v25 constraintEqualToConstant:v18];
+  heightAnchor2 = [v10 heightAnchor];
+  v26 = [heightAnchor2 constraintEqualToConstant:v18];
   v63[9] = v26;
-  v27 = [v6 trailingAnchor];
-  v28 = [v27 constraintEqualToAnchor:v20];
+  trailingAnchor5 = [v6 trailingAnchor];
+  v28 = [trailingAnchor5 constraintEqualToAnchor:v20];
   v63[10] = v28;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:11];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v36];
-  v29 = [v60 resultsController];
-  v30 = [v29 tableView];
-  v31 = [v30 backgroundColor];
-  [v48 setBackgroundColor:v31];
+  resultsController3 = [v60 resultsController];
+  tableView3 = [resultsController3 tableView];
+  backgroundColor2 = [tableView3 backgroundColor];
+  [v48 setBackgroundColor:backgroundColor2];
 
-  [(PXUIPeopleBootstrapNamingViewController *)v59 _updateNavigationBarForCurrentTraitCollection];
+  [(PXUIPeopleBootstrapNamingViewController *)selfCopy _updateNavigationBarForCurrentTraitCollection];
 }
 
-- (PXUIPeopleBootstrapNamingViewController)initWithContext:(id)a3
+- (PXUIPeopleBootstrapNamingViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = PXUIPeopleBootstrapNamingViewController;
   v6 = [(PXUIPeopleBootstrapNamingViewController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bootstrapContext, a3);
-    v8 = [v5 face];
+    objc_storeStrong(&v6->_bootstrapContext, context);
+    face = [contextCopy face];
     v9 = [PXPeopleNamePickerViewController alloc];
     v10 = v9;
-    if (v8)
+    if (face)
     {
-      v11 = [(PXPeopleNamePickerViewController *)v9 initWithFace:v8];
+      v11 = [(PXPeopleNamePickerViewController *)v9 initWithFace:face];
       namePicker = v7->_namePicker;
       v7->_namePicker = v11;
     }

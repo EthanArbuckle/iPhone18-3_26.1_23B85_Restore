@@ -1,15 +1,15 @@
 @interface LocalNotificationHandler
 + (LocalNotificationHandler)sharedHandler;
 - (NSArray)presentedRequests;
-- (id)_notificationContentWithRequest:(id)a3 silently:(BOOL)a4;
-- (id)retrieveRequestWithIdentifier:(id)a3;
-- (void)_handleApproverRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleRequesterRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleUnknownRequestIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)_replaceNotificationWithRequest:(id)a3;
-- (void)dismissNotificationWithIdentifier:(id)a3;
+- (id)_notificationContentWithRequest:(id)request silently:(BOOL)silently;
+- (id)retrieveRequestWithIdentifier:(id)identifier;
+- (void)_handleApproverRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_handleRequesterRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_handleUnknownRequestIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)_replaceNotificationWithRequest:(id)request;
+- (void)dismissNotificationWithIdentifier:(id)identifier;
 - (void)start;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation LocalNotificationHandler
@@ -33,10 +33,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(LocalNotificationHandler *)self notificationCenter];
-  v5 = [v4 deliveredNotifications];
+  notificationCenter = [(LocalNotificationHandler *)self notificationCenter];
+  deliveredNotifications = [notificationCenter deliveredNotifications];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [deliveredNotifications countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -47,14 +47,14 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(deliveredNotifications);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * i) request];
-        v11 = [v10 content];
-        v12 = [v11 userInfo];
+        request = [*(*(&v17 + 1) + 8 * i) request];
+        content = [request content];
+        userInfo = [content userInfo];
 
-        v13 = [[GenericRequest alloc] initWithDictionary:v12];
+        v13 = [[GenericRequest alloc] initWithDictionary:userInfo];
         if ([(GenericRequest *)v13 status]== -1)
         {
           v14 = off_1000547A8;
@@ -65,12 +65,12 @@
         {
           v14 = off_1000547C0;
 LABEL_11:
-          v15 = [objc_alloc(*v14) initWithDictionary:v12];
+          v15 = [objc_alloc(*v14) initWithDictionary:userInfo];
           [v3 ap_addNullableObject:v15];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [deliveredNotifications countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -79,62 +79,62 @@ LABEL_11:
   return v3;
 }
 
-- (void)dismissNotificationWithIdentifier:(id)a3
+- (void)dismissNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[APLogConfig sharedDaemonConfig];
-  v6 = v5;
-  if (v4)
+  notificationCenter = v5;
+  if (identifierCopy)
   {
     if (!v5)
     {
-      v6 = +[APLogConfig sharedConfig];
+      notificationCenter = +[APLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [notificationCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
       v13 = objc_opt_class();
       v14 = 2114;
-      v15 = v4;
+      v15 = identifierCopy;
       v8 = v13;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Dismissing notification. Identifier: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Dismissing notification. Identifier: %{public}@", buf, 0x16u);
     }
 
-    v6 = [(LocalNotificationHandler *)self notificationCenter];
-    v11 = v4;
-    v9 = [NSArray arrayWithObjects:&v11 count:1];
-    [v6 removeDeliveredNotificationsWithIdentifiers:v9];
+    notificationCenter = [(LocalNotificationHandler *)self notificationCenter];
+    v11 = identifierCopy;
+    oSLogObject2 = [NSArray arrayWithObjects:&v11 count:1];
+    [notificationCenter removeDeliveredNotificationsWithIdentifiers:oSLogObject2];
   }
 
   else
   {
     if (!v5)
     {
-      v6 = +[APLogConfig sharedConfig];
+      notificationCenter = +[APLogConfig sharedConfig];
     }
 
-    v9 = [v6 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [notificationCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v13 = objc_opt_class();
       v10 = v13;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@: Could not dismiss notification without request identifier", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Could not dismiss notification without request identifier", buf, 0xCu);
     }
   }
 }
 
-- (id)retrieveRequestWithIdentifier:(id)a3
+- (id)retrieveRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(LocalNotificationHandler *)self presentedRequests];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  presentedRequests = [(LocalNotificationHandler *)self presentedRequests];
+  v6 = [presentedRequests countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -145,12 +145,12 @@ LABEL_11:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(presentedRequests);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 requestIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        requestIdentifier = [v10 requestIdentifier];
+        v12 = [requestIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -160,8 +160,8 @@ LABEL_11:
             v17 = +[APLogConfig sharedConfig];
           }
 
-          v18 = [v17 OSLogObject];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          oSLogObject = [v17 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v19 = objc_opt_class();
             *buf = 138543618;
@@ -169,7 +169,7 @@ LABEL_11:
             v28 = 2114;
             v29 = v10;
             v20 = v19;
-            _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: Retrieved request. Request: %{public}@", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Retrieved request. Request: %{public}@", buf, 0x16u);
           }
 
           v16 = v10;
@@ -177,7 +177,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v7 = [presentedRequests countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v7)
       {
         continue;
@@ -187,22 +187,22 @@ LABEL_11:
     }
   }
 
-  v5 = +[APLogConfig sharedDaemonConfig];
-  if (!v5)
+  presentedRequests = +[APLogConfig sharedDaemonConfig];
+  if (!presentedRequests)
   {
-    v5 = +[APLogConfig sharedConfig];
+    presentedRequests = +[APLogConfig sharedConfig];
   }
 
-  v13 = [v5 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [presentedRequests OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     *buf = 138543618;
     v27 = v14;
     v28 = 2114;
-    v29 = v4;
+    v29 = identifierCopy;
     v15 = v14;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Could not retrieve request. Identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Could not retrieve request. Identifier: %{public}@", buf, 0x16u);
   }
 
   v16 = 0;
@@ -219,13 +219,13 @@ LABEL_19:
     v3 = +[APLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
     v9 = objc_opt_class();
     v5 = v9;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting local notification center", &v8, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting local notification center", &v8, 0xCu);
   }
 
   v6 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.askpermission.notifications"];
@@ -236,158 +236,158 @@ LABEL_19:
   [(UNUserNotificationCenter *)self->_notificationCenter setWantsNotificationResponsesDelivered];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 content];
-  v12 = [v11 userInfo];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v13 = [[GenericRequest alloc] initWithDictionary:v12];
+  v13 = [[GenericRequest alloc] initWithDictionary:userInfo];
   v14 = +[APLogConfig sharedDaemonConfig];
   if (!v14)
   {
     v14 = +[APLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138543618;
     v21 = objc_opt_class();
     v22 = 2114;
     v23 = v13;
     v16 = v21;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Received notification response. Request: %{public}@", &v20, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received notification response. Request: %{public}@", &v20, 0x16u);
   }
 
   if ([(GenericRequest *)v13 status]== -1)
   {
-    v19 = [[ApprovalRequest alloc] initWithDictionary:v12];
-    [(LocalNotificationHandler *)self _handleApproverRequest:v19 withCompletionHandler:v8];
+    identifier = [[ApprovalRequest alloc] initWithDictionary:userInfo];
+    [(LocalNotificationHandler *)self _handleApproverRequest:identifier withCompletionHandler:handlerCopy];
   }
 
   else if ([(GenericRequest *)v13 status]== 1 || ![(GenericRequest *)v13 status])
   {
-    v19 = [[RequesterRequest alloc] initWithDictionary:v12];
-    [(LocalNotificationHandler *)self _handleRequesterRequest:v19 withCompletionHandler:v8];
+    identifier = [[RequesterRequest alloc] initWithDictionary:userInfo];
+    [(LocalNotificationHandler *)self _handleRequesterRequest:identifier withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v17 = [v7 notification];
-    v18 = [v17 request];
-    v19 = [v18 identifier];
+    notification2 = [responseCopy notification];
+    request2 = [notification2 request];
+    identifier = [request2 identifier];
 
-    [(LocalNotificationHandler *)self _handleUnknownRequestIdentifier:v19 withCompletionHandler:v8];
+    [(LocalNotificationHandler *)self _handleUnknownRequestIdentifier:identifier withCompletionHandler:handlerCopy];
   }
 }
 
-- (void)_handleApproverRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleApproverRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[ApproverLocalNotificationTask alloc] initWithRequest:v6];
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = [[ApproverLocalNotificationTask alloc] initWithRequest:requestCopy];
   objc_initWeak(&location, self);
-  v9 = [(ApproverLocalNotificationTask *)v8 perform];
+  perform = [(ApproverLocalNotificationTask *)v8 perform];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001685C;
   v11[3] = &unk_100055440;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v12 = v10;
-  [v9 addFinishBlock:v11];
+  [perform addFinishBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleRequesterRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleRequesterRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[RequesterLocalNotificationTask alloc] initWithRequest:v6];
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = [[RequesterLocalNotificationTask alloc] initWithRequest:requestCopy];
   objc_initWeak(&location, self);
-  v9 = [(RequesterLocalNotificationTask *)v8 perform];
+  perform = [(RequesterLocalNotificationTask *)v8 perform];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100016B3C;
   v11[3] = &unk_100055440;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v12 = v10;
-  [v9 addFinishBlock:v11];
+  [perform addFinishBlock:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleUnknownRequestIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleUnknownRequestIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[APLogConfig sharedDaemonConfig];
   if (!v8)
   {
     v8 = +[APLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v6;
+    v14 = identifierCopy;
     v10 = v12;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@: Unknown notification. Identifier: %{public}@", &v11, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Unknown notification. Identifier: %{public}@", &v11, 0x16u);
   }
 
-  [(LocalNotificationHandler *)self dismissNotificationWithIdentifier:v6];
-  v7[2](v7);
+  [(LocalNotificationHandler *)self dismissNotificationWithIdentifier:identifierCopy];
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)_replaceNotificationWithRequest:(id)a3
+- (void)_replaceNotificationWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(LocalNotificationHandler *)self _notificationContentWithRequest:v4 silently:1];
+  requestCopy = request;
+  v5 = [(LocalNotificationHandler *)self _notificationContentWithRequest:requestCopy silently:1];
   objc_initWeak(&location, self);
-  v6 = [(LocalNotificationHandler *)self notificationCenter];
-  v7 = [v4 requestIdentifier];
+  notificationCenter = [(LocalNotificationHandler *)self notificationCenter];
+  requestIdentifier = [requestCopy requestIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000172F8;
   v9[3] = &unk_100055490;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = requestCopy;
   v10 = v8;
-  [v6 replaceContentForRequestWithIdentifier:v7 replacementContent:v5 completionHandler:v9];
+  [notificationCenter replaceContentForRequestWithIdentifier:requestIdentifier replacementContent:v5 completionHandler:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (id)_notificationContentWithRequest:(id)a3 silently:(BOOL)a4
+- (id)_notificationContentWithRequest:(id)request silently:(BOOL)silently
 {
-  v4 = a4;
-  v5 = a3;
+  silentlyCopy = silently;
+  requestCopy = request;
   v6 = objc_alloc_init(UNMutableNotificationContent);
-  v7 = [v5 localizations];
-  v8 = [v7 body];
-  [v6 setBody:v8];
+  localizations = [requestCopy localizations];
+  body = [localizations body];
+  [v6 setBody:body];
 
-  v9 = [v5 localizations];
-  v10 = [v9 title];
-  [v6 setTitle:v10];
+  localizations2 = [requestCopy localizations];
+  title = [localizations2 title];
+  [v6 setTitle:title];
 
-  v11 = [v5 date];
-  v12 = v11;
-  if (v11)
+  date = [requestCopy date];
+  v12 = date;
+  if (date)
   {
-    v13 = v11;
+    v13 = date;
   }
 
   else
@@ -401,11 +401,11 @@ LABEL_19:
   v15 = [v14 dateByAddingTimeInterval:2592000.0];
   [v6 setExpirationDate:v15];
 
-  v16 = [v5 compile];
-  [v6 setUserInfo:v16];
+  compile = [requestCopy compile];
+  [v6 setUserInfo:compile];
 
   [v6 setHasDefaultAction:1];
-  if ([v5 status] == -1)
+  if ([requestCopy status] == -1)
   {
     v17 = 2;
   }
@@ -419,7 +419,7 @@ LABEL_19:
   [v6 setShouldAuthenticateDefaultAction:1];
   [v6 setShouldBackgroundDefaultAction:1];
   [v6 setShouldPreventNotificationDismissalAfterDefaultAction:1];
-  if (v4)
+  if (silentlyCopy)
   {
     [v6 setSound:0];
   }

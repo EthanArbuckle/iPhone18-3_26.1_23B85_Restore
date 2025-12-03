@@ -3,9 +3,9 @@
 - (BOOL)isTracking;
 - (CMSleepTracker)init;
 - (void)dealloc;
-- (void)querySleepDataFromRecord:(id)a3 handler:(id)a4;
-- (void)startWithHandler:(id)a3;
-- (void)stopWithHandler:(id)a3;
+- (void)querySleepDataFromRecord:(id)record handler:(id)handler;
+- (void)startWithHandler:(id)handler;
+- (void)stopWithHandler:(id)handler;
 @end
 
 @implementation CMSleepTracker
@@ -56,9 +56,9 @@
   return MEMORY[0x1EEE66B58](v3, sel__isTracking, v4);
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMSleepTracker.mm", 261, @"Invalid parameter not satisfying: %@", @"handler");
@@ -69,13 +69,13 @@
   v8[2] = sub_19B658E8C;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 
-- (void)stopWithHandler:(id)a3
+- (void)stopWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMSleepTracker.mm", 270, @"Invalid parameter not satisfying: %@", @"handler");
@@ -86,15 +86,15 @@
   v8[2] = sub_19B658F98;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 
-- (void)querySleepDataFromRecord:(id)a3 handler:(id)a4
+- (void)querySleepDataFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSleepTracker.mm", 279, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -103,8 +103,8 @@
   v10[2] = sub_19B6590AC;
   v10[3] = &unk_1E7532C08;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = record;
+  v10[6] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v10);
 }
 

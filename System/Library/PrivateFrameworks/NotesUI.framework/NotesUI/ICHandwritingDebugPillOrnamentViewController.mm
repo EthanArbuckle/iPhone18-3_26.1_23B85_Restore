@@ -1,6 +1,6 @@
 @interface ICHandwritingDebugPillOrnamentViewController
 - (ICHandwritingDebugDelegate)delegate;
-- (ICHandwritingDebugPillOrnamentViewController)initWithRootViewController:(id)a3 delegate:(id)a4;
+- (ICHandwritingDebugPillOrnamentViewController)initWithRootViewController:(id)controller delegate:(id)delegate;
 - (void)refresh;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -8,15 +8,15 @@
 
 @implementation ICHandwritingDebugPillOrnamentViewController
 
-- (ICHandwritingDebugPillOrnamentViewController)initWithRootViewController:(id)a3 delegate:(id)a4
+- (ICHandwritingDebugPillOrnamentViewController)initWithRootViewController:(id)controller delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = ICHandwritingDebugPillOrnamentViewController;
-  v7 = [(ICPillOrnamentViewController *)&v13 initWithRootViewController:a3 contentAnchorPoint:0.0 sceneAnchorPoint:0.5 offset:1.0 cornerRadius:0.5, 24.0, 0.0, 32.0];
+  v7 = [(ICPillOrnamentViewController *)&v13 initWithRootViewController:controller contentAnchorPoint:0.0 sceneAnchorPoint:0.5 offset:1.0 cornerRadius:0.5, 24.0, 0.0, 32.0];
   if (v7)
   {
-    v8 = [[ICHandwritingDebugViewController alloc] initWithDelegate:v6];
+    v8 = [[ICHandwritingDebugViewController alloc] initWithDelegate:delegateCopy];
     handwritingDebugViewController = v7->_handwritingDebugViewController;
     v7->_handwritingDebugViewController = v8;
 
@@ -33,24 +33,24 @@
   v12.receiver = self;
   v12.super_class = ICHandwritingDebugPillOrnamentViewController;
   [(ICHandwritingDebugPillOrnamentViewController *)&v12 viewDidLoad];
-  v3 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
-  v4 = [v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  handwritingDebugNavigationController = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
+  view = [handwritingDebugNavigationController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
-  [(ICHandwritingDebugPillOrnamentViewController *)self addChildViewController:v5];
+  handwritingDebugNavigationController2 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
+  [(ICHandwritingDebugPillOrnamentViewController *)self addChildViewController:handwritingDebugNavigationController2];
 
-  v6 = [(ICPillOrnamentViewController *)self contentView];
-  v7 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  contentView = [(ICPillOrnamentViewController *)self contentView];
+  handwritingDebugNavigationController3 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
+  view2 = [handwritingDebugNavigationController3 view];
+  [contentView addSubview:view2];
 
-  v9 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
-  v10 = [v9 view];
-  [v10 ic_addAnchorsToFillSuperview];
+  handwritingDebugNavigationController4 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
+  view3 = [handwritingDebugNavigationController4 view];
+  [view3 ic_addAnchorsToFillSuperview];
 
-  v11 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
-  [v11 didMoveToParentViewController:self];
+  handwritingDebugNavigationController5 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugNavigationController];
+  [handwritingDebugNavigationController5 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -64,16 +64,16 @@
 
 - (ICHandwritingDebugDelegate)delegate
 {
-  v2 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugViewController];
-  v3 = [v2 delegate];
+  handwritingDebugViewController = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugViewController];
+  delegate = [handwritingDebugViewController delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (void)refresh
 {
-  v2 = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugViewController];
-  [v2 refresh];
+  handwritingDebugViewController = [(ICHandwritingDebugPillOrnamentViewController *)self handwritingDebugViewController];
+  [handwritingDebugViewController refresh];
 }
 
 @end

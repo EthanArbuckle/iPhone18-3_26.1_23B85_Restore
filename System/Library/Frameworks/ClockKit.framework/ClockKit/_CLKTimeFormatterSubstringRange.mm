@@ -1,23 +1,23 @@
 @interface _CLKTimeFormatterSubstringRange
-+ (_CLKTimeFormatterSubstringRange)rangeWithRange:(_NSRange)a3;
-- (_CLKTimeFormatterSubstringRange)initWithRange:(_NSRange)a3;
++ (_CLKTimeFormatterSubstringRange)rangeWithRange:(_NSRange)range;
+- (_CLKTimeFormatterSubstringRange)initWithRange:(_NSRange)range;
 - (_NSRange)range;
-- (id)substringFromString:(id)a3;
+- (id)substringFromString:(id)string;
 @end
 
 @implementation _CLKTimeFormatterSubstringRange
 
-+ (_CLKTimeFormatterSubstringRange)rangeWithRange:(_NSRange)a3
++ (_CLKTimeFormatterSubstringRange)rangeWithRange:(_NSRange)range
 {
-  v3 = [[a1 alloc] initWithRange:{a3.location, a3.length}];
+  v3 = [[self alloc] initWithRange:{range.location, range.length}];
 
   return v3;
 }
 
-- (_CLKTimeFormatterSubstringRange)initWithRange:(_NSRange)a3
+- (_CLKTimeFormatterSubstringRange)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6.receiver = self;
   v6.super_class = _CLKTimeFormatterSubstringRange;
   result = [(_CLKTimeFormatterSubstringRange *)&v6 init];
@@ -30,12 +30,12 @@
   return result;
 }
 
-- (id)substringFromString:(id)a3
+- (id)substringFromString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   location = self->_range.location;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || (v7 = self->_range.length + location, v7 > [v4 length]))
+  if (location == 0x7FFFFFFFFFFFFFFFLL || (v7 = self->_range.length + location, v7 > [stringCopy length]))
   {
     v8 = 0;
   }

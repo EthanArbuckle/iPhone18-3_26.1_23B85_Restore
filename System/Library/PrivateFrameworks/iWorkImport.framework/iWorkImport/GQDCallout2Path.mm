@@ -3,7 +3,7 @@
 - (CGPoint)tailCenter;
 - (CGPoint)tailPosition;
 - (CGSize)size;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 @end
 
 @implementation GQDCallout2Path
@@ -192,29 +192,29 @@
   return result;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  if (!sub_426B0(a3, qword_A35E8, "cornerRadius", &self->mCornerRadius))
+  if (!sub_426B0(reader, qword_A35E8, "cornerRadius", &self->mCornerRadius))
   {
     return 3;
   }
 
-  sub_428CC(a3, qword_A35E8, "tailPositionX", &self->mTailPosition.x);
+  sub_428CC(reader, qword_A35E8, "tailPositionX", &self->mTailPosition.x);
   if (!v6)
   {
     return 3;
   }
 
-  sub_428CC(a3, qword_A35E8, "tailPositionY", &self->mTailPosition.y);
+  sub_428CC(reader, qword_A35E8, "tailPositionY", &self->mTailPosition.y);
   if (!v7)
   {
     return 3;
   }
 
   v8 = 3;
-  if (sub_426B0(a3, qword_A35E8, "tailSize", &self->mTailSize))
+  if (sub_426B0(reader, qword_A35E8, "tailSize", &self->mTailSize))
   {
-    if (sub_421B4(a3, qword_A35E8, "tailAtCenter", &self->mTailAtCenter))
+    if (sub_421B4(reader, qword_A35E8, "tailAtCenter", &self->mTailAtCenter))
     {
       return 1;
     }

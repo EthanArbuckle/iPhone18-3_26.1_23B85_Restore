@@ -1,27 +1,27 @@
 @interface CPHitTest
-- (BOOL)hitTestGraphicObject:(id)a3 point:(CGPoint)a4;
-- (BOOL)hitTestParagraph:(id)a3 point:(CGPoint)a4;
-- (CPHitTest)initWithPage:(id)a3;
-- (id)column:(CGPoint)a3;
-- (id)findBestMatch:(id)a3 atPoint:(CGPoint)a4;
-- (id)findObjectIn:(id)a3 at:(CGPoint)a4 count:(int *)a5;
-- (id)layoutArea:(CGPoint)a3;
-- (id)paragraph:(CGPoint)a3;
-- (id)paragraphNear:(CGPoint)a3;
-- (id)textLine:(CGPoint)a3;
-- (int64_t)compareByReadingOrder:(CGPoint)a3 to:(CGPoint)a4;
-- (unsigned)columnsAt:(CGPoint)a3;
+- (BOOL)hitTestGraphicObject:(id)object point:(CGPoint)point;
+- (BOOL)hitTestParagraph:(id)paragraph point:(CGPoint)point;
+- (CPHitTest)initWithPage:(id)page;
+- (id)column:(CGPoint)column;
+- (id)findBestMatch:(id)match atPoint:(CGPoint)point;
+- (id)findObjectIn:(id)in at:(CGPoint)at count:(int *)count;
+- (id)layoutArea:(CGPoint)area;
+- (id)paragraph:(CGPoint)paragraph;
+- (id)paragraphNear:(CGPoint)near;
+- (id)textLine:(CGPoint)line;
+- (int64_t)compareByReadingOrder:(CGPoint)order to:(CGPoint)to;
+- (unsigned)columnsAt:(CGPoint)at;
 - (void)dealloc;
-- (void)findClickableObjects:(BOOL)a3;
+- (void)findClickableObjects:(BOOL)objects;
 @end
 
 @implementation CPHitTest
 
-- (int64_t)compareByReadingOrder:(CGPoint)a3 to:(CGPoint)a4
+- (int64_t)compareByReadingOrder:(CGPoint)order to:(CGPoint)to
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(CPHitTest *)self textLine:a3.x, a3.y];
+  y = to.y;
+  x = to.x;
+  v7 = [(CPHitTest *)self textLine:order.x, order.y];
   v8 = [(CPHitTest *)self textLine:x, y];
   [(CPPage *)self->page pageCropBox];
   v12[0] = v9;
@@ -29,10 +29,10 @@
   return readingOrder(v7, v8, v12);
 }
 
-- (id)textLine:(CGPoint)a3
+- (id)textLine:(CGPoint)line
 {
-  x = a3.x;
-  point = a3.y;
+  x = line.x;
+  point = line.y;
   v3 = [(CPHitTest *)self paragraph:?];
   if (!v3)
   {
@@ -81,9 +81,9 @@
   return v13;
 }
 
-- (id)column:(CGPoint)a3
+- (id)column:(CGPoint)column
 {
-  v3 = [(CPHitTest *)self objectAtPoint:a3.x, a3.y];
+  v3 = [(CPHitTest *)self objectAtPoint:column.x, column.y];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -96,16 +96,16 @@
   }
 }
 
-- (unsigned)columnsAt:(CGPoint)a3
+- (unsigned)columnsAt:(CGPoint)at
 {
   v4 = 0;
-  [(CPHitTest *)self findObjectIn:self->objectsOnPage at:&v4 count:a3.x, a3.y];
+  [(CPHitTest *)self findObjectIn:self->objectsOnPage at:&v4 count:at.x, at.y];
   return v4;
 }
 
-- (id)layoutArea:(CGPoint)a3
+- (id)layoutArea:(CGPoint)area
 {
-  v3 = [(CPHitTest *)self objectAtPoint:a3.x, a3.y];
+  v3 = [(CPHitTest *)self objectAtPoint:area.x, area.y];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -115,10 +115,10 @@
   return [v3 parent];
 }
 
-- (id)paragraphNear:(CGPoint)a3
+- (id)paragraphNear:(CGPoint)near
 {
-  y = a3.y;
-  x = a3.x;
+  y = near.y;
+  x = near.x;
   v6 = [(CPHitTest *)self paragraph:?];
   if (v6)
   {
@@ -167,10 +167,10 @@
   return [v10 lastChild];
 }
 
-- (id)paragraph:(CGPoint)a3
+- (id)paragraph:(CGPoint)paragraph
 {
-  x = a3.x;
-  point = a3.y;
+  x = paragraph.x;
+  point = paragraph.y;
   v3 = [(CPHitTest *)self objectAtPoint:?];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -228,7 +228,7 @@
   [(CPHitTest *)&v3 dealloc];
 }
 
-- (CPHitTest)initWithPage:(id)a3
+- (CPHitTest)initWithPage:(id)page
 {
   v7.receiver = self;
   v7.super_class = CPHitTest;
@@ -236,20 +236,20 @@
   v5 = v4;
   if (v4)
   {
-    v4->page = a3;
+    v4->page = page;
     [(CPHitTest *)v4 findClickableObjects:0];
   }
 
   return v5;
 }
 
-- (id)findObjectIn:(id)a3 at:(CGPoint)a4 count:(int *)a5
+- (id)findObjectIn:(id)in at:(CGPoint)at count:(int *)count
 {
-  y = a4.y;
-  x = a4.x;
+  y = at.y;
+  x = at.x;
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
-  *a5 = 0;
-  v11 = [a3 count];
+  *count = 0;
+  v11 = [in count];
   if (v11 >= 1)
   {
     v12 = 0;
@@ -257,7 +257,7 @@
     v14 = v11 & 0x7FFFFFFF;
     while (1)
     {
-      v15 = [a3 objectAtIndex:v12];
+      v15 = [in objectAtIndex:v12];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -321,7 +321,7 @@ LABEL_7:
   v13 = 0;
 LABEL_17:
   v33 = [v10 count];
-  *a5 = v33;
+  *count = v33;
   if (v33)
   {
     if (v33 == 1)
@@ -329,8 +329,8 @@ LABEL_17:
       v34 = [v10 objectAtIndex:0];
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v35 = [v34 zOrder];
-        if (v35 >= [v13 zOrder])
+        zOrder = [v34 zOrder];
+        if (zOrder >= [v13 zOrder])
         {
           v13 = v34;
         }
@@ -351,12 +351,12 @@ LABEL_17:
   return v13;
 }
 
-- (id)findBestMatch:(id)a3 atPoint:(CGPoint)a4
+- (id)findBestMatch:(id)match atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [a3 objectAtIndex:0];
-  v9 = [a3 count];
+  y = point.y;
+  x = point.x;
+  v8 = [match objectAtIndex:0];
+  v9 = [match count];
   if (v9 < 1)
   {
     return v8;
@@ -366,7 +366,7 @@ LABEL_17:
   v11 = v9 & 0x7FFFFFFF;
   while (1)
   {
-    v12 = [a3 objectAtIndex:v10];
+    v12 = [match objectAtIndex:v10];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -392,11 +392,11 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)hitTestParagraph:(id)a3 point:(CGPoint)a4
+- (BOOL)hitTestParagraph:(id)paragraph point:(CGPoint)point
 {
-  x = a4.x;
-  pointa = a4.y;
-  [a3 rotationAngle];
+  x = point.x;
+  pointa = point.y;
+  [paragraph rotationAngle];
   v6.x = x;
   v6.y = pointa;
   point = v6;
@@ -410,7 +410,7 @@ LABEL_17:
     point = vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v9, point, 1), v7, x), 0);
   }
 
-  v10 = [a3 count];
+  v10 = [paragraph count];
   if (v10 < 1)
   {
     return 0;
@@ -423,7 +423,7 @@ LABEL_17:
     v13 = 1;
     do
     {
-      [objc_msgSend(a3 childAtIndex:{v12), "bounds"}];
+      [objc_msgSend(paragraph childAtIndex:{v12), "bounds"}];
       if (CGRectContainsPoint(v18, point))
       {
         break;
@@ -439,11 +439,11 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)hitTestGraphicObject:(id)a3 point:(CGPoint)a4
+- (BOOL)hitTestGraphicObject:(id)object point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [a3 count];
+  y = point.y;
+  x = point.x;
+  v8 = [object count];
   if (v8 < 1)
   {
     return 0;
@@ -456,7 +456,7 @@ LABEL_17:
     v11 = 1;
     do
     {
-      v12 = [a3 childAtIndex:v10];
+      v12 = [object childAtIndex:v10];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -487,24 +487,24 @@ LABEL_17:
   return v11;
 }
 
-- (void)findClickableObjects:(BOOL)a3
+- (void)findClickableObjects:(BOOL)objects
 {
-  v3 = a3;
+  objectsCopy = objects;
   objectsOnPage = self->objectsOnPage;
   if (objectsOnPage)
   {
   }
 
   self->objectsOnPage = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(CPPage *)self->page bodyZone];
-  v7 = [v6 count];
+  bodyZone = [(CPPage *)self->page bodyZone];
+  v7 = [bodyZone count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     while (1)
     {
-      v10 = [v6 childAtIndex:v9];
+      v10 = [bodyZone childAtIndex:v9];
       if (![v10 count])
       {
         goto LABEL_14;
@@ -519,7 +519,7 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v10 children];
+        children = [v10 children];
         v15 = self->objectsOnPage;
         goto LABEL_13;
       }
@@ -527,7 +527,7 @@ LABEL_17:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v3)
+        if (objectsCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -539,28 +539,28 @@ LABEL_17:
         goto LABEL_14;
       }
 
-      v16 = [v10 firstChild];
+      firstChild = [v10 firstChild];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v3)
+        if (objectsCopy)
         {
-          [(NSMutableArray *)self->objectsOnPage addObject:v16];
+          [(NSMutableArray *)self->objectsOnPage addObject:firstChild];
         }
 
-        if ([v16 count])
+        if ([firstChild count])
         {
-          v11 = [v16 firstChild];
+          v16FirstChild = [firstChild firstChild];
 LABEL_9:
-          v12 = v11;
+          v12 = v16FirstChild;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v13 = self->objectsOnPage;
-            v14 = [v12 children];
+            children = [v12 children];
             v15 = v13;
 LABEL_13:
-            [(NSMutableArray *)v15 addObjectsFromArray:v14];
+            [(NSMutableArray *)v15 addObjectsFromArray:children];
           }
         }
       }
@@ -578,7 +578,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v11 = [v10 childAtIndex:0];
+    v16FirstChild = [v10 childAtIndex:0];
     goto LABEL_9;
   }
 

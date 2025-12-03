@@ -9,7 +9,7 @@
 - (id)stringValueForKey:()TypeSafeAccess
 {
   v4 = a3;
-  v5 = [a1 valueForKey:v4];
+  v5 = [self valueForKey:v4];
   if (v5)
   {
     objc_opt_class();
@@ -35,7 +35,7 @@ LABEL_8:
 - (id)dataValueForKey:()TypeSafeAccess
 {
   v4 = a3;
-  v5 = [a1 valueForKey:v4];
+  v5 = [self valueForKey:v4];
   if (v5)
   {
     objc_opt_class();
@@ -61,11 +61,11 @@ LABEL_8:
 - (uint64_t)BOOLValueForKey:()TypeSafeAccess
 {
   v4 = a3;
-  v5 = [a1 valueForKey:v4];
+  v5 = [self valueForKey:v4];
   if (!v5)
   {
 LABEL_7:
-    v6 = 0;
+    bOOLValue = 0;
     goto LABEL_8;
   }
 
@@ -80,10 +80,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 LABEL_8:
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)stringValueForKey:()TypeSafeAccess .cold.1()

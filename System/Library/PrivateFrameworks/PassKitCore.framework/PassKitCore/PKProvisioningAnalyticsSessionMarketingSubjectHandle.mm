@@ -1,58 +1,58 @@
 @interface PKProvisioningAnalyticsSessionMarketingSubjectHandle
-- (PKProvisioningAnalyticsSessionMarketingSubjectHandle)initWithArchivedParent:(id)a3;
-- (void)reportEvent:(id)a3 state:(id)a4;
+- (PKProvisioningAnalyticsSessionMarketingSubjectHandle)initWithArchivedParent:(id)parent;
+- (void)reportEvent:(id)event state:(id)state;
 @end
 
 @implementation PKProvisioningAnalyticsSessionMarketingSubjectHandle
 
-- (PKProvisioningAnalyticsSessionMarketingSubjectHandle)initWithArchivedParent:(id)a3
+- (PKProvisioningAnalyticsSessionMarketingSubjectHandle)initWithArchivedParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = PKProvisioningAnalyticsSessionMarketingSubjectHandle;
-  return [(PKProvisioningAnalyticsSessionSubjectHandle *)&v4 _initWithSubject:@"marketingProvisioning" archivedParent:a3];
+  return [(PKProvisioningAnalyticsSessionSubjectHandle *)&v4 _initWithSubject:@"marketingProvisioning" archivedParent:parent];
 }
 
-- (void)reportEvent:(id)a3 state:(id)a4
+- (void)reportEvent:(id)event state:(id)state
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  stateCopy = state;
+  eventCopy = event;
   [(PKProvisioningAnalyticsSessionSubjectHandle *)self _startReportingIfNecessary];
-  v8 = [v7 mutableCopy];
+  v8 = [eventCopy mutableCopy];
 
-  v9 = [v6 environment];
-  [v8 setObject:v9 forKeyedSubscript:@"environment"];
+  environment = [stateCopy environment];
+  [v8 setObject:environment forKeyedSubscript:@"environment"];
 
-  v10 = [v6 productTypeDescriptor];
-  [v8 setObject:v10 forKeyedSubscript:@"productType"];
+  productTypeDescriptor = [stateCopy productTypeDescriptor];
+  [v8 setObject:productTypeDescriptor forKeyedSubscript:@"productType"];
 
-  v11 = [v6 productSubtypeDescriptor];
-  [v8 setObject:v11 forKeyedSubscript:@"productSubType"];
+  productSubtypeDescriptor = [stateCopy productSubtypeDescriptor];
+  [v8 setObject:productSubtypeDescriptor forKeyedSubscript:@"productSubType"];
 
-  v12 = [v6 referralSource];
-  [v8 setObject:v12 forKeyedSubscript:@"referralSource"];
+  referralSource = [stateCopy referralSource];
+  [v8 setObject:referralSource forKeyedSubscript:@"referralSource"];
 
-  v13 = [v6 productIssuer];
-  [v8 setObject:v13 forKeyedSubscript:@"issuer"];
+  productIssuer = [stateCopy productIssuer];
+  [v8 setObject:productIssuer forKeyedSubscript:@"issuer"];
 
-  v14 = [v6 productMetadata];
+  productMetadata = [stateCopy productMetadata];
 
-  if (v14)
+  if (productMetadata)
   {
-    v15 = [v6 productMetadata];
-    [v8 addEntriesFromDictionary:v15];
+    productMetadata2 = [stateCopy productMetadata];
+    [v8 addEntriesFromDictionary:productMetadata2];
   }
 
-  v16 = [v6 passMetadata];
+  passMetadata = [stateCopy passMetadata];
 
-  if (v16)
+  if (passMetadata)
   {
-    v17 = [v6 passMetadata];
-    [v8 addEntriesFromDictionary:v17];
+    passMetadata2 = [stateCopy passMetadata];
+    [v8 addEntriesFromDictionary:passMetadata2];
   }
 
-  v18 = [(PKProvisioningAnalyticsSessionSubjectHandle *)self subject];
-  v20[0] = v18;
+  subject = [(PKProvisioningAnalyticsSessionSubjectHandle *)self subject];
+  v20[0] = subject;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   [PKAnalyticsReporter subjects:v19 sendEvent:v8];
 }

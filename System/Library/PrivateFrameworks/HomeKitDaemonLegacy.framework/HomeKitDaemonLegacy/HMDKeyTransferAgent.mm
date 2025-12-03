@@ -1,9 +1,9 @@
 @interface HMDKeyTransferAgent
 + (id)logCategory;
 - (HMDHomeManager)homeManager;
-- (HMDKeyTransferAgent)initWithHomeManager:(id)a3;
+- (HMDKeyTransferAgent)initWithHomeManager:(id)manager;
 - (HMFMessageDestination)messageDestination;
-- (void)beginPairingWithCompletionHandler:(id)a3;
+- (void)beginPairingWithCompletionHandler:(id)handler;
 - (void)resetConfig;
 @end
 
@@ -19,8 +19,8 @@
 - (HMFMessageDestination)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDKeyTransferAgent *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDKeyTransferAgent *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
@@ -29,7 +29,7 @@
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -43,12 +43,12 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginPairingWithCompletionHandler:(id)a3
+- (void)beginPairingWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -60,31 +60,31 @@
 
   objc_autoreleasePoolPop(v5);
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:10 userInfo:0];
-  v4[2](v4, v9);
+  handlerCopy[2](handlerCopy, v9);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDKeyTransferAgent)initWithHomeManager:(id)a3
+- (HMDKeyTransferAgent)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HMDKeyTransferAgent;
   v5 = [(HMDKeyTransferAgent *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_homeManager, v4);
+    objc_storeWeak(&v5->_homeManager, managerCopy);
     v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"234BC343-7465-4AEE-AE7B-F2DC3F80C9FF"];
     uuid = v6->_uuid;
     v6->_uuid = v7;
 
-    v9 = [(NSUUID *)v6->_uuid UUIDString];
-    v10 = [@"com.apple.hmd.kta." stringByAppendingString:v9];
+    uUIDString = [(NSUUID *)v6->_uuid UUIDString];
+    v10 = [@"com.apple.hmd.kta." stringByAppendingString:uUIDString];
 
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v6->_workQueue;
     v6->_workQueue = v13;
 

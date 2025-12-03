@@ -1,11 +1,11 @@
 @interface MarketingDynamicOfferCoordinator
 - (_TtC9SeymourUI32MarketingDynamicOfferCoordinator)init;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation MarketingDynamicOfferCoordinator
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
   v7 = sub_20C138FA4();
   v8 = *(v7 - 8);
@@ -14,8 +14,8 @@
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
-    v11 = a5;
-    v12 = self;
+    errorCopy = error;
+    selfCopy = self;
     sub_20C138F94();
     sub_20BDDD25C();
     sub_20C13A764();

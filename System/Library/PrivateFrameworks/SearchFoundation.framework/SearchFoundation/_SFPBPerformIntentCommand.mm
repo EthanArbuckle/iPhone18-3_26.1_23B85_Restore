@@ -1,61 +1,61 @@
 @interface _SFPBPerformIntentCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPerformIntentCommand)initWithDictionary:(id)a3;
-- (_SFPBPerformIntentCommand)initWithFacade:(id)a3;
-- (_SFPBPerformIntentCommand)initWithJSON:(id)a3;
+- (_SFPBPerformIntentCommand)initWithDictionary:(id)dictionary;
+- (_SFPBPerformIntentCommand)initWithFacade:(id)facade;
+- (_SFPBPerformIntentCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setBiomeStreamIdentifier:(id)a3;
-- (void)setIntentMessageData:(id)a3;
-- (void)setIntentMessageName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setBiomeStreamIdentifier:(id)identifier;
+- (void)setIntentMessageData:(id)data;
+- (void)setIntentMessageName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPerformIntentCommand
 
-- (_SFPBPerformIntentCommand)initWithFacade:(id)a3
+- (_SFPBPerformIntentCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPerformIntentCommand *)self init];
   if (v5)
   {
-    v6 = [v4 intentMessageName];
+    intentMessageName = [facadeCopy intentMessageName];
 
-    if (v6)
+    if (intentMessageName)
     {
-      v7 = [v4 intentMessageName];
-      [(_SFPBPerformIntentCommand *)v5 setIntentMessageName:v7];
+      intentMessageName2 = [facadeCopy intentMessageName];
+      [(_SFPBPerformIntentCommand *)v5 setIntentMessageName:intentMessageName2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(_SFPBPerformIntentCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBPerformIntentCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    v10 = [v4 intentMessageData];
+    intentMessageData = [facadeCopy intentMessageData];
 
-    if (v10)
+    if (intentMessageData)
     {
-      v11 = [v4 intentMessageData];
-      [(_SFPBPerformIntentCommand *)v5 setIntentMessageData:v11];
+      intentMessageData2 = [facadeCopy intentMessageData];
+      [(_SFPBPerformIntentCommand *)v5 setIntentMessageData:intentMessageData2];
     }
 
-    if ([v4 hasIsRunnableWorkflow])
+    if ([facadeCopy hasIsRunnableWorkflow])
     {
-      -[_SFPBPerformIntentCommand setIsRunnableWorkflow:](v5, "setIsRunnableWorkflow:", [v4 isRunnableWorkflow]);
+      -[_SFPBPerformIntentCommand setIsRunnableWorkflow:](v5, "setIsRunnableWorkflow:", [facadeCopy isRunnableWorkflow]);
     }
 
-    v12 = [v4 biomeStreamIdentifier];
+    biomeStreamIdentifier = [facadeCopy biomeStreamIdentifier];
 
-    if (v12)
+    if (biomeStreamIdentifier)
     {
-      v13 = [v4 biomeStreamIdentifier];
-      [(_SFPBPerformIntentCommand *)v5 setBiomeStreamIdentifier:v13];
+      biomeStreamIdentifier2 = [facadeCopy biomeStreamIdentifier];
+      [(_SFPBPerformIntentCommand *)v5 setBiomeStreamIdentifier:biomeStreamIdentifier2];
     }
 
     v14 = v5;
@@ -64,15 +64,15 @@
   return v5;
 }
 
-- (_SFPBPerformIntentCommand)initWithDictionary:(id)a3
+- (_SFPBPerformIntentCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = _SFPBPerformIntentCommand;
   v5 = [(_SFPBPerformIntentCommand *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"intentMessageName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"intentMessageName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(_SFPBPerformIntentCommand *)v5 setIntentMessageName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(_SFPBPerformIntentCommand *)v5 setApplicationBundleIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"intentMessageData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"intentMessageData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,14 +96,14 @@
       [(_SFPBPerformIntentCommand *)v5 setIntentMessageData:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isRunnableWorkflow"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isRunnableWorkflow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPerformIntentCommand setIsRunnableWorkflow:](v5, "setIsRunnableWorkflow:", [v12 BOOLValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"biomeStreamIdentifier"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"biomeStreamIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (_SFPBPerformIntentCommand)initWithJSON:(id)a3
+- (_SFPBPerformIntentCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPerformIntentCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPerformIntentCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPerformIntentCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -153,51 +153,51 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_biomeStreamIdentifier)
   {
-    v6 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"biomeStreamIdentifier"];
+    biomeStreamIdentifier = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
+    v7 = [biomeStreamIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"biomeStreamIdentifier"];
   }
 
   if (self->_intentMessageData)
   {
-    v8 = [(_SFPBPerformIntentCommand *)self intentMessageData];
-    v9 = [v8 base64EncodedStringWithOptions:0];
+    intentMessageData = [(_SFPBPerformIntentCommand *)self intentMessageData];
+    v9 = [intentMessageData base64EncodedStringWithOptions:0];
     if (v9)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"intentMessageData"];
+      [dictionary setObject:v9 forKeyedSubscript:@"intentMessageData"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"intentMessageData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"intentMessageData"];
     }
   }
 
   if (self->_intentMessageName)
   {
-    v11 = [(_SFPBPerformIntentCommand *)self intentMessageName];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"intentMessageName"];
+    intentMessageName = [(_SFPBPerformIntentCommand *)self intentMessageName];
+    v12 = [intentMessageName copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"intentMessageName"];
   }
 
   if (self->_isRunnableWorkflow)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPerformIntentCommand isRunnableWorkflow](self, "isRunnableWorkflow")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isRunnableWorkflow"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isRunnableWorkflow"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -218,28 +218,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_biomeStreamIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = [(_SFPBPerformIntentCommand *)self intentMessageName];
-  v6 = [v4 intentMessageName];
-  if ((v5 != 0) == (v6 == 0))
+  intentMessageName = [(_SFPBPerformIntentCommand *)self intentMessageName];
+  intentMessageName2 = [equalCopy intentMessageName];
+  if ((intentMessageName != 0) == (intentMessageName2 == 0))
   {
     goto LABEL_22;
   }
 
-  v7 = [(_SFPBPerformIntentCommand *)self intentMessageName];
-  if (v7)
+  intentMessageName3 = [(_SFPBPerformIntentCommand *)self intentMessageName];
+  if (intentMessageName3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPerformIntentCommand *)self intentMessageName];
-    v10 = [v4 intentMessageName];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMessageName3;
+    intentMessageName4 = [(_SFPBPerformIntentCommand *)self intentMessageName];
+    intentMessageName5 = [equalCopy intentMessageName];
+    v11 = [intentMessageName4 isEqual:intentMessageName5];
 
     if (!v11)
     {
@@ -251,20 +251,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  intentMessageName = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
+  intentMessageName2 = [equalCopy applicationBundleIdentifier];
+  if ((intentMessageName != 0) == (intentMessageName2 == 0))
   {
     goto LABEL_22;
   }
 
-  v12 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
-  if (v12)
+  applicationBundleIdentifier = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
-    v15 = [v4 applicationBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationBundleIdentifier;
+    applicationBundleIdentifier2 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+    v16 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
     if (!v16)
     {
@@ -276,20 +276,20 @@
   {
   }
 
-  v5 = [(_SFPBPerformIntentCommand *)self intentMessageData];
-  v6 = [v4 intentMessageData];
-  if ((v5 != 0) == (v6 == 0))
+  intentMessageName = [(_SFPBPerformIntentCommand *)self intentMessageData];
+  intentMessageName2 = [equalCopy intentMessageData];
+  if ((intentMessageName != 0) == (intentMessageName2 == 0))
   {
     goto LABEL_22;
   }
 
-  v17 = [(_SFPBPerformIntentCommand *)self intentMessageData];
-  if (v17)
+  intentMessageData = [(_SFPBPerformIntentCommand *)self intentMessageData];
+  if (intentMessageData)
   {
-    v18 = v17;
-    v19 = [(_SFPBPerformIntentCommand *)self intentMessageData];
-    v20 = [v4 intentMessageData];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMessageData;
+    intentMessageData2 = [(_SFPBPerformIntentCommand *)self intentMessageData];
+    intentMessageData3 = [equalCopy intentMessageData];
+    v21 = [intentMessageData2 isEqual:intentMessageData3];
 
     if (!v21)
     {
@@ -302,22 +302,22 @@
   }
 
   isRunnableWorkflow = self->_isRunnableWorkflow;
-  if (isRunnableWorkflow != [v4 isRunnableWorkflow])
+  if (isRunnableWorkflow != [equalCopy isRunnableWorkflow])
   {
     goto LABEL_23;
   }
 
-  v5 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
-  v6 = [v4 biomeStreamIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  intentMessageName = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
+  intentMessageName2 = [equalCopy biomeStreamIdentifier];
+  if ((intentMessageName != 0) == (intentMessageName2 == 0))
   {
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v23 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
-  if (!v23)
+  biomeStreamIdentifier = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
+  if (!biomeStreamIdentifier)
   {
 
 LABEL_26:
@@ -325,10 +325,10 @@ LABEL_26:
     goto LABEL_24;
   }
 
-  v24 = v23;
-  v25 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
-  v26 = [v4 biomeStreamIdentifier];
-  v27 = [v25 isEqual:v26];
+  v24 = biomeStreamIdentifier;
+  biomeStreamIdentifier2 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
+  biomeStreamIdentifier3 = [equalCopy biomeStreamIdentifier];
+  v27 = [biomeStreamIdentifier2 isEqual:biomeStreamIdentifier3];
 
   if (v27)
   {
@@ -342,23 +342,23 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBPerformIntentCommand *)self intentMessageName];
-  if (v4)
+  toCopy = to;
+  intentMessageName = [(_SFPBPerformIntentCommand *)self intentMessageName];
+  if (intentMessageName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
-  if (v5)
+  applicationBundleIdentifier = [(_SFPBPerformIntentCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBPerformIntentCommand *)self intentMessageData];
-  if (v6)
+  intentMessageData = [(_SFPBPerformIntentCommand *)self intentMessageData];
+  if (intentMessageData)
   {
     PBDataWriterWriteDataField();
   }
@@ -368,43 +368,43 @@ LABEL_24:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
-  if (v7)
+  biomeStreamIdentifier = [(_SFPBPerformIntentCommand *)self biomeStreamIdentifier];
+  if (biomeStreamIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setBiomeStreamIdentifier:(id)a3
+- (void)setBiomeStreamIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   biomeStreamIdentifier = self->_biomeStreamIdentifier;
   self->_biomeStreamIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIntentMessageData:(id)a3
+- (void)setIntentMessageData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   intentMessageData = self->_intentMessageData;
   self->_intentMessageData = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIntentMessageName:(id)a3
+- (void)setIntentMessageName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   intentMessageName = self->_intentMessageName;
   self->_intentMessageName = v4;
 

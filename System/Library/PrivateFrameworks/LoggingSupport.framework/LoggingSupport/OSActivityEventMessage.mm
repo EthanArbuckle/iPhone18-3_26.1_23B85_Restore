@@ -1,6 +1,6 @@
 @interface OSActivityEventMessage
 - (NSString)format;
-- (void)fillEventData:(const char *)a3 length:(unint64_t)a4 privateBuffer:(const char *)a5 length:(unint64_t)a6;
+- (void)fillEventData:(const char *)data length:(unint64_t)length privateBuffer:(const char *)buffer length:(unint64_t)a6;
 @end
 
 @implementation OSActivityEventMessage
@@ -12,8 +12,8 @@
   v3 = [(OSActivityEvent *)self traceID]>> 32;
   v10[0] = 0;
   v10[1] = 0;
-  v4 = [(OSActivityEvent *)self senderImageUUID];
-  [v4 getUUIDBytes:v10];
+  senderImageUUID = [(OSActivityEvent *)self senderImageUUID];
+  [senderImageUUID getUUIDBytes:v10];
 
   v5 = uuidpath_resolve(0, v10, v3, 0, &v9, 0, 0, 0);
   v6 = 0;
@@ -27,13 +27,13 @@
   return v6;
 }
 
-- (void)fillEventData:(const char *)a3 length:(unint64_t)a4 privateBuffer:(const char *)a5 length:(unint64_t)a6
+- (void)fillEventData:(const char *)data length:(unint64_t)length privateBuffer:(const char *)buffer length:(unint64_t)a6
 {
-  v9 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:a4];
+  v9 = [MEMORY[0x277CBEA90] dataWithBytes:data length:length];
   bufferData = self->_bufferData;
   self->_bufferData = v9;
 
-  v11 = [MEMORY[0x277CBEA90] dataWithBytes:a5 length:a6];
+  v11 = [MEMORY[0x277CBEA90] dataWithBytes:buffer length:a6];
   bufferPrivateData = self->_bufferPrivateData;
   self->_bufferPrivateData = v11;
 

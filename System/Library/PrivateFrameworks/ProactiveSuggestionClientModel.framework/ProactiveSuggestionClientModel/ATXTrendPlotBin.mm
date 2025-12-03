@@ -1,14 +1,14 @@
 @interface ATXTrendPlotBin
-- (ATXTrendPlotBin)initWithStartDate:(id)a3;
+- (ATXTrendPlotBin)initWithStartDate:(id)date;
 @end
 
 @implementation ATXTrendPlotBin
 
-- (ATXTrendPlotBin)initWithStartDate:(id)a3
+- (ATXTrendPlotBin)initWithStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
-  [(ATXTrendPlotBin *)v5 setStartDate:v4];
+  [(ATXTrendPlotBin *)v5 setStartDate:dateCopy];
 
   return v5;
 }

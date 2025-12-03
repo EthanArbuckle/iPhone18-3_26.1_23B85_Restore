@@ -3,9 +3,9 @@
 - (BOOL)credit;
 - (BOOL)debited;
 - (NSString)description;
-- (_CDRateLimiter)initWithCount:(int64_t)a3 perPeriod:(double)a4;
+- (_CDRateLimiter)initWithCount:(int64_t)count perPeriod:(double)period;
 - (void)recordTimeAndRefillIfNeeded;
-- (void)resetRateLimitWithTimeStamp:(id)a3;
+- (void)resetRateLimitWithTimeStamp:(id)stamp;
 @end
 
 @implementation _CDRateLimiter
@@ -35,8 +35,8 @@
   [(NSDate *)self->_lastRecorded timeIntervalSinceNow];
   if (fabs(v3) > self->_period)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [(_CDRateLimiter *)self resetRateLimitWithTimeStamp:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_CDRateLimiter *)self resetRateLimitWithTimeStamp:date];
   }
 }
 
@@ -52,7 +52,7 @@
   return v3;
 }
 
-- (_CDRateLimiter)initWithCount:(int64_t)a3 perPeriod:(double)a4
+- (_CDRateLimiter)initWithCount:(int64_t)count perPeriod:(double)period
 {
   v12.receiver = self;
   v12.super_class = _CDRateLimiter;
@@ -63,11 +63,11 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v6->_period = a4;
-    v6->_count = a3;
-    v9 = [MEMORY[0x1E695DF00] distantPast];
+    v6->_period = period;
+    v6->_count = count;
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastRecorded = v6->_lastRecorded;
-    v6->_lastRecorded = v9;
+    v6->_lastRecorded = distantPast;
 
     v6->_balance = 0;
   }
@@ -87,12 +87,12 @@
   return 1;
 }
 
-- (void)resetRateLimitWithTimeStamp:(id)a3
+- (void)resetRateLimitWithTimeStamp:(id)stamp
 {
-  v4 = a3;
+  stampCopy = stamp;
   dispatch_assert_queue_V2(self->_queue);
   lastRecorded = self->_lastRecorded;
-  self->_lastRecorded = v4;
+  self->_lastRecorded = stampCopy;
 
   self->_balance = 0;
 }

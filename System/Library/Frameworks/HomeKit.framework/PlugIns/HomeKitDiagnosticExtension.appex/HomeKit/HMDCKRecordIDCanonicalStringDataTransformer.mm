@@ -1,14 +1,14 @@
 @interface HMDCKRecordIDCanonicalStringDataTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDCKRecordIDCanonicalStringDataTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithData:v4 encoding:1];
+  valueCopy = value;
+  v5 = [[NSString alloc] initWithData:valueCopy encoding:1];
 
   if (v5)
   {
@@ -24,10 +24,10 @@
   return v7;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v4 = [a3 hmd_canonicalStringRepresentation];
-  v5 = [v4 dataUsingEncoding:1];
+  hmd_canonicalStringRepresentation = [value hmd_canonicalStringRepresentation];
+  v5 = [hmd_canonicalStringRepresentation dataUsingEncoding:1];
 
   return v5;
 }

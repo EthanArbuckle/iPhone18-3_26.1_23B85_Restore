@@ -1,17 +1,17 @@
 @interface TACLVisit
 - (BOOL)hasArrivalDate;
 - (BOOL)hasDepartureDate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTemporalOrderSensical;
 - (CLLocationCoordinate2D)coordinate;
 - (NSDateInterval)dateInterval;
 - (NSString)description;
-- (TACLVisit)initWithCoder:(id)a3;
-- (TACLVisit)initWithCoordinate:(CLLocationCoordinate2D)a3 horizontalAccuracy:(double)a4 arrivalDate:(id)a5 departureDate:(id)a6 detectionDate:(id)a7 confidence:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TACLVisit)initWithCoder:(id)coder;
+- (TACLVisit)initWithCoordinate:(CLLocationCoordinate2D)coordinate horizontalAccuracy:(double)accuracy arrivalDate:(id)date departureDate:(id)departureDate detectionDate:(id)detectionDate confidence:(unint64_t)confidence;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TACLVisit
@@ -25,78 +25,78 @@
   return result;
 }
 
-- (TACLVisit)initWithCoder:(id)a3
+- (TACLVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"Latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"Latitude"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"Longitude"];
+  [coderCopy decodeDoubleForKey:@"Longitude"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"HorizontalAccuracy"];
+  [coderCopy decodeDoubleForKey:@"HorizontalAccuracy"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ArrivalDate"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DepartureDate"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
-  v14 = [v4 decodeIntegerForKey:@"Confidence"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ArrivalDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DepartureDate"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  v14 = [coderCopy decodeIntegerForKey:@"Confidence"];
 
   v15 = [(TACLVisit *)self initWithCoordinate:v11 horizontalAccuracy:v12 arrivalDate:v13 departureDate:v14 detectionDate:v6 confidence:v8, v10];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   [(TACLVisit *)self coordinate];
-  [v8 encodeDouble:@"Latitude" forKey:?];
+  [coderCopy encodeDouble:@"Latitude" forKey:?];
   [(TACLVisit *)self coordinate];
-  [v8 encodeDouble:@"Longitude" forKey:v4];
+  [coderCopy encodeDouble:@"Longitude" forKey:v4];
   [(TACLVisit *)self horizontalAccuracy];
-  [v8 encodeDouble:@"HorizontalAccuracy" forKey:?];
-  v5 = [(TACLVisit *)self arrivalDate];
-  [v8 encodeObject:v5 forKey:@"ArrivalDate"];
+  [coderCopy encodeDouble:@"HorizontalAccuracy" forKey:?];
+  arrivalDate = [(TACLVisit *)self arrivalDate];
+  [coderCopy encodeObject:arrivalDate forKey:@"ArrivalDate"];
 
-  v6 = [(TACLVisit *)self departureDate];
-  [v8 encodeObject:v6 forKey:@"DepartureDate"];
+  departureDate = [(TACLVisit *)self departureDate];
+  [coderCopy encodeObject:departureDate forKey:@"DepartureDate"];
 
-  v7 = [(TACLVisit *)self detectionDate];
-  [v8 encodeObject:v7 forKey:@"Date"];
+  detectionDate = [(TACLVisit *)self detectionDate];
+  [coderCopy encodeObject:detectionDate forKey:@"Date"];
 
-  [v8 encodeInteger:-[TACLVisit confidence](self forKey:{"confidence"), @"Confidence"}];
+  [coderCopy encodeInteger:-[TACLVisit confidence](self forKey:{"confidence"), @"Confidence"}];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TACLVisit allocWithZone:a3];
+  v4 = [TACLVisit allocWithZone:zone];
   [(TACLVisit *)self coordinate];
   v6 = v5;
   v8 = v7;
   [(TACLVisit *)self horizontalAccuracy];
   v10 = v9;
-  v11 = [(TACLVisit *)self arrivalDate];
-  v12 = [(TACLVisit *)self departureDate];
-  v13 = [(TACLVisit *)self detectionDate];
-  v14 = [(TACLVisit *)v4 initWithCoordinate:v11 horizontalAccuracy:v12 arrivalDate:v13 departureDate:[(TACLVisit *)self confidence] detectionDate:v6 confidence:v8, v10];
+  arrivalDate = [(TACLVisit *)self arrivalDate];
+  departureDate = [(TACLVisit *)self departureDate];
+  detectionDate = [(TACLVisit *)self detectionDate];
+  v14 = [(TACLVisit *)v4 initWithCoordinate:arrivalDate horizontalAccuracy:departureDate arrivalDate:detectionDate departureDate:[(TACLVisit *)self confidence] detectionDate:v6 confidence:v8, v10];
 
   return v14;
 }
 
-- (TACLVisit)initWithCoordinate:(CLLocationCoordinate2D)a3 horizontalAccuracy:(double)a4 arrivalDate:(id)a5 departureDate:(id)a6 detectionDate:(id)a7 confidence:(unint64_t)a8
+- (TACLVisit)initWithCoordinate:(CLLocationCoordinate2D)coordinate horizontalAccuracy:(double)accuracy arrivalDate:(id)date departureDate:(id)departureDate detectionDate:(id)detectionDate confidence:(unint64_t)confidence
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  dateCopy = date;
+  departureDateCopy = departureDate;
+  detectionDateCopy = detectionDate;
   v27.receiver = self;
   v27.super_class = TACLVisit;
   v18 = [(TACLVisit *)&v27 init];
@@ -105,34 +105,34 @@
     goto LABEL_7;
   }
 
-  if (!v17)
+  if (!detectionDateCopy)
   {
 LABEL_9:
     v25 = 0;
     goto LABEL_10;
   }
 
-  if (!(v15 | v16))
+  if (!(dateCopy | departureDateCopy))
   {
-    v15 = 0;
-    v16 = 0;
+    dateCopy = 0;
+    departureDateCopy = 0;
     goto LABEL_9;
   }
 
-  if (!v16)
+  if (!departureDateCopy)
   {
-    v16 = [MEMORY[0x277CBEAA8] distantFuture];
-    if (v15)
+    departureDateCopy = [MEMORY[0x277CBEAA8] distantFuture];
+    if (dateCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_12:
-    v15 = [MEMORY[0x277CBEAA8] distantPast];
+    dateCopy = [MEMORY[0x277CBEAA8] distantPast];
     goto LABEL_6;
   }
 
-  if (!v15)
+  if (!dateCopy)
   {
     goto LABEL_12;
   }
@@ -140,20 +140,20 @@ LABEL_12:
 LABEL_6:
   v18->_coordinate.latitude = latitude;
   v18->_coordinate.longitude = longitude;
-  v18->_horizontalAccuracy = a4;
-  v19 = [v15 copy];
+  v18->_horizontalAccuracy = accuracy;
+  v19 = [dateCopy copy];
   arrivalDate = v18->_arrivalDate;
   v18->_arrivalDate = v19;
 
-  v21 = [v16 copy];
+  v21 = [departureDateCopy copy];
   departureDate = v18->_departureDate;
   v18->_departureDate = v21;
 
-  v23 = [v17 copy];
+  v23 = [detectionDateCopy copy];
   detectionDate = v18->_detectionDate;
   v18->_detectionDate = v23;
 
-  v18->_confidence = a8;
+  v18->_confidence = confidence;
 LABEL_7:
   v25 = v18;
 LABEL_10:
@@ -161,10 +161,10 @@ LABEL_10:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -174,7 +174,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       [(TACLVisit *)self coordinate];
       v8 = v7;
       [(TACLVisit *)v6 coordinate];
@@ -186,37 +186,37 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v16 = [(TACLVisit *)self arrivalDate];
-      v17 = [(TACLVisit *)v6 arrivalDate];
-      if (v16 != v17)
+      arrivalDate = [(TACLVisit *)self arrivalDate];
+      arrivalDate2 = [(TACLVisit *)v6 arrivalDate];
+      if (arrivalDate != arrivalDate2)
       {
-        v3 = [(TACLVisit *)self arrivalDate];
-        v18 = [(TACLVisit *)v6 arrivalDate];
-        if (![v3 isEqual:v18])
+        arrivalDate3 = [(TACLVisit *)self arrivalDate];
+        arrivalDate4 = [(TACLVisit *)v6 arrivalDate];
+        if (![arrivalDate3 isEqual:arrivalDate4])
         {
           v19 = 0;
           goto LABEL_27;
         }
 
-        v32 = v18;
-        v33 = v3;
+        v32 = arrivalDate4;
+        v33 = arrivalDate3;
       }
 
-      v20 = [(TACLVisit *)self departureDate];
-      v21 = [(TACLVisit *)v6 departureDate];
-      if (v20 != v21)
+      departureDate = [(TACLVisit *)self departureDate];
+      departureDate2 = [(TACLVisit *)v6 departureDate];
+      if (departureDate != departureDate2)
       {
-        v3 = [(TACLVisit *)self departureDate];
-        v22 = [(TACLVisit *)v6 departureDate];
-        if (![v3 isEqual:v22])
+        arrivalDate3 = [(TACLVisit *)self departureDate];
+        departureDate3 = [(TACLVisit *)v6 departureDate];
+        if (![arrivalDate3 isEqual:departureDate3])
         {
           v19 = 0;
 LABEL_25:
 
 LABEL_26:
-          v18 = v32;
-          v3 = v33;
-          if (v16 == v17)
+          arrivalDate4 = v32;
+          arrivalDate3 = v33;
+          if (arrivalDate == arrivalDate2)
           {
 LABEL_28:
 
@@ -228,37 +228,37 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v30 = v22;
-        v31 = v3;
+        v30 = departureDate3;
+        v31 = arrivalDate3;
       }
 
-      v23 = [(TACLVisit *)self detectionDate];
-      v24 = [(TACLVisit *)v6 detectionDate];
-      if (v23 != v24)
+      detectionDate = [(TACLVisit *)self detectionDate];
+      detectionDate2 = [(TACLVisit *)v6 detectionDate];
+      if (detectionDate != detectionDate2)
       {
-        v28 = v20;
-        v25 = [(TACLVisit *)self detectionDate];
-        v3 = [(TACLVisit *)v6 detectionDate];
-        v29 = v25;
-        if (![v25 isEqual:v3])
+        v28 = departureDate;
+        detectionDate3 = [(TACLVisit *)self detectionDate];
+        arrivalDate3 = [(TACLVisit *)v6 detectionDate];
+        v29 = detectionDate3;
+        if (![detectionDate3 isEqual:arrivalDate3])
         {
           v19 = 0;
-          v20 = v28;
+          departureDate = v28;
           goto LABEL_23;
         }
 
-        v20 = v28;
+        departureDate = v28;
       }
 
-      v26 = [(TACLVisit *)self confidence];
-      v19 = v26 == [(TACLVisit *)v6 confidence];
-      if (v23 == v24)
+      confidence = [(TACLVisit *)self confidence];
+      v19 = confidence == [(TACLVisit *)v6 confidence];
+      if (detectionDate == detectionDate2)
       {
 LABEL_24:
 
-        v22 = v30;
-        v3 = v31;
-        if (v20 == v21)
+        departureDate3 = v30;
+        arrivalDate3 = v31;
+        if (departureDate == departureDate2)
         {
           goto LABEL_26;
         }
@@ -284,24 +284,24 @@ LABEL_30:
   v20[8] = *MEMORY[0x277D85DE8];
   if ([(TACLVisit *)self hasArrivalDate])
   {
-    v3 = [(TACLVisit *)self arrivalDate];
-    v4 = [v3 getDateString];
+    arrivalDate = [(TACLVisit *)self arrivalDate];
+    getDateString = [arrivalDate getDateString];
   }
 
   else
   {
-    v4 = @"-";
+    getDateString = @"-";
   }
 
   if ([(TACLVisit *)self hasDepartureDate])
   {
-    v5 = [(TACLVisit *)self departureDate];
-    v6 = [v5 getDateString];
+    departureDate = [(TACLVisit *)self departureDate];
+    getDateString2 = [departureDate getDateString];
   }
 
   else
   {
-    v6 = @"-";
+    getDateString2 = @"-";
   }
 
   v19[0] = @"EventType";
@@ -317,14 +317,14 @@ LABEL_30:
   v19[3] = @"HorizontalAccuracy";
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_horizontalAccuracy];
   v20[3] = v11;
-  v20[4] = v4;
+  v20[4] = getDateString;
   v19[4] = @"ArrivalDate";
   v19[5] = @"DepartureDate";
-  v20[5] = v6;
+  v20[5] = getDateString2;
   v19[6] = @"Date";
-  v12 = [(TACLVisit *)self detectionDate];
-  v13 = [v12 getDateString];
-  v20[6] = v13;
+  detectionDate = [(TACLVisit *)self detectionDate];
+  getDateString3 = [detectionDate getDateString];
+  v20[6] = getDateString3;
   v19[7] = @"Confidence";
   confidence = self->_confidence;
   if (confidence > 2)
@@ -347,9 +347,9 @@ LABEL_30:
 
 - (NSString)description
 {
-  v3 = [(TACLVisit *)self descriptionDictionary];
+  descriptionDictionary = [(TACLVisit *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -359,46 +359,46 @@ LABEL_30:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
 - (BOOL)hasArrivalDate
 {
-  v2 = [(TACLVisit *)self arrivalDate];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  v4 = [v2 isEqual:v3];
+  arrivalDate = [(TACLVisit *)self arrivalDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v4 = [arrivalDate isEqual:distantPast];
 
   return v4 ^ 1;
 }
 
 - (BOOL)hasDepartureDate
 {
-  v2 = [(TACLVisit *)self departureDate];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  v4 = [v2 isEqual:v3];
+  departureDate = [(TACLVisit *)self departureDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v4 = [departureDate isEqual:distantFuture];
 
   return v4 ^ 1;
 }
 
 - (BOOL)isTemporalOrderSensical
 {
-  v3 = [(TACLVisit *)self arrivalDate];
-  v4 = [(TACLVisit *)self departureDate];
-  v5 = [v3 earlierDate:v4];
-  v6 = [(TACLVisit *)self detectionDate];
-  v7 = [v5 earlierDate:v6];
-  v8 = [(TACLVisit *)self arrivalDate];
-  v9 = [v7 isEqual:v8];
+  arrivalDate = [(TACLVisit *)self arrivalDate];
+  departureDate = [(TACLVisit *)self departureDate];
+  v5 = [arrivalDate earlierDate:departureDate];
+  detectionDate = [(TACLVisit *)self detectionDate];
+  v7 = [v5 earlierDate:detectionDate];
+  arrivalDate2 = [(TACLVisit *)self arrivalDate];
+  v9 = [v7 isEqual:arrivalDate2];
 
   return v9;
 }
@@ -409,9 +409,9 @@ LABEL_30:
   if ([(TACLVisit *)self isTemporalOrderSensical])
   {
     v3 = objc_alloc(MEMORY[0x277CCA970]);
-    v4 = [(TACLVisit *)self arrivalDate];
-    v5 = [(TACLVisit *)self departureDate];
-    v6 = [v3 initWithStartDate:v4 endDate:v5];
+    arrivalDate = [(TACLVisit *)self arrivalDate];
+    departureDate = [(TACLVisit *)self departureDate];
+    v6 = [v3 initWithStartDate:arrivalDate endDate:departureDate];
   }
 
   else
@@ -420,22 +420,22 @@ LABEL_30:
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(TACLVisit *)self arrivalDate];
-      v10 = [(TACLVisit *)self departureDate];
+      arrivalDate2 = [(TACLVisit *)self arrivalDate];
+      departureDate2 = [(TACLVisit *)self departureDate];
       v14[0] = 68289539;
       v14[1] = 0;
       v15 = 2082;
       v16 = "";
       v17 = 2113;
-      v18 = v9;
+      v18 = arrivalDate2;
       v19 = 2113;
-      v20 = v10;
+      v20 = departureDate2;
       _os_log_impl(&dword_26F2E2000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#TACLVisit attempted to create dateInterval with nonsensical arrival and departure dates, arrivalDate:%{private}@, departureDate:%{private}@}", v14, 0x26u);
     }
 
     v11 = objc_alloc(MEMORY[0x277CCA970]);
-    v4 = [(TACLVisit *)self arrivalDate];
-    v6 = [v11 initWithStartDate:v4 duration:0.0];
+    arrivalDate = [(TACLVisit *)self arrivalDate];
+    v6 = [v11 initWithStartDate:arrivalDate duration:0.0];
   }
 
   v12 = *MEMORY[0x277D85DE8];

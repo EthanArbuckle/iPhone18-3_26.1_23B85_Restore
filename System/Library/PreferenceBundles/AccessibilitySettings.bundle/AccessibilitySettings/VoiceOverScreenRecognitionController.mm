@@ -1,21 +1,21 @@
 @interface VoiceOverScreenRecognitionController
 - (AXElementVisionModelAssetPolicy)elementVisionModelAssetPolicy;
 - (BOOL)_isFeatureEnabled;
-- (id)_appsApplied:(id)a3;
-- (id)_ignoreAppAccessibility:(id)a3;
-- (id)_neuralVisionEnabled:(id)a3;
+- (id)_appsApplied:(id)applied;
+- (id)_ignoreAppAccessibility:(id)accessibility;
+- (id)_neuralVisionEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_addSettingToRotor:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_addSettingToRotor:(id)rotor;
 - (void)_downloadModel;
 - (void)_purgeModel;
-- (void)_setIgnoreAppAccessibility:(id)a3 specifier:(id)a4;
-- (void)_setNeuralVisionEnabled:(id)a3 specifier:(id)a4;
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6;
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setIgnoreAppAccessibility:(id)accessibility specifier:(id)specifier;
+- (void)_setNeuralVisionEnabled:(id)enabled specifier:(id)specifier;
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected;
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -26,8 +26,8 @@
   v13.receiver = self;
   v13.super_class = VoiceOverScreenRecognitionController;
   [(VoiceOverScreenRecognitionController *)&v13 viewDidLoad];
-  v3 = [(VoiceOverScreenRecognitionController *)self elementVisionModelAssetPolicy];
-  v4 = [AXAssetController assetControllerWithPolicy:v3 qosClass:25];
+  elementVisionModelAssetPolicy = [(VoiceOverScreenRecognitionController *)self elementVisionModelAssetPolicy];
+  v4 = [AXAssetController assetControllerWithPolicy:elementVisionModelAssetPolicy qosClass:25];
   v5 = *(&self->_assetStatusSpecifier + 6);
   *(&self->_assetStatusSpecifier + 6) = v4;
 
@@ -45,10 +45,10 @@
 
   objc_destroyWeak(&v11);
   [*(&self->_assetStatusSpecifier + 6) refreshAssetsByForceUpdatingCatalog:0 updatingCatalogIfNeeded:1 catalogRefreshOverrideTimeout:0 completion:0];
-  v7 = [(VoiceOverScreenRecognitionController *)self table];
+  table = [(VoiceOverScreenRecognitionController *)self table];
   v8 = objc_opt_class();
   v9 = +[AXAssetStatusInfoCell cellReuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [table registerClass:v8 forCellReuseIdentifier:v9];
 
   objc_destroyWeak(&location);
 }
@@ -149,13 +149,13 @@ void __51__VoiceOverScreenRecognitionController_viewDidLoad__block_invoke(uint64
   return v4;
 }
 
-- (void)_setNeuralVisionEnabled:(id)a3 specifier:(id)a4
+- (void)_setNeuralVisionEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  [v6 setAutomaticAccessibilityEnabled:{objc_msgSend(v5, "integerValue") != 0}];
+  [v6 setAutomaticAccessibilityEnabled:{objc_msgSend(enabledCopy, "integerValue") != 0}];
 
-  LODWORD(v6) = [v5 BOOLValue];
+  LODWORD(v6) = [enabledCopy BOOLValue];
   if (v6)
   {
     [(VoiceOverScreenRecognitionController *)self _downloadModel];
@@ -171,7 +171,7 @@ void __51__VoiceOverScreenRecognitionController_viewDidLoad__block_invoke(uint64
   [(VoiceOverScreenRecognitionController *)self _addSettingToRotor:v7];
 }
 
-- (id)_neuralVisionEnabled:(id)a3
+- (id)_neuralVisionEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 automaticAccessibilityEnabled]);
@@ -179,22 +179,22 @@ void __51__VoiceOverScreenRecognitionController_viewDidLoad__block_invoke(uint64
   return v4;
 }
 
-- (void)_addSettingToRotor:(id)a3
+- (void)_addSettingToRotor:(id)rotor
 {
-  v3 = a3;
+  rotorCopy = rotor;
   v4 = AXValidationManager_ptr;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverRotorItems];
-  v7 = [v6 mutableCopy];
+  voiceOverRotorItems = [v5 voiceOverRotorItems];
+  v7 = [voiceOverRotorItems mutableCopy];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 voiceOverRotorItems];
+  voiceOverRotorItems2 = [v8 voiceOverRotorItems];
 
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v10 = [voiceOverRotorItems2 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (!v10)
   {
 
@@ -203,7 +203,7 @@ LABEL_13:
     v27[0] = @"RotorItem";
     v27[1] = @"Enabled";
     v28[0] = kAXSVoiceOverTouchRotorMLElementsMode;
-    v28[1] = v3;
+    v28[1] = rotorCopy;
     v20 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:2];
     [v7 setObject:v20 atIndexedSubscript:v12];
 
@@ -212,7 +212,7 @@ LABEL_13:
   }
 
   v11 = v10;
-  v22 = v3;
+  v22 = rotorCopy;
   v12 = 0;
   v13 = 0;
   v14 = *v24;
@@ -222,7 +222,7 @@ LABEL_13:
     {
       if (*v24 != v14)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(voiceOverRotorItems2);
       }
 
       v16 = *(*(&v23 + 1) + 8 * i);
@@ -241,12 +241,12 @@ LABEL_13:
       ++v12;
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    v11 = [voiceOverRotorItems2 countByEnumeratingWithState:&v23 objects:v29 count:16];
   }
 
   while (v11);
 
-  v3 = v22;
+  rotorCopy = v22;
   v4 = AXValidationManager_ptr;
   if (!v13)
   {
@@ -254,11 +254,11 @@ LABEL_13:
   }
 
 LABEL_14:
-  v21 = [v4[375] sharedInstance];
-  [v21 setVoiceOverRotorItems:v7];
+  sharedInstance = [v4[375] sharedInstance];
+  [sharedInstance setVoiceOverRotorItems:v7];
 }
 
-- (id)_ignoreAppAccessibility:(id)a3
+- (id)_ignoreAppAccessibility:(id)accessibility
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 automaticAccessibilityIgnoreAppAccessibilityPreferred]);
@@ -266,19 +266,19 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setIgnoreAppAccessibility:(id)a3 specifier:(id)a4
+- (void)_setIgnoreAppAccessibility:(id)accessibility specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [accessibility BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAutomaticAccessibilityIgnoreAppAccessibilityPreferred:v4];
+  [v5 setAutomaticAccessibilityIgnoreAppAccessibilityPreferred:bOOLValue];
 }
 
 - (BOOL)_isFeatureEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 automaticAccessibilityEnabled];
+  automaticAccessibilityEnabled = [v2 automaticAccessibilityEnabled];
 
-  return v3;
+  return automaticAccessibilityEnabled;
 }
 
 - (void)_downloadModel
@@ -299,35 +299,35 @@ LABEL_14:
   [v3 refreshAssetsByForceUpdatingCatalog:0 updatingCatalogIfNeeded:0 catalogRefreshOverrideTimeout:0 completion:0];
 }
 
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected
 {
   v10 = *(&self->_preferenceToggleSpecifier + 6);
-  v11 = a4;
-  [v10 setAx_assetState:a3];
-  v12 = [(VoiceOverScreenRecognitionController *)self cachedAsset];
-  [*(&self->_preferenceToggleSpecifier + 6) setAx_asset:v12];
+  errorCopy = error;
+  [v10 setAx_assetState:cell];
+  cachedAsset = [(VoiceOverScreenRecognitionController *)self cachedAsset];
+  [*(&self->_preferenceToggleSpecifier + 6) setAx_asset:cachedAsset];
 
-  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetError:v11];
-  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetDownloadBytesReceived:a5];
-  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetDownloadBytesExpected:a6];
+  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetError:errorCopy];
+  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetDownloadBytesReceived:downloaded];
+  [*(&self->_preferenceToggleSpecifier + 6) setAx_assetDownloadBytesExpected:expected];
   v13 = *(&self->_preferenceToggleSpecifier + 6);
 
   [(VoiceOverScreenRecognitionController *)self reloadSpecifier:v13];
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v9 = a4;
+  assetsCopy = assets;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __102__VoiceOverScreenRecognitionController_assetController_didFinishRefreshingAssets_wasSuccessful_error___block_invoke;
   v12[3] = &unk_257AD0;
-  v15 = a5;
+  successfulCopy = successful;
   v12[4] = self;
-  v13 = a6;
-  v14 = v9;
-  v10 = v9;
-  v11 = v13;
+  errorCopy = error;
+  v14 = assetsCopy;
+  v10 = assetsCopy;
+  v11 = errorCopy;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
@@ -419,16 +419,16 @@ LABEL_18:
   [*(a1 + 32) _updateAssetStatusCell:1 error:0 downloaded:0 expected:0];
 }
 
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __137__VoiceOverScreenRecognitionController_assetController_asset_downloadProgressTotalWritten_totalExpected_isStalled_expectedTimeRemaining___block_invoke;
   v8[3] = &unk_257AF8;
-  v9 = a7;
+  stalledCopy = stalled;
   v8[4] = self;
-  v8[5] = a5;
-  v8[6] = a6;
+  v8[5] = written;
+  v8[6] = expected;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
@@ -447,16 +447,16 @@ id __137__VoiceOverScreenRecognitionController_assetController_asset_downloadPro
   return [*(a1 + 32) _updateAssetStatusCell:v1 error:0 downloaded:*(a1 + 40) expected:*(a1 + 48)];
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __124__VoiceOverScreenRecognitionController_assetController_didFinishDownloadingAsset_wasSuccessful_error_hasRemainingDownloads___block_invoke;
   block[3] = &unk_256190;
-  v10 = a5;
+  successfulCopy = successful;
   block[4] = self;
-  v9 = a6;
-  v7 = v9;
+  errorCopy = error;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -479,19 +479,19 @@ id __124__VoiceOverScreenRecognitionController_assetController_didFinishDownload
   return [v3 _updateAssetStatusCell:v4 error:v5 downloaded:0 expected:0];
 }
 
-- (id)_appsApplied:(id)a3
+- (id)_appsApplied:(id)applied
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 automaticAccessibilityModes];
+  automaticAccessibilityModes = [v3 automaticAccessibilityModes];
 
-  v5 = [v4 allKeys];
+  allKeys = [automaticAccessibilityModes allKeys];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = __53__VoiceOverScreenRecognitionController__appsApplied___block_invoke;
   v16 = &unk_257BE0;
-  v6 = v4;
+  v6 = automaticAccessibilityModes;
   v17 = v6;
-  v7 = [v5 ax_filteredArrayUsingBlock:&v13];
+  v7 = [allKeys ax_filteredArrayUsingBlock:&v13];
 
   if ([v7 count] < 3)
   {
@@ -528,33 +528,33 @@ BOOL __53__VoiceOverScreenRecognitionController__appsApplied___block_invoke(uint
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = VoiceOverScreenRecognitionController;
-  v4 = [(VoiceOverScreenRecognitionController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(VoiceOverScreenRecognitionController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:PSIDKey];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:PSIDKey];
   v11 = [v10 isEqualToString:@"apps"];
 
   if (v11)
   {
     v12 = objc_alloc_init(AXAppSelectionController);
-    v13 = [(VoiceOverScreenRecognitionController *)self rootController];
-    [(AXAppSelectionController *)v12 setRootController:v13];
+    rootController = [(VoiceOverScreenRecognitionController *)self rootController];
+    [(AXAppSelectionController *)v12 setRootController:rootController];
 
-    [(AXAppSelectionController *)v12 setSpecifier:v9];
+    [(AXAppSelectionController *)v12 setSpecifier:specifier];
     [(AXAppSelectionController *)v12 setParentController:self];
     [(AXAppSelectionController *)v12 setIncludesHomeScreen:0];
     objc_initWeak(&location, self);
@@ -574,7 +574,7 @@ BOOL __53__VoiceOverScreenRecognitionController__appsApplied___block_invoke(uint
   {
     v14.receiver = self;
     v14.super_class = VoiceOverScreenRecognitionController;
-    [(VoiceOverScreenRecognitionController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(VoiceOverScreenRecognitionController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

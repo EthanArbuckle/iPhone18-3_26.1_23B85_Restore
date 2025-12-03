@@ -1,19 +1,19 @@
 @interface CHTextToMathResultTransformationStep
-- (CHTextToMathResultTransformationStep)initWithAdditionalRecognitionBlock:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (CHTextToMathResultTransformationStep)initWithAdditionalRecognitionBlock:(id)block;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHTextToMathResultTransformationStep
 
-- (CHTextToMathResultTransformationStep)initWithAdditionalRecognitionBlock:(id)a3
+- (CHTextToMathResultTransformationStep)initWithAdditionalRecognitionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v22.receiver = self;
   v22.super_class = CHTextToMathResultTransformationStep;
   v5 = [(CHTextToMathResultTransformationStep *)&v22 init];
   if (v5)
   {
-    v6 = MEMORY[0x1865E6810](v4);
+    v6 = MEMORY[0x1865E6810](blockCopy);
     additionalRecognitionBlock = v5->_additionalRecognitionBlock;
     v5->_additionalRecognitionBlock = v6;
 
@@ -30,18 +30,18 @@
   return v5;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v580 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  processCopy = process;
+  v5 = processCopy;
   v565 = 0u;
   v566 = 0u;
   v567 = 0u;
   v568 = 0u;
-  if (v4)
+  if (processCopy)
   {
-    v6 = v4[9];
+    v6 = processCopy[9];
   }
 
   else
@@ -290,7 +290,7 @@ LABEL_33:
             *&buf[8] = 3221225472;
             *&buf[16] = sub_1838EC7EC;
             v577 = &unk_1E6DDF1A0;
-            v578 = self;
+            selfCopy = self;
             v178 = v171;
             v579 = v178;
             objc_msgSend_enumerateSubstringsInRange_options_usingBlock_(v165, v179, 0, v177, 2, buf);

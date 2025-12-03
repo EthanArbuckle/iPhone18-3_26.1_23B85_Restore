@@ -1,41 +1,41 @@
 @interface SessionDelegate
-- (SessionDelegate)initWithUploadDb:(void *)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
+- (SessionDelegate)initWithUploadDb:(void *)db;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
 - (void)URLSessionDidFinishEventsForBackgroundURLSession;
 @end
 
 @implementation SessionDelegate
 
-- (SessionDelegate)initWithUploadDb:(void *)a3
+- (SessionDelegate)initWithUploadDb:(void *)db
 {
   v5.receiver = self;
   v5.super_class = SessionDelegate;
   result = [(SessionDelegate *)&v5 init];
   if (result)
   {
-    result->_uploadDb = a3;
+    result->_uploadDb = db;
   }
 
   return result;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v11 = a3;
-  v12 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   uploadDb = self->_uploadDb;
   v14 = *(uploadDb + 96);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003100E0;
   block[3] = &unk_100449210;
-  v18 = v11;
-  v19 = v12;
+  v18 = sessionCopy;
+  v19 = taskCopy;
   v20 = uploadDb;
-  v21 = a6;
-  v22 = a7;
-  v15 = v12;
-  v16 = v11;
+  sentCopy = sent;
+  sendCopy = send;
+  v15 = taskCopy;
+  v16 = sessionCopy;
   dispatch_async(v14, block);
 }
 

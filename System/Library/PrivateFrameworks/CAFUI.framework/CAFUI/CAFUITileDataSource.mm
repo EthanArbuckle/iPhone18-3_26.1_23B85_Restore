@@ -1,47 +1,47 @@
 @interface CAFUITileDataSource
 - (_TtC5CAFUI19CAFUITileDataSource)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)automakerSettingService:(id)a3 didUpdateDisabled:(BOOL)a4;
-- (void)automakerSettingService:(id)a3 didUpdateHidden:(BOOL)a4;
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4;
-- (void)automakerSettingService:(void *)a3 didUpdateUserVisibleLabel:;
-- (void)floatSettingService:(id)a3 didUpdateValue:(float)a4;
-- (void)integerSettingService:(id)a3 didUpdateValue:(int)a4;
-- (void)volumeService:(id)a3 didUpdateMute:(BOOL)a4;
-- (void)volumeService:(id)a3 didUpdateUserVisibleLabel:(id)a4;
-- (void)volumeService:(id)a3 didUpdateVolume:(unsigned __int8)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)automakerSettingService:(id)service didUpdateDisabled:(BOOL)disabled;
+- (void)automakerSettingService:(id)service didUpdateHidden:(BOOL)hidden;
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info;
+- (void)automakerSettingService:(void *)service didUpdateUserVisibleLabel:;
+- (void)floatSettingService:(id)service didUpdateValue:(float)value;
+- (void)integerSettingService:(id)service didUpdateValue:(int)value;
+- (void)volumeService:(id)service didUpdateMute:(BOOL)mute;
+- (void)volumeService:(id)service didUpdateUserVisibleLabel:(id)label;
+- (void)volumeService:(id)service didUpdateVolume:(unsigned __int8)volume;
 @end
 
 @implementation CAFUITileDataSource
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = specialized CAFUITileDataSource.collectionView(_:numberOfItemsInSection:)(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = specialized CAFUITileDataSource.collectionView(_:numberOfItemsInSection:)(section);
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = CAFUITileDataSource.collectionView(_:cellForItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = CAFUITileDataSource.collectionView(_:cellForItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -50,9 +50,9 @@
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = self;
-  v16 = CAFUITileDataSource.collectionView(_:viewForSupplementaryElementOfKind:at:)(v14, v11, v13);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = CAFUITileDataSource.collectionView(_:viewForSupplementaryElementOfKind:at:)(viewCopy, v11, v13);
 
   (*(v8 + 8))(v10, v7);
 
@@ -66,68 +66,68 @@
   return result;
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFUITileDataSource.automakerSettingService(_:didUpdateProminenceInfo:)(v6);
+  serviceCopy = service;
+  infoCopy = info;
+  selfCopy = self;
+  CAFUITileDataSource.automakerSettingService(_:didUpdateProminenceInfo:)(serviceCopy);
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateHidden:(BOOL)a4
+- (void)automakerSettingService:(id)service didUpdateHidden:(BOOL)hidden
 {
-  v6 = a3;
-  v7 = self;
-  CAFUITileDataSource.automakerSettingService(_:didUpdateHidden:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.automakerSettingService(_:didUpdateHidden:)(serviceCopy, hidden);
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateDisabled:(BOOL)a4
+- (void)automakerSettingService:(id)service didUpdateDisabled:(BOOL)disabled
 {
-  v6 = a3;
-  v7 = self;
-  CAFUITileDataSource.automakerSettingService(_:didUpdateDisabled:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.automakerSettingService(_:didUpdateDisabled:)(serviceCopy, disabled);
 }
 
-- (void)automakerSettingService:(void *)a3 didUpdateUserVisibleLabel:
+- (void)automakerSettingService:(void *)service didUpdateUserVisibleLabel:
 {
-  v4 = a3;
-  v5 = a1;
-  CAFUITileDataSource.updated(setting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
-- (void)floatSettingService:(id)a3 didUpdateValue:(float)a4
+- (void)floatSettingService:(id)service didUpdateValue:(float)value
 {
-  v5 = a3;
-  v6 = self;
-  CAFUITileDataSource.updated(setting:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
-- (void)integerSettingService:(id)a3 didUpdateValue:(int)a4
+- (void)integerSettingService:(id)service didUpdateValue:(int)value
 {
-  v5 = a3;
-  v6 = self;
-  CAFUITileDataSource.updated(setting:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
-- (void)volumeService:(id)a3 didUpdateVolume:(unsigned __int8)a4
+- (void)volumeService:(id)service didUpdateVolume:(unsigned __int8)volume
 {
-  v5 = a3;
-  v6 = self;
-  CAFUITileDataSource.updated(setting:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
-- (void)volumeService:(id)a3 didUpdateUserVisibleLabel:(id)a4
+- (void)volumeService:(id)service didUpdateUserVisibleLabel:(id)label
 {
-  v5 = a3;
-  v6 = self;
-  CAFUITileDataSource.updated(setting:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
-- (void)volumeService:(id)a3 didUpdateMute:(BOOL)a4
+- (void)volumeService:(id)service didUpdateMute:(BOOL)mute
 {
-  v5 = a3;
-  v6 = self;
-  CAFUITileDataSource.updated(setting:)(v5);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileDataSource.updated(setting:)(serviceCopy);
 }
 
 @end

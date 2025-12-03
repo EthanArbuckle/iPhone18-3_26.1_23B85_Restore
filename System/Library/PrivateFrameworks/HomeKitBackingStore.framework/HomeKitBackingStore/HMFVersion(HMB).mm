@@ -9,13 +9,13 @@
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v11[0] = @"a";
-  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "majorVersion")}];
+  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "majorVersion")}];
   v12[0] = v2;
   v11[1] = @"i";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "minorVersion")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "minorVersion")}];
   v12[1] = v3;
   v11[2] = @"u";
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "updateVersion")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "updateVersion")}];
   v12[2] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -54,11 +54,11 @@
   {
     v7 = objc_alloc(MEMORY[0x277D0F940]);
     v8 = [v6 objectForKey:@"a"];
-    v9 = [v8 integerValue];
+    integerValue = [v8 integerValue];
     v10 = [v6 objectForKey:@"i"];
-    v11 = [v10 integerValue];
+    integerValue2 = [v10 integerValue];
     v12 = [v6 objectForKey:@"u"];
-    v13 = [v7 initWithMajorVersion:v9 minorVersion:v11 updateVersion:{objc_msgSend(v12, "integerValue")}];
+    v13 = [v7 initWithMajorVersion:integerValue minorVersion:integerValue2 updateVersion:{objc_msgSend(v12, "integerValue")}];
 
     return v13;
   }

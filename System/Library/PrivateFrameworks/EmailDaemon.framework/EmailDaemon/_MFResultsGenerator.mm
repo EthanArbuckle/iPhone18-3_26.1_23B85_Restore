@@ -1,9 +1,9 @@
 @interface _MFResultsGenerator
 - (_MFResultsGenerator)init;
-- (_MFResultsGenerator)initWithKeys:(id)a3;
+- (_MFResultsGenerator)initWithKeys:(id)keys;
 - (id)copyResults;
 - (id)results;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation _MFResultsGenerator
@@ -15,15 +15,15 @@
   return 0;
 }
 
-- (_MFResultsGenerator)initWithKeys:(id)a3
+- (_MFResultsGenerator)initWithKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v10.receiver = self;
   v10.super_class = _MFResultsGenerator;
   v5 = [(_MFResultsGenerator *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keysCopy copy];
     resultKeys = v5->_resultKeys;
     v5->_resultKeys = v6;
 
@@ -80,19 +80,19 @@
 
 - (id)results
 {
-  v2 = [(_MFResultsGenerator *)self copyResults];
+  copyResults = [(_MFResultsGenerator *)self copyResults];
 
-  return v2;
+  return copyResults;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_MFResultsGenerator *)self blockForKey:v4];
+  keyCopy = key;
+  v5 = [(_MFResultsGenerator *)self blockForKey:keyCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = (*(v5 + 16))(v5, self, v4);
+    v7 = (*(v5 + 16))(v5, self, keyCopy);
   }
 
   else

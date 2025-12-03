@@ -1,5 +1,5 @@
 @interface AVVideoFrameVisualAnalyzer
-- (AVVideoFrameVisualAnalyzer)initWithPlayerController:(id)a3 playerLayer:(id)a4;
+- (AVVideoFrameVisualAnalyzer)initWithPlayerController:(id)controller playerLayer:(id)layer;
 - (AVVideoFrameVisualAnalyzerDelegate)delegate;
 - (VKCImageAnalyzer)imageAnalyzer;
 - (id)_imageAnalysisQueue;
@@ -9,10 +9,10 @@
 - (void)_updateAnalysisIfNeeded;
 - (void)_updateObserversIfNeeded;
 - (void)dealloc;
-- (void)setActuallyEnabled:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPlayerController:(id)a3;
-- (void)setPlayerLayer:(id)a3;
+- (void)setActuallyEnabled:(BOOL)enabled;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPlayerController:(id)controller;
+- (void)setPlayerLayer:(id)layer;
 @end
 
 @implementation AVVideoFrameVisualAnalyzer
@@ -52,8 +52,8 @@
     self->_imageAnalyzer = v6;
 
     v8 = self->_imageAnalyzer;
-    v9 = [(AVVideoFrameVisualAnalyzer *)self _imageAnalysisQueue];
-    [(VKCImageAnalyzer *)v8 setCallbackQueue:v9];
+    _imageAnalysisQueue = [(AVVideoFrameVisualAnalyzer *)self _imageAnalysisQueue];
+    [(VKCImageAnalyzer *)v8 setCallbackQueue:_imageAnalysisQueue];
 
     imageAnalyzer = self->_imageAnalyzer;
   }
@@ -63,18 +63,18 @@
 
 - (id)_imageAnalysisQueue
 {
-  if (a1)
+  if (self)
   {
     if (_imageAnalysisQueue_once != -1)
     {
       dispatch_once(&_imageAnalysisQueue_once, &__block_literal_global_37);
     }
 
-    a1 = _imageAnalysisQueue_videoFrameAnalysisQueue;
+    self = _imageAnalysisQueue_videoFrameAnalysisQueue;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
@@ -87,12 +87,12 @@ void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
   _imageAnalysisQueue_videoFrameAnalysisQueue = v1;
 }
 
-- (void)setActuallyEnabled:(BOOL)a3
+- (void)setActuallyEnabled:(BOOL)enabled
 {
-  if (self->_actuallyEnabled != a3)
+  if (self->_actuallyEnabled != enabled)
   {
-    self->_actuallyEnabled = a3;
-    if (!a3)
+    self->_actuallyEnabled = enabled;
+    if (!enabled)
     {
       [(VKCImageAnalyzer *)self->_imageAnalyzer cancelAllRequests];
       [(AVVideoFrameVisualAnalyzer *)self _resetAnalysis];
@@ -104,92 +104,92 @@ void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
 
 - (void)_resetAnalysis
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x1E6960C70];
-    *(a1 + 24) = 0x3FF0000000000000;
-    *(a1 + 40) = *v2;
-    *(a1 + 56) = *(v2 + 16);
-    if (*(a1 + 16))
+    *(self + 24) = 0x3FF0000000000000;
+    *(self + 40) = *v2;
+    *(self + 56) = *(v2 + 16);
+    if (*(self + 16))
     {
-      v3 = [a1 imageAnalyzer];
-      [v3 cancelRequestID:*(a1 + 16)];
+      imageAnalyzer = [self imageAnalyzer];
+      [imageAnalyzer cancelRequestID:*(self + 16)];
 
-      *(a1 + 16) = 0;
+      *(self + 16) = 0;
     }
 
-    [*(a1 + 32) invalidate];
-    if (*(a1 + 64))
+    [*(self + 32) invalidate];
+    if (*(self + 64))
     {
-      v4 = [a1 delegate];
+      delegate = [self delegate];
       v5 = objc_opt_respondsToSelector();
 
       if (v5)
       {
-        v6 = [a1 delegate];
-        [v6 videoFrameVisualAnalyzerDidFinishAnalyzingVideoFrame:a1 withAnalysis:0];
+        delegate2 = [self delegate];
+        [delegate2 videoFrameVisualAnalyzerDidFinishAnalyzingVideoFrame:self withAnalysis:0];
       }
     }
 
-    v7 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v7 = *(self + 64);
+    *(self + 64) = 0;
   }
 }
 
 - (void)_updateObserversIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v12 = [a1 playerController];
-    v2 = [a1 enabled];
-    v3 = [a1 actuallyEnabled];
-    v4 = a1[1];
+    playerController = [self playerController];
+    enabled = [self enabled];
+    actuallyEnabled = [self actuallyEnabled];
+    v4 = self[1];
     if (!v4)
     {
-      v5 = [[AVObservationController alloc] initWithOwner:a1];
-      v6 = a1[1];
-      a1[1] = v5;
+      v5 = [[AVObservationController alloc] initWithOwner:self];
+      v6 = self[1];
+      self[1] = v5;
 
-      v4 = a1[1];
+      v4 = self[1];
     }
 
     [v4 stopAllObservation];
-    v7 = v12;
-    if (v2 && v12)
+    v7 = playerController;
+    if (enabled && playerController)
     {
-      v8 = [a1[1] startObserving:v12 keyPath:@"currentAssetIfReady" includeInitialValue:0 observationHandler:&__block_literal_global_5726];
-      v7 = v12;
+      v8 = [self[1] startObserving:playerController keyPath:@"currentAssetIfReady" includeInitialValue:0 observationHandler:&__block_literal_global_5726];
+      v7 = playerController;
     }
 
-    if (v7 && ((v3 ^ 1) & 1) == 0)
+    if (v7 && ((actuallyEnabled ^ 1) & 1) == 0)
     {
-      v9 = [a1[1] startObserving:v12 keyPath:@"activeRate" includeInitialValue:1 observationHandler:&__block_literal_global_14];
-      [a1[1] startObservingNotificationForName:@"AVPlayerControllerCurrentTimeJumpedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_17];
-      v10 = [a1[1] startObserving:v12 keyPath:@"player.currentItem.videoComposition" includeInitialValue:1 observationHandler:&__block_literal_global_22];
-      v11 = [a1[1] startObserving:v12 keyPath:@"preferredTransform" includeInitialValue:1 observationHandler:&__block_literal_global_27_5730];
-      v7 = v12;
+      v9 = [self[1] startObserving:playerController keyPath:@"activeRate" includeInitialValue:1 observationHandler:&__block_literal_global_14];
+      [self[1] startObservingNotificationForName:@"AVPlayerControllerCurrentTimeJumpedNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_17];
+      v10 = [self[1] startObserving:playerController keyPath:@"player.currentItem.videoComposition" includeInitialValue:1 observationHandler:&__block_literal_global_22];
+      v11 = [self[1] startObserving:playerController keyPath:@"preferredTransform" includeInitialValue:1 observationHandler:&__block_literal_global_27_5730];
+      v7 = playerController;
     }
   }
 }
 
 - (void)_updateAnalysisIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v8 = [a1 playerController];
-    [(AVVideoFrameVisualAnalyzer *)a1 _resetAnalysis];
-    [v8 activeRate];
-    v2 = v8;
+    playerController = [self playerController];
+    [(AVVideoFrameVisualAnalyzer *)self _resetAnalysis];
+    [playerController activeRate];
+    v2 = playerController;
     if (v3 == 0.0)
     {
-      [v8 currentTime];
-      *(a1 + 24) = v4;
-      if ([(AVVideoFrameVisualAnalyzer *)a1 _canStartAnalysis])
+      [playerController currentTime];
+      *(self + 24) = v4;
+      if ([(AVVideoFrameVisualAnalyzer *)self _canStartAnalysis])
       {
-        if ([(AVVideoFrameVisualAnalyzer *)a1 _canStartAnalysis])
+        if ([(AVVideoFrameVisualAnalyzer *)self _canStartAnalysis])
         {
-          [*(a1 + 32) invalidate];
-          objc_initWeak(&location, a1);
+          [*(self + 32) invalidate];
+          objc_initWeak(&location, self);
           v5 = MEMORY[0x1E695DFF0];
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
@@ -197,8 +197,8 @@ void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
           v9[3] = &unk_1E7209DA8;
           objc_copyWeak(&v10, &location);
           v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v9 block:0.25];
-          v7 = *(a1 + 32);
-          *(a1 + 32) = v6;
+          v7 = *(self + 32);
+          *(self + 32) = v6;
 
           objc_destroyWeak(&v10);
           objc_destroyWeak(&location);
@@ -207,40 +207,40 @@ void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
 
       else
       {
-        [*(a1 + 80) cancelAllRequests];
-        [(AVVideoFrameVisualAnalyzer *)a1 _resetAnalysis];
+        [*(self + 80) cancelAllRequests];
+        [(AVVideoFrameVisualAnalyzer *)self _resetAnalysis];
       }
 
-      v2 = v8;
+      v2 = playerController;
     }
   }
 }
 
 - (uint64_t)_canStartAnalysis
 {
-  v2 = [a1 playerController];
-  v3 = [a1 actuallyEnabled];
-  if (*(a1 + 16))
+  playerController = [self playerController];
+  actuallyEnabled = [self actuallyEnabled];
+  if (*(self + 16))
   {
     v4 = 1;
   }
 
   else
   {
-    [v2 activeRate];
+    [playerController activeRate];
     v4 = v5 != 0.0;
   }
 
-  v6 = *(a1 + 52);
-  v15 = *(a1 + 40);
-  v7 = CMTimeGetSeconds(&v15) != *(a1 + 24) && *(a1 + 64) == 0;
-  v8 = [a1 playerController];
-  v9 = [v8 currentAssetIfReady];
-  v10 = [v9 hasProtectedContent];
+  v6 = *(self + 52);
+  v15 = *(self + 40);
+  v7 = CMTimeGetSeconds(&v15) != *(self + 24) && *(self + 64) == 0;
+  playerController2 = [self playerController];
+  currentAssetIfReady = [playerController2 currentAssetIfReady];
+  hasProtectedContent = [currentAssetIfReady hasProtectedContent];
 
-  if (v8)
+  if (playerController2)
   {
-    v11 = v9 == 0;
+    v11 = currentAssetIfReady == 0;
   }
 
   else
@@ -255,10 +255,10 @@ void __49__AVVideoFrameVisualAnalyzer__imageAnalysisQueue__block_invoke()
 
   else
   {
-    v12 = v3;
+    v12 = actuallyEnabled;
   }
 
-  if (v10 & 1 | ((v12 & 1) == 0) | v4)
+  if (hasProtectedContent & 1 | ((v12 & 1) == 0) | v4)
   {
     v13 = 0;
   }
@@ -489,15 +489,15 @@ void __54__AVVideoFrameVisualAnalyzer__startVideoFrameAnalysis__block_invoke_3(u
 
 - (void)_updateActualEnabledStateIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 playerController];
-    v6 = [v2 currentAssetIfReady];
+    playerController = [self playerController];
+    currentAssetIfReady = [playerController currentAssetIfReady];
 
-    v3 = [a1 enabled];
-    if (v6)
+    enabled = [self enabled];
+    if (currentAssetIfReady)
     {
-      v4 = v3;
+      v4 = enabled;
     }
 
     else
@@ -505,7 +505,7 @@ void __54__AVVideoFrameVisualAnalyzer__startVideoFrameAnalysis__block_invoke_3(u
       v4 = 0;
     }
 
-    if (a1[12])
+    if (self[12])
     {
       v5 = v4;
     }
@@ -515,45 +515,45 @@ void __54__AVVideoFrameVisualAnalyzer__startVideoFrameAnalysis__block_invoke_3(u
       v5 = 0;
     }
 
-    [a1 setActuallyEnabled:v5];
+    [self setActuallyEnabled:v5];
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_playerController = &self->_playerController;
-  if (self->_playerController != v5)
+  if (self->_playerController != controllerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_playerController, a3);
+    v7 = controllerCopy;
+    objc_storeStrong(p_playerController, controller);
     [(AVVideoFrameVisualAnalyzer *)&self->super.isa _updateObserversIfNeeded];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_playerController, v5);
+  MEMORY[0x1EEE66BB8](p_playerController, controllerCopy);
 }
 
-- (void)setPlayerLayer:(id)a3
+- (void)setPlayerLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   p_playerLayer = &self->_playerLayer;
-  if (self->_playerLayer != v5)
+  if (self->_playerLayer != layerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_playerLayer, a3);
+    v7 = layerCopy;
+    objc_storeStrong(p_playerLayer, layer);
     [(AVVideoFrameVisualAnalyzer *)self _updateActualEnabledStateIfNeeded];
-    v5 = v7;
+    layerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_playerLayer, v5);
+  MEMORY[0x1EEE66BB8](p_playerLayer, layerCopy);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(AVVideoFrameVisualAnalyzer *)&self->super.isa _updateObserversIfNeeded];
 
     [(AVVideoFrameVisualAnalyzer *)self _updateActualEnabledStateIfNeeded];
@@ -570,10 +570,10 @@ void __54__AVVideoFrameVisualAnalyzer__startVideoFrameAnalysis__block_invoke_3(u
   [(AVVideoFrameVisualAnalyzer *)&v3 dealloc];
 }
 
-- (AVVideoFrameVisualAnalyzer)initWithPlayerController:(id)a3 playerLayer:(id)a4
+- (AVVideoFrameVisualAnalyzer)initWithPlayerController:(id)controller playerLayer:(id)layer
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  layerCopy = layer;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -583,20 +583,20 @@ void __54__AVVideoFrameVisualAnalyzer__startVideoFrameAnalysis__block_invoke_3(u
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_playerController, a3);
-      objc_storeStrong(p_isa + 12, a4);
+      objc_storeStrong(&v9->_playerController, controller);
+      objc_storeStrong(p_isa + 12, layer);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

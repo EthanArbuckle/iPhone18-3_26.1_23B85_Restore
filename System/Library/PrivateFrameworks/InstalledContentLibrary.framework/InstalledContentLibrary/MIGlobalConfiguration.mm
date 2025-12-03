@@ -55,14 +55,14 @@
 - (NSURL)systemExtensionKitExtensionsDirectory;
 - (NSURL)systemFrameworksRootDirectory;
 - (NSURL)testFileSentinelForSyncURL;
-- (id)_bundleIDMapForBundlesInDirectory:(id)a3 withExtension:(id)a4 loadingAdditionalKeys:(id)a5;
-- (id)_ixDataStorageHomeURLWithError:(id *)a3;
+- (id)_bundleIDMapForBundlesInDirectory:(id)directory withExtension:(id)extension loadingAdditionalKeys:(id)keys;
+- (id)_ixDataStorageHomeURLWithError:(id *)error;
 - (id)disableSystemAppDeletionCanaryFile;
-- (id)installCoordinationStagingWithError:(id *)a3;
+- (id)installCoordinationStagingWithError:(id *)error;
 - (void)reScanCoreServicesApps;
 - (void)reScanInternalApps;
 - (void)reScanSystemApps;
-- (void)setSystemAppPlaceholderBundleIDToInfoMap:(id)a3;
+- (void)setSystemAppPlaceholderBundleIDToInfoMap:(id)map;
 @end
 
 @implementation MIGlobalConfiguration
@@ -103,8 +103,8 @@
     v12 = v16;
     v2->_ixDaemonUID = HIDWORD(v16);
     v2->_ixDaemonGID = v12;
-    v13 = [getUMUserManagerClass_0() sharedManager];
-    v2->_isSharediPad = [v13 isSharedIPad];
+    sharedManager = [getUMUserManagerClass_0() sharedManager];
+    v2->_isSharediPad = [sharedManager isSharedIPad];
   }
 
   return v2;
@@ -116,7 +116,7 @@
   block[1] = 3221225472;
   block[2] = __39__MIGlobalConfiguration_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -129,53 +129,53 @@
 
 - (NSSet)systemAppPlaceholderBundleIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  systemAppPlaceholderBundleIDs = v2->_systemAppPlaceholderBundleIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemAppPlaceholderBundleIDs = selfCopy->_systemAppPlaceholderBundleIDs;
   if (!systemAppPlaceholderBundleIDs)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [(MIGlobalConfiguration *)v2 systemAppPlaceholderBundleIDToInfoMap];
-    v6 = [v5 allKeys];
-    v7 = [v4 setWithArray:v6];
-    v8 = v2->_systemAppPlaceholderBundleIDs;
-    v2->_systemAppPlaceholderBundleIDs = v7;
+    systemAppPlaceholderBundleIDToInfoMap = [(MIGlobalConfiguration *)selfCopy systemAppPlaceholderBundleIDToInfoMap];
+    allKeys = [systemAppPlaceholderBundleIDToInfoMap allKeys];
+    v7 = [v4 setWithArray:allKeys];
+    v8 = selfCopy->_systemAppPlaceholderBundleIDs;
+    selfCopy->_systemAppPlaceholderBundleIDs = v7;
 
-    systemAppPlaceholderBundleIDs = v2->_systemAppPlaceholderBundleIDs;
+    systemAppPlaceholderBundleIDs = selfCopy->_systemAppPlaceholderBundleIDs;
   }
 
   v9 = systemAppPlaceholderBundleIDs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (NSDictionary)systemAppPlaceholderBundleIDToInfoMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  systemAppPlaceholderBundleIDToInfoMap = v2->_systemAppPlaceholderBundleIDToInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemAppPlaceholderBundleIDToInfoMap = selfCopy->_systemAppPlaceholderBundleIDToInfoMap;
   if (!systemAppPlaceholderBundleIDToInfoMap)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"UIRequiredDeviceCapabilities", @"UIDeviceFamily", @"LSRequiredFeatureFlags", @"LSEligibilityPredicatesValidAtEraseInstallDataMigration", @"LSEligibilityInstallPredicate", @"LSEligibilityUninstallPredicate", @"LSInstallByDefault", 0}];
-    v5 = [(MIGlobalConfiguration *)v2 systemAppPlaceholdersDirectory];
-    v6 = [(MIGlobalConfiguration *)v2 _bundleIDMapForAppsInDirectory:v5 loadingAdditionalKeys:v4];
-    v7 = v2->_systemAppPlaceholderBundleIDToInfoMap;
-    v2->_systemAppPlaceholderBundleIDToInfoMap = v6;
+    systemAppPlaceholdersDirectory = [(MIGlobalConfiguration *)selfCopy systemAppPlaceholdersDirectory];
+    v6 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForAppsInDirectory:systemAppPlaceholdersDirectory loadingAdditionalKeys:v4];
+    v7 = selfCopy->_systemAppPlaceholderBundleIDToInfoMap;
+    selfCopy->_systemAppPlaceholderBundleIDToInfoMap = v6;
 
-    systemAppPlaceholderBundleIDToInfoMap = v2->_systemAppPlaceholderBundleIDToInfoMap;
+    systemAppPlaceholderBundleIDToInfoMap = selfCopy->_systemAppPlaceholderBundleIDToInfoMap;
   }
 
   v8 = systemAppPlaceholderBundleIDToInfoMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (NSURL)systemAppPlaceholdersDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/AppPlaceholders" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library/AppPlaceholders" isDirectory:1];
 
   return v3;
 }
@@ -230,56 +230,56 @@ uint64_t __49__MIGlobalConfiguration_allowDeletableSystemApps__block_invoke(uint
 
 - (NSURL)oldDataDirectoryPath
 {
-  v2 = [(MIGlobalConfiguration *)self mobilePath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library/MobileInstallation" isDirectory:1];
+  mobilePath = [(MIGlobalConfiguration *)self mobilePath];
+  v3 = [mobilePath URLByAppendingPathComponent:@"Library/MobileInstallation" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)oldLoggingPath
 {
-  v2 = [(MIGlobalConfiguration *)self mobilePath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library/Logs/MobileInstallation" isDirectory:1];
+  mobilePath = [(MIGlobalConfiguration *)self mobilePath];
+  v3 = [mobilePath URLByAppendingPathComponent:@"Library/Logs/MobileInstallation" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)oldArchiveDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self mobilePath];
-  v3 = [v2 URLByAppendingPathComponent:@"Media/ApplicationArchives" isDirectory:1];
+  mobilePath = [(MIGlobalConfiguration *)self mobilePath];
+  v3 = [mobilePath URLByAppendingPathComponent:@"Media/ApplicationArchives" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)roleUserMigrationMarkerFilePath
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"RoleUserMigration.plist" isDirectory:0];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"RoleUserMigration.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)systemAppInstallStateFilePath
 {
-  v2 = [(MIGlobalConfiguration *)self backedUpStateDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"SystemAppInstallState.plist" isDirectory:0];
+  backedUpStateDirectory = [(MIGlobalConfiguration *)self backedUpStateDirectory];
+  v3 = [backedUpStateDirectory URLByAppendingPathComponent:@"SystemAppInstallState.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)backupSystemAppInstallStateFilePath
 {
-  v2 = [(MIGlobalConfiguration *)self backedUpStateDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"BackupSystemAppInstallState.plist" isDirectory:0];
+  backedUpStateDirectory = [(MIGlobalConfiguration *)self backedUpStateDirectory];
+  v3 = [backedUpStateDirectory URLByAppendingPathComponent:@"BackupSystemAppInstallState.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)logDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self installdLibraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Logs/MobileInstallation" isDirectory:1];
+  installdLibraryPath = [(MIGlobalConfiguration *)self installdLibraryPath];
+  v3 = [installdLibraryPath URLByAppendingPathComponent:@"Logs/MobileInstallation" isDirectory:1];
 
   return v3;
 }
@@ -323,7 +323,7 @@ uint64_t __49__MIGlobalConfiguration_allowDeletableSystemApps__block_invoke(uint
 
   if ((v11 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
   {
-    v17 = [(NSURL *)self->_helperLogDirectory path];
+    path = [(NSURL *)self->_helperLogDirectory path];
     MOLogWrite();
   }
 
@@ -335,64 +335,64 @@ uint64_t __49__MIGlobalConfiguration_allowDeletableSystemApps__block_invoke(uint
 
 - (NSURL)internalRootDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"AppleInternal" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"AppleInternal" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)developerRootDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Developer" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"Developer" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)systemDeveloperRootDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Developer" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Developer" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)coreServicesDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/CoreServices" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library/CoreServices" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)systemAppsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Applications" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"Applications" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)systemAppDetachedSignaturesDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/AppSignatures" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library/AppSignatures" isDirectory:1];
 
   return v3;
 }
 
 - (id)disableSystemAppDeletionCanaryFile
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/disableSystemAppDeletion" isDirectory:0];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library/disableSystemAppDeletion" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)internalAppsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self internalRootDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Applications" isDirectory:1];
+  internalRootDirectory = [(MIGlobalConfiguration *)self internalRootDirectory];
+  v3 = [internalRootDirectory URLByAppendingPathComponent:@"Applications" isDirectory:1];
 
   return v3;
 }
@@ -400,33 +400,33 @@ uint64_t __49__MIGlobalConfiguration_allowDeletableSystemApps__block_invoke(uint
 - (NSSet)developerDirectories
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(MIGlobalConfiguration *)self developerRootDirectory];
-  v5 = [(MIGlobalConfiguration *)self systemDeveloperRootDirectory];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  developerRootDirectory = [(MIGlobalConfiguration *)self developerRootDirectory];
+  systemDeveloperRootDirectory = [(MIGlobalConfiguration *)self systemDeveloperRootDirectory];
+  v6 = [v3 setWithObjects:{developerRootDirectory, systemDeveloperRootDirectory, 0}];
 
   return v6;
 }
 
 - (NSURL)stagedSystemAppsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"private/var/staged_system_apps" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"private/var/staged_system_apps" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)cryptexAppsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Cryptexes/App" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Cryptexes/App" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)cryptexOSDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Cryptexes/OS" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Cryptexes/OS" isDirectory:1];
 
   return v3;
 }
@@ -468,16 +468,16 @@ void __53__MIGlobalConfiguration_cryptexFrameworksDirectories__block_invoke(uint
 
 - (NSURL)systemFrameworksRootDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)internalFrameworksRootDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self internalRootDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Library" isDirectory:1];
+  internalRootDirectory = [(MIGlobalConfiguration *)self internalRootDirectory];
+  v3 = [internalRootDirectory URLByAppendingPathComponent:@"Library" isDirectory:1];
 
   return v3;
 }
@@ -535,24 +535,24 @@ void __49__MIGlobalConfiguration_allFrameworksDirectories__block_invoke(uint64_t
 
 - (NSURL)systemExtensionKitExtensionsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self rootPath];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/ExtensionKit/Extensions" isDirectory:1];
+  rootPath = [(MIGlobalConfiguration *)self rootPath];
+  v3 = [rootPath URLByAppendingPathComponent:@"System/Library/ExtensionKit/Extensions" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)internalExtensionKitExtensionsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self internalRootDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"Library/ExtensionKit/Extensions" isDirectory:1];
+  internalRootDirectory = [(MIGlobalConfiguration *)self internalRootDirectory];
+  v3 = [internalRootDirectory URLByAppendingPathComponent:@"Library/ExtensionKit/Extensions" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)cryptexExtensionKitExtensionsDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self cryptexOSDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"System/Library/ExtensionKit/Extensions" isDirectory:1];
+  cryptexOSDirectory = [(MIGlobalConfiguration *)self cryptexOSDirectory];
+  v3 = [cryptexOSDirectory URLByAppendingPathComponent:@"System/Library/ExtensionKit/Extensions" isDirectory:1];
 
   return v3;
 }
@@ -560,13 +560,13 @@ void __49__MIGlobalConfiguration_allFrameworksDirectories__block_invoke(uint64_t
 - (NSSet)builtInExtensionKitExtensionsDirectories
 {
   v3 = objc_opt_new();
-  v4 = [(MIGlobalConfiguration *)self systemExtensionKitExtensionsDirectory];
-  [v3 addObject:v4];
+  systemExtensionKitExtensionsDirectory = [(MIGlobalConfiguration *)self systemExtensionKitExtensionsDirectory];
+  [v3 addObject:systemExtensionKitExtensionsDirectory];
 
   if ([(MIGlobalConfiguration *)self hasInternalContent])
   {
-    v5 = [(MIGlobalConfiguration *)self internalExtensionKitExtensionsDirectory];
-    [v3 addObject:v5];
+    internalExtensionKitExtensionsDirectory = [(MIGlobalConfiguration *)self internalExtensionKitExtensionsDirectory];
+    [v3 addObject:internalExtensionKitExtensionsDirectory];
   }
 
   v6 = [v3 copy];
@@ -577,54 +577,54 @@ void __49__MIGlobalConfiguration_allFrameworksDirectories__block_invoke(uint64_t
 - (NSSet)cryptexExtensionKitExtensionsDirectories
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(MIGlobalConfiguration *)self cryptexExtensionKitExtensionsDirectory];
-  v4 = [v2 setWithObject:v3];
+  cryptexExtensionKitExtensionsDirectory = [(MIGlobalConfiguration *)self cryptexExtensionKitExtensionsDirectory];
+  v4 = [v2 setWithObject:cryptexExtensionKitExtensionsDirectory];
 
   return v4;
 }
 
 - (NSSet)allExtensionKitExtensionsDirectories
 {
-  v3 = [(MIGlobalConfiguration *)self builtInExtensionKitExtensionsDirectories];
-  v4 = [(MIGlobalConfiguration *)self cryptexExtensionKitExtensionsDirectories];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  builtInExtensionKitExtensionsDirectories = [(MIGlobalConfiguration *)self builtInExtensionKitExtensionsDirectories];
+  cryptexExtensionKitExtensionsDirectories = [(MIGlobalConfiguration *)self cryptexExtensionKitExtensionsDirectories];
+  v5 = [builtInExtensionKitExtensionsDirectories setByAddingObjectsFromSet:cryptexExtensionKitExtensionsDirectories];
 
   return v5;
 }
 
 - (NSURL)installdLibraryPath
 {
-  v2 = [(MIGlobalConfiguration *)self installdPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library" isDirectory:1];
+  installdPath = [(MIGlobalConfiguration *)self installdPath];
+  v3 = [installdPath URLByAppendingPathComponent:@"Library" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)dataDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self installdLibraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"MobileInstallation" isDirectory:1];
+  installdLibraryPath = [(MIGlobalConfiguration *)self installdLibraryPath];
+  v3 = [installdLibraryPath URLByAppendingPathComponent:@"MobileInstallation" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)cachesDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self installdLibraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches" isDirectory:1];
+  installdLibraryPath = [(MIGlobalConfiguration *)self installdLibraryPath];
+  v3 = [installdLibraryPath URLByAppendingPathComponent:@"Caches" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)backedUpStateDirectory
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"BackedUpState" isDirectory:1];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"BackedUpState" isDirectory:1];
 
   return v3;
 }
 
-- (id)_ixDataStorageHomeURLWithError:(id *)a3
+- (id)_ixDataStorageHomeURLWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_dynamicPropertyLock);
   ixDataStorageDirectoryPath = self->_ixDataStorageDirectoryPath;
@@ -657,18 +657,18 @@ void __49__MIGlobalConfiguration_allFrameworksDirectories__block_invoke(uint64_t
 
   v12 = ixDataStorageDirectoryPath;
   os_unfair_lock_unlock(&self->_dynamicPropertyLock);
-  if (a3 && !v12)
+  if (error && !v12)
   {
     v13 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v12;
 }
 
-- (id)installCoordinationStagingWithError:(id *)a3
+- (id)installCoordinationStagingWithError:(id *)error
 {
-  v3 = [(MIGlobalConfiguration *)self _ixDataStorageHomeURLWithError:a3];
+  v3 = [(MIGlobalConfiguration *)self _ixDataStorageHomeURLWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -697,17 +697,17 @@ uint64_t __46__MIGlobalConfiguration_installationBlacklist__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_bundleIDMapForBundlesInDirectory:(id)a3 withExtension:(id)a4 loadingAdditionalKeys:(id)a5
+- (id)_bundleIDMapForBundlesInDirectory:(id)directory withExtension:(id)extension loadingAdditionalKeys:(id)keys
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  directoryCopy = directory;
+  extensionCopy = extension;
+  keysCopy = keys;
   v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
-  v12 = [(MIGlobalConfiguration *)self standardInfoMapInfoPlistKeys];
-  v13 = v12;
-  if (v10)
+  standardInfoMapInfoPlistKeys = [(MIGlobalConfiguration *)self standardInfoMapInfoPlistKeys];
+  v13 = standardInfoMapInfoPlistKeys;
+  if (keysCopy)
   {
-    v14 = [v12 setByAddingObjectsFromSet:v10];
+    v14 = [standardInfoMapInfoPlistKeys setByAddingObjectsFromSet:keysCopy];
 
     v13 = v14;
   }
@@ -717,13 +717,13 @@ uint64_t __46__MIGlobalConfiguration_installationBlacklist__block_invoke()
   v25[1] = 3221225472;
   v25[2] = __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExtension_loadingAdditionalKeys___block_invoke;
   v25[3] = &unk_1E7AE1FB8;
-  v16 = v9;
+  v16 = extensionCopy;
   v26 = v16;
   v17 = v13;
   v27 = v17;
   v18 = v11;
   v28 = v18;
-  v19 = [v15 enumerateURLsForItemsInDirectoryAtURL:v8 ignoreSymlinks:1 withBlock:v25];
+  v19 = [v15 enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v25];
 
   if (!v19)
   {
@@ -731,12 +731,12 @@ uint64_t __46__MIGlobalConfiguration_installationBlacklist__block_invoke()
     goto LABEL_8;
   }
 
-  v20 = [v19 domain];
-  if ([v20 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v19 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v21 = [v19 code];
+    code = [v19 code];
 
-    if (v21 == 2)
+    if (code == 2)
     {
       v22 = objc_opt_new();
 LABEL_8:
@@ -811,15 +811,15 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 
 - (NSSet)builtInApplicationBundleIDs
 {
-  v3 = [(MIGlobalConfiguration *)self systemAppBundleIDToInfoMap];
-  v4 = [v3 allKeys];
+  systemAppBundleIDToInfoMap = [(MIGlobalConfiguration *)self systemAppBundleIDToInfoMap];
+  allKeys = [systemAppBundleIDToInfoMap allKeys];
 
-  v5 = [(MIGlobalConfiguration *)self internalAppBundleIDToInfoMap];
-  v6 = [v5 allKeys];
+  internalAppBundleIDToInfoMap = [(MIGlobalConfiguration *)self internalAppBundleIDToInfoMap];
+  allKeys2 = [internalAppBundleIDToInfoMap allKeys];
 
   v7 = objc_opt_new();
-  [v7 addObjectsFromArray:v4];
-  [v7 addObjectsFromArray:v6];
+  [v7 addObjectsFromArray:allKeys];
+  [v7 addObjectsFromArray:allKeys2];
   v8 = [v7 copy];
 
   return v8;
@@ -827,95 +827,95 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 
 - (NSDictionary)coreServicesAppBundleIDToInfoMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  coreServicesAppBundleIDToInfoMap = v2->_coreServicesAppBundleIDToInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  coreServicesAppBundleIDToInfoMap = selfCopy->_coreServicesAppBundleIDToInfoMap;
   if (!coreServicesAppBundleIDToInfoMap)
   {
-    v4 = [(MIGlobalConfiguration *)v2 coreServicesDirectory];
-    v5 = [(MIGlobalConfiguration *)v2 _bundleIDMapForAppsInDirectory:v4];
-    v6 = v2->_coreServicesAppBundleIDToInfoMap;
-    v2->_coreServicesAppBundleIDToInfoMap = v5;
+    coreServicesDirectory = [(MIGlobalConfiguration *)selfCopy coreServicesDirectory];
+    v5 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForAppsInDirectory:coreServicesDirectory];
+    v6 = selfCopy->_coreServicesAppBundleIDToInfoMap;
+    selfCopy->_coreServicesAppBundleIDToInfoMap = v5;
 
-    coreServicesAppBundleIDToInfoMap = v2->_coreServicesAppBundleIDToInfoMap;
+    coreServicesAppBundleIDToInfoMap = selfCopy->_coreServicesAppBundleIDToInfoMap;
   }
 
   v7 = coreServicesAppBundleIDToInfoMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSDictionary)systemAppBundleIDToInfoMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  systemAppBundleIDToInfoMap = v2->_systemAppBundleIDToInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemAppBundleIDToInfoMap = selfCopy->_systemAppBundleIDToInfoMap;
   if (!systemAppBundleIDToInfoMap)
   {
-    v4 = [(MIGlobalConfiguration *)v2 systemAppsDirectory];
-    v5 = [(MIGlobalConfiguration *)v2 _bundleIDMapForAppsInDirectory:v4];
-    v6 = v2->_systemAppBundleIDToInfoMap;
-    v2->_systemAppBundleIDToInfoMap = v5;
+    systemAppsDirectory = [(MIGlobalConfiguration *)selfCopy systemAppsDirectory];
+    v5 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForAppsInDirectory:systemAppsDirectory];
+    v6 = selfCopy->_systemAppBundleIDToInfoMap;
+    selfCopy->_systemAppBundleIDToInfoMap = v5;
 
-    systemAppBundleIDToInfoMap = v2->_systemAppBundleIDToInfoMap;
+    systemAppBundleIDToInfoMap = selfCopy->_systemAppBundleIDToInfoMap;
   }
 
   v7 = systemAppBundleIDToInfoMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSDictionary)stagedSystemAppBundleIDToInfoMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  stagedSystemAppBundleIDToInfoMap = v2->_stagedSystemAppBundleIDToInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stagedSystemAppBundleIDToInfoMap = selfCopy->_stagedSystemAppBundleIDToInfoMap;
   if (!stagedSystemAppBundleIDToInfoMap)
   {
-    v4 = [(MIGlobalConfiguration *)v2 stagedSystemAppsDirectory];
-    v5 = [(MIGlobalConfiguration *)v2 _bundleIDMapForAppsInDirectory:v4];
-    v6 = v2->_stagedSystemAppBundleIDToInfoMap;
-    v2->_stagedSystemAppBundleIDToInfoMap = v5;
+    stagedSystemAppsDirectory = [(MIGlobalConfiguration *)selfCopy stagedSystemAppsDirectory];
+    v5 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForAppsInDirectory:stagedSystemAppsDirectory];
+    v6 = selfCopy->_stagedSystemAppBundleIDToInfoMap;
+    selfCopy->_stagedSystemAppBundleIDToInfoMap = v5;
 
-    stagedSystemAppBundleIDToInfoMap = v2->_stagedSystemAppBundleIDToInfoMap;
+    stagedSystemAppBundleIDToInfoMap = selfCopy->_stagedSystemAppBundleIDToInfoMap;
   }
 
   v7 = stagedSystemAppBundleIDToInfoMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setSystemAppPlaceholderBundleIDToInfoMap:(id)a3
+- (void)setSystemAppPlaceholderBundleIDToInfoMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   obj = self;
   objc_sync_enter(obj);
   systemAppPlaceholderBundleIDToInfoMap = obj->_systemAppPlaceholderBundleIDToInfoMap;
-  obj->_systemAppPlaceholderBundleIDToInfoMap = v4;
+  obj->_systemAppPlaceholderBundleIDToInfoMap = mapCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSDictionary)internalAppBundleIDToInfoMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  internalAppBundleIDToInfoMap = v2->_internalAppBundleIDToInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internalAppBundleIDToInfoMap = selfCopy->_internalAppBundleIDToInfoMap;
   if (!internalAppBundleIDToInfoMap)
   {
-    v4 = [(MIGlobalConfiguration *)v2 internalAppsDirectory];
-    v5 = [(MIGlobalConfiguration *)v2 _bundleIDMapForAppsInDirectory:v4];
-    v6 = v2->_internalAppBundleIDToInfoMap;
-    v2->_internalAppBundleIDToInfoMap = v5;
+    internalAppsDirectory = [(MIGlobalConfiguration *)selfCopy internalAppsDirectory];
+    v5 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForAppsInDirectory:internalAppsDirectory];
+    v6 = selfCopy->_internalAppBundleIDToInfoMap;
+    selfCopy->_internalAppBundleIDToInfoMap = v5;
 
-    internalAppBundleIDToInfoMap = v2->_internalAppBundleIDToInfoMap;
+    internalAppBundleIDToInfoMap = selfCopy->_internalAppBundleIDToInfoMap;
   }
 
   v7 = internalAppBundleIDToInfoMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -923,9 +923,9 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 - (NSSet)builtInFrameworkBundleIDs
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  builtInFrameworkBundleIDs = v2->_builtInFrameworkBundleIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  builtInFrameworkBundleIDs = selfCopy->_builtInFrameworkBundleIDs;
   if (!builtInFrameworkBundleIDs)
   {
     v4 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
@@ -933,8 +933,8 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(MIGlobalConfiguration *)v2 allFrameworksDirectories];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allFrameworksDirectories = [(MIGlobalConfiguration *)selfCopy allFrameworksDirectories];
+    v6 = [allFrameworksDirectories countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = *v16;
@@ -944,29 +944,29 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allFrameworksDirectories);
           }
 
-          v9 = [(MIGlobalConfiguration *)v2 _bundleIDMapForBundlesInDirectory:*(*(&v15 + 1) + 8 * i) withExtension:@"framework"];
-          v10 = [v9 allKeys];
-          [v4 addObjectsFromArray:v10];
+          v9 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForBundlesInDirectory:*(*(&v15 + 1) + 8 * i) withExtension:@"framework"];
+          allKeys = [v9 allKeys];
+          [v4 addObjectsFromArray:allKeys];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [allFrameworksDirectories countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
     }
 
     v11 = [v4 copy];
-    v12 = v2->_builtInFrameworkBundleIDs;
-    v2->_builtInFrameworkBundleIDs = v11;
+    v12 = selfCopy->_builtInFrameworkBundleIDs;
+    selfCopy->_builtInFrameworkBundleIDs = v11;
 
-    builtInFrameworkBundleIDs = v2->_builtInFrameworkBundleIDs;
+    builtInFrameworkBundleIDs = selfCopy->_builtInFrameworkBundleIDs;
   }
 
   v13 = builtInFrameworkBundleIDs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -974,20 +974,20 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 - (NSSet)systemAppPlaceholderAppExtensionBundleIDs
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  systemAppPlaceholderAppExtensionBundleIDs = v2->_systemAppPlaceholderAppExtensionBundleIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemAppPlaceholderAppExtensionBundleIDs = selfCopy->_systemAppPlaceholderAppExtensionBundleIDs;
   if (!systemAppPlaceholderAppExtensionBundleIDs)
   {
     v22 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
-    v4 = [(MIGlobalConfiguration *)v2 systemAppPlaceholderBundleIDToInfoMap];
-    v5 = [v4 allValues];
+    systemAppPlaceholderBundleIDToInfoMap = [(MIGlobalConfiguration *)selfCopy systemAppPlaceholderBundleIDToInfoMap];
+    allValues = [systemAppPlaceholderBundleIDToInfoMap allValues];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = v5;
+    obj = allValues;
     v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
@@ -1006,20 +1006,20 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
           if (v9)
           {
             v11 = [v9 URLByAppendingPathComponent:@"PlugIns" isDirectory:1];
-            v12 = [(MIGlobalConfiguration *)v2 _bundleIDMapForBundlesInDirectory:v11 withExtension:@"appex"];
+            v12 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForBundlesInDirectory:v11 withExtension:@"appex"];
             if ([v12 count])
             {
-              v13 = [v12 allKeys];
-              [v22 addObjectsFromArray:v13];
+              allKeys = [v12 allKeys];
+              [v22 addObjectsFromArray:allKeys];
             }
 
             v14 = [v10 URLByAppendingPathComponent:@"Extensions" isDirectory:1];
-            v15 = [(MIGlobalConfiguration *)v2 _bundleIDMapForBundlesInDirectory:v14 withExtension:@"appex"];
+            v15 = [(MIGlobalConfiguration *)selfCopy _bundleIDMapForBundlesInDirectory:v14 withExtension:@"appex"];
 
             if ([v15 count])
             {
-              v16 = [v15 allKeys];
-              [v22 addObjectsFromArray:v16];
+              allKeys2 = [v15 allKeys];
+              [v22 addObjectsFromArray:allKeys2];
             }
           }
         }
@@ -1031,14 +1031,14 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
     }
 
     v17 = [v22 copy];
-    v18 = v2->_systemAppPlaceholderAppExtensionBundleIDs;
-    v2->_systemAppPlaceholderAppExtensionBundleIDs = v17;
+    v18 = selfCopy->_systemAppPlaceholderAppExtensionBundleIDs;
+    selfCopy->_systemAppPlaceholderAppExtensionBundleIDs = v17;
 
-    systemAppPlaceholderAppExtensionBundleIDs = v2->_systemAppPlaceholderAppExtensionBundleIDs;
+    systemAppPlaceholderAppExtensionBundleIDs = selfCopy->_systemAppPlaceholderAppExtensionBundleIDs;
   }
 
   v19 = systemAppPlaceholderAppExtensionBundleIDs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v19;
 }
@@ -1046,21 +1046,21 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 - (NSSet)systemAppPlaceholderXPCServiceBundleIDs
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  systemAppPlaceholderXPCServiceBundleIDs = v2->_systemAppPlaceholderXPCServiceBundleIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemAppPlaceholderXPCServiceBundleIDs = selfCopy->_systemAppPlaceholderXPCServiceBundleIDs;
   if (!systemAppPlaceholderXPCServiceBundleIDs)
   {
     v20 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
-    v4 = v2;
-    v5 = [(MIGlobalConfiguration *)v2 systemAppPlaceholderBundleIDToInfoMap];
-    v6 = [v5 allValues];
+    v4 = selfCopy;
+    systemAppPlaceholderBundleIDToInfoMap = [(MIGlobalConfiguration *)selfCopy systemAppPlaceholderBundleIDToInfoMap];
+    allValues = [systemAppPlaceholderBundleIDToInfoMap allValues];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v6;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
@@ -1082,8 +1082,8 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
             v14 = [(MIGlobalConfiguration *)v4 _bundleIDMapForBundlesInDirectory:v13 withExtension:@"xpc"];
             if ([v14 count])
             {
-              v15 = [v14 allKeys];
-              [v20 addObjectsFromArray:v15];
+              allKeys = [v14 allKeys];
+              [v20 addObjectsFromArray:allKeys];
             }
           }
         }
@@ -1099,11 +1099,11 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
     v4->_systemAppPlaceholderXPCServiceBundleIDs = v16;
 
     systemAppPlaceholderXPCServiceBundleIDs = v4->_systemAppPlaceholderXPCServiceBundleIDs;
-    v2 = v4;
+    selfCopy = v4;
   }
 
   v18 = systemAppPlaceholderXPCServiceBundleIDs;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
@@ -1157,8 +1157,8 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 
 - (NSURL)migrationPlistURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"MigrationInfo.plist" isDirectory:0];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"MigrationInfo.plist" isDirectory:0];
 
   if (v3)
   {
@@ -1175,8 +1175,8 @@ uint64_t __95__MIGlobalConfiguration__bundleIDMapForBundlesInDirectory_withExten
 
 - (NSURL)lastBuildInfoFileURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"LastBuildInfo.plist" isDirectory:0];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"LastBuildInfo.plist" isDirectory:0];
 
   if (v3)
   {
@@ -1343,8 +1343,8 @@ LABEL_11:
 
 - (NSURL)testFileSentinelForSyncURL
 {
-  v2 = [(MIGlobalConfiguration *)self dataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"TestFileForSync" isDirectory:0];
+  dataDirectory = [(MIGlobalConfiguration *)self dataDirectory];
+  v3 = [dataDirectory URLByAppendingPathComponent:@"TestFileForSync" isDirectory:0];
 
   return v3;
 }

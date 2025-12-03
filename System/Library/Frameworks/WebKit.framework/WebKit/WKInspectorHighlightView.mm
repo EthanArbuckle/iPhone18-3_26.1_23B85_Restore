@@ -1,23 +1,23 @@
 @interface WKInspectorHighlightView
-- (WKInspectorHighlightView)initWithFrame:(CGRect)a3;
+- (WKInspectorHighlightView)initWithFrame:(CGRect)frame;
 - (id).cxx_construct;
-- (void)_createLayers:(unint64_t)a3;
-- (void)_layoutForNodeHighlight:(const void *)a3 offset:(unsigned int)a4;
-- (void)_layoutForNodeListHighlight:(const void *)a3;
-- (void)_layoutForRectsHighlight:(const void *)a3;
+- (void)_createLayers:(unint64_t)layers;
+- (void)_layoutForNodeHighlight:(const void *)highlight offset:(unsigned int)offset;
+- (void)_layoutForNodeListHighlight:(const void *)highlight;
+- (void)_layoutForRectsHighlight:(const void *)highlight;
 - (void)_removeAllLayers;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)update:(const void *)a3 scale:(double)a4 frame:(const FloatRect *)a5;
+- (void)drawRect:(CGRect)rect;
+- (void)update:(const void *)update scale:(double)scale frame:(const FloatRect *)frame;
 @end
 
 @implementation WKInspectorHighlightView
 
-- (WKInspectorHighlightView)initWithFrame:(CGRect)a3
+- (WKInspectorHighlightView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = WKInspectorHighlightView;
-  v3 = [(WKInspectorHighlightView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WKInspectorHighlightView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -76,10 +76,10 @@
   [(NSMutableArray *)self->_layers.m_ptr removeAllObjects];
 }
 
-- (void)_createLayers:(unint64_t)a3
+- (void)_createLayers:(unint64_t)layers
 {
   v5 = [(NSMutableArray *)self->_layers.m_ptr count];
-  if (a3 && v5 != a3)
+  if (layers && v5 != layers)
   {
     do
     {
@@ -94,34 +94,34 @@
       {
       }
 
-      --a3;
+      --layers;
     }
 
-    while (a3);
+    while (layers);
   }
 }
 
-- (void)_layoutForNodeHighlight:(const void *)a3 offset:(unsigned int)a4
+- (void)_layoutForNodeHighlight:(const void *)highlight offset:(unsigned int)offset
 {
   v7 = [(NSMutableArray *)self->_layers.m_ptr count];
-  v8 = a4 + 4;
-  if (v7 >= v8 && *(a3 + 15) >= v8)
+  v8 = offset + 4;
+  if (v7 >= v8 && *(highlight + 15) >= v8)
   {
-    v9 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:a4];
-    v10 = a4 + 1;
+    v9 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:offset];
+    v10 = offset + 1;
     v11 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:v10];
-    v12 = a4 + 2;
+    v12 = offset + 2;
     v13 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:v12];
-    v14 = a4 + 3;
+    v14 = offset + 3;
     v15 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:v14];
-    v17 = *(a3 + 15);
-    if (v17 <= a4)
+    v17 = *(highlight + 15);
+    if (v17 <= offset)
     {
       goto LABEL_20;
     }
 
-    v18 = *(a3 + 6);
-    v19 = (v18 + 32 * a4);
+    v18 = *(highlight + 6);
+    v19 = (v18 + 32 * offset);
     v20 = v19[1];
     v39[0] = *v19;
     v39[1] = v20;
@@ -157,7 +157,7 @@ LABEL_20:
     v27 = v26[1];
     v36[0] = *v26;
     v36[1] = v27;
-    WebCore::cachedCGColor(&cf, (a3 + 32), v16);
+    WebCore::cachedCGColor(&cf, (highlight + 32), v16);
     [(CAShapeLayer *)v9 setFillColor:cf];
     v29 = cf;
     cf = 0;
@@ -166,7 +166,7 @@ LABEL_20:
       CFRelease(v29);
     }
 
-    WebCore::cachedCGColor(&cf, (a3 + 24), v28);
+    WebCore::cachedCGColor(&cf, (highlight + 24), v28);
     [(CAShapeLayer *)v11 setFillColor:cf];
     v31 = cf;
     cf = 0;
@@ -175,7 +175,7 @@ LABEL_20:
       CFRelease(v31);
     }
 
-    WebCore::cachedCGColor(&cf, (a3 + 16), v30);
+    WebCore::cachedCGColor(&cf, (highlight + 16), v30);
     [(CAShapeLayer *)v13 setFillColor:cf];
     v33 = cf;
     cf = 0;
@@ -184,7 +184,7 @@ LABEL_20:
       CFRelease(v33);
     }
 
-    WebCore::cachedCGColor(&cf, a3, v32);
+    WebCore::cachedCGColor(&cf, highlight, v32);
     [(CAShapeLayer *)v25 setFillColor:cf];
     v34 = cf;
     cf = 0;
@@ -200,9 +200,9 @@ LABEL_20:
   }
 }
 
-- (void)_layoutForNodeListHighlight:(const void *)a3
+- (void)_layoutForNodeListHighlight:(const void *)highlight
 {
-  v3 = *(a3 + 15);
+  v3 = *(highlight + 15);
   if (v3)
   {
     [(WKInspectorHighlightView *)self _createLayers:v3 & 0xFFFFFFFC];
@@ -212,7 +212,7 @@ LABEL_20:
       v7 = v3 >> 2;
       do
       {
-        [(WKInspectorHighlightView *)self _layoutForNodeHighlight:a3 offset:v6];
+        [(WKInspectorHighlightView *)self _layoutForNodeHighlight:highlight offset:v6];
         v6 = (v6 + 4);
         --v7;
       }
@@ -222,13 +222,13 @@ LABEL_20:
   }
 }
 
-- (void)_layoutForRectsHighlight:(const void *)a3
+- (void)_layoutForRectsHighlight:(const void *)highlight
 {
-  v3 = *(a3 + 15);
+  v3 = *(highlight + 15);
   if (v3)
   {
-    [(WKInspectorHighlightView *)self _createLayers:*(a3 + 15)];
-    WebCore::cachedCGColor(&cf, a3, v6);
+    [(WKInspectorHighlightView *)self _createLayers:*(highlight + 15)];
+    WebCore::cachedCGColor(&cf, highlight, v6);
     v7 = 0;
     v8 = 0;
     v9 = 32 * v3;
@@ -236,13 +236,13 @@ LABEL_20:
     {
       v10 = [(NSMutableArray *)self->_layers.m_ptr objectAtIndex:v8];
       [(CAShapeLayer *)v10 setFillColor:cf];
-      if (v8 >= *(a3 + 15))
+      if (v8 >= *(highlight + 15))
       {
         __break(0xC471u);
         return;
       }
 
-      layerPath(v10, (*(a3 + 6) + v7));
+      layerPath(v10, (*(highlight + 6) + v7));
       ++v8;
       v7 += 32;
     }
@@ -257,10 +257,10 @@ LABEL_20:
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v33 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  rectCopy = rect;
   v30.receiver = self;
   v30.super_class = WKInspectorHighlightView;
   [(WKInspectorHighlightView *)&v30 drawRect:?];
@@ -269,7 +269,7 @@ LABEL_20:
   {
     UIGraphicsGetCurrentContext();
     WebCore::GraphicsContextCG::GraphicsContextCG();
-    WebCore::FloatRect::FloatRect(&v24, &v31);
+    WebCore::FloatRect::FloatRect(&v24, &rectCopy);
     WebCore::GraphicsContextCG::clip(v32, &v24);
     [(WKInspectorHighlightView *)self frame];
     v6 = v5;
@@ -352,54 +352,54 @@ LABEL_20:
   }
 }
 
-- (void)update:(const void *)a3 scale:(double)a4 frame:(const FloatRect *)a5
+- (void)update:(const void *)update scale:(double)scale frame:(const FloatRect *)frame
 {
-  v8 = self;
+  selfCopy = self;
   [(WKInspectorHighlightView *)self _removeAllLayers];
-  p_highlight = &v8->_highlight;
-  if (!v8->_highlight.__engaged_)
+  p_highlight = &selfCopy->_highlight;
+  if (!selfCopy->_highlight.__engaged_)
   {
-    v24 = *a3;
-    p_highlight->var0.__val_.contentColor.m_colorAndFlags = *a3;
+    v24 = *update;
+    p_highlight->var0.__val_.contentColor.m_colorAndFlags = *update;
     if ((v24 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v24 & 0xFFFFFFFFFFFFLL), 1u);
     }
 
-    v25 = *(a3 + 1);
-    v8->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags = v25;
+    v25 = *(update + 1);
+    selfCopy->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags = v25;
     if ((v25 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v25 & 0xFFFFFFFFFFFFLL), 1u);
     }
 
-    v26 = *(a3 + 2);
-    v8->_highlight.var0.__val_.paddingColor.m_colorAndFlags = v26;
+    v26 = *(update + 2);
+    selfCopy->_highlight.var0.__val_.paddingColor.m_colorAndFlags = v26;
     if ((v26 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v26 & 0xFFFFFFFFFFFFLL), 1u);
     }
 
-    v27 = *(a3 + 3);
-    v8->_highlight.var0.__val_.borderColor.m_colorAndFlags = v27;
+    v27 = *(update + 3);
+    selfCopy->_highlight.var0.__val_.borderColor.m_colorAndFlags = v27;
     if ((v27 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v27 & 0xFFFFFFFFFFFFLL), 1u);
     }
 
-    v28 = *(a3 + 4);
-    v8->_highlight.var0.__val_.marginColor.m_colorAndFlags = v28;
+    v28 = *(update + 4);
+    selfCopy->_highlight.var0.__val_.marginColor.m_colorAndFlags = v28;
     if ((v28 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v28 & 0xFFFFFFFFFFFFLL), 1u);
     }
 
-    v8->_highlight.var0.__val_.type = *(a3 + 40);
-    WTF::Vector<WebCore::PlatformTimeRanges::Range,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v8->_highlight.var0.__val_.quads, a3 + 48);
-    v29 = *(a3 + 19);
-    v8->_highlight.var0.__val_.gridHighlightOverlays.m_buffer = 0;
-    *&v8->_highlight.var0.__val_.gridHighlightOverlays.m_capacity = 0;
-    v8->_highlight.var0.__val_.gridHighlightOverlays.m_size = v29;
+    selfCopy->_highlight.var0.__val_.type = *(update + 40);
+    WTF::Vector<WebCore::PlatformTimeRanges::Range,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&selfCopy->_highlight.var0.__val_.quads, update + 48);
+    v29 = *(update + 19);
+    selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_buffer = 0;
+    *&selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_capacity = 0;
+    selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_size = v29;
     if (v29)
     {
       if (v29 >= 0x38E38E4)
@@ -409,12 +409,12 @@ LABEL_20:
 
       v30 = 72 * v29;
       v31 = WTF::fastMalloc((72 * v29));
-      v8->_highlight.var0.__val_.gridHighlightOverlays.m_capacity = v30 / 0x48;
-      v8->_highlight.var0.__val_.gridHighlightOverlays.m_buffer = v31;
-      v32 = *(a3 + 19);
+      selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_capacity = v30 / 0x48;
+      selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_buffer = v31;
+      v32 = *(update + 19);
       if (v32)
       {
-        v33 = *(a3 + 8);
+        v33 = *(update + 8);
         v34 = 72 * v32;
         do
         {
@@ -427,15 +427,15 @@ LABEL_20:
       }
     }
 
-    v35 = *(a3 + 23);
-    v8->_highlight.var0.__val_.flexHighlightOverlays.m_buffer = 0;
-    *&v8->_highlight.var0.__val_.flexHighlightOverlays.m_capacity = 0;
-    v8->_highlight.var0.__val_.flexHighlightOverlays.m_size = v35;
+    v35 = *(update + 23);
+    selfCopy->_highlight.var0.__val_.flexHighlightOverlays.m_buffer = 0;
+    *&selfCopy->_highlight.var0.__val_.flexHighlightOverlays.m_capacity = 0;
+    selfCopy->_highlight.var0.__val_.flexHighlightOverlays.m_size = v35;
     if (!v35)
     {
 LABEL_45:
-      v8->_highlight.var0.__val_.usePageCoordinates = *(a3 + 96);
-      v8->_highlight.__engaged_ = 1;
+      selfCopy->_highlight.var0.__val_.usePageCoordinates = *(update + 96);
+      selfCopy->_highlight.__engaged_ = 1;
       goto LABEL_109;
     }
 
@@ -443,12 +443,12 @@ LABEL_45:
     {
       v36 = 136 * v35;
       v37 = WTF::fastMalloc((136 * v35));
-      v8->_highlight.var0.__val_.flexHighlightOverlays.m_capacity = v36 / 0x88;
-      v8->_highlight.var0.__val_.flexHighlightOverlays.m_buffer = v37;
-      v38 = *(a3 + 23);
+      selfCopy->_highlight.var0.__val_.flexHighlightOverlays.m_capacity = v36 / 0x88;
+      selfCopy->_highlight.var0.__val_.flexHighlightOverlays.m_buffer = v37;
+      v38 = *(update + 23);
       if (v38)
       {
-        v39 = *(a3 + 10);
+        v39 = *(update + 10);
         v40 = 136 * v38;
         do
         {
@@ -469,7 +469,7 @@ LABEL_126:
   }
 
   m_colorAndFlags = p_highlight->var0.__val_.contentColor.m_colorAndFlags;
-  if (p_highlight->var0.__val_.contentColor.m_colorAndFlags != *a3)
+  if (p_highlight->var0.__val_.contentColor.m_colorAndFlags != *update)
   {
     if ((m_colorAndFlags & 0x8000000000000) != 0)
     {
@@ -481,16 +481,16 @@ LABEL_126:
       }
     }
 
-    v12 = *a3;
-    p_highlight->var0.__val_.contentColor.m_colorAndFlags = *a3;
+    v12 = *update;
+    p_highlight->var0.__val_.contentColor.m_colorAndFlags = *update;
     if ((v12 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v12 & 0xFFFFFFFFFFFFLL), 1u);
     }
   }
 
-  v13 = v8->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags;
-  if (v13 != *(a3 + 1))
+  v13 = selfCopy->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags;
+  if (v13 != *(update + 1))
   {
     if ((v13 & 0x8000000000000) != 0)
     {
@@ -502,16 +502,16 @@ LABEL_126:
       }
     }
 
-    v14 = *(a3 + 1);
-    v8->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags = v14;
+    v14 = *(update + 1);
+    selfCopy->_highlight.var0.__val_.contentOutlineColor.m_colorAndFlags = v14;
     if ((v14 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v14 & 0xFFFFFFFFFFFFLL), 1u);
     }
   }
 
-  v15 = v8->_highlight.var0.__val_.paddingColor.m_colorAndFlags;
-  if (v15 != *(a3 + 2))
+  v15 = selfCopy->_highlight.var0.__val_.paddingColor.m_colorAndFlags;
+  if (v15 != *(update + 2))
   {
     if ((v15 & 0x8000000000000) != 0)
     {
@@ -523,16 +523,16 @@ LABEL_126:
       }
     }
 
-    v16 = *(a3 + 2);
-    v8->_highlight.var0.__val_.paddingColor.m_colorAndFlags = v16;
+    v16 = *(update + 2);
+    selfCopy->_highlight.var0.__val_.paddingColor.m_colorAndFlags = v16;
     if ((v16 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v16 & 0xFFFFFFFFFFFFLL), 1u);
     }
   }
 
-  v17 = v8->_highlight.var0.__val_.borderColor.m_colorAndFlags;
-  if (v17 != *(a3 + 3))
+  v17 = selfCopy->_highlight.var0.__val_.borderColor.m_colorAndFlags;
+  if (v17 != *(update + 3))
   {
     if ((v17 & 0x8000000000000) != 0)
     {
@@ -544,16 +544,16 @@ LABEL_126:
       }
     }
 
-    v18 = *(a3 + 3);
-    v8->_highlight.var0.__val_.borderColor.m_colorAndFlags = v18;
+    v18 = *(update + 3);
+    selfCopy->_highlight.var0.__val_.borderColor.m_colorAndFlags = v18;
     if ((v18 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v18 & 0xFFFFFFFFFFFFLL), 1u);
     }
   }
 
-  v19 = v8->_highlight.var0.__val_.marginColor.m_colorAndFlags;
-  if (v19 != *(a3 + 4))
+  v19 = selfCopy->_highlight.var0.__val_.marginColor.m_colorAndFlags;
+  if (v19 != *(update + 4))
   {
     if ((v19 & 0x8000000000000) != 0)
     {
@@ -565,44 +565,44 @@ LABEL_126:
       }
     }
 
-    v20 = *(a3 + 4);
-    v8->_highlight.var0.__val_.marginColor.m_colorAndFlags = v20;
+    v20 = *(update + 4);
+    selfCopy->_highlight.var0.__val_.marginColor.m_colorAndFlags = v20;
     if ((v20 & 0x8000000000000) != 0)
     {
       atomic_fetch_add((v20 & 0xFFFFFFFFFFFFLL), 1u);
     }
   }
 
-  v8->_highlight.var0.__val_.type = *(a3 + 40);
-  WTF::Vector<WebCore::PlatformTimeRanges::Range,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(&v8->_highlight.var0.__val_.quads, a3 + 48);
-  if (p_highlight != a3)
+  selfCopy->_highlight.var0.__val_.type = *(update + 40);
+  WTF::Vector<WebCore::PlatformTimeRanges::Range,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(&selfCopy->_highlight.var0.__val_.quads, update + 48);
+  if (p_highlight != update)
   {
-    m_size = v8->_highlight.var0.__val_.gridHighlightOverlays.m_size;
-    v23 = *(a3 + 19);
+    m_size = selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_size;
+    v23 = *(update + 19);
     if (m_size <= v23)
     {
-      if (v23 > v8->_highlight.var0.__val_.gridHighlightOverlays.m_capacity)
+      if (v23 > selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_capacity)
       {
-        WTF::Vector<WebCore::InspectorOverlayHighlight::GridHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&v8->_highlight.var0.__val_.gridHighlightOverlays, 0);
-        WTF::Vector<WebCore::InspectorOverlayHighlight::GridHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&v8->_highlight.var0.__val_.gridHighlightOverlays, *(a3 + 19));
-        m_size = v8->_highlight.var0.__val_.gridHighlightOverlays.m_size;
+        WTF::Vector<WebCore::InspectorOverlayHighlight::GridHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&selfCopy->_highlight.var0.__val_.gridHighlightOverlays, 0);
+        WTF::Vector<WebCore::InspectorOverlayHighlight::GridHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&selfCopy->_highlight.var0.__val_.gridHighlightOverlays, *(update + 19));
+        m_size = selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_size;
       }
     }
 
     else
     {
-      WTF::VectorTypeOperations<WebCore::InspectorOverlayHighlight::GridHighlightOverlay>::destruct((v8->_highlight.var0.__val_.gridHighlightOverlays.m_buffer + 72 * v23), (v8->_highlight.var0.__val_.gridHighlightOverlays.m_buffer + 72 * m_size));
-      v8->_highlight.var0.__val_.gridHighlightOverlays.m_size = v23;
+      WTF::VectorTypeOperations<WebCore::InspectorOverlayHighlight::GridHighlightOverlay>::destruct((selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_buffer + 72 * v23), (selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_buffer + 72 * m_size));
+      selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_size = v23;
       m_size = v23;
     }
 
-    v41 = *(a3 + 8);
+    v41 = *(update + 8);
     if (m_size)
     {
-      v95 = a5;
-      v96 = v8;
+      frameCopy = frame;
+      v96 = selfCopy;
       v42 = (v41 + 72 * m_size);
-      m_buffer = v8->_highlight.var0.__val_.gridHighlightOverlays.m_buffer;
+      m_buffer = selfCopy->_highlight.var0.__val_.gridHighlightOverlays.m_buffer;
       do
       {
         v44 = *m_buffer;
@@ -756,12 +756,12 @@ LABEL_126:
       }
 
       while (v41 != v42);
-      v41 = *(a3 + 8);
+      v41 = *(update + 8);
       m_size = p_highlight->var0.__val_.gridHighlightOverlays.m_size;
-      v8 = v96;
+      selfCopy = v96;
     }
 
-    v68 = *(a3 + 19);
+    v68 = *(update + 19);
     if (m_size != v68)
     {
       v69 = (p_highlight->var0.__val_.gridHighlightOverlays.m_buffer + 72 * m_size);
@@ -775,17 +775,17 @@ LABEL_126:
       }
 
       while (v71);
-      m_size = *(a3 + 19);
+      m_size = *(update + 19);
     }
 
     p_highlight->var0.__val_.gridHighlightOverlays.m_size = m_size;
-    v72 = *(a3 + 23);
+    v72 = *(update + 23);
     if (p_highlight->var0.__val_.flexHighlightOverlays.m_size <= v72)
     {
       if (v72 > p_highlight->var0.__val_.flexHighlightOverlays.m_capacity)
       {
         WTF::Vector<WebCore::InspectorOverlayHighlight::FlexHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&p_highlight->var0.__val_.flexHighlightOverlays, 0);
-        WTF::Vector<WebCore::InspectorOverlayHighlight::FlexHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&p_highlight->var0.__val_.flexHighlightOverlays, *(a3 + 23));
+        WTF::Vector<WebCore::InspectorOverlayHighlight::FlexHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&p_highlight->var0.__val_.flexHighlightOverlays, *(update + 23));
       }
     }
 
@@ -794,12 +794,12 @@ LABEL_126:
       WTF::Vector<WebCore::InspectorOverlayHighlight::FlexHighlightOverlay,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrink(&p_highlight->var0.__val_.flexHighlightOverlays, v72);
     }
 
-    v73 = *(a3 + 10);
+    v73 = *(update + 10);
     v74 = p_highlight->var0.__val_.flexHighlightOverlays.m_size;
     v75 = p_highlight->var0.__val_.flexHighlightOverlays.m_buffer;
     if (v74)
     {
-      v76 = v8;
+      v76 = selfCopy;
       v77 = 0;
       v78 = 136 * v74;
       do
@@ -839,13 +839,13 @@ LABEL_126:
       }
 
       while (v78 != v77);
-      v73 = *(a3 + 10);
+      v73 = *(update + 10);
       LODWORD(v74) = p_highlight->var0.__val_.flexHighlightOverlays.m_size;
       v75 = p_highlight->var0.__val_.flexHighlightOverlays.m_buffer;
-      v8 = v76;
+      selfCopy = v76;
     }
 
-    v84 = *(a3 + 23);
+    v84 = *(update + 23);
     if (v74 != v84)
     {
       v85 = (v75 + 136 * v74);
@@ -859,33 +859,33 @@ LABEL_126:
       }
 
       while (v87);
-      LODWORD(v74) = *(a3 + 23);
+      LODWORD(v74) = *(update + 23);
     }
 
     p_highlight->var0.__val_.flexHighlightOverlays.m_size = v74;
   }
 
-  p_highlight->var0.__val_.usePageCoordinates = *(a3 + 96);
+  p_highlight->var0.__val_.usePageCoordinates = *(update + 96);
 LABEL_109:
   [objc_msgSend(MEMORY[0x1E69DCEB0] mainScreen];
-  [(WKInspectorHighlightView *)v8 setContentScaleFactor:v88 * a4];
+  [(WKInspectorHighlightView *)selfCopy setContentScaleFactor:v88 * scale];
   WebCore::FloatRect::operator CGRect();
-  [(WKInspectorHighlightView *)v8 setFrame:?];
-  v89 = *(a3 + 40);
+  [(WKInspectorHighlightView *)selfCopy setFrame:?];
+  v89 = *(update + 40);
   if ((v89 - 1) >= 2)
   {
     if (v89 == 3)
     {
-      [(WKInspectorHighlightView *)v8 _layoutForRectsHighlight:a3];
+      [(WKInspectorHighlightView *)selfCopy _layoutForRectsHighlight:update];
     }
   }
 
   else
   {
-    [(WKInspectorHighlightView *)v8 _layoutForNodeListHighlight:a3];
+    [(WKInspectorHighlightView *)selfCopy _layoutForNodeListHighlight:update];
   }
 
-  [(WKInspectorHighlightView *)v8 setNeedsDisplay];
+  [(WKInspectorHighlightView *)selfCopy setNeedsDisplay];
 }
 
 - (id).cxx_construct

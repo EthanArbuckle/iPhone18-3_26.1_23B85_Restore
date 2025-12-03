@@ -12,8 +12,8 @@
     return v3;
   }
 
-  v6 = [v3 lastPathComponent];
-  v7 = [v6 rangeOfString:@"."];
+  lastPathComponent = [v3 lastPathComponent];
+  v7 = [lastPathComponent rangeOfString:@"."];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -22,7 +22,7 @@
   else
   {
     v9 = v7;
-    v8 = [v6 substringFromIndex:v7 + 1];
+    v8 = [lastPathComponent substringFromIndex:v7 + 1];
     v3 = [objc_msgSend(v3 "stringByDeletingLastPathComponent")];
   }
 

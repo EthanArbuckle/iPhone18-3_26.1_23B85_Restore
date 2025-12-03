@@ -1,14 +1,14 @@
 @interface WDBlockRunIterator
-- (id)childIteratorFrom:(id)a3;
+- (id)childIteratorFrom:(id)from;
 @end
 
 @implementation WDBlockRunIterator
 
-- (id)childIteratorFrom:(id)a3
+- (id)childIteratorFrom:(id)from
 {
-  v3 = [a3 runIterator];
+  runIterator = [from runIterator];
 
-  return v3;
+  return runIterator;
 }
 
 @end

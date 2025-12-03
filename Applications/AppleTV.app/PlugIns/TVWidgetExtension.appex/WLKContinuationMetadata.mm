@@ -1,39 +1,39 @@
 @interface WLKContinuationMetadata
-- (id)tvun_channelImageURLString:(BOOL *)a3;
-- (id)tvun_punchoutURL:(BOOL)a3;
+- (id)tvun_channelImageURLString:(BOOL *)string;
+- (id)tvun_punchoutURL:(BOOL)l;
 @end
 
 @implementation WLKContinuationMetadata
 
-- (id)tvun_channelImageURLString:(BOOL *)a3
+- (id)tvun_channelImageURLString:(BOOL *)string
 {
-  v4 = [(WLKContinuationMetadata *)self playable];
-  v5 = [v4 channelDetails];
+  playable = [(WLKContinuationMetadata *)self playable];
+  channelDetails = [playable channelDetails];
 
-  v6 = [v5 images];
-  v7 = [v6 artworkVariantOfType:10];
+  images = [channelDetails images];
+  v7 = [images artworkVariantOfType:10];
 
-  v8 = [v5 images];
-  v9 = [v8 artworkVariantOfType:18];
+  images2 = [channelDetails images];
+  v9 = [images2 artworkVariantOfType:18];
 
-  if ([v5 isApSubscription] && v9)
+  if ([channelDetails isApSubscription] && v9)
   {
-    v10 = [v9 artworkURLString];
-    if (!a3)
+    artworkURLString = [v9 artworkURLString];
+    if (!string)
     {
       goto LABEL_10;
     }
 
     v11 = 1;
 LABEL_8:
-    *a3 = v11;
+    *string = v11;
     goto LABEL_10;
   }
 
   if (v7)
   {
-    v10 = [v7 artworkURLString];
-    if (!a3)
+    artworkURLString = [v7 artworkURLString];
+    if (!string)
     {
       goto LABEL_10;
     }
@@ -42,60 +42,60 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = 0;
+  artworkURLString = 0;
 LABEL_10:
 
-  return v10;
+  return artworkURLString;
 }
 
-- (id)tvun_punchoutURL:(BOOL)a3
+- (id)tvun_punchoutURL:(BOOL)l
 {
-  v3 = a3;
-  v5 = [(WLKContinuationMetadata *)self playable];
-  v6 = [v5 playPunchoutURL];
-  v7 = [(WLKContinuationMetadata *)self playable];
-  v8 = [v7 channelDetails];
+  lCopy = l;
+  playable = [(WLKContinuationMetadata *)self playable];
+  playPunchoutURL = [playable playPunchoutURL];
+  playable2 = [(WLKContinuationMetadata *)self playable];
+  channelDetails = [playable2 channelDetails];
 
-  if ([v5 isiTunes])
+  if ([playable isiTunes])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v8 isApSubscription] ^ 1;
+    v9 = [channelDetails isApSubscription] ^ 1;
   }
 
-  v10 = [v5 tvAppDeeplinkURL];
-  v11 = v10;
-  if (!v10 || (v9 & 1) != 0)
+  tvAppDeeplinkURL = [playable tvAppDeeplinkURL];
+  v11 = tvAppDeeplinkURL;
+  if (!tvAppDeeplinkURL || (v9 & 1) != 0)
   {
   }
 
   else
   {
-    v12 = [v5 isEntitled];
+    isEntitled = [playable isEntitled];
 
-    if (v12)
+    if (isEntitled)
     {
-      v13 = [v5 tvAppDeeplinkURL];
-      v14 = [WLKPlayableUtilities _punchoutURLForDirectPlayback:v13 ignoreExtras:1];
+      tvAppDeeplinkURL2 = [playable tvAppDeeplinkURL];
+      v14 = [WLKPlayableUtilities _punchoutURLForDirectPlayback:tvAppDeeplinkURL2 ignoreExtras:1];
 
       goto LABEL_16;
     }
   }
 
-  if (v3 && [v5 isEntitled] && objc_msgSend(v5, "isAppInstalled") && objc_msgSend(v6, "length"))
+  if (lCopy && [playable isEntitled] && objc_msgSend(playable, "isAppInstalled") && objc_msgSend(playPunchoutURL, "length"))
   {
-    v15 = [NSURL URLWithString:v6];
+    contentTVAppDeeplinkURL = [NSURL URLWithString:playPunchoutURL];
   }
 
   else
   {
-    v15 = [(WLKContinuationMetadata *)self contentTVAppDeeplinkURL];
+    contentTVAppDeeplinkURL = [(WLKContinuationMetadata *)self contentTVAppDeeplinkURL];
   }
 
-  v14 = v15;
+  v14 = contentTVAppDeeplinkURL;
 LABEL_16:
 
   return v14;

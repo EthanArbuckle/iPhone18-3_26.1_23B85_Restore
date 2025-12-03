@@ -1,11 +1,11 @@
 @interface PackagePowerCC
-- (PackagePowerCC)initWithParams:(__CFDictionary *)a3;
+- (PackagePowerCC)initWithParams:(__CFDictionary *)params;
 - (void)updatePowerTarget;
 @end
 
 @implementation PackagePowerCC
 
-- (PackagePowerCC)initWithParams:(__CFDictionary *)a3
+- (PackagePowerCC)initWithParams:(__CFDictionary *)params
 {
   v8.receiver = self;
   v8.super_class = PackagePowerCC;
@@ -17,7 +17,7 @@
     v4->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d PackagePower ", 13);
     v5->super.previousValue = v5->super.currentLoadingIndex;
     *(&v5->super.currentPower + 1) = [qword_1000ABCB0 requestListID];
-    [(ComponentControl *)v5 updatePowerParameters:a3];
+    [(ComponentControl *)v5 updatePowerParameters:params];
     if (v5->super._minPower)
     {
       [qword_1000ABCB0 setMaxPackagePower:v5->super._nominalPowerTarget];
@@ -33,7 +33,7 @@
       }
     }
 
-    if (sub_100031D64(a3, @"expectsCPMSSupport", 0))
+    if (sub_100031D64(params, @"expectsCPMSSupport", 0))
     {
       [qword_1000ABCB0 setCPMSMitigationsEnabled:1];
       [(ComponentControl *)v5 setCPMSMitigationState:1];

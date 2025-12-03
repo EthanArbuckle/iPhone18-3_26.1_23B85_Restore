@@ -1,75 +1,75 @@
 @interface PXVisualIntelligenceManager
-+ (BOOL)canRequestVKImageAnalysisForAsset:(id)a3;
-+ (CGSize)_sizeToPreheatResourcesForSubjectExtractionOfAsset:(id)a3;
++ (BOOL)canRequestVKImageAnalysisForAsset:(id)asset;
++ (CGSize)_sizeToPreheatResourcesForSubjectExtractionOfAsset:(id)asset;
 + (PXVisualIntelligenceManager)sharedManager;
 + (id)new;
-+ (int)preheatResourcesForSubjectExtractionOfAsset:(id)a3;
++ (int)preheatResourcesForSubjectExtractionOfAsset:(id)asset;
 + (unint64_t)supportedAnalysisTypes;
 - (PXVisualIntelligenceManager)init;
 - (VKCImageAnalyzer)vkAnalyzer;
 - (id)_init;
-- (int)requestVKImageAnalysisForAsset:(id)a3 cgImage:(CGImage *)a4 orientation:(int64_t)a5 resultHandler:(id)a6;
-- (int)requestVKImageAnalysisForAsset:(id)a3 image:(id)a4 resultHandler:(id)a5;
-- (int)requestVKImageAnalysisForAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(int64_t)a5 resultHandler:(id)a6;
-- (int)requestVKImageAnalysisForAsset:(id)a3 resultHandler:(id)a4;
+- (int)requestVKImageAnalysisForAsset:(id)asset cgImage:(CGImage *)image orientation:(int64_t)orientation resultHandler:(id)handler;
+- (int)requestVKImageAnalysisForAsset:(id)asset image:(id)image resultHandler:(id)handler;
+- (int)requestVKImageAnalysisForAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(int64_t)orientation resultHandler:(id)handler;
+- (int)requestVKImageAnalysisForAsset:(id)asset resultHandler:(id)handler;
 - (void)_dispatchNextRequest;
-- (void)_logAnalysis:(id)a3 request:(id)a4 duration:(double)a5 error:(id)a6;
-- (void)_processAnalysis:(id)a3 withRequest:(id)a4 error:(id)a5;
+- (void)_logAnalysis:(id)analysis request:(id)request duration:(double)duration error:(id)error;
+- (void)_processAnalysis:(id)analysis withRequest:(id)request error:(id)error;
 - (void)_resetCurrentRequestAndDispatchNextRequest;
-- (void)cancelRequestByID:(int)a3;
-- (void)setAnalysisSuspended:(BOOL)a3;
+- (void)cancelRequestByID:(int)d;
+- (void)setAnalysisSuspended:(BOOL)suspended;
 @end
 
 @implementation PXVisualIntelligenceManager
 
-- (void)_logAnalysis:(id)a3 request:(id)a4 duration:(double)a5 error:(id)a6
+- (void)_logAnalysis:(id)analysis request:(id)request duration:(double)duration error:(id)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  analysisCopy = analysis;
+  requestCopy = request;
+  errorCopy = error;
+  if (errorCopy)
   {
     v12 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "requestID")}];
-      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "vkRequestID")}];
-      v15 = [v10 asset];
-      v16 = [v15 uuid];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "requestID")}];
+      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "vkRequestID")}];
+      asset = [requestCopy asset];
+      uuid = [asset uuid];
       *buf = 138413058;
       v40 = v13;
       v41 = 2112;
       v42 = v14;
       v43 = 2112;
-      v44 = *&v16;
+      durationCopy = *&uuid;
       v45 = 2112;
-      v46 = v11;
+      v46 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "VK analyzing: requestID (PX: %@, VK: %@) failed (asset_uuid = %@): %@", buf, 0x2Au);
     }
   }
 
-  if (v9)
+  if (analysisCopy)
   {
-    v17 = [v9 hasResultsForAnalysisTypes:1];
-    v18 = [v9 hasResultsForAnalysisTypes:2];
-    v19 = [v9 hasResultsForAnalysisTypes:4];
-    v20 = [v9 hasResultsForAnalysisTypes:8];
-    v21 = [v9 hasResultsForAnalysisTypes:16];
-    v22 = [v9 countOfDataDetectorsWithTypes:-1];
+    v17 = [analysisCopy hasResultsForAnalysisTypes:1];
+    v18 = [analysisCopy hasResultsForAnalysisTypes:2];
+    v19 = [analysisCopy hasResultsForAnalysisTypes:4];
+    v20 = [analysisCopy hasResultsForAnalysisTypes:8];
+    v21 = [analysisCopy hasResultsForAnalysisTypes:16];
+    v22 = [analysisCopy countOfDataDetectorsWithTypes:-1];
     v23 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v37 = v17;
       v38 = v18;
-      [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "requestID")}];
+      [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "requestID")}];
       v36 = v20;
       v25 = v24 = v19;
-      v26 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "vkRequestID")}];
-      v27 = [v10 asset];
-      v28 = [v27 uuid];
+      v26 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "vkRequestID")}];
+      asset2 = [requestCopy asset];
+      uuid2 = [asset2 uuid];
       v29 = v22;
-      v30 = v28;
+      v30 = uuid2;
       *buf = 138414594;
       v31 = @"NO";
       v40 = v25;
@@ -121,9 +121,9 @@
       }
 
       v43 = 2048;
-      v44 = a5;
+      durationCopy = duration;
       v45 = 2112;
-      v46 = v28;
+      v46 = uuid2;
       v47 = 2112;
       v48 = v32;
       v49 = 2112;
@@ -148,17 +148,17 @@
   [(PXVisualIntelligenceManager *)self _dispatchNextRequest];
 }
 
-- (void)_processAnalysis:(id)a3 withRequest:(id)a4 error:(id)a5
+- (void)_processAnalysis:(id)analysis withRequest:(id)request error:(id)error
 {
-  if (a4)
+  if (request)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
-    v11 = [v8 resultHandler];
-    v10 = [v8 requestID];
+    errorCopy = error;
+    requestCopy = request;
+    analysisCopy = analysis;
+    resultHandler = [requestCopy resultHandler];
+    requestID = [requestCopy requestID];
 
-    v11[2](v11, v10, v9, v7);
+    resultHandler[2](resultHandler, requestID, analysisCopy, errorCopy);
   }
 }
 
@@ -167,14 +167,14 @@
   if (![(PXVisualIntelligenceManager *)self analysisSuspended])
   {
     objc_initWeak(&location, self);
-    v3 = [(PXVisualIntelligenceManager *)self workingQueue];
+    workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__PXVisualIntelligenceManager__dispatchNextRequest__block_invoke;
     block[3] = &unk_1E774B248;
     objc_copyWeak(&v5, &location);
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(workingQueue, block);
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -296,18 +296,18 @@ void __51__PXVisualIntelligenceManager__dispatchNextRequest__block_invoke_2(uint
   }
 }
 
-- (void)setAnalysisSuspended:(BOOL)a3
+- (void)setAnalysisSuspended:(BOOL)suspended
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_analysisSuspended != a3)
+  if (self->_analysisSuspended != suspended)
   {
-    v3 = a3;
-    self->_analysisSuspended = a3;
+    suspendedCopy = suspended;
+    self->_analysisSuspended = suspended;
     v5 = PLVisualIntelligenceGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (suspendedCopy)
       {
         v6 = @"YES";
       }
@@ -317,22 +317,22 @@ void __51__PXVisualIntelligenceManager__dispatchNextRequest__block_invoke_2(uint
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_INFO, "VK analyzing: analyzing suspend (%@)", buf, 0xCu);
     }
 
-    if (v3)
+    if (suspendedCopy)
     {
-      v7 = [(PXVisualIntelligenceManager *)self currentRequest];
-      v8 = v7;
-      if (v7)
+      currentRequest = [(PXVisualIntelligenceManager *)self currentRequest];
+      v8 = currentRequest;
+      if (currentRequest)
       {
-        -[PXVisualIntelligenceManager cancelRequestByID:](self, "cancelRequestByID:", [v7 requestID]);
+        -[PXVisualIntelligenceManager cancelRequestByID:](self, "cancelRequestByID:", [currentRequest requestID]);
         objc_initWeak(buf, self);
-        v9 = [(PXVisualIntelligenceManager *)self workingQueue];
+        workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __52__PXVisualIntelligenceManager_setAnalysisSuspended___block_invoke;
         v10[3] = &unk_1E774B248;
         objc_copyWeak(&v12, buf);
         v11 = v8;
-        dispatch_async(v9, v10);
+        dispatch_async(workingQueue, v10);
 
         objc_destroyWeak(&v12);
         objc_destroyWeak(buf);
@@ -353,19 +353,19 @@ void __52__PXVisualIntelligenceManager_setAnalysisSuspended___block_invoke(uint6
   [v2 addObject:*(a1 + 32)];
 }
 
-- (void)cancelRequestByID:(int)a3
+- (void)cancelRequestByID:(int)d
 {
-  if (a3)
+  if (d)
   {
     objc_initWeak(&location, self);
-    v5 = [(PXVisualIntelligenceManager *)self workingQueue];
+    workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__PXVisualIntelligenceManager_cancelRequestByID___block_invoke;
     block[3] = &unk_1E773C440;
     objc_copyWeak(&v7, &location);
-    v8 = a3;
-    dispatch_async(v5, block);
+    dCopy = d;
+    dispatch_async(workingQueue, block);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -445,11 +445,11 @@ LABEL_11:
   }
 }
 
-- (int)requestVKImageAnalysisForAsset:(id)a3 cgImage:(CGImage *)a4 orientation:(int64_t)a5 resultHandler:(id)a6
+- (int)requestVKImageAnalysisForAsset:(id)asset cgImage:(CGImage *)image orientation:(int64_t)orientation resultHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  assetCopy = asset;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -460,8 +460,8 @@ LABEL_11:
   v27[3] = __Block_byref_object_copy__135399;
   v27[4] = __Block_byref_object_dispose__135400;
   v28 = 0;
-  CGImageRetain(a4);
-  v12 = [(PXVisualIntelligenceManager *)self workingQueue];
+  CGImageRetain(image);
+  workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_cgImage_orientation_resultHandler___block_invoke;
@@ -469,22 +469,22 @@ LABEL_11:
   v23 = &v29;
   block[4] = self;
   v24 = v27;
-  v13 = v10;
+  v13 = assetCopy;
   v21 = v13;
-  v25 = a4;
-  v26 = a5;
-  v14 = v11;
+  imageCopy = image;
+  orientationCopy = orientation;
+  v14 = handlerCopy;
   v22 = v14;
-  dispatch_sync(v12, block);
+  dispatch_sync(workingQueue, block);
 
-  CGImageRelease(a4);
+  CGImageRelease(image);
   v15 = PLVisualIntelligenceGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v13 uuid];
+    uuid = [v13 uuid];
     v17 = [MEMORY[0x1E696AD98] numberWithInt:*(v30 + 6)];
     *buf = 138412546;
-    v34 = v16;
+    v34 = uuid;
     v35 = 2112;
     v36 = v17;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEBUG, "VK analyzing: requested and request added in queue, NOT sent to VKC yet, (asset_uuid = %@), requestID: %@", buf, 0x16u);
@@ -514,11 +514,11 @@ void __96__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_cgImage_or
   [v7 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (int)requestVKImageAnalysisForAsset:(id)a3 pixelBuffer:(__CVBuffer *)a4 orientation:(int64_t)a5 resultHandler:(id)a6
+- (int)requestVKImageAnalysisForAsset:(id)asset pixelBuffer:(__CVBuffer *)buffer orientation:(int64_t)orientation resultHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  assetCopy = asset;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -529,8 +529,8 @@ void __96__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_cgImage_or
   v27[3] = __Block_byref_object_copy__135399;
   v27[4] = __Block_byref_object_dispose__135400;
   v28 = 0;
-  CVPixelBufferRetain(a4);
-  v12 = [(PXVisualIntelligenceManager *)self workingQueue];
+  CVPixelBufferRetain(buffer);
+  workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_pixelBuffer_orientation_resultHandler___block_invoke;
@@ -538,22 +538,22 @@ void __96__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_cgImage_or
   v23 = &v29;
   block[4] = self;
   v24 = v27;
-  v13 = v10;
+  v13 = assetCopy;
   v21 = v13;
-  v25 = a4;
-  v26 = a5;
-  v14 = v11;
+  bufferCopy = buffer;
+  orientationCopy = orientation;
+  v14 = handlerCopy;
   v22 = v14;
-  dispatch_sync(v12, block);
+  dispatch_sync(workingQueue, block);
 
-  CVPixelBufferRelease(a4);
+  CVPixelBufferRelease(buffer);
   v15 = PLVisualIntelligenceGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v13 uuid];
+    uuid = [v13 uuid];
     v17 = [MEMORY[0x1E696AD98] numberWithInt:*(v30 + 6)];
     *buf = 138412546;
-    v34 = v16;
+    v34 = uuid;
     v35 = 2112;
     v36 = v17;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEBUG, "VK analyzing: requested and request added in queue, NOT sent to VKC yet, (asset_uuid = %@), requestID: %@", buf, 0x16u);
@@ -583,12 +583,12 @@ void __100__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_pixelBuff
   [v7 addObject:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (int)requestVKImageAnalysisForAsset:(id)a3 image:(id)a4 resultHandler:(id)a5
+- (int)requestVKImageAnalysisForAsset:(id)asset image:(id)image resultHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  imageCopy = image;
+  handlerCopy = handler;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -599,29 +599,29 @@ void __100__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_pixelBuff
   v30[3] = __Block_byref_object_copy__135399;
   v30[4] = __Block_byref_object_dispose__135400;
   v31 = 0;
-  v11 = [(PXVisualIntelligenceManager *)self workingQueue];
+  workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __82__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_image_resultHandler___block_invoke;
   v23 = &unk_1E773C3F0;
   v28 = &v32;
   v29 = v30;
-  v24 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = assetCopy;
   v25 = v12;
-  v13 = v9;
+  v13 = imageCopy;
   v26 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v27 = v14;
-  dispatch_sync(v11, &v20);
+  dispatch_sync(workingQueue, &v20);
 
   v15 = PLVisualIntelligenceGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v12 uuid];
+    uuid = [v12 uuid];
     v17 = [MEMORY[0x1E696AD98] numberWithInt:*(v33 + 6)];
     *buf = 138412546;
-    v37 = v16;
+    v37 = uuid;
     v38 = 2112;
     v39 = v17;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEBUG, "VK analyzing: requested and request added in queue, NOT sent to VKC yet, (asset_uuid = %@), requestID: %@", buf, 0x16u);
@@ -651,11 +651,11 @@ void __82__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_image_resu
   [v7 addObject:*(*(*(a1 + 72) + 8) + 40)];
 }
 
-- (int)requestVKImageAnalysisForAsset:(id)a3 resultHandler:(id)a4
+- (int)requestVKImageAnalysisForAsset:(id)asset resultHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -666,7 +666,7 @@ void __82__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_image_resu
   v21[3] = __Block_byref_object_copy__135399;
   v21[4] = __Block_byref_object_dispose__135400;
   v22 = 0;
-  v8 = [(PXVisualIntelligenceManager *)self workingQueue];
+  workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHandler___block_invoke;
@@ -674,19 +674,19 @@ void __82__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_image_resu
   v19 = &v23;
   v20 = v21;
   block[4] = self;
-  v9 = v6;
+  v9 = assetCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v18 = v10;
-  dispatch_sync(v8, block);
+  dispatch_sync(workingQueue, block);
 
   v11 = PLVisualIntelligenceGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v9 uuid];
+    uuid = [v9 uuid];
     v13 = [MEMORY[0x1E696AD98] numberWithInt:*(v24 + 6)];
     *buf = 138412546;
-    v28 = v12;
+    v28 = uuid;
     v29 = 2112;
     v30 = v13;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "VK analyzing: requested and request added in queue, NOT sent to VKC yet, (asset_uuid = %@), requestID: %@", buf, 0x16u);
@@ -725,8 +725,8 @@ void __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHand
     v5 = self->_vkAnalyzer;
     self->_vkAnalyzer = v4;
 
-    v6 = [(PXVisualIntelligenceManager *)self workingQueue];
-    [(VKCImageAnalyzer *)self->_vkAnalyzer setCallbackQueue:v6];
+    workingQueue = [(PXVisualIntelligenceManager *)self workingQueue];
+    [(VKCImageAnalyzer *)self->_vkAnalyzer setCallbackQueue:workingQueue];
 
     vkAnalyzer = self->_vkAnalyzer;
   }
@@ -757,30 +757,30 @@ void __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHand
 
 - (PXVisualIntelligenceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXVisualIntelligenceManager.m" lineNumber:317 description:{@"%s is not available as initializer", "-[PXVisualIntelligenceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVisualIntelligenceManager.m" lineNumber:317 description:{@"%s is not available as initializer", "-[PXVisualIntelligenceManager init]"}];
 
   abort();
 }
 
-+ (CGSize)_sizeToPreheatResourcesForSubjectExtractionOfAsset:(id)a3
++ (CGSize)_sizeToPreheatResourcesForSubjectExtractionOfAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 pixelWidth];
-  v5 = [v3 pixelHeight];
+  assetCopy = asset;
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
 
-  v6 = v5;
-  if (1.0 - v5 <= 0.00000011920929 && 1.0 - v4 <= 0.00000011920929)
+  v6 = pixelHeight;
+  if (1.0 - pixelHeight <= 0.00000011920929 && 1.0 - pixelWidth <= 0.00000011920929)
   {
-    v8 = v4 * v6;
-    v9 = 11500000.0 / (v4 * v6);
+    v8 = pixelWidth * v6;
+    v9 = 11500000.0 / (pixelWidth * v6);
     v10 = sqrtf(v9);
     if (v10 < 1.0)
     {
       v11 = v10;
-      v4 = floor(v4 * v11);
+      pixelWidth = floor(pixelWidth * v11);
       v6 = floor(v6 * v11);
-      v8 = v6 * v4;
+      v8 = v6 * pixelWidth;
     }
 
     if (v8 > 11500000.0)
@@ -791,21 +791,21 @@ void __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHand
 
   else
   {
-    v4 = *MEMORY[0x1E695F060];
+    pixelWidth = *MEMORY[0x1E695F060];
     v6 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v12 = v4;
+  v12 = pixelWidth;
   v13 = v6;
   result.height = v13;
   result.width = v12;
   return result;
 }
 
-+ (int)preheatResourcesForSubjectExtractionOfAsset:(id)a3
++ (int)preheatResourcesForSubjectExtractionOfAsset:(id)asset
 {
-  v4 = a3;
-  if (![a1 canRequestVKImageAnalysisForAsset:v4])
+  assetCopy = asset;
+  if (![self canRequestVKImageAnalysisForAsset:assetCopy])
   {
     goto LABEL_5;
   }
@@ -815,19 +815,19 @@ void __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHand
     dispatch_once(&preheatResourcesForSubjectExtractionOfAsset__onceToken, &__block_literal_global_130);
   }
 
-  v5 = [v4 uuid];
-  v6 = [v5 isEqualToString:preheatResourcesForSubjectExtractionOfAsset__lastRequestedAssetUUID];
+  uuid = [assetCopy uuid];
+  v6 = [uuid isEqualToString:preheatResourcesForSubjectExtractionOfAsset__lastRequestedAssetUUID];
 
   if ((v6 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E6978860] defaultManager];
-    v9 = v8;
+    defaultManager = [MEMORY[0x1E6978860] defaultManager];
+    v9 = defaultManager;
     if (preheatResourcesForSubjectExtractionOfAsset__lastRequestID)
     {
-      [v8 cancelImageRequest:?];
+      [defaultManager cancelImageRequest:?];
     }
 
-    [a1 _sizeToPreheatResourcesForSubjectExtractionOfAsset:v4];
+    [self _sizeToPreheatResourcesForSubjectExtractionOfAsset:assetCopy];
     v11 = v10;
     v13 = v12;
     Current = CFAbsoluteTimeGetCurrent();
@@ -836,16 +836,16 @@ void __76__PXVisualIntelligenceManager_requestVKImageAnalysisForAsset_resultHand
     v21 = 3221225472;
     v22 = __75__PXVisualIntelligenceManager_preheatResourcesForSubjectExtractionOfAsset___block_invoke_2;
     v23 = &unk_1E773C468;
-    v16 = v4;
+    v16 = assetCopy;
     v24 = v16;
     v25 = v11;
     v26 = v13;
     v27 = Current;
     v7 = [v9 requestImageForAsset:v16 targetSize:0 contentMode:v15 options:&v20 resultHandler:{v11, v13}];
     preheatResourcesForSubjectExtractionOfAsset__lastRequestID = v7;
-    v17 = [v16 uuid];
+    uuid2 = [v16 uuid];
     v18 = preheatResourcesForSubjectExtractionOfAsset__lastRequestedAssetUUID;
-    preheatResourcesForSubjectExtractionOfAsset__lastRequestedAssetUUID = v17;
+    preheatResourcesForSubjectExtractionOfAsset__lastRequestedAssetUUID = uuid2;
   }
 
   else
@@ -900,12 +900,12 @@ uint64_t __75__PXVisualIntelligenceManager_preheatResourcesForSubjectExtractionO
   return [v2 setNetworkAccessAllowed:1];
 }
 
-+ (BOOL)canRequestVKImageAnalysisForAsset:(id)a3
++ (BOOL)canRequestVKImageAnalysisForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = assetCopy;
   }
 
   else
@@ -913,9 +913,9 @@ uint64_t __75__PXVisualIntelligenceManager_preheatResourcesForSubjectExtractionO
     v5 = 0;
   }
 
-  v6 = [a1 supportedAnalysisTypes];
+  supportedAnalysisTypes = [self supportedAnalysisTypes];
   v7 = 0;
-  if (v5 && v6)
+  if (v5 && supportedAnalysisTypes)
   {
     if (([v5 needsSensitivityProtection] & 1) != 0 || objc_msgSend(v5, "mediaType") != 1)
     {
@@ -924,11 +924,11 @@ uint64_t __75__PXVisualIntelligenceManager_preheatResourcesForSubjectExtractionO
 
     else
     {
-      v8 = [v5 playbackStyle];
-      v9 = [v5 playbackStyle];
+      playbackStyle = [v5 playbackStyle];
+      playbackStyle2 = [v5 playbackStyle];
       [v5 deferredProcessingNeeded];
       v10 = PHAssetDeferredProcessingInvalidatesContentWhenCompleted();
-      v12 = v8 != 2 && v9 != 5;
+      v12 = playbackStyle != 2 && playbackStyle2 != 5;
       v7 = v12 & (v10 ^ 1);
     }
   }
@@ -955,8 +955,8 @@ uint64_t __53__PXVisualIntelligenceManager_supportedAnalysisTypes__block_invoke(
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXVisualIntelligenceManager.m" lineNumber:321 description:{@"%s is not available as initializer", "+[PXVisualIntelligenceManager new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVisualIntelligenceManager.m" lineNumber:321 description:{@"%s is not available as initializer", "+[PXVisualIntelligenceManager new]"}];
 
   abort();
 }

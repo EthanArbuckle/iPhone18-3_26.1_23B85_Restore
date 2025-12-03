@@ -1,41 +1,41 @@
 @interface PKPaymentSetupProductProvidersViewController
-- (PKPaymentSetupProductProvidersViewController)initWithProduct:(id)a3 showOtherProviders:(BOOL)a4 context:(int64_t)a5;
+- (PKPaymentSetupProductProvidersViewController)initWithProduct:(id)product showOtherProviders:(BOOL)providers context:(int64_t)context;
 - (PKPaymentSetupProductProvidersViewControllerDelegate)flowDelegate;
-- (void)didSelectProviderWithSetupMethod:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didSelectProviderWithSetupMethod:(id)method;
+- (void)preflightWithCompletion:(id)completion;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupProductProvidersViewController
 
-- (PKPaymentSetupProductProvidersViewController)initWithProduct:(id)a3 showOtherProviders:(BOOL)a4 context:(int64_t)a5
+- (PKPaymentSetupProductProvidersViewController)initWithProduct:(id)product showOtherProviders:(BOOL)providers context:(int64_t)context
 {
-  v9 = a3;
+  productCopy = product;
   v13.receiver = self;
   v13.super_class = PKPaymentSetupProductProvidersViewController;
-  v10 = [(PKPaymentSetupOptionsViewController *)&v13 initWithContext:a5];
+  v10 = [(PKPaymentSetupOptionsViewController *)&v13 initWithContext:context];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_product, a3);
-    v11->_setupContext = a5;
-    v11->_showOtherProviders = a4;
+    objc_storeStrong(&v10->_product, product);
+    v11->_setupContext = context;
+    v11->_showOtherProviders = providers;
     [(PKDynamicCollectionViewController *)v11 setUseItemIdentityWhenUpdating:1];
   }
 
   return v11;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    v18 = v4;
+    v18 = completionCopy;
     v6 = objc_alloc_init(MEMORY[0x1E69B8658]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -80,7 +80,7 @@
       while (v10);
     }
 
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __72__PKPaymentSetupProductProvidersViewController_preflightWithCompletion___block_invoke_26;
@@ -92,7 +92,7 @@
     v24 = v19;
     v15 = v8;
     v16 = v7;
-    v17 = [v6 evaluateWithInput:v14 completion:v21];
+    v17 = [v6 evaluateWithInput:null completion:v21];
   }
 }
 
@@ -264,26 +264,26 @@ uint64_t __72__PKPaymentSetupProductProvidersViewController_preflightWithComplet
   [(PKDynamicCollectionViewController *)self setRetainCellSelectionCellOnReload:1];
   if (self->_showOtherProviders)
   {
-    v3 = [(PKPaymentSetupProductProvidersViewController *)self view];
-    [v3 setAccessibilityIdentifier:@"other-providers"];
+    view = [(PKPaymentSetupProductProvidersViewController *)self view];
+    [view setAccessibilityIdentifier:@"other-providers"];
 
     v4 = PKLocalizedPaymentString(&cfstr_Providers.isa);
     [(PKPaymentSetupOptionsViewController *)self setTitleText:v4];
 
-    v5 = [(PKPaymentSetupProduct *)self->_product displayName];
-    v6 = PKLocalizedPaymentString(&cfstr_ProvidersSubti.isa, &stru_1F3BD5BF0.isa, v5);
+    displayName = [(PKPaymentSetupProduct *)self->_product displayName];
+    v6 = PKLocalizedPaymentString(&cfstr_ProvidersSubti.isa, &stru_1F3BD5BF0.isa, displayName);
     [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v6];
   }
 
   else
   {
-    v7 = [(PKPaymentSetupProduct *)self->_product displayName];
-    [(PKPaymentSetupOptionsViewController *)self setTitleText:v7];
+    displayName2 = [(PKPaymentSetupProduct *)self->_product displayName];
+    [(PKPaymentSetupOptionsViewController *)self setTitleText:displayName2];
 
-    v8 = [(PKPaymentSetupProduct *)self->_product configuration];
-    v9 = [v8 type];
+    configuration = [(PKPaymentSetupProduct *)self->_product configuration];
+    type = [configuration type];
 
-    if (v9 == 3)
+    if (type == 3)
     {
       v10 = @"SELECT_TRANSIT_CARD_SUBTITLE";
     }
@@ -293,8 +293,8 @@ uint64_t __72__PKPaymentSetupProductProvidersViewController_preflightWithComplet
       v10 = @"SELECT_PAYMENT_CARD_SUBTITLE";
     }
 
-    v5 = PKLocalizedPaymentString(&v10->isa);
-    [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v5];
+    displayName = PKLocalizedPaymentString(&v10->isa);
+    [(PKPaymentSetupOptionsViewController *)self setSubtitleText:displayName];
   }
 
   v11 = [[PKPaymentSetupProductProvidersSectionController alloc] initWithProduct:self->_product linkedApplications:self->_linkedApplications clipMetadata:self->_clipMetadata showOtherProviders:self->_showOtherProviders delegate:self];
@@ -309,25 +309,25 @@ uint64_t __72__PKPaymentSetupProductProvidersViewController_preflightWithComplet
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupProductProvidersViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)didSelectProviderWithSetupMethod:(id)a3
+- (void)didSelectProviderWithSetupMethod:(id)method
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 type] == 2)
+  methodCopy = method;
+  if ([methodCopy type] == 2)
   {
     v5 = MEMORY[0x1E69BB570];
     goto LABEL_5;
   }
 
-  if ([v4 type] == 1)
+  if ([methodCopy type] == 1)
   {
     v5 = MEMORY[0x1E69BB520];
 LABEL_5:
@@ -341,21 +341,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v4 type] == 5)
+  if ([methodCopy type] == 5)
   {
-    v10 = [v4 associatedStoreIdentifiers];
-    if (!v10)
+    associatedStoreIdentifiers = [methodCopy associatedStoreIdentifiers];
+    if (!associatedStoreIdentifiers)
     {
       v7 = 0;
       v6 = 0;
       goto LABEL_25;
     }
 
-    v11 = [(NSDictionary *)self->_linkedApplications objectForKeyedSubscript:v10];
-    v12 = [v11 displayName];
-    v13 = [v11 isInstalled];
+    appClipLaunchURL = [(NSDictionary *)self->_linkedApplications objectForKeyedSubscript:associatedStoreIdentifiers];
+    displayName = [appClipLaunchURL displayName];
+    isInstalled = [appClipLaunchURL isInstalled];
     v14 = MEMORY[0x1E69BB4B8];
-    if (!v13)
+    if (!isInstalled)
     {
       v14 = MEMORY[0x1E69BB4B0];
     }
@@ -364,7 +364,7 @@ LABEL_5:
     goto LABEL_23;
   }
 
-  if ([v4 type] != 6)
+  if ([methodCopy type] != 6)
   {
     v6 = 0;
     v7 = 0;
@@ -372,27 +372,27 @@ LABEL_5:
   }
 
   v6 = *MEMORY[0x1E69BB488];
-  v10 = v4;
-  v11 = [v10 appClipLaunchURL];
-  if (v11)
+  associatedStoreIdentifiers = methodCopy;
+  appClipLaunchURL = [associatedStoreIdentifiers appClipLaunchURL];
+  if (appClipLaunchURL)
   {
-    v15 = [(NSDictionary *)self->_clipMetadata objectForKeyedSubscript:v11];
-    v16 = [v15 fullAppName];
-    v17 = v16;
-    if (v16)
+    v15 = [(NSDictionary *)self->_clipMetadata objectForKeyedSubscript:appClipLaunchURL];
+    fullAppName = [v15 fullAppName];
+    v17 = fullAppName;
+    if (fullAppName)
     {
-      v18 = v16;
+      localizedTitle = fullAppName;
     }
 
     else
     {
-      v18 = [v10 localizedTitle];
+      localizedTitle = [associatedStoreIdentifiers localizedTitle];
     }
 
-    v12 = v18;
+    displayName = localizedTitle;
 
 LABEL_23:
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v6, v12];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v6, displayName];
 
     goto LABEL_24;
   }
@@ -423,21 +423,21 @@ LABEL_6:
 
 LABEL_26:
   WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
-  [WeakRetained setupProductProvidersViewController:self didSelectMethod:v4];
+  [WeakRetained setupProductProvidersViewController:self didSelectMethod:methodCopy];
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v7 setUserInteractionEnabled:!v5];
+  animatedCopy = animated;
+  iCopy = i;
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setUserInteractionEnabled:!iCopy];
 
-  if (!v5)
+  if (!iCopy)
   {
     productProvidersSectionController = self->_productProvidersSectionController;
 
-    [(PKPaymentSetupProductProvidersSectionController *)productProvidersSectionController hideLoadingIndicatorsAnimated:v4];
+    [(PKPaymentSetupProductProvidersSectionController *)productProvidersSectionController hideLoadingIndicatorsAnimated:animatedCopy];
   }
 }
 

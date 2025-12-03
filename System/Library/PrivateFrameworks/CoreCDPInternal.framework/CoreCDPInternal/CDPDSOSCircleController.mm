@@ -1,40 +1,40 @@
 @interface CDPDSOSCircleController
 - (CDPDCircleDelegate)delegate;
-- (CDPDSOSCircleController)initWithUiProvider:(id)a3 delegate:(id)a4 circleProxy:(id)a5 octagonTrustProxy:(id)a6;
-- (void)_joinCircleIgnoringBackups:(BOOL)a3 completion:(id)a4;
-- (void)_requestCircleJoinWithObserver:(id)a3 requestBlock:(id)a4 completion:(id)a5;
-- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)a3;
-- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)a3;
-- (void)_requestToJoinWithObserver:(id)a3 completion:(id)a4;
-- (void)_requestToJoinWithRequestBlock:(id)a3 completion:(id)a4;
-- (void)applyToJoinCircleWithJoinHandler:(id)a3;
+- (CDPDSOSCircleController)initWithUiProvider:(id)provider delegate:(id)delegate circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy;
+- (void)_joinCircleIgnoringBackups:(BOOL)backups completion:(id)completion;
+- (void)_requestCircleJoinWithObserver:(id)observer requestBlock:(id)block completion:(id)completion;
+- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)handler;
+- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)handler;
+- (void)_requestToJoinWithObserver:(id)observer completion:(id)completion;
+- (void)_requestToJoinWithRequestBlock:(id)block completion:(id)completion;
+- (void)applyToJoinCircleWithJoinHandler:(id)handler;
 - (void)cancelApplicationToJoinCircle;
 - (void)dealloc;
-- (void)joinCircleAfterRecoveryWithCompletion:(id)a3;
+- (void)joinCircleAfterRecoveryWithCompletion:(id)completion;
 - (void)prepareCircleStateForRecovery;
-- (void)resetCircleIncludingCloudKitData:(BOOL)a3 cloudKitResetReasonDescription:(id)a4 withCompletion:(id)a5;
-- (void)useCircleInfoToUpdateNameForDevices:(id)a3;
+- (void)resetCircleIncludingCloudKitData:(BOOL)data cloudKitResetReasonDescription:(id)description withCompletion:(id)completion;
+- (void)useCircleInfoToUpdateNameForDevices:(id)devices;
 @end
 
 @implementation CDPDSOSCircleController
 
-- (CDPDSOSCircleController)initWithUiProvider:(id)a3 delegate:(id)a4 circleProxy:(id)a5 octagonTrustProxy:(id)a6
+- (CDPDSOSCircleController)initWithUiProvider:(id)provider delegate:(id)delegate circleProxy:(id)proxy octagonTrustProxy:(id)trustProxy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  proxyCopy = proxy;
   v13 = [(CDPDSOSCircleController *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_uiProvider, a3);
-    objc_storeWeak(&v14->_delegate, v11);
+    objc_storeStrong(&v13->_uiProvider, provider);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("com.apple.cdpd.circleRequestQueue", v15);
     requestSynchronizationQueue = v14->_requestSynchronizationQueue;
     v14->_requestSynchronizationQueue = v16;
 
-    objc_storeStrong(&v14->_circleProxy, a5);
+    objc_storeStrong(&v14->_circleProxy, proxy);
   }
 
   return v14;
@@ -51,16 +51,16 @@
 - (void)prepareCircleStateForRecovery
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(CDPDSOSCircleController *)self circleStatus];
+  circleStatus = [(CDPDSOSCircleController *)self circleStatus];
   v3 = _CDPLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *&buf[4] = v2;
+    *&buf[4] = circleStatus;
     _os_log_impl(&dword_24510B000, v3, OS_LOG_TYPE_DEFAULT, "Circle status before attempting recovery is %lu", buf, 0xCu);
   }
 
-  if (v2 == 3)
+  if (circleStatus == 3)
   {
     *buf = 0;
     v4 = _CDPLogSystem();
@@ -92,19 +92,19 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_joinCircleIgnoringBackups:(BOOL)a3 completion:(id)a4
+- (void)_joinCircleIgnoringBackups:(BOOL)backups completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_24510B000, "cdp: circle join", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  v8 = [(CDPDSOSCircleController *)self circleStatus];
+  circleStatus = [(CDPDSOSCircleController *)self circleStatus];
   v9 = objc_alloc_init(CDPDCircleJoinResult);
-  [(CDPDCircleJoinResult *)v9 setCircleStatus:v8];
+  [(CDPDCircleJoinResult *)v9 setCircleStatus:circleStatus];
   [(CDPDCircleJoinResult *)v9 setRequiresEscrowRecordsFetch:1];
   [(CDPDCircleJoinResult *)v9 setRequiresInitialSync:1];
-  if (v8 == 1)
+  if (circleStatus == 1)
   {
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -138,7 +138,7 @@
     }
   }
 
-  if (v8 == 2 || v8 == 4)
+  if (circleStatus == 2 || circleStatus == 4)
   {
     v20 = _CDPLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -152,21 +152,21 @@
     v23[1] = 3221225472;
     v23[2] = __65__CDPDSOSCircleController__joinCircleIgnoringBackups_completion___block_invoke;
     v23[3] = &unk_278E25BD8;
-    v26 = v6;
-    v28 = a3;
-    v27 = v8;
+    v26 = completionCopy;
+    backupsCopy = backups;
+    v27 = circleStatus;
     v24 = v9;
-    v25 = self;
+    selfCopy = self;
     [WeakRetained circleController:self secureBackupRecordsArePresentWithCompletion:v23];
 
     v22 = v26;
     goto LABEL_21;
   }
 
-  if (v8 != 3)
+  if (circleStatus != 3)
   {
     v22 = _CDPStateError();
-    (*(v6 + 2))(v6, 0, v22);
+    (*(completionCopy + 2))(completionCopy, 0, v22);
 LABEL_21:
 
     goto LABEL_22;
@@ -174,7 +174,7 @@ LABEL_21:
 
   [(CDPDCircleJoinResult *)v9 setNeedsBackupRecovery:1];
 LABEL_5:
-  (*(v6 + 2))(v6, v9, 0);
+  (*(completionCopy + 2))(completionCopy, v9, 0);
 LABEL_22:
 
   os_activity_scope_leave(&state);
@@ -243,10 +243,10 @@ uint64_t __65__CDPDSOSCircleController__joinCircleIgnoringBackups_completion___b
   return v5();
 }
 
-- (void)joinCircleAfterRecoveryWithCompletion:(id)a3
+- (void)joinCircleAfterRecoveryWithCompletion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   circleProxy = self->_circleProxy;
   v48 = 0;
   v6 = [(CDPDCircleProxy *)circleProxy requestToJoinCircleAfterRestore:&v48];
@@ -261,30 +261,30 @@ uint64_t __65__CDPDSOSCircleController__joinCircleIgnoringBackups_completion___b
       _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "Circle join request succeeded after backup recovery", buf, 2u);
     }
 
-    v10 = [(CDPDSOSCircleController *)self circleStatus];
+    circleStatus = [(CDPDSOSCircleController *)self circleStatus];
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v50 = v10;
+      v50 = circleStatus;
       _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "Circle status after successful request to join is %lu", buf, 0xCu);
     }
 
-    if (v10 == 3)
+    if (circleStatus == 3)
     {
       v29 = self->_circleProxy;
       v44 = 0;
       [(CDPDCircleProxy *)v29 resetToOffering:&v44];
       v15 = v44;
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, 0, v15);
+        completionCopy[2](completionCopy, 0, v15);
       }
 
       goto LABEL_38;
     }
 
-    if (v10 != 1)
+    if (circleStatus != 1)
     {
       v30 = objc_alloc_init(CDPDCircleStateObserver);
       v31 = self->_circleProxy;
@@ -293,9 +293,9 @@ uint64_t __65__CDPDSOSCircleController__joinCircleIgnoringBackups_completion___b
       v39[2] = __65__CDPDSOSCircleController_joinCircleAfterRecoveryWithCompletion___block_invoke;
       v39[3] = &unk_278E25C00;
       v40 = v30;
-      v41 = self;
-      v42 = v4;
-      v43 = v10;
+      selfCopy = self;
+      v42 = completionCopy;
+      v43 = circleStatus;
       v15 = v30;
       [(CDPDCircleStateObserver *)v15 observeCircleStateWithCircleProxy:v31 changeHandler:v39];
 
@@ -304,14 +304,14 @@ LABEL_38:
     }
 
     v12 = objc_alloc(MEMORY[0x277CDBD48]);
-    v13 = [(CDPDCircleProxy *)self->_circleProxy cdpContext];
-    v14 = [v13 cliqueConfiguration];
-    v15 = [v12 initWithContextData:v14];
+    cdpContext = [(CDPDCircleProxy *)self->_circleProxy cdpContext];
+    cliqueConfiguration = [cdpContext cliqueConfiguration];
+    v15 = [v12 initWithContextData:cliqueConfiguration];
 
     v47 = 0;
-    LODWORD(v14) = [(CDPDCircleStateObserver *)v15 fetchUserControllableViewsSyncingEnabled:&v47];
+    LODWORD(cliqueConfiguration) = [(CDPDCircleStateObserver *)v15 fetchUserControllableViewsSyncingEnabled:&v47];
     v16 = v47;
-    if (v14)
+    if (cliqueConfiguration)
     {
       v17 = self->_circleProxy;
       v46 = 0;
@@ -386,9 +386,9 @@ LABEL_33:
 LABEL_34:
 
 LABEL_35:
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
         goto LABEL_38;
@@ -414,9 +414,9 @@ LABEL_35:
     [(CDPDSOSCircleController *)v7 joinCircleAfterRecoveryWithCompletion:v9, v23, v24, v25, v26, v27, v28];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
 LABEL_39:
@@ -468,26 +468,26 @@ LABEL_11:
   }
 }
 
-- (void)resetCircleIncludingCloudKitData:(BOOL)a3 cloudKitResetReasonDescription:(id)a4 withCompletion:(id)a5
+- (void)resetCircleIncludingCloudKitData:(BOOL)data cloudKitResetReasonDescription:(id)description withCompletion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v6 = a5;
+    completionCopy = completion;
     v7 = _CDPStateError();
-    (*(a5 + 2))(v6, 0, v7);
+    (*(completion + 2))(completionCopy, 0, v7);
   }
 }
 
-- (void)useCircleInfoToUpdateNameForDevices:(id)a3
+- (void)useCircleInfoToUpdateNameForDevices:(id)devices
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CDPDSOSCircleController *)self _peerDeviceNamesByPeerID];
+  devicesCopy = devices;
+  _peerDeviceNamesByPeerID = [(CDPDSOSCircleController *)self _peerDeviceNamesByPeerID];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = devicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
@@ -505,12 +505,12 @@ LABEL_11:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 recordID];
+        recordID = [v12 recordID];
 
-        if (v13)
+        if (recordID)
         {
-          v14 = [v12 recordID];
-          v15 = [v5 objectForKey:v14];
+          recordID2 = [v12 recordID];
+          v15 = [_peerDeviceNamesByPeerID objectForKey:recordID2];
 
           if (v15)
           {
@@ -538,59 +538,59 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyToJoinCircleWithJoinHandler:(id)a3
+- (void)applyToJoinCircleWithJoinHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(CDPDCircleStateObserver);
   circleJoinObserver = self->_circleJoinObserver;
   self->_circleJoinObserver = v4;
 
-  [(CDPDSOSCircleController *)self _requestToJoinWithObserver:self->_circleJoinObserver completion:v6];
+  [(CDPDSOSCircleController *)self _requestToJoinWithObserver:self->_circleJoinObserver completion:handlerCopy];
 }
 
-- (void)_requestToJoinWithObserver:(id)a3 completion:(id)a4
+- (void)_requestToJoinWithObserver:(id)observer completion:(id)completion
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__CDPDSOSCircleController__requestToJoinWithObserver_completion___block_invoke;
   v4[3] = &unk_278E25370;
   v4[4] = self;
-  [(CDPDSOSCircleController *)self _requestCircleJoinWithObserver:a3 requestBlock:v4 completion:a4];
+  [(CDPDSOSCircleController *)self _requestCircleJoinWithObserver:observer requestBlock:v4 completion:completion];
 }
 
-- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)a3
+- (void)_requestToJoinAndWaitForSuccessWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__CDPDSOSCircleController__requestToJoinAndWaitForSuccessWithHandler___block_invoke;
   v3[3] = &unk_278E25370;
   v3[4] = self;
-  [(CDPDSOSCircleController *)self _requestToJoinWithRequestBlock:v3 completion:a3];
+  [(CDPDSOSCircleController *)self _requestToJoinWithRequestBlock:v3 completion:handler];
 }
 
-- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)a3
+- (void)_requestToJoinAfterRestoreAndWaitForSuccessWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __82__CDPDSOSCircleController__requestToJoinAfterRestoreAndWaitForSuccessWithHandler___block_invoke;
   v3[3] = &unk_278E25370;
   v3[4] = self;
-  [(CDPDSOSCircleController *)self _requestToJoinWithRequestBlock:v3 completion:a3];
+  [(CDPDSOSCircleController *)self _requestToJoinWithRequestBlock:v3 completion:handler];
 }
 
-- (void)_requestToJoinWithRequestBlock:(id)a3 completion:(id)a4
+- (void)_requestToJoinWithRequestBlock:(id)block completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  blockCopy = block;
   v8 = objc_alloc_init(CDPDCircleStateObserver);
-  [(CDPDSOSCircleController *)self _requestCircleJoinWithObserver:v8 requestBlock:v7 completion:v6];
+  [(CDPDSOSCircleController *)self _requestCircleJoinWithObserver:v8 requestBlock:blockCopy completion:completionCopy];
 }
 
-- (void)_requestCircleJoinWithObserver:(id)a3 requestBlock:(id)a4 completion:(id)a5
+- (void)_requestCircleJoinWithObserver:(id)observer requestBlock:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  blockCopy = block;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -606,9 +606,9 @@ LABEL_11:
       [(CDPDSOSCircleController *)v12 _requestCircleJoinWithObserver:v13 requestBlock:v14 completion:v15, v16, v17, v18, v19];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -624,9 +624,9 @@ LABEL_11:
     aBlock[3] = &unk_278E253C0;
     aBlock[4] = self;
     v31 = buf;
-    v20 = v8;
+    v20 = observerCopy;
     v29 = v20;
-    v30 = v10;
+    v30 = completionCopy;
     v21 = _Block_copy(aBlock);
     circleProxy = self->_circleProxy;
     v26[0] = MEMORY[0x277D85DD0];
@@ -637,7 +637,7 @@ LABEL_11:
     v27 = v23;
     [v20 observeChangeToState:1 circleProxy:circleProxy handler:v26];
     v25 = 0;
-    LOBYTE(circleProxy) = v9[2](v9, &v25);
+    LOBYTE(circleProxy) = blockCopy[2](blockCopy, &v25);
     v24 = v25;
     if ((circleProxy & 1) == 0)
     {

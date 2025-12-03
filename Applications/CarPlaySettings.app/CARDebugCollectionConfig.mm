@@ -30,8 +30,8 @@
 
     v7 = v6;
 
-    v8 = [v7 integerValue];
-    v2->_cells = v8;
+    integerValue = [v7 integerValue];
+    v2->_cells = integerValue;
     v9 = [NSNumber numberWithInteger:10];
     CFPreferencesAppSynchronize(@"com.apple.CarPlaySettings");
     v10 = CFPreferencesCopyAppValue(@"DebugCollectionPanel_Columns", @"com.apple.CarPlaySettings");
@@ -48,8 +48,8 @@
 
     v13 = v12;
 
-    v14 = [v13 integerValue];
-    v2->_columns = v14;
+    integerValue2 = [v13 integerValue];
+    v2->_columns = integerValue2;
     v15 = [NSNumber numberWithInteger:4];
     CFPreferencesAppSynchronize(@"com.apple.CarPlaySettings");
     v16 = CFPreferencesCopyAppValue(@"DebugCollectionPanel_Rows", @"com.apple.CarPlaySettings");
@@ -66,8 +66,8 @@
 
     v19 = v18;
 
-    v20 = [v19 integerValue];
-    v2->_rows = v20;
+    integerValue3 = [v19 integerValue];
+    v2->_rows = integerValue3;
     v21 = [NSNumber numberWithDouble:0.0];
     CFPreferencesAppSynchronize(@"com.apple.CarPlaySettings");
     v22 = CFPreferencesCopyAppValue(@"DebugCollectionPanel_SectionInsetTop", @"com.apple.CarPlaySettings");

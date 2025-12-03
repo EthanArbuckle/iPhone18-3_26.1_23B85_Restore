@@ -1,38 +1,38 @@
 @interface CBSystem
 + (void)_checkOutUserSettings;
-+ (void)checkoutAndReboot:(BOOL)a3 userInitiated:(BOOL)a4;
++ (void)checkoutAndReboot:(BOOL)reboot userInitiated:(BOOL)initiated;
 - (CBSystem)init;
 - (id)proxyServer;
-- (void)_connectToSSID:(id)a3 password:(id)a4 completion:(id)a5;
+- (void)_connectToSSID:(id)d password:(id)password completion:(id)completion;
 - (void)_deregisterNotifications;
-- (void)_inactivityTimerFired:(id)a3;
+- (void)_inactivityTimerFired:(id)fired;
 - (void)_registerForNotifications;
 - (void)_runShutdownImminentCompletions;
 - (void)_startInactivityTimer;
 - (void)_stopInactivityTimer;
-- (void)_stopInactivityTimer:(id)a3;
-- (void)addShutdownTask:(id)a3 forReason:(id)a4;
-- (void)connectedNetwork:(id)a3;
-- (void)currentLocaleIdentifier:(id)a3;
-- (void)diagnosticsRunning:(id)a3;
+- (void)_stopInactivityTimer:(id)timer;
+- (void)addShutdownTask:(id)task forReason:(id)reason;
+- (void)connectedNetwork:(id)network;
+- (void)currentLocaleIdentifier:(id)identifier;
+- (void)diagnosticsRunning:(id)running;
 - (void)dimDisplay;
 - (void)disableNetworkReconnect;
 - (void)disableTouchButtonEvents;
-- (void)displayDimmed:(id)a3;
+- (void)displayDimmed:(id)dimmed;
 - (void)enableNetworkReconnect;
 - (void)enableTouchButtonEvents;
-- (void)exitRequestedWithServer:(id)a3;
+- (void)exitRequestedWithServer:(id)server;
 - (void)hideSceneStatusBar;
 - (void)launchDiagnostics;
 - (void)launchPrimaryApp;
-- (void)networkReconnectEnabled:(id)a3;
-- (void)networkScanWithCompletion:(id)a3;
-- (void)primaryAppRunning:(id)a3;
-- (void)removeShutdownTask:(id)a3;
-- (void)setLocaleIdentifier:(id)a3 completion:(id)a4;
+- (void)networkReconnectEnabled:(id)enabled;
+- (void)networkScanWithCompletion:(id)completion;
+- (void)primaryAppRunning:(id)running;
+- (void)removeShutdownTask:(id)task;
+- (void)setLocaleIdentifier:(id)identifier completion:(id)completion;
 - (void)showSceneStatusBar;
 - (void)start;
-- (void)statusBarStyle:(int64_t)a3;
+- (void)statusBarStyle:(int64_t)style;
 - (void)undimDisplay;
 @end
 
@@ -103,15 +103,15 @@
   [(CBSystem *)self _startInactivityTimer];
 }
 
-+ (void)checkoutAndReboot:(BOOL)a3 userInitiated:(BOOL)a4
++ (void)checkoutAndReboot:(BOOL)reboot userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v5 = a3;
+  initiatedCopy = initiated;
+  rebootCopy = reboot;
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v18 = v5;
+    v18 = rebootCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CheckerBoard is checking out and will reboot (%d)", buf, 8u);
   }
 
@@ -122,7 +122,7 @@
   v8 = +[CBBootIntentManager sharedInstance];
   [v8 deleteBootIntentSourceData];
 
-  if (v4)
+  if (initiatedCopy)
   {
     [CBSNVRamUtil clearNVRamVariable:@"boot-command"];
   }
@@ -131,7 +131,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_10002F478;
   v15[3] = &unk_10007E4C0;
-  v16 = v5;
+  v16 = rebootCopy;
   v9 = objc_retainBlock(v15);
   v10 = +[CBRemoteSetupManager sharedInstance];
   v11 = v10;
@@ -180,7 +180,7 @@
   }
 }
 
-- (void)exitRequestedWithServer:(id)a3
+- (void)exitRequestedWithServer:(id)server
 {
   v3 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -202,9 +202,9 @@
   }
 
   v3 = +[CBUserSettings sharedInstance];
-  v4 = [v3 proxyServer];
+  proxyServer = [v3 proxyServer];
 
-  return v4;
+  return proxyServer;
 }
 
 - (void)showSceneStatusBar
@@ -219,10 +219,10 @@
   [v2 hideSceneStatusBar];
 }
 
-- (void)statusBarStyle:(int64_t)a3
+- (void)statusBarStyle:(int64_t)style
 {
   v4 = +[CBSceneManager sharedInstance];
-  [v4 statusBarStyle:a3];
+  [v4 statusBarStyle:style];
 }
 
 - (void)dimDisplay
@@ -246,43 +246,43 @@
 
 - (void)disableTouchButtonEvents
 {
-  v3 = [(CBSystem *)self touchSensitiveButtonEnabledAssertion];
+  touchSensitiveButtonEnabledAssertion = [(CBSystem *)self touchSensitiveButtonEnabledAssertion];
 
-  if (v3)
+  if (touchSensitiveButtonEnabledAssertion)
   {
-    v4 = [(CBSystem *)self touchSensitiveButtonEnabledAssertion];
-    [v4 invalidate];
+    touchSensitiveButtonEnabledAssertion2 = [(CBSystem *)self touchSensitiveButtonEnabledAssertion];
+    [touchSensitiveButtonEnabledAssertion2 invalidate];
 
     [(CBSystem *)self setTouchSensitiveButtonEnabledAssertion:0];
   }
 }
 
-- (void)addShutdownTask:(id)a3 forReason:(id)a4
+- (void)addShutdownTask:(id)task forReason:(id)reason
 {
-  v6 = a4;
-  v8 = objc_retainBlock(a3);
-  v7 = [(CBSystem *)self shutdownTasks];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  reasonCopy = reason;
+  v8 = objc_retainBlock(task);
+  shutdownTasks = [(CBSystem *)self shutdownTasks];
+  [shutdownTasks setObject:v8 forKeyedSubscript:reasonCopy];
 }
 
-- (void)removeShutdownTask:(id)a3
+- (void)removeShutdownTask:(id)task
 {
-  v4 = a3;
-  v5 = [(CBSystem *)self shutdownTasks];
-  [v5 removeObjectForKey:v4];
+  taskCopy = task;
+  shutdownTasks = [(CBSystem *)self shutdownTasks];
+  [shutdownTasks removeObjectForKey:taskCopy];
 
-  v7 = [(CBSystem *)self shutdownTasks];
-  if (![v7 count])
+  shutdownTasks2 = [(CBSystem *)self shutdownTasks];
+  if (![shutdownTasks2 count])
   {
-    v6 = [(CBSystem *)self shutdownTasksPendingSemaphore];
+    shutdownTasksPendingSemaphore = [(CBSystem *)self shutdownTasksPendingSemaphore];
 
-    if (!v6)
+    if (!shutdownTasksPendingSemaphore)
     {
       return;
     }
 
-    v7 = [(CBSystem *)self shutdownTasksPendingSemaphore];
-    dispatch_semaphore_signal(v7);
+    shutdownTasks2 = [(CBSystem *)self shutdownTasksPendingSemaphore];
+    dispatch_semaphore_signal(shutdownTasks2);
   }
 }
 
@@ -301,32 +301,32 @@
 - (void)launchPrimaryApp
 {
   v2 = +[UIApplication sharedApplication];
-  v4 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  v3 = v4;
-  if (v4)
+  v3 = delegate;
+  if (delegate)
   {
-    [v4 launchPrimaryApp];
-    v3 = v4;
+    [delegate launchPrimaryApp];
+    v3 = delegate;
   }
 }
 
-- (void)primaryAppRunning:(id)a3
+- (void)primaryAppRunning:(id)running
 {
-  v3 = a3;
+  runningCopy = running;
   v7 = +[CBAppManager sharedInstance];
-  v4 = [v7 primaryAppBundleID];
+  primaryAppBundleID = [v7 primaryAppBundleID];
   v5 = +[CBAppManager sharedInstance];
-  v6 = [v5 currentOpenAppBundleIDs];
+  currentOpenAppBundleIDs = [v5 currentOpenAppBundleIDs];
 
-  v3[2](v3, [v6 containsObject:v4]);
+  runningCopy[2](runningCopy, [currentOpenAppBundleIDs containsObject:primaryAppBundleID]);
 }
 
 - (void)launchDiagnostics
 {
   v3 = +[CBAppManager sharedInstance];
-  v4 = [v3 primaryAppBundleID];
-  if (v4 == @"com.apple.Diagnostics")
+  primaryAppBundleID = [v3 primaryAppBundleID];
+  if (primaryAppBundleID == @"com.apple.Diagnostics")
   {
     [(CBSystem *)self launchPrimaryApp];
   }
@@ -342,14 +342,14 @@
   }
 }
 
-- (void)diagnosticsRunning:(id)a3
+- (void)diagnosticsRunning:(id)running
 {
-  v4 = a3;
+  runningCopy = running;
   v5 = +[CBAppManager sharedInstance];
-  v6 = [v5 primaryAppBundleID];
-  if (v6 == @"com.apple.Diagnostics")
+  primaryAppBundleID = [v5 primaryAppBundleID];
+  if (primaryAppBundleID == @"com.apple.Diagnostics")
   {
-    [(CBSystem *)self primaryAppRunning:v4];
+    [(CBSystem *)self primaryAppRunning:runningCopy];
   }
 
   else
@@ -361,14 +361,14 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Primary app is not currently Diagnostics. Reporting that it is not running, as it is not allow-listed to run.", v8, 2u);
     }
 
-    v4[2](v4, 0);
+    runningCopy[2](runningCopy, 0);
   }
 }
 
-- (void)_connectToSSID:(id)a3 password:(id)a4 completion:(id)a5
+- (void)_connectToSSID:(id)d password:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  passwordCopy = password;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -385,11 +385,11 @@
   v42[1] = 3221225472;
   v42[2] = sub_100030358;
   v42[3] = &unk_10007E4E8;
-  v10 = a5;
+  completionCopy = completion;
   v44 = &v52;
   v45 = &v46;
   v42[4] = self;
-  v43 = v10;
+  v43 = completionCopy;
   v11 = objc_retainBlock(v42);
   v12 = +[NSNotificationCenter defaultCenter];
   v13 = +[NSOperationQueue mainQueue];
@@ -416,9 +416,9 @@
   v30[3] = &unk_10007E510;
   v33 = &v36;
   objc_copyWeak(&v34, &location);
-  v20 = v8;
+  v20 = dCopy;
   v31 = v20;
-  v21 = v9;
+  v21 = passwordCopy;
   v32 = v21;
   v22 = objc_retainBlock(v30);
   v23 = +[NSNotificationCenter defaultCenter];
@@ -445,9 +445,9 @@
   _Block_object_dispose(&v52, 8);
 }
 
-- (void)networkScanWithCompletion:(id)a3
+- (void)networkScanWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -461,7 +461,7 @@
   v14[3] = &unk_10007E538;
   v16 = &v19;
   objc_copyWeak(&v17, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v15 = v5;
   v6 = objc_retainBlock(v14);
   v7 = CheckerBoardLogHandleForCategory();
@@ -485,59 +485,59 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)connectedNetwork:(id)a3
+- (void)connectedNetwork:(id)network
 {
-  v7 = a3;
+  networkCopy = network;
   v3 = +[CBWiFiManager sharedInstance];
-  v4 = [v3 isAssociatedToNetwork];
+  isAssociatedToNetwork = [v3 isAssociatedToNetwork];
 
-  if (v4)
+  if (isAssociatedToNetwork)
   {
     v5 = +[CBWiFiManager sharedInstance];
-    v6 = [v5 currentNetworkSSID];
-    v7[2](v7, v6);
+    currentNetworkSSID = [v5 currentNetworkSSID];
+    networkCopy[2](networkCopy, currentNetworkSSID);
   }
 
   else
   {
-    v7[2](v7, 0);
+    networkCopy[2](networkCopy, 0);
   }
 }
 
-- (void)displayDimmed:(id)a3
+- (void)displayDimmed:(id)dimmed
 {
-  v4 = a3;
+  dimmedCopy = dimmed;
   v5 = +[CBIdleSleepManager sharedInstance];
-  (*(a3 + 2))(v4, [v5 isDisplayDim]);
+  (*(dimmed + 2))(dimmedCopy, [v5 isDisplayDim]);
 }
 
-- (void)networkReconnectEnabled:(id)a3
+- (void)networkReconnectEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[CBWiFiManager sharedInstance];
-  (*(a3 + 2))(v4, [v5 attemptsNetworkReconnect]);
+  (*(enabled + 2))(enabledCopy, [v5 attemptsNetworkReconnect]);
 }
 
-- (void)currentLocaleIdentifier:(id)a3
+- (void)currentLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6 = +[NSLocale currentLocale];
-  v5 = [v6 localeIdentifier];
-  (*(a3 + 2))(v4, v5);
+  localeIdentifier = [v6 localeIdentifier];
+  (*(identifier + 2))(identifierCopy, localeIdentifier);
 }
 
-- (void)setLocaleIdentifier:(id)a3 completion:(id)a4
+- (void)setLocaleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[CBLocationController sharedLocationController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100030FB4;
   v9[3] = &unk_10007DC38;
-  v10 = v5;
-  v8 = v5;
-  [v7 selectLanguage:v6 restartAfterCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 selectLanguage:identifierCopy restartAfterCompletion:v9];
 }
 
 - (void)_registerForNotifications
@@ -569,7 +569,7 @@
   [v4 removeObserver:self name:@"CBEndGameViewControllerLaunchingPrimaryAppNotification" object:0];
 }
 
-- (void)_stopInactivityTimer:(id)a3
+- (void)_stopInactivityTimer:(id)timer
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -583,9 +583,9 @@
 
 - (void)_startInactivityTimer
 {
-  v3 = [(CBSystem *)self inactivityTimer];
+  inactivityTimer = [(CBSystem *)self inactivityTimer];
 
-  if (!v3)
+  if (!inactivityTimer)
   {
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -600,21 +600,21 @@
     v7 = [[PCPersistentTimer alloc] initWithFireDate:v6 serviceIdentifier:@"com.apple.CheckerBoard.inactivitytimer" target:self selector:"_inactivityTimerFired:" userInfo:0];
     [(CBSystem *)self setInactivityTimer:v7];
 
-    v8 = [(CBSystem *)self inactivityTimer];
-    [v8 setMinimumEarlyFireProportion:1.0];
+    inactivityTimer2 = [(CBSystem *)self inactivityTimer];
+    [inactivityTimer2 setMinimumEarlyFireProportion:1.0];
 
-    v9 = [(CBSystem *)self inactivityTimer];
+    inactivityTimer3 = [(CBSystem *)self inactivityTimer];
     v10 = +[NSRunLoop mainRunLoop];
-    [v9 scheduleInRunLoop:v10];
+    [inactivityTimer3 scheduleInRunLoop:v10];
   }
 }
 
 - (void)_stopInactivityTimer
 {
   [(CBSystem *)self _deregisterNotifications];
-  v3 = [(CBSystem *)self inactivityTimer];
+  inactivityTimer = [(CBSystem *)self inactivityTimer];
 
-  if (v3)
+  if (inactivityTimer)
   {
     v4 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -623,14 +623,14 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Invalidating inactivity timer…", v6, 2u);
     }
 
-    v5 = [(CBSystem *)self inactivityTimer];
-    [v5 invalidate];
+    inactivityTimer2 = [(CBSystem *)self inactivityTimer];
+    [inactivityTimer2 invalidate];
 
     [(CBSystem *)self setInactivityTimer:0];
   }
 }
 
-- (void)_inactivityTimerFired:(id)a3
+- (void)_inactivityTimerFired:(id)fired
 {
   v4 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -645,8 +645,8 @@
 
 - (void)_runShutdownImminentCompletions
 {
-  v3 = [(CBSystem *)self shutdownTasks];
-  v4 = [v3 count];
+  shutdownTasks = [(CBSystem *)self shutdownTasks];
+  v4 = [shutdownTasks count];
 
   if (v4)
   {
@@ -657,8 +657,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(CBSystem *)self shutdownTasks];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    shutdownTasks2 = [(CBSystem *)self shutdownTasks];
+    v7 = [shutdownTasks2 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -669,7 +669,7 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(shutdownTasks2);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
@@ -681,20 +681,20 @@
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Running shutdown imminent completion for reason %@", buf, 0xCu);
           }
 
-          v13 = [(CBSystem *)self shutdownTasks];
-          v14 = [v13 objectForKeyedSubscript:v11];
+          shutdownTasks3 = [(CBSystem *)self shutdownTasks];
+          v14 = [shutdownTasks3 objectForKeyedSubscript:v11];
           v14[2]();
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v8 = [shutdownTasks2 countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v8);
     }
 
-    v15 = [(CBSystem *)self shutdownTasksPendingSemaphore];
+    shutdownTasksPendingSemaphore = [(CBSystem *)self shutdownTasksPendingSemaphore];
     v16 = dispatch_time(0, 5000000000);
-    v17 = dispatch_semaphore_wait(v15, v16);
+    v17 = dispatch_semaphore_wait(shutdownTasksPendingSemaphore, v16);
 
     if (v17)
     {

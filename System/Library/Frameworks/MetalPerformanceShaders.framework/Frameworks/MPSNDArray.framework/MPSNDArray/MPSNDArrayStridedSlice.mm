@@ -1,27 +1,27 @@
 @interface MPSNDArrayStridedSlice
 - (MPSNDArrayOffsets)strides;
-- (MPSNDArrayStridedSlice)initWithDevice:(id)a3;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
-- (int32x4_t)stridesAtSourceIndex:(uint64_t)a1@<X0>;
+- (MPSNDArrayStridedSlice)initWithDevice:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
+- (int32x4_t)stridesAtSourceIndex:(uint64_t)index@<X0>;
 - (void)setStrides:(MPSNDArrayOffsets *)strides;
 @end
 
 @implementation MPSNDArrayStridedSlice
 
-- (MPSNDArrayStridedSlice)initWithDevice:(id)a3
+- (MPSNDArrayStridedSlice)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayStridedSlice;
-  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:device];
   result->super.super._encode = EncodeStridedSlice;
   result->super.super.super._encodeData = result;
   return result;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
   v12[16] = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v5 = [arrays objectAtIndexedSubscript:{0, state}];
   v6 = *(v5 + *MEMORY[0x277CD73F0]);
   if (v6)
   {
@@ -52,12 +52,12 @@
   return result;
 }
 
-- (int32x4_t)stridesAtSourceIndex:(uint64_t)a1@<X0>
+- (int32x4_t)stridesAtSourceIndex:(uint64_t)index@<X0>
 {
-  v2 = vuzp1q_s32(*(a1 + 664), *(a1 + 680));
-  v3 = vuzp1q_s32(*(a1 + 696), *(a1 + 712));
-  result = vuzp1q_s32(*(a1 + 760), *(a1 + 776));
-  a2[2] = vuzp1q_s32(*(a1 + 728), *(a1 + 744));
+  v2 = vuzp1q_s32(*(index + 664), *(index + 680));
+  v3 = vuzp1q_s32(*(index + 696), *(index + 712));
+  result = vuzp1q_s32(*(index + 760), *(index + 776));
+  a2[2] = vuzp1q_s32(*(index + 728), *(index + 744));
   a2[3] = result;
   *a2 = v2;
   a2[1] = v3;

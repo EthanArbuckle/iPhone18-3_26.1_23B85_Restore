@@ -1,23 +1,23 @@
 @interface DOCFixedRadiusRoundedRectShapeProvider
-- (DOCFixedRadiusRoundedRectShapeProvider)initWithCornerRadius:(double)a3 insets:(UIEdgeInsets)a4;
+- (DOCFixedRadiusRoundedRectShapeProvider)initWithCornerRadius:(double)radius insets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)insets;
-- (id)resolvedShapeInContext:(id)a3;
+- (id)resolvedShapeInContext:(id)context;
 @end
 
 @implementation DOCFixedRadiusRoundedRectShapeProvider
 
-- (DOCFixedRadiusRoundedRectShapeProvider)initWithCornerRadius:(double)a3 insets:(UIEdgeInsets)a4
+- (DOCFixedRadiusRoundedRectShapeProvider)initWithCornerRadius:(double)radius insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v10.receiver = self;
   v10.super_class = DOCFixedRadiusRoundedRectShapeProvider;
   result = [(DOCFixedRadiusRoundedRectShapeProvider *)&v10 init];
   if (result)
   {
-    result->_cornerRadius = a3;
+    result->_cornerRadius = radius;
     result->_insets.top = top;
     result->_insets.left = left;
     result->_insets.bottom = bottom;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (id)resolvedShapeInContext:(id)a3
+- (id)resolvedShapeInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 contentShape];
-  [v5 boundingRect];
+  contextCopy = context;
+  contentShape = [contextCopy contentShape];
+  [contentShape boundingRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -45,7 +45,7 @@
   v22 = MEMORY[0x277D75A18];
   [(DOCFixedRadiusRoundedRectShapeProvider *)self cornerRadius];
   v24 = [v22 fixedRectShapeWithRect:v15 cornerRadius:{v17, v19, v21, v23}];
-  v25 = [v24 resolvedShapeInContext:v4];
+  v25 = [v24 resolvedShapeInContext:contextCopy];
 
   return v25;
 }

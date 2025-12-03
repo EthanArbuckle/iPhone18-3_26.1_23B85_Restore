@@ -1,8 +1,8 @@
 @interface BRFetchRecordsOperation
 - (BRFetchRecordsOperation)init;
 - (void)dealloc;
-- (void)setFetchRecordsCompletionBlock:(id)a3;
-- (void)setPerRecordCompletionBlock:(id)a3;
+- (void)setFetchRecordsCompletionBlock:(id)block;
+- (void)setPerRecordCompletionBlock:(id)block;
 @end
 
 @implementation BRFetchRecordsOperation
@@ -184,21 +184,21 @@ LABEL_25:
   [(BRFetchRecordsOperation *)&v5 dealloc];
 }
 
-- (void)setPerRecordCompletionBlock:(id)a3
+- (void)setPerRecordCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   completedRecords = self->_completedRecords;
   self->_completedRecords = v5;
 
-  v7 = MEMORY[0x22AA4A310](v4);
+  v7 = MEMORY[0x22AA4A310](blockCopy);
   perRecordCompletionBlock = self->_perRecordCompletionBlock;
   self->_perRecordCompletionBlock = v7;
 }
 
-- (void)setFetchRecordsCompletionBlock:(id)a3
+- (void)setFetchRecordsCompletionBlock:(id)block
 {
-  v4 = MEMORY[0x22AA4A310](a3, a2);
+  v4 = MEMORY[0x22AA4A310](block, a2);
   fetchRecordsCompletionBlock = self->_fetchRecordsCompletionBlock;
   self->_fetchRecordsCompletionBlock = v4;
 

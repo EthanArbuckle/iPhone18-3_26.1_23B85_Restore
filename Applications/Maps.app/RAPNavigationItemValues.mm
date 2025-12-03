@@ -1,56 +1,56 @@
 @interface RAPNavigationItemValues
-- (void)setValuesOnNavigationItem:(id)a3 animated:(BOOL)a4;
-- (void)takeValuesFromNavigationItem:(id)a3;
+- (void)setValuesOnNavigationItem:(id)item animated:(BOOL)animated;
+- (void)takeValuesFromNavigationItem:(id)item;
 @end
 
 @implementation RAPNavigationItemValues
 
-- (void)setValuesOnNavigationItem:(id)a3 animated:(BOOL)a4
+- (void)setValuesOnNavigationItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   title = self->_title;
-  v7 = a3;
-  [v7 setTitle:title];
-  [v7 setBackBarButtonItem:self->_backBarButtonItem];
-  [v7 setTitleView:self->_titleView];
-  [v7 setPrompt:self->_prompt];
-  [v7 setLeftItemsSupplementBackButton:self->_leftItemsSupplementBackButton];
-  [v7 setHidesBackButton:self->_hidesBackButton animated:v4];
-  [v7 setLeftBarButtonItems:self->_leftBarButtonItems animated:v4];
-  [v7 setRightBarButtonItems:self->_rightBarButtonItems animated:v4];
+  itemCopy = item;
+  [itemCopy setTitle:title];
+  [itemCopy setBackBarButtonItem:self->_backBarButtonItem];
+  [itemCopy setTitleView:self->_titleView];
+  [itemCopy setPrompt:self->_prompt];
+  [itemCopy setLeftItemsSupplementBackButton:self->_leftItemsSupplementBackButton];
+  [itemCopy setHidesBackButton:self->_hidesBackButton animated:animatedCopy];
+  [itemCopy setLeftBarButtonItems:self->_leftBarButtonItems animated:animatedCopy];
+  [itemCopy setRightBarButtonItems:self->_rightBarButtonItems animated:animatedCopy];
 }
 
-- (void)takeValuesFromNavigationItem:(id)a3
+- (void)takeValuesFromNavigationItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v5 copy];
+  itemCopy = item;
+  title = [itemCopy title];
+  v6 = [title copy];
   title = self->_title;
   self->_title = v6;
 
-  v8 = [v4 backBarButtonItem];
+  backBarButtonItem = [itemCopy backBarButtonItem];
   backBarButtonItem = self->_backBarButtonItem;
-  self->_backBarButtonItem = v8;
+  self->_backBarButtonItem = backBarButtonItem;
 
-  v10 = [v4 titleView];
+  titleView = [itemCopy titleView];
   titleView = self->_titleView;
-  self->_titleView = v10;
+  self->_titleView = titleView;
 
-  v12 = [v4 prompt];
-  v13 = [v12 copy];
+  prompt = [itemCopy prompt];
+  v13 = [prompt copy];
   prompt = self->_prompt;
   self->_prompt = v13;
 
-  self->_leftItemsSupplementBackButton = [v4 leftItemsSupplementBackButton];
-  self->_hidesBackButton = [v4 hidesBackButton];
-  v15 = [v4 leftBarButtonItems];
-  v16 = [v15 copy];
+  self->_leftItemsSupplementBackButton = [itemCopy leftItemsSupplementBackButton];
+  self->_hidesBackButton = [itemCopy hidesBackButton];
+  leftBarButtonItems = [itemCopy leftBarButtonItems];
+  v16 = [leftBarButtonItems copy];
   leftBarButtonItems = self->_leftBarButtonItems;
   self->_leftBarButtonItems = v16;
 
-  v20 = [v4 rightBarButtonItems];
+  rightBarButtonItems = [itemCopy rightBarButtonItems];
 
-  v18 = [v20 copy];
+  v18 = [rightBarButtonItems copy];
   rightBarButtonItems = self->_rightBarButtonItems;
   self->_rightBarButtonItems = v18;
 }

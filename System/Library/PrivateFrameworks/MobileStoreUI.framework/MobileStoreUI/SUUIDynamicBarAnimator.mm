@@ -1,23 +1,23 @@
 @interface SUUIDynamicBarAnimator
-- (BOOL)canTransitionToState:(int64_t)a3;
+- (BOOL)canTransitionToState:(int64_t)state;
 - (SUUIDynamicBarAnimator)init;
 - (SUUIDynamicBarAnimatorDelegate)delegate;
-- (double)_constrainTopBarHeight:(double)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_moveBarsWithDelta:(double)a3;
-- (void)_setInSteadyState:(BOOL)a3;
+- (double)_constrainTopBarHeight:(double)height;
+- (void)_displayLinkFired:(id)fired;
+- (void)_moveBarsWithDelta:(double)delta;
+- (void)_setInSteadyState:(BOOL)state;
 - (void)_transitionToSteadyState;
 - (void)_updateDisplayLink;
 - (void)_updateOutputs;
-- (void)attemptTransitionToState:(int64_t)a3 animated:(BOOL)a4;
-- (void)beginDraggingWithOffset:(double)a3;
+- (void)attemptTransitionToState:(int64_t)state animated:(BOOL)animated;
+- (void)beginDraggingWithOffset:(double)offset;
 - (void)dealloc;
-- (void)endDraggingWithTargetOffset:(double)a3 velocity:(double)a4;
-- (void)setBottomBarOffset:(double)a3 forState:(int64_t)a4;
-- (void)setMaximumBottomBarOffset:(double)a3;
-- (void)setMinimumTopBarHeight:(double)a3;
-- (void)setTopBarHeight:(double)a3 forState:(int64_t)a4;
-- (void)updateDraggingWithOffset:(double)a3;
+- (void)endDraggingWithTargetOffset:(double)offset velocity:(double)velocity;
+- (void)setBottomBarOffset:(double)offset forState:(int64_t)state;
+- (void)setMaximumBottomBarOffset:(double)offset;
+- (void)setMinimumTopBarHeight:(double)height;
+- (void)setTopBarHeight:(double)height forState:(int64_t)state;
+- (void)updateDraggingWithOffset:(double)offset;
 @end
 
 @implementation SUUIDynamicBarAnimator
@@ -48,21 +48,21 @@
   [(SUUIDynamicBarAnimator *)&v2 dealloc];
 }
 
-- (void)_moveBarsWithDelta:(double)a3
+- (void)_moveBarsWithDelta:(double)delta
 {
   unroundedTopBarHeight = self->_unroundedTopBarHeight;
-  v6 = self->_targetTopBarHeight - a3;
+  v6 = self->_targetTopBarHeight - delta;
   self->_targetTopBarHeight = v6;
   v7 = self->_topBarHeightForState[1] - self->_topBarHeightForState[0];
   v8 = vabdd_f64(unroundedTopBarHeight, v6);
-  self->_unroundedTopBarHeight = unroundedTopBarHeight - exp(-(v8 * 3.0 / v7 * (v8 * 3.0 / v7))) * a3;
+  self->_unroundedTopBarHeight = unroundedTopBarHeight - exp(-(v8 * 3.0 / v7 * (v8 * 3.0 / v7))) * delta;
 
   [(SUUIDynamicBarAnimator *)self _updateOutputs];
 }
 
-- (void)attemptTransitionToState:(int64_t)a3 animated:(BOOL)a4
+- (void)attemptTransitionToState:(int64_t)state animated:(BOOL)animated
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
     [SUUIDynamicBarAnimator attemptTransitionToState:animated:];
   }
@@ -70,9 +70,9 @@
   if ([(SUUIDynamicBarAnimator *)self canTransitionToState:?])
   {
     self->_didHideOrShowBarsExplicitly = 1;
-    v7 = self->_topBarHeightForState[a3];
+    v7 = self->_topBarHeightForState[state];
     self->_targetTopBarHeight = v7;
-    if (!a4)
+    if (!animated)
     {
       self->_unroundedTopBarHeight = v7;
     }
@@ -137,14 +137,14 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
   return round(v4 * a1) / v4;
 }
 
-- (void)_setInSteadyState:(BOOL)a3
+- (void)_setInSteadyState:(BOOL)state
 {
-  if (self->_inSteadyState != a3)
+  if (self->_inSteadyState != state)
   {
-    v4 = a3;
-    self->_inSteadyState = a3;
+    stateCopy = state;
+    self->_inSteadyState = state;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v4)
+    if (stateCopy)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -159,19 +159,19 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
   }
 }
 
-- (BOOL)canTransitionToState:(int64_t)a3
+- (BOOL)canTransitionToState:(int64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
     [SUUIDynamicBarAnimator canTransitionToState:];
   }
 
-  v3 = (&self->super.isa + a3);
+  v3 = (&self->super.isa + state);
   [(SUUIDynamicBarAnimator *)self _constrainTopBarHeight:v3[1]];
   return v4 == v3[1];
 }
 
-- (double)_constrainTopBarHeight:(double)a3
+- (double)_constrainTopBarHeight:(double)height
 {
   minimumTopBarHeight = self->_minimumTopBarHeight;
   [(SUUIDynamicBarAnimator *)self _topBarHeightForBottomBarOffset:self->_maximumBottomBarOffset];
@@ -185,9 +185,9 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
     result = self->_topBarHeightForState[0];
   }
 
-  if (result <= a3)
+  if (result <= height)
   {
-    result = a3;
+    result = height;
   }
 
   if (result >= self->_topBarHeightForState[1])
@@ -198,9 +198,9 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
   return result;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  [a3 duration];
+  [fired duration];
   unroundedTopBarHeight = self->_unroundedTopBarHeight;
   self->_unroundedTopBarHeight = unroundedTopBarHeight - ((self->_lastUnroundedTopBarHeight - unroundedTopBarHeight) / v5 + ((self->_lastUnroundedTopBarHeight - unroundedTopBarHeight) / v5 * -50.0 + (unroundedTopBarHeight - self->_targetTopBarHeight) * 900.0) * v5) * v5;
   self->_lastUnroundedTopBarHeight = unroundedTopBarHeight;
@@ -219,8 +219,8 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
       self->_displayLink = v6;
 
       v8 = self->_displayLink;
-      v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [(CADisplayLink *)v8 addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [(CADisplayLink *)v8 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
       self->_lastUnroundedTopBarHeight = self->_unroundedTopBarHeight;
     }
@@ -245,18 +245,18 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
   }
 }
 
-- (void)beginDraggingWithOffset:(double)a3
+- (void)beginDraggingWithOffset:(double)offset
 {
   self->_dragging = 1;
   *&self->_didHideBarsByMoving = 0;
-  self->_lastOffset = a3;
+  self->_lastOffset = offset;
 }
 
-- (void)updateDraggingWithOffset:(double)a3
+- (void)updateDraggingWithOffset:(double)offset
 {
   if (self->_state == 1 && !self->_didHideOrShowBarsExplicitly)
   {
-    v5 = a3 - self->_lastOffset;
+    v5 = offset - self->_lastOffset;
     v6 = fmax(self->_topBarHeight - self->_topBarHeightForState[0] - v5, 0.0);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = [WeakRetained dynamicBarAnimator:self canHideBarsByDraggingWithOffset:v6];
@@ -271,31 +271,31 @@ double __40__SUUIDynamicBarAnimator__updateOutputs__block_invoke(double a1)
     }
   }
 
-  self->_lastOffset = a3;
+  self->_lastOffset = offset;
 }
 
-- (void)endDraggingWithTargetOffset:(double)a3 velocity:(double)a4
+- (void)endDraggingWithTargetOffset:(double)offset velocity:(double)velocity
 {
   self->_dragging = 0;
   if (self->_didHideOrShowBarsExplicitly)
   {
-    if (![(SUUIDynamicBarAnimator *)self targetState:a3]&& [(SUUIDynamicBarAnimator *)self canTransitionToState:0])
+    if (![(SUUIDynamicBarAnimator *)self targetState:offset]&& [(SUUIDynamicBarAnimator *)self canTransitionToState:0])
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 0;
 LABEL_7:
 
-      [(SUUIDynamicBarAnimator *)v5 attemptTransitionToState:v6 animated:1];
+      [(SUUIDynamicBarAnimator *)selfCopy2 attemptTransitionToState:v6 animated:1];
       return;
     }
 
 LABEL_6:
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (a4 < -250.0)
+  if (velocity < -250.0)
   {
     goto LABEL_6;
   }
@@ -303,37 +303,37 @@ LABEL_6:
   [(SUUIDynamicBarAnimator *)self _transitionToSteadyState];
 }
 
-- (void)setTopBarHeight:(double)a3 forState:(int64_t)a4
+- (void)setTopBarHeight:(double)height forState:(int64_t)state
 {
-  if (a4 >= 2)
+  if (state >= 2)
   {
     [SUUIDynamicBarAnimator setTopBarHeight:forState:];
   }
 
-  if (self->_topBarHeightForState[a4] != a3)
+  if (self->_topBarHeightForState[state] != height)
   {
-    self->_topBarHeightForState[a4] = a3;
-    if (self->_state == a4)
+    self->_topBarHeightForState[state] = height;
+    if (self->_state == state)
     {
-      self->_targetTopBarHeight = a3;
-      self->_unroundedTopBarHeight = a3;
+      self->_targetTopBarHeight = height;
+      self->_unroundedTopBarHeight = height;
 
       [(SUUIDynamicBarAnimator *)self _updateOutputs];
     }
   }
 }
 
-- (void)setBottomBarOffset:(double)a3 forState:(int64_t)a4
+- (void)setBottomBarOffset:(double)offset forState:(int64_t)state
 {
-  if (a4 >= 2)
+  if (state >= 2)
   {
     [SUUIDynamicBarAnimator setBottomBarOffset:forState:];
   }
 
-  if (self->_bottomBarOffsetForState[a4] != a3)
+  if (self->_bottomBarOffsetForState[state] != offset)
   {
-    self->_bottomBarOffsetForState[a4] = a3;
-    if (self->_state == a4)
+    self->_bottomBarOffsetForState[state] = offset;
+    if (self->_state == state)
     {
 
       [(SUUIDynamicBarAnimator *)self _updateOutputs];
@@ -341,20 +341,20 @@ LABEL_6:
   }
 }
 
-- (void)setMinimumTopBarHeight:(double)a3
+- (void)setMinimumTopBarHeight:(double)height
 {
-  if (self->_minimumTopBarHeight != a3)
+  if (self->_minimumTopBarHeight != height)
   {
-    self->_minimumTopBarHeight = a3;
+    self->_minimumTopBarHeight = height;
     [(SUUIDynamicBarAnimator *)self _updateOutputs];
   }
 }
 
-- (void)setMaximumBottomBarOffset:(double)a3
+- (void)setMaximumBottomBarOffset:(double)offset
 {
-  if (self->_maximumBottomBarOffset != a3)
+  if (self->_maximumBottomBarOffset != offset)
   {
-    self->_maximumBottomBarOffset = a3;
+    self->_maximumBottomBarOffset = offset;
     [(SUUIDynamicBarAnimator *)self _updateOutputs];
   }
 }

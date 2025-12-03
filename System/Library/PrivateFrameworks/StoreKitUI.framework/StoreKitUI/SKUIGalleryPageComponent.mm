@@ -1,13 +1,13 @@
 @interface SKUIGalleryPageComponent
-- (SKUIGalleryPageComponent)initWithCustomPageContext:(id)a3;
+- (SKUIGalleryPageComponent)initWithCustomPageContext:(id)context;
 @end
 
 @implementation SKUIGalleryPageComponent
 
-- (SKUIGalleryPageComponent)initWithCustomPageContext:(id)a3
+- (SKUIGalleryPageComponent)initWithCustomPageContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGalleryPageComponent initWithCustomPageContext:];
@@ -15,31 +15,31 @@
 
   v31.receiver = self;
   v31.super_class = SKUIGalleryPageComponent;
-  v5 = [(SKUIPageComponent *)&v31 initWithCustomPageContext:v4];
+  v5 = [(SKUIPageComponent *)&v31 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"cycleInterval"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"cycleInterval"];
     if (objc_opt_respondsToSelector())
     {
       [v7 floatValue];
       v5->_cycleInterval = v8;
     }
 
-    v9 = [v6 objectForKey:@"hidesPageIndicator"];
+    v9 = [componentDictionary objectForKey:@"hidesPageIndicator"];
 
     if (objc_opt_respondsToSelector())
     {
       v5->_hidesPageIndicator = [v9 BOOLValue];
     }
 
-    v10 = [v6 objectForKey:@"children"];
+    v10 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v24 = v9;
-      v25 = v6;
-      v11 = [v4 copy];
+      v25 = componentDictionary;
+      v11 = [contextCopy copy];
       v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v27 = 0u;
       v28 = 0u;
@@ -90,7 +90,7 @@
       v5->_childComponents = v20;
 
       v9 = v24;
-      v6 = v25;
+      componentDictionary = v25;
       v10 = v23;
     }
   }

@@ -1,6 +1,6 @@
 @interface CHBPieDataValueProperties
 + (id)chdDataValueProperties;
-+ (void)read:(id)a3 from:(const XlChartSeriesFormat *)a4;
++ (void)read:(id)read from:(const XlChartSeriesFormat *)from;
 @end
 
 @implementation CHBPieDataValueProperties
@@ -12,15 +12,15 @@
   return v2;
 }
 
-+ (void)read:(id)a3 from:(const XlChartSeriesFormat *)a4
++ (void)read:(id)read from:(const XlChartSeriesFormat *)from
 {
-  v5 = a3;
-  if (a4)
+  readCopy = read;
+  if (from)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setExplosion:a4->var10];
+      [readCopy setExplosion:from->var10];
     }
   }
 }

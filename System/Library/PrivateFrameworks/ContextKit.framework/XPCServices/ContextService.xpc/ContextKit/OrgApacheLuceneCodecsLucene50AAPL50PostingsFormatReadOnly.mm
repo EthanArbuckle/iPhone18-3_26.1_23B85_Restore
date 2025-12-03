@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly
 - (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly)init;
-- (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly)initWithInt:(int)a3 withInt:(int)a4;
+- (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly)initWithInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly
@@ -13,11 +13,11 @@
   return self;
 }
 
-- (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly)initWithInt:(int)a3 withInt:(int)a4
+- (OrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly)initWithInt:(int)int withInt:(int)withInt
 {
   OrgApacheLuceneCodecsPostingsFormat_initWithNSString_(self, @"AAPL50");
-  self->minTermBlockSize_ = a3;
-  self->maxTermBlockSize_ = a4;
+  self->minTermBlockSize_ = int;
+  self->maxTermBlockSize_ = withInt;
   return self;
 }
 

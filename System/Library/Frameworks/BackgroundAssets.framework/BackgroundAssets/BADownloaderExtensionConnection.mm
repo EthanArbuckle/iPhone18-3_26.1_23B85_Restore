@@ -1,22 +1,22 @@
 @interface BADownloaderExtensionConnection
 - (BADownloaderExtension)principalObject;
-- (BADownloaderExtensionConnection)initWithPrincipalObject:(id)a3;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (BADownloaderExtensionConnection)initWithPrincipalObject:(id)object;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (id)acquireWakeAssertion;
-- (uint64_t)_markPurgeableWithFileURL:(void *)a3 error:;
-- (void)backgroundDownload:(id)a3 failedWithError:(id)a4 completionHandler:(id)a5;
-- (void)backgroundDownload:(id)a3 finishedWithSandboxToken:(id)a4 completionHandler:(id)a5;
-- (void)downloadsForRequest:(int64_t)a3 manifestURL:(id)a4 manifestToken:(id)a5 extensionInfo:(id)a6 completionHandler:(id)a7;
+- (uint64_t)_markPurgeableWithFileURL:(void *)l error:;
+- (void)backgroundDownload:(id)download failedWithError:(id)error completionHandler:(id)handler;
+- (void)backgroundDownload:(id)download finishedWithSandboxToken:(id)token completionHandler:(id)handler;
+- (void)downloadsForRequest:(int64_t)request manifestURL:(id)l manifestToken:(id)token extensionInfo:(id)info completionHandler:(id)handler;
 - (void)extensionWillTerminate;
-- (void)receivedAuthenticationChallenge:(id)a3 download:(id)a4 completionHandler:(id)a5;
-- (void)setPrincipalObject:(id)a3;
+- (void)receivedAuthenticationChallenge:(id)challenge download:(id)download completionHandler:(id)handler;
+- (void)setPrincipalObject:(id)object;
 @end
 
 @implementation BADownloaderExtensionConnection
 
-- (BADownloaderExtensionConnection)initWithPrincipalObject:(id)a3
+- (BADownloaderExtensionConnection)initWithPrincipalObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = BADownloaderExtensionConnection;
   v5 = [(BADownloaderExtensionConnection *)&v14 init];
@@ -26,14 +26,14 @@
     [(BADownloadManager *)v6 setExtensionConnection:v5];
 
     v7 = MEMORY[0x277CCACA8];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = [v8 bundleIdentifier];
-    v10 = [v7 stringWithFormat:@"%@.work-queue", v9];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v10 = [v7 stringWithFormat:@"%@.work-queue", bundleIdentifier];
 
     v11 = dispatch_queue_create([v10 UTF8String], 0);
     objc_setProperty_atomic(v5, v12, v11, 32);
 
-    [(BADownloaderExtensionConnection *)v5 setPrincipalObject:v4];
+    [(BADownloaderExtensionConnection *)v5 setPrincipalObject:objectCopy];
   }
 
   return v5;
@@ -44,24 +44,24 @@
   principalObject = self->_principalObject;
   if ([objc_opt_class() conformsToProtocol:&unk_2849E2B90])
   {
-    v4 = [(BADownloaderExtensionConnection *)self extensionWrapper];
+    extensionWrapper = [(BADownloaderExtensionConnection *)self extensionWrapper];
   }
 
   else
   {
-    v4 = self->_principalObject;
+    extensionWrapper = self->_principalObject;
   }
 
-  return v4;
+  return extensionWrapper;
 }
 
-- (void)setPrincipalObject:(id)a3
+- (void)setPrincipalObject:(id)object
 {
-  v6 = a3;
-  objc_storeStrong(&self->_principalObject, a3);
+  objectCopy = object;
+  objc_storeStrong(&self->_principalObject, object);
   if ([objc_opt_class() conformsToProtocol:&unk_2849E2B90])
   {
-    v5 = [[BAManagedDownloaderExtensionWrapper alloc] initWithWrappedExtension:v6];
+    v5 = [[BAManagedDownloaderExtensionWrapper alloc] initWithWrappedExtension:objectCopy];
     [(BADownloaderExtensionConnection *)self setExtensionWrapper:v5];
   }
 
@@ -222,10 +222,10 @@ uint64_t __94__BADownloaderExtensionConnection_receivedAuthenticationChallenge_d
 
 - (void)extensionWillTerminate
 {
-  v2 = [(BADownloaderExtensionConnection *)self principalObject];
+  principalObject = [(BADownloaderExtensionConnection *)self principalObject];
   if (objc_opt_respondsToSelector())
   {
-    [v2 extensionWillTerminate];
+    [principalObject extensionWillTerminate];
   }
 }
 
@@ -371,15 +371,15 @@ LABEL_32:
 LABEL_33:
 }
 
-- (uint64_t)_markPurgeableWithFileURL:(void *)a3 error:
+- (uint64_t)_markPurgeableWithFileURL:(void *)l error:
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 fileSystemRepresentation];
-    Property = objc_getProperty(a1, v7, 48, 1);
+    Property = objc_getProperty(self, v7, 48, 1);
     if (Property)
     {
       [Property auditToken];
@@ -408,7 +408,7 @@ LABEL_33:
       *(&v22 + 1) = __Block_byref_object_copy__119;
       v23 = __Block_byref_object_dispose__120;
       v24 = 0;
-      v14 = objc_getProperty(a1, v13, 48, 1);
+      v14 = objc_getProperty(self, v13, 48, 1);
       v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_122];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -418,12 +418,12 @@ LABEL_33:
       v20[5] = &v21;
       [v15 markPurgeableWithFileURL:v6 sandboxToken:v12 reply:v20];
 
-      if (a3)
+      if (l)
       {
-        *a3 = *(*(&v21 + 1) + 40);
+        *l = *(*(&v21 + 1) + 40);
       }
 
-      LOBYTE(a1) = *(v26 + 24);
+      LOBYTE(self) = *(v26 + 24);
       _Block_object_dispose(&v21, 8);
 
       _Block_object_dispose(&v25, 8);
@@ -431,28 +431,28 @@ LABEL_33:
 
     else
     {
-      if (!a3)
+      if (!l)
       {
-        LOBYTE(a1) = 0;
+        LOBYTE(self) = 0;
         goto LABEL_12;
       }
 
       v16 = MEMORY[0x277CCA9B8];
-      a1 = *__error();
+      self = *__error();
       v29 = @"FileURL";
       v30[0] = v6;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-      v12 = [v16 errorWithDomain:*MEMORY[0x277CCA5B8] code:a1 userInfo:v17];
+      v12 = [v16 errorWithDomain:*MEMORY[0x277CCA5B8] code:self userInfo:v17];
 
       NSErrorWithBAErrorDomainCodeUnderlying(@"BAErrorDomain", -107, v12);
-      *a3 = LOBYTE(a1) = 0;
+      *l = LOBYTE(self) = 0;
     }
   }
 
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];
-  return a1 & 1;
+  return self & 1;
 }
 
 - (id)acquireWakeAssertion
@@ -517,10 +517,10 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2849DEC78];
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   [v4 setClasses:v5 forSelector:sel_downloadsForRequest_manifestURL_manifestToken_extensionInfo_completionHandler_ argumentIndex:1 ofReply:0];
@@ -586,27 +586,27 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   [v4 setClasses:v19 forSelector:sel_backgroundDownload_finishedWithSandboxToken_completionHandler_ argumentIndex:1 ofReply:0];
 
   v20 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2849E2B30];
-  [v3 setExportedInterface:v4];
-  [v3 setRemoteObjectInterface:v20];
-  [v3 setExportedObject:self];
+  [connectionCopy setExportedInterface:v4];
+  [connectionCopy setRemoteObjectInterface:v20];
+  [connectionCopy setExportedObject:self];
   if (self)
   {
-    objc_setProperty_atomic(self, v21, v3, 48);
+    objc_setProperty_atomic(self, v21, connectionCopy, 48);
   }
 
-  [v3 resume];
+  [connectionCopy resume];
 
   v22 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)downloadsForRequest:(int64_t)a3 manifestURL:(id)a4 manifestToken:(id)a5 extensionInfo:(id)a6 completionHandler:(id)a7
+- (void)downloadsForRequest:(int64_t)request manifestURL:(id)l manifestToken:(id)token extensionInfo:(id)info completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v17 = [(BADownloaderExtensionConnection *)self principalObject];
+  lCopy = l;
+  tokenCopy = token;
+  infoCopy = info;
+  handlerCopy = handler;
+  principalObject = [(BADownloaderExtensionConnection *)self principalObject];
   if (self)
   {
     self = objc_getProperty(self, v16, 32, 1);
@@ -616,26 +616,26 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   v23[1] = 3221225472;
   v23[2] = __113__BADownloaderExtensionConnection_downloadsForRequest_manifestURL_manifestToken_extensionInfo_completionHandler___block_invoke;
   v23[3] = &unk_278A0CE98;
-  v24 = v13;
-  v25 = v12;
-  v28 = v15;
-  v29 = a3;
-  v26 = v17;
-  v27 = v14;
-  v18 = v14;
-  v19 = v17;
-  v20 = v15;
-  v21 = v12;
-  v22 = v13;
+  v24 = tokenCopy;
+  v25 = lCopy;
+  v28 = handlerCopy;
+  requestCopy = request;
+  v26 = principalObject;
+  v27 = infoCopy;
+  v18 = infoCopy;
+  v19 = principalObject;
+  v20 = handlerCopy;
+  v21 = lCopy;
+  v22 = tokenCopy;
   dispatch_async(&self->super.super, v23);
 }
 
-- (void)receivedAuthenticationChallenge:(id)a3 download:(id)a4 completionHandler:(id)a5
+- (void)receivedAuthenticationChallenge:(id)challenge download:(id)download completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = [(BADownloaderExtensionConnection *)self principalObject];
+  challengeCopy = challenge;
+  downloadCopy = download;
+  handlerCopy = handler;
+  principalObject = [(BADownloaderExtensionConnection *)self principalObject];
   if (self)
   {
     self = objc_getProperty(self, v11, 32, 1);
@@ -645,23 +645,23 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   v17[1] = 3221225472;
   v17[2] = __94__BADownloaderExtensionConnection_receivedAuthenticationChallenge_download_completionHandler___block_invoke;
   v17[3] = &unk_278A0CEC0;
-  v18 = v12;
-  v19 = v9;
-  v20 = v8;
-  v21 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
-  v16 = v12;
+  v18 = principalObject;
+  v19 = downloadCopy;
+  v20 = challengeCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = challengeCopy;
+  v15 = downloadCopy;
+  v16 = principalObject;
   dispatch_async(&self->super.super, v17);
 }
 
-- (void)backgroundDownload:(id)a3 failedWithError:(id)a4 completionHandler:(id)a5
+- (void)backgroundDownload:(id)download failedWithError:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = [(BADownloaderExtensionConnection *)self principalObject];
+  downloadCopy = download;
+  errorCopy = error;
+  handlerCopy = handler;
+  principalObject = [(BADownloaderExtensionConnection *)self principalObject];
   if (self)
   {
     self = objc_getProperty(self, v11, 32, 1);
@@ -671,23 +671,23 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   v17[1] = 3221225472;
   v17[2] = __88__BADownloaderExtensionConnection_backgroundDownload_failedWithError_completionHandler___block_invoke;
   v17[3] = &unk_278A0CEC0;
-  v18 = v12;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = v12;
+  v18 = principalObject;
+  v19 = downloadCopy;
+  v20 = errorCopy;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = errorCopy;
+  v15 = downloadCopy;
+  v16 = principalObject;
   dispatch_async(&self->super.super, v17);
 }
 
-- (void)backgroundDownload:(id)a3 finishedWithSandboxToken:(id)a4 completionHandler:(id)a5
+- (void)backgroundDownload:(id)download finishedWithSandboxToken:(id)token completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = [(BADownloaderExtensionConnection *)self principalObject];
+  downloadCopy = download;
+  tokenCopy = token;
+  handlerCopy = handler;
+  principalObject = [(BADownloaderExtensionConnection *)self principalObject];
   if (self)
   {
     Property = objc_getProperty(self, v11, 32, 1);
@@ -702,15 +702,15 @@ void __67__BADownloaderExtensionConnection__markPurgeableWithFileURL_error___blo
   block[1] = 3221225472;
   block[2] = __97__BADownloaderExtensionConnection_backgroundDownload_finishedWithSandboxToken_completionHandler___block_invoke;
   block[3] = &unk_278A0CEE8;
-  v19 = v9;
-  v20 = v8;
-  v22 = self;
-  v23 = v10;
-  v21 = v12;
-  v14 = v10;
-  v15 = v12;
-  v16 = v8;
-  v17 = v9;
+  v19 = tokenCopy;
+  v20 = downloadCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v21 = principalObject;
+  v14 = handlerCopy;
+  v15 = principalObject;
+  v16 = downloadCopy;
+  v17 = tokenCopy;
   dispatch_async(Property, block);
 }
 

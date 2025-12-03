@@ -7,16 +7,16 @@
 
 - (double)hu_centerInGlobalCoordinateSpace
 {
-  [a1 center];
+  [self center];
 
-  return HUConvertPointToGlobalCoordinateSpace(a1, v2, v3);
+  return HUConvertPointToGlobalCoordinateSpace(self, v2, v3);
 }
 
 - (double)hu_frameInGlobalCoordinateSpace
 {
-  [a1 frame];
+  [self frame];
 
-  return HUConvertRectToGlobalCoordinateSpace(a1, v2, v3, v4, v5);
+  return HUConvertRectToGlobalCoordinateSpace(self, v2, v3, v4, v5);
 }
 
 @end

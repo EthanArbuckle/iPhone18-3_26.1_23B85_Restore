@@ -4,21 +4,21 @@
 - (id)contentsDidLoad;
 - (id)didInteract;
 - (int64_t)itemCount;
-- (void)setContentsDidLoad:(id)a3;
-- (void)setDetailDelegate:(id)a3;
-- (void)setDidInteract:(id)a3;
-- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)a3;
-- (void)updateWithSelectedPlaybackIdentifiers:(id)a3 reloadingData:(BOOL)a4;
-- (void)vuiScrollViewDidScroll:(id)a3;
+- (void)setContentsDidLoad:(id)load;
+- (void)setDetailDelegate:(id)delegate;
+- (void)setDidInteract:(id)interact;
+- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)identifiers;
+- (void)updateWithSelectedPlaybackIdentifiers:(id)identifiers reloadingData:(BOOL)data;
+- (void)vuiScrollViewDidScroll:(id)scroll;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MultiViewPlayerHUDTemplateController
 
 - (int64_t)itemCount
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FF8928();
   v4 = v3;
 
@@ -27,7 +27,7 @@
 
 - (double)contentsHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3FF8B3C();
 
   return v3;
@@ -53,16 +53,16 @@
   return v4;
 }
 
-- (void)setContentsDidLoad:(id)a3
+- (void)setContentsDidLoad:(id)load
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(load);
   if (v4)
   {
     OUTLINED_FUNCTION_4_0();
     *(swift_allocObject() + 16) = v4;
   }
 
-  v9 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_14_170();
   v5 = OUTLINED_FUNCTION_67_0();
   sub_1E3FF8E60(v5, v6, v7, v8);
@@ -88,16 +88,16 @@
   return v4;
 }
 
-- (void)setDidInteract:(id)a3
+- (void)setDidInteract:(id)interact
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(interact);
   if (v4)
   {
     OUTLINED_FUNCTION_4_0();
     *(swift_allocObject() + 16) = v4;
   }
 
-  v9 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_12_160();
   v5 = OUTLINED_FUNCTION_67_0();
   sub_1E3FF8E60(v5, v6, v7, v8);
@@ -110,43 +110,43 @@
   return v2;
 }
 
-- (void)setDetailDelegate:(id)a3
+- (void)setDetailDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1E3FF92C0();
 }
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FF9320();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1E3FFA260(a3);
+  selfCopy = self;
+  sub_1E3FFA260(appear);
 }
 
-- (void)vuiScrollViewDidScroll:(id)a3
+- (void)vuiScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E3FFA950(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1E3FFA950(scrollCopy);
 }
 
-- (void)updateWithSelectedPlaybackIdentifiers:(id)a3 reloadingData:(BOOL)a4
+- (void)updateWithSelectedPlaybackIdentifiers:(id)identifiers reloadingData:(BOOL)data
 {
   sub_1E42062B4();
-  v6 = self;
-  sub_1E3FFC288(v6, a4);
+  selfCopy = self;
+  sub_1E3FFC288(selfCopy, data);
 }
 
-- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)a3
+- (void)updateVisibleCellsWithPlaybackIdentifiers:(id)identifiers
 {
   sub_1E42062B4();
-  v4 = self;
+  selfCopy = self;
   sub_1E3FFC9A4();
 }
 

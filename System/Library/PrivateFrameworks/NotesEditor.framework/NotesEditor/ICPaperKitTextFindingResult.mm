@@ -1,37 +1,37 @@
 @interface ICPaperKitTextFindingResult
-- (CGRect)frameForHighlightInTextView:(id)a3;
+- (CGRect)frameForHighlightInTextView:(id)view;
 - (CGRect)searchResultRect;
-- (id)framesForHighlightInTextView:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)generateFindPreviewImageForPaperKitAttachment:(id)a3 completion:(id)a4;
-- (void)selectInTextView:(id)a3;
+- (id)framesForHighlightInTextView:(id)view;
+- (int64_t)compare:(id)compare;
+- (void)generateFindPreviewImageForPaperKitAttachment:(id)attachment completion:(id)completion;
+- (void)selectInTextView:(id)view;
 @end
 
 @implementation ICPaperKitTextFindingResult
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v10.receiver = self;
   v10.super_class = ICPaperKitTextFindingResult;
-  v5 = [(ICTextFindingResult *)&v10 compare:v4];
+  v5 = [(ICTextFindingResult *)&v10 compare:compareCopy];
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [(ICPaperKitTextFindingResult *)self order];
-      v8 = [v6 order];
+      v6 = compareCopy;
+      order = [(ICPaperKitTextFindingResult *)self order];
+      order2 = [v6 order];
 
-      if (v7 < v8)
+      if (order < order2)
       {
         v5 = -1;
       }
 
       else
       {
-        v5 = v7 != v8;
+        v5 = order != order2;
       }
     }
 
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (CGRect)frameForHighlightInTextView:(id)a3
+- (CGRect)frameForHighlightInTextView:(id)view
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 textStorage];
-  v6 = [v5 attribute:*MEMORY[0x277D74060] atIndex:-[ICTextFindingResult range](self effectiveRange:{"range"), 0}];
+  viewCopy = view;
+  textStorage = [viewCopy textStorage];
+  v6 = [textStorage attribute:*MEMORY[0x277D74060] atIndex:-[ICTextFindingResult range](self effectiveRange:{"range"), 0}];
 
   if (v6)
   {
-    v7 = [v4 _pk_viewProviderForAttachment:v6 atCharacterIndex:-[ICTextFindingResult range](self createIfNeeded:{"range"), 0}];
-    v8 = [v7 view];
-    v9 = [v8 window];
+    v7 = [viewCopy _pk_viewProviderForAttachment:v6 atCharacterIndex:-[ICTextFindingResult range](self createIfNeeded:{"range"), 0}];
+    view = [v7 view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
-      [v8 bounds];
+      [view bounds];
       v11 = v10;
       v13 = v12;
       Width = v14;
@@ -68,13 +68,13 @@
 
     else
     {
-      v22 = [(ICTextFindingResult *)self range];
-      [v4 ic_rectForRange:{v22, v23}];
+      range = [(ICTextFindingResult *)self range];
+      [viewCopy ic_rectForRange:{range, v23}];
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v31 = v30;
-      [v4 ic_textContainerOrigin];
+      [viewCopy ic_textContainerOrigin];
       v33 = v32;
       v35 = v34;
       v70.origin.x = v25;
@@ -85,7 +85,7 @@
       height = v71.size.height;
       v11 = floor(v71.origin.x);
       v13 = floor(v71.origin.y);
-      [v4 bounds];
+      [viewCopy bounds];
       Width = CGRectGetWidth(v72);
       v17 = ceil(height);
     }
@@ -110,10 +110,10 @@
     y = v75.origin.y;
     v50 = v75.size.width;
     v51 = v75.size.height;
-    v52 = [v8 window];
-    if (v52)
+    window2 = [view window];
+    if (window2)
     {
-      [v4 convertRect:v8 fromCoordinateSpace:{x, y, v50, v51}];
+      [viewCopy convertRect:view fromCoordinateSpace:{x, y, v50, v51}];
     }
 
     else
@@ -157,15 +157,15 @@
     v19 = *(MEMORY[0x277CBF3A0] + 8);
     v20 = *(MEMORY[0x277CBF3A0] + 16);
     v21 = *(MEMORY[0x277CBF3A0] + 24);
-    v8 = os_log_create("com.apple.notes", "SystemPaper");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    view = os_log_create("com.apple.notes", "SystemPaper");
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf.a) = 134217984;
       *(&buf.a + 4) = [(ICTextFindingResult *)self range];
-      _os_log_impl(&dword_2151A1000, v8, OS_LOG_TYPE_DEFAULT, "Couldn't find text attachment for PaperKit text finding result at %ld", &buf, 0xCu);
+      _os_log_impl(&dword_2151A1000, view, OS_LOG_TYPE_DEFAULT, "Couldn't find text attachment for PaperKit text finding result at %ld", &buf, 0xCu);
     }
 
-    v7 = v8;
+    v7 = view;
   }
 
   v62 = v18;
@@ -179,10 +179,10 @@
   return result;
 }
 
-- (id)framesForHighlightInTextView:(id)a3
+- (id)framesForHighlightInTextView:(id)view
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  [(ICPaperKitTextFindingResult *)self frameForHighlightInTextView:a3];
+  [(ICPaperKitTextFindingResult *)self frameForHighlightInTextView:view];
   v3 = [MEMORY[0x277CCAE60] ic_valueWithRect:?];
   v6[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
@@ -190,29 +190,29 @@
   return v4;
 }
 
-- (void)generateFindPreviewImageForPaperKitAttachment:(id)a3 completion:(id)a4
+- (void)generateFindPreviewImageForPaperKitAttachment:(id)attachment completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  attachmentCopy = attachment;
   [(ICPaperKitTextFindingResult *)self searchResultRect];
   v21 = CGRectInset(v20, -100.0, -100.0);
   x = v21.origin.x;
   y = v21.origin.y;
   width = v21.size.width;
   height = v21.size.height;
-  v12 = [MEMORY[0x277D368E0] imageGeneratorWithPaperAttachment:v7 useActivePaper:1];
+  v12 = [MEMORY[0x277D368E0] imageGeneratorWithPaperAttachment:attachmentCopy useActivePaper:1];
 
   [v12 setSixChannelBlendingEnabled:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __88__ICPaperKitTextFindingResult_generateFindPreviewImageForPaperKitAttachment_completion___block_invoke;
   v14[3] = &unk_2781AE3C0;
-  v15 = v6;
+  v15 = completionCopy;
   v16 = x;
   v17 = y;
   v18 = width;
   v19 = height;
-  v13 = v6;
+  v13 = completionCopy;
   [v12 imageWithBounds:v14 completion:{x, y, width, height}];
 }
 
@@ -227,10 +227,10 @@ uint64_t __88__ICPaperKitTextFindingResult_generateFindPreviewImageForPaperKitAt
   return result;
 }
 
-- (void)selectInTextView:(id)a3
+- (void)selectInTextView:(id)view
 {
-  v4 = a3;
-  [v4 setSelectedRange:{-[ICTextFindingResult range](self, "range"), 0}];
+  viewCopy = view;
+  [viewCopy setSelectedRange:{-[ICTextFindingResult range](self, "range"), 0}];
 }
 
 - (CGRect)searchResultRect

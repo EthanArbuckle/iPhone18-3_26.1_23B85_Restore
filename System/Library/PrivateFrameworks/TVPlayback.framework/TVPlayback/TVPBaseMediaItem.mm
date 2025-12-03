@@ -1,12 +1,12 @@
 @interface TVPBaseMediaItem
 - (NSString)description;
 - (TVPBaseMediaItem)init;
-- (void)_postMetadataDidChangeNotificationWithMetadataProperties:(id)a3;
-- (void)_postMetadataWillChangeNotificationWithMetadataProperties:(id)a3;
-- (void)_setMetadata:(id)a3 forProperty:(id)a4 postNotification:(BOOL)a5;
-- (void)performMediaItemMetadataTransactionWithBlock:(id)a3;
-- (void)removeMediaItemMetadataForProperty:(id)a3;
-- (void)setMediaItemMetadata:(id)a3 forProperty:(id)a4;
+- (void)_postMetadataDidChangeNotificationWithMetadataProperties:(id)properties;
+- (void)_postMetadataWillChangeNotificationWithMetadataProperties:(id)properties;
+- (void)_setMetadata:(id)metadata forProperty:(id)property postNotification:(BOOL)notification;
+- (void)performMediaItemMetadataTransactionWithBlock:(id)block;
+- (void)removeMediaItemMetadataForProperty:(id)property;
+- (void)setMediaItemMetadata:(id)metadata forProperty:(id)property;
 @end
 
 @implementation TVPBaseMediaItem
@@ -19,28 +19,28 @@
   if (v2)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [v3 stringWithFormat:@"(%@)", v5];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v6 = [v3 stringWithFormat:@"(%@)", bundleIdentifier];
     [(TVPBaseMediaItem *)v2 _setMetadata:v6 forProperty:@"TVPMediaItemMetadataServiceIdentifier" postNotification:0];
   }
 
   return v2;
 }
 
-- (void)performMediaItemMetadataTransactionWithBlock:(id)a3
+- (void)performMediaItemMetadataTransactionWithBlock:(id)block
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  blockCopy = block;
   v6 = objc_alloc_init(v4);
   transactionDictionary = self->_transactionDictionary;
   self->_transactionDictionary = v6;
 
-  v5[2](v5);
-  v8 = [(NSMutableDictionary *)self->_transactionDictionary allKeys];
-  if ([v8 count])
+  blockCopy[2](blockCopy);
+  allKeys = [(NSMutableDictionary *)self->_transactionDictionary allKeys];
+  if ([allKeys count])
   {
-    [(TVPBaseMediaItem *)self _postMetadataWillChangeNotificationWithMetadataProperties:v8];
+    [(TVPBaseMediaItem *)self _postMetadataWillChangeNotificationWithMetadataProperties:allKeys];
     v9 = self->_transactionDictionary;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -48,51 +48,51 @@
     v11[3] = &unk_279D7D978;
     v11[4] = self;
     [(NSMutableDictionary *)v9 enumerateKeysAndObjectsUsingBlock:v11];
-    [(TVPBaseMediaItem *)self _postMetadataDidChangeNotificationWithMetadataProperties:v8];
+    [(TVPBaseMediaItem *)self _postMetadataDidChangeNotificationWithMetadataProperties:allKeys];
   }
 
   v10 = self->_transactionDictionary;
   self->_transactionDictionary = 0;
 }
 
-- (void)setMediaItemMetadata:(id)a3 forProperty:(id)a4
+- (void)setMediaItemMetadata:(id)metadata forProperty:(id)property
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  metadataCopy = metadata;
+  propertyCopy = property;
+  if (metadataCopy && propertyCopy)
   {
     transactionDictionary = self->_transactionDictionary;
     if (transactionDictionary)
     {
-      [(NSMutableDictionary *)transactionDictionary setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)transactionDictionary setObject:metadataCopy forKey:propertyCopy];
     }
 
     else
     {
-      [(TVPBaseMediaItem *)self _setMetadata:v8 forProperty:v6 postNotification:1];
+      [(TVPBaseMediaItem *)self _setMetadata:metadataCopy forProperty:propertyCopy postNotification:1];
     }
   }
 }
 
-- (void)removeMediaItemMetadataForProperty:(id)a3
+- (void)removeMediaItemMetadataForProperty:(id)property
 {
-  v4 = a3;
-  if (v4)
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v7 = v4;
+    v7 = propertyCopy;
     transactionDictionary = self->_transactionDictionary;
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     if (transactionDictionary)
     {
-      [(NSMutableDictionary *)transactionDictionary setObject:v6 forKey:v7];
+      [(NSMutableDictionary *)transactionDictionary setObject:null forKey:v7];
     }
 
     else
     {
-      [(TVPBaseMediaItem *)self _setMetadata:v6 forProperty:v7 postNotification:1];
+      [(TVPBaseMediaItem *)self _setMetadata:null forProperty:v7 postNotification:1];
     }
 
-    v4 = v7;
+    propertyCopy = v7;
   }
 }
 
@@ -108,13 +108,13 @@
   return v6;
 }
 
-- (void)_setMetadata:(id)a3 forProperty:(id)a4 postNotification:(BOOL)a5
+- (void)_setMetadata:(id)metadata forProperty:(id)property postNotification:(BOOL)notification
 {
-  v5 = a5;
+  notificationCopy = notification;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  metadataCopy = metadata;
+  propertyCopy = property;
+  if (propertyCopy)
   {
     if (!self->_metadataDictionary)
     {
@@ -123,22 +123,22 @@
       self->_metadataDictionary = v10;
     }
 
-    if (v5)
+    if (notificationCopy)
     {
-      v18[0] = v9;
+      v18[0] = propertyCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
       [(TVPBaseMediaItem *)self _postMetadataWillChangeNotificationWithMetadataProperties:v12];
     }
 
-    if (v8)
+    if (metadataCopy)
     {
-      v13 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
       v14 = self->_metadataDictionary;
-      if (v13 != v8)
+      if (null != metadataCopy)
       {
-        [(NSMutableDictionary *)v14 setObject:v8 forKey:v9];
-        if (!v5)
+        [(NSMutableDictionary *)v14 setObject:metadataCopy forKey:propertyCopy];
+        if (!notificationCopy)
         {
           goto LABEL_13;
         }
@@ -152,11 +152,11 @@
       v14 = self->_metadataDictionary;
     }
 
-    [(NSMutableDictionary *)v14 removeObjectForKey:v9];
-    if (v5)
+    [(NSMutableDictionary *)v14 removeObjectForKey:propertyCopy];
+    if (notificationCopy)
     {
 LABEL_12:
-      v17 = v9;
+      v17 = propertyCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
       [(TVPBaseMediaItem *)self _postMetadataDidChangeNotificationWithMetadataProperties:v15];
     }
@@ -167,31 +167,31 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postMetadataWillChangeNotificationWithMetadataProperties:(id)a3
+- (void)_postMetadataWillChangeNotificationWithMetadataProperties:(id)properties
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"TVPMediaItemMetadataChangesKey";
-  v10[0] = a3;
+  v10[0] = properties;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  propertiesCopy = properties;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v7 postNotificationName:@"TVPMediaItemMetadataWillChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"TVPMediaItemMetadataWillChangeNotification" object:self userInfo:v6];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postMetadataDidChangeNotificationWithMetadataProperties:(id)a3
+- (void)_postMetadataDidChangeNotificationWithMetadataProperties:(id)properties
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"TVPMediaItemMetadataChangesKey";
-  v10[0] = a3;
+  v10[0] = properties;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  propertiesCopy = properties;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v7 postNotificationName:@"TVPMediaItemMetadataDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"TVPMediaItemMetadataDidChangeNotification" object:self userInfo:v6];
   v8 = *MEMORY[0x277D85DE8];
 }
 

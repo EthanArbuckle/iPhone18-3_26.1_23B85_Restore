@@ -1,22 +1,22 @@
 @interface _MRRequestDetailsProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInitiatorWasInferred:(BOOL)a3;
-- (void)setHasQos:(BOOL)a3;
-- (void)setHasUserInitiated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInitiatorWasInferred:(BOOL)inferred;
+- (void)setHasQos:(BOOL)qos;
+- (void)setHasUserInitiated:(BOOL)initiated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRRequestDetailsProtobuf
 
-- (void)setHasQos:(BOOL)a3
+- (void)setHasQos:(BOOL)qos
 {
-  if (a3)
+  if (qos)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUserInitiated:(BOOL)a3
+- (void)setHasUserInitiated:(BOOL)initiated
 {
-  if (a3)
+  if (initiated)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasInitiatorWasInferred:(BOOL)a3
+- (void)setHasInitiatorWasInferred:(BOOL)inferred
 {
-  if (a3)
+  if (inferred)
   {
     v3 = 4;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = _MRRequestDetailsProtobuf;
   v4 = [(_MRRequestDetailsProtobuf *)&v8 description];
-  v5 = [(_MRRequestDetailsProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRRequestDetailsProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   initiator = self->_initiator;
   if (initiator)
   {
-    [v3 setObject:initiator forKey:@"initiator"];
+    [dictionary setObject:initiator forKey:@"initiator"];
   }
 
   requestID = self->_requestID;
@@ -165,26 +165,26 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_initiator)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_requestID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_reason)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -192,7 +192,7 @@ LABEL_12:
   {
     qos = self->_qos;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -213,7 +213,7 @@ LABEL_9:
 
   startDate = self->_startDate;
   PBDataWriterWriteUint64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -229,62 +229,62 @@ LABEL_10:
 LABEL_23:
   userInitiated = self->_userInitiated;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
     initiatorWasInferred = self->_initiatorWasInferred;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_12:
   if (self->_originatingBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_operationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_surface)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_initiator)
   {
-    [v4 setInitiator:?];
-    v4 = v6;
+    [toCopy setInitiator:?];
+    toCopy = v6;
   }
 
   if (self->_requestID)
   {
     [v6 setRequestID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_reason)
   {
     [v6 setReason:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_qos;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 10) = self->_qos;
+    *(toCopy + 76) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -303,8 +303,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 1) = self->_startDate;
-  *(v4 + 76) |= 1u;
+  *(toCopy + 1) = self->_startDate;
+  *(toCopy + 76) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -318,47 +318,47 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 73) = self->_userInitiated;
-  *(v4 + 76) |= 8u;
+  *(toCopy + 73) = self->_userInitiated;
+  *(toCopy + 76) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
-    *(v4 + 72) = self->_initiatorWasInferred;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 72) = self->_initiatorWasInferred;
+    *(toCopy + 76) |= 4u;
   }
 
 LABEL_12:
   if (self->_originatingBundleID)
   {
     [v6 setOriginatingBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_operationID)
   {
     [v6 setOperationID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_surface)
   {
     [v6 setSurface:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_initiator copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_initiator copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_requestID copyWithZone:a3];
+  v8 = [(NSString *)self->_requestID copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_reason copyWithZone:a3];
+  v10 = [(NSString *)self->_reason copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -410,31 +410,31 @@ LABEL_5:
   }
 
 LABEL_6:
-  v13 = [(NSString *)self->_originatingBundleID copyWithZone:a3];
+  v13 = [(NSString *)self->_originatingBundleID copyWithZone:zone];
   v14 = *(v5 + 32);
   *(v5 + 32) = v13;
 
-  v15 = [(NSString *)self->_operationID copyWithZone:a3];
+  v15 = [(NSString *)self->_operationID copyWithZone:zone];
   v16 = *(v5 + 24);
   *(v5 + 24) = v15;
 
-  v17 = [(NSString *)self->_surface copyWithZone:a3];
+  v17 = [(NSString *)self->_surface copyWithZone:zone];
   v18 = *(v5 + 64);
   *(v5 + 64) = v17;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   initiator = self->_initiator;
-  if (initiator | *(v4 + 2))
+  if (initiator | *(equalCopy + 2))
   {
     if (![(NSString *)initiator isEqual:?])
     {
@@ -443,7 +443,7 @@ LABEL_6:
   }
 
   requestID = self->_requestID;
-  if (requestID | *(v4 + 7))
+  if (requestID | *(equalCopy + 7))
   {
     if (![(NSString *)requestID isEqual:?])
     {
@@ -452,7 +452,7 @@ LABEL_6:
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 6))
+  if (reason | *(equalCopy + 6))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -460,63 +460,63 @@ LABEL_6:
     }
   }
 
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_qos != *(v4 + 10))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_qos != *(equalCopy + 10))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_39;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_startDate != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_startDate != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0)
+    if ((*(equalCopy + 76) & 8) == 0)
     {
       goto LABEL_39;
     }
 
-    v13 = *(v4 + 73);
+    v13 = *(equalCopy + 73);
     if (self->_userInitiated)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 76) & 4) == 0)
+    if ((*(equalCopy + 76) & 4) == 0)
     {
       goto LABEL_22;
     }
@@ -526,34 +526,34 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((*(v4 + 76) & 4) == 0)
+  if ((*(equalCopy + 76) & 4) == 0)
   {
     goto LABEL_39;
   }
 
-  v14 = *(v4 + 72);
+  v14 = *(equalCopy + 72);
   if (self->_initiatorWasInferred)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_39;
   }
 
 LABEL_22:
   originatingBundleID = self->_originatingBundleID;
-  if (originatingBundleID | *(v4 + 4) && ![(NSString *)originatingBundleID isEqual:?])
+  if (originatingBundleID | *(equalCopy + 4) && ![(NSString *)originatingBundleID isEqual:?])
   {
     goto LABEL_39;
   }
 
   operationID = self->_operationID;
-  if (operationID | *(v4 + 3))
+  if (operationID | *(equalCopy + 3))
   {
     if (![(NSString *)operationID isEqual:?])
     {
@@ -562,7 +562,7 @@ LABEL_22:
   }
 
   surface = self->_surface;
-  if (surface | *(v4 + 8))
+  if (surface | *(equalCopy + 8))
   {
     v12 = [(NSString *)surface isEqual:?];
   }
@@ -638,34 +638,34 @@ LABEL_10:
   return v12 ^ [(NSString *)self->_surface hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(_MRRequestDetailsProtobuf *)self setInitiator:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(_MRRequestDetailsProtobuf *)self setRequestID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_MRRequestDetailsProtobuf *)self setReason:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 2) != 0)
   {
-    self->_qos = *(v4 + 10);
+    self->_qos = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 1) == 0)
     {
 LABEL_9:
@@ -678,14 +678,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 76) & 1) == 0)
+  else if ((*(fromCopy + 76) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_startDate = *(v4 + 1);
+  self->_startDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -698,32 +698,32 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_userInitiated = *(v4 + 73);
+  self->_userInitiated = *(fromCopy + 73);
   *&self->_has |= 8u;
-  if ((*(v4 + 76) & 4) != 0)
+  if ((*(fromCopy + 76) & 4) != 0)
   {
 LABEL_11:
-    self->_initiatorWasInferred = *(v4 + 72);
+    self->_initiatorWasInferred = *(fromCopy + 72);
     *&self->_has |= 4u;
   }
 
 LABEL_12:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRRequestDetailsProtobuf *)self setOriginatingBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_MRRequestDetailsProtobuf *)self setOperationID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(_MRRequestDetailsProtobuf *)self setSurface:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

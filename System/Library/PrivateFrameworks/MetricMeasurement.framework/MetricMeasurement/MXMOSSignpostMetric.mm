@@ -1,47 +1,47 @@
 @interface MXMOSSignpostMetric
 - (BOOL)_shouldConstructProbe;
-- (MXMOSSignpostMetric)initWithCoder:(id)a3;
-- (MXMOSSignpostMetric)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 processName:(id)a6;
+- (MXMOSSignpostMetric)initWithCoder:(id)coder;
+- (MXMOSSignpostMetric)initWithSubsystem:(id)subsystem category:(id)category name:(id)name processName:(id)processName;
 - (NSString)category;
 - (NSString)name;
 - (NSString)subsystem;
 - (id)_constructProbe;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_constructProbe;
-- (void)didStartAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 startDate:(id)a5;
-- (void)didStartAtTime:(unint64_t)a3 startDate:(id)a4;
-- (void)didStopAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 stopDate:(id)a5;
-- (void)didStopAtTime:(unint64_t)a3 stopDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)didStartAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime startDate:(id)date;
+- (void)didStartAtTime:(unint64_t)time startDate:(id)date;
+- (void)didStopAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime stopDate:(id)date;
+- (void)didStopAtTime:(unint64_t)time stopDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMOSSignpostMetric
 
 - (NSString)subsystem
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"os_signpost subsystem"];
-  v4 = [v3 stringValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"os_signpost subsystem"];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)category
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"os_signpost category"];
-  v4 = [v3 stringValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"os_signpost category"];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (NSString)name
 {
-  v2 = [(MXMMetric *)self filter];
-  v3 = [v2 attributeFilterWithName:@"os_signpost name"];
-  v4 = [v3 stringValue];
+  filter = [(MXMMetric *)self filter];
+  v3 = [filter attributeFilterWithName:@"os_signpost name"];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 - (BOOL)_shouldConstructProbe
@@ -113,34 +113,34 @@
   return v13;
 }
 
-- (MXMOSSignpostMetric)initWithSubsystem:(id)a3 category:(id)a4 name:(id)a5 processName:(id)a6
+- (MXMOSSignpostMetric)initWithSubsystem:(id)subsystem category:(id)category name:(id)name processName:(id)processName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  nameCopy = name;
+  processNameCopy = processName;
   v14 = [MEMORY[0x277CBEB58] set];
-  if (v10)
+  if (subsystemCopy)
   {
-    v15 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost subsystem" stringValue:v10];
+    v15 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost subsystem" stringValue:subsystemCopy];
     [v14 addObject:v15];
   }
 
-  if (v11)
+  if (categoryCopy)
   {
-    v16 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost category" stringValue:v11];
+    v16 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost category" stringValue:categoryCopy];
     [v14 addObject:v16];
   }
 
-  if (v12)
+  if (nameCopy)
   {
-    v17 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost name" stringValue:v12];
+    v17 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost name" stringValue:nameCopy];
     [v14 addObject:v17];
   }
 
-  if (v13)
+  if (processNameCopy)
   {
-    v18 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost animation contributing process name" stringValue:v13];
+    v18 = [[MXMSampleAttributeFilter alloc] initWithAttributeName:@"os_signpost animation contributing process name" stringValue:processNameCopy];
     [v14 addObject:v18];
   }
 
@@ -150,18 +150,18 @@
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = MXMOSSignpostMetric;
   v5 = [(MXMMetric *)&v11 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+    v6 = [(NSDate *)self->_startDate copyWithZone:zone];
     v7 = v5[8];
     v5[8] = v6;
 
-    v8 = [(NSDate *)self->_stopDate copyWithZone:a3];
+    v8 = [(NSDate *)self->_stopDate copyWithZone:zone];
     v9 = v5[9];
     v5[9] = v8;
 
@@ -172,48 +172,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MXMOSSignpostMetric;
-  v4 = a3;
-  [(MXMMetric *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_startDate forKey:{@"_startDate", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_stopDate forKey:@"_stopDate"];
-  [v4 encodeInt64:self->_startMachContTime forKey:@"_startMachContTime"];
-  [v4 encodeInt64:self->_stopMachContTime forKey:@"_stopMachContTime"];
+  coderCopy = coder;
+  [(MXMMetric *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_startDate forKey:{@"_startDate", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_stopDate forKey:@"_stopDate"];
+  [coderCopy encodeInt64:self->_startMachContTime forKey:@"_startMachContTime"];
+  [coderCopy encodeInt64:self->_stopMachContTime forKey:@"_stopMachContTime"];
 }
 
-- (MXMOSSignpostMetric)initWithCoder:(id)a3
+- (MXMOSSignpostMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MXMOSSignpostMetric;
-  v5 = [(MXMMetric *)&v11 initWithCoder:v4];
+  v5 = [(MXMMetric *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_stopDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_stopDate"];
     stopDate = v5->_stopDate;
     v5->_stopDate = v8;
 
-    v5->_startMachContTime = [v4 decodeInt64ForKey:@"_startMachContTime"];
-    v5->_stopMachContTime = [v4 decodeInt64ForKey:@"_stopMachContTime"];
+    v5->_startMachContTime = [coderCopy decodeInt64ForKey:@"_startMachContTime"];
+    v5->_stopMachContTime = [coderCopy decodeInt64ForKey:@"_stopMachContTime"];
   }
 
   return v5;
 }
 
-- (void)didStartAtTime:(unint64_t)a3 startDate:(id)a4
+- (void)didStartAtTime:(unint64_t)time startDate:(id)date
 {
   v9.receiver = self;
   v9.super_class = MXMOSSignpostMetric;
-  v6 = a4;
-  [(MXMMetric *)&v9 didStartAtTime:a3 startDate:v6];
-  v7 = [v6 dateByAddingTimeInterval:{-1.0, v9.receiver, v9.super_class}];
+  dateCopy = date;
+  [(MXMMetric *)&v9 didStartAtTime:time startDate:dateCopy];
+  v7 = [dateCopy dateByAddingTimeInterval:{-1.0, v9.receiver, v9.super_class}];
 
   startDate = self->_startDate;
   self->_startDate = v7;
@@ -221,18 +221,18 @@
   self->_startMachContTime = 0;
 }
 
-- (void)didStartAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 startDate:(id)a5
+- (void)didStartAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime startDate:(id)date
 {
   v12.receiver = self;
   v12.super_class = MXMOSSignpostMetric;
-  v8 = a5;
-  [(MXMMetric *)&v12 didStartAtContinuousTime:a3 absoluteTime:a4 startDate:v8];
-  v9 = [v8 dateByAddingTimeInterval:{-1.0, v12.receiver, v12.super_class}];
+  dateCopy = date;
+  [(MXMMetric *)&v12 didStartAtContinuousTime:time absoluteTime:absoluteTime startDate:dateCopy];
+  v9 = [dateCopy dateByAddingTimeInterval:{-1.0, v12.receiver, v12.super_class}];
 
   startDate = self->_startDate;
   self->_startDate = v9;
 
-  self->_startMachContTime = a3;
+  self->_startMachContTime = time;
   startDate_semaphore = self->_startDate_semaphore;
   if (startDate_semaphore)
   {
@@ -240,24 +240,24 @@
   }
 }
 
-- (void)didStopAtTime:(unint64_t)a3 stopDate:(id)a4
+- (void)didStopAtTime:(unint64_t)time stopDate:(id)date
 {
   self->_stopMachContTime = 0;
-  v6 = a4;
-  v7 = [v6 dateByAddingTimeInterval:1.0];
+  dateCopy = date;
+  v7 = [dateCopy dateByAddingTimeInterval:1.0];
   stopDate = self->_stopDate;
   self->_stopDate = v7;
 
   v9.receiver = self;
   v9.super_class = MXMOSSignpostMetric;
-  [(MXMMetric *)&v9 didStopAtTime:a3 stopDate:v6];
+  [(MXMMetric *)&v9 didStopAtTime:time stopDate:dateCopy];
 }
 
-- (void)didStopAtContinuousTime:(unint64_t)a3 absoluteTime:(unint64_t)a4 stopDate:(id)a5
+- (void)didStopAtContinuousTime:(unint64_t)time absoluteTime:(unint64_t)absoluteTime stopDate:(id)date
 {
-  v8 = a5;
-  self->_stopMachContTime = a3;
-  v9 = [v8 dateByAddingTimeInterval:1.0];
+  dateCopy = date;
+  self->_stopMachContTime = time;
+  v9 = [dateCopy dateByAddingTimeInterval:1.0];
   stopDate = self->_stopDate;
   self->_stopDate = v9;
 
@@ -269,13 +269,13 @@
 
   v12.receiver = self;
   v12.super_class = MXMOSSignpostMetric;
-  [(MXMMetric *)&v12 didStopAtContinuousTime:a3 absoluteTime:a4 stopDate:v8];
+  [(MXMMetric *)&v12 didStopAtContinuousTime:time absoluteTime:absoluteTime stopDate:dateCopy];
 }
 
 - (void)_constructProbe
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"MXMOSSignpostMetric.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_stopDate"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"MXMOSSignpostMetric.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_stopDate"}];
 
   *a4 = *a3;
 }

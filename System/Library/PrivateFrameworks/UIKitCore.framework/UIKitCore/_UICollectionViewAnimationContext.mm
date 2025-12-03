@@ -1,45 +1,45 @@
 @interface _UICollectionViewAnimationContext
 - (NSArray)appearingAttributes;
 - (NSArray)disappearingAttributes;
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3;
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(uint64_t)a1;
-- (id)initWithDataSourceTranslator:(void *)a3 updates:(void *)a4 layout:;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(uint64_t)a1;
-- (void)setAppearingAttributes:(id)a3;
-- (void)setCurrentlyVisibleItemIndexPaths:(uint64_t)a1;
-- (void)setDisappearingAttributes:(id)a3;
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section;
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(uint64_t)path;
+- (id)initWithDataSourceTranslator:(void *)translator updates:(void *)updates layout:;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(uint64_t)path;
+- (void)setAppearingAttributes:(id)attributes;
+- (void)setCurrentlyVisibleItemIndexPaths:(uint64_t)paths;
+- (void)setDisappearingAttributes:(id)attributes;
 @end
 
 @implementation _UICollectionViewAnimationContext
 
-- (id)initWithDataSourceTranslator:(void *)a3 updates:(void *)a4 layout:
+- (id)initWithDataSourceTranslator:(void *)translator updates:(void *)updates layout:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  translatorCopy = translator;
+  updatesCopy = updates;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = _UICollectionViewAnimationContext;
     v11 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 5, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a4);
+      objc_storeStrong(self + 3, translator);
+      objc_storeStrong(self + 4, updates);
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v13 = a1[1];
-      a1[1] = v12;
+      v13 = self[1];
+      self[1] = v12;
 
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v15 = a1[2];
-      a1[2] = v14;
+      v15 = self[2];
+      self[2] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (NSArray)appearingAttributes
@@ -68,8 +68,8 @@
         v9 = *(*(&v14 + 1) + 8 * i);
         if (![v9 updateAction])
         {
-          v10 = [v9 indexPathAfterUpdate];
-          v11 = [(_UICollectionViewAnimationContext *)self initialLayoutAttributesForAppearingItemAtIndexPath:v10];
+          indexPathAfterUpdate = [v9 indexPathAfterUpdate];
+          v11 = [(_UICollectionViewAnimationContext *)self initialLayoutAttributesForAppearingItemAtIndexPath:indexPathAfterUpdate];
 
           if (v11)
           {
@@ -88,16 +88,16 @@
   return v3;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(uint64_t)a1
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(uint64_t)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
     v4 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:v3];
-    v5 = [*(a1 + 8) objectForKeyedSubscript:v4];
+    v5 = [*(path + 8) objectForKeyedSubscript:v4];
     if (!v5)
     {
-      v5 = [*(a1 + 32) _initialLayoutAttributesForAppearingItemAtIndexPath:v3];
+      v5 = [*(path + 32) _initialLayoutAttributesForAppearingItemAtIndexPath:v3];
     }
   }
 
@@ -109,15 +109,15 @@
   return v5;
 }
 
-- (void)setAppearingAttributes:(id)a3
+- (void)setAppearingAttributes:(id)attributes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -128,7 +128,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -137,7 +137,7 @@
         [(NSMutableDictionary *)self->_appearingAttributesDict setObject:v11 forKeyedSubscript:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -170,8 +170,8 @@
         v9 = *(*(&v14 + 1) + 8 * i);
         if ([v9 updateAction] == 1)
         {
-          v10 = [v9 indexPathBeforeUpdate];
-          v11 = [(_UICollectionViewAnimationContext *)self finalLayoutAttributesForDisappearingItemAtIndexPath:v10];
+          indexPathBeforeUpdate = [v9 indexPathBeforeUpdate];
+          v11 = [(_UICollectionViewAnimationContext *)self finalLayoutAttributesForDisappearingItemAtIndexPath:indexPathBeforeUpdate];
 
           if (v11)
           {
@@ -190,16 +190,16 @@
   return v3;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(uint64_t)a1
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(uint64_t)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
     v4 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:v3];
-    v5 = [*(a1 + 16) objectForKeyedSubscript:v4];
+    v5 = [*(path + 16) objectForKeyedSubscript:v4];
     if (!v5)
     {
-      v5 = [*(a1 + 32) _finalLayoutAttributesForDisappearingItemAtIndexPath:v3];
+      v5 = [*(path + 32) _finalLayoutAttributesForDisappearingItemAtIndexPath:v3];
     }
   }
 
@@ -211,15 +211,15 @@
   return v5;
 }
 
-- (void)setDisappearingAttributes:(id)a3
+- (void)setDisappearingAttributes:(id)attributes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -230,45 +230,45 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 indexPath];
-        v11 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:v10];
+        indexPath = [v9 indexPath];
+        v11 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:indexPath];
 
         v12 = [v9 copy];
         [(NSMutableDictionary *)self->_disappearingAttributesDict setObject:v12 forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v3 = [(_UICollectionViewUpdateTranslating *)self->_dataSourceTranslator initalSectionGlobalItemRangeForSection:a3];
+  v3 = [(_UICollectionViewUpdateTranslating *)self->_dataSourceTranslator initalSectionGlobalItemRangeForSection:section];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v3 = [(_UICollectionViewUpdateTranslating *)self->_dataSourceTranslator finalSectionGlobalItemRangeForSection:a3];
+  v3 = [(_UICollectionViewUpdateTranslating *)self->_dataSourceTranslator finalSectionGlobalItemRangeForSection:section];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (void)setCurrentlyVisibleItemIndexPaths:(uint64_t)a1
+- (void)setCurrentlyVisibleItemIndexPaths:(uint64_t)paths
 {
-  if (a1)
+  if (paths)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((paths + 80), a2);
   }
 }
 

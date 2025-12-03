@@ -1,15 +1,15 @@
 @interface _UIActivityActionCellBadgeView
-- (_UIActivityActionCellBadgeView)initWithFrame:(CGRect)a3;
+- (_UIActivityActionCellBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIActivityActionCellBadgeView
 
-- (_UIActivityActionCellBadgeView)initWithFrame:(CGRect)a3
+- (_UIActivityActionCellBadgeView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = _UIActivityActionCellBadgeView;
-  v3 = [(_UIActivityActionCellBadgeView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIActivityActionCellBadgeView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -26,37 +26,37 @@
     [v4 setAccessibilityIdentifier:@"titleLabel"];
     [(_UIActivityActionCellBadgeView *)v3 addSubview:v4];
     [(_UIActivityActionCellBadgeView *)v3 setTitleLabel:v4];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [v4 leadingAnchor];
-    v10 = [(_UIActivityActionCellBadgeView *)v3 leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:6.0];
-    [v8 addObject:v11];
+    array = [MEMORY[0x1E695DF70] array];
+    leadingAnchor = [v4 leadingAnchor];
+    leadingAnchor2 = [(_UIActivityActionCellBadgeView *)v3 leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
+    [array addObject:v11];
 
-    v12 = [(_UIActivityActionCellBadgeView *)v3 trailingAnchor];
-    v13 = [v4 trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:6.0];
-    [v8 addObject:v14];
+    trailingAnchor = [(_UIActivityActionCellBadgeView *)v3 trailingAnchor];
+    trailingAnchor2 = [v4 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:6.0];
+    [array addObject:v14];
 
-    v15 = [v4 topAnchor];
-    v16 = [(_UIActivityActionCellBadgeView *)v3 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:3.0];
+    topAnchor = [v4 topAnchor];
+    topAnchor2 = [(_UIActivityActionCellBadgeView *)v3 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
 
     LODWORD(v18) = 1144766464;
     [v17 setPriority:v18];
-    [v8 addObject:v17];
-    v19 = [(_UIActivityActionCellBadgeView *)v3 bottomAnchor];
-    v20 = [v4 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:3.0];
+    [array addObject:v17];
+    bottomAnchor = [(_UIActivityActionCellBadgeView *)v3 bottomAnchor];
+    bottomAnchor2 = [v4 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:3.0];
 
     LODWORD(v22) = 1144766464;
     [v21 setPriority:v22];
-    [v8 addObject:v21];
-    v23 = [(_UIActivityActionCellBadgeView *)v3 widthAnchor];
-    v24 = [(_UIActivityActionCellBadgeView *)v3 heightAnchor];
-    v25 = [v23 constraintGreaterThanOrEqualToAnchor:v24];
-    [v8 addObject:v25];
+    [array addObject:v21];
+    widthAnchor = [(_UIActivityActionCellBadgeView *)v3 widthAnchor];
+    heightAnchor = [(_UIActivityActionCellBadgeView *)v3 heightAnchor];
+    v25 = [widthAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor];
+    [array addObject:v25];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v8];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v3;
@@ -71,8 +71,8 @@
   Width = CGRectGetWidth(v7);
   [(_UIActivityActionCellBadgeView *)self bounds];
   v4 = fmin(Width, CGRectGetHeight(v8)) * 0.5;
-  v5 = [(_UIActivityActionCellBadgeView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(_UIActivityActionCellBadgeView *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 @end

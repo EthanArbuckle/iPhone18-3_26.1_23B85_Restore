@@ -8,14 +8,14 @@
 + (id)sublibraries
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v3 = [a1 Domino];
-  v10[0] = v3;
-  v4 = [a1 ExternalDisplay];
-  v10[1] = v4;
-  v5 = [a1 GestureEducation];
-  v10[2] = v5;
-  v6 = [a1 WindowManagement];
-  v10[3] = v6;
+  domino = [self Domino];
+  v10[0] = domino;
+  externalDisplay = [self ExternalDisplay];
+  v10[1] = externalDisplay;
+  gestureEducation = [self GestureEducation];
+  v10[2] = gestureEducation;
+  windowManagement = [self WindowManagement];
+  v10[3] = windowManagement;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
 
   v8 = *MEMORY[0x1E69E9840];

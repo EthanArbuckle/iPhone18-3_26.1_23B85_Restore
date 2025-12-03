@@ -1,27 +1,27 @@
 @interface VCMediaNegotiationBlobMediaEncryptionSettings
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setUpMediaBitmaskWithCipherSuites:(id)a3;
-- (BOOL)setUpSRTCPBitmaskWithCipherSuites:(id)a3;
-- (VCMediaNegotiationBlobMediaEncryptionSettings)initWithMediaEncryptionSettings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setUpMediaBitmaskWithCipherSuites:(id)suites;
+- (BOOL)setUpSRTCPBitmaskWithCipherSuites:(id)suites;
+- (VCMediaNegotiationBlobMediaEncryptionSettings)initWithMediaEncryptionSettings:(id)settings;
 - (VCMediaNegotiatorMediaEncryptionSettings)mediaEncryptionSettings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)mediaCipherSuites;
 - (unsigned)srtcpCipherSuites;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)extractMediaCipherSuitesWithBlock:(id)a3;
-- (void)extractSRTCPCipherSuitesWithBlock:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSrtcpCipherSuites:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)extractMediaCipherSuitesWithBlock:(id)block;
+- (void)extractSRTCPCipherSuitesWithBlock:(id)block;
+- (void)mergeFrom:(id)from;
+- (void)setHasSrtcpCipherSuites:(BOOL)suites;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobMediaEncryptionSettings
 
-- (VCMediaNegotiationBlobMediaEncryptionSettings)initWithMediaEncryptionSettings:(id)a3
+- (VCMediaNegotiationBlobMediaEncryptionSettings)initWithMediaEncryptionSettings:(id)settings
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -36,20 +36,20 @@ LABEL_10:
     return 0;
   }
 
-  if (!a3)
+  if (!settings)
   {
     [VCMediaNegotiationBlobMediaEncryptionSettings(Utils) initWithMediaEncryptionSettings:v4];
     goto LABEL_10;
   }
 
-  -[VCMediaNegotiationBlobMediaEncryptionSettings setSendMediaKey:](v4, "setSendMediaKey:", [a3 sendMediaKey]);
-  if (!-[VCMediaNegotiationBlobMediaEncryptionSettings setUpMediaBitmaskWithCipherSuites:](v5, "setUpMediaBitmaskWithCipherSuites:", [a3 mediaCipherSuites]))
+  -[VCMediaNegotiationBlobMediaEncryptionSettings setSendMediaKey:](v4, "setSendMediaKey:", [settings sendMediaKey]);
+  if (!-[VCMediaNegotiationBlobMediaEncryptionSettings setUpMediaBitmaskWithCipherSuites:](v5, "setUpMediaBitmaskWithCipherSuites:", [settings mediaCipherSuites]))
   {
     [VCMediaNegotiationBlobMediaEncryptionSettings(Utils) initWithMediaEncryptionSettings:v5];
     goto LABEL_10;
   }
 
-  if (!-[VCMediaNegotiationBlobMediaEncryptionSettings setUpSRTCPBitmaskWithCipherSuites:](v5, "setUpSRTCPBitmaskWithCipherSuites:", [a3 srtcpCipherSuites]))
+  if (!-[VCMediaNegotiationBlobMediaEncryptionSettings setUpSRTCPBitmaskWithCipherSuites:](v5, "setUpSRTCPBitmaskWithCipherSuites:", [settings srtcpCipherSuites]))
   {
     [VCMediaNegotiationBlobMediaEncryptionSettings(Utils) initWithMediaEncryptionSettings:v5];
     goto LABEL_10;
@@ -77,7 +77,7 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)setUpMediaBitmaskWithCipherSuites:(id)a3
+- (BOOL)setUpMediaBitmaskWithCipherSuites:(id)suites
 {
   v18 = *MEMORY[0x1E69E9840];
   self->_mediaCipherSuites = 0;
@@ -85,7 +85,7 @@ LABEL_10:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  v5 = [suites countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -96,18 +96,18 @@ LABEL_10:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(suites);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) integerValue];
-        if (v9 == 6)
+        integerValue = [*(*(&v14 + 1) + 8 * i) integerValue];
+        if (integerValue == 6)
         {
           v10 = 2;
         }
 
         else
         {
-          if (v9 != 7)
+          if (integerValue != 7)
           {
             return 0;
           }
@@ -118,7 +118,7 @@ LABEL_10:
         self->_mediaCipherSuites |= v10;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v6 = [suites countByEnumeratingWithState:&v14 objects:v13 count:16];
       if (v6)
       {
         continue;
@@ -138,7 +138,7 @@ LABEL_10:
   return 1;
 }
 
-- (void)extractMediaCipherSuitesWithBlock:(id)a3
+- (void)extractMediaCipherSuitesWithBlock:(id)block
 {
   if (*&self->_has)
   {
@@ -151,7 +151,7 @@ LABEL_10:
         {
           v6 = 7;
 LABEL_8:
-          (*(a3 + 2))(a3, v6);
+          (*(block + 2))(block, v6);
         }
 
         mediaCipherSuites &= ~i;
@@ -167,7 +167,7 @@ LABEL_8:
   }
 }
 
-- (BOOL)setUpSRTCPBitmaskWithCipherSuites:(id)a3
+- (BOOL)setUpSRTCPBitmaskWithCipherSuites:(id)suites
 {
   v17 = *MEMORY[0x1E69E9840];
   self->_srtcpCipherSuites = 0;
@@ -175,7 +175,7 @@ LABEL_8:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v5 = [suites countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,18 +186,18 @@ LABEL_8:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(suites);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) integerValue];
-        if (v9 == 7)
+        integerValue = [*(*(&v13 + 1) + 8 * i) integerValue];
+        if (integerValue == 7)
         {
           v10 = 1;
         }
 
         else
         {
-          if (v9 != 6)
+          if (integerValue != 6)
           {
             return 0;
           }
@@ -208,7 +208,7 @@ LABEL_8:
         self->_srtcpCipherSuites |= v10;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v6 = [suites countByEnumeratingWithState:&v13 objects:v12 count:16];
       if (v6)
       {
         continue;
@@ -222,7 +222,7 @@ LABEL_8:
   return 1;
 }
 
-- (void)extractSRTCPCipherSuitesWithBlock:(id)a3
+- (void)extractSRTCPCipherSuitesWithBlock:(id)block
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -235,7 +235,7 @@ LABEL_8:
         {
           v6 = 6;
 LABEL_8:
-          (*(a3 + 2))(a3, v6);
+          (*(block + 2))(block, v6);
         }
 
         srtcpCipherSuites &= ~i;
@@ -286,9 +286,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasSrtcpCipherSuites:(BOOL)a3
+- (void)setHasSrtcpCipherSuites:(BOOL)suites
 {
-  if (a3)
+  if (suites)
   {
     v3 = 2;
   }
@@ -311,12 +311,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sendMediaKey = self->_sendMediaKey;
   if (sendMediaKey)
   {
-    [v3 setObject:sendMediaKey forKey:@"sendMediaKey"];
+    [dictionary setObject:sendMediaKey forKey:@"sendMediaKey"];
   }
 
   has = self->_has;
@@ -334,7 +334,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_sendMediaKey)
   {
@@ -355,33 +355,33 @@ LABEL_8:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_sendMediaKey)
   {
-    [a3 setSendMediaKey:?];
+    [to setSendMediaKey:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_mediaCipherSuites;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_mediaCipherSuites;
+    *(to + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 6) = self->_srtcpCipherSuites;
-    *(a3 + 28) |= 2u;
+    *(to + 6) = self->_srtcpCipherSuites;
+    *(to + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 16) = [(NSData *)self->_sendMediaKey copyWithZone:a3];
+  *(v5 + 16) = [(NSData *)self->_sendMediaKey copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -399,33 +399,33 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     sendMediaKey = self->_sendMediaKey;
-    if (!(sendMediaKey | *(a3 + 2)) || (v5 = [(NSData *)sendMediaKey isEqual:?]) != 0)
+    if (!(sendMediaKey | *(equal + 2)) || (v5 = [(NSData *)sendMediaKey isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 28) & 1) == 0 || self->_mediaCipherSuites != *(a3 + 2))
+        if ((*(equal + 28) & 1) == 0 || self->_mediaCipherSuites != *(equal + 2))
         {
           goto LABEL_13;
         }
       }
 
-      else if (*(a3 + 28))
+      else if (*(equal + 28))
       {
 LABEL_13:
         LOBYTE(v5) = 0;
         return v5;
       }
 
-      LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+      LOBYTE(v5) = (*(equal + 28) & 2) == 0;
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 28) & 2) == 0 || self->_srtcpCipherSuites != *(a3 + 6))
+        if ((*(equal + 28) & 2) == 0 || self->_srtcpCipherSuites != *(equal + 6))
         {
           goto LABEL_13;
         }
@@ -465,24 +465,24 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(VCMediaNegotiationBlobMediaEncryptionSettings *)self setSendMediaKey:?];
   }
 
-  v5 = *(a3 + 28);
+  v5 = *(from + 28);
   if (v5)
   {
-    self->_mediaCipherSuites = *(a3 + 2);
+    self->_mediaCipherSuites = *(from + 2);
     *&self->_has |= 1u;
-    v5 = *(a3 + 28);
+    v5 = *(from + 28);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_srtcpCipherSuites = *(a3 + 6);
+    self->_srtcpCipherSuites = *(from + 6);
     *&self->_has |= 2u;
   }
 }

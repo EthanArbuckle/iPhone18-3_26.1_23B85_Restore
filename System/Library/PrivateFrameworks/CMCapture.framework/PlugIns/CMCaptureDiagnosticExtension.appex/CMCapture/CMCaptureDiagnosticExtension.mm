@@ -1,10 +1,10 @@
 @interface CMCaptureDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation CMCaptureDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v34[0] = 0;
   v3 = +[NSMutableArray array];

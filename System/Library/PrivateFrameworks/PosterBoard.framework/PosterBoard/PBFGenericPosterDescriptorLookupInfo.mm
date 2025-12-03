@@ -1,9 +1,9 @@
 @interface PBFGenericPosterDescriptorLookupInfo
 + (id)nullPosterDescriptorLookupInfo;
-+ (id)posterDescriptorLookupInfoForPath:(id)a3 extension:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)posterDescriptorLookupInfoForPath:(id)path extension:(id)extension;
+- (BOOL)isEqual:(id)equal;
 - (PBFGenericPosterDescriptorLookupInfo)init;
-- (id)_initWithPath:(id)a3 extension:(id)a4;
+- (id)_initWithPath:(id)path extension:(id)extension;
 - (void)dealloc;
 @end
 
@@ -22,7 +22,7 @@
     v10 = 2112;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = @"PBFPosterPreview.m";
     v16 = 1024;
@@ -42,45 +42,45 @@
   [(PBFGenericPosterDescriptorLookupInfo *)&v3 dealloc];
 }
 
-- (id)_initWithPath:(id)a3 extension:(id)a4
+- (id)_initWithPath:(id)path extension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  extensionCopy = extension;
   v16.receiver = self;
   v16.super_class = PBFGenericPosterDescriptorLookupInfo;
   v9 = [(PBFGenericPosterDescriptorLookupInfo *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_path, a3);
+    objc_storeStrong(&v9->_path, path);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v7 extendValidityForReason:v12];
+    v13 = [pathCopy extendValidityForReason:v12];
     pathValidityExtension = v10->_pathValidityExtension;
     v10->_pathValidityExtension = v13;
 
-    objc_storeStrong(&v10->_extension, a4);
+    objc_storeStrong(&v10->_extension, extension);
   }
 
   return v10;
 }
 
-+ (id)posterDescriptorLookupInfoForPath:(id)a3 extension:(id)a4
++ (id)posterDescriptorLookupInfoForPath:(id)path extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  pathCopy = path;
+  extensionCopy = extension;
+  if (!pathCopy)
   {
     [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:a2 extension:?];
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = extensionCopy;
+  if (!extensionCopy)
   {
     [PBFGenericPosterDescriptorLookupInfo posterDescriptorLookupInfoForPath:a2 extension:?];
   }
 
-  v9 = [[PBFGenericPosterDescriptorLookupInfo alloc] _initWithPath:v6 extension:v7];
+  v9 = [[PBFGenericPosterDescriptorLookupInfo alloc] _initWithPath:pathCopy extension:extensionCopy];
 
   return v9;
 }
@@ -104,10 +104,10 @@ void __70__PBFGenericPosterDescriptorLookupInfo_nullPosterDescriptorLookupInfo__
   nullPosterDescriptorLookupInfo___nullInfo = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }

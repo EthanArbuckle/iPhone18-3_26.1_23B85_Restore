@@ -1,33 +1,33 @@
 @interface SDFLayer
-- (_TtC7SwiftUI8SDFLayer)initWithLayer:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4;
+- (_TtC7SwiftUI8SDFLayer)initWithLayer:(id)layer;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma;
 - (void)layoutSublayers;
 @end
 
 @implementation SDFLayer
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v4 = CoreViewSDFDefaultAction(a3, a4);
+  v4 = CoreViewSDFDefaultAction(layer, key);
 
   return v4;
 }
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   SDFLayer.layoutSublayers()();
 }
 
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma
 {
-  v6 = a3;
-  v7 = self;
-  specialized SDFLayer.backdropLayer(_:didChangeLuma:)(a4);
+  layerCopy = layer;
+  selfCopy = self;
+  specialized SDFLayer.backdropLayer(_:didChangeLuma:)(luma);
 }
 
-- (_TtC7SwiftUI8SDFLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUI8SDFLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

@@ -5,7 +5,7 @@
 - (NSAttributedString)accessibilityAttributedLabel;
 - (NSAttributedString)accessibilityAttributedValue;
 - (_TtCC8StocksUI9StockView18StockViewAXElement)init;
-- (_TtCC8StocksUI9StockView18StockViewAXElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC8StocksUI9StockView18StockViewAXElement)initWithAccessibilityContainer:(id)container;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -17,7 +17,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     v6 = sub_22078D550();
   }
 
@@ -31,7 +31,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22078C960();
 
   if (v3)
@@ -49,7 +49,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22078CDB0();
 
   if (v3)
@@ -103,19 +103,19 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
   {
-    v7 = self;
+    selfCopy = self;
 LABEL_6:
     v6 = MEMORY[0x277D76578];
-    v4 = self;
+    selfCopy2 = self;
     goto LABEL_7;
   }
 
-  v4 = Strong;
+  selfCopy2 = Strong;
   v5 = OBJC_IVAR____TtC8StocksUI9StockView_isSelected;
   swift_beginAccess();
-  if ((*(&v4->super.super.super.isa + v5) & 1) == 0)
+  if ((*(&selfCopy2->super.super.super.isa + v5) & 1) == 0)
   {
-    v8 = self;
+    selfCopy3 = self;
 
     goto LABEL_6;
   }
@@ -129,13 +129,13 @@ LABEL_7:
 
 - (NSAttributedString)accessibilityAttributedLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22078CFB0();
 
   return v3;
 }
 
-- (_TtCC8StocksUI9StockView18StockViewAXElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC8StocksUI9StockView18StockViewAXElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_2208923BC();

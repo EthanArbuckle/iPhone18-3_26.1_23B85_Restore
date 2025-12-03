@@ -45,7 +45,7 @@
     goto LABEL_33;
   }
 
-  v49 = [(AssistantHistoryViewController *)self _getDataSharingOptInStatus];
+  _getDataSharingOptInStatus = [(AssistantHistoryViewController *)self _getDataSharingOptInStatus];
   v57 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v55 = v2;
   if (+[AssistantUtilities deviceIsiPhone])
@@ -123,9 +123,9 @@
   if (!+[AssistantUtilities isRpiOnDeviceDeletionEnabled])
   {
     v48 = v21;
-    if ((v49 - 2) >= 2 && v49)
+    if ((_getDataSharingOptInStatus - 2) >= 2 && _getDataSharingOptInStatus)
     {
-      if (v49 != 1)
+      if (_getDataSharingOptInStatus != 1)
       {
 LABEL_31:
         v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -292,12 +292,12 @@ void __60__AssistantHistoryViewController__getDataSharingOptInStatus__block_invo
 
 - (void)_handleDeleteSiriHistoryButtonPress
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  LODWORD(v3) = +[AssistantUtilities isRpiOnDeviceDeletionEnabled];
+  LODWORD(currentDevice) = +[AssistantUtilities isRpiOnDeviceDeletionEnabled];
   v5 = +[AssistantUtilities deviceIsiPhone];
-  if (!v3)
+  if (!currentDevice)
   {
     if (v5)
     {
@@ -366,7 +366,7 @@ LABEL_17:
   v12 = MEMORY[0x277D75110];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"DELETE_SIRI_HISTORY" value:&stru_285317CF0 table:@"AssistantSettings"];
-  v15 = [v12 alertControllerWithTitle:v14 message:v11 preferredStyle:v4];
+  v15 = [v12 alertControllerWithTitle:v14 message:v11 preferredStyle:sf_isiPad];
 
   objc_initWeak(&location, self);
   v16 = MEMORY[0x277D750F8];
@@ -475,14 +475,14 @@ void __52__AssistantHistoryViewController__deleteSiriHistory__block_invoke(uint6
 - (void)_startIndicatorViewSpinning
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC30]) allValues];
-  v4 = v3;
+  allValues = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC30]) allValues];
+  v4 = allValues;
   if (self->_deleteButtonCell)
   {
     [(AssistantHistoryViewController *)self _animateSpinnerIn];
   }
 
-  else if ([v3 count] == 1)
+  else if ([allValues count] == 1)
   {
     v5 = [v4 objectAtIndex:0];
     objc_opt_class();
@@ -502,13 +502,13 @@ void __52__AssistantHistoryViewController__deleteSiriHistory__block_invoke(uint6
       [(UIActivityIndicatorView *)self->_indicatorView setHidesWhenStopped:0];
       [(UIActivityIndicatorView *)self->_indicatorView setAlpha:0.0];
       [(PSDeleteButtonCell *)self->_deleteButtonCell addSubview:self->_indicatorView];
-      v11 = [(UIActivityIndicatorView *)self->_indicatorView centerXAnchor];
-      v12 = [(PSDeleteButtonCell *)self->_deleteButtonCell centerXAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      centerXAnchor = [(UIActivityIndicatorView *)self->_indicatorView centerXAnchor];
+      centerXAnchor2 = [(PSDeleteButtonCell *)self->_deleteButtonCell centerXAnchor];
+      v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-      v14 = [(UIActivityIndicatorView *)self->_indicatorView centerYAnchor];
-      v15 = [(PSDeleteButtonCell *)self->_deleteButtonCell centerYAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      centerYAnchor = [(UIActivityIndicatorView *)self->_indicatorView centerYAnchor];
+      centerYAnchor2 = [(PSDeleteButtonCell *)self->_deleteButtonCell centerYAnchor];
+      v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
       v17 = self->_deleteButtonCell;
       v20[0] = v13;

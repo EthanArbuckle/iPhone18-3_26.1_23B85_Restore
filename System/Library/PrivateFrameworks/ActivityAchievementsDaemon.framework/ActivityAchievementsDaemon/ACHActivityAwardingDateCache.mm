@@ -1,11 +1,11 @@
 @interface ACHActivityAwardingDateCache
-- (ACHActivityAwardingDateCache)initWithCalendar:(id)a3;
+- (ACHActivityAwardingDateCache)initWithCalendar:(id)calendar;
 - (NSNumber)dayOfMonthForToday;
 - (NSNumber)dayOfWeekForLastDayOfFitnessWeek;
 - (NSNumber)dayOfWeekForToday;
 - (NSNumber)numberOfDaysInThisMonth;
 - (void)_clearDateVariables;
-- (void)setCurrentDateComponents:(id)a3;
+- (void)setCurrentDateComponents:(id)components;
 @end
 
 @implementation ACHActivityAwardingDateCache
@@ -16,9 +16,9 @@
   if (!numberOfDaysInThisMonth)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(ACHActivityAwardingDateCache *)self calendar];
-    v6 = [(ACHActivityAwardingDateCache *)self currentDate];
-    [v5 rangeOfUnit:16 inUnit:8 forDate:v6];
+    calendar = [(ACHActivityAwardingDateCache *)self calendar];
+    currentDate = [(ACHActivityAwardingDateCache *)self currentDate];
+    [calendar rangeOfUnit:16 inUnit:8 forDate:currentDate];
     v8 = [v4 numberWithUnsignedInteger:v7];
     v9 = self->_numberOfDaysInThisMonth;
     self->_numberOfDaysInThisMonth = v8;
@@ -29,16 +29,16 @@
   return numberOfDaysInThisMonth;
 }
 
-- (ACHActivityAwardingDateCache)initWithCalendar:(id)a3
+- (ACHActivityAwardingDateCache)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v9.receiver = self;
   v9.super_class = ACHActivityAwardingDateCache;
   v6 = [(ACHActivityAwardingDateCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
   }
 
   return v7;
@@ -56,14 +56,14 @@
   self->_dayOfMonthForToday = 0;
 }
 
-- (void)setCurrentDateComponents:(id)a3
+- (void)setCurrentDateComponents:(id)components
 {
-  v7 = a3;
-  objc_storeStrong(&self->_currentDateComponents, a3);
+  componentsCopy = components;
+  objc_storeStrong(&self->_currentDateComponents, components);
   if (self->_currentDateComponents)
   {
-    v5 = [(ACHActivityAwardingDateCache *)self calendar];
-    v6 = [v5 dateFromComponents:v7];
+    calendar = [(ACHActivityAwardingDateCache *)self calendar];
+    v6 = [calendar dateFromComponents:componentsCopy];
     [(ACHActivityAwardingDateCache *)self setCurrentDate:v6];
   }
 
@@ -81,9 +81,9 @@
   if (!dayOfWeekForToday)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(ACHActivityAwardingDateCache *)self calendar];
-    v6 = [(ACHActivityAwardingDateCache *)self currentDate];
-    v7 = [v4 numberWithInteger:{objc_msgSend(v5, "component:fromDate:", 512, v6)}];
+    calendar = [(ACHActivityAwardingDateCache *)self calendar];
+    currentDate = [(ACHActivityAwardingDateCache *)self currentDate];
+    v7 = [v4 numberWithInteger:{objc_msgSend(calendar, "component:fromDate:", 512, currentDate)}];
     v8 = self->_dayOfWeekForToday;
     self->_dayOfWeekForToday = v7;
 
@@ -114,9 +114,9 @@
   if (!dayOfMonthForToday)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [(ACHActivityAwardingDateCache *)self calendar];
-    v6 = [(ACHActivityAwardingDateCache *)self currentDate];
-    v7 = [v4 numberWithInteger:{objc_msgSend(v5, "component:fromDate:", 16, v6)}];
+    calendar = [(ACHActivityAwardingDateCache *)self calendar];
+    currentDate = [(ACHActivityAwardingDateCache *)self currentDate];
+    v7 = [v4 numberWithInteger:{objc_msgSend(calendar, "component:fromDate:", 16, currentDate)}];
     v8 = self->_dayOfMonthForToday;
     self->_dayOfMonthForToday = v7;
 

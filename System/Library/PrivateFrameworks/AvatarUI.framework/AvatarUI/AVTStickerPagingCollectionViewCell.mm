@@ -2,45 +2,45 @@
 - (UIEdgeInsets)additionalContentInsets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPageContentView:(id)a3;
+- (void)setPageContentView:(id)view;
 @end
 
 @implementation AVTStickerPagingCollectionViewCell
 
-- (void)setPageContentView:(id)a3
+- (void)setPageContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   pageContentView = self->_pageContentView;
-  if (pageContentView != v5)
+  if (pageContentView != viewCopy)
   {
-    v11 = v5;
-    v7 = [(UIView *)pageContentView superview];
-    v8 = [(AVTStickerPagingCollectionViewCell *)self contentView];
+    v11 = viewCopy;
+    superview = [(UIView *)pageContentView superview];
+    contentView = [(AVTStickerPagingCollectionViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_pageContentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_pageContentView, a3);
-    v5 = v11;
+    objc_storeStrong(&self->_pageContentView, view);
+    viewCopy = v11;
     if (v11)
     {
       [(UIView *)v11 removeFromSuperview];
-      v9 = [(AVTStickerPagingCollectionViewCell *)self contentView];
-      [v9 bounds];
+      contentView2 = [(AVTStickerPagingCollectionViewCell *)self contentView];
+      [contentView2 bounds];
       [(UIView *)v11 setFrame:?];
 
       [(UIView *)v11 setAutoresizingMask:18];
-      v10 = [(AVTStickerPagingCollectionViewCell *)self contentView];
-      [v10 addSubview:v11];
+      contentView3 = [(AVTStickerPagingCollectionViewCell *)self contentView];
+      [contentView3 addSubview:v11];
 
       pageContentView = [(AVTStickerPagingCollectionViewCell *)self setNeedsLayout];
-      v5 = v11;
+      viewCopy = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](pageContentView, v5);
+  MEMORY[0x1EEE66BB8](pageContentView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -48,8 +48,8 @@
   v21.receiver = self;
   v21.super_class = AVTStickerPagingCollectionViewCell;
   [(AVTStickerPagingCollectionViewCell *)&v21 layoutSubviews];
-  v3 = [(AVTStickerPagingCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(AVTStickerPagingCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -59,8 +59,8 @@
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
   v19 = v11 - (v14 + v18);
-  v20 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  pageContentView = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
+  [pageContentView setFrame:{v13, v15, v17, v19}];
 }
 
 - (void)prepareForReuse
@@ -68,18 +68,18 @@
   v10.receiver = self;
   v10.super_class = AVTStickerPagingCollectionViewCell;
   [(AVTStickerPagingCollectionViewCell *)&v10 prepareForReuse];
-  v3 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
-  if (v3)
+  pageContentView = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
+  if (pageContentView)
   {
-    v4 = v3;
-    v5 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
-    v6 = [v5 superview];
-    v7 = [(AVTStickerPagingCollectionViewCell *)self contentView];
+    v4 = pageContentView;
+    pageContentView2 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
+    superview = [pageContentView2 superview];
+    contentView = [(AVTStickerPagingCollectionViewCell *)self contentView];
 
-    if (v6 == v7)
+    if (superview == contentView)
     {
-      v8 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
-      [v8 removeFromSuperview];
+      pageContentView3 = [(AVTStickerPagingCollectionViewCell *)self pageContentView];
+      [pageContentView3 removeFromSuperview];
     }
   }
 

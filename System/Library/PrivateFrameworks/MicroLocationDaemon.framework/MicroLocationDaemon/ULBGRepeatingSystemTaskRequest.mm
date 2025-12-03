@@ -5,22 +5,22 @@
 + (id)maintenanceULBGRepeatingSystemTaskRequest;
 + (id)routineStateAnalyzerULBGRepeatingSystemTaskRequest;
 + (id)wifiAnalyzerULBGRepeatingSystemTaskRequest;
-- (ULBGRepeatingSystemTaskRequest)initWithIdentifier:(id)a3 interval:(double)a4 minDurationBetweenInstances:(double)a5;
+- (ULBGRepeatingSystemTaskRequest)initWithIdentifier:(id)identifier interval:(double)interval minDurationBetweenInstances:(double)instances;
 - (id)createRequestFromSelf;
 @end
 
 @implementation ULBGRepeatingSystemTaskRequest
 
-- (ULBGRepeatingSystemTaskRequest)initWithIdentifier:(id)a3 interval:(double)a4 minDurationBetweenInstances:(double)a5
+- (ULBGRepeatingSystemTaskRequest)initWithIdentifier:(id)identifier interval:(double)interval minDurationBetweenInstances:(double)instances
 {
   v10.receiver = self;
   v10.super_class = ULBGRepeatingSystemTaskRequest;
-  v7 = [(ULBGSystemTaskRequest *)&v10 initWithIdentifier:a3];
+  v7 = [(ULBGSystemTaskRequest *)&v10 initWithIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    [(ULBGRepeatingSystemTaskRequest *)v7 setInterval:a4];
-    [(ULBGRepeatingSystemTaskRequest *)v8 setMinDurationBetweenInstances:a5];
+    [(ULBGRepeatingSystemTaskRequest *)v7 setInterval:interval];
+    [(ULBGRepeatingSystemTaskRequest *)v8 setMinDurationBetweenInstances:instances];
   }
 
   return v8;
@@ -29,8 +29,8 @@
 - (id)createRequestFromSelf
 {
   v3 = objc_alloc(MEMORY[0x277CF07D8]);
-  v4 = [(ULBGSystemTaskRequest *)self identifier];
-  v5 = [v3 initWithIdentifier:v4];
+  identifier = [(ULBGSystemTaskRequest *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier];
 
   [(ULBGRepeatingSystemTaskRequest *)self interval];
   [v5 setInterval:?];
@@ -51,21 +51,21 @@
 + (id)learningULBGRepeatingSystemTaskRequest
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULLearningInterval"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = [&unk_286A712F8 intValue];
+    intValue = [&unk_286A712F8 intValue];
   }
 
-  v7 = v6;
+  v7 = intValue;
 
   v8 = [[ULBGRepeatingSystemTaskRequest alloc] initWithIdentifier:@"com.apple.milod.learning" interval:v7 minDurationBetweenInstances:v7 * 0.8];
   [(ULBGSystemTaskRequest *)v8 setPriority:1];
@@ -83,21 +83,21 @@
 + (id)maintenanceULBGRepeatingSystemTaskRequest
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMaintenanceInterval"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = [&unk_286A712F8 intValue];
+    intValue = [&unk_286A712F8 intValue];
   }
 
-  v7 = v6;
+  v7 = intValue;
 
   v8 = [[ULBGRepeatingSystemTaskRequest alloc] initWithIdentifier:@"com.apple.milod.maintenance" interval:v7 minDurationBetweenInstances:v7 * 0.8];
   [(ULBGSystemTaskRequest *)v8 setPriority:1];
@@ -115,21 +115,21 @@
 + (id)routineStateAnalyzerULBGRepeatingSystemTaskRequest
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULRoutineStateRefreshInterval"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = [&unk_286A712F8 intValue];
+    intValue = [&unk_286A712F8 intValue];
   }
 
-  v7 = v6;
+  v7 = intValue;
 
   v8 = [[ULBGRepeatingSystemTaskRequest alloc] initWithIdentifier:@"com.apple.milod.routineStateAnalyzerExecute" interval:v7 minDurationBetweenInstances:v7 * 0.8];
   [(ULBGSystemTaskRequest *)v8 setPriority:1];

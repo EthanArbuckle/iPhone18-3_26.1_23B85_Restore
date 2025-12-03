@@ -1,17 +1,17 @@
 @interface CRLiOSMiniFormatterBaseLayerButton
-- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithCoder:(id)a3;
-- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithFrame:(CGRect)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithCoder:(id)coder;
+- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithFrame:(CGRect)frame;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 @end
 
 @implementation CRLiOSMiniFormatterBaseLayerButton
 
-- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithFrame:(CGRect)a3
+- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton_isPresentingPopover) = 0;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -19,14 +19,14 @@
   return [(CRLiOSMiniFormatterBaseLayerButton *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithCoder:(id)a3
+- (_TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8Freeform34CRLiOSMiniFormatterBaseLayerButton_isPresentingPopover) = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLiOSMiniFormatterBaseLayerButton();
-  v5 = a3;
-  v6 = [(CRLiOSMiniFormatterBaseLayerButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CRLiOSMiniFormatterBaseLayerButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -35,11 +35,11 @@
   return v6;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -48,10 +48,10 @@
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_101307048(a3, v16, v17);
+  sub_101307048(action, v16, v17);
 
   sub_10000CAAC(v16, &unk_1019F4D00);
   v8 = v18;

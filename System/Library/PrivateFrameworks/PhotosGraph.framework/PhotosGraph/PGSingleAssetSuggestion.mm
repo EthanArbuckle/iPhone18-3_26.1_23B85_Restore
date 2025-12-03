@@ -1,7 +1,7 @@
 @interface PGSingleAssetSuggestion
 - (NSArray)keyAssets;
 - (NSString)description;
-- (PGSingleAssetSuggestion)initWithType:(unsigned __int16)a3 subtype:(unsigned __int16)a4 asset:(id)a5;
+- (PGSingleAssetSuggestion)initWithType:(unsigned __int16)type subtype:(unsigned __int16)subtype asset:(id)asset;
 @end
 
 @implementation PGSingleAssetSuggestion
@@ -11,12 +11,12 @@
   relevanceDurationInDays = self->_relevanceDurationInDays;
   if (relevanceDurationInDays)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"relevant for %lu days", relevanceDurationInDays];
+    relevanceDurationInDays = [MEMORY[0x277CCACA8] stringWithFormat:@"relevant for %lu days", relevanceDurationInDays];
   }
 
   else
   {
-    v4 = &stru_2843F5C58;
+    relevanceDurationInDays = &stru_2843F5C58;
   }
 
   v13.receiver = self;
@@ -26,8 +26,8 @@
   v7 = PHSuggestionStringWithType();
   subtype = self->_subtype;
   v9 = PHSuggestionStringWithSubtype();
-  v10 = [(PHAsset *)self->_asset uuid];
-  v11 = [v5 stringByAppendingFormat:@": type=%@, subtype=%@, assetUUID=%@, %@features=%@", v7, v9, v10, v4, self->_features];
+  uuid = [(PHAsset *)self->_asset uuid];
+  v11 = [v5 stringByAppendingFormat:@": type=%@, subtype=%@, assetUUID=%@, %@features=%@", v7, v9, uuid, relevanceDurationInDays, self->_features];
 
   return v11;
 }
@@ -51,18 +51,18 @@
   return v2;
 }
 
-- (PGSingleAssetSuggestion)initWithType:(unsigned __int16)a3 subtype:(unsigned __int16)a4 asset:(id)a5
+- (PGSingleAssetSuggestion)initWithType:(unsigned __int16)type subtype:(unsigned __int16)subtype asset:(id)asset
 {
-  v9 = a5;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PGSingleAssetSuggestion;
   v10 = [(PGSingleAssetSuggestion *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_subtype = a4;
-    objc_storeStrong(&v10->_asset, a5);
+    v10->_type = type;
+    v10->_subtype = subtype;
+    objc_storeStrong(&v10->_asset, asset);
   }
 
   return v11;

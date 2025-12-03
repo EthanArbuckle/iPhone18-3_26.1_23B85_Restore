@@ -23,7 +23,7 @@
   }
 
   MTRSetPotentialPairing(0, 1);
-  return [a1 __plugin__preWarmCommissioningSession];
+  return [self __plugin__preWarmCommissioningSession];
 }
 
 @end

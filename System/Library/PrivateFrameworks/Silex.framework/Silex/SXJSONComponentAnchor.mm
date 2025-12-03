@@ -1,15 +1,15 @@
 @interface SXJSONComponentAnchor
-- (int64_t)anchorAlignmentForString:(id)a3;
-- (int64_t)originAnchorPositionWithValue:(id)a3 withType:(int)a4;
+- (int64_t)anchorAlignmentForString:(id)string;
+- (int64_t)originAnchorPositionWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXJSONComponentAnchor
 
-- (int64_t)originAnchorPositionWithValue:(id)a3 withType:(int)a4
+- (int64_t)originAnchorPositionWithValue:(id)value withType:(int)type
 {
-  if (a3)
+  if (value)
   {
-    return [(SXJSONComponentAnchor *)self anchorAlignmentForString:a3, *&a4];
+    return [(SXJSONComponentAnchor *)self anchorAlignmentForString:value, *&type];
   }
 
   else
@@ -18,20 +18,20 @@
   }
 }
 
-- (int64_t)anchorAlignmentForString:(id)a3
+- (int64_t)anchorAlignmentForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"top"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"bottom"])
+  else if ([stringCopy isEqualToString:@"bottom"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"center"])
+  else if ([stringCopy isEqualToString:@"center"])
   {
     v4 = 3;
   }

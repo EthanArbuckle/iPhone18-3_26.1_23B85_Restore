@@ -1,12 +1,12 @@
 @interface RESortedDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RESortedDictionary)init;
-- (RESortedDictionary)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
+- (RESortedDictionary)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation RESortedDictionary
@@ -18,30 +18,30 @@
   v2 = [(RESortedDictionary *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     order = v2->_order;
-    v2->_order = v3;
+    v2->_order = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     values = v2->_values;
-    v2->_values = v5;
+    v2->_values = dictionary;
   }
 
   return v2;
 }
 
-- (RESortedDictionary)initWithCapacity:(unint64_t)a3
+- (RESortedDictionary)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = RESortedDictionary;
   v4 = [(RESortedDictionary *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:capacity];
     order = v4->_order;
     v4->_order = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a3];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:capacity];
     values = v4->_values;
     v4->_values = v7;
   }
@@ -49,10 +49,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       values = v5->_values;
       v7 = self->_values;
       v8 = v7;
@@ -108,9 +108,9 @@ LABEL_14:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableArray *)self->_order copy];
   v6 = v4[2];
   v4[2] = v5;
@@ -122,12 +122,12 @@ LABEL_14:
   return v4;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   values = self->_values;
-  v5 = a3;
-  [(NSMutableDictionary *)values removeObjectForKey:v5];
-  v6 = [(NSMutableArray *)self->_order indexOfObject:v5 inSortedRange:0 options:[(NSMutableArray *)self->_order count] usingComparator:256, &__block_literal_global_21];
+  keyCopy = key;
+  [(NSMutableDictionary *)values removeObjectForKey:keyCopy];
+  v6 = [(NSMutableArray *)self->_order indexOfObject:keyCopy inSortedRange:0 options:[(NSMutableArray *)self->_order count] usingComparator:256, &__block_literal_global_21];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -135,18 +135,18 @@ LABEL_14:
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(RESortedDictionary *)self objectForKey:v6];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [(RESortedDictionary *)self objectForKey:keyCopy];
 
   if (!v7)
   {
-    [(NSMutableArray *)self->_order insertObject:v6 atIndex:[(NSMutableArray *)self->_order indexOfObject:v6 inSortedRange:0 options:[(NSMutableArray *)self->_order count] usingComparator:1280, &__block_literal_global_4_0]];
+    [(NSMutableArray *)self->_order insertObject:keyCopy atIndex:[(NSMutableArray *)self->_order indexOfObject:keyCopy inSortedRange:0 options:[(NSMutableArray *)self->_order count] usingComparator:1280, &__block_literal_global_4_0]];
   }
 
-  [(NSMutableDictionary *)self->_values setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_values setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
 - (void)removeAllObjects
@@ -157,11 +157,11 @@ LABEL_14:
   [(NSMutableArray *)order removeAllObjects];
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     order = self->_order;
     v9[0] = MEMORY[0x277D85DD0];
@@ -169,8 +169,8 @@ LABEL_14:
     v9[2] = __61__RESortedDictionary_enumerateObjectsWithOptions_usingBlock___block_invoke;
     v9[3] = &unk_2785FB510;
     v9[4] = self;
-    v10 = v6;
-    [(NSMutableArray *)order enumerateObjectsWithOptions:a3 usingBlock:v9];
+    v10 = blockCopy;
+    [(NSMutableArray *)order enumerateObjectsWithOptions:options usingBlock:v9];
   }
 }
 

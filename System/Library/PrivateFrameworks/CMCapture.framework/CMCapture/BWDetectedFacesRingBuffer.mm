@@ -1,17 +1,17 @@
 @interface BWDetectedFacesRingBuffer
-- (BWDetectedFacesRingBuffer)initWithDepth:(int)a3;
+- (BWDetectedFacesRingBuffer)initWithDepth:(int)depth;
 - (float)secondsSinceLastFaceDetected;
-- (void)addFacesFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)addFacesFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 - (void)flush;
-- (void)transferFacesToSampleBuffer:(opaqueCMSampleBuffer *)a3 transformToBufferSpace:(BOOL)a4 sourceCropRect:(CGRect)a5;
+- (void)transferFacesToSampleBuffer:(opaqueCMSampleBuffer *)buffer transformToBufferSpace:(BOOL)space sourceCropRect:(CGRect)rect;
 @end
 
 @implementation BWDetectedFacesRingBuffer
 
-- (BWDetectedFacesRingBuffer)initWithDepth:(int)a3
+- (BWDetectedFacesRingBuffer)initWithDepth:(int)depth
 {
-  if (a3 <= 0)
+  if (depth <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"depth must be at least 1" userInfo:0]);
   }
@@ -22,8 +22,8 @@
   if (v4)
   {
     v4->_mutex = FigSimpleMutexCreate();
-    v4->_ringBuffer = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-    v4->_depth = a3;
+    v4->_ringBuffer = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:depth];
+    v4->_depth = depth;
   }
 
   return v4;
@@ -37,13 +37,13 @@
   [(BWDetectedFacesRingBuffer *)&v3 dealloc];
 }
 
-- (void)addFacesFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)addFacesFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   FigSimpleMutexLock();
   ringBuffer = self->_ringBuffer;
   depth = self->_depth;
   v14 = **&MEMORY[0x1E6960C70];
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (v7)
   {
     v8 = [v7 objectForKeyedSubscript:*off_1E798B218];
@@ -97,7 +97,7 @@
     }
   }
 
-  CMSampleBufferGetPresentationTimeStamp(&v13, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v13, buffer);
   self->_lastUpdatePTS = v13;
   FigSimpleMutexUnlock();
 }
@@ -143,7 +143,7 @@
   return Seconds;
 }
 
-- (void)transferFacesToSampleBuffer:(opaqueCMSampleBuffer *)a3 transformToBufferSpace:(BOOL)a4 sourceCropRect:(CGRect)a5
+- (void)transferFacesToSampleBuffer:(opaqueCMSampleBuffer *)buffer transformToBufferSpace:(BOOL)space sourceCropRect:(CGRect)rect
 {
   OUTLINED_FUNCTION_9_7();
   HIDWORD(v59) = v5;
@@ -247,13 +247,13 @@ LABEL_11:
 LABEL_12:
   if (v14 == -1 && (v17 & 0x80000000) == 0)
   {
-    v39 = [v10 lastObject];
+    lastObject = [v10 lastObject];
     goto LABEL_21;
   }
 
   if (v17 == -1 && (v14 & 0x80000000) == 0)
   {
-    v39 = [v10 firstObject];
+    lastObject = [v10 firstObject];
     goto LABEL_21;
   }
 
@@ -265,9 +265,9 @@ LABEL_16:
 
   else
   {
-    v39 = [v10 objectAtIndexedSubscript:(v14 + v17) >> 1];
+    lastObject = [v10 objectAtIndexedSubscript:(v14 + v17) >> 1];
 LABEL_21:
-    v18 = v39;
+    v18 = lastObject;
   }
 
 LABEL_25:

@@ -2,32 +2,32 @@
 + (BOOL)isSupported;
 - ($C4732ECC957FA13B9B3DF4A51A95735B)espressoNetwork;
 - ($F613A077D53D3D97A8E0FDF5BAE1891D)networkInputParams;
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 inputTensorNames:(id)a4 outputTensorNames:(id)a5 networkInputScaleBeforeRotation:(CGSize)a6 networkFilePath:(id)a7;
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 inputTensorNames:(id)a4 outputTensorNames:(id)a5 networkInputScaleBeforeRotation:(CGSize)a6 networkFilePath:(id)a7 useEspressoZeroCopyOutput:(BOOL)a8;
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 networkInputScaleBeforeRotation:(CGSize)a4 delegateInference:(BOOL)a5;
-- (BOOL)ARMLVerifyLoadedModelVersion:(id)a3 deviceName:(id)a4 major:(int)a5 minor:(int)a6;
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue inputTensorNames:(id)names outputTensorNames:(id)tensorNames networkInputScaleBeforeRotation:(CGSize)rotation networkFilePath:(id)path;
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue inputTensorNames:(id)names outputTensorNames:(id)tensorNames networkInputScaleBeforeRotation:(CGSize)rotation networkFilePath:(id)path useEspressoZeroCopyOutput:(BOOL)output;
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue networkInputScaleBeforeRotation:(CGSize)rotation delegateInference:(BOOL)inference;
+- (BOOL)ARMLVerifyLoadedModelVersion:(id)version deviceName:(id)name major:(int)major minor:(int)minor;
 - (BOOL)isBusy;
 - (CGSize)allowedResamplingImageSize;
 - (CGSize)networkInputScaleBeforeRotation;
 - (NSString)networkVersionString;
 - (id).cxx_construct;
-- (id)_resampleImage:(id)a3 rotationOfResultTensor:(int64_t)a4 networkInputSize:(CGSize)a5;
+- (id)_resampleImage:(id)image rotationOfResultTensor:(int64_t)tensor networkInputSize:(CGSize)size;
 - (id)defaultEngineName;
-- (id)networkModesForOrientation:(int64_t)a3;
-- (id)processData:(id)a3;
-- (id)processImageDataThroughNeuralNetwork:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (int)bindInputBuffer:(unint64_t)a3 withImage:(id)a4 andOriginalImageData:(id)a5 rotationOfResultTensor:(int64_t)a6;
-- (int64_t)getDeviceOrientationFromImageData:(id)a3;
-- (void)_asynchronousProcessDownSampledImage:(id)a3;
-- (void)_asynchronousProcessEspressoTensor:(id)a3;
+- (id)networkModesForOrientation:(int64_t)orientation;
+- (id)processData:(id)data;
+- (id)processImageDataThroughNeuralNetwork:(id)network originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (int)bindInputBuffer:(unint64_t)buffer withImage:(id)image andOriginalImageData:(id)data rotationOfResultTensor:(int64_t)tensor;
+- (int64_t)getDeviceOrientationFromImageData:(id)data;
+- (void)_asynchronousProcessDownSampledImage:(id)image;
+- (void)_asynchronousProcessEspressoTensor:(id)tensor;
 - (void)_bindOutputTensor;
-- (void)_runNeuralNetworkAndPushResult:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6;
-- (void)changeEspressoConfig:(id)a3;
+- (void)_runNeuralNetworkAndPushResult:(id)result originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor;
+- (void)changeEspressoConfig:(id)config;
 - (void)dealloc;
-- (void)loadMLWithPath:(id)a3 networkMode:(id)a4;
-- (void)prepare:(BOOL)a3;
-- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)a3;
+- (void)loadMLWithPath:(id)path networkMode:(id)mode;
+- (void)prepare:(BOOL)prepare;
+- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)timestamp;
 - (void)waitForProcessingCompleteInDeterministicMode;
 @end
 
@@ -50,37 +50,37 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
   return result;
 }
 
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 inputTensorNames:(id)a4 outputTensorNames:(id)a5 networkInputScaleBeforeRotation:(CGSize)a6 networkFilePath:(id)a7 useEspressoZeroCopyOutput:(BOOL)a8
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue inputTensorNames:(id)names outputTensorNames:(id)tensorNames networkInputScaleBeforeRotation:(CGSize)rotation networkFilePath:(id)path useEspressoZeroCopyOutput:(BOOL)output
 {
-  v8 = a8;
-  height = a6.height;
-  width = a6.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = [(ARMLImageProcessingTechnique *)self initWithDispatchQueue:v15 inputTensorNames:v16 outputTensorNames:v17 networkInputScaleBeforeRotation:v18 networkFilePath:width, height];
-  v20 = v19;
-  if (v19)
+  outputCopy = output;
+  height = rotation.height;
+  width = rotation.width;
+  queueCopy = queue;
+  namesCopy = names;
+  tensorNamesCopy = tensorNames;
+  pathCopy = path;
+  height = [(ARMLImageProcessingTechnique *)self initWithDispatchQueue:queueCopy inputTensorNames:namesCopy outputTensorNames:tensorNamesCopy networkInputScaleBeforeRotation:pathCopy networkFilePath:width, height];
+  v20 = height;
+  if (height)
   {
-    [(ARMLImageProcessingTechnique *)v19 setUseEspressoZeroCopyOutput:v8];
+    [(ARMLImageProcessingTechnique *)height setUseEspressoZeroCopyOutput:outputCopy];
   }
 
   return v20;
 }
 
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 networkInputScaleBeforeRotation:(CGSize)a4 delegateInference:(BOOL)a5
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue networkInputScaleBeforeRotation:(CGSize)rotation delegateInference:(BOOL)inference
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  height = rotation.height;
+  width = rotation.width;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = ARMLImageProcessingTechnique;
   v11 = [(ARImageBasedTechnique *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_processingQueue, a3);
+    objc_storeStrong(&v11->_processingQueue, queue);
     v13 = dispatch_semaphore_create(1);
     processingSemaphore = v12->_processingSemaphore;
     v12->_processingSemaphore = v13;
@@ -88,7 +88,7 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
     v12->_prepLock._os_unfair_lock_opaque = 0;
     v12->_lockedOrientation = -1;
     v12->_allowedResamplingImageSize = *MEMORY[0x1E695F060];
-    v12->_delegateInference = a5;
+    v12->_delegateInference = inference;
     v12->_networkInputScaleBeforeRotation.width = width;
     v12->_networkInputScaleBeforeRotation.height = height;
   }
@@ -96,29 +96,29 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
   return v12;
 }
 
-- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)a3 inputTensorNames:(id)a4 outputTensorNames:(id)a5 networkInputScaleBeforeRotation:(CGSize)a6 networkFilePath:(id)a7
+- (ARMLImageProcessingTechnique)initWithDispatchQueue:(id)queue inputTensorNames:(id)names outputTensorNames:(id)tensorNames networkInputScaleBeforeRotation:(CGSize)rotation networkFilePath:(id)path
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = [(ARMLImageProcessingTechnique *)self initWithDispatchQueue:v13 networkInputScaleBeforeRotation:width, height];
-  v18 = v17;
-  if (v17)
+  height = rotation.height;
+  width = rotation.width;
+  queueCopy = queue;
+  namesCopy = names;
+  tensorNamesCopy = tensorNames;
+  pathCopy = path;
+  height = [(ARMLImageProcessingTechnique *)self initWithDispatchQueue:queueCopy networkInputScaleBeforeRotation:width, height];
+  v18 = height;
+  if (height)
   {
-    v17->_espressoInputBufferTimestamp = 0.0;
-    v17->_espressoInputBufferLock._os_unfair_lock_opaque = 0;
-    v19 = [v14 copy];
+    height->_espressoInputBufferTimestamp = 0.0;
+    height->_espressoInputBufferLock._os_unfair_lock_opaque = 0;
+    v19 = [namesCopy copy];
     inputTensorNames = v18->_inputTensorNames;
     v18->_inputTensorNames = v19;
 
-    v21 = [v15 copy];
+    v21 = [tensorNamesCopy copy];
     outputTensorNames = v18->_outputTensorNames;
     v18->_outputTensorNames = v21;
 
-    v23 = [v16 copy];
+    v23 = [pathCopy copy];
     networkFilePath = v18->_networkFilePath;
     v18->_networkFilePath = v23;
 
@@ -130,10 +130,10 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
   return v18;
 }
 
-- (BOOL)ARMLVerifyLoadedModelVersion:(id)a3 deviceName:(id)a4 major:(int)a5 minor:(int)a6
+- (BOOL)ARMLVerifyLoadedModelVersion:(id)version deviceName:(id)name major:(int)major minor:(int)minor
 {
-  v9 = a4;
-  v10 = [a3 componentsSeparatedByString:@"."];
+  nameCopy = name;
+  v10 = [version componentsSeparatedByString:@"."];
   v11 = v10;
   if (!v10 || [v10 count] != 3)
   {
@@ -141,14 +141,14 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
   }
 
   v12 = [v11 objectAtIndexedSubscript:1];
-  v13 = [v12 intValue];
+  intValue = [v12 intValue];
 
   v14 = [v11 objectAtIndexedSubscript:2];
-  v15 = [v14 intValue];
+  intValue2 = [v14 intValue];
 
   v16 = [v11 objectAtIndexedSubscript:0];
-  v17 = [v16 isEqual:v9];
-  if (v13 == a5)
+  v17 = [v16 isEqual:nameCopy];
+  if (intValue == major)
   {
     v18 = v17;
   }
@@ -164,7 +164,7 @@ uint64_t __43__ARMLImageProcessingTechnique_isSupported__block_invoke()
     goto LABEL_10;
   }
 
-  if (v15 != a6)
+  if (intValue2 != minor)
   {
 LABEL_10:
     v19 = 0;
@@ -217,17 +217,17 @@ LABEL_11:
 
 - (id)defaultEngineName
 {
-  v2 = [(ARMLImageProcessingTechnique *)self defaultEngine];
-  if (v2 > 10005)
+  defaultEngine = [(ARMLImageProcessingTechnique *)self defaultEngine];
+  if (defaultEngine > 10005)
   {
-    if (v2 == 10006)
+    if (defaultEngine == 10006)
     {
       return @"ESPRESSO_ENGINE_ANE_RUNTIME_DIRECT";
     }
 
-    if (v2 != 10007)
+    if (defaultEngine != 10007)
     {
-      if (v2 == 0x7FFFFFFF)
+      if (defaultEngine == 0x7FFFFFFF)
       {
         return @"ESPRESSO_ENGINE_MAX_VAL";
       }
@@ -240,14 +240,14 @@ LABEL_11:
 
   else
   {
-    if (!v2)
+    if (!defaultEngine)
     {
       return @"ESPRESSO_ENGINE_CPU";
     }
 
-    if (v2 != 2)
+    if (defaultEngine != 2)
     {
-      if (v2 == 5)
+      if (defaultEngine == 5)
       {
         return @"ESPRESSO_ENGINE_MPS";
       }
@@ -259,12 +259,12 @@ LABEL_11:
   }
 }
 
-- (id)networkModesForOrientation:(int64_t)a3
+- (id)networkModesForOrientation:(int64_t)orientation
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ((a3 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
-    if ((a3 - 1) < 2)
+    if ((orientation - 1) < 2)
     {
       return @"portrait";
     }
@@ -286,9 +286,9 @@ LABEL_11:
         v13 = 138543874;
         v14 = v10;
         v15 = 2048;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2048;
-        v18 = a3;
+        orientationCopy2 = orientation;
         _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not find a network config for the device orientation %ld", &v13, 0x20u);
       }
     }
@@ -300,9 +300,9 @@ LABEL_11:
       v13 = 138543874;
       v14 = v12;
       v15 = 2048;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2048;
-      v18 = a3;
+      orientationCopy2 = orientation;
       _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not find a network config for the device orientation %ld", &v13, 0x20u);
     }
   }
@@ -327,15 +327,15 @@ LABEL_11:
   return v2;
 }
 
-- (void)loadMLWithPath:(id)a3 networkMode:(id)a4
+- (void)loadMLWithPath:(id)path networkMode:(id)mode
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  pathCopy = path;
+  modeCopy = mode;
+  if (pathCopy)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:pathCopy];
 
     if (v9)
     {
@@ -344,13 +344,13 @@ LABEL_11:
       {
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [(ARMLImageProcessingTechnique *)self defaultEngineName];
+        defaultEngineName = [(ARMLImageProcessingTechnique *)self defaultEngineName];
         *buf = 138543874;
         v63 = v12;
         v64 = 2048;
-        v65 = self;
+        selfCopy9 = self;
         v66 = 2112;
-        v67 = v13;
+        v67 = defaultEngineName;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Setting up espresso engine '%@'.", buf, 0x20u);
       }
 
@@ -369,8 +369,8 @@ LABEL_11:
       }
 
       self->_espressoPlan = espresso_create_plan();
-      v16 = v6;
-      [(__CFString *)v6 UTF8String];
+      v16 = pathCopy;
+      [(__CFString *)pathCopy UTF8String];
       if (espresso_plan_add_network())
       {
         self->_failedToLoadNetwork = 1;
@@ -378,10 +378,10 @@ LABEL_11:
       }
 
       self->_failedToLoadNetwork = 0;
-      v36 = [(ARMLImageProcessingTechnique *)self networkVersionString];
-      if (v36)
+      networkVersionString = [(ARMLImageProcessingTechnique *)self networkVersionString];
+      if (networkVersionString)
       {
-        v37 = [(ARMLImageProcessingTechnique *)self isLoadedModelVersionCorrect:v36];
+        v37 = [(ARMLImageProcessingTechnique *)self isLoadedModelVersionCorrect:networkVersionString];
         v38 = _ARLogTechnique();
         v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG);
         if (v37)
@@ -393,63 +393,63 @@ LABEL_11:
             *buf = 138543874;
             v63 = v41;
             v64 = 2048;
-            v65 = self;
+            selfCopy9 = self;
             v66 = 2112;
-            v67 = v36;
+            v67 = networkVersionString;
             _os_log_impl(&dword_1C241C000, v38, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Version '%@'.", buf, 0x20u);
           }
 
-          v42 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+          inputTensorNames = [(ARMLImageProcessingTechnique *)self inputTensorNames];
           v61[0] = MEMORY[0x1E69E9820];
           v61[1] = 3221225472;
           v61[2] = __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invoke;
           v61[3] = &unk_1E817C510;
           v61[4] = self;
-          [v42 enumerateObjectsUsingBlock:v61];
+          [inputTensorNames enumerateObjectsUsingBlock:v61];
 
-          v43 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
-          std::vector<espresso_buffer_t>::resize(&self->_espressoOutputTensors.__begin_, [v43 count]);
+          outputTensorNames = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+          std::vector<espresso_buffer_t>::resize(&self->_espressoOutputTensors.__begin_, [outputTensorNames count]);
 
-          v44 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
-          std::vector<__CVPixelBufferPool *>::resize(&self->_espressoOutputBufferPools.__begin_, [v44 count]);
+          outputTensorNames2 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+          std::vector<__CVPixelBufferPool *>::resize(&self->_espressoOutputBufferPools.__begin_, [outputTensorNames2 count]);
 
-          v45 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+          outputTensorNames3 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
           v60[0] = MEMORY[0x1E69E9820];
           v60[1] = 3221225472;
           v60[2] = __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invoke_36;
           v60[3] = &unk_1E817C510;
           v60[4] = self;
-          [v45 enumerateObjectsUsingBlock:v60];
+          [outputTensorNames3 enumerateObjectsUsingBlock:v60];
 
           if (!espresso_plan_build())
           {
             [(ARMLImageProcessingTechnique *)self _bindOutputTensor];
-            v53 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
-            std::vector<espresso_buffer_t>::resize(&self->_espressoInputTensors.__begin_, [v53 count]);
+            inputTensorNames2 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+            std::vector<espresso_buffer_t>::resize(&self->_espressoInputTensors.__begin_, [inputTensorNames2 count]);
 
-            v54 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+            inputTensorNames3 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
             v59[0] = MEMORY[0x1E69E9820];
             v59[1] = 3221225472;
             v59[2] = __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invoke_39;
             v59[3] = &unk_1E817C510;
             v59[4] = self;
-            [v54 enumerateObjectsUsingBlock:v59];
+            [inputTensorNames3 enumerateObjectsUsingBlock:v59];
 
-            v55 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+            inputTensorNames4 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
             v58[0] = MEMORY[0x1E69E9820];
             v58[1] = 3221225472;
             v58[2] = __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invoke_41;
             v58[3] = &unk_1E817C510;
             v58[4] = self;
-            [v55 enumerateObjectsUsingBlock:v58];
+            [inputTensorNames4 enumerateObjectsUsingBlock:v58];
 
-            v56 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+            outputTensorNames4 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
             v57[0] = MEMORY[0x1E69E9820];
             v57[1] = 3221225472;
             v57[2] = __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invoke_43;
             v57[3] = &unk_1E817C510;
             v57[4] = self;
-            [v56 enumerateObjectsUsingBlock:v57];
+            [outputTensorNames4 enumerateObjectsUsingBlock:v57];
 
             goto LABEL_47;
           }
@@ -462,7 +462,7 @@ LABEL_11:
             *buf = 138543874;
             v63 = v48;
             v64 = 2048;
-            v65 = self;
+            selfCopy9 = self;
             v66 = 2080;
             v67 = "Could not build espresso plan.";
             _os_log_impl(&dword_1C241C000, v46, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -482,7 +482,7 @@ LABEL_47:
           *buf = 138543874;
           v63 = v52;
           v64 = 2048;
-          v65 = self;
+          selfCopy9 = self;
           v66 = 2080;
           v67 = "Version mismatch";
           _os_log_impl(&dword_1C241C000, v38, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -499,7 +499,7 @@ LABEL_47:
           *buf = 138543874;
           v63 = v50;
           v64 = 2048;
-          v65 = self;
+          selfCopy9 = self;
           v66 = 2080;
           v67 = "Failed to get espresso network version.";
           _os_log_impl(&dword_1C241C000, v38, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -532,7 +532,7 @@ LABEL_47:
         *buf = 138543618;
         v63 = v21;
         v64 = 2048;
-        v65 = self;
+        selfCopy9 = self;
         _os_log_impl(&dword_1C241C000, v19, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Path to network is nil, check if network is added to spatial_splitting_network_mapping.plist file.", buf, 0x16u);
       }
     }
@@ -544,7 +544,7 @@ LABEL_47:
       *buf = 138543618;
       v63 = v23;
       v64 = 2048;
-      v65 = self;
+      selfCopy9 = self;
       _os_log_impl(&dword_1C241C000, v19, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Path to network is nil, check if network is added to spatial_splitting_network_mapping.plist file.", buf, 0x16u);
     }
   }
@@ -566,9 +566,9 @@ LABEL_47:
       *buf = 138543874;
       v63 = v28;
       v64 = 2048;
-      v65 = self;
+      selfCopy9 = self;
       v66 = 2112;
-      v67 = v6;
+      v67 = pathCopy;
       _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to load model from path '%@'", buf, 0x20u);
     }
   }
@@ -580,17 +580,17 @@ LABEL_47:
     *buf = 138543874;
     v63 = v30;
     v64 = 2048;
-    v65 = self;
+    selfCopy9 = self;
     v66 = 2112;
-    v67 = v6;
+    v67 = pathCopy;
     _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to load model from path '%@'", buf, 0x20u);
   }
 
-  v31 = [MEMORY[0x1E695DF90] dictionary];
-  v32 = v31;
-  if (v6)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v32 = dictionary;
+  if (pathCopy)
   {
-    v33 = v6;
+    v33 = pathCopy;
   }
 
   else
@@ -598,10 +598,10 @@ LABEL_47:
     v33 = @"<nil>";
   }
 
-  [v31 setObject:v33 forKeyedSubscript:*MEMORY[0x1E696A368]];
-  v34 = [(ARTechnique *)self delegate];
+  [dictionary setObject:v33 forKeyedSubscript:*MEMORY[0x1E696A368]];
+  delegate = [(ARTechnique *)self delegate];
   v35 = ARErrorWithCodeAndUserInfo(1004, v32);
-  [v34 technique:self didFailWithError:v35];
+  [delegate technique:self didFailWithError:v35];
 
 LABEL_30:
 }
@@ -740,13 +740,13 @@ void __59__ARMLImageProcessingTechnique_loadMLWithPath_networkMode___block_invok
 
 - (void)_bindOutputTensor
 {
-  v3 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+  outputTensorNames = [(ARMLImageProcessingTechnique *)self outputTensorNames];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __49__ARMLImageProcessingTechnique__bindOutputTensor__block_invoke;
   v4[3] = &unk_1E817C510;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [outputTensorNames enumerateObjectsUsingBlock:v4];
 }
 
 void __49__ARMLImageProcessingTechnique__bindOutputTensor__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -950,19 +950,19 @@ LABEL_10:
 LABEL_26:
 }
 
-- (void)changeEspressoConfig:(id)a3
+- (void)changeEspressoConfig:(id)config
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configCopy = config;
   previous_network_configuration = self->_previous_network_configuration;
-  if (previous_network_configuration == v5 || [(NSString *)previous_network_configuration isEqualToString:v5])
+  if (previous_network_configuration == configCopy || [(NSString *)previous_network_configuration isEqualToString:configCopy])
   {
     goto LABEL_3;
   }
 
   [(ARMLImageProcessingTechnique *)self _startLoadingMLModelSignpost];
   espresso_plan_build_clean();
-  [(NSString *)v5 UTF8String];
+  [(NSString *)configCopy UTF8String];
   if (espresso_network_select_configuration())
   {
     v7 = _ARLogTechnique();
@@ -973,7 +973,7 @@ LABEL_26:
       *buf = 138543874;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2080;
       v19 = "Can't set mode";
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -995,7 +995,7 @@ LABEL_11:
       *buf = 138543874;
       v15 = v11;
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2080;
       v19 = "Could not rebuild espresso plan";
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -1005,18 +1005,18 @@ LABEL_11:
   }
 
   [(ARMLImageProcessingTechnique *)self _bindOutputTensor];
-  v12 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+  inputTensorNames = [(ARMLImageProcessingTechnique *)self inputTensorNames];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke;
   v13[3] = &unk_1E817C510;
   v13[4] = self;
-  [v12 enumerateObjectsUsingBlock:v13];
+  [inputTensorNames enumerateObjectsUsingBlock:v13];
 
   [(ARMLImageProcessingTechnique *)self _endLoadingMLModelSignpost];
-  [(ARMLImageProcessingTechnique *)self networkModeDidChange:self->_previous_network_configuration toMode:v5];
+  [(ARMLImageProcessingTechnique *)self networkModeDidChange:self->_previous_network_configuration toMode:configCopy];
 LABEL_3:
-  objc_storeStrong(&self->_previous_network_configuration, a3);
+  objc_storeStrong(&self->_previous_network_configuration, config);
 LABEL_12:
 }
 
@@ -1044,11 +1044,11 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
   }
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
-  v3 = a3;
+  prepareCopy = prepare;
   os_unfair_lock_lock(&self->_prepLock);
-  self->_deterministic = v3;
+  self->_deterministic = prepareCopy;
   if (self->_hasBegunPrep)
   {
 
@@ -1059,7 +1059,7 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
   {
     self->_hasBegunPrep = 1;
     os_unfair_lock_unlock(&self->_prepLock);
-    [(ARMLImageProcessingTechnique *)self _prepareOnce:v3];
+    [(ARMLImageProcessingTechnique *)self _prepareOnce:prepareCopy];
     if (!self->_delegateInference)
     {
       [(ARMLImageProcessingTechnique *)self _startLoadingMLModelSignpost];
@@ -1085,18 +1085,18 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = ARMLImageProcessingTechnique;
-  v5 = [(ARImageBasedTechnique *)&v7 processData:v4];
+  v5 = [(ARImageBasedTechnique *)&v7 processData:dataCopy];
   if ([(ARMLImageProcessingTechnique *)self prepComplete])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([(ARMLImageProcessingTechnique *)self requiredSensorDataTypes]& 1) != 0)
     {
-      [(ARMLImageProcessingTechnique *)self _asynchronousProcessDownSampledImage:v4];
+      [(ARMLImageProcessingTechnique *)self _asynchronousProcessDownSampledImage:dataCopy];
     }
 
     else
@@ -1104,7 +1104,7 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(ARMLImageProcessingTechnique *)self _asynchronousProcessEspressoTensor:v4];
+        [(ARMLImageProcessingTechnique *)self _asynchronousProcessEspressoTensor:dataCopy];
       }
     }
 
@@ -1116,47 +1116,47 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([(ARMLImageProcessingTechnique *)self requiredSensorDataTypes]& 1) != 0)
     {
-      [v4 timestamp];
+      [dataCopy timestamp];
       [(ARMLImageProcessingTechnique *)self pushEmptyResultOnAsynchronousQueueForTimestamp:?];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 timestamp];
+      [dataCopy timestamp];
       [(ARMLImageProcessingTechnique *)self pushEmptyResultOnAsynchronousQueueForTimestamp:?];
     }
   }
 
-  return v4;
+  return dataCopy;
 }
 
-- (void)_asynchronousProcessDownSampledImage:(id)a3
+- (void)_asynchronousProcessDownSampledImage:(id)image
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  imageCopy = image;
+  latestResizedUltraWideImageData3 = imageCopy;
   if ([(ARMLImageProcessingTechnique *)self shouldUseSynchronizedUltraWide])
   {
-    v6 = [v4 latestResizedUltraWideImageData];
+    latestResizedUltraWideImageData = [imageCopy latestResizedUltraWideImageData];
 
-    v5 = v4;
-    if (v6)
+    latestResizedUltraWideImageData3 = imageCopy;
+    if (latestResizedUltraWideImageData)
     {
-      v7 = [v4 latestResizedUltraWideImageData];
+      latestResizedUltraWideImageData2 = [imageCopy latestResizedUltraWideImageData];
 
-      if (v7)
+      if (latestResizedUltraWideImageData2)
       {
-        v5 = [v4 latestResizedUltraWideImageData];
-        v8 = v4;
+        latestResizedUltraWideImageData3 = [imageCopy latestResizedUltraWideImageData];
+        originalImageData = imageCopy;
       }
 
       else
       {
-        v8 = [v4 originalImageData];
-        [v8 timestamp];
+        originalImageData = [imageCopy originalImageData];
+        [originalImageData timestamp];
         [(ARImageBasedTechnique *)self pushResultData:MEMORY[0x1E695E0F0] forTimestamp:?];
-        v5 = v4;
+        latestResizedUltraWideImageData3 = imageCopy;
       }
     }
   }
@@ -1168,23 +1168,23 @@ void __53__ARMLImageProcessingTechnique_changeEspressoConfig___block_invoke(uint
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v12 = [v5 downScalingResults];
-  v13 = [v12 countByEnumeratingWithState:&v56 objects:v62 count:16];
+  downScalingResults = [latestResizedUltraWideImageData3 downScalingResults];
+  v13 = [downScalingResults countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (!v13)
   {
 
 LABEL_28:
     v25 = p_networkInputScaleBeforeRotation->width;
     v26 = self->_networkInputScaleBeforeRotation.height;
-    if (-[ARMLImageProcessingTechnique networkProvidesConfigurationsForDeviceOrientation](self, "networkProvidesConfigurationsForDeviceOrientation") && ([v5 rotationOfResultTensor] == 90 || objc_msgSend(v5, "rotationOfResultTensor") == -90))
+    if (-[ARMLImageProcessingTechnique networkProvidesConfigurationsForDeviceOrientation](self, "networkProvidesConfigurationsForDeviceOrientation") && ([latestResizedUltraWideImageData3 rotationOfResultTensor] == 90 || objc_msgSend(latestResizedUltraWideImageData3, "rotationOfResultTensor") == -90))
     {
       v26 = p_networkInputScaleBeforeRotation->width;
       v25 = self->_networkInputScaleBeforeRotation.height;
     }
 
-    v27 = [v5 downScalingResults];
-    v28 = [v27 firstObject];
-    v14 = -[ARMLImageProcessingTechnique _resampleImage:rotationOfResultTensor:networkInputSize:](self, "_resampleImage:rotationOfResultTensor:networkInputSize:", v28, [v5 rotationOfResultTensor], v25, v26);
+    downScalingResults2 = [latestResizedUltraWideImageData3 downScalingResults];
+    firstObject = [downScalingResults2 firstObject];
+    v14 = -[ARMLImageProcessingTechnique _resampleImage:rotationOfResultTensor:networkInputSize:](self, "_resampleImage:rotationOfResultTensor:networkInputSize:", firstObject, [latestResizedUltraWideImageData3 rotationOfResultTensor], v25, v26);
 
     goto LABEL_33;
   }
@@ -1197,7 +1197,7 @@ LABEL_28:
     {
       if (*v57 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(downScalingResults);
       }
 
       v17 = *(*(&v56 + 1) + 8 * i);
@@ -1217,7 +1217,7 @@ LABEL_28:
       v14 = v24;
     }
 
-    v13 = [v12 countByEnumeratingWithState:&v56 objects:v62 count:16];
+    v13 = [downScalingResults countByEnumeratingWithState:&v56 objects:v62 count:16];
   }
 
   while (v13);
@@ -1228,24 +1228,24 @@ LABEL_28:
   }
 
 LABEL_33:
-  v29 = [v5 rotationOfResultTensor];
+  rotationOfResultTensor = [latestResizedUltraWideImageData3 rotationOfResultTensor];
   [v14 regionOfInterest];
   v31 = v30;
   v33 = v32;
   v34 = objc_opt_new();
-  [v5 timestamp];
+  [latestResizedUltraWideImageData3 timestamp];
   [v34 setTimestamp:?];
   if (-[ARMLImageProcessingTechnique shouldUseSynchronizedUltraWide](self, "shouldUseSynchronizedUltraWide") && [v14 undistortedPixelBuffer] || objc_msgSend(v14, "undistortedPixelBuffer"))
   {
-    v35 = [v14 undistortedPixelBuffer];
+    undistortedPixelBuffer = [v14 undistortedPixelBuffer];
   }
 
   else
   {
-    v35 = [v14 pixelBuffer];
+    undistortedPixelBuffer = [v14 pixelBuffer];
   }
 
-  [v34 setPixelBuffer:v35];
+  [v34 setPixelBuffer:undistortedPixelBuffer];
   v60 = @"croppedRect";
   v36 = MEMORY[0x1E696B098];
   [v14 cropRegion];
@@ -1258,10 +1258,10 @@ LABEL_33:
   v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
   [v34 setMetaData:v42];
 
-  v43 = [v5 originalImageData];
+  originalImageData2 = [latestResizedUltraWideImageData3 originalImageData];
   if (dispatch_semaphore_wait(self->_processingSemaphore, 0))
   {
-    [v5 timestamp];
+    [latestResizedUltraWideImageData3 timestamp];
     kdebug_trace();
   }
 
@@ -1271,7 +1271,7 @@ LABEL_33:
   }
 
   os_unfair_lock_lock(&self->_espressoInputBufferLock);
-  [v43 timestamp];
+  [originalImageData2 timestamp];
   self->_espressoInputBufferTimestamp = v44;
   os_unfair_lock_unlock(&self->_espressoInputBufferLock);
   objc_initWeak(&location, self);
@@ -1281,15 +1281,15 @@ LABEL_33:
   v49[2] = __69__ARMLImageProcessingTechnique__asynchronousProcessDownSampledImage___block_invoke;
   v49[3] = &unk_1E817C538;
   objc_copyWeak(v53, &location);
-  v50 = v43;
+  v50 = originalImageData2;
   v51 = v34;
-  v52 = v5;
+  v52 = latestResizedUltraWideImageData3;
   v53[1] = v31;
   v53[2] = v33;
-  v53[3] = v29;
-  v46 = v5;
+  v53[3] = rotationOfResultTensor;
+  v46 = latestResizedUltraWideImageData3;
   v47 = v34;
-  v48 = v43;
+  v48 = originalImageData2;
   dispatch_async(processingQueue, v49);
 
   objc_destroyWeak(v53);
@@ -1335,7 +1335,7 @@ void __69__ARMLImageProcessingTechnique__asynchronousProcessDownSampledImage___b
   }
 }
 
-- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)a3
+- (void)pushEmptyResultOnAsynchronousQueueForTimestamp:(double)timestamp
 {
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
@@ -1344,7 +1344,7 @@ void __69__ARMLImageProcessingTechnique__asynchronousProcessDownSampledImage___b
   block[2] = __79__ARMLImageProcessingTechnique_pushEmptyResultOnAsynchronousQueueForTimestamp___block_invoke;
   block[3] = &unk_1E817C560;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
+  v7[1] = *&timestamp;
   dispatch_async(processingQueue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -1356,29 +1356,29 @@ void __79__ARMLImageProcessingTechnique_pushEmptyResultOnAsynchronousQueueForTim
   [WeakRetained pushResultData:MEMORY[0x1E695E0F0] forTimestamp:*(a1 + 40)];
 }
 
-- (void)_runNeuralNetworkAndPushResult:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (void)_runNeuralNetworkAndPushResult:(id)result originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v11 = a4;
-  [v11 timestamp];
+  height = interest.height;
+  width = interest.width;
+  resultCopy = result;
+  dataCopy = data;
+  [dataCopy timestamp];
   [(ARMLImageProcessingTechnique *)self _startMLProcessingSignpostWithTimestamp:?];
-  v12 = [(ARMLImageProcessingTechnique *)self runNeuralNetworkWithImageData:v14 originalImageData:v11 regionOfInterest:a6 rotationOfResultTensor:width, height];
+  height = [(ARMLImageProcessingTechnique *)self runNeuralNetworkWithImageData:resultCopy originalImageData:dataCopy regionOfInterest:tensor rotationOfResultTensor:width, height];
   dispatch_semaphore_signal(self->_processingSemaphore);
   if ([(ARMLImageProcessingTechnique *)self shouldUseSynchronizedUltraWide])
   {
-    [v11 timestampOfSynchronizedWideImageData];
+    [dataCopy timestampOfSynchronizedWideImageData];
   }
 
   else
   {
-    [v11 timestamp];
+    [dataCopy timestamp];
   }
 
-  if (v12)
+  if (height)
   {
-    v13 = v12;
+    v13 = height;
   }
 
   else
@@ -1387,22 +1387,22 @@ void __79__ARMLImageProcessingTechnique_pushEmptyResultOnAsynchronousQueueForTim
   }
 
   [(ARImageBasedTechnique *)self pushResultData:v13 forTimestamp:?];
-  [v11 timestamp];
+  [dataCopy timestamp];
   [(ARMLImageProcessingTechnique *)self _endMLProcessingSignpostWithTimestamp:?];
 }
 
-- (id)runNeuralNetworkWithImageData:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)runNeuralNetworkWithImageData:(id)data originalImageData:(id)imageData regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
+  height = interest.height;
+  width = interest.width;
   v17[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = [(ARMLImageProcessingTechnique *)self processImageDataThroughNeuralNetwork:v11 originalImageData:v12 regionOfInterest:a6 rotationOfResultTensor:width, height];
-  v14 = v13;
-  if (v13)
+  dataCopy = data;
+  imageDataCopy = imageData;
+  height = [(ARMLImageProcessingTechnique *)self processImageDataThroughNeuralNetwork:dataCopy originalImageData:imageDataCopy regionOfInterest:tensor rotationOfResultTensor:width, height];
+  v14 = height;
+  if (height)
   {
-    v17[0] = v13;
+    v17[0] = height;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   }
 
@@ -1414,12 +1414,12 @@ void __79__ARMLImageProcessingTechnique_pushEmptyResultOnAsynchronousQueueForTim
   return v15;
 }
 
-- (void)_asynchronousProcessEspressoTensor:(id)a3
+- (void)_asynchronousProcessEspressoTensor:(id)tensor
 {
-  v4 = a3;
+  tensorCopy = tensor;
   if (self->_failedToLoadNetwork || dispatch_semaphore_wait(self->_processingSemaphore, 0))
   {
-    [v4 timestamp];
+    [tensorCopy timestamp];
     [(ARImageBasedTechnique *)self pushResultData:MEMORY[0x1E695E0F0] forTimestamp:?];
   }
 
@@ -1434,7 +1434,7 @@ void __79__ARMLImageProcessingTechnique_pushEmptyResultOnAsynchronousQueueForTim
     v8[3] = &unk_1E817C350;
     objc_copyWeak(&v11, &location);
     v9 = v5;
-    v10 = v4;
+    v10 = tensorCopy;
     v7 = v5;
     dispatch_async(processingQueue, v8);
 
@@ -1480,33 +1480,33 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
   }
 }
 
-- (id)_resampleImage:(id)a3 rotationOfResultTensor:(int64_t)a4 networkInputSize:(CGSize)a5
+- (id)_resampleImage:(id)image rotationOfResultTensor:(int64_t)tensor networkInputSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   v9 = ARCreateCVPixelBufferFromPool(&self->_bgraPixelBufferPool, 1111970369, self, @"Down Scale Output", width, height);
   if (v9)
   {
-    CVPixelBufferLockBaseAddress([v8 pixelBuffer], 0);
+    CVPixelBufferLockBaseAddress([imageCopy pixelBuffer], 0);
     CVPixelBufferLockBaseAddress(v9, 0);
     memset(&src, 0, sizeof(src));
-    ARWrapCVPixelBufferVImage([v8 pixelBuffer], &src.data);
+    ARWrapCVPixelBufferVImage([imageCopy pixelBuffer], &src.data);
     memset(&v27, 0, sizeof(v27));
     ARWrapCVPixelBufferVImage(v9, &v27.data);
     vImageScale_ARGB8888(&src, &v27, 0, 0x10u);
     CVPixelBufferUnlockBaseAddress(v9, 0);
-    CVPixelBufferUnlockBaseAddress([v8 pixelBuffer], 0);
-    [v8 imageResolution];
+    CVPixelBufferUnlockBaseAddress([imageCopy pixelBuffer], 0);
+    [imageCopy imageResolution];
     v11 = v10;
-    [v8 imageResolution];
+    [imageCopy imageResolution];
     v13 = v12;
-    [v8 regionOfInterest];
+    [imageCopy regionOfInterest];
     v15 = v14;
-    [v8 regionOfInterest];
+    [imageCopy regionOfInterest];
     v17 = v16;
     v18 = [ARMLImageDownScalingResult alloc];
-    [v8 cropRegion];
+    [imageCopy cropRegion];
     v20 = v19;
     v22 = v21;
     *&v19 = width / v11;
@@ -1530,39 +1530,39 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
   return self;
 }
 
-- (int)bindInputBuffer:(unint64_t)a3 withImage:(id)a4 andOriginalImageData:(id)a5 rotationOfResultTensor:(int64_t)a6
+- (int)bindInputBuffer:(unint64_t)buffer withImage:(id)image andOriginalImageData:(id)data rotationOfResultTensor:(int64_t)tensor
 {
-  v8 = a4;
-  v9 = [(NSArray *)self->_inputTensorNames objectAtIndexedSubscript:a3];
+  imageCopy = image;
+  v9 = [(NSArray *)self->_inputTensorNames objectAtIndexedSubscript:buffer];
   [v9 UTF8String];
-  [v8 pixelBuffer];
+  [imageCopy pixelBuffer];
   v10 = espresso_network_bind_direct_cvpixelbuffer();
 
   return v10;
 }
 
-- (id)processImageDataThroughNeuralNetwork:(id)a3 originalImageData:(id)a4 regionOfInterest:(CGSize)a5 rotationOfResultTensor:(int64_t)a6
+- (id)processImageDataThroughNeuralNetwork:(id)network originalImageData:(id)data regionOfInterest:(CGSize)interest rotationOfResultTensor:(int64_t)tensor
 {
-  height = a5.height;
-  width = a5.width;
+  height = interest.height;
+  width = interest.width;
   v84 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v72 = a4;
+  networkCopy = network;
+  dataCopy = data;
   v12 = 0;
-  if (v11 && !self->_failedToLoadNetwork)
+  if (networkCopy && !self->_failedToLoadNetwork)
   {
-    v70 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:v72];
+    v70 = [(ARMLImageProcessingTechnique *)self getDeviceOrientationFromImageData:dataCopy];
     v71 = [(ARMLImageProcessingTechnique *)self networkModesForOrientation:?];
     [(ARMLImageProcessingTechnique *)self changeEspressoConfig:?];
-    CVPixelBufferLockBaseAddress([v11 pixelBuffer], 0);
-    [v11 timestamp];
+    CVPixelBufferLockBaseAddress([networkCopy pixelBuffer], 0);
+    [networkCopy timestamp];
     [(ARMLImageProcessingTechnique *)self _startMLRunNetworkSignpostWithTimestamp:?];
-    [v11 timestamp];
+    [networkCopy timestamp];
     v14 = v13;
-    v15 = [v72 cameraType];
-    v16 = [v15 isEqualToString:*MEMORY[0x1E6986948]];
-    v17 = CVPixelBufferGetWidth([v11 pixelBuffer]);
-    -[ARMLImageProcessingTechnique _captureMLRunNetworkInputImageData:cameraType:imageWidth:imageHeight:](self, "_captureMLRunNetworkInputImageData:cameraType:imageWidth:imageHeight:", v16, v17, CVPixelBufferGetHeight([v11 pixelBuffer]), v14);
+    cameraType = [dataCopy cameraType];
+    v16 = [cameraType isEqualToString:*MEMORY[0x1E6986948]];
+    v17 = CVPixelBufferGetWidth([networkCopy pixelBuffer]);
+    -[ARMLImageProcessingTechnique _captureMLRunNetworkInputImageData:cameraType:imageWidth:imageHeight:](self, "_captureMLRunNetworkInputImageData:cameraType:imageWidth:imageHeight:", v16, v17, CVPixelBufferGetHeight([networkCopy pixelBuffer]), v14);
 
     __p = 0;
     v74 = 0;
@@ -1572,15 +1572,15 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
       v18 = 0;
       for (i = 0; ; ++i)
       {
-        v20 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
-        v21 = i < [v20 count];
+        outputTensorNames = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+        v21 = i < [outputTensorNames count];
 
         if (!v21)
         {
           break;
         }
 
-        [v11 timestamp];
+        [networkCopy timestamp];
         kdebug_trace();
         v22 = [(NSArray *)self->_outputTensorNames objectAtIndexedSubscript:i];
         v23 = v22;
@@ -1597,7 +1597,7 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
             *buf = 138543874;
             v77 = v27;
             v78 = 2048;
-            v79 = self;
+            selfCopy2 = self;
             v80 = 2080;
             v81 = "Failure to query network output dimensions";
             _os_log_impl(&dword_1C241C000, v25, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -1661,8 +1661,8 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
         }
 
         v74 = v33;
-        v39 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
-        v40 = [v39 objectAtIndexedSubscript:i];
+        outputTensorNames2 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+        v40 = [outputTensorNames2 objectAtIndexedSubscript:i];
         v41 = v40;
         [v40 UTF8String];
         v42 = espresso_network_bind_direct_cvpixelbuffer();
@@ -1677,7 +1677,7 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
             *buf = 138543874;
             v77 = v45;
             v78 = 2048;
-            v79 = self;
+            selfCopy2 = self;
             v80 = 2080;
             v81 = "Failure to bind direct cvpixelbuffer output";
             _os_log_impl(&dword_1C241C000, v43, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", buf, 0x20u);
@@ -1691,17 +1691,17 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
 
     for (j = 0; ; ++j)
     {
-      v47 = [(ARMLImageProcessingTechnique *)self inputTensorNames];
-      v48 = j < [v47 count];
+      inputTensorNames = [(ARMLImageProcessingTechnique *)self inputTensorNames];
+      v48 = j < [inputTensorNames count];
 
       if (!v48)
       {
         break;
       }
 
-      if ([(ARMLImageProcessingTechnique *)self bindInputBuffer:j withImage:v11 andOriginalImageData:v72 rotationOfResultTensor:a6])
+      if ([(ARMLImageProcessingTechnique *)self bindInputBuffer:j withImage:networkCopy andOriginalImageData:dataCopy rotationOfResultTensor:tensor])
       {
-        [v11 timestamp];
+        [networkCopy timestamp];
         [(ARMLImageProcessingTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
         if (ARShouldUseLogTypeError(void)::onceToken != -1)
         {
@@ -1740,7 +1740,7 @@ void __67__ARMLImageProcessingTechnique__asynchronousProcessEspressoTensor___blo
           _os_log_impl(&dword_1C241C000, v54, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to bind input buffer for index: '%lu'.", v82, 0x20u);
         }
 
-        CVPixelBufferUnlockBaseAddress([v11 pixelBuffer], 0);
+        CVPixelBufferUnlockBaseAddress([networkCopy pixelBuffer], 0);
 LABEL_43:
         v12 = 0;
         goto LABEL_44;
@@ -1763,22 +1763,22 @@ LABEL_43:
         _os_log_impl(&dword_1C241C000, v49, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %s", v82, 0x20u);
       }
 
-      CVPixelBufferUnlockBaseAddress([v11 pixelBuffer], 0);
-      [v11 timestamp];
+      CVPixelBufferUnlockBaseAddress([networkCopy pixelBuffer], 0);
+      [networkCopy timestamp];
       [(ARMLImageProcessingTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
       goto LABEL_43;
     }
 
-    [v11 timestamp];
+    [networkCopy timestamp];
     [(ARMLImageProcessingTechnique *)self _endMLRunNetworkSignpostWithTimestamp:?];
-    CVPixelBufferUnlockBaseAddress([v11 pixelBuffer], 0);
-    v60 = [v11 pixelBuffer];
-    [v11 timestamp];
+    CVPixelBufferUnlockBaseAddress([networkCopy pixelBuffer], 0);
+    pixelBuffer = [networkCopy pixelBuffer];
+    [networkCopy timestamp];
     v62 = v61;
-    if (v60)
+    if (pixelBuffer)
     {
-      v63 = CVPixelBufferGetWidth(v60);
-      v64 = CVPixelBufferGetHeight(v60);
+      v63 = CVPixelBufferGetWidth(pixelBuffer);
+      v64 = CVPixelBufferGetHeight(pixelBuffer);
       v65 = v63;
       v66 = v64;
     }
@@ -1800,14 +1800,14 @@ LABEL_43:
       [ARMLImageProcessingTechnique createResultDataFromTensors:"createResultDataFromTensors:numberOfOutputTensors:imageDataForNeuralNetwork:inputImageData:rotationNeeded:regionOfInterest:" numberOfOutputTensors:width imageDataForNeuralNetwork:height inputImageData:? rotationNeeded:? regionOfInterest:?];
     }
     v12 = ;
-    [v11 timestamp];
+    [networkCopy timestamp];
     [(ARMLImageProcessingTechnique *)self _endMLCreateResultSignpostWithTimestamp:?];
     if ([(ARMLImageProcessingTechnique *)self useEspressoZeroCopyOutput])
     {
       for (k = 0; ; ++k)
       {
-        v68 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
-        v69 = k < [v68 count];
+        outputTensorNames3 = [(ARMLImageProcessingTechnique *)self outputTensorNames];
+        v69 = k < [outputTensorNames3 count];
 
         if (!v69)
         {
@@ -1829,10 +1829,10 @@ LABEL_44:
   return v12;
 }
 
-- (int64_t)getDeviceOrientationFromImageData:(id)a3
+- (int64_t)getDeviceOrientationFromImageData:(id)data
 {
-  v4 = a3;
-  if (![v4 deviceOrientation])
+  dataCopy = data;
+  if (![dataCopy deviceOrientation])
   {
     lockedOrientation = self->_lockedOrientation;
     if ((lockedOrientation & 0x80000000) == 0)
@@ -1852,7 +1852,7 @@ LABEL_44:
 
   v9.receiver = self;
   v9.super_class = ARMLImageProcessingTechnique;
-  lockedOrientation = [(ARImageBasedTechnique *)&v9 getDeviceOrientationFromImageData:v4];
+  lockedOrientation = [(ARImageBasedTechnique *)&v9 getDeviceOrientationFromImageData:dataCopy];
 LABEL_6:
 
   return lockedOrientation;

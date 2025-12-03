@@ -1,27 +1,27 @@
 @interface CNUIMeContactComparisonStrategyUnified
-- (BOOL)isMeContact:(id)a3;
-- (id)identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:(id)a3;
+- (BOOL)isMeContact:(id)contact;
+- (id)identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:(id)contact;
 - (id)meContactIdentifiers;
-- (void)meContactChangedInStore:(id)a3;
+- (void)meContactChangedInStore:(id)store;
 @end
 
 @implementation CNUIMeContactComparisonStrategyUnified
 
-- (void)meContactChangedInStore:(id)a3
+- (void)meContactChangedInStore:(id)store
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E695C2D8];
   v17[0] = *MEMORY[0x1E695C258];
   v17[1] = v4;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
+  storeCopy = store;
   v7 = [v5 arrayWithObjects:v17 count:2];
   v16 = 0;
-  v8 = [v6 _crossPlatformUnifiedMeContactWithKeysToFetch:v7 error:&v16];
+  v8 = [storeCopy _crossPlatformUnifiedMeContactWithKeysToFetch:v7 error:&v16];
   v9 = v16;
 
   v15 = v9;
-  v10 = [v6 meContactIdentifiers:&v15];
+  v10 = [storeCopy meContactIdentifiers:&v15];
 
   v11 = v15;
   v12 = [(CNUIMeContactComparisonStrategyUnified *)self identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:v8];
@@ -38,31 +38,31 @@
 
 - (id)meContactIdentifiers
 {
-  v2 = [(CNUIMeContactComparisonStrategyUnified *)self meContactIdentifiersFound];
-  v3 = [v2 allObjects];
+  meContactIdentifiersFound = [(CNUIMeContactComparisonStrategyUnified *)self meContactIdentifiersFound];
+  allObjects = [meContactIdentifiersFound allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (BOOL)isMeContact:(id)a3
+- (BOOL)isMeContact:(id)contact
 {
-  if (!a3)
+  if (!contact)
   {
     return 0;
   }
 
   v4 = [(CNUIMeContactComparisonStrategyUnified *)self identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:?];
-  v5 = [(CNUIMeContactComparisonStrategyUnified *)self meContactIdentifiersFound];
-  v6 = [v4 intersectsSet:v5];
+  meContactIdentifiersFound = [(CNUIMeContactComparisonStrategyUnified *)self meContactIdentifiersFound];
+  v6 = [v4 intersectsSet:meContactIdentifiersFound];
 
   return v6;
 }
 
-- (id)identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:(id)a3
+- (id)identifierAndLinkIdentifierAndLinkedContactIdentifiersFromContact:(id)contact
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v4 = [MEMORY[0x1E695DFD8] set];
     goto LABEL_14;
@@ -70,53 +70,53 @@
 
   v4 = [MEMORY[0x1E695DFA8] set];
   v5 = *MEMORY[0x1E6996568];
-  v6 = [v3 identifier];
-  v7 = (*(v5 + 16))(v5, v6);
+  identifier = [contactCopy identifier];
+  v7 = (*(v5 + 16))(v5, identifier);
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v3 identifier];
-    [v4 addObject:v8];
+    identifier2 = [contactCopy identifier];
+    [v4 addObject:identifier2];
   }
 
-  if (![v3 isUnified])
+  if (![contactCopy isUnified])
   {
-    v15 = +[CNUIMeContactMonitor log];
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    linkedContacts2 = +[CNUIMeContactMonitor log];
+    if (!os_log_type_enabled(linkedContacts2, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v16 = [v3 identifier];
+    identifier3 = [contactCopy identifier];
     v18 = 138543362;
-    v19 = v16;
-    _os_log_impl(&dword_1A31E6000, v15, OS_LOG_TYPE_DEFAULT, "*** WARNING *** contact %{public}@ is not unified. This may result in the contact not being correctly identified as the me contact.", &v18, 0xCu);
+    v19 = identifier3;
+    _os_log_impl(&dword_1A31E6000, linkedContacts2, OS_LOG_TYPE_DEFAULT, "*** WARNING *** contact %{public}@ is not unified. This may result in the contact not being correctly identified as the me contact.", &v18, 0xCu);
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v9 = [v3 linkIdentifier];
-  v10 = (*(v5 + 16))(v5, v9);
+  linkIdentifier = [contactCopy linkIdentifier];
+  v10 = (*(v5 + 16))(v5, linkIdentifier);
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v3 linkIdentifier];
-    [v4 addObject:v11];
+    linkIdentifier2 = [contactCopy linkIdentifier];
+    [v4 addObject:linkIdentifier2];
   }
 
   v12 = *MEMORY[0x1E6996530];
-  v13 = [v3 linkedContacts];
-  v14 = [v13 _cn_map:&__block_literal_global_139];
+  linkedContacts = [contactCopy linkedContacts];
+  v14 = [linkedContacts _cn_map:&__block_literal_global_139];
   LOBYTE(v12) = (*(v12 + 16))(v12, v14);
 
   if ((v12 & 1) == 0)
   {
-    v15 = [v3 linkedContacts];
-    v16 = [v15 _cn_map:&__block_literal_global_139];
-    [v4 addObjectsFromArray:v16];
+    linkedContacts2 = [contactCopy linkedContacts];
+    identifier3 = [linkedContacts2 _cn_map:&__block_literal_global_139];
+    [v4 addObjectsFromArray:identifier3];
     goto LABEL_12;
   }
 

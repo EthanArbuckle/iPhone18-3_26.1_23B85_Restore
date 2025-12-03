@@ -1,41 +1,41 @@
 @interface PUActivitySharingController
-- (BOOL)_shouldIncrementShareCountForActivityType:(id)a3;
-- (BOOL)activityViewControllerShouldCancelAfterPreparationCanceled:(id)a3;
+- (BOOL)_shouldIncrementShareCountForActivityType:(id)type;
+- (BOOL)activityViewControllerShouldCancelAfterPreparationCanceled:(id)canceled;
 - (NSArray)selectedAssets;
 - (NSDictionary)selectedAssetsByAssetCollection;
 - (PHAsset)currentAsset;
 - (PUActivitySharingController)init;
-- (PUActivitySharingController)initWithActivitySharingConfiguration:(id)a3;
+- (PUActivitySharingController)initWithActivitySharingConfiguration:(id)configuration;
 - (PUActivitySharingController)new;
 - (PUActivityViewController)internalActivityViewController;
 - (PUCarouselSharingViewController)carouselViewController;
 - (PXActivitySharingControllerDelegate)delegate;
 - (PXActivityViewController)activityViewController;
 - (PXSelectionSnapshot)selectionSnapshot;
-- (id)_assetItemsForAssetsFetchResult:(id)a3;
-- (id)_createActivityViewControllerWithActivities:(id)a3;
+- (id)_assetItemsForAssetsFetchResult:(id)result;
+- (id)_createActivityViewControllerWithActivities:(id)activities;
 - (id)activityViewControllerIfAvailable;
 - (id)photosDataSource;
 - (void)_activitySharingControllerWillDismissActivityViewController;
-- (void)_activityViewControllerDidCompleteWithActivityType:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_activityViewControllerDidCompleteWithActivityType:(id)type success:(BOOL)success error:(id)error;
 - (void)_cancel;
 - (void)_cancelPreheatResourcesRequest;
 - (void)_createPhotosViewControllerIfNeeded;
-- (void)_handlePreheatRequestCompletionForAsset:(id)a3 withSuccess:(BOOL)a4 cancelled:(BOOL)a5 error:(id)a6 startTime:(id)a7;
+- (void)_handlePreheatRequestCompletionForAsset:(id)asset withSuccess:(BOOL)success cancelled:(BOOL)cancelled error:(id)error startTime:(id)time;
 - (void)_incrementShareCountForSelectedAssets;
 - (void)_preheatResources;
-- (void)_updateCarouselSelectionEnabled:(BOOL)a3;
+- (void)_updateCarouselSelectionEnabled:(BOOL)enabled;
 - (void)_updateExcludedActivityTypes;
 - (void)_updatePreheatResourcesRequest;
 - (void)_updateSelectedAssetIdentifiers;
-- (void)activityViewControllerDidFailAirdropTransfer:(id)a3;
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3;
-- (void)activityViewControllerWillStartAirdropTransfer:(id)a3;
-- (void)carouselSharingViewController:(id)a3 addAssetItem:(id)a4;
-- (void)carouselSharingViewController:(id)a3 removeAssetItem:(id)a4;
-- (void)carouselSharingViewController:(id)a3 replaceAssetItem:(id)a4 withAssetItem:(id)a5;
-- (void)carouselSharingViewController:(id)a3 setAssetItems:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)activityViewControllerDidFailAirdropTransfer:(id)transfer;
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer;
+- (void)activityViewControllerWillStartAirdropTransfer:(id)transfer;
+- (void)carouselSharingViewController:(id)controller addAssetItem:(id)item;
+- (void)carouselSharingViewController:(id)controller removeAssetItem:(id)item;
+- (void)carouselSharingViewController:(id)controller replaceAssetItem:(id)item withAssetItem:(id)assetItem;
+- (void)carouselSharingViewController:(id)controller setAssetItems:(id)items;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)selectInitialAssets;
 @end
 
@@ -57,20 +57,20 @@
 
 - (void)_updatePreheatResourcesRequest
 {
-  v3 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+  resourcePreheatingQueue = [(PUActivitySharingController *)self resourcePreheatingQueue];
 
-  if (v3)
+  if (resourcePreheatingQueue)
   {
-    v4 = [(PUActivitySharingController *)self selectedAssets];
-    v5 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+    selectedAssets = [(PUActivitySharingController *)self selectedAssets];
+    resourcePreheatingQueue2 = [(PUActivitySharingController *)self resourcePreheatingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__PUActivitySharingController__updatePreheatResourcesRequest__block_invoke;
     v7[3] = &unk_1E7B80C38;
     v7[4] = self;
-    v8 = v4;
-    v6 = v4;
-    dispatch_async(v5, v7);
+    v8 = selectedAssets;
+    v6 = selectedAssets;
+    dispatch_async(resourcePreheatingQueue2, v7);
   }
 }
 
@@ -95,17 +95,17 @@ void __61__PUActivitySharingController__updatePreheatResourcesRequest__block_inv
 
 - (void)_cancelPreheatResourcesRequest
 {
-  v3 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+  resourcePreheatingQueue = [(PUActivitySharingController *)self resourcePreheatingQueue];
 
-  if (v3)
+  if (resourcePreheatingQueue)
   {
-    v4 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+    resourcePreheatingQueue2 = [(PUActivitySharingController *)self resourcePreheatingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__PUActivitySharingController__cancelPreheatResourcesRequest__block_invoke;
     block[3] = &unk_1E7B80DD0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(resourcePreheatingQueue2, block);
   }
 }
 
@@ -119,32 +119,32 @@ uint64_t __61__PUActivitySharingController__cancelPreheatResourcesRequest__block
   return [v3 setResourcesPreheatRequest:0];
 }
 
-- (void)_handlePreheatRequestCompletionForAsset:(id)a3 withSuccess:(BOOL)a4 cancelled:(BOOL)a5 error:(id)a6 startTime:(id)a7
+- (void)_handlePreheatRequestCompletionForAsset:(id)asset withSuccess:(BOOL)success cancelled:(BOOL)cancelled error:(id)error startTime:(id)time
 {
-  v9 = a5;
-  v10 = a4;
+  cancelledCopy = cancelled;
+  successCopy = success;
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(PUActivitySharingController *)self resourcePreheatingQueue];
-  dispatch_assert_queue_V2(v15);
+  assetCopy = asset;
+  errorCopy = error;
+  timeCopy = time;
+  resourcePreheatingQueue = [(PUActivitySharingController *)self resourcePreheatingQueue];
+  dispatch_assert_queue_V2(resourcePreheatingQueue);
 
   v16 = [MEMORY[0x1E695DF00] now];
-  [v16 timeIntervalSinceDate:v14];
+  [v16 timeIntervalSinceDate:timeCopy];
   v18 = v17;
 
   v19 = PLShareSheetGetLog();
   v20 = v19;
-  if (v10)
+  if (successCopy)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v12 uuid];
+      uuid = [assetCopy uuid];
       v26 = 134218498;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2114;
-      v29 = v21;
+      v29 = uuid;
       v30 = 2048;
       v31 = v18;
       v22 = "<PUActivitySharingController:%p> Share Sheet Preheat Resources Request finished with success for asset uuid %{public}@. Took %.2f seconds.";
@@ -157,15 +157,15 @@ LABEL_10:
     }
   }
 
-  else if (v9)
+  else if (cancelledCopy)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v12 uuid];
+      uuid = [assetCopy uuid];
       v26 = 134218498;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2114;
-      v29 = v21;
+      v29 = uuid;
       v30 = 2048;
       v31 = v18;
       v22 = "<PUActivitySharingController:%p> Share Sheet Preheat Resources Request cancelled for asset uuid %{public}@ after %.2f seconds";
@@ -175,15 +175,15 @@ LABEL_10:
 
   else if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v21 = [v12 uuid];
+    uuid = [assetCopy uuid];
     v26 = 134218754;
-    v27 = self;
+    selfCopy3 = self;
     v28 = 2048;
     v29 = v18;
     v30 = 2114;
-    v31 = v21;
+    v31 = uuid;
     v32 = 2114;
-    v33 = v13;
+    v33 = errorCopy;
     v22 = "<PUActivitySharingController:%p> Share Sheet Preheat Resources Request failed after %.2f seconds for asset uuid %{public}@ with error: %{public}@.";
     v23 = v20;
     v24 = OS_LOG_TYPE_ERROR;
@@ -196,27 +196,27 @@ LABEL_10:
 
 - (void)_preheatResources
 {
-  v3 = [(PUActivitySharingController *)self selectedAssets];
-  if ([v3 count] == 1)
+  selectedAssets = [(PUActivitySharingController *)self selectedAssets];
+  if ([selectedAssets count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+    firstObject = [selectedAssets firstObject];
+    resourcePreheatingQueue = [(PUActivitySharingController *)self resourcePreheatingQueue];
 
-    if (!v5)
+    if (!resourcePreheatingQueue)
     {
       v6 = px_dispatch_queue_create_serial();
       [(PUActivitySharingController *)self setResourcePreheatingQueue:v6];
     }
 
-    v7 = [(PUActivitySharingController *)self resourcePreheatingQueue];
+    resourcePreheatingQueue2 = [(PUActivitySharingController *)self resourcePreheatingQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__PUActivitySharingController__preheatResources__block_invoke;
     v9[3] = &unk_1E7B80C38;
-    v10 = v4;
-    v11 = self;
-    v8 = v4;
-    dispatch_async(v7, v9);
+    v10 = firstObject;
+    selfCopy = self;
+    v8 = firstObject;
+    dispatch_async(resourcePreheatingQueue2, v9);
   }
 }
 
@@ -283,104 +283,104 @@ void __48__PUActivitySharingController__preheatResources__block_invoke_2(uint64_
   [WeakRetained _handlePreheatRequestCompletionForAsset:*(a1 + 32) withSuccess:*(a1 + 64) cancelled:*(a1 + 65) error:*(a1 + 40) startTime:*(a1 + 48)];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(PUActivitySharingController *)self delegate];
-  [v4 activitySharingControllerDidCancel:self];
+  delegate = [(PUActivitySharingController *)self delegate];
+  [delegate activitySharingControllerDidCancel:self];
 }
 
-- (void)carouselSharingViewController:(id)a3 replaceAssetItem:(id)a4 withAssetItem:(id)a5
+- (void)carouselSharingViewController:(id)controller replaceAssetItem:(id)item withAssetItem:(id)assetItem
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v9 replaceAssetItem:v8 withAssetItem:v7];
+  assetItemCopy = assetItem;
+  itemCopy = item;
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController replaceAssetItem:itemCopy withAssetItem:assetItemCopy];
 
   [(PUActivitySharingController *)self _updatePreheatResourcesRequest];
 }
 
-- (void)carouselSharingViewController:(id)a3 setAssetItems:(id)a4
+- (void)carouselSharingViewController:(id)controller setAssetItems:(id)items
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PUActivitySharingController *)self internalActivityViewController];
-  v7 = [v6 isUsingCustomItems];
+  itemsCopy = items;
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  isUsingCustomItems = [internalActivityViewController isUsingCustomItems];
 
-  if (v7)
+  if (isUsingCustomItems)
   {
     v8 = PLShareSheetGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
-      v10 = [(PUActivitySharingController *)self internalActivityViewController];
+      internalActivityViewController2 = [(PUActivitySharingController *)self internalActivityViewController];
       v12 = 138412546;
       v13 = v9;
       v14 = 2048;
-      v15 = v10;
+      v15 = internalActivityViewController2;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "<%@:%p>: Ignoring carousel changes. Using custom items", &v12, 0x16u);
     }
   }
 
   else
   {
-    v11 = [(PUActivitySharingController *)self internalActivityViewController];
-    [v11 setAssetItems:v5];
+    internalActivityViewController3 = [(PUActivitySharingController *)self internalActivityViewController];
+    [internalActivityViewController3 setAssetItems:itemsCopy];
 
     [(PUActivitySharingController *)self _updateSelectedAssetIdentifiers];
     [(PUActivitySharingController *)self _updatePreheatResourcesRequest];
   }
 }
 
-- (void)carouselSharingViewController:(id)a3 removeAssetItem:(id)a4
+- (void)carouselSharingViewController:(id)controller removeAssetItem:(id)item
 {
-  v5 = a4;
-  v6 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v6 removeAssetItem:v5];
+  itemCopy = item;
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController removeAssetItem:itemCopy];
 
-  v7 = [v5 asset];
+  asset = [itemCopy asset];
 
-  v12 = [v7 localIdentifier];
+  localIdentifier = [asset localIdentifier];
 
-  v8 = [(PUActivitySharingController *)self internalActivityViewController];
-  v9 = [v8 _selectedAssetIdentifiers];
-  v10 = [v9 mutableCopy];
+  internalActivityViewController2 = [(PUActivitySharingController *)self internalActivityViewController];
+  _selectedAssetIdentifiers = [internalActivityViewController2 _selectedAssetIdentifiers];
+  v10 = [_selectedAssetIdentifiers mutableCopy];
 
-  [v10 removeObject:v12];
-  v11 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v11 _setSelectedAssetIdentifiers:v10];
+  [v10 removeObject:localIdentifier];
+  internalActivityViewController3 = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController3 _setSelectedAssetIdentifiers:v10];
 
   [(PUActivitySharingController *)self _updatePreheatResourcesRequest];
 }
 
-- (void)carouselSharingViewController:(id)a3 addAssetItem:(id)a4
+- (void)carouselSharingViewController:(id)controller addAssetItem:(id)item
 {
-  v5 = a4;
-  v6 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v6 addAssetItem:v5];
+  itemCopy = item;
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController addAssetItem:itemCopy];
 
-  v7 = [v5 asset];
+  asset = [itemCopy asset];
 
-  v13 = [v7 localIdentifier];
+  localIdentifier = [asset localIdentifier];
 
-  v8 = [(PUActivitySharingController *)self internalActivityViewController];
-  v9 = [v8 _selectedAssetIdentifiers];
+  internalActivityViewController2 = [(PUActivitySharingController *)self internalActivityViewController];
+  _selectedAssetIdentifiers = [internalActivityViewController2 _selectedAssetIdentifiers];
 
-  if (([v9 containsObject:v13] & 1) == 0)
+  if (([_selectedAssetIdentifiers containsObject:localIdentifier] & 1) == 0)
   {
-    if (v9)
+    if (_selectedAssetIdentifiers)
     {
-      v10 = [v9 mutableCopy];
+      array = [_selectedAssetIdentifiers mutableCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v11 = v10;
-    [v10 addObject:v13];
-    v12 = [(PUActivitySharingController *)self internalActivityViewController];
-    [v12 _setSelectedAssetIdentifiers:v11];
+    v11 = array;
+    [array addObject:localIdentifier];
+    internalActivityViewController3 = [(PUActivitySharingController *)self internalActivityViewController];
+    [internalActivityViewController3 _setSelectedAssetIdentifiers:v11];
   }
 
   [(PUActivitySharingController *)self _updatePreheatResourcesRequest];
@@ -389,29 +389,29 @@ void __48__PUActivitySharingController__preheatResources__block_invoke_2(uint64_
 - (void)_updateSelectedAssetIdentifiers
 {
   v3 = MEMORY[0x1E695DFB8];
-  v4 = [(PUActivitySharingController *)self selectedAssets];
-  v8 = [v3 orderedSetWithArray:v4];
+  selectedAssets = [(PUActivitySharingController *)self selectedAssets];
+  v8 = [v3 orderedSetWithArray:selectedAssets];
 
   v5 = [v8 valueForKey:@"localIdentifier"];
-  v6 = [v5 array];
+  array = [v5 array];
 
-  v7 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v7 _setSelectedAssetIdentifiers:v6];
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController _setSelectedAssetIdentifiers:array];
 }
 
-- (BOOL)activityViewControllerShouldCancelAfterPreparationCanceled:(id)a3
+- (BOOL)activityViewControllerShouldCancelAfterPreparationCanceled:(id)canceled
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  canceledCopy = canceled;
   v5 = PLShareSheetGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = canceledCopy;
     v6 = v9;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "<%@:%p>: preparation was cancelled for activityViewController:%@", &v8, 0x20u);
   }
@@ -420,28 +420,28 @@ void __48__PUActivitySharingController__preheatResources__block_invoke_2(uint64_
   return 0;
 }
 
-- (void)activityViewControllerDidFailAirdropTransfer:(id)a3
+- (void)activityViewControllerDidFailAirdropTransfer:(id)transfer
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = PLShareSheetGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "<PUActivitySharingController:%p> Share Sheet did fail AirDrop transfer", &v5, 0xCu);
   }
 
   [(PUActivitySharingController *)self _updateCarouselSelectionEnabled:1];
 }
 
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = PLShareSheetGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "<PUActivitySharingController:%p> Share Sheet did finish AirDrop transfer", &v5, 0xCu);
   }
 
@@ -449,48 +449,48 @@ void __48__PUActivitySharingController__preheatResources__block_invoke_2(uint64_
   [(PUActivitySharingController *)self _incrementShareCountForSelectedAssets];
 }
 
-- (void)activityViewControllerWillStartAirdropTransfer:(id)a3
+- (void)activityViewControllerWillStartAirdropTransfer:(id)transfer
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = PLShareSheetGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "<PUActivitySharingController:%p> Share Sheet will start AirDrop transfer", &v5, 0xCu);
   }
 
   [(PUActivitySharingController *)self _updateCarouselSelectionEnabled:0];
 }
 
-- (void)_updateCarouselSelectionEnabled:(BOOL)a3
+- (void)_updateCarouselSelectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x1E69E9840];
   v5 = PLShareSheetGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v3;
+    v10 = enabledCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "<PUActivitySharingController:%p> Share Sheet update carousel selection enabled: %d", &v7, 0x12u);
   }
 
-  [(PUCarouselSharingViewController *)self->_carouselViewController setSelectionEnabled:v3];
-  v6 = [(PUCarouselSharingViewController *)self->_carouselViewController mainCollectionView];
-  [v6 reloadData];
+  [(PUCarouselSharingViewController *)self->_carouselViewController setSelectionEnabled:enabledCopy];
+  mainCollectionView = [(PUCarouselSharingViewController *)self->_carouselViewController mainCollectionView];
+  [mainCollectionView reloadData];
 }
 
 - (void)_activitySharingControllerWillDismissActivityViewController
 {
-  v3 = [(PUActivitySharingController *)self delegate];
+  delegate = [(PUActivitySharingController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PUActivitySharingController *)self delegate];
-    [v5 activitySharingControllerWillDismissActivityViewController:self];
+    delegate2 = [(PUActivitySharingController *)self delegate];
+    [delegate2 activitySharingControllerWillDismissActivityViewController:self];
   }
 
   [(PUActivitySharingController *)self _cancelPreheatResourcesRequest];
@@ -498,20 +498,20 @@ void __48__PUActivitySharingController__preheatResources__block_invoke_2(uint64_
 
 - (void)_cancel
 {
-  v3 = [(PUActivitySharingController *)self delegate];
+  delegate = [(PUActivitySharingController *)self delegate];
   objc_initWeak(&location, self);
-  v4 = [(PUActivitySharingController *)self internalActivityViewController];
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PUActivitySharingController__cancel__block_invoke;
   v7[3] = &unk_1E7B746C8;
-  v5 = v3;
+  v5 = delegate;
   v8 = v5;
   objc_copyWeak(&v9, &location);
-  [v4 setCompletionWithItemsHandler:v7];
+  [internalActivityViewController setCompletionWithItemsHandler:v7];
 
-  v6 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v6 _cancel];
+  internalActivityViewController2 = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController2 _cancel];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -527,8 +527,8 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
 - (void)_incrementShareCountForSelectedAssets
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(PUActivitySharingController *)self internalActivityViewController];
-  v3 = [v2 assets];
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  assets = [internalActivityViewController assets];
 
   PXIncrementShareCountForAssets();
   v4 = objc_opt_class();
@@ -537,7 +537,7 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = assets;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
@@ -574,12 +574,12 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_shouldIncrementShareCountForActivityType:(id)a3
+- (BOOL)_shouldIncrementShareCountForActivityType:(id)type
 {
-  v3 = a3;
-  if ([PUActivityViewController isShareActivity:v3])
+  typeCopy = type;
+  if ([PUActivityViewController isShareActivity:typeCopy])
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69CDA78]] ^ 1;
+    v4 = [typeCopy isEqualToString:*MEMORY[0x1E69CDA78]] ^ 1;
   }
 
   else
@@ -594,32 +594,32 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
 {
   if (self->_usePhotosStack)
   {
-    v2 = [(PUPhotosSharingStackViewController *)self->_stackViewController currentAsset];
+    currentAsset = [(PUPhotosSharingStackViewController *)self->_stackViewController currentAsset];
   }
 
   else
   {
-    v3 = [(PUActivitySharingController *)self carouselViewController];
-    v2 = [v3 currentAsset];
+    carouselViewController = [(PUActivitySharingController *)self carouselViewController];
+    currentAsset = [carouselViewController currentAsset];
   }
 
-  return v2;
+  return currentAsset;
 }
 
-- (void)_activityViewControllerDidCompleteWithActivityType:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_activityViewControllerDidCompleteWithActivityType:(id)type success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  errorCopy = error;
   v10 = PLShareSheetGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [(PUActivitySharingController *)self internalActivityViewController];
+    internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
     v14 = @"NO";
-    if (v6)
+    if (successCopy)
     {
       v14 = @"YES";
     }
@@ -628,33 +628,33 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     v19 = 138413570;
     v20 = v11;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v13;
+    v24 = internalActivityViewController;
     v25 = 2112;
-    v26 = v8;
+    v26 = typeCopy;
     v27 = 2112;
     v28 = v15;
     v29 = 2112;
-    v30 = v9;
+    v30 = errorCopy;
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEFAULT, "<%@:%p>: activityViewController %@ did complete with activity type:%@ didComplete:%@ error:%@", &v19, 0x3Eu);
   }
 
-  if (v6 && [(PUActivitySharingController *)self _shouldIncrementShareCountForActivityType:v8])
+  if (successCopy && [(PUActivitySharingController *)self _shouldIncrementShareCountForActivityType:typeCopy])
   {
     [(PUActivitySharingController *)self _incrementShareCountForSelectedAssets];
   }
 
-  if (v8 && ((-[PUActivitySharingController internalActivityViewController](self, "internalActivityViewController"), v16 = objc_claimAutoreleasedReturnValue(), [v16 presentingViewController], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17) || v6))
+  if (typeCopy && ((-[PUActivitySharingController internalActivityViewController](self, "internalActivityViewController"), v16 = objc_claimAutoreleasedReturnValue(), [v16 presentingViewController], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17) || successCopy))
   {
-    v18 = [(PUActivitySharingController *)self delegate];
-    [v18 activitySharingController:self didCompleteWithActivityType:v8 success:v6];
+    delegate = [(PUActivitySharingController *)self delegate];
+    [delegate activitySharingController:self didCompleteWithActivityType:typeCopy success:successCopy];
   }
 
   else
   {
-    v18 = [(PUActivitySharingController *)self delegate];
-    [v18 activitySharingControllerDidCancel:self];
+    delegate = [(PUActivitySharingController *)self delegate];
+    [delegate activitySharingControllerDidCancel:self];
   }
 }
 
@@ -667,10 +667,10 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     [v3 addObject:*MEMORY[0x1E69C3CF0]];
   }
 
-  v4 = [(PUActivitySharingController *)self person];
-  v5 = [v4 faceCount];
+  person = [(PUActivitySharingController *)self person];
+  faceCount = [person faceCount];
 
-  if (v5 <= 1)
+  if (faceCount <= 1)
   {
     v6 = *MEMORY[0x1E69C3E18];
     v21[0] = *MEMORY[0x1E69C3E60];
@@ -679,13 +679,13 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     [v3 addObjectsFromArray:v7];
   }
 
-  v8 = [(PUActivitySharingController *)self excludedActivityTypes];
-  v9 = [v8 count];
+  excludedActivityTypes = [(PUActivitySharingController *)self excludedActivityTypes];
+  v9 = [excludedActivityTypes count];
 
   if (v9)
   {
-    v10 = [(PUActivitySharingController *)self excludedActivityTypes];
-    [v3 addObjectsFromArray:v10];
+    excludedActivityTypes2 = [(PUActivitySharingController *)self excludedActivityTypes];
+    [v3 addObjectsFromArray:excludedActivityTypes2];
   }
 
   v11 = PLShareSheetGetLog();
@@ -694,42 +694,42 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     v15 = 138412802;
     v16 = objc_opt_class();
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v3;
     v12 = v16;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEFAULT, "<%@:%p>: set ExcludedActivityTypes: %@", &v15, 0x20u);
   }
 
-  v13 = [v3 allObjects];
-  v14 = [(PUActivitySharingController *)self internalActivityViewController];
-  [v14 setExcludedActivityTypes:v13];
+  allObjects = [v3 allObjects];
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  [internalActivityViewController setExcludedActivityTypes:allObjects];
 }
 
-- (id)_createActivityViewControllerWithActivities:(id)a3
+- (id)_createActivityViewControllerWithActivities:(id)activities
 {
   v46 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  activitiesCopy = activities;
   v5 = MEMORY[0x1E695DFB8];
-  v6 = [(PUActivitySharingController *)self selectedAssets];
-  v7 = [v5 orderedSetWithArray:v6];
+  selectedAssets = [(PUActivitySharingController *)self selectedAssets];
+  v7 = [v5 orderedSetWithArray:selectedAssets];
 
   v8 = [v7 valueForKey:@"localIdentifier"];
-  v9 = [v8 array];
+  array = [v8 array];
 
   if (self->_usePhotosStack)
   {
     stackViewController = self->_stackViewController;
     if (!stackViewController)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"_stackViewController"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"_stackViewController"}];
 
       stackViewController = self->_stackViewController;
     }
 
-    v11 = [(PUPhotosSharingStackViewController *)stackViewController assetFetchResult];
-    v12 = [(PUActivitySharingController *)self _assetItemsForAssetsFetchResult:v11];
+    assetFetchResult = [(PUPhotosSharingStackViewController *)stackViewController assetFetchResult];
+    currentActivityAssetItems = [(PUActivitySharingController *)self _assetItemsForAssetsFetchResult:assetFetchResult];
   }
 
   else
@@ -737,37 +737,37 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     carouselViewController = self->_carouselViewController;
     if (!carouselViewController)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"_carouselViewController"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"_carouselViewController"}];
 
       carouselViewController = self->_carouselViewController;
     }
 
-    v12 = [(PUCarouselSharingViewController *)carouselViewController currentActivityAssetItems];
+    currentActivityAssetItems = [(PUCarouselSharingViewController *)carouselViewController currentActivityAssetItems];
   }
 
-  v14 = [v7 firstObject];
-  v15 = [v14 photoLibrary];
+  firstObject = [v7 firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__PUActivitySharingController__createActivityViewControllerWithActivities___block_invoke;
   block[3] = &unk_1E7B80DD0;
-  v16 = v15;
+  v16 = photoLibrary;
   v39 = v16;
   v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, block);
   v18 = dispatch_get_global_queue(21, 0);
   dispatch_async(v18, v17);
 
-  v19 = [[PUActivityViewController alloc] initWithAssetItems:v12 photosApplicationActivities:v30 linkPresentation:0 assetIdentifiers:v9 sharingViewModel:self->_viewModel];
+  v19 = [[PUActivityViewController alloc] initWithAssetItems:currentActivityAssetItems photosApplicationActivities:activitiesCopy linkPresentation:0 assetIdentifiers:array sharingViewModel:self->_viewModel];
   [(PUActivityViewController *)v19 setDelegate:self];
   [(PUActivityViewController *)v19 setAirDropDelegate:self];
   [(PUActivityViewController *)v19 setActivitySharingController:self];
   [(PUActivityViewController *)v19 setEnableNewDesignInPhotos:1];
   [(PUActivityViewController *)v19 setAllowsCustomPresentationStyle:1];
   [(PUActivityViewController *)v19 setModalPresentationStyle:2];
-  v20 = [(PUActivityViewController *)v19 presentationController];
-  [v20 setDelegate:self];
+  presentationController = [(PUActivityViewController *)v19 presentationController];
+  [presentationController setDelegate:self];
 
   [(PUActivityViewController *)v19 setSharingStyle:0];
   v21 = 88;
@@ -784,7 +784,7 @@ void __38__PUActivitySharingController__cancel__block_invoke(uint64_t a1)
     *buf = 138412802;
     v41 = v23;
     v42 = 2048;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
     v45 = v19;
     v24 = v23;
@@ -848,16 +848,16 @@ void __75__PUActivitySharingController__createActivityViewControllerWithActiviti
   [v3 _preheatResources];
 }
 
-- (id)_assetItemsForAssetsFetchResult:(id)a3
+- (id)_assetItemsForAssetsFetchResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  resultCopy = result;
+  v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(resultCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = resultCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -889,50 +889,50 @@ void __75__PUActivitySharingController__createActivityViewControllerWithActiviti
 
 - (void)selectInitialAssets
 {
-  v3 = [(PUActivitySharingController *)self viewModel];
-  v4 = [v3 selectionManager];
-  v5 = [(PUActivitySharingController *)self viewModel];
-  v6 = [v5 collectionListFetchResult];
-  [v4 selectInitialAssetsInAssetCollections:v6];
+  viewModel = [(PUActivitySharingController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  viewModel2 = [(PUActivitySharingController *)self viewModel];
+  collectionListFetchResult = [viewModel2 collectionListFetchResult];
+  [selectionManager selectInitialAssetsInAssetCollections:collectionListFetchResult];
 
   [(PUActivitySharingController *)self _updateSelectedAssetIdentifiers];
 }
 
 - (NSArray)selectedAssets
 {
-  v3 = [(PUActivitySharingController *)self viewModel];
-  v4 = [v3 selectionManager];
-  v5 = [(PUActivitySharingController *)self viewModel];
-  v6 = [v5 collectionListFetchResult];
-  v7 = [v4 selectedAssetsWithAssetCollectionOrdering:v6];
+  viewModel = [(PUActivitySharingController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  viewModel2 = [(PUActivitySharingController *)self viewModel];
+  collectionListFetchResult = [viewModel2 collectionListFetchResult];
+  v7 = [selectionManager selectedAssetsWithAssetCollectionOrdering:collectionListFetchResult];
 
   return v7;
 }
 
 - (NSDictionary)selectedAssetsByAssetCollection
 {
-  v2 = [(PUActivitySharingController *)self viewModel];
-  v3 = [v2 selectionManager];
-  v4 = [v3 selectedAssetsByAssetCollection];
+  viewModel = [(PUActivitySharingController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectedAssetsByAssetCollection = [selectionManager selectedAssetsByAssetCollection];
 
-  return v4;
+  return selectedAssetsByAssetCollection;
 }
 
 - (PXSelectionSnapshot)selectionSnapshot
 {
-  v2 = [(PUActivitySharingController *)self viewModel];
-  v3 = [v2 selectionManager];
-  v4 = [v3 selectionSnapshot];
+  viewModel = [(PUActivitySharingController *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  return v4;
+  return selectionSnapshot;
 }
 
 - (id)photosDataSource
 {
-  v2 = [(PUActivitySharingController *)self viewModel];
-  v3 = [v2 photosDataSource];
+  viewModel = [(PUActivitySharingController *)self viewModel];
+  photosDataSource = [viewModel photosDataSource];
 
-  return v3;
+  return photosDataSource;
 }
 
 - (PXActivityViewController)activityViewController
@@ -950,21 +950,21 @@ void __75__PUActivitySharingController__createActivityViewControllerWithActiviti
         *buf = 138412546;
         v15 = objc_opt_class();
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v6 = v15;
         _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_ERROR, "<%@:%p>: Accessing lazy activityViewController getter when it has been dealloced already.", buf, 0x16u);
       }
     }
 
     self->_activityViewControllerWasCreated = 1;
-    v7 = [(PUActivitySharingController *)self viewModel];
-    v8 = [v7 selectionManager];
-    v9 = [v8 isAnyAssetSelected];
+    viewModel = [(PUActivitySharingController *)self viewModel];
+    selectionManager = [viewModel selectionManager];
+    isAnyAssetSelected = [selectionManager isAnyAssetSelected];
 
-    if ((v9 & 1) == 0)
+    if ((isAnyAssetSelected & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"self.viewModel.selectionManager.isAnyAssetSelected"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"self.viewModel.selectionManager.isAnyAssetSelected"}];
     }
 
     v10 = [(PUActivitySharingController *)self _createActivityViewControllerWithActivities:self->_activities];
@@ -981,8 +981,8 @@ void __75__PUActivitySharingController__createActivityViewControllerWithActiviti
 - (id)activityViewControllerIfAvailable
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PUActivitySharingController *)self internalActivityViewController];
-  if (!v3)
+  internalActivityViewController = [(PUActivitySharingController *)self internalActivityViewController];
+  if (!internalActivityViewController)
   {
     activityViewControllerWasCreated = self->_activityViewControllerWasCreated;
     v5 = PLShareSheetGetLog();
@@ -994,7 +994,7 @@ void __75__PUActivitySharingController__createActivityViewControllerWithActiviti
         v10 = 138412546;
         v11 = objc_opt_class();
         v12 = 2048;
-        v13 = self;
+        selfCopy2 = self;
         v7 = v11;
         v8 = "<%@:%p>:  Accessing activityViewControllerIfAvailable when it has been dealloced already.";
 LABEL_7:
@@ -1007,22 +1007,22 @@ LABEL_7:
       v10 = 138412546;
       v11 = objc_opt_class();
       v12 = 2048;
-      v13 = self;
+      selfCopy2 = self;
       v7 = v11;
       v8 = "<%@:%p>:  Accessing activityViewControllerIfAvailable before it has been created.";
       goto LABEL_7;
     }
   }
 
-  return v3;
+  return internalActivityViewController;
 }
 
 - (PUCarouselSharingViewController)carouselViewController
 {
   if (self->_usePhotosStack)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:134 description:@"Attempting to obtain carousel when using photos stack view"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:134 description:@"Attempting to obtain carousel when using photos stack view"];
   }
 
   carouselViewController = self->_carouselViewController;
@@ -1043,7 +1043,7 @@ LABEL_7:
         v16 = 138412546;
         v17 = objc_opt_class();
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v4 = v17;
         v5 = "<%@:%p>: _createPhotosViewControllerIfNeeded called for a non-nil _stackViewController...";
 LABEL_8:
@@ -1072,7 +1072,7 @@ LABEL_8:
         v16 = 138412546;
         v17 = objc_opt_class();
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v4 = v17;
         v5 = "<%@:%p>: _createPhotosViewControllerIfNeeded called for a non-nil _carouselViewController...";
         goto LABEL_8;
@@ -1084,30 +1084,30 @@ LABEL_9:
     }
 
     v8 = [PUCarouselSharingViewController alloc];
-    v9 = [(PUActivitySharingViewModel *)self->_viewModel collectionListFetchResult];
+    collectionListFetchResult = [(PUActivitySharingViewModel *)self->_viewModel collectionListFetchResult];
     assetsFetchResultsByAssetCollection = self->_assetsFetchResultsByAssetCollection;
-    v11 = [(PUActivitySharingViewModel *)self->_viewModel selectionManager];
-    v12 = [(PUCarouselSharingViewController *)v8 initWithPhotoCollectionsFetchResult:v9 assetsFetchResultsByAssetCollection:assetsFetchResultsByAssetCollection selection:v11];
+    selectionManager = [(PUActivitySharingViewModel *)self->_viewModel selectionManager];
+    v12 = [(PUCarouselSharingViewController *)v8 initWithPhotoCollectionsFetchResult:collectionListFetchResult assetsFetchResultsByAssetCollection:assetsFetchResultsByAssetCollection selection:selectionManager];
 
     [(PUCarouselSharingViewController *)v12 setDelegate:self];
-    v13 = [(PUActivitySharingViewModel *)self->_viewModel photosDataSource];
-    [(PUCarouselSharingViewController *)v12 setPhotosDataSource:v13];
+    photosDataSource = [(PUActivitySharingViewModel *)self->_viewModel photosDataSource];
+    [(PUCarouselSharingViewController *)v12 setPhotosDataSource:photosDataSource];
 
-    v14 = [(PUActivitySharingViewModel *)self->_viewModel selectionManager];
-    [v14 setDataSource:v12];
+    selectionManager2 = [(PUActivitySharingViewModel *)self->_viewModel selectionManager];
+    [selectionManager2 setDataSource:v12];
 
     carouselViewController = self->_carouselViewController;
     self->_carouselViewController = v12;
   }
 }
 
-- (PUActivitySharingController)initWithActivitySharingConfiguration:(id)a3
+- (PUActivitySharingController)initWithActivitySharingConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"activitySharingConfiguration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"activitySharingConfiguration"}];
   }
 
   v23.receiver = self;
@@ -1115,37 +1115,37 @@ LABEL_9:
   v6 = [(PUActivitySharingController *)&v23 init];
   if (v6)
   {
-    v7 = [[PUActivitySharingViewModel alloc] initWithActivitySharingConfiguration:v5];
+    v7 = [[PUActivitySharingViewModel alloc] initWithActivitySharingConfiguration:configurationCopy];
     viewModel = v6->_viewModel;
     v6->_viewModel = v7;
 
-    v9 = [v5 assetsFetchResultsByAssetCollection];
+    assetsFetchResultsByAssetCollection = [configurationCopy assetsFetchResultsByAssetCollection];
     assetsFetchResultsByAssetCollection = v6->_assetsFetchResultsByAssetCollection;
-    v6->_assetsFetchResultsByAssetCollection = v9;
+    v6->_assetsFetchResultsByAssetCollection = assetsFetchResultsByAssetCollection;
 
-    v6->_allowsAirPlayActivity = [v5 allowsAirPlayActivity];
-    v11 = [v5 person];
+    v6->_allowsAirPlayActivity = [configurationCopy allowsAirPlayActivity];
+    person = [configurationCopy person];
     person = v6->_person;
-    v6->_person = v11;
+    v6->_person = person;
 
-    v13 = [v5 excludedActivityTypes];
+    excludedActivityTypes = [configurationCopy excludedActivityTypes];
     excludedActivityTypes = v6->_excludedActivityTypes;
-    v6->_excludedActivityTypes = v13;
+    v6->_excludedActivityTypes = excludedActivityTypes;
 
-    v15 = [v5 activities];
+    activities = [configurationCopy activities];
     activities = v6->_activities;
-    v6->_activities = v15;
+    v6->_activities = activities;
 
-    v17 = [v5 initialAssetsFetchResult];
+    initialAssetsFetchResult = [configurationCopy initialAssetsFetchResult];
     initialAssetsFetchResult = v6->_initialAssetsFetchResult;
-    v6->_initialAssetsFetchResult = v17;
+    v6->_initialAssetsFetchResult = initialAssetsFetchResult;
 
     v19 = _os_feature_enabled_impl();
     v6->_usePhotosStack = v19;
     if (v19 && !v6->_initialAssetsFetchResult)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:v6 file:@"PUActivitySharingController.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"_initialAssetsFetchResult"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"PUActivitySharingController.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"_initialAssetsFetchResult"}];
     }
 
     [(PUActivitySharingController *)v6 _createPhotosViewControllerIfNeeded];
@@ -1156,16 +1156,16 @@ LABEL_9:
 
 - (PUActivitySharingController)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:84 description:{@"%s is not available as initializer", "-[PUActivitySharingController new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:84 description:{@"%s is not available as initializer", "-[PUActivitySharingController new]"}];
 
   abort();
 }
 
 - (PUActivitySharingController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PUActivitySharingController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivitySharingController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PUActivitySharingController init]"}];
 
   abort();
 }

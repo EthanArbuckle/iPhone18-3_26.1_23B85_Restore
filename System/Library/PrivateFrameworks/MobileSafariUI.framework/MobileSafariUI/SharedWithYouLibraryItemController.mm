@@ -1,46 +1,46 @@
 @interface SharedWithYouLibraryItemController
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelected;
 - (void)didSelectItem;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation SharedWithYouLibraryItemController
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [v3 _systemImageNamed:@"shared.with.you"];
-  [v4 setImage:v5];
+  [configurationCopy setImage:v5];
 
   v6 = startPageTitleForCollectionType(@"SharedWithYouCollection");
-  [v4 setText:v6];
+  [configurationCopy setText:v6];
 }
 
 - (void)didSelectItem
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 libraryItemOpenHandler];
-  [v3 openLibrary:@"SharedWithYouCollection"];
+  configuration = [(LibraryItemController *)self configuration];
+  libraryItemOpenHandler = [configuration libraryItemOpenHandler];
+  [libraryItemOpenHandler openLibrary:@"SharedWithYouCollection"];
 
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didUseSidebarAction:8];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didUseSidebarAction:8];
 }
 
 - (BOOL)isSelected
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 libraryItemOpenHandler];
-  v4 = [v3 activeLibraryType];
-  v5 = [v4 isEqualToString:@"SharedWithYouCollection"];
+  configuration = [(LibraryItemController *)self configuration];
+  libraryItemOpenHandler = [configuration libraryItemOpenHandler];
+  activeLibraryType = [libraryItemOpenHandler activeLibraryType];
+  v5 = [activeLibraryType isEqualToString:@"SharedWithYouCollection"];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -3,31 +3,31 @@
 - (CGRect)paperContentBoundsHint;
 - (id)account;
 - (id)additionalIndexableTextContentInNote;
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4;
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content;
 - (id)searchableTextContentInNote;
-- (void)addMergeableDataToCloudKitRecord:(id)a3 approach:(int64_t)a4 mergeableFieldState:(id)a5;
+- (void)addMergeableDataToCloudKitRecord:(id)record approach:(int64_t)approach mergeableFieldState:(id)state;
 - (void)fixupMetadataAndMinimumSupportedNotesVersion;
-- (void)setHasDeepLink:(BOOL)a3;
-- (void)setPaperContentBoundsHint:(CGRect)a3;
-- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)a3;
+- (void)setHasDeepLink:(BOOL)link;
+- (void)setPaperContentBoundsHint:(CGRect)hint;
+- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)map;
 @end
 
 @implementation ICAttachmentSystemPaperModel
 
 - (CGRect)paperContentBoundsHint
 {
-  v6 = [(ICAttachmentModel *)self attachment];
-  v7 = [v6 metadata];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
 
-  if (!v7)
+  if (!metadata)
   {
     goto LABEL_17;
   }
 
-  v8 = [v7 objectForKeyedSubscript:@"paperContentBoundsOriginXKey"];
-  v9 = [v7 objectForKeyedSubscript:@"paperContentBoundsOriginYKey"];
-  v10 = [v7 objectForKeyedSubscript:@"paperContentBoundsWidthKey"];
-  v11 = [v7 objectForKeyedSubscript:@"paperContentBoundsHeightKey"];
+  v8 = [metadata objectForKeyedSubscript:@"paperContentBoundsOriginXKey"];
+  v9 = [metadata objectForKeyedSubscript:@"paperContentBoundsOriginYKey"];
+  v10 = [metadata objectForKeyedSubscript:@"paperContentBoundsWidthKey"];
+  v11 = [metadata objectForKeyedSubscript:@"paperContentBoundsHeightKey"];
   v12 = v11;
   v13 = !v8 || v9 == 0;
   v14 = v13 || v10 == 0;
@@ -65,13 +65,13 @@ LABEL_17:
   return result;
 }
 
-- (void)setPaperContentBoundsHint:(CGRect)a3
+- (void)setPaperContentBoundsHint:(CGRect)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(ICAttachmentModel *)self attachment];
+  height = hint.size.height;
+  width = hint.size.width;
+  y = hint.origin.y;
+  x = hint.origin.x;
+  attachment = [(ICAttachmentModel *)self attachment];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ICAttachmentSystemPaperModel_setPaperContentBoundsHint___block_invoke;
@@ -80,7 +80,7 @@ LABEL_17:
   *&v8[5] = y;
   *&v8[6] = width;
   *&v8[7] = height;
-  [v7 updateAttachmentMetadataWithBlock:v8];
+  [attachment updateAttachmentMetadataWithBlock:v8];
 }
 
 void __58__ICAttachmentSystemPaperModel_setPaperContentBoundsHint___block_invoke(uint64_t a1, void *a2)
@@ -144,15 +144,15 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)setHasDeepLink:(BOOL)a3
+- (void)setHasDeepLink:(BOOL)link
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__ICAttachmentSystemPaperModel_setHasDeepLink___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  linkCopy = link;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 uint64_t __47__ICAttachmentSystemPaperModel_setHasDeepLink___block_invoke(uint64_t a1, void *a2)
@@ -170,44 +170,44 @@ uint64_t __47__ICAttachmentSystemPaperModel_setHasDeepLink___block_invoke(uint64
 
 - (BOOL)hasDeepLink
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
 
-  v4 = [v3 objectForKeyedSubscript:@"hasDeepLinkKey"];
-  LOBYTE(v2) = v4 != 0;
+  v4 = [metadata objectForKeyedSubscript:@"hasDeepLinkKey"];
+  LOBYTE(attachment) = v4 != 0;
 
-  return v2;
+  return attachment;
 }
 
-- (void)addMergeableDataToCloudKitRecord:(id)a3 approach:(int64_t)a4 mergeableFieldState:(id)a5
+- (void)addMergeableDataToCloudKitRecord:(id)record approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  if (a4 == 1 && a5)
+  if (approach == 1 && state)
   {
-    v7 = a5;
-    v10 = [(ICAttachmentModel *)self attachment];
-    v8 = [v10 identifier];
-    v9 = [v8 dataUsingEncoding:4];
-    [v7 setObject:v9 forKey:@"TokenContentIdentifierEncrypted"];
+    stateCopy = state;
+    attachment = [(ICAttachmentModel *)self attachment];
+    identifier = [attachment identifier];
+    v9 = [identifier dataUsingEncoding:4];
+    [stateCopy setObject:v9 forKey:@"TokenContentIdentifierEncrypted"];
   }
 }
 
-- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)a3
+- (void)updateAfterLoadWithInlineAttachmentIdentifierMap:(id)map
 {
-  v4 = a3;
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 shortLoggingDescription];
+  mapCopy = map;
+  attachment = [(ICAttachmentModel *)self attachment];
+  shortLoggingDescription = [attachment shortLoggingDescription];
 
   v7 = [_TtC11NotesShared21ICSystemPaperDocument alloc];
-  v8 = [(ICAttachmentModel *)self attachment];
-  v9 = [(ICSystemPaperDocument *)v7 initWithPaperAttachment:v8];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  v9 = [(ICSystemPaperDocument *)v7 initWithPaperAttachment:attachment2];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdentifierMap___block_invoke;
   v11[3] = &unk_278195FD8;
-  v12 = v6;
-  v10 = v6;
-  [(ICSystemPaperDocument *)v9 updateGraphDestinationsUsingInlineAttachmentIdentifierMap:v4 completion:v11];
+  v12 = shortLoggingDescription;
+  v10 = shortLoggingDescription;
+  [(ICSystemPaperDocument *)v9 updateGraphDestinationsUsingInlineAttachmentIdentifierMap:mapCopy completion:v11];
 }
 
 void __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdentifierMap___block_invoke(uint64_t a1, void *a2)
@@ -231,28 +231,28 @@ void __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdent
 
 - (void)fixupMetadataAndMinimumSupportedNotesVersion
 {
-  v1 = [a1 attachment];
-  v2 = [v1 ic_loggingDescription];
+  attachment = [self attachment];
+  ic_loggingDescription = [attachment ic_loggingDescription];
   OUTLINED_FUNCTION_0_9();
   OUTLINED_FUNCTION_3_1(&dword_214D51000, v3, v4, "minimumSupportedNotesVersion is (%lld), but attachment is missing compatibility metadata; setting paperHasNewInks2022 now. Attachment: %@", v5, v6, v7, v8, v9);
 }
 
 - (id)additionalIndexableTextContentInNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 additionalIndexableText];
+  attachment = [(ICAttachmentModel *)self attachment];
+  additionalIndexableText = [attachment additionalIndexableText];
 
-  return v3;
+  return additionalIndexableText;
 }
 
 - (id)searchableTextContentInNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 summary];
+  attachment = [(ICAttachmentModel *)self attachment];
+  summary = [attachment summary];
 
-  if (v3)
+  if (summary)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v3];
+    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:summary];
   }
 
   else
@@ -263,15 +263,15 @@ void __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdent
   return v4;
 }
 
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content
 {
-  *a3 = @"img";
-  v4 = [(ICAttachmentModel *)self attachment];
-  v5 = [v4 fallbackImageData];
+  *name = @"img";
+  attachment = [(ICAttachmentModel *)self attachment];
+  fallbackImageData = [attachment fallbackImageData];
 
-  if (v5)
+  if (fallbackImageData)
   {
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    v6 = [fallbackImageData base64EncodedStringWithOptions:0];
     v7 = +[ICAttachment fallbackImageUTI];
     v8 = [ICAttachment mimeTypeFromUTI:v7];
 
@@ -288,8 +288,8 @@ void __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdent
 
 - (id)account
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
   v8 = 0;
   v9 = &v8;
@@ -303,7 +303,7 @@ void __81__ICAttachmentSystemPaperModel_updateAfterLoadWithInlineAttachmentIdent
   v7[3] = &unk_278194DE8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 

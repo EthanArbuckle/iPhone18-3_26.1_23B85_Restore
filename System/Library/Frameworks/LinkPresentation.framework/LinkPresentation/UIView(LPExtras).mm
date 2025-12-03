@@ -21,44 +21,44 @@
 - (void)_lp_setOpacity:()LPExtras
 {
   v2 = a2;
-  v4 = [a1 layer];
+  layer = [self layer];
   *&v3 = v2;
-  [v4 setOpacity:v3];
+  [layer setOpacity:v3];
 }
 
 - (void)_lp_setShadowRadius:()LPExtras
 {
-  v3 = [a1 layer];
-  [v3 setShadowRadius:a2];
+  layer = [self layer];
+  [layer setShadowRadius:a2];
 }
 
 - (void)_lp_setShadowOffset:()LPExtras
 {
-  v5 = [a1 layer];
-  [v5 setShadowOffset:{a2, a3}];
+  layer = [self layer];
+  [layer setShadowOffset:{a2, a3}];
 }
 
 - (void)_lp_setShadowColor:()LPExtras
 {
   v6 = a3;
-  v4 = [v6 CGColor];
-  v5 = [a1 layer];
-  [v5 setShadowColor:v4];
+  cGColor = [v6 CGColor];
+  layer = [self layer];
+  [layer setShadowColor:cGColor];
 }
 
 - (void)_lp_setShadowOpacity:()LPExtras
 {
   v2 = a2;
-  v4 = [a1 layer];
+  layer = [self layer];
   *&v3 = v2;
-  [v4 setShadowOpacity:v3];
+  [layer setShadowOpacity:v3];
 }
 
 - (void)_lp_setCompositingFilter:()LPExtras
 {
   v5 = a3;
-  v4 = [a1 layer];
-  [v4 setCompositingFilter:v5];
+  layer = [self layer];
+  [layer setCompositingFilter:v5];
 }
 
 - (void)_lp_insertSubview:()LPExtras aboveSubview:
@@ -67,12 +67,12 @@
   v6 = a4;
   if (v6)
   {
-    [a1 insertSubview:v7 aboveSubview:v6];
+    [self insertSubview:v7 aboveSubview:v6];
   }
 
   else
   {
-    [a1 addSubview:v7];
+    [self addSubview:v7];
   }
 }
 
@@ -82,31 +82,31 @@
   v6 = a4;
   if (v6)
   {
-    [a1 insertSubview:v7 belowSubview:v6];
+    [self insertSubview:v7 belowSubview:v6];
   }
 
   else
   {
-    [a1 insertSubview:v7 atIndex:0];
+    [self insertSubview:v7 atIndex:0];
   }
 }
 
 - (double)_lp_backingScaleFactor
 {
-  v2 = [a1 window];
+  window = [self window];
 
-  if (v2)
+  if (window)
   {
-    v3 = [a1 window];
-    v4 = [v3 screen];
-    [v4 scale];
+    window2 = [self window];
+    screen = [window2 screen];
+    [screen scale];
     v6 = v5;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
     v6 = v7;
   }
 
@@ -125,13 +125,13 @@
     v3 = 4;
   }
 
-  return [a1 setSemanticContentAttribute:v3];
+  return [self setSemanticContentAttribute:v3];
 }
 
 - (void)_lp_setCornerRadius:()LPExtras continuous:
 {
-  v9 = [a1 layer];
-  [v9 setCornerRadius:a2];
+  layer = [self layer];
+  [layer setCornerRadius:a2];
 
   v7 = MEMORY[0x1E69796E8];
   if (!a4)
@@ -140,22 +140,22 @@
   }
 
   v8 = *v7;
-  v10 = [a1 layer];
-  [v10 setCornerCurve:v8];
+  layer2 = [self layer];
+  [layer2 setCornerCurve:v8];
 
   if (a2 != 0.0)
   {
-    v11 = [a1 layer];
-    [v11 setMasksToBounds:1];
+    layer3 = [self layer];
+    [layer3 setMasksToBounds:1];
   }
 }
 
 - (uint64_t)_lp_prefersDarkInterface
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 _lp_prefersDarkInterface];
+  traitCollection = [self traitCollection];
+  _lp_prefersDarkInterface = [traitCollection _lp_prefersDarkInterface];
 
-  return v2;
+  return _lp_prefersDarkInterface;
 }
 
 - (uint64_t)_lp_setUserInterfaceStyle:()LPExtras
@@ -170,7 +170,7 @@
     v3 = 1;
   }
 
-  return [a1 setOverrideUserInterfaceStyle:v3];
+  return [self setOverrideUserInterfaceStyle:v3];
 }
 
 + (LPFlippedView)_lp_createFlippedView
@@ -184,8 +184,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v7[2](v7, a1, v6);
-  v8 = [v6 dependentTraits];
+  v7[2](v7, self, v6);
+  dependentTraits = [v6 dependentTraits];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__UIView_LPExtras___lp_applyAndRegisterForUpdatesToValue_withApplyCallback___block_invoke;
@@ -194,7 +194,7 @@
   v14 = v9;
   v10 = v6;
   v13 = v10;
-  v11 = [a1 registerForTraitChanges:v8 withHandler:v12];
+  v11 = [self registerForTraitChanges:dependentTraits withHandler:v12];
 }
 
 @end

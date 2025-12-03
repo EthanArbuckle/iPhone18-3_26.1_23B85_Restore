@@ -1,24 +1,24 @@
 @interface TRIRolloutDeployment
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeployment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeployment:(id)deployment;
 - (NSString)shortDesc;
-- (TRIRolloutDeployment)initWithCoder:(id)a3;
-- (TRIRolloutDeployment)initWithRolloutId:(id)a3 deploymentId:(int)a4;
-- (id)copyWithReplacementRolloutId:(id)a3;
+- (TRIRolloutDeployment)initWithCoder:(id)coder;
+- (TRIRolloutDeployment)initWithRolloutId:(id)id deploymentId:(int)deploymentId;
+- (id)copyWithReplacementRolloutId:(id)id;
 - (id)description;
 - (id)taskTag;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRolloutDeployment
 
-- (TRIRolloutDeployment)initWithRolloutId:(id)a3 deploymentId:(int)a4
+- (TRIRolloutDeployment)initWithRolloutId:(id)id deploymentId:(int)deploymentId
 {
-  v8 = a3;
-  if (!v8)
+  idCopy = id;
+  if (!idCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1626 description:{@"Invalid parameter not satisfying: %@", @"rolloutId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1626 description:{@"Invalid parameter not satisfying: %@", @"rolloutId != nil"}];
   }
 
   v13.receiver = self;
@@ -27,33 +27,33 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rolloutId, a3);
-    v10->_deploymentId = a4;
+    objc_storeStrong(&v9->_rolloutId, id);
+    v10->_deploymentId = deploymentId;
   }
 
   return v10;
 }
 
-- (id)copyWithReplacementRolloutId:(id)a3
+- (id)copyWithReplacementRolloutId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithRolloutId:v4 deploymentId:self->_deploymentId];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithRolloutId:idCopy deploymentId:self->_deploymentId];
 
   return v5;
 }
 
-- (BOOL)isEqualToDeployment:(id)a3
+- (BOOL)isEqualToDeployment:(id)deployment
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  deploymentCopy = deployment;
+  v5 = deploymentCopy;
+  if (!deploymentCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_rolloutId == 0;
-  v7 = [v4 rolloutId];
-  v8 = v7 != 0;
+  rolloutId = [deploymentCopy rolloutId];
+  v8 = rolloutId != 0;
 
   if (v6 == v8 || (rolloutId = self->_rolloutId) != 0 && ([v5 rolloutId], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](rolloutId, "isEqual:", v10), v10, !v11))
   {
@@ -70,33 +70,33 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutDeployment *)self isEqualToDeployment:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutDeployment *)self isEqualToDeployment:v5];
   }
 
   return v6;
 }
 
-- (TRIRolloutDeployment)initWithCoder:(id)a3
+- (TRIRolloutDeployment)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rolloutId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rolloutId"];
   if (!v5)
   {
-    v8 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v8)
+    if (!error)
     {
       v18 = *MEMORY[0x277CCA450];
       v19[0] = @"Retrieved nil serialized value for nonnull TRIRolloutDeployment.rolloutId";
@@ -105,22 +105,22 @@ LABEL_6:
       v11 = 2;
 LABEL_9:
       v13 = [v10 initWithDomain:@"TRIRolloutDeploymentOCNTErrorDomain" code:v11 userInfo:v9];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
     }
 
 LABEL_10:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeInt64ForKey:@"deploymentId"];
+  v6 = [coderCopy decodeInt64ForKey:@"deploymentId"];
   if (!v6)
   {
-    v12 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (!v12)
+    if (!error2)
     {
-      if ([v4 containsValueForKey:@"deploymentId"])
+      if ([coderCopy containsValueForKey:@"deploymentId"])
       {
         goto LABEL_3;
       }
@@ -138,25 +138,25 @@ LABEL_10:
 
 LABEL_3:
   self = [(TRIRolloutDeployment *)self initWithRolloutId:v5 deploymentId:v6];
-  v7 = self;
+  selfCopy = self;
 LABEL_11:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   rolloutId = self->_rolloutId;
-  v6 = v4;
+  v6 = coderCopy;
   if (rolloutId)
   {
-    [v4 encodeObject:rolloutId forKey:@"rolloutId"];
-    v4 = v6;
+    [coderCopy encodeObject:rolloutId forKey:@"rolloutId"];
+    coderCopy = v6;
   }
 
-  [v4 encodeInt64:self->_deploymentId forKey:@"deploymentId"];
+  [coderCopy encodeInt64:self->_deploymentId forKey:@"deploymentId"];
 }
 
 - (id)description
@@ -172,8 +172,8 @@ LABEL_11:
 - (NSString)shortDesc
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(TRIRolloutDeployment *)self rolloutId];
-  v5 = [v3 initWithFormat:@"%@.%d", v4, -[TRIRolloutDeployment deploymentId](self, "deploymentId")];
+  rolloutId = [(TRIRolloutDeployment *)self rolloutId];
+  v5 = [v3 initWithFormat:@"%@.%d", rolloutId, -[TRIRolloutDeployment deploymentId](self, "deploymentId")];
 
   return v5;
 }
@@ -181,9 +181,9 @@ LABEL_11:
 - (id)taskTag
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(TRIRolloutDeployment *)self rolloutId];
+  rolloutId = [(TRIRolloutDeployment *)self rolloutId];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[TRIRolloutDeployment deploymentId](self, "deploymentId")}];
-  v6 = [v3 initWithFormat:@"%@.%@", v4, v5];
+  v6 = [v3 initWithFormat:@"%@.%@", rolloutId, v5];
 
   return v6;
 }

@@ -1,49 +1,49 @@
 @interface HMBShareParticipant
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5;
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error;
 - (BOOL)hasAccepted;
 - (BOOL)hasWriteAccess;
-- (BOOL)isEqual:(id)a3;
-- (HMBShareParticipant)initWithCKShareParticipant:(id)a3 clientIdentifier:(id)a4;
-- (HMBShareParticipant)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMBShareParticipant)initWithCKShareParticipant:(id)participant clientIdentifier:(id)identifier;
+- (HMBShareParticipant)initWithCoder:(id)coder;
 - (HMBShareUserID)cloudShareID;
 - (id)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBShareParticipant
 
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error
 {
   v7 = MEMORY[0x277CCAAC8];
   v8 = MEMORY[0x277CBEB98];
-  v9 = a3;
-  v10 = [v8 setWithObject:a1];
-  v11 = [v7 _strictlyUnarchivedObjectOfClasses:v10 fromData:v9 error:a5];
+  dataCopy = data;
+  v10 = [v8 setWithObject:self];
+  v11 = [v7 _strictlyUnarchivedObjectOfClasses:v10 fromData:dataCopy error:error];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBShareParticipant *)self ckShareParticipant];
-  [v4 encodeObject:v5 forKey:@"HMBUI.cksp"];
+  coderCopy = coder;
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  [coderCopy encodeObject:ckShareParticipant forKey:@"HMBUI.cksp"];
 
-  v6 = [(HMBShareParticipant *)self clientIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMBUI.ci"];
+  clientIdentifier = [(HMBShareParticipant *)self clientIdentifier];
+  [coderCopy encodeObject:clientIdentifier forKey:@"HMBUI.ci"];
 
-  v7 = [(HMBShareParticipant *)self pendingInvitation];
-  [v4 encodeObject:v7 forKey:@"HMBUI.pi"];
+  pendingInvitation = [(HMBShareParticipant *)self pendingInvitation];
+  [coderCopy encodeObject:pendingInvitation forKey:@"HMBUI.pi"];
 }
 
-- (HMBShareParticipant)initWithCoder:(id)a3
+- (HMBShareParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.cksp"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.ci"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.pi"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.cksp"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.ci"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBUI.pi"];
 
   if (v5)
   {
@@ -57,53 +57,53 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HMBShareParticipant *)self initWithCKShareParticipant:v5 clientIdentifier:v6];
     [(HMBShareParticipant *)self setPendingInvitation:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMBShareParticipant allocWithZone:a3];
-  v5 = [(HMBShareParticipant *)self ckShareParticipant];
-  v6 = [(HMBShareParticipant *)self clientIdentifier];
-  v7 = [(HMBShareParticipant *)v4 initWithCKShareParticipant:v5 clientIdentifier:v6];
+  v4 = [HMBShareParticipant allocWithZone:zone];
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  clientIdentifier = [(HMBShareParticipant *)self clientIdentifier];
+  v7 = [(HMBShareParticipant *)v4 initWithCKShareParticipant:ckShareParticipant clientIdentifier:clientIdentifier];
 
-  v8 = [(HMBShareParticipant *)self pendingInvitation];
-  [(HMBShareParticipant *)v7 setPendingInvitation:v8];
+  pendingInvitation = [(HMBShareParticipant *)self pendingInvitation];
+  [(HMBShareParticipant *)v7 setPendingInvitation:pendingInvitation];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMBShareParticipant *)self ckShareParticipant];
-  v4 = [v3 hash];
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  v4 = [ckShareParticipant hash];
 
-  v5 = [(HMBShareParticipant *)self clientIdentifier];
-  v6 = [v5 hash] ^ v4;
+  clientIdentifier = [(HMBShareParticipant *)self clientIdentifier];
+  v6 = [clientIdentifier hash] ^ v4;
 
-  v7 = [(HMBShareParticipant *)self pendingInvitation];
-  v8 = [v7 hash];
+  pendingInvitation = [(HMBShareParticipant *)self pendingInvitation];
+  v8 = [pendingInvitation hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -114,16 +114,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMBShareParticipant *)self ckShareParticipant];
-    v8 = [v6 ckShareParticipant];
-    if ([v7 isEqual:v8])
+    ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+    ckShareParticipant2 = [v6 ckShareParticipant];
+    if ([ckShareParticipant isEqual:ckShareParticipant2])
     {
-      v9 = [(HMBShareParticipant *)self clientIdentifier];
-      v10 = [v6 clientIdentifier];
-      if ([v9 isEqual:v10])
+      clientIdentifier = [(HMBShareParticipant *)self clientIdentifier];
+      clientIdentifier2 = [v6 clientIdentifier];
+      if ([clientIdentifier isEqual:clientIdentifier2])
       {
-        v11 = [(HMBShareParticipant *)self pendingInvitation];
-        v12 = [v6 pendingInvitation];
+        pendingInvitation = [(HMBShareParticipant *)self pendingInvitation];
+        pendingInvitation2 = [v6 pendingInvitation];
         v13 = HMFEqualObjects();
       }
 
@@ -149,29 +149,29 @@
 
 - (BOOL)hasAccepted
 {
-  v2 = [(HMBShareParticipant *)self ckShareParticipant];
-  v3 = [v2 acceptanceStatus] == 2;
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  v3 = [ckShareParticipant acceptanceStatus] == 2;
 
   return v3;
 }
 
 - (BOOL)hasWriteAccess
 {
-  v2 = [(HMBShareParticipant *)self ckShareParticipant];
-  v3 = [v2 permission] == 3;
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  v3 = [ckShareParticipant permission] == 3;
 
   return v3;
 }
 
 - (HMBShareUserID)cloudShareID
 {
-  v2 = [(HMBShareParticipant *)self ckShareParticipant];
-  v3 = [v2 userIdentity];
-  v4 = [v3 userRecordID];
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  userIdentity = [ckShareParticipant userIdentity];
+  userRecordID = [userIdentity userRecordID];
 
-  if (v4)
+  if (userRecordID)
   {
-    v5 = [[HMBShareUserID alloc] initWithUserRecordID:v4];
+    v5 = [[HMBShareUserID alloc] initWithUserRecordID:userRecordID];
   }
 
   else
@@ -186,15 +186,15 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBShareParticipant *)self ckShareParticipant];
-  v5 = [v3 initWithName:@"CK Share Participant" value:v4 options:2 formatter:0];
+  ckShareParticipant = [(HMBShareParticipant *)self ckShareParticipant];
+  v5 = [v3 initWithName:@"CK Share Participant" value:ckShareParticipant options:2 formatter:0];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMBShareParticipant *)self clientIdentifier];
-  v8 = [v6 initWithName:@"Client Identifier" value:v7];
+  clientIdentifier = [(HMBShareParticipant *)self clientIdentifier];
+  v8 = [v6 initWithName:@"Client Identifier" value:clientIdentifier];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMBShareParticipant *)self pendingInvitation];
-  v11 = [v9 initWithName:@"Pending Invitation" value:v10];
+  pendingInvitation = [(HMBShareParticipant *)self pendingInvitation];
+  v11 = [v9 initWithName:@"Pending Invitation" value:pendingInvitation];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
 
@@ -203,20 +203,20 @@
   return v12;
 }
 
-- (HMBShareParticipant)initWithCKShareParticipant:(id)a3 clientIdentifier:(id)a4
+- (HMBShareParticipant)initWithCKShareParticipant:(id)participant clientIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMBShareParticipant;
   v8 = [(HMBShareParticipant *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [participantCopy copy];
     ckShareParticipant = v8->_ckShareParticipant;
     v8->_ckShareParticipant = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     clientIdentifier = v8->_clientIdentifier;
     v8->_clientIdentifier = v11;
   }

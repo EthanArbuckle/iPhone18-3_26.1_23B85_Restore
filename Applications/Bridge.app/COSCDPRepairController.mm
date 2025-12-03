@@ -1,8 +1,8 @@
 @interface COSCDPRepairController
 + (BOOL)controllerNeedsToRun;
 - (COSCDPRepairController)init;
-- (COSCDPRepairController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (COSCDPRepairController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (COSCDPRepairController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (COSCDPRepairController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)localizedWaitScreenDescription;
 - (void)didPushWaitScreen;
 @end
@@ -21,21 +21,21 @@
       v4 = swift_dynamicCastObjCClass();
       if (v4)
       {
-        v5 = [v4 setupController];
-        if (!v5)
+        setupController = [v4 setupController];
+        if (!setupController)
         {
           __break(1u);
-          return v5;
+          return setupController;
         }
 
-        v6 = v5;
-        [v5 startSilentAppleIDSignIn];
+        v6 = setupController;
+        [setupController startSilentAppleIDSignIn];
       }
     }
   }
 
-  LOBYTE(v5) = v3 & 1;
-  return v5;
+  LOBYTE(setupController) = v3 & 1;
+  return setupController;
 }
 
 - (void)didPushWaitScreen
@@ -46,12 +46,12 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1001390A0(0, 0, v5, &unk_1001C83B0, v9);
 }
 
@@ -71,14 +71,14 @@
   return [(COSOptinViewController *)&v3 init];
 }
 
-- (COSCDPRepairController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (COSCDPRepairController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -86,12 +86,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_10015B3E0(v9, v11, a4, v13, v14, v16, a6);
+    return sub_10015B3E0(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -99,23 +99,23 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_10015B3E0(v9, v11, a4, v13, v14, v16, a6);
+  return sub_10015B3E0(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (COSCDPRepairController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (COSCDPRepairController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v10;
+    text = v10;
   }
 
   *&self->super.BPSWelcomeOptinViewController_opaque[OBJC_IVAR___COSCDPRepairController_cdpEncryptionHelper] = 0;
-  v11 = a5;
+  iconCopy = icon;
   v12 = String._bridgeToObjectiveC()();
 
-  if (a4)
+  if (text)
   {
     v13 = String._bridgeToObjectiveC()();
   }
@@ -127,7 +127,7 @@ LABEL_3:
 
   v16.receiver = self;
   v16.super_class = type metadata accessor for CDPRepairController();
-  v14 = [(COSCDPRepairController *)&v16 initWithTitle:v12 detailText:v13 icon:v11 contentLayout:a6];
+  v14 = [(COSCDPRepairController *)&v16 initWithTitle:v12 detailText:v13 icon:iconCopy contentLayout:layout];
 
   return v14;
 }

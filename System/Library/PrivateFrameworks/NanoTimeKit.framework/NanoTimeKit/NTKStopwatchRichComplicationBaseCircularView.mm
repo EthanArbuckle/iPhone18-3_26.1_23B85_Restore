@@ -1,35 +1,35 @@
 @interface NTKStopwatchRichComplicationBaseCircularView
-- (NTKStopwatchRichComplicationBaseCircularView)initWithFamily:(int64_t)a3;
+- (NTKStopwatchRichComplicationBaseCircularView)initWithFamily:(int64_t)family;
 - (int64_t)_backgroundFilterStyle;
 - (int64_t)_foregroundFilterStyle;
 - (void)_applyPausedUpdate;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)_updateDialProgress;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKStopwatchRichComplicationBaseCircularView
 
-- (NTKStopwatchRichComplicationBaseCircularView)initWithFamily:(int64_t)a3
+- (NTKStopwatchRichComplicationBaseCircularView)initWithFamily:(int64_t)family
 {
   v49.receiver = self;
   v49.super_class = NTKStopwatchRichComplicationBaseCircularView;
-  v3 = [(NTKRichComplicationCircularBaseView *)&v49 initWithFamily:a3];
+  v3 = [(NTKRichComplicationCircularBaseView *)&v49 initWithFamily:family];
   v4 = v3;
   if (v3)
   {
     p_stopwatchImageConfigPointSize = &v3->_layoutConstants.stopwatchImageConfigPointSize;
-    v6 = [(CDRichComplicationView *)v3 device];
-    v7 = [(CDRichComplicationView *)v4 family];
+    device = [(CDRichComplicationView *)v3 device];
+    family = [(CDRichComplicationView *)v4 family];
     memset(location, 0, 144);
     v8 = location;
-    ___LayoutConstants_block_invoke_37(v6, location);
-    if (v7 != 10)
+    ___LayoutConstants_block_invoke_37(device, location);
+    if (family != 10)
     {
-      if (v7 == 12)
+      if (family == 12)
       {
         v8 = &location[4] + 8;
       }
@@ -39,7 +39,7 @@
         v9 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          _LayoutConstants_cold_1(v7, v9);
+          _LayoutConstants_cold_1(family, v9);
         }
 
         v8 = location;
@@ -69,14 +69,14 @@
     v15 = v4;
     v43 = v15;
     v16 = _Block_copy(aBlock);
-    v17 = [MEMORY[0x277D75348] systemOrangeColor];
-    v18 = [v17 colorWithAlphaComponent:0.4];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v18 = [systemOrangeColor colorWithAlphaComponent:0.4];
     v19 = v16[2](v16, v18);
     v20 = v15[76];
     v15[76] = v19;
 
-    v21 = [MEMORY[0x277D75348] systemOrangeColor];
-    v22 = v16[2](v16, v21);
+    systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+    v22 = v16[2](v16, systemOrangeColor2);
     v23 = v15[75];
     v15[75] = v22;
 
@@ -102,12 +102,12 @@
     [v27 setNeedsResizeHandler:v38];
     [v15[74] setMaxWidth:v4->_layoutConstants.timeLabelMaxWidth];
     v28 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v4->_layoutConstants.timeLabelFontSize design:*MEMORY[0x277D74420]];
-    v29 = [v28 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v28 CLKFontWithAlternativePunctuation];
 
-    [v15[74] setFont:v29];
+    [v15[74] setFont:cLKFontWithAlternativePunctuation];
     [v15[74] setHidden:1];
-    v30 = [v15 contentView];
-    [v30 addSubview:v15[74]];
+    contentView = [v15 contentView];
+    [contentView addSubview:v15[74]];
 
     v31 = [MEMORY[0x277D755D0] configurationWithPointSize:*p_stopwatchImageConfigPointSize];
     v32 = [MEMORY[0x277D755B8] systemImageNamed:@"stopwatch" withConfiguration:v31];
@@ -115,11 +115,11 @@
     v34 = v15[73];
     v15[73] = v33;
 
-    v35 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v15[73] setTintColor:v35];
+    systemOrangeColor3 = [MEMORY[0x277D75348] systemOrangeColor];
+    [v15[73] setTintColor:systemOrangeColor3];
 
-    v36 = [v15 contentView];
-    [v36 addSubview:v15[73]];
+    contentView2 = [v15 contentView];
+    [contentView2 addSubview:v15[73]];
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(&v41);
@@ -172,8 +172,8 @@ void __63__NTKStopwatchRichComplicationBaseCircularView_initWithFamily___block_i
 {
   if (self->_updateToken)
   {
-    v3 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
-    [v3 stopUpdatesForToken:self->_updateToken];
+    textProvider = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+    [textProvider stopUpdatesForToken:self->_updateToken];
 
     updateToken = self->_updateToken;
     self->_updateToken = 0;
@@ -189,12 +189,12 @@ void __63__NTKStopwatchRichComplicationBaseCircularView_initWithFamily___block_i
   v27.receiver = self;
   v27.super_class = NTKStopwatchRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v27 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CDRichComplicationView *)self device];
+  device = [(CDRichComplicationView *)self device];
   CLKSizeCenteredInRectForDevice();
   v10 = v9;
   v12 = v11;
@@ -217,8 +217,8 @@ void __63__NTKStopwatchRichComplicationBaseCircularView_initWithFamily___block_i
     timeLabelMaxWidth = v17;
   }
 
-  v22 = [(CLKUIColoringLabel *)self->_timeLabel font];
-  [v22 ascender];
+  font = [(CLKUIColoringLabel *)self->_timeLabel font];
+  [font ascender];
   *&v23 = timeLabelBottom - v23;
   v24 = ceilf(*&v23);
 
@@ -228,30 +228,30 @@ void __63__NTKStopwatchRichComplicationBaseCircularView_initWithFamily___block_i
   [(UIImageView *)self->_stopwatchImageView setFrame:(v5 - v25) * 0.5, (v7 - v26) * 0.5 + v7 * -0.02];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
+  templateCopy = template;
   if (self->_updateToken)
   {
-    v6 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
-    [v6 stopUpdatesForToken:self->_updateToken];
+    textProvider = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+    [textProvider stopUpdatesForToken:self->_updateToken];
 
     updateToken = self->_updateToken;
     self->_updateToken = 0;
   }
 
-  v8 = [v5 metadata];
-  v9 = [v8 objectForKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
+  metadata = [templateCopy metadata];
+  v9 = [metadata objectForKeyedSubscript:@"NTKStopwatchComplicationMetadataStateKey"];
 
   if ([v9 isEqualToString:@"NTKStopwatchComplicationMetadataStateValue_Running"])
   {
     self->_showPlatter = 0;
     [(NTKRichComplicationDialView *)self->_backDial setHidden:0];
     [(NTKRichComplicationDialView *)self->_frontDial setHidden:0];
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
 LABEL_7:
-    v11 = v10;
-    [(CLKUIColoringLabel *)self->_timeLabel setTextColor:v10];
+    v11 = whiteColor;
+    [(CLKUIColoringLabel *)self->_timeLabel setTextColor:whiteColor];
 
     v12 = 0;
     v13 = 1;
@@ -263,7 +263,7 @@ LABEL_7:
     self->_showPlatter = 0;
     [(NTKRichComplicationDialView *)self->_backDial setHidden:0];
     [(NTKRichComplicationDialView *)self->_frontDial setHidden:0];
-    v10 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
+    whiteColor = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
     goto LABEL_7;
   }
 
@@ -278,24 +278,24 @@ LABEL_9:
   [(NTKRichComplicationCircularBaseView *)self _updatePlatterColor];
   if (([(CLKUIColoringLabel *)self->_timeLabel isHidden]& 1) == 0)
   {
-    v14 = [v5 metadata];
-    v15 = [v14 objectForKeyedSubscript:@"NTKStopwatchComplicationMetadataTimeTextProviderKey"];
+    metadata2 = [templateCopy metadata];
+    v15 = [metadata2 objectForKeyedSubscript:@"NTKStopwatchComplicationMetadataTimeTextProviderKey"];
 
-    v16 = [MEMORY[0x277D75348] systemOrangeColor];
-    [v15 setTintColor:v16];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [v15 setTintColor:systemOrangeColor];
 
     [v15 setPaused:0];
     [(CLKUIColoringLabel *)self->_timeLabel setTextProvider:v15];
   }
 
   objc_initWeak(&location, self);
-  v17 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+  textProvider2 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason___block_invoke;
   v20[3] = &unk_27877DC58;
   objc_copyWeak(&v21, &location);
-  v18 = [v17 startUpdatesWithHandler:v20];
+  v18 = [textProvider2 startUpdatesWithHandler:v20];
   v19 = self->_updateToken;
   self->_updateToken = v18;
 
@@ -314,9 +314,9 @@ void __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason__
   v5.receiver = self;
   v5.super_class = NTKStopwatchRichComplicationBaseCircularView;
   [(CDRichComplicationView *)&v5 _applyPausedUpdate];
-  v3 = [(CDRichComplicationView *)self paused];
-  v4 = [(UIImageView *)self->_stopwatchImageView layer];
-  [v4 setShouldRasterize:v3];
+  paused = [(CDRichComplicationView *)self paused];
+  layer = [(UIImageView *)self->_stopwatchImageView layer];
+  [layer setShouldRasterize:paused];
 }
 
 - (void)_updateDialProgress
@@ -348,8 +348,8 @@ void __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason__
 
 - (int64_t)_backgroundFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -364,8 +364,8 @@ void __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason__
 
 - (int64_t)_foregroundFilterStyle
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = NTKShowGossamerUI(v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = NTKShowGossamerUI(device);
 
   if (v3)
   {
@@ -378,33 +378,33 @@ void __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason__
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v13.receiver = self;
   v13.super_class = NTKStopwatchRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v13 transitionToMonochromeWithFraction:?];
-  v5 = [(CDRichComplicationView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:-[NTKStopwatchRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), a3}];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v6 = [filterProvider filtersForView:self style:-[NTKStopwatchRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), fraction}];
 
   if (v6)
   {
-    v7 = [(UIImageView *)self->_stopwatchImageView layer];
-    [v7 setFilters:v6];
+    layer = [(UIImageView *)self->_stopwatchImageView layer];
+    [layer setFilters:v6];
 
-    v8 = [(NTKRichComplicationDialView *)self->_backDial layer];
-    [v8 setFilters:v6];
+    layer2 = [(NTKRichComplicationDialView *)self->_backDial layer];
+    [layer2 setFilters:v6];
 
-    v9 = [(NTKRichComplicationDialView *)self->_frontDial layer];
-    [v9 setFilters:v6];
+    layer3 = [(NTKRichComplicationDialView *)self->_frontDial layer];
+    [layer3 setFilters:v6];
   }
 
-  v10 = [(CDRichComplicationView *)self filterProvider];
-  v11 = [v10 filtersForView:self style:-[NTKStopwatchRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), a3}];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v11 = [filterProvider2 filtersForView:self style:-[NTKStopwatchRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), fraction}];
 
   if (v11)
   {
-    v12 = [(CLKUIColoringLabel *)self->_timeLabel layer];
-    [v12 setFilters:v11];
+    layer4 = [(CLKUIColoringLabel *)self->_timeLabel layer];
+    [layer4 setFilters:v11];
   }
 }
 
@@ -413,28 +413,28 @@ void __71__NTKStopwatchRichComplicationBaseCircularView__handleTemplate_reason__
   v11.receiver = self;
   v11.super_class = NTKStopwatchRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v11 updateMonochromeColor];
-  v3 = [(CDRichComplicationView *)self filterProvider];
-  v4 = [v3 filtersForView:self style:{-[NTKStopwatchRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v4 = [filterProvider filtersForView:self style:{-[NTKStopwatchRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
 
   if (v4)
   {
-    v5 = [(UIImageView *)self->_stopwatchImageView layer];
-    [v5 setFilters:v4];
+    layer = [(UIImageView *)self->_stopwatchImageView layer];
+    [layer setFilters:v4];
 
-    v6 = [(NTKRichComplicationDialView *)self->_backDial layer];
-    [v6 setFilters:v4];
+    layer2 = [(NTKRichComplicationDialView *)self->_backDial layer];
+    [layer2 setFilters:v4];
 
-    v7 = [(NTKRichComplicationDialView *)self->_frontDial layer];
-    [v7 setFilters:v4];
+    layer3 = [(NTKRichComplicationDialView *)self->_frontDial layer];
+    [layer3 setFilters:v4];
   }
 
-  v8 = [(CDRichComplicationView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:{-[NTKStopwatchRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v9 = [filterProvider2 filtersForView:self style:{-[NTKStopwatchRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
 
   if (v9)
   {
-    v10 = [(CLKUIColoringLabel *)self->_timeLabel layer];
-    [v10 setFilters:v9];
+    layer4 = [(CLKUIColoringLabel *)self->_timeLabel layer];
+    [layer4 setFilters:v9];
   }
 }
 

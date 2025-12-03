@@ -1,43 +1,43 @@
 @interface NLXSchemaMARRSRepetitionDetectionEvaluated
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithDictionary:(id)a3;
-- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithDictionary:(id)dictionary;
+- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFullRepetitionConfidence:(BOOL)a3;
-- (void)setHasNoRepetitionConfidence:(BOOL)a3;
-- (void)setHasPartialRepetitionConfidence:(BOOL)a3;
-- (void)setHasRuleType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFullRepetitionConfidence:(BOOL)confidence;
+- (void)setHasNoRepetitionConfidence:(BOOL)confidence;
+- (void)setHasPartialRepetitionConfidence:(BOOL)confidence;
+- (void)setHasRuleType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaMARRSRepetitionDetectionEvaluated
 
-- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithDictionary:(id)a3
+- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NLXSchemaMARRSRepetitionDetectionEvaluated;
   v5 = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"repetitionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"repetitionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaMARRSRepetitionDetectionEvaluated setRepetitionType:](v5, "setRepetitionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"ruleType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"ruleType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaMARRSRepetitionDetectionEvaluated setRuleType:](v5, "setRuleType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"noRepetitionConfidence"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"noRepetitionConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(NLXSchemaMARRSRepetitionDetectionEvaluated *)v5 setNoRepetitionConfidence:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"fullRepetitionConfidence"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"fullRepetitionConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(NLXSchemaMARRSRepetitionDetectionEvaluated *)v5 setFullRepetitionConfidence:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"partialRepetitionConfidence"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"partialRepetitionConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithJSON:(id)a3
+- (NLXSchemaMARRSRepetitionDetectionEvaluated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -103,14 +103,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v9 = MEMORY[0x1E696AD98];
     [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self fullRepetitionConfidence];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"fullRepetitionConfidence"];
+    [dictionary setObject:v10 forKeyedSubscript:@"fullRepetitionConfidence"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -133,7 +133,7 @@ LABEL_3:
   v11 = MEMORY[0x1E696AD98];
   [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self noRepetitionConfidence];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"noRepetitionConfidence"];
+  [dictionary setObject:v12 forKeyedSubscript:@"noRepetitionConfidence"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -151,7 +151,7 @@ LABEL_17:
   v13 = MEMORY[0x1E696AD98];
   [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self partialRepetitionConfidence];
   v14 = [v13 numberWithFloat:?];
-  [v3 setObject:v14 forKeyedSubscript:@"partialRepetitionConfidence"];
+  [dictionary setObject:v14 forKeyedSubscript:@"partialRepetitionConfidence"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -177,21 +177,21 @@ LABEL_18:
     v16 = off_1E78DC518[v15];
   }
 
-  [v3 setObject:v16 forKeyedSubscript:@"repetitionType"];
+  [dictionary setObject:v16 forKeyedSubscript:@"repetitionType"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  v5 = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self ruleType];
+  ruleType = [(NLXSchemaMARRSRepetitionDetectionEvaluated *)self ruleType];
   v6 = @"MARRSREPETITIONDETECTIONRULETYPE_OTHER";
-  if (v5 == 1)
+  if (ruleType == 1)
   {
     v6 = @"MARRSREPETITIONDETECTIONRULETYPE_SKIPPED";
   }
 
-  if (v5 == 2)
+  if (ruleType == 2)
   {
     v7 = @"MARRSREPETITIONDETECTIONRULETYPE_TIME_GAP_EXCEEDED";
   }
@@ -201,11 +201,11 @@ LABEL_6:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"ruleType"];
+  [dictionary setObject:v7 forKeyedSubscript:@"ruleType"];
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -356,16 +356,16 @@ LABEL_12:
   return v5 ^ v4 ^ v10 ^ v11 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_21;
@@ -374,13 +374,13 @@ LABEL_12:
   if (*&has)
   {
     repetitionType = self->_repetitionType;
-    if (repetitionType != [v4 repetitionType])
+    if (repetitionType != [equalCopy repetitionType])
     {
       goto LABEL_21;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -389,13 +389,13 @@ LABEL_12:
     if (v8)
     {
       ruleType = self->_ruleType;
-      if (ruleType != [v4 ruleType])
+      if (ruleType != [equalCopy ruleType])
       {
         goto LABEL_21;
       }
 
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -404,14 +404,14 @@ LABEL_12:
       if (v10)
       {
         noRepetitionConfidence = self->_noRepetitionConfidence;
-        [v4 noRepetitionConfidence];
+        [equalCopy noRepetitionConfidence];
         if (noRepetitionConfidence != v12)
         {
           goto LABEL_21;
         }
 
         has = self->_has;
-        v6 = v4[28];
+        v6 = equalCopy[28];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -420,20 +420,20 @@ LABEL_12:
         if (v13)
         {
           fullRepetitionConfidence = self->_fullRepetitionConfidence;
-          [v4 fullRepetitionConfidence];
+          [equalCopy fullRepetitionConfidence];
           if (fullRepetitionConfidence != v15)
           {
             goto LABEL_21;
           }
 
           has = self->_has;
-          v6 = v4[28];
+          v6 = equalCopy[28];
         }
 
         v16 = (*&has >> 4) & 1;
         if (v16 == ((v6 >> 4) & 1))
         {
-          if (!v16 || (partialRepetitionConfidence = self->_partialRepetitionConfidence, [v4 partialRepetitionConfidence], partialRepetitionConfidence == v18))
+          if (!v16 || (partialRepetitionConfidence = self->_partialRepetitionConfidence, [equalCopy partialRepetitionConfidence], partialRepetitionConfidence == v18))
           {
             v19 = 1;
             goto LABEL_22;
@@ -450,9 +450,9 @@ LABEL_22:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -513,9 +513,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasPartialRepetitionConfidence:(BOOL)a3
+- (void)setHasPartialRepetitionConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 16;
   }
@@ -528,9 +528,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasFullRepetitionConfidence:(BOOL)a3
+- (void)setHasFullRepetitionConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 8;
   }
@@ -543,9 +543,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNoRepetitionConfidence:(BOOL)a3
+- (void)setHasNoRepetitionConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 4;
   }
@@ -558,9 +558,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRuleType:(BOOL)a3
+- (void)setHasRuleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

@@ -1,52 +1,52 @@
 @interface PKPeerPaymentGraduationExplanationViewController
-- (PKPeerPaymentGraduationExplanationViewController)initWithPeerPaymentWebService:(id)a3 peerPaymentAccount:(id)a4 passLibraryDataProvider:(id)a5 setupDelegate:(id)a6 context:(int64_t)a7;
+- (PKPeerPaymentGraduationExplanationViewController)initWithPeerPaymentWebService:(id)service peerPaymentAccount:(id)account passLibraryDataProvider:(id)provider setupDelegate:(id)delegate context:(int64_t)context;
 - (void)_presentGenericError;
-- (void)_presentIdentityVerificationFlowWithGraduationPrerequisiteIdentifier:(BOOL)a3;
-- (void)_presentTermsWithTermsResponse:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_presentIdentityVerificationFlowWithGraduationPrerequisiteIdentifier:(BOOL)identifier;
+- (void)_presentTermsWithTermsResponse:(id)response;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentGraduationExplanationViewController
 
-- (PKPeerPaymentGraduationExplanationViewController)initWithPeerPaymentWebService:(id)a3 peerPaymentAccount:(id)a4 passLibraryDataProvider:(id)a5 setupDelegate:(id)a6 context:(int64_t)a7
+- (PKPeerPaymentGraduationExplanationViewController)initWithPeerPaymentWebService:(id)service peerPaymentAccount:(id)account passLibraryDataProvider:(id)provider setupDelegate:(id)delegate context:(int64_t)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = PKPeerPaymentGraduationExplanationViewController;
-  v17 = [(PKExplanationViewController *)&v32 initWithContext:a7];
+  v17 = [(PKExplanationViewController *)&v32 initWithContext:context];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_peerPaymentWebService, a3);
-    objc_storeStrong(&v18->_peerPaymentAccount, a4);
-    objc_storeWeak(&v18->_setupDelegate, v16);
-    objc_storeWeak(&v18->_passLibraryDataProvider, v15);
-    v19 = [(PKPeerPaymentAccount *)v18->_peerPaymentAccount associatedPassUniqueID];
-    if ([v19 length])
+    objc_storeStrong(&v17->_peerPaymentWebService, service);
+    objc_storeStrong(&v18->_peerPaymentAccount, account);
+    objc_storeWeak(&v18->_setupDelegate, delegateCopy);
+    objc_storeWeak(&v18->_passLibraryDataProvider, providerCopy);
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)v18->_peerPaymentAccount associatedPassUniqueID];
+    if ([associatedPassUniqueID length])
     {
       WeakRetained = objc_loadWeakRetained(&v18->_passLibraryDataProvider);
-      v21 = [WeakRetained passWithUniqueID:v19];
+      v21 = [WeakRetained passWithUniqueID:associatedPassUniqueID];
 
       [v21 loadImageSetSync:0 preheat:1];
       v22 = [[PKPassView alloc] initWithPass:v21 content:5 suppressedContent:512];
       [(PKPassView *)v22 snapshotOfFrontFaceWithRequestedSize:257.0, 157.0];
-      v31 = v16;
-      v23 = v15;
-      v24 = v14;
-      v26 = v25 = v13;
-      v27 = [(PKExplanationViewController *)v18 explanationView];
-      [v27 setImage:v26];
-      v28 = [v27 imageView];
-      [v28 setAccessibilityIgnoresInvertColors:1];
+      v31 = delegateCopy;
+      v23 = providerCopy;
+      v24 = accountCopy;
+      v26 = v25 = serviceCopy;
+      explanationView = [(PKExplanationViewController *)v18 explanationView];
+      [explanationView setImage:v26];
+      imageView = [explanationView imageView];
+      [imageView setAccessibilityIgnoresInvertColors:1];
 
-      v13 = v25;
-      v14 = v24;
-      v15 = v23;
-      v16 = v31;
+      serviceCopy = v25;
+      accountCopy = v24;
+      providerCopy = v23;
+      delegateCopy = v31;
     }
 
     v29 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:2];
@@ -65,33 +65,33 @@
   v8.receiver = self;
   v8.super_class = PKPeerPaymentGraduationExplanationViewController;
   [(PKExplanationViewController *)&v8 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = PKLocalizedPeerPaymentString(&cfstr_IdentityVerifi_5.isa);
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
   v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentGra.isa);
-  [v3 setBodyText:v5];
+  [explanationView setBodyText:v5];
 
-  [v3 setShowPrivacyView:1];
-  [v3 setTopMargin:12.0];
-  [v3 setBodyDataDetectorTypes:0];
-  v6 = [v3 dockView];
-  v7 = [v6 footerView];
-  [v7 setSetUpLaterButton:0];
+  [explanationView setShowPrivacyView:1];
+  [explanationView setTopMargin:12.0];
+  [explanationView setBodyDataDetectorTypes:0];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  [footerView setSetUpLaterButton:0];
 }
 
-- (void)_presentIdentityVerificationFlowWithGraduationPrerequisiteIdentifier:(BOOL)a3
+- (void)_presentIdentityVerificationFlowWithGraduationPrerequisiteIdentifier:(BOOL)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E69B8F88]);
   v6 = v5;
-  if (v3)
+  if (identifierCopy)
   {
     [v5 setPrerequisiteIdentifier:*MEMORY[0x1E69BC330]];
   }
 
-  v7 = [(PKPeerPaymentWebService *)self->_peerPaymentWebService context];
-  [v6 setDevSigned:{objc_msgSend(v7, "devSigned")}];
+  context = [(PKPeerPaymentWebService *)self->_peerPaymentWebService context];
+  [v6 setDevSigned:{objc_msgSend(context, "devSigned")}];
 
   [(PKPeerPaymentGraduationExplanationViewController *)self _showSpinner:1];
   peerPaymentWebService = self->_peerPaymentWebService;
@@ -188,38 +188,38 @@ void __121__PKPeerPaymentGraduationExplanationViewController__presentIdentityVer
   }
 }
 
-- (void)_presentTermsWithTermsResponse:(id)a3
+- (void)_presentTermsWithTermsResponse:(id)response
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 termsURL];
-  v6 = [v4 termsIdentifier];
-  v7 = v6;
-  if (!v5 || !v6)
+  responseCopy = response;
+  termsURL = [responseCopy termsURL];
+  termsIdentifier = [responseCopy termsIdentifier];
+  v7 = termsIdentifier;
+  if (!termsURL || !termsIdentifier)
   {
-    v8 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount termsURL];
+    termsURL2 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount termsURL];
 
-    v9 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount termsIdentifier];
+    termsIdentifier2 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount termsIdentifier];
 
-    v7 = v9;
-    v5 = v8;
+    v7 = termsIdentifier2;
+    termsURL = termsURL2;
   }
 
-  v10 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-  if (v5 && v7)
+  associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+  if (termsURL && v7)
   {
     [(PKPeerPaymentGraduationExplanationViewController *)self _showSpinner:1];
     v11 = [PKPeerPaymentTermsController alloc];
     v12 = v11;
     if (self->_peerPaymentWebService)
     {
-      v13 = [(PKPeerPaymentTermsController *)v11 initWithTermsURL:v5 termsIdentifier:v7 passUniqueID:v10 webService:?];
+      v13 = [(PKPeerPaymentTermsController *)v11 initWithTermsURL:termsURL termsIdentifier:v7 passUniqueID:associatedPassUniqueID webService:?];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E69B9020] sharedService];
-      v13 = [(PKPeerPaymentTermsController *)v12 initWithTermsURL:v5 termsIdentifier:v7 passUniqueID:v10 webService:v15];
+      mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+      v13 = [(PKPeerPaymentTermsController *)v12 initWithTermsURL:termsURL termsIdentifier:v7 passUniqueID:associatedPassUniqueID webService:mEMORY[0x1E69B9020]];
     }
 
     objc_initWeak(buf, self);
@@ -239,7 +239,7 @@ void __121__PKPeerPaymentGraduationExplanationViewController__presentIdentityVer
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v5;
+      v19 = termsURL;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Error cannot present terms for url %@ and terms identifier %@", buf, 0x16u);
@@ -313,22 +313,22 @@ void __72__PKPeerPaymentGraduationExplanationViewController__presentGenericError
   [WeakRetained viewControllerDidTerminateSetupFlow:*(a1 + 32)];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v10 = [v5 dockView];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  v6 = [v10 primaryButton];
-  [v6 setShowSpinner:v3];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:spinnerCopy];
 
-  [v10 setButtonsEnabled:v3 ^ 1];
-  v7 = [(PKPeerPaymentGraduationExplanationViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3 ^ 1];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
+  navigationItem = [(PKPeerPaymentGraduationExplanationViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:spinnerCopy ^ 1];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3 ^ 1];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:spinnerCopy ^ 1];
 }
 
 @end

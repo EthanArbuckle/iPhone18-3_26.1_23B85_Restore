@@ -1,39 +1,39 @@
 @interface DOCContentUnavailableButtonProperties
 - (UIAction)primaryAction;
 - (void)configurePlain;
-- (void)setPrimaryAction:(id)a3;
+- (void)setPrimaryAction:(id)action;
 @end
 
 @implementation DOCContentUnavailableButtonProperties
 
 - (void)configurePlain
 {
-  v4 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  v3 = [(DOCContentUnavailableButtonProperties *)self asUIKit];
-  [v3 setConfiguration:v4];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  asUIKit = [(DOCContentUnavailableButtonProperties *)self asUIKit];
+  [asUIKit setConfiguration:plainButtonConfiguration];
 }
 
 - (UIAction)primaryAction
 {
-  v2 = [(DOCContentUnavailableButtonProperties *)self asUIKit];
-  v3 = [v2 primaryAction];
+  asUIKit = [(DOCContentUnavailableButtonProperties *)self asUIKit];
+  primaryAction = [asUIKit primaryAction];
 
-  return v3;
+  return primaryAction;
 }
 
-- (void)setPrimaryAction:(id)a3
+- (void)setPrimaryAction:(id)action
 {
-  v4 = a3;
-  v5 = [(DOCContentUnavailableButtonProperties *)self asUIKit];
-  [v5 setPrimaryAction:v4];
+  actionCopy = action;
+  asUIKit = [(DOCContentUnavailableButtonProperties *)self asUIKit];
+  [asUIKit setPrimaryAction:actionCopy];
 
-  v8 = [v4 title];
+  title = [actionCopy title];
 
-  if ([v8 length])
+  if ([title length])
   {
-    v6 = [(DOCContentUnavailableButtonProperties *)self asUIKit];
-    v7 = [v6 configuration];
-    [v7 setTitle:v8];
+    asUIKit2 = [(DOCContentUnavailableButtonProperties *)self asUIKit];
+    configuration = [asUIKit2 configuration];
+    [configuration setTitle:title];
   }
 }
 

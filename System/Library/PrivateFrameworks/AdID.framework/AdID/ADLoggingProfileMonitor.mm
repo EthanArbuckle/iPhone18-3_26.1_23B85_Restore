@@ -1,11 +1,11 @@
 @interface ADLoggingProfileMonitor
 - (ADLoggingProfileMonitor)init;
-- (BOOL)_hasRelevantProfileChanged:(id)a3;
+- (BOOL)_hasRelevantProfileChanged:(id)changed;
 - (OS_dispatch_queue)initQueue;
 - (id)fetchInstalledProfileIdentifiers;
 - (void)_beginMonitoring;
 - (void)_fetchInstalledProfilesAndListen;
-- (void)_profilesChanged:(id)a3;
+- (void)_profilesChanged:(id)changed;
 @end
 
 @implementation ADLoggingProfileMonitor
@@ -73,14 +73,14 @@ void __59__ADLoggingProfileMonitor__fetchInstalledProfilesAndListen__block_invok
   }
 }
 
-- (void)_profilesChanged:(id)a3
+- (void)_profilesChanged:(id)changed
 {
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Received profile list changed notification"];
   _ADLog();
 
-  v5 = [(ADLoggingProfileMonitor *)self fetchInstalledProfileIdentifiers];
-  v6 = [(ADLoggingProfileMonitor *)self _hasRelevantProfileChanged:v5];
-  objc_storeStrong(&self->_profileIdentifiers, v5);
+  fetchInstalledProfileIdentifiers = [(ADLoggingProfileMonitor *)self fetchInstalledProfileIdentifiers];
+  v6 = [(ADLoggingProfileMonitor *)self _hasRelevantProfileChanged:fetchInstalledProfileIdentifiers];
+  objc_storeStrong(&self->_profileIdentifiers, fetchInstalledProfileIdentifiers);
   profileIdentifiers = self->_profileIdentifiers;
   v13 = 0;
   v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:profileIdentifiers requiringSecureCoding:1 error:&v13];
@@ -98,8 +98,8 @@ void __59__ADLoggingProfileMonitor__fetchInstalledProfilesAndListen__block_invok
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Ad Platforms logging profile has been removed or Personalized Ads profiles was installed/removed."];
     _ADLog();
 
-    v12 = [MEMORY[0x277CE9658] sharedInstance];
-    [v12 performOperationWhenNotReconciling:&__block_literal_global_6];
+    mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+    [mEMORY[0x277CE9658] performOperationWhenNotReconciling:&__block_literal_global_6];
   }
 }
 
@@ -135,20 +135,20 @@ void __44__ADLoggingProfileMonitor__profilesChanged___block_invoke_4(uint64_t a1
   }
 }
 
-- (BOOL)_hasRelevantProfileChanged:(id)a3
+- (BOOL)_hasRelevantProfileChanged:(id)changed
 {
   v4 = MEMORY[0x277CCACA8];
   profileIdentifiers = self->_profileIdentifiers;
-  v6 = a3;
-  v7 = [v4 stringWithFormat:@"Existing profile list\n%@", profileIdentifiers];
+  changedCopy = changed;
+  profileIdentifiers = [v4 stringWithFormat:@"Existing profile list\n%@", profileIdentifiers];
   v8 = 1;
   _ADLog();
 
   v9 = [(NSSet *)self->_profileIdentifiers mutableCopy];
-  [v9 minusSet:v6];
-  v10 = [v6 mutableCopy];
+  [v9 minusSet:changedCopy];
+  v10 = [changedCopy mutableCopy];
   [v10 minusSet:v9];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Installed profiles:\n%@", v6];
+  changedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Installed profiles:\n%@", changedCopy];
 
   _ADLog();
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Removed profiles:\n%@", v9];
@@ -165,19 +165,19 @@ void __44__ADLoggingProfileMonitor__profilesChanged___block_invoke_4(uint64_t a1
 - (id)fetchInstalledProfileIdentifiers
 {
   v2 = MEMORY[0x277CBEB58];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 installedProfileIdentifiers];
-  v5 = [v2 setWithArray:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  installedProfileIdentifiers = [mEMORY[0x277D262A0] installedProfileIdentifiers];
+  v5 = [v2 setWithArray:installedProfileIdentifiers];
 
   return v5;
 }
 
 - (void)_beginMonitoring
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = *MEMORY[0x277D26148];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v5 addObserver:self selector:sel__profilesChanged_ name:v3 object:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [defaultCenter addObserver:self selector:sel__profilesChanged_ name:v3 object:mEMORY[0x277D262A0]];
 }
 
 - (OS_dispatch_queue)initQueue

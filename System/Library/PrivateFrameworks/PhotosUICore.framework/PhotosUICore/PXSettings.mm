@@ -1,31 +1,31 @@
 @interface PXSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (NSSet)transientProperties;
-+ (id)_signatureDictionaryWithDefaultSettings:(id *)a3;
++ (id)_signatureDictionaryWithDefaultSettings:(id *)settings;
 + (id)_userDefaults;
 + (id)createSharedInstance;
 + (id)sharedInstance;
-+ (void)setSuiteName:(id)a3;
-- (BOOL)_setOverrideValuesFromDictionary:(id)a3;
++ (void)setSuiteName:(id)name;
+- (BOOL)_setOverrideValuesFromDictionary:(id)dictionary;
 - (BOOL)hasDefaultValues;
 - (BOOL)hasUserDefaultsOverrides;
-- (BOOL)isTransientKey:(id)a3;
-- (BOOL)isTransientKeyPath:(id)a3;
+- (BOOL)isTransientKey:(id)key;
+- (BOOL)isTransientKeyPath:(id)path;
 - (id)_archiveDictionaryWithSignature;
 - (id)archiveDictionary;
-- (id)archiveValueForKey:(id)a3;
-- (void)_resetValuesThatChangedBetweenCurrentDefaultValues:(id)a3 andArchivedDefaultValues:(id)a4 defaultSettings:(id)a5;
-- (void)_validateArchivableValue:(id)a3 forKey:(id)a4;
-- (void)_willArchiveSettings:(id)a3;
-- (void)addDeferredKeyObserver:(id)a3;
-- (void)addDeferredKeyPathObserver:(id)a3;
-- (void)addKeyObserver:(id)a3;
-- (void)addKeyPathObserver:(id)a3;
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4;
+- (id)archiveValueForKey:(id)key;
+- (void)_resetValuesThatChangedBetweenCurrentDefaultValues:(id)values andArchivedDefaultValues:(id)defaultValues defaultSettings:(id)settings;
+- (void)_validateArchivableValue:(id)value forKey:(id)key;
+- (void)_willArchiveSettings:(id)settings;
+- (void)addDeferredKeyObserver:(id)observer;
+- (void)addDeferredKeyPathObserver:(id)observer;
+- (void)addKeyObserver:(id)observer;
+- (void)addKeyPathObserver:(id)observer;
+- (void)applyArchiveValue:(id)value forKey:(id)key;
 - (void)clearManualOverrides;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)removeKeyObserver:(id)a3;
-- (void)removeKeyPathObserver:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)removeKeyObserver:(id)observer;
+- (void)removeKeyPathObserver:(id)observer;
 - (void)restoreDefaultValues;
 - (void)save;
 @end
@@ -39,17 +39,17 @@
   {
     v3 = 0;
 LABEL_5:
-    v4 = [[a1 alloc] initWithDefaultValues];
+    initWithDefaultValues = [[self alloc] initWithDefaultValues];
     goto LABEL_6;
   }
 
-  v8 = [a1 _userDefaults];
-  v9 = [a1 _defaultsKey];
-  v10 = [v8 objectForKey:v9];
+  _userDefaults = [self _userDefaults];
+  _defaultsKey = [self _defaultsKey];
+  v10 = [_userDefaults objectForKey:_defaultsKey];
 
   v11 = [v10 objectForKeyedSubscript:@"PXSettingsArchiveKey"];
-  v12 = [a1 _userDefaults];
-  v13 = [v12 objectForKey:@"PXSettingsOverride"];
+  _userDefaults2 = [self _userDefaults];
+  v13 = [_userDefaults2 objectForKey:@"PXSettingsOverride"];
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -59,28 +59,28 @@ LABEL_5:
   v26 = v3;
   [v13 enumerateKeysAndObjectsUsingBlock:v25];
 
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  LODWORD(v13) = [v15 launchedToTest];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  LODWORD(v13) = [mEMORY[0x1E69DC668] launchedToTest];
 
   if (!v13)
   {
     v24 = 0;
-    v16 = [a1 _signatureDictionaryWithDefaultSettings:&v24];
+    v16 = [self _signatureDictionaryWithDefaultSettings:&v24];
     v17 = v24;
     v18 = [v10 objectForKeyedSubscript:@"PXSettingsSignatureKey"];
     v19 = [v16 objectForKeyedSubscript:@"PXSettingsSignatureVersionKey"];
-    v20 = [v19 integerValue];
+    integerValue = [v19 integerValue];
     v21 = [v18 objectForKeyedSubscript:@"PXSettingsSignatureVersionKey"];
-    LOBYTE(v20) = v20 == [v21 integerValue];
+    LOBYTE(integerValue) = integerValue == [v21 integerValue];
 
-    if (v20)
+    if (integerValue)
     {
       if (v11)
       {
-        v4 = [a1 settingsFromArchiveDictionary:v11];
+        initWithDefaultValues = [self settingsFromArchiveDictionary:v11];
         v22 = [v16 objectForKeyedSubscript:@"PXSettingsSignatureDefaultValuesKey"];
         v23 = [v18 objectForKeyedSubscript:@"PXSettingsSignatureDefaultValuesKey"];
-        [v4 _resetValuesThatChangedBetweenCurrentDefaultValues:v22 andArchivedDefaultValues:v23 defaultSettings:v17];
+        [initWithDefaultValues _resetValuesThatChangedBetweenCurrentDefaultValues:v22 andArchivedDefaultValues:v23 defaultSettings:v17];
 
 LABEL_19:
         goto LABEL_20;
@@ -93,7 +93,7 @@ LABEL_19:
       v11 = 0;
     }
 
-    v4 = 0;
+    initWithDefaultValues = 0;
     goto LABEL_19;
   }
 
@@ -103,10 +103,10 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  v4 = [a1 settingsFromArchiveDictionary:v11];
+  initWithDefaultValues = [self settingsFromArchiveDictionary:v11];
 LABEL_20:
 
-  if (!v4)
+  if (!initWithDefaultValues)
   {
     goto LABEL_5;
   }
@@ -114,37 +114,37 @@ LABEL_20:
 LABEL_6:
   if (v3)
   {
-    v5 = [a1 _defaultsKey];
-    v6 = [v3 objectForKey:v5];
+    _defaultsKey2 = [self _defaultsKey];
+    v6 = [v3 objectForKey:_defaultsKey2];
 
-    [v4 _setOverrideValuesFromDictionary:v6];
+    [initWithDefaultValues _setOverrideValuesFromDictionary:v6];
   }
 
-  return v4;
+  return initWithDefaultValues;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v7 = [(PXSettings *)self _archiveDictionaryWithSignature];
+  containerCopy = container;
+  _archiveDictionaryWithSignature = [(PXSettings *)self _archiveDictionaryWithSignature];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 addAttachmentWithDictionary:v7 name:v6];
+  [containerCopy addAttachmentWithDictionary:_archiveDictionaryWithSignature name:v6];
 }
 
-- (void)addDeferredKeyPathObserver:(id)a3
+- (void)addDeferredKeyPathObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
-  v5 = [off_1E7721858 sharedScheduler];
+  objc_initWeak(&from, observerCopy);
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__PXSettings_addDeferredKeyPathObserver___block_invoke;
   v6[3] = &unk_1E7749C10;
   objc_copyWeak(&v7, &location);
   objc_copyWeak(&v8, &from);
-  [v5 scheduleMainQueueTask:v6];
+  [sharedScheduler scheduleMainQueueTask:v6];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v7);
@@ -159,19 +159,19 @@ void __41__PXSettings_addDeferredKeyPathObserver___block_invoke(uint64_t a1)
   [WeakRetained addKeyPathObserver:v2];
 }
 
-- (void)addDeferredKeyObserver:(id)a3
+- (void)addDeferredKeyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
-  v5 = [off_1E7721858 sharedScheduler];
+  objc_initWeak(&from, observerCopy);
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__PXSettings_addDeferredKeyObserver___block_invoke;
   v6[3] = &unk_1E7749C10;
   objc_copyWeak(&v7, &location);
   objc_copyWeak(&v8, &from);
-  [v5 scheduleMainQueueTask:v6];
+  [sharedScheduler scheduleMainQueueTask:v6];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v7);
@@ -186,19 +186,19 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   [WeakRetained addKeyObserver:v2];
 }
 
-- (void)removeKeyPathObserver:(id)a3
+- (void)removeKeyPathObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = PXSettings;
-  [(PTSettings *)&v14 removeKeyPathObserver:v4];
+  [(PTSettings *)&v14 removeKeyPathObserver:observerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PXSettings *)self reparentedRootSettings];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v6 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -210,33 +210,33 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) removeKeyPathObserver:v4];
+        [*(*(&v10 + 1) + 8 * v9++) removeKeyPathObserver:observerCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addKeyPathObserver:(id)a3
+- (void)addKeyPathObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = PXSettings;
-  [(PTSettings *)&v14 addKeyPathObserver:v4];
+  [(PTSettings *)&v14 addKeyPathObserver:observerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PXSettings *)self reparentedRootSettings];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v6 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -248,33 +248,33 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) addKeyPathObserver:v4];
+        [*(*(&v10 + 1) + 8 * v9++) addKeyPathObserver:observerCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)removeKeyObserver:(id)a3
+- (void)removeKeyObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = PXSettings;
-  [(PTSettings *)&v14 removeKeyObserver:v4];
+  [(PTSettings *)&v14 removeKeyObserver:observerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PXSettings *)self reparentedRootSettings];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v6 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -286,33 +286,33 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) removeKeyObserver:v4];
+        [*(*(&v10 + 1) + 8 * v9++) removeKeyObserver:observerCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addKeyObserver:(id)a3
+- (void)addKeyObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = PXSettings;
-  [(PTSettings *)&v14 addKeyObserver:v4];
+  [(PTSettings *)&v14 addKeyObserver:observerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PXSettings *)self reparentedRootSettings];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v6 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -324,36 +324,36 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) addKeyObserver:v4];
+        [*(*(&v10 + 1) + 8 * v9++) addKeyObserver:observerCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [reparentedRootSettings countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4
+- (void)applyArchiveValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(PXSettings *)self isTransientKey:v7])
+  valueCopy = value;
+  keyCopy = key;
+  if (![(PXSettings *)self isTransientKey:keyCopy])
   {
     v8.receiver = self;
     v8.super_class = PXSettings;
-    [(PTSettings *)&v8 applyArchiveValue:v6 forKey:v7];
+    [(PTSettings *)&v8 applyArchiveValue:valueCopy forKey:keyCopy];
   }
 }
 
-- (id)archiveValueForKey:(id)a3
+- (id)archiveValueForKey:(id)key
 {
-  v4 = a3;
-  if ([(PXSettings *)self isTransientKey:v4])
+  keyCopy = key;
+  if ([(PXSettings *)self isTransientKey:keyCopy])
   {
     v5 = 0;
   }
@@ -362,34 +362,34 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   {
     v7.receiver = self;
     v7.super_class = PXSettings;
-    v5 = [(PTSettings *)&v7 archiveValueForKey:v4];
+    v5 = [(PTSettings *)&v7 archiveValueForKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)_validateArchivableValue:(id)a3 forKey:(id)a4
+- (void)_validateArchivableValue:(id)value forKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!CFPropertyListIsValid(v7, kCFPropertyListBinaryFormat_v1_0))
+  valueCopy = value;
+  keyCopy = key;
+  if (!CFPropertyListIsValid(valueCopy, kCFPropertyListBinaryFormat_v1_0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
       abort();
     }
 
-    v9 = v7;
+    v9 = valueCopy;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v9 keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    keyEnumerator = [v9 keyEnumerator];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -400,7 +400,7 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
@@ -408,7 +408,7 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
           [(PXSettings *)self _validateArchivableValue:v16 forKey:v15];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -421,22 +421,22 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   [(PXSettings *)self _willArchiveSettings:self];
   v5.receiver = self;
   v5.super_class = PXSettings;
-  v3 = [(PTSettings *)&v5 archiveDictionary];
+  archiveDictionary = [(PTSettings *)&v5 archiveDictionary];
 
-  return v3;
+  return archiveDictionary;
 }
 
-- (void)_willArchiveSettings:(id)a3
+- (void)_willArchiveSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if (_PXSettingsRootIsSaving == 1)
   {
-    v7 = v4;
-    v5 = [(PXSettings *)self parentSettings];
-    v6 = v5;
-    if (v5)
+    v7 = settingsCopy;
+    parentSettings = [(PXSettings *)self parentSettings];
+    v6 = parentSettings;
+    if (parentSettings)
     {
-      [v5 _willArchiveSettings:v7];
+      [parentSettings _willArchiveSettings:v7];
     }
 
     else
@@ -444,7 +444,7 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       [(NSMutableSet *)self->_archivedSettings addObject:v7];
     }
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 }
 
@@ -452,8 +452,8 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
   _PXSettingsRootIsSaving = 1;
-  v4 = [(PXSettings *)self archiveDictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"PXSettingsArchiveKey"];
+  archiveDictionary = [(PXSettings *)self archiveDictionary];
+  [v3 setObject:archiveDictionary forKeyedSubscript:@"PXSettingsArchiveKey"];
 
   _PXSettingsRootIsSaving = 0;
   v5 = [objc_opt_class() _signatureDictionaryWithDefaultSettings:0];
@@ -469,25 +469,25 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   v35 = *MEMORY[0x1E69E9840];
   if (PFOSVariantHasInternalUI() && (PFOSVariantHasInternalDiagnostics() & 1) != 0)
   {
-    v3 = [(PXSettings *)self parentSettings];
-    if (v3)
+    parentSettings = [(PXSettings *)self parentSettings];
+    if (parentSettings)
     {
-      v4 = v3;
-      [v3 save];
+      v4 = parentSettings;
+      [parentSettings save];
     }
 
     else
     {
       if (self->_hasUserDefaultsOverrides)
       {
-        v5 = PLUIGetLog();
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+        _userDefaults = PLUIGetLog();
+        if (os_log_type_enabled(_userDefaults, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v31 = self;
+          selfCopy = self;
           v32 = 2112;
           v33 = @"PXSettingsOverride";
-          _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "%@: Will skip attempt to save a settings tree with some settings overridden. It would conflict with manual override key %@", buf, 0x16u);
+          _os_log_impl(&dword_1A3C1C000, _userDefaults, OS_LOG_TYPE_ERROR, "%@: Will skip attempt to save a settings tree with some settings overridden. It would conflict with manual override key %@", buf, 0x16u);
         }
       }
 
@@ -497,11 +497,11 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
         archivedSettings = self->_archivedSettings;
         self->_archivedSettings = v6;
 
-        v5 = [objc_opt_class() _userDefaults];
-        v8 = [objc_opt_class() _defaultsKey];
-        v9 = [(PXSettings *)self _archiveDictionaryWithSignature];
-        [(PXSettings *)self _validateArchivableValue:v9 forKey:v8];
-        [v5 setObject:v9 forKey:v8];
+        _userDefaults = [objc_opt_class() _userDefaults];
+        _defaultsKey = [objc_opt_class() _defaultsKey];
+        _archiveDictionaryWithSignature = [(PXSettings *)self _archiveDictionaryWithSignature];
+        [(PXSettings *)self _validateArchivableValue:_archiveDictionaryWithSignature forKey:_defaultsKey];
+        [_userDefaults setObject:_archiveDictionaryWithSignature forKey:_defaultsKey];
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
@@ -535,15 +535,15 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
         v15 = self->_archivedSettings;
         self->_archivedSettings = 0;
 
-        [v5 synchronize];
+        [_userDefaults synchronize];
       }
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v16 = [(PXSettings *)self reparentedRootSettings];
-      v17 = [v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+      v17 = [reparentedRootSettings countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v17)
       {
         v18 = v17;
@@ -555,14 +555,14 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
           {
             if (*v22 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(reparentedRootSettings);
             }
 
             [*(*(&v21 + 1) + 8 * v20++) save];
           }
 
           while (v18 != v20);
-          v18 = [v16 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v18 = [reparentedRootSettings countByEnumeratingWithState:&v21 objects:v29 count:16];
         }
 
         while (v18);
@@ -585,17 +585,17 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
 
 - (void)clearManualOverrides
 {
-  v2 = [(PXSettings *)self parentSettings];
-  v4 = v2;
-  if (v2)
+  parentSettings = [(PXSettings *)self parentSettings];
+  v4 = parentSettings;
+  if (parentSettings)
   {
-    [v2 clearManualOverrides];
+    [parentSettings clearManualOverrides];
   }
 
   else
   {
-    v3 = [objc_opt_class() _userDefaults];
-    [v3 removeObjectForKey:@"PXSettingsOverride"];
+    _userDefaults = [objc_opt_class() _userDefaults];
+    [_userDefaults removeObjectForKey:@"PXSettingsOverride"];
   }
 }
 
@@ -603,16 +603,16 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(objc_opt_class());
-  v4 = [(PXSettings *)self archiveDictionary];
-  v5 = [v3 archiveDictionary];
-  v6 = [v4 isEqual:v5];
+  archiveDictionary = [(PXSettings *)self archiveDictionary];
+  archiveDictionary2 = [v3 archiveDictionary];
+  hasDefaultValues = [archiveDictionary isEqual:archiveDictionary2];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(PXSettings *)self reparentedRootSettings];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v8 = [reparentedRootSettings countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -623,27 +623,27 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
-        if (v6)
+        if (hasDefaultValues)
         {
-          v6 = [*(*(&v13 + 1) + 8 * i) hasDefaultValues];
+          hasDefaultValues = [*(*(&v13 + 1) + 8 * i) hasDefaultValues];
         }
 
         else
         {
-          v6 = 0;
+          hasDefaultValues = 0;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [reparentedRootSettings countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  return v6;
+  return hasDefaultValues;
 }
 
 - (void)restoreDefaultValues
@@ -656,8 +656,8 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(PXSettings *)self reparentedRootSettings];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v4 = [reparentedRootSettings countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -669,23 +669,23 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) restoreDefaultValues];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [reparentedRootSettings countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)_setOverrideValuesFromDictionary:(id)a3
+- (BOOL)_setOverrideValuesFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -696,7 +696,7 @@ void __37__PXSettings_addDeferredKeyObserver___block_invoke(uint64_t a1)
   v9[3] = &unk_1E7749BE8;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
   v5 = v11;
   if (self->_hasUserDefaultsOverrides)
   {
@@ -793,8 +793,8 @@ LABEL_14:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PXSettings *)self reparentedRootSettings];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  reparentedRootSettings = [(PXSettings *)self reparentedRootSettings];
+  v4 = [reparentedRootSettings countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -805,7 +805,7 @@ LABEL_14:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reparentedRootSettings);
         }
 
         if (hasUserDefaultsOverrides)
@@ -819,7 +819,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [reparentedRootSettings countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -828,25 +828,25 @@ LABEL_14:
   return hasUserDefaultsOverrides;
 }
 
-- (void)_resetValuesThatChangedBetweenCurrentDefaultValues:(id)a3 andArchivedDefaultValues:(id)a4 defaultSettings:(id)a5
+- (void)_resetValuesThatChangedBetweenCurrentDefaultValues:(id)values andArchivedDefaultValues:(id)defaultValues defaultSettings:(id)settings
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
+  valuesCopy = values;
+  defaultValuesCopy = defaultValues;
+  settingsCopy = settings;
+  array = [MEMORY[0x1E695DF70] array];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __106__PXSettings__resetValuesThatChangedBetweenCurrentDefaultValues_andArchivedDefaultValues_defaultSettings___block_invoke;
   v24[3] = &unk_1E7749BC0;
   v24[4] = self;
-  v12 = v9;
+  v12 = defaultValuesCopy;
   v25 = v12;
-  v13 = v10;
+  v13 = settingsCopy;
   v26 = v13;
-  v14 = v11;
+  v14 = array;
   v27 = v14;
-  [v8 enumerateKeysAndObjectsUsingBlock:v24];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v24];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -913,20 +913,20 @@ void __106__PXSettings__resetValuesThatChangedBetweenCurrentDefaultValues_andArc
   }
 }
 
-- (BOOL)isTransientKeyPath:(id)a3
+- (BOOL)isTransientKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"." options:2];
+  pathCopy = path;
+  v5 = [pathCopy rangeOfString:@"." options:2];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PXSettings *)self isTransientKey:v4];
+    v7 = [(PXSettings *)self isTransientKey:pathCopy];
   }
 
   else
   {
     v8 = v5;
     v9 = v6;
-    v10 = [v4 substringToIndex:v5];
+    v10 = [pathCopy substringToIndex:v5];
     v11 = [(PXSettings *)self valueForKey:v10];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
@@ -938,72 +938,72 @@ void __106__PXSettings__resetValuesThatChangedBetweenCurrentDefaultValues_andArc
       v12 = 0;
     }
 
-    v13 = [v4 substringFromIndex:v8 + v9];
+    v13 = [pathCopy substringFromIndex:v8 + v9];
     v7 = [v12 isTransientKeyPath:v13];
   }
 
   return v7;
 }
 
-- (BOOL)isTransientKey:(id)a3
+- (BOOL)isTransientKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   cachedTransientProperties = self->_cachedTransientProperties;
   if (!cachedTransientProperties)
   {
-    v6 = [objc_opt_class() transientProperties];
+    transientProperties = [objc_opt_class() transientProperties];
     v7 = self->_cachedTransientProperties;
-    self->_cachedTransientProperties = v6;
+    self->_cachedTransientProperties = transientProperties;
 
     cachedTransientProperties = self->_cachedTransientProperties;
   }
 
-  if ([(NSSet *)cachedTransientProperties containsObject:v4])
+  if ([(NSSet *)cachedTransientProperties containsObject:keyCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v4 hasPrefix:@"_internal_"];
+    v8 = [keyCopy hasPrefix:@"_internal_"];
   }
 
   return v8;
 }
 
-+ (id)_signatureDictionaryWithDefaultSettings:(id *)a3
++ (id)_signatureDictionaryWithDefaultSettings:(id *)settings
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [objc_alloc(objc_opt_class()) initWithDefaultValues];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "version")}];
-  [v5 setObject:v7 forKeyedSubscript:@"PXSettingsSignatureVersionKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  initWithDefaultValues = [objc_alloc(objc_opt_class()) initWithDefaultValues];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "version")}];
+  [dictionary setObject:v7 forKeyedSubscript:@"PXSettingsSignatureVersionKey"];
 
-  v8 = [v6 archiveDictionary];
-  [v5 setObject:v8 forKeyedSubscript:@"PXSettingsSignatureDefaultValuesKey"];
+  archiveDictionary = [initWithDefaultValues archiveDictionary];
+  [dictionary setObject:archiveDictionary forKeyedSubscript:@"PXSettingsSignatureDefaultValuesKey"];
 
-  if (a3)
+  if (settings)
   {
-    v9 = v6;
-    *a3 = v6;
+    v9 = initWithDefaultValues;
+    *settings = initWithDefaultValues;
   }
 
-  return v5;
+  return dictionary;
 }
 
 + (id)_userDefaults
 {
-  v2 = [a1 suiteName];
-  if (v2)
+  suiteName = [self suiteName];
+  if (suiteName)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:v2];
+    standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:suiteName];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   }
 
-  v4 = v3;
+  v4 = standardUserDefaults;
 
   return v4;
 }
@@ -1038,26 +1038,26 @@ void __33__PXSettings_transientProperties__block_invoke()
   transientProperties_transientProperties_239758 = v6;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 transientProperties];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  transientProperties = [self transientProperties];
+  v6 = [transientProperties containsObject:keyCopy];
 
   return v6;
 }
 
 + (id)sharedInstance
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXSettings.m" lineNumber:100 description:@"Concrete subclass must implement. Use either PXSettingsImplementRootSettings() or PXSettingsImplementChildSettings() macro for this."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSettings.m" lineNumber:100 description:@"Concrete subclass must implement. Use either PXSettingsImplementRootSettings() or PXSettingsImplementChildSettings() macro for this."];
 
   return 0;
 }
 
-+ (void)setSuiteName:(id)a3
++ (void)setSuiteName:(id)name
 {
-  v3 = [a3 copy];
+  v3 = [name copy];
   v4 = _suiteName;
   _suiteName = v3;
 }

@@ -1,54 +1,54 @@
 @interface ASDTUserActivityNotifier
-+ (id)notifierForDelegate:(id)a3 withName:(id)a4;
-+ (id)notifierForDelegate:(id)a3 withQueue:(id)a4;
-+ (void)logUserActiveBits:(unint64_t)a3 withPrefix:(id)a4;
++ (id)notifierForDelegate:(id)delegate withName:(id)name;
++ (id)notifierForDelegate:(id)delegate withQueue:(id)queue;
++ (void)logUserActiveBits:(unint64_t)bits withPrefix:(id)prefix;
 - (ASDTUserActivityNotifierDelegate)delegate;
 - (BOOL)registerUserActivityLevelNotification;
 - (BOOL)userIsActive;
-- (id)initForDelegate:(id)a3 withName:(id)a4;
-- (id)initForDelegate:(id)a3 withQueue:(id)a4;
+- (id)initForDelegate:(id)delegate withName:(id)name;
+- (id)initForDelegate:(id)delegate withQueue:(id)queue;
 - (void)dealloc;
 - (void)deregisterUserActivityLevelNotification;
 @end
 
 @implementation ASDTUserActivityNotifier
 
-+ (id)notifierForDelegate:(id)a3 withName:(id)a4
++ (id)notifierForDelegate:(id)delegate withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ASDTUserActivityNotifier alloc] initForDelegate:v5 withName:v6];
+  delegateCopy = delegate;
+  nameCopy = name;
+  v7 = [[ASDTUserActivityNotifier alloc] initForDelegate:delegateCopy withName:nameCopy];
 
   return v7;
 }
 
-+ (id)notifierForDelegate:(id)a3 withQueue:(id)a4
++ (id)notifierForDelegate:(id)delegate withQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[ASDTUserActivityNotifier alloc] initForDelegate:v5 withQueue:v6];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v7 = [[ASDTUserActivityNotifier alloc] initForDelegate:delegateCopy withQueue:queueCopy];
 
   return v7;
 }
 
-- (id)initForDelegate:(id)a3 withName:(id)a4
+- (id)initForDelegate:(id)delegate withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  nameCopy = name;
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INTERACTIVE, 0);
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.PowerNotification", v7];
-  v11 = dispatch_queue_create([v10 UTF8String], v9);
-  v12 = [(ASDTUserActivityNotifier *)self initForDelegate:v6 withQueue:v11];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.PowerNotification", nameCopy];
+  v11 = dispatch_queue_create([nameCopy UTF8String], v9);
+  v12 = [(ASDTUserActivityNotifier *)self initForDelegate:delegateCopy withQueue:v11];
 
   return v12;
 }
 
-- (id)initForDelegate:(id)a3 withQueue:(id)a4
+- (id)initForDelegate:(id)delegate withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ASDTUserActivityNotifier;
   v8 = [(ASDTUserActivityNotifier *)&v13 init];
@@ -58,9 +58,9 @@
     goto LABEL_5;
   }
 
-  [(ASDTUserActivityNotifier *)v8 setDelegate:v6];
-  [(ASDTUserActivityNotifier *)v9 setQueue:v7];
-  if (!v6 || !v7)
+  [(ASDTUserActivityNotifier *)v8 setDelegate:delegateCopy];
+  [(ASDTUserActivityNotifier *)v9 setQueue:queueCopy];
+  if (!delegateCopy || !queueCopy)
   {
     v11 = ASDTBaseLogType();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -95,38 +95,38 @@ LABEL_10:
 
 - (BOOL)userIsActive
 {
-  v2 = [(ASDTUserActivityNotifier *)self delegate];
-  [v2 userIsActiveBits];
+  delegate = [(ASDTUserActivityNotifier *)self delegate];
+  [delegate userIsActiveBits];
 
   IOPMGetUserActivityLevel();
   return 0;
 }
 
-+ (void)logUserActiveBits:(unint64_t)a3 withPrefix:(id)a4
++ (void)logUserActiveBits:(unint64_t)bits withPrefix:(id)prefix
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  prefixCopy = prefix;
   v6 = ASDTBaseLogType();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = " presentActive";
-    if ((a3 & 1) == 0)
+    if ((bits & 1) == 0)
     {
       v7 = "";
     }
 
     v15 = 138414338;
-    v16 = v5;
+    v16 = prefixCopy;
     v8 = " presentPassive";
-    if ((a3 & 2) == 0)
+    if ((bits & 2) == 0)
     {
       v8 = "";
     }
 
     v17 = 2048;
-    v18 = a3;
+    bitsCopy = bits;
     v9 = " presentPassiveWithDisplay";
-    if ((a3 & 4) == 0)
+    if ((bits & 4) == 0)
     {
       v9 = "";
     }
@@ -134,7 +134,7 @@ LABEL_10:
     v19 = 2080;
     v20 = v7;
     v10 = " presentPassiveWithoutDisplay";
-    if ((a3 & 8) == 0)
+    if ((bits & 8) == 0)
     {
       v10 = "";
     }
@@ -142,7 +142,7 @@ LABEL_10:
     v21 = 2080;
     v22 = v8;
     v11 = " remoteClientActive";
-    if ((a3 & 0x10) == 0)
+    if ((bits & 0x10) == 0)
     {
       v11 = "";
     }
@@ -150,7 +150,7 @@ LABEL_10:
     v23 = 2080;
     v24 = v9;
     v12 = " notificationActive";
-    if ((a3 & 0x20) == 0)
+    if ((bits & 0x20) == 0)
     {
       v12 = "";
     }
@@ -161,7 +161,7 @@ LABEL_10:
     v27 = 2080;
     v28 = v11;
     v29 = 2080;
-    if ((a3 & 0x40) == 0)
+    if ((bits & 0x40) == 0)
     {
       v13 = "";
     }
@@ -178,7 +178,7 @@ LABEL_10:
 - (BOOL)registerUserActivityLevelNotification
 {
   objc_initWeak(&location, self);
-  v3 = [(ASDTUserActivityNotifier *)self queue];
+  queue = [(ASDTUserActivityNotifier *)self queue];
   objc_copyWeak(&v7, &location);
   self->_userActivityLevelChangeNotification = IOPMScheduleUserActivityLevelNotification();
 

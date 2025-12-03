@@ -1,25 +1,25 @@
 @interface GeoPlaceCacheDetailTableViewController
-- (GeoPlaceCacheDetailTableViewController)initWithGEORequestCounterCacheResults:(id)a3;
-- (id)_nonZeroTotalsForSection:(int64_t)a3;
-- (id)_totalsForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (GeoPlaceCacheDetailTableViewController)initWithGEORequestCounterCacheResults:(id)results;
+- (id)_nonZeroTotalsForSection:(int64_t)section;
+- (id)_totalsForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation GeoPlaceCacheDetailTableViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"reuseIdentifier"];
   }
 
   [v7 setSelectionStyle:0];
-  v8 = -[GeoPlaceCacheDetailTableViewController _nonZeroTotalsForSection:](self, "_nonZeroTotalsForSection:", [v6 section]);
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  v8 = -[GeoPlaceCacheDetailTableViewController _nonZeroTotalsForSection:](self, "_nonZeroTotalsForSection:", [pathCopy section]);
+  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v10 = 0;
   v11 = [v9 unsignedIntegerValue] - 1;
   if (v11 <= 2u)
@@ -27,34 +27,34 @@
     v10 = *(&off_101633070 + v11);
   }
 
-  v12 = [v6 section];
+  section = [pathCopy section];
 
-  v13 = [(GeoPlaceCacheDetailTableViewController *)self _totalsForSection:v12];
+  v13 = [(GeoPlaceCacheDetailTableViewController *)self _totalsForSection:section];
   v14 = [v13 objectForKeyedSubscript:v9];
-  v15 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  v16 = [v7 textLabel];
-  [v16 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
-  v17 = [NSString stringWithFormat:@"%lu", v15];
-  v18 = [v7 detailTextLabel];
-  [v18 setText:v17];
+  v17 = [NSString stringWithFormat:@"%lu", unsignedIntegerValue];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v17];
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(GeoPlaceCacheDetailTableViewController *)self _nonZeroTotalsForSection:a4];
+  v4 = [(GeoPlaceCacheDetailTableViewController *)self _nonZeroTotalsForSection:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)_nonZeroTotalsForSection:(int64_t)a3
+- (id)_nonZeroTotalsForSection:(int64_t)section
 {
   v5 = [(NSOrderedSet *)self->_displayOrder mutableCopy];
-  v6 = [(GeoPlaceCacheDetailTableViewController *)self _totalsForSection:a3];
+  v6 = [(GeoPlaceCacheDetailTableViewController *)self _totalsForSection:section];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100A7A5A4;
@@ -66,17 +66,17 @@
   return v7;
 }
 
-- (id)_totalsForSection:(int64_t)a3
+- (id)_totalsForSection:(int64_t)section
 {
-  v4 = [(NSOrderedSet *)self->_orderedKeys objectAtIndexedSubscript:a3];
+  v4 = [(NSOrderedSet *)self->_orderedKeys objectAtIndexedSubscript:section];
   v5 = [(NSDictionary *)self->_totalsDict objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (GeoPlaceCacheDetailTableViewController)initWithGEORequestCounterCacheResults:(id)a3
+- (GeoPlaceCacheDetailTableViewController)initWithGEORequestCounterCacheResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v36.receiver = self;
   v36.super_class = GeoPlaceCacheDetailTableViewController;
   v5 = [(GeoPlaceCacheDetailTableViewController *)&v36 initWithStyle:1];
@@ -92,8 +92,8 @@
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = resultsCopy;
+    obj = resultsCopy;
     v30 = [obj countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v30)
     {
@@ -108,15 +108,15 @@
           }
 
           v9 = *(*(&v32 + 1) + 8 * i);
-          v10 = [v9 requestType];
-          if (v10 >= 0x41)
+          requestType = [v9 requestType];
+          if (requestType >= 0x41)
           {
-            v11 = [NSString stringWithFormat:@"(unknown: %i)", v10];
+            v11 = [NSString stringWithFormat:@"(unknown: %i)", requestType];
           }
 
           else
           {
-            v11 = *(&off_101632E68 + v10);
+            v11 = *(&off_101632E68 + requestType);
           }
 
           v12 = [v31 objectForKeyedSubscript:v11];
@@ -158,8 +158,8 @@
     totalsDict = v26->_totalsDict;
     v26->_totalsDict = v20;
 
-    v22 = [v31 allKeys];
-    v23 = [v22 sortedArrayUsingSelector:"compare:"];
+    allKeys = [v31 allKeys];
+    v23 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     if (v23)
     {
@@ -172,7 +172,7 @@
     }
 
     objc_storeStrong(&v26->_orderedKeys, v24);
-    v4 = v27;
+    resultsCopy = v27;
     if (v23)
     {
     }

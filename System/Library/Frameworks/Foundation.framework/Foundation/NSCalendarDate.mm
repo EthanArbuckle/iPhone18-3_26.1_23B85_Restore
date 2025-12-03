@@ -1,5 +1,5 @@
 @interface NSCalendarDate
-+ (NSCalendarDate)dateWithNaturalLanguageString:(id)a3 date:(id)a4 locale:(id)a5;
++ (NSCalendarDate)dateWithNaturalLanguageString:(id)string date:(id)date locale:(id)locale;
 + (NSCalendarDate)distantFuture;
 + (NSCalendarDate)distantPast;
 + (id)calendarDate;
@@ -8,20 +8,20 @@
 + (id)dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second timeZone:(NSTimeZone *)aTimeZone;
 - (NSCalendarDate)dateByAddingYears:(NSInteger)year months:(NSInteger)month days:(NSInteger)day hours:(NSInteger)hour minutes:(NSInteger)minute seconds:(NSInteger)second;
 - (NSCalendarDate)init;
-- (NSCalendarDate)initWithCoder:(id)a3;
-- (NSCalendarDate)initWithTimeIntervalSinceReferenceDate:(double)a3;
+- (NSCalendarDate)initWithCoder:(id)coder;
+- (NSCalendarDate)initWithTimeIntervalSinceReferenceDate:(double)date;
 - (NSInteger)hourOfDay;
 - (NSInteger)minuteOfHour;
 - (NSInteger)secondOfMinute;
 - (NSString)descriptionWithCalendarFormat:(NSString *)format locale:(id)locale;
-- (id)addTimeInterval:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)addTimeInterval:(double)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initWithString:(NSString *)description;
 - (id)initWithString:(NSString *)description calendarFormat:(NSString *)format locale:(id)locale;
 - (id)initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second timeZone:(NSTimeZone *)aTimeZone;
-- (id)replacementObjectForPortCoder:(id)a3;
+- (id)replacementObjectForPortCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)release;
 - (void)setCalendarFormat:(NSString *)format;
 - (void)setTimeZone:(NSTimeZone *)aTimeZone;
@@ -60,7 +60,7 @@
   {
     if (_CFAppVersionCheckLessThan() || _CFAppVersionCheckLessThan() || _CFAppVersionCheckLessThan())
     {
-      v3 = self;
+      selfCopy = self;
     }
 
     else
@@ -91,9 +91,9 @@
   return [(NSCalendarDate *)&v4 initWithString:description];
 }
 
-- (NSCalendarDate)initWithTimeIntervalSinceReferenceDate:(double)a3
+- (NSCalendarDate)initWithTimeIntervalSinceReferenceDate:(double)date
 {
-  self->_timeIntervalSinceReferenceDate = a3;
+  self->_timeIntervalSinceReferenceDate = date;
   if (!self->_timeZone)
   {
     self->_timeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
@@ -109,7 +109,7 @@
 
 + (NSCalendarDate)distantFuture
 {
-  v2 = objc_allocWithZone(a1);
+  v2 = objc_allocWithZone(self);
   [objc_msgSend(MEMORY[0x1E695DF00] "distantFuture")];
   v3 = [v2 initWithTimeIntervalSinceReferenceDate:?];
 
@@ -118,7 +118,7 @@
 
 + (NSCalendarDate)distantPast
 {
-  v2 = objc_allocWithZone(a1);
+  v2 = objc_allocWithZone(self);
   [objc_msgSend(MEMORY[0x1E695DF00] "distantPast")];
   v3 = [v2 initWithTimeIntervalSinceReferenceDate:?];
 
@@ -132,11 +132,11 @@
   v11 = day;
   v12 = month;
   v13 = year;
-  v15 = aTimeZone;
+  defaultTimeZone = aTimeZone;
   v16 = second;
   if (!aTimeZone)
   {
-    v15 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
   v18.hour = v10;
@@ -145,8 +145,8 @@
   v18.month = v12;
   v18.year = v13;
   v18.second = v16;
-  self->_timeIntervalSinceReferenceDate = CFGregorianDateGetAbsoluteTime(v18, v15);
-  self->_timeZone = v15;
+  self->_timeIntervalSinceReferenceDate = CFGregorianDateGetAbsoluteTime(v18, defaultTimeZone);
+  self->_timeZone = defaultTimeZone;
   if (!self->_formatString)
   {
     self->_formatString = @"%Y-%m-%d %H:%M:%S %z";
@@ -157,14 +157,14 @@
 
 + (id)calendarDate
 {
-  v2 = [objc_allocWithZone(a1) init];
+  v2 = [objc_allocWithZone(self) init];
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithTimeIntervalSinceReferenceDate:", self->_timeIntervalSinceReferenceDate}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithTimeIntervalSinceReferenceDate:", self->_timeIntervalSinceReferenceDate}];
   [v4 setTimeZone:self->_timeZone];
   [v4 setCalendarFormat:self->_formatString];
   return v4;
@@ -172,15 +172,15 @@
 
 - (void)setTimeZone:(NSTimeZone *)aTimeZone
 {
-  v3 = aTimeZone;
+  defaultTimeZone = aTimeZone;
   if (!aTimeZone)
   {
-    v3 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  v5 = v3;
+  v5 = defaultTimeZone;
 
-  self->_timeZone = v3;
+  self->_timeZone = defaultTimeZone;
 }
 
 - (void)setCalendarFormat:(NSString *)format
@@ -233,7 +233,7 @@
 
 + (id)dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second timeZone:(NSTimeZone *)aTimeZone
 {
-  v9 = [objc_allocWithZone(a1) initWithYear:year month:month day:day hour:hour minute:minute second:second timeZone:aTimeZone];
+  v9 = [objc_allocWithZone(self) initWithYear:year month:month day:day hour:hour minute:minute second:second timeZone:aTimeZone];
 
   return v9;
 }
@@ -301,50 +301,50 @@
   }
 }
 
-- (id)addTimeInterval:(double)a3
+- (id)addTimeInterval:(double)interval
 {
   [(NSCalendarDate *)self timeIntervalSinceReferenceDate];
-  v6 = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:v5 + a3];
-  [(NSCalendarDate *)v6 setTimeZone:self->_timeZone];
-  [(NSCalendarDate *)v6 setCalendarFormat:self->_formatString];
-  return v6;
+  interval = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:v5 + interval];
+  [(NSCalendarDate *)interval setTimeZone:self->_timeZone];
+  [(NSCalendarDate *)interval setCalendarFormat:self->_formatString];
+  return interval;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     [(NSCalendarDate *)self timeIntervalSinceReferenceDate];
-    [a3 encodeDouble:@"NS.time" forKey:?];
-    [a3 encodeObject:-[NSCalendarDate timeZone](self forKey:{"timeZone"), @"NS.timezone"}];
-    v5 = [(NSCalendarDate *)self calendarFormat];
+    [coder encodeDouble:@"NS.time" forKey:?];
+    [coder encodeObject:-[NSCalendarDate timeZone](self forKey:{"timeZone"), @"NS.timezone"}];
+    calendarFormat = [(NSCalendarDate *)self calendarFormat];
 
-    [a3 encodeObject:v5 forKey:@"NS.format"];
+    [coder encodeObject:calendarFormat forKey:@"NS.format"];
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"d" at:&self->_timeIntervalSinceReferenceDate];
-    [a3 encodeValueOfObjCType:"@" at:&self->_timeZone];
+    [coder encodeValueOfObjCType:"d" at:&self->_timeIntervalSinceReferenceDate];
+    [coder encodeValueOfObjCType:"@" at:&self->_timeZone];
 
-    [a3 encodeValueOfObjCType:"@" at:&self->_formatString];
+    [coder encodeValueOfObjCType:"@" at:&self->_formatString];
   }
 }
 
-- (NSCalendarDate)initWithCoder:(id)a3
+- (NSCalendarDate)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v5 = 0.0;
-    if ([a3 containsValueForKey:@"NS.time"])
+    if ([coder containsValueForKey:@"NS.time"])
     {
-      [a3 decodeDoubleForKey:@"NS.time"];
+      [coder decodeDoubleForKey:@"NS.time"];
       v5 = v6;
     }
 
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.timezone"];
-    v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.format"];
-    if ([a3 error])
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.timezone"];
+    v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.format"];
+    if ([coder error])
     {
       return 0;
     }
@@ -363,9 +363,9 @@
 
   else
   {
-    [a3 decodeValueOfObjCType:"d" at:&self->_timeIntervalSinceReferenceDate size:8];
-    [a3 decodeValueOfObjCType:"@" at:&self->_timeZone size:8];
-    [a3 decodeValueOfObjCType:"@" at:&self->_formatString size:8];
+    [coder decodeValueOfObjCType:"d" at:&self->_timeIntervalSinceReferenceDate size:8];
+    [coder decodeValueOfObjCType:"@" at:&self->_timeZone size:8];
+    [coder decodeValueOfObjCType:"@" at:&self->_formatString size:8];
   }
 
   return self;
@@ -373,14 +373,14 @@
 
 + (id)dateWithString:(NSString *)description calendarFormat:(NSString *)format
 {
-  v4 = [objc_allocWithZone(a1) initWithString:description calendarFormat:format locale:0];
+  v4 = [objc_allocWithZone(self) initWithString:description calendarFormat:format locale:0];
 
   return v4;
 }
 
 + (id)dateWithString:(NSString *)description calendarFormat:(NSString *)format locale:(id)locale
 {
-  v5 = [objc_allocWithZone(a1) initWithString:description calendarFormat:format locale:locale];
+  v5 = [objc_allocWithZone(self) initWithString:description calendarFormat:format locale:locale];
 
   return v5;
 }
@@ -472,7 +472,7 @@ LABEL_18:
     {
       if (v17 > 119)
       {
-        v18 = self;
+        selfCopy2 = self;
         if (v17 == 120)
         {
           v34 = locale;
@@ -491,7 +491,7 @@ LABEL_70:
           }
 
           v50 = [(NSString *)v5 length];
-          v28 = [(NSCalendarDate *)v18 descriptionWithCalendarFormat:v49 locale:v34];
+          v28 = [(NSCalendarDate *)selfCopy2 descriptionWithCalendarFormat:v49 locale:v34];
           v27 = v5;
           v26 = v50;
           goto LABEL_81;
@@ -546,7 +546,7 @@ LABEL_81:
           goto LABEL_82;
         }
 
-        v51 = [(NSCalendarDate *)self yearOfCommonEra];
+        yearOfCommonEra = [(NSCalendarDate *)self yearOfCommonEra];
         v52 = [locale objectForKey:@"AppleLocale"];
         if (v52)
         {
@@ -568,11 +568,11 @@ LABEL_76:
 
           if ([v53 isEqualToString:@"th_TH_TRADITIONAL"])
           {
-            v51 += 543;
+            yearOfCommonEra += 543;
           }
         }
 
-        v29 = v51 % 100;
+        dayOfYear = yearOfCommonEra % 100;
 LABEL_67:
         v30 = v5;
         v39 = "%02ld";
@@ -581,7 +581,7 @@ LABEL_67:
 
       if (v17 == 112)
       {
-        v19 = [(NSCalendarDate *)self hourOfDay]> 11;
+        dayOfWeek2 = [(NSCalendarDate *)self hourOfDay]> 11;
         v20 = [locale objectForKey:@"NSAMPMDesignation"];
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"AM", @"PM", 0, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69}];
 LABEL_78:
@@ -591,7 +591,7 @@ LABEL_78:
         }
 
         v58 = [(NSString *)v5 length];
-        v28 = [v20 objectAtIndex:v19];
+        v28 = [v20 objectAtIndex:dayOfWeek2];
         v27 = v5;
         v26 = v58;
         goto LABEL_81;
@@ -602,24 +602,24 @@ LABEL_78:
         goto LABEL_37;
       }
 
-      v25 = [(NSCalendarDate *)self dayOfWeek];
+      dayOfWeek = [(NSCalendarDate *)self dayOfWeek];
 LABEL_41:
-      v29 = v25;
+      dayOfYear = dayOfWeek;
       v30 = v5;
     }
 
     else
     {
-      v18 = self;
+      selfCopy2 = self;
       switch(v17)
       {
         case 'A':
-          v19 = [(NSCalendarDate *)self dayOfWeek];
+          dayOfWeek2 = [(NSCalendarDate *)self dayOfWeek];
           v20 = [locale objectForKey:@"NSWeekDayNameArray"];
           v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"Sunday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", 0, v65, v66, v67, v68, v69}];
           goto LABEL_78;
         case 'B':
-          v19 = [(NSCalendarDate *)self monthOfYear]- 1;
+          dayOfWeek2 = [(NSCalendarDate *)self monthOfYear]- 1;
           v20 = [locale objectForKey:@"NSMonthNameArray"];
           v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"January", @"February", @"March", @"April", @"May", @"June", @"July", @"August", @"September", @"October", @"November", @"December", 0}];
           goto LABEL_78;
@@ -664,26 +664,26 @@ LABEL_41:
           [(NSString *)v5 replaceCharactersInRange:[(NSString *)v5 length] withCharacters:0 length:v73, 3];
           goto LABEL_82;
         case 'H':
-          v33 = [(NSCalendarDate *)self hourOfDay];
+          hourOfDay = [(NSCalendarDate *)self hourOfDay];
           goto LABEL_66;
         case 'I':
-          v38 = [(NSCalendarDate *)self hourOfDay];
-          if (v38 % 12)
+          hourOfDay2 = [(NSCalendarDate *)self hourOfDay];
+          if (hourOfDay2 % 12)
           {
-            v29 = v38 % 12;
+            dayOfYear = hourOfDay2 % 12;
           }
 
           else
           {
-            v29 = 12;
+            dayOfYear = 12;
           }
 
           goto LABEL_67;
         case 'M':
-          v33 = [(NSCalendarDate *)self minuteOfHour];
+          hourOfDay = [(NSCalendarDate *)self minuteOfHour];
           goto LABEL_66;
         case 'S':
-          v33 = [(NSCalendarDate *)self secondOfMinute];
+          hourOfDay = [(NSCalendarDate *)self secondOfMinute];
           goto LABEL_66;
         case 'X':
           v34 = locale;
@@ -692,7 +692,7 @@ LABEL_41:
           v37 = @"%H:%M:%S %Z";
           goto LABEL_70;
         case 'Y':
-          v46 = [(NSCalendarDate *)self yearOfCommonEra];
+          yearOfCommonEra2 = [(NSCalendarDate *)self yearOfCommonEra];
           v47 = [locale objectForKey:@"AppleLocale"];
           if (!v47)
           {
@@ -707,18 +707,18 @@ LABEL_41:
 
           if ([v48 isEqualToString:@"th_TH_TRADITIONAL"])
           {
-            v46 += 543;
+            yearOfCommonEra2 += 543;
           }
 
 LABEL_63:
           v30 = v5;
-          v29 = v46;
+          dayOfYear = yearOfCommonEra2;
           break;
         case 'Z':
-          v31 = [(NSTimeZone *)[(NSCalendarDate *)self timeZone] name];
-          if (v31)
+          name = [(NSTimeZone *)[(NSCalendarDate *)self timeZone] name];
+          if (name)
           {
-            v32 = v31;
+            v32 = name;
           }
 
           else
@@ -729,12 +729,12 @@ LABEL_63:
           [(NSString *)v5 appendString:v32];
           goto LABEL_82;
         case 'a':
-          v19 = [(NSCalendarDate *)self dayOfWeek];
+          dayOfWeek2 = [(NSCalendarDate *)self dayOfWeek];
           v20 = [locale objectForKey:@"NSShortWeekDayNameArray"];
           v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"Sun", @"Mon", @"Tue", @"Wed", @"Thu", @"Fri", @"Sat", 0, v65, v66, v67, v68, v69}];
           goto LABEL_78;
         case 'b':
-          v19 = [(NSCalendarDate *)self monthOfYear]- 1;
+          dayOfWeek2 = [(NSCalendarDate *)self monthOfYear]- 1;
           v20 = [locale objectForKey:@"NSShortMonthNameArray"];
           v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec", 0}];
           goto LABEL_78;
@@ -745,23 +745,23 @@ LABEL_63:
           v37 = @"%a %b %d %H:%M:%S %Z %Y";
           goto LABEL_70;
         case 'd':
-          v33 = [(NSCalendarDate *)self dayOfMonth];
+          hourOfDay = [(NSCalendarDate *)self dayOfMonth];
           goto LABEL_66;
         case 'e':
-          v25 = [(NSCalendarDate *)self dayOfMonth];
+          dayOfWeek = [(NSCalendarDate *)self dayOfMonth];
           goto LABEL_41;
         case 'i':
-          v29 = [(NSCalendarDate *)self hourOfDay]% 12;
+          dayOfYear = [(NSCalendarDate *)self hourOfDay]% 12;
           goto LABEL_67;
         case 'j':
-          v29 = [(NSCalendarDate *)self dayOfYear];
+          dayOfYear = [(NSCalendarDate *)self dayOfYear];
           v30 = v5;
           v39 = "%03ld";
           goto LABEL_68;
         case 'm':
-          v33 = [(NSCalendarDate *)self monthOfYear];
+          hourOfDay = [(NSCalendarDate *)self monthOfYear];
 LABEL_66:
-          v29 = v33;
+          dayOfYear = hourOfDay;
           goto LABEL_67;
         default:
           if (v17 != 37)
@@ -778,7 +778,7 @@ LABEL_66:
 
     v39 = "%ld";
 LABEL_68:
-    appendNumber(v30, v29, __str, v39);
+    appendNumber(v30, dayOfYear, __str, v39);
     goto LABEL_82;
   }
 
@@ -836,23 +836,23 @@ LABEL_68:
 
       if (![(NSScanner *)v8 scanString:v14 intoString:0])
       {
-        v18 = [(NSScanner *)v8 scanLocation];
-        v19 = [(NSScanner *)v7 scanLocation];
+        scanLocation = [(NSScanner *)v8 scanLocation];
+        scanLocation2 = [(NSScanner *)v7 scanLocation];
         if ([(NSScanner *)v8 isAtEnd]&& ![(NSScanner *)v7 isAtEnd])
         {
           goto LABEL_139;
         }
 
         v20 = v14;
-        v21 = [(NSString *)format characterAtIndex:v18];
-        if ([(NSString *)description characterAtIndex:v19]!= v21)
+        v21 = [(NSString *)format characterAtIndex:scanLocation];
+        if ([(NSString *)description characterAtIndex:scanLocation2]!= v21)
         {
           goto LABEL_139;
         }
 
         v14 = v20;
-        [(NSScanner *)v7 setScanLocation:v19 + 1];
-        v22 = v18 + 1;
+        [(NSScanner *)v7 setScanLocation:scanLocation2 + 1];
+        v22 = scanLocation + 1;
         goto LABEL_111;
       }
 
@@ -898,14 +898,14 @@ LABEL_71:
           switch(v15)
           {
             case '%':
-              v27 = [(NSScanner *)v7 scanLocation];
-              if ([(NSString *)[(NSScanner *)v7 string] characterAtIndex:v27]!= 37)
+              scanLocation3 = [(NSScanner *)v7 scanLocation];
+              if ([(NSString *)[(NSScanner *)v7 string] characterAtIndex:scanLocation3]!= 37)
               {
                 goto LABEL_139;
               }
 
 LABEL_86:
-              [(NSScanner *)v7 setScanLocation:v27 + 1];
+              [(NSScanner *)v7 setScanLocation:scanLocation3 + 1];
               break;
             case 'A':
               v26 = [locale objectForKey:@"NSWeekDayNameArray"];
@@ -1136,8 +1136,8 @@ LABEL_112:
 
           goto LABEL_110;
         case 'w':
-          v27 = [(NSScanner *)v7 scanLocation];
-          if ([(NSString *)description characterAtIndex:v27]- 48 <= 6)
+          scanLocation3 = [(NSScanner *)v7 scanLocation];
+          if ([(NSString *)description characterAtIndex:scanLocation3]- 48 <= 6)
           {
             goto LABEL_86;
           }
@@ -1270,20 +1270,20 @@ LABEL_8:
       goto LABEL_118;
     }
 
-    v13 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:v79];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:v79];
   }
 
   else if (v11 == -1)
   {
-    v13 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:v11];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:v11];
   }
 
-  v12 = v13;
+  v12 = defaultTimeZone;
 LABEL_118:
   v50 = v86[0];
   if (v86[0] == -1)
@@ -1392,16 +1392,16 @@ LABEL_142:
   return v69;
 }
 
-+ (NSCalendarDate)dateWithNaturalLanguageString:(id)a3 date:(id)a4 locale:(id)a5
++ (NSCalendarDate)dateWithNaturalLanguageString:(id)string date:(id)date locale:(id)locale
 {
-  v117 = a5;
+  localeCopy = locale;
   v124[1] = *MEMORY[0x1E69E9840];
-  v8 = [a3 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+  v8 = [string stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   if ([v8 isEqual:@"now"])
   {
-    if (a4)
+    if (date)
     {
-      return a4;
+      return date;
     }
 
     return +[NSCalendarDate calendarDate];
@@ -1409,19 +1409,19 @@ LABEL_142:
 
   if ([v8 isEqual:@"today"])
   {
-    if (!a4)
+    if (!date)
     {
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
 
-    v10 = [a4 yearOfCommonEra];
-    v11 = [a4 monthOfYear];
-    v12 = [a4 dayOfMonth];
-    return [a1 dateWithYear:v10 month:v11 day:v12 hour:0 minute:0 second:0 timeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "defaultTimeZone")}];
+    yearOfCommonEra = [date yearOfCommonEra];
+    monthOfYear = [date monthOfYear];
+    dayOfMonth = [date dayOfMonth];
+    return [self dateWithYear:yearOfCommonEra month:monthOfYear day:dayOfMonth hour:0 minute:0 second:0 timeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "defaultTimeZone")}];
   }
 
   v124[0] = 0;
-  v13 = [objc_msgSend(v117 objectForKey:{@"NSDateTimeOrdering", "uppercaseString"}];
+  v13 = [objc_msgSend(localeCopy objectForKey:{@"NSDateTimeOrdering", "uppercaseString"}];
   if (!v13)
   {
     v13 = @"MDYH";
@@ -1433,8 +1433,8 @@ LABEL_142:
   v113 = +[NSCharacterSet alphanumericCharacterSet];
   v15 = [+[NSMutableCharacterSet decimalDigitCharacterSet](NSMutableCharacterSet mutableCopyWithZone:"mutableCopyWithZone:", 0];
   v120 = 0;
-  v16 = [NSScanner scannerWithString:a3];
-  v17 = [MEMORY[0x1E695DF70] array];
+  v16 = [NSScanner scannerWithString:string];
+  array = [MEMORY[0x1E695DF70] array];
   *&v18 = -1;
   *(&v18 + 1) = -1;
   v121 = v18;
@@ -1473,30 +1473,30 @@ LABEL_142:
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"format error" reason:@"internal error" userInfo:0]);
       }
 
-      [v17 addObject:v120];
+      [array addObject:v120];
     }
 
     while (![(NSScanner *)v16 isAtEnd]);
   }
 
-  v104 = a1;
-  v119 = [v17 count];
+  selfCopy = self;
+  v119 = [array count];
   if (v119 <= 0)
   {
-    v65 = 0;
+    dayOfMonth2 = 0;
     v24 = 0;
     v23 = 0;
-    v22 = 0;
-    v66 = -1;
+    defaultTimeZone = 0;
+    yearOfCommonEra2 = -1;
     *&v121 = -1;
     v25 = -1;
     goto LABEL_122;
   }
 
-  v105 = a4;
+  dateCopy = date;
   v106 = 0;
   v21 = 0;
-  v22 = 0;
+  defaultTimeZone = 0;
   v23 = 0;
   v24 = 0;
   v107 = -1;
@@ -1508,12 +1508,12 @@ LABEL_142:
   v116 = v14;
   do
   {
-    v120 = [v17 objectAtIndex:v21];
+    v120 = [array objectAtIndex:v21];
     v26 = [(__CFString *)v120 characterAtIndex:0];
     if ([(NSCharacterSet *)v14 characterIsMember:v26])
     {
       v27 = v120;
-      v28 = buildTokenMapWithDictionary(v117);
+      v28 = buildTokenMapWithDictionary(localeCopy);
       Value = CFDictionaryGetValue(v28, [(__CFString *)v27 lowercaseString]);
       if (Value && Value != 65)
       {
@@ -1524,23 +1524,23 @@ LABEL_142:
       if ([(__CFString *)v120 isEqual:@"GMT"])
       {
         v33 = v21 + 1;
-        v34 = [v17 count];
+        v34 = [array count];
         v14 = v116;
-        if (v21 + 1 < v34 && [v115 characterIsMember:{objc_msgSend(objc_msgSend(v17, "objectAtIndex:", v21 + 1), "characterAtIndex:", 0)}])
+        if (v21 + 1 < v34 && [v115 characterIsMember:{objc_msgSend(objc_msgSend(array, "objectAtIndex:", v21 + 1), "characterAtIndex:", 0)}])
         {
           v21 += 2;
-          v35 = [v17 count];
+          v35 = [array count];
           v110 = MEMORY[0x1E695DFE8];
-          v36 = [@"GMT" stringByAppendingString:{objc_msgSend(v17, "objectAtIndex:", v33)}];
+          v36 = [@"GMT" stringByAppendingString:{objc_msgSend(array, "objectAtIndex:", v33)}];
           if (v21 >= v35)
           {
-            v22 = [v110 timeZoneWithAbbreviation:v36];
+            defaultTimeZone = [v110 timeZoneWithAbbreviation:v36];
             v21 = v33;
           }
 
           else
           {
-            v22 = [v110 timeZoneWithAbbreviation:{objc_msgSend(v36, "stringByAppendingString:", objc_msgSend(v17, "objectAtIndex:", v21))}];
+            defaultTimeZone = [v110 timeZoneWithAbbreviation:{objc_msgSend(v36, "stringByAppendingString:", objc_msgSend(array, "objectAtIndex:", v21))}];
           }
 
           goto LABEL_31;
@@ -1552,8 +1552,8 @@ LABEL_142:
 
       else
       {
-        v42 = [MEMORY[0x1E695DFE8] abbreviationDictionary];
-        v43 = [v42 objectForKey:v120];
+        abbreviationDictionary = [MEMORY[0x1E695DFE8] abbreviationDictionary];
+        v43 = [abbreviationDictionary objectForKey:v120];
         v14 = v116;
         if (!v43)
         {
@@ -1566,7 +1566,7 @@ LABEL_142:
 
       v41 = [v44 timeZoneWithAbbreviation:v45];
 LABEL_59:
-      v22 = v41;
+      defaultTimeZone = v41;
       goto LABEL_60;
     }
 
@@ -1578,25 +1578,25 @@ LABEL_59:
         goto LABEL_60;
       }
 
-      v37 = [(__CFString *)v120 integerValue];
-      if (v37 >= 0)
+      integerValue = [(__CFString *)v120 integerValue];
+      if (integerValue >= 0)
       {
-        v38 = v37;
+        v38 = integerValue;
       }
 
       else
       {
-        v38 = -v37;
+        v38 = -integerValue;
       }
 
       v39 = -3600;
-      if (v37 >= 0)
+      if (integerValue >= 0)
       {
         v39 = 3600;
       }
 
       v40 = -60;
-      if (v37 >= 0)
+      if (integerValue >= 0)
       {
         v40 = 60;
       }
@@ -1605,31 +1605,31 @@ LABEL_59:
       goto LABEL_59;
     }
 
-    v30 = [(__CFString *)v120 integerValue];
-    v31 = v30;
-    if (v30 >= 32)
+    integerValue2 = [(__CFString *)v120 integerValue];
+    v31 = integerValue2;
+    if (integerValue2 >= 32)
     {
-      v32 = v30 + 1900;
-      if (v30 >= 0x64)
+      v32 = integerValue2 + 1900;
+      if (integerValue2 >= 0x64)
       {
-        v32 = v30;
+        v32 = integerValue2;
       }
 
       v114 = v32;
       goto LABEL_60;
     }
 
-    if (v30 >= 24 && v114 != -1)
+    if (integerValue2 >= 24 && v114 != -1)
     {
-      v106 = v30;
+      v106 = integerValue2;
       goto LABEL_60;
     }
 
-    v111 = v22;
+    v111 = defaultTimeZone;
     v46 = v21 + 1;
-    if (v21 + 1 < v119 && v30 < 24)
+    if (v21 + 1 < v119 && integerValue2 < 24)
     {
-      v120 = [v17 objectAtIndex:v21 + 1];
+      v120 = [array objectAtIndex:v21 + 1];
       v47 = [(__CFString *)v120 characterAtIndex:0];
       if (v47 == 58)
       {
@@ -1638,12 +1638,12 @@ LABEL_59:
           goto LABEL_69;
         }
 
-        v120 = [v17 objectAtIndex:?];
+        v120 = [array objectAtIndex:?];
         v48 = [(__CFString *)v120 characterAtIndex:0];
         if ([(NSCharacterSet *)v118 characterIsMember:v48])
         {
-          v49 = [(__CFString *)v120 integerValue];
-          if (v49 > 59)
+          integerValue3 = [(__CFString *)v120 integerValue];
+          if (integerValue3 > 59)
           {
             goto LABEL_68;
           }
@@ -1652,13 +1652,13 @@ LABEL_59:
           if (v21 + 3 >= v119)
           {
             v25 = v31;
-            v24 = v49;
+            v24 = integerValue3;
             v21 += 2;
             goto LABEL_70;
           }
 
-          v24 = v49;
-          v120 = [v17 objectAtIndex:v21 + 3];
+          v24 = integerValue3;
+          v120 = [array objectAtIndex:v21 + 3];
           v62 = [(__CFString *)v120 characterAtIndex:0];
           if (v62 == 58)
           {
@@ -1670,24 +1670,24 @@ LABEL_68:
 LABEL_69:
               v21 = v46;
 LABEL_70:
-              v22 = v111;
+              defaultTimeZone = v111;
 LABEL_31:
               v14 = v116;
               goto LABEL_60;
             }
 
-            v120 = [v17 objectAtIndex:v21];
+            v120 = [array objectAtIndex:v21];
             v48 = [(__CFString *)v120 characterAtIndex:0];
             if ([(NSCharacterSet *)v118 characterIsMember:v48])
             {
-              v63 = [(__CFString *)v120 integerValue];
+              integerValue4 = [(__CFString *)v120 integerValue];
               v25 = v31;
-              if (v63 > 60)
+              if (integerValue4 > 60)
               {
                 goto LABEL_70;
               }
 
-              v23 = v63;
+              v23 = integerValue4;
             }
 
             else
@@ -1718,11 +1718,11 @@ LABEL_31:
         v48 = v47;
       }
 
-      v22 = v111;
+      defaultTimeZone = v111;
       if ([(NSCharacterSet *)v116 characterIsMember:v48])
       {
         v57 = v120;
-        v58 = buildTokenMapWithDictionary(v117);
+        v58 = buildTokenMapWithDictionary(localeCopy);
         v59 = CFDictionaryGetValue(v58, [(__CFString *)v57 lowercaseString]);
         v60 = v59;
         if (!v59)
@@ -1734,7 +1734,7 @@ LABEL_31:
         {
           v123[(v60 - 1) & 0x37] = 1;
           ++v21;
-          v22 = v111;
+          defaultTimeZone = v111;
           v14 = v116;
           if (v25 == -1 && v31 != -1)
           {
@@ -1745,7 +1745,7 @@ LABEL_31:
           goto LABEL_98;
         }
 
-        v22 = v111;
+        defaultTimeZone = v111;
       }
 
       v14 = v116;
@@ -1786,7 +1786,7 @@ LABEL_98:
     v51 = v108;
     if (v107 == -1)
     {
-      v52 = v30;
+      v52 = integerValue2;
     }
 
     else
@@ -1797,7 +1797,7 @@ LABEL_98:
     if (v108 == -1)
     {
       v52 = v107;
-      v53 = v30;
+      v53 = integerValue2;
     }
 
     else
@@ -1806,12 +1806,12 @@ LABEL_98:
     }
 
     v54 = v109;
-    v22 = v111;
+    defaultTimeZone = v111;
     if (v109 == -1)
     {
       v52 = v107;
       v53 = v108;
-      v55 = v30;
+      v55 = integerValue2;
     }
 
     else
@@ -1836,7 +1836,7 @@ LABEL_98:
     v109 = v54;
     if (v112 == -1)
     {
-      v56 = v30;
+      v56 = integerValue2;
     }
 
     v112 = v56;
@@ -1851,76 +1851,76 @@ LABEL_60:
   *(&v121 + 1) = v109;
   if (v123[1])
   {
-    v64 = 1;
-    a4 = v105;
-    v65 = v106;
-    v66 = v114;
+    monthOfYear2 = 1;
+    date = dateCopy;
+    dayOfMonth2 = v106;
+    yearOfCommonEra2 = v114;
     goto LABEL_145;
   }
 
-  a4 = v105;
-  v65 = v106;
-  v66 = v114;
+  date = dateCopy;
+  dayOfMonth2 = v106;
+  yearOfCommonEra2 = v114;
   if (v123[2])
   {
-    v64 = 2;
+    monthOfYear2 = 2;
     goto LABEL_145;
   }
 
 LABEL_122:
   if (v123[3])
   {
-    v64 = 3;
+    monthOfYear2 = 3;
   }
 
   else if (v123[4])
   {
-    v64 = 4;
+    monthOfYear2 = 4;
   }
 
   else if (v123[5])
   {
-    v64 = 5;
+    monthOfYear2 = 5;
   }
 
   else if (v123[6])
   {
-    v64 = 6;
+    monthOfYear2 = 6;
   }
 
   else if (v123[7])
   {
-    v64 = 7;
+    monthOfYear2 = 7;
   }
 
   else if (v123[8])
   {
-    v64 = 8;
+    monthOfYear2 = 8;
   }
 
   else if (v123[9])
   {
-    v64 = 9;
+    monthOfYear2 = 9;
   }
 
   else if (v123[10])
   {
-    v64 = 10;
+    monthOfYear2 = 10;
   }
 
   else if (v123[11])
   {
-    v64 = 11;
+    monthOfYear2 = 11;
   }
 
   else if (v123[12])
   {
-    v64 = 12;
+    monthOfYear2 = 12;
   }
 
   else
   {
-    v64 = 0;
+    monthOfYear2 = 0;
   }
 
 LABEL_145:
@@ -1946,38 +1946,38 @@ LABEL_145:
   {
     v67 = -1;
 LABEL_153:
-    if (!a4)
+    if (!date)
     {
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
 
-    v68 = [a4 dateByAddingYears:0 months:0 days:v67 hours:0 minutes:0 seconds:0];
-    v64 = [v68 monthOfYear];
-    v65 = [v68 dayOfMonth];
-    v66 = [v68 yearOfCommonEra];
+    v68 = [date dateByAddingYears:0 months:0 days:v67 hours:0 minutes:0 seconds:0];
+    monthOfYear2 = [v68 monthOfYear];
+    dayOfMonth2 = [v68 dayOfMonth];
+    yearOfCommonEra2 = [v68 yearOfCommonEra];
   }
 
   if (v123[26])
   {
     if (v123[24])
     {
-      if (!a4)
+      if (!date)
       {
-        a4 = +[NSCalendarDate calendarDate];
+        date = +[NSCalendarDate calendarDate];
       }
 
-      v66 = [a4 yearOfCommonEra] + 1;
+      yearOfCommonEra2 = [date yearOfCommonEra] + 1;
       v123[24] = 0;
     }
 
     else if (v123[25])
     {
-      if (!a4)
+      if (!date)
       {
-        a4 = +[NSCalendarDate calendarDate];
+        date = +[NSCalendarDate calendarDate];
       }
 
-      v66 = [a4 yearOfCommonEra] - 1;
+      yearOfCommonEra2 = [date yearOfCommonEra] - 1;
       v123[25] = 0;
     }
 
@@ -1993,7 +1993,7 @@ LABEL_153:
   {
     v123[24] = 0;
     v69 = 1;
-    if (!a4)
+    if (!date)
     {
       goto LABEL_164;
     }
@@ -2009,22 +2009,22 @@ LABEL_153:
     }
 
     v69 = -1;
-    if (!a4)
+    if (!date)
     {
 LABEL_164:
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
   }
 
-  v70 = [a4 dateByAddingYears:0 months:v69 days:0 hours:0 minutes:0 seconds:0];
-  v64 = [v70 monthOfYear];
-  if (v66 == -1)
+  v70 = [date dateByAddingYears:0 months:v69 days:0 hours:0 minutes:0 seconds:0];
+  monthOfYear2 = [v70 monthOfYear];
+  if (yearOfCommonEra2 == -1)
   {
-    v66 = [v70 yearOfCommonEra];
+    yearOfCommonEra2 = [v70 yearOfCommonEra];
   }
 
 LABEL_171:
-  if (!v65)
+  if (!dayOfMonth2)
   {
     if (v123[17])
     {
@@ -2060,7 +2060,7 @@ LABEL_171:
     {
       if (!v123[23])
       {
-        v71 = 0;
+        dateCopy2 = 0;
         goto LABEL_205;
       }
 
@@ -2070,39 +2070,39 @@ LABEL_171:
     if (v123[25])
     {
       v74 = &v123[25];
-      if (!a4)
+      if (!date)
       {
-        a4 = +[NSCalendarDate calendarDate];
+        date = +[NSCalendarDate calendarDate];
       }
 
-      v75 = [a4 dayOfWeek];
-      if (v72 >= v75)
+      dayOfWeek = [date dayOfWeek];
+      if (v72 >= dayOfWeek)
       {
-        v76 = v72 - v75 - 7;
+        v76 = v72 - dayOfWeek - 7;
       }
 
       else
       {
-        v76 = v72 - v75;
+        v76 = v72 - dayOfWeek;
       }
     }
 
     else
     {
-      if (!a4)
+      if (!date)
       {
-        a4 = +[NSCalendarDate calendarDate];
+        date = +[NSCalendarDate calendarDate];
       }
 
-      v77 = [a4 dayOfWeek];
-      if (v72 - v77 >= 1)
+      dayOfWeek2 = [date dayOfWeek];
+      if (v72 - dayOfWeek2 >= 1)
       {
-        v76 = v72 - v77;
+        v76 = v72 - dayOfWeek2;
       }
 
       else
       {
-        v76 = v72 - v77 + 7;
+        v76 = v72 - dayOfWeek2 + 7;
       }
 
       v74 = &v123[24];
@@ -2111,12 +2111,12 @@ LABEL_171:
     *v74 = 0;
     if (v76)
     {
-      v71 = [a4 dateByAddingYears:0 months:0 days:v76 hours:0 minutes:0 seconds:0];
+      dateCopy2 = [date dateByAddingYears:0 months:0 days:v76 hours:0 minutes:0 seconds:0];
     }
 
     else
     {
-      v71 = a4;
+      dateCopy2 = date;
     }
 
 LABEL_205:
@@ -2129,10 +2129,10 @@ LABEL_205:
     {
       v123[24] = 0;
       v78 = 7;
-      if (a4)
+      if (date)
       {
 LABEL_209:
-        v71 = [a4 dateByAddingYears:0 months:0 days:v78 hours:0 minutes:0 seconds:0];
+        dateCopy2 = [date dateByAddingYears:0 months:0 days:v78 hours:0 minutes:0 seconds:0];
         goto LABEL_210;
       }
     }
@@ -2147,17 +2147,17 @@ LABEL_209:
       }
 
       v78 = -7;
-      if (a4)
+      if (date)
       {
         goto LABEL_209;
       }
     }
 
-    a4 = +[NSCalendarDate calendarDate];
+    date = +[NSCalendarDate calendarDate];
     goto LABEL_209;
   }
 
-  v71 = 0;
+  dateCopy2 = 0;
 LABEL_210:
   for (i = 0; i != 24; ++i)
   {
@@ -2176,13 +2176,13 @@ LABEL_210:
     v81 = 2;
   }
 
-  if (v66 == -1)
+  if (yearOfCommonEra2 == -1)
   {
     v80 = v81;
   }
 
-  v82 = v64 == 0;
-  if (!v65)
+  v82 = monthOfYear2 == 0;
+  if (!dayOfMonth2)
   {
     ++v82;
   }
@@ -2218,10 +2218,10 @@ LABEL_210:
   v86 = v25 == -1 && v83 > v84;
   v87 = v86;
   v88 = v83 - v87;
-  v89 = v66 == -1 && v88 > v84;
+  v89 = yearOfCommonEra2 == -1 && v88 > v84;
   v90 = v89;
   v91 = v88 - v90;
-  v92 = !v64 && v91 > v84;
+  v92 = !monthOfYear2 && v91 > v84;
   v93 = v92;
   if (!v84)
   {
@@ -2241,9 +2241,9 @@ LABEL_210:
       {
         if (v98 == 68)
         {
-          if (!v65)
+          if (!dayOfMonth2)
           {
-            v65 = *(&v121 + v94);
+            dayOfMonth2 = *(&v121 + v94);
             if (v96 > 31)
             {
               return 0;
@@ -2282,11 +2282,11 @@ LABEL_210:
           return 0;
         }
 
-        if (v66 == -1 && !v90)
+        if (yearOfCommonEra2 == -1 && !v90)
         {
           if (v96 > 99)
           {
-            v66 = *(&v121 + v94);
+            yearOfCommonEra2 = *(&v121 + v94);
           }
 
           else if (dateWithNaturalLanguageString_date_locale__doExcelLittleY)
@@ -2301,12 +2301,12 @@ LABEL_210:
               v99 = 2000;
             }
 
-            v66 = v99 + v96;
+            yearOfCommonEra2 = v99 + v96;
           }
 
           else
           {
-            v66 = v96 + 1900;
+            yearOfCommonEra2 = v96 + 1900;
           }
 
           goto LABEL_265;
@@ -2315,7 +2315,7 @@ LABEL_210:
         goto LABEL_264;
       }
 
-      if (v64 != 0 || v93)
+      if (monthOfYear2 != 0 || v93)
       {
 LABEL_264:
         v95 += 2;
@@ -2330,7 +2330,7 @@ LABEL_264:
       break;
     }
 
-    v64 = *(&v121 + v94);
+    monthOfYear2 = *(&v121 + v94);
     if (v96 > 12)
     {
       return 0;
@@ -2360,7 +2360,7 @@ LABEL_281:
         v100 = v25;
       }
 
-      if (!v71)
+      if (!dateCopy2)
       {
         goto LABEL_301;
       }
@@ -2388,63 +2388,63 @@ LABEL_281:
         v100 = v25;
       }
 
-      if (!v71)
+      if (!dateCopy2)
       {
         goto LABEL_301;
       }
     }
 
 LABEL_297:
-    if (!v65 && !v64 && v66 == -1)
+    if (!dayOfMonth2 && !monthOfYear2 && yearOfCommonEra2 == -1)
     {
-      v65 = [v71 dayOfMonth];
-      v64 = [v71 monthOfYear];
-      v66 = [v71 yearOfCommonEra];
+      dayOfMonth2 = [dateCopy2 dayOfMonth];
+      monthOfYear2 = [dateCopy2 monthOfYear];
+      yearOfCommonEra2 = [dateCopy2 yearOfCommonEra];
     }
 
     goto LABEL_301;
   }
 
   v100 = -1;
-  if (v71)
+  if (dateCopy2)
   {
     goto LABEL_297;
   }
 
 LABEL_301:
-  if (!v65 && !v64 && v66 == -1 && v100 == -1)
+  if (!dayOfMonth2 && !monthOfYear2 && yearOfCommonEra2 == -1 && v100 == -1)
   {
     return 0;
   }
 
-  if (!v65)
+  if (!dayOfMonth2)
   {
-    if (!a4)
+    if (!date)
     {
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
 
-    v65 = [a4 dayOfMonth];
+    dayOfMonth2 = [date dayOfMonth];
   }
 
-  if (!v64)
+  if (!monthOfYear2)
   {
-    if (!a4)
+    if (!date)
     {
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
 
-    v64 = [a4 monthOfYear];
+    monthOfYear2 = [date monthOfYear];
   }
 
-  if (v66 == -1)
+  if (yearOfCommonEra2 == -1)
   {
-    if (!a4)
+    if (!date)
     {
-      a4 = +[NSCalendarDate calendarDate];
+      date = +[NSCalendarDate calendarDate];
     }
 
-    v66 = [a4 yearOfCommonEra];
+    yearOfCommonEra2 = [date yearOfCommonEra];
   }
 
   if (v100 == -1)
@@ -2457,28 +2457,28 @@ LABEL_301:
     v102 = v100;
   }
 
-  if (!v22)
+  if (!defaultTimeZone)
   {
-    v22 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  a4 = 0;
-  if ((v66 - 4001) >= 0xFFFFFFFFFFFFF060 && (v64 - 13) >= 0xFFFFFFFFFFFFFFF4 && (v65 - 32) >= 0xFFFFFFFFFFFFFFE1)
+  date = 0;
+  if ((yearOfCommonEra2 - 4001) >= 0xFFFFFFFFFFFFF060 && (monthOfYear2 - 13) >= 0xFFFFFFFFFFFFFFF4 && (dayOfMonth2 - 32) >= 0xFFFFFFFFFFFFFFE1)
   {
-    return [v104 dateWithYear:v66 month:v64 day:v65 hour:v102 minute:v24 second:v23 timeZone:v22];
+    return [selfCopy dateWithYear:yearOfCommonEra2 month:monthOfYear2 day:dayOfMonth2 hour:v102 minute:v24 second:v23 timeZone:defaultTimeZone];
   }
 
-  return a4;
+  return date;
 }
 
-- (id)replacementObjectForPortCoder:(id)a3
+- (id)replacementObjectForPortCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isByref])
+  if ([coder isByref])
   {
     v6.receiver = self;
     v6.super_class = NSCalendarDate;
-    return [(NSDate *)&v6 replacementObjectForPortCoder:a3];
+    return [(NSDate *)&v6 replacementObjectForPortCoder:coder];
   }
 
   return self;

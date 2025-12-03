@@ -1,13 +1,13 @@
 @interface IXGizmoInstallingAppInstallCoordinator
-- (BOOL)setTargetGizmoPairingID:(id)a3 error:(id *)a4;
-- (id)targetGizmoPairingIDWithError:(id *)a3;
+- (BOOL)setTargetGizmoPairingID:(id)d error:(id *)error;
+- (id)targetGizmoPairingIDWithError:(id *)error;
 @end
 
 @implementation IXGizmoInstallingAppInstallCoordinator
 
-- (BOOL)setTargetGizmoPairingID:(id)a3 error:(id *)a4
+- (BOOL)setTargetGizmoPairingID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -23,27 +23,27 @@
   v19[1] = 3221225472;
   v19[2] = __72__IXGizmoInstallingAppInstallCoordinator_setTargetGizmoPairingID_error___block_invoke;
   v19[3] = &unk_1E85C5920;
-  v8 = v6;
+  v8 = dCopy;
   v20 = v8;
-  v21 = self;
+  selfCopy = self;
   v22 = &v23;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v19];
-  v10 = [(IXAppInstallCoordinator *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXAppInstallCoordinator *)self uniqueIdentifier];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__IXGizmoInstallingAppInstallCoordinator_setTargetGizmoPairingID_error___block_invoke_10;
   v14[3] = &unk_1E85C5948;
   v11 = v8;
   v15 = v11;
-  v16 = self;
+  selfCopy2 = self;
   v17 = &v23;
   v18 = &v29;
-  [v9 _remote_IXSCoordinatedAppInstall:v10 setTargetGizmoPairingID:v11 completion:v14];
+  [v9 _remote_IXSCoordinatedAppInstall:uniqueIdentifier setTargetGizmoPairingID:v11 completion:v14];
 
   v12 = *(v30 + 24);
-  if (a4 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
-    *a4 = v24[5];
+    *error = v24[5];
     v12 = *(v30 + 24);
   }
 
@@ -113,7 +113,7 @@ void __72__IXGizmoInstallingAppInstallCoordinator_setTargetGizmoPairingID_error_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)targetGizmoPairingIDWithError:(id *)a3
+- (id)targetGizmoPairingIDWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -135,7 +135,7 @@ void __72__IXGizmoInstallingAppInstallCoordinator_setTargetGizmoPairingID_error_
   v12[4] = self;
   v12[5] = &v13;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXAppInstallCoordinator *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXAppInstallCoordinator *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__IXGizmoInstallingAppInstallCoordinator_targetGizmoPairingIDWithError___block_invoke_11;
@@ -143,12 +143,12 @@ void __72__IXGizmoInstallingAppInstallCoordinator_setTargetGizmoPairingID_error_
   v11[4] = self;
   v11[5] = &v13;
   v11[6] = &v19;
-  [v6 _remote_IXSCoordinatedAppInstall:v7 targetGizmoPairingIDWithCompletion:v11];
+  [v6 _remote_IXSCoordinatedAppInstall:uniqueIdentifier targetGizmoPairingIDWithCompletion:v11];
 
   v8 = v20[5];
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 

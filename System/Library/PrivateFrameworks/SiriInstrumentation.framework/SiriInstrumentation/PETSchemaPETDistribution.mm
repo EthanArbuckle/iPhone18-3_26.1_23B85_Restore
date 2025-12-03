@@ -1,28 +1,28 @@
 @interface PETSchemaPETDistribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PETSchemaPETDistribution)initWithDictionary:(id)a3;
-- (PETSchemaPETDistribution)initWithJSON:(id)a3;
+- (PETSchemaPETDistribution)initWithDictionary:(id)dictionary;
+- (PETSchemaPETDistribution)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMax:(BOOL)a3;
-- (void)setHasMean:(BOOL)a3;
-- (void)setHasVariance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMax:(BOOL)max;
+- (void)setHasMean:(BOOL)mean;
+- (void)setHasVariance:(BOOL)variance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETSchemaPETDistribution
 
-- (PETSchemaPETDistribution)initWithDictionary:(id)a3
+- (PETSchemaPETDistribution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PETSchemaPETDistribution;
   v5 = [(PETSchemaPETDistribution *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"min"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(PETSchemaPETDistribution *)v5 setMin:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"max"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"max"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(PETSchemaPETDistribution *)v5 setMax:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mean"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mean"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(PETSchemaPETDistribution *)v5 setMean:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"variance"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"variance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,30 +60,30 @@
   return v5;
 }
 
-- (PETSchemaPETDistribution)initWithJSON:(id)a3
+- (PETSchemaPETDistribution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PETSchemaPETDistribution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PETSchemaPETDistribution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PETSchemaPETDistribution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -96,14 +96,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = MEMORY[0x1E696AD98];
     [(PETSchemaPETDistribution *)self max];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"max"];
+    [dictionary setObject:v9 forKeyedSubscript:@"max"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(PETSchemaPETDistribution *)self mean];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"mean"];
+  [dictionary setObject:v11 forKeyedSubscript:@"mean"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -144,7 +144,7 @@ LABEL_11:
   v12 = MEMORY[0x1E696AD98];
   [(PETSchemaPETDistribution *)self min];
   v13 = [v12 numberWithDouble:?];
-  [v3 setObject:v13 forKeyedSubscript:@"min"];
+  [dictionary setObject:v13 forKeyedSubscript:@"min"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -152,13 +152,13 @@ LABEL_5:
     v5 = MEMORY[0x1E696AD98];
     [(PETSchemaPETDistribution *)self variance];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"variance"];
+    [dictionary setObject:v6 forKeyedSubscript:@"variance"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -301,16 +301,16 @@ LABEL_6:
   return v8 ^ v4 ^ v12 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -319,14 +319,14 @@ LABEL_6:
   if (*&has)
   {
     min = self->_min;
-    [v4 min];
+    [equalCopy min];
     if (min != v8)
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -335,14 +335,14 @@ LABEL_6:
     if (v9)
     {
       max = self->_max;
-      [v4 max];
+      [equalCopy max];
       if (max != v11)
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v12 = (*&has >> 2) & 1;
@@ -351,20 +351,20 @@ LABEL_6:
       if (v12)
       {
         mean = self->_mean;
-        [v4 mean];
+        [equalCopy mean];
         if (mean != v14)
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[40];
+        v6 = equalCopy[40];
       }
 
       v15 = (*&has >> 3) & 1;
       if (v15 == ((v6 >> 3) & 1))
       {
-        if (!v15 || (variance = self->_variance, [v4 variance], variance == v17))
+        if (!v15 || (variance = self->_variance, [equalCopy variance], variance == v17))
         {
           v18 = 1;
           goto LABEL_18;
@@ -380,9 +380,9 @@ LABEL_18:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -429,9 +429,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasVariance:(BOOL)a3
+- (void)setHasVariance:(BOOL)variance
 {
-  if (a3)
+  if (variance)
   {
     v3 = 8;
   }
@@ -444,9 +444,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMean:(BOOL)a3
+- (void)setHasMean:(BOOL)mean
 {
-  if (a3)
+  if (mean)
   {
     v3 = 4;
   }
@@ -459,9 +459,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMax:(BOOL)a3
+- (void)setHasMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 2;
   }

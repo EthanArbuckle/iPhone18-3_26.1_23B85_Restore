@@ -1,30 +1,30 @@
 @interface WRWidgetRendererInitializationPayload
-- (WRWidgetRendererInitializationPayload)initWithCoder:(id)a3;
-- (WRWidgetRendererInitializationPayload)initWithExtensions:(id)a3 configurations:(id)a4 systemEnvironment:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WRWidgetRendererInitializationPayload)initWithCoder:(id)coder;
+- (WRWidgetRendererInitializationPayload)initWithExtensions:(id)extensions configurations:(id)configurations systemEnvironment:(id)environment;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WRWidgetRendererInitializationPayload
 
-- (WRWidgetRendererInitializationPayload)initWithExtensions:(id)a3 configurations:(id)a4 systemEnvironment:(id)a5
+- (WRWidgetRendererInitializationPayload)initWithExtensions:(id)extensions configurations:(id)configurations systemEnvironment:(id)environment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionsCopy = extensions;
+  configurationsCopy = configurations;
+  environmentCopy = environment;
   v19.receiver = self;
   v19.super_class = WRWidgetRendererInitializationPayload;
   v11 = [(WRWidgetRendererInitializationPayload *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [extensionsCopy copy];
     extensions = v11->_extensions;
     v11->_extensions = v12;
 
-    v14 = [v9 copy];
+    v14 = [configurationsCopy copy];
     configurations = v11->_configurations;
     v11->_configurations = v14;
 
-    v16 = [v10 copy];
+    v16 = [environmentCopy copy];
     systemEnvironment = v11->_systemEnvironment;
     v11->_systemEnvironment = v16;
   }
@@ -32,33 +32,33 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extensions = self->_extensions;
-  v5 = a3;
-  [v5 encodeObject:extensions forKey:@"extensions"];
-  [v5 encodeObject:self->_configurations forKey:@"configurations"];
-  [v5 encodeObject:self->_systemEnvironment forKey:@"systemEnvironment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extensions forKey:@"extensions"];
+  [coderCopy encodeObject:self->_configurations forKey:@"configurations"];
+  [coderCopy encodeObject:self->_systemEnvironment forKey:@"systemEnvironment"];
 }
 
-- (WRWidgetRendererInitializationPayload)initWithCoder:(id)a3
+- (WRWidgetRendererInitializationPayload)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"extensions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"extensions"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v13 forKey:@"configurations"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"configurations"];
 
-  v15 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"systemEnvironment"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemEnvironment"];
 
-  v16 = 0;
+  selfCopy = 0;
   if (v9 && v14 && v15)
   {
     v20.receiver = self;
@@ -73,10 +73,10 @@
     }
 
     self = p_isa;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface _UIMotionEffectEngine
 + (BOOL)_motionEffectsEnabled;
 + (BOOL)_motionEffectsSupported;
-- (BOOL)_hasMotionEffectsForView:(id)a3;
-- (BOOL)_motionEffect:(id)a3 belongsToView:(id)a4;
-- (BOOL)_motionEffectsAreSuspendedForView:(id)a3;
+- (BOOL)_hasMotionEffectsForView:(id)view;
+- (BOOL)_motionEffect:(id)effect belongsToView:(id)view;
+- (BOOL)_motionEffectsAreSuspendedForView:(id)view;
 - (BOOL)_shouldGenerateUpdates;
 - (NSString)debugDescription;
 - (_UIMotionEffectEngine)init;
-- (id)_motionEffectsForView:(id)a3;
-- (void)_applyEffectsFromAnalyzer:(id)a3;
+- (id)_motionEffectsForView:(id)view;
+- (void)_applyEffectsFromAnalyzer:(id)analyzer;
 - (void)_handleLatestDeviceMotion;
 - (void)_startGeneratingUpdates;
 - (void)_startOrStopGeneratingUpdates;
 - (void)_stopGeneratingUpdates;
 - (void)_toggleSlowUpdates;
 - (void)_unapplyAllEffects;
-- (void)_unregisterAllMotionEffectsForView:(id)a3;
-- (void)_unregisterMotionEffect:(id)a3 fromView:(id)a4;
+- (void)_unregisterAllMotionEffectsForView:(id)view;
+- (void)_unregisterMotionEffect:(id)effect fromView:(id)view;
 - (void)_updateDisplayLinkInterval;
-- (void)beginApplyingMotionEffect:(id)a3 toView:(id)a4;
-- (void)beginSuspendingForReason:(id)a3;
-- (void)beginSuspendingMotionEffectsForView:(id)a3;
+- (void)beginApplyingMotionEffect:(id)effect toView:(id)view;
+- (void)beginSuspendingForReason:(id)reason;
+- (void)beginSuspendingMotionEffectsForView:(id)view;
 - (void)dealloc;
-- (void)endApplyingMotionEffect:(id)a3 toView:(id)a4;
-- (void)endSuspendingForReason:(id)a3;
-- (void)endSuspendingMotionEffectsForView:(id)a3;
+- (void)endApplyingMotionEffect:(id)effect toView:(id)view;
+- (void)endSuspendingForReason:(id)reason;
+- (void)endSuspendingMotionEffectsForView:(id)view;
 - (void)resetMotionAnalysis;
-- (void)updateEventProviderStatus:(int64_t)a3;
-- (void)updateWithEvent:(id)a3;
+- (void)updateEventProviderStatus:(int64_t)status;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation _UIMotionEffectEngine
@@ -73,7 +73,7 @@
         v7 = v6;
         if (v6)
         {
-          v8 = [v6 BOOLValue];
+          bOOLValue = [v6 BOOLValue];
         }
 
         else
@@ -84,10 +84,10 @@
             [v4 synchronize];
           }
 
-          v8 = 0;
+          bOOLValue = 0;
         }
 
-        _UIMotionEffectsShouldBeEnabled__UIMotionEffectsShouldBeEnabledCache = v8;
+        _UIMotionEffectsShouldBeEnabled__UIMotionEffectsShouldBeEnabledCache = bOOLValue;
       }
 
       v2 = _UIMotionEffectsShouldBeEnabled__UIMotionEffectsShouldBeEnabledCache;
@@ -110,21 +110,21 @@
 
 - (BOOL)_shouldGenerateUpdates
 {
-  v3 = [objc_opt_class() _motionEffectsEnabled];
-  if (v3)
+  _motionEffectsEnabled = [objc_opt_class() _motionEffectsEnabled];
+  if (_motionEffectsEnabled)
   {
     if ([(_UIMotionEffectEngine *)self _isSuspended])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_motionEffectsEnabled) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(_UIAssociationTable *)self->_effectViewAssociationTable isEmpty];
+      LOBYTE(_motionEffectsEnabled) = ![(_UIAssociationTable *)self->_effectViewAssociationTable isEmpty];
     }
   }
 
-  return v3;
+  return _motionEffectsEnabled;
 }
 
 - (void)_startOrStopGeneratingUpdates
@@ -195,8 +195,8 @@
     v8->_suspendReasons = v15;
 
     v8->_targetInterfaceOrientation = 1;
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v8 selector:sel__startOrStopGeneratingUpdates name:@"_UIMotionEffectEngineEnabledDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__startOrStopGeneratingUpdates name:@"_UIMotionEffectEngineEnabledDidChangeNotification" object:0];
 
     objc_initWeak(&location, v8);
     v18 = *MEMORY[0x1E69E98C0];
@@ -241,16 +241,16 @@
   if ((_UIInternalPreferenceUsesDefault_1(&_MergedGlobals_946, @"UIMotionEffectUIUpdateFrequency") & 1) != 0 || (v5 = *&qword_1ED48B390, *&qword_1ED48B390 <= 0))
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
     v8 = 32;
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = 48;
     }
 
     v9 = 30;
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v9 = 45;
     }
@@ -321,8 +321,8 @@ LABEL_23:
 
     [(_UIMotionEffectEngine *)self _updateDisplayLinkInterval];
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   v17 = 0u;
@@ -359,9 +359,9 @@ LABEL_23:
   self->_hasAppliedAtLeastOneUpdateSinceStarting = 0;
   *&self->_slowUpdatesEnabled = 0;
   self->_generatingUpdates = 1;
-  v12 = [(_UIMotionEffectEventProvider *)self->_eventProvider wantsSynchronizedUpdates];
+  wantsSynchronizedUpdates = [(_UIMotionEffectEventProvider *)self->_eventProvider wantsSynchronizedUpdates];
   v13 = 2;
-  if (v12)
+  if (wantsSynchronizedUpdates)
   {
     v13 = 0;
   }
@@ -390,8 +390,8 @@ LABEL_23:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers cachedObjectEnumerable];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  cachedObjectEnumerable = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers cachedObjectEnumerable];
+  v4 = [cachedObjectEnumerable countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -402,7 +402,7 @@ LABEL_23:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cachedObjectEnumerable);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -410,7 +410,7 @@ LABEL_23:
         [(_UIMotionEffectEngine *)self _applyEffectsFromAnalyzer:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [cachedObjectEnumerable countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -482,9 +482,9 @@ LABEL_8:
           if (_UIInternalPreferenceUsesDefault_1(&unk_1ED48B3A8, @"UIMotionEffectSlowVelocityThreshhold"))
           {
             v18 = +[UIDevice currentDevice];
-            v19 = [v18 userInterfaceIdiom];
+            userInterfaceIdiom = [v18 userInterfaceIdiom];
 
-            v20 = dbl_18A680900[(v19 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+            v20 = dbl_18A680900[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
           }
 
           else
@@ -553,8 +553,8 @@ LABEL_26:
           v28 = *(*(&v45 + 1) + 8 * i);
           v29 = v5;
           [v28 updateWithEvent:v5];
-          v30 = [v28 viewerRelativeDevicePose];
-          [v30 viewerOffset];
+          viewerRelativeDevicePose = [v28 viewerRelativeDevicePose];
+          [viewerRelativeDevicePose viewerOffset];
           v32 = v31;
           v34 = v33;
 
@@ -646,8 +646,8 @@ LABEL_26:
   [(_UIMotionEffectEngine *)self _stopGeneratingUpdates];
   [(_UIMotionEffectEngine *)self _unapplyAllEffects];
   [(_UIMotionEffectEventProvider *)self->_eventProvider setConsumer:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityReduceMotionStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityReduceMotionStatusDidChangeNotification" object:0];
 
   notify_cancel(self->_thermalNotificationToken);
   notify_cancel(self->_screenDimmingNotificationToken);
@@ -656,17 +656,17 @@ LABEL_26:
   [(_UIMotionEffectEngine *)&v4 dealloc];
 }
 
-- (void)_applyEffectsFromAnalyzer:(id)a3
+- (void)_applyEffectsFromAnalyzer:(id)analyzer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 updateHistory];
-  v5 = [v4 viewerRelativeDevicePose];
+  analyzerCopy = analyzer;
+  [analyzerCopy updateHistory];
+  viewerRelativeDevicePose = [analyzerCopy viewerRelativeDevicePose];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMapTable *)self->_analyzersToEffects objectForKey:v4, 0];
+  v6 = [(NSMapTable *)self->_analyzersToEffects objectForKey:analyzerCopy, 0];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -683,7 +683,7 @@ LABEL_26:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         v12 = [(_UIAssociationTable *)self->_effectViewAssociationTable rightValueEnumerableForLeftValue:v11];
-        [_UIMotionEffectApplicator applyMotionEffect:v11 toViews:v12 usingPose:v5 transformedForTargetInterfaceOrientation:self->_targetInterfaceOrientation];
+        [_UIMotionEffectApplicator applyMotionEffect:v11 toViews:v12 usingPose:viewerRelativeDevicePose transformedForTargetInterfaceOrientation:self->_targetInterfaceOrientation];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -693,14 +693,14 @@ LABEL_26:
   }
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
-  v5 = a3;
-  if (v5)
+  eventCopy = event;
+  if (eventCopy)
   {
     os_unfair_lock_lock(&self->_pendingEventLock);
     self->_hasReceivedAtLeastOneEventSinceStarting = 1;
-    objc_storeStrong(&self->_pendingEvent, a3);
+    objc_storeStrong(&self->_pendingEvent, event);
     os_unfair_lock_unlock(&self->_pendingEventLock);
     if ([(_UIMotionEffectEventProvider *)self->_eventProvider wantsSynchronizedUpdates])
     {
@@ -722,33 +722,33 @@ LABEL_26:
   }
 }
 
-- (void)updateEventProviderStatus:(int64_t)a3
+- (void)updateEventProviderStatus:(int64_t)status
 {
-  if (self->_eventProviderStatus != a3)
+  if (self->_eventProviderStatus != status)
   {
-    self->_eventProviderStatus = a3;
+    self->_eventProviderStatus = status;
     [(_UIMotionEffectEngine *)self _updateDisplayLinkInterval];
   }
 }
 
-- (void)beginSuspendingForReason:(id)a3
+- (void)beginSuspendingForReason:(id)reason
 {
-  [(NSMutableSet *)self->_suspendReasons addObject:a3];
+  [(NSMutableSet *)self->_suspendReasons addObject:reason];
 
   [(_UIMotionEffectEngine *)self _startOrStopGeneratingUpdates];
 }
 
-- (void)endSuspendingForReason:(id)a3
+- (void)endSuspendingForReason:(id)reason
 {
-  [(NSMutableSet *)self->_suspendReasons removeObject:a3];
+  [(NSMutableSet *)self->_suspendReasons removeObject:reason];
 
   [(_UIMotionEffectEngine *)self _startOrStopGeneratingUpdates];
 }
 
-- (void)beginSuspendingMotionEffectsForView:(id)a3
+- (void)beginSuspendingMotionEffectsForView:(id)view
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if (qword_1ED499018 != -1)
   {
     dispatch_once(&qword_1ED499018, &__block_literal_global_180);
@@ -756,15 +756,15 @@ LABEL_26:
 
   if (_MergedGlobals_13_4 == 1)
   {
-    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v4];
+    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:viewCopy];
 
     if (!v5)
     {
-      v6 = [(_UIMotionEffectEngine *)self _hasMotionEffectsForView:v4];
+      v6 = [(_UIMotionEffectEngine *)self _hasMotionEffectsForView:viewCopy];
       v7 = MEMORY[0x1E695DFA8];
       if (v6)
       {
-        v8 = [(_UIMotionEffectEngine *)self _motionEffectsForView:v4];
+        v8 = [(_UIMotionEffectEngine *)self _motionEffectsForView:viewCopy];
         v9 = [v7 setWithArray:v8];
 
         v17 = 0u;
@@ -786,7 +786,7 @@ LABEL_26:
                 objc_enumerationMutation(v10);
               }
 
-              [(_UIMotionEffectEngine *)self endApplyingMotionEffect:*(*(&v15 + 1) + 8 * i) toView:v4, v15];
+              [(_UIMotionEffectEngine *)self endApplyingMotionEffect:*(*(&v15 + 1) + 8 * i) toView:viewCopy, v15];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -801,15 +801,15 @@ LABEL_26:
         v10 = [MEMORY[0x1E695DFA8] set];
       }
 
-      [(NSMapTable *)self->_suspendedViewsToEffectSets setObject:v10 forKey:v4, v15];
+      [(NSMapTable *)self->_suspendedViewsToEffectSets setObject:v10 forKey:viewCopy, v15];
     }
   }
 }
 
-- (void)endSuspendingMotionEffectsForView:(id)a3
+- (void)endSuspendingMotionEffectsForView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   if (qword_1ED499018 != -1)
   {
     dispatch_once(&qword_1ED499018, &__block_literal_global_180);
@@ -817,10 +817,10 @@ LABEL_26:
 
   if (_MergedGlobals_13_4 == 1)
   {
-    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v4];
+    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:viewCopy];
     if (v5)
     {
-      [(NSMapTable *)self->_suspendedViewsToEffectSets removeObjectForKey:v4];
+      [(NSMapTable *)self->_suspendedViewsToEffectSets removeObjectForKey:viewCopy];
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
@@ -840,7 +840,7 @@ LABEL_26:
               objc_enumerationMutation(v6);
             }
 
-            [(_UIMotionEffectEngine *)self beginApplyingMotionEffect:*(*(&v11 + 1) + 8 * i) toView:v4, v11];
+            [(_UIMotionEffectEngine *)self beginApplyingMotionEffect:*(*(&v11 + 1) + 8 * i) toView:viewCopy, v11];
           }
 
           v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -852,44 +852,44 @@ LABEL_26:
   }
 }
 
-- (BOOL)_motionEffectsAreSuspendedForView:(id)a3
+- (BOOL)_motionEffectsAreSuspendedForView:(id)view
 {
-  v3 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:a3];
+  v3 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:view];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)beginApplyingMotionEffect:(id)a3 toView:(id)a4
+- (void)beginApplyingMotionEffect:(id)effect toView:(id)view
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  effectCopy = effect;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (effectCopy && viewCopy)
   {
-    if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:v7])
+    if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:viewCopy])
     {
       v9 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v8];
-      [v9 addObject:v6];
+      [v9 addObject:effectCopy];
     }
 
     else
     {
-      [(_UIAssociationTable *)self->_effectViewAssociationTable registerAssociationWithLeftValue:v6 rightValue:v8];
-      v10 = [v6 _preferredMotionAnalyzerSettings];
+      [(_UIAssociationTable *)self->_effectViewAssociationTable registerAssociationWithLeftValue:effectCopy rightValue:v8];
+      _preferredMotionAnalyzerSettings = [effectCopy _preferredMotionAnalyzerSettings];
       analyzerSettingsToAnalyzers = self->_analyzerSettingsToAnalyzers;
-      v12 = _lazyMapClientForEffectAndView(v6, v8);
-      [(_UILazyMapTable *)analyzerSettingsToAnalyzers registerClient:v12 ofObjectForKey:v10];
+      v12 = _lazyMapClientForEffectAndView(effectCopy, v8);
+      [(_UILazyMapTable *)analyzerSettingsToAnalyzers registerClient:v12 ofObjectForKey:_preferredMotionAnalyzerSettings];
 
-      LOBYTE(v12) = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers hasCachedObjectForKey:v10];
-      v13 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers objectForKey:v10];
+      LOBYTE(v12) = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers hasCachedObjectForKey:_preferredMotionAnalyzerSettings];
+      v13 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers objectForKey:_preferredMotionAnalyzerSettings];
       if ((v12 & 1) == 0)
       {
-        v14 = [(_UIMotionEffectEventProvider *)self->_eventProvider currentEvent];
-        if (v14)
+        currentEvent = [(_UIMotionEffectEventProvider *)self->_eventProvider currentEvent];
+        if (currentEvent)
         {
-          [v13 updateWithEvent:v14];
+          [v13 updateWithEvent:currentEvent];
         }
 
         self->_allAnalyzersAreCentered = 0;
@@ -898,41 +898,41 @@ LABEL_26:
 
       v18[0] = v8;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      v16 = [v13 viewerRelativeDevicePose];
-      [_UIMotionEffectApplicator applyMotionEffect:v6 toViews:v15 usingPose:v16 transformedForTargetInterfaceOrientation:self->_targetInterfaceOrientation];
+      viewerRelativeDevicePose = [v13 viewerRelativeDevicePose];
+      [_UIMotionEffectApplicator applyMotionEffect:effectCopy toViews:v15 usingPose:viewerRelativeDevicePose transformedForTargetInterfaceOrientation:self->_targetInterfaceOrientation];
 
-      v17 = [(NSMapTable *)self->_analyzersToEffects objectForKey:v13];
-      if (!v17)
+      weakObjectsHashTable = [(NSMapTable *)self->_analyzersToEffects objectForKey:v13];
+      if (!weakObjectsHashTable)
       {
-        v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-        [(NSMapTable *)self->_analyzersToEffects setObject:v17 forKey:v13];
+        weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+        [(NSMapTable *)self->_analyzersToEffects setObject:weakObjectsHashTable forKey:v13];
       }
 
-      [v17 addObject:v6];
+      [weakObjectsHashTable addObject:effectCopy];
       [(_UIMotionEffectEngine *)self _startOrStopGeneratingUpdates];
     }
   }
 }
 
-- (void)_unregisterMotionEffect:(id)a3 fromView:(id)a4
+- (void)_unregisterMotionEffect:(id)effect fromView:(id)view
 {
-  v14 = a3;
+  effectCopy = effect;
   effectViewAssociationTable = self->_effectViewAssociationTable;
-  v7 = a4;
-  [(_UIAssociationTable *)effectViewAssociationTable unregisterAssociationWithLeftValue:v14 rightValue:v7];
-  v8 = [v14 _preferredMotionAnalyzerSettings];
-  v9 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers objectForKey:v8];
+  viewCopy = view;
+  [(_UIAssociationTable *)effectViewAssociationTable unregisterAssociationWithLeftValue:effectCopy rightValue:viewCopy];
+  _preferredMotionAnalyzerSettings = [effectCopy _preferredMotionAnalyzerSettings];
+  v9 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers objectForKey:_preferredMotionAnalyzerSettings];
   analyzerSettingsToAnalyzers = self->_analyzerSettingsToAnalyzers;
-  v11 = _lazyMapClientForEffectAndView(v14, v7);
+  v11 = _lazyMapClientForEffectAndView(effectCopy, viewCopy);
 
-  [(_UILazyMapTable *)analyzerSettingsToAnalyzers unregisterClient:v11 ofObjectForKey:v8];
-  if (v9 && ![(_UIAssociationTable *)self->_effectViewAssociationTable hasRightValuesForLeftValue:v14])
+  [(_UILazyMapTable *)analyzerSettingsToAnalyzers unregisterClient:v11 ofObjectForKey:_preferredMotionAnalyzerSettings];
+  if (v9 && ![(_UIAssociationTable *)self->_effectViewAssociationTable hasRightValuesForLeftValue:effectCopy])
   {
     v12 = [(NSMapTable *)self->_analyzersToEffects objectForKey:v9];
     v13 = v12;
     if (v12)
     {
-      [v12 removeObject:v14];
+      [v12 removeObject:effectCopy];
       if (![v13 count])
       {
         [(NSMapTable *)self->_analyzersToEffects removeObjectForKey:v9];
@@ -943,41 +943,41 @@ LABEL_26:
   [(_UIMotionEffectEngine *)self _startOrStopGeneratingUpdates];
 }
 
-- (void)endApplyingMotionEffect:(id)a3 toView:(id)a4
+- (void)endApplyingMotionEffect:(id)effect toView:(id)view
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  effectCopy = effect;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (effectCopy && viewCopy)
   {
-    if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:v7])
+    if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:viewCopy])
     {
       v9 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v8];
-      [v9 removeObject:v6];
+      [v9 removeObject:effectCopy];
     }
 
     else
     {
-      [(_UIMotionEffectEngine *)self _unregisterMotionEffect:v6 fromView:v8];
+      [(_UIMotionEffectEngine *)self _unregisterMotionEffect:effectCopy fromView:v8];
       v11[0] = v8;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-      [_UIMotionEffectApplicator unapplyMotionEffect:v6 toViews:v10];
+      [_UIMotionEffectApplicator unapplyMotionEffect:effectCopy toViews:v10];
     }
   }
 }
 
-- (void)_unregisterAllMotionEffectsForView:(id)a3
+- (void)_unregisterAllMotionEffectsForView:(id)view
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(_UIAssociationTable *)self->_effectViewAssociationTable hasLeftValuesForRightValue:v4])
+  viewCopy = view;
+  if ([(_UIAssociationTable *)self->_effectViewAssociationTable hasLeftValuesForRightValue:viewCopy])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(_UIMotionEffectEngine *)self _motionEffectsForView:v4, 0];
+    v5 = [(_UIMotionEffectEngine *)self _motionEffectsForView:viewCopy, 0];
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -993,7 +993,7 @@ LABEL_26:
             objc_enumerationMutation(v5);
           }
 
-          [(_UIMotionEffectEngine *)self _unregisterMotionEffect:*(*(&v10 + 1) + 8 * v9++) fromView:v4];
+          [(_UIMotionEffectEngine *)self _unregisterMotionEffect:*(*(&v10 + 1) + 8 * v9++) fromView:viewCopy];
         }
 
         while (v7 != v9);
@@ -1004,55 +1004,55 @@ LABEL_26:
     }
   }
 
-  [(NSMapTable *)self->_suspendedViewsToEffectSets removeObjectForKey:v4];
+  [(NSMapTable *)self->_suspendedViewsToEffectSets removeObjectForKey:viewCopy];
 }
 
-- (id)_motionEffectsForView:(id)a3
+- (id)_motionEffectsForView:(id)view
 {
-  v4 = a3;
-  if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:v4])
+  viewCopy = view;
+  if ([(_UIMotionEffectEngine *)self _motionEffectsAreSuspendedForView:viewCopy])
   {
-    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v4];
+    v5 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:viewCopy];
 
-    v6 = [v5 allObjects];
-    v4 = v5;
+    allObjects = [v5 allObjects];
+    viewCopy = v5;
   }
 
   else
   {
-    v6 = [(_UIAssociationTable *)self->_effectViewAssociationTable leftValuesForRightValue:v4];
+    allObjects = [(_UIAssociationTable *)self->_effectViewAssociationTable leftValuesForRightValue:viewCopy];
   }
 
-  return v6;
+  return allObjects;
 }
 
-- (BOOL)_hasMotionEffectsForView:(id)a3
+- (BOOL)_hasMotionEffectsForView:(id)view
 {
-  v4 = a3;
-  if ([(_UIAssociationTable *)self->_effectViewAssociationTable hasLeftValuesForRightValue:v4])
+  viewCopy = view;
+  if ([(_UIAssociationTable *)self->_effectViewAssociationTable hasLeftValuesForRightValue:viewCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:v4];
+    v6 = [(NSMapTable *)self->_suspendedViewsToEffectSets objectForKey:viewCopy];
     v5 = [v6 count] != 0;
   }
 
   return v5;
 }
 
-- (BOOL)_motionEffect:(id)a3 belongsToView:(id)a4
+- (BOOL)_motionEffect:(id)effect belongsToView:(id)view
 {
-  if (!a3 || !a4)
+  if (!effect || !view)
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [(_UIMotionEffectEngine *)self _motionEffectsForView:a4];
-  LOBYTE(self) = [v7 containsObject:v6];
+  effectCopy = effect;
+  v7 = [(_UIMotionEffectEngine *)self _motionEffectsForView:view];
+  LOBYTE(self) = [v7 containsObject:effectCopy];
 
   return self;
 }
@@ -1064,8 +1064,8 @@ LABEL_26:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(_UIAssociationTable *)self->_effectViewAssociationTable leftValueEnumerable];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  leftValueEnumerable = [(_UIAssociationTable *)self->_effectViewAssociationTable leftValueEnumerable];
+  v4 = [leftValueEnumerable countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1076,7 +1076,7 @@ LABEL_26:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(leftValueEnumerable);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1084,7 +1084,7 @@ LABEL_26:
         [_UIMotionEffectApplicator unapplyMotionEffect:v8 toViews:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [leftValueEnumerable countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1098,11 +1098,11 @@ LABEL_26:
   v5 = NSStringFromClass(v4);
   generatingUpdates = self->_generatingUpdates;
   suspendReasons = self->_suspendReasons;
-  v8 = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers cachedObjects];
+  cachedObjects = [(_UILazyMapTable *)self->_analyzerSettingsToAnalyzers cachedObjects];
   effectViewAssociationTable = self->_effectViewAssociationTable;
-  v10 = [(NSMapTable *)self->_suspendedViewsToEffectSets keyEnumerator];
-  v11 = [v10 allObjects];
-  v12 = [v3 stringWithFormat:@"<%@: %p isGeneratingUpdates=%d suspensionReasons=%@ analyzers=%@ effects=%@ suspendedViews=%@>", v5, self, generatingUpdates, suspendReasons, v8, effectViewAssociationTable, v11];
+  keyEnumerator = [(NSMapTable *)self->_suspendedViewsToEffectSets keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v12 = [v3 stringWithFormat:@"<%@: %p isGeneratingUpdates=%d suspensionReasons=%@ analyzers=%@ effects=%@ suspendedViews=%@>", v5, self, generatingUpdates, suspendReasons, cachedObjects, effectViewAssociationTable, allObjects];
 
   return v12;
 }

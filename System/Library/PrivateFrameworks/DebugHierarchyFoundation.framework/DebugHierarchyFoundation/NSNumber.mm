@@ -1,34 +1,34 @@
 @interface NSNumber
-- (id)dbgStringForType:(id)a3 error:(id *)a4;
+- (id)dbgStringForType:(id)type error:(id *)error;
 @end
 
 @implementation NSNumber
 
-- (id)dbgStringForType:(id)a3 error:(id *)a4
+- (id)dbgStringForType:(id)type error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"b"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"b"])
   {
-    v7 = [(NSNumber *)self BOOLValue];
+    bOOLValue = [(NSNumber *)self BOOLValue];
 LABEL_3:
-    [NSString stringWithFormat:@"%d", v7];
-    a4 = LABEL_9:;
+    [NSString stringWithFormat:@"%d", bOOLValue];
+    error = LABEL_9:;
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"CGf"])
+  if ([typeCopy isEqualToString:@"CGf"])
   {
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"f"])
+  if ([typeCopy isEqualToString:@"f"])
   {
     [(NSNumber *)self floatValue];
     [NSString stringWithFormat:@"%a", v9];
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"d"])
+  if ([typeCopy isEqualToString:@"d"])
   {
 LABEL_5:
     [(NSNumber *)self doubleValue];
@@ -36,77 +36,77 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"integer"])
+  if ([typeCopy isEqualToString:@"integer"])
   {
-    v11 = [(NSNumber *)self integerValue];
+    integerValue = [(NSNumber *)self integerValue];
 LABEL_16:
-    [NSString stringWithFormat:@"%ld", v11];
+    [NSString stringWithFormat:@"%ld", integerValue];
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"uinteger"])
+  if ([typeCopy isEqualToString:@"uinteger"])
   {
-    v12 = [(NSNumber *)self unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)self unsignedIntegerValue];
 LABEL_19:
-    [NSString stringWithFormat:@"%lx", v12];
+    [NSString stringWithFormat:@"%lx", unsignedIntegerValue];
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"i"])
+  if ([typeCopy isEqualToString:@"i"])
   {
-    v7 = [(NSNumber *)self intValue];
+    bOOLValue = [(NSNumber *)self intValue];
     goto LABEL_3;
   }
 
-  if ([v6 isEqualToString:@"ui"])
+  if ([typeCopy isEqualToString:@"ui"])
   {
     [NSString stringWithFormat:@"%u", [(NSNumber *)self unsignedIntValue]];
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"l"])
+  if ([typeCopy isEqualToString:@"l"])
   {
-    v11 = [(NSNumber *)self longValue];
+    integerValue = [(NSNumber *)self longValue];
     goto LABEL_16;
   }
 
-  if ([v6 isEqualToString:@"ul"])
+  if ([typeCopy isEqualToString:@"ul"])
   {
-    v12 = [(NSNumber *)self unsignedLongValue];
+    unsignedIntegerValue = [(NSNumber *)self unsignedLongValue];
     goto LABEL_19;
   }
 
-  if ([v6 isEqualToString:@"ll"])
+  if ([typeCopy isEqualToString:@"ll"])
   {
-    v13 = [(NSNumber *)self longLongValue];
+    longLongValue = [(NSNumber *)self longLongValue];
 LABEL_32:
-    [NSString stringWithFormat:@"%llx", v13];
+    [NSString stringWithFormat:@"%llx", longLongValue];
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"ull"])
+  if ([typeCopy isEqualToString:@"ull"])
   {
-    v13 = [(NSNumber *)self unsignedLongLongValue];
+    longLongValue = [(NSNumber *)self unsignedLongLongValue];
     goto LABEL_32;
   }
 
-  if (a4)
+  if (error)
   {
-    v14 = [NSString stringWithFormat:@"Unknown type specifier: %@", v6];
+    typeCopy = [NSString stringWithFormat:@"Unknown type specifier: %@", typeCopy];
     v18 = NSLocalizedDescriptionKey;
-    v19 = v14;
+    v19 = typeCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v16 = [NSError errorWithDomain:@"DebugHierarchyNumberStringEncodingErrorDomain" code:1 userInfo:v15];
 
     v17 = v16;
-    *a4 = v16;
+    *error = v16;
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_10:
 
-  return a4;
+  return error;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface CRLWPStickyNoteEditor
-- (_TtC8Freeform21CRLWPStickyNoteEditor)initWithInteractiveCanvasController:(id)a3;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)saveDefaultInsertionPreset:(id)a3;
-- (void)updatePreset:(id)a3;
+- (_TtC8Freeform21CRLWPStickyNoteEditor)initWithInteractiveCanvasController:(id)controller;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)saveDefaultInsertionPreset:(id)preset;
+- (void)updatePreset:(id)preset;
 @end
 
 @implementation CRLWPStickyNoteEditor
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -21,20 +21,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100FE5988(a3, v10);
+  v8 = sub_100FE5988(action, v10);
 
   sub_1005E09AC(v10);
   return v8;
 }
 
-- (void)updatePreset:(id)a3
+- (void)updatePreset:(id)preset
 {
-  if (a3)
+  if (preset)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100FE5B88(v6);
@@ -51,11 +51,11 @@
   sub_1005E09AC(v6);
 }
 
-- (void)saveDefaultInsertionPreset:(id)a3
+- (void)saveDefaultInsertionPreset:(id)preset
 {
-  if (a3)
+  if (preset)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -64,7 +64,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100FE6F14();
@@ -72,20 +72,20 @@
   sub_1005E09AC(v6);
 }
 
-- (void)addMiniFormatterElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addMiniFormatterElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  sub_100FE7BAC(v7, x, y);
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
+  selfCopy = self;
+  sub_100FE7BAC(arrayCopy, x, y);
 }
 
-- (_TtC8Freeform21CRLWPStickyNoteEditor)initWithInteractiveCanvasController:(id)a3
+- (_TtC8Freeform21CRLWPStickyNoteEditor)initWithInteractiveCanvasController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for CRLWPStickyNoteEditor();
-  return [(CRLBoardItemEditor *)&v5 initWithInteractiveCanvasController:a3];
+  return [(CRLBoardItemEditor *)&v5 initWithInteractiveCanvasController:controller];
 }
 
 @end

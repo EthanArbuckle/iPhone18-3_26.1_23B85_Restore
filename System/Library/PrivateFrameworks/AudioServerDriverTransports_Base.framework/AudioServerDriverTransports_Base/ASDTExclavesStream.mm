@@ -1,7 +1,7 @@
 @interface ASDTExclavesStream
-- (ASDTExclavesStream)initWithConfig:(id)a3 withDevice:(id)a4;
-- (BOOL)allocExclavesAudioBuffer:(unsigned int)a3;
-- (BOOL)unexpectedSensorStatus:(int)a3;
+- (ASDTExclavesStream)initWithConfig:(id)config withDevice:(id)device;
+- (BOOL)allocExclavesAudioBuffer:(unsigned int)buffer;
+- (BOOL)unexpectedSensorStatus:(int)status;
 - (BOOL)usesExclavesAudioBuffer;
 - (NSDictionary)status;
 - (id).cxx_construct;
@@ -9,33 +9,33 @@
 - (id)exclavesWriteMix;
 - (id)readInputBlock;
 - (id)writeMixBlock;
-- (int)pmPrepareStream:(int)a3;
+- (int)pmPrepareStream:(int)stream;
 - (void)clearBuffer;
 - (void)exclavesStatusTracker;
 - (void)freeExclavesAudioBuffer;
-- (void)ioThreadStateChange:(id)a3;
-- (void)updateSensorForIOThreadStateChange:(id)a3;
+- (void)ioThreadStateChange:(id)change;
+- (void)updateSensorForIOThreadStateChange:(id)change;
 @end
 
 @implementation ASDTExclavesStream
 
-- (ASDTExclavesStream)initWithConfig:(id)a3 withDevice:(id)a4
+- (ASDTExclavesStream)initWithConfig:(id)config withDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = ASDTExclavesStream;
-  v8 = [(ASDTStream *)&v12 initWithConfig:v6 withDevice:v7];
+  v8 = [(ASDTStream *)&v12 initWithConfig:configCopy withDevice:deviceCopy];
   if (v8)
   {
-    v9 = [v6 asdtExclavesBufferName];
-    [(ASDTExclavesStream *)v8 setExclavesBufferName:v9];
+    asdtExclavesBufferName = [configCopy asdtExclavesBufferName];
+    [(ASDTExclavesStream *)v8 setExclavesBufferName:asdtExclavesBufferName];
 
-    v10 = [(ASDTExclavesStream *)v8 exclavesBufferName];
+    exclavesBufferName = [(ASDTExclavesStream *)v8 exclavesBufferName];
 
-    if (v10)
+    if (exclavesBufferName)
     {
-      [v7 setSupportsIsolatedIO:1];
+      [deviceCopy setSupportsIsolatedIO:1];
     }
   }
 
@@ -44,13 +44,13 @@
 
 - (BOOL)usesExclavesAudioBuffer
 {
-  v2 = [(ASDTExclavesStream *)self exclavesBufferName];
-  v3 = v2 != 0;
+  exclavesBufferName = [(ASDTExclavesStream *)self exclavesBufferName];
+  v3 = exclavesBufferName != 0;
 
   return v3;
 }
 
-- (BOOL)allocExclavesAudioBuffer:(unsigned int)a3
+- (BOOL)allocExclavesAudioBuffer:(unsigned int)buffer
 {
   ptr = self->_audioBuffer.__ptr_;
   self->_audioBuffer.__ptr_ = 0;
@@ -66,20 +66,20 @@
     (*(*v6 + 8))(v6, a2);
   }
 
-  v7 = [(ASDTExclavesStream *)self exclavesBufferName];
+  exclavesBufferName = [(ASDTExclavesStream *)self exclavesBufferName];
 
-  if (v7)
+  if (exclavesBufferName)
   {
     if ([(ASDStream *)self direction]== 1768845428)
     {
       [(ASDTExclavesStream *)self exclavesBufferName];
-      v8 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      ASDT::Exclaves::AudioBuffer::Create(v8, a3);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      ASDT::Exclaves::AudioBuffer::Create(uTF8String, buffer);
     }
 
     [(ASDTExclavesStream *)self exclavesBufferName];
-    v9 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    ASDT::Exclaves::InboundBuffer::Create(v9, a3);
+    uTF8String2 = [objc_claimAutoreleasedReturnValue() UTF8String];
+    ASDT::Exclaves::InboundBuffer::Create(uTF8String2, buffer);
   }
 
   [(ASDTExclavesStream *)self setExclavesBufferSize:0];
@@ -105,7 +105,7 @@
   [(ASDTExclavesStream *)self setExclavesBufferSize:0];
 }
 
-- (int)pmPrepareStream:(int)a3
+- (int)pmPrepareStream:(int)stream
 {
   v22 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -113,22 +113,22 @@
   v5 = [(ASDTStream *)&v19 pmPrepareStream:?];
   if (!v5)
   {
-    if (a3 == 1970303090 && [(ASDStream *)self direction]== 1768845428 && [(ASDTExclavesStream *)self usesExclavesAudioBuffer])
+    if (stream == 1970303090 && [(ASDStream *)self direction]== 1768845428 && [(ASDTExclavesStream *)self usesExclavesAudioBuffer])
     {
-      v6 = [(ASDTStream *)self device];
-      v7 = [v6 exclavesSensorName];
-      v8 = [ASDTExclavesSensorManager forSensorName:v7];
+      device = [(ASDTStream *)self device];
+      exclavesSensorName = [device exclavesSensorName];
+      v8 = [ASDTExclavesSensorManager forSensorName:exclavesSensorName];
       [(ASDTExclavesStream *)self setExclavesSensorManager:v8];
 
-      v9 = [(ASDTExclavesStream *)self exclavesSensorManager];
-      LODWORD(v6) = v9 == 0;
+      exclavesSensorManager = [(ASDTExclavesStream *)self exclavesSensorManager];
+      LODWORD(device) = exclavesSensorManager == 0;
 
-      if (!v6)
+      if (!device)
       {
-        v10 = [(ASDStream *)self physicalFormat];
-        if (v10)
+        physicalFormat = [(ASDStream *)self physicalFormat];
+        if (physicalFormat)
         {
-          [v10 audioStreamBasicDescription];
+          [physicalFormat audioStreamBasicDescription];
         }
 
         else
@@ -144,17 +144,17 @@
       v5 = 2003329396;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [(ASDTStream *)self device];
-        v13 = [v12 deviceUID];
-        v14 = [(ASDStream *)self streamName];
-        v15 = [(ASDTStream *)self device];
-        v16 = [v15 exclavesSensorName];
+        device2 = [(ASDTStream *)self device];
+        deviceUID = [device2 deviceUID];
+        streamName = [(ASDStream *)self streamName];
+        device3 = [(ASDTStream *)self device];
+        exclavesSensorName2 = [device3 exclavesSensorName];
         *buf = 138412802;
-        *&buf[4] = v13;
+        *&buf[4] = deviceUID;
         *&buf[12] = 2112;
-        *&buf[14] = v14;
+        *&buf[14] = streamName;
         *&buf[22] = 2112;
-        *&buf[24] = v16;
+        *&buf[24] = exclavesSensorName2;
         _os_log_error_impl(&dword_241659000, v11, OS_LOG_TYPE_ERROR, "%@:%@: Failed to start with bad sensor name: %@", buf, 0x20u);
       }
     }
@@ -169,37 +169,37 @@
   return v5;
 }
 
-- (void)ioThreadStateChange:(id)a3
+- (void)ioThreadStateChange:(id)change
 {
-  v4 = a3;
-  [(ASDTExclavesStream *)self updateSensorForIOThreadStateChange:v4];
+  changeCopy = change;
+  [(ASDTExclavesStream *)self updateSensorForIOThreadStateChange:changeCopy];
   v5.receiver = self;
   v5.super_class = ASDTExclavesStream;
-  [(ASDTStream *)&v5 ioThreadStateChange:v4];
+  [(ASDTStream *)&v5 ioThreadStateChange:changeCopy];
 }
 
 - (void)exclavesStatusTracker
 {
-  v3 = [(ASDTStream *)self device];
-  v4 = [v3 conformsToProtocol:&unk_285364AE8];
+  device = [(ASDTStream *)self device];
+  v4 = [device conformsToProtocol:&unk_285364AE8];
 
   if ((v4 & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(ASDTStream *)self device];
-  v6 = [v5 exclavesStatusTracker];
+  device2 = [(ASDTStream *)self device];
+  exclavesStatusTracker = [device2 exclavesStatusTracker];
 
-  return v6;
+  return exclavesStatusTracker;
 }
 
-- (BOOL)unexpectedSensorStatus:(int)a3
+- (BOOL)unexpectedSensorStatus:(int)status
 {
-  v4 = [(ASDTExclavesStream *)self nonSecureStreamStarted];
-  if (a3 <= 4)
+  nonSecureStreamStarted = [(ASDTExclavesStream *)self nonSecureStreamStarted];
+  if (status <= 4)
   {
-    v5 = 5u >> a3;
+    v5 = 5u >> status;
   }
 
   else
@@ -207,7 +207,7 @@
     LOBYTE(v5) = 1;
   }
 
-  if (!v4)
+  if (!nonSecureStreamStarted)
   {
     LOBYTE(v5) = 0;
   }
@@ -215,49 +215,49 @@
   return v5 & 1;
 }
 
-- (void)updateSensorForIOThreadStateChange:(id)a3
+- (void)updateSensorForIOThreadStateChange:(id)change
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 asdtIOThreadChangeIsolatedUseCase])
+  changeCopy = change;
+  if (![changeCopy asdtIOThreadChangeIsolatedUseCase])
   {
-    if ([v4 asdtIOThreadUseCaseIsFirstOrWasLast])
+    if ([changeCopy asdtIOThreadUseCaseIsFirstOrWasLast])
     {
-      v5 = [v4 asdtIOThreadChangeEvent];
-      v6 = [(ASDTExclavesStream *)self exclavesSensorManager];
-      [v6 ioThreadStartStop:v5 == 1937011316 withStatusTracker:{-[ASDTExclavesStream exclavesStatusTracker](self, "exclavesStatusTracker")}];
+      asdtIOThreadChangeEvent = [changeCopy asdtIOThreadChangeEvent];
+      exclavesSensorManager = [(ASDTExclavesStream *)self exclavesSensorManager];
+      [exclavesSensorManager ioThreadStartStop:asdtIOThreadChangeEvent == 1937011316 withStatusTracker:{-[ASDTExclavesStream exclavesStatusTracker](self, "exclavesStatusTracker")}];
 
-      [(ASDTExclavesStream *)self setNonSecureStreamStarted:v5 == 1937011316];
-      v7 = [(ASDTExclavesStream *)self exclavesSensorManager];
-      v8 = [v7 sensor];
+      [(ASDTExclavesStream *)self setNonSecureStreamStarted:asdtIOThreadChangeEvent == 1937011316];
+      exclavesSensorManager2 = [(ASDTExclavesStream *)self exclavesSensorManager];
+      sensor = [exclavesSensorManager2 sensor];
 
-      if (v8)
+      if (sensor)
       {
         v53 = 4;
         v54 = 0;
-        v9 = [(ASDTStream *)self device];
-        v10 = [v9 getProperty:"SxEatpni" withQualifierSize:0 qualifierData:0 dataSize:&v53 andData:&v54 forClient:0];
+        device = [(ASDTStream *)self device];
+        v10 = [device getProperty:"SxEatpni" withQualifierSize:0 qualifierData:0 dataSize:&v53 andData:&v54 forClient:0];
 
         if ((v10 & 1) == 0)
         {
           v54 = 1;
         }
 
-        v11 = [(ASDTStream *)self device];
-        v12 = [v11 exclavesSensorName];
+        device2 = [(ASDTStream *)self device];
+        exclavesSensorName = [device2 exclavesSensorName];
 
-        if (!v12)
+        if (!exclavesSensorName)
         {
           v25 = ASDTBaseLogType();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v45 = [(ASDTStream *)self device];
-            v46 = [v45 deviceUID];
-            v47 = [(ASDStream *)self streamName];
+            device3 = [(ASDTStream *)self device];
+            deviceUID = [device3 deviceUID];
+            streamName = [(ASDStream *)self streamName];
             *buf = 138412546;
-            *&buf[4] = v46;
+            *&buf[4] = deviceUID;
             *&buf[12] = 2112;
-            *&buf[14] = v47;
+            *&buf[14] = streamName;
             _os_log_error_impl(&dword_241659000, v25, OS_LOG_TYPE_ERROR, "%@:%@: Bad sensor name!", buf, 0x16u);
           }
 
@@ -267,53 +267,53 @@
         v13 = ASDTBaseLogType();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(ASDTStream *)self device];
-          v15 = [v14 deviceUID];
-          v16 = [(ASDStream *)self streamName];
+          device4 = [(ASDTStream *)self device];
+          deviceUID2 = [device4 deviceUID];
+          streamName2 = [(ASDStream *)self streamName];
           *buf = 138412802;
-          *&buf[4] = v15;
+          *&buf[4] = deviceUID2;
           *&buf[12] = 2112;
-          *&buf[14] = v16;
+          *&buf[14] = streamName2;
           *&buf[22] = 2112;
-          *&buf[24] = v12;
+          *&buf[24] = exclavesSensorName;
           _os_log_impl(&dword_241659000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@: Using sensor: %@", buf, 0x20u);
         }
 
         v52 = 0;
         if (v54)
         {
-          v17 = [(ASDTStream *)self device];
-          v18 = [v17 deviceUID];
+          device5 = [(ASDTStream *)self device];
+          deviceUID3 = [device5 deviceUID];
 
-          if (v5 == 1937011316)
+          if (asdtIOThreadChangeEvent == 1937011316)
           {
-            v19 = [(ASDTStream *)self device];
-            v20 = [v19 deviceManager];
-            v21 = [v20 concurrentQueue];
+            device6 = [(ASDTStream *)self device];
+            deviceManager = [device6 deviceManager];
+            concurrentQueue = [deviceManager concurrentQueue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __57__ASDTExclavesStream_updateSensorForIOThreadStateChange___block_invoke;
             block[3] = &unk_278CE64F0;
-            v51 = v18;
-            dispatch_async(v21, block);
+            v51 = deviceUID3;
+            dispatch_async(concurrentQueue, block);
 
-            v22 = ASDT::Exclaves::Sensor::Start(v8, &v52);
+            v22 = ASDT::Exclaves::Sensor::Start(sensor, &v52);
             v23 = &v51;
             v24 = 1;
           }
 
           else
           {
-            v22 = ASDT::Exclaves::Sensor::Stop(v8, &v52);
-            v26 = [(ASDTStream *)self device];
-            v27 = [v26 deviceManager];
-            v28 = [v27 concurrentQueue];
+            v22 = ASDT::Exclaves::Sensor::Stop(sensor, &v52);
+            device7 = [(ASDTStream *)self device];
+            deviceManager2 = [device7 deviceManager];
+            concurrentQueue2 = [deviceManager2 concurrentQueue];
             v48[0] = MEMORY[0x277D85DD0];
             v48[1] = 3221225472;
             v48[2] = __57__ASDTExclavesStream_updateSensorForIOThreadStateChange___block_invoke_2;
             v48[3] = &unk_278CE64F0;
-            v49 = v18;
-            dispatch_async(v28, v48);
+            v49 = deviceUID3;
+            dispatch_async(concurrentQueue2, v48);
 
             v23 = &v49;
             v24 = 2;
@@ -324,18 +324,18 @@
             v29 = ASDTBaseLogType();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
-              [(ASDTExclavesStream *)v12 updateSensorForIOThreadStateChange:v29];
+              [(ASDTExclavesStream *)exclavesSensorName updateSensorForIOThreadStateChange:v29];
             }
           }
 
           else
           {
-            v30 = [(ASDTExclavesStream *)self exclavesStatusTracker];
-            v31 = v30;
-            if (v30)
+            exclavesStatusTracker = [(ASDTExclavesStream *)self exclavesStatusTracker];
+            v31 = exclavesStatusTracker;
+            if (exclavesStatusTracker)
             {
               v32 = v52;
-              ASDTTime::machAbsoluteTime(v30, &v55);
+              ASDTTime::machAbsoluteTime(exclavesStatusTracker, &v55);
               *&buf[8] = v55;
               *buf = -1;
               *&buf[24] = v56;
@@ -352,8 +352,8 @@
               v35 = ASDT::Exclaves::Sensor::StatusString(v52);
               v36 = "stop";
               *buf = 138413314;
-              *&buf[4] = v12;
-              if (v5 == 1937011316)
+              *&buf[4] = exclavesSensorName;
+              if (asdtIOThreadChangeEvent == 1937011316)
               {
                 v36 = "start";
               }
@@ -379,7 +379,7 @@
 
         else
         {
-          if (!ASDT::Exclaves::Sensor::GetStatus(v8, &v52))
+          if (!ASDT::Exclaves::Sensor::GetStatus(sensor, &v52))
           {
             v39 = [(ASDTExclavesStream *)self unexpectedSensorStatus:v52];
             v40 = ASDTBaseLogType();
@@ -389,7 +389,7 @@
               v42 = ASDT::Exclaves::Sensor::StatusString(v52);
               v43 = "";
               *buf = 138413058;
-              *&buf[4] = v12;
+              *&buf[4] = exclavesSensorName;
               *&buf[12] = 1024;
               if (v39)
               {
@@ -413,10 +413,10 @@
             goto LABEL_32;
           }
 
-          v18 = ASDTBaseLogType();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          deviceUID3 = ASDTBaseLogType();
+          if (os_log_type_enabled(deviceUID3, OS_LOG_TYPE_ERROR))
           {
-            [(ASDTExclavesStream *)v12 updateSensorForIOThreadStateChange:v18];
+            [(ASDTExclavesStream *)exclavesSensorName updateSensorForIOThreadStateChange:deviceUID3];
           }
         }
 
@@ -443,31 +443,31 @@ void __57__ASDTExclavesStream_updateSensorForIOThreadStateChange___block_invoke_
 - (id)exclavesReadInput
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDStream *)self physicalFormat];
-  v4 = [v3 bytesPerFrame];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  bytesPerFrame = [physicalFormat bytesPerFrame];
 
-  v5 = [(ASDTExclavesStream *)self ioBufferSize];
-  v6 = [(ASDTStream *)self device];
-  v7 = [v6 timestampPeriod];
+  ioBufferSize = [(ASDTExclavesStream *)self ioBufferSize];
+  device = [(ASDTStream *)self device];
+  timestampPeriod = [device timestampPeriod];
 
-  if (!v7 || !v4 || !v5)
+  if (!timestampPeriod || !bytesPerFrame || !ioBufferSize)
   {
     v18 = ASDTBaseLogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(ASDTStream *)self device];
-      v22 = [v21 deviceUID];
-      v23 = [(ASDStream *)self streamName];
+      device2 = [(ASDTStream *)self device];
+      deviceUID = [device2 deviceUID];
+      streamName = [(ASDStream *)self streamName];
       *buf = 138413314;
-      v32 = v22;
+      v32 = deviceUID;
       v33 = 2112;
-      v34 = v23;
+      v34 = streamName;
       v35 = 1024;
-      v36 = v4;
+      v36 = bytesPerFrame;
       v37 = 1024;
-      v38 = v5;
+      v38 = ioBufferSize;
       v39 = 1024;
-      v40 = v7;
+      v40 = timestampPeriod;
       _os_log_error_impl(&dword_241659000, v18, OS_LOG_TYPE_ERROR, "%@:%@: Bad stream format: Bbf: %u, streamBufferSize: %u, period: %u", buf, 0x28u);
     }
 
@@ -477,32 +477,32 @@ LABEL_13:
   }
 
   ptr = self->_ramper.__ptr_;
-  v9 = [(ASDTExclavesStream *)self exclavesStatusTracker];
-  v10 = [(ASDTStream *)self updateClientPositionBlock];
-  [(ASDTStream *)self setUpdateClientPositionCopy:v10];
+  exclavesStatusTracker = [(ASDTExclavesStream *)self exclavesStatusTracker];
+  updateClientPositionBlock = [(ASDTStream *)self updateClientPositionBlock];
+  [(ASDTStream *)self setUpdateClientPositionCopy:updateClientPositionBlock];
 
-  v11 = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
+  getUpdateClientPositionUnretainedAddress = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
   v12 = self->_audioBuffer.__ptr_;
   if (v12)
   {
     if (ptr && *(ptr + 9))
     {
-      v13 = v11;
-      v14 = v5 / v4;
-      v15 = [(ASDTStream *)self ioBufferFramesSizeMax];
-      v16 = [(ASDTStream *)self ioBufferFramesUnexpectedSizeCount];
+      v13 = getUpdateClientPositionUnretainedAddress;
+      v14 = ioBufferSize / bytesPerFrame;
+      ioBufferFramesSizeMax = [(ASDTStream *)self ioBufferFramesSizeMax];
+      ioBufferFramesUnexpectedSizeCount = [(ASDTStream *)self ioBufferFramesUnexpectedSizeCount];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __39__ASDTExclavesStream_exclavesReadInput__block_invoke;
       v27[3] = &__block_descriptor_92_e195_i40__0I8r__AudioServerPlugInIOCycleInfo_QI_AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II____dd_d_12_v20_v28I36l;
-      v27[4] = v15;
+      v27[4] = ioBufferFramesSizeMax;
       v27[5] = ptr;
-      v27[6] = v16;
+      v27[6] = ioBufferFramesUnexpectedSizeCount;
       v27[7] = v12;
-      v28 = v7;
-      v29 = v4;
+      v28 = timestampPeriod;
+      v29 = bytesPerFrame;
       v30 = v14;
-      v27[8] = v9;
+      v27[8] = exclavesStatusTracker;
       v27[9] = v13;
       v17 = _Block_copy(v27);
       goto LABEL_15;
@@ -511,13 +511,13 @@ LABEL_13:
     v18 = ASDTBaseLogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(ASDTStream *)self device];
-      v25 = [v24 deviceUID];
-      v26 = [(ASDStream *)self streamName];
+      device3 = [(ASDTStream *)self device];
+      deviceUID2 = [device3 deviceUID];
+      streamName2 = [(ASDStream *)self streamName];
       *buf = 138412546;
-      v32 = v25;
+      v32 = deviceUID2;
       v33 = 2112;
-      v34 = v26;
+      v34 = streamName2;
       _os_log_error_impl(&dword_241659000, v18, OS_LOG_TYPE_ERROR, "%@:%@: Bad physical format; ramper is nil.", buf, 0x16u);
     }
 
@@ -648,42 +648,42 @@ ASDTTime *__39__ASDTExclavesStream_exclavesReadInput__block_invoke(uint64_t a1, 
 {
   if ([(ASDStream *)self direction]== 1768845428 && [(ASDTExclavesStream *)self usesExclavesAudioBuffer])
   {
-    v3 = [(ASDTExclavesStream *)self exclavesReadInput];
+    exclavesReadInput = [(ASDTExclavesStream *)self exclavesReadInput];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ASDTExclavesStream;
-    v3 = [(ASDTStream *)&v5 readInputBlock];
+    exclavesReadInput = [(ASDTStream *)&v5 readInputBlock];
   }
 
-  return v3;
+  return exclavesReadInput;
 }
 
 - (id)exclavesWriteMix
 {
-  v3 = [(ASDStream *)self physicalFormat];
-  v4 = [v3 bytesPerFrame];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  bytesPerFrame = [physicalFormat bytesPerFrame];
 
-  v5 = [(ASDTExclavesStream *)self ioBufferSize];
-  v6 = [(ASDTStream *)self updateClientPositionBlock];
-  [(ASDTStream *)self setUpdateClientPositionCopy:v6];
+  ioBufferSize = [(ASDTExclavesStream *)self ioBufferSize];
+  updateClientPositionBlock = [(ASDTStream *)self updateClientPositionBlock];
+  [(ASDTStream *)self setUpdateClientPositionCopy:updateClientPositionBlock];
 
-  v7 = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
+  getUpdateClientPositionUnretainedAddress = [(ASDTStream *)self getUpdateClientPositionUnretainedAddress];
   ptr = self->_inboundBuffer.__ptr_;
   if (ptr)
   {
-    v9 = v7;
-    v10 = [(ASDTStream *)self ioBufferFramesSizeMax];
+    v9 = getUpdateClientPositionUnretainedAddress;
+    ioBufferFramesSizeMax = [(ASDTStream *)self ioBufferFramesSizeMax];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __38__ASDTExclavesStream_exclavesWriteMix__block_invoke;
     v13[3] = &__block_descriptor_64_e195_i40__0I8r__AudioServerPlugInIOCycleInfo_QI_AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II__AudioTimeStamp_dQdQ_SMPTETime_ssIIIssss_II____dd_d_12_v20_v28I36l;
-    v13[4] = v10;
+    v13[4] = ioBufferFramesSizeMax;
     v13[5] = ptr;
-    v14 = v4;
-    v15 = v5 / v4;
+    v14 = bytesPerFrame;
+    v15 = ioBufferSize / bytesPerFrame;
     v13[6] = v9;
     v11 = _Block_copy(v13);
   }
@@ -733,17 +733,17 @@ uint64_t __38__ASDTExclavesStream_exclavesWriteMix__block_invoke(uint64_t a1, un
 {
   if ([(ASDStream *)self direction]== 1869968496 && [(ASDTExclavesStream *)self usesExclavesAudioBuffer])
   {
-    v3 = [(ASDTExclavesStream *)self exclavesWriteMix];
+    exclavesWriteMix = [(ASDTExclavesStream *)self exclavesWriteMix];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ASDTExclavesStream;
-    v3 = [(ASDTStream *)&v5 writeMixBlock];
+    exclavesWriteMix = [(ASDTStream *)&v5 writeMixBlock];
   }
 
-  return v3;
+  return exclavesWriteMix;
 }
 
 - (void)clearBuffer
@@ -751,10 +751,10 @@ uint64_t __38__ASDTExclavesStream_exclavesWriteMix__block_invoke(uint64_t a1, un
   if ([(ASDStream *)self direction]== 1869968496 && self->_inboundBuffer.__ptr_)
   {
     v4 = [MEMORY[0x277CBEB28] dataWithLength:{-[ASDTExclavesStream exclavesBufferSize](self, "exclavesBufferSize")}];
-    v3 = [v4 bytes];
-    if (v3)
+    bytes = [v4 bytes];
+    if (bytes)
     {
-      ASDT::Exclaves::InboundBuffer::Write(self->_inboundBuffer.__ptr_, v3, [(ASDTExclavesStream *)self exclavesBufferSize], 1);
+      ASDT::Exclaves::InboundBuffer::Write(self->_inboundBuffer.__ptr_, bytes, [(ASDTExclavesStream *)self exclavesBufferSize], 1);
     }
   }
 
@@ -768,13 +768,13 @@ uint64_t __38__ASDTExclavesStream_exclavesWriteMix__block_invoke(uint64_t a1, un
 
 - (NSDictionary)status
 {
-  v3 = [(ASDTExclavesStream *)self exclavesSensorManager];
-  v4 = [v3 sensor];
+  exclavesSensorManager = [(ASDTExclavesStream *)self exclavesSensorManager];
+  sensor = [exclavesSensorManager sensor];
 
-  if (v4)
+  if (sensor)
   {
     v16 = 0;
-    if (ASDT::Exclaves::Sensor::GetStatus(v4, &v16))
+    if (ASDT::Exclaves::Sensor::GetStatus(sensor, &v16))
     {
       goto LABEL_3;
     }
@@ -793,20 +793,20 @@ uint64_t __38__ASDTExclavesStream_exclavesWriteMix__block_invoke(uint64_t a1, un
     if (!v10)
     {
 LABEL_3:
-      v4 = 0;
+      sensor = 0;
     }
 
     else
     {
       v11 = v10;
       v12 = MEMORY[0x277CBEAC0];
-      v13 = [(ASDTStream *)self device];
-      v14 = [v13 exclavesSensorName];
-      v4 = [v12 dictionaryWithObject:v11 forKey:v14];
+      device = [(ASDTStream *)self device];
+      exclavesSensorName = [device exclavesSensorName];
+      sensor = [v12 dictionaryWithObject:v11 forKey:exclavesSensorName];
     }
   }
 
-  return v4;
+  return sensor;
 }
 
 - (id).cxx_construct

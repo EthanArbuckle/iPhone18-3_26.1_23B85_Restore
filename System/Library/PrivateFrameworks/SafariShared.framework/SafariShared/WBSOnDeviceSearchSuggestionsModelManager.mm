@@ -1,17 +1,17 @@
 @interface WBSOnDeviceSearchSuggestionsModelManager
 + (WBSOnDeviceSearchSuggestionsModelManager)sharedManager;
-- (BOOL)haveModelForLocale:(id)a3;
-- (BOOL)isLocaleSupported:(id)a3;
+- (BOOL)haveModelForLocale:(id)locale;
+- (BOOL)isLocaleSupported:(id)supported;
 - (BOOL)needsSupportedLocaleUpdate;
 - (WBSOnDeviceSearchSuggestionsModelManager)init;
 - (id)_dictionaryToSave;
-- (id)currentChecksumForModelWithLocale:(id)a3;
-- (id)fileURLForModelWithLocale:(id)a3;
-- (id)fileURLForModelWithLocaleIfDownloaded:(id)a3;
+- (id)currentChecksumForModelWithLocale:(id)locale;
+- (id)fileURLForModelWithLocale:(id)locale;
+- (id)fileURLForModelWithLocaleIfDownloaded:(id)downloaded;
 - (void)_updateModelFileOnDisk;
-- (void)addOrUpdateModelForLocale:(id)a3 withChecksum:(id)a4;
+- (void)addOrUpdateModelForLocale:(id)locale withChecksum:(id)checksum;
 - (void)clearModels;
-- (void)updateSupportedModelLocales:(id)a3;
+- (void)updateSupportedModelLocales:(id)locales;
 @end
 
 @implementation WBSOnDeviceSearchSuggestionsModelManager
@@ -35,14 +35,14 @@
   v2 = [(WBSOnDeviceSearchSuggestionsModelManager *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v4 = urlForOfflineSearchDirectory();
-    v5 = [v3 safari_ensureDirectoryExists:v4];
+    v5 = [defaultManager safari_ensureDirectoryExists:v4];
 
     v6 = urlForOfflineSearchModelPlist();
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager2 fileExistsAtPath:path];
 
     if (v9)
     {
@@ -68,9 +68,9 @@
 
     else
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v10 = v2->_localeIdentifiersToChecksums;
-      v2->_localeIdentifiersToChecksums = v14;
+      v2->_localeIdentifiersToChecksums = dictionary;
     }
 
     v2->_modelDataLock._os_unfair_lock_opaque = 0;
@@ -104,13 +104,13 @@
 
 - (BOOL)needsSupportedLocaleUpdate
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_modelDataLock);
-  v3 = v2->_supportedLocaleIdentifiers;
-  os_unfair_lock_unlock(&v2->_modelDataLock);
-  LOBYTE(v2) = [(NSSet *)v3 count]== 0;
+  v3 = selfCopy->_supportedLocaleIdentifiers;
+  os_unfair_lock_unlock(&selfCopy->_modelDataLock);
+  LOBYTE(selfCopy) = [(NSSet *)v3 count]== 0;
 
-  return v2;
+  return selfCopy;
 }
 
 void __57__WBSOnDeviceSearchSuggestionsModelManager_sharedManager__block_invoke()
@@ -120,28 +120,28 @@ void __57__WBSOnDeviceSearchSuggestionsModelManager_sharedManager__block_invoke(
   sharedManager_sharedManager_2 = v0;
 }
 
-- (void)addOrUpdateModelForLocale:(id)a3 withChecksum:(id)a4
+- (void)addOrUpdateModelForLocale:(id)locale withChecksum:(id)checksum
 {
-  v6 = a4;
-  v7 = a3;
+  checksumCopy = checksum;
+  localeCopy = locale;
   os_unfair_lock_lock(&self->_modelDataLock);
   localeIdentifiersToChecksums = self->_localeIdentifiersToChecksums;
-  v9 = [v7 safari_localeStringInOfflineSearchModelFormat];
+  safari_localeStringInOfflineSearchModelFormat = [localeCopy safari_localeStringInOfflineSearchModelFormat];
 
-  [(NSMutableDictionary *)localeIdentifiersToChecksums setObject:v6 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)localeIdentifiersToChecksums setObject:checksumCopy forKeyedSubscript:safari_localeStringInOfflineSearchModelFormat];
   os_unfair_lock_unlock(&self->_modelDataLock);
 
   [(WBSOnDeviceSearchSuggestionsModelManager *)self _updateModelFileOnDisk];
 }
 
-- (void)updateSupportedModelLocales:(id)a3
+- (void)updateSupportedModelLocales:(id)locales
 {
-  v6 = a3;
+  localesCopy = locales;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     os_unfair_lock_lock(&self->_modelDataLock);
-    v4 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v4 = [MEMORY[0x1E695DFD8] setWithArray:localesCopy];
     supportedLocaleIdentifiers = self->_supportedLocaleIdentifiers;
     self->_supportedLocaleIdentifiers = v4;
 
@@ -152,9 +152,9 @@ void __57__WBSOnDeviceSearchSuggestionsModelManager_sharedManager__block_invoke(
 
 - (void)clearModels
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = urlForOfflineSearchDirectory();
-  [v3 safari_removeContentsOfDirectory:v4];
+  [defaultManager safari_removeContentsOfDirectory:v4];
 
   os_unfair_lock_lock(&self->_modelDataLock);
   [(NSMutableDictionary *)self->_localeIdentifiersToChecksums removeAllObjects];
@@ -164,25 +164,25 @@ void __57__WBSOnDeviceSearchSuggestionsModelManager_sharedManager__block_invoke(
   os_unfair_lock_unlock(&self->_modelDataLock);
 }
 
-- (id)fileURLForModelWithLocale:(id)a3
+- (id)fileURLForModelWithLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = urlForOfflineSearchDirectory();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v3 safari_localeStringInOfflineSearchModelFormat];
+  safari_localeStringInOfflineSearchModelFormat = [localeCopy safari_localeStringInOfflineSearchModelFormat];
 
-  v7 = [v5 stringWithFormat:@"%@.bin", v6];
+  v7 = [v5 stringWithFormat:@"%@.bin", safari_localeStringInOfflineSearchModelFormat];
   v8 = [v4 URLByAppendingPathComponent:v7];
 
   return v8;
 }
 
-- (id)fileURLForModelWithLocaleIfDownloaded:(id)a3
+- (id)fileURLForModelWithLocaleIfDownloaded:(id)downloaded
 {
-  v4 = a3;
-  if ([(WBSOnDeviceSearchSuggestionsModelManager *)self haveModelForLocale:v4])
+  downloadedCopy = downloaded;
+  if ([(WBSOnDeviceSearchSuggestionsModelManager *)self haveModelForLocale:downloadedCopy])
   {
-    v5 = [(WBSOnDeviceSearchSuggestionsModelManager *)self fileURLForModelWithLocale:v4];
+    v5 = [(WBSOnDeviceSearchSuggestionsModelManager *)self fileURLForModelWithLocale:downloadedCopy];
   }
 
   else
@@ -193,39 +193,39 @@ void __57__WBSOnDeviceSearchSuggestionsModelManager_sharedManager__block_invoke(
   return v5;
 }
 
-- (BOOL)haveModelForLocale:(id)a3
+- (BOOL)haveModelForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   os_unfair_lock_lock(&self->_modelDataLock);
   localeIdentifiersToChecksums = self->_localeIdentifiersToChecksums;
-  v6 = [v4 safari_localeStringInOfflineSearchModelFormat];
+  safari_localeStringInOfflineSearchModelFormat = [localeCopy safari_localeStringInOfflineSearchModelFormat];
 
-  v7 = [(NSMutableDictionary *)localeIdentifiersToChecksums objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)localeIdentifiersToChecksums objectForKeyedSubscript:safari_localeStringInOfflineSearchModelFormat];
 
   os_unfair_lock_unlock(&self->_modelDataLock);
   return v7 != 0;
 }
 
-- (BOOL)isLocaleSupported:(id)a3
+- (BOOL)isLocaleSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   os_unfair_lock_lock(&self->_modelDataLock);
   supportedLocaleIdentifiers = self->_supportedLocaleIdentifiers;
-  v6 = [v4 safari_localeStringInOfflineSearchModelFormat];
+  safari_localeStringInOfflineSearchModelFormat = [supportedCopy safari_localeStringInOfflineSearchModelFormat];
 
-  LOBYTE(v4) = [(NSSet *)supportedLocaleIdentifiers containsObject:v6];
+  LOBYTE(supportedCopy) = [(NSSet *)supportedLocaleIdentifiers containsObject:safari_localeStringInOfflineSearchModelFormat];
   os_unfair_lock_unlock(&self->_modelDataLock);
-  return v4;
+  return supportedCopy;
 }
 
-- (id)currentChecksumForModelWithLocale:(id)a3
+- (id)currentChecksumForModelWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   os_unfair_lock_lock(&self->_modelDataLock);
   localeIdentifiersToChecksums = self->_localeIdentifiersToChecksums;
-  v6 = [v4 safari_localeStringInOfflineSearchModelFormat];
+  safari_localeStringInOfflineSearchModelFormat = [localeCopy safari_localeStringInOfflineSearchModelFormat];
 
-  v7 = [(NSMutableDictionary *)localeIdentifiersToChecksums objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)localeIdentifiersToChecksums objectForKeyedSubscript:safari_localeStringInOfflineSearchModelFormat];
 
   os_unfair_lock_unlock(&self->_modelDataLock);
 
@@ -264,11 +264,11 @@ id __66__WBSOnDeviceSearchSuggestionsModelManager__updateModelFileOnDisk__block_
   v12[4] = self;
   [v3 setHandler:v12];
   v13[0] = @"SupportedLocales";
-  v4 = [(NSSet *)self->_supportedLocaleIdentifiers allObjects];
-  v5 = v4;
-  if (v4)
+  allObjects = [(NSSet *)self->_supportedLocaleIdentifiers allObjects];
+  v5 = allObjects;
+  if (allObjects)
   {
-    v6 = v4;
+    v6 = allObjects;
   }
 
   else

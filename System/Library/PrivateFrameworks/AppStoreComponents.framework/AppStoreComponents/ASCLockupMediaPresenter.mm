@@ -1,19 +1,19 @@
 @interface ASCLockupMediaPresenter
 + (id)log;
-- (ASCLockupMediaPresenter)initWithView:(id)a3 lockupPresenter:(id)a4;
-- (ASCLockupMediaPresenter)initWithView:(id)a3 lockupPresenter:(id)a4 context:(id)a5;
+- (ASCLockupMediaPresenter)initWithView:(id)view lockupPresenter:(id)presenter;
+- (ASCLockupMediaPresenter)initWithView:(id)view lockupPresenter:(id)presenter context:(id)context;
 - (ASCLockupMediaPresenterBackgroundView)backgroundView;
 - (ASCLockupMediaPresenterObserver)observer;
-- (id)artworkForLockup:(id)a3;
-- (id)videoViewForLockup:(id)a3;
+- (id)artworkForLockup:(id)lockup;
+- (id)videoViewForLockup:(id)lockup;
 - (void)dealloc;
-- (void)lockupPresenterDidChange:(id)a3;
-- (void)performFollowUpWork:(id)a3;
+- (void)lockupPresenterDidChange:(id)change;
+- (void)performFollowUpWork:(id)work;
 - (void)performScreenshotsFetch;
-- (void)screenshotArtwork:(id)a3 didFailFetchWithError:(id)a4 atIndex:(unint64_t)a5;
-- (void)screenshotArtwork:(id)a3 didFetchImage:(id)a4 atIndex:(int64_t)a5;
-- (void)setLockup:(id)a3;
-- (void)videoView:(id)a3 videoStateDidChange:(int64_t)a4;
+- (void)screenshotArtwork:(id)artwork didFailFetchWithError:(id)error atIndex:(unint64_t)index;
+- (void)screenshotArtwork:(id)artwork didFetchImage:(id)image atIndex:(int64_t)index;
+- (void)setLockup:(id)lockup;
+- (void)videoView:(id)view videoStateDidChange:(int64_t)change;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -38,11 +38,11 @@ uint64_t __30__ASCLockupMediaPresenter_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCLockupMediaPresenter)initWithView:(id)a3 lockupPresenter:(id)a4 context:(id)a5
+- (ASCLockupMediaPresenter)initWithView:(id)view lockupPresenter:(id)presenter context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  presenterCopy = presenter;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = ASCLockupMediaPresenter;
   v12 = [(ASCLockupMediaPresenter *)&v20 init];
@@ -52,103 +52,103 @@ uint64_t __30__ASCLockupMediaPresenter_log__block_invoke()
     pendingArtworkPromises = v12->_pendingArtworkPromises;
     v12->_pendingArtworkPromises = v13;
 
-    objc_storeStrong(&v12->_view, a3);
-    objc_storeStrong(&v12->_context, a5);
-    v15 = [v10 lockup];
-    v16 = [v15 copy];
+    objc_storeStrong(&v12->_view, view);
+    objc_storeStrong(&v12->_context, context);
+    lockup = [presenterCopy lockup];
+    v16 = [lockup copy];
     lockup = v12->_lockup;
     v12->_lockup = v16;
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v12 selector:sel_lockupPresenterDidChange_ name:0x2827A3618 object:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_lockupPresenterDidChange_ name:0x2827A3618 object:presenterCopy];
   }
 
   return v12;
 }
 
-- (ASCLockupMediaPresenter)initWithView:(id)a3 lockupPresenter:(id)a4
+- (ASCLockupMediaPresenter)initWithView:(id)view lockupPresenter:(id)presenter
 {
-  v6 = a4;
-  v7 = a3;
+  presenterCopy = presenter;
+  viewCopy = view;
   v8 = +[ASCPresenterContext sharedContext];
-  v9 = [(ASCLockupMediaPresenter *)self initWithView:v7 lockupPresenter:v6 context:v8];
+  v9 = [(ASCLockupMediaPresenter *)self initWithView:viewCopy lockupPresenter:presenterCopy context:v8];
 
   return v9;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCLockupMediaPresenter;
   [(ASCLockupMediaPresenter *)&v4 dealloc];
 }
 
-- (void)lockupPresenterDidChange:(id)a3
+- (void)lockupPresenterDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 lockup];
-  [(ASCLockupMediaPresenter *)self setLockup:v4];
+  object = [change object];
+  lockup = [object lockup];
+  [(ASCLockupMediaPresenter *)self setLockup:lockup];
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
+  lockupCopy = lockup;
   lockup = self->_lockup;
-  v19 = v4;
-  if (v4 && lockup)
+  v19 = lockupCopy;
+  if (lockupCopy && lockup)
   {
-    v6 = [(ASCLockup *)lockup isEqual:v4];
-    v4 = v19;
+    v6 = [(ASCLockup *)lockup isEqual:lockupCopy];
+    lockupCopy = v19;
     if (v6)
     {
       goto LABEL_11;
     }
   }
 
-  else if (lockup == v4)
+  else if (lockup == lockupCopy)
   {
     goto LABEL_11;
   }
 
-  v7 = [(ASCLockup *)v4 copy];
+  v7 = [(ASCLockup *)lockupCopy copy];
   v8 = self->_lockup;
   self->_lockup = v7;
 
-  v9 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
-  v10 = [v9 hasPromises];
+  pendingArtworkPromises = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
+  hasPromises = [pendingArtworkPromises hasPromises];
 
-  if (v10)
+  if (hasPromises)
   {
-    v11 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
-    [v11 cancelAll];
+    pendingArtworkPromises2 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
+    [pendingArtworkPromises2 cancelAll];
 
-    v12 = [(ASCLockupMediaPresenter *)self observer];
-    [v12 lockupMediaPresenterDidCancelScreenshotsFetchRequest];
+    observer = [(ASCLockupMediaPresenter *)self observer];
+    [observer lockupMediaPresenterDidCancelScreenshotsFetchRequest];
   }
 
-  v13 = [(ASCLockupMediaPresenter *)self view];
+  view = [(ASCLockupMediaPresenter *)self view];
   if (v19)
   {
-    v14 = [(ASCLockup *)v19 screenshots];
-    v15 = [(ASCLockup *)v19 trailers];
-    [v13 setScreenshots:v14 andTrailers:v15];
+    screenshots = [(ASCLockup *)v19 screenshots];
+    trailers = [(ASCLockup *)v19 trailers];
+    [view setScreenshots:screenshots andTrailers:trailers];
 
-    v16 = [(ASCLockupMediaPresenter *)self view];
+    view2 = [(ASCLockupMediaPresenter *)self view];
     v17 = [(ASCLockupMediaPresenter *)self videoViewForLockup:v19];
-    [v16 setVideoView:v17];
+    [view2 setVideoView:v17];
 
     [(ASCLockupMediaPresenter *)self performScreenshotsFetch];
   }
 
   else
   {
-    [v13 setVideoView:0];
+    [view setVideoView:0];
 
-    v18 = [(ASCLockupMediaPresenter *)self view];
-    [v18 setScreenshots:0 andTrailers:0];
+    view3 = [(ASCLockupMediaPresenter *)self view];
+    [view3 setScreenshots:0 andTrailers:0];
   }
 
 LABEL_11:
@@ -156,25 +156,25 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)videoViewForLockup:(id)a3
+- (id)videoViewForLockup:(id)lockup
 {
-  v4 = a3;
-  v5 = [v4 trailers];
-  if (v5 && (v6 = v5, [v4 trailers], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "videos"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v6, v9))
+  lockupCopy = lockup;
+  trailers = [lockupCopy trailers];
+  if (trailers && (v6 = trailers, [lockupCopy trailers], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "videos"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v6, v9))
   {
-    v10 = [v4 trailers];
-    v11 = [v10 videos];
-    v12 = [v11 firstObject];
+    trailers2 = [lockupCopy trailers];
+    videos = [trailers2 videos];
+    firstObject = [videos firstObject];
 
     v13 = [ASCScreenshotDisplayConfiguration alloc];
-    v14 = [v4 trailers];
-    v15 = [v14 mediaPlatform];
-    v16 = [v15 deviceCornerRadiusFactor];
-    v17 = [(ASCScreenshotDisplayConfiguration *)v13 initWithDeviceCornerRadiusFactor:v16];
+    trailers3 = [lockupCopy trailers];
+    mediaPlatform = [trailers3 mediaPlatform];
+    deviceCornerRadiusFactor = [mediaPlatform deviceCornerRadiusFactor];
+    v17 = [(ASCScreenshotDisplayConfiguration *)v13 initWithDeviceCornerRadiusFactor:deviceCornerRadiusFactor];
 
     v18 = [ASCVideoView alloc];
-    v19 = [v12 videoURL];
-    v20 = [(ASCVideoView *)v18 initWithFrame:v19 videoURL:v17 screenshotDisplayConfiguration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    videoURL = [firstObject videoURL];
+    v20 = [(ASCVideoView *)v18 initWithFrame:videoURL videoURL:v17 screenshotDisplayConfiguration:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
     [(ASCVideoView *)v20 setDelegate:self];
   }
@@ -189,41 +189,41 @@ LABEL_11:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
-  v4 = [v3 hasPromises];
+  pendingArtworkPromises = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
+  hasPromises = [pendingArtworkPromises hasPromises];
 
-  if (v4)
+  if (hasPromises)
   {
-    v5 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
-    [v5 cancelAll];
+    pendingArtworkPromises2 = [(ASCLockupMediaPresenter *)self pendingArtworkPromises];
+    [pendingArtworkPromises2 cancelAll];
 
-    v6 = [(ASCLockupMediaPresenter *)self observer];
-    [v6 lockupMediaPresenterDidCancelScreenshotsFetchRequest];
+    observer = [(ASCLockupMediaPresenter *)self observer];
+    [observer lockupMediaPresenterDidCancelScreenshotsFetchRequest];
   }
 
   [(ASCLockupMediaPresenter *)self performScreenshotsFetch];
 }
 
-- (id)artworkForLockup:(id)a3
+- (id)artworkForLockup:(id)lockup
 {
-  v4 = [a3 screenshots];
-  v5 = [(ASCLockupMediaPresenter *)self lockup];
-  v6 = [v5 trailers];
-  v7 = [__ASCLayoutProxy artworkFrom:v4 and:v6];
+  screenshots = [lockup screenshots];
+  lockup = [(ASCLockupMediaPresenter *)self lockup];
+  trailers = [lockup trailers];
+  v7 = [__ASCLayoutProxy artworkFrom:screenshots and:trailers];
 
   return v7;
 }
 
 - (void)performScreenshotsFetch
 {
-  v3 = [(ASCLockupMediaPresenter *)self observer];
-  [v3 lockupMediaPresenterDidBeginScreenshotsFetchRequest];
+  observer = [(ASCLockupMediaPresenter *)self observer];
+  [observer lockupMediaPresenterDidBeginScreenshotsFetchRequest];
 
-  v4 = [(ASCLockupMediaPresenter *)self lockup];
-  v5 = [(ASCLockupMediaPresenter *)self artworkForLockup:v4];
+  lockup = [(ASCLockupMediaPresenter *)self lockup];
+  v5 = [(ASCLockupMediaPresenter *)self artworkForLockup:lockup];
 
-  v6 = [(ASCLockupMediaPresenter *)self view];
-  [v6 preferredScreenshotSize];
+  view = [(ASCLockupMediaPresenter *)self view];
+  [view preferredScreenshotSize];
   v8 = v7;
   v10 = v9;
 
@@ -286,10 +286,10 @@ void __50__ASCLockupMediaPresenter_performScreenshotsFetch__block_invoke_3(uint6
   [WeakRetained screenshotArtwork:*(a1 + 32) didFailFetchWithError:v3 atIndex:*(a1 + 48)];
 }
 
-- (void)performFollowUpWork:(id)a3
+- (void)performFollowUpWork:(id)work
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = work;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -301,20 +301,20 @@ void __50__ASCLockupMediaPresenter_performScreenshotsFetch__block_invoke_3(uint6
   }
 }
 
-- (void)screenshotArtwork:(id)a3 didFetchImage:(id)a4 atIndex:(int64_t)a5
+- (void)screenshotArtwork:(id)artwork didFetchImage:(id)image atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  artworkCopy = artwork;
+  imageCopy = image;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ASCLockupMediaPresenter_screenshotArtwork_didFetchImage_atIndex___block_invoke;
   v12[3] = &unk_2781CC2E8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = artworkCopy;
+  v14 = imageCopy;
+  indexCopy = index;
+  v10 = imageCopy;
+  v11 = artworkCopy;
   [(ASCLockupMediaPresenter *)self performFollowUpWork:v12];
 }
 
@@ -398,17 +398,17 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)screenshotArtwork:(id)a3 didFailFetchWithError:(id)a4 atIndex:(unint64_t)a5
+- (void)screenshotArtwork:(id)artwork didFailFetchWithError:(id)error atIndex:(unint64_t)index
 {
-  v7 = a3;
+  artworkCopy = artwork;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__ASCLockupMediaPresenter_screenshotArtwork_didFailFetchWithError_atIndex___block_invoke;
   v9[3] = &unk_2781CC310;
-  v10 = v7;
-  v11 = a5;
+  v10 = artworkCopy;
+  indexCopy = index;
   v9[4] = self;
-  v8 = v7;
+  v8 = artworkCopy;
   [(ASCLockupMediaPresenter *)self performFollowUpWork:v9];
 }
 
@@ -483,15 +483,15 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)videoView:(id)a3 videoStateDidChange:(int64_t)a4
+- (void)videoView:(id)view videoStateDidChange:(int64_t)change
 {
-  v6 = [(ASCLockupMediaPresenter *)self observer];
+  observer = [(ASCLockupMediaPresenter *)self observer];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ASCLockupMediaPresenter *)self observer];
-    [v8 lockupMediaPresenterVideoStateDidChange:a4];
+    observer2 = [(ASCLockupMediaPresenter *)self observer];
+    [observer2 lockupMediaPresenterVideoStateDidChange:change];
   }
 }
 

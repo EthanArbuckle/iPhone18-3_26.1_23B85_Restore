@@ -1,13 +1,13 @@
 @interface CallRecordingGlyphView
 - (CGSize)intrinsicContentSize;
-- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithCoder:(id)a3;
-- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithFrame:(CGRect)a3;
+- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithCoder:(id)coder;
+- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CallRecordingGlyphView
 
-- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithCoder:(id)a3
+- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView_package) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView_glyphState);
@@ -22,7 +22,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_128CC();
 }
 
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithFrame:(CGRect)a3
+- (_TtC25RPControlCenterModuleHQLR22CallRecordingGlyphView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

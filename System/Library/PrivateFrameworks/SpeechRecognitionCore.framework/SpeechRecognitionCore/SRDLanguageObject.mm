@@ -1,21 +1,21 @@
 @interface SRDLanguageObject
-- (SRDLanguageObject)initWithLanguageObject:(__RXLanguageObject *)a3 transcriptionResult:(id)a4;
+- (SRDLanguageObject)initWithLanguageObject:(__RXLanguageObject *)object transcriptionResult:(id)result;
 - (void)dealloc;
 @end
 
 @implementation SRDLanguageObject
 
-- (SRDLanguageObject)initWithLanguageObject:(__RXLanguageObject *)a3 transcriptionResult:(id)a4
+- (SRDLanguageObject)initWithLanguageObject:(__RXLanguageObject *)object transcriptionResult:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SRDLanguageObject;
   v7 = [(SRDLanguageObject *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SRDLanguageObject *)v7 setTranscriptionResult:v6];
-    [(SRDLanguageObject *)v8 setLanguageObject:a3];
+    [(SRDLanguageObject *)v7 setTranscriptionResult:resultCopy];
+    [(SRDLanguageObject *)v8 setLanguageObject:object];
     CFRetain([(SRDLanguageObject *)v8 languageObject]);
   }
 

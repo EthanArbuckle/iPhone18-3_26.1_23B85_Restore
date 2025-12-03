@@ -1,23 +1,23 @@
 @interface PLSLibraryChangeSnapshot
-+ (BOOL)number:(id)a3 equalsNumber:(id)a4;
-+ (BOOL)string:(id)a3 equalsString:(id)a4;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (BOOL)number:(id)number equalsNumber:(id)equalsNumber;
++ (BOOL)string:(id)string equalsString:(id)equalsString;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 + (id)librarySnapshot;
 - (BOOL)hasChangedObjects;
-- (BOOL)isEqualToSnapshot:(id)a3;
+- (BOOL)isEqualToSnapshot:(id)snapshot;
 - (PLSLibraryChangeSnapshot)init;
-- (PLSLibraryChangeSnapshot)initWithCoder:(id)a3;
+- (PLSLibraryChangeSnapshot)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSLibraryChangeSnapshot
 
-+ (BOOL)number:(id)a3 equalsNumber:(id)a4
++ (BOOL)number:(id)number equalsNumber:(id)equalsNumber
 {
-  if (a3 | a4)
+  if (number | equalsNumber)
   {
-    return [a3 isEqualToNumber:a4];
+    return [number isEqualToNumber:equalsNumber];
   }
 
   else
@@ -26,11 +26,11 @@
   }
 }
 
-+ (BOOL)string:(id)a3 equalsString:(id)a4
++ (BOOL)string:(id)string equalsString:(id)equalsString
 {
-  if (a3 | a4)
+  if (string | equalsString)
   {
-    return [a3 isEqualToString:a4];
+    return [string isEqualToString:equalsString];
   }
 
   else
@@ -46,24 +46,24 @@
   return v2;
 }
 
-- (BOOL)isEqualToSnapshot:(id)a3
+- (BOOL)isEqualToSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  snapshotCopy = snapshot;
+  v5 = snapshotCopy;
+  if (!snapshotCopy)
   {
     goto LABEL_19;
   }
 
-  if (v4 == self)
+  if (snapshotCopy == self)
   {
     v23 = 1;
     goto LABEL_20;
   }
 
-  v6 = [(PLSLibraryChangeSnapshot *)self libraryKind];
-  v7 = [(PLSLibraryChangeSnapshot *)v5 libraryKind];
-  v8 = [PLSLibraryChangeSnapshot string:v6 equalsString:v7];
+  libraryKind = [(PLSLibraryChangeSnapshot *)self libraryKind];
+  libraryKind2 = [(PLSLibraryChangeSnapshot *)v5 libraryKind];
+  v8 = [PLSLibraryChangeSnapshot string:libraryKind equalsString:libraryKind2];
 
   if ((v8 & 1) == 0)
   {
@@ -79,9 +79,9 @@
     goto LABEL_12;
   }
 
-  v9 = [(PLSLibraryChangeSnapshot *)self libraryUUID];
-  v10 = [(PLSLibraryChangeSnapshot *)v5 libraryUUID];
-  v11 = [PLSLibraryChangeSnapshot string:v9 equalsString:v10];
+  libraryUUID = [(PLSLibraryChangeSnapshot *)self libraryUUID];
+  libraryUUID2 = [(PLSLibraryChangeSnapshot *)v5 libraryUUID];
+  v11 = [PLSLibraryChangeSnapshot string:libraryUUID equalsString:libraryUUID2];
 
   if ((v11 & 1) == 0)
   {
@@ -104,10 +104,10 @@ LABEL_12:
   *(&buf + 1) = &buf;
   v40 = 0x2020000000;
   v41 = 1;
-  v13 = [(PLSLibraryChangeSnapshot *)v5 orderedAlbums];
-  v14 = [(PLSLibraryChangeSnapshot *)self orderedAlbums];
-  v15 = [v14 count];
-  LOBYTE(v15) = v15 == [v13 count];
+  orderedAlbums = [(PLSLibraryChangeSnapshot *)v5 orderedAlbums];
+  orderedAlbums2 = [(PLSLibraryChangeSnapshot *)self orderedAlbums];
+  v15 = [orderedAlbums2 count];
+  LOBYTE(v15) = v15 == [orderedAlbums count];
 
   if ((v15 & 1) == 0)
   {
@@ -125,20 +125,20 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v16 = [(PLSLibraryChangeSnapshot *)self orderedAlbums];
+  orderedAlbums3 = [(PLSLibraryChangeSnapshot *)self orderedAlbums];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_4694;
   v34[3] = &unk_24BC8;
-  v17 = v13;
+  v17 = orderedAlbums;
   v35 = v17;
   p_buf = &buf;
-  [v16 enumerateObjectsUsingBlock:v34];
+  [orderedAlbums3 enumerateObjectsUsingBlock:v34];
 
-  LOBYTE(v16) = *(*(&buf + 1) + 24);
+  LOBYTE(orderedAlbums3) = *(*(&buf + 1) + 24);
   _Block_object_dispose(&buf, 8);
   objc_autoreleasePoolPop(v12);
-  if ((v16 & 1) == 0)
+  if ((orderedAlbums3 & 1) == 0)
   {
 LABEL_19:
     v23 = 0;
@@ -150,21 +150,21 @@ LABEL_19:
   *(&buf + 1) = &buf;
   v40 = 0x2020000000;
   v41 = 1;
-  v19 = [(PLSLibraryChangeSnapshot *)v5 assetsByUUID];
-  v20 = [(PLSLibraryChangeSnapshot *)self assetsByUUID];
-  v21 = [v20 count];
-  LOBYTE(v21) = v21 == [v19 count];
+  assetsByUUID = [(PLSLibraryChangeSnapshot *)v5 assetsByUUID];
+  assetsByUUID2 = [(PLSLibraryChangeSnapshot *)self assetsByUUID];
+  v21 = [assetsByUUID2 count];
+  LOBYTE(v21) = v21 == [assetsByUUID count];
 
   if (v21)
   {
-    v22 = [(PLSLibraryChangeSnapshot *)self assetsByUUID];
+    assetsByUUID3 = [(PLSLibraryChangeSnapshot *)self assetsByUUID];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_481C;
     v31[3] = &unk_246A0;
-    v32 = v19;
+    v32 = assetsByUUID;
     v33 = &buf;
-    [v22 enumerateKeysAndObjectsUsingBlock:v31];
+    [assetsByUUID3 enumerateKeysAndObjectsUsingBlock:v31];
 
     v23 = *(*(&buf + 1) + 24);
     v24 = v32;
@@ -191,25 +191,25 @@ LABEL_20:
   return v23 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSLibraryChangeSnapshot *)self updates];
-  [v4 encodeObject:v5 forKey:@"PLSLibrarySnapshotUpdatesKey"];
+  coderCopy = coder;
+  updates = [(PLSLibraryChangeSnapshot *)self updates];
+  [coderCopy encodeObject:updates forKey:@"PLSLibrarySnapshotUpdatesKey"];
 
-  v6 = [(PLSLibraryChangeSnapshot *)self deletes];
-  [v4 encodeObject:v6 forKey:@"PLSLibrarySnapshotDeletesKey"];
+  deletes = [(PLSLibraryChangeSnapshot *)self deletes];
+  [coderCopy encodeObject:deletes forKey:@"PLSLibrarySnapshotDeletesKey"];
 
-  v7 = [(PLSLibraryChangeSnapshot *)self libraryUUID];
-  [v4 encodeObject:v7 forKey:@"PLSLibraryChangeSnapshotLibraryUUIDKey"];
+  libraryUUID = [(PLSLibraryChangeSnapshot *)self libraryUUID];
+  [coderCopy encodeObject:libraryUUID forKey:@"PLSLibraryChangeSnapshotLibraryUUIDKey"];
 
-  v8 = [(PLSLibraryChangeSnapshot *)self libraryKind];
-  [v4 encodeObject:v8 forKey:@"PLSLibraryChangeSnapshotLibraryKindKey"];
+  libraryKind = [(PLSLibraryChangeSnapshot *)self libraryKind];
+  [coderCopy encodeObject:libraryKind forKey:@"PLSLibraryChangeSnapshotLibraryKindKey"];
 }
 
-- (PLSLibraryChangeSnapshot)initWithCoder:(id)a3
+- (PLSLibraryChangeSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PLSLibraryChangeSnapshot;
   v5 = [(PLSLibraryChangeSnapshot *)&v20 init];
@@ -220,19 +220,19 @@ LABEL_20:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v6, v7, v8, v9, objc_opt_class(), 0];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"PLSLibrarySnapshotUpdatesKey"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"PLSLibrarySnapshotUpdatesKey"];
     updates = v5->_updates;
     v5->_updates = v11;
 
-    v13 = [v4 decodeObjectOfClasses:v10 forKey:@"PLSLibrarySnapshotDeletesKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v10 forKey:@"PLSLibrarySnapshotDeletesKey"];
     deletes = v5->_deletes;
     v5->_deletes = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLSLibraryChangeSnapshotLibraryUUIDKey"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLSLibraryChangeSnapshotLibraryUUIDKey"];
     libraryUUID = v5->_libraryUUID;
     v5->_libraryUUID = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PLSLibraryChangeSnapshotLibraryKindKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PLSLibraryChangeSnapshotLibraryKindKey"];
     libraryKind = v5->_libraryKind;
     v5->_libraryKind = v17;
   }
@@ -242,16 +242,16 @@ LABEL_20:
 
 - (BOOL)hasChangedObjects
 {
-  v3 = [(PLSLibraryChangeSnapshot *)self updates];
-  if ([v3 count])
+  updates = [(PLSLibraryChangeSnapshot *)self updates];
+  if ([updates count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PLSLibraryChangeSnapshot *)self deletes];
-    v4 = [v5 count] != 0;
+    deletes = [(PLSLibraryChangeSnapshot *)self deletes];
+    v4 = [deletes count] != 0;
   }
 
   return v4;
@@ -262,11 +262,11 @@ LABEL_20:
   v10.receiver = self;
   v10.super_class = PLSLibraryChangeSnapshot;
   v3 = [(PLSLibraryChangeSnapshot *)&v10 description];
-  v4 = [(PLSLibraryChangeSnapshot *)self libraryUUID];
-  v5 = [(PLSLibraryChangeSnapshot *)self libraryKind];
-  v6 = [(PLSLibraryChangeSnapshot *)self updates];
-  v7 = [(PLSLibraryChangeSnapshot *)self deletes];
-  v8 = [NSString stringWithFormat:@"%@, libraryUUID: %@ libraryKind:%@\nupdates: %@\ndeletes: %@", v3, v4, v5, v6, v7];
+  libraryUUID = [(PLSLibraryChangeSnapshot *)self libraryUUID];
+  libraryKind = [(PLSLibraryChangeSnapshot *)self libraryKind];
+  updates = [(PLSLibraryChangeSnapshot *)self updates];
+  deletes = [(PLSLibraryChangeSnapshot *)self deletes];
+  v8 = [NSString stringWithFormat:@"%@, libraryUUID: %@ libraryKind:%@\nupdates: %@\ndeletes: %@", v3, libraryUUID, libraryKind, updates, deletes];
 
   return v8;
 }
@@ -306,13 +306,13 @@ LABEL_20:
   return v3;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PLSLibraryChangeSnapshot;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v9, "keyPathsForValuesAffectingValueForKey:", v3);
-  v5 = [v3 isEqualToString:@"hasChangedObjects"];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v9, "keyPathsForValuesAffectingValueForKey:", keyCopy);
+  v5 = [keyCopy isEqualToString:@"hasChangedObjects"];
 
   if (v5)
   {

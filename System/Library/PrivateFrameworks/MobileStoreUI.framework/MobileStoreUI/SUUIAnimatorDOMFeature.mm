@@ -1,25 +1,25 @@
 @interface SUUIAnimatorDOMFeature
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (SUUIAnimatorDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SUUIAnimatorDOMFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (SUUIAnimatorDOMFeatureDelegate)delegate;
 @end
 
 @implementation SUUIAnimatorDOMFeature
 
-- (SUUIAnimatorDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SUUIAnimatorDOMFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SUUIAnimatorDOMFeature;
   v8 = [(SUUIAnimatorDOMFeature *)&v13 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
   }
@@ -27,12 +27,12 @@
   return v8;
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [SKJSUIAnimatorDOMFeature alloc];
-  v5 = [v3 appContext];
-  v6 = [(SKJSUIAnimatorDOMFeature *)v4 initWithAppContext:v5 DOMFeature:v3];
+  appContext = [featureCopy appContext];
+  v6 = [(SKJSUIAnimatorDOMFeature *)v4 initWithAppContext:appContext DOMFeature:featureCopy];
 
   return v6;
 }

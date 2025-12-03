@@ -1,30 +1,30 @@
 @interface RMGenericAuthenticationCredential
-- (BOOL)_prepareSchemeMAIDTask:(id)a3 error:(id *)a4;
-- (BOOL)_prepareSchemeMAIDURLRequest:(id)a3 error:(id *)a4;
-- (BOOL)prepareTask:(id)a3 error:(id *)a4;
-- (BOOL)prepareURLRequest:(id)a3 error:(id *)a4;
+- (BOOL)_prepareSchemeMAIDTask:(id)task error:(id *)error;
+- (BOOL)_prepareSchemeMAIDURLRequest:(id)request error:(id *)error;
+- (BOOL)prepareTask:(id)task error:(id *)error;
+- (BOOL)prepareURLRequest:(id)request error:(id *)error;
 - (id)_appleIDContext;
 - (id)_createAuthenticationParameters;
-- (id)_updateBearerPropertiesAccountIdentifier:(id)a3 afterFailure:(BOOL)a4;
-- (id)_updateTestPropertiesAccountIdentifier:(id)a3 afterFailure:(BOOL)a4;
+- (id)_updateBearerPropertiesAccountIdentifier:(id)identifier afterFailure:(BOOL)failure;
+- (id)_updateTestPropertiesAccountIdentifier:(id)identifier afterFailure:(BOOL)failure;
 @end
 
 @implementation RMGenericAuthenticationCredential
 
-- (BOOL)prepareURLRequest:(id)a3 error:(id *)a4
+- (BOOL)prepareURLRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RMGenericAuthenticationCredential *)self _createAuthenticationParameters];
-  v8 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-  v9 = [NSString stringWithFormat:@"%@ %@", v8, v7];
-  [v6 setValue:v9 forHTTPHeaderField:@"Authorization"];
+  requestCopy = request;
+  _createAuthenticationParameters = [(RMGenericAuthenticationCredential *)self _createAuthenticationParameters];
+  authenticationScheme = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+  v9 = [NSString stringWithFormat:@"%@ %@", authenticationScheme, _createAuthenticationParameters];
+  [requestCopy setValue:v9 forHTTPHeaderField:@"Authorization"];
 
-  v10 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-  LODWORD(v8) = [v10 isEqualToString:RMAuthenticationSchemeMAID];
+  authenticationScheme2 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+  LODWORD(authenticationScheme) = [authenticationScheme2 isEqualToString:RMAuthenticationSchemeMAID];
 
-  if (v8)
+  if (authenticationScheme)
   {
-    v11 = [(RMGenericAuthenticationCredential *)self _prepareSchemeMAIDURLRequest:v6 error:a4];
+    v11 = [(RMGenericAuthenticationCredential *)self _prepareSchemeMAIDURLRequest:requestCopy error:error];
   }
 
   else
@@ -35,15 +35,15 @@
   return v11;
 }
 
-- (BOOL)_prepareSchemeMAIDURLRequest:(id)a3 error:(id *)a4
+- (BOOL)_prepareSchemeMAIDURLRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  [v5 ak_addDeviceUDIDHeader];
-  [v5 ak_addClientInfoHeader];
-  [v5 ak_addDeviceSerialNumberHeader];
-  v6 = [(RMGenericAuthenticationCredential *)self properties];
-  v7 = [v6 objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldAltDSID];
-  v8 = [v6 objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldShortLivedToken];
+  requestCopy = request;
+  [requestCopy ak_addDeviceUDIDHeader];
+  [requestCopy ak_addClientInfoHeader];
+  [requestCopy ak_addDeviceSerialNumberHeader];
+  properties = [(RMGenericAuthenticationCredential *)self properties];
+  v7 = [properties objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldAltDSID];
+  v8 = [properties objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldShortLivedToken];
   v9 = v8;
   if (v7)
   {
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      stringValue = v11;
     }
 
     else
@@ -69,7 +69,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 stringValue];
+        stringValue = [v11 stringValue];
       }
 
       else
@@ -77,7 +77,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [RMDateFormat stringUTCWithDate:v11];
+          stringValue = [RMDateFormat stringUTCWithDate:v11];
         }
 
         else
@@ -92,18 +92,18 @@
           {
             [v11 description];
           }
-          v12 = ;
+          stringValue = ;
         }
       }
     }
 
-    v13 = v12;
+    v13 = stringValue;
 
     v14 = v7;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      stringValue2 = v14;
     }
 
     else
@@ -111,7 +111,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v14 stringValue];
+        stringValue2 = [v14 stringValue];
       }
 
       else
@@ -119,7 +119,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [RMDateFormat stringUTCWithDate:v14];
+          stringValue2 = [RMDateFormat stringUTCWithDate:v14];
         }
 
         else
@@ -134,18 +134,18 @@
           {
             [v14 description];
           }
-          v15 = ;
+          stringValue2 = ;
         }
       }
     }
 
-    v16 = v15;
+    v16 = stringValue2;
 
-    [v5 ak_addAuthorizationHeaderWithServiceToken:v13 forAltDSID:v16];
+    [requestCopy ak_addAuthorizationHeaderWithServiceToken:v13 forAltDSID:v16];
   }
 
-  v17 = [v6 objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldDSID];
-  v18 = [v6 objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldLongLivedToken];
+  v17 = [properties objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldDSID];
+  v18 = [properties objectForKeyedSubscript:RMAuthenticationSchemeMAIDFieldLongLivedToken];
   v19 = v18;
   if (v17)
   {
@@ -163,7 +163,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      stringValue3 = v21;
     }
 
     else
@@ -171,7 +171,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [v21 stringValue];
+        stringValue3 = [v21 stringValue];
       }
 
       else
@@ -179,7 +179,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [RMDateFormat stringUTCWithDate:v21];
+          stringValue3 = [RMDateFormat stringUTCWithDate:v21];
         }
 
         else
@@ -194,18 +194,18 @@
           {
             [v21 description];
           }
-          v22 = ;
+          stringValue3 = ;
         }
       }
     }
 
-    v23 = v22;
+    v23 = stringValue3;
 
     v24 = v19;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v24;
+      stringValue4 = v24;
     }
 
     else
@@ -213,7 +213,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [v24 stringValue];
+        stringValue4 = [v24 stringValue];
       }
 
       else
@@ -221,7 +221,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [RMDateFormat stringUTCWithDate:v24];
+          stringValue4 = [RMDateFormat stringUTCWithDate:v24];
         }
 
         else
@@ -236,32 +236,32 @@
           {
             [v24 description];
           }
-          v25 = ;
+          stringValue4 = ;
         }
       }
     }
 
-    v26 = v25;
+    v26 = stringValue4;
 
     v27 = [NSString stringWithFormat:@"%@:%@", v23, v26];
 
     v28 = [v27 dataUsingEncoding:4];
     v29 = [v28 base64EncodedStringWithOptions:0];
-    [v5 setValue:v29 forHTTPHeaderField:@"X-Apple-RM-MDM-Token"];
+    [requestCopy setValue:v29 forHTTPHeaderField:@"X-Apple-RM-MDM-Token"];
   }
 
   return 1;
 }
 
-- (BOOL)prepareTask:(id)a3 error:(id *)a4
+- (BOOL)prepareTask:(id)task error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-  v8 = [v7 isEqualToString:RMAuthenticationSchemeMAID];
+  taskCopy = task;
+  authenticationScheme = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+  v8 = [authenticationScheme isEqualToString:RMAuthenticationSchemeMAID];
 
   if (v8)
   {
-    v9 = [(RMGenericAuthenticationCredential *)self _prepareSchemeMAIDTask:v6 error:a4];
+    v9 = [(RMGenericAuthenticationCredential *)self _prepareSchemeMAIDTask:taskCopy error:error];
   }
 
   else
@@ -272,13 +272,13 @@
   return v9;
 }
 
-- (BOOL)_prepareSchemeMAIDTask:(id)a3 error:(id *)a4
+- (BOOL)_prepareSchemeMAIDTask:(id)task error:(id *)error
 {
-  v5 = a3;
+  taskCopy = task;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(RMGenericAuthenticationCredential *)self _appleIDContext];
-    [v5 _setAppleIDContext:v6];
+    _appleIDContext = [(RMGenericAuthenticationCredential *)self _appleIDContext];
+    [taskCopy _setAppleIDContext:_appleIDContext];
   }
 
   return 1;
@@ -305,13 +305,13 @@
   return v4;
 }
 
-- (id)_updateTestPropertiesAccountIdentifier:(id)a3 afterFailure:(BOOL)a4
+- (id)_updateTestPropertiesAccountIdentifier:(id)identifier afterFailure:(BOOL)failure
 {
-  v4 = a4;
-  v6 = [(RMGenericAuthenticationCredential *)self properties];
-  v7 = [v6 mutableCopy];
+  failureCopy = failure;
+  properties = [(RMGenericAuthenticationCredential *)self properties];
+  v7 = [properties mutableCopy];
 
-  if (v4)
+  if (failureCopy)
   {
     v8 = +[RMLog genericAuthenticationCredential];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -320,12 +320,12 @@
     }
 
     v9 = objc_opt_new();
-    v10 = [v9 UUIDString];
-    [v7 setObject:v10 forKeyedSubscript:RMAuthenticationSchemeTestFieldToken];
+    uUIDString = [v9 UUIDString];
+    [v7 setObject:uUIDString forKeyedSubscript:RMAuthenticationSchemeTestFieldToken];
 
     v11 = [RMGenericAuthenticationCredential alloc];
-    v12 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-    v13 = [v11 initWithAuthenticationScheme:v12 properties:v7];
+    authenticationScheme = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+    v13 = [v11 initWithAuthenticationScheme:authenticationScheme properties:v7];
   }
 
   else
@@ -336,21 +336,21 @@
   return v13;
 }
 
-- (id)_updateBearerPropertiesAccountIdentifier:(id)a3 afterFailure:(BOOL)a4
+- (id)_updateBearerPropertiesAccountIdentifier:(id)identifier afterFailure:(BOOL)failure
 {
-  v5 = a3;
-  v6 = [(RMGenericAuthenticationCredential *)self properties];
-  v7 = [v6 mutableCopy];
+  identifierCopy = identifier;
+  properties = [(RMGenericAuthenticationCredential *)self properties];
+  v7 = [properties mutableCopy];
 
-  v8 = [(RMGenericAuthenticationCredential *)self properties];
+  properties2 = [(RMGenericAuthenticationCredential *)self properties];
   v9 = RMAuthenticationSchemeBearerFieldAccessToken;
-  v10 = [v8 objectForKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
+  v10 = [properties2 objectForKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
 
   v11 = +[ACAccountStore rm_defaultStore];
-  v12 = [v11 rm_remoteManagementAccountForIdentifier:v5];
-  v13 = [v12 rm_bearerToken];
-  v14 = v13;
-  if (v13 && ([v13 isEqualToString:v10] & 1) == 0)
+  v12 = [v11 rm_remoteManagementAccountForIdentifier:identifierCopy];
+  rm_bearerToken = [v12 rm_bearerToken];
+  v14 = rm_bearerToken;
+  if (rm_bearerToken && ([rm_bearerToken isEqualToString:v10] & 1) == 0)
   {
     v16 = +[RMLog genericAuthenticationCredential];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -360,8 +360,8 @@
 
     [v7 setObject:v14 forKeyedSubscript:v9];
     v17 = [RMGenericAuthenticationCredential alloc];
-    v18 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-    v15 = [v17 initWithAuthenticationScheme:v18 properties:v7];
+    authenticationScheme = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+    v15 = [v17 initWithAuthenticationScheme:authenticationScheme properties:v7];
   }
 
   else
@@ -374,19 +374,19 @@
 
 - (id)_createAuthenticationParameters
 {
-  v3 = [(RMGenericAuthenticationCredential *)self authenticationScheme];
-  v4 = [v3 isEqualToString:RMAuthenticationSchemeBearer];
+  authenticationScheme = [(RMGenericAuthenticationCredential *)self authenticationScheme];
+  v4 = [authenticationScheme isEqualToString:RMAuthenticationSchemeBearer];
 
-  v5 = [(RMGenericAuthenticationCredential *)self properties];
-  v6 = v5;
+  properties = [(RMGenericAuthenticationCredential *)self properties];
+  v6 = properties;
   if (v4)
   {
-    v7 = [v5 objectForKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
+    v7 = [properties objectForKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
   }
 
   else
   {
-    +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [properties count]);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000A7AC;

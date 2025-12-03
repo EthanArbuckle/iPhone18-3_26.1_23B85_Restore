@@ -1,20 +1,20 @@
 @interface _ICLLRadioSeed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLRadioSeed
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     mediaId = self->_mediaId;
-    if (mediaId | v4[1])
+    if (mediaId | equalCopy[1])
     {
       v6 = [(NSString *)mediaId isEqual:?];
     }
@@ -33,17 +33,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mediaId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mediaId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_mediaId)
   {
@@ -53,12 +53,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   mediaId = self->_mediaId;
   if (mediaId)
   {
-    [v3 setObject:mediaId forKey:@"mediaId"];
+    [dictionary setObject:mediaId forKey:@"mediaId"];
   }
 
   return v4;
@@ -70,8 +70,8 @@
   v8.receiver = self;
   v8.super_class = _ICLLRadioSeed;
   v4 = [(_ICLLRadioSeed *)&v8 description];
-  v5 = [(_ICLLRadioSeed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLRadioSeed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

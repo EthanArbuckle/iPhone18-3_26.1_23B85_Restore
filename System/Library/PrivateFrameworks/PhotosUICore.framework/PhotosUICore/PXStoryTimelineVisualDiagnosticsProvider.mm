@@ -1,39 +1,39 @@
 @interface PXStoryTimelineVisualDiagnosticsProvider
 - (PXStoryTimelineVisualDiagnosticsProvider)init;
-- (PXStoryTimelineVisualDiagnosticsProvider)initWithModel:(id)a3 screenScale:(double)a4;
-- (id)_autoEditDebugInfoBySegmentInTimeline:(id)a3;
-- (id)_descriptionForDurationInfo:(id *)a3;
-- (id)_descriptionForFaces:(id)a3 context:(id)a4;
-- (id)_descriptionForMovementType:(int64_t)a3;
-- (id)_displayStringForPrivateString:(id)a3 context:(id)a4;
-- (id)_moduleDescriptionsBySegmentInTimeline:(id)a3;
-- (id)_moduleStartSegmentIndexesInTimeline:(id)a3;
-- (id)_momentEndSegmentIndexesInTimeline:(id)a3;
-- (id)_movementDescriptionForSegmentAtIndex:(int64_t)a3 inTimeline:(id)a4;
-- (id)_segmentIndexesWithInvalidOrderOutTransitionInTimeline:(id)a3;
-- (id)_tvPreviewRankByAssetUUIDForMemory:(id)a3;
-- (unint64_t)_approxLinesInString:(id)a3 lineLength:(unint64_t)a4;
-- (void)_addAssetsDetailsTable:(id)a3;
-- (void)_addCinematicDiagnostics:(id)a3;
-- (void)_addCropDiagnostics:(id)a3;
-- (void)_addDetailedSaliencyDiagnostics:(id)a3;
-- (void)_addMiscellaneousDiagnostics:(id)a3;
-- (void)_addSegmentsAutoEditDebugInfoTables:(id)a3 debugInfoKeys:(id)a4;
-- (void)_addSegmentsDetailsTable:(id)a3;
-- (void)_drawAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5;
-- (void)_drawSegmentAtIndex:(int64_t)a3 timeline:(id)a4 inRect:(CGRect)a5 options:(unint64_t)a6 context:(id)a7;
-- (void)_drawVerticalInRect:(CGRect)a3 backgroundColor:(id)a4 context:(id)a5 configuration:(id)a6;
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4;
+- (PXStoryTimelineVisualDiagnosticsProvider)initWithModel:(id)model screenScale:(double)scale;
+- (id)_autoEditDebugInfoBySegmentInTimeline:(id)timeline;
+- (id)_descriptionForDurationInfo:(id *)info;
+- (id)_descriptionForFaces:(id)faces context:(id)context;
+- (id)_descriptionForMovementType:(int64_t)type;
+- (id)_displayStringForPrivateString:(id)string context:(id)context;
+- (id)_moduleDescriptionsBySegmentInTimeline:(id)timeline;
+- (id)_moduleStartSegmentIndexesInTimeline:(id)timeline;
+- (id)_momentEndSegmentIndexesInTimeline:(id)timeline;
+- (id)_movementDescriptionForSegmentAtIndex:(int64_t)index inTimeline:(id)timeline;
+- (id)_segmentIndexesWithInvalidOrderOutTransitionInTimeline:(id)timeline;
+- (id)_tvPreviewRankByAssetUUIDForMemory:(id)memory;
+- (unint64_t)_approxLinesInString:(id)string lineLength:(unint64_t)length;
+- (void)_addAssetsDetailsTable:(id)table;
+- (void)_addCinematicDiagnostics:(id)diagnostics;
+- (void)_addCropDiagnostics:(id)diagnostics;
+- (void)_addDetailedSaliencyDiagnostics:(id)diagnostics;
+- (void)_addMiscellaneousDiagnostics:(id)diagnostics;
+- (void)_addSegmentsAutoEditDebugInfoTables:(id)tables debugInfoKeys:(id)keys;
+- (void)_addSegmentsDetailsTable:(id)table;
+- (void)_drawAsset:(id)asset inRect:(CGRect)rect context:(id)context;
+- (void)_drawSegmentAtIndex:(int64_t)index timeline:(id)timeline inRect:(CGRect)rect options:(unint64_t)options context:(id)context;
+- (void)_drawVerticalInRect:(CGRect)rect backgroundColor:(id)color context:(id)context configuration:(id)configuration;
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation PXStoryTimelineVisualDiagnosticsProvider
 
-- (id)_tvPreviewRankByAssetUUIDForMemory:(id)a3
+- (id)_tvPreviewRankByAssetUUIDForMemory:(id)memory
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  memoryCopy = memory;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 rankedPreviewAssetsForLength:4 targetSize:{1920.0, 1080.0}];
+  v6 = [memoryCopy rankedPreviewAssetsForLength:4 targetSize:{1920.0, 1080.0}];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -57,41 +57,41 @@ void __79__PXStoryTimelineVisualDiagnosticsProvider__tvPreviewRankByAssetUUIDFor
   [v7 setObject:v9 forKeyedSubscript:v8];
 }
 
-- (void)_drawVerticalInRect:(CGRect)a3 backgroundColor:(id)a4 context:(id)a5 configuration:(id)a6
+- (void)_drawVerticalInRect:(CGRect)rect backgroundColor:(id)color context:(id)context configuration:(id)configuration
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  CGContextSaveGState([v9 CGContext]);
+  colorCopy = color;
+  contextCopy = context;
+  configurationCopy = configuration;
+  CGContextSaveGState([contextCopy CGContext]);
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
   PXRectGetCenter();
 }
 
-- (void)_drawAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5
+- (void)_drawAsset:(id)asset inRect:(CGRect)rect context:(id)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(PXStoryTimelineVisualDiagnosticsProvider *)self helper];
-  [v13 drawAsset:v12 inRect:v11 context:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contextCopy = context;
+  assetCopy = asset;
+  helper = [(PXStoryTimelineVisualDiagnosticsProvider *)self helper];
+  [helper drawAsset:assetCopy inRect:contextCopy context:{x, y, width, height}];
 }
 
-- (id)_displayStringForPrivateString:(id)a3 context:(id)a4
+- (id)_displayStringForPrivateString:(id)string context:(id)context
 {
-  v5 = a3;
-  if ([a4 isPrivateDataAllowed])
+  stringCopy = string;
+  if ([context isPrivateDataAllowed])
   {
-    v6 = v5;
+    v6 = stringCopy;
   }
 
   else
   {
-    v6 = [&stru_1F1741150 stringByPaddingToLength:objc_msgSend(v5 withString:"length") startingAtIndex:{@"*", 0}];
+    v6 = [&stru_1F1741150 stringByPaddingToLength:objc_msgSend(stringCopy withString:"length") startingAtIndex:{@"*", 0}];
   }
 
   v7 = v6;
@@ -99,24 +99,24 @@ void __79__PXStoryTimelineVisualDiagnosticsProvider__tvPreviewRankByAssetUUIDFor
   return v7;
 }
 
-- (void)_drawSegmentAtIndex:(int64_t)a3 timeline:(id)a4 inRect:(CGRect)a5 options:(unint64_t)a6 context:(id)a7
+- (void)_drawSegmentAtIndex:(int64_t)index timeline:(id)timeline inRect:(CGRect)rect options:(unint64_t)options context:(id)context
 {
-  v8 = a6;
-  width = a5.size.width;
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = a7;
-  v12 = [v10 identifierForSegmentAtIndex:a3];
-  if (v10)
+  optionsCopy = options;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  timelineCopy = timeline;
+  contextCopy = context;
+  v12 = [timelineCopy identifierForSegmentAtIndex:index];
+  if (timelineCopy)
   {
-    [v10 timeRangeForSegmentWithIdentifier:v12];
+    [timelineCopy timeRangeForSegmentWithIdentifier:v12];
   }
 
-  v13 = [v11 CGContext];
-  CGContextSaveGState(v13);
-  if ((v8 & 2) != 0)
+  cGContext = [contextCopy CGContext];
+  CGContextSaveGState(cGContext);
+  if ((optionsCopy & 2) != 0)
   {
     v14 = 6.0;
   }
@@ -131,14 +131,14 @@ void __79__PXStoryTimelineVisualDiagnosticsProvider__tvPreviewRankByAssetUUIDFor
   v24.size.width = v20;
   v24.size.height = v22;
   v15 = CGPathCreateWithRoundedRect(v24, v14, v14, 0);
-  CGContextAddPath(v13, v15);
+  CGContextAddPath(cGContext, v15);
   v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.9 alpha:1.0];
-  CGContextSetFillColorWithColor(v13, [v16 CGColor]);
+  CGContextSetFillColorWithColor(cGContext, [v16 CGColor]);
 
-  CGContextFillPath(v13);
+  CGContextFillPath(cGContext);
   CGPathRelease(v15);
-  CGContextClip(v13);
-  [v10 size];
+  CGContextClip(cGContext);
+  [timelineCopy size];
   PXRectWithOriginAndSize();
 }
 
@@ -278,17 +278,17 @@ void __96__PXStoryTimelineVisualDiagnosticsProvider__drawSegmentAtIndex_timeline
   [v11 setRelativePosition:{0.0, 1.0}];
 }
 
-- (id)_descriptionForFaces:(id)a3 context:(id)a4
+- (id)_descriptionForFaces:(id)faces context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  facesCopy = faces;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if ([v5 count])
+  if ([facesCopy count])
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
+      v9 = [facesCopy objectAtIndexedSubscript:v8];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -297,23 +297,23 @@ void __96__PXStoryTimelineVisualDiagnosticsProvider__drawSegmentAtIndex_timeline
 
 LABEL_15:
 
-      if (++v8 >= [v5 count])
+      if (++v8 >= [facesCopy count])
       {
         goto LABEL_19;
       }
     }
 
     v10 = MEMORY[0x1E6978980];
-    v11 = [v9 photoLibrary];
-    v12 = [v11 librarySpecificFetchOptions];
-    v13 = [v10 fetchPersonWithFace:v9 options:v12];
-    v14 = [v13 firstObject];
+    photoLibrary = [v9 photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v13 = [v10 fetchPersonWithFace:v9 options:librarySpecificFetchOptions];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
-      if (![v6 isPrivateDataAllowed] || (objc_msgSend(v14, "name"), (v15 = objc_claimAutoreleasedReturnValue()) == 0) && (objc_msgSend(v14, "displayName"), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![contextCopy isPrivateDataAllowed] || (objc_msgSend(firstObject, "name"), (v15 = objc_claimAutoreleasedReturnValue()) == 0) && (objc_msgSend(firstObject, "displayName"), (v15 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v16 = [v14 localIdentifier];
+        localIdentifier = [firstObject localIdentifier];
         if (!v8)
         {
           goto LABEL_14;
@@ -322,11 +322,11 @@ LABEL_15:
         goto LABEL_13;
       }
 
-      v16 = v15;
+      localIdentifier = v15;
       if (![(__CFString *)v15 length])
       {
 
-        v16 = @"<unnamed>";
+        localIdentifier = @"<unnamed>";
         if (!v8)
         {
           goto LABEL_14;
@@ -338,13 +338,13 @@ LABEL_15:
 
     else
     {
-      v16 = @"?";
+      localIdentifier = @"?";
     }
 
     if (!v8)
     {
 LABEL_14:
-      [v7 appendFormat:@"%li: %@", v8, v16];
+      [v7 appendFormat:@"%li: %@", v8, localIdentifier];
 
       goto LABEL_15;
     }
@@ -360,12 +360,12 @@ LABEL_19:
   return v17;
 }
 
-- (void)_addMiscellaneousDiagnostics:(id)a3
+- (void)_addMiscellaneousDiagnostics:(id)diagnostics
 {
-  v4 = a3;
-  [v4 addTitlePageWithTitle:@"Timeline" subtitle:@"Miscellaneous"];
-  [v4 beginPage];
-  [v4 currentPageBounds];
+  diagnosticsCopy = diagnostics;
+  [diagnosticsCopy addTitlePageWithTitle:@"Timeline" subtitle:@"Miscellaneous"];
+  [diagnosticsCopy beginPage];
+  [diagnosticsCopy currentPageBounds];
   v17 = CGRectInset(v16, 20.0, 20.0);
   x = v17.origin.x;
   y = v17.origin.y;
@@ -375,9 +375,9 @@ LABEL_19:
   v11 = 3221225472;
   v12 = __73__PXStoryTimelineVisualDiagnosticsProvider__addMiscellaneousDiagnostics___block_invoke;
   v13 = &unk_1E7732CB8;
-  v14 = self;
-  v15 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v15 = diagnosticsCopy;
+  v9 = diagnosticsCopy;
   [v9 drawTextInRect:&v10 configuration:{x, y, width, height}];
   [v9 endPage];
 }
@@ -502,27 +502,27 @@ void __73__PXStoryTimelineVisualDiagnosticsProvider__addMiscellaneousDiagnostics
   PXUserInterfaceLayoutDirectionDescription();
 }
 
-- (void)_addDetailedSaliencyDiagnostics:(id)a3
+- (void)_addDetailedSaliencyDiagnostics:(id)diagnostics
 {
-  v4 = a3;
-  [v4 addTitlePageWithTitle:@"Assets" subtitle:@"Detailed Saliency"];
-  v12 = v4;
-  [v4 CGContext];
-  v5 = [(PXStoryTimelineVisualDiagnosticsProvider *)self resourcesDataSource];
-  v6 = [v5 detailedSaliency];
+  diagnosticsCopy = diagnostics;
+  [diagnosticsCopy addTitlePageWithTitle:@"Assets" subtitle:@"Detailed Saliency"];
+  v12 = diagnosticsCopy;
+  [diagnosticsCopy CGContext];
+  resourcesDataSource = [(PXStoryTimelineVisualDiagnosticsProvider *)self resourcesDataSource];
+  detailedSaliency = [resourcesDataSource detailedSaliency];
   v13 = objc_opt_respondsToSelector();
-  if ([v5 numberOfDisplayAssetResources] >= 1)
+  if ([resourcesDataSource numberOfDisplayAssetResources] >= 1)
   {
     v7 = 0;
     do
     {
-      v8 = [v5 displayAssetResourceAtIndex:v7];
-      v9 = [v8 px_storyResourceDisplayAsset];
+      v8 = [resourcesDataSource displayAssetResourceAtIndex:v7];
+      px_storyResourceDisplayAsset = [v8 px_storyResourceDisplayAsset];
 
-      v10 = [v6 saliencyAreasForDisplayAsset:v9];
+      v10 = [detailedSaliency saliencyAreasForDisplayAsset:px_storyResourceDisplayAsset];
       if (v13)
       {
-        v11 = [v6 rawSaliencyAreasForDisplayAsset:v9];
+        v11 = [detailedSaliency rawSaliencyAreasForDisplayAsset:px_storyResourceDisplayAsset];
       }
 
       else
@@ -540,14 +540,14 @@ void __73__PXStoryTimelineVisualDiagnosticsProvider__addMiscellaneousDiagnostics
         memset(&v14, 0, sizeof(v14));
         CGRectDivide(slice, &slice, &remainder, 40.0, CGRectMaxYEdge);
         CGRectDivide(slice, &v14, &slice, 30.0, CGRectMaxYEdge);
-        [v9 aspectRatio];
+        [px_storyResourceDisplayAsset aspectRatio];
         PXRectWithAspectRatioFittingRect();
       }
 
       ++v7;
     }
 
-    while (v7 < [v5 numberOfDisplayAssetResources]);
+    while (v7 < [resourcesDataSource numberOfDisplayAssetResources]);
   }
 }
 
@@ -596,12 +596,12 @@ void __76__PXStoryTimelineVisualDiagnosticsProvider__addDetailedSaliencyDiagnost
   [v4 setRelativePosition:{0.0, *(a1 + 48)}];
 }
 
-- (void)_addCropDiagnostics:(id)a3
+- (void)_addCropDiagnostics:(id)diagnostics
 {
-  [a3 addTitlePageWithTitle:@"Timeline" subtitle:@"Crops"];
+  [diagnostics addTitlePageWithTitle:@"Timeline" subtitle:@"Crops"];
   [(PXStoryTimelineVisualDiagnosticsProvider *)self helper];
   objc_claimAutoreleasedReturnValue();
-  v4 = [(PXStoryTimelineVisualDiagnosticsProvider *)self timeline];
+  timeline = [(PXStoryTimelineVisualDiagnosticsProvider *)self timeline];
   [(PXStoryTimelineVisualDiagnosticsProvider *)self resourcesDataSource];
   objc_claimAutoreleasedReturnValue();
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -610,19 +610,19 @@ void __76__PXStoryTimelineVisualDiagnosticsProvider__addDetailedSaliencyDiagnost
 
   [v5 setTimeStyle:2];
   [v5 setDateStyle:1];
-  v7 = [(PXStoryTimelineVisualDiagnosticsProvider *)self configuration];
-  v8 = [v7 assetCollection];
+  configuration = [(PXStoryTimelineVisualDiagnosticsProvider *)self configuration];
+  assetCollection = [configuration assetCollection];
 
-  [[PXStoryDefaultDisplayAssetCroppingContext alloc] initWithAssetCollection:v8 detailedSaliency:0];
+  [[PXStoryDefaultDisplayAssetCroppingContext alloc] initWithAssetCollection:assetCollection detailedSaliency:0];
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 showTVPreviewInDiagnostics];
+  showTVPreviewInDiagnostics = [v9 showTVPreviewInDiagnostics];
 
-  if (v10)
+  if (showTVPreviewInDiagnostics)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PXStoryTimelineVisualDiagnosticsProvider *)self _tvPreviewRankByAssetUUIDForMemory:v8];
+      [(PXStoryTimelineVisualDiagnosticsProvider *)self _tvPreviewRankByAssetUUIDForMemory:assetCollection];
       objc_claimAutoreleasedReturnValue();
     }
   }
@@ -634,12 +634,12 @@ void __76__PXStoryTimelineVisualDiagnosticsProvider__addDetailedSaliencyDiagnost
   v12[4] = __Block_byref_object_dispose__54977;
   v12[5] = 0;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4)
+  if (timeline)
   {
-    [v4 timeRange];
+    [timeline timeRange];
   }
 
-  [v4 size];
+  [timeline size];
   PXRectWithOriginAndSize();
 }
 
@@ -814,13 +814,13 @@ void __64__PXStoryTimelineVisualDiagnosticsProvider__addCropDiagnostics___block_
   [v3 setTextColor:v4];
 }
 
-- (id)_segmentIndexesWithInvalidOrderOutTransitionInTimeline:(id)a3
+- (id)_segmentIndexesWithInvalidOrderOutTransitionInTimeline:(id)timeline
 {
-  v3 = a3;
+  timelineCopy = timeline;
   v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (v3)
+  if (timelineCopy)
   {
-    [v3 timeRange];
+    [timelineCopy timeRange];
   }
 
   else
@@ -832,10 +832,10 @@ void __64__PXStoryTimelineVisualDiagnosticsProvider__addCropDiagnostics___block_
   v10 = 3221225472;
   v11 = __99__PXStoryTimelineVisualDiagnosticsProvider__segmentIndexesWithInvalidOrderOutTransitionInTimeline___block_invoke;
   v12 = &unk_1E773B9D8;
-  v13 = v3;
+  v13 = timelineCopy;
   v14 = v4;
   v5 = v4;
-  v6 = v3;
+  v6 = timelineCopy;
   [v6 enumerateSegmentsInTimeRange:v15 usingBlock:&v9];
   v7 = [v5 copy];
 
@@ -878,23 +878,23 @@ uint64_t __99__PXStoryTimelineVisualDiagnosticsProvider__segmentIndexesWithInval
   return result;
 }
 
-- (id)_moduleStartSegmentIndexesInTimeline:(id)a3
+- (id)_moduleStartSegmentIndexesInTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v7 = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
-  v8 = [v7 currentStyle];
+  model = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
+  currentStyle = [model currentStyle];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 autoEditDecisionList];
-    if (v9)
+    autoEditDecisionList = [currentStyle autoEditDecisionList];
+    if (autoEditDecisionList)
     {
-      v10 = v9;
-      if (v5)
+      v10 = autoEditDecisionList;
+      if (timelineCopy)
       {
-        [v5 timeRange];
+        [timelineCopy timeRange];
       }
 
       else
@@ -906,8 +906,8 @@ uint64_t __99__PXStoryTimelineVisualDiagnosticsProvider__segmentIndexesWithInval
       v14[1] = 3221225472;
       v14[2] = __81__PXStoryTimelineVisualDiagnosticsProvider__moduleStartSegmentIndexesInTimeline___block_invoke;
       v14[3] = &unk_1E7732BA0;
-      v15 = v5;
-      v16 = self;
+      v15 = timelineCopy;
+      selfCopy = self;
       v19 = a2;
       v17 = v10;
       v18 = v6;
@@ -982,23 +982,23 @@ void __81__PXStoryTimelineVisualDiagnosticsProvider__moduleStartSegmentIndexesIn
   }
 }
 
-- (id)_autoEditDebugInfoBySegmentInTimeline:(id)a3
+- (id)_autoEditDebugInfoBySegmentInTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v6 = objc_opt_new();
-  v7 = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
-  v8 = [v7 currentStyle];
+  model = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
+  currentStyle = [model currentStyle];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 autoEditDecisionList];
-    if (v9)
+    autoEditDecisionList = [currentStyle autoEditDecisionList];
+    if (autoEditDecisionList)
     {
-      v10 = v9;
-      if (v5)
+      v10 = autoEditDecisionList;
+      if (timelineCopy)
       {
-        [v5 timeRange];
+        [timelineCopy timeRange];
       }
 
       else
@@ -1010,8 +1010,8 @@ void __81__PXStoryTimelineVisualDiagnosticsProvider__moduleStartSegmentIndexesIn
       v14[1] = 3221225472;
       v14[2] = __82__PXStoryTimelineVisualDiagnosticsProvider__autoEditDebugInfoBySegmentInTimeline___block_invoke;
       v14[3] = &unk_1E7732BA0;
-      v15 = v5;
-      v16 = self;
+      v15 = timelineCopy;
+      selfCopy = self;
       v19 = a2;
       v17 = v10;
       v18 = v6;
@@ -1095,23 +1095,23 @@ void __82__PXStoryTimelineVisualDiagnosticsProvider__autoEditDebugInfoBySegmentI
   }
 }
 
-- (id)_moduleDescriptionsBySegmentInTimeline:(id)a3
+- (id)_moduleDescriptionsBySegmentInTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
-  v8 = [v7 currentStyle];
+  model = [(PXStoryTimelineVisualDiagnosticsProvider *)self model];
+  currentStyle = [model currentStyle];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 autoEditDecisionList];
-    if (v9)
+    autoEditDecisionList = [currentStyle autoEditDecisionList];
+    if (autoEditDecisionList)
     {
-      v10 = v9;
-      if (v5)
+      v10 = autoEditDecisionList;
+      if (timelineCopy)
       {
-        [v5 timeRange];
+        [timelineCopy timeRange];
       }
 
       else
@@ -1123,8 +1123,8 @@ void __82__PXStoryTimelineVisualDiagnosticsProvider__autoEditDebugInfoBySegmentI
       v14[1] = 3221225472;
       v14[2] = __83__PXStoryTimelineVisualDiagnosticsProvider__moduleDescriptionsBySegmentInTimeline___block_invoke;
       v14[3] = &unk_1E7732BA0;
-      v15 = v5;
-      v16 = self;
+      v15 = timelineCopy;
+      selfCopy = self;
       v19 = a2;
       v17 = v10;
       v18 = v6;
@@ -1232,23 +1232,23 @@ void __83__PXStoryTimelineVisualDiagnosticsProvider__moduleDescriptionsBySegment
   }
 }
 
-- (id)_momentEndSegmentIndexesInTimeline:(id)a3
+- (id)_momentEndSegmentIndexesInTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v7 = [(PXStoryTimelineVisualDiagnosticsProvider *)self momentsProvider];
+  momentsProvider = [(PXStoryTimelineVisualDiagnosticsProvider *)self momentsProvider];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __79__PXStoryTimelineVisualDiagnosticsProvider__momentEndSegmentIndexesInTimeline___block_invoke;
   v22[3] = &unk_1E7741B80;
   v8 = v6;
   v23 = v8;
-  [v7 enumerateMomentsUsingBlock:v22];
+  [momentsProvider enumerateMomentsUsingBlock:v22];
 
   v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (v5)
+  if (timelineCopy)
   {
-    [v5 timeRange];
+    [timelineCopy timeRange];
   }
 
   else
@@ -1262,12 +1262,12 @@ void __83__PXStoryTimelineVisualDiagnosticsProvider__moduleDescriptionsBySegment
   v15[3] = &unk_1E7732BA0;
   v19 = v9;
   v20 = a2;
-  v16 = v5;
-  v17 = self;
+  v16 = timelineCopy;
+  selfCopy = self;
   v18 = v8;
   v10 = v9;
   v11 = v8;
-  v12 = v5;
+  v12 = timelineCopy;
   [v12 enumerateSegmentsInTimeRange:v21 usingBlock:v15];
   v13 = [v10 copy];
 
@@ -1358,30 +1358,30 @@ void __79__PXStoryTimelineVisualDiagnosticsProvider__momentEndSegmentIndexesInTi
   }
 }
 
-- (id)_descriptionForMovementType:(int64_t)a3
+- (id)_descriptionForMovementType:(int64_t)type
 {
-  if (a3 > 0xD)
+  if (type > 0xD)
   {
     return @"??";
   }
 
   else
   {
-    return off_1E7732DC8[a3];
+    return off_1E7732DC8[type];
   }
 }
 
-- (id)_movementDescriptionForSegmentAtIndex:(int64_t)a3 inTimeline:(id)a4
+- (id)_movementDescriptionForSegmentAtIndex:(int64_t)index inTimeline:(id)timeline
 {
-  v5 = a4;
+  timelineCopy = timeline;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 identifierForSegmentAtIndex:a3];
-  if (v5)
+  v7 = [timelineCopy identifierForSegmentAtIndex:index];
+  if (timelineCopy)
   {
-    [v5 timeRangeForSegmentWithIdentifier:v7];
+    [timelineCopy timeRangeForSegmentWithIdentifier:v7];
   }
 
-  [v5 size];
+  [timelineCopy size];
   PXRectWithOriginAndSize();
 }
 
@@ -1418,23 +1418,23 @@ void __93__PXStoryTimelineVisualDiagnosticsProvider__movementDescriptionForSegme
   }
 }
 
-- (id)_descriptionForDurationInfo:(id *)a3
+- (id)_descriptionForDurationInfo:(id *)info
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  var1 = a3->var1;
+  var1 = info->var1;
   v5 = PXStoryTimeDescription(&var1);
-  var1 = a3->var0;
+  var1 = info->var0;
   v6 = PXStoryTimeDescription(&var1);
-  var1 = a3->var2;
+  var1 = info->var2;
   v7 = PXStoryTimeDescription(&var1);
   v8 = [v4 initWithFormat:@"%@ (%@ - %@)", v5, v6, v7];
 
   return v8;
 }
 
-- (void)_addAssetsDetailsTable:(id)a3
+- (void)_addAssetsDetailsTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__PXStoryTimelineVisualDiagnosticsProvider__addAssetsDetailsTable___block_invoke_2;
@@ -1447,9 +1447,9 @@ void __93__PXStoryTimelineVisualDiagnosticsProvider__movementDescriptionForSegme
   v6[3] = &unk_1E7732B50;
   v6[4] = self;
   v7 = @"Assets";
-  v8 = v4;
+  v8 = tableCopy;
   v9 = @"Distance";
-  v5 = v4;
+  v5 = tableCopy;
   [v5 addPagesForTableWithConfiguration:&__block_literal_global_400 columnsConfiguration:v10 rowsConfiguration:v6];
 }
 
@@ -1586,19 +1586,19 @@ void __67__PXStoryTimelineVisualDiagnosticsProvider__addAssetsDetailsTable___blo
   [v2 setWidth:100.0];
 }
 
-- (void)_addSegmentsAutoEditDebugInfoTables:(id)a3 debugInfoKeys:(id)a4
+- (void)_addSegmentsAutoEditDebugInfoTables:(id)tables debugInfoKeys:(id)keys
 {
   v36 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v6 = a4;
+  tablesCopy = tables;
+  keysCopy = keys;
   [(PXStoryTimelineVisualDiagnosticsProvider *)self timeline];
   v17 = v19 = self;
   v20 = [(PXStoryTimelineVisualDiagnosticsProvider *)self _autoEditDebugInfoBySegmentInTimeline:?];
-  v7 = [v20 allValues];
-  v8 = [v7 firstObject];
+  allValues = [v20 allValues];
+  firstObject = [allValues firstObject];
 
-  v9 = [v8 allKeys];
-  v10 = [v9 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [firstObject allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v33 = 0u;
   v34 = 0u;
@@ -1620,7 +1620,7 @@ void __67__PXStoryTimelineVisualDiagnosticsProvider__addAssetsDetailsTable___blo
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        if (!v6 || [v6 containsObject:*(*(&v31 + 1) + 8 * i)])
+        if (!keysCopy || [keysCopy containsObject:*(*(&v31 + 1) + 8 * i)])
         {
           v29 = v15;
           v30[0] = MEMORY[0x1E69E9820];
@@ -1639,7 +1639,7 @@ void __67__PXStoryTimelineVisualDiagnosticsProvider__addAssetsDetailsTable___blo
           v22[3] = &unk_1E7732AB0;
           v22[4] = v19;
           v23 = @"Segment";
-          v16 = v21;
+          v16 = tablesCopy;
           v24 = v16;
           v25 = v20;
           v26 = v15;
@@ -1784,14 +1784,14 @@ void __94__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsAutoEditDebugInf
   [v2 setWidth:70.0];
 }
 
-- (unint64_t)_approxLinesInString:(id)a3 lineLength:(unint64_t)a4
+- (unint64_t)_approxLinesInString:(id)string lineLength:(unint64_t)length
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 componentsSeparatedByString:{@"\n", 0}];
+  v5 = [string componentsSeparatedByString:{@"\n", 0}];
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1807,7 +1807,7 @@ void __94__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsAutoEditDebugInf
           objc_enumerationMutation(v5);
         }
 
-        v8 += [*(*(&v12 + 1) + 8 * i) length] / a4 + 1;
+        v8 += [*(*(&v12 + 1) + 8 * i) length] / length + 1;
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1824,9 +1824,9 @@ void __94__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsAutoEditDebugInf
   return v8;
 }
 
-- (void)_addSegmentsDetailsTable:(id)a3
+- (void)_addSegmentsDetailsTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsDetailsTable___block_invoke_2;
@@ -1842,12 +1842,12 @@ void __94__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsAutoEditDebugInf
   v6[3] = &unk_1E77329E8;
   v6[4] = self;
   v7 = @"Segment";
-  v8 = v4;
+  v8 = tableCopy;
   v9 = @"Duration";
   v10 = @"Movement";
   v11 = @"Transition";
   v12 = @"MomentBoundary";
-  v5 = v4;
+  v5 = tableCopy;
   [v5 addPagesForTableWithConfiguration:&__block_literal_global_55201 columnsConfiguration:v13 rowsConfiguration:v6];
 }
 
@@ -2124,9 +2124,9 @@ void __69__PXStoryTimelineVisualDiagnosticsProvider__addSegmentsDetailsTable___b
   [v2 setWidth:70.0];
 }
 
-- (void)_addCinematicDiagnostics:(id)a3
+- (void)_addCinematicDiagnostics:(id)diagnostics
 {
-  v4 = a3;
+  diagnosticsCopy = diagnostics;
   [(PXStoryTimelineVisualDiagnosticsProvider *)self timeline];
   [objc_claimAutoreleasedReturnValue() size];
   PXSizeGetAspectRatio();
@@ -2296,59 +2296,59 @@ void __67__PXStoryTimelineVisualDiagnosticsProvider__addSegmentDiagnostics___blo
   [v3 setRelativePosition:{0.5, 0.5}];
 }
 
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v6 = a3;
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCoverPage:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentDiagnostics:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCinematicDiagnostics:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentsDetailsTable:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentsAutoEditDebugInfoTables:v6 debugInfoKeys:&unk_1F19100C0];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCropDiagnostics:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addDetailedSaliencyDiagnostics:v6];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addMiscellaneousDiagnostics:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCoverPage:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentDiagnostics:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCinematicDiagnostics:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentsDetailsTable:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addSegmentsAutoEditDebugInfoTables:contextCopy debugInfoKeys:&unk_1F19100C0];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addCropDiagnostics:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addDetailedSaliencyDiagnostics:contextCopy];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)self _addMiscellaneousDiagnostics:contextCopy];
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (PXStoryTimelineVisualDiagnosticsProvider)initWithModel:(id)a3 screenScale:(double)a4
+- (PXStoryTimelineVisualDiagnosticsProvider)initWithModel:(id)model screenScale:(double)scale
 {
-  v7 = a3;
+  modelCopy = model;
   v27.receiver = self;
   v27.super_class = PXStoryTimelineVisualDiagnosticsProvider;
   v8 = [(PXStoryTimelineVisualDiagnosticsProvider *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_model, a3);
-    v10 = 1.0;
-    if (a4 >= 1.0)
+    objc_storeStrong(&v8->_model, model);
+    scaleCopy = 1.0;
+    if (scale >= 1.0)
     {
-      v10 = a4;
+      scaleCopy = scale;
     }
 
-    v9->_screenScale = v10;
-    v11 = [(PXStoryModel *)v9->_model timeline];
+    v9->_screenScale = scaleCopy;
+    timeline = [(PXStoryModel *)v9->_model timeline];
     timeline = v9->_timeline;
-    v9->_timeline = v11;
+    v9->_timeline = timeline;
 
-    v13 = [(PXStoryModel *)v9->_model configuration];
+    configuration = [(PXStoryModel *)v9->_model configuration];
     configuration = v9->_configuration;
-    v9->_configuration = v13;
+    v9->_configuration = configuration;
 
-    v15 = [(PXStoryModel *)v9->_model timelineManager];
-    v16 = [v15 resourcesDataSourceManager];
-    v17 = [v16 recipeManager];
-    v18 = [v17 diagnosticsMomentsProvider];
+    timelineManager = [(PXStoryModel *)v9->_model timelineManager];
+    resourcesDataSourceManager = [timelineManager resourcesDataSourceManager];
+    recipeManager = [resourcesDataSourceManager recipeManager];
+    diagnosticsMomentsProvider = [recipeManager diagnosticsMomentsProvider];
     momentsProvider = v9->_momentsProvider;
-    v9->_momentsProvider = v18;
+    v9->_momentsProvider = diagnosticsMomentsProvider;
 
-    v20 = [(PXStoryModel *)v9->_model timelineManager];
-    v21 = [v20 resourcesDataSourceManager];
-    v22 = [v21 dataSource];
+    timelineManager2 = [(PXStoryModel *)v9->_model timelineManager];
+    resourcesDataSourceManager2 = [timelineManager2 resourcesDataSourceManager];
+    dataSource = [resourcesDataSourceManager2 dataSource];
     resourcesDataSource = v9->_resourcesDataSource;
-    v9->_resourcesDataSource = v22;
+    v9->_resourcesDataSource = dataSource;
 
     v24 = [[PXStoryVisualDiagnosticsProviderHelper alloc] initWithConfiguration:v9->_configuration];
     helper = v9->_helper;
@@ -2360,8 +2360,8 @@ void __67__PXStoryTimelineVisualDiagnosticsProvider__addSegmentDiagnostics___blo
 
 - (PXStoryTimelineVisualDiagnosticsProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineVisualDiagnosticsProvider.m" lineNumber:82 description:{@"%s is not available as initializer", "-[PXStoryTimelineVisualDiagnosticsProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineVisualDiagnosticsProvider.m" lineNumber:82 description:{@"%s is not available as initializer", "-[PXStoryTimelineVisualDiagnosticsProvider init]"}];
 
   abort();
 }

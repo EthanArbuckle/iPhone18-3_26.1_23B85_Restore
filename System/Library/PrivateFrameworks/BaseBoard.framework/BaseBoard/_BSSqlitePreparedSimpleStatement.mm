@@ -1,9 +1,9 @@
 @interface _BSSqlitePreparedSimpleStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
-- (id)_initWithDatabaseConnection:(void *)a3 statement:;
-- (id)_sqliteError:(uint64_t)a1;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
+- (id)_initWithDatabaseConnection:(void *)connection statement:;
+- (id)_sqliteError:(uint64_t)error;
 - (void)dealloc;
-- (void)sqliteDatabaseConnectionWillClose:(id)a3;
+- (void)sqliteDatabaseConnectionWillClose:(id)close;
 @end
 
 @implementation _BSSqlitePreparedSimpleStatement
@@ -36,28 +36,28 @@
   [(BSSqlitePreparedStatement *)&v5 dealloc];
 }
 
-- (id)_initWithDatabaseConnection:(void *)a3 statement:
+- (id)_initWithDatabaseConnection:(void *)connection statement:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(BSSqlitePreparedStatement *)a1 _initWithDatabaseConnection:v5];
-    a1 = v6;
+    v6 = [(BSSqlitePreparedStatement *)self _initWithDatabaseConnection:v5];
+    self = v6;
     if (v6)
     {
-      v6[2] = a3;
+      v6[2] = connection;
       WeakRetained = objc_loadWeakRetained(v6 + 1);
-      [(BSSqliteDatabaseConnection *)WeakRetained addObserver:a1];
+      [(BSSqliteDatabaseConnection *)WeakRetained addObserver:self];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -71,12 +71,12 @@
     v14[3] = &unk_1E72CAD30;
     v17 = &v18;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = bindingsCopy;
+    v16 = handlerCopy;
     [(BSSqliteDatabaseConnection *)WeakRetained performSyncWithDatabase:v14];
 
     v11 = *(v19 + 6);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -86,7 +86,7 @@
   {
     v11 = 21;
     *(v19 + 6) = 21;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -94,7 +94,7 @@
 
   if (v11)
   {
-    *a5 = [(_BSSqlitePreparedSimpleStatement *)self _sqliteError:v11];
+    *error = [(_BSSqlitePreparedSimpleStatement *)self _sqliteError:v11];
     v11 = *(v19 + 6);
   }
 
@@ -105,23 +105,23 @@ LABEL_8:
   return v12;
 }
 
-- (id)_sqliteError:(uint64_t)a1
+- (id)_sqliteError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:sqlite3_errstr(a2)];
-    [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v7 = [(BSSqliteDatabaseConnection *)WeakRetained lastErrorMessage];
+    WeakRetained = objc_loadWeakRetained((error + 8));
+    lastErrorMessage = [(BSSqliteDatabaseConnection *)WeakRetained lastErrorMessage];
 
-    if (v7)
+    if (lastErrorMessage)
     {
-      [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A588]];
+      [dictionary setObject:lastErrorMessage forKeyedSubscript:*MEMORY[0x1E696A588]];
     }
 
-    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.baseboard.bssqlite" code:a2 userInfo:v4];
+    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.baseboard.bssqlite" code:a2 userInfo:dictionary];
   }
 
   else
@@ -132,7 +132,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)sqliteDatabaseConnectionWillClose:(id)a3
+- (void)sqliteDatabaseConnectionWillClose:(id)close
 {
   statement = self->_statement;
   if (statement)

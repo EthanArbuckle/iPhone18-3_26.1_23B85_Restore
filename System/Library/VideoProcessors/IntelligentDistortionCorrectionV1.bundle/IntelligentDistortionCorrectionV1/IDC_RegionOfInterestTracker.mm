@@ -1,29 +1,29 @@
 @interface IDC_RegionOfInterestTracker
 - ($A3B2E143E1A03423F9FC703C010436DC)getCropData;
 - ($A3B2E143E1A03423F9FC703C010436DC)getRoiData;
-- (id)init:(id)a3 metalBufferOffset:(unint64_t)a4 initialIdcRoi:(id *)a5;
-- (void)setIdcCrop:(id *)a3;
-- (void)setIdcRoi:(id *)a3;
-- (void)setRoiData:(id)a3;
+- (id)init:(id)init metalBufferOffset:(unint64_t)offset initialIdcRoi:(id *)roi;
+- (void)setIdcCrop:(id *)crop;
+- (void)setIdcRoi:(id *)roi;
+- (void)setRoiData:(id)data;
 - (void)synchronizeData;
 @end
 
 @implementation IDC_RegionOfInterestTracker
 
-- (id)init:(id)a3 metalBufferOffset:(unint64_t)a4 initialIdcRoi:(id *)a5
+- (id)init:(id)init metalBufferOffset:(unint64_t)offset initialIdcRoi:(id *)roi
 {
-  v9 = a3;
+  initCopy = init;
   v14.receiver = self;
   v14.super_class = IDC_RegionOfInterestTracker;
   v10 = [(IDC_RegionOfInterestTracker *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a5->var0;
-    *&v10->_idcRoi.width = *&a5->var4;
+    v12 = *&roi->var0;
+    *&v10->_idcRoi.width = *&roi->var4;
     *&v10->_idcRoi.x0 = v12;
-    objc_storeStrong(&v10->_metalBuffer, a3);
-    v11->_metalBufferOffset = a4;
+    objc_storeStrong(&v10->_metalBuffer, init);
+    v11->_metalBufferOffset = offset;
     v11->_isCpuMaster = 1;
   }
 
@@ -34,10 +34,10 @@
 {
   if (!self->_isCpuMaster)
   {
-    v3 = [(MTLBuffer *)self->_metalBuffer contents];
-    if (v3)
+    contents = [(MTLBuffer *)self->_metalBuffer contents];
+    if (contents)
     {
-      v4 = v3 + self->_metalBufferOffset;
+      v4 = contents + self->_metalBufferOffset;
       *&self->_idcCrop.x0 = *(v4 + 16);
       v5 = *v4;
       *&self->_idcRoi.x0 = *v4;
@@ -49,14 +49,14 @@
   }
 }
 
-- (void)setRoiData:(id)a3
+- (void)setRoiData:(id)data
 {
-  self->_idcRoi.x0 = a3.var0;
-  self->_idcRoi.y0 = a3.var1;
-  self->_idcRoi.x1 = a3.var2;
-  self->_idcRoi.y1 = a3.var3;
-  self->_idcRoi.width = a3.var2 - a3.var0 + 1;
-  self->_idcRoi.height = a3.var3 - a3.var1 + 1;
+  self->_idcRoi.x0 = data.var0;
+  self->_idcRoi.y0 = data.var1;
+  self->_idcRoi.x1 = data.var2;
+  self->_idcRoi.y1 = data.var3;
+  self->_idcRoi.width = data.var2 - data.var0 + 1;
+  self->_idcRoi.height = data.var3 - data.var1 + 1;
   self->_isCpuMaster = 1;
 }
 
@@ -82,17 +82,17 @@
   return result;
 }
 
-- (void)setIdcRoi:(id *)a3
+- (void)setIdcRoi:(id *)roi
 {
-  v3 = *&a3->var0;
-  *&self->_idcRoi.width = *&a3->var4;
+  v3 = *&roi->var0;
+  *&self->_idcRoi.width = *&roi->var4;
   *&self->_idcRoi.x0 = v3;
 }
 
-- (void)setIdcCrop:(id *)a3
+- (void)setIdcCrop:(id *)crop
 {
-  v3 = *&a3->var0;
-  *&self->_idcCrop.width = *&a3->var4;
+  v3 = *&crop->var0;
+  *&self->_idcCrop.width = *&crop->var4;
   *&self->_idcCrop.x0 = v3;
 }
 

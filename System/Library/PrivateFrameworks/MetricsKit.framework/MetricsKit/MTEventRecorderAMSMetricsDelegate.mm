@@ -1,44 +1,44 @@
 @interface MTEventRecorderAMSMetricsDelegate
 + (id)amsMetricsObjectCache;
-- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)a3 amsBag:(id)a4;
-- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)a3 profileName:(id)a4 profileVersion:(id)a5;
-- (id)_recordEvent:(id)a3 toTopic:(id)a4;
+- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)id amsBag:(id)bag;
+- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)id profileName:(id)name profileVersion:(id)version;
+- (id)_recordEvent:(id)event toTopic:(id)topic;
 - (id)activeItunesAccount;
-- (id)amsContainerIdForTopic:(id)a3;
-- (id)amsMetricsForTopic:(id)a3;
+- (id)amsContainerIdForTopic:(id)topic;
+- (id)amsMetricsForTopic:(id)topic;
 - (id)flushUnreportedEvents;
-- (id)lookupItunesAccount:(id)a3;
-- (id)periodicQueueForTopic:(id)a3;
-- (id)recordEvent:(id)a3 toTopic:(id)a4;
+- (id)lookupItunesAccount:(id)account;
+- (id)periodicQueueForTopic:(id)topic;
+- (id)recordEvent:(id)event toTopic:(id)topic;
 - (void)_beginTransaction;
 - (void)_endTransaction;
-- (void)_flushEvents:(id)a3 topic:(id)a4;
-- (void)setFlushMode:(int64_t)a3;
-- (void)setFlushTimeInterval:(double)a3;
-- (void)setMaximumBatchSize:(int64_t)a3;
-- (void)setNumberOfPendingEvents:(int64_t)a3;
-- (void)setTransactionEnabled:(BOOL)a3;
+- (void)_flushEvents:(id)events topic:(id)topic;
+- (void)setFlushMode:(int64_t)mode;
+- (void)setFlushTimeInterval:(double)interval;
+- (void)setMaximumBatchSize:(int64_t)size;
+- (void)setNumberOfPendingEvents:(int64_t)events;
+- (void)setTransactionEnabled:(BOOL)enabled;
 @end
 
 @implementation MTEventRecorderAMSMetricsDelegate
 
-- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)a3 amsBag:(id)a4
+- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)id amsBag:(id)bag
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  bagCopy = bag;
   v9 = [(MTEventRecorderAMSMetricsDelegate *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerId, a3);
+    objc_storeStrong(&v9->_containerId, id);
     *&v10->_monitorsLifecycleEvents = 16843009;
     v10->_flushTimeInterval = 60.0;
     v10->_maximumBatchSize = 500;
-    v11 = [v8 dictionaryForKey:@"metrics"];
-    v12 = [v11 valuePromise];
+    v11 = [bagCopy dictionaryForKey:@"metrics"];
+    valuePromise = [v11 valuePromise];
     metricsBagPromise = v10->_metricsBagPromise;
-    v10->_metricsBagPromise = v12;
+    v10->_metricsBagPromise = valuePromise;
 
     objc_initWeak(&location, v10);
     v14 = v10->_metricsBagPromise;
@@ -48,24 +48,24 @@
     v26 = &unk_2798CD108;
     objc_copyWeak(&v27, &location);
     [(AMSPromise *)v14 addFinishBlock:&v23];
-    objc_storeStrong(&v10->_amsBag, a4);
+    objc_storeStrong(&v10->_amsBag, bag);
     v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{1, v23, v24, v25, v26}];
     amsMetricsByTopic = v10->_amsMetricsByTopic;
     v10->_amsMetricsByTopic = v15;
 
-    [MEMORY[0x277CEE400] registerBagKeySetForMetricsRecorder:v8];
+    [MEMORY[0x277CEE400] registerBagKeySetForMetricsRecorder:bagCopy];
     v17 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v18 = objc_opt_class();
-      v19 = [(MTEventRecorderAMSMetricsDelegate *)v10 containerId];
-      v20 = [v8 profile];
+      containerId = [(MTEventRecorderAMSMetricsDelegate *)v10 containerId];
+      profile = [bagCopy profile];
       *buf = 138412802;
       v30 = v18;
       v31 = 2112;
-      v32 = v19;
+      v32 = containerId;
       v33 = 2112;
-      v34 = v20;
+      v34 = profile;
       _os_log_impl(&dword_258F4B000, v17, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: Created new object with container: %@ bag profile: %@", buf, 0x20u);
     }
 
@@ -102,12 +102,12 @@ void __64__MTEventRecorderAMSMetricsDelegate_initWithContainerId_amsBag___block_
   }
 }
 
-- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)a3 profileName:(id)a4 profileVersion:(id)a5
+- (MTEventRecorderAMSMetricsDelegate)initWithContainerId:(id)id profileName:(id)name profileVersion:(id)version
 {
   v8 = MEMORY[0x277CEE3F0];
-  v9 = a3;
-  v10 = [v8 bagForProfile:a4 profileVersion:a5];
-  v11 = [(MTEventRecorderAMSMetricsDelegate *)self initWithContainerId:v9 amsBag:v10];
+  idCopy = id;
+  v10 = [v8 bagForProfile:name profileVersion:version];
+  v11 = [(MTEventRecorderAMSMetricsDelegate *)self initWithContainerId:idCopy amsBag:v10];
 
   return v11;
 }
@@ -131,22 +131,22 @@ uint64_t __58__MTEventRecorderAMSMetricsDelegate_amsMetricsObjectCache__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)amsMetricsForTopic:(id)a3
+- (id)amsMetricsForTopic:(id)topic
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTEventRecorderAMSMetricsDelegate *)v5 amsMetricsByTopic];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  topicCopy = topic;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  amsMetricsByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsMetricsByTopic];
+  v7 = [amsMetricsByTopic objectForKeyedSubscript:topicCopy];
 
   if (!v7)
   {
-    v8 = [(MTEventRecorderAMSMetricsDelegate *)v5 amsContainerIdForTopic:v4];
+    v8 = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsContainerIdForTopic:topicCopy];
     v9 = +[MTEventRecorderAMSMetricsDelegate amsMetricsObjectCache];
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(MTEventRecorderAMSMetricsDelegate *)v5 amsBag];
-    v12 = [v10 stringWithFormat:@"%@-%lu", v8, objc_msgSend(v11, "hash")];
+    amsBag = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsBag];
+    v12 = [v10 stringWithFormat:@"%@-%lu", v8, objc_msgSend(amsBag, "hash")];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -154,35 +154,35 @@ uint64_t __58__MTEventRecorderAMSMetricsDelegate_amsMetricsObjectCache__block_in
     v24[3] = &unk_2798CD150;
     v13 = v8;
     v25 = v13;
-    v26 = v5;
+    v26 = selfCopy;
     v7 = [v9 objectForKeyedSubscript:v12 creation:v24];
-    [v7 setFlushTimerEnabled:v5->_flushTimerEnabled];
-    [v7 setMaxBatchSize:v5->_maximumBatchSize];
+    [v7 setFlushTimerEnabled:selfCopy->_flushTimerEnabled];
+    [v7 setMaxBatchSize:selfCopy->_maximumBatchSize];
     if (objc_opt_respondsToSelector())
     {
-      [v7 setMonitorsLifecycleEvents:{-[MTEventRecorderAMSMetricsDelegate monitorsLifecycleEvents](v5, "monitorsLifecycleEvents")}];
+      [v7 setMonitorsLifecycleEvents:{-[MTEventRecorderAMSMetricsDelegate monitorsLifecycleEvents](selfCopy, "monitorsLifecycleEvents")}];
     }
 
-    v14 = [(MTEventRecorderAMSMetricsDelegate *)v5 amsMetricsByTopic];
-    [v14 setObject:v7 forKeyedSubscript:v4];
+    amsMetricsByTopic2 = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsMetricsByTopic];
+    [amsMetricsByTopic2 setObject:v7 forKeyedSubscript:topicCopy];
 
     v15 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v16 = objc_opt_class();
-      v17 = [(MTEventRecorderAMSMetricsDelegate *)v5 amsBag];
-      v18 = [v17 profile];
+      amsBag2 = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsBag];
+      profile = [amsBag2 profile];
       *buf = 138412802;
       v28 = v16;
       v29 = 2112;
       v30 = v13;
       v31 = 2112;
-      v32 = v18;
+      v32 = profile;
       _os_log_impl(&dword_258F4B000, v15, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: Created new AMSMetrics for containerId: %@ bag profile: %@", buf, 0x20u);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   if (!v7)
   {
@@ -212,45 +212,45 @@ id __56__MTEventRecorderAMSMetricsDelegate_amsMetricsForTopic___block_invoke(uin
   return v5;
 }
 
-- (id)periodicQueueForTopic:(id)a3
+- (id)periodicQueueForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTEventRecorderAMSMetricsDelegate *)v5 periodicQueuesByTopic];
+  topicCopy = topic;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  periodicQueuesByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
 
-  if (!v6)
+  if (!periodicQueuesByTopic)
   {
     v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
-    [(MTEventRecorderAMSMetricsDelegate *)v5 setPeriodicQueuesByTopic:v7];
+    [(MTEventRecorderAMSMetricsDelegate *)selfCopy setPeriodicQueuesByTopic:v7];
   }
 
-  v8 = [(MTEventRecorderAMSMetricsDelegate *)v5 periodicQueuesByTopic];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  periodicQueuesByTopic2 = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
+  v9 = [periodicQueuesByTopic2 objectForKeyedSubscript:topicCopy];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MTPeriodicQueue);
-    [(MTPeriodicQueue *)v9 setFlushTimeInterval:v5->_flushTimeInterval];
-    [(MTPeriodicQueue *)v9 setFlushTimerEnabled:v5->_flushTimerEnabled];
-    [(MTPeriodicQueue *)v9 setMaximumBatchSize:v5->_maximumBatchSize];
-    objc_initWeak(&location, v5);
+    [(MTPeriodicQueue *)v9 setFlushTimeInterval:selfCopy->_flushTimeInterval];
+    [(MTPeriodicQueue *)v9 setFlushTimerEnabled:selfCopy->_flushTimerEnabled];
+    [(MTPeriodicQueue *)v9 setMaximumBatchSize:selfCopy->_maximumBatchSize];
+    objc_initWeak(&location, selfCopy);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invoke;
     v13[3] = &unk_2798CD178;
     objc_copyWeak(&v15, &location);
-    v10 = v4;
+    v10 = topicCopy;
     v14 = v10;
     [(MTPeriodicQueue *)v9 setFlushHandler:v13];
-    v11 = [(MTEventRecorderAMSMetricsDelegate *)v5 periodicQueuesByTopic];
-    [v11 setObject:v9 forKeyedSubscript:v10];
+    periodicQueuesByTopic3 = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
+    [periodicQueuesByTopic3 setObject:v9 forKeyedSubscript:v10];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -262,24 +262,24 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
   [WeakRetained _flushEvents:v3 topic:*(a1 + 32)];
 }
 
-- (void)setTransactionEnabled:(BOOL)a3
+- (void)setTransactionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_transactionEnabled = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_transactionEnabled = enabledCopy;
+  if (enabledCopy)
   {
-    if (v4->_numberOfPendingEvents >= 1)
+    if (selfCopy->_numberOfPendingEvents >= 1)
     {
-      [(MTEventRecorderAMSMetricsDelegate *)v4 _beginTransaction];
+      [(MTEventRecorderAMSMetricsDelegate *)selfCopy _beginTransaction];
     }
   }
 
   else
   {
-    [(MTEventRecorderAMSMetricsDelegate *)v4 _endTransaction];
+    [(MTEventRecorderAMSMetricsDelegate *)selfCopy _endTransaction];
   }
 
   v5 = MTMetricsKitOSLog();
@@ -288,21 +288,21 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
     v8 = 138412546;
     v9 = objc_opt_class();
     v10 = 1024;
-    v11 = v3;
+    v11 = enabledCopy;
     v6 = v9;
     _os_log_impl(&dword_258F4B000, v5, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: Updated transactionEnabled to %d", &v8, 0x12u);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFlushMode:(int64_t)a3
+- (void)setFlushMode:(int64_t)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSMutableDictionary *)v4->_amsMetricsByTopic count]|| [(NSMutableDictionary *)v4->_periodicQueuesByTopic count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_amsMetricsByTopic count]|| [(NSMutableDictionary *)selfCopy->_periodicQueuesByTopic count])
   {
     v8 = MEMORY[0x277CBEAD8];
     v9 = MEMORY[0x277CCACA8];
@@ -315,16 +315,16 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
     objc_exception_throw(v13);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v4->_flushMode = a3;
+  selfCopy->_flushMode = mode;
   v5 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v16 = objc_opt_class();
     v17 = 2048;
-    v18 = a3;
+    modeCopy = mode;
     v6 = v16;
     _os_log_impl(&dword_258F4B000, v5, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: Updated flushMode to %ld", buf, 0x16u);
   }
@@ -332,47 +332,47 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFlushTimeInterval:(double)a3
+- (void)setFlushTimeInterval:(double)interval
 {
-  self->_flushTimeInterval = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTEventRecorderAMSMetricsDelegate *)v4 periodicQueuesByTopic];
-  v7 = [v5 allValues];
+  self->_flushTimeInterval = interval;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  periodicQueuesByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
+  allValues = [periodicQueuesByTopic allValues];
 
-  objc_sync_exit(v4);
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v7 setValue:v6 forKey:@"flushTimeInterval"];
+  objc_sync_exit(selfCopy);
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
+  [allValues setValue:v6 forKey:@"flushTimeInterval"];
 }
 
-- (void)setMaximumBatchSize:(int64_t)a3
+- (void)setMaximumBatchSize:(int64_t)size
 {
-  self->_maximumBatchSize = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTEventRecorderAMSMetricsDelegate *)v4 amsMetricsByTopic];
-  v10 = [v5 allValues];
+  self->_maximumBatchSize = size;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  amsMetricsByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsMetricsByTopic];
+  allValues = [amsMetricsByTopic allValues];
 
-  v6 = [(MTEventRecorderAMSMetricsDelegate *)v4 periodicQueuesByTopic];
-  v7 = [v6 allValues];
+  periodicQueuesByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
+  allValues2 = [periodicQueuesByTopic allValues];
 
-  objc_sync_exit(v4);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v10 setValue:v8 forKey:@"maxBatchSize"];
+  objc_sync_exit(selfCopy);
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:size];
+  [allValues setValue:v8 forKey:@"maxBatchSize"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v7 setValue:v9 forKey:@"maximumBatchSize"];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:size];
+  [allValues2 setValue:v9 forKey:@"maximumBatchSize"];
 }
 
-- (void)setNumberOfPendingEvents:(int64_t)a3
+- (void)setNumberOfPendingEvents:(int64_t)events
 {
   obj = self;
   objc_sync_enter(obj);
   numberOfPendingEvents = obj->_numberOfPendingEvents;
-  obj->_numberOfPendingEvents = a3;
-  if (a3 != 1 || numberOfPendingEvents)
+  obj->_numberOfPendingEvents = events;
+  if (events != 1 || numberOfPendingEvents)
   {
-    if (!a3)
+    if (!events)
     {
       [(MTEventRecorderAMSMetricsDelegate *)obj _endTransaction];
     }
@@ -430,26 +430,26 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lookupItunesAccount:(id)a3
+- (id)lookupItunesAccount:(id)account
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "integerValue")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(accountCopy, "integerValue")}];
 
-    v3 = v4;
+    accountCopy = v4;
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
-  v6 = [v5 ams_iTunesAccounts];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
+  ams_iTunesAccounts = [ams_sharedAccountStore ams_iTunesAccounts];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [ams_iTunesAccounts countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -459,13 +459,13 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(ams_iTunesAccounts);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 ams_DSID];
-        v12 = v11;
-        if (v11 && ([v11 isEqualToNumber:v3] & 1) != 0)
+        ams_DSID = [v10 ams_DSID];
+        v12 = ams_DSID;
+        if (ams_DSID && ([ams_DSID isEqualToNumber:accountCopy] & 1) != 0)
         {
           v7 = v10;
 
@@ -473,7 +473,7 @@ void __59__MTEventRecorderAMSMetricsDelegate_periodicQueueForTopic___block_invok
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [ams_iTunesAccounts countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -492,18 +492,18 @@ LABEL_14:
 
 - (id)activeItunesAccount
 {
-  v2 = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
-- (id)recordEvent:(id)a3 toTopic:(id)a4
+- (id)recordEvent:(id)event toTopic:(id)topic
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"eventType"];
+  eventCopy = event;
+  topicCopy = topic;
+  v8 = [eventCopy objectForKeyedSubscript:@"eventType"];
   v9 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -525,9 +525,9 @@ LABEL_14:
   objc_copyWeak(&v26, buf);
   v13 = v11;
   v22 = v13;
-  v14 = v6;
+  v14 = eventCopy;
   v23 = v14;
-  v15 = v7;
+  v15 = topicCopy;
   v24 = v15;
   v16 = v8;
   v25 = v16;
@@ -610,15 +610,15 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_recordEvent:(id)a3 toTopic:(id)a4
+- (id)_recordEvent:(id)event toTopic:(id)topic
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"dsId"];
+  eventCopy = event;
+  topicCopy = topic;
+  v8 = [eventCopy objectForKeyedSubscript:@"dsId"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v10 = [objc_alloc(MEMORY[0x277CEE5A0]) initWithTopic:v7];
+  v10 = [objc_alloc(MEMORY[0x277CEE5A0]) initWithTopic:topicCopy];
   if (isKindOfClass)
   {
     if (objc_opt_respondsToSelector())
@@ -629,15 +629,15 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
 
   else if ([(MTEventRecorderAMSMetricsDelegate *)self personalizedWithItunesAccount])
   {
-    if (!v8 || ([(MTEventRecorderAMSMetricsDelegate *)self lookupItunesAccount:v8], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v8 || ([(MTEventRecorderAMSMetricsDelegate *)self lookupItunesAccount:v8], (activeItunesAccount = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v11 = [(MTEventRecorderAMSMetricsDelegate *)self activeItunesAccount];
+      activeItunesAccount = [(MTEventRecorderAMSMetricsDelegate *)self activeItunesAccount];
     }
 
-    [v10 setAccount:v11];
+    [v10 setAccount:activeItunesAccount];
   }
 
-  v12 = [MTReflectUtil removeNullValuesFromDictionary:v6];
+  v12 = [MTReflectUtil removeNullValuesFromDictionary:eventCopy];
   [v10 addPropertiesWithDictionary:v12];
   flushMode = self->_flushMode;
   if (flushMode == 2)
@@ -645,7 +645,7 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
     [(MTEventRecorderAMSMetricsDelegate *)self setNumberOfPendingEvents:[(MTEventRecorderAMSMetricsDelegate *)self numberOfPendingEvents]+ 1];
     v26 = v10;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-    [(MTEventRecorderAMSMetricsDelegate *)self _flushEvents:v18 topic:v7];
+    [(MTEventRecorderAMSMetricsDelegate *)self _flushEvents:v18 topic:topicCopy];
   }
 
   else if (flushMode == 1)
@@ -655,7 +655,7 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [v6 objectForKeyedSubscript:@"eventType"];
+      v22 = [eventCopy objectForKeyedSubscript:@"eventType"];
       *buf = 138412546;
       v28 = v20;
       v29 = 2112;
@@ -664,7 +664,7 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
     }
 
     [(MTEventRecorderAMSMetricsDelegate *)self setNumberOfPendingEvents:[(MTEventRecorderAMSMetricsDelegate *)self numberOfPendingEvents]+ 1];
-    v18 = [(MTEventRecorderAMSMetricsDelegate *)self periodicQueueForTopic:v7];
+    v18 = [(MTEventRecorderAMSMetricsDelegate *)self periodicQueueForTopic:topicCopy];
     [v18 appendObject:v10];
   }
 
@@ -680,7 +680,7 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
     {
       v15 = objc_opt_class();
       v16 = v15;
-      v17 = [v6 objectForKeyedSubscript:@"eventType"];
+      v17 = [eventCopy objectForKeyedSubscript:@"eventType"];
       *buf = 138412546;
       v28 = v15;
       v29 = 2112;
@@ -688,7 +688,7 @@ void __57__MTEventRecorderAMSMetricsDelegate_recordEvent_toTopic___block_invoke_
       _os_log_impl(&dword_258F4B000, v14, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: enqueue %@ event using AMSMetrics", buf, 0x16u);
     }
 
-    v18 = [(MTEventRecorderAMSMetricsDelegate *)self amsMetricsForTopic:v7];
+    v18 = [(MTEventRecorderAMSMetricsDelegate *)self amsMetricsForTopic:topicCopy];
     [v18 enqueueEvent:v10];
   }
 
@@ -700,11 +700,11 @@ LABEL_20:
   return v23;
 }
 
-- (void)_flushEvents:(id)a3 topic:(id)a4
+- (void)_flushEvents:(id)events topic:(id)topic
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  topicCopy = topic;
   v8 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -713,23 +713,23 @@ LABEL_20:
     *buf = 138412546;
     v24 = v9;
     v25 = 2048;
-    v26 = [v6 count];
+    v26 = [eventsCopy count];
     _os_log_impl(&dword_258F4B000, v8, OS_LOG_TYPE_DEBUG, "MetricsKit: %@: Start flushing %lu in-memory events", buf, 0x16u);
   }
 
-  v11 = [(MTEventRecorderAMSMetricsDelegate *)self _sortedEventsFromBatch:v6];
-  v12 = [(MTEventRecorderAMSMetricsDelegate *)self amsMetricsForTopic:v7];
+  v11 = [(MTEventRecorderAMSMetricsDelegate *)self _sortedEventsFromBatch:eventsCopy];
+  v12 = [(MTEventRecorderAMSMetricsDelegate *)self amsMetricsForTopic:topicCopy];
   v13 = [v12 flushEvents:v11];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __56__MTEventRecorderAMSMetricsDelegate__flushEvents_topic___block_invoke;
   v18[3] = &unk_2798CD1F0;
   v19 = v11;
-  v20 = self;
-  v21 = v6;
-  v22 = v7;
-  v14 = v7;
-  v15 = v6;
+  selfCopy = self;
+  v21 = eventsCopy;
+  v22 = topicCopy;
+  v14 = topicCopy;
+  v15 = eventsCopy;
   v16 = v11;
   [v13 addFinishBlock:v18];
 
@@ -865,18 +865,18 @@ uint64_t __60__MTEventRecorderAMSMetricsDelegate__sortedEventsFromBatch___block_
 
 - (id)flushUnreportedEvents
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTEventRecorderAMSMetricsDelegate *)v2 amsMetricsByTopic];
-  v4 = [v3 allValues];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  amsMetricsByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy amsMetricsByTopic];
+  allValues = [amsMetricsByTopic allValues];
 
-  v5 = [(MTEventRecorderAMSMetricsDelegate *)v2 periodicQueuesByTopic];
-  v6 = [v5 allValues];
+  periodicQueuesByTopic = [(MTEventRecorderAMSMetricsDelegate *)selfCopy periodicQueuesByTopic];
+  allValues2 = [periodicQueuesByTopic allValues];
 
-  objc_sync_exit(v2);
-  if (([v4 count] || objc_msgSend(v6, "count")) && (objc_msgSend(v6, "makeObjectsPerformSelector:", sel_flushObjects), objc_msgSend(v4, "count")))
+  objc_sync_exit(selfCopy);
+  if (([allValues count] || objc_msgSend(allValues2, "count")) && (objc_msgSend(allValues2, "makeObjectsPerformSelector:", sel_flushObjects), objc_msgSend(allValues, "count")))
   {
-    v7 = [v4 mt_map:&__block_literal_global_58];
+    v7 = [allValues mt_map:&__block_literal_global_58];
     v8 = objc_alloc_init(MTPromise);
     v9 = [MEMORY[0x277CEE638] promiseWithAll:v7];
     v12[0] = MEMORY[0x277D85DD0];
@@ -957,24 +957,24 @@ void __58__MTEventRecorderAMSMetricsDelegate_flushUnreportedEvents__block_invoke
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)amsContainerIdForTopic:(id)a3
+- (id)amsContainerIdForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   containerId = self->_containerId;
   if (containerId)
   {
-    v6 = containerId;
+    metricsKitBundleIdentifier = containerId;
   }
 
   else
   {
     v7 = +[MTFrameworkEnvironment sharedEnvironment];
-    v6 = [v7 metricsKitBundleIdentifier];
+    metricsKitBundleIdentifier = [v7 metricsKitBundleIdentifier];
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, v4];
+  topicCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", metricsKitBundleIdentifier, topicCopy];
 
-  return v8;
+  return topicCopy;
 }
 
 @end

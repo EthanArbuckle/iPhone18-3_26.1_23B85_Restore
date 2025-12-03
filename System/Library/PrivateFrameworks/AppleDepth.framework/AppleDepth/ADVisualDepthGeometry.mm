@@ -1,22 +1,22 @@
 @interface ADVisualDepthGeometry
-- (ADVisualDepthGeometry)initWithBuffer:(id)a3 count:(int64_t)a4 offset:(int64_t)a5 stride:(int64_t)a6;
+- (ADVisualDepthGeometry)initWithBuffer:(id)buffer count:(int64_t)count offset:(int64_t)offset stride:(int64_t)stride;
 @end
 
 @implementation ADVisualDepthGeometry
 
-- (ADVisualDepthGeometry)initWithBuffer:(id)a3 count:(int64_t)a4 offset:(int64_t)a5 stride:(int64_t)a6
+- (ADVisualDepthGeometry)initWithBuffer:(id)buffer count:(int64_t)count offset:(int64_t)offset stride:(int64_t)stride
 {
-  v11 = a3;
+  bufferCopy = buffer;
   v15.receiver = self;
   v15.super_class = ADVisualDepthGeometry;
   v12 = [(ADVisualDepthGeometry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_buffer, a3);
-    v13->_count = a4;
-    v13->_offset = a5;
-    v13->_stride = a6;
+    objc_storeStrong(&v12->_buffer, buffer);
+    v13->_count = count;
+    v13->_offset = offset;
+    v13->_stride = stride;
   }
 
   return v13;

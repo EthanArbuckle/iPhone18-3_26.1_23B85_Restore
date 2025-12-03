@@ -1,24 +1,24 @@
 @interface SKUIModernChartsView
-- (SKUIModernChartsView)initWithFrame:(CGRect)a3;
+- (SKUIModernChartsView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_layoutHeadersWithColumnSize:(CGSize)a3;
-- (void)_layoutViewControllersWithColumnSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_layoutHeadersWithColumnSize:(CGSize)size;
+- (void)_layoutViewControllersWithColumnSize:(CGSize)size contentInset:(UIEdgeInsets)inset;
 - (void)_updateHeader;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setColumnViewControllers:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setColumnViewControllers:(id)controllers;
 @end
 
 @implementation SKUIModernChartsView
 
-- (SKUIModernChartsView)initWithFrame:(CGRect)a3
+- (SKUIModernChartsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIModernChartsView initWithFrame:];
@@ -26,58 +26,58 @@
 
   v19.receiver = self;
   v19.super_class = SKUIModernChartsView;
-  v8 = [(SKUIModernChartsView *)&v19 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIModernChartsView *)&v19 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D759D8]);
-    scrollView = v8->_scrollView;
-    v8->_scrollView = v9;
+    scrollView = height->_scrollView;
+    height->_scrollView = v9;
 
-    [(UIScrollView *)v8->_scrollView setAutoresizingMask:18];
-    [(UIScrollView *)v8->_scrollView setAlwaysBounceHorizontal:1];
-    [(UIScrollView *)v8->_scrollView setBouncesHorizontally:1];
-    [(UIScrollView *)v8->_scrollView setBouncesVertically:0];
-    [(UIScrollView *)v8->_scrollView setCanCancelContentTouches:0];
-    [(UIScrollView *)v8->_scrollView setDelaysContentTouches:0];
-    [(UIScrollView *)v8->_scrollView setDelegate:v8];
-    [(SKUIModernChartsView *)v8 addSubview:v8->_scrollView];
+    [(UIScrollView *)height->_scrollView setAutoresizingMask:18];
+    [(UIScrollView *)height->_scrollView setAlwaysBounceHorizontal:1];
+    [(UIScrollView *)height->_scrollView setBouncesHorizontally:1];
+    [(UIScrollView *)height->_scrollView setBouncesVertically:0];
+    [(UIScrollView *)height->_scrollView setCanCancelContentTouches:0];
+    [(UIScrollView *)height->_scrollView setDelaysContentTouches:0];
+    [(UIScrollView *)height->_scrollView setDelegate:height];
+    [(SKUIModernChartsView *)height addSubview:height->_scrollView];
     v11 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
-    backdropView = v8->_backdropView;
-    v8->_backdropView = v11;
+    backdropView = height->_backdropView;
+    height->_backdropView = v11;
 
-    [(_UIBackdropView *)v8->_backdropView setAutoresizingMask:2];
-    [(SKUIModernChartsView *)v8 addSubview:v8->_backdropView];
+    [(_UIBackdropView *)height->_backdropView setAutoresizingMask:2];
+    [(SKUIModernChartsView *)height addSubview:height->_backdropView];
     v13 = objc_alloc_init(MEMORY[0x277D75D18]);
-    headerView = v8->_headerView;
-    v8->_headerView = v13;
+    headerView = height->_headerView;
+    height->_headerView = v13;
 
-    [(UIView *)v8->_headerView setAutoresizingMask:2];
-    v15 = v8->_headerView;
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    [(UIView *)height->_headerView setAutoresizingMask:2];
+    v15 = height->_headerView;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v15 setBackgroundColor:clearColor];
 
-    [(SKUIModernChartsView *)v8 addSubview:v8->_headerView];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v8 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    [(SKUIModernChartsView *)height addSubview:height->_headerView];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:height selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = SKUIModernChartsView;
   [(SKUIModernChartsView *)&v4 dealloc];
 }
 
-- (void)setColumnViewControllers:(id)a3
+- (void)setColumnViewControllers:(id)controllers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllersCopy = controllers;
   viewControllers = self->_viewControllers;
   if (viewControllers)
   {
@@ -101,8 +101,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v24 + 1) + 8 * v11) view];
-          [v12 removeFromSuperview];
+          view = [*(*(&v24 + 1) + 8 * v11) view];
+          [view removeFromSuperview];
 
           ++v11;
         }
@@ -115,7 +115,7 @@
     }
   }
 
-  objc_storeStrong(&self->_viewControllers, a3);
+  objc_storeStrong(&self->_viewControllers, controllers);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -137,8 +137,8 @@
         }
 
         scrollView = self->_scrollView;
-        v19 = [*(*(&v20 + 1) + 8 * v17) view];
-        [(UIScrollView *)scrollView addSubview:v19];
+        view2 = [*(*(&v20 + 1) + 8 * v17) view];
+        [(UIScrollView *)scrollView addSubview:view2];
 
         ++v17;
       }
@@ -155,7 +155,7 @@
   [(SKUIModernChartsView *)self setNeedsLayout];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(UIView *)self->_headerView bounds];
   [(UIScrollView *)self->_scrollView bounds];
@@ -219,16 +219,16 @@
   }
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   [(SKUIModernChartsView *)self _updateHeader];
 
   [(SKUIModernChartsView *)self setNeedsLayout];
 }
 
-- (void)_layoutHeadersWithColumnSize:(CGSize)a3
+- (void)_layoutHeadersWithColumnSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -264,11 +264,11 @@
   }
 }
 
-- (void)_layoutViewControllersWithColumnSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4
+- (void)_layoutViewControllersWithColumnSize:(CGSize)size contentInset:(UIEdgeInsets)inset
 {
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
+  top = inset.top;
+  height = size.height;
+  width = size.width;
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
@@ -291,13 +291,13 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 view];
-        [v14 setFrame:{v11, 0.0, width, height}];
-        v15 = [v13 contentScrollView];
-        v16 = v15;
-        if (v15)
+        view = [v13 view];
+        [view setFrame:{v11, 0.0, width, height}];
+        contentScrollView = [v13 contentScrollView];
+        v16 = contentScrollView;
+        if (contentScrollView)
         {
-          [v15 contentInset];
+          [contentScrollView contentInset];
           [v16 setContentInset:top];
           [v16 scrollIndicatorInsets];
           [v16 setScrollIndicatorInsets:top];
@@ -379,8 +379,8 @@
 
         v16 = *(*(&v19 + 1) + 8 * v15);
         v17 = objc_alloc_init(SKUIModernChartHeaderView);
-        v18 = [v16 title];
-        [(SKUIModernChartHeaderView *)v17 setTitle:v18];
+        title = [v16 title];
+        [(SKUIModernChartHeaderView *)v17 setTitle:title];
 
         [(NSMutableArray *)self->_headerViews addObject:v17];
         [(UIView *)self->_headerView addSubview:v17];

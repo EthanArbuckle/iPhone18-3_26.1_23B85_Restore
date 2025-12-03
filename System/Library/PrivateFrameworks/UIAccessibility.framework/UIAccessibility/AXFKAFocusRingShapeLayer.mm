@@ -1,5 +1,5 @@
 @interface AXFKAFocusRingShapeLayer
-+ (id)layerWithStyle:(int64_t)a3 kind:(unint64_t)a4;
++ (id)layerWithStyle:(int64_t)style kind:(unint64_t)kind;
 - (AXFKAFocusRingShapeLayer)init;
 - (BOOL)increaseContrast;
 - (BOOL)useDefaultRingColor;
@@ -7,26 +7,26 @@
 - (CGColor)ringColorRef;
 - (CGColor)strokeColorForBottomLayer;
 - (double)borderScale;
-- (double)insetForFocusRingBorder:(id)a3;
+- (double)insetForFocusRingBorder:(id)border;
 - (double)lineWidthForBottomLayer;
-- (id)bottomFocusRingColorForTintColor:(id)a3;
+- (id)bottomFocusRingColorForTintColor:(id)color;
 - (id)fillColorForBottomLayer;
 - (id)tintColor;
 - (void)_updateBottomLayerPath;
 - (void)dealloc;
-- (void)setPath:(CGPath *)a3;
+- (void)setPath:(CGPath *)path;
 - (void)updateAppearance;
 @end
 
 @implementation AXFKAFocusRingShapeLayer
 
-+ (id)layerWithStyle:(int64_t)a3 kind:(unint64_t)a4
++ (id)layerWithStyle:(int64_t)style kind:(unint64_t)kind
 {
-  v6 = [a1 layer];
-  [v6 setInterfaceStyle:a3];
-  [v6 setKind:a4];
+  layer = [self layer];
+  [layer setInterfaceStyle:style];
+  [layer setKind:kind];
 
-  return v6;
+  return layer;
 }
 
 - (AXFKAFocusRingShapeLayer)init
@@ -40,39 +40,39 @@
     [(AXFKAFocusRingShapeLayer *)v2 setBottomBorderLayer:v3];
 
     objc_initWeak(&location, v2);
-    v4 = [MEMORY[0x1E6989890] sharedInstance];
+    mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __32__AXFKAFocusRingShapeLayer_init__block_invoke;
     v17[3] = &unk_1E78AB970;
     objc_copyWeak(&v18, &location);
-    [v4 registerUpdateBlock:v17 forRetrieveSelector:sel_fullKeyboardAccessFocusRingColor withListener:v2];
+    [mEMORY[0x1E6989890] registerUpdateBlock:v17 forRetrieveSelector:sel_fullKeyboardAccessFocusRingColor withListener:v2];
 
     objc_destroyWeak(&v18);
-    v5 = [MEMORY[0x1E6989890] sharedInstance];
+    mEMORY[0x1E6989890]2 = [MEMORY[0x1E6989890] sharedInstance];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __32__AXFKAFocusRingShapeLayer_init__block_invoke_2;
     v15[3] = &unk_1E78AB970;
     objc_copyWeak(&v16, &location);
-    [v5 registerUpdateBlock:v15 forRetrieveSelector:sel_fullKeyboardAccessLargeFocusRingEnabled withListener:v2];
+    [mEMORY[0x1E6989890]2 registerUpdateBlock:v15 forRetrieveSelector:sel_fullKeyboardAccessLargeFocusRingEnabled withListener:v2];
 
     objc_destroyWeak(&v16);
-    v6 = [MEMORY[0x1E6989890] sharedInstance];
+    mEMORY[0x1E6989890]3 = [MEMORY[0x1E6989890] sharedInstance];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __32__AXFKAFocusRingShapeLayer_init__block_invoke_3;
     v13 = &unk_1E78AB970;
     objc_copyWeak(&v14, &location);
-    [v6 registerUpdateBlock:&v10 forRetrieveSelector:sel_fullKeyboardAccessFocusRingHighContrastEnabled withListener:v2];
+    [mEMORY[0x1E6989890]3 registerUpdateBlock:&v10 forRetrieveSelector:sel_fullKeyboardAccessFocusRingHighContrastEnabled withListener:v2];
 
     objc_destroyWeak(&v14);
     v7 = [(AXFKAFocusRingShapeLayer *)v2 bottomBorderLayer:v10];
     [(AXFKAFocusRingShapeLayer *)v2 addSublayer:v7];
 
     [(AXFKAFocusRingShapeLayer *)v2 setFillColor:0];
-    v8 = [(AXFKAFocusRingShapeLayer *)v2 bottomBorderLayer];
-    [v8 setFillColor:0];
+    bottomBorderLayer = [(AXFKAFocusRingShapeLayer *)v2 bottomBorderLayer];
+    [bottomBorderLayer setFillColor:0];
 
     objc_destroyWeak(&location);
   }
@@ -100,19 +100,19 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4CE0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4CE0] object:0];
 
   v4.receiver = self;
   v4.super_class = AXFKAFocusRingShapeLayer;
   [(AXFKAFocusRingShapeLayer *)&v4 dealloc];
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
   v4.receiver = self;
   v4.super_class = AXFKAFocusRingShapeLayer;
-  [(AXFKAFocusRingShapeLayer *)&v4 setPath:a3];
+  [(AXFKAFocusRingShapeLayer *)&v4 setPath:path];
   [(AXFKAFocusRingShapeLayer *)self _updateBottomLayerPath];
   [(AXFKAFocusRingShapeLayer *)self updateAppearance];
 }
@@ -121,13 +121,13 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 {
   if ([(AXFKAFocusRingShapeLayer *)self path])
   {
-    v3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v3 unscaledLineWidth];
+    bottomBorderLayer = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer unscaledLineWidth];
     v5 = v4;
     [(AXFKAFocusRingShapeLayer *)self borderScale];
     v7 = v5 * v6;
-    v8 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v8 setLineWidth:v7];
+    bottomBorderLayer2 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer2 setLineWidth:v7];
 
     v9 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:{-[AXFKAFocusRingShapeLayer path](self, "path")}];
     [v9 bounds];
@@ -151,29 +151,29 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
       v16 = v14;
     }
 
-    v17 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [(AXFKAFocusRingShapeLayer *)self insetForFocusRingBorder:v17];
+    bottomBorderLayer3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [(AXFKAFocusRingShapeLayer *)self insetForFocusRingBorder:bottomBorderLayer3];
     v19 = v18;
 
     if ([(AXFKAFocusRingShapeLayer *)self kind]!= 1)
     {
-      v20 = [(AXFKAFocusRingShapeLayer *)self increaseContrast];
-      v21 = [(AXFKAFocusRingShapeLayer *)self useLargeRing];
+      increaseContrast = [(AXFKAFocusRingShapeLayer *)self increaseContrast];
+      useLargeRing = [(AXFKAFocusRingShapeLayer *)self useLargeRing];
       v22 = 0.0;
       v23 = 2.0;
-      if (v21)
+      if (useLargeRing)
       {
         v22 = 2.0;
       }
 
       v24 = v19 + v22;
-      if (!v21)
+      if (!useLargeRing)
       {
         v23 = -1.0;
       }
 
       v25 = v19 + v23;
-      if (v20)
+      if (increaseContrast)
       {
         v19 = v25;
       }
@@ -241,9 +241,9 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
     v45 = v46;
     [v9 applyTransform:&v45];
     [v9 closePath];
-    v38 = [v9 CGPath];
-    v39 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v39 setPath:v38];
+    cGPath = [v9 CGPath];
+    bottomBorderLayer4 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer4 setPath:cGPath];
   }
 }
 
@@ -251,9 +251,9 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 {
   if (![(AXFKAFocusRingShapeLayer *)self kind]|| [(AXFKAFocusRingShapeLayer *)self kind]== 3 || [(AXFKAFocusRingShapeLayer *)self kind]== 1 && [(AXFKAFocusRingShapeLayer *)self increaseContrast])
   {
-    v3 = [(AXFKAFocusRingShapeLayer *)self strokeColorForBottomLayer];
-    v4 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v4 setStrokeColor:v3];
+    strokeColorForBottomLayer = [(AXFKAFocusRingShapeLayer *)self strokeColorForBottomLayer];
+    bottomBorderLayer = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer setStrokeColor:strokeColorForBottomLayer];
 
     if ([(AXFKAFocusRingShapeLayer *)self useLargeRing])
     {
@@ -265,19 +265,19 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
       v5 = 0;
     }
 
-    v6 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v6 setRingPosition:v5];
+    bottomBorderLayer2 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer2 setRingPosition:v5];
 
     [(AXFKAFocusRingShapeLayer *)self lineWidthForBottomLayer];
     v8 = v7;
-    v9 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v9 setUnscaledLineWidth:v8];
+    bottomBorderLayer3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer3 setUnscaledLineWidth:v8];
   }
 
   else
   {
-    v9 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v9 setStrokeColor:0];
+    bottomBorderLayer3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer3 setStrokeColor:0];
   }
 
   if ([(AXFKAFocusRingShapeLayer *)self kind]== 1)
@@ -292,18 +292,18 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
       v10 = 0.15;
     }
 
-    v11 = [(AXFKAFocusRingShapeLayer *)self fillColorForBottomLayer];
-    v12 = [v11 colorWithAlphaComponent:v10];
+    fillColorForBottomLayer = [(AXFKAFocusRingShapeLayer *)self fillColorForBottomLayer];
+    bottomBorderLayer5 = [fillColorForBottomLayer colorWithAlphaComponent:v10];
 
-    v13 = [v12 CGColor];
-    v14 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v14 setFillColor:v13];
+    cGColor = [bottomBorderLayer5 CGColor];
+    bottomBorderLayer4 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer4 setFillColor:cGColor];
   }
 
   else
   {
-    v12 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v12 setFillColor:0];
+    bottomBorderLayer5 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer5 setFillColor:0];
   }
 
   [(AXFKAFocusRingShapeLayer *)self _updateBottomLayerPath];
@@ -333,9 +333,9 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
       v4 = 8.0;
     }
 
-    v5 = [(AXFKAFocusRingShapeLayer *)self kind];
+    kind = [(AXFKAFocusRingShapeLayer *)self kind];
     v6 = 1.0;
-    if (v5 == 1)
+    if (kind == 1)
     {
       v6 = 1.5;
     }
@@ -359,18 +359,18 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
-    v3 = ;
+    fillColorForBottomLayer = ;
   }
 
   else
   {
-    v3 = [(AXFKAFocusRingShapeLayer *)self fillColorForBottomLayer];
+    fillColorForBottomLayer = [(AXFKAFocusRingShapeLayer *)self fillColorForBottomLayer];
   }
 
-  v4 = v3;
-  v5 = [v3 CGColor];
+  v4 = fillColorForBottomLayer;
+  cGColor = [fillColorForBottomLayer CGColor];
 
-  return v5;
+  return cGColor;
 }
 
 - (id)fillColorForBottomLayer
@@ -378,11 +378,11 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
   v3 = [MEMORY[0x1E69DC888] colorWithCGColor:{-[AXFKAFocusRingShapeLayer ringColorRef](self, "ringColorRef")}];
   if ([(AXFKAFocusRingShapeLayer *)self useDefaultRingColor])
   {
-    v4 = [(AXFKAFocusRingShapeLayer *)self tintColor];
-    v5 = v4;
-    if (v4)
+    tintColor = [(AXFKAFocusRingShapeLayer *)self tintColor];
+    v5 = tintColor;
+    if (tintColor)
     {
-      v6 = v4;
+      v6 = tintColor;
     }
 
     else
@@ -403,15 +403,15 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 - (id)tintColor
 {
   objc_opt_class();
-  v3 = [(AXFKAFocusRingShapeLayer *)self superlayer];
+  superlayer = [(AXFKAFocusRingShapeLayer *)self superlayer];
   v4 = CALayerGetDelegate();
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 _accessibilityFocusRingTintColor];
-  v7 = v6;
-  if (v6)
+  _accessibilityFocusRingTintColor = [v5 _accessibilityFocusRingTintColor];
+  v7 = _accessibilityFocusRingTintColor;
+  if (_accessibilityFocusRingTintColor)
   {
-    v8 = v6;
+    v8 = _accessibilityFocusRingTintColor;
   }
 
   else
@@ -427,7 +427,7 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 - (double)borderScale
 {
   objc_opt_class();
-  v3 = [(AXFKAFocusRingShapeLayer *)self superlayer];
+  superlayer = [(AXFKAFocusRingShapeLayer *)self superlayer];
   v4 = CALayerGetDelegate();
   v5 = __UIAccessibilityCastAsClass();
 
@@ -439,16 +439,16 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 
 - (BOOL)useDefaultRingColor
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  v3 = [v2 fullKeyboardAccessFocusRingColor] == 0;
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  v3 = [mEMORY[0x1E6989890] fullKeyboardAccessFocusRingColor] == 0;
 
   return v3;
 }
 
 - (CGColor)ringColorRef
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  [v2 fullKeyboardAccessFocusRingColor];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  [mEMORY[0x1E6989890] fullKeyboardAccessFocusRingColor];
   v3 = AXSAssistiveTouchCursorColor();
 
   return v3;
@@ -456,28 +456,28 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
 
 - (BOOL)useLargeRing
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  v3 = [v2 fullKeyboardAccessLargeFocusRingEnabled];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  fullKeyboardAccessLargeFocusRingEnabled = [mEMORY[0x1E6989890] fullKeyboardAccessLargeFocusRingEnabled];
 
-  return v3;
+  return fullKeyboardAccessLargeFocusRingEnabled;
 }
 
 - (BOOL)increaseContrast
 {
-  v2 = [MEMORY[0x1E6989890] sharedInstance];
-  v3 = [v2 fullKeyboardAccessFocusRingHighContrastEnabled];
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  fullKeyboardAccessFocusRingHighContrastEnabled = [mEMORY[0x1E6989890] fullKeyboardAccessFocusRingHighContrastEnabled];
 
-  return v3;
+  return fullKeyboardAccessFocusRingHighContrastEnabled;
 }
 
-- (double)insetForFocusRingBorder:(id)a3
+- (double)insetForFocusRingBorder:(id)border
 {
-  v3 = a3;
-  if ([v3 ringPosition])
+  borderCopy = border;
+  if ([borderCopy ringPosition])
   {
     v4 = 0.0;
     v5 = -0.5;
-    if ([v3 ringPosition] != 1)
+    if ([borderCopy ringPosition] != 1)
     {
       goto LABEL_6;
     }
@@ -488,22 +488,22 @@ void __32__AXFKAFocusRingShapeLayer_init__block_invoke_3(uint64_t a1)
     v5 = 0.5;
   }
 
-  [v3 lineWidth];
+  [borderCopy lineWidth];
   v4 = v6 * v5;
 LABEL_6:
 
   return v4;
 }
 
-- (id)bottomFocusRingColorForTintColor:(id)a3
+- (id)bottomFocusRingColorForTintColor:(id)color
 {
-  v4 = a3;
-  if (a3)
+  colorCopy = color;
+  if (color)
   {
     var8[0] = 0.0;
     v12 = 0.0;
     v13 = 0.0;
-    [a3 getHue:var8 saturation:&v13 brightness:&v12 alpha:0];
+    [color getHue:var8 saturation:&v13 brightness:&v12 alpha:0];
     v5 = v12 + v12 * v13 * -0.5;
     v6 = 0.0;
     v7 = v5 == 0.0 || v5 == 1.0;
@@ -522,11 +522,11 @@ LABEL_6:
     }
 
     v13 = v6;
-    v4 = [MEMORY[0x1E69DC888] colorWithHue:var8[0] saturation:? brightness:? alpha:?];
+    colorCopy = [MEMORY[0x1E69DC888] colorWithHue:var8[0] saturation:? brightness:? alpha:?];
     v3 = var8[2];
   }
 
-  return v4;
+  return colorCopy;
 }
 
 @end

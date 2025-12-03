@@ -1,25 +1,25 @@
 @interface RAPDirectionsRecording
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSString)description;
 - (RAPNavSessionID)navigationSessionID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)clusteredRouteRideSelectionsAtIndex:(unint64_t)a3;
-- (void)addAuxiliaryControls:(id)a3;
-- (void)addDirectionsRequests:(id)a3;
-- (void)addDirectionsResponses:(id)a3;
-- (void)addRoute:(id)a3;
-- (void)addUserPath:(id)a3;
-- (void)addWaypoints:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)clusteredRouteRideSelectionsAtIndex:(unint64_t)index;
+- (void)addAuxiliaryControls:(id)controls;
+- (void)addDirectionsRequests:(id)requests;
+- (void)addDirectionsResponses:(id)responses;
+- (void)addRoute:(id)route;
+- (void)addUserPath:(id)path;
+- (void)addWaypoints:(id)waypoints;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOriginatingAuxiliaryControlIndex:(BOOL)a3;
-- (void)setHasSelectedDirectionsResponseIndex:(BOOL)a3;
-- (void)setHasSelectedSuggestedRouteIndexInDirectionsResponse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasOriginatingAuxiliaryControlIndex:(BOOL)index;
+- (void)setHasSelectedDirectionsResponseIndex:(BOOL)index;
+- (void)setHasSelectedSuggestedRouteIndexInDirectionsResponse:(BOOL)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RAPDirectionsRecording
@@ -34,14 +34,14 @@
   return result;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v5 = *(v4 + 8);
+  v5 = *(fromCopy + 8);
   v6 = [v5 countByEnumeratingWithState:&v67 objects:v76 count:16];
   if (v6)
   {
@@ -69,7 +69,7 @@
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v10 = *(v4 + 10);
+  v10 = *(fromCopy + 10);
   v11 = [v10 countByEnumeratingWithState:&v63 objects:v75 count:16];
   if (v11)
   {
@@ -93,32 +93,32 @@
     while (v12);
   }
 
-  v15 = v4[160];
+  v15 = fromCopy[160];
   if ((v15 & 4) != 0)
   {
-    self->_selectedDirectionsResponseIndex = *(v4 + 30);
+    self->_selectedDirectionsResponseIndex = *(fromCopy + 30);
     *&self->_has |= 4u;
-    v15 = v4[160];
+    v15 = fromCopy[160];
   }
 
   if ((v15 & 8) != 0)
   {
-    self->_selectedSuggestedRouteIndexInDirectionsResponse = *(v4 + 31);
+    self->_selectedSuggestedRouteIndexInDirectionsResponse = *(fromCopy + 31);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(RAPDirectionsRecording *)self setOverviewScreenshotImageData:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(RAPDirectionsRecording *)self setDirectionsResponseID:?];
   }
 
   startWaypoint = self->_startWaypoint;
-  v17 = *(v4 + 16);
+  v17 = *(fromCopy + 16);
   if (startWaypoint)
   {
     if (v17)
@@ -133,7 +133,7 @@
   }
 
   endWaypoint = self->_endWaypoint;
-  v19 = *(v4 + 11);
+  v19 = *(fromCopy + 11);
   if (endWaypoint)
   {
     if (v19)
@@ -151,7 +151,7 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v20 = *(v4 + 7);
+  v20 = *(fromCopy + 7);
   v21 = [v20 countByEnumeratingWithState:&v59 objects:v74 count:16];
   if (v21)
   {
@@ -175,14 +175,14 @@
     while (v22);
   }
 
-  if ((v4[160] & 2) != 0)
+  if ((fromCopy[160] & 2) != 0)
   {
-    self->_originatingAuxiliaryControlIndex = *(v4 + 6);
+    self->_originatingAuxiliaryControlIndex = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
   startWaypointCorrectedSearchTemplate = self->_startWaypointCorrectedSearchTemplate;
-  v26 = *(v4 + 17);
+  v26 = *(fromCopy + 17);
   if (startWaypointCorrectedSearchTemplate)
   {
     if (v26)
@@ -197,7 +197,7 @@
   }
 
   endWaypointCorrectedSearchTemplate = self->_endWaypointCorrectedSearchTemplate;
-  v28 = *(v4 + 12);
+  v28 = *(fromCopy + 12);
   if (endWaypointCorrectedSearchTemplate)
   {
     if (v28)
@@ -211,19 +211,19 @@
     [(RAPDirectionsRecording *)self setEndWaypointCorrectedSearchTemplate:?];
   }
 
-  v29 = [v4 clusteredRouteRideSelectionsCount];
-  if (v29)
+  clusteredRouteRideSelectionsCount = [fromCopy clusteredRouteRideSelectionsCount];
+  if (clusteredRouteRideSelectionsCount)
   {
-    v30 = v29;
+    v30 = clusteredRouteRideSelectionsCount;
     for (m = 0; m != v30; ++m)
     {
-      -[RAPDirectionsRecording addClusteredRouteRideSelections:](self, "addClusteredRouteRideSelections:", [v4 clusteredRouteRideSelectionsAtIndex:m]);
+      -[RAPDirectionsRecording addClusteredRouteRideSelections:](self, "addClusteredRouteRideSelections:", [fromCopy clusteredRouteRideSelectionsAtIndex:m]);
     }
   }
 
-  if (v4[160])
+  if (fromCopy[160])
   {
-    self->_navigationSessionID = *(v4 + 8);
+    self->_navigationSessionID = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -231,7 +231,7 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v32 = *(v4 + 18);
+  v32 = *(fromCopy + 18);
   v33 = [v32 countByEnumeratingWithState:&v55 objects:v73 count:16];
   if (v33)
   {
@@ -259,7 +259,7 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v37 = *(v4 + 19);
+  v37 = *(fromCopy + 19);
   v38 = [v37 countByEnumeratingWithState:&v51 objects:v72 count:16];
   if (v38)
   {
@@ -287,7 +287,7 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v42 = *(v4 + 14);
+  v42 = *(fromCopy + 14);
   v43 = [v42 countByEnumeratingWithState:&v47 objects:v71 count:16];
   if (v43)
   {
@@ -371,16 +371,16 @@ LABEL_6:
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v13 ^ [(NSMutableArray *)self->_routes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
   directionsRequests = self->_directionsRequests;
-  if (directionsRequests | *(v4 + 8))
+  if (directionsRequests | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)directionsRequests isEqual:?])
     {
@@ -389,7 +389,7 @@ LABEL_6:
   }
 
   directionsResponses = self->_directionsResponses;
-  if (directionsResponses | *(v4 + 10))
+  if (directionsResponses | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)directionsResponses isEqual:?])
     {
@@ -399,13 +399,13 @@ LABEL_6:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 160) & 4) == 0 || self->_selectedDirectionsResponseIndex != *(v4 + 30))
+    if ((*(equalCopy + 160) & 4) == 0 || self->_selectedDirectionsResponseIndex != *(equalCopy + 30))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 160) & 4) != 0)
+  else if ((*(equalCopy + 160) & 4) != 0)
   {
 LABEL_51:
     v18 = 0;
@@ -414,25 +414,25 @@ LABEL_51:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 160) & 8) == 0 || self->_selectedSuggestedRouteIndexInDirectionsResponse != *(v4 + 31))
+    if ((*(equalCopy + 160) & 8) == 0 || self->_selectedSuggestedRouteIndexInDirectionsResponse != *(equalCopy + 31))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 160) & 8) != 0)
+  else if ((*(equalCopy + 160) & 8) != 0)
   {
     goto LABEL_51;
   }
 
   overviewScreenshotImageData = self->_overviewScreenshotImageData;
-  if (overviewScreenshotImageData | *(v4 + 13) && ![(NSData *)overviewScreenshotImageData isEqual:?])
+  if (overviewScreenshotImageData | *(equalCopy + 13) && ![(NSData *)overviewScreenshotImageData isEqual:?])
   {
     goto LABEL_51;
   }
 
   directionsResponseID = self->_directionsResponseID;
-  if (directionsResponseID | *(v4 + 9))
+  if (directionsResponseID | *(equalCopy + 9))
   {
     if (![(NSData *)directionsResponseID isEqual:?])
     {
@@ -441,7 +441,7 @@ LABEL_51:
   }
 
   startWaypoint = self->_startWaypoint;
-  if (startWaypoint | *(v4 + 16))
+  if (startWaypoint | *(equalCopy + 16))
   {
     if (![(RAPUserSearchInput *)startWaypoint isEqual:?])
     {
@@ -450,7 +450,7 @@ LABEL_51:
   }
 
   endWaypoint = self->_endWaypoint;
-  if (endWaypoint | *(v4 + 11))
+  if (endWaypoint | *(equalCopy + 11))
   {
     if (![(RAPUserSearchInput *)endWaypoint isEqual:?])
     {
@@ -459,7 +459,7 @@ LABEL_51:
   }
 
   auxiliaryControls = self->_auxiliaryControls;
-  if (auxiliaryControls | *(v4 + 7))
+  if (auxiliaryControls | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)auxiliaryControls isEqual:?])
     {
@@ -469,25 +469,25 @@ LABEL_51:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 160) & 2) == 0 || self->_originatingAuxiliaryControlIndex != *(v4 + 6))
+    if ((*(equalCopy + 160) & 2) == 0 || self->_originatingAuxiliaryControlIndex != *(equalCopy + 6))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 160) & 2) != 0)
+  else if ((*(equalCopy + 160) & 2) != 0)
   {
     goto LABEL_51;
   }
 
   startWaypointCorrectedSearchTemplate = self->_startWaypointCorrectedSearchTemplate;
-  if (startWaypointCorrectedSearchTemplate | *(v4 + 17) && ![(GEORPCorrectedSearch *)startWaypointCorrectedSearchTemplate isEqual:?])
+  if (startWaypointCorrectedSearchTemplate | *(equalCopy + 17) && ![(GEORPCorrectedSearch *)startWaypointCorrectedSearchTemplate isEqual:?])
   {
     goto LABEL_51;
   }
 
   endWaypointCorrectedSearchTemplate = self->_endWaypointCorrectedSearchTemplate;
-  if (endWaypointCorrectedSearchTemplate | *(v4 + 12))
+  if (endWaypointCorrectedSearchTemplate | *(equalCopy + 12))
   {
     if (![(GEORPCorrectedSearch *)endWaypointCorrectedSearchTemplate isEqual:?])
     {
@@ -502,30 +502,30 @@ LABEL_51:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 160) & 1) == 0)
+    if ((*(equalCopy + 160) & 1) == 0)
     {
       goto LABEL_51;
     }
 
-    if (self->_navigationSessionID._high != *(v4 + 1) || self->_navigationSessionID._low != *(v4 + 2))
+    if (self->_navigationSessionID._high != *(equalCopy + 1) || self->_navigationSessionID._low != *(equalCopy + 2))
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 160))
+  else if (*(equalCopy + 160))
   {
     goto LABEL_51;
   }
 
   userPaths = self->_userPaths;
-  if (userPaths | *(v4 + 18) && ![(NSMutableArray *)userPaths isEqual:?])
+  if (userPaths | *(equalCopy + 18) && ![(NSMutableArray *)userPaths isEqual:?])
   {
     goto LABEL_51;
   }
 
   waypoints = self->_waypoints;
-  if (waypoints | *(v4 + 19))
+  if (waypoints | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)waypoints isEqual:?])
     {
@@ -534,7 +534,7 @@ LABEL_51:
   }
 
   routes = self->_routes;
-  if (routes | *(v4 + 14))
+  if (routes | *(equalCopy + 14))
   {
     v18 = [(NSMutableArray *)routes isEqual:?];
   }
@@ -549,9 +549,9 @@ LABEL_52:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -571,7 +571,7 @@ LABEL_52:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v76 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v76 + 1) + 8 * i) copyWithZone:zone];
         [v5 addDirectionsRequests:v11];
       }
 
@@ -600,7 +600,7 @@ LABEL_52:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v72 + 1) + 8 * j) copyWithZone:a3];
+        v17 = [*(*(&v72 + 1) + 8 * j) copyWithZone:zone];
         [v5 addDirectionsResponses:v17];
       }
 
@@ -624,19 +624,19 @@ LABEL_52:
     v5[160] |= 8u;
   }
 
-  v19 = [(NSData *)self->_overviewScreenshotImageData copyWithZone:a3];
+  v19 = [(NSData *)self->_overviewScreenshotImageData copyWithZone:zone];
   v20 = *(v5 + 13);
   *(v5 + 13) = v19;
 
-  v21 = [(NSData *)self->_directionsResponseID copyWithZone:a3];
+  v21 = [(NSData *)self->_directionsResponseID copyWithZone:zone];
   v22 = *(v5 + 9);
   *(v5 + 9) = v21;
 
-  v23 = [(RAPUserSearchInput *)self->_startWaypoint copyWithZone:a3];
+  v23 = [(RAPUserSearchInput *)self->_startWaypoint copyWithZone:zone];
   v24 = *(v5 + 16);
   *(v5 + 16) = v23;
 
-  v25 = [(RAPUserSearchInput *)self->_endWaypoint copyWithZone:a3];
+  v25 = [(RAPUserSearchInput *)self->_endWaypoint copyWithZone:zone];
   v26 = *(v5 + 11);
   *(v5 + 11) = v25;
 
@@ -659,7 +659,7 @@ LABEL_52:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v68 + 1) + 8 * k) copyWithZone:a3];
+        v32 = [*(*(&v68 + 1) + 8 * k) copyWithZone:zone];
         [v5 addAuxiliaryControls:v32];
       }
 
@@ -675,11 +675,11 @@ LABEL_52:
     v5[160] |= 2u;
   }
 
-  v33 = [(GEORPCorrectedSearch *)self->_startWaypointCorrectedSearchTemplate copyWithZone:a3];
+  v33 = [(GEORPCorrectedSearch *)self->_startWaypointCorrectedSearchTemplate copyWithZone:zone];
   v34 = *(v5 + 17);
   *(v5 + 17) = v33;
 
-  v35 = [(GEORPCorrectedSearch *)self->_endWaypointCorrectedSearchTemplate copyWithZone:a3];
+  v35 = [(GEORPCorrectedSearch *)self->_endWaypointCorrectedSearchTemplate copyWithZone:zone];
   v36 = *(v5 + 12);
   *(v5 + 12) = v35;
 
@@ -709,7 +709,7 @@ LABEL_52:
           objc_enumerationMutation(v37);
         }
 
-        v42 = [*(*(&v64 + 1) + 8 * m) copyWithZone:a3];
+        v42 = [*(*(&v64 + 1) + 8 * m) copyWithZone:zone];
         [v5 addUserPath:v42];
       }
 
@@ -738,7 +738,7 @@ LABEL_52:
           objc_enumerationMutation(v43);
         }
 
-        v48 = [*(*(&v60 + 1) + 8 * n) copyWithZone:a3];
+        v48 = [*(*(&v60 + 1) + 8 * n) copyWithZone:zone];
         [v5 addWaypoints:v48];
       }
 
@@ -767,7 +767,7 @@ LABEL_52:
           objc_enumerationMutation(v49);
         }
 
-        v54 = [*(*(&v56 + 1) + 8 * ii) copyWithZone:{a3, v56}];
+        v54 = [*(*(&v56 + 1) + 8 * ii) copyWithZone:{zone, v56}];
         [v5 addRoute:v54];
       }
 
@@ -780,35 +780,35 @@ LABEL_52:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v32 = a3;
+  toCopy = to;
   if ([(RAPDirectionsRecording *)self directionsRequestsCount])
   {
-    [v32 clearDirectionsRequests];
-    v4 = [(RAPDirectionsRecording *)self directionsRequestsCount];
-    if (v4)
+    [toCopy clearDirectionsRequests];
+    directionsRequestsCount = [(RAPDirectionsRecording *)self directionsRequestsCount];
+    if (directionsRequestsCount)
     {
-      v5 = v4;
+      v5 = directionsRequestsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(RAPDirectionsRecording *)self directionsRequestsAtIndex:i];
-        [v32 addDirectionsRequests:v7];
+        [toCopy addDirectionsRequests:v7];
       }
     }
   }
 
   if ([(RAPDirectionsRecording *)self directionsResponsesCount])
   {
-    [v32 clearDirectionsResponses];
-    v8 = [(RAPDirectionsRecording *)self directionsResponsesCount];
-    if (v8)
+    [toCopy clearDirectionsResponses];
+    directionsResponsesCount = [(RAPDirectionsRecording *)self directionsResponsesCount];
+    if (directionsResponsesCount)
     {
-      v9 = v8;
+      v9 = directionsResponsesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(RAPDirectionsRecording *)self directionsResponsesAtIndex:j];
-        [v32 addDirectionsResponses:v11];
+        [toCopy addDirectionsResponses:v11];
       }
     }
   }
@@ -816,137 +816,137 @@ LABEL_52:
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v32 + 30) = self->_selectedDirectionsResponseIndex;
-    v32[160] |= 4u;
+    *(toCopy + 30) = self->_selectedDirectionsResponseIndex;
+    toCopy[160] |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(v32 + 31) = self->_selectedSuggestedRouteIndexInDirectionsResponse;
-    v32[160] |= 8u;
+    *(toCopy + 31) = self->_selectedSuggestedRouteIndexInDirectionsResponse;
+    toCopy[160] |= 8u;
   }
 
   if (self->_overviewScreenshotImageData)
   {
-    [v32 setOverviewScreenshotImageData:?];
+    [toCopy setOverviewScreenshotImageData:?];
   }
 
   if (self->_directionsResponseID)
   {
-    [v32 setDirectionsResponseID:?];
+    [toCopy setDirectionsResponseID:?];
   }
 
   if (self->_startWaypoint)
   {
-    [v32 setStartWaypoint:?];
+    [toCopy setStartWaypoint:?];
   }
 
   if (self->_endWaypoint)
   {
-    [v32 setEndWaypoint:?];
+    [toCopy setEndWaypoint:?];
   }
 
   if ([(RAPDirectionsRecording *)self auxiliaryControlsCount])
   {
-    [v32 clearAuxiliaryControls];
-    v13 = [(RAPDirectionsRecording *)self auxiliaryControlsCount];
-    if (v13)
+    [toCopy clearAuxiliaryControls];
+    auxiliaryControlsCount = [(RAPDirectionsRecording *)self auxiliaryControlsCount];
+    if (auxiliaryControlsCount)
     {
-      v14 = v13;
+      v14 = auxiliaryControlsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(RAPDirectionsRecording *)self auxiliaryControlsAtIndex:k];
-        [v32 addAuxiliaryControls:v16];
+        [toCopy addAuxiliaryControls:v16];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v32 + 6) = self->_originatingAuxiliaryControlIndex;
-    v32[160] |= 2u;
+    *(toCopy + 6) = self->_originatingAuxiliaryControlIndex;
+    toCopy[160] |= 2u;
   }
 
   if (self->_startWaypointCorrectedSearchTemplate)
   {
-    [v32 setStartWaypointCorrectedSearchTemplate:?];
+    [toCopy setStartWaypointCorrectedSearchTemplate:?];
   }
 
   if (self->_endWaypointCorrectedSearchTemplate)
   {
-    [v32 setEndWaypointCorrectedSearchTemplate:?];
+    [toCopy setEndWaypointCorrectedSearchTemplate:?];
   }
 
   if ([(RAPDirectionsRecording *)self clusteredRouteRideSelectionsCount])
   {
-    [v32 clearClusteredRouteRideSelections];
-    v17 = [(RAPDirectionsRecording *)self clusteredRouteRideSelectionsCount];
-    if (v17)
+    [toCopy clearClusteredRouteRideSelections];
+    clusteredRouteRideSelectionsCount = [(RAPDirectionsRecording *)self clusteredRouteRideSelectionsCount];
+    if (clusteredRouteRideSelectionsCount)
     {
-      v18 = v17;
+      v18 = clusteredRouteRideSelectionsCount;
       for (m = 0; m != v18; ++m)
       {
-        [v32 addClusteredRouteRideSelections:{-[RAPDirectionsRecording clusteredRouteRideSelectionsAtIndex:](self, "clusteredRouteRideSelectionsAtIndex:", m)}];
+        [toCopy addClusteredRouteRideSelections:{-[RAPDirectionsRecording clusteredRouteRideSelectionsAtIndex:](self, "clusteredRouteRideSelectionsAtIndex:", m)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v32 + 8) = self->_navigationSessionID;
-    v32[160] |= 1u;
+    *(toCopy + 8) = self->_navigationSessionID;
+    toCopy[160] |= 1u;
   }
 
   if ([(RAPDirectionsRecording *)self userPathsCount])
   {
-    [v32 clearUserPaths];
-    v20 = [(RAPDirectionsRecording *)self userPathsCount];
-    if (v20)
+    [toCopy clearUserPaths];
+    userPathsCount = [(RAPDirectionsRecording *)self userPathsCount];
+    if (userPathsCount)
     {
-      v21 = v20;
+      v21 = userPathsCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(RAPDirectionsRecording *)self userPathAtIndex:n];
-        [v32 addUserPath:v23];
+        [toCopy addUserPath:v23];
       }
     }
   }
 
   if ([(RAPDirectionsRecording *)self waypointsCount])
   {
-    [v32 clearWaypoints];
-    v24 = [(RAPDirectionsRecording *)self waypointsCount];
-    if (v24)
+    [toCopy clearWaypoints];
+    waypointsCount = [(RAPDirectionsRecording *)self waypointsCount];
+    if (waypointsCount)
     {
-      v25 = v24;
+      v25 = waypointsCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(RAPDirectionsRecording *)self waypointsAtIndex:ii];
-        [v32 addWaypoints:v27];
+        [toCopy addWaypoints:v27];
       }
     }
   }
 
   if ([(RAPDirectionsRecording *)self routesCount])
   {
-    [v32 clearRoutes];
-    v28 = [(RAPDirectionsRecording *)self routesCount];
-    if (v28)
+    [toCopy clearRoutes];
+    routesCount = [(RAPDirectionsRecording *)self routesCount];
+    if (routesCount)
     {
-      v29 = v28;
+      v29 = routesCount;
       for (jj = 0; jj != v29; ++jj)
       {
         v31 = [(RAPDirectionsRecording *)self routeAtIndex:jj];
-        [v32 addRoute:v31];
+        [toCopy addRoute:v31];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -1094,7 +1094,7 @@ LABEL_52:
   {
     v50 = 0;
     PBDataWriterPlaceMark();
-    v22 = v4;
+    v22 = toCopy;
     PBDataWriterWriteUint64Field();
     PBDataWriterWriteUint64Field();
 
@@ -1186,19 +1186,19 @@ LABEL_52:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 >= [a3 length])
+  position = [from position];
+  if (position >= [from length])
   {
 LABEL_161:
-    LOBYTE(v18) = [a3 hasError] ^ 1;
+    LOBYTE(v18) = [from hasError] ^ 1;
     return v18;
   }
 
   while (2)
   {
-    if ([a3 hasError])
+    if ([from hasError])
     {
       goto LABEL_161;
     }
@@ -1209,18 +1209,18 @@ LABEL_161:
     while (1)
     {
       LOBYTE(v80) = 0;
-      v9 = [a3 position] + 1;
-      if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+      v9 = [from position] + 1;
+      if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
       {
-        v11 = [a3 data];
-        [v11 getBytes:&v80 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v80 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v8 |= (v80 & 0x7F) << v6;
@@ -1238,9 +1238,9 @@ LABEL_161:
       }
     }
 
-    v13 = [a3 hasError] ? 0 : v8;
+    v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-    if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
     {
       goto LABEL_161;
     }
@@ -1263,18 +1263,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v80) = 0;
-          v36 = [a3 position] + 1;
-          if (v36 >= [a3 position] && (v37 = objc_msgSend(a3, "position") + 1, v37 <= objc_msgSend(a3, "length")))
+          v36 = [from position] + 1;
+          if (v36 >= [from position] && (v37 = objc_msgSend(from, "position") + 1, v37 <= objc_msgSend(from, "length")))
           {
-            v38 = [a3 data];
-            [v38 getBytes:&v80 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v80 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v35 |= (v80 & 0x7F) << v33;
@@ -1292,7 +1292,7 @@ LABEL_15:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v39 = 0;
         }
@@ -1313,18 +1313,18 @@ LABEL_144:
         while (1)
         {
           LOBYTE(v80) = 0;
-          v43 = [a3 position] + 1;
-          if (v43 >= [a3 position] && (v44 = objc_msgSend(a3, "position") + 1, v44 <= objc_msgSend(a3, "length")))
+          v43 = [from position] + 1;
+          if (v43 >= [from position] && (v44 = objc_msgSend(from, "position") + 1, v44 <= objc_msgSend(from, "length")))
           {
-            v45 = [a3 data];
-            [v45 getBytes:&v80 range:{objc_msgSend(a3, "position"), 1}];
+            data3 = [from data];
+            [data3 getBytes:&v80 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v42 |= (v80 & 0x7F) << v40;
@@ -1342,7 +1342,7 @@ LABEL_144:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v39 = 0;
         }
@@ -1391,18 +1391,18 @@ LABEL_125:
         while (1)
         {
           LOBYTE(v80) = 0;
-          v29 = [a3 position] + 1;
-          if (v29 >= [a3 position] && (v30 = objc_msgSend(a3, "position") + 1, v30 <= objc_msgSend(a3, "length")))
+          v29 = [from position] + 1;
+          if (v29 >= [from position] && (v30 = objc_msgSend(from, "position") + 1, v30 <= objc_msgSend(from, "length")))
           {
-            v31 = [a3 data];
-            [v31 getBytes:&v80 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:&v80 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v28 |= (v80 & 0x7F) << v26;
@@ -1420,7 +1420,7 @@ LABEL_125:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v32 = 0;
         }
@@ -1456,8 +1456,8 @@ LABEL_130:
 
           while (1)
           {
-            v19 = [a3 position];
-            if (v19 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+            position2 = [from position];
+            if (position2 >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
             {
               break;
             }
@@ -1468,18 +1468,18 @@ LABEL_130:
             while (1)
             {
               v82 = 0;
-              v23 = [a3 position] + 1;
-              if (v23 >= [a3 position] && (v24 = objc_msgSend(a3, "position") + 1, v24 <= objc_msgSend(a3, "length")))
+              v23 = [from position] + 1;
+              if (v23 >= [from position] && (v24 = objc_msgSend(from, "position") + 1, v24 <= objc_msgSend(from, "length")))
               {
-                v25 = [a3 data];
-                [v25 getBytes:&v82 range:{objc_msgSend(a3, "position"), 1}];
+                data5 = [from data];
+                [data5 getBytes:&v82 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v22 |= (v82 & 0x7F) << v20;
@@ -1496,7 +1496,7 @@ LABEL_130:
               }
             }
 
-            [a3 hasError];
+            [from hasError];
 LABEL_39:
             PBRepeatedUInt32Add();
           }
@@ -1513,18 +1513,18 @@ LABEL_123:
           while (1)
           {
             LOBYTE(v80) = 0;
-            v76 = [a3 position] + 1;
-            if (v76 >= [a3 position] && (v77 = objc_msgSend(a3, "position") + 1, v77 <= objc_msgSend(a3, "length")))
+            v76 = [from position] + 1;
+            if (v76 >= [from position] && (v77 = objc_msgSend(from, "position") + 1, v77 <= objc_msgSend(from, "length")))
             {
-              v78 = [a3 data];
-              [v78 getBytes:&v80 range:{objc_msgSend(a3, "position"), 1}];
+              data6 = [from data];
+              [data6 getBytes:&v80 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v75 |= (v80 & 0x7F) << v73;
@@ -1541,7 +1541,7 @@ LABEL_123:
             }
           }
 
-          [a3 hasError];
+          [from hasError];
 LABEL_160:
           PBRepeatedUInt32Add();
         }
@@ -1557,15 +1557,15 @@ LABEL_160:
           return v18;
         }
 
-        v48 = [a3 position];
-        if (v48 >= [a3 length])
+        position3 = [from position];
+        if (position3 >= [from length])
         {
           goto LABEL_122;
         }
 
         do
         {
-          if ([a3 hasError])
+          if ([from hasError])
           {
             break;
           }
@@ -1576,18 +1576,18 @@ LABEL_160:
           while (1)
           {
             v82 = 0;
-            v52 = [a3 position] + 1;
-            if (v52 >= [a3 position] && (v53 = objc_msgSend(a3, "position") + 1, v53 <= objc_msgSend(a3, "length")))
+            v52 = [from position] + 1;
+            if (v52 >= [from position] && (v53 = objc_msgSend(from, "position") + 1, v53 <= objc_msgSend(from, "length")))
             {
-              v54 = [a3 data];
-              [v54 getBytes:&v82 range:{objc_msgSend(a3, "position"), 1}];
+              data7 = [from data];
+              [data7 getBytes:&v82 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v51 |= (v82 & 0x7F) << v49;
@@ -1605,9 +1605,9 @@ LABEL_160:
             }
           }
 
-          v55 = [a3 hasError] ? 0 : v51;
+          v55 = [from hasError] ? 0 : v51;
 LABEL_89:
-          if (([a3 hasError] & 1) != 0 || (v55 & 7) == 4)
+          if (([from hasError] & 1) != 0 || (v55 & 7) == 4)
           {
             break;
           }
@@ -1620,18 +1620,18 @@ LABEL_89:
             while (1)
             {
               v82 = 0;
-              v66 = [a3 position] + 1;
-              if (v66 >= [a3 position] && (v67 = objc_msgSend(a3, "position") + 1, v67 <= objc_msgSend(a3, "length")))
+              v66 = [from position] + 1;
+              if (v66 >= [from position] && (v67 = objc_msgSend(from, "position") + 1, v67 <= objc_msgSend(from, "length")))
               {
-                v68 = [a3 data];
-                [v68 getBytes:&v82 range:{objc_msgSend(a3, "position"), 1}];
+                data8 = [from data];
+                [data8 getBytes:&v82 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v65 |= (v82 & 0x7F) << v63;
@@ -1649,7 +1649,7 @@ LABEL_89:
               }
             }
 
-            v69 = [a3 hasError] ? 0 : v65;
+            v69 = [from hasError] ? 0 : v65;
 LABEL_120:
             self->_navigationSessionID._low = v69;
           }
@@ -1662,18 +1662,18 @@ LABEL_120:
             while (1)
             {
               v82 = 0;
-              v59 = [a3 position] + 1;
-              if (v59 >= [a3 position] && (v60 = objc_msgSend(a3, "position") + 1, v60 <= objc_msgSend(a3, "length")))
+              v59 = [from position] + 1;
+              if (v59 >= [from position] && (v60 = objc_msgSend(from, "position") + 1, v60 <= objc_msgSend(from, "length")))
               {
-                v61 = [a3 data];
-                [v61 getBytes:&v82 range:{objc_msgSend(a3, "position"), 1}];
+                data9 = [from data];
+                [data9 getBytes:&v82 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v58 |= (v82 & 0x7F) << v56;
@@ -1691,7 +1691,7 @@ LABEL_120:
               }
             }
 
-            v62 = [a3 hasError] ? 0 : v58;
+            v62 = [from hasError] ? 0 : v58;
 LABEL_116:
             self->_navigationSessionID._high = v62;
           }
@@ -1701,12 +1701,12 @@ LABEL_116:
             goto LABEL_164;
           }
 
-          v70 = [a3 position];
+          position4 = [from position];
         }
 
-        while (v70 < [a3 length]);
+        while (position4 < [from length]);
 LABEL_122:
-        if (([a3 hasError] & 1) == 0)
+        if (([from hasError] & 1) == 0)
         {
           goto LABEL_123;
         }
@@ -1717,7 +1717,7 @@ LABEL_122:
         [(RAPDirectionsRecording *)self addUserPath:v14];
         v80 = 0;
         v81 = 0;
-        if (!PBReaderPlaceMark() || !sub_100DE52EC(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_100DE52EC(v14, from))
         {
           goto LABEL_163;
         }
@@ -1729,7 +1729,7 @@ LABEL_122:
 LABEL_126:
         v80 = 0;
         v81 = 0;
-        if (!PBReaderPlaceMark() || !sub_100A79484(v14, a3))
+        if (!PBReaderPlaceMark() || !sub_100A79484(v14, from))
         {
           goto LABEL_163;
         }
@@ -1741,14 +1741,14 @@ LABEL_126:
 LABEL_132:
         v80 = 0;
         v81 = 0;
-        if (PBReaderPlaceMark() && [(RAPUserSearchInput *)v14 readFrom:a3])
+        if (PBReaderPlaceMark() && [(RAPUserSearchInput *)v14 readFrom:from])
         {
 LABEL_134:
           PBReaderRecallMark();
 
 LABEL_135:
-          v71 = [a3 position];
-          if (v71 >= [a3 length])
+          position5 = [from position];
+          if (position5 >= [from length])
           {
             goto LABEL_161;
           }
@@ -1797,8 +1797,8 @@ LABEL_164:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v85 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v85 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v85 objects:v94 count:16];
@@ -1832,8 +1832,8 @@ LABEL_164:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v81 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v81 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v81 objects:v93 count:16];
@@ -1875,15 +1875,15 @@ LABEL_164:
   startWaypoint = self->_startWaypoint;
   if (startWaypoint)
   {
-    v24 = [(RAPUserSearchInput *)startWaypoint dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"startWaypoint"];
+    dictionaryRepresentation3 = [(RAPUserSearchInput *)startWaypoint dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"startWaypoint"];
   }
 
   endWaypoint = self->_endWaypoint;
   if (endWaypoint)
   {
-    v26 = [(RAPUserSearchInput *)endWaypoint dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"endWaypoint"];
+    dictionaryRepresentation4 = [(RAPUserSearchInput *)endWaypoint dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"endWaypoint"];
   }
 
   if ([(NSMutableArray *)self->_auxiliaryControls count])
@@ -1908,8 +1908,8 @@ LABEL_164:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v77 + 1) + 8 * k) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation5 = [*(*(&v77 + 1) + 8 * k) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation5];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v77 objects:v92 count:16];
@@ -1930,15 +1930,15 @@ LABEL_164:
   startWaypointCorrectedSearchTemplate = self->_startWaypointCorrectedSearchTemplate;
   if (startWaypointCorrectedSearchTemplate)
   {
-    v36 = [(GEORPCorrectedSearch *)startWaypointCorrectedSearchTemplate dictionaryRepresentation];
-    [v3 setObject:v36 forKey:@"startWaypointCorrectedSearchTemplate"];
+    dictionaryRepresentation6 = [(GEORPCorrectedSearch *)startWaypointCorrectedSearchTemplate dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"startWaypointCorrectedSearchTemplate"];
   }
 
   endWaypointCorrectedSearchTemplate = self->_endWaypointCorrectedSearchTemplate;
   if (endWaypointCorrectedSearchTemplate)
   {
-    v38 = [(GEORPCorrectedSearch *)endWaypointCorrectedSearchTemplate dictionaryRepresentation];
-    [v3 setObject:v38 forKey:@"endWaypointCorrectedSearchTemplate"];
+    dictionaryRepresentation7 = [(GEORPCorrectedSearch *)endWaypointCorrectedSearchTemplate dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"endWaypointCorrectedSearchTemplate"];
   }
 
   v39 = PBRepeatedUInt32NSArray();
@@ -1978,8 +1978,8 @@ LABEL_164:
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v73 + 1) + 8 * m) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation8 = [*(*(&v73 + 1) + 8 * m) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation8];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v73 objects:v91 count:16];
@@ -2013,8 +2013,8 @@ LABEL_164:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v69 + 1) + 8 * n) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation9 = [*(*(&v69 + 1) + 8 * n) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation9];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v69 objects:v90 count:16];
@@ -2048,8 +2048,8 @@ LABEL_164:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v65 + 1) + 8 * ii) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation10 = [*(*(&v65 + 1) + 8 * ii) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation10];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v65 objects:v89 count:16];
@@ -2069,83 +2069,83 @@ LABEL_164:
   v7.receiver = self;
   v7.super_class = RAPDirectionsRecording;
   v3 = [(RAPDirectionsRecording *)&v7 description];
-  v4 = [(RAPDirectionsRecording *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RAPDirectionsRecording *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)addRoute:(id)a3
+- (void)addRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   routes = self->_routes;
-  v8 = v4;
+  v8 = routeCopy;
   if (!routes)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_routes;
     self->_routes = v6;
 
-    v4 = v8;
+    routeCopy = v8;
     routes = self->_routes;
   }
 
-  [(NSMutableArray *)routes addObject:v4];
+  [(NSMutableArray *)routes addObject:routeCopy];
 }
 
-- (void)addWaypoints:(id)a3
+- (void)addWaypoints:(id)waypoints
 {
-  v4 = a3;
+  waypointsCopy = waypoints;
   waypoints = self->_waypoints;
-  v8 = v4;
+  v8 = waypointsCopy;
   if (!waypoints)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_waypoints;
     self->_waypoints = v6;
 
-    v4 = v8;
+    waypointsCopy = v8;
     waypoints = self->_waypoints;
   }
 
-  [(NSMutableArray *)waypoints addObject:v4];
+  [(NSMutableArray *)waypoints addObject:waypointsCopy];
 }
 
-- (void)addUserPath:(id)a3
+- (void)addUserPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   userPaths = self->_userPaths;
-  v8 = v4;
+  v8 = pathCopy;
   if (!userPaths)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_userPaths;
     self->_userPaths = v6;
 
-    v4 = v8;
+    pathCopy = v8;
     userPaths = self->_userPaths;
   }
 
-  [(NSMutableArray *)userPaths addObject:v4];
+  [(NSMutableArray *)userPaths addObject:pathCopy];
 }
 
-- (unsigned)clusteredRouteRideSelectionsAtIndex:(unint64_t)a3
+- (unsigned)clusteredRouteRideSelectionsAtIndex:(unint64_t)index
 {
   p_clusteredRouteRideSelections = &self->_clusteredRouteRideSelections;
   count = self->_clusteredRouteRideSelections.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_clusteredRouteRideSelections->list[a3];
+  return p_clusteredRouteRideSelections->list[index];
 }
 
-- (void)setHasOriginatingAuxiliaryControlIndex:(BOOL)a3
+- (void)setHasOriginatingAuxiliaryControlIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -2158,27 +2158,27 @@ LABEL_164:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAuxiliaryControls:(id)a3
+- (void)addAuxiliaryControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   auxiliaryControls = self->_auxiliaryControls;
-  v8 = v4;
+  v8 = controlsCopy;
   if (!auxiliaryControls)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_auxiliaryControls;
     self->_auxiliaryControls = v6;
 
-    v4 = v8;
+    controlsCopy = v8;
     auxiliaryControls = self->_auxiliaryControls;
   }
 
-  [(NSMutableArray *)auxiliaryControls addObject:v4];
+  [(NSMutableArray *)auxiliaryControls addObject:controlsCopy];
 }
 
-- (void)setHasSelectedSuggestedRouteIndexInDirectionsResponse:(BOOL)a3
+- (void)setHasSelectedSuggestedRouteIndexInDirectionsResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 8;
   }
@@ -2191,9 +2191,9 @@ LABEL_164:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSelectedDirectionsResponseIndex:(BOOL)a3
+- (void)setHasSelectedDirectionsResponseIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -2206,40 +2206,40 @@ LABEL_164:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addDirectionsResponses:(id)a3
+- (void)addDirectionsResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   directionsResponses = self->_directionsResponses;
-  v8 = v4;
+  v8 = responsesCopy;
   if (!directionsResponses)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_directionsResponses;
     self->_directionsResponses = v6;
 
-    v4 = v8;
+    responsesCopy = v8;
     directionsResponses = self->_directionsResponses;
   }
 
-  [(NSMutableArray *)directionsResponses addObject:v4];
+  [(NSMutableArray *)directionsResponses addObject:responsesCopy];
 }
 
-- (void)addDirectionsRequests:(id)a3
+- (void)addDirectionsRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   directionsRequests = self->_directionsRequests;
-  v8 = v4;
+  v8 = requestsCopy;
   if (!directionsRequests)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_directionsRequests;
     self->_directionsRequests = v6;
 
-    v4 = v8;
+    requestsCopy = v8;
     directionsRequests = self->_directionsRequests;
   }
 
-  [(NSMutableArray *)directionsRequests addObject:v4];
+  [(NSMutableArray *)directionsRequests addObject:requestsCopy];
 }
 
 - (void)dealloc

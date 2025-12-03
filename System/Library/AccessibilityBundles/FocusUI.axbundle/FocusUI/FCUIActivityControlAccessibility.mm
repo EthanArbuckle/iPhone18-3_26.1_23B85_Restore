@@ -1,5 +1,5 @@
 @interface FCUIActivityControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityMenuItemElements;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
@@ -9,19 +9,19 @@
 
 @implementation FCUIActivityControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_activityTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_detailLabel" withType:"UILabel"];
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_optionsButton" withType:"FCUIOptionsControl"];
-  [v3 validateClass:@"FCUIActivityControl" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_menuView" withType:"FCUIActivityControlMenuView"];
-  [v3 validateClass:@"FCUIActivityControlMenuView" hasInstanceMethod:@"menuItemElements" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FCUIActivityControlMenuView" hasInstanceVariable:@"_footerView" withType:"_FCUIActivityControlMenuFooterView"];
-  [v3 validateClass:@"FCUIActivityControl" hasInstanceMethod:@"optionsAction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FCUIOptionsControl" hasInstanceMethod:@"controlType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_activityTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_detailLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_optionsButton" withType:"FCUIOptionsControl"];
+  [validationsCopy validateClass:@"FCUIActivityControl" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceVariable:@"_menuView" withType:"FCUIActivityControlMenuView"];
+  [validationsCopy validateClass:@"FCUIActivityControlMenuView" hasInstanceMethod:@"menuItemElements" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FCUIActivityControlMenuView" hasInstanceVariable:@"_footerView" withType:"_FCUIActivityControlMenuFooterView"];
+  [validationsCopy validateClass:@"FCUIActivityControl" hasInstanceMethod:@"optionsAction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FCUIOptionsControl" hasInstanceMethod:@"controlType" withFullSignature:{"q", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -103,19 +103,19 @@ uint64_t __62__FCUIActivityControlAccessibility_accessibilityCustomActions__bloc
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(FCUIActivityControlAccessibility *)self _accessibilityIsExpanded])
   {
-    v4 = [(FCUIActivityControlAccessibility *)self _accessibilityMenuItemElements];
-    [v3 axSafelyAddObjectsFromArray:v4];
+    _accessibilityMenuItemElements = [(FCUIActivityControlAccessibility *)self _accessibilityMenuItemElements];
+    [array axSafelyAddObjectsFromArray:_accessibilityMenuItemElements];
 
-    v5 = [(FCUIActivityControlAccessibility *)self _accessibilityMenuView];
-    v6 = [v5 safeValueForKey:@"_footerView"];
+    _accessibilityMenuView = [(FCUIActivityControlAccessibility *)self _accessibilityMenuView];
+    v6 = [_accessibilityMenuView safeValueForKey:@"_footerView"];
 
-    [v3 axSafelyAddObject:v6];
+    [array axSafelyAddObject:v6];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)automationElements
@@ -129,8 +129,8 @@ uint64_t __62__FCUIActivityControlAccessibility_accessibilityCustomActions__bloc
 
 - (id)_accessibilityMenuItemElements
 {
-  v2 = [(FCUIActivityControlAccessibility *)self _accessibilityMenuView];
-  v3 = [v2 safeArrayForKey:@"menuItemElements"];
+  _accessibilityMenuView = [(FCUIActivityControlAccessibility *)self _accessibilityMenuView];
+  v3 = [_accessibilityMenuView safeArrayForKey:@"menuItemElements"];
 
   return v3;
 }

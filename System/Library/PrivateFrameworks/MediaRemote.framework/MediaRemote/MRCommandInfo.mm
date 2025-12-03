@@ -1,10 +1,10 @@
 @interface MRCommandInfo
-+ (id)commandInfosFromData:(id)a3;
-+ (id)dataFromCommandInfos:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRCommandInfo)initWithData:(id)a3;
-- (MRCommandInfo)initWithPropertyListData:(id)a3;
-- (MRCommandInfo)initWithProtobuf:(id)a3;
++ (id)commandInfosFromData:(id)data;
++ (id)dataFromCommandInfos:(id)infos;
+- (BOOL)isEqual:(id)equal;
+- (MRCommandInfo)initWithData:(id)data;
+- (MRCommandInfo)initWithPropertyListData:(id)data;
+- (MRCommandInfo)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (NSData)propertyListData;
 - (NSDictionary)dictionaryRepresentation;
@@ -24,13 +24,13 @@
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[MRCommandInfo isEnabled](self, "isEnabled")}];
   [v3 setObject:v5 forKeyedSubscript:@"kCommandInfoEnabledKey"];
 
-  v6 = [(MRCommandInfo *)self options];
-  v7 = [v6 count];
+  options = [(MRCommandInfo *)self options];
+  v7 = [options count];
 
   if (v7)
   {
-    v8 = [(MRCommandInfo *)self options];
-    [v3 setObject:v8 forKeyedSubscript:@"kCommandInfoOptionsKey"];
+    options2 = [(MRCommandInfo *)self options];
+    [v3 setObject:options2 forKeyedSubscript:@"kCommandInfoOptionsKey"];
   }
 
   v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:200 options:0 error:0];
@@ -43,9 +43,9 @@
   v3 = MRMediaRemoteCopyCommandDescription([(MRCommandInfo *)self command]);
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = objc_opt_class();
-  v6 = [(MRCommandInfo *)self isEnabled];
-  v7 = [(MRCommandInfo *)self options];
-  v8 = [v4 initWithFormat:@"<%@: %p, %@, enabled = %d, options = %@>", v5, self, v3, v6, v7];
+  isEnabled = [(MRCommandInfo *)self isEnabled];
+  options = [(MRCommandInfo *)self options];
+  v8 = [v4 initWithFormat:@"<%@: %p, %@, enabled = %d, options = %@>", v5, self, v3, isEnabled, options];
 
   return v8;
 }
@@ -67,17 +67,17 @@
   }
 
   [v3 setObject:v5 forKeyedSubscript:@"enabled"];
-  v6 = [(MRCommandInfo *)self options];
-  [v3 setObject:v6 forKeyedSubscript:@"options"];
+  options = [(MRCommandInfo *)self options];
+  [v3 setObject:options forKeyedSubscript:@"options"];
 
   return v3;
 }
 
-- (MRCommandInfo)initWithProtobuf:(id)a3
+- (MRCommandInfo)initWithProtobuf:(id)protobuf
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v90.receiver = self;
     v90.super_class = MRCommandInfo;
@@ -85,292 +85,292 @@
 
     if (v5)
     {
-      v5->_command = MRMediaRemoteCommandFromProtobuf([v4 command]);
-      v5->_enabled = [v4 enabled];
+      v5->_command = MRMediaRemoteCommandFromProtobuf([protobufCopy command]);
+      v5->_enabled = [protobufCopy enabled];
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      if ([v4 preferredIntervalsCount])
+      if ([protobufCopy preferredIntervalsCount])
       {
         v7 = PBRepeatedDoubleNSArray();
         [v6 setObject:v7 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredIntervalsKey"];
       }
 
-      if ([v4 hasActive])
+      if ([protobufCopy hasActive])
       {
-        v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "active")}];
+        v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "active")}];
         [v6 setObject:v8 forKeyedSubscript:@"kMRMediaRemoteCommandInfoIsActiveKey"];
       }
 
-      if ([v4 hasLocalizedTitle])
+      if ([protobufCopy hasLocalizedTitle])
       {
-        v9 = [v4 localizedTitle];
-        [v6 setObject:v9 forKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedTitleKey"];
+        localizedTitle = [protobufCopy localizedTitle];
+        [v6 setObject:localizedTitle forKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedTitleKey"];
       }
 
-      if ([v4 hasLocalizedShortTitle])
+      if ([protobufCopy hasLocalizedShortTitle])
       {
-        v10 = [v4 localizedShortTitle];
-        [v6 setObject:v10 forKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedShortTitleKey"];
+        localizedShortTitle = [protobufCopy localizedShortTitle];
+        [v6 setObject:localizedShortTitle forKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedShortTitleKey"];
       }
 
-      if ([v4 hasMinimumRating])
+      if ([protobufCopy hasMinimumRating])
       {
         v11 = MEMORY[0x1E696AD98];
-        [v4 minimumRating];
+        [protobufCopy minimumRating];
         v12 = [v11 numberWithFloat:?];
         [v6 setObject:v12 forKeyedSubscript:@"kMRMediaRemoteCommandInfoMinimumRatingKey"];
       }
 
-      if ([v4 hasMaximumRating])
+      if ([protobufCopy hasMaximumRating])
       {
         v13 = MEMORY[0x1E696AD98];
-        [v4 maximumRating];
+        [protobufCopy maximumRating];
         v14 = [v13 numberWithFloat:?];
         [v6 setObject:v14 forKeyedSubscript:@"kMRMediaRemoteCommandInfoMaximumRatingKey"];
       }
 
-      if ([v4 supportedRatesCount])
+      if ([protobufCopy supportedRatesCount])
       {
         v15 = PBRepeatedFloatNSArray();
         [v6 setObject:v15 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackRates"];
       }
 
-      if ([v4 extendedSupportedRatesCount])
+      if ([protobufCopy extendedSupportedRatesCount])
       {
         v16 = PBRepeatedFloatNSArray();
         [v6 setObject:v16 forKeyedSubscript:@"kMRMediaRemoteCommandInfoExtendedSupportedPlaybackRates"];
       }
 
-      if ([v4 hasRepeatMode])
+      if ([protobufCopy hasRepeatMode])
       {
-        v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "repeatMode")}];
+        v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "repeatMode")}];
         [v6 setObject:v17 forKeyedSubscript:@"kMRMediaRemoteCommandInfoRepeatMode"];
       }
 
-      if ([v4 hasShuffleMode])
+      if ([protobufCopy hasShuffleMode])
       {
-        v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "shuffleMode")}];
+        v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "shuffleMode")}];
         [v6 setObject:v18 forKeyedSubscript:@"kMRMediaRemoteCommandInfoShuffleMode"];
       }
 
-      if ([v4 hasPresentationStyle])
+      if ([protobufCopy hasPresentationStyle])
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "presentationStyle")}];
+        v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "presentationStyle")}];
         [v6 setObject:v19 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPresentationStyleKey"];
       }
 
-      if ([v4 hasSkipInterval])
+      if ([protobufCopy hasSkipInterval])
       {
-        v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "skipInterval")}];
+        v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "skipInterval")}];
         [v6 setObject:v20 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipInterval"];
       }
 
-      if ([v4 hasNumAvailableSkips])
+      if ([protobufCopy hasNumAvailableSkips])
       {
-        v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "numAvailableSkips")}];
+        v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "numAvailableSkips")}];
         [v6 setObject:v21 forKeyedSubscript:@"kMRMediaRemoteCommandInfoNumberOfAvailableSkips"];
       }
 
-      if ([v4 hasSkipFrequency])
+      if ([protobufCopy hasSkipFrequency])
       {
-        v22 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "skipFrequency")}];
+        v22 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "skipFrequency")}];
         [v6 setObject:v22 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipFrequency"];
       }
 
-      if ([v4 hasCanScrub])
+      if ([protobufCopy hasCanScrub])
       {
-        v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "canScrub")}];
+        v23 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "canScrub")}];
         [v6 setObject:v23 forKeyedSubscript:@"kMRMediaRemoteCommandInfoCanBeControlledByScrubbingKey"];
       }
 
-      if ([v4 supportedPlaybackQueueTypes])
+      if ([protobufCopy supportedPlaybackQueueTypes])
       {
         v24 = PBRepeatedInt32NSArray();
         [v6 setObject:v24 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackQueueTypes"];
       }
 
-      v25 = [v4 supportedCustomQueueIdentifiers];
+      supportedCustomQueueIdentifiers = [protobufCopy supportedCustomQueueIdentifiers];
 
-      if (v25)
+      if (supportedCustomQueueIdentifiers)
       {
-        v26 = [v4 supportedCustomQueueIdentifiers];
-        [v6 setObject:v26 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedCustomPlaybackQueueIdentifiers"];
+        supportedCustomQueueIdentifiers2 = [protobufCopy supportedCustomQueueIdentifiers];
+        [v6 setObject:supportedCustomQueueIdentifiers2 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedCustomPlaybackQueueIdentifiers"];
       }
 
-      if ([v4 supportedInsertionPositions])
+      if ([protobufCopy supportedInsertionPositions])
       {
         v27 = PBRepeatedInt32NSArray();
         [v6 setObject:v27 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedInsertionPositions"];
       }
 
-      if ([v4 hasUpNextItemCount])
+      if ([protobufCopy hasUpNextItemCount])
       {
-        v28 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "upNextItemCount")}];
+        v28 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "upNextItemCount")}];
         [v6 setObject:v28 forKeyedSubscript:@"kMRMediaRemoteCommandInfoUpNextItemCount"];
       }
 
-      if ([v4 hasPreferredPlaybackRate])
+      if ([protobufCopy hasPreferredPlaybackRate])
       {
         v29 = MEMORY[0x1E696AD98];
-        [v4 preferredPlaybackRate];
+        [protobufCopy preferredPlaybackRate];
         v30 = [v29 numberWithFloat:?];
         [v6 setObject:v30 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredPlaybackRate"];
       }
 
-      v31 = [v4 supportedPlaybackSessionTypes];
+      supportedPlaybackSessionTypes = [protobufCopy supportedPlaybackSessionTypes];
 
-      if (v31)
+      if (supportedPlaybackSessionTypes)
       {
-        v32 = [v4 supportedPlaybackSessionTypes];
-        [v6 setObject:v32 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionTypes"];
+        supportedPlaybackSessionTypes2 = [protobufCopy supportedPlaybackSessionTypes];
+        [v6 setObject:supportedPlaybackSessionTypes2 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionTypes"];
       }
 
-      v33 = [v4 currentPlaybackSessionTypes];
+      currentPlaybackSessionTypes = [protobufCopy currentPlaybackSessionTypes];
 
-      if (v33)
+      if (currentPlaybackSessionTypes)
       {
-        v34 = [v4 currentPlaybackSessionTypes];
-        [v6 setObject:v34 forKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentPlaybackSessionTypes"];
+        currentPlaybackSessionTypes2 = [protobufCopy currentPlaybackSessionTypes];
+        [v6 setObject:currentPlaybackSessionTypes2 forKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentPlaybackSessionTypes"];
       }
 
-      v35 = [v4 playbackSessionIdentifier];
+      playbackSessionIdentifier = [protobufCopy playbackSessionIdentifier];
 
-      if (v35)
+      if (playbackSessionIdentifier)
       {
-        v36 = [v4 playbackSessionIdentifier];
-        [v6 setObject:v36 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionIdentifier"];
+        playbackSessionIdentifier2 = [protobufCopy playbackSessionIdentifier];
+        [v6 setObject:playbackSessionIdentifier2 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionIdentifier"];
       }
 
-      if ([v4 currentQueueEndAction])
+      if ([protobufCopy currentQueueEndAction])
       {
-        v37 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "currentQueueEndAction")}];
+        v37 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "currentQueueEndAction")}];
         [v6 setObject:v37 forKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentQueueEndAction"];
       }
 
-      if ([v4 supportedQueueEndActions])
+      if ([protobufCopy supportedQueueEndActions])
       {
         v38 = PBRepeatedInt32NSArray();
         [v6 setObject:v38 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedQueueEndActions"];
       }
 
-      v39 = [v4 proactiveCommandOptions];
+      proactiveCommandOptions = [protobufCopy proactiveCommandOptions];
 
-      if (v39)
+      if (proactiveCommandOptions)
       {
-        v40 = [v4 proactiveCommandOptions];
-        v41 = MRMediaRemoteCommandOptionsFromProtobuf(v40);
+        proactiveCommandOptions2 = [protobufCopy proactiveCommandOptions];
+        v41 = MRMediaRemoteCommandOptionsFromProtobuf(proactiveCommandOptions2);
         [v6 setObject:v41 forKeyedSubscript:@"kMRMediaRemoteCommandInfoProactiveCommandOptions"];
       }
 
-      if ([v4 hasDisabledReason])
+      if ([protobufCopy hasDisabledReason])
       {
-        v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "disabledReason")}];
+        v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "disabledReason")}];
         [v6 setObject:v42 forKeyedSubscript:@"kMRMediaRemoteCommandInfoDisabledReason"];
       }
 
-      if ([v4 hasVocalsControlActive])
+      if ([protobufCopy hasVocalsControlActive])
       {
-        v43 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "vocalsControlActive")}];
+        v43 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "vocalsControlActive")}];
         [v6 setObject:v43 forKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlActive"];
       }
 
-      if ([v4 hasVocalsControlLevel])
+      if ([protobufCopy hasVocalsControlLevel])
       {
         v44 = MEMORY[0x1E696AD98];
-        [v4 vocalsControlLevel];
+        [protobufCopy vocalsControlLevel];
         v45 = [v44 numberWithFloat:?];
         [v6 setObject:v45 forKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlLevel"];
       }
 
-      if ([v4 hasVocalsControlContinuous])
+      if ([protobufCopy hasVocalsControlContinuous])
       {
-        v46 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "vocalsControlContinuous")}];
+        v46 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "vocalsControlContinuous")}];
         [v6 setObject:v46 forKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlContinuous"];
       }
 
-      if ([v4 hasVocalsControlMaxLevel])
+      if ([protobufCopy hasVocalsControlMaxLevel])
       {
         v47 = MEMORY[0x1E696AD98];
-        [v4 vocalsControlMaxLevel];
+        [protobufCopy vocalsControlMaxLevel];
         v48 = [v47 numberWithFloat:?];
         [v6 setObject:v48 forKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMaxLevel"];
       }
 
-      if ([v4 hasVocalsControlMinLevel])
+      if ([protobufCopy hasVocalsControlMinLevel])
       {
         v49 = MEMORY[0x1E696AD98];
-        [v4 vocalsControlMinLevel];
+        [protobufCopy vocalsControlMinLevel];
         v50 = [v49 numberWithFloat:?];
         [v6 setObject:v50 forKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMinLevel"];
       }
 
-      if ([v4 hasSleepTimerTime])
+      if ([protobufCopy hasSleepTimerTime])
       {
         v51 = MEMORY[0x1E696AD98];
-        [v4 sleepTimerTime];
+        [protobufCopy sleepTimerTime];
         v52 = [v51 numberWithDouble:?];
         [v6 setObject:v52 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerTime"];
       }
 
-      if ([v4 hasSleepTimerStopMode])
+      if ([protobufCopy hasSleepTimerStopMode])
       {
-        v53 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "sleepTimerStopMode")}];
+        v53 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "sleepTimerStopMode")}];
         [v6 setObject:v53 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerStopMode"];
       }
 
-      if ([v4 hasSleepTimerFireDate])
+      if ([protobufCopy hasSleepTimerFireDate])
       {
         v54 = MEMORY[0x1E696AD98];
-        [v4 sleepTimerFireDate];
+        [protobufCopy sleepTimerFireDate];
         v55 = [v54 numberWithDouble:?];
         [v6 setObject:v55 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerFireDate"];
       }
 
-      if ([v4 hasLastSectionContentItemID])
+      if ([protobufCopy hasLastSectionContentItemID])
       {
-        v56 = [v4 lastSectionContentItemID];
-        [v6 setObject:v56 forKeyedSubscript:@"kMRMediaRemoteCommandInfoLastSectionContentItemID"];
+        lastSectionContentItemID = [protobufCopy lastSectionContentItemID];
+        [v6 setObject:lastSectionContentItemID forKeyedSubscript:@"kMRMediaRemoteCommandInfoLastSectionContentItemID"];
       }
 
-      if ([v4 hasDialogOptions])
+      if ([protobufCopy hasDialogOptions])
       {
-        v57 = [v4 dialogOptions];
-        v58 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v57);
+        dialogOptions = [protobufCopy dialogOptions];
+        v58 = _MRProtoUtilsNSDictionaryFromProtoDictionary(dialogOptions);
         [v6 setObject:v58 forKeyedSubscript:@"kMRMediaRemoteCommandInfoDialogOptions"];
       }
 
-      if ([v4 hasPlaybackSessionRequirements])
+      if ([protobufCopy hasPlaybackSessionRequirements])
       {
-        v59 = [v4 playbackSessionRequirements];
-        v60 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v59);
+        playbackSessionRequirements = [protobufCopy playbackSessionRequirements];
+        v60 = _MRProtoUtilsNSDictionaryFromProtoDictionary(playbackSessionRequirements);
         [v6 setObject:v60 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionRequirements"];
       }
 
-      if ([v4 hasTransitionStyle])
+      if ([protobufCopy hasTransitionStyle])
       {
-        v61 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "transitionStyle")}];
+        v61 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "transitionStyle")}];
         [v6 setObject:v61 forKeyedSubscript:@"kMRMediaRemoteCommandInfoTransitionStyle"];
       }
 
-      if ([v4 hasSupportsReferencePosition])
+      if ([protobufCopy hasSupportsReferencePosition])
       {
-        v62 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "supportsReferencePosition")}];
+        v62 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(protobufCopy, "supportsReferencePosition")}];
         [v6 setObject:v62 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportsReferencePosition"];
       }
 
-      v63 = [v4 supportedPlaybackSessionIdentifiers];
+      supportedPlaybackSessionIdentifiers = [protobufCopy supportedPlaybackSessionIdentifiers];
 
-      if (v63)
+      if (supportedPlaybackSessionIdentifiers)
       {
         v83 = v6;
         v84 = v5;
-        v64 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v86 = 0u;
         v87 = 0u;
         v88 = 0u;
         v89 = 0u;
-        v85 = v4;
-        v65 = [v4 supportedPlaybackSessionIdentifiers];
-        v66 = [v65 countByEnumeratingWithState:&v86 objects:v91 count:16];
+        v85 = protobufCopy;
+        supportedPlaybackSessionIdentifiers2 = [protobufCopy supportedPlaybackSessionIdentifiers];
+        v66 = [supportedPlaybackSessionIdentifiers2 countByEnumeratingWithState:&v86 objects:v91 count:16];
         if (v66)
         {
           v67 = v66;
@@ -381,39 +381,39 @@
             {
               if (*v87 != v68)
               {
-                objc_enumerationMutation(v65);
+                objc_enumerationMutation(supportedPlaybackSessionIdentifiers2);
               }
 
               v70 = *(*(&v86 + 1) + 8 * i);
-              v71 = [v70 playbackSessionIdentifier];
+              playbackSessionIdentifier3 = [v70 playbackSessionIdentifier];
 
-              if (v71)
+              if (playbackSessionIdentifier3)
               {
-                v72 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary2 = [MEMORY[0x1E695DF90] dictionary];
                 v73 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v70, "playbackSessionPriority")}];
-                [v72 setObject:v73 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionPriority"];
+                [dictionary2 setObject:v73 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionPriority"];
 
-                v74 = [v70 playbackSessionRevision];
-                [v72 setObject:v74 forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionRevision"];
+                playbackSessionRevision = [v70 playbackSessionRevision];
+                [dictionary2 setObject:playbackSessionRevision forKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionRevision"];
 
-                v75 = [v72 copy];
-                v76 = [v70 playbackSessionIdentifier];
-                [v64 setObject:v75 forKeyedSubscript:v76];
+                v75 = [dictionary2 copy];
+                playbackSessionIdentifier4 = [v70 playbackSessionIdentifier];
+                [dictionary setObject:v75 forKeyedSubscript:playbackSessionIdentifier4];
               }
             }
 
-            v67 = [v65 countByEnumeratingWithState:&v86 objects:v91 count:16];
+            v67 = [supportedPlaybackSessionIdentifiers2 countByEnumeratingWithState:&v86 objects:v91 count:16];
           }
 
           while (v67);
         }
 
-        v77 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v64];
+        v77 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
         v6 = v83;
         [v83 setObject:v77 forKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionIdentifiers"];
 
         v5 = v84;
-        v4 = v85;
+        protobufCopy = v85;
       }
 
       if ([v6 count])
@@ -425,24 +425,24 @@
     }
 
     self = v5;
-    v80 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v80 = 0;
+    selfCopy = 0;
   }
 
   v81 = *MEMORY[0x1E69E9840];
-  return v80;
+  return selfCopy;
 }
 
-- (MRCommandInfo)initWithData:(id)a3
+- (MRCommandInfo)initWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [[_MRCommandInfoProtobuf alloc] initWithData:v4];
+    v5 = [[_MRCommandInfoProtobuf alloc] initWithData:dataCopy];
     v6 = [(MRCommandInfo *)self initWithProtobuf:v5];
   }
 
@@ -454,17 +454,17 @@
   return v6;
 }
 
-- (MRCommandInfo)initWithPropertyListData:(id)a3
+- (MRCommandInfo)initWithPropertyListData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v15.receiver = self;
     v15.super_class = MRCommandInfo;
     v5 = [(MRCommandInfo *)&v15 init];
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:0];
+      v6 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:0];
       v7 = [v6 objectForKeyedSubscript:@"kCommandInfoCommandKey"];
       v5->_command = [v7 integerValue];
       v8 = [v6 objectForKeyedSubscript:@"kCommandInfoEnabledKey"];
@@ -480,22 +480,22 @@
     }
 
     self = v5;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)commandInfosFromData:(id)a3
++ (id)commandInfosFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = MRCreateArrayFromData(a3, &__block_literal_global_63);
+    v4 = MRCreateArrayFromData(data, &__block_literal_global_63);
   }
 
   else
@@ -514,11 +514,11 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
   return v3;
 }
 
-+ (id)dataFromCommandInfos:(id)a3
++ (id)dataFromCommandInfos:(id)infos
 {
-  if (a3)
+  if (infos)
   {
-    v4 = MRCreateDataFromArray(a3, &__block_literal_global_15);
+    v4 = MRCreateDataFromArray(infos, &__block_literal_global_15);
   }
 
   else
@@ -544,13 +544,13 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     [(_MRCommandInfoProtobuf *)v3 setEnabled:1];
   }
 
-  v5 = [(MRCommandInfo *)self options];
-  v6 = [v5 count];
+  options = [(MRCommandInfo *)self options];
+  v6 = [options count];
 
   if (v6)
   {
-    v7 = [(MRCommandInfo *)self options];
-    v8 = [v7 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredIntervalsKey"];
+    options2 = [(MRCommandInfo *)self options];
+    v8 = [options2 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredIntervalsKey"];
 
     v215 = 0u;
     v216 = 0u;
@@ -581,16 +581,16 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       while (v11);
     }
 
-    v14 = [(MRCommandInfo *)self options];
-    v15 = [v14 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoIsActiveKey"];
+    options3 = [(MRCommandInfo *)self options];
+    v15 = [options3 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoIsActiveKey"];
 
     if (v15)
     {
       -[_MRCommandInfoProtobuf setActive:](v3, "setActive:", [v15 BOOLValue]);
     }
 
-    v16 = [(MRCommandInfo *)self options];
-    v17 = [v16 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedShortTitleKey"];
+    options4 = [(MRCommandInfo *)self options];
+    v17 = [options4 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedShortTitleKey"];
 
     v185 = v17;
     if ([v17 length])
@@ -600,8 +600,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
 
     else
     {
-      v18 = [(MRCommandInfo *)self options];
-      v19 = [v18 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedTitleKey"];
+      options5 = [(MRCommandInfo *)self options];
+      v19 = [options5 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLocalizedTitleKey"];
 
       if ([v19 length])
       {
@@ -609,8 +609,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       }
     }
 
-    v20 = [(MRCommandInfo *)self options];
-    v21 = [v20 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoMinimumRatingKey"];
+    options6 = [(MRCommandInfo *)self options];
+    v21 = [options6 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoMinimumRatingKey"];
 
     if (v21)
     {
@@ -618,8 +618,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       [(_MRCommandInfoProtobuf *)v3 setMinimumRating:?];
     }
 
-    v22 = [(MRCommandInfo *)self options];
-    v23 = [v22 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoMaximumRatingKey"];
+    options7 = [(MRCommandInfo *)self options];
+    v23 = [options7 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoMaximumRatingKey"];
 
     if (v23)
     {
@@ -627,8 +627,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       [(_MRCommandInfoProtobuf *)v3 setMaximumRating:?];
     }
 
-    v24 = [(MRCommandInfo *)self options];
-    v25 = [v24 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackRates"];
+    options8 = [(MRCommandInfo *)self options];
+    v25 = [options8 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackRates"];
 
     v211 = 0u;
     v212 = 0u;
@@ -661,8 +661,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
 
     v182 = v26;
 
-    v31 = [(MRCommandInfo *)self options];
-    v32 = [v31 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoExtendedSupportedPlaybackRates"];
+    options9 = [(MRCommandInfo *)self options];
+    v32 = [options9 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoExtendedSupportedPlaybackRates"];
 
     v207 = 0u;
     v208 = 0u;
@@ -693,8 +693,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       while (v35);
     }
 
-    v38 = [(MRCommandInfo *)self options];
-    v39 = [v38 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoShuffleMode"];
+    options10 = [(MRCommandInfo *)self options];
+    v39 = [options10 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoShuffleMode"];
 
     if (v39)
     {
@@ -702,8 +702,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v178 = v39;
-    v40 = [(MRCommandInfo *)self options];
-    v41 = [v40 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoRepeatMode"];
+    options11 = [(MRCommandInfo *)self options];
+    v41 = [options11 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoRepeatMode"];
 
     if (v41)
     {
@@ -711,8 +711,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v177 = v41;
-    v42 = [(MRCommandInfo *)self options];
-    v43 = [v42 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPresentationStyleKey"];
+    options12 = [(MRCommandInfo *)self options];
+    v43 = [options12 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPresentationStyleKey"];
 
     if (v43)
     {
@@ -720,8 +720,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v176 = v43;
-    v44 = [(MRCommandInfo *)self options];
-    v45 = [v44 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipInterval"];
+    options13 = [(MRCommandInfo *)self options];
+    v45 = [options13 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipInterval"];
 
     if (v45)
     {
@@ -729,8 +729,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v175 = v45;
-    v46 = [(MRCommandInfo *)self options];
-    v47 = [v46 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoNumberOfAvailableSkips"];
+    options14 = [(MRCommandInfo *)self options];
+    v47 = [options14 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoNumberOfAvailableSkips"];
 
     if (v47)
     {
@@ -738,8 +738,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v174 = v47;
-    v48 = [(MRCommandInfo *)self options];
-    v49 = [v48 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipFrequency"];
+    options15 = [(MRCommandInfo *)self options];
+    v49 = [options15 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSkipFrequency"];
 
     if (v49)
     {
@@ -747,8 +747,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v173 = v49;
-    v50 = [(MRCommandInfo *)self options];
-    v51 = [v50 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCanBeControlledByScrubbingKey"];
+    options16 = [(MRCommandInfo *)self options];
+    v51 = [options16 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCanBeControlledByScrubbingKey"];
 
     if (v51)
     {
@@ -756,8 +756,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v172 = v51;
-    v52 = [(MRCommandInfo *)self options];
-    v53 = [v52 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackQueueTypes"];
+    options17 = [(MRCommandInfo *)self options];
+    v53 = [options17 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackQueueTypes"];
 
     v188 = v33;
     v181 = v53;
@@ -797,8 +797,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     v183 = v23;
     v184 = v21;
     v59 = v15;
-    v60 = [(MRCommandInfo *)self options];
-    v61 = [v60 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedCustomPlaybackQueueIdentifiers"];
+    options18 = [(MRCommandInfo *)self options];
+    v61 = [options18 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedCustomPlaybackQueueIdentifiers"];
 
     if (v61)
     {
@@ -806,8 +806,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       [(_MRCommandInfoProtobuf *)v3 setSupportedCustomQueueIdentifiers:v62];
     }
 
-    v63 = [(MRCommandInfo *)self options];
-    v64 = [v63 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedInsertionPositions"];
+    options19 = [(MRCommandInfo *)self options];
+    v64 = [options19 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedInsertionPositions"];
 
     v171 = v61;
     v180 = v64;
@@ -844,8 +844,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       v33 = v188;
     }
 
-    v70 = [(MRCommandInfo *)self options];
-    v71 = [v70 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoUpNextItemCount"];
+    options20 = [(MRCommandInfo *)self options];
+    v71 = [options20 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoUpNextItemCount"];
 
     if (v71)
     {
@@ -853,8 +853,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v170 = v71;
-    v72 = [(MRCommandInfo *)self options];
-    v73 = [v72 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredPlaybackRate"];
+    options21 = [(MRCommandInfo *)self options];
+    v73 = [options21 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPreferredPlaybackRate"];
 
     v186 = v59;
     if (v73)
@@ -863,8 +863,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       [(_MRCommandInfoProtobuf *)v3 setPreferredPlaybackRate:?];
     }
 
-    v74 = [(MRCommandInfo *)self options];
-    v75 = [v74 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionTypes"];
+    options22 = [(MRCommandInfo *)self options];
+    v75 = [options22 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionTypes"];
 
     if (v75)
     {
@@ -873,8 +873,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v168 = v75;
-    v77 = [(MRCommandInfo *)self options];
-    v78 = [v77 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentPlaybackSessionTypes"];
+    options23 = [(MRCommandInfo *)self options];
+    v78 = [options23 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentPlaybackSessionTypes"];
 
     if (v78)
     {
@@ -883,8 +883,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v167 = v78;
-    v80 = [(MRCommandInfo *)self options];
-    v81 = [v80 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionIdentifier"];
+    options24 = [(MRCommandInfo *)self options];
+    v81 = [options24 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionIdentifier"];
 
     if (v81)
     {
@@ -892,8 +892,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v166 = v81;
-    v82 = [(MRCommandInfo *)self options];
-    v83 = [v82 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoProactiveCommandOptions"];
+    options25 = [(MRCommandInfo *)self options];
+    v83 = [options25 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoProactiveCommandOptions"];
 
     if (v83)
     {
@@ -905,12 +905,12 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     v179 = v83;
     if ([(MRCommandInfo *)self command]== 135)
     {
-      v85 = [(MRCommandInfo *)self options];
-      v86 = [v85 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentQueueEndAction"];
+      options26 = [(MRCommandInfo *)self options];
+      v86 = [options26 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoCurrentQueueEndAction"];
 
       -[_MRCommandInfoProtobuf setCurrentQueueEndAction:](v3, "setCurrentQueueEndAction:", [v86 intValue]);
-      v87 = [(MRCommandInfo *)self options];
-      v88 = [v87 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedQueueEndActions"];
+      options27 = [(MRCommandInfo *)self options];
+      v88 = [options27 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedQueueEndActions"];
 
       v195 = 0u;
       v196 = 0u;
@@ -943,8 +943,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       v33 = v188;
     }
 
-    v94 = [(MRCommandInfo *)self options];
-    v95 = [v94 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoDisabledReason"];
+    options28 = [(MRCommandInfo *)self options];
+    v95 = [options28 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoDisabledReason"];
 
     if (v95)
     {
@@ -952,8 +952,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v165 = v95;
-    v96 = [(MRCommandInfo *)self options];
-    v97 = [v96 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlActive"];
+    options29 = [(MRCommandInfo *)self options];
+    v97 = [options29 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlActive"];
 
     if (v97)
     {
@@ -961,8 +961,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v187 = v97;
-    v98 = [(MRCommandInfo *)self options];
-    v99 = [v98 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlLevel"];
+    options30 = [(MRCommandInfo *)self options];
+    v99 = [options30 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlLevel"];
 
     if (v99)
     {
@@ -971,8 +971,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v164 = v99;
-    v100 = [(MRCommandInfo *)self options];
-    v101 = [v100 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMaxLevel"];
+    options31 = [(MRCommandInfo *)self options];
+    v101 = [options31 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMaxLevel"];
 
     if (v187)
     {
@@ -981,8 +981,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v163 = v101;
-    v102 = [(MRCommandInfo *)self options];
-    v103 = [v102 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMinLevel"];
+    options32 = [(MRCommandInfo *)self options];
+    v103 = [options32 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlMinLevel"];
 
     if (v103)
     {
@@ -990,16 +990,16 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
       [(_MRCommandInfoProtobuf *)v3 setVocalsControlMinLevel:?];
     }
 
-    v104 = [(MRCommandInfo *)self options];
-    v105 = [v104 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlContinuous"];
+    options33 = [(MRCommandInfo *)self options];
+    v105 = [options33 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoVocalsControlContinuous"];
 
     if (v105)
     {
       -[_MRCommandInfoProtobuf setVocalsControlContinuous:](v3, "setVocalsControlContinuous:", [v105 BOOLValue]);
     }
 
-    v106 = [(MRCommandInfo *)self options];
-    v107 = [v106 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerTime"];
+    options34 = [(MRCommandInfo *)self options];
+    v107 = [options34 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerTime"];
 
     if (v107)
     {
@@ -1008,8 +1008,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v161 = v107;
-    v108 = [(MRCommandInfo *)self options];
-    v109 = [v108 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerStopMode"];
+    options35 = [(MRCommandInfo *)self options];
+    v109 = [options35 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerStopMode"];
 
     if (v109)
     {
@@ -1017,8 +1017,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v160 = v109;
-    v110 = [(MRCommandInfo *)self options];
-    v111 = [v110 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerFireDate"];
+    options36 = [(MRCommandInfo *)self options];
+    v111 = [options36 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSleepTimerFireDate"];
 
     if (v111)
     {
@@ -1027,8 +1027,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v159 = v111;
-    v112 = [(MRCommandInfo *)self options];
-    v113 = [v112 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLastSectionContentItemID"];
+    options37 = [(MRCommandInfo *)self options];
+    v113 = [options37 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoLastSectionContentItemID"];
 
     if (v113)
     {
@@ -1036,8 +1036,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v158 = v113;
-    v114 = [(MRCommandInfo *)self options];
-    v115 = [v114 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoTransitionStyle"];
+    options38 = [(MRCommandInfo *)self options];
+    v115 = [options38 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoTransitionStyle"];
 
     v116 = v115;
     v117 = v179;
@@ -1048,8 +1048,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v157 = v116;
-    v119 = [(MRCommandInfo *)self options];
-    v120 = [v119 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoDialogOptions"];
+    options39 = [(MRCommandInfo *)self options];
+    v120 = [options39 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoDialogOptions"];
 
     if (v120)
     {
@@ -1058,8 +1058,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v156 = v120;
-    v122 = [(MRCommandInfo *)self options];
-    v123 = [v122 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionRequirements"];
+    options40 = [(MRCommandInfo *)self options];
+    v123 = [options40 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoPlaybackSessionRequirements"];
 
     if (v123)
     {
@@ -1069,8 +1069,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
 
     v155 = v123;
     v162 = v105;
-    v125 = [(MRCommandInfo *)self options];
-    v126 = [v125 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportsReferencePosition"];
+    options41 = [(MRCommandInfo *)self options];
+    v126 = [options41 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportsReferencePosition"];
 
     v127 = v186;
     if (v126)
@@ -1079,8 +1079,8 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     }
 
     v154 = v126;
-    v128 = [(MRCommandInfo *)self options];
-    v129 = [v128 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionIdentifiers"];
+    options42 = [(MRCommandInfo *)self options];
+    v129 = [options42 objectForKeyedSubscript:@"kMRMediaRemoteCommandInfoSupportedPlaybackSessionIdentifiers"];
 
     v130 = v129;
     v132 = v184;
@@ -1157,16 +1157,16 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
 
 - (NSData)data
 {
-  v2 = [(MRCommandInfo *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRCommandInfo *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -1176,22 +1176,22 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRCommandInfo *)v5 command];
-      if (v6 == [(MRCommandInfo *)self command]&& (v7 = [(MRCommandInfo *)v5 isEnabled], v7 == [(MRCommandInfo *)self isEnabled]))
+      v5 = equalCopy;
+      command = [(MRCommandInfo *)v5 command];
+      if (command == [(MRCommandInfo *)self command]&& (v7 = [(MRCommandInfo *)v5 isEnabled], v7 == [(MRCommandInfo *)self isEnabled]))
       {
-        v9 = [(MRCommandInfo *)v5 options];
-        v10 = [(MRCommandInfo *)self options];
-        if (v9 == v10)
+        options = [(MRCommandInfo *)v5 options];
+        options2 = [(MRCommandInfo *)self options];
+        if (options == options2)
         {
           v8 = 1;
         }
 
         else
         {
-          v11 = [(MRCommandInfo *)v5 options];
-          v12 = [(MRCommandInfo *)self options];
-          v8 = [v11 isEqualToDictionary:v12];
+          options3 = [(MRCommandInfo *)v5 options];
+          options4 = [(MRCommandInfo *)self options];
+          v8 = [options3 isEqualToDictionary:options4];
         }
       }
 
@@ -1212,7 +1212,7 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
 
 - (unint64_t)hash
 {
-  v3 = [(MRCommandInfo *)self command];
+  command = [(MRCommandInfo *)self command];
   if ([(MRCommandInfo *)self isEnabled])
   {
     v4 = 0x1000000;
@@ -1223,7 +1223,7 @@ MRCommandInfo *__38__MRCommandInfo_commandInfosFromData___block_invoke(uint64_t 
     v4 = 0;
   }
 
-  return v4 | v3;
+  return v4 | command;
 }
 
 @end

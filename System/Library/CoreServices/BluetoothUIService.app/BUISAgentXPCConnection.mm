@@ -1,10 +1,10 @@
 @interface BUISAgentXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (void)_xpcSendReplyError:(id)a3 request:(id)a4;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (void)_xpcSendReplyError:(id)error request:(id)request;
 - (void)invalidate;
-- (void)xpcConnectionEvent:(id)a3;
-- (void)xpcConnectionMessage:(id)a3;
-- (void)xpcSendMessage:(int)a3;
+- (void)xpcConnectionEvent:(id)event;
+- (void)xpcConnectionMessage:(id)message;
+- (void)xpcSendMessage:(int)message;
 @end
 
 @implementation BUISAgentXPCConnection
@@ -20,7 +20,7 @@
   }
 }
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -43,10 +43,10 @@
       LogPrintF();
     }
 
-    if (a3)
+    if (error)
     {
       v8 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     return 0;
@@ -55,15 +55,15 @@
   return result;
 }
 
-- (void)xpcConnectionEvent:(id)a3
+- (void)xpcConnectionEvent:(id)event
 {
-  v5 = a3;
-  if (xpc_get_type(v5) == &_xpc_type_dictionary)
+  eventCopy = event;
+  if (xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
-    [(BUISAgentXPCConnection *)self xpcConnectionMessage:v5];
+    [(BUISAgentXPCConnection *)self xpcConnectionMessage:eventCopy];
   }
 
-  else if (v5 == &_xpc_error_connection_invalid)
+  else if (eventCopy == &_xpc_error_connection_invalid)
   {
     if (dword_10001E9A0 <= 20 && (dword_10001E9A0 != -1 || _LogCategory_Initialize()))
     {
@@ -84,13 +84,13 @@
   _objc_release_x1();
 }
 
-- (void)xpcSendMessage:(int)a3
+- (void)xpcSendMessage:(int)message
 {
   connection = self->_xpcCnx;
   if (connection)
   {
     v5 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_int64(v5, [@"BUISKeyType" UTF8String], a3);
+    xpc_dictionary_set_int64(v5, [@"BUISKeyType" UTF8String], message);
     xpc_connection_send_message_with_reply(connection, v5, self->_dispatchQueue, &stru_100018578);
   }
 
@@ -100,14 +100,14 @@
   }
 }
 
-- (void)_xpcSendReplyError:(id)a3 request:(id)a4
+- (void)_xpcSendReplyError:(id)error request:(id)request
 {
-  v9 = a3;
-  v6 = a4;
+  errorCopy = error;
+  requestCopy = request;
   v7 = self->_xpcCnx;
   if (v7)
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(requestCopy);
     if (reply)
     {
       CUXPCEncodeNSError();
@@ -126,10 +126,10 @@
   }
 }
 
-- (void)xpcConnectionMessage:(id)a3
+- (void)xpcConnectionMessage:(id)message
 {
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "BUISKeyType");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "BUISKeyType");
   if (!string)
   {
     if (dword_10001E9A0 <= 90 && (dword_10001E9A0 != -1 || _LogCategory_Initialize()))
@@ -162,7 +162,7 @@
     v10 = v6;
 LABEL_17:
     v9 = NSErrorF();
-    [(BUISAgentXPCConnection *)self _xpcSendReplyError:v9 request:v4, v10];
+    [(BUISAgentXPCConnection *)self _xpcSendReplyError:v9 request:messageCopy, v10];
 
 LABEL_18:
     v8 = 0;
@@ -174,7 +174,7 @@ LABEL_18:
   v8 = v11;
   if (v7)
   {
-    [(BluetoothUIService *)self->_agent activateBanner:v4 withXPCConnection:self];
+    [(BluetoothUIService *)self->_agent activateBanner:messageCopy withXPCConnection:self];
   }
 
 LABEL_19:

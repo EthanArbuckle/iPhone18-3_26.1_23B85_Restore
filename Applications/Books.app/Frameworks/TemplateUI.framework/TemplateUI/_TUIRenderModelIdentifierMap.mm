@@ -1,14 +1,14 @@
 @interface _TUIRenderModelIdentifierMap
-- (_NSRange)allocateNewRangeWithLength:(unint64_t)a3;
+- (_NSRange)allocateNewRangeWithLength:(unint64_t)length;
 - (_TUIRenderModelIdentifierMap)init;
 - (id).cxx_construct;
-- (id)mapRenderModels:(id)a3;
+- (id)mapRenderModels:(id)models;
 - (unint64_t)allocateNewIndex;
-- (unint64_t)indexForIdentifier:(id)a3;
+- (unint64_t)indexForIdentifier:(id)identifier;
 - (unint64_t)largestIndexInUse;
-- (void)_appendInterests:(id)a3;
-- (void)_releaseIndexes:(const void *)a3;
-- (void)_retainIndexes:(const void *)a3;
+- (void)_appendInterests:(id)interests;
+- (void)_releaseIndexes:(const void *)indexes;
+- (void)_retainIndexes:(const void *)indexes;
 @end
 
 @implementation _TUIRenderModelIdentifierMap
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (void)_retainIndexes:(const void *)a3
+- (void)_retainIndexes:(const void *)indexes
 {
-  v3 = a3 + 8;
-  v4 = *a3;
-  if (*a3 != a3 + 8)
+  v3 = indexes + 8;
+  v4 = *indexes;
+  if (*indexes != indexes + 8)
   {
     p_end_node = &self->_indexToReferenceCount.__tree_.__end_node_;
     do
@@ -112,11 +112,11 @@ LABEL_11:
   }
 }
 
-- (void)_releaseIndexes:(const void *)a3
+- (void)_releaseIndexes:(const void *)indexes
 {
-  v3 = a3 + 8;
-  v4 = *a3;
-  if (*a3 != a3 + 8)
+  v3 = indexes + 8;
+  v4 = *indexes;
+  if (*indexes != indexes + 8)
   {
     p_end_node = &self->_indexToReferenceCount.__tree_.__end_node_;
     do
@@ -196,15 +196,15 @@ LABEL_11:
   }
 }
 
-- (void)_appendInterests:(id)a3
+- (void)_appendInterests:(id)interests
 {
-  v5 = a3;
+  interestsCopy = interests;
   if (self->_collectedIndexes.__tree_.__size_)
   {
     v4 = [[_TUIRenderModelIdentifierInterest alloc] initWithIndexes:&self->_collectedIndexes map:self];
     if (v4)
     {
-      [v5 addObject:v4];
+      [interestsCopy addObject:v4];
     }
   }
 
@@ -228,15 +228,15 @@ LABEL_11:
   }
 }
 
-- (id)mapRenderModels:(id)a3
+- (id)mapRenderModels:(id)models
 {
-  v15 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
+  modelsCopy = models;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v15;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -251,8 +251,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [(_TUIRenderModelIdentifierMap *)self indexForIdentifier:v10];
+        identifier = [v9 identifier];
+        v11 = [(_TUIRenderModelIdentifierMap *)self indexForIdentifier:identifier];
 
         if (v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -272,19 +272,19 @@ LABEL_11:
   return v13;
 }
 
-- (unint64_t)indexForIdentifier:(id)a3
+- (unint64_t)indexForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_identifierToIndex objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_identifierToIndex objectForKeyedSubscript:identifierCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
 
       v8 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+      if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_12;
       }
@@ -292,12 +292,12 @@ LABEL_11:
 
     else
     {
-      v7 = [(NSMutableIndexSet *)self->_available firstIndex];
-      if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+      unsignedIntegerValue = [(NSMutableIndexSet *)self->_available firstIndex];
+      if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v7 = [(_TUIRenderModelIdentifierMap *)self allocateNewIndex];
+        unsignedIntegerValue = [(_TUIRenderModelIdentifierMap *)self allocateNewIndex];
         v8 = 0x7FFFFFFFFFFFFFFFLL;
-        if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+        if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_12;
         }
@@ -305,19 +305,19 @@ LABEL_11:
 
       else
       {
-        [(NSMutableIndexSet *)self->_available removeIndex:v7];
+        [(NSMutableIndexSet *)self->_available removeIndex:unsignedIntegerValue];
       }
 
-      v9 = [NSNumber numberWithUnsignedInteger:v7];
-      [(NSMutableDictionary *)self->_identifierToIndex setObject:v9 forKeyedSubscript:v4];
+      v9 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+      [(NSMutableDictionary *)self->_identifierToIndex setObject:v9 forKeyedSubscript:identifierCopy];
 
       indexToIdentifier = self->_indexToIdentifier;
-      v11 = [NSNumber numberWithUnsignedInteger:v7];
-      [(NSMutableDictionary *)indexToIdentifier setObject:v4 forKeyedSubscript:v11];
+      v11 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+      [(NSMutableDictionary *)indexToIdentifier setObject:identifierCopy forKeyedSubscript:v11];
     }
 
-    [(_TUIRenderModelIdentifierMap *)self _collectIndex:v7];
-    v8 = v7;
+    [(_TUIRenderModelIdentifierMap *)self _collectIndex:unsignedIntegerValue];
+    v8 = unsignedIntegerValue;
   }
 
   else
@@ -342,22 +342,22 @@ LABEL_12:
   return result;
 }
 
-- (_NSRange)allocateNewRangeWithLength:(unint64_t)a3
+- (_NSRange)allocateNewRangeWithLength:(unint64_t)length
 {
   nextUnassigned = self->_nextUnassigned;
-  if ((nextUnassigned + a3) < 0)
+  if ((nextUnassigned + length) < 0)
   {
-    v5 = 0;
+    lengthCopy = 0;
     nextUnassigned = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v5 = a3;
-    self->_nextUnassigned = nextUnassigned + a3;
+    lengthCopy = length;
+    self->_nextUnassigned = nextUnassigned + length;
   }
 
-  result.length = v5;
+  result.length = lengthCopy;
   result.location = nextUnassigned;
   return result;
 }

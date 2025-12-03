@@ -1,6 +1,6 @@
 @interface MTRBooleanStateClusterStateChangeEvent
 - (MTRBooleanStateClusterStateChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBooleanStateClusterStateChangeEvent);
-  v5 = [(MTRBooleanStateClusterStateChangeEvent *)self stateValue];
-  [(MTRBooleanStateClusterStateChangeEvent *)v4 setStateValue:v5];
+  stateValue = [(MTRBooleanStateClusterStateChangeEvent *)self stateValue];
+  [(MTRBooleanStateClusterStateChangeEvent *)v4 setStateValue:stateValue];
 
   return v4;
 }

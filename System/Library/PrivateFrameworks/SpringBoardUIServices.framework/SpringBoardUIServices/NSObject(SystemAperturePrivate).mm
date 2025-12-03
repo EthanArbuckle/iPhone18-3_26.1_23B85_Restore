@@ -7,34 +7,34 @@
 
 - (id)systemApertureElementContextPrivate
 {
-  v2 = [a1 systemApertureElementContext];
+  systemApertureElementContext = [self systemApertureElementContext];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [a1 systemApertureElementContext];
+    systemApertureElementContext2 = [self systemApertureElementContext];
   }
 
   else
   {
-    v3 = 0;
+    systemApertureElementContext2 = 0;
   }
 
-  return v3;
+  return systemApertureElementContext2;
 }
 
 - (id)systemApertureHostedElementContext
 {
-  v2 = [a1 systemApertureElementContext];
+  systemApertureElementContext = [self systemApertureElementContext];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [a1 systemApertureElementContext];
+    systemApertureElementContext2 = [self systemApertureElementContext];
   }
 
   else
   {
-    v3 = 0;
+    systemApertureElementContext2 = 0;
   }
 
-  return v3;
+  return systemApertureElementContext2;
 }
 
 @end

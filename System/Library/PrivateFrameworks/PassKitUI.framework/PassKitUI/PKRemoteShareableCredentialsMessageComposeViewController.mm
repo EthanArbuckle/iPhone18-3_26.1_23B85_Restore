@@ -1,30 +1,30 @@
 @interface PKRemoteShareableCredentialsMessageComposeViewController
 - (PKShareableCredentialsMessageComposeViewControllerDelegate)delegate;
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKRemoteShareableCredentialsMessageComposeViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   if (!self->_finished)
   {
     self->_finished = 1;
-    v4 = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
-    [v4 messageComposeViewControllerDidFinishWithResult:0];
+    delegate = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
+    [delegate messageComposeViewControllerDidFinishWithResult:0];
   }
 }
 
-- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)a3
+- (void)messageComposeViewControllerDidFinishWithResult:(BOOL)result
 {
-  v3 = a3;
-  v5 = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
+  resultCopy = result;
+  delegate = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
-    [v6 messageComposeViewControllerDidFinishWithResult:v3];
+    delegate2 = [(PKRemoteShareableCredentialsMessageComposeViewController *)self delegate];
+    [delegate2 messageComposeViewControllerDidFinishWithResult:resultCopy];
   }
 
   else

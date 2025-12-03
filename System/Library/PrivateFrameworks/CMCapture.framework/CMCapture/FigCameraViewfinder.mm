@@ -1,8 +1,8 @@
 @interface FigCameraViewfinder
-+ (BOOL)clientIsAllowedToUseCameraViewfinder:(id *)a3;
++ (BOOL)clientIsAllowedToUseCameraViewfinder:(id *)viewfinder;
 - (FigCameraViewfinder)init;
 - (void)dealloc;
-- (void)startWithOptions:(id)a3;
+- (void)startWithOptions:(id)options;
 - (void)stop;
 @end
 
@@ -31,15 +31,15 @@
   return v2;
 }
 
-+ (BOOL)clientIsAllowedToUseCameraViewfinder:(id *)a3
++ (BOOL)clientIsAllowedToUseCameraViewfinder:(id *)viewfinder
 {
-  v3 = *&a3->var0[4];
-  v5[0] = *a3->var0;
+  v3 = *&viewfinder->var0[4];
+  v5[0] = *viewfinder->var0;
   v5[1] = v3;
   return FigCaptureClientHasEntitlement(v5, @"com.apple.coremedia.cameraviewfinder");
 }
 
-- (void)startWithOptions:(id)a3
+- (void)startWithOptions:(id)options
 {
   v5 = objc_opt_class();
 

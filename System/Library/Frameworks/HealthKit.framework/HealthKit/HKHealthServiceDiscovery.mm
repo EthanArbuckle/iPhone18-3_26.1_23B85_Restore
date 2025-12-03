@@ -1,11 +1,11 @@
 @interface HKHealthServiceDiscovery
-- (HKHealthServiceDiscovery)initWithType:(int64_t)a3;
+- (HKHealthServiceDiscovery)initWithType:(int64_t)type;
 - (id)initForAllTypes;
 @end
 
 @implementation HKHealthServiceDiscovery
 
-- (HKHealthServiceDiscovery)initWithType:(int64_t)a3
+- (HKHealthServiceDiscovery)initWithType:(int64_t)type
 {
   v12.receiver = self;
   v12.super_class = HKHealthServiceDiscovery;
@@ -16,7 +16,7 @@
     goto LABEL_5;
   }
 
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -29,7 +29,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4->_serviceType = a3;
+  v4->_serviceType = type;
   v4->_discoveryIdentifier = 0;
   v6 = v4;
 LABEL_6:

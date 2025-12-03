@@ -3,21 +3,21 @@
 + (id)sharedDonationHandler;
 - (HMDDonationHandler)init;
 - (id)_init;
-- (void)_donateActionSet:(id)a3 withMessage:(id)a4;
-- (void)_donateIntent:(id)a3 withActionSet:(id)a4;
-- (void)_removeIntentForActionSet:(id)a3;
-- (void)donateActionSet:(id)a3 withMessage:(id)a4;
-- (void)removeIntentForActionSet:(id)a3;
+- (void)_donateActionSet:(id)set withMessage:(id)message;
+- (void)_donateIntent:(id)intent withActionSet:(id)set;
+- (void)_removeIntentForActionSet:(id)set;
+- (void)donateActionSet:(id)set withMessage:(id)message;
+- (void)removeIntentForActionSet:(id)set;
 @end
 
 @implementation HMDDonationHandler
 
-- (void)_removeIntentForActionSet:(id)a3
+- (void)_removeIntentForActionSet:(id)set
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [HMDHomeManager deriveIntentGroupIdentifierFromBaseUUID:v5];
+  setCopy = set;
+  uuid = [setCopy uuid];
+  v6 = [HMDHomeManager deriveIntentGroupIdentifierFromBaseUUID:uuid];
 
   v7 = isWatch();
   v8 = MEMORY[0x277CD09C8];
@@ -28,18 +28,18 @@
 
   v9 = MEMORY[0x277CC34A8];
   v10 = *v8;
-  v11 = [v9 defaultSearchableIndex];
-  v12 = [v6 UUIDString];
-  v18[0] = v12;
+  defaultSearchableIndex = [v9 defaultSearchableIndex];
+  uUIDString = [v6 UUIDString];
+  v18[0] = uUIDString;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__HMDDonationHandler__removeIntentForActionSet___block_invoke;
   v16[3] = &unk_2797358C8;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
-  [v11 deleteInteractionsWithGroupIdentifiers:v13 bundleID:v10 protectionClass:0 completionHandler:v16];
+  v17 = setCopy;
+  v14 = setCopy;
+  [defaultSearchableIndex deleteInteractionsWithGroupIdentifiers:v13 bundleID:v10 protectionClass:0 completionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -100,26 +100,26 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donateIntent:(id)a3 withActionSet:(id)a4
+- (void)_donateIntent:(id)intent withActionSet:(id)set
 {
-  v6 = a3;
+  intentCopy = intent;
   v7 = MEMORY[0x277CD3D58];
-  v8 = a4;
-  v9 = [[v7 alloc] initWithIntent:v6 response:0];
-  v10 = [v8 uuid];
+  setCopy = set;
+  v9 = [[v7 alloc] initWithIntent:intentCopy response:0];
+  uuid = [setCopy uuid];
 
-  v11 = [HMDHomeManager deriveIntentGroupIdentifierFromBaseUUID:v10];
+  v11 = [HMDHomeManager deriveIntentGroupIdentifierFromBaseUUID:uuid];
 
-  v12 = [v11 UUIDString];
-  [v9 setGroupIdentifier:v12];
+  uUIDString = [v11 UUIDString];
+  [v9 setGroupIdentifier:uUIDString];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__HMDDonationHandler__donateIntent_withActionSet___block_invoke;
   v14[3] = &unk_2797358C8;
-  v15 = v6;
-  v16 = self;
-  v13 = v6;
+  v15 = intentCopy;
+  selfCopy = self;
+  v13 = intentCopy;
   [v9 donateInteractionWithCompletion:v14];
 }
 
@@ -176,27 +176,27 @@ void __50__HMDDonationHandler__donateIntent_withActionSet___block_invoke(uint64_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donateActionSet:(id)a3 withMessage:(id)a4
+- (void)_donateActionSet:(id)set withMessage:(id)message
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actions];
-  v9 = [v8 count];
+  setCopy = set;
+  messageCopy = message;
+  actions = [setCopy actions];
+  v9 = [actions count];
 
   if (!v9)
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy2 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       v44 = HMFGetLogIdentifier();
-      v45 = [v6 name];
+      name = [setCopy name];
       *buf = 138543618;
       *&buf[4] = v44;
       v62 = 2112;
-      v63 = v45;
+      v63 = name;
       _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_ERROR, "%{public}@There is no action in Action Set: %@", buf, 0x16u);
 
 LABEL_14:
@@ -213,7 +213,7 @@ LABEL_16:
   if (!+[HMDDeviceCapabilities supportsIntentDonation])
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy2 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
@@ -227,17 +227,17 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v10 = [v7 source];
+  source = [messageCopy source];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy3 = self;
   v13 = HMFGetOSLogHandle();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-  if (v10 != 5)
+  if (source != 5)
   {
     if (v14)
     {
       v48 = HMFGetLogIdentifier();
-      v49 = HMDRequestSourceAsString(v10);
+      v49 = HMDRequestSourceAsString(source);
       *buf = 138543618;
       *&buf[4] = v48;
       v62 = 2112;
@@ -252,38 +252,38 @@ LABEL_16:
   if (v14)
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v7 clientIdentifier];
+    clientIdentifier = [messageCopy clientIdentifier];
     *buf = 138543874;
     *&buf[4] = v15;
     v62 = 2112;
     v63 = @"FirstParty";
     v64 = 2112;
-    v65 = v16;
+    v65 = clientIdentifier;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@The trigger source is: %@ (bundleID: %@)", buf, 0x20u);
   }
 
-  v59 = v7;
+  v59 = messageCopy;
 
   objc_autoreleasePoolPop(v11);
-  v17 = v6;
-  v18 = [v17 spiClientIdentifier];
-  v57 = [v17 home];
-  v58 = [v57 spiClientIdentifier];
+  v17 = setCopy;
+  spiClientIdentifier = [v17 spiClientIdentifier];
+  home = [v17 home];
+  spiClientIdentifier2 = [home spiClientIdentifier];
   v19 = objc_alloc(MEMORY[0x277CD4188]);
-  v60 = v12;
-  v20 = v18;
-  v21 = [v18 UUIDString];
-  v22 = [v17 name];
+  v60 = selfCopy3;
+  v20 = spiClientIdentifier;
+  uUIDString = [spiClientIdentifier UUIDString];
+  name2 = [v17 name];
 
-  v23 = [v19 initWithIdentifier:v21 string:v22];
+  v23 = [v19 initWithIdentifier:uUIDString string:name2];
   v24 = objc_alloc(MEMORY[0x277CD4188]);
-  v25 = [v58 UUIDString];
-  v26 = [v57 name];
-  v27 = [v24 initWithIdentifier:v25 string:v26];
+  uUIDString2 = [spiClientIdentifier2 UUIDString];
+  name3 = [home name];
+  v27 = [v24 initWithIdentifier:uUIDString2 string:name3];
 
   v28 = objc_alloc(MEMORY[0x277CD3CF8]);
-  v29 = [v20 UUIDString];
-  *buf = v29;
+  uUIDString3 = [v20 UUIDString];
+  *buf = uUIDString3;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
   v31 = [v28 initWithEntityIdentifiers:v30 home:v27 scene:v23 homeZone:0 group:0 room:0 accessory:0 service:0 entityType:5 serviceType:0 subServiceType:0];
 
@@ -321,22 +321,22 @@ LABEL_16:
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       v53 = HMFGetLogIdentifier();
-      v54 = [v17 name];
-      v55 = [v17 home];
-      v56 = [v55 name];
+      name4 = [v17 name];
+      home2 = [v17 home];
+      name5 = [home2 name];
       *buf = 138543874;
       *&buf[4] = v53;
       v62 = 2112;
-      v63 = v54;
+      v63 = name4;
       v64 = 2112;
-      v65 = v56;
+      v65 = name5;
       _os_log_impl(&dword_2531F8000, v52, OS_LOG_TYPE_ERROR, "%{public}@Unable to get the intent of Action Set %@ in Home %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v50);
   }
 
-  v7 = v59;
+  messageCopy = v59;
 LABEL_17:
 
   v47 = *MEMORY[0x277D85DE8];
@@ -359,35 +359,35 @@ LABEL_17:
   return v2;
 }
 
-- (void)removeIntentForActionSet:(id)a3
+- (void)removeIntentForActionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(HMDDonationHandler *)self workQueue];
+  setCopy = set;
+  workQueue = [(HMDDonationHandler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HMDDonationHandler_removeIntentForActionSet___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = setCopy;
+  v6 = setCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)donateActionSet:(id)a3 withMessage:(id)a4
+- (void)donateActionSet:(id)set withMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDDonationHandler *)self workQueue];
+  setCopy = set;
+  messageCopy = message;
+  workQueue = [(HMDDonationHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__HMDDonationHandler_donateActionSet_withMessage___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = setCopy;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = setCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (HMDDonationHandler)init

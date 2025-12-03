@@ -1,38 +1,38 @@
 @interface CXChannelServiceClient
 - (BOOL)isPermittedToUsePublicAPI;
-- (CXChannelServiceClient)initWithConnection:(id)a3;
+- (CXChannelServiceClient)initWithConnection:(id)connection;
 - (CXChannelServiceClientDelegate)delegate;
-- (id)_createSandboxURLAccessValidatedUpdate:(id)a3;
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4;
-- (void)commitTransaction:(id)a3;
-- (void)handleActionTimeout:(id)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)registerWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)reportAudioFinishedForChannelWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)reportChannelWithUUID:(id)a3 connectedAtDate:(id)a4 completionHandler:(id)a5;
-- (void)reportChannelWithUUID:(id)a3 disconnectedAtDate:(id)a4 disconnectedReason:(id)a5 completionHandler:(id)a6;
-- (void)reportChannelWithUUID:(id)a3 startedConnectingAtDate:(id)a4 completionHandler:(id)a5;
-- (void)reportChannelWithUUID:(id)a3 updated:(id)a4 completionHandler:(id)a5;
-- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)a3 reason:(id)a4 completionHandler:(id)a5;
-- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)a3 update:(id)a4 shouldReplaceOutgoingTransmission:(id)a5 completionHandler:(id)a6;
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4;
+- (id)_createSandboxURLAccessValidatedUpdate:(id)update;
+- (void)actionCompleted:(id)completed completionHandler:(id)handler;
+- (void)commitTransaction:(id)transaction;
+- (void)handleActionTimeout:(id)timeout;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)registerWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)reportAudioFinishedForChannelWithUUID:(id)d completionHandler:(id)handler;
+- (void)reportChannelWithUUID:(id)d connectedAtDate:(id)date completionHandler:(id)handler;
+- (void)reportChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(id)reason completionHandler:(id)handler;
+- (void)reportChannelWithUUID:(id)d startedConnectingAtDate:(id)date completionHandler:(id)handler;
+- (void)reportChannelWithUUID:(id)d updated:(id)updated completionHandler:(id)handler;
+- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(id)reason completionHandler:(id)handler;
+- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(id)transmission completionHandler:(id)handler;
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation CXChannelServiceClient
 
-- (CXChannelServiceClient)initWithConnection:(id)a3
+- (CXChannelServiceClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CXChannelServiceClient;
-  v5 = [(CXServiceClient *)&v9 initWithConnection:v4];
+  v5 = [(CXServiceClient *)&v9 initWithConnection:connectionCopy];
   v6 = v5;
   if (v5 && ![(CXChannelServiceClient *)v5 isPermittedToUsePublicAPI])
   {
     v7 = CXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CXChannelServiceClient *)v6 initWithConnection:v4, v7];
+      [(CXChannelServiceClient *)v6 initWithConnection:connectionCopy, v7];
     }
 
     v6 = 0;
@@ -58,38 +58,38 @@
   return v3;
 }
 
-- (void)actionCompleted:(id)a3 completionHandler:(id)a4
+- (void)actionCompleted:(id)completed completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v34 = "[CXChannelServiceClient actionCompleted:completionHandler:]";
     v35 = 2112;
-    v36 = v6;
+    v36 = completedCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with action: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (completedCopy)
     {
       if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
       {
         if (![(CXServiceClient *)self isPermittedToUsePrivateAPI])
         {
-          v9 = [v6 sanitizedCopy];
+          sanitizedCopy = [completedCopy sanitizedCopy];
 
-          v6 = v9;
+          completedCopy = sanitizedCopy;
         }
 
-        v10 = [(CXChannelServiceClient *)self delegate];
-        [v10 serviceClient:self actionCompleted:v6];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self actionCompleted:completedCopy];
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       else
@@ -104,7 +104,7 @@
         v29[1] = 3221225472;
         v29[2] = __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invoke_11;
         v29[3] = &unk_1E7C07388;
-        v30 = v7;
+        v30 = handlerCopy;
         __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invoke_11(v29);
       }
     }
@@ -121,9 +121,9 @@
       v31[1] = 3221225472;
       v31[2] = __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invoke_10;
       v31[3] = &unk_1E7C07388;
-      v32 = v7;
+      v32 = handlerCopy;
       __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invoke_10(v31);
-      v6 = v32;
+      completedCopy = v32;
     }
   }
 
@@ -153,36 +153,36 @@ void __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invo
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)registerWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)registerWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v31 = "[CXChannelServiceClient registerWithConfiguration:completionHandler:]";
     v32 = 2112;
-    v33 = v6;
+    v33 = configurationCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with configuration: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (configurationCopy)
     {
       if (![(CXServiceClient *)self isPermittedToUsePrivateAPI])
       {
-        v9 = [v6 sanitizedCopy];
+        sanitizedCopy = [configurationCopy sanitizedCopy];
 
-        v6 = v9;
+        configurationCopy = sanitizedCopy;
       }
 
-      v10 = [(CXChannelServiceClient *)self delegate];
-      [v10 serviceClient:self registeredWithConfiguration:v6];
+      delegate = [(CXChannelServiceClient *)self delegate];
+      [delegate serviceClient:self registeredWithConfiguration:configurationCopy];
 
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -197,9 +197,9 @@ void __60__CXChannelServiceClient_actionCompleted_completionHandler___block_invo
       v28[1] = 3221225472;
       v28[2] = __70__CXChannelServiceClient_registerWithConfiguration_completionHandler___block_invoke_17;
       v28[3] = &unk_1E7C07388;
-      v29 = v7;
+      v29 = handlerCopy;
       __70__CXChannelServiceClient_registerWithConfiguration_completionHandler___block_invoke_17(v28);
-      v6 = v29;
+      configurationCopy = v29;
     }
   }
 
@@ -222,32 +222,32 @@ void __70__CXChannelServiceClient_registerWithConfiguration_completionHandler___
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportAudioFinishedForChannelWithUUID:(id)a3 completionHandler:(id)a4
+- (void)reportAudioFinishedForChannelWithUUID:(id)d completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315394;
     v35 = "[CXChannelServiceClient reportAudioFinishedForChannelWithUUID:completionHandler:]";
     v36 = 2112;
-    v37 = v9;
+    v37 = uUIDString;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with UUID: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       if ([(CXServiceClient *)self isPermittedToUsePrivateAPI])
       {
-        v10 = [(CXChannelServiceClient *)self delegate];
-        [v10 serviceClient:self reportedAudioFinishedForChannelWithUUID:v6];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self reportedAudioFinishedForChannelWithUUID:dCopy];
 
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_17;
       }
 
@@ -261,7 +261,7 @@ void __70__CXChannelServiceClient_registerWithConfiguration_completionHandler___
       v30[1] = 3221225472;
       v30[2] = __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completionHandler___block_invoke_24;
       v30[3] = &unk_1E7C07388;
-      v31 = v7;
+      v31 = handlerCopy;
       __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completionHandler___block_invoke_24(v30);
       v27 = v31;
     }
@@ -278,7 +278,7 @@ void __70__CXChannelServiceClient_registerWithConfiguration_completionHandler___
       v32[1] = 3221225472;
       v32[2] = __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completionHandler___block_invoke_23;
       v32[3] = &unk_1E7C07388;
-      v33 = v7;
+      v33 = handlerCopy;
       __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completionHandler___block_invoke_23(v32);
       v27 = v33;
     }
@@ -310,35 +310,35 @@ void __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completi
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportChannelWithUUID:(id)a3 connectedAtDate:(id)a4 completionHandler:(id)a5
+- (void)reportChannelWithUUID:(id)d connectedAtDate:(id)date completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dateCopy = date;
+  handlerCopy = handler;
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315650;
     v38 = "[CXChannelServiceClient reportChannelWithUUID:connectedAtDate:completionHandler:]";
     v39 = 2112;
-    v40 = v12;
+    v40 = uUIDString;
     v41 = 2112;
-    v42 = v9;
+    v42 = dateCopy;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Received %s with UUID: %@ connectedAtDate: %@", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
       {
-        v13 = [(CXChannelServiceClient *)self delegate];
-        [v13 serviceClient:self reportedChannelWithUUID:v8 connectedAtDate:v9];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self reportedChannelWithUUID:dCopy connectedAtDate:dateCopy];
 
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_17;
       }
 
@@ -352,7 +352,7 @@ void __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completi
       v33[1] = 3221225472;
       v33[2] = __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completionHandler___block_invoke_28;
       v33[3] = &unk_1E7C07388;
-      v34 = v10;
+      v34 = handlerCopy;
       __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completionHandler___block_invoke_28(v33);
       v30 = v34;
     }
@@ -369,7 +369,7 @@ void __82__CXChannelServiceClient_reportAudioFinishedForChannelWithUUID_completi
       v35[1] = 3221225472;
       v35[2] = __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completionHandler___block_invoke_27;
       v35[3] = &unk_1E7C07388;
-      v36 = v10;
+      v36 = handlerCopy;
       __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completionHandler___block_invoke_27(v35);
       v30 = v36;
     }
@@ -401,40 +401,40 @@ void __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completi
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportChannelWithUUID:(id)a3 disconnectedAtDate:(id)a4 disconnectedReason:(id)a5 completionHandler:(id)a6
+- (void)reportChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(id)reason completionHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dateCopy = date;
+  reasonCopy = reason;
+  handlerCopy = handler;
   v14 = CXDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315906;
     v51 = "[CXChannelServiceClient reportChannelWithUUID:disconnectedAtDate:disconnectedReason:completionHandler:]";
     v52 = 2112;
-    v53 = v15;
+    v53 = uUIDString;
     v54 = 2112;
-    v55 = v11;
+    v55 = dateCopy;
     v56 = 2112;
-    v57 = v12;
+    v57 = reasonCopy;
     _os_log_impl(&dword_1B47F3000, v14, OS_LOG_TYPE_DEFAULT, "Received %s with UUID: %@ disconnectedAtDate: %@ disconnectedReason: %@", buf, 0x2Au);
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    if (v10)
+    if (dCopy)
     {
-      if (v12)
+      if (reasonCopy)
       {
         if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
         {
-          v16 = [(CXChannelServiceClient *)self delegate];
-          [v16 serviceClient:self reportedChannelWithUUID:v10 disconnectedAtDate:v11 disconnectedReason:{objc_msgSend(v12, "integerValue")}];
+          delegate = [(CXChannelServiceClient *)self delegate];
+          [delegate serviceClient:self reportedChannelWithUUID:dCopy disconnectedAtDate:dateCopy disconnectedReason:{objc_msgSend(reasonCopy, "integerValue")}];
 
-          v13[2](v13, 0);
+          handlerCopy[2](handlerCopy, 0);
           goto LABEL_21;
         }
 
@@ -448,7 +448,7 @@ void __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completi
         v44[1] = 3221225472;
         v44[2] = __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_36;
         v44[3] = &unk_1E7C07388;
-        v45 = v13;
+        v45 = handlerCopy;
         __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_36(v44);
         v33 = v45;
       }
@@ -465,7 +465,7 @@ void __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completi
         v46[1] = 3221225472;
         v46[2] = __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_35;
         v46[3] = &unk_1E7C07388;
-        v47 = v13;
+        v47 = handlerCopy;
         __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_35(v46);
         v33 = v47;
       }
@@ -483,7 +483,7 @@ void __82__CXChannelServiceClient_reportChannelWithUUID_connectedAtDate_completi
       v48[1] = 3221225472;
       v48[2] = __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_31;
       v48[3] = &unk_1E7C07388;
-      v49 = v13;
+      v49 = handlerCopy;
       __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disconnectedReason_completionHandler___block_invoke_31(v48);
       v33 = v49;
     }
@@ -522,35 +522,35 @@ void __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disc
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportChannelWithUUID:(id)a3 startedConnectingAtDate:(id)a4 completionHandler:(id)a5
+- (void)reportChannelWithUUID:(id)d startedConnectingAtDate:(id)date completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dateCopy = date;
+  handlerCopy = handler;
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315650;
     v38 = "[CXChannelServiceClient reportChannelWithUUID:startedConnectingAtDate:completionHandler:]";
     v39 = 2112;
-    v40 = v12;
+    v40 = uUIDString;
     v41 = 2112;
-    v42 = v9;
+    v42 = dateCopy;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Received %s with UUID: %@ startedConnectingAtDate: %@", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    if (v8)
+    if (dCopy)
     {
       if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
       {
-        v13 = [(CXChannelServiceClient *)self delegate];
-        [v13 serviceClient:self reportedChannelWithUUID:v8 startedConnectingAtDate:v9];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self reportedChannelWithUUID:dCopy startedConnectingAtDate:dateCopy];
 
-        v10[2](v10, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_17;
       }
 
@@ -564,7 +564,7 @@ void __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disc
       v33[1] = 3221225472;
       v33[2] = __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_completionHandler___block_invoke_40;
       v33[3] = &unk_1E7C07388;
-      v34 = v10;
+      v34 = handlerCopy;
       __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_completionHandler___block_invoke_40(v33);
       v30 = v34;
     }
@@ -581,7 +581,7 @@ void __104__CXChannelServiceClient_reportChannelWithUUID_disconnectedAtDate_disc
       v35[1] = 3221225472;
       v35[2] = __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_completionHandler___block_invoke_39;
       v35[3] = &unk_1E7C07388;
-      v36 = v10;
+      v36 = handlerCopy;
       __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_completionHandler___block_invoke_39(v35);
       v30 = v36;
     }
@@ -613,28 +613,28 @@ void __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportChannelWithUUID:(id)a3 updated:(id)a4 completionHandler:(id)a5
+- (void)reportChannelWithUUID:(id)d updated:(id)updated completionHandler:(id)handler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  updatedCopy = updated;
+  handlerCopy = handler;
   v11 = CXDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315650;
     v50 = "[CXChannelServiceClient reportChannelWithUUID:updated:completionHandler:]";
     v51 = 2112;
-    v52 = v12;
+    v52 = uUIDString;
     v53 = 2112;
-    v54 = v9;
+    v54 = updatedCopy;
     _os_log_impl(&dword_1B47F3000, v11, OS_LOG_TYPE_DEFAULT, "Received %s with UUID: %@ update: %@", buf, 0x20u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    if (!v8)
+    if (!dCopy)
     {
       v24 = CXDefaultLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -646,28 +646,28 @@ void __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_
       v47[1] = 3221225472;
       v47[2] = __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_43;
       v47[3] = &unk_1E7C07388;
-      v48 = v10;
+      v48 = handlerCopy;
       __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_43(v47);
       v32 = v48;
       goto LABEL_22;
     }
 
-    if (v9)
+    if (updatedCopy)
     {
       if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
       {
         if (![(CXServiceClient *)self isPermittedToUsePrivateAPI])
         {
-          v13 = [v9 sanitizedCopy];
+          sanitizedCopy = [updatedCopy sanitizedCopy];
 
-          v9 = v13;
+          updatedCopy = sanitizedCopy;
         }
 
-        v14 = [(CXChannelServiceClient *)self _createSandboxURLAccessValidatedUpdate:v9];
-        v15 = [(CXChannelServiceClient *)self delegate];
-        [v15 serviceClient:self reportedChannelWithUUID:v8 updated:v14];
+        v14 = [(CXChannelServiceClient *)self _createSandboxURLAccessValidatedUpdate:updatedCopy];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self reportedChannelWithUUID:dCopy updated:v14];
 
-        (*(v10 + 2))(v10, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0);
         goto LABEL_23;
       }
 
@@ -681,7 +681,7 @@ void __90__CXChannelServiceClient_reportChannelWithUUID_startedConnectingAtDate_
       v43[1] = 3221225472;
       v43[2] = __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_48;
       v43[3] = &unk_1E7C07388;
-      v44 = v10;
+      v44 = handlerCopy;
       __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_48(v43);
       v32 = v44;
 LABEL_22:
@@ -699,9 +699,9 @@ LABEL_22:
     v45[1] = 3221225472;
     v45[2] = __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_47;
     v45[3] = &unk_1E7C07388;
-    v46 = v10;
+    v46 = handlerCopy;
     __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandler___block_invoke_47(v45);
-    v9 = v46;
+    updatedCopy = v46;
   }
 
   else
@@ -739,21 +739,21 @@ void __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandle
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)reportIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dCopy = d;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v8)
+    if (dCopy)
     {
-      if (v9)
+      if (reasonCopy)
       {
         if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
         {
-          v11 = [(CXChannelServiceClient *)self delegate];
-          [v11 serviceClient:self reportedIncomingTransmissionEndedForChannelWithUUID:v8 reason:objc_msgSend(v9 completionHandler:{"integerValue"), v10}];
+          delegate = [(CXChannelServiceClient *)self delegate];
+          [delegate serviceClient:self reportedIncomingTransmissionEndedForChannelWithUUID:dCopy reason:objc_msgSend(reasonCopy completionHandler:{"integerValue"), handlerCopy}];
 
           goto LABEL_19;
         }
@@ -768,7 +768,7 @@ void __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandle
         v38[1] = 3221225472;
         v38[2] = __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_56;
         v38[3] = &unk_1E7C07388;
-        v39 = v10;
+        v39 = handlerCopy;
         __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_56(v38);
         v28 = v39;
       }
@@ -785,7 +785,7 @@ void __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandle
         v40[1] = 3221225472;
         v40[2] = __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_55;
         v40[3] = &unk_1E7C07388;
-        v41 = v10;
+        v41 = handlerCopy;
         __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_55(v40);
         v28 = v41;
       }
@@ -803,7 +803,7 @@ void __74__CXChannelServiceClient_reportChannelWithUUID_updated_completionHandle
       v42[1] = 3221225472;
       v42[2] = __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_51;
       v42[3] = &unk_1E7C07388;
-      v43 = v10;
+      v43 = handlerCopy;
       __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWithUUID_reason_completionHandler___block_invoke_51(v42);
       v28 = v43;
     }
@@ -841,23 +841,23 @@ void __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWith
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)a3 update:(id)a4 shouldReplaceOutgoingTransmission:(id)a5 completionHandler:(id)a6
+- (void)reportIncomingTransmissionStartedForChannelWithUUID:(id)d update:(id)update shouldReplaceOutgoingTransmission:(id)transmission completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  dCopy = d;
+  updateCopy = update;
+  transmissionCopy = transmission;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v10)
+    if (dCopy)
     {
-      if (v11)
+      if (updateCopy)
       {
         if ([(CXChannelServiceClient *)self isPermittedToUsePublicAPI])
         {
-          v14 = [(CXChannelServiceClient *)self _createSandboxURLAccessValidatedUpdate:v11];
-          v15 = [(CXChannelServiceClient *)self delegate];
-          [v15 serviceClient:self reportedIncomingTransmissionStartedForChannelWithUUID:v10 update:v14 shouldReplaceOutgoingTransmission:objc_msgSend(v12 completionHandler:{"BOOLValue"), v13}];
+          v14 = [(CXChannelServiceClient *)self _createSandboxURLAccessValidatedUpdate:updateCopy];
+          delegate = [(CXChannelServiceClient *)self delegate];
+          [delegate serviceClient:self reportedIncomingTransmissionStartedForChannelWithUUID:dCopy update:v14 shouldReplaceOutgoingTransmission:objc_msgSend(transmissionCopy completionHandler:{"BOOLValue"), handlerCopy}];
 
           goto LABEL_19;
         }
@@ -872,7 +872,7 @@ void __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWith
         v42[1] = 3221225472;
         v42[2] = __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_61;
         v42[3] = &unk_1E7C07388;
-        v43 = v13;
+        v43 = handlerCopy;
         __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_61(v42);
         v32 = v43;
       }
@@ -889,7 +889,7 @@ void __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWith
         v44[1] = 3221225472;
         v44[2] = __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_60;
         v44[3] = &unk_1E7C07388;
-        v45 = v13;
+        v45 = handlerCopy;
         __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_60(v44);
         v32 = v45;
       }
@@ -907,7 +907,7 @@ void __101__CXChannelServiceClient_reportIncomingTransmissionEndedForChannelWith
       v46[1] = 3221225472;
       v46[2] = __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_59;
       v46[3] = &unk_1E7C07388;
-      v47 = v13;
+      v47 = handlerCopy;
       __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWithUUID_update_shouldReplaceOutgoingTransmission_completionHandler___block_invoke_59(v46);
       v32 = v47;
     }
@@ -945,29 +945,29 @@ void __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWi
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)requestTransaction:(id)a3 completionHandler:(id)a4
+- (void)requestTransaction:(id)transaction completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v32 = "[CXChannelServiceClient requestTransaction:completionHandler:]";
     v33 = 2112;
-    v34 = v6;
+    v34 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "Received %s with transaction: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (transactionCopy)
     {
       if ([(CXServiceClient *)self isPermittedToUsePrivateAPI])
       {
-        v9 = [(CXChannelServiceClient *)self delegate];
-        [v9 serviceClient:self requestedTransaction:v6 completionHandler:v7];
+        delegate = [(CXChannelServiceClient *)self delegate];
+        [delegate serviceClient:self requestedTransaction:transactionCopy completionHandler:handlerCopy];
       }
 
       else
@@ -982,9 +982,9 @@ void __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWi
         v27[1] = 3221225472;
         v27[2] = __63__CXChannelServiceClient_requestTransaction_completionHandler___block_invoke_68;
         v27[3] = &unk_1E7C07388;
-        v28 = v7;
+        v28 = handlerCopy;
         __63__CXChannelServiceClient_requestTransaction_completionHandler___block_invoke_68(v27);
-        v9 = v28;
+        delegate = v28;
       }
     }
 
@@ -1000,18 +1000,18 @@ void __137__CXChannelServiceClient_reportIncomingTransmissionStartedForChannelWi
       v29[1] = 3221225472;
       v29[2] = __63__CXChannelServiceClient_requestTransaction_completionHandler___block_invoke_67;
       v29[3] = &unk_1E7C07388;
-      v30 = v7;
+      v30 = handlerCopy;
       __63__CXChannelServiceClient_requestTransaction_completionHandler___block_invoke_67(v29);
-      v9 = v30;
+      delegate = v30;
     }
   }
 
   else
   {
-    v9 = CXDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate = CXDefaultLog();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      [(CXCallSource *)v9 requestTransaction:v10 completionHandler:v11, v12, v13, v14, v15, v16];
+      [(CXCallSource *)delegate requestTransaction:v10 completionHandler:v11, v12, v13, v14, v15, v16];
     }
   }
 
@@ -1032,12 +1032,12 @@ void __63__CXChannelServiceClient_requestTransaction_completionHandler___block_i
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_createSandboxURLAccessValidatedUpdate:(id)a3
+- (id)_createSandboxURLAccessValidatedUpdate:(id)update
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
-  v5 = [v4 sandboxExtendedImageURL];
-  v6 = [v5 URL];
+  v4 = [update copy];
+  sandboxExtendedImageURL = [v4 sandboxExtendedImageURL];
+  v6 = [sandboxExtendedImageURL URL];
 
   if (v6 && ![(CXServiceClient *)self clientCanAccessSandboxFileURL:v6])
   {
@@ -1052,21 +1052,21 @@ void __63__CXChannelServiceClient_requestTransaction_completionHandler___block_i
     [v4 setSandboxExtendedImageURL:0];
   }
 
-  v8 = [v4 activeRemoteParticipant];
-  v9 = [v8 imageURL];
+  activeRemoteParticipant = [v4 activeRemoteParticipant];
+  imageURL = [activeRemoteParticipant imageURL];
 
-  if (v9 && ![(CXServiceClient *)self clientCanAccessSandboxFileURL:v9])
+  if (imageURL && ![(CXServiceClient *)self clientCanAccessSandboxFileURL:imageURL])
   {
     v10 = CXDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = imageURL;
       _os_log_impl(&dword_1B47F3000, v10, OS_LOG_TYPE_DEFAULT, "[WARN] Client does not have permission to access active remote participant url: %@", &v14, 0xCu);
     }
 
-    v11 = [v4 activeRemoteParticipant];
-    [v11 setImageURL:0];
+    activeRemoteParticipant2 = [v4 activeRemoteParticipant];
+    [activeRemoteParticipant2 setImageURL:0];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1074,59 +1074,59 @@ void __63__CXChannelServiceClient_requestTransaction_completionHandler___block_i
   return v4;
 }
 
-- (void)commitTransaction:(id)a3
+- (void)commitTransaction:(id)transaction
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Sending commit for transaction %@", &v9, 0xCu);
   }
 
-  v6 = [(CXServiceClient *)self connection];
-  v7 = [v6 remoteTarget];
-  [v7 commitTransaction:v4];
+  connection = [(CXServiceClient *)self connection];
+  remoteTarget = [connection remoteTarget];
+  [remoteTarget commitTransaction:transactionCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleActionTimeout:(id)a3
+- (void)handleActionTimeout:(id)timeout
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = timeoutCopy;
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Sending handle timeout for action %@", &v9, 0xCu);
   }
 
-  v6 = [(CXServiceClient *)self connection];
-  v7 = [v6 remoteTarget];
-  [v7 handleActionTimeout:v4];
+  connection = [(CXServiceClient *)self connection];
+  remoteTarget = [connection remoteTarget];
+  [remoteTarget handleActionTimeout:timeoutCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = CXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = [v4 BOOLValue];
+    v9[1] = [toCopy BOOLValue];
     _os_log_impl(&dword_1B47F3000, v5, OS_LOG_TYPE_DEFAULT, "Sending handleAudioSessionActivationStateChangedTo %d", v9, 8u);
   }
 
-  v6 = [(CXServiceClient *)self connection];
-  v7 = [v6 remoteTarget];
-  [v7 handleAudioSessionActivationStateChangedTo:v4];
+  connection = [(CXServiceClient *)self connection];
+  remoteTarget = [connection remoteTarget];
+  [remoteTarget handleAudioSessionActivationStateChangedTo:toCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }

@@ -1,16 +1,16 @@
 @interface BTShareAudioConnectingViewController
 - (uint64_t)_updateForDeviceInfo;
-- (void)_updateDeviceVisual:(id)a3;
+- (void)_updateDeviceVisual:(id)visual;
 - (void)_updateForDeviceInfo;
-- (void)eventCancel:(id)a3;
-- (void)sessionProgressEvent:(int)a3 info:(id)a4;
+- (void)eventCancel:(id)cancel;
+- (void)sessionProgressEvent:(int)event info:(id)info;
 @end
 
 @implementation BTShareAudioConnectingViewController
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioConnectingViewController eventCancel:];
@@ -19,18 +19,18 @@
   [(BTShareAudioViewController *)self->super._mainController reportUserCancelled];
 }
 
-- (void)sessionProgressEvent:(int)a3 info:(id)a4
+- (void)sessionProgressEvent:(int)event info:(id)info
 {
-  v6 = a4;
-  if (a3 == 200 || a3 == 300 || a3 == 220)
+  infoCopy = info;
+  if (event == 200 || event == 300 || event == 220)
   {
-    v9 = v6;
+    v9 = infoCopy;
     [(BTShareAudioConnectingViewController *)self _updateForDeviceInfo];
-    v7 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+    mainBundle = [(BTShareAudioViewController *)self->super._mainController mainBundle];
     v8 = CULocalizedStringEx();
     [(UIActivityIndicatorView *)self->_progressActivity setText:v8];
 
-    v6 = v9;
+    infoCopy = v9;
   }
 }
 
@@ -44,7 +44,7 @@
 
   else
   {
-    v4 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+    mainBundle = [(BTShareAudioViewController *)self->super._mainController mainBundle];
     if (self->_colorCode)
     {
       SFLocalizedNameForBluetoothProductID();
@@ -110,12 +110,12 @@ void __60__BTShareAudioConnectingViewController__updateForDeviceInfo__block_invo
   }
 }
 
-- (void)_updateDeviceVisual:(id)a3
+- (void)_updateDeviceVisual:(id)visual
 {
   v12 = [(BTShareAudioViewController *)self->super._mainController _moviePathForPID:self->_colorCode colorCode:self->_productIDActive];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-Loop", v12];
-  v5 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
-  v6 = [v5 pathForResource:v4 ofType:@"mov"];
+  mainBundle = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+  v6 = [mainBundle pathForResource:v4 ofType:@"mov"];
 
   if (v6)
   {
@@ -150,8 +150,8 @@ void __60__BTShareAudioConnectingViewController__updateForDeviceInfo__block_invo
       }
 
       v9 = MEMORY[0x277D755B8];
-      v10 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
-      v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:v10 compatibleWithTraitCollection:0];
+      mainBundle2 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+      v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:mainBundle2 compatibleWithTraitCollection:0];
       p_productID = &self->_productMovieView;
       [*p_productID setImage:v11];
     }
@@ -162,7 +162,7 @@ void __60__BTShareAudioConnectingViewController__updateForDeviceInfo__block_invo
 
 - (uint64_t)_updateForDeviceInfo
 {
-  v3 = *a1;
+  v3 = *self;
   v4 = *(a2 + 1024);
   return LogPrintF();
 }

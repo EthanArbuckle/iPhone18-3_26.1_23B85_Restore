@@ -1,46 +1,46 @@
 @interface BBSectionMuteAssertion
-+ (id)sectionMuteAssertionUntilDate:(id)a3;
-- (BBSectionMuteAssertion)initWithCoder:(id)a3;
-- (BOOL)isActiveForThreadIdentifier:(id)a3 currentDate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithExpirationDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4 currentDate:(id)a5;
++ (id)sectionMuteAssertionUntilDate:(id)date;
+- (BBSectionMuteAssertion)initWithCoder:(id)coder;
+- (BOOL)isActiveForThreadIdentifier:(id)identifier currentDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithExpirationDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged currentDate:(id)currentDate;
 @end
 
 @implementation BBSectionMuteAssertion
 
-+ (id)sectionMuteAssertionUntilDate:(id)a3
++ (id)sectionMuteAssertionUntilDate:(id)date
 {
-  v3 = a3;
-  v4 = [[BBSectionMuteAssertion alloc] _initWithExpirationDate:v3];
+  dateCopy = date;
+  v4 = [[BBSectionMuteAssertion alloc] _initWithExpirationDate:dateCopy];
 
   return v4;
 }
 
-- (id)_initWithExpirationDate:(id)a3
+- (id)_initWithExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = BBSectionMuteAssertion;
-  v5 = [(BBMuteAssertion *)&v9 _init];
-  if (v5)
+  _init = [(BBMuteAssertion *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [dateCopy copy];
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (BOOL)isActiveForThreadIdentifier:(id)a3 currentDate:(id)a4
+- (BOOL)isActiveForThreadIdentifier:(id)identifier currentDate:(id)date
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (dateCopy)
   {
-    v7 = v5;
+    v7 = dateCopy;
   }
 
   else
@@ -54,24 +54,24 @@
   return v9;
 }
 
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4 currentDate:(id)a5
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged currentDate:(id)currentDate
 {
-  v8 = [(BBSectionMuteAssertion *)self isActiveForThreadIdentifier:0 currentDate:a5];
+  v8 = [(BBSectionMuteAssertion *)self isActiveForThreadIdentifier:0 currentDate:currentDate];
   expirationDate = 0;
   if (v8)
   {
     expirationDate = self->_expirationDate;
   }
 
-  *a3 = expirationDate;
-  *a4 = 0;
+  *date = expirationDate;
+  *purged = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     expirationDate = self->_expirationDate;
@@ -87,24 +87,24 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BBSectionMuteAssertion;
-  v4 = a3;
-  [(BBMuteAssertion *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_expirationDate forKey:{@"expirationDate", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(BBMuteAssertion *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_expirationDate forKey:{@"expirationDate", v5.receiver, v5.super_class}];
 }
 
-- (BBSectionMuteAssertion)initWithCoder:(id)a3
+- (BBSectionMuteAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BBSectionMuteAssertion;
-  v5 = [(BBMuteAssertion *)&v9 initWithCoder:v4];
+  v5 = [(BBMuteAssertion *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
   }

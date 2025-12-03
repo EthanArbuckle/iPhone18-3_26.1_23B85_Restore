@@ -1,12 +1,12 @@
 @interface ABCPbSigConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSigConfig
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = ABCPbSigConfig;
   v4 = [(ABCPbSigConfig *)&v8 description];
-  v5 = [(ABCPbSigConfig *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSigConfig *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   type = self->_type;
@@ -54,93 +54,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_type)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtype)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtypeContext)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v5;
+    [toCopy setDomain:?];
+    toCopy = v5;
   }
 
   if (self->_type)
   {
     [v5 setType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtype)
   {
     [v5 setSubtype:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subtypeContext)
   {
     [v5 setSubtypeContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_type copyWithZone:a3];
+  v8 = [(NSString *)self->_type copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_subtype copyWithZone:a3];
+  v10 = [(NSString *)self->_subtype copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_subtypeContext copyWithZone:a3];
+  v12 = [(NSString *)self->_subtypeContext copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((type = self->_type, !(type | v4[4])) || -[NSString isEqual:](type, "isEqual:")) && ((subtype = self->_subtype, !(subtype | v4[2])) || -[NSString isEqual:](subtype, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[1])) || -[NSString isEqual:](domain, "isEqual:")) && ((type = self->_type, !(type | equalCopy[4])) || -[NSString isEqual:](type, "isEqual:")) && ((subtype = self->_subtype, !(subtype | equalCopy[2])) || -[NSString isEqual:](subtype, "isEqual:")))
   {
     subtypeContext = self->_subtypeContext;
-    if (subtypeContext | v4[3])
+    if (subtypeContext | equalCopy[3])
     {
       v9 = [(NSString *)subtypeContext isEqual:?];
     }
@@ -167,25 +167,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_subtypeContext hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(ABCPbSigConfig *)self setDomain:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(ABCPbSigConfig *)self setType:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(ABCPbSigConfig *)self setSubtype:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(ABCPbSigConfig *)self setSubtypeContext:?];
   }

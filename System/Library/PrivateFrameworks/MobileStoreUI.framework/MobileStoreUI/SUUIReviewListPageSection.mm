@@ -1,80 +1,80 @@
 @interface SUUIReviewListPageSection
-- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)a3;
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIReviewListPageSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)_contentInsetForReviewIndex:(int64_t)a3;
-- (id)_contextActionRegistrationKeyWithCell:(id)a3 indexPath:(id)a4;
-- (id)cellForIndexPath:(id)a3;
+- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)path;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIReviewListPageSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)_contentInsetForReviewIndex:(int64_t)index;
+- (id)_contextActionRegistrationKeyWithCell:(id)cell indexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
 - (int64_t)numberOfCells;
 - (void)_requestCellLayout;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)registerContextActionsForCell:(id)a3 indexPath:(id)a4 viewController:(id)a5;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)unregisterContextActionsForCell:(id)a3 indexPath:(id)a4 viewController:(id)a5;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)registerContextActionsForCell:(id)cell indexPath:(id)path viewController:(id)controller;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)unregisterContextActionsForCell:(id)cell indexPath:(id)path viewController:(id)controller;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIReviewListPageSection
 
-- (SUUIReviewListPageSection)initWithPageComponent:(id)a3
+- (SUUIReviewListPageSection)initWithPageComponent:(id)component
 {
   v7.receiver = self;
   v7.super_class = SUUIReviewListPageSection;
-  v3 = [(SUUIStorePageSection *)&v7 initWithPageComponent:a3];
+  v3 = [(SUUIStorePageSection *)&v7 initWithPageComponent:component];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     contextActionsRegistration = v3->_contextActionsRegistration;
-    v3->_contextActionsRegistration = v4;
+    v3->_contextActionsRegistration = dictionary;
   }
 
   return v3;
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
-  [v6 addItemViewElement:v9];
+  sessionCopy = session;
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v10 = [(SUUIStorePageSection *)self pageComponent];
-  v11 = [v10 viewElement];
-  v12 = [v11 items];
-  v13 = [v7 item];
+  pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+  viewElement2 = [pageComponent2 viewElement];
+  items = [viewElement2 items];
+  item = [pathCopy item];
 
-  v14 = [v12 objectAtIndex:v13];
+  v14 = [items objectAtIndex:item];
 
-  [v6 addItemViewElement:v14];
+  [sessionCopy addItemViewElement:v14];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  v9 = [v8 items];
-  v10 = [v9 objectAtIndex:v5];
+  pathCopy = path;
+  item = [pathCopy item];
+  context = [(SUUIStorePageSection *)self context];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  v10 = [items objectAtIndex:item];
 
-  v11 = [v6 collectionView];
-  v12 = [v11 dequeueReusableCellWithReuseIdentifier:0x286AF6160 forIndexPath:v4];
+  collectionView = [context collectionView];
+  v12 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AF6160 forIndexPath:pathCopy];
 
   [v12 setSeparatorStyle:5];
   v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
   [v12 setSeparatorColor:v13];
 
-  [v6 activePageWidth];
+  [context activePageWidth];
   v15 = v14 + -30.0;
-  [(SUUIReviewListPageSection *)self _contentInsetForReviewIndex:v5];
+  [(SUUIReviewListPageSection *)self _contentInsetForReviewIndex:item];
   [v12 setContentInset:?];
   [v12 reloadWithViewElement:v10 width:self->_cellLayoutContext context:v15];
   v29[0] = MEMORY[0x277D85DD0];
@@ -84,10 +84,10 @@
   v16 = v10;
   v34 = v15;
   v30 = v16;
-  v31 = self;
-  v17 = v6;
+  selfCopy = self;
+  v17 = context;
   v32 = v17;
-  v18 = v4;
+  v18 = pathCopy;
   v33 = v18;
   [v12 setDescriptionTapAction:v29];
   v23[0] = MEMORY[0x277D85DD0];
@@ -96,7 +96,7 @@
   v23[3] = &unk_2798F76A0;
   v28 = v15;
   v24 = v16;
-  v25 = self;
+  selfCopy2 = self;
   v26 = v17;
   v27 = v18;
   v19 = v18;
@@ -165,18 +165,18 @@ void __46__SUUIReviewListPageSection_cellForIndexPath___block_invoke_3(uint64_t 
   }
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  [v5 activePageWidth];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v7 = v6;
 
-  v8 = [v4 item];
-  v9 = [(SUUIStorePageSection *)self pageComponent];
-  v10 = [v9 viewElement];
-  v11 = [v10 items];
-  v12 = [v11 objectAtIndex:v8];
+  item = [pathCopy item];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  v12 = [items objectAtIndex:item];
 
   [SUUIReviewCollectionViewCell sizeThatFitsWidth:v12 viewElement:self->_cellLayoutContext context:v7 + -30.0];
   v14 = v13 + 15.0;
@@ -188,60 +188,60 @@ void __46__SUUIReviewListPageSection_cellForIndexPath___block_invoke_3(uint64_t 
   return result;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 items];
-  v8 = [v4 item];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  item = [pathCopy item];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [items objectAtIndex:item];
 
   [v9 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)a3
+- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)path
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
-  v5 = [v4 attributes];
-  v6 = [v5 valueForKey:@"highlight"];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  attributes = [viewElement attributes];
+  v6 = [attributes valueForKey:@"highlight"];
 
   if ([v6 length])
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  attributesCopy = attributes;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  v8 = [items count];
 
-  v9 = [v4 indexPath];
-  v10 = [v9 item];
+  indexPath = [attributesCopy indexPath];
+  item = [indexPath item];
 
   v11 = v8 - 1;
-  if (v10 < 1 || v10 >= v11)
+  if (item < 1 || item >= v11)
   {
     v13 = 5;
-    if (!v10)
+    if (!item)
     {
       v13 = 13;
     }
 
-    if (v10 == v11)
+    if (item == v11)
     {
       v12 = v13 | 0x20;
     }
@@ -257,59 +257,59 @@ void __46__SUUIReviewListPageSection_cellForIndexPath___block_invoke_3(uint64_t 
     v12 = 21;
   }
 
-  [v4 setPosition:v12];
+  [attributesCopy setPosition:v12];
   v14.receiver = self;
   v14.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v14 collectionViewWillApplyLayoutAttributes:v4];
+  [(SUUIStorePageSection *)&v14 collectionViewWillApplyLayoutAttributes:attributesCopy];
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 beginActiveImpressionForViewElement:v8];
-  v9 = [(SUUIStorePageSection *)self pageComponent];
-  v10 = [v9 viewElement];
-  v11 = [v10 items];
-  v12 = [v11 objectAtIndex:{objc_msgSend(v4, "item")}];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
+  pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+  viewElement2 = [pageComponent2 viewElement];
+  items = [viewElement2 items];
+  v12 = [items objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  [v6 beginActiveImpressionForViewElement:v12];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:v12];
   v13.receiver = self;
   v13.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v13 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v13 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)registerContextActionsForCell:(id)a3 indexPath:(id)a4 viewController:(id)a5
+- (void)registerContextActionsForCell:(id)cell indexPath:(id)path viewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUUIStorePageSection *)self pageComponent];
-  v12 = [v11 viewElement];
-  v13 = [v12 items];
-  v14 = [v13 objectAtIndex:{objc_msgSend(v9, "item")}];
+  cellCopy = cell;
+  pathCopy = path;
+  controllerCopy = controller;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  v14 = [items objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 dialogTemplate];
+    dialogTemplate = [v14 dialogTemplate];
 
-    if (v15)
+    if (dialogTemplate)
     {
-      v16 = [(SUUIReviewListPageSection *)self _contextActionRegistrationKeyWithCell:v8 indexPath:v9];
+      v16 = [(SUUIReviewListPageSection *)self _contextActionRegistrationKeyWithCell:cellCopy indexPath:pathCopy];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __84__SUUIReviewListPageSection_registerContextActionsForCell_indexPath_viewController___block_invoke;
       v19[3] = &unk_2798F76F0;
       v20 = v14;
-      v17 = [v10 registerForPreviewingFromSourceView:v8 handler:v19];
-      v18 = [(SUUIReviewListPageSection *)self contextActionsRegistration];
-      [v18 setObject:v17 forKeyedSubscript:v16];
+      v17 = [controllerCopy registerForPreviewingFromSourceView:cellCopy handler:v19];
+      contextActionsRegistration = [(SUUIReviewListPageSection *)self contextActionsRegistration];
+      [contextActionsRegistration setObject:v17 forKeyedSubscript:v16];
     }
   }
 }
@@ -323,140 +323,140 @@ SUUIContextActionsConfiguration *__84__SUUIReviewListPageSection_registerContext
   return v4;
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 endActiveImpressionForViewElement:v8];
-  v9 = [v4 item];
-  v10 = [v8 items];
-  if (v9 < [v10 count])
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
+  item = [pathCopy item];
+  items = [viewElement items];
+  if (item < [items count])
   {
-    v11 = [v10 objectAtIndex:v9];
+    v11 = [items objectAtIndex:item];
 
-    [v6 endActiveImpressionForViewElement:v11];
-    v8 = v11;
+    [activeMetricsImpressionSession endActiveImpressionForViewElement:v11];
+    viewElement = v11;
   }
 
   v12.receiver = self;
   v12.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)unregisterContextActionsForCell:(id)a3 indexPath:(id)a4 viewController:(id)a5
+- (void)unregisterContextActionsForCell:(id)cell indexPath:(id)path viewController:(id)controller
 {
-  v12 = a5;
-  v8 = [(SUUIReviewListPageSection *)self _contextActionRegistrationKeyWithCell:a3 indexPath:a4];
-  v9 = [(SUUIReviewListPageSection *)self contextActionsRegistration];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  controllerCopy = controller;
+  v8 = [(SUUIReviewListPageSection *)self _contextActionRegistrationKeyWithCell:cell indexPath:path];
+  contextActionsRegistration = [(SUUIReviewListPageSection *)self contextActionsRegistration];
+  v10 = [contextActionsRegistration objectForKeyedSubscript:v8];
 
   if (v10)
   {
-    [v12 unregisterForPreviewing:v10];
-    v11 = [(SUUIReviewListPageSection *)self contextActionsRegistration];
-    [v11 removeObjectForKey:v8];
+    [controllerCopy unregisterForPreviewing:v10];
+    contextActionsRegistration2 = [(SUUIReviewListPageSection *)self contextActionsRegistration];
+    [contextActionsRegistration2 removeObjectForKey:v8];
   }
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  providerCopy = provider;
   [(SUUIReviewListPageSection *)self _requestCellLayout];
   v8.receiver = self;
   v8.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v8 entityProvider:v7 didInvalidateWithContext:v6];
+  [(SUUIStorePageSection *)&v8 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
 - (int64_t)numberOfCells
 {
-  v2 = [(SUUIStorePageSection *)self pageComponent];
-  v3 = [v2 viewElement];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  items = [viewElement items];
+  v5 = [items count];
 
   return v5;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v15 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v15];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v7)
   {
-    v8 = [v15 item];
-    v9 = [(SUUIStorePageSection *)self pageComponent];
-    v10 = [v9 viewElement];
-    v11 = [v10 items];
+    item = [pathCopy item];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    items = [viewElement items];
 
-    [v5 activePageWidth];
+    [context activePageWidth];
     v13 = v12 + -30.0;
-    [(SUUIReviewListPageSection *)self _contentInsetForReviewIndex:v8];
+    [(SUUIReviewListPageSection *)self _contentInsetForReviewIndex:item];
     [v7 setContentInset:?];
-    v14 = [v11 objectAtIndex:v8];
+    v14 = [items objectAtIndex:item];
     [v7 reloadWithViewElement:v14 width:self->_cellLayoutContext context:v13];
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF6160];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF6160];
   v6 = self->_cellLayoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
-  v9 = [(SUUIStorePageSection *)self pageComponent];
-  v10 = [v9 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [v10 elementType]);
+  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [viewElement elementType]);
   [(SUUIReviewListPageSection *)self _requestCellLayout];
   v11.receiver = self;
   v11.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v11 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v11 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cellLayoutContext = self->_cellLayoutContext;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SUUIViewElementLayoutContext *)cellLayoutContext invalidateAllEditorialLayouts];
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setActivePageWidth:width];
   [(SUUIReviewListPageSection *)self _requestCellLayout];
   v9.receiver = self;
   v9.super_class = SUUIReviewListPageSection;
-  [(SUUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (id)_contextActionRegistrationKeyWithCell:(id)a3 indexPath:(id)a4
+- (id)_contextActionRegistrationKeyWithCell:(id)cell indexPath:(id)path
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = [a3 hash];
-  v8 = [v6 hash];
+  pathCopy = path;
+  v7 = [cell hash];
+  v8 = [pathCopy hash];
 
   v9 = [v5 numberWithUnsignedInteger:v8 + v7];
-  v10 = [v9 stringValue];
+  stringValue = [v9 stringValue];
 
-  return v10;
+  return stringValue;
 }
 
-- (UIEdgeInsets)_contentInsetForReviewIndex:(int64_t)a3
+- (UIEdgeInsets)_contentInsetForReviewIndex:(int64_t)index
 {
   v3 = 15.0;
-  if (!a3)
+  if (!index)
   {
     v3 = 0.0;
   }
@@ -474,19 +474,19 @@ SUUIContextActionsConfiguration *__84__SUUIReviewListPageSection_registerContext
 - (void)_requestCellLayout
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v5 = [v4 items];
-  v6 = [(SUUIStorePageSection *)self context];
-  [v6 activePageWidth];
+  items = [viewElement items];
+  context = [(SUUIStorePageSection *)self context];
+  [context activePageWidth];
   v8 = v7;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v5;
+  v9 = items;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

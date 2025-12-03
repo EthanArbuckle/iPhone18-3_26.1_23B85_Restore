@@ -4,63 +4,63 @@
 - (BOOL)_waitingForTopHitForCurrentText;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)endEditing:(BOOL)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInputShouldDelete:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)endEditing:(BOOL)editing;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInputShouldDelete:(id)delete;
 - (BOOL)resignFirstResponder;
 - (CGRect)editRect;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
 - (UIColor)placeholderColor;
-- (UnifiedField)initWithFrame:(CGRect)a3;
+- (UnifiedField)initWithFrame:(CGRect)frame;
 - (_NSRange)selectedCharactersRange;
 - (id)_reflectedItemCompletionString;
 - (id)_textForPasteboard;
 - (id)_textWithoutWhitespace;
 - (id)_topHitForCurrentText;
-- (id)_voiceSearchInputModeForFirstResponder:(BOOL)a3;
+- (id)_voiceSearchInputModeForFirstResponder:(BOOL)responder;
 - (id)keyCommands;
 - (unint64_t)_unifiedFieldInputType;
 - (void)_cancelPendingTopHitNavigation;
 - (void)_endEditingWithCurrentText;
 - (void)_layoutTopHitCompletionView;
-- (void)_promoteCompletionToSelectionSelectingSuffix:(BOOL)a3 andMoveForward:(BOOL)a4;
+- (void)_promoteCompletionToSelectionSelectingSuffix:(BOOL)suffix andMoveForward:(BOOL)forward;
 - (void)_removeTopHitCompletionView;
 - (void)_restoreUserTypedText;
-- (void)_setReflectedItem:(id)a3 updateUserTypedPrefix:(BOOL)a4;
-- (void)_setTopHit:(id)a3;
+- (void)_setReflectedItem:(id)item updateUserTypedPrefix:(BOOL)prefix;
+- (void)_setTopHit:(id)hit;
 - (void)_textDidChangeFromTyping;
-- (void)_updateKeyboardInputMode:(id)a3;
+- (void)_updateKeyboardInputMode:(id)mode;
 - (void)_updateLayoutDirectionIfNeeded;
 - (void)_updateReturnKey;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)clearUserTypedText;
 - (void)completeDictation;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)focusAndInsertCursorAtEnd;
 - (void)focusNextKeyViewKeyPressed;
 - (void)focusPreviousKeyViewKeyPressed;
-- (void)insertTextSuggestion:(id)a3;
+- (void)insertTextSuggestion:(id)suggestion;
 - (void)layoutSubviews;
 - (void)moveLeftKeyPressed;
 - (void)moveRightKeyPressed;
 - (void)nextCompletionSelectionByRowKeyPressed;
 - (void)nextCompletionSelectionBySectionKeyPressed;
-- (void)paste:(id)a3;
-- (void)pasteAndGo:(id)a3;
+- (void)paste:(id)paste;
+- (void)pasteAndGo:(id)go;
 - (void)previousCompletionSelectionByRowKeyPressed;
 - (void)previousCompletionSelectionBySectionKeyPressed;
-- (void)selectAll:(id)a3;
+- (void)selectAll:(id)all;
 - (void)selectCompletionKeyPressed;
-- (void)setAttributedText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setText:(id)a3;
-- (void)setVoiceSearchState:(int64_t)a3;
+- (void)setAttributedText:(id)text;
+- (void)setFont:(id)font;
+- (void)setPlaceholderColor:(id)color;
+- (void)setText:(id)text;
+- (void)setVoiceSearchState:(int64_t)state;
 - (void)topHitDidBecomeReady;
 - (void)willBeginPencilTextInputEditing;
 @end
@@ -88,8 +88,8 @@
   [(UnifiedField *)&v6 layoutSubviews];
   if (!self->_userTypedText)
   {
-    v3 = [(UnifiedField *)self text];
-    v4 = [v3 copy];
+    text = [(UnifiedField *)self text];
+    v4 = [text copy];
     userTypedText = self->_userTypedText;
     self->_userTypedText = v4;
   }
@@ -104,8 +104,8 @@
 {
   v8.receiver = self;
   v8.super_class = UnifiedField;
-  v3 = [(UnifiedField *)&v8 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(UnifiedField *)&v8 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(UnifiedField *)self _updateLayoutDirectionIfNeeded];
     [(UnifiedField *)self _updateReturnKey];
@@ -118,11 +118,11 @@
       _os_log_impl(&dword_215819000, v4, OS_LOG_TYPE_INFO, "Becoming first responder; allows reflected Top Hits: YES", v7, 2u);
     }
 
-    v5 = [(UnifiedField *)self delegate];
-    [v5 unifiedFieldMakeWindowKey:self];
+    delegate = [(UnifiedField *)self delegate];
+    [delegate unifiedFieldMakeWindowKey:self];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (void)_updateLayoutDirectionIfNeeded
@@ -170,12 +170,12 @@
 
     else
     {
-      v6 = [(UnifiedField *)self _textWithoutWhitespace];
-      v4 = [v6 length] != 0;
+      _textWithoutWhitespace = [(UnifiedField *)self _textWithoutWhitespace];
+      v4 = [_textWithoutWhitespace length] != 0;
     }
 
-    v5 = [MEMORY[0x277D75658] activeKeyboard];
-    [v5 setReturnKeyEnabled:v4];
+    activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:v4];
 
     if (!reflectedItem)
     {
@@ -190,72 +190,72 @@
     return 0;
   }
 
-  v3 = [(UnifiedField *)self delegate];
-  v4 = [(UnifiedField *)self text];
-  v5 = [v3 unifiedField:self shouldWaitForTopHitForText:v4];
+  delegate = [(UnifiedField *)self delegate];
+  text = [(UnifiedField *)self text];
+  v5 = [delegate unifiedField:self shouldWaitForTopHitForText:text];
 
   return v5;
 }
 
 - (id)_textWithoutWhitespace
 {
-  v2 = [(UnifiedField *)self text];
-  v3 = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  text = [(UnifiedField *)self text];
+  safari_whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] safari_whitespaceAndNewlineCharacterSet];
+  v4 = [text stringByTrimmingCharactersInSet:safari_whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
 
-- (UnifiedField)initWithFrame:(CGRect)a3
+- (UnifiedField)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = UnifiedField;
-  v3 = [(UnifiedField *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UnifiedField *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UnifiedField *)v3 addTarget:v3 action:sel__endEditingWithCurrentText forControlEvents:0x80000];
     [(UnifiedField *)v4 addTarget:v4 action:sel__textDidChangeFromTyping forControlEvents:0x20000];
     [(UnifiedField *)v4 setTextDragOptions:1];
-    v5 = [MEMORY[0x277D75468] isEnabledByDefault];
-    v6 = [(UnifiedField *)v4 textDragInteraction];
-    [v6 setEnabled:v5];
+    isEnabledByDefault = [MEMORY[0x277D75468] isEnabledByDefault];
+    textDragInteraction = [(UnifiedField *)v4 textDragInteraction];
+    [textDragInteraction setEnabled:isEnabledByDefault];
 
     [(UnifiedField *)v4 setClipsToBounds:1];
     [(UnifiedField *)v4 setEnablesReturnKeyAutomatically:0];
     [(UnifiedField *)v4 setUseAutomaticEndpointing:1];
     [(UnifiedField *)v4 setWritingToolsBehavior:-1];
-    v7 = [(UnifiedField *)v4 _clearButton];
-    [v7 setAccessibilityIdentifier:@"ClearTextButton"];
+    _clearButton = [(UnifiedField *)v4 _clearButton];
+    [_clearButton setAccessibilityIdentifier:@"ClearTextButton"];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v4 selector:sel_dictationDidFinish_ name:*MEMORY[0x277D76888] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_dictationDidFinish_ name:*MEMORY[0x277D76888] object:0];
 
     v9 = objc_alloc_init(MEMORY[0x277D75BA0]);
     textCursorAssertionController = v4->_textCursorAssertionController;
     v4->_textCursorAssertionController = v9;
 
-    v11 = [MEMORY[0x277D75128] sharedApplication];
-    v4->_keyboardInputModeIsRTL = [v11 safari_currentKeyboardInputIsRTL];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v4->_keyboardInputModeIsRTL = [mEMORY[0x277D75128] safari_currentKeyboardInputIsRTL];
 
     [(UnifiedField *)v4 _updateLayoutDirectionIfNeeded];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x277D77200] object:0];
-    [v12 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x277D28FF0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x277D77200] object:0];
+    [defaultCenter2 addObserver:v4 selector:sel__updateKeyboardInputMode_ name:*MEMORY[0x277D28FF0] object:0];
     v13 = v4;
   }
 
   return v4;
 }
 
-- (void)_updateKeyboardInputMode:(id)a3
+- (void)_updateKeyboardInputMode:(id)mode
 {
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 safari_currentKeyboardInputIsRTL];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  safari_currentKeyboardInputIsRTL = [mEMORY[0x277D75128] safari_currentKeyboardInputIsRTL];
 
-  if (self->_keyboardInputModeIsRTL != v5)
+  if (self->_keyboardInputModeIsRTL != safari_currentKeyboardInputIsRTL)
   {
-    self->_keyboardInputModeIsRTL = v5;
+    self->_keyboardInputModeIsRTL = safari_currentKeyboardInputIsRTL;
     if ([(UnifiedField *)self _canUpdateLayoutDirectionImmediately])
     {
 
@@ -266,8 +266,8 @@
 
 - (BOOL)_canUpdateLayoutDirectionImmediately
 {
-  v3 = [(UnifiedField *)self text];
-  if ([v3 length])
+  text = [(UnifiedField *)self text];
+  if ([text length])
   {
     v4 = 0;
   }
@@ -280,36 +280,36 @@
   return v4;
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   self->_pastingText = 1;
   v3.receiver = self;
   v3.super_class = UnifiedField;
-  [(UnifiedField *)&v3 paste:a3];
+  [(UnifiedField *)&v3 paste:paste];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v13.receiver = self;
   v13.super_class = UnifiedField;
-  [(UnifiedField *)&v13 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
-  v6 = [MEMORY[0x277D75730] contextSystem];
+  [(UnifiedField *)&v13 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
+  contextSystem = [MEMORY[0x277D75730] contextSystem];
 
-  if (v5 == v6)
+  if (system == contextSystem)
   {
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
-    v8 = [v7 safari_pasteAndNavigateCommands];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    safari_pasteAndNavigateCommands = [generalPasteboard safari_pasteAndNavigateCommands];
 
     v9 = *MEMORY[0x277D76D60];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__UnifiedField_buildMenuWithBuilder___block_invoke;
     v11[3] = &unk_2781D8DE8;
-    v12 = v8;
-    v10 = v8;
-    [v4 replaceChildrenOfMenuForIdentifier:v9 fromChildrenBlock:v11];
+    v12 = safari_pasteAndNavigateCommands;
+    v10 = safari_pasteAndNavigateCommands;
+    [builderCopy replaceChildrenOfMenuForIdentifier:v9 fromChildrenBlock:v11];
   }
 }
 
@@ -344,24 +344,24 @@ BOOL __37__UnifiedField_buildMenuWithBuilder___block_invoke_2(uint64_t a1, void 
   return v3;
 }
 
-- (void)pasteAndGo:(id)a3
+- (void)pasteAndGo:(id)go
 {
-  v4 = a3;
-  v5 = [(UnifiedField *)self text];
-  v6 = [(UnifiedField *)self selectedCharactersRange];
+  goCopy = go;
+  text = [(UnifiedField *)self text];
+  selectedCharactersRange = [(UnifiedField *)self selectedCharactersRange];
   v8 = v7;
   objc_initWeak(&location, self);
-  v9 = [MEMORY[0x277D75810] generalPasteboard];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __27__UnifiedField_pasteAndGo___block_invoke;
   v11[3] = &unk_2781D9168;
   objc_copyWeak(v13, &location);
-  v10 = v5;
+  v10 = text;
   v12 = v10;
-  v13[1] = v6;
+  v13[1] = selectedCharactersRange;
   v13[2] = v8;
-  [v9 safari_bestStringForPastingIntoURLFieldCompletionHandler:v11];
+  [generalPasteboard safari_bestStringForPastingIntoURLFieldCompletionHandler:v11];
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -390,11 +390,11 @@ void __27__UnifiedField_pasteAndGo___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
   v8.receiver = self;
   v8.super_class = UnifiedField;
-  [(UnifiedField *)&v8 rightViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UnifiedField *)&v8 rightViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v7 = v6 + -2.5;
   result.size.height = v5;
   result.size.width = v4;
@@ -403,33 +403,33 @@ void __27__UnifiedField_pasteAndGo___block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v8 = a3;
-  v4 = [(UnifiedField *)self placeholderColor];
-  if (v4 != v8)
+  colorCopy = color;
+  placeholderColor = [(UnifiedField *)self placeholderColor];
+  if (placeholderColor != colorCopy)
   {
-    v5 = [(UnifiedField *)self _placeholderLabel];
-    v6 = v5;
-    if (v8)
+    _placeholderLabel = [(UnifiedField *)self _placeholderLabel];
+    v6 = _placeholderLabel;
+    if (colorCopy)
     {
-      [v5 setTextColor:?];
+      [_placeholderLabel setTextColor:?];
     }
 
     else
     {
-      v7 = [(UnifiedField *)self _placeholderColor];
-      [v6 setTextColor:v7];
+      _placeholderColor = [(UnifiedField *)self _placeholderColor];
+      [v6 setTextColor:_placeholderColor];
     }
   }
 }
 
 - (UIColor)placeholderColor
 {
-  v2 = [(UnifiedField *)self _placeholderLabel];
-  v3 = [v2 textColor];
+  _placeholderLabel = [(UnifiedField *)self _placeholderLabel];
+  textColor = [_placeholderLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (unint64_t)_unifiedFieldInputType
@@ -442,7 +442,7 @@ void __27__UnifiedField_pasteAndGo___block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v3 = [(UnifiedField *)self text];
+    text = [(UnifiedField *)self text];
     v4 = WBSUnifiedFieldInputTypeForString();
 
     return v4;
@@ -451,22 +451,22 @@ void __27__UnifiedField_pasteAndGo___block_invoke(uint64_t a1, void *a2)
 
 - (void)_endEditingWithCurrentText
 {
-  v6 = [(UnifiedField *)self delegate];
+  delegate = [(UnifiedField *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 unifiedField:self didEndEditingWithParsecTopHit:self->_topHit];
+    [delegate unifiedField:self didEndEditingWithParsecTopHit:self->_topHit];
 LABEL_3:
     [(UnifiedField *)self setVoiceSearchState:0];
     goto LABEL_18;
   }
 
-  v3 = [(UnifiedField *)self _unifiedFieldInputType];
-  if (v3 > 2)
+  _unifiedFieldInputType = [(UnifiedField *)self _unifiedFieldInputType];
+  if (_unifiedFieldInputType > 2)
   {
-    if (v3 != 3)
+    if (_unifiedFieldInputType != 3)
     {
-      if (v3 == 4)
+      if (_unifiedFieldInputType == 4)
       {
         goto LABEL_3;
       }
@@ -477,42 +477,42 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  if ((v3 - 1) < 2)
+  if ((_unifiedFieldInputType - 1) < 2)
   {
-    v4 = [(CompletionItem *)self->_topHit userVisibleURLString];
-    if (v4)
+    userVisibleURLString = [(CompletionItem *)self->_topHit userVisibleURLString];
+    if (userVisibleURLString)
     {
-      [(UnifiedField *)self setText:v4];
-      objc_storeStrong(&self->_userTypedText, v4);
+      [(UnifiedField *)self setText:userVisibleURLString];
+      objc_storeStrong(&self->_userTypedText, userVisibleURLString);
     }
 
-    v5 = [(UnifiedField *)self _textWithoutWhitespace];
-    [v6 unifiedField:self didEndEditingWithAddress:v5];
+    _textWithoutWhitespace = [(UnifiedField *)self _textWithoutWhitespace];
+    [delegate unifiedField:self didEndEditingWithAddress:_textWithoutWhitespace];
 
     [(UnifiedField *)self setVoiceSearchState:0];
     goto LABEL_9;
   }
 
-  if (!v3)
+  if (!_unifiedFieldInputType)
   {
 LABEL_14:
     if (self->_voiceSearchState == 2)
     {
-      [v6 unifiedFieldVoiceSearchStateDidChange:self];
+      [delegate unifiedFieldVoiceSearchStateDidChange:self];
     }
 
     else
     {
       if (!self->_performingExternalSearch)
       {
-        v4 = [(UnifiedField *)self _textWithoutWhitespace];
-        [v6 unifiedField:self didEndEditingWithSearch:v4];
+        userVisibleURLString = [(UnifiedField *)self _textWithoutWhitespace];
+        [delegate unifiedField:self didEndEditingWithSearch:userVisibleURLString];
 LABEL_9:
 
         goto LABEL_18;
       }
 
-      [v6 unifiedFieldExternalSearchDidEnd:self];
+      [delegate unifiedFieldExternalSearchDidEnd:self];
     }
   }
 
@@ -523,30 +523,30 @@ LABEL_18:
 {
   if (!self->_isResigningFirstResponder)
   {
-    v3 = [(UnifiedField *)self delegate];
-    v4 = [(UnifiedField *)self text];
-    v5 = [v4 copy];
+    delegate = [(UnifiedField *)self delegate];
+    text = [(UnifiedField *)self text];
+    v5 = [text copy];
 
     if (self->_keyboardInputModeIsRTL != self->_layoutShouldBeRTL)
     {
-      v6 = [(UnifiedField *)self text];
-      v7 = [v6 length];
+      text2 = [(UnifiedField *)self text];
+      v7 = [text2 length];
 
       if (v7 == 1)
       {
         [(UnifiedField *)self _updateLayoutDirectionIfNeeded];
-        v8 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v8 postNotificationName:*MEMORY[0x277D29188] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:*MEMORY[0x277D29188] object:0];
       }
     }
 
-    [v3 unifiedField:self willUpdateUserTypedText:self->_userTypedText toText:v5];
+    [delegate unifiedField:self willUpdateUserTypedText:self->_userTypedText toText:v5];
     objc_storeStrong(&self->_userTypedText, v5);
     [(UnifiedField *)self _cancelPendingTopHitNavigation];
     if (self->_reflectedItem == self->_topHit)
     {
-      v9 = [(UnifiedField *)self _topHitForCurrentText];
-      [(UnifiedField *)self _setTopHit:v9];
+      _topHitForCurrentText = [(UnifiedField *)self _topHitForCurrentText];
+      [(UnifiedField *)self _setTopHit:_topHitForCurrentText];
     }
 
     else
@@ -555,7 +555,7 @@ LABEL_18:
     }
 
     [(UnifiedField *)self _updateReturnKey];
-    [v3 unifiedFieldDidUpdateUserTypedText:self forQueryString:self->_userTypedText];
+    [delegate unifiedFieldDidUpdateUserTypedText:self forQueryString:self->_userTypedText];
     if ([(UnifiedField *)self _canUpdateLayoutDirectionImmediately])
     {
       [(UnifiedField *)self _updateLayoutDirectionIfNeeded];
@@ -579,9 +579,9 @@ LABEL_18:
 
   else
   {
-    v3 = [(UnifiedField *)self delegate];
-    v4 = [(UnifiedField *)self text];
-    v5 = [v3 unifiedField:self topHitForText:v4];
+    delegate = [(UnifiedField *)self delegate];
+    text = [(UnifiedField *)self text];
+    v5 = [delegate unifiedField:self topHitForText:text];
   }
 
   return v5;
@@ -593,22 +593,22 @@ LABEL_18:
   self->_pendingTopHitNavigationText = 0;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  markedTextCopy = markedText;
+  inputCopy = input;
+  textCopy = text;
   self->_lastEditWasADeletion = 0;
-  if ([v9 isEqualToString:@"\n"] && -[UnifiedField _waitingForTopHitForCurrentText](self, "_waitingForTopHitForCurrentText"))
+  if ([textCopy isEqualToString:@"\n"] && -[UnifiedField _waitingForTopHitForCurrentText](self, "_waitingForTopHitForCurrentText"))
   {
-    v10 = [(UnifiedField *)self text];
-    v11 = [v10 isEqual:self->_pendingTopHitNavigationText];
+    text = [(UnifiedField *)self text];
+    v11 = [text isEqual:self->_pendingTopHitNavigationText];
 
     if ((v11 & 1) == 0)
     {
       [(UnifiedField *)self sendActionsForControlEvents:0x20000];
-      v12 = [(UnifiedField *)self text];
-      v13 = [v12 copy];
+      text2 = [(UnifiedField *)self text];
+      v13 = [text2 copy];
       pendingTopHitNavigationText = self->_pendingTopHitNavigationText;
       self->_pendingTopHitNavigationText = v13;
     }
@@ -620,17 +620,17 @@ LABEL_18:
   {
     v17.receiver = self;
     v17.super_class = UnifiedField;
-    v15 = [(UnifiedField *)&v17 keyboardInput:v8 shouldInsertText:v9 isMarkedText:v5];
+    v15 = [(UnifiedField *)&v17 keyboardInput:inputCopy shouldInsertText:textCopy isMarkedText:markedTextCopy];
   }
 
   return v15;
 }
 
-- (BOOL)keyboardInputShouldDelete:(id)a3
+- (BOOL)keyboardInputShouldDelete:(id)delete
 {
   v10.receiver = self;
   v10.super_class = UnifiedField;
-  if (![(UnifiedField *)&v10 keyboardInputShouldDelete:a3])
+  if (![(UnifiedField *)&v10 keyboardInputShouldDelete:delete])
   {
     return 0;
   }
@@ -644,8 +644,8 @@ LABEL_18:
     [(UnifiedField *)self _setTopHit:0];
     if (topHitCompletionView)
     {
-      v6 = [(UnifiedField *)self text];
-      v7 = [v6 copy];
+      text = [(UnifiedField *)self text];
+      v7 = [text copy];
       userTypedText = self->_userTypedText;
       self->_userTypedText = v7;
 
@@ -661,28 +661,28 @@ LABEL_18:
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = UnifiedField;
-  [(UnifiedField *)&v4 setText:a3];
+  [(UnifiedField *)&v4 setText:text];
   [(UnifiedField *)self _updateReturnKey];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v4.receiver = self;
   v4.super_class = UnifiedField;
-  [(UnifiedField *)&v4 setAttributedText:a3];
+  [(UnifiedField *)&v4 setAttributedText:text];
   [(UnifiedField *)self _updateReturnKey];
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v23.receiver = self;
   v23.super_class = UnifiedField;
   [(UnifiedField *)&v23 placeholderRectForBounds:?];
@@ -719,13 +719,13 @@ LABEL_18:
 
 - (_NSRange)selectedCharactersRange
 {
-  v3 = [(UnifiedField *)self selectedTextRange];
-  v4 = [(UnifiedField *)self beginningOfDocument];
-  v5 = [v3 start];
-  v6 = [(UnifiedField *)self offsetFromPosition:v4 toPosition:v5];
-  v7 = [v3 start];
-  v8 = [v3 end];
-  v9 = [(UnifiedField *)self offsetFromPosition:v7 toPosition:v8];
+  selectedTextRange = [(UnifiedField *)self selectedTextRange];
+  beginningOfDocument = [(UnifiedField *)self beginningOfDocument];
+  start = [selectedTextRange start];
+  v6 = [(UnifiedField *)self offsetFromPosition:beginningOfDocument toPosition:start];
+  start2 = [selectedTextRange start];
+  v8 = [selectedTextRange end];
+  v9 = [(UnifiedField *)self offsetFromPosition:start2 toPosition:v8];
 
   v10 = v6;
   v11 = v9;
@@ -736,26 +736,26 @@ LABEL_18:
 
 - (id)_textForPasteboard
 {
-  v3 = [(UnifiedField *)self selectedText];
+  selectedText = [(UnifiedField *)self selectedText];
   if (-[UnifiedField selectionRange](self, "selectionRange") || (v5 = v4, -[UnifiedField _unifiedFieldInputType](self, "_unifiedFieldInputType") != 2) || (v6 = MEMORY[0x277CBEBC0], -[UnifiedField text](self, "text"), v7 = objc_claimAutoreleasedReturnValue(), [v6 URLWithString:v7], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "scheme"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v9))
   {
-    v10 = v3;
+    v10 = selectedText;
   }
 
   else
   {
-    v12 = [(UnifiedField *)self text];
-    v13 = [@"http://" stringByAppendingString:v12];
+    text = [(UnifiedField *)self text];
+    v13 = [@"http://" stringByAppendingString:text];
 
-    v14 = [v13 _web_rangeOfURLHost];
-    if (v14 == 0x7FFFFFFFFFFFFFFFLL || v5 + 7 < (v14 + v15))
+    _web_rangeOfURLHost = [v13 _web_rangeOfURLHost];
+    if (_web_rangeOfURLHost == 0x7FFFFFFFFFFFFFFFLL || v5 + 7 < (_web_rangeOfURLHost + v15))
     {
-      v16 = v3;
+      v16 = selectedText;
     }
 
     else
     {
-      v16 = [@"http://" stringByAppendingString:v3];
+      v16 = [@"http://" stringByAppendingString:selectedText];
     }
 
     v10 = v16;
@@ -764,39 +764,39 @@ LABEL_18:
   return v10;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CCAA88]);
-  v5 = [(UnifiedField *)self delegate];
-  if ([v5 shouldPutMetadataOnPasteboardForUnifiedField:self])
+  delegate = [(UnifiedField *)self delegate];
+  if ([delegate shouldPutMetadataOnPasteboardForUnifiedField:self])
   {
-    v6 = [v5 currentMetadataForUnifiedField:self];
+    v6 = [delegate currentMetadataForUnifiedField:self];
     if (v6)
     {
       [v4 safari_registerLinkMetadata:v6];
     }
   }
 
-  v7 = [(UnifiedField *)self _textForPasteboard];
-  [v4 registerObject:v7 visibility:0];
+  _textForPasteboard = [(UnifiedField *)self _textForPasteboard];
+  [v4 registerObject:_textForPasteboard visibility:0];
 
   v10[0] = v4;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v9 = [MEMORY[0x277D75810] generalPasteboard];
-  [v9 setItemProviders:v8];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  [generalPasteboard setItemProviders:v8];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(UnifiedField *)self _textForPasteboard];
+  cutCopy = cut;
+  _textForPasteboard = [(UnifiedField *)self _textForPasteboard];
   v7.receiver = self;
   v7.super_class = UnifiedField;
-  [(UnifiedField *)&v7 cut:v4];
+  [(UnifiedField *)&v7 cut:cutCopy];
 
-  v6 = [MEMORY[0x277D75810] generalPasteboard];
-  [v6 setString:v5];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  [generalPasteboard setString:_textForPasteboard];
 }
 
 - (void)_removeTopHitCompletionView
@@ -812,19 +812,19 @@ LABEL_18:
     self->_topHitCompletionPromotionRecognizer = 0;
   }
 
-  v5 = [(UnifiedField *)self _fieldEditor];
-  [v5 setHidden:0];
+  _fieldEditor = [(UnifiedField *)self _fieldEditor];
+  [_fieldEditor setHidden:0];
 
   [(UITextCursorAssertion *)self->_textCursorHiddenAssertion invalidate];
   textCursorHiddenAssertion = self->_textCursorHiddenAssertion;
   self->_textCursorHiddenAssertion = 0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_topHitCompletionPromotionRecognizer == a3)
+  if (self->_topHitCompletionPromotionRecognizer == recognizer)
   {
-    [a4 locationInView:self];
+    [touch locationInView:self];
     v6 = [(UnifiedField *)self hitTest:0 withEvent:?];
     objc_opt_class();
     v4 = objc_opt_isKindOfClass() ^ 1;
@@ -838,11 +838,11 @@ LABEL_18:
   return v4 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_topHitCompletionPromotionRecognizer == a3)
+  if (self->_topHitCompletionPromotionRecognizer == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -899,11 +899,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v10 = [(UnifiedField *)self attributedText];
-  if (v10)
+  attributedText = [(UnifiedField *)self attributedText];
+  if (attributedText)
   {
-    v11 = [(UnifiedField *)self attributedText];
-    if ([v11 length])
+    attributedText2 = [(UnifiedField *)self attributedText];
+    if ([attributedText2 length])
     {
       v12 = &stru_2827BF158;
     }
@@ -924,14 +924,14 @@ LABEL_20:
   return v12;
 }
 
-- (void)_promoteCompletionToSelectionSelectingSuffix:(BOOL)a3 andMoveForward:(BOOL)a4
+- (void)_promoteCompletionToSelectionSelectingSuffix:(BOOL)suffix andMoveForward:(BOOL)forward
 {
-  v4 = a4;
-  v5 = a3;
+  forwardCopy = forward;
+  suffixCopy = suffix;
   v15 = self->_reflectedItem;
   [(UnifiedField *)self _setTopHit:0];
   v7 = [(CompletionItem *)v15 reflectedStringForUserTypedString:self->_userTypedText];
-  if (v4)
+  if (forwardCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![(CompletionItem *)v15 matchLocationIsInURL])
@@ -939,9 +939,9 @@ LABEL_20:
       goto LABEL_14;
     }
 
-    v8 = [v7 safari_bestURLForUserTypedString];
-    v9 = [v8 path];
-    if ([v9 isEqualToString:@"/"])
+    safari_bestURLForUserTypedString = [v7 safari_bestURLForUserTypedString];
+    path = [safari_bestURLForUserTypedString path];
+    if ([path isEqualToString:@"/"])
     {
       v10 = [v7 hasSuffix:@"/"];
 
@@ -953,7 +953,7 @@ LABEL_14:
       }
 
       [v7 stringByAppendingString:@"/"];
-      v7 = v8 = v7;
+      v7 = safari_bestURLForUserTypedString = v7;
     }
 
     else
@@ -964,55 +964,55 @@ LABEL_14:
   }
 
   [(UnifiedField *)self setText:v7];
-  v11 = [(UnifiedField *)self beginningOfDocument];
-  v12 = [(UnifiedField *)self positionFromPosition:v11 inDirection:2 offset:[(NSString *)self->_userTypedText length]];
+  beginningOfDocument = [(UnifiedField *)self beginningOfDocument];
+  v12 = [(UnifiedField *)self positionFromPosition:beginningOfDocument inDirection:2 offset:[(NSString *)self->_userTypedText length]];
 
-  v13 = v12;
-  if (v5)
+  endOfDocument = v12;
+  if (suffixCopy)
   {
-    v13 = [(UnifiedField *)self endOfDocument];
+    endOfDocument = [(UnifiedField *)self endOfDocument];
   }
 
-  v14 = [(UnifiedField *)self textRangeFromPosition:v12 toPosition:v13];
+  v14 = [(UnifiedField *)self textRangeFromPosition:v12 toPosition:endOfDocument];
   [(UnifiedField *)self setSelectedTextRange:v14];
 
-  if (v5)
+  if (suffixCopy)
   {
   }
 
 LABEL_15:
 }
 
-- (void)_setTopHit:(id)a3
+- (void)_setTopHit:(id)hit
 {
-  v7 = a3;
-  if (([(CompletionItem *)v7 isEquivalentTo:self->_topHit]& 1) != 0)
+  hitCopy = hit;
+  if (([(CompletionItem *)hitCopy isEquivalentTo:self->_topHit]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(CompletionItem *)v7 isEquivalentTo:self->_lastTopHit];
+    v5 = [(CompletionItem *)hitCopy isEquivalentTo:self->_lastTopHit];
   }
 
   self->_topHitInitiallySelected = v5;
-  objc_storeStrong(&self->_lastTopHit, a3);
-  [(UnifiedField *)self _setReflectedItem:v7 updateUserTypedPrefix:0];
-  v6 = v7;
-  if (self->_topHit != v7)
+  objc_storeStrong(&self->_lastTopHit, hit);
+  [(UnifiedField *)self _setReflectedItem:hitCopy updateUserTypedPrefix:0];
+  v6 = hitCopy;
+  if (self->_topHit != hitCopy)
   {
-    objc_storeStrong(&self->_topHit, a3);
+    objc_storeStrong(&self->_topHit, hit);
     [(UnifiedField *)self _cancelPendingTopHitNavigation];
     [(UnifiedField *)self _updateReturnKey];
-    v6 = v7;
+    v6 = hitCopy;
   }
 }
 
 - (void)_restoreUserTypedText
 {
-  v3 = [(UnifiedField *)self text];
-  v4 = [v3 isEqualToString:self->_userTypedText];
+  text = [(UnifiedField *)self text];
+  v4 = [text isEqualToString:self->_userTypedText];
 
   if ((v4 & 1) == 0)
   {
@@ -1022,21 +1022,21 @@ LABEL_15:
   }
 }
 
-- (void)_setReflectedItem:(id)a3 updateUserTypedPrefix:(BOOL)a4
+- (void)_setReflectedItem:(id)item updateUserTypedPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v6 = a3;
-  if (self->_reflectedItem != v6)
+  prefixCopy = prefix;
+  itemCopy = item;
+  if (self->_reflectedItem != itemCopy)
   {
     if (![(UnifiedField *)self _allowsReflectedTopHit])
     {
 
-      v6 = 0;
+      itemCopy = 0;
     }
 
-    objc_storeStrong(&self->_reflectedItem, v6);
-    v7 = [(UnifiedField *)self delegate];
-    [v7 unifiedFieldReflectedItemDidChange:self];
+    objc_storeStrong(&self->_reflectedItem, itemCopy);
+    delegate = [(UnifiedField *)self delegate];
+    [delegate unifiedFieldReflectedItemDidChange:self];
 
     if (self->_reflectedItem)
     {
@@ -1047,12 +1047,12 @@ LABEL_15:
         topHitCompletionView = self->_topHitCompletionView;
         self->_topHitCompletionView = v9;
 
-        v11 = [MEMORY[0x277D75348] clearColor];
-        [(TopHitCompletionView *)self->_topHitCompletionView setBackgroundColor:v11];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(TopHitCompletionView *)self->_topHitCompletionView setBackgroundColor:clearColor];
 
         [(TopHitCompletionView *)self->_topHitCompletionView setContentMode:3];
-        v12 = [(UnifiedField *)self selectionHighlightColor];
-        [(TopHitCompletionView *)self->_topHitCompletionView setHighlightColor:v12];
+        selectionHighlightColor = [(UnifiedField *)self selectionHighlightColor];
+        [(TopHitCompletionView *)self->_topHitCompletionView setHighlightColor:selectionHighlightColor];
       }
 
       if (!self->_topHitCompletionPromotionRecognizer)
@@ -1082,7 +1082,7 @@ LABEL_15:
 
         if (v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (v4)
+          if (prefixCopy)
           {
             [(UnifiedField *)self setText:&stru_2827BF158];
           }
@@ -1091,10 +1091,10 @@ LABEL_15:
         else
         {
           v21 = [v16 substringToIndex:v19];
-          if (v4)
+          if (prefixCopy)
           {
-            v22 = [(UnifiedField *)self text];
-            v23 = [v22 isEqualToString:v21];
+            text = [(UnifiedField *)self text];
+            v23 = [text isEqualToString:v21];
 
             if ((v23 & 1) == 0)
             {
@@ -1120,8 +1120,8 @@ LABEL_15:
         self->_textCursorHiddenAssertion = v25;
 
         [(UnifiedField *)self addSubview:self->_topHitCompletionView];
-        v27 = [(UnifiedField *)self _fieldEditor];
-        [v27 setHidden:1];
+        _fieldEditor = [(UnifiedField *)self _fieldEditor];
+        [_fieldEditor setHidden:1];
 
         [(UnifiedField *)self setNeedsLayout];
       }
@@ -1149,17 +1149,17 @@ LABEL_28:
   if ([(UnifiedField *)self isFirstResponder]&& [(UnifiedField *)self _allowsReflectedTopHit])
   {
     v6 = self->_pendingTopHitNavigationText;
-    v3 = [(UnifiedField *)self _topHitForCurrentText];
-    [(UnifiedField *)self _setTopHit:v3];
+    _topHitForCurrentText = [(UnifiedField *)self _topHitForCurrentText];
+    [(UnifiedField *)self _setTopHit:_topHitForCurrentText];
 
     if (v6)
     {
-      v4 = [(UnifiedField *)self text];
-      if ([(NSString *)v6 isEqualToString:v4])
+      text = [(UnifiedField *)self text];
+      if ([(NSString *)v6 isEqualToString:text])
       {
-        v5 = [(UnifiedField *)self _waitingForTopHitForCurrentText];
+        _waitingForTopHitForCurrentText = [(UnifiedField *)self _waitingForTopHitForCurrentText];
 
-        if (!v5)
+        if (!_waitingForTopHitForCurrentText)
         {
           [(UnifiedField *)self _endEditingWithCurrentText];
         }
@@ -1177,8 +1177,8 @@ LABEL_28:
 - (void)_layoutTopHitCompletionView
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v3 = [(UnifiedField *)self _reflectedItemCompletionString];
-  if (!v3)
+  _reflectedItemCompletionString = [(UnifiedField *)self _reflectedItemCompletionString];
+  if (!_reflectedItemCompletionString)
   {
     [(UnifiedField *)self _removeTopHitCompletionView];
     goto LABEL_29;
@@ -1186,17 +1186,17 @@ LABEL_28:
 
   v4 = *MEMORY[0x277D740C0];
   v72 = *MEMORY[0x277D740C0];
-  v5 = [(UnifiedField *)self textColor];
-  v73[0] = v5;
+  textColor = [(UnifiedField *)self textColor];
+  v73[0] = textColor;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
 
   v68 = v6;
-  v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v3 attributes:v6];
-  v67 = [(UnifiedField *)self attributedText];
+  v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:_reflectedItemCompletionString attributes:v6];
+  attributedText = [(UnifiedField *)self attributedText];
   [v7 insertAttributedString:? atIndex:?];
   v8 = *MEMORY[0x277D740A8];
-  v9 = [(UnifiedField *)self font];
-  [v7 addAttribute:v8 value:v9 range:{0, objc_msgSend(v7, "length")}];
+  font = [(UnifiedField *)self font];
+  [v7 addAttribute:v8 value:font range:{0, objc_msgSend(v7, "length")}];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1204,18 +1204,18 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(CompletionItem *)self->_reflectedItem safari_titleForReflection];
-      if (v12)
+      safari_titleForReflection = [(CompletionItem *)self->_reflectedItem safari_titleForReflection];
+      if (safari_titleForReflection)
       {
         goto LABEL_16;
       }
     }
 
 LABEL_10:
-    v12 = 0;
+    safari_titleForReflection = 0;
     p_layoutShouldBeRTL = &self->_layoutShouldBeRTL;
 LABEL_21:
-    v35 = v67;
+    v35 = attributedText;
 LABEL_22:
     -[TopHitCompletionView setAttributedText:highlightStartIndex:layoutIsRTL:](self->_topHitCompletionView, "setAttributedText:highlightStartIndex:layoutIsRTL:", v7, [v35 length], 0);
     v34 = v7;
@@ -1223,29 +1223,29 @@ LABEL_22:
   }
 
   v10 = self->_reflectedItem;
-  v11 = [(CompletionItem *)v10 matchLocation];
-  v12 = [(CompletionItem *)v10 title];
-  if (!v12 || (v11 - 11) <= 0xFFFFFFFFFFFFFFFDLL)
+  matchLocation = [(CompletionItem *)v10 matchLocation];
+  safari_titleForReflection = [(CompletionItem *)v10 title];
+  if (!safari_titleForReflection || (matchLocation - 11) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v13 = v3;
-    v14 = [(CompletionItem *)v10 alternativeDisplayTextForURL];
-    v15 = [v14 length];
+    v13 = _reflectedItemCompletionString;
+    alternativeDisplayTextForURL = [(CompletionItem *)v10 alternativeDisplayTextForURL];
+    v15 = [alternativeDisplayTextForURL length];
 
     if (v15)
     {
-      v16 = [(CompletionItem *)v10 alternativeDisplayTextForURL];
+      alternativeDisplayTextForURL2 = [(CompletionItem *)v10 alternativeDisplayTextForURL];
     }
 
     else
     {
-      v18 = [(CompletionItem *)v10 userVisibleURLString];
-      v16 = [v18 safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:1 simplifiedStringOffset:0];
+      userVisibleURLString = [(CompletionItem *)v10 userVisibleURLString];
+      alternativeDisplayTextForURL2 = [userVisibleURLString safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:1 simplifiedStringOffset:0];
 
-      v12 = v18;
+      safari_titleForReflection = userVisibleURLString;
     }
 
-    v12 = v16;
-    v3 = v13;
+    safari_titleForReflection = alternativeDisplayTextForURL2;
+    _reflectedItemCompletionString = v13;
   }
 
   v19 = [(CompletionItem *)self->_reflectedItem reflectedStringForUserTypedString:self->_userTypedText];
@@ -1253,25 +1253,25 @@ LABEL_22:
   {
     [(UnifiedField *)self _restoreUserTypedText];
     [(CompletionItem *)v10 userVisibleURLString];
-    v21 = v20 = v3;
+    v21 = v20 = _reflectedItemCompletionString;
     v22 = [v21 safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:1 simplifiedStringOffset:0];
 
-    v3 = v20;
-    v12 = v22;
+    _reflectedItemCompletionString = v20;
+    safari_titleForReflection = v22;
   }
 
-  if (!v12)
+  if (!safari_titleForReflection)
   {
     goto LABEL_10;
   }
 
 LABEL_16:
   v70[0] = v8;
-  v23 = [(UnifiedField *)self font];
+  font2 = [(UnifiedField *)self font];
   v70[1] = v4;
-  v71[0] = v23;
-  v24 = [(UnifiedField *)self _inheritedInteractionTintColor];
-  v71[1] = v24;
+  v71[0] = font2;
+  _inheritedInteractionTintColor = [(UnifiedField *)self _inheritedInteractionTintColor];
+  v71[1] = _inheritedInteractionTintColor;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:2];
 
   p_layoutShouldBeRTL = &self->_layoutShouldBeRTL;
@@ -1279,23 +1279,23 @@ LABEL_16:
   v27 = objc_alloc(MEMORY[0x277CCA898]);
   if (!layoutShouldBeRTL)
   {
-    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@" %C %@", 8212, v12];
+    v36 = [MEMORY[0x277CCACA8] stringWithFormat:@" %C %@", 8212, safari_titleForReflection];
     v37 = [v27 initWithString:v36 attributes:v25];
 
     [v7 appendAttributedString:v37];
     goto LABEL_21;
   }
 
-  v66 = v3;
-  v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C%@ %C ", 8206, v12, 8212];
-  v29 = [v27 initWithString:v28 attributes:v25];
+  v66 = _reflectedItemCompletionString;
+  8212 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C%@ %C ", 8206, safari_titleForReflection, 8212];
+  v29 = [v27 initWithString:8212 attributes:v25];
 
-  v30 = [v29 string];
-  v65 = [v30 length];
+  string = [v29 string];
+  v65 = [string length];
 
   v31 = objc_alloc(MEMORY[0x277CCAB48]);
-  v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8206];
-  v33 = [v31 initWithString:v32];
+  8206 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8206];
+  v33 = [v31 initWithString:8206];
 
   [v33 appendAttributedString:v7];
   v34 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v29];
@@ -1304,12 +1304,12 @@ LABEL_16:
   if (!*p_layoutShouldBeRTL)
   {
     v7 = v34;
-    v3 = v66;
+    _reflectedItemCompletionString = v66;
     goto LABEL_21;
   }
 
-  v3 = v66;
-  v35 = v67;
+  _reflectedItemCompletionString = v66;
+  v35 = attributedText;
   if (!v65)
   {
     v7 = v34;
@@ -1319,10 +1319,10 @@ LABEL_16:
   [(TopHitCompletionView *)self->_topHitCompletionView setAttributedText:v34 highlightStartIndex:v65 layoutIsRTL:1];
 LABEL_23:
   v38 = CTLineCreateWithAttributedString(v34);
-  v39 = [(UnifiedField *)self attributedText];
-  v40 = round(CTLineGetOffsetForStringIndex(v38, [v39 length], 0));
-  v41 = [(UnifiedField *)self _fieldEditor];
-  [v41 bounds];
+  attributedText2 = [(UnifiedField *)self attributedText];
+  v40 = round(CTLineGetOffsetForStringIndex(v38, [attributedText2 length], 0));
+  _fieldEditor = [(UnifiedField *)self _fieldEditor];
+  [_fieldEditor bounds];
   v43 = fmax(v40 - v42, 0.0);
 
   BoundsWithOptions = CTLineGetBoundsWithOptions(v38, 0);
@@ -1400,9 +1400,9 @@ uint64_t __43__UnifiedField__layoutTopHitCompletionView__block_invoke(uint64_t a
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TopHitCompletionView *)self->_topHitCompletionView superview];
+  superview = [(TopHitCompletionView *)self->_topHitCompletionView superview];
 
-  if (v11)
+  if (superview)
   {
     v12 = v8 + -30.0;
   }
@@ -1431,10 +1431,10 @@ uint64_t __43__UnifiedField__layoutTopHitCompletionView__block_invoke(uint64_t a
     return 0;
   }
 
-  v3 = [(UnifiedField *)self delegate];
+  delegate = [(UnifiedField *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 unifiedFieldCanBecomeFirstResponder:self];
+    v4 = [delegate unifiedFieldCanBecomeFirstResponder:self];
   }
 
   else
@@ -1460,25 +1460,25 @@ uint64_t __43__UnifiedField__layoutTopHitCompletionView__block_invoke(uint64_t a
 
   v9.receiver = self;
   v9.super_class = UnifiedField;
-  v4 = [(UnifiedField *)&v9 resignFirstResponder];
-  v5 = v4;
+  resignFirstResponder = [(UnifiedField *)&v9 resignFirstResponder];
+  v5 = resignFirstResponder;
   self->_isResigningFirstResponder = 0;
-  if (self->_preserveSelectionOnResignFirstResponder && v4 != 0)
+  if (self->_preserveSelectionOnResignFirstResponder && resignFirstResponder != 0)
   {
-    v7 = [(UnifiedField *)self interactionAssistant];
-    [v7 activateSelection];
+    interactionAssistant = [(UnifiedField *)self interactionAssistant];
+    [interactionAssistant activateSelection];
   }
 
   return v5;
 }
 
-- (BOOL)endEditing:(BOOL)a3
+- (BOOL)endEditing:(BOOL)editing
 {
   preserveSelectionOnResignFirstResponder = self->_preserveSelectionOnResignFirstResponder;
   self->_preserveSelectionOnResignFirstResponder = 0;
   v6.receiver = self;
   v6.super_class = UnifiedField;
-  result = [(UnifiedField *)&v6 endEditing:a3];
+  result = [(UnifiedField *)&v6 endEditing:editing];
   self->_preserveSelectionOnResignFirstResponder = preserveSelectionOnResignFirstResponder;
   return result;
 }
@@ -1486,16 +1486,16 @@ uint64_t __43__UnifiedField__layoutTopHitCompletionView__block_invoke(uint64_t a
 - (void)focusAndInsertCursorAtEnd
 {
   [(UnifiedField *)self becomeFirstResponder];
-  v5 = [(UnifiedField *)self endOfDocument];
-  v3 = [(UnifiedField *)self endOfDocument];
-  v4 = [(UnifiedField *)self textRangeFromPosition:v5 toPosition:v3];
+  endOfDocument = [(UnifiedField *)self endOfDocument];
+  endOfDocument2 = [(UnifiedField *)self endOfDocument];
+  v4 = [(UnifiedField *)self textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
   [(UnifiedField *)self setSelectedTextRange:v4];
 }
 
 - (void)clearUserTypedText
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self willUpdateUserTypedText:self->_userTypedText toText:0];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self willUpdateUserTypedText:self->_userTypedText toText:0];
 
   userTypedText = self->_userTypedText;
   self->_userTypedText = 0;
@@ -1559,8 +1559,8 @@ uint64_t __43__UnifiedField__layoutTopHitCompletionView__block_invoke(uint64_t a
       while (v17);
     }
 
-    v20 = [(UnifiedField *)self _allCombinationsOfModifierKeys];
-    v21 = [v20 safari_arrayByMappingObjectsUsingBlock:&__block_literal_global_179];
+    _allCombinationsOfModifierKeys = [(UnifiedField *)self _allCombinationsOfModifierKeys];
+    v21 = [_allCombinationsOfModifierKeys safari_arrayByMappingObjectsUsingBlock:&__block_literal_global_179];
 
     v22 = [keyCommands_commands arrayByAddingObjectsFromArray:v21];
     v23 = keyCommands_commands;
@@ -1612,42 +1612,42 @@ uint64_t __27__UnifiedField_keyCommands__block_invoke(uint64_t a1, void *a2)
   return [v2 keyCommandWithInput:@"\r" modifierFlags:v3 action:sel_selectCompletionKeyPressed];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (NSSelectorFromString(@"_define:") == a3 || NSSelectorFromString(@"_share:") == a3)
+  senderCopy = sender;
+  if (NSSelectorFromString(@"_define:") == action || NSSelectorFromString(@"_share:") == action)
   {
     goto LABEL_22;
   }
 
-  if (sel_pasteAndGo_ == a3 || sel_pasteAndSearch_ == a3)
+  if (sel_pasteAndGo_ == action || sel_pasteAndSearch_ == action)
   {
-    v8 = [MEMORY[0x277D75810] generalPasteboard];
-    v9 = [v8 safari_preferredPasteAndNavigateCommand];
-    LOBYTE(a3) = [v9 action] == a3;
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    safari_preferredPasteAndNavigateCommand = [generalPasteboard safari_preferredPasteAndNavigateCommand];
+    LOBYTE(action) = [safari_preferredPasteAndNavigateCommand action] == action;
 
     goto LABEL_23;
   }
 
-  if (sel_moveRightKeyPressed == a3 || sel_moveLeftKeyPressed == a3)
+  if (sel_moveRightKeyPressed == action || sel_moveLeftKeyPressed == action)
   {
     if (([(UnifiedField *)self hasMarkedText]& 1) == 0)
     {
-      LOBYTE(a3) = self->_topHitCompletionView != 0;
+      LOBYTE(action) = self->_topHitCompletionView != 0;
       goto LABEL_23;
     }
 
 LABEL_22:
-    LOBYTE(a3) = 0;
+    LOBYTE(action) = 0;
     goto LABEL_23;
   }
 
-  if (sel_nextCompletionSelectionByRowKeyPressed == a3 || sel_nextCompletionSelectionBySectionKeyPressed == a3 || sel_previousCompletionSelectionByRowKeyPressed == a3 || sel_previousCompletionSelectionBySectionKeyPressed == a3)
+  if (sel_nextCompletionSelectionByRowKeyPressed == action || sel_nextCompletionSelectionBySectionKeyPressed == action || sel_previousCompletionSelectionByRowKeyPressed == action || sel_previousCompletionSelectionBySectionKeyPressed == action)
   {
     if (([(UnifiedField *)self hasMarkedText]& 1) == 0)
     {
-      v11 = [(UnifiedField *)self delegate];
-      LOBYTE(a3) = [v11 unifiedFieldShouldMoveCompletionSelection:self];
+      delegate = [(UnifiedField *)self delegate];
+      LOBYTE(action) = [delegate unifiedFieldShouldMoveCompletionSelection:self];
 
       goto LABEL_23;
     }
@@ -1655,28 +1655,28 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (sel_focusNextKeyViewKeyPressed == a3 || sel_focusPreviousKeyViewKeyPressed == a3 || sel_selectCompletionKeyPressed == a3)
+  if (sel_focusNextKeyViewKeyPressed == action || sel_focusPreviousKeyViewKeyPressed == action || sel_selectCompletionKeyPressed == action)
   {
-    LODWORD(a3) = [(UnifiedField *)self hasMarkedText]^ 1;
+    LODWORD(action) = [(UnifiedField *)self hasMarkedText]^ 1;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = UnifiedField;
-    LOBYTE(a3) = [(UnifiedField *)&v12 canPerformAction:a3 withSender:v6];
+    LOBYTE(action) = [(UnifiedField *)&v12 canPerformAction:action withSender:senderCopy];
   }
 
 LABEL_23:
 
-  return a3;
+  return action;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(UnifiedField *)self traitCollection];
-  v6 = [v4 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v5];
+  fontCopy = font;
+  traitCollection = [(UnifiedField *)self traitCollection];
+  v6 = [fontCopy _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
   v7.receiver = self;
   v7.super_class = UnifiedField;
@@ -1701,63 +1701,63 @@ LABEL_23:
 
 - (void)nextCompletionSelectionByRowKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self moveCompletionSelectionByRowOffset:1];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self moveCompletionSelectionByRowOffset:1];
 }
 
 - (void)nextCompletionSelectionBySectionKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self moveCompletionSelectionBySectionOffset:1];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self moveCompletionSelectionBySectionOffset:1];
 }
 
 - (void)previousCompletionSelectionByRowKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self moveCompletionSelectionByRowOffset:-1];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self moveCompletionSelectionByRowOffset:-1];
 }
 
 - (void)previousCompletionSelectionBySectionKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self moveCompletionSelectionBySectionOffset:-1];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self moveCompletionSelectionBySectionOffset:-1];
 }
 
 - (void)focusNextKeyViewKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self focusNextKeyView:1];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self focusNextKeyView:1];
 }
 
 - (void)focusPreviousKeyViewKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedField:self focusNextKeyView:0];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self focusNextKeyView:0];
 }
 
 - (void)selectCompletionKeyPressed
 {
-  v3 = [(UnifiedField *)self delegate];
-  [v3 unifiedFieldSelectCompletionItemIfAvailable:self];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedFieldSelectCompletionItemIfAvailable:self];
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   querySuggestions = self->_querySuggestions;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__UnifiedField_insertTextSuggestion___block_invoke;
   v10[3] = &unk_2781D91D8;
-  v11 = v4;
-  v6 = v4;
+  v11 = suggestionCopy;
+  v6 = suggestionCopy;
   v7 = [(NSArray *)querySuggestions safari_firstObjectPassingTest:v10];
   [(CKContextCompleter *)self->_contextCompleter logEngagement:v7 forInput:self->_userTypedText];
-  v8 = [(UnifiedField *)self delegate];
-  [v8 unifiedField:self didEngageWithQuerySuggestion:v7 forQueryString:self->_userTypedText];
+  delegate = [(UnifiedField *)self delegate];
+  [delegate unifiedField:self didEngageWithQuerySuggestion:v7 forQueryString:self->_userTypedText];
 
-  v9 = [v6 inputText];
-  [(UnifiedField *)self setText:v9];
+  inputText = [v6 inputText];
+  [(UnifiedField *)self setText:inputText];
 
   self->_lastInputWasQuerySuggestion = 1;
   self->_hasSelectedQuerySuggestion = 1;
@@ -1774,9 +1774,9 @@ uint64_t __37__UnifiedField_insertTextSuggestion___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
+  allCopy = all;
   if (self->_reflectedItem)
   {
     [(UnifiedField *)self _promoteCompletionToSelection];
@@ -1784,29 +1784,29 @@ uint64_t __37__UnifiedField_insertTextSuggestion___block_invoke(uint64_t a1, voi
 
   v5.receiver = self;
   v5.super_class = UnifiedField;
-  [(UnifiedField *)&v5 selectAll:v4];
+  [(UnifiedField *)&v5 selectAll:allCopy];
 }
 
-- (void)setVoiceSearchState:(int64_t)a3
+- (void)setVoiceSearchState:(int64_t)state
 {
-  if (self->_voiceSearchState != a3)
+  if (self->_voiceSearchState != state)
   {
-    self->_voiceSearchState = a3;
-    v8 = [MEMORY[0x277D75688] sharedInputModeController];
-    if (a3 == 1)
+    self->_voiceSearchState = state;
+    mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+    if (state == 1)
     {
       [(UnifiedField *)self setText:0];
       v6 = [(UnifiedField *)self _voiceSearchInputModeForFirstResponder:[(UnifiedField *)self isFirstResponder]];
-      [v8 toggleDictationForResponder:self withOption:v6 firstResponderSetupCompletion:0];
+      [mEMORY[0x277D75688] toggleDictationForResponder:self withOption:v6 firstResponderSetupCompletion:0];
     }
 
-    else if (!a3)
+    else if (!state)
     {
-      [v8 stopDictation];
+      [mEMORY[0x277D75688] stopDictation];
     }
 
-    v7 = [(UnifiedField *)self delegate];
-    [v7 unifiedFieldVoiceSearchStateDidChange:self];
+    delegate = [(UnifiedField *)self delegate];
+    [delegate unifiedFieldVoiceSearchStateDidChange:self];
   }
 }
 
@@ -1819,12 +1819,12 @@ uint64_t __37__UnifiedField_insertTextSuggestion___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)_voiceSearchInputModeForFirstResponder:(BOOL)a3
+- (id)_voiceSearchInputModeForFirstResponder:(BOOL)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   v4 = objc_alloc_init(MEMORY[0x277D75430]);
   v5 = v4;
-  if (v3)
+  if (responderCopy)
   {
     v6 = @"UIDictationInputModeInvocationSourceMicButtonInFirstResponderSafariAddressBar";
   }

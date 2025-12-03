@@ -1,12 +1,12 @@
 @interface PKHandwritingSynthesisDataCollectionViewController
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)initWithDrawings:(id *)a1;
-- (id)makeDrawingForOriginalStrokes:(void *)a3 refinedStrokes:(void *)a4 contextStrokes:(double)a5 bounds:(double)a6;
-- (id)makeDrawingForStrokes:(id *)a1;
-- (id)makeImageForDrawing:(uint64_t)a1;
-- (id)saveDrawing:(void *)a1 toBaseURL:(void *)a2 withName:(void *)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)initWithDrawings:(id *)drawings;
+- (id)makeDrawingForOriginalStrokes:(void *)strokes refinedStrokes:(void *)refinedStrokes contextStrokes:(double)contextStrokes bounds:(double)bounds;
+- (id)makeDrawingForStrokes:(id *)strokes;
+- (id)makeImageForDrawing:(uint64_t)drawing;
+- (id)saveDrawing:(void *)drawing toBaseURL:(void *)l withName:(void *)name;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (uint64_t)updateTableViewHeight;
 - (void)submitFeedback;
 - (void)viewDidLayoutSubviews;
@@ -15,22 +15,22 @@
 
 @implementation PKHandwritingSynthesisDataCollectionViewController
 
-- (id)initWithDrawings:(id *)a1
+- (id)initWithDrawings:(id *)drawings
 {
   v4 = a2;
-  if (a1)
+  if (drawings)
   {
-    v7.receiver = a1;
+    v7.receiver = drawings;
     v7.super_class = PKHandwritingSynthesisDataCollectionViewController;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    drawings = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 124, a2);
     }
   }
 
-  return a1;
+  return drawings;
 }
 
 - (void)viewDidLoad
@@ -39,9 +39,9 @@
   v232.receiver = self;
   v232.super_class = PKHandwritingSynthesisDataCollectionViewController;
   [(PKHandwritingSynthesisDataCollectionViewController *)&v232 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  view = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  [view setBackgroundColor:whiteColor];
 
   v5 = objc_alloc(MEMORY[0x1E69DCEF8]);
   v6 = *MEMORY[0x1E695F058];
@@ -70,8 +70,8 @@
   v14 = scrollView;
   [(UIScrollView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  v16 = v15;
+  view2 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  v16 = view2;
   if (self)
   {
     v17 = self->_scrollView;
@@ -82,18 +82,18 @@
 
   else
   {
-    [v15 addSubview:0];
+    [view2 addSubview:0];
 
     v18 = 0;
   }
 
   v19 = v18;
-  v20 = [(UIScrollView *)v19 frameLayoutGuide];
-  v21 = [v20 topAnchor];
-  v22 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  v23 = [v22 safeAreaLayoutGuide];
-  v24 = [v23 topAnchor];
-  v25 = [v21 constraintEqualToAnchor:v24];
+  frameLayoutGuide = [(UIScrollView *)v19 frameLayoutGuide];
+  topAnchor = [frameLayoutGuide topAnchor];
+  view3 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v25 setActive:1];
 
   if (self)
@@ -107,12 +107,12 @@
   }
 
   v27 = v26;
-  v28 = [(UIScrollView *)v27 frameLayoutGuide];
-  v29 = [v28 leftAnchor];
-  v30 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  v31 = [v30 safeAreaLayoutGuide];
-  v32 = [v31 leftAnchor];
-  v33 = [v29 constraintEqualToAnchor:v32];
+  frameLayoutGuide2 = [(UIScrollView *)v27 frameLayoutGuide];
+  leftAnchor = [frameLayoutGuide2 leftAnchor];
+  view4 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide2 leftAnchor];
+  v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v33 setActive:1];
 
   if (self)
@@ -126,12 +126,12 @@
   }
 
   v35 = v34;
-  v36 = [(UIScrollView *)v35 frameLayoutGuide];
-  v37 = [v36 rightAnchor];
-  v38 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  v39 = [v38 safeAreaLayoutGuide];
-  v40 = [v39 rightAnchor];
-  v41 = [v37 constraintEqualToAnchor:v40];
+  frameLayoutGuide3 = [(UIScrollView *)v35 frameLayoutGuide];
+  rightAnchor = [frameLayoutGuide3 rightAnchor];
+  view5 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide3 rightAnchor];
+  v41 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v41 setActive:1];
 
   if (self)
@@ -145,12 +145,12 @@
   }
 
   v43 = v42;
-  v44 = [(UIScrollView *)v43 frameLayoutGuide];
-  v45 = [v44 bottomAnchor];
-  v46 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
-  v47 = [v46 safeAreaLayoutGuide];
-  v48 = [v47 bottomAnchor];
-  v49 = [v45 constraintEqualToAnchor:v48];
+  frameLayoutGuide4 = [(UIScrollView *)v43 frameLayoutGuide];
+  bottomAnchor = [frameLayoutGuide4 bottomAnchor];
+  view6 = [(PKHandwritingSynthesisDataCollectionViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v49 setActive:1];
 
   if (self)
@@ -164,8 +164,8 @@
   }
 
   v51 = v50;
-  v52 = [(UIScrollView *)v51 frameLayoutGuide];
-  v53 = [v52 widthAnchor];
+  frameLayoutGuide5 = [(UIScrollView *)v51 frameLayoutGuide];
+  widthAnchor = [frameLayoutGuide5 widthAnchor];
   if (self)
   {
     v54 = self->_scrollView;
@@ -177,9 +177,9 @@
   }
 
   v55 = v54;
-  v56 = [(UIScrollView *)v55 contentLayoutGuide];
-  v57 = [v56 widthAnchor];
-  v58 = [v53 constraintEqualToAnchor:v57];
+  contentLayoutGuide = [(UIScrollView *)v55 contentLayoutGuide];
+  widthAnchor2 = [contentLayoutGuide widthAnchor];
+  v58 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v58 setActive:1];
 
   v59 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
@@ -201,12 +201,12 @@
   [(UILabel *)v62 setNumberOfLines:0];
 
   v63 = +[PKHandwritingSynthesisLogger sharedHandwritingSynthesisLogger];
-  v64 = [(PKHandwritingSynthesisLogger *)v63 entries];
+  entries = [(PKHandwritingSynthesisLogger *)v63 entries];
 
-  v65 = [v64 count];
+  v65 = [entries count];
   v66 = _PencilKitBundle();
   v67 = v66;
-  v221 = v64;
+  v221 = entries;
   if (v65)
   {
     v68 = @"Please select all handwriting synthesis you want to submit. If you make no selection and click submit, all entries will be sent to Apple.";
@@ -277,7 +277,7 @@
 
   v207 = MEMORY[0x1E696ACD8];
   v218 = v79;
-  v80 = [(UILabel *)v218 topAnchor];
+  topAnchor3 = [(UILabel *)v218 topAnchor];
   if (self)
   {
     v81 = self->_scrollView;
@@ -289,8 +289,8 @@
   }
 
   v213 = v81;
-  v211 = [(UIScrollView *)v213 topAnchor];
-  v209 = [v80 constraintEqualToAnchor:20.0 constant:?];
+  topAnchor4 = [(UIScrollView *)v213 topAnchor];
+  v209 = [topAnchor3 constraintEqualToAnchor:20.0 constant:?];
   v240[0] = v209;
   if (self)
   {
@@ -303,7 +303,7 @@
   }
 
   v205 = v82;
-  v83 = [(UILabel *)v205 leadingAnchor];
+  leadingAnchor = [(UILabel *)v205 leadingAnchor];
   if (self)
   {
     v84 = self->_scrollView;
@@ -315,11 +315,11 @@
   }
 
   v85 = v84;
-  v86 = [(UIScrollView *)v85 leadingAnchor];
-  v203 = v83;
-  v87 = [v83 constraintEqualToAnchor:v86 constant:20.0];
+  leadingAnchor2 = [(UIScrollView *)v85 leadingAnchor];
+  v203 = leadingAnchor;
+  v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v240[1] = v87;
-  obj = v80;
+  obj = topAnchor3;
   if (self)
   {
     v88 = self->_descriptionLabel;
@@ -331,7 +331,7 @@
   }
 
   v89 = v88;
-  v90 = [(UILabel *)v89 trailingAnchor];
+  trailingAnchor = [(UILabel *)v89 trailingAnchor];
   if (self)
   {
     v91 = self->_scrollView;
@@ -342,25 +342,25 @@
     v91 = 0;
   }
 
-  v92 = self;
+  selfCopy = self;
   v93 = v91;
-  v94 = [(UIScrollView *)v93 trailingAnchor];
-  v95 = [v90 constraintEqualToAnchor:v94 constant:-20.0];
+  trailingAnchor2 = [(UIScrollView *)v93 trailingAnchor];
+  v95 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v240[2] = v95;
   v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:v240 count:3];
   [v207 activateConstraints:v96];
 
   v97 = objc_alloc_init(MEMORY[0x1E69DD020]);
   v98 = v97;
-  v99 = v92;
-  if (v92)
+  v99 = selfCopy;
+  if (selfCopy)
   {
-    objc_storeStrong(&v92->_tableView, v97);
+    objc_storeStrong(&selfCopy->_tableView, v97);
 
-    v100 = v92->_tableView;
+    v100 = selfCopy->_tableView;
     [(UITableView *)v100 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    tableView = v92->_tableView;
+    tableView = selfCopy->_tableView;
   }
 
   else
@@ -371,14 +371,14 @@
   }
 
   v102 = tableView;
-  [(UITableView *)v102 setDelegate:v92];
+  [(UITableView *)v102 setDelegate:selfCopy];
 
-  if (v92)
+  if (selfCopy)
   {
-    v103 = v92->_tableView;
-    [(UITableView *)v103 setDataSource:v92];
+    v103 = selfCopy->_tableView;
+    [(UITableView *)v103 setDataSource:selfCopy];
 
-    v104 = v92->_tableView;
+    v104 = selfCopy->_tableView;
   }
 
   else
@@ -390,12 +390,12 @@
   v105 = v104;
   [(UITableView *)v105 setSeparatorStyle:0];
 
-  if (v92)
+  if (selfCopy)
   {
-    v106 = v92->_tableView;
+    v106 = selfCopy->_tableView;
     [(UITableView *)v106 setAllowsMultipleSelection:1];
 
-    v107 = v92->_tableView;
+    v107 = selfCopy->_tableView;
   }
 
   else
@@ -407,10 +407,10 @@
   v108 = v107;
   [(UITableView *)v108 registerClass:objc_opt_class() forCellReuseIdentifier:@"ImageCell"];
 
-  if (v92)
+  if (selfCopy)
   {
-    v109 = v92->_scrollView;
-    v110 = v92->_tableView;
+    v109 = selfCopy->_scrollView;
+    v110 = selfCopy->_tableView;
   }
 
   else
@@ -422,9 +422,9 @@
   v111 = v110;
   [(UIScrollView *)v109 addSubview:v111];
 
-  if (v92)
+  if (selfCopy)
   {
-    v112 = v92->_tableView;
+    v112 = selfCopy->_tableView;
   }
 
   else
@@ -434,10 +434,10 @@
 
   v206 = MEMORY[0x1E696ACD8];
   v219 = v112;
-  v113 = [(UITableView *)v219 topAnchor];
-  if (v92)
+  topAnchor5 = [(UITableView *)v219 topAnchor];
+  if (selfCopy)
   {
-    v114 = v92->_descriptionLabel;
+    v114 = selfCopy->_descriptionLabel;
   }
 
   else
@@ -446,12 +446,12 @@
   }
 
   v214 = v114;
-  v212 = [(UILabel *)v214 bottomAnchor];
-  v210 = [v113 constraintEqualToAnchor:20.0 constant:?];
+  bottomAnchor3 = [(UILabel *)v214 bottomAnchor];
+  v210 = [topAnchor5 constraintEqualToAnchor:20.0 constant:?];
   v239[0] = v210;
-  if (v92)
+  if (selfCopy)
   {
-    v115 = v92->_tableView;
+    v115 = selfCopy->_tableView;
   }
 
   else
@@ -460,10 +460,10 @@
   }
 
   v208 = v115;
-  v116 = [(UITableView *)v208 leadingAnchor];
-  if (v92)
+  leadingAnchor3 = [(UITableView *)v208 leadingAnchor];
+  if (selfCopy)
   {
-    v117 = v92->_scrollView;
+    v117 = selfCopy->_scrollView;
   }
 
   else
@@ -472,12 +472,12 @@
   }
 
   v204 = v117;
-  v202 = [(UIScrollView *)v204 leadingAnchor];
-  v201 = [v116 constraintEqualToAnchor:20.0 constant:?];
+  leadingAnchor4 = [(UIScrollView *)v204 leadingAnchor];
+  v201 = [leadingAnchor3 constraintEqualToAnchor:20.0 constant:?];
   v239[1] = v201;
-  if (v92)
+  if (selfCopy)
   {
-    v118 = v92->_tableView;
+    v118 = selfCopy->_tableView;
   }
 
   else
@@ -486,7 +486,7 @@
   }
 
   v200 = v118;
-  v119 = [(UITableView *)v200 trailingAnchor];
+  trailingAnchor3 = [(UITableView *)v200 trailingAnchor];
   if (v99)
   {
     v120 = v99->_scrollView;
@@ -498,10 +498,10 @@
   }
 
   v121 = v120;
-  v122 = [(UIScrollView *)v121 trailingAnchor];
-  v123 = [v119 constraintEqualToAnchor:v122 constant:-20.0];
+  trailingAnchor4 = [(UIScrollView *)v121 trailingAnchor];
+  v123 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
   v239[2] = v123;
-  obja = v113;
+  obja = topAnchor5;
   if (v99)
   {
     v124 = v99->_tableView;
@@ -512,11 +512,11 @@
     v124 = 0;
   }
 
-  v199 = v119;
+  v199 = trailingAnchor3;
   v125 = v124;
-  v126 = [(UITableView *)v125 bottomAnchor];
+  bottomAnchor4 = [(UITableView *)v125 bottomAnchor];
   p_isa = &v99->super.super.super.isa;
-  v127 = v116;
+  v127 = leadingAnchor3;
   if (v99)
   {
     v128 = v99->_scrollView;
@@ -528,8 +528,8 @@
   }
 
   v129 = v128;
-  v130 = [(UIScrollView *)v129 bottomAnchor];
-  v131 = [v126 constraintEqualToAnchor:v130 constant:-20.0];
+  bottomAnchor5 = [(UIScrollView *)v129 bottomAnchor];
+  v131 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-20.0];
   v239[3] = v131;
   v132 = [MEMORY[0x1E695DEC8] arrayWithObjects:v239 count:4];
   [v206 activateConstraints:v132];
@@ -538,8 +538,8 @@
   if (p_isa)
   {
     v134 = p_isa[128];
-    v135 = [v134 heightAnchor];
-    v136 = [v135 constraintEqualToConstant:0.0];
+    heightAnchor = [v134 heightAnchor];
+    v136 = [heightAnchor constraintEqualToConstant:0.0];
     objc_storeStrong(p_isa + 129, v136);
 
     v137 = p_isa[129];
@@ -547,8 +547,8 @@
 
   else
   {
-    v198 = [0 heightAnchor];
-    [v198 constraintEqualToConstant:0.0];
+    heightAnchor2 = [0 heightAnchor];
+    [heightAnchor2 constraintEqualToConstant:0.0];
 
     v137 = 0;
   }
@@ -582,21 +582,21 @@
         }
 
         v141 = *(*(&v228 + 1) + 8 * v140);
-        v142 = [MEMORY[0x1E695DF70] array];
-        v143 = [v141 originalStrokes];
-        [v142 addObjectsFromArray:v143];
+        array = [MEMORY[0x1E695DF70] array];
+        originalStrokes = [v141 originalStrokes];
+        [array addObjectsFromArray:originalStrokes];
 
-        v144 = [v141 synthesizedStrokes];
-        [v142 addObjectsFromArray:v144];
+        synthesizedStrokes = [v141 synthesizedStrokes];
+        [array addObjectsFromArray:synthesizedStrokes];
 
-        v145 = [v141 contextStrokes];
-        [v142 addObjectsFromArray:v145];
+        contextStrokes = [v141 contextStrokes];
+        [array addObjectsFromArray:contextStrokes];
 
         v226 = 0u;
         v227 = 0u;
         v224 = 0u;
         v225 = 0u;
-        v146 = v142;
+        v146 = array;
         v147 = [v146 countByEnumeratingWithState:&v224 objects:v237 count:16];
         v148 = v9;
         v149 = v8;
@@ -658,8 +658,8 @@
         v165 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v165, OS_LOG_TYPE_ERROR))
         {
-          v194 = [v141 synthesizedStrokes];
-          v195 = [v194 count];
+          synthesizedStrokes2 = [v141 synthesizedStrokes];
+          v195 = [synthesizedStrokes2 count];
           v244.origin.x = v151;
           v244.origin.y = v150;
           v244.size.width = v149;
@@ -673,34 +673,34 @@
         }
 
         v166 = objc_opt_new();
-        v167 = [v141 originalStrokes];
-        v168 = [v167 count];
+        originalStrokes2 = [v141 originalStrokes];
+        v168 = [originalStrokes2 count];
 
         if (v168)
         {
-          v169 = [v141 originalStrokes];
-          v170 = [v141 contextStrokes];
-          v171 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeDrawingForOriginalStrokes:v169 refinedStrokes:0 contextStrokes:v170 bounds:v151, v150];
+          originalStrokes3 = [v141 originalStrokes];
+          contextStrokes2 = [v141 contextStrokes];
+          v150 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeDrawingForOriginalStrokes:originalStrokes3 refinedStrokes:0 contextStrokes:contextStrokes2 bounds:v151, v150];
 
-          v172 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeImageForDrawing:v171];
+          v172 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeImageForDrawing:v150];
         }
 
         else
         {
-          v171 = 0;
+          v150 = 0;
           v172 = 0;
         }
 
-        v173 = [v141 synthesizedStrokes];
-        v174 = [v173 count];
-        v175 = [v141 contextStrokes];
-        v176 = [v175 count];
+        synthesizedStrokes3 = [v141 synthesizedStrokes];
+        v174 = [synthesizedStrokes3 count];
+        contextStrokes3 = [v141 contextStrokes];
+        v176 = [contextStrokes3 count];
 
         if (v174 + v176)
         {
-          v179 = [v141 synthesizedStrokes];
-          v180 = [v141 contextStrokes];
-          v177 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeDrawingForOriginalStrokes:v179 refinedStrokes:v180 contextStrokes:v151 bounds:v150];
+          synthesizedStrokes4 = [v141 synthesizedStrokes];
+          contextStrokes4 = [v141 contextStrokes];
+          v177 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeDrawingForOriginalStrokes:synthesizedStrokes4 refinedStrokes:contextStrokes4 contextStrokes:v151 bounds:v150];
 
           v178 = [(PKHandwritingSynthesisDataCollectionViewController *)p_isa makeImageForDrawing:v177];
         }
@@ -745,7 +745,7 @@
         {
           objc_storeStrong(v166 + 4, v141);
           objc_storeStrong(v166 + 3, v191);
-          objc_storeStrong(v166 + 2, v171);
+          objc_storeStrong(v166 + 2, v150);
           objc_storeStrong(v166 + 1, v177);
         }
 
@@ -777,18 +777,18 @@
   [(PKHandwritingSynthesisDataCollectionViewController *)v133 updateTableViewHeight];
 }
 
-- (id)makeDrawingForOriginalStrokes:(void *)a3 refinedStrokes:(void *)a4 contextStrokes:(double)a5 bounds:(double)a6
+- (id)makeDrawingForOriginalStrokes:(void *)strokes refinedStrokes:(void *)refinedStrokes contextStrokes:(double)contextStrokes bounds:(double)bounds
 {
   v68 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  if (a1)
+  strokesCopy = strokes;
+  refinedStrokesCopy = refinedStrokes;
+  if (self)
   {
-    if ([a1[124] count])
+    if ([self[124] count])
     {
-      v38 = [a1[124] objectAtIndexedSubscript:0];
-      a1 = objc_alloc_init(objc_opt_class());
+      v38 = [self[124] objectAtIndexedSubscript:0];
+      self = objc_alloc_init(objc_opt_class());
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
@@ -796,8 +796,8 @@
       v40 = v11;
       v14 = v11;
       v15 = [v14 countByEnumeratingWithState:&v61 objects:v67 count:16];
-      v16 = -a5;
-      v17 = -a6;
+      v16 = -contextStrokes;
+      v17 = -bounds;
       v18 = MEMORY[0x1E695EFD0];
       if (v15)
       {
@@ -815,13 +815,13 @@
               objc_enumerationMutation(v14);
             }
 
-            v22 = [*(*(&v61 + 1) + 8 * i) copyForMutation];
+            copyForMutation = [*(*(&v61 + 1) + 8 * i) copyForMutation];
             *&v59.a = v48;
             *&v59.c = v45;
             *&v59.tx = v42;
             CGAffineTransformTranslate(&v60, &v59, v16, v17);
-            [v22 _applyTransform:&v60];
-            [a1 addNewStroke:v22];
+            [copyForMutation _applyTransform:&v60];
+            [self addNewStroke:copyForMutation];
           }
 
           v19 = [v14 countByEnumeratingWithState:&v61 objects:v67 count:16];
@@ -834,7 +834,7 @@
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v23 = v12;
+      v23 = strokesCopy;
       v24 = [v23 countByEnumeratingWithState:&v55 objects:v66 count:16];
       if (v24)
       {
@@ -852,13 +852,13 @@
               objc_enumerationMutation(v23);
             }
 
-            v28 = [*(*(&v55 + 1) + 8 * j) copyForMutation];
+            copyForMutation2 = [*(*(&v55 + 1) + 8 * j) copyForMutation];
             *&v59.a = v49;
             *&v59.c = v46;
             *&v59.tx = v43;
             CGAffineTransformTranslate(&v60, &v59, v16, v17);
-            [v28 _applyTransform:&v60];
-            [a1 addNewStroke:v28];
+            [copyForMutation2 _applyTransform:&v60];
+            [self addNewStroke:copyForMutation2];
           }
 
           v25 = [v23 countByEnumeratingWithState:&v55 objects:v66 count:16];
@@ -867,13 +867,13 @@
         while (v25);
       }
 
-      v39 = v12;
+      v39 = strokesCopy;
 
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = v13;
+      obj = refinedStrokesCopy;
       v29 = [obj countByEnumeratingWithState:&v51 objects:v65 count:16];
       if (v29)
       {
@@ -891,18 +891,18 @@
               objc_enumerationMutation(obj);
             }
 
-            v33 = [*(*(&v51 + 1) + 8 * k) copyForMutation];
+            copyForMutation3 = [*(*(&v51 + 1) + 8 * k) copyForMutation];
             *&v59.a = v50;
             *&v59.c = v47;
             *&v59.tx = v44;
             CGAffineTransformTranslate(&v60, &v59, v16, v17);
-            [v33 _applyTransform:&v60];
-            v34 = [v33 ink];
-            v35 = [MEMORY[0x1E69DC888] lightGrayColor];
-            v36 = [PKInk inkFromInk:v34 color:v35];
-            [v33 setInk:v36];
+            [copyForMutation3 _applyTransform:&v60];
+            v34 = [copyForMutation3 ink];
+            lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+            v36 = [PKInk inkFromInk:v34 color:lightGrayColor];
+            [copyForMutation3 setInk:v36];
 
-            [a1 addNewStroke:v33];
+            [self addNewStroke:copyForMutation3];
           }
 
           v30 = [obj countByEnumeratingWithState:&v51 objects:v65 count:16];
@@ -911,23 +911,23 @@
         while (v30);
       }
 
-      v12 = v39;
+      strokesCopy = v39;
       v11 = v40;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)makeImageForDrawing:(uint64_t)a1
+- (id)makeImageForDrawing:(uint64_t)drawing
 {
   v3 = a2;
-  if (a1)
+  if (drawing)
   {
     v4 = dispatch_semaphore_create(0);
     v26 = 0;
@@ -946,8 +946,8 @@
       v7 = 768.0;
     }
 
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v12 = v11;
 
     if (v12 < v7)
@@ -955,8 +955,8 @@
       v7 = v12;
     }
 
-    v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v13 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v15 = v14;
 
     if (v15 < MaxY)
@@ -965,8 +965,8 @@
     }
 
     v16 = [PKImageRenderer alloc];
-    v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v17 scale];
+    mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen3 scale];
     v19 = [(PKImageRenderer *)v16 initWithSize:v7 scale:MaxY, v18];
 
     v23[0] = MEMORY[0x1E69E9820];
@@ -1053,7 +1053,7 @@
   return result;
 }
 
-- (id)makeDrawingForStrokes:(id *)a1
+- (id)makeDrawingForStrokes:(id *)strokes
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = a2;
@@ -1125,7 +1125,7 @@
     v14 = v4;
   }
 
-  v26 = [(PKHandwritingSynthesisDataCollectionViewController *)a1 makeDrawingForOriginalStrokes:v3 refinedStrokes:0 contextStrokes:0 bounds:v14, v13];
+  v26 = [(PKHandwritingSynthesisDataCollectionViewController *)strokes makeDrawingForOriginalStrokes:v3 refinedStrokes:0 contextStrokes:0 bounds:v14, v13];
 
   return v26;
 }
@@ -1137,55 +1137,55 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)saveDrawing:(void *)a1 toBaseURL:(void *)a2 withName:(void *)a3
+- (id)saveDrawing:(void *)drawing toBaseURL:(void *)l withName:(void *)name
 {
-  v5 = a3;
-  v6 = a2;
-  v7 = [a1 serializeWithVersion:2];
-  v8 = [v6 URLByAppendingPathComponent:v5];
+  nameCopy = name;
+  lCopy = l;
+  v7 = [drawing serializeWithVersion:2];
+  v8 = [lCopy URLByAppendingPathComponent:nameCopy];
 
   [v7 writeToURL:v8 atomically:1];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self)
   {
     self = self->_tableDataEntries;
   }
 
-  return [(PKHandwritingSynthesisDataCollectionViewController *)self count:a3];
+  return [(PKHandwritingSynthesisDataCollectionViewController *)self count:view];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ImageCell" forIndexPath:v6];
-  v8 = [v7 contentView];
-  v9 = [v8 subviews];
-  [v9 makeObjectsPerformSelector:sel_removeFromSuperview];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ImageCell" forIndexPath:pathCopy];
+  contentView = [v7 contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   v10 = objc_alloc(MEMORY[0x1E69DD250]);
-  v11 = [v7 contentView];
-  [v11 bounds];
+  contentView2 = [v7 contentView];
+  [contentView2 bounds];
   v12 = [v10 initWithFrame:?];
 
   [v12 setAutoresizingMask:18];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:15.0];
+  layer = [v12 layer];
+  [layer setCornerRadius:15.0];
 
-  v14 = [v12 layer];
-  [v14 setMasksToBounds:1];
+  layer2 = [v12 layer];
+  [layer2 setMasksToBounds:1];
 
-  v15 = [v12 layer];
-  [v15 setBorderWidth:0.8];
+  layer3 = [v12 layer];
+  [layer3 setBorderWidth:0.8];
 
-  v16 = [MEMORY[0x1E69DC888] grayColor];
-  v17 = [v16 CGColor];
-  v18 = [v12 layer];
-  [v18 setBorderColor:v17];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  cGColor = [grayColor CGColor];
+  layer4 = [v12 layer];
+  [layer4 setBorderColor:cGColor];
 
   if (self)
   {
@@ -1198,7 +1198,7 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
   }
 
   v20 = tableDataEntries;
-  v21 = [v6 row];
+  v21 = [pathCopy row];
 
   v22 = [(NSMutableArray *)v20 objectAtIndexedSubscript:v21];
   v23 = v22;
@@ -1215,43 +1215,43 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
   v25 = v24;
   [v25 size];
   v27 = v26;
-  v28 = [v7 contentView];
-  [v28 bounds];
+  contentView3 = [v7 contentView];
+  [contentView3 bounds];
   v30 = v29 + -40.0;
 
-  v31 = [v7 contentView];
-  [v31 bounds];
+  contentView4 = [v7 contentView];
+  [contentView4 bounds];
   v33 = (v32 - v30) * 0.5;
 
   v34 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v25];
   [v34 setContentMode:1];
   [v34 setFrame:{v33, 20.0, v30, v27}];
   [v12 addSubview:v34];
-  v35 = [v7 contentView];
-  [v35 addSubview:v12];
+  contentView5 = [v7 contentView];
+  [contentView5 addSubview:v12];
 
-  v36 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v36];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   v37 = objc_alloc(MEMORY[0x1E69DD250]);
   [v7 bounds];
   v38 = [v37 initWithFrame:?];
-  v39 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v40 = [v39 colorWithAlphaComponent:0.4];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v40 = [systemGrayColor colorWithAlphaComponent:0.4];
   [v38 setBackgroundColor:v40];
 
-  v41 = [v38 layer];
-  [v41 setCornerRadius:15.0];
+  layer5 = [v38 layer];
+  [layer5 setCornerRadius:15.0];
 
-  v42 = [v38 layer];
-  [v42 setMasksToBounds:1];
+  layer6 = [v38 layer];
+  [layer6 setMasksToBounds:1];
 
   [v7 setSelectedBackgroundView:v38];
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   if (self)
   {
@@ -1264,7 +1264,7 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
   }
 
   v6 = tableDataEntries;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](v6, "objectAtIndexedSubscript:", [a4 row]);
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](v6, "objectAtIndexedSubscript:", [path row]);
   v8 = v7;
   if (v7)
   {
@@ -1294,13 +1294,13 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
 - (void)submitFeedback
 {
   v123 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v5 = MEMORY[0x1E695DFF8];
   v6 = NSTemporaryDirectory();
   v7 = [v5 fileURLWithPath:v6];
-  v8 = [v7 URLByAppendingPathComponent:v4];
+  v8 = [v7 URLByAppendingPathComponent:uUIDString];
 
   v9 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v114 = 0;
@@ -1312,20 +1312,20 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
     v100 = v9;
     v113 = v8;
     v101 = v8;
-    v102 = v4;
+    v102 = uUIDString;
     v99 = v11;
     if (self)
     {
-      v112 = [MEMORY[0x1E695DF70] array];
-      v12 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
-      if ([v12 count])
+      array = [MEMORY[0x1E695DF70] array];
+      indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+      if ([indexPathsForSelectedRows count])
       {
         v13 = objc_opt_new();
         v118 = 0u;
         v119 = 0u;
         v120 = 0u;
         v121 = 0u;
-        v14 = v12;
+        v14 = indexPathsForSelectedRows;
         v15 = [v14 countByEnumeratingWithState:&v118 objects:v122 count:16];
         if (v15)
         {
@@ -1373,7 +1373,7 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
       v22 = 0;
       v23 = 0;
       v107 = *v119;
-      v103 = self;
+      selfCopy = self;
       v104 = v13;
       while (1)
       {
@@ -1413,9 +1413,9 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
             }
 
             v30 = v29;
-            v31 = [v30 isAutoRefined];
+            isAutoRefined = [v30 isAutoRefined];
             v32 = @"Handwriting Refine Feedback: ";
-            if (v31)
+            if (isAutoRefined)
             {
               v32 = @"Handwriting AutoRefine Feedback: ";
             }
@@ -1440,19 +1440,19 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
               v106 = @"Handwriting Synthesis Feedback: ";
             }
 
-            v54 = [v30 originalStrokes];
-            v44 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v54];
+            originalStrokes = [v30 originalStrokes];
+            v44 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:originalStrokes];
 
-            v55 = [v30 refinedStrokes];
-            v46 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v55];
+            refinedStrokes = [v30 refinedStrokes];
+            v46 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:refinedStrokes];
 
-            v56 = [v30 unchangedStrokes];
-            v57 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v56];
+            unchangedStrokes = [v30 unchangedStrokes];
+            v57 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:unchangedStrokes];
 
             v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/drawing_%ld_original.drawing", v22];
             v109 = v44;
             v59 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v44 toBaseURL:v113 withName:v58];
-            [v112 addObject:v59];
+            [array addObject:v59];
 
             if ([v30 isAutoRefined])
             {
@@ -1466,12 +1466,12 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
 
             v61 = [MEMORY[0x1E696AEC0] stringWithFormat:v60, v22];
             v62 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v46 toBaseURL:v113 withName:v61];
-            [v112 addObject:v62];
+            [array addObject:v62];
 
             v63 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/drawing_%ld_context.drawing", v22];
             v105 = v57;
             v64 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v57 toBaseURL:v113 withName:v63];
-            [v112 addObject:v64];
+            [array addObject:v64];
 
             if (v25)
             {
@@ -1488,10 +1488,10 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
             v53 = [v113 URLByAppendingPathComponent:v66];
 
             [v50 writeToURL:v53 atomically:1];
-            [v112 addObject:v53];
+            [array addObject:v53];
             v67 = [v30 description];
 
-            self = v103;
+            self = selfCopy;
             if (!v67)
             {
               v51 = v105;
@@ -1514,9 +1514,9 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
             v73 = [v113 URLByAppendingPathComponent:v72];
 
             [v70 writeToURL:v73 atomically:1];
-            [v112 addObject:v73];
+            [array addObject:v73];
 
-            self = v103;
+            self = selfCopy;
             v51 = v105;
             v23 = v106;
             goto LABEL_55;
@@ -1561,12 +1561,12 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
             }
 
             v30 = v38;
-            v39 = [v30 synthesizedStrokes];
-            v40 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v39];
+            synthesizedStrokes = [v30 synthesizedStrokes];
+            v40 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:synthesizedStrokes];
 
             v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/drawing_%ld_generated.drawing", v22];
             v42 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v40 toBaseURL:v113 withName:v41];
-            [v112 addObject:v42];
+            [array addObject:v42];
 
             if (v25)
             {
@@ -1583,7 +1583,7 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
             v46 = [v113 URLByAppendingPathComponent:v45];
 
             [v44 writeToURL:v46 atomically:1];
-            [v112 addObject:v46];
+            [array addObject:v46];
             v47 = [v30 description];
 
             if (v47)
@@ -1604,7 +1604,7 @@ void __74__PKHandwritingSynthesisDataCollectionViewController_makeImageForDrawin
               v53 = [v113 URLByAppendingPathComponent:v52];
 
               [v50 writeToURL:v53 atomically:1];
-              [v112 addObject:v53];
+              [array addObject:v53];
 LABEL_72:
 
               v13 = v104;
@@ -1661,22 +1661,22 @@ LABEL_73:
             }
 
             v30 = v77;
-            v78 = [v30 originalStrokes];
-            v79 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v78];
+            originalStrokes2 = [v30 originalStrokes];
+            v79 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:originalStrokes2];
 
             v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/drawing_%ld_proofreading_original.drawing", v22];
             v110 = v79;
             v81 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v79 toBaseURL:v113 withName:v80];
-            [v112 addObject:v81];
+            [array addObject:v81];
 
-            v82 = [v30 synthesizedStrokes];
-            v83 = self;
-            v84 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:v82];
+            synthesizedStrokes2 = [v30 synthesizedStrokes];
+            selfCopy2 = self;
+            v84 = [(PKHandwritingSynthesisDataCollectionViewController *)&self->super.super.super.isa makeDrawingForStrokes:synthesizedStrokes2];
 
             v85 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/drawing_%ld_proofreading_replacement.drawing", v22];
             v109 = v84;
             v86 = [PKHandwritingSynthesisDataCollectionViewController saveDrawing:v84 toBaseURL:v113 withName:v85];
-            [v112 addObject:v86];
+            [array addObject:v86];
 
             if (v25)
             {
@@ -1693,10 +1693,10 @@ LABEL_73:
             v51 = [v113 URLByAppendingPathComponent:v88];
 
             [v46 writeToURL:v51 atomically:1];
-            [v112 addObject:v51];
+            [array addObject:v51];
             v89 = [v30 description];
 
-            self = v83;
+            self = selfCopy2;
             if (!v89)
             {
               v44 = v109;
@@ -1719,7 +1719,7 @@ LABEL_73:
             v94 = [v113 URLByAppendingPathComponent:v93];
 
             [v53 writeToURL:v94 atomically:1];
-            [v112 addObject:v94];
+            [array addObject:v94];
 
             v23 = v90;
 LABEL_55:
@@ -1739,7 +1739,7 @@ LABEL_75:
         {
 LABEL_91:
           v96 = v23;
-          v97 = [MEMORY[0x1E695DEC8] arrayWithArray:v112];
+          v97 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
           goto LABEL_92;
         }
@@ -1754,7 +1754,7 @@ LABEL_92:
     [PKHandwritingDebugUtility submitFeedbackWithAttachments:v97 title:v98];
 
     v8 = v101;
-    v4 = v102;
+    uUIDString = v102;
     v11 = v99;
     v9 = v100;
   }

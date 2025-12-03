@@ -1,11 +1,11 @@
 @interface NSOrthography
-+ (NSOrthography)allocWithZone:(_NSZone *)a3;
++ (NSOrthography)allocWithZone:(_NSZone *)zone;
 + (NSOrthography)defaultOrthographyForLanguage:(NSString *)language;
 + (NSOrthography)orthographyWithDominantScript:(NSString *)script languageMap:(NSDictionary *)map;
-+ (id)_orthographyWithDominantScript:(id)a3 languageMap:(id)a4;
-+ (id)_scriptNameForScriptIndex:(unint64_t)a3;
++ (id)_orthographyWithDominantScript:(id)script languageMap:(id)map;
++ (id)_scriptNameForScriptIndex:(unint64_t)index;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allLanguages;
 - (NSArray)allScripts;
 - (NSArray)languagesForScript:(NSString *)script;
@@ -13,36 +13,36 @@
 - (NSString)dominantLanguage;
 - (NSString)dominantLanguageForScript:(NSString *)script;
 - (id)description;
-- (id)replacementObjectForPortCoder:(id)a3;
+- (id)replacementObjectForPortCoder:(id)coder;
 - (unint64_t)hash;
 - (unsigned)orthographyFlags;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSOrthography
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-+ (NSOrthography)allocWithZone:(_NSZone *)a3
++ (NSOrthography)allocWithZone:(_NSZone *)zone
 {
-  if (NSOrthography == a1)
+  if (NSOrthography == self)
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
 + (NSOrthography)orthographyWithDominantScript:(NSString *)script languageMap:(NSDictionary *)map
 {
-  v4 = [objc_allocWithZone(a1) initWithDominantScript:script languageMap:map];
+  v4 = [objc_allocWithZone(self) initWithDominantScript:script languageMap:map];
 
   return v4;
 }
@@ -59,30 +59,30 @@
   return [(NSDictionary *)[(NSOrthography *)self languageMap] hash]^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if (a3 && (objc_opt_isKindOfClass() & 1) != 0)
+  else if (equal && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = [(NSOrthography *)self orthographyFlags];
-    if (v5)
+    orthographyFlags = [(NSOrthography *)self orthographyFlags];
+    if (orthographyFlags)
     {
-      LOBYTE(v6) = v5 == [a3 orthographyFlags];
+      LOBYTE(v6) = orthographyFlags == [equal orthographyFlags];
     }
 
     else
     {
-      v6 = -[NSString isEqualToString:](-[NSOrthography dominantScript](self, "dominantScript"), "isEqualToString:", [a3 dominantScript]);
+      v6 = -[NSString isEqualToString:](-[NSOrthography dominantScript](self, "dominantScript"), "isEqualToString:", [equal dominantScript]);
       if (v6)
       {
-        v7 = [(NSOrthography *)self languageMap];
-        v8 = [a3 languageMap];
+        languageMap = [(NSOrthography *)self languageMap];
+        languageMap2 = [equal languageMap];
 
-        LOBYTE(v6) = [(NSDictionary *)v7 isEqual:v8];
+        LOBYTE(v6) = [(NSDictionary *)languageMap isEqual:languageMap2];
       }
     }
   }
@@ -98,11 +98,11 @@
 - (id)description
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(NSOrthography *)self dominantScript];
-  v4 = [(NSOrthography *)self dominantLanguage];
-  v5 = [(NSOrthography *)self allScripts];
-  v6 = [(NSOrthography *)self languagesForScript:v3];
-  v7 = [NSString stringWithFormat:@"%@->%@", v3, v4];
+  dominantScript = [(NSOrthography *)self dominantScript];
+  dominantLanguage = [(NSOrthography *)self dominantLanguage];
+  allScripts = [(NSOrthography *)self allScripts];
+  v6 = [(NSOrthography *)self languagesForScript:dominantScript];
+  v7 = [NSString stringWithFormat:@"%@->%@", dominantScript, dominantLanguage];
   if ([(NSArray *)v6 count]>= 3)
   {
     v8 = [NSString stringWithFormat:@" and %lu other languages", [(NSArray *)v6 count]- 1];
@@ -119,20 +119,20 @@ LABEL_5:
 
   v9 = &stru_1EEEFDF90;
 LABEL_7:
-  if ([(NSArray *)v5 count]< 3)
+  if ([(NSArray *)allScripts count]< 3)
   {
-    if ([(NSArray *)v5 count]!= 2)
+    if ([(NSArray *)allScripts count]!= 2)
     {
       v11 = &stru_1EEEFDF90;
       goto LABEL_13;
     }
 
-    v10 = [NSString stringWithFormat:@", plus %@", [(NSArray *)v5 objectAtIndex:1]];
+    v10 = [NSString stringWithFormat:@", plus %@", [(NSArray *)allScripts objectAtIndex:1]];
   }
 
   else
   {
-    v10 = [NSString stringWithFormat:@", plus %lu other scripts", [(NSArray *)v5 count]- 1];
+    v10 = [NSString stringWithFormat:@", plus %lu other scripts", [(NSArray *)allScripts count]- 1];
   }
 
   v11 = v10;
@@ -142,22 +142,22 @@ LABEL_13:
   return [NSString stringWithFormat:@"%@{%@%@%@}", [(NSOrthography *)&v13 description], v7, v9, v11];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(NSOrthography *)self dominantScript];
-  v6 = [(NSOrthography *)self languageMap];
-  if ([a3 allowsKeyedCoding])
+  dominantScript = [(NSOrthography *)self dominantScript];
+  languageMap = [(NSOrthography *)self languageMap];
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeObject:v5 forKey:@"NSDominantScript"];
+    [coder encodeObject:dominantScript forKey:@"NSDominantScript"];
 
-    [a3 encodeObject:v6 forKey:@"NSLanguageMap"];
+    [coder encodeObject:languageMap forKey:@"NSLanguageMap"];
   }
 
   else
   {
-    [a3 encodeObject:v5];
+    [coder encodeObject:dominantScript];
 
-    [a3 encodeObject:v6];
+    [coder encodeObject:languageMap];
   }
 }
 
@@ -166,20 +166,20 @@ LABEL_13:
   v37 = *MEMORY[0x1E69E9840];
   if ([(NSCoder *)coder allowsKeyedCoding])
   {
-    v6 = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDominantScript"];
+    decodeObject = [(NSCoder *)coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDominantScript"];
     if (_NSIsNSString())
     {
       v7 = MEMORY[0x1E695DFD8];
       v8 = objc_opt_class();
       v9 = objc_opt_class();
-      v10 = -[NSCoder decodeObjectOfClasses:forKey:](coder, "decodeObjectOfClasses:forKey:", [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}], @"NSLanguageMap");
+      decodeObject2 = -[NSCoder decodeObjectOfClasses:forKey:](coder, "decodeObjectOfClasses:forKey:", [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}], @"NSLanguageMap");
       if (_NSIsNSDictionary())
       {
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v33 objects:v32 count:16];
+        v11 = [decodeObject2 countByEnumeratingWithState:&v33 objects:v32 count:16];
         if (v11)
         {
           v12 = v11;
@@ -191,7 +191,7 @@ LABEL_13:
             {
               if (*v34 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(decodeObject2);
               }
 
               v15 = *(*(&v33 + 1) + 8 * i);
@@ -202,7 +202,7 @@ LABEL_13:
                 goto LABEL_29;
               }
 
-              v16 = [v10 objectForKeyedSubscript:v15];
+              v16 = [decodeObject2 objectForKeyedSubscript:v15];
               if ((_NSIsNSArray() & 1) == 0)
               {
 
@@ -249,7 +249,7 @@ LABEL_13:
               v13 = v26;
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v33 objects:v32 count:16];
+            v12 = [decodeObject2 countByEnumeratingWithState:&v33 objects:v32 count:16];
             if (v12)
             {
               continue;
@@ -259,7 +259,7 @@ LABEL_13:
           }
         }
 
-        return [(NSOrthography *)self initWithDominantScript:v6 languageMap:v10];
+        return [(NSOrthography *)self initWithDominantScript:decodeObject languageMap:decodeObject2];
       }
 
       v23 = @"Orthography language map is not a dictionary";
@@ -280,9 +280,9 @@ LABEL_29:
     v21 = [(NSCoder *)coder versionForClassName:@"NSOrthography"];
     if (v21 == 1)
     {
-      v6 = [(NSCoder *)coder decodeObject];
-      v10 = [(NSCoder *)coder decodeObject];
-      return [(NSOrthography *)self initWithDominantScript:v6 languageMap:v10];
+      decodeObject = [(NSCoder *)coder decodeObject];
+      decodeObject2 = [(NSCoder *)coder decodeObject];
+      return [(NSOrthography *)self initWithDominantScript:decodeObject languageMap:decodeObject2];
     }
 
     v24 = v21;
@@ -294,14 +294,14 @@ LABEL_29:
   return 0;
 }
 
-- (id)replacementObjectForPortCoder:(id)a3
+- (id)replacementObjectForPortCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (([a3 isBycopy] & 1) == 0)
+  if (([coder isBycopy] & 1) == 0)
   {
     v6.receiver = self;
     v6.super_class = NSOrthography;
-    return [(NSOrthography *)&v6 replacementObjectForPortCoder:a3];
+    return [(NSOrthography *)&v6 replacementObjectForPortCoder:coder];
   }
 
   return self;
@@ -309,17 +309,17 @@ LABEL_29:
 
 - (unsigned)orthographyFlags
 {
-  v3 = [(NSOrthography *)self dominantScript];
-  v4 = [(NSOrthography *)self languageMap];
+  dominantScript = [(NSOrthography *)self dominantScript];
+  languageMap = [(NSOrthography *)self languageMap];
 
-  return NSOrthographyFlagsForDominantScriptAndLanguageMap(v3, v4);
+  return NSOrthographyFlagsForDominantScriptAndLanguageMap(dominantScript, languageMap);
 }
 
 - (NSArray)languagesForScript:(NSString *)script
 {
-  v4 = [(NSOrthography *)self languageMap];
+  languageMap = [(NSOrthography *)self languageMap];
 
-  return [(NSDictionary *)v4 objectForKey:script];
+  return [(NSDictionary *)languageMap objectForKey:script];
 }
 
 - (NSString)dominantLanguageForScript:(NSString *)script
@@ -337,24 +337,24 @@ LABEL_29:
 
 - (NSString)dominantLanguage
 {
-  v3 = [(NSOrthography *)self dominantScript];
+  dominantScript = [(NSOrthography *)self dominantScript];
 
-  return [(NSOrthography *)self dominantLanguageForScript:v3];
+  return [(NSOrthography *)self dominantLanguageForScript:dominantScript];
 }
 
 - (NSArray)allScripts
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithArray:{-[NSDictionary allKeys](-[NSOrthography languageMap](self, "languageMap"), "allKeys")}];
-  v4 = [(NSOrthography *)self dominantScript];
-  [(NSArray *)v3 removeObject:v4];
-  [(NSArray *)v3 insertObject:v4 atIndex:0];
+  dominantScript = [(NSOrthography *)self dominantScript];
+  [(NSArray *)v3 removeObject:dominantScript];
+  [(NSArray *)v3 insertObject:dominantScript atIndex:0];
   return v3;
 }
 
 - (NSArray)allLanguages
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -394,9 +394,9 @@ LABEL_29:
               }
 
               v13 = *(*(&v17 + 1) + 8 * j);
-              if (![(NSArray *)v3 containsObject:v13])
+              if (![(NSArray *)array containsObject:v13])
               {
-                [(NSArray *)v3 addObject:v13];
+                [(NSArray *)array addObject:v13];
               }
             }
 
@@ -413,18 +413,18 @@ LABEL_29:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
-+ (id)_scriptNameForScriptIndex:(unint64_t)a3
++ (id)_scriptNameForScriptIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     return 0;
   }
 
   result = @"Zyyy";
-  if (a3 != 1 && a3 <= 0x1F)
+  if (index != 1 && index <= 0x1F)
   {
     return [&unk_1EEF59E70 objectAtIndex:?];
   }
@@ -432,9 +432,9 @@ LABEL_29:
   return result;
 }
 
-+ (id)_orthographyWithDominantScript:(id)a3 languageMap:(id)a4
++ (id)_orthographyWithDominantScript:(id)script languageMap:(id)map
 {
-  v6 = NSOrthographyFlagsForDominantScriptAndLanguageMap(a3, a4);
+  v6 = NSOrthographyFlagsForDominantScriptAndLanguageMap(script, map);
   if (v6)
   {
 
@@ -444,7 +444,7 @@ LABEL_29:
   else
   {
 
-    return [(NSOrthography *)NSComplexOrthography orthographyWithDominantScript:a3 languageMap:a4];
+    return [(NSOrthography *)NSComplexOrthography orthographyWithDominantScript:script languageMap:map];
   }
 }
 
@@ -454,22 +454,22 @@ LABEL_29:
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:language];
-    v7 = [v6 languageCode];
-    v8 = [v6 scriptCode];
+    languageCode = [v6 languageCode];
+    scriptCode = [v6 scriptCode];
     v5 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v8)
+    if (scriptCode)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = v7 == 0;
+      v9 = languageCode == 0;
     }
 
     if (!v9)
     {
-      v10 = [&unk_1EEF59DF8 indexOfObject:v7];
+      v10 = [&unk_1EEF59DF8 indexOfObject:languageCode];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v13 = v10;
@@ -478,7 +478,7 @@ LABEL_29:
         goto LABEL_18;
       }
 
-      v11 = [v7 stringByAppendingString:@"-"];
+      v11 = [languageCode stringByAppendingString:@"-"];
       v12 = 0;
       do
       {
@@ -503,7 +503,7 @@ LABEL_29:
       while (v5 == 0x7FFFFFFFFFFFFFFFLL);
     }
 
-    if (v8)
+    if (scriptCode)
     {
       goto LABEL_33;
     }
@@ -515,7 +515,7 @@ LABEL_18:
     v14 = &unk_1EEF59EE8;
     v15 = v5;
 LABEL_32:
-    v8 = [v14 objectAtIndex:v15];
+    scriptCode = [v14 objectAtIndex:v15];
     goto LABEL_33;
   }
 
@@ -561,16 +561,16 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v8 = 0;
+  scriptCode = 0;
 LABEL_33:
-  if (!v8)
+  if (!scriptCode)
   {
-    v8 = @"Latn";
+    scriptCode = @"Latn";
   }
 
-  v16 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithObject:", language), v8}];
+  v16 = [MEMORY[0x1E695DF20] dictionaryWithObject:objc_msgSend(MEMORY[0x1E695DEC8] forKey:{"arrayWithObject:", language), scriptCode}];
 
-  return [a1 _orthographyWithDominantScript:v8 languageMap:v16];
+  return [self _orthographyWithDominantScript:scriptCode languageMap:v16];
 }
 
 @end

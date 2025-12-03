@@ -2,13 +2,13 @@
 + (id)sharedRegistry;
 - (NSMutableArray)activeRequests;
 - (NSMutableDictionary)requestHandlers;
-- (id)handlerForIncomingRequestWithAction:(id)a3 scheme:(id)a4;
+- (id)handlerForIncomingRequestWithAction:(id)action scheme:(id)scheme;
 - (id)popActiveRequest;
-- (id)popRequest:(id)a3;
-- (id)popRequestWithUUID:(id)a3;
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 scheme:(id)a5;
-- (void)registerOutgoingRequest:(id)a3;
-- (void)removeHandlerForIncomingRequestsWithAction:(id)a3 scheme:(id)a4;
+- (id)popRequest:(id)request;
+- (id)popRequestWithUUID:(id)d;
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action scheme:(id)scheme;
+- (void)registerOutgoingRequest:(id)request;
+- (void)removeHandlerForIncomingRequestsWithAction:(id)action scheme:(id)scheme;
 @end
 
 @implementation WFInterchangeURLRequestRegistry
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __49__WFInterchangeURLRequestRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken != -1)
   {
     dispatch_once(&sharedRegistry_onceToken, block);
@@ -54,9 +54,9 @@ void __49__WFInterchangeURLRequestRegistry_sharedRegistry__block_invoke(uint64_t
 
 - (id)popActiveRequest
 {
-  v3 = [(WFInterchangeURLRequestRegistry *)self activeRequests];
-  v4 = [v3 lastObject];
-  v5 = [(WFInterchangeURLRequestRegistry *)self popRequest:v4];
+  activeRequests = [(WFInterchangeURLRequestRegistry *)self activeRequests];
+  lastObject = [activeRequests lastObject];
+  v5 = [(WFInterchangeURLRequestRegistry *)self popRequest:lastObject];
 
   return v5;
 }
@@ -76,44 +76,44 @@ void __49__WFInterchangeURLRequestRegistry_sharedRegistry__block_invoke(uint64_t
   return activeRequests;
 }
 
-- (id)popRequestWithUUID:(id)a3
+- (id)popRequestWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(WFInterchangeURLRequestRegistry *)self activeRequests];
-  v6 = [v5 objectMatchingKey:@"uniqueID" value:v4];
+  dCopy = d;
+  activeRequests = [(WFInterchangeURLRequestRegistry *)self activeRequests];
+  v6 = [activeRequests objectMatchingKey:@"uniqueID" value:dCopy];
 
   v7 = [(WFInterchangeURLRequestRegistry *)self popRequest:v6];
 
   return v7;
 }
 
-- (id)popRequest:(id)a3
+- (id)popRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(WFInterchangeURLRequestRegistry *)self activeRequests];
-    [v5 removeObject:v4];
+    activeRequests = [(WFInterchangeURLRequestRegistry *)self activeRequests];
+    [activeRequests removeObject:requestCopy];
   }
 
-  return v4;
+  return requestCopy;
 }
 
-- (void)registerOutgoingRequest:(id)a3
+- (void)registerOutgoingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WFInterchangeURLRequestRegistry *)self activeRequests];
-  [v5 addObject:v4];
+  requestCopy = request;
+  activeRequests = [(WFInterchangeURLRequestRegistry *)self activeRequests];
+  [activeRequests addObject:requestCopy];
 }
 
-- (id)handlerForIncomingRequestWithAction:(id)a3 scheme:(id)a4
+- (id)handlerForIncomingRequestWithAction:(id)action scheme:(id)scheme
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
-  v9 = [v8 objectForKey:v7];
+  actionCopy = action;
+  schemeCopy = scheme;
+  requestHandlers = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
+  v9 = [requestHandlers objectForKey:schemeCopy];
 
-  v10 = [v9 objectForKey:v6];
+  v10 = [v9 objectForKey:actionCopy];
   if (v10)
   {
     v11 = v10;
@@ -121,10 +121,10 @@ void __49__WFInterchangeURLRequestRegistry_sharedRegistry__block_invoke(uint64_t
     goto LABEL_8;
   }
 
-  v13 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
-  v14 = [v13 objectForKey:@"*"];
+  requestHandlers2 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
+  v14 = [requestHandlers2 objectForKey:@"*"];
 
-  v15 = [v14 objectForKey:v6];
+  v15 = [v14 objectForKey:actionCopy];
   if (v15)
   {
     v11 = v15;
@@ -149,13 +149,13 @@ LABEL_8:
   return v12;
 }
 
-- (void)removeHandlerForIncomingRequestsWithAction:(id)a3 scheme:(id)a4
+- (void)removeHandlerForIncomingRequestsWithAction:(id)action scheme:(id)scheme
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  actionCopy = action;
+  schemeCopy = scheme;
+  if (schemeCopy)
   {
-    v8 = v7;
+    v8 = schemeCopy;
   }
 
   else
@@ -163,9 +163,9 @@ LABEL_8:
     v8 = @"*";
   }
 
-  if (v6)
+  if (actionCopy)
   {
-    v9 = v6;
+    v9 = actionCopy;
   }
 
   else
@@ -174,19 +174,19 @@ LABEL_8:
   }
 
   v12 = v9;
-  v10 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
-  v11 = [v10 objectForKey:v8];
+  requestHandlers = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
+  v11 = [requestHandlers objectForKey:v8];
   [v11 removeObjectForKey:v12];
 }
 
-- (void)registerHandler:(id)a3 forIncomingRequestsWithAction:(id)a4 scheme:(id)a5
+- (void)registerHandler:(id)handler forIncomingRequestsWithAction:(id)action scheme:(id)scheme
 {
-  aBlock = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  aBlock = handler;
+  actionCopy = action;
+  schemeCopy = scheme;
+  if (schemeCopy)
   {
-    v10 = v9;
+    v10 = schemeCopy;
   }
 
   else
@@ -194,24 +194,24 @@ LABEL_8:
     v10 = @"*";
   }
 
-  v11 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
-  v12 = [v11 objectForKey:v10];
+  requestHandlers = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
+  v12 = [requestHandlers objectForKey:v10];
 
   if (!v12)
   {
     v12 = objc_opt_new();
   }
 
-  if (!v8)
+  if (!actionCopy)
   {
-    v8 = @"*";
+    actionCopy = @"*";
   }
 
   v13 = _Block_copy(aBlock);
-  [v12 setObject:v13 forKey:v8];
+  [v12 setObject:v13 forKey:actionCopy];
 
-  v14 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
-  [v14 setObject:v12 forKey:v10];
+  requestHandlers2 = [(WFInterchangeURLRequestRegistry *)self requestHandlers];
+  [requestHandlers2 setObject:v12 forKey:v10];
 }
 
 @end

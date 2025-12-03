@@ -1,20 +1,20 @@
 @interface CKDPSignedVersionedBlob
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanValidateWithKT:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanValidateWithKT:(BOOL)t;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPSignedVersionedBlob
 
-- (void)setHasCanValidateWithKT:(BOOL)a3
+- (void)setHasCanValidateWithKT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 2;
   }
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -95,41 +95,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_version;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_version;
+    *(toCopy + 32) |= 1u;
   }
 
   signature = self->_signature;
-  v8 = v4;
+  v8 = toCopy;
   if (signature)
   {
-    objc_msgSend_setSignature_(v4, v5, signature);
-    v4 = v8;
+    objc_msgSend_setSignature_(toCopy, v5, signature);
+    toCopy = v8;
   }
 
   serializedObject = self->_serializedObject;
   if (serializedObject)
   {
     objc_msgSend_setSerializedObject_(v8, v5, serializedObject);
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 28) = self->_canValidateWithKT;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 28) = self->_canValidateWithKT;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -138,11 +138,11 @@
     *(v10 + 32) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_signature, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_signature, v11, zone);
   v14 = *(v12 + 16);
   *(v12 + 16) = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_serializedObject, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_serializedObject, v15, zone);
   v17 = *(v12 + 8);
   *(v12 + 8) = v16;
 
@@ -155,38 +155,38 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((v4[4] & 1) == 0 || self->_version != *(v4 + 6))
+    if ((equalCopy[4] & 1) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
     goto LABEL_13;
   }
 
   signature = self->_signature;
-  v10 = v4[2];
+  v10 = equalCopy[2];
   if (signature | v10 && !objc_msgSend_isEqual_(signature, v7, v10))
   {
     goto LABEL_13;
   }
 
   serializedObject = self->_serializedObject;
-  v12 = v4[1];
+  v12 = equalCopy[1];
   if (serializedObject | v12)
   {
     if (!objc_msgSend_isEqual_(serializedObject, v7, v12))
@@ -195,10 +195,10 @@
     }
   }
 
-  v13 = (v4[4] & 2) == 0;
+  v13 = (equalCopy[4] & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[4] & 2) == 0)
+    if ((equalCopy[4] & 2) == 0)
     {
 LABEL_13:
       v13 = 0;
@@ -207,13 +207,13 @@ LABEL_13:
 
     if (self->_canValidateWithKT)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_13;
     }
@@ -253,33 +253,33 @@ LABEL_14:
   return v5 ^ v4 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 32))
+  fromCopy = from;
+  if (*(fromCopy + 32))
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v6 = *(v4 + 2);
-  v8 = v4;
+  v6 = *(fromCopy + 2);
+  v8 = fromCopy;
   if (v6)
   {
     objc_msgSend_setSignature_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
     objc_msgSend_setSerializedObject_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_canValidateWithKT = *(v4 + 28);
+    self->_canValidateWithKT = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 }

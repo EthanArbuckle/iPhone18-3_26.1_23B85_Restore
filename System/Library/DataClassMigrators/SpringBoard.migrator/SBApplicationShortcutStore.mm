@@ -1,11 +1,11 @@
 @interface SBApplicationShortcutStore
 + (void)clearStore;
-- (BOOL)_stateLock_truncateIfNeeded:(id)a3;
+- (BOOL)_stateLock_truncateIfNeeded:(id)needed;
 - (NSArray)applicationShortcutItems;
 - (NSArray)languages;
-- (SBApplicationShortcutStore)initWithBundleIdentifier:(id)a3;
-- (id)_applicationShortcutItemsFromPlistArray:(id)a3;
-- (id)_plistArrayFromApplicationShortcutItems:(id)a3;
+- (SBApplicationShortcutStore)initWithBundleIdentifier:(id)identifier;
+- (id)_applicationShortcutItemsFromPlistArray:(id)array;
+- (id)_plistArrayFromApplicationShortcutItems:(id)items;
 - (id)description;
 - (unint64_t)version;
 - (void)_saveQueue_save;
@@ -13,7 +13,7 @@
 - (void)_stateLock_markDirty;
 - (void)invalidateCache;
 - (void)saveSynchronously;
-- (void)setApplicationShortcutItems:(id)a3 withLanguages:(id)a4 version:(unint64_t)a5;
+- (void)setApplicationShortcutItems:(id)items withLanguages:(id)languages version:(unint64_t)version;
 - (void)truncateIfNecessary;
 @end
 
@@ -55,15 +55,15 @@
   }
 }
 
-- (SBApplicationShortcutStore)initWithBundleIdentifier:(id)a3
+- (SBApplicationShortcutStore)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBApplicationShortcutStore;
   v5 = [(SBApplicationShortcutStore *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
@@ -87,8 +87,8 @@
 - (id)description
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(SBApplicationShortcutStore *)self bundleIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
+  v5 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
   if (self->_isLoaded)
   {
@@ -98,9 +98,9 @@
     v9 = [v3 appendBool:self->_isDirty withName:@"isDirty"];
   }
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (NSArray)applicationShortcutItems
@@ -132,10 +132,10 @@
   return cachedVersion;
 }
 
-- (void)setApplicationShortcutItems:(id)a3 withLanguages:(id)a4 version:(unint64_t)a5
+- (void)setApplicationShortcutItems:(id)items withLanguages:(id)languages version:(unint64_t)version
 {
-  v9 = a3;
-  v10 = a4;
+  itemsCopy = items;
+  languagesCopy = languages;
   [(NSLock *)self->_stateLock lock];
   [(SBApplicationShortcutStore *)self _stateLock_loadFromStoreIfNeeded];
   if (self->_isLoaded)
@@ -152,17 +152,17 @@
   if (self->_isLoaded)
   {
 LABEL_7:
-    if (![v9 isEqualToArray:self->_cachedApplicationShortcutItems] || !objc_msgSend(v10, "isEqualToArray:", self->_cachedLanguages) || self->_cachedVersion != a5)
+    if (![itemsCopy isEqualToArray:self->_cachedApplicationShortcutItems] || !objc_msgSend(languagesCopy, "isEqualToArray:", self->_cachedLanguages) || self->_cachedVersion != version)
     {
-      objc_storeStrong(&self->_cachedApplicationShortcutItems, a3);
-      objc_storeStrong(&self->_cachedLanguages, a4);
-      self->_cachedVersion = a5;
+      objc_storeStrong(&self->_cachedApplicationShortcutItems, items);
+      objc_storeStrong(&self->_cachedLanguages, languages);
+      self->_cachedVersion = version;
       v12 = SBLogAppShortcuts();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+        bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
         v14 = 138543362;
-        v15 = v13;
+        v15 = bundleIdentifier;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating app shortcut store...", &v14, 0xCu);
       }
 
@@ -214,9 +214,9 @@ LABEL_7:
   [(NSLock *)stateLock unlock];
 }
 
-- (id)_applicationShortcutItemsFromPlistArray:(id)a3
+- (id)_applicationShortcutItemsFromPlistArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = xpc_dictionary_create(0, 0, 0);
   BSSerializeCFValueToXPCDictionaryWithKey();
 
@@ -237,9 +237,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)_plistArrayFromApplicationShortcutItems:(id)a3
+- (id)_plistArrayFromApplicationShortcutItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = xpc_dictionary_create(0, 0, 0);
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 
@@ -259,13 +259,13 @@ LABEL_7:
       v4 = [v3 objectForKeyedSubscript:@"applicationShortcutItems"];
       v5 = [v3 objectForKeyedSubscript:@"languages"];
       v6 = [v3 objectForKeyedSubscript:@"version"];
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
       v4 = v3;
-      v7 = 0;
+      unsignedIntegerValue = 0;
       v5 = 0;
     }
 
@@ -298,7 +298,7 @@ LABEL_7:
           sub_F7FC(self);
         }
 
-        v7 = 0;
+        unsignedIntegerValue = 0;
         v12 = 0;
         v8 = 0;
       }
@@ -307,13 +307,13 @@ LABEL_7:
       {
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v13 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+          bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
           v18 = 138543362;
-          v19 = v13;
+          v19 = bundleIdentifier;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "%{public}@: No saved data in store", &v18, 0xCu);
         }
 
-        v7 = 0;
+        unsignedIntegerValue = 0;
         v12 = 0;
         v8 = 0;
         self->_isLoaded = 1;
@@ -328,7 +328,7 @@ LABEL_7:
     self->_cachedLanguages = v12;
     v17 = v12;
 
-    self->_cachedVersion = v7;
+    self->_cachedVersion = unsignedIntegerValue;
   }
 }
 
@@ -340,9 +340,9 @@ LABEL_7:
     v3 = SBLogAppShortcuts();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+      bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
       *buf = 138543362;
-      v8 = v4;
+      v8 = bundleIdentifier;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "%{public}@: Marking as dirty...", buf, 0xCu);
     }
 
@@ -362,9 +362,9 @@ LABEL_7:
   v4 = SBLogAppShortcuts();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
     v17 = 138543362;
-    v18 = v5;
+    v18 = bundleIdentifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Saving...", &v17, 0xCu);
   }
 
@@ -397,10 +397,10 @@ LABEL_7:
       v13 = SBLogAppShortcuts();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+        bundleIdentifier2 = [(SBApplicationShortcutStore *)self bundleIdentifier];
         v15 = [(NSArray *)self->_cachedApplicationShortcutItems count];
         v17 = 138543618;
-        v18 = v14;
+        v18 = bundleIdentifier2;
         v19 = 2048;
         v20 = v15;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "%{public}@: Committing app shortcut store w/ %lu shortcuts", &v17, 0x16u);
@@ -418,9 +418,9 @@ LABEL_7:
     v7 = SBLogAppShortcuts();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+      bundleIdentifier3 = [(SBApplicationShortcutStore *)self bundleIdentifier];
       v17 = 138543362;
-      v18 = v16;
+      v18 = bundleIdentifier3;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring save request because not dirty", &v17, 0xCu);
     }
   }
@@ -428,17 +428,17 @@ LABEL_7:
   [(NSLock *)self->_stateLock unlock];
 }
 
-- (BOOL)_stateLock_truncateIfNeeded:(id)a3
+- (BOOL)_stateLock_truncateIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (!self->_isLoaded)
   {
     p_super = SBLogAppShortcuts();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+      bundleIdentifier = [(SBApplicationShortcutStore *)self bundleIdentifier];
       v19 = 138543362;
-      v20 = v10;
+      v20 = bundleIdentifier;
       _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@: SBApplicationShortcutStore cannot truncate; data isn't loaded.", &v19, 0xCu);
     }
 
@@ -452,12 +452,12 @@ LABEL_7:
   {
     if (v7)
     {
-      v8 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+      bundleIdentifier2 = [(SBApplicationShortcutStore *)self bundleIdentifier];
       v9 = [(NSArray *)self->_cachedApplicationShortcutItems count];
       v19 = 138543874;
-      v20 = v8;
+      v20 = bundleIdentifier2;
       v21 = 2112;
-      v22 = v4;
+      v22 = neededCopy;
       v23 = 2048;
       v24 = v9;
       _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@: SBApplicationShortcutStore doesn't need truncation (truncation reason: %@); there are %ld application shortcut items.", &v19, 0x20u);
@@ -470,12 +470,12 @@ LABEL_7:
 
   if (v7)
   {
-    v13 = [(SBApplicationShortcutStore *)self bundleIdentifier];
+    bundleIdentifier3 = [(SBApplicationShortcutStore *)self bundleIdentifier];
     v14 = [(NSArray *)self->_cachedApplicationShortcutItems count];
     v19 = 138543874;
-    v20 = v13;
+    v20 = bundleIdentifier3;
     v21 = 2112;
-    v22 = v4;
+    v22 = neededCopy;
     v23 = 2048;
     v24 = v14;
     _os_log_impl(&dword_0, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@: SBApplicationShortcutStore needs truncation (truncation reason: %@); there are %ld application shortcut items.", &v19, 0x20u);

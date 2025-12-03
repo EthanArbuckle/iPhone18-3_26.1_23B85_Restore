@@ -1,9 +1,9 @@
 @interface PlaybackController.MPCPlayer
 - (_TtCC16PodcastsPlayback18PlaybackController9MPCPlayer)init;
-- (void)engine:(id)a3 didFailToPlayFirstItem:(id)a4 withError:(id)a5;
-- (void)engine:(id)a3 didFailToPlayItem:(id)a4 withError:(id)a5;
-- (void)engine:(id)a3 didUpdatePlaybackPositionWithEvent:(id)a4;
-- (void)engine:(id)a3 didUpdateRelativeVolume:(float)a4;
+- (void)engine:(id)engine didFailToPlayFirstItem:(id)item withError:(id)error;
+- (void)engine:(id)engine didFailToPlayItem:(id)item withError:(id)error;
+- (void)engine:(id)engine didUpdatePlaybackPositionWithEvent:(id)event;
+- (void)engine:(id)engine didUpdateRelativeVolume:(float)volume;
 @end
 
 @implementation PlaybackController.MPCPlayer
@@ -15,43 +15,43 @@
   return result;
 }
 
-- (void)engine:(id)a3 didFailToPlayItem:(id)a4 withError:(id)a5
+- (void)engine:(id)engine didFailToPlayItem:(id)item withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_3D13C(v11);
+  engineCopy = engine;
+  itemCopy = item;
+  errorCopy = error;
+  selfCopy = self;
+  sub_3D13C(errorCopy);
 }
 
-- (void)engine:(id)a3 didFailToPlayFirstItem:(id)a4 withError:(id)a5
+- (void)engine:(id)engine didFailToPlayFirstItem:(id)item withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
+  engineCopy = engine;
+  itemCopy = item;
+  errorCopy = error;
+  selfCopy = self;
   sub_3D310();
 }
 
-- (void)engine:(id)a3 didUpdatePlaybackPositionWithEvent:(id)a4
+- (void)engine:(id)engine didUpdatePlaybackPositionWithEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_3D4B8(v7);
+  engineCopy = engine;
+  eventCopy = event;
+  selfCopy = self;
+  sub_3D4B8(eventCopy);
 }
 
-- (void)engine:(id)a3 didUpdateRelativeVolume:(float)a4
+- (void)engine:(id)engine didUpdateRelativeVolume:(float)volume
 {
-  v4 = [objc_opt_self() defaultCenter];
-  v5 = v4;
+  defaultCenter = [objc_opt_self() defaultCenter];
+  v5 = defaultCenter;
   if (qword_7CC90 != -1)
   {
     swift_once();
-    v4 = v5;
+    defaultCenter = v5;
   }
 
-  [v4 postNotificationName:qword_7EF60 object:0];
+  [defaultCenter postNotificationName:qword_7EF60 object:0];
 }
 
 @end

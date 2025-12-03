@@ -1,101 +1,101 @@
 @interface ATXDigestGroupEngagementMetric
 - (id)coreAnalyticsDictionary;
-- (void)populateMetricsFromDigestGroup:(id)a3 digestUUID:(id)a4;
+- (void)populateMetricsFromDigestGroup:(id)group digestUUID:(id)d;
 @end
 
 @implementation ATXDigestGroupEngagementMetric
 
-- (void)populateMetricsFromDigestGroup:(id)a3 digestUUID:(id)a4
+- (void)populateMetricsFromDigestGroup:(id)group digestUUID:(id)d
 {
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  [(ATXDigestGroupEngagementMetric *)self setDigestUUID:v7];
+  groupCopy = group;
+  uUIDString = [d UUIDString];
+  [(ATXDigestGroupEngagementMetric *)self setDigestUUID:uUIDString];
 
-  v8 = [v6 bundleId];
-  [(ATXDigestGroupEngagementMetric *)self setBundleId:v8];
+  bundleId = [groupCopy bundleId];
+  [(ATXDigestGroupEngagementMetric *)self setBundleId:bundleId];
 
-  v9 = [v6 digestEngagementTrackingMetrics];
-  v10 = [v9 sectionIdentifier];
-  [(ATXDigestGroupEngagementMetric *)self setSection:v10];
+  digestEngagementTrackingMetrics = [groupCopy digestEngagementTrackingMetrics];
+  sectionIdentifier = [digestEngagementTrackingMetrics sectionIdentifier];
+  [(ATXDigestGroupEngagementMetric *)self setSection:sectionIdentifier];
 
-  v11 = [v6 digestEngagementTrackingMetrics];
-  -[ATXDigestGroupEngagementMetric setSectionPosition:](self, "setSectionPosition:", [v11 sectionPosition]);
+  digestEngagementTrackingMetrics2 = [groupCopy digestEngagementTrackingMetrics];
+  -[ATXDigestGroupEngagementMetric setSectionPosition:](self, "setSectionPosition:", [digestEngagementTrackingMetrics2 sectionPosition]);
 
-  v12 = [v6 digestEngagementTrackingMetrics];
-  -[ATXDigestGroupEngagementMetric setSectionSize:](self, "setSectionSize:", [v12 sectionSize]);
+  digestEngagementTrackingMetrics3 = [groupCopy digestEngagementTrackingMetrics];
+  -[ATXDigestGroupEngagementMetric setSectionSize:](self, "setSectionSize:", [digestEngagementTrackingMetrics3 sectionSize]);
 
-  v13 = [v6 rankedNotifications];
-  -[ATXDigestGroupEngagementMetric setNumNotifications:](self, "setNumNotifications:", [v13 count]);
+  rankedNotifications = [groupCopy rankedNotifications];
+  -[ATXDigestGroupEngagementMetric setNumNotifications:](self, "setNumNotifications:", [rankedNotifications count]);
 
-  -[ATXDigestGroupEngagementMetric setHasImage:](self, "setHasImage:", [v6 hasPreviewableAttachment]);
-  [v6 priority];
+  -[ATXDigestGroupEngagementMetric setHasImage:](self, "setHasImage:", [groupCopy hasPreviewableAttachment]);
+  [groupCopy priority];
   [(ATXDigestGroupEngagementMetric *)self setGroupScore:?];
-  v14 = [v6 digestEngagementTrackingMetrics];
-  -[ATXDigestGroupEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [v14 numEngagementsInUpcoming]);
+  digestEngagementTrackingMetrics4 = [groupCopy digestEngagementTrackingMetrics];
+  -[ATXDigestGroupEngagementMetric setNumEngagementsInUpcoming:](self, "setNumEngagementsInUpcoming:", [digestEngagementTrackingMetrics4 numEngagementsInUpcoming]);
 
-  v15 = [v6 digestEngagementTrackingMetrics];
-  -[ATXDigestGroupEngagementMetric setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", [v15 numEngagementsInScheduled]);
+  digestEngagementTrackingMetrics5 = [groupCopy digestEngagementTrackingMetrics];
+  -[ATXDigestGroupEngagementMetric setNumEngagementsInScheduled:](self, "setNumEngagementsInScheduled:", [digestEngagementTrackingMetrics5 numEngagementsInScheduled]);
 
-  v16 = [v6 digestEngagementTrackingMetrics];
-  -[ATXDigestGroupEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [v16 numEngagementsAfterExpiration]);
+  digestEngagementTrackingMetrics6 = [groupCopy digestEngagementTrackingMetrics];
+  -[ATXDigestGroupEngagementMetric setNumEngagementsAfterExpiration:](self, "setNumEngagementsAfterExpiration:", [digestEngagementTrackingMetrics6 numEngagementsAfterExpiration]);
 
-  v17 = [v6 digestEngagementTrackingMetrics];
+  digestEngagementTrackingMetrics7 = [groupCopy digestEngagementTrackingMetrics];
 
-  -[ATXDigestGroupEngagementMetric setNumExpansions:](self, "setNumExpansions:", [v17 numExpansions]);
+  -[ATXDigestGroupEngagementMetric setNumExpansions:](self, "setNumExpansions:", [digestEngagementTrackingMetrics7 numExpansions]);
 }
 
 - (id)coreAnalyticsDictionary
 {
   v33[13] = *MEMORY[0x277D85DE8];
   v32[0] = @"digestUUID";
-  v3 = [(ATXDigestGroupEngagementMetric *)self digestUUID];
-  v4 = v3;
-  if (!v3)
+  digestUUID = [(ATXDigestGroupEngagementMetric *)self digestUUID];
+  v4 = digestUUID;
+  if (!digestUUID)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    digestUUID = [MEMORY[0x277CBEB68] null];
   }
 
-  v25 = v3;
-  v33[0] = v3;
+  v25 = digestUUID;
+  v33[0] = digestUUID;
   v32[1] = @"bundleId";
-  v5 = [(ATXDigestGroupEngagementMetric *)self bundleId];
-  v6 = v5;
-  if (!v5)
+  bundleId = [(ATXDigestGroupEngagementMetric *)self bundleId];
+  v6 = bundleId;
+  if (!bundleId)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    bundleId = [MEMORY[0x277CBEB68] null];
   }
 
   v31 = v4;
-  v24 = v5;
-  v33[1] = v5;
+  v24 = bundleId;
+  v33[1] = bundleId;
   v32[2] = @"secureBundleId";
-  v7 = [(ATXDigestGroupEngagementMetric *)self bundleId];
-  if (v7)
+  bundleId2 = [(ATXDigestGroupEngagementMetric *)self bundleId];
+  if (bundleId2)
   {
-    v28 = [(ATXDigestGroupEngagementMetric *)self bundleId];
-    v8 = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
+    bundleId3 = [(ATXDigestGroupEngagementMetric *)self bundleId];
+    null = [ATXCoreAnalyticsFieldUtilities hashBoundString:?];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    v28 = v8;
+    null = [MEMORY[0x277CBEB68] null];
+    bundleId3 = null;
   }
 
-  v29 = v7;
+  v29 = bundleId2;
   v30 = v6;
-  v26 = v8;
-  v33[2] = v8;
+  v26 = null;
+  v33[2] = null;
   v32[3] = @"section";
-  v9 = [(ATXDigestGroupEngagementMetric *)self section];
-  v10 = v9;
-  if (!v9)
+  section = [(ATXDigestGroupEngagementMetric *)self section];
+  v10 = section;
+  if (!section)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    section = [MEMORY[0x277CBEB68] null];
   }
 
-  v23 = v9;
-  v33[3] = v9;
+  v23 = section;
+  v33[3] = section;
   v32[4] = @"sectionPosition";
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXDigestGroupEngagementMetric sectionPosition](self, "sectionPosition")}];
   v33[4] = v27;

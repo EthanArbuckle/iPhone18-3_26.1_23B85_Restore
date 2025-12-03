@@ -1,12 +1,12 @@
 @interface _LTDAnalyticsAssetSnapshotProvider
-- (void)collectAssetSnapshotWithCompletion:(id)a3;
+- (void)collectAssetSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation _LTDAnalyticsAssetSnapshotProvider
 
-- (void)collectAssetSnapshotWithCompletion:(id)a3
+- (void)collectAssetSnapshotWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -51,9 +51,9 @@
   block[3] = &unk_2789B5758;
   v11 = v22;
   v12 = v20;
-  v9 = v3;
+  v9 = completionCopy;
   v10 = v24;
-  v7 = v3;
+  v7 = completionCopy;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v20, 8);

@@ -1,9 +1,9 @@
 @interface TSNavigationBarSpinnerManager
 + (id)sharedManager;
 - (TSNavigationBarSpinnerManager)init;
-- (void)startSpinnerInNavigationItem:(id)a3 withIdentifier:(id)a4;
-- (void)stopSpinnerForIdentifier:(id)a3;
-- (void)stopSpinnerInNavigationItem:(id)a3 withIdentifier:(id)a4;
+- (void)startSpinnerInNavigationItem:(id)item withIdentifier:(id)identifier;
+- (void)stopSpinnerForIdentifier:(id)identifier;
+- (void)stopSpinnerInNavigationItem:(id)item withIdentifier:(id)identifier;
 @end
 
 @implementation TSNavigationBarSpinnerManager
@@ -47,82 +47,82 @@ uint64_t __46__TSNavigationBarSpinnerManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)startSpinnerInNavigationItem:(id)a3 withIdentifier:(id)a4
+- (void)startSpinnerInNavigationItem:(id)item withIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  itemCopy = item;
+  identifierCopy = identifier;
+  navigationItems = [(TSNavigationBarSpinnerManager *)self navigationItems];
+  v9 = [navigationItems objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
-    v10 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-    [v10 setObject:v6 forKeyedSubscript:v7];
+    navigationItems2 = [(TSNavigationBarSpinnerManager *)self navigationItems];
+    [navigationItems2 setObject:itemCopy forKeyedSubscript:identifierCopy];
 
-    v11 = [v6 leftBarButtonItems];
+    leftBarButtonItems = [itemCopy leftBarButtonItems];
 
-    if (v11)
+    if (leftBarButtonItems)
     {
-      v12 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
-      v13 = [v6 leftBarButtonItems];
-      [v12 setObject:v13 forKey:v7];
+      previousLeftBarButtonItems = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
+      leftBarButtonItems2 = [itemCopy leftBarButtonItems];
+      [previousLeftBarButtonItems setObject:leftBarButtonItems2 forKey:identifierCopy];
     }
 
-    v14 = [v6 rightBarButtonItems];
+    rightBarButtonItems = [itemCopy rightBarButtonItems];
 
-    if (v14)
+    if (rightBarButtonItems)
     {
-      v15 = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
-      v16 = [v6 rightBarButtonItems];
-      [v15 setObject:v16 forKey:v7];
+      previousRightBarButtonItems = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
+      rightBarButtonItems2 = [itemCopy rightBarButtonItems];
+      [previousRightBarButtonItems setObject:rightBarButtonItems2 forKey:identifierCopy];
     }
 
     v17 = objc_alloc_init(TSSpinnerNavigationBarItem);
     v20[0] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-    [v6 setRightBarButtonItems:v18 animated:1];
+    [itemCopy setRightBarButtonItems:v18 animated:1];
 
-    [v6 setLeftBarButtonItems:0 animated:1];
+    [itemCopy setLeftBarButtonItems:0 animated:1];
     [(TSSpinnerNavigationBarItem *)v17 startAnimating];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSpinnerForIdentifier:(id)a3
+- (void)stopSpinnerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  navigationItems = [(TSNavigationBarSpinnerManager *)self navigationItems];
+  v6 = [navigationItems objectForKeyedSubscript:identifierCopy];
 
-  [(TSNavigationBarSpinnerManager *)self stopSpinnerInNavigationItem:v6 withIdentifier:v4];
+  [(TSNavigationBarSpinnerManager *)self stopSpinnerInNavigationItem:v6 withIdentifier:identifierCopy];
 }
 
-- (void)stopSpinnerInNavigationItem:(id)a3 withIdentifier:(id)a4
+- (void)stopSpinnerInNavigationItem:(id)item withIdentifier:(id)identifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  itemCopy = item;
+  identifierCopy = identifier;
+  navigationItems = [(TSNavigationBarSpinnerManager *)self navigationItems];
+  v9 = [navigationItems objectForKeyedSubscript:identifierCopy];
 
   if (v9)
   {
-    v10 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    navigationItems2 = [(TSNavigationBarSpinnerManager *)self navigationItems];
+    v11 = [navigationItems2 objectForKeyedSubscript:identifierCopy];
 
-    if (v11 != v6)
+    if (v11 != itemCopy)
     {
       v12 = _TSLogDomain();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v26 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-        v27 = [v26 objectForKeyedSubscript:v7];
+        navigationItems3 = [(TSNavigationBarSpinnerManager *)self navigationItems];
+        v27 = [navigationItems3 objectForKeyedSubscript:identifierCopy];
         v28 = 138413058;
-        v29 = v7;
+        v29 = identifierCopy;
         v30 = 2112;
-        v31 = v6;
+        v31 = itemCopy;
         v32 = 2112;
         v33 = v27;
         v34 = 2080;
@@ -131,12 +131,12 @@ uint64_t __46__TSNavigationBarSpinnerManager_sharedManager__block_invoke()
       }
     }
 
-    v13 = [v6 rightBarButtonItems];
-    v14 = [v13 lastObject];
+    rightBarButtonItems = [itemCopy rightBarButtonItems];
+    lastObject = [rightBarButtonItems lastObject];
 
     if (objc_opt_respondsToSelector())
     {
-      [v14 stopAnimating];
+      [lastObject stopAnimating];
     }
 
     else
@@ -144,32 +144,32 @@ uint64_t __46__TSNavigationBarSpinnerManager_sharedManager__block_invoke()
       v15 = _TSLogDomain();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [TSNavigationBarSpinnerManager stopSpinnerInNavigationItem:v14 withIdentifier:v15];
+        [TSNavigationBarSpinnerManager stopSpinnerInNavigationItem:lastObject withIdentifier:v15];
       }
     }
 
-    v16 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
-    v17 = [v16 objectForKeyedSubscript:v7];
+    previousLeftBarButtonItems = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
+    v17 = [previousLeftBarButtonItems objectForKeyedSubscript:identifierCopy];
 
     if (v17)
     {
-      v18 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
-      v19 = [v18 objectForKeyedSubscript:v7];
-      [v6 setLeftBarButtonItems:v19 animated:1];
+      previousLeftBarButtonItems2 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
+      v19 = [previousLeftBarButtonItems2 objectForKeyedSubscript:identifierCopy];
+      [itemCopy setLeftBarButtonItems:v19 animated:1];
     }
 
-    v20 = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
-    v21 = [v20 objectForKeyedSubscript:v7];
-    [v6 setRightBarButtonItems:v21 animated:1];
+    previousRightBarButtonItems = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
+    v21 = [previousRightBarButtonItems objectForKeyedSubscript:identifierCopy];
+    [itemCopy setRightBarButtonItems:v21 animated:1];
 
-    v22 = [(TSNavigationBarSpinnerManager *)self navigationItems];
-    [v22 removeObjectForKey:v7];
+    navigationItems4 = [(TSNavigationBarSpinnerManager *)self navigationItems];
+    [navigationItems4 removeObjectForKey:identifierCopy];
 
-    v23 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
-    [v23 removeObjectForKey:v7];
+    previousLeftBarButtonItems3 = [(TSNavigationBarSpinnerManager *)self previousLeftBarButtonItems];
+    [previousLeftBarButtonItems3 removeObjectForKey:identifierCopy];
 
-    v24 = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
-    [v24 removeObjectForKey:v7];
+    previousRightBarButtonItems2 = [(TSNavigationBarSpinnerManager *)self previousRightBarButtonItems];
+    [previousRightBarButtonItems2 removeObjectForKey:identifierCopy];
   }
 
   v25 = *MEMORY[0x277D85DE8];

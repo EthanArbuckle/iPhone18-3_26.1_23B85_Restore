@@ -1,54 +1,54 @@
 @interface RBArchiveDelegateImpl
-- (CGFont)decodedCGFontWithData:(id)a3 error:(id *)a4;
-- (RBArchiveDelegateImpl)initWithFlags:(unsigned int)a3;
-- (id)decodedShaderLibraryWithData:(id)a3 error:(id *)a4;
-- (id)encodedCGFontData:(CGFont *)a3 error:(id *)a4;
-- (id)encodedImageData:(id)a3 error:(id *)a4;
-- (id)encodedShaderLibraryData:(id)a3 error:(id *)a4;
-- (void)decodedImageContentsWithData:(id)a3 type:(int *)a4 error:(id *)a5;
-- (void)decodedMetadata:(id)a3;
+- (CGFont)decodedCGFontWithData:(id)data error:(id *)error;
+- (RBArchiveDelegateImpl)initWithFlags:(unsigned int)flags;
+- (id)decodedShaderLibraryWithData:(id)data error:(id *)error;
+- (id)encodedCGFontData:(CGFont *)data error:(id *)error;
+- (id)encodedImageData:(id)data error:(id *)error;
+- (id)encodedShaderLibraryData:(id)data error:(id *)error;
+- (void)decodedImageContentsWithData:(id)data type:(int *)type error:(id *)error;
+- (void)decodedMetadata:(id)metadata;
 @end
 
 @implementation RBArchiveDelegateImpl
 
-- (RBArchiveDelegateImpl)initWithFlags:(unsigned int)a3
+- (RBArchiveDelegateImpl)initWithFlags:(unsigned int)flags
 {
   v5.receiver = self;
   v5.super_class = RBArchiveDelegateImpl;
   result = [(RBArchiveDelegateImpl *)&v5 init];
   if (result)
   {
-    result->_flags = a3;
+    result->_flags = flags;
   }
 
   return result;
 }
 
-- (void)decodedMetadata:(id)a3
+- (void)decodedMetadata:(id)metadata
 {
   p = self->_metadata._p;
-  if (p != a3)
+  if (p != metadata)
   {
 
-    self->_metadata._p = a3;
+    self->_metadata._p = metadata;
   }
 }
 
-- (id)encodedImageData:(id)a3 error:(id *)a4
+- (id)encodedImageData:(id)data error:(id *)error
 {
-  if (!a3.var1)
+  if (!data.var1)
   {
     return 0;
   }
 
-  var1 = a3.var1;
-  v6 = *&a3.var0;
+  var1 = data.var1;
+  v6 = *&data.var0;
   if (self->_flags)
   {
     goto LABEL_19;
   }
 
-  if (LOBYTE(a3.var0) == 1)
+  if (LOBYTE(data.var0) == 1)
   {
     v12 = NSClassFromString(&cfstr_Caiosurfacecod.isa);
     if (v12)
@@ -60,12 +60,12 @@
         if (v14)
         {
           v15 = v14;
-          v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
+          data = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
 
 LABEL_16:
-          if (v7)
+          if (data)
           {
-            return v7;
+            return data;
           }
 
           goto LABEL_19;
@@ -74,17 +74,17 @@ LABEL_16:
     }
   }
 
-  else if (!LOBYTE(a3.var0))
+  else if (!LOBYTE(data.var0))
   {
-    v7 = [MEMORY[0x1E695DF88] data];
-    v8 = CGImageDestinationCreateWithData(v7, @"public.png", 1uLL, 0);
+    data = [MEMORY[0x1E695DF88] data];
+    v8 = CGImageDestinationCreateWithData(data, @"public.png", 1uLL, 0);
     if (v8)
     {
       v9 = v8;
       CGImageDestinationAddImage(v8, var1, 0);
       v10 = CGImageDestinationFinalize(v9);
       CFRelease(v9);
-      if (v7)
+      if (data)
       {
         v11 = v10;
       }
@@ -96,7 +96,7 @@ LABEL_16:
 
       if (v11)
       {
-        return v7;
+        return data;
       }
 
       goto LABEL_19;
@@ -107,22 +107,22 @@ LABEL_16:
 
 LABEL_19:
   RB::ImageDescription::ImageDescription(v18, v6, var1);
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  [v16 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v6), @"type"}];
-  [v16 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[0]), @"ident"}];
-  [v16 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[1]), @"width"}];
-  [v16 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[2]), @"height"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v6), @"type"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[0]), @"ident"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[1]), @"width"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v18[2]), @"height"}];
   if (v19 == 1)
   {
-    [v16 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"alpha"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"alpha"];
   }
 
-  return [MEMORY[0x1E696ACB0] dataWithJSONObject:v16 options:0 error:a4];
+  return [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:error];
 }
 
-- (void)decodedImageContentsWithData:(id)a3 type:(int *)a4 error:(id *)a5
+- (void)decodedImageContentsWithData:(id)data type:(int *)type error:(id *)error
 {
-  v7 = [a3 length];
+  v7 = [data length];
   v25 = 0;
   if (!v7)
   {
@@ -130,10 +130,10 @@ LABEL_19:
   }
 
   v8 = v7;
-  [a3 getBytes:&v25 length:1];
+  [data getBytes:&v25 length:1];
   if (v25 == 123)
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:0];
+    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -150,7 +150,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v12 unsignedLongLongValue];
+            unsignedLongLongValue = [v12 unsignedLongLongValue];
             [v10 unsignedLongLongValue];
             [v11 unsignedLongLongValue];
             objc_opt_class();
@@ -159,7 +159,7 @@ LABEL_19:
               [v13 BOOLValue];
             }
 
-            RB::cg_image_create_placeholder(v14);
+            RB::cg_image_create_placeholder(unsignedLongLongValue);
           }
         }
       }
@@ -169,7 +169,7 @@ LABEL_19:
   ImageAtIndex = 0;
   if (v8 >= 7 && v25 == 98)
   {
-    [a3 getBytes:&v23 length:6];
+    [data getBytes:&v23 length:6];
     if (v23 != 1768714338 || v24 != 29811)
     {
       goto LABEL_15;
@@ -187,7 +187,7 @@ LABEL_15:
       }
 
       v21 = objc_autoreleasePoolPush();
-      v22 = [objc_msgSend(MEMORY[0x1E696ACD0] unarchivedObjectOfClass:ImageAtIndex fromData:a3 error:{0), "decodedObject"}];
+      v22 = [objc_msgSend(MEMORY[0x1E696ACD0] unarchivedObjectOfClass:ImageAtIndex fromData:data error:{0), "decodedObject"}];
       if (v22)
       {
         ImageAtIndex = CFRetain(v22);
@@ -201,7 +201,7 @@ LABEL_15:
       objc_autoreleasePoolPop(v21);
       if (ImageAtIndex)
       {
-        *a4 = 1;
+        *type = 1;
       }
     }
   }
@@ -215,7 +215,7 @@ LABEL_19:
   }
 
 LABEL_17:
-  v17 = CGImageSourceCreateWithData(a3, 0);
+  v17 = CGImageSourceCreateWithData(data, 0);
   if (!v17)
   {
     return 0;
@@ -223,7 +223,7 @@ LABEL_17:
 
   v18 = v17;
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v17, 0, 0);
-  *a4 = 0;
+  *type = 0;
   CFRelease(v18);
   if (ImageAtIndex)
   {
@@ -233,14 +233,14 @@ LABEL_17:
   return ImageAtIndex;
 }
 
-- (id)encodedCGFontData:(CGFont *)a3 error:(id *)a4
+- (id)encodedCGFontData:(CGFont *)data error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = CGFontCopyPostScriptName(a3);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v7 = CGFontCopyPostScriptName(data);
   if (v7)
   {
     v8 = v7;
-    [v6 setObject:v7 forKeyedSubscript:@"postscriptName"];
+    [dictionary setObject:v7 forKeyedSubscript:@"postscriptName"];
   }
 
   else
@@ -252,22 +252,22 @@ LABEL_17:
     }
 
     v8 = v9;
-    [v6 setObject:v9 forKeyedSubscript:@"URL"];
+    [dictionary setObject:v9 forKeyedSubscript:@"URL"];
   }
 
   CFRelease(v8);
 LABEL_6:
   v10 = MEMORY[0x1E696ACB0];
 
-  return [v10 dataWithJSONObject:v6 options:0 error:a4];
+  return [v10 dataWithJSONObject:dictionary options:0 error:error];
 }
 
-- (CGFont)decodedCGFontWithData:(id)a3 error:(id *)a4
+- (CGFont)decodedCGFontWithData:(id)data error:(id *)error
 {
   v14 = 0;
-  if ([a3 length] && (objc_msgSend(a3, "getBytes:length:", &v14, 1), v14 == 123))
+  if ([data length] && (objc_msgSend(data, "getBytes:length:", &v14, 1), v14 == 123))
   {
-    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:a4];
+    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:data options:0 error:error];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -302,7 +302,7 @@ LABEL_6:
 
   else
   {
-    v9 = CGDataProviderCreateWithCFData(a3);
+    v9 = CGDataProviderCreateWithCFData(data);
     if (!v9)
     {
       return 0;
@@ -321,9 +321,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)encodedShaderLibraryData:(id)a3 error:(id *)a4
+- (id)encodedShaderLibraryData:(id)data error:(id *)error
 {
-  result = [(RBDecodedFontMetadata *)a3 fontUID];
+  result = [(RBDecodedFontMetadata *)data fontUID];
   if (result)
   {
     v5 = result;
@@ -370,17 +370,17 @@ LABEL_9:
   return result;
 }
 
-- (id)decodedShaderLibraryWithData:(id)a3 error:(id *)a4
+- (id)decodedShaderLibraryWithData:(id)data error:(id *)error
 {
-  if ([a3 length] >= 5 && (v5 = objc_msgSend(a3, "bytes"), *v5 == 77) && v5[1] == 84 && v5[2] == 76 && v5[3] == 66)
+  if ([data length] >= 5 && (v5 = objc_msgSend(data, "bytes"), *v5 == 77) && v5[1] == 84 && v5[2] == 76 && v5[3] == 66)
   {
 
-    return [RBShaderLibrary libraryWithData:a3];
+    return [RBShaderLibrary libraryWithData:data];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:4];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:data encoding:4];
     if (v7)
     {
       v8 = [RBShaderLibrary libraryWithSource:v7];

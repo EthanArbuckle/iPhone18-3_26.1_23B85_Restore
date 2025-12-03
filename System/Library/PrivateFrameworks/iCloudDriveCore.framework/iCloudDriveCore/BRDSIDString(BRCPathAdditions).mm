@@ -9,7 +9,7 @@
   v23 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a1 brc_accountIDPathForAccountPath:v4];
+  v6 = [self brc_accountIDPathForAccountPath:v4];
   v16 = 0;
   v7 = [v5 stringWithContentsOfFile:v6 encoding:4 error:&v16];
   v8 = v16;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v12 = [v7 stringByTrimmingCharactersInSet:v11];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v12 = [v7 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v12 length])
   {

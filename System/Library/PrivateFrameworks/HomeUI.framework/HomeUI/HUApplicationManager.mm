@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (BOOL)isStatusBarHidden;
 - (HUApplicationManager)init;
-- (void)setIdleTimerDisabled:(BOOL)a3 forRequester:(id)a4;
-- (void)setStatusBarHidden:(BOOL)a3 forRequester:(id)a4 withAnimationSettings:(id)a5;
+- (void)setIdleTimerDisabled:(BOOL)disabled forRequester:(id)requester;
+- (void)setStatusBarHidden:(BOOL)hidden forRequester:(id)requester withAnimationSettings:(id)settings;
 @end
 
 @implementation HUApplicationManager
@@ -34,11 +34,11 @@ void __38__HUApplicationManager_sharedInstance__block_invoke()
   v2 = [(HUApplicationManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HUApplicationManager *)v2 setStatusBarHidingRequesters:v3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HUApplicationManager *)v2 setStatusBarHidingRequesters:weakObjectsHashTable];
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HUApplicationManager *)v2 setIdleTimerDisabledRequesters:v4];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HUApplicationManager *)v2 setIdleTimerDisabledRequesters:weakObjectsHashTable2];
 
     v5 = objc_alloc_init(HUDefaultStatusBarVisiblityHandler);
     [(HUApplicationManager *)v2 setStatusBarVisibilityHandler:v5];
@@ -49,34 +49,34 @@ void __38__HUApplicationManager_sharedInstance__block_invoke()
 
 - (BOOL)isStatusBarHidden
 {
-  v2 = [(HUApplicationManager *)self statusBarVisibilityHandler];
-  v3 = [v2 isStatusBarHidden];
+  statusBarVisibilityHandler = [(HUApplicationManager *)self statusBarVisibilityHandler];
+  isStatusBarHidden = [statusBarVisibilityHandler isStatusBarHidden];
 
-  return v3;
+  return isStatusBarHidden;
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 forRequester:(id)a4 withAnimationSettings:(id)a5
+- (void)setStatusBarHidden:(BOOL)hidden forRequester:(id)requester withAnimationSettings:(id)settings
 {
-  v6 = a3;
-  v17 = a5;
-  v8 = a4;
-  v9 = [(HUApplicationManager *)self statusBarHidingRequesters];
-  v10 = [v9 count];
+  hiddenCopy = hidden;
+  settingsCopy = settings;
+  requesterCopy = requester;
+  statusBarHidingRequesters = [(HUApplicationManager *)self statusBarHidingRequesters];
+  v10 = [statusBarHidingRequesters count];
 
-  v11 = [(HUApplicationManager *)self statusBarHidingRequesters];
-  v12 = v11;
-  if (v6)
+  statusBarHidingRequesters2 = [(HUApplicationManager *)self statusBarHidingRequesters];
+  v12 = statusBarHidingRequesters2;
+  if (hiddenCopy)
   {
-    [v11 addObject:v8];
+    [statusBarHidingRequesters2 addObject:requesterCopy];
   }
 
   else
   {
-    [v11 removeObject:v8];
+    [statusBarHidingRequesters2 removeObject:requesterCopy];
   }
 
-  v13 = [(HUApplicationManager *)self statusBarHidingRequesters];
-  v14 = [v13 count];
+  statusBarHidingRequesters3 = [(HUApplicationManager *)self statusBarHidingRequesters];
+  v14 = [statusBarHidingRequesters3 count];
 
   if ((v10 == 0) == (v14 != 0))
   {
@@ -100,31 +100,31 @@ void __38__HUApplicationManager_sharedInstance__block_invoke()
       }
     }
 
-    v16 = [(HUApplicationManager *)self statusBarVisibilityHandler];
-    [v16 setStatusBarHidden:v15 withAnimationSettings:v17];
+    statusBarVisibilityHandler = [(HUApplicationManager *)self statusBarVisibilityHandler];
+    [statusBarVisibilityHandler setStatusBarHidden:v15 withAnimationSettings:settingsCopy];
   }
 
 LABEL_10:
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3 forRequester:(id)a4
+- (void)setIdleTimerDisabled:(BOOL)disabled forRequester:(id)requester
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(HUApplicationManager *)self idleTimerDisabledRequesters];
-  v8 = v7;
-  if (v4)
+  disabledCopy = disabled;
+  requesterCopy = requester;
+  idleTimerDisabledRequesters = [(HUApplicationManager *)self idleTimerDisabledRequesters];
+  v8 = idleTimerDisabledRequesters;
+  if (disabledCopy)
   {
-    [v7 addObject:v6];
+    [idleTimerDisabledRequesters addObject:requesterCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [idleTimerDisabledRequesters removeObject:requesterCopy];
   }
 
-  v10 = [(HUApplicationManager *)self idleTimerDisabledRequesters];
-  v9 = [v10 count] != 0;
+  idleTimerDisabledRequesters2 = [(HUApplicationManager *)self idleTimerDisabledRequesters];
+  v9 = [idleTimerDisabledRequesters2 count] != 0;
   [*MEMORY[0x277D76620] setIdleTimerDisabled:v9];
 }
 

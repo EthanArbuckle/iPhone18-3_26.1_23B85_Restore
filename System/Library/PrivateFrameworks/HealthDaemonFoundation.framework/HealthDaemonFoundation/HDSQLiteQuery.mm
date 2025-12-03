@@ -1,25 +1,25 @@
 @interface HDSQLiteQuery
-- (BOOL)deleteAllEntitiesWithError:(id *)a3;
-- (BOOL)enumeratePersistentIDsAndProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-- (BOOL)enumerateProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5;
-- (HDSQLiteQuery)initWithDatabase:(id)a3 descriptor:(id)a4;
-- (void)_expandLastSQLStatementIfNecessary:(uint64_t)a1;
+- (BOOL)deleteAllEntitiesWithError:(id *)error;
+- (BOOL)enumeratePersistentIDsAndProperties:(id)properties error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)enumerateProperties:(id)properties error:(id *)error enumerationHandler:(id)handler;
+- (HDSQLiteQuery)initWithDatabase:(id)database descriptor:(id)descriptor;
+- (void)_expandLastSQLStatementIfNecessary:(uint64_t)necessary;
 @end
 
 @implementation HDSQLiteQuery
 
-- (HDSQLiteQuery)initWithDatabase:(id)a3 descriptor:(id)a4
+- (HDSQLiteQuery)initWithDatabase:(id)database descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = HDSQLiteQuery;
   v9 = [(HDSQLiteQuery *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_database, database);
+    v11 = [descriptorCopy copy];
     descriptor = v10->_descriptor;
     v10->_descriptor = v11;
   }
@@ -27,7 +27,7 @@
   return v10;
 }
 
-- (BOOL)deleteAllEntitiesWithError:(id *)a3
+- (BOOL)deleteAllEntitiesWithError:(id *)error
 {
   database = self->_database;
   v5[0] = MEMORY[0x277D85DD0];
@@ -35,7 +35,7 @@
   v5[2] = __44__HDSQLiteQuery_deleteAllEntitiesWithError___block_invoke;
   v5[3] = &unk_2796BE320;
   v5[4] = self;
-  return [(HDSQLiteDatabase *)database performTransactionWithType:1 error:a3 usingBlock:v5];
+  return [(HDSQLiteDatabase *)database performTransactionWithType:1 error:error usingBlock:v5];
 }
 
 uint64_t __44__HDSQLiteQuery_deleteAllEntitiesWithError___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -83,13 +83,13 @@ void __44__HDSQLiteQuery_deleteAllEntitiesWithError___block_invoke_2(uint64_t a1
   [(HDSQLiteQuery *)*(a1 + 32) _expandLastSQLStatementIfNecessary:a2];
 }
 
-- (BOOL)enumeratePersistentIDsAndProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
+- (BOOL)enumeratePersistentIDsAndProperties:(id)properties error:(id *)error enumerationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  if (propertiesCopy)
   {
-    v11 = [v9 mutableCopy];
+    v11 = [propertiesCopy mutableCopy];
   }
 
   else
@@ -100,9 +100,9 @@ void __44__HDSQLiteQuery_deleteAllEntitiesWithError___block_invoke_2(uint64_t a1
   v12 = v11;
   [v11 insertObject:@"ROWID" atIndex:0];
   v13 = MEMORY[0x277CBEBF8];
-  if (v9)
+  if (propertiesCopy)
   {
-    v13 = v9;
+    v13 = propertiesCopy;
   }
 
   v14 = v13;
@@ -112,11 +112,11 @@ void __44__HDSQLiteQuery_deleteAllEntitiesWithError___block_invoke_2(uint64_t a1
   v19[3] = &unk_2796BE448;
   v22 = a2;
   v19[4] = self;
-  v15 = v10;
+  v15 = handlerCopy;
   v20 = v14;
   v21 = v15;
   v16 = v14;
-  v17 = [(HDSQLiteQuery *)self enumerateProperties:v12 error:a4 enumerationHandler:v19];
+  v17 = [(HDSQLiteQuery *)self enumerateProperties:v12 error:error enumerationHandler:v19];
 
   return v17;
 }
@@ -136,21 +136,21 @@ uint64_t __78__HDSQLiteQuery_enumeratePersistentIDsAndProperties_error_enumerati
   return result;
 }
 
-- (BOOL)enumerateProperties:(id)a3 error:(id *)a4 enumerationHandler:(id)a5
+- (BOOL)enumerateProperties:(id)properties error:(id *)error enumerationHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v34 = v8;
-  if ([v8 count] >= 0x7FFFFFFF)
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  v34 = propertiesCopy;
+  if ([propertiesCopy count] >= 0x7FFFFFFF)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"HDSQLiteQuery.mm" lineNumber:94 description:{@"Insane number of properties for enumeration (%lu)", objc_msgSend(v8, "count")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSQLiteQuery.mm" lineNumber:94 description:{@"Insane number of properties for enumeration (%lu)", objc_msgSend(propertiesCopy, "count")}];
   }
 
-  v10 = v9;
+  v10 = handlerCopy;
   v35 = [(HDSQLiteQueryDescriptor *)self->_descriptor selectSQLForProperties:v34];
-  v33 = a4;
+  errorCopy = error;
   if ([(HDSQLiteQueryDescriptor *)self->_descriptor shouldExpandLastSQLStatement])
   {
     v11 = 0;
@@ -189,7 +189,7 @@ uint64_t __78__HDSQLiteQuery_enumeratePersistentIDsAndProperties_error_enumerati
           objc_enumerationMutation(v13);
         }
 
-        v17 = [*(*(&v45 + 1) + 8 * i) UTF8String];
+        uTF8String = [*(*(&v45 + 1) + 8 * i) UTF8String];
         v18 = v50;
         if (v50 >= v51)
         {
@@ -221,7 +221,7 @@ uint64_t __78__HDSQLiteQuery_enumeratePersistentIDsAndProperties_error_enumerati
           }
 
           v23 = (8 * v20);
-          *v23 = v17;
+          *v23 = uTF8String;
           v19 = (8 * v20 + 8);
           v24 = v23 - (v50 - __p);
           memcpy(v24, __p, v50 - __p);
@@ -234,12 +234,12 @@ uint64_t __78__HDSQLiteQuery_enumeratePersistentIDsAndProperties_error_enumerati
             operator delete(v25);
           }
 
-          v10 = v9;
+          v10 = handlerCopy;
         }
 
         else
         {
-          *v50 = v17;
+          *v50 = uTF8String;
           v19 = v18 + 1;
         }
 
@@ -271,7 +271,7 @@ uint64_t __78__HDSQLiteQuery_enumeratePersistentIDsAndProperties_error_enumerati
   v39 = v27;
   v28 = v13;
   v38 = v28;
-  v29 = [(HDSQLiteDatabase *)database executeSQL:v35 error:v33 bindingHandler:v44 enumerationHandler:v37];
+  v29 = [(HDSQLiteDatabase *)database executeSQL:v35 error:errorCopy bindingHandler:v44 enumerationHandler:v37];
 
   if (v41)
   {
@@ -313,19 +313,19 @@ uint64_t __62__HDSQLiteQuery_enumerateProperties_error_enumerationHandler___bloc
   return (*(a1[5] + 16))();
 }
 
-- (void)_expandLastSQLStatementIfNecessary:(uint64_t)a1
+- (void)_expandLastSQLStatementIfNecessary:(uint64_t)necessary
 {
-  if (a1)
+  if (necessary)
   {
-    if ([*(a1 + 16) shouldExpandLastSQLStatement])
+    if ([*(necessary + 16) shouldExpandLastSQLStatement])
     {
       v4 = sqlite3_expanded_sql(a2);
       if (v4)
       {
         v5 = v4;
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];
-        v7 = *(a1 + 24);
-        *(a1 + 24) = v6;
+        v7 = *(necessary + 24);
+        *(necessary + 24) = v6;
 
         sqlite3_free(v5);
       }

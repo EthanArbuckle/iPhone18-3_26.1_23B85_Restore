@@ -1,34 +1,34 @@
 @interface TUNavigationBarDefaultCompressionAnimation
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4;
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed;
 - (TUAnimationFloatFunction)opacityFunction;
 - (TUAnimationFloatFunction)scaleFunction;
 - (TUAnimationFloatFunction)translateFunction;
-- (TUNavigationBarDefaultCompressionAnimation)initWithNavigationBar:(id)a3 tabBarController:(id)a4;
-- (double)maximumBarHeightForTraitCollection:(id)a3;
-- (void)animateFloatingTabBarHiddenIfNeeded:(BOOL)a3;
+- (TUNavigationBarDefaultCompressionAnimation)initWithNavigationBar:(id)bar tabBarController:(id)controller;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
+- (void)animateFloatingTabBarHiddenIfNeeded:(BOOL)needed;
 - (void)prepareForUpdates;
-- (void)reloadWithTraitCollection:(id)a3;
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4;
-- (void)setHideTitleOnTop:(BOOL)a3;
-- (void)updateWithPercentage:(double)a3;
+- (void)reloadWithTraitCollection:(id)collection;
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset;
+- (void)setHideTitleOnTop:(BOOL)top;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation TUNavigationBarDefaultCompressionAnimation
 
-- (TUNavigationBarDefaultCompressionAnimation)initWithNavigationBar:(id)a3 tabBarController:(id)a4
+- (TUNavigationBarDefaultCompressionAnimation)initWithNavigationBar:(id)bar tabBarController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  barCopy = bar;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = TUNavigationBarDefaultCompressionAnimation;
   v9 = [(TUNavigationBarDefaultCompressionAnimation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_navigationBar, a3);
+    objc_storeStrong(&v9->_navigationBar, bar);
     v10->_compressTitleView = 1;
     v10->_translationOffset = -3.5;
-    objc_storeStrong(&v10->_tabBarController, a4);
+    objc_storeStrong(&v10->_tabBarController, controller);
   }
 
   return v10;
@@ -36,59 +36,59 @@
 
 - (void)prepareForUpdates
 {
-  v3 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v4 = [v3 ts_fetchCompressibleTitleView];
-  [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:v4];
+  navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  ts_fetchCompressibleTitleView = [navigationBar ts_fetchCompressibleTitleView];
+  [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:ts_fetchCompressibleTitleView];
 
-  v6 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v5 = [v6 ts_barButtonViews];
-  [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:v5];
+  navigationBar2 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  ts_barButtonViews = [navigationBar2 ts_barButtonViews];
+  [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:ts_barButtonViews];
 }
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+  compressibleTitleView = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
 
-  if (!v5)
+  if (!compressibleTitleView)
   {
-    v6 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-    v7 = [v6 ts_fetchCompressibleTitleView];
-    [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:v7];
+    navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+    ts_fetchCompressibleTitleView = [navigationBar ts_fetchCompressibleTitleView];
+    [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:ts_fetchCompressibleTitleView];
   }
 
-  v8 = [(TUNavigationBarDefaultCompressionAnimation *)self opacityFunction];
-  [v8 solveForTime:a3];
+  opacityFunction = [(TUNavigationBarDefaultCompressionAnimation *)self opacityFunction];
+  [opacityFunction solveForTime:percentage];
   v10 = v9;
 
-  v11 = [(TUNavigationBarDefaultCompressionAnimation *)self scaleFunction];
-  [v11 solveForTime:a3];
+  scaleFunction = [(TUNavigationBarDefaultCompressionAnimation *)self scaleFunction];
+  [scaleFunction solveForTime:percentage];
   v13 = v12;
 
-  v14 = [(TUNavigationBarDefaultCompressionAnimation *)self translateFunction];
-  [v14 solveForTime:a3];
+  translateFunction = [(TUNavigationBarDefaultCompressionAnimation *)self translateFunction];
+  [translateFunction solveForTime:percentage];
   v16 = v15;
 
   if ([(TUNavigationBarDefaultCompressionAnimation *)self compressTitleView])
   {
-    v17 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
-    [v17 setContentAlpha:v10];
+    compressibleTitleView2 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+    [compressibleTitleView2 setContentAlpha:v10];
   }
 
-  v18 = [(TUNavigationBarDefaultCompressionAnimation *)self barButtonItemViews];
-  if (!v18 || (v19 = v18, -[TUNavigationBarDefaultCompressionAnimation barButtonItemViews](self, "barButtonItemViews"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 count], v20, v19, !v21))
+  barButtonItemViews = [(TUNavigationBarDefaultCompressionAnimation *)self barButtonItemViews];
+  if (!barButtonItemViews || (v19 = barButtonItemViews, -[TUNavigationBarDefaultCompressionAnimation barButtonItemViews](self, "barButtonItemViews"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 count], v20, v19, !v21))
   {
-    v22 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-    v23 = [v22 ts_barButtonViews];
-    [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:v23];
+    navigationBar2 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+    ts_barButtonViews = [navigationBar2 ts_barButtonViews];
+    [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:ts_barButtonViews];
   }
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v24 = [(TUNavigationBarDefaultCompressionAnimation *)self barButtonItemViews];
-  v25 = [v24 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  barButtonItemViews2 = [(TUNavigationBarDefaultCompressionAnimation *)self barButtonItemViews];
+  v25 = [barButtonItemViews2 countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v25)
   {
     v26 = v25;
@@ -99,46 +99,46 @@
       {
         if (*v54 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(barButtonItemViews2);
         }
 
         v29 = *(*(&v53 + 1) + 8 * i);
         [v29 setContentAlpha:v10];
-        v30 = [v29 view];
+        view = [v29 view];
         CATransform3DMakeTranslation(&v52, 0.0, v16, 0.0);
-        [v30 setTransform3D:&v52];
+        [view setTransform3D:&v52];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      v26 = [barButtonItemViews2 countByEnumeratingWithState:&v53 objects:v57 count:16];
     }
 
     while (v26);
   }
 
-  v31 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v32 = [v31 items];
-  v33 = [v32 firstObject];
-  v34 = [v33 _bottomPalette];
-  v35 = [v34 contentView];
-  v36 = [v35 conformsToProtocol:&unk_1F539EE30];
+  navigationBar3 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  items = [navigationBar3 items];
+  firstObject = [items firstObject];
+  _bottomPalette = [firstObject _bottomPalette];
+  contentView = [_bottomPalette contentView];
+  v36 = [contentView conformsToProtocol:&unk_1F539EE30];
 
   v37 = 0.0;
   if (v36)
   {
-    v38 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-    v39 = [v38 items];
-    v40 = [v39 firstObject];
-    v41 = [v40 _bottomPalette];
-    v42 = [v41 contentView];
+    navigationBar4 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+    items2 = [navigationBar4 items];
+    firstObject2 = [items2 firstObject];
+    _bottomPalette2 = [firstObject2 _bottomPalette];
+    contentView2 = [_bottomPalette2 contentView];
 
-    [v42 compressWithScale:v13 opacity:v10];
-    [v42 paletteHeight];
+    [contentView2 compressWithScale:v13 opacity:v10];
+    [contentView2 paletteHeight];
     v37 = v43;
   }
 
-  v44 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v45 = v44;
-  if (a3 <= 0.0)
+  navigationBar5 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  navigationBar6 = navigationBar5;
+  if (percentage <= 0.0)
   {
     v50 = *(MEMORY[0x1E695EFD0] + 16);
     *&v52.m11 = *MEMORY[0x1E695EFD0];
@@ -148,72 +148,72 @@
 
   else
   {
-    [v44 bounds];
+    [navigationBar5 bounds];
     v46 = v37 + CGRectGetHeight(v59);
     [(TUNavigationBarDefaultCompressionAnimation *)self translationOffset];
     v48 = v46 + v47;
 
-    v45 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+    navigationBar6 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
     v49 = *(MEMORY[0x1E695EFD0] + 16);
     *&v51.a = *MEMORY[0x1E695EFD0];
     *&v51.c = v49;
     *&v51.tx = *(MEMORY[0x1E695EFD0] + 32);
-    CGAffineTransformTranslate(&v52, &v51, 0.0, -(v48 * a3));
+    CGAffineTransformTranslate(&v52, &v51, 0.0, -(v48 * percentage));
   }
 
-  [v45 setTransform:&v52];
+  [navigationBar6 setTransform:&v52];
 
-  [(TUNavigationBarDefaultCompressionAnimation *)self animateFloatingTabBarHiddenIfNeeded:a3 > 0.0];
+  [(TUNavigationBarDefaultCompressionAnimation *)self animateFloatingTabBarHiddenIfNeeded:percentage > 0.0];
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v3 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  [v3 frame];
+  navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  [navigationBar frame];
   Height = CGRectGetHeight(v6);
 
   return Height;
 }
 
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed
 {
-  v5 = a3;
-  v6 = [v5 window];
-  [v6 safeAreaInsets];
+  viewCopy = view;
+  window = [viewCopy window];
+  [window safeAreaInsets];
   v8 = v7;
-  [v5 contentOffset];
+  [viewCopy contentOffset];
   v10 = v9;
-  [v5 contentInset];
+  [viewCopy contentInset];
   if (v10 >= -v11)
   {
-    [v5 contentOffset];
+    [viewCopy contentOffset];
     v14 = v13;
 
-    v12 = v14 < -v8 || !a4;
+    isDragging = v14 < -v8 || !compressed;
   }
 
   else
   {
-    v12 = [v5 isDragging];
+    isDragging = [viewCopy isDragging];
   }
 
-  return v12;
+  return isDragging;
 }
 
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset
 {
-  v4 = a3;
+  topCopy = top;
   if ([(TUNavigationBarDefaultCompressionAnimation *)self hideTitleOnTop])
   {
-    v6 = !v4;
+    v6 = !topCopy;
     [(TUNavigationBarDefaultCompressionAnimation *)self setCompressTitleView:v6];
     if (v6)
     {
-      v8 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-      v9 = v8;
-      if (v8)
+      navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+      v9 = navigationBar;
+      if (navigationBar)
       {
-        [v8 transform];
+        [navigationBar transform];
       }
 
       else
@@ -225,8 +225,8 @@
 
       if (IsIdentity)
       {
-        v11 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
-        [v11 setContentAlpha:1.0];
+        compressibleTitleView = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+        [compressibleTitleView setContentAlpha:1.0];
 
         [(TUNavigationBarDefaultCompressionAnimation *)self animateFloatingTabBarHiddenIfNeeded:0];
       }
@@ -234,44 +234,44 @@
 
     else
     {
-      v7 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
-      [v7 setContentAlpha:0.0];
+      compressibleTitleView2 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+      [compressibleTitleView2 setContentAlpha:0.0];
 
       [(TUNavigationBarDefaultCompressionAnimation *)self animateFloatingTabBarHiddenIfNeeded:1];
     }
   }
 }
 
-- (void)setHideTitleOnTop:(BOOL)a3
+- (void)setHideTitleOnTop:(BOOL)top
 {
-  v3 = a3;
-  v5 = [(TUNavigationBarDefaultCompressionAnimation *)self hideTitleOnTop];
-  self->_hideTitleOnTop = v3;
-  if (v3 && !v5)
+  topCopy = top;
+  hideTitleOnTop = [(TUNavigationBarDefaultCompressionAnimation *)self hideTitleOnTop];
+  self->_hideTitleOnTop = topCopy;
+  if (topCopy && !hideTitleOnTop)
   {
-    v6 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
-    [v6 setContentAlpha:0.0];
+    compressibleTitleView = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+    [compressibleTitleView setContentAlpha:0.0];
 
     [(TUNavigationBarDefaultCompressionAnimation *)self animateFloatingTabBarHiddenIfNeeded:1];
   }
 }
 
-- (void)reloadWithTraitCollection:(id)a3
+- (void)reloadWithTraitCollection:(id)collection
 {
-  v4 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v5 = [v4 ts_fetchCompressibleTitleView];
-  [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:v5];
+  navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  ts_fetchCompressibleTitleView = [navigationBar ts_fetchCompressibleTitleView];
+  [(TUNavigationBarDefaultCompressionAnimation *)self setCompressibleTitleView:ts_fetchCompressibleTitleView];
 
-  v6 = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
-  v7 = [v6 view];
-  [v7 setMaskView:0];
+  compressibleTitleView = [(TUNavigationBarDefaultCompressionAnimation *)self compressibleTitleView];
+  view = [compressibleTitleView view];
+  [view setMaskView:0];
 
-  v8 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  v9 = [v8 ts_barButtonViews];
-  [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:v9];
+  navigationBar2 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  ts_barButtonViews = [navigationBar2 ts_barButtonViews];
+  [(TUNavigationBarDefaultCompressionAnimation *)self setBarButtonItemViews:ts_barButtonViews];
 
-  v10 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-  [v10 ts_resetButtonTransforms];
+  navigationBar3 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+  [navigationBar3 ts_resetButtonTransforms];
 }
 
 - (TUAnimationFloatFunction)opacityFunction
@@ -326,8 +326,8 @@
     [(TUAnimationFloatFunction *)v4 setTimingFunction:v5];
 
     [(TUAnimationFloatFunction *)v4 setStartValue:0.0];
-    v6 = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
-    [v6 frame];
+    navigationBar = [(TUNavigationBarDefaultCompressionAnimation *)self navigationBar];
+    [navigationBar frame];
     [(TUAnimationFloatFunction *)v4 setEndValue:CGRectGetHeight(v10) * 0.5];
 
     v7 = self->_translateFunction;
@@ -339,40 +339,40 @@
   return translateFunction;
 }
 
-- (void)animateFloatingTabBarHiddenIfNeeded:(BOOL)a3
+- (void)animateFloatingTabBarHiddenIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
-  if (v5)
+  neededCopy = needed;
+  tabBarController = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
+  if (tabBarController)
   {
-    v13 = v5;
-    v6 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
-    v7 = [v6 _uip_sidebar];
-    if ([v7 _isVisible])
+    tabBarController5 = tabBarController;
+    tabBarController2 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
+    _uip_sidebar = [tabBarController2 _uip_sidebar];
+    if ([_uip_sidebar _isVisible])
     {
     }
 
     else
     {
-      v8 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
-      v9 = [v8 traitCollection];
-      v10 = [v9 horizontalSizeClass];
+      tabBarController3 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
+      traitCollection = [tabBarController3 traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-      if (v10 != 2)
+      if (horizontalSizeClass != 2)
       {
         return;
       }
 
-      v11 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
-      v12 = [v11 _uip_isTabBarHidden];
+      tabBarController4 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
+      _uip_isTabBarHidden = [tabBarController4 _uip_isTabBarHidden];
 
-      if (v12 == v3)
+      if (_uip_isTabBarHidden == neededCopy)
       {
         return;
       }
 
-      v13 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
-      [v13 _uip_setTabBarHidden:v3 animated:{objc_msgSend(MEMORY[0x1E69DD250], "areAnimationsEnabled")}];
+      tabBarController5 = [(TUNavigationBarDefaultCompressionAnimation *)self tabBarController];
+      [tabBarController5 _uip_setTabBarHidden:neededCopy animated:{objc_msgSend(MEMORY[0x1E69DD250], "areAnimationsEnabled")}];
     }
   }
 }

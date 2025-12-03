@@ -1,23 +1,23 @@
 @interface MPSNNGradientState
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 forKernel:(id)a5 suggestedDescriptor:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states forKernel:(id)kernel suggestedDescriptor:(id)descriptor;
 - (void)dealloc;
 @end
 
 @implementation MPSNNGradientState
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 forKernel:(id)a5 suggestedDescriptor:(id)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states forKernel:(id)kernel suggestedDescriptor:(id)descriptor
 {
   v114.receiver = self;
   v114.super_class = MPSNNGradientState;
-  v9 = [(MPSState *)&v114 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 forKernel:a5 suggestedDescriptor:a6];
+  v9 = [(MPSState *)&v114 destinationImageDescriptorForSourceImages:images sourceStates:states forKernel:kernel suggestedDescriptor:descriptor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ((*(a5 + *MEMORY[0x277CD7378]) & 1) == 0)
+    if ((*(kernel + *MEMORY[0x277CD7378]) & 1) == 0)
     {
-      objc_msgSend_count(a3, v10, v11, v12, v13, v14, v15, v16);
-      if (objc_msgSend_count(a3, v17, v18, v19, v20, v21, v22, v23) <= 1)
+      objc_msgSend_count(images, v10, v11, v12, v13, v14, v15, v16);
+      if (objc_msgSend_count(images, v17, v18, v19, v20, v21, v22, v23) <= 1)
       {
         if (MTLReportFailureTypeEnabled())
         {
@@ -28,33 +28,33 @@
       }
     }
 
-    objc_msgSend_readGradientState_(a5, v10, self, v12, v13, v14, v15, v16, v110);
+    objc_msgSend_readGradientState_(kernel, v10, self, v12, v13, v14, v15, v16, v110);
     v112[0] = 0;
     v112[1] = 0;
     v113 = 0;
-    objc_msgSend_setPrimaryOffset_(a5, v24, v112, v25, v26, v27, v28, v29);
+    objc_msgSend_setPrimaryOffset_(kernel, v24, v112, v25, v26, v27, v28, v29);
     objc_msgSend_setWidth_(v9, v30, self->_srcSize.width, v31, v32, v33, v34, v35);
     objc_msgSend_setHeight_(v9, v36, self->_srcSize.height, v37, v38, v39, v40, v41);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v49 = objc_msgSend_sourceImageFeatureChannels(a5, v42, v43, v44, v45, v46, v47, v48);
+      v49 = objc_msgSend_sourceImageFeatureChannels(kernel, v42, v43, v44, v45, v46, v47, v48);
       objc_msgSend_setFeatureChannels_(v9, v50, v49, v51, v52, v53, v54, v55);
     }
 
 LABEL_10:
-    objc_msgSend_setKernelOffsetX_(a5, v42, ((self->_kernelWidth & 1) == 0) - self->_offset.x, v44, v45, v46, v47, v48);
-    objc_msgSend_setKernelOffsetY_(a5, v101, ((self->_kernelHeight & 1) == 0) - self->_offset.y, v102, v103, v104, v105, v106);
+    objc_msgSend_setKernelOffsetX_(kernel, v42, ((self->_kernelWidth & 1) == 0) - self->_offset.x, v44, v45, v46, v47, v48);
+    objc_msgSend_setKernelOffsetY_(kernel, v101, ((self->_kernelHeight & 1) == 0) - self->_offset.y, v102, v103, v104, v105, v106);
     return v9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ((*(a5 + *MEMORY[0x277CD7378]) & 1) == 0)
+    if ((*(kernel + *MEMORY[0x277CD7378]) & 1) == 0)
     {
-      objc_msgSend_count(a3, v56, v57, v58, v59, v60, v61, v62);
-      if (objc_msgSend_count(a3, v63, v64, v65, v66, v67, v68, v69) <= 1)
+      objc_msgSend_count(images, v56, v57, v58, v59, v60, v61, v62);
+      if (objc_msgSend_count(images, v63, v64, v65, v66, v67, v68, v69) <= 1)
       {
         if (MTLReportFailureTypeEnabled())
         {
@@ -65,12 +65,12 @@ LABEL_10:
       }
     }
 
-    objc_msgSend_readGradientState_(a5, v56, self, v58, v59, v60, v61, v62, v110);
-    objc_msgSend_primaryOffset(a5, v70, v71, v72, v73, v74, v75, v76);
+    objc_msgSend_readGradientState_(kernel, v56, self, v58, v59, v60, v61, v62, v110);
+    objc_msgSend_primaryOffset(kernel, v70, v71, v72, v73, v74, v75, v76);
     v111[0] = 0;
     v111[1] = 0;
     v111[2] = v113;
-    objc_msgSend_setPrimaryOffset_(a5, v77, v111, v78, v79, v80, v81, v82);
+    objc_msgSend_setPrimaryOffset_(kernel, v77, v111, v78, v79, v80, v81, v82);
     objc_msgSend_setWidth_(v9, v83, self->_srcSize.width, v84, v85, v86, v87, v88);
     objc_msgSend_setHeight_(v9, v89, self->_srcSize.height, v90, v91, v92, v93, v94);
     objc_msgSend_setFeatureChannels_(v9, v95, self->_sourceFeatureChannels, v96, v97, v98, v99, v100);

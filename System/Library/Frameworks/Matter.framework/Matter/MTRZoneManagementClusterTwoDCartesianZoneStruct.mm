@@ -1,6 +1,6 @@
 @interface MTRZoneManagementClusterTwoDCartesianZoneStruct
 - (MTRZoneManagementClusterTwoDCartesianZoneStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     use = v3->_use;
     v3->_use = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     vertices = v3->_vertices;
-    v3->_vertices = v6;
+    v3->_vertices = array;
 
     color = v3->_color;
     v3->_color = 0;
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterTwoDCartesianZoneStruct);
-  v5 = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self name];
-  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setName:v5];
+  name = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self name];
+  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setName:name];
 
   v6 = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self use];
   [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setUse:v6];
 
-  v7 = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self vertices];
-  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setVertices:v7];
+  vertices = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self vertices];
+  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setVertices:vertices];
 
-  v8 = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self color];
-  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setColor:v8];
+  color = [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)self color];
+  [(MTRZoneManagementClusterTwoDCartesianZoneStruct *)v4 setColor:color];
 
   return v4;
 }

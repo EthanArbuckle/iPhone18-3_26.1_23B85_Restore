@@ -1,8 +1,8 @@
 @interface NFGReplicatedSnapshotViewController
-- (NFGReplicatedSnapshotViewController)initWithCoder:(id)a3;
-- (NFGReplicatedSnapshotViewController)initWithFace:(id)a3 uuid:(id)a4;
-- (NFGReplicatedSnapshotViewController)initWithFace:(id)a3 uuid:(id)a4 index:(unint64_t)a5;
-- (NFGReplicatedSnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NFGReplicatedSnapshotViewController)initWithCoder:(id)coder;
+- (NFGReplicatedSnapshotViewController)initWithFace:(id)face uuid:(id)uuid;
+- (NFGReplicatedSnapshotViewController)initWithFace:(id)face uuid:(id)uuid index:(unint64_t)index;
+- (NFGReplicatedSnapshotViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NTKFace)face;
 - (void)viewDidLoad;
 @end
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (NFGReplicatedSnapshotViewController)initWithFace:(id)a3 uuid:(id)a4
+- (NFGReplicatedSnapshotViewController)initWithFace:(id)face uuid:(id)uuid
 {
   v6 = sub_25B0E24A0();
   v7 = *(v6 - 8);
@@ -40,16 +40,16 @@
   }
 
   sub_25B0E2480();
-  v11 = a3;
+  faceCopy = face;
   v12 = sub_25B0E2470();
-  v13 = [(NFGReplicatedSnapshotViewController *)self initWithFace:v11 uuid:v12 index:100];
+  v13 = [(NFGReplicatedSnapshotViewController *)self initWithFace:faceCopy uuid:v12 index:100];
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (NFGReplicatedSnapshotViewController)initWithFace:(id)a3 uuid:(id)a4 index:(unint64_t)a5
+- (NFGReplicatedSnapshotViewController)initWithFace:(id)face uuid:(id)uuid index:(unint64_t)index
 {
   v7 = sub_25B0E24A0();
   v8 = *(*(v7 - 8) + 64);
@@ -64,12 +64,12 @@
   }
 
   sub_25B0E2480();
-  v11 = NFGReplicatedSnapshotViewController.init(face:uuid:index:)(a3, v10, a5);
+  v11 = NFGReplicatedSnapshotViewController.init(face:uuid:index:)(face, v10, index);
 
   return v11;
 }
 
-- (NFGReplicatedSnapshotViewController)initWithCoder:(id)a3
+- (NFGReplicatedSnapshotViewController)initWithCoder:(id)coder
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -94,11 +94,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   NFGReplicatedSnapshotViewController.viewDidLoad()();
 }
 
-- (NFGReplicatedSnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NFGReplicatedSnapshotViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25B0E3900();
   sub_25B0E38F0();

@@ -1,28 +1,28 @@
 @interface EMDEBeamSearchHandler
-- (EMDEBeamSearchHandler)initWithModel:(void *)a3 beamWidth:(int)a4 timeSteps:(int)a5 lengthPenalty:(float)a6 tokenThreshold:(float)a7;
+- (EMDEBeamSearchHandler)initWithModel:(void *)model beamWidth:(int)width timeSteps:(int)steps lengthPenalty:(float)penalty tokenThreshold:(float)threshold;
 - (id).cxx_construct;
-- (id)getTopBeamWithModelState:(__CFArray *)a3 startPosition:(int)a4 allowedWords:()basic_string<char;
+- (id)getTopBeamWithModelState:(__CFArray *)state startPosition:(int)position allowedWords:()basic_string<char;
 - (vector<const)currentStates;
 - (vector<const)previousStates;
 - (void)runNextTimeStep;
 - (void)setCurrentStates:(vector<const __CFArray *);
 - (void)setPreviousStates:(vector<const __CFArray *);
-- (void)updateBeamsWithPredictionFor:(id)a3 state:(__CFArray *)a4 predictions:(void *)a5;
+- (void)updateBeamsWithPredictionFor:(id)for state:(__CFArray *)state predictions:(void *)predictions;
 @end
 
 @implementation EMDEBeamSearchHandler
 
-- (EMDEBeamSearchHandler)initWithModel:(void *)a3 beamWidth:(int)a4 timeSteps:(int)a5 lengthPenalty:(float)a6 tokenThreshold:(float)a7
+- (EMDEBeamSearchHandler)initWithModel:(void *)model beamWidth:(int)width timeSteps:(int)steps lengthPenalty:(float)penalty tokenThreshold:(float)threshold
 {
-  v7 = self;
-  if (a3)
+  selfCopy = self;
+  if (model)
   {
     v34.receiver = self;
     v34.super_class = EMDEBeamSearchHandler;
     v13 = [(EMDEBeamSearchHandler *)&v34 init];
-    v13->_maxLength = a5;
-    v13->_beamWidth = a4;
-    v13->_tokenThreshold = a7;
+    v13->_maxLength = steps;
+    v13->_beamWidth = width;
+    v13->_tokenThreshold = threshold;
     v14 = +[EMDEUtils config];
     v15 = [v14 objectForKeyedSubscript:@"EMDE_EARLY_STOPPING_PATIENCE"];
     if (v15)
@@ -39,7 +39,7 @@
     }
 
     v13->_finishedBeamMaxScore = 0.0;
-    v13->_lengthPenalty = a6;
+    v13->_lengthPenalty = penalty;
     v21 = objc_alloc_init(NSMutableArray);
     activeBeams = v13->_activeBeams;
     v13->_activeBeams = v21;
@@ -71,9 +71,9 @@
     v32 = ;
     v13->_EOSToken = [v32 intValue];
 
-    v13->_model = a3;
-    v7 = v13;
-    v20 = v7;
+    v13->_model = model;
+    selfCopy = v13;
+    v20 = selfCopy;
   }
 
   else
@@ -90,27 +90,27 @@
   return v20;
 }
 
-- (void)updateBeamsWithPredictionFor:(id)a3 state:(__CFArray *)a4 predictions:(void *)a5
+- (void)updateBeamsWithPredictionFor:(id)for state:(__CFArray *)state predictions:(void *)predictions
 {
-  v8 = a3;
-  if (v8 && a4 && a5)
+  forCopy = for;
+  if (forCopy && state && predictions)
   {
     if (self->_beamWidth >= 1)
     {
       v9 = 0;
       do
       {
-        v10 = *(*(a5 + 1) + (((v9 + *(a5 + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(a5 + 4)) & 0x1FF);
+        v10 = *(*(predictions + 1) + (((v9 + *(predictions + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(predictions + 4)) & 0x1FF);
         if (*v10 == self->_EOSToken)
         {
           v11 = [EMDEBeamPath alloc];
-          v12 = *(*(*(a5 + 1) + (((v9 + *(a5 + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(a5 + 4)) & 0x1FF));
+          v12 = *(*(*(predictions + 1) + (((v9 + *(predictions + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(predictions + 4)) & 0x1FF));
           lengthPenalty = self->_lengthPenalty;
           v14 = +[EMDEUtils config];
           v15 = [v14 objectForKeyedSubscript:@"EMDE_BEAM_VALIDATION_REQUIRED"];
-          v16 = [v15 BOOLValue];
+          bOOLValue = [v15 BOOLValue];
           *&v17 = lengthPenalty;
-          v18 = [(EMDEBeamPath *)v11 initFinishedBeamFrom:v8 additionalToken:v12 lengthPenalty:v16 validate:v17];
+          v18 = [(EMDEBeamPath *)v11 initFinishedBeamFrom:forCopy additionalToken:v12 lengthPenalty:bOOLValue validate:v17];
 
           if (v18)
           {
@@ -133,13 +133,13 @@
           }
 
           v22 = [EMDEBeamPath alloc];
-          v23 = *(*(*(a5 + 1) + (((v9 + *(a5 + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(a5 + 4)) & 0x1FF));
+          v23 = *(*(*(predictions + 1) + (((v9 + *(predictions + 4)) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((v9 + *(predictions + 4)) & 0x1FF));
           v24 = self->_lengthPenalty;
           v25 = +[EMDEUtils config];
           v26 = [v25 objectForKeyedSubscript:@"EMDE_BEAM_VALIDATION_REQUIRED"];
-          v27 = [v26 BOOLValue];
+          bOOLValue2 = [v26 BOOLValue];
           *&v28 = v24;
-          v18 = [(EMDEBeamPath *)v22 initChildBeamFrom:v8 additionalToken:v23 state:a4 lengthPenalty:v27 validate:v28];
+          v18 = [(EMDEBeamPath *)v22 initChildBeamFrom:forCopy additionalToken:v23 state:state lengthPenalty:bOOLValue2 validate:v28];
 
           if (v18)
           {
@@ -164,11 +164,11 @@
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = 138412802;
-      v32 = v8;
+      v32 = forCopy;
       v33 = 2112;
-      v34 = a4;
+      stateCopy = state;
       v35 = 2112;
-      v36 = a5;
+      predictionsCopy = predictions;
       _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "EMDEBeamSearchHandler - Found nil in input parameters for updateBeamsWithPredictionFor:%@ state:%@ predictions:%@", &v31, 0x20u);
     }
   }
@@ -368,12 +368,12 @@ LABEL_24:
   }
 }
 
-- (id)getTopBeamWithModelState:(__CFArray *)a3 startPosition:(int)a4 allowedWords:()basic_string<char
+- (id)getTopBeamWithModelState:(__CFArray *)state startPosition:(int)position allowedWords:()basic_string<char
 {
-  v35 = a3;
-  if (a3)
+  stateCopy = state;
+  if (state)
   {
-    self->_currentPosition = a4;
+    self->_currentPosition = position;
     v37[0] = kMRLNeuralNetworkTensorInfoInputDimensionKey;
     v7 = [NSNumber numberWithInt:1];
     v38[0] = v7;
@@ -399,7 +399,7 @@ LABEL_24:
     tempTensor = self->_tempTensor;
     MRLNeuralNetworkTensorAppendData();
     v12 = [EMDEBeamPath alloc];
-    v13 = v35;
+    v13 = stateCopy;
     if (*(&a5->__rep_.__l + 23) < 0)
     {
       sub_100019AD4(__p, a5->__rep_.__l.__data_, a5->__rep_.__l.__size_);
@@ -418,7 +418,7 @@ LABEL_24:
     }
 
     [(NSMutableArray *)self->_activeBeams addObject:v15, __p[0], __p[1], v27];
-    sub_1000032BC(&self->_currentStates, &v35);
+    sub_1000032BC(&self->_currentStates, &stateCopy);
     currentPosition = self->_currentPosition;
     v17 = currentPosition + self->_maxLength - 2;
     while (currentPosition < v17 && [(NSMutableArray *)self->_activeBeams count])

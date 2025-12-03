@@ -1,90 +1,90 @@
 @interface RBProcessCPUMaximumLimits
-- (BOOL)isEqual:(id)a3;
-- (RBProcessCPUMaximumLimits)initWithPercentage:(unint64_t)a3 duration:(unint64_t)a4 violationPolicy:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (RBProcessCPUMaximumLimits)initWithPercentage:(unint64_t)percentage duration:(unint64_t)duration violationPolicy:(unint64_t)policy;
 - (id)description;
-- (id)unionLimit:(id)a3;
+- (id)unionLimit:(id)limit;
 - (unint64_t)hash;
 @end
 
 @implementation RBProcessCPUMaximumLimits
 
-- (RBProcessCPUMaximumLimits)initWithPercentage:(unint64_t)a3 duration:(unint64_t)a4 violationPolicy:(unint64_t)a5
+- (RBProcessCPUMaximumLimits)initWithPercentage:(unint64_t)percentage duration:(unint64_t)duration violationPolicy:(unint64_t)policy
 {
   v9.receiver = self;
   v9.super_class = RBProcessCPUMaximumLimits;
   result = [(RBProcessCPUMaximumLimits *)&v9 init];
   if (result)
   {
-    result->_percentage = a3;
-    result->_duration = a4;
-    result->_violationPolicy = a5;
+    result->_percentage = percentage;
+    result->_duration = duration;
+    result->_violationPolicy = policy;
   }
 
   return result;
 }
 
-- (id)unionLimit:(id)a3
+- (id)unionLimit:(id)limit
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  limitCopy = limit;
+  v5 = limitCopy;
+  if (!limitCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (limitCopy == self)
   {
     goto LABEL_5;
   }
 
   percentage = self->_percentage;
   duration = self->_duration;
-  v8 = [(RBProcessCPUMaximumLimits *)v4 duration];
-  v9 = [(RBProcessCPUMaximumLimits *)v5 percentage];
-  v10 = v9 * v8;
+  duration = [(RBProcessCPUMaximumLimits *)limitCopy duration];
+  percentage = [(RBProcessCPUMaximumLimits *)v5 percentage];
+  v10 = percentage * duration;
   v11 = percentage * duration;
   violationPolicy = self->_violationPolicy;
-  v13 = [(RBProcessCPUMaximumLimits *)v5 violationPolicy];
-  if (v13 > violationPolicy || v10 < v11)
+  violationPolicy = [(RBProcessCPUMaximumLimits *)v5 violationPolicy];
+  if (violationPolicy > violationPolicy || v10 < v11)
   {
-    if (v13 <= violationPolicy)
+    if (violationPolicy <= violationPolicy)
     {
       v15 = violationPolicy;
     }
 
     else
     {
-      v15 = v13;
+      v15 = violationPolicy;
     }
 
     if (v10 >= v11)
     {
-      v9 = percentage;
-      v8 = duration;
+      percentage = percentage;
+      duration = duration;
     }
 
-    v14 = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:v9 duration:v8 violationPolicy:v15];
+    selfCopy = [[RBProcessCPUMaximumLimits alloc] initWithPercentage:percentage duration:duration violationPolicy:v15];
   }
 
   else
   {
 LABEL_5:
-    v14 = self;
+    selfCopy = self;
   }
 
-  v16 = v14;
+  v16 = selfCopy;
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if (!v4 || (v6 = objc_opt_class(), v6 == objc_opt_class()) && (self->_percentage != v5->_percentage || self->_duration != v5->_duration || self->_violationPolicy != v5->_violationPolicy))
+    if (!equalCopy || (v6 = objc_opt_class(), v6 == objc_opt_class()) && (self->_percentage != v5->_percentage || self->_duration != v5->_duration || self->_violationPolicy != v5->_violationPolicy))
     {
       v7 = 0;
     }

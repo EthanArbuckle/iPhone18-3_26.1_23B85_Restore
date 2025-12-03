@@ -15,9 +15,9 @@
   v8 = v7;
   v10 = v9;
   v11 = +[CNContactStyle currentStyle];
-  v12 = [v11 usesInsetPlatterStyle];
+  usesInsetPlatterStyle = [v11 usesInsetPlatterStyle];
 
-  if (v12)
+  if (usesInsetPlatterStyle)
   {
     v20.origin.x = v4;
     v20.origin.y = v6;
@@ -28,11 +28,11 @@
     y = v21.origin.y;
     width = v21.size.width;
     height = v21.size.height;
-    v17 = [(CNContactListSectionHeaderFooterView *)self backgroundView];
-    [v17 setFrame:{x, y, width, height}];
+    backgroundView = [(CNContactListSectionHeaderFooterView *)self backgroundView];
+    [backgroundView setFrame:{x, y, width, height}];
 
-    v18 = [(CNContactListSectionHeaderFooterView *)self backgroundView];
-    [v18 _setContinuousCornerRadius:8.0];
+    backgroundView2 = [(CNContactListSectionHeaderFooterView *)self backgroundView];
+    [backgroundView2 _setContinuousCornerRadius:8.0];
   }
 }
 

@@ -3,24 +3,24 @@
 + (id)downBadgeViewForText;
 + (id)rightBadgeSizeForDigits;
 + (id)rightBadgeViewForText;
-+ (void)setDownBadgeSizeForDigits:(id)a3;
-+ (void)setDownBadgeViewForText:(id)a3;
-+ (void)setRightBadgeSizeForDigits:(id)a3;
-+ (void)setRightBadgeViewForText:(id)a3;
++ (void)setDownBadgeSizeForDigits:(id)digits;
++ (void)setDownBadgeViewForText:(id)text;
++ (void)setRightBadgeSizeForDigits:(id)digits;
++ (void)setRightBadgeViewForText:(id)text;
 @end
 
 @implementation VCUIBadgeViewShim
 
-+ (void)setRightBadgeViewForText:(id)a3
++ (void)setRightBadgeViewForText:(id)text
 {
-  __rightBadgeViewForText = _Block_copy(a3);
+  __rightBadgeViewForText = _Block_copy(text);
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (void)setRightBadgeSizeForDigits:(id)a3
++ (void)setRightBadgeSizeForDigits:(id)digits
 {
-  __rightBadgeSizeForDigits = _Block_copy(a3);
+  __rightBadgeSizeForDigits = _Block_copy(digits);
 
   MEMORY[0x2821F96F8]();
 }
@@ -39,16 +39,16 @@
   return v2;
 }
 
-+ (void)setDownBadgeViewForText:(id)a3
++ (void)setDownBadgeViewForText:(id)text
 {
-  __downBadgeViewForText = _Block_copy(a3);
+  __downBadgeViewForText = _Block_copy(text);
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (void)setDownBadgeSizeForDigits:(id)a3
++ (void)setDownBadgeSizeForDigits:(id)digits
 {
-  __downBadgeSizeForDigits = _Block_copy(a3);
+  __downBadgeSizeForDigits = _Block_copy(digits);
 
   MEMORY[0x2821F96F8]();
 }

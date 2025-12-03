@@ -1,6 +1,6 @@
 @interface ARRecordingConfiguration
-- (ARRecordingConfiguration)initWithBaseConfiguration:(id)a3 fileURL:(id)a4;
-- (ARRecordingConfiguration)initWithBaseConfiguration:(id)a3 recordingTechnique:(id)a4;
+- (ARRecordingConfiguration)initWithBaseConfiguration:(id)configuration fileURL:(id)l;
+- (ARRecordingConfiguration)initWithBaseConfiguration:(id)configuration recordingTechnique:(id)technique;
 - (ARRecordingTechniqueProtocol)recordingTechnique;
 - (NSString)description;
 - (id)imageSensorSettings;
@@ -10,25 +10,25 @@
 - (id)videoFormat;
 - (int64_t)worldAlignment;
 - (void)abortRecording;
-- (void)finishRecordingWithHandler:(id)a3;
-- (void)setVideoFormat:(id)a3;
+- (void)finishRecordingWithHandler:(id)handler;
+- (void)setVideoFormat:(id)format;
 - (void)startRecording;
-- (void)technique:(id)a3 didFinishWithResult:(id)a4;
+- (void)technique:(id)technique didFinishWithResult:(id)result;
 @end
 
 @implementation ARRecordingConfiguration
 
-- (ARRecordingConfiguration)initWithBaseConfiguration:(id)a3 fileURL:(id)a4
+- (ARRecordingConfiguration)initWithBaseConfiguration:(id)configuration fileURL:(id)l
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  lCopy = l;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v6 techniques];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  techniques = [configurationCopy techniques];
+  v9 = [techniques countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -40,13 +40,13 @@
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(techniques);
         }
 
         v12 |= [*(*(&v27 + 1) + 8 * i) requiredSensorDataTypes];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v10 = [techniques countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v10);
@@ -61,8 +61,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v6 secondaryTechniques];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  secondaryTechniques = [configurationCopy secondaryTechniques];
+  v15 = [secondaryTechniques countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
   {
     v16 = v15;
@@ -73,13 +73,13 @@
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(secondaryTechniques);
         }
 
         v12 |= [*(*(&v23 + 1) + 8 * j) requiredSensorDataTypes];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v16 = [secondaryTechniques countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v16);
@@ -88,72 +88,72 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v6 isCollaborationEnabled];
+    isCollaborationEnabled = [configurationCopy isCollaborationEnabled];
   }
 
   else
   {
-    v19 = 0;
+    isCollaborationEnabled = 0;
   }
 
-  v20 = [[ARRecordingTechniquePublic alloc] initWithFileURL:v7 recordingSensorDataTypes:v12 startImmediately:0 recordCollaborationData:v19];
-  v21 = [(ARRecordingConfiguration *)self initWithBaseConfiguration:v6 recordingTechnique:v20];
+  v20 = [[ARRecordingTechniquePublic alloc] initWithFileURL:lCopy recordingSensorDataTypes:v12 startImmediately:0 recordCollaborationData:isCollaborationEnabled];
+  v21 = [(ARRecordingConfiguration *)self initWithBaseConfiguration:configurationCopy recordingTechnique:v20];
 
   return v21;
 }
 
-- (ARRecordingConfiguration)initWithBaseConfiguration:(id)a3 recordingTechnique:(id)a4
+- (ARRecordingConfiguration)initWithBaseConfiguration:(id)configuration recordingTechnique:(id)technique
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  techniqueCopy = technique;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 templateConfiguration];
-    v9 = [(ARRecordingConfiguration *)self initWithBaseConfiguration:v8 recordingTechnique:v7];
+    templateConfiguration = [configurationCopy templateConfiguration];
+    v9 = [(ARRecordingConfiguration *)self initWithBaseConfiguration:templateConfiguration recordingTechnique:techniqueCopy];
   }
 
   else
   {
     v20.receiver = self;
     v20.super_class = ARRecordingConfiguration;
-    v10 = [(ARCustomTechniquesConfiguration *)&v20 initPrivate];
-    if (v10)
+    initPrivate = [(ARCustomTechniquesConfiguration *)&v20 initPrivate];
+    if (initPrivate)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v7;
-        v12 = [v6 parentImageSensorSettings];
-        [v11 setParentImageSensorSettings:v12];
+        v11 = techniqueCopy;
+        parentImageSensorSettings = [configurationCopy parentImageSensorSettings];
+        [v11 setParentImageSensorSettings:parentImageSensorSettings];
       }
 
-      objc_storeStrong(v10 + 18, a4);
-      v13 = [v7 outputFileURL];
-      v14 = v10[17];
-      v10[17] = v13;
+      objc_storeStrong(initPrivate + 18, technique);
+      outputFileURL = [techniqueCopy outputFileURL];
+      v14 = initPrivate[17];
+      initPrivate[17] = outputFileURL;
 
-      v15 = [v6 techniques];
-      v16 = [v15 mutableCopy];
+      techniques = [configurationCopy techniques];
+      v16 = [techniques mutableCopy];
 
-      [v10 setTemplateConfiguration:v6];
+      [initPrivate setTemplateConfiguration:configurationCopy];
       v17 = [v16 indexOfObjectPassingTest:&__block_literal_global_57];
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [v16 removeObjectAtIndex:v17];
       }
 
-      [v16 addObject:v7];
-      [v10 setAutoFocusEnabled:{objc_msgSend(v6, "isAutoFocusEnabled")}];
-      [v10 setProvidesAudioData:{objc_msgSend(v6, "providesAudioData")}];
-      v18 = [v6 customSensors];
-      [v10 setCustomSensors:v18];
+      [v16 addObject:techniqueCopy];
+      [initPrivate setAutoFocusEnabled:{objc_msgSend(configurationCopy, "isAutoFocusEnabled")}];
+      [initPrivate setProvidesAudioData:{objc_msgSend(configurationCopy, "providesAudioData")}];
+      customSensors = [configurationCopy customSensors];
+      [initPrivate setCustomSensors:customSensors];
 
-      [v10 setFrameSemantics:{objc_msgSend(v6, "frameSemantics")}];
-      [v10 setTechniques:v16];
+      [initPrivate setFrameSemantics:{objc_msgSend(configurationCopy, "frameSemantics")}];
+      [initPrivate setTechniques:v16];
     }
 
-    v9 = v10;
+    v9 = initPrivate;
   }
 
   return v9;
@@ -189,29 +189,29 @@
   }
 
   [(ARRecordingConfiguration *)self setState:1];
-  v3 = [(ARRecordingConfiguration *)self customUserData];
-  [(ARRecordingTechniqueProtocol *)self->_recordingTechnique setCustomUserData:v3];
+  customUserData = [(ARRecordingConfiguration *)self customUserData];
+  [(ARRecordingTechniqueProtocol *)self->_recordingTechnique setCustomUserData:customUserData];
 
-  v4 = [(ARRecordingConfiguration *)self recordingTechnique];
-  [v4 startRecording];
+  recordingTechnique = [(ARRecordingConfiguration *)self recordingTechnique];
+  [recordingTechnique startRecording];
 }
 
-- (void)finishRecordingWithHandler:(id)a3
+- (void)finishRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(ARRecordingConfiguration *)self state]!= 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"You cannot finish before start or more than once"];
   }
 
   [(ARRecordingConfiguration *)self setState:2];
-  [(ARRecordingConfiguration *)self setFinishBlock:v4];
+  [(ARRecordingConfiguration *)self setFinishBlock:handlerCopy];
 
-  v5 = [(ARRecordingConfiguration *)self recordingTechnique];
-  [v5 setRecordingTechniqueDelegate:self];
+  recordingTechnique = [(ARRecordingConfiguration *)self recordingTechnique];
+  [recordingTechnique setRecordingTechniqueDelegate:self];
 
-  v6 = [(ARRecordingConfiguration *)self recordingTechnique];
-  [v6 finishRecording];
+  recordingTechnique2 = [(ARRecordingConfiguration *)self recordingTechnique];
+  [recordingTechnique2 finishRecording];
 }
 
 - (void)abortRecording
@@ -219,20 +219,20 @@
   if ([(ARRecordingConfiguration *)self state]== 1)
   {
     [(ARRecordingConfiguration *)self setState:2];
-    v3 = [(ARRecordingConfiguration *)self recordingTechnique];
-    [v3 abortRecording];
+    recordingTechnique = [(ARRecordingConfiguration *)self recordingTechnique];
+    [recordingTechnique abortRecording];
   }
 }
 
 - (int64_t)worldAlignment
 {
-  v2 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v3 = [v2 worldAlignment];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  worldAlignment = [templateConfiguration worldAlignment];
 
-  return v3;
+  return worldAlignment;
 }
 
-- (void)setVideoFormat:(id)a3
+- (void)setVideoFormat:(id)format
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D940];
@@ -244,34 +244,34 @@
 
 - (id)videoFormat
 {
-  v2 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v3 = [v2 videoFormat];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  videoFormat = [templateConfiguration videoFormat];
 
-  return v3;
+  return videoFormat;
 }
 
 - (id)imageSensorSettings
 {
-  v2 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v3 = [v2 imageSensorSettings];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  imageSensorSettings = [templateConfiguration imageSensorSettings];
 
-  return v3;
+  return imageSensorSettings;
 }
 
 - (id)parentImageSensorSettings
 {
-  v2 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v3 = [v2 parentImageSensorSettings];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  parentImageSensorSettings = [templateConfiguration parentImageSensorSettings];
 
-  return v3;
+  return parentImageSensorSettings;
 }
 
 - (id)secondaryTechniques
 {
-  v2 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v3 = [v2 secondaryTechniques];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  secondaryTechniques = [templateConfiguration secondaryTechniques];
 
-  return v3;
+  return secondaryTechniques;
 }
 
 - (NSString)description
@@ -282,8 +282,8 @@
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
   [v6 appendFormat:@" fileURL=%@", self->_fileURL];
-  v7 = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
-  v8 = [v7 description];
+  templateConfiguration = [(ARCustomTechniquesConfiguration *)self templateConfiguration];
+  v8 = [templateConfiguration description];
   [v6 appendFormat:@" templateConfiguration=%@", v8];
 
   [v6 appendString:@">"];
@@ -291,15 +291,15 @@
   return v6;
 }
 
-- (void)technique:(id)a3 didFinishWithResult:(id)a4
+- (void)technique:(id)technique didFinishWithResult:(id)result
 {
-  v7 = a4;
-  v5 = [(ARRecordingConfiguration *)self finishBlock];
+  resultCopy = result;
+  finishBlock = [(ARRecordingConfiguration *)self finishBlock];
 
-  if (v5)
+  if (finishBlock)
   {
-    v6 = [(ARRecordingConfiguration *)self finishBlock];
-    (v6)[2](v6, v7);
+    finishBlock2 = [(ARRecordingConfiguration *)self finishBlock];
+    (finishBlock2)[2](finishBlock2, resultCopy);
 
     [(ARRecordingConfiguration *)self setFinishBlock:0];
   }

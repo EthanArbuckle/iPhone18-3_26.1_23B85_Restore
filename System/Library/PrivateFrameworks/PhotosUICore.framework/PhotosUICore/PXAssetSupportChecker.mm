@@ -1,54 +1,54 @@
 @interface PXAssetSupportChecker
-+ (BOOL)isSupportedAsset:(id)a3 type:(int64_t)a4;
-+ (void)_alertTitleAndMessageForAsset:(id)a3 type:(int64_t)a4 title:(id *)a5 message:(id *)a6;
-+ (void)_presentAlertWithTitle:(id)a3 message:(id)a4 knowledgeBaseURL:(id)a5 alertControllerPresenter:(id)a6 completionHandler:(id)a7;
-+ (void)checkIsSupportedAndPresentAlertForAsset:(id)a3 type:(int64_t)a4 alertControllerPresenter:(id)a5 completionHandler:(id)a6;
-+ (void)checkIsSupportedAsset:(id)a3 type:(int64_t)a4 completionHandler:(id)a5;
-+ (void)checkIsSupportedAsset:(id)a3 type:(int64_t)a4 completionHandlerWithReason:(id)a5;
-+ (void)presentAlertForAsset:(id)a3 type:(int64_t)a4 alertControllerPresenter:(id)a5 completionHandler:(id)a6;
-+ (void)presentAlertWithTitle:(id)a3 message:(id)a4 uti:(id)a5 codecName:(id)a6 alertControllerPresenter:(id)a7 completionHandler:(id)a8;
++ (BOOL)isSupportedAsset:(id)asset type:(int64_t)type;
++ (void)_alertTitleAndMessageForAsset:(id)asset type:(int64_t)type title:(id *)title message:(id *)message;
++ (void)_presentAlertWithTitle:(id)title message:(id)message knowledgeBaseURL:(id)l alertControllerPresenter:(id)presenter completionHandler:(id)handler;
++ (void)checkIsSupportedAndPresentAlertForAsset:(id)asset type:(int64_t)type alertControllerPresenter:(id)presenter completionHandler:(id)handler;
++ (void)checkIsSupportedAsset:(id)asset type:(int64_t)type completionHandler:(id)handler;
++ (void)checkIsSupportedAsset:(id)asset type:(int64_t)type completionHandlerWithReason:(id)reason;
++ (void)presentAlertForAsset:(id)asset type:(int64_t)type alertControllerPresenter:(id)presenter completionHandler:(id)handler;
++ (void)presentAlertWithTitle:(id)title message:(id)message uti:(id)uti codecName:(id)name alertControllerPresenter:(id)presenter completionHandler:(id)handler;
 @end
 
 @implementation PXAssetSupportChecker
 
-+ (void)checkIsSupportedAndPresentAlertForAsset:(id)a3 type:(int64_t)a4 alertControllerPresenter:(id)a5 completionHandler:(id)a6
++ (void)checkIsSupportedAndPresentAlertForAsset:(id)asset type:(int64_t)type alertControllerPresenter:(id)presenter completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  assetCopy = asset;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  if (assetCopy)
   {
-    if (v12)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
 
-  if (!v12)
+  if (!presenterCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v13)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
@@ -58,15 +58,15 @@ LABEL_4:
   v20[1] = 3221225472;
   v20[2] = __113__PXAssetSupportChecker_checkIsSupportedAndPresentAlertForAsset_type_alertControllerPresenter_completionHandler___block_invoke;
   v20[3] = &unk_1E7730470;
-  v24 = a1;
-  v25 = a4;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  [a1 checkIsSupportedAsset:v16 type:a4 completionHandlerWithReason:v20];
+  selfCopy = self;
+  typeCopy = type;
+  v21 = assetCopy;
+  v22 = presenterCopy;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = presenterCopy;
+  v16 = assetCopy;
+  [self checkIsSupportedAsset:v16 type:type completionHandlerWithReason:v20];
 }
 
 void __113__PXAssetSupportChecker_checkIsSupportedAndPresentAlertForAsset_type_alertControllerPresenter_completionHandler___block_invoke(uint64_t a1, char a2, void *a3, void *a4, uint64_t a5)
@@ -121,14 +121,14 @@ void __113__PXAssetSupportChecker_checkIsSupportedAndPresentAlertForAsset_type_a
   }
 }
 
-+ (void)presentAlertForAsset:(id)a3 type:(int64_t)a4 alertControllerPresenter:(id)a5 completionHandler:(id)a6
++ (void)presentAlertForAsset:(id)asset type:(int64_t)type alertControllerPresenter:(id)presenter completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  assetCopy = asset;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  if (assetCopy)
   {
-    if (v12)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -136,29 +136,29 @@ void __113__PXAssetSupportChecker_checkIsSupportedAndPresentAlertForAsset_type_a
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
 
-    if (v12)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
 
 LABEL_3:
   v22 = 0;
   v23 = 0;
-  [a1 _alertTitleAndMessageForAsset:v11 type:a4 title:&v23 message:&v22];
+  [self _alertTitleAndMessageForAsset:assetCopy type:type title:&v23 message:&v22];
   v14 = v23;
   v15 = v22;
   v16 = v15;
   if (!v14)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:203 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
     if (v16)
     {
@@ -166,8 +166,8 @@ LABEL_3:
     }
 
 LABEL_9:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"message"}];
 
     goto LABEL_5;
   }
@@ -179,29 +179,29 @@ LABEL_9:
 
 LABEL_5:
   v17 = +[PXMediaTypeInfoManager knowledgeBaseFallbackURL];
-  [a1 _presentAlertWithTitle:v14 message:v16 knowledgeBaseURL:v17 alertControllerPresenter:v12 completionHandler:v13];
+  [self _presentAlertWithTitle:v14 message:v16 knowledgeBaseURL:v17 alertControllerPresenter:presenterCopy completionHandler:handlerCopy];
 }
 
-+ (void)presentAlertWithTitle:(id)a3 message:(id)a4 uti:(id)a5 codecName:(id)a6 alertControllerPresenter:(id)a7 completionHandler:(id)a8
++ (void)presentAlertWithTitle:(id)title message:(id)message uti:(id)uti codecName:(id)name alertControllerPresenter:(id)presenter completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  titleCopy = title;
+  messageCopy = message;
+  utiCopy = uti;
+  nameCopy = name;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  if (titleCopy)
   {
-    if (v16)
+    if (messageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"message"}];
 
-    if (v19)
+    if (presenterCopy)
     {
       goto LABEL_4;
     }
@@ -209,26 +209,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-  if (!v16)
+  if (!messageCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (v19)
+  if (presenterCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_10:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:184 description:{@"Invalid parameter not satisfying: %@", @"alertControllerPresenter"}];
 
 LABEL_4:
-  if (v17 | v18)
+  if (utiCopy | nameCopy)
   {
     v21 = +[PXMediaTypeInfoManager sharedManager];
     v22 = *&PXMediaTypeInfoManagerDefaultTimeout;
@@ -236,29 +236,29 @@ LABEL_4:
     v27[1] = 3221225472;
     v27[2] = __112__PXAssetSupportChecker_presentAlertWithTitle_message_uti_codecName_alertControllerPresenter_completionHandler___block_invoke;
     v27[3] = &unk_1E7730448;
-    v32 = a1;
-    v28 = v15;
-    v29 = v16;
-    v30 = v19;
-    v31 = v20;
-    [v21 mediaTypeInfoURLForUTI:v17 codecName:v18 timeout:v27 completionHandler:v22];
+    selfCopy = self;
+    v28 = titleCopy;
+    v29 = messageCopy;
+    v30 = presenterCopy;
+    v31 = handlerCopy;
+    [v21 mediaTypeInfoURLForUTI:utiCopy codecName:nameCopy timeout:v27 completionHandler:v22];
   }
 
   else
   {
     v23 = +[PXMediaTypeInfoManager knowledgeBaseFallbackURL];
-    [a1 _presentAlertWithTitle:v15 message:v16 knowledgeBaseURL:v23 alertControllerPresenter:v19 completionHandler:v20];
+    [self _presentAlertWithTitle:titleCopy message:messageCopy knowledgeBaseURL:v23 alertControllerPresenter:presenterCopy completionHandler:handlerCopy];
   }
 }
 
-+ (void)checkIsSupportedAsset:(id)a3 type:(int64_t)a4 completionHandlerWithReason:(id)a5
++ (void)checkIsSupportedAsset:(id)asset type:(int64_t)type completionHandlerWithReason:(id)reason
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  assetCopy = asset;
+  reasonCopy = reason;
+  v11 = reasonCopy;
+  if (assetCopy)
   {
-    if (v10)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -266,8 +266,8 @@ LABEL_4:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"displayAsset"}];
 
     if (v11)
     {
@@ -275,11 +275,11 @@ LABEL_4:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v12 = v9;
+  v12 = assetCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -291,7 +291,7 @@ LABEL_3:
     v25 = v13;
     v26 = v11;
     v14 = _Block_copy(aBlock);
-    if (a4 || ([v13 isVideo] & 1) == 0)
+    if (type || ([v13 isVideo] & 1) == 0)
     {
       v14[2](v14, 1, 0);
     }
@@ -301,7 +301,7 @@ LABEL_3:
       v15 = objc_alloc_init(MEMORY[0x1E6978868]);
       [v15 setSynchronous:1];
       [v15 setVersion:2];
-      v16 = [MEMORY[0x1E6978860] defaultManager];
+      defaultManager = [MEMORY[0x1E6978860] defaultManager];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __80__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandlerWithReason___block_invoke_2;
@@ -310,7 +310,7 @@ LABEL_3:
       v21 = v15;
       v22 = v13;
       v17 = v15;
-      [v16 requestAVProxyForAsset:v22 options:v17 resultHandler:v20];
+      [defaultManager requestAVProxyForAsset:v22 options:v17 resultHandler:v20];
     }
   }
 
@@ -413,21 +413,21 @@ void __80__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandlerWit
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-+ (void)checkIsSupportedAsset:(id)a3 type:(int64_t)a4 completionHandler:(id)a5
++ (void)checkIsSupportedAsset:(id)asset type:(int64_t)type completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandler___block_invoke;
   v10[3] = &unk_1E7730380;
-  v11 = v8;
-  v9 = v8;
-  [a1 checkIsSupportedAsset:a3 type:a4 completionHandlerWithReason:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [self checkIsSupportedAsset:asset type:type completionHandlerWithReason:v10];
 }
 
-+ (BOOL)isSupportedAsset:(id)a3 type:(int64_t)a4
++ (BOOL)isSupportedAsset:(id)asset type:(int64_t)type
 {
-  v4 = a3;
+  assetCopy = asset;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -441,7 +441,7 @@ void __80__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandlerWit
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [PXAssetSupportChecker checkIsSupportedAsset:v4 type:0 completionHandler:v9];
+  [PXAssetSupportChecker checkIsSupportedAsset:assetCopy type:0 completionHandler:v9];
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = *(v13 + 24);
 
@@ -449,29 +449,29 @@ void __80__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandlerWit
   return v7;
 }
 
-+ (void)_presentAlertWithTitle:(id)a3 message:(id)a4 knowledgeBaseURL:(id)a5 alertControllerPresenter:(id)a6 completionHandler:(id)a7
++ (void)_presentAlertWithTitle:(id)title message:(id)message knowledgeBaseURL:(id)l alertControllerPresenter:(id)presenter completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v15)
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  if (!lCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"knowledgeBaseURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"knowledgeBaseURL"}];
   }
 
-  v18 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v13 message:v14 preferredStyle:1];
+  v18 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   v19 = MEMORY[0x1E69DC648];
   v20 = PXLocalizedStringFromTable(@"PXAssetSupportChecker_UnsupportedFormat_Alert_MoreInfoButton", @"PhotosUICore");
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __116__PXAssetSupportChecker__presentAlertWithTitle_message_knowledgeBaseURL_alertControllerPresenter_completionHandler___block_invoke;
   v32[3] = &unk_1E7741C90;
-  v21 = v15;
+  v21 = lCopy;
   v33 = v21;
-  v22 = v17;
+  v22 = handlerCopy;
   v34 = v22;
   v23 = [v19 actionWithTitle:v20 style:0 handler:v32];
   [v18 addAction:v23];
@@ -487,7 +487,7 @@ void __80__PXAssetSupportChecker_checkIsSupportedAsset_type_completionHandlerWit
   v27 = [v24 actionWithTitle:v25 style:0 handler:v30];
   [v18 addAction:v27];
 
-  v28 = v16[2](v16, v18);
+  v28 = presenterCopy[2](presenterCopy, v18);
   if (v26 && (v28 & 1) == 0)
   {
     v26[2](v26);
@@ -528,13 +528,13 @@ uint64_t __116__PXAssetSupportChecker__presentAlertWithTitle_message_knowledgeBa
   return result;
 }
 
-+ (void)_alertTitleAndMessageForAsset:(id)a3 type:(int64_t)a4 title:(id *)a5 message:(id *)a6
++ (void)_alertTitleAndMessageForAsset:(id)asset type:(int64_t)type title:(id *)title message:(id *)message
 {
-  v11 = a3;
-  v19 = v11;
-  if (a5)
+  assetCopy = asset;
+  v19 = assetCopy;
+  if (title)
   {
-    if (a6)
+    if (message)
     {
       goto LABEL_3;
     }
@@ -542,33 +542,33 @@ uint64_t __116__PXAssetSupportChecker__presentAlertWithTitle_message_knowledgeBa
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-    v11 = v19;
-    if (a6)
+    assetCopy = v19;
+    if (message)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"message"}];
 
-  v11 = v19;
+  assetCopy = v19;
 LABEL_3:
-  v12 = [v11 mediaType];
-  if (v12 == 1)
+  mediaType = [assetCopy mediaType];
+  if (mediaType == 1)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v12 != 2)
+    if (mediaType != 2)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"PXAssetSupportChecker.m" lineNumber:46 description:@"Code which should be unreachable has been reached"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXAssetSupportChecker.m" lineNumber:46 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -576,15 +576,15 @@ LABEL_3:
     v13 = 0;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    *a5 = PXLocalizedStringFromTable(@"PXAssetSupportChecker_UnsupportedFormat_Playback_Video_Title", @"PhotosUICore");
+    *title = PXLocalizedStringFromTable(@"PXAssetSupportChecker_UnsupportedFormat_Playback_Video_Title", @"PhotosUICore");
     v15 = @"PXAssetSupportChecker_UnsupportedFormat_Playback_Video_Message";
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_18;
     }
@@ -609,10 +609,10 @@ LABEL_3:
       v15 = @"PXAssetSupportChecker_UnsupportedFormat_Edit_Video_Message";
     }
 
-    *a5 = PXLocalizedStringFromTable(v14, @"PhotosUICore");
+    *title = PXLocalizedStringFromTable(v14, @"PhotosUICore");
   }
 
-  *a6 = PXLocalizedStringFromTable(v15, @"PhotosUICore");
+  *message = PXLocalizedStringFromTable(v15, @"PhotosUICore");
 LABEL_18:
 }
 

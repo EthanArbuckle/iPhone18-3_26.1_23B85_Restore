@@ -1,36 +1,36 @@
 @interface PETEventTracker2
-+ (double)roundToSigFigs:(double)a3 sigFigs:(unint64_t)a4;
-+ (id)_writeMessage:(id)a3 objCClassName:(id)a4;
++ (double)roundToSigFigs:(double)figs sigFigs:(unint64_t)sigFigs;
++ (id)_writeMessage:(id)message objCClassName:(id)name;
 + (id)defaultRootDir;
-+ (id)formattedTextForAggregatedMessage:(id)a3;
-+ (id)formattedTextForUnaggregatedMessage:(id)a3 messageGroup:(id)a4 config:(id)a5;
++ (id)formattedTextForAggregatedMessage:(id)message;
++ (id)formattedTextForUnaggregatedMessage:(id)message messageGroup:(id)group config:(id)config;
 + (id)sharedInstance;
-+ (unsigned)typeIdForMessageName:(id)a3;
-- (PETEventTracker2)initWithAsyncEnabled:(BOOL)a3;
-- (PETEventTracker2)initWithRootDir:(id)a3 config:(id)a4;
-- (double)_roundToSigFigs:(double)a3 forRawMessage:(id)a4;
-- (id)_getLogStore:(id)a3;
-- (id)initForTestingWithRootDir:(id)a3;
-- (void)_dispatchAsyncForLogging:(id)a3 txnName:(const char *)a4;
++ (unsigned)typeIdForMessageName:(id)name;
+- (PETEventTracker2)initWithAsyncEnabled:(BOOL)enabled;
+- (PETEventTracker2)initWithRootDir:(id)dir config:(id)config;
+- (double)_roundToSigFigs:(double)figs forRawMessage:(id)message;
+- (id)_getLogStore:(id)store;
+- (id)initForTestingWithRootDir:(id)dir;
+- (void)_dispatchAsyncForLogging:(id)logging txnName:(const char *)name;
 - (void)_init;
-- (void)_initWithRootDir:(id)a3 config:(id)a4;
-- (void)_logMessage:(id)a3 subGroup:(id)a4;
-- (void)_logMessageData:(id)a3 objcClassName:(id)a4 subGroup:(id)a5;
-- (void)_runBlockWithRBSAssertion:(id)a3;
-- (void)_trackDistributionForMessage:(id)a3 value:(double)a4;
-- (void)_trackScalarForMessage:(id)a3 count:(int)a4 overwrite:(BOOL)a5;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)_initWithRootDir:(id)dir config:(id)config;
+- (void)_logMessage:(id)message subGroup:(id)group;
+- (void)_logMessageData:(id)data objcClassName:(id)name subGroup:(id)group;
+- (void)_runBlockWithRBSAssertion:(id)assertion;
+- (void)_trackDistributionForMessage:(id)message value:(double)value;
+- (void)_trackScalarForMessage:(id)message count:(int)count overwrite:(BOOL)overwrite;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertionWillInvalidate:(id)invalidate;
 - (void)clearLogStores;
-- (void)enumerateAggregatedMessagesWithBlock:(id)a3 clearStore:(BOOL)a4;
-- (void)enumerateMessageGroups:(id)a3;
-- (void)enumerateMessagesWithBlock:(id)a3 clearStore:(BOOL)a4;
-- (void)enumerateMessagesWithBlock:(id)a3 messageGroup:(id)a4 clearStore:(BOOL)a5;
-- (void)logMessage:(id)a3 subGroup:(id)a4;
-- (void)logMessageData:(id)a3 objcClassName:(id)a4 subGroup:(id)a5;
-- (void)trackDistributionForMessage:(id)a3 value:(double)a4;
-- (void)trackScalarForMessage:(id)a3 count:(int)a4;
-- (void)trackScalarForMessage:(id)a3 updateCount:(int)a4;
+- (void)enumerateAggregatedMessagesWithBlock:(id)block clearStore:(BOOL)store;
+- (void)enumerateMessageGroups:(id)groups;
+- (void)enumerateMessagesWithBlock:(id)block clearStore:(BOOL)store;
+- (void)enumerateMessagesWithBlock:(id)block messageGroup:(id)group clearStore:(BOOL)store;
+- (void)logMessage:(id)message subGroup:(id)group;
+- (void)logMessageData:(id)data objcClassName:(id)name subGroup:(id)group;
+- (void)trackDistributionForMessage:(id)message value:(double)value;
+- (void)trackScalarForMessage:(id)message count:(int)count;
+- (void)trackScalarForMessage:(id)message updateCount:(int)count;
 @end
 
 @implementation PETEventTracker2
@@ -68,11 +68,11 @@ void __34__PETEventTracker2_clearLogStores__block_invoke(uint64_t a1, uint64_t a
   [v2 clear];
 }
 
-- (void)enumerateAggregatedMessagesWithBlock:(id)a3 clearStore:(BOOL)a4
+- (void)enumerateAggregatedMessagesWithBlock:(id)block clearStore:(BOOL)store
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  storeCopy = store;
+  blockCopy = block;
+  v7 = blockCopy;
   if (self->_inited)
   {
     v19[0] = MEMORY[0x1E69E9820];
@@ -80,19 +80,19 @@ void __34__PETEventTracker2_clearLogStores__block_invoke(uint64_t a1, uint64_t a
     v19[2] = __68__PETEventTracker2_enumerateAggregatedMessagesWithBlock_clearStore___block_invoke;
     v19[3] = &unk_1E86C2C98;
     v19[4] = self;
-    v8 = v6;
+    v8 = blockCopy;
     v20 = v8;
     v9 = MEMORY[0x1E12DDDC0](v19);
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __68__PETEventTracker2_enumerateAggregatedMessagesWithBlock_clearStore___block_invoke_174;
     v16 = &unk_1E86C2CC0;
-    v17 = self;
+    selfCopy = self;
     v18 = v8;
     v10 = MEMORY[0x1E12DDDC0](&v13);
     v11 = [(PETEventTracker2 *)self aggregateState:v13];
     v12 = v11;
-    if (v4)
+    if (storeCopy)
     {
       [v11 enumerateAndResetCounters:v9 distributions:v10];
     }
@@ -201,41 +201,41 @@ void __68__PETEventTracker2_enumerateAggregatedMessagesWithBlock_clearStore___bl
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (double)_roundToSigFigs:(double)a3 forRawMessage:(id)a4
+- (double)_roundToSigFigs:(double)figs forRawMessage:(id)message
 {
-  v6 = a4;
-  v7 = [(PETEventTracker2 *)self config];
-  v8 = [v6 name];
+  messageCopy = message;
+  config = [(PETEventTracker2 *)self config];
+  name = [messageCopy name];
 
-  v9 = [v7 sigFigsForMessageName:v8];
+  v9 = [config sigFigsForMessageName:name];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3;
+    return figs;
   }
 
   v11 = objc_opt_class();
 
-  [v11 roundToSigFigs:v9 sigFigs:a3];
+  [v11 roundToSigFigs:v9 sigFigs:figs];
   return result;
 }
 
-- (void)enumerateMessagesWithBlock:(id)a3 messageGroup:(id)a4 clearStore:(BOOL)a5
+- (void)enumerateMessagesWithBlock:(id)block messageGroup:(id)group clearStore:(BOOL)store
 {
-  v5 = a5;
-  v8 = a3;
+  storeCopy = store;
+  blockCopy = block;
   if (self->_inited)
   {
-    v9 = [(PETEventTracker2 *)self _getLogStore:a4];
+    v9 = [(PETEventTracker2 *)self _getLogStore:group];
     if (v9)
     {
-      if (v5)
+      if (storeCopy)
       {
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __71__PETEventTracker2_enumerateMessagesWithBlock_messageGroup_clearStore___block_invoke;
         v13[3] = &unk_1E86C2C70;
         v10 = &v14;
-        v14 = v8;
+        v14 = blockCopy;
         [v9 enumerateAndClearItemsWithBlock:v13];
       }
 
@@ -246,7 +246,7 @@ void __68__PETEventTracker2_enumerateAggregatedMessagesWithBlock_clearStore___bl
         v11[2] = __71__PETEventTracker2_enumerateMessagesWithBlock_messageGroup_clearStore___block_invoke_2;
         v11[3] = &unk_1E86C2C70;
         v10 = &v12;
-        v12 = v8;
+        v12 = blockCopy;
         [v9 enumerateItemsWithBlock:v11];
       }
     }
@@ -273,10 +273,10 @@ void __71__PETEventTracker2_enumerateMessagesWithBlock_messageGroup_clearStore__
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)enumerateMessagesWithBlock:(id)a3 clearStore:(BOOL)a4
+- (void)enumerateMessagesWithBlock:(id)block clearStore:(BOOL)store
 {
-  v6 = a3;
-  v7 = v6;
+  blockCopy = block;
+  v7 = blockCopy;
   if (self->_inited)
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -284,8 +284,8 @@ void __71__PETEventTracker2_enumerateMessagesWithBlock_messageGroup_clearStore__
     v8[2] = __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke;
     v8[3] = &unk_1E86C2C48;
     v8[4] = self;
-    v9 = v6;
-    v10 = a4;
+    v9 = blockCopy;
+    storeCopy = store;
     [(PETEventTracker2 *)self enumerateMessageGroups:v8];
   }
 }
@@ -306,16 +306,16 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
   [v4 enumerateMessagesWithBlock:v8 messageGroup:v7 clearStore:v6];
 }
 
-- (void)enumerateMessageGroups:(id)a3
+- (void)enumerateMessageGroups:(id)groups
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupsCopy = groups;
   if (self->_inited)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     logStoresDir = self->_logStoresDir;
     v20 = 0;
-    v7 = [v5 contentsOfDirectoryAtPath:logStoresDir error:&v20];
+    v7 = [defaultManager contentsOfDirectoryAtPath:logStoresDir error:&v20];
     v8 = v20;
 
     if (v7)
@@ -339,7 +339,7 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
               objc_enumerationMutation(v9);
             }
 
-            v4[2](v4, *(*(&v16 + 1) + 8 * i));
+            groupsCopy[2](groupsCopy, *(*(&v16 + 1) + 8 * i));
           }
 
           v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -362,55 +362,55 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logMessage:(id)a3 subGroup:(id)a4
+- (void)_logMessage:(id)message subGroup:(id)group
 {
-  v6 = a4;
-  v7 = a3;
+  groupCopy = group;
+  messageCopy = message;
   v8 = objc_opt_class();
   v10 = NSStringFromClass(v8);
-  v9 = [v7 data];
+  data = [messageCopy data];
 
-  [(PETEventTracker2 *)self _logMessageData:v9 objcClassName:v10 subGroup:v6];
+  [(PETEventTracker2 *)self _logMessageData:data objcClassName:v10 subGroup:groupCopy];
 }
 
-- (void)_logMessageData:(id)a3 objcClassName:(id)a4 subGroup:(id)a5
+- (void)_logMessageData:(id)data objcClassName:(id)name subGroup:(id)group
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  groupCopy = group;
   if (self->_inited)
   {
-    v10 = [(PETEventTracker2 *)self config];
-    v11 = [v10 groupForMessageName:v8];
+    config = [(PETEventTracker2 *)self config];
+    v11 = [config groupForMessageName:nameCopy];
 
     v12 = objc_autoreleasePoolPush();
-    if (v9)
+    if (groupCopy)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v11, v9];
+      groupCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v11, groupCopy];
 
-      v11 = v13;
+      v11 = groupCopy;
     }
 
     objc_autoreleasePoolPop(v12);
     v14 = [(PETEventTracker2 *)self _getLogStore:v11];
     if (v14)
     {
-      v15 = [PETEventTracker2 _writeMessage:v18 objCClassName:v8];
+      v15 = [PETEventTracker2 _writeMessage:dataCopy objCClassName:nameCopy];
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 data];
-        [v14 log:v17];
+        data = [v15 data];
+        [v14 log:data];
       }
     }
   }
 }
 
-- (id)_getLogStore:(id)a3
+- (id)_getLogStore:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storeCache objectForKey:v4];
+  storeCopy = store;
+  v5 = [(NSMutableDictionary *)self->_storeCache objectForKey:storeCopy];
   if (v5)
   {
     v6 = v5;
@@ -418,25 +418,25 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
 
   else
   {
-    v7 = [(NSString *)self->_logStoresDir stringByAppendingPathComponent:v4];
-    v8 = [(PETEventTracker2 *)self config];
-    v9 = [v8 samplingLimitForMessageGroup:v4];
+    v7 = [(NSString *)self->_logStoresDir stringByAppendingPathComponent:storeCopy];
+    config = [(PETEventTracker2 *)self config];
+    v9 = [config samplingLimitForMessageGroup:storeCopy];
 
     v10 = [[PETReservoirSamplingLog alloc] initWithPath:v7 limit:v9];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_storeCache setValue:v10 forKey:v4];
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v11 attributesOfItemAtPath:v7 error:0];
-      v13 = [v12 fileSize];
+      [(NSMutableDictionary *)self->_storeCache setValue:v10 forKey:storeCopy];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v12 = [defaultManager attributesOfItemAtPath:v7 error:0];
+      fileSize = [v12 fileSize];
 
-      if (v13 > 0xA00000)
+      if (fileSize > 0xA00000)
       {
         [(PETReservoirSamplingLog *)v10 clear];
         v17[0] = @"type";
         v17[1] = @"msg_group";
         v18[0] = &unk_1F5AB6CA8;
-        v18[1] = v4;
+        v18[1] = storeCopy;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
         AnalyticsSendEvent();
       }
@@ -447,15 +447,15 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v22 = v4;
+        v22 = storeCopy;
         _os_log_error_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to create store for unaggregated message group: %@", buf, 0xCu);
       }
 
       v19[0] = @"reason";
       v19[1] = @"msg_group";
       v20[0] = @"init_log_store";
-      v20[1] = v4;
-      v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
+      v20[1] = storeCopy;
+      defaultManager = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
       AnalyticsSendEvent();
     }
 
@@ -467,39 +467,39 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
   return v6;
 }
 
-- (void)_trackDistributionForMessage:(id)a3 value:(double)a4
+- (void)_trackDistributionForMessage:(id)message value:(double)value
 {
   if (self->_inited)
   {
-    v7 = a3;
+    messageCopy = message;
     v27 = objc_opt_new();
     [v27 setType:2];
     [v27 setDatestamp:_getDatestamp()];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 data];
+    data = [messageCopy data];
     v11 = objc_opt_class();
 
     v12 = NSStringFromClass(v11);
-    v13 = [PETEventTracker2 _writeMessage:v10 objCClassName:v12];
+    v13 = [PETEventTracker2 _writeMessage:data objCClassName:v12];
     [v27 setRawMessage:v13];
 
-    v14 = [v27 rawMessage];
+    rawMessage = [v27 rawMessage];
 
-    if (v14)
+    if (rawMessage)
     {
-      v15 = [v27 data];
-      v16 = [(PETEventTracker2 *)self aggregateState];
-      [v16 updateDistributionWithValue:objc_msgSend(v15 forKey:"bytes") keyLength:objc_msgSend(v15 maxSampleSize:{"length"), 1, a4}];
+      data2 = [v27 data];
+      aggregateState = [(PETEventTracker2 *)self aggregateState];
+      [aggregateState updateDistributionWithValue:objc_msgSend(data2 forKey:"bytes") keyLength:objc_msgSend(data2 maxSampleSize:{"length"), 1, value}];
 
-      v17 = [(PETEventTracker2 *)self config];
-      v18 = [v17 bucketsForMessageName:v9];
+      config = [(PETEventTracker2 *)self config];
+      v18 = [config bucketsForMessageName:v9];
 
       if (v18)
       {
         [v27 setType:3];
         v19 = [v18 sortedArrayUsingSelector:sel_compare_];
-        v20 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+        v20 = [MEMORY[0x1E696AD98] numberWithDouble:value];
         v21 = [v19 indexOfObject:v20 inSortedRange:0 options:objc_msgSend(v19 usingComparator:{"count"), 1280, &__block_literal_global_381}];
 
         if (v21 >= [v19 count])
@@ -515,51 +515,51 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
         }
 
         [v27 setBucket:v24];
-        v25 = [v27 data];
+        data3 = [v27 data];
 
-        v26 = [(PETEventTracker2 *)self aggregateState];
-        [v26 incrementCounterBy:objc_msgSend(v25 forKey:"bytes") keyLength:{objc_msgSend(v25, "length"), 1.0}];
+        aggregateState2 = [(PETEventTracker2 *)self aggregateState];
+        [aggregateState2 incrementCounterBy:objc_msgSend(data3 forKey:"bytes") keyLength:{objc_msgSend(data3, "length"), 1.0}];
 
-        v15 = v25;
+        data2 = data3;
       }
     }
   }
 }
 
-- (void)_trackScalarForMessage:(id)a3 count:(int)a4 overwrite:(BOOL)a5
+- (void)_trackScalarForMessage:(id)message count:(int)count overwrite:(BOOL)overwrite
 {
   if (self->_inited)
   {
-    v6 = a5;
-    v9 = a3;
+    overwriteCopy = overwrite;
+    messageCopy = message;
     v21 = objc_opt_new();
     [v21 setType:1];
     [v21 setDatestamp:_getDatestamp()];
-    v10 = [v9 data];
+    data = [messageCopy data];
     v11 = objc_opt_class();
 
     v12 = NSStringFromClass(v11);
-    v13 = [PETEventTracker2 _writeMessage:v10 objCClassName:v12];
+    v13 = [PETEventTracker2 _writeMessage:data objCClassName:v12];
     [v21 setRawMessage:v13];
 
-    v14 = [v21 rawMessage];
+    rawMessage = [v21 rawMessage];
 
     v15 = v21;
-    if (v14)
+    if (rawMessage)
     {
-      v16 = [v21 data];
-      v17 = [(PETEventTracker2 *)self aggregateState];
-      v18 = a4;
-      v19 = [v16 bytes];
-      v20 = [v16 length];
-      if (v6)
+      data2 = [v21 data];
+      aggregateState = [(PETEventTracker2 *)self aggregateState];
+      countCopy = count;
+      bytes = [data2 bytes];
+      v20 = [data2 length];
+      if (overwriteCopy)
       {
-        [v17 updateCounterTo:v19 forKey:v20 keyLength:v18];
+        [aggregateState updateCounterTo:bytes forKey:v20 keyLength:countCopy];
       }
 
       else
       {
-        [v17 incrementCounterBy:v19 forKey:v20 keyLength:v18];
+        [aggregateState incrementCounterBy:bytes forKey:v20 keyLength:countCopy];
       }
 
       v15 = v21;
@@ -567,11 +567,11 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
   }
 }
 
-- (void)logMessageData:(id)a3 objcClassName:(id)a4 subGroup:(id)a5
+- (void)logMessageData:(id)data objcClassName:(id)name subGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  groupCopy = group;
   if (self->_isAsyncEnabled)
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -579,9 +579,9 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v16[2] = __58__PETEventTracker2_logMessageData_objcClassName_subGroup___block_invoke;
     v16[3] = &unk_1E86C2BF8;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
-    v19 = v10;
+    v17 = dataCopy;
+    v18 = nameCopy;
+    v19 = groupCopy;
     [(PETEventTracker2 *)self _dispatchAsyncForLogging:v16 txnName:"com.apple.proactive.eventtracker.logMessageData"];
   }
 
@@ -593,19 +593,19 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v12[2] = __58__PETEventTracker2_logMessageData_objcClassName_subGroup___block_invoke_2;
     v12[3] = &unk_1E86C2BF8;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = dataCopy;
+    v14 = nameCopy;
+    v15 = groupCopy;
     [(PETEventTracker2 *)self _runBlockWithRBSAssertion:v12];
 
     objc_autoreleasePoolPop(v11);
   }
 }
 
-- (void)logMessage:(id)a3 subGroup:(id)a4
+- (void)logMessage:(id)message subGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  groupCopy = group;
   if (self->_isAsyncEnabled)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -613,8 +613,8 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v12[2] = __40__PETEventTracker2_logMessage_subGroup___block_invoke;
     v12[3] = &unk_1E86C2BD0;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = messageCopy;
+    v14 = groupCopy;
     [(PETEventTracker2 *)self _dispatchAsyncForLogging:v12 txnName:"com.apple.proactive.eventtracker.logMessage"];
   }
 
@@ -626,18 +626,18 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v9[2] = __40__PETEventTracker2_logMessage_subGroup___block_invoke_2;
     v9[3] = &unk_1E86C2BD0;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = messageCopy;
+    v11 = groupCopy;
     [(PETEventTracker2 *)self _runBlockWithRBSAssertion:v9];
 
     objc_autoreleasePoolPop(v8);
   }
 }
 
-- (void)trackDistributionForMessage:(id)a3 value:(double)a4
+- (void)trackDistributionForMessage:(id)message value:(double)value
 {
-  v6 = a3;
-  v7 = v6;
+  messageCopy = message;
+  v7 = messageCopy;
   if (self->_isAsyncEnabled)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -645,8 +645,8 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v12[2] = __54__PETEventTracker2_trackDistributionForMessage_value___block_invoke;
     v12[3] = &unk_1E86C2BA8;
     v12[4] = self;
-    v13 = v6;
-    v14 = a4;
+    v13 = messageCopy;
+    valueCopy = value;
     [(PETEventTracker2 *)self _dispatchAsyncForLogging:v12 txnName:"com.apple.proactive.eventtracker.trackDistribution"];
   }
 
@@ -659,17 +659,17 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v9[3] = &unk_1E86C2BA8;
     v9[4] = self;
     v10 = v7;
-    v11 = a4;
+    valueCopy2 = value;
     [(PETEventTracker2 *)self _runBlockWithRBSAssertion:v9];
 
     objc_autoreleasePoolPop(v8);
   }
 }
 
-- (void)trackScalarForMessage:(id)a3 updateCount:(int)a4
+- (void)trackScalarForMessage:(id)message updateCount:(int)count
 {
-  v6 = a3;
-  v7 = v6;
+  messageCopy = message;
+  v7 = messageCopy;
   if (self->_isAsyncEnabled)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -677,8 +677,8 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v12[2] = __54__PETEventTracker2_trackScalarForMessage_updateCount___block_invoke;
     v12[3] = &unk_1E86C2B80;
     v12[4] = self;
-    v13 = v6;
-    v14 = a4;
+    v13 = messageCopy;
+    countCopy = count;
     [(PETEventTracker2 *)self _dispatchAsyncForLogging:v12 txnName:"com.apple.proactive.eventtracker.trackScalar"];
   }
 
@@ -691,17 +691,17 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v9[3] = &unk_1E86C2B80;
     v9[4] = self;
     v10 = v7;
-    v11 = a4;
+    countCopy2 = count;
     [(PETEventTracker2 *)self _runBlockWithRBSAssertion:v9];
 
     objc_autoreleasePoolPop(v8);
   }
 }
 
-- (void)trackScalarForMessage:(id)a3 count:(int)a4
+- (void)trackScalarForMessage:(id)message count:(int)count
 {
-  v6 = a3;
-  v7 = v6;
+  messageCopy = message;
+  v7 = messageCopy;
   if (self->_isAsyncEnabled)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -709,8 +709,8 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v12[2] = __48__PETEventTracker2_trackScalarForMessage_count___block_invoke;
     v12[3] = &unk_1E86C2B80;
     v12[4] = self;
-    v13 = v6;
-    v14 = a4;
+    v13 = messageCopy;
+    countCopy = count;
     [(PETEventTracker2 *)self _dispatchAsyncForLogging:v12 txnName:"com.apple.proactive.eventtracker.trackScalar"];
   }
 
@@ -723,18 +723,18 @@ void __58__PETEventTracker2_enumerateMessagesWithBlock_clearStore___block_invoke
     v9[3] = &unk_1E86C2B80;
     v9[4] = self;
     v10 = v7;
-    v11 = a4;
+    countCopy2 = count;
     [(PETEventTracker2 *)self _runBlockWithRBSAssertion:v9];
 
     objc_autoreleasePoolPop(v8);
   }
 }
 
-- (void)_runBlockWithRBSAssertion:(id)a3
+- (void)_runBlockWithRBSAssertion:(id)assertion
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  assertionCopy = assertion;
+  v5 = assertionCopy;
   if (self->_inited)
   {
     if (self->_isProcessManagedByRBS)
@@ -830,7 +830,7 @@ LABEL_14:
 
     else
     {
-      v4[2](v4);
+      assertionCopy[2](assertionCopy);
     }
   }
 
@@ -870,14 +870,14 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
   return pthread_mutex_unlock((*(a1 + 32) + 128));
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidateCopy = invalidate;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = invalidateCopy;
     _os_log_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Runningboard assertion (%@) will be invalidated soon. Force unlocking all store files...", buf, 0xCu);
   }
 
@@ -885,8 +885,8 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_storeCache allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_storeCache allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -898,14 +898,14 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v9++) unlock];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -914,21 +914,21 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assertionCopy = assertion;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v13 = v5;
+    v13 = assertionCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = errorCopy;
     _os_log_error_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Runningboard assertion (%@) was invalidated unexpectedly with error %@", buf, 0x16u);
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "code", @"error_code"}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code", @"error_code"}];
   v11 = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   AnalyticsSendEvent();
@@ -936,9 +936,9 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchAsyncForLogging:(id)a3 txnName:(const char *)a4
+- (void)_dispatchAsyncForLogging:(id)logging txnName:(const char *)name
 {
-  v5 = a3;
+  loggingCopy = logging;
   pthread_mutex_lock(&self->_loggingQueueLock);
   loggingQueueSize = self->_loggingQueueSize;
   if (loggingQueueSize < 1024)
@@ -953,7 +953,7 @@ uint64_t __46__PETEventTracker2__runBlockWithRBSAssertion___block_invoke(uint64_
     block[3] = &unk_1E86C2B58;
     block[4] = self;
     v11 = v7;
-    v12 = v5;
+    v12 = loggingCopy;
     v9 = v7;
     dispatch_async(loggingQueue, block);
   }
@@ -981,15 +981,15 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
   return pthread_mutex_unlock(v2);
 }
 
-- (void)_initWithRootDir:(id)a3 config:(id)a4
+- (void)_initWithRootDir:(id)dir config:(id)config
 {
-  v5 = a3;
+  dirCopy = dir;
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_rootDir, v5);
-  objc_storeStrong(&self->_config, a4);
-  v9 = [v7 stringByAppendingPathComponent:@"log_stores"];
+  dirCopy2 = dir;
+  configCopy = config;
+  objc_storeStrong(&self->_rootDir, dirCopy);
+  objc_storeStrong(&self->_config, config);
+  v9 = [dirCopy2 stringByAppendingPathComponent:@"log_stores"];
   logStoresDir = self->_logStoresDir;
   self->_logStoresDir = v9;
 
@@ -997,13 +997,13 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
   storeCache = self->_storeCache;
   self->_storeCache = v11;
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   rootDir = self->_rootDir;
   v37 = 0;
-  LOBYTE(v5) = [v13 createDirectoryAtPath:rootDir withIntermediateDirectories:1 attributes:0 error:&v37];
+  LOBYTE(dirCopy) = [defaultManager createDirectoryAtPath:rootDir withIntermediateDirectories:1 attributes:0 error:&v37];
   v15 = v37;
 
-  if (v5)
+  if (dirCopy)
   {
     v16 = [(NSString *)self->_rootDir stringByAppendingPathComponent:@"aggr_state"];
     v17 = [[PETAggregateState alloc] initWithPath:v16];
@@ -1012,34 +1012,34 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
 
     if (self->_aggregateState)
     {
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
-      v20 = [v19 attributesOfItemAtPath:v16 error:0];
-      v21 = [v20 fileSize];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v20 = [defaultManager2 attributesOfItemAtPath:v16 error:0];
+      fileSize = [v20 fileSize];
 
-      if (v21 > 0xA00000)
+      if (fileSize > 0xA00000)
       {
         [(PETAggregateState *)self->_aggregateState reset];
         AnalyticsSendEvent();
       }
 
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
       v23 = self->_logStoresDir;
       v36 = v15;
-      v24 = [v22 createDirectoryAtPath:v23 withIntermediateDirectories:1 attributes:0 error:&v36];
+      v24 = [defaultManager3 createDirectoryAtPath:v23 withIntermediateDirectories:1 attributes:0 error:&v36];
       v25 = v36;
 
       if (v24)
       {
-        v26 = [MEMORY[0x1E696AE30] processInfo];
-        v27 = [v26 processIdentifier];
+        processInfo = [MEMORY[0x1E696AE30] processInfo];
+        processIdentifier = [processInfo processIdentifier];
 
-        v28 = [MEMORY[0x1E69C7640] targetWithPid:v27];
+        v28 = [MEMORY[0x1E69C7640] targetWithPid:processIdentifier];
         rbsTarget = self->_rbsTarget;
         self->_rbsTarget = v28;
 
         pthread_mutex_init(&self->_rbsAssertionLock, 0);
-        v30 = [MEMORY[0x1E69C75D0] currentProcess];
-        self->_isProcessManagedByRBS = [v30 isManaged];
+        currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+        self->_isProcessManagedByRBS = [currentProcess isManaged];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
@@ -1115,15 +1115,15 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (PETEventTracker2)initWithRootDir:(id)a3 config:(id)a4
+- (PETEventTracker2)initWithRootDir:(id)dir config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  dirCopy = dir;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = PETEventTracker2;
   v8 = [(PETEventTracker2 *)&v13 init];
   v9 = v8;
-  if (v8 && (v8->_isAsyncEnabled = 0, [(PETEventTracker2 *)v8 _initWithRootDir:v6 config:v7], !v9->_inited))
+  if (v8 && (v8->_isAsyncEnabled = 0, [(PETEventTracker2 *)v8 _initWithRootDir:dirCopy config:configCopy], !v9->_inited))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1142,30 +1142,30 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
   return v10;
 }
 
-- (id)initForTestingWithRootDir:(id)a3
+- (id)initForTestingWithRootDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v5 = [[PETConfig alloc] initWithDictionary:&unk_1F5AB6E40];
   if (v5)
   {
-    self = [(PETEventTracker2 *)self initWithRootDir:v4 config:v5];
-    v6 = self;
+    self = [(PETEventTracker2 *)self initWithRootDir:dirCopy config:v5];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)_init
 {
   v13[2] = *MEMORY[0x1E69E9840];
   self->_isTesting = 0;
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
   if ([MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.proactive.eventtracker" logHandle:0])
   {
@@ -1232,7 +1232,7 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
     v12[0] = @"reason";
     v12[1] = @"process";
     v13[0] = &unk_1F5AB6C48;
-    v13[1] = v4;
+    v13[1] = processName;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
     AnalyticsSendEvent();
   }
@@ -1240,9 +1240,9 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (PETEventTracker2)initWithAsyncEnabled:(BOOL)a3
+- (PETEventTracker2)initWithAsyncEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16.receiver = self;
   v16.super_class = PETEventTracker2;
   v4 = [(PETEventTracker2 *)&v16 init];
@@ -1252,8 +1252,8 @@ uint64_t __53__PETEventTracker2__dispatchAsyncForLogging_txnName___block_invoke(
     goto LABEL_5;
   }
 
-  v4->_isAsyncEnabled = v3;
-  if (v3)
+  v4->_isAsyncEnabled = enabledCopy;
+  if (enabledCopy)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_BACKGROUND, 0);
@@ -1304,141 +1304,141 @@ void __41__PETEventTracker2_initWithAsyncEnabled___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)formattedTextForUnaggregatedMessage:(id)a3 messageGroup:(id)a4 config:(id)a5
++ (id)formattedTextForUnaggregatedMessage:(id)message messageGroup:(id)group config:(id)config
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  configCopy = config;
+  groupCopy = group;
+  messageCopy = message;
   v10 = objc_opt_new();
-  [v10 appendFormat:@"Message Group: %@\n", v8];
+  [v10 appendFormat:@"Message Group: %@\n", groupCopy];
 
-  v11 = [v9 name];
-  [v10 appendFormat:@"Message Name: %@\n", v11];
+  name = [messageCopy name];
+  [v10 appendFormat:@"Message Name: %@\n", name];
 
-  [v10 appendFormat:@"Message Type: %08x\n", objc_msgSend(v9, "typeId")];
-  v12 = [v9 name];
-  v13 = [v7 nestedFieldsForMessageName:v12];
+  [v10 appendFormat:@"Message Type: %08x\n", objc_msgSend(messageCopy, "typeId")];
+  name2 = [messageCopy name];
+  v13 = [configCopy nestedFieldsForMessageName:name2];
 
   v14 = [PETProtobufRawDecodedMessage alloc];
-  v15 = [v9 rawBytes];
+  rawBytes = [messageCopy rawBytes];
 
-  v16 = [(PETProtobufRawDecodedMessage *)v14 initWithData:v15 nestedFields:v13];
+  v16 = [(PETProtobufRawDecodedMessage *)v14 initWithData:rawBytes nestedFields:v13];
   [v10 appendFormat:@"Message Body:\n"];
-  v17 = [(PETProtobufRawDecodedMessage *)v16 formattedText];
-  [v10 appendFormat:@"%@", v17];
+  formattedText = [(PETProtobufRawDecodedMessage *)v16 formattedText];
+  [v10 appendFormat:@"%@", formattedText];
 
   return v10;
 }
 
-+ (id)formattedTextForAggregatedMessage:(id)a3
++ (id)formattedTextForAggregatedMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_opt_new();
-  v5 = [v3 key];
-  v6 = [v5 datestamp];
+  v5 = [messageCopy key];
+  datestamp = [v5 datestamp];
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v8 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
-  v9 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:(86400 * v6)];
+  v9 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:(86400 * datestamp)];
   [v7 setTimeZone:v8];
   [v7 setDateFormat:@"yyyy-MM-dd"];
   v10 = [v7 stringFromDate:v9];
 
   [v4 appendFormat:@"UTC Date: %@\n", v10];
-  v11 = [v3 key];
-  v12 = [v11 rawMessage];
-  v13 = [v12 name];
-  [v4 appendFormat:@"Message Name: %@\n", v13];
+  v11 = [messageCopy key];
+  rawMessage = [v11 rawMessage];
+  name = [rawMessage name];
+  [v4 appendFormat:@"Message Name: %@\n", name];
 
-  v14 = [v3 key];
-  v15 = [v14 rawMessage];
-  [v4 appendFormat:@"Message Type: %08x\n", objc_msgSend(v15, "typeId")];
+  v14 = [messageCopy key];
+  rawMessage2 = [v14 rawMessage];
+  [v4 appendFormat:@"Message Type: %08x\n", objc_msgSend(rawMessage2, "typeId")];
 
-  v16 = [v3 key];
-  v17 = [v16 type];
+  v16 = [messageCopy key];
+  type = [v16 type];
 
-  v18 = [v3 key];
-  v19 = [v18 typeAsString:v17];
+  v18 = [messageCopy key];
+  v19 = [v18 typeAsString:type];
   [v4 appendFormat:@"Aggregation Type: %@\n", v19];
 
-  [v4 appendFormat:@"Count: %u\n", objc_msgSend(v3, "count")];
-  if (v17 == 3)
+  [v4 appendFormat:@"Count: %u\n", objc_msgSend(messageCopy, "count")];
+  if (type == 3)
   {
-    v26 = [v3 key];
-    [v26 bucket];
+    distribution4 = [messageCopy key];
+    [distribution4 bucket];
     [v4 appendFormat:@"Bucket: %f\n", v28];
   }
 
   else
   {
-    if (v17 != 2)
+    if (type != 2)
     {
       goto LABEL_6;
     }
 
-    v20 = [v3 distribution];
-    [v20 min];
+    distribution = [messageCopy distribution];
+    [distribution min];
     [v4 appendFormat:@"Min: %f\n", v21];
 
-    v22 = [v3 distribution];
-    [v22 max];
+    distribution2 = [messageCopy distribution];
+    [distribution2 max];
     [v4 appendFormat:@"Max: %f\n", v23];
 
-    v24 = [v3 distribution];
-    [v24 mean];
+    distribution3 = [messageCopy distribution];
+    [distribution3 mean];
     [v4 appendFormat:@"Mean: %f\n", v25];
 
-    v26 = [v3 distribution];
-    [v26 variance];
+    distribution4 = [messageCopy distribution];
+    [distribution4 variance];
     [v4 appendFormat:@"Variance: %f\n", v27];
   }
 
 LABEL_6:
   v29 = [PETProtobufRawDecodedMessage alloc];
-  v30 = [v3 key];
-  v31 = [v30 rawMessage];
-  v32 = [v31 rawBytes];
-  v33 = [(PETProtobufRawDecodedMessage *)v29 initWithData:v32];
+  v30 = [messageCopy key];
+  rawMessage3 = [v30 rawMessage];
+  rawBytes = [rawMessage3 rawBytes];
+  v33 = [(PETProtobufRawDecodedMessage *)v29 initWithData:rawBytes];
 
   [v4 appendFormat:@"Message Body:\n"];
-  v34 = [(PETProtobufRawDecodedMessage *)v33 formattedText];
-  [v4 appendFormat:@"%@", v34];
+  formattedText = [(PETProtobufRawDecodedMessage *)v33 formattedText];
+  [v4 appendFormat:@"%@", formattedText];
 
   return v4;
 }
 
-+ (double)roundToSigFigs:(double)a3 sigFigs:(unint64_t)a4
++ (double)roundToSigFigs:(double)figs sigFigs:(unint64_t)sigFigs
 {
-  v4 = a3;
-  v5 = a3 < 0.0;
-  if (a3 != 0.0)
+  figsCopy = figs;
+  v5 = figs < 0.0;
+  if (figs != 0.0)
   {
-    v6 = a4;
-    v7 = -a3;
+    sigFigsCopy = sigFigs;
+    v7 = -figs;
     if (!v5)
     {
-      v7 = v4;
+      v7 = figsCopy;
     }
 
     v8 = log10(v7);
-    v9 = __exp10((v6 - vcvtpd_s64_f64(v8)));
-    return round(v9 * v4) / v9;
+    v9 = __exp10((sigFigsCopy - vcvtpd_s64_f64(v8)));
+    return round(v9 * figsCopy) / v9;
   }
 
-  return v4;
+  return figsCopy;
 }
 
-+ (id)_writeMessage:(id)a3 objCClassName:(id)a4
++ (id)_writeMessage:(id)message objCClassName:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [PETEventTracker2 typeIdForMessageName:v6];
-  if ([v5 length] <= 0x100000)
+  messageCopy = message;
+  nameCopy = name;
+  v7 = [PETEventTracker2 typeIdForMessageName:nameCopy];
+  if ([messageCopy length] <= 0x100000)
   {
     v10 = objc_opt_new();
     [v10 setTypeId:v7];
-    [v10 setRawBytes:v5];
-    [v10 setName:v6];
+    [v10 setRawBytes:messageCopy];
+    [v10 setName:nameCopy];
   }
 
   else
@@ -1446,15 +1446,15 @@ LABEL_6:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v16 = v6;
+      v16 = nameCopy;
       v17 = 2048;
-      v18 = [v5 length];
+      v18 = [messageCopy length];
       v19 = 1024;
       v20 = 0x100000;
       _os_log_impl(&dword_1DF726000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "dropping large message %@ with length %lu. max length: %ul", buf, 0x1Cu);
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "length", @"name", @"size", v6)}];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "length", @"name", @"size", nameCopy)}];
     v14[1] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:2];
     AnalyticsSendEvent();
@@ -1467,12 +1467,12 @@ LABEL_6:
   return v10;
 }
 
-+ (unsigned)typeIdForMessageName:(id)a3
++ (unsigned)typeIdForMessageName:(id)name
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_MD5(v3, v4, md);
+  uTF8String = [name UTF8String];
+  v4 = strlen(uTF8String);
+  CC_MD5(uTF8String, v4, md);
   v5 = *MEMORY[0x1E69E9840];
   return bswap32(*md);
 }

@@ -11,23 +11,23 @@
 + (id)activeOrLocalAccount
 {
   v2 = objc_opt_self();
-  v3 = [v2 ams_sharedAccountStore];
-  v4 = [v3 ams_activeiTunesAccount];
+  ams_sharedAccountStore = [v2 ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  if (!v4)
+  if (!ams_activeiTunesAccount)
   {
-    v5 = [v2 ams_sharedAccountStore];
-    v4 = [v5 ams_localiTunesAccount];
+    ams_sharedAccountStore2 = [v2 ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore2 ams_localiTunesAccount];
   }
 
-  return v4;
+  return ams_activeiTunesAccount;
 }
 
 + (id)shared
 {
-  v2 = [objc_opt_self() ams_sharedAccountStore];
+  ams_sharedAccountStore = [objc_opt_self() ams_sharedAccountStore];
 
-  return v2;
+  return ams_sharedAccountStore;
 }
 
 + (NSString)storefront
@@ -48,19 +48,19 @@
 
 + (NSArray)accounts
 {
-  v2 = [objc_opt_self() ams_sharedAccountStore];
-  v3 = [v2 ams_iTunesAccounts];
+  ams_sharedAccountStore = [objc_opt_self() ams_sharedAccountStore];
+  ams_iTunesAccounts = [ams_sharedAccountStore ams_iTunesAccounts];
 
-  if (!v3)
+  if (!ams_iTunesAccounts)
   {
     sub_26CC18080(0, &qword_2804BD818, 0x277CB8F30);
     sub_26CD3A7AC();
     v4 = sub_26CD3A79C();
 
-    v3 = v4;
+    ams_iTunesAccounts = v4;
   }
 
-  return v3;
+  return ams_iTunesAccounts;
 }
 
 - (TVAppAccountStoreObjC)init

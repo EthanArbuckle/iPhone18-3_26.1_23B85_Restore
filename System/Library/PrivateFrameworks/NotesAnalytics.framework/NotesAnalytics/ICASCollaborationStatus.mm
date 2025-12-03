@@ -1,34 +1,34 @@
 @interface ICASCollaborationStatus
-- (ICASCollaborationStatus)initWithCollaborationStatus:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationStatus)initWithCollaborationStatus:(int64_t)status;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationStatus
 
-- (ICASCollaborationStatus)initWithCollaborationStatus:(int64_t)a3
+- (ICASCollaborationStatus)initWithCollaborationStatus:(int64_t)status
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationStatus;
   result = [(ICASCollaborationStatus *)&v5 init];
   if (result)
   {
-    result->_collaborationStatus = a3;
+    result->_collaborationStatus = status;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationStatus *)self collaborationStatus];
-  if ((v3 - 1) > 2)
+  collaborationStatus = [(ICASCollaborationStatus *)self collaborationStatus];
+  if ((collaborationStatus - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF8D8[v3 - 1];
+    return off_2799AF8D8[collaborationStatus - 1];
   }
 }
 

@@ -1,21 +1,21 @@
 @interface NTKUpNextAccessoryView
-- (NTKUpNextAccessoryView)initWithFrame:(CGRect)a3;
-- (void)configureWithDescription:(id)a3;
+- (NTKUpNextAccessoryView)initWithFrame:(CGRect)frame;
+- (void)configureWithDescription:(id)description;
 @end
 
 @implementation NTKUpNextAccessoryView
 
-- (NTKUpNextAccessoryView)initWithFrame:(CGRect)a3
+- (NTKUpNextAccessoryView)initWithFrame:(CGRect)frame
 {
   v40[4] = *MEMORY[0x277D85DE8];
   v39.receiver = self;
   v39.super_class = NTKUpNextAccessoryView;
-  v3 = [(NTKUpNextAccessoryView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextAccessoryView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v5 = [v4 device];
-    v6 = ___LayoutConstants_block_invoke_29(v5, v5);
+    device = [v4 device];
+    v6 = ___LayoutConstants_block_invoke_29(device, device);
     v8 = v7;
     v10 = v9;
 
@@ -28,8 +28,8 @@
     v34 = v11;
     [(CLKUIColoringLabel *)v3->_label setFont:v11];
     v15 = v3->_label;
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v15 setTextColor:v16];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v15 setTextColor:whiteColor];
 
     [(CLKUIColoringLabel *)v3->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CLKUIColoringLabel *)v3->_label setLineBreakMode:4];
@@ -43,29 +43,29 @@
     [(CLKUIColoringLabel *)v3->_label setContentHuggingPriority:1 forAxis:v19];
     LODWORD(v20) = 1148846080;
     [(CLKUIColoringLabel *)v3->_label setContentHuggingPriority:0 forAxis:v20];
-    v21 = [(NTKUpNextAccessoryView *)v3 layer];
-    [v21 setCornerRadius:v8];
+    layer = [(NTKUpNextAccessoryView *)v3 layer];
+    [layer setCornerRadius:v8];
 
-    v22 = [(NTKUpNextAccessoryView *)v3 layer];
-    [v22 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(NTKUpNextAccessoryView *)v3 layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
 
     [(NTKUpNextAccessoryView *)v3 addSubview:v3->_label];
-    v38 = [(CLKUIColoringLabel *)v3->_label leadingAnchor];
-    v37 = [(NTKUpNextAccessoryView *)v3 leadingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:v10];
+    leadingAnchor = [(CLKUIColoringLabel *)v3->_label leadingAnchor];
+    leadingAnchor2 = [(NTKUpNextAccessoryView *)v3 leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v10];
     v40[0] = v36;
-    v35 = [(CLKUIColoringLabel *)v3->_label trailingAnchor];
-    v23 = [(NTKUpNextAccessoryView *)v3 trailingAnchor];
-    v24 = [v35 constraintEqualToAnchor:v23 constant:-v10];
+    trailingAnchor = [(CLKUIColoringLabel *)v3->_label trailingAnchor];
+    trailingAnchor2 = [(NTKUpNextAccessoryView *)v3 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v10];
     v40[1] = v24;
-    v25 = [(CLKUIColoringLabel *)v3->_label firstBaselineAnchor];
-    v26 = [(NTKUpNextAccessoryView *)v3 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-v10];
+    firstBaselineAnchor = [(CLKUIColoringLabel *)v3->_label firstBaselineAnchor];
+    bottomAnchor = [(NTKUpNextAccessoryView *)v3 bottomAnchor];
+    v27 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-v10];
     v40[2] = v27;
-    v28 = [(NTKUpNextAccessoryView *)v3 topAnchor];
-    v29 = [(CLKUIColoringLabel *)v3->_label firstBaselineAnchor];
+    topAnchor = [(NTKUpNextAccessoryView *)v3 topAnchor];
+    firstBaselineAnchor2 = [(CLKUIColoringLabel *)v3->_label firstBaselineAnchor];
     [v11 capHeight];
-    v31 = [v28 constraintEqualToAnchor:v29 constant:-(v10 + v30)];
+    v31 = [topAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:-(v10 + v30)];
     v40[3] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
 
@@ -75,19 +75,19 @@
   return v3;
 }
 
-- (void)configureWithDescription:(id)a3
+- (void)configureWithDescription:(id)description
 {
-  v8 = a3;
+  descriptionCopy = description;
   if (([(REAccessoryDescription *)self->_accessoryDescription isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_accessoryDescription, a3);
+    objc_storeStrong(&self->_accessoryDescription, description);
     [(CLKUIColoringLabel *)self->_label setText:0];
     label = self->_label;
-    v6 = [(REAccessoryDescription *)self->_accessoryDescription textProvider];
-    [(CLKUIColoringLabel *)label setTextProvider:v6];
+    textProvider = [(REAccessoryDescription *)self->_accessoryDescription textProvider];
+    [(CLKUIColoringLabel *)label setTextProvider:textProvider];
 
-    v7 = [(REAccessoryDescription *)self->_accessoryDescription backgroundColor];
-    [(NTKUpNextAccessoryView *)self setBackgroundColor:v7];
+    backgroundColor = [(REAccessoryDescription *)self->_accessoryDescription backgroundColor];
+    [(NTKUpNextAccessoryView *)self setBackgroundColor:backgroundColor];
   }
 }
 

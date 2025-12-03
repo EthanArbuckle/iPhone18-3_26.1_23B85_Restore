@@ -1,39 +1,39 @@
 @interface CALNNotification
-+ (id)notificationWithRequest:(id)a3 date:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNotification:(id)a3;
-- (CALNNotification)initWithCoder:(id)a3;
-- (CALNNotification)initWithNotificationRequest:(id)a3 date:(id)a4;
++ (id)notificationWithRequest:(id)request date:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNotification:(id)notification;
+- (CALNNotification)initWithCoder:(id)coder;
+- (CALNNotification)initWithNotificationRequest:(id)request date:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CALNNotification
 
-+ (id)notificationWithRequest:(id)a3 date:(id)a4
++ (id)notificationWithRequest:(id)request date:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CALNNotification alloc] initWithNotificationRequest:v6 date:v5];
+  dateCopy = date;
+  requestCopy = request;
+  v7 = [[CALNNotification alloc] initWithNotificationRequest:requestCopy date:dateCopy];
 
   return v7;
 }
 
-- (CALNNotification)initWithNotificationRequest:(id)a3 date:(id)a4
+- (CALNNotification)initWithNotificationRequest:(id)request date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = CALNNotification;
   v8 = [(CALNNotification *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
 
-    v11 = [v6 copy];
+    v11 = [requestCopy copy];
     request = v8->_request;
     v8->_request = v11;
   }
@@ -43,40 +43,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CALNNotification *)self date];
-  v4 = [v3 hash];
-  v5 = [(CALNNotification *)self request];
-  v6 = [v5 hash];
+  date = [(CALNNotification *)self date];
+  v4 = [date hash];
+  request = [(CALNNotification *)self request];
+  v6 = [request hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotification *)self isEqualToNotification:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotification *)self isEqualToNotification:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToNotification:(id)a3
+- (BOOL)isEqualToNotification:(id)notification
 {
-  v4 = a3;
-  if (self == v4)
+  notificationCopy = notification;
+  if (self == notificationCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(CALNNotification *)self date];
-    v6 = [(CALNNotification *)v4 date];
+    date = [(CALNNotification *)self date];
+    date2 = [(CALNNotification *)notificationCopy date];
     v7 = CalEqualObjects();
 
     if (v7)
     {
-      v8 = [(CALNNotification *)self request];
-      v9 = [(CALNNotification *)v4 request];
+      request = [(CALNNotification *)self request];
+      request2 = [(CALNNotification *)notificationCopy request];
       v10 = CalEqualObjects();
     }
 
@@ -93,28 +93,28 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CALNNotification *)self date];
-  v6 = [(CALNNotification *)self request];
-  v7 = [v3 stringWithFormat:@"<%@: %p(date: %@, request: %@)", v4, self, v5, v6];
+  date = [(CALNNotification *)self date];
+  request = [(CALNNotification *)self request];
+  v7 = [v3 stringWithFormat:@"<%@: %p(date: %@, request: %@)", v4, self, date, request];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CALNNotification *)self date];
-  [v4 encodeObject:v5 forKey:@"date"];
+  coderCopy = coder;
+  date = [(CALNNotification *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v6 = [(CALNNotification *)self request];
-  [v4 encodeObject:v6 forKey:@"request"];
+  request = [(CALNNotification *)self request];
+  [coderCopy encodeObject:request forKey:@"request"];
 }
 
-- (CALNNotification)initWithCoder:(id)a3
+- (CALNNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
 
   v7 = [(CALNNotification *)self initWithNotificationRequest:v6 date:v5];
   return v7;

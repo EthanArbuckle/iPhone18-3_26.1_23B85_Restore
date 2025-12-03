@@ -1,15 +1,15 @@
 @interface CKEncryptedString
-- (CKEncryptedString)initWithString:(id)a3;
+- (CKEncryptedString)initWithString:(id)string;
 - (NSString)string;
 @end
 
 @implementation CKEncryptedString
 
-- (CKEncryptedString)initWithString:(id)a3
+- (CKEncryptedString)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v29 = 0;
-  v5 = _CKCheckArgument("string", v4, 0, 0, 1, &v29);
+  v5 = _CKCheckArgument("string", stringCopy, 0, 0, 1, &v29);
   v6 = v29;
   if ((v5 & 1) == 0)
   {
@@ -24,7 +24,7 @@
   }
 
   v7 = objc_alloc_init(CKDPRecordFieldValueEncryptedValue);
-  v10 = objc_msgSend_copy(v4, v8, v9);
+  v10 = objc_msgSend_copy(stringCopy, v8, v9);
   objc_msgSend_setStringValue_(v7, v11, v10);
 
   v14 = objc_msgSend_data(v7, v12, v13);

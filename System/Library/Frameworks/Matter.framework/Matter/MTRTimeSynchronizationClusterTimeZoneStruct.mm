@@ -1,6 +1,6 @@
 @interface MTRTimeSynchronizationClusterTimeZoneStruct
 - (MTRTimeSynchronizationClusterTimeZoneStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTimeSynchronizationClusterTimeZoneStruct);
-  v5 = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self offset];
-  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setOffset:v5];
+  offset = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self offset];
+  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setOffset:offset];
 
-  v6 = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self validAt];
-  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setValidAt:v6];
+  validAt = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self validAt];
+  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setValidAt:validAt];
 
-  v7 = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self name];
-  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setName:v7];
+  name = [(MTRTimeSynchronizationClusterTimeZoneStruct *)self name];
+  [(MTRTimeSynchronizationClusterTimeZoneStruct *)v4 setName:name];
 
   return v4;
 }

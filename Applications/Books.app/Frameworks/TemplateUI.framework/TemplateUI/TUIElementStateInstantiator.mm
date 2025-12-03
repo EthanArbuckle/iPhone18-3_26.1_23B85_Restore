@@ -1,40 +1,40 @@
 @interface TUIElementStateInstantiator
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 containingBuilder:(id)a5 context:(id)a6 block:(id)a7;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)instantiateChildrenOfNode:(id)node object:(id)object containingBuilder:(id)builder context:(id)context block:(id)block;
 @end
 
 @implementation TUIElementStateInstantiator
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a3;
-  v9 = [a5 stringForAttribute:137 node:a4.var0];
+  objectCopy = object;
+  v9 = [attributes stringForAttribute:137 node:node.var0];
   v10 = v9;
   if (v9)
   {
     v12 = v9;
     v11 = [NSArray arrayWithObjects:&v12 count:1];
-    [v8 setStates:v11];
+    [objectCopy setStates:v11];
   }
 }
 
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 containingBuilder:(id)a5 context:(id)a6 block:(id)a7
++ (void)instantiateChildrenOfNode:(id)node object:(id)object containingBuilder:(id)builder context:(id)context block:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [a4 states];
+  builderCopy = builder;
+  contextCopy = context;
+  blockCopy = block;
+  states = [object states];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_13867C;
   v17[3] = &unk_262690;
-  v19 = v10;
-  v20 = v12;
-  v18 = v11;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
-  [v15 evaluateStates:v13 block:v17];
+  v19 = builderCopy;
+  v20 = blockCopy;
+  v18 = contextCopy;
+  v14 = builderCopy;
+  v15 = contextCopy;
+  v16 = blockCopy;
+  [v15 evaluateStates:states block:v17];
 }
 
 @end

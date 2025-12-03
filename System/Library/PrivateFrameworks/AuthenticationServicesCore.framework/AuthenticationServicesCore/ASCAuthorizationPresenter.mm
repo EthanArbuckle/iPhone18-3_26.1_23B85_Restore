@@ -2,34 +2,34 @@
 - (ASCAuthorizationPresenter)init;
 - (ASCAuthorizationPresenterCredentialExchangeDelegate)credentialExchangeDelegate;
 - (ASCAuthorizationPresenterDelegate)delegate;
-- (BOOL)_isErrorDueToNewAlertHandleRequest:(id)a3;
-- (BOOL)_isPresentationContextValid:(id)a3 error:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_invalidateWithError:(id)a3;
+- (BOOL)_isErrorDueToNewAlertHandleRequest:(id)request;
+- (BOOL)_isPresentationContextValid:(id)valid error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_invalidateWithError:(id)error;
 - (void)_performQueuedUpdatesIfNecessary;
-- (void)authorizationRequestFinishedWithCredential:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)authorizationRequestInitiatedWithLoginChoice:(id)a3 authenticatedContext:(id)a4 completionHandler:(id)a5;
+- (void)authorizationRequestFinishedWithCredential:(id)credential error:(id)error completionHandler:(id)handler;
+- (void)authorizationRequestInitiatedWithLoginChoice:(id)choice authenticatedContext:(id)context completionHandler:(id)handler;
 - (void)cableClientWillAuthenticate;
 - (void)cableClientWillConnect;
 - (void)cancelCurrentCredentialExchangeOperation;
 - (void)didIgnorePINRequest;
 - (void)dismiss;
-- (void)dismissWithError:(id)a3;
-- (void)getExportedCredentialData:(id)a3;
+- (void)dismissWithError:(id)error;
+- (void)getExportedCredentialData:(id)data;
 - (void)initializeClientToViewServiceConnection;
-- (void)presentAuthorizationWithContext:(id)a3 forProcess:(id)a4 completionHandler:(id)a5;
-- (void)presentError:(id)a3 forService:(id)a4 completionHandler:(id)a5;
-- (void)presentExportFlowForProcess:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)a3;
+- (void)presentAuthorizationWithContext:(id)context forProcess:(id)process completionHandler:(id)handler;
+- (void)presentError:(id)error forService:(id)service completionHandler:(id)handler;
+- (void)presentExportFlowForProcess:(id)process windowSceneIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)length;
 - (void)presentPINEntryInterface;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setTokenForImport:(id)a3;
-- (void)startCABLEAuthenticationWithCompletionHandler:(id)a3;
-- (void)updateInterfaceForUserVisibleError:(id)a3;
-- (void)updateInterfaceWithLoginChoices:(id)a3;
-- (void)userSelectedImportingDestinationWithBundleIdentfier:(id)a3;
-- (void)validateUserEnteredPIN:(id)a3 completionHandler:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setTokenForImport:(id)import;
+- (void)startCABLEAuthenticationWithCompletionHandler:(id)handler;
+- (void)updateInterfaceForUserVisibleError:(id)error;
+- (void)updateInterfaceWithLoginChoices:(id)choices;
+- (void)userSelectedImportingDestinationWithBundleIdentfier:(id)identfier;
+- (void)validateUserEnteredPIN:(id)n completionHandler:(id)handler;
 @end
 
 @implementation ASCAuthorizationPresenter
@@ -55,30 +55,30 @@
   return v2;
 }
 
-- (void)presentAuthorizationWithContext:(id)a3 forProcess:(id)a4 completionHandler:(id)a5
+- (void)presentAuthorizationWithContext:(id)context forProcess:(id)process completionHandler:(id)handler
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  processCopy = process;
+  handlerCopy = handler;
   v45 = 0;
-  v11 = [(ASCAuthorizationPresenter *)self _isPresentationContextValid:v8 error:&v45];
+  v11 = [(ASCAuthorizationPresenter *)self _isPresentationContextValid:contextCopy error:&v45];
   v12 = v45;
   if (v11)
   {
     v44 = v12;
-    v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v44];
+    v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v44];
     v14 = v44;
 
     if (v13)
     {
-      v15 = _Block_copy(v10);
+      v15 = _Block_copy(handlerCopy);
       credentialResultHandler = self->_credentialResultHandler;
       self->_credentialResultHandler = v15;
 
-      v17 = [MEMORY[0x1E696B0D8] anonymousListener];
+      anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
       remoteListener = self->_remoteListener;
-      self->_remoteListener = v17;
+      self->_remoteListener = anonymousListener;
 
       [(NSXPCListener *)self->_remoteListener setDelegate:self];
       [(NSXPCListener *)self->_remoteListener resume];
@@ -89,9 +89,9 @@
       v20 = objc_alloc(MEMORY[0x1E69D42A0]);
       v21 = [v20 initWithServiceName:authenticationServicesViewServiceBundleIdentifier viewControllerClassName:@"ASViewServiceViewController"];
       v22 = objc_opt_new();
-      v23 = [(NSXPCListener *)self->_remoteListener endpoint];
-      v24 = [v23 _endpoint];
-      [v22 setXpcEndpoint:v24];
+      endpoint = [(NSXPCListener *)self->_remoteListener endpoint];
+      _endpoint = [endpoint _endpoint];
+      [v22 setXpcEndpoint:_endpoint];
 
       [v22 setUserInfo:v19];
       v43 = v21;
@@ -135,10 +135,10 @@
       else
       {
         v32 = objc_opt_new();
-        if (v9)
+        if (processCopy)
         {
-          v33 = [MEMORY[0x1E69D42D8] predicateForProcess:v9];
-          [v8 windowSceneIdentifier];
+          v33 = [MEMORY[0x1E69D42D8] predicateForProcess:processCopy];
+          [contextCopy windowSceneIdentifier];
           v34 = v40 = v19;
           [v33 setScenePersistentIdentifier:v34];
 
@@ -160,31 +160,31 @@
         [ASCAuthorizationPresenter presentAuthorizationWithContext:v30 forProcess:? completionHandler:?];
       }
 
-      (*(v10 + 2))(v10, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
     v14 = v12;
   }
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentError:(id)a3 forService:(id)a4 completionHandler:(id)a5
+- (void)presentError:(id)error forService:(id)service completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  serviceCopy = service;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ASCAuthorizationPresenter_presentError_forService_completionHandler___block_invoke;
   v10[3] = &unk_1E8160138;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = serviceCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = serviceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
@@ -220,17 +220,17 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)updateInterfaceWithLoginChoices:(id)a3
+- (void)updateInterfaceWithLoginChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__ASCAuthorizationPresenter_updateInterfaceWithLoginChoices___block_invoke;
   v7[3] = &unk_1E815FD28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = choicesCopy;
+  v6 = choicesCopy;
   dispatch_async(interfaceUpdateQueue, v7);
 }
 
@@ -274,7 +274,7 @@ void *__53__ASCAuthorizationPresenter_presentPINEntryInterface__block_invoke(uin
   return result;
 }
 
-- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)a3
+- (void)presentNewPINEntryInterfaceWithMinLength:(unint64_t)length
 {
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -282,7 +282,7 @@ void *__53__ASCAuthorizationPresenter_presentPINEntryInterface__block_invoke(uin
   v4[2] = __70__ASCAuthorizationPresenter_presentNewPINEntryInterfaceWithMinLength___block_invoke;
   v4[3] = &unk_1E8160070;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = length;
   dispatch_async(interfaceUpdateQueue, v4);
 }
 
@@ -299,18 +299,18 @@ uint64_t __70__ASCAuthorizationPresenter_presentNewPINEntryInterfaceWithMinLengt
   return result;
 }
 
-- (void)updateInterfaceForUserVisibleError:(id)a3
+- (void)updateInterfaceForUserVisibleError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"com.apple.AuthenticationServicesCore.AuthorizationError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.AuthenticationServicesCore.AuthorizationError"];
 
   if (v6)
   {
-    v7 = [v4 code];
-    if ((v7 - 4) < 4 || v7 == 13)
+    code = [errorCopy code];
+    if ((code - 4) < 4 || code == 13)
     {
-      [(ASCViewServiceProtocol *)self->_viewServiceProxy updateInterfaceForUserVisibleError:v4];
+      [(ASCViewServiceProtocol *)self->_viewServiceProxy updateInterfaceForUserVisibleError:errorCopy];
     }
 
     else
@@ -344,28 +344,28 @@ uint64_t __70__ASCAuthorizationPresenter_presentNewPINEntryInterfaceWithMinLengt
   dispatch_async(interfaceUpdateQueue, block);
 }
 
-- (void)dismissWithError:(id)a3
+- (void)dismissWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   interfaceUpdateQueue = self->_interfaceUpdateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__ASCAuthorizationPresenter_dismissWithError___block_invoke;
   v7[3] = &unk_1E815FD28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(interfaceUpdateQueue, v7);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -377,7 +377,7 @@ uint64_t __70__ASCAuthorizationPresenter_presentNewPINEntryInterfaceWithMinLengt
   HasEntitlement = WBSAuditTokenHasEntitlement();
   if (HasEntitlement)
   {
-    objc_storeStrong(&self->_viewServiceConnection, a4);
+    objc_storeStrong(&self->_viewServiceConnection, connection);
     v10 = +[ASCAuthorizationPresenterHostInterface xpcInterface];
     [(NSXPCConnection *)self->_viewServiceConnection setExportedInterface:v10];
 
@@ -445,15 +445,15 @@ void __64__ASCAuthorizationPresenter_listener_shouldAcceptNewConnection___block_
   }
 }
 
-- (BOOL)_isPresentationContextValid:(id)a3 error:(id *)a4
+- (BOOL)_isPresentationContextValid:(id)valid error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 requestTypes] & 0x200) != 0)
+  validCopy = valid;
+  if (([validCopy requestTypes] & 0x200) != 0)
   {
-    if ([v5 requestTypes] != 512)
+    if ([validCopy requestTypes] != 512)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_12:
         v8 = 0;
@@ -468,7 +468,7 @@ LABEL_12:
       v12 = &v18;
 LABEL_11:
       v13 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-      *a4 = [v9 errorWithDomain:@"com.apple.AuthenticationServicesCore.AuthorizationError" code:1 userInfo:v13];
+      *error = [v9 errorWithDomain:@"com.apple.AuthenticationServicesCore.AuthorizationError" code:1 userInfo:v13];
 
       goto LABEL_12;
     }
@@ -476,18 +476,18 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v6 = [v5 cableAuthenticatorURL];
+  cableAuthenticatorURL = [validCopy cableAuthenticatorURL];
 
-  if (v6 || ![v5 isRegistrationRequest])
+  if (cableAuthenticatorURL || ![validCopy isRegistrationRequest])
   {
 LABEL_8:
     v8 = 1;
     goto LABEL_13;
   }
 
-  v7 = [v5 requestTypes];
-  v8 = (v7 & 0xFFFFFFFFFFFFFFABLL) == 0;
-  if (a4 && (v7 & 0xFFFFFFFFFFFFFFABLL) != 0)
+  requestTypes = [validCopy requestTypes];
+  v8 = (requestTypes & 0xFFFFFFFFFFFFFFABLL) == 0;
+  if (error && (requestTypes & 0xFFFFFFFFFFFFFFABLL) != 0)
   {
     v9 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A588];
@@ -556,17 +556,17 @@ void __61__ASCAuthorizationPresenter__performQueuedUpdatesIfNecessary__block_inv
   }
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   invalidationQueue = self->_invalidationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ASCAuthorizationPresenter__invalidateWithError___block_invoke;
   v7[3] = &unk_1E815FD28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(invalidationQueue, v7);
 }
 
@@ -650,7 +650,7 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   return result;
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -662,10 +662,10 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   [(ASCAuthorizationPresenter *)self _invalidateWithError:v5];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(ASCAuthorizationPresenter *)self _isErrorDueToNewAlertHandleRequest:v5];
+  errorCopy = error;
+  v6 = [(ASCAuthorizationPresenter *)self _isErrorDueToNewAlertHandleRequest:errorCopy];
   v7 = WBS_LOG_CHANNEL_PREFIXAuthorization();
   v8 = v7;
   if (v6)
@@ -697,54 +697,54 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   [(ASCAuthorizationPresenter *)self _invalidateWithError:v10];
 }
 
-- (BOOL)_isErrorDueToNewAlertHandleRequest:(id)a3
+- (BOOL)_isErrorDueToNewAlertHandleRequest:(id)request
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = *MEMORY[0x1E69D4468];
   v9[0] = &unk_1F41ABC10;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  requestCopy = request;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  LOBYTE(v3) = [v4 safari_matchesErrorDomainsAndCodes:v5];
+  LOBYTE(v3) = [requestCopy safari_matchesErrorDomainsAndCodes:v5];
 
   v6 = *MEMORY[0x1E69E9840];
   return v3;
 }
 
-- (void)authorizationRequestInitiatedWithLoginChoice:(id)a3 authenticatedContext:(id)a4 completionHandler:(id)a5
+- (void)authorizationRequestInitiatedWithLoginChoice:(id)choice authenticatedContext:(id)context completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
+  choiceCopy = choice;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained authorizationPresenter:self credentialRequestedForLoginChoice:v10 authenticatedContext:v9 completionHandler:v8];
+  [WeakRetained authorizationPresenter:self credentialRequestedForLoginChoice:choiceCopy authenticatedContext:contextCopy completionHandler:handlerCopy];
 }
 
-- (void)authorizationRequestFinishedWithCredential:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)authorizationRequestFinishedWithCredential:(id)credential error:(id)error completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  credentialCopy = credential;
+  errorCopy = error;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained authorizationPresenter:self didFinishWithCredential:v13 error:v8];
+  [WeakRetained authorizationPresenter:self didFinishWithCredential:credentialCopy error:errorCopy];
 
   credentialResultHandler = self->_credentialResultHandler;
   if (credentialResultHandler)
   {
-    credentialResultHandler[2](credentialResultHandler, v13, v8);
+    credentialResultHandler[2](credentialResultHandler, credentialCopy, errorCopy);
     v12 = self->_credentialResultHandler;
     self->_credentialResultHandler = 0;
   }
 
-  v9[2](v9);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)validateUserEnteredPIN:(id)a3 completionHandler:(id)a4
+- (void)validateUserEnteredPIN:(id)n completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  nCopy = n;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained authorizationPresenter:self validateUserEnteredPIN:v7 completionHandler:v6];
+  [WeakRetained authorizationPresenter:self validateUserEnteredPIN:nCopy completionHandler:handlerCopy];
 }
 
 - (void)didIgnorePINRequest
@@ -763,24 +763,24 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   }
 }
 
-- (void)startCABLEAuthenticationWithCompletionHandler:(id)a3
+- (void)startCABLEAuthenticationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained authorizationPresenter:self startCABLEAuthenticationWithCompletionHandler:v4];
+  [WeakRetained authorizationPresenter:self startCABLEAuthenticationWithCompletionHandler:handlerCopy];
 }
 
-- (void)presentExportFlowForProcess:(id)a3 windowSceneIdentifier:(id)a4 completionHandler:(id)a5
+- (void)presentExportFlowForProcess:(id)process windowSceneIdentifier:(id)identifier completionHandler:(id)handler
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 auditToken];
-  v12 = v11;
-  if (v11)
+  processCopy = process;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  auditToken = [processCopy auditToken];
+  v12 = auditToken;
+  if (auditToken)
   {
-    [v11 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -798,14 +798,14 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   if (v14)
   {
     v44 = v15;
-    v45 = v9;
-    v17 = [MEMORY[0x1E696B0D8] anonymousListener];
+    v45 = identifierCopy;
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     remoteListener = self->_remoteListener;
-    self->_remoteListener = v17;
+    self->_remoteListener = anonymousListener;
 
     [(NSXPCListener *)self->_remoteListener setDelegate:self];
     [(NSXPCListener *)self->_remoteListener resume];
-    v19 = _Block_copy(v10);
+    v19 = _Block_copy(handlerCopy);
     presentExportFlowResultHandler = self->_presentExportFlowResultHandler;
     self->_presentExportFlowResultHandler = v19;
 
@@ -815,9 +815,9 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
     v22 = objc_alloc(MEMORY[0x1E69D42A0]);
     v23 = [v22 initWithServiceName:authenticationServicesViewServiceBundleIdentifier viewControllerClassName:@"ASViewServiceViewController"];
     v24 = objc_opt_new();
-    v25 = [(NSXPCListener *)self->_remoteListener endpoint];
-    v26 = [v25 _endpoint];
-    [v24 setXpcEndpoint:v26];
+    endpoint = [(NSXPCListener *)self->_remoteListener endpoint];
+    _endpoint = [endpoint _endpoint];
+    [v24 setXpcEndpoint:_endpoint];
 
     v43 = v21;
     [v24 setUserInfo:v21];
@@ -853,28 +853,28 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
       v34 = [v40 errorWithDomain:@"com.apple.AuthenticationServicesCore.AuthorizationError" code:1 userInfo:v41];
 
-      (*(v10 + 2))(v10, 0, v34);
+      (*(handlerCopy + 2))(handlerCopy, 0, v34);
       [(ASCAuthorizationPresenter *)self _invalidateWithError:v34];
     }
 
     else
     {
       v34 = objc_opt_new();
-      if (v8)
+      if (processCopy)
       {
-        v35 = [MEMORY[0x1E69D42D8] predicateForProcess:v8];
+        v35 = [MEMORY[0x1E69D42D8] predicateForProcess:processCopy];
         [v35 setScenePersistentIdentifier:v45];
         v36 = [objc_alloc(MEMORY[0x1E69D42C0]) initWithTargetPredicate:v35];
         [v34 setPresentationTarget:v36];
       }
 
       [(SBSRemoteAlertHandle *)self->_remoteAlertHandle activateWithContext:v34];
-      v37 = _Block_copy(v10);
+      v37 = _Block_copy(handlerCopy);
       v38 = self->_presentExportFlowResultHandler;
       self->_presentExportFlowResultHandler = v37;
     }
 
-    v9 = v45;
+    identifierCopy = v45;
 
     v16 = v44;
   }
@@ -887,18 +887,18 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
       [ASCAuthorizationPresenter presentExportFlowForProcess:windowSceneIdentifier:completionHandler:];
     }
 
-    (*(v10 + 2))(v10, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userSelectedImportingDestinationWithBundleIdentfier:(id)a3
+- (void)userSelectedImportingDestinationWithBundleIdentfier:(id)identfier
 {
   presentExportFlowResultHandler = self->_presentExportFlowResultHandler;
   if (presentExportFlowResultHandler)
   {
-    presentExportFlowResultHandler[2](presentExportFlowResultHandler, a3, 0);
+    presentExportFlowResultHandler[2](presentExportFlowResultHandler, identfier, 0);
     v5 = self->_presentExportFlowResultHandler;
     self->_presentExportFlowResultHandler = 0;
   }
@@ -913,19 +913,19 @@ void *__56__ASCAuthorizationPresenter_cableClientWillAuthenticate__block_invoke(
   }
 }
 
-- (void)setTokenForImport:(id)a3
+- (void)setTokenForImport:(id)import
 {
   self->_exportDidComplete = 1;
-  v4 = a3;
+  importCopy = import;
   WeakRetained = objc_loadWeakRetained(&self->_credentialExchangeDelegate);
-  [WeakRetained setTokenForImport:v4];
+  [WeakRetained setTokenForImport:importCopy];
 }
 
-- (void)getExportedCredentialData:(id)a3
+- (void)getExportedCredentialData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_credentialExchangeDelegate);
-  [WeakRetained getExportedCredentialData:v4];
+  [WeakRetained getExportedCredentialData:dataCopy];
 }
 
 - (void)cancelCurrentCredentialExchangeOperation

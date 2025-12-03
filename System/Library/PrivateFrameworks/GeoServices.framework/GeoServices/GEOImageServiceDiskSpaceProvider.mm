@@ -1,13 +1,13 @@
 @interface GEOImageServiceDiskSpaceProvider
-- (BOOL)_shouldPurgeForUrgency:(int)a3;
+- (BOOL)_shouldPurgeForUrgency:(int)urgency;
 - (int)minimumUregency;
 @end
 
 @implementation GEOImageServiceDiskSpaceProvider
 
-- (BOOL)_shouldPurgeForUrgency:(int)a3
+- (BOOL)_shouldPurgeForUrgency:(int)urgency
 {
-  if ([(GEOImageServiceDiskSpaceProvider *)self minimumUregency]> a3)
+  if ([(GEOImageServiceDiskSpaceProvider *)self minimumUregency]> urgency)
   {
     goto LABEL_2;
   }

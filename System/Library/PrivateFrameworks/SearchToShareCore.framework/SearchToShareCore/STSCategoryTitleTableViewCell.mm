@@ -1,41 +1,41 @@
 @interface STSCategoryTitleTableViewCell
-- (STSCategoryTitleTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (STSCategoryTitleTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (STSCategoryTitleTableViewCellDelegate)selectionDelegate;
-- (void)clearButtonPressed:(id)a3;
+- (void)clearButtonPressed:(id)pressed;
 @end
 
 @implementation STSCategoryTitleTableViewCell
 
-- (STSCategoryTitleTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (STSCategoryTitleTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = STSCategoryTitleTableViewCell;
-  v4 = [(STSCategoryTitleTableViewCell *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(STSCategoryTitleTableViewCell *)&v29 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v28 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
-    v5 = [v28 fontDescriptor];
-    v6 = [v5 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v28 fontDescriptor];
+    v6 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
-    v7 = [(STSCategoryTitleTableViewCell *)v4 textLabel];
+    textLabel = [(STSCategoryTitleTableViewCell *)v4 textLabel];
     v8 = [MEMORY[0x277D74300] fontWithDescriptor:v6 size:0.0];
-    [v7 setFont:v8];
+    [textLabel setFont:v8];
 
-    v9 = [(STSCategoryTitleTableViewCell *)v4 textLabel];
-    [v9 setAdjustsFontSizeToFitWidth:1];
+    textLabel2 = [(STSCategoryTitleTableViewCell *)v4 textLabel];
+    [textLabel2 setAdjustsFontSizeToFitWidth:1];
 
     v10 = [MEMORY[0x277D75220] buttonWithType:1];
     v11 = STSLocalizedString(@"CLEAR");
     [(UIButton *)v10 setTitle:v11 forState:0];
-    v12 = [(UIButton *)v10 titleLabel];
+    titleLabel = [(UIButton *)v10 titleLabel];
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76920]];
-    [v12 setFont:v13];
+    [titleLabel setFont:v13];
 
-    v14 = [(UIButton *)v10 titleLabel];
-    [v14 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(UIButton *)v10 titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v15 = [MEMORY[0x277D75348] systemPinkColor];
-    [(UIButton *)v10 setTintColor:v15];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+    [(UIButton *)v10 setTintColor:systemPinkColor];
 
     [(UIButton *)v10 addTarget:v4 action:sel_clearButtonPressed_ forControlEvents:64];
     [(UIButton *)v10 setHidden:1];
@@ -45,31 +45,31 @@
     v17 = v10;
 
     [(STSCategoryTitleTableViewCell *)v4 addSubview:v4->_clearButton];
-    v18 = [MEMORY[0x277CBEB18] array];
-    v19 = [(STSCategoryTitleTableViewCell *)v4 readableContentGuide];
-    v20 = [(UIButton *)v4->_clearButton centerYAnchor];
-    v21 = [(STSCategoryTitleTableViewCell *)v4 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
-    [v18 addObject:v22];
+    array = [MEMORY[0x277CBEB18] array];
+    readableContentGuide = [(STSCategoryTitleTableViewCell *)v4 readableContentGuide];
+    centerYAnchor = [(UIButton *)v4->_clearButton centerYAnchor];
+    centerYAnchor2 = [(STSCategoryTitleTableViewCell *)v4 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v22];
 
-    v23 = [(UIButton *)v4->_clearButton trailingAnchor];
-    v24 = [(STSCategoryTitleTableViewCell *)v4 contentView];
-    v25 = [v24 trailingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:-10.0];
-    [v18 addObject:v26];
+    trailingAnchor = [(UIButton *)v4->_clearButton trailingAnchor];
+    contentView = [(STSCategoryTitleTableViewCell *)v4 contentView];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
+    [array addObject:v26];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v18];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v4;
 }
 
-- (void)clearButtonPressed:(id)a3
+- (void)clearButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_selectionDelegate);
-  v5 = [(STSCategoryTitleTableViewCell *)self result];
-  [WeakRetained clearButton:v4 pressedForCategoryResult:v5];
+  result = [(STSCategoryTitleTableViewCell *)self result];
+  [WeakRetained clearButton:pressedCopy pressedForCategoryResult:result];
 }
 
 - (STSCategoryTitleTableViewCellDelegate)selectionDelegate

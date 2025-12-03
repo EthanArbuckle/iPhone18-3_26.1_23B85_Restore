@@ -1,6 +1,6 @@
 @interface DMDRemoveProtectedProfileOperation
 + (id)whitelistedClassesForRequest;
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5;
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation DMDRemoveProtectedProfileOperation
@@ -12,12 +12,12 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 installationType:(int64_t)a4 completion:(id)a5
+- (void)removeProfileWithIdentifier:(id)identifier installationType:(int64_t)type completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v9 = +[MCProfileConnection sharedConnection];
-  [v9 removeProtectedProfileAsyncWithIdentifier:v8 installationType:a4 completion:v7];
+  [v9 removeProtectedProfileAsyncWithIdentifier:identifierCopy installationType:type completion:completionCopy];
 }
 
 @end

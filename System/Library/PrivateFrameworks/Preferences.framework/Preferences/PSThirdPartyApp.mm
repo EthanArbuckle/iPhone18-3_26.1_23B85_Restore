@@ -1,31 +1,31 @@
 @interface PSThirdPartyApp
 - (LSApplicationProxy)proxy;
-- (PSThirdPartyApp)initWithApplicationProxy:(id)a3;
-- (PSThirdPartyApp)initWithApplicationRecord:(id)a3;
+- (PSThirdPartyApp)initWithApplicationProxy:(id)proxy;
+- (PSThirdPartyApp)initWithApplicationRecord:(id)record;
 - (id)description;
 - (id)localizedName;
 @end
 
 @implementation PSThirdPartyApp
 
-- (PSThirdPartyApp)initWithApplicationProxy:(id)a3
+- (PSThirdPartyApp)initWithApplicationProxy:(id)proxy
 {
-  v4 = [a3 correspondingApplicationRecord];
-  v5 = [(PSThirdPartyApp *)self initWithApplicationRecord:v4];
+  correspondingApplicationRecord = [proxy correspondingApplicationRecord];
+  v5 = [(PSThirdPartyApp *)self initWithApplicationRecord:correspondingApplicationRecord];
 
   return v5;
 }
 
-- (PSThirdPartyApp)initWithApplicationRecord:(id)a3
+- (PSThirdPartyApp)initWithApplicationRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = PSThirdPartyApp;
   v6 = [(PSThirdPartyApp *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_record, a3);
+    objc_storeStrong(&v6->_record, record);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (LSApplicationProxy)proxy
 {
-  v3 = [(LSApplicationRecord *)self->_record bundleIdentifier];
-  NSLog(&cfstr_OverrideWithRe.isa, v3);
+  bundleIdentifier = [(LSApplicationRecord *)self->_record bundleIdentifier];
+  NSLog(&cfstr_OverrideWithRe.isa, bundleIdentifier);
 
   record = self->_record;
 
@@ -46,16 +46,16 @@
   localizedName = self->_localizedName;
   if (!localizedName)
   {
-    v4 = [(LSApplicationRecord *)self->_record localizedName];
-    if (![v4 length])
+    localizedName = [(LSApplicationRecord *)self->_record localizedName];
+    if (![localizedName length])
     {
-      v5 = [(LSApplicationRecord *)self->_record localizedName];
+      localizedName2 = [(LSApplicationRecord *)self->_record localizedName];
 
-      v4 = v5;
+      localizedName = localizedName2;
     }
 
     v6 = self->_localizedName;
-    self->_localizedName = v4;
+    self->_localizedName = localizedName;
 
     localizedName = self->_localizedName;
   }

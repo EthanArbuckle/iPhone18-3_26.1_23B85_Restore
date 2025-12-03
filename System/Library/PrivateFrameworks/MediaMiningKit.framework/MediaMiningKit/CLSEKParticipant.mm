@@ -1,16 +1,16 @@
 @interface CLSEKParticipant
-- (BOOL)isEqual:(id)a3;
-- (CLSEKParticipant)initWithCoder:(id)a3;
-- (CLSEKParticipant)initWithEKParticipant:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSEKParticipant)initWithCoder:(id)coder;
+- (CLSEKParticipant)initWithEKParticipant:(id)participant;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSEKParticipant
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -21,7 +21,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(CLSEKParticipant *)self hash];
-      v6 = v5 == [(CLSEKParticipant *)v4 hash];
+      v6 = v5 == [(CLSEKParticipant *)equalCopy hash];
     }
 
     else
@@ -33,83 +33,83 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URL = self->_URL;
-  v5 = a3;
-  [v5 encodeObject:URL forKey:@"URL"];
-  [v5 encodeInteger:self->_participantStatus forKey:@"participantStatus"];
-  [v5 encodeObject:self->_emailAddress forKey:@"emailAddress"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeBool:self->_isCurrentUser forKey:@"isCurrentUser"];
-  [v5 encodeInteger:self->_participantType forKey:@"participantType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URL forKey:@"URL"];
+  [coderCopy encodeInteger:self->_participantStatus forKey:@"participantStatus"];
+  [coderCopy encodeObject:self->_emailAddress forKey:@"emailAddress"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeBool:self->_isCurrentUser forKey:@"isCurrentUser"];
+  [coderCopy encodeInteger:self->_participantType forKey:@"participantType"];
 }
 
-- (CLSEKParticipant)initWithCoder:(id)a3
+- (CLSEKParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CLSEKParticipant;
   v5 = [(CLSEKParticipant *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v5->_participantStatus = [v4 decodeIntegerForKey:@"participantStatus"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
+    v5->_participantStatus = [coderCopy decodeIntegerForKey:@"participantStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
-    v5->_isCurrentUser = [v4 decodeBoolForKey:@"isCurrentUser"];
-    v5->_participantType = [v4 decodeIntegerForKey:@"participantType"];
+    v5->_isCurrentUser = [coderCopy decodeBoolForKey:@"isCurrentUser"];
+    v5->_participantType = [coderCopy decodeIntegerForKey:@"participantType"];
   }
 
   return v5;
 }
 
-- (CLSEKParticipant)initWithEKParticipant:(id)a3
+- (CLSEKParticipant)initWithEKParticipant:(id)participant
 {
-  v4 = a3;
-  if (v4)
+  participantCopy = participant;
+  if (participantCopy)
   {
     v14.receiver = self;
     v14.super_class = CLSEKParticipant;
     v5 = [(CLSEKParticipant *)&v14 init];
     if (v5)
     {
-      v6 = [v4 URL];
+      v6 = [participantCopy URL];
       URL = v5->_URL;
       v5->_URL = v6;
 
-      v5->_participantStatus = [v4 participantStatus];
-      v8 = [v4 emailAddress];
+      v5->_participantStatus = [participantCopy participantStatus];
+      emailAddress = [participantCopy emailAddress];
       emailAddress = v5->_emailAddress;
-      v5->_emailAddress = v8;
+      v5->_emailAddress = emailAddress;
 
-      v10 = [v4 name];
+      name = [participantCopy name];
       name = v5->_name;
-      v5->_name = v10;
+      v5->_name = name;
 
-      v5->_isCurrentUser = [v4 isCurrentUser];
-      v5->_participantType = [v4 participantType];
+      v5->_isCurrentUser = [participantCopy isCurrentUser];
+      v5->_participantType = [participantCopy participantType];
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

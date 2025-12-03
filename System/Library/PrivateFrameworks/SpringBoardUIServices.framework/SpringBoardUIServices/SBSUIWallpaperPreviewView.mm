@@ -1,8 +1,8 @@
 @interface SBSUIWallpaperPreviewView
-- (SBSUIWallpaperPreviewView)initWithFrame:(CGRect)a3 wallpaperView:(id)a4 disableParallax:(BOOL)a5;
+- (SBSUIWallpaperPreviewView)initWithFrame:(CGRect)frame wallpaperView:(id)view disableParallax:(BOOL)parallax;
 - (SBSUIWallpaperPreviewViewDelegate)delegate;
 - (id)_makeButtonWithVisualEffectBlur;
-- (void)_fadeOutInstructionsWithDelay:(double)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_fadeOutInstructionsWithDelay:(double)delay animated:(BOOL)animated completion:(id)completion;
 - (void)_layoutCancelButton;
 - (void)_layoutDateView;
 - (void)_layoutGradientView;
@@ -12,51 +12,51 @@
 - (void)_layoutSetButton;
 - (void)_layoutStackedButtons;
 - (void)_layoutWallpaperView;
-- (void)_userDidTapOnCancelButton:(id)a3;
-- (void)_userDidTapOnIrisButton:(id)a3;
-- (void)_userDidTapOnParallaxButton:(id)a3;
-- (void)_userDidTapOnSetButton:(id)a3;
+- (void)_userDidTapOnCancelButton:(id)button;
+- (void)_userDidTapOnIrisButton:(id)button;
+- (void)_userDidTapOnParallaxButton:(id)button;
+- (void)_userDidTapOnSetButton:(id)button;
 - (void)dealloc;
-- (void)displayInstructionsForEffect:(unint64_t)a3 enabled:(BOOL)a4 animated:(BOOL)a5;
-- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)a3;
+- (void)displayInstructionsForEffect:(unint64_t)effect enabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setCancelButton:(id)a3;
-- (void)setDateView:(id)a3;
-- (void)setIrisButton:(id)a3;
-- (void)setParallaxButton:(id)a3;
-- (void)setSetButton:(id)a3;
-- (void)setWallpaperView:(id)a3;
-- (void)updateForChangedSettings:(id)a3;
+- (void)setCancelButton:(id)button;
+- (void)setDateView:(id)view;
+- (void)setIrisButton:(id)button;
+- (void)setParallaxButton:(id)button;
+- (void)setSetButton:(id)button;
+- (void)setWallpaperView:(id)view;
+- (void)updateForChangedSettings:(id)settings;
 @end
 
 @implementation SBSUIWallpaperPreviewView
 
-- (SBSUIWallpaperPreviewView)initWithFrame:(CGRect)a3 wallpaperView:(id)a4 disableParallax:(BOOL)a5
+- (SBSUIWallpaperPreviewView)initWithFrame:(CGRect)frame wallpaperView:(id)view disableParallax:(BOOL)parallax
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v84.receiver = self;
   v84.super_class = SBSUIWallpaperPreviewView;
-  v13 = [(SBSUIWallpaperPreviewView *)&v84 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(SBSUIWallpaperPreviewView *)&v84 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    [(SBSUIWallpaperPreviewView *)v13 setBackgroundColor:v14];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(SBSUIWallpaperPreviewView *)height setBackgroundColor:blackColor];
 
-    objc_storeStrong(&v13->_wallpaperView, a4);
-    if (v13->_wallpaperView)
+    objc_storeStrong(&height->_wallpaperView, view);
+    if (height->_wallpaperView)
     {
-      [(SBSUIWallpaperPreviewView *)v13 addSubview:?];
+      [(SBSUIWallpaperPreviewView *)height addSubview:?];
     }
 
-    v77 = [v12 supportsCropping];
-    v81 = v12;
+    supportsCropping = [viewCopy supportsCropping];
+    v81 = viewCopy;
     if ([MEMORY[0x1E69DD250] _motionEffectsEnabled])
     {
-      v15 = [objc_opt_class() allowsParallax] & !a5;
+      v15 = [objc_opt_class() allowsParallax] & !parallax;
     }
 
     else
@@ -64,8 +64,8 @@
       v15 = 0;
     }
 
-    v13->_parallaxPossible = v15;
-    v16 = v13->_wallpaperView;
+    height->_parallaxPossible = v15;
+    v16 = height->_wallpaperView;
     if (objc_opt_respondsToSelector())
     {
       v17 = v16;
@@ -78,7 +78,7 @@
 
     v18 = v17;
 
-    v13->_irisPossible = v18 != 0;
+    height->_irisPossible = v18 != 0;
     v19 = *MEMORY[0x1E69DDD80];
     v20 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:?];
     v21 = [v20 fontDescriptorWithSymbolicTraits:0];
@@ -89,101 +89,101 @@
     [MEMORY[0x1E69D3FE8] dateLabelFontSize];
     v82 = [MEMORY[0x1E69DB878] systemFontOfSize:?];
     v22 = 0x1E696A000;
-    if (v13->_irisPossible)
+    if (height->_irisPossible)
     {
-      v23 = [(SBSUIWallpaperPreviewView *)v13 _makeButtonWithVisualEffectBlur];
+      _makeButtonWithVisualEffectBlur = [(SBSUIWallpaperPreviewView *)height _makeButtonWithVisualEffectBlur];
       v24 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"livephoto.slash" withConfiguration:v83];
-      [v23 setImage:v24 forState:0];
+      [_makeButtonWithVisualEffectBlur setImage:v24 forState:0];
 
       v25 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"livephoto" withConfiguration:v83];
-      [v23 setImage:v25 forState:4];
+      [_makeButtonWithVisualEffectBlur setImage:v25 forState:4];
 
-      v26 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [v23 setTintColor:v26];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [_makeButtonWithVisualEffectBlur setTintColor:systemWhiteColor];
 
-      [v23 addTarget:v13 action:sel__userDidTapOnIrisButton_ forControlEvents:64];
-      [(SBSUIWallpaperPreviewView *)v13 setIrisButton:v23];
+      [_makeButtonWithVisualEffectBlur addTarget:height action:sel__userDidTapOnIrisButton_ forControlEvents:64];
+      [(SBSUIWallpaperPreviewView *)height setIrisButton:_makeButtonWithVisualEffectBlur];
       v27 = objc_alloc(MEMORY[0x1E69DD5B0]);
       v28 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v29 = [v28 localizedStringForKey:@"IRIS_INSTRUCTIONS_LINE_1" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices-OrbHW"];
       v30 = [v27 initWithSettings:0 strength:v29 string:v82 font:5.0];
-      irisInstructionsLabel1 = v13->_irisInstructionsLabel1;
-      v13->_irisInstructionsLabel1 = v30;
+      irisInstructionsLabel1 = height->_irisInstructionsLabel1;
+      height->_irisInstructionsLabel1 = v30;
 
-      [(_UILegibilityLabel *)v13->_irisInstructionsLabel1 setAlpha:0.0];
-      [(SBSUIWallpaperPreviewView *)v13 addSubview:v13->_irisInstructionsLabel1];
+      [(_UILegibilityLabel *)height->_irisInstructionsLabel1 setAlpha:0.0];
+      [(SBSUIWallpaperPreviewView *)height addSubview:height->_irisInstructionsLabel1];
       v32 = objc_alloc(MEMORY[0x1E69DD5B0]);
       v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v34 = [v33 localizedStringForKey:@"IRIS_INSTRUCTIONS_LINE_2" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices-OrbHW"];
       v22 = 0x1E696A000uLL;
       v35 = [v32 initWithSettings:0 strength:v34 string:v82 font:5.0];
-      irisInstructionsLabel2 = v13->_irisInstructionsLabel2;
-      v13->_irisInstructionsLabel2 = v35;
+      irisInstructionsLabel2 = height->_irisInstructionsLabel2;
+      height->_irisInstructionsLabel2 = v35;
 
-      [(_UILegibilityLabel *)v13->_irisInstructionsLabel2 setAlpha:0.0];
-      [(SBSUIWallpaperPreviewView *)v13 addSubview:v13->_irisInstructionsLabel2];
-      [(PBUIWallpaperView *)v13->_wallpaperView setIrisDelegate:v13];
+      [(_UILegibilityLabel *)height->_irisInstructionsLabel2 setAlpha:0.0];
+      [(SBSUIWallpaperPreviewView *)height addSubview:height->_irisInstructionsLabel2];
+      [(PBUIWallpaperView *)height->_wallpaperView setIrisDelegate:height];
     }
 
-    if (v13->_parallaxPossible)
+    if (height->_parallaxPossible)
     {
-      v37 = [(SBSUIWallpaperPreviewView *)v13 _makeButtonWithVisualEffectBlur];
+      _makeButtonWithVisualEffectBlur2 = [(SBSUIWallpaperPreviewView *)height _makeButtonWithVisualEffectBlur];
       v38 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"rectangle.and.arrow.up.right.and.arrow.down.left.slash" withConfiguration:v83];
-      [v37 setImage:v38 forState:0];
+      [_makeButtonWithVisualEffectBlur2 setImage:v38 forState:0];
 
       v39 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"rectangle.and.arrow.up.right.and.arrow.down.left" withConfiguration:v83];
-      [v37 setImage:v39 forState:4];
+      [_makeButtonWithVisualEffectBlur2 setImage:v39 forState:4];
 
-      v40 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [v37 setTintColor:v40];
+      systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [_makeButtonWithVisualEffectBlur2 setTintColor:systemWhiteColor2];
 
-      [v37 addTarget:v13 action:sel__userDidTapOnParallaxButton_ forControlEvents:64];
-      [(SBSUIWallpaperPreviewView *)v13 setParallaxButton:v37];
+      [_makeButtonWithVisualEffectBlur2 addTarget:height action:sel__userDidTapOnParallaxButton_ forControlEvents:64];
+      [(SBSUIWallpaperPreviewView *)height setParallaxButton:_makeButtonWithVisualEffectBlur2];
     }
 
     v41 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v19];
     v42 = [v41 fontDescriptorWithSymbolicTraits:2];
 
-    v43 = [(SBSUIWallpaperPreviewView *)v13 _makeButtonWithVisualEffectBlur];
-    v44 = [v43 layer];
+    _makeButtonWithVisualEffectBlur3 = [(SBSUIWallpaperPreviewView *)height _makeButtonWithVisualEffectBlur];
+    layer = [_makeButtonWithVisualEffectBlur3 layer];
     v45 = *MEMORY[0x1E69796E8];
-    [v44 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
 
-    v46 = [v43 titleLabel];
+    titleLabel = [_makeButtonWithVisualEffectBlur3 titleLabel];
     v47 = [MEMORY[0x1E69DB878] fontWithDescriptor:v42 size:0.0];
-    [v46 setFont:v47];
+    [titleLabel setFont:v47];
 
     v48 = [*(v22 + 2792) bundleForClass:objc_opt_class()];
     v49 = [v48 localizedStringForKey:@"WALLPAPER_PREVIEW_VIEW_CANCEL" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
     v75 = v49;
-    [v43 setTitle:v49 forState:0];
-    [v43 addTarget:v13 action:sel__userDidTapOnCancelButton_ forControlEvents:64];
-    [(SBSUIWallpaperPreviewView *)v13 setCancelButton:v43];
-    v50 = [(SBSUIWallpaperPreviewView *)v13 _makeButtonWithVisualEffectBlur];
-    v51 = [v50 layer];
-    [v51 setCornerCurve:v45];
+    [_makeButtonWithVisualEffectBlur3 setTitle:v49 forState:0];
+    [_makeButtonWithVisualEffectBlur3 addTarget:height action:sel__userDidTapOnCancelButton_ forControlEvents:64];
+    [(SBSUIWallpaperPreviewView *)height setCancelButton:_makeButtonWithVisualEffectBlur3];
+    _makeButtonWithVisualEffectBlur4 = [(SBSUIWallpaperPreviewView *)height _makeButtonWithVisualEffectBlur];
+    layer2 = [_makeButtonWithVisualEffectBlur4 layer];
+    [layer2 setCornerCurve:v45];
 
-    v52 = [v50 titleLabel];
+    titleLabel2 = [_makeButtonWithVisualEffectBlur4 titleLabel];
     v76 = v42;
     v53 = [MEMORY[0x1E69DB878] fontWithDescriptor:v42 size:0.0];
-    [v52 setFont:v53];
+    [titleLabel2 setFont:v53];
 
     v54 = [*(v22 + 2792) bundleForClass:objc_opt_class()];
     v55 = [v54 localizedStringForKey:@"WALLPAPER_PREVIEW_VIEW_SET" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-    [v50 setTitle:v55 forState:0];
-    [v50 addTarget:v13 action:sel__userDidTapOnSetButton_ forControlEvents:64];
-    [(SBSUIWallpaperPreviewView *)v13 setSetButton:v50];
+    [_makeButtonWithVisualEffectBlur4 setTitle:v55 forState:0];
+    [_makeButtonWithVisualEffectBlur4 addTarget:height action:sel__userDidTapOnSetButton_ forControlEvents:64];
+    [(SBSUIWallpaperPreviewView *)height setSetButton:_makeButtonWithVisualEffectBlur4];
     v56 = objc_alloc_init(_SBSUIWallpaperGradientView);
-    gradientView = v13->_gradientView;
-    v13->_gradientView = &v56->super;
+    gradientView = height->_gradientView;
+    height->_gradientView = &v56->super;
 
-    [(SBSUIWallpaperPreviewView *)v13 addSubview:v13->_gradientView];
-    v58 = [MEMORY[0x1E698E7E8] preferredFontProvider];
-    v59 = [v58 preferredFontForTextStyle:v19 hiFontStyle:4];
+    [(SBSUIWallpaperPreviewView *)height addSubview:height->_gradientView];
+    preferredFontProvider = [MEMORY[0x1E698E7E8] preferredFontProvider];
+    v59 = [preferredFontProvider preferredFontForTextStyle:v19 hiFontStyle:4];
 
-    if (v77)
+    if (supportsCropping)
     {
       v78 = [MEMORY[0x1E69DCAD8] configurationWithFont:v59];
       v60 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"crop" withConfiguration:v78];
@@ -193,34 +193,34 @@
       v63 = [*(v22 + 2792) bundleForClass:objc_opt_class()];
       v64 = [v63 localizedStringForKey:@"WALLPAPER_MOVE_ROTATE_SCALE" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
       v65 = [(_SBUIWallpaperInstructionView *)v62 initWithImage:v61 text:v64 font:v59];
-      cropInstructionView = v13->_cropInstructionView;
-      v13->_cropInstructionView = v65;
+      cropInstructionView = height->_cropInstructionView;
+      height->_cropInstructionView = v65;
 
-      v67 = v13->_cropInstructionView;
-      v68 = [MEMORY[0x1E69DC888] whiteColor];
-      [(_SBUIWallpaperInstructionView *)v67 setTintColor:v68];
+      v67 = height->_cropInstructionView;
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(_SBUIWallpaperInstructionView *)v67 setTintColor:whiteColor];
 
-      [(SBSUIWallpaperPreviewView *)v13 addSubview:v13->_cropInstructionView];
+      [(SBSUIWallpaperPreviewView *)height addSubview:height->_cropInstructionView];
     }
 
     v69 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    effectStateLabel = v13->_effectStateLabel;
-    v13->_effectStateLabel = v69;
+    effectStateLabel = height->_effectStateLabel;
+    height->_effectStateLabel = v69;
 
-    v71 = v13->_effectStateLabel;
-    v72 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v71 setTextColor:v72];
+    v71 = height->_effectStateLabel;
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v71 setTextColor:whiteColor2];
 
-    [(UILabel *)v13->_effectStateLabel setFont:v59];
-    [(UILabel *)v13->_effectStateLabel setAlpha:0.0];
-    [(UILabel *)v13->_effectStateLabel setNumberOfLines:0];
-    [(SBSUIWallpaperPreviewView *)v13 addSubview:v13->_effectStateLabel];
-    v73 = v13;
+    [(UILabel *)height->_effectStateLabel setFont:v59];
+    [(UILabel *)height->_effectStateLabel setAlpha:0.0];
+    [(UILabel *)height->_effectStateLabel setNumberOfLines:0];
+    [(SBSUIWallpaperPreviewView *)height addSubview:height->_effectStateLabel];
+    v73 = height;
 
-    v12 = v81;
+    viewCopy = v81;
   }
 
-  return v13;
+  return height;
 }
 
 - (id)_makeButtonWithVisualEffectBlur
@@ -230,32 +230,32 @@
   return v2;
 }
 
-- (void)_userDidTapOnIrisButton:(id)a3
+- (void)_userDidTapOnIrisButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SBSUIWallpaperPreviewView *)self delegate];
-  [v5 userDidTapOnIrisButton:v4];
+  buttonCopy = button;
+  delegate = [(SBSUIWallpaperPreviewView *)self delegate];
+  [delegate userDidTapOnIrisButton:buttonCopy];
 }
 
-- (void)_userDidTapOnParallaxButton:(id)a3
+- (void)_userDidTapOnParallaxButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SBSUIWallpaperPreviewView *)self delegate];
-  [v5 userDidTapOnParallaxButton:v4];
+  buttonCopy = button;
+  delegate = [(SBSUIWallpaperPreviewView *)self delegate];
+  [delegate userDidTapOnParallaxButton:buttonCopy];
 }
 
-- (void)_userDidTapOnCancelButton:(id)a3
+- (void)_userDidTapOnCancelButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SBSUIWallpaperPreviewView *)self delegate];
-  [v5 userDidTapOnCancelButton:v4];
+  buttonCopy = button;
+  delegate = [(SBSUIWallpaperPreviewView *)self delegate];
+  [delegate userDidTapOnCancelButton:buttonCopy];
 }
 
-- (void)_userDidTapOnSetButton:(id)a3
+- (void)_userDidTapOnSetButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SBSUIWallpaperPreviewView *)self delegate];
-  [v5 userDidTapOnSetButton:v4];
+  buttonCopy = button;
+  delegate = [(SBSUIWallpaperPreviewView *)self delegate];
+  [delegate userDidTapOnSetButton:buttonCopy];
 }
 
 - (void)dealloc
@@ -270,96 +270,96 @@
   [(SBSUIWallpaperPreviewView *)&v3 dealloc];
 }
 
-- (void)setDateView:(id)a3
+- (void)setDateView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   dateView = self->_dateView;
   if (dateView)
   {
     [(SBFLockScreenDateView *)dateView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_dateView, a3);
+  objc_storeStrong(&self->_dateView, view);
   if (self->_dateView)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
   }
 }
 
-- (void)setIrisButton:(id)a3
+- (void)setIrisButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   irisButton = self->_irisButton;
   if (irisButton)
   {
     [(UIButton *)irisButton removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_irisButton, a3);
+  objc_storeStrong(&self->_irisButton, button);
   if (self->_irisButton)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
   }
 }
 
-- (void)setParallaxButton:(id)a3
+- (void)setParallaxButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   parallaxButton = self->_parallaxButton;
   if (parallaxButton)
   {
     [(UIButton *)parallaxButton removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_parallaxButton, a3);
+  objc_storeStrong(&self->_parallaxButton, button);
   if (self->_parallaxButton)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
   }
 }
 
-- (void)setCancelButton:(id)a3
+- (void)setCancelButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   cancelButton = self->_cancelButton;
   if (cancelButton)
   {
     [(UIButton *)cancelButton removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_cancelButton, a3);
+  objc_storeStrong(&self->_cancelButton, button);
   if (self->_cancelButton)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
   }
 }
 
-- (void)setSetButton:(id)a3
+- (void)setSetButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   setButton = self->_setButton;
   if (setButton)
   {
     [(UIButton *)setButton removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_setButton, a3);
+  objc_storeStrong(&self->_setButton, button);
   if (self->_setButton)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
   }
 }
 
-- (void)setWallpaperView:(id)a3
+- (void)setWallpaperView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   wallpaperView = self->_wallpaperView;
   if (wallpaperView)
   {
     [(PBUIWallpaperView *)wallpaperView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_wallpaperView, a3);
+  objc_storeStrong(&self->_wallpaperView, view);
   if (self->_wallpaperView)
   {
     [(SBSUIWallpaperPreviewView *)self addSubview:?];
@@ -371,28 +371,28 @@
   }
 }
 
-- (void)updateForChangedSettings:(id)a3
+- (void)updateForChangedSettings:(id)settings
 {
   irisInstructionsLabel1 = self->_irisInstructionsLabel1;
-  v5 = a3;
-  [(_UILegibilityLabel *)irisInstructionsLabel1 updateForChangedSettings:v5];
-  [(_UILegibilityLabel *)self->_irisInstructionsLabel2 updateForChangedSettings:v5];
+  settingsCopy = settings;
+  [(_UILegibilityLabel *)irisInstructionsLabel1 updateForChangedSettings:settingsCopy];
+  [(_UILegibilityLabel *)self->_irisInstructionsLabel2 updateForChangedSettings:settingsCopy];
 }
 
-- (void)displayInstructionsForEffect:(unint64_t)a3 enabled:(BOOL)a4 animated:(BOOL)a5
+- (void)displayInstructionsForEffect:(unint64_t)effect enabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SBSUIWallpaperPreviewView_displayInstructionsForEffect_enabled_animated___block_invoke;
   v9[3] = &unk_1E789F810;
-  v11 = v5;
-  v10[1] = a3;
+  v11 = animatedCopy;
+  v10[1] = effect;
   v9[4] = self;
-  v12 = a4;
+  enabledCopy = enabled;
   objc_copyWeak(v10, &location);
-  [(SBSUIWallpaperPreviewView *)self _fadeOutInstructionsWithDelay:v5 animated:v9 completion:0.0];
+  [(SBSUIWallpaperPreviewView *)self _fadeOutInstructionsWithDelay:animatedCopy animated:v9 completion:0.0];
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
@@ -526,11 +526,11 @@ void __75__SBSUIWallpaperPreviewView_displayInstructionsForEffect_enabled_animat
   *(v3 + 408) = v2;
 }
 
-- (void)_fadeOutInstructionsWithDelay:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_fadeOutInstructionsWithDelay:(double)delay animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v9 = 0.25;
   }
@@ -558,10 +558,10 @@ void __75__SBSUIWallpaperPreviewView_displayInstructionsForEffect_enabled_animat
   v16 = 3221225472;
   v17 = __79__SBSUIWallpaperPreviewView__fadeOutInstructionsWithDelay_animated_completion___block_invoke_2;
   v18 = &unk_1E789F838;
-  v19 = v8;
-  v14 = v8;
+  v19 = completionCopy;
+  v14 = completionCopy;
   [(UIViewPropertyAnimator *)v13 addCompletion:&v15];
-  [(UIViewPropertyAnimator *)self->_fadeOutInstructionsAnimator startAnimationAfterDelay:a3, v15, v16, v17, v18];
+  [(UIViewPropertyAnimator *)self->_fadeOutInstructionsAnimator startAnimationAfterDelay:delay, v15, v16, v17, v18];
 }
 
 uint64_t __79__SBSUIWallpaperPreviewView__fadeOutInstructionsWithDelay_animated_completion___block_invoke(uint64_t a1)
@@ -655,26 +655,26 @@ uint64_t __79__SBSUIWallpaperPreviewView__fadeOutInstructionsWithDelay_animated_
 - (void)_layoutStackedButtons
 {
   p_cancelButton = &self->_cancelButton;
-  v4 = [(UIButton *)self->_cancelButton titleLabel];
-  v5 = [v4 font];
-  [v5 pointSize];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  font = [titleLabel font];
+  [font pointSize];
   v7 = v6 * 1.8;
 
   v8 = fmax(v7, 34.0);
-  v9 = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
-  [v9 layoutFrame];
+  readableContentGuide = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
+  [readableContentGuide layoutFrame];
   v113 = v10;
 
-  v11 = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
-  [v11 layoutFrame];
+  readableContentGuide2 = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
+  [readableContentGuide2 layoutFrame];
   v117 = v12;
 
-  v13 = [(UIButton *)*p_cancelButton titleLabel];
-  [v13 intrinsicContentSize];
+  titleLabel2 = [(UIButton *)*p_cancelButton titleLabel];
+  [titleLabel2 intrinsicContentSize];
   v15 = v14;
 
-  v16 = [(UIButton *)self->_setButton titleLabel];
-  [v16 intrinsicContentSize];
+  titleLabel3 = [(UIButton *)self->_setButton titleLabel];
+  [titleLabel3 intrinsicContentSize];
   v18 = v17;
 
   if (v15 >= v18)
@@ -740,8 +740,8 @@ uint64_t __79__SBSUIWallpaperPreviewView__fadeOutInstructionsWithDelay_animated_
   }
 
   v111 = v26;
-  v31 = [(SBSUIWallpaperPreviewView *)self safeAreaLayoutGuide];
-  [v31 layoutFrame];
+  safeAreaLayoutGuide = [(SBSUIWallpaperPreviewView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   MaxY = CGRectGetMaxY(v120);
 
   [(SBSUIWallpaperPreviewView *)self bounds];
@@ -817,8 +817,8 @@ uint64_t __79__SBSUIWallpaperPreviewView__fadeOutInstructionsWithDelay_animated_
 
         else
         {
-          v54 = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
-          [v54 layoutFrame];
+          readableContentGuide3 = [(SBSUIWallpaperPreviewView *)self readableContentGuide];
+          [readableContentGuide3 layoutFrame];
           CGRectGetMidX(v135);
         }
 
@@ -1069,9 +1069,9 @@ LABEL_55:
   irisButton = self->_irisButton;
   if (irisButton)
   {
-    v4 = [(UIButton *)irisButton layer];
+    layer = [(UIButton *)irisButton layer];
     [(UIButton *)self->_irisButton frame];
-    [v4 setCornerRadius:CGRectGetHeight(v7) * 0.5];
+    [layer setCornerRadius:CGRectGetHeight(v7) * 0.5];
 
     v5 = self->_irisButton;
 
@@ -1084,9 +1084,9 @@ LABEL_55:
   parallaxButton = self->_parallaxButton;
   if (parallaxButton)
   {
-    v4 = [(UIButton *)parallaxButton layer];
+    layer = [(UIButton *)parallaxButton layer];
     [(UIButton *)self->_parallaxButton frame];
-    [v4 setCornerRadius:CGRectGetHeight(v7) * 0.5];
+    [layer setCornerRadius:CGRectGetHeight(v7) * 0.5];
 
     v5 = self->_parallaxButton;
 
@@ -1099,9 +1099,9 @@ LABEL_55:
   cancelButton = self->_cancelButton;
   if (cancelButton)
   {
-    v4 = [(UIButton *)cancelButton layer];
+    layer = [(UIButton *)cancelButton layer];
     [(UIButton *)self->_cancelButton frame];
-    [v4 setCornerRadius:CGRectGetHeight(v7) * 0.5];
+    [layer setCornerRadius:CGRectGetHeight(v7) * 0.5];
 
     v5 = self->_cancelButton;
 
@@ -1114,9 +1114,9 @@ LABEL_55:
   setButton = self->_setButton;
   if (setButton)
   {
-    v4 = [(UIButton *)setButton layer];
+    layer = [(UIButton *)setButton layer];
     [(UIButton *)self->_setButton frame];
-    [v4 setCornerRadius:CGRectGetHeight(v7) * 0.5];
+    [layer setCornerRadius:CGRectGetHeight(v7) * 0.5];
 
     v5 = self->_setButton;
 
@@ -1124,9 +1124,9 @@ LABEL_55:
   }
 }
 
-- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)a3
+- (void)irisWallpaperPlayerPlaybackStateDidChange:(id)change
 {
-  if ([a3 irisPlaybackState] == 4)
+  if ([change irisPlaybackState] == 4)
   {
 
     [(SBSUIWallpaperPreviewView *)self _fadeOutInstructionsWithDelay:1 animated:0 completion:0.0];

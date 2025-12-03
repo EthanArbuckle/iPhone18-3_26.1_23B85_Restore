@@ -1,24 +1,24 @@
 @interface ICASDocScanData
-- (ICASDocScanData)initWithDocScanID:(id)a3 docScanActionType:(id)a4 docScanStage:(id)a5;
+- (ICASDocScanData)initWithDocScanID:(id)d docScanActionType:(id)type docScanStage:(id)stage;
 - (id)toDict;
 @end
 
 @implementation ICASDocScanData
 
-- (ICASDocScanData)initWithDocScanID:(id)a3 docScanActionType:(id)a4 docScanStage:(id)a5
+- (ICASDocScanData)initWithDocScanID:(id)d docScanActionType:(id)type docScanStage:(id)stage
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  typeCopy = type;
+  stageCopy = stage;
   v15.receiver = self;
   v15.super_class = ICASDocScanData;
   v12 = [(ICASDocScanData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_docScanID, a3);
-    objc_storeStrong(&v13->_docScanActionType, a4);
-    objc_storeStrong(&v13->_docScanStage, a5);
+    objc_storeStrong(&v12->_docScanID, d);
+    objc_storeStrong(&v13->_docScanActionType, type);
+    objc_storeStrong(&v13->_docScanStage, stage);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"docScanID";
-  v3 = [(ICASDocScanData *)self docScanID];
-  if (v3)
+  docScanID = [(ICASDocScanData *)self docScanID];
+  if (docScanID)
   {
-    v4 = [(ICASDocScanData *)self docScanID];
+    docScanID2 = [(ICASDocScanData *)self docScanID];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    docScanID2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = docScanID2;
+  v16[0] = docScanID2;
   v15[1] = @"docScanActionType";
-  v6 = [(ICASDocScanData *)self docScanActionType];
-  if (v6)
+  docScanActionType = [(ICASDocScanData *)self docScanActionType];
+  if (docScanActionType)
   {
-    v7 = [(ICASDocScanData *)self docScanActionType];
+    docScanActionType2 = [(ICASDocScanData *)self docScanActionType];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    docScanActionType2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = docScanActionType2;
+  v16[1] = docScanActionType2;
   v15[2] = @"docScanStage";
-  v9 = [(ICASDocScanData *)self docScanStage];
-  if (v9)
+  docScanStage = [(ICASDocScanData *)self docScanStage];
+  if (docScanStage)
   {
-    v10 = [(ICASDocScanData *)self docScanStage];
+    docScanStage2 = [(ICASDocScanData *)self docScanStage];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    docScanStage2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = docScanStage2;
+  v16[2] = docScanStage2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

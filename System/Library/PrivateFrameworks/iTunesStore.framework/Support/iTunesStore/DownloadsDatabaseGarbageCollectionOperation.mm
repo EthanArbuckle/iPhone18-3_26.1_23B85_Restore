@@ -3,7 +3,7 @@
 - (void)_garbageCollectPersistentManagers;
 - (void)_garbageCollectSoftwareDownloads;
 - (void)_garbageCollectWorkingDirectory;
-- (void)_garbageCollectWorkingDirectoryPath:(id)a3;
+- (void)_garbageCollectWorkingDirectoryPath:(id)path;
 - (void)run;
 @end
 
@@ -66,19 +66,19 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v8 &= 2u;
     }
@@ -109,7 +109,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [NSString stringWithCString:v13 encoding:4, &v22, v15];
+      oSLogObject = [NSString stringWithCString:v13 encoding:4, &v22, v15];
       free(v13);
       SSFileLog();
     }
@@ -128,19 +128,19 @@ LABEL_14:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -158,7 +158,7 @@ LABEL_14:
 
   if (v8)
   {
-    v6 = [NSString stringWithCString:v8 encoding:4, &v13, v11];
+    oSLogObject = [NSString stringWithCString:v8 encoding:4, &v13, v11];
     free(v8);
     SSFileLog();
 LABEL_11:
@@ -179,37 +179,37 @@ LABEL_11:
   [(DownloadsDatabaseGarbageCollectionOperation *)self _garbageCollectWorkingDirectoryPath:v3];
 
   v4 = +[ApplicationWorkspace defaultWorkspace];
-  v5 = [v4 isMultiUser];
+  isMultiUser = [v4 isMultiUser];
 
-  if (v5)
+  if (isMultiUser)
   {
     v6 = +[ScratchManager containerDirectoryPath];
     [(DownloadsDatabaseGarbageCollectionOperation *)self _garbageCollectWorkingDirectoryPath:v6];
   }
 }
 
-- (void)_garbageCollectWorkingDirectoryPath:(id)a3
+- (void)_garbageCollectWorkingDirectoryPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -219,7 +219,7 @@ LABEL_11:
     v68 = 138412546;
     v69 = objc_opt_class();
     v70 = 2112;
-    v71 = v3;
+    v71 = pathCopy;
     v8 = v69;
     LODWORD(v46) = 22;
     v44 = &v68;
@@ -230,16 +230,16 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v7 = [NSString stringWithCString:v9 encoding:4, &v68, v46];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v68, v46];
     free(v9);
-    v44 = v7;
+    v44 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
   v10 = objc_alloc_init(NSFileManager);
   v11 = objc_alloc_init(NSMutableSet);
-  [v10 contentsOfDirectoryAtPath:v3 error:0];
+  [v10 contentsOfDirectoryAtPath:pathCopy error:0];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -258,10 +258,10 @@ LABEL_12:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v62 + 1) + 8 * i) longLongValue];
-        if (v16)
+        longLongValue = [*(*(&v62 + 1) + 8 * i) longLongValue];
+        if (longLongValue)
         {
-          v17 = [[NSNumber alloc] initWithLongLong:v16];
+          v17 = [[NSNumber alloc] initWithLongLong:longLongValue];
           [v11 addObject:v17];
         }
       }
@@ -281,9 +281,9 @@ LABEL_12:
     v57[3] = &unk_10032B650;
     v19 = v11;
     v58 = v19;
-    v59 = self;
-    v49 = v3;
-    v20 = v3;
+    selfCopy = self;
+    v49 = pathCopy;
+    v20 = pathCopy;
     v60 = v20;
     v48 = v10;
     v21 = v10;
@@ -297,19 +297,19 @@ LABEL_12:
     }
 
     v47 = v11;
-    v23 = [v22 shouldLog];
+    shouldLog2 = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog2 | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog2;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v26 = v24;
     }
@@ -360,29 +360,29 @@ LABEL_34:
               objc_enumerationMutation(v50);
             }
 
-            v36 = [*(*(&v53 + 1) + 8 * v34) stringValue];
-            v37 = [v20 stringByAppendingPathComponent:v36];
+            stringValue = [*(*(&v53 + 1) + 8 * v34) stringValue];
+            v37 = [v20 stringByAppendingPathComponent:stringValue];
 
             [v21 removeItemAtPath:v37 error:0];
-            v38 = [v35[412] sharedDaemonConfig];
-            if (!v38)
+            sharedDaemonConfig = [v35[412] sharedDaemonConfig];
+            if (!sharedDaemonConfig)
             {
-              v38 = [v35[412] sharedConfig];
+              sharedDaemonConfig = [v35[412] sharedConfig];
             }
 
-            v39 = [v38 shouldLog];
-            if ([v38 shouldLogToDisk])
+            shouldLog3 = [sharedDaemonConfig shouldLog];
+            if ([sharedDaemonConfig shouldLogToDisk])
             {
-              v39 |= 2u;
+              shouldLog3 |= 2u;
             }
 
-            v40 = [v38 OSLogObject];
-            if (!os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
+            oSLogObject3 = [sharedDaemonConfig OSLogObject];
+            if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
             {
-              v39 &= 2u;
+              shouldLog3 &= 2u;
             }
 
-            if (v39)
+            if (shouldLog3)
             {
               v41 = objc_opt_class();
               v68 = 138412546;
@@ -400,9 +400,9 @@ LABEL_34:
                 goto LABEL_49;
               }
 
-              v40 = [NSString stringWithCString:v43 encoding:4, &v68, v46];
+              oSLogObject3 = [NSString stringWithCString:v43 encoding:4, &v68, v46];
               free(v43);
-              v45 = v40;
+              v45 = oSLogObject3;
               SSFileLog();
             }
 
@@ -417,16 +417,16 @@ LABEL_49:
 LABEL_51:
 
             v10 = v48;
-            v3 = v49;
+            pathCopy = v49;
             v11 = v47;
             goto LABEL_52;
           }
         }
       }
 
-      v25 = [NSString stringWithCString:v30 encoding:4, &v68, v46];
+      oSLogObject2 = [NSString stringWithCString:v30 encoding:4, &v68, v46];
       free(v30);
-      v45 = v25;
+      v45 = oSLogObject2;
       SSFileLog();
     }
 

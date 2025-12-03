@@ -1,12 +1,12 @@
 @interface MapQuickActionMenuPresenter
-- (BOOL)_isValidLabelMarkerForInitiatingOrbGesture:(id)a3;
-- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)a3 inView:(id)a4;
-- (MapQuickActionMenuPresenter)initWithMapView:(id)a3;
-- (id)_imageForStyleAttributes:(id)a3 screenScale:(double)a4 isNightMode:(BOOL)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
+- (BOOL)_isValidLabelMarkerForInitiatingOrbGesture:(id)gesture;
+- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)location inView:(id)view;
+- (MapQuickActionMenuPresenter)initWithMapView:(id)view;
+- (id)_imageForStyleAttributes:(id)attributes screenScale:(double)scale isNightMode:(BOOL)mode;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
 - (id)previewViewController;
-- (void)_fetchImageForLabelMarkerWithCompletion:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)_fetchImageForLabelMarkerWithCompletion:(id)completion;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
 - (void)invalidateIfNeeded;
 - (void)reset;
@@ -14,38 +14,38 @@
 
 @implementation MapQuickActionMenuPresenter
 
-- (id)_imageForStyleAttributes:(id)a3 screenScale:(double)a4 isNightMode:(BOOL)a5
+- (id)_imageForStyleAttributes:(id)attributes screenScale:(double)scale isNightMode:(BOOL)mode
 {
   iconFetchingQueue = self->_iconFetchingQueue;
-  v8 = a3;
+  attributesCopy = attributes;
   dispatch_assert_queue_V2(iconFetchingQueue);
-  LOBYTE(v12) = a5;
-  v9 = [MKIconManager imageForStyle:v8 size:4 forScale:1 format:0 transparent:0 transitMode:1 interactive:a4 nightMode:v12];
+  LOBYTE(v12) = mode;
+  v9 = [MKIconManager imageForStyle:attributesCopy size:4 forScale:1 format:0 transparent:0 transitMode:1 interactive:scale nightMode:v12];
 
   if (!v9)
   {
     v10 = [[GEOFeatureStyleAttributes alloc] initWithAttributes:{5, 3, 6, 223, 0}];
-    LOBYTE(v13) = a5;
-    v9 = [MKIconManager imageForStyle:v10 size:4 forScale:1 format:0 transparent:0 transitMode:1 interactive:a4 nightMode:v13];
+    LOBYTE(v13) = mode;
+    v9 = [MKIconManager imageForStyle:v10 size:4 forScale:1 format:0 transparent:0 transitMode:1 interactive:scale nightMode:v13];
   }
 
   return v9;
 }
 
-- (void)_fetchImageForLabelMarkerWithCompletion:(id)a3
+- (void)_fetchImageForLabelMarkerWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     dispatch_assert_queue_V2(&_dispatch_main_q);
-    v5 = [(QuickActionMenuPresenter *)self presentingViewController];
-    v6 = [v5 view];
-    v7 = [v6 window];
-    v8 = [v7 screen];
-    v9 = v8;
-    if (v8)
+    presentingViewController = [(QuickActionMenuPresenter *)self presentingViewController];
+    view = [presentingViewController view];
+    window = [view window];
+    screen = [window screen];
+    v9 = screen;
+    if (screen)
     {
-      [v8 scale];
+      [screen scale];
       v11 = v10;
     }
 
@@ -56,87 +56,87 @@
       v11 = v13;
     }
 
-    v14 = [(VKLabelMarker *)self->super._labelMarker iconImageKeys];
-    v15 = [(VKLabelMarker *)self->super._labelMarker featureType];
-    v16 = [(MKMapView *)self->_mapView traitCollection];
-    v17 = [v16 userInterfaceStyle] == 2;
+    iconImageKeys = [(VKLabelMarker *)self->super._labelMarker iconImageKeys];
+    featureType = [(VKLabelMarker *)self->super._labelMarker featureType];
+    traitCollection = [(MKMapView *)self->_mapView traitCollection];
+    v17 = [traitCollection userInterfaceStyle] == 2;
 
-    v18 = [(VKLabelMarker *)self->super._labelMarker styleAttributes];
+    styleAttributes = [(VKLabelMarker *)self->super._labelMarker styleAttributes];
     iconFetchingQueue = self->_iconFetchingQueue;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100D28D74;
     v22[3] = &unk_1016519D8;
-    v23 = v14;
+    v23 = iconImageKeys;
     v27 = v11;
-    v28 = v15;
-    v25 = v18;
-    v26 = v4;
-    v24 = self;
+    v28 = featureType;
+    v25 = styleAttributes;
+    v26 = completionCopy;
+    selfCopy = self;
     v29 = v17;
-    v20 = v18;
-    v21 = v14;
+    v20 = styleAttributes;
+    v21 = iconImageKeys;
     dispatch_async(iconFetchingQueue, v22);
   }
 }
 
-- (BOOL)_isValidLabelMarkerForInitiatingOrbGesture:(id)a3
+- (BOOL)_isValidLabelMarkerForInitiatingOrbGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(QuickActionMenuPresenter *)self delegate];
-  LOBYTE(self) = [v5 mapQuickActionMenuPresenter:self shouldBeginOrbGestureForLabelMarkerOnMap:v4];
+  gestureCopy = gesture;
+  delegate = [(QuickActionMenuPresenter *)self delegate];
+  LOBYTE(self) = [delegate mapQuickActionMenuPresenter:self shouldBeginOrbGestureForLabelMarkerOnMap:gestureCopy];
 
   return self;
 }
 
-- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)a3 inView:(id)a4
+- (BOOL)shouldBeginOrbGestureAtLocation:(CGPoint)location inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 hitTest:0 withEvent:{x, y}];
-  [(MKMapView *)self->_mapView convertPoint:v7 fromView:x, y];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  v8 = [viewCopy hitTest:0 withEvent:{x, y}];
+  [(MKMapView *)self->_mapView convertPoint:viewCopy fromView:x, y];
   v10 = v9;
   v12 = v11;
   if ([(MKMapView *)self->_mapView calloutViewContainsPoint:?])
   {
-    v13 = [(MKMapView *)self->_mapView selectedAnnotations];
-    v14 = [v13 count];
+    selectedAnnotations = [(MKMapView *)self->_mapView selectedAnnotations];
+    v14 = [selectedAnnotations count];
 
     if (v14 == 1)
     {
-      v15 = [(MKMapView *)self->_mapView selectedAnnotations];
-      v16 = [v15 firstObject];
+      selectedAnnotations2 = [(MKMapView *)self->_mapView selectedAnnotations];
+      firstObject = [selectedAnnotations2 firstObject];
 
-      [(MapQuickActionMenuPresenter *)self setAnnotation:v16];
+      [(MapQuickActionMenuPresenter *)self setAnnotation:firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v16 annotation];
+        annotation = [firstObject annotation];
 
-        v16 = v17;
+        firstObject = annotation;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(QuickActionMenuPresenter *)self setSearchResult:v16];
-        v18 = self;
+        [(QuickActionMenuPresenter *)self setSearchResult:firstObject];
+        selfCopy5 = self;
         v19 = 4;
         goto LABEL_20;
       }
     }
 
-    v16 = [(MKMapView *)self->_mapView _selectedLabelMarker];
-    if (![(MapQuickActionMenuPresenter *)self _isValidLabelMarkerForInitiatingOrbGesture:v16])
+    firstObject = [(MKMapView *)self->_mapView _selectedLabelMarker];
+    if (![(MapQuickActionMenuPresenter *)self _isValidLabelMarkerForInitiatingOrbGesture:firstObject])
     {
       v34 = 0;
       goto LABEL_34;
     }
 
-    [(QuickActionMenuPresenter *)self setLabelMarker:v16];
+    [(QuickActionMenuPresenter *)self setLabelMarker:firstObject];
     [(QuickActionMenuPresenter *)self setUiTarget:4];
-    if (![v16 isTransitLine])
+    if (![firstObject isTransitLine])
     {
 LABEL_21:
       v34 = 1;
@@ -145,10 +145,10 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v18 = self;
+    selfCopy5 = self;
     v19 = 7;
 LABEL_20:
-    [(QuickActionMenuPresenter *)v18 setUiTarget:v19];
+    [(QuickActionMenuPresenter *)selfCopy5 setUiTarget:v19];
     goto LABEL_21;
   }
 
@@ -168,36 +168,36 @@ LABEL_20:
     v38.y = v12;
     if (CGRectContainsPoint(v39, v38))
     {
-      v16 = [(MKMapView *)self->_mapView _annotationAtPoint:0 avoidCurrent:v10, v12];
-      [(MapQuickActionMenuPresenter *)self setAnnotation:v16];
+      firstObject = [(MKMapView *)self->_mapView _annotationAtPoint:0 avoidCurrent:v10, v12];
+      [(MapQuickActionMenuPresenter *)self setAnnotation:firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v16 annotation];
+        annotation2 = [firstObject annotation];
 
-        v16 = v32;
+        firstObject = annotation2;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(QuickActionMenuPresenter *)self setSearchResult:v16];
-        v33 = [(SearchResult *)self->super._searchResult appearance];
-        if (v33 == 1)
+        [(QuickActionMenuPresenter *)self setSearchResult:firstObject];
+        appearance = [(SearchResult *)self->super._searchResult appearance];
+        if (appearance == 1)
         {
-          v18 = self;
+          selfCopy5 = self;
           v19 = 5;
         }
 
-        else if (v33 == 3)
+        else if (appearance == 3)
         {
-          v18 = self;
+          selfCopy5 = self;
           v19 = 6;
         }
 
         else
         {
-          v18 = self;
+          selfCopy5 = self;
           v19 = 0;
         }
 
@@ -226,7 +226,7 @@ LABEL_20:
           goto LABEL_33;
         }
 
-        [(MKMapView *)self->_mapView convertPoint:v7 toCoordinateFromView:x, y];
+        [(MKMapView *)self->_mapView convertPoint:viewCopy toCoordinateFromView:x, y];
         v36 = [SearchResult customSearchResultWithCoordinate:?];
         [(QuickActionMenuPresenter *)self setSearchResult:v36];
       }
@@ -244,28 +244,28 @@ LABEL_35:
   return v34;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  if (a5)
+  if (animator)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100D295C0;
     v6[3] = &unk_101661B18;
     v6[4] = self;
-    [a5 addCompletion:{v6, a4}];
+    [animator addCompletion:{v6, configuration}];
   }
 
   else
   {
 
-    [(MapQuickActionMenuPresenter *)self invalidateIfNeeded:a3];
+    [(MapQuickActionMenuPresenter *)self invalidateIfNeeded:interaction];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = [(QuickActionMenuPresenter *)self containerViewController:a3];
+  v6 = [(QuickActionMenuPresenter *)self containerViewController:interaction];
   v7 = sub_10000FA08(v6);
 
   if (v7 == 5)
@@ -282,20 +282,20 @@ LABEL_35:
     v22 = [[UIImageView alloc] initWithFrame:{0.0, 0.0, 50.0, 50.0}];
     v9 = v22;
     [(MapQuickActionMenuPresenter *)self _fetchImageForLabelMarkerWithCompletion:v21];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:25.0];
+    layer = [v9 layer];
+    [layer setCornerRadius:25.0];
 
     [v9 setClipsToBounds:1];
     v11 = [UIView alloc];
-    v12 = [(QuickActionMenuPresenter *)self containerViewController];
-    v13 = [v12 view];
-    [v13 bounds];
+    containerViewController = [(QuickActionMenuPresenter *)self containerViewController];
+    view = [containerViewController view];
+    [view bounds];
     v14 = [v11 initWithFrame:?];
 
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(QuickActionMenuPresenter *)self containerViewController];
-    v16 = [v15 view];
-    [v16 addSubview:v14];
+    containerViewController2 = [(QuickActionMenuPresenter *)self containerViewController];
+    view2 = [containerViewController2 view];
+    [view2 addSubview:v14];
 
     objc_storeWeak(&self->_containerView, v14);
     v17 = [UIPreviewTarget alloc];
@@ -356,16 +356,16 @@ LABEL_35:
   [(MapQuickActionMenuPresenter *)self reset];
 }
 
-- (MapQuickActionMenuPresenter)initWithMapView:(id)a3
+- (MapQuickActionMenuPresenter)initWithMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = MapQuickActionMenuPresenter;
-  v6 = [(QuickActionMenuPresenter *)&v11 initWithView:v5];
+  v6 = [(QuickActionMenuPresenter *)&v11 initWithView:viewCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapView, a3);
+    objc_storeStrong(&v6->_mapView, view);
     v8 = geo_dispatch_queue_create_with_qos();
     iconFetchingQueue = v7->_iconFetchingQueue;
     v7->_iconFetchingQueue = v8;

@@ -1,20 +1,20 @@
 @interface CNPhoneticOrganizationNameDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPhoneticOrganizationNameDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 phoneticOrganizationName];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  phoneticOrganizationName = [contactCopy phoneticOrganizationName];
+  if (!phoneticOrganizationName)
   {
-    v4 = [v7 phoneticOrganizationName];
-    if (!v4)
+    phoneticOrganizationName2 = [otherCopy phoneticOrganizationName];
+    if (!phoneticOrganizationName2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 phoneticOrganizationName];
-  v10 = [v7 phoneticOrganizationName];
-  v11 = [v9 isEqual:v10];
+  phoneticOrganizationName3 = [contactCopy phoneticOrganizationName];
+  phoneticOrganizationName4 = [otherCopy phoneticOrganizationName];
+  v11 = [phoneticOrganizationName3 isEqual:phoneticOrganizationName4];
 
-  if (!v8)
+  if (!phoneticOrganizationName)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_phoneticOrganizationName"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_phoneticOrganizationName"];
 
   v7 = [v9 copy];
-  v8 = v5[14];
-  v5[14] = v7;
+  v8 = contactCopy[14];
+  contactCopy[14] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A4D8];
+    *d = *MEMORY[0x1E698A4D8];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

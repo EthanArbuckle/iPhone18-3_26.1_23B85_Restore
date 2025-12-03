@@ -1,20 +1,20 @@
 @interface CRLAccessibilityBoxedWeakReference
-- (CRLAccessibilityBoxedWeakReference)initWithObject:(id)a3;
+- (CRLAccessibilityBoxedWeakReference)initWithObject:(id)object;
 - (id)reference;
 @end
 
 @implementation CRLAccessibilityBoxedWeakReference
 
-- (CRLAccessibilityBoxedWeakReference)initWithObject:(id)a3
+- (CRLAccessibilityBoxedWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = CRLAccessibilityBoxedWeakReference;
   v5 = [(CRLAccessibilityBoxedWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_reference, v4);
+    objc_storeWeak(&v5->_reference, objectCopy);
   }
 
   return v6;

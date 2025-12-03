@@ -1,8 +1,8 @@
 @interface Music_SSMetricsComponentRenderEvent
 + (NSString)Topic;
 - (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)init;
-- (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)initWithBodyDictionary:(id)a3;
-- (void)setStandardPropertiesWith:(id)a3 completionHandler:(id)a4;
+- (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)initWithBodyDictionary:(id)dictionary;
+- (void)setStandardPropertiesWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation Music_SSMetricsComponentRenderEvent
@@ -14,20 +14,20 @@
   return v2;
 }
 
-- (void)setStandardPropertiesWith:(id)a3 completionHandler:(id)a4
+- (void)setStandardPropertiesWith:(id)with completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  withCopy = with;
+  selfCopy = self;
   v10 = sub_100572898();
-  [(Music_SSMetricsComponentRenderEvent *)v9 setEventType:v10];
+  [(Music_SSMetricsComponentRenderEvent *)selfCopy setEventType:v10];
 
-  v11 = v8;
-  v12 = v9;
+  v11 = withCopy;
+  v12 = selfCopy;
 
-  sub_10019C5A8(a3, v12, v12, a3, sub_10019CEAC, v7);
+  sub_10019C5A8(with, v12, v12, with, sub_10019CEAC, v7);
 }
 
 - (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)init
@@ -37,7 +37,7 @@
   return [(Music_SSMetricsComponentRenderEvent *)&v3 init];
 }
 
-- (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)initWithBodyDictionary:(id)a3
+- (_TtC9MusicCore35Music_SSMetricsComponentRenderEvent)initWithBodyDictionary:(id)dictionary
 {
   sub_1005726A8();
   isa = sub_100572688().super.isa;

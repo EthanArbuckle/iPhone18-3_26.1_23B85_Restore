@@ -1,27 +1,27 @@
 @interface PKCredentialPairingExplanationHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (PKCredentialPairingExplanationHeaderView)initWithConfiguration:(id)a3;
+- (PKCredentialPairingExplanationHeaderView)initWithConfiguration:(id)configuration;
 - (id)_fallbackPairingImage;
 - (void)_loadPairingImage;
-- (void)_setPairingImage:(id)a3;
+- (void)_setPairingImage:(id)image;
 - (void)_showLoadingContent;
 - (void)layoutSubviews;
-- (void)setUseCompactLayout:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setUseCompactLayout:(BOOL)layout;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKCredentialPairingExplanationHeaderView
 
-- (PKCredentialPairingExplanationHeaderView)initWithConfiguration:(id)a3
+- (PKCredentialPairingExplanationHeaderView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = PKCredentialPairingExplanationHeaderView;
   v6 = [(PKCredentialPairingExplanationHeaderView *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v7->_imageView;
     v7->_imageView = v8;
@@ -43,8 +43,8 @@
 
     [(PKCredentialPairingExplanationHeaderView *)v7 _showLoadingContent];
     [(PKCredentialPairingExplanationHeaderView *)v7 _loadPairingImage];
-    v18 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-    [(PKCredentialPairingExplanationHeaderView *)v7 setBackgroundColor:v18];
+    systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+    [(PKCredentialPairingExplanationHeaderView *)v7 setBackgroundColor:systemLightGrayColor];
 
     [(PKCredentialPairingExplanationHeaderView *)v7 setClipsToBounds:1];
     [(PKCredentialPairingExplanationHeaderView *)v7 setUseCompactLayout:PKUIGetMinScreenType() < 4];
@@ -58,13 +58,13 @@
   v17.receiver = self;
   v17.super_class = PKCredentialPairingExplanationHeaderView;
   [(PKCredentialPairingExplanationHeaderView *)&v17 layoutSubviews];
-  v3 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
   [(PKCredentialPairingExplanationHeaderView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 size];
+  [image size];
   PKSizeAspectFill();
   PKSizeAlignedInRect();
   [(UIImageView *)self->_imageView setFrame:v12 + 0.0, v13 + 1.0, v15, v14 + -2.0];
@@ -87,17 +87,17 @@
     v3 = 1;
   }
 
-  v4 = [(PKCredentialPairingExplanationHeaderView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle] == 2;
+  traitCollection = [(PKCredentialPairingExplanationHeaderView *)self traitCollection];
+  v5 = [traitCollection userInterfaceStyle] == 2;
 
-  v6 = [(PKAddCarKeyPassConfiguration *)self->_configuration provisioningTemplateIdentifier];
-  v7 = [MEMORY[0x1E69B90D8] sharedInstance];
+  provisioningTemplateIdentifier = [(PKAddCarKeyPassConfiguration *)self->_configuration provisioningTemplateIdentifier];
+  mEMORY[0x1E69B90D8] = [MEMORY[0x1E69B90D8] sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PKCredentialPairingExplanationHeaderView__loadPairingImage__block_invoke;
   v8[3] = &unk_1E801A860;
   v8[4] = self;
-  [v7 carPairingImageForRadioTechnology:v3 templateIdentifier:v6 darkMode:v5 completion:v8];
+  [mEMORY[0x1E69B90D8] carPairingImageForRadioTechnology:v3 templateIdentifier:provisioningTemplateIdentifier darkMode:v5 completion:v8];
 }
 
 void __61__PKCredentialPairingExplanationHeaderView__loadPairingImage__block_invoke(uint64_t a1, void *a2)
@@ -121,8 +121,8 @@ void __61__PKCredentialPairingExplanationHeaderView__loadPairingImage__block_inv
 - (void)_showLoadingContent
 {
   imageView = self->_imageView;
-  v4 = [(PKCredentialPairingExplanationHeaderView *)self _fallbackPairingImage];
-  [(UIImageView *)imageView setImage:v4];
+  _fallbackPairingImage = [(PKCredentialPairingExplanationHeaderView *)self _fallbackPairingImage];
+  [(UIImageView *)imageView setImage:_fallbackPairingImage];
 
   [(UIVisualEffectView *)self->_blurView setAlpha:1.0];
   [(PKCredentialPairingExplanationHeaderView *)self addSubview:self->_blurView];
@@ -132,16 +132,16 @@ void __61__PKCredentialPairingExplanationHeaderView__loadPairingImage__block_inv
   [(PKCredentialPairingExplanationHeaderView *)self addSubview:spinner];
 }
 
-- (void)_setPairingImage:(id)a3
+- (void)_setPairingImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PKCredentialPairingExplanationHeaderView__setPairingImage___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = imageCopy;
+  v5 = imageCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -185,8 +185,8 @@ uint64_t __61__PKCredentialPairingExplanationHeaderView__setPairingImage___block
 
 - (id)_fallbackPairingImage
 {
-  v2 = [(PKAddCarKeyPassConfiguration *)self->_configuration provisioningTemplateIdentifier];
-  if ([v2 containsString:@"RHD"])
+  provisioningTemplateIdentifier = [(PKAddCarKeyPassConfiguration *)self->_configuration provisioningTemplateIdentifier];
+  if ([provisioningTemplateIdentifier containsString:@"RHD"])
   {
     v3 = @"CarPairingLightRHD";
     v4 = @"CarPairingDarkRHD";
@@ -215,23 +215,23 @@ uint64_t __61__PKCredentialPairingExplanationHeaderView__setPairingImage___block
   return result;
 }
 
-- (void)setUseCompactLayout:(BOOL)a3
+- (void)setUseCompactLayout:(BOOL)layout
 {
-  if (self->_useCompactLayout != a3)
+  if (self->_useCompactLayout != layout)
   {
-    self->_useCompactLayout = a3;
+    self->_useCompactLayout = layout;
     [(PKCredentialPairingExplanationHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PKCredentialPairingExplanationHeaderView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(PKCredentialPairingExplanationHeaderView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(PKCredentialPairingExplanationHeaderView *)self _loadPairingImage];

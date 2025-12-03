@@ -1,36 +1,36 @@
 @interface TwoLinesSearchResultOutlineCellModel
-- (BOOL)isEqual:(id)a3;
-- (TwoLinesSearchResultOutlineCellModel)initWithSearchResult:(id)a3 backgroundModel:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TwoLinesSearchResultOutlineCellModel)initWithSearchResult:(id)result backgroundModel:(id)model;
 @end
 
 @implementation TwoLinesSearchResultOutlineCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v11.receiver = self;
     v11.super_class = TwoLinesSearchResultOutlineCellModel;
     if ([(TwoLinesBasicOutlineCellModel *)&v11 isEqual:v6])
     {
-      v7 = [(TwoLinesSearchResultOutlineCellModel *)v6 searchResult];
-      v8 = v7;
-      if (v7 == self->_searchResult)
+      searchResult = [(TwoLinesSearchResultOutlineCellModel *)v6 searchResult];
+      v8 = searchResult;
+      if (searchResult == self->_searchResult)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [(SearchResult *)v7 isEqual:?];
+        v9 = [(SearchResult *)searchResult isEqual:?];
       }
     }
 
@@ -48,10 +48,10 @@
   return v9;
 }
 
-- (TwoLinesSearchResultOutlineCellModel)initWithSearchResult:(id)a3 backgroundModel:(id)a4
+- (TwoLinesSearchResultOutlineCellModel)initWithSearchResult:(id)result backgroundModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  modelCopy = model;
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -60,11 +60,11 @@
   objc_copyWeak(&v14, &location);
   v12.receiver = self;
   v12.super_class = TwoLinesSearchResultOutlineCellModel;
-  v9 = [(TwoLinesBasicOutlineCellModel *)&v12 initWithBackgroundModel:v8 contentModelBlock:v13];
+  v9 = [(TwoLinesBasicOutlineCellModel *)&v12 initWithBackgroundModel:modelCopy contentModelBlock:v13];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_searchResult, a3);
+    objc_storeStrong(&v9->_searchResult, result);
   }
 
   objc_destroyWeak(&v14);

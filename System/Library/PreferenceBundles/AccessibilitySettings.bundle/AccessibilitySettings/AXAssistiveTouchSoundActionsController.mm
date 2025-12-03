@@ -1,7 +1,7 @@
 @interface AXAssistiveTouchSoundActionsController
-- (BOOL)supportsIconType:(id)a3;
+- (BOOL)supportsIconType:(id)type;
 - (id)actionsBySoundAction;
-- (void)updateSoundActionsWithDictionary:(id)a3;
+- (void)updateSoundActionsWithDictionary:(id)dictionary;
 @end
 
 @implementation AXAssistiveTouchSoundActionsController
@@ -9,27 +9,27 @@
 - (id)actionsBySoundAction
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchActionsBySoundAction];
+  assistiveTouchActionsBySoundAction = [v2 assistiveTouchActionsBySoundAction];
 
-  return v3;
+  return assistiveTouchActionsBySoundAction;
 }
 
-- (void)updateSoundActionsWithDictionary:(id)a3
+- (void)updateSoundActionsWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchActionsBySoundAction:v3];
+  [v4 setAssistiveTouchActionsBySoundAction:dictionaryCopy];
 }
 
-- (BOOL)supportsIconType:(id)a3
+- (BOOL)supportsIconType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (supportsIconType__onceToken != -1)
   {
     [AXAssistiveTouchSoundActionsController supportsIconType:];
   }
 
-  if ([v3 isEqualToString:@"__NONE__"])
+  if ([typeCopy isEqualToString:@"__NONE__"])
   {
     v4 = 1;
   }
@@ -37,7 +37,7 @@
   else
   {
     v5 = AXSystemActionIconTypes();
-    if ([v5 containsObject:v3])
+    if ([v5 containsObject:typeCopy])
     {
       v4 = 1;
     }
@@ -45,7 +45,7 @@
     else
     {
       v6 = AXAssistiveTouchCustomGesturesIcons();
-      if ([v6 containsObject:v3])
+      if ([v6 containsObject:typeCopy])
       {
         v4 = 1;
       }
@@ -53,7 +53,7 @@
       else
       {
         v7 = AXAssistiveTouchScrollIcons();
-        if ([v7 containsObject:v3])
+        if ([v7 containsObject:typeCopy])
         {
           v4 = 1;
         }
@@ -61,14 +61,14 @@
         else
         {
           v8 = AXAssistiveTouchDwellIcons();
-          if ([v8 containsObject:v3])
+          if ([v8 containsObject:typeCopy])
           {
             v4 = 1;
           }
 
           else
           {
-            v4 = [supportsIconType__sOtherSupportedIconTypes containsObject:v3];
+            v4 = [supportsIconType__sOtherSupportedIconTypes containsObject:typeCopy];
           }
         }
       }

@@ -1,49 +1,49 @@
 @interface UITextReplacement
-+ (UITextReplacement)replacementWithRange:(id)a3 original:(id)a4 replacement:(id)a5 menuTitle:(id)a6 isDictationCommandReplacement:(BOOL)a7;
++ (UITextReplacement)replacementWithRange:(id)range original:(id)original replacement:(id)replacement menuTitle:(id)title isDictationCommandReplacement:(BOOL)commandReplacement;
 - (BOOL)_isNoReplacementsFoundItem;
-- (void)didReplaceTextWithTarget:(id)a3;
+- (void)didReplaceTextWithTarget:(id)target;
 @end
 
 @implementation UITextReplacement
 
-+ (UITextReplacement)replacementWithRange:(id)a3 original:(id)a4 replacement:(id)a5 menuTitle:(id)a6 isDictationCommandReplacement:(BOOL)a7
++ (UITextReplacement)replacementWithRange:(id)range original:(id)original replacement:(id)replacement menuTitle:(id)title isDictationCommandReplacement:(BOOL)commandReplacement
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  rangeCopy = range;
+  originalCopy = original;
+  replacementCopy = replacement;
+  titleCopy = title;
   v16 = objc_alloc_init(UITextReplacement);
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_range, a3);
-    objc_storeStrong(&v17->_originalText, a4);
-    objc_storeStrong(&v17->_replacementText, a5);
-    objc_storeStrong(&v17->_menuTitle, a6);
-    v17->_isDictationCommandReplacement = a7;
+    objc_storeStrong(&v16->_range, range);
+    objc_storeStrong(&v17->_originalText, original);
+    objc_storeStrong(&v17->_replacementText, replacement);
+    objc_storeStrong(&v17->_menuTitle, title);
+    v17->_isDictationCommandReplacement = commandReplacement;
   }
 
   return v17;
 }
 
-- (void)didReplaceTextWithTarget:(id)a3
+- (void)didReplaceTextWithTarget:(id)target
 {
-  v13 = a3;
-  v4 = [(UITextReplacement *)self replacementCompletionBlock];
+  targetCopy = target;
+  replacementCompletionBlock = [(UITextReplacement *)self replacementCompletionBlock];
 
-  if (v4 && [v13 conformsToProtocol:&unk_1EFE8B2D0])
+  if (replacementCompletionBlock && [targetCopy conformsToProtocol:&unk_1EFE8B2D0])
   {
-    v5 = v13;
-    v6 = [(UITextReplacement *)self range];
-    v7 = [v6 start];
+    v5 = targetCopy;
+    range = [(UITextReplacement *)self range];
+    start = [range start];
 
-    v8 = [(UITextReplacement *)self replacementText];
-    v9 = [v5 positionFromPosition:v7 offset:{objc_msgSend(v8, "length")}];
+    replacementText = [(UITextReplacement *)self replacementText];
+    v9 = [v5 positionFromPosition:start offset:{objc_msgSend(replacementText, "length")}];
 
-    v10 = [v5 textRangeFromPosition:v7 toPosition:v9];
-    v11 = [(UITextReplacement *)self replacementCompletionBlock];
-    v12 = [(UITextReplacement *)self replacementText];
-    (v11)[2](v11, v12, v10, v5);
+    v10 = [v5 textRangeFromPosition:start toPosition:v9];
+    replacementCompletionBlock2 = [(UITextReplacement *)self replacementCompletionBlock];
+    replacementText2 = [(UITextReplacement *)self replacementText];
+    (replacementCompletionBlock2)[2](replacementCompletionBlock2, replacementText2, v10, v5);
 
     [(UITextReplacement *)self setReplacementCompletionBlock:0];
   }

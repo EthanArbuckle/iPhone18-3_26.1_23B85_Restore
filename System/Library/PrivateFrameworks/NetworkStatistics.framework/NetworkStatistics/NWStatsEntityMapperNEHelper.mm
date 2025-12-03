@@ -1,19 +1,19 @@
 @interface NWStatsEntityMapperNEHelper
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 @end
 
 @implementation NWStatsEntityMapperNEHelper
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  dCopy = d;
+  v6 = dCopy;
   v17[0] = 0;
   v17[1] = 0;
-  if (v5)
+  if (dCopy)
   {
-    [v5 getUUIDBytes:v17];
+    [dCopy getUUIDBytes:v17];
     v7 = NEHelperCacheCopySigningIdentifierMapping();
     v8 = v7;
     if (!v7)
@@ -33,7 +33,7 @@ LABEL_8:
         v11 = 4;
 LABEL_9:
 
-        if (!a4)
+        if (!derivation)
         {
           goto LABEL_11;
         }
@@ -71,10 +71,10 @@ LABEL_7:
 
   v11 = 0;
   v12 = 0;
-  if (a4)
+  if (derivation)
   {
 LABEL_10:
-    *a4 = v11;
+    *derivation = v11;
   }
 
 LABEL_11:

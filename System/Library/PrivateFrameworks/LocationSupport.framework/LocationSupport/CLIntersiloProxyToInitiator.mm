@@ -1,6 +1,6 @@
 @interface CLIntersiloProxyToInitiator
 - (CLIntersiloProxy)peer;
-- (CLIntersiloProxyToInitiator)initWithDelegateObject:(id)a3 delegateSilo:(id)a4 uninitializedPeer:(id)a5;
+- (CLIntersiloProxyToInitiator)initWithDelegateObject:(id)object delegateSilo:(id)silo uninitializedPeer:(id)peer;
 @end
 
 @implementation CLIntersiloProxyToInitiator
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (CLIntersiloProxyToInitiator)initWithDelegateObject:(id)a3 delegateSilo:(id)a4 uninitializedPeer:(id)a5
+- (CLIntersiloProxyToInitiator)initWithDelegateObject:(id)object delegateSilo:(id)silo uninitializedPeer:(id)peer
 {
-  v8 = a5;
+  peerCopy = peer;
   v12.receiver = self;
   v12.super_class = CLIntersiloProxyToInitiator;
-  v9 = [(CLIntersiloProxy *)&v12 initWithDelegateObject:a3 delegateSilo:a4];
+  v9 = [(CLIntersiloProxy *)&v12 initWithDelegateObject:object delegateSilo:silo];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_peer, v8);
+    objc_storeWeak(&v9->_peer, peerCopy);
   }
 
   return v10;

@@ -1,15 +1,15 @@
 @interface ContentRestoreURLRequestEncoder
-- (ContentRestoreURLRequestEncoder)initWithBag:(id)a3;
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4;
+- (ContentRestoreURLRequestEncoder)initWithBag:(id)bag;
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters;
 @end
 
 @implementation ContentRestoreURLRequestEncoder
 
-- (ContentRestoreURLRequestEncoder)initWithBag:(id)a3
+- (ContentRestoreURLRequestEncoder)initWithBag:(id)bag
 {
   v6.receiver = self;
   v6.super_class = ContentRestoreURLRequestEncoder;
-  v3 = [(ContentRestoreURLRequestEncoder *)&v6 initWithBag:a3];
+  v3 = [(ContentRestoreURLRequestEncoder *)&v6 initWithBag:bag];
   v4 = v3;
   if (v3)
   {
@@ -19,18 +19,18 @@
   return v4;
 }
 
-- (id)requestByEncodingRequest:(id)a3 parameters:(id)a4
+- (id)requestByEncodingRequest:(id)request parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setCachePolicy:1];
-  [v7 setHTTPContentType:@"text/xml"];
+  parametersCopy = parameters;
+  requestCopy = request;
+  [requestCopy setCachePolicy:1];
+  [requestCopy setHTTPContentType:@"text/xml"];
   v8 = sub_1003BBF50();
-  sub_1003BC30C(v7, 1, v8);
+  sub_1003BC30C(requestCopy, 1, v8);
 
   v11.receiver = self;
   v11.super_class = ContentRestoreURLRequestEncoder;
-  v9 = [(ContentRestoreURLRequestEncoder *)&v11 requestByEncodingRequest:v7 parameters:v6];
+  v9 = [(ContentRestoreURLRequestEncoder *)&v11 requestByEncodingRequest:requestCopy parameters:parametersCopy];
 
   return v9;
 }

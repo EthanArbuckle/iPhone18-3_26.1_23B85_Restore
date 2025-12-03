@@ -1,31 +1,31 @@
 @interface APSUserCourier
 - (APSProtocolConnection)preferredProtocolConnection;
-- (APSUserCourier)initWithEnvironment:(id)a3 courierUser:(id)a4 userPreferences:(id)a5 clientIdentityProvider:(id)a6 userAppIDManager:(id)a7 systemTokenStorage:(id)a8 delegate:(id)a9 withConnectionEstablisher:(id)a10;
-- (APSUserCourier)initWithEnvironment:(id)a3 courierUser:(id)a4 userPreferences:(id)a5 clientIdentityProvider:(id)a6 userAppIDManager:(id)a7 systemTokenStorage:(id)a8 filterVersionStateMachine:(id)a9 debugOverrides:(id)a10 delegate:(id)a11 withConnectionEstablisher:(id)a12 tokenStore:(id)a13 tokenRequestQueue:(id)a14;
+- (APSUserCourier)initWithEnvironment:(id)environment courierUser:(id)user userPreferences:(id)preferences clientIdentityProvider:(id)provider userAppIDManager:(id)manager systemTokenStorage:(id)storage delegate:(id)delegate withConnectionEstablisher:(id)self0;
+- (APSUserCourier)initWithEnvironment:(id)environment courierUser:(id)user userPreferences:(id)preferences clientIdentityProvider:(id)provider userAppIDManager:(id)manager systemTokenStorage:(id)storage filterVersionStateMachine:(id)machine debugOverrides:(id)self0 delegate:(id)self1 withConnectionEstablisher:(id)self2 tokenStore:(id)self3 tokenRequestQueue:(id)self4;
 - (APSUserCourierDelegate)delegate;
 - (BOOL)_hasListeningTopics;
 - (BOOL)_isIdentityAvailable;
-- (BOOL)_isResponseForProxyDevice:(id)a3;
+- (BOOL)_isResponseForProxyDevice:(id)device;
 - (BOOL)_processPendingProxyPresences;
 - (BOOL)_processPotentialIdentityChanged;
 - (BOOL)_useShortKeepAliveInterval;
-- (BOOL)_wakeCausedByTopic:(id)a3 interface:(id)a4 priorityVal:(unint64_t)a5 inAllowlist:(BOOL)a6;
-- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)a3;
-- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)a3 forClient:(id)a4;
+- (BOOL)_wakeCausedByTopic:(id)topic interface:(id)interface priorityVal:(unint64_t)val inAllowlist:(BOOL)allowlist;
+- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)connection;
+- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)connection forClient:(id)client;
 - (BOOL)hasConnectedInterface;
-- (BOOL)hasConnectedInterfaceForIdentifier:(id)a3;
-- (BOOL)hasConnectedInterfaceOfType:(int64_t)a3;
-- (BOOL)hasOutOfDateFilterOnProtocolConnection:(id)a3;
-- (BOOL)hasProtocolConnectionInterfaceOfType:(int64_t)a3;
+- (BOOL)hasConnectedInterfaceForIdentifier:(id)identifier;
+- (BOOL)hasConnectedInterfaceOfType:(int64_t)type;
+- (BOOL)hasOutOfDateFilterOnProtocolConnection:(id)connection;
+- (BOOL)hasProtocolConnectionInterfaceOfType:(int64_t)type;
 - (BOOL)hasReasonToConnect;
 - (BOOL)isConnectableRightNow;
 - (BOOL)isConnectedOnUltraConstrainedInterface;
 - (BOOL)isInteractivePushDuringSleepEnabled;
 - (BOOL)isKeepAliveProxyConfigured;
-- (BOOL)protocolConnectionHasSentActivityTrackingSalt:(id)a3;
-- (BOOL)shouldDropPubSubMessageWithData:(id)a3 forTopic:(id)a4;
+- (BOOL)protocolConnectionHasSentActivityTrackingSalt:(id)salt;
+- (BOOL)shouldDropPubSubMessageWithData:(id)data forTopic:(id)topic;
 - (BOOL)shouldForceShortTimeouts;
-- (BOOL)shouldHandleIncomingPush:(id)a3 forProtocolConnection:(id)a4;
+- (BOOL)shouldHandleIncomingPush:(id)push forProtocolConnection:(id)connection;
 - (BOOL)shouldOnlySendFilterOnPreferredInterface;
 - (BOOL)shouldRun;
 - (BOOL)shouldUseInternet;
@@ -35,27 +35,27 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONDebugState;
-- (id)_copyParsedPayload:(id)a3;
-- (id)_findActiveClientWithToken:(id)a3;
-- (id)_findClientWithToken:(id)a3;
-- (id)_findConnectedClientWithToken:(id)a3 onProtocolConnection:(id)a4;
+- (id)_copyParsedPayload:(id)payload;
+- (id)_findActiveClientWithToken:(id)token;
+- (id)_findClientWithToken:(id)token;
+- (id)_findConnectedClientWithToken:(id)token onProtocolConnection:(id)connection;
 - (id)_getCurrentTokens;
 - (id)_getNextMessageID;
 - (id)_proxyManager;
-- (id)_topicsByHashFromTopicStateDictionary:(id)a3;
-- (id)_ultraConstrainedTopicsFromTopicDictionary:(id)a3;
-- (id)allRegisteredChannelsForTopic:(id)a3;
+- (id)_topicsByHashFromTopicStateDictionary:(id)dictionary;
+- (id)_ultraConstrainedTopicsFromTopicDictionary:(id)dictionary;
+- (id)allRegisteredChannelsForTopic:(id)topic;
 - (id)aps_prettyDescription;
-- (id)connectedInterfaceForIdentifier:(id)a3;
-- (id)connection:(id)a3 createURLTokenForToken:(id)a4;
+- (id)connectedInterfaceForIdentifier:(id)identifier;
+- (id)connection:(id)connection createURLTokenForToken:(id)token;
 - (id)copyOperatorName;
-- (id)getConnectionTypeFromProtocolConnection:(id)a3;
-- (id)stateForProtocolConnection:(id)a3;
-- (id)updateChannelForIncomingMessageWithData:(id)a3 forTopic:(id)a4;
+- (id)getConnectionTypeFromProtocolConnection:(id)connection;
+- (id)stateForProtocolConnection:(id)connection;
+- (id)updateChannelForIncomingMessageWithData:(id)data forTopic:(id)topic;
 - (id)urlPrefix;
 - (id)verboseDescription;
-- (int)_protoSubscriptionFailureToReadableFailure:(int)a3;
-- (int)_protoUpdateFailureToReadableFailure:(int)a3;
+- (int)_protoSubscriptionFailureToReadableFailure:(int)failure;
+- (int)_protoUpdateFailureToReadableFailure:(int)failure;
 - (int64_t)countOfConnectedInterface;
 - (unint64_t)_countActiveClients;
 - (unint64_t)_countConnectedClients;
@@ -63,143 +63,143 @@
 - (unint64_t)overallCourierStatus;
 - (void)__dumpLogsForInconsistencyIfNecessary;
 - (void)__performIdleCheck;
-- (void)__processStoredIncomingMessagesForConnection:(id)a3;
+- (void)__processStoredIncomingMessagesForConnection:(id)connection;
 - (void)_adjustIsConnectedToService;
-- (void)_cancelRequest:(id)a3;
+- (void)_cancelRequest:(id)request;
 - (void)_clearCachedSigNonceCert;
 - (void)_clearPendingProxyPresence;
 - (void)_clearTopicsForGuestUser;
 - (void)_deleteClientIdentityRequestingReplacement;
-- (void)_didFinishAssertingAllPresences:(id)a3;
+- (void)_didFinishAssertingAllPresences:(id)presences;
 - (void)_dumpLogsForInconsistencyIfNecessary;
-- (void)_enqueueMessage:(id)a3 forOriginator:(id)a4;
-- (void)_finishDisconnectForInterface:(id)a3;
+- (void)_enqueueMessage:(id)message forOriginator:(id)originator;
+- (void)_finishDisconnectForInterface:(id)interface;
 - (void)_generateSalt;
-- (void)_handleAppTokenGenerateResponse:(id)a3 onProtocolConnection:(id)a4;
-- (void)_handleChannelUpdateCommand:(id)a3;
-- (void)_handleConnectedMessage:(id)a3 onProtocolConnection:(id)a4;
+- (void)_handleAppTokenGenerateResponse:(id)response onProtocolConnection:(id)connection;
+- (void)_handleChannelUpdateCommand:(id)command;
+- (void)_handleConnectedMessage:(id)message onProtocolConnection:(id)connection;
 - (void)_handleLostPushTokens;
-- (void)_handleMessageMessage:(id)a3 onProtocolConnection:(id)a4 withGeneration:(unint64_t)a5 isWakingMessage:(BOOL)a6 fromAgent:(BOOL)a7;
-- (void)_handleOutgoingMessageAcknowledgment:(id)a3 onProtocolConnection:(id)a4;
-- (void)_handlePresenceOffline:(id)a3;
-- (void)_handlePresenceTrackingResponse:(id)a3 onProtocolConnection:(id)a4;
-- (void)_handlePubSubChannelListRequestonProtocolConnection:(id)a3;
-- (void)_handlePubSubRequest:(id)a3 unsubscriptionChannels:(id)a4 token:(id)a5;
-- (void)_handlePubSubSubscriptionResponse:(id)a3 fromAgent:(BOOL)a4 onProtocolConnection:(id)a5;
-- (void)_handlePubSubUpdateMessage:(id)a3 onProtocolConnection:(id)a4;
-- (void)_handleSubscriptionUpdateCommand:(id)a3 token:(id)a4 protocolConnection:(id)a5;
-- (void)_notifyForIncomingMessage:(id)a3 forConnection:(id)a4;
+- (void)_handleMessageMessage:(id)message onProtocolConnection:(id)connection withGeneration:(unint64_t)generation isWakingMessage:(BOOL)wakingMessage fromAgent:(BOOL)agent;
+- (void)_handleOutgoingMessageAcknowledgment:(id)acknowledgment onProtocolConnection:(id)connection;
+- (void)_handlePresenceOffline:(id)offline;
+- (void)_handlePresenceTrackingResponse:(id)response onProtocolConnection:(id)connection;
+- (void)_handlePubSubChannelListRequestonProtocolConnection:(id)connection;
+- (void)_handlePubSubRequest:(id)request unsubscriptionChannels:(id)channels token:(id)token;
+- (void)_handlePubSubSubscriptionResponse:(id)response fromAgent:(BOOL)agent onProtocolConnection:(id)connection;
+- (void)_handlePubSubUpdateMessage:(id)message onProtocolConnection:(id)connection;
+- (void)_handleSubscriptionUpdateCommand:(id)command token:(id)token protocolConnection:(id)connection;
+- (void)_notifyForIncomingMessage:(id)message forConnection:(id)connection;
 - (void)_performIdleCheck;
 - (void)_processShouldRunChangeIfNecessary;
 - (void)_processShouldUseInternetChangeIfNecessary;
 - (void)_processStoredIncomingMessages;
-- (void)_processStoredIncomingMessagesForConnection:(id)a3;
-- (void)_reconnectAllConnectionsWithReason:(unsigned int)a3;
-- (void)_reconnectIgnoringDelayReconnectTimer:(unsigned int)a3;
+- (void)_processStoredIncomingMessagesForConnection:(id)connection;
+- (void)_reconnectAllConnectionsWithReason:(unsigned int)reason;
+- (void)_reconnectIgnoringDelayReconnectTimer:(unsigned int)timer;
 - (void)_recreateCacheDictionaries;
 - (void)_registerAppTokenCleanup;
-- (void)_removePendingRequestsForProtocolConnection:(id)a3;
+- (void)_removePendingRequestsForProtocolConnection:(id)connection;
 - (void)_reportAPSConnectivity;
-- (void)_requestClientPubSubChannelList:(id)a3 onProtocolConnection:(id)a4;
-- (void)_requestToSendFilterOnTopicManager:(id)a3 change:(id)a4;
-- (void)_resetCheckpointForIgnoredTopics:(id)a3;
-- (void)_retryRequestAfterDelay:(id)a3;
-- (void)_retryRequestAfterDelay:(id)a3 withDelay:(double)a4;
-- (void)_sendActiveStateMessageWithSendAllBlueListMessages:(BOOL)a3;
-- (void)_sendClientFilter:(id)a3 onProtocolConnection:(id)a4;
-- (void)_sendFilterMessageOnProtocolConnection:(id)a3 withChange:(id)a4;
-- (void)_sendFilterMessageOnProtocolConnection:(id)a3 withReason:(unint64_t)a4;
-- (void)_sendOutgoingMessage:(id)a3 onProtocolConnection:(id)a4;
-- (void)_sendPresenceMessageOnProtocolConnection:(id)a3 serverTime:(id)a4;
-- (void)_sendProxyChannelList:(id)a3 onConnectionType:(int64_t)a4;
-- (void)_sendPubsubConnectMessageOnProtocolConnection:(id)a3 token:(id)a4;
+- (void)_requestClientPubSubChannelList:(id)list onProtocolConnection:(id)connection;
+- (void)_requestToSendFilterOnTopicManager:(id)manager change:(id)change;
+- (void)_resetCheckpointForIgnoredTopics:(id)topics;
+- (void)_retryRequestAfterDelay:(id)delay;
+- (void)_retryRequestAfterDelay:(id)delay withDelay:(double)withDelay;
+- (void)_sendActiveStateMessageWithSendAllBlueListMessages:(BOOL)messages;
+- (void)_sendClientFilter:(id)filter onProtocolConnection:(id)connection;
+- (void)_sendFilterMessageOnProtocolConnection:(id)connection withChange:(id)change;
+- (void)_sendFilterMessageOnProtocolConnection:(id)connection withReason:(unint64_t)reason;
+- (void)_sendOutgoingMessage:(id)message onProtocolConnection:(id)connection;
+- (void)_sendPresenceMessageOnProtocolConnection:(id)connection serverTime:(id)time;
+- (void)_sendProxyChannelList:(id)list onConnectionType:(int64_t)type;
+- (void)_sendPubsubConnectMessageOnProtocolConnection:(id)connection token:(id)token;
 - (void)_sendQueuedOutgoingMessages;
-- (void)_triggerAutoBugCaptureForInvalidPresence:(id)a3;
-- (void)_triggerAutoBugCaptureIfMessageIsRetried:(id)a3;
-- (void)_triggerTTRFromServer:(id)a3;
+- (void)_triggerAutoBugCaptureForInvalidPresence:(id)presence;
+- (void)_triggerAutoBugCaptureIfMessageIsRetried:(id)retried;
+- (void)_triggerTTRFromServer:(id)server;
 - (void)_tryConnectingOrDisconnectingTokens;
-- (void)_useInteractivePowerAssertionIfNeededForConnectionServer:(id)a3 withReason:(id)a4;
-- (void)_writePubSubMessagetoConnection:(id)a3 messageID:(unsigned int)a4 token:(id)a5 connectionType:(int64_t)a6;
-- (void)addConnection:(id)a3;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3;
+- (void)_useInteractivePowerAssertionIfNeededForConnectionServer:(id)server withReason:(id)reason;
+- (void)_writePubSubMessagetoConnection:(id)connection messageID:(unsigned int)d token:(id)token connectionType:(int64_t)type;
+- (void)addConnection:(id)connection;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer;
 - (void)attemptToRollSalt;
-- (void)beginTrackingProtocolConnection:(id)a3;
+- (void)beginTrackingProtocolConnection:(id)connection;
 - (void)canUseProxyChanged;
 - (void)clearCachedIdentityAndTokens;
-- (void)client:(id)a3 requestPushAckResponse:(id)a4 messageId:(id)a5 token:(id)a6 connectionType:(id)a7 generation:(id)a8;
-- (void)client:(id)a3 requestSendOutgoingMessage:(id)a4;
-- (void)client:(id)a3 requestTokenGenerateWithTopicHash:(id)a4 baseToken:(id)a5 appId:(id)a6 expirationTTL:(id)a7 vapidPublicKeyHash:(id)a8 type:(id)a9;
-- (void)client:(id)a3 sendPubSubChannelList:(id)a4 token:(id)a5;
-- (void)clientBecameInactive:(id)a3;
+- (void)client:(id)client requestPushAckResponse:(id)response messageId:(id)id token:(id)token connectionType:(id)type generation:(id)generation;
+- (void)client:(id)client requestSendOutgoingMessage:(id)message;
+- (void)client:(id)client requestTokenGenerateWithTopicHash:(id)hash baseToken:(id)token appId:(id)id expirationTTL:(id)l vapidPublicKeyHash:(id)keyHash type:(id)type;
+- (void)client:(id)client sendPubSubChannelList:(id)list token:(id)token;
+- (void)clientBecameInactive:(id)inactive;
 - (void)clientIdentityDidBecomeAvailable;
 - (void)clientIdentityDidBecomeUnavailable;
-- (void)connection:(id)a3 didInvalidateTokenForInfo:(id)a4;
-- (void)connection:(id)a3 didReceiveCancellationForOutgoingMessageWithID:(unint64_t)a4;
-- (void)connection:(id)a3 didReceiveFakeMessageToSend:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessageReceiptWithTopic:(id)a4 tracingUUID:(id)a5;
-- (void)connection:(id)a3 didReceiveOutgoingMessageToSend:(id)a4;
-- (void)connection:(id)a3 didReceiveSubscribeToChannels:(id)a4 forTopic:(id)a5;
-- (void)connection:(id)a3 didReceiveUnsubscribeToChannels:(id)a4 forTopic:(id)a5;
-- (void)connection:(id)a3 didRequestCurrentTokenForInfo:(id)a4;
-- (void)connection:(id)a3 didRequestTokenForInfo:(id)a4;
-- (void)connection:(id)a3 handleAckIncomingMessageWithGuid:(id)a4 topic:(id)a5 tracingUUID:(id)a6;
-- (void)connection:(id)a3 setKeepAliveConfiguration:(unint64_t)a4;
-- (void)connectionChangedCriticalReliability:(id)a3;
-- (void)connectionChangedTrackActivityPresence:(id)a3;
-- (void)connectionDidClientDisconnect:(id)a3;
-- (void)connectionTopicsChanged:(id)a3;
-- (void)connectionWasClosed:(id)a3;
-- (void)connectionWasOpened:(id)a3;
+- (void)connection:(id)connection didInvalidateTokenForInfo:(id)info;
+- (void)connection:(id)connection didReceiveCancellationForOutgoingMessageWithID:(unint64_t)d;
+- (void)connection:(id)connection didReceiveFakeMessageToSend:(id)send;
+- (void)connection:(id)connection didReceiveIncomingMessageReceiptWithTopic:(id)topic tracingUUID:(id)d;
+- (void)connection:(id)connection didReceiveOutgoingMessageToSend:(id)send;
+- (void)connection:(id)connection didReceiveSubscribeToChannels:(id)channels forTopic:(id)topic;
+- (void)connection:(id)connection didReceiveUnsubscribeToChannels:(id)channels forTopic:(id)topic;
+- (void)connection:(id)connection didRequestCurrentTokenForInfo:(id)info;
+- (void)connection:(id)connection didRequestTokenForInfo:(id)info;
+- (void)connection:(id)connection handleAckIncomingMessageWithGuid:(id)guid topic:(id)topic tracingUUID:(id)d;
+- (void)connection:(id)connection setKeepAliveConfiguration:(unint64_t)configuration;
+- (void)connectionChangedCriticalReliability:(id)reliability;
+- (void)connectionChangedTrackActivityPresence:(id)presence;
+- (void)connectionDidClientDisconnect:(id)disconnect;
+- (void)connectionTopicsChanged:(id)changed;
+- (void)connectionWasClosed:(id)closed;
+- (void)connectionWasOpened:(id)opened;
 - (void)dealloc;
-- (void)didRecoverFromSuspensionOnProtocolConnection:(id)a3;
-- (void)didSuspendProtocolConnection:(id)a3;
-- (void)enumerateAllProtocolConnections:(id)a3;
-- (void)enumerateConnectedProtocolConnections:(id)a3;
-- (void)enumerateConnectedProtocolConnectionsOfType:(int64_t)a3 block:(id)a4;
+- (void)didRecoverFromSuspensionOnProtocolConnection:(id)connection;
+- (void)didSuspendProtocolConnection:(id)connection;
+- (void)enumerateAllProtocolConnections:(id)connections;
+- (void)enumerateConnectedProtocolConnections:(id)connections;
+- (void)enumerateConnectedProtocolConnectionsOfType:(int64_t)type block:(id)block;
 - (void)flush;
-- (void)handleDisconnectForInterface:(id)a3 connectionState:(int64_t)a4 withReason:(unsigned int)a5;
-- (void)handleIgnoredTopics:(id)a3;
-- (void)incomingPresenceWithGuid:(id)a3 token:(id)a4 hwVersion:(id)a5 swVersion:(id)a6 swBuild:(id)a7 certificates:(id)a8 nonce:(id)a9 signature:(id)a10 additionalFlags:(int)a11;
+- (void)handleDisconnectForInterface:(id)interface connectionState:(int64_t)state withReason:(unsigned int)reason;
+- (void)handleIgnoredTopics:(id)topics;
+- (void)incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)nonce signature:(id)self0 additionalFlags:(int)self1;
 - (void)invalidateDeviceIdentity;
-- (void)logStateWithReason:(id)a3;
+- (void)logStateWithReason:(id)reason;
 - (void)logout;
-- (void)markProtocolConnectionDisconnectedForActivityTracking:(id)a3;
-- (void)outgoingDataAboutToSendForProtocolConnection:(id)a3;
-- (void)outgoingMessageQueue:(id)a3 lateAcknowledgmentForCriticalOutgoingMessage:(id)a4;
-- (void)outgoingMessageQueue:(id)a3 requestToSendLowPriorityMessages:(id)a4;
-- (void)outgoingMessageQueueShortMessageTimeoutExceeded:(id)a3;
+- (void)markProtocolConnectionDisconnectedForActivityTracking:(id)tracking;
+- (void)outgoingDataAboutToSendForProtocolConnection:(id)connection;
+- (void)outgoingMessageQueue:(id)queue lateAcknowledgmentForCriticalOutgoingMessage:(id)message;
+- (void)outgoingMessageQueue:(id)queue requestToSendLowPriorityMessages:(id)messages;
+- (void)outgoingMessageQueueShortMessageTimeoutExceeded:(id)exceeded;
 - (void)performAppTokenCleanup;
 - (void)periodicSignalFired;
 - (void)prepareForDarkWake;
 - (void)prepareForFullWake;
 - (void)prepareForSleep;
 - (void)processIsPowerEfficientToSendChange;
-- (void)protocolConnection:(id)a3 receivedFilterUpdateWithParameters:(id)a4;
-- (void)pushTokenBecameInvalidForClient:(id)a3;
+- (void)protocolConnection:(id)connection receivedFilterUpdateWithParameters:(id)parameters;
+- (void)pushTokenBecameInvalidForClient:(id)client;
 - (void)recalculateTrackActivityPresence;
-- (void)receivedConnectedResponseWithParameters:(id)a3 onProtocolConnection:(id)a4;
-- (void)receivedFilterResponseWithParameters:(id)a3 onProtocolConnection:(id)a4;
-- (void)removeConnectionForConnectionPortName:(id)a3;
-- (void)requestFilterForClient:(id)a3;
-- (void)rollTokenAndReconnectImmediately:(BOOL)a3;
+- (void)receivedConnectedResponseWithParameters:(id)parameters onProtocolConnection:(id)connection;
+- (void)receivedFilterResponseWithParameters:(id)parameters onProtocolConnection:(id)connection;
+- (void)removeConnectionForConnectionPortName:(id)name;
+- (void)requestFilterForClient:(id)client;
+- (void)rollTokenAndReconnectImmediately:(BOOL)immediately;
 - (void)rollTokensForAllBAAEnvironments;
-- (void)saveToken:(id)a3 forInfo:(id)a4 connection:(id)a5;
-- (void)sendFailuresToClient:(id)a3 pushTopic:(id)a4;
-- (void)sendPresenceTrackingRequestOnProtocolConnection:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIsConnectedToService:(BOOL)a3;
-- (void)setLargeMessageSize:(unint64_t)a3;
-- (void)setMessageSize:(unint64_t)a3;
-- (void)setPublicToken:(id)a3 fromServer:(BOOL)a4;
-- (void)shouldConnectToCourier:(id)a3;
-- (void)subscribeToPreviouslyIgnoredTopics:(id)a3;
+- (void)saveToken:(id)token forInfo:(id)info connection:(id)connection;
+- (void)sendFailuresToClient:(id)client pushTopic:(id)topic;
+- (void)sendPresenceTrackingRequestOnProtocolConnection:(id)connection;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIsConnectedToService:(BOOL)service;
+- (void)setLargeMessageSize:(unint64_t)size;
+- (void)setMessageSize:(unint64_t)size;
+- (void)setPublicToken:(id)token fromServer:(BOOL)server;
+- (void)shouldConnectToCourier:(id)courier;
+- (void)subscribeToPreviouslyIgnoredTopics:(id)topics;
 - (void)systemDidLock;
 - (void)systemDidUnlock;
-- (void)topicManagerRequestToSendFilter:(id)a3 change:(id)a4;
-- (void)ttlCollection:(id)a3 itemsDidExpire:(id)a4 withStates:(id)a5;
-- (void)unsubscribeFromChannels:(id)a3 forTopic:(id)a4 token:(id)a5;
-- (void)unsubscribeFromChannels:(id)a3 token:(id)a4;
-- (void)updateForReceivedConfig:(id)a3 finishedProcessingConfigBlock:(id)a4;
+- (void)topicManagerRequestToSendFilter:(id)filter change:(id)change;
+- (void)ttlCollection:(id)collection itemsDidExpire:(id)expire withStates:(id)states;
+- (void)unsubscribeFromChannels:(id)channels forTopic:(id)topic token:(id)token;
+- (void)unsubscribeFromChannels:(id)channels token:(id)token;
+- (void)updateForReceivedConfig:(id)config finishedProcessingConfigBlock:(id)block;
 @end
 
 @implementation APSUserCourier
@@ -232,13 +232,13 @@
   cachedPublicToken = self->_cachedPublicToken;
   if (!cachedPublicToken)
   {
-    v4 = [(APSUserCourier *)self systemTokenStorage];
-    v5 = [(APSUserCourier *)self environment];
-    v6 = [v4 tokenInfoForEnvironment:v5];
+    systemTokenStorage = [(APSUserCourier *)self systemTokenStorage];
+    environment = [(APSUserCourier *)self environment];
+    v6 = [systemTokenStorage tokenInfoForEnvironment:environment];
 
-    v7 = [v6 systemToken];
+    systemToken = [v6 systemToken];
     v8 = self->_cachedPublicToken;
-    self->_cachedPublicToken = v7;
+    self->_cachedPublicToken = systemToken;
 
     [(APSUserCourier *)self setPublicToken:self->_cachedPublicToken fromServer:0];
     cachedPublicToken = self->_cachedPublicToken;
@@ -249,8 +249,8 @@
 
 - (BOOL)shouldOnlySendFilterOnPreferredInterface
 {
-  v3 = [(APSUserCourier *)self stateByConnectionIdentifier];
-  if ([v3 count] >= 2)
+  stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+  if ([stateByConnectionIdentifier count] >= 2)
   {
     v4 = [(APSUserCourier *)self hasConnectedInterfaceOfType:2];
 
@@ -288,8 +288,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(APSUserCourier *)self connectionServers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v4 = [connectionServers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -300,18 +300,18 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectionServers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 connectionPortName];
-        if (v9)
+        connectionPortName = [v8 connectionPortName];
+        if (connectionPortName)
         {
-          [(NSMutableDictionary *)self->_connectionPortNamesToConnections setObject:v8 forKey:v9];
+          [(NSMutableDictionary *)self->_connectionPortNamesToConnections setObject:v8 forKey:connectionPortName];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [connectionServers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -323,10 +323,10 @@
 - (void)_processShouldRunChangeIfNecessary
 {
   shouldRun = self->_shouldRun;
-  v4 = [(APSUserCourier *)self shouldRun];
-  if (shouldRun != v4)
+  shouldRun = [(APSUserCourier *)self shouldRun];
+  if (shouldRun != shouldRun)
   {
-    v5 = v4;
+    v5 = shouldRun;
     v6 = +[APSLog shouldReduceLogging];
     v7 = +[APSLog courier];
     v8 = v7;
@@ -341,7 +341,7 @@
         }
 
         v14 = 138412546;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2112;
         v17 = v9;
         v10 = v8;
@@ -360,7 +360,7 @@ LABEL_11:
       }
 
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v12;
       v10 = v8;
@@ -377,10 +377,10 @@ LABEL_11:
 - (BOOL)shouldRun
 {
   self->_shouldRun = self->_enabled;
-  v3 = [(APSUserCourier *)self _countActiveClients];
+  _countActiveClients = [(APSUserCourier *)self _countActiveClients];
   if (self->_shouldRun)
   {
-    v4 = v3;
+    v4 = _countActiveClients;
     result = [(APSUserCourier *)self _hasListeningTopics];
     if (v4)
     {
@@ -446,15 +446,15 @@ LABEL_11:
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(APSTopicManager *)self->_topicManager hasListeningTopics];
+      hasListeningTopics = [(APSTopicManager *)self->_topicManager hasListeningTopics];
       v7 = @"NO";
-      if (v6)
+      if (hasListeningTopics)
       {
         v7 = @"YES";
       }
 
       v13 = 138412546;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
       v16 = v7;
       v8 = v5;
@@ -466,15 +466,15 @@ LABEL_10:
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(APSTopicManager *)self->_topicManager hasListeningTopics];
+    hasListeningTopics2 = [(APSTopicManager *)self->_topicManager hasListeningTopics];
     v11 = @"NO";
-    if (v10)
+    if (hasListeningTopics2)
     {
       v11 = @"YES";
     }
 
     v13 = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
     v16 = v11;
     v8 = v5;
@@ -487,11 +487,11 @@ LABEL_10:
 
 - (unint64_t)largeMessageSize
 {
-  v3 = [(APSEnvironment *)self->_environment largeMessageSize];
+  largeMessageSize = [(APSEnvironment *)self->_environment largeMessageSize];
   result = [(APSUserCourier *)self messageSize];
-  if (v3 > result)
+  if (largeMessageSize > result)
   {
-    return v3;
+    return largeMessageSize;
   }
 
   return result;
@@ -520,11 +520,11 @@ LABEL_10:
         }
 
         v7 = *(*(&v22 + 1) + 8 * i);
-        v8 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-        v9 = [v8 objectForKeyedSubscript:v7];
+        protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+        v9 = [protocolConnectionByIdentifier objectForKeyedSubscript:v7];
         v26[0] = v9;
-        v10 = [(APSUserCourier *)self stateByConnectionIdentifier];
-        v11 = [v10 objectForKeyedSubscript:v7];
+        stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+        v11 = [stateByConnectionIdentifier objectForKeyedSubscript:v7];
         v26[1] = v11;
         v12 = [NSArray arrayWithObjects:v26 count:2];
         [v21 setObject:v12 forKeyedSubscript:v7];
@@ -539,7 +539,7 @@ LABEL_10:
   v13 = APSPrettyPrintCollection();
   filterVersionStateMachine = self->_filterVersionStateMachine;
   v15 = APSPrettyPrintObject();
-  v16 = [(NSMutableDictionary *)self->_proxyClients allValues];
+  allValues = [(NSMutableDictionary *)self->_proxyClients allValues];
   v17 = APSPrettyPrintCollection();
   v18 = [NSString stringWithFormat:@"%@ protocol connections: %@ filter version state: %@ proxy clients: %@", self, v13, v15, v17];
 
@@ -549,11 +549,11 @@ LABEL_10:
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(APSUserCourier *)self environment];
-  v5 = [v4 name];
-  v6 = [(APSUserCourier *)self courierUser];
-  v7 = [v6 name];
-  v8 = [NSString stringWithFormat:@"<%@ %p %@ %@>", v3, self, v5, v7];
+  environment = [(APSUserCourier *)self environment];
+  name = [environment name];
+  courierUser = [(APSUserCourier *)self courierUser];
+  name2 = [courierUser name];
+  v8 = [NSString stringWithFormat:@"<%@ %p %@ %@>", v3, self, name, name2];
 
   return v8;
 }
@@ -571,10 +571,10 @@ LABEL_10:
 - (id)_getCurrentTokens
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(APSUserCourier *)self publicToken];
-  if (v4)
+  publicToken = [(APSUserCourier *)self publicToken];
+  if (publicToken)
   {
-    [v3 addObject:v4];
+    [v3 addObject:publicToken];
   }
 
   return v3;
@@ -582,34 +582,34 @@ LABEL_10:
 
 - (BOOL)isConnectableRightNow
 {
-  v3 = [(APSUserCourier *)self _isIdentityAvailable];
-  if (v3)
+  _isIdentityAvailable = [(APSUserCourier *)self _isIdentityAvailable];
+  if (_isIdentityAvailable)
   {
 
-    LOBYTE(v3) = [(APSUserCourier *)self shouldUseInternet];
+    LOBYTE(_isIdentityAvailable) = [(APSUserCourier *)self shouldUseInternet];
   }
 
-  return v3;
+  return _isIdentityAvailable;
 }
 
 - (BOOL)_isIdentityAvailable
 {
-  v2 = [(APSUserCourier *)self clientIdentityProvider];
-  v3 = [v2 isReadyToFetchIdentity];
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+  isReadyToFetchIdentity = [clientIdentityProvider isReadyToFetchIdentity];
 
-  return v3;
+  return isReadyToFetchIdentity;
 }
 
 - (BOOL)shouldUseInternet
 {
-  v3 = [(APSUserCourier *)self shouldRun];
-  if (v3)
+  shouldRun = [(APSUserCourier *)self shouldRun];
+  if (shouldRun)
   {
-    LOBYTE(v3) = ![(APSUserCourier *)self hasProtocolConnectionInterfaceOfType:2];
+    LOBYTE(shouldRun) = ![(APSUserCourier *)self hasProtocolConnectionInterfaceOfType:2];
   }
 
-  self->_shouldUseInternet = v3;
-  return v3;
+  self->_shouldUseInternet = shouldRun;
+  return shouldRun;
 }
 
 - (BOOL)willBeAbleToConnect
@@ -652,8 +652,8 @@ LABEL_10:
 
 - (void)_sendQueuedOutgoingMessages
 {
-  v3 = [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue outgoingMessagesToSend];
-  if ([v3 count])
+  outgoingMessagesToSend = [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue outgoingMessagesToSend];
+  if ([outgoingMessagesToSend count])
   {
     v4 = +[APSLog shouldReduceLogging];
     v5 = +[APSLog courier];
@@ -662,11 +662,11 @@ LABEL_10:
     {
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(APSUser *)self->_courierUser name];
+        name = [(APSUser *)self->_courierUser name];
         *buf = 138412546;
-        v31 = self;
+        selfCopy4 = self;
         v32 = 2112;
-        v33 = v7;
+        v33 = name;
         v8 = v6;
         v9 = OS_LOG_TYPE_DEBUG;
 LABEL_7:
@@ -676,11 +676,11 @@ LABEL_7:
 
     else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(APSUser *)self->_courierUser name];
+      name = [(APSUser *)self->_courierUser name];
       *buf = 138412546;
-      v31 = self;
+      selfCopy4 = self;
       v32 = 2112;
-      v33 = v7;
+      v33 = name;
       v8 = v6;
       v9 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_7;
@@ -690,7 +690,7 @@ LABEL_7:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = v3;
+    v10 = outgoingMessagesToSend;
     v11 = [v10 countByEnumeratingWithState:&v26 objects:v36 count:16];
     if (!v11)
     {
@@ -709,10 +709,10 @@ LABEL_7:
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 originator];
-        v17 = [v16 isConnected];
+        originator = [v15 originator];
+        isConnected = [originator isConnected];
 
-        if (v17)
+        if (isConnected)
         {
           [(APSUserCourier *)self _sendOutgoingMessage:v15 onProtocolConnection:0];
           continue;
@@ -725,14 +725,14 @@ LABEL_7:
         {
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v15 messageID];
-            v22 = [v15 originator];
+            messageID = [v15 messageID];
+            originator2 = [v15 originator];
             *buf = 138412802;
-            v31 = self;
+            selfCopy4 = self;
             v32 = 2048;
-            v33 = v21;
+            v33 = messageID;
             v34 = 2112;
-            v35 = v22;
+            v35 = originator2;
             v23 = v20;
             v24 = OS_LOG_TYPE_DEBUG;
 LABEL_20:
@@ -742,14 +742,14 @@ LABEL_20:
 
         else if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v15 messageID];
-          v22 = [v15 originator];
+          messageID2 = [v15 messageID];
+          originator2 = [v15 originator];
           *buf = 138412802;
-          v31 = self;
+          selfCopy4 = self;
           v32 = 2048;
-          v33 = v25;
+          v33 = messageID2;
           v34 = 2112;
-          v35 = v22;
+          v35 = originator2;
           v23 = v20;
           v24 = OS_LOG_TYPE_DEFAULT;
           goto LABEL_20;
@@ -773,10 +773,10 @@ LABEL_24:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v4 = [v3 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -787,18 +787,18 @@ LABEL_24:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isPreferredInterface])
         {
-          v11 = v9;
+          firstObject = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -808,34 +808,34 @@ LABEL_24:
     }
   }
 
-  v4 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v10 = [v4 allValues];
-  v11 = [v10 firstObject];
+  allValues = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  v4AllValues = [allValues allValues];
+  firstObject = [v4AllValues firstObject];
 
 LABEL_11:
 
-  return v11;
+  return firstObject;
 }
 
 - (BOOL)shouldForceShortTimeouts
 {
-  v2 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  v3 = [v2 countConnectedInterfaces] > 1;
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  v3 = [protocolConnectionEstablisher countConnectedInterfaces] > 1;
 
   return v3;
 }
 
-- (APSUserCourier)initWithEnvironment:(id)a3 courierUser:(id)a4 userPreferences:(id)a5 clientIdentityProvider:(id)a6 userAppIDManager:(id)a7 systemTokenStorage:(id)a8 delegate:(id)a9 withConnectionEstablisher:(id)a10
+- (APSUserCourier)initWithEnvironment:(id)environment courierUser:(id)user userPreferences:(id)preferences clientIdentityProvider:(id)provider userAppIDManager:(id)manager systemTokenStorage:(id)storage delegate:(id)delegate withConnectionEstablisher:(id)self0
 {
-  v16 = a3;
-  v38 = a10;
-  v37 = a9;
-  v36 = a8;
-  v35 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v39 = [[APSTokenStore alloc] initWithEnvironment:v16 allowInMemoryCache:0];
+  environmentCopy = environment;
+  establisherCopy = establisher;
+  delegateCopy = delegate;
+  storageCopy = storage;
+  managerCopy = manager;
+  providerCopy = provider;
+  preferencesCopy = preferences;
+  userCopy = user;
+  v39 = [[APSTokenStore alloc] initWithEnvironment:environmentCopy allowInMemoryCache:0];
   v20 = objc_alloc_init(APSOutgoingQueue);
   if (sub_10000712C())
   {
@@ -848,11 +848,11 @@ LABEL_11:
   }
 
   v34 = v21;
-  v22 = [(APSDefaultsDebugOverrides *)v21 overrideFilterVersion];
-  v33 = v22;
-  if (v22)
+  overrideFilterVersion = [(APSDefaultsDebugOverrides *)v21 overrideFilterVersion];
+  v33 = overrideFilterVersion;
+  if (overrideFilterVersion)
   {
-    v23 = v22;
+    v23 = overrideFilterVersion;
     v24 = +[APSLog shouldReduceLogging];
     v25 = +[APSLog courier];
     v26 = v25;
@@ -861,7 +861,7 @@ LABEL_11:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2112;
         v43 = v23;
         v27 = v26;
@@ -874,7 +874,7 @@ LABEL_11:
     else if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
       v43 = v23;
       v27 = v26;
@@ -889,48 +889,48 @@ LABEL_11:
   v29 = objc_alloc_init(APSFilterVersionStateMachine);
 LABEL_13:
   v30 = v29;
-  v32 = [(APSUserCourier *)self initWithEnvironment:v16 courierUser:v19 userPreferences:v18 clientIdentityProvider:v17 userAppIDManager:v35 systemTokenStorage:v36 filterVersionStateMachine:v29 debugOverrides:v34 delegate:v37 withConnectionEstablisher:v38 tokenStore:v39 tokenRequestQueue:v20];
+  v32 = [(APSUserCourier *)self initWithEnvironment:environmentCopy courierUser:userCopy userPreferences:preferencesCopy clientIdentityProvider:providerCopy userAppIDManager:managerCopy systemTokenStorage:storageCopy filterVersionStateMachine:v29 debugOverrides:v34 delegate:delegateCopy withConnectionEstablisher:establisherCopy tokenStore:v39 tokenRequestQueue:v20];
 
   return v32;
 }
 
-- (APSUserCourier)initWithEnvironment:(id)a3 courierUser:(id)a4 userPreferences:(id)a5 clientIdentityProvider:(id)a6 userAppIDManager:(id)a7 systemTokenStorage:(id)a8 filterVersionStateMachine:(id)a9 debugOverrides:(id)a10 delegate:(id)a11 withConnectionEstablisher:(id)a12 tokenStore:(id)a13 tokenRequestQueue:(id)a14
+- (APSUserCourier)initWithEnvironment:(id)environment courierUser:(id)user userPreferences:(id)preferences clientIdentityProvider:(id)provider userAppIDManager:(id)manager systemTokenStorage:(id)storage filterVersionStateMachine:(id)machine debugOverrides:(id)self0 delegate:(id)self1 withConnectionEstablisher:(id)self2 tokenStore:(id)self3 tokenRequestQueue:(id)self4
 {
-  v134 = a3;
-  v133 = a4;
-  v19 = a5;
-  v20 = a8;
-  v130 = v19;
-  v21 = a7;
-  v121 = a6;
-  v122 = a7;
-  v131 = a8;
-  v123 = a9;
-  v129 = a10;
-  v132 = a11;
-  v124 = a12;
-  v125 = a13;
-  v126 = a14;
+  environmentCopy = environment;
+  userCopy = user;
+  preferencesCopy = preferences;
+  storageCopy = storage;
+  v130 = preferencesCopy;
+  managerCopy = manager;
+  providerCopy = provider;
+  managerCopy2 = manager;
+  storageCopy2 = storage;
+  machineCopy = machine;
+  overridesCopy = overrides;
+  delegateCopy = delegate;
+  establisherCopy = establisher;
+  storeCopy = store;
+  queueCopy = queue;
   v138.receiver = self;
   v138.super_class = APSUserCourier;
   v22 = [(APSUserCourier *)&v138 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_environment, a3);
-    objc_storeStrong(&v23->_courierUser, a4);
-    objc_storeStrong(&v23->_filterVersionStateMachine, a9);
+    objc_storeStrong(&v22->_environment, environment);
+    objc_storeStrong(&v23->_courierUser, user);
+    objc_storeStrong(&v23->_filterVersionStateMachine, machine);
     if (_os_feature_enabled_impl())
     {
-      v24 = [v129 disableFilterOptimization];
+      disableFilterOptimization = [overridesCopy disableFilterOptimization];
     }
 
     else
     {
-      v24 = 1;
+      disableFilterOptimization = 1;
     }
 
-    v23->_locallyDisabledFilterOptimization = v24;
+    v23->_locallyDisabledFilterOptimization = disableFilterOptimization;
     v25 = +[APSLog shouldReduceLogging];
     v26 = +[APSLog courier];
     v27 = v26;
@@ -938,8 +938,8 @@ LABEL_13:
     {
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [v134 domain];
-        v29 = v28;
+        domain = [environmentCopy domain];
+        v29 = domain;
         v30 = @"NO";
         locallyDisabledFilterOptimization = v23->_locallyDisabledFilterOptimization;
         *buf = 138413058;
@@ -950,9 +950,9 @@ LABEL_13:
 
         v140 = v23;
         v141 = 2112;
-        v142 = v28;
+        v142 = domain;
         v143 = 2112;
-        v144 = v133;
+        v144 = userCopy;
         v145 = 2112;
         v146 = v30;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%@: Initializing a courier with environment %@ user %@ {_locallyDisabledFilterOptimization: %@}", buf, 0x2Au);
@@ -961,8 +961,8 @@ LABEL_13:
 
     else if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v134 domain];
-      v33 = v32;
+      domain2 = [environmentCopy domain];
+      v33 = domain2;
       v34 = @"NO";
       v35 = v23->_locallyDisabledFilterOptimization;
       *buf = 138413058;
@@ -973,31 +973,31 @@ LABEL_13:
 
       v140 = v23;
       v141 = 2112;
-      v142 = v32;
+      v142 = domain2;
       v143 = 2112;
-      v144 = v133;
+      v144 = userCopy;
       v145 = 2112;
       v146 = v34;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%@: Initializing a courier with environment %@ user %@ {_locallyDisabledFilterOptimization: %@}", buf, 0x2Au);
     }
 
-    objc_storeWeak(&v23->_delegate, v132);
-    objc_storeStrong(&v23->_userAppIDManager, v21);
+    objc_storeWeak(&v23->_delegate, delegateCopy);
+    objc_storeStrong(&v23->_userAppIDManager, managerCopy);
     v36 = [APSKeychainTopicSaltStore alloc];
     v37 = +[APSMultiUserMode sharedInstance];
-    v128 = [(APSKeychainTopicSaltStore *)v36 initWithEnvironment:v134 multiUserMode:v37];
+    v128 = [(APSKeychainTopicSaltStore *)v36 initWithEnvironment:environmentCopy multiUserMode:v37];
 
     v38 = [[APSTopicHasher alloc] initWithTopicSaltStore:v128];
     topicHasher = v23->_topicHasher;
     v23->_topicHasher = v38;
 
-    objc_storeStrong(&v23->_tokenStore, a13);
+    objc_storeStrong(&v23->_tokenStore, store);
     if (!qword_1001BF700)
     {
       objc_storeStrong(&qword_1001BF700, v23);
     }
 
-    objc_storeStrong(&v23->_debugOverrides, a10);
+    objc_storeStrong(&v23->_debugOverrides, overrides);
     v40 = objc_alloc_init(NSMutableArray);
     connectionServers = v23->_connectionServers;
     v23->_connectionServers = v40;
@@ -1010,7 +1010,7 @@ LABEL_13:
     outgoingMessageQueue = v23->_outgoingMessageQueue;
     v23->_outgoingMessageQueue = v44;
 
-    objc_storeStrong(&v23->_tokenRequestQueue, a14);
+    objc_storeStrong(&v23->_tokenRequestQueue, queue);
     v23->_slowReceiveThreshold = 60.0;
     v46 = [[APSPushHistory alloc] initWithEnvironment:v23->_environment];
     pushHistory = v23->_pushHistory;
@@ -1024,9 +1024,9 @@ LABEL_13:
     stateByConnectionIdentifier = v23->_stateByConnectionIdentifier;
     v23->_stateByConnectionIdentifier = v50;
 
-    objc_storeStrong(&v23->_protocolConnectionEstablisher, a12);
-    objc_storeStrong(&v23->_systemTokenStorage, v20);
-    v52 = [v131 tokenInfoForEnvironment:v134];
+    objc_storeStrong(&v23->_protocolConnectionEstablisher, establisher);
+    objc_storeStrong(&v23->_systemTokenStorage, storageCopy);
+    v52 = [storageCopy2 tokenInfoForEnvironment:environmentCopy];
     v53 = +[APSLog shouldReduceLogging];
     v54 = +[APSLog courier];
     v55 = v54;
@@ -1034,28 +1034,28 @@ LABEL_13:
     {
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
-        v56 = [v52 systemToken];
-        v57 = [v52 tokenType];
+        systemToken = [v52 systemToken];
+        tokenType = [v52 tokenType];
         *buf = 138412802;
         v140 = v23;
         v141 = 2112;
-        v142 = v56;
+        v142 = systemToken;
         v143 = 2048;
-        v144 = v57;
+        v144 = tokenType;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEBUG, "%@: Cached token: %@, type: %ld", buf, 0x20u);
       }
     }
 
     else if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
-      v58 = [v52 systemToken];
-      v59 = [v52 tokenType];
+      systemToken2 = [v52 systemToken];
+      tokenType2 = [v52 tokenType];
       *buf = 138412802;
       v140 = v23;
       v141 = 2112;
-      v142 = v58;
+      v142 = systemToken2;
       v143 = 2048;
-      v144 = v59;
+      v144 = tokenType2;
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%@: Cached token: %@, type: %ld", buf, 0x20u);
     }
 
@@ -1068,19 +1068,19 @@ LABEL_13:
       {
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
         {
-          v63 = [v134 name];
-          v64 = [v52 systemToken];
-          v65 = [v52 tokenType];
+          name = [environmentCopy name];
+          systemToken3 = [v52 systemToken];
+          tokenType3 = [v52 tokenType];
           v66 = "Albert";
           *buf = 138412802;
-          v140 = v63;
-          if (v65 == 1)
+          v140 = name;
+          if (tokenType3 == 1)
           {
             v66 = "BAA";
           }
 
           v141 = 2112;
-          v142 = v64;
+          v142 = systemToken3;
           v143 = 2080;
           v144 = v66;
           _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEBUG, "Found an existing token in keychain to init clientIdentityManager for environment %@, token: %@, type: %s", buf, 0x20u);
@@ -1089,25 +1089,25 @@ LABEL_13:
 
       else if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [v134 name];
-        v69 = [v52 systemToken];
-        v70 = [v52 tokenType];
+        name2 = [environmentCopy name];
+        systemToken4 = [v52 systemToken];
+        tokenType4 = [v52 tokenType];
         v71 = "Albert";
         *buf = 138412802;
-        v140 = v68;
-        if (v70 == 1)
+        v140 = name2;
+        if (tokenType4 == 1)
         {
           v71 = "BAA";
         }
 
         v141 = 2112;
-        v142 = v69;
+        v142 = systemToken4;
         v143 = 2080;
         v144 = v71;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Found an existing token in keychain to init clientIdentityManager for environment %@, token: %@, type: %s", buf, 0x20u);
       }
 
-      v72 = [v52 systemToken];
+      systemToken5 = [v52 systemToken];
     }
 
     else
@@ -1116,28 +1116,28 @@ LABEL_13:
       {
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
         {
-          v67 = [v134 name];
+          name3 = [environmentCopy name];
           *buf = 138412290;
-          v140 = v67;
+          v140 = name3;
           _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEBUG, "No token found in keychain for environment %@, setting clientIdentityManager status to unknown", buf, 0xCu);
         }
       }
 
       else if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
-        v73 = [v134 name];
+        name4 = [environmentCopy name];
         *buf = 138412290;
-        v140 = v73;
+        v140 = name4;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "No token found in keychain for environment %@, setting clientIdentityManager status to unknown", buf, 0xCu);
       }
 
-      v72 = 0;
+      systemToken5 = 0;
     }
 
     cachedPublicToken = v23->_cachedPublicToken;
-    v23->_cachedPublicToken = v72;
+    v23->_cachedPublicToken = systemToken5;
 
-    objc_storeStrong(&v23->_clientIdentityProvider, a6);
+    objc_storeStrong(&v23->_clientIdentityProvider, provider);
     v23->_swappingIdentity = 0;
     v75 = +[APSSystemMonitor sharedInstance];
     [v75 setActive:1];
@@ -1161,7 +1161,7 @@ LABEL_13:
       [(APSTTLCollection *)v23->_tracingEnabledAcksCollection setDelegate:v23];
     }
 
-    v82 = [[APSTopicManager alloc] initWithEnvironment:v134 topicHasher:v23->_topicHasher user:v133 userPreferences:v130 ultraConstrainedProvider:v23 delegate:v23];
+    v82 = [[APSTopicManager alloc] initWithEnvironment:environmentCopy topicHasher:v23->_topicHasher user:userCopy userPreferences:v130 ultraConstrainedProvider:v23 delegate:v23];
     topicManager = v23->_topicManager;
     v23->_topicManager = v82;
 
@@ -1181,7 +1181,7 @@ LABEL_13:
     inhibitedTopics = v23->_inhibitedTopics;
     v23->_inhibitedTopics = v90;
 
-    v92 = [[APSOutgoingMessageQueue alloc] initWithDelegate:v23 environment:v134];
+    v92 = [[APSOutgoingMessageQueue alloc] initWithDelegate:v23 environment:environmentCopy];
     v93 = v23->_outgoingMessageQueue;
     v23->_outgoingMessageQueue = v92;
 
@@ -1195,8 +1195,8 @@ LABEL_13:
       v23->_subscriptionStore = v96;
     }
 
-    v98 = [(APSEnvironment *)v23->_environment domain];
-    v99 = [NSString stringWithFormat:@"%@-waitingformessages-%@", APSBundleIdentifier, v98];
+    domain3 = [(APSEnvironment *)v23->_environment domain];
+    v99 = [NSString stringWithFormat:@"%@-waitingformessages-%@", APSBundleIdentifier, domain3];
 
     v100 = [[APSNoOpPowerAssertion alloc] initWithName:v99 category:200 holdDuration:20.0];
     waitForStoredMessagesToArrivePowerAssertion = v23->_waitForStoredMessagesToArrivePowerAssertion;
@@ -1227,17 +1227,17 @@ LABEL_13:
     {
     }
 
-    v105 = [(APSUserCourier *)v23 clientIdentityProvider];
-    [v105 preloadIdentity:0];
+    clientIdentityProvider = [(APSUserCourier *)v23 clientIdentityProvider];
+    [clientIdentityProvider preloadIdentity:0];
 
     v106 = +[APSMultiUserMode sharedInstance];
-    v107 = [v106 isMultiUser];
+    isMultiUser = [v106 isMultiUser];
 
     v108 = +[APSMultiUserMode sharedInstance];
-    v109 = [v108 isLoggedInUser];
+    isLoggedInUser = [v108 isLoggedInUser];
 
     v110 = +[APSMultiUserFS sharedInstance];
-    v111 = [v110 systemPath];
+    systemPath = [v110 systemPath];
 
     if (+[APSLog shouldReduceLogging])
     {
@@ -1245,7 +1245,7 @@ LABEL_13:
       if (os_log_type_enabled(v112, OS_LOG_TYPE_DEBUG))
       {
         v113 = @"NO";
-        if (v107)
+        if (isMultiUser)
         {
           v114 = @"YES";
         }
@@ -1258,14 +1258,14 @@ LABEL_13:
         *buf = 138412802;
         v140 = v114;
         v141 = 2112;
-        if (v109)
+        if (isLoggedInUser)
         {
           v113 = @"YES";
         }
 
         v142 = v113;
         v143 = 2112;
-        v144 = v111;
+        v144 = systemPath;
         v115 = v112;
         v116 = OS_LOG_TYPE_DEBUG;
 LABEL_61:
@@ -1279,7 +1279,7 @@ LABEL_61:
       if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
       {
         v117 = @"NO";
-        if (v107)
+        if (isMultiUser)
         {
           v118 = @"YES";
         }
@@ -1292,14 +1292,14 @@ LABEL_61:
         *buf = 138412802;
         v140 = v118;
         v141 = 2112;
-        if (v109)
+        if (isLoggedInUser)
         {
           v117 = @"YES";
         }
 
         v142 = v117;
         v143 = 2112;
-        v144 = v111;
+        v144 = systemPath;
         v115 = v112;
         v116 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_61;
@@ -1327,8 +1327,8 @@ LABEL_61:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(APSUserCourier *)self connectionServers];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v6 = [connectionServers countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1340,7 +1340,7 @@ LABEL_61:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectionServers);
         }
 
         [*(*(&v22 + 1) + 8 * v9) setDelegate:0];
@@ -1348,7 +1348,7 @@ LABEL_61:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [connectionServers countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -1403,9 +1403,9 @@ LABEL_61:
 - (id)_proxyManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained proxyManager];
+  proxyManager = [WeakRetained proxyManager];
 
-  return v3;
+  return proxyManager;
 }
 
 - (id)copyOperatorName
@@ -1425,21 +1425,21 @@ LABEL_61:
 
   else
   {
-    v4 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    v3 = [v4 countConnectedInterfaces] != 0;
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    v3 = [protocolConnectionEstablisher countConnectedInterfaces] != 0;
   }
 
   [(APSUserCourier *)self setIsConnectedToService:v3];
 }
 
-- (void)setIsConnectedToService:(BOOL)a3
+- (void)setIsConnectedToService:(BOOL)service
 {
-  if (self->_isConnectedToService == a3)
+  if (self->_isConnectedToService == service)
   {
     goto LABEL_20;
   }
 
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -1448,13 +1448,13 @@ LABEL_61:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v8 = @"NO";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = @"YES";
       }
 
       *buf = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v8;
       v9 = v7;
@@ -1467,13 +1467,13 @@ LABEL_11:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v4)
+    if (serviceCopy)
     {
       v11 = @"YES";
     }
 
     *buf = 138412546;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v11;
     v9 = v7;
@@ -1481,13 +1481,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  self->_isConnectedToService = v4;
+  self->_isConnectedToService = serviceCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [(APSUserCourier *)self connectionServers];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v13 = [connectionServers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1498,13 +1498,13 @@ LABEL_11:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(connectionServers);
         }
 
         [*(*(&v18 + 1) + 8 * i) handleConnectionStatusChanged:self->_isConnectedToService];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v14 = [connectionServers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v14);
@@ -1517,20 +1517,20 @@ LABEL_20:
   [(APSUserCourier *)self attemptToRollSalt];
 }
 
-- (void)setPublicToken:(id)a3 fromServer:(BOOL)a4
+- (void)setPublicToken:(id)token fromServer:(BOOL)server
 {
-  v4 = a4;
-  v6 = a3;
+  serverCopy = server;
+  tokenCopy = token;
   v7 = self->_cachedPublicToken;
   v8 = v7;
-  if (v7 == v6 || v7 && [(NSData *)v6 isEqualToData:v7])
+  if (v7 == tokenCopy || v7 && [(NSData *)tokenCopy isEqualToData:v7])
   {
     goto LABEL_45;
   }
 
   if (self->_cachedPublicToken)
   {
-    v9 = v6 == 0;
+    v9 = tokenCopy == 0;
   }
 
   else
@@ -1545,11 +1545,11 @@ LABEL_20:
 
   else
   {
-    v10 = v6 != 0;
+    v10 = tokenCopy != 0;
   }
 
-  v11 = v4 || v9;
-  if (v4 || v9)
+  v11 = serverCopy || v9;
+  if (serverCopy || v9)
   {
     v12 = +[APSLog shouldReduceLogging];
     v13 = +[APSLog courier];
@@ -1562,7 +1562,7 @@ LABEL_20:
       }
 
       v15 = @"NO";
-      if (v4)
+      if (serverCopy)
       {
         v16 = @"YES";
       }
@@ -1573,7 +1573,7 @@ LABEL_20:
       }
 
       *buf = 138412802;
-      v48 = self;
+      selfCopy4 = self;
       v50 = v16;
       v49 = 2112;
       if (v9)
@@ -1595,7 +1595,7 @@ LABEL_20:
       }
 
       v19 = @"NO";
-      if (v4)
+      if (serverCopy)
       {
         v20 = @"YES";
       }
@@ -1606,7 +1606,7 @@ LABEL_20:
       }
 
       *buf = 138412802;
-      v48 = self;
+      selfCopy4 = self;
       v50 = v20;
       v49 = 2112;
       if (v9)
@@ -1624,20 +1624,20 @@ LABEL_20:
 LABEL_27:
 
     tokenStore = self->_tokenStore;
-    v22 = [(APSUserCourier *)self courierUser];
-    [(APSTokenStore *)tokenStore deleteAppTokensForUser:v22];
+    courierUser = [(APSUserCourier *)self courierUser];
+    [(APSTokenStore *)tokenStore deleteAppTokensForUser:courierUser];
 
-    LODWORD(v22) = +[APSLog shouldReduceLogging];
+    LODWORD(courierUser) = +[APSLog shouldReduceLogging];
     v23 = +[APSLog courier];
     v24 = v23;
-    if (v22)
+    if (courierUser)
     {
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(NSData *)v6 length];
-        v26 = [(NSData *)v6 debugDescription];
+        v25 = [(NSData *)tokenCopy length];
+        v26 = [(NSData *)tokenCopy debugDescription];
         *buf = 138412802;
-        v48 = self;
+        selfCopy4 = self;
         v49 = 2048;
         v50 = v25;
         v51 = 2112;
@@ -1651,10 +1651,10 @@ LABEL_32:
 
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(NSData *)v6 length];
-      v26 = [(NSData *)v6 debugDescription];
+      v29 = [(NSData *)tokenCopy length];
+      v26 = [(NSData *)tokenCopy debugDescription];
       *buf = 138412802;
-      v48 = self;
+      selfCopy4 = self;
       v49 = 2048;
       v50 = v29;
       v51 = 2112;
@@ -1664,16 +1664,16 @@ LABEL_32:
       goto LABEL_32;
     }
 
-    v30 = [(APSUserCourier *)self clientIdentityProvider];
-    v31 = [v30 currentTokenType];
+    clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+    currentTokenType = [clientIdentityProvider currentTokenType];
 
-    v32 = [[APSSystemTokenInfo alloc] initWithSystemToken:v6 type:v31];
-    v33 = [(APSUserCourier *)self systemTokenStorage];
-    v34 = [(APSUserCourier *)self environment];
-    [v33 setTokenInfo:v32 forEnvironment:v34];
+    v32 = [[APSSystemTokenInfo alloc] initWithSystemToken:tokenCopy type:currentTokenType];
+    systemTokenStorage = [(APSUserCourier *)self systemTokenStorage];
+    environment = [(APSUserCourier *)self environment];
+    [systemTokenStorage setTokenInfo:v32 forEnvironment:environment];
   }
 
-  v35 = [(NSData *)v6 copy];
+  v35 = [(NSData *)tokenCopy copy];
   cachedPublicToken = self->_cachedPublicToken;
   self->_cachedPublicToken = v35;
 
@@ -1686,8 +1686,8 @@ LABEL_32:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v37 = [(APSUserCourier *)self connectionServers];
-  v38 = [v37 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v38 = [connectionServers countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v38)
   {
     v39 = v38;
@@ -1698,13 +1698,13 @@ LABEL_32:
       {
         if (*v43 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(connectionServers);
         }
 
-        [*(*(&v42 + 1) + 8 * i) setPublicToken:v6 needsAck:v11];
+        [*(*(&v42 + 1) + 8 * i) setPublicToken:tokenCopy needsAck:v11];
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v39 = [connectionServers countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v39);
@@ -1718,7 +1718,7 @@ LABEL_32:
 LABEL_45:
 }
 
-- (void)setMessageSize:(unint64_t)a3
+- (void)setMessageSize:(unint64_t)size
 {
   v20 = 0u;
   v21 = 0u;
@@ -1741,7 +1741,7 @@ LABEL_45:
         }
 
         v10 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v20 + 1) + 8 * v9)];
-        [v10 setMessageSize:a3];
+        [v10 setMessageSize:size];
 
         v9 = v9 + 1;
       }
@@ -1753,15 +1753,15 @@ LABEL_45:
     while (v7);
   }
 
-  if ([(APSEnvironment *)self->_environment messageSize]!= a3)
+  if ([(APSEnvironment *)self->_environment messageSize]!= size)
   {
-    [(APSEnvironment *)self->_environment setMessageSize:a3];
+    [(APSEnvironment *)self->_environment setMessageSize:size];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [(APSUserCourier *)self connectionServers];
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    connectionServers = [(APSUserCourier *)self connectionServers];
+    v12 = [connectionServers countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1773,15 +1773,15 @@ LABEL_45:
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(connectionServers);
           }
 
-          [*(*(&v16 + 1) + 8 * v15) setMessageSize:a3];
+          [*(*(&v16 + 1) + 8 * v15) setMessageSize:size];
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [connectionServers countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);
@@ -1789,7 +1789,7 @@ LABEL_45:
   }
 }
 
-- (void)setLargeMessageSize:(unint64_t)a3
+- (void)setLargeMessageSize:(unint64_t)size
 {
   v20 = 0u;
   v21 = 0u;
@@ -1812,7 +1812,7 @@ LABEL_45:
         }
 
         v10 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v20 + 1) + 8 * v9)];
-        [v10 setLargeMessageSize:a3];
+        [v10 setLargeMessageSize:size];
 
         v9 = v9 + 1;
       }
@@ -1824,15 +1824,15 @@ LABEL_45:
     while (v7);
   }
 
-  if ([(APSEnvironment *)self->_environment largeMessageSize]!= a3)
+  if ([(APSEnvironment *)self->_environment largeMessageSize]!= size)
   {
-    [(APSEnvironment *)self->_environment setLargeMessageSize:a3];
+    [(APSEnvironment *)self->_environment setLargeMessageSize:size];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [(APSUserCourier *)self connectionServers];
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    connectionServers = [(APSUserCourier *)self connectionServers];
+    v12 = [connectionServers countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1844,15 +1844,15 @@ LABEL_45:
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(connectionServers);
           }
 
-          [*(*(&v16 + 1) + 8 * v15) setLargeMessageSize:a3];
+          [*(*(&v16 + 1) + 8 * v15) setLargeMessageSize:size];
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [connectionServers countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);
@@ -1860,12 +1860,12 @@ LABEL_45:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v5 = +[APSLog shouldReduceLogging];
     v6 = +[APSLog courier];
     v7 = v6;
@@ -1873,7 +1873,7 @@ LABEL_45:
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        if (v3)
+        if (enabledCopy)
         {
           v8 = @"YES";
         }
@@ -1883,13 +1883,13 @@ LABEL_45:
           v8 = @"NO";
         }
 
-        v9 = [(APSTopicManager *)self->_topicManager logString];
+        logString = [(APSTopicManager *)self->_topicManager logString];
         v13 = 138412802;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = v8;
         v17 = 2112;
-        v18 = v9;
+        v18 = logString;
         v10 = v7;
         v11 = OS_LOG_TYPE_DEBUG;
 LABEL_13:
@@ -1899,7 +1899,7 @@ LABEL_13:
 
     else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3)
+      if (enabledCopy)
       {
         v12 = @"YES";
       }
@@ -1909,13 +1909,13 @@ LABEL_13:
         v12 = @"NO";
       }
 
-      v9 = [(APSTopicManager *)self->_topicManager logString];
+      logString = [(APSTopicManager *)self->_topicManager logString];
       v13 = 138412802;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
       v16 = v12;
       v17 = 2112;
-      v18 = v9;
+      v18 = logString;
       v10 = v7;
       v11 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_13;
@@ -1943,8 +1943,8 @@ LABEL_13:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(APSUserCourier *)self connectionServers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v3 = [connectionServers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1954,7 +1954,7 @@ LABEL_13:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(connectionServers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) enableCriticalReliability])
@@ -1964,7 +1964,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [connectionServers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1990,8 +1990,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(APSUserCourier *)self connectionServers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v4 = [connectionServers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2002,7 +2002,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectionServers);
         }
 
         if ([(APSUserCourier *)self _isInteractivePushDuringSleepEnabledForConnectionServer:*(*(&v10 + 1) + 8 * i)])
@@ -2012,7 +2012,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [connectionServers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -2030,51 +2030,51 @@ LABEL_14:
 
 - (BOOL)isKeepAliveProxyConfigured
 {
-  v3 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  if ([v3 isKeepAliveProxyConfiguredOnAnyConnection])
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  if ([protocolConnectionEstablisher isKeepAliveProxyConfiguredOnAnyConnection])
   {
-    v4 = [(APSUserCourier *)self hasConnectedInterface];
+    hasConnectedInterface = [(APSUserCourier *)self hasConnectedInterface];
   }
 
   else
   {
-    v4 = 0;
+    hasConnectedInterface = 0;
   }
 
-  return v4;
+  return hasConnectedInterface;
 }
 
 - (BOOL)hasReasonToConnect
 {
-  v3 = [(APSUserCourier *)self _isIdentityAvailable];
-  if (v3)
+  _isIdentityAvailable = [(APSUserCourier *)self _isIdentityAvailable];
+  if (_isIdentityAvailable)
   {
 
-    LOBYTE(v3) = [(APSUserCourier *)self shouldRun];
+    LOBYTE(_isIdentityAvailable) = [(APSUserCourier *)self shouldRun];
   }
 
-  return v3;
+  return _isIdentityAvailable;
 }
 
-- (void)logStateWithReason:(id)a3
+- (void)logStateWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
+  reasonCopy = reason;
+  v5 = reasonCopy;
   v6 = @"STATEDUMP";
-  if (v4)
+  if (reasonCopy)
   {
-    v6 = v4;
+    v6 = reasonCopy;
   }
 
   v7 = v6;
   v8 = +[APSLog courierOversized];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(APSUserCourier *)self verboseDescription];
+    verboseDescription = [(APSUserCourier *)self verboseDescription];
     v10 = 138412546;
     v11 = v7;
     v12 = 2112;
-    v13 = v9;
+    v13 = verboseDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@] %@", &v10, 0x16u);
   }
 }
@@ -2083,7 +2083,7 @@ LABEL_14:
 {
   v14 = objc_opt_class();
   courierUser = self->_courierUser;
-  v4 = [(APSUserCourier *)self _countActiveClients];
+  _countActiveClients = [(APSUserCourier *)self _countActiveClients];
   if ([(APSUserCourier *)self shouldUseInternet])
   {
     v5 = @"YES";
@@ -2094,8 +2094,8 @@ LABEL_14:
     v5 = @"NO";
   }
 
-  v6 = [(APSUserCourier *)self publicToken];
-  v7 = [v6 debugDescription];
+  publicToken = [(APSUserCourier *)self publicToken];
+  v7 = [publicToken debugDescription];
   if ([(APSUserCourier *)self _isIdentityAvailable])
   {
     v8 = @"YES";
@@ -2106,10 +2106,10 @@ LABEL_14:
     v8 = @"NO";
   }
 
-  v9 = [(APSUserCourier *)self connectionServers];
+  connectionServers = [(APSUserCourier *)self connectionServers];
   v10 = APSPrettyPrintCollection();
-  v11 = [(APSTopicManager *)self->_topicManager logString];
-  v12 = [NSString stringWithFormat:@"<%@ %p: user=%@, activeClients=%lu, shouldUseInternet=%@, publicToken=%@, isIdentityAvailable=%@, connectionServers=%@, deviceTopicManager=%@>", v14, self, courierUser, v4, v5, v7, v8, v10, v11];
+  logString = [(APSTopicManager *)self->_topicManager logString];
+  v12 = [NSString stringWithFormat:@"<%@ %p: user=%@, activeClients=%lu, shouldUseInternet=%@, publicToken=%@, isIdentityAvailable=%@, connectionServers=%@, deviceTopicManager=%@>", v14, self, courierUser, _countActiveClients, v5, v7, v8, v10, logString];
 
   return v12;
 }
@@ -2117,20 +2117,20 @@ LABEL_14:
 - (id)aps_prettyDescription
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(APSUserCourier *)self subscriptionStore];
-  v5 = [(APSUserCourier *)self environment];
-  v6 = [v5 name];
-  v7 = [(APSUserCourier *)self courierUser];
-  v8 = [v7 pubSubName];
-  v9 = [v4 inMemorySubscriptionsForEnvironment:v6 userName:v8];
+  subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+  environment = [(APSUserCourier *)self environment];
+  name = [environment name];
+  courierUser = [(APSUserCourier *)self courierUser];
+  pubSubName = [courierUser pubSubName];
+  v9 = [subscriptionStore inMemorySubscriptionsForEnvironment:name userName:pubSubName];
 
-  v10 = [(APSUserCourier *)self subscriptionStore];
-  v11 = [(APSUserCourier *)self environment];
-  v12 = [v11 name];
-  v50 = self;
-  v13 = [(APSUserCourier *)self courierUser];
-  v14 = [v13 pubSubName];
-  v48 = [v10 databaseSubscriptionsForEnvironment:v12 userName:v14];
+  subscriptionStore2 = [(APSUserCourier *)self subscriptionStore];
+  environment2 = [(APSUserCourier *)self environment];
+  name2 = [environment2 name];
+  selfCopy = self;
+  courierUser2 = [(APSUserCourier *)self courierUser];
+  pubSubName2 = [courierUser2 pubSubName];
+  v48 = [subscriptionStore2 databaseSubscriptionsForEnvironment:name2 userName:pubSubName2];
 
   v59 = 0u;
   v60 = 0u;
@@ -2152,9 +2152,9 @@ LABEL_14:
         }
 
         v19 = *(*(&v57 + 1) + 8 * i);
-        v20 = [v19 channelID];
-        v21 = [v19 channelTopic];
-        v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, topic=%@, checkpoint=%llu inMemoryOnly=%@>", v20, v21, [v19 checkpoint], @"YES");
+        channelID = [v19 channelID];
+        channelTopic = [v19 channelTopic];
+        v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, topic=%@, checkpoint=%llu inMemoryOnly=%@>", channelID, channelTopic, [v19 checkpoint], @"YES");
         [v3 addObject:v22];
       }
 
@@ -2184,9 +2184,9 @@ LABEL_14:
         }
 
         v28 = *(*(&v53 + 1) + 8 * j);
-        v29 = [v28 channelID];
-        v30 = [v28 channelTopic];
-        v31 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, topic=%@, checkpoint=%llu inMemoryOnly=%@>", v29, v30, [v28 checkpoint], @"NO");
+        channelID2 = [v28 channelID];
+        channelTopic2 = [v28 channelTopic];
+        v31 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, topic=%@, checkpoint=%llu inMemoryOnly=%@>", channelID2, channelTopic2, [v28 checkpoint], @"NO");
         [v3 addObject:v31];
       }
 
@@ -2198,12 +2198,12 @@ LABEL_14:
 
   v49 = v23;
 
-  courierUser = v50->_courierUser;
+  courierUser = selfCopy->_courierUser;
   v45 = APSPrettyPrintObject();
-  v47 = [(NSMutableDictionary *)v50->_proxyClients allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_proxyClients allValues];
   v44 = APSPrettyPrintCollection();
   v33 = @"YES";
-  if ([(APSUserCourier *)v50 shouldUseInternet])
+  if ([(APSUserCourier *)selfCopy shouldUseInternet])
   {
     v34 = @"YES";
   }
@@ -2213,21 +2213,21 @@ LABEL_14:
     v34 = @"NO";
   }
 
-  v46 = [(APSUserCourier *)v50 publicToken];
-  v35 = [v46 debugDescription];
-  if (![(APSUserCourier *)v50 _isIdentityAvailable])
+  publicToken = [(APSUserCourier *)selfCopy publicToken];
+  v35 = [publicToken debugDescription];
+  if (![(APSUserCourier *)selfCopy _isIdentityAvailable])
   {
     v33 = @"NO";
   }
 
-  v36 = [(APSUserCourier *)v50 clientIdentityProvider];
+  clientIdentityProvider = [(APSUserCourier *)selfCopy clientIdentityProvider];
   v37 = objc_opt_class();
   v38 = NSStringFromClass(v37);
-  v39 = [(APSUserCourier *)v50 connectionServers];
+  connectionServers = [(APSUserCourier *)selfCopy connectionServers];
   v40 = APSPrettyPrintCollection();
-  v41 = [(APSTopicManager *)v50->_topicManager logString];
+  logString = [(APSTopicManager *)selfCopy->_topicManager logString];
   v42 = APSPrettyPrintCollection();
-  v51 = [NSString stringWithFormat:@"<user=%@, activeClients=%@, shouldUseInternet=%@, publicToken=%@, isIdentityAvailable=%@, identityStatus=%@, connectionServers=%@, deviceTopicManager=%@, channels=%@>", v45, v44, v34, v35, v33, v38, v40, v41, v42];
+  v51 = [NSString stringWithFormat:@"<user=%@, activeClients=%@, shouldUseInternet=%@, publicToken=%@, isIdentityAvailable=%@, identityStatus=%@, connectionServers=%@, deviceTopicManager=%@, channels=%@>", v45, v44, v34, v35, v33, v38, v40, logString, v42];
 
   return v51;
 }
@@ -2263,11 +2263,11 @@ LABEL_14:
 
   v40 = v6;
   v11 = +[APSMessageStore sharedInstance];
-  v12 = [(APSEnvironment *)self->_environment name];
-  v39 = self;
-  v13 = [(APSUserCourier *)self courierUser];
-  v14 = [v13 pubSubName];
-  v15 = [v11 allRegisteredChannelsForEnvironment:v12 userName:v14];
+  name = [(APSEnvironment *)self->_environment name];
+  selfCopy = self;
+  courierUser = [(APSUserCourier *)self courierUser];
+  pubSubName = [courierUser pubSubName];
+  v15 = [v11 allRegisteredChannelsForEnvironment:name userName:pubSubName];
 
   v16 = objc_alloc_init(NSMutableDictionary);
   v46 = 0u;
@@ -2290,22 +2290,22 @@ LABEL_14:
         }
 
         v21 = *(*(&v46 + 1) + 8 * i);
-        v22 = [v21 channelTopic];
-        v23 = [v16 objectForKeyedSubscript:v22];
+        channelTopic = [v21 channelTopic];
+        v23 = [v16 objectForKeyedSubscript:channelTopic];
 
         if (!v23)
         {
           v24 = +[NSMutableArray array];
-          v25 = [v21 channelTopic];
-          [v16 setObject:v24 forKeyedSubscript:v25];
+          channelTopic2 = [v21 channelTopic];
+          [v16 setObject:v24 forKeyedSubscript:channelTopic2];
         }
 
-        v26 = [v21 channelTopic];
-        v27 = [v16 objectForKeyedSubscript:v26];
+        channelTopic3 = [v21 channelTopic];
+        v27 = [v16 objectForKeyedSubscript:channelTopic3];
         v51[0] = @"channel";
-        v28 = [v21 channelID];
+        channelID = [v21 channelID];
         v51[1] = @"checkpoint";
-        v52[0] = v28;
+        v52[0] = channelID;
         v29 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v21 checkpoint]);
         v52[1] = v29;
         v30 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
@@ -2324,8 +2324,8 @@ LABEL_14:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v32 = [(APSUserCourier *)v39 connectionServers];
-  v33 = [v32 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  connectionServers = [(APSUserCourier *)selfCopy connectionServers];
+  v33 = [connectionServers countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v33)
   {
     v34 = v33;
@@ -2336,14 +2336,14 @@ LABEL_14:
       {
         if (*v43 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(connectionServers);
         }
 
-        v37 = [*(*(&v42 + 1) + 8 * j) JSONDebugState];
-        [v31 addObject:v37];
+        jSONDebugState = [*(*(&v42 + 1) + 8 * j) JSONDebugState];
+        [v31 addObject:jSONDebugState];
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v42 objects:v50 count:16];
+      v34 = [connectionServers countByEnumeratingWithState:&v42 objects:v50 count:16];
     }
 
     while (v34);
@@ -2354,9 +2354,9 @@ LABEL_14:
   return v40;
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3
+- (void)appendPrettyStatusToStatusPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   if (self->_isConnectedToService)
   {
     v5 = @"Connected";
@@ -2393,31 +2393,31 @@ LABEL_14:
     v5 = @"Disabled";
   }
 
-  [v4 appendDescription:@"courier status" stringValue:v5];
-  [v4 pushIndent];
-  [v4 appendDescription:@"enabled" BOOLValue:self->_enabled];
-  v6 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v4 appendDescription:@"stream connected" BOOLValue:{objc_msgSend(v6, "countOpenConnections") != 0}];
+  [printerCopy appendDescription:@"courier status" stringValue:v5];
+  [printerCopy pushIndent];
+  [printerCopy appendDescription:@"enabled" BOOLValue:self->_enabled];
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [printerCopy appendDescription:@"stream connected" BOOLValue:{objc_msgSend(protocolConnectionEstablisher, "countOpenConnections") != 0}];
 
-  [v4 appendDescription:@"stream connected" BOOLValue:{-[APSUserCourier hasConnectedInterface](self, "hasConnectedInterface")}];
-  [v4 appendDescription:@"connected to service" BOOLValue:self->_isConnectedToService];
-  [v4 pushIndent];
+  [printerCopy appendDescription:@"stream connected" BOOLValue:{-[APSUserCourier hasConnectedInterface](self, "hasConnectedInterface")}];
+  [printerCopy appendDescription:@"connected to service" BOOLValue:self->_isConnectedToService];
+  [printerCopy pushIndent];
   if (self->_successfulConnectionCount >= 1)
   {
-    [v4 appendDescription:@"successful connections" unsignedIntegerValue:?];
+    [printerCopy appendDescription:@"successful connections" unsignedIntegerValue:?];
   }
 
-  [v4 popIndent];
+  [printerCopy popIndent];
   if (self->_lastReceivedTopic)
   {
-    [v4 appendDescription:@"last received topic" stringValue:?];
-    [v4 appendDescription:@"last received topic time" timeIntervalValue:self->_lastReceivedTopicTime];
+    [printerCopy appendDescription:@"last received topic" stringValue:?];
+    [printerCopy appendDescription:@"last received topic time" timeIntervalValue:self->_lastReceivedTopicTime];
   }
 
   if (self->_lastClientRequestedKeepaliveTime != 0.0)
   {
-    [v4 appendDescription:@"last keepalive request time" timeIntervalValue:?];
-    [v4 appendDescription:@"last keepalive response time" dateValue:self->_timeSinceLastKeepAlive];
+    [printerCopy appendDescription:@"last keepalive request time" timeIntervalValue:?];
+    [printerCopy appendDescription:@"last keepalive response time" dateValue:self->_timeSinceLastKeepAlive];
   }
 
   if (+[APSNWTCPStream isKeepAliveProxyFeatureEnabled]&& [(APSUserCourier *)self _requestKeepAliveProxy])
@@ -2458,12 +2458,12 @@ LABEL_14:
         v10 = 0;
       }
 
-      [v4 appendDescription:@"total push wakes" unsignedIntegerValue:v10];
-      [v4 pushIndent];
-      [v4 appendDescription:@"last push wake topic" stringValue:self->_lastReceivedTopicToCauseWake];
-      [v4 appendDescription:@"last push wake time" timeIntervalValue:self->_lastReceivedTopicToCauseWakeTime];
-      [v4 appendDescription:@"push wake topics" unsignedIntegerValue:{-[NSCountedSet count](self->_topicsToCauseWake, "count")}];
-      [v4 pushIndent];
+      [printerCopy appendDescription:@"total push wakes" unsignedIntegerValue:v10];
+      [printerCopy pushIndent];
+      [printerCopy appendDescription:@"last push wake topic" stringValue:self->_lastReceivedTopicToCauseWake];
+      [printerCopy appendDescription:@"last push wake time" timeIntervalValue:self->_lastReceivedTopicToCauseWakeTime];
+      [printerCopy appendDescription:@"push wake topics" unsignedIntegerValue:{-[NSCountedSet count](self->_topicsToCauseWake, "count")}];
+      [printerCopy pushIndent];
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
@@ -2484,15 +2484,15 @@ LABEL_14:
             }
 
             v18 = *(*(&v82 + 1) + 8 * j);
-            [v4 appendDescription:@"push wake topic" stringValue:v18];
-            [v4 pushIndent];
-            [v4 appendDescription:@"push wakes" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_topicsToCauseWake, "countForObject:", v18)}];
+            [printerCopy appendDescription:@"push wake topic" stringValue:v18];
+            [printerCopy pushIndent];
+            [printerCopy appendDescription:@"push wakes" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_topicsToCauseWake, "countForObject:", v18)}];
             if ([(NSCountedSet *)self->_offendingTopics containsObject:v18])
             {
-              [v4 appendDescription:@"offending messages" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_offendingTopics, "countForObject:", v18)}];
+              [printerCopy appendDescription:@"offending messages" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_offendingTopics, "countForObject:", v18)}];
             }
 
-            [v4 popIndent];
+            [printerCopy popIndent];
           }
 
           v15 = [(NSCountedSet *)v13 countByEnumeratingWithState:&v82 objects:v95 count:16];
@@ -2501,38 +2501,38 @@ LABEL_14:
         while (v15);
       }
 
-      [v4 popIndent];
-      [v4 popIndent];
+      [printerCopy popIndent];
+      [printerCopy popIndent];
     }
 
-    [v4 pushIndent];
+    [printerCopy pushIndent];
     if (self->_findKeepAliveProxyInterfaceFailureCount)
     {
-      [v4 appendDescription:@"interface available failures" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"interface available failures" unsignedIntegerValue:?];
     }
 
     if (self->_forceKeepAliveProxyInterfaceFailureCount)
     {
-      [v4 appendDescription:@"interface switch failures" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"interface switch failures" unsignedIntegerValue:?];
     }
 
     if (self->_obtainKeepAliveProxyFailureCount)
     {
-      [v4 appendDescription:@"proxy request failures" unsignedIntegerValue:?];
+      [printerCopy appendDescription:@"proxy request failures" unsignedIntegerValue:?];
     }
 
-    [v4 popIndent];
+    [printerCopy popIndent];
   }
 
   if ([(APSUserCourier *)self isInteractivePushDuringSleepEnabled])
   {
-    [v4 appendDescription:@"interactive push" BOOLValue:{-[APSUserCourier isInteractivePushDuringSleepEnabled](self, "isInteractivePushDuringSleepEnabled")}];
+    [printerCopy appendDescription:@"interactive push" BOOLValue:{-[APSUserCourier isInteractivePushDuringSleepEnabled](self, "isInteractivePushDuringSleepEnabled")}];
   }
 
   if ([(NSCountedSet *)self->_inhibitedTopics count])
   {
-    [v4 appendDescription:@"inhibited topics" unsignedIntegerValue:{-[NSCountedSet count](self->_inhibitedTopics, "count")}];
-    [v4 pushIndent];
+    [printerCopy appendDescription:@"inhibited topics" unsignedIntegerValue:{-[NSCountedSet count](self->_inhibitedTopics, "count")}];
+    [printerCopy pushIndent];
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
@@ -2553,10 +2553,10 @@ LABEL_14:
           }
 
           v24 = *(*(&v78 + 1) + 8 * k);
-          [v4 appendDescription:@"inhibited topic" stringValue:v24];
-          [v4 pushIndent];
-          [v4 appendDescription:@"inhibited messages" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_inhibitedTopics, "countForObject:", v24)}];
-          [v4 popIndent];
+          [printerCopy appendDescription:@"inhibited topic" stringValue:v24];
+          [printerCopy pushIndent];
+          [printerCopy appendDescription:@"inhibited messages" unsignedIntegerValue:{-[NSCountedSet countForObject:](self->_inhibitedTopics, "countForObject:", v24)}];
+          [printerCopy popIndent];
         }
 
         v21 = [(NSCountedSet *)v19 countByEnumeratingWithState:&v78 objects:v94 count:16];
@@ -2565,18 +2565,18 @@ LABEL_14:
       while (v21);
     }
 
-    [v4 popIndent];
+    [printerCopy popIndent];
   }
 
-  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue appendPrettyStatusToStatusPrinter:v4];
+  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue appendPrettyStatusToStatusPrinter:printerCopy];
   v25 = +[APSMessageStore sharedInstance];
-  v26 = [(APSEnvironment *)self->_environment name];
-  v27 = [(APSUserCourier *)self courierUser];
-  v28 = [v27 pubSubName];
-  v29 = [v25 allRegisteredChannelsForEnvironment:v26 userName:v28];
+  name = [(APSEnvironment *)self->_environment name];
+  courierUser = [(APSUserCourier *)self courierUser];
+  pubSubName = [courierUser pubSubName];
+  v29 = [v25 allRegisteredChannelsForEnvironment:name userName:pubSubName];
 
-  [v4 appendDescription:@"subscribed channels" unsignedLongLongValue:{objc_msgSend(v29, "count")}];
-  [v4 pushIndent];
+  [printerCopy appendDescription:@"subscribed channels" unsignedLongLongValue:{objc_msgSend(v29, "count")}];
+  [printerCopy pushIndent];
   v30 = objc_alloc_init(NSMutableDictionary);
   v74 = 0u;
   v75 = 0u;
@@ -2598,18 +2598,18 @@ LABEL_14:
         }
 
         v35 = *(*(&v74 + 1) + 8 * m);
-        v36 = [v35 channelTopic];
-        v37 = [v30 objectForKeyedSubscript:v36];
+        channelTopic = [v35 channelTopic];
+        v37 = [v30 objectForKeyedSubscript:channelTopic];
 
         if (!v37)
         {
           v38 = +[NSMutableArray array];
-          v39 = [v35 channelTopic];
-          [v30 setObject:v38 forKeyedSubscript:v39];
+          channelTopic2 = [v35 channelTopic];
+          [v30 setObject:v38 forKeyedSubscript:channelTopic2];
         }
 
-        v40 = [v35 channelTopic];
-        v41 = [v30 objectForKeyedSubscript:v40];
+        channelTopic3 = [v35 channelTopic];
+        v41 = [v30 objectForKeyedSubscript:channelTopic3];
         [v41 addObject:v35];
       }
 
@@ -2619,7 +2619,7 @@ LABEL_14:
     while (v32);
   }
 
-  v57 = self;
+  selfCopy = self;
 
   v72 = 0u;
   v73 = 0u;
@@ -2640,9 +2640,9 @@ LABEL_14:
         }
 
         v43 = *(*(&v70 + 1) + 8 * n);
-        [v4 pushIndent];
+        [printerCopy pushIndent];
         v44 = [v61 objectForKeyedSubscript:v43];
-        [v4 appendDescription:v43 unsignedLongLongValue:{objc_msgSend(v44, "count")}];
+        [printerCopy appendDescription:v43 unsignedLongLongValue:{objc_msgSend(v44, "count")}];
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
@@ -2663,14 +2663,14 @@ LABEL_14:
               }
 
               v50 = *(*(&v66 + 1) + 8 * ii);
-              [v4 pushIndent];
-              v51 = [v50 channelID];
-              [v4 appendDescription:@"channel" stringValue:v51];
+              [printerCopy pushIndent];
+              channelID = [v50 channelID];
+              [printerCopy appendDescription:@"channel" stringValue:channelID];
 
-              [v4 pushIndent];
-              [v4 appendDescription:@"checkpoint" unsignedLongLongValue:{objc_msgSend(v50, "checkpoint")}];
-              [v4 popIndent];
-              [v4 popIndent];
+              [printerCopy pushIndent];
+              [printerCopy appendDescription:@"checkpoint" unsignedLongLongValue:{objc_msgSend(v50, "checkpoint")}];
+              [printerCopy popIndent];
+              [printerCopy popIndent];
             }
 
             v47 = [v45 countByEnumeratingWithState:&v66 objects:v91 count:16];
@@ -2679,7 +2679,7 @@ LABEL_14:
           while (v47);
         }
 
-        [v4 popIndent];
+        [printerCopy popIndent];
       }
 
       v60 = [v61 countByEnumeratingWithState:&v70 objects:v92 count:16];
@@ -2688,13 +2688,13 @@ LABEL_14:
     while (v60);
   }
 
-  [v4 popIndent];
+  [printerCopy popIndent];
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v52 = [(APSUserCourier *)v57 connectionServers];
-  v53 = [v52 countByEnumeratingWithState:&v62 objects:v90 count:16];
+  connectionServers = [(APSUserCourier *)selfCopy connectionServers];
+  v53 = [connectionServers countByEnumeratingWithState:&v62 objects:v90 count:16];
   if (v53)
   {
     v54 = v53;
@@ -2705,36 +2705,36 @@ LABEL_14:
       {
         if (*v63 != v55)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(connectionServers);
         }
 
-        [*(*(&v62 + 1) + 8 * jj) appendPrettyStatusToStatusPrinter:v4];
+        [*(*(&v62 + 1) + 8 * jj) appendPrettyStatusToStatusPrinter:printerCopy];
       }
 
-      v54 = [v52 countByEnumeratingWithState:&v62 objects:v90 count:16];
+      v54 = [connectionServers countByEnumeratingWithState:&v62 objects:v90 count:16];
     }
 
     while (v54);
   }
 
-  [v4 popIndent];
+  [printerCopy popIndent];
 }
 
-- (void)_triggerAutoBugCaptureIfMessageIsRetried:(id)a3
+- (void)_triggerAutoBugCaptureIfMessageIsRetried:(id)retried
 {
-  v4 = a3;
+  retriedCopy = retried;
   if (sub_10000712C())
   {
-    v5 = [v4 topic];
-    v6 = [v5 isEqualToString:@"com.apple.madrid"];
+    topic = [retriedCopy topic];
+    v6 = [topic isEqualToString:@"com.apple.madrid"];
 
     if (v6)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKey:@"rc"];
-      v9 = [v8 intValue];
+      userInfo = [retriedCopy userInfo];
+      v8 = [userInfo objectForKey:@"rc"];
+      intValue = [v8 intValue];
 
-      if (v9 < 1)
+      if (intValue < 1)
       {
 LABEL_13:
 
@@ -2748,12 +2748,12 @@ LABEL_13:
       {
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v7 objectForKey:@"U"];
-          v14 = [v7 objectForKey:@"rc"];
+          v13 = [userInfo objectForKey:@"U"];
+          v14 = [userInfo objectForKey:@"rc"];
           *buf = 138412546;
           v22 = v13;
           v23 = 1024;
-          v24 = [v14 intValue];
+          intValue2 = [v14 intValue];
           v15 = v12;
           v16 = OS_LOG_TYPE_DEBUG;
 LABEL_9:
@@ -2763,12 +2763,12 @@ LABEL_9:
 
       else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v7 objectForKey:@"U"];
-        v14 = [v7 objectForKey:@"rc"];
+        v13 = [userInfo objectForKey:@"U"];
+        v14 = [userInfo objectForKey:@"rc"];
         *buf = 138412546;
         v22 = v13;
         v23 = 1024;
-        v24 = [v14 intValue];
+        intValue2 = [v14 intValue];
         v15 = v12;
         v16 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_9;
@@ -2781,7 +2781,7 @@ LABEL_9:
         self->_symptomReporter = v17;
       }
 
-      v19 = [v7 objectForKey:@"rc"];
+      v19 = [userInfo objectForKey:@"rc"];
       v20 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"RetryCount%d", [v19 intValue]);
 
       [(APSSymptomReporter *)self->_symptomReporter reportSymptomToAutoBugCapture:@"RetriedMessage" subType:v20];
@@ -2946,16 +2946,16 @@ LABEL_22:
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v4 = a3;
-  [(APSUserCourier *)self _useInteractivePowerAssertionIfNeededForConnectionServer:v4 withReason:@"adding interactive"];
-  if (v4)
+  connectionCopy = connection;
+  [(APSUserCourier *)self _useInteractivePowerAssertionIfNeededForConnectionServer:connectionCopy withReason:@"adding interactive"];
+  if (connectionCopy)
   {
-    [(NSMutableArray *)self->_connectionServers addObject:v4];
+    [(NSMutableArray *)self->_connectionServers addObject:connectionCopy];
   }
 
-  v5 = [(APSUserCourier *)self publicToken];
+  publicToken = [(APSUserCourier *)self publicToken];
   [(APSUserCourier *)self _recreateCacheDictionaries];
   v6 = +[APSLog shouldReduceLogging];
   v7 = +[APSLog courier];
@@ -2965,11 +2965,11 @@ LABEL_22:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412802;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = connectionCopy;
       v15 = 2112;
-      v16 = v5;
+      v16 = publicToken;
       v9 = v8;
       v10 = OS_LOG_TYPE_DEBUG;
 LABEL_8:
@@ -2980,24 +2980,24 @@ LABEL_8:
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = connectionCopy;
     v15 = 2112;
-    v16 = v5;
+    v16 = publicToken;
     v9 = v8;
     v10 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_8;
   }
 
-  [v4 setPublicToken:v5 needsAck:0];
-  [v4 setMessageSize:{-[APSUserCourier messageSize](self, "messageSize")}];
-  [v4 setLargeMessageSize:{-[APSUserCourier largeMessageSize](self, "largeMessageSize")}];
+  [connectionCopy setPublicToken:publicToken needsAck:0];
+  [connectionCopy setMessageSize:{-[APSUserCourier messageSize](self, "messageSize")}];
+  [connectionCopy setLargeMessageSize:{-[APSUserCourier largeMessageSize](self, "largeMessageSize")}];
 }
 
-- (void)removeConnectionForConnectionPortName:(id)a3
+- (void)removeConnectionForConnectionPortName:(id)name
 {
-  v4 = [(NSMutableDictionary *)self->_connectionPortNamesToConnections objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_connectionPortNamesToConnections objectForKey:name];
   if (v4)
   {
     v5 = v4;
@@ -3007,32 +3007,32 @@ LABEL_8:
   }
 }
 
-- (void)connectionTopicsChanged:(id)a3
+- (void)connectionTopicsChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [v5 ignoredTopics];
-  [(APSUserCourier *)self handleIgnoredTopics:v4];
+  changedCopy = changed;
+  ignoredTopics = [changedCopy ignoredTopics];
+  [(APSUserCourier *)self handleIgnoredTopics:ignoredTopics];
 
   [(APSUserCourier *)self _recreateCacheDictionaries];
-  [(APSUserCourier *)self _processStoredIncomingMessagesForConnection:v5];
+  [(APSUserCourier *)self _processStoredIncomingMessagesForConnection:changedCopy];
 }
 
-- (void)_processStoredIncomingMessagesForConnection:(id)a3
+- (void)_processStoredIncomingMessagesForConnection:(id)connection
 {
   if (self->_enabled)
   {
-    v5 = a3;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"__processStoredIncomingMessagesForConnection:" object:v5];
-    [(APSUserCourier *)self performSelector:"__processStoredIncomingMessagesForConnection:" withObject:v5 afterDelay:10.0];
+    connectionCopy = connection;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"__processStoredIncomingMessagesForConnection:" object:connectionCopy];
+    [(APSUserCourier *)self performSelector:"__processStoredIncomingMessagesForConnection:" withObject:connectionCopy afterDelay:10.0];
   }
 }
 
-- (void)__processStoredIncomingMessagesForConnection:(id)a3
+- (void)__processStoredIncomingMessagesForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self _getCurrentTokens];
+  connectionCopy = connection;
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
   v6 = +[APSMessageStore sharedInstance];
-  v7 = [v6 incomingMessagesForTopic:0 priority:10 environment:self->_environment pushTokens:v5];
+  v7 = [v6 incomingMessagesForTopic:0 priority:10 environment:self->_environment pushTokens:_getCurrentTokens];
 
   v20 = 0u;
   v21 = 0u;
@@ -3053,7 +3053,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        [(APSUserCourier *)self _notifyForIncomingMessage:*(*(&v18 + 1) + 8 * i) forConnection:v4, v18];
+        [(APSUserCourier *)self _notifyForIncomingMessage:*(*(&v18 + 1) + 8 * i) forConnection:connectionCopy, v18];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -3070,9 +3070,9 @@ LABEL_8:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v4;
+      v25 = connectionCopy;
       v16 = v15;
       v17 = OS_LOG_TYPE_DEBUG;
 LABEL_13:
@@ -3083,18 +3083,18 @@ LABEL_13:
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = connectionCopy;
     v16 = v15;
     v17 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_13;
   }
 }
 
-- (void)connectionWasClosed:(id)a3
+- (void)connectionWasClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -3108,7 +3108,7 @@ LABEL_13:
     *v32 = 138412546;
     *&v32[4] = self;
     *&v32[12] = 2112;
-    *&v32[14] = v4;
+    *&v32[14] = closedCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEBUG;
   }
@@ -3123,7 +3123,7 @@ LABEL_13:
     *v32 = 138412546;
     *&v32[4] = self;
     *&v32[12] = 2112;
-    *&v32[14] = v4;
+    *&v32[14] = closedCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -3131,10 +3131,10 @@ LABEL_13:
   _os_log_impl(&_mh_execute_header, v8, v9, "%@: Removing connection server %@", v32, 0x16u);
 LABEL_7:
 
-  [v4 setDelegate:0];
-  if (v4)
+  [closedCopy setDelegate:0];
+  if (closedCopy)
   {
-    [(NSMutableArray *)self->_connectionServers removeObject:v4];
+    [(NSMutableArray *)self->_connectionServers removeObject:closedCopy];
   }
 
   v10 = [(APSUserCourier *)self connectionServers:*v32];
@@ -3152,7 +3152,7 @@ LABEL_7:
         *v32 = 138412546;
         *&v32[4] = self;
         *&v32[12] = 2112;
-        *&v32[14] = v4;
+        *&v32[14] = closedCopy;
         v15 = v14;
         v16 = OS_LOG_TYPE_DEBUG;
 LABEL_15:
@@ -3165,7 +3165,7 @@ LABEL_15:
       *v32 = 138412546;
       *&v32[4] = self;
       *&v32[12] = 2112;
-      *&v32[14] = v4;
+      *&v32[14] = closedCopy;
       v15 = v14;
       v16 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_15;
@@ -3188,7 +3188,7 @@ LABEL_15:
     *v32 = 138412546;
     *&v32[4] = self;
     *&v32[12] = 2112;
-    *&v32[14] = v4;
+    *&v32[14] = closedCopy;
     v21 = v20;
     v22 = OS_LOG_TYPE_DEBUG;
   }
@@ -3203,7 +3203,7 @@ LABEL_15:
     *v32 = 138412546;
     *&v32[4] = self;
     *&v32[12] = 2112;
-    *&v32[14] = v4;
+    *&v32[14] = closedCopy;
     v21 = v20;
     v22 = OS_LOG_TYPE_DEFAULT;
   }
@@ -3219,11 +3219,11 @@ LABEL_23:
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [v4 inMemorySubscriptions];
+      inMemorySubscriptions = [closedCopy inMemorySubscriptions];
       *v32 = 138412546;
       *&v32[4] = self;
       *&v32[12] = 2112;
-      *&v32[14] = v26;
+      *&v32[14] = inMemorySubscriptions;
       v27 = v25;
       v28 = OS_LOG_TYPE_DEBUG;
 LABEL_28:
@@ -3233,29 +3233,29 @@ LABEL_28:
 
   else if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v4 inMemorySubscriptions];
+    inMemorySubscriptions = [closedCopy inMemorySubscriptions];
     *v32 = 138412546;
     *&v32[4] = self;
     *&v32[12] = 2112;
-    *&v32[14] = v26;
+    *&v32[14] = inMemorySubscriptions;
     v27 = v25;
     v28 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_28;
   }
 
-  v29 = [v4 inMemorySubscriptions];
-  v30 = [v29 allObjects];
-  v31 = [(APSUserCourier *)self publicToken];
-  [(APSUserCourier *)self unsubscribeFromChannels:v30 token:v31];
+  inMemorySubscriptions2 = [closedCopy inMemorySubscriptions];
+  allObjects = [inMemorySubscriptions2 allObjects];
+  publicToken = [(APSUserCourier *)self publicToken];
+  [(APSUserCourier *)self unsubscribeFromChannels:allObjects token:publicToken];
 
-  [(APSTopicManager *)self->_topicManager removeTopicsForConnectionServer:v4];
+  [(APSTopicManager *)self->_topicManager removeTopicsForConnectionServer:closedCopy];
   [(APSUserCourier *)self _recreateCacheDictionaries];
   [(APSUserCourier *)self _performIdleCheck];
 }
 
-- (void)connectionWasOpened:(id)a3
+- (void)connectionWasOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -3263,13 +3263,13 @@ LABEL_28:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v4 connection];
+      connection = [openedCopy connection];
       v11 = 138412802;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = openedCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = connection;
       v9 = v7;
       v10 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -3279,19 +3279,19 @@ LABEL_6:
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 connection];
+    connection = [openedCopy connection];
     v11 = 138412802;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = openedCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = connection;
     v9 = v7;
     v10 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
-  [(APSUserCourier *)self _processStoredIncomingMessagesForConnection:v4];
+  [(APSUserCourier *)self _processStoredIncomingMessagesForConnection:openedCopy];
 }
 
 - (void)_performIdleCheck
@@ -3307,7 +3307,7 @@ LABEL_6:
 
 - (void)__performIdleCheck
 {
-  v3 = [(APSUserCourier *)self _countActiveClients];
+  _countActiveClients = [(APSUserCourier *)self _countActiveClients];
   v4 = +[APSLog shouldReduceLogging];
   v5 = +[APSLog courier];
   v6 = v5;
@@ -3319,7 +3319,7 @@ LABEL_6:
       *v12 = 138412802;
       *&v12[4] = self;
       *&v12[12] = 2048;
-      *&v12[14] = v3;
+      *&v12[14] = _countActiveClients;
       *&v12[22] = 2048;
       v13 = v7;
       v8 = v6;
@@ -3335,7 +3335,7 @@ LABEL_6:
     *v12 = 138412802;
     *&v12[4] = self;
     *&v12[12] = 2048;
-    *&v12[14] = v3;
+    *&v12[14] = _countActiveClients;
     *&v12[22] = 2048;
     v13 = v10;
     v8 = v6;
@@ -3343,7 +3343,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!v3 && ![(NSMutableArray *)self->_connectionServers count])
+  if (!_countActiveClients && ![(NSMutableArray *)self->_connectionServers count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained courierHasNoConnections:self];
@@ -3352,17 +3352,17 @@ LABEL_6:
   [(APSUserCourier *)self _processShouldRunChangeIfNecessary:*v12];
 }
 
-- (void)connectionChangedCriticalReliability:(id)a3
+- (void)connectionChangedCriticalReliability:(id)reliability
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v5 recalculateCriticalReliability];
+  reliabilityCopy = reliability;
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [protocolConnectionEstablisher recalculateCriticalReliability];
 
-  LODWORD(v5) = [v4 enableCriticalReliability];
-  if (v5)
+  LODWORD(protocolConnectionEstablisher) = [reliabilityCopy enableCriticalReliability];
+  if (protocolConnectionEstablisher)
   {
-    v6 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    [v6 refreshCriticalReliability];
+    protocolConnectionEstablisher2 = [(APSUserCourier *)self protocolConnectionEstablisher];
+    [protocolConnectionEstablisher2 refreshCriticalReliability];
 
     if (qword_1001BF6F8 != -1)
     {
@@ -3371,15 +3371,15 @@ LABEL_6:
 
     if (byte_1001BF6F0 == 1)
     {
-      v7 = [(APSUserCourier *)self protocolConnectionEstablisher];
-      [v7 triggerCriticalReliability];
+      protocolConnectionEstablisher3 = [(APSUserCourier *)self protocolConnectionEstablisher];
+      [protocolConnectionEstablisher3 triggerCriticalReliability];
     }
   }
 }
 
-- (void)connectionChangedTrackActivityPresence:(id)a3
+- (void)connectionChangedTrackActivityPresence:(id)presence
 {
-  v4 = a3;
+  presenceCopy = presence;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -3388,9 +3388,9 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = presenceCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -3401,9 +3401,9 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = presenceCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -3412,10 +3412,10 @@ LABEL_6:
   [(APSUserCourier *)self recalculateTrackActivityPresence];
 }
 
-- (void)_enqueueMessage:(id)a3 forOriginator:(id)a4
+- (void)_enqueueMessage:(id)message forOriginator:(id)originator
 {
-  v6 = a3;
-  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue enqueueOutgoingMessage:v6 forOriginator:a4];
+  messageCopy = message;
+  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue enqueueOutgoingMessage:messageCopy forOriginator:originator];
   v7 = +[APSLog shouldReduceLogging];
   v8 = +[APSLog courier];
   v9 = v8;
@@ -3426,14 +3426,14 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v10 = [v6 messageID];
-    v11 = [v6 topic];
+    messageID = [messageCopy messageID];
+    topic = [messageCopy topic];
     *buf = 138412802;
-    v31 = self;
+    selfCopy6 = self;
     v32 = 2048;
-    v33 = v10;
+    v33 = messageID;
     v34 = 2112;
-    v35 = v11;
+    v35 = topic;
     v12 = v9;
     v13 = OS_LOG_TYPE_DEBUG;
   }
@@ -3445,14 +3445,14 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v14 = [v6 messageID];
-    v11 = [v6 topic];
+    messageID2 = [messageCopy messageID];
+    topic = [messageCopy topic];
     *buf = 138412802;
-    v31 = self;
+    selfCopy6 = self;
     v32 = 2048;
-    v33 = v14;
+    v33 = messageID2;
     v34 = 2112;
-    v35 = v11;
+    v35 = topic;
     v12 = v9;
     v13 = OS_LOG_TYPE_DEFAULT;
   }
@@ -3470,7 +3470,7 @@ LABEL_7:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = self;
+        selfCopy6 = self;
         v23 = v22;
         v24 = OS_LOG_TYPE_DEBUG;
 LABEL_17:
@@ -3481,26 +3481,26 @@ LABEL_17:
     else if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = self;
+      selfCopy6 = self;
       v23 = v22;
       v24 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_17;
     }
 
-    v25 = [(APSUserCourier *)self delegate];
-    v26 = [v25 proxyManager];
-    v27 = [v26 canUseProxy];
+    delegate = [(APSUserCourier *)self delegate];
+    proxyManager = [delegate proxyManager];
+    canUseProxy = [proxyManager canUseProxy];
 
-    if (v27)
+    if (canUseProxy)
     {
-      v28 = [(APSUserCourier *)self delegate];
-      [v28 kickstartProxyConnection];
+      delegate2 = [(APSUserCourier *)self delegate];
+      [delegate2 kickstartProxyConnection];
     }
 
     else
     {
-      v28 = [(APSUserCourier *)self protocolConnectionEstablisher];
-      [v28 adjustConnectionsIfNeeded];
+      delegate2 = [(APSUserCourier *)self protocolConnectionEstablisher];
+      [delegate2 adjustConnectionsIfNeeded];
     }
 
     goto LABEL_27;
@@ -3516,7 +3516,7 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = self;
+        selfCopy6 = self;
         v18 = v17;
         v19 = OS_LOG_TYPE_DEBUG;
 LABEL_25:
@@ -3527,7 +3527,7 @@ LABEL_25:
     else if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = self;
+      selfCopy6 = self;
       v18 = v17;
       v19 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_25;
@@ -3546,17 +3546,17 @@ LABEL_25:
 LABEL_27:
 }
 
-- (void)connection:(id)a3 didReceiveOutgoingMessageToSend:(id)a4
+- (void)connection:(id)connection didReceiveOutgoingMessageToSend:(id)send
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  sendCopy = send;
   v8 = +[APSLog courierOversized];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [v7 messageID];
-    v9 = [v7 topic];
-    v10 = [v7 timeout];
-    if ([v7 isCritical])
+    messageID = [sendCopy messageID];
+    topic = [sendCopy topic];
+    timeout = [sendCopy timeout];
+    if ([sendCopy isCritical])
     {
       v11 = @"yes";
     }
@@ -3566,47 +3566,47 @@ LABEL_27:
       v11 = @"no";
     }
 
-    v12 = [v7 identifier];
-    v13 = [v7 userInfo];
-    [v7 topic];
-    v34 = v6;
+    identifier = [sendCopy identifier];
+    userInfo = [sendCopy userInfo];
+    [sendCopy topic];
+    v34 = connectionCopy;
     v15 = v14 = self;
-    v16 = sub_100015D6C(v13, v15);
+    v16 = sub_100015D6C(userInfo, v15);
     *buf = 138413826;
-    v36 = v14;
+    selfCopy2 = v14;
     v37 = 2048;
-    v38 = v33;
+    v38 = messageID;
     v39 = 2112;
-    v40 = v9;
+    v40 = topic;
     v41 = 2048;
-    v42 = v10;
+    v42 = timeout;
     v43 = 2112;
     v44 = v11;
     v45 = 2048;
-    v46 = v12;
+    v46 = identifier;
     v47 = 2112;
     v48 = v16;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received outgoing message %lu to send with topic '%@', timeout %lu, critical %@, identifier %lu, and userInfo '%@'", buf, 0x48u);
 
     self = v14;
-    v6 = v34;
+    connectionCopy = v34;
   }
 
-  [v7 setOriginator:v6];
-  v17 = [v6 enabledTopics];
-  v18 = [v7 topic];
-  if ([v17 containsObject:v18])
+  [sendCopy setOriginator:connectionCopy];
+  enabledTopics = [connectionCopy enabledTopics];
+  topic2 = [sendCopy topic];
+  if ([enabledTopics containsObject:topic2])
   {
     goto LABEL_9;
   }
 
-  v19 = [v6 opportunisticTopics];
-  v20 = [v7 topic];
-  if (([v19 containsObject:v20] & 1) == 0)
+  opportunisticTopics = [connectionCopy opportunisticTopics];
+  topic3 = [sendCopy topic];
+  if (([opportunisticTopics containsObject:topic3] & 1) == 0)
   {
-    v21 = [v6 nonWakingTopics];
-    v22 = [v7 topic];
-    v23 = [v21 containsObject:v22];
+    nonWakingTopics = [connectionCopy nonWakingTopics];
+    topic4 = [sendCopy topic];
+    v23 = [nonWakingTopics containsObject:topic4];
 
     if (v23)
     {
@@ -3620,14 +3620,14 @@ LABEL_27:
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v7 messageID];
-        v28 = [v7 topic];
+        messageID2 = [sendCopy messageID];
+        topic5 = [sendCopy topic];
         *buf = 138412802;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2048;
-        v38 = v27;
+        v38 = messageID2;
         v39 = 2112;
-        v40 = v28;
+        v40 = topic5;
         v29 = v26;
         v30 = OS_LOG_TYPE_DEBUG;
 LABEL_18:
@@ -3637,51 +3637,51 @@ LABEL_18:
 
     else if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v7 messageID];
-      v28 = [v7 topic];
+      messageID3 = [sendCopy messageID];
+      topic5 = [sendCopy topic];
       *buf = 138412802;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2048;
-      v38 = v31;
+      v38 = messageID3;
       v39 = 2112;
-      v40 = v28;
+      v40 = topic5;
       v29 = v26;
       v30 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_18;
     }
 
     v32 = APSError();
-    [v6 handleResult:v32 forSendingOutgoingMessageWithID:{objc_msgSend(v7, "messageID")}];
+    [connectionCopy handleResult:v32 forSendingOutgoingMessageWithID:{objc_msgSend(sendCopy, "messageID")}];
 
     goto LABEL_11;
   }
 
 LABEL_9:
 LABEL_10:
-  [(APSUserCourier *)self _enqueueMessage:v7 forOriginator:v6];
+  [(APSUserCourier *)self _enqueueMessage:sendCopy forOriginator:connectionCopy];
 LABEL_11:
 }
 
-- (void)connection:(id)a3 didReceiveSubscribeToChannels:(id)a4 forTopic:(id)a5
+- (void)connection:(id)connection didReceiveSubscribeToChannels:(id)channels forTopic:(id)topic
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 connectionPortName];
-  v11 = v10 == 0;
+  topicCopy = topic;
+  channelsCopy = channels;
+  connectionPortName = [connection connectionPortName];
+  v11 = connectionPortName == 0;
 
-  v12 = [(APSUserCourier *)self publicToken];
-  [(APSUserCourier *)self subscribeToChannels:v9 forTopic:v8 token:v12 inMemoryOnly:v11];
+  publicToken = [(APSUserCourier *)self publicToken];
+  [(APSUserCourier *)self subscribeToChannels:channelsCopy forTopic:topicCopy token:publicToken inMemoryOnly:v11];
 }
 
-- (void)connection:(id)a3 didReceiveUnsubscribeToChannels:(id)a4 forTopic:(id)a5
+- (void)connection:(id)connection didReceiveUnsubscribeToChannels:(id)channels forTopic:(id)topic
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(APSUserCourier *)self publicToken];
-  [(APSUserCourier *)self unsubscribeFromChannels:v8 forTopic:v7 token:v9];
+  topicCopy = topic;
+  channelsCopy = channels;
+  publicToken = [(APSUserCourier *)self publicToken];
+  [(APSUserCourier *)self unsubscribeFromChannels:channelsCopy forTopic:topicCopy token:publicToken];
 }
 
-- (void)connection:(id)a3 didReceiveCancellationForOutgoingMessageWithID:(unint64_t)a4
+- (void)connection:(id)connection didReceiveCancellationForOutgoingMessageWithID:(unint64_t)d
 {
   v6 = +[APSLog shouldReduceLogging];
   v7 = +[APSLog courier];
@@ -3691,9 +3691,9 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2048;
-      v14 = a4;
+      dCopy2 = d;
       v9 = v8;
       v10 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -3704,26 +3704,26 @@ LABEL_6:
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2048;
-    v14 = a4;
+    dCopy2 = d;
     v9 = v8;
     v10 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
-  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue cancelOutgoingMessageWithID:a4];
+  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue cancelOutgoingMessageWithID:d];
 }
 
-- (void)connection:(id)a3 didReceiveFakeMessageToSend:(id)a4
+- (void)connection:(id)connection didReceiveFakeMessageToSend:(id)send
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 topic];
+  connectionCopy = connection;
+  sendCopy = send;
+  topic = [sendCopy topic];
   v9 = +[APSLog shouldReduceLogging];
   v10 = +[APSLog courier];
   v11 = v10;
-  if (!v8)
+  if (!topic)
   {
     if (v9)
     {
@@ -3766,9 +3766,9 @@ LABEL_6:
       *v23 = 138412802;
       *&v23[4] = self;
       *&v23[12] = 2112;
-      *&v23[14] = v8;
+      *&v23[14] = topic;
       *&v23[22] = 2048;
-      v24 = [v7 priority];
+      priority = [sendCopy priority];
       v12 = v11;
       v13 = OS_LOG_TYPE_DEBUG;
 LABEL_10:
@@ -3781,26 +3781,26 @@ LABEL_10:
     *v23 = 138412802;
     *&v23[4] = self;
     *&v23[12] = 2112;
-    *&v23[14] = v8;
+    *&v23[14] = topic;
     *&v23[22] = 2048;
-    v24 = [v7 priority];
+    priority = [sendCopy priority];
     v12 = v11;
     v13 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_10;
   }
 
   v16 = [APSIncomingMessage alloc];
-  v17 = [v7 userInfo];
-  v11 = [(APSIncomingMessage *)v16 initWithTopic:v8 userInfo:v17];
+  userInfo = [sendCopy userInfo];
+  v11 = [(APSIncomingMessage *)v16 initWithTopic:topic userInfo:userInfo];
 
-  v18 = [v7 correlationIdentifier];
-  [v11 setCorrelationIdentifier:v18];
+  correlationIdentifier = [sendCopy correlationIdentifier];
+  [v11 setCorrelationIdentifier:correlationIdentifier];
 
-  v19 = [v7 timestamp];
+  timestamp = [sendCopy timestamp];
 
-  if (v19)
+  if (timestamp)
   {
-    [v7 timestamp];
+    [sendCopy timestamp];
   }
 
   else
@@ -3808,17 +3808,17 @@ LABEL_10:
     +[NSDate date];
   }
   v20 = ;
-  [v11 setTimestamp:v20, *v23, *&v23[16], v24];
+  [v11 setTimestamp:v20, *v23, *&v23[16], priority];
 
-  -[NSObject setPushType:](v11, "setPushType:", [v7 pushType]);
-  -[NSObject setPushFlags:](v11, "setPushFlags:", [v7 pushFlags]);
-  v21 = [v7 channelID];
-  [v11 setChannelID:v21];
+  -[NSObject setPushType:](v11, "setPushType:", [sendCopy pushType]);
+  -[NSObject setPushFlags:](v11, "setPushFlags:", [sendCopy pushFlags]);
+  channelID = [sendCopy channelID];
+  [v11 setChannelID:channelID];
 
-  v22 = [v6 publicToken];
-  [v11 setToken:v22];
+  publicToken = [connectionCopy publicToken];
+  [v11 setToken:publicToken];
 
-  if ([v7 priority] == 1)
+  if ([sendCopy priority] == 1)
   {
     [v11 setPriority:1];
   }
@@ -3827,12 +3827,12 @@ LABEL_10:
 LABEL_20:
 }
 
-- (void)connection:(id)a3 handleAckIncomingMessageWithGuid:(id)a4 topic:(id)a5 tracingUUID:(id)a6
+- (void)connection:(id)connection handleAckIncomingMessageWithGuid:(id)guid topic:(id)topic tracingUUID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  guidCopy = guid;
+  topicCopy = topic;
+  dCopy = d;
   v14 = +[APSLog shouldReduceLogging];
   v15 = +[APSLog courier];
   v16 = v15;
@@ -3844,13 +3844,13 @@ LABEL_20:
     }
 
     v24 = 138413058;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2112;
-    v27 = v10;
+    v27 = connectionCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = guidCopy;
     v30 = 2112;
-    v31 = v13;
+    v31 = dCopy;
     v17 = v16;
     v18 = OS_LOG_TYPE_DEBUG;
   }
@@ -3863,13 +3863,13 @@ LABEL_20:
     }
 
     v24 = 138413058;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2112;
-    v27 = v10;
+    v27 = connectionCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = guidCopy;
     v30 = 2112;
-    v31 = v13;
+    v31 = dCopy;
     v17 = v16;
     v18 = OS_LOG_TYPE_DEFAULT;
   }
@@ -3877,20 +3877,20 @@ LABEL_20:
   _os_log_impl(&_mh_execute_header, v17, v18, "%@ informed that %@ acknowledges incoming message with guid %@ tracingUUID %@", &v24, 0x2Au);
 LABEL_7:
 
-  [(APSTTLCollection *)self->_tracingEnabledAcksCollection removeItem:v13 withFlag:1];
+  [(APSTTLCollection *)self->_tracingEnabledAcksCollection removeItem:dCopy withFlag:1];
   v19 = +[APSMessageStore sharedInstance];
-  [v19 deleteIncomingMessageWithGUID:v11];
+  [v19 deleteIncomingMessageWithGUID:guidCopy];
 
-  if (v13)
+  if (dCopy)
   {
-    v20 = [(APSUserCourier *)self preferredProtocolConnection];
-    if (v20)
+    preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+    if (preferredProtocolConnection)
     {
       topicHasher = self->_topicHasher;
-      v22 = [v10 user];
-      v23 = [(APSTopicHasher *)topicHasher topicHashForTopic:v12 user:v22];
+      user = [connectionCopy user];
+      v23 = [(APSTopicHasher *)topicHasher topicHashForTopic:topicCopy user:user];
 
-      [v20 sendMessageTracingAckWithTopicHash:v23 topic:v12 tracingUUID:v13 status:1 token:0];
+      [preferredProtocolConnection sendMessageTracingAckWithTopicHash:v23 topic:topicCopy tracingUUID:dCopy status:1 token:0];
     }
 
     else
@@ -3899,21 +3899,21 @@ LABEL_7:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = 138412802;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
-        v27 = v12;
+        v27 = topicCopy;
         v28 = 2112;
-        v29 = v13;
+        v29 = dCopy;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@ trying to send message tracing framework ack but we currently don't have connected interface. {topic: %@; tracingUUID: %@}", &v24, 0x20u);
       }
     }
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessageReceiptWithTopic:(id)a4 tracingUUID:(id)a5
+- (void)connection:(id)connection didReceiveIncomingMessageReceiptWithTopic:(id)topic tracingUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  topicCopy = topic;
+  dCopy = d;
   v9 = +[APSLog shouldReduceLogging];
   v10 = +[APSLog courier];
   v11 = v10;
@@ -3925,11 +3925,11 @@ LABEL_7:
     }
 
     v18 = 138412802;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = topicCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = dCopy;
     v12 = v11;
     v13 = OS_LOG_TYPE_DEBUG;
   }
@@ -3942,11 +3942,11 @@ LABEL_7:
     }
 
     v18 = 138412802;
-    v19 = self;
+    selfCopy3 = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = topicCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = dCopy;
     v12 = v11;
     v13 = OS_LOG_TYPE_DEFAULT;
   }
@@ -3954,15 +3954,15 @@ LABEL_7:
   _os_log_impl(&_mh_execute_header, v12, v13, "%@ handling incoming message receipt. {topic:%@, tracingUUID:%@}", &v18, 0x20u);
 LABEL_7:
 
-  [(APSTTLCollection *)self->_tracingEnabledAcksCollection removeItem:v8 withFlag:2];
-  v14 = [(APSUserCourier *)self preferredProtocolConnection];
-  if (v14)
+  [(APSTTLCollection *)self->_tracingEnabledAcksCollection removeItem:dCopy withFlag:2];
+  preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+  if (preferredProtocolConnection)
   {
     topicHasher = self->_topicHasher;
-    v16 = [(APSUserCourier *)self courierUser];
-    v17 = [(APSTopicHasher *)topicHasher topicHashForTopic:v7 user:v16];
+    courierUser = [(APSUserCourier *)self courierUser];
+    v17 = [(APSTopicHasher *)topicHasher topicHashForTopic:topicCopy user:courierUser];
 
-    [v14 sendMessageTracingAckWithTopicHash:v17 topic:v7 tracingUUID:v8 status:2 token:0];
+    [preferredProtocolConnection sendMessageTracingAckWithTopicHash:v17 topic:topicCopy tracingUUID:dCopy status:2 token:0];
   }
 
   else
@@ -3971,25 +3971,25 @@ LABEL_7:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412802;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2112;
-      v21 = v7;
+      v21 = topicCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = dCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ trying to send message tracing application ack but we currently don't have connected interface. {topic: %@; tracingUUID: %@}", &v18, 0x20u);
     }
   }
 }
 
-- (void)connection:(id)a3 setKeepAliveConfiguration:(unint64_t)a4
+- (void)connection:(id)connection setKeepAliveConfiguration:(unint64_t)configuration
 {
-  v5 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v5 setKeepAliveConfiguration:a4];
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [protocolConnectionEstablisher setKeepAliveConfiguration:configuration];
 }
 
-- (void)connectionDidClientDisconnect:(id)a3
+- (void)connectionDidClientDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   if ([(APSUserCourier *)self isIdle])
   {
     v5 = +[APSLog shouldReduceLogging];
@@ -4000,9 +4000,9 @@ LABEL_7:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v11 = 138412546;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2112;
-        v14 = v4;
+        v14 = disconnectCopy;
         v8 = v7;
         v9 = OS_LOG_TYPE_DEBUG;
 LABEL_7:
@@ -4013,9 +4013,9 @@ LABEL_7:
     else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = disconnectCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_7;
@@ -4026,18 +4026,18 @@ LABEL_7:
   }
 }
 
-- (void)ttlCollection:(id)a3 itemsDidExpire:(id)a4 withStates:(id)a5
+- (void)ttlCollection:(id)collection itemsDidExpire:(id)expire withStates:(id)states
 {
-  v12 = a5;
-  if ([a4 count])
+  statesCopy = states;
+  if ([expire count])
   {
     v6 = [NSURL URLWithString:@"tap-to-radar://new?Title=Missing%20CloudKit%20Push&Description=Missing%20both%20acks&ComponentID=297783&ComponentName=Apple%20Push%20Service&ComponentVersion=New%20Bugs&AutoDiagnostics=phone, watch&Classification=Other%20Bug&Reproducibility=Not%20Applicable"];
-    v7 = [v12 firstObject];
-    v8 = [v7 unsignedIntValue];
+    firstObject = [statesCopy firstObject];
+    unsignedIntValue = [firstObject unsignedIntValue];
 
-    if ((v8 & 2) != 0)
+    if ((unsignedIntValue & 2) != 0)
     {
-      if (v8)
+      if (unsignedIntValue)
       {
 LABEL_7:
         v11 = +[APSDiagnostic sharedInstance];
@@ -4073,7 +4073,7 @@ LABEL_8:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       v6 = v5;
       v7 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -4084,7 +4084,7 @@ LABEL_6:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -4106,7 +4106,7 @@ LABEL_6:
     }
 
     *buf = 138412290;
-    v50 = self;
+    selfCopy6 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -4119,7 +4119,7 @@ LABEL_6:
     }
 
     *buf = 138412290;
-    v50 = self;
+    selfCopy6 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -4130,14 +4130,14 @@ LABEL_7:
   v8 = +[APSMessageStore sharedInstance];
   [v8 deleteStaleIncomingLowPriorityMessagesForEnvironment:self->_environment];
 
-  v9 = [(APSUserCourier *)self _getCurrentTokens];
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
   v10 = +[APSMessageStore sharedInstance];
-  v11 = [v10 incomingMessagesForTopic:0 priority:1 environment:self->_environment pushTokens:v9];
+  v11 = [v10 incomingMessagesForTopic:0 priority:1 environment:self->_environment pushTokens:_getCurrentTokens];
 
   v12 = +[APSLog shouldReduceLogging];
   v13 = +[APSLog courier];
   v14 = v13;
-  v40 = v9;
+  v40 = _getCurrentTokens;
   if (v12)
   {
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -4147,7 +4147,7 @@ LABEL_7:
 
     v15 = [v11 count];
     *buf = 138412546;
-    v50 = self;
+    selfCopy6 = self;
     v51 = 2048;
     v52 = v15;
     v16 = v14;
@@ -4163,7 +4163,7 @@ LABEL_7:
 
     v18 = [v11 count];
     *buf = 138412546;
-    v50 = self;
+    selfCopy6 = self;
     v51 = 2048;
     v52 = v18;
     v16 = v14;
@@ -4195,11 +4195,11 @@ LABEL_13:
         }
 
         v23 = *(*(&v43 + 1) + 8 * v22);
-        v24 = [v23 topic];
-        v25 = [v23 token];
+        topic = [v23 topic];
+        token = [v23 token];
         topicHasher = self->_topicHasher;
-        v27 = [(APSUserCourier *)self courierUser];
-        v28 = [(APSTopicHasher *)topicHasher topicHashForTopic:v24 user:v27];
+        courierUser = [(APSUserCourier *)self courierUser];
+        v28 = [(APSTopicHasher *)topicHasher topicHashForTopic:topic user:courierUser];
 
         v29 = self->_topicManager;
         v30 = [(APSTopicManager *)v29 hasTopicHash:v28];
@@ -4215,9 +4215,9 @@ LABEL_13:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v50 = self;
+              selfCopy6 = self;
               v51 = 2112;
-              v52 = v24;
+              v52 = topic;
               v35 = v34;
               v36 = OS_LOG_TYPE_DEBUG;
               goto LABEL_24;
@@ -4227,9 +4227,9 @@ LABEL_13:
           else if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v50 = self;
+            selfCopy6 = self;
             v51 = 2112;
-            v52 = v24;
+            v52 = topic;
             v35 = v34;
             v36 = OS_LOG_TYPE_DEFAULT;
 LABEL_24:
@@ -4238,9 +4238,9 @@ LABEL_24:
 
           v37 = +[APSMessageStore sharedInstance];
           environment = self->_environment;
-          v47 = v25;
+          v47 = token;
           v39 = [NSArray arrayWithObjects:&v47 count:1];
-          [v37 deleteLowPriorityIncomingMessagesForTopic:v24 environment:environment pushTokens:v39];
+          [v37 deleteLowPriorityIncomingMessagesForTopic:topic environment:environment pushTokens:v39];
 
           v21 = v31;
           v20 = v41;
@@ -4270,7 +4270,7 @@ LABEL_24:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -4283,7 +4283,7 @@ LABEL_24:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -4311,7 +4311,7 @@ LABEL_7:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       v6 = v5;
       v7 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -4322,20 +4322,20 @@ LABEL_6:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
-  v8 = [(APSUserCourier *)self delegate];
-  [v8 courierShouldRollBAAEnvironmentTokens:self];
+  delegate = [(APSUserCourier *)self delegate];
+  [delegate courierShouldRollBAAEnvironmentTokens:self];
 }
 
-- (id)_findActiveClientWithToken:(id)a3
+- (id)_findActiveClientWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -4357,16 +4357,16 @@ LABEL_6:
           }
 
           v10 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v16 + 1) + 8 * i), v16];
-          v11 = [v10 publicToken];
-          if (v11)
+          publicToken = [v10 publicToken];
+          if (publicToken)
           {
-            v12 = v11;
-            v13 = [v10 publicToken];
-            if ([v13 isEqualToData:v4])
+            v12 = publicToken;
+            publicToken2 = [v10 publicToken];
+            if ([publicToken2 isEqualToData:tokenCopy])
             {
-              v14 = [v10 isActive];
+              isActive = [v10 isActive];
 
-              if (v14)
+              if (isActive)
               {
                 goto LABEL_15;
               }
@@ -4396,11 +4396,11 @@ LABEL_15:
   return v10;
 }
 
-- (id)_findConnectedClientWithToken:(id)a3 onProtocolConnection:(id)a4
+- (id)_findConnectedClientWithToken:(id)token onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v18 = a4;
-  if (v6)
+  tokenCopy = token;
+  connectionCopy = connection;
+  if (tokenCopy)
   {
     v22 = 0u;
     v23 = 0u;
@@ -4421,16 +4421,16 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v11 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v20 + 1) + 8 * i), v18];
-          v12 = [v11 publicToken];
-          if (v12)
+          connectionCopy = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v20 + 1) + 8 * i), connectionCopy];
+          publicToken = [connectionCopy publicToken];
+          if (publicToken)
           {
-            v13 = v12;
-            v14 = [v11 publicToken];
-            if ([v14 isEqualToData:v6])
+            v13 = publicToken;
+            publicToken2 = [connectionCopy publicToken];
+            if ([publicToken2 isEqualToData:tokenCopy])
             {
-              v15 = [v18 identifier];
-              v16 = [v11 isConnectedOnInterface:v15];
+              identifier = [connectionCopy identifier];
+              v16 = [connectionCopy isConnectedOnInterface:identifier];
 
               if (v16)
               {
@@ -4450,22 +4450,22 @@ LABEL_15:
       while (v8);
     }
 
-    v11 = 0;
+    connectionCopy = 0;
 LABEL_15:
   }
 
   else
   {
-    v11 = 0;
+    connectionCopy = 0;
   }
 
-  return v11;
+  return connectionCopy;
 }
 
-- (id)_findClientWithToken:(id)a3
+- (id)_findClientWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -4487,12 +4487,12 @@ LABEL_4:
         }
 
         v10 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v16 + 1) + 8 * v9), v16];
-        v11 = [v10 publicToken];
-        if (v11)
+        publicToken = [v10 publicToken];
+        if (publicToken)
         {
-          v12 = v11;
-          v13 = [v10 publicToken];
-          v14 = [v13 isEqualToData:v4];
+          v12 = publicToken;
+          publicToken2 = [v10 publicToken];
+          v14 = [publicToken2 isEqualToData:tokenCopy];
 
           if (v14)
           {
@@ -4578,7 +4578,7 @@ LABEL_11:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       v6 = v5;
       v7 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -4589,7 +4589,7 @@ LABEL_6:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -4598,20 +4598,20 @@ LABEL_6:
   [(APSUserCourier *)self _processShouldUseInternetChangeIfNecessary];
 }
 
-- (void)incomingPresenceWithGuid:(id)a3 token:(id)a4 hwVersion:(id)a5 swVersion:(id)a6 swBuild:(id)a7 certificates:(id)a8 nonce:(id)a9 signature:(id)a10 additionalFlags:(int)a11
+- (void)incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)nonce signature:(id)self0 additionalFlags:(int)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v47 = a7;
-  v46 = a8;
-  v21 = a9;
-  v22 = a10;
-  LODWORD(a8) = +[APSLog shouldReduceLogging];
+  guidCopy = guid;
+  tokenCopy = token;
+  versionCopy = version;
+  swVersionCopy = swVersion;
+  buildCopy = build;
+  certificatesCopy = certificates;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  LODWORD(certificates) = +[APSLog shouldReduceLogging];
   v23 = +[APSLog courier];
   v24 = v23;
-  if (a8)
+  if (certificates)
   {
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
@@ -4619,9 +4619,9 @@ LABEL_6:
     }
 
     *buf = 138412546;
-    v49 = self;
+    selfCopy6 = self;
     v50 = 2112;
-    v51 = v17;
+    v51 = guidCopy;
     v25 = v24;
     v26 = OS_LOG_TYPE_DEBUG;
   }
@@ -4634,9 +4634,9 @@ LABEL_6:
     }
 
     *buf = 138412546;
-    v49 = self;
+    selfCopy6 = self;
     v50 = 2112;
-    v51 = v17;
+    v51 = guidCopy;
     v25 = v24;
     v26 = OS_LOG_TYPE_DEFAULT;
   }
@@ -4644,12 +4644,12 @@ LABEL_6:
   _os_log_impl(&_mh_execute_header, v25, v26, "%@ incoming device presence %@", buf, 0x16u);
 LABEL_7:
 
-  if (!v17)
+  if (!guidCopy)
   {
     goto LABEL_28;
   }
 
-  v45 = v20;
+  v45 = swVersionCopy;
   proxyClients = self->_proxyClients;
   if (!proxyClients)
   {
@@ -4660,20 +4660,20 @@ LABEL_7:
     proxyClients = self->_proxyClients;
   }
 
-  v30 = [(NSMutableDictionary *)proxyClients objectForKey:v17];
+  v30 = [(NSMutableDictionary *)proxyClients objectForKey:guidCopy];
   v31 = +[APSLog shouldReduceLogging];
   v32 = +[APSLog courier];
   v33 = v32;
   if (v31)
   {
-    v20 = v45;
+    swVersionCopy = v45;
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_16;
     }
 
     *buf = 138412546;
-    v49 = self;
+    selfCopy6 = self;
     v50 = 2112;
     v51 = v30;
     v34 = v33;
@@ -4682,14 +4682,14 @@ LABEL_7:
 
   else
   {
-    v20 = v45;
+    swVersionCopy = v45;
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
 
     *buf = 138412546;
-    v49 = self;
+    selfCopy6 = self;
     v50 = 2112;
     v51 = v30;
     v34 = v33;
@@ -4704,14 +4704,14 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  v44 = [(APSUserCourier *)self _findClientWithToken:v18];
+  v44 = [(APSUserCourier *)self _findClientWithToken:tokenCopy];
   [v44 invalidate];
-  v30 = [[APSProxyClient alloc] initWithEnvironment:self->_environment guid:v17];
-  [(NSMutableDictionary *)self->_proxyClients setObject:v30 forKey:v17];
+  v30 = [[APSProxyClient alloc] initWithEnvironment:self->_environment guid:guidCopy];
+  [(NSMutableDictionary *)self->_proxyClients setObject:v30 forKey:guidCopy];
   [(APSProxyClient *)v30 setMessageSize:[(APSEnvironment *)self->_environment messageSize]];
   [(APSProxyClient *)v30 setLargeMessageSize:[(APSEnvironment *)self->_environment largeMessageSize]];
-  v36 = [(APSUserCourier *)self _proxyManager];
-  [(APSProxyClient *)v30 setProxyManager:v36];
+  _proxyManager = [(APSUserCourier *)self _proxyManager];
+  [(APSProxyClient *)v30 setProxyManager:_proxyManager];
 
   [(APSProxyClient *)v30 setDelegate:self];
   v37 = +[APSLog shouldReduceLogging];
@@ -4722,11 +4722,11 @@ LABEL_16:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v49 = self;
+      selfCopy6 = self;
       v50 = 2112;
       v51 = v30;
       v52 = 2112;
-      v53 = v17;
+      v53 = guidCopy;
       v40 = v39;
       v41 = OS_LOG_TYPE_DEBUG;
 LABEL_22:
@@ -4737,23 +4737,23 @@ LABEL_22:
   else if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v49 = self;
+    selfCopy6 = self;
     v50 = 2112;
     v51 = v30;
     v52 = 2112;
-    v53 = v17;
+    v53 = guidCopy;
     v40 = v39;
     v41 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_22;
   }
 
-  v20 = v45;
+  swVersionCopy = v45;
 LABEL_24:
-  LODWORD(v43) = a11;
-  [(APSProxyClient *)v30 incomingPresenceWithCertificates:v46 nonce:v21 signature:v22 token:v18 hwVersion:v19 swVersion:v20 swBuild:v47 additionalFlags:v43];
-  v42 = [(APSUserCourier *)self _processPendingProxyPresences];
+  LODWORD(v43) = flags;
+  [(APSProxyClient *)v30 incomingPresenceWithCertificates:certificatesCopy nonce:nonceCopy signature:signatureCopy token:tokenCopy hwVersion:versionCopy swVersion:swVersionCopy swBuild:buildCopy additionalFlags:v43];
+  _processPendingProxyPresences = [(APSUserCourier *)self _processPendingProxyPresences];
   [(APSUserCourier *)self _processShouldRunChangeIfNecessary];
-  if ((v42 & 1) == 0 && ![(APSProxyClient *)v30 isInvalid])
+  if ((_processPendingProxyPresences & 1) == 0 && ![(APSProxyClient *)v30 isInvalid])
   {
     [(APSProxyClient *)v30 noteIsConnected];
   }
@@ -4814,7 +4814,7 @@ LABEL_28:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v7;
           v15 = v14;
@@ -4827,7 +4827,7 @@ LABEL_20:
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2112;
         v24 = v7;
         v15 = v14;
@@ -4880,9 +4880,9 @@ LABEL_20:
       v7 = @"NO";
     }
 
-    v8 = [(APSUserCourier *)self hasConnectedInterface];
+    hasConnectedInterface = [(APSUserCourier *)self hasConnectedInterface];
     proxyClientWithOutstandingPresence = self->_proxyClientWithOutstandingPresence;
-    if (v8)
+    if (hasConnectedInterface)
     {
       v10 = @"YES";
     }
@@ -4921,9 +4921,9 @@ LABEL_20:
       v13 = @"NO";
     }
 
-    v14 = [(APSUserCourier *)self hasConnectedInterface];
+    hasConnectedInterface2 = [(APSUserCourier *)self hasConnectedInterface];
     v15 = self->_proxyClientWithOutstandingPresence;
-    if (v14)
+    if (hasConnectedInterface2)
     {
       v16 = @"YES";
     }
@@ -4989,7 +4989,7 @@ LABEL_22:
 
         v18 = *(*&buf[8] + 40);
         *v87 = 138412546;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v18;
         v19 = v17;
@@ -5006,7 +5006,7 @@ LABEL_22:
 
         v25 = *(*&buf[8] + 40);
         *v87 = 138412546;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v25;
         v19 = v17;
@@ -5017,21 +5017,21 @@ LABEL_22:
 LABEL_35:
 
       v26 = *(v76 + 5);
-      v27 = [*(*&buf[8] + 40) publicToken];
-      v28 = [*(*&buf[8] + 40) hwVersion];
-      v29 = [*(*&buf[8] + 40) swVersion];
-      v30 = [*(*&buf[8] + 40) swBuild];
+      publicToken = [*(*&buf[8] + 40) publicToken];
+      hwVersion = [*(*&buf[8] + 40) hwVersion];
+      swVersion = [*(*&buf[8] + 40) swVersion];
+      swBuild = [*(*&buf[8] + 40) swBuild];
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
       v73[2] = sub_10003DC8C;
       v73[3] = &unk_100187050;
       v73[4] = self;
       v73[5] = &v75;
-      [v26 sendConnectMessageWithToken:v27 state:2 presenceFlags:0 hwVersion:v28 swVersion:v29 swBuild:v30 certificates:0 nonce:0 signature:0 withCompletion:v73];
+      [v26 sendConnectMessageWithToken:publicToken state:2 presenceFlags:0 hwVersion:hwVersion swVersion:swVersion swBuild:swBuild certificates:0 nonce:0 signature:0 withCompletion:v73];
 
       v31 = *(*&buf[8] + 40);
-      v32 = [*(v76 + 5) identifier];
-      [v31 setState:3 onInterface:v32];
+      identifier = [*(v76 + 5) identifier];
+      [v31 setState:3 onInterface:identifier];
 
       objc_storeStrong(&self->_proxyClientWithOutstandingPresence, *(*&buf[8] + 40));
       if (+[APSLog shouldReduceLogging])
@@ -5042,7 +5042,7 @@ LABEL_35:
           v34 = self->_proxyClientWithOutstandingPresence;
           v35 = v76[5];
           *v87 = 138412802;
-          v88 = self;
+          selfCopy10 = self;
           v89 = 2112;
           v90 = v34;
           v91 = 2114;
@@ -5062,7 +5062,7 @@ LABEL_40:
           v38 = self->_proxyClientWithOutstandingPresence;
           v39 = v76[5];
           *v87 = 138412802;
-          v88 = self;
+          selfCopy10 = self;
           v89 = 2112;
           v90 = v38;
           v91 = 2114;
@@ -5099,7 +5099,7 @@ LABEL_66:
         [(APSProxyClient *)v23 lastPresence];
         v24 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v23;
         v91 = 2112;
@@ -5117,7 +5117,7 @@ LABEL_66:
         [(APSProxyClient *)v40 lastPresence];
         v41 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v40;
         v91 = 2112;
@@ -5126,17 +5126,17 @@ LABEL_66:
       }
     }
 
-    v42 = [v82[5] lastPresence];
-    [v42 timeIntervalSinceNow];
+    lastPresence = [v82[5] lastPresence];
+    [lastPresence timeIntervalSinceNow];
     v44 = v43;
 
     v71 = +[NSMutableArray array];
-    v45 = [v82[5] certificates];
+    certificates = [v82[5] certificates];
 
-    if (v45)
+    if (certificates)
     {
-      v46 = [v82[5] certificates];
-      [v71 addObjectsFromArray:v46];
+      certificates2 = [v82[5] certificates];
+      [v71 addObjectsFromArray:certificates2];
     }
 
     if ([(APSUserCourier *)self locallyDisabledFilterOptimization])
@@ -5149,7 +5149,7 @@ LABEL_66:
       v47 = _os_feature_enabled_impl();
     }
 
-    v70 = [v82[5] additionalFlags];
+    additionalFlags = [v82[5] additionalFlags];
     if (v47)
     {
       v48 = 0x2000;
@@ -5161,19 +5161,19 @@ LABEL_66:
     }
 
     v49 = *(v76 + 5);
-    v50 = [v82[5] publicToken];
-    v51 = [v82[5] hwVersion];
-    v52 = [v82[5] swVersion];
-    v53 = [v82[5] swBuild];
-    v54 = [v82[5] nonce];
-    v55 = [v82[5] signature];
+    publicToken2 = [v82[5] publicToken];
+    hwVersion2 = [v82[5] hwVersion];
+    swVersion2 = [v82[5] swVersion];
+    swBuild2 = [v82[5] swBuild];
+    nonce = [v82[5] nonce];
+    signature = [v82[5] signature];
     v72[0] = _NSConcreteStackBlock;
     v72[1] = 3221225472;
     v72[2] = sub_10003DCA4;
     v72[3] = &unk_100187050;
     v72[4] = self;
     v72[5] = &v75;
-    [v49 sendConnectMessageWithToken:v50 state:1 presenceFlags:v70 | v48 hwVersion:v51 swVersion:v52 swBuild:v53 certificates:v71 nonce:v54 signature:v55 withCompletion:v72];
+    [v49 sendConnectMessageWithToken:publicToken2 state:1 presenceFlags:additionalFlags | v48 hwVersion:hwVersion2 swVersion:swVersion2 swBuild:swBuild2 certificates:v71 nonce:nonce signature:signature withCompletion:v72];
 
     v56 = fabs(v44);
     if (+[APSLog shouldReduceLogging])
@@ -5181,11 +5181,11 @@ LABEL_66:
       v57 = +[APSLog courier];
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
       {
-        v58 = [v82[5] publicToken];
+        publicToken3 = [v82[5] publicToken];
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
-        v90 = v58;
+        v90 = publicToken3;
         v91 = 2048;
         v92 = v56;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEBUG, "%@: Sending client connect message with token '%@' presence age %f", v87, 0x20u);
@@ -5197,11 +5197,11 @@ LABEL_66:
       v57 = +[APSLog courier];
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
-        v59 = [v82[5] publicToken];
+        publicToken4 = [v82[5] publicToken];
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
-        v90 = v59;
+        v90 = publicToken4;
         v91 = 2048;
         v92 = v56;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%@: Sending client connect message with token '%@' presence age %f", v87, 0x20u);
@@ -5209,8 +5209,8 @@ LABEL_66:
     }
 
     v60 = v82[5];
-    v61 = [*(v76 + 5) identifier];
-    [v60 setState:1 onInterface:v61];
+    identifier2 = [*(v76 + 5) identifier];
+    [v60 setState:1 onInterface:identifier2];
 
     objc_storeStrong(&self->_proxyClientWithOutstandingPresence, v82[5]);
     if (+[APSLog shouldReduceLogging])
@@ -5221,7 +5221,7 @@ LABEL_66:
         v63 = self->_proxyClientWithOutstandingPresence;
         v64 = v76[5];
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v63;
         v91 = 2114;
@@ -5241,7 +5241,7 @@ LABEL_63:
         v67 = self->_proxyClientWithOutstandingPresence;
         v68 = v76[5];
         *v87 = 138412802;
-        v88 = self;
+        selfCopy10 = self;
         v89 = 2112;
         v90 = v67;
         v91 = 2114;
@@ -5258,36 +5258,36 @@ LABEL_63:
   return 0;
 }
 
-- (void)_sendClientFilter:(id)a3 onProtocolConnection:(id)a4
+- (void)_sendClientFilter:(id)filter onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 topics];
-  if (v8)
+  filterCopy = filter;
+  connectionCopy = connection;
+  topics = [filterCopy topics];
+  if (topics)
   {
-    v9 = [v6 publicToken];
+    publicToken = [filterCopy publicToken];
 
-    if (v9)
+    if (publicToken)
     {
-      v10 = [v8 hashesToEnabledTopics];
-      v11 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:v10];
+      hashesToEnabledTopics = [topics hashesToEnabledTopics];
+      v11 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:hashesToEnabledTopics];
 
-      v12 = [v8 hashesToIgnoredTopics];
-      v51 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:v12];
+      hashesToIgnoredTopics = [topics hashesToIgnoredTopics];
+      v51 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:hashesToIgnoredTopics];
 
-      v13 = [v8 hashesToOpportunisticTopics];
-      v14 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:v13];
+      hashesToOpportunisticTopics = [topics hashesToOpportunisticTopics];
+      v14 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:hashesToOpportunisticTopics];
 
-      v15 = [v8 hashesToNonWakingTopics];
-      v49 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:v15];
+      hashesToNonWakingTopics = [topics hashesToNonWakingTopics];
+      v49 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:hashesToNonWakingTopics];
 
-      v16 = [v8 hashesToPausedTopics];
-      v50 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:v16];
+      hashesToPausedTopics = [topics hashesToPausedTopics];
+      v50 = [(APSUserCourier *)self _topicsByHashFromTopicStateDictionary:hashesToPausedTopics];
 
-      v17 = [v6 filterVersionStateMachine];
-      v18 = [v7 identifier];
+      filterVersionStateMachine = [filterCopy filterVersionStateMachine];
+      identifier = [connectionCopy identifier];
       v54 = 0;
-      v47 = [v17 versionToSendFor:v18 error:&v54];
+      v47 = [filterVersionStateMachine versionToSendFor:identifier error:&v54];
       v48 = v54;
 
       v19 = +[APSLog courierOversized];
@@ -5296,14 +5296,14 @@ LABEL_63:
         v20 = APSPrettyPrintCollection();
         APSPrettyPrintCollection();
         v45 = v14;
-        v21 = v46 = v7;
+        v21 = v46 = connectionCopy;
         v22 = APSPrettyPrintCollection();
         v23 = APSPrettyPrintCollection();
         v24 = APSPrettyPrintCollection();
         *buf = 138414338;
-        v56 = self;
+        selfCopy3 = self;
         v57 = 2112;
-        v58 = v6;
+        v58 = filterCopy;
         v59 = 2048;
         v60 = v47;
         v61 = 2112;
@@ -5320,35 +5320,35 @@ LABEL_63:
         v72 = v46;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@: sending filter for client %@ with version %llu with enabled topics = %@, opportunistic topics = %@, non-waking topics = %@, paused topics = %@, ignored topics = %@ on interface %{public}@", buf, 0x5Cu);
 
-        v7 = v46;
+        connectionCopy = v46;
         v14 = v45;
       }
 
       v25 = v48;
       if (!v48)
       {
-        v36 = [(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:v7 forClient:v6];
-        v37 = [v6 publicToken];
+        v36 = [(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:connectionCopy forClient:filterCopy];
+        publicToken2 = [filterCopy publicToken];
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
         v52[2] = sub_10003E2F4;
         v52[3] = &unk_100187078;
         v52[4] = self;
-        v38 = v7;
+        v38 = connectionCopy;
         v53 = v38;
         LOBYTE(v44) = v36;
         v39 = v14;
-        [v38 sendFilterMessageWithEnabledTopicsByHash:v11 ignoredTopicsByHash:v51 opportunisticTopicsByHash:v14 nonWakingTopicsByHash:v49 pausedTopicsByHash:v50 saltsByTopic:0 token:v37 version:v47 expectsResponse:v44 withCompletion:v52];
+        [v38 sendFilterMessageWithEnabledTopicsByHash:v11 ignoredTopicsByHash:v51 opportunisticTopicsByHash:v14 nonWakingTopicsByHash:v49 pausedTopicsByHash:v50 saltsByTopic:0 token:publicToken2 version:v47 expectsResponse:v44 withCompletion:v52];
 
-        v40 = [v6 filterVersionStateMachine];
-        v41 = [v38 identifier];
-        [v40 noteSentWithVersion:v47 on:v41];
+        filterVersionStateMachine2 = [filterCopy filterVersionStateMachine];
+        identifier2 = [v38 identifier];
+        [filterVersionStateMachine2 noteSentWithVersion:v47 on:identifier2];
 
         if ((v36 & 1) == 0)
         {
-          v42 = [v6 filterVersionStateMachine];
-          v43 = [v38 identifier];
-          [v42 noteAckedWithVersion:v47 on:v43];
+          filterVersionStateMachine3 = [filterCopy filterVersionStateMachine];
+          identifier3 = [v38 identifier];
+          [filterVersionStateMachine3 noteAckedWithVersion:v47 on:identifier3];
         }
 
         v14 = v39;
@@ -5364,7 +5364,7 @@ LABEL_63:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v56 = v48;
+          selfCopy3 = v48;
           v29 = v28;
           v30 = OS_LOG_TYPE_DEBUG;
 LABEL_20:
@@ -5375,13 +5375,13 @@ LABEL_20:
       else if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v56 = v48;
+        selfCopy3 = v48;
         v29 = v28;
         v30 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_20;
       }
 
-      [v7 disconnectWithReason:6];
+      [connectionCopy disconnectWithReason:6];
 LABEL_22:
 
       goto LABEL_23;
@@ -5395,13 +5395,13 @@ LABEL_22:
   {
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [v6 publicToken];
+      publicToken3 = [filterCopy publicToken];
       *buf = 138412802;
-      v56 = self;
+      selfCopy3 = self;
       v57 = 2112;
-      v58 = v6;
+      v58 = filterCopy;
       v59 = 2112;
-      v60 = v33;
+      v60 = publicToken3;
       v34 = v11;
       v35 = OS_LOG_TYPE_DEBUG;
 LABEL_14:
@@ -5411,13 +5411,13 @@ LABEL_14:
 
   else if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [v6 publicToken];
+    publicToken3 = [filterCopy publicToken];
     *buf = 138412802;
-    v56 = self;
+    selfCopy3 = self;
     v57 = 2112;
-    v58 = v6;
+    v58 = filterCopy;
     v59 = 2112;
-    v60 = v33;
+    v60 = publicToken3;
     v34 = v11;
     v35 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_14;
@@ -5426,9 +5426,9 @@ LABEL_14:
 LABEL_23:
 }
 
-- (void)pushTokenBecameInvalidForClient:(id)a3
+- (void)pushTokenBecameInvalidForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -5437,9 +5437,9 @@ LABEL_23:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = clientCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5450,9 +5450,9 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = clientCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -5461,9 +5461,9 @@ LABEL_6:
   [(APSUserCourier *)self _reconnectIgnoringDelayReconnectTimer:1];
 }
 
-- (void)requestFilterForClient:(id)a3
+- (void)requestFilterForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -5472,9 +5472,9 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v4;
+      v25 = clientCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5485,25 +5485,25 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = clientCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
   [(APSUserCourier *)self setHasFilterChanged:1];
-  if (-[APSUserCourier shouldOnlySendFilterOnPreferredInterface](self, "shouldOnlySendFilterOnPreferredInterface") && [v4 shouldOnlySendFilterOnPreferredInterface])
+  if (-[APSUserCourier shouldOnlySendFilterOnPreferredInterface](self, "shouldOnlySendFilterOnPreferredInterface") && [clientCopy shouldOnlySendFilterOnPreferredInterface])
   {
-    v10 = [(APSUserCourier *)self preferredProtocolConnection];
-    v11 = [v10 identifier];
-    v12 = [v4 stateOnInterface:v11];
+    preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+    identifier = [preferredProtocolConnection identifier];
+    v12 = [clientCopy stateOnInterface:identifier];
 
     if (v12 == 2)
     {
-      v13 = [(APSUserCourier *)self preferredProtocolConnection];
-      [(APSUserCourier *)self _sendClientFilter:v4 onProtocolConnection:v13];
+      preferredProtocolConnection2 = [(APSUserCourier *)self preferredProtocolConnection];
+      [(APSUserCourier *)self _sendClientFilter:clientCopy onProtocolConnection:preferredProtocolConnection2];
     }
 
     v20[0] = _NSConcreteStackBlock;
@@ -5511,8 +5511,8 @@ LABEL_6:
     v20[2] = sub_10003E6A4;
     v20[3] = &unk_1001870A0;
     v20[4] = self;
-    v21 = v4;
-    v14 = v4;
+    v21 = clientCopy;
+    v14 = clientCopy;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v20];
     v15 = v21;
   }
@@ -5523,17 +5523,17 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = sub_10003E7A4;
     v17[3] = &unk_1001870A0;
-    v18 = v4;
-    v19 = self;
-    v16 = v4;
+    v18 = clientCopy;
+    selfCopy3 = self;
+    v16 = clientCopy;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v17];
     v15 = v18;
   }
 }
 
-- (void)clientBecameInactive:(id)a3
+- (void)clientBecameInactive:(id)inactive
 {
-  v4 = a3;
+  inactiveCopy = inactive;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -5542,9 +5542,9 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = inactiveCopy;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5555,9 +5555,9 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = inactiveCopy;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -5567,17 +5567,17 @@ LABEL_6:
   [(APSUserCourier *)self _performIdleCheck];
 }
 
-- (void)client:(id)a3 requestPushAckResponse:(id)a4 messageId:(id)a5 token:(id)a6 connectionType:(id)a7 generation:(id)a8
+- (void)client:(id)client requestPushAckResponse:(id)response messageId:(id)id token:(id)token connectionType:(id)type generation:(id)generation
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = [a7 integerValue];
-  v20 = [v18 unsignedIntegerValue];
+  clientCopy = client;
+  responseCopy = response;
+  idCopy = id;
+  tokenCopy = token;
+  generationCopy = generation;
+  integerValue = [type integerValue];
+  unsignedIntegerValue = [generationCopy unsignedIntegerValue];
 
-  if (![(APSUserCourier *)self hasConnectedInterfaceOfType:v19])
+  if (![(APSUserCourier *)self hasConnectedInterfaceOfType:integerValue])
   {
     v21 = +[APSLog shouldReduceLogging];
     v22 = +[APSLog courier];
@@ -5587,9 +5587,9 @@ LABEL_6:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2112;
-        v35 = v14;
+        v35 = clientCopy;
         v24 = v23;
         v25 = OS_LOG_TYPE_DEBUG;
 LABEL_8:
@@ -5600,9 +5600,9 @@ LABEL_8:
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
-      v35 = v14;
+      v35 = clientCopy;
       v24 = v23;
       v25 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_8;
@@ -5615,28 +5615,28 @@ LABEL_8:
   v26[1] = 3221225472;
   v26[2] = sub_10003EB9C;
   v26[3] = &unk_1001870C8;
-  v31 = v20;
+  v31 = unsignedIntegerValue;
   v26[4] = self;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:v19 block:v26];
+  v27 = clientCopy;
+  v28 = responseCopy;
+  v29 = idCopy;
+  v30 = tokenCopy;
+  [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:integerValue block:v26];
 
 LABEL_10:
 }
 
-- (void)client:(id)a3 requestSendOutgoingMessage:(id)a4
+- (void)client:(id)client requestSendOutgoingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  messageCopy = message;
   v8 = +[APSLog courierOversized];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 messageID];
-    v10 = [v7 topic];
-    v11 = [v7 timeout];
-    if ([v7 isCritical])
+    messageID = [messageCopy messageID];
+    topic = [messageCopy topic];
+    timeout = [messageCopy timeout];
+    if ([messageCopy isCritical])
     {
       v12 = @"yes";
     }
@@ -5646,50 +5646,50 @@ LABEL_10:
       v12 = @"no";
     }
 
-    v13 = [v7 identifier];
-    v14 = [v7 userInfo];
+    identifier = [messageCopy identifier];
+    userInfo = [messageCopy userInfo];
     *buf = 138414082;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
-    v39 = v6;
+    v39 = clientCopy;
     v40 = 2048;
-    v41 = v9;
+    v41 = messageID;
     v42 = 2112;
-    v43 = v10;
+    v43 = topic;
     v44 = 2048;
-    v45 = v11;
+    v45 = timeout;
     v46 = 2112;
     v47 = v12;
     v48 = 2048;
-    v49 = v13;
+    v49 = identifier;
     v50 = 2112;
-    v51 = v14;
+    v51 = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received proxy %@ outgoing message %lu to send with topic '%@', timeout %lu, critical %@, identifier %lu, and userInfo '%@'", buf, 0x52u);
   }
 
-  [v7 setOriginator:v6];
-  v15 = [v6 topics];
-  v16 = [v15 enabledTopics];
-  v17 = [v7 topic];
-  if ([v16 containsObject:v17])
+  [messageCopy setOriginator:clientCopy];
+  topics = [clientCopy topics];
+  enabledTopics = [topics enabledTopics];
+  topic2 = [messageCopy topic];
+  if ([enabledTopics containsObject:topic2])
   {
     goto LABEL_9;
   }
 
-  v18 = [v6 topics];
-  v19 = [v18 opportunisticTopics];
-  v20 = [v7 topic];
-  if (([v19 containsObject:v20] & 1) == 0)
+  topics2 = [clientCopy topics];
+  opportunisticTopics = [topics2 opportunisticTopics];
+  topic3 = [messageCopy topic];
+  if (([opportunisticTopics containsObject:topic3] & 1) == 0)
   {
-    [v6 topics];
-    v21 = v35 = v6;
+    [clientCopy topics];
+    v21 = v35 = clientCopy;
     [v21 nonWakingTopics];
     v22 = v34 = self;
-    v23 = [v7 topic];
-    v33 = [v22 containsObject:v23];
+    topic4 = [messageCopy topic];
+    v33 = [v22 containsObject:topic4];
 
     self = v34;
-    v6 = v35;
+    clientCopy = v35;
 
     if (v33)
     {
@@ -5703,14 +5703,14 @@ LABEL_10:
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v7 messageID];
-        v28 = [v7 topic];
+        messageID2 = [messageCopy messageID];
+        topic5 = [messageCopy topic];
         *buf = 138412802;
-        v37 = v34;
+        selfCopy = v34;
         v38 = 2048;
-        v39 = v27;
+        v39 = messageID2;
         v40 = 2112;
-        v41 = v28;
+        v41 = topic5;
         v29 = v26;
         v30 = OS_LOG_TYPE_DEBUG;
 LABEL_18:
@@ -5720,40 +5720,40 @@ LABEL_18:
 
     else if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v7 messageID];
-      v28 = [v7 topic];
+      messageID3 = [messageCopy messageID];
+      topic5 = [messageCopy topic];
       *buf = 138412802;
-      v37 = v34;
+      selfCopy = v34;
       v38 = 2048;
-      v39 = v31;
+      v39 = messageID3;
       v40 = 2112;
-      v41 = v28;
+      v41 = topic5;
       v29 = v26;
       v30 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_18;
     }
 
     v32 = APSError();
-    [v35 handleResult:v32 forSendingOutgoingMessage:v7];
+    [v35 handleResult:v32 forSendingOutgoingMessage:messageCopy];
 
     goto LABEL_11;
   }
 
 LABEL_9:
 LABEL_10:
-  [(APSUserCourier *)self _enqueueMessage:v7 forOriginator:v6];
+  [(APSUserCourier *)self _enqueueMessage:messageCopy forOriginator:clientCopy];
 LABEL_11:
 }
 
-- (void)client:(id)a3 requestTokenGenerateWithTopicHash:(id)a4 baseToken:(id)a5 appId:(id)a6 expirationTTL:(id)a7 vapidPublicKeyHash:(id)a8 type:(id)a9
+- (void)client:(id)client requestTokenGenerateWithTopicHash:(id)hash baseToken:(id)token appId:(id)id expirationTTL:(id)l vapidPublicKeyHash:(id)keyHash type:(id)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  clientCopy = client;
+  hashCopy = hash;
+  tokenCopy = token;
+  idCopy = id;
+  lCopy = l;
+  keyHashCopy = keyHash;
+  typeCopy = type;
   v22 = +[APSLog shouldReduceLogging];
   v23 = +[APSLog courier];
   v24 = v23;
@@ -5762,21 +5762,21 @@ LABEL_11:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138414082;
-      v47 = self;
+      selfCopy2 = self;
       v48 = 2112;
-      v49 = v15;
+      v49 = clientCopy;
       v50 = 2112;
-      v51 = v16;
+      v51 = hashCopy;
       v52 = 2112;
-      v53 = v17;
+      v53 = tokenCopy;
       v54 = 2112;
-      v55 = v18;
+      v55 = idCopy;
       v56 = 2112;
-      v57 = v19;
+      v57 = lCopy;
       v58 = 2112;
-      v59 = v20;
+      v59 = keyHashCopy;
       v60 = 2112;
-      v61 = v21;
+      v61 = typeCopy;
       v25 = v24;
       v26 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5787,21 +5787,21 @@ LABEL_6:
   else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138414082;
-    v47 = self;
+    selfCopy2 = self;
     v48 = 2112;
-    v49 = v15;
+    v49 = clientCopy;
     v50 = 2112;
-    v51 = v16;
+    v51 = hashCopy;
     v52 = 2112;
-    v53 = v17;
+    v53 = tokenCopy;
     v54 = 2112;
-    v55 = v18;
+    v55 = idCopy;
     v56 = 2112;
-    v57 = v19;
+    v57 = lCopy;
     v58 = 2112;
-    v59 = v20;
+    v59 = keyHashCopy;
     v60 = 2112;
-    v61 = v21;
+    v61 = typeCopy;
     v25 = v24;
     v26 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -5813,41 +5813,41 @@ LABEL_6:
   v39[2] = sub_10003F534;
   v39[3] = &unk_1001870F0;
   v39[4] = self;
-  v40 = v16;
-  v41 = v17;
-  v42 = v18;
-  v43 = v19;
-  v44 = v20;
-  v45 = v21;
+  v40 = hashCopy;
+  v41 = tokenCopy;
+  v42 = idCopy;
+  v43 = lCopy;
+  v44 = keyHashCopy;
+  v45 = typeCopy;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_10003F66C;
   v35[3] = &unk_100187118;
   v35[4] = self;
-  v36 = v15;
+  v36 = clientCopy;
   v37 = v40;
   v38 = v42;
   v28 = v42;
   v29 = v40;
-  v30 = v15;
-  v31 = v21;
-  v32 = v20;
-  v33 = v19;
-  v34 = v17;
+  v30 = clientCopy;
+  v31 = typeCopy;
+  v32 = keyHashCopy;
+  v33 = lCopy;
+  v34 = tokenCopy;
   [(APSOutgoingQueue *)tokenRequestQueue enqueueSendBlock:v39 completionBlock:v35];
 }
 
-- (void)client:(id)a3 sendPubSubChannelList:(id)a4 token:(id)a5
+- (void)client:(id)client sendPubSubChannelList:(id)list token:(id)token
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003FB70;
   v9[3] = &unk_100187140;
-  v10 = a3;
-  v11 = self;
-  v12 = a4;
-  v7 = v12;
-  v8 = v10;
+  clientCopy = client;
+  selfCopy = self;
+  listCopy = list;
+  v7 = listCopy;
+  v8 = clientCopy;
   [(APSUserCourier *)self enumerateConnectedProtocolConnections:v9];
 }
 
@@ -5861,7 +5861,7 @@ LABEL_6:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       v6 = v5;
       v7 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5872,7 +5872,7 @@ LABEL_6:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -5895,7 +5895,7 @@ LABEL_6:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       v6 = v5;
       v7 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -5906,15 +5906,15 @@ LABEL_6:
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
   [(APSUserCourier *)self _clearCachedSigNonceCert];
-  v8 = [(APSUserCourier *)self clientIdentityProvider];
-  [v8 forceIdentityRefresh:0];
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+  [clientIdentityProvider forceIdentityRefresh:0];
 }
 
 - (void)systemDidLock
@@ -5972,16 +5972,16 @@ LABEL_6:
 {
   if (!self->_swappingIdentity)
   {
-    v3 = [(APSUserCourier *)self clientIdentityProvider];
-    [v3 notePushTokenLost];
+    clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+    [clientIdentityProvider notePushTokenLost];
   }
 
   if (![(APSUserCourier *)self _processPotentialIdentityChanged])
   {
-    v4 = [(APSUserCourier *)self courierUser];
-    v5 = [v4 isDefaultUser];
+    courierUser = [(APSUserCourier *)self courierUser];
+    isDefaultUser = [courierUser isDefaultUser];
 
-    if (v5)
+    if (isDefaultUser)
     {
       v6 = +[APSLog shouldReduceLogging];
       v7 = +[APSLog courier];
@@ -5991,7 +5991,7 @@ LABEL_6:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
           v11 = 138412290;
-          v12 = self;
+          selfCopy2 = self;
           v9 = v8;
           v10 = OS_LOG_TYPE_DEBUG;
 LABEL_10:
@@ -6002,7 +6002,7 @@ LABEL_10:
       else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy2 = self;
         v9 = v8;
         v10 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_10;
@@ -6032,7 +6032,7 @@ LABEL_10:
     }
 
     *buf = 138412546;
-    v37 = self;
+    selfCopy6 = self;
     v38 = 2112;
     v39 = v6;
     v7 = v5;
@@ -6053,7 +6053,7 @@ LABEL_10:
     }
 
     *buf = 138412546;
-    v37 = self;
+    selfCopy6 = self;
     v38 = 2112;
     v39 = v9;
     v7 = v5;
@@ -6068,9 +6068,9 @@ LABEL_11:
     goto LABEL_26;
   }
 
-  v10 = [(APSUserCourier *)self _getCurrentTokens];
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
   v11 = +[APSMessageStore sharedInstance];
-  v12 = [v11 incomingHighPriorityMessagesForEnvironment:self->_environment pushTokens:v10];
+  v12 = [v11 incomingHighPriorityMessagesForEnvironment:self->_environment pushTokens:_getCurrentTokens];
 
   v13 = +[APSLog shouldReduceLogging];
   v14 = +[APSLog courier];
@@ -6081,7 +6081,7 @@ LABEL_11:
     {
       v16 = [v12 count];
       *buf = 138412546;
-      v37 = self;
+      selfCopy6 = self;
       v38 = 2048;
       v39 = v16;
       v17 = v15;
@@ -6095,7 +6095,7 @@ LABEL_17:
   {
     v19 = [v12 count];
     *buf = 138412546;
-    v37 = self;
+    selfCopy6 = self;
     v38 = 2048;
     v39 = v19;
     v17 = v15;
@@ -6143,7 +6143,7 @@ LABEL_26:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v37 = self;
+      selfCopy6 = self;
       v29 = v28;
       v30 = OS_LOG_TYPE_DEBUG;
 LABEL_31:
@@ -6154,7 +6154,7 @@ LABEL_31:
   else if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = self;
+    selfCopy6 = self;
     v29 = v28;
     v30 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_31;
@@ -6164,23 +6164,23 @@ LABEL_31:
 - (void)_processShouldUseInternetChangeIfNecessary
 {
   shouldUseInternet = self->_shouldUseInternet;
-  v4 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v4 adjustConnectionsIfNeeded];
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [protocolConnectionEstablisher adjustConnectionsIfNeeded];
 
   if ([(APSUserCourier *)self shouldUseInternet]|| ![(APSUserCourier *)self shouldRun])
   {
-    v11 = [(APSUserCourier *)self shouldRun];
+    shouldRun = [(APSUserCourier *)self shouldRun];
     v12 = +[APSLog shouldReduceLogging];
     v13 = +[APSLog courier];
     v14 = v13;
-    if (v11)
+    if (shouldRun)
     {
       if (v12)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v38 = self;
+          selfCopy11 = self;
           v15 = v14;
           v16 = OS_LOG_TYPE_DEBUG;
 LABEL_16:
@@ -6191,7 +6191,7 @@ LABEL_16:
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = self;
+        selfCopy11 = self;
         v15 = v14;
         v16 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_16;
@@ -6201,10 +6201,10 @@ LABEL_16:
       v32 = 3221225472;
       v33 = sub_100041598;
       v34 = &unk_100187000;
-      v35 = self;
+      selfCopy3 = self;
       v19 = &v31;
 LABEL_22:
-      [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:2 block:v19, v31, v32, v33, v34, v35];
+      [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:2 block:v19, v31, v32, v33, v34, selfCopy3];
       goto LABEL_23;
     }
 
@@ -6213,7 +6213,7 @@ LABEL_22:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v38 = self;
+        selfCopy11 = self;
         v17 = v14;
         v18 = OS_LOG_TYPE_DEBUG;
 LABEL_20:
@@ -6224,7 +6224,7 @@ LABEL_20:
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = self;
+      selfCopy11 = self;
       v17 = v14;
       v18 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_20;
@@ -6245,7 +6245,7 @@ LABEL_20:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v38 = self;
+        selfCopy11 = self;
         v9 = v8;
         v10 = OS_LOG_TYPE_DEBUG;
 LABEL_41:
@@ -6256,7 +6256,7 @@ LABEL_41:
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = self;
+      selfCopy11 = self;
       v9 = v8;
       v10 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_41;
@@ -6278,7 +6278,7 @@ LABEL_41:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v38 = self;
+      selfCopy11 = self;
       v28 = v8;
       v29 = OS_LOG_TYPE_DEBUG;
 LABEL_45:
@@ -6289,7 +6289,7 @@ LABEL_45:
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = self;
+    selfCopy11 = self;
     v28 = v8;
     v29 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_45;
@@ -6315,7 +6315,7 @@ LABEL_23:
       }
 
       *buf = 138412546;
-      v38 = self;
+      selfCopy11 = self;
       v39 = 2112;
       v40 = v23;
       v24 = v22;
@@ -6334,7 +6334,7 @@ LABEL_33:
     }
 
     *buf = 138412546;
-    v38 = self;
+    selfCopy11 = self;
     v39 = 2112;
     v40 = v26;
     v24 = v22;
@@ -6348,28 +6348,28 @@ LABEL_33:
 
 - (BOOL)_processPotentialIdentityChanged
 {
-  v3 = [(APSUserCourier *)self clientIdentityProvider];
-  if (![v3 identityStatus])
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+  if (![clientIdentityProvider identityStatus])
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(APSUserCourier *)self clientIdentityProvider];
-  v5 = [v4 hasUnderlyingIdentityChanged];
+  clientIdentityProvider2 = [(APSUserCourier *)self clientIdentityProvider];
+  hasUnderlyingIdentityChanged = [clientIdentityProvider2 hasUnderlyingIdentityChanged];
 
-  if (v5)
+  if (hasUnderlyingIdentityChanged)
   {
 LABEL_5:
     v6 = 1;
     [(APSUserCourier *)self _processInvalidIdentityAndConnectImmediately:1];
-    v7 = [(APSUserCourier *)self clientIdentityProvider];
+    clientIdentityProvider3 = [(APSUserCourier *)self clientIdentityProvider];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000416E0;
     v9[3] = &unk_100187220;
     v9[4] = self;
-    [v7 preloadIdentity:v9];
+    [clientIdentityProvider3 preloadIdentity:v9];
 
     return v6;
   }
@@ -6377,9 +6377,9 @@ LABEL_5:
   return 0;
 }
 
-- (void)rollTokenAndReconnectImmediately:(BOOL)a3
+- (void)rollTokenAndReconnectImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -6391,7 +6391,7 @@ LABEL_5:
     }
 
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEBUG;
   }
@@ -6404,7 +6404,7 @@ LABEL_5:
     }
 
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6413,7 +6413,7 @@ LABEL_5:
 LABEL_7:
 
   [(APSUserCourier *)self setPublicToken:0 fromServer:1];
-  if (v3)
+  if (immediatelyCopy)
   {
     [(APSUserCourier *)self _reconnectIgnoringDelayReconnectTimer:14];
   }
@@ -6424,10 +6424,10 @@ LABEL_7:
   }
 }
 
-- (void)topicManagerRequestToSendFilter:(id)a3 change:(id)a4
+- (void)topicManagerRequestToSendFilter:(id)filter change:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  filterCopy = filter;
+  changeCopy = change;
   v8 = +[APSLog shouldReduceLogging];
   v9 = +[APSLog courier];
   v10 = v9;
@@ -6435,13 +6435,13 @@ LABEL_7:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(APSUserCourier *)self protocolConnectionEstablisher];
+      protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
       v14 = 138412802;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v6;
+      v17 = filterCopy;
       v18 = 2048;
-      v19 = [v11 countConnectedInterfaces];
+      countConnectedInterfaces = [protocolConnectionEstablisher countConnectedInterfaces];
       v12 = v10;
       v13 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -6451,37 +6451,37 @@ LABEL_6:
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(APSUserCourier *)self protocolConnectionEstablisher];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
     v14 = 138412802;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = filterCopy;
     v18 = 2048;
-    v19 = [v11 countConnectedInterfaces];
+    countConnectedInterfaces = [protocolConnectionEstablisher countConnectedInterfaces];
     v12 = v10;
     v13 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
   [(APSUserCourier *)self setHasFilterChanged:1];
-  [(APSUserCourier *)self _requestToSendFilterOnTopicManager:self->_topicManager change:v7];
+  [(APSUserCourier *)self _requestToSendFilterOnTopicManager:self->_topicManager change:changeCopy];
 }
 
-- (id)getConnectionTypeFromProtocolConnection:(id)a3
+- (id)getConnectionTypeFromProtocolConnection:(id)connection
 {
-  v3 = a3;
-  v4 = v3;
+  connectionCopy = connection;
+  v4 = connectionCopy;
   v5 = @"wifi";
-  if (v3)
+  if (connectionCopy)
   {
-    v6 = [v3 connectionType];
+    connectionType = [connectionCopy connectionType];
     v7 = @"proxy";
-    if (v6 != 2)
+    if (connectionType != 2)
     {
       v7 = @"wifi";
     }
 
-    if (v6)
+    if (connectionType)
     {
       v5 = v7;
     }
@@ -6495,23 +6495,23 @@ LABEL_6:
   return v5;
 }
 
-- (void)outgoingMessageQueue:(id)a3 lateAcknowledgmentForCriticalOutgoingMessage:(id)a4
+- (void)outgoingMessageQueue:(id)queue lateAcknowledgmentForCriticalOutgoingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   +[NSDate timeIntervalSinceReferenceDate];
   v7 = v6;
   v8 = v6 - self->_lastLateCriticalOutgoingMessageAcknowledgmentReconnectTime;
   if (v8 < 0.0 || v8 >= 60.0)
   {
-    v10 = [v5 sendInterfaceIdentifier];
-    v11 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    if ([v11 isAttemptingToReconnect])
+    sendInterfaceIdentifier = [messageCopy sendInterfaceIdentifier];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    if ([protocolConnectionEstablisher isAttemptingToReconnect])
     {
 
       goto LABEL_11;
     }
 
-    v12 = [(APSUserCourier *)self hasConnectedInterfaceForIdentifier:v10];
+    v12 = [(APSUserCourier *)self hasConnectedInterfaceForIdentifier:sendInterfaceIdentifier];
 
     if (!v12)
     {
@@ -6524,9 +6524,9 @@ LABEL_11:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v24 = 138412546;
-          v25 = self;
+          selfCopy4 = self;
           v26 = 2048;
-          v27 = [v5 messageID];
+          messageID = [messageCopy messageID];
           v21 = v20;
           v22 = OS_LOG_TYPE_DEBUG;
 LABEL_16:
@@ -6537,9 +6537,9 @@ LABEL_16:
       else if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138412546;
-        v25 = self;
+        selfCopy4 = self;
         v26 = 2048;
-        v27 = [v5 messageID];
+        messageID = [messageCopy messageID];
         v21 = v20;
         v22 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_16;
@@ -6557,11 +6557,11 @@ LABEL_22:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v24 = 138412802;
-        v25 = self;
+        selfCopy4 = self;
         v26 = 2048;
-        v27 = [v5 messageID];
+        messageID = [messageCopy messageID];
         v28 = 2112;
-        v29 = v10;
+        v29 = sendInterfaceIdentifier;
         v16 = v15;
         v17 = OS_LOG_TYPE_DEBUG;
 LABEL_20:
@@ -6572,17 +6572,17 @@ LABEL_20:
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412802;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2048;
-      v27 = [v5 messageID];
+      messageID = [messageCopy messageID];
       v28 = 2112;
-      v29 = v10;
+      v29 = sendInterfaceIdentifier;
       v16 = v15;
       v17 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_20;
     }
 
-    v23 = [(APSUserCourier *)self connectedInterfaceForIdentifier:v10];
+    v23 = [(APSUserCourier *)self connectedInterfaceForIdentifier:sendInterfaceIdentifier];
     [v23 noteConnectionFailureWithReason:105];
 
     self->_lastLateCriticalOutgoingMessageAcknowledgmentReconnectTime = v7;
@@ -6592,7 +6592,7 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)outgoingMessageQueueShortMessageTimeoutExceeded:(id)a3
+- (void)outgoingMessageQueueShortMessageTimeoutExceeded:(id)exceeded
 {
   if ([(APSUserCourier *)self countOfConnectedInterface]>= 2)
   {
@@ -6604,7 +6604,7 @@ LABEL_23:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy2 = self;
         v7 = v6;
         v8 = OS_LOG_TYPE_DEBUG;
 LABEL_7:
@@ -6615,7 +6615,7 @@ LABEL_7:
     else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       v7 = v6;
       v8 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_7;
@@ -6625,10 +6625,10 @@ LABEL_7:
   }
 }
 
-- (void)outgoingMessageQueue:(id)a3 requestToSendLowPriorityMessages:(id)a4
+- (void)outgoingMessageQueue:(id)queue requestToSendLowPriorityMessages:(id)messages
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  messagesCopy = messages;
   v8 = +[APSLog shouldReduceLogging];
   v9 = +[APSLog courier];
   v10 = v9;
@@ -6640,11 +6640,11 @@ LABEL_7:
     }
 
     *buf = 138412802;
-    v29 = self;
+    selfCopy4 = self;
     v30 = 2112;
-    v31 = v6;
+    v31 = queueCopy;
     v32 = 2112;
-    v33 = v7;
+    v33 = messagesCopy;
     v11 = v10;
     v12 = OS_LOG_TYPE_DEBUG;
   }
@@ -6657,11 +6657,11 @@ LABEL_7:
     }
 
     *buf = 138412802;
-    v29 = self;
+    selfCopy4 = self;
     v30 = 2112;
-    v31 = v6;
+    v31 = queueCopy;
     v32 = 2112;
-    v33 = v7;
+    v33 = messagesCopy;
     v11 = v10;
     v12 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6675,7 +6675,7 @@ LABEL_7:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = v7;
+    v13 = messagesCopy;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
@@ -6708,7 +6708,7 @@ LABEL_7:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = self;
+      selfCopy4 = self;
       v21 = v20;
       v22 = OS_LOG_TYPE_DEBUG;
 LABEL_21:
@@ -6719,7 +6719,7 @@ LABEL_21:
   else if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = self;
+    selfCopy4 = self;
     v21 = v20;
     v22 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_21;
@@ -6739,7 +6739,7 @@ LABEL_21:
     }
 
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -6752,7 +6752,7 @@ LABEL_21:
     }
 
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6763,11 +6763,11 @@ LABEL_7:
   if ([(APSUserCourier *)self _isIdentityAvailable])
   {
     [(APSUserCourier *)self _clearCachedSigNonceCert];
-    v8 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    [v8 adjustConnectionsIfNeeded];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    [protocolConnectionEstablisher adjustConnectionsIfNeeded];
 
-    v9 = [(APSUserCourier *)self delegate];
-    [v9 courierIdentityBecameAvailable:self];
+    delegate = [(APSUserCourier *)self delegate];
+    [delegate courierIdentityBecameAvailable:self];
   }
 }
 
@@ -6808,8 +6808,8 @@ LABEL_7:
   if (![(APSUserCourier *)self _isIdentityAvailable])
   {
     [(APSUserCourier *)self _clearCachedSigNonceCert];
-    v8 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    [v8 adjustConnectionsIfNeeded];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    [protocolConnectionEstablisher adjustConnectionsIfNeeded];
   }
 
   [(APSUserCourier *)self setPublicToken:0 fromServer:1, *v9];
@@ -6828,7 +6828,7 @@ LABEL_7:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -6841,7 +6841,7 @@ LABEL_7:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6871,7 +6871,7 @@ LABEL_7:
     }
 
     v9 = 138412290;
-    v10 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -6884,7 +6884,7 @@ LABEL_7:
     }
 
     v9 = 138412290;
-    v10 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6914,7 +6914,7 @@ LABEL_7:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEBUG;
   }
@@ -6927,7 +6927,7 @@ LABEL_7:
     }
 
     v8 = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     v6 = v5;
     v7 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6945,8 +6945,8 @@ LABEL_7:
 
 - (void)logout
 {
-  v3 = [(APSUser *)self->_courierUser name];
-  v4 = [APSSystemUser systemUserWithUserID:v3];
+  name = [(APSUser *)self->_courierUser name];
+  v4 = [APSSystemUser systemUserWithUserID:name];
 
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
@@ -6958,14 +6958,14 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v8 = [(APSUser *)self->_courierUser name];
-    v9 = [(APSEnvironment *)self->_environment name];
+    name2 = [(APSUser *)self->_courierUser name];
+    name3 = [(APSEnvironment *)self->_environment name];
     *buf = 138412802;
-    v43 = self;
+    selfCopy6 = self;
     v44 = 2112;
-    v45 = v8;
+    v45 = name2;
     v46 = 2112;
-    v47 = v9;
+    v47 = name3;
     v10 = v7;
     v11 = OS_LOG_TYPE_DEBUG;
   }
@@ -6977,14 +6977,14 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v8 = [(APSUser *)self->_courierUser name];
-    v9 = [(APSEnvironment *)self->_environment name];
+    name2 = [(APSUser *)self->_courierUser name];
+    name3 = [(APSEnvironment *)self->_environment name];
     *buf = 138412802;
-    v43 = self;
+    selfCopy6 = self;
     v44 = 2112;
-    v45 = v8;
+    v45 = name2;
     v46 = 2112;
-    v47 = v9;
+    v47 = name3;
     v10 = v7;
     v11 = OS_LOG_TYPE_DEFAULT;
   }
@@ -6998,8 +6998,8 @@ LABEL_7:
     [(APSUserCourier *)self _clearTopicsForGuestUser];
   }
 
-  v12 = [(APSUserCourier *)self connectionServers];
-  v13 = [v12 copy];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v13 = [connectionServers copy];
 
   v39 = 0u;
   v40 = 0u;
@@ -7031,11 +7031,11 @@ LABEL_7:
             goto LABEL_20;
           }
 
-          v22 = [v18 name];
+          name4 = [v18 name];
           *buf = 138412546;
-          v43 = self;
+          selfCopy6 = self;
           v44 = 2112;
-          v45 = v22;
+          v45 = name4;
           v23 = v21;
           v24 = OS_LOG_TYPE_DEBUG;
         }
@@ -7047,11 +7047,11 @@ LABEL_7:
             goto LABEL_20;
           }
 
-          v22 = [v18 name];
+          name4 = [v18 name];
           *buf = 138412546;
-          v43 = self;
+          selfCopy6 = self;
           v44 = 2112;
-          v45 = v22;
+          v45 = name4;
           v23 = v21;
           v24 = OS_LOG_TYPE_DEFAULT;
         }
@@ -7105,11 +7105,11 @@ LABEL_20:
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(APSUser *)self->_courierUser name];
+        name5 = [(APSUser *)self->_courierUser name];
         *buf = 138412546;
-        v43 = self;
+        selfCopy6 = self;
         v44 = 2112;
-        v45 = v30;
+        v45 = name5;
         v31 = v29;
         v32 = OS_LOG_TYPE_DEBUG;
 LABEL_34:
@@ -7119,11 +7119,11 @@ LABEL_34:
 
     else if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(APSUser *)self->_courierUser name];
+      name5 = [(APSUser *)self->_courierUser name];
       *buf = 138412546;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2112;
-      v45 = v30;
+      v45 = name5;
       v31 = v29;
       v32 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_34;
@@ -7134,8 +7134,8 @@ LABEL_34:
 
   if (v25)
   {
-    v33 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    [v33 adjustConnectionsIfNeeded];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    [protocolConnectionEstablisher adjustConnectionsIfNeeded];
   }
 }
 
@@ -7153,11 +7153,11 @@ LABEL_34:
       goto LABEL_7;
     }
 
-    v7 = [(APSUser *)self->_courierUser name];
+    name = [(APSUser *)self->_courierUser name];
     *buf = 138412546;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
-    v31 = v7;
+    v31 = name;
     v8 = v6;
     v9 = OS_LOG_TYPE_DEBUG;
   }
@@ -7169,11 +7169,11 @@ LABEL_34:
       goto LABEL_7;
     }
 
-    v7 = [(APSUser *)self->_courierUser name];
+    name = [(APSUser *)self->_courierUser name];
     *buf = 138412546;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2112;
-    v31 = v7;
+    v31 = name;
     v8 = v6;
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -7181,8 +7181,8 @@ LABEL_34:
   _os_log_impl(&_mh_execute_header, v8, v9, "%@: Flushing user %@", buf, 0x16u);
 
 LABEL_7:
-  v10 = [(APSUserCourier *)self connectionServers];
-  v11 = [v10 copy];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v11 = [connectionServers copy];
 
   v26 = 0u;
   v27 = 0u;
@@ -7207,21 +7207,21 @@ LABEL_7:
         }
 
         v18 = *(*(&v24 + 1) + 8 * v17);
-        v19 = [v3[414] courier];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        courier = [v3[414] courier];
+        if (os_log_type_enabled(courier, OS_LOG_TYPE_ERROR))
         {
-          v20 = [v18 connectionPortName];
-          v21 = [v18 processName];
-          v22 = [(APSUser *)self->_courierUser name];
+          connectionPortName = [v18 connectionPortName];
+          processName = [v18 processName];
+          name2 = [(APSUser *)self->_courierUser name];
           *buf = v23;
-          v29 = self;
+          selfCopy3 = self;
           v30 = 2112;
-          v31 = v20;
+          v31 = connectionPortName;
           v32 = 2112;
-          v33 = v21;
+          v33 = processName;
           v34 = 2112;
-          v35 = v22;
-          _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%@: Encountered unexpected connection %@/%@ for user %@", buf, 0x2Au);
+          v35 = name2;
+          _os_log_error_impl(&_mh_execute_header, courier, OS_LOG_TYPE_ERROR, "%@: Encountered unexpected connection %@/%@ for user %@", buf, 0x2Au);
 
           v3 = &fputc_ptr;
         }
@@ -7253,11 +7253,11 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = [(APSUser *)self->_courierUser name];
+    name = [(APSUser *)self->_courierUser name];
     *buf = 138412546;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2112;
-    v23 = v7;
+    v23 = name;
     v8 = v6;
     v9 = OS_LOG_TYPE_DEBUG;
   }
@@ -7269,11 +7269,11 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = [(APSUser *)self->_courierUser name];
+    name = [(APSUser *)self->_courierUser name];
     *buf = 138412546;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2112;
-    v23 = v7;
+    v23 = name;
     v8 = v6;
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -7285,8 +7285,8 @@ LABEL_7:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(APSUserCourier *)self connectionServers];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v11 = [connectionServers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -7297,13 +7297,13 @@ LABEL_7:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(connectionServers);
         }
 
         [*(*(&v15 + 1) + 8 * i) setEnabledTopics:v3 ignoredTopics:v3 opportunisticTopics:v3 nonWakingTopics:v3];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [connectionServers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
@@ -7313,11 +7313,11 @@ LABEL_7:
   [(APSUserCourier *)self _requestToSendFilterOnTopicManager:self->_topicManager change:0];
 }
 
-- (void)_useInteractivePowerAssertionIfNeededForConnectionServer:(id)a3 withReason:(id)a4
+- (void)_useInteractivePowerAssertionIfNeededForConnectionServer:(id)server withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(APSUserCourier *)self isIdle]&& [(APSUserCourier *)self _isInteractivePushDuringSleepEnabledForConnectionServer:v6])
+  serverCopy = server;
+  reasonCopy = reason;
+  if (![(APSUserCourier *)self isIdle]&& [(APSUserCourier *)self _isInteractivePushDuringSleepEnabledForConnectionServer:serverCopy])
   {
     v8 = +[APSLog shouldReduceLogging];
     v9 = +[APSLog courier];
@@ -7327,11 +7327,11 @@ LABEL_7:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412802;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
-        v16 = v7;
+        v16 = reasonCopy;
         v17 = 2112;
-        v18 = v6;
+        v18 = serverCopy;
         v11 = v10;
         v12 = OS_LOG_TYPE_DEBUG;
 LABEL_8:
@@ -7342,11 +7342,11 @@ LABEL_8:
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
-      v16 = v7;
+      v16 = reasonCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = serverCopy;
       v11 = v10;
       v12 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_8;
@@ -7375,10 +7375,10 @@ LABEL_8:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v3 = [v2 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7390,13 +7390,13 @@ LABEL_8:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) isConnected];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -7416,10 +7416,10 @@ LABEL_8:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v3 = [v2 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -7429,7 +7429,7 @@ LABEL_8:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isConnected])
@@ -7439,7 +7439,7 @@ LABEL_8:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -7454,16 +7454,16 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)hasProtocolConnectionInterfaceOfType:(int64_t)a3
+- (BOOL)hasProtocolConnectionInterfaceOfType:(int64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v5 = [v4 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7474,17 +7474,17 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) connectionType] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) connectionType] == type)
         {
           v10 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -7500,16 +7500,16 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)hasConnectedInterfaceOfType:(int64_t)a3
+- (BOOL)hasConnectedInterfaceOfType:(int64_t)type
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v5 = [v4 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7520,18 +7520,18 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 isConnected] && objc_msgSend(v10, "connectionType") == a3)
+        if ([v10 isConnected] && objc_msgSend(v10, "connectionType") == type)
         {
           v11 = 1;
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -7547,36 +7547,36 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)hasConnectedInterfaceForIdentifier:(id)a3
+- (BOOL)hasConnectedInterfaceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  v6 = [protocolConnectionByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6 != 0;
 }
 
-- (id)connectedInterfaceForIdentifier:(id)a3
+- (id)connectedInterfaceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  v6 = [protocolConnectionByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)enumerateAllProtocolConnections:(id)a3
+- (void)enumerateAllProtocolConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v6 = [v5 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -7587,10 +7587,10 @@ LABEL_3:
     {
       if (*v12 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allValues);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v10), &v15);
+      connectionsCopy[2](connectionsCopy, *(*(&v11 + 1) + 8 * v10), &v15);
       if (v15)
       {
         break;
@@ -7598,7 +7598,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -7610,18 +7610,18 @@ LABEL_3:
   }
 }
 
-- (void)enumerateConnectedProtocolConnections:(id)a3
+- (void)enumerateConnectedProtocolConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v6 = [v5 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -7632,13 +7632,13 @@ LABEL_3:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allValues);
       }
 
       v11 = *(*(&v12 + 1) + 8 * v10);
       if ([v11 isConnected])
       {
-        v4[2](v4, v11, &v16);
+        connectionsCopy[2](connectionsCopy, v11, &v16);
         if (v16)
         {
           break;
@@ -7647,7 +7647,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -7659,18 +7659,18 @@ LABEL_3:
   }
 }
 
-- (void)enumerateConnectedProtocolConnectionsOfType:(int64_t)a3 block:(id)a4
+- (void)enumerateConnectedProtocolConnectionsOfType:(int64_t)type block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v18 = 0;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v8 = [v7 allValues];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  allValues = [protocolConnectionByIdentifier allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -7681,15 +7681,15 @@ LABEL_3:
     {
       if (*v15 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(allValues);
       }
 
       v13 = *(*(&v14 + 1) + 8 * v12);
       if ([v13 isConnected])
       {
-        if ([v13 connectionType] == a3)
+        if ([v13 connectionType] == type)
         {
-          v6[2](v6, v13, &v18);
+          blockCopy[2](blockCopy, v13, &v18);
           if (v18)
           {
             break;
@@ -7699,7 +7699,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v14 objects:v19 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -7711,16 +7711,16 @@ LABEL_3:
   }
 }
 
-- (void)beginTrackingProtocolConnection:(id)a3
+- (void)beginTrackingProtocolConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  connectionCopy = connection;
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  identifier = [connectionCopy identifier];
+  v7 = [protocolConnectionByIdentifier objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    [(APSUserCourier *)self _disconnectTokenWithReason:1000 onProtocolConnection:v4];
+    [(APSUserCourier *)self _disconnectTokenWithReason:1000 onProtocolConnection:connectionCopy];
     v8 = +[APSLog shouldReduceLogging];
     v9 = +[APSLog courier];
     v10 = v9;
@@ -7729,9 +7729,9 @@ LABEL_3:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v21 = 138412546;
-        v22 = self;
+        selfCopy4 = self;
         v23 = 2112;
-        v24 = v4;
+        v24 = connectionCopy;
         v11 = "%@ begin tracking protocol connection, clearing previous state %@";
 LABEL_8:
         v14 = v10;
@@ -7750,9 +7750,9 @@ LABEL_14:
     }
 
     v21 = 138412546;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = connectionCopy;
     v11 = "%@ begin tracking protocol connection, clearing previous state %@";
 LABEL_13:
     v14 = v10;
@@ -7771,9 +7771,9 @@ LABEL_13:
     }
 
     v21 = 138412546;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = connectionCopy;
     v11 = "%@ begin tracking protocol connection %@";
     goto LABEL_13;
   }
@@ -7781,81 +7781,81 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = connectionCopy;
     v11 = "%@ begin tracking protocol connection %@";
     goto LABEL_8;
   }
 
 LABEL_15:
 
-  v16 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v17 = [v4 identifier];
-  [v16 setObject:v4 forKeyedSubscript:v17];
+  protocolConnectionByIdentifier2 = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  identifier2 = [connectionCopy identifier];
+  [protocolConnectionByIdentifier2 setObject:connectionCopy forKeyedSubscript:identifier2];
 
   v18 = objc_alloc_init(APSUserCourierInterfaceState);
-  v19 = [(APSUserCourier *)self stateByConnectionIdentifier];
-  v20 = [v4 identifier];
-  [v19 setObject:v18 forKeyedSubscript:v20];
+  stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+  identifier3 = [connectionCopy identifier];
+  [stateByConnectionIdentifier setObject:v18 forKeyedSubscript:identifier3];
 
   [(APSUserCourier *)self logStateWithReason:0];
-  [v4 addDataListener:self];
-  [v4 addStateListener:self];
-  [(APSUserCourier *)self _sendPresenceMessageOnProtocolConnection:v4 serverTime:0];
+  [connectionCopy addDataListener:self];
+  [connectionCopy addStateListener:self];
+  [(APSUserCourier *)self _sendPresenceMessageOnProtocolConnection:connectionCopy serverTime:0];
   [(APSUserCourier *)self _processShouldUseInternetChangeIfNecessary];
 }
 
-- (id)stateForProtocolConnection:(id)a3
+- (id)stateForProtocolConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self stateByConnectionIdentifier];
-  v6 = [v4 identifier];
+  connectionCopy = connection;
+  stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+  identifier = [connectionCopy identifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [stateByConnectionIdentifier objectForKeyedSubscript:identifier];
 
   return v7;
 }
 
-- (void)didRecoverFromSuspensionOnProtocolConnection:(id)a3
+- (void)didRecoverFromSuspensionOnProtocolConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   [(APSUserCourier *)self _sendQueuedOutgoingMessages];
   [(APSUserCourier *)self _adjustIsConnectedToService];
-  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v4 withReason:5];
+  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:connectionCopy withReason:5];
 }
 
-- (void)didSuspendProtocolConnection:(id)a3
+- (void)didSuspendProtocolConnection:(id)connection
 {
-  v8 = a3;
-  if (![v8 connectionType] && (objc_msgSend(v8, "isSuspended") & 1) == 0)
+  connectionCopy = connection;
+  if (![connectionCopy connectionType] && (objc_msgSend(connectionCopy, "isSuspended") & 1) == 0)
   {
     outgoingMessageQueue = self->_outgoingMessageQueue;
-    v5 = [v8 identifier];
-    [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionClosedOnInterface:v5];
+    identifier = [connectionCopy identifier];
+    [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionClosedOnInterface:identifier];
 
     tokenRequestQueue = self->_tokenRequestQueue;
-    v7 = [v8 identifier];
-    [(APSOutgoingQueue *)tokenRequestQueue handleConnectionClosedOnInterface:v7];
+    identifier2 = [connectionCopy identifier];
+    [(APSOutgoingQueue *)tokenRequestQueue handleConnectionClosedOnInterface:identifier2];
   }
 }
 
-- (void)outgoingDataAboutToSendForProtocolConnection:(id)a3
+- (void)outgoingDataAboutToSendForProtocolConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[APSLog courier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100108FA8();
   }
 
-  v6 = [(APSUserCourier *)self locallyDisabledFilterOptimization];
-  if (v4 && (v6 & 1) == 0)
+  locallyDisabledFilterOptimization = [(APSUserCourier *)self locallyDisabledFilterOptimization];
+  if (connectionCopy && (locallyDisabledFilterOptimization & 1) == 0)
   {
-    v7 = [(APSUserCourier *)self hasOutOfDateFilterOnProtocolConnection:v4];
-    v8 = [(APSUserCourier *)self filterVersionStateMachine];
-    v9 = [v4 identifier];
-    if (([v8 everSentFilterOn:v9] & 1) == 0)
+    v7 = [(APSUserCourier *)self hasOutOfDateFilterOnProtocolConnection:connectionCopy];
+    filterVersionStateMachine = [(APSUserCourier *)self filterVersionStateMachine];
+    identifier = [connectionCopy identifier];
+    if (([filterVersionStateMachine everSentFilterOn:identifier] & 1) == 0)
     {
 
 LABEL_18:
@@ -7863,7 +7863,7 @@ LABEL_18:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v37 = self;
+      selfCopy = self;
       obj = [(NSMutableDictionary *)self->_proxyClients allValues];
       v18 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
       if (!v18)
@@ -7885,20 +7885,20 @@ LABEL_18:
           }
 
           v23 = *(*(&v39 + 1) + 8 * i);
-          v24 = [v23 filterVersionStateMachine];
-          v25 = [v4 identifier];
-          v26 = [v24 isOutOfDateOn:v25];
+          filterVersionStateMachine2 = [v23 filterVersionStateMachine];
+          identifier2 = [connectionCopy identifier];
+          v26 = [filterVersionStateMachine2 isOutOfDateOn:identifier2];
 
-          v27 = [v23 filterVersionStateMachine];
-          v28 = [v4 identifier];
-          if (([v27 everSentFilterOn:v28] & 1) == 0)
+          filterVersionStateMachine3 = [v23 filterVersionStateMachine];
+          identifier3 = [connectionCopy identifier];
+          if (([filterVersionStateMachine3 everSentFilterOn:identifier3] & 1) == 0)
           {
 
             continue;
           }
 
-          v29 = [v4 identifier];
-          v30 = [v23 isConnectedOnInterface:v29];
+          identifier4 = [connectionCopy identifier];
+          v30 = [v23 isConnectedOnInterface:identifier4];
 
           if ((v26 & v30) != 1)
           {
@@ -7913,11 +7913,11 @@ LABEL_18:
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
             {
               *buf = v36;
-              v44 = v37;
+              selfCopy3 = selfCopy;
               v45 = 2112;
               v46 = v23;
               v47 = 2114;
-              v48 = v4;
+              v48 = connectionCopy;
               v34 = v33;
               v35 = OS_LOG_TYPE_DEBUG;
 LABEL_31:
@@ -7928,17 +7928,17 @@ LABEL_31:
           else if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v36;
-            v44 = v37;
+            selfCopy3 = selfCopy;
             v45 = 2112;
             v46 = v23;
             v47 = 2114;
-            v48 = v4;
+            v48 = connectionCopy;
             v34 = v33;
             v35 = OS_LOG_TYPE_DEFAULT;
             goto LABEL_31;
           }
 
-          [(APSUserCourier *)v37 _sendClientFilter:v23 onProtocolConnection:v4];
+          [(APSUserCourier *)selfCopy _sendClientFilter:v23 onProtocolConnection:connectionCopy];
         }
 
         v20 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
@@ -7951,10 +7951,10 @@ LABEL_35:
       }
     }
 
-    v10 = [(APSUserCourier *)self stateForProtocolConnection:v4];
-    v11 = [v10 userState];
+    v10 = [(APSUserCourier *)self stateForProtocolConnection:connectionCopy];
+    userState = [v10 userState];
 
-    if (v11)
+    if (userState)
     {
       v12 = 0;
     }
@@ -7977,9 +7977,9 @@ LABEL_35:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2114;
-        v46 = v4;
+        v46 = connectionCopy;
         v16 = v15;
         v17 = OS_LOG_TYPE_DEBUG;
 LABEL_16:
@@ -7990,25 +7990,25 @@ LABEL_16:
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v44 = self;
+      selfCopy3 = self;
       v45 = 2114;
-      v46 = v4;
+      v46 = connectionCopy;
       v16 = v15;
       v17 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_16;
     }
 
-    [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v4 withReason:4];
+    [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:connectionCopy withReason:4];
     goto LABEL_18;
   }
 
 LABEL_36:
 }
 
-- (BOOL)shouldHandleIncomingPush:(id)a3 forProtocolConnection:(id)a4
+- (BOOL)shouldHandleIncomingPush:(id)push forProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  pushCopy = push;
+  connectionCopy = connection;
   v41[0] = @"APSProtocolToken";
   v41[1] = @"APSProtocolPubSubToken";
   v41[2] = @"APSProtocolPubSubUpdateToken";
@@ -8031,7 +8031,7 @@ LABEL_36:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 objectForKey:*(*(&v36 + 1) + 8 * i)];
+        v13 = [pushCopy objectForKey:*(*(&v36 + 1) + 8 * i)];
         if (v13)
         {
           v14 = v13;
@@ -8052,7 +8052,7 @@ LABEL_36:
   v14 = 0;
 LABEL_11:
 
-  v15 = [v6 objectForKey:@"APSProtocolBaseToken"];
+  v15 = [pushCopy objectForKey:@"APSProtocolBaseToken"];
   v16 = v15;
   if (v15)
   {
@@ -8065,10 +8065,10 @@ LABEL_11:
   }
 
   v18 = v17;
-  v19 = [(APSUserCourier *)self _getCurrentTokens];
-  v20 = v19;
-  v34 = v7;
-  if (v16 && ![v19 containsObject:{v16, v7}])
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
+  v20 = _getCurrentTokens;
+  v34 = connectionCopy;
+  if (v16 && ![_getCurrentTokens containsObject:{v16, connectionCopy}])
   {
     goto LABEL_19;
   }
@@ -8089,7 +8089,7 @@ LABEL_11:
   else
   {
 LABEL_19:
-    v22 = [(APSUserCourier *)self _findConnectedClientWithToken:v18 onProtocolConnection:v7, v34];
+    v22 = [(APSUserCourier *)self _findConnectedClientWithToken:v18 onProtocolConnection:connectionCopy, v34];
     v23 = v22;
     if (v22)
     {
@@ -8133,9 +8133,9 @@ LABEL_28:
   }
 
   tokenStore = self->_tokenStore;
-  v29 = [(APSUserCourier *)self courierUser];
+  courierUser = [(APSUserCourier *)self courierUser];
   v35 = 0;
-  v25 = [(APSTokenStore *)tokenStore isMatchingTokenInKeychain:v14 user:v29 error:&v35];
+  v25 = [(APSTokenStore *)tokenStore isMatchingTokenInKeychain:v14 user:courierUser error:&v35];
   v26 = v35;
 
   v27 = 0;
@@ -8149,7 +8149,7 @@ LABEL_30:
   v30 = 1;
   if ((v27 & 1) == 0 && (v25 & 1) == 0)
   {
-    v31 = [v6 objectForKey:@"APSProtocolTopicHash"];
+    v31 = [pushCopy objectForKey:@"APSProtocolTopicHash"];
     v32 = +[APSLog courier];
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -8165,10 +8165,10 @@ LABEL_35:
   return v30;
 }
 
-- (void)protocolConnection:(id)a3 receivedFilterUpdateWithParameters:(id)a4
+- (void)protocolConnection:(id)connection receivedFilterUpdateWithParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  parametersCopy = parameters;
   if ([(APSUserCourier *)self locallyDisabledFilterOptimization])
   {
     v8 = +[APSLog courier];
@@ -8180,20 +8180,20 @@ LABEL_35:
     goto LABEL_50;
   }
 
-  if ([(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:v6])
+  if ([(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:connectionCopy])
   {
-    v8 = [v7 objectForKeyedSubscript:@"APSProtocolFilterUpdateTokenKey"];
-    v9 = [(APSUserCourier *)self _getCurrentTokens];
-    v10 = v9;
-    v44 = v9;
-    if (v8 && ([v9 containsObject:v8] & 1) != 0)
+    v8 = [parametersCopy objectForKeyedSubscript:@"APSProtocolFilterUpdateTokenKey"];
+    _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
+    v10 = _getCurrentTokens;
+    v44 = _getCurrentTokens;
+    if (v8 && ([_getCurrentTokens containsObject:v8] & 1) != 0)
     {
-      v11 = 0;
+      preferredProtocolConnection = 0;
     }
 
     else
     {
-      v12 = [(APSUserCourier *)self _findConnectedClientWithToken:v8 onProtocolConnection:v6];
+      v12 = [(APSUserCourier *)self _findConnectedClientWithToken:v8 onProtocolConnection:connectionCopy];
       if (!v12)
       {
         v12 = [(APSUserCourier *)self _findClientWithToken:v8];
@@ -8201,7 +8201,7 @@ LABEL_35:
         {
           v34 = +[APSLog shouldReduceLogging];
           v35 = +[APSLog courier];
-          v11 = v35;
+          preferredProtocolConnection = v35;
           if (v34)
           {
             if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -8211,14 +8211,14 @@ LABEL_35:
 
             proxyClients = self->_proxyClients;
             *buf = 138413058;
-            v46 = self;
+            selfCopy2 = self;
             v47 = 2112;
             v48 = v8;
             v49 = 2112;
             v50 = v10;
             v51 = 2112;
             v52 = proxyClients;
-            p_super = &v11->super;
+            p_super = &preferredProtocolConnection->super;
             v38 = OS_LOG_TYPE_DEBUG;
           }
 
@@ -8231,14 +8231,14 @@ LABEL_35:
 
             v43 = self->_proxyClients;
             *buf = 138413058;
-            v46 = self;
+            selfCopy2 = self;
             v47 = 2112;
             v48 = v8;
             v49 = 2112;
             v50 = v10;
             v51 = 2112;
             v52 = v43;
-            p_super = &v11->super;
+            p_super = &preferredProtocolConnection->super;
             v38 = OS_LOG_TYPE_DEFAULT;
           }
 
@@ -8247,14 +8247,14 @@ LABEL_35:
         }
       }
 
-      v11 = v12;
+      preferredProtocolConnection = v12;
     }
 
-    v13 = [v7 objectForKey:@"APSProtocolFilterUpdateVersionKey"];
-    v14 = [v13 integerValue];
+    v13 = [parametersCopy objectForKey:@"APSProtocolFilterUpdateVersionKey"];
+    integerValue = [v13 integerValue];
 
-    v15 = [v7 objectForKey:@"APSProtocolFilterUpdateStatusKey"];
-    v16 = [v15 integerValue];
+    v15 = [parametersCopy objectForKey:@"APSProtocolFilterUpdateStatusKey"];
+    integerValue2 = [v15 integerValue];
 
     v17 = +[APSLog shouldReduceLogging];
     v18 = +[APSLog courier];
@@ -8267,13 +8267,13 @@ LABEL_35:
       }
 
       *buf = 138413058;
-      v46 = v6;
+      selfCopy2 = connectionCopy;
       v47 = 2112;
       v48 = v8;
       v49 = 2048;
-      v50 = v14;
+      v50 = integerValue;
       v51 = 2048;
-      v52 = v16;
+      v52 = integerValue2;
       v20 = v19;
       v21 = OS_LOG_TYPE_DEBUG;
     }
@@ -8286,13 +8286,13 @@ LABEL_35:
       }
 
       *buf = 138413058;
-      v46 = v6;
+      selfCopy2 = connectionCopy;
       v47 = 2112;
       v48 = v8;
       v49 = 2048;
-      v50 = v14;
+      v50 = integerValue;
       v51 = 2048;
-      v52 = v16;
+      v52 = integerValue2;
       v20 = v19;
       v21 = OS_LOG_TYPE_DEFAULT;
     }
@@ -8303,9 +8303,9 @@ LABEL_19:
     v22 = +[APSLog shouldReduceLogging];
     v23 = +[APSLog courier];
     v24 = v23;
-    if (v16 != 2)
+    if (integerValue2 != 2)
     {
-      if (v16 == 1)
+      if (integerValue2 == 1)
       {
         if (v22)
         {
@@ -8332,15 +8332,15 @@ LABEL_32:
           }
         }
 
-        if (!v11)
+        if (!preferredProtocolConnection)
         {
-          v11 = [(APSUserCourier *)self stateForProtocolConnection:v6];
-          [(APSUserCourier *)v11 setFilterMode:2];
+          preferredProtocolConnection = [(APSUserCourier *)self stateForProtocolConnection:connectionCopy];
+          [(APSUserCourier *)preferredProtocolConnection setFilterMode:2];
           goto LABEL_49;
         }
 
-        v31 = [(APSUserCourier *)v6 identifier];
-        [(APSUserCourier *)v11 setFilterMode:2 onInterface:v31];
+        identifier = [(APSUserCourier *)connectionCopy identifier];
+        [(APSUserCourier *)preferredProtocolConnection setFilterMode:2 onInterface:identifier];
 LABEL_35:
 
 LABEL_49:
@@ -8352,7 +8352,7 @@ LABEL_49:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134217984;
-          v46 = v16;
+          selfCopy2 = integerValue2;
           v29 = v24;
           v30 = OS_LOG_TYPE_DEBUG;
 LABEL_44:
@@ -8363,7 +8363,7 @@ LABEL_44:
       else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v46 = v16;
+        selfCopy2 = integerValue2;
         v29 = v24;
         v30 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_44;
@@ -8399,16 +8399,16 @@ LABEL_44:
     _os_log_impl(&_mh_execute_header, v27, v28, "Received filter update resend filter request from server - resending filters.", buf, 2u);
 LABEL_39:
 
-    if (v11)
+    if (preferredProtocolConnection)
     {
-      v32 = [(APSUserCourier *)v6 identifier];
-      v33 = [(APSUserCourier *)v11 stateOnInterface:v32];
+      identifier2 = [(APSUserCourier *)connectionCopy identifier];
+      v33 = [(APSUserCourier *)preferredProtocolConnection stateOnInterface:identifier2];
 
       if (v33 != 2)
       {
         v39 = +[APSLog shouldReduceLogging];
         v40 = +[APSLog courier];
-        v31 = v40;
+        identifier = v40;
         if (v39)
         {
           v10 = v44;
@@ -8418,8 +8418,8 @@ LABEL_39:
           }
 
           *buf = 138412290;
-          v46 = v11;
-          v41 = v31;
+          selfCopy2 = preferredProtocolConnection;
+          v41 = identifier;
           v42 = OS_LOG_TYPE_DEBUG;
         }
 
@@ -8432,8 +8432,8 @@ LABEL_39:
           }
 
           *buf = 138412290;
-          v46 = v11;
-          v41 = v31;
+          selfCopy2 = preferredProtocolConnection;
+          v41 = identifier;
           v42 = OS_LOG_TYPE_DEFAULT;
         }
 
@@ -8441,13 +8441,13 @@ LABEL_39:
         goto LABEL_35;
       }
 
-      [(APSUserCourier *)self _sendClientFilter:v11 onProtocolConnection:v6];
+      [(APSUserCourier *)self _sendClientFilter:preferredProtocolConnection onProtocolConnection:connectionCopy];
     }
 
     else
     {
-      v11 = [(APSUserCourier *)self preferredProtocolConnection];
-      [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v11 withReason:6];
+      preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+      [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:preferredProtocolConnection withReason:6];
     }
 
 LABEL_48:
@@ -8464,19 +8464,19 @@ LABEL_48:
 LABEL_50:
 }
 
-- (void)receivedFilterResponseWithParameters:(id)a3 onProtocolConnection:(id)a4
+- (void)receivedFilterResponseWithParameters:(id)parameters onProtocolConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"APSProtocolFilterResponseTokenKey"];
-  v9 = [v7 objectForKey:@"APSProtocolFilterResponseVersionKey"];
-  v71 = [v9 integerValue];
+  connectionCopy = connection;
+  parametersCopy = parameters;
+  v8 = [parametersCopy objectForKeyedSubscript:@"APSProtocolFilterResponseTokenKey"];
+  v9 = [parametersCopy objectForKey:@"APSProtocolFilterResponseVersionKey"];
+  integerValue = [v9 integerValue];
 
-  v10 = [v7 objectForKey:@"APSProtocolFilterResponseStatusKey"];
+  v10 = [parametersCopy objectForKey:@"APSProtocolFilterResponseStatusKey"];
 
-  v11 = [v10 integerValue];
-  v12 = [(APSUserCourier *)self debugOverrides];
-  v13 = [v12 overrideFilterDisableResponseForConnectionType:{objc_msgSend(v6, "connectionType")}];
+  integerValue2 = [v10 integerValue];
+  debugOverrides = [(APSUserCourier *)self debugOverrides];
+  v13 = [debugOverrides overrideFilterDisableResponseForConnectionType:{objc_msgSend(connectionCopy, "connectionType")}];
 
   v14 = +[APSLog shouldReduceLogging];
   v15 = +[APSLog courier];
@@ -8488,15 +8488,15 @@ LABEL_50:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413314;
-        v73 = self;
+        selfCopy6 = self;
         v74 = 2112;
-        v75 = v6;
+        v75 = connectionCopy;
         v76 = 2112;
         v77 = v8;
         v78 = 2048;
-        v79 = v71;
+        v79 = integerValue;
         v80 = 2048;
-        v81 = v11;
+        v81 = integerValue2;
         v19 = v16;
         v20 = OS_LOG_TYPE_DEBUG;
 LABEL_14:
@@ -8507,15 +8507,15 @@ LABEL_14:
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v73 = self;
+      selfCopy6 = self;
       v74 = 2112;
-      v75 = v6;
+      v75 = connectionCopy;
       v76 = 2112;
       v77 = v8;
       v78 = 2048;
-      v79 = v71;
+      v79 = integerValue;
       v80 = 2048;
-      v81 = v11;
+      v81 = integerValue2;
       v19 = v16;
       v20 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_14;
@@ -8529,17 +8529,17 @@ LABEL_14:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413570;
-      v73 = self;
+      selfCopy6 = self;
       v74 = 2112;
-      v75 = v6;
+      v75 = connectionCopy;
       v76 = 2112;
       v77 = v8;
       v78 = 2048;
-      v79 = v71;
+      v79 = integerValue;
       v80 = 2048;
-      v81 = v11;
+      v81 = integerValue2;
       v82 = 2048;
-      v83 = [v13 integerValue];
+      integerValue3 = [v13 integerValue];
       v17 = v16;
       v18 = OS_LOG_TYPE_DEBUG;
 LABEL_10:
@@ -8550,59 +8550,59 @@ LABEL_10:
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413570;
-    v73 = self;
+    selfCopy6 = self;
     v74 = 2112;
-    v75 = v6;
+    v75 = connectionCopy;
     v76 = 2112;
     v77 = v8;
     v78 = 2048;
-    v79 = v71;
+    v79 = integerValue;
     v80 = 2048;
-    v81 = v11;
+    v81 = integerValue2;
     v82 = 2048;
-    v83 = [v13 integerValue];
+    integerValue3 = [v13 integerValue];
     v17 = v16;
     v18 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_10;
   }
 
-  v11 = [v13 integerValue];
+  integerValue2 = [v13 integerValue];
 LABEL_16:
-  v21 = [(APSUserCourier *)self _getCurrentTokens];
-  v22 = v21;
-  if (v8 && ([v21 containsObject:v8] & 1) != 0)
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
+  v22 = _getCurrentTokens;
+  if (v8 && ([_getCurrentTokens containsObject:v8] & 1) != 0)
   {
     v23 = v22;
     v24 = v8;
     v25 = v13;
-    v26 = [(APSUserCourier *)self filterVersionStateMachine];
+    filterVersionStateMachine = [(APSUserCourier *)self filterVersionStateMachine];
     v27 = 0;
     v70 = 1;
     goto LABEL_22;
   }
 
-  v28 = [(APSUserCourier *)self _findConnectedClientWithToken:v8 onProtocolConnection:v6];
+  v28 = [(APSUserCourier *)self _findConnectedClientWithToken:v8 onProtocolConnection:connectionCopy];
   if (v28 || ([(APSUserCourier *)self _findClientWithToken:v8], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v23 = v22;
     v24 = v8;
     v25 = v13;
     v27 = v28;
-    v26 = [v28 filterVersionStateMachine];
+    filterVersionStateMachine = [v28 filterVersionStateMachine];
     v70 = 0;
 LABEL_22:
-    v29 = v6;
-    v30 = [v6 identifier];
-    [v26 noteAckedWithVersion:v71 on:v30];
+    v29 = connectionCopy;
+    identifier = [connectionCopy identifier];
+    [filterVersionStateMachine noteAckedWithVersion:integerValue on:identifier];
 
-    if (v11 <= 2)
+    if (integerValue2 <= 2)
     {
       v13 = v25;
-      if (v11 != 1)
+      if (integerValue2 != 1)
       {
         v8 = v24;
-        v6 = v29;
-        if (v11 == 2)
+        connectionCopy = v29;
+        if (integerValue2 == 2)
         {
           v31 = +[APSLog shouldReduceLogging];
           v32 = +[APSLog courier];
@@ -8651,7 +8651,7 @@ LABEL_34:
           }
 
           *buf = 134217984;
-          v73 = v11;
+          selfCopy6 = integerValue2;
           v35 = "Received unknown status from server (%ld).";
           p_super = &v33->super;
           v37 = OS_LOG_TYPE_DEBUG;
@@ -8665,7 +8665,7 @@ LABEL_34:
           }
 
           *buf = 134217984;
-          v73 = v11;
+          selfCopy6 = integerValue2;
           v35 = "Received unknown status from server (%ld).";
           p_super = &v33->super;
           v37 = OS_LOG_TYPE_DEFAULT;
@@ -8681,7 +8681,7 @@ LABEL_52:
       v47 = +[APSLog courier];
       v48 = v47;
       v8 = v24;
-      v6 = v29;
+      connectionCopy = v29;
       if (v46)
       {
         v22 = v23;
@@ -8712,7 +8712,7 @@ LABEL_55:
       if (v70)
       {
         v62 = [(APSUserCourier *)self stateForProtocolConnection:v29];
-        v63 = v62;
+        identifier2 = v62;
         v64 = 1;
 LABEL_63:
         [v62 setFilterMode:v64];
@@ -8721,24 +8721,24 @@ LABEL_67:
         goto LABEL_83;
       }
 
-      v63 = [v29 identifier];
+      identifier2 = [v29 identifier];
       v65 = v34;
       v66 = 1;
       goto LABEL_66;
     }
 
     v13 = v25;
-    if (v11 != 3)
+    if (integerValue2 != 3)
     {
       v8 = v24;
-      v6 = v29;
-      if (v11 != 4)
+      connectionCopy = v29;
+      if (integerValue2 != 4)
       {
         goto LABEL_34;
       }
 
-      v38 = [(APSUserCourier *)self filterVersionStateMachine];
-      v33 = [v38 noteInvalidWithVersion:v71];
+      filterVersionStateMachine2 = [(APSUserCourier *)self filterVersionStateMachine];
+      v33 = [filterVersionStateMachine2 noteInvalidWithVersion:integerValue];
 
       v39 = +[APSLog shouldReduceLogging];
       v40 = +[APSLog courier];
@@ -8752,7 +8752,7 @@ LABEL_67:
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v73 = v33;
+            selfCopy6 = v33;
             v42 = v41;
             v43 = OS_LOG_TYPE_DEBUG;
 LABEL_73:
@@ -8763,13 +8763,13 @@ LABEL_73:
         else if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v73 = v33;
+          selfCopy6 = v33;
           v42 = v41;
           v43 = OS_LOG_TYPE_DEFAULT;
           goto LABEL_73;
         }
 
-        [v6 disconnectWithReason:23];
+        [connectionCopy disconnectWithReason:23];
         goto LABEL_82;
       }
 
@@ -8800,7 +8800,7 @@ LABEL_80:
     v52 = +[APSLog courier];
     v53 = v52;
     v8 = v24;
-    v6 = v29;
+    connectionCopy = v29;
     if (v51)
     {
       v22 = v23;
@@ -8831,16 +8831,16 @@ LABEL_60:
     if (v70)
     {
       v62 = [(APSUserCourier *)self stateForProtocolConnection:v29];
-      v63 = v62;
+      identifier2 = v62;
       v64 = 2;
       goto LABEL_63;
     }
 
-    v63 = [v29 identifier];
+    identifier2 = [v29 identifier];
     v65 = v34;
     v66 = 2;
 LABEL_66:
-    [v65 setFilterMode:v66 onInterface:v63];
+    [v65 setFilterMode:v66 onInterface:identifier2];
     goto LABEL_67;
   }
 
@@ -8856,7 +8856,7 @@ LABEL_66:
 
     proxyClients = self->_proxyClients;
     *buf = 138413058;
-    v73 = self;
+    selfCopy6 = self;
     v74 = 2112;
     v75 = v8;
     v76 = 2112;
@@ -8874,7 +8874,7 @@ LABEL_77:
   {
     v58 = self->_proxyClients;
     *buf = 138413058;
-    v73 = self;
+    selfCopy6 = self;
     v74 = 2112;
     v75 = v8;
     v76 = 2112;
@@ -8889,24 +8889,24 @@ LABEL_77:
 LABEL_83:
 }
 
-- (BOOL)hasOutOfDateFilterOnProtocolConnection:(id)a3
+- (BOOL)hasOutOfDateFilterOnProtocolConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self locallyDisabledFilterOptimization];
+  connectionCopy = connection;
+  locallyDisabledFilterOptimization = [(APSUserCourier *)self locallyDisabledFilterOptimization];
   v6 = 0;
-  if (v4 && (v5 & 1) == 0)
+  if (connectionCopy && (locallyDisabledFilterOptimization & 1) == 0)
   {
-    v7 = [(APSUserCourier *)self filterVersionStateMachine];
-    v8 = [v4 identifier];
-    v6 = [v7 isOutOfDateOn:v8];
+    filterVersionStateMachine = [(APSUserCourier *)self filterVersionStateMachine];
+    identifier = [connectionCopy identifier];
+    v6 = [filterVersionStateMachine isOutOfDateOn:identifier];
   }
 
   return v6;
 }
 
-- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)a3
+- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if ([(APSUserCourier *)self locallyDisabledFilterOptimization])
   {
     v5 = 0;
@@ -8914,8 +8914,8 @@ LABEL_83:
 
   else
   {
-    v6 = [(APSUserCourier *)self stateForProtocolConnection:v4];
-    v7 = [v6 filterMode];
+    v6 = [(APSUserCourier *)self stateForProtocolConnection:connectionCopy];
+    filterMode = [v6 filterMode];
 
     v13 = 0;
     v14 = &v13;
@@ -8925,11 +8925,11 @@ LABEL_83:
     v9[1] = 3221225472;
     v9[2] = sub_100045E14;
     v9[3] = &unk_100187290;
-    v11 = self;
+    selfCopy = self;
     v12 = &v13;
-    v10 = v4;
+    v10 = connectionCopy;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v9];
-    if (v7 == 2)
+    if (filterMode == 2)
     {
       v5 = 0;
     }
@@ -8945,14 +8945,14 @@ LABEL_83:
   return v5 & 1;
 }
 
-- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)a3 forClient:(id)a4
+- (BOOL)expectsResponseForFilterMessageOnProtocolConnection:(id)connection forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:v6])
+  connectionCopy = connection;
+  clientCopy = client;
+  if ([(APSUserCourier *)self expectsResponseForFilterMessageOnProtocolConnection:connectionCopy])
   {
-    v8 = [v6 identifier];
-    v9 = [v7 filterModeOnInterface:v8];
+    identifier = [connectionCopy identifier];
+    v9 = [clientCopy filterModeOnInterface:identifier];
 
     v16 = 0;
     v17 = &v16;
@@ -8962,9 +8962,9 @@ LABEL_83:
     v12[1] = 3221225472;
     v12[2] = sub_100046050;
     v12[3] = &unk_100187290;
-    v13 = v6;
+    v13 = connectionCopy;
     v15 = &v16;
-    v14 = v7;
+    v14 = clientCopy;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v12];
     if (v9 == 2)
     {
@@ -8987,10 +8987,10 @@ LABEL_83:
   return v10 & 1;
 }
 
-- (void)updateForReceivedConfig:(id)a3 finishedProcessingConfigBlock:(id)a4
+- (void)updateForReceivedConfig:(id)config finishedProcessingConfigBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  blockCopy = block;
   v8 = +[APSLog shouldReduceLogging];
   v9 = +[APSLog courier];
   v10 = v9;
@@ -9002,7 +9002,7 @@ LABEL_83:
     }
 
     *buf = 138412290;
-    v43 = self;
+    selfCopy6 = self;
     v11 = v10;
     v12 = OS_LOG_TYPE_DEBUG;
   }
@@ -9015,7 +9015,7 @@ LABEL_83:
     }
 
     *buf = 138412290;
-    v43 = self;
+    selfCopy6 = self;
     v11 = v10;
     v12 = OS_LOG_TYPE_DEFAULT;
   }
@@ -9023,15 +9023,15 @@ LABEL_83:
   _os_log_impl(&_mh_execute_header, v11, v12, "%@ user courier processing updated APSConfig", buf, 0xCu);
 LABEL_7:
 
-  v13 = [v6 powerOptimizationsForExpensiveNetworkingDisabled];
-  v14 = v13;
-  if (!v13)
+  powerOptimizationsForExpensiveNetworkingDisabled = [configCopy powerOptimizationsForExpensiveNetworkingDisabled];
+  v14 = powerOptimizationsForExpensiveNetworkingDisabled;
+  if (!powerOptimizationsForExpensiveNetworkingDisabled)
   {
     goto LABEL_19;
   }
 
-  v15 = [v13 BOOLValue];
-  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue setPowerOptimizationsForExpensiveNetworkingDisabled:v15];
+  bOOLValue = [powerOptimizationsForExpensiveNetworkingDisabled BOOLValue];
+  [(APSOutgoingMessageQueue *)self->_outgoingMessageQueue setPowerOptimizationsForExpensiveNetworkingDisabled:bOOLValue];
   v16 = +[APSLog shouldReduceLogging];
   v17 = +[APSLog courier];
   v18 = v17;
@@ -9040,13 +9040,13 @@ LABEL_7:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v19 = @"NO";
-      if (v15)
+      if (bOOLValue)
       {
         v19 = @"YES";
       }
 
       *buf = 138412546;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2112;
       v45 = v19;
       v20 = v18;
@@ -9059,13 +9059,13 @@ LABEL_17:
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v22 = @"NO";
-    if (v15)
+    if (bOOLValue)
     {
       v22 = @"YES";
     }
 
     *buf = 138412546;
-    v43 = self;
+    selfCopy6 = self;
     v44 = 2112;
     v45 = v22;
     v20 = v18;
@@ -9074,18 +9074,18 @@ LABEL_17:
   }
 
 LABEL_19:
-  v23 = [v6 filterOptimizationEnabled];
-  v24 = v23;
+  filterOptimizationEnabled = [configCopy filterOptimizationEnabled];
+  v24 = filterOptimizationEnabled;
   v25 = "0 && impossible pad state" + 6;
-  if (!v23)
+  if (!filterOptimizationEnabled)
   {
     goto LABEL_33;
   }
 
-  v26 = [v23 BOOLValue];
-  v27 = [(APSUserCourier *)self shouldOnlySendFilterOnPreferredInterface];
-  self->_serverDisabledFilterOptimization = v26 ^ 1;
-  v28 = [(APSUserCourier *)self shouldOnlySendFilterOnPreferredInterface];
+  bOOLValue2 = [filterOptimizationEnabled BOOLValue];
+  shouldOnlySendFilterOnPreferredInterface = [(APSUserCourier *)self shouldOnlySendFilterOnPreferredInterface];
+  self->_serverDisabledFilterOptimization = bOOLValue2 ^ 1;
+  shouldOnlySendFilterOnPreferredInterface2 = [(APSUserCourier *)self shouldOnlySendFilterOnPreferredInterface];
   v29 = +[APSLog shouldReduceLogging];
   v30 = +[APSLog courier];
   v31 = v30;
@@ -9094,13 +9094,13 @@ LABEL_19:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
       v32 = @"NO";
-      if (v26)
+      if (bOOLValue2)
       {
         v32 = @"YES";
       }
 
       *buf = 138412546;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2112;
       v45 = v32;
       v33 = v31;
@@ -9113,13 +9113,13 @@ LABEL_29:
   else if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v35 = @"NO";
-    if (v26)
+    if (bOOLValue2)
     {
       v35 = @"YES";
     }
 
     *buf = 138412546;
-    v43 = self;
+    selfCopy6 = self;
     v44 = 2112;
     v45 = v35;
     v33 = v31;
@@ -9127,7 +9127,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v36 = v28 | ~v27;
+  v36 = shouldOnlySendFilterOnPreferredInterface2 | ~shouldOnlySendFilterOnPreferredInterface;
   v25 = "impossible pad state";
   if ((v36 & 1) == 0 && [(APSUserCourier *)self countOfConnectedInterface]>= 2)
   {
@@ -9140,20 +9140,20 @@ LABEL_29:
   }
 
 LABEL_33:
-  v37 = [(APSUserCourier *)self clientIdentityProvider];
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = *(v25 + 290);
   v39[2] = sub_10004662C;
   v39[3] = &unk_1001872B8;
   v39[4] = self;
-  v40 = v7;
-  v38 = v7;
-  [v37 noteServerBagUpdate:v6 finishedProcessingServerBagUpdateBlock:v39];
+  v40 = blockCopy;
+  v38 = blockCopy;
+  [clientIdentityProvider noteServerBagUpdate:configCopy finishedProcessingServerBagUpdateBlock:v39];
 }
 
-- (void)shouldConnectToCourier:(id)a3
+- (void)shouldConnectToCourier:(id)courier
 {
-  v4 = a3;
+  courierCopy = courier;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -9162,7 +9162,7 @@ LABEL_33:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy2 = self;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -9173,26 +9173,26 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy2 = self;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
-  v10 = [(APSUserCourier *)self clientIdentityProvider];
-  v14 = v4;
-  v11 = v4;
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+  v14 = courierCopy;
+  v11 = courierCopy;
   v12 = [(APSUserCourier *)self publicToken:_NSConcreteStackBlock];
-  [v10 checkIdentityIsAvailable:&v13 hasExistingToken:v12 != 0];
+  [clientIdentityProvider checkIdentityIsAvailable:&v13 hasExistingToken:v12 != 0];
 }
 
-- (void)_handlePresenceOffline:(id)a3
+- (void)_handlePresenceOffline:(id)offline
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"APSProtocolPresenceStatus"];
+  offlineCopy = offline;
+  v5 = [offlineCopy objectForKey:@"APSProtocolPresenceStatus"];
   if ([v5 intValue] == 2)
   {
-    v6 = [v4 objectForKey:@"APSProtocolToken"];
+    v6 = [offlineCopy objectForKey:@"APSProtocolToken"];
     v7 = [(APSUserCourier *)self _findClientWithToken:v6];
     v8 = +[APSLog shouldReduceLogging];
     v9 = +[APSLog courier];
@@ -9202,7 +9202,7 @@ LABEL_6:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412546;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = v7;
         v11 = v10;
@@ -9215,7 +9215,7 @@ LABEL_7:
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2112;
       v16 = v7;
       v11 = v10;
@@ -9228,13 +9228,13 @@ LABEL_7:
   }
 }
 
-- (void)receivedConnectedResponseWithParameters:(id)a3 onProtocolConnection:(id)a4
+- (void)receivedConnectedResponseWithParameters:(id)parameters onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  connectionCopy = connection;
   stateByConnectionIdentifier = self->_stateByConnectionIdentifier;
-  v9 = [v7 identifier];
-  v10 = [(NSMutableDictionary *)stateByConnectionIdentifier objectForKeyedSubscript:v9];
+  identifier = [connectionCopy identifier];
+  v10 = [(NSMutableDictionary *)stateByConnectionIdentifier objectForKeyedSubscript:identifier];
   if ([v10 userState] == 1)
   {
 
@@ -9253,8 +9253,8 @@ LABEL_7:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         v25 = self->_stateByConnectionIdentifier;
-        v26 = [v7 identifier];
-        v27 = [(NSMutableDictionary *)v25 objectForKeyedSubscript:v26];
+        identifier2 = [connectionCopy identifier];
+        v27 = [(NSMutableDictionary *)v25 objectForKeyedSubscript:identifier2];
         *v31 = 138412546;
         *&v31[4] = self;
         *&v31[12] = 2048;
@@ -9269,8 +9269,8 @@ LABEL_12:
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v30 = self->_stateByConnectionIdentifier;
-      v26 = [v7 identifier];
-      v27 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:v26];
+      identifier2 = [connectionCopy identifier];
+      v27 = [(NSMutableDictionary *)v30 objectForKeyedSubscript:identifier2];
       *v31 = 138412546;
       *&v31[4] = self;
       *&v31[12] = 2048;
@@ -9285,46 +9285,46 @@ LABEL_12:
 
 LABEL_4:
   v12 = self->_stateByConnectionIdentifier;
-  v13 = [v7 identifier];
-  v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
+  identifier3 = [connectionCopy identifier];
+  v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:identifier3];
   [v14 setUserState:0];
 
   v15 = self->_proxyClientWithOutstandingPresence;
-  v16 = [v7 identifier];
-  v17 = [(APSProxyClient *)v15 stateOnInterface:v16];
+  identifier4 = [connectionCopy identifier];
+  v17 = [(APSProxyClient *)v15 stateOnInterface:identifier4];
 
   if (v17 == 3)
   {
     v18 = self->_proxyClientWithOutstandingPresence;
-    v19 = [v7 identifier];
-    [(APSProxyClient *)v18 setState:0 onInterface:v19];
+    identifier5 = [connectionCopy identifier];
+    [(APSProxyClient *)v18 setState:0 onInterface:identifier5];
 
     v20 = self->_proxyClientWithOutstandingPresence;
-    v21 = [v7 identifier];
-    [(APSProxyClient *)v20 setFilterMode:0 onInterface:v21];
+    identifier6 = [connectionCopy identifier];
+    [(APSProxyClient *)v20 setFilterMode:0 onInterface:identifier6];
 
     [(APSUserCourier *)self _clearPendingProxyPresence];
   }
 
   else
   {
-    [(APSUserCourier *)self _handleConnectedMessage:v6 onProtocolConnection:v7];
+    [(APSUserCourier *)self _handleConnectedMessage:parametersCopy onProtocolConnection:connectionCopy];
   }
 
 LABEL_14:
   [(APSUserCourier *)self logStateWithReason:0, *v31, *&v31[16]];
 }
 
-- (void)_handleConnectedMessage:(id)a3 onProtocolConnection:(id)a4
+- (void)_handleConnectedMessage:(id)message onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  messageCopy = message;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   proxyClientWithOutstandingPresence = self->_proxyClientWithOutstandingPresence;
   if (proxyClientWithOutstandingPresence)
   {
-    v10 = [(__CFString *)v7 identifier];
-    v189 = [(APSProxyClient *)proxyClientWithOutstandingPresence stateOnInterface:v10]!= 1;
+    identifier = [(__CFString *)connectionCopy identifier];
+    v189 = [(APSProxyClient *)proxyClientWithOutstandingPresence stateOnInterface:identifier]!= 1;
   }
 
   else
@@ -9339,9 +9339,9 @@ LABEL_14:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(APSEnvironment *)self->_environment name];
+      name = [(APSEnvironment *)self->_environment name];
       *buf = 138412290;
-      v198 = v14;
+      selfCopy35 = name;
       v15 = v13;
       v16 = OS_LOG_TYPE_DEBUG;
 LABEL_9:
@@ -9351,24 +9351,24 @@ LABEL_9:
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(APSEnvironment *)self->_environment name];
+    name = [(APSEnvironment *)self->_environment name];
     *buf = 138412290;
-    v198 = v14;
+    selfCopy35 = name;
     v15 = v13;
     v16 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_9;
   }
 
-  v17 = [v6 objectForKey:@"APSProtocolConnectedResponse"];
-  v18 = [v17 intValue];
+  v17 = [messageCopy objectForKey:@"APSProtocolConnectedResponse"];
+  intValue = [v17 intValue];
 
   if (sub_10000712C())
   {
-    v19 = [(APSUserCourier *)self debugOverrides];
-    v20 = [v19 forcedInvalidPresences];
-    v21 = [v20 integerValue];
+    debugOverrides = [(APSUserCourier *)self debugOverrides];
+    forcedInvalidPresences = [debugOverrides forcedInvalidPresences];
+    integerValue = [forcedInvalidPresences integerValue];
 
-    if (v21 >= 1)
+    if (integerValue >= 1)
     {
       v22 = +[APSLog courier];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -9376,39 +9376,39 @@ LABEL_9:
         sub_10010910C();
       }
 
-      v18 = 2;
+      intValue = 2;
     }
   }
 
-  v23 = [v6 objectForKey:@"APSProtocolServerRequestedTTR"];
-  v24 = [v23 BOOLValue];
+  v23 = [messageCopy objectForKey:@"APSProtocolServerRequestedTTR"];
+  bOOLValue = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue)
   {
-    v25 = [v6 objectForKey:@"APSProtocolInvalidPresenceReason"];
+    v25 = [messageCopy objectForKey:@"APSProtocolInvalidPresenceReason"];
     [(APSUserCourier *)self _triggerTTRFromServer:v25];
   }
 
   v26 = "impossible pad state";
-  if (v18 == 2)
+  if (intValue == 2)
   {
-    v35 = [v6 objectForKey:@"APSProtocolServerTimeForBadNonce"];
+    v35 = [messageCopy objectForKey:@"APSProtocolServerTimeForBadNonce"];
     if (!sub_10000712C())
     {
       goto LABEL_151;
     }
 
-    v36 = [(APSUserCourier *)self debugOverrides];
-    v37 = [v36 forcedInvalidPresences];
-    v38 = [v37 integerValue];
+    debugOverrides2 = [(APSUserCourier *)self debugOverrides];
+    forcedInvalidPresences2 = [debugOverrides2 forcedInvalidPresences];
+    integerValue2 = [forcedInvalidPresences2 integerValue];
 
-    if (v38 != 1)
+    if (integerValue2 != 1)
     {
-      v111 = [(APSUserCourier *)self debugOverrides];
-      v112 = [v111 forcedInvalidPresences];
-      v113 = [v112 integerValue];
+      debugOverrides3 = [(APSUserCourier *)self debugOverrides];
+      forcedInvalidPresences3 = [debugOverrides3 forcedInvalidPresences];
+      integerValue3 = [forcedInvalidPresences3 integerValue];
 
-      if (v113 != 2)
+      if (integerValue3 != 2)
       {
         goto LABEL_151;
       }
@@ -9428,7 +9428,7 @@ LABEL_150:
 
           v35 = v116;
 LABEL_151:
-          v150 = [v6 objectForKey:@"APSProtocolInvalidPresenceReason"];
+          v150 = [messageCopy objectForKey:@"APSProtocolInvalidPresenceReason"];
           if (!v150)
           {
             goto LABEL_159;
@@ -9442,7 +9442,7 @@ LABEL_151:
             if (os_log_type_enabled(v152, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v198 = self;
+              selfCopy35 = self;
               v199 = 2112;
               v200 = v150;
               v154 = v153;
@@ -9455,7 +9455,7 @@ LABEL_157:
           else if (os_log_type_enabled(v152, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v198 = self;
+            selfCopy35 = self;
             v199 = 2112;
             v200 = v150;
             v154 = v153;
@@ -9464,7 +9464,7 @@ LABEL_157:
           }
 
 LABEL_159:
-          [(APSUserCourier *)self _triggerAutoBugCaptureForInvalidPresence:v6];
+          [(APSUserCourier *)self _triggerAutoBugCaptureForInvalidPresence:messageCopy];
           if (v189)
           {
             v156 = [(APSUserCourier *)self stateForProtocolConnection:v8];
@@ -9472,11 +9472,11 @@ LABEL_159:
 
             if (v35)
             {
-              v157 = self;
+              selfCopy4 = self;
               v158 = v8;
               v159 = v35;
 LABEL_185:
-              [(APSUserCourier *)v157 _sendPresenceMessageOnProtocolConnection:v158 serverTime:v159];
+              [(APSUserCourier *)selfCopy4 _sendPresenceMessageOnProtocolConnection:v158 serverTime:v159];
               goto LABEL_186;
             }
 
@@ -9487,16 +9487,16 @@ LABEL_185:
             }
 
             [(__CFString *)v8 noteInvalidPresence];
-            v178 = [(APSUserCourier *)self clientIdentityProvider];
-            [v178 noteInvalidServerPresence];
+            clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+            [clientIdentityProvider noteInvalidServerPresence];
 
-            v179 = [(APSUserCourier *)self courierUser];
-            v180 = [v179 isDefaultUser];
+            courierUser = [(APSUserCourier *)self courierUser];
+            isDefaultUser = [courierUser isDefaultUser];
 
-            if (!v180)
+            if (!isDefaultUser)
             {
               [(APSUserCourier *)self setPublicToken:0 fromServer:1];
-              v157 = self;
+              selfCopy4 = self;
               v158 = v8;
               v159 = 0;
               goto LABEL_185;
@@ -9520,7 +9520,7 @@ LABEL_186:
 
             v163 = self->_proxyClientWithOutstandingPresence;
             *buf = 138412546;
-            v198 = self;
+            selfCopy35 = self;
             v199 = 2112;
             v200 = v163;
             v164 = v162;
@@ -9536,7 +9536,7 @@ LABEL_186:
 
             v166 = self->_proxyClientWithOutstandingPresence;
             *buf = 138412546;
-            v198 = self;
+            selfCopy35 = self;
             v199 = 2112;
             v200 = v166;
             v164 = v162;
@@ -9548,12 +9548,12 @@ LABEL_168:
 
           [(APSProxyClient *)self->_proxyClientWithOutstandingPresence invalidate];
           v167 = self->_proxyClientWithOutstandingPresence;
-          v168 = [(__CFString *)v8 identifier];
-          [(APSProxyClient *)v167 setState:0 onInterface:v168];
+          identifier2 = [(__CFString *)v8 identifier];
+          [(APSProxyClient *)v167 setState:0 onInterface:identifier2];
 
           v169 = self->_proxyClientWithOutstandingPresence;
-          v170 = [(__CFString *)v8 identifier];
-          [(APSProxyClient *)v169 setFilterMode:0 onInterface:v170];
+          identifier3 = [(__CFString *)v8 identifier];
+          [(APSProxyClient *)v169 setFilterMode:0 onInterface:identifier3];
 
           if (!v35)
           {
@@ -9578,7 +9578,7 @@ LABEL_168:
             {
               v174 = self->_proxyClientWithOutstandingPresence;
               *buf = 138412546;
-              v198 = self;
+              selfCopy35 = self;
               v199 = 2112;
               v200 = v174;
               v175 = v173;
@@ -9592,7 +9592,7 @@ LABEL_181:
           {
             v185 = self->_proxyClientWithOutstandingPresence;
             *buf = 138412546;
-            v198 = self;
+            selfCopy35 = self;
             v199 = 2112;
             v200 = v185;
             v175 = v173;
@@ -9611,7 +9611,7 @@ LABEL_183:
         }
 
         *buf = 138412546;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
         v200 = v116;
         v119 = v35;
@@ -9626,7 +9626,7 @@ LABEL_183:
         }
 
         *buf = 138412546;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
         v200 = v116;
         v119 = v35;
@@ -9645,7 +9645,7 @@ LABEL_183:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v198 = self;
+        selfCopy35 = self;
         v42 = v41;
         v43 = OS_LOG_TYPE_DEBUG;
 LABEL_148:
@@ -9656,7 +9656,7 @@ LABEL_148:
     else if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v198 = self;
+      selfCopy35 = self;
       v42 = v41;
       v43 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_148;
@@ -9666,7 +9666,7 @@ LABEL_148:
     goto LABEL_150;
   }
 
-  if (v18)
+  if (intValue)
   {
     v44 = +[APSLog shouldReduceLogging];
     v45 = +[APSLog courier];
@@ -9679,9 +9679,9 @@ LABEL_148:
       }
 
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 1024;
-      LODWORD(v200) = v18;
+      LODWORD(v200) = intValue;
       v47 = v46;
       v48 = OS_LOG_TYPE_DEBUG;
     }
@@ -9694,9 +9694,9 @@ LABEL_148:
       }
 
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 1024;
-      LODWORD(v200) = v18;
+      LODWORD(v200) = intValue;
       v47 = v46;
       v48 = OS_LOG_TYPE_DEFAULT;
     }
@@ -9719,7 +9719,7 @@ LABEL_53:
       {
         v67 = self->_proxyClientWithOutstandingPresence;
         *buf = 138412546;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
         v200 = v67;
         v68 = v66;
@@ -9733,7 +9733,7 @@ LABEL_108:
     {
       v121 = self->_proxyClientWithOutstandingPresence;
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
       v200 = v121;
       v68 = v66;
@@ -9743,12 +9743,12 @@ LABEL_108:
 
     [(APSProxyClient *)self->_proxyClientWithOutstandingPresence setActive:0];
     v122 = self->_proxyClientWithOutstandingPresence;
-    v123 = [(__CFString *)v8 identifier];
-    [(APSProxyClient *)v122 setState:0 onInterface:v123];
+    identifier4 = [(__CFString *)v8 identifier];
+    [(APSProxyClient *)v122 setState:0 onInterface:identifier4];
 
     v124 = self->_proxyClientWithOutstandingPresence;
-    v125 = [(__CFString *)v8 identifier];
-    [(APSProxyClient *)v124 setFilterMode:0 onInterface:v125];
+    identifier5 = [(__CFString *)v8 identifier];
+    [(APSProxyClient *)v124 setFilterMode:0 onInterface:identifier5];
 
     [(APSUserCourier *)self _clearPendingProxyPresence];
     [(APSUserCourier *)self _performIdleCheck];
@@ -9775,16 +9775,16 @@ LABEL_108:
       v30 = @"NO";
     }
 
-    v31 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    v32 = [v31 countConnectedInterfaces];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    countConnectedInterfaces = [protocolConnectionEstablisher countConnectedInterfaces];
     *buf = 138413058;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v30;
     v201 = 2112;
     v202 = v8;
     v203 = 2048;
-    v204 = v32;
+    v204 = countConnectedInterfaces;
     v33 = v29;
     v34 = OS_LOG_TYPE_DEBUG;
   }
@@ -9806,16 +9806,16 @@ LABEL_108:
       v49 = @"NO";
     }
 
-    v31 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    v50 = [v31 countConnectedInterfaces];
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    countConnectedInterfaces2 = [protocolConnectionEstablisher countConnectedInterfaces];
     *buf = 138413058;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v49;
     v201 = 2112;
     v202 = v8;
     v203 = 2048;
-    v204 = v50;
+    v204 = countConnectedInterfaces2;
     v33 = v29;
     v34 = OS_LOG_TYPE_DEFAULT;
   }
@@ -9823,14 +9823,14 @@ LABEL_108:
   _os_log_impl(&_mh_execute_header, v33, v34, "%@: Connected response ok for user courier token? %@ on interface: %@ - connected on %lu interfaces", buf, 0x2Au);
 
 LABEL_39:
-  v51 = [v6 objectForKey:@"APSProtocolFilterOptimizationSupport"];
-  v52 = [v51 BOOLValue];
+  v51 = [messageCopy objectForKey:@"APSProtocolFilterOptimizationSupport"];
+  bOOLValue2 = [v51 BOOLValue];
 
-  v53 = [(APSUserCourier *)self serverDisabledFilterOptimization];
+  serverDisabledFilterOptimization = [(APSUserCourier *)self serverDisabledFilterOptimization];
   v54 = +[APSLog shouldReduceLogging];
   v55 = +[APSLog courier];
   v56 = v55;
-  if (v53)
+  if (serverDisabledFilterOptimization)
   {
     if (v54)
     {
@@ -9839,9 +9839,9 @@ LABEL_39:
       {
         v58 = @"NO";
         *buf = 138413058;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
-        if (v52)
+        if (bOOLValue2)
         {
           v58 = @"YES";
         }
@@ -9865,9 +9865,9 @@ LABEL_62:
       {
         v70 = @"NO";
         *buf = 138413058;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
-        if (v52)
+        if (bOOLValue2)
         {
           v70 = @"YES";
         }
@@ -9898,9 +9898,9 @@ LABEL_70:
 
     v61 = @"NO";
     *buf = 138412802;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
-    if (v52)
+    if (bOOLValue2)
     {
       v61 = @"YES";
     }
@@ -9922,9 +9922,9 @@ LABEL_70:
 
     v71 = @"NO";
     *buf = 138412802;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
-    if (v52)
+    if (bOOLValue2)
     {
       v71 = @"YES";
     }
@@ -9939,7 +9939,7 @@ LABEL_70:
   _os_log_impl(&_mh_execute_header, v62, v63, "%@: Setting filterOptimizationSupport: %@ on %@", buf, 0x20u);
 LABEL_69:
 
-  if (v52)
+  if (bOOLValue2)
   {
     goto LABEL_70;
   }
@@ -9952,12 +9952,12 @@ LABEL_72:
     goto LABEL_90;
   }
 
-  v73 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  if (([v73 allowedToHaveMultipleOpenInterfaces] & 1) == 0)
+  protocolConnectionEstablisher2 = [(APSUserCourier *)self protocolConnectionEstablisher];
+  if (([protocolConnectionEstablisher2 allowedToHaveMultipleOpenInterfaces] & 1) == 0)
   {
-    v74 = [(APSUserCourier *)self countOfConnectedInterface];
+    countOfConnectedInterface = [(APSUserCourier *)self countOfConnectedInterface];
 
-    if (v74 < 1)
+    if (countOfConnectedInterface < 1)
     {
       goto LABEL_77;
     }
@@ -9967,33 +9967,33 @@ LABEL_72:
     v192[2] = sub_100048694;
     v192[3] = &unk_1001870A0;
     v193 = v8;
-    v194 = self;
+    selfCopy23 = self;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v192];
-    v73 = v193;
+    protocolConnectionEstablisher2 = v193;
   }
 
 LABEL_77:
   v75 = [(APSUserCourier *)self stateForProtocolConnection:v8];
   [v75 setFilterMode:v188];
 
-  v76 = [v6 objectForKey:@"APSProtocolReportLastReversePushRTT"];
-  v77 = [v76 BOOLValue];
+  v76 = [messageCopy objectForKey:@"APSProtocolReportLastReversePushRTT"];
+  bOOLValue3 = [v76 BOOLValue];
 
-  v78 = [v57[414] shouldReduceLogging];
+  shouldReduceLogging = [v57[414] shouldReduceLogging];
   v79 = v57;
-  v80 = v78;
-  v81 = [v79[414] courier];
-  v82 = v81;
-  v187 = v6;
+  v80 = shouldReduceLogging;
+  courier = [v79[414] courier];
+  v82 = courier;
+  v187 = messageCopy;
   if (v80)
   {
-    if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(courier, OS_LOG_TYPE_DEBUG))
     {
       v83 = @"NO";
       *buf = 138412802;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
-      if (v77)
+      if (bOOLValue3)
       {
         v83 = @"YES";
       }
@@ -10008,13 +10008,13 @@ LABEL_86:
     }
   }
 
-  else if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(courier, OS_LOG_TYPE_DEFAULT))
   {
     v86 = @"NO";
     *buf = 138412802;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
-    if (v77)
+    if (bOOLValue3)
     {
       v86 = @"YES";
     }
@@ -10028,19 +10028,19 @@ LABEL_86:
   }
 
   outgoingMessageQueue = self->_outgoingMessageQueue;
-  v88 = [(__CFString *)v8 identifier];
-  [(APSOutgoingMessageQueue *)outgoingMessageQueue setShouldReportLastReversePushRTT:v77 onInterface:v88];
+  identifier6 = [(__CFString *)v8 identifier];
+  [(APSOutgoingMessageQueue *)outgoingMessageQueue setShouldReportLastReversePushRTT:bOOLValue3 onInterface:identifier6];
 
   v195[0] = @"ConnectionType";
   v89 = [(APSUserCourier *)self getConnectionTypeFromProtocolConnection:v8];
   v196[0] = v89;
   v195[1] = @"ServerHostname";
-  v90 = [(__CFString *)v8 serverHostname];
-  v91 = [NSString stringWithFormat:@"%@", v90];
+  serverHostname = [(__CFString *)v8 serverHostname];
+  v91 = [NSString stringWithFormat:@"%@", serverHostname];
   v196[1] = v91;
   v195[2] = @"ServerIP";
-  v92 = [(__CFString *)v8 serverIPAddress];
-  v93 = [NSString stringWithFormat:@"%@", v92];
+  serverIPAddress = [(__CFString *)v8 serverIPAddress];
+  v93 = [NSString stringWithFormat:@"%@", serverIPAddress];
   v196[2] = v93;
   v195[3] = @"LinkQuality";
   v94 = [NSNumber numberWithInt:[(__CFString *)v8 linkQuality]];
@@ -10048,7 +10048,7 @@ LABEL_86:
   v95 = [NSDictionary dictionaryWithObjects:v196 forKeys:v195 count:4];
   v96 = [v95 mutableCopy];
 
-  v6 = v187;
+  messageCopy = v187;
   v97 = [v187 objectForKey:@"APSProtocolExperimentIDKey"];
   if (v97)
   {
@@ -10059,27 +10059,27 @@ LABEL_86:
 
   v57 = &fputc_ptr;
 LABEL_90:
-  v98 = [(APSUserCourier *)self clientIdentityProvider];
-  [v98 noteValidServerPresence];
+  clientIdentityProvider2 = [(APSUserCourier *)self clientIdentityProvider];
+  [clientIdentityProvider2 noteValidServerPresence];
 
-  v99 = [v6 objectForKey:@"APSProtocolToken"];
+  v99 = [messageCopy objectForKey:@"APSProtocolToken"];
   if (!v99)
   {
     goto LABEL_114;
   }
 
-  v100 = [v57[414] shouldReduceLogging];
-  v101 = [v57[414] courier];
-  v102 = v101;
-  if (v100)
+  shouldReduceLogging2 = [v57[414] shouldReduceLogging];
+  courier2 = [v57[414] courier];
+  v102 = courier2;
+  if (shouldReduceLogging2)
   {
-    if (!os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled(courier2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_97;
     }
 
     *buf = 138412546;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v99;
     v103 = v102;
@@ -10088,13 +10088,13 @@ LABEL_90:
 
   else
   {
-    if (!os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(courier2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_97;
     }
 
     *buf = 138412546;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v99;
     v103 = v102;
@@ -10110,16 +10110,16 @@ LABEL_97:
     goto LABEL_114;
   }
 
-  v105 = [v57[414] shouldReduceLogging];
-  v106 = [v57[414] courier];
-  v107 = v106;
-  if (v105)
+  shouldReduceLogging3 = [v57[414] shouldReduceLogging];
+  courier3 = [v57[414] courier];
+  v107 = courier3;
+  if (shouldReduceLogging3)
   {
-    if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(courier3, OS_LOG_TYPE_DEBUG))
     {
       v108 = self->_proxyClientWithOutstandingPresence;
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
       v200 = v108;
       v109 = v107;
@@ -10129,11 +10129,11 @@ LABEL_112:
     }
   }
 
-  else if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(courier3, OS_LOG_TYPE_DEFAULT))
   {
     v126 = self->_proxyClientWithOutstandingPresence;
     *buf = 138412546;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v126;
     v109 = v107;
@@ -10143,7 +10143,7 @@ LABEL_112:
 
   [(APSProxyClient *)self->_proxyClientWithOutstandingPresence setPublicToken:v99];
 LABEL_114:
-  v127 = [v6 objectForKey:@"APSProtocolServerMetadata"];
+  v127 = [messageCopy objectForKey:@"APSProtocolServerMetadata"];
   if (!v127)
   {
     goto LABEL_122;
@@ -10157,7 +10157,7 @@ LABEL_114:
     if (os_log_type_enabled(v129, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
       v200 = v127;
       v131 = v130;
@@ -10170,7 +10170,7 @@ LABEL_120:
   else if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
     v200 = v127;
     v131 = v130;
@@ -10179,8 +10179,8 @@ LABEL_120:
   }
 
 LABEL_122:
-  v133 = [(__CFString *)v8 maxMessageSize];
-  if (!v133)
+  maxMessageSize = [(__CFString *)v8 maxMessageSize];
+  if (!maxMessageSize)
   {
     goto LABEL_130;
   }
@@ -10193,9 +10193,9 @@ LABEL_122:
     if (os_log_type_enabled(v135, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
-      v200 = v133;
+      v200 = maxMessageSize;
       v137 = v136;
       v138 = OS_LOG_TYPE_DEBUG;
 LABEL_128:
@@ -10206,18 +10206,18 @@ LABEL_128:
   else if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v198 = self;
+    selfCopy35 = self;
     v199 = 2112;
-    v200 = v133;
+    v200 = maxMessageSize;
     v137 = v136;
     v138 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_128;
   }
 
-  -[APSUserCourier setMessageSize:](self, "setMessageSize:", [v133 unsignedIntegerValue]);
+  -[APSUserCourier setMessageSize:](self, "setMessageSize:", [maxMessageSize unsignedIntegerValue]);
 LABEL_130:
-  v139 = [(__CFString *)v8 maxLargeMessageSize];
-  if (v139)
+  maxLargeMessageSize = [(__CFString *)v8 maxLargeMessageSize];
+  if (maxLargeMessageSize)
   {
     v140 = +[APSLog shouldReduceLogging];
     v141 = +[APSLog courier];
@@ -10227,9 +10227,9 @@ LABEL_130:
       if (os_log_type_enabled(v141, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v198 = self;
+        selfCopy35 = self;
         v199 = 2112;
-        v200 = v139;
+        v200 = maxLargeMessageSize;
         v143 = v142;
         v144 = OS_LOG_TYPE_DEBUG;
 LABEL_136:
@@ -10240,15 +10240,15 @@ LABEL_136:
     else if (os_log_type_enabled(v141, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v198 = self;
+      selfCopy35 = self;
       v199 = 2112;
-      v200 = v139;
+      v200 = maxLargeMessageSize;
       v143 = v142;
       v144 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_136;
     }
 
-    -[APSUserCourier setLargeMessageSize:](self, "setLargeMessageSize:", [v139 unsignedIntegerValue]);
+    -[APSUserCourier setLargeMessageSize:](self, "setLargeMessageSize:", [maxLargeMessageSize unsignedIntegerValue]);
   }
 
   if (v189)
@@ -10261,12 +10261,12 @@ LABEL_136:
     v145 = self->_proxyClientWithOutstandingPresence;
     if (v145)
     {
-      v146 = [(__CFString *)v8 identifier];
-      [(APSProxyClient *)v145 setState:2 onInterface:v146];
+      identifier7 = [(__CFString *)v8 identifier];
+      [(APSProxyClient *)v145 setState:2 onInterface:identifier7];
 
       v147 = self->_proxyClientWithOutstandingPresence;
-      v148 = [(__CFString *)v8 identifier];
-      [(APSProxyClient *)v147 setFilterMode:v188 onInterface:v148];
+      identifier8 = [(__CFString *)v8 identifier];
+      [(APSProxyClient *)v147 setFilterMode:v188 onInterface:identifier8];
 
       [(APSUserCourier *)self _sendClientFilter:self->_proxyClientWithOutstandingPresence onProtocolConnection:v8];
       [(APSUserCourier *)self _requestClientPubSubChannelList:self->_proxyClientWithOutstandingPresence onProtocolConnection:v8];
@@ -10298,18 +10298,18 @@ LABEL_187:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_triggerAutoBugCaptureForInvalidPresence:(id)a3
+- (void)_triggerAutoBugCaptureForInvalidPresence:(id)presence
 {
-  v4 = a3;
+  presenceCopy = presence;
   if (!sub_10000712C())
   {
     goto LABEL_18;
   }
 
-  v5 = [(APSDebugOverrides *)self->_debugOverrides forcedInvalidPresences];
-  v6 = [v5 integerValue];
+  forcedInvalidPresences = [(APSDebugOverrides *)self->_debugOverrides forcedInvalidPresences];
+  integerValue = [forcedInvalidPresences integerValue];
 
-  if (v6 > 0)
+  if (integerValue > 0)
   {
     goto LABEL_18;
   }
@@ -10346,8 +10346,8 @@ LABEL_8:
     self->_symptomReporter = v13;
   }
 
-  v15 = [(APSUserCourier *)self clientIdentityProvider];
-  if ([v15 identityStatus])
+  clientIdentityProvider = [(APSUserCourier *)self clientIdentityProvider];
+  if ([clientIdentityProvider identityStatus])
   {
     v16 = @"NO";
   }
@@ -10357,7 +10357,7 @@ LABEL_8:
     v16 = @"YES";
   }
 
-  v17 = [v4 objectForKey:@"APSProtocolServerTimeForBadNonce"];
+  v17 = [presenceCopy objectForKey:@"APSProtocolServerTimeForBadNonce"];
   if (v17)
   {
     v18 = @"YES";
@@ -10374,9 +10374,9 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)_triggerTTRFromServer:(id)a3
+- (void)_triggerTTRFromServer:(id)server
 {
-  v3 = a3;
+  serverCopy = server;
   v18 = CUTWeakLinkClass();
   v16 = CUTWeakLinkClass();
   v17 = CUTWeakLinkClass();
@@ -10392,9 +10392,9 @@ LABEL_18:
   [v10 setObject:v11 forKeyedSubscript:v19];
 
   v12 = @"No server reason given";
-  if (v3)
+  if (serverCopy)
   {
-    v12 = v3;
+    v12 = serverCopy;
   }
 
   v13 = [NSString stringWithFormat:@"Server requested TTR, presence error reason: %@", v12];
@@ -10411,7 +10411,7 @@ LABEL_18:
   [v18 launchWithRequest:v15 context:v14];
 }
 
-- (void)_reconnectIgnoringDelayReconnectTimer:(unsigned int)a3
+- (void)_reconnectIgnoringDelayReconnectTimer:(unsigned int)timer
 {
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
@@ -10421,7 +10421,7 @@ LABEL_18:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -10432,7 +10432,7 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = self;
+    selfCopy2 = self;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -10442,13 +10442,13 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = sub_100048E64;
   v11[3] = &unk_1001872D8;
-  v12 = a3;
+  timerCopy = timer;
   [(APSUserCourier *)self enumerateAllProtocolConnections:v11];
-  v10 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v10 forceAdjustConnections];
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [protocolConnectionEstablisher forceAdjustConnections];
 }
 
-- (void)_reconnectAllConnectionsWithReason:(unsigned int)a3
+- (void)_reconnectAllConnectionsWithReason:(unsigned int)reason
 {
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
@@ -10458,9 +10458,9 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 1024;
-      v16 = a3;
+      reasonCopy2 = reason;
       v8 = v7;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -10471,9 +10471,9 @@ LABEL_6:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 1024;
-    v16 = a3;
+    reasonCopy2 = reason;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
@@ -10483,46 +10483,46 @@ LABEL_6:
   v11[1] = 3221225472;
   v11[2] = sub_100048FF8;
   v11[3] = &unk_1001872D8;
-  v12 = a3;
+  reasonCopy3 = reason;
   [(APSUserCourier *)self enumerateAllProtocolConnections:v11];
-  v10 = [(APSUserCourier *)self protocolConnectionEstablisher];
-  [v10 adjustConnectionsIfNeeded];
+  protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+  [protocolConnectionEstablisher adjustConnectionsIfNeeded];
 }
 
-- (void)_notifyForIncomingMessage:(id)a3 forConnection:(id)a4
+- (void)_notifyForIncomingMessage:(id)message forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001092F0(self, v6, v8);
+    sub_1001092F0(self, messageCopy, v8);
   }
 
-  if (v7)
+  if (connectionCopy)
   {
-    v50 = v7;
-    v9 = [NSArray arrayWithObjects:&v50 count:1];
+    v50 = connectionCopy;
+    connectionServers = [NSArray arrayWithObjects:&v50 count:1];
   }
 
   else
   {
-    v9 = [(APSUserCourier *)self connectionServers];
+    connectionServers = [(APSUserCourier *)self connectionServers];
   }
 
-  v32 = self;
-  v33 = v7;
+  selfCopy = self;
+  v33 = connectionCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v9;
+  obj = connectionServers;
   v38 = [obj countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v38)
   {
     v35 = 0;
     v37 = *v40;
-    v34 = v6;
+    v34 = messageCopy;
     do
     {
       v10 = 0;
@@ -10534,48 +10534,48 @@ LABEL_6:
         }
 
         v11 = *(*(&v39 + 1) + 8 * v10);
-        v12 = [v11 enabledTopics];
-        v13 = [v11 opportunisticTopics];
-        v14 = [v11 nonWakingTopics];
-        v15 = [v11 publicToken];
-        v16 = [v6 token];
-        v17 = [v15 isEqual:v16];
+        enabledTopics = [v11 enabledTopics];
+        opportunisticTopics = [v11 opportunisticTopics];
+        nonWakingTopics = [v11 nonWakingTopics];
+        publicToken = [v11 publicToken];
+        token = [messageCopy token];
+        v17 = [publicToken isEqual:token];
 
-        v18 = [v6 topic];
-        if ([v12 containsObject:v18])
+        topic = [messageCopy topic];
+        if ([enabledTopics containsObject:topic])
         {
           v19 = 0;
         }
 
         else
         {
-          [v6 topic];
-          v21 = v20 = v6;
-          if ([v14 containsObject:v21])
+          [messageCopy topic];
+          v21 = v20 = messageCopy;
+          if ([nonWakingTopics containsObject:v21])
           {
             v19 = 0;
           }
 
           else
           {
-            v22 = [v20 topic];
-            if ([v13 containsObject:v22] & 1) != 0 || (objc_msgSend(v12, "containsObject:", @"*") & 1) != 0 || (objc_msgSend(v13, "containsObject:", @"*"))
+            topic2 = [v20 topic];
+            if ([opportunisticTopics containsObject:topic2] & 1) != 0 || (objc_msgSend(enabledTopics, "containsObject:", @"*") & 1) != 0 || (objc_msgSend(opportunisticTopics, "containsObject:", @"*"))
             {
               v19 = 0;
             }
 
             else
             {
-              v19 = [v14 containsObject:@"*"] ^ 1;
+              v19 = [nonWakingTopics containsObject:@"*"] ^ 1;
             }
           }
 
-          v6 = v34;
+          messageCopy = v34;
         }
 
         if (v17 && (v19 & 1) == 0)
         {
-          [v11 handleReceivedMessage:v6];
+          [v11 handleReceivedMessage:messageCopy];
           v35 = 1;
         }
 
@@ -10602,16 +10602,16 @@ LABEL_6:
     v26 = v25;
     if (v24)
     {
-      v27 = v32;
+      v27 = selfCopy;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [v6 topic];
+        topic3 = [messageCopy topic];
         *buf = 138412802;
-        v44 = v32;
+        v44 = selfCopy;
         v45 = 2112;
-        v46 = v6;
+        v46 = messageCopy;
         v47 = 2112;
-        v48 = v28;
+        v48 = topic3;
         v29 = v26;
         v30 = OS_LOG_TYPE_DEBUG;
 LABEL_37:
@@ -10621,38 +10621,38 @@ LABEL_37:
 
     else
     {
-      v27 = v32;
+      v27 = selfCopy;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v6 topic];
+        topic3 = [messageCopy topic];
         *buf = 138412802;
-        v44 = v32;
+        v44 = selfCopy;
         v45 = 2112;
-        v46 = v6;
+        v46 = messageCopy;
         v47 = 2112;
-        v48 = v28;
+        v48 = topic3;
         v29 = v26;
         v30 = OS_LOG_TYPE_DEFAULT;
         goto LABEL_37;
       }
     }
 
-    v31 = [v6 guid];
-    [(APSUserCourier *)v27 connection:0 handleAckIncomingMessageWithGuid:v31 topic:0 tracingUUID:0];
+    guid = [messageCopy guid];
+    [(APSUserCourier *)v27 connection:0 handleAckIncomingMessageWithGuid:guid topic:0 tracingUUID:0];
   }
 }
 
-- (BOOL)_wakeCausedByTopic:(id)a3 interface:(id)a4 priorityVal:(unint64_t)a5 inAllowlist:(BOOL)a6
+- (BOOL)_wakeCausedByTopic:(id)topic interface:(id)interface priorityVal:(unint64_t)val inAllowlist:(BOOL)allowlist
 {
-  v8 = [PCPersistentTimer lastSystemWakeDate:a3];
+  v8 = [PCPersistentTimer lastSystemWakeDate:topic];
   v9 = v8;
-  v10 = a5 == 5 && a6;
-  if (a5 == 10)
+  v10 = val == 5 && allowlist;
+  if (val == 10)
   {
     v10 = 1;
   }
 
-  if (a5)
+  if (val)
   {
     v11 = v10;
   }
@@ -10685,14 +10685,14 @@ LABEL_37:
   return v16;
 }
 
-- (void)_handleMessageMessage:(id)a3 onProtocolConnection:(id)a4 withGeneration:(unint64_t)a5 isWakingMessage:(BOOL)a6 fromAgent:(BOOL)a7
+- (void)_handleMessageMessage:(id)message onProtocolConnection:(id)connection withGeneration:(unint64_t)generation isWakingMessage:(BOOL)wakingMessage fromAgent:(BOOL)agent
 {
-  v175 = a7;
-  v7 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 objectForKey:@"APSProtocolToken"];
-  v13 = [v10 objectForKey:@"APSProtocolBaseToken"];
+  agentCopy = agent;
+  wakingMessageCopy = wakingMessage;
+  messageCopy = message;
+  connectionCopy = connection;
+  v12 = [messageCopy objectForKey:@"APSProtocolToken"];
+  v13 = [messageCopy objectForKey:@"APSProtocolBaseToken"];
   v14 = v13;
   if (v13)
   {
@@ -10705,18 +10705,18 @@ LABEL_37:
   }
 
   v16 = v15;
-  v17 = [(APSUserCourier *)self _getCurrentTokens];
-  v18 = v17;
-  v191 = self;
+  _getCurrentTokens = [(APSUserCourier *)self _getCurrentTokens];
+  v18 = _getCurrentTokens;
+  selfCopy = self;
   v184 = v14;
-  if (!v14 || [v17 containsObject:v14]) && (!v12 || (objc_msgSend(v18, "containsObject:", v12)))
+  if (!v14 || [_getCurrentTokens containsObject:v14]) && (!v12 || (objc_msgSend(v18, "containsObject:", v12)))
   {
     v189 = 0;
 LABEL_29:
-    v37 = [v10 objectForKey:@"APSProtocolTopicHash"];
-    v186 = [v10 objectForKey:@"APSProtocolPayload"];
-    v38 = [v10 objectForKey:@"APSProtocolMessageID"];
-    v169 = [v10 objectForKey:@"APSProtocolMessageCorrelationIdentifier"];
+    v37 = [messageCopy objectForKey:@"APSProtocolTopicHash"];
+    v186 = [messageCopy objectForKey:@"APSProtocolPayload"];
+    v38 = [messageCopy objectForKey:@"APSProtocolMessageID"];
+    v169 = [messageCopy objectForKey:@"APSProtocolMessageCorrelationIdentifier"];
     v161 = v38;
     if (v38)
     {
@@ -10728,20 +10728,20 @@ LABEL_29:
       v181 = 0;
     }
 
-    v39 = [v10 objectForKey:@"APSProtocolMessageTimestamp"];
-    v168 = [v10 objectForKey:@"APSProtocolMessageExpiry"];
-    v40 = [v10 objectForKey:@"APSProtocolMessageStorageFlags"];
-    v185 = [v10 objectForKey:@"APSProtocolMessagePriority"];
-    v183 = [v10 objectForKey:@"APSProtocolMessageAPNFlags"];
-    v174 = [v10 objectForKey:@"APSProtocolMessageTracingUUID"];
-    v182 = [v10 objectForKey:@"APSProtocolMessagePushType"];
-    v187 = [v10 objectForKey:@"APSProtocolMessagePubSubInfo"];
+    v39 = [messageCopy objectForKey:@"APSProtocolMessageTimestamp"];
+    v168 = [messageCopy objectForKey:@"APSProtocolMessageExpiry"];
+    v40 = [messageCopy objectForKey:@"APSProtocolMessageStorageFlags"];
+    v185 = [messageCopy objectForKey:@"APSProtocolMessagePriority"];
+    v183 = [messageCopy objectForKey:@"APSProtocolMessageAPNFlags"];
+    v174 = [messageCopy objectForKey:@"APSProtocolMessageTracingUUID"];
+    v182 = [messageCopy objectForKey:@"APSProtocolMessagePushType"];
+    v187 = [messageCopy objectForKey:@"APSProtocolMessagePubSubInfo"];
     v163 = v40;
-    v41 = [v40 unsignedIntValue];
+    unsignedIntValue = [v40 unsignedIntValue];
     wakeMetricTracker = self->_wakeMetricTracker;
-    v172 = v41;
-    v157 = v7;
-    if (v41)
+    v172 = unsignedIntValue;
+    v157 = wakingMessageCopy;
+    if (unsignedIntValue)
     {
       [(APSWakeMetricTracker *)wakeMetricTracker noteReceivedStoredMessage];
     }
@@ -10755,11 +10755,11 @@ LABEL_29:
     v44 = [(APSTopicManager *)v43 hasEnabledTopicHash:v37];
     v45 = v44;
     v178 = v39;
-    v179 = v11;
+    v179 = connectionCopy;
     v164 = v37;
     v165 = v18;
     v166 = v12;
-    v167 = v10;
+    v167 = messageCopy;
     v170 = v16;
     v162 = v43;
     if (v44)
@@ -10797,7 +10797,7 @@ LABEL_29:
               v173 = v114;
               v171 = +[APSLog courier];
               v115 = v187;
-              v50 = v11;
+              v50 = connectionCopy;
               v116 = v161;
               if (os_log_type_enabled(v171, OS_LOG_TYPE_ERROR))
               {
@@ -10809,7 +10809,7 @@ LABEL_29:
               v117 = 0;
               v160 = 0;
               v159 = 6;
-              v118 = a5;
+              generationCopy3 = generation;
               v119 = v181;
               v51 = v189;
             }
@@ -10820,7 +10820,7 @@ LABEL_29:
               v171 = +[APSLog courier];
               v152 = os_log_type_enabled(v171, OS_LOG_TYPE_ERROR);
               v115 = v187;
-              v50 = v11;
+              v50 = connectionCopy;
               v116 = v161;
               if (v176)
               {
@@ -10847,7 +10847,7 @@ LABEL_29:
               v117 = 0;
               v160 = 0;
               v159 = 7;
-              v118 = a5;
+              generationCopy3 = generation;
               v119 = v181;
             }
 
@@ -10863,7 +10863,7 @@ LABEL_164:
             v197 = v135;
             v200 = v119;
             v198 = v50;
-            v201 = v118;
+            v201 = generationCopy3;
             v136 = v117;
             v199 = v136;
             v137 = objc_retainBlock(v196);
@@ -10875,7 +10875,7 @@ LABEL_164:
               v145 = v185;
 LABEL_176:
 
-              v10 = v167;
+              messageCopy = v167;
               v60 = v184;
               v16 = v170;
               v34 = v165;
@@ -10890,17 +10890,17 @@ LABEL_176:
             v192[2] = sub_10004B304;
             v192[3] = &unk_100187328;
             v195 = v138;
-            v140 = self;
+            selfCopy2 = self;
             v141 = v136;
             v193 = v141;
-            v194 = v140;
+            v194 = selfCopy2;
             v142 = objc_retainBlock(v192);
             v143 = sub_1000143BC();
 
             if (v143)
             {
-              v144 = +[APSMessageStore sharedInstance];
-              [v144 storeIncomingMessage:v141 environment:v140->_environment completionBlock:v142];
+              uUIDString = +[APSMessageStore sharedInstance];
+              [uUIDString storeIncomingMessage:v141 environment:selfCopy2->_environment completionBlock:v142];
 LABEL_175:
               v12 = v166;
 
@@ -10911,7 +10911,7 @@ LABEL_175:
             }
 
             v146 = +[NSUUID UUID];
-            v144 = [v146 UUIDString];
+            uUIDString = [v146 UUIDString];
 
             v147 = +[APSLog shouldReduceLogging];
             v148 = +[APSLog courier];
@@ -10921,9 +10921,9 @@ LABEL_175:
               if (os_log_type_enabled(v148, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v205 = v191;
+                selfCopy13 = selfCopy;
                 v206 = 2112;
-                *v207 = v144;
+                *v207 = uUIDString;
                 v150 = v149;
                 v151 = OS_LOG_TYPE_DEBUG;
 LABEL_173:
@@ -10934,15 +10934,15 @@ LABEL_173:
             else if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v205 = v191;
+              selfCopy13 = selfCopy;
               v206 = 2112;
-              *v207 = v144;
+              *v207 = uUIDString;
               v150 = v149;
               v151 = OS_LOG_TYPE_DEFAULT;
               goto LABEL_173;
             }
 
-            (v142[2])(v142, v144);
+            (v142[2])(v142, uUIDString);
             v50 = v179;
             goto LABEL_175;
           }
@@ -10956,7 +10956,7 @@ LABEL_173:
       v46 = v48;
     }
 
-    v62 = -[APSUserCourier _wakeCausedByTopic:interface:priorityVal:inAllowlist:](self, "_wakeCausedByTopic:interface:priorityVal:inAllowlist:", v46, v11, [v185 unsignedIntegerValue], v45 != 0);
+    v62 = -[APSUserCourier _wakeCausedByTopic:interface:priorityVal:inAllowlist:](self, "_wakeCausedByTopic:interface:priorityVal:inAllowlist:", v46, connectionCopy, [v185 unsignedIntegerValue], v45 != 0);
     if (v12)
     {
       v63 = [v18 containsObject:v12];
@@ -10987,7 +10987,7 @@ LABEL_69:
       if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v205 = v191;
+        selfCopy13 = selfCopy;
         v206 = 2112;
         *v207 = v12;
         *&v207[8] = 2112;
@@ -11002,14 +11002,14 @@ LABEL_69:
       v69 = 1;
 LABEL_96:
 
-      v83 = [v183 unsignedLongValue];
-      if (v68 & 1) == 0 && (v83)
+      unsignedLongValue = [v183 unsignedLongValue];
+      if (v68 & 1) == 0 && (unsignedLongValue)
       {
         v84 = +[APSLog courier];
         if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v205 = v191;
+          selfCopy13 = selfCopy;
           v206 = 2112;
           *v207 = v12;
           *&v207[8] = 2112;
@@ -11017,21 +11017,21 @@ LABEL_96:
           _os_log_error_impl(&_mh_execute_header, v84, OS_LOG_TYPE_ERROR, "%@: Received push for token %@ topic %@ which was removed but the token is valid unexpectedly! Delivering message to the client anyways.", buf, 0x20u);
         }
 
-        symptomReporter = v191->_symptomReporter;
+        symptomReporter = selfCopy->_symptomReporter;
         if (!symptomReporter)
         {
           v86 = objc_alloc_init(APSSymptomReporter);
-          v87 = v191->_symptomReporter;
-          v191->_symptomReporter = v86;
+          v87 = selfCopy->_symptomReporter;
+          selfCopy->_symptomReporter = v86;
 
-          symptomReporter = v191->_symptomReporter;
+          symptomReporter = selfCopy->_symptomReporter;
         }
 
         [(APSSymptomReporter *)symptomReporter reportSymptomToAutoBugCapture:@"PerAppToken" subType:@"RemovedTokenIsUnexpectedlyValid"];
       }
 
       v188 = v46;
-      v88 = [(APSUserCourier *)v191 shouldDropPubSubMessageWithData:v187 forTopic:v46];
+      v88 = [(APSUserCourier *)selfCopy shouldDropPubSubMessageWithData:v187 forTopic:v46];
       v89 = v67 == 0;
       if (v67)
       {
@@ -11065,13 +11065,13 @@ LABEL_160:
         v123 = objc_alloc_init(NSMutableDictionary);
         v124 = [NSNumber numberWithUnsignedInteger:v93];
         v125 = [NSNumber numberWithInteger:[(APSIncomingMessage *)v92 priority]];
-        v126 = [v179 serverHostname];
-        v154 = [NSString stringWithFormat:@"%@", v126];
+        serverHostname = [v179 serverHostname];
+        v126 = [NSString stringWithFormat:@"%@", serverHostname];
 
-        v127 = [v179 serverIPAddress];
-        v153 = [NSString stringWithFormat:@"%@", v127];
+        serverIPAddress = [v179 serverIPAddress];
+        v127 = [NSString stringWithFormat:@"%@", serverIPAddress];
 
-        v177 = [(APSUserCourier *)v191 getConnectionTypeFromProtocolConnection:v179];
+        v177 = [(APSUserCourier *)selfCopy getConnectionTypeFromProtocolConnection:v179];
         v128 = [NSNumber numberWithBool:v89];
         v129 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v179 linkQuality]);
         [v123 setObject:v177 forKeyedSubscript:@"ConnectionType"];
@@ -11085,8 +11085,8 @@ LABEL_160:
 
         [v123 setObject:v124 forKeyedSubscript:@"MessageIdentifier"];
         [v123 setObject:v125 forKeyedSubscript:@"Priority"];
-        [v123 setObject:v154 forKeyedSubscript:@"ServerHostname"];
-        [v123 setObject:v153 forKeyedSubscript:@"ServerIP"];
+        [v123 setObject:v126 forKeyedSubscript:@"ServerHostname"];
+        [v123 setObject:v127 forKeyedSubscript:@"ServerIP"];
         [v123 setObject:v188 forKeyedSubscript:@"Topic"];
         v132 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v186 length]);
         [v123 setObject:v132 forKeyedSubscript:@"Size"];
@@ -11110,13 +11110,13 @@ LABEL_160:
         v119 = v181;
         v50 = v179;
 
-        self = v191;
+        self = selfCopy;
         v117 = v155;
 
         v176 = 0;
         v173 = 0;
         v51 = v189;
-        v118 = a5;
+        generationCopy3 = generation;
         v115 = v187;
         v116 = v161;
         goto LABEL_164;
@@ -11136,7 +11136,7 @@ LABEL_160:
           goto LABEL_137;
         }
 
-        v95 = [(APSUserCourier *)v191 updateChannelForIncomingMessageWithData:v187 forTopic:v188];
+        v95 = [(APSUserCourier *)selfCopy updateChannelForIncomingMessageWithData:v187 forTopic:v188];
         v96 = +[APSLog shouldReduceLogging];
         v97 = +[APSLog courier];
         v98 = v97;
@@ -11145,7 +11145,7 @@ LABEL_160:
           if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v205 = v191;
+            selfCopy13 = selfCopy;
             v206 = 2112;
             *v207 = v95;
             v99 = v98;
@@ -11158,7 +11158,7 @@ LABEL_135:
         else if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v205 = v191;
+          selfCopy13 = selfCopy;
           v206 = 2112;
           *v207 = v95;
           v99 = v98;
@@ -11183,8 +11183,8 @@ LABEL_137:
         goto LABEL_111;
       }
 
-      [(APSPushHistory *)v191->_pushHistory receivedPushWithTopic:v188 token:v12 payload:v186 timestamp:v178];
-      v101 = [(APSUserCourier *)v191 _copyParsedPayload:v186];
+      [(APSPushHistory *)selfCopy->_pushHistory receivedPushWithTopic:v188 token:v12 payload:v186 timestamp:v178];
+      v101 = [(APSUserCourier *)selfCopy _copyParsedPayload:v186];
       v102 = +[APSLog courierOversized];
       if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
       {
@@ -11192,7 +11192,7 @@ LABEL_137:
         v104 = v103;
         *buf = 138413826;
         v105 = @"NO";
-        v205 = v191;
+        selfCopy13 = selfCopy;
         if (v63)
         {
           v106 = @"YES";
@@ -11205,13 +11205,13 @@ LABEL_137:
 
         v206 = 2112;
         *v207 = v188;
-        if (v175)
+        if (agentCopy)
         {
           v105 = @"YES";
         }
 
         *&v207[8] = 2112;
-        v208 = v11;
+        v208 = connectionCopy;
         v209 = 2112;
         v210 = v103;
         v211 = 2112;
@@ -11249,7 +11249,7 @@ LABEL_137:
       -[APSIncomingMessage setTracingEnabled:](v92, "setTracingEnabled:", ([v183 unsignedLongValue] >> 1) & 1);
       [(APSIncomingMessage *)v92 setTracingUUID:v174];
       [(APSIncomingMessage *)v92 setExpirationDate:v168];
-      -[APSIncomingMessage setIncomingInterface:](v92, "setIncomingInterface:", sub_10001B334([v11 connectionType]));
+      -[APSIncomingMessage setIncomingInterface:](v92, "setIncomingInterface:", sub_10001B334([connectionCopy connectionType]));
       if ((v172 & 2) == 0)
       {
 LABEL_150:
@@ -11258,15 +11258,15 @@ LABEL_150:
         [(APSIncomingMessage *)v92 setPerAppToken:v12];
         if (v182)
         {
-          v121 = [v182 unsignedShortValue];
+          unsignedShortValue = [v182 unsignedShortValue];
         }
 
         else
         {
-          v121 = 0;
+          unsignedShortValue = 0;
         }
 
-        [(APSIncomingMessage *)v92 setPushType:v121];
+        [(APSIncomingMessage *)v92 setPushType:unsignedShortValue];
         if (v185)
         {
           -[APSIncomingMessage setPriority:](v92, "setPriority:", [v185 unsignedIntegerValue]);
@@ -11282,19 +11282,19 @@ LABEL_150:
         if (os_log_type_enabled(v122, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v205 = v191;
+          selfCopy13 = selfCopy;
           v206 = 2112;
           *v207 = v174;
           _os_log_impl(&_mh_execute_header, v122, OS_LOG_TYPE_DEFAULT, "%@: Push has been read from stream and parsed. UUID: %@", buf, 0x16u);
         }
 
-        [(APSUserCourier *)v191 _triggerAutoBugCaptureIfMessageIsRetried:v92];
+        [(APSUserCourier *)selfCopy _triggerAutoBugCaptureIfMessageIsRetried:v92];
         v89 = 0;
         v159 = 0;
         goto LABEL_160;
       }
 
-      --v191->_usersPotentiallyWithMessages;
+      --selfCopy->_usersPotentiallyWithMessages;
       v107 = +[APSLog shouldReduceLogging];
       v108 = +[APSLog courier];
       v109 = v108;
@@ -11305,9 +11305,9 @@ LABEL_150:
           goto LABEL_148;
         }
 
-        usersPotentiallyWithMessages = v191->_usersPotentiallyWithMessages;
+        usersPotentiallyWithMessages = selfCopy->_usersPotentiallyWithMessages;
         *buf = 138412802;
-        v205 = v191;
+        selfCopy13 = selfCopy;
         v206 = 1024;
         *v207 = usersPotentiallyWithMessages;
         *&v207[4] = 1024;
@@ -11323,9 +11323,9 @@ LABEL_150:
           goto LABEL_148;
         }
 
-        v120 = v191->_usersPotentiallyWithMessages;
+        v120 = selfCopy->_usersPotentiallyWithMessages;
         *buf = 138412802;
-        v205 = v191;
+        selfCopy13 = selfCopy;
         v206 = 1024;
         *v207 = v120;
         *&v207[4] = 1024;
@@ -11337,9 +11337,9 @@ LABEL_150:
       _os_log_impl(&_mh_execute_header, v111, v112, "%@: Received LastFromStorage flag in message, users potentially with messages = %d, flags = 0x%02x", buf, 0x18u);
 LABEL_148:
 
-      if (!v191->_usersPotentiallyWithMessages)
+      if (!selfCopy->_usersPotentiallyWithMessages)
       {
-        [(APSNoOpPowerAssertion *)v191->_waitForStoredMessagesToArrivePowerAssertion clear];
+        [(APSNoOpPowerAssertion *)selfCopy->_waitForStoredMessagesToArrivePowerAssertion clear];
       }
 
       goto LABEL_150;
@@ -11355,7 +11355,7 @@ LABEL_148:
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v205 = v191;
+          selfCopy13 = selfCopy;
           v206 = 2112;
           *v207 = v12;
           *&v207[8] = 2112;
@@ -11370,7 +11370,7 @@ LABEL_79:
       else if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v205 = v191;
+        selfCopy13 = selfCopy;
         v206 = 2112;
         *v207 = v12;
         *&v207[8] = 2112;
@@ -11389,9 +11389,9 @@ LABEL_79:
     if (v12)
     {
       tokenStore = self->_tokenStore;
-      v75 = [(APSUserCourier *)self courierUser];
+      courierUser = [(APSUserCourier *)self courierUser];
       v203 = 0;
-      LOBYTE(tokenStore) = [(APSTokenStore *)tokenStore isMatchingTokenInKeychain:v12 user:v75 error:&v203];
+      LOBYTE(tokenStore) = [(APSTokenStore *)tokenStore isMatchingTokenInKeychain:v12 user:courierUser error:&v203];
       v67 = v203;
 
       if (tokenStore)
@@ -11399,14 +11399,14 @@ LABEL_79:
         v68 = 0;
 LABEL_88:
         v78 = [(APSPushHistory *)self->_pushHistory timestampForTopic:v46 token:v12];
-        v79 = self;
+        selfCopy3 = self;
         v66 = v78;
         if (!v12)
         {
           goto LABEL_69;
         }
 
-        v80 = v79->_pushHistory;
+        v80 = selfCopy3->_pushHistory;
         v217 = v12;
         v81 = [NSArray arrayWithObjects:&v217 count:1];
         LODWORD(v80) = [(APSPushHistory *)v80 hasPayload:v186 forTopic:v46 tokens:v81];
@@ -11425,7 +11425,7 @@ LABEL_88:
             if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
             {
               *buf = 138413058;
-              v205 = v191;
+              selfCopy13 = selfCopy;
               v206 = 2112;
               *v207 = v12;
               *&v207[8] = 2112;
@@ -11458,7 +11458,7 @@ LABEL_88:
     goto LABEL_88;
   }
 
-  v189 = [(APSUserCourier *)self _findConnectedClientWithToken:v16 onProtocolConnection:v11];
+  v189 = [(APSUserCourier *)self _findConnectedClientWithToken:v16 onProtocolConnection:connectionCopy];
   if (!v189)
   {
     v189 = [(APSUserCourier *)self _findClientWithToken:v16];
@@ -11473,7 +11473,7 @@ LABEL_88:
       }
 
       *buf = 138413058;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v184;
       *&v207[8] = 2112;
@@ -11493,7 +11493,7 @@ LABEL_88:
       }
 
       *buf = 138413058;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v184;
       *&v207[8] = 2112;
@@ -11517,7 +11517,7 @@ LABEL_88:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413314;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v189;
       *&v207[8] = 2112;
@@ -11539,7 +11539,7 @@ LABEL_22:
   else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v205 = self;
+    selfCopy13 = self;
     v206 = 2112;
     *v207 = v189;
     *&v207[8] = 2112;
@@ -11556,14 +11556,14 @@ LABEL_22:
 
 LABEL_23:
 
-  if (v175 || !v189)
+  if (agentCopy || !v189)
   {
     goto LABEL_29;
   }
 
   v28 = v18;
-  v29 = [v11 identifier];
-  v30 = [v189 isConnectedOnInterface:v29];
+  identifier = [connectionCopy identifier];
+  v30 = [v189 isConnectedOnInterface:identifier];
 
   v31 = +[APSLog shouldReduceLogging];
   v32 = +[APSLog courier];
@@ -11579,7 +11579,7 @@ LABEL_23:
       }
 
       *buf = 138412546;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v189;
       v35 = v33;
@@ -11595,7 +11595,7 @@ LABEL_23:
       }
 
       *buf = 138412546;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v189;
       v35 = v33;
@@ -11605,8 +11605,8 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v35, v36, "%@ passing this message off to the client device %@ to handle.", buf, 0x16u);
 LABEL_47:
 
-    v50 = v11;
-    [v189 receivedPush:v10 onConnectionType:objc_msgSend(v11 withGeneration:{"connectionType"), a5}];
+    v50 = connectionCopy;
+    [v189 receivedPush:messageCopy onConnectionType:objc_msgSend(connectionCopy withGeneration:{"connectionType"), generation}];
     v55 = +[APSLog shouldReduceLogging];
     v56 = +[APSLog courier];
     v57 = v56;
@@ -11616,7 +11616,7 @@ LABEL_47:
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v205 = self;
+        selfCopy13 = self;
         v58 = v57;
         v59 = OS_LOG_TYPE_DEBUG;
 LABEL_56:
@@ -11627,7 +11627,7 @@ LABEL_56:
     else if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v205 = self;
+      selfCopy13 = self;
       v58 = v57;
       v59 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_56;
@@ -11640,12 +11640,12 @@ LABEL_56:
   v34 = v28;
   if (v31)
   {
-    v50 = v11;
+    v50 = connectionCopy;
     v51 = v189;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v189;
       v52 = v33;
@@ -11657,12 +11657,12 @@ LABEL_52:
 
   else
   {
-    v50 = v11;
+    v50 = connectionCopy;
     v51 = v189;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v205 = self;
+      selfCopy13 = self;
       v206 = 2112;
       *v207 = v189;
       v52 = v33;
@@ -11676,12 +11676,12 @@ LABEL_58:
 LABEL_177:
 }
 
-- (id)_copyParsedPayload:(id)a3
+- (id)_copyParsedPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = objc_autoreleasePoolPush();
   v16 = 0;
-  v5 = [NSPropertyListSerialization propertyListWithData:v3 options:0 format:&v16 error:0];
+  v5 = [NSPropertyListSerialization propertyListWithData:payloadCopy options:0 format:&v16 error:0];
   if (v5)
   {
     v6 = 0;
@@ -11691,7 +11691,7 @@ LABEL_177:
   else
   {
     v15 = 0;
-    v8 = [NSJSONSerialization JSONObjectWithData:v3 options:0 error:&v15];
+    v8 = [NSJSONSerialization JSONObjectWithData:payloadCopy options:0 error:&v15];
     v6 = v15;
     if (!v8)
     {
@@ -11713,11 +11713,11 @@ LABEL_8:
 
     for (i = objc_alloc_init(NSMutableString); ; [(__CFString *)i appendString:@"; "])
     {
-      v10 = [v6 localizedDescription];
-      [(__CFString *)i appendString:v10];
+      localizedDescription = [v6 localizedDescription];
+      [(__CFString *)i appendString:localizedDescription];
 
-      v11 = [v6 userInfo];
-      v12 = [v11 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [v6 userInfo];
+      v12 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if (!v12)
       {
@@ -11752,16 +11752,16 @@ LABEL_16:
   return v7;
 }
 
-- (void)_handleOutgoingMessageAcknowledgment:(id)a3 onProtocolConnection:(id)a4
+- (void)_handleOutgoingMessageAcknowledgment:(id)acknowledgment onProtocolConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"APSProtocolAckTimestampKey"];
-  v9 = [v8 unsignedIntegerValue];
+  connectionCopy = connection;
+  acknowledgmentCopy = acknowledgment;
+  v8 = [acknowledgmentCopy objectForKey:@"APSProtocolAckTimestampKey"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v7 objectForKey:@"APSProtocolDeliveryStatus"];
+  v10 = [acknowledgmentCopy objectForKey:@"APSProtocolDeliveryStatus"];
 
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
   v12 = APSError();
   v13 = +[APSLog shouldReduceLogging];
   v14 = +[APSLog courier];
@@ -11771,9 +11771,9 @@ LABEL_16:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = v11;
+      v25 = integerValue;
       v16 = v15;
       v17 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -11784,27 +11784,27 @@ LABEL_6:
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2048;
-    v25 = v11;
+    v25 = integerValue;
     v16 = v15;
     v17 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
   outgoingMessageQueue = self->_outgoingMessageQueue;
-  v19 = [v6 linkQuality];
-  v20 = [v6 connectionType];
-  v21 = [v6 identifier];
+  linkQuality = [connectionCopy linkQuality];
+  connectionType = [connectionCopy connectionType];
+  identifier = [connectionCopy identifier];
 
-  [(APSOutgoingMessageQueue *)outgoingMessageQueue handleAcknowledgmentForOutgoingMessageWithResult:v12 ackTimestamp:v9 linkQuality:v19 connectionType:v20 onInterface:v21];
+  [(APSOutgoingMessageQueue *)outgoingMessageQueue handleAcknowledgmentForOutgoingMessageWithResult:v12 ackTimestamp:unsignedIntegerValue linkQuality:linkQuality connectionType:connectionType onInterface:identifier];
 }
 
-- (void)handleDisconnectForInterface:(id)a3 connectionState:(int64_t)a4 withReason:(unsigned int)a5
+- (void)handleDisconnectForInterface:(id)interface connectionState:(int64_t)state withReason:(unsigned int)reason
 {
-  v7 = a3;
-  [(APSUserCourier *)self _removePendingRequestsForProtocolConnection:v7];
-  [(APSUserCourier *)self markProtocolConnectionDisconnectedForActivityTracking:v7];
+  interfaceCopy = interface;
+  [(APSUserCourier *)self _removePendingRequestsForProtocolConnection:interfaceCopy];
+  [(APSUserCourier *)self markProtocolConnectionDisconnectedForActivityTracking:interfaceCopy];
   [(APSUserCourier *)self _reportAPSConnectivity];
   if (self->_proxyClientWithOutstandingPresence)
   {
@@ -11820,7 +11820,7 @@ LABEL_6:
 
       proxyClientWithOutstandingPresence = self->_proxyClientWithOutstandingPresence;
       *buf = 138412546;
-      v70 = self;
+      selfCopy11 = self;
       v71 = 2112;
       v72 = proxyClientWithOutstandingPresence;
       v12 = v10;
@@ -11836,7 +11836,7 @@ LABEL_6:
 
       v14 = self->_proxyClientWithOutstandingPresence;
       *buf = 138412546;
-      v70 = self;
+      selfCopy11 = self;
       v71 = 2112;
       v72 = v14;
       v12 = v10;
@@ -11847,8 +11847,8 @@ LABEL_6:
 LABEL_8:
 
     v15 = self->_proxyClientWithOutstandingPresence;
-    v16 = [(APSProxyClient *)v7 identifier];
-    v17 = [(APSProxyClient *)v15 stateOnInterface:v16];
+    identifier = [(APSProxyClient *)interfaceCopy identifier];
+    v17 = [(APSProxyClient *)v15 stateOnInterface:identifier];
 
     if ((v17 & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
@@ -11864,13 +11864,13 @@ LABEL_8:
       {
         v21 = self->_proxyClientWithOutstandingPresence;
         *buf = 138413058;
-        v70 = self;
+        selfCopy11 = self;
         v71 = 2112;
         v72 = v21;
         v73 = 2048;
         v74 = v17;
         v75 = 2112;
-        v76 = v7;
+        v76 = interfaceCopy;
         v22 = v20;
         v23 = OS_LOG_TYPE_DEBUG;
 LABEL_14:
@@ -11882,13 +11882,13 @@ LABEL_14:
     {
       v24 = self->_proxyClientWithOutstandingPresence;
       *buf = 138413058;
-      v70 = self;
+      selfCopy11 = self;
       v71 = 2112;
       v72 = v24;
       v73 = 2048;
       v74 = v17;
       v75 = 2112;
-      v76 = v7;
+      v76 = interfaceCopy;
       v22 = v20;
       v23 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_14;
@@ -11918,12 +11918,12 @@ LABEL_16:
         }
 
         v30 = [(NSMutableDictionary *)self->_proxyClients objectForKey:*(*(&v64 + 1) + 8 * i)];
-        v31 = [(APSProxyClient *)v7 identifier];
-        [v30 setState:0 onInterface:v31];
+        identifier2 = [(APSProxyClient *)interfaceCopy identifier];
+        [v30 setState:0 onInterface:identifier2];
 
         v32 = self->_proxyClientWithOutstandingPresence;
-        v33 = [(APSProxyClient *)v7 identifier];
-        [(APSProxyClient *)v32 setFilterMode:0 onInterface:v33];
+        identifier3 = [(APSProxyClient *)interfaceCopy identifier];
+        [(APSProxyClient *)v32 setFilterMode:0 onInterface:identifier3];
       }
 
       v27 = [(NSMutableDictionary *)v25 countByEnumeratingWithState:&v64 objects:v68 count:16];
@@ -11933,14 +11933,14 @@ LABEL_16:
   }
 
   [(APSUserCourier *)self _adjustIsConnectedToService];
-  if ((a4 - 1) <= 1)
+  if ((state - 1) <= 1)
   {
-    [(APSUserCourier *)self _disconnectTokenWithReason:a5 onProtocolConnection:v7];
+    [(APSUserCourier *)self _disconnectTokenWithReason:reason onProtocolConnection:interfaceCopy];
   }
 
-  v34 = [(APSUserCourier *)self filterVersionStateMachine];
-  v35 = [(APSProxyClient *)v7 identifier];
-  v36 = [v34 hasUnAckedVersionOn:v35];
+  filterVersionStateMachine = [(APSUserCourier *)self filterVersionStateMachine];
+  identifier4 = [(APSProxyClient *)interfaceCopy identifier];
+  v36 = [filterVersionStateMachine hasUnAckedVersionOn:identifier4];
 
   if (v36)
   {
@@ -11948,8 +11948,8 @@ LABEL_16:
     v61[1] = 3221225472;
     v61[2] = sub_10004BFB4;
     v61[3] = &unk_1001870A0;
-    v62 = v7;
-    v63 = self;
+    v62 = interfaceCopy;
+    selfCopy5 = self;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v61];
   }
 
@@ -11964,9 +11964,9 @@ LABEL_16:
     }
 
     *buf = 138412546;
-    v70 = self;
+    selfCopy11 = self;
     v71 = 2112;
-    v72 = v7;
+    v72 = interfaceCopy;
     v40 = v39;
     v41 = OS_LOG_TYPE_DEBUG;
   }
@@ -11979,9 +11979,9 @@ LABEL_16:
     }
 
     *buf = 138412546;
-    v70 = self;
+    selfCopy11 = self;
     v71 = 2112;
-    v72 = v7;
+    v72 = interfaceCopy;
     v40 = v39;
     v41 = OS_LOG_TYPE_DEFAULT;
   }
@@ -11989,21 +11989,21 @@ LABEL_16:
   _os_log_impl(&_mh_execute_header, v40, v41, "%@ clearing tracking of protocol connection %@", buf, 0x16u);
 LABEL_33:
 
-  v42 = [(APSUserCourier *)self protocolConnectionByIdentifier];
-  v43 = [(APSProxyClient *)v7 identifier];
-  [v42 setObject:0 forKeyedSubscript:v43];
+  protocolConnectionByIdentifier = [(APSUserCourier *)self protocolConnectionByIdentifier];
+  identifier5 = [(APSProxyClient *)interfaceCopy identifier];
+  [protocolConnectionByIdentifier setObject:0 forKeyedSubscript:identifier5];
 
-  v44 = [(APSUserCourier *)self stateByConnectionIdentifier];
-  v45 = [(APSProxyClient *)v7 identifier];
-  [v44 setObject:0 forKeyedSubscript:v45];
+  stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+  identifier6 = [(APSProxyClient *)interfaceCopy identifier];
+  [stateByConnectionIdentifier setObject:0 forKeyedSubscript:identifier6];
 
-  if (a4 == 2)
+  if (state == 2)
   {
-    if ([(APSProxyClient *)v7 connectionType]!= 2)
+    if ([(APSProxyClient *)interfaceCopy connectionType]!= 2)
     {
       outgoingMessageQueue = self->_outgoingMessageQueue;
-      v52 = [(APSProxyClient *)v7 identifier];
-      [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionClosedOnInterface:v52];
+      identifier7 = [(APSProxyClient *)interfaceCopy identifier];
+      [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionClosedOnInterface:identifier7];
 
       goto LABEL_43;
     }
@@ -12016,7 +12016,7 @@ LABEL_33:
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v70 = self;
+        selfCopy11 = self;
         v49 = v48;
         v50 = OS_LOG_TYPE_DEBUG;
 LABEL_41:
@@ -12027,7 +12027,7 @@ LABEL_41:
     else if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v70 = self;
+      selfCopy11 = self;
       v49 = v48;
       v50 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_41;
@@ -12039,8 +12039,8 @@ LABEL_43:
     {
 LABEL_51:
       tokenRequestQueue = self->_tokenRequestQueue;
-      v59 = [(APSProxyClient *)v7 identifier];
-      [(APSOutgoingQueue *)tokenRequestQueue handleConnectionClosedOnInterface:v59];
+      identifier8 = [(APSProxyClient *)interfaceCopy identifier];
+      [(APSOutgoingQueue *)tokenRequestQueue handleConnectionClosedOnInterface:identifier8];
 
       goto LABEL_52;
     }
@@ -12053,9 +12053,9 @@ LABEL_51:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v70 = self;
+        selfCopy11 = self;
         v71 = 2112;
-        v72 = v7;
+        v72 = interfaceCopy;
         v56 = v55;
         v57 = OS_LOG_TYPE_DEBUG;
 LABEL_49:
@@ -12066,9 +12066,9 @@ LABEL_49:
     else if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v70 = self;
+      selfCopy11 = self;
       v71 = 2112;
-      v72 = v7;
+      v72 = interfaceCopy;
       v56 = v55;
       v57 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_49;
@@ -12083,20 +12083,20 @@ LABEL_52:
   [(APSUserCourier *)self _processShouldUseInternetChangeIfNecessary];
 }
 
-- (void)_didFinishAssertingAllPresences:(id)a3
+- (void)_didFinishAssertingAllPresences:(id)presences
 {
-  v4 = a3;
-  [v4 noteConnected];
+  presencesCopy = presences;
+  [presencesCopy noteConnected];
   [(APSUserCourier *)self _reportAPSConnectivity];
   outgoingMessageQueue = self->_outgoingMessageQueue;
-  v6 = [v4 identifier];
-  [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionOpenedOnInterface:v6];
+  identifier = [presencesCopy identifier];
+  [(APSOutgoingMessageQueue *)outgoingMessageQueue handleConnectionOpenedOnInterface:identifier];
 
   [(APSOutgoingQueue *)self->_tokenRequestQueue handleConnectionOpened];
   v7 = self->_topicManager;
-  LODWORD(v6) = [(APSTopicManager *)v7 pendingServerUpdate];
-  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v4 withReason:0];
-  if (v6)
+  LODWORD(identifier) = [(APSTopicManager *)v7 pendingServerUpdate];
+  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:presencesCopy withReason:0];
+  if (identifier)
   {
     v8 = +[APSLog shouldReduceLogging];
     v9 = +[APSLog courier];
@@ -12106,7 +12106,7 @@ LABEL_52:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v33 = self;
+        selfCopy5 = self;
         v11 = v10;
         v12 = OS_LOG_TYPE_DEBUG;
 LABEL_7:
@@ -12117,7 +12117,7 @@ LABEL_7:
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy5 = self;
       v11 = v10;
       v12 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_7;
@@ -12127,13 +12127,13 @@ LABEL_7:
     v27 = 3221225472;
     v28 = sub_10004C4A0;
     v29 = &unk_1001870A0;
-    v30 = v4;
-    v31 = self;
+    v30 = presencesCopy;
+    selfCopy3 = self;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:&v26];
   }
 
   v13 = [(APSUserCourier *)self publicToken:v26];
-  [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:v4 token:v13];
+  [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:presencesCopy token:v13];
 
   v14 = +[APSLog shouldReduceLogging];
   v15 = +[APSLog courier];
@@ -12146,7 +12146,7 @@ LABEL_7:
     }
 
     *buf = 138412290;
-    v33 = self;
+    selfCopy5 = self;
     v17 = v16;
     v18 = OS_LOG_TYPE_DEBUG;
   }
@@ -12159,7 +12159,7 @@ LABEL_7:
     }
 
     *buf = 138412290;
-    v33 = self;
+    selfCopy5 = self;
     v17 = v16;
     v18 = OS_LOG_TYPE_DEFAULT;
   }
@@ -12167,10 +12167,10 @@ LABEL_7:
   _os_log_impl(&_mh_execute_header, v17, v18, "%@: Sending presence tracking message following connect.", buf, 0xCu);
 LABEL_15:
 
-  [(APSUserCourier *)self sendPresenceTrackingRequestOnProtocolConnection:v4];
+  [(APSUserCourier *)self sendPresenceTrackingRequestOnProtocolConnection:presencesCopy];
   [(APSUserCourier *)self _adjustIsConnectedToService];
   [(APSUserCourier *)self _sendQueuedOutgoingMessages];
-  [v4 connectionSetupComplete];
+  [presencesCopy connectionSetupComplete];
   v19 = +[APSLog shouldReduceLogging];
   v20 = +[APSLog courier];
   v21 = v20;
@@ -12180,7 +12180,7 @@ LABEL_15:
     {
       cachedPublicToken = self->_cachedPublicToken;
       *buf = 138412290;
-      v33 = cachedPublicToken;
+      selfCopy5 = cachedPublicToken;
       v23 = v21;
       v24 = OS_LOG_TYPE_DEBUG;
 LABEL_20:
@@ -12192,20 +12192,20 @@ LABEL_20:
   {
     v25 = self->_cachedPublicToken;
     *buf = 138412290;
-    v33 = v25;
+    selfCopy5 = v25;
     v23 = v21;
     v24 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_20;
   }
 }
 
-- (void)_sendPresenceMessageOnProtocolConnection:(id)a3 serverTime:(id)a4
+- (void)_sendPresenceMessageOnProtocolConnection:(id)connection serverTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSUserCourier *)self publicToken];
-  v9 = [(APSUserCourier *)self courierUser];
-  v10 = [v9 isDefaultUser];
+  connectionCopy = connection;
+  timeCopy = time;
+  publicToken = [(APSUserCourier *)self publicToken];
+  courierUser = [(APSUserCourier *)self courierUser];
+  isDefaultUser = [courierUser isDefaultUser];
 
   v11 = +[APSLog shouldReduceLogging];
   v12 = +[APSLog courier];
@@ -12217,21 +12217,21 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v14 = [(APSUserCourier *)self courierUser];
-    v15 = [v14 name];
-    v16 = [v8 length];
-    v17 = [v8 debugDescription];
+    courierUser2 = [(APSUserCourier *)self courierUser];
+    name = [courierUser2 name];
+    v16 = [publicToken length];
+    v17 = [publicToken debugDescription];
     courierUser = self->_courierUser;
     *buf = 138413570;
-    v37 = self;
+    selfCopy2 = self;
     v38 = 2112;
-    v39 = v15;
+    v39 = name;
     v40 = 2048;
     v41 = v16;
     v42 = 2112;
     v43 = v17;
     v44 = 2114;
-    v45 = v6;
+    v45 = connectionCopy;
     v46 = 2112;
     v47 = courierUser;
     v19 = v13;
@@ -12245,21 +12245,21 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v14 = [(APSUserCourier *)self courierUser];
-    v15 = [v14 name];
-    v21 = [v8 length];
-    v17 = [v8 debugDescription];
+    courierUser2 = [(APSUserCourier *)self courierUser];
+    name = [courierUser2 name];
+    v21 = [publicToken length];
+    v17 = [publicToken debugDescription];
     v22 = self->_courierUser;
     *buf = 138413570;
-    v37 = self;
+    selfCopy2 = self;
     v38 = 2112;
-    v39 = v15;
+    v39 = name;
     v40 = 2048;
     v41 = v21;
     v42 = 2112;
     v43 = v17;
     v44 = 2114;
-    v45 = v6;
+    v45 = connectionCopy;
     v46 = 2112;
     v47 = v22;
     v19 = v13;
@@ -12273,20 +12273,20 @@ LABEL_7:
   v29 = 3221225472;
   v30 = sub_10004C830;
   v31 = &unk_100187390;
-  v32 = self;
-  v23 = v6;
+  selfCopy3 = self;
+  v23 = connectionCopy;
   v33 = v23;
-  v34 = v8;
-  LOBYTE(v35) = v10;
-  v24 = v8;
+  v34 = publicToken;
+  LOBYTE(v35) = isDefaultUser;
+  v24 = publicToken;
   v25 = objc_retainBlock(&v28);
   v26 = v25;
-  if (v10)
+  if (isDefaultUser)
   {
-    v27 = [(APSUserCourier *)self stateForProtocolConnection:v23, v28, v29, v30, v31, v32, v33, v34, v35];
+    v27 = [(APSUserCourier *)self stateForProtocolConnection:v23, v28, v29, v30, v31, selfCopy3, v33, v34, v35];
     [v27 setUserState:2];
 
-    [(APSUserCourier *)self refreshCertNonceAndSignatureWithServerTime:v7 hasExistingToken:v24 != 0 withCompletion:v26];
+    [(APSUserCourier *)self refreshCertNonceAndSignatureWithServerTime:timeCopy hasExistingToken:v24 != 0 withCompletion:v26];
   }
 
   else
@@ -12295,14 +12295,14 @@ LABEL_7:
   }
 }
 
-- (void)_requestToSendFilterOnTopicManager:(id)a3 change:(id)a4
+- (void)_requestToSendFilterOnTopicManager:(id)manager change:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   if ([(APSUserCourier *)self shouldOnlySendFilterOnPreferredInterface])
   {
-    [v5 setReason:3];
-    v6 = [(APSUserCourier *)self preferredProtocolConnection];
-    [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v6 withChange:v5];
+    [changeCopy setReason:3];
+    preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+    [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:preferredProtocolConnection withChange:changeCopy];
   }
 
   else
@@ -12311,21 +12311,21 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = sub_10004CD98;
     v7[3] = &unk_1001870A0;
-    v8 = v5;
-    v9 = self;
+    v8 = changeCopy;
+    selfCopy = self;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v7];
   }
 }
 
-- (id)_topicsByHashFromTopicStateDictionary:(id)a3
+- (id)_topicsByHashFromTopicStateDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(NSMutableDictionary);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -12342,8 +12342,8 @@ LABEL_7:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v15}];
-        v12 = [v11 topicName];
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        topicName = [v11 topicName];
+        [v4 setObject:topicName forKeyedSubscript:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -12357,15 +12357,15 @@ LABEL_7:
   return v13;
 }
 
-- (id)_ultraConstrainedTopicsFromTopicDictionary:(id)a3
+- (id)_ultraConstrainedTopicsFromTopicDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(NSMutableDictionary);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -12381,9 +12381,9 @@ LABEL_7:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [(APSUserCourier *)self topicManager];
+        topicManager = [(APSUserCourier *)self topicManager];
         v13 = [v6 objectForKeyedSubscript:v11];
-        v14 = [v12 hasUltraConstrainedPermissionForTopic:v13];
+        v14 = [topicManager hasUltraConstrainedPermissionForTopic:v13];
 
         if (v14)
         {
@@ -12403,25 +12403,25 @@ LABEL_7:
   return v16;
 }
 
-- (void)_sendFilterMessageOnProtocolConnection:(id)a3 withReason:(unint64_t)a4
+- (void)_sendFilterMessageOnProtocolConnection:(id)connection withReason:(unint64_t)reason
 {
-  v6 = a3;
+  connectionCopy = connection;
   v7 = objc_alloc_init(APSFilterChange);
-  [(APSFilterChange *)v7 setReason:a4];
-  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:v6 withChange:v7];
+  [(APSFilterChange *)v7 setReason:reason];
+  [(APSUserCourier *)self _sendFilterMessageOnProtocolConnection:connectionCopy withChange:v7];
 }
 
-- (void)_sendFilterMessageOnProtocolConnection:(id)a3 withChange:(id)a4
+- (void)_sendFilterMessageOnProtocolConnection:(id)connection withChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSUserCourier *)self topicManager];
+  connectionCopy = connection;
+  changeCopy = change;
+  topicManager = [(APSUserCourier *)self topicManager];
 
-  if (!v8)
+  if (!topicManager)
   {
     v13 = +[APSLog shouldReduceLogging];
     v14 = +[APSLog courier];
-    v9 = v14;
+    publicToken = v14;
     if (v13)
     {
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -12430,8 +12430,8 @@ LABEL_7:
       }
 
       *buf = 136315138;
-      v32 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
-      v15 = v9;
+      selfCopy4 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
+      v15 = publicToken;
       v16 = OS_LOG_TYPE_DEBUG;
     }
 
@@ -12443,8 +12443,8 @@ LABEL_7:
       }
 
       *buf = 136315138;
-      v32 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
-      v15 = v9;
+      selfCopy4 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
+      v15 = publicToken;
       v16 = OS_LOG_TYPE_DEFAULT;
     }
 
@@ -12452,8 +12452,8 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  v9 = [(APSUserCourier *)self publicToken];
-  if (!v9)
+  publicToken = [(APSUserCourier *)self publicToken];
+  if (!publicToken)
   {
     v17 = +[APSLog shouldReduceLogging];
     v18 = +[APSLog courier];
@@ -12463,7 +12463,7 @@ LABEL_7:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v32 = self;
+        selfCopy4 = self;
         v33 = 2080;
         v34 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
         v20 = v19;
@@ -12476,7 +12476,7 @@ LABEL_19:
     else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2080;
       v34 = "[APSUserCourier _sendFilterMessageOnProtocolConnection:withChange:]";
       v20 = v19;
@@ -12487,10 +12487,10 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  v10 = [(APSUserCourier *)self topicManager];
-  v11 = [v10 hasListeningTopics];
+  topicManager2 = [(APSUserCourier *)self topicManager];
+  hasListeningTopics = [topicManager2 hasListeningTopics];
 
-  if (!v11)
+  if (!hasListeningTopics)
   {
     v22 = +[APSLog shouldReduceLogging];
     v23 = +[APSLog courier];
@@ -12500,7 +12500,7 @@ LABEL_19:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v32 = self;
+        selfCopy4 = self;
         v25 = v24;
         v26 = OS_LOG_TYPE_DEBUG;
 LABEL_23:
@@ -12511,7 +12511,7 @@ LABEL_23:
     else if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = self;
+      selfCopy4 = self;
       v25 = v24;
       v26 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_23;
@@ -12521,36 +12521,36 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v12 = [(APSUserCourier *)self topicManager];
+  topicManager3 = [(APSUserCourier *)self topicManager];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10004D524;
   v27[3] = &unk_1001873B8;
   v27[4] = self;
-  v28 = v6;
-  v29 = v7;
-  v9 = v9;
-  v30 = v9;
-  [v12 performFilterBlock:v27];
+  v28 = connectionCopy;
+  v29 = changeCopy;
+  publicToken = publicToken;
+  v30 = publicToken;
+  [topicManager3 performFilterBlock:v27];
 
 LABEL_25:
 }
 
-- (void)_finishDisconnectForInterface:(id)a3
+- (void)_finishDisconnectForInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self stateForProtocolConnection:v4];
+  interfaceCopy = interface;
+  v5 = [(APSUserCourier *)self stateForProtocolConnection:interfaceCopy];
   [v5 setUserState:3];
-  v6 = [(APSUserCourier *)self filterVersionStateMachine];
-  v7 = [v4 identifier];
-  [v6 clearInfoFor:v7];
+  filterVersionStateMachine = [(APSUserCourier *)self filterVersionStateMachine];
+  identifier = [interfaceCopy identifier];
+  [filterVersionStateMachine clearInfoFor:identifier];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(APSUserCourier *)self connectionServers];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v9 = [connectionServers countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -12561,20 +12561,20 @@ LABEL_25:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(connectionServers);
         }
 
         [*(*(&v21 + 1) + 8 * i) handleConnectionStatusChanged:0];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v10 = [connectionServers countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(APSUser *)self->_courierUser name];
-  v14 = [APSSystemUser systemUserWithUserID:v13];
+  name = [(APSUser *)self->_courierUser name];
+  v14 = [APSSystemUser systemUserWithUserID:name];
 
   if ([v14 isGuestUser] && objc_msgSend(v14, "isLoggedOut"))
   {
@@ -12585,11 +12585,11 @@ LABEL_25:
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [(APSUser *)self->_courierUser name];
+        name2 = [(APSUser *)self->_courierUser name];
         *buf = 138412546;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
-        v28 = v18;
+        v28 = name2;
         v19 = v17;
         v20 = OS_LOG_TYPE_DEBUG;
 LABEL_15:
@@ -12599,11 +12599,11 @@ LABEL_15:
 
     else if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(APSUser *)self->_courierUser name];
+      name2 = [(APSUser *)self->_courierUser name];
       *buf = 138412546;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2112;
-      v28 = v18;
+      v28 = name2;
       v19 = v17;
       v20 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_15;
@@ -12613,9 +12613,9 @@ LABEL_15:
   }
 }
 
-- (void)_sendActiveStateMessageWithSendAllBlueListMessages:(BOOL)a3
+- (void)_sendActiveStateMessageWithSendAllBlueListMessages:(BOOL)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v5 = +[APSLog shouldReduceLogging];
   v6 = +[APSLog courier];
   v7 = v6;
@@ -12627,13 +12627,13 @@ LABEL_15:
     }
 
     v8 = @"NO";
-    if (v3)
+    if (messagesCopy)
     {
       v8 = @"YES";
     }
 
     *buf = 138412546;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
     v18 = v8;
     v9 = v7;
@@ -12648,13 +12648,13 @@ LABEL_15:
     }
 
     v11 = @"NO";
-    if (v3)
+    if (messagesCopy)
     {
       v11 = @"YES";
     }
 
     *buf = 138412546;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
     v18 = v11;
     v9 = v7;
@@ -12664,7 +12664,7 @@ LABEL_15:
   _os_log_impl(&_mh_execute_header, v9, v10, "%@: Sending active interval message with send all messages '%@'", buf, 0x16u);
 LABEL_11:
 
-  if (v3)
+  if (messagesCopy)
   {
     v12 = 0x7FFFFFFF;
   }
@@ -12682,31 +12682,31 @@ LABEL_11:
   [(APSUserCourier *)self enumerateConnectedProtocolConnections:v13];
 }
 
-- (void)_sendOutgoingMessage:(id)a3 onProtocolConnection:(id)a4
+- (void)_sendOutgoingMessage:(id)message onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  messageCopy = message;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    v9 = v7;
+    preferredProtocolConnection = connectionCopy;
   }
 
   else
   {
-    v9 = [(APSUserCourier *)self preferredProtocolConnection];
+    preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
   }
 
-  v10 = v9;
+  v10 = preferredProtocolConnection;
   topicHasher = self->_topicHasher;
-  v12 = [v6 topic];
-  v13 = [(APSUserCourier *)self courierUser];
-  v14 = [(APSTopicHasher *)topicHasher topicHashForTopic:v12 user:v13];
+  topic = [messageCopy topic];
+  courierUser = [(APSUserCourier *)self courierUser];
+  v14 = [(APSTopicHasher *)topicHasher topicHashForTopic:topic user:courierUser];
 
-  v15 = [(APSUserCourier *)self courierUser];
-  if ([v15 isDefaultUser])
+  courierUser2 = [(APSUserCourier *)self courierUser];
+  if ([courierUser2 isDefaultUser])
   {
-    v16 = [v6 originator];
+    originator = [messageCopy originator];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -12721,20 +12721,20 @@ LABEL_11:
   {
   }
 
-  v19 = [v6 originator];
-  v20 = [v19 publicToken];
-  v21 = v20;
-  if (v20)
+  originator2 = [messageCopy originator];
+  publicToken = [originator2 publicToken];
+  v21 = publicToken;
+  if (publicToken)
   {
-    v22 = v20;
+    publicToken2 = publicToken;
   }
 
   else
   {
-    v22 = [(APSUserCourier *)self publicToken];
+    publicToken2 = [(APSUserCourier *)self publicToken];
   }
 
-  v18 = v22;
+  v18 = publicToken2;
 
 LABEL_12:
   if ([(APSUserCourier *)self protocolConnectionHasSentActivityTrackingSalt:v10])
@@ -12750,7 +12750,7 @@ LABEL_12:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v59 = self;
+      selfCopy2 = self;
       v60 = 2112;
       v61 = v10;
       v26 = v25;
@@ -12763,7 +12763,7 @@ LABEL_18:
   else if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v59 = self;
+    selfCopy2 = self;
     v60 = 2112;
     v61 = v10;
     v26 = v25;
@@ -12776,8 +12776,8 @@ LABEL_20:
   if (_os_feature_enabled_impl())
   {
     topicManager = self->_topicManager;
-    v29 = [v6 topic];
-    v30 = [(APSTopicManager *)topicManager hasUltraConstrainedPermissionForTopic:v29];
+    topic2 = [messageCopy topic];
+    v30 = [(APSTopicManager *)topicManager hasUltraConstrainedPermissionForTopic:topic2];
   }
 
   else
@@ -12786,14 +12786,14 @@ LABEL_20:
   }
 
   outgoingMessageQueue = self->_outgoingMessageQueue;
-  v32 = [v10 identifier];
-  v33 = [(APSOutgoingMessageQueue *)outgoingMessageQueue lastReversePushRTTMillisecondsOnInterface:v32];
+  identifier = [v10 identifier];
+  v33 = [(APSOutgoingMessageQueue *)outgoingMessageQueue lastReversePushRTTMillisecondsOnInterface:identifier];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_10004EA24;
   v53[3] = &unk_1001873E0;
   v53[4] = self;
-  v34 = v6;
+  v34 = messageCopy;
   v54 = v34;
   v35 = v10;
   v55 = v35;
@@ -12810,19 +12810,19 @@ LABEL_20:
   else
   {
     v37 = self->_outgoingMessageQueue;
-    v38 = [v35 identifier];
-    [(APSOutgoingMessageQueue *)v37 handleSentOutgoingMessage:v34 onInterface:v38];
+    identifier2 = [v35 identifier];
+    [(APSOutgoingMessageQueue *)v37 handleSentOutgoingMessage:v34 onInterface:identifier2];
 
     v51 = [(APSUserCourier *)self getConnectionTypeFromProtocolConnection:v35];
     v57[0] = v51;
     v56[0] = @"ConnectionType";
     v56[1] = @"ServerHostname";
-    v50 = [v35 serverHostname];
-    v49 = [NSString stringWithFormat:@"%@", v50];
+    serverHostname = [v35 serverHostname];
+    v49 = [NSString stringWithFormat:@"%@", serverHostname];
     v57[1] = v49;
     v56[2] = @"ServerIP";
-    v48 = [v35 serverIPAddress];
-    v47 = [NSString stringWithFormat:@"%@", v48];
+    serverIPAddress = [v35 serverIPAddress];
+    v47 = [NSString stringWithFormat:@"%@", serverIPAddress];
     v57[2] = v47;
     v56[3] = @"LinkQuality";
     v52 = v14;
@@ -12832,8 +12832,8 @@ LABEL_20:
     v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v34 identifier]);
     v57[4] = v39;
     v56[5] = @"Topic";
-    v40 = [v34 topic];
-    v57[5] = v40;
+    topic3 = [v34 topic];
+    v57[5] = topic3;
     v56[6] = @"Priority";
     v41 = v8;
     v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v34 priority]);
@@ -12887,8 +12887,8 @@ LABEL_20:
 
   v3 = v2;
   _Block_object_dispose(&v15, 8);
-  v4 = [v2 sharedInterface];
-  [v4 onAPSDConnectionChangeIsOverWiFi:*(v7 + 24) isOverCell:*(v11 + 24)];
+  sharedInterface = [v2 sharedInterface];
+  [sharedInterface onAPSDConnectionChangeIsOverWiFi:*(v7 + 24) isOverCell:*(v11 + 24)];
 
   _Block_object_dispose(&v6, 8);
   _Block_object_dispose(&v10, 8);
@@ -12907,7 +12907,7 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: Recalculating activity presence", buf, 0xCu);
   }
 
@@ -12915,8 +12915,8 @@ LABEL_20:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(APSUserCourier *)self connectionServers];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v28 count:16];
+  connectionServers = [(APSUserCourier *)self connectionServers];
+  v5 = [connectionServers countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -12927,7 +12927,7 @@ LABEL_20:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectionServers);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -12937,7 +12937,7 @@ LABEL_20:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v23 = self;
+            selfCopy3 = self;
             v24 = 2112;
             v25 = v9;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: Connection %@ requesting activity presence tracking", buf, 0x16u);
@@ -12948,7 +12948,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v28 count:16];
+      v6 = [connectionServers countByEnumeratingWithState:&v18 objects:v28 count:16];
       if (v6)
       {
         continue;
@@ -12977,13 +12977,13 @@ LABEL_15:
         v13 = "disabled";
       }
 
-      v14 = [(APSEnvironment *)self->_environment domain];
+      domain = [(APSEnvironment *)self->_environment domain];
       *buf = 138412802;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2080;
       v25 = v13;
       v26 = 2112;
-      v27 = v14;
+      v27 = domain;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: Tracking activity presence is now %s for '%@'", buf, 0x20u);
     }
 
@@ -12995,8 +12995,8 @@ LABEL_15:
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v17];
     if (v10)
     {
-      v15 = [(APSUserCourier *)self preferredProtocolConnection];
-      [(APSUserCourier *)self sendPresenceTrackingRequestOnProtocolConnection:v15];
+      preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+      [(APSUserCourier *)self sendPresenceTrackingRequestOnProtocolConnection:preferredProtocolConnection];
     }
 
     else
@@ -13011,12 +13011,12 @@ LABEL_15:
   }
 }
 
-- (void)sendPresenceTrackingRequestOnProtocolConnection:(id)a3
+- (void)sendPresenceTrackingRequestOnProtocolConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v5 = [(APSUserCourier *)self publicToken];
+    publicToken = [(APSUserCourier *)self publicToken];
     activityPresenceSalt = self->_activityPresenceSalt;
     if (!activityPresenceSalt)
     {
@@ -13025,8 +13025,8 @@ LABEL_15:
     }
 
     trackActivityPresence = self->_trackActivityPresence;
-    v8 = [(APSUserCourier *)self protocolConnectionEstablisher];
-    v9 = [v8 serverTimeInNanoSeconds] / 0xF4240;
+    protocolConnectionEstablisher = [(APSUserCourier *)self protocolConnectionEstablisher];
+    v9 = [protocolConnectionEstablisher serverTimeInNanoSeconds] / 0xF4240;
 
     v10 = arc4random_uniform(0xFFFFFFFE) + 1;
     v11 = +[APSLog activityTracking];
@@ -13037,59 +13037,59 @@ LABEL_15:
       v15 = 2048;
       v16 = trackActivityPresence;
       v17 = 2114;
-      v18 = v4;
+      v18 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Sending presence tracking request with ID:%lu and flag:%lu on interface %{public}@", &v13, 0x20u);
     }
 
-    v12 = [(APSUserCourier *)self stateForProtocolConnection:v4];
+    v12 = [(APSUserCourier *)self stateForProtocolConnection:connectionCopy];
     [v12 setTrackingState:1];
 
-    [v4 sendActivityTrackingRequestWithMessageID:v10 pushToken:v5 salt:activityPresenceSalt trackingFlag:trackActivityPresence timestamp:v9];
+    [connectionCopy sendActivityTrackingRequestWithMessageID:v10 pushToken:publicToken salt:activityPresenceSalt trackingFlag:trackActivityPresence timestamp:v9];
   }
 
   else
   {
-    v5 = +[APSLog activityTracking];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    publicToken = +[APSLog activityTracking];
+    if (os_log_type_enabled(publicToken, OS_LOG_TYPE_ERROR))
     {
-      sub_1001097C0(v5);
+      sub_1001097C0(publicToken);
     }
   }
 }
 
-- (void)markProtocolConnectionDisconnectedForActivityTracking:(id)a3
+- (void)markProtocolConnectionDisconnectedForActivityTracking:(id)tracking
 {
-  v4 = a3;
-  if (v4)
+  trackingCopy = tracking;
+  if (trackingCopy)
   {
-    v5 = [(APSUserCourier *)self stateByConnectionIdentifier];
-    v6 = [v4 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+    identifier = [trackingCopy identifier];
+    v7 = [stateByConnectionIdentifier objectForKeyedSubscript:identifier];
     [v7 setTrackingState:0];
   }
 
   else
   {
-    v5 = +[APSLog activityTracking];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    stateByConnectionIdentifier = +[APSLog activityTracking];
+    if (os_log_type_enabled(stateByConnectionIdentifier, OS_LOG_TYPE_ERROR))
     {
-      sub_100109804(v5);
+      sub_100109804(stateByConnectionIdentifier);
     }
   }
 }
 
-- (BOOL)protocolConnectionHasSentActivityTrackingSalt:(id)a3
+- (BOOL)protocolConnectionHasSentActivityTrackingSalt:(id)salt
 {
-  if (!a3)
+  if (!salt)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(APSUserCourier *)self stateByConnectionIdentifier];
-  v6 = [v4 identifier];
+  saltCopy = salt;
+  stateByConnectionIdentifier = [(APSUserCourier *)self stateByConnectionIdentifier];
+  identifier = [saltCopy identifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [stateByConnectionIdentifier objectForKeyedSubscript:identifier];
   v8 = [v7 trackingState] == 1;
 
   return v8;
@@ -13101,24 +13101,24 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Attempting to roll activity presence salt. Self:%@", &v20, 0xCu);
   }
 
   if (![(APSUserCourier *)self hasConnectedInterface])
   {
-    v5 = [(APSUserCourier *)self environment];
-    v6 = [(APSUserCourier *)self preferredProtocolConnection];
-    v4 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", v5, [v6 connectionType]);
+    environment = [(APSUserCourier *)self environment];
+    preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+    v4 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", environment, [preferredProtocolConnection connectionType]);
 
-    v7 = [v4 minPresenceSaltRotationInterval];
-    v8 = [v7 unsignedIntegerValue];
+    minPresenceSaltRotationInterval = [v4 minPresenceSaltRotationInterval];
+    unsignedIntegerValue = [minPresenceSaltRotationInterval unsignedIntegerValue];
 
     v9 = self->_lastActivityPresenceSaltRoll;
     if (v9)
     {
-      v10 = 60 * v8;
-      if (!v8)
+      v10 = 60 * unsignedIntegerValue;
+      if (!unsignedIntegerValue)
       {
         v10 = 86400;
       }
@@ -13135,7 +13135,7 @@ LABEL_15:
         if (v16)
         {
           v20 = 134218240;
-          v21 = v14;
+          selfCopy = v14;
           v22 = 2048;
           v23 = v11;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "It has not been long enough since the last roll. Time:%lu -- Min Interval:%lu", &v20, 0x16u);
@@ -13147,7 +13147,7 @@ LABEL_15:
       if (v16)
       {
         v20 = 134218240;
-        v21 = v14;
+        selfCopy = v14;
         v22 = 2048;
         v23 = v11;
         v17 = "It has been long enough since our last roll. Time:%lu -- Min Interval:%lu";
@@ -13204,12 +13204,12 @@ LABEL_20:
   self->_lastActivityPresenceSaltRoll = v4;
 }
 
-- (void)_handlePresenceTrackingResponse:(id)a3 onProtocolConnection:(id)a4
+- (void)_handlePresenceTrackingResponse:(id)response onProtocolConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"APSProtocolPresenceActivityMessageIDKey"];
-  v6 = [v4 objectForKeyedSubscript:@"APSProtocolPresenceActivityPushTokenKey"];
-  v7 = [v4 objectForKeyedSubscript:@"APSProtocolPresenceActivityStatusKey"];
+  responseCopy = response;
+  v5 = [responseCopy objectForKeyedSubscript:@"APSProtocolPresenceActivityMessageIDKey"];
+  v6 = [responseCopy objectForKeyedSubscript:@"APSProtocolPresenceActivityPushTokenKey"];
+  v7 = [responseCopy objectForKeyedSubscript:@"APSProtocolPresenceActivityStatusKey"];
 
   v8 = +[APSLog activityTracking];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -13251,7 +13251,7 @@ LABEL_20:
   {
     v4 = +[NSDate now];
     *buf = 138412546;
-    v59 = self;
+    selfCopy2 = self;
     v60 = 2112;
     v61 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@:Performing app token cleanup at %@", buf, 0x16u);
@@ -13278,20 +13278,20 @@ LABEL_20:
 
         v37 = v5;
         v6 = *(*(&v51 + 1) + 8 * v5);
-        v7 = [v6 enabledTopics];
-        v8 = [v7 mutableCopy];
+        enabledTopics = [v6 enabledTopics];
+        v8 = [enabledTopics mutableCopy];
 
-        v9 = [v6 ignoredTopics];
-        v10 = [v9 mutableCopy];
+        ignoredTopics = [v6 ignoredTopics];
+        v10 = [ignoredTopics mutableCopy];
         [v8 addObjectsFromArray:v10];
 
-        v11 = [v6 opportunisticTopics];
-        v12 = [v11 mutableCopy];
+        opportunisticTopics = [v6 opportunisticTopics];
+        v12 = [opportunisticTopics mutableCopy];
         [v8 addObjectsFromArray:v12];
 
         v42 = v6;
-        v13 = [v6 nonWakingTopics];
-        v14 = [v13 mutableCopy];
+        nonWakingTopics = [v6 nonWakingTopics];
+        v14 = [nonWakingTopics mutableCopy];
         [v8 addObjectsFromArray:v14];
 
         v49 = 0u;
@@ -13316,8 +13316,8 @@ LABEL_20:
               v41 = v15;
               v16 = *(*(&v47 + 1) + 8 * v15);
               tokenStore = self->_tokenStore;
-              v18 = [(APSUserCourier *)self courierUser];
-              v19 = [(APSTokenStore *)tokenStore tokenInfoArrayForTopic:v16 user:v18];
+              courierUser = [(APSUserCourier *)self courierUser];
+              v19 = [(APSTokenStore *)tokenStore tokenInfoArrayForTopic:v16 user:courierUser];
 
               v45 = 0u;
               v46 = 0u;
@@ -13339,13 +13339,13 @@ LABEL_20:
                     }
 
                     v25 = *(*(&v43 + 1) + 8 * i);
-                    v26 = [v25 expirationDate];
-                    if (v26)
+                    expirationDate = [v25 expirationDate];
+                    if (expirationDate)
                     {
-                      v27 = v26;
-                      v28 = [v25 expirationDate];
+                      v27 = expirationDate;
+                      expirationDate2 = [v25 expirationDate];
                       v29 = +[NSDate date];
-                      v30 = [v28 compare:v29];
+                      v30 = [expirationDate2 compare:v29];
 
                       if (v30 == -1)
                       {
@@ -13353,15 +13353,15 @@ LABEL_20:
                         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                         {
                           *buf = 138412546;
-                          v59 = self;
+                          selfCopy2 = self;
                           v60 = 2112;
                           v61 = v25;
                           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%@: Purging token for info %@", buf, 0x16u);
                         }
 
                         v32 = self->_tokenStore;
-                        v33 = [(APSUserCourier *)self courierUser];
-                        [(APSTokenStore *)v32 setToken:0 forInfo:v25 user:v33];
+                        courierUser2 = [(APSUserCourier *)self courierUser];
+                        [(APSTokenStore *)v32 setToken:0 forInfo:v25 user:courierUser2];
 
                         [(APSUserCourier *)self connection:v42 didInvalidateTokenForInfo:v25];
                       }
@@ -13395,72 +13395,72 @@ LABEL_20:
   }
 }
 
-- (void)saveToken:(id)a3 forInfo:(id)a4 connection:(id)a5
+- (void)saveToken:(id)token forInfo:(id)info connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  infoCopy = info;
   v9 = +[APSLog courier];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(APSEnvironment *)self->_environment domain];
+    domain = [(APSEnvironment *)self->_environment domain];
     v13 = 138413058;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v7;
+    v16 = tokenCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = domain;
     v19 = 2112;
-    v20 = v8;
+    v20 = infoCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ Adding token %@ into keychain for %@, %@", &v13, 0x2Au);
   }
 
   tokenStore = self->_tokenStore;
-  v12 = [(APSUserCourier *)self courierUser];
-  [(APSTokenStore *)tokenStore setToken:v7 forInfo:v8 user:v12];
+  courierUser = [(APSUserCourier *)self courierUser];
+  [(APSTokenStore *)tokenStore setToken:tokenCopy forInfo:infoCopy user:courierUser];
 }
 
-- (void)connection:(id)a3 didRequestTokenForInfo:(id)a4
+- (void)connection:(id)connection didRequestTokenForInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v48 = self;
+    selfCopy5 = self;
     v49 = 2112;
-    v50 = v6;
+    v50 = connectionCopy;
     v51 = 2112;
-    v52 = v7;
+    v52 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received request from %@ to generate token for info %@", buf, 0x20u);
   }
 
-  v9 = [v7 topic];
-  v10 = [v9 length];
+  topic = [infoCopy topic];
+  v10 = [topic length];
 
   if (v10)
   {
     tokenStore = self->_tokenStore;
-    v12 = [(APSUserCourier *)self courierUser];
+    courierUser = [(APSUserCourier *)self courierUser];
     v46 = 0;
-    v13 = [(APSTokenStore *)tokenStore tokenForInfo:v7 user:v12 persistedInfo:&v46];
+    v13 = [(APSTokenStore *)tokenStore tokenForInfo:infoCopy user:courierUser persistedInfo:&v46];
     v14 = v46;
 
-    v15 = [(APSUserCourier *)self publicToken];
-    [v7 setBaseToken:v15];
+    publicToken = [(APSUserCourier *)self publicToken];
+    [infoCopy setBaseToken:publicToken];
 
     v16 = +[APSLog courier];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v7 topic];
+      topic2 = [infoCopy topic];
       *buf = 138413314;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2112;
-      v50 = v17;
+      v50 = topic2;
       v51 = 2112;
       v52 = v13;
       v53 = 2112;
-      v54 = v7;
+      v54 = infoCopy;
       v55 = 2112;
       v56 = v14;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ found cached token for topic: %@, token: %@ for info %@ persisted info %@", buf, 0x34u);
@@ -13468,11 +13468,11 @@ LABEL_20:
 
     if (v13)
     {
-      v18 = [v7 baseToken];
-      if (v18)
+      baseToken = [infoCopy baseToken];
+      if (baseToken)
       {
-        v19 = v18;
-        v20 = [v14 isEqual:v7];
+        v19 = baseToken;
+        v20 = [v14 isEqual:infoCopy];
 
         if (v20)
         {
@@ -13480,20 +13480,20 @@ LABEL_20:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v48 = self;
+            selfCopy5 = self;
             v49 = 2112;
             v50 = v13;
             v51 = 2112;
-            v52 = v7;
+            v52 = infoCopy;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ handleReceivedToken: %@ forInfo %@", buf, 0x20u);
           }
 
-          [v6 handleReceivedToken:v13 forInfo:v7];
-          v22 = [v14 baseToken];
+          [connectionCopy handleReceivedToken:v13 forInfo:infoCopy];
+          baseToken2 = [v14 baseToken];
 
-          if (!v22)
+          if (!baseToken2)
           {
-            [(APSUserCourier *)self saveToken:v13 forInfo:v7 connection:v6];
+            [(APSUserCourier *)self saveToken:v13 forInfo:infoCopy connection:connectionCopy];
           }
 
           goto LABEL_24;
@@ -13502,12 +13502,12 @@ LABEL_20:
 
       if (v14)
       {
-        v23 = [v14 baseToken];
-        if (v23)
+        baseToken3 = [v14 baseToken];
+        if (baseToken3)
         {
-          v24 = v23;
-          v25 = [v14 baseToken];
-          v26 = [v25 isEqualToData:self->_cachedPublicToken];
+          v24 = baseToken3;
+          baseToken4 = [v14 baseToken];
+          v26 = [baseToken4 isEqualToData:self->_cachedPublicToken];
 
           if ((v26 & 1) == 0)
           {
@@ -13515,9 +13515,9 @@ LABEL_20:
             if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412802;
-              v48 = self;
+              selfCopy5 = self;
               v49 = 2112;
-              v50 = v7;
+              v50 = infoCopy;
               v51 = 2112;
               v52 = v14;
               _os_log_fault_impl(&_mh_execute_header, v27, OS_LOG_TYPE_FAULT, "%@ Found persisted token info, but the system token didn't match! TokenInfo %@ persisted TokenInfo %@", buf, 0x20u);
@@ -13527,18 +13527,18 @@ LABEL_20:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v48 = self;
+              selfCopy5 = self;
               v49 = 2112;
-              v50 = v7;
+              v50 = infoCopy;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@ Requesting a new token for info %@", buf, 0x16u);
             }
           }
         }
       }
 
-      if ([v7 type])
+      if ([infoCopy type])
       {
-        [(APSUserCourier *)self connection:v6 didInvalidateTokenForInfo:v7];
+        [(APSUserCourier *)self connection:connectionCopy didInvalidateTokenForInfo:infoCopy];
       }
     }
 
@@ -13546,10 +13546,10 @@ LABEL_20:
     v42[1] = 3221225472;
     v42[2] = sub_100050D84;
     v42[3] = &unk_1001874E0;
-    v29 = v7;
+    v29 = infoCopy;
     v43 = v29;
-    v44 = self;
-    v30 = v6;
+    selfCopy6 = self;
+    v30 = connectionCopy;
     v45 = v30;
     v31 = objc_retainBlock(v42);
     tokenRequestQueue = self->_tokenRequestQueue;
@@ -13558,7 +13558,7 @@ LABEL_20:
     v38[2] = sub_100050EA0;
     v38[3] = &unk_100187508;
     v39 = v29;
-    v40 = self;
+    selfCopy7 = self;
     v41 = v30;
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -13575,45 +13575,45 @@ LABEL_24:
   }
 }
 
-- (void)connection:(id)a3 didRequestCurrentTokenForInfo:(id)a4
+- (void)connection:(id)connection didRequestCurrentTokenForInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v20 = self;
+    selfCopy3 = self;
     v21 = 2112;
-    v22 = v6;
+    v22 = connectionCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received request from %@ to fetch current token for info %@", buf, 0x20u);
   }
 
-  v9 = [v7 topic];
-  v10 = [v9 length];
+  topic = [infoCopy topic];
+  v10 = [topic length];
 
   if (v10)
   {
     tokenStore = self->_tokenStore;
-    v12 = [(APSUserCourier *)self courierUser];
+    courierUser = [(APSUserCourier *)self courierUser];
     v18 = 0;
-    v13 = [(APSTokenStore *)tokenStore tokenForInfo:v7 user:v12 persistedInfo:&v18];
+    v13 = [(APSTokenStore *)tokenStore tokenForInfo:infoCopy user:courierUser persistedInfo:&v18];
     v14 = v18;
 
     v15 = +[APSLog courier];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v7 topic];
+      topic2 = [infoCopy topic];
       *buf = 138413058;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2112;
-      v22 = v16;
+      v22 = topic2;
       v23 = 2112;
       v24 = v13;
       v25 = 2112;
-      v26 = v7;
+      v26 = infoCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@ found cached token for topic: %@, token: %@ for info %@", buf, 0x2Au);
     }
 
@@ -13623,7 +13623,7 @@ LABEL_24:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v20 = self;
+        selfCopy3 = self;
         v21 = 2112;
         v22 = v13;
         v23 = 2112;
@@ -13631,144 +13631,144 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@ handleReceivedToken: %@ forInfo %@", buf, 0x20u);
       }
 
-      [v6 handleReceivedToken:v13 forInfo:v14];
+      [connectionCopy handleReceivedToken:v13 forInfo:v14];
     }
   }
 }
 
-- (void)connection:(id)a3 didInvalidateTokenForInfo:(id)a4
+- (void)connection:(id)connection didInvalidateTokenForInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412802;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v6;
+    v28 = connectionCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = infoCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ asked by %@ to invalidate extended app token for info %@", &v25, 0x20u);
   }
 
-  if (![v7 type])
+  if (![infoCopy type])
   {
-    v9 = [(APSUserCourier *)self userAppIDManager];
-    v10 = [(APSEnvironment *)self->_environment name];
-    v11 = [v7 topic];
-    v12 = [v7 identifier];
-    [v9 removeAppIdForEnvironmentName:v10 topic:v11 identifier:v12];
+    userAppIDManager = [(APSUserCourier *)self userAppIDManager];
+    name = [(APSEnvironment *)self->_environment name];
+    topic = [infoCopy topic];
+    identifier = [infoCopy identifier];
+    [userAppIDManager removeAppIdForEnvironmentName:name topic:topic identifier:identifier];
   }
 
   tokenStore = self->_tokenStore;
-  v14 = [(APSUserCourier *)self courierUser];
-  [(APSTokenStore *)tokenStore setToken:0 forInfo:v7 user:v14];
+  courierUser = [(APSUserCourier *)self courierUser];
+  [(APSTokenStore *)tokenStore setToken:0 forInfo:infoCopy user:courierUser];
 
   v15 = self->_tokenStore;
-  v16 = [v7 topic];
-  v17 = [(APSUserCourier *)self courierUser];
-  v18 = [(APSTokenStore *)v15 tokensForTopic:v16 user:v17 error:0];
+  topic2 = [infoCopy topic];
+  courierUser2 = [(APSUserCourier *)self courierUser];
+  v18 = [(APSTokenStore *)v15 tokensForTopic:topic2 user:courierUser2 error:0];
   v19 = [v18 count];
 
-  v20 = +[APSLog courier];
-  v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
+  topic4 = +[APSLog courier];
+  v21 = os_log_type_enabled(topic4, OS_LOG_TYPE_DEFAULT);
   if (!v19)
   {
     if (v21)
     {
-      v23 = [v7 topic];
+      topic3 = [infoCopy topic];
       v25 = 138412290;
-      v26 = v23;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "No tokens use salt anymore. Clearing salt for topic %@", &v25, 0xCu);
+      selfCopy = topic3;
+      _os_log_impl(&_mh_execute_header, topic4, OS_LOG_TYPE_DEFAULT, "No tokens use salt anymore. Clearing salt for topic %@", &v25, 0xCu);
     }
 
     topicHasher = self->_topicHasher;
-    v20 = [v7 topic];
-    v22 = [(APSUserCourier *)self courierUser];
-    [(APSTopicHasher *)topicHasher clearSaltForTopic:v20 user:v22];
+    topic4 = [infoCopy topic];
+    courierUser3 = [(APSUserCourier *)self courierUser];
+    [(APSTopicHasher *)topicHasher clearSaltForTopic:topic4 user:courierUser3];
     goto LABEL_11;
   }
 
   if (v21)
   {
-    v22 = [v7 topic];
+    courierUser3 = [infoCopy topic];
     v25 = 138412290;
-    v26 = v22;
-    _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Still existing tokens for topic %@. Not clearing salt.", &v25, 0xCu);
+    selfCopy = courierUser3;
+    _os_log_impl(&_mh_execute_header, topic4, OS_LOG_TYPE_DEFAULT, "Still existing tokens for topic %@. Not clearing salt.", &v25, 0xCu);
 LABEL_11:
   }
 }
 
-- (id)connection:(id)a3 createURLTokenForToken:(id)a4
+- (id)connection:(id)connection createURLTokenForToken:(id)token
 {
-  v5 = a4;
-  v6 = sub_1000882F8(v5);
-  v7 = [(APSUserCourier *)self urlPrefix];
-  v8 = [v7 stringByAppendingString:v6];
-  v9 = [[APSURLToken alloc] initWithTokenURL:v8 token:v5];
+  tokenCopy = token;
+  v6 = sub_1000882F8(tokenCopy);
+  urlPrefix = [(APSUserCourier *)self urlPrefix];
+  v8 = [urlPrefix stringByAppendingString:v6];
+  v9 = [[APSURLToken alloc] initWithTokenURL:v8 token:tokenCopy];
 
   return v9;
 }
 
 - (id)urlPrefix
 {
-  v3 = [(APSUserCourier *)self environment];
-  v4 = [(APSUserCourier *)self preferredProtocolConnection];
-  v5 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", v3, [v4 connectionType]);
-  v6 = [v5 urlTokenPrefix];
+  environment = [(APSUserCourier *)self environment];
+  preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+  v5 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", environment, [preferredProtocolConnection connectionType]);
+  urlTokenPrefix = [v5 urlTokenPrefix];
 
-  if (!v6)
+  if (!urlTokenPrefix)
   {
-    v7 = [(APSUserCourier *)self environment];
-    v8 = [v7 name];
-    v9 = [v8 isEqualToString:APSEnvironmentProduction];
+    environment2 = [(APSUserCourier *)self environment];
+    name = [environment2 name];
+    v9 = [name isEqualToString:APSEnvironmentProduction];
 
     if (v9)
     {
-      v6 = @"https://web.push.apple.com/";
+      urlTokenPrefix = @"https://web.push.apple.com/";
     }
 
     else
     {
-      v6 = @"https://web.sandbox.push.apple.com/";
+      urlTokenPrefix = @"https://web.sandbox.push.apple.com/";
     }
   }
 
-  return v6;
+  return urlTokenPrefix;
 }
 
-- (void)_handleAppTokenGenerateResponse:(id)a3 onProtocolConnection:(id)a4
+- (void)_handleAppTokenGenerateResponse:(id)response onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  connectionCopy = connection;
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v6;
+    v14 = responseCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: Received app token generate response %@", &v11, 0x16u);
   }
 
   tokenRequestQueue = self->_tokenRequestQueue;
-  v10 = [v7 identifier];
+  identifier = [connectionCopy identifier];
 
-  [(APSOutgoingQueue *)tokenRequestQueue handleResponseForPendingItem:v6 error:0 onInterface:v10];
+  [(APSOutgoingQueue *)tokenRequestQueue handleResponseForPendingItem:responseCopy error:0 onInterface:identifier];
 }
 
-- (void)unsubscribeFromChannels:(id)a3 forTopic:(id)a4 token:(id)a5
+- (void)unsubscribeFromChannels:(id)channels forTopic:(id)topic token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v23 = a5;
+  channelsCopy = channels;
+  topicCopy = topic;
+  tokenCopy = token;
   v24 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = v8;
+  v10 = channelsCopy;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v11)
   {
@@ -13784,14 +13784,14 @@ LABEL_11:
         }
 
         v15 = [objc_alloc(CUTWeakLinkClass()) initWithDictionary:*(*(&v25 + 1) + 8 * i)];
-        [v15 setChannelTopic:v9];
-        v16 = [(APSUserCourier *)self environment];
-        v17 = [v16 name];
-        [v15 setEnvironment:v17];
+        [v15 setChannelTopic:topicCopy];
+        environment = [(APSUserCourier *)self environment];
+        name = [environment name];
+        [v15 setEnvironment:name];
 
-        v18 = [(APSUserCourier *)self courierUser];
-        v19 = [v18 pubSubName];
-        [v15 setTokenName:v19];
+        courierUser = [(APSUserCourier *)self courierUser];
+        pubSubName = [courierUser pubSubName];
+        [v15 setTokenName:pubSubName];
 
         v20 = +[APSLog pubSub];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -13801,8 +13801,8 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Incoming pubsub unsubscribe request for %@", buf, 0xCu);
         }
 
-        v21 = [(APSUserCourier *)self subscriptionStore];
-        v22 = [v21 deleteSubscription:v15];
+        subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+        v22 = [subscriptionStore deleteSubscription:v15];
 
         if (v22)
         {
@@ -13816,18 +13816,18 @@ LABEL_11:
     while (v12);
   }
 
-  [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v24 token:v23];
+  [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v24 token:tokenCopy];
 }
 
-- (void)unsubscribeFromChannels:(id)a3 token:(id)a4
+- (void)unsubscribeFromChannels:(id)channels token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  channelsCopy = channels;
+  tokenCopy = token;
   v8 = +[APSLog pubSub];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = channelsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Incoming pubsub unsubscribe request for %@", buf, 0xCu);
   }
 
@@ -13836,7 +13836,7 @@ LABEL_11:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v6;
+  v10 = channelsCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -13853,8 +13853,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [(APSUserCourier *)self subscriptionStore];
-        v17 = [v16 deleteSubscription:v15];
+        subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+        v17 = [subscriptionStore deleteSubscription:v15];
 
         if (v17)
         {
@@ -13871,23 +13871,23 @@ LABEL_11:
     while (v12);
   }
 
-  [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v9 token:v7];
+  [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v9 token:tokenCopy];
 }
 
-- (void)_handlePubSubRequest:(id)a3 unsubscriptionChannels:(id)a4 token:(id)a5
+- (void)_handlePubSubRequest:(id)request unsubscriptionChannels:(id)channels token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  requestCopy = request;
+  channelsCopy = channels;
+  tokenCopy = token;
+  if ([requestCopy count] || objc_msgSend(channelsCopy, "count"))
   {
-    v24 = v10;
-    v11 = [v8 mutableCopy];
+    v24 = tokenCopy;
+    v11 = [requestCopy mutableCopy];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v8;
+    obj = requestCopy;
     v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
@@ -13904,12 +13904,12 @@ LABEL_11:
 
           v16 = *(*(&v30 + 1) + 8 * i);
           topicHasher = self->_topicHasher;
-          v18 = [v16 channelTopic];
-          v19 = [(APSUserCourier *)self courierUser];
-          v20 = [(APSTopicHasher *)topicHasher topicHashForTopic:v18 user:v19];
+          channelTopic = [v16 channelTopic];
+          courierUser = [(APSUserCourier *)self courierUser];
+          v20 = [(APSTopicHasher *)topicHasher topicHashForTopic:channelTopic user:courierUser];
 
-          v21 = [(APSUserCourier *)self topicManager];
-          v22 = [v21 hasIgnoredTopicHash:v20];
+          topicManager = [(APSUserCourier *)self topicManager];
+          v22 = [topicManager hasIgnoredTopicHash:v20];
 
           if (v22)
           {
@@ -13930,26 +13930,26 @@ LABEL_11:
     v26[3] = &unk_100188C30;
     v26[4] = self;
     v27 = v23;
-    v28 = v9;
-    v10 = v24;
+    v28 = channelsCopy;
+    tokenCopy = v24;
     v29 = v24;
-    v8 = v23;
+    requestCopy = v23;
     [(APSUserCourier *)self enumerateConnectedProtocolConnections:v26];
   }
 }
 
-- (void)_retryRequestAfterDelay:(id)a3
+- (void)_retryRequestAfterDelay:(id)delay
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self environment];
-  v6 = [(APSUserCourier *)self preferredProtocolConnection];
-  v10 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", v5, [v6 connectionType]);
+  delayCopy = delay;
+  environment = [(APSUserCourier *)self environment];
+  preferredProtocolConnection = [(APSUserCourier *)self preferredProtocolConnection];
+  v10 = +[APSConfiguration configurationForEnvironment:connectionType:](APSConfiguration, "configurationForEnvironment:connectionType:", environment, [preferredProtocolConnection connectionType]);
 
-  v7 = [v10 pubSubDefaultTimeout];
-  v8 = [v7 unsignedIntegerValue];
-  if (v8)
+  pubSubDefaultTimeout = [v10 pubSubDefaultTimeout];
+  unsignedIntegerValue = [pubSubDefaultTimeout unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    v9 = v8;
+    v9 = unsignedIntegerValue;
   }
 
   else
@@ -13957,13 +13957,13 @@ LABEL_11:
     v9 = 30.0;
   }
 
-  [(APSUserCourier *)self _retryRequestAfterDelay:v4 withDelay:v9];
+  [(APSUserCourier *)self _retryRequestAfterDelay:delayCopy withDelay:v9];
 }
 
-- (void)_retryRequestAfterDelay:(id)a3 withDelay:(double)a4
+- (void)_retryRequestAfterDelay:(id)delay withDelay:(double)withDelay
 {
-  v6 = a3;
-  if (v6)
+  delayCopy = delay;
+  if (delayCopy)
   {
     if ([(APSUserCourier *)self hasConnectedInterfaceOfType:2])
     {
@@ -13975,19 +13975,19 @@ LABEL_11:
       }
     }
 
-    else if ([v6 retryCount])
+    else if ([delayCopy retryCount])
     {
-      [v6 setRetryCount:{objc_msgSend(v6, "retryCount") - 1}];
+      [delayCopy setRetryCount:{objc_msgSend(delayCopy, "retryCount") - 1}];
       v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-      [v6 setTimeoutSource:v8];
+      [delayCopy setTimeoutSource:v8];
 
-      v9 = [v6 timeoutSource];
-      v10 = dispatch_time(0, (a4 * 1000000000.0));
-      dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
+      timeoutSource = [delayCopy timeoutSource];
+      v10 = dispatch_time(0, (withDelay * 1000000000.0));
+      dispatch_source_set_timer(timeoutSource, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-      objc_initWeak(buf, v6);
+      objc_initWeak(buf, delayCopy);
       objc_initWeak(&location, self);
-      v11 = [v6 timeoutSource];
+      timeoutSource2 = [delayCopy timeoutSource];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1000AFA2C;
@@ -13995,12 +13995,12 @@ LABEL_11:
       objc_copyWeak(&v18, buf);
       objc_copyWeak(&v19, &location);
       handler[4] = self;
-      v12 = v6;
+      v12 = delayCopy;
       v17 = v12;
-      dispatch_source_set_event_handler(v11, handler);
+      dispatch_source_set_event_handler(timeoutSource2, handler);
 
-      v13 = [v12 timeoutSource];
-      dispatch_resume(v13);
+      timeoutSource3 = [v12 timeoutSource];
+      dispatch_resume(timeoutSource3);
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v18);
@@ -14014,25 +14014,25 @@ LABEL_11:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v6;
+        v22 = delayCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "PubSub request %@ has exceeded its retry limit.  Abandoning.", buf, 0xCu);
       }
 
-      v15 = [(APSUserCourier *)self subscriptionRequests];
-      [v15 removeObject:v6];
+      subscriptionRequests = [(APSUserCourier *)self subscriptionRequests];
+      [subscriptionRequests removeObject:delayCopy];
     }
   }
 }
 
-- (id)allRegisteredChannelsForTopic:(id)a3
+- (id)allRegisteredChannelsForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self subscriptionStore];
-  v6 = [(APSUserCourier *)self environment];
-  v7 = [v6 name];
-  v8 = [(APSUserCourier *)self courierUser];
-  v9 = [v8 pubSubName];
-  v10 = [v5 allSubscriptionsForTopic:v4 environment:v7 userName:v9];
+  topicCopy = topic;
+  subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+  environment = [(APSUserCourier *)self environment];
+  name = [environment name];
+  courierUser = [(APSUserCourier *)self courierUser];
+  pubSubName = [courierUser pubSubName];
+  v10 = [subscriptionStore allSubscriptionsForTopic:topicCopy environment:name userName:pubSubName];
 
   if (v10)
   {
@@ -14049,75 +14049,75 @@ LABEL_11:
   return v11;
 }
 
-- (void)_sendPubsubConnectMessageOnProtocolConnection:(id)a3 token:(id)a4
+- (void)_sendPubsubConnectMessageOnProtocolConnection:(id)connection token:(id)token
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(APSUserCourier *)self courierUser];
-  v8 = [v7 pubSubName];
+  connectionCopy = connection;
+  tokenCopy = token;
+  courierUser = [(APSUserCourier *)self courierUser];
+  pubSubName = [courierUser pubSubName];
 
-  v9 = [(APSUserCourier *)self subscriptionStore];
-  v10 = [(APSUserCourier *)self environment];
-  v11 = [v10 name];
-  v12 = [v9 allSubscriptionsForEnvironment:v11 userName:v8];
+  subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+  environment = [(APSUserCourier *)self environment];
+  name = [environment name];
+  v12 = [subscriptionStore allSubscriptionsForEnvironment:name userName:pubSubName];
 
   if (v12 && [v12 count])
   {
     v13 = [APSPubSubRequest alloc];
-    v14 = [(APSUserCourier *)self _getNextMessageID];
-    v15 = [v12 firstObject];
-    v16 = [v15 tokenName];
-    v17 = -[APSPubSubRequest initWithSubscriptionChannels:unsubscriptionChannels:messageID:userName:token:subscriptionType:connectionType:retryCount:](v13, "initWithSubscriptionChannels:unsubscriptionChannels:messageID:userName:token:subscriptionType:connectionType:retryCount:", v12, 0, v14, v16, v6, 1, [v23 connectionType], 3);
+    _getNextMessageID = [(APSUserCourier *)self _getNextMessageID];
+    firstObject = [v12 firstObject];
+    tokenName = [firstObject tokenName];
+    v17 = -[APSPubSubRequest initWithSubscriptionChannels:unsubscriptionChannels:messageID:userName:token:subscriptionType:connectionType:retryCount:](v13, "initWithSubscriptionChannels:unsubscriptionChannels:messageID:userName:token:subscriptionType:connectionType:retryCount:", v12, 0, _getNextMessageID, tokenName, tokenCopy, 1, [connectionCopy connectionType], 3);
 
-    v18 = [(APSPubSubRequest *)v17 messageID];
-    v19 = [v18 unsignedIntValue];
+    messageID = [(APSPubSubRequest *)v17 messageID];
+    unsignedIntValue = [messageID unsignedIntValue];
 
-    v20 = [(APSUserCourier *)self subscriptionRequests];
+    subscriptionRequests = [(APSUserCourier *)self subscriptionRequests];
 
-    if (!v20)
+    if (!subscriptionRequests)
     {
       v21 = +[NSMutableArray array];
       [(APSUserCourier *)self setSubscriptionRequests:v21];
     }
 
-    v22 = [(APSUserCourier *)self subscriptionRequests];
-    [v22 addObject:v17];
+    subscriptionRequests2 = [(APSUserCourier *)self subscriptionRequests];
+    [subscriptionRequests2 addObject:v17];
 
-    [(APSUserCourier *)self _writePubSubMessagetoConnection:v17 messageID:v19 token:v6 connectionType:[(APSPubSubRequest *)v17 connectionType]];
+    [(APSUserCourier *)self _writePubSubMessagetoConnection:v17 messageID:unsignedIntValue token:tokenCopy connectionType:[(APSPubSubRequest *)v17 connectionType]];
     [(APSUserCourier *)self _retryRequestAfterDelay:v17];
   }
 }
 
-- (void)_writePubSubMessagetoConnection:(id)a3 messageID:(unsigned int)a4 token:(id)a5 connectionType:(int64_t)a6
+- (void)_writePubSubMessagetoConnection:(id)connection messageID:(unsigned int)d token:(id)token connectionType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 metadata];
-  if (v12)
+  connectionCopy = connection;
+  tokenCopy = token;
+  metadata = [connectionCopy metadata];
+  if (metadata)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000AFF94;
     v13[3] = &unk_100188C80;
-    v14 = v10;
-    v15 = self;
-    v18 = a6;
-    v16 = v12;
-    v17 = v11;
-    v19 = a4;
-    [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:a6 block:v13];
+    v14 = connectionCopy;
+    selfCopy = self;
+    typeCopy = type;
+    v16 = metadata;
+    v17 = tokenCopy;
+    dCopy = d;
+    [(APSUserCourier *)self enumerateConnectedProtocolConnectionsOfType:type block:v13];
   }
 }
 
-- (void)_removePendingRequestsForProtocolConnection:(id)a3
+- (void)_removePendingRequestsForProtocolConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(APSUserCourier *)self subscriptionRequests];
-  v6 = [v5 mutableCopy];
+  subscriptionRequests = [(APSUserCourier *)self subscriptionRequests];
+  v6 = [subscriptionRequests mutableCopy];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -14133,15 +14133,15 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        if (v4)
+        if (connectionCopy)
         {
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 connectionType];
-          if (v12 == [v4 connectionType])
+          connectionType = [v11 connectionType];
+          if (connectionType == [connectionCopy connectionType])
           {
             [(APSUserCourier *)self _cancelRequest:v11];
-            v13 = [(APSUserCourier *)self subscriptionRequests];
-            [v13 removeObject:v11];
+            subscriptionRequests2 = [(APSUserCourier *)self subscriptionRequests];
+            [subscriptionRequests2 removeObject:v11];
           }
         }
       }
@@ -14153,16 +14153,16 @@ LABEL_11:
   }
 }
 
-- (void)_handlePubSubSubscriptionResponse:(id)a3 fromAgent:(BOOL)a4 onProtocolConnection:(id)a5
+- (void)_handlePubSubSubscriptionResponse:(id)response fromAgent:(BOOL)agent onProtocolConnection:(id)connection
 {
-  v8 = a3;
-  v68 = a5;
-  v9 = [v8 objectForKeyedSubscript:@"APSProtocolPubSubToken"];
-  v67 = [v8 objectForKeyedSubscript:@"APSProtocolPubSubTimeout"];
-  v10 = [v8 objectForKeyedSubscript:@"APSProtocolPubSubStatus"];
-  v11 = [v8 objectForKeyedSubscript:@"APSProtocolPubSubMessageID"];
-  v69 = v8;
-  v66 = [v8 objectForKeyedSubscript:@"APSProtocolPubSubPayload"];
+  responseCopy = response;
+  connectionCopy = connection;
+  v9 = [responseCopy objectForKeyedSubscript:@"APSProtocolPubSubToken"];
+  v67 = [responseCopy objectForKeyedSubscript:@"APSProtocolPubSubTimeout"];
+  v10 = [responseCopy objectForKeyedSubscript:@"APSProtocolPubSubStatus"];
+  v11 = [responseCopy objectForKeyedSubscript:@"APSProtocolPubSubMessageID"];
+  v69 = responseCopy;
+  v66 = [responseCopy objectForKeyedSubscript:@"APSProtocolPubSubPayload"];
   v73 = v11;
   v70 = v10;
   v71 = v9;
@@ -14182,12 +14182,12 @@ LABEL_11:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v16 = [(APSUserCourier *)self subscriptionRequests];
-    v17 = [v16 countByEnumeratingWithState:&v90 objects:v106 count:16];
+    subscriptionRequests = [(APSUserCourier *)self subscriptionRequests];
+    v17 = [subscriptionRequests countByEnumeratingWithState:&v90 objects:v106 count:16];
     v18 = v17;
     if (v17)
     {
-      v19 = self;
+      selfCopy = self;
       v20 = *v91;
       while (2)
       {
@@ -14196,12 +14196,12 @@ LABEL_11:
         {
           if (*v91 != v20)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(subscriptionRequests);
           }
 
           v22 = *(*(&v90 + 1) + 8 * v21);
-          v23 = [v22 messageID];
-          v24 = [v23 isEqualToNumber:v73];
+          messageID = [v22 messageID];
+          v24 = [messageID isEqualToNumber:v73];
 
           if (v24)
           {
@@ -14213,7 +14213,7 @@ LABEL_11:
         }
 
         while (v18 != v21);
-        v18 = [v16 countByEnumeratingWithState:&v90 objects:v106 count:16];
+        v18 = [subscriptionRequests countByEnumeratingWithState:&v90 objects:v106 count:16];
         if (v18)
         {
           continue;
@@ -14223,14 +14223,14 @@ LABEL_11:
       }
 
 LABEL_22:
-      self = v19;
+      self = selfCopy;
     }
 
     v65 = v18;
-    if (!v18 && !a4)
+    if (!v18 && !agent)
     {
-      v81 = +[APSLog pubSub];
-      if (os_log_type_enabled(v81, OS_LOG_TYPE_FAULT))
+      pubSubName = +[APSLog pubSub];
+      if (os_log_type_enabled(pubSubName, OS_LOG_TYPE_FAULT))
       {
         sub_10010CBB0();
       }
@@ -14238,38 +14238,38 @@ LABEL_22:
       goto LABEL_53;
     }
 
-    if (a4)
+    if (agent)
     {
-      v25 = [(APSUserCourier *)self courierUser];
-      v81 = [v25 pubSubName];
+      courierUser = [(APSUserCourier *)self courierUser];
+      pubSubName = [courierUser pubSubName];
     }
 
     else
     {
       [(APSUserCourier *)self _cancelRequest:v18];
-      v26 = [(APSUserCourier *)self subscriptionRequests];
-      [v26 removeObject:v18];
+      subscriptionRequests2 = [(APSUserCourier *)self subscriptionRequests];
+      [subscriptionRequests2 removeObject:v18];
 
-      v81 = [v18 userName];
+      pubSubName = [v18 userName];
     }
 
     v27 = [(APSUserCourier *)self _isResponseForProxyDevice:v71];
-    v28 = [v70 intValue];
-    v29 = v28;
+    intValue = [v70 intValue];
+    v29 = intValue;
     if (v27)
     {
-      if (v28 == 3)
+      if (intValue == 3)
       {
         v30 = +[APSLog pubSub];
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v18 retryCount];
+          retryCount = [v18 retryCount];
           *buf = 138412802;
-          v95 = self;
+          selfCopy5 = self;
           v96 = 2112;
           v97 = v18;
           v98 = 2048;
-          v99 = v31;
+          v99 = retryCount;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@ The PubSub request %@ was told to retry.  Retry attempts left %lu", buf, 0x20u);
         }
 
@@ -14300,7 +14300,7 @@ LABEL_47:
         goto LABEL_48;
       }
 
-      v34 = [(APSUserCourier *)self _findConnectedClientWithToken:v71 onProtocolConnection:v68];
+      v34 = [(APSUserCourier *)self _findConnectedClientWithToken:v71 onProtocolConnection:connectionCopy];
       [v34 sendPubSubChannelListResponse:v69];
       goto LABEL_52;
     }
@@ -14319,13 +14319,13 @@ LABEL_47:
       case 3u:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v18 retryCount];
+          retryCount2 = [v18 retryCount];
           *buf = 138412802;
-          v95 = self;
+          selfCopy5 = self;
           v96 = 2112;
           v97 = v18;
           v98 = 2048;
-          v99 = v35;
+          v99 = retryCount2;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%@ The PubSub request %@ was told to retry.  Retry attempts left %lu", buf, 0x20u);
         }
 
@@ -14359,7 +14359,7 @@ LABEL_53:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v95 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%@ Received a response message for PubSub request", buf, 0xCu);
     }
 
@@ -14389,17 +14389,17 @@ LABEL_60:
 
       v76 = v36;
       v37 = *(*(&v86 + 1) + 8 * v36);
-      v38 = [v37 appId];
-      v39 = [v37 subscriptionChannelResponses];
-      v40 = [v37 unsubscriptionChannelResponses];
-      [v39 addObjectsFromArray:v40];
+      appId = [v37 appId];
+      subscriptionChannelResponses = [v37 subscriptionChannelResponses];
+      unsubscriptionChannelResponses = [v37 unsubscriptionChannelResponses];
+      [subscriptionChannelResponses addObjectsFromArray:unsubscriptionChannelResponses];
 
       v77 = +[NSMutableArray array];
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v79 = v39;
+      v79 = subscriptionChannelResponses;
       v41 = [v79 countByEnumeratingWithState:&v82 objects:v104 count:16];
       if (v41)
       {
@@ -14410,7 +14410,7 @@ LABEL_77:
 
       if ([v77 count])
       {
-        [(APSUserCourier *)self sendFailuresToClient:v77 pushTopic:v38];
+        [(APSUserCourier *)self sendFailuresToClient:v77 pushTopic:appId];
       }
 
       v36 = v76 + 1;
@@ -14439,17 +14439,17 @@ LABEL_65:
       }
 
       v45 = *(*(&v82 + 1) + 8 * v44);
-      v46 = [v45 channelStatus];
-      if (v46 == 1)
+      channelStatus = [v45 channelStatus];
+      if (channelStatus == 1)
       {
         break;
       }
 
-      if (!v46)
+      if (!channelStatus)
       {
         v47 = -[APSUserCourier _protoSubscriptionFailureToReadableFailure:](self, "_protoSubscriptionFailureToReadableFailure:", [v45 channelStatus]);
-        v48 = [v45 channelId];
-        v49 = [v48 base64EncodedStringWithOptions:0];
+        channelId = [v45 channelId];
+        v49 = [channelId base64EncodedStringWithOptions:0];
 
         v102[0] = @"channelID";
         v102[1] = @"reason";
@@ -14464,23 +14464,23 @@ LABEL_65:
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v95 = self;
+          selfCopy5 = self;
           v96 = 2112;
           v97 = v49;
           v98 = 2112;
-          v99 = v38;
+          v99 = appId;
           v100 = 1024;
           v101 = v47;
           _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%@ The channel %@ on topic %@ failed to subscribe with reason %u Removing subscription...", buf, 0x26u);
         }
 
         v54 = objc_alloc(CUTWeakLinkClass());
-        v55 = [(APSUserCourier *)self environment];
-        v56 = [v55 name];
-        v57 = [v54 initWithChannelID:v49 channelTopic:v38 environment:v56 tokenName:v81 checkpoint:0];
+        environment = [(APSUserCourier *)self environment];
+        name = [environment name];
+        subscriptionStore3 = [v54 initWithChannelID:v49 channelTopic:appId environment:name tokenName:pubSubName checkpoint:0];
 
-        v58 = [(APSUserCourier *)self subscriptionStore];
-        [v58 deleteSubscription:v57];
+        subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+        [subscriptionStore deleteSubscription:subscriptionStore3];
 
         goto LABEL_74;
       }
@@ -14498,22 +14498,22 @@ LABEL_75:
       }
     }
 
-    v59 = [v45 channelId];
-    v80 = [v59 base64EncodedStringWithOptions:0];
+    channelId2 = [v45 channelId];
+    v80 = [channelId2 base64EncodedStringWithOptions:0];
 
-    v60 = [(APSUserCourier *)self subscriptionStore];
-    v61 = [(APSUserCourier *)self environment];
-    [v61 name];
+    subscriptionStore2 = [(APSUserCourier *)self subscriptionStore];
+    environment2 = [(APSUserCourier *)self environment];
+    [environment2 name];
     v63 = v62 = v43;
     v49 = v80;
-    v52 = [v60 lookupSubscriptionForChannelID:v80 pushTopic:v38 environment:v63 userName:v81];
+    v52 = [subscriptionStore2 lookupSubscriptionForChannelID:v80 pushTopic:appId environment:v63 userName:pubSubName];
 
     v43 = v62;
     v42 = v78;
 
     [v52 setCheckpoint:{objc_msgSend(v45, "channelSubscriptionCheckpoint")}];
-    v57 = [(APSUserCourier *)self subscriptionStore];
-    [v57 updateChannel:v52];
+    subscriptionStore3 = [(APSUserCourier *)self subscriptionStore];
+    [subscriptionStore3 updateChannel:v52];
 LABEL_74:
 
     goto LABEL_75;
@@ -14529,7 +14529,7 @@ LABEL_74:
 LABEL_55:
 }
 
-- (BOOL)_isResponseForProxyDevice:(id)a3
+- (BOOL)_isResponseForProxyDevice:(id)device
 {
   v10 = 0;
   v11 = &v10;
@@ -14539,20 +14539,20 @@ LABEL_55:
   v6[1] = 3221225472;
   v6[2] = sub_1000B0DFC;
   v6[3] = &unk_100188CA8;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  deviceCopy = device;
+  v8 = deviceCopy;
   v9 = &v10;
-  [(APSUserCourier *)v7 enumerateConnectedProtocolConnections:v6];
+  [(APSUserCourier *)selfCopy enumerateConnectedProtocolConnections:v6];
   v4 = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
   return v4;
 }
 
-- (int)_protoSubscriptionFailureToReadableFailure:(int)a3
+- (int)_protoSubscriptionFailureToReadableFailure:(int)failure
 {
-  if (a3)
+  if (failure)
   {
     return -1;
   }
@@ -14563,10 +14563,10 @@ LABEL_55:
   }
 }
 
-- (void)sendFailuresToClient:(id)a3 pushTopic:(id)a4
+- (void)sendFailuresToClient:(id)client pushTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  topicCopy = topic;
   [(APSUserCourier *)self connectionServers];
   v19 = 0u;
   v20 = 0u;
@@ -14591,12 +14591,12 @@ LABEL_55:
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      v14 = [v13 enabledTopics];
-      v15 = [v13 opportunisticTopics];
-      v16 = [v13 nonWakingTopics];
-      if (([v14 containsObject:v7] & 1) != 0 || (objc_msgSend(v16, "containsObject:", v7) & 1) != 0 || (objc_msgSend(v15, "containsObject:", v7) & 1) != 0 || (objc_msgSend(v14, "containsObject:", @"*") & 1) != 0 || (objc_msgSend(v15, "containsObject:", @"*") & 1) != 0 || objc_msgSend(v16, "containsObject:", @"*"))
+      enabledTopics = [v13 enabledTopics];
+      opportunisticTopics = [v13 opportunisticTopics];
+      nonWakingTopics = [v13 nonWakingTopics];
+      if (([enabledTopics containsObject:topicCopy] & 1) != 0 || (objc_msgSend(nonWakingTopics, "containsObject:", topicCopy) & 1) != 0 || (objc_msgSend(opportunisticTopics, "containsObject:", topicCopy) & 1) != 0 || (objc_msgSend(enabledTopics, "containsObject:", @"*") & 1) != 0 || (objc_msgSend(opportunisticTopics, "containsObject:", @"*") & 1) != 0 || objc_msgSend(nonWakingTopics, "containsObject:", @"*"))
       {
-        [v13 handleChannelSubscriptionFailures:v6 forTopic:v7];
+        [v13 handleChannelSubscriptionFailures:clientCopy forTopic:topicCopy];
         v10 = 1;
       }
     }
@@ -14616,17 +14616,17 @@ LABEL_16:
   }
 }
 
-- (void)handleIgnoredTopics:(id)a3
+- (void)handleIgnoredTopics:(id)topics
 {
-  v4 = a3;
-  [(APSUserCourier *)self _resetCheckpointForIgnoredTopics:v4];
+  topicsCopy = topics;
+  [(APSUserCourier *)self _resetCheckpointForIgnoredTopics:topicsCopy];
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [topicsCopy allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -14638,7 +14638,7 @@ LABEL_16:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = [(APSUserCourier *)self allRegisteredChannelsForTopic:*(*(&v13 + 1) + 8 * v10)];
@@ -14648,7 +14648,7 @@ LABEL_16:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -14656,14 +14656,14 @@ LABEL_16:
 
   if ([v5 count])
   {
-    v12 = [(APSUserCourier *)self publicToken];
-    [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v5 token:v12];
+    publicToken = [(APSUserCourier *)self publicToken];
+    [(APSUserCourier *)self _handlePubSubRequest:0 unsubscriptionChannels:v5 token:publicToken];
   }
 }
 
-- (void)_resetCheckpointForIgnoredTopics:(id)a3
+- (void)_resetCheckpointForIgnoredTopics:(id)topics
 {
-  [a3 allObjects];
+  [topics allObjects];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -14683,12 +14683,12 @@ LABEL_16:
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [(APSUserCourier *)self subscriptionStore];
-        v10 = [(APSUserCourier *)self environment];
-        v11 = [v10 name];
-        v12 = [(APSUserCourier *)self courierUser];
-        v13 = [v12 pubSubName];
-        v14 = [v9 allSubscriptionsForTopic:v8 environment:v11 userName:v13];
+        subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+        environment = [(APSUserCourier *)self environment];
+        name = [environment name];
+        courierUser = [(APSUserCourier *)self courierUser];
+        pubSubName = [courierUser pubSubName];
+        v14 = [subscriptionStore allSubscriptionsForTopic:v8 environment:name userName:pubSubName];
 
         v25 = 0u;
         v26 = 0u;
@@ -14711,8 +14711,8 @@ LABEL_16:
 
               v20 = *(*(&v23 + 1) + 8 * j);
               [v20 resetCheckpoint];
-              v21 = [(APSUserCourier *)self subscriptionStore];
-              [v21 updateChannel:v20];
+              subscriptionStore2 = [(APSUserCourier *)self subscriptionStore];
+              [subscriptionStore2 updateChannel:v20];
             }
 
             v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -14729,16 +14729,16 @@ LABEL_16:
   }
 }
 
-- (void)subscribeToPreviouslyIgnoredTopics:(id)a3
+- (void)subscribeToPreviouslyIgnoredTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [topicsCopy allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -14750,7 +14750,7 @@ LABEL_16:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = [(APSUserCourier *)self allRegisteredChannelsForTopic:*(*(&v13 + 1) + 8 * v10)];
@@ -14760,7 +14760,7 @@ LABEL_16:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -14768,35 +14768,35 @@ LABEL_16:
 
   if ([v5 count])
   {
-    v12 = [(APSUserCourier *)self publicToken];
-    [(APSUserCourier *)self _handlePubSubRequest:v5 unsubscriptionChannels:0 token:v12];
+    publicToken = [(APSUserCourier *)self publicToken];
+    [(APSUserCourier *)self _handlePubSubRequest:v5 unsubscriptionChannels:0 token:publicToken];
   }
 }
 
 - (id)_getNextMessageID
 {
-  v3 = [(APSUserCourier *)self currentMessageID];
+  currentMessageID = [(APSUserCourier *)self currentMessageID];
 
-  if (!v3)
+  if (!currentMessageID)
   {
     [(APSUserCourier *)self setCurrentMessageID:&off_100197AD0];
   }
 
-  v4 = [(APSUserCourier *)self currentMessageID];
-  v5 = [v4 unsignedIntValue];
+  currentMessageID2 = [(APSUserCourier *)self currentMessageID];
+  unsignedIntValue = [currentMessageID2 unsignedIntValue];
 
-  v6 = [NSNumber numberWithInteger:v5 + 1];
+  v6 = [NSNumber numberWithInteger:unsignedIntValue + 1];
   [(APSUserCourier *)self setCurrentMessageID:v6];
 
   return [(APSUserCourier *)self currentMessageID];
 }
 
-- (void)_handlePubSubUpdateMessage:(id)a3 onProtocolConnection:(id)a4
+- (void)_handlePubSubUpdateMessage:(id)message onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"APSProtocolPubSubUpdatePayload"];
-  v9 = [v6 objectForKeyedSubscript:@"APSProtocolPubSubUpdateToken"];
+  messageCopy = message;
+  connectionCopy = connection;
+  v8 = [messageCopy objectForKeyedSubscript:@"APSProtocolPubSubUpdatePayload"];
+  v9 = [messageCopy objectForKeyedSubscript:@"APSProtocolPubSubUpdateToken"];
   v10 = +[APSLog pubSub];
   v11 = v10;
   if (v8)
@@ -14828,26 +14828,26 @@ LABEL_16:
 
     if ([(APSUserCourier *)self _isResponseForProxyDevice:v9])
     {
-      v11 = [(APSUserCourier *)self _findConnectedClientWithToken:v9 onProtocolConnection:v7];
-      -[NSObject sendPubSubUpdateMessage:forConnectionType:](v11, "sendPubSubUpdateMessage:forConnectionType:", v6, [v7 connectionType]);
+      v11 = [(APSUserCourier *)self _findConnectedClientWithToken:v9 onProtocolConnection:connectionCopy];
+      -[NSObject sendPubSubUpdateMessage:forConnectionType:](v11, "sendPubSubUpdateMessage:forConnectionType:", messageCopy, [connectionCopy connectionType]);
     }
 
     else
     {
       v11 = [[PSChannelSubscriptionsUpdatePayload alloc] initWithData:v8];
-      v14 = [v11 subscriptionUpdates];
-      v15 = [v14 count];
+      subscriptionUpdates = [v11 subscriptionUpdates];
+      v15 = [subscriptionUpdates count];
 
       if (v15)
       {
-        [(APSUserCourier *)self _handleSubscriptionUpdateCommand:v11 token:v9 protocolConnection:v7];
+        [(APSUserCourier *)self _handleSubscriptionUpdateCommand:v11 token:v9 protocolConnection:connectionCopy];
       }
 
       else
       {
-        v16 = [v11 appChannelUpdates];
+        appChannelUpdates = [v11 appChannelUpdates];
 
-        if (v16)
+        if (appChannelUpdates)
         {
           [(APSUserCourier *)self _handleChannelUpdateCommand:v11];
         }
@@ -14856,16 +14856,16 @@ LABEL_16:
   }
 }
 
-- (void)_handleSubscriptionUpdateCommand:(id)a3 token:(id)a4 protocolConnection:(id)a5
+- (void)_handleSubscriptionUpdateCommand:(id)command token:(id)token protocolConnection:(id)connection
 {
-  v21 = a4;
-  v8 = a5;
+  tokenCopy = token;
+  connectionCopy = connection;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [a3 subscriptionUpdates];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  subscriptionUpdates = [command subscriptionUpdates];
+  v10 = [subscriptionUpdates countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v10)
   {
     v12 = v10;
@@ -14878,19 +14878,19 @@ LABEL_16:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subscriptionUpdates);
         }
 
         if (![*(*(&v22 + 1) + 8 * i) subscriptionsStatus])
         {
           v28[0] = @"Environment";
-          v15 = [(APSUserCourier *)self environment];
-          v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v15 environmentType]);
+          environment = [(APSUserCourier *)self environment];
+          v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [environment environmentType]);
           v29[0] = v16;
           v29[1] = &off_100197AE8;
           v28[1] = @"MessageType";
           v28[2] = @"ConnectionType";
-          v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 connectionType]);
+          v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [connectionCopy connectionType]);
           v29[2] = v17;
           v18 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
 
@@ -14899,28 +14899,28 @@ LABEL_16:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v20;
-            v27 = self;
+            selfCopy = self;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@ Resending full subscription list in response to an incoming command 30.", buf, 0xCu);
           }
 
-          [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:v8 token:v21];
+          [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:connectionCopy token:tokenCopy];
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v12 = [subscriptionUpdates countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)_handleChannelUpdateCommand:(id)a3
+- (void)_handleChannelUpdateCommand:(id)command
 {
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = [a3 appChannelUpdates];
+  obj = [command appChannelUpdates];
   v33 = [obj countByEnumeratingWithState:&v43 objects:v58 count:16];
   if (v33)
   {
@@ -14937,14 +14937,14 @@ LABEL_16:
 
         v34 = v4;
         v5 = *(*(&v43 + 1) + 8 * v4);
-        v38 = [v5 appId];
+        appId = [v5 appId];
         v35 = +[NSMutableArray array];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v36 = [v5 channelUpdates];
-        v6 = [v36 countByEnumeratingWithState:&v39 objects:v57 count:16];
+        channelUpdates = [v5 channelUpdates];
+        v6 = [channelUpdates countByEnumeratingWithState:&v39 objects:v57 count:16];
         if (v6)
         {
           v7 = v6;
@@ -14955,45 +14955,45 @@ LABEL_16:
             {
               if (*v40 != v37)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(channelUpdates);
               }
 
               v9 = *(*(&v39 + 1) + 8 * i);
-              v10 = [v9 channelId];
-              v11 = [v10 base64EncodedStringWithOptions:0];
+              channelId = [v9 channelId];
+              v11 = [channelId base64EncodedStringWithOptions:0];
 
-              v12 = [v9 channelStatus];
-              if (v12 == 1)
+              channelStatus = [v9 channelStatus];
+              if (channelStatus == 1)
               {
                 v24 = +[APSLog pubSub];
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
-                  v25 = [v9 checkpoint];
+                  checkpoint = [v9 checkpoint];
                   *buf = 138413058;
-                  v48 = self;
+                  selfCopy2 = self;
                   v49 = 2112;
                   v50 = v11;
                   v51 = 2048;
-                  v52 = v25;
+                  v52 = checkpoint;
                   v53 = 2112;
-                  v54 = v38;
+                  v54 = appId;
                   _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@ Channel %@ was told to fastforward the checkpoint to %llu for topic %@", buf, 0x2Au);
                 }
 
                 v26 = objc_alloc(CUTWeakLinkClass());
-                v27 = [(APSUserCourier *)self environment];
-                v28 = [v27 name];
-                v29 = [(APSUserCourier *)self courierUser];
-                v30 = [v29 pubSubName];
-                v15 = [v26 initWithChannelID:v11 channelTopic:v38 environment:v28 tokenName:v30 checkpoint:{objc_msgSend(v9, "checkpoint")}];
+                environment = [(APSUserCourier *)self environment];
+                name = [environment name];
+                courierUser = [(APSUserCourier *)self courierUser];
+                pubSubName = [courierUser pubSubName];
+                v15 = [v26 initWithChannelID:v11 channelTopic:appId environment:name tokenName:pubSubName checkpoint:{objc_msgSend(v9, "checkpoint")}];
 
-                v22 = [(APSUserCourier *)self subscriptionStore];
-                [v22 updateChannel:v15];
+                subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+                [subscriptionStore updateChannel:v15];
               }
 
               else
               {
-                if (v12)
+                if (channelStatus)
                 {
                   goto LABEL_20;
                 }
@@ -15011,31 +15011,31 @@ LABEL_16:
                 if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138413058;
-                  v48 = self;
+                  selfCopy2 = self;
                   v49 = 2112;
                   v50 = v11;
                   v51 = 2112;
-                  v52 = v38;
+                  v52 = appId;
                   v53 = 1024;
                   LODWORD(v54) = v13;
                   _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ The channel %@ on topic %@ does not exist %u Removing subscription...", buf, 0x26u);
                 }
 
                 v17 = objc_alloc(CUTWeakLinkClass());
-                v18 = [(APSUserCourier *)self environment];
-                v19 = [v18 name];
-                v20 = [(APSUserCourier *)self courierUser];
-                v21 = [v20 pubSubName];
-                v22 = [v17 initWithChannelID:v11 channelTopic:v38 environment:v19 tokenName:v21 checkpoint:0];
+                environment2 = [(APSUserCourier *)self environment];
+                name2 = [environment2 name];
+                courierUser2 = [(APSUserCourier *)self courierUser];
+                pubSubName2 = [courierUser2 pubSubName];
+                subscriptionStore = [v17 initWithChannelID:v11 channelTopic:appId environment:name2 tokenName:pubSubName2 checkpoint:0];
 
-                v23 = [(APSUserCourier *)self subscriptionStore];
-                [v23 deleteSubscription:v22];
+                subscriptionStore2 = [(APSUserCourier *)self subscriptionStore];
+                [subscriptionStore2 deleteSubscription:subscriptionStore];
               }
 
 LABEL_20:
             }
 
-            v7 = [v36 countByEnumeratingWithState:&v39 objects:v57 count:16];
+            v7 = [channelUpdates countByEnumeratingWithState:&v39 objects:v57 count:16];
           }
 
           while (v7);
@@ -15043,7 +15043,7 @@ LABEL_20:
 
         if ([v35 count])
         {
-          [(APSUserCourier *)self sendFailuresToClient:v35 pushTopic:v38];
+          [(APSUserCourier *)self sendFailuresToClient:v35 pushTopic:appId];
         }
 
         v4 = v34 + 1;
@@ -15057,9 +15057,9 @@ LABEL_20:
   }
 }
 
-- (int)_protoUpdateFailureToReadableFailure:(int)a3
+- (int)_protoUpdateFailureToReadableFailure:(int)failure
 {
-  if (a3)
+  if (failure)
   {
     return -1;
   }
@@ -15070,28 +15070,28 @@ LABEL_20:
   }
 }
 
-- (BOOL)shouldDropPubSubMessageWithData:(id)a3 forTopic:(id)a4
+- (BOOL)shouldDropPubSubMessageWithData:(id)data forTopic:(id)topic
 {
-  if (a3)
+  if (data)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [[PSChannelSubscriptionsPushMetadata alloc] initWithData:v7];
+    topicCopy = topic;
+    dataCopy = data;
+    v8 = [[PSChannelSubscriptionsPushMetadata alloc] initWithData:dataCopy];
 
-    v9 = [(PSChannelSubscriptionsPushMetadata *)v8 channelId];
-    v10 = [v9 base64EncodedStringWithOptions:0];
+    channelId = [(PSChannelSubscriptionsPushMetadata *)v8 channelId];
+    v10 = [channelId base64EncodedStringWithOptions:0];
 
-    v11 = [(APSUserCourier *)self subscriptionStore];
-    v12 = [(APSUserCourier *)self environment];
-    v13 = [v12 name];
-    v14 = [(APSUserCourier *)self courierUser];
-    v15 = [v14 pubSubName];
-    v16 = [v11 lookupSubscriptionForChannelID:v10 pushTopic:v6 environment:v13 userName:v15];
+    subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+    environment = [(APSUserCourier *)self environment];
+    name = [environment name];
+    courierUser = [(APSUserCourier *)self courierUser];
+    pubSubName = [courierUser pubSubName];
+    v16 = [subscriptionStore lookupSubscriptionForChannelID:v10 pushTopic:topicCopy environment:name userName:pubSubName];
 
     if (v16)
     {
-      v17 = [(PSChannelSubscriptionsPushMetadata *)v8 checkpoint];
-      if ([v16 checkpoint] <= v17)
+      checkpoint = [(PSChannelSubscriptionsPushMetadata *)v8 checkpoint];
+      if ([v16 checkpoint] <= checkpoint)
       {
         v19 = 0;
         goto LABEL_11;
@@ -15122,30 +15122,30 @@ LABEL_11:
   return 0;
 }
 
-- (id)updateChannelForIncomingMessageWithData:(id)a3 forTopic:(id)a4
+- (id)updateChannelForIncomingMessageWithData:(id)data forTopic:(id)topic
 {
-  v6 = a4;
-  if (a3)
+  topicCopy = topic;
+  if (data)
   {
-    v7 = a3;
-    v8 = [[PSChannelSubscriptionsPushMetadata alloc] initWithData:v7];
+    dataCopy = data;
+    v8 = [[PSChannelSubscriptionsPushMetadata alloc] initWithData:dataCopy];
 
-    v9 = [(PSChannelSubscriptionsPushMetadata *)v8 channelId];
-    v10 = [v9 base64EncodedStringWithOptions:0];
+    channelId = [(PSChannelSubscriptionsPushMetadata *)v8 channelId];
+    v10 = [channelId base64EncodedStringWithOptions:0];
 
-    v21 = [(PSChannelSubscriptionsPushMetadata *)v8 checkpoint];
-    v11 = [(APSUserCourier *)self subscriptionStore];
-    v12 = [(APSUserCourier *)self environment];
-    v13 = [v12 name];
-    v14 = [(APSUserCourier *)self courierUser];
-    v15 = [v14 pubSubName];
-    v16 = [v11 lookupSubscriptionForChannelID:v10 pushTopic:v6 environment:v13 userName:v15];
+    checkpoint = [(PSChannelSubscriptionsPushMetadata *)v8 checkpoint];
+    subscriptionStore = [(APSUserCourier *)self subscriptionStore];
+    environment = [(APSUserCourier *)self environment];
+    name = [environment name];
+    courierUser = [(APSUserCourier *)self courierUser];
+    pubSubName = [courierUser pubSubName];
+    v16 = [subscriptionStore lookupSubscriptionForChannelID:v10 pushTopic:topicCopy environment:name userName:pubSubName];
 
     if (v16)
     {
-      [v16 setCheckpoint:v21];
-      v17 = [(APSUserCourier *)self subscriptionStore];
-      [v17 updateChannel:v16];
+      [v16 setCheckpoint:checkpoint];
+      subscriptionStore2 = [(APSUserCourier *)self subscriptionStore];
+      [subscriptionStore2 updateChannel:v16];
 
       v18 = v10;
     }
@@ -15156,9 +15156,9 @@ LABEL_11:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        v23 = self;
+        selfCopy = self;
         v24 = 2112;
-        v25 = v6;
+        v25 = topicCopy;
         v26 = 2112;
         v27 = v10;
         _os_log_fault_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "%@ We received a pubsub update for a topic we dont have a subscription for!  topic: %@ channelID: %@", buf, 0x20u);
@@ -15176,40 +15176,40 @@ LABEL_11:
   return v18;
 }
 
-- (void)_sendProxyChannelList:(id)a3 onConnectionType:(int64_t)a4
+- (void)_sendProxyChannelList:(id)list onConnectionType:(int64_t)type
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000B2558;
   v6[3] = &unk_1001870A0;
-  v7 = self;
-  v8 = a3;
-  v5 = v8;
-  [(APSUserCourier *)v7 enumerateConnectedProtocolConnectionsOfType:a4 block:v6];
+  selfCopy = self;
+  listCopy = list;
+  v5 = listCopy;
+  [(APSUserCourier *)selfCopy enumerateConnectedProtocolConnectionsOfType:type block:v6];
 }
 
-- (void)_requestClientPubSubChannelList:(id)a3 onProtocolConnection:(id)a4
+- (void)_requestClientPubSubChannelList:(id)list onProtocolConnection:(id)connection
 {
-  v5 = a3;
-  [v5 sendPubSubChannelListRequestForConnectionType:{objc_msgSend(a4, "connectionType")}];
+  listCopy = list;
+  [listCopy sendPubSubChannelListRequestForConnectionType:{objc_msgSend(connection, "connectionType")}];
 }
 
-- (void)_handlePubSubChannelListRequestonProtocolConnection:(id)a3
+- (void)_handlePubSubChannelListRequestonProtocolConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(APSUserCourier *)self publicToken];
-  [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:v4 token:v5];
+  connectionCopy = connection;
+  publicToken = [(APSUserCourier *)self publicToken];
+  [(APSUserCourier *)self _sendPubsubConnectMessageOnProtocolConnection:connectionCopy token:publicToken];
 }
 
-- (void)_cancelRequest:(id)a3
+- (void)_cancelRequest:(id)request
 {
-  v5 = a3;
-  v3 = [v5 timeoutSource];
+  requestCopy = request;
+  timeoutSource = [requestCopy timeoutSource];
 
-  if (v3)
+  if (timeoutSource)
   {
-    v4 = [v5 timeoutSource];
-    dispatch_source_cancel(v4);
+    timeoutSource2 = [requestCopy timeoutSource];
+    dispatch_source_cancel(timeoutSource2);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface AppLaunchExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AppLaunchExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AppLaunchExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AppLaunchExperience.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface EMTProjection
-- (BOOL)isEqual:(id)a3;
-- (EMTProjection)initWithIdentifier:(id)a3 range:(_NSRange)a4;
+- (BOOL)isEqual:(id)equal;
+- (EMTProjection)initWithIdentifier:(id)identifier range:(_NSRange)range;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation EMTProjection
 
-- (EMTProjection)initWithIdentifier:(id)a3 range:(_NSRange)a4
+- (EMTProjection)initWithIdentifier:(id)identifier range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = EMTProjection;
   v8 = [(EMTProjection *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
@@ -29,7 +29,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EMTProjection alloc];
   identifier = self->_identifier;
@@ -39,16 +39,16 @@
   return [(EMTProjection *)v4 initWithIdentifier:identifier range:location, length];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(EMTProjection *)self identifier];
-    v7 = [v5 identifier];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    identifier = [(EMTProjection *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = [identifier isEqualToString:identifier2];
 
     if (v8)
     {

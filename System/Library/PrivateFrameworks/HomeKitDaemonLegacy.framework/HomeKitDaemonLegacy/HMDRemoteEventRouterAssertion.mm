@@ -1,5 +1,5 @@
 @interface HMDRemoteEventRouterAssertion
-- (HMDRemoteEventRouterAssertion)initWithAssertionController:(id)a3;
+- (HMDRemoteEventRouterAssertion)initWithAssertionController:(id)controller;
 - (HMDRemoteEventRouterClientActiveStateDelegate)activeStateDelegate;
 - (void)cancel;
 - (void)dealloc;
@@ -25,22 +25,22 @@
 - (void)cancel
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDRemoteEventRouterAssertion *)self isActive];
+  isActive = [(HMDRemoteEventRouterAssertion *)self isActive];
   [(HMDRemoteEventRouterAssertion *)self setIsActive:0];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (isActive)
   {
-    v4 = [(HMDRemoteEventRouterAssertion *)self activeStateDelegate];
-    [v4 assertionDidBecomeInactive:self];
+    activeStateDelegate = [(HMDRemoteEventRouterAssertion *)self activeStateDelegate];
+    [activeStateDelegate assertionDidBecomeInactive:self];
   }
 }
 
-- (HMDRemoteEventRouterAssertion)initWithAssertionController:(id)a3
+- (HMDRemoteEventRouterAssertion)initWithAssertionController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = v4;
+    v5 = controllerCopy;
     v11.receiver = self;
     v11.super_class = HMDRemoteEventRouterAssertion;
     v6 = [(HMDRemoteEventRouterAssertion *)&v11 init];

@@ -1,9 +1,9 @@
 @interface NotificationCenter
 + (BOOL)_healthAppHidden;
 - (NotificationCenter)init;
-- (void)handleNotificationAction:(id)a3;
-- (void)sendNotificationWithExposureLevel:(double)a3 duration:(double)a4 eventType:(unsigned int)a5 volumeLoweringAction:(unsigned int)a6;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)handleNotificationAction:(id)action;
+- (void)sendNotificationWithExposureLevel:(double)level duration:(double)duration eventType:(unsigned int)type volumeLoweringAction:(unsigned int)action;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation NotificationCenter
@@ -27,16 +27,16 @@
   return v2;
 }
 
-- (void)sendNotificationWithExposureLevel:(double)a3 duration:(double)a4 eventType:(unsigned int)a5 volumeLoweringAction:(unsigned int)a6
+- (void)sendNotificationWithExposureLevel:(double)level duration:(double)duration eventType:(unsigned int)type volumeLoweringAction:(unsigned int)action
 {
-  if (a5 == 1818850917)
+  if (type == 1818850917)
   {
     v8 = @"hae.loud.ios";
     v9 = @"MessageShortlookLoud";
     goto LABEL_5;
   }
 
-  if (a5 == 2003133803)
+  if (type == 2003133803)
   {
     v8 = @"hae.weekly.ios";
     v9 = @"MessageShortlookWeekly";
@@ -74,7 +74,7 @@ LABEL_5:
     title = self->_title;
     self->_title = v22;
 
-    if (a6 != 1986817143)
+    if (action != 1986817143)
     {
       v24 = HAENLocalizationUtilityGetBundle();
       v25 = [v24 localizedStringForKey:@"NotificationTitleRecommendation" value:&stru_2862C7158 table:0];
@@ -104,9 +104,9 @@ LABEL_5:
     [v33 setThreadIdentifier:@"com.apple.coreaudio.hae.notification"];
     [v33 setShouldBackgroundDefaultAction:1];
     v35 = MEMORY[0x277CE1FC0];
-    v36 = [MEMORY[0x277CCAD78] UUID];
-    v37 = [v36 UUIDString];
-    v38 = [v35 requestWithIdentifier:v37 content:v33 trigger:0 destinations:15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v38 = [v35 requestWithIdentifier:uUIDString content:v33 trigger:0 destinations:15];
 
     [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v38 withCompletionHandler:&__block_literal_global_2];
     goto LABEL_15;
@@ -141,30 +141,30 @@ void __96__NotificationCenter_sendNotificationWithExposureLevel_duration_eventTy
   }
 }
 
-- (void)handleNotificationAction:(id)a3
+- (void)handleNotificationAction:(id)action
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionCopy = action;
   v4 = *MEMORY[0x277D0AC58];
   v20[0] = *MEMORY[0x277D0AC70];
   v20[1] = v4;
   v21[0] = MEMORY[0x277CBEC38];
   v21[1] = MEMORY[0x277CBEC38];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
-  if ([(__CFString *)v3 isEqualToString:*MEMORY[0x277CE20E8]])
+  if ([(__CFString *)actionCopy isEqualToString:*MEMORY[0x277CE20E8]])
   {
     v6 = HAENotificationsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v3;
+      v19 = actionCopy;
       _os_log_impl(&dword_25081E000, v6, OS_LOG_TYPE_DEFAULT, "HAE Notification Action: %@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v8 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Sounds&path=HEADPHONE_LEVEL_LIMIT_SETTING"];
     v17 = 0;
-    [v7 openSensitiveURL:v8 withOptions:v5 error:&v17];
+    [defaultWorkspace openSensitiveURL:v8 withOptions:v5 error:&v17];
     v9 = v17;
 
     if (v9)
@@ -181,7 +181,7 @@ LABEL_13:
 
   else
   {
-    v11 = [(__CFString *)v3 isEqualToString:@"HAEActionLearnMoreInHealth"];
+    v11 = [(__CFString *)actionCopy isEqualToString:@"HAEActionLearnMoreInHealth"];
     v9 = HAENotificationsLog();
     v12 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
     if (v11)
@@ -193,10 +193,10 @@ LABEL_13:
         _os_log_impl(&dword_25081E000, v9, OS_LOG_TYPE_DEFAULT, "HAE Notification Action: %@", buf, 0xCu);
       }
 
-      v13 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
       v14 = [MEMORY[0x277CBEBC0] URLWithString:@"x-apple-Health://HearingAppPlugin.healthplugin/SafeHeadphoneListening"];
       v16 = 0;
-      [v13 openSensitiveURL:v14 withOptions:v5 error:&v16];
+      [defaultWorkspace2 openSensitiveURL:v14 withOptions:v5 error:&v16];
       v9 = v16;
 
       if (v9)
@@ -214,7 +214,7 @@ LABEL_13:
     else if (v12)
     {
       *buf = 138412290;
-      v19 = v3;
+      v19 = actionCopy;
       _os_log_impl(&dword_25081E000, v9, OS_LOG_TYPE_DEFAULT, "Unknown HAE Notification Action: %@", buf, 0xCu);
     }
   }
@@ -222,21 +222,21 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 content];
-  v12 = [v11 categoryIdentifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  if ([v12 hasPrefix:@"hae."])
+  if ([categoryIdentifier hasPrefix:@"hae."])
   {
-    v13 = [v7 actionIdentifier];
-    [(NotificationCenter *)self handleNotificationAction:v13];
+    actionIdentifier = [responseCopy actionIdentifier];
+    [(NotificationCenter *)self handleNotificationAction:actionIdentifier];
 
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_8;
     }
@@ -250,10 +250,10 @@ LABEL_13:
     [NotificationCenter userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
   }
 
-  if (v8)
+  if (handlerCopy)
   {
 LABEL_7:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_8:
@@ -261,36 +261,36 @@ LABEL_8:
 
 + (BOOL)_healthAppHidden
 {
-  v2 = [MEMORY[0x277CCDD28] sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  mEMORY[0x277CCDD28] = [MEMORY[0x277CCDD28] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD28] isAppleWatch];
 
-  if (v3)
+  if (isAppleWatch)
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 restrictedAppBundleIDs];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    restrictedAppBundleIDs = [mEMORY[0x277D262A0] restrictedAppBundleIDs];
     v6 = *MEMORY[0x277CCE3A0];
-    v7 = [v5 containsObject:*MEMORY[0x277CCE3A0]];
-    v8 = [v4 parentalControlsBlacklistedAppBundleIDs];
-    LOBYTE(v6) = [v8 containsObject:v6];
-    v9 = ([v4 effectiveBoolValueForSetting:*MEMORY[0x277D25F10]] == 2) | v7 | v6;
+    v7 = [restrictedAppBundleIDs containsObject:*MEMORY[0x277CCE3A0]];
+    parentalControlsBlacklistedAppBundleIDs = [mEMORY[0x277D262A0] parentalControlsBlacklistedAppBundleIDs];
+    LOBYTE(v6) = [parentalControlsBlacklistedAppBundleIDs containsObject:v6];
+    isRestricted = ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F10]] == 2) | v7 | v6;
   }
 
   else
   {
     v10 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:*MEMORY[0x277CCE3A0] placeholder:0];
-    v4 = v10;
+    mEMORY[0x277D262A0] = v10;
     if (!v10)
     {
-      v9 = 0;
+      isRestricted = 0;
       goto LABEL_6;
     }
 
-    v5 = [v10 appState];
-    v9 = [v5 isRestricted];
+    restrictedAppBundleIDs = [v10 appState];
+    isRestricted = [restrictedAppBundleIDs isRestricted];
   }
 
 LABEL_6:
-  return v9 & 1;
+  return isRestricted & 1;
 }
 
 void __96__NotificationCenter_sendNotificationWithExposureLevel_duration_eventType_volumeLoweringAction___block_invoke_cold_1()

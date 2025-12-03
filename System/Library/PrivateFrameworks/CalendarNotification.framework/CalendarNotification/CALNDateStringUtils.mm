@@ -1,21 +1,21 @@
 @interface CALNDateStringUtils
 + (id)_allDayFormatter;
 + (id)_dateTimeFormatter;
-+ (id)dateTimeStringForEventDate:(id)a3 alwaysIncludeDate:(BOOL)a4 allDayEvent:(BOOL)a5 dateProvider:(id)a6;
++ (id)dateTimeStringForEventDate:(id)date alwaysIncludeDate:(BOOL)includeDate allDayEvent:(BOOL)event dateProvider:(id)provider;
 @end
 
 @implementation CALNDateStringUtils
 
-+ (id)dateTimeStringForEventDate:(id)a3 alwaysIncludeDate:(BOOL)a4 allDayEvent:(BOOL)a5 dateProvider:(id)a6
++ (id)dateTimeStringForEventDate:(id)date alwaysIncludeDate:(BOOL)includeDate allDayEvent:(BOOL)event dateProvider:(id)provider
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = [a6 now];
-  [v9 timeIntervalSinceDate:v10];
-  if (a4 || v11 < 0.0 || v11 >= 43200.0)
+  eventCopy = event;
+  dateCopy = date;
+  v10 = [provider now];
+  [dateCopy timeIntervalSinceDate:v10];
+  if (includeDate || v11 < 0.0 || v11 >= 43200.0)
   {
     v13 = objc_opt_class();
-    if (v7)
+    if (eventCopy)
     {
       [v13 _allDayFormatter];
     }
@@ -25,12 +25,12 @@
       [v13 _dateTimeFormatter];
     }
     v14 = ;
-    v12 = [v14 stringFromDate:v9];
+    v12 = [v14 stringFromDate:dateCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA968] localizedStringFromDate:v9 dateStyle:0 timeStyle:1];
+    v12 = [MEMORY[0x277CCA968] localizedStringFromDate:dateCopy dateStyle:0 timeStyle:1];
   }
 
   return v12;

@@ -18,7 +18,7 @@
 - (int64_t)extensionCount
 {
   v2 = *(&self->super.isa + OBJC_IVAR___TULiveLookupManagerProxy_manager);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_19586EB70();
   if (v4 >> 62)
   {

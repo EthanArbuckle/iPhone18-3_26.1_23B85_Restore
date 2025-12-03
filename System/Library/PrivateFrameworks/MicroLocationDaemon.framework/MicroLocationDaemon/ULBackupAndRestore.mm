@@ -1,25 +1,25 @@
 @interface ULBackupAndRestore
-- (BOOL)_clearTempBackupDirectory:(id)a3;
-- (BOOL)_createBackupDbPathWithAttributes:(id)a3;
-- (BOOL)_createTempBackupDirectoryIfNotExists:(id)a3;
+- (BOOL)_clearTempBackupDirectory:(id)directory;
+- (BOOL)_createBackupDbPathWithAttributes:(id)attributes;
+- (BOOL)_createTempBackupDirectoryIfNotExists:(id)exists;
 - (BOOL)_didReceiveCancel:(function<BOOL)(;
 - (BOOL)_exportiCloudBackupTransactionWithCancelFunc:(function<BOOL)(;
 - (BOOL)_importiCloudBackupTransaction;
-- (BOOL)_setClassBAttributeToFile:(id)a3;
+- (BOOL)_setClassBAttributeToFile:(id)file;
 - (BOOL)exportiCloudBackupWithCancelFunc:(function<BOOL)(;
 - (BOOL)importiCloudBackup;
-- (ULBackupAndRestore)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4;
-- (id)_getTempBackupDatabaseDirectoryClearCurrent:(BOOL)a3 createNew:(BOOL)a4;
+- (ULBackupAndRestore)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management;
+- (id)_getTempBackupDatabaseDirectoryClearCurrent:(BOOL)current createNew:(BOOL)new;
 - (id)getBackupDatabasePath;
 - (uint64_t)_importiCloudBackupTransaction;
-- (unint64_t)_getFileSize:(id)a3;
-- (void)_deleteTempDb:(id)a3;
+- (unint64_t)_getFileSize:(id)size;
+- (void)_deleteTempDb:(id)db;
 - (void)deleteBackupFiles;
 @end
 
 @implementation ULBackupAndRestore
 
-- (ULBackupAndRestore)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4
+- (ULBackupAndRestore)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management
 {
   v9.receiver = self;
   v9.super_class = ULBackupAndRestore;
@@ -27,8 +27,8 @@
   v7 = v6;
   if (v6)
   {
-    [(ULBackupAndRestore *)v6 setDbStore:a3];
-    [(ULBackupAndRestore *)v7 setDbManagement:a4];
+    [(ULBackupAndRestore *)v6 setDbStore:store];
+    [(ULBackupAndRestore *)v7 setDbManagement:management];
   }
 
   return v7;
@@ -77,8 +77,8 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v7 = [(ULBackupAndRestore *)self dbManagement];
-  if (((*(v7->var0 + 7))(v7) & 1) == 0)
+  dbManagement = [(ULBackupAndRestore *)self dbManagement];
+  if (((*(dbManagement->var0 + 7))(dbManagement) & 1) == 0)
   {
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -227,28 +227,28 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
 
 - (void)deleteBackupFiles
 {
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(ULBackupAndRestore *)self getBackupDatabasePath];
-  [v5 removeItemAtPath:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  getBackupDatabasePath = [(ULBackupAndRestore *)self getBackupDatabasePath];
+  [defaultManager removeItemAtPath:getBackupDatabasePath error:0];
   v4 = [(ULBackupAndRestore *)self _getTempBackupDatabaseDirectoryClearCurrent:1 createNew:0];
 }
 
 - (id)getBackupDatabasePath
 {
-  v2 = [(ULBackupAndRestore *)self dbStore];
-  v3 = (*(v2->var0 + 2))(v2);
-  v4 = [v3 storesDirectory];
+  dbStore = [(ULBackupAndRestore *)self dbStore];
+  v3 = (*(dbStore->var0 + 2))(dbStore);
+  storesDirectory = [v3 storesDirectory];
 
-  v5 = [v4 URLByAppendingPathComponent:@"miloBackup.db"];
-  v6 = [v5 path];
+  v5 = [storesDirectory URLByAppendingPathComponent:@"miloBackup.db"];
+  path = [v5 path];
 
-  return v6;
+  return path;
 }
 
 - (BOOL)_exportiCloudBackupTransactionWithCancelFunc:(function<BOOL)(
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(ULBackupAndRestore *)self _getTempBackupDatabaseDirectoryClearCurrent:1 createNew:1];
   if (objc_claimAutoreleasedReturnValue())
   {
@@ -262,10 +262,10 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
 - (BOOL)_importiCloudBackupTransaction
 {
   v35[0] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(ULBackupAndRestore *)self getBackupDatabasePath];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  getBackupDatabasePath = [(ULBackupAndRestore *)self getBackupDatabasePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:getBackupDatabasePath];
 
   if (v6)
   {
@@ -275,11 +275,11 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
       v8 = [_TtC19MicroLocationDaemon10ULKeychain retrieveSymmetricKey:@"com.apple.milod.security.database.backup"];
       if (v8)
       {
-        v25 = [(ULBackupAndRestore *)self _getFileSize:v4];
+        v25 = [(ULBackupAndRestore *)self _getFileSize:getBackupDatabasePath];
         v9 = +[ULPersistenceManager defaultLocalStoreFilename];
         v26 = [v7 stringByAppendingPathComponent:v9];
 
-        if ([_TtC19MicroLocationDaemon12ULEncryption decryptFile:v4 destinationPath:v26 keyLabel:@"com.apple.milod.security.database.backup" keychainClass:objc_opt_class()])
+        if ([_TtC19MicroLocationDaemon12ULEncryption decryptFile:getBackupDatabasePath destinationPath:v26 keyLabel:@"com.apple.milod.security.database.backup" keychainClass:objc_opt_class()])
         {
           operator new();
         }
@@ -296,8 +296,8 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
           _os_log_impl(&dword_258FE9000, v17, OS_LOG_TYPE_ERROR, "Failed to decrypt restored backup file", buf, 2u);
         }
 
-        v18 = [(ULBackupAndRestore *)self dbStore];
-        v19 = (*(v18->var0 + 15))(v18);
+        dbStore = [(ULBackupAndRestore *)self dbStore];
+        v19 = (*(dbStore->var0 + 15))(dbStore);
         v27 = cl::chrono::CFAbsoluteTimeClock::now();
         ULMigrationDO::ULMigrationDO(v34, 9, &v27);
         *buf = 0;
@@ -313,7 +313,7 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
 
         v11 = 0;
         [(ULBackupAndRestore *)self _deleteTempDb:v26];
-        [v3 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
         v21 = v20;
         if (onceToken_MicroLocation_Default != -1)
         {
@@ -331,7 +331,7 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
           *&v29[16] = 2049;
           *&v29[18] = -v21;
           v30 = 2113;
-          v31 = v4;
+          v31 = getBackupDatabasePath;
           v32 = 2049;
           v33 = v25;
           _os_log_impl(&dword_258FE9000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:MiLo import from iCloud restored backup, result:%{private}hhd, duration [s]:%{private}f, file path:%{private, location:escape_only}@, file size [B]:%{private}llu}", buf, 0x36u);
@@ -352,8 +352,8 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
           _os_log_impl(&dword_258FE9000, v15, OS_LOG_TYPE_ERROR, "Failed to get key for backup decryption", buf, 2u);
         }
 
-        v16 = [(ULBackupAndRestore *)self dbStore];
-        v26 = (*(v16->var0 + 15))(v16);
+        dbStore2 = [(ULBackupAndRestore *)self dbStore];
+        v26 = (*(dbStore2->var0 + 15))(dbStore2);
         v27 = cl::chrono::CFAbsoluteTimeClock::now();
         ULMigrationDO::ULMigrationDO(v34, 8, &v27);
         *buf = 0;
@@ -373,8 +373,8 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
 
     else
     {
-      v12 = [(ULBackupAndRestore *)self dbStore];
-      v13 = (*(v12->var0 + 15))(v12);
+      dbStore3 = [(ULBackupAndRestore *)self dbStore];
+      v13 = (*(dbStore3->var0 + 15))(dbStore3);
       v27 = cl::chrono::CFAbsoluteTimeClock::now();
       ULMigrationDO::ULMigrationDO(v34, 10, &v27);
       *buf = 0;
@@ -419,7 +419,7 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
       *v29 = 2082;
       *&v29[2] = "";
       *&v29[10] = 2113;
-      *&v29[12] = v4;
+      *&v29[12] = getBackupDatabasePath;
       _os_log_impl(&dword_258FE9000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Skipping Microlocation iCloud restore. Restored backup file does not exist, filePath:%{private, location:escape_only}@}", buf, 0x1Cu);
     }
 
@@ -430,22 +430,22 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)_deleteTempDb:(id)a3
+- (void)_deleteTempDb:(id)db
 {
-  v4 = a3;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 removeItemAtPath:v4 error:0];
+  dbCopy = db;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:dbCopy error:0];
 }
 
-- (unint64_t)_getFileSize:(id)a3
+- (unint64_t)_getFileSize:(id)size
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  sizeCopy = size;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v11];
+  v5 = [defaultManager attributesOfItemAtPath:sizeCopy error:&v11];
   v6 = v11;
-  v7 = [v5 fileSize];
+  fileSize = [v5 fileSize];
 
   if (v6)
   {
@@ -462,7 +462,7 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
       v14 = 2082;
       v15 = "";
       v16 = 2113;
-      v17 = v3;
+      v17 = sizeCopy;
       v18 = 2113;
       v19 = v6;
       _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Failed to get file size, filePath:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", buf, 0x26u);
@@ -470,25 +470,25 @@ uint64_t __40__ULBackupAndRestore_importiCloudBackup__block_invoke(uint64_t a1)
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return fileSize;
 }
 
-- (BOOL)_clearTempBackupDirectory:(id)a3
+- (BOOL)_clearTempBackupDirectory:(id)directory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = +[ULPersistenceManager defaultLocalStoreFilename];
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  v6 = [directoryCopy stringByAppendingPathComponent:v5];
 
-  if (![v4 fileExistsAtPath:v6])
+  if (![defaultManager fileExistsAtPath:v6])
   {
     v8 = 0;
     goto LABEL_13;
   }
 
   v14 = 0;
-  v7 = [v4 removeItemAtPath:v6 error:&v14];
+  v7 = [defaultManager removeItemAtPath:v6 error:&v14];
   v8 = v14;
   if (v7)
   {
@@ -542,12 +542,12 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_createTempBackupDirectoryIfNotExists:(id)a3
+- (BOOL)_createTempBackupDirectoryIfNotExists:(id)exists
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  existsCopy = exists;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:existsCopy])
   {
     v5 = 1;
   }
@@ -559,7 +559,7 @@ LABEL_14:
     v23[0] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v13 = 0;
-    v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:v7 error:&v13];
+    v5 = [defaultManager createDirectoryAtPath:existsCopy withIntermediateDirectories:1 attributes:v7 error:&v13];
     v8 = v13;
 
     if ((v5 & 1) == 0)
@@ -577,7 +577,7 @@ LABEL_14:
         v16 = 2082;
         v17 = "";
         v18 = 2113;
-        v19 = v3;
+        v19 = existsCopy;
         v20 = 2114;
         v21 = v8;
         _os_log_impl(&dword_258FE9000, v9, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Failed to create temp backup directory, directory:%{private, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -596,7 +596,7 @@ LABEL_14:
         v16 = 2082;
         v17 = "";
         v18 = 2113;
-        v19 = v3;
+        v19 = existsCopy;
         v20 = 2114;
         v21 = v8;
         _os_signpost_emit_with_name_impl(&dword_258FE9000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Failed to create temp backup directory", "{msg%{public}.0s:Failed to create temp backup directory, directory:%{private, location:escape_only}@, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -608,19 +608,19 @@ LABEL_14:
   return v5;
 }
 
-- (id)_getTempBackupDatabaseDirectoryClearCurrent:(BOOL)a3 createNew:(BOOL)a4
+- (id)_getTempBackupDatabaseDirectoryClearCurrent:(BOOL)current createNew:(BOOL)new
 {
-  v4 = a4;
-  v5 = a3;
+  newCopy = new;
+  currentCopy = current;
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = NSTemporaryDirectory();
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:493];
   v32 = *MEMORY[0x277CCA180];
   v33[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
   v23 = 0;
-  v11 = [v7 setAttributes:v10 ofItemAtPath:v8 error:&v23];
+  v11 = [defaultManager setAttributes:v10 ofItemAtPath:v8 error:&v23];
   v12 = v23;
 
   if (v11)
@@ -628,7 +628,7 @@ LABEL_14:
     v13 = [v8 stringByAppendingPathComponent:@"com.apple.milod"];
     v14 = [v13 stringByAppendingPathComponent:@"miloTempBackup"];
 
-    if ((!v5 || [(ULBackupAndRestore *)self _clearTempBackupDirectory:v14]) && (!v4 || [(ULBackupAndRestore *)self _createTempBackupDirectoryIfNotExists:v14]))
+    if ((!currentCopy || [(ULBackupAndRestore *)self _clearTempBackupDirectory:v14]) && (!newCopy || [(ULBackupAndRestore *)self _createTempBackupDirectoryIfNotExists:v14]))
     {
       v14 = v14;
       v15 = v14;
@@ -647,13 +647,13 @@ LABEL_14:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = v8;
-      v18 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       *buf = 68289539;
       v25 = 0;
       v26 = 2082;
       v27 = "";
       v28 = 2081;
-      v29 = v18;
+      v29 = uTF8String;
       v30 = 2114;
       v31 = v12;
       _os_log_impl(&dword_258FE9000, v16, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Failed to set attributes for directory, directory:%{private, location:escape_only}s, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -668,13 +668,13 @@ LABEL_14:
     if (os_signpost_enabled(v14))
     {
       v19 = v8;
-      v20 = [v8 UTF8String];
+      uTF8String2 = [v8 UTF8String];
       *buf = 68289539;
       v25 = 0;
       v26 = 2082;
       v27 = "";
       v28 = 2081;
-      v29 = v20;
+      v29 = uTF8String2;
       v30 = 2114;
       v31 = v12;
       _os_signpost_emit_with_name_impl(&dword_258FE9000, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Failed to set attributes for directory", "{msg%{public}.0s:Failed to set attributes for directory, directory:%{private, location:escape_only}s, error:%{public, location:escape_only}@}", buf, 0x26u);
@@ -689,19 +689,19 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)_createBackupDbPathWithAttributes:(id)a3
+- (BOOL)_createBackupDbPathWithAttributes:(id)attributes
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  attributesCopy = attributes;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17 = *MEMORY[0x277CCA1B0];
   v18[0] = *MEMORY[0x277CCA198];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v7 = [v5 createFileAtPath:v4 contents:0 attributes:v6];
+  v7 = [defaultManager createFileAtPath:attributesCopy contents:0 attributes:v6];
 
   if (v7)
   {
-    v8 = [(ULBackupAndRestore *)self _setExcludeFromBackupAttribute:v4 withValue:1];
+    v8 = [(ULBackupAndRestore *)self _setExcludeFromBackupAttribute:attributesCopy withValue:1];
   }
 
   else
@@ -719,7 +719,7 @@ LABEL_16:
       v13 = 2082;
       v14 = "";
       v15 = 2113;
-      v16 = v4;
+      v16 = attributesCopy;
       _os_log_impl(&dword_258FE9000, v9, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Failed to create file at path, filename:%{private, location:escape_only}@}", v12, 0x1Cu);
     }
 
@@ -730,16 +730,16 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)_setClassBAttributeToFile:(id)a3
+- (BOOL)_setClassBAttributeToFile:(id)file
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = *MEMORY[0x277CCA1B0];
   v22[0] = *MEMORY[0x277CCA198];
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v12 = 0;
-  v6 = [v4 setAttributes:v5 ofItemAtPath:v3 error:&v12];
+  v6 = [defaultManager setAttributes:v5 ofItemAtPath:fileCopy error:&v12];
   v7 = v12;
 
   if ((v6 & 1) == 0)
@@ -757,7 +757,7 @@ LABEL_16:
       v15 = 2082;
       v16 = "";
       v17 = 2113;
-      v18 = v3;
+      v18 = fileCopy;
       v19 = 2113;
       v20 = v7;
       _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Failed to set attribute for path, path:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", buf, 0x26u);
@@ -776,7 +776,7 @@ LABEL_16:
       v15 = 2082;
       v16 = "";
       v17 = 2113;
-      v18 = v3;
+      v18 = fileCopy;
       v19 = 2113;
       v20 = v7;
       _os_signpost_emit_with_name_impl(&dword_258FE9000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Failed to set attribute for path", "{msg%{public}.0s:Failed to set attribute for path, path:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", buf, 0x26u);
@@ -822,7 +822,7 @@ LABEL_16:
 - (uint64_t)_importiCloudBackupTransaction
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -8,12 +8,12 @@
 {
   if (a4)
   {
-    [a3 localize:a1 pluralizationNumber:?];
+    [a3 localize:self pluralizationNumber:?];
   }
 
   else
   {
-    [a3 localize:a1];
+    [a3 localize:self];
   }
   v4 = ;
 

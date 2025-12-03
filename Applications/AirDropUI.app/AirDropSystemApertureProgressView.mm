@@ -1,7 +1,7 @@
 @interface AirDropSystemApertureProgressView
 - (CGSize)intrinsicContentSize;
 - (_TtC9AirDropUI33AirDropSystemApertureProgressView)init;
-- (_TtC9AirDropUI33AirDropSystemApertureProgressView)initWithCoder:(id)a3;
+- (_TtC9AirDropUI33AirDropSystemApertureProgressView)initWithCoder:(id)coder;
 - (void)touchedDownCancelButton;
 - (void)touchedUpCancelButton;
 @end
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC9AirDropUI33AirDropSystemApertureProgressView)initWithCoder:(id)a3
+- (_TtC9AirDropUI33AirDropSystemApertureProgressView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9AirDropUI33AirDropSystemApertureProgressView_progress;
   *(&self->super.super.super.super.isa + v4) = [objc_opt_self() progressWithTotalUnitCount:1000];
@@ -44,14 +44,14 @@
 - (void)touchedDownCancelButton
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9AirDropUI33AirDropSystemApertureProgressView_isTouchingDownButton) = 1;
-  v2 = self;
+  selfCopy = self;
   sub_100109800();
 }
 
 - (void)touchedUpCancelButton
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9AirDropUI33AirDropSystemApertureProgressView_isTouchingDownButton) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_100109800();
 }
 

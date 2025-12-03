@@ -1,16 +1,16 @@
 @interface CSMiniPlayerView
-- (CSMiniPlayerView)initWithFrame:(CGRect)a3;
-- (void)_addSubviewsForAutolayout:(id)a3;
-- (void)updateViewStateToNormalWithMediaPlaying:(BOOL)a3 playingSong:(id)a4;
+- (CSMiniPlayerView)initWithFrame:(CGRect)frame;
+- (void)_addSubviewsForAutolayout:(id)autolayout;
+- (void)updateViewStateToNormalWithMediaPlaying:(BOOL)playing playingSong:(id)song;
 @end
 
 @implementation CSMiniPlayerView
 
-- (CSMiniPlayerView)initWithFrame:(CGRect)a3
+- (CSMiniPlayerView)initWithFrame:(CGRect)frame
 {
   v66.receiver = self;
   v66.super_class = CSMiniPlayerView;
-  v3 = [(CSMiniPlayerView *)&v66 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSMiniPlayerView *)&v66 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CSMiniPlayerArtworkView);
@@ -23,20 +23,20 @@
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:1];
     v8 = v3->_titleLabel;
-    v9 = [MEMORY[0x277D75340] labelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    labelColor = [MEMORY[0x277D75340] labelColor];
+    [(UILabel *)v8 setTextColor:labelColor];
 
     v10 = v3->_titleLabel;
     v11 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76970] variant:1024];
     [(UILabel *)v10 setFont:v11];
 
     [(UILabel *)v3->_titleLabel setAdjustsFontForContentSizeCategory:1];
-    v12 = [objc_alloc(MEMORY[0x277D25700]) initForAutolayout];
+    initForAutolayout = [objc_alloc(MEMORY[0x277D25700]) initForAutolayout];
     titleMarqueeView = v3->_titleMarqueeView;
-    v3->_titleMarqueeView = v12;
+    v3->_titleMarqueeView = initForAutolayout;
 
-    v14 = [(MPUMarqueeView *)v3->_titleMarqueeView contentView];
-    [v14 addSubview:v3->_titleLabel];
+    contentView = [(MPUMarqueeView *)v3->_titleMarqueeView contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     [(MPUMarqueeView *)v3->_titleMarqueeView setViewForContentSize:v3->_titleLabel];
     [(MPUMarqueeView *)v3->_titleMarqueeView setAnimationReferenceView:v3->_titleMarqueeView];
@@ -52,20 +52,20 @@
 
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:1];
     v18 = v3->_subtitleLabel;
-    v19 = [MEMORY[0x277D75340] secondaryLabelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x277D75340] secondaryLabelColor];
+    [(UILabel *)v18 setTextColor:secondaryLabelColor];
 
     v20 = v3->_subtitleLabel;
     v21 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76930] weight:*MEMORY[0x277D74418]];
     [(UILabel *)v20 setFont:v21];
 
     [(UILabel *)v3->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
-    v22 = [objc_alloc(MEMORY[0x277D25700]) initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x277D25700]) initForAutolayout];
     subtitleMarqueeView = v3->_subtitleMarqueeView;
-    v3->_subtitleMarqueeView = v22;
+    v3->_subtitleMarqueeView = initForAutolayout2;
 
-    v24 = [(MPUMarqueeView *)v3->_subtitleMarqueeView contentView];
-    [v24 addSubview:v3->_subtitleLabel];
+    contentView2 = [(MPUMarqueeView *)v3->_subtitleMarqueeView contentView];
+    [contentView2 addSubview:v3->_subtitleLabel];
 
     [(MPUMarqueeView *)v3->_subtitleMarqueeView setViewForContentSize:v3->_subtitleLabel];
     [(MPUMarqueeView *)v3->_subtitleMarqueeView setAnimationReferenceView:v3->_subtitleMarqueeView];
@@ -88,11 +88,11 @@
       [(CSMiniPlayerView *)v3 setBackgroundColor:v26];
     }
 
-    v27 = [(CSMiniPlayerView *)v3 layer];
-    [v27 setCornerRadius:24.0];
+    layer = [(CSMiniPlayerView *)v3 layer];
+    [layer setCornerRadius:24.0];
 
-    v28 = [(CSMiniPlayerView *)v3 layer];
-    [v28 setCornerCurve:*MEMORY[0x277CDA128]];
+    layer2 = [(CSMiniPlayerView *)v3 layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA128]];
 
     v65[0] = v3->_artworkView;
     v65[1] = v3->_titleMarqueeView;
@@ -103,47 +103,47 @@
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v51 = MEMORY[0x277CCAAD0];
-    v63 = [(CSMiniPlayerArtworkView *)v3->_artworkView leadingAnchor];
-    v62 = [(CSMiniPlayerView *)v3 leadingAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:16.0];
+    leadingAnchor = [(CSMiniPlayerArtworkView *)v3->_artworkView leadingAnchor];
+    leadingAnchor2 = [(CSMiniPlayerView *)v3 leadingAnchor];
+    v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v64[0] = v61;
-    v60 = [(CSMiniPlayerArtworkView *)v3->_artworkView centerYAnchor];
-    v59 = [(CSMiniPlayerView *)v3 centerYAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    centerYAnchor = [(CSMiniPlayerArtworkView *)v3->_artworkView centerYAnchor];
+    centerYAnchor2 = [(CSMiniPlayerView *)v3 centerYAnchor];
+    v58 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v64[1] = v58;
-    v57 = [(CSMiniPlayerArtworkView *)v3->_artworkView heightAnchor];
-    v56 = [v57 constraintEqualToConstant:30.0];
+    heightAnchor = [(CSMiniPlayerArtworkView *)v3->_artworkView heightAnchor];
+    v56 = [heightAnchor constraintEqualToConstant:30.0];
     v64[2] = v56;
-    v55 = [(CSMiniPlayerArtworkView *)v3->_artworkView widthAnchor];
-    v54 = [v55 constraintEqualToConstant:30.0];
+    widthAnchor = [(CSMiniPlayerArtworkView *)v3->_artworkView widthAnchor];
+    v54 = [widthAnchor constraintEqualToConstant:30.0];
     v64[3] = v54;
-    v53 = [(MPUMarqueeView *)v3->_titleMarqueeView leadingAnchor];
-    v52 = [(CSMiniPlayerArtworkView *)v3->_artworkView trailingAnchor];
-    v50 = [v53 constraintEqualToAnchor:v52 constant:8.0];
+    leadingAnchor3 = [(MPUMarqueeView *)v3->_titleMarqueeView leadingAnchor];
+    trailingAnchor = [(CSMiniPlayerArtworkView *)v3->_artworkView trailingAnchor];
+    v50 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     v64[4] = v50;
-    v49 = [(MPUMarqueeView *)v3->_titleMarqueeView topAnchor];
-    v48 = [(CSMiniPlayerView *)v3 topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:9.0];
+    topAnchor = [(MPUMarqueeView *)v3->_titleMarqueeView topAnchor];
+    topAnchor2 = [(CSMiniPlayerView *)v3 topAnchor];
+    v47 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
     v64[5] = v47;
-    v46 = [(MPUMarqueeView *)v3->_titleMarqueeView trailingAnchor];
-    v45 = [(CSMiniPlayerView *)v3 trailingAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45 constant:-8.0];
+    trailingAnchor2 = [(MPUMarqueeView *)v3->_titleMarqueeView trailingAnchor];
+    trailingAnchor3 = [(CSMiniPlayerView *)v3 trailingAnchor];
+    v44 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-8.0];
     v64[6] = v44;
-    v43 = [(MPUMarqueeView *)v3->_subtitleMarqueeView leadingAnchor];
-    v42 = [(MPUMarqueeView *)v3->_titleMarqueeView leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    leadingAnchor4 = [(MPUMarqueeView *)v3->_subtitleMarqueeView leadingAnchor];
+    leadingAnchor5 = [(MPUMarqueeView *)v3->_titleMarqueeView leadingAnchor];
+    v41 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v64[7] = v41;
-    v40 = [(MPUMarqueeView *)v3->_subtitleMarqueeView topAnchor];
-    v30 = [(MPUMarqueeView *)v3->_titleMarqueeView bottomAnchor];
-    v31 = [v40 constraintEqualToAnchor:v30 constant:1.0];
+    topAnchor3 = [(MPUMarqueeView *)v3->_subtitleMarqueeView topAnchor];
+    bottomAnchor = [(MPUMarqueeView *)v3->_titleMarqueeView bottomAnchor];
+    v31 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:1.0];
     v64[8] = v31;
-    v32 = [(MPUMarqueeView *)v3->_subtitleMarqueeView bottomAnchor];
-    v33 = [(CSMiniPlayerView *)v3 bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:-8.0];
+    bottomAnchor2 = [(MPUMarqueeView *)v3->_subtitleMarqueeView bottomAnchor];
+    bottomAnchor3 = [(CSMiniPlayerView *)v3 bottomAnchor];
+    v34 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-8.0];
     v64[9] = v34;
-    v35 = [(MPUMarqueeView *)v3->_subtitleMarqueeView trailingAnchor];
-    v36 = [(MPUMarqueeView *)v3->_titleMarqueeView trailingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    trailingAnchor4 = [(MPUMarqueeView *)v3->_subtitleMarqueeView trailingAnchor];
+    trailingAnchor5 = [(MPUMarqueeView *)v3->_titleMarqueeView trailingAnchor];
+    v37 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v64[10] = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:11];
     [v51 activateConstraints:v38];
@@ -154,14 +154,14 @@
   return v3;
 }
 
-- (void)_addSubviewsForAutolayout:(id)a3
+- (void)_addSubviewsForAutolayout:(id)autolayout
 {
-  v4 = a3;
+  autolayoutCopy = autolayout;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [autolayoutCopy countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -172,7 +172,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(autolayoutCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -180,31 +180,31 @@
         [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [autolayoutCopy countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)updateViewStateToNormalWithMediaPlaying:(BOOL)a3 playingSong:(id)a4
+- (void)updateViewStateToNormalWithMediaPlaying:(BOOL)playing playingSong:(id)song
 {
-  v12 = a4;
+  songCopy = song;
   [(CSMiniPlayerView *)self setAlpha:1.0];
   titleLabel = self->_titleLabel;
-  if (v12)
+  if (songCopy)
   {
-    v6 = [v12 title];
-    [(UILabel *)titleLabel setText:v6];
+    title = [songCopy title];
+    [(UILabel *)titleLabel setText:title];
 
     subtitleLabel = self->_subtitleLabel;
-    v8 = [v12 artist];
-    v9 = [v8 name];
-    [(UILabel *)subtitleLabel setText:v9];
+    artist = [songCopy artist];
+    name = [artist name];
+    [(UILabel *)subtitleLabel setText:name];
 
     artworkView = self->_artworkView;
-    v11 = [v12 artworkCatalog];
-    [(CSMiniPlayerArtworkView *)artworkView setArtwork:v11];
+    artworkCatalog = [songCopy artworkCatalog];
+    [(CSMiniPlayerArtworkView *)artworkView setArtwork:artworkCatalog];
   }
 
   else

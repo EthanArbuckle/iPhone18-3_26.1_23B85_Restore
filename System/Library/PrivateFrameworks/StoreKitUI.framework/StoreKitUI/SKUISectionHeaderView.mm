@@ -1,28 +1,28 @@
 @interface SKUISectionHeaderView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_linesForViewElement:(id)a3 width:(double)a4 buttonSize:(CGSize)a5 context:(id)a6;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUISectionHeaderView)initWithFrame:(CGRect)a3;
-- (void)_buttonAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_linesForViewElement:(id)element width:(double)width buttonSize:(CGSize)size context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUISectionHeaderView)initWithFrame:(CGRect)frame;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUISectionHeaderView
 
-- (SKUISectionHeaderView)initWithFrame:(CGRect)a3
+- (SKUISectionHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -37,18 +37,18 @@
 
   v20.receiver = self;
   v20.super_class = SKUISectionHeaderView;
-  v16 = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
-    views = v16->_views;
-    v16->_views = v17;
+    views = height->_views;
+    height->_views = v17;
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -65,17 +65,17 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUISectionHeaderView preferredSizeForViewElement:context:];
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -86,11 +86,11 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -103,15 +103,15 @@
     }
   }
 
-  v18 = [v9 labelLayoutCache];
-  v36 = [v8 button];
-  v37 = v8;
-  v19 = [v8 titleLabels];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  button = [elementCopy button];
+  v37 = elementCopy;
+  titleLabels = [elementCopy titleLabels];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v20 = [titleLabels countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v20)
   {
     v21 = v20;
@@ -122,37 +122,37 @@
       {
         if (*v39 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(titleLabels);
         }
 
         v24 = *(*(&v38 + 1) + 8 * i);
-        v25 = [a1 _attributedStringForLabel:v24 context:v9];
-        [v18 requestLayoutForLabel:v24 attributedString:v25 width:a4];
+        v25 = [self _attributedStringForLabel:v24 context:contextCopy];
+        [labelLayoutCache requestLayoutForLabel:v24 attributedString:v25 width:width];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v21 = [titleLabels countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v21);
   }
 
-  if (v36)
+  if (button)
   {
-    v26 = a4 * 0.3;
+    v26 = width * 0.3;
     v27 = vcvtps_s32_f32(v26);
-    v28 = [v36 style];
-    if ([v28 elementAlignment] == 1)
+    style = [button style];
+    if ([style elementAlignment] == 1)
     {
-      v29 = [v19 count];
+      v29 = [titleLabels count];
 
       if (!v29)
       {
-        v30 = [v37 style];
-        [v30 elementPadding];
+        style2 = [v37 style];
+        [style2 elementPadding];
         v32 = v31;
         v34 = v33;
 
-        v27 = (a4 - (v34 + v32));
+        v27 = (width - (v34 + v32));
       }
     }
 
@@ -160,16 +160,16 @@
     {
     }
 
-    v35 = [a1 _attributedStringForButton:v36 context:v9];
-    [v18 requestLayoutForButton:v36 attributedString:v35 width:v27];
+    v35 = [self _attributedStringForButton:button context:contextCopy];
+    [labelLayoutCache requestLayoutForButton:button attributedString:v35 width:v27];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -182,11 +182,11 @@
     }
   }
 
-  v18 = [v8 button];
-  if (v18)
+  button = [elementCopy button];
+  if (button)
   {
-    v19 = a3 * 0.3;
-    [a1 _sizeForViewElement:v18 width:v9 context:vcvtps_s32_f32(v19)];
+    v19 = width * 0.3;
+    [self _sizeForViewElement:button width:contextCopy context:vcvtps_s32_f32(v19)];
     v21 = v20;
     v23 = v22 + 10.0;
   }
@@ -197,15 +197,15 @@
     v21 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v24 = [v8 titleLabels];
-  v25 = v24;
-  if (a3 <= 600.0)
+  titleLabels = [elementCopy titleLabels];
+  v25 = titleLabels;
+  if (width <= 600.0)
   {
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v40 = [v24 countByEnumeratingWithState:&v58 objects:v64 count:16];
+    v40 = [titleLabels countByEnumeratingWithState:&v58 objects:v64 count:16];
     if (v40)
     {
       v41 = v40;
@@ -220,7 +220,7 @@
             objc_enumerationMutation(v25);
           }
 
-          [a1 _sizeForViewElement:*(*(&v58 + 1) + 8 * i) width:v9 context:a3];
+          [self _sizeForViewElement:*(*(&v58 + 1) + 8 * i) width:contextCopy context:width];
           v30 = v30 + v44;
         }
 
@@ -238,10 +238,10 @@
 
   else
   {
-    v47 = v24;
-    v48 = v18;
-    v49 = v8;
-    v26 = [a1 _linesForViewElement:v8 width:v9 buttonSize:a3 context:{v23, v21}];
+    v47 = titleLabels;
+    v48 = button;
+    v49 = elementCopy;
+    v26 = [self _linesForViewElement:elementCopy width:contextCopy buttonSize:width context:{v23, v21}];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
@@ -282,7 +282,7 @@
                   objc_enumerationMutation(v33);
                 }
 
-                [a1 _sizeForViewElement:*(*(&v50 + 1) + 8 * k) width:v9 context:a3];
+                [self _sizeForViewElement:*(*(&v50 + 1) + 8 * k) width:contextCopy context:width];
                 if (v37 < v39)
                 {
                   v37 = v39;
@@ -314,8 +314,8 @@
       v30 = 0.0;
     }
 
-    v18 = v48;
-    v8 = v49;
+    button = v48;
+    elementCopy = v49;
     v25 = v47;
   }
 
@@ -324,19 +324,19 @@
     v21 = v30;
   }
 
-  v45 = a3;
+  widthCopy = width;
   v46 = v21;
   result.height = v46;
-  result.width = v45;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_header, a3);
-  [objc_opt_class() sizeThatFitsWidth:v9 viewElement:v10 context:a4];
+  elementCopy = element;
+  contextCopy = context;
+  objc_storeStrong(&self->_header, element);
+  [objc_opt_class() sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   self->_lastFitSize.width = v11;
   self->_lastFitSize.height = v12;
   [(NSMapTable *)self->_views removeAllObjects];
@@ -349,22 +349,22 @@
   v17[1] = 3221225472;
   v17[2] = __61__SKUISectionHeaderView_reloadWithViewElement_width_context___block_invoke;
   v17[3] = &unk_2781FA4A8;
-  v13 = v9;
-  v22 = a4;
+  v13 = elementCopy;
+  widthCopy = width;
   v18 = v13;
-  v19 = self;
-  v14 = v10;
+  selfCopy = self;
+  v14 = contextCopy;
   v20 = v14;
   v21 = &v23;
   [(SKUIViewReuseView *)self modifyUsingBlock:v17];
-  if (a4 <= 600.0)
+  if (width <= 600.0)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [objc_opt_class() _linesForViewElement:self->_header width:v14 buttonSize:a4 context:{v24[4], v24[5]}];
+    v15 = [objc_opt_class() _linesForViewElement:self->_header width:v14 buttonSize:width context:{v24[4], v24[5]}];
   }
 
   lines = self->_lines;
@@ -457,15 +457,15 @@ LABEL_10:
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUISectionHeaderView *)self setNeedsLayout];
   }
 }
@@ -477,12 +477,12 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SKUIHeaderViewElement *)self->_header button];
-  v12 = [v11 style];
-  if ([v12 elementAlignment] == 1)
+  button = [(SKUIHeaderViewElement *)self->_header button];
+  style = [button style];
+  if ([style elementAlignment] == 1)
   {
-    v13 = [(SKUIHeaderViewElement *)self->_header titleLabels];
-    v14 = [v13 count] == 0;
+    titleLabels = [(SKUIHeaderViewElement *)self->_header titleLabels];
+    v14 = [titleLabels count] == 0;
   }
 
   else
@@ -491,16 +491,16 @@ LABEL_10:
   }
 
   v51 = v4;
-  if (v11)
+  if (button)
   {
-    v15 = [(NSMapTable *)self->_views objectForKey:v11];
+    v15 = [(NSMapTable *)self->_views objectForKey:button];
     [v15 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
     v17 = v16;
     v19 = v18;
     if (v14)
     {
-      v20 = [v11 style];
-      [v20 elementPadding];
+      style2 = [button style];
+      [style2 elementPadding];
       v22 = v21;
       v24 = v23;
 
@@ -555,7 +555,7 @@ LABEL_10:
   v81 = &v80;
   v82 = 0x2020000000;
   v83 = 0;
-  v38 = [(SKUIHeaderViewElement *)self->_header titleLabels];
+  titleLabels2 = [(SKUIHeaderViewElement *)self->_header titleLabels];
   if (self->_lastFitSize.width <= 600.0)
   {
     v76 = 0;
@@ -577,9 +577,9 @@ LABEL_10:
     v73 = y;
     v74 = width;
     v75 = height;
-    v65 = v11;
+    v65 = button;
     v67 = &v80;
-    [v38 enumerateObjectsUsingBlock:v64];
+    [titleLabels2 enumerateObjectsUsingBlock:v64];
 
     _Block_object_dispose(&v76, 8);
   }
@@ -601,7 +601,7 @@ LABEL_10:
     v57 = v27;
     v58 = v28;
     v59 = v29;
-    v53 = v11;
+    v53 = button;
     v54 = &v76;
     v60 = x;
     v61 = y;
@@ -850,7 +850,7 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
   *(*(*(a1 + 48) + 8) + 24) = v15 + *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_lastFitSize.width;
   height = self->_lastFitSize.height;
@@ -859,10 +859,10 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -889,24 +889,24 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
         v11 = *(*(&v23 + 1) + 8 * v10);
         v12 = [*(&self->super.super.super.super.isa + v5) objectForKey:v11];
 
-        if (v12 == v4)
+        if (v12 == actionCopy)
         {
           v13 = SKUICollectionViewCellForView(self);
           v14 = SKUICollectionViewForView(v13);
-          v15 = [v14 delegate];
+          delegate = [v14 delegate];
           if (objc_opt_respondsToSelector())
           {
             [v14 indexPathForCell:v13];
-            v16 = self;
+            selfCopy = self;
             v17 = v6;
             v18 = v5;
-            v20 = v19 = v4;
-            [v15 collectionView:v14 didConfirmButtonElement:v11 withClickInfo:0 forItemAtIndexPath:v20];
+            v20 = v19 = actionCopy;
+            [delegate collectionView:v14 didConfirmButtonElement:v11 withClickInfo:0 forItemAtIndexPath:v20];
 
-            v4 = v19;
+            actionCopy = v19;
             v5 = v18;
             v6 = v17;
-            self = v16;
+            self = selfCopy;
             v9 = v21;
           }
 
@@ -929,23 +929,23 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
   }
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SKUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -954,44 +954,44 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
     v11 = [MEMORY[0x277D74300] fontWithDescriptor:v12 size:0.0];
   }
 
-  v13 = [v6 tintColor];
-  v14 = SKUIViewElementPlainColorWithStyle(v10, v13);
+  tintColor = [contextCopy tintColor];
+  v14 = SKUIViewElementPlainColorWithStyle(v10, tintColor);
 
   if (!v14)
   {
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
   }
 
-  v15 = [v5 buttonText];
-  v16 = [v15 attributedStringWithDefaultFont:v11 foregroundColor:v14 style:v10];
+  buttonText = [buttonCopy buttonText];
+  v16 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:v14 style:v10];
 
   return v16;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = [v6 aggregateValueForKey:@"SKUISectionHeaderStyleKey"];
-  v9 = [v8 integerValue];
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = [contextCopy aggregateValueForKey:@"SKUISectionHeaderStyleKey"];
+  integerValue = [v8 integerValue];
 
-  v10 = SKUIViewElementFontWithStyle(v7);
-  v11 = [v6 tintColor];
+  v10 = SKUIViewElementFontWithStyle(style);
+  tintColor = [contextCopy tintColor];
 
-  v12 = SKUIViewElementPlainColorWithStyle(v7, v11);
+  v12 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v13 = [v5 labelViewStyle];
-  if (v13 > 5)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle > 5)
   {
     goto LABEL_17;
   }
 
-  if (((1 << v13) & 0x1B) == 0)
+  if (((1 << labelViewStyle) & 0x1B) == 0)
   {
     if (!v10)
     {
-      if (v9 != 1)
+      if (integerValue != 1)
       {
         v10 = SKUIFontPreferredFontForTextStyle(1);
         if (v12)
@@ -1000,9 +1000,9 @@ void __39__SKUISectionHeaderView_layoutSubviews__block_invoke_2(uint64_t a1, voi
         }
 
 LABEL_11:
-        v17 = [MEMORY[0x277D75348] labelColor];
+        labelColor = [MEMORY[0x277D75348] labelColor];
 LABEL_16:
-        v12 = v17;
+        v12 = labelColor;
         goto LABEL_17;
       }
 
@@ -1028,7 +1028,7 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  if (v9 == 1)
+  if (integerValue == 1)
   {
     v10 = SKUIFontPreferredFontForTextStyle(8);
     if (v12)
@@ -1043,12 +1043,12 @@ LABEL_16:
   if (!v12)
   {
 LABEL_5:
-    if (v9 != 1)
+    if (integerValue != 1)
     {
       v14 = MEMORY[0x277D75348];
       v15 = 0.6;
 LABEL_15:
-      v17 = [v14 colorWithWhite:0.0 alpha:v15];
+      labelColor = [v14 colorWithWhite:0.0 alpha:v15];
       goto LABEL_16;
     }
 
@@ -1059,40 +1059,40 @@ LABEL_14:
   }
 
 LABEL_17:
-  v18 = SKUIViewElementAlignmentForStyle(v7);
+  v18 = SKUIViewElementAlignmentForStyle(style);
   v19 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v18);
-  v20 = [v5 text];
-  v21 = [v20 attributedStringWithDefaultFont:v10 foregroundColor:v12 textAlignment:v19 style:v7];
+  text = [labelCopy text];
+  v21 = [text attributedStringWithDefaultFont:v10 foregroundColor:v12 textAlignment:v19 style:style];
 
   return v21;
 }
 
-+ (id)_linesForViewElement:(id)a3 width:(double)a4 buttonSize:(CGSize)a5 context:(id)a6
++ (id)_linesForViewElement:(id)element width:(double)width buttonSize:(CGSize)size context:(id)context
 {
-  width = a5.width;
-  v10 = a6;
-  v11 = a3;
+  width = size.width;
+  contextCopy = context;
+  elementCopy = element;
   v12 = objc_alloc_init(SKUIViewElementHorizontalLayout);
   [(SKUIViewElementHorizontalLayout *)v12 setElementSpacing:10.0];
-  [(SKUIViewElementHorizontalLayout *)v12 setLayoutWidth:a4 - width];
-  v13 = [v11 titleLabels];
+  [(SKUIViewElementHorizontalLayout *)v12 setLayoutWidth:width - width];
+  titleLabels = [elementCopy titleLabels];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__SKUISectionHeaderView__linesForViewElement_width_buttonSize_context___block_invoke;
   v17[3] = &unk_2781FA520;
-  v20 = a4;
-  v18 = v10;
-  v19 = a1;
-  v14 = v10;
-  v15 = [(SKUIViewElementHorizontalLayout *)v12 layoutViewElements:v13 usingSizingBlock:v17];
+  widthCopy = width;
+  v18 = contextCopy;
+  selfCopy = self;
+  v14 = contextCopy;
+  v15 = [(SKUIViewElementHorizontalLayout *)v12 layoutViewElements:titleLabels usingSizingBlock:v17];
 
   return v15;
 }
 
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context
 {
-  [a5 sizeForViewElement:a3 width:a4];
+  [context sizeForViewElement:element width:width];
   result.height = v6;
   result.width = v5;
   return result;

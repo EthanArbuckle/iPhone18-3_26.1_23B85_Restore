@@ -1,23 +1,23 @@
 @interface FPDFilePresenter
-+ (id)presenter:(id)a3 withItemID:(id)a4 auditToken:(id *)a5 urlHint:(id)a6 domain:(id)a7;
++ (id)presenter:(id)presenter withItemID:(id)d auditToken:(id *)token urlHint:(id)hint domain:(id)domain;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
-- (FPDFilePresenter)initWithIdentifier:(id)a3 itemID:(id)a4 auditToken:(id *)a5 urlHint:(id)a6 domain:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (FPDFilePresenter)initWithIdentifier:(id)identifier itemID:(id)d auditToken:(id *)token urlHint:(id)hint domain:(id)domain;
 - (NSString)description;
 - (NSString)prettyDescription;
 - (id)_newCoordinator;
-- (id)_presentedItemDescription:(BOOL)a3;
+- (id)_presentedItemDescription:(BOOL)description;
 - (id)enumerator;
 - (int)requestEffectivePID;
 - (void)_destroyEnumerator;
-- (void)_enumeratorRequestDidFailWithXPCError:(id)a3;
+- (void)_enumeratorRequestDidFailWithXPCError:(id)error;
 - (void)_fetchChangeToken;
 - (void)_fetchUpdates;
-- (void)didUpdateItem:(id)a3;
-- (void)dumpStateTo:(id)a3;
+- (void)didUpdateItem:(id)item;
+- (void)dumpStateTo:(id)to;
 - (void)enumerationResultsDidChange;
-- (void)receiveUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4;
-- (void)setAuditToken:(id *)a3;
+- (void)receiveUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers;
+- (void)setAuditToken:(id *)token;
 - (void)start;
 - (void)stop;
 @end
@@ -40,27 +40,27 @@
   return v8;
 }
 
-- (FPDFilePresenter)initWithIdentifier:(id)a3 itemID:(id)a4 auditToken:(id *)a5 urlHint:(id)a6 domain:(id)a7
+- (FPDFilePresenter)initWithIdentifier:(id)identifier itemID:(id)d auditToken:(id *)token urlHint:(id)hint domain:(id)domain
 {
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  hintCopy = hint;
+  domainCopy = domain;
   v30.receiver = self;
   v30.super_class = FPDFilePresenter;
   v17 = [(FPDFilePresenter *)&v30 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_observedItemID, a4);
-    objc_storeStrong(&v18->_domain, a7);
-    objc_storeStrong(&v18->_presentedItemURL, a6);
-    objc_storeStrong(&v18->_filePresenterID, a3);
-    v19 = *&a5->var0[4];
-    *v18->_auditToken.val = *a5->var0;
+    objc_storeStrong(&v17->_observedItemID, d);
+    objc_storeStrong(&v18->_domain, domain);
+    objc_storeStrong(&v18->_presentedItemURL, hint);
+    objc_storeStrong(&v18->_filePresenterID, identifier);
+    v19 = *&token->var0[4];
+    *v18->_auditToken.val = *token->var0;
     *&v18->_auditToken.val[4] = v19;
-    v20 = [MEMORY[0x1E696ABF8] _observedUbiquityAttributesForPresenterWithID:v13];
+    v20 = [MEMORY[0x1E696ABF8] _observedUbiquityAttributesForPresenterWithID:identifierCopy];
     v21 = v20;
     if (v20)
     {
@@ -99,9 +99,9 @@
         v29 = v21;
       }
 
-      *&buf[4] = v13;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v14;
+      *&buf[14] = dCopy;
       *&buf[22] = 2112;
       *&buf[24] = v29;
       _os_log_debug_impl(&dword_1CEFC7000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] new presenter %@ for %@, watching attributes: %@", buf, 0x20u);
@@ -120,33 +120,33 @@
   return audit_token_to_pid(&v4);
 }
 
-+ (id)presenter:(id)a3 withItemID:(id)a4 auditToken:(id *)a5 urlHint:(id)a6 domain:(id)a7
++ (id)presenter:(id)presenter withItemID:(id)d auditToken:(id *)token urlHint:(id)hint domain:(id)domain
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a1 alloc];
-  v17 = *&a5->var0[4];
-  v20[0] = *a5->var0;
+  domainCopy = domain;
+  hintCopy = hint;
+  dCopy = d;
+  presenterCopy = presenter;
+  v16 = [self alloc];
+  v17 = *&token->var0[4];
+  v20[0] = *token->var0;
   v20[1] = v17;
-  v18 = [v16 initWithIdentifier:v15 itemID:v14 auditToken:v20 urlHint:v13 domain:v12];
+  v18 = [v16 initWithIdentifier:presenterCopy itemID:dCopy auditToken:v20 urlHint:hintCopy domain:domainCopy];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 itemID];
-    if ([v5 isEqual:self->_observedItemID])
+    itemID = [equalCopy itemID];
+    if ([itemID isEqual:self->_observedItemID])
     {
-      v6 = [v4 filePresenterID];
-      v7 = [v6 isEqual:self->_filePresenterID];
+      filePresenterID = [equalCopy filePresenterID];
+      v7 = [filePresenterID isEqual:self->_filePresenterID];
     }
 
     else
@@ -163,22 +163,22 @@
   return v7;
 }
 
-- (id)_presentedItemDescription:(BOOL)a3
+- (id)_presentedItemDescription:(BOOL)description
 {
   v4 = MEMORY[0x1E696AEC0];
   presentedItemURL = self->_presentedItemURL;
-  if (a3)
+  if (description)
   {
-    v6 = [(NSURL *)presentedItemURL fp_shortDescription];
-    v7 = [v4 stringWithFormat:@"%@ (%@)", v6, self->_observedItemID];
+    fp_shortDescription = [(NSURL *)presentedItemURL fp_shortDescription];
+    v7 = [v4 stringWithFormat:@"%@ (%@)", fp_shortDescription, self->_observedItemID];
   }
 
   else
   {
-    v6 = [(NSURL *)presentedItemURL lastPathComponent];
-    v8 = [v6 fp_obfuscatedFilename];
-    v9 = [(FPItemID *)self->_observedItemID identifier];
-    v7 = [v4 stringWithFormat:@"%@ (%@)", v8, v9];
+    fp_shortDescription = [(NSURL *)presentedItemURL lastPathComponent];
+    fp_obfuscatedFilename = [fp_shortDescription fp_obfuscatedFilename];
+    identifier = [(FPItemID *)self->_observedItemID identifier];
+    v7 = [v4 stringWithFormat:@"%@ (%@)", fp_obfuscatedFilename, identifier];
   }
 
   return v7;
@@ -259,7 +259,7 @@
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"enumerator for %@", self->_observedItemID];
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
-    v8 = [(FPDDomain *)self->_domain defaultBackend];
+    defaultBackend = [(FPDDomain *)self->_domain defaultBackend];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __30__FPDFilePresenter_enumerator__block_invoke;
@@ -270,7 +270,7 @@
     v17 = v9;
     v10 = v7;
     v18 = v10;
-    [v8 enumerateWithSettings:v5 lifetimeExtender:self observer:self completionHandler:v16];
+    [defaultBackend enumerateWithSettings:v5 lifetimeExtender:self observer:self completionHandler:v16];
 
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v4 = v21[5];
@@ -313,10 +313,10 @@ void __30__FPDFilePresenter_enumerator__block_invoke(uint64_t a1, void *a2, void
 - (void)start
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(FPDDomain *)self->_domain provider];
-  v4 = [v3 presentersQueue];
+  provider = [(FPDDomain *)self->_domain provider];
+  presentersQueue = [provider presentersQueue];
   queue = self->_queue;
-  self->_queue = v4;
+  self->_queue = presentersQueue;
 
   if (self->_queue)
   {
@@ -336,11 +336,11 @@ LABEL_7:
 
     else
     {
-      v10 = [(FPDDomain *)self->_domain provider];
-      v11 = [v10 identifier];
-      v12 = [v11 fp_isiCloudDriveIdentifier];
+      provider2 = [(FPDDomain *)self->_domain provider];
+      identifier = [provider2 identifier];
+      fp_isiCloudDriveIdentifier = [identifier fp_isiCloudDriveIdentifier];
 
-      if (!v12 || self->_presenterWantsUbiqitousAttributes)
+      if (!fp_isiCloudDriveIdentifier || self->_presenterWantsUbiqitousAttributes)
       {
         v13 = self->_queue;
         block[0] = MEMORY[0x1E69E9820];
@@ -462,14 +462,14 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumeratorRequestDidFailWithXPCError:(id)a3
+- (void)_enumeratorRequestDidFailWithXPCError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(FPDFilePresenter *)self _enumeratorRequestDidFailWithXPCError:v4, v5];
+    [(FPDFilePresenter *)self _enumeratorRequestDidFailWithXPCError:errorCopy, v5];
   }
 
   [(FPDFilePresenter *)self _destroyEnumerator];
@@ -493,11 +493,11 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)receiveUpdatedItems:(id)a3 deletedItemsIdentifiers:(id)a4
+- (void)receiveUpdatedItems:(id)items deletedItemsIdentifiers:(id)identifiers
 {
   v72 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v49 = a4;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_enumerator)
   {
@@ -512,8 +512,8 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    obj = v50;
-    v7 = [obj countByEnumeratingWithState:&v61 objects:v71 count:{16, v49}];
+    obj = itemsCopy;
+    v7 = [obj countByEnumeratingWithState:&v61 objects:v71 count:{16, identifiersCopy}];
     if (v7)
     {
       v55 = *v62;
@@ -533,16 +533,16 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
           v9 = *(*(&v61 + 1) + 8 * i);
           if (self->_observedItemID)
           {
-            v10 = [*(*(&v61 + 1) + 8 * i) itemID];
-            if ([v10 isEqual:self->_observedItemID])
+            itemID = [*(*(&v61 + 1) + 8 * i) itemID];
+            if ([itemID isEqual:self->_observedItemID])
             {
               v11 = 1;
             }
 
             else
             {
-              v12 = [v9 formerItemID];
-              v11 = [v12 isEqual:self->_observedItemID];
+              formerItemID = [v9 formerItemID];
+              v11 = [formerItemID isEqual:self->_observedItemID];
             }
           }
 
@@ -552,17 +552,17 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
           }
 
           v13 = self->_presentedItemURL;
-          v14 = [v9 fileURL];
-          if (!v14)
+          fileURL = [v9 fileURL];
+          if (!fileURL)
           {
             v57 = 0;
             v58 = 0;
             goto LABEL_24;
           }
 
-          v15 = [v9 fileURL];
+          fileURL2 = [v9 fileURL];
           v60 = 0;
-          v16 = [v15 getResourceValue:&v60 forKey:v54 error:0];
+          v16 = [fileURL2 getResourceValue:&v60 forKey:v54 error:0];
           v58 = v60;
           if (v16)
           {
@@ -581,7 +581,7 @@ void __24__FPDFilePresenter_stop__block_invoke(uint64_t a1)
               }
 
               [v9 fileURL];
-              v13 = v14 = v13;
+              v13 = fileURL = v13;
               goto LABEL_23;
             }
           }
@@ -605,16 +605,16 @@ LABEL_24:
             {
               [MEMORY[0x1E6967388] allUbiquitousResourceKeys];
             }
-            v26 = ;
-            v28 = [(FPItem *)self->_currentItem capabilities];
-            if (v28 == [v9 capabilities])
+            provider2 = ;
+            capabilities = [(FPItem *)self->_currentItem capabilities];
+            if (capabilities == [v9 capabilities])
             {
               v29 = MEMORY[0x1E695DFD8];
               v66[0] = v52;
               v66[1] = v51;
               v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
               v31 = [v29 setWithArray:v30];
-              v32 = [v26 intersectsSet:v31];
+              v32 = [provider2 intersectsSet:v31];
             }
 
             else
@@ -628,35 +628,35 @@ LABEL_24:
             v35 = v34;
             if (v34)
             {
-              v27 = v34;
+              purposeIdentifier2 = v34;
             }
 
             else
             {
-              v36 = [MEMORY[0x1E6967388] allUbiquitousResourceKeys];
-              v27 = [v36 mutableCopy];
+              allUbiquitousResourceKeys = [MEMORY[0x1E6967388] allUbiquitousResourceKeys];
+              purposeIdentifier2 = [allUbiquitousResourceKeys mutableCopy];
             }
 
-            [(FPDFilePresenter *)v27 intersectSet:v26];
-            if ([(FPDFilePresenter *)v27 count])
+            [(FPDFilePresenter *)purposeIdentifier2 intersectSet:provider2];
+            if ([(FPDFilePresenter *)purposeIdentifier2 count])
             {
-              v37 = [(FPDFilePresenter *)self _newCoordinator];
+              _newCoordinator = [(FPDFilePresenter *)self _newCoordinator];
               v38 = fp_current_or_default_log();
               if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
               {
-                v39 = [v9 fileURL];
-                v40 = [v39 fp_shortDescription];
+                fileURL3 = [v9 fileURL];
+                fp_shortDescription = [fileURL3 fp_shortDescription];
                 *buf = 138412546;
-                v68 = v27;
+                selfCopy = purposeIdentifier2;
                 v69 = 2112;
-                v70 = v40;
+                v70 = fp_shortDescription;
                 _os_log_impl(&dword_1CEFC7000, v38, OS_LOG_TYPE_INFO, "[INFO] 🎖 posting did change ubiquity attributes (%@) for updated file %@", buf, 0x16u);
               }
 
-              [v37 itemAtURL:v13 didChangeUbiquityAttributes:v27];
+              [_newCoordinator itemAtURL:v13 didChangeUbiquityAttributes:purposeIdentifier2];
               if (v32)
               {
-                if (!v37)
+                if (!_newCoordinator)
                 {
                   goto LABEL_46;
                 }
@@ -665,13 +665,13 @@ LABEL_47:
                 v46 = fp_current_or_default_log();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
                 {
-                  v47 = [(NSURL *)v13 fp_shortDescription];
+                  fp_shortDescription2 = [(NSURL *)v13 fp_shortDescription];
                   *buf = 138412290;
-                  v68 = v47;
+                  selfCopy = fp_shortDescription2;
                   _os_log_impl(&dword_1CEFC7000, v46, OS_LOG_TYPE_INFO, "[INFO] 🎖 posting sharing did change for updated file %@", buf, 0xCu);
                 }
 
-                [v37 sharingDidChangeForItemAtURL:v13];
+                [_newCoordinator sharingDidChangeForItemAtURL:v13];
               }
             }
 
@@ -680,25 +680,25 @@ LABEL_47:
               v41 = fp_current_or_default_log();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
               {
-                v42 = [(NSURL *)v13 fp_shortDescription];
+                fp_shortDescription3 = [(NSURL *)v13 fp_shortDescription];
                 *buf = 138412290;
-                v68 = v42;
+                selfCopy = fp_shortDescription3;
                 _os_log_impl(&dword_1CEFC7000, v41, OS_LOG_TYPE_INFO, "[INFO] 🎖 posting did change ubiquity for updated file %@", buf, 0xCu);
               }
 
               v43 = MEMORY[0x1E696ABF8];
-              v44 = [(FPDDomain *)self->_domain provider];
-              v45 = [v44 purposeIdentifier];
-              [v43 __itemAtURL:v13 didChangeUbiquityWithPurposeID:v45];
+              provider = [(FPDDomain *)self->_domain provider];
+              purposeIdentifier = [provider purposeIdentifier];
+              [v43 __itemAtURL:v13 didChangeUbiquityWithPurposeID:purposeIdentifier];
 
               if (v32)
               {
 LABEL_46:
-                v37 = [(FPDFilePresenter *)self _newCoordinator];
+                _newCoordinator = [(FPDFilePresenter *)self _newCoordinator];
                 goto LABEL_47;
               }
 
-              v37 = 0;
+              _newCoordinator = 0;
             }
 
             goto LABEL_52;
@@ -707,19 +707,19 @@ LABEL_46:
           v22 = fp_current_or_default_log();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = [v9 fileURL];
-            v24 = [v23 fp_shortDescription];
+            fileURL4 = [v9 fileURL];
+            fp_shortDescription4 = [fileURL4 fp_shortDescription];
             *buf = 138412546;
-            v68 = self;
+            selfCopy = self;
             v69 = 2112;
-            v70 = v24;
+            v70 = fp_shortDescription4;
             _os_log_impl(&dword_1CEFC7000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: 🎖 posting did change ubiquity for updated file %@", buf, 0x16u);
           }
 
           v25 = MEMORY[0x1E696ABF8];
-          v26 = [(FPDDomain *)self->_domain provider];
-          v27 = [v26 purposeIdentifier];
-          [v25 __itemAtURL:v13 didChangeUbiquityWithPurposeID:v27];
+          provider2 = [(FPDDomain *)self->_domain provider];
+          purposeIdentifier2 = [provider2 purposeIdentifier];
+          [v25 __itemAtURL:v13 didChangeUbiquityWithPurposeID:purposeIdentifier2];
 LABEL_52:
         }
 
@@ -737,13 +737,13 @@ LABEL_52:
 
 - (id)_newCoordinator
 {
-  v2 = [(FPDDomain *)self->_domain provider];
-  v3 = [v2 purposeIdentifier];
+  provider = [(FPDDomain *)self->_domain provider];
+  purposeIdentifier = [provider purposeIdentifier];
 
-  if (v3)
+  if (purposeIdentifier)
   {
     v4 = objc_opt_new();
-    [v4 setPurposeIdentifier:v3];
+    [v4 setPurposeIdentifier:purposeIdentifier];
   }
 
   else
@@ -756,11 +756,11 @@ LABEL_52:
 
 - (void)enumerationResultsDidChange
 {
-  v3 = [(FPDDomain *)self->_domain provider];
-  v4 = [v3 identifier];
-  v5 = [v4 fp_isiCloudDriveIdentifier];
+  provider = [(FPDDomain *)self->_domain provider];
+  identifier = [provider identifier];
+  fp_isiCloudDriveIdentifier = [identifier fp_isiCloudDriveIdentifier];
 
-  if (self->_presenterWantsUbiqitousAttributes || !v5)
+  if (self->_presenterWantsUbiqitousAttributes || !fp_isiCloudDriveIdentifier)
   {
     queue = self->_queue;
     if (queue)
@@ -803,11 +803,11 @@ uint64_t __47__FPDFilePresenter_enumerationResultsDidChange__block_invoke(uint64
   return __fp_leave_section_Debug();
 }
 
-- (void)didUpdateItem:(id)a3
+- (void)didUpdateItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -815,7 +815,7 @@ uint64_t __47__FPDFilePresenter_enumerationResultsDidChange__block_invoke(uint64
     v7[2] = __34__FPDFilePresenter_didUpdateItem___block_invoke;
     v7[3] = &unk_1E83BE158;
     v7[4] = self;
-    v8 = v4;
+    v8 = itemCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -1128,18 +1128,18 @@ LABEL_35:
   return result;
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *&self->_auditToken.val[4];
   *atoken.val = *self->_auditToken.val;
   *&atoken.val[4] = v5;
   v6 = audit_token_to_pid(&atoken);
-  [v4 write:@"  presenter: "];
+  [toCopy write:@"  presenter: "];
   if (v6 == -1)
   {
-    [v4 startFgColor:1];
-    [v4 write:@"unknown process"];
+    [toCopy startFgColor:1];
+    [toCopy write:@"unknown process"];
   }
 
   else
@@ -1154,12 +1154,12 @@ LABEL_35:
       v7 = 3;
     }
 
-    [v4 startFgColor:v7];
+    [toCopy startFgColor:v7];
     v8 = *&self->_auditToken.val[4];
     *atoken.val = *self->_auditToken.val;
     *&atoken.val[4] = v8;
     v9 = FPExecutableNameForAuditToken();
-    [v4 write:{@"%@[%d]", v9, v6}];
+    [toCopy write:{@"%@[%d]", v9, v6}];
   }
 
   if (!self->_presenterWantsUbiqitousAttributes)
@@ -1172,12 +1172,12 @@ LABEL_35:
   {
     v10 = @" (passive)";
 LABEL_11:
-    [v4 write:v10];
+    [toCopy write:v10];
   }
 
-  [v4 reset];
+  [toCopy reset];
   v11 = [(FPDFilePresenter *)self _presentedItemDescription:1];
-  [v4 write:{@" presenting %@ (%@)\n", v11, self->_filePresenterID}];
+  [toCopy write:{@" presenting %@ (%@)\n", v11, self->_filePresenterID}];
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
@@ -1188,10 +1188,10 @@ LABEL_11:
   return self;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *self->_auditToken.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *self->_auditToken.val = *token->var0;
   *&self->_auditToken.val[4] = v3;
 }
 

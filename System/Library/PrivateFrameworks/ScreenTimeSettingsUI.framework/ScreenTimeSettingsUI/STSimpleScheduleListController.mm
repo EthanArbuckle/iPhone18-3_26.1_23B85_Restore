@@ -1,23 +1,23 @@
 @interface STSimpleScheduleListController
-- (STSimpleScheduleListController)initWithSimpleSchedule:(id)a3;
+- (STSimpleScheduleListController)initWithSimpleSchedule:(id)schedule;
 - (STSimpleScheduleListControllerDelegate)delegate;
-- (id)_endTime:(id)a3;
-- (id)_startTime:(id)a3;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)_endTime:(id)time;
+- (id)_startTime:(id)time;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)a3 selectedSpecifier:(id)a4 unselectedSpecifier:(id)a5;
-- (void)cancelButtonTapped:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)colors selectedSpecifier:(id)specifier unselectedSpecifier:(id)unselectedSpecifier;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)datePickerChanged:(id)changed;
+- (void)doneButtonTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation STSimpleScheduleListController
 
-- (STSimpleScheduleListController)initWithSimpleSchedule:(id)a3
+- (STSimpleScheduleListController)initWithSimpleSchedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   v42.receiver = self;
   v42.super_class = STSimpleScheduleListController;
   v5 = [(STSimpleScheduleListController *)&v42 init];
@@ -27,15 +27,15 @@
     v7 = [v6 localizedStringForKey:@"DeviceDowntimeEditScheduleTitle" value:&stru_28766E5A8 table:0];
     [(STSimpleScheduleListController *)v5 setTitle:v7];
 
-    v8 = [(STSimpleScheduleListController *)v5 navigationItem];
+    navigationItem = [(STSimpleScheduleListController *)v5 navigationItem];
     v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v5 action:sel_cancelButtonTapped_];
-    [v8 setLeftBarButtonItem:v9];
+    [navigationItem setLeftBarButtonItem:v9];
 
-    v40 = v8;
+    v40 = navigationItem;
     if (_UISolariumEnabled())
     {
       v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v5 action:sel_doneButtonTapped_];
-      [v8 setRightBarButtonItem:v10];
+      [navigationItem setRightBarButtonItem:v10];
     }
 
     else
@@ -44,16 +44,16 @@
       v10 = [v11 localizedStringForKey:@"DeviceDowntimeScheduleDoneBarButtonItemTitle" value:&stru_28766E5A8 table:0];
 
       v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v10 style:2 target:v5 action:sel_doneButtonTapped_];
-      [v8 setRightBarButtonItem:v12];
+      [navigationItem setRightBarButtonItem:v12];
     }
 
-    v13 = [v4 copy];
+    v13 = [scheduleCopy copy];
     simpleSchedule = v5->_simpleSchedule;
     v5->_simpleSchedule = v13;
 
-    v15 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    st_emptyGroupSpecifier = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     simpleScheduleGroupSpecifier = v5->_simpleScheduleGroupSpecifier;
-    v5->_simpleScheduleGroupSpecifier = v15;
+    v5->_simpleScheduleGroupSpecifier = st_emptyGroupSpecifier;
 
     v17 = [v6 localizedStringForKey:@"DeviceDowntimeFromSpecifierName" value:&stru_28766E5A8 table:0];
     v18 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v17 target:v5 set:0 get:sel__startTime_ detail:0 cell:4 edit:0];
@@ -64,10 +64,10 @@
     startTimePickerSpecifier = v5->_startTimePickerSpecifier;
     v5->_startTimePickerSpecifier = v20;
 
-    v41 = v4;
+    v41 = scheduleCopy;
     v22 = objc_opt_new();
-    v23 = [v22 UUIDString];
-    [(PSSpecifier *)v5->_startTimePickerSpecifier setIdentifier:v23];
+    uUIDString = [v22 UUIDString];
+    [(PSSpecifier *)v5->_startTimePickerSpecifier setIdentifier:uUIDString];
 
     v24 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
@@ -88,14 +88,14 @@
     v5->_endTimePickerSpecifier = v32;
 
     v34 = objc_opt_new();
-    v35 = [v34 UUIDString];
-    [(PSSpecifier *)v5->_endTimePickerSpecifier setIdentifier:v35];
+    uUIDString2 = [v34 UUIDString];
+    [(PSSpecifier *)v5->_endTimePickerSpecifier setIdentifier:uUIDString2];
 
     v36 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
     v37 = [v36 numberWithDouble:?];
     v38 = v26;
-    v4 = v41;
+    scheduleCopy = v41;
     [(PSSpecifier *)v5->_endTimePickerSpecifier setObject:v37 forKeyedSubscript:v38];
 
     [(PSSpecifier *)v5->_endTimePickerSpecifier setObject:objc_opt_class() forKeyedSubscript:v28];
@@ -104,7 +104,7 @@
   return v5;
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -113,15 +113,15 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User saved edited simple Downtime schedule", v7, 2u);
   }
 
-  v5 = [(STSimpleScheduleListController *)self delegate];
+  delegate = [(STSimpleScheduleListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(STSimpleScheduleListController *)self simpleSchedule];
-    [v5 simpleScheduleListController:self didSaveSimpleSchedule:v6];
+    simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+    [delegate simpleScheduleListController:self didSaveSimpleSchedule:simpleSchedule];
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -130,10 +130,10 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User cancelled editing simple Downtime schedule", v6, 2u);
   }
 
-  v5 = [(STSimpleScheduleListController *)self delegate];
+  delegate = [(STSimpleScheduleListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 simpleScheduleListControllerDidCancel:self];
+    [delegate simpleScheduleListControllerDidCancel:self];
   }
 }
 
@@ -144,14 +144,14 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(STSimpleScheduleListController *)self simpleScheduleGroupSpecifier];
-    v12[0] = v5;
-    v6 = [(STSimpleScheduleListController *)self startTimeSpecifier];
-    v12[1] = v6;
-    v7 = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
-    v12[2] = v7;
-    v8 = [(STSimpleScheduleListController *)self endTimeSpecifier];
-    v12[3] = v8;
+    simpleScheduleGroupSpecifier = [(STSimpleScheduleListController *)self simpleScheduleGroupSpecifier];
+    v12[0] = simpleScheduleGroupSpecifier;
+    startTimeSpecifier = [(STSimpleScheduleListController *)self startTimeSpecifier];
+    v12[1] = startTimeSpecifier;
+    startTimePickerSpecifier = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
+    v12[2] = startTimePickerSpecifier;
+    endTimeSpecifier = [(STSimpleScheduleListController *)self endTimeSpecifier];
+    v12[3] = endTimeSpecifier;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:4];
     v10 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v9;
@@ -162,70 +162,70 @@
   return v4;
 }
 
-- (id)_startTime:(id)a3
+- (id)_startTime:(id)time
 {
   v4 = objc_opt_new();
   [v4 setTimeStyle:1];
   [v4 setDateStyle:0];
   [v4 setFormattingContext:1];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [(STSimpleScheduleListController *)self simpleSchedule];
-  v7 = [v6 startTime];
-  v8 = [v5 dateFromComponents:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+  startTime = [simpleSchedule startTime];
+  v8 = [currentCalendar dateFromComponents:startTime];
 
   v9 = [v4 stringFromDate:v8];
 
   return v9;
 }
 
-- (id)_endTime:(id)a3
+- (id)_endTime:(id)time
 {
   v4 = objc_opt_new();
   [v4 setTimeStyle:1];
   [v4 setDateStyle:0];
   [v4 setFormattingContext:1];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [(STSimpleScheduleListController *)self simpleSchedule];
-  v7 = [v6 endTime];
-  v8 = [v5 dateFromComponents:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+  endTime = [simpleSchedule endTime];
+  v8 = [currentCalendar dateFromComponents:endTime];
 
   v9 = [v4 stringFromDate:v8];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STSimpleScheduleListController *)self specifierAtIndexPath:v7];
-  v9 = [(STSimpleScheduleListController *)self startTimeSpecifier];
-  v10 = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
-  v11 = [(STSimpleScheduleListController *)self endTimeSpecifier];
-  v12 = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
-  if (v8 == v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STSimpleScheduleListController *)self specifierAtIndexPath:pathCopy];
+  startTimeSpecifier = [(STSimpleScheduleListController *)self startTimeSpecifier];
+  startTimePickerSpecifier = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
+  endTimeSpecifier = [(STSimpleScheduleListController *)self endTimeSpecifier];
+  endTimePickerSpecifier = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
+  if (v8 == startTimeSpecifier)
   {
-    if ([(STSimpleScheduleListController *)self containsSpecifier:v12])
+    if ([(STSimpleScheduleListController *)self containsSpecifier:endTimePickerSpecifier])
     {
       v14 = 1;
-      [(STSimpleScheduleListController *)self removeSpecifier:v12 animated:1];
+      [(STSimpleScheduleListController *)self removeSpecifier:endTimePickerSpecifier animated:1];
     }
 
     else
     {
-      if ([(STSimpleScheduleListController *)self containsSpecifier:v10])
+      if ([(STSimpleScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
       {
-        [(STSimpleScheduleListController *)self removeSpecifier:v10 animated:1];
+        [(STSimpleScheduleListController *)self removeSpecifier:startTimePickerSpecifier animated:1];
         v14 = 0;
 LABEL_13:
-        v15 = self;
+        selfCopy2 = self;
         v16 = v14;
-        v17 = v9;
-        v18 = v11;
+        v17 = startTimeSpecifier;
+        v18 = endTimeSpecifier;
 LABEL_17:
-        [(STSimpleScheduleListController *)v15 _updateTimeSpecifierDetailTextLabelColors:v16 selectedSpecifier:v17 unselectedSpecifier:v18];
-        v19 = [v8 identifier];
-        [(STSimpleScheduleListController *)self highlightSpecifierWithID:v19];
+        [(STSimpleScheduleListController *)selfCopy2 _updateTimeSpecifierDetailTextLabelColors:v16 selectedSpecifier:v17 unselectedSpecifier:v18];
+        identifier = [v8 identifier];
+        [(STSimpleScheduleListController *)self highlightSpecifierWithID:identifier];
 
         goto LABEL_18;
       }
@@ -233,68 +233,68 @@ LABEL_17:
       v14 = 1;
     }
 
-    [(STSimpleScheduleListController *)self insertSpecifier:v10 afterSpecifier:v9 animated:1];
+    [(STSimpleScheduleListController *)self insertSpecifier:startTimePickerSpecifier afterSpecifier:startTimeSpecifier animated:1];
     goto LABEL_13;
   }
 
-  if (v8 == v11)
+  if (v8 == endTimeSpecifier)
   {
-    if ([(STSimpleScheduleListController *)self containsSpecifier:v10])
+    if ([(STSimpleScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
     {
       v13 = 1;
-      [(STSimpleScheduleListController *)self removeSpecifier:v10 animated:1];
+      [(STSimpleScheduleListController *)self removeSpecifier:startTimePickerSpecifier animated:1];
     }
 
     else
     {
-      if ([(STSimpleScheduleListController *)self containsSpecifier:v12])
+      if ([(STSimpleScheduleListController *)self containsSpecifier:endTimePickerSpecifier])
       {
-        [(STSimpleScheduleListController *)self removeSpecifier:v12 animated:1];
+        [(STSimpleScheduleListController *)self removeSpecifier:endTimePickerSpecifier animated:1];
         v13 = 0;
 LABEL_16:
-        v15 = self;
+        selfCopy2 = self;
         v16 = v13;
-        v17 = v11;
-        v18 = v9;
+        v17 = endTimeSpecifier;
+        v18 = startTimeSpecifier;
         goto LABEL_17;
       }
 
       v13 = 1;
     }
 
-    [(STSimpleScheduleListController *)self insertSpecifier:v12 afterSpecifier:v11 animated:1];
+    [(STSimpleScheduleListController *)self insertSpecifier:endTimePickerSpecifier afterSpecifier:endTimeSpecifier animated:1];
     goto LABEL_16;
   }
 
 LABEL_18:
   v20.receiver = self;
   v20.super_class = STSimpleScheduleListController;
-  [(STSimpleScheduleListController *)&v20 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STSimpleScheduleListController *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = [(STSimpleScheduleListController *)self startTimeSpecifier];
-  v10 = [(STSimpleScheduleListController *)self indexPathForSpecifier:v9];
-  v11 = [v8 isEqual:v10];
+  cellCopy = cell;
+  pathCopy = path;
+  startTimeSpecifier = [(STSimpleScheduleListController *)self startTimeSpecifier];
+  v10 = [(STSimpleScheduleListController *)self indexPathForSpecifier:startTimeSpecifier];
+  v11 = [pathCopy isEqual:v10];
   if (v11)
   {
-    v5 = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
-    if ([(STSimpleScheduleListController *)self containsSpecifier:v5])
+    startTimePickerSpecifier = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
+    if ([(STSimpleScheduleListController *)self containsSpecifier:startTimePickerSpecifier])
     {
 
       goto LABEL_11;
     }
   }
 
-  v12 = [(STSimpleScheduleListController *)self endTimeSpecifier];
-  v13 = [(STSimpleScheduleListController *)self indexPathForSpecifier:v12];
-  if ([v8 isEqual:v13])
+  endTimeSpecifier = [(STSimpleScheduleListController *)self endTimeSpecifier];
+  v13 = [(STSimpleScheduleListController *)self indexPathForSpecifier:endTimeSpecifier];
+  if ([pathCopy isEqual:v13])
   {
-    v14 = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
-    v15 = [(STSimpleScheduleListController *)self containsSpecifier:v14];
+    endTimePickerSpecifier = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
+    v15 = [(STSimpleScheduleListController *)self containsSpecifier:endTimePickerSpecifier];
   }
 
   else
@@ -316,120 +316,120 @@ LABEL_18:
   if (v15)
   {
 LABEL_11:
-    v16 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v17 = [v18 detailTextLabel];
-    [v17 setTextColor:v16];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel = [cellCopy detailTextLabel];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
   }
 
 LABEL_12:
 }
 
-- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)a3 selectedSpecifier:(id)a4 unselectedSpecifier:(id)a5
+- (void)_updateTimeSpecifierDetailTextLabelColors:(BOOL)colors selectedSpecifier:(id)specifier unselectedSpecifier:(id)unselectedSpecifier
 {
-  v6 = a3;
+  colorsCopy = colors;
   v7 = *MEMORY[0x277D40148];
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:v7];
-  v15 = [v9 detailTextLabel];
+  unselectedSpecifierCopy = unselectedSpecifier;
+  v9 = [specifier objectForKeyedSubscript:v7];
+  detailTextLabel = [v9 detailTextLabel];
 
-  v10 = [v8 objectForKeyedSubscript:v7];
+  v10 = [unselectedSpecifierCopy objectForKeyedSubscript:v7];
 
-  v11 = [v10 detailTextLabel];
+  detailTextLabel2 = [v10 detailTextLabel];
 
-  if (v6)
+  if (colorsCopy)
   {
-    v12 = [v15 textColor];
-    v13 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    [v15 setTextColor:v13];
+    textColor = [detailTextLabel textColor];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
 
-    v14 = v11;
+    v14 = detailTextLabel2;
   }
 
   else
   {
-    v12 = [v11 textColor];
-    v14 = v15;
+    textColor = [detailTextLabel2 textColor];
+    v14 = detailTextLabel;
   }
 
-  [v14 setTextColor:v12];
+  [v14 setTextColor:textColor];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 calendar];
-  v6 = [v4 date];
+  changedCopy = changed;
+  calendar = [changedCopy calendar];
+  date = [changedCopy date];
 
-  v15 = [v5 components:96 fromDate:v6];
+  v15 = [calendar components:96 fromDate:date];
 
-  v7 = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
-  LODWORD(v5) = [(STSimpleScheduleListController *)self containsSpecifier:v7];
+  startTimePickerSpecifier = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
+  LODWORD(calendar) = [(STSimpleScheduleListController *)self containsSpecifier:startTimePickerSpecifier];
 
-  if (v5)
+  if (calendar)
   {
-    v8 = [(STSimpleScheduleListController *)self startTimeSpecifier];
-    v9 = [(STSimpleScheduleListController *)self simpleSchedule];
-    [v9 setStartTime:v15];
+    startTimeSpecifier = [(STSimpleScheduleListController *)self startTimeSpecifier];
+    simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+    [simpleSchedule setStartTime:v15];
   }
 
   else
   {
-    v10 = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
-    v11 = [(STSimpleScheduleListController *)self containsSpecifier:v10];
+    endTimePickerSpecifier = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
+    v11 = [(STSimpleScheduleListController *)self containsSpecifier:endTimePickerSpecifier];
 
     if (!v11)
     {
       goto LABEL_7;
     }
 
-    v8 = [(STSimpleScheduleListController *)self endTimeSpecifier];
-    v9 = [(STSimpleScheduleListController *)self simpleSchedule];
-    [v9 setEndTime:v15];
+    startTimeSpecifier = [(STSimpleScheduleListController *)self endTimeSpecifier];
+    simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+    [simpleSchedule setEndTime:v15];
   }
 
-  if (v8)
+  if (startTimeSpecifier)
   {
-    [(STSimpleScheduleListController *)self reloadSpecifier:v8];
-    v12 = [v8 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-    v13 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    v14 = [v12 detailTextLabel];
-    [v14 setTextColor:v13];
+    [(STSimpleScheduleListController *)self reloadSpecifier:startTimeSpecifier];
+    v12 = [startTimeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    detailTextLabel = [v12 detailTextLabel];
+    [detailTextLabel setTextColor:tableCellBlueTextColor];
   }
 
 LABEL_7:
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_opt_new();
   [v5 setPreferredDatePickerStyle:1];
   [v5 setDatePickerMode:0];
-  v6 = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
+  startTimePickerSpecifier = [(STSimpleScheduleListController *)self startTimePickerSpecifier];
 
-  if (v6 == v4)
+  if (startTimePickerSpecifier == specifierCopy)
   {
-    v8 = [v5 calendar];
-    v9 = [(STSimpleScheduleListController *)self simpleSchedule];
-    v10 = [v9 startTime];
+    calendar = [v5 calendar];
+    simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+    startTime = [simpleSchedule startTime];
   }
 
   else
   {
-    v7 = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
+    endTimePickerSpecifier = [(STSimpleScheduleListController *)self endTimePickerSpecifier];
 
-    if (v7 != v4)
+    if (endTimePickerSpecifier != specifierCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = [v5 calendar];
-    v9 = [(STSimpleScheduleListController *)self simpleSchedule];
-    v10 = [v9 endTime];
+    calendar = [v5 calendar];
+    simpleSchedule = [(STSimpleScheduleListController *)self simpleSchedule];
+    startTime = [simpleSchedule endTime];
   }
 
-  v11 = v10;
-  v12 = [v8 dateFromComponents:v10];
+  v11 = startTime;
+  v12 = [calendar dateFromComponents:startTime];
   [v5 setDate:v12];
 
 LABEL_6:

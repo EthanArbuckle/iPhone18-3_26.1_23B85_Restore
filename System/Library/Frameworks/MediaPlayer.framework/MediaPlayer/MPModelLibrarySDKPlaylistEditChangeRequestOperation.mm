@@ -7,11 +7,11 @@
 
 - (void)_executeWithCloudLibraryEnabledConfirmed
 {
-  v4 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
-  v5 = [v4 playlist];
-  v78 = v5;
-  v82 = [v4 mediaLibrary];
-  v81 = [v4 playlistName];
+  request = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
+  playlist = [request playlist];
+  v78 = playlist;
+  mediaLibrary = [request mediaLibrary];
+  playlistName = [request playlistName];
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -19,18 +19,18 @@
   v87 = __Block_byref_object_dispose__31599;
   v88 = 0;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v77 = [v4 shouldCreatePlaylist];
-  if (v77)
+  shouldCreatePlaylist = [request shouldCreatePlaylist];
+  if (shouldCreatePlaylist)
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v82 _addPlaylistWithName:v81 externalVendorIdentifier:v8];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v9 = [mediaLibrary _addPlaylistWithName:playlistName externalVendorIdentifier:bundleIdentifier];
     v10 = v84[5];
     v84[5] = v9;
 
-    if (v81)
+    if (playlistName)
     {
-      [v6 setObject:v81 forKey:@"name"];
+      [v6 setObject:playlistName forKey:@"name"];
     }
 
     v11 = [v84[5] valueForProperty:@"dateCreated"];
@@ -39,9 +39,9 @@
       [v6 setObject:v11 forKey:@"dateCreated"];
     }
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      [v6 setObject:v8 forKey:@"externalVendorIdentifier"];
+      [v6 setObject:bundleIdentifier forKey:@"externalVendorIdentifier"];
     }
 
     if (v84[5])
@@ -53,7 +53,7 @@
       v160[1] = 3221225472;
       v160[2] = __95__MPModelLibrarySDKPlaylistEditChangeRequestOperation__executeWithCloudLibraryEnabledConfirmed__block_invoke;
       v160[3] = &unk_1E767B4E0;
-      v161 = v82;
+      v161 = mediaLibrary;
       v162 = &v83;
       v15 = [(MPIdentifierSet *)v13 initWithSource:@"LibrarySDKPlaylistEdit" modelKind:v14 block:v160];
       v79 = [(MPModelObject *)v12 initWithIdentifiers:v15 block:&__block_literal_global_127];
@@ -64,18 +64,18 @@
       v79 = 0;
     }
 
-    v5 = v78;
+    playlist = v78;
   }
 
   else
   {
-    v16 = [v5 identifiers];
-    v17 = [v16 library];
-    v18 = [v17 persistentID];
+    identifiers = [playlist identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    if (v18)
+    if (persistentID)
     {
-      v19 = [v82 playlistWithPersistentID:v18];
+      v19 = [mediaLibrary playlistWithPersistentID:persistentID];
     }
 
     else
@@ -84,11 +84,11 @@
     }
 
     objc_storeStrong(v84 + 5, v19);
-    if (v18)
+    if (persistentID)
     {
     }
 
-    v79 = v5;
+    v79 = playlist;
   }
 
   if (v84[5])
@@ -101,15 +101,15 @@
     v159 = 0;
     v20 = dispatch_queue_create("com.apple.MediaPlayer.MPModelLibraryPlaylistEditChangeRequestOperation.accessQueue", 0);
     v21 = dispatch_group_create();
-    v22 = [v4 playlistEntries];
+    playlistEntries = [request playlistEntries];
 
-    if (v22)
+    if (playlistEntries)
     {
-      v68 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v68 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditChangeRequestOperation.mm" lineNumber:660 description:{@"To use the SDK Playlist Edit Change Request, the musicKitPlaylistEntries should be used instead of the playlistEntries property."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditChangeRequestOperation.mm" lineNumber:660 description:{@"To use the SDK Playlist Edit Change Request, the musicKitPlaylistEntries should be used instead of the playlistEntries property."}];
     }
 
-    v80 = [v4 musicKitPlaylistEntries];
+    musicKitPlaylistEntries = [request musicKitPlaylistEntries];
     v23 = objc_alloc_init(MPMutableSectionedCollection);
     v148 = 0;
     v149 = &v148;
@@ -119,7 +119,7 @@
     v153 = 0;
     v76 = v23;
     [(MPMutableSectionedCollection *)v23 appendSection:&stru_1F149ECA8];
-    if (v80)
+    if (musicKitPlaylistEntries)
     {
       v24 = objc_alloc_init(MPCloudControllerItemIDList);
       v25 = v155[5];
@@ -131,16 +131,16 @@
       v147[3] = &unk_1E767B508;
       v147[4] = &v154;
       v147[5] = &v148;
-      [v80 enumerateItemsUsingBlock:v147];
+      [musicKitPlaylistEntries enumerateItemsUsingBlock:v147];
     }
 
     if (v149[5])
     {
-      v26 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
-      v27 = v26;
-      if (v26)
+      completeResponseHandler = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
+      playlistDescription = completeResponseHandler;
+      if (completeResponseHandler)
       {
-        (*(v26 + 16))(v26, v149[5], 0);
+        (*(completeResponseHandler + 16))(completeResponseHandler, v149[5], 0);
       }
 
       [(MPAsyncOperation *)self finishWithError:v149[5]];
@@ -149,12 +149,12 @@ LABEL_64:
       _Block_object_dispose(&v148, 8);
       _Block_object_dispose(&v154, 8);
 
-      v5 = v78;
+      playlist = v78;
       goto LABEL_65;
     }
 
-    v72 = v81 != 0;
-    if (v81)
+    v72 = playlistName != 0;
+    if (playlistName)
     {
       dispatch_group_enter(v21);
       v31 = v84[5];
@@ -164,14 +164,14 @@ LABEL_64:
       v142[3] = &unk_1E767B530;
       v143 = v20;
       v144 = v6;
-      v32 = v81;
+      v32 = playlistName;
       v145 = v32;
       v146 = v21;
       [v31 setValue:v32 forProperty:@"name" withCompletionBlock:v142];
     }
 
-    v27 = [v4 playlistDescription];
-    if (v27)
+    playlistDescription = [request playlistDescription];
+    if (playlistDescription)
     {
       dispatch_group_enter(v21);
       v33 = v84[5];
@@ -181,7 +181,7 @@ LABEL_64:
       v137[3] = &unk_1E767B530;
       v138 = v20;
       v139 = v6;
-      v34 = v27;
+      v34 = playlistDescription;
       v140 = v34;
       v141 = v21;
       [v33 setValue:v34 forProperty:@"descriptionInfo" withCompletionBlock:v137];
@@ -189,8 +189,8 @@ LABEL_64:
       v72 = 1;
     }
 
-    v74 = [v4 isPublicPlaylist];
-    if (v74)
+    isPublicPlaylist = [request isPublicPlaylist];
+    if (isPublicPlaylist)
     {
       dispatch_group_enter(v21);
       v35 = v84[5];
@@ -200,14 +200,14 @@ LABEL_64:
       v132[3] = &unk_1E767B530;
       v133 = v20;
       v134 = v6;
-      v36 = v74;
+      v36 = isPublicPlaylist;
       v135 = v36;
       v136 = v21;
       [v35 setValue:v36 forProperty:@"cloudIsPublic" withCompletionBlock:v132];
     }
 
-    v73 = [v4 isVisiblePlaylist];
-    if (v73)
+    isVisiblePlaylist = [request isVisiblePlaylist];
+    if (isVisiblePlaylist)
     {
       dispatch_group_enter(v21);
       v37 = v84[5];
@@ -217,14 +217,14 @@ LABEL_64:
       v127[3] = &unk_1E767B530;
       v128 = v20;
       v129 = v6;
-      v38 = v73;
+      v38 = isVisiblePlaylist;
       v130 = v38;
       v131 = v21;
       [v37 setValue:v38 forProperty:@"cloudIsVisible" withCompletionBlock:v127];
     }
 
-    v71 = [v4 isCuratorPlaylist];
-    if (v71)
+    isCuratorPlaylist = [request isCuratorPlaylist];
+    if (isCuratorPlaylist)
     {
       dispatch_group_enter(v21);
       v39 = v84[5];
@@ -234,14 +234,14 @@ LABEL_64:
       v122[3] = &unk_1E767B530;
       v123 = v20;
       v124 = v6;
-      v40 = v71;
+      v40 = isCuratorPlaylist;
       v125 = v40;
       v126 = v21;
       [v39 setValue:v40 forProperty:@"cloudIsCuratorPlaylist" withCompletionBlock:v122];
     }
 
-    v70 = [v4 isOwner];
-    if (v70)
+    isOwner = [request isOwner];
+    if (isOwner)
     {
       dispatch_group_enter(v21);
       v41 = v84[5];
@@ -251,14 +251,14 @@ LABEL_64:
       v117[3] = &unk_1E767B530;
       v118 = v20;
       v119 = v6;
-      v42 = v70;
+      v42 = isOwner;
       v120 = v42;
       v121 = v21;
       [v41 setValue:v42 forProperty:@"iO" withCompletionBlock:v117];
     }
 
-    v75 = [v4 authorDisplayName];
-    if ([v75 length])
+    authorDisplayName = [request authorDisplayName];
+    if ([authorDisplayName length])
     {
       dispatch_group_enter(v21);
       v43 = v84[5];
@@ -268,7 +268,7 @@ LABEL_64:
       v112[3] = &unk_1E767B530;
       v113 = v20;
       v114 = v6;
-      v44 = v75;
+      v44 = authorDisplayName;
       v115 = v44;
       v116 = v21;
       [v43 setValue:v44 forProperty:@"externalVendorDisplayName" withCompletionBlock:v112];
@@ -278,33 +278,33 @@ LABEL_64:
 
     else
     {
-      if ((v77 & 1) == 0 && ![v75 isEqualToString:&stru_1F149ECA8])
+      if ((shouldCreatePlaylist & 1) == 0 && ![authorDisplayName isEqualToString:&stru_1F149ECA8])
       {
         goto LABEL_61;
       }
 
-      v69 = [MEMORY[0x1E696AAE8] mainBundle];
-      v46 = [v69 localizedInfoDictionary];
-      v47 = [v46 objectForKey:@"CFBundleDisplayName"];
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      localizedInfoDictionary = [mainBundle2 localizedInfoDictionary];
+      v47 = [localizedInfoDictionary objectForKey:@"CFBundleDisplayName"];
 
       if (![v47 length])
       {
-        v48 = [v69 localizedInfoDictionary];
-        v49 = [v48 objectForKey:@"CFBundleExecutable"];
+        localizedInfoDictionary2 = [mainBundle2 localizedInfoDictionary];
+        v49 = [localizedInfoDictionary2 objectForKey:@"CFBundleExecutable"];
 
         v47 = v49;
       }
 
       if (![v47 length])
       {
-        v50 = [v69 infoDictionary];
-        v51 = [v50 objectForKey:@"CFBundleDisplayName"];
+        infoDictionary = [mainBundle2 infoDictionary];
+        v51 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
 
         v47 = v51;
       }
 
-      v52 = [v69 infoDictionary];
-      v53 = [v52 objectForKey:@"CFBundleExecutable"];
+      infoDictionary2 = [mainBundle2 infoDictionary];
+      v53 = [infoDictionary2 objectForKey:@"CFBundleExecutable"];
 
       if (![v53 length])
       {
@@ -337,24 +337,24 @@ LABEL_64:
       else
       {
         v57 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPModelLibrarySDKPlaylistEditChangeRequestOperationErrorDomain" code:-10004 userInfo:0];
-        v58 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
-        v59 = v58;
-        if (v58)
+        completeResponseHandler2 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
+        v59 = completeResponseHandler2;
+        if (completeResponseHandler2)
         {
-          (*(v58 + 16))(v58, v57, 0);
+          (*(completeResponseHandler2 + 16))(completeResponseHandler2, v57, 0);
         }
 
         [(MPAsyncOperation *)self finishWithError:v57];
       }
 
-      v45 = v69;
+      v45 = mainBundle2;
     }
 
 LABEL_61:
-    if (((v77 | !v72) & 1) == 0)
+    if (((shouldCreatePlaylist | !v72) & 1) == 0)
     {
       dispatch_group_enter(v21);
-      v60 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v61 = v84[5];
       v101[0] = MEMORY[0x1E69E9820];
       v101[1] = 3221225472;
@@ -362,9 +362,9 @@ LABEL_61:
       v101[3] = &unk_1E767B530;
       v102 = v20;
       v103 = v6;
-      v104 = v60;
+      v104 = date;
       v105 = v21;
-      v62 = v60;
+      v62 = date;
       [v61 setValue:v62 forProperty:@"dateModified" withCompletionBlock:v101];
     }
 
@@ -386,12 +386,12 @@ LABEL_61:
     block[2] = __95__MPModelLibrarySDKPlaylistEditChangeRequestOperation__executeWithCloudLibraryEnabledConfirmed__block_invoke_7_149;
     block[3] = &unk_1E767B5B8;
     v67 = v64;
-    v96 = v77;
+    v96 = shouldCreatePlaylist;
     v90 = v67;
-    v91 = self;
+    selfCopy = self;
     v94 = &v154;
     v95 = &v83;
-    v92 = v82;
+    v92 = mediaLibrary;
     v93 = v79;
     dispatch_group_notify(v65, v66, block);
 
@@ -399,11 +399,11 @@ LABEL_61:
   }
 
   v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPModelLibrarySDKPlaylistEditChangeRequestOperationErrorDomain" code:-10004 userInfo:0];
-  v29 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
-  v30 = v29;
-  if (v29)
+  completeResponseHandler3 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self completeResponseHandler];
+  v30 = completeResponseHandler3;
+  if (completeResponseHandler3)
   {
-    (*(v29 + 16))(v29, v28, 0);
+    (*(completeResponseHandler3 + 16))(completeResponseHandler3, v28, 0);
   }
 
   [(MPAsyncOperation *)self finishWithError:v28];

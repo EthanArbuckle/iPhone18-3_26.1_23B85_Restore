@@ -1,13 +1,13 @@
 @interface AFRemoteRequest
-- (AFRemoteRequest)initWithInfo:(id)a3;
-- (void)sendWithCompletion:(id)a3;
+- (AFRemoteRequest)initWithInfo:(id)info;
+- (void)sendWithCompletion:(id)completion;
 @end
 
 @implementation AFRemoteRequest
 
-- (void)sendWithCompletion:(id)a3
+- (void)sendWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(AFSettingsConnection);
   info = self->_info;
   peerIdentifier = self->_peerIdentifier;
@@ -16,10 +16,10 @@
   v10[2] = __38__AFRemoteRequest_sendWithCompletion___block_invoke;
   v10[3] = &unk_1E7346690;
   v11 = v5;
-  v12 = v4;
+  v12 = completionCopy;
   v10[4] = self;
   v8 = v5;
-  v9 = v4;
+  v9 = completionCopy;
   [(AFSettingsConnection *)v8 startRemoteRequest:info onPeer:peerIdentifier completion:v10];
 }
 
@@ -34,16 +34,16 @@ uint64_t __38__AFRemoteRequest_sendWithCompletion___block_invoke(uint64_t a1, ui
   return result;
 }
 
-- (AFRemoteRequest)initWithInfo:(id)a3
+- (AFRemoteRequest)initWithInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = AFRemoteRequest;
   v6 = [(AFRemoteRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_info, a3);
+    objc_storeStrong(&v6->_info, info);
   }
 
   return v7;

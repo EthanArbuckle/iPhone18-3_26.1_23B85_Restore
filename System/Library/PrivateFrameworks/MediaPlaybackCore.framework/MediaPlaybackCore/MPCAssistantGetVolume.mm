@@ -1,20 +1,20 @@
 @interface MPCAssistantGetVolume
-- (void)getVolumeLevelForUID:(id)a3 completion:(id)a4;
+- (void)getVolumeLevelForUID:(id)d completion:(id)completion;
 @end
 
 @implementation MPCAssistantGetVolume
 
-- (void)getVolumeLevelForUID:(id)a3 completion:(id)a4
+- (void)getVolumeLevelForUID:(id)d completion:(id)completion
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v11[0] = a3;
+  completionCopy = completion;
+  v11[0] = d;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
+  dCopy = d;
   [v6 arrayWithObjects:v11 count:1];
   v8 = MRAVReconnaissanceSessionCreateWithEndpointFeatures();
-  v10 = v5;
-  v9 = v5;
+  v10 = completionCopy;
+  v9 = completionCopy;
   MRAVReconnaissanceSessionBeginSearch();
   CFRelease(v8);
 }

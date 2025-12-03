@@ -1,16 +1,16 @@
 @interface HKDrugInteractionResult
-- (BOOL)hasSameAncestorIdentifiersAsInteractionResult:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasSameAncestorIdentifiersAsInteractionResult:(id)result;
+- (BOOL)isEqual:(id)equal;
 - (HKDrugInteractionResult)init;
-- (HKDrugInteractionResult)initWithCoder:(id)a3;
-- (HKDrugInteractionResult)initWithFirstInteractionClass:(id)a3 secondInteractionClass:(id)a4 severity:(id)a5 educationContent:(id)a6 ontologyIdentifier:(id)a7 validRegionCodes:(id)a8;
+- (HKDrugInteractionResult)initWithCoder:(id)coder;
+- (HKDrugInteractionResult)initWithFirstInteractionClass:(id)class secondInteractionClass:(id)interactionClass severity:(id)severity educationContent:(id)content ontologyIdentifier:(id)identifier validRegionCodes:(id)codes;
 - (NSString)uniqueIdentifier;
 - (id)description;
 - (id)interactionClasses;
-- (uint64_t)hasEquivalentFirstAncestorIdentifier:(void *)a3 secondAncestorIdentifier:;
-- (uint64_t)hasEquivalentFirstInteractionClass:(void *)a3 secondInteractionClass:;
+- (uint64_t)hasEquivalentFirstAncestorIdentifier:(void *)identifier secondAncestorIdentifier:;
+- (uint64_t)hasEquivalentFirstInteractionClass:(void *)class secondInteractionClass:;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDrugInteractionResult
@@ -25,17 +25,17 @@
   return 0;
 }
 
-- (HKDrugInteractionResult)initWithFirstInteractionClass:(id)a3 secondInteractionClass:(id)a4 severity:(id)a5 educationContent:(id)a6 ontologyIdentifier:(id)a7 validRegionCodes:(id)a8
+- (HKDrugInteractionResult)initWithFirstInteractionClass:(id)class secondInteractionClass:(id)interactionClass severity:(id)severity educationContent:(id)content ontologyIdentifier:(id)identifier validRegionCodes:(id)codes
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14)
+  classCopy = class;
+  interactionClassCopy = interactionClass;
+  severityCopy = severity;
+  contentCopy = content;
+  identifierCopy = identifier;
+  codesCopy = codes;
+  if (classCopy)
   {
-    if (v15)
+    if (interactionClassCopy)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@
   else
   {
     [HKDrugInteractionResult initWithFirstInteractionClass:secondInteractionClass:severity:educationContent:ontologyIdentifier:validRegionCodes:];
-    if (v15)
+    if (interactionClassCopy)
     {
       goto LABEL_3;
     }
@@ -52,16 +52,16 @@
 
   [HKDrugInteractionResult initWithFirstInteractionClass:secondInteractionClass:severity:educationContent:ontologyIdentifier:validRegionCodes:];
 LABEL_3:
-  if (![v14 isEqual:v15])
+  if (![classCopy isEqual:interactionClassCopy])
   {
-    if (v16)
+    if (severityCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [HKDrugInteractionResult initWithFirstInteractionClass:secondInteractionClass:severity:educationContent:ontologyIdentifier:validRegionCodes:];
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
@@ -70,13 +70,13 @@ LABEL_12:
   }
 
   [HKDrugInteractionResult initWithFirstInteractionClass:secondInteractionClass:severity:educationContent:ontologyIdentifier:validRegionCodes:];
-  if (!v16)
+  if (!severityCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v18)
+  if (identifierCopy)
   {
     goto LABEL_6;
   }
@@ -89,27 +89,27 @@ LABEL_6:
   v20 = [(HKDrugInteractionResult *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [classCopy copy];
     firstInteractionClass = v20->_firstInteractionClass;
     v20->_firstInteractionClass = v21;
 
-    v23 = [v15 copy];
+    v23 = [interactionClassCopy copy];
     secondInteractionClass = v20->_secondInteractionClass;
     v20->_secondInteractionClass = v23;
 
-    v25 = [v16 copy];
+    v25 = [severityCopy copy];
     severity = v20->_severity;
     v20->_severity = v25;
 
-    v27 = [v17 copy];
+    v27 = [contentCopy copy];
     educationContent = v20->_educationContent;
     v20->_educationContent = v27;
 
-    v29 = [v18 copy];
+    v29 = [identifierCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v29;
 
-    v31 = [v19 copy];
+    v31 = [codesCopy copy];
     validRegionCodes = v20->_validRegionCodes;
     v20->_validRegionCodes = v31;
   }
@@ -120,10 +120,10 @@ LABEL_6:
 - (NSString)uniqueIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HKConceptIdentifier *)self->_identifier rawIdentifier];
-  v5 = [(HKDrugInteractionClass *)self->_firstInteractionClass uniqueIdentifier];
-  v6 = [(HKDrugInteractionClass *)self->_secondInteractionClass uniqueIdentifier];
-  v7 = [v3 stringWithFormat:@"%ld_%@_%@", v4, v5, v6];
+  rawIdentifier = [(HKConceptIdentifier *)self->_identifier rawIdentifier];
+  uniqueIdentifier = [(HKDrugInteractionClass *)self->_firstInteractionClass uniqueIdentifier];
+  uniqueIdentifier2 = [(HKDrugInteractionClass *)self->_secondInteractionClass uniqueIdentifier];
+  v7 = [v3 stringWithFormat:@"%ld_%@_%@", rawIdentifier, uniqueIdentifier, uniqueIdentifier2];
 
   return v7;
 }
@@ -137,8 +137,8 @@ LABEL_6:
   educationContent = self->_educationContent;
   v7 = HKStringFromBool();
   identifier = self->_identifier;
-  v9 = [(NSSet *)self->_validRegionCodes allObjects];
-  v10 = [v9 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_validRegionCodes allObjects];
+  v10 = [allObjects componentsJoinedByString:{@", "}];
   v11 = [v3 stringWithFormat:@"<%@:%p\nfirst interaction class: %@, \nsecond interaction class: %@, \nseverity: %@, \neducationPresent: %@, \nontologyIdentifier: %@, \nvalidRegionCodes:[%@]>", v4, self, v13, severity, v7, identifier, v10];
 
   return v11;
@@ -156,23 +156,23 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)hasSameAncestorIdentifiersAsInteractionResult:(id)a3
+- (BOOL)hasSameAncestorIdentifiersAsInteractionResult:(id)result
 {
-  if (a3 == self)
+  if (result == self)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [v5 firstInteractionClass];
-  v7 = [v6 ancestorIdentifier];
-  v8 = [v5 secondInteractionClass];
+  selfCopy = self;
+  resultCopy = result;
+  firstInteractionClass = [resultCopy firstInteractionClass];
+  ancestorIdentifier = [firstInteractionClass ancestorIdentifier];
+  secondInteractionClass = [resultCopy secondInteractionClass];
 
-  v9 = [v8 ancestorIdentifier];
-  LOBYTE(v4) = [(HKDrugInteractionResult *)v4 hasEquivalentFirstAncestorIdentifier:v7 secondAncestorIdentifier:v9];
+  ancestorIdentifier2 = [secondInteractionClass ancestorIdentifier];
+  LOBYTE(selfCopy) = [(HKDrugInteractionResult *)selfCopy hasEquivalentFirstAncestorIdentifier:ancestorIdentifier secondAncestorIdentifier:ancestorIdentifier2];
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -182,10 +182,10 @@ LABEL_6:
   return v4 ^ [(HKConceptIdentifier *)self->_identifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_5;
@@ -194,7 +194,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if (![(HKDrugInteractionResult *)self hasEquivalentFirstInteractionClass:v7->_secondInteractionClass secondInteractionClass:?])
     {
       goto LABEL_10;
@@ -230,48 +230,48 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   firstInteractionClass = self->_firstInteractionClass;
-  v5 = a3;
-  [v5 encodeObject:firstInteractionClass forKey:@"FirstInteractionClass"];
-  [v5 encodeObject:self->_secondInteractionClass forKey:@"SecondInteractionClass"];
-  [v5 encodeObject:self->_severity forKey:@"Severity"];
-  [v5 encodeObject:self->_educationContent forKey:@"EducationContent"];
-  [v5 encodeObject:self->_identifier forKey:@"OntologyIdentifier"];
-  [v5 encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:firstInteractionClass forKey:@"FirstInteractionClass"];
+  [coderCopy encodeObject:self->_secondInteractionClass forKey:@"SecondInteractionClass"];
+  [coderCopy encodeObject:self->_severity forKey:@"Severity"];
+  [coderCopy encodeObject:self->_educationContent forKey:@"EducationContent"];
+  [coderCopy encodeObject:self->_identifier forKey:@"OntologyIdentifier"];
+  [coderCopy encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
 }
 
-- (HKDrugInteractionResult)initWithCoder:(id)a3
+- (HKDrugInteractionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = HKDrugInteractionResult;
   v5 = [(HKDrugInteractionResult *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstInteractionClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstInteractionClass"];
     firstInteractionClass = v5->_firstInteractionClass;
     v5->_firstInteractionClass = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SecondInteractionClass"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SecondInteractionClass"];
     secondInteractionClass = v5->_secondInteractionClass;
     v5->_secondInteractionClass = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
     severity = v5->_severity;
     v5->_severity = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EducationContent"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EducationContent"];
     educationContent = v5->_educationContent;
     v5->_educationContent = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OntologyIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OntologyIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v14;
 
     v16 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"ValidRegionCodes"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"ValidRegionCodes"];
     validRegionCodes = v5->_validRegionCodes;
     v5->_validRegionCodes = v17;
 
@@ -294,22 +294,22 @@ LABEL_5:
   return v5;
 }
 
-- (uint64_t)hasEquivalentFirstAncestorIdentifier:(void *)a3 secondAncestorIdentifier:
+- (uint64_t)hasEquivalentFirstAncestorIdentifier:(void *)identifier secondAncestorIdentifier:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v7 = [*(a1 + 8) ancestorIdentifier];
-    if (v7 == v5)
+    ancestorIdentifier = [*(self + 8) ancestorIdentifier];
+    if (ancestorIdentifier == v5)
     {
       v9 = 1;
     }
 
     else if (v5)
     {
-      v8 = [*(a1 + 8) ancestorIdentifier];
-      v9 = [v8 isEqual:v5];
+      ancestorIdentifier2 = [*(self + 8) ancestorIdentifier];
+      v9 = [ancestorIdentifier2 isEqual:v5];
     }
 
     else
@@ -317,16 +317,16 @@ LABEL_5:
       v9 = 0;
     }
 
-    v10 = [*(a1 + 16) ancestorIdentifier];
-    if (v10 == v6)
+    ancestorIdentifier3 = [*(self + 16) ancestorIdentifier];
+    if (ancestorIdentifier3 == identifierCopy)
     {
       v12 = 1;
     }
 
-    else if (v6)
+    else if (identifierCopy)
     {
-      v11 = [*(a1 + 16) ancestorIdentifier];
-      v12 = [v11 isEqual:v6];
+      ancestorIdentifier4 = [*(self + 16) ancestorIdentifier];
+      v12 = [ancestorIdentifier4 isEqual:identifierCopy];
     }
 
     else
@@ -334,16 +334,16 @@ LABEL_5:
       v12 = 0;
     }
 
-    v13 = [*(a1 + 8) ancestorIdentifier];
-    if (v13 == v6)
+    ancestorIdentifier5 = [*(self + 8) ancestorIdentifier];
+    if (ancestorIdentifier5 == identifierCopy)
     {
       v15 = 1;
     }
 
-    else if (v6)
+    else if (identifierCopy)
     {
-      v14 = [*(a1 + 8) ancestorIdentifier];
-      v15 = [v14 isEqual:v6];
+      ancestorIdentifier6 = [*(self + 8) ancestorIdentifier];
+      v15 = [ancestorIdentifier6 isEqual:identifierCopy];
     }
 
     else
@@ -351,16 +351,16 @@ LABEL_5:
       v15 = 0;
     }
 
-    v16 = [*(a1 + 16) ancestorIdentifier];
-    if (v16 == v5)
+    ancestorIdentifier7 = [*(self + 16) ancestorIdentifier];
+    if (ancestorIdentifier7 == v5)
     {
       v18 = 1;
     }
 
     else if (v5)
     {
-      v17 = [*(a1 + 16) ancestorIdentifier];
-      v18 = [v17 isEqual:v5];
+      ancestorIdentifier8 = [*(self + 16) ancestorIdentifier];
+      v18 = [ancestorIdentifier8 isEqual:v5];
     }
 
     else
@@ -368,22 +368,22 @@ LABEL_5:
       v18 = 0;
     }
 
-    LOBYTE(a1) = v9 & v12 | v15 & v18;
+    LOBYTE(self) = v9 & v12 | v15 & v18;
   }
 
-  return a1 & 1;
+  return self & 1;
 }
 
-- (uint64_t)hasEquivalentFirstInteractionClass:(void *)a3 secondInteractionClass:
+- (uint64_t)hasEquivalentFirstInteractionClass:(void *)class secondInteractionClass:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  classCopy = class;
+  if (!self)
   {
     goto LABEL_23;
   }
 
-  v7 = *(a1 + 8);
+  v7 = *(self + 8);
   if (v7 == v5)
   {
     v8 = 1;
@@ -399,33 +399,33 @@ LABEL_5:
     v8 = 0;
   }
 
-  v9 = *(a1 + 16);
-  if (v9 == v6)
+  v9 = *(self + 16);
+  if (v9 == classCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (!v6)
+    if (!classCopy)
     {
       v10 = 0;
-      v12 = *(a1 + 8) == 0;
+      v12 = *(self + 8) == 0;
       goto LABEL_17;
     }
 
-    v10 = [v9 isEqual:v6];
+    v10 = [v9 isEqual:classCopy];
   }
 
-  v11 = *(a1 + 8);
-  if (v11 == v6)
+  v11 = *(self + 8);
+  if (v11 == classCopy)
   {
     v12 = 1;
   }
 
-  else if (v6)
+  else if (classCopy)
   {
-    v12 = [v11 isEqual:v6];
+    v12 = [v11 isEqual:classCopy];
   }
 
   else
@@ -434,7 +434,7 @@ LABEL_5:
   }
 
 LABEL_17:
-  v13 = *(a1 + 16);
+  v13 = *(self + 16);
   if (v13 == v5)
   {
     v14 = 1;
@@ -450,10 +450,10 @@ LABEL_17:
     v14 = 0;
   }
 
-  LOBYTE(a1) = v8 & v10 | v12 & v14;
+  LOBYTE(self) = v8 & v10 | v12 & v14;
 LABEL_23:
 
-  return a1 & 1;
+  return self & 1;
 }
 
 - (void)initWithFirstInteractionClass:secondInteractionClass:severity:educationContent:ontologyIdentifier:validRegionCodes:.cold.1()

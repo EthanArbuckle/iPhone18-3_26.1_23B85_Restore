@@ -1,25 +1,25 @@
 @interface _SFNavigationBarTheme
-- (_SFNavigationBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
-- (id)URLAccessoryButtonTintColorForInputMode:(unint64_t)a3;
-- (id)_colorForPlatterTextColor:(id)a3 regularColor:(id)a4 withPlatterAlpha:(double)a5;
+- (_SFNavigationBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
+- (id)URLAccessoryButtonTintColorForInputMode:(unint64_t)mode;
+- (id)_colorForPlatterTextColor:(id)color regularColor:(id)regularColor withPlatterAlpha:(double)alpha;
 @end
 
 @implementation _SFNavigationBarTheme
 
-- (_SFNavigationBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
+- (_SFNavigationBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
-  v8 = a4;
+  colorCopy = color;
   v54.receiver = self;
   v54.super_class = _SFNavigationBarTheme;
-  v9 = [(_SFBarTheme *)&v54 initWithBarTintStyle:a3 preferredBarTintColor:v8 controlsTintColor:a5];
+  v9 = [(_SFBarTheme *)&v54 initWithBarTintStyle:style preferredBarTintColor:colorCopy controlsTintColor:tintColor];
   v10 = v9;
   if (v9)
   {
-    v11 = [(_SFBarTheme *)v9 preferredBarTintColor];
+    preferredBarTintColor = [(_SFBarTheme *)v9 preferredBarTintColor];
 
-    v12 = [(_SFBarTheme *)v10 backdropIsDark];
+    backdropIsDark = [(_SFBarTheme *)v10 backdropIsDark];
     v13 = _SFIsPrivateTintStyle();
-    v14 = v12 | v13;
+    v14 = backdropIsDark | v13;
     v10->_platterOverrideUserInterfaceStyle = v13;
     v15 = 2;
     if (!v13)
@@ -28,15 +28,15 @@
     }
 
     v10->_platterTextFieldOverrideUserInterfaceStyle = v15;
-    v10->_platterKeyboardOverrideAppearance = 2 * (a3 == 3);
+    v10->_platterKeyboardOverrideAppearance = 2 * (style == 3);
     v10->_platterBackdropIsDark = v14 & 1;
-    v16 = redTextColorForDarkBackground(v12);
-    v17 = greenTextColorForDarkBackground(v12);
-    if (v11)
+    v16 = redTextColorForDarkBackground(backdropIsDark);
+    v17 = greenTextColorForDarkBackground(backdropIsDark);
+    if (preferredBarTintColor)
     {
-      v10->_backdropIsRed = colorIsSimilarToColor(v11, v16);
-      v10->_backdropIsGreen = colorIsSimilarToColor(v11, v17);
-      v18 = v11;
+      v10->_backdropIsRed = colorIsSimilarToColor(preferredBarTintColor, v16);
+      v10->_backdropIsGreen = colorIsSimilarToColor(preferredBarTintColor, v17);
+      v18 = preferredBarTintColor;
       v58 = 0.0;
       v59 = 0.0;
       v56 = 0.0;
@@ -107,7 +107,7 @@ LABEL_19:
       v17 = v19;
     }
 
-    v27 = textColorForDarkBackground(v12);
+    v27 = textColorForDarkBackground(backdropIsDark);
     textColor = v10->_textColor;
     v10->_textColor = v27;
 
@@ -125,23 +125,23 @@ LABEL_19:
     }
 
     objc_storeStrong(&v10->_secureTextColor, v30);
-    v31 = annotationTextColorForDarkBackground(v12);
+    v31 = annotationTextColorForDarkBackground(backdropIsDark);
     annotationTextColor = v10->_annotationTextColor;
     v10->_annotationTextColor = v31;
 
-    v33 = [(_SFBarTheme *)v10 controlsTintColor];
-    v34 = v33;
-    if (a3 == 4)
+    controlsTintColor = [(_SFBarTheme *)v10 controlsTintColor];
+    v34 = controlsTintColor;
+    if (style == 4)
     {
-      v35 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
     else
     {
-      v35 = v33;
+      whiteColor = controlsTintColor;
     }
 
-    v36 = v35;
+    v36 = whiteColor;
 
     progressBarTintColor = v10->_progressBarTintColor;
     v10->_progressBarTintColor = v36;
@@ -220,27 +220,27 @@ LABEL_19:
 
   else
   {
-    v11 = v8;
+    preferredBarTintColor = colorCopy;
   }
 
   return v10;
 }
 
-- (id)URLAccessoryButtonTintColorForInputMode:(unint64_t)a3
+- (id)URLAccessoryButtonTintColorForInputMode:(unint64_t)mode
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (mode)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
-        [(_SFBarTheme *)v3 toolbarControlsTintColor];
+        [(_SFBarTheme *)selfCopy toolbarControlsTintColor];
       }
 
       else
       {
-        [(_SFBarTheme *)v3 controlsTintColor];
+        [(_SFBarTheme *)selfCopy controlsTintColor];
       }
       self = ;
     }
@@ -254,26 +254,26 @@ LABEL_19:
   return self;
 }
 
-- (id)_colorForPlatterTextColor:(id)a3 regularColor:(id)a4 withPlatterAlpha:(double)a5
+- (id)_colorForPlatterTextColor:(id)color regularColor:(id)regularColor withPlatterAlpha:(double)alpha
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5 == 1.0 || [v7 isEqual:v8])
+  colorCopy = color;
+  regularColorCopy = regularColor;
+  if (alpha == 1.0 || [colorCopy isEqual:regularColorCopy])
   {
-    v9 = v7;
+    v9 = colorCopy;
 LABEL_4:
     v10 = v9;
     goto LABEL_5;
   }
 
-  if (a5 == 0.0)
+  if (alpha == 0.0)
   {
-    v9 = v8;
+    v9 = regularColorCopy;
     goto LABEL_4;
   }
 
-  v12 = [v7 colorWithAlphaComponent:a5];
-  v10 = [v8 _colorBlendedWithColor:v12];
+  v12 = [colorCopy colorWithAlphaComponent:alpha];
+  v10 = [regularColorCopy _colorBlendedWithColor:v12];
 
 LABEL_5:
 

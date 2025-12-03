@@ -1,23 +1,23 @@
 @interface TUICandidateInlineTextView
-- (TUICandidateInlineTextView)initWithCoder:(id)a3;
-- (TUICandidateInlineTextView)initWithFrame:(CGRect)a3;
+- (TUICandidateInlineTextView)initWithCoder:(id)coder;
+- (TUICandidateInlineTextView)initWithFrame:(CGRect)frame;
 - (void)commonInit;
-- (void)setStyle:(id)a3;
-- (void)setText:(id)a3;
+- (void)setStyle:(id)style;
+- (void)setText:(id)text;
 - (void)updateLabels;
 @end
 
 @implementation TUICandidateInlineTextView
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v7 = a3;
+  styleCopy = style;
   if (([(TUICandidateViewStyle *)self->_style isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_style, a3);
-    v5 = [v7 textColor];
-    v6 = [(TUICandidateInlineTextView *)self label];
-    [v6 setTextColor:v5];
+    objc_storeStrong(&self->_style, style);
+    textColor = [styleCopy textColor];
+    label = [(TUICandidateInlineTextView *)self label];
+    [label setTextColor:textColor];
 
     [(TUICandidateInlineTextView *)self updateLabels];
   }
@@ -30,8 +30,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v13 = [(TUICandidateInlineTextView *)self style];
-  [v13 gridPadding];
+  style = [(TUICandidateInlineTextView *)self style];
+  [style gridPadding];
   v12 = v11 + 10.0;
   v15.origin.x = v4;
   v15.origin.y = v6;
@@ -41,26 +41,26 @@
   [(UILabel *)self->_label setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
     v6 = self->_text;
-    v7 = [(TUICandidateInlineTextView *)self label];
-    [v7 setText:v6];
+    label = [(TUICandidateInlineTextView *)self label];
+    [label setText:v6];
   }
 }
 
-- (TUICandidateInlineTextView)initWithCoder:(id)a3
+- (TUICandidateInlineTextView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateInlineTextView;
-  v3 = [(TUICandidateInlineTextView *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateInlineTextView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -70,11 +70,11 @@
   return v4;
 }
 
-- (TUICandidateInlineTextView)initWithFrame:(CGRect)a3
+- (TUICandidateInlineTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateInlineTextView;
-  v3 = [(TUICandidateInlineTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateInlineTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

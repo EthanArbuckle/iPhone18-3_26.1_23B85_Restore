@@ -21,10 +21,10 @@
   v9 = a4;
   v10 = [[v8 alloc] initWithURL:v9 cachePolicy:a5 timeoutInterval:a2];
 
-  v11 = [MEMORY[0x1E695AC68] overrideUserAgent];
-  [v10 setValue:v11 forHTTPHeaderField:@"User-Agent"];
+  overrideUserAgent = [MEMORY[0x1E695AC68] overrideUserAgent];
+  [v10 setValue:overrideUserAgent forHTTPHeaderField:@"User-Agent"];
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v12 = v10;
   }
@@ -45,10 +45,10 @@
   v5 = a3;
   v6 = [[v4 alloc] initWithURL:v5];
 
-  v7 = [MEMORY[0x1E695AC68] overrideUserAgent];
-  [v6 setValue:v7 forHTTPHeaderField:@"User-Agent"];
+  overrideUserAgent = [MEMORY[0x1E695AC68] overrideUserAgent];
+  [v6 setValue:overrideUserAgent forHTTPHeaderField:@"User-Agent"];
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v8 = v6;
   }

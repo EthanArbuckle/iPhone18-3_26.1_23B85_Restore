@@ -1,15 +1,15 @@
 @interface HMDEventRouterLogEventUtilities
-+ (id)sanitizedTopicFromTopic:(id)a3;
++ (id)sanitizedTopicFromTopic:(id)topic;
 @end
 
 @implementation HMDEventRouterLogEventUtilities
 
-+ (id)sanitizedTopicFromTopic:(id)a3
++ (id)sanitizedTopicFromTopic:(id)topic
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
-  v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(v3, "length")}];
+  topicCopy = topic;
+  v4 = [topicCopy componentsSeparatedByString:@"."];
+  v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(topicCopy, "length")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;

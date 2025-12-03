@@ -1,67 +1,67 @@
 @interface ATXClient
-+ (id)clientForConsumerType:(unint64_t)a3;
-+ (id)clientForConsumerType:(unint64_t)a3 cacheBasePath:(id)a4;
-+ (id)dayZeroBundleIdsAndScoresFromDayZeroParameters:(id)a3;
-- (ATXClient)initWithConsumerType:(unint64_t)a3 cacheBasePath:(id)a4;
-- (BOOL)forceCacheUpdateForConsumerSubType:(unsigned __int8)a3 intent:(id)a4 candidateBundleIdentifiers:(id)a5 candidateIntentTypeIdentifiers:(id)a6;
-- (BOOL)shouldPredictAppBundleId:(id)a3;
-- (BOOL)shouldPredictBundleIdForShortcuts:(id)a3 action:(id)a4 forPrimaryShortcuts:(BOOL)a5;
++ (id)clientForConsumerType:(unint64_t)type;
++ (id)clientForConsumerType:(unint64_t)type cacheBasePath:(id)path;
++ (id)dayZeroBundleIdsAndScoresFromDayZeroParameters:(id)parameters;
+- (ATXClient)initWithConsumerType:(unint64_t)type cacheBasePath:(id)path;
+- (BOOL)forceCacheUpdateForConsumerSubType:(unsigned __int8)type intent:(id)intent candidateBundleIdentifiers:(id)identifiers candidateIntentTypeIdentifiers:(id)typeIdentifiers;
+- (BOOL)shouldPredictAppBundleId:(id)id;
+- (BOOL)shouldPredictBundleIdForShortcuts:(id)shortcuts action:(id)action forPrimaryShortcuts:(BOOL)primaryShortcuts;
 - (id)_asyncProxy;
 - (id)_getConnection;
 - (id)_minuteZeroResponse;
-- (id)_predicateForDenyList:(id)a3;
+- (id)_predicateForDenyList:(id)list;
 - (id)_simulatorResponse;
 - (id)_syncProxy;
-- (id)appPredictionsForConsumerSubType:(unsigned __int8)a3 blackList:(id)a4 limit:(int)a5 runningDiagnostics:(BOOL)a6;
-- (id)appPredictionsForConsumerSubType:(unsigned __int8)a3 limit:(int)a4 personaUID:(id)a5;
+- (id)appPredictionsForConsumerSubType:(unsigned __int8)type blackList:(id)list limit:(int)limit runningDiagnostics:(BOOL)diagnostics;
+- (id)appPredictionsForConsumerSubType:(unsigned __int8)type limit:(int)limit personaUID:(id)d;
 - (id)approvedSiriKitIntents;
-- (id)atxResponseFromBlendingAppPredictionCacheForConsumerSubType:(unsigned __int8)a3 filterPredicate:(id)a4 limit:(int)a5;
+- (id)atxResponseFromBlendingAppPredictionCacheForConsumerSubType:(unsigned __int8)type filterPredicate:(id)predicate limit:(int)limit;
 - (id)fetchLastExecutedActions;
-- (id)fetchMenuItemsForCurrentAppInFocus:(id *)a3;
-- (id)fetchPreWarmedContextualActionSuggestionsWithError:(id *)a3;
-- (id)fetchToolKitBasedFallbackActionIds:(id *)a3;
+- (id)fetchMenuItemsForCurrentAppInFocus:(id *)focus;
+- (id)fetchPreWarmedContextualActionSuggestionsWithError:(id *)error;
+- (id)fetchToolKitBasedFallbackActionIds:(id *)ids;
 - (id)getAppPredictorAssetMappingDescription;
 - (id)semanticallySimilarDocumentsFromOnScreenAppEntities;
 - (void)dealloc;
-- (void)getWebsitePredictionsForContextType:(id)a3 limit:(unint64_t)a4 reply:(id)a5;
-- (void)logUserFeedback:(id)a3 consumerSubType:(unsigned __int8)a4 engagementType:(unint64_t)a5 bundleIdentifier:(id)a6 bundleIdsShown:(id)a7 explicitlyRejectedIds:(id)a8 personaUID:(id)a9;
-- (void)notifySpotlightInvoked:(BOOL)a3;
-- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)a3 contextType:(id)a4;
-- (void)recentURLsWithLimit:(unint64_t)a3 typeIdentifiersForScope:(id)a4 withCompletion:(id)a5;
-- (void)sortAppsByLaunches:(id)a3 reply:(id)a4;
+- (void)getWebsitePredictionsForContextType:(id)type limit:(unint64_t)limit reply:(id)reply;
+- (void)logUserFeedback:(id)feedback consumerSubType:(unsigned __int8)type engagementType:(unint64_t)engagementType bundleIdentifier:(id)identifier bundleIdsShown:(id)shown explicitlyRejectedIds:(id)ids personaUID:(id)d;
+- (void)notifySpotlightInvoked:(BOOL)invoked;
+- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)string contextType:(id)type;
+- (void)recentURLsWithLimit:(unint64_t)limit typeIdentifiersForScope:(id)scope withCompletion:(id)completion;
+- (void)sortAppsByLaunches:(id)launches reply:(id)reply;
 @end
 
 @implementation ATXClient
 
-+ (id)clientForConsumerType:(unint64_t)a3
++ (id)clientForConsumerType:(unint64_t)type
 {
-  v3 = [[ATXClient alloc] initWithConsumerType:a3 cacheBasePath:0];
+  v3 = [[ATXClient alloc] initWithConsumerType:type cacheBasePath:0];
 
   return v3;
 }
 
-+ (id)clientForConsumerType:(unint64_t)a3 cacheBasePath:(id)a4
++ (id)clientForConsumerType:(unint64_t)type cacheBasePath:(id)path
 {
-  v5 = a4;
-  v6 = [[ATXClient alloc] initWithConsumerType:a3 cacheBasePath:v5];
+  pathCopy = path;
+  v6 = [[ATXClient alloc] initWithConsumerType:type cacheBasePath:pathCopy];
 
   return v6;
 }
 
-- (ATXClient)initWithConsumerType:(unint64_t)a3 cacheBasePath:(id)a4
+- (ATXClient)initWithConsumerType:(unint64_t)type cacheBasePath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = ATXClient;
   v8 = [(ATXClient *)&v15 init];
   if (v8)
   {
-    v9 = [[ATXCacheReader alloc] initWithCacheBasePath:v7];
+    v9 = [[ATXCacheReader alloc] initWithCacheBasePath:pathCopy];
     cacheReader = v8->_cacheReader;
     v8->_cacheReader = v9;
 
-    objc_storeStrong(&v8->_cacheBasePath, a4);
-    v8->_consumerType = a3;
+    objc_storeStrong(&v8->_cacheBasePath, path);
+    v8->_consumerType = type;
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.proactive.AppPrediction.client.ATXClientQueue", v11);
     queue = v8->_queue;
@@ -116,13 +116,13 @@ void __27__ATXClient__getConnection__block_invoke()
 
 - (id)_asyncProxy
 {
-  v3 = [(ATXClient *)self _getConnection];
+  _getConnection = [(ATXClient *)self _getConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__ATXClient__asyncProxy__block_invoke;
   v6[3] = &unk_1E80C2AF8;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [_getConnection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -139,8 +139,8 @@ void __24__ATXClient__asyncProxy__block_invoke(uint64_t a1, void *a2)
 
 - (id)_syncProxy
 {
-  v2 = [(ATXClient *)self _getConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18_0];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v3 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_18_0];
 
   return v3;
 }
@@ -155,13 +155,13 @@ void __23__ATXClient__syncProxy__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)sortAppsByLaunches:(id)a3 reply:(id)a4
+- (void)sortAppsByLaunches:(id)launches reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ATXClient *)self _getConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 sortAppsByLaunches:v7 reply:v6];
+  replyCopy = reply;
+  launchesCopy = launches;
+  _getConnection = [(ATXClient *)self _getConnection];
+  remoteObjectProxy = [_getConnection remoteObjectProxy];
+  [remoteObjectProxy sortAppsByLaunches:launchesCopy reply:replyCopy];
 }
 
 - (id)approvedSiriKitIntents
@@ -172,8 +172,8 @@ void __23__ATXClient__syncProxy__block_invoke(uint64_t a1, void *a2)
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = MEMORY[0x1E695E0F0];
-  v2 = [(ATXClient *)self _getConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v3 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_20];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__ATXClient_approvedSiriKitIntents__block_invoke_21;
@@ -216,26 +216,26 @@ void __35__ATXClient_approvedSiriKitIntents__block_invoke_21(uint64_t a1, void *
   }
 }
 
-- (BOOL)shouldPredictAppBundleId:(id)a3
+- (BOOL)shouldPredictAppBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(ATXClient *)self _getConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v6 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_24];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__ATXClient_shouldPredictAppBundleId___block_invoke_25;
   v8[3] = &unk_1E80C3150;
   v8[4] = &v9;
-  [v6 shouldPredictAppBundleId:v4 reply:v8];
+  [v6 shouldPredictAppBundleId:idCopy reply:v8];
 
-  LOBYTE(v5) = *(v10 + 24);
+  LOBYTE(_getConnection) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return v5;
+  return _getConnection;
 }
 
 void __38__ATXClient_shouldPredictAppBundleId___block_invoke(uint64_t a1, void *a2)
@@ -263,28 +263,28 @@ void __38__ATXClient_shouldPredictAppBundleId___block_invoke_25(uint64_t a1, cha
   *(*(*(a1 + 32) + 8) + 24) = a2;
 }
 
-- (BOOL)shouldPredictBundleIdForShortcuts:(id)a3 action:(id)a4 forPrimaryShortcuts:(BOOL)a5
+- (BOOL)shouldPredictBundleIdForShortcuts:(id)shortcuts action:(id)action forPrimaryShortcuts:(BOOL)primaryShortcuts
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  primaryShortcutsCopy = primaryShortcuts;
+  shortcutsCopy = shortcuts;
+  actionCopy = action;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v10 = [(ATXClient *)self _getConnection];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_28_0];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v11 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_28_0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__ATXClient_shouldPredictBundleIdForShortcuts_action_forPrimaryShortcuts___block_invoke_29;
   v13[3] = &unk_1E80C3150;
   v13[4] = &v14;
-  [v11 shouldPredictBundleIdForShortcuts:v8 action:v9 forPrimaryShortcuts:v5 reply:v13];
+  [v11 shouldPredictBundleIdForShortcuts:shortcutsCopy action:actionCopy forPrimaryShortcuts:primaryShortcutsCopy reply:v13];
 
-  LOBYTE(v5) = *(v15 + 24);
+  LOBYTE(primaryShortcutsCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
 
-  return v5;
+  return primaryShortcutsCopy;
 }
 
 void __74__ATXClient_shouldPredictBundleIdForShortcuts_action_forPrimaryShortcuts___block_invoke(uint64_t a1, void *a2)
@@ -312,10 +312,10 @@ void __74__ATXClient_shouldPredictBundleIdForShortcuts_action_forPrimaryShortcut
   *(*(*(a1 + 32) + 8) + 24) = a2;
 }
 
-- (id)appPredictionsForConsumerSubType:(unsigned __int8)a3 limit:(int)a4 personaUID:(id)a5
+- (id)appPredictionsForConsumerSubType:(unsigned __int8)type limit:(int)limit personaUID:(id)d
 {
-  v5 = *&a4;
-  v6 = a3;
+  v5 = *&limit;
+  typeCopy = type;
   v8 = __atxlog_handle_metrics();
   v9 = os_signpost_id_generate(v8);
 
@@ -328,7 +328,7 @@ void __74__ATXClient_shouldPredictBundleIdForShortcuts_action_forPrimaryShortcut
   }
 
   v12 = objc_opt_new();
-  v13 = [(ATXClient *)self appPredictionsForConsumerSubType:v6 blackList:v12 limit:v5 runningDiagnostics:0];
+  v13 = [(ATXClient *)self appPredictionsForConsumerSubType:typeCopy blackList:v12 limit:v5 runningDiagnostics:0];
 
   v14 = __atxlog_handle_metrics();
   v15 = v14;
@@ -341,16 +341,16 @@ void __74__ATXClient_shouldPredictBundleIdForShortcuts_action_forPrimaryShortcut
   return v13;
 }
 
-- (id)_predicateForDenyList:(id)a3
+- (id)_predicateForDenyList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = MEMORY[0x1E696AE18];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__ATXClient__predicateForDenyList___block_invoke;
   v8[3] = &unk_1E80C1508;
-  v9 = v3;
-  v5 = v3;
+  v9 = listCopy;
+  v5 = listCopy;
   v6 = [v4 predicateWithBlock:v8];
 
   return v6;
@@ -377,42 +377,42 @@ uint64_t __35__ATXClient__predicateForDenyList___block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (id)appPredictionsForConsumerSubType:(unsigned __int8)a3 blackList:(id)a4 limit:(int)a5 runningDiagnostics:(BOOL)a6
+- (id)appPredictionsForConsumerSubType:(unsigned __int8)type blackList:(id)list limit:(int)limit runningDiagnostics:(BOOL)diagnostics
 {
-  v7 = *&a5;
-  v8 = a3;
+  v7 = *&limit;
+  typeCopy = type;
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  listCopy = list;
   v11 = __atxlog_handle_default();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v29[0] = 67109378;
-    v29[1] = v8;
+    v29[1] = typeCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = listCopy;
     _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_INFO, "App predictions for subtype %i deny list: %@", v29, 0x12u);
   }
 
-  if (a6)
+  if (diagnostics)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [(ATXClient *)self _predicateForDenyList:v10];
+    v12 = [(ATXClient *)self _predicateForDenyList:listCopy];
   }
 
-  if (v8 != 9)
+  if (typeCopy != 9)
   {
-    v18 = [(ATXCacheReader *)self->_cacheReader readCacheFileForConsumerSubtype:v8];
+    v18 = [(ATXCacheReader *)self->_cacheReader readCacheFileForConsumerSubtype:typeCopy];
     if (v18)
     {
       v19 = ATXCacheFileSplitChunks();
       if ([v19 count] == 2)
       {
-        v20 = [v19 firstObject];
-        v21 = [ATXPredictionSetReader bundleIdReader:v20];
+        firstObject = [v19 firstObject];
+        v21 = [ATXPredictionSetReader bundleIdReader:firstObject];
         v22 = [v21 readScoredPredictionsWithLimit:v7 filterPredicate:v12];
         v23 = [[ATXResponse alloc] initWithPredictions:v22 cacheFileData:v18 error:0];
 
@@ -473,23 +473,23 @@ LABEL_25:
   return v23;
 }
 
-- (id)atxResponseFromBlendingAppPredictionCacheForConsumerSubType:(unsigned __int8)a3 filterPredicate:(id)a4 limit:(int)a5
+- (id)atxResponseFromBlendingAppPredictionCacheForConsumerSubType:(unsigned __int8)type filterPredicate:(id)predicate limit:(int)limit
 {
-  v6 = a3;
+  typeCopy = type;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [[ATXProactiveSuggestionClient alloc] initWithConsumerSubType:v6];
-  v10 = [(ATXProactiveSuggestionClient *)v9 suggestionLayoutFromCache];
-  if (v10)
+  predicateCopy = predicate;
+  v9 = [[ATXProactiveSuggestionClient alloc] initWithConsumerSubType:typeCopy];
+  suggestionLayoutFromCache = [(ATXProactiveSuggestionClient *)v9 suggestionLayoutFromCache];
+  if (suggestionLayoutFromCache)
   {
     v11 = objc_opt_new();
     v12 = objc_opt_new();
-    v13 = [v10 allSuggestionsInLayout];
+    allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
     v14 = __atxlog_handle_blending();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v13 count];
+      *(&buf + 4) = [allSuggestionsInLayout count];
       _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "Blending retrieved a layout with %lu bundleIds in it.", &buf, 0xCu);
     }
 
@@ -502,19 +502,19 @@ LABEL_25:
     v36 = 0x3032000000;
     v37 = __Block_byref_object_copy__8;
     v38 = __Block_byref_object_dispose__8;
-    v39 = v8;
+    v39 = predicateCopy;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __95__ATXClient_atxResponseFromBlendingAppPredictionCacheForConsumerSubType_filterPredicate_limit___block_invoke;
     v25[3] = &unk_1E80C3178;
-    v30 = a5;
+    limitCopy = limit;
     v28 = v31;
     p_buf = &buf;
     v15 = v11;
     v26 = v15;
     v16 = v12;
     v27 = v16;
-    [v13 enumerateObjectsUsingBlock:v25];
+    [allSuggestionsInLayout enumerateObjectsUsingBlock:v25];
     v17 = __atxlog_handle_blending();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -526,8 +526,8 @@ LABEL_25:
 
     v19 = [ATXResponse alloc];
     v20 = objc_opt_new();
-    v21 = [v10 uuid];
-    v22 = [(ATXResponse *)v19 initWithPredictions:v15 proactiveSuggestions:v16 uuid:v20 cacheFileData:0 blendingUICacheUpdateUUID:v21 error:0];
+    uuid = [suggestionLayoutFromCache uuid];
+    _minuteZeroResponse = [(ATXResponse *)v19 initWithPredictions:v15 proactiveSuggestions:v16 uuid:v20 cacheFileData:0 blendingUICacheUpdateUUID:uuid error:0];
 
     _Block_object_dispose(&buf, 8);
     _Block_object_dispose(v31, 8);
@@ -542,10 +542,10 @@ LABEL_25:
       _os_log_impl(&dword_1BF549000, v23, OS_LOG_TYPE_DEFAULT, "There was no cached suggestion layout, falling back to minute zero response", &buf, 2u);
     }
 
-    v22 = [(ATXClient *)self _minuteZeroResponse];
+    _minuteZeroResponse = [(ATXClient *)self _minuteZeroResponse];
   }
 
-  return v22;
+  return _minuteZeroResponse;
 }
 
 void __95__ATXClient_atxResponseFromBlendingAppPredictionCacheForConsumerSubType_filterPredicate_limit___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -602,22 +602,22 @@ void __95__ATXClient_atxResponseFromBlendingAppPredictionCacheForConsumerSubType
   }
 }
 
-- (void)logUserFeedback:(id)a3 consumerSubType:(unsigned __int8)a4 engagementType:(unint64_t)a5 bundleIdentifier:(id)a6 bundleIdsShown:(id)a7 explicitlyRejectedIds:(id)a8 personaUID:(id)a9
+- (void)logUserFeedback:(id)feedback consumerSubType:(unsigned __int8)type engagementType:(unint64_t)engagementType bundleIdentifier:(id)identifier bundleIdsShown:(id)shown explicitlyRejectedIds:(id)ids personaUID:(id)d
 {
-  v13 = a4;
+  typeCopy = type;
   v53 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  feedbackCopy = feedback;
+  identifierCopy = identifier;
+  shownCopy = shown;
+  idsCopy = ids;
   v19 = __atxlog_handle_default();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG);
 
   if (v20)
   {
-    v33 = a5;
+    engagementTypeCopy = engagementType;
     v21 = objc_opt_new();
-    if ([v17 count])
+    if ([shownCopy count])
     {
       v22 = 0;
       do
@@ -627,37 +627,37 @@ void __95__ATXClient_atxResponseFromBlendingAppPredictionCacheForConsumerSubType
           [v21 appendString:{@", "}];
         }
 
-        v23 = [v17 objectAtIndexedSubscript:v22];
+        v23 = [shownCopy objectAtIndexedSubscript:v22];
         [v21 appendString:v23];
 
         ++v22;
       }
 
-      while ([v17 count] > v22);
+      while ([shownCopy count] > v22);
     }
 
     v24 = __atxlog_handle_default();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       v32 = [MEMORY[0x1E698B028] stringForConsumerType:self->_consumerType];
-      v30 = [MEMORY[0x1E698B028] stringForConsumerSubtype:v13];
-      [MEMORY[0x1E698B028] stringForEngagementType:v33];
+      v30 = [MEMORY[0x1E698B028] stringForConsumerSubtype:typeCopy];
+      [MEMORY[0x1E698B028] stringForEngagementType:engagementTypeCopy];
       *buf = 138413570;
       v42 = v32;
       v43 = 2112;
-      v44 = v15;
+      v44 = feedbackCopy;
       v45 = 2112;
       v46 = v30;
       v48 = v47 = 2112;
       v31 = v48;
       v49 = 2112;
-      v50 = v16;
+      v50 = identifierCopy;
       v51 = 2112;
       v52 = v21;
       _os_log_debug_impl(&dword_1BF549000, v24, OS_LOG_TYPE_DEBUG, "sending feedback for\n  consumerType:%@\n  atxResponse: ***(%@)***\n  consumerSubType:%@\n  engagementType:%@\n  bundleIdentifier:%@\n  bundleIdsShown:%@", buf, 0x3Eu);
     }
 
-    a5 = v33;
+    engagementType = engagementTypeCopy;
   }
 
   queue = self->_queue;
@@ -665,17 +665,17 @@ void __95__ATXClient_atxResponseFromBlendingAppPredictionCacheForConsumerSubType
   block[1] = 3221225472;
   block[2] = __125__ATXClient_logUserFeedback_consumerSubType_engagementType_bundleIdentifier_bundleIdsShown_explicitlyRejectedIds_personaUID___block_invoke;
   block[3] = &unk_1E80C31C0;
-  v40 = v13;
+  v40 = typeCopy;
   block[4] = self;
-  v35 = v15;
-  v36 = v16;
-  v37 = v17;
-  v38 = v18;
-  v39 = a5;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
+  v35 = feedbackCopy;
+  v36 = identifierCopy;
+  v37 = shownCopy;
+  v38 = idsCopy;
+  engagementTypeCopy2 = engagementType;
+  v26 = idsCopy;
+  v27 = shownCopy;
+  v28 = identifierCopy;
+  v29 = feedbackCopy;
   dispatch_async(queue, block);
 }
 
@@ -714,11 +714,11 @@ LABEL_6:
   }
 }
 
-- (BOOL)forceCacheUpdateForConsumerSubType:(unsigned __int8)a3 intent:(id)a4 candidateBundleIdentifiers:(id)a5 candidateIntentTypeIdentifiers:(id)a6
+- (BOOL)forceCacheUpdateForConsumerSubType:(unsigned __int8)type intent:(id)intent candidateBundleIdentifiers:(id)identifiers candidateIntentTypeIdentifiers:(id)typeIdentifiers
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  intentCopy = intent;
+  identifiersCopy = identifiers;
+  typeIdentifiersCopy = typeIdentifiers;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -728,15 +728,15 @@ LABEL_6:
   v18[1] = 3221225472;
   v18[2] = __113__ATXClient_forceCacheUpdateForConsumerSubType_intent_candidateBundleIdentifiers_candidateIntentTypeIdentifiers___block_invoke;
   v18[3] = &unk_1E80C3210;
-  v23 = a3;
+  typeCopy = type;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
+  v19 = intentCopy;
+  v20 = identifiersCopy;
+  v21 = typeIdentifiersCopy;
   v22 = &v24;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v14 = typeIdentifiersCopy;
+  v15 = identifiersCopy;
+  v16 = intentCopy;
   dispatch_sync(queue, v18);
   LOBYTE(queue) = *(v25 + 24);
 
@@ -895,9 +895,9 @@ void __51__ATXClient_getAppPredictorAssetMappingDescription__block_invoke_2(uint
   return v37;
 }
 
-+ (id)dayZeroBundleIdsAndScoresFromDayZeroParameters:(id)a3
++ (id)dayZeroBundleIdsAndScoresFromDayZeroParameters:(id)parameters
 {
-  v3 = [a3 objectForKeyedSubscript:@"dayZero"];
+  v3 = [parameters objectForKeyedSubscript:@"dayZero"];
   v4 = [v3 objectForKeyedSubscript:@"dayZeroBumps"];
 
   objc_opt_class();
@@ -924,33 +924,33 @@ void __51__ATXClient_getAppPredictorAssetMappingDescription__block_invoke_2(uint
 {
   v43 = *MEMORY[0x1E69E9840];
   v31 = [[ATXAssetsABHelper alloc] initWithAssetsForResource:@"_ATXAppPredictorDayZero" ofType:@"plist" specifiedABGroup:0];
-  v30 = [(ATXAssetsABHelper *)v31 abGroupContents];
-  v2 = [objc_opt_class() dayZeroBundleIdsAndScoresFromDayZeroParameters:v30];
+  abGroupContents = [(ATXAssetsABHelper *)v31 abGroupContents];
+  v2 = [objc_opt_class() dayZeroBundleIdsAndScoresFromDayZeroParameters:abGroupContents];
   v3 = +[ATXAppDisplayIdentifiers appIdentifiers];
   v29 = v3;
   if ([v3 count])
   {
-    v4 = [v2 allKeys];
+    allKeys = [v2 allKeys];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __32__ATXClient__minuteZeroResponse__block_invoke;
     v40[3] = &unk_1E80C1BD0;
     v41 = v3;
-    v5 = [v4 _pas_filteredArrayWithTest:v40];
+    v5 = [allKeys _pas_filteredArrayWithTest:v40];
     v6 = [v2 dictionaryWithValuesForKeys:v5];
 
     v2 = v6;
   }
 
-  v7 = [v2 allKeys];
+  allKeys2 = [v2 allKeys];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __32__ATXClient__minuteZeroResponse__block_invoke_2;
   v38[3] = &unk_1E80C17F0;
   v27 = v2;
-  v28 = v7;
+  v28 = allKeys2;
   v39 = v27;
-  v8 = [v7 sortedArrayUsingComparator:v38];
+  v8 = [allKeys2 sortedArrayUsingComparator:v38];
   v33 = objc_opt_new();
   v9 = objc_opt_new();
   v34 = 0u;
@@ -1009,37 +1009,37 @@ uint64_t __32__ATXClient__minuteZeroResponse__block_invoke_2(uint64_t a1, uint64
   return v9;
 }
 
-- (void)getWebsitePredictionsForContextType:(id)a3 limit:(unint64_t)a4 reply:(id)a5
+- (void)getWebsitePredictionsForContextType:(id)type limit:(unint64_t)limit reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = [(ATXClient *)self _getConnection];
-  v10 = [v11 remoteObjectProxy];
-  [v10 getWebsitePredictionsForContextType:v9 limit:a4 reply:v8];
+  replyCopy = reply;
+  typeCopy = type;
+  _getConnection = [(ATXClient *)self _getConnection];
+  remoteObjectProxy = [_getConnection remoteObjectProxy];
+  [remoteObjectProxy getWebsitePredictionsForContextType:typeCopy limit:limit reply:replyCopy];
 }
 
-- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)a3 contextType:(id)a4
+- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)string contextType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ATXClient *)self _getConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 overwriteWebsitePredictionsCacheWithWebsiteString:v7 contextType:v6];
+  typeCopy = type;
+  stringCopy = string;
+  _getConnection = [(ATXClient *)self _getConnection];
+  remoteObjectProxy = [_getConnection remoteObjectProxy];
+  [remoteObjectProxy overwriteWebsitePredictionsCacheWithWebsiteString:stringCopy contextType:typeCopy];
 }
 
-- (void)recentURLsWithLimit:(unint64_t)a3 typeIdentifiersForScope:(id)a4 withCompletion:(id)a5
+- (void)recentURLsWithLimit:(unint64_t)limit typeIdentifiersForScope:(id)scope withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ATXClient *)self _getConnection];
-  v11 = [v10 remoteObjectProxy];
+  completionCopy = completion;
+  scopeCopy = scope;
+  _getConnection = [(ATXClient *)self _getConnection];
+  remoteObjectProxy = [_getConnection remoteObjectProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__ATXClient_recentURLsWithLimit_typeIdentifiersForScope_withCompletion___block_invoke;
   v13[3] = &unk_1E80C0908;
-  v14 = v8;
-  v12 = v8;
-  [v11 recentURLsWithLimit:a3 typeIdentifiersForScope:v9 withCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [remoteObjectProxy recentURLsWithLimit:limit typeIdentifiersForScope:scopeCopy withCompletion:v13];
 }
 
 void __72__ATXClient_recentURLsWithLimit_typeIdentifiersForScope_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1068,12 +1068,12 @@ void __72__ATXClient_recentURLsWithLimit_typeIdentifiersForScope_withCompletion_
   }
 }
 
-- (void)notifySpotlightInvoked:(BOOL)a3
+- (void)notifySpotlightInvoked:(BOOL)invoked
 {
-  v3 = a3;
-  v5 = [(ATXClient *)self _getConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_118_0];
-  [v4 notifySpotlightInvoked:v3];
+  invokedCopy = invoked;
+  _getConnection = [(ATXClient *)self _getConnection];
+  v4 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_118_0];
+  [v4 notifySpotlightInvoked:invokedCopy];
 }
 
 void __36__ATXClient_notifySpotlightInvoked___block_invoke(uint64_t a1, void *a2)
@@ -1086,7 +1086,7 @@ void __36__ATXClient_notifySpotlightInvoked___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)fetchPreWarmedContextualActionSuggestionsWithError:(id *)a3
+- (id)fetchPreWarmedContextualActionSuggestionsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1100,13 +1100,13 @@ void __36__ATXClient_notifySpotlightInvoked___block_invoke(uint64_t a1, void *a2
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v4 = [(ATXClient *)self _getConnection];
+  _getConnection = [(ATXClient *)self _getConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__ATXClient_fetchPreWarmedContextualActionSuggestionsWithError___block_invoke;
   v10[3] = &unk_1E80C3260;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__ATXClient_fetchPreWarmedContextualActionSuggestionsWithError___block_invoke_2;
@@ -1116,9 +1116,9 @@ void __36__ATXClient_notifySpotlightInvoked___block_invoke(uint64_t a1, void *a2
   [v5 fetchPreWarmedContextualActionSuggestionsWithCompletion:v9];
 
   v6 = v12;
-  if (a3 && !v12[5])
+  if (error && !v12[5])
   {
-    *a3 = v18[5];
+    *error = v18[5];
     v6 = v12;
   }
 
@@ -1144,7 +1144,7 @@ void __64__ATXClient_fetchPreWarmedContextualActionSuggestionsWithError___block_
   *(v9 + 40) = v6;
 }
 
-- (id)fetchMenuItemsForCurrentAppInFocus:(id *)a3
+- (id)fetchMenuItemsForCurrentAppInFocus:(id *)focus
 {
   v17 = 0;
   v18 = &v17;
@@ -1158,13 +1158,13 @@ void __64__ATXClient_fetchPreWarmedContextualActionSuggestionsWithError___block_
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v4 = [(ATXClient *)self _getConnection];
+  _getConnection = [(ATXClient *)self _getConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__ATXClient_fetchMenuItemsForCurrentAppInFocus___block_invoke;
   v10[3] = &unk_1E80C3260;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__ATXClient_fetchMenuItemsForCurrentAppInFocus___block_invoke_2;
@@ -1174,9 +1174,9 @@ void __64__ATXClient_fetchPreWarmedContextualActionSuggestionsWithError___block_
   [v5 fetchMenuItemsForCurrentAppInFocusWithCompletion:v9];
 
   v6 = v12;
-  if (a3 && !v12[5])
+  if (focus && !v12[5])
   {
-    *a3 = v18[5];
+    *focus = v18[5];
     v6 = v12;
   }
 
@@ -1202,7 +1202,7 @@ void __48__ATXClient_fetchMenuItemsForCurrentAppInFocus___block_invoke_2(uint64_
   *(v9 + 40) = v6;
 }
 
-- (id)fetchToolKitBasedFallbackActionIds:(id *)a3
+- (id)fetchToolKitBasedFallbackActionIds:(id *)ids
 {
   v17 = 0;
   v18 = &v17;
@@ -1216,13 +1216,13 @@ void __48__ATXClient_fetchMenuItemsForCurrentAppInFocus___block_invoke_2(uint64_
   v14 = __Block_byref_object_copy__8;
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
-  v4 = [(ATXClient *)self _getConnection];
+  _getConnection = [(ATXClient *)self _getConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__ATXClient_fetchToolKitBasedFallbackActionIds___block_invoke;
   v10[3] = &unk_1E80C3260;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__ATXClient_fetchToolKitBasedFallbackActionIds___block_invoke_2;
@@ -1232,9 +1232,9 @@ void __48__ATXClient_fetchMenuItemsForCurrentAppInFocus___block_invoke_2(uint64_
   [v5 fetchToolKitBasedFallbackActionIdsWithCompletion:v9];
 
   v6 = v12;
-  if (a3 && !v12[5])
+  if (ids && !v12[5])
   {
-    *a3 = v18[5];
+    *ids = v18[5];
     v6 = v12;
   }
 
@@ -1268,8 +1268,8 @@ void __48__ATXClient_fetchToolKitBasedFallbackActionIds___block_invoke_2(uint64_
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = MEMORY[0x1E695E0F0];
-  v2 = [(ATXClient *)self _getConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_120];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v3 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_120];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__ATXClient_semanticallySimilarDocumentsFromOnScreenAppEntities__block_invoke_2;
@@ -1313,8 +1313,8 @@ void __64__ATXClient_semanticallySimilarDocumentsFromOnScreenAppEntities__block_
   v10 = __Block_byref_object_copy__8;
   v11 = __Block_byref_object_dispose__8;
   v12 = MEMORY[0x1E695E0F0];
-  v2 = [(ATXClient *)self _getConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_126];
+  _getConnection = [(ATXClient *)self _getConnection];
+  v3 = [_getConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_126];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__ATXClient_fetchLastExecutedActions__block_invoke_2;

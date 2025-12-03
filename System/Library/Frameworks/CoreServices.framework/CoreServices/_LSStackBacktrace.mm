@@ -1,12 +1,12 @@
 @interface _LSStackBacktrace
 - (NSString)backtraceString;
 - (_LSStackBacktrace)initWithBacktrace;
-- (_LSStackBacktrace)initWithCoder:(id)a3;
-- (_LSStackBacktrace)initWithFrames:(void *)a3 count:(unint64_t)a4;
+- (_LSStackBacktrace)initWithCoder:(id)coder;
+- (_LSStackBacktrace)initWithFrames:(void *)frames count:(unint64_t)count;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSStackBacktrace
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (_LSStackBacktrace)initWithFrames:(void *)a3 count:(unint64_t)a4
+- (_LSStackBacktrace)initWithFrames:(void *)frames count:(unint64_t)count
 {
   v20.receiver = self;
   v20.super_class = _LSStackBacktrace;
@@ -40,8 +40,8 @@
   v7 = v6;
   if (v6)
   {
-    std::vector<void *>::reserve(&v6->_frames.__begin_, a4);
-    if (a4)
+    std::vector<void *>::reserve(&v6->_frames.__begin_, count);
+    if (count)
     {
       end = v7->_frames.__end_;
       do
@@ -78,7 +78,7 @@
             std::allocator<LSApplicationRecord * {__strong}>::allocate_at_least[abi:nn200100](&v7->_frames, v14);
           }
 
-          *(8 * v11) = *a3;
+          *(8 * v11) = *frames;
           end = (8 * v11 + 8);
           v15 = v7->_frames.__begin_;
           v16 = v7->_frames.__end_ - v15;
@@ -96,22 +96,22 @@
 
         else
         {
-          *end++ = *a3;
+          *end++ = *frames;
         }
 
         v7->_frames.__end_ = end;
-        ++a3;
-        --a4;
+        ++frames;
+        --count;
       }
 
-      while (a4);
+      while (count);
     }
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LSStackBacktrace alloc];
   v5 = self->_frames.__end_ - self->_frames.__begin_;
@@ -119,18 +119,18 @@
   return [_LSStackBacktrace initWithFrames:v4 count:"initWithFrames:count:"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(_LSStackBacktrace *)self backtraceString];
-  [v5 encodeObject:v4 forKey:@"backtrace"];
+  coderCopy = coder;
+  backtraceString = [(_LSStackBacktrace *)self backtraceString];
+  [coderCopy encodeObject:backtraceString forKey:@"backtrace"];
 }
 
-- (_LSStackBacktrace)initWithCoder:(id)a3
+- (_LSStackBacktrace)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frames"];
+  coderCopy = coder;
+  v5 = coderCopy;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frames"];
   std::vector<void *>::reserve(&self->_frames.__begin_, [v6 count]);
   for (i = 0; i < [v6 count]; ++i)
   {
@@ -140,7 +140,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 unsignedLongValue];
+        unsignedLongValue = [v8 unsignedLongValue];
         end = self->_frames.__end_;
         cap = self->_frames.__cap_;
         if (end >= cap)
@@ -175,7 +175,7 @@
           }
 
           v18 = (8 * v14);
-          *v18 = v9;
+          *v18 = unsignedLongValue;
           v12 = (8 * v14 + 8);
           v19 = self->_frames.__begin_;
           v20 = (self->_frames.__end_ - v19);
@@ -190,12 +190,12 @@
             operator delete(v22);
           }
 
-          v4 = v5;
+          coderCopy = v5;
         }
 
         else
         {
-          *end = v9;
+          *end = unsignedLongValue;
           v12 = end + 1;
         }
 
@@ -479,19 +479,19 @@ LABEL_77:
 
 - (id)description
 {
-  v3 = [(_LSStackBacktrace *)self backtraceString];
-  if (!v3)
+  backtraceString = [(_LSStackBacktrace *)self backtraceString];
+  if (!backtraceString)
   {
-    v3 = [(_LSStackBacktrace *)self backtraceString];
-    if (!v3)
+    backtraceString = [(_LSStackBacktrace *)self backtraceString];
+    if (!backtraceString)
     {
       v5.receiver = self;
       v5.super_class = _LSStackBacktrace;
-      v3 = [(_LSStackBacktrace *)&v5 description];
+      backtraceString = [(_LSStackBacktrace *)&v5 description];
     }
   }
 
-  return v3;
+  return backtraceString;
 }
 
 - (id).cxx_construct

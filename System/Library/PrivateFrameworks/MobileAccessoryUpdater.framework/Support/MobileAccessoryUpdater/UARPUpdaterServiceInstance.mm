@@ -1,36 +1,36 @@
 @interface UARPUpdaterServiceInstance
 - (BOOL)consentDisabledForService;
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5;
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5;
-- (BOOL)isTrackingIONotificationPortForRegistryEntryID:(id)a3;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service;
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service;
+- (BOOL)isTrackingIONotificationPortForRegistryEntryID:(id)d;
 - (BOOL)queryIsServiceBusy;
 - (BOOL)queryIsServiceBusyInternal;
-- (UARPUpdaterServiceInstance)initWithServiceBundle:(id)a3 delegate:(id)a4;
+- (UARPUpdaterServiceInstance)initWithServiceBundle:(id)bundle delegate:(id)delegate;
 - (id)findAndReleaseAllIONotificationPorts;
-- (id)findAndReleaseIONotificationPortForRegistryEntryID:(id)a3;
+- (id)findAndReleaseIONotificationPortForRegistryEntryID:(id)d;
 - (id)queryPendingTssRequests;
-- (void)bsdNotificationReceived:(id)a3;
+- (void)bsdNotificationReceived:(id)received;
 - (void)checkinDASActivities;
-- (void)consentReceived:(id)a3;
-- (void)consentReceivedPostLogoutMode:(id)a3;
-- (void)dasActivityReceived:(id)a3;
+- (void)consentReceived:(id)received;
+- (void)consentReceivedPostLogoutMode:(id)mode;
+- (void)dasActivityReceived:(id)received;
 - (void)dealloc;
-- (void)disabledProductIdentifiers:(id)a3;
-- (void)eaRuleMatched:(id)a3;
+- (void)disabledProductIdentifiers:(id)identifiers;
+- (void)eaRuleMatched:(id)matched;
 - (void)initializeUpdaterServiceConnection;
-- (void)ioKitRuleMatched:(id)a3;
+- (void)ioKitRuleMatched:(id)matched;
 - (void)queryBSDNotificationRules;
 - (void)queryDASActivityRules;
 - (void)queryLaunchRules;
 - (void)queryMatchingRules;
 - (void)releaseXPCConnection;
-- (void)storeIONotificationPort:(id)a3 forRegistryEntryID:(id)a4;
-- (void)tssResponse:(id)a3;
+- (void)storeIONotificationPort:(id)port forRegistryEntryID:(id)d;
+- (void)tssResponse:(id)response;
 @end
 
 @implementation UARPUpdaterServiceInstance
 
-- (UARPUpdaterServiceInstance)initWithServiceBundle:(id)a3 delegate:(id)a4
+- (UARPUpdaterServiceInstance)initWithServiceBundle:(id)bundle delegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = UARPUpdaterServiceInstance;
@@ -38,20 +38,20 @@
   if (v6)
   {
     v6->_log = os_log_create("com.apple.accessoryupdater.uarp", "updaterManager");
-    v7 = [objc_msgSend(a3 "bundleIdentifier")];
+    v7 = [objc_msgSend(bundle "bundleIdentifier")];
     v6->_serviceName = v7;
-    v6->_delegate = a4;
+    v6->_delegate = delegate;
     v6->_queue = dispatch_queue_create([(NSString *)v7 UTF8String], 0);
     v6->_regEntryIDToIONotificationPorts = objc_opt_new();
-    v8 = [a3 infoDictionary];
-    v9 = [v8 objectForKeyedSubscript:@"AccessoriesNeedingConsent"];
+    infoDictionary = [bundle infoDictionary];
+    v9 = [infoDictionary objectForKeyedSubscript:@"AccessoriesNeedingConsent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6->_accessoriesNeedingConsent = [v9 copy];
     }
 
-    if ([objc_msgSend(objc_msgSend(v8 objectForKeyedSubscript:{@"XPCService", "objectForKeyedSubscript:", @"ServiceType", "isEqualToString:", @"Application"}])
+    if ([objc_msgSend(objc_msgSend(infoDictionary objectForKeyedSubscript:{@"XPCService", "objectForKeyedSubscript:", @"ServiceType", "isEqualToString:", @"Application"}])
     {
       v6->_serviceTypeApplication = 1;
     }
@@ -321,7 +321,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)ioKitRuleMatched:(id)a3
+- (void)ioKitRuleMatched:(id)matched
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -329,11 +329,11 @@
   v4[2] = sub_100021858;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = matched;
   dispatch_async(queue, v4);
 }
 
-- (void)bsdNotificationReceived:(id)a3
+- (void)bsdNotificationReceived:(id)received
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -341,11 +341,11 @@
   v4[2] = sub_1000219EC;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = received;
   dispatch_async(queue, v4);
 }
 
-- (void)dasActivityReceived:(id)a3
+- (void)dasActivityReceived:(id)received
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -353,11 +353,11 @@
   v4[2] = sub_100021B40;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = received;
   dispatch_async(queue, v4);
 }
 
-- (void)consentReceived:(id)a3
+- (void)consentReceived:(id)received
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -365,11 +365,11 @@
   v4[2] = sub_100021C98;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = received;
   dispatch_async(queue, v4);
 }
 
-- (void)consentReceivedPostLogoutMode:(id)a3
+- (void)consentReceivedPostLogoutMode:(id)mode
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -377,11 +377,11 @@
   v4[2] = sub_100021DEC;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(queue, v4);
 }
 
-- (void)disabledProductIdentifiers:(id)a3
+- (void)disabledProductIdentifiers:(id)identifiers
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -389,11 +389,11 @@
   v4[2] = sub_100021F40;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifiers;
   dispatch_async(queue, v4);
 }
 
-- (void)eaRuleMatched:(id)a3
+- (void)eaRuleMatched:(id)matched
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -401,7 +401,7 @@
   v4[2] = sub_100022094;
   v4[3] = &unk_100081788;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = matched;
   dispatch_async(queue, v4);
 }
 
@@ -492,7 +492,7 @@
   return v3;
 }
 
-- (BOOL)isTrackingIONotificationPortForRegistryEntryID:(id)a3
+- (BOOL)isTrackingIONotificationPortForRegistryEntryID:(id)d
 {
   v7 = 0;
   v8 = &v7;
@@ -503,7 +503,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000225E4;
   block[3] = &unk_100081A40;
-  block[5] = a3;
+  block[5] = d;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(queue, block);
@@ -512,7 +512,7 @@
   return v4;
 }
 
-- (void)storeIONotificationPort:(id)a3 forRegistryEntryID:(id)a4
+- (void)storeIONotificationPort:(id)port forRegistryEntryID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -520,12 +520,12 @@
   block[2] = sub_10002269C;
   block[3] = &unk_100081800;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = port;
+  block[6] = d;
   dispatch_sync(queue, block);
 }
 
-- (id)findAndReleaseIONotificationPortForRegistryEntryID:(id)a3
+- (id)findAndReleaseIONotificationPortForRegistryEntryID:(id)d
 {
   v7 = 0;
   v8 = &v7;
@@ -539,7 +539,7 @@
   block[2] = sub_100022784;
   block[3] = &unk_1000817B0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   block[6] = &v7;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -569,7 +569,7 @@
   return v3;
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service
 {
   [(UARPUpdaterServiceInstance *)self initializeUpdaterServiceConnection];
   v23 = 0;
@@ -593,7 +593,7 @@
   v17[2] = sub_100022C78;
   v17[3] = &unk_100081A18;
   v17[4] = &v18;
-  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcConnection synchronousRemoteObjectProxyWithErrorHandler:{v22), "standaloneDynamicAssetSolicitation:modelNumber:notifyService:reply:", a3, a4, a5, v17}];
+  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcConnection synchronousRemoteObjectProxyWithErrorHandler:{v22), "standaloneDynamicAssetSolicitation:modelNumber:notifyService:reply:", solicitation, number, service, v17}];
   v10 = v24[5];
   log = self->_log;
   if (v10)
@@ -632,7 +632,7 @@
   return v14;
 }
 
-- (BOOL)dynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5
+- (BOOL)dynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service
 {
   [(UARPUpdaterServiceInstance *)self initializeUpdaterServiceConnection];
   v23 = 0;
@@ -656,7 +656,7 @@
   v17[2] = sub_100022F84;
   v17[3] = &unk_100081A18;
   v17[4] = &v18;
-  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcConnection synchronousRemoteObjectProxyWithErrorHandler:{v22), "standaloneDynamicAssetSolicitation:modelNumbers:notifyService:reply:", a3, a4, a5, v17}];
+  [-[NSXPCConnection synchronousRemoteObjectProxyWithErrorHandler:](xpcConnection synchronousRemoteObjectProxyWithErrorHandler:{v22), "standaloneDynamicAssetSolicitation:modelNumbers:notifyService:reply:", solicitation, numbers, service, v17}];
   v10 = v24[5];
   log = self->_log;
   if (v10)
@@ -735,7 +735,7 @@
   return v7;
 }
 
-- (void)tssResponse:(id)a3
+- (void)tssResponse:(id)response
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -743,7 +743,7 @@
     *buf = 136315394;
     v9 = "[UARPUpdaterServiceInstance tssResponse:]";
     v10 = 2112;
-    v11 = a3;
+    responseCopy = response;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: tss reponse %@", buf, 0x16u);
   }
 
@@ -753,7 +753,7 @@
   v7[2] = sub_1000234F8;
   v7[3] = &unk_100081788;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = response;
   dispatch_async(queue, v7);
 }
 

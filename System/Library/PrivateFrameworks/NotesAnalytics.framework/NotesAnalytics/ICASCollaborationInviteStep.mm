@@ -1,34 +1,34 @@
 @interface ICASCollaborationInviteStep
-- (ICASCollaborationInviteStep)initWithCollaborationInviteStep:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationInviteStep)initWithCollaborationInviteStep:(int64_t)step;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationInviteStep
 
-- (ICASCollaborationInviteStep)initWithCollaborationInviteStep:(int64_t)a3
+- (ICASCollaborationInviteStep)initWithCollaborationInviteStep:(int64_t)step
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationInviteStep;
   result = [(ICASCollaborationInviteStep *)&v5 init];
   if (result)
   {
-    result->_collaborationInviteStep = a3;
+    result->_collaborationInviteStep = step;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationInviteStep *)self collaborationInviteStep];
-  if ((v3 - 1) > 4)
+  collaborationInviteStep = [(ICASCollaborationInviteStep *)self collaborationInviteStep];
+  if ((collaborationInviteStep - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF0E8[v3 - 1];
+    return off_2799AF0E8[collaborationInviteStep - 1];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface MFAttachmentPlaceholder
 + (id)_placeholderMagic;
-+ (id)dataForPlaceholder:(id)a3;
++ (id)dataForPlaceholder:(id)placeholder;
 + (id)placeholder;
-+ (id)placeholderFromSerializedRepresentation:(id)a3;
++ (id)placeholderFromSerializedRepresentation:(id)representation;
 - (BOOL)useMailDrop;
 - (MFAttachmentPlaceholder)init;
 - (id)description;
@@ -10,14 +10,14 @@
 - (id)serializedRepresentation;
 - (unint64_t)fileSize;
 - (void)dealloc;
-- (void)setFileSize:(unint64_t)a3;
+- (void)setFileSize:(unint64_t)size;
 @end
 
 @implementation MFAttachmentPlaceholder
 
 + (id)placeholder
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -45,19 +45,19 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MFAttachmentPlaceholder *)self fileName];
-  v5 = [(MFAttachmentPlaceholder *)self fileSize];
-  v6 = [(MFAttachmentPlaceholder *)self mimeType];
-  v7 = [(MFAttachmentPlaceholder *)self fileURLString];
-  v8 = [(MFAttachmentPlaceholder *)self contentID];
-  v9 = [(MFAttachmentPlaceholder *)self useMailDrop];
+  fileName = [(MFAttachmentPlaceholder *)self fileName];
+  fileSize = [(MFAttachmentPlaceholder *)self fileSize];
+  mimeType = [(MFAttachmentPlaceholder *)self mimeType];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
+  contentID = [(MFAttachmentPlaceholder *)self contentID];
+  useMailDrop = [(MFAttachmentPlaceholder *)self useMailDrop];
   v10 = "SMTP";
-  if (v9)
+  if (useMailDrop)
   {
     v10 = "MailDrop";
   }
 
-  return [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", v4, v5, v6, v7, v8, v10];
+  return [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", fileName, fileSize, mimeType, fileURLString, contentID, v10];
 }
 
 - (unint64_t)fileSize
@@ -67,10 +67,10 @@
   return [v2 unsignedIntegerValue];
 }
 
-- (void)setFileSize:(unint64_t)a3
+- (void)setFileSize:(unint64_t)size
 {
   jsonDictionary = self->_jsonDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:size];
 
   [(NSMutableDictionary *)jsonDictionary setValue:v4 forKey:@"fileSize"];
 }
@@ -78,9 +78,9 @@
 - (id)fileURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(MFAttachmentPlaceholder *)self fileURLString];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
 
-  return [v2 URLWithString:v3];
+  return [v2 URLWithString:fileURLString];
 }
 
 - (BOOL)useMailDrop
@@ -90,14 +90,14 @@
   return [v2 BOOLValue];
 }
 
-+ (id)placeholderFromSerializedRepresentation:(id)a3
++ (id)placeholderFromSerializedRepresentation:(id)representation
 {
-  if (![a1 isPlaceholderSerializedRepresentation:?])
+  if (![self isPlaceholderSerializedRepresentation:?])
   {
     return 0;
   }
 
-  v4 = [a3 subdataWithRange:{4, objc_msgSend(a3, "length") - 4}];
+  v4 = [representation subdataWithRange:{4, objc_msgSend(representation, "length") - 4}];
   if (!v4)
   {
     v9 = MFLogGeneral();
@@ -170,15 +170,15 @@ id __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   return v5;
 }
 
-+ (id)dataForPlaceholder:(id)a3
++ (id)dataForPlaceholder:(id)placeholder
 {
-  v3 = [a3 fileURL];
+  fileURL = [placeholder fileURL];
   if (![objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
   {
     v5 = MFLogGeneral();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(MFAttachmentPlaceholder *)v3 dataForPlaceholder:v5];
+      [(MFAttachmentPlaceholder *)fileURL dataForPlaceholder:v5];
     }
 
     return 0;
@@ -188,7 +188,7 @@ id __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   v15[1] = 3221225472;
   v16 = __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke;
   v17 = &unk_2798B71B0;
-  v18 = v3;
+  v18 = fileURL;
   if (MFIsMobileMail())
   {
     v4 = v16(v15, 0);

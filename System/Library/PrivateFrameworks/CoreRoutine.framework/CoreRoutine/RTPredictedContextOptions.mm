@@ -1,13 +1,13 @@
 @interface RTPredictedContextOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RTPredictedContextOptions)init;
-- (RTPredictedContextOptions)initWithCoder:(id)a3;
-- (RTPredictedContextOptions)initWithCreationDate:(id)a3 forecastWindowDateInterval:(id)a4 forecastWindowTimeInterval:(double)a5 filterContextTypeMask:(unint64_t)a6 filterLocations:(id)a7 resultSortDescriptors:(id)a8;
-- (RTPredictedContextOptions)initWithForecastWindowDateInterval:(id)a3 filterContextTypeMask:(unint64_t)a4 filterLocations:(id)a5 resultSortDescriptors:(id)a6;
-- (RTPredictedContextOptions)initWithForecastWindowTimeInterval:(double)a3 filterContextTypeMask:(unint64_t)a4 filterLocations:(id)a5 resultSortDescriptors:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTPredictedContextOptions)initWithCoder:(id)coder;
+- (RTPredictedContextOptions)initWithCreationDate:(id)date forecastWindowDateInterval:(id)interval forecastWindowTimeInterval:(double)timeInterval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors;
+- (RTPredictedContextOptions)initWithForecastWindowDateInterval:(id)interval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors;
+- (RTPredictedContextOptions)initWithForecastWindowTimeInterval:(double)interval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPredictedContextOptions
@@ -17,8 +17,8 @@
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AB80]);
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [v3 initWithStartDate:v4 endDate:distantFuture];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateInterval.startDate.date" ascending:1];
   v13[0] = v7;
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"probability" ascending:0];
@@ -30,106 +30,106 @@
   return v10;
 }
 
-- (RTPredictedContextOptions)initWithForecastWindowDateInterval:(id)a3 filterContextTypeMask:(unint64_t)a4 filterLocations:(id)a5 resultSortDescriptors:(id)a6
+- (RTPredictedContextOptions)initWithForecastWindowDateInterval:(id)interval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  intervalCopy = interval;
+  locationsCopy = locations;
+  descriptorsCopy = descriptors;
+  if (intervalCopy)
   {
-    v13 = v10;
+    v13 = intervalCopy;
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x1E696AB80]);
     v15 = [MEMORY[0x1E695DF00] now];
-    v16 = [MEMORY[0x1E695DF00] distantFuture];
-    v13 = [v14 initWithStartDate:v15 endDate:v16];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    v13 = [v14 initWithStartDate:v15 endDate:distantFuture];
   }
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  v18 = [(RTPredictedContextOptions *)self initWithCreationDate:v17 forecastWindowDateInterval:v13 forecastWindowTimeInterval:a4 filterContextTypeMask:v11 filterLocations:v12 resultSortDescriptors:0.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v18 = [(RTPredictedContextOptions *)self initWithCreationDate:date forecastWindowDateInterval:v13 forecastWindowTimeInterval:mask filterContextTypeMask:locationsCopy filterLocations:descriptorsCopy resultSortDescriptors:0.0];
 
   return v18;
 }
 
-- (RTPredictedContextOptions)initWithForecastWindowTimeInterval:(double)a3 filterContextTypeMask:(unint64_t)a4 filterLocations:(id)a5 resultSortDescriptors:(id)a6
+- (RTPredictedContextOptions)initWithForecastWindowTimeInterval:(double)interval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 date];
-  v14 = [(RTPredictedContextOptions *)self initWithCreationDate:v13 forecastWindowDateInterval:0 forecastWindowTimeInterval:a4 filterContextTypeMask:v12 filterLocations:v11 resultSortDescriptors:a3];
+  descriptorsCopy = descriptors;
+  locationsCopy = locations;
+  date = [v10 date];
+  v14 = [(RTPredictedContextOptions *)self initWithCreationDate:date forecastWindowDateInterval:0 forecastWindowTimeInterval:mask filterContextTypeMask:locationsCopy filterLocations:descriptorsCopy resultSortDescriptors:interval];
 
   return v14;
 }
 
-- (RTPredictedContextOptions)initWithCreationDate:(id)a3 forecastWindowDateInterval:(id)a4 forecastWindowTimeInterval:(double)a5 filterContextTypeMask:(unint64_t)a6 filterLocations:(id)a7 resultSortDescriptors:(id)a8
+- (RTPredictedContextOptions)initWithCreationDate:(id)date forecastWindowDateInterval:(id)interval forecastWindowTimeInterval:(double)timeInterval filterContextTypeMask:(unint64_t)mask filterLocations:(id)locations resultSortDescriptors:(id)descriptors
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
+  dateCopy = date;
+  intervalCopy = interval;
+  locationsCopy = locations;
+  descriptorsCopy = descriptors;
   v24.receiver = self;
   v24.super_class = RTPredictedContextOptions;
   v19 = [(RTPredictedContextOptions *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_creationDate, a3);
-    if (v16 || a5 != 0.0)
+    objc_storeStrong(&v19->_creationDate, date);
+    if (intervalCopy || timeInterval != 0.0)
     {
-      objc_storeStrong(&v20->_forecastWindowDateInterval, a4);
-      v20->_forecastWindowTimeInterval = a5;
+      objc_storeStrong(&v20->_forecastWindowDateInterval, interval);
+      v20->_forecastWindowTimeInterval = timeInterval;
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DF00] distantFuture];
-      [v21 timeIntervalSinceReferenceDate];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [distantFuture timeIntervalSinceReferenceDate];
       v20->_forecastWindowTimeInterval = v22;
     }
 
-    v20->_filterContextTypeMask = a6;
-    objc_storeStrong(&v20->_filterLocations, a7);
-    objc_storeStrong(&v20->_resultSortDescriptors, a8);
+    v20->_filterContextTypeMask = mask;
+    objc_storeStrong(&v20->_filterLocations, locations);
+    objc_storeStrong(&v20->_resultSortDescriptors, descriptors);
   }
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   creationDate = self->_creationDate;
-  v5 = a3;
-  [v5 encodeObject:creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_forecastWindowDateInterval forKey:@"forecastWindowDateInterval"];
-  [v5 encodeDouble:@"forecastWindowTimeInterval" forKey:self->_forecastWindowTimeInterval];
-  [v5 encodeInteger:self->_filterContextTypeMask forKey:@"filterContextTypeMask"];
-  [v5 encodeObject:self->_filterLocations forKey:@"filterLocations"];
-  [v5 encodeObject:self->_resultSortDescriptors forKey:@"resultSortDescriptors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_forecastWindowDateInterval forKey:@"forecastWindowDateInterval"];
+  [coderCopy encodeDouble:@"forecastWindowTimeInterval" forKey:self->_forecastWindowTimeInterval];
+  [coderCopy encodeInteger:self->_filterContextTypeMask forKey:@"filterContextTypeMask"];
+  [coderCopy encodeObject:self->_filterLocations forKey:@"filterLocations"];
+  [coderCopy encodeObject:self->_resultSortDescriptors forKey:@"resultSortDescriptors"];
 }
 
-- (RTPredictedContextOptions)initWithCoder:(id)a3
+- (RTPredictedContextOptions)initWithCoder:(id)coder
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"forecastWindowDateInterval"];
-  [v3 decodeDoubleForKey:@"forecastWindowTimeInterval"];
+  coderCopy = coder;
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forecastWindowDateInterval"];
+  [coderCopy decodeDoubleForKey:@"forecastWindowTimeInterval"];
   v5 = v4;
-  v27 = [v3 decodeIntegerForKey:@"filterContextTypeMask"];
+  v27 = [coderCopy decodeIntegerForKey:@"filterContextTypeMask"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v26 = [v3 decodeObjectOfClasses:v8 forKey:@"filterLocations"];
+  v26 = [coderCopy decodeObjectOfClasses:v8 forKey:@"filterLocations"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v31 = v3;
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"resultSortDescriptors"];
+  v31 = coderCopy;
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"resultSortDescriptors"];
 
   v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
   v32 = 0u;
@@ -170,29 +170,29 @@
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RTPredictedContextOptions *)self forecastWindowDateInterval];
-    v8 = [(RTPredictedContextOptions *)v6 forecastWindowDateInterval];
-    if ([v7 isEqualToDateInterval:v8] && (-[RTPredictedContextOptions forecastWindowTimeInterval](self, "forecastWindowTimeInterval"), v10 = v9, -[RTPredictedContextOptions forecastWindowTimeInterval](v6, "forecastWindowTimeInterval"), v10 == v11) && (v12 = -[RTPredictedContextOptions filterContextTypeMask](self, "filterContextTypeMask"), v12 == -[RTPredictedContextOptions filterContextTypeMask](v6, "filterContextTypeMask")))
+    forecastWindowDateInterval = [(RTPredictedContextOptions *)self forecastWindowDateInterval];
+    forecastWindowDateInterval2 = [(RTPredictedContextOptions *)v6 forecastWindowDateInterval];
+    if ([forecastWindowDateInterval isEqualToDateInterval:forecastWindowDateInterval2] && (-[RTPredictedContextOptions forecastWindowTimeInterval](self, "forecastWindowTimeInterval"), v10 = v9, -[RTPredictedContextOptions forecastWindowTimeInterval](v6, "forecastWindowTimeInterval"), v10 == v11) && (v12 = -[RTPredictedContextOptions filterContextTypeMask](self, "filterContextTypeMask"), v12 == -[RTPredictedContextOptions filterContextTypeMask](v6, "filterContextTypeMask")))
     {
-      v13 = [(RTPredictedContextOptions *)self filterLocations];
-      v14 = [(RTPredictedContextOptions *)v6 filterLocations];
-      if ([v13 isEqual:v14])
+      filterLocations = [(RTPredictedContextOptions *)self filterLocations];
+      filterLocations2 = [(RTPredictedContextOptions *)v6 filterLocations];
+      if ([filterLocations isEqual:filterLocations2])
       {
-        v15 = [(RTPredictedContextOptions *)self resultSortDescriptors];
-        v16 = [(RTPredictedContextOptions *)v6 resultSortDescriptors];
-        v17 = v15 == v16;
+        resultSortDescriptors = [(RTPredictedContextOptions *)self resultSortDescriptors];
+        resultSortDescriptors2 = [(RTPredictedContextOptions *)v6 resultSortDescriptors];
+        v17 = resultSortDescriptors == resultSortDescriptors2;
       }
 
       else
@@ -215,7 +215,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPredictedContextOptions alloc];
   forecastWindowDateInterval = self->_forecastWindowDateInterval;
@@ -231,14 +231,14 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTPredictedContextOptions *)self creationDate];
-  v5 = [(RTPredictedContextOptions *)self forecastWindowDateInterval];
+  creationDate = [(RTPredictedContextOptions *)self creationDate];
+  forecastWindowDateInterval = [(RTPredictedContextOptions *)self forecastWindowDateInterval];
   [(RTPredictedContextOptions *)self forecastWindowTimeInterval];
   v7 = v6;
-  v8 = [(RTPredictedContextOptions *)self filterContextTypeMask];
-  v9 = [(RTPredictedContextOptions *)self filterLocations];
-  v10 = [(RTPredictedContextOptions *)self resultSortDescriptors];
-  v11 = [v3 stringWithFormat:@"creationDate, %@, forecastWindowDateInterval, %@, forecastWindowTimeInterval %f, filterContextTypeMask, %lu, filterLocations, %@, resultSortDescriptors, %@", v4, v5, v7, v8, v9, v10];
+  filterContextTypeMask = [(RTPredictedContextOptions *)self filterContextTypeMask];
+  filterLocations = [(RTPredictedContextOptions *)self filterLocations];
+  resultSortDescriptors = [(RTPredictedContextOptions *)self resultSortDescriptors];
+  v11 = [v3 stringWithFormat:@"creationDate, %@, forecastWindowDateInterval, %@, forecastWindowTimeInterval %f, filterContextTypeMask, %lu, filterLocations, %@, resultSortDescriptors, %@", creationDate, forecastWindowDateInterval, v7, filterContextTypeMask, filterLocations, resultSortDescriptors];
 
   return v11;
 }

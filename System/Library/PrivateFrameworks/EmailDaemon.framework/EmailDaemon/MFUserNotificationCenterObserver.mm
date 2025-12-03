@@ -1,40 +1,40 @@
 @interface MFUserNotificationCenterObserver
-- (BOOL)_nts_updateObservationWithAccounts:(id)a3;
-- (BOOL)isObservingMailbox:(id)a3 inAccountID:(id)a4;
-- (MFUserNotificationCenterObserver)initWithVIPReader:(id)a3 favoritesReader:(id)a4 delegate:(id)a5;
+- (BOOL)_nts_updateObservationWithAccounts:(id)accounts;
+- (BOOL)isObservingMailbox:(id)mailbox inAccountID:(id)d;
+- (MFUserNotificationCenterObserver)initWithVIPReader:(id)reader favoritesReader:(id)favoritesReader delegate:(id)delegate;
 - (MFUserNotificationCenterObserverDelegate)delegate;
 - (NSArray)activeAccounts;
-- (void)_handleAccountsChanged:(id)a3;
-- (void)_handleConversationFlagsChanged:(id)a3;
-- (void)_handleFoldersChanged:(id)a3;
-- (void)_handleMessagesAdded:(id)a3;
-- (void)_handleMessagesDeleted:(id)a3;
-- (void)_handleMessagesFlagsChanged:(id)a3;
-- (void)_handleVIPsChanged:(id)a3;
-- (void)_nts_startObservingAccounts:(id)a3;
-- (void)_nts_stopObservingAccountWithIDs:(id)a3;
-- (void)_startObservingStore:(id)a3;
-- (void)_stopObservingStore:(id)a3;
+- (void)_handleAccountsChanged:(id)changed;
+- (void)_handleConversationFlagsChanged:(id)changed;
+- (void)_handleFoldersChanged:(id)changed;
+- (void)_handleMessagesAdded:(id)added;
+- (void)_handleMessagesDeleted:(id)deleted;
+- (void)_handleMessagesFlagsChanged:(id)changed;
+- (void)_handleVIPsChanged:(id)changed;
+- (void)_nts_startObservingAccounts:(id)accounts;
+- (void)_nts_stopObservingAccountWithIDs:(id)ds;
+- (void)_startObservingStore:(id)store;
+- (void)_stopObservingStore:(id)store;
 - (void)startObserving;
 - (void)stopObserving;
 @end
 
 @implementation MFUserNotificationCenterObserver
 
-- (MFUserNotificationCenterObserver)initWithVIPReader:(id)a3 favoritesReader:(id)a4 delegate:(id)a5
+- (MFUserNotificationCenterObserver)initWithVIPReader:(id)reader favoritesReader:(id)favoritesReader delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  readerCopy = reader;
+  favoritesReaderCopy = favoritesReader;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MFUserNotificationCenterObserver;
   v12 = [(MFUserNotificationCenterObserver *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    objc_storeStrong(&v13->_vipReader, a3);
-    objc_storeStrong(&v13->_favoritesReader, a4);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_vipReader, reader);
+    objc_storeStrong(&v13->_favoritesReader, favoritesReader);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_attr_make_with_qos_class(v14, QOS_CLASS_UTILITY, 0);
     v16 = dispatch_queue_create("com.apple.mail.UserNotificationCenter.Observer", v15);
@@ -58,17 +58,17 @@
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"_handleAccountsChanged:" name:ECMailAccountsDidChangeNotification object:0];
-  v4 = [(MFUserNotificationCenterObserver *)self vipReader];
-  [v3 addObserver:self selector:"_handleVIPsChanged:" name:EMVIPsDidChangeNotification object:v4];
+  vipReader = [(MFUserNotificationCenterObserver *)self vipReader];
+  [v3 addObserver:self selector:"_handleVIPsChanged:" name:EMVIPsDidChangeNotification object:vipReader];
 
   [v3 addObserver:self selector:"_handleConversationFlagsChanged:" name:EDConversationFlagsChanged object:0];
-  v5 = [(MFUserNotificationCenterObserver *)self queue];
+  queue = [(MFUserNotificationCenterObserver *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A518C;
   block[3] = &unk_100156400;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopObserving
@@ -88,33 +88,33 @@
   dispatch_async(queue, block);
 }
 
-- (void)_startObservingStore:(id)a3
+- (void)_startObservingStore:(id)store
 {
-  v4 = a3;
-  if (v4)
+  storeCopy = store;
+  if (storeCopy)
   {
-    v6 = v4;
+    v6 = storeCopy;
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:self selector:"_handleMessagesAdded:" name:MailMessageStoreMessagesAdded object:v6];
     [v5 addObserver:self selector:"_handleMessagesFlagsChanged:" name:MailMessageStoreMessageFlagsChanged object:v6];
     [v5 addObserver:self selector:"_handleMessagesDeleted:" name:MailMessageStoreMessagesCompacted object:v6];
 
-    v4 = v6;
+    storeCopy = v6;
   }
 }
 
-- (void)_stopObservingStore:(id)a3
+- (void)_stopObservingStore:(id)store
 {
-  v4 = a3;
-  if (v4)
+  storeCopy = store;
+  if (storeCopy)
   {
-    v6 = v4;
+    v6 = storeCopy;
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 removeObserver:self name:MailMessageStoreMessagesAdded object:v6];
     [v5 removeObserver:self name:MailMessageStoreMessageFlagsChanged object:v6];
     [v5 removeObserver:self name:MailMessageStoreMessagesCompacted object:v6];
 
-    v4 = v6;
+    storeCopy = v6;
   }
 }
 
@@ -138,10 +138,10 @@
   return v7;
 }
 
-- (BOOL)isObservingMailbox:(id)a3 inAccountID:(id)a4
+- (BOOL)isObservingMailbox:(id)mailbox inAccountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxCopy = mailbox;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -155,7 +155,7 @@
   block[3] = &unk_100157618;
   v25 = &v26;
   block[4] = self;
-  v9 = v7;
+  v9 = dCopy;
   v24 = v9;
   dispatch_sync(queue, block);
   v21 = 0u;
@@ -176,10 +176,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) mailbox];
-        v15 = [v14 uniqueId];
-        v16 = [v6 uniqueId];
-        v17 = [v15 isEqual:v16];
+        mailbox = [*(*(&v19 + 1) + 8 * i) mailbox];
+        uniqueId = [mailbox uniqueId];
+        uniqueId2 = [mailboxCopy uniqueId];
+        v17 = [uniqueId isEqual:uniqueId2];
 
         if (v17)
         {
@@ -204,49 +204,49 @@ LABEL_11:
   return v11;
 }
 
-- (void)_handleMessagesAdded:(id)a3
+- (void)_handleMessagesAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A59F0;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = addedCopy;
+  selfCopy = self;
+  v6 = addedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleMessagesFlagsChanged:(id)a3
+- (void)_handleMessagesFlagsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A5B44;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleMessagesDeleted:(id)a3
+- (void)_handleMessagesDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A5CC8;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deletedCopy;
+  selfCopy = self;
+  v6 = deletedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleAccountsChanged:(id)a3
+- (void)_handleAccountsChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -257,53 +257,53 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)_handleVIPsChanged:(id)a3
+- (void)_handleVIPsChanged:(id)changed
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:EMVIPsRemovedKey];
-  v5 = [(MFUserNotificationCenterObserver *)self delegate];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:EMVIPsRemovedKey];
+  delegate = [(MFUserNotificationCenterObserver *)self delegate];
   if ([v4 count])
   {
-    [v5 notificationCenterObserver:self removedVIPs:v4];
+    [delegate notificationCenterObserver:self removedVIPs:v4];
   }
 
   else
   {
-    [v5 vipsChangedForNotificationCenterObserver:self];
+    [delegate vipsChangedForNotificationCenterObserver:self];
   }
 }
 
-- (void)_handleConversationFlagsChanged:(id)a3
+- (void)_handleConversationFlagsChanged:(id)changed
 {
-  v4 = [(MFUserNotificationCenterObserver *)self delegate];
-  [v4 conversationFlagsDidChangeForNotificationCenterObserver:self];
+  delegate = [(MFUserNotificationCenterObserver *)self delegate];
+  [delegate conversationFlagsDidChangeForNotificationCenterObserver:self];
 }
 
-- (void)_handleFoldersChanged:(id)a3
+- (void)_handleFoldersChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A639C;
   v8[3] = &unk_1001563D8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = object;
+  v7 = object;
   dispatch_async(queue, v8);
 }
 
-- (void)_nts_startObservingAccounts:(id)a3
+- (void)_nts_startObservingAccounts:(id)accounts
 {
-  v18 = a3;
+  accountsCopy = accounts;
   dispatch_assert_queue_V2(self->_queue);
   v22 = +[NSNotificationCenter defaultCenter];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v18;
+  obj = accountsCopy;
   v23 = [obj countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v23)
   {
@@ -319,8 +319,8 @@ LABEL_11:
         }
 
         v4 = *(*(&v30 + 1) + 8 * i);
-        v5 = [(MFUserNotificationCenterObserver *)self favoritesReader];
-        v24 = [v4 mailboxesToBeObserved:v5];
+        favoritesReader = [(MFUserNotificationCenterObserver *)self favoritesReader];
+        v24 = [v4 mailboxesToBeObserved:favoritesReader];
 
         v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v24 count]);
         v28 = 0u;
@@ -354,9 +354,9 @@ LABEL_11:
                 v13 = MSUserNotificationsLog();
                 if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
                 {
-                  v14 = [v11 ef_publicDescription];
+                  ef_publicDescription = [v11 ef_publicDescription];
                   *buf = 138543362;
-                  v35 = v14;
+                  v35 = ef_publicDescription;
                   _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Error: got nil store for mailbox uid %{public}@", buf, 0xCu);
                 }
               }
@@ -370,8 +370,8 @@ LABEL_11:
 
         [v22 addObserver:self selector:"_handlePushedFoldersChanged:" name:v20 object:v4];
         [v22 addObserver:self selector:"_handleFavoriteMailboxesChanged:" name:@"MailApplicationAccountFavoritesDidChange" object:v4];
-        v15 = [v4 uniqueID];
-        [(NSMutableDictionary *)self->_observedStoresByAccountID setObject:v6 forKeyedSubscript:v15];
+        uniqueID = [v4 uniqueID];
+        [(NSMutableDictionary *)self->_observedStoresByAccountID setObject:v6 forKeyedSubscript:uniqueID];
       }
 
       v23 = [obj countByEnumeratingWithState:&v30 objects:v37 count:16];
@@ -383,23 +383,23 @@ LABEL_11:
   v16 = MSUserNotificationsLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(NSMutableDictionary *)self->_observedStoresByAccountID allKeys];
+    allKeys = [(NSMutableDictionary *)self->_observedStoresByAccountID allKeys];
     *buf = 138543362;
-    v35 = v17;
+    v35 = allKeys;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Observer: Started observing stores for accounts %{public}@", buf, 0xCu);
   }
 }
 
-- (void)_nts_stopObservingAccountWithIDs:(id)a3
+- (void)_nts_stopObservingAccountWithIDs:(id)ds
 {
-  v17 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
   v21 = +[NSNotificationCenter defaultCenter];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v17;
+  obj = dsCopy;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v4)
   {
@@ -415,8 +415,8 @@ LABEL_11:
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [(NSMutableDictionary *)self->_observedStoresByAccountID objectForKeyedSubscript:v6, v17];
-        if (v7)
+        dsCopy = [(NSMutableDictionary *)self->_observedStoresByAccountID objectForKeyedSubscript:v6, dsCopy];
+        if (dsCopy)
         {
           v8 = [MailAccount accountWithUniqueId:v6];
           [v21 removeObserver:self name:v19 object:v8];
@@ -425,7 +425,7 @@ LABEL_11:
           v25 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v9 = v7;
+          v9 = dsCopy;
           v10 = [v9 countByEnumeratingWithState:&v22 objects:v32 count:16];
           if (v10)
           {
@@ -469,25 +469,25 @@ LABEL_11:
   v14 = MSUserNotificationsLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(NSMutableDictionary *)self->_observedStoresByAccountID allKeys];
+    allKeys = [(NSMutableDictionary *)self->_observedStoresByAccountID allKeys];
     *buf = 138543362;
-    v31 = v15;
+    v31 = allKeys;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Observer: Currently observed accounts %{public}@", buf, 0xCu);
   }
 
-  v16 = [(MFUserNotificationCenterObserver *)self delegate];
-  [v16 notificationCenterObserver:self didStopListeningForChangesForAccountIDs:obj];
+  delegate = [(MFUserNotificationCenterObserver *)self delegate];
+  [delegate notificationCenterObserver:self didStopListeningForChangesForAccountIDs:obj];
 }
 
-- (BOOL)_nts_updateObservationWithAccounts:(id)a3
+- (BOOL)_nts_updateObservationWithAccounts:(id)accounts
 {
-  v23 = a3;
+  accountsCopy = accounts;
   dispatch_assert_queue_V2(self->_queue);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v23;
+  obj = accountsCopy;
   v27 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v27)
   {
@@ -503,11 +503,11 @@ LABEL_11:
         }
 
         v4 = *(*(&v40 + 1) + 8 * i);
-        v28 = [v4 uniqueID];
+        uniqueID = [v4 uniqueID];
         v29 = [(NSMutableDictionary *)self->_observedStoresByAccountID objectForKeyedSubscript:?];
         v5 = [[NSMutableArray alloc] initWithArray:v29];
-        v6 = [(MFUserNotificationCenterObserver *)self favoritesReader];
-        v31 = [v4 mailboxesToBeObserved:v6];
+        favoritesReader = [(MFUserNotificationCenterObserver *)self favoritesReader];
+        v31 = [v4 mailboxesToBeObserved:favoritesReader];
 
         v38 = 0u;
         v39 = 0u;
@@ -529,8 +529,8 @@ LABEL_11:
               }
 
               v12 = *(*(&v36 + 1) + 8 * j);
-              v13 = [v12 mailbox];
-              if (!v13 || ([v31 containsObject:v13] & 1) == 0)
+              mailbox = [v12 mailbox];
+              if (!mailbox || ([v31 containsObject:mailbox] & 1) == 0)
               {
                 [v5 removeObject:v12];
                 [(MFUserNotificationCenterObserver *)self _stopObservingStore:v12];
@@ -591,7 +591,7 @@ LABEL_11:
             v21 = 0;
           }
 
-          [(NSMutableDictionary *)self->_observedStoresByAccountID setObject:v21 forKeyedSubscript:v28];
+          [(NSMutableDictionary *)self->_observedStoresByAccountID setObject:v21 forKeyedSubscript:uniqueID];
           v24 = 1;
         }
       }

@@ -1,45 +1,45 @@
 @interface WFRemoteFileCell
-- (WFRemoteFileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFRemoteFileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setFile:(id)a3 checked:(BOOL)a4 dateFormatter:(id)a5;
+- (void)setFile:(id)file checked:(BOOL)checked dateFormatter:(id)formatter;
 @end
 
 @implementation WFRemoteFileCell
 
-- (void)setFile:(id)a3 checked:(BOOL)a4 dateFormatter:(id)a5
+- (void)setFile:(id)file checked:(BOOL)checked dateFormatter:(id)formatter
 {
-  v6 = a4;
-  v32 = a3;
-  v8 = a5;
-  v9 = [v32 wfIsDirectory];
-  if (v9)
+  checkedCopy = checked;
+  fileCopy = file;
+  formatterCopy = formatter;
+  wfIsDirectory = [fileCopy wfIsDirectory];
+  if (wfIsDirectory)
   {
-    v10 = [MEMORY[0x277D79FC8] actionKitImageNamed:@"Folder"];
+    documentIcon = [MEMORY[0x277D79FC8] actionKitImageNamed:@"Folder"];
   }
 
   else
   {
-    v11 = [v32 wfFileType];
-    v10 = [v11 documentIcon];
+    wfFileType = [fileCopy wfFileType];
+    documentIcon = [wfFileType documentIcon];
   }
 
-  v12 = [v32 wfPath];
-  v13 = [v12 lastPathComponent];
-  v14 = [(WFRemoteFileCell *)self textLabel];
-  [v14 setText:v13];
+  wfPath = [fileCopy wfPath];
+  lastPathComponent = [wfPath lastPathComponent];
+  textLabel = [(WFRemoteFileCell *)self textLabel];
+  [textLabel setText:lastPathComponent];
 
-  v15 = [v10 UIImage];
-  v16 = [(WFRemoteFileCell *)self imageView];
-  [v16 setImage:v15];
+  uIImage = [documentIcon UIImage];
+  imageView = [(WFRemoteFileCell *)self imageView];
+  [imageView setImage:uIImage];
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v32 wfFileSize];
-  v19 = [v18 longLongValue];
+  wfFileSize = [fileCopy wfFileSize];
+  longLongValue = [wfFileSize longLongValue];
 
-  v20 = [MEMORY[0x277CCA8E8] stringFromByteCount:v19 countStyle:0];
-  if (v19)
+  v20 = [MEMORY[0x277CCA8E8] stringFromByteCount:longLongValue countStyle:0];
+  if (longLongValue)
   {
-    v21 = v9;
+    v21 = wfIsDirectory;
   }
 
   else
@@ -52,29 +52,29 @@
     [v17 addObject:v20];
   }
 
-  v22 = [v32 wfLastModifiedDate];
-  v23 = [v8 stringFromDate:v22];
+  wfLastModifiedDate = [fileCopy wfLastModifiedDate];
+  v23 = [formatterCopy stringFromDate:wfLastModifiedDate];
 
   if ([v23 length])
   {
     v24 = MEMORY[0x277CCACA8];
     v25 = WFLocalizedString(@"modified %@");
-    v26 = [v23 lowercaseString];
-    v27 = [v24 localizedStringWithFormat:v25, v26];
+    lowercaseString = [v23 lowercaseString];
+    v27 = [v24 localizedStringWithFormat:v25, lowercaseString];
     [v17 addObject:v27];
   }
 
   v28 = [v17 componentsJoinedByString:{@", "}];
-  v29 = [(WFRemoteFileCell *)self detailTextLabel];
-  [v29 setText:v28];
+  detailTextLabel = [(WFRemoteFileCell *)self detailTextLabel];
+  [detailTextLabel setText:v28];
 
   v30 = 3;
-  if (!v6)
+  if (!checkedCopy)
   {
     v30 = 0;
   }
 
-  if (v9)
+  if (wfIsDirectory)
   {
     v31 = 1;
   }
@@ -92,8 +92,8 @@
   v35.receiver = self;
   v35.super_class = WFRemoteFileCell;
   [(WFRemoteFileCell *)&v35 layoutSubviews];
-  v3 = [(WFRemoteFileCell *)self contentView];
-  [v3 bounds];
+  contentView = [(WFRemoteFileCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -115,40 +115,40 @@
   y = v37.origin.y;
   width = v37.size.width;
   height = v37.size.height;
-  v16 = [(WFRemoteFileCell *)self imageView];
-  [v16 setFrame:{x, y, width, height}];
+  imageView = [(WFRemoteFileCell *)self imageView];
+  [imageView setFrame:{x, y, width, height}];
 
-  v17 = [(WFRemoteFileCell *)self textLabel];
-  [v17 frame];
+  textLabel = [(WFRemoteFileCell *)self textLabel];
+  [textLabel frame];
   v19 = v18;
   v21 = v20;
 
   v22 = remainder.origin.x;
   v23 = remainder.size.width;
-  v24 = [(WFRemoteFileCell *)self textLabel];
-  [v24 setFrame:{v22, v19, v23, v21}];
+  textLabel2 = [(WFRemoteFileCell *)self textLabel];
+  [textLabel2 setFrame:{v22, v19, v23, v21}];
 
-  v25 = [(WFRemoteFileCell *)self detailTextLabel];
-  [v25 frame];
+  detailTextLabel = [(WFRemoteFileCell *)self detailTextLabel];
+  [detailTextLabel frame];
   v27 = v26;
   v29 = v28;
 
   v30 = remainder.origin.x;
   v31 = remainder.size.width;
-  v32 = [(WFRemoteFileCell *)self detailTextLabel];
-  [v32 setFrame:{v30, v27, v31, v29}];
+  detailTextLabel2 = [(WFRemoteFileCell *)self detailTextLabel];
+  [detailTextLabel2 setFrame:{v30, v27, v31, v29}];
 }
 
-- (WFRemoteFileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFRemoteFileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = WFRemoteFileCell;
-  v4 = [(WFRemoteFileCell *)&v9 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(WFRemoteFileCell *)&v9 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WFRemoteFileCell *)v4 imageView];
-    [v6 setContentMode:1];
+    imageView = [(WFRemoteFileCell *)v4 imageView];
+    [imageView setContentMode:1];
 
     [(WFRemoteFileCell *)v5 setSeparatorInset:0.0, 49.0, 0.0, 0.0];
     v7 = v5;

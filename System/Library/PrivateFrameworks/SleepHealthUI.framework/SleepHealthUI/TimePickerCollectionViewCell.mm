@@ -1,17 +1,17 @@
 @interface TimePickerCollectionViewCell
 - (NSString)description;
-- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TimePickerCollectionViewCell
 
-- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI28TimePickerCollectionViewCell)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -47,7 +47,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_269C62C94();
 
   v3 = sub_269D9A5F0();

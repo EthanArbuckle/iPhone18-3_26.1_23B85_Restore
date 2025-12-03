@@ -1,12 +1,12 @@
 @interface DatapathMetricStream
 + (id)sharedInstance;
 - (DatapathMetricStream)init;
-- (id)getPBCodableNSDataFromNSKeyedArchive:(id)a3;
+- (id)getPBCodableNSDataFromNSKeyedArchive:(id)archive;
 - (void)dealloc;
 - (void)fetchMetrics;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDispatchQueueAndAddObservers:(id)a3 withGetter:(id)a4;
-- (void)streamPBCodeable:(id)a3 additionalDictionaryItems:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDispatchQueueAndAddObservers:(id)observers withGetter:(id)getter;
+- (void)streamPBCodeable:(id)codeable additionalDictionaryItems:(id)items;
 - (void)updateTimerConfiguration;
 @end
 
@@ -64,8 +64,8 @@
     v9 = [[NSMutableData alloc] initWithCapacity:10240];
     [(DatapathMetricStream *)v2 setLastPB:v9];
 
-    v10 = [(DatapathMetricStream *)v2 lastPB];
-    [v10 setLength:10240];
+    lastPB = [(DatapathMetricStream *)v2 lastPB];
+    [lastPB setLength:10240];
 
     [(DatapathMetricStream *)v2 setLastPBLength:0];
     v11 = objc_alloc_init(NSLock);
@@ -101,10 +101,10 @@
   [(DatapathMetricStream *)&v4 dealloc];
 }
 
-- (void)setDispatchQueueAndAddObservers:(id)a3 withGetter:(id)a4
+- (void)setDispatchQueueAndAddObservers:(id)observers withGetter:(id)getter
 {
-  v6 = a4;
-  v7 = a3;
+  getterCopy = getter;
+  observersCopy = observers;
   v8 = WALogCategoryInitPersistentLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -115,28 +115,28 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:setDispatchQueueAndAddObservers", &v13, 0x12u);
   }
 
-  [(DatapathMetricStream *)self setQueue:v7];
-  [(DatapathMetricStream *)self setGetter:v6];
+  [(DatapathMetricStream *)self setQueue:observersCopy];
+  [(DatapathMetricStream *)self setGetter:getterCopy];
 
   v9 = +[ManagedConfiguration sharedInstance];
   [(DatapathMetricStream *)self setManagedConfiguration:v9];
 
-  v10 = [(DatapathMetricStream *)self managedConfiguration];
-  [v10 addObserver:self forKeyPath:@"megawifiprofile_diagnostic_metrics_enabled" options:5 context:0];
+  managedConfiguration = [(DatapathMetricStream *)self managedConfiguration];
+  [managedConfiguration addObserver:self forKeyPath:@"megawifiprofile_diagnostic_metrics_enabled" options:5 context:0];
 
-  v11 = [(DatapathMetricStream *)self managedConfiguration];
-  [v11 addObserver:self forKeyPath:@"megawifiprofile_diagnostic_metrics_period_ms" options:5 context:0];
+  managedConfiguration2 = [(DatapathMetricStream *)self managedConfiguration];
+  [managedConfiguration2 addObserver:self forKeyPath:@"megawifiprofile_diagnostic_metrics_period_ms" options:5 context:0];
 
-  v12 = [(DatapathMetricStream *)self managedConfiguration];
-  [v12 addObserver:self forKeyPath:@"coredata_diagnostic_metrics_enabled" options:5 context:0];
+  managedConfiguration3 = [(DatapathMetricStream *)self managedConfiguration];
+  [managedConfiguration3 addObserver:self forKeyPath:@"coredata_diagnostic_metrics_enabled" options:5 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -161,11 +161,11 @@
     v36 = 1024;
     v37 = 116;
     v38 = 2112;
-    v39 = v9;
+    v39 = pathCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:observeValueForKeyPath %@", buf, 0x1Cu);
   }
 
-  if ([v9 isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"])
+  if ([pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"])
   {
     if (v14)
     {
@@ -173,19 +173,19 @@
       v16 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_enabled];
+        megawifiprofile_diagnostic_metrics_enabled = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_enabled];
         v18 = "NO";
         v35 = "[DatapathMetricStream observeValueForKeyPath:ofObject:change:context:]";
         v36 = 1024;
         v37 = 121;
         *buf = 136446978;
-        if (v17)
+        if (megawifiprofile_diagnostic_metrics_enabled)
         {
           v18 = "YES";
         }
 
         v38 = 2112;
-        v39 = v9;
+        v39 = pathCopy;
         v40 = 2080;
         v41 = v18;
         v19 = "%{public}s::%d:%@ Preference is %s";
@@ -196,26 +196,26 @@
     }
   }
 
-  else if ([v9 isEqualToString:@"megawifiprofile_diagnostic_metrics_period_ms"])
+  else if ([pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_period_ms"])
   {
     if (v14)
     {
-      v20 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
-      if (v20 != [v14 unsignedIntegerValue] && -[DatapathMetricStream megawifiprofile_diagnostic_metrics_period_ms](self, "megawifiprofile_diagnostic_metrics_period_ms") && objc_msgSend(v14, "unsignedIntegerValue"))
+      megawifiprofile_diagnostic_metrics_period_ms = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
+      if (megawifiprofile_diagnostic_metrics_period_ms != [v14 unsignedIntegerValue] && -[DatapathMetricStream megawifiprofile_diagnostic_metrics_period_ms](self, "megawifiprofile_diagnostic_metrics_period_ms") && objc_msgSend(v14, "unsignedIntegerValue"))
       {
         v21 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
-          v23 = [v14 unsignedIntegerValue];
+          megawifiprofile_diagnostic_metrics_period_ms2 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
+          unsignedIntegerValue = [v14 unsignedIntegerValue];
           *buf = 136446978;
           v35 = "[DatapathMetricStream observeValueForKeyPath:ofObject:change:context:]";
           v36 = 1024;
           v37 = 130;
           v38 = 2048;
-          v39 = v22;
+          v39 = megawifiprofile_diagnostic_metrics_period_ms2;
           v40 = 2048;
-          v41 = v23;
+          v41 = unsignedIntegerValue;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Noticed that kMegaProfileDiagnosticMetricsPeriod_ms is changing values from %lu to %lu", buf, 0x26u);
         }
 
@@ -229,15 +229,15 @@
         goto LABEL_29;
       }
 
-      v24 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
+      megawifiprofile_diagnostic_metrics_period_ms3 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
       *buf = 136446978;
       v35 = "[DatapathMetricStream observeValueForKeyPath:ofObject:change:context:]";
       v36 = 1024;
       v37 = 134;
       v38 = 2112;
-      v39 = v9;
+      v39 = pathCopy;
       v40 = 2048;
-      v41 = v24;
+      v41 = megawifiprofile_diagnostic_metrics_period_ms3;
       v19 = "%{public}s::%d:%@ Preference is %lu";
       goto LABEL_28;
     }
@@ -245,7 +245,7 @@
 
   else
   {
-    v25 = [v9 isEqualToString:@"coredata_diagnostic_metrics_enabled"];
+    v25 = [pathCopy isEqualToString:@"coredata_diagnostic_metrics_enabled"];
     if (v14)
     {
       v26 = v25;
@@ -262,15 +262,15 @@
       v16 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(DatapathMetricStream *)self coredata_diagnostic_metrics_enabled];
+        coredata_diagnostic_metrics_enabled = [(DatapathMetricStream *)self coredata_diagnostic_metrics_enabled];
         *buf = 136446978;
         v35 = "[DatapathMetricStream observeValueForKeyPath:ofObject:change:context:]";
         v36 = 1024;
         v37 = 139;
         v38 = 2112;
-        v39 = v9;
+        v39 = pathCopy;
         v40 = 2048;
-        v41 = v27;
+        v41 = coredata_diagnostic_metrics_enabled;
         v19 = "%{public}s::%d:%@ Preference is %lu";
 LABEL_28:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v19, buf, 0x26u);
@@ -280,21 +280,21 @@ LABEL_29:
     }
   }
 
-  v28 = [(DatapathMetricStream *)self queue];
+  queue = [(DatapathMetricStream *)self queue];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100042920;
   v29[3] = &unk_1000EDB80;
   v29[4] = self;
   v29[5] = &v30;
-  dispatch_async(v28, v29);
+  dispatch_async(queue, v29);
 
   _Block_object_dispose(&v30, 8);
 }
 
-- (id)getPBCodableNSDataFromNSKeyedArchive:(id)a3
+- (id)getPBCodableNSDataFromNSKeyedArchive:(id)archive
 {
-  v3 = a3;
+  archiveCopy = archive;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -305,13 +305,13 @@ LABEL_29:
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0];
   v21 = 0;
-  v13 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:v3 error:&v21];
+  v13 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:archiveCopy error:&v21];
 
   v14 = v21;
   if (v14)
   {
-    v15 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    data = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(data, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446722;
       v23 = "[DatapathMetricStream getPBCodableNSDataFromNSKeyedArchive:]";
@@ -319,21 +319,21 @@ LABEL_29:
       v25 = 163;
       v26 = 2112;
       v27 = v14;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to unarchive WAMessageAWD: %@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, data, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to unarchive WAMessageAWD: %@", buf, 0x1Cu);
     }
 
     v16 = 0;
     goto LABEL_7;
   }
 
-  v17 = [(DatapathMetricStream *)self pbConverter];
-  v14 = [v17 instantiateAWDProtobufAndPopulateValues:v13];
+  pbConverter = [(DatapathMetricStream *)self pbConverter];
+  v14 = [pbConverter instantiateAWDProtobufAndPopulateValues:v13];
 
   if (v14)
   {
     v18 = [NSData alloc];
-    v15 = [v14 data];
-    v16 = [v18 initWithData:v15];
+    data = [v14 data];
+    v16 = [v18 initWithData:data];
 LABEL_7:
 
     goto LABEL_8;
@@ -498,13 +498,13 @@ LABEL_32:
       v26 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
+        megawifiprofile_diagnostic_metrics_period_ms = [(DatapathMetricStream *)self megawifiprofile_diagnostic_metrics_period_ms];
         *buf = 136446722;
         v40 = "[DatapathMetricStream updateTimerConfiguration]";
         v41 = 1024;
         v42 = 235;
         v43 = 2048;
-        *v44 = 1000000 * v27;
+        *v44 = 1000000 * megawifiprofile_diagnostic_metrics_period_ms;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Starting dispatch_source_set_timer fire in %llu ns", buf, 0x1Cu);
       }
 
@@ -619,28 +619,28 @@ LABEL_27:
 LABEL_47:
 }
 
-- (void)streamPBCodeable:(id)a3 additionalDictionaryItems:(id)a4
+- (void)streamPBCodeable:(id)codeable additionalDictionaryItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  codeableCopy = codeable;
+  itemsCopy = items;
   v8 = objc_autoreleasePoolPush();
   v9 = [WANWActivityStatistics alloc];
-  v10 = [v6 data];
-  v11 = [v9 initWithPBCodableData:v10];
+  data = [codeableCopy data];
+  v11 = [v9 initWithPBCodableData:data];
 
-  v12 = [(DatapathMetricStream *)self lastPBLock];
-  [v12 lock];
+  lastPBLock = [(DatapathMetricStream *)self lastPBLock];
+  [lastPBLock lock];
 
-  v13 = [(DatapathMetricStream *)self lastPB];
-  if (![v13 length])
+  lastPB = [(DatapathMetricStream *)self lastPB];
+  if (![lastPB length])
   {
 
     goto LABEL_18;
   }
 
-  v14 = [(DatapathMetricStream *)self lastPBLength];
+  lastPBLength = [(DatapathMetricStream *)self lastPBLength];
 
-  if (!v14)
+  if (!lastPBLength)
   {
 LABEL_18:
     v45 = WALogCategoryDefaultHandle();
@@ -690,16 +690,16 @@ LABEL_18:
   }
 
   v15 = [NSData alloc];
-  v16 = [(DatapathMetricStream *)self lastPB];
-  v17 = [v15 initWithBytesNoCopy:objc_msgSend(v16 length:"mutableBytes") freeWhenDone:{-[DatapathMetricStream lastPBLength](self, "lastPBLength"), 0}];
+  lastPB2 = [(DatapathMetricStream *)self lastPB];
+  v17 = [v15 initWithBytesNoCopy:objc_msgSend(lastPB2 length:"mutableBytes") freeWhenDone:{-[DatapathMetricStream lastPBLength](self, "lastPBLength"), 0}];
 
   v18 = WALogCategoryDefaultHandle();
   v19 = v18;
   if (v17)
   {
-    v72 = v6;
+    v72 = codeableCopy;
     v73 = v8;
-    v71 = v7;
+    v71 = itemsCopy;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136446722;
@@ -713,30 +713,30 @@ LABEL_18:
 
     v68 = v17;
     v19 = [[WANWActivityStatistics alloc] initWithPBCodableData:v17];
-    v20 = [v19 awdReport];
-    v21 = [v20 dictionaryRepresentation];
-    v22 = [v21 allKeys];
-    v23 = [v22 count];
+    awdReport = [v19 awdReport];
+    dictionaryRepresentation = [awdReport dictionaryRepresentation];
+    allKeys = [dictionaryRepresentation allKeys];
+    v23 = [allKeys count];
     v70 = v11;
-    v24 = [v11 awdReport];
-    v25 = [v24 dictionaryRepresentation];
-    v26 = [v25 allKeys];
-    v27 = [v26 count];
+    awdReport2 = [v11 awdReport];
+    dictionaryRepresentation2 = [awdReport2 dictionaryRepresentation];
+    allKeys2 = [dictionaryRepresentation2 allKeys];
+    v27 = [allKeys2 count];
 
     if (v23 != v27)
     {
       v38 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
-        v48 = [v19 awdReport];
-        v66 = [v48 dictionaryRepresentation];
-        v49 = [v66 allKeys];
-        v50 = [v49 count];
+        awdReport3 = [v19 awdReport];
+        dictionaryRepresentation3 = [awdReport3 dictionaryRepresentation];
+        allKeys3 = [dictionaryRepresentation3 allKeys];
+        v50 = [allKeys3 count];
         v11 = v70;
-        v51 = [v70 awdReport];
-        v52 = [v51 dictionaryRepresentation];
-        v53 = [v52 allKeys];
-        v54 = [v53 count];
+        awdReport4 = [v70 awdReport];
+        dictionaryRepresentation4 = [awdReport4 dictionaryRepresentation];
+        allKeys4 = [dictionaryRepresentation4 allKeys];
+        v54 = [allKeys4 count];
         *buf = 136446978;
         v77 = "[DatapathMetricStream streamPBCodeable:additionalDictionaryItems:]";
         v78 = 1024;
@@ -747,15 +747,15 @@ LABEL_18:
         *&v81[10] = v54;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Not diffing - previousFragment.keys.count %lu wifiFragment %lu", buf, 0x26u);
 
-        v7 = v71;
-        v6 = v72;
+        itemsCopy = v71;
+        codeableCopy = v72;
         v8 = v73;
       }
 
       else
       {
-        v7 = v71;
-        v6 = v72;
+        itemsCopy = v71;
+        codeableCopy = v72;
         v8 = v73;
         v11 = v70;
       }
@@ -768,32 +768,32 @@ LABEL_40:
 
     if (v19)
     {
-      v28 = [v19 awdReport];
-      v29 = [v28 dictionaryRepresentation];
-      v30 = [v29 allKeys];
+      awdReport5 = [v19 awdReport];
+      dictionaryRepresentation5 = [awdReport5 dictionaryRepresentation];
+      allKeys5 = [dictionaryRepresentation5 allKeys];
       v31 = v68;
-      if ([v30 containsObject:@"interfaceStats"])
+      if ([allKeys5 containsObject:@"interfaceStats"])
       {
-        v32 = [v19 awdReport];
-        v33 = [v32 dictionaryRepresentation];
-        v34 = [v33 allKeys];
-        v35 = [v34 containsObject:@"controllerStats"];
+        awdReport6 = [v19 awdReport];
+        dictionaryRepresentation6 = [awdReport6 dictionaryRepresentation];
+        allKeys6 = [dictionaryRepresentation6 allKeys];
+        v35 = [allKeys6 containsObject:@"controllerStats"];
 
         if (v35)
         {
-          v36 = [v19 awdReport];
-          v37 = [v36 dictionaryRepresentation];
+          awdReport7 = [v19 awdReport];
+          dictionaryRepresentation7 = [awdReport7 dictionaryRepresentation];
           v11 = v70;
-          v38 = [v70 getTransformedFlattenedFrom:v37 style:2];
+          v38 = [v70 getTransformedFlattenedFrom:dictionaryRepresentation7 style:2];
 
-          v6 = v72;
+          codeableCopy = v72;
           v8 = v73;
           if (v38)
           {
             v39 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
             [v39 processWiFiStats:v38];
 
-            v7 = v71;
+            itemsCopy = v71;
             if ([NSJSONSerialization isValidJSONObject:v38])
             {
               v40 = objc_autoreleasePoolPush();
@@ -829,21 +829,21 @@ LABEL_40:
           else
           {
             v55 = 1;
-            v7 = v71;
+            itemsCopy = v71;
           }
 
 LABEL_37:
           v56 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
           {
-            v69 = [v19 awdReport];
-            v67 = [v69 dictionaryRepresentation];
-            loga = [v67 allKeys];
+            awdReport8 = [v19 awdReport];
+            dictionaryRepresentation8 = [awdReport8 dictionaryRepresentation];
+            loga = [dictionaryRepresentation8 allKeys];
             v57 = [loga count];
             [v19 awdReport];
             v59 = v58 = v38;
-            v60 = [v59 dictionaryRepresentation];
-            v61 = [v60 allKeys];
+            dictionaryRepresentation9 = [v59 dictionaryRepresentation];
+            allKeys7 = [dictionaryRepresentation9 allKeys];
             *buf = 136447490;
             v77 = "[DatapathMetricStream streamPBCodeable:additionalDictionaryItems:]";
             v78 = 1024;
@@ -853,13 +853,13 @@ LABEL_37:
             *&v81[4] = 2048;
             *&v81[6] = v57;
             *&v81[14] = 2112;
-            *&v81[16] = v61;
+            *&v81[16] = allKeys7;
             v82 = 2112;
             v83 = v58;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "%{public}s::%d:bad flattenedAndTransformed %d %lu %@ or invalid JSON %@", buf, 0x36u);
 
-            v6 = v72;
-            v7 = v71;
+            codeableCopy = v72;
+            itemsCopy = v71;
 
             v38 = v58;
             v8 = v73;
@@ -876,16 +876,16 @@ LABEL_37:
 
       v38 = 0;
       v55 = 1;
-      v7 = v71;
-      v6 = v72;
+      itemsCopy = v71;
+      codeableCopy = v72;
       v8 = v73;
       goto LABEL_37;
     }
 
     v38 = 0;
     v55 = 1;
-    v7 = v71;
-    v6 = v72;
+    itemsCopy = v71;
+    codeableCopy = v72;
     v8 = v73;
     v31 = v68;
     goto LABEL_37;
@@ -903,8 +903,8 @@ LABEL_37:
   v31 = 0;
 LABEL_41:
 
-  v62 = [(DatapathMetricStream *)self lastPBLock];
-  [v62 unlock];
+  lastPBLock2 = [(DatapathMetricStream *)self lastPBLock];
+  [lastPBLock2 unlock];
 
   objc_autoreleasePoolPop(v8);
 }

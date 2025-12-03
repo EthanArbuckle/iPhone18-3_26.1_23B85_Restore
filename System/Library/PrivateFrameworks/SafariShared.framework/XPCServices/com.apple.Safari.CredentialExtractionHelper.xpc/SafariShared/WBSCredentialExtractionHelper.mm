@@ -1,15 +1,15 @@
 @interface WBSCredentialExtractionHelper
-- (void)fetchExtractedCredentialsFromCSVFile:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5;
-- (void)fetchLooksLikePasswordsCSVFile:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5;
+- (void)fetchExtractedCredentialsFromCSVFile:(id)file sandboxExtension:(id)extension completionHandler:(id)handler;
+- (void)fetchLooksLikePasswordsCSVFile:(id)file sandboxExtension:(id)extension completionHandler:(id)handler;
 @end
 
 @implementation WBSCredentialExtractionHelper
 
-- (void)fetchLooksLikePasswordsCSVFile:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5
+- (void)fetchLooksLikePasswordsCSVFile:(id)file sandboxExtension:(id)extension completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  [a4 UTF8String];
+  fileCopy = file;
+  handlerCopy = handler;
+  [extension UTF8String];
   v9 = sandbox_extension_consume();
   if (v9 == -1)
   {
@@ -19,7 +19,7 @@
     }
 
     v11 = [WBSPasswordImportCSVCredentialExtractor credentialExtractionErrorForErrorCode:0];
-    v8[2](v8, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
@@ -32,26 +32,26 @@
     v15[3] = &unk_100004118;
     v15[4] = v10;
     [v11 setHandler:v15];
-    v12 = [[WBSPasswordImportCSVCredentialExtractor alloc] initWithURLforCSVFile:v7];
+    v12 = [[WBSPasswordImportCSVCredentialExtractor alloc] initWithURLforCSVFile:fileCopy];
     v13 = v12;
     if (v12)
     {
-      (v8)[2](v8, [v12 looksLikePasswordsCSVFile], 0);
+      (handlerCopy)[2](handlerCopy, [v12 looksLikePasswordsCSVFile], 0);
     }
 
     else
     {
       v14 = [WBSPasswordImportCSVCredentialExtractor credentialExtractionErrorForErrorCode:1];
-      v8[2](v8, 0, v14);
+      handlerCopy[2](handlerCopy, 0, v14);
     }
   }
 }
 
-- (void)fetchExtractedCredentialsFromCSVFile:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5
+- (void)fetchExtractedCredentialsFromCSVFile:(id)file sandboxExtension:(id)extension completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  [a4 UTF8String];
+  fileCopy = file;
+  handlerCopy = handler;
+  [extension UTF8String];
   v9 = sandbox_extension_consume();
   if (v9 == -1)
   {
@@ -61,7 +61,7 @@
     }
 
     v11 = [WBSPasswordImportCSVCredentialExtractor credentialExtractionErrorForErrorCode:0];
-    v8[2](v8, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
@@ -74,20 +74,20 @@
     v17[3] = &unk_100004118;
     v17[4] = v10;
     [v11 setHandler:v17];
-    v12 = [[WBSPasswordImportCSVCredentialExtractor alloc] initWithURLforCSVFile:v7];
+    v12 = [[WBSPasswordImportCSVCredentialExtractor alloc] initWithURLforCSVFile:fileCopy];
     v13 = v12;
     if (v12)
     {
       v16 = 0;
       v14 = [v12 extractCredentialsWithError:&v16];
       v15 = v16;
-      (v8)[2](v8, v14, v15);
+      (handlerCopy)[2](handlerCopy, v14, v15);
     }
 
     else
     {
       v15 = [WBSPasswordImportCSVCredentialExtractor credentialExtractionErrorForErrorCode:1];
-      v8[2](v8, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
     }
   }
 }

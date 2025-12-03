@@ -1,6 +1,6 @@
 @interface BLSHBacklightTransitionStateMachineAbortContext
-+ (unsigned)backlightChangeRequestExplanationIdentifierFromString:(id)a3;
-- (BLSHBacklightTransitionStateMachineAbortContext)initWithCurrentState:(id)a3 targetState:(id)a4 activeEvents:(id)a5 abortedEvents:(id)a6 pendingEnvironmentUpdate:(id)a7 pendingUpdatePresentation:(id)a8 pendingUpdateToSpecifier:(id)a9 pendingUpdateDisplayMode:(id)a10 ensureFlipbookCurrentOperation:(id)a11 queuedEventsToPerform:(id)a12 pendingPrewarmedEvent:(id)a13 environmentStateMachine:(id)a14 sleepMonitorAggregateState:(id)a15;
++ (unsigned)backlightChangeRequestExplanationIdentifierFromString:(id)string;
+- (BLSHBacklightTransitionStateMachineAbortContext)initWithCurrentState:(id)state targetState:(id)targetState activeEvents:(id)events abortedEvents:(id)abortedEvents pendingEnvironmentUpdate:(id)update pendingUpdatePresentation:(id)presentation pendingUpdateToSpecifier:(id)specifier pendingUpdateDisplayMode:(id)self0 ensureFlipbookCurrentOperation:(id)self1 queuedEventsToPerform:(id)self2 pendingPrewarmedEvent:(id)self3 environmentStateMachine:(id)self4 sleepMonitorAggregateState:(id)self5;
 - (NSString)abortReasonString;
 - (NSString)description;
 - (void)_populatePayload;
@@ -9,32 +9,32 @@
 
 @implementation BLSHBacklightTransitionStateMachineAbortContext
 
-+ (unsigned)backlightChangeRequestExplanationIdentifierFromString:(id)a3
++ (unsigned)backlightChangeRequestExplanationIdentifierFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (backlightChangeRequestExplanationIdentifierFromString__onceToken != -1)
   {
     +[BLSHBacklightTransitionStateMachineAbortContext backlightChangeRequestExplanationIdentifierFromString:];
   }
 
-  v4 = [backlightChangeRequestExplanationIdentifierFromString__exactMatches objectForKeyedSubscript:v3];
+  v4 = [backlightChangeRequestExplanationIdentifierFromString__exactMatches objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
-  else if ([v3 containsString:@" - force active"])
+  else if ([stringCopy containsString:@" - force active"])
   {
-    v6 = 1000;
+    unsignedIntegerValue = 1000;
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeRequestExplanationIdentifierFromString___block_invoke()
@@ -43,43 +43,43 @@ void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeReque
   backlightChangeRequestExplanationIdentifierFromString__exactMatches = &unk_28338DED8;
 }
 
-- (BLSHBacklightTransitionStateMachineAbortContext)initWithCurrentState:(id)a3 targetState:(id)a4 activeEvents:(id)a5 abortedEvents:(id)a6 pendingEnvironmentUpdate:(id)a7 pendingUpdatePresentation:(id)a8 pendingUpdateToSpecifier:(id)a9 pendingUpdateDisplayMode:(id)a10 ensureFlipbookCurrentOperation:(id)a11 queuedEventsToPerform:(id)a12 pendingPrewarmedEvent:(id)a13 environmentStateMachine:(id)a14 sleepMonitorAggregateState:(id)a15
+- (BLSHBacklightTransitionStateMachineAbortContext)initWithCurrentState:(id)state targetState:(id)targetState activeEvents:(id)events abortedEvents:(id)abortedEvents pendingEnvironmentUpdate:(id)update pendingUpdatePresentation:(id)presentation pendingUpdateToSpecifier:(id)specifier pendingUpdateDisplayMode:(id)self0 ensureFlipbookCurrentOperation:(id)self1 queuedEventsToPerform:(id)self2 pendingPrewarmedEvent:(id)self3 environmentStateMachine:(id)self4 sleepMonitorAggregateState:(id)self5
 {
-  v40 = a3;
-  v39 = a4;
-  v28 = a5;
-  v38 = a5;
-  v29 = a6;
-  v37 = a6;
-  v30 = a7;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v33 = a10;
-  v32 = a11;
-  v20 = a12;
-  v21 = a13;
-  v22 = a14;
-  v23 = a15;
+  stateCopy = state;
+  targetStateCopy = targetState;
+  eventsCopy = events;
+  eventsCopy2 = events;
+  abortedEventsCopy = abortedEvents;
+  abortedEventsCopy2 = abortedEvents;
+  updateCopy = update;
+  updateCopy2 = update;
+  presentationCopy = presentation;
+  specifierCopy = specifier;
+  modeCopy = mode;
+  operationCopy = operation;
+  performCopy = perform;
+  eventCopy = event;
+  machineCopy = machine;
+  aggregateStateCopy = aggregateState;
   v41.receiver = self;
   v41.super_class = BLSHBacklightTransitionStateMachineAbortContext;
   v24 = [(BLSHBacklightTransitionStateMachineAbortContext *)&v41 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_currentState, a3);
-    objc_storeStrong(&v25->_targetState, a4);
-    objc_storeStrong(&v25->_activeEvents, v28);
-    objc_storeStrong(&v25->_abortedEvents, v29);
-    objc_storeStrong(&v25->_pendingEnvironmentUpdate, v30);
-    objc_storeStrong(&v25->_pendingUpdatePresentation, a8);
-    objc_storeStrong(&v25->_pendingUpdateToSpecifier, a9);
-    objc_storeStrong(&v25->_pendingUpdateDisplayMode, a10);
-    objc_storeStrong(&v25->_ensureFlipbookCurrentOperation, a11);
-    objc_storeStrong(&v25->_queuedEventsToPerform, a12);
-    objc_storeStrong(&v25->_pendingPrewarmedEvent, a13);
-    objc_storeStrong(&v25->_environmentStateMachine, a14);
-    objc_storeStrong(&v25->_sleepMonitorAggregateState, a15);
+    objc_storeStrong(&v24->_currentState, state);
+    objc_storeStrong(&v25->_targetState, targetState);
+    objc_storeStrong(&v25->_activeEvents, eventsCopy);
+    objc_storeStrong(&v25->_abortedEvents, abortedEventsCopy);
+    objc_storeStrong(&v25->_pendingEnvironmentUpdate, updateCopy);
+    objc_storeStrong(&v25->_pendingUpdatePresentation, presentation);
+    objc_storeStrong(&v25->_pendingUpdateToSpecifier, specifier);
+    objc_storeStrong(&v25->_pendingUpdateDisplayMode, mode);
+    objc_storeStrong(&v25->_ensureFlipbookCurrentOperation, operation);
+    objc_storeStrong(&v25->_queuedEventsToPerform, perform);
+    objc_storeStrong(&v25->_pendingPrewarmedEvent, event);
+    objc_storeStrong(&v25->_environmentStateMachine, machine);
+    objc_storeStrong(&v25->_sleepMonitorAggregateState, aggregateState);
     v25->_abortTimestamp = mach_continuous_time();
     v25->_abortReason = 1;
     v25->_payloadSize = 376;
@@ -107,12 +107,12 @@ void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeReque
   v3 = malloc_type_calloc(1uLL, self->_payloadSize, 0x8ED12450uLL);
   *v3 = 2;
   v3[1] = [(BLSHBacklightAggregateState *)self->_currentState displayMode];
-  v4 = [(BLSHBacklightAggregateState *)self->_currentState presentation];
-  [BLSHBacklightEnvironmentStateMachineAbortPayload populatePresentationStruct:v3 + 2 withPresentation:v4];
+  presentation = [(BLSHBacklightAggregateState *)self->_currentState presentation];
+  [BLSHBacklightEnvironmentStateMachineAbortPayload populatePresentationStruct:v3 + 2 withPresentation:presentation];
 
   v3[8] = [(BLSHBacklightMutableTargetState *)self->_targetState displayMode];
-  v5 = [(BLSHBacklightMutableTargetState *)self->_targetState presentation];
-  [BLSHBacklightEnvironmentStateMachineAbortPayload populatePresentationStruct:v3 + 9 withPresentation:v5];
+  presentation2 = [(BLSHBacklightMutableTargetState *)self->_targetState presentation];
+  [BLSHBacklightEnvironmentStateMachineAbortPayload populatePresentationStruct:v3 + 9 withPresentation:presentation2];
 
   pendingEnvironmentUpdate = self->_pendingEnvironmentUpdate;
   v7 = v3[16] & 0xFE;
@@ -136,24 +136,24 @@ void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeReque
     }
 
     *(v3 + 64) = v3[16] & 0xFD | v9;
-    v10 = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
-    *(v3 + 9) = [v10 eventID];
+    triggerEvent = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
+    *(v3 + 9) = [triggerEvent eventID];
 
-    v11 = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
-    v3[20] = [v11 state];
+    triggerEvent2 = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
+    v3[20] = [triggerEvent2 state];
 
-    v12 = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
-    v3[21] = [v12 previousState];
+    triggerEvent3 = [(BLSHPendingEnvironmentUpdateOperation *)v8 triggerEvent];
+    v3[21] = [triggerEvent3 previousState];
 
-    v13 = [(BLSHPendingEnvironmentUpdateOperation *)v8 initialSpecifier];
-    v14 = [v13 presentationDate];
-    [v14 timeIntervalSinceReferenceDate];
+    initialSpecifier = [(BLSHPendingEnvironmentUpdateOperation *)v8 initialSpecifier];
+    presentationDate = [initialSpecifier presentationDate];
+    [presentationDate timeIntervalSinceReferenceDate];
     *(v3 + 11) = v15;
 
-    v16 = [(BLSHPendingEnvironmentUpdateOperation *)v8 initialSpecifier];
+    initialSpecifier2 = [(BLSHPendingEnvironmentUpdateOperation *)v8 initialSpecifier];
 
-    v17 = [v16 specifiers];
-    v3[24] = [v17 count];
+    specifiers = [initialSpecifier2 specifiers];
+    v3[24] = [specifiers count];
   }
 
   v18 = v3[26] & 0xFE;
@@ -187,8 +187,8 @@ void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeReque
     v3[29] = [(BLSHPendingUpdateDisplayMode *)pendingUpdateDisplayMode targetDisplayMode];
   }
 
-  v22 = [(NSArray *)self->_queuedEventsToPerform firstObject];
-  _populateBacklightChangeEventStruct(v22, (v3 + 66));
+  firstObject = [(NSArray *)self->_queuedEventsToPerform firstObject];
+  _populateBacklightChangeEventStruct(firstObject, (v3 + 66));
 
   _populateBacklightChangeEventStruct(self->_pendingPrewarmedEvent, (v3 + 80));
   environmentStateMachine = self->_environmentStateMachine;
@@ -224,9 +224,9 @@ void __105__BLSHBacklightTransitionStateMachineAbortContext_backlightChangeReque
   v15 = [v3 appendObject:self->_pendingUpdateToSpecifier withName:@"pendingUpdateToSpecifier"];
   v16 = [v3 appendObject:self->_queuedEventsToPerform withName:@"queuedEventsToPerform"];
   v17 = [v3 appendObject:self->_pendingPrewarmedEvent withName:@"pendingPrewarmedEvent"];
-  v18 = [v3 build];
+  build = [v3 build];
 
-  return v18;
+  return build;
 }
 
 - (void)dealloc

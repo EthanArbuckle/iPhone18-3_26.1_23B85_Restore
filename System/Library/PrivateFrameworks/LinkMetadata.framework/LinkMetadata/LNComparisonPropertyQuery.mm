@@ -1,29 +1,29 @@
 @interface LNComparisonPropertyQuery
-- (BOOL)isEqual:(id)a3;
-- (LNComparisonPropertyQuery)initWithCoder:(id)a3;
-- (LNComparisonPropertyQuery)initWithPropertyIndex:(id)a3 value:(id)a4 type:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNComparisonPropertyQuery)initWithCoder:(id)coder;
+- (LNComparisonPropertyQuery)initWithPropertyIndex:(id)index value:(id)value type:(unint64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNComparisonPropertyQuery
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   propertyIndex = self->_propertyIndex;
-  v5 = a3;
-  [v5 encodeObject:propertyIndex forKey:@"propertyIndex"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:propertyIndex forKey:@"propertyIndex"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (LNComparisonPropertyQuery)initWithCoder:(id)a3
+- (LNComparisonPropertyQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyIndex"];
-  v6 = [v4 decodeIntForKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyIndex"];
+  v6 = [coderCopy decodeIntForKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
 
   if (v5)
   {
@@ -37,36 +37,36 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNComparisonPropertyQuery *)self initWithPropertyIndex:v5 value:v7 type:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNComparisonPropertyQuery *)self propertyIndex];
-  v4 = [v3 hash];
-  v5 = [(LNComparisonPropertyQuery *)self value];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNComparisonPropertyQuery *)self type];
+  propertyIndex = [(LNComparisonPropertyQuery *)self propertyIndex];
+  v4 = [propertyIndex hash];
+  value = [(LNComparisonPropertyQuery *)self value];
+  v6 = [value hash] ^ v4;
+  type = [(LNComparisonPropertyQuery *)self type];
 
-  return v6 ^ v7;
+  return v6 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -75,10 +75,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = [(LNComparisonPropertyQuery *)self propertyIndex];
-    v8 = [(LNComparisonPropertyQuery *)v6 propertyIndex];
-    v9 = v7;
-    v10 = v8;
+    propertyIndex = [(LNComparisonPropertyQuery *)self propertyIndex];
+    propertyIndex2 = [(LNComparisonPropertyQuery *)v6 propertyIndex];
+    v9 = propertyIndex;
+    v10 = propertyIndex2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -87,8 +87,8 @@ LABEL_17:
     else
     {
       LOBYTE(v12) = 0;
-      v13 = v10;
-      v14 = v9;
+      value2 = v10;
+      value = v9;
       if (!v9 || !v10)
       {
         goto LABEL_15;
@@ -102,12 +102,12 @@ LABEL_17:
       }
     }
 
-    v14 = [(LNComparisonPropertyQuery *)self value];
-    v13 = [(LNComparisonPropertyQuery *)v6 value];
-    if ([v14 isEqual:v13])
+    value = [(LNComparisonPropertyQuery *)self value];
+    value2 = [(LNComparisonPropertyQuery *)v6 value];
+    if ([value isEqual:value2])
     {
-      v15 = [(LNComparisonPropertyQuery *)self type];
-      LOBYTE(v12) = v15 == [(LNComparisonPropertyQuery *)v6 type];
+      type = [(LNComparisonPropertyQuery *)self type];
+      LOBYTE(v12) = type == [(LNComparisonPropertyQuery *)v6 type];
     }
 
     else
@@ -130,18 +130,18 @@ LABEL_18:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNComparisonPropertyQuery *)self propertyIndex];
+  propertyIndex = [(LNComparisonPropertyQuery *)self propertyIndex];
   if (self)
   {
-    v5 = [(LNComparisonPropertyQuery *)self type];
-    if (v5 - 1 > 8)
+    type = [(LNComparisonPropertyQuery *)self type];
+    if (type - 1 > 8)
     {
       v6 = @"==";
     }
 
     else
     {
-      v6 = off_1E72B1070[v5 - 1];
+      v6 = off_1E72B1070[type - 1];
     }
   }
 
@@ -151,20 +151,20 @@ LABEL_18:
   }
 
   v7 = v6;
-  v8 = [(LNComparisonPropertyQuery *)self value];
-  v9 = [v3 stringWithFormat:@"<%@ %@ %@>", v4, v7, v8];
+  value = [(LNComparisonPropertyQuery *)self value];
+  v9 = [v3 stringWithFormat:@"<%@ %@ %@>", propertyIndex, v7, value];
 
   return v9;
 }
 
-- (LNComparisonPropertyQuery)initWithPropertyIndex:(id)a3 value:(id)a4 type:(unint64_t)a5
+- (LNComparisonPropertyQuery)initWithPropertyIndex:(id)index value:(id)value type:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  indexCopy = index;
+  valueCopy = value;
+  v12 = valueCopy;
+  if (indexCopy)
   {
-    if (v11)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -172,8 +172,8 @@ LABEL_18:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNComparisonPropertyQuery.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"propertyIndex"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNComparisonPropertyQuery.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"propertyIndex"}];
 
     if (v12)
     {
@@ -181,19 +181,19 @@ LABEL_18:
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"LNComparisonPropertyQuery.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNComparisonPropertyQuery.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"value"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = LNComparisonPropertyQuery;
-  v13 = [(LNPropertyQuery *)&v18 _init];
-  v14 = v13;
-  if (v13)
+  _init = [(LNPropertyQuery *)&v18 _init];
+  v14 = _init;
+  if (_init)
   {
-    objc_storeStrong(v13 + 1, a3);
-    v14->_type = a5;
-    objc_storeStrong(&v14->_value, a4);
+    objc_storeStrong(_init + 1, index);
+    v14->_type = type;
+    objc_storeStrong(&v14->_value, value);
   }
 
   return v14;

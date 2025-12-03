@@ -1,13 +1,13 @@
 @interface CSMessageVolumeIncreaseRequest
-+ (id)responseMessageFromDictionary:(id)a3;
++ (id)responseMessageFromDictionary:(id)dictionary;
 @end
 
 @implementation CSMessageVolumeIncreaseRequest
 
-+ (id)responseMessageFromDictionary:(id)a3
++ (id)responseMessageFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[CSMessageVolumeResponse alloc] initWithMessage:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[CSMessageVolumeResponse alloc] initWithMessage:dictionaryCopy];
 
   return v4;
 }

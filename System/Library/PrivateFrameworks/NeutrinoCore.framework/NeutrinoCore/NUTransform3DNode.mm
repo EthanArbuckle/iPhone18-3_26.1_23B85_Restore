@@ -1,19 +1,19 @@
 @interface NUTransform3DNode
-- (NUTransform3DNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (NUTransform3DNode)initWithTransform3D:(id)a3 input:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_transformWithError:(id *)a3;
+- (NUTransform3DNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (NUTransform3DNode)initWithTransform3D:(id)d input:(id)input;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_transformWithError:(id *)error;
 - (id)debugQuickLookObject;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUTransform3DNode
 
-- (id)_transformWithError:(id *)a3
+- (id)_transformWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     v5 = NUAssertLogger_27316();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v12;
         v23 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -67,22 +67,22 @@
   {
     v5.receiver = self;
     v5.super_class = NUTransform3DNode;
-    v3 = [(NURenderNode *)&v5 debugQuickLookObject];
+    debugQuickLookObject = [(NURenderNode *)&v5 debugQuickLookObject];
   }
 
   else
   {
     v6 = 0;
-    v3 = [(NUTransform3DNode *)self _evaluateImage:&v6];
+    debugQuickLookObject = [(NUTransform3DNode *)self _evaluateImage:&v6];
   }
 
-  return v3;
+  return debugQuickLookObject;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v95 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v52 = NUAssertLogger_27316();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -103,8 +103,8 @@
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v60 callStackSymbols];
+        v63 = [callStackSymbols componentsJoinedByString:@"\n"];
         buf[0].i32[0] = 138543618;
         *(buf[0].i64 + 4) = v59;
         buf[0].i16[6] = 2114;
@@ -115,8 +115,8 @@
 
     else if (v56)
     {
-      v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v58 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       buf[0].i32[0] = 138543362;
       *(buf[0].i64 + 4) = v58;
       _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -159,8 +159,8 @@
             v75 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
             v76 = MEMORY[0x1E696AF00];
             v77 = v75;
-            v78 = [v76 callStackSymbols];
-            v79 = [v78 componentsJoinedByString:@"\n"];
+            callStackSymbols3 = [v76 callStackSymbols];
+            v79 = [callStackSymbols3 componentsJoinedByString:@"\n"];
             buf[0].i32[0] = 138543618;
             *(buf[0].i64 + 4) = v75;
             buf[0].i16[6] = 2114;
@@ -171,8 +171,8 @@
 
         else if (v72)
         {
-          v73 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v74 = [v73 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v74 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           buf[0].i32[0] = 138543362;
           *(buf[0].i64 + 4) = v74;
           _os_log_error_impl(&dword_1C0184000, v71, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -181,10 +181,10 @@
         _NUAssertFailHandler("[NUTransform3DNode _evaluateImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Transform.m", 374, @"Invalid render scale", v80, v81, v82, v83, v84);
       }
 
-      v85 = a3;
+      imageCopy = image;
       v89 = v10;
-      v13 = [v9 renderScale];
-      v15 = NUScaleToDouble(v13, v14);
+      renderScale = [v9 renderScale];
+      v15 = NUScaleToDouble(renderScale, v14);
       memset(buf, 0, sizeof(buf));
       [v9 extent];
       [(NUImageTransform3D *)self->_transform transformPoint:buf[0].i64[0], buf[0].i64[1]];
@@ -228,16 +228,16 @@
 
       if (v44)
       {
-        v45 = [v44 outputImage];
-        v46 = v45;
-        if (v45)
+        outputImage = [v44 outputImage];
+        v46 = outputImage;
+        if (outputImage)
         {
-          v47 = v45;
+          v47 = outputImage;
         }
 
         else
         {
-          *v85 = [NUError errorWithCode:2 reason:@"Core Image returned invalid output for filter" object:v44];
+          *imageCopy = [NUError errorWithCode:2 reason:@"Core Image returned invalid output for filter" object:v44];
         }
 
         v49 = v88;
@@ -250,7 +250,7 @@
       {
         [NUError errorWithCode:1 reason:@"Cannot create CIPerspectiveTransform filter" object:self->_transform];
         v46 = 0;
-        *v85 = v48 = v86;
+        *imageCopy = v48 = v86;
         v49 = v88;
         v10 = v89;
         v50 = v87;
@@ -260,21 +260,21 @@
     else
     {
       [NUError errorWithCode:2 reason:@"Cannot evaluate input geometry" object:v6 underlyingError:v10];
-      *a3 = v46 = 0;
+      *image = v46 = 0;
     }
   }
 
   else
   {
     [NUError errorWithCode:2 reason:@"Cannot evaluate input image" object:v6 underlyingError:v8];
-    *a3 = v46 = 0;
+    *image = v46 = 0;
     v10 = v8;
   }
 
   return v46;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v52 = *MEMORY[0x1E69E9840];
   v41.receiver = self;
@@ -324,34 +324,34 @@
     v39 = v43[1];
     v40 = v43[0];
     v27 = [NUImageGeometry alloc];
-    v28 = [v5 renderScale];
+    renderScale = [v5 renderScale];
     v30 = v29;
-    v31 = [v5 orientation];
+    orientation = [v5 orientation];
     v44.origin = v40;
     v44.size = v39;
-    v32 = [(NUImageGeometry *)v27 initWithExtent:&v44 renderScale:v28 orientation:v30, v31];
+    v32 = [(NUImageGeometry *)v27 initWithExtent:&v44 renderScale:renderScale orientation:v30, orientation];
   }
 
   else
   {
     v33 = MEMORY[0x1E695DFB0];
     v34 = v42;
-    v35 = [v33 null];
-    v36 = [NUError errorWithCode:1 reason:@"Cannot evaluate image geometry" object:v35 underlyingError:v34];
+    null = [v33 null];
+    v36 = [NUError errorWithCode:1 reason:@"Cannot evaluate image geometry" object:null underlyingError:v34];
     v37 = v36;
 
-    *a3 = v36;
+    *geometry = v36;
     v32 = 0;
   }
 
   return v32;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = NUTransform3DNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   v8 = v7;
   if (v7)
   {
@@ -361,17 +361,17 @@
   return v8;
 }
 
-- (NUTransform3DNode)initWithTransform3D:(id)a3 input:(id)a4
+- (NUTransform3DNode)initWithTransform3D:(id)d input:(id)input
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_transform, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_transform, d);
+  dCopy = d;
+  inputCopy = input;
   v16 = @"transform";
-  v17[0] = v7;
+  v17[0] = dCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v14 = *MEMORY[0x1E695FAB0];
-  v15 = v8;
+  v15 = inputCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v13.receiver = self;
   v13.super_class = NUTransform3DNode;
@@ -380,11 +380,11 @@
   return v11;
 }
 
-- (NUTransform3DNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUTransform3DNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_27330);
@@ -428,8 +428,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -445,8 +445,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

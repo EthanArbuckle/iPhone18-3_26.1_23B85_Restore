@@ -1,22 +1,22 @@
 @interface STUniquedManagedObjectDelta
-- (STUniquedManagedObjectDelta)initWithUniqueIdentifier:(id)a3;
+- (STUniquedManagedObjectDelta)initWithUniqueIdentifier:(id)identifier;
 - (void)deleted;
 - (void)inserted;
-- (void)removePropertyWithName:(id)a3;
-- (void)updatedWithProperties:(id)a3;
+- (void)removePropertyWithName:(id)name;
+- (void)updatedWithProperties:(id)properties;
 @end
 
 @implementation STUniquedManagedObjectDelta
 
-- (STUniquedManagedObjectDelta)initWithUniqueIdentifier:(id)a3
+- (STUniquedManagedObjectDelta)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = STUniquedManagedObjectDelta;
   v5 = [(STUniquedManagedObjectDelta *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
   }
@@ -40,10 +40,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updatedWithProperties:(id)a3
+- (void)updatedWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
   if (self->_changeType != 1)
   {
     self->_changeType = 2;
@@ -67,13 +67,13 @@
     v5 = v11;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](propertiesCopy, v5);
 }
 
-- (void)removePropertyWithName:(id)a3
+- (void)removePropertyWithName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -94,8 +94,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        name = [v10 name];
+        v12 = [name isEqualToString:nameCopy];
 
         if (v12)
         {

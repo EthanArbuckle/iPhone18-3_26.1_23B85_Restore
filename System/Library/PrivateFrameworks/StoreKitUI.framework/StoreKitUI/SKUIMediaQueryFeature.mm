@@ -1,12 +1,12 @@
 @interface SKUIMediaQueryFeature
-- (SKUIMediaQueryFeature)initWithFeatureName:(id)a3 value:(id)a4;
+- (SKUIMediaQueryFeature)initWithFeatureName:(id)name value:(id)value;
 @end
 
 @implementation SKUIMediaQueryFeature
 
-- (SKUIMediaQueryFeature)initWithFeatureName:(id)a3 value:(id)a4
+- (SKUIMediaQueryFeature)initWithFeatureName:(id)name value:(id)value
 {
-  v5 = a3;
+  nameCopy = name;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaQueryFeature initWithFeatureName:value:];
@@ -17,7 +17,7 @@
   v6 = [(SKUIMediaQueryFeature *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     featureName = v6->_featureName;
     v6->_featureName = v7;
   }

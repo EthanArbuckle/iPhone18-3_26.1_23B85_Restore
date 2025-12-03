@@ -1,32 +1,32 @@
 @interface CPAnalyticsKnowledgeStoreDestination
-- (CPAnalyticsKnowledgeStoreDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4;
-- (id)_datasetSampleFromEvent:(id)a3 andMatcher:(id)a4;
-- (void)_addCoreDuetDatasetSample:(id)a3 toDataset:(id)a4;
-- (void)processEvent:(id)a3;
+- (CPAnalyticsKnowledgeStoreDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance;
+- (id)_datasetSampleFromEvent:(id)event andMatcher:(id)matcher;
+- (void)_addCoreDuetDatasetSample:(id)sample toDataset:(id)dataset;
+- (void)processEvent:(id)event;
 @end
 
 @implementation CPAnalyticsKnowledgeStoreDestination
 
-- (void)_addCoreDuetDatasetSample:(id)a3 toDataset:(id)a4
+- (void)_addCoreDuetDatasetSample:(id)sample toDataset:(id)dataset
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  datasetCopy = dataset;
   v8 = MEMORY[0x277CFE1E8];
   v9 = [MEMORY[0x277CFE1B8] typeForName:@"PFLDatasetSampleSchemaVersion"];
-  v10 = [v8 eventStreamWithName:v7 valueType:v9];
+  v10 = [v8 eventStreamWithName:datasetCopy valueType:v9];
 
   v11 = MEMORY[0x277CFE1F0];
   v12 = [MEMORY[0x277CFE1B8] typeForName:@"PFLDatasetSampleSchemaVersion"];
   v13 = [v11 identifierWithString:@"PFLDatasetSample-v1.0" type:v12];
 
   v14 = MEMORY[0x277CFE1D8];
-  v15 = [v6 date];
-  v16 = [v6 date];
-  v17 = [v6 metadata];
-  v18 = [v14 eventWithStream:v10 startDate:v15 endDate:v16 value:v13 metadata:v17];
+  date = [sampleCopy date];
+  date2 = [sampleCopy date];
+  metadata = [sampleCopy metadata];
+  v18 = [v14 eventWithStream:v10 startDate:date endDate:date2 value:v13 metadata:metadata];
 
-  v19 = [(CPAnalyticsKnowledgeStoreDestination *)self knowledgeStore];
+  knowledgeStore = [(CPAnalyticsKnowledgeStoreDestination *)self knowledgeStore];
   v28[0] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   v21 = dispatch_get_global_queue(9, 0);
@@ -34,11 +34,11 @@
   v25[1] = 3221225472;
   v25[2] = __76__CPAnalyticsKnowledgeStoreDestination__addCoreDuetDatasetSample_toDataset___block_invoke;
   v25[3] = &unk_278D612C8;
-  v26 = v7;
-  v27 = v6;
-  v22 = v6;
-  v23 = v7;
-  [v19 saveObjects:v20 responseQueue:v21 withCompletion:v25];
+  v26 = datasetCopy;
+  v27 = sampleCopy;
+  v22 = sampleCopy;
+  v23 = datasetCopy;
+  [knowledgeStore saveObjects:v20 responseQueue:v21 withCompletion:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -77,28 +77,28 @@ void __76__CPAnalyticsKnowledgeStoreDestination__addCoreDuetDatasetSample_toData
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_datasetSampleFromEvent:(id)a3 andMatcher:(id)a4
+- (id)_datasetSampleFromEvent:(id)event andMatcher:(id)matcher
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 identifierPropertyName];
-  v8 = [v5 propertyForKey:v7];
+  eventCopy = event;
+  matcherCopy = matcher;
+  identifierPropertyName = [matcherCopy identifierPropertyName];
+  v8 = [eventCopy propertyForKey:identifierPropertyName];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 subsetPropertyName];
-    v10 = [v6 subsetPropertyValue];
-    if (v9)
+    subsetPropertyName = [matcherCopy subsetPropertyName];
+    subsetPropertyValue = [matcherCopy subsetPropertyValue];
+    if (subsetPropertyName)
     {
-      v11 = [v5 propertyForKey:v9];
+      v11 = [eventCopy propertyForKey:subsetPropertyName];
 
-      v10 = v11;
+      subsetPropertyValue = v11;
     }
 
     v12 = [CPAnalyticsKnowledgeStoreDatasetSample alloc];
-    v13 = [v5 timestamp];
-    v14 = [(CPAnalyticsKnowledgeStoreDatasetSample *)v12 initWithIdentifier:v8 andDate:v13 forSubset:v10];
+    timestamp = [eventCopy timestamp];
+    v14 = [(CPAnalyticsKnowledgeStoreDatasetSample *)v12 initWithIdentifier:v8 andDate:timestamp forSubset:subsetPropertyValue];
   }
 
   else
@@ -109,16 +109,16 @@ void __76__CPAnalyticsKnowledgeStoreDestination__addCoreDuetDatasetSample_toData
   return v14;
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CPAnalyticsKnowledgeStoreDestination *)self matchers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  matchers = [(CPAnalyticsKnowledgeStoreDestination *)self matchers];
+  v6 = [matchers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -129,22 +129,22 @@ LABEL_3:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(matchers);
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      if ([v10 doesMatch:v4])
+      if ([v10 doesMatch:eventCopy])
       {
-        v11 = [(CPAnalyticsKnowledgeStoreDestination *)self _datasetSampleFromEvent:v4 andMatcher:v10];
+        v11 = [(CPAnalyticsKnowledgeStoreDestination *)self _datasetSampleFromEvent:eventCopy andMatcher:v10];
         if (v11)
         {
-          v12 = [v10 datasetName];
-          [(CPAnalyticsKnowledgeStoreDestination *)self _addCoreDuetDatasetSample:v11 toDataset:v12];
+          datasetName = [v10 datasetName];
+          [(CPAnalyticsKnowledgeStoreDestination *)self _addCoreDuetDatasetSample:v11 toDataset:datasetName];
         }
 
-        v13 = [v10 matchNextEvent];
+        matchNextEvent = [v10 matchNextEvent];
 
-        if (!v13)
+        if (!matchNextEvent)
         {
           break;
         }
@@ -152,7 +152,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [matchers countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -166,20 +166,20 @@ LABEL_3:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (CPAnalyticsKnowledgeStoreDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (CPAnalyticsKnowledgeStoreDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configCopy = config;
   v27.receiver = self;
   v27.super_class = CPAnalyticsKnowledgeStoreDestination;
   v6 = [(CPAnalyticsKnowledgeStoreDestination *)&v27 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CFE208] knowledgeStore];
+    knowledgeStore = [MEMORY[0x277CFE208] knowledgeStore];
     knowledgeStore = v6->_knowledgeStore;
-    v6->_knowledgeStore = v7;
+    v6->_knowledgeStore = knowledgeStore;
 
-    v9 = [v5 objectForKeyedSubscript:@"events"];
+    v9 = [configCopy objectForKeyedSubscript:@"events"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

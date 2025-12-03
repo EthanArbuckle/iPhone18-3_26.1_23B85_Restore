@@ -1,15 +1,15 @@
 @interface AXMAssetMetadataNode
-- (void)triggerWithAssetURL:(id)a3 cacheKey:(id)a4 resultHandler:(id)a5;
+- (void)triggerWithAssetURL:(id)l cacheKey:(id)key resultHandler:(id)handler;
 @end
 
 @implementation AXMAssetMetadataNode
 
-- (void)triggerWithAssetURL:(id)a3 cacheKey:(id)a4 resultHandler:(id)a5
+- (void)triggerWithAssetURL:(id)l cacheKey:(id)key resultHandler:(id)handler
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  keyCopy = key;
+  handlerCopy = handler;
   v18[0] = @"sourceProvidesResults";
   v18[1] = @"diagnosticsEnabled";
   v19[0] = MEMORY[0x1E695E118];
@@ -20,9 +20,9 @@
   v14 = [AXMVisionPipelineContext contextWithSourceParameters:v12 options:v13];
 
   [v14 setShouldCallCompletionHandlersForEngineBusyError:1];
-  if (v8)
+  if (lCopy)
   {
-    v15 = [AXMVisionFeatureAssetMetadata assetMetadataFromURL:v8];
+    v15 = [AXMVisionFeatureAssetMetadata assetMetadataFromURL:lCopy];
     v16 = [AXMVisionFeature featureWithAssetMetadata:v15];
     if (v16)
     {
@@ -32,7 +32,7 @@
 
   v17.receiver = self;
   v17.super_class = AXMAssetMetadataNode;
-  [(AXMSourceNode *)&v17 triggerWithContext:v14 cacheKey:v9 resultHandler:v10];
+  [(AXMSourceNode *)&v17 triggerWithContext:v14 cacheKey:keyCopy resultHandler:handlerCopy];
 }
 
 @end

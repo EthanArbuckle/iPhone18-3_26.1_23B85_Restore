@@ -1,35 +1,35 @@
 @interface IDSEndpointResolverComponent
-- (IDSEndpointResolverComponent)initWithQueryCache:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IDSEndpointResolverComponent)initWithQueryCache:(id)cache;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSEndpointResolverComponent
 
-- (IDSEndpointResolverComponent)initWithQueryCache:(id)a3
+- (IDSEndpointResolverComponent)initWithQueryCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = IDSEndpointResolverComponent;
   v6 = [(IDSEndpointResolverComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerIDManager, a3);
+    objc_storeStrong(&v6->_peerIDManager, cache);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 uris];
-  v7 = [v6 count];
+  uris = [inputCopy uris];
+  v7 = [uris count];
 
   if (v7)
   {
-    if ([v4 alwaysSkipSelf])
+    if ([inputCopy alwaysSkipSelf])
     {
       v8 = 1;
     }
@@ -39,7 +39,7 @@
       v8 = 2;
     }
 
-    if ([v4 alwaysIncludeSelf])
+    if ([inputCopy alwaysIncludeSelf])
     {
       v9 = 3;
     }
@@ -50,13 +50,13 @@
     }
 
     peerIDManager = self->_peerIDManager;
-    v11 = [v4 uris];
-    v12 = [v4 fromID];
-    v13 = [v4 service];
-    v14 = [IDSURI URIWithPrefixedURI:v12 withServiceLoggingHint:v13];
-    v15 = [v4 service];
-    v16 = [v4 fromIdentity];
-    v17 = -[IDSPeerIDManager endpointsForURIs:fromURI:service:fromIdentity:filterBehavior:allowRefresh:](peerIDManager, "endpointsForURIs:fromURI:service:fromIdentity:filterBehavior:allowRefresh:", v11, v14, v15, v16, v9, [v4 disallowQueryRefresh] ^ 1);
+    uris2 = [inputCopy uris];
+    fromID = [inputCopy fromID];
+    service = [inputCopy service];
+    v14 = [IDSURI URIWithPrefixedURI:fromID withServiceLoggingHint:service];
+    service2 = [inputCopy service];
+    fromIdentity = [inputCopy fromIdentity];
+    v17 = -[IDSPeerIDManager endpointsForURIs:fromURI:service:fromIdentity:filterBehavior:allowRefresh:](peerIDManager, "endpointsForURIs:fromURI:service:fromIdentity:filterBehavior:allowRefresh:", uris2, v14, service2, fromIdentity, v9, [inputCopy disallowQueryRefresh] ^ 1);
 
     v37 = 0u;
     v38 = 0u;
@@ -114,8 +114,8 @@
     }
   }
 
-  [v4 setEndpoints:v5];
-  v29 = [CUTUnsafePromise fulfilledPromiseWithValue:v4];
+  [inputCopy setEndpoints:v5];
+  v29 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
 
   return v29;
 }

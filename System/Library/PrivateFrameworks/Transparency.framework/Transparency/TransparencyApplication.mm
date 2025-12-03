@@ -1,109 +1,109 @@
 @interface TransparencyApplication
-+ (id)addApplicationPrefixForIdentifier:(id)a3 uri:(id)a4;
-+ (id)applicationIdentifierForValue:(id)a3;
-+ (id)applicationPrefixForIdentifier:(id)a3;
-+ (id)applicationValueForIdentifier:(id)a3;
-+ (id)idsServiceForIdentifier:(id)a3;
-+ (id)stripApplicationPrefixForIdentifier:(id)a3 uri:(id)a4;
-- (TransparencyApplication)initWithIdentifier:(id)a3;
++ (id)addApplicationPrefixForIdentifier:(id)identifier uri:(id)uri;
++ (id)applicationIdentifierForValue:(id)value;
++ (id)applicationPrefixForIdentifier:(id)identifier;
++ (id)applicationValueForIdentifier:(id)identifier;
++ (id)idsServiceForIdentifier:(id)identifier;
++ (id)stripApplicationPrefixForIdentifier:(id)identifier uri:(id)uri;
+- (TransparencyApplication)initWithIdentifier:(id)identifier;
 @end
 
 @implementation TransparencyApplication
 
-+ (id)applicationValueForIdentifier:(id)a3
++ (id)applicationValueForIdentifier:(id)identifier
 {
   v3 = initializeApplicationIdentifierMaps_once;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[TransparencyApplication applicationValueForIdentifier:];
   }
 
-  v5 = [kApplicationIdentifierMap objectForKeyedSubscript:v4];
+  v5 = [kApplicationIdentifierMap objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-+ (id)applicationIdentifierForValue:(id)a3
++ (id)applicationIdentifierForValue:(id)value
 {
   v3 = initializeApplicationIdentifierMaps_once;
-  v4 = a3;
+  valueCopy = value;
   if (v3 != -1)
   {
     +[TransparencyApplication applicationValueForIdentifier:];
   }
 
-  v5 = [kApplicationEnumMap objectForKeyedSubscript:v4];
+  v5 = [kApplicationEnumMap objectForKeyedSubscript:valueCopy];
 
   return v5;
 }
 
-+ (id)applicationPrefixForIdentifier:(id)a3
++ (id)applicationPrefixForIdentifier:(id)identifier
 {
   v3 = initializeApplicationIdentifierMaps_once;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[TransparencyApplication applicationValueForIdentifier:];
   }
 
-  v5 = [kApplicationIdentifierToUriPrefixMap objectForKeyedSubscript:v4];
+  v5 = [kApplicationIdentifierToUriPrefixMap objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-+ (id)idsServiceForIdentifier:(id)a3
++ (id)idsServiceForIdentifier:(id)identifier
 {
   v3 = initializeApplicationIdentifierMaps_once;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[TransparencyApplication applicationValueForIdentifier:];
   }
 
-  v5 = [kApplicationIDSServiceMap objectForKeyedSubscript:v4];
+  v5 = [kApplicationIDSServiceMap objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-+ (id)addApplicationPrefixForIdentifier:(id)a3 uri:(id)a4
++ (id)addApplicationPrefixForIdentifier:(id)identifier uri:(id)uri
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() applicationPrefixForIdentifier:v6];
+  uriCopy = uri;
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() applicationPrefixForIdentifier:identifierCopy];
 
-  if ([v5 hasPrefix:v7])
+  if ([uriCopy hasPrefix:v7])
   {
-    v8 = v5;
+    uriCopy = uriCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", v7, v5];
+    uriCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", v7, uriCopy];
   }
 
-  v9 = v8;
+  v9 = uriCopy;
 
   return v9;
 }
 
-+ (id)stripApplicationPrefixForIdentifier:(id)a3 uri:(id)a4
++ (id)stripApplicationPrefixForIdentifier:(id)identifier uri:(id)uri
 {
-  v5 = a4;
+  uriCopy = uri;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v8 = [objc_opt_class() applicationPrefixForIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = [objc_opt_class() applicationPrefixForIdentifier:identifierCopy];
 
   v9 = [v6 stringWithFormat:@"%@://", v8];
 
-  if ([v5 hasPrefix:v9])
+  if ([uriCopy hasPrefix:v9])
   {
-    v10 = [v5 substringFromIndex:{objc_msgSend(v9, "length")}];
+    v10 = [uriCopy substringFromIndex:{objc_msgSend(v9, "length")}];
   }
 
   else
   {
-    v10 = v5;
+    v10 = uriCopy;
   }
 
   v11 = v10;
@@ -111,15 +111,15 @@
   return v11;
 }
 
-- (TransparencyApplication)initWithIdentifier:(id)a3
+- (TransparencyApplication)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (initializeApplicationIdentifierMaps_once != -1)
   {
     +[TransparencyApplication applicationValueForIdentifier:];
   }
 
-  v6 = [kApplicationIdentifierMap objectForKeyedSubscript:v5];
+  v6 = [kApplicationIdentifierMap objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -129,19 +129,19 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_applicationIdentifier, a3);
+      objc_storeStrong(&v7->_applicationIdentifier, identifier);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

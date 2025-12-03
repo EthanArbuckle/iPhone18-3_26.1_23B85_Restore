@@ -1,27 +1,27 @@
 @interface INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addDependentSignals:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDependentSignals:(id)signals;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated;
   v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"independentSignal"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"independentSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)v5 setIndependentSignal:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dependentSignals"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dependentSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,10 +118,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_dependentSignals count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -141,16 +141,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -160,52 +160,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"dependentSignals"];
+    [dictionary setObject:array forKeyedSubscript:@"dependentSignals"];
   }
 
   if (self->_independentSignal)
   {
-    v12 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    independentSignal = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+    dictionaryRepresentation2 = [independentSignal dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"independentSignal"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"independentSignal"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"independentSignal"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"independentSignal"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
-  v6 = [v4 independentSignal];
-  if ((v5 != 0) == (v6 == 0))
+  independentSignal = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+  independentSignal2 = [equalCopy independentSignal];
+  if ((independentSignal != 0) == (independentSignal2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
-  if (v7)
+  independentSignal3 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+  if (independentSignal3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
-    v10 = [v4 independentSignal];
-    v11 = [v9 isEqual:v10];
+    v8 = independentSignal3;
+    independentSignal4 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+    independentSignal5 = [equalCopy independentSignal];
+    v11 = [independentSignal4 isEqual:independentSignal5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
-  v6 = [v4 dependentSignals];
-  if ((v5 != 0) != (v6 == 0))
+  independentSignal = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
+  independentSignal2 = [equalCopy dependentSignals];
+  if ((independentSignal != 0) != (independentSignal2 == 0))
   {
-    v12 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
-    if (!v12)
+    dependentSignals = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
+    if (!dependentSignals)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
-    v15 = [v4 dependentSignals];
-    v16 = [v14 isEqual:v15];
+    v13 = dependentSignals;
+    dependentSignals2 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
+    dependentSignals3 = [equalCopy dependentSignals];
+    v16 = [dependentSignals2 isEqual:dependentSignals3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+  toCopy = to;
+  independentSignal = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
 
-  if (v5)
+  if (independentSignal)
   {
-    v6 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+    independentSignal2 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addDependentSignals:(id)a3
+- (void)addDependentSignals:(id)signals
 {
-  v4 = a3;
+  signalsCopy = signals;
   dependentSignals = self->_dependentSignals;
-  v8 = v4;
+  v8 = signalsCopy;
   if (!dependentSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dependentSignals;
-    self->_dependentSignals = v6;
+    self->_dependentSignals = array;
 
-    v4 = v8;
+    signalsCopy = v8;
     dependentSignals = self->_dependentSignals;
   }
 
-  [(NSArray *)dependentSignals addObject:v4];
+  [(NSArray *)dependentSignals addObject:signalsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  independentSignal = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self independentSignal];
+  v7 = [independentSignal applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self deleteIndependentSignal];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  dependentSignals = [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self dependentSignals];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:dependentSignals underConditions:policyCopy];
   [(INFERENCESchemaINFERENCEVideoPlayOnThirdPartyAppGroundTruthGenerated *)self setDependentSignals:v10];
 
   return v5;

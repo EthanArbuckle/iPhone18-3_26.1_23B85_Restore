@@ -1,52 +1,52 @@
 @interface DAEditPropertyAction
-- (DAEditPropertyAction)initWithChangedItem:(id)a3 propertyName:(id)a4 value:(id)a5 propertyNamespace:(id)a6 serverId:(id)a7;
-- (DAEditPropertyAction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DAEditPropertyAction)initWithChangedItem:(id)item propertyName:(id)name value:(id)value propertyNamespace:(id)namespace serverId:(id)id;
+- (DAEditPropertyAction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAEditPropertyAction
 
-- (DAEditPropertyAction)initWithChangedItem:(id)a3 propertyName:(id)a4 value:(id)a5 propertyNamespace:(id)a6 serverId:(id)a7
+- (DAEditPropertyAction)initWithChangedItem:(id)item propertyName:(id)name value:(id)value propertyNamespace:(id)namespace serverId:(id)id
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  nameCopy = name;
+  valueCopy = value;
+  namespaceCopy = namespace;
   v19.receiver = self;
   v19.super_class = DAEditPropertyAction;
-  v16 = [(DAAction *)&v19 initWithItemChangeType:10 changedItem:a3 serverId:a7];
+  v16 = [(DAAction *)&v19 initWithItemChangeType:10 changedItem:item serverId:id];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_propertyName, a4);
-    objc_storeStrong(&v17->_propertyNamespace, a6);
-    objc_storeStrong(&v17->_value, a5);
+    objc_storeStrong(&v16->_propertyName, name);
+    objc_storeStrong(&v17->_propertyNamespace, namespace);
+    objc_storeStrong(&v17->_value, value);
   }
 
   return v17;
 }
 
-- (DAEditPropertyAction)initWithCoder:(id)a3
+- (DAEditPropertyAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [DAEditPropertyAction initWithCoder:];
   }
 
   v13.receiver = self;
   v13.super_class = DAEditPropertyAction;
-  v5 = [(DAAction *)&v13 initWithCoder:v4];
+  v5 = [(DAAction *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyName"];
     propertyName = v5->_propertyName;
     v5->_propertyName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyNamespace"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyNamespace"];
     propertyNamespace = v5->_propertyNamespace;
     v5->_propertyNamespace = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAPropertyValue"];
     value = v5->_value;
     v5->_value = v10;
   }
@@ -54,25 +54,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [DAEditPropertyAction encodeWithCoder:];
   }
 
   v8.receiver = self;
   v8.super_class = DAEditPropertyAction;
-  [(DAAction *)&v8 encodeWithCoder:v4];
-  v5 = [(DAEditPropertyAction *)self value];
-  [v4 encodeObject:v5 forKey:@"DAPropertyValue"];
+  [(DAAction *)&v8 encodeWithCoder:coderCopy];
+  value = [(DAEditPropertyAction *)self value];
+  [coderCopy encodeObject:value forKey:@"DAPropertyValue"];
 
-  v6 = [(DAEditPropertyAction *)self propertyNamespace];
-  [v4 encodeObject:v6 forKey:@"DAPropertyNamespace"];
+  propertyNamespace = [(DAEditPropertyAction *)self propertyNamespace];
+  [coderCopy encodeObject:propertyNamespace forKey:@"DAPropertyNamespace"];
 
-  v7 = [(DAEditPropertyAction *)self propertyName];
-  [v4 encodeObject:v7 forKey:@"DAPropertyName"];
+  propertyName = [(DAEditPropertyAction *)self propertyName];
+  [coderCopy encodeObject:propertyName forKey:@"DAPropertyName"];
 }
 
 - (void)initWithCoder:.cold.1()

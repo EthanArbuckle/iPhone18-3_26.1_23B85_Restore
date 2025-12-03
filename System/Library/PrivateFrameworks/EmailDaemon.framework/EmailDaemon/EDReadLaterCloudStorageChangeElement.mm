@@ -1,23 +1,23 @@
 @interface EDReadLaterCloudStorageChangeElement
-- (EDReadLaterCloudStorageChangeElement)initWithMessageID:(id)a3 readLaterDate:(id)a4 displayDate:(id)a5;
+- (EDReadLaterCloudStorageChangeElement)initWithMessageID:(id)d readLaterDate:(id)date displayDate:(id)displayDate;
 @end
 
 @implementation EDReadLaterCloudStorageChangeElement
 
-- (EDReadLaterCloudStorageChangeElement)initWithMessageID:(id)a3 readLaterDate:(id)a4 displayDate:(id)a5
+- (EDReadLaterCloudStorageChangeElement)initWithMessageID:(id)d readLaterDate:(id)date displayDate:(id)displayDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dateCopy = date;
+  displayDateCopy = displayDate;
   v15.receiver = self;
   v15.super_class = EDReadLaterCloudStorageChangeElement;
   v12 = [(EDReadLaterCloudStorageChangeElement *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_messageID, a3);
-    objc_storeStrong(&v13->_readLaterDate, a4);
-    objc_storeStrong(&v13->_displayDate, a5);
+    objc_storeStrong(&v12->_messageID, d);
+    objc_storeStrong(&v13->_readLaterDate, date);
+    objc_storeStrong(&v13->_displayDate, displayDate);
   }
 
   return v13;

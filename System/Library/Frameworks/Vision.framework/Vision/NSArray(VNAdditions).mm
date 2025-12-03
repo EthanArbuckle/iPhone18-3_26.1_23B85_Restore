@@ -7,7 +7,7 @@
 - (void)vn_enumerateObjectsAsSubarraysOfCount:()VNAdditions usingBlock:
 {
   v6 = a4;
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7 < a3)
   {
     a3 = v7;
@@ -25,7 +25,7 @@
         a3 = v8 - v9;
       }
 
-      v10 = [a1 subarrayWithRange:{v9, a3}];
+      v10 = [self subarrayWithRange:{v9, a3}];
       v6[2](v6, v10, v9, a3, &v12);
       v11 = v12;
 

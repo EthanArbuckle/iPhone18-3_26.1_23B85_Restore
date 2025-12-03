@@ -1,76 +1,76 @@
 @interface UIRuntimeEventConnection
 - (SEL)action;
-- (UIRuntimeEventConnection)initWithCoder:(id)a3;
+- (UIRuntimeEventConnection)initWithCoder:(id)coder;
 - (id)description;
 - (id)target;
 - (void)connect;
 - (void)connectForSimulator;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIRuntimeEventConnection
 
 - (void)connect
 {
-  v3 = [(UIRuntimeConnection *)self source];
-  [v3 _connectInterfaceBuilderEventConnection:self];
+  source = [(UIRuntimeConnection *)self source];
+  [source _connectInterfaceBuilderEventConnection:self];
 }
 
 - (id)target
 {
-  v3 = [(UIRuntimeConnection *)self destination];
-  if (v3 == IBFirstResponderStandin)
+  destination = [(UIRuntimeConnection *)self destination];
+  if (destination == IBFirstResponderStandin)
   {
-    v4 = 0;
+    destination2 = 0;
   }
 
   else
   {
-    v4 = [(UIRuntimeConnection *)self destination];
+    destination2 = [(UIRuntimeConnection *)self destination];
   }
 
-  return v4;
+  return destination2;
 }
 
 - (SEL)action
 {
-  v2 = [(UIRuntimeConnection *)self label];
-  v3 = NSSelectorFromString(v2);
+  label = [(UIRuntimeConnection *)self label];
+  v3 = NSSelectorFromString(label);
 
   return v3;
 }
 
-- (UIRuntimeEventConnection)initWithCoder:(id)a3
+- (UIRuntimeEventConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIRuntimeEventConnection;
-  v5 = [(UIRuntimeConnection *)&v7 initWithCoder:v4];
+  v5 = [(UIRuntimeConnection *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->eventMask = [v4 decodeIntegerForKey:@"UIEventMask"];
+    v5->eventMask = [coderCopy decodeIntegerForKey:@"UIEventMask"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UIRuntimeEventConnection;
-  [(UIRuntimeConnection *)&v6 encodeWithCoder:v4];
+  [(UIRuntimeConnection *)&v6 encodeWithCoder:coderCopy];
   eventMask = self->eventMask;
   if (eventMask)
   {
-    [v4 encodeInteger:eventMask forKey:@"UIEventMask"];
+    [coderCopy encodeInteger:eventMask forKey:@"UIEventMask"];
   }
 }
 
 - (void)connectForSimulator
 {
-  v3 = [(UIRuntimeConnection *)self source];
-  [v3 _connectInterfaceBuilderEventConnection:self];
+  source = [(UIRuntimeConnection *)self source];
+  [source _connectInterfaceBuilderEventConnection:self];
 
   NSLog(&cfstr_CouldNotEstabl.isa, self);
 }
@@ -78,10 +78,10 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UIRuntimeConnection *)self source];
-  v5 = [(UIRuntimeConnection *)self destination];
-  v6 = [(UIRuntimeConnection *)self label];
-  v7 = [v3 stringWithFormat:@"Action event connection with source %@, target %@, and selector %@.", v4, v5, v6];
+  source = [(UIRuntimeConnection *)self source];
+  destination = [(UIRuntimeConnection *)self destination];
+  label = [(UIRuntimeConnection *)self label];
+  v7 = [v3 stringWithFormat:@"Action event connection with source %@, target %@, and selector %@.", source, destination, label];
 
   return v7;
 }

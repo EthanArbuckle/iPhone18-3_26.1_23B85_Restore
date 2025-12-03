@@ -1,28 +1,28 @@
 @interface _HKWorkoutComparisonFilter
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)_quantityTypeFromKeyPath:(id)a3 prefix:(id)a4;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsWorkoutWithActivities:(id)a3;
-- (BOOL)_acceptsWorkoutWithActivityType:(unint64_t)a3;
-- (BOOL)_acceptsWorkoutWithDuration:(double)a3;
-- (BOOL)_acceptsWorkoutWithGoalType:(unint64_t)a3;
-- (BOOL)_acceptsWorkoutWithQuantity:(id)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)_quantityTypeFromKeyPath:(id)path prefix:(id)prefix;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsWorkoutWithActivities:(id)activities;
+- (BOOL)_acceptsWorkoutWithActivityType:(unint64_t)type;
+- (BOOL)_acceptsWorkoutWithDuration:(double)duration;
+- (BOOL)_acceptsWorkoutWithGoalType:(unint64_t)type;
+- (BOOL)_acceptsWorkoutWithQuantity:(id)quantity;
+- (BOOL)acceptsDataObject:(id)object;
 - (void)configureInMemoryFilter;
 @end
 
 @implementation _HKWorkoutComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"duration"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"totalDistance") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"totalEnergyBurned") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"totalFlightsClimbed") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"totalSwimmingStrokeCount") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"workoutType") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"goal") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"goalType") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"workoutActivity"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"duration"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"totalDistance") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"totalEnergyBurned") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"totalFlightsClimbed") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"totalSwimmingStrokeCount") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"workoutType") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"goal") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"goalType") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"workoutActivity"))
   {
     v5 = 1;
   }
@@ -53,9 +53,9 @@
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v4 hasPrefix:{v13, v15}])
+          if ([pathCopy hasPrefix:{v13, v15}])
           {
-            v14 = [a1 _quantityTypeFromKeyPath:v4 prefix:v13];
+            v14 = [self _quantityTypeFromKeyPath:pathCopy prefix:v13];
             v5 = v14 != 0;
 
             goto LABEL_22;
@@ -80,7 +80,7 @@ LABEL_22:
   return v5;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -88,10 +88,10 @@ LABEL_22:
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"duration"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"workoutType") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"goalType"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"duration"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"workoutType") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"goalType"))
   {
     v4 = MEMORY[0x1E695DFD8];
 LABEL_5:
@@ -99,7 +99,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:@"goal"])
+  if ([pathCopy isEqualToString:@"goal"])
   {
     v8 = objc_alloc(MEMORY[0x1E695DFD8]);
     v9 = objc_opt_class();
@@ -108,7 +108,7 @@ LABEL_5:
 
   else
   {
-    v10 = [v3 isEqualToString:@"workoutActivity"];
+    v10 = [pathCopy isEqualToString:@"workoutActivity"];
     v4 = MEMORY[0x1E695DFD8];
     if (!v10)
     {
@@ -128,28 +128,28 @@ LABEL_6:
   return v6;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"workoutType"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"workoutType"])
   {
-    v6 = a3 == 4;
+    v6 = type == 4;
   }
 
-  else if ([v5 isEqualToString:@"goalType"])
+  else if ([pathCopy isEqualToString:@"goalType"])
   {
-    v6 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v6 = (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"workoutActivity"])
+    if (![pathCopy isEqualToString:@"workoutActivity"])
     {
-      v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:a3 forKeyPath:v5];
+      v7 = [_HKComparisonFilter isAllowedPredicateOperatorType:type forKeyPath:pathCopy];
       goto LABEL_10;
     }
 
-    v6 = a3 == 99;
+    v6 = type == 99;
   }
 
   v7 = v6;
@@ -158,14 +158,14 @@ LABEL_10:
   return v7;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v11.receiver = a1;
+  typesCopy = types;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS____HKWorkoutComparisonFilter;
-  if (objc_msgSendSuper2(&v11, sel_areValidTypes_forKeyPath_error_, v8, a4, a5))
+  if (objc_msgSendSuper2(&v11, sel_areValidTypes_forKeyPath_error_, typesCopy, path, error))
   {
-    v9 = [v8 hk_allObjectsPassTestWithError:a5 test:&__block_literal_global_138];
+    v9 = [typesCopy hk_allObjectsPassTestWithError:error test:&__block_literal_global_138];
   }
 
   else
@@ -176,19 +176,19 @@ LABEL_10:
   return v9;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v21.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS____HKWorkoutComparisonFilter;
-  if (!objc_msgSendSuper2(&v21, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v12, v13, a5, a6, a7))
+  if (!objc_msgSendSuper2(&v21, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, types, error))
   {
     goto LABEL_14;
   }
 
-  v14 = v12;
-  v15 = v13;
+  v14 = valueCopy;
+  v15 = pathCopy;
   if ([v15 isEqualToString:@"totalDistance"])
   {
     v16 = &HKQuantityTypeIdentifierDistanceWalkingRunning;
@@ -241,7 +241,7 @@ LABEL_11:
 
   if ((v18 & 1) == 0)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a7 code:3 format:{@"Invalid value '%@' for %@", v14, v15}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid value '%@' for %@", v14, v15}];
 LABEL_14:
     v19 = 0;
     goto LABEL_15;
@@ -254,82 +254,82 @@ LABEL_15:
   return v19;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"duration"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"duration"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"totalDistance"])
+  else if ([pathCopy isEqualToString:@"totalDistance"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"totalEnergyBurned"])
+  else if ([pathCopy isEqualToString:@"totalEnergyBurned"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"totalFlightsClimbed"])
+  else if ([pathCopy isEqualToString:@"totalFlightsClimbed"])
   {
     v6 = 3;
   }
 
-  else if ([v5 isEqualToString:@"totalSwimmingStrokeCount"])
+  else if ([pathCopy isEqualToString:@"totalSwimmingStrokeCount"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"workoutType"])
+  else if ([pathCopy isEqualToString:@"workoutType"])
   {
     v6 = 5;
   }
 
-  else if ([v5 isEqualToString:@"goal"])
+  else if ([pathCopy isEqualToString:@"goal"])
   {
     v6 = 6;
   }
 
-  else if ([v5 isEqualToString:@"goalType"])
+  else if ([pathCopy isEqualToString:@"goalType"])
   {
     v6 = 7;
   }
 
-  else if ([v5 hasPrefix:@"sumQuantity."])
+  else if ([pathCopy hasPrefix:@"sumQuantity."])
   {
     v6 = 8;
   }
 
-  else if ([v5 hasPrefix:@"minimumQuantity."])
+  else if ([pathCopy hasPrefix:@"minimumQuantity."])
   {
     v6 = 9;
   }
 
-  else if ([v5 hasPrefix:@"maximumQuantity."])
+  else if ([pathCopy hasPrefix:@"maximumQuantity."])
   {
     v6 = 10;
   }
 
-  else if ([v5 hasPrefix:@"averageQuantity."])
+  else if ([pathCopy hasPrefix:@"averageQuantity."])
   {
     v6 = 11;
   }
 
-  else if ([v5 isEqualToString:@"workoutActivity"])
+  else if ([pathCopy isEqualToString:@"workoutActivity"])
   {
     v6 = 12;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKWorkoutComparisonFilter.m" lineNumber:237 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKWorkoutComparisonFilter.m" lineNumber:237 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKWorkoutComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
@@ -340,17 +340,17 @@ LABEL_15:
   v21.receiver = self;
   v21.super_class = _HKWorkoutComparisonFilter;
   [(_HKComparisonFilter *)&v21 configureInMemoryFilter];
-  v3 = [(_HKComparisonFilter *)self keyPath];
-  v4 = [v3 hasPrefix:@"sumQuantity."];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
+  v4 = [keyPath hasPrefix:@"sumQuantity."];
 
   if (v4)
   {
     v5 = objc_opt_class();
-    v6 = [(_HKComparisonFilter *)self keyPath];
+    keyPath2 = [(_HKComparisonFilter *)self keyPath];
     v7 = @"sumQuantity.";
 LABEL_9:
-    v14 = [v5 _quantityTypeFromKeyPath:v6 prefix:v7];
-    v15 = [v14 copy];
+    dataTypes = [v5 _quantityTypeFromKeyPath:keyPath2 prefix:v7];
+    v15 = [dataTypes copy];
     v16 = &OBJC_IVAR____HKWorkoutComparisonFilter__quantityType;
 LABEL_10:
     v17 = *v16;
@@ -360,59 +360,59 @@ LABEL_10:
     return;
   }
 
-  v8 = [(_HKComparisonFilter *)self keyPath];
-  v9 = [v8 hasPrefix:@"minimumQuantity."];
+  keyPath3 = [(_HKComparisonFilter *)self keyPath];
+  v9 = [keyPath3 hasPrefix:@"minimumQuantity."];
 
   if (v9)
   {
     v5 = objc_opt_class();
-    v6 = [(_HKComparisonFilter *)self keyPath];
+    keyPath2 = [(_HKComparisonFilter *)self keyPath];
     v7 = @"minimumQuantity.";
     goto LABEL_9;
   }
 
-  v10 = [(_HKComparisonFilter *)self keyPath];
-  v11 = [v10 hasPrefix:@"maximumQuantity."];
+  keyPath4 = [(_HKComparisonFilter *)self keyPath];
+  v11 = [keyPath4 hasPrefix:@"maximumQuantity."];
 
   if (v11)
   {
     v5 = objc_opt_class();
-    v6 = [(_HKComparisonFilter *)self keyPath];
+    keyPath2 = [(_HKComparisonFilter *)self keyPath];
     v7 = @"maximumQuantity.";
     goto LABEL_9;
   }
 
-  v12 = [(_HKComparisonFilter *)self keyPath];
-  v13 = [v12 hasPrefix:@"averageQuantity."];
+  keyPath5 = [(_HKComparisonFilter *)self keyPath];
+  v13 = [keyPath5 hasPrefix:@"averageQuantity."];
 
   if (v13)
   {
     v5 = objc_opt_class();
-    v6 = [(_HKComparisonFilter *)self keyPath];
+    keyPath2 = [(_HKComparisonFilter *)self keyPath];
     v7 = @"averageQuantity.";
     goto LABEL_9;
   }
 
-  v19 = [(_HKComparisonFilter *)self keyPath];
-  v20 = [v19 isEqualToString:@"workoutActivity"];
+  keyPath6 = [(_HKComparisonFilter *)self keyPath];
+  v20 = [keyPath6 isEqualToString:@"workoutActivity"];
 
   if (v20)
   {
-    v6 = [(_HKComparisonFilter *)self value];
-    v14 = [(_HKComparisonFilter *)self dataTypes];
-    v15 = [v6 hk_filterRepresentationForDataTypes:v14 isSubpredicate:1];
+    keyPath2 = [(_HKComparisonFilter *)self value];
+    dataTypes = [(_HKComparisonFilter *)self dataTypes];
+    v15 = [keyPath2 hk_filterRepresentationForDataTypes:dataTypes isSubpredicate:1];
     v16 = &OBJC_IVAR____HKWorkoutComparisonFilter__subFilter;
     goto LABEL_10;
   }
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = objectCopy;
     switch([(_HKComparisonFilter *)self keyPathIntegerValue])
     {
       case 0:
@@ -420,25 +420,25 @@ LABEL_10:
         v7 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithDuration:?];
         goto LABEL_14;
       case 1:
-        v11 = [v6 totalDistance];
+        totalDistance = [v6 totalDistance];
         goto LABEL_17;
       case 2:
-        v11 = [v6 totalEnergyBurned];
+        totalDistance = [v6 totalEnergyBurned];
         goto LABEL_17;
       case 3:
-        v11 = [v6 totalFlightsClimbed];
+        totalDistance = [v6 totalFlightsClimbed];
         goto LABEL_17;
       case 4:
-        v11 = [v6 totalSwimmingStrokeCount];
+        totalDistance = [v6 totalSwimmingStrokeCount];
         goto LABEL_17;
       case 5:
         v7 = -[_HKWorkoutComparisonFilter _acceptsWorkoutWithActivityType:](self, "_acceptsWorkoutWithActivityType:", [v6 workoutActivityType]);
         goto LABEL_14;
       case 6:
-        v11 = [v6 _goal];
+        totalDistance = [v6 _goal];
 LABEL_17:
-        v9 = v11;
-        v12 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithQuantity:v11];
+        _subActivities = totalDistance;
+        v12 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithQuantity:totalDistance];
         goto LABEL_18;
       case 7:
         v7 = -[_HKWorkoutComparisonFilter _acceptsWorkoutWithGoalType:](self, "_acceptsWorkoutWithGoalType:", [v6 _goalType]);
@@ -446,36 +446,36 @@ LABEL_14:
         v8 = v7;
         break;
       case 8:
-        v9 = [v6 statisticsForType:self->_quantityType];
-        v10 = [v9 sumQuantity];
+        _subActivities = [v6 statisticsForType:self->_quantityType];
+        sumQuantity = [_subActivities sumQuantity];
         goto LABEL_21;
       case 9:
-        v9 = [v6 statisticsForType:self->_quantityType];
-        v10 = [v9 minimumQuantity];
+        _subActivities = [v6 statisticsForType:self->_quantityType];
+        sumQuantity = [_subActivities minimumQuantity];
         goto LABEL_21;
       case 10:
-        v9 = [v6 statisticsForType:self->_quantityType];
-        v10 = [v9 maximumQuantity];
+        _subActivities = [v6 statisticsForType:self->_quantityType];
+        sumQuantity = [_subActivities maximumQuantity];
         goto LABEL_21;
       case 11:
-        v9 = [v6 statisticsForType:self->_quantityType];
-        v10 = [v9 averageQuantity];
+        _subActivities = [v6 statisticsForType:self->_quantityType];
+        sumQuantity = [_subActivities averageQuantity];
 LABEL_21:
-        v14 = v10;
-        v8 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithQuantity:v10];
+        v14 = sumQuantity;
+        v8 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithQuantity:sumQuantity];
 
         goto LABEL_22;
       case 12:
-        v9 = [v6 _subActivities];
-        v12 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithActivities:v9];
+        _subActivities = [v6 _subActivities];
+        v12 = [(_HKWorkoutComparisonFilter *)self _acceptsWorkoutWithActivities:_subActivities];
 LABEL_18:
         v8 = v12;
 LABEL_22:
 
         break;
       default:
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"_HKWorkoutComparisonFilter.m" lineNumber:305 description:@"Unreachable code has been executed"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_HKWorkoutComparisonFilter.m" lineNumber:305 description:@"Unreachable code has been executed"];
 
         v8 = 0;
         break;
@@ -490,47 +490,47 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)_acceptsWorkoutWithDuration:(double)a3
+- (BOOL)_acceptsWorkoutWithDuration:(double)duration
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  [v5 doubleValue];
-  v7 = HKCompareDoubles(a3, v6);
+  value = [(_HKComparisonFilter *)self value];
+  [value doubleValue];
+  v7 = HKCompareDoubles(duration, v6);
 
-  v8 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v7, v8);
+  return HKComparisonResultMatchesPredicateOperator(v7, operatorType);
 }
 
-- (BOOL)_acceptsWorkoutWithActivityType:(unint64_t)a3
+- (BOOL)_acceptsWorkoutWithActivityType:(unint64_t)type
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(type, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsWorkoutWithGoalType:(unint64_t)a3
+- (BOOL)_acceptsWorkoutWithGoalType:(unint64_t)type
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(type, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsWorkoutWithQuantity:(id)a3
+- (BOOL)_acceptsWorkoutWithQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = [v5 _unit];
-  v7 = [v4 isCompatibleWithUnit:v6];
+  quantityCopy = quantity;
+  value = [(_HKComparisonFilter *)self value];
+  _unit = [value _unit];
+  v7 = [quantityCopy isCompatibleWithUnit:_unit];
 
   if (v7)
   {
-    v8 = HKComparisonResultMatchesPredicateOperator([v4 compare:v5], -[_HKComparisonFilter operatorType](self, "operatorType"));
+    v8 = HKComparisonResultMatchesPredicateOperator([quantityCopy compare:value], -[_HKComparisonFilter operatorType](self, "operatorType"));
   }
 
   else
@@ -541,15 +541,15 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)_acceptsWorkoutWithActivities:(id)a3
+- (BOOL)_acceptsWorkoutWithActivities:(id)activities
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  activitiesCopy = activities;
+  v5 = [activitiesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -560,7 +560,7 @@ LABEL_22:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activitiesCopy);
         }
 
         if ([(_HKFilter *)self->_subFilter acceptsWorkoutActivity:*(*(&v12 + 1) + 8 * i), v12])
@@ -570,7 +570,7 @@ LABEL_22:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activitiesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -587,13 +587,13 @@ LABEL_11:
   return v9;
 }
 
-+ (id)_quantityTypeFromKeyPath:(id)a3 prefix:(id)a4
++ (id)_quantityTypeFromKeyPath:(id)path prefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:v6])
+  pathCopy = path;
+  prefixCopy = prefix;
+  if ([pathCopy hasPrefix:prefixCopy])
   {
-    v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+    v7 = [pathCopy substringFromIndex:{objc_msgSend(prefixCopy, "length")}];
     v8 = v7;
     if (v7)
     {

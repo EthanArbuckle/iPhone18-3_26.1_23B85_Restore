@@ -1,23 +1,23 @@
 @interface SXQuickLookComponentSizer
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
 @end
 
 @implementation SXQuickLookComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = a4;
-  v7 = [(SXComponentSizer *)self componentLayout];
-  [v7 minimumHeight];
+  contextCopy = context;
+  componentLayout = [(SXComponentSizer *)self componentLayout];
+  [componentLayout minimumHeight];
   v9 = v8;
 
-  v10 = [v6 unitConverter];
+  unitConverter = [contextCopy unitConverter];
 
   if (v9)
   {
-    v11 = [(SXComponentSizer *)self componentLayout];
-    v12 = [v11 minimumHeight];
-    [v10 convertValueToPoints:{v12, v13}];
+    componentLayout2 = [(SXComponentSizer *)self componentLayout];
+    minimumHeight = [componentLayout2 minimumHeight];
+    [unitConverter convertValueToPoints:{minimumHeight, v13}];
     v15 = v14;
 
     return v15;
@@ -25,17 +25,17 @@
 
   else
   {
-    [v10 convertValueToPoints:{0x4049000000000000, 2}];
+    [unitConverter convertValueToPoints:{0x4049000000000000, 2}];
     v18 = v17;
 
-    if (v18 <= a3)
+    if (v18 <= width)
     {
       return v18;
     }
 
     else
     {
-      return a3;
+      return width;
     }
   }
 }

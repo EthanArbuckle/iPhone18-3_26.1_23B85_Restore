@@ -1,26 +1,26 @@
 @interface HUProcessedWallpaperFactory
 + (id)_defaultBackdropSettings;
-- (CGRect)_scaledCropRectForBounds:(CGRect)a3 wallpaper:(id)a4 image:(id)a5;
+- (CGRect)_scaledCropRectForBounds:(CGRect)bounds wallpaper:(id)wallpaper image:(id)image;
 - (NSArray)supportedVariants;
-- (id)_croppedImageFromWallpaper:(id)a3 image:(id)a4;
-- (id)_darkContentBlurredImageForWallpaper:(id)a3 image:(id)a4;
-- (id)_darkContentDarkModeBlurredImageForWallpaper:(id)a3 image:(id)a4;
-- (id)_imageByApplyingLayerEffects:(id)a3 toImage:(id)a4;
-- (id)_layerWithCompositingFilterType:(id)a3 color:(id)a4;
-- (id)_lightContentBlurredImageForWallpaper:(id)a3 image:(id)a4;
-- (id)_processedImageForWallpaper:(id)a3 image:(id)a4;
-- (id)applyCustomFilterForWallpaper:(id)a3 image:(id)a4;
-- (id)processedImageForVariant:(int64_t)a3 wallpaper:(id)a4 image:(id)a5;
+- (id)_croppedImageFromWallpaper:(id)wallpaper image:(id)image;
+- (id)_darkContentBlurredImageForWallpaper:(id)wallpaper image:(id)image;
+- (id)_darkContentDarkModeBlurredImageForWallpaper:(id)wallpaper image:(id)image;
+- (id)_imageByApplyingLayerEffects:(id)effects toImage:(id)image;
+- (id)_layerWithCompositingFilterType:(id)type color:(id)color;
+- (id)_lightContentBlurredImageForWallpaper:(id)wallpaper image:(id)image;
+- (id)_processedImageForWallpaper:(id)wallpaper image:(id)image;
+- (id)applyCustomFilterForWallpaper:(id)wallpaper image:(id)image;
+- (id)processedImageForVariant:(int64_t)variant wallpaper:(id)wallpaper image:(id)image;
 @end
 
 @implementation HUProcessedWallpaperFactory
 
-- (id)applyCustomFilterForWallpaper:(id)a3 image:(id)a4
+- (id)applyCustomFilterForWallpaper:(id)wallpaper image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_20D0E1CD4(v7, [v6 type] == 6);
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  selfCopy = self;
+  v9 = sub_20D0E1CD4(imageCopy, [wallpaperCopy type] == 6);
 
   return v9;
 }
@@ -43,14 +43,14 @@ void __48__HUProcessedWallpaperFactory_supportedVariants__block_invoke_2()
   qword_281122068 = &unk_282492CA8;
 }
 
-- (id)processedImageForVariant:(int64_t)a3 wallpaper:(id)a4 image:(id)a5
+- (id)processedImageForVariant:(int64_t)variant wallpaper:(id)wallpaper image:(id)image
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  v10 = imageCopy;
+  if (variant)
   {
-    if (v9)
+    if (imageCopy)
     {
       goto LABEL_3;
     }
@@ -60,24 +60,24 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  NSLog(&cfstr_AskingForOrigi.isa, v8);
+  NSLog(&cfstr_AskingForOrigi.isa, wallpaperCopy);
   if (!v10)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (a3 > 2)
+  if (variant > 2)
   {
-    if (a3 == 3)
+    if (variant == 3)
     {
-      v11 = [(HUProcessedWallpaperFactory *)self _lightContentBlurredImageForWallpaper:v8 image:v10];
+      v11 = [(HUProcessedWallpaperFactory *)self _lightContentBlurredImageForWallpaper:wallpaperCopy image:v10];
       goto LABEL_15;
     }
 
-    if (a3 == 4)
+    if (variant == 4)
     {
-      v11 = [(HUProcessedWallpaperFactory *)self _darkContentDarkModeBlurredImageForWallpaper:v8 image:v10];
+      v11 = [(HUProcessedWallpaperFactory *)self _darkContentDarkModeBlurredImageForWallpaper:wallpaperCopy image:v10];
       goto LABEL_15;
     }
 
@@ -86,18 +86,18 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (variant == 1)
   {
-    v11 = [(HUProcessedWallpaperFactory *)self _processedImageForWallpaper:v8 image:v10];
+    v11 = [(HUProcessedWallpaperFactory *)self _processedImageForWallpaper:wallpaperCopy image:v10];
     goto LABEL_15;
   }
 
-  if (a3 != 2)
+  if (variant != 2)
   {
     goto LABEL_12;
   }
 
-  v11 = [(HUProcessedWallpaperFactory *)self _darkContentBlurredImageForWallpaper:v8 image:v10];
+  v11 = [(HUProcessedWallpaperFactory *)self _darkContentBlurredImageForWallpaper:wallpaperCopy image:v10];
 LABEL_15:
   v12 = v11;
 LABEL_16:
@@ -105,24 +105,24 @@ LABEL_16:
   return v12;
 }
 
-- (CGRect)_scaledCropRectForBounds:(CGRect)a3 wallpaper:(id)a4 image:(id)a5
+- (CGRect)_scaledCropRectForBounds:(CGRect)bounds wallpaper:(id)wallpaper image:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a4;
-  v9 = a5;
-  [v9 scale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  [imageCopy scale];
   v11 = v10;
-  v12 = [v8 cropInfo];
+  cropInfo = [wallpaperCopy cropInfo];
 
-  if (v12)
+  if (cropInfo)
   {
-    v13 = [v8 cropInfo];
-    [v13 scale];
+    cropInfo2 = [wallpaperCopy cropInfo];
+    [cropInfo2 scale];
     v15 = v14;
 
-    v16 = [v8 cropInfo];
-    [v16 center];
+    cropInfo3 = [wallpaperCopy cropInfo];
+    [cropInfo3 center];
     v18 = v17;
     v20 = v19;
 
@@ -131,15 +131,15 @@ LABEL_16:
 
   else
   {
-    [v9 size];
+    [imageCopy size];
     v15 = v21 / width;
-    [v9 size];
+    [imageCopy size];
     if (v15 >= v22 / height)
     {
       v15 = v22 / height;
     }
 
-    [v9 size];
+    [imageCopy size];
     UIRectGetCenter();
     v18 = v23;
     v20 = v24;
@@ -169,14 +169,14 @@ LABEL_16:
   return result;
 }
 
-- (id)_croppedImageFromWallpaper:(id)a3 image:(id)a4
+- (id)_croppedImageFromWallpaper:(id)wallpaper image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
   [MEMORY[0x277D14D10] contentSizeForWallpaper];
   v9 = v8;
   v11 = v10;
-  [v7 hf_sizeInScreenScale];
+  [imageCopy hf_sizeInScreenScale];
   v13 = v12;
   v15 = v14;
   v16 = v11;
@@ -200,26 +200,26 @@ LABEL_16:
     }
   }
 
-  if ([v6 type] == 2 || objc_msgSend(v6, "type") == 3 || objc_msgSend(v6, "type") == 4 || objc_msgSend(v6, "type") == 5)
+  if ([wallpaperCopy type] == 2 || objc_msgSend(wallpaperCopy, "type") == 3 || objc_msgSend(wallpaperCopy, "type") == 4 || objc_msgSend(wallpaperCopy, "type") == 5)
   {
     goto LABEL_14;
   }
 
-  v23 = [v6 cropInfo];
-  if (v23)
+  cropInfo = [wallpaperCopy cropInfo];
+  if (cropInfo)
   {
   }
 
   else if (v17 == v13 && v16 == v15)
   {
 LABEL_14:
-    v21 = v7;
+    v21 = imageCopy;
     goto LABEL_15;
   }
 
-  v24 = [v7 imageWithNormalizedOrientation];
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 scale];
+  imageWithNormalizedOrientation = [imageCopy imageWithNormalizedOrientation];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v27 = v26;
   v42.width = v17;
   v42.height = v16;
@@ -229,17 +229,17 @@ LABEL_14:
   CGContextTranslateCTM(CurrentContext, 0.0, v16);
   v29 = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(v29, 1.0, -1.0);
-  [(HUProcessedWallpaperFactory *)self _scaledCropRectForBounds:v6 wallpaper:v7 image:0.0, 0.0, v9, v11];
+  [(HUProcessedWallpaperFactory *)self _scaledCropRectForBounds:wallpaperCopy wallpaper:imageCopy image:0.0, 0.0, v9, v11];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [v24 CGImage];
+  cGImage = [imageWithNormalizedOrientation CGImage];
   v43.origin.x = v31;
   v43.origin.y = v33;
   v43.size.width = v35;
   v43.size.height = v37;
-  v39 = CGImageCreateWithImageInRect(v38, v43);
+  v39 = CGImageCreateWithImageInRect(cGImage, v43);
   v40 = UIGraphicsGetCurrentContext();
   v44.origin.x = 0.0;
   v44.origin.y = 0.0;
@@ -255,19 +255,19 @@ LABEL_15:
   return v21;
 }
 
-- (id)_processedImageForWallpaper:(id)a3 image:(id)a4
+- (id)_processedImageForWallpaper:(id)wallpaper image:(id)image
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HUProcessedWallpaperFactory *)self _croppedImageFromWallpaper:v6 image:a4];
-  if ([v6 type] == 4 || objc_msgSend(v6, "type") == 5 || objc_msgSend(v6, "type") == 1 || objc_msgSend(v6, "type") == 6)
+  wallpaperCopy = wallpaper;
+  v7 = [(HUProcessedWallpaperFactory *)self _croppedImageFromWallpaper:wallpaperCopy image:image];
+  if ([wallpaperCopy type] == 4 || objc_msgSend(wallpaperCopy, "type") == 5 || objc_msgSend(wallpaperCopy, "type") == 1 || objc_msgSend(wallpaperCopy, "type") == 6)
   {
     v8 = v7;
   }
 
   else
   {
-    if ([v6 type] == 2)
+    if ([wallpaperCopy type] == 2)
     {
       v10 = 0.04;
       v11 = 0.08;
@@ -275,7 +275,7 @@ LABEL_15:
 
     else
     {
-      v12 = [v6 type] == 3;
+      v12 = [wallpaperCopy type] == 3;
       v11 = dbl_20D5CB2B0[v12];
       v10 = dbl_20D5CB2C0[v12];
     }
@@ -297,58 +297,58 @@ LABEL_15:
   return v8;
 }
 
-- (id)_darkContentBlurredImageForWallpaper:(id)a3 image:(id)a4
+- (id)_darkContentBlurredImageForWallpaper:(id)wallpaper image:(id)image
 {
-  v4 = a4;
-  [v4 scale];
+  imageCopy = image;
+  [imageCopy scale];
   v6 = v5;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   if (v6 != v9)
   {
-    [v4 scale];
+    [imageCopy scale];
     v11 = v10;
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     NSLog(&cfstr_WallpaperProce.isa, v11, v13);
   }
 
-  v14 = [objc_opt_class() _defaultBackdropSettings];
-  [v14 setSaturationDeltaFactor:5.0];
+  _defaultBackdropSettings = [objc_opt_class() _defaultBackdropSettings];
+  [_defaultBackdropSettings setSaturationDeltaFactor:5.0];
   v15 = [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
-  [v14 setColorTint:v15];
+  [_defaultBackdropSettings setColorTint:v15];
 
-  [v14 setColorTintAlpha:0.8];
-  v16 = [v4 _applyBackdropViewSettings:v14];
+  [_defaultBackdropSettings setColorTintAlpha:0.8];
+  v16 = [imageCopy _applyBackdropViewSettings:_defaultBackdropSettings];
 
   return v16;
 }
 
-- (id)_darkContentDarkModeBlurredImageForWallpaper:(id)a3 image:(id)a4
+- (id)_darkContentDarkModeBlurredImageForWallpaper:(id)wallpaper image:(id)image
 {
-  v4 = a4;
-  v5 = [objc_opt_class() _defaultBackdropSettings];
-  [v5 setSaturationDeltaFactor:5.0];
+  imageCopy = image;
+  _defaultBackdropSettings = [objc_opt_class() _defaultBackdropSettings];
+  [_defaultBackdropSettings setSaturationDeltaFactor:5.0];
   v6 = [MEMORY[0x277D75348] colorWithWhite:0.2 alpha:1.0];
-  [v5 setColorTint:v6];
+  [_defaultBackdropSettings setColorTint:v6];
 
-  [v5 setColorTintAlpha:0.8];
-  v7 = [v4 _applyBackdropViewSettings:v5];
+  [_defaultBackdropSettings setColorTintAlpha:0.8];
+  v7 = [imageCopy _applyBackdropViewSettings:_defaultBackdropSettings];
 
   return v7;
 }
 
-- (id)_lightContentBlurredImageForWallpaper:(id)a3 image:(id)a4
+- (id)_lightContentBlurredImageForWallpaper:(id)wallpaper image:(id)image
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [objc_opt_class() _defaultBackdropSettings];
-  [v6 setRenderingHint:1];
-  [v6 setSaturationDeltaFactor:4.0];
-  [v6 setColorTint:0];
-  [v6 setColorTintAlpha:0.0];
+  imageCopy = image;
+  _defaultBackdropSettings = [objc_opt_class() _defaultBackdropSettings];
+  [_defaultBackdropSettings setRenderingHint:1];
+  [_defaultBackdropSettings setSaturationDeltaFactor:4.0];
+  [_defaultBackdropSettings setColorTint:0];
+  [_defaultBackdropSettings setColorTintAlpha:0.0];
   v7 = *MEMORY[0x277CDA5C0];
   v8 = [MEMORY[0x277D75348] colorWithWhite:0.305882353 alpha:0.3];
   v9 = [(HUProcessedWallpaperFactory *)self _layerWithCompositingFilterType:v7 color:v8];
@@ -360,7 +360,7 @@ LABEL_15:
   v17[0] = v9;
   v17[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v14 = [v5 _applyBackdropViewSettings:v6];
+  v14 = [imageCopy _applyBackdropViewSettings:_defaultBackdropSettings];
 
   v15 = [(HUProcessedWallpaperFactory *)self _imageByApplyingLayerEffects:v13 toImage:v14];
 
@@ -382,44 +382,44 @@ LABEL_15:
   return v2;
 }
 
-- (id)_layerWithCompositingFilterType:(id)a3 color:(id)a4
+- (id)_layerWithCompositingFilterType:(id)type color:(id)color
 {
   v5 = MEMORY[0x277CD9ED0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 layer];
-  v9 = [MEMORY[0x277CD9EA0] filterWithType:v7];
+  colorCopy = color;
+  typeCopy = type;
+  layer = [v5 layer];
+  v9 = [MEMORY[0x277CD9EA0] filterWithType:typeCopy];
 
-  [v8 setCompositingFilter:v9];
-  v10 = [v6 CGColor];
+  [layer setCompositingFilter:v9];
+  cGColor = [colorCopy CGColor];
 
-  [v8 setBackgroundColor:v10];
+  [layer setBackgroundColor:cGColor];
 
-  return v8;
+  return layer;
 }
 
-- (id)_imageByApplyingLayerEffects:(id)a3 toImage:(id)a4
+- (id)_imageByApplyingLayerEffects:(id)effects toImage:(id)image
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v6 hf_sizeInScreenScale];
+  effectsCopy = effects;
+  imageCopy = image;
+  [imageCopy hf_sizeInScreenScale];
   v8 = v7;
   v10 = v9;
   v11 = *MEMORY[0x277CBF348];
   v12 = *(MEMORY[0x277CBF348] + 8);
-  v13 = [MEMORY[0x277CD9ED0] layer];
-  [v13 setContents:{objc_msgSend(v6, "CGImage")}];
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
-  [v13 setContentsScale:?];
+  layer = [MEMORY[0x277CD9ED0] layer];
+  [layer setContents:{objc_msgSend(imageCopy, "CGImage")}];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  [layer setContentsScale:?];
 
-  [v13 setFrame:{v11, v12, v8, v10}];
+  [layer setFrame:{v11, v12, v8, v10}];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v5;
+  v15 = effectsCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
@@ -436,7 +436,7 @@ LABEL_15:
 
         v20 = *(*(&v27 + 1) + 8 * i);
         [v20 setFrame:{v11, v12, v8, v10}];
-        [v13 addSublayer:v20];
+        [layer addSublayer:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -450,8 +450,8 @@ LABEL_15:
   v25[1] = 3221225472;
   v25[2] = __68__HUProcessedWallpaperFactory__imageByApplyingLayerEffects_toImage___block_invoke;
   v25[3] = &unk_277DC3310;
-  v26 = v13;
-  v22 = v13;
+  v26 = layer;
+  v22 = layer;
   v23 = [v21 imageWithActions:v25];
 
   return v23;

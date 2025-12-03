@@ -1,58 +1,58 @@
 @interface KTDeviceStatus
-- (KTDeviceStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KTDeviceStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTDeviceStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(KTDeviceStatus *)self idms];
+  coderCopy = coder;
+  idms = [(KTDeviceStatus *)self idms];
 
-  if (v4)
+  if (idms)
   {
-    v5 = [(KTDeviceStatus *)self idms];
-    [v13 encodeObject:v5 forKey:@"idms"];
+    idms2 = [(KTDeviceStatus *)self idms];
+    [coderCopy encodeObject:idms2 forKey:@"idms"];
   }
 
-  v6 = [(KTDeviceStatus *)self loggableData];
+  loggableData = [(KTDeviceStatus *)self loggableData];
 
-  if (v6)
+  if (loggableData)
   {
-    v7 = [(KTDeviceStatus *)self loggableData];
-    [v13 encodeObject:v7 forKey:@"loggableData"];
+    loggableData2 = [(KTDeviceStatus *)self loggableData];
+    [coderCopy encodeObject:loggableData2 forKey:@"loggableData"];
   }
 
-  v8 = [(KTDeviceStatus *)self loggableDataError];
+  loggableDataError = [(KTDeviceStatus *)self loggableDataError];
 
-  v9 = v13;
-  if (v8)
+  v9 = coderCopy;
+  if (loggableDataError)
   {
     v10 = MEMORY[0x1E697AAC0];
-    v11 = [(KTDeviceStatus *)self loggableDataError];
-    v12 = [v10 cleanseErrorForXPC:v11];
-    [v13 encodeObject:v12 forKey:@"loggableDataError"];
+    loggableDataError2 = [(KTDeviceStatus *)self loggableDataError];
+    v12 = [v10 cleanseErrorForXPC:loggableDataError2];
+    [coderCopy encodeObject:v12 forKey:@"loggableDataError"];
 
-    v9 = v13;
+    v9 = coderCopy;
   }
 }
 
-- (KTDeviceStatus)initWithCoder:(id)a3
+- (KTDeviceStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = KTDeviceStatus;
   v5 = [(KTDeviceStatus *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idms"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idms"];
     [(KTDeviceStatus *)v5 setIdms:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loggableData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loggableData"];
     [(KTDeviceStatus *)v5 setLoggableData:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loggableDataError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loggableDataError"];
     [(KTDeviceStatus *)v5 setLoggableDataError:v8];
 
     v9 = v5;

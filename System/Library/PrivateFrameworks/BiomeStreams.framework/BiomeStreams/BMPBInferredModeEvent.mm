@@ -1,24 +1,24 @@
 @interface BMPBInferredModeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsModeType:(id)a3;
-- (int)StringAsOrigin:(id)a3;
+- (int)StringAsModeType:(id)type;
+- (int)StringAsOrigin:(id)origin;
 - (int)modeType;
 - (int)origin;
 - (unint64_t)hash;
-- (void)addSerializedTriggers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasIsAutomationEnabled:(BOOL)a3;
-- (void)setHasIsStart:(BOOL)a3;
-- (void)setHasModeType:(BOOL)a3;
-- (void)setHasOrigin:(BOOL)a3;
-- (void)setHasShouldSuggestTriggers:(BOOL)a3;
-- (void)setHasUiLocation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSerializedTriggers:(id)triggers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasIsAutomationEnabled:(BOOL)enabled;
+- (void)setHasIsStart:(BOOL)start;
+- (void)setHasModeType:(BOOL)type;
+- (void)setHasOrigin:(BOOL)origin;
+- (void)setHasShouldSuggestTriggers:(BOOL)triggers;
+- (void)setHasUiLocation:(BOOL)location;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBInferredModeEvent
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)setHasOrigin:(BOOL)a3
+- (void)setHasOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
     v3 = 16;
   }
@@ -51,95 +51,95 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsOrigin:(id)a3
+- (int)StringAsOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"Unknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([originCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CoreMotion"])
+  else if ([originCopy isEqualToString:@"CoreMotion"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CarPlay"])
+  else if ([originCopy isEqualToString:@"CarPlay"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DNDWD"])
+  else if ([originCopy isEqualToString:@"DNDWD"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([originCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Sleep"])
+  else if ([originCopy isEqualToString:@"Sleep"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AppLaunch"])
+  else if ([originCopy isEqualToString:@"AppLaunch"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"WatchWorkout"])
+  else if ([originCopy isEqualToString:@"WatchWorkout"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"WFHClassifier"])
+  else if ([originCopy isEqualToString:@"WFHClassifier"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Calendar"])
+  else if ([originCopy isEqualToString:@"Calendar"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AnchorModel"])
+  else if ([originCopy isEqualToString:@"AnchorModel"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"AppLaunchModel"])
+  else if ([originCopy isEqualToString:@"AppLaunchModel"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ScreenShare"])
+  else if ([originCopy isEqualToString:@"ScreenShare"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ScreenRecording"])
+  else if ([originCopy isEqualToString:@"ScreenRecording"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"GameControllerConnected"])
+  else if ([originCopy isEqualToString:@"GameControllerConnected"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"POI"])
+  else if ([originCopy isEqualToString:@"POI"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"BacklightData"])
+  else if ([originCopy isEqualToString:@"BacklightData"])
   {
     v4 = 16;
   }
@@ -152,9 +152,9 @@
   return v4;
 }
 
-- (void)setHasIsAutomationEnabled:(BOOL)a3
+- (void)setHasIsAutomationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsStart:(BOOL)a3
+- (void)setHasIsStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 64;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasUiLocation:(BOOL)a3
+- (void)setHasUiLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 4;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -212,22 +212,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSerializedTriggers:(id)a3
+- (void)addSerializedTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   serializedTriggers = self->_serializedTriggers;
-  v8 = v4;
+  v8 = triggersCopy;
   if (!serializedTriggers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_serializedTriggers;
     self->_serializedTriggers = v6;
 
-    v4 = v8;
+    triggersCopy = v8;
     serializedTriggers = self->_serializedTriggers;
   }
 
-  [(NSMutableArray *)serializedTriggers addObject:v4];
+  [(NSMutableArray *)serializedTriggers addObject:triggersCopy];
 }
 
 - (int)modeType
@@ -243,9 +243,9 @@
   }
 }
 
-- (void)setHasModeType:(BOOL)a3
+- (void)setHasModeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -258,90 +258,90 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsModeType:(id)a3
+- (int)StringAsModeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Custom"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Custom"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Default"])
+  else if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([typeCopy isEqualToString:@"Home"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Working"])
+  else if ([typeCopy isEqualToString:@"Working"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Exercising"])
+  else if ([typeCopy isEqualToString:@"Exercising"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Driving"])
+  else if ([typeCopy isEqualToString:@"Driving"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Bedtime"])
+  else if ([typeCopy isEqualToString:@"Bedtime"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Gaming"])
+  else if ([typeCopy isEqualToString:@"Gaming"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Reading"])
+  else if ([typeCopy isEqualToString:@"Reading"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Traveling"])
+  else if ([typeCopy isEqualToString:@"Traveling"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Learning"])
+  else if ([typeCopy isEqualToString:@"Learning"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Streaming"])
+  else if ([typeCopy isEqualToString:@"Streaming"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ScreenSharing"])
+  else if ([typeCopy isEqualToString:@"ScreenSharing"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ClassicDND"])
+  else if ([typeCopy isEqualToString:@"ClassicDND"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ScreenRecording"])
+  else if ([typeCopy isEqualToString:@"ScreenRecording"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"AirPlayMirroring"])
+  else if ([typeCopy isEqualToString:@"AirPlayMirroring"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"Mindfulness"])
+  else if ([typeCopy isEqualToString:@"Mindfulness"])
   {
     v4 = 16;
   }
@@ -354,9 +354,9 @@
   return v4;
 }
 
-- (void)setHasShouldSuggestTriggers:(BOOL)a3
+- (void)setHasShouldSuggestTriggers:(BOOL)triggers
 {
-  if (a3)
+  if (triggers)
   {
     v3 = 0x80;
   }
@@ -375,25 +375,25 @@
   v8.receiver = self;
   v8.super_class = BMPBInferredModeEvent;
   v4 = [(BMPBInferredModeEvent *)&v8 description];
-  v5 = [(BMPBInferredModeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBInferredModeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   modeIdentifier = self->_modeIdentifier;
   if (modeIdentifier)
   {
-    [v3 setObject:modeIdentifier forKey:@"modeIdentifier"];
+    [dictionary setObject:modeIdentifier forKey:@"modeIdentifier"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -409,20 +409,20 @@
       v7 = off_1E6E52AB8[v6];
     }
 
-    [v3 setObject:v7 forKey:@"origin"];
+    [dictionary setObject:v7 forKey:@"origin"];
   }
 
   originBundleId = self->_originBundleId;
   if (originBundleId)
   {
-    [v3 setObject:originBundleId forKey:@"originBundleId"];
+    [dictionary setObject:originBundleId forKey:@"originBundleId"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAutomationEnabled];
-    [v3 setObject:v10 forKey:@"isAutomationEnabled"];
+    [dictionary setObject:v10 forKey:@"isAutomationEnabled"];
 
     has = self->_has;
   }
@@ -430,26 +430,26 @@
   if ((has & 0x40) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_isStart];
-    [v3 setObject:v11 forKey:@"isStart"];
+    [dictionary setObject:v11 forKey:@"isStart"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   originAnchorType = self->_originAnchorType;
   if (originAnchorType)
   {
-    [v3 setObject:originAnchorType forKey:@"originAnchorType"];
+    [dictionary setObject:originAnchorType forKey:@"originAnchorType"];
   }
 
   v14 = self->_has;
   if ((v14 & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_uiLocation];
-    [v3 setObject:v15 forKey:@"uiLocation"];
+    [dictionary setObject:v15 forKey:@"uiLocation"];
 
     v14 = self->_has;
   }
@@ -457,13 +457,13 @@
   if ((v14 & 2) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidenceScore];
-    [v3 setObject:v16 forKey:@"confidenceScore"];
+    [dictionary setObject:v16 forKey:@"confidenceScore"];
   }
 
   serializedTriggers = self->_serializedTriggers;
   if (serializedTriggers)
   {
-    [v3 setObject:serializedTriggers forKey:@"serializedTriggers"];
+    [dictionary setObject:serializedTriggers forKey:@"serializedTriggers"];
   }
 
   v18 = self->_has;
@@ -480,7 +480,7 @@
       v20 = off_1E6E52B48[modeType];
     }
 
-    [v3 setObject:v20 forKey:@"modeType"];
+    [dictionary setObject:v20 forKey:@"modeType"];
 
     v18 = self->_has;
   }
@@ -488,22 +488,22 @@
   if (v18 < 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldSuggestTriggers];
-    [v3 setObject:v21 forKey:@"shouldSuggestTriggers"];
+    [dictionary setObject:v21 forKey:@"shouldSuggestTriggers"];
   }
 
   userModeName = self->_userModeName;
   if (userModeName)
   {
-    [v3 setObject:userModeName forKey:@"userModeName"];
+    [dictionary setObject:userModeName forKey:@"userModeName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -615,81 +615,81 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 92) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 92) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_modeIdentifier)
   {
-    [v4 setModeIdentifier:?];
-    v4 = v13;
+    [toCopy setModeIdentifier:?];
+    toCopy = v13;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 11) = self->_origin;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 11) = self->_origin;
+    *(toCopy + 92) |= 0x10u;
   }
 
   if (self->_originBundleId)
   {
     [v13 setOriginBundleId:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 88) = self->_isAutomationEnabled;
-    *(v4 + 92) |= 0x20u;
+    *(toCopy + 88) = self->_isAutomationEnabled;
+    *(toCopy + 92) |= 0x20u;
     has = self->_has;
   }
 
   if ((has & 0x40) != 0)
   {
-    *(v4 + 89) = self->_isStart;
-    *(v4 + 92) |= 0x40u;
+    *(toCopy + 89) = self->_isStart;
+    *(toCopy + 92) |= 0x40u;
   }
 
   if (self->_uuid)
   {
     [v13 setUuid:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_originAnchorType)
   {
     [v13 setOriginAnchorType:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    v4[3] = self->_uiLocation;
-    *(v4 + 92) |= 4u;
+    toCopy[3] = self->_uiLocation;
+    *(toCopy + 92) |= 4u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    v4[2] = *&self->_confidenceScore;
-    *(v4 + 92) |= 2u;
+    toCopy[2] = *&self->_confidenceScore;
+    *(toCopy + 92) |= 2u;
   }
 
   if ([(BMPBInferredModeEvent *)self serializedTriggersCount])
   {
     [v13 clearSerializedTriggers];
-    v7 = [(BMPBInferredModeEvent *)self serializedTriggersCount];
-    if (v7)
+    serializedTriggersCount = [(BMPBInferredModeEvent *)self serializedTriggersCount];
+    if (serializedTriggersCount)
     {
-      v8 = v7;
+      v8 = serializedTriggersCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(BMPBInferredModeEvent *)self serializedTriggersAtIndex:i];
@@ -720,10 +720,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -731,7 +731,7 @@
     *(v5 + 92) |= 1u;
   }
 
-  v7 = [(NSString *)self->_modeIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_modeIdentifier copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -741,7 +741,7 @@
     *(v6 + 92) |= 0x10u;
   }
 
-  v9 = [(NSString *)self->_originBundleId copyWithZone:a3];
+  v9 = [(NSString *)self->_originBundleId copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
@@ -759,11 +759,11 @@
     *(v6 + 92) |= 0x40u;
   }
 
-  v12 = [(NSString *)self->_uuid copyWithZone:a3];
+  v12 = [(NSString *)self->_uuid copyWithZone:zone];
   v13 = *(v6 + 80);
   *(v6 + 80) = v12;
 
-  v14 = [(NSString *)self->_originAnchorType copyWithZone:a3];
+  v14 = [(NSString *)self->_originAnchorType copyWithZone:zone];
   v15 = *(v6 + 48);
   *(v6 + 48) = v14;
 
@@ -800,7 +800,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{a3, v28}];
+        v22 = [*(*(&v28 + 1) + 8 * i) copyWithZone:{zone, v28}];
         [v6 addSerializedTriggers:v22];
       }
 
@@ -824,7 +824,7 @@
     *(v6 + 92) |= 0x80u;
   }
 
-  v24 = [(NSString *)self->_userModeName copyWithZone:a3, v28];
+  v24 = [(NSString *)self->_userModeName copyWithZone:zone, v28];
   v25 = *(v6 + 72);
   *(v6 + 72) = v24;
 
@@ -832,31 +832,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_61;
   }
 
   has = self->_has;
-  v6 = *(v4 + 92);
+  v6 = *(equalCopy + 92);
   if (has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_61;
   }
 
   modeIdentifier = self->_modeIdentifier;
-  if (modeIdentifier | *(v4 + 4))
+  if (modeIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)modeIdentifier isEqual:?])
     {
@@ -866,22 +866,22 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 92);
+  v8 = *(equalCopy + 92);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0 || self->_origin != *(v4 + 11))
+    if ((*(equalCopy + 92) & 0x10) == 0 || self->_origin != *(equalCopy + 11))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 0x10) != 0)
+  else if ((*(equalCopy + 92) & 0x10) != 0)
   {
     goto LABEL_61;
   }
 
   originBundleId = self->_originBundleId;
-  if (originBundleId | *(v4 + 7))
+  if (originBundleId | *(equalCopy + 7))
   {
     if (![(NSString *)originBundleId isEqual:?])
     {
@@ -891,69 +891,69 @@
     has = self->_has;
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 92) & 0x20) == 0)
+    if ((*(equalCopy + 92) & 0x20) == 0)
     {
       goto LABEL_61;
     }
 
-    v15 = *(v4 + 88);
+    v15 = *(equalCopy + 88);
     if (self->_isAutomationEnabled)
     {
-      if ((*(v4 + 88) & 1) == 0)
+      if ((*(equalCopy + 88) & 1) == 0)
       {
         goto LABEL_61;
       }
     }
 
-    else if (*(v4 + 88))
+    else if (*(equalCopy + 88))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 0x20) != 0)
+  else if ((*(equalCopy + 92) & 0x20) != 0)
   {
     goto LABEL_61;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 92) & 0x40) == 0)
+    if ((*(equalCopy + 92) & 0x40) == 0)
     {
       goto LABEL_61;
     }
 
-    v16 = *(v4 + 89);
+    v16 = *(equalCopy + 89);
     if (self->_isStart)
     {
-      if ((*(v4 + 89) & 1) == 0)
+      if ((*(equalCopy + 89) & 1) == 0)
       {
         goto LABEL_61;
       }
     }
 
-    else if (*(v4 + 89))
+    else if (*(equalCopy + 89))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 0x40) != 0)
+  else if ((*(equalCopy + 92) & 0x40) != 0)
   {
     goto LABEL_61;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 10) && ![(NSString *)uuid isEqual:?])
+  if (uuid | *(equalCopy + 10) && ![(NSString *)uuid isEqual:?])
   {
     goto LABEL_61;
   }
 
   originAnchorType = self->_originAnchorType;
-  if (originAnchorType | *(v4 + 6))
+  if (originAnchorType | *(equalCopy + 6))
   {
     if (![(NSString *)originAnchorType isEqual:?])
     {
@@ -962,35 +962,35 @@
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 92);
+  v14 = *(equalCopy + 92);
   if ((v13 & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_uiLocation != *(v4 + 3))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_uiLocation != *(equalCopy + 3))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_61;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_confidenceScore != *(v4 + 2))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_confidenceScore != *(equalCopy + 2))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_61;
   }
 
   serializedTriggers = self->_serializedTriggers;
-  if (serializedTriggers | *(v4 + 8))
+  if (serializedTriggers | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)serializedTriggers isEqual:?])
     {
@@ -1000,23 +1000,23 @@
     v13 = self->_has;
   }
 
-  v18 = *(v4 + 92);
+  v18 = *(equalCopy + 92);
   if ((v13 & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) == 0 || self->_modeType != *(v4 + 10))
+    if ((*(equalCopy + 92) & 8) == 0 || self->_modeType != *(equalCopy + 10))
     {
       goto LABEL_61;
     }
   }
 
-  else if ((*(v4 + 92) & 8) != 0)
+  else if ((*(equalCopy + 92) & 8) != 0)
   {
     goto LABEL_61;
   }
 
   if ((v13 & 0x80) == 0)
   {
-    if ((*(v4 + 92) & 0x80) == 0)
+    if ((*(equalCopy + 92) & 0x80) == 0)
     {
       goto LABEL_58;
     }
@@ -1026,28 +1026,28 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if ((*(v4 + 92) & 0x80) == 0)
+  if ((*(equalCopy + 92) & 0x80) == 0)
   {
     goto LABEL_61;
   }
 
-  v22 = *(v4 + 90);
+  v22 = *(equalCopy + 90);
   if (self->_shouldSuggestTriggers)
   {
-    if ((*(v4 + 90) & 1) == 0)
+    if ((*(equalCopy + 90) & 1) == 0)
     {
       goto LABEL_61;
     }
   }
 
-  else if (*(v4 + 90))
+  else if (*(equalCopy + 90))
   {
     goto LABEL_61;
   }
 
 LABEL_58:
   userModeName = self->_userModeName;
-  if (userModeName | *(v4 + 9))
+  if (userModeName | *(equalCopy + 9))
   {
     v20 = [(NSString *)userModeName isEqual:?];
   }
@@ -1204,18 +1204,18 @@ LABEL_27:
   return v26 ^ v5 ^ v25 ^ v24 ^ v9 ^ v10 ^ v11 ^ v12 ^ v15 ^ v19 ^ v20 ^ v21 ^ v22 ^ [(NSString *)self->_userModeName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 92))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 92))
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBInferredModeEvent *)self setModeIdentifier:?];
   }

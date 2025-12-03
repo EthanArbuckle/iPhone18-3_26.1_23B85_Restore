@@ -3,42 +3,42 @@
 - (NSString)accessibilityAnnouncement;
 - (NSString)message;
 - (_TtC8Freeform32CRLPersistentFollowHUDController)init;
-- (_TtC8Freeform32CRLPersistentFollowHUDController)initWithManager:(id)a3 followingParticipant:(id)a4 delegate:(id)a5 canvasWidth:(double)a6 accessibilityExperienceCoordinator:(id)a7 stopButtonClickedHandler:(id)a8;
+- (_TtC8Freeform32CRLPersistentFollowHUDController)initWithManager:(id)manager followingParticipant:(id)participant delegate:(id)delegate canvasWidth:(double)width accessibilityExperienceCoordinator:(id)coordinator stopButtonClickedHandler:(id)handler;
 - (_TtP8Freeform23CRLStatusHUDManaging_mi_)manager;
-- (id)viewControllerForLargeContentViewerInteraction:(id)a3;
-- (void)setAccessibilityAnnouncement:(id)a3;
-- (void)setContainerView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setHeightConstraint:(id)a3;
-- (void)setHideTimer:(id)a3;
-- (void)setHudView:(id)a3;
-- (void)setSwipeGestureRecognizer:(id)a3;
-- (void)setTimeStartedShowing:(id)a3;
-- (void)stopButtonClickedWithSender:(id)a3;
+- (id)viewControllerForLargeContentViewerInteraction:(id)interaction;
+- (void)setAccessibilityAnnouncement:(id)announcement;
+- (void)setContainerView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setHeightConstraint:(id)constraint;
+- (void)setHideTimer:(id)timer;
+- (void)setHudView:(id)view;
+- (void)setSwipeGestureRecognizer:(id)recognizer;
+- (void)setTimeStartedShowing:(id)showing;
+- (void)stopButtonClickedWithSender:(id)sender;
 - (void)updateForAppearance;
 @end
 
 @implementation CRLPersistentFollowHUDController
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_contentView);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_contentView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_contentView) = view;
+  viewCopy = view;
 }
 
-- (void)setHudView:(id)a3
+- (void)setHudView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hudView);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hudView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hudView) = view;
+  viewCopy = view;
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_containerView);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_containerView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_containerView) = view;
+  viewCopy = view;
 }
 
 - (_TtP8Freeform23CRLStatusHUDManaging_mi_)manager
@@ -50,7 +50,7 @@
 
 - (NSString)message
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A4C94C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -80,12 +80,12 @@
   return v10;
 }
 
-- (void)setTimeStartedShowing:(id)a3
+- (void)setTimeStartedShowing:(id)showing
 {
   v5 = sub_1005B981C(&qword_101A0A320);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (showing)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Date();
@@ -100,16 +100,16 @@
 
   v10 = OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_timeStartedShowing;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_100015CDC(v7, self + v10);
   swift_endAccess();
 }
 
-- (void)setHideTimer:(id)a3
+- (void)setHideTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hideTimer);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hideTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_hideTimer) = timer;
+  timerCopy = timer;
 }
 
 - (NSString)accessibilityAnnouncement
@@ -128,9 +128,9 @@
   return v2;
 }
 
-- (void)setAccessibilityAnnouncement:(id)a3
+- (void)setAccessibilityAnnouncement:(id)announcement
 {
-  if (a3)
+  if (announcement)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -146,26 +146,26 @@
   v6[1] = v5;
 }
 
-- (void)setSwipeGestureRecognizer:(id)a3
+- (void)setSwipeGestureRecognizer:(id)recognizer
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_swipeGestureRecognizer);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_swipeGestureRecognizer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_swipeGestureRecognizer) = recognizer;
+  recognizerCopy = recognizer;
 }
 
-- (void)setHeightConstraint:(id)a3
+- (void)setHeightConstraint:(id)constraint
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_heightConstraint);
-  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_heightConstraint) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_heightConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
-- (void)stopButtonClickedWithSender:(id)a3
+- (void)stopButtonClickedWithSender:(id)sender
 {
   v3 = *(self + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_stopButtonClickedHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10067F2EC(v3);
     v3(v5);
 
@@ -173,9 +173,9 @@
   }
 }
 
-- (_TtC8Freeform32CRLPersistentFollowHUDController)initWithManager:(id)a3 followingParticipant:(id)a4 delegate:(id)a5 canvasWidth:(double)a6 accessibilityExperienceCoordinator:(id)a7 stopButtonClickedHandler:(id)a8
+- (_TtC8Freeform32CRLPersistentFollowHUDController)initWithManager:(id)manager followingParticipant:(id)participant delegate:(id)delegate canvasWidth:(double)width accessibilityExperienceCoordinator:(id)coordinator stopButtonClickedHandler:(id)handler
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(handler);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -189,10 +189,10 @@
   }
 
   swift_unknownObjectRetain();
-  v15 = a4;
+  participantCopy = participant;
   swift_unknownObjectRetain();
-  v16 = a7;
-  return sub_100A4E908(a3, v15, a5, a7, v13, v14, a6);
+  coordinatorCopy = coordinator;
+  return sub_100A4E908(manager, participantCopy, delegate, coordinator, v13, v14, width);
 }
 
 - (_TtC8Freeform32CRLPersistentFollowHUDController)init
@@ -204,16 +204,16 @@
 
 - (void)updateForAppearance
 {
-  v5 = self;
+  selfCopy = self;
   sub_10105B41C();
-  v2 = *(v5 + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_contentView);
+  v2 = *(selfCopy + OBJC_IVAR____TtC8Freeform32CRLPersistentFollowHUDController_contentView);
   v3 = sub_100A4CC7C();
-  v4 = [v3 UIColor];
+  uIColor = [v3 UIColor];
 
-  [v2 setBackgroundColor:v4];
+  [v2 setBackgroundColor:uIColor];
 }
 
-- (id)viewControllerForLargeContentViewerInteraction:(id)a3
+- (id)viewControllerForLargeContentViewerInteraction:(id)interaction
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)

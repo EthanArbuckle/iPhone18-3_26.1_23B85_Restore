@@ -1,38 +1,38 @@
 @interface SKUIPreviewContainerViewController
-- (void)setChildViewController:(id)a3;
+- (void)setChildViewController:(id)controller;
 @end
 
 @implementation SKUIPreviewContainerViewController
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v12 = a3;
+  controllerCopy = controller;
   childViewController = self->_childViewController;
   if (childViewController)
   {
     [(UIViewController *)childViewController removeFromParentViewController];
-    v6 = [(UIViewController *)self->_childViewController view];
-    [v6 removeFromSuperview];
+    view = [(UIViewController *)self->_childViewController view];
+    [view removeFromSuperview];
 
     [(SKUIPreviewContainerViewController *)self _setExistingNavigationItem:0];
   }
 
-  objc_storeStrong(&self->_childViewController, a3);
-  v7 = v12;
-  if (v12)
+  objc_storeStrong(&self->_childViewController, controller);
+  v7 = controllerCopy;
+  if (controllerCopy)
   {
-    [(SKUIPreviewContainerViewController *)self addChildViewController:v12];
-    v8 = [v12 view];
-    [v8 setAutoresizingMask:18];
+    [(SKUIPreviewContainerViewController *)self addChildViewController:controllerCopy];
+    view2 = [controllerCopy view];
+    [view2 setAutoresizingMask:18];
 
-    v9 = [(SKUIPreviewContainerViewController *)self view];
-    v10 = [v12 view];
-    [v9 addSubview:v10];
+    view3 = [(SKUIPreviewContainerViewController *)self view];
+    view4 = [controllerCopy view];
+    [view3 addSubview:view4];
 
-    v11 = [v12 navigationItem];
-    [(SKUIPreviewContainerViewController *)self _setExistingNavigationItem:v11];
+    navigationItem = [controllerCopy navigationItem];
+    [(SKUIPreviewContainerViewController *)self _setExistingNavigationItem:navigationItem];
 
-    v7 = v12;
+    v7 = controllerCopy;
   }
 }
 

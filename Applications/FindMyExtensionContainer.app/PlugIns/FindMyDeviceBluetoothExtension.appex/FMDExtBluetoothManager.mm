@@ -1,6 +1,6 @@
 @interface FMDExtBluetoothManager
 + (id)classicPairedAppleAccessories;
-+ (id)pairedAccessoryWithID:(id)a3;
++ (id)pairedAccessoryWithID:(id)d;
 @end
 
 @implementation FMDExtBluetoothManager
@@ -30,9 +30,9 @@
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           v8 = [v2 objectAtIndexedSubscript:v7];
-          v9 = [v8 name];
+          name = [v8 name];
           *buf = 138412290;
-          v31 = v9;
+          v31 = name;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Found %@.\n", buf, 0xCu);
         }
 
@@ -72,15 +72,15 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 deviceFlags];
-        v18 = [v16 deviceFlags];
-        if ([v16 vendorID] != 76 || (v17 & 0x2000000) != 0 || (v18 & 0x4000) == 0)
+        deviceFlags = [v16 deviceFlags];
+        deviceFlags2 = [v16 deviceFlags];
+        if ([v16 vendorID] != 76 || (deviceFlags & 0x2000000) != 0 || (deviceFlags2 & 0x4000) == 0)
         {
-          if ((v18 & 0x4000) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+          if ((deviceFlags2 & 0x4000) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v16 name];
+            name2 = [v16 name];
             *buf = 138412290;
-            v31 = v21;
+            v31 = name2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Ignore %@ because it is LE paired.\n", buf, 0xCu);
           }
         }
@@ -100,9 +100,9 @@
   return v10;
 }
 
-+ (id)pairedAccessoryWithID:(id)a3
++ (id)pairedAccessoryWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   +[FMDExtBluetoothManager classicPairedAppleAccessories];
   v13 = 0u;
   v14 = 0u;
@@ -122,11 +122,11 @@
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 btAddressData];
-        v10 = [v9 fm_MACAddressString];
-        v11 = [FMDExtHelper deviceIDFromAddress:v10];
+        btAddressData = [v8 btAddressData];
+        fm_MACAddressString = [btAddressData fm_MACAddressString];
+        v11 = [FMDExtHelper deviceIDFromAddress:fm_MACAddressString];
 
-        if ([v11 isEqualToString:v3])
+        if ([v11 isEqualToString:dCopy])
         {
           v5 = v8;
 

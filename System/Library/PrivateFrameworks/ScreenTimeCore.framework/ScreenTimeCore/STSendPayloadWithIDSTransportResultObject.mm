@@ -1,28 +1,28 @@
 @interface STSendPayloadWithIDSTransportResultObject
-- (STSendPayloadWithIDSTransportResultObject)initWithLocalPayloadUUID:(id)a3 payloadUUID:(id)a4 destinations:(id)a5;
+- (STSendPayloadWithIDSTransportResultObject)initWithLocalPayloadUUID:(id)d payloadUUID:(id)iD destinations:(id)destinations;
 @end
 
 @implementation STSendPayloadWithIDSTransportResultObject
 
-- (STSendPayloadWithIDSTransportResultObject)initWithLocalPayloadUUID:(id)a3 payloadUUID:(id)a4 destinations:(id)a5
+- (STSendPayloadWithIDSTransportResultObject)initWithLocalPayloadUUID:(id)d payloadUUID:(id)iD destinations:(id)destinations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  destinationsCopy = destinations;
   v19.receiver = self;
   v19.super_class = STSendPayloadWithIDSTransportResultObject;
   v11 = [(STSendPayloadWithIDSTransportResultObject *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     localPayloadUUID = v11->_localPayloadUUID;
     v11->_localPayloadUUID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     payloadUUID = v11->_payloadUUID;
     v11->_payloadUUID = v14;
 
-    v16 = [v10 copy];
+    v16 = [destinationsCopy copy];
     destinations = v11->_destinations;
     v11->_destinations = v16;
   }

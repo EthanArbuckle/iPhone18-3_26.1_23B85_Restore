@@ -1,28 +1,28 @@
 @interface ORCHSchemaORCHPowerContextPolicyReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHPowerContextPolicyReported)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHPowerContextPolicyReported)initWithJSON:(id)a3;
+- (ORCHSchemaORCHPowerContextPolicyReported)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHPowerContextPolicyReported)initWithJSON:(id)n;
 - (ORCHSchemaORCHVisionPowerState)visionPowerState;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteVisionPowerState;
-- (void)setVisionPowerState:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setVisionPowerState:(id)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHPowerContextPolicyReported
 
-- (ORCHSchemaORCHPowerContextPolicyReported)initWithDictionary:(id)a3
+- (ORCHSchemaORCHPowerContextPolicyReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ORCHSchemaORCHPowerContextPolicyReported;
   v5 = [(ORCHSchemaORCHPowerContextPolicyReported *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"powerContextPolicies"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"powerContextPolicies"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(ORCHSchemaORCHPowerContextPolicyReported *)v5 setPowerContextPolicies:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"visionPowerState"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"visionPowerState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,30 +44,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHPowerContextPolicyReported)initWithJSON:(id)a3
+- (ORCHSchemaORCHPowerContextPolicyReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHPowerContextPolicyReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHPowerContextPolicyReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHPowerContextPolicyReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -80,72 +80,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_powerContextPolicies)
   {
-    v4 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    powerContextPolicies = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+    dictionaryRepresentation = [powerContextPolicies dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"powerContextPolicies"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"powerContextPolicies"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"powerContextPolicies"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"powerContextPolicies"];
     }
   }
 
   if (self->_visionPowerState)
   {
-    v7 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    visionPowerState = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+    dictionaryRepresentation2 = [visionPowerState dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"visionPowerState"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"visionPowerState"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"visionPowerState"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"visionPowerState"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichPlatformspecificpowerstates = self->_whichPlatformspecificpowerstates;
-  if (whichPlatformspecificpowerstates != [v4 whichPlatformspecificpowerstates])
+  if (whichPlatformspecificpowerstates != [equalCopy whichPlatformspecificpowerstates])
   {
     goto LABEL_13;
   }
 
-  v6 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
-  v7 = [v4 powerContextPolicies];
-  if ((v6 != 0) == (v7 == 0))
+  powerContextPolicies = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+  powerContextPolicies2 = [equalCopy powerContextPolicies];
+  if ((powerContextPolicies != 0) == (powerContextPolicies2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
-  if (v8)
+  powerContextPolicies3 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+  if (powerContextPolicies3)
   {
-    v9 = v8;
-    v10 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
-    v11 = [v4 powerContextPolicies];
-    v12 = [v10 isEqual:v11];
+    v9 = powerContextPolicies3;
+    powerContextPolicies4 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+    powerContextPolicies5 = [equalCopy powerContextPolicies];
+    v12 = [powerContextPolicies4 isEqual:powerContextPolicies5];
 
     if (!v12)
     {
@@ -157,12 +157,12 @@
   {
   }
 
-  v6 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
-  v7 = [v4 visionPowerState];
-  if ((v6 != 0) != (v7 == 0))
+  powerContextPolicies = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+  powerContextPolicies2 = [equalCopy visionPowerState];
+  if ((powerContextPolicies != 0) != (powerContextPolicies2 == 0))
   {
-    v13 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
-    if (!v13)
+    visionPowerState = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+    if (!visionPowerState)
     {
 
 LABEL_16:
@@ -170,10 +170,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
-    v16 = [v4 visionPowerState];
-    v17 = [v15 isEqual:v16];
+    v14 = visionPowerState;
+    visionPowerState2 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+    visionPowerState3 = [equalCopy visionPowerState];
+    v17 = [visionPowerState2 isEqual:visionPowerState3];
 
     if (v17)
     {
@@ -193,22 +193,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+  toCopy = to;
+  powerContextPolicies = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
 
-  if (v4)
+  if (powerContextPolicies)
   {
-    v5 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+    powerContextPolicies2 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+  visionPowerState = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
 
-  if (v6)
+  if (visionPowerState)
   {
-    v7 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+    visionPowerState2 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -238,38 +238,38 @@ LABEL_14:
   return v3;
 }
 
-- (void)setVisionPowerState:(id)a3
+- (void)setVisionPowerState:(id)state
 {
   v3 = 101;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
 
   self->_whichPlatformspecificpowerstates = v3;
-  objc_storeStrong(&self->_visionPowerState, a3);
+  objc_storeStrong(&self->_visionPowerState, state);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ORCHSchemaORCHPowerContextPolicyReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  powerContextPolicies = [(ORCHSchemaORCHPowerContextPolicyReported *)self powerContextPolicies];
+  v7 = [powerContextPolicies applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHPowerContextPolicyReported *)self deletePowerContextPolicies];
   }
 
-  v9 = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  visionPowerState = [(ORCHSchemaORCHPowerContextPolicyReported *)self visionPowerState];
+  v10 = [visionPowerState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHPowerContextPolicyReported *)self deleteVisionPowerState];
   }

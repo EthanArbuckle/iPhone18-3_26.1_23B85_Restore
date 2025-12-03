@@ -1,21 +1,21 @@
 @interface HMObjectMergePair
-- (HMObjectMergePair)initWithOldObject:(id)a3 updatedObject:(id)a4;
+- (HMObjectMergePair)initWithOldObject:(id)object updatedObject:(id)updatedObject;
 @end
 
 @implementation HMObjectMergePair
 
-- (HMObjectMergePair)initWithOldObject:(id)a3 updatedObject:(id)a4
+- (HMObjectMergePair)initWithOldObject:(id)object updatedObject:(id)updatedObject
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  objectCopy = object;
+  updatedObjectCopy = updatedObject;
+  if (!objectCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = updatedObjectCopy;
+  if (!updatedObjectCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -28,8 +28,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_oldObject, a3);
-    objc_storeStrong(&v11->_updatedObject, a4);
+    objc_storeStrong(&v10->_oldObject, object);
+    objc_storeStrong(&v11->_updatedObject, updatedObject);
   }
 
   return v11;

@@ -1,12 +1,12 @@
 @interface PXStoryAnalyticsUsageDestination
 - (PXStoryAnalyticsUsageDestination)init;
-- (id)_createDefaultPayloadForInfo:(id)a3;
-- (id)_createInfoForEvent:(id)a3;
-- (id)_existingInfoForEvent:(id)a3 pop:(BOOL)a4;
-- (id)_popInfoForEndEvent:(id)a3;
-- (void)_enumerateExistingInfosUsingBlock:(id)a3;
-- (void)_sendSummaryEventsForInfo:(id)a3;
-- (void)processEvent:(id)a3;
+- (id)_createDefaultPayloadForInfo:(id)info;
+- (id)_createInfoForEvent:(id)event;
+- (id)_existingInfoForEvent:(id)event pop:(BOOL)pop;
+- (id)_popInfoForEndEvent:(id)event;
+- (void)_enumerateExistingInfosUsingBlock:(id)block;
+- (void)_sendSummaryEventsForInfo:(id)info;
+- (void)processEvent:(id)event;
 @end
 
 @implementation PXStoryAnalyticsUsageDestination
@@ -26,97 +26,97 @@
   return v2;
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if ([v5 isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionBegan"])
+  eventCopy = event;
+  name = [eventCopy name];
+  if ([name isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionBegan"])
   {
-    v6 = [(PXStoryAnalyticsUsageDestination *)self _createInfoForEvent:v4];
+    v6 = [(PXStoryAnalyticsUsageDestination *)self _createInfoForEvent:eventCopy];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionPaused"])
+  else if ([name isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionPaused"])
   {
-    v7 = [(PXStoryAnalyticsUsageDestination *)self _existingInfoForEvent:v4];
-    [v7 didPauseWithEvent:v4];
+    v7 = [(PXStoryAnalyticsUsageDestination *)self _existingInfoForEvent:eventCopy];
+    [v7 didPauseWithEvent:eventCopy];
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x1E6991C40]])
+  else if ([name isEqualToString:*MEMORY[0x1E6991C40]])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__PXStoryAnalyticsUsageDestination_processEvent___block_invoke;
     v9[3] = &unk_1E77324A8;
-    v10 = v4;
+    v10 = eventCopy;
     [(PXStoryAnalyticsUsageDestination *)self _enumerateExistingInfosUsingBlock:v9];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionEnded"])
+  else if ([name isEqualToString:@"com.apple.photos.memory.interactiveMemorySessionEnded"])
   {
-    v8 = [(PXStoryAnalyticsUsageDestination *)self _popInfoForEndEvent:v4];
+    v8 = [(PXStoryAnalyticsUsageDestination *)self _popInfoForEndEvent:eventCopy];
     [(PXStoryAnalyticsUsageDestination *)self _sendSummaryEventsForInfo:v8];
   }
 }
 
-- (void)_sendSummaryEventsForInfo:(id)a3
+- (void)_sendSummaryEventsForInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     PXAssertGetLog();
   }
 
-  v5 = [(PXStoryAnalyticsUsageDestination *)self _createDefaultPayloadForInfo:v4];
+  v5 = [(PXStoryAnalyticsUsageDestination *)self _createDefaultPayloadForInfo:infoCopy];
   [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.memory.interactiveMemoryPlaybackSummary" withPayload:v5];
   v6 = MEMORY[0x1E6991F28];
-  v7 = PXStoryAnalyticsEventForSummaryWithPauseCount([v4 pauseCount]);
+  v7 = PXStoryAnalyticsEventForSummaryWithPauseCount([infoCopy pauseCount]);
   [v6 sendEvent:v7 withPayload:v5];
 }
 
-- (void)_enumerateExistingInfosUsingBlock:(id)a3
+- (void)_enumerateExistingInfosUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   sessionInfosByIdentifier = self->_sessionInfosByIdentifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PXStoryAnalyticsUsageDestination__enumerateExistingInfosUsingBlock___block_invoke;
   v7[3] = &unk_1E7732478;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)sessionInfosByIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)_createDefaultPayloadForInfo:(id)a3
+- (id)_createDefaultPayloadForInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 startEvent];
-  v5 = [v4 copyRawPayload];
-  v6 = [v5 mutableCopy];
+  infoCopy = info;
+  startEvent = [infoCopy startEvent];
+  copyRawPayload = [startEvent copyRawPayload];
+  v6 = [copyRawPayload mutableCopy];
 
   if (!v6)
   {
     PXAssertGetLog();
   }
 
-  v7 = [v3 endEvent];
-  v8 = [v7 copyRawPayload];
-  [v6 addEntriesFromDictionary:v8];
+  endEvent = [infoCopy endEvent];
+  copyRawPayload2 = [endEvent copyRawPayload];
+  [v6 addEntriesFromDictionary:copyRawPayload2];
 
   [v6 setObject:0 forKeyedSubscript:@"interactiveMemorySessionIdentifier"];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "pauseCount")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(infoCopy, "pauseCount")}];
   [v6 setObject:v9 forKeyedSubscript:@"interactiveMemoryPlaybackSummaryPauseCount"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "appSuspensionCount")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(infoCopy, "appSuspensionCount")}];
   [v6 setObject:v10 forKeyedSubscript:@"interactiveMemoryPlaybackSummaryAppSuspensionCount"];
 
   return v6;
 }
 
-- (id)_existingInfoForEvent:(id)a3 pop:(BOOL)a4
+- (id)_existingInfoForEvent:(id)event pop:(BOOL)pop
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 propertyForKey:@"interactiveMemorySessionIdentifier"];
+  popCopy = pop;
+  eventCopy = event;
+  v7 = [eventCopy propertyForKey:@"interactiveMemorySessionIdentifier"];
   if (!v7)
   {
     PXAssertGetLog();
@@ -128,7 +128,7 @@
     PXAssertGetLog();
   }
 
-  if (v4)
+  if (popCopy)
   {
     [(NSMutableDictionary *)self->_sessionInfosByIdentifier setObject:0 forKeyedSubscript:v7];
   }
@@ -136,19 +136,19 @@
   return v8;
 }
 
-- (id)_popInfoForEndEvent:(id)a3
+- (id)_popInfoForEndEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PXStoryAnalyticsUsageDestination *)self _existingInfoForEvent:v4 pop:1];
-  [v5 finalizeWithEvent:v4];
+  eventCopy = event;
+  v5 = [(PXStoryAnalyticsUsageDestination *)self _existingInfoForEvent:eventCopy pop:1];
+  [v5 finalizeWithEvent:eventCopy];
 
   return v5;
 }
 
-- (id)_createInfoForEvent:(id)a3
+- (id)_createInfoForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"interactiveMemorySessionIdentifier"];
+  eventCopy = event;
+  v5 = [eventCopy propertyForKey:@"interactiveMemorySessionIdentifier"];
   if (!v5)
   {
     PXAssertGetLog();
@@ -161,7 +161,7 @@
     PXAssertGetLog();
   }
 
-  v7 = [[_PXStoryAnalyticsSessionInfo alloc] initWithEvent:v4];
+  v7 = [[_PXStoryAnalyticsSessionInfo alloc] initWithEvent:eventCopy];
   [(NSMutableDictionary *)self->_sessionInfosByIdentifier setObject:v7 forKeyedSubscript:v5];
 
   return v7;

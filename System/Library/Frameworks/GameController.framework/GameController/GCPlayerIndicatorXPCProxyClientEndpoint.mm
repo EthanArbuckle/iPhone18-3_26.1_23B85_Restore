@@ -1,19 +1,19 @@
 @interface GCPlayerIndicatorXPCProxyClientEndpoint
 - (GCPlayerIndicatorXPCProxyClientEndpoint)init;
-- (GCPlayerIndicatorXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialPlayerIndex:(int64_t)a4;
-- (void)_remoteEndpointSetPlayerIndex:(int64_t)a3;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (GCPlayerIndicatorXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialPlayerIndex:(int64_t)index;
+- (void)_remoteEndpointSetPlayerIndex:(int64_t)index;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
 - (void)invalidateConnection;
-- (void)newPlayerIndex:(int64_t)a3;
+- (void)newPlayerIndex:(int64_t)index;
 - (void)refreshPlayerIndex;
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection;
 @end
 
 @implementation GCPlayerIndicatorXPCProxyClientEndpoint
 
-- (GCPlayerIndicatorXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialPlayerIndex:(int64_t)a4
+- (GCPlayerIndicatorXPCProxyClientEndpoint)initWithIdentifier:(id)identifier initialPlayerIndex:(int64_t)index
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = GCPlayerIndicatorXPCProxyClientEndpoint;
   v7 = [(GCPlayerIndicatorXPCProxyClientEndpoint *)&v11 init];
@@ -21,14 +21,14 @@
   {
     if (gc_isInternalBuild())
     {
-      [GCPlayerIndicatorXPCProxyClientEndpoint initWithIdentifier:v6 initialPlayerIndex:a4];
+      [GCPlayerIndicatorXPCProxyClientEndpoint initWithIdentifier:identifierCopy initialPlayerIndex:index];
     }
 
-    v8 = [v6 copyWithZone:0];
+    v8 = [identifierCopy copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_playerIndex = a4;
+    v7->_playerIndex = index;
   }
 
   return v7;
@@ -41,10 +41,10 @@
   return 0;
 }
 
-- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+- (void)setRemoteEndpoint:(id)endpoint connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -52,15 +52,15 @@
   v18 = &unk_1E8418D18;
   objc_copyWeak(&v19, &location);
   v9 = _Block_copy(&v15);
-  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  v10 = [connectionCopy addInterruptionHandler:{v9, v15, v16, v17, v18}];
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v10;
 
-  v12 = [v8 addInvalidationHandler:v9];
+  v12 = [connectionCopy addInvalidationHandler:v9];
   connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v12;
 
-  objc_storeStrong(&self->_serverEndpoint, a3);
+  objc_storeStrong(&self->_serverEndpoint, endpoint);
   if (gc_isInternalBuild())
   {
     v14 = getGCLogger();
@@ -94,27 +94,27 @@ void __72__GCPlayerIndicatorXPCProxyClientEndpoint_setRemoteEndpoint_connection_
   }
 }
 
-- (void)_remoteEndpointSetPlayerIndex:(int64_t)a3
+- (void)_remoteEndpointSetPlayerIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   if (WeakRetained)
   {
     v6 = WeakRetained;
     [WeakRetained willChangeValueForKey:@"playerIndex"];
-    self->_playerIndex = a3;
+    self->_playerIndex = index;
     [v6 didChangeValueForKey:@"playerIndex"];
     WeakRetained = v6;
   }
 }
 
-- (void)newPlayerIndex:(int64_t)a3
+- (void)newPlayerIndex:(int64_t)index
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58__GCPlayerIndicatorXPCProxyClientEndpoint_newPlayerIndex___block_invoke;
   v3[3] = &unk_1E84191C0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = index;
   _os_activity_initiate(&dword_1D2CD5000, "(Player Indicator XPC Proxy Client Endpoint) New Player Index", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
 
@@ -165,11 +165,11 @@ void __63__GCPlayerIndicatorXPCProxyClientEndpoint_invalidateConnection__block_i
   *(v6 + 16) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCPlayerIndicatorXPCProxyClientEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCPlayerIndicatorXPCProxyClientEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (void)initWithIdentifier:(uint64_t)a1 initialPlayerIndex:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

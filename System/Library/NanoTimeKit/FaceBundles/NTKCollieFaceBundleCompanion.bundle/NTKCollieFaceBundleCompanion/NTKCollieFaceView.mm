@@ -2,71 +2,71 @@
 + (CGSize)_snapshotImageSize;
 + (double)avatarFramingTopMargin;
 + (double)preferredMemojiFieldOfView;
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (CGPoint)_fractionalLocationOfGesture:(id)a3 inView:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (CGPoint)_fractionalLocationOfGesture:(id)gesture inView:(id)view;
 - (CGRect)_dateComplicationFrame;
-- (NTKCollieFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_bgColorForEditMode:(int64_t)a3;
+- (NTKCollieFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_bgColorForEditMode:(int64_t)mode;
 - (id)_dateComplicationFont;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_existingSnapshotImageForOption:(id)a3 state:(unint64_t)a4;
-- (id)_snapshotImageForOption:(id)a3 machineState:(unint64_t)a4 resolveToyBox:(BOOL)a5 force:(BOOL)a6;
-- (id)_snapshotImageFromCurrentAvatarForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_existingSnapshotImageForOption:(id)option state:(unint64_t)state;
+- (id)_snapshotImageForOption:(id)option machineState:(unint64_t)state resolveToyBox:(BOOL)box force:(BOOL)force;
+- (id)_snapshotImageFromCurrentAvatarForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler;
 - (void)_addSecondActivities;
 - (void)_addTapGestureRecognizers;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_asyncSetImageView0:(id)a3 imageView1:(id)a4 image:(id)a5 forOption:(id)a6 state:(unint64_t)a7 completion:(id)a8;
-- (void)_asyncSetImageViewsForOption:(id)a3 state:(unint64_t)a4 resolveToyBox:(BOOL)a5;
-- (void)_avatarStoreDidChange:(id)a3;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_asyncSetImageView0:(id)view0 imageView1:(id)view1 image:(id)image forOption:(id)option state:(unint64_t)state completion:(id)completion;
+- (void)_asyncSetImageViewsForOption:(id)option state:(unint64_t)state resolveToyBox:(BOOL)box;
+- (void)_avatarStoreDidChange:(id)change;
 - (void)_becameActiveFace;
 - (void)_becameInactiveFace;
 - (void)_cleanupAfterEditing;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_didFirstUnlock;
 - (void)_handleOrdinaryScreenWake;
 - (void)_handleWristRaiseScreenWake;
-- (void)_loadAvatarAsyncForOption:(id)a3 completion:(id)a4;
+- (void)_loadAvatarAsyncForOption:(id)option completion:(id)completion;
 - (void)_loadSharedViews;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
-- (void)_pushBackMachineStateResetTimer:(double)a3 completionHandler:(id)a4;
+- (void)_pushBackMachineStateResetTimer:(double)timer completionHandler:(id)handler;
 - (void)_reloadToyBoxAvatar;
 - (void)_removeTapGestureRecognizers;
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4;
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group;
 - (void)_reorderSwitcherSnapshotView;
 - (void)_reportStats;
-- (void)_restartRenderForAvatar:(id)a3 fromState:(unint64_t)a4 completion:(id)a5;
-- (void)_setBackgroundAlpha:(double)a3 contentAlpha:(double)a4 complicationsAlpha:(double)a5 complicationsColor:(id)a6 timeAlpha:(double)a7 timeColor:(id)a8;
-- (void)_setComplicationsColor:(id)a3;
-- (void)_setContentAlpha:(double)a3 complicationsAlpha:(double)a4 complicationsColor:(id)a5 timeAlpha:(double)a6 timeColor:(id)a7;
-- (void)_setContentOpaqueTimeAlpha:(double)a3 complicationsAlpha:(double)a4;
-- (void)_setNumerals:(unint64_t)a3;
-- (void)_startMachineFromState:(unint64_t)a3;
-- (void)_stopMachineImmediate:(BOOL)a3;
+- (void)_restartRenderForAvatar:(id)avatar fromState:(unint64_t)state completion:(id)completion;
+- (void)_setBackgroundAlpha:(double)alpha contentAlpha:(double)contentAlpha complicationsAlpha:(double)complicationsAlpha complicationsColor:(id)color timeAlpha:(double)timeAlpha timeColor:(id)timeColor;
+- (void)_setComplicationsColor:(id)color;
+- (void)_setContentAlpha:(double)alpha complicationsAlpha:(double)complicationsAlpha complicationsColor:(id)color timeAlpha:(double)timeAlpha timeColor:(id)timeColor;
+- (void)_setContentOpaqueTimeAlpha:(double)alpha complicationsAlpha:(double)complicationsAlpha;
+- (void)_setNumerals:(unint64_t)numerals;
+- (void)_startMachineFromState:(unint64_t)state;
+- (void)_stopMachineImmediate:(BOOL)immediate;
 - (void)_stopSecondActivities;
 - (void)_topOfTheMinuteReached;
-- (void)_transitionBackgroundToBlackImmediate:(BOOL)a3;
+- (void)_transitionBackgroundToBlackImmediate:(BOOL)immediate;
 - (void)_transitionBackgroundToColor;
-- (void)_transitionFromAvatarToImageForOption:(id)a3 toState:(unint64_t)a4 immediate:(BOOL)a5 retainAvatar:(BOOL)a6 forceImage:(BOOL)a7 completion:(id)a8;
-- (void)_transitionFromAvatarToImagePart2ForOption:(id)a3 toState:(unint64_t)a4 retainAvatar:(BOOL)a5 forceImage:(BOOL)a6;
-- (void)_transitionFromAvatarToImagePart3ForOption:(id)a3 immediate:(BOOL)a4 retainAvatar:(BOOL)a5;
-- (void)_transitionFromImageToAvatarForOption:(id)a3 fromState:(unint64_t)a4;
-- (void)_transitionFromImageToAvatarForOption:(id)a3 fromState:(unint64_t)a4 completion:(id)a5;
-- (void)_transitionFromImageToCurrentAvatarImmediate:(BOOL)a3;
-- (void)_transitionToMachineState:(unint64_t)a3 immediate:(BOOL)a4;
+- (void)_transitionFromAvatarToImageForOption:(id)option toState:(unint64_t)state immediate:(BOOL)immediate retainAvatar:(BOOL)avatar forceImage:(BOOL)image completion:(id)completion;
+- (void)_transitionFromAvatarToImagePart2ForOption:(id)option toState:(unint64_t)state retainAvatar:(BOOL)avatar forceImage:(BOOL)image;
+- (void)_transitionFromAvatarToImagePart3ForOption:(id)option immediate:(BOOL)immediate retainAvatar:(BOOL)avatar;
+- (void)_transitionFromImageToAvatarForOption:(id)option fromState:(unint64_t)state;
+- (void)_transitionFromImageToAvatarForOption:(id)option fromState:(unint64_t)state completion:(id)completion;
+- (void)_transitionFromImageToCurrentAvatarImmediate:(BOOL)immediate;
+- (void)_transitionToMachineState:(unint64_t)state immediate:(BOOL)immediate;
 - (void)_unloadAvatar;
 - (void)_unloadSharedViews;
 - (void)_unloadSnapshotContentViews;
-- (void)_viewSingleTapped:(id)a3;
+- (void)_viewSingleTapped:(id)tapped;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)populateFaceViewEditOptionsFromFace:(id)a3;
-- (void)screenDidTurnOffAnimated:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)populateFaceViewEditOptionsFromFace:(id)face;
+- (void)screenDidTurnOffAnimated:(BOOL)animated;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation NTKCollieFaceView
@@ -89,23 +89,23 @@
   v3 = [(NTKCollieFaceView *)self device:0];
   sub_1150C(v3, &v21);
 
-  v4 = [(NTKCollieFaceView *)self _dateComplicationFont];
-  [v4 ascender];
-  [v4 descender];
-  v5 = [(NTKCollieFaceView *)self device];
+  _dateComplicationFont = [(NTKCollieFaceView *)self _dateComplicationFont];
+  [_dateComplicationFont ascender];
+  [_dateComplicationFont descender];
+  device = [(NTKCollieFaceView *)self device];
   CLKRoundForDevice();
   v7 = v6;
 
-  v8 = [(NTKCollieFaceView *)self device];
+  device2 = [(NTKCollieFaceView *)self device];
   CLKRoundForDevice();
   v10 = v9;
 
-  v11 = [(NTKCollieFaceView *)self device];
+  device3 = [(NTKCollieFaceView *)self device];
   CLKRoundForDevice();
   v13 = v12;
 
   [(NTKCollieFaceView *)self bounds];
-  v14 = [(NTKCollieFaceView *)self device];
+  device4 = [(NTKCollieFaceView *)self device];
   CLKRoundForDevice();
   v16 = v15;
 
@@ -157,51 +157,51 @@
   return v3;
 }
 
-- (void)_setComplicationsColor:(id)a3
+- (void)_setComplicationsColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_A7AC;
   v5[3] = &unk_2CB48;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(NTKCollieFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-- (void)_setContentAlpha:(double)a3 complicationsAlpha:(double)a4 complicationsColor:(id)a5 timeAlpha:(double)a6 timeColor:(id)a7
+- (void)_setContentAlpha:(double)alpha complicationsAlpha:(double)complicationsAlpha complicationsColor:(id)color timeAlpha:(double)timeAlpha timeColor:(id)timeColor
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = [(NTKCollieFaceView *)self contentView];
-  [v14 setAlpha:a3];
+  timeColorCopy = timeColor;
+  colorCopy = color;
+  contentView = [(NTKCollieFaceView *)self contentView];
+  [contentView setAlpha:alpha];
 
-  v15 = [(NTKCollieFaceView *)self complicationContainerView];
-  [v15 setAlpha:a4];
+  complicationContainerView = [(NTKCollieFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:complicationsAlpha];
 
-  [(NTKCollieFaceView *)self _setComplicationsColor:v13];
-  v16 = [(NTKCollieFaceView *)self timeView];
-  [v16 setAlpha:a6];
+  [(NTKCollieFaceView *)self _setComplicationsColor:colorCopy];
+  timeView = [(NTKCollieFaceView *)self timeView];
+  [timeView setAlpha:timeAlpha];
 
-  v17 = [(NTKCollieFaceView *)self timeView];
-  [v17 setTextColor:v12];
+  timeView2 = [(NTKCollieFaceView *)self timeView];
+  [timeView2 setTextColor:timeColorCopy];
 }
 
-- (void)_setBackgroundAlpha:(double)a3 contentAlpha:(double)a4 complicationsAlpha:(double)a5 complicationsColor:(id)a6 timeAlpha:(double)a7 timeColor:(id)a8
+- (void)_setBackgroundAlpha:(double)alpha contentAlpha:(double)contentAlpha complicationsAlpha:(double)complicationsAlpha complicationsColor:(id)color timeAlpha:(double)timeAlpha timeColor:(id)timeColor
 {
   backgroundColorView = self->_backgroundColorView;
-  v15 = a8;
-  v16 = a6;
-  [(UIView *)backgroundColorView setAlpha:a3];
-  [(NTKCollieFaceView *)self _setContentAlpha:v16 complicationsAlpha:v15 complicationsColor:a4 timeAlpha:a5 timeColor:a7];
+  timeColorCopy = timeColor;
+  colorCopy = color;
+  [(UIView *)backgroundColorView setAlpha:alpha];
+  [(NTKCollieFaceView *)self _setContentAlpha:colorCopy complicationsAlpha:timeColorCopy complicationsColor:contentAlpha timeAlpha:complicationsAlpha timeColor:timeAlpha];
 }
 
-- (void)_setContentOpaqueTimeAlpha:(double)a3 complicationsAlpha:(double)a4
+- (void)_setContentOpaqueTimeAlpha:(double)alpha complicationsAlpha:(double)complicationsAlpha
 {
   v7 = +[UIColor whiteColor];
-  [(NTKCollieFaceView *)self _setContentAlpha:v7 complicationsAlpha:v7 complicationsColor:1.0 timeAlpha:a4 timeColor:a3];
+  [(NTKCollieFaceView *)self _setContentAlpha:v7 complicationsAlpha:v7 complicationsColor:1.0 timeAlpha:complicationsAlpha timeColor:alpha];
 }
 
-- (id)_snapshotImageFromCurrentAvatarForEditMode:(int64_t)a3
+- (id)_snapshotImageFromCurrentAvatarForEditMode:(int64_t)mode
 {
   avtView = self->_avtView;
   [(NTKCollieFaceView *)self bounds];
@@ -209,17 +209,17 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NTKCollieFaceView *)self device];
-  [v13 screenScale];
+  device = [(NTKCollieFaceView *)self device];
+  [device screenScale];
   v15 = [(CLKUIMetalQuadView *)avtView snapshotInRect:v6 scale:v8 time:v10, v12, v14, CACurrentMediaTime()];
 
   return v15;
 }
 
-- (NTKCollieFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKCollieFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v10 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -228,12 +228,12 @@
 
   v34.receiver = self;
   v34.super_class = NTKCollieFaceView;
-  v11 = [(NTKCollieFaceView *)&v34 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:v9];
+  v11 = [(NTKCollieFaceView *)&v34 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
   if (v11)
   {
     v12 = [NTKCollieFaceViewComplicationFactory alloc];
-    v13 = [(NTKCollieFaceView *)v11 device];
-    v14 = [(NTKCollieFaceViewComplicationFactory *)v12 initForDevice:v13];
+    device = [(NTKCollieFaceView *)v11 device];
+    v14 = [(NTKCollieFaceViewComplicationFactory *)v12 initForDevice:device];
 
     v35[0] = NTKComplicationSlotBottom;
     v35[1] = NTKComplicationSlotDate;
@@ -298,11 +298,11 @@
   [(NTKCollieFaceView *)&v4 dealloc];
 }
 
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group
 {
   v4.receiver = self;
   v4.super_class = NTKCollieFaceView;
-  [(NTKCollieFaceView *)&v4 _renderSynchronouslyWithImageQueueDiscard:a3 inGroup:a4];
+  [(NTKCollieFaceView *)&v4 _renderSynchronouslyWithImageQueueDiscard:discard inGroup:group];
 }
 
 - (void)_loadSharedViews
@@ -328,51 +328,51 @@
   [(UIImageView *)self->_vignetteImageView setImage:v11];
 
   [(UIView *)self->_backgroundColorView addSubview:self->_vignetteImageView];
-  v12 = [(NTKCollieFaceView *)self faceColorPalette];
-  v13 = [v12 primaryColor];
-  [(NTKCollieFaceView *)self _setBackgroundColor:v13 radiance:1.0];
+  faceColorPalette = [(NTKCollieFaceView *)self faceColorPalette];
+  primaryColor = [faceColorPalette primaryColor];
+  [(NTKCollieFaceView *)self _setBackgroundColor:primaryColor radiance:1.0];
 
   v14 = objc_opt_new();
   fromSnapshotView = self->_fromSnapshotView;
   self->_fromSnapshotView = v14;
 
   [(NTKCollieFaceImageView *)self->_fromSnapshotView setContentMode:4];
-  v16 = [(NTKCollieFaceImageView *)self->_fromSnapshotView layer];
-  [v16 setContentsGravity:kCAGravityBottom];
+  layer = [(NTKCollieFaceImageView *)self->_fromSnapshotView layer];
+  [layer setContentsGravity:kCAGravityBottom];
 
-  v17 = [(NTKCollieFaceView *)self contentView];
-  [v17 addSubview:self->_fromSnapshotView];
+  contentView = [(NTKCollieFaceView *)self contentView];
+  [contentView addSubview:self->_fromSnapshotView];
 
   v18 = objc_opt_new();
   toSnapshotView = self->_toSnapshotView;
   self->_toSnapshotView = v18;
 
   [(NTKCollieFaceImageView *)self->_toSnapshotView setContentMode:4];
-  v20 = [(NTKCollieFaceImageView *)self->_toSnapshotView layer];
-  [v20 setContentsGravity:kCAGravityBottom];
+  layer2 = [(NTKCollieFaceImageView *)self->_toSnapshotView layer];
+  [layer2 setContentsGravity:kCAGravityBottom];
 
-  v21 = [(NTKCollieFaceView *)self contentView];
-  [v21 addSubview:self->_toSnapshotView];
+  contentView2 = [(NTKCollieFaceView *)self contentView];
+  [contentView2 addSubview:self->_toSnapshotView];
 
-  v22 = [(NTKCollieFaceView *)self device];
+  device = [(NTKCollieFaceView *)self device];
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
-  sub_1150C(v22, &v38);
+  sub_1150C(device, &v38);
   v23 = *&v39 * 0.5;
 
   [(NTKCollieFaceImageView *)self->_toSnapshotView setVOffset:v23];
   [(NTKCollieFaceImageView *)self->_fromSnapshotView setVOffset:v23];
   [(NTKCollieFaceView *)self _createTimeViewIfNecessary];
-  v24 = [(NTKCollieFaceView *)self timeView];
+  timeView = [(NTKCollieFaceView *)self timeView];
   v25 = [NTKRoundedCornerOverlayView alloc];
   [(NTKCollieFaceView *)self bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(NTKCollieFaceView *)self device];
-  v35 = [v25 initWithFrame:v34 forDeviceCornerRadius:{v27, v29, v31, v33}];
+  device2 = [(NTKCollieFaceView *)self device];
+  v35 = [v25 initWithFrame:device2 forDeviceCornerRadius:{v27, v29, v31, v33}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v35;
 
@@ -420,16 +420,16 @@
 
   else
   {
-    v6 = [(NTKCollieFaceView *)self device];
-    v5 = [NTKCollieStyleEditOption defaultOptionForDevice:v6];
+    device = [(NTKCollieFaceView *)self device];
+    v5 = [NTKCollieStyleEditOption defaultOptionForDevice:device];
   }
 
   v16.receiver = self;
   v16.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v16 _loadSnapshotContentViews];
   [(NTKCollieFaceView *)self _loadSharedViews];
-  v7 = [(NTKCollieFaceView *)self timeView];
-  [v7 setForcedNumberSystem:self->_numberSystem];
+  timeView = [(NTKCollieFaceView *)self timeView];
+  [timeView setForcedNumberSystem:self->_numberSystem];
 
   v8 = [[NTKCollieMetalQuadView alloc] initWithFrame:@"Coli" identifier:15 options:0 colorSpace:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   avtView = self->_avtView;
@@ -444,8 +444,8 @@
   self->_avtQuad = v11;
 
   [(CLKUIMetalQuadView *)self->_avtView addQuad:self->_avtQuad];
-  v13 = [(NTKCollieFaceView *)self contentView];
-  [v13 addSubview:self->_avtView];
+  contentView = [(NTKCollieFaceView *)self contentView];
+  [contentView addSubview:self->_avtView];
 
   [(NTKCollieFaceView *)self _addTapGestureRecognizers];
   [(NTKCollieFaceView *)self _addCrownSequencer];
@@ -554,8 +554,8 @@
   v23.receiver = self;
   v23.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v23 layoutSubviews];
-  v3 = [(NTKCollieFaceView *)self device];
-  [v3 screenBounds];
+  device = [(NTKCollieFaceView *)self device];
+  [device screenBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -567,16 +567,16 @@
   [(NTKCollieFaceImageView *)self->_toSnapshotView setFrame:v5, v7, v9, v11];
   if (([(NTKCollieFaceView *)self _shouldHideUI]& 1) == 0)
   {
-    v13 = [(NTKCollieFaceView *)self rootContainerView];
-    [(NTKCollieFaceView *)self bringSubviewToFront:v13];
+    rootContainerView = [(NTKCollieFaceView *)self rootContainerView];
+    [(NTKCollieFaceView *)self bringSubviewToFront:rootContainerView];
 
-    v14 = [(NTKCollieFaceView *)self timeView];
-    [(NTKCollieFaceView *)self bringSubviewToFront:v14];
+    timeView = [(NTKCollieFaceView *)self timeView];
+    [(NTKCollieFaceView *)self bringSubviewToFront:timeView];
   }
 
   currentDataMode = self->_currentDataMode;
-  v16 = [(NTKCollieFaceView *)self contentView];
-  v17 = v16;
+  contentView = [(NTKCollieFaceView *)self contentView];
+  v17 = contentView;
   if (currentDataMode == 1)
   {
     p_fromSnapshotView = &self->_fromSnapshotView;
@@ -592,42 +592,42 @@
     p_avtView = &self->_fromSnapshotView;
   }
 
-  [v16 bringSubviewToFront:*p_fromSnapshotView];
+  [contentView bringSubviewToFront:*p_fromSnapshotView];
 
-  v19 = [(NTKCollieFaceView *)self contentView];
-  [v19 bringSubviewToFront:self->_toSnapshotView];
+  contentView2 = [(NTKCollieFaceView *)self contentView];
+  [contentView2 bringSubviewToFront:self->_toSnapshotView];
 
-  v20 = [(NTKCollieFaceView *)self contentView];
-  [v20 bringSubviewToFront:*p_avtView];
+  contentView3 = [(NTKCollieFaceView *)self contentView];
+  [contentView3 bringSubviewToFront:*p_avtView];
 
-  v21 = [(NTKCollieFaceView *)self rootContainerView];
-  v22 = [(NTKCollieFaceView *)self complicationContainerView];
-  [v21 bringSubviewToFront:v22];
+  rootContainerView2 = [(NTKCollieFaceView *)self rootContainerView];
+  complicationContainerView = [(NTKCollieFaceView *)self complicationContainerView];
+  [rootContainerView2 bringSubviewToFront:complicationContainerView];
 
   [(NTKCollieFaceView *)self bringSubviewToFront:self->_cornerOverlayView];
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(NTKCollieFaceView *)self device];
-  v9 = sub_BF04(v8);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  device = [(NTKCollieFaceView *)self device];
+  v9 = sub_BF04(device);
   memset(v19, 0, sizeof(v19));
-  sub_1150C(v8, v19);
-  v10 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v9 applyAdvanceFudge:v8 withBaselineY:x withFont:y forDevice:width, height, 0.0, *(v19 + 1)];
-  v11 = [v10 layoutRule];
-  [v11 referenceFrame];
+  sub_1150C(device, v19);
+  v10 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v9 applyAdvanceFudge:device withBaselineY:x withFont:y forDevice:width, height, 0.0, *(v19 + 1)];
+  layoutRule = [v10 layoutRule];
+  [layoutRule referenceFrame];
   v13 = v12;
   v15 = v14;
 
-  v16 = [v10 layoutRule];
-  [v16 setReferenceFrame:{0.0, v13, width, v15}];
+  layoutRule2 = [v10 layoutRule];
+  [layoutRule2 setReferenceFrame:{0.0, v13, width, v15}];
 
-  v17 = [v10 layoutRule];
-  [v17 setHorizontalLayout:1];
+  layoutRule3 = [v10 layoutRule];
+  [layoutRule3 setHorizontalLayout:1];
 
   return v10;
 }
@@ -637,17 +637,17 @@
   v29.receiver = self;
   v29.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v29 _applyDataMode];
-  v3 = [(NTKCollieFaceView *)self dataMode];
+  dataMode = [(NTKCollieFaceView *)self dataMode];
   v4 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_18B70();
   }
 
-  if (self->_currentDataMode != v3)
+  if (self->_currentDataMode != dataMode)
   {
-    [(UITapGestureRecognizer *)self->_singleTapGestureRecognizer setEnabled:v3 == (&dword_0 + 1)];
-    self->_isHandlingHardwareEvents = v3 == (&dword_0 + 1);
+    [(UITapGestureRecognizer *)self->_singleTapGestureRecognizer setEnabled:dataMode == (&dword_0 + 1)];
+    self->_isHandlingHardwareEvents = dataMode == (&dword_0 + 1);
     [(NTKCollieFaceView *)self _repositionCrownSequencer];
     currentStyleEditOption = self->_currentStyleEditOption;
     if (currentStyleEditOption)
@@ -657,14 +657,14 @@
 
     else
     {
-      v7 = [(NTKCollieFaceView *)self device];
-      v6 = [NTKCollieStyleEditOption defaultOptionForDevice:v7];
+      device = [(NTKCollieFaceView *)self device];
+      v6 = [NTKCollieStyleEditOption defaultOptionForDevice:device];
     }
 
     currentDataMode = self->_currentDataMode;
     if (currentDataMode == 2)
     {
-      if (v3 == (&dword_0 + 1))
+      if (dataMode == (&dword_0 + 1))
       {
         v11 = (&dword_0 + 2);
 LABEL_17:
@@ -680,21 +680,21 @@ LABEL_17:
         v13 = objc_retainBlock(v25);
         if (v11 != &dword_0 + 2)
         {
-          v14 = [(NTKCollieQuad *)self->_avtQuad avatar];
+          avatar = [(NTKCollieQuad *)self->_avtQuad avatar];
 
-          if (!v14)
+          if (!avatar)
           {
-            v17 = [(NTKCollieFaceView *)self resourceDirectory];
+            resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
             [objc_opt_class() _snapshotImageSize];
             v19 = v18;
             v21 = v20;
-            v22 = [(NTKCollieFaceView *)self device];
+            device2 = [(NTKCollieFaceView *)self device];
             v23[0] = _NSConcreteStackBlock;
             v23[1] = 3221225472;
             v23[2] = sub_C464;
             v23[3] = &unk_2CCC0;
             v24 = v13;
-            [NTKCollieStyleEditOption prewarmOption:v12 resourceDirectory:v17 size:v22 forDevice:v23 completion:v19, v21];
+            [NTKCollieStyleEditOption prewarmOption:v12 resourceDirectory:resourceDirectory size:device2 forDevice:v23 completion:v19, v21];
 
             goto LABEL_23;
           }
@@ -712,7 +712,7 @@ LABEL_23:
         objc_destroyWeak(v27);
         objc_destroyWeak(&location);
 LABEL_28:
-        self->_currentDataMode = v3;
+        self->_currentDataMode = dataMode;
 
         return;
       }
@@ -720,7 +720,7 @@ LABEL_28:
       v16 = +[NTKCollieFaceBundle logObject];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_18C00(&self->_currentDataMode, v3, v16);
+        sub_18C00(&self->_currentDataMode, dataMode, v16);
       }
 
       [(NTKCollieFaceView *)self _unloadAvatar];
@@ -730,13 +730,13 @@ LABEL_28:
     {
       if (currentDataMode == 1)
       {
-        v9 = sub_C3A0(v3);
-        v10 = v3 == &dword_4 || v3 == (&dword_0 + 2);
+        v9 = sub_C3A0(dataMode);
+        v10 = dataMode == &dword_4 || dataMode == (&dword_0 + 2);
         [NTKCollieFaceView _transitionFromAvatarToImageForOption:"_transitionFromAvatarToImageForOption:toState:immediate:retainAvatar:completion:" toState:v6 immediate:v9 retainAvatar:v10 completion:?];
         self->_tritiumAfterOnRestartNeeded = 0;
       }
 
-      if (v3 == (&dword_0 + 1))
+      if (dataMode == (&dword_0 + 1))
       {
         v11 = self->_currentDataMode;
         goto LABEL_17;
@@ -748,33 +748,33 @@ LABEL_28:
   }
 }
 
-- (id)_bgColorForEditMode:(int64_t)a3
+- (id)_bgColorForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v5 = self->_complicationsEditModeColor;
+    primaryColor2 = self->_complicationsEditModeColor;
   }
 
   else
   {
-    if (a3 == 15)
+    if (mode == 15)
     {
-      v3 = [(NTKCollieFaceView *)self faceColorPalette];
-      v4 = [v3 primaryColor];
-      v5 = NTKColorByApplyingBlackOverlay();
+      faceColorPalette = [(NTKCollieFaceView *)self faceColorPalette];
+      primaryColor = [faceColorPalette primaryColor];
+      primaryColor2 = NTKColorByApplyingBlackOverlay();
     }
 
     else
     {
-      v3 = [(NTKCollieFaceView *)self faceColorPalette];
-      v5 = [v3 primaryColor];
+      faceColorPalette = [(NTKCollieFaceView *)self faceColorPalette];
+      primaryColor2 = [faceColorPalette primaryColor];
     }
   }
 
-  return v5;
+  return primaryColor2;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v9 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -782,19 +782,19 @@ LABEL_28:
     *buf = 136315906;
     *&buf[4] = "[NTKCollieFaceView _configureForTransitionFraction:fromEditMode:toEditMode:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = fraction;
     *&buf[22] = 1024;
-    *&buf[24] = a4;
+    *&buf[24] = mode;
     *&buf[28] = 1024;
-    *&buf[30] = a5;
+    *&buf[30] = editMode;
     _os_log_debug_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%s: fraction = %f fromMode = %u toMode = %u", buf, 0x22u);
   }
 
   v29.receiver = self;
   v29.super_class = NTKCollieFaceView;
-  [(NTKCollieFaceView *)&v29 _configureForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
-  v10 = [(NTKCollieFaceView *)self _bgColorForEditMode:a4];
-  if (a4 == 10)
+  [(NTKCollieFaceView *)&v29 _configureForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
+  v10 = [(NTKCollieFaceView *)self _bgColorForEditMode:mode];
+  if (mode == 10)
   {
     v11 = 0.333000004;
   }
@@ -804,7 +804,7 @@ LABEL_28:
     v11 = 1.0;
   }
 
-  v12 = [(NTKCollieFaceView *)self _bgColorForEditMode:a5, v11];
+  v12 = [(NTKCollieFaceView *)self _bgColorForEditMode:editMode, v11];
   v13 = NTKInterpolateBetweenColors();
   CLKInterpolateBetweenFloatsClipped();
   v15 = v14;
@@ -814,25 +814,25 @@ LABEL_28:
   v19 = v18;
   [(NTKCollieFaceView *)self _setBackgroundColor:v13 radiance:v15];
   [(NTKCollieFaceView *)self _setContentOpaqueTimeAlpha:v17 complicationsAlpha:v19];
-  v20 = [(NTKCollieFaceView *)self device];
-  v21 = v20;
-  if (a4 != 15)
+  device = [(NTKCollieFaceView *)self device];
+  v21 = device;
+  if (mode != 15)
   {
     memset(buf, 0, 48);
-    sub_1150C(v20, buf);
+    sub_1150C(device, buf);
   }
 
-  v22 = [(NTKCollieFaceView *)self device];
-  v23 = v22;
-  if (a5 != 15)
+  device2 = [(NTKCollieFaceView *)self device];
+  v23 = device2;
+  if (editMode != 15)
   {
     memset(buf, 0, 48);
-    sub_1150C(v22, buf);
+    sub_1150C(device2, buf);
   }
 
   CLKInterpolateBetweenFloatsUnclipped();
   v25 = v24;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v26 = 0.100000001;
   }
@@ -842,7 +842,7 @@ LABEL_28:
     v26 = 1.0;
   }
 
-  if (a5 == 1)
+  if (editMode == 1)
   {
     v27 = 0.100000001;
   }
@@ -852,21 +852,21 @@ LABEL_28:
     v27 = 1.0;
   }
 
-  if ((a4 != 0) == (a5 == 0))
+  if ((mode != 0) == (editMode == 0))
   {
-    [(NTKCollieFaceView *)self _asyncSetImageViewsForOption:self->_currentStyleEditOption state:0 resolveToyBox:a5 == 0];
+    [(NTKCollieFaceView *)self _asyncSetImageViewsForOption:self->_currentStyleEditOption state:0 resolveToyBox:editMode == 0];
   }
 
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:v27 * a3];
-    v28 = (1.0 - a3) * v26;
+    [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:v27 * fraction];
+    v28 = (1.0 - fraction) * v26;
   }
 
   else
   {
-    [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:(1.0 - a3) * v26];
-    v28 = v27 * a3;
+    [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:(1.0 - fraction) * v26];
+    v28 = v27 * fraction;
   }
 
   [(NTKCollieFaceImageView *)self->_toSnapshotView setAlpha:v28];
@@ -879,9 +879,9 @@ LABEL_28:
   v5.receiver = self;
   v5.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v5 _prepareForEditing];
-  v3 = [(NTKCollieFaceView *)self resourceDirectory];
-  v4 = [(NTKCollieFaceView *)self device];
-  [NTKCollieStyleEditOption beginCacheWithResourceDirectory:v3 forDevice:v4];
+  resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+  device = [(NTKCollieFaceView *)self device];
+  [NTKCollieStyleEditOption beginCacheWithResourceDirectory:resourceDirectory forDevice:device];
 }
 
 - (void)_cleanupAfterEditing
@@ -892,7 +892,7 @@ LABEL_28:
   +[NTKCollieStyleEditOption endCache];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -900,15 +900,15 @@ LABEL_28:
     sub_18D28();
   }
 
-  v6 = [(NTKCollieFaceView *)self _bgColorForEditMode:a3];
+  v6 = [(NTKCollieFaceView *)self _bgColorForEditMode:mode];
   v7 = 1.0;
-  if (a3 == 15)
+  if (mode == 15)
   {
     v7 = 0.5;
   }
 
   v8 = 0.0;
-  switch(a3)
+  switch(mode)
   {
     case 1:
       v7 = 0.0;
@@ -924,13 +924,13 @@ LABEL_9:
   v8 = 1.0;
 LABEL_11:
   v9 = 0.333000004;
-  if (a3 != 10)
+  if (mode != 10)
   {
     v9 = 1.0;
   }
 
   v10 = 0.0;
-  if (a3 == 15)
+  if (mode == 15)
   {
     v11 = 0.0;
   }
@@ -942,18 +942,18 @@ LABEL_11:
 
   [(NTKCollieFaceView *)self _setBackgroundColor:v6 radiance:v7, v9];
   [(NTKCollieFaceView *)self _setContentOpaqueTimeAlpha:v8 complicationsAlpha:v11];
-  v12 = [(NTKCollieFaceView *)self device];
-  v13 = v12;
-  if (a3 != 15)
+  device = [(NTKCollieFaceView *)self device];
+  v13 = device;
+  if (mode != 15)
   {
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    sub_1150C(v12, &v15);
+    sub_1150C(device, &v15);
     v10 = *&v16 * 0.5;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v14 = 0.100000001;
   }
@@ -969,53 +969,53 @@ LABEL_11:
   [(NTKCollieFaceImageView *)self->_toSnapshotView setVOffset:v10];
 }
 
-- (id)_snapshotImageForOption:(id)a3 machineState:(unint64_t)a4 resolveToyBox:(BOOL)a5 force:(BOOL)a6
+- (id)_snapshotImageForOption:(id)option machineState:(unint64_t)state resolveToyBox:(BOOL)box force:(BOOL)force
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  forceCopy = force;
+  boxCopy = box;
+  optionCopy = option;
   v11 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v10 styleName];
+    styleName = [optionCopy styleName];
     v24 = LogBool();
     v25 = 136316162;
     v26 = "[NTKCollieFaceView _snapshotImageForOption:machineState:resolveToyBox:force:]";
     v27 = 2048;
-    v28 = v10;
+    v28 = optionCopy;
     v29 = 2112;
-    v30 = v23;
+    v30 = styleName;
     v31 = 2048;
-    v32 = a4;
+    stateCopy = state;
     v33 = 2112;
     v34 = v24;
     _os_log_debug_impl(&dword_0, v11, OS_LOG_TYPE_DEBUG, "%s: start option(%p).style = %@ machineState = %lu resolveToyBox = %@", &v25, 0x34u);
   }
 
-  v12 = [(NTKCollieFaceView *)self _resolveStyleEditOption:v10 resolveToyBox:v7];
+  v12 = [(NTKCollieFaceView *)self _resolveStyleEditOption:optionCopy resolveToyBox:boxCopy];
 
   [(NTKCollieFace *)self->_face ensureBridgeMemojiResources];
   [objc_opt_class() _snapshotImageSize];
   v14 = v13;
   v16 = v15;
-  v17 = [(NTKCollieFaceView *)self resourceDirectory];
-  v18 = [(NTKCollieFaceView *)self device];
-  v19 = [(NTKCollieQuad *)self->_avtQuad avatar];
-  if (a4 == 1)
+  resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+  device = [(NTKCollieFaceView *)self device];
+  avatar = [(NTKCollieQuad *)self->_avtQuad avatar];
+  if (state == 1)
   {
-    v20 = [NTKCollieStyleEditOption sleepImageForOption:v12 resourceDirectory:v17 size:v18 forDevice:v19 oldAvatar:v14, v16];
+    v20 = [NTKCollieStyleEditOption sleepImageForOption:v12 resourceDirectory:resourceDirectory size:device forDevice:avatar oldAvatar:v14, v16];
   }
 
   else
   {
-    if (a4 == 2)
+    if (state == 2)
     {
-      [NTKCollieStyleEditOption neutralImageForOption:v12 resourceDirectory:v17 size:v18 forDevice:v19 oldAvatar:v14, v16];
+      [NTKCollieStyleEditOption neutralImageForOption:v12 resourceDirectory:resourceDirectory size:device forDevice:avatar oldAvatar:v14, v16];
     }
 
     else
     {
-      [NTKCollieStyleEditOption snapshotImageForOption:v12 resourceDirectory:v17 size:v18 forDevice:v19 oldAvatar:v6 force:v14, v16];
+      [NTKCollieStyleEditOption snapshotImageForOption:v12 resourceDirectory:resourceDirectory size:device forDevice:avatar oldAvatar:forceCopy force:v14, v16];
     }
     v20 = ;
   }
@@ -1025,26 +1025,26 @@ LABEL_11:
   return v21;
 }
 
-- (id)_existingSnapshotImageForOption:(id)a3 state:(unint64_t)a4
+- (id)_existingSnapshotImageForOption:(id)option state:(unint64_t)state
 {
-  if (a4 == 2)
+  if (state == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = a4 == 1;
+    v5 = state == 1;
   }
 
   face = self->_face;
-  v7 = a3;
+  optionCopy = option;
   [(NTKCollieFace *)face ensureBridgeMemojiResources];
   [objc_opt_class() _snapshotImageSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKCollieFaceView *)self resourceDirectory];
-  v13 = [NTKCollieStyleEditOption existingSnapshotImageForOption:v7 resourceDirectory:v12 poseType:v5 size:0 force:v9, v11];
+  resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+  v13 = [NTKCollieStyleEditOption existingSnapshotImageForOption:optionCopy resourceDirectory:resourceDirectory poseType:v5 size:0 force:v9, v11];
 
   if (v13)
   {
@@ -1054,65 +1054,65 @@ LABEL_11:
   return v13;
 }
 
-- (void)_asyncSetImageView0:(id)a3 imageView1:(id)a4 image:(id)a5 forOption:(id)a6 state:(unint64_t)a7 completion:(id)a8
+- (void)_asyncSetImageView0:(id)view0 imageView1:(id)view1 image:(id)image forOption:(id)option state:(unint64_t)state completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  view0Copy = view0;
+  view1Copy = view1;
+  imageCopy = image;
+  optionCopy = option;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (!(v14 | v15))
+  if (!(view0Copy | view1Copy))
   {
 LABEL_7:
-    if (v18)
+    if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_22;
   }
 
-  if (v16)
+  if (imageCopy)
   {
-    if (v14)
+    if (view0Copy)
     {
-      [v14 setImage:v16];
+      [view0Copy setImage:imageCopy];
     }
 
-    if (v15)
+    if (view1Copy)
     {
-      [v15 setImage:v16];
+      [view1Copy setImage:imageCopy];
     }
 
     goto LABEL_7;
   }
 
-  v19 = [v17 styleName];
-  if (a7 == 2)
+  styleName = [optionCopy styleName];
+  if (state == 2)
   {
     v20 = 2;
   }
 
   else
   {
-    v20 = a7 == 1;
+    v20 = state == 1;
   }
 
   v31 = v20;
-  [NSString stringWithFormat:@"%@-%u", v19, v20];
+  [NSString stringWithFormat:@"%@-%u", styleName, v20];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_D274;
   v21 = v36[3] = &unk_2CCE8;
   v37 = v21;
-  v38 = a7;
+  stateCopy = state;
   v22 = objc_retainBlock(v36);
   v23 = v22;
-  if (!v14)
+  if (!view0Copy)
   {
     v24 = 1;
-    if (v15)
+    if (view1Copy)
     {
       goto LABEL_14;
     }
@@ -1122,20 +1122,20 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v24 = (v22[2])(v22, v14);
-  if (!v15)
+  v24 = (v22[2])(v22, view0Copy);
+  if (!view1Copy)
   {
     goto LABEL_16;
   }
 
 LABEL_14:
-  v25 = v23[2](v23, v15);
+  v25 = v23[2](v23, view1Copy);
 LABEL_17:
   if ((v24 & v25) == 1)
   {
-    if (v18)
+    if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1145,15 +1145,15 @@ LABEL_17:
     [objc_opt_class() _snapshotImageSize];
     v27 = v26;
     v29 = v28;
-    v30 = [(NTKCollieFaceView *)self resourceDirectory];
+    resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
     objc_initWeak(&location, self);
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_D30C;
     v32[3] = &unk_2CD38;
-    v33 = v18;
+    v33 = completionCopy;
     objc_copyWeak(&v34, &location);
-    [NTKCollieStyleEditOption asyncMakeSnapshotImageForOption:v17 resourceDirectory:v30 poseType:v31 size:v32 completion:v27, v29];
+    [NTKCollieStyleEditOption asyncMakeSnapshotImageForOption:optionCopy resourceDirectory:resourceDirectory poseType:v31 size:v32 completion:v27, v29];
     objc_destroyWeak(&v34);
 
     objc_destroyWeak(&location);
@@ -1162,19 +1162,19 @@ LABEL_17:
 LABEL_22:
 }
 
-- (void)_asyncSetImageViewsForOption:(id)a3 state:(unint64_t)a4 resolveToyBox:(BOOL)a5
+- (void)_asyncSetImageViewsForOption:(id)option state:(unint64_t)state resolveToyBox:(BOOL)box
 {
-  v8 = [(NTKCollieFaceView *)self _resolveStyleEditOption:a3 resolveToyBox:a5];
-  v7 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:v8 state:a4];
-  [(NTKCollieFaceView *)self _asyncSetImageView0:self->_toSnapshotView imageView1:self->_fromSnapshotView image:v7 forOption:v8 state:a4 completion:0];
+  v8 = [(NTKCollieFaceView *)self _resolveStyleEditOption:option resolveToyBox:box];
+  v7 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:v8 state:state];
+  [(NTKCollieFaceView *)self _asyncSetImageView0:self->_toSnapshotView imageView1:self->_fromSnapshotView image:v7 forOption:v8 state:state completion:0];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v5 willMoveToWindow:?];
-  self->_movedToWindow = a3 != 0;
+  self->_movedToWindow = window != 0;
 }
 
 - (void)_reloadToyBoxAvatar
@@ -1191,8 +1191,8 @@ LABEL_22:
     else
     {
       currentStyleEditOption = self->_currentStyleEditOption;
-      v6 = [(NTKCollieFaceView *)self resourceDirectory];
-      v10 = [(NTKCollieStyleEditOption *)currentStyleEditOption nextRandomizedToyBoxOptionWithResourceDirectory:v6];
+      resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+      v10 = [(NTKCollieStyleEditOption *)currentStyleEditOption nextRandomizedToyBoxOptionWithResourceDirectory:resourceDirectory];
 
       v4 = v10;
     }
@@ -1213,13 +1213,13 @@ LABEL_22:
   }
 }
 
-- (void)_transitionFromAvatarToImageForOption:(id)a3 toState:(unint64_t)a4 immediate:(BOOL)a5 retainAvatar:(BOOL)a6 forceImage:(BOOL)a7 completion:(id)a8
+- (void)_transitionFromAvatarToImageForOption:(id)option toState:(unint64_t)state immediate:(BOOL)immediate retainAvatar:(BOOL)avatar forceImage:(BOOL)image completion:(id)completion
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a8;
+  imageCopy = image;
+  avatarCopy = avatar;
+  immediateCopy = immediate;
+  optionCopy = option;
+  completionCopy = completion;
   v16 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -1228,7 +1228,7 @@ LABEL_22:
 
   dispatch_assert_queue_V2(&_dispatch_main_q);
   [(CLKUIMetalQuadView *)self->_avtView setPaused:1];
-  if (v15)
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     avtQuad = self->_avtQuad;
@@ -1237,11 +1237,11 @@ LABEL_22:
     v18[2] = sub_DA8C;
     v18[3] = &unk_2CD60;
     objc_copyWeak(v21, &location);
-    v20 = v15;
-    v19 = v14;
-    v21[1] = a4;
-    v22 = v10;
-    v23 = v11;
+    v20 = completionCopy;
+    v19 = optionCopy;
+    v21[1] = state;
+    v22 = avatarCopy;
+    v23 = immediateCopy;
     [(NTKCollieQuad *)avtQuad setPaused:1 completion:v18];
 
     objc_destroyWeak(v21);
@@ -1251,16 +1251,16 @@ LABEL_22:
   else
   {
     [(NTKCollieQuad *)self->_avtQuad setPaused:1];
-    [(NTKCollieFaceView *)self _transitionFromAvatarToImagePart2ForOption:v14 toState:a4 retainAvatar:v10 forceImage:v9];
-    [(NTKCollieFaceView *)self _transitionFromAvatarToImagePart3ForOption:v14 immediate:v11 retainAvatar:v10];
+    [(NTKCollieFaceView *)self _transitionFromAvatarToImagePart2ForOption:optionCopy toState:state retainAvatar:avatarCopy forceImage:imageCopy];
+    [(NTKCollieFaceView *)self _transitionFromAvatarToImagePart3ForOption:optionCopy immediate:immediateCopy retainAvatar:avatarCopy];
   }
 }
 
-- (void)_transitionFromAvatarToImagePart2ForOption:(id)a3 toState:(unint64_t)a4 retainAvatar:(BOOL)a5 forceImage:(BOOL)a6
+- (void)_transitionFromAvatarToImagePart2ForOption:(id)option toState:(unint64_t)state retainAvatar:(BOOL)avatar forceImage:(BOOL)image
 {
-  if (a4)
+  if (state)
   {
-    v7 = [(NTKCollieFaceView *)self _snapshotImageForOption:a3 machineState:a4 resolveToyBox:a5 force:a6];
+    v7 = [(NTKCollieFaceView *)self _snapshotImageForOption:option machineState:state resolveToyBox:avatar force:image];
     [(NTKCollieFaceImageView *)self->_toSnapshotView setImage:v7];
     [(NTKCollieFaceImageView *)self->_fromSnapshotView setImage:v7];
   }
@@ -1268,19 +1268,19 @@ LABEL_22:
   else
   {
 
-    [NTKCollieFaceView _asyncSetImageViewsForOption:"_asyncSetImageViewsForOption:state:resolveToyBox:" state:a3 resolveToyBox:?];
+    [NTKCollieFaceView _asyncSetImageViewsForOption:"_asyncSetImageViewsForOption:state:resolveToyBox:" state:option resolveToyBox:?];
   }
 }
 
-- (void)_transitionFromAvatarToImagePart3ForOption:(id)a3 immediate:(BOOL)a4 retainAvatar:(BOOL)a5
+- (void)_transitionFromAvatarToImagePart3ForOption:(id)option immediate:(BOOL)immediate retainAvatar:(BOOL)avatar
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(NTKCollieFaceView *)self device];
+  immediateCopy = immediate;
+  optionCopy = option;
+  device = [(NTKCollieFaceView *)self device];
   v23 = 0u;
   v24 = 0u;
   location = 0u;
-  sub_1150C(v9, &location);
+  sub_1150C(device, &location);
   v10 = *&v23 * 0.5;
 
   [(NTKCollieFaceImageView *)self->_fromSnapshotView setVOffset:v10];
@@ -1289,11 +1289,11 @@ LABEL_22:
   v19[1] = 3221225472;
   v19[2] = sub_DF74;
   v19[3] = &unk_2CDC0;
-  v20 = a5;
-  v21 = v6;
+  avatarCopy = avatar;
+  v21 = immediateCopy;
   v11 = objc_retainBlock(v19);
   v12 = v11;
-  if (v6)
+  if (immediateCopy)
   {
     sub_DEFC(v11, self);
     (v12)[2](v12, self);
@@ -1322,16 +1322,16 @@ LABEL_22:
   }
 }
 
-- (void)_transitionFromImageToCurrentAvatarImmediate:(BOOL)a3
+- (void)_transitionFromImageToCurrentAvatarImmediate:(BOOL)immediate
 {
-  v3 = a3;
+  immediateCopy = immediate;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_18E24();
   }
 
-  if (v3)
+  if (immediateCopy)
   {
     sub_E344(v6, self);
     sub_E3BC(v7, self);
@@ -1360,9 +1360,9 @@ LABEL_22:
   }
 }
 
-- (void)_restartRenderForAvatar:(id)a3 fromState:(unint64_t)a4 completion:(id)a5
+- (void)_restartRenderForAvatar:(id)avatar fromState:(unint64_t)state completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   +[NSDate timeIntervalSinceReferenceDate];
   self->_didRenderAvatarStartTime = v8;
   objc_initWeak(&location, self);
@@ -1371,9 +1371,9 @@ LABEL_22:
   v10[2] = sub_E5D0;
   v10[3] = &unk_2CE78;
   objc_copyWeak(v12, &location);
-  v12[1] = a4;
-  v11 = v7;
-  v9 = v7;
+  v12[1] = state;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(v12);
@@ -1387,21 +1387,21 @@ LABEL_22:
   self->_currentWatchfaceCoordinator = 0;
 }
 
-- (void)_loadAvatarAsyncForOption:(id)a3 completion:(id)a4
+- (void)_loadAvatarAsyncForOption:(id)option completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionCopy = option;
+  completionCopy = completion;
   v8 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v13 = LogBool();
     v14 = objc_retainBlock(self->_didLoadAvatarCallback);
-    v15 = objc_retainBlock(v7);
-    v16 = [v6 styleName];
+    v15 = objc_retainBlock(completionCopy);
+    styleName = [optionCopy styleName];
     *location = 136316418;
     *&location[4] = "[NTKCollieFaceView _loadAvatarAsyncForOption:completion:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v13;
     v24 = 2048;
@@ -1409,12 +1409,12 @@ LABEL_22:
     v26 = 2048;
     v27 = v15;
     v28 = 2112;
-    v29 = v16;
+    v29 = styleName;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "%s(%p): _loadInProgress = %@ loadedCallback.was = %p loadedCallback.willBe = %p characterStyle = %@", location, 0x3Eu);
   }
 
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v9 = objc_retainBlock(v7);
+  v9 = objc_retainBlock(completionCopy);
   didLoadAvatarCallback = self->_didLoadAvatarCallback;
   self->_didLoadAvatarCallback = v9;
 
@@ -1424,24 +1424,24 @@ LABEL_22:
     kdebug_trace();
     [(NTKCollieFace *)self->_face ensureBridgeMemojiResources];
     objc_initWeak(location, self);
-    v11 = [(NTKCollieFaceView *)self resourceDirectory];
-    v12 = [(NTKCollieQuad *)self->_avtQuad avatar];
+    resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+    avatar = [(NTKCollieQuad *)self->_avtQuad avatar];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_EE24;
     v17[3] = &unk_2CEC8;
     objc_copyWeak(&v18, location);
-    [NTKCollieStyleEditOption loadAvatarForOption:v6 resourceDirectory:v11 oldAvatar:v12 completion:v17];
+    [NTKCollieStyleEditOption loadAvatarForOption:optionCopy resourceDirectory:resourceDirectory oldAvatar:avatar completion:v17];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
   }
 }
 
-- (void)_transitionFromImageToAvatarForOption:(id)a3 fromState:(unint64_t)a4 completion:(id)a5
+- (void)_transitionFromImageToAvatarForOption:(id)option fromState:(unint64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  completionCopy = completion;
   v10 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1451,19 +1451,19 @@ LABEL_22:
   dispatch_assert_queue_V2(&_dispatch_main_q);
   +[NSDate timeIntervalSinceReferenceDate];
   self->_loadAvatarStartTime = v11;
-  v12 = [(NTKCollieQuad *)self->_avtQuad avatar];
-  if (v12 && (v13 = v12, v14 = [(NTKCollieStyleEditOption *)self->_currentStyleEditOption isEqual:v8], v13, v14))
+  avatar = [(NTKCollieQuad *)self->_avtQuad avatar];
+  if (avatar && (v13 = avatar, v14 = [(NTKCollieStyleEditOption *)self->_currentStyleEditOption isEqual:optionCopy], v13, v14))
   {
     v15 = +[NTKCollieFaceBundle logObject];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      sub_18F0C(self, v8);
+      sub_18F0C(self, optionCopy);
     }
 
     +[NSDate timeIntervalSinceReferenceDate];
     self->_loadAvatarEndTime = v16;
-    v17 = [(NTKCollieQuad *)self->_avtQuad avatar];
-    [(NTKCollieFaceView *)self _restartRenderForAvatar:v17 fromState:a4 completion:v9];
+    avatar2 = [(NTKCollieQuad *)self->_avtQuad avatar];
+    [(NTKCollieFaceView *)self _restartRenderForAvatar:avatar2 fromState:state completion:completionCopy];
   }
 
   else
@@ -1471,7 +1471,7 @@ LABEL_22:
     v18 = +[NTKCollieFaceBundle logObject];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      sub_18FB8(self, v8);
+      sub_18FB8(self, optionCopy);
     }
 
     objc_initWeak(&location, self);
@@ -1480,9 +1480,9 @@ LABEL_22:
     v19[2] = sub_F36C;
     v19[3] = &unk_2CEF0;
     objc_copyWeak(v21, &location);
-    v21[1] = a4;
-    v20 = v9;
-    [(NTKCollieFaceView *)self _loadAvatarAsyncForOption:v8 completion:v19];
+    v21[1] = state;
+    v20 = completionCopy;
+    [(NTKCollieFaceView *)self _loadAvatarAsyncForOption:optionCopy completion:v19];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -1516,10 +1516,10 @@ LABEL_22:
   }
 }
 
-- (void)_transitionFromImageToAvatarForOption:(id)a3 fromState:(unint64_t)a4
+- (void)_transitionFromImageToAvatarForOption:(id)option fromState:(unint64_t)state
 {
-  v6 = a3;
-  if ([v6 isToybox])
+  optionCopy = option;
+  if ([optionCopy isToybox])
   {
     v7 = (self->_currentDataMode - 3) < 0xFFFFFFFFFFFFFFFELL;
   }
@@ -1535,51 +1535,51 @@ LABEL_22:
   v8[2] = sub_F66C;
   v8[3] = &unk_2CF18;
   objc_copyWeak(v9, &location);
-  v9[1] = a4;
+  v9[1] = state;
   v10 = v7;
-  [(NTKCollieFaceView *)self _transitionFromImageToAvatarForOption:v6 fromState:a4 completion:v8];
+  [(NTKCollieFaceView *)self _transitionFromImageToAvatarForOption:optionCopy fromState:state completion:v8];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v11 = a4;
-  v12 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v13 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [v11 localizedName];
-    v34 = [v12 localizedName];
+    localizedName = [optionCopy localizedName];
+    localizedName2 = [toOptionCopy localizedName];
     LODWORD(v37.a) = 136315906;
     *(&v37.a + 4) = "[NTKCollieFaceView _applyTransitionFraction:fromOption:toOption:forCustomEditMode:slot:]";
     WORD2(v37.b) = 2048;
-    *(&v37.b + 6) = a3;
+    *(&v37.b + 6) = fraction;
     HIWORD(v37.c) = 2112;
-    *&v37.d = v33;
+    *&v37.d = localizedName;
     LOWORD(v37.tx) = 2112;
-    *(&v37.tx + 2) = v34;
+    *(&v37.tx + 2) = localizedName2;
     _os_log_debug_impl(&dword_0, v13, OS_LOG_TYPE_DEBUG, "%s: fraction = %f fromOption = %@ toOption = %@", &v37, 0x2Au);
   }
 
-  switch(a6)
+  switch(mode)
   {
     case 19:
-      v21 = [v11 numeralOption];
-      v22 = [v12 numeralOption];
-      if (v21 == v22)
+      numeralOption = [optionCopy numeralOption];
+      numeralOption2 = [toOptionCopy numeralOption];
+      if (numeralOption == numeralOption2)
       {
-        [(NTKCollieFaceView *)self _setNumerals:v21];
+        [(NTKCollieFaceView *)self _setNumerals:numeralOption];
       }
 
       else
       {
-        if (a3 >= 0.5)
+        if (fraction >= 0.5)
         {
-          v28 = v22;
+          v28 = numeralOption2;
           CLKMapFractionIntoRange();
           v27 = v29;
-          v21 = v28;
+          numeralOption = v28;
         }
 
         else
@@ -1591,52 +1591,52 @@ LABEL_22:
         CLKMapFractionIntoRange();
         memset(&v37, 0, sizeof(v37));
         CGAffineTransformMakeScale(&v37, v30, v30);
-        [(NTKCollieFaceView *)self _setNumerals:v21];
-        v31 = [(NTKCollieFaceView *)self timeView];
-        [v31 setAlpha:v27];
+        [(NTKCollieFaceView *)self _setNumerals:numeralOption];
+        timeView = [(NTKCollieFaceView *)self timeView];
+        [timeView setAlpha:v27];
 
         v36 = v37;
-        v32 = [(NTKCollieFaceView *)self timeView];
+        timeView2 = [(NTKCollieFaceView *)self timeView];
         v35 = v36;
-        [v32 setTransform:&v35];
+        [timeView2 setTransform:&v35];
       }
 
       break;
     case 15:
-      v14 = v11;
-      v15 = v12;
-      v16 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:v14 state:0];
-      v17 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:v15 state:0];
+      interpolatedColorPalette = optionCopy;
+      primaryColor = toOptionCopy;
+      v16 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:interpolatedColorPalette state:0];
+      v17 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:primaryColor state:0];
       v18 = v17;
-      if (a3 >= 0.0500000007)
+      if (fraction >= 0.0500000007)
       {
         v19 = v17;
-        v20 = v15;
-        if (a3 <= 0.949999988)
+        v20 = primaryColor;
+        if (fraction <= 0.949999988)
         {
 LABEL_13:
-          if (a3 <= 0.5)
+          if (fraction <= 0.5)
           {
-            [(NTKCollieFaceView *)self _asyncSetImageView:self->_toSnapshotView image:v16 forOption:v14 state:0];
-            [(NTKCollieFaceImageView *)self->_toSnapshotView setAlpha:1.0 - a3];
+            [(NTKCollieFaceView *)self _asyncSetImageView:self->_toSnapshotView image:v16 forOption:interpolatedColorPalette state:0];
+            [(NTKCollieFaceImageView *)self->_toSnapshotView setAlpha:1.0 - fraction];
             v23 = 48;
           }
 
           else
           {
-            [(NTKCollieFaceView *)self _asyncSetImageView:self->_fromSnapshotView image:v16 forOption:v14 state:0];
-            [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:1.0 - a3];
+            [(NTKCollieFaceView *)self _asyncSetImageView:self->_fromSnapshotView image:v16 forOption:interpolatedColorPalette state:0];
+            [(NTKCollieFaceImageView *)self->_fromSnapshotView setAlpha:1.0 - fraction];
             v23 = 56;
           }
 
-          [(NTKCollieFaceView *)self _asyncSetImageView:*&self->NTKDigitalFaceView_opaque[v23] image:v18 forOption:v15 state:0];
-          [*&self->NTKDigitalFaceView_opaque[v23] setAlpha:a3];
+          [(NTKCollieFaceView *)self _asyncSetImageView:*&self->NTKDigitalFaceView_opaque[v23] image:v18 forOption:primaryColor state:0];
+          [*&self->NTKDigitalFaceView_opaque[v23] setAlpha:fraction];
           [(NTKCollieFaceView *)self device];
 
           [(NTKCollieFaceImageView *)self->_fromSnapshotView setVOffset:0.0];
           [(NTKCollieFaceImageView *)self->_toSnapshotView setVOffset:0.0];
-          v24 = v14;
-          if (a3 <= 0.0 || (v24 = v15, a3 >= 1.0))
+          v24 = interpolatedColorPalette;
+          if (fraction <= 0.0 || (v24 = primaryColor, fraction >= 1.0))
           {
             objc_storeStrong(&self->_currentStyleEditOption, v24);
           }
@@ -1658,54 +1658,54 @@ LABEL_13:
       {
         v19 = v16;
         v16 = v17;
-        v20 = v14;
-        v14 = v15;
+        v20 = interpolatedColorPalette;
+        interpolatedColorPalette = primaryColor;
       }
 
       v18 = v19;
 
-      v15 = v20;
+      primaryColor = v20;
       v16 = v18;
-      v14 = v15;
+      interpolatedColorPalette = primaryColor;
       goto LABEL_13;
     case 10:
-      v14 = [(NTKCollieFaceView *)self interpolatedColorPalette];
-      v15 = [v14 primaryColor];
-      [(NTKCollieFaceView *)self _setBackgroundColor:v15 radiance:1.0];
+      interpolatedColorPalette = [(NTKCollieFaceView *)self interpolatedColorPalette];
+      primaryColor = [interpolatedColorPalette primaryColor];
+      [(NTKCollieFaceView *)self _setBackgroundColor:primaryColor radiance:1.0];
 LABEL_22:
 
       break;
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
+  optionCopy = option;
   v8 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(NTKCollieFaceView *)self dataMode];
-    v17 = [v7 localizedName];
+    dataMode = [(NTKCollieFaceView *)self dataMode];
+    localizedName = [optionCopy localizedName];
     v18 = 136316162;
     v19 = "[NTKCollieFaceView _applyOption:forCustomEditMode:slot:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
-    v23 = v16;
+    v23 = dataMode;
     v24 = 2112;
-    v25 = v17;
+    v25 = localizedName;
     v26 = 1024;
-    v27 = a4;
+    modeCopy = mode;
     _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "%s(%p): dataMode = %ld option = %@ mode = %u", &v18, 0x30u);
   }
 
-  switch(a4)
+  switch(mode)
   {
     case 19:
-      -[NTKCollieFaceView _setNumerals:](self, "_setNumerals:", [v7 numeralOption]);
+      -[NTKCollieFaceView _setNumerals:](self, "_setNumerals:", [optionCopy numeralOption]);
       break;
     case 15:
-      v11 = v7;
+      v11 = optionCopy;
       v12 = sub_C3A0(self->_currentDataMode);
       if (self->_currentDataMode == 1)
       {
@@ -1724,37 +1724,37 @@ LABEL_22:
 
       v14 = self->_currentStyleEditOption;
       self->_currentStyleEditOption = v11;
-      v9 = v11;
+      faceColorPalette = v11;
 
       currentToyBoxStyleEditOption = self->_currentToyBoxStyleEditOption;
       self->_currentToyBoxStyleEditOption = 0;
 
       goto LABEL_14;
     case 10:
-      v9 = [(NTKCollieFaceView *)self faceColorPalette];
-      v10 = [(NTKCollieStyleEditOption *)v9 primaryColor];
-      [(NTKCollieFaceView *)self _setBackgroundColor:v10 radiance:1.0];
+      faceColorPalette = [(NTKCollieFaceView *)self faceColorPalette];
+      primaryColor = [(NTKCollieStyleEditOption *)faceColorPalette primaryColor];
+      [(NTKCollieFaceView *)self _setBackgroundColor:primaryColor radiance:1.0];
 
 LABEL_14:
       break;
   }
 }
 
-- (void)_setNumerals:(unint64_t)a3
+- (void)_setNumerals:(unint64_t)numerals
 {
-  self->_numeralOption = a3;
+  self->_numeralOption = numerals;
   v4 = CLKLocaleNumberSystemFromNumeralOption();
   if (self->_numberSystem != v4)
   {
     v5 = v4;
     self->_numberSystem = v4;
-    v6 = [(NTKCollieFaceView *)self device];
+    device = [(NTKCollieFaceView *)self device];
     v7 = NTKShowIndicScriptNumerals();
 
     if (v7)
     {
-      v8 = [(NTKCollieFaceView *)self timeView];
-      [v8 setForcedNumberSystem:v5];
+      timeView = [(NTKCollieFaceView *)self timeView];
+      [timeView setForcedNumberSystem:v5];
 
       [(NTKCollieFaceView *)self invalidateDigitalTimeLabelStyle];
 
@@ -1763,9 +1763,9 @@ LABEL_14:
   }
 }
 
-- (void)_pushBackMachineStateResetTimer:(double)a3 completionHandler:(id)a4
+- (void)_pushBackMachineStateResetTimer:(double)timer completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   machineStateResetTimer = self->_machineStateResetTimer;
   if (machineStateResetTimer)
   {
@@ -1774,25 +1774,25 @@ LABEL_14:
     self->_machineStateResetTimer = 0;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_FF58;
     v11[3] = &unk_2CF40;
-    v12 = v6;
-    v9 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v11 block:a3];
+    v12 = handlerCopy;
+    v9 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v11 block:timer];
     v10 = self->_machineStateResetTimer;
     self->_machineStateResetTimer = v9;
   }
 }
 
-- (void)_transitionBackgroundToBlackImmediate:(BOOL)a3
+- (void)_transitionBackgroundToBlackImmediate:(BOOL)immediate
 {
-  v3 = a3;
-  v5 = [(NTKCollieFaceView *)self device];
+  immediateCopy = immediate;
+  device = [(NTKCollieFaceView *)self device];
   v6 = [UIColor colorWithWhite:0.649999976 alpha:1.0];
-  if (v3)
+  if (immediateCopy)
   {
     [(NTKCollieFaceView *)self _setBackgroundAlpha:v6 contentAlpha:0.0 timeComplicationsColor:0.649999976];
   }
@@ -1816,8 +1816,8 @@ LABEL_14:
 
 - (void)_transitionBackgroundToColor
 {
-  v3 = [(NTKCollieFaceView *)self faceColorPalette];
-  v4 = [v3 primaryColor];
+  faceColorPalette = [(NTKCollieFaceView *)self faceColorPalette];
+  primaryColor = [faceColorPalette primaryColor];
 
   v5 = +[UIColor whiteColor];
   objc_initWeak(&location, self);
@@ -1840,7 +1840,7 @@ LABEL_14:
   v19 = v14;
   v12 = v11;
   v16 = v12;
-  v13 = v4;
+  v13 = primaryColor;
   v17 = v13;
   [UIView animateWithDuration:0x20000 delay:v20 options:v15 animations:0.5 completion:0.0];
 
@@ -1849,15 +1849,15 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)_transitionToMachineState:(unint64_t)a3 immediate:(BOOL)a4
+- (void)_transitionToMachineState:(unint64_t)state immediate:(BOOL)immediate
 {
-  v4 = a3;
+  stateCopy = state;
   currentMachineState = self->_currentMachineState;
-  v7 = [NTKCollieFaceBundle logObject:a3];
+  v7 = [NTKCollieFaceBundle logObject:state];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [&off_2DDA8 objectAtIndexedSubscript:currentMachineState];
-    v9 = [&off_2DDA8 objectAtIndexedSubscript:v4];
+    v9 = [&off_2DDA8 objectAtIndexedSubscript:stateCopy];
     v10 = 136315650;
     v11 = "[NTKCollieFaceView _transitionToMachineState:immediate:]";
     v12 = 2112;
@@ -1867,31 +1867,31 @@ LABEL_14:
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%s: oldState = %@, newState = %@", &v10, 0x20u);
   }
 
-  if ((v4 - 3) >= 2)
+  if ((stateCopy - 3) >= 2)
   {
-    if (v4 != 1)
+    if (stateCopy != 1)
     {
-      if (v4 == 5)
+      if (stateCopy == 5)
       {
         if (currentMachineState == 1)
         {
           return;
         }
 
-        v4 = 5;
+        stateCopy = 5;
       }
 
       else
       {
-        v4 = 2;
+        stateCopy = 2;
       }
     }
 
-    self->_currentMachineState = v4;
+    self->_currentMachineState = stateCopy;
   }
 }
 
-- (void)_startMachineFromState:(unint64_t)a3
+- (void)_startMachineFromState:(unint64_t)state
 {
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1902,7 +1902,7 @@ LABEL_14:
   currentWatchfaceCoordinator = self->_currentWatchfaceCoordinator;
   self->_currentWatchfaceCoordinator = 0;
 
-  if (a3 == 1)
+  if (state == 1)
   {
     [(NTKCollieFaceView *)self _transitionToMachineState:1 immediate:1];
   }
@@ -1911,9 +1911,9 @@ LABEL_14:
   [(NTKCollieFaceView *)self _addSecondActivities];
 }
 
-- (void)_stopMachineImmediate:(BOOL)a3
+- (void)_stopMachineImmediate:(BOOL)immediate
 {
-  v3 = a3;
+  immediateCopy = immediate;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1931,12 +1931,12 @@ LABEL_14:
     v6 = 2;
   }
 
-  [(NTKCollieFaceView *)self _transitionToMachineState:v6 immediate:v3];
+  [(NTKCollieFaceView *)self _transitionToMachineState:v6 immediate:immediateCopy];
 }
 
-- (void)screenDidTurnOffAnimated:(BOOL)a3
+- (void)screenDidTurnOffAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1946,7 +1946,7 @@ LABEL_14:
   [(NTKCollieFaceView *)self _stopMachineImmediate:1];
   v6.receiver = self;
   v6.super_class = NTKCollieFaceView;
-  [(NTKCollieFaceView *)&v6 screenDidTurnOffAnimated:v3];
+  [(NTKCollieFaceView *)&v6 screenDidTurnOffAnimated:animatedCopy];
   if ([(NTKCollieStyleEditOption *)self->_currentStyleEditOption isToybox])
   {
     self->_shouldShakeToyBox = 1;
@@ -1991,7 +1991,7 @@ LABEL_14:
   [(NTKCollieFaceView *)self _stopMachineImmediate:1];
 }
 
-- (void)_viewSingleTapped:(id)a3
+- (void)_viewSingleTapped:(id)tapped
 {
   v4 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2017,9 +2017,9 @@ LABEL_14:
   }
 }
 
-- (CGPoint)_fractionalLocationOfGesture:(id)a3 inView:(id)a4
+- (CGPoint)_fractionalLocationOfGesture:(id)gesture inView:(id)view
 {
-  [a3 locationInView:a4];
+  [gesture locationInView:view];
   v6 = v5;
   v8 = v7;
   [(CLKUIMetalQuadView *)self->_avtView bounds];
@@ -2040,9 +2040,9 @@ LABEL_14:
   return result;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 19)
+  if (options == 19)
   {
     v6 = &off_2DDC0;
   }
@@ -2051,31 +2051,31 @@ LABEL_14:
   {
     v9 = v4;
     v10 = v5;
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NTKCollieFaceView;
-    v6 = objc_msgSendSuper2(&v8, "_swatchForEditModeDependsOnOptions:forDevice:", a3, a4);
+    v6 = objc_msgSendSuper2(&v8, "_swatchForEditModeDependsOnOptions:forDevice:", options, device);
   }
 
   return v6;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 == 19)
+  optionCopy = option;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (mode == 19)
   {
-    v16 = [(NTKCollieFaceView *)self device];
-    v17 = sub_BF04(v16);
+    device = [(NTKCollieFaceView *)self device];
+    v17 = sub_BF04(device);
 
-    v18 = [(NTKCollieFaceView *)self device];
-    v15 = [v10 swatchImageWithFont:v17 device:v18 baseline:0.0];
+    device2 = [(NTKCollieFaceView *)self device];
+    v15 = [optionCopy swatchImageWithFont:v17 device:device2 baseline:0.0];
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
-    v13 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:v10 state:0];
+    v13 = [(NTKCollieFaceView *)self _existingSnapshotImageForOption:optionCopy state:0];
     v14 = v13;
     if (v13)
     {
@@ -2087,15 +2087,15 @@ LABEL_14:
       [objc_opt_class() _snapshotImageSize];
       v20 = v19;
       v22 = v21;
-      v23 = [(NTKCollieFaceView *)self resourceDirectory];
-      [v10 styleName];
+      resourceDirectory = [(NTKCollieFaceView *)self resourceDirectory];
+      [optionCopy styleName];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_10DBC;
       v28 = v27[3] = &unk_2CFB8;
-      v29 = v12;
+      v29 = handlerCopy;
       v24 = v28;
-      [NTKCollieStyleEditOption asyncMakeSnapshotImageForOption:v10 resourceDirectory:v23 poseType:0 size:v27 completion:v20, v22];
+      [NTKCollieStyleEditOption asyncMakeSnapshotImageForOption:optionCopy resourceDirectory:resourceDirectory poseType:0 size:v27 completion:v20, v22];
       v15 = +[NTKCollieFaceImageView loadingImage];
     }
   }
@@ -2104,7 +2104,7 @@ LABEL_14:
   {
     v26.receiver = self;
     v26.super_class = NTKCollieFaceView;
-    v15 = [(NTKCollieFaceView *)&v26 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11];
+    v15 = [(NTKCollieFaceView *)&v26 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;
@@ -2115,44 +2115,44 @@ LABEL_14:
   v5.receiver = self;
   v5.super_class = NTKCollieFaceView;
   [(NTKCollieFaceView *)&v5 _reorderSwitcherSnapshotView];
-  v3 = [(NTKCollieFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKCollieFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKCollieFaceView *)self switcherSnapshotView];
-    [(NTKCollieFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKCollieFaceView *)self switcherSnapshotView];
+    [(NTKCollieFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
-- (void)populateFaceViewEditOptionsFromFace:(id)a3
+- (void)populateFaceViewEditOptionsFromFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   v6.receiver = self;
   v6.super_class = NTKCollieFaceView;
-  [(NTKCollieFaceView *)&v6 populateFaceViewEditOptionsFromFace:v4];
+  [(NTKCollieFaceView *)&v6 populateFaceViewEditOptionsFromFace:faceCopy];
   face = self->_face;
-  self->_face = v4;
+  self->_face = faceCopy;
 }
 
-- (void)_avatarStoreDidChange:(id)a3
+- (void)_avatarStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[NTKCollieFaceBundle logObject];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[NTKCollieFaceView _avatarStoreDidChange:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = changeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%s(%p): started, notification = %@", buf, 0x20u);
   }
 
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v6 = self->_currentStyleEditOption;
-  v7 = [v4 userInfo];
-  v8 = [(NTKCollieStyleEditOption *)v6 isImpactedByAvatarStoreChangedInfo:v7];
+  userInfo = [changeCopy userInfo];
+  v8 = [(NTKCollieStyleEditOption *)v6 isImpactedByAvatarStoreChangedInfo:userInfo];
 
   if (v8)
   {
@@ -2166,8 +2166,8 @@ LABEL_14:
     block[2] = sub_110E4;
     block[3] = &unk_2CFE0;
     v10 = v6;
-    v11 = v4;
-    v12 = self;
+    v11 = changeCopy;
+    selfCopy2 = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 }

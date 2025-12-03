@@ -1,20 +1,20 @@
 @interface HKCodableChartSharableModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartSharableModel
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -33,48 +33,48 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartSharableModel;
   v4 = [(HKCodableChartSharableModel *)&v8 description];
-  v5 = [(HKCodableChartSharableModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartSharableModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   monthData = self->_monthData;
   if (monthData)
   {
-    v5 = [(HKCodableChartDataSourceQueryData *)monthData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"monthData"];
+    dictionaryRepresentation = [(HKCodableChartDataSourceQueryData *)monthData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"monthData"];
   }
 
   monthDateInterval = self->_monthDateInterval;
   if (monthDateInterval)
   {
-    v7 = [(HKCodableDateInterval *)monthDateInterval dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"monthDateInterval"];
+    dictionaryRepresentation2 = [(HKCodableDateInterval *)monthDateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"monthDateInterval"];
   }
 
   sixMonthData = self->_sixMonthData;
   if (sixMonthData)
   {
-    v9 = [(HKCodableChartDataSourceQueryData *)sixMonthData dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"sixMonthData"];
+    dictionaryRepresentation3 = [(HKCodableChartDataSourceQueryData *)sixMonthData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"sixMonthData"];
   }
 
   sixMonthDateInterval = self->_sixMonthDateInterval;
   if (sixMonthDateInterval)
   {
-    v11 = [(HKCodableDateInterval *)sixMonthDateInterval dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"sixMonthDateInterval"];
+    dictionaryRepresentation4 = [(HKCodableDateInterval *)sixMonthDateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"sixMonthDateInterval"];
   }
 
   has = self->_has;
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-    [v3 setObject:v13 forKey:@"latestSupportedVersion"];
+    [dictionary setObject:v13 forKey:@"latestSupportedVersion"];
 
     has = self->_has;
   }
@@ -82,190 +82,190 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v14 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v14 forKey:@"minimumSupportedVersion"];
   }
 
   weekData = self->_weekData;
   if (weekData)
   {
-    v16 = [(HKCodableChartDataSourceQueryData *)weekData dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"weekData"];
+    dictionaryRepresentation5 = [(HKCodableChartDataSourceQueryData *)weekData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"weekData"];
   }
 
   weekDateInterval = self->_weekDateInterval;
   if (weekDateInterval)
   {
-    v18 = [(HKCodableDateInterval *)weekDateInterval dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"weekDateInterval"];
+    dictionaryRepresentation6 = [(HKCodableDateInterval *)weekDateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"weekDateInterval"];
   }
 
   dayData = self->_dayData;
   if (dayData)
   {
-    v20 = [(HKCodableChartDataSourceQueryData *)dayData dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"dayData"];
+    dictionaryRepresentation7 = [(HKCodableChartDataSourceQueryData *)dayData dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"dayData"];
   }
 
   dayDateInterval = self->_dayDateInterval;
   if (dayDateInterval)
   {
-    v22 = [(HKCodableDateInterval *)dayDateInterval dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"dayDateInterval"];
+    dictionaryRepresentation8 = [(HKCodableDateInterval *)dayDateInterval dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"dayDateInterval"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_monthData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_monthDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sixMonthData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sixMonthDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_weekData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_weekDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dayData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dayDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_monthData)
   {
-    [v4 setMonthData:?];
-    v4 = v6;
+    [toCopy setMonthData:?];
+    toCopy = v6;
   }
 
   if (self->_monthDateInterval)
   {
     [v6 setMonthDateInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sixMonthData)
   {
     [v6 setSixMonthData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sixMonthDateInterval)
   {
     [v6 setSixMonthDateInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_latestSupportedVersion;
-    *(v4 + 88) |= 1u;
+    *(toCopy + 1) = self->_latestSupportedVersion;
+    *(toCopy + 88) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_minimumSupportedVersion;
-    *(v4 + 88) |= 2u;
+    *(toCopy + 2) = self->_minimumSupportedVersion;
+    *(toCopy + 88) |= 2u;
   }
 
   if (self->_weekData)
   {
     [v6 setWeekData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_weekDateInterval)
   {
     [v6 setWeekDateInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dayData)
   {
     [v6 setDayData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dayDateInterval)
   {
     [v6 setDayDateInterval:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableChartDataSourceQueryData *)self->_monthData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableChartDataSourceQueryData *)self->_monthData copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(HKCodableDateInterval *)self->_monthDateInterval copyWithZone:a3];
+  v8 = [(HKCodableDateInterval *)self->_monthDateInterval copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(HKCodableChartDataSourceQueryData *)self->_sixMonthData copyWithZone:a3];
+  v10 = [(HKCodableChartDataSourceQueryData *)self->_sixMonthData copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(HKCodableDateInterval *)self->_sixMonthDateInterval copyWithZone:a3];
+  v12 = [(HKCodableDateInterval *)self->_sixMonthDateInterval copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
@@ -283,35 +283,35 @@
     *(v5 + 88) |= 2u;
   }
 
-  v15 = [(HKCodableChartDataSourceQueryData *)self->_weekData copyWithZone:a3];
+  v15 = [(HKCodableChartDataSourceQueryData *)self->_weekData copyWithZone:zone];
   v16 = *(v5 + 72);
   *(v5 + 72) = v15;
 
-  v17 = [(HKCodableDateInterval *)self->_weekDateInterval copyWithZone:a3];
+  v17 = [(HKCodableDateInterval *)self->_weekDateInterval copyWithZone:zone];
   v18 = *(v5 + 80);
   *(v5 + 80) = v17;
 
-  v19 = [(HKCodableChartDataSourceQueryData *)self->_dayData copyWithZone:a3];
+  v19 = [(HKCodableChartDataSourceQueryData *)self->_dayData copyWithZone:zone];
   v20 = *(v5 + 24);
   *(v5 + 24) = v19;
 
-  v21 = [(HKCodableDateInterval *)self->_dayDateInterval copyWithZone:a3];
+  v21 = [(HKCodableDateInterval *)self->_dayDateInterval copyWithZone:zone];
   v22 = *(v5 + 32);
   *(v5 + 32) = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   monthData = self->_monthData;
-  if (monthData | *(v4 + 5))
+  if (monthData | *(equalCopy + 5))
   {
     if (![(HKCodableChartDataSourceQueryData *)monthData isEqual:?])
     {
@@ -320,7 +320,7 @@
   }
 
   monthDateInterval = self->_monthDateInterval;
-  if (monthDateInterval | *(v4 + 6))
+  if (monthDateInterval | *(equalCopy + 6))
   {
     if (![(HKCodableDateInterval *)monthDateInterval isEqual:?])
     {
@@ -329,7 +329,7 @@
   }
 
   sixMonthData = self->_sixMonthData;
-  if (sixMonthData | *(v4 + 7))
+  if (sixMonthData | *(equalCopy + 7))
   {
     if (![(HKCodableChartDataSourceQueryData *)sixMonthData isEqual:?])
     {
@@ -338,7 +338,7 @@
   }
 
   sixMonthDateInterval = self->_sixMonthDateInterval;
-  if (sixMonthDateInterval | *(v4 + 8))
+  if (sixMonthDateInterval | *(equalCopy + 8))
   {
     if (![(HKCodableDateInterval *)sixMonthDateInterval isEqual:?])
     {
@@ -348,13 +348,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_latestSupportedVersion != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_latestSupportedVersion != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
 LABEL_28:
     v13 = 0;
@@ -363,25 +363,25 @@ LABEL_28:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_minimumSupportedVersion != *(v4 + 2))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_minimumSupportedVersion != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   weekData = self->_weekData;
-  if (weekData | *(v4 + 9) && ![(HKCodableChartDataSourceQueryData *)weekData isEqual:?])
+  if (weekData | *(equalCopy + 9) && ![(HKCodableChartDataSourceQueryData *)weekData isEqual:?])
   {
     goto LABEL_28;
   }
 
   weekDateInterval = self->_weekDateInterval;
-  if (weekDateInterval | *(v4 + 10))
+  if (weekDateInterval | *(equalCopy + 10))
   {
     if (![(HKCodableDateInterval *)weekDateInterval isEqual:?])
     {
@@ -390,7 +390,7 @@ LABEL_28:
   }
 
   dayData = self->_dayData;
-  if (dayData | *(v4 + 3))
+  if (dayData | *(equalCopy + 3))
   {
     if (![(HKCodableChartDataSourceQueryData *)dayData isEqual:?])
     {
@@ -399,7 +399,7 @@ LABEL_28:
   }
 
   dayDateInterval = self->_dayDateInterval;
-  if (dayDateInterval | *(v4 + 4))
+  if (dayDateInterval | *(equalCopy + 4))
   {
     v13 = [(HKCodableDateInterval *)dayDateInterval isEqual:?];
   }
@@ -449,12 +449,12 @@ LABEL_6:
   return v11 ^ v12 ^ [(HKCodableDateInterval *)self->_dayDateInterval hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   monthData = self->_monthData;
-  v6 = v4[5];
-  v22 = v4;
+  v6 = fromCopy[5];
+  v22 = fromCopy;
   if (monthData)
   {
     if (!v6)
@@ -475,10 +475,10 @@ LABEL_6:
     [(HKCodableChartSharableModel *)self setMonthData:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_7:
   monthDateInterval = self->_monthDateInterval;
-  v8 = v4[6];
+  v8 = fromCopy[6];
   if (monthDateInterval)
   {
     if (!v8)
@@ -499,10 +499,10 @@ LABEL_7:
     [(HKCodableChartSharableModel *)self setMonthDateInterval:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_13:
   sixMonthData = self->_sixMonthData;
-  v10 = v4[7];
+  v10 = fromCopy[7];
   if (sixMonthData)
   {
     if (!v10)
@@ -523,10 +523,10 @@ LABEL_13:
     [(HKCodableChartSharableModel *)self setSixMonthData:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_19:
   sixMonthDateInterval = self->_sixMonthDateInterval;
-  v12 = v4[8];
+  v12 = fromCopy[8];
   if (sixMonthDateInterval)
   {
     if (!v12)
@@ -547,24 +547,24 @@ LABEL_19:
     [(HKCodableChartSharableModel *)self setSixMonthDateInterval:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_25:
-  v13 = *(v4 + 88);
+  v13 = *(fromCopy + 88);
   if (v13)
   {
-    self->_latestSupportedVersion = v4[1];
+    self->_latestSupportedVersion = fromCopy[1];
     *&self->_has |= 1u;
-    v13 = *(v4 + 88);
+    v13 = *(fromCopy + 88);
   }
 
   if ((v13 & 2) != 0)
   {
-    self->_minimumSupportedVersion = v4[2];
+    self->_minimumSupportedVersion = fromCopy[2];
     *&self->_has |= 2u;
   }
 
   weekData = self->_weekData;
-  v15 = v4[9];
+  v15 = fromCopy[9];
   if (weekData)
   {
     if (!v15)
@@ -585,10 +585,10 @@ LABEL_25:
     [(HKCodableChartSharableModel *)self setWeekData:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_35:
   weekDateInterval = self->_weekDateInterval;
-  v17 = v4[10];
+  v17 = fromCopy[10];
   if (weekDateInterval)
   {
     if (!v17)
@@ -609,10 +609,10 @@ LABEL_35:
     [(HKCodableChartSharableModel *)self setWeekDateInterval:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_41:
   dayData = self->_dayData;
-  v19 = v4[3];
+  v19 = fromCopy[3];
   if (dayData)
   {
     if (!v19)
@@ -633,10 +633,10 @@ LABEL_41:
     [(HKCodableChartSharableModel *)self setDayData:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_47:
   dayDateInterval = self->_dayDateInterval;
-  v21 = v4[4];
+  v21 = fromCopy[4];
   if (dayDateInterval)
   {
     if (!v21)
@@ -657,10 +657,10 @@ LABEL_47:
     dayDateInterval = [(HKCodableChartSharableModel *)self setDayDateInterval:?];
   }
 
-  v4 = v22;
+  fromCopy = v22;
 LABEL_53:
 
-  MEMORY[0x1EEE66BB8](dayDateInterval, v4);
+  MEMORY[0x1EEE66BB8](dayDateInterval, fromCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface EMFStringStemmer
-+ (id)stemmerLanguageNameForLocale:(id)a3;
++ (id)stemmerLanguageNameForLocale:(id)locale;
 + (id)supportedLanguageNames;
-+ (sb_stemmer)_createSnowballStemmerForLocale:(id)a3;
-+ (unsigned)supportsLocale:(id)a3;
-- (EMFStringStemmer)initWithLocale:(id)a3;
-- (id)stemToken:(id)a3;
-- (id)stemTokens:(id)a3;
++ (sb_stemmer)_createSnowballStemmerForLocale:(id)locale;
++ (unsigned)supportsLocale:(id)locale;
+- (EMFStringStemmer)initWithLocale:(id)locale;
+- (id)stemToken:(id)token;
+- (id)stemTokens:(id)tokens;
 - (void)dealloc;
 @end
 
 @implementation EMFStringStemmer
 
-+ (unsigned)supportsLocale:(id)a3
++ (unsigned)supportsLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [objc_opt_class() stemmerLanguageNameForLocale:v3];
+  localeCopy = locale;
+  v4 = [objc_opt_class() stemmerLanguageNameForLocale:localeCopy];
   v5 = v4;
   if (v4 && (v6 = [v4 cStringUsingEncoding:1]) != 0 && (v7 = v6, v8 = sb_stemmer_list(), (v9 = *v8) != 0))
   {
@@ -64,27 +64,27 @@
   return v7;
 }
 
-+ (id)stemmerLanguageNameForLocale:(id)a3
++ (id)stemmerLanguageNameForLocale:(id)locale
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
+  localeCopy = locale;
   v5 = [v3 localeWithLocaleIdentifier:@"en"];
-  v6 = [v4 languageCode];
+  languageCode = [localeCopy languageCode];
 
-  v7 = [v5 localizedStringForLanguageCode:v6];
-  v8 = [v7 lowercaseString];
+  v7 = [v5 localizedStringForLanguageCode:languageCode];
+  lowercaseString = [v7 lowercaseString];
 
-  v9 = [v8 componentsSeparatedByString:@" "];
-  v10 = [v9 firstObject];
-  v11 = v10;
-  if (v10)
+  v9 = [lowercaseString componentsSeparatedByString:@" "];
+  firstObject = [v9 firstObject];
+  v11 = firstObject;
+  if (firstObject)
   {
-    v12 = v10;
+    v12 = firstObject;
   }
 
   else
   {
-    v12 = v8;
+    v12 = lowercaseString;
   }
 
   v13 = v12;
@@ -92,9 +92,9 @@
   return v13;
 }
 
-- (EMFStringStemmer)initWithLocale:(id)a3
+- (EMFStringStemmer)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = EMFStringStemmer;
   v6 = [(EMFStringStemmer *)&v11 init];
@@ -102,8 +102,8 @@
   if (v6)
   {
     v6->_encoding = 4;
-    objc_storeStrong(&v6->_locale, a3);
-    v7->_stemmer = [objc_opt_class() _createSnowballStemmerForLocale:v5];
+    objc_storeStrong(&v6->_locale, locale);
+    v7->_stemmer = [objc_opt_class() _createSnowballStemmerForLocale:localeCopy];
     v8 = objc_alloc_init(MEMORY[0x1E696AD10]);
     stemmerLock = v7->_stemmerLock;
     v7->_stemmerLock = v8;
@@ -125,11 +125,11 @@
   [(EMFStringStemmer *)&v4 dealloc];
 }
 
-- (id)stemToken:(id)a3
+- (id)stemToken:(id)token
 {
   if (self->_stemmer)
   {
-    v4 = [a3 cStringUsingEncoding:self->_encoding];
+    v4 = [token cStringUsingEncoding:self->_encoding];
     [(NSLock *)self->_stemmerLock lock];
     v5 = strlen(v4);
     v6 = sb_stemmer_stem(self->_stemmer, v4, v5);
@@ -145,16 +145,16 @@
   return v7;
 }
 
-- (id)stemTokens:(id)a3
+- (id)stemTokens:(id)tokens
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = tokensCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -184,10 +184,10 @@
   return v12;
 }
 
-+ (sb_stemmer)_createSnowballStemmerForLocale:(id)a3
++ (sb_stemmer)_createSnowballStemmerForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [objc_opt_class() stemmerLanguageNameForLocale:v3];
+  localeCopy = locale;
+  v4 = [objc_opt_class() stemmerLanguageNameForLocale:localeCopy];
 
   v5 = sb_stemmer_new([v4 cStringUsingEncoding:1], "UTF_8");
   return v5;

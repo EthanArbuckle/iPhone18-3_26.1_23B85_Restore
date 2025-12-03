@@ -15,62 +15,62 @@
 
 + (void)__MPModelStoreBrowseSectionRelationshipRadioStation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:28 description:@"Translator was missing mapping for MPModelStoreBrowseSectionRelationshipRadioStation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:28 description:@"Translator was missing mapping for MPModelStoreBrowseSectionRelationshipRadioStation"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyDisplayStyle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:27 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyDisplayStyle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:27 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyDisplayStyle"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyDisplaysAsGridCellInCarPlay__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:26 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyDisplaysAsGridCellInCarPlay"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:26 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyDisplaysAsGridCellInCarPlay"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyPreviouslyRetrievedNestedResponse__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:25 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyPreviouslyRetrievedNestedResponse"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:25 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyPreviouslyRetrievedNestedResponse"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyBrick__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:24 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyBrick"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:24 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyBrick"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyMemberOfChartSet__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:23 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyMemberOfChartSet"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:23 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyMemberOfChartSet"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyUniformContentItemType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:22 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyUniformContentItemType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:22 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyUniformContentItemType"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyLoadAdditionalContentURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:21 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyLoadAdditionalContentURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:21 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyLoadAdditionalContentURL"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:20 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:20 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyType"];
 }
 
 + (void)__MPModelStoreBrowseSectionPropertyTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreBrowseSection.m" lineNumber:19 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreBrowseSection.m" lineNumber:19 description:@"Translator was missing mapping for MPModelStoreBrowseSectionPropertyTitle"];
 }
 
 @end

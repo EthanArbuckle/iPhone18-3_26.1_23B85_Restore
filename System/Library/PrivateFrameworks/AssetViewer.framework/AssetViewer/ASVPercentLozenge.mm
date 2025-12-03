@@ -3,11 +3,11 @@
 - (CGSize)intrinsicContentSize;
 - (id)lozengeFont;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPercentage:(float)a3;
-- (void)setText:(id)a3;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setPercentage:(float)percentage;
+- (void)setText:(id)text;
 - (void)sizeToFit;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ASVPercentLozenge
@@ -30,52 +30,52 @@
     percentLozengeAnimator = v2->_percentLozengeAnimator;
     v2->_percentLozengeAnimator = v7;
 
-    v9 = [MEMORY[0x277D75348] blackColor];
-    [(ASVPercentLozenge *)v2 setTextColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(ASVPercentLozenge *)v2 setTextColor:blackColor];
 
     [(ASVPercentLozenge *)v2 setTextAlignment:1];
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(ASVPercentLozenge *)v2 setBackgroundColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(ASVPercentLozenge *)v2 setBackgroundColor:whiteColor];
 
-    v11 = [(ASVPercentLozenge *)v2 lozengeFont];
-    [(ASVPercentLozenge *)v2 setFont:v11];
+    lozengeFont = [(ASVPercentLozenge *)v2 lozengeFont];
+    [(ASVPercentLozenge *)v2 setFont:lozengeFont];
 
     [(ASVPercentLozenge *)v2 setAdjustsFontForContentSizeCategory:1];
-    v12 = [(ASVPercentLozenge *)v2 layer];
-    [v12 setMasksToBounds:1];
+    layer = [(ASVPercentLozenge *)v2 layer];
+    [layer setMasksToBounds:1];
   }
 
   return v2;
 }
 
-- (void)setPercentage:(float)a3
+- (void)setPercentage:(float)percentage
 {
-  v8 = [(ASVPercentLozenge *)self percentageFormatter];
-  *&v5 = a3;
+  percentageFormatter = [(ASVPercentLozenge *)self percentageFormatter];
+  *&v5 = percentage;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-  v7 = [v8 stringFromNumber:v6];
+  v7 = [percentageFormatter stringFromNumber:v6];
   [(ASVPercentLozenge *)self setText:v7];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = ASVPercentLozenge;
-  [(ASVPercentLozenge *)&v4 setText:a3];
+  [(ASVPercentLozenge *)&v4 setText:text];
   [(ASVPercentLozenge *)self sizeToFit];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = ASVPercentLozenge;
-  v4 = a3;
-  [(ASVPercentLozenge *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(ASVPercentLozenge *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(ASVPercentLozenge *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(ASVPercentLozenge *)self sizeToFit];
   }
@@ -109,8 +109,8 @@
   }
 
   v7 = v6 * 0.5;
-  v8 = [(ASVPercentLozenge *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(ASVPercentLozenge *)self layer];
+  [layer setCornerRadius:v7];
 }
 
 - (CGSize)intrinsicContentSize
@@ -125,10 +125,10 @@
   return result;
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  hiddenCopy = hidden;
+  if (animated)
   {
     objc_initWeak(&location, self);
     v6 = MEMORY[0x277D75D18];
@@ -139,7 +139,7 @@
     v10[2] = __40__ASVPercentLozenge_setHidden_animated___block_invoke;
     v10[3] = &unk_278CCB1F0;
     objc_copyWeak(&v11, &location);
-    v12 = v4;
+    v12 = hiddenCopy;
     [v6 animateWithDuration:0 delay:v10 options:&__block_literal_global_9 animations:v8 completion:0.0];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -147,10 +147,10 @@
 
   else
   {
-    v9 = [(ASVPercentLozenge *)self percentLozengeAnimator];
-    [v9 stopAnimation:1];
+    percentLozengeAnimator = [(ASVPercentLozenge *)self percentLozengeAnimator];
+    [percentLozengeAnimator stopAnimation:1];
 
-    [(ASVPercentLozenge *)self setAlpha:!v4];
+    [(ASVPercentLozenge *)self setAlpha:!hiddenCopy];
   }
 }
 
@@ -164,21 +164,21 @@ void __40__ASVPercentLozenge_setHidden_animated___block_invoke(uint64_t a1)
 - (id)lozengeFont
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v2 = [(ASVPercentLozenge *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(ASVPercentLozenge *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v4 = *MEMORY[0x277D76808];
-  if ((UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x277D76808]) & 0x8000000000000000) == 0)
+  if ((UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76808]) & 0x8000000000000000) == 0)
   {
     v5 = v4;
 
-    v3 = v5;
+    preferredContentSizeCategory = v5;
   }
 
-  v6 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v3];
+  v6 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940] compatibleWithTraitCollection:v6];
-  v8 = [v7 fontDescriptor];
-  v9 = [v8 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v7 fontDescriptor];
+  v9 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v21 = *MEMORY[0x277D74338];
   v10 = [MEMORY[0x277CCABB0] numberWithInt:{6, *MEMORY[0x277D74398]}];

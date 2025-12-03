@@ -1,32 +1,32 @@
 @interface OABWordArt
-+ (unsigned)readTextAlignment:(int)a3;
-+ (void)readFromShapeManager:(id)a3 toCharacterProperties:(id)a4 state:(id)a5;
-+ (void)readFromShapeManager:(id)a3 toShape:(id)a4 state:(id)a5;
++ (unsigned)readTextAlignment:(int)alignment;
++ (void)readFromShapeManager:(id)manager toCharacterProperties:(id)properties state:(id)state;
++ (void)readFromShapeManager:(id)manager toShape:(id)shape state:(id)state;
 @end
 
 @implementation OABWordArt
 
-+ (void)readFromShapeManager:(id)a3 toShape:(id)a4 state:(id)a5
++ (void)readFromShapeManager:(id)manager toShape:(id)shape state:(id)state
 {
-  v32 = a3;
-  v30 = a4;
-  v31 = a5;
+  managerCopy = manager;
+  shapeCopy = shape;
+  stateCopy = state;
   v8 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADShapeGeometry *)v8 setIsEscher:1];
   [(OADPresetShapeGeometry *)v8 setType:1];
-  [v30 setGeometry:v8];
+  [shapeCopy setGeometry:v8];
 
-  v9 = [v30 textBody];
-  v28 = [v9 properties];
+  textBody = [shapeCopy textBody];
+  properties = [textBody properties];
   v10 = +[OADTextBodyProperties defaultEscherWordArtProperties];
-  [v28 setParent:v10];
+  [properties setParent:v10];
 
   v11 = objc_alloc_init(OADPresetTextWarp);
   [(OADPresetTextWarp *)v11 setPresetTextWarpType:29];
-  [v28 setTextWarp:v11];
-  v29 = [a1 readTextAlignment:{objc_msgSend(v32, "textPathTextAlignment")}];
-  v27 = [v32 textPathUnicodeString];
-  v26 = [v27 mutableCopy];
+  [properties setTextWarp:v11];
+  v29 = [self readTextAlignment:{objc_msgSend(managerCopy, "textPathTextAlignment")}];
+  textPathUnicodeString = [managerCopy textPathUnicodeString];
+  v26 = [textPathUnicodeString mutableCopy];
   [v26 tc_replaceAllSubstr:@"\r\n" with:@"\r"];
   [v26 tc_replaceAllSubstr:@"\n" with:@"\r"];
   v25 = v11;
@@ -41,66 +41,66 @@
     }
 
     v15 = [v12 objectAtIndex:v13];
-    v16 = v9;
-    v17 = [v9 addParagraph];
-    v18 = [v17 properties];
-    [v18 setAlign:v29];
+    v16 = textBody;
+    addParagraph = [textBody addParagraph];
+    properties2 = [addParagraph properties];
+    [properties2 setAlign:v29];
     if ([v15 length])
     {
-      v19 = [v17 addRegularTextRun];
-      v20 = [v19 text];
-      [v20 setString:v15];
+      addRegularTextRun = [addParagraph addRegularTextRun];
+      text = [addRegularTextRun text];
+      [text setString:v15];
 
-      v21 = [v19 properties];
-      [a1 readFromShapeManager:v32 toCharacterProperties:v21 state:v31];
+      properties3 = [addRegularTextRun properties];
+      [self readFromShapeManager:managerCopy toCharacterProperties:properties3 state:stateCopy];
     }
 
-    v22 = [v17 paragraphEndCharacterProperties];
-    [a1 readFromShapeManager:v32 toCharacterProperties:v22 state:v31];
-    v23 = [v30 graphicProperties];
-    if ([v23 hasFill])
+    paragraphEndCharacterProperties = [addParagraph paragraphEndCharacterProperties];
+    [self readFromShapeManager:managerCopy toCharacterProperties:paragraphEndCharacterProperties state:stateCopy];
+    graphicProperties = [shapeCopy graphicProperties];
+    if ([graphicProperties hasFill])
     {
-      v24 = [v23 fill];
-      [v22 setFill:v24];
+      fill = [graphicProperties fill];
+      [paragraphEndCharacterProperties setFill:fill];
 
-      [v23 setFill:0];
+      [graphicProperties setFill:0];
     }
 
     v13 = v14 + 1;
-    v9 = v16;
+    textBody = v16;
   }
 }
 
-+ (void)readFromShapeManager:(id)a3 toCharacterProperties:(id)a4 state:(id)a5
++ (void)readFromShapeManager:(id)manager toCharacterProperties:(id)properties state:(id)state
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v14 textPathFontFamily];
-  if (v9)
+  managerCopy = manager;
+  propertiesCopy = properties;
+  stateCopy = state;
+  textPathFontFamily = [managerCopy textPathFontFamily];
+  if (textPathFontFamily)
   {
-    [v7 setLatinFont:v9];
+    [propertiesCopy setLatinFont:textPathFontFamily];
   }
 
-  *&v10 = EshFixedPointUtil::toFloat([v14 textPathFontSize]);
-  [v7 setSize:v10];
-  [v7 setIsBold:{objc_msgSend(v14, "textPathBold")}];
-  [v7 setIsItalic:{objc_msgSend(v14, "textPathItalic")}];
-  [v7 setUnderlineType:0];
-  [v14 textPathSmallcaps];
-  [v7 setStrikeThroughType:0];
-  v11 = [OABFill readFillFromFillPropertiesManager:v14 state:v8];
-  [v7 setFill:v11];
-  v12 = [OABStroke readStrokeFromShapeBaseManager:v14 state:v8];
-  [v7 setStroke:v12];
-  v13 = [OABShadow readShadowFromShapeBaseManager:v14 state:v8];
-  [v7 setEffects:v13];
+  *&v10 = EshFixedPointUtil::toFloat([managerCopy textPathFontSize]);
+  [propertiesCopy setSize:v10];
+  [propertiesCopy setIsBold:{objc_msgSend(managerCopy, "textPathBold")}];
+  [propertiesCopy setIsItalic:{objc_msgSend(managerCopy, "textPathItalic")}];
+  [propertiesCopy setUnderlineType:0];
+  [managerCopy textPathSmallcaps];
+  [propertiesCopy setStrikeThroughType:0];
+  v11 = [OABFill readFillFromFillPropertiesManager:managerCopy state:stateCopy];
+  [propertiesCopy setFill:v11];
+  v12 = [OABStroke readStrokeFromShapeBaseManager:managerCopy state:stateCopy];
+  [propertiesCopy setStroke:v12];
+  v13 = [OABShadow readShadowFromShapeBaseManager:managerCopy state:stateCopy];
+  [propertiesCopy setEffects:v13];
 }
 
-+ (unsigned)readTextAlignment:(int)a3
++ (unsigned)readTextAlignment:(int)alignment
 {
-  v3 = 0x50502000103uLL >> (8 * a3);
-  if (a3 >= 6)
+  v3 = 0x50502000103uLL >> (8 * alignment);
+  if (alignment >= 6)
   {
     LOBYTE(v3) = 0;
   }

@@ -1,39 +1,39 @@
 @interface SYSyncEngine
-- (BOOL)resume:(id *)a3;
+- (BOOL)resume:(id *)resume;
 - (PBCodable)stateForLogging;
 - (SYService)service;
-- (SYSyncEngine)initWithService:(id)a3 queue:(id)a4;
+- (SYSyncEngine)initWithService:(id)service queue:(id)queue;
 - (SYSyncEngineResponder)responder;
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7;
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error;
 - (void)beginSession;
 - (void)dealloc;
 - (void)endSession;
-- (void)enqueueSyncRequest:(id)a3 withMessageID:(unsigned __int16)a4 priority:(int64_t)a5 options:(id)a6 userContext:(id)a7 callback:(id)a8;
+- (void)enqueueSyncRequest:(id)request withMessageID:(unsigned __int16)d priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback;
 - (void)suspend;
 @end
 
 @implementation SYSyncEngine
 
-- (SYSyncEngine)initWithService:(id)a3 queue:(id)a4
+- (SYSyncEngine)initWithService:(id)service queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = SYSyncEngine;
   v8 = [(SYSyncEngine *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_service, v6);
-    v10 = [v6 serviceActivity];
-    v11 = _os_activity_create(&dword_1DF835000, "Transport", v10, OS_ACTIVITY_FLAG_DEFAULT);
+    objc_storeWeak(&v8->_service, serviceCopy);
+    serviceActivity = [serviceCopy serviceActivity];
+    v11 = _os_activity_create(&dword_1DF835000, "Transport", serviceActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
     transportActivity = v9->_transportActivity;
     v9->_transportActivity = v11;
 
-    if (v7)
+    if (queueCopy)
     {
-      v13 = v7;
+      v13 = queueCopy;
       queue = v9->_queue;
       v9->_queue = v13;
     }
@@ -42,10 +42,10 @@
     {
       v15 = objc_opt_class();
       queue = NSStringFromClass(v15);
-      v16 = [queue UTF8String];
+      uTF8String = [queue UTF8String];
       v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v18 = dispatch_get_global_queue(21, 0);
-      v19 = dispatch_queue_create_with_target_V2(v16, v17, v18);
+      v19 = dispatch_queue_create_with_target_V2(uTF8String, v17, v18);
       v20 = v9->_queue;
       v9->_queue = v19;
     }
@@ -94,7 +94,7 @@
   return WeakRetained;
 }
 
-- (BOOL)resume:(id *)a3
+- (BOOL)resume:(id *)resume
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -112,7 +112,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)enqueueSyncRequest:(id)a3 withMessageID:(unsigned __int16)a4 priority:(int64_t)a5 options:(id)a6 userContext:(id)a7 callback:(id)a8
+- (void)enqueueSyncRequest:(id)request withMessageID:(unsigned __int16)d priority:(int64_t)priority options:(id)options userContext:(id)context callback:(id)callback
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -121,7 +121,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();

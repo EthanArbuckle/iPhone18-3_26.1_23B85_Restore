@@ -1,16 +1,16 @@
 @interface PGGraphIngestBusinessItemContainer
 - (NSDateInterval)dateInterval;
-- (PGGraphIngestBusinessItemContainer)initWithBusinessItem:(id)a3 visit:(id)a4 dateInterval:(id)a5;
-- (void)updateBusinessItem:(id)a3;
+- (PGGraphIngestBusinessItemContainer)initWithBusinessItem:(id)item visit:(id)visit dateInterval:(id)interval;
+- (void)updateBusinessItem:(id)item;
 @end
 
 @implementation PGGraphIngestBusinessItemContainer
 
 - (NSDateInterval)dateInterval
 {
-  v3 = [(CLSLocationOfInterestVisit *)self->_visit visitInterval];
-  dateInterval = v3;
-  if (!v3)
+  visitInterval = [(CLSLocationOfInterestVisit *)self->_visit visitInterval];
+  dateInterval = visitInterval;
+  if (!visitInterval)
   {
     dateInterval = self->_dateInterval;
   }
@@ -20,33 +20,33 @@
   return dateInterval;
 }
 
-- (void)updateBusinessItem:(id)a3
+- (void)updateBusinessItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   businessItem = self->_businessItem;
   p_businessItem = &self->_businessItem;
-  if (businessItem != v5)
+  if (businessItem != itemCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_businessItem, a3);
-    v5 = v8;
+    v8 = itemCopy;
+    objc_storeStrong(p_businessItem, item);
+    itemCopy = v8;
   }
 }
 
-- (PGGraphIngestBusinessItemContainer)initWithBusinessItem:(id)a3 visit:(id)a4 dateInterval:(id)a5
+- (PGGraphIngestBusinessItemContainer)initWithBusinessItem:(id)item visit:(id)visit dateInterval:(id)interval
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  visitCopy = visit;
+  intervalCopy = interval;
   v15.receiver = self;
   v15.super_class = PGGraphIngestBusinessItemContainer;
   v12 = [(PGGraphIngestBusinessItemContainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_businessItem, a3);
-    objc_storeStrong(&v13->_visit, a4);
-    objc_storeStrong(&v13->_dateInterval, a5);
+    objc_storeStrong(&v12->_businessItem, item);
+    objc_storeStrong(&v13->_visit, visit);
+    objc_storeStrong(&v13->_dateInterval, interval);
   }
 
   return v13;

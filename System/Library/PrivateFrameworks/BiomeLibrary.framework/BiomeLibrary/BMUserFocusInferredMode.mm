@@ -1,40 +1,40 @@
 @interface BMUserFocusInferredMode
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUserFocusInferredMode)initWithAbsoluteTimestamp:(id)a3 modeIdentifier:(id)a4 origin:(int)a5 originBundleID:(id)a6 isAutomationEnabled:(id)a7 isStart:(id)a8 uuid:(id)a9 originAnchorType:(id)a10 uiLocation:(id)a11 confidenceScore:(id)a12 serializedTriggers:(id)a13 modeType:(int)a14 shouldSuggestTriggers:(id)a15 userModeName:(id)a16;
-- (BMUserFocusInferredMode)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMUserFocusInferredMode)initWithAbsoluteTimestamp:(id)timestamp modeIdentifier:(id)identifier origin:(int)origin originBundleID:(id)d isAutomationEnabled:(id)enabled isStart:(id)start uuid:(id)uuid originAnchorType:(id)self0 uiLocation:(id)self1 confidenceScore:(id)self2 serializedTriggers:(id)self3 modeType:(int)self4 shouldSuggestTriggers:(id)self5 userModeName:(id)self6;
+- (BMUserFocusInferredMode)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (id)_serializedTriggersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUserFocusInferredMode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMUserFocusInferredMode *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMUserFocusInferredMode *)self modeIdentifier];
-    v14 = [v5 modeIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    modeIdentifier = [(BMUserFocusInferredMode *)self modeIdentifier];
+    modeIdentifier2 = [v5 modeIdentifier];
+    v15 = modeIdentifier2;
+    if (modeIdentifier == modeIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMUserFocusInferredMode *)self modeIdentifier];
-      v17 = [v5 modeIdentifier];
-      v18 = [v16 isEqual:v17];
+      modeIdentifier3 = [(BMUserFocusInferredMode *)self modeIdentifier];
+      modeIdentifier4 = [v5 modeIdentifier];
+      v18 = [modeIdentifier3 isEqual:modeIdentifier4];
 
       if (!v18)
       {
@@ -61,21 +61,21 @@
       }
     }
 
-    v19 = [(BMUserFocusInferredMode *)self origin];
-    if (v19 == [v5 origin])
+    origin = [(BMUserFocusInferredMode *)self origin];
+    if (origin == [v5 origin])
     {
-      v20 = [(BMUserFocusInferredMode *)self originBundleID];
-      v21 = [v5 originBundleID];
-      v22 = v21;
-      if (v20 == v21)
+      originBundleID = [(BMUserFocusInferredMode *)self originBundleID];
+      originBundleID2 = [v5 originBundleID];
+      v22 = originBundleID2;
+      if (originBundleID == originBundleID2)
       {
       }
 
       else
       {
-        v23 = [(BMUserFocusInferredMode *)self originBundleID];
-        v24 = [v5 originBundleID];
-        v25 = [v23 isEqual:v24];
+        originBundleID3 = [(BMUserFocusInferredMode *)self originBundleID];
+        originBundleID4 = [v5 originBundleID];
+        v25 = [originBundleID3 isEqual:originBundleID4];
 
         if (!v25)
         {
@@ -95,8 +95,8 @@
           goto LABEL_54;
         }
 
-        v26 = [(BMUserFocusInferredMode *)self isAutomationEnabled];
-        if (v26 != [v5 isAutomationEnabled])
+        isAutomationEnabled = [(BMUserFocusInferredMode *)self isAutomationEnabled];
+        if (isAutomationEnabled != [v5 isAutomationEnabled])
         {
           goto LABEL_54;
         }
@@ -114,25 +114,25 @@
           goto LABEL_54;
         }
 
-        v27 = [(BMUserFocusInferredMode *)self isStart];
-        if (v27 != [v5 isStart])
+        isStart = [(BMUserFocusInferredMode *)self isStart];
+        if (isStart != [v5 isStart])
         {
           goto LABEL_54;
         }
       }
 
-      v28 = [(BMUserFocusInferredMode *)self uuid];
-      v29 = [v5 uuid];
-      v30 = v29;
-      if (v28 == v29)
+      uuid = [(BMUserFocusInferredMode *)self uuid];
+      uuid2 = [v5 uuid];
+      v30 = uuid2;
+      if (uuid == uuid2)
       {
       }
 
       else
       {
-        v31 = [(BMUserFocusInferredMode *)self uuid];
-        v32 = [v5 uuid];
-        v33 = [v31 isEqual:v32];
+        uuid3 = [(BMUserFocusInferredMode *)self uuid];
+        uuid4 = [v5 uuid];
+        v33 = [uuid3 isEqual:uuid4];
 
         if (!v33)
         {
@@ -140,18 +140,18 @@
         }
       }
 
-      v34 = [(BMUserFocusInferredMode *)self originAnchorType];
-      v35 = [v5 originAnchorType];
-      v36 = v35;
-      if (v34 == v35)
+      originAnchorType = [(BMUserFocusInferredMode *)self originAnchorType];
+      originAnchorType2 = [v5 originAnchorType];
+      v36 = originAnchorType2;
+      if (originAnchorType == originAnchorType2)
       {
       }
 
       else
       {
-        v37 = [(BMUserFocusInferredMode *)self originAnchorType];
-        v38 = [v5 originAnchorType];
-        v39 = [v37 isEqual:v38];
+        originAnchorType3 = [(BMUserFocusInferredMode *)self originAnchorType];
+        originAnchorType4 = [v5 originAnchorType];
+        v39 = [originAnchorType3 isEqual:originAnchorType4];
 
         if (!v39)
         {
@@ -171,8 +171,8 @@
           goto LABEL_54;
         }
 
-        v40 = [(BMUserFocusInferredMode *)self uiLocation];
-        if (v40 != [v5 uiLocation])
+        uiLocation = [(BMUserFocusInferredMode *)self uiLocation];
+        if (uiLocation != [v5 uiLocation])
         {
           goto LABEL_54;
         }
@@ -199,18 +199,18 @@
         }
       }
 
-      v44 = [(BMUserFocusInferredMode *)self serializedTriggers];
-      v45 = [v5 serializedTriggers];
-      v46 = v45;
-      if (v44 == v45)
+      serializedTriggers = [(BMUserFocusInferredMode *)self serializedTriggers];
+      serializedTriggers2 = [v5 serializedTriggers];
+      v46 = serializedTriggers2;
+      if (serializedTriggers == serializedTriggers2)
       {
       }
 
       else
       {
-        v47 = [(BMUserFocusInferredMode *)self serializedTriggers];
-        v48 = [v5 serializedTriggers];
-        v49 = [v47 isEqual:v48];
+        serializedTriggers3 = [(BMUserFocusInferredMode *)self serializedTriggers];
+        serializedTriggers4 = [v5 serializedTriggers];
+        v49 = [serializedTriggers3 isEqual:serializedTriggers4];
 
         if (!v49)
         {
@@ -218,23 +218,23 @@
         }
       }
 
-      v50 = [(BMUserFocusInferredMode *)self modeType];
-      if (v50 == [v5 modeType])
+      modeType = [(BMUserFocusInferredMode *)self modeType];
+      if (modeType == [v5 modeType])
       {
         if (!-[BMUserFocusInferredMode hasShouldSuggestTriggers](self, "hasShouldSuggestTriggers") && ![v5 hasShouldSuggestTriggers] || -[BMUserFocusInferredMode hasShouldSuggestTriggers](self, "hasShouldSuggestTriggers") && objc_msgSend(v5, "hasShouldSuggestTriggers") && (v51 = -[BMUserFocusInferredMode shouldSuggestTriggers](self, "shouldSuggestTriggers"), v51 == objc_msgSend(v5, "shouldSuggestTriggers")))
         {
-          v53 = [(BMUserFocusInferredMode *)self userModeName];
-          v54 = [v5 userModeName];
-          if (v53 == v54)
+          userModeName = [(BMUserFocusInferredMode *)self userModeName];
+          userModeName2 = [v5 userModeName];
+          if (userModeName == userModeName2)
           {
             v12 = 1;
           }
 
           else
           {
-            v55 = [(BMUserFocusInferredMode *)self userModeName];
-            v56 = [v5 userModeName];
-            v12 = [v55 isEqual:v56];
+            userModeName3 = [(BMUserFocusInferredMode *)self userModeName];
+            userModeName4 = [v5 userModeName];
+            v12 = [userModeName3 isEqual:userModeName4];
           }
 
           goto LABEL_55;
@@ -275,12 +275,12 @@ LABEL_56:
 - (id)jsonDictionary
 {
   v55[14] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMUserFocusInferredMode *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -289,9 +289,9 @@ LABEL_56:
     v6 = 0;
   }
 
-  v7 = [(BMUserFocusInferredMode *)self modeIdentifier];
+  modeIdentifier = [(BMUserFocusInferredMode *)self modeIdentifier];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMUserFocusInferredMode origin](self, "origin")}];
-  v9 = [(BMUserFocusInferredMode *)self originBundleID];
+  originBundleID = [(BMUserFocusInferredMode *)self originBundleID];
   if ([(BMUserFocusInferredMode *)self hasIsAutomationEnabled])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusInferredMode isAutomationEnabled](self, "isAutomationEnabled")}];
@@ -312,8 +312,8 @@ LABEL_56:
     v11 = 0;
   }
 
-  v53 = [(BMUserFocusInferredMode *)self uuid];
-  v52 = [(BMUserFocusInferredMode *)self originAnchorType];
+  uuid = [(BMUserFocusInferredMode *)self uuid];
+  originAnchorType = [(BMUserFocusInferredMode *)self originAnchorType];
   if ([(BMUserFocusInferredMode *)self hasUiLocation])
   {
     v51 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMUserFocusInferredMode uiLocation](self, "uiLocation")}];
@@ -337,7 +337,7 @@ LABEL_56:
     v50 = [v13 numberWithDouble:?];
   }
 
-  v49 = [(BMUserFocusInferredMode *)self _serializedTriggersJSONArray];
+  _serializedTriggersJSONArray = [(BMUserFocusInferredMode *)self _serializedTriggersJSONArray];
   v48 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMUserFocusInferredMode modeType](self, "modeType")}];
   if ([(BMUserFocusInferredMode *)self hasShouldSuggestTriggers])
   {
@@ -349,135 +349,135 @@ LABEL_56:
     v14 = 0;
   }
 
-  v15 = [(BMUserFocusInferredMode *)self userModeName];
+  userModeName = [(BMUserFocusInferredMode *)self userModeName];
   v54[0] = @"absoluteTimestamp";
-  v16 = v6;
+  null = v6;
   if (!v6)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v42 = v16;
-  v55[0] = v16;
+  v42 = null;
+  v55[0] = null;
   v54[1] = @"modeIdentifier";
-  v17 = v7;
-  if (!v7)
+  null2 = modeIdentifier;
+  if (!modeIdentifier)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v17;
-  v55[1] = v17;
+  v41 = null2;
+  v55[1] = null2;
   v54[2] = @"origin";
-  v18 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v18;
-  v55[2] = v18;
+  v40 = null3;
+  v55[2] = null3;
   v54[3] = @"originBundleID";
-  v19 = v9;
-  if (!v9)
+  null4 = originBundleID;
+  if (!originBundleID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v19;
-  v55[3] = v19;
+  v39 = null4;
+  v55[3] = null4;
   v54[4] = @"isAutomationEnabled";
-  v20 = v10;
+  null5 = v10;
   if (!v10)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v20;
-  v55[4] = v20;
+  v38 = null5;
+  v55[4] = null5;
   v54[5] = @"isStart";
-  v21 = v11;
+  null6 = v11;
   if (!v11)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v47 = v8;
-  v37 = v21;
-  v55[5] = v21;
+  v37 = null6;
+  v55[5] = null6;
   v54[6] = @"uuid";
-  v22 = v53;
-  if (!v53)
+  null7 = uuid;
+  if (!uuid)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v46 = v10;
-  v55[6] = v22;
+  v55[6] = null7;
   v54[7] = @"originAnchorType";
-  v23 = v52;
-  if (!v52)
+  null8 = originAnchorType;
+  if (!originAnchorType)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v45 = v11;
-  v55[7] = v23;
+  v55[7] = null8;
   v54[8] = @"uiLocation";
-  v24 = v51;
+  null9 = v51;
   if (!v51)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55[8] = v24;
+  v55[8] = null9;
   v54[9] = @"confidenceScore";
-  v25 = v50;
+  null10 = v50;
   if (!v50)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v23;
-  v36 = v22;
+  v34 = null8;
+  v36 = null7;
   v44 = v6;
-  v55[9] = v25;
+  v55[9] = null10;
   v54[10] = @"serializedTriggers";
-  v26 = v49;
-  if (!v49)
+  null11 = _serializedTriggersJSONArray;
+  if (!_serializedTriggersJSONArray)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v7;
-  v55[10] = v26;
+  v27 = modeIdentifier;
+  v55[10] = null11;
   v54[11] = @"modeType";
-  v28 = v48;
+  null12 = v48;
   if (!v48)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55[11] = v28;
+  v55[11] = null12;
   v54[12] = @"shouldSuggestTriggers";
-  v29 = v14;
+  null13 = v14;
   v30 = v14;
   if (!v14)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55[12] = v29;
+  v55[12] = null13;
   v54[13] = @"userModeName";
-  v31 = v15;
-  if (!v15)
+  null14 = userModeName;
+  if (!userModeName)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55[13] = v31;
+  v55[13] = null14;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:{14, v34}];
-  if (!v15)
+  if (!userModeName)
   {
   }
 
@@ -489,7 +489,7 @@ LABEL_56:
   {
   }
 
-  if (!v49)
+  if (!_serializedTriggersJSONArray)
   {
   }
 
@@ -501,11 +501,11 @@ LABEL_56:
   {
   }
 
-  if (!v52)
+  if (!originAnchorType)
   {
   }
 
-  if (!v53)
+  if (!uuid)
   {
   }
 
@@ -523,7 +523,7 @@ LABEL_56:
     if (v46)
     {
 LABEL_66:
-      if (v9)
+      if (originBundleID)
       {
         goto LABEL_67;
       }
@@ -532,7 +532,7 @@ LABEL_66:
     }
   }
 
-  if (v9)
+  if (originBundleID)
   {
 LABEL_67:
     if (v47)
@@ -592,8 +592,8 @@ LABEL_70:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMUserFocusInferredMode *)self serializedTriggers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  serializedTriggers = [(BMUserFocusInferredMode *)self serializedTriggers];
+  v5 = [serializedTriggers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -604,14 +604,14 @@ LABEL_70:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serializedTriggers);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) base64EncodedStringWithOptions:0];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [serializedTriggers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -622,11 +622,11 @@ LABEL_70:
   return v3;
 }
 
-- (BMUserFocusInferredMode)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMUserFocusInferredMode)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v222[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -654,10 +654,10 @@ LABEL_6:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v111 = 0;
-        v40 = 0;
+        errorCopy = 0;
         goto LABEL_143;
       }
 
@@ -669,8 +669,8 @@ LABEL_6:
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v222 forKeys:&v221 count:1];
       v128 = [v125 initWithDomain:v126 code:2 userInfo:v15];
       v111 = 0;
-      v40 = 0;
-      *a4 = v128;
+      errorCopy = 0;
+      *error = v128;
       v35 = v127;
       goto LABEL_142;
     }
@@ -683,7 +683,7 @@ LABEL_6:
   v7 = [v14 dateFromString:v6];
 
 LABEL_9:
-  v15 = [v5 objectForKeyedSubscript:@"modeIdentifier"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"modeIdentifier"];
   v183 = v6;
   v184 = v7;
   if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -697,7 +697,7 @@ LABEL_9:
   {
     v16 = v15;
 LABEL_12:
-    v17 = [v5 objectForKeyedSubscript:@"origin"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"origin"];
     if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v180 = 0;
@@ -717,7 +717,7 @@ LABEL_12:
     {
       v180 = [MEMORY[0x1E696AD98] numberWithInt:BMUserFocusInferredModeOriginFromString(v17)];
 LABEL_15:
-      v18 = [v5 objectForKeyedSubscript:@"originBundleID"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"originBundleID"];
       v181 = v16;
       v182 = v18;
       if (!v18 || (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -732,7 +732,7 @@ LABEL_15:
       {
         v20 = v19;
 LABEL_18:
-        v21 = [v5 objectForKeyedSubscript:@"isAutomationEnabled"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"isAutomationEnabled"];
         v178 = v20;
         if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -747,7 +747,7 @@ LABEL_18:
           v174 = v21;
           v175 = v21;
 LABEL_21:
-          v22 = [v5 objectForKeyedSubscript:@"isStart"];
+          v22 = [dictionaryCopy objectForKeyedSubscript:@"isStart"];
           v177 = v22;
           if (!v22 || (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -760,24 +760,24 @@ LABEL_21:
           {
             v176 = v23;
 LABEL_24:
-            v24 = [v5 objectForKeyedSubscript:@"uuid"];
+            v24 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
             v173 = v24;
             if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v166 = 0;
 LABEL_27:
-              v26 = [v5 objectForKeyedSubscript:@"originAnchorType"];
+              v26 = [dictionaryCopy objectForKeyedSubscript:@"originAnchorType"];
               v171 = v26;
               if (v26 && (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!a4)
+                  if (!error)
                   {
                     v172 = 0;
-                    v40 = 0;
-                    v38 = v180;
+                    errorCopy = 0;
+                    errorCopy2 = v180;
                     v49 = v174;
                     v77 = v166;
                     goto LABEL_135;
@@ -801,10 +801,10 @@ LABEL_27:
                   v165 = v106;
                   v108 = [v99 initWithDomain:v107 code:2 userInfo:?];
                   v172 = 0;
-                  v40 = 0;
-                  *a4 = v108;
+                  errorCopy = 0;
+                  *error = v108;
                   v20 = v178;
-                  v38 = v180;
+                  errorCopy2 = v180;
                   goto LABEL_148;
                 }
 
@@ -816,13 +816,13 @@ LABEL_27:
                 v172 = 0;
               }
 
-              v28 = [v5 objectForKeyedSubscript:@"uiLocation"];
+              v28 = [dictionaryCopy objectForKeyedSubscript:@"uiLocation"];
               v165 = v28;
               if (!v28 || (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v161 = 0;
 LABEL_33:
-                v30 = [v5 objectForKeyedSubscript:@"confidenceScore"];
+                v30 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
                 v159 = v17;
                 v160 = v15;
                 v163 = v30;
@@ -831,7 +831,7 @@ LABEL_33:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    if (a4)
+                    if (error)
                     {
                       v122 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v123 = *MEMORY[0x1E698F240];
@@ -841,10 +841,10 @@ LABEL_33:
                       v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v204 forKeys:&v203 count:1];
                       v124 = [v122 initWithDomain:v123 code:2 userInfo:v50];
                       v164 = 0;
-                      v40 = 0;
-                      *a4 = v124;
+                      errorCopy = 0;
+                      *error = v124;
                       v20 = v178;
-                      v38 = v180;
+                      errorCopy2 = v180;
                       v49 = v174;
                       v77 = v166;
                       v58 = v161;
@@ -852,9 +852,9 @@ LABEL_33:
                     }
 
                     v164 = 0;
-                    v40 = 0;
+                    errorCopy = 0;
                     v20 = v178;
-                    v38 = v180;
+                    errorCopy2 = v180;
                     v49 = v174;
                     v77 = v166;
                     v58 = v161;
@@ -869,13 +869,13 @@ LABEL_33:
                   v164 = 0;
                 }
 
-                v32 = [v5 objectForKeyedSubscript:@"serializedTriggers"];
-                v33 = [MEMORY[0x1E695DFB0] null];
-                v34 = [v32 isEqual:v33];
+                v32 = [dictionaryCopy objectForKeyedSubscript:@"serializedTriggers"];
+                null = [MEMORY[0x1E695DFB0] null];
+                v34 = [v32 isEqual:null];
 
                 if (v34)
                 {
-                  v169 = self;
+                  selfCopy2 = self;
 
                   v32 = 0;
                 }
@@ -887,11 +887,11 @@ LABEL_33:
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      if (!a4)
+                      if (!error)
                       {
-                        v40 = 0;
+                        errorCopy = 0;
                         v20 = v178;
-                        v38 = v180;
+                        errorCopy2 = v180;
                         v49 = v174;
                         v77 = v166;
                         v58 = v161;
@@ -905,14 +905,14 @@ LABEL_33:
                       v202 = v50;
                       v131 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v202 forKeys:&v201 count:1];
                       v132 = [v129 initWithDomain:v130 code:2 userInfo:v131];
-                      v40 = 0;
-                      *a4 = v132;
+                      errorCopy = 0;
+                      *error = v132;
                       v121 = v131;
                       goto LABEL_107;
                     }
                   }
 
-                  v169 = self;
+                  selfCopy2 = self;
                 }
 
                 v50 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v32, "count")}];
@@ -948,7 +948,7 @@ LABEL_63:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    if (a4)
+                    if (error)
                     {
                       v109 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v110 = *MEMORY[0x1E698F240];
@@ -975,12 +975,12 @@ LABEL_63:
 
 LABEL_70:
 
-                    v56 = [v5 objectForKeyedSubscript:@"modeType"];
+                    v56 = [dictionaryCopy objectForKeyedSubscript:@"modeType"];
                     v156 = v56;
                     if (!v56)
                     {
                       v158 = 0;
-                      self = v169;
+                      self = selfCopy2;
 LABEL_110:
                       v20 = v178;
                       v77 = v166;
@@ -990,7 +990,7 @@ LABEL_110:
 
                     v57 = v56;
                     objc_opt_class();
-                    self = v169;
+                    self = selfCopy2;
                     v58 = v161;
                     if (objc_opt_isKindOfClass())
                     {
@@ -1006,7 +1006,7 @@ LABEL_116:
                       v20 = v178;
                       v77 = v166;
 LABEL_117:
-                      v133 = [v5 objectForKeyedSubscript:@"shouldSuggestTriggers"];
+                      v133 = [dictionaryCopy objectForKeyedSubscript:@"shouldSuggestTriggers"];
                       v170 = v133;
                       if (!v133 || (v134 = v133, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
@@ -1019,12 +1019,12 @@ LABEL_117:
                       {
                         v157 = v134;
 LABEL_120:
-                        v135 = [v5 objectForKeyedSubscript:@"userModeName"];
+                        v135 = [dictionaryCopy objectForKeyedSubscript:@"userModeName"];
                         v167 = v135;
                         if (!v135)
                         {
 LABEL_123:
-                          v38 = v180;
+                          errorCopy2 = v180;
                           goto LABEL_124;
                         }
 
@@ -1036,21 +1036,21 @@ LABEL_123:
                         }
 
                         objc_opt_class();
-                        v38 = v180;
+                        errorCopy2 = v180;
                         if (objc_opt_isKindOfClass())
                         {
                           v135 = v135;
                           v20 = v178;
 LABEL_124:
-                          v136 = [v38 intValue];
+                          intValue = [errorCopy2 intValue];
                           LODWORD(v154) = [v158 intValue];
-                          self = [(BMUserFocusInferredMode *)self initWithAbsoluteTimestamp:v184 modeIdentifier:v181 origin:v136 originBundleID:v20 isAutomationEnabled:v175 isStart:v176 uuid:v77 originAnchorType:v172 uiLocation:v58 confidenceScore:v164 serializedTriggers:v50 modeType:v154 shouldSuggestTriggers:v157 userModeName:v135];
-                          v40 = self;
+                          self = [(BMUserFocusInferredMode *)self initWithAbsoluteTimestamp:v184 modeIdentifier:v181 origin:intValue originBundleID:v20 isAutomationEnabled:v175 isStart:v176 uuid:v77 originAnchorType:v172 uiLocation:v58 confidenceScore:v164 serializedTriggers:v50 modeType:v154 shouldSuggestTriggers:v157 userModeName:v135];
+                          errorCopy = self;
                         }
 
                         else
                         {
-                          if (a4)
+                          if (error)
                           {
                             v162 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v155 = *MEMORY[0x1E698F240];
@@ -1058,11 +1058,11 @@ LABEL_124:
                             v143 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"userModeName"];
                             v191 = v143;
                             v144 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v191 forKeys:&v190 count:1];
-                            *a4 = [v162 initWithDomain:v155 code:2 userInfo:v144];
+                            *error = [v162 initWithDomain:v155 code:2 userInfo:v144];
                           }
 
                           v135 = 0;
-                          v40 = 0;
+                          errorCopy = 0;
                           v20 = v178;
                         }
 
@@ -1071,7 +1071,7 @@ LABEL_125:
 
                       else
                       {
-                        if (a4)
+                        if (error)
                         {
                           v140 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v168 = *MEMORY[0x1E698F240];
@@ -1082,17 +1082,17 @@ LABEL_125:
                           v142 = v168;
                           v167 = v141;
                           v157 = 0;
-                          v40 = 0;
-                          *a4 = [v140 initWithDomain:v142 code:2 userInfo:?];
+                          errorCopy = 0;
+                          *error = [v140 initWithDomain:v142 code:2 userInfo:?];
                           v20 = v178;
-                          v38 = v180;
+                          errorCopy2 = v180;
                           goto LABEL_125;
                         }
 
                         v157 = 0;
-                        v40 = 0;
+                        errorCopy = 0;
                         v20 = v178;
-                        v38 = v180;
+                        errorCopy2 = v180;
                       }
 
                       v137 = v170;
@@ -1111,7 +1111,7 @@ LABEL_128:
                       goto LABEL_110;
                     }
 
-                    if (a4)
+                    if (error)
                     {
                       v145 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v146 = *MEMORY[0x1E698F240];
@@ -1120,19 +1120,19 @@ LABEL_128:
                       v195 = v157;
                       v137 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v195 forKeys:&v194 count:1];
                       v158 = 0;
-                      v40 = 0;
-                      *a4 = [v145 initWithDomain:v146 code:2 userInfo:v137];
+                      errorCopy = 0;
+                      *error = [v145 initWithDomain:v146 code:2 userInfo:v137];
                       v20 = v178;
-                      v38 = v180;
+                      errorCopy2 = v180;
                       v77 = v166;
                       v58 = v161;
                       goto LABEL_127;
                     }
 
                     v158 = 0;
-                    v40 = 0;
+                    errorCopy = 0;
                     v20 = v178;
-                    v38 = v180;
+                    errorCopy2 = v180;
                     v49 = v174;
                     v77 = v166;
                     v58 = v161;
@@ -1157,7 +1157,7 @@ LABEL_136:
                   }
                 }
 
-                if (a4)
+                if (error)
                 {
                   v94 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v95 = *MEMORY[0x1E698F240];
@@ -1170,23 +1170,23 @@ LABEL_136:
 LABEL_93:
                   v157 = v96;
                   v77 = v166;
-                  self = v169;
+                  self = selfCopy2;
                   v20 = v178;
-                  v38 = v180;
+                  errorCopy2 = v180;
                   v58 = v161;
-                  v40 = 0;
-                  *a4 = [v97 initWithDomain:v98 code:2 userInfo:?];
+                  errorCopy = 0;
+                  *error = [v97 initWithDomain:v98 code:2 userInfo:?];
                   v158 = v32;
                   goto LABEL_128;
                 }
 
 LABEL_97:
-                v40 = 0;
+                errorCopy = 0;
                 v121 = v32;
-                self = v169;
+                self = selfCopy2;
 LABEL_107:
                 v20 = v178;
-                v38 = v180;
+                errorCopy2 = v180;
                 v49 = v174;
                 v77 = v166;
                 v58 = v161;
@@ -1200,7 +1200,7 @@ LABEL_107:
                 goto LABEL_33;
               }
 
-              if (a4)
+              if (error)
               {
                 v112 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v113 = v15;
@@ -1219,17 +1219,17 @@ LABEL_107:
                 v163 = v118;
                 v120 = [v112 initWithDomain:v119 code:2 userInfo:?];
                 v58 = 0;
-                v40 = 0;
-                *a4 = v120;
-                v38 = v180;
+                errorCopy = 0;
+                *error = v120;
+                errorCopy2 = v180;
                 v49 = v174;
                 v77 = v166;
                 goto LABEL_133;
               }
 
               v58 = 0;
-              v40 = 0;
-              v38 = v180;
+              errorCopy = 0;
+              errorCopy2 = v180;
 LABEL_148:
               v49 = v174;
               v77 = v166;
@@ -1243,7 +1243,7 @@ LABEL_148:
               goto LABEL_27;
             }
 
-            if (a4)
+            if (error)
             {
               v79 = objc_alloc(MEMORY[0x1E696ABC0]);
               v80 = v15;
@@ -1263,15 +1263,15 @@ LABEL_148:
               v171 = v85;
               v87 = [v79 initWithDomain:v86 code:2 userInfo:?];
               v77 = 0;
-              v40 = 0;
-              *a4 = v87;
-              v38 = v180;
+              errorCopy = 0;
+              *error = v87;
+              errorCopy2 = v180;
               v49 = v174;
               goto LABEL_136;
             }
 
-            v40 = 0;
-            v38 = v180;
+            errorCopy = 0;
+            errorCopy2 = v180;
             v49 = v174;
             v48 = v175;
             v77 = 0;
@@ -1280,7 +1280,7 @@ LABEL_137:
             goto LABEL_138;
           }
 
-          if (a4)
+          if (error)
           {
             v68 = objc_alloc(MEMORY[0x1E696ABC0]);
             v69 = v15;
@@ -1301,16 +1301,16 @@ LABEL_137:
             v173 = v75;
             v78 = [v68 initWithDomain:v76 code:2 userInfo:?];
             v176 = 0;
-            v40 = 0;
-            *a4 = v78;
-            v38 = v180;
+            errorCopy = 0;
+            *error = v78;
+            errorCopy2 = v180;
             v49 = v174;
             goto LABEL_137;
           }
 
           v176 = 0;
-          v40 = 0;
-          v38 = v180;
+          errorCopy = 0;
+          errorCopy2 = v180;
           v49 = v174;
           v48 = v175;
 LABEL_138:
@@ -1318,7 +1318,7 @@ LABEL_138:
           goto LABEL_139;
         }
 
-        if (a4)
+        if (error)
         {
           v59 = objc_alloc(MEMORY[0x1E696ABC0]);
           v60 = v15;
@@ -1338,14 +1338,14 @@ LABEL_138:
           v177 = v65;
           v67 = [v59 initWithDomain:v66 code:2 userInfo:?];
           v48 = 0;
-          v40 = 0;
-          *a4 = v67;
-          v38 = v180;
+          errorCopy = 0;
+          *error = v67;
+          errorCopy2 = v180;
           goto LABEL_138;
         }
 
-        v40 = 0;
-        v38 = v180;
+        errorCopy = 0;
+        errorCopy2 = v180;
         v49 = v21;
         v48 = 0;
 LABEL_139:
@@ -1355,8 +1355,8 @@ LABEL_139:
         goto LABEL_140;
       }
 
-      v40 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v179 = objc_alloc(MEMORY[0x1E696ABC0]);
         v41 = *MEMORY[0x1E698F240];
@@ -1371,16 +1371,16 @@ LABEL_139:
         v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v216 forKeys:&v215 count:1];
         v47 = [v179 initWithDomain:v41 code:2 userInfo:v46];
         v20 = 0;
-        v40 = 0;
-        *a4 = v47;
+        errorCopy = 0;
+        *error = v47;
         v48 = v45;
         v49 = v46;
-        v38 = v180;
+        errorCopy2 = v180;
         goto LABEL_139;
       }
 
       v20 = 0;
-      v38 = v180;
+      errorCopy2 = v180;
 LABEL_99:
       v111 = v184;
 LABEL_140:
@@ -1388,8 +1388,8 @@ LABEL_140:
       goto LABEL_141;
     }
 
-    v38 = a4;
-    if (a4)
+    errorCopy2 = error;
+    if (error)
     {
       v88 = objc_alloc(MEMORY[0x1E696ABC0]);
       v89 = *MEMORY[0x1E698F240];
@@ -1403,13 +1403,13 @@ LABEL_140:
       v218 = v20;
       v182 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v218 forKeys:&v217 count:1];
       v93 = [v88 initWithDomain:v89 code:2 userInfo:?];
-      v38 = 0;
-      v40 = 0;
-      *a4 = v93;
+      errorCopy2 = 0;
+      errorCopy = 0;
+      *error = v93;
       goto LABEL_99;
     }
 
-    v40 = 0;
+    errorCopy = 0;
 LABEL_113:
     v111 = v184;
 LABEL_141:
@@ -1418,44 +1418,44 @@ LABEL_141:
     goto LABEL_142;
   }
 
-  if (a4)
+  if (error)
   {
     v36 = objc_alloc(MEMORY[0x1E696ABC0]);
     v37 = *MEMORY[0x1E698F240];
     v219 = *MEMORY[0x1E696A578];
-    v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modeIdentifier"];
-    v220 = v38;
+    errorCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modeIdentifier"];
+    v220 = errorCopy2;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v220 forKeys:&v219 count:1];
     v39 = [v36 initWithDomain:v37 code:2 userInfo:v17];
     v35 = 0;
-    v40 = 0;
-    *a4 = v39;
+    errorCopy = 0;
+    *error = v39;
     goto LABEL_113;
   }
 
-  v40 = 0;
+  errorCopy = 0;
   v35 = 0;
   v111 = v7;
 LABEL_142:
 
 LABEL_143:
   v138 = *MEMORY[0x1E69E9840];
-  return v40;
+  return errorCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMUserFocusInferredMode *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -1556,9 +1556,9 @@ LABEL_143:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v75.receiver = self;
   v75.super_class = BMUserFocusInferredMode;
   v5 = [(BMEventBase *)&v75 init];
@@ -1568,12 +1568,12 @@ LABEL_143:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1584,18 +1584,18 @@ LABEL_143:
       while (1)
       {
         LOBYTE(v76) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v76 & 0x7F) << v8;
@@ -1613,9 +1613,9 @@ LABEL_143:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -1625,18 +1625,18 @@ LABEL_16:
         case 1u:
           v5->_hasRaw_absoluteTimestamp = 1;
           v76 = 0;
-          v16 = [v4 position] + 8;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 8;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v68 = [v4 data];
-            [v68 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v66 = v76;
@@ -1653,18 +1653,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v76 & 0x7F) << v40;
@@ -1681,7 +1681,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 0x11)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 0x11)
           {
 LABEL_99:
             LODWORD(v20) = 0;
@@ -1701,18 +1701,18 @@ LABEL_99:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v76 & 0x7F) << v25;
@@ -1730,7 +1730,7 @@ LABEL_99:
             }
           }
 
-          v31 = (v27 != 0) & ~[v4 hasError];
+          v31 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_94:
           v64 = 32;
           goto LABEL_104;
@@ -1742,18 +1742,18 @@ LABEL_94:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v50 = [v4 position] + 1;
-            if (v50 >= [v4 position] && (v51 = objc_msgSend(v4, "position") + 1, v51 <= objc_msgSend(v4, "length")))
+            v50 = [fromCopy position] + 1;
+            if (v50 >= [fromCopy position] && (v51 = objc_msgSend(fromCopy, "position") + 1, v51 <= objc_msgSend(fromCopy, "length")))
             {
-              v52 = [v4 data];
-              [v52 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v49 |= (v76 & 0x7F) << v47;
@@ -1771,7 +1771,7 @@ LABEL_94:
             }
           }
 
-          v31 = (v49 != 0) & ~[v4 hasError];
+          v31 = (v49 != 0) & ~[fromCopy hasError];
 LABEL_103:
           v64 = 34;
           goto LABEL_104;
@@ -1791,18 +1791,18 @@ LABEL_103:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v59 = [v4 position] + 1;
-            if (v59 >= [v4 position] && (v60 = objc_msgSend(v4, "position") + 1, v60 <= objc_msgSend(v4, "length")))
+            v59 = [fromCopy position] + 1;
+            if (v59 >= [fromCopy position] && (v60 = objc_msgSend(fromCopy, "position") + 1, v60 <= objc_msgSend(fromCopy, "length")))
             {
-              v61 = [v4 data];
-              [v61 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v58 |= (v76 & 0x7F) << v56;
@@ -1820,7 +1820,7 @@ LABEL_103:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v62 = 0;
           }
@@ -1836,18 +1836,18 @@ LABEL_108:
         case 0xAu:
           v5->_hasConfidenceScore = 1;
           v76 = 0;
-          v38 = [v4 position] + 8;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 8, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 8;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 8, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v65 = [v4 data];
-            [v65 getBytes:&v76 range:{objc_msgSend(v4, "position"), 8}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v66 = v76;
@@ -1873,18 +1873,18 @@ LABEL_113:
           while (1)
           {
             LOBYTE(v76) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (v76 & 0x7F) << v18;
@@ -1901,7 +1901,7 @@ LABEL_113:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 0x12)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 0x12)
           {
 LABEL_91:
             LODWORD(v20) = 0;
@@ -1939,18 +1939,18 @@ LABEL_119:
       while (1)
       {
         LOBYTE(v76) = 0;
-        v35 = [v4 position] + 1;
-        if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+        v35 = [fromCopy position] + 1;
+        if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
         {
-          v37 = [v4 data];
-          [v37 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data9 = [fromCopy data];
+          [data9 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v34 |= (v76 & 0x7F) << v32;
@@ -1968,24 +1968,24 @@ LABEL_119:
         }
       }
 
-      v31 = (v34 != 0) & ~[v4 hasError];
+      v31 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_96:
       v64 = 38;
 LABEL_104:
       *(&v5->super.super.isa + v64) = v31;
 LABEL_114:
-      v69 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v69 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v70 = [v6 copy];
   serializedTriggers = v5->_serializedTriggers;
   v5->_serializedTriggers = v70;
 
-  v72 = [v4 hasError];
-  if (v72)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_116:
     v73 = 0;
@@ -2003,53 +2003,53 @@ LABEL_117:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v20 = [(BMUserFocusInferredMode *)self absoluteTimestamp];
-  v19 = [(BMUserFocusInferredMode *)self modeIdentifier];
+  absoluteTimestamp = [(BMUserFocusInferredMode *)self absoluteTimestamp];
+  modeIdentifier = [(BMUserFocusInferredMode *)self modeIdentifier];
   v18 = BMUserFocusInferredModeOriginAsString([(BMUserFocusInferredMode *)self origin]);
-  v17 = [(BMUserFocusInferredMode *)self originBundleID];
+  originBundleID = [(BMUserFocusInferredMode *)self originBundleID];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusInferredMode isAutomationEnabled](self, "isAutomationEnabled")}];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusInferredMode isStart](self, "isStart")}];
-  v4 = [(BMUserFocusInferredMode *)self uuid];
-  v5 = [(BMUserFocusInferredMode *)self originAnchorType];
+  uuid = [(BMUserFocusInferredMode *)self uuid];
+  originAnchorType = [(BMUserFocusInferredMode *)self originAnchorType];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMUserFocusInferredMode uiLocation](self, "uiLocation")}];
   v7 = MEMORY[0x1E696AD98];
   [(BMUserFocusInferredMode *)self confidenceScore];
   v8 = [v7 numberWithDouble:?];
-  v9 = [(BMUserFocusInferredMode *)self serializedTriggers];
+  serializedTriggers = [(BMUserFocusInferredMode *)self serializedTriggers];
   v10 = BMUserFocusInferredModeTypeAsString([(BMUserFocusInferredMode *)self modeType]);
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMUserFocusInferredMode shouldSuggestTriggers](self, "shouldSuggestTriggers")}];
-  v12 = [(BMUserFocusInferredMode *)self userModeName];
-  v16 = [v15 initWithFormat:@"BMUserFocusInferredMode with absoluteTimestamp: %@, modeIdentifier: %@, origin: %@, originBundleID: %@, isAutomationEnabled: %@, isStart: %@, uuid: %@, originAnchorType: %@, uiLocation: %@, confidenceScore: %@, serializedTriggers: %@, modeType: %@, shouldSuggestTriggers: %@, userModeName: %@", v20, v19, v18, v17, v14, v3, v4, v5, v6, v8, v9, v10, v11, v12];
+  userModeName = [(BMUserFocusInferredMode *)self userModeName];
+  v16 = [v15 initWithFormat:@"BMUserFocusInferredMode with absoluteTimestamp: %@, modeIdentifier: %@, origin: %@, originBundleID: %@, isAutomationEnabled: %@, isStart: %@, uuid: %@, originAnchorType: %@, uiLocation: %@, confidenceScore: %@, serializedTriggers: %@, modeType: %@, shouldSuggestTriggers: %@, userModeName: %@", absoluteTimestamp, modeIdentifier, v18, originBundleID, v14, v3, uuid, originAnchorType, v6, v8, serializedTriggers, v10, v11, userModeName];
 
   return v16;
 }
 
-- (BMUserFocusInferredMode)initWithAbsoluteTimestamp:(id)a3 modeIdentifier:(id)a4 origin:(int)a5 originBundleID:(id)a6 isAutomationEnabled:(id)a7 isStart:(id)a8 uuid:(id)a9 originAnchorType:(id)a10 uiLocation:(id)a11 confidenceScore:(id)a12 serializedTriggers:(id)a13 modeType:(int)a14 shouldSuggestTriggers:(id)a15 userModeName:(id)a16
+- (BMUserFocusInferredMode)initWithAbsoluteTimestamp:(id)timestamp modeIdentifier:(id)identifier origin:(int)origin originBundleID:(id)d isAutomationEnabled:(id)enabled isStart:(id)start uuid:(id)uuid originAnchorType:(id)self0 uiLocation:(id)self1 confidenceScore:(id)self2 serializedTriggers:(id)self3 modeType:(int)self4 shouldSuggestTriggers:(id)self5 userModeName:(id)self6
 {
-  v20 = a3;
-  obj = a4;
-  v40 = a4;
-  v35 = a6;
-  v39 = a6;
-  v21 = a7;
-  v22 = a8;
-  v38 = a9;
-  v37 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a15;
-  v27 = a16;
+  timestampCopy = timestamp;
+  obj = identifier;
+  identifierCopy = identifier;
+  dCopy = d;
+  dCopy2 = d;
+  enabledCopy = enabled;
+  startCopy = start;
+  uuidCopy = uuid;
+  typeCopy = type;
+  locationCopy = location;
+  scoreCopy = score;
+  triggersCopy = triggers;
+  suggestTriggersCopy = suggestTriggers;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = BMUserFocusInferredMode;
   v28 = [(BMEventBase *)&v41 init];
   if (v28)
   {
     v28->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v20)
+    if (timestampCopy)
     {
       v28->_hasRaw_absoluteTimestamp = 1;
-      [v20 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -2060,12 +2060,12 @@ LABEL_117:
 
     v28->_raw_absoluteTimestamp = v29;
     objc_storeStrong(&v28->_modeIdentifier, obj);
-    v28->_origin = a5;
-    objc_storeStrong(&v28->_originBundleID, v35);
-    if (v21)
+    v28->_origin = origin;
+    objc_storeStrong(&v28->_originBundleID, dCopy);
+    if (enabledCopy)
     {
       v28->_hasIsAutomationEnabled = 1;
-      v28->_isAutomationEnabled = [v21 BOOLValue];
+      v28->_isAutomationEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -2074,10 +2074,10 @@ LABEL_117:
       v28->_isAutomationEnabled = 0;
     }
 
-    if (v22)
+    if (startCopy)
     {
       v28->_hasIsStart = 1;
-      v28->_isStart = [v22 BOOLValue];
+      v28->_isStart = [startCopy BOOLValue];
     }
 
     else
@@ -2086,25 +2086,25 @@ LABEL_117:
       v28->_isStart = 0;
     }
 
-    objc_storeStrong(&v28->_uuid, a9);
-    objc_storeStrong(&v28->_originAnchorType, a10);
-    if (v23)
+    objc_storeStrong(&v28->_uuid, uuid);
+    objc_storeStrong(&v28->_originAnchorType, type);
+    if (locationCopy)
     {
       v28->_hasUiLocation = 1;
-      v30 = [v23 unsignedLongLongValue];
+      unsignedLongLongValue = [locationCopy unsignedLongLongValue];
     }
 
     else
     {
-      v30 = 0;
+      unsignedLongLongValue = 0;
       v28->_hasUiLocation = 0;
     }
 
-    v28->_uiLocation = v30;
-    if (v24)
+    v28->_uiLocation = unsignedLongLongValue;
+    if (scoreCopy)
     {
       v28->_hasConfidenceScore = 1;
-      [v24 doubleValue];
+      [scoreCopy doubleValue];
     }
 
     else
@@ -2114,12 +2114,12 @@ LABEL_117:
     }
 
     v28->_confidenceScore = v31;
-    objc_storeStrong(&v28->_serializedTriggers, a13);
-    v28->_modeType = a14;
-    if (v26)
+    objc_storeStrong(&v28->_serializedTriggers, triggers);
+    v28->_modeType = modeType;
+    if (suggestTriggersCopy)
     {
       v28->_hasShouldSuggestTriggers = 1;
-      v28->_shouldSuggestTriggers = [v26 BOOLValue];
+      v28->_shouldSuggestTriggers = [suggestTriggersCopy BOOLValue];
     }
 
     else
@@ -2128,7 +2128,7 @@ LABEL_117:
       v28->_shouldSuggestTriggers = 0;
     }
 
-    objc_storeStrong(&v28->_userModeName, a16);
+    objc_storeStrong(&v28->_userModeName, name);
   }
 
   return v28;
@@ -2219,24 +2219,24 @@ id __34__BMUserFocusInferredMode_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMUserFocusInferredMode_v1;
   }
 
   else
   {
-    if (a4 != 2)
+    if (version != 2)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMUserFocusInferredMode;
   }
 
@@ -2244,7 +2244,7 @@ id __34__BMUserFocusInferredMode_columns__block_invoke(uint64_t a1, void *a2)
   v9 = v8;
   if (v8)
   {
-    *(v8 + 40) = a4;
+    *(v8 + 40) = version;
   }
 
 LABEL_9:

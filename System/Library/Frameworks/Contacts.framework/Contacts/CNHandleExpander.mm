@@ -1,22 +1,22 @@
 @interface CNHandleExpander
 + (id)contactStoreForFetchingContacts;
-- (CNHandleExpander)initWithHandles:(id)a3;
+- (CNHandleExpander)initWithHandles:(id)handles;
 - (id)expandedHandles;
 - (void)expandHandles;
 @end
 
 @implementation CNHandleExpander
 
-- (CNHandleExpander)initWithHandles:(id)a3
+- (CNHandleExpander)initWithHandles:(id)handles
 {
-  v5 = a3;
+  handlesCopy = handles;
   v10.receiver = self;
   v10.super_class = CNHandleExpander;
   v6 = [(CNHandleExpander *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_incomingAddresses, a3);
+    objc_storeStrong(&v6->_incomingAddresses, handles);
     v8 = v7;
   }
 
@@ -46,22 +46,22 @@
 
   else
   {
-    v4 = [objc_opt_class() contactStoreForFetchingContacts];
+    contactStoreForFetchingContacts = [objc_opt_class() contactStoreForFetchingContacts];
     v5 = [CNContact predicateForContactsMatchingHandleStrings:self->_incomingAddresses];
     v16[0] = @"emailAddresses";
     v16[1] = @"phoneNumbers";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v7 = [[CNContactFetchRequest alloc] initWithKeysToFetch:v6];
     [(CNContactFetchRequest *)v7 setPredicate:v5];
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __33__CNHandleExpander_expandHandles__block_invoke;
     v13[3] = &unk_1E7414AA8;
-    v9 = v8;
+    v9 = array;
     v14 = v9;
-    [v4 enumerateContactsWithFetchRequest:v7 error:&v15 usingBlock:v13];
+    [contactStoreForFetchingContacts enumerateContactsWithFetchRequest:v7 error:&v15 usingBlock:v13];
     v10 = v15;
     v11 = self->_expandedAddresses;
     self->_expandedAddresses = v9;

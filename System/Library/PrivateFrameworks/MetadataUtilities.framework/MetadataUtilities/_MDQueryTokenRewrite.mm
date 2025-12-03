@@ -1,14 +1,14 @@
 @interface _MDQueryTokenRewrite
 - (NSArray)variations;
 - (NSString)originalToken;
-- (_MDQueryTokenRewrite)initWithOriginalToken:(id)a3 variations:(id)a4;
+- (_MDQueryTokenRewrite)initWithOriginalToken:(id)token variations:(id)variations;
 - (void)dealloc;
-- (void)setOriginalToken:(id)a3;
+- (void)setOriginalToken:(id)token;
 @end
 
 @implementation _MDQueryTokenRewrite
 
-- (_MDQueryTokenRewrite)initWithOriginalToken:(id)a3 variations:(id)a4
+- (_MDQueryTokenRewrite)initWithOriginalToken:(id)token variations:(id)variations
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -16,8 +16,8 @@
   v6 = [(_MDQueryTokenRewrite *)&v9 init];
   if (v6)
   {
-    v6->_originalToken = [a3 copy];
-    v6->_variations = [a4 copy];
+    v6->_originalToken = [token copy];
+    v6->_variations = [variations copy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (void)setOriginalToken:(id)a3
+- (void)setOriginalToken:(id)token
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 8);
+  objc_setProperty_nonatomic_copy(self, a2, token, 8);
 }
 
 - (NSArray)variations

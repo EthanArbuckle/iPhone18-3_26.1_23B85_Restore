@@ -11,25 +11,25 @@
 - (NSArray)uiSceneOptions;
 - (unsigned)driverSide;
 - (unsigned)uiSceneState;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFUIState
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFUIState;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -42,12 +42,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -63,13 +63,13 @@
 - (CAFUISceneStateCharacteristic)uiSceneStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000047000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000047000001"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000047000001"];
@@ -88,22 +88,22 @@
 
 - (unsigned)uiSceneState
 {
-  v2 = [(CAFUIState *)self uiSceneStateCharacteristic];
-  v3 = [v2 uiSceneStateValue];
+  uiSceneStateCharacteristic = [(CAFUIState *)self uiSceneStateCharacteristic];
+  uiSceneStateValue = [uiSceneStateCharacteristic uiSceneStateValue];
 
-  return v3;
+  return uiSceneStateValue;
 }
 
 - (CAFArrayCharacteristic)uiSceneOptionsCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000047000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000047000004"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000047000004"];
@@ -122,16 +122,16 @@
 
 - (NSArray)uiSceneOptions
 {
-  v2 = [(CAFUIState *)self uiSceneOptionsCharacteristic];
-  v3 = [v2 arrayValue];
+  uiSceneOptionsCharacteristic = [(CAFUIState *)self uiSceneOptionsCharacteristic];
+  arrayValue = [uiSceneOptionsCharacteristic arrayValue];
 
-  return v3;
+  return arrayValue;
 }
 
 - (BOOL)hasUiSceneOptions
 {
-  v2 = [(CAFUIState *)self uiSceneOptionsCharacteristic];
-  v3 = v2 != 0;
+  uiSceneOptionsCharacteristic = [(CAFUIState *)self uiSceneOptionsCharacteristic];
+  v3 = uiSceneOptionsCharacteristic != 0;
 
   return v3;
 }
@@ -139,13 +139,13 @@
 - (CAFDriverSideCharacteristic)driverSideCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000009"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000009"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000009"];
@@ -164,16 +164,16 @@
 
 - (unsigned)driverSide
 {
-  v2 = [(CAFUIState *)self driverSideCharacteristic];
-  v3 = [v2 driverSideValue];
+  driverSideCharacteristic = [(CAFUIState *)self driverSideCharacteristic];
+  driverSideValue = [driverSideCharacteristic driverSideValue];
 
-  return v3;
+  return driverSideValue;
 }
 
 - (BOOL)hasDriverSide
 {
-  v2 = [(CAFUIState *)self driverSideCharacteristic];
-  v3 = v2 != 0;
+  driverSideCharacteristic = [(CAFUIState *)self driverSideCharacteristic];
+  v3 = driverSideCharacteristic != 0;
 
   return v3;
 }
@@ -181,13 +181,13 @@
 - (BOOL)registeredForUISceneState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000047000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000047000001"];
 
   return v10;
 }
@@ -195,13 +195,13 @@
 - (BOOL)registeredForUISceneOptions
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000047000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000047000004"];
 
   return v10;
 }
@@ -209,13 +209,13 @@
 - (BOOL)registeredForDriverSide
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000009"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000009"];
 
   return v10;
 }

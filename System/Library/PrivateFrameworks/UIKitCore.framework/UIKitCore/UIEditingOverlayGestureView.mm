@@ -1,7 +1,7 @@
 @interface UIEditingOverlayGestureView
 - (UIWindow)previousWindow;
-- (id)_gestureRecognizersForEvent:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_gestureRecognizersForEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)didMoveToWindow;
 @end
 
@@ -16,13 +16,13 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UIEditingOverlayGestureView *)self previousWindow];
+  previousWindow = [(UIEditingOverlayGestureView *)self previousWindow];
 
-  if (v3)
+  if (previousWindow)
   {
     v4 = UIApp;
-    v5 = [(UIEditingOverlayGestureView *)self previousWindow];
-    v6 = [v4 _touchesEventForWindow:v5];
+    previousWindow2 = [(UIEditingOverlayGestureView *)self previousWindow];
+    v6 = [v4 _touchesEventForWindow:previousWindow2];
 
     if (v6)
     {
@@ -32,8 +32,8 @@
     if (_os_feature_enabled_impl())
     {
       v7 = UIApp;
-      v8 = [(UIEditingOverlayGestureView *)self previousWindow];
-      v9 = [v7 _hoverEventForWindow:v8];
+      previousWindow3 = [(UIEditingOverlayGestureView *)self previousWindow];
+      v9 = [v7 _hoverEventForWindow:previousWindow3];
 
       if (v9)
       {
@@ -42,44 +42,44 @@
     }
   }
 
-  v10 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v10)
+  if (window)
   {
     v11 = UIApp;
-    v12 = [(UIView *)self window];
-    v13 = [v11 _touchesEventForWindow:v12];
+    window2 = [(UIView *)self window];
+    v13 = [v11 _touchesEventForWindow:window2];
 
     [(UIEvent *)v13 _addEventObserver:?];
     if (_os_feature_enabled_impl())
     {
       v14 = UIApp;
-      v15 = [(UIView *)self window];
-      v16 = [v14 _hoverEventForWindow:v15];
+      window3 = [(UIView *)self window];
+      v16 = [v14 _hoverEventForWindow:window3];
 
       [(UIEvent *)v16 _addEventObserver:?];
     }
   }
 
-  v17 = [(UIView *)self window];
-  [(UIEditingOverlayGestureView *)self setPreviousWindow:v17];
+  window4 = [(UIView *)self window];
+  [(UIEditingOverlayGestureView *)self setPreviousWindow:window4];
 }
 
-- (id)_gestureRecognizersForEvent:(id)a3
+- (id)_gestureRecognizersForEvent:(id)event
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIView *)self window];
-  v6 = [v5 isMemberOfClass:objc_opt_class()];
+  eventCopy = event;
+  window = [(UIView *)self window];
+  v6 = [window isMemberOfClass:objc_opt_class()];
 
   if (!v6)
   {
 LABEL_11:
-    v15 = [(UIView *)self window];
-    v16 = [v15 windowScene];
-    v17 = [v16 activationState];
+    window2 = [(UIView *)self window];
+    windowScene = [window2 windowScene];
+    activationState = [windowScene activationState];
 
-    if (v17 > 1)
+    if (activationState > 1)
     {
       v13 = MEMORY[0x1E695E0F0];
       goto LABEL_26;
@@ -90,8 +90,8 @@ LABEL_11:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [(UIView *)self gestureRecognizers];
-    v18 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    gestureRecognizers = [(UIView *)self gestureRecognizers];
+    v18 = [gestureRecognizers countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (!v18)
     {
       goto LABEL_24;
@@ -105,15 +105,15 @@ LABEL_14:
     {
       if (*v28 != v20)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(gestureRecognizers);
       }
 
       v22 = *(*(&v27 + 1) + 8 * v21);
-      v23 = [v22 _activeEvents];
-      if ([v23 count])
+      _activeEvents = [v22 _activeEvents];
+      if ([_activeEvents count])
       {
-        v24 = [v22 _activeEvents];
-        v25 = [v24 containsObject:v4];
+        _activeEvents2 = [v22 _activeEvents];
+        v25 = [_activeEvents2 containsObject:eventCopy];
 
         if (!v25)
         {
@@ -129,7 +129,7 @@ LABEL_14:
 LABEL_22:
       if (v19 == ++v21)
       {
-        v19 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v19 = [gestureRecognizers countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (!v19)
         {
           goto LABEL_24;
@@ -144,11 +144,11 @@ LABEL_22:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(UIView *)self window];
-  v8 = [v7 windowScene];
-  v9 = [v8 windows];
+  window3 = [(UIView *)self window];
+  windowScene2 = [window3 windowScene];
+  gestureRecognizers = [windowScene2 windows];
 
-  v10 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v10 = [gestureRecognizers countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (!v10)
   {
     goto LABEL_10;
@@ -163,7 +163,7 @@ LABEL_4:
   {
     if (*v32 != v12)
     {
-      objc_enumerationMutation(v9);
+      objc_enumerationMutation(gestureRecognizers);
     }
 
     if ([*(*(&v31 + 1) + 8 * v14) isMemberOfClass:objc_opt_class()])
@@ -173,7 +173,7 @@ LABEL_4:
 
     if (v11 == ++v14)
     {
-      v11 = [v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v11 = [gestureRecognizers countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (!v11)
       {
 LABEL_10:
@@ -192,17 +192,17 @@ LABEL_26:
   return v13;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = +[UIKeyShortcutHUDService _existingHUDService];
-  [v8 handleTouchEvent:v7];
+  [v8 handleTouchEvent:eventCopy];
 
   v12.receiver = self;
   v12.super_class = UIEditingOverlayGestureView;
-  v9 = [(UIView *)&v12 hitTest:v7 withEvent:x, y];
+  v9 = [(UIView *)&v12 hitTest:eventCopy withEvent:x, y];
 
   if (v9 == self)
   {

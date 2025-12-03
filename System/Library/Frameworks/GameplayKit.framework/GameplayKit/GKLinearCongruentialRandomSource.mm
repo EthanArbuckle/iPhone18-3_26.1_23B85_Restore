@@ -1,11 +1,11 @@
 @interface GKLinearCongruentialRandomSource
 - (GKLinearCongruentialRandomSource)init;
-- (GKLinearCongruentialRandomSource)initWithCoder:(id)a3;
+- (GKLinearCongruentialRandomSource)initWithCoder:(id)coder;
 - (GKLinearCongruentialRandomSource)initWithSeed:(uint64_t)seed;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)nextBits:(int)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)nextBits:(int)bits;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKLinearCongruentialRandomSource
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   seed = self->_seed;
@@ -43,59 +43,59 @@
   return [v4 initWithSeed:seed];
 }
 
-- (GKLinearCongruentialRandomSource)initWithCoder:(id)a3
+- (GKLinearCongruentialRandomSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(GKLinearCongruentialRandomSource *)self init];
   if (v5)
   {
-    v5->_seed = [v4 decodeInt64ForKey:@"seed"];
+    v5->_seed = [coderCopy decodeInt64ForKey:@"seed"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = GKLinearCongruentialRandomSource;
-  [(GKRandomSource *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_seed forKey:@"seed"];
+  [(GKRandomSource *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_seed forKey:@"seed"];
 }
 
-- (unint64_t)nextBits:(int)a3
+- (unint64_t)nextBits:(int)bits
 {
   result = (0x5DEECE66DLL * self->_seed + 11) & 0xFFFFFFFFFFFFLL;
   self->_seed = result;
-  if (a3 < 1)
+  if (bits < 1)
   {
     return 0;
   }
 
-  if (a3 <= 0x30)
+  if (bits <= 0x30)
   {
-    result >>= 48 - a3;
+    result >>= 48 - bits;
   }
 
   return result;
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  v5 = a3 - 1;
-  if ((a3 & (a3 - 1)) == 0)
+  v5 = bound - 1;
+  if ((bound & (bound - 1)) == 0)
   {
-    return ([(GKLinearCongruentialRandomSource *)self nextBits:32]* a3) >> 32;
+    return ([(GKLinearCongruentialRandomSource *)self nextBits:32]* bound) >> 32;
   }
 
   do
   {
     v7 = [(GKLinearCongruentialRandomSource *)self nextBits:32];
-    result = v7 % a3;
+    result = v7 % bound;
   }
 
-  while (v5 + v7 < v7 % a3);
+  while (v5 + v7 < v7 % bound);
   return result;
 }
 

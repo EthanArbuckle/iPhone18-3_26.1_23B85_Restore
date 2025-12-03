@@ -11,10 +11,10 @@
     goto LABEL_3;
   }
 
-  v3 = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  generatedWaveformOutputURL = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [generatedWaveformOutputURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if ((v6 & 1) == 0)
   {

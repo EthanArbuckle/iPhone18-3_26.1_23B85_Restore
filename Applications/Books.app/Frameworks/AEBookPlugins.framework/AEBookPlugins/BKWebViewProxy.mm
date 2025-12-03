@@ -2,32 +2,32 @@
 - (CGRect)contentRectForVisibleContent;
 - (CGRect)frame;
 - (CGRect)localFrame;
-- (CGRect)rectForPageOffset:(unint64_t)a3;
-- (double)scrollingPageHeightForPaginationMode:(unint64_t)a3 configuration:(id)a4;
-- (double)scrollingPageWidthForPaginationMode:(unint64_t)a3 configuration:(id)a4;
-- (id)currentLocationForOrdinal:(unint64_t)a3 pageOffset:(unint64_t)a4 contentInsets:(UIEdgeInsets)a5;
+- (CGRect)rectForPageOffset:(unint64_t)offset;
+- (double)scrollingPageHeightForPaginationMode:(unint64_t)mode configuration:(id)configuration;
+- (double)scrollingPageWidthForPaginationMode:(unint64_t)mode configuration:(id)configuration;
+- (id)currentLocationForOrdinal:(unint64_t)ordinal pageOffset:(unint64_t)offset contentInsets:(UIEdgeInsets)insets;
 - (unint64_t)pageCount;
-- (unint64_t)pageOffsetForLocation:(id)a3;
-- (void)_butActually_wk2_scrollToPage:(int64_t)a3 paginationMode:(unint64_t)a4 pageProgressionDirection:(int)a5 configuration:(id)a6;
-- (void)_wk2_scrollToPage:(int64_t)a3 paginationMode:(unint64_t)a4 pageProgressionDirection:(int)a5 configuration:(id)a6;
-- (void)clientRectsForLocation:(id)a3 completion:(id)a4;
-- (void)clientRectsForLocations:(id)a3 completion:(id)a4;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setScrollViewClipsToBounds:(BOOL)a3;
+- (unint64_t)pageOffsetForLocation:(id)location;
+- (void)_butActually_wk2_scrollToPage:(int64_t)page paginationMode:(unint64_t)mode pageProgressionDirection:(int)direction configuration:(id)configuration;
+- (void)_wk2_scrollToPage:(int64_t)page paginationMode:(unint64_t)mode pageProgressionDirection:(int)direction configuration:(id)configuration;
+- (void)clientRectsForLocation:(id)location completion:(id)completion;
+- (void)clientRectsForLocations:(id)locations completion:(id)completion;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setScrollViewClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation BKWebViewProxy
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BKWebViewProxy *)self setLocalFrame:?];
-  v8 = [(BKWebViewProxy *)self loader];
-  [v8 setDesiredWebViewFrame:{x, y, width, height}];
+  loader = [(BKWebViewProxy *)self loader];
+  [loader setDesiredWebViewFrame:{x, y, width, height}];
 }
 
 - (CGRect)frame
@@ -44,40 +44,40 @@
 
 - (unint64_t)pageCount
 {
-  v2 = [(BKWebViewProxy *)self loader];
-  v3 = [v2 pageCount];
+  loader = [(BKWebViewProxy *)self loader];
+  pageCount = [loader pageCount];
 
-  return v3;
+  return pageCount;
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v5 = [(BKWebViewProxy *)self loader];
-  v4 = [v5 webView];
-  [v4 setClipsToBounds:v3];
+  boundsCopy = bounds;
+  loader = [(BKWebViewProxy *)self loader];
+  webView = [loader webView];
+  [webView setClipsToBounds:boundsCopy];
 }
 
-- (void)setScrollViewClipsToBounds:(BOOL)a3
+- (void)setScrollViewClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v6 = [(BKWebViewProxy *)self loader];
-  v4 = [v6 webView];
-  v5 = [v4 scrollView];
-  [v5 setClipsToBounds:v3];
+  boundsCopy = bounds;
+  loader = [(BKWebViewProxy *)self loader];
+  webView = [loader webView];
+  scrollView = [webView scrollView];
+  [scrollView setClipsToBounds:boundsCopy];
 }
 
-- (void)clientRectsForLocations:(id)a3 completion:(id)a4
+- (void)clientRectsForLocations:(id)locations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  completionCopy = completion;
   v8 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(NSMutableArray);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v6;
+  v10 = locationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -110,31 +110,31 @@
     while (v12);
   }
 
-  v16 = [(BKWebViewProxy *)self loader];
+  loader = [(BKWebViewProxy *)self loader];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_8BA10;
   v19[3] = &unk_1E46F0;
   v20 = v8;
-  v21 = v7;
+  v21 = completionCopy;
   v17 = v8;
-  v18 = v7;
-  [v16 clientRectsForLocations:v9 completion:v19];
+  v18 = completionCopy;
+  [loader clientRectsForLocations:v9 completion:v19];
 }
 
-- (void)clientRectsForLocation:(id)a3 completion:(id)a4
+- (void)clientRectsForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (locationCopy)
   {
-    v15 = v6;
+    v15 = locationCopy;
     v8 = [NSArray arrayWithObjects:&v15 count:1];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_8BC2C;
     v13[3] = &unk_1E4DC0;
-    v14 = v7;
+    v14 = completionCopy;
     [(BKWebViewProxy *)self clientRectsForLocations:v8 completion:v13];
 
     v9 = v14;
@@ -149,7 +149,7 @@
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "clientRectsForLocation: nil location", v12, 2u);
     }
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(completionCopy);
     v9 = v11;
     if (v11)
     {
@@ -162,8 +162,8 @@
 {
   if ([(BKWebViewProxy *)self hasWKWebView])
   {
-    v3 = [(BKWebViewProxy *)self loader];
-    [v3 contentRectForVisibleContent];
+    loader = [(BKWebViewProxy *)self loader];
+    [loader contentRectForVisibleContent];
     x = v4;
     y = v6;
     width = v8;
@@ -189,12 +189,12 @@
   return result;
 }
 
-- (CGRect)rectForPageOffset:(unint64_t)a3
+- (CGRect)rectForPageOffset:(unint64_t)offset
 {
   if ([(BKWebViewProxy *)self hasWKWebView])
   {
-    v5 = [(BKWebViewProxy *)self loader];
-    [v5 rectForPageOffset:a3];
+    loader = [(BKWebViewProxy *)self loader];
+    [loader rectForPageOffset:offset];
     x = v6;
     y = v8;
     width = v10;
@@ -220,15 +220,15 @@
   return result;
 }
 
-- (id)currentLocationForOrdinal:(unint64_t)a3 pageOffset:(unint64_t)a4 contentInsets:(UIEdgeInsets)a5
+- (id)currentLocationForOrdinal:(unint64_t)ordinal pageOffset:(unint64_t)offset contentInsets:(UIEdgeInsets)insets
 {
-  v6 = [(BKWebViewProxy *)self loader:a3];
-  v7 = [v6 currentFirstVisbleCFILocation];
+  v6 = [(BKWebViewProxy *)self loader:ordinal];
+  currentFirstVisbleCFILocation = [v6 currentFirstVisbleCFILocation];
 
-  [v7 setWk1EpubLocation:0];
+  [currentFirstVisbleCFILocation setWk1EpubLocation:0];
   if ([(BKWebViewProxy *)self hasWKWebView])
   {
-    v8 = v7;
+    v8 = currentFirstVisbleCFILocation;
   }
 
   else
@@ -241,9 +241,9 @@
   return v8;
 }
 
-- (unint64_t)pageOffsetForLocation:(id)a3
+- (unint64_t)pageOffsetForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ([(BKWebViewProxy *)self hasWKWebView])
   {
     v5 = _AEWKProxyLog();
@@ -284,13 +284,13 @@
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (double)scrollingPageWidthForPaginationMode:(unint64_t)a3 configuration:(id)a4
+- (double)scrollingPageWidthForPaginationMode:(unint64_t)mode configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = v6;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [v6 contentLayoutSize];
+    [configurationCopy contentLayoutSize];
     Width = v8;
   }
 
@@ -299,8 +299,8 @@
     Width = 0.0;
     if ([(BKWebViewProxy *)self hasWKWebView])
     {
-      v10 = [(BKWebViewProxy *)self loader];
-      [v10 desiredWebViewFrame];
+      loader = [(BKWebViewProxy *)self loader];
+      [loader desiredWebViewFrame];
       Width = CGRectGetWidth(v12);
     }
   }
@@ -308,13 +308,13 @@
   return Width;
 }
 
-- (double)scrollingPageHeightForPaginationMode:(unint64_t)a3 configuration:(id)a4
+- (double)scrollingPageHeightForPaginationMode:(unint64_t)mode configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 4)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (mode == 4)
   {
-    [v6 contentLayoutSize];
+    [configurationCopy contentLayoutSize];
     Height = v8;
   }
 
@@ -323,8 +323,8 @@
     Height = 0.0;
     if ([(BKWebViewProxy *)self hasWKWebView])
     {
-      v10 = [(BKWebViewProxy *)self loader];
-      [v10 desiredWebViewFrame];
+      loader = [(BKWebViewProxy *)self loader];
+      [loader desiredWebViewFrame];
       Height = CGRectGetHeight(v12);
     }
   }
@@ -332,34 +332,34 @@
   return Height;
 }
 
-- (void)_wk2_scrollToPage:(int64_t)a3 paginationMode:(unint64_t)a4 pageProgressionDirection:(int)a5 configuration:(id)a6
+- (void)_wk2_scrollToPage:(int64_t)page paginationMode:(unint64_t)mode pageProgressionDirection:(int)direction configuration:(id)configuration
 {
-  v10 = a6;
-  v11 = [(BKWebViewProxy *)self loader];
-  v12 = [v11 webView];
+  configurationCopy = configuration;
+  loader = [(BKWebViewProxy *)self loader];
+  webView = [loader webView];
 
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_8C414;
   v32[3] = &unk_1E4DE8;
   v32[4] = self;
-  v34 = a3;
-  v35 = a4;
-  v36 = a5;
-  v13 = v10;
+  pageCopy = page;
+  modeCopy = mode;
+  directionCopy = direction;
+  v13 = configurationCopy;
   v33 = v13;
   v14 = objc_retainBlock(v32);
-  v15 = [v12 scrollView];
-  [v15 contentSize];
+  scrollView = [webView scrollView];
+  [scrollView contentSize];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(BKWebViewProxy *)self loader];
-  v21 = [v20 pageCount];
+  loader2 = [(BKWebViewProxy *)self loader];
+  pageCount = [loader2 pageCount];
 
   [v13 be_pageLength];
   v23 = v22;
-  if ((a4 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  if ((mode & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
     v24 = v17;
   }
@@ -369,7 +369,7 @@
     v24 = v19;
   }
 
-  v25 = v24 / v21;
+  v25 = v24 / pageCount;
   if (v25 < v22 * 0.8)
   {
     v26 = _AEBookPluginsPageTurnLog();
@@ -396,7 +396,7 @@
   if (v17 == CGSizeZero.width && v19 == CGSizeZero.height)
   {
 LABEL_13:
-    [v12 _doAfterNextPresentationUpdate:v14];
+    [webView _doAfterNextPresentationUpdate:v14];
     goto LABEL_14;
   }
 
@@ -404,39 +404,39 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_butActually_wk2_scrollToPage:(int64_t)a3 paginationMode:(unint64_t)a4 pageProgressionDirection:(int)a5 configuration:(id)a6
+- (void)_butActually_wk2_scrollToPage:(int64_t)page paginationMode:(unint64_t)mode pageProgressionDirection:(int)direction configuration:(id)configuration
 {
-  v10 = a6;
-  if (a3 <= 0x7FFFFFFFFFFFFFFELL)
+  configurationCopy = configuration;
+  if (page <= 0x7FFFFFFFFFFFFFFELL)
   {
     if ([(BKWebViewProxy *)self hasWKWebView])
     {
-      v11 = [(BKWebViewProxy *)self loader];
-      v12 = [v11 pageCount];
+      loader = [(BKWebViewProxy *)self loader];
+      pageCount = [loader pageCount];
     }
 
     else
     {
-      v12 = 0;
+      pageCount = 0;
     }
 
-    v13 = [(BKWebViewProxy *)self loader];
-    v14 = [v13 webView];
-    v15 = [v14 isLoading];
+    loader2 = [(BKWebViewProxy *)self loader];
+    webView = [loader2 webView];
+    isLoading = [webView isLoading];
 
-    if (v15 && v12 <= 0)
+    if (isLoading && pageCount <= 0)
     {
-      v16 = _AEBookPluginsPageTurnLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      webView2 = _AEBookPluginsPageTurnLog();
+      if (os_log_type_enabled(webView2, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(BKWebViewProxy *)self loader];
-        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 ordinal]);
-        v19 = [NSNumber numberWithInteger:a3];
+        loader3 = [(BKWebViewProxy *)self loader];
+        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [loader3 ordinal]);
+        v19 = [NSNumber numberWithInteger:page];
         *buf = 138412546;
         v127 = v18;
         v128 = 2112;
         v129 = v19;
-        _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Attempt to turn pages in:%@ to %@ when we are not loaded and have no known pagecount.", buf, 0x16u);
+        _os_log_impl(&dword_0, webView2, OS_LOG_TYPE_ERROR, "Attempt to turn pages in:%@ to %@ when we are not loaded and have no known pagecount.", buf, 0x16u);
 
 LABEL_12:
       }
@@ -444,22 +444,22 @@ LABEL_12:
 
     else
     {
-      if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+      if (pageCount != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v12 >= a3)
+        if (pageCount >= page)
         {
-          v21 = a3;
+          pageCopy = page;
         }
 
         else
         {
-          v21 = (v12 - 1);
+          pageCopy = (pageCount - 1);
           v22 = _AEBookPluginsPageTurnLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [NSNumber numberWithInteger:a3];
-            v24 = [NSNumber numberWithInteger:v12];
-            v25 = [NSNumber numberWithInteger:v12 - 1];
+            v23 = [NSNumber numberWithInteger:page];
+            v24 = [NSNumber numberWithInteger:pageCount];
+            v25 = [NSNumber numberWithInteger:pageCount - 1];
             *buf = 138412802;
             v127 = v23;
             v128 = 2112;
@@ -468,30 +468,30 @@ LABEL_12:
             v131 = v25;
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Attempt to turn to page %@ when we have %@ pages -- setting pageOffset to %@", buf, 0x20u);
 
-            v21 = (v12 - 1);
+            pageCopy = (pageCount - 1);
           }
         }
 
-        v26 = [(BKWebViewProxy *)self loader];
-        v16 = [v26 webView];
+        loader4 = [(BKWebViewProxy *)self loader];
+        webView2 = [loader4 webView];
 
-        [v16 frame];
+        [webView2 frame];
         v28 = v27;
         v30 = v29;
         v113 = v32;
         v114 = v31;
-        v33 = [v16 scrollView];
-        v34 = [v16 be_estimatedContentSizeValue];
-        v35 = [v16 be_requestedContentOffset];
-        [v33 contentOffset];
+        scrollView = [webView2 scrollView];
+        be_estimatedContentSizeValue = [webView2 be_estimatedContentSizeValue];
+        be_requestedContentOffset = [webView2 be_requestedContentOffset];
+        [scrollView contentOffset];
         v37 = v36;
         v39 = v38;
-        [v33 contentSize];
+        [scrollView contentSize];
         v41 = v40;
         v43 = v42;
-        if (v35)
+        if (be_requestedContentOffset)
         {
-          [v35 CGPointValue];
+          [be_requestedContentOffset CGPointValue];
           v45 = v44;
           v47 = v46;
           CGRectMakeWithSize();
@@ -508,16 +508,16 @@ LABEL_12:
 
           else
           {
-            v111 = v21;
+            v111 = pageCopy;
             v48 = _AEBookPluginsPageTurnLog();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
             {
-              v115 = v35;
+              v115 = be_requestedContentOffset;
               *v125 = v45;
               *&v125[1] = v47;
               [NSValue valueWithBytes:v125 objCType:"{CGPoint=dd}"];
-              v118 = v33;
-              v50 = v49 = v34;
+              v118 = scrollView;
+              v50 = v49 = be_estimatedContentSizeValue;
               *v124 = v41;
               *&v124[1] = v43;
               v51 = [NSValue valueWithBytes:v124 objCType:"{CGSize=dd}"];
@@ -527,22 +527,22 @@ LABEL_12:
               v129 = v51;
               _os_log_impl(&dword_0, v48, OS_LOG_TYPE_ERROR, "Requested content offset outside availabe content! offset: %@ contentSize: %@", buf, 0x16u);
 
-              v35 = v115;
-              v34 = v49;
-              v33 = v118;
+              be_requestedContentOffset = v115;
+              be_estimatedContentSizeValue = v49;
+              scrollView = v118;
             }
 
-            v21 = v111;
+            pageCopy = v111;
           }
         }
 
-        if ([v10 isScroll])
+        if ([configurationCopy isScroll])
         {
-          if (v34)
+          if (be_estimatedContentSizeValue)
           {
             v116 = v37;
             v119 = v39;
-            [v34 CGSizeValue];
+            [be_estimatedContentSizeValue CGSizeValue];
             CGRectMakeWithSize();
             v53 = v52;
             v55 = v54;
@@ -594,13 +594,13 @@ LABEL_12:
             }
           }
 
-          if ([v10 layout] == &dword_0 + 2)
+          if ([configurationCopy layout] == &dword_0 + 2)
           {
-            [v10 contentLayoutSize];
+            [configurationCopy contentLayoutSize];
             v79 = v78;
-            [v10 contentInsets];
-            v81 = -(v80 - v79 * v21);
-            [v33 bounds];
+            [configurationCopy contentInsets];
+            v81 = -(v80 - v79 * pageCopy);
+            [scrollView bounds];
             v82 = v43 - CGRectGetHeight(v143);
             if (v81 < v82)
             {
@@ -618,22 +618,22 @@ LABEL_12:
             }
           }
 
-          else if ([v10 layout] == &dword_0 + 3)
+          else if ([configurationCopy layout] == &dword_0 + 3)
           {
-            [(BKWebViewProxy *)self scrollingPageWidthForPaginationMode:a4 configuration:v10];
+            [(BKWebViewProxy *)self scrollingPageWidthForPaginationMode:mode configuration:configurationCopy];
             v84 = v83;
-            [v10 contentInsets];
-            if (a5 == 1)
+            [configurationCopy contentInsets];
+            if (direction == 1)
             {
-              v87 = v41 - v84 * (v21 + 1) + v86;
+              v87 = v41 - v84 * (pageCopy + 1) + v86;
             }
 
             else
             {
-              v87 = -(v85 - v84 * v21);
+              v87 = -(v85 - v84 * pageCopy);
             }
 
-            [v33 bounds];
+            [scrollView bounds];
             v109 = v41 - CGRectGetWidth(v145);
             if (v87 < v109)
             {
@@ -654,16 +654,16 @@ LABEL_12:
 
         else
         {
-          [v10 contentLayoutSize];
+          [configurationCopy contentLayoutSize];
           v70 = v69;
-          [v10 gutterWidth];
+          [configurationCopy gutterWidth];
           v72 = v71;
-          [v10 gutterWidth];
-          if (v21)
+          [configurationCopy gutterWidth];
+          if (pageCopy)
           {
             v74 = v70 + v72;
-            v75 = ((v12 * v74) - v73);
-            v76 = (v21 * v74);
+            v75 = ((pageCount * v74) - v73);
+            v76 = (pageCopy * v74);
             if (v76 > v75)
             {
               v76 = v75;
@@ -675,34 +675,34 @@ LABEL_12:
             v76 = 0.0;
           }
 
-          v77 = v35;
-          if (a5 == 1)
+          v77 = be_requestedContentOffset;
+          if (direction == 1)
           {
-            if ([v10 layout] == &dword_0 + 2)
+            if ([configurationCopy layout] == &dword_0 + 2)
             {
               v76 = -v76;
             }
 
             else
             {
-              v88 = [(BKWebViewProxy *)self loader];
-              v89 = [v88 webView];
-              [v89 bounds];
+              loader5 = [(BKWebViewProxy *)self loader];
+              webView3 = [loader5 webView];
+              [webView3 bounds];
               v90 = CGRectGetWidth(v144);
 
-              [v10 contentLayoutSize];
+              [configurationCopy contentLayoutSize];
               v76 = v90 - (v76 + v91);
             }
           }
 
-          v92 = [(BKWebViewProxy *)self loader];
-          v93 = [v92 webView];
-          v94 = [v93 be_contentView];
+          loader6 = [(BKWebViewProxy *)self loader];
+          webView4 = [loader6 webView];
+          be_contentView = [webView4 be_contentView];
           v39 = 0.0;
-          [v94 convertPoint:v33 toView:{v76, 0.0}];
+          [be_contentView convertPoint:scrollView toView:{v76, 0.0}];
           v37 = v95;
 
-          v35 = v77;
+          be_requestedContentOffset = v77;
         }
 
         v96 = _AEBookPluginsLifeCycleLog();
@@ -711,19 +711,19 @@ LABEL_12:
           *v123 = v37;
           *&v123[1] = v39;
           v97 = [NSValue valueWithBytes:v123 objCType:"{CGPoint=dd}"];
-          v117 = v35;
-          [v33 contentOffset];
+          v117 = be_requestedContentOffset;
+          [scrollView contentOffset];
           v122[0] = v98;
           v122[1] = v99;
           [NSValue valueWithBytes:v122 objCType:"{CGPoint=dd}"];
-          v120 = v33;
-          v101 = v100 = v34;
+          v120 = scrollView;
+          v101 = v100 = be_estimatedContentSizeValue;
           [v120 contentSize];
           v121[0] = v102;
           v121[1] = v103;
           v104 = [NSValue valueWithBytes:v121 objCType:"{CGSize=dd}"];
-          v105 = [(BKWebViewProxy *)self loader];
-          v106 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v105 ordinal]);
+          loader7 = [(BKWebViewProxy *)self loader];
+          v106 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [loader7 ordinal]);
           *buf = 138544642;
           v127 = v97;
           v128 = 2114;
@@ -738,28 +738,28 @@ LABEL_12:
           v137 = v106;
           _os_log_impl(&dword_0, v96, OS_LOG_TYPE_DEFAULT, "BKWVP scrollToPage contentOffset:%{public}@ currentScrollViewOffset:%{public}@ requestedContentOffset:%{public}@ scrollViewContentSize:%{public}@ estimatedContentSize:%{public}@ ordinal:%{public}@", buf, 0x3Eu);
 
-          v35 = v117;
-          v34 = v100;
-          v33 = v120;
+          be_requestedContentOffset = v117;
+          be_estimatedContentSizeValue = v100;
+          scrollView = v120;
         }
 
-        v107 = [(BKWebViewProxy *)self loader];
-        v108 = [v107 webView];
-        [v108 be_setContentOffset:{v37, v39}];
+        loader8 = [(BKWebViewProxy *)self loader];
+        webView5 = [loader8 webView];
+        [webView5 be_setContentOffset:{v37, v39}];
 
         goto LABEL_53;
       }
 
-      v16 = _AEBookPluginsPageTurnLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      webView2 = _AEBookPluginsPageTurnLog();
+      if (os_log_type_enabled(webView2, OS_LOG_TYPE_ERROR))
       {
-        v17 = [NSNumber numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
-        v20 = [NSNumber numberWithInteger:a3];
+        loader3 = [NSNumber numberWithInteger:0x7FFFFFFFFFFFFFFFLL];
+        v20 = [NSNumber numberWithInteger:page];
         *buf = 138543618;
-        v127 = v17;
+        v127 = loader3;
         v128 = 2114;
         v129 = v20;
-        _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Attempt to set invalid offset - totalPages:%{public}@ pageOffset:%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_0, webView2, OS_LOG_TYPE_ERROR, "Attempt to set invalid offset - totalPages:%{public}@ pageOffset:%{public}@", buf, 0x16u);
 
         goto LABEL_12;
       }

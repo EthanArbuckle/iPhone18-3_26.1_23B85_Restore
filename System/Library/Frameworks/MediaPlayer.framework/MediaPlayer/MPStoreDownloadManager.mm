@@ -1,53 +1,53 @@
 @interface MPStoreDownloadManager
 + (id)sharedManager;
-- (BOOL)_isActiveDownload:(id)a3;
-- (BOOL)_onQueue_hasExistingDownloadForStoreDownload:(id)a3;
-- (BOOL)_shouldHideDownload:(id)a3;
+- (BOOL)_isActiveDownload:(id)download;
+- (BOOL)_onQueue_hasExistingDownloadForStoreDownload:(id)download;
+- (BOOL)_shouldHideDownload:(id)download;
 - (BOOL)hasFetchedInitialDownloads;
 - (MPStoreDownloadManager)init;
 - (NSArray)activeDownloads;
 - (NSArray)downloads;
 - (NSArray)userDownloads;
-- (id)_existingDownloadForSSDownload:(id)a3;
+- (id)_existingDownloadForSSDownload:(id)download;
 - (id)_init;
 - (id)_observersForAllDownloads;
-- (id)_observersForDownload:(id)a3;
-- (id)_onQueue_findStoreDownloadWithSSDownload:(id)a3 SSPurchase:(id)a4;
-- (id)activeDownloadForMediaItemPersistentID:(unint64_t)a3;
-- (id)activeDownloadForStoreID:(int64_t)a3;
-- (id)addDownloads:(id)a3;
-- (id)downloadForDownloadPersistentIdentifier:(int64_t)a3;
-- (id)downloadForMediaItem:(id)a3;
-- (id)downloadForMediaItemPersistentID:(unint64_t)a3;
-- (id)downloadForStoreID:(int64_t)a3;
-- (void)_addNonCancelledDownloadsToActiveList:(id)a3;
-- (void)_addPurchaseFinishedHandler:(id)a3 forDownloads:(id)a4;
-- (void)_onQueue_addDownloadToMapTables:(id)a3;
-- (void)_onQueue_removeDownloadFromMapTables:(id)a3;
-- (void)_registerBlockObserver:(id)a3;
-- (void)_sendActiveDownloadsDidChangeToObserversWithAddedDownloads:(id)a3 removedDownloads:(id)a4;
-- (void)_sendDownloadsDidChangeToObserversWithAddedDownloads:(id)a3 removedDownloads:(id)a4;
-- (void)_sendDownloadsDidFinishPurchasesToObserversForDownloads:(id)a3;
-- (void)_sendDownloadsDidFinishToObserversForDownloads:(id)a3 notifyDownloadManager:(BOOL)a4 completionHandler:(id)a5;
-- (void)_sendDownloadsDidProgressToObserversForDownloads:(id)a3;
-- (void)_unregisterBlockObserver:(id)a3;
-- (void)_updateActiveDownloadsWithCancelledDownloads:(id)a3;
-- (void)_updateActiveDownloadsWithChangedActiveDownloads:(id)a3 inactiveDownloads:(id)a4;
-- (void)_updateDownloadsWithAdditions:(id)a3 removals:(id)a4;
-- (void)_updateMediaItemPropertiesForFinishedStoreDownload:(id)a3 SSDownload:(id)a4;
-- (void)addFinishHandler:(id)a3 forDownloads:(id)a4;
-- (void)addObserver:(id)a3 forDownloads:(id)a4;
-- (void)cancelDownloads:(id)a3;
+- (id)_observersForDownload:(id)download;
+- (id)_onQueue_findStoreDownloadWithSSDownload:(id)download SSPurchase:(id)purchase;
+- (id)activeDownloadForMediaItemPersistentID:(unint64_t)d;
+- (id)activeDownloadForStoreID:(int64_t)d;
+- (id)addDownloads:(id)downloads;
+- (id)downloadForDownloadPersistentIdentifier:(int64_t)identifier;
+- (id)downloadForMediaItem:(id)item;
+- (id)downloadForMediaItemPersistentID:(unint64_t)d;
+- (id)downloadForStoreID:(int64_t)d;
+- (void)_addNonCancelledDownloadsToActiveList:(id)list;
+- (void)_addPurchaseFinishedHandler:(id)handler forDownloads:(id)downloads;
+- (void)_onQueue_addDownloadToMapTables:(id)tables;
+- (void)_onQueue_removeDownloadFromMapTables:(id)tables;
+- (void)_registerBlockObserver:(id)observer;
+- (void)_sendActiveDownloadsDidChangeToObserversWithAddedDownloads:(id)downloads removedDownloads:(id)removedDownloads;
+- (void)_sendDownloadsDidChangeToObserversWithAddedDownloads:(id)downloads removedDownloads:(id)removedDownloads;
+- (void)_sendDownloadsDidFinishPurchasesToObserversForDownloads:(id)downloads;
+- (void)_sendDownloadsDidFinishToObserversForDownloads:(id)downloads notifyDownloadManager:(BOOL)manager completionHandler:(id)handler;
+- (void)_sendDownloadsDidProgressToObserversForDownloads:(id)downloads;
+- (void)_unregisterBlockObserver:(id)observer;
+- (void)_updateActiveDownloadsWithCancelledDownloads:(id)downloads;
+- (void)_updateActiveDownloadsWithChangedActiveDownloads:(id)downloads inactiveDownloads:(id)inactiveDownloads;
+- (void)_updateDownloadsWithAdditions:(id)additions removals:(id)removals;
+- (void)_updateMediaItemPropertiesForFinishedStoreDownload:(id)download SSDownload:(id)sDownload;
+- (void)addFinishHandler:(id)handler forDownloads:(id)downloads;
+- (void)addObserver:(id)observer forDownloads:(id)downloads;
+- (void)cancelDownloads:(id)downloads;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadManagerNetworkUsageDidChange:(id)a3;
-- (void)pauseDownloads:(id)a3;
-- (void)prioritizeDownloads:(id)a3;
-- (void)purchaseManager:(id)a3 didFinishPurchasesWithResponses:(id)a4;
-- (void)removeObserver:(id)a3 forDownloads:(id)a4;
-- (void)requestPermissionToDownloadWithType:(int64_t)a3 completionHandler:(id)a4;
-- (void)restartDownloads:(id)a3;
-- (void)resumeDownloads:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)downloadManagerNetworkUsageDidChange:(id)change;
+- (void)pauseDownloads:(id)downloads;
+- (void)prioritizeDownloads:(id)downloads;
+- (void)purchaseManager:(id)manager didFinishPurchasesWithResponses:(id)responses;
+- (void)removeObserver:(id)observer forDownloads:(id)downloads;
+- (void)requestPermissionToDownloadWithType:(int64_t)type completionHandler:(id)handler;
+- (void)restartDownloads:(id)downloads;
+- (void)resumeDownloads:(id)downloads;
 @end
 
 @implementation MPStoreDownloadManager
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __39__MPStoreDownloadManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_297 != -1)
   {
     dispatch_once(&sharedManager_onceToken_297, block);
@@ -142,10 +142,10 @@ void __39__MPStoreDownloadManager_sharedManager__block_invoke()
   v18 = v17;
   _Block_object_dispose(&v156, 8);
   v144 = objc_alloc_init(v17);
-  v19 = [MEMORY[0x1E696AAE8] mainBundle];
-  v142 = [v19 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v142 isEqualToString:@"com.apple.Music"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.Music"])
   {
     v156 = 0;
     v157 = &v156;
@@ -202,12 +202,12 @@ void __39__MPStoreDownloadManager_sharedManager__block_invoke()
         v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v166 count:4];
         [v144 setDownloadKinds:v30];
 
-        v31 = getSSDownloadKindMovie();
-        v164[0] = v31;
-        v165[0] = v142;
+        iPodDownloadKinds = getSSDownloadKindMovie();
+        v164[0] = iPodDownloadKinds;
+        v165[0] = bundleIdentifier;
         v32 = getSSDownloadKindTelevisionEpisode();
         v164[1] = v32;
-        v165[1] = v142;
+        v165[1] = bundleIdentifier;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v165 forKeys:v164 count:2];
         downloadKindToRequiredClientBundleIdentifiers = v2->_downloadKindToRequiredClientBundleIdentifiers;
         v2->_downloadKindToRequiredClientBundleIdentifiers = v33;
@@ -215,24 +215,24 @@ void __39__MPStoreDownloadManager_sharedManager__block_invoke()
         goto LABEL_13;
       }
 
-      v135 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v136 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadKindMusicVideo(void)"];
-      [v135 handleFailureInFunction:v136 file:@"MPStoreDownloadManager.m" lineNumber:46 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v136 file:@"MPStoreDownloadManager.m" lineNumber:46 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v133 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v134 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadKindMusic(void)"];
-      [v133 handleFailureInFunction:v134 file:@"MPStoreDownloadManager.m" lineNumber:45 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v134 file:@"MPStoreDownloadManager.m" lineNumber:45 description:{@"%s", dlerror()}];
     }
 
 LABEL_71:
     __break(1u);
   }
 
-  v31 = [getSSDownloadManagerClass() IPodDownloadKinds];
-  [v144 setDownloadKinds:v31];
+  iPodDownloadKinds = [getSSDownloadManagerClass() IPodDownloadKinds];
+  [v144 setDownloadKinds:iPodDownloadKinds];
 LABEL_13:
 
   [v144 setPersistenceIdentifier:@"com.apple.MediaPlayer.MPStoreDownloadManager"];
@@ -258,9 +258,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v35)
   {
-    v107 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v108 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadExternalPropertyBytesDownloaded(void)"];
-    [v107 handleFailureInFunction:v108 file:@"MPStoreDownloadManager.m" lineNumber:62 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v108 file:@"MPStoreDownloadManager.m" lineNumber:62 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -289,9 +289,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v39)
   {
-    v109 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v110 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadExternalPropertyPercentComplete(void)"];
-    [v109 handleFailureInFunction:v110 file:@"MPStoreDownloadManager.m" lineNumber:63 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v110 file:@"MPStoreDownloadManager.m" lineNumber:63 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -320,9 +320,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v43)
   {
-    v111 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v112 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadExternalPropertyPolicySizeLimit(void)"];
-    [v111 handleFailureInFunction:v112 file:@"MPStoreDownloadManager.m" lineNumber:64 description:{@"%s", dlerror()}];
+    [currentHandler5 handleFailureInFunction:v112 file:@"MPStoreDownloadManager.m" lineNumber:64 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -351,9 +351,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v47)
   {
-    v113 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v114 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadExternalPropertyRentalInformation(void)"];
-    [v113 handleFailureInFunction:v114 file:@"MPStoreDownloadManager.m" lineNumber:65 description:{@"%s", dlerror()}];
+    [currentHandler6 handleFailureInFunction:v114 file:@"MPStoreDownloadManager.m" lineNumber:65 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -388,9 +388,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v54)
   {
-    v115 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v116 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyDownloadPhase(void)"];
-    [v115 handleFailureInFunction:v116 file:@"MPStoreDownloadManager.m" lineNumber:50 description:{@"%s", dlerror()}];
+    [currentHandler7 handleFailureInFunction:v116 file:@"MPStoreDownloadManager.m" lineNumber:50 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -419,9 +419,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v57)
   {
-    v117 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
     v118 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyEncodedErrorData(void)"];
-    [v117 handleFailureInFunction:v118 file:@"MPStoreDownloadManager.m" lineNumber:51 description:{@"%s", dlerror()}];
+    [currentHandler8 handleFailureInFunction:v118 file:@"MPStoreDownloadManager.m" lineNumber:51 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -450,9 +450,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v60)
   {
-    v119 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
     v120 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyIsRestore(void)"];
-    [v119 handleFailureInFunction:v120 file:@"MPStoreDownloadManager.m" lineNumber:52 description:{@"%s", dlerror()}];
+    [currentHandler9 handleFailureInFunction:v120 file:@"MPStoreDownloadManager.m" lineNumber:52 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -485,9 +485,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v63)
   {
-    v121 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
     v122 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyPreferredAssetFlavor(void)"];
-    [v121 handleFailureInFunction:v122 file:@"MPStoreDownloadManager.m" lineNumber:55 description:{@"%s", dlerror()}];
+    [currentHandler10 handleFailureInFunction:v122 file:@"MPStoreDownloadManager.m" lineNumber:55 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -516,9 +516,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v67)
   {
-    v123 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
     v124 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyReason(void)"];
-    [v123 handleFailureInFunction:v124 file:@"MPStoreDownloadManager.m" lineNumber:56 description:{@"%s", dlerror()}];
+    [currentHandler11 handleFailureInFunction:v124 file:@"MPStoreDownloadManager.m" lineNumber:56 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -549,9 +549,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v72)
   {
-    v125 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
     v126 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyThumbnailImageURL(void)"];
-    [v125 handleFailureInFunction:v126 file:@"MPStoreDownloadManager.m" lineNumber:58 description:{@"%s", dlerror()}];
+    [currentHandler12 handleFailureInFunction:v126 file:@"MPStoreDownloadManager.m" lineNumber:58 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -580,9 +580,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v76)
   {
-    v127 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
     v128 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyTitle(void)"];
-    [v127 handleFailureInFunction:v128 file:@"MPStoreDownloadManager.m" lineNumber:59 description:{@"%s", dlerror()}];
+    [currentHandler13 handleFailureInFunction:v128 file:@"MPStoreDownloadManager.m" lineNumber:59 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -611,9 +611,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v80)
   {
-    v129 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler14 = [MEMORY[0x1E696AAA8] currentHandler];
     v130 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyHandlerID(void)"];
-    [v129 handleFailureInFunction:v130 file:@"MPStoreDownloadManager.m" lineNumber:60 description:{@"%s", dlerror()}];
+    [currentHandler14 handleFailureInFunction:v130 file:@"MPStoreDownloadManager.m" lineNumber:60 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -642,9 +642,9 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   if (!v84)
   {
-    v131 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler15 = [MEMORY[0x1E696AAA8] currentHandler];
     v132 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPropertyCollectionName(void)"];
-    [v131 handleFailureInFunction:v132 file:@"MPStoreDownloadManager.m" lineNumber:61 description:{@"%s", dlerror()}];
+    [currentHandler15 handleFailureInFunction:v132 file:@"MPStoreDownloadManager.m" lineNumber:61 description:{@"%s", dlerror()}];
 
     goto LABEL_71;
   }
@@ -689,12 +689,12 @@ LABEL_13:
   _Block_object_dispose(&v156, 8);
   v96 = [v94 alloc];
   v97 = MEMORY[0x1E696AEC0];
-  v98 = [MEMORY[0x1E696AAE8] mainBundle];
-  v99 = [v98 bundleIdentifier];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
   v100 = objc_opt_class();
   v101 = NSStringFromClass(v100);
-  v102 = [v97 stringWithFormat:@"%@.%@", v99, v101];
-  v103 = [v96 initWithManagerIdentifier:v102];
+  v101 = [v97 stringWithFormat:@"%@.%@", bundleIdentifier2, v101];
+  v103 = [v96 initWithManagerIdentifier:v101];
   v104 = v93[15];
   v93[15] = v103;
 
@@ -835,26 +835,26 @@ void __31__MPStoreDownloadManager__init__block_invoke_4(uint64_t a1, void *a2, u
   }
 }
 
-- (BOOL)_isActiveDownload:(id)a3
+- (BOOL)_isActiveDownload:(id)download
 {
-  v3 = [a3 phaseIdentifier];
-  v4 = v3;
-  v5 = v3 && (([v3 isEqualToString:@"MPStoreDownloadPhaseDownloading"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MPStoreDownloadPhaseProcessing") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"MPStoreDownloadPhaseInstalling"));
+  phaseIdentifier = [download phaseIdentifier];
+  v4 = phaseIdentifier;
+  v5 = phaseIdentifier && (([phaseIdentifier isEqualToString:@"MPStoreDownloadPhaseDownloading"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"MPStoreDownloadPhaseProcessing") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"MPStoreDownloadPhaseInstalling"));
 
   return v5;
 }
 
-- (void)_updateActiveDownloadsWithCancelledDownloads:(id)a3
+- (void)_updateActiveDownloadsWithCancelledDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__MPStoreDownloadManager__updateActiveDownloadsWithCancelledDownloads___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = downloadsCopy;
+  v6 = downloadsCopy;
   dispatch_barrier_sync(accessQueue, v7);
 }
 
@@ -871,17 +871,17 @@ void __71__MPStoreDownloadManager__updateActiveDownloadsWithCancelledDownloads__
   *(v3 + 16) = v2;
 }
 
-- (void)_addNonCancelledDownloadsToActiveList:(id)a3
+- (void)_addNonCancelledDownloadsToActiveList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__MPStoreDownloadManager__addNonCancelledDownloadsToActiveList___block_invoke;
   v7[3] = &unk_1E76823C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = listCopy;
+  selfCopy = self;
+  v6 = listCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -996,27 +996,27 @@ void __64__MPStoreDownloadManager__addNonCancelledDownloadsToActiveList___block_
   *(v25 + 16) = v5;
 }
 
-- (void)_updateMediaItemPropertiesForFinishedStoreDownload:(id)a3 SSDownload:(id)a4
+- (void)_updateMediaItemPropertiesForFinishedStoreDownload:(id)download SSDownload:(id)sDownload
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  downloadCopy = download;
+  sDownloadCopy = sDownload;
+  v7 = sDownloadCopy;
+  if (downloadCopy)
   {
-    if (![v5 isFinished])
+    if (![downloadCopy isFinished])
     {
       goto LABEL_15;
     }
 
-    v8 = [v5 failureError];
+    failureError = [downloadCopy failureError];
 
-    if (v8)
+    if (failureError)
     {
       goto LABEL_15;
     }
 
-    v9 = [v5 libraryItemIdentifier];
-    if (!v9)
+    libraryItemIdentifier = [downloadCopy libraryItemIdentifier];
+    if (!libraryItemIdentifier)
     {
       goto LABEL_15;
     }
@@ -1024,14 +1024,14 @@ void __64__MPStoreDownloadManager__addNonCancelledDownloadsToActiveList___block_
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!sDownloadCopy)
   {
 LABEL_15:
 
     return;
   }
 
-  v10 = [v6 downloadPhaseIdentifier];
+  downloadPhaseIdentifier = [sDownloadCopy downloadPhaseIdentifier];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1048,51 +1048,51 @@ LABEL_15:
   _Block_object_dispose(&v19, 8);
   if (v11)
   {
-    if ([v10 isEqualToString:*v11] && (objc_msgSend(v7, "failureError"), v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+    if ([downloadPhaseIdentifier isEqualToString:*v11] && (objc_msgSend(v7, "failureError"), v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
     {
       v15 = getSSDownloadPropertyLibraryItemIdentifier_186();
       v16 = [v7 valueForProperty:v15];
-      v9 = [v16 longLongValue];
+      libraryItemIdentifier = [v16 longLongValue];
     }
 
     else
     {
-      v9 = 0;
+      libraryItemIdentifier = 0;
     }
 
-    if (!v9)
+    if (!libraryItemIdentifier)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
-    v14 = [[MPMediaItem alloc] initWithPersistentID:v9];
+    v14 = [[MPMediaItem alloc] initWithPersistentID:libraryItemIdentifier];
     [(MPMediaEntity *)v14 invalidateCachedProperties];
 
     goto LABEL_15;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSSDownloadPhaseFinished(void)"];
-  [v17 handleFailureInFunction:v18 file:@"MPStoreDownloadManager.m" lineNumber:67 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v18 file:@"MPStoreDownloadManager.m" lineNumber:67 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)_updateDownloadsWithAdditions:(id)a3 removals:(id)a4
+- (void)_updateDownloadsWithAdditions:(id)additions removals:(id)removals
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  additionsCopy = additions;
+  removalsCopy = removals;
+  if ([additionsCopy count] || objc_msgSend(removalsCopy, "count"))
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__MPStoreDownloadManager__updateDownloadsWithAdditions_removals___block_invoke;
     block[3] = &unk_1E76800A0;
-    v10 = v6;
-    v11 = v7;
-    v12 = self;
+    v10 = additionsCopy;
+    v11 = removalsCopy;
+    selfCopy = self;
     dispatch_barrier_async(accessQueue, block);
   }
 }
@@ -1309,20 +1309,20 @@ uint64_t __65__MPStoreDownloadManager__updateDownloadsWithAdditions_removals___b
   return [v2 _sendDownloadsDidChangeToObserversWithAddedDownloads:v3 removedDownloads:v4];
 }
 
-- (void)_updateActiveDownloadsWithChangedActiveDownloads:(id)a3 inactiveDownloads:(id)a4
+- (void)_updateActiveDownloadsWithChangedActiveDownloads:(id)downloads inactiveDownloads:(id)inactiveDownloads
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  downloadsCopy = downloads;
+  inactiveDownloadsCopy = inactiveDownloads;
+  if ([downloadsCopy count] || objc_msgSend(inactiveDownloadsCopy, "count"))
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __93__MPStoreDownloadManager__updateActiveDownloadsWithChangedActiveDownloads_inactiveDownloads___block_invoke;
     block[3] = &unk_1E76800A0;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = downloadsCopy;
+    selfCopy = self;
+    v12 = inactiveDownloadsCopy;
     dispatch_barrier_async(accessQueue, block);
   }
 }
@@ -1358,11 +1358,11 @@ void __93__MPStoreDownloadManager__updateActiveDownloadsWithChangedActiveDownloa
   dispatch_async(v10, block);
 }
 
-- (void)_unregisterBlockObserver:(id)a3
+- (void)_unregisterBlockObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1370,7 +1370,7 @@ void __93__MPStoreDownloadManager__updateActiveDownloadsWithChangedActiveDownloa
     v7[2] = __51__MPStoreDownloadManager__unregisterBlockObserver___block_invoke;
     v7[3] = &unk_1E76823C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_barrier_async(accessQueue, v7);
   }
 }
@@ -1386,13 +1386,13 @@ void __51__MPStoreDownloadManager__unregisterBlockObserver___block_invoke(uint64
   }
 }
 
-- (BOOL)_shouldHideDownload:(id)a3
+- (BOOL)_shouldHideDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   if (self->_downloadKindToRequiredClientBundleIdentifiers)
   {
     v5 = getSSDownloadPropertyKind();
-    v6 = [v4 valueForProperty:v5];
+    v6 = [downloadCopy valueForProperty:v5];
 
     v7 = [(NSDictionary *)self->_downloadKindToRequiredClientBundleIdentifiers objectForKey:v6];
     if (v7)
@@ -1400,7 +1400,7 @@ void __51__MPStoreDownloadManager__unregisterBlockObserver___block_invoke(uint64
       if (_NSIsNSString())
       {
         v8 = getSSDownloadPropertyClientBundleIdentifier();
-        v9 = [v4 valueForProperty:v8];
+        v9 = [downloadCopy valueForProperty:v8];
 
         if (v9)
         {
@@ -1418,7 +1418,7 @@ LABEL_13:
       if (_NSIsNSArray())
       {
         v12 = getSSDownloadPropertyClientBundleIdentifier();
-        v9 = [v4 valueForProperty:v12];
+        v9 = [downloadCopy valueForProperty:v12];
 
         if (v9)
         {
@@ -1444,16 +1444,16 @@ LABEL_15:
   return v11;
 }
 
-- (void)_sendDownloadsDidProgressToObserversForDownloads:(id)a3
+- (void)_sendDownloadsDidProgressToObserversForDownloads:(id)downloads
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPStoreDownloadManager *)self _observersForAllDownloads];
+  downloadsCopy = downloads;
+  _observersForAllDownloads = [(MPStoreDownloadManager *)self _observersForAllDownloads];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  v6 = [_observersForAllDownloads countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1464,28 +1464,28 @@ LABEL_15:
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_observersForAllDownloads);
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v10 downloadManager:self downloadsDidProgress:v4];
+          [v10 downloadManager:self downloadsDidProgress:downloadsCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v7 = [_observersForAllDownloads countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v7);
   }
 
-  v19 = v5;
+  v19 = _observersForAllDownloads;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = downloadsCopy;
   v22 = [obj countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v22)
   {
@@ -1540,18 +1540,18 @@ LABEL_15:
   }
 }
 
-- (void)_sendDownloadsDidFinishToObserversForDownloads:(id)a3 notifyDownloadManager:(BOOL)a4 completionHandler:(id)a5
+- (void)_sendDownloadsDidFinishToObserversForDownloads:(id)downloads notifyDownloadManager:(BOOL)manager completionHandler:(id)handler
 {
-  v23 = a4;
+  managerCopy = manager;
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v24 = a5;
+  downloadsCopy = downloads;
+  handlerCopy = handler;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
-  v27 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  obj = downloadsCopy;
+  v27 = [downloadsCopy countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v27)
   {
     v26 = *v37;
@@ -1598,21 +1598,21 @@ LABEL_15:
         }
       }
 
-      v7 = obj;
+      downloadsCopy = obj;
       v27 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v27);
   }
 
-  if (v23)
+  if (managerCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = v7;
+    v17 = downloadsCopy;
     v18 = [v17 countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v18)
     {
@@ -1627,10 +1627,10 @@ LABEL_15:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v28 + 1) + 8 * k) _SSDownload];
-          if (v22)
+          _SSDownload = [*(*(&v28 + 1) + 8 * k) _SSDownload];
+          if (_SSDownload)
           {
-            [v16 addObject:v22];
+            [v16 addObject:_SSDownload];
           }
         }
 
@@ -1645,23 +1645,23 @@ LABEL_15:
       [(SSDownloadManager *)self->_downloadManager finishDownloads:v16];
     }
 
-    v7 = obj;
+    downloadsCopy = obj;
   }
 
-  if (v24)
+  if (handlerCopy)
   {
-    v24[2](v24, v7);
+    handlerCopy[2](handlerCopy, downloadsCopy);
   }
 }
 
-- (void)_sendDownloadsDidFinishPurchasesToObserversForDownloads:(id)a3
+- (void)_sendDownloadsDidFinishPurchasesToObserversForDownloads:(id)downloads
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = downloads;
   v14 = [obj countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v14)
   {
@@ -1716,17 +1716,17 @@ LABEL_15:
   }
 }
 
-- (void)_sendDownloadsDidChangeToObserversWithAddedDownloads:(id)a3 removedDownloads:(id)a4
+- (void)_sendDownloadsDidChangeToObserversWithAddedDownloads:(id)downloads removedDownloads:(id)removedDownloads
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPStoreDownloadManager *)self _observersForAllDownloads];
+  downloadsCopy = downloads;
+  removedDownloadsCopy = removedDownloads;
+  _observersForAllDownloads = [(MPStoreDownloadManager *)self _observersForAllDownloads];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [_observersForAllDownloads countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1738,37 +1738,37 @@ LABEL_15:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_observersForAllDownloads);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 downloadManager:self didAddDownloads:v6 removeDownloads:v7];
+          [v13 downloadManager:self didAddDownloads:downloadsCopy removeDownloads:removedDownloadsCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [_observersForAllDownloads countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_sendActiveDownloadsDidChangeToObserversWithAddedDownloads:(id)a3 removedDownloads:(id)a4
+- (void)_sendActiveDownloadsDidChangeToObserversWithAddedDownloads:(id)downloads removedDownloads:(id)removedDownloads
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPStoreDownloadManager *)self _observersForAllDownloads];
+  downloadsCopy = downloads;
+  removedDownloadsCopy = removedDownloads;
+  _observersForAllDownloads = [(MPStoreDownloadManager *)self _observersForAllDownloads];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [_observersForAllDownloads countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1780,31 +1780,31 @@ LABEL_15:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_observersForAllDownloads);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 downloadManager:self didAddActiveDownloads:v6 removeActiveDownloads:v7];
+          [v13 downloadManager:self didAddActiveDownloads:downloadsCopy removeActiveDownloads:removedDownloadsCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [_observersForAllDownloads countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_registerBlockObserver:(id)a3
+- (void)_registerBlockObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1812,7 +1812,7 @@ LABEL_15:
     v7[2] = __49__MPStoreDownloadManager__registerBlockObserver___block_invoke;
     v7[3] = &unk_1E76823C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_barrier_async(accessQueue, v7);
   }
 }
@@ -1835,50 +1835,50 @@ uint64_t __49__MPStoreDownloadManager__registerBlockObserver___block_invoke(uint
   return [v2 addObject:v6];
 }
 
-- (void)_onQueue_removeDownloadFromMapTables:(id)a3
+- (void)_onQueue_removeDownloadFromMapTables:(id)tables
 {
-  v4 = a3;
-  key = [v4 storeItemIdentifier];
+  tablesCopy = tables;
+  key = [tablesCopy storeItemIdentifier];
   if (key)
   {
     NSMapRemove(self->_storeIdentifiersToDownloads, &key);
   }
 
-  v6 = [v4 libraryItemIdentifier];
-  if (v6)
+  libraryItemIdentifier = [tablesCopy libraryItemIdentifier];
+  if (libraryItemIdentifier)
   {
-    NSMapRemove(self->_libraryIdentifiersToDownloads, &v6);
+    NSMapRemove(self->_libraryIdentifiersToDownloads, &libraryItemIdentifier);
   }
 
-  v5 = [v4 downloadIdentifier];
-  if (v5)
+  downloadIdentifier = [tablesCopy downloadIdentifier];
+  if (downloadIdentifier)
   {
-    NSMapRemove(self->_downloadIdentifiersToDownloads, &v5);
+    NSMapRemove(self->_downloadIdentifiersToDownloads, &downloadIdentifier);
   }
 }
 
-- (BOOL)_onQueue_hasExistingDownloadForStoreDownload:(id)a3
+- (BOOL)_onQueue_hasExistingDownloadForStoreDownload:(id)download
 {
-  if (!a3)
+  if (!download)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [v4 _SSDownload];
-  v6 = [v4 _SSPurchase];
+  downloadCopy = download;
+  _SSDownload = [downloadCopy _SSDownload];
+  _SSPurchase = [downloadCopy _SSPurchase];
 
-  v7 = [(MPStoreDownloadManager *)self _onQueue_findStoreDownloadWithSSDownload:v5 SSPurchase:v6];
+  v7 = [(MPStoreDownloadManager *)self _onQueue_findStoreDownloadWithSSDownload:_SSDownload SSPurchase:_SSPurchase];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (id)_onQueue_findStoreDownloadWithSSDownload:(id)a3 SSPurchase:(id)a4
+- (id)_onQueue_findStoreDownloadWithSSDownload:(id)download SSPurchase:(id)purchase
 {
-  v6 = a3;
-  v7 = a4;
-  key = [v6 persistentIdentifier];
+  downloadCopy = download;
+  purchaseCopy = purchase;
+  key = [downloadCopy persistentIdentifier];
   if (key)
   {
     v8 = NSMapGet(self->_downloadIdentifiersToDownloads, &key);
@@ -1889,12 +1889,12 @@ uint64_t __49__MPStoreDownloadManager__registerBlockObserver___block_invoke(uint
   }
 
   v9 = getSSDownloadPropertyStoreItemIdentifier_215();
-  v10 = [v6 valueForProperty:v9];
-  v21 = [v10 longLongValue];
+  v10 = [downloadCopy valueForProperty:v9];
+  longLongValue = [v10 longLongValue];
 
-  if (v21 || (getSSDownloadPropertyStoreItemIdentifier_215(), v11 = objc_claimAutoreleasedReturnValue(), [v7 valueForDownloadProperty:{v11, 0, key}], v12 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v12, "longLongValue"), v12, v11, v21))
+  if (longLongValue || (getSSDownloadPropertyStoreItemIdentifier_215(), v11 = objc_claimAutoreleasedReturnValue(), [purchaseCopy valueForDownloadProperty:{v11, 0, key}], v12 = objc_claimAutoreleasedReturnValue(), longLongValue = objc_msgSend(v12, "longLongValue"), v12, v11, longLongValue))
   {
-    v8 = NSMapGet(self->_storeIdentifiersToDownloads, &v21);
+    v8 = NSMapGet(self->_storeIdentifiersToDownloads, &longLongValue);
     if (v8)
     {
       goto LABEL_9;
@@ -1902,13 +1902,13 @@ uint64_t __49__MPStoreDownloadManager__registerBlockObserver___block_invoke(uint
   }
 
   v13 = getSSDownloadPropertyLibraryItemIdentifier_186();
-  v14 = [v6 valueForProperty:v13];
-  v15 = [v14 longLongValue];
-  v21 = v15;
+  v14 = [downloadCopy valueForProperty:v13];
+  longLongValue2 = [v14 longLongValue];
+  longLongValue = longLongValue2;
 
-  if (v15 || (getSSDownloadPropertyLibraryItemIdentifier_186(), v16 = objc_claimAutoreleasedReturnValue(), [v7 valueForDownloadProperty:v16], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "longLongValue"), v21 = v18, v17, v16, v18))
+  if (longLongValue2 || (getSSDownloadPropertyLibraryItemIdentifier_186(), v16 = objc_claimAutoreleasedReturnValue(), [purchaseCopy valueForDownloadProperty:v16], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "longLongValue"), longLongValue = v18, v17, v16, v18))
   {
-    v8 = NSMapGet(self->_libraryIdentifiersToDownloads, &v21);
+    v8 = NSMapGet(self->_libraryIdentifiersToDownloads, &longLongValue);
 LABEL_9:
     v19 = v8;
     goto LABEL_10;
@@ -1920,33 +1920,33 @@ LABEL_10:
   return v19;
 }
 
-- (void)_onQueue_addDownloadToMapTables:(id)a3
+- (void)_onQueue_addDownloadToMapTables:(id)tables
 {
-  v4 = a3;
-  key = [v4 storeItemIdentifier];
+  tablesCopy = tables;
+  key = [tablesCopy storeItemIdentifier];
   if (key)
   {
-    NSMapInsert(self->_storeIdentifiersToDownloads, &key, v4);
+    NSMapInsert(self->_storeIdentifiersToDownloads, &key, tablesCopy);
   }
 
-  v6 = [v4 libraryItemIdentifier];
-  if (v6)
+  libraryItemIdentifier = [tablesCopy libraryItemIdentifier];
+  if (libraryItemIdentifier)
   {
-    NSMapInsert(self->_libraryIdentifiersToDownloads, &v6, v4);
+    NSMapInsert(self->_libraryIdentifiersToDownloads, &libraryItemIdentifier, tablesCopy);
   }
 
-  v5 = [v4 downloadIdentifier];
-  if (v5)
+  downloadIdentifier = [tablesCopy downloadIdentifier];
+  if (downloadIdentifier)
   {
-    NSMapInsert(self->_downloadIdentifiersToDownloads, &v5, v4);
+    NSMapInsert(self->_downloadIdentifiersToDownloads, &downloadIdentifier, tablesCopy);
   }
 }
 
-- (id)_observersForDownload:(id)a3
+- (id)_observersForDownload:(id)download
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  downloadCopy = download;
+  v5 = downloadCopy;
+  if (downloadCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -1961,7 +1961,7 @@ LABEL_10:
     block[3] = &unk_1E7681330;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = downloadCopy;
     dispatch_sync(accessQueue, block);
     v7 = v13[5];
 
@@ -2068,11 +2068,11 @@ void __51__MPStoreDownloadManager__observersForAllDownloads__block_invoke(uint64
   }
 }
 
-- (id)_existingDownloadForSSDownload:(id)a3
+- (id)_existingDownloadForSSDownload:(id)download
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  downloadCopy = download;
+  v5 = downloadCopy;
+  if (downloadCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -2087,7 +2087,7 @@ void __51__MPStoreDownloadManager__observersForAllDownloads__block_invoke(uint64
     block[3] = &unk_1E7681330;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = downloadCopy;
     dispatch_sync(accessQueue, block);
     v7 = v13[5];
 
@@ -2110,22 +2110,22 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (void)_addPurchaseFinishedHandler:(id)a3 forDownloads:(id)a4
+- (void)_addPurchaseFinishedHandler:(id)handler forDownloads:(id)downloads
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 count])
+  handlerCopy = handler;
+  downloadsCopy = downloads;
+  if (![downloadsCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MPStoreDownloadManager.m" lineNumber:948 description:@"Downloads must not be empty."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPStoreDownloadManager.m" lineNumber:948 description:@"Downloads must not be empty."];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v8;
+  v9 = downloadsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -2141,20 +2141,20 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 _SSPurchaseResponse];
+        _SSPurchaseResponse = [v14 _SSPurchaseResponse];
 
-        if (v15)
+        if (_SSPurchaseResponse)
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7, v14);
+            handlerCopy[2](handlerCopy, v14);
           }
         }
 
         else
         {
           v16 = [[_MPStoreDownloadBlockObserver alloc] initWithDownload:v14];
-          [(_MPStoreDownloadBlockObserver *)v16 setDidFinishPurchaseHandler:v7];
+          [(_MPStoreDownloadBlockObserver *)v16 setDidFinishPurchaseHandler:handlerCopy];
           [(MPStoreDownloadManager *)self _registerBlockObserver:v16];
         }
       }
@@ -2166,15 +2166,15 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
   }
 }
 
-- (void)downloadManagerNetworkUsageDidChange:(id)a3
+- (void)downloadManagerNetworkUsageDidChange:(id)change
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(MPStoreDownloadManager *)self _observersForAllDownloads];
+  _observersForAllDownloads = [(MPStoreDownloadManager *)self _observersForAllDownloads];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [_observersForAllDownloads countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2186,7 +2186,7 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_observersForAllDownloads);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -2199,27 +2199,27 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [_observersForAllDownloads countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  changeCopy = change;
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v34 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v34 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(changeCopy, "count")}];
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = v5;
+  v6 = changeCopy;
   v7 = [v6 countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v7)
   {
@@ -2281,10 +2281,10 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
             _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_DEFAULT, "Download did change: %{public}@. Download: %{public}@", buf, 0x16u);
           }
 
-          v19 = [(MPStoreDownload *)v16 _isCanceled];
-          v20 = [v12 downloadPhaseIdentifier];
-          v21 = v20;
-          if (v19)
+          _isCanceled = [(MPStoreDownload *)v16 _isCanceled];
+          downloadPhaseIdentifier = [v12 downloadPhaseIdentifier];
+          v21 = downloadPhaseIdentifier;
+          if (_isCanceled)
           {
             v22 = 0;
             if (!v16)
@@ -2298,7 +2298,7 @@ void __57__MPStoreDownloadManager__existingDownloadForSSDownload___block_invoke(
           v23 = v9;
           v24 = v10;
           v25 = v6;
-          soft_SSDownloadPhaseIsFinishedPhase(v20);
+          soft_SSDownloadPhaseIsFinishedPhase(downloadPhaseIdentifier);
           if ((v26 & 1) != 0 || (getSSDownloadPhaseFailed(), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v21 isEqual:v27], v27, v28))
           {
             [v35 addObject:v16];
@@ -2416,18 +2416,18 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
   [v2 _sendDownloadsDidFinishToObserversForDownloads:v4 notifyDownloadManager:1 completionHandler:v3];
 }
 
-- (void)purchaseManager:(id)a3 didFinishPurchasesWithResponses:(id)a4
+- (void)purchaseManager:(id)manager didFinishPurchasesWithResponses:(id)responses
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v20 = self;
-  v23 = [(MPStoreDownloadManager *)self downloads];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  responsesCopy = responses;
+  selfCopy = self;
+  downloads = [(MPStoreDownloadManager *)self downloads];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(responsesCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = responsesCopy;
   v24 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v24)
   {
@@ -2444,12 +2444,12 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
 
         v25 = v7;
         v8 = *(*(&v32 + 1) + 8 * v7);
-        v9 = [v8 purchase];
+        purchase = [v8 purchase];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v10 = v23;
+        v10 = downloads;
         v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v11)
         {
@@ -2465,8 +2465,8 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
               }
 
               v15 = *(*(&v28 + 1) + 8 * i);
-              v16 = [v15 _SSPurchase];
-              v17 = [v16 isEqual:v9];
+              _SSPurchase = [v15 _SSPurchase];
+              v17 = [_SSPurchase isEqual:purchase];
 
               if (v17)
               {
@@ -2494,32 +2494,32 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
     while (v24);
   }
 
-  calloutSerialQueue = v20->_calloutSerialQueue;
+  calloutSerialQueue = selfCopy->_calloutSerialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__MPStoreDownloadManager_purchaseManager_didFinishPurchasesWithResponses___block_invoke;
   block[3] = &unk_1E76823C0;
-  block[4] = v20;
+  block[4] = selfCopy;
   v27 = v6;
   v19 = v6;
   dispatch_async(calloutSerialQueue, block);
 }
 
-- (void)requestPermissionToDownloadWithType:(int64_t)a3 completionHandler:(id)a4
+- (void)requestPermissionToDownloadWithType:(int64_t)type completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 1)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (type == 1)
   {
-    if (v6)
+    if (handlerCopy)
     {
       calloutSerialQueue = self->_calloutSerialQueue;
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __80__MPStoreDownloadManager_requestPermissionToDownloadWithType_completionHandler___block_invoke_2;
       v13[3] = &unk_1E7682370;
-      v14 = v6;
+      v14 = handlerCopy;
       dispatch_async(calloutSerialQueue, v13);
       v9 = v14;
       goto LABEL_9;
@@ -2528,7 +2528,7 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v9 = os_log_create("com.apple.amp.mediaplayer", "Download");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2538,21 +2538,21 @@ void __66__MPStoreDownloadManager_downloadManager_downloadStatesDidChange___bloc
         *buf = 138543618;
         v18 = v12;
         v19 = 2048;
-        v20 = a3;
+        typeCopy = type;
         _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_ERROR, "[%{public}@] UNKNOWN PURCHASE TYPE: %li", buf, 0x16u);
       }
 
       goto LABEL_9;
     }
 
-    if (v6)
+    if (handlerCopy)
     {
       v8 = self->_calloutSerialQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __80__MPStoreDownloadManager_requestPermissionToDownloadWithType_completionHandler___block_invoke;
       block[3] = &unk_1E7682370;
-      v16 = v6;
+      v16 = handlerCopy;
       dispatch_async(v8, block);
       v9 = v16;
 LABEL_9:
@@ -2560,21 +2560,21 @@ LABEL_9:
   }
 }
 
-- (void)removeObserver:(id)a3 forDownloads:(id)a4
+- (void)removeObserver:(id)observer forDownloads:(id)downloads
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  downloadsCopy = downloads;
+  v8 = downloadsCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__MPStoreDownloadManager_removeObserver_forDownloads___block_invoke;
     block[3] = &unk_1E76800A0;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = downloadsCopy;
+    selfCopy = self;
+    v13 = observerCopy;
     dispatch_barrier_sync(accessQueue, block);
   }
 }
@@ -2705,15 +2705,15 @@ void __54__MPStoreDownloadManager_removeObserver_forDownloads___block_invoke(uin
   }
 }
 
-- (void)prioritizeDownloads:(id)a3
+- (void)prioritizeDownloads:(id)downloads
 {
   v32 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v31 count:16];
+  reverseObjectEnumerator = [downloads reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2724,13 +2724,13 @@ void __54__MPStoreDownloadManager_removeObserver_forDownloads___block_invoke(uin
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 _SSDownload];
-        v11 = v10;
-        if (v10)
+        _SSDownload = [v9 _SSDownload];
+        v11 = _SSDownload;
+        if (_SSDownload)
         {
           downloadManager = self->_downloadManager;
           if (downloadManager)
@@ -2740,7 +2740,7 @@ void __54__MPStoreDownloadManager_removeObserver_forDownloads___block_invoke(uin
             v20[2] = __46__MPStoreDownloadManager_prioritizeDownloads___block_invoke;
             v20[3] = &unk_1E767B680;
             v20[4] = v9;
-            v21 = v10;
+            v21 = _SSDownload;
             [(SSDownloadManager *)downloadManager moveDownload:v21 afterDownload:0 completionBlock:v20];
 
             goto LABEL_18;
@@ -2761,9 +2761,9 @@ LABEL_16:
 
         else
         {
-          v13 = [v9 _SSPurchase];
-          v14 = v13;
-          if (v13)
+          _SSPurchase = [v9 _SSPurchase];
+          v14 = _SSPurchase;
+          if (_SSPurchase)
           {
             purchaseManager = self->_purchaseManager;
             if (!purchaseManager)
@@ -2782,7 +2782,7 @@ LABEL_16:
               goto LABEL_16;
             }
 
-            v26 = v13;
+            v26 = _SSPurchase;
             v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
             v19[0] = MEMORY[0x1E69E9820];
             v19[1] = 3221225472;
@@ -2796,7 +2796,7 @@ LABEL_16:
 LABEL_18:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v31 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v22 objects:v31 count:16];
     }
 
     while (v6);
@@ -2846,9 +2846,9 @@ void __46__MPStoreDownloadManager_prioritizeDownloads___block_invoke_49(uint64_t
   }
 }
 
-- (id)downloadForStoreID:(int64_t)a3
+- (id)downloadForStoreID:(int64_t)d
 {
-  if (a3)
+  if (d)
   {
     v7 = 0;
     v8 = &v7;
@@ -2862,7 +2862,7 @@ void __46__MPStoreDownloadManager_prioritizeDownloads___block_invoke_49(uint64_t
     block[2] = __45__MPStoreDownloadManager_downloadForStoreID___block_invoke;
     block[3] = &unk_1E76814A0;
     block[5] = &v7;
-    block[6] = a3;
+    block[6] = d;
     block[4] = self;
     dispatch_sync(accessQueue, block);
     v4 = v8[5];
@@ -2885,9 +2885,9 @@ void __45__MPStoreDownloadManager_downloadForStoreID___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)downloadForMediaItemPersistentID:(unint64_t)a3
+- (id)downloadForMediaItemPersistentID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
     v7 = 0;
     v8 = &v7;
@@ -2901,7 +2901,7 @@ void __45__MPStoreDownloadManager_downloadForStoreID___block_invoke(void *a1)
     block[2] = __59__MPStoreDownloadManager_downloadForMediaItemPersistentID___block_invoke;
     block[3] = &unk_1E76814A0;
     block[5] = &v7;
-    block[6] = a3;
+    block[6] = d;
     block[4] = self;
     dispatch_sync(accessQueue, block);
     v4 = v8[5];
@@ -2924,25 +2924,25 @@ void __59__MPStoreDownloadManager_downloadForMediaItemPersistentID___block_invok
   *(v3 + 40) = v2;
 }
 
-- (id)downloadForMediaItem:(id)a3
+- (id)downloadForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 persistentID];
-  if (!v5 || ([(MPStoreDownloadManager *)self downloadForMediaItemPersistentID:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  itemCopy = item;
+  persistentID = [itemCopy persistentID];
+  if (!persistentID || ([(MPStoreDownloadManager *)self downloadForMediaItemPersistentID:persistentID], (longLongValue = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [v4 valueForProperty:@"storeItemAdamID"];
-    v6 = [v7 longLongValue];
+    v7 = [itemCopy valueForProperty:@"storeItemAdamID"];
+    longLongValue = [v7 longLongValue];
 
-    if (v6)
+    if (longLongValue)
     {
-      v6 = [(MPStoreDownloadManager *)self downloadForStoreID:v6];
+      longLongValue = [(MPStoreDownloadManager *)self downloadForStoreID:longLongValue];
     }
   }
 
-  return v6;
+  return longLongValue;
 }
 
-- (id)downloadForDownloadPersistentIdentifier:(int64_t)a3
+- (id)downloadForDownloadPersistentIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -2956,7 +2956,7 @@ void __59__MPStoreDownloadManager_downloadForMediaItemPersistentID___block_invok
   block[2] = __66__MPStoreDownloadManager_downloadForDownloadPersistentIdentifier___block_invoke;
   block[3] = &unk_1E76814A0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
   dispatch_sync(accessQueue, block);
   v4 = v8[5];
@@ -2973,16 +2973,16 @@ void __66__MPStoreDownloadManager_downloadForDownloadPersistentIdentifier___bloc
   *(v3 + 40) = v2;
 }
 
-- (void)restartDownloads:(id)a3
+- (void)restartDownloads:(id)downloads
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  downloadsCopy = downloads;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = v4;
+  v6 = downloadsCopy;
   v7 = [v6 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v7)
   {
@@ -2998,10 +2998,10 @@ void __66__MPStoreDownloadManager_downloadForDownloadPersistentIdentifier___bloc
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v36 + 1) + 8 * v10) _SSDownload];
-        if (v11)
+        _SSDownload = [*(*(&v36 + 1) + 8 * v10) _SSDownload];
+        if (_SSDownload)
         {
-          [v5 addObject:v11];
+          [v5 addObject:_SSDownload];
         }
 
         ++v10;
@@ -3055,7 +3055,7 @@ void __66__MPStoreDownloadManager_downloadForDownloadPersistentIdentifier___bloc
     v27[2] = __43__MPStoreDownloadManager_restartDownloads___block_invoke;
     v27[3] = &unk_1E767AD48;
     v28 = v13;
-    v29 = self;
+    selfCopy = self;
     v30 = v5;
     v31 = v12;
     [(SSDownloadManager *)downloadManager restartDownloads:v30 completionBlock:v27];
@@ -3163,16 +3163,16 @@ void __43__MPStoreDownloadManager_restartDownloads___block_invoke(uint64_t a1, v
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)resumeDownloads:(id)a3
+- (void)resumeDownloads:(id)downloads
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  downloadsCopy = downloads;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v4;
+  v6 = downloadsCopy;
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
@@ -3188,10 +3188,10 @@ void __43__MPStoreDownloadManager_restartDownloads___block_invoke(uint64_t a1, v
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v35 + 1) + 8 * v10) _SSDownload];
-        if (v11)
+        _SSDownload = [*(*(&v35 + 1) + 8 * v10) _SSDownload];
+        if (_SSDownload)
         {
-          [v5 addObject:v11];
+          [v5 addObject:_SSDownload];
         }
 
         ++v10;
@@ -3320,20 +3320,20 @@ void __42__MPStoreDownloadManager_resumeDownloads___block_invoke(uint64_t a1, vo
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)pauseDownloads:(id)a3
+- (void)pauseDownloads:(id)downloads
 {
-  v27 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  downloadsCopy = downloads;
+  v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v4 = v3;
+  v4 = downloadsCopy;
   v5 = [v4 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v5)
   {
@@ -3351,8 +3351,8 @@ void __42__MPStoreDownloadManager_resumeDownloads___block_invoke(uint64_t a1, vo
         }
 
         v11 = *(*(&v47 + 1) + 8 * i);
-        v12 = [v11 _SSDownload];
-        if (v12)
+        _SSDownload = [v11 _SSDownload];
+        if (_SSDownload)
         {
           [v11 _addOverridePhaseIdentifier:@"MPStoreDownloadPhasePaused"];
           if (!v8)
@@ -3361,14 +3361,14 @@ void __42__MPStoreDownloadManager_resumeDownloads___block_invoke(uint64_t a1, vo
           }
 
           [v8 addObject:v11];
-          [v31 addObject:v12];
+          [v31 addObject:_SSDownload];
           [v30 addObject:v11];
         }
 
         else
         {
-          v13 = [v11 _SSPurchase];
-          if (v13)
+          _SSPurchase = [v11 _SSPurchase];
+          if (_SSPurchase)
           {
             [v11 _addOverridePhaseIdentifier:@"MPStoreDownloadPhaseCanceled"];
             if (!v7)
@@ -3377,7 +3377,7 @@ void __42__MPStoreDownloadManager_resumeDownloads___block_invoke(uint64_t a1, vo
             }
 
             [v7 addObject:v11];
-            [v29 addObject:v13];
+            [v29 addObject:_SSPurchase];
             [v28 addObject:v11];
           }
         }
@@ -3396,13 +3396,13 @@ void __42__MPStoreDownloadManager_resumeDownloads___block_invoke(uint64_t a1, vo
   }
 
   v14 = dispatch_group_create();
-  v15 = v27;
+  v15 = selfCopy;
   if ([v31 count])
   {
-    if (v27->_downloadManager)
+    if (selfCopy->_downloadManager)
     {
       dispatch_group_enter(v14);
-      downloadManager = v27->_downloadManager;
+      downloadManager = selfCopy->_downloadManager;
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __41__MPStoreDownloadManager_pauseDownloads___block_invoke;
@@ -3658,20 +3658,20 @@ uint64_t __41__MPStoreDownloadManager_pauseDownloads___block_invoke_2(uint64_t a
   return [v2 _sendDownloadsDidFinishToObserversForDownloads:v3 notifyDownloadManager:1 completionHandler:0];
 }
 
-- (void)cancelDownloads:(id)a3
+- (void)cancelDownloads:(id)downloads
 {
-  v35 = self;
+  selfCopy = self;
   v69 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v37 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  downloadsCopy = downloads;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v37 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v7 = v3;
+  v7 = downloadsCopy;
   v8 = [v7 countByEnumeratingWithState:&v58 objects:v68 count:16];
   if (v8)
   {
@@ -3687,19 +3687,19 @@ uint64_t __41__MPStoreDownloadManager_pauseDownloads___block_invoke_2(uint64_t a
         }
 
         v12 = *(*(&v58 + 1) + 8 * i);
-        v13 = [v12 _SSDownload];
-        if (v13)
+        _SSDownload = [v12 _SSDownload];
+        if (_SSDownload)
         {
-          [v5 addObject:v13];
+          [v5 addObject:_SSDownload];
           [v4 addObject:v12];
         }
 
         else
         {
-          v14 = [v12 _SSPurchase];
-          if (v14)
+          _SSPurchase = [v12 _SSPurchase];
+          if (_SSPurchase)
           {
-            [v6 addObject:v14];
+            [v6 addObject:_SSPurchase];
             [v37 addObject:v12];
           }
         }
@@ -3714,21 +3714,21 @@ uint64_t __41__MPStoreDownloadManager_pauseDownloads___block_invoke_2(uint64_t a
   }
 
   v15 = dispatch_group_create();
-  v16 = v35;
+  v16 = selfCopy;
   if ([v5 count])
   {
-    if (v35->_downloadManager)
+    if (selfCopy->_downloadManager)
     {
       dispatch_group_enter(v15);
-      [(MPStoreDownloadManager *)v35 _updateActiveDownloadsWithCancelledDownloads:v4];
-      downloadManager = v35->_downloadManager;
+      [(MPStoreDownloadManager *)selfCopy _updateActiveDownloadsWithCancelledDownloads:v4];
+      downloadManager = selfCopy->_downloadManager;
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __42__MPStoreDownloadManager_cancelDownloads___block_invoke;
       v53[3] = &unk_1E767AD48;
       v54 = v5;
       v55 = v4;
-      v56 = v35;
+      v56 = selfCopy;
       v57 = v15;
       [(SSDownloadManager *)downloadManager cancelDownloads:v54 completionBlock:v53];
 
@@ -3756,7 +3756,7 @@ uint64_t __41__MPStoreDownloadManager_pauseDownloads___block_invoke_2(uint64_t a
               objc_enumerationMutation(v19);
             }
 
-            [*(*(&v49 + 1) + 8 * j) _setCanceled:{0, v35}];
+            [*(*(&v49 + 1) + 8 * j) _setCanceled:{0, selfCopy}];
           }
 
           v21 = [v19 countByEnumeratingWithState:&v49 objects:v67 count:16];
@@ -3776,7 +3776,7 @@ uint64_t __41__MPStoreDownloadManager_pauseDownloads___block_invoke_2(uint64_t a
         _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_ERROR, "Failed to cancel downloads %{public}@ with error %{public}@", buf, 0x16u);
       }
 
-      v16 = v35;
+      v16 = selfCopy;
     }
   }
 
@@ -4000,21 +4000,21 @@ LABEL_17:
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)addObserver:(id)a3 forDownloads:(id)a4
+- (void)addObserver:(id)observer forDownloads:(id)downloads
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  downloadsCopy = downloads;
+  v8 = downloadsCopy;
+  if (observerCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__MPStoreDownloadManager_addObserver_forDownloads___block_invoke;
     block[3] = &unk_1E76800A0;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = downloadsCopy;
+    selfCopy = self;
+    v13 = observerCopy;
     dispatch_barrier_sync(accessQueue, block);
   }
 }
@@ -4097,22 +4097,22 @@ void __51__MPStoreDownloadManager_addObserver_forDownloads___block_invoke(uint64
   }
 }
 
-- (void)addFinishHandler:(id)a3 forDownloads:(id)a4
+- (void)addFinishHandler:(id)handler forDownloads:(id)downloads
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 count])
+  handlerCopy = handler;
+  downloadsCopy = downloads;
+  if (![downloadsCopy count])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPStoreDownloadManager.m" lineNumber:398 description:@"Downloads must not be empty."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPStoreDownloadManager.m" lineNumber:398 description:@"Downloads must not be empty."];
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v8;
+  v9 = downloadsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -4130,16 +4130,16 @@ void __51__MPStoreDownloadManager_addObserver_forDownloads___block_invoke(uint64
         v14 = *(*(&v17 + 1) + 8 * i);
         if ([v14 isFinished])
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7, v14);
+            handlerCopy[2](handlerCopy, v14);
           }
         }
 
         else
         {
           v15 = [[_MPStoreDownloadBlockObserver alloc] initWithDownload:v14];
-          [(_MPStoreDownloadBlockObserver *)v15 setDidFinishDownloadHandler:v7];
+          [(_MPStoreDownloadBlockObserver *)v15 setDidFinishDownloadHandler:handlerCopy];
           [(MPStoreDownloadManager *)self _registerBlockObserver:v15];
         }
       }
@@ -4151,18 +4151,18 @@ void __51__MPStoreDownloadManager_addObserver_forDownloads___block_invoke(uint64
   }
 }
 
-- (id)addDownloads:(id)a3
+- (id)addDownloads:(id)downloads
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  downloadsCopy = downloads;
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = downloadsCopy;
   v5 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v5)
   {
@@ -4200,10 +4200,10 @@ void __51__MPStoreDownloadManager_addObserver_forDownloads___block_invoke(uint64
 
         else
         {
-          v10 = [v8 _SSPurchase];
-          if (v10)
+          _SSPurchase = [v8 _SSPurchase];
+          if (_SSPurchase)
           {
-            [v16 addObject:v10];
+            [v16 addObject:_SSPurchase];
             [v18 addObject:v8];
             [v20 addObject:v8];
           }
@@ -4354,7 +4354,7 @@ void __39__MPStoreDownloadManager_addDownloads___block_invoke_3(uint64_t a1)
   [v5 _sendDownloadsDidFinishToObserversForDownloads:v3 notifyDownloadManager:0 completionHandler:v4];
 }
 
-- (id)activeDownloadForStoreID:(int64_t)a3
+- (id)activeDownloadForStoreID:(int64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
   [(MPStoreDownloadManager *)self activeDownloads];
@@ -4377,7 +4377,7 @@ void __39__MPStoreDownloadManager_addDownloads___block_invoke_3(uint64_t a1)
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 storeItemIdentifier] == a3)
+        if ([v9 storeItemIdentifier] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -4400,7 +4400,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)activeDownloadForMediaItemPersistentID:(unint64_t)a3
+- (id)activeDownloadForMediaItemPersistentID:(unint64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
   [(MPStoreDownloadManager *)self activeDownloads];
@@ -4423,7 +4423,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 libraryItemIdentifier] == a3)
+        if ([v9 libraryItemIdentifier] == d)
         {
           v10 = v9;
           goto LABEL_11;

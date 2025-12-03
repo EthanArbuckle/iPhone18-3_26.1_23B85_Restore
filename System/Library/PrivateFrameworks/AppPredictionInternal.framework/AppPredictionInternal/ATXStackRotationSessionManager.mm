@@ -1,20 +1,20 @@
 @interface ATXStackRotationSessionManager
 - (ATXStackRotationSessionManager)init;
-- (ATXStackRotationSessionManager)initWithCoder:(id)a3;
-- (ATXStackRotationSessionManager)initWithStackIdToStackRotationSessions:(id)a3 completedSessions:(id)a4 recentHomeScreenCachedSuggestions:(id)a5 nPlusOneSuggestionUUIDsWithFirstRotation:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXStackRotationSessionManager:(id)a3;
+- (ATXStackRotationSessionManager)initWithCoder:(id)coder;
+- (ATXStackRotationSessionManager)initWithStackIdToStackRotationSessions:(id)sessions completedSessions:(id)completedSessions recentHomeScreenCachedSuggestions:(id)suggestions nPlusOneSuggestionUUIDsWithFirstRotation:(id)rotation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXStackRotationSessionManager:(id)manager;
 - (id)removeAllAndReturnCompletedSystemSuggestSessions;
 - (id)removeAndReturnCompletedSessions;
-- (id)uuidsOfNPlusOneSuggestionsFromCachedSuggestions:(id)a3;
-- (void)_tryEndStackRotationSessionWithStackId:(id)a3 homeScreenEvent:(id)a4;
+- (id)uuidsOfNPlusOneSuggestionsFromCachedSuggestions:(id)suggestions;
+- (void)_tryEndStackRotationSessionWithStackId:(id)id homeScreenEvent:(id)event;
 - (void)_tryPruneSessionsOverMaxLimit;
-- (void)_tryStartStackRotationSessionWithStackId:(id)a3 homeScreenEvent:(id)a4;
-- (void)_tryUpdateNPlusOneStatusForSession:(id)a3 stackId:(id)a4;
-- (void)_tryUpdateStackRotationSessionWithSystemSuggestLayout:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithBlendingUICacheUpdate:(id)a3;
-- (void)updateWithUIEvent:(id)a3;
+- (void)_tryStartStackRotationSessionWithStackId:(id)id homeScreenEvent:(id)event;
+- (void)_tryUpdateNPlusOneStatusForSession:(id)session stackId:(id)id;
+- (void)_tryUpdateStackRotationSessionWithSystemSuggestLayout:(id)layout;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithBlendingUICacheUpdate:(id)update;
+- (void)updateWithUIEvent:(id)event;
 @end
 
 @implementation ATXStackRotationSessionManager
@@ -30,22 +30,22 @@
   return v7;
 }
 
-- (ATXStackRotationSessionManager)initWithStackIdToStackRotationSessions:(id)a3 completedSessions:(id)a4 recentHomeScreenCachedSuggestions:(id)a5 nPlusOneSuggestionUUIDsWithFirstRotation:(id)a6
+- (ATXStackRotationSessionManager)initWithStackIdToStackRotationSessions:(id)sessions completedSessions:(id)completedSessions recentHomeScreenCachedSuggestions:(id)suggestions nPlusOneSuggestionUUIDsWithFirstRotation:(id)rotation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sessionsCopy = sessions;
+  completedSessionsCopy = completedSessions;
+  suggestionsCopy = suggestions;
+  rotationCopy = rotation;
   v18.receiver = self;
   v18.super_class = ATXStackRotationSessionManager;
   v15 = [(ATXStackRotationSessionManager *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_stackIdToStackRotationSessions, a3);
-    objc_storeStrong(&v16->_completedSessions, a4);
-    objc_storeStrong(&v16->_recentHomeScreenCachedSuggestions, a5);
-    objc_storeStrong(&v16->_nPlusOneSuggestionUUIDsWithFirstRotation, a6);
+    objc_storeStrong(&v15->_stackIdToStackRotationSessions, sessions);
+    objc_storeStrong(&v16->_completedSessions, completedSessions);
+    objc_storeStrong(&v16->_recentHomeScreenCachedSuggestions, suggestions);
+    objc_storeStrong(&v16->_nPlusOneSuggestionUUIDsWithFirstRotation, rotation);
   }
 
   return v16;
@@ -68,20 +68,20 @@
   }
 }
 
-- (void)_tryEndStackRotationSessionWithStackId:(id)a3 homeScreenEvent:(id)a4
+- (void)_tryEndStackRotationSessionWithStackId:(id)id homeScreenEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  idCopy = id;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (idCopy && eventCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:idCopy];
     v10 = v9;
     if (v9)
     {
       [v9 finalizeWithEndingStackChangeEvent:v8];
-      [(NSMutableDictionary *)self->_stackIdToStackRotationSessions removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_stackIdToStackRotationSessions removeObjectForKey:idCopy];
       [(NSMutableArray *)self->_completedSessions addObject:v10];
       v11 = __atxlog_handle_metrics();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -101,7 +101,7 @@
       v15 = 138412802;
       v16 = v14;
       v17 = 2112;
-      v18 = v6;
+      v18 = idCopy;
       v19 = 2112;
       v20 = v8;
       _os_log_error_impl(&dword_2263AA000, v10, OS_LOG_TYPE_ERROR, "%@ - could not end session because of missing fields, stackId: %@, homeScreenEvent: %@", &v15, 0x20u);
@@ -111,19 +111,19 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryStartStackRotationSessionWithStackId:(id)a3 homeScreenEvent:(id)a4
+- (void)_tryStartStackRotationSessionWithStackId:(id)id homeScreenEvent:(id)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7 && ([v7 reason], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  idCopy = id;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (idCopy && eventCopy && ([eventCopy reason], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     [(ATXStackRotationSessionManager *)self _tryPruneSessionsOverMaxLimit];
     v10 = [[ATXStackRotationSession alloc] initWithStartingStackChangeEvent:v8];
     [(ATXStackRotationSessionManager *)self _tryUpdateStackRotationSessionWithSystemSuggestLayout:v10];
-    [(ATXStackRotationSessionManager *)self _tryUpdateNPlusOneStatusForSession:v10 stackId:v6];
-    [(NSMutableDictionary *)self->_stackIdToStackRotationSessions setValue:v10 forKey:v6];
+    [(ATXStackRotationSessionManager *)self _tryUpdateNPlusOneStatusForSession:v10 stackId:idCopy];
+    [(NSMutableDictionary *)self->_stackIdToStackRotationSessions setValue:v10 forKey:idCopy];
     v11 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -138,13 +138,13 @@
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v8 reason];
+      reason = [v8 reason];
       v16 = 138413058;
       v17 = v14;
       v18 = 2112;
-      v19 = v6;
+      v19 = idCopy;
       v20 = 2112;
-      v21 = v15;
+      v21 = reason;
       v22 = 2112;
       v23 = v8;
       _os_log_error_impl(&dword_2263AA000, &v10->super, OS_LOG_TYPE_ERROR, "%@ - could not start session because of missing fields, stackId: %@, reason: %@, homeScreenEvent: %@", &v16, 0x2Au);
@@ -154,124 +154,124 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithUIEvent:(id)a3
+- (void)updateWithUIEvent:(id)event
 {
-  v4 = [a3 homeScreenEvent];
-  v5 = v4;
-  if (v4)
+  homeScreenEvent = [event homeScreenEvent];
+  v5 = homeScreenEvent;
+  if (homeScreenEvent)
   {
-    v6 = [v4 eventTypeString];
-    if ([v6 isEqualToString:@"Unknown"])
+    eventTypeString = [homeScreenEvent eventTypeString];
+    if ([eventTypeString isEqualToString:@"Unknown"])
     {
       v7 = 0;
     }
 
-    else if ([v6 isEqualToString:@"HomeScreenPageShown"])
+    else if ([eventTypeString isEqualToString:@"HomeScreenPageShown"])
     {
       v7 = 1;
     }
 
-    else if ([v6 isEqualToString:@"HomeScreenDisappeared"])
+    else if ([eventTypeString isEqualToString:@"HomeScreenDisappeared"])
     {
       v7 = 2;
     }
 
-    else if ([v6 isEqualToString:@"StackChanged"])
+    else if ([eventTypeString isEqualToString:@"StackChanged"])
     {
       v7 = 3;
     }
 
-    else if ([v6 isEqualToString:@"WidgetTapped"])
+    else if ([eventTypeString isEqualToString:@"WidgetTapped"])
     {
       v7 = 4;
     }
 
-    else if ([v6 isEqualToString:@"WidgetLongLook"])
+    else if ([eventTypeString isEqualToString:@"WidgetLongLook"])
     {
       v7 = 5;
     }
 
-    else if ([v6 isEqualToString:@"WidgetUserFeedback"])
+    else if ([eventTypeString isEqualToString:@"WidgetUserFeedback"])
     {
       v7 = 6;
     }
 
-    else if ([v6 isEqualToString:@"UserStackConfigChanged"])
+    else if ([eventTypeString isEqualToString:@"UserStackConfigChanged"])
     {
       v7 = 7;
     }
 
-    else if ([v6 isEqualToString:@"DeviceLocked"])
+    else if ([eventTypeString isEqualToString:@"DeviceLocked"])
     {
       v7 = 8;
     }
 
-    else if ([v6 isEqualToString:@"DeviceUnlocked"])
+    else if ([eventTypeString isEqualToString:@"DeviceUnlocked"])
     {
       v7 = 9;
     }
 
-    else if ([v6 isEqualToString:@"PinnedWidgetAdded"])
+    else if ([eventTypeString isEqualToString:@"PinnedWidgetAdded"])
     {
       v7 = 10;
     }
 
-    else if ([v6 isEqualToString:@"PinnedWidgetDeleted"])
+    else if ([eventTypeString isEqualToString:@"PinnedWidgetDeleted"])
     {
       v7 = 11;
     }
 
-    else if ([v6 isEqualToString:@"SpecialPageAppeared"])
+    else if ([eventTypeString isEqualToString:@"SpecialPageAppeared"])
     {
       v7 = 12;
     }
 
-    else if ([v6 isEqualToString:@"SpecialPageDisappeared"])
+    else if ([eventTypeString isEqualToString:@"SpecialPageDisappeared"])
     {
       v7 = 13;
     }
 
-    else if ([v6 isEqualToString:@"StackShown"])
+    else if ([eventTypeString isEqualToString:@"StackShown"])
     {
       v7 = 14;
     }
 
-    else if ([v6 isEqualToString:@"StackDisappeared"])
+    else if ([eventTypeString isEqualToString:@"StackDisappeared"])
     {
       v7 = 15;
     }
 
-    else if ([v6 isEqualToString:@"StackCreated"])
+    else if ([eventTypeString isEqualToString:@"StackCreated"])
     {
       v7 = 16;
     }
 
-    else if ([v6 isEqualToString:@"StackDeleted"])
+    else if ([eventTypeString isEqualToString:@"StackDeleted"])
     {
       v7 = 17;
     }
 
-    else if ([v6 isEqualToString:@"WidgetAddedToStack"])
+    else if ([eventTypeString isEqualToString:@"WidgetAddedToStack"])
     {
       v7 = 18;
     }
 
-    else if ([v6 isEqualToString:@"WidgetRemovedFromStack"])
+    else if ([eventTypeString isEqualToString:@"WidgetRemovedFromStack"])
     {
       v7 = 19;
     }
 
-    else if ([v6 isEqualToString:@"StackVisibilityChanged"])
+    else if ([eventTypeString isEqualToString:@"StackVisibilityChanged"])
     {
       v7 = 20;
     }
 
-    else if ([v6 isEqualToString:@"AppAdded"])
+    else if ([eventTypeString isEqualToString:@"AppAdded"])
     {
       v7 = 21;
     }
 
-    else if ([v6 isEqualToString:@"AppRemoved"])
+    else if ([eventTypeString isEqualToString:@"AppRemoved"])
     {
       v7 = 22;
     }
@@ -281,8 +281,8 @@
       v7 = 0;
     }
 
-    v8 = [v5 stackId];
-    if (!v8)
+    stackId = [v5 stackId];
+    if (!stackId)
     {
       goto LABEL_87;
     }
@@ -292,23 +292,23 @@
       switch(v7)
       {
         case 14:
-          v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v8];
-          if (!v9)
+          reason = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:stackId];
+          if (!reason)
           {
             goto LABEL_86;
           }
 
-          v15 = [v5 widgetUniqueId];
-          v16 = [v9 widgetUniqueId];
-          v17 = [v15 isEqualToString:v16];
+          widgetUniqueId = [v5 widgetUniqueId];
+          widgetUniqueId2 = [reason widgetUniqueId];
+          v17 = [widgetUniqueId isEqualToString:widgetUniqueId2];
 
           if (!v17)
           {
             goto LABEL_86;
           }
 
-          v18 = [v5 date];
-          [v9 markStackShownAtDate:v18];
+          date = [v5 date];
+          [reason markStackShownAtDate:date];
 
           v11 = __atxlog_handle_metrics();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -318,23 +318,23 @@
 
           goto LABEL_85;
         case 15:
-          v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v8];
-          if (!v9)
+          reason = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:stackId];
+          if (!reason)
           {
             goto LABEL_86;
           }
 
-          v22 = [v5 widgetUniqueId];
-          v23 = [v9 widgetUniqueId];
-          v24 = [v22 isEqualToString:v23];
+          widgetUniqueId3 = [v5 widgetUniqueId];
+          widgetUniqueId4 = [reason widgetUniqueId];
+          v24 = [widgetUniqueId3 isEqualToString:widgetUniqueId4];
 
           if (!v24)
           {
             goto LABEL_86;
           }
 
-          v25 = [v5 date];
-          [v9 markStackHiddenAtDate:v25];
+          date2 = [v5 date];
+          [reason markStackHiddenAtDate:date2];
 
           v11 = __atxlog_handle_metrics();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -344,15 +344,15 @@
 
           goto LABEL_85;
         case 17:
-          v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v8];
-          if (!v9)
+          reason = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:stackId];
+          if (!reason)
           {
 LABEL_86:
 
             break;
           }
 
-          [(ATXStackRotationSessionManager *)self _tryEndStackRotationSessionWithStackId:v8 homeScreenEvent:v5];
+          [(ATXStackRotationSessionManager *)self _tryEndStackRotationSessionWithStackId:stackId homeScreenEvent:v5];
           v11 = __atxlog_handle_metrics();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
@@ -368,26 +368,26 @@ LABEL_86:
       switch(v7)
       {
         case 3:
-          [(ATXStackRotationSessionManager *)self _tryEndStackRotationSessionWithStackId:v8 homeScreenEvent:v5];
-          [(ATXStackRotationSessionManager *)self _tryStartStackRotationSessionWithStackId:v8 homeScreenEvent:v5];
+          [(ATXStackRotationSessionManager *)self _tryEndStackRotationSessionWithStackId:stackId homeScreenEvent:v5];
+          [(ATXStackRotationSessionManager *)self _tryStartStackRotationSessionWithStackId:stackId homeScreenEvent:v5];
           break;
         case 4:
-          v9 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v8];
-          if (!v9)
+          reason = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:stackId];
+          if (!reason)
           {
             goto LABEL_86;
           }
 
-          v19 = [v5 widgetUniqueId];
-          v20 = [v9 widgetUniqueId];
-          v21 = [v19 isEqualToString:v20];
+          widgetUniqueId5 = [v5 widgetUniqueId];
+          widgetUniqueId6 = [reason widgetUniqueId];
+          v21 = [widgetUniqueId5 isEqualToString:widgetUniqueId6];
 
           if (!v21)
           {
             goto LABEL_86;
           }
 
-          [v9 markStackTapped];
+          [reason markStackTapped];
           v11 = __atxlog_handle_metrics();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
@@ -396,16 +396,16 @@ LABEL_86:
 
           goto LABEL_85;
         case 6:
-          v9 = [v5 reason];
-          v10 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:v8];
+          reason = [v5 reason];
+          v10 = [(NSMutableDictionary *)self->_stackIdToStackRotationSessions objectForKey:stackId];
           v11 = v10;
-          if (!v9 || !v10)
+          if (!reason || !v10)
           {
             goto LABEL_85;
           }
 
           v12 = NSStringForATXHomeScreenWidgetExplicitFeedback();
-          v13 = [v9 isEqualToString:v12];
+          v13 = [reason isEqualToString:v12];
 
           if (v13)
           {
@@ -422,7 +422,7 @@ LABEL_84:
           }
 
           v26 = NSStringForATXHomeScreenWidgetExplicitFeedback();
-          v27 = [v9 isEqualToString:v26];
+          v27 = [reason isEqualToString:v26];
 
           if (v27)
           {
@@ -437,7 +437,7 @@ LABEL_84:
           }
 
           v28 = NSStringForATXHomeScreenWidgetExplicitFeedback();
-          v29 = [v9 isEqualToString:v28];
+          v29 = [reason isEqualToString:v28];
 
           if (v29)
           {
@@ -461,11 +461,11 @@ LABEL_87:
   }
 }
 
-- (void)updateWithBlendingUICacheUpdate:(id)a3
+- (void)updateWithBlendingUICacheUpdate:(id)update
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uiCache];
+  updateCopy = update;
+  uiCache = [updateCopy uiCache];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -474,18 +474,18 @@ LABEL_87:
     goto LABEL_20;
   }
 
-  v7 = [v4 uiCache];
-  v8 = [v7 cachedTopOfStackLayouts];
-  if ([v8 count])
+  uiCache2 = [updateCopy uiCache];
+  cachedTopOfStackLayouts = [uiCache2 cachedTopOfStackLayouts];
+  if ([cachedTopOfStackLayouts count])
   {
 
 LABEL_5:
-    [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions addObject:v7];
+    [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions addObject:uiCache2];
     goto LABEL_6;
   }
 
-  v9 = [v7 cachedSuggestedWidgetsLayouts];
-  v10 = [v9 count];
+  cachedSuggestedWidgetsLayouts = [uiCache2 cachedSuggestedWidgetsLayouts];
+  v10 = [cachedSuggestedWidgetsLayouts count];
 
   if (v10)
   {
@@ -503,7 +503,7 @@ LABEL_6:
     while ([(NSMutableArray *)self->_recentHomeScreenCachedSuggestions count]> 2);
   }
 
-  v11 = [(ATXStackRotationSessionManager *)self uuidsOfNPlusOneSuggestionsFromCachedSuggestions:v7];
+  v11 = [(ATXStackRotationSessionManager *)self uuidsOfNPlusOneSuggestionsFromCachedSuggestions:uiCache2];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -564,8 +564,8 @@ LABEL_20:
 
 - (id)removeAllAndReturnCompletedSystemSuggestSessions
 {
-  v2 = [(ATXStackRotationSessionManager *)self removeAndReturnCompletedSessions];
-  v3 = [v2 _pas_filteredArrayWithTest:&__block_literal_global_167];
+  removeAndReturnCompletedSessions = [(ATXStackRotationSessionManager *)self removeAndReturnCompletedSessions];
+  v3 = [removeAndReturnCompletedSessions _pas_filteredArrayWithTest:&__block_literal_global_167];
 
   return v3;
 }
@@ -579,11 +579,11 @@ uint64_t __82__ATXStackRotationSessionManager_removeAllAndReturnCompletedSystemS
   return v4;
 }
 
-- (void)_tryUpdateNPlusOneStatusForSession:(id)a3 stackId:(id)a4
+- (void)_tryUpdateNPlusOneStatusForSession:(id)session stackId:(id)id
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v13 = a4;
+  sessionCopy = session;
+  idCopy = id;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -600,8 +600,8 @@ uint64_t __82__ATXStackRotationSessionManager_removeAllAndReturnCompletedSystemS
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v34 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v34 count:16];
   if (v8)
   {
     v9 = *v21;
@@ -612,32 +612,32 @@ uint64_t __82__ATXStackRotationSessionManager_removeAllAndReturnCompletedSystemS
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * v10) cachedSuggestedWidgetsLayouts];
+        cachedSuggestedWidgetsLayouts = [*(*(&v20 + 1) + 8 * v10) cachedSuggestedWidgetsLayouts];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __77__ATXStackRotationSessionManager__tryUpdateNPlusOneStatusForSession_stackId___block_invoke;
         v14[3] = &unk_27859F360;
-        v15 = v6;
-        v16 = self;
+        v15 = sessionCopy;
+        selfCopy = self;
         v17 = &v30;
         v18 = &v26;
         v19 = v24;
-        [v11 enumerateKeysAndObjectsUsingBlock:v14];
+        [cachedSuggestedWidgetsLayouts enumerateKeysAndObjectsUsingBlock:v14];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v34 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v34 count:16];
     }
 
     while (v8);
   }
 
-  [v6 updateIsNPlusOneRotation:*(v31 + 24) isFirstNPlusOneRotation:*(v27 + 24)];
+  [sessionCopy updateIsNPlusOneRotation:*(v31 + 24) isFirstNPlusOneRotation:*(v27 + 24)];
   _Block_object_dispose(v24, 8);
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&v30, 8);
@@ -733,13 +733,13 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tryUpdateStackRotationSessionWithSystemSuggestLayout:(id)a3
+- (void)_tryUpdateStackRotationSessionWithSystemSuggestLayout:(id)layout
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 rotationReason];
+  layoutCopy = layout;
+  rotationReason = [layoutCopy rotationReason];
   v6 = NSStringForATXHomeScreenStackChangeReason();
-  v7 = [v5 isEqualToString:v6];
+  v7 = [rotationReason isEqualToString:v6];
 
   if (v7)
   {
@@ -747,8 +747,8 @@ LABEL_17:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions reverseObjectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_recentHomeScreenCachedSuggestions reverseObjectEnumerator];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -760,22 +760,22 @@ LABEL_17:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * v12) cachedTopOfStackLayouts];
+          cachedTopOfStackLayouts = [*(*(&v17 + 1) + 8 * v12) cachedTopOfStackLayouts];
           v15[0] = MEMORY[0x277D85DD0];
           v15[1] = 3221225472;
           v15[2] = __88__ATXStackRotationSessionManager__tryUpdateStackRotationSessionWithSystemSuggestLayout___block_invoke;
           v15[3] = &unk_27859EA98;
-          v16 = v4;
-          [v13 enumerateKeysAndObjectsUsingBlock:v15];
+          v16 = layoutCopy;
+          [cachedTopOfStackLayouts enumerateKeysAndObjectsUsingBlock:v15];
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -798,11 +798,11 @@ void __88__ATXStackRotationSessionManager__tryUpdateStackRotationSessionWithSyst
   }
 }
 
-- (id)uuidsOfNPlusOneSuggestionsFromCachedSuggestions:(id)a3
+- (id)uuidsOfNPlusOneSuggestionsFromCachedSuggestions:(id)suggestions
 {
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
-  v5 = [v3 cachedSuggestedWidgetsLayouts];
+  cachedSuggestedWidgetsLayouts = [suggestionsCopy cachedSuggestedWidgetsLayouts];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -810,7 +810,7 @@ void __88__ATXStackRotationSessionManager__tryUpdateStackRotationSessionWithSyst
   v9[3] = &unk_278599A48;
   v10 = v4;
   v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [cachedSuggestedWidgetsLayouts enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -863,29 +863,29 @@ void __82__ATXStackRotationSessionManager_uuidsOfNPlusOneSuggestionsFromCachedSu
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXStackRotationSessionManager *)self isEqualToATXStackRotationSessionManager:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXStackRotationSessionManager *)self isEqualToATXStackRotationSessionManager:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXStackRotationSessionManager:(id)a3
+- (BOOL)isEqualToATXStackRotationSessionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = self->_stackIdToStackRotationSessions;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == managerCopy[1])
   {
   }
 
@@ -902,7 +902,7 @@ void __82__ATXStackRotationSessionManager_uuidsOfNPlusOneSuggestionsFromCachedSu
 
   v9 = self->_completedSessions;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == managerCopy[2])
   {
     v8 = 1;
   }
@@ -916,19 +916,19 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stackIdToStackRotationSessions = self->_stackIdToStackRotationSessions;
-  v5 = a3;
-  [v5 encodeObject:stackIdToStackRotationSessions forKey:@"mapping"];
-  [v5 encodeObject:self->_completedSessions forKey:@"completedSessions"];
-  [v5 encodeObject:self->_recentHomeScreenCachedSuggestions forKey:@"recentHomeScreenCachedSuggestions"];
-  [v5 encodeObject:self->_nPlusOneSuggestionUUIDsWithFirstRotation forKey:@"nPlusOneRotationStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:stackIdToStackRotationSessions forKey:@"mapping"];
+  [coderCopy encodeObject:self->_completedSessions forKey:@"completedSessions"];
+  [coderCopy encodeObject:self->_recentHomeScreenCachedSuggestions forKey:@"recentHomeScreenCachedSuggestions"];
+  [coderCopy encodeObject:self->_nPlusOneSuggestionUUIDsWithFirstRotation forKey:@"nPlusOneRotationStatus"];
 }
 
-- (ATXStackRotationSessionManager)initWithCoder:(id)a3
+- (ATXStackRotationSessionManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
@@ -937,9 +937,9 @@ LABEL_9:
   objc_autoreleasePoolPop(v5);
   v10 = MEMORY[0x277D42620];
   v11 = __atxlog_handle_metrics();
-  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"mapping" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v11];
+  v12 = [v10 robustDecodeObjectOfClasses:v9 forKey:@"mapping" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v11];
 
-  if (v12 && ([v4 error], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (v12 && ([coderCopy error], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v15 = MEMORY[0x277D42620];
     v16 = objc_autoreleasePoolPush();
@@ -948,9 +948,9 @@ LABEL_9:
     v19 = [v17 initWithObjects:{v18, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v16);
     v20 = __atxlog_handle_metrics();
-    v21 = [v15 robustDecodeObjectOfClasses:v19 forKey:@"completedSessions" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v20];
+    v21 = [v15 robustDecodeObjectOfClasses:v19 forKey:@"completedSessions" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v20];
 
-    if (v21 && ([v4 error], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
+    if (v21 && ([coderCopy error], v22 = objc_claimAutoreleasedReturnValue(), v22, !v22))
     {
       v23 = objc_autoreleasePoolPush();
       v41 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -962,9 +962,9 @@ LABEL_9:
 
       v28 = MEMORY[0x277D42620];
       v29 = __atxlog_handle_metrics();
-      v30 = [v28 robustDecodeObjectOfClasses:v27 forKey:@"recentHomeScreenCachedSuggestions" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v29];
+      v30 = [v28 robustDecodeObjectOfClasses:v27 forKey:@"recentHomeScreenCachedSuggestions" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v29];
 
-      if (v30 && ([v4 error], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
+      if (v30 && ([coderCopy error], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31))
       {
         v32 = objc_autoreleasePoolPush();
         v33 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -974,17 +974,17 @@ LABEL_9:
 
         v36 = MEMORY[0x277D42620];
         v37 = __atxlog_handle_metrics();
-        v38 = [v36 robustDecodeObjectOfClasses:v35 forKey:@"nPlusOneRotationStatus" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v37];
+        v38 = [v36 robustDecodeObjectOfClasses:v35 forKey:@"nPlusOneRotationStatus" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXStackRotationSessionManager" errorCode:-1 logHandle:v37];
 
-        if (v38 && ([v4 error], v39 = objc_claimAutoreleasedReturnValue(), v39, !v39))
+        if (v38 && ([coderCopy error], v39 = objc_claimAutoreleasedReturnValue(), v39, !v39))
         {
           self = [(ATXStackRotationSessionManager *)self initWithStackIdToStackRotationSessions:v12 completedSessions:v21 recentHomeScreenCachedSuggestions:v30 nPlusOneSuggestionUUIDsWithFirstRotation:v38];
-          v14 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v14 = 0;
+          selfCopy = 0;
         }
 
         v27 = v35;
@@ -992,7 +992,7 @@ LABEL_9:
 
       else
       {
-        v14 = 0;
+        selfCopy = 0;
       }
 
       v9 = v27;
@@ -1000,16 +1000,16 @@ LABEL_9:
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)_tryEndStackRotationSessionWithStackId:homeScreenEvent:.cold.1()

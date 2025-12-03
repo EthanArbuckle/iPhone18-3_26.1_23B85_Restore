@@ -1,30 +1,30 @@
 @interface PKDashboardSearchResultCell
 - ($830F05BABEC066712FB7F25B8833642A)_cellLayoutState;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardSearchResultCell)initWithFrame:(CGRect)a3;
-- (void)_actionButtonTapped:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardSearchResultCell)initWithFrame:(CGRect)frame;
+- (void)_actionButtonTapped:(id)tapped;
 - (void)_updateAccessoryViews;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetFonts;
-- (void)setAction:(id)a3 withButtonType:(unint64_t)a4;
-- (void)setDetailText:(id)a3;
-- (void)setShowDisclosure:(BOOL)a3;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setThumbnail:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAction:(id)action withButtonType:(unint64_t)type;
+- (void)setDetailText:(id)text;
+- (void)setShowDisclosure:(BOOL)disclosure;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)setStyle:(unint64_t)style;
+- (void)setSubtitle:(id)subtitle;
+- (void)setThumbnail:(id)thumbnail;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKDashboardSearchResultCell
 
-- (PKDashboardSearchResultCell)initWithFrame:(CGRect)a3
+- (PKDashboardSearchResultCell)initWithFrame:(CGRect)frame
 {
   v44[2] = *MEMORY[0x1E69E9840];
   v43.receiver = self;
   v43.super_class = PKDashboardSearchResultCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v43 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v43 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -36,24 +36,24 @@
     v3->_titleLabel = v6;
 
     v8 = v3->_titleLabel;
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v8 setTextColor:labelColor];
 
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subtitleLabel = v3->_subtitleLabel;
     v3->_subtitleLabel = v10;
 
     v12 = v3->_subtitleLabel;
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v12 setTextColor:secondaryLabelColor];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     detailTextLabel = v3->_detailTextLabel;
     v3->_detailTextLabel = v14;
 
     v16 = v3->_detailTextLabel;
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v16 setTextColor:secondaryLabelColor2];
 
     v18 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     spinner = v3->_spinner;
@@ -75,8 +75,8 @@
     v3->_disclosureView = v22;
 
     v24 = v3->_disclosureView;
-    v25 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v24 setTintColor:v25];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v24 setTintColor:tertiaryLabelColor];
 
     v26 = MEMORY[0x1E69DCAD8];
     v27 = PKDefaultSystemFontWithPreferredSizeForTextStyleAndWeight(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DB980]);
@@ -85,8 +85,8 @@
     v3->_actionButtonSymbolConfig = v28;
 
     v30 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.up" withConfiguration:v3->_actionButtonSymbolConfig];
-    v31 = [MEMORY[0x1E69DC888] labelColor];
-    v32 = [v30 imageWithTintColor:v31 renderingMode:1];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    v32 = [v30 imageWithTintColor:labelColor2 renderingMode:1];
 
     v40[0] = 0uLL;
     v40[1] = xmmword_1BE0B69E0;
@@ -99,11 +99,11 @@
     v3->_actionButton = &v33->super;
     v35 = v33;
 
-    v36 = [(PKDashboardSearchResultCell *)v3 contentView];
-    [v36 addSubview:v3->_thumbnailView];
-    [v36 addSubview:v3->_titleLabel];
-    [v36 addSubview:v3->_subtitleLabel];
-    [v36 addSubview:v3->_detailTextLabel];
+    contentView = [(PKDashboardSearchResultCell *)v3 contentView];
+    [contentView addSubview:v3->_thumbnailView];
+    [contentView addSubview:v3->_titleLabel];
+    [contentView addSubview:v3->_subtitleLabel];
+    [contentView addSubview:v3->_detailTextLabel];
     v42 = 0;
     v41 = 0u;
     [(PKDashboardSearchResultCell *)v3 _cellLayoutState:0];
@@ -172,12 +172,12 @@
   [(UILabel *)detailTextLabel setFont:v13];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PKDashboardSearchResultCell *)self title];
-  v8 = v4;
-  v6 = v5;
+  titleCopy = title;
+  title = [(PKDashboardSearchResultCell *)self title];
+  v8 = titleCopy;
+  v6 = title;
   if (v6 == v8)
   {
 
@@ -202,12 +202,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(PKDashboardSearchResultCell *)self subtitle];
-  v8 = v4;
-  v6 = v5;
+  subtitleCopy = subtitle;
+  subtitle = [(PKDashboardSearchResultCell *)self subtitle];
+  v8 = subtitleCopy;
+  v6 = subtitle;
   if (v6 == v8)
   {
 
@@ -232,12 +232,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(PKDashboardSearchResultCell *)self detailText];
-  v8 = v4;
-  v6 = v5;
+  textCopy = text;
+  detailText = [(PKDashboardSearchResultCell *)self detailText];
+  v8 = textCopy;
+  v6 = detailText;
   if (v6 == v8)
   {
 
@@ -262,47 +262,47 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v6 = a3;
-  v4 = [(PKDashboardSearchResultCell *)self thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(PKDashboardSearchResultCell *)self thumbnail];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = thumbnailCopy;
+  if (thumbnail != thumbnailCopy)
   {
-    [(UIImageView *)self->_thumbnailView setImage:v6];
+    [(UIImageView *)self->_thumbnailView setImage:thumbnailCopy];
     [(PKDashboardSearchResultCell *)self setNeedsLayout];
-    v5 = v6;
+    v5 = thumbnailCopy;
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PKDashboardSearchResultCell *)self _cellLayoutState:0];
     [(UIImageView *)self->_thumbnailView _setContinuousCornerRadius:0.0];
     [(PKDashboardSearchResultCell *)self setNeedsLayout];
   }
 }
 
-- (void)setShowDisclosure:(BOOL)a3
+- (void)setShowDisclosure:(BOOL)disclosure
 {
-  if (self->_showDisclosure != a3)
+  if (self->_showDisclosure != disclosure)
   {
-    self->_showDisclosure = a3;
+    self->_showDisclosure = disclosure;
     [(PKDashboardSearchResultCell *)self _updateAccessoryViews];
   }
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner != a3)
+  if (self->_showSpinner != spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     spinner = self->_spinner;
-    if (a3)
+    if (spinner)
     {
       [(UIActivityIndicatorView *)spinner startAnimating];
     }
@@ -316,27 +316,27 @@ LABEL_9:
   }
 }
 
-- (void)setAction:(id)a3 withButtonType:(unint64_t)a4
+- (void)setAction:(id)action withButtonType:(unint64_t)type
 {
-  aBlock = a3;
+  aBlock = action;
   if (self->_action != aBlock)
   {
-    v6 = [(UIButton *)self->_actionButton superview];
+    superview = [(UIButton *)self->_actionButton superview];
 
     v7 = aBlock;
     if (aBlock)
     {
-      if (!v6)
+      if (!superview)
       {
-        v8 = [(PKDashboardSearchResultCell *)self contentView];
-        [v8 addSubview:self->_actionButton];
+        contentView = [(PKDashboardSearchResultCell *)self contentView];
+        [contentView addSubview:self->_actionButton];
 
 LABEL_7:
         v7 = aBlock;
       }
     }
 
-    else if (v6)
+    else if (superview)
     {
       [(UIButton *)self->_actionButton removeFromSuperview];
       goto LABEL_7;
@@ -347,22 +347,22 @@ LABEL_7:
     self->_action = v9;
   }
 
-  if (self->_actionButtonType != a4)
+  if (self->_actionButtonType != type)
   {
-    self->_actionButtonType = a4;
-    if (a4 > 2)
+    self->_actionButtonType = type;
+    if (type > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = off_1E8011808[a4];
+      v11 = off_1E8011808[type];
     }
 
     v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11 withConfiguration:self->_actionButtonSymbolConfig];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    v14 = [v12 imageWithTintColor:v13 renderingMode:1];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v14 = [v12 imageWithTintColor:labelColor renderingMode:1];
 
     [(UIButton *)self->_actionButton setImage:v14 forState:0];
   }
@@ -374,12 +374,12 @@ LABEL_7:
 {
   if (self->_showSpinner)
   {
-    v3 = [(UIActivityIndicatorView *)self->_spinner superview];
+    superview = [(UIActivityIndicatorView *)self->_spinner superview];
 
-    if (!v3)
+    if (!superview)
     {
-      v4 = [(PKDashboardSearchResultCell *)self contentView];
-      [v4 addSubview:self->_spinner];
+      contentView = [(PKDashboardSearchResultCell *)self contentView];
+      [contentView addSubview:self->_spinner];
     }
 
     v5 = &OBJC_IVAR___PKDashboardSearchResultCell__actionButton;
@@ -395,21 +395,21 @@ LABEL_7:
     goto LABEL_17;
   }
 
-  v6 = [(UIImageView *)self->_disclosureView superview];
-  if (v6)
+  superview2 = [(UIImageView *)self->_disclosureView superview];
+  if (superview2)
   {
     goto LABEL_10;
   }
 
   if (self->_showDisclosure)
   {
-    v6 = [(PKDashboardSearchResultCell *)self contentView];
-    [v6 addSubview:self->_disclosureView];
+    superview2 = [(PKDashboardSearchResultCell *)self contentView];
+    [superview2 addSubview:self->_disclosureView];
 LABEL_10:
   }
 
-  v7 = [(UIButton *)self->_actionButton superview];
-  if (v7)
+  superview3 = [(UIButton *)self->_actionButton superview];
+  if (superview3)
   {
   }
 
@@ -421,8 +421,8 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v8 = [(PKDashboardSearchResultCell *)self contentView];
-    [v8 addSubview:self->_actionButton];
+    contentView2 = [(PKDashboardSearchResultCell *)self contentView];
+    [contentView2 addSubview:self->_actionButton];
   }
 
   v5 = &OBJC_IVAR___PKDashboardSearchResultCell__spinner;
@@ -432,7 +432,7 @@ LABEL_17:
   [(PKDashboardSearchResultCell *)self setNeedsLayout];
 }
 
-- (void)_actionButtonTapped:(id)a3
+- (void)_actionButtonTapped:(id)tapped
 {
   action = self->_action;
   if (action)
@@ -441,17 +441,17 @@ LABEL_17:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [(PKDashboardSearchResultCell *)self _cellLayoutState];
   [(PKDashboardCollectionViewCell *)self horizontalInset];
   v6 = width + v5 * -2.0;
   v7 = v6 - (0.0 + 0.0);
   [(UILabel *)self->_titleLabel pkui_sizeThatFits:1 forceWordWrap:v7, 1.79769313e308];
   v9 = v8;
-  v10 = [(UILabel *)self->_subtitleLabel text];
-  v11 = [v10 length];
+  text = [(UILabel *)self->_subtitleLabel text];
+  v11 = [text length];
 
   if (v11)
   {
@@ -459,8 +459,8 @@ LABEL_17:
     v9 = v9 + v12 + 2.0;
   }
 
-  v13 = [(UILabel *)self->_detailTextLabel text];
-  v14 = [v13 length];
+  text2 = [(UILabel *)self->_detailTextLabel text];
+  v14 = [text2 length];
 
   if (v14)
   {
@@ -468,7 +468,7 @@ LABEL_17:
     v9 = v9 + v15 + 2.0;
   }
 
-  v16 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
   v17 = 0.0;
   if (v9 >= 0.0)
@@ -476,7 +476,7 @@ LABEL_17:
     v17 = v9;
   }
 
-  if (!v16)
+  if (!image)
   {
     v17 = v9;
   }
@@ -498,8 +498,8 @@ LABEL_17:
   *amount = 0u;
   v48 = 0u;
   [(PKDashboardSearchResultCell *)self _cellLayoutState];
-  v3 = [(PKDashboardSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDashboardSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -516,9 +516,9 @@ LABEL_17:
   v16 = *(MEMORY[0x1E695F050] + 16);
   v46.origin = *MEMORY[0x1E695F050];
   v46.size = v16;
-  v17 = [(UIButton *)self->_actionButton superview];
+  superview = [(UIButton *)self->_actionButton superview];
 
-  if (v17)
+  if (superview)
   {
     v53.origin.x = v12;
     v53.origin.y = v13;
@@ -532,9 +532,9 @@ LABEL_17:
     CGRectDivide(remainder, &v46, &remainder, 8.0, CGRectMaxXEdge);
   }
 
-  v19 = [(UIActivityIndicatorView *)self->_spinner superview];
+  superview2 = [(UIActivityIndicatorView *)self->_spinner superview];
 
-  if (v19)
+  if (superview2)
   {
     [(UIActivityIndicatorView *)self->_spinner frame];
     PKSizeAspectFit();
@@ -555,9 +555,9 @@ LABEL_17:
     CGRectDivide(remainder, &v46, &remainder, v21 + 8.0, CGRectMaxXEdge);
   }
 
-  v23 = [(UIImageView *)self->_disclosureView superview];
+  superview3 = [(UIImageView *)self->_disclosureView superview];
 
-  if (v23)
+  if (superview3)
   {
     [(UIImageView *)self->_disclosureView frame];
     CGRectDivide(remainder, &v46, &remainder, v24, CGRectMaxXEdge);
@@ -568,11 +568,11 @@ LABEL_17:
     CGRectDivide(remainder, &v46, &remainder, 8.0, CGRectMaxXEdge);
   }
 
-  v26 = [(UIImageView *)self->_thumbnailView image];
-  v27 = v26;
-  if (v26)
+  image = [(UIImageView *)self->_thumbnailView image];
+  v27 = image;
+  if (image)
   {
-    [v26 size];
+    [image size];
     PKSizeAspectFit();
     CGRectDivide(remainder, &v46, &remainder, v28, CGRectMinXEdge);
     thumbnailView = self->_thumbnailView;
@@ -585,8 +585,8 @@ LABEL_17:
   v31 = v30;
   v33 = *MEMORY[0x1E695F060];
   v32 = *(MEMORY[0x1E695F060] + 8);
-  v34 = [(UILabel *)self->_subtitleLabel text];
-  v35 = [v34 length];
+  text = [(UILabel *)self->_subtitleLabel text];
+  v35 = [text length];
 
   v36 = v33;
   v37 = v32;
@@ -597,8 +597,8 @@ LABEL_17:
     v37 = v39;
   }
 
-  v40 = [(UILabel *)self->_detailTextLabel text];
-  v41 = [v40 length];
+  text2 = [(UILabel *)self->_detailTextLabel text];
+  v41 = [text2 length];
 
   if (v41)
   {

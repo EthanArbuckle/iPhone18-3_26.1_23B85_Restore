@@ -1,48 +1,48 @@
 @interface CPAccNavInfoType
-+ (id)stringForUpdateClass:(Class)a3 infoType:(unsigned __int16)a4;
++ (id)stringForUpdateClass:(Class)class infoType:(unsigned __int16)type;
 @end
 
 @implementation CPAccNavInfoType
 
-+ (id)stringForUpdateClass:(Class)a3 infoType:(unsigned __int16)a4
++ (id)stringForUpdateClass:(Class)class infoType:(unsigned __int16)type
 {
-  v4 = a4;
-  if (objc_opt_class() == a3)
+  typeCopy = type;
+  if (objc_opt_class() == class)
   {
-    if ((v4 - 1) >= 3)
+    if ((typeCopy - 1) >= 3)
     {
       v6 = @"DisplayComponentID";
       goto LABEL_15;
     }
 
-    v7 = (v4 - 1);
+    v7 = (typeCopy - 1);
     v8 = off_278A10DB8;
     goto LABEL_10;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    if ((v4 - 1) >= 3)
+    if ((typeCopy - 1) >= 3)
     {
       v6 = @"Index";
       goto LABEL_15;
     }
 
-    v7 = (v4 - 1);
+    v7 = (typeCopy - 1);
     v8 = off_278A10DD0;
 LABEL_10:
     v6 = v8[v7];
     goto LABEL_15;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v6 = NSStringFromAccNavManeuverInfoUpdateInfoType(v4);
+    v6 = NSStringFromAccNavManeuverInfoUpdateInfoType(typeCopy);
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
-    v6 = NSStringFromAccNavRouteGuidanceUpdateInfoType(v4);
+    v6 = NSStringFromAccNavRouteGuidanceUpdateInfoType(typeCopy);
   }
 
   else

@@ -1,19 +1,19 @@
 @interface CAFilter
 + (id)filterTypes;
-+ (id)filterWithType:(id)a3;
-+ (void)CAMLParserStartElement:(id)a3;
-- (CAFilter)initWithCoder:(id)a3;
-- (CAFilter)initWithType:(id)a3;
++ (id)filterWithType:(id)type;
++ (void)CAMLParserStartElement:(id)element;
+- (CAFilter)initWithCoder:(id)coder;
+- (CAFilter)initWithType:(id)type;
 - (Object)CA_copyRenderValue;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDefaults;
-- (void)setName:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setName:(id)name;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CAFilter
@@ -66,28 +66,28 @@
     return 0;
   }
 
-  v2 = self;
-  v3 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
-  if (!v3)
+  selfCopy = self;
+  selfCopy2 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
+  if (!selfCopy2)
   {
     self = CA::Transaction::create(self);
-    v3 = self;
+    selfCopy2 = self;
   }
 
-  name_high = HIDWORD(v3[2]._name);
-  HIDWORD(v3[2]._name) = name_high + 1;
+  name_high = HIDWORD(selfCopy2[2]._name);
+  HIDWORD(selfCopy2[2]._name) = name_high + 1;
   if (!name_high)
   {
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  if (!v2->_cache)
+  if (!selfCopy->_cache)
   {
-    attr = v2->_attr;
+    attr = selfCopy->_attr;
     if (attr)
     {
       v6 = -1;
-      v7 = v2->_attr;
+      v7 = selfCopy->_attr;
       do
       {
         v7 = *v7;
@@ -106,7 +106,7 @@
           MEMORY[0x1EEE9AC00](self);
           bzero(&v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0), v8);
           v17 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-          LODWORD(v18) = v2->_type;
+          LODWORD(v18) = selfCopy->_type;
 LABEL_16:
           CA::AttrList::for_each(*attr, copy_attr, &v16);
           if (v16)
@@ -127,10 +127,10 @@ LABEL_37:
         }
 
         v17 = malloc_type_malloc(8 * v6, 0x2004093837F09uLL);
-        LODWORD(v18) = v2->_type;
+        LODWORD(v18) = selfCopy->_type;
         if (v17)
         {
-          attr = v2->_attr;
+          attr = selfCopy->_attr;
           if (!attr)
           {
             goto LABEL_36;
@@ -143,7 +143,7 @@ LABEL_37:
 
     v10 = 0;
 LABEL_19:
-    v11 = CA::Render::String::new_string(v2->_name, a2);
+    v11 = CA::Render::String::new_string(selfCopy->_name, a2);
     if (x_malloc_get_zone::once != -1)
     {
       dispatch_once_f(&x_malloc_get_zone::once, 0, malloc_zone_init);
@@ -153,7 +153,7 @@ LABEL_19:
     v13 = v12;
     if (v12)
     {
-      CA::Render::Filter::Filter(v12, v2->_type, v11, v10);
+      CA::Render::Filter::Filter(v12, selfCopy->_type, v11, v10);
     }
 
     if (v11 && atomic_fetch_add(v11 + 2, 0xFFFFFFFF) == 1)
@@ -166,17 +166,17 @@ LABEL_19:
       (*(*v10 + 16))(v10);
     }
 
-    flags = v2->_flags;
+    flags = selfCopy->_flags;
     if (flags)
     {
       *(v13 + 3) |= flags << 8;
     }
 
-    v2->_cache = v13;
+    selfCopy->_cache = v13;
   }
 
-  CA::Transaction::unlock(v3);
-  result = v2->_cache;
+  CA::Transaction::unlock(selfCopy2);
+  result = selfCopy->_cache;
   if (result)
   {
     p_var1 = &result->var1;
@@ -190,9 +190,9 @@ LABEL_19:
   return result;
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
-  v4 = CAInternAtom(a3, 0);
+  v4 = CAInternAtom(key, 0);
   if (v4 == 87 || v4 == 234)
   {
     return @"BOOL";
@@ -556,24 +556,24 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
-  [a3 setElementAttribute:-[CAFilter type](self forKey:{"type"), @"filter"}];
-  v5 = [(CAFilter *)self name];
-  if (v5)
+  [writer setElementAttribute:-[CAFilter type](self forKey:{"type"), @"filter"}];
+  name = [(CAFilter *)self name];
+  if (name)
   {
-    [a3 setElementAttribute:v5 forKey:@"name"];
+    [writer setElementAttribute:name forKey:@"name"];
   }
 
   if (![(CAFilter *)self isEnabled])
   {
-    [a3 setElementAttribute:@"0" forKey:@"enabled"];
+    [writer setElementAttribute:@"0" forKey:@"enabled"];
   }
 
-  v6 = [(CAFilter *)self cachesInputImage];
-  if (v6)
+  cachesInputImage = [(CAFilter *)self cachesInputImage];
+  if (cachesInputImage)
   {
-    v6 = [a3 setElementAttribute:@"1" forKey:@"cachesInputImage"];
+    cachesInputImage = [writer setElementAttribute:@"1" forKey:@"cachesInputImage"];
   }
 
   if (self->_attr)
@@ -581,7 +581,7 @@ LABEL_19:
     v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v7)
     {
-      v7 = CA::Transaction::create(v6);
+      v7 = CA::Transaction::create(cachesInputImage);
     }
 
     v8 = *(v7 + 29);
@@ -594,14 +594,14 @@ LABEL_19:
     attr = self->_attr;
     if (attr)
     {
-      CA::AttrList::for_each(*attr, write_attr, a3);
+      CA::AttrList::for_each(*attr, write_attr, writer);
     }
 
     CA::Transaction::unlock(v7);
   }
 }
 
-- (CAFilter)initWithCoder:(id)a3
+- (CAFilter)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -609,14 +609,14 @@ LABEL_19:
   v4 = [(CAFilter *)&v11 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CAFilterType"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CAFilterType"];
     if (v5)
     {
       v4->_type = CAInternAtom(v5, 1);
     }
 
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CAFilterName"];
-    if ([a3 containsValueForKey:@"CAFilterEnabled"] && !objc_msgSend(a3, "decodeBoolForKey:", @"CAFilterEnabled"))
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CAFilterName"];
+    if ([coder containsValueForKey:@"CAFilterEnabled"] && !objc_msgSend(coder, "decodeBoolForKey:", @"CAFilterEnabled"))
     {
       v6 = v4->_flags & 0xFFFFFFFE;
     }
@@ -627,7 +627,7 @@ LABEL_19:
     }
 
     v4->_flags = v6;
-    v7 = [a3 CA_decodeObjectForKey:@"CAFilterInputs"];
+    v7 = [coder CA_decodeObjectForKey:@"CAFilterInputs"];
     if (v7)
     {
       v8 = v7;
@@ -642,18 +642,18 @@ LABEL_19:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 encodeObject:CAAtomGetString(self->_type) forKey:@"CAFilterType"];
+  v5 = [coder encodeObject:CAAtomGetString(self->_type) forKey:@"CAFilterType"];
   name = self->_name;
   if (name)
   {
-    v5 = [a3 encodeObject:name forKey:@"CAFilterName"];
+    v5 = [coder encodeObject:name forKey:@"CAFilterName"];
   }
 
   if ((self->_flags & 1) == 0)
   {
-    v5 = [a3 encodeBool:0 forKey:@"CAFilterEnabled"];
+    v5 = [coder encodeBool:0 forKey:@"CAFilterEnabled"];
   }
 
   if (self->_attr)
@@ -680,13 +680,13 @@ LABEL_19:
     }
 
     CA::Transaction::unlock(v7);
-    [a3 CA_encodeObject:v11 forKey:@"CAFilterInputs" conditional:0];
+    [coder CA_encodeObject:v11 forKey:@"CAFilterInputs" conditional:0];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -766,32 +766,32 @@ LABEL_19:
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = CAInternAtom(a3, 1);
+  v4 = CAInternAtom(key, 1);
   v5 = v4;
   if (v4 <= 526)
   {
     if (v4 == 87)
     {
       v6 = MEMORY[0x1E696AD98];
-      v7 = [(CAFilter *)self cachesInputImage];
+      cachesInputImage = [(CAFilter *)self cachesInputImage];
       goto LABEL_18;
     }
 
     if (v4 == 234)
     {
       v6 = MEMORY[0x1E696AD98];
-      v7 = [(CAFilter *)self isEnabled];
+      cachesInputImage = [(CAFilter *)self isEnabled];
 LABEL_18:
 
-      return [v6 numberWithBool:v7];
+      return [v6 numberWithBool:cachesInputImage];
     }
 
     goto LABEL_9;
@@ -842,16 +842,16 @@ LABEL_9:
   return [(CAFilter *)self type];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v17[0] = a3;
-  if (a4)
+  v17[0] = value;
+  if (key)
   {
-    v7 = CAInternAtom(a4, 1);
+    v7 = CAInternAtom(key, 1);
     if (v7 == 87)
     {
-      v10 = *MEMORY[0x1E695E4C0] != a3;
+      v10 = *MEMORY[0x1E695E4C0] != value;
 
       [(CAFilter *)self setCachesInputImage:v10];
     }
@@ -861,7 +861,7 @@ LABEL_9:
       v8 = v7;
       if (v7 == 234)
       {
-        v9 = *MEMORY[0x1E695E4C0] != a3;
+        v9 = *MEMORY[0x1E695E4C0] != value;
 
         [(CAFilter *)self setEnabled:v9];
       }
@@ -869,7 +869,7 @@ LABEL_9:
       else if (v7 == 527)
       {
 
-        [(CAFilter *)self setName:a3];
+        [(CAFilter *)self setName:value];
       }
 
       else
@@ -889,9 +889,9 @@ LABEL_9:
         }
 
         attr = self->_attr;
-        if (!attr || !CA::AttrList::get(attr, v8, 1, &v16) || ([v16 isEqual:a3] & 1) == 0)
+        if (!attr || !CA::AttrList::get(attr, v8, 1, &v16) || ([v16 isEqual:value] & 1) == 0)
         {
-          [(CAFilter *)self willChangeValueForKey:a4];
+          [(CAFilter *)self willChangeValueForKey:key];
           v14 = self->_attr;
           if (!v14)
           {
@@ -915,7 +915,7 @@ LABEL_9:
             self->_cache = 0;
           }
 
-          [(CAFilter *)self didChangeValueForKey:a4];
+          [(CAFilter *)self didChangeValueForKey:key];
         }
 
         CA::Transaction::unlock(v11);
@@ -924,13 +924,13 @@ LABEL_9:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (self->_name != a3)
+  if (self->_name != name)
   {
     [(CAFilter *)self willChangeValueForKey:@"name"];
 
-    self->_name = [a3 copy];
+    self->_name = [name copy];
     cache = self->_cache;
     if (cache)
     {
@@ -946,12 +946,12 @@ LABEL_9:
   }
 }
 
-- (CAFilter)initWithType:(id)a3
+- (CAFilter)initWithType:(id)type
 {
   self->_flags = 1;
-  if (a3)
+  if (type)
   {
-    type = CAInternAtom(a3, 1);
+    type = CAInternAtom(type, 1);
     self->_type = type;
   }
 
@@ -965,14 +965,14 @@ LABEL_9:
   return [(CAFilter *)self init];
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = [a3 attributeForKey:@"filter" remove:1];
+  v4 = [element attributeForKey:@"filter" remove:1];
   if (v4)
   {
     v5 = [CAFilter filterWithType:v4];
 
-    [a3 setElementValue:v5];
+    [element setElementValue:v5];
   }
 
   else
@@ -980,9 +980,9 @@ LABEL_9:
   }
 }
 
-+ (id)filterWithType:(id)a3
++ (id)filterWithType:(id)type
 {
-  v3 = [[a1 alloc] initWithType:a3];
+  v3 = [[self alloc] initWithType:type];
 
   return v3;
 }

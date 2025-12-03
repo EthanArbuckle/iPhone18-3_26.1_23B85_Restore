@@ -1,36 +1,36 @@
 @interface CSSiriMobileBluetoothDeviceDataSource
 - (CSSiriMobileBluetoothDeviceDataSource)init;
 - (id)_deviceProxies;
-- (id)_deviceProxyWithAddress:(id)a3 createsIfAbsent:(BOOL)a4;
-- (id)_deviceProxyWithUID:(id)a3 createsIfAbsent:(BOOL)a4;
-- (id)deviceWithAddress:(id)a3;
-- (id)deviceWithUID:(id)a3;
+- (id)_deviceProxyWithAddress:(id)address createsIfAbsent:(BOOL)absent;
+- (id)_deviceProxyWithUID:(id)d createsIfAbsent:(BOOL)absent;
+- (id)deviceWithAddress:(id)address;
+- (id)deviceWithUID:(id)d;
 - (void)_attachToSession;
 - (void)_cleanUpDeviceProxies;
 - (void)_detachFromSession;
-- (void)_reloadForDevice:(BTDeviceImpl *)a3;
-- (void)_sessionAttached:(BTSessionImpl *)a3 result:(int)a4;
-- (void)_sessionDetached:(BTSessionImpl *)a3;
-- (void)_sessionTerminated:(BTSessionImpl *)a3;
+- (void)_reloadForDevice:(BTDeviceImpl *)device;
+- (void)_sessionAttached:(BTSessionImpl *)attached result:(int)result;
+- (void)_sessionDetached:(BTSessionImpl *)detached;
+- (void)_sessionTerminated:(BTSessionImpl *)terminated;
 - (void)_setUpAccessoryManager;
 - (void)_setUpLocalDevice;
 - (void)_tearDownAccessoryManager;
 - (void)_tearDownLocalDevice;
-- (void)accessoryManager:(BTAccessoryManagerImpl *)a3 event:(int)a4 device:(BTDeviceImpl *)a5 state:(int)a6;
-- (void)getBTDeviceWithAddress:(id)a3 completion:(id)a4;
-- (void)getBTDeviceWithDeviceUID:(id)a3 completion:(id)a4;
-- (void)getBTLocalDeviceWithCompletion:(id)a3;
+- (void)accessoryManager:(BTAccessoryManagerImpl *)manager event:(int)event device:(BTDeviceImpl *)device state:(int)state;
+- (void)getBTDeviceWithAddress:(id)address completion:(id)completion;
+- (void)getBTDeviceWithDeviceUID:(id)d completion:(id)completion;
+- (void)getBTLocalDeviceWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)localDevice:(BTLocalDeviceImpl *)a3 event:(int)a4 result:(int)a5;
+- (void)localDevice:(BTLocalDeviceImpl *)device event:(int)event result:(int)result;
 @end
 
 @implementation CSSiriMobileBluetoothDeviceDataSource
 
-- (id)_deviceProxyWithUID:(id)a3 createsIfAbsent:(BOOL)a4
+- (id)_deviceProxyWithUID:(id)d createsIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID objectForKey:v6];
+  absentCopy = absent;
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID objectForKey:dCopy];
   if (v7)
   {
     v8 = 1;
@@ -38,23 +38,23 @@
 
   else
   {
-    v8 = !v4;
+    v8 = !absentCopy;
   }
 
   if (!v8)
   {
-    v7 = [[CSSiriMobileBluetoothDeviceProxy alloc] initWithDeviceUID:v6 dataSource:self queue:self->_queue];
-    [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID setObject:v7 forKey:v6];
+    v7 = [[CSSiriMobileBluetoothDeviceProxy alloc] initWithDeviceUID:dCopy dataSource:self queue:self->_queue];
+    [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID setObject:v7 forKey:dCopy];
   }
 
   return v7;
 }
 
-- (id)_deviceProxyWithAddress:(id)a3 createsIfAbsent:(BOOL)a4
+- (id)_deviceProxyWithAddress:(id)address createsIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_deviceProxiesByAddress objectForKey:v6];
+  absentCopy = absent;
+  addressCopy = address;
+  v7 = [(NSMutableDictionary *)self->_deviceProxiesByAddress objectForKey:addressCopy];
   if (v7)
   {
     v8 = 1;
@@ -62,43 +62,43 @@
 
   else
   {
-    v8 = !v4;
+    v8 = !absentCopy;
   }
 
   if (!v8)
   {
-    v7 = [[CSSiriMobileBluetoothDeviceProxy alloc] initWithAddress:v6 dataSource:self queue:self->_queue];
-    [(NSMutableDictionary *)self->_deviceProxiesByAddress setObject:v7 forKey:v6];
+    v7 = [[CSSiriMobileBluetoothDeviceProxy alloc] initWithAddress:addressCopy dataSource:self queue:self->_queue];
+    [(NSMutableDictionary *)self->_deviceProxiesByAddress setObject:v7 forKey:addressCopy];
   }
 
   return v7;
 }
 
-- (id)deviceWithUID:(id)a3
+- (id)deviceWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_deviceProxiesLock);
-  v5 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxyWithUID:v4 createsIfAbsent:1];
+  v5 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxyWithUID:dCopy createsIfAbsent:1];
 
   os_unfair_lock_unlock(&self->_deviceProxiesLock);
 
   return v5;
 }
 
-- (id)deviceWithAddress:(id)a3
+- (id)deviceWithAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   os_unfair_lock_lock(&self->_deviceProxiesLock);
-  v5 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxyWithAddress:v4 createsIfAbsent:1];
+  v5 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxyWithAddress:addressCopy createsIfAbsent:1];
 
   os_unfair_lock_unlock(&self->_deviceProxiesLock);
 
   return v5;
 }
 
-- (void)getBTLocalDeviceWithCompletion:(id)a3
+- (void)getBTLocalDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sessionSetupGroup = self->_sessionSetupGroup;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -106,8 +106,8 @@
   v8[2] = __72__CSSiriMobileBluetoothDeviceDataSource_getBTLocalDeviceWithCompletion___block_invoke;
   v8[3] = &unk_2784C6E98;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_group_notify(sessionSetupGroup, queue, v8);
 }
 
@@ -145,10 +145,10 @@ uint64_t __72__CSSiriMobileBluetoothDeviceDataSource_getBTLocalDeviceWithComplet
   return result;
 }
 
-- (void)getBTDeviceWithDeviceUID:(id)a3 completion:(id)a4
+- (void)getBTDeviceWithDeviceUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   sessionSetupGroup = self->_sessionSetupGroup;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -156,10 +156,10 @@ uint64_t __72__CSSiriMobileBluetoothDeviceDataSource_getBTLocalDeviceWithComplet
   block[2] = __77__CSSiriMobileBluetoothDeviceDataSource_getBTDeviceWithDeviceUID_completion___block_invoke;
   block[3] = &unk_2784C6C68;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
   dispatch_group_notify(sessionSetupGroup, queue, block);
 }
 
@@ -229,10 +229,10 @@ uint64_t __77__CSSiriMobileBluetoothDeviceDataSource_getBTDeviceWithDeviceUID_co
   return result;
 }
 
-- (void)getBTDeviceWithAddress:(id)a3 completion:(id)a4
+- (void)getBTDeviceWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   sessionSetupGroup = self->_sessionSetupGroup;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -240,10 +240,10 @@ uint64_t __77__CSSiriMobileBluetoothDeviceDataSource_getBTDeviceWithDeviceUID_co
   block[2] = __75__CSSiriMobileBluetoothDeviceDataSource_getBTDeviceWithAddress_completion___block_invoke;
   block[3] = &unk_2784C6C68;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = addressCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   dispatch_group_notify(sessionSetupGroup, queue, block);
 }
 
@@ -337,35 +337,35 @@ LABEL_9:
 - (id)_deviceProxies
 {
   os_unfair_lock_lock(&self->_deviceProxiesLock);
-  v3 = [(NSMutableDictionary *)self->_deviceProxiesByAddress allValues];
-  v4 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID allValues];
+  allValues = [(NSMutableDictionary *)self->_deviceProxiesByAddress allValues];
+  allValues2 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID allValues];
   os_unfair_lock_unlock(&self->_deviceProxiesLock);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v3 count])
+  if ([allValues count])
   {
-    [v5 addObjectsFromArray:v3];
+    [v5 addObjectsFromArray:allValues];
   }
 
-  if ([v4 count])
+  if ([allValues2 count])
   {
-    [v5 addObjectsFromArray:v4];
+    [v5 addObjectsFromArray:allValues2];
   }
 
   return v5;
 }
 
-- (void)_reloadForDevice:(BTDeviceImpl *)a3
+- (void)_reloadForDevice:(BTDeviceImpl *)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = _CSSiriBTDeviceGetAddress(a3);
+  v4 = _CSSiriBTDeviceGetAddress(device);
   if (v4)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxies];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    _deviceProxies = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxies];
+    v6 = [_deviceProxies countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -377,7 +377,7 @@ LABEL_9:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_deviceProxies);
           }
 
           v10 = *(*(&v15 + 1) + 8 * v9);
@@ -393,7 +393,7 @@ LABEL_9:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [_deviceProxies countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -416,7 +416,7 @@ void __58__CSSiriMobileBluetoothDeviceDataSource__reloadForDevice___block_invoke
   }
 }
 
-- (void)accessoryManager:(BTAccessoryManagerImpl *)a3 event:(int)a4 device:(BTDeviceImpl *)a5 state:(int)a6
+- (void)accessoryManager:(BTAccessoryManagerImpl *)manager event:(int)event device:(BTDeviceImpl *)device state:(int)state
 {
   v26 = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277CEF0A0];
@@ -425,13 +425,13 @@ void __58__CSSiriMobileBluetoothDeviceDataSource__reloadForDevice___block_invoke
     *buf = 136316162;
     v17 = "[CSSiriMobileBluetoothDeviceDataSource accessoryManager:event:device:state:]";
     v18 = 2048;
-    v19 = a3;
+    managerCopy = manager;
     v20 = 1024;
-    v21 = a4;
+    eventCopy = event;
     v22 = 2048;
-    v23 = a5;
+    deviceCopy = device;
     v24 = 1024;
-    v25 = a6;
+    stateCopy = state;
     _os_log_impl(&dword_222E4D000, v11, OS_LOG_TYPE_INFO, "%s accessoryManager = %p, accessoryEvent = %d, device = %p, state = %d", buf, 0x2Cu);
   }
 
@@ -441,9 +441,9 @@ void __58__CSSiriMobileBluetoothDeviceDataSource__reloadForDevice___block_invoke
   v14[2] = __77__CSSiriMobileBluetoothDeviceDataSource_accessoryManager_event_device_state___block_invoke;
   v14[3] = &unk_2784C5C68;
   v14[4] = self;
-  v14[5] = a3;
-  v15 = a4;
-  v14[6] = a5;
+  v14[5] = manager;
+  eventCopy2 = event;
+  v14[6] = device;
   dispatch_async(queue, v14);
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -542,7 +542,7 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localDevice:(BTLocalDeviceImpl *)a3 event:(int)a4 result:(int)a5
+- (void)localDevice:(BTLocalDeviceImpl *)device event:(int)event result:(int)result
 {
   v22 = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277CEF0A0];
@@ -551,11 +551,11 @@ LABEL_10:
     *buf = 136315906;
     v15 = "[CSSiriMobileBluetoothDeviceDataSource localDevice:event:result:]";
     v16 = 2048;
-    v17 = a3;
+    deviceCopy = device;
     v18 = 1024;
-    v19 = a4;
+    eventCopy = event;
     v20 = 1024;
-    v21 = a5;
+    resultCopy = result;
     _os_log_impl(&dword_222E4D000, v9, OS_LOG_TYPE_INFO, "%s localDevice = %p, event = %d, result = %d", buf, 0x22u);
   }
 
@@ -565,8 +565,8 @@ LABEL_10:
   block[2] = __66__CSSiriMobileBluetoothDeviceDataSource_localDevice_event_result___block_invoke;
   block[3] = &unk_2784C5F40;
   block[4] = self;
-  block[5] = a3;
-  v13 = a4;
+  block[5] = device;
+  eventCopy2 = event;
   dispatch_async(queue, block);
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -665,7 +665,7 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sessionTerminated:(BTSessionImpl *)a3
+- (void)_sessionTerminated:(BTSessionImpl *)terminated
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF0A0];
@@ -674,11 +674,11 @@ LABEL_10:
     v7 = 136315394;
     v8 = "[CSSiriMobileBluetoothDeviceDataSource _sessionTerminated:]";
     v9 = 2048;
-    v10 = a3;
+    terminatedCopy = terminated;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_INFO, "%s session = %p", &v7, 0x16u);
   }
 
-  if (self->_session == a3)
+  if (self->_session == terminated)
   {
     [(CSSiriMobileBluetoothDeviceDataSource *)self _tearDownAccessoryManager];
     [(CSSiriMobileBluetoothDeviceDataSource *)self _tearDownLocalDevice];
@@ -694,7 +694,7 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sessionDetached:(BTSessionImpl *)a3
+- (void)_sessionDetached:(BTSessionImpl *)detached
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF0A0];
@@ -703,11 +703,11 @@ LABEL_10:
     v7 = 136315394;
     v8 = "[CSSiriMobileBluetoothDeviceDataSource _sessionDetached:]";
     v9 = 2048;
-    v10 = a3;
+    detachedCopy = detached;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_INFO, "%s session = %p", &v7, 0x16u);
   }
 
-  if (self->_session == a3)
+  if (self->_session == detached)
   {
     [(CSSiriMobileBluetoothDeviceDataSource *)self _cleanUpDeviceProxies];
     [(CSSiriMobileBluetoothDeviceDataSource *)self _tearDownAccessoryManager];
@@ -722,7 +722,7 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sessionAttached:(BTSessionImpl *)a3 result:(int)a4
+- (void)_sessionAttached:(BTSessionImpl *)attached result:(int)result
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CEF0A0];
@@ -731,18 +731,18 @@ LABEL_10:
     *buf = 136315650;
     v20 = "[CSSiriMobileBluetoothDeviceDataSource _sessionAttached:result:]";
     v21 = 2048;
-    v22 = a3;
+    attachedCopy = attached;
     v23 = 1024;
-    v24 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_INFO, "%s session = %p, result = %d", buf, 0x1Cu);
   }
 
   self->_attachingToSession = 0;
-  if (!a4)
+  if (!result)
   {
     [(CSSiriMobileBluetoothDeviceDataSource *)self _detachFromSession];
-    self->_session = a3;
-    if (a3)
+    self->_session = attached;
+    if (attached)
     {
       BTServiceAddCallbacks();
     }
@@ -753,8 +753,8 @@ LABEL_10:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxies];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _deviceProxies = [(CSSiriMobileBluetoothDeviceDataSource *)self _deviceProxies];
+    v9 = [_deviceProxies countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -766,14 +766,14 @@ LABEL_10:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_deviceProxies);
           }
 
           [*(*(&v14 + 1) + 8 * v12++) reload];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [_deviceProxies countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -881,16 +881,16 @@ LABEL_7:
   }
 
   os_unfair_lock_lock(&self->_deviceProxiesLock);
-  v4 = [(NSMutableDictionary *)self->_deviceProxiesByAddress allValues];
+  allValues = [(NSMutableDictionary *)self->_deviceProxiesByAddress allValues];
   [(NSMutableDictionary *)self->_deviceProxiesByAddress removeAllObjects];
-  v5 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID allValues];
+  allValues2 = [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID allValues];
   [(NSMutableDictionary *)self->_deviceProxiesByDeviceUID removeAllObjects];
   os_unfair_lock_unlock(&self->_deviceProxiesLock);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -920,7 +920,7 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v5;
+  v11 = allValues2;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {

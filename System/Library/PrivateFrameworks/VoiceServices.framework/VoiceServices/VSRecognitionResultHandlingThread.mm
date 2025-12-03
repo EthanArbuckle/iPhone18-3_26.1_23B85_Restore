@@ -1,11 +1,11 @@
 @interface VSRecognitionResultHandlingThread
 - (VSRecognitionResultHandlingThread)init;
 - (void)_handleRequests;
-- (void)_notifyRequestHandled:(id)a3;
+- (void)_notifyRequestHandled:(id)handled;
 - (void)dealloc;
-- (void)handleResults:(id)a3 withHandler:(id)a4;
+- (void)handleResults:(id)results withHandler:(id)handler;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VSRecognitionResultHandlingThread
@@ -42,17 +42,17 @@
     [(NSConditionLock *)self->_lock unlockWithCondition:v7];
     if (v5)
     {
-      v8 = [v5 handler];
+      handler = [v5 handler];
       v9 = objc_opt_respondsToSelector();
-      v10 = [v5 results];
+      results = [v5 results];
       if (v9)
       {
-        v11 = [v8 actionForRecognitionResults:v10];
+        v11 = [handler actionForRecognitionResults:results];
       }
 
       else
       {
-        v11 = [v8 actionForRecognitionResult:{objc_msgSend(v10, "lastObject")}];
+        v11 = [handler actionForRecognitionResult:{objc_msgSend(results, "lastObject")}];
       }
 
       [v5 setNextAction:v11];
@@ -63,15 +63,15 @@
   while ((resultHandlingFlags & 4) != 0);
 }
 
-- (void)_notifyRequestHandled:(id)a3
+- (void)_notifyRequestHandled:(id)handled
 {
   if ((~*&self->_resultHandlingFlags & 6) == 0)
   {
     delegate = self->_delegate;
-    v7 = [a3 results];
-    v8 = [a3 nextAction];
+    results = [handled results];
+    nextAction = [handled nextAction];
 
-    [(VSRecognitionResultHandlingThreadDelegate *)delegate recognitionResultHandlingThread:self didHandleResults:v7 nextAction:v8];
+    [(VSRecognitionResultHandlingThreadDelegate *)delegate recognitionResultHandlingThread:self didHandleResults:results nextAction:nextAction];
   }
 }
 
@@ -87,11 +87,11 @@
   }
 }
 
-- (void)handleResults:(id)a3 withHandler:(id)a4
+- (void)handleResults:(id)results withHandler:(id)handler
 {
   if ((*&self->_resultHandlingFlags & 4) != 0)
   {
-    v7 = [[VSRecognitionResultHandlingRequest alloc] initWithHandler:a4 results:a3];
+    v7 = [[VSRecognitionResultHandlingRequest alloc] initWithHandler:handler results:results];
     [(NSConditionLock *)self->_lock lock];
     requests = self->_requests;
     if (!requests)
@@ -111,11 +111,11 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     if (objc_opt_respondsToSelector())
     {
       v4 = 2;

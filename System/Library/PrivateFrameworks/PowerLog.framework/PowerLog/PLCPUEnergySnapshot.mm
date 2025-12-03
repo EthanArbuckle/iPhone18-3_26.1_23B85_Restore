@@ -2,48 +2,48 @@
 + (NSMutableDictionary)coalitionIDToCoalitionNameMapping;
 + (NSMutableDictionary)identifierToAccountingName;
 + (NSMutableDictionary)identifierToCoalitionID;
-+ (void)setCoalitionIDToCoalitionNameMapping:(id)a3;
-+ (void)setIdentifierToAccountingName:(id)a3;
-+ (void)setIdentifierToCoalitionID:(id)a3;
-- (BOOL)snapshotCPUEnergy:(id)a3;
-- (PLCPUEnergySnapshot)initWithIdentifier:(id)a3 andMockData:(id)a4;
-- (double)computeEnergyDiff:(id)a3;
-- (double)computeEnergyDiffUntilNow:(id)a3 andAdjustSnapshotToNow:(BOOL)a4;
-- (id)getCoalitionIDForIdentifier:(id)a3;
-- (id)searchCoalitionsCacheForID:(id)a3;
++ (void)setCoalitionIDToCoalitionNameMapping:(id)mapping;
++ (void)setIdentifierToAccountingName:(id)name;
++ (void)setIdentifierToCoalitionID:(id)d;
+- (BOOL)snapshotCPUEnergy:(id)energy;
+- (PLCPUEnergySnapshot)initWithIdentifier:(id)identifier andMockData:(id)data;
+- (double)computeEnergyDiff:(id)diff;
+- (double)computeEnergyDiffUntilNow:(id)now andAdjustSnapshotToNow:(BOOL)toNow;
+- (id)getCoalitionIDForIdentifier:(id)identifier;
+- (id)searchCoalitionsCacheForID:(id)d;
 - (void)refreshCoalitionIDMapping;
 @end
 
 @implementation PLCPUEnergySnapshot
 
-- (PLCPUEnergySnapshot)initWithIdentifier:(id)a3 andMockData:(id)a4
+- (PLCPUEnergySnapshot)initWithIdentifier:(id)identifier andMockData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = PLCPUEnergySnapshot;
   v8 = [(PLCPUEnergySnapshot *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PLCPUEnergySnapshot *)v8 setMockData:v7];
-    [(PLCPUEnergySnapshot *)v9 snapshotCPUEnergy:v6];
+    [(PLCPUEnergySnapshot *)v8 setMockData:dataCopy];
+    [(PLCPUEnergySnapshot *)v9 snapshotCPUEnergy:identifierCopy];
   }
 
   return v9;
 }
 
-- (double)computeEnergyDiffUntilNow:(id)a3 andAdjustSnapshotToNow:(BOOL)a4
+- (double)computeEnergyDiffUntilNow:(id)now andAdjustSnapshotToNow:(BOOL)toNow
 {
-  v4 = a4;
-  v6 = a3;
+  toNowCopy = toNow;
+  nowCopy = now;
   v7 = [PLCPUEnergySnapshot alloc];
-  v8 = [(PLCPUEnergySnapshot *)self mockData];
-  v9 = [(PLCPUEnergySnapshot *)v7 initWithIdentifier:v6 andMockData:v8];
+  mockData = [(PLCPUEnergySnapshot *)self mockData];
+  v9 = [(PLCPUEnergySnapshot *)v7 initWithIdentifier:nowCopy andMockData:mockData];
 
   [(PLCPUEnergySnapshot *)v9 computeEnergyDiff:self];
   v11 = v10;
-  if (v4)
+  if (toNowCopy)
   {
     v12 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -64,9 +64,9 @@
   return v11;
 }
 
-- (double)computeEnergyDiff:(id)a3
+- (double)computeEnergyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v5 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -76,17 +76,17 @@
   v6 = 0.0;
   if ([(PLCPUEnergySnapshot *)self isValid])
   {
-    if ([v4 isValid])
+    if ([diffCopy isValid])
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergy](self, "cpuEnergy") - objc_msgSend(v4, "cpuEnergy")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergy](self, "cpuEnergy") - objc_msgSend(diffCopy, "cpuEnergy")}];
       [v7 doubleValue];
       v9 = v8;
 
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergyBilledToMe](self, "cpuEnergyBilledToMe") - objc_msgSend(v4, "cpuEnergyBilledToMe")}];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergyBilledToMe](self, "cpuEnergyBilledToMe") - objc_msgSend(diffCopy, "cpuEnergyBilledToMe")}];
       [v10 doubleValue];
       v12 = v11;
 
-      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergyBilledToOthers](self, "cpuEnergyBilledToOthers") - objc_msgSend(v4, "cpuEnergyBilledToOthers")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLCPUEnergySnapshot cpuEnergyBilledToOthers](self, "cpuEnergyBilledToOthers") - objc_msgSend(diffCopy, "cpuEnergyBilledToOthers")}];
       [v13 doubleValue];
       v15 = v14;
 
@@ -108,18 +108,18 @@
   return v6;
 }
 
-- (BOOL)snapshotCPUEnergy:(id)a3
+- (BOOL)snapshotCPUEnergy:(id)energy
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLCPUEnergySnapshot *)self mockData];
-  v6 = [v5 objectForKeyedSubscript:@"CPUCoalitionsMock"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  energyCopy = energy;
+  mockData = [(PLCPUEnergySnapshot *)self mockData];
+  v6 = [mockData objectForKeyedSubscript:@"CPUCoalitionsMock"];
+  v7 = [v6 objectForKeyedSubscript:energyCopy];
 
   if (!v7)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0];
-    v11 = [(PLCPUEnergySnapshot *)self getCoalitionIDForIdentifier:v4];
+    v11 = [(PLCPUEnergySnapshot *)self getCoalitionIDForIdentifier:energyCopy];
 
     if ([v11 unsignedLongLongValue])
     {
@@ -167,7 +167,7 @@ LABEL_14:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v20 = 138412546;
-    v21 = v4;
+    v21 = energyCopy;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&dword_1BACB7000, v8, OS_LOG_TYPE_INFO, "Reading mock coalitions data for identifier=%@, mockDataForIdentifier=%@", &v20, 0x16u);
@@ -200,13 +200,13 @@ LABEL_17:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getCoalitionIDForIdentifier:(id)a3
+- (id)getCoalitionIDForIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0];
   v6 = +[PLCPUEnergySnapshot identifierToCoalitionID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:identifierCopy];
 
   if (v7)
   {
@@ -217,12 +217,12 @@ LABEL_17:
     }
 
     v9 = +[PLCPUEnergySnapshot identifierToCoalitionID];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    v10 = [v9 objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v11 = [(PLCPUEnergySnapshot *)self searchCoalitionsCacheForID:v4];
+    v11 = [(PLCPUEnergySnapshot *)self searchCoalitionsCacheForID:identifierCopy];
 
     if (![v11 unsignedLongLongValue])
     {
@@ -230,12 +230,12 @@ LABEL_17:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v4;
+        v19 = identifierCopy;
         _os_log_impl(&dword_1BACB7000, v12, OS_LOG_TYPE_INFO, "coalitionID not found, refreshing coalition mapping and searching again for identifier=%@", &v18, 0xCu);
       }
 
       [(PLCPUEnergySnapshot *)self refreshCoalitionIDMapping];
-      v13 = [(PLCPUEnergySnapshot *)self searchCoalitionsCacheForID:v4];
+      v13 = [(PLCPUEnergySnapshot *)self searchCoalitionsCacheForID:identifierCopy];
 
       v11 = v13;
     }
@@ -252,7 +252,7 @@ LABEL_17:
     if ([v11 unsignedLongLongValue])
     {
       v15 = +[PLCPUEnergySnapshot identifierToCoalitionID];
-      [v15 setObject:v11 forKeyedSubscript:v4];
+      [v15 setObject:v11 forKeyedSubscript:identifierCopy];
     }
 
     v5 = v11;
@@ -264,9 +264,9 @@ LABEL_17:
   return v10;
 }
 
-- (id)searchCoalitionsCacheForID:(id)a3
+- (id)searchCoalitionsCacheForID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -284,7 +284,7 @@ LABEL_17:
   v9[1] = 3221225472;
   v9[2] = __50__PLCPUEnergySnapshot_searchCoalitionsCacheForID___block_invoke;
   v9[3] = &unk_1E7F18690;
-  v6 = v3;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
@@ -374,11 +374,11 @@ void __50__PLCPUEnergySnapshot_searchCoalitionsCacheForID___block_invoke(uint64_
   return v2;
 }
 
-+ (void)setIdentifierToCoalitionID:(id)a3
++ (void)setIdentifierToCoalitionID:(id)d
 {
-  if (_identifierToCoalitionID != a3)
+  if (_identifierToCoalitionID != d)
   {
-    _identifierToCoalitionID = [a3 mutableCopy];
+    _identifierToCoalitionID = [d mutableCopy];
 
     MEMORY[0x1EEE66BB8]();
   }
@@ -399,11 +399,11 @@ void __50__PLCPUEnergySnapshot_searchCoalitionsCacheForID___block_invoke(uint64_
   return v2;
 }
 
-+ (void)setCoalitionIDToCoalitionNameMapping:(id)a3
++ (void)setCoalitionIDToCoalitionNameMapping:(id)mapping
 {
-  if (_coalitionIDToCoalitionNameMapping != a3)
+  if (_coalitionIDToCoalitionNameMapping != mapping)
   {
-    _coalitionIDToCoalitionNameMapping = [a3 mutableCopy];
+    _coalitionIDToCoalitionNameMapping = [mapping mutableCopy];
 
     MEMORY[0x1EEE66BB8]();
   }
@@ -424,11 +424,11 @@ void __50__PLCPUEnergySnapshot_searchCoalitionsCacheForID___block_invoke(uint64_
   return v2;
 }
 
-+ (void)setIdentifierToAccountingName:(id)a3
++ (void)setIdentifierToAccountingName:(id)name
 {
-  if (_identifierToAccountingName != a3)
+  if (_identifierToAccountingName != name)
   {
-    _identifierToAccountingName = [a3 mutableCopy];
+    _identifierToAccountingName = [name mutableCopy];
 
     MEMORY[0x1EEE66BB8]();
   }

@@ -1,79 +1,79 @@
 @interface ADStatusConditions
-+ (void)clearStatusCondition:(id)a3 completionHandler:(id)a4;
-+ (void)isStatusConditionRegistered:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5;
-+ (void)setStatusCondition:(id)a3 completionHandler:(id)a4;
++ (void)clearStatusCondition:(id)condition completionHandler:(id)handler;
++ (void)isStatusConditionRegistered:(id)registered bundleIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)setStatusCondition:(id)condition completionHandler:(id)handler;
 @end
 
 @implementation ADStatusConditions
 
-+ (void)setStatusCondition:(id)a3 completionHandler:(id)a4
++ (void)setStatusCondition:(id)condition completionHandler:(id)handler
 {
-  v7 = a3;
-  v5 = a4;
-  if (v7)
+  conditionCopy = condition;
+  handlerCopy = handler;
+  if (conditionCopy)
   {
     v6 = objc_alloc_init(ADStatusConditionsImpl);
-    [(ADStatusConditionsImpl *)v6 setStatusCondition:v7 completionHandler:v5];
+    [(ADStatusConditionsImpl *)v6 setStatusCondition:conditionCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    if (!v5)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1102 userInfo:0];
-    v5[2](v5, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 
 LABEL_6:
 }
 
-+ (void)clearStatusCondition:(id)a3 completionHandler:(id)a4
++ (void)clearStatusCondition:(id)condition completionHandler:(id)handler
 {
-  v7 = a3;
-  v5 = a4;
-  if (v7)
+  conditionCopy = condition;
+  handlerCopy = handler;
+  if (conditionCopy)
   {
     v6 = objc_alloc_init(ADStatusConditionsImpl);
-    [(ADStatusConditionsImpl *)v6 clearStatusCondition:v7 completionHandler:v5];
+    [(ADStatusConditionsImpl *)v6 clearStatusCondition:conditionCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    if (!v5)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1102 userInfo:0];
-    v5[2](v5, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 
 LABEL_6:
 }
 
-+ (void)isStatusConditionRegistered:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5
++ (void)isStatusConditionRegistered:(id)registered bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v10 && v7)
+  registeredCopy = registered;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (registeredCopy && identifierCopy)
   {
     v9 = objc_alloc_init(ADStatusConditionsImpl);
-    [(ADStatusConditionsImpl *)v9 isStatusConditionRegistered:v10 bundleIdentifier:v7 completionHandler:v8];
+    [(ADStatusConditionsImpl *)v9 isStatusConditionRegistered:registeredCopy bundleIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_7;
     }
 
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1102 userInfo:0];
-    v8[2](v8, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
 LABEL_7:

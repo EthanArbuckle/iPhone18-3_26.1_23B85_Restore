@@ -1,5 +1,5 @@
 @interface WBSTabDialog
-+ (id)tabDialogWithPresentationBlock:(id)a3 dismissalBlock:(id)a4;
++ (id)tabDialogWithPresentationBlock:(id)block dismissalBlock:(id)dismissalBlock;
 - (WBSTabDialog)init;
 - (id)_init;
 - (id)createInfo;
@@ -7,21 +7,21 @@
 
 @implementation WBSTabDialog
 
-+ (id)tabDialogWithPresentationBlock:(id)a3 dismissalBlock:(id)a4
++ (id)tabDialogWithPresentationBlock:(id)block dismissalBlock:(id)dismissalBlock
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _init];
-  v9 = MEMORY[0x1BFB13CE0](v7);
+  dismissalBlockCopy = dismissalBlock;
+  blockCopy = block;
+  _init = [[self alloc] _init];
+  v9 = MEMORY[0x1BFB13CE0](blockCopy);
 
-  v10 = v8[1];
-  v8[1] = v9;
+  v10 = _init[1];
+  _init[1] = v9;
 
-  v11 = MEMORY[0x1BFB13CE0](v6);
-  v12 = v8[2];
-  v8[2] = v11;
+  v11 = MEMORY[0x1BFB13CE0](dismissalBlockCopy);
+  v12 = _init[2];
+  _init[2] = v11;
 
-  return v8;
+  return _init;
 }
 
 - (id)_init

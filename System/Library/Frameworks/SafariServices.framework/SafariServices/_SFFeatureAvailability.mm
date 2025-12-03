@@ -1,10 +1,10 @@
 @interface _SFFeatureAvailability
-+ (BOOL)_isEligibleForDomain:(unint64_t)a3;
++ (BOOL)_isEligibleForDomain:(unint64_t)domain;
 @end
 
 @implementation _SFFeatureAvailability
 
-+ (BOOL)_isEligibleForDomain:(unint64_t)a3
++ (BOOL)_isEligibleForDomain:(unint64_t)domain
 {
   domain_answer = os_eligibility_get_domain_answer();
   v4 = WBS_LOG_CHANNEL_PREFIXViewService();

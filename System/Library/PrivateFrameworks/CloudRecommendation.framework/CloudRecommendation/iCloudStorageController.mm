@@ -1,28 +1,28 @@
 @interface iCloudStorageController
-- (iCloudStorageController)initWithAccount:(id)a3;
-- (void)fetchStorageSummary:(id)a3;
+- (iCloudStorageController)initWithAccount:(id)account;
+- (void)fetchStorageSummary:(id)summary;
 @end
 
 @implementation iCloudStorageController
 
-- (iCloudStorageController)initWithAccount:(id)a3
+- (iCloudStorageController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = iCloudStorageController;
   v6 = [(iCloudStorageController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (void)fetchStorageSummary:(id)a3
+- (void)fetchStorageSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -53,7 +53,7 @@
   v9[2] = __47__iCloudStorageController_fetchStorageSummary___block_invoke;
   v9[3] = &unk_278DE0480;
   v9[4] = self;
-  v8 = v4;
+  v8 = summaryCopy;
   v10 = v8;
   v11 = &v12;
   [v7 fetchStorageSummaryWithCompletion:v9];

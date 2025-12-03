@@ -1,28 +1,28 @@
 @interface HUUtilityOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUUtilityOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)determineNextViewControllerFromResults:(id)a3;
-- (id)processUserInput:(id)a3;
-- (id)processUserInputWithState:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUUtilityOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)determineNextViewControllerFromResults:(id)results;
+- (id)processUserInput:(id)input;
+- (id)processUserInputWithState:(id)state;
 - (void)_setThisUserDismissedOnboarding;
-- (void)updateState:(unint64_t)a3;
+- (void)updateState:(unint64_t)state;
 @end
 
 @implementation HUUtilityOnboardingFlow
 
-- (HUUtilityOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUUtilityOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v21.receiver = self;
   v21.super_class = HUUtilityOnboardingFlow;
   v8 = [(HUUtilityOnboardingFlow *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     v9->_currentState = 0;
-    v10 = [[_TtC6HomeUI24UtilityOnboardingContext alloc] initWithHome:v7];
+    v10 = [[_TtC6HomeUI24UtilityOnboardingContext alloc] initWithHome:homeCopy];
     context = v9->_context;
     v9->_context = v10;
 
@@ -67,18 +67,18 @@ void __53__HUUtilityOnboardingFlow_initWithUsageOptions_home___block_invoke(uint
   v7 = @"HUHomeFeatureOnboardingKey_UtilityDiscovery_FinishedOnboarding";
   v8[0] = MEMORY[0x277CBEC38];
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [(HUUtilityOnboardingFlow *)self home];
-  v5 = [HUHomeFeatureOnboardingUtilities home:v4 processHomeFeatureOnboarderResults:v3];
+  home = [(HUUtilityOnboardingFlow *)self home];
+  v5 = [HUHomeFeatureOnboardingUtilities home:home processHomeFeatureOnboarderResults:v3];
 
-  v6 = [(HUUtilityOnboardingFlow *)self home];
-  [HUHomeEnergyManagerHelper setHasDismissedConnectAccountBannerWithHome:v6];
+  home2 = [(HUUtilityOnboardingFlow *)self home];
+  [HUHomeEnergyManagerHelper setHasDismissedConnectAccountBannerWithHome:home2];
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  optionsCopy = options;
   if (HFForceUtilityOnboarding())
   {
     v9 = HFLogForCategory();
@@ -86,7 +86,7 @@ void __53__HUUtilityOnboardingFlow_initWithUsageOptions_home___block_invoke(uint
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@ FORCING Utility Onboarding", buf, 0x16u);
@@ -98,22 +98,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
-  v12 = [v11 BOOLValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"OnboardingDisplayOption_OnboardingFromUserInput"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = NSStringFromSelector(a2);
-      v13 = [v7 name];
+      name = [homeCopy name];
       *buf = 138412802;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v10;
       v24 = 2112;
-      v25 = v13;
+      v25 = name;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@ true for home(%@) because: onboarding", buf, 0x20u);
 
       goto LABEL_7;
@@ -130,7 +130,7 @@ LABEL_8:
   v17[1] = 3221225472;
   v17[2] = __58__HUUtilityOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v17[3] = &unk_277DBB320;
-  v18 = v7;
+  v18 = homeCopy;
   v19 = 0;
   v14 = [v15 futureWithBlock:v17];
 
@@ -160,26 +160,26 @@ void __58__HUUtilityOnboardingFlow_needsOnboardingForHome_options___block_invoke
   [v2 finishWithResult:v3];
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  inputCopy = input;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v59 = 138412802;
-    v60 = self;
+    selfCopy = self;
     v61 = 2112;
     v62 = v7;
     v63 = 2112;
-    v64 = v5;
+    v64 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", &v59, 0x20u);
   }
 
   if (_os_feature_enabled_impl())
   {
-    v8 = [v5 objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+    v8 = [inputCopy objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
     switch([v8 integerValue])
     {
       case 0:
@@ -189,7 +189,7 @@ void __58__HUUtilityOnboardingFlow_needsOnboardingForHome_options___block_invoke
         {
           v10 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v10;
+          selfCopy = v10;
           _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: UtilityLookup ", &v59, 0xCu);
         }
 
@@ -201,14 +201,14 @@ void __58__HUUtilityOnboardingFlow_needsOnboardingForHome_options___block_invoke
         {
           v29 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v29;
+          selfCopy = v29;
           _os_log_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Quick Lookup", &v59, 0xCu);
         }
 
         v30 = [HUUtilityOnboardingQuickLookupViewController alloc];
-        v15 = [(HUUtilityOnboardingFlow *)self context];
+        context = [(HUUtilityOnboardingFlow *)self context];
         v23 = v30;
-        v24 = v15;
+        v24 = context;
         v25 = 1;
         goto LABEL_26;
       case 2:
@@ -217,22 +217,22 @@ void __58__HUUtilityOnboardingFlow_needsOnboardingForHome_options___block_invoke
         {
           v19 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v19;
+          selfCopy = v19;
           _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: TAF", &v59, 0xCu);
         }
 
-        v20 = [(UtilityOnboardingContext *)self->_context isMeContactComplete];
+        isMeContactComplete = [(UtilityOnboardingContext *)self->_context isMeContactComplete];
         context = self->_context;
-        if (!v20)
+        if (!isMeContactComplete)
         {
           goto LABEL_60;
         }
 
         [(UtilityOnboardingContext *)context updateStateWithNewState:7];
         v22 = [HUUtilityOnboardingQuickLookupViewController alloc];
-        v15 = [(HUUtilityOnboardingFlow *)self context];
+        context = [(HUUtilityOnboardingFlow *)self context];
         v23 = v22;
-        v24 = v15;
+        v24 = context;
         v25 = 0;
 LABEL_26:
         v31 = [(HUUtilityOnboardingQuickLookupViewController *)v23 initWithContext:v24 hideBackButton:v25];
@@ -243,7 +243,7 @@ LABEL_26:
         {
           v37 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v37;
+          selfCopy = v37;
           _os_log_impl(&dword_20CEB6000, v36, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OAuth Login ", &v59, 0xCu);
         }
 
@@ -255,16 +255,16 @@ LABEL_26:
         {
           v39 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v39;
+          selfCopy = v39;
           _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: TAF Edit Details", &v59, 0xCu);
         }
 
         if ([(UtilityOnboardingContext *)self->_context currentState]== 7)
         {
           v40 = [UtilityOnboardingPasswordlessViewController alloc];
-          v15 = [(HUUtilityOnboardingFlow *)self context];
+          context = [(HUUtilityOnboardingFlow *)self context];
           v41 = v40;
-          v42 = v15;
+          v42 = context;
           v43 = 1;
         }
 
@@ -274,9 +274,9 @@ LABEL_26:
 LABEL_60:
           [(UtilityOnboardingContext *)context updateStateWithNewState:1];
           v58 = [UtilityOnboardingPasswordlessViewController alloc];
-          v15 = [(HUUtilityOnboardingFlow *)self context];
+          context = [(HUUtilityOnboardingFlow *)self context];
           v41 = v58;
-          v42 = v15;
+          v42 = context;
           v43 = 0;
         }
 
@@ -288,7 +288,7 @@ LABEL_60:
         {
           v27 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v27;
+          selfCopy = v27;
           _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OTP Selection ", &v59, 0xCu);
         }
 
@@ -301,7 +301,7 @@ LABEL_60:
         {
           v33 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v33;
+          selfCopy = v33;
           _os_log_impl(&dword_20CEB6000, v32, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Enter OTP", &v59, 0xCu);
         }
 
@@ -314,7 +314,7 @@ LABEL_60:
         {
           v35 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v35;
+          selfCopy = v35;
           _os_log_impl(&dword_20CEB6000, v34, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: T&Cs", &v59, 0xCu);
         }
 
@@ -327,7 +327,7 @@ LABEL_60:
         {
           v55 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v55;
+          selfCopy = v55;
           _os_log_impl(&dword_20CEB6000, v54, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Loading", &v59, 0xCu);
         }
 
@@ -340,15 +340,15 @@ LABEL_60:
         {
           v47 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v47;
+          selfCopy = v47;
           _os_log_impl(&dword_20CEB6000, v46, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Service Locations", &v59, 0xCu);
         }
 
         [(UtilityOnboardingContext *)self->_context updateStateWithNewState:10];
         v48 = [HUUtilityOnboardingSelectLocationViewController alloc];
         home = self->_home;
-        v15 = [(HUUtilityOnboardingFlow *)self context];
-        v31 = [(HUUtilityOnboardingSelectLocationViewController *)v48 initWithHome:home context:v15];
+        context = [(HUUtilityOnboardingFlow *)self context];
+        v31 = [(HUUtilityOnboardingSelectLocationViewController *)v48 initWithHome:home context:context];
         goto LABEL_53;
       case 10:
         v16 = HFLogForCategory();
@@ -356,7 +356,7 @@ LABEL_60:
         {
           v17 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v17;
+          selfCopy = v17;
           _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Connected", &v59, 0xCu);
         }
 
@@ -369,7 +369,7 @@ LABEL_60:
         {
           v14 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v14;
+          selfCopy = v14;
           _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Onboarding completed successfully. ", &v59, 0xCu);
         }
 
@@ -380,7 +380,7 @@ LABEL_60:
         {
           v45 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v45;
+          selfCopy = v45;
           _os_log_impl(&dword_20CEB6000, v44, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Account Not Found", &v59, 0xCu);
         }
 
@@ -388,8 +388,8 @@ LABEL_60:
         v11 = HUUtilityOnboardingNoAccountViewController;
 LABEL_52:
         v56 = [v11 alloc];
-        v15 = [(HUUtilityOnboardingFlow *)self context];
-        v31 = [v56 initWithContext:v15];
+        context = [(HUUtilityOnboardingFlow *)self context];
+        v31 = [v56 initWithContext:context];
 LABEL_53:
         v12 = v31;
         goto LABEL_54;
@@ -399,22 +399,22 @@ LABEL_53:
         {
           v51 = NSStringFromSelector(a2);
           v59 = 138412290;
-          v60 = v51;
+          selfCopy = v51;
           _os_log_impl(&dword_20CEB6000, v50, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Error", &v59, 0xCu);
         }
 
         [(UtilityOnboardingContext *)self->_context updateStateWithNewState:3];
         v52 = [HUUtilityOnboardingErrorViewController alloc];
-        v15 = [(HUUtilityOnboardingFlow *)self context];
-        v53 = [v5 objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
-        v12 = [(HUUtilityOnboardingErrorViewController *)v52 initWithContext:v15 error:v53];
+        context = [(HUUtilityOnboardingFlow *)self context];
+        v53 = [inputCopy objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
+        v12 = [(HUUtilityOnboardingErrorViewController *)v52 initWithContext:context error:v53];
 
         goto LABEL_54;
       case 14:
       case 16:
 LABEL_12:
-        v15 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
-        [v15 finishWithNoResult];
+        context = [(HUUtilityOnboardingFlow *)self onboardingFuture];
+        [context finishWithNoResult];
         v12 = 0;
 LABEL_54:
 
@@ -428,16 +428,16 @@ LABEL_54:
 
   else
   {
-    v12 = [(HUUtilityOnboardingFlow *)self processUserInputWithState:v5];
+    v12 = [(HUUtilityOnboardingFlow *)self processUserInputWithState:inputCopy];
   }
 
   return v12;
 }
 
-- (id)processUserInputWithState:(id)a3
+- (id)processUserInputWithState:(id)state
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -447,12 +447,12 @@ LABEL_54:
     *&v61[12] = 2112;
     *&v61[14] = v7;
     *&v61[22] = 2112;
-    v62 = v5;
+    v62 = stateCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", v61, 0x20u);
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
-  v9 = [v8 integerValue];
+  v8 = [stateCopy objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+  integerValue = [v8 integerValue];
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -483,12 +483,12 @@ LABEL_54:
         _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@ -> Start & user input=%@", v61, 0x16u);
       }
 
-      v16 = v9 == 17;
+      v16 = integerValue == 17;
       v17 = 3;
       goto LABEL_16;
     case 1uLL:
-      v25 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
-      [v25 finishWithNoResult];
+      onboardingFuture = [(HUUtilityOnboardingFlow *)self onboardingFuture];
+      [onboardingFuture finishWithNoResult];
       goto LABEL_27;
     case 3uLL:
       v43 = HFLogForCategory();
@@ -502,36 +502,36 @@ LABEL_54:
         _os_log_impl(&dword_20CEB6000, v43, OS_LOG_TYPE_DEFAULT, "%@ -> DoUtilityLookup & user input=%@", v61, 0x16u);
       }
 
-      if (v9 <= 12)
+      if (integerValue <= 12)
       {
-        if (v9 == 2)
+        if (integerValue == 2)
         {
           [(UtilityOnboardingContext *)self->_context populateFieldsFromMeContact];
           if ([(UtilityOnboardingContext *)self->_context quickLookupHasAllFields])
           {
-            v59 = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
+            allRequiredFieldsComplete = [(UtilityOnboardingContext *)self->_context allRequiredFieldsComplete];
           }
 
           else
           {
-            v59 = 0;
+            allRequiredFieldsComplete = 0;
           }
 
           v60 = HFLogForCategory();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             *v61 = 67109120;
-            *&v61[4] = v59;
+            *&v61[4] = allRequiredFieldsComplete;
             _os_log_impl(&dword_20CEB6000, v60, OS_LOG_TYPE_DEFAULT, "MeCard contains all the keys? --> %{BOOL}d", v61, 8u);
           }
 
-          v54 = !v59;
+          v54 = !allRequiredFieldsComplete;
           v55 = 6;
           v56 = 4;
           goto LABEL_107;
         }
 
-        if (v9 == 3)
+        if (integerValue == 3)
         {
           goto LABEL_96;
         }
@@ -539,21 +539,21 @@ LABEL_54:
         goto LABEL_100;
       }
 
-      if (v9 == 13)
+      if (integerValue == 13)
       {
         goto LABEL_57;
       }
 
-      if (v9 != 15)
+      if (integerValue != 15)
       {
-        if (v9 == 17)
+        if (integerValue == 17)
         {
           goto LABEL_64;
         }
 
 LABEL_100:
-        v25 = HFLogForCategory();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+        onboardingFuture = HFLogForCategory();
+        if (os_log_type_enabled(onboardingFuture, OS_LOG_TYPE_DEFAULT))
         {
           v28 = NSStringFromSelector(a2);
           *v61 = 138412546;
@@ -562,7 +562,7 @@ LABEL_100:
           *&v61[14] = v28;
           v29 = "%@:%@ Invalid User Input in DoUtilityLookup";
 LABEL_102:
-          _os_log_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_DEFAULT, v29, v61, 0x16u);
+          _os_log_impl(&dword_20CEB6000, onboardingFuture, OS_LOG_TYPE_DEFAULT, v29, v61, 0x16u);
         }
 
 LABEL_27:
@@ -572,7 +572,7 @@ LABEL_90:
       v13 = 1;
 LABEL_91:
       [(HUUtilityOnboardingFlow *)self updateState:v13, *v61, *&v61[16]];
-      v57 = [(HUUtilityOnboardingFlow *)self determineNextViewControllerFromResults:v5];
+      v57 = [(HUUtilityOnboardingFlow *)self determineNextViewControllerFromResults:stateCopy];
 
       return v57;
     case 4uLL:
@@ -587,7 +587,7 @@ LABEL_91:
         _os_log_impl(&dword_20CEB6000, v45, OS_LOG_TYPE_DEFAULT, "%@ -> Quick Lookup & user input=%@", v61, 0x16u);
       }
 
-      switch(v9)
+      switch(integerValue)
       {
         case 17:
           goto LABEL_86;
@@ -614,18 +614,18 @@ LABEL_91:
         _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@ -> OAuth Login & user input=%@", v61, 0x16u);
       }
 
-      if (v9 == 17)
+      if (integerValue == 17)
       {
         goto LABEL_64;
       }
 
-      if (v9 == 13)
+      if (integerValue == 13)
       {
         goto LABEL_57;
       }
 
-      v25 = HFLogForCategory();
-      if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      onboardingFuture = HFLogForCategory();
+      if (!os_log_type_enabled(onboardingFuture, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_27;
       }
@@ -649,9 +649,9 @@ LABEL_91:
         _os_log_impl(&dword_20CEB6000, v36, OS_LOG_TYPE_DEFAULT, "%@ -> TAF & user input=%@", v61, 0x16u);
       }
 
-      if (v9 > 16)
+      if (integerValue > 16)
       {
-        if (v9 == 17)
+        if (integerValue == 17)
         {
 LABEL_86:
           v13 = 8;
@@ -659,7 +659,7 @@ LABEL_86:
 
         else
         {
-          if (v9 != 18)
+          if (integerValue != 18)
           {
             goto LABEL_90;
           }
@@ -670,10 +670,10 @@ LABEL_86:
         goto LABEL_91;
       }
 
-      if (v9 == 13)
+      if (integerValue == 13)
       {
 LABEL_85:
-        v52 = [v5 objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
+        v52 = [stateCopy objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
         v53 = [HUHomeEnergyManagerHelper redirectToOAuth:v52];
 
         v54 = !v53;
@@ -693,7 +693,7 @@ LABEL_107:
         goto LABEL_91;
       }
 
-      if (v9 == 14)
+      if (integerValue == 14)
       {
         goto LABEL_97;
       }
@@ -711,9 +711,9 @@ LABEL_107:
         _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEFAULT, "%@ -> Account Not Found & user input=%@", v61, 0x16u);
       }
 
-      if (v9 <= 12)
+      if (integerValue <= 12)
       {
-        if (v9 == 3)
+        if (integerValue == 3)
         {
 LABEL_96:
           v13 = 5;
@@ -721,7 +721,7 @@ LABEL_96:
 
         else
         {
-          if (v9 != 4)
+          if (integerValue != 4)
           {
             goto LABEL_90;
           }
@@ -732,7 +732,7 @@ LABEL_96:
 
       else
       {
-        switch(v9)
+        switch(integerValue)
         {
           case 13:
 LABEL_57:
@@ -764,8 +764,8 @@ LABEL_64:
         _os_log_impl(&dword_20CEB6000, v49, OS_LOG_TYPE_DEFAULT, "%@ -> OTPSelection & user input=%@", v61, 0x16u);
       }
 
-      v32 = v9 - 13;
-      if ((v9 - 13) >= 6)
+      v32 = integerValue - 13;
+      if ((integerValue - 13) >= 6)
       {
         goto LABEL_90;
       }
@@ -784,8 +784,8 @@ LABEL_64:
         _os_log_impl(&dword_20CEB6000, v47, OS_LOG_TYPE_DEFAULT, "%@ -> EnterOTP & user input=%@", v61, 0x16u);
       }
 
-      v32 = v9 - 13;
-      if ((v9 - 13) >= 6)
+      v32 = integerValue - 13;
+      if ((integerValue - 13) >= 6)
       {
         goto LABEL_90;
       }
@@ -804,7 +804,7 @@ LABEL_64:
         _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@ -> GetTermsConsent & user input=%@", v61, 0x16u);
       }
 
-      v16 = v9 == 17;
+      v16 = integerValue == 17;
       v17 = 11;
 LABEL_16:
       if (v16)
@@ -830,8 +830,8 @@ LABEL_16:
         _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "%@ -> Loading screen & user input=%@", v61, 0x16u);
       }
 
-      v32 = v9 - 13;
-      if ((v9 - 13) >= 7)
+      v32 = integerValue - 13;
+      if ((integerValue - 13) >= 7)
       {
         goto LABEL_90;
       }
@@ -853,12 +853,12 @@ LABEL_80:
       }
 
       v24 = 12;
-      if (v9 == 13)
+      if (integerValue == 13)
       {
         v24 = 15;
       }
 
-      if (v9 == 17)
+      if (integerValue == 17)
       {
         v13 = 13;
       }
@@ -881,15 +881,15 @@ LABEL_80:
         _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@ -> GetHomeSubscription & user input=%@", v61, 0x16u);
       }
 
-      if (v9 == 17)
+      if (integerValue == 17)
       {
         v13 = 14;
       }
 
       else
       {
-        v51 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
-        [v51 finishWithNoResult];
+        onboardingFuture2 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
+        [onboardingFuture2 finishWithNoResult];
 
         v13 = 0;
       }
@@ -907,10 +907,10 @@ LABEL_80:
         _os_log_impl(&dword_20CEB6000, v40, OS_LOG_TYPE_DEFAULT, "%@:%@ Finishing the onboarding flow due to error", v61, 0x16u);
       }
 
-      v42 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
-      [v42 finishWithNoResult];
+      onboardingFuture3 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
+      [onboardingFuture3 finishWithNoResult];
 
-      [v5 setObject:0 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
+      [stateCopy setObject:0 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
       goto LABEL_57;
     default:
       v34 = HFLogForCategory();
@@ -930,17 +930,17 @@ LABEL_80:
   }
 }
 
-- (id)determineNextViewControllerFromResults:(id)a3
+- (id)determineNextViewControllerFromResults:(id)results
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultsCopy = results;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     currentState = self->_currentState;
     v40 = 138412802;
-    v41 = self;
+    selfCopy = self;
     v42 = 2112;
     v43 = v7;
     v44 = 2048;
@@ -949,8 +949,8 @@ LABEL_80:
   }
 
   v9 = self->_currentState;
-  v10 = HFLogForCategory();
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  home = HFLogForCategory();
+  v11 = os_log_type_enabled(home, OS_LOG_TYPE_DEFAULT);
   switch(v9)
   {
     case 1uLL:
@@ -961,7 +961,7 @@ LABEL_80:
 
       v12 = NSStringFromSelector(a2);
       v40 = 138412290;
-      v41 = v12;
+      selfCopy = v12;
       v13 = "%@ -> CASE: Declined";
       goto LABEL_18;
     case 3uLL:
@@ -969,25 +969,25 @@ LABEL_80:
       {
         v28 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v28;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: UtilityLookup ", &v40, 0xCu);
+        selfCopy = v28;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: UtilityLookup ", &v40, 0xCu);
       }
 
       if (!_os_feature_enabled_impl())
       {
         v39 = [HUUtilityDiscoverySetupViewController alloc];
-        v10 = [(HUUtilityOnboardingFlow *)self home];
-        v37 = [(HUUtilityOnboardingFlow *)self context];
-        v38 = [(HUUtilityDiscoverySetupViewController *)v39 initWithHome:v10 onboardingContext:v37];
+        home = [(HUUtilityOnboardingFlow *)self home];
+        context = [(HUUtilityOnboardingFlow *)self context];
+        v38 = [(HUUtilityDiscoverySetupViewController *)v39 initWithHome:home onboardingContext:context];
         goto LABEL_61;
       }
 
       v21 = _TtC6HomeUI36UtilityOnboardingSetupViewController;
 LABEL_50:
       v27 = [v21 alloc];
-      v10 = [(HUUtilityOnboardingFlow *)self context];
+      home = [(HUUtilityOnboardingFlow *)self context];
 LABEL_51:
-      v19 = [(HUUtilityOnboardingQuickLookupViewController *)v27 initWithContext:v10];
+      v19 = [(HUUtilityOnboardingQuickLookupViewController *)v27 initWithContext:home];
 LABEL_52:
       v15 = v19;
       goto LABEL_53;
@@ -996,27 +996,27 @@ LABEL_52:
       {
         v25 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v25;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Quick Lookup", &v40, 0xCu);
+        selfCopy = v25;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Quick Lookup", &v40, 0xCu);
       }
 
       v26 = _os_feature_enabled_impl();
       v27 = [HUUtilityOnboardingQuickLookupViewController alloc];
-      v10 = [(HUUtilityOnboardingFlow *)self context];
+      home = [(HUUtilityOnboardingFlow *)self context];
       if (!v26)
       {
         goto LABEL_51;
       }
 
-      v19 = [(HUUtilityOnboardingQuickLookupViewController *)v27 initWithContext:v10 hideBackButton:0];
+      v19 = [(HUUtilityOnboardingQuickLookupViewController *)v27 initWithContext:home hideBackButton:0];
       goto LABEL_52;
     case 5uLL:
       if (v11)
       {
         v24 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v24;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OAuth Login ", &v40, 0xCu);
+        selfCopy = v24;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OAuth Login ", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingOAuthLoginViewController;
@@ -1026,8 +1026,8 @@ LABEL_52:
       {
         v20 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v20;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: TAF", &v40, 0xCu);
+        selfCopy = v20;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: TAF", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingTAFViewController;
@@ -1037,8 +1037,8 @@ LABEL_52:
       {
         v22 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v22;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Account Not Found", &v40, 0xCu);
+        selfCopy = v22;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Account Not Found", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingNoAccountViewController;
@@ -1048,8 +1048,8 @@ LABEL_52:
       {
         v29 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v29;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OTP Selection ", &v40, 0xCu);
+        selfCopy = v29;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: OTP Selection ", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingOTPSelectionViewController;
@@ -1059,8 +1059,8 @@ LABEL_52:
       {
         v30 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v30;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Enter OTP", &v40, 0xCu);
+        selfCopy = v30;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Enter OTP", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingEnterOTPViewController;
@@ -1070,8 +1070,8 @@ LABEL_52:
       {
         v32 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v32;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: T&Cs", &v40, 0xCu);
+        selfCopy = v32;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: T&Cs", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingTermsViewController;
@@ -1081,8 +1081,8 @@ LABEL_52:
       {
         v31 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v31;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Loading", &v40, 0xCu);
+        selfCopy = v31;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Loading", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingLoadingViewController;
@@ -1092,22 +1092,22 @@ LABEL_52:
       {
         v16 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v16;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Service Locations", &v40, 0xCu);
+        selfCopy = v16;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Service Locations", &v40, 0xCu);
       }
 
       v17 = [HUUtilityOnboardingSelectLocationViewController alloc];
       home = self->_home;
-      v10 = [(HUUtilityOnboardingFlow *)self context];
-      v19 = [(HUUtilityOnboardingSelectLocationViewController *)v17 initWithHome:home context:v10];
+      home = [(HUUtilityOnboardingFlow *)self context];
+      v19 = [(HUUtilityOnboardingSelectLocationViewController *)v17 initWithHome:home context:home];
       goto LABEL_52;
     case 0xDuLL:
       if (v11)
       {
         v23 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v23;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: GetHomeSubscription ", &v40, 0xCu);
+        selfCopy = v23;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: GetHomeSubscription ", &v40, 0xCu);
       }
 
       v21 = HUUtilityOnboardingConnectionViewController;
@@ -1117,24 +1117,24 @@ LABEL_52:
       {
         v12 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v12;
+        selfCopy = v12;
         v13 = "%@ -> CASE: Onboarding completed successfully. ";
 LABEL_18:
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, v13, &v40, 0xCu);
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, v13, &v40, 0xCu);
       }
 
 LABEL_19:
 
-      v10 = [(HUUtilityOnboardingFlow *)self onboardingFuture];
-      [v10 finishWithNoResult];
+      home = [(HUUtilityOnboardingFlow *)self onboardingFuture];
+      [home finishWithNoResult];
       goto LABEL_20;
     case 0xFuLL:
       if (v11)
       {
         v14 = NSStringFromSelector(a2);
         v40 = 138412290;
-        v41 = v14;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Error", &v40, 0xCu);
+        selfCopy = v14;
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: Error", &v40, 0xCu);
       }
 
       if (self->_previousState == self->_currentState)
@@ -1145,9 +1145,9 @@ LABEL_19:
       else
       {
         v36 = [HUUtilityOnboardingErrorViewController alloc];
-        v10 = [(HUUtilityOnboardingFlow *)self context];
-        v37 = [v5 objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
-        v38 = [(HUUtilityOnboardingErrorViewController *)v36 initWithContext:v10 error:v37];
+        home = [(HUUtilityOnboardingFlow *)self context];
+        context = [resultsCopy objectForKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_Error"];
+        v38 = [(HUUtilityOnboardingErrorViewController *)v36 initWithContext:home error:context];
 LABEL_61:
         v15 = v38;
 
@@ -1161,10 +1161,10 @@ LABEL_53:
         v34 = NSStringFromSelector(a2);
         v35 = self->_currentState;
         v40 = 138412546;
-        v41 = v34;
+        selfCopy = v34;
         v42 = 2048;
         v43 = v35;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: %lu does not present a view controller ", &v40, 0x16u);
+        _os_log_impl(&dword_20CEB6000, home, OS_LOG_TYPE_DEFAULT, "%@ -> CASE: %lu does not present a view controller ", &v40, 0x16u);
       }
 
 LABEL_20:
@@ -1173,7 +1173,7 @@ LABEL_20:
   }
 }
 
-- (void)updateState:(unint64_t)a3
+- (void)updateState:(unint64_t)state
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
@@ -1183,20 +1183,20 @@ LABEL_20:
     previousState = self->_previousState;
     currentState = self->_currentState;
     v10 = 138413314;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     v14 = 2048;
     v15 = currentState;
     v16 = 2048;
-    v17 = a3;
+    stateCopy = state;
     v18 = 2048;
     v19 = previousState;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ updating homeEnergyOnboardingState=%lu with state=%lu\t previous state=%lu", &v10, 0x34u);
   }
 
   self->_previousState = self->_currentState;
-  self->_currentState = a3;
+  self->_currentState = state;
 }
 
 @end

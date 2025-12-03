@@ -1,20 +1,20 @@
 @interface EmojiGenerationHostToClientAction
-- (_TtC10StickerKit33EmojiGenerationHostToClientAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (void)performActionForHostedWindowScene:(id)a3;
+- (_TtC10StickerKit33EmojiGenerationHostToClientAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (void)performActionForHostedWindowScene:(id)scene;
 @end
 
 @implementation EmojiGenerationHostToClientAction
 
-- (void)performActionForHostedWindowScene:(id)a3
+- (void)performActionForHostedWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A6E91A4(v4);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_19A6E91A4(sceneCopy);
 }
 
-- (_TtC10StickerKit33EmojiGenerationHostToClientAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (_TtC10StickerKit33EmojiGenerationHostToClientAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -27,9 +27,9 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a5;
-  return sub_19A6E9D98(a3, a5, v9, v10, &block_descriptor_22, type metadata accessor for EmojiGenerationHostToClientAction, a4);
+  infoCopy = info;
+  queueCopy = queue;
+  return sub_19A6E9D98(info, queue, v9, v10, &block_descriptor_22, type metadata accessor for EmojiGenerationHostToClientAction, timeout);
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface NANowPlayingDockedView
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CGSize)artworkSize;
-- (NANowPlayingDockedView)initWithBackground:(id)a3 artworkEnabled:(BOOL)a4;
+- (NANowPlayingDockedView)initWithBackground:(id)background artworkEnabled:(BOOL)enabled;
 - (NANowPlayingDockedViewDelegate)delegate;
-- (UIEdgeInsets)_touchInsetsForFrame:(CGRect)a3;
-- (double)_computeLabelWidthWithLeadingButton:(id)a3;
-- (id)_imageForPlayPauseButtonWithSystemName:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (UIEdgeInsets)_touchInsetsForFrame:(CGRect)frame;
+- (double)_computeLabelWidthWithLeadingButton:(id)button;
+- (id)_imageForPlayPauseButtonWithSystemName:(id)name;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateTitleAccessibilityLabel;
-- (void)closeButtonTapped:(id)a3;
+- (void)closeButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)pauseButtonTapped:(id)a3;
-- (void)playButtonTapped:(id)a3;
-- (void)rewindButtonTapped:(id)a3;
-- (void)setArtwork:(id)a3;
-- (void)setArtwork:(id)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsPlaying:(BOOL)a3 waiting:(BOOL)a4;
-- (void)setMarqueeRunning:(BOOL)a3;
-- (void)setPublisher:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)pauseButtonTapped:(id)tapped;
+- (void)playButtonTapped:(id)tapped;
+- (void)rewindButtonTapped:(id)tapped;
+- (void)setArtwork:(id)artwork;
+- (void)setArtwork:(id)artwork animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsPlaying:(BOOL)playing waiting:(BOOL)waiting;
+- (void)setMarqueeRunning:(BOOL)running;
+- (void)setPublisher:(id)publisher;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NANowPlayingDockedView
 
-- (NANowPlayingDockedView)initWithBackground:(id)a3 artworkEnabled:(BOOL)a4
+- (NANowPlayingDockedView)initWithBackground:(id)background artworkEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v61[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  backgroundCopy = background;
   v60.receiver = self;
   v60.super_class = NANowPlayingDockedView;
   v7 = [(NANowPlayingDockedView *)&v60 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    [(NANowPlayingDockedView *)v7 setArtworkEnabled:v4];
-    [v6 setAutoresizingMask:18];
-    [(NANowPlayingDockedView *)v8 addSubview:v6];
+    [(NANowPlayingDockedView *)v7 setArtworkEnabled:enabledCopy];
+    [backgroundCopy setAutoresizingMask:18];
+    [(NANowPlayingDockedView *)v8 addSubview:backgroundCopy];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke;
@@ -49,7 +49,7 @@
     contentView = v9->_contentView;
     v9->_contentView = v10;
 
-    if (v4)
+    if (enabledCopy)
     {
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
@@ -126,17 +126,17 @@
     [(NANowPlayingDockedView *)v31 setAccessibilityLabel:v35];
 
     [(NANowPlayingDockedView *)v31 setAccessibilityContainerType:4];
-    v36 = [(NANowPlayingDockedView *)v31 titleLabel];
-    v61[0] = v36;
-    v37 = [(NANowPlayingDockedView *)v31 rewindButton];
-    v61[1] = v37;
-    v38 = [(NANowPlayingDockedView *)v31 playPauseButton];
-    v61[2] = v38;
-    v39 = [(NANowPlayingDockedView *)v31 closeButton];
-    v61[3] = v39;
+    titleLabel = [(NANowPlayingDockedView *)v31 titleLabel];
+    v61[0] = titleLabel;
+    rewindButton = [(NANowPlayingDockedView *)v31 rewindButton];
+    v61[1] = rewindButton;
+    playPauseButton = [(NANowPlayingDockedView *)v31 playPauseButton];
+    v61[2] = playPauseButton;
+    closeButton = [(NANowPlayingDockedView *)v31 closeButton];
+    v61[3] = closeButton;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:4];
-    v41 = [(NANowPlayingDockedView *)v31 contentView];
-    [v41 setAccessibilityElements:v40];
+    contentView = [(NANowPlayingDockedView *)v31 contentView];
+    [contentView setAccessibilityElements:v40];
 
     [(NANowPlayingDockedView *)v31 setIsPlaying:0];
     [(NANowPlayingDockedView *)v31 setIsPlaying:[(NANowPlayingDockedView *)v31 isPlaying] waiting:0];
@@ -405,8 +405,8 @@ id __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke
 
 - (CGSize)artworkSize
 {
-  v2 = [(NANowPlayingDockedView *)self artworkView];
-  [v2 artworkSizeForTitleViewWidth:30.0];
+  artworkView = [(NANowPlayingDockedView *)self artworkView];
+  [artworkView artworkSizeForTitleViewWidth:30.0];
   v4 = v3;
   v6 = v5;
 
@@ -417,18 +417,18 @@ id __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = NANowPlayingDockedView;
-  [(NANowPlayingDockedView *)&v7 setHighlighted:a3];
-  v4 = [(NANowPlayingDockedView *)self isHighlighted];
+  [(NANowPlayingDockedView *)&v7 setHighlighted:highlighted];
+  isHighlighted = [(NANowPlayingDockedView *)self isHighlighted];
   v5 = 1.0;
-  if (v4)
+  if (isHighlighted)
   {
-    v6 = [(NANowPlayingDockedView *)self changesDisplayWhenHighlighted];
+    changesDisplayWhenHighlighted = [(NANowPlayingDockedView *)self changesDisplayWhenHighlighted];
     v5 = 0.8;
-    if (!v6)
+    if (!changesDisplayWhenHighlighted)
     {
       v5 = 1.0;
     }
@@ -437,25 +437,25 @@ id __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke
   [(NANowPlayingDockedView *)self setAlpha:v5];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = NANowPlayingDockedView;
-  v5 = [(NANowPlayingDockedView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(NANowPlayingDockedView *)&v9 hitTest:event withEvent:test.x, test.y];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      selfCopy = v5;
     }
 
     else
     {
-      v6 = self;
+      selfCopy = self;
     }
 
-    v7 = v6;
+    v7 = selfCopy;
   }
 
   else
@@ -516,8 +516,8 @@ id __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke
   v10 = v3 + v9;
   v12 = v11 - (v4 + v6);
   v14 = v13 - (v3 + v5);
-  v15 = [(NANowPlayingDockedView *)self contentView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  contentView = [(NANowPlayingDockedView *)self contentView];
+  [contentView setFrame:{v8, v10, v12, v14}];
 
   if ([(NANowPlayingDockedView *)self artworkEnabled])
   {
@@ -525,221 +525,221 @@ id __60__NANowPlayingDockedView_initWithBackground_artworkEnabled___block_invoke
     v17 = v16;
     [(NANowPlayingDockedView *)self artworkSize];
     v19 = v18;
-    v20 = [(NANowPlayingDockedView *)self artworkView];
-    [v20 setFrame:{0.0, 0.0, v17, v19}];
+    artworkView = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView setFrame:{0.0, 0.0, v17, v19}];
 
-    v21 = [(NANowPlayingDockedView *)self artworkView];
-    [v21 frame];
+    artworkView2 = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView2 frame];
     MaxX = CGRectGetMaxX(v150);
-    v23 = [(NANowPlayingDockedView *)self publisherLabel];
-    [v23 bounds];
+    publisherLabel = [(NANowPlayingDockedView *)self publisherLabel];
+    [publisherLabel bounds];
     Width = CGRectGetWidth(v151);
-    v25 = [(NANowPlayingDockedView *)self publisherLabel];
-    [v25 bounds];
+    publisherLabel2 = [(NANowPlayingDockedView *)self publisherLabel];
+    [publisherLabel2 bounds];
     Height = CGRectGetHeight(v152);
-    v27 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-    [v27 setFrame:{MaxX, 0.0, Width, Height}];
+    publisherMarqueeContainer = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+    [publisherMarqueeContainer setFrame:{MaxX, 0.0, Width, Height}];
 
-    v28 = [(NANowPlayingDockedView *)self artworkView];
-    [v28 frame];
+    artworkView3 = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView3 frame];
     v29 = CGRectGetMaxX(v153);
-    v30 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-    [v30 frame];
+    publisherMarqueeContainer2 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+    [publisherMarqueeContainer2 frame];
     v31 = CGRectGetMaxY(v154) + 1.0;
-    v32 = [(NANowPlayingDockedView *)self titleLabel];
-    [v32 bounds];
+    titleLabel = [(NANowPlayingDockedView *)self titleLabel];
+    [titleLabel bounds];
     v33 = CGRectGetWidth(v155);
-    v34 = [(NANowPlayingDockedView *)self titleLabel];
-    [v34 bounds];
+    titleLabel2 = [(NANowPlayingDockedView *)self titleLabel];
+    [titleLabel2 bounds];
     v35 = CGRectGetHeight(v156);
-    v36 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-    [v36 setFrame:{v29, v31, v33, v35}];
+    titleMarqueeContainer = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+    [titleMarqueeContainer setFrame:{v29, v31, v33, v35}];
   }
 
   else
   {
-    v37 = [(NANowPlayingDockedView *)self publisherLabel];
-    [v37 bounds];
+    publisherLabel3 = [(NANowPlayingDockedView *)self publisherLabel];
+    [publisherLabel3 bounds];
     v38 = CGRectGetWidth(v157);
-    v39 = [(NANowPlayingDockedView *)self publisherLabel];
-    [v39 bounds];
+    publisherLabel4 = [(NANowPlayingDockedView *)self publisherLabel];
+    [publisherLabel4 bounds];
     v40 = CGRectGetHeight(v158);
-    v41 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-    [v41 setFrame:{0.0, 0.0, v38, v40}];
+    publisherMarqueeContainer3 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+    [publisherMarqueeContainer3 setFrame:{0.0, 0.0, v38, v40}];
 
-    v28 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-    [v28 frame];
+    artworkView3 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+    [artworkView3 frame];
     v42 = CGRectGetMaxY(v159) + 1.0 + 3.5;
-    v30 = [(NANowPlayingDockedView *)self titleLabel];
-    [v30 bounds];
+    publisherMarqueeContainer2 = [(NANowPlayingDockedView *)self titleLabel];
+    [publisherMarqueeContainer2 bounds];
     v43 = CGRectGetWidth(v160);
-    v32 = [(NANowPlayingDockedView *)self titleLabel];
-    [v32 bounds];
+    titleLabel = [(NANowPlayingDockedView *)self titleLabel];
+    [titleLabel bounds];
     v44 = CGRectGetHeight(v161);
-    v34 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-    [v34 setFrame:{0.0, v42, v43, v44}];
+    titleLabel2 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+    [titleLabel2 setFrame:{0.0, v42, v43, v44}];
   }
 
-  v45 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v45 frame];
+  titleMarqueeContainer2 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer2 frame];
   MaxY = CGRectGetMaxY(v162);
-  v47 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v47 frame];
+  publisherMarqueeContainer4 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer4 frame];
   v48 = (MaxY - CGRectGetMinY(v163)) * 0.5;
 
-  v49 = [(NANowPlayingDockedView *)self contentView];
-  [v49 bounds];
+  contentView2 = [(NANowPlayingDockedView *)self contentView];
+  [contentView2 bounds];
   v50 = CGRectGetWidth(v164);
-  v51 = [(NANowPlayingDockedView *)self closeButton];
-  [v51 bounds];
+  closeButton = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton bounds];
   v52 = v50 - CGRectGetWidth(v165);
-  v53 = [(NANowPlayingDockedView *)self closeButton];
-  [v53 bounds];
+  closeButton2 = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton2 bounds];
   v54 = v48 - CGRectGetHeight(v166) * 0.5;
-  v55 = [(NANowPlayingDockedView *)self closeButton];
-  [v55 bounds];
+  closeButton3 = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton3 bounds];
   v56 = CGRectGetWidth(v167);
-  v57 = [(NANowPlayingDockedView *)self closeButton];
-  [v57 bounds];
+  closeButton4 = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton4 bounds];
   v58 = CGRectGetHeight(v168);
-  v59 = [(NANowPlayingDockedView *)self closeButton];
-  [v59 setFrame:{v52, v54, v56, v58}];
+  closeButton5 = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton5 setFrame:{v52, v54, v56, v58}];
 
-  v60 = [(NANowPlayingDockedView *)self closeButton];
-  [v60 frame];
+  closeButton6 = [(NANowPlayingDockedView *)self closeButton];
+  [closeButton6 frame];
   v62 = v61;
-  v63 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v63 bounds];
+  playPauseButton = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton bounds];
   v64 = v62 - (CGRectGetWidth(v169) + 22.0);
-  v65 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v65 bounds];
+  playPauseButton2 = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton2 bounds];
   v66 = v48 - CGRectGetHeight(v170) * 0.5;
-  v67 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v67 bounds];
+  playPauseButton3 = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton3 bounds];
   v68 = CGRectGetWidth(v171);
-  v69 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v69 bounds];
+  playPauseButton4 = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton4 bounds];
   v70 = CGRectGetHeight(v172);
-  v71 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v71 setFrame:{v64, v66, v68, v70}];
+  playPauseButton5 = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton5 setFrame:{v64, v66, v68, v70}];
 
-  v72 = [(NANowPlayingDockedView *)self playPauseButton];
-  [v72 frame];
+  playPauseButton6 = [(NANowPlayingDockedView *)self playPauseButton];
+  [playPauseButton6 frame];
   v74 = v73;
-  v75 = [(NANowPlayingDockedView *)self rewindButton];
-  [v75 bounds];
+  rewindButton = [(NANowPlayingDockedView *)self rewindButton];
+  [rewindButton bounds];
   v76 = v74 - (CGRectGetWidth(v173) + 22.0);
-  v77 = [(NANowPlayingDockedView *)self rewindButton];
-  [v77 bounds];
+  rewindButton2 = [(NANowPlayingDockedView *)self rewindButton];
+  [rewindButton2 bounds];
   v78 = v48 - CGRectGetHeight(v174) * 0.5;
-  v79 = [(NANowPlayingDockedView *)self rewindButton];
-  [v79 bounds];
+  rewindButton3 = [(NANowPlayingDockedView *)self rewindButton];
+  [rewindButton3 bounds];
   v80 = CGRectGetWidth(v175);
-  v81 = [(NANowPlayingDockedView *)self rewindButton];
-  [v81 bounds];
+  rewindButton4 = [(NANowPlayingDockedView *)self rewindButton];
+  [rewindButton4 bounds];
   v82 = CGRectGetHeight(v176);
-  v83 = [(NANowPlayingDockedView *)self rewindButton];
-  [v83 setFrame:{v76, v78, v80, v82}];
+  rewindButton5 = [(NANowPlayingDockedView *)self rewindButton];
+  [rewindButton5 setFrame:{v76, v78, v80, v82}];
 
-  v84 = [(NANowPlayingDockedView *)self rewindButton];
-  [(NANowPlayingDockedView *)self _computeLabelWidthWithLeadingButton:v84];
+  rewindButton6 = [(NANowPlayingDockedView *)self rewindButton];
+  [(NANowPlayingDockedView *)self _computeLabelWidthWithLeadingButton:rewindButton6];
   v86 = v85;
 
   if (v86 < 100.0 && [(NANowPlayingDockedView *)self artworkEnabled])
   {
-    v87 = [(NANowPlayingDockedView *)self closeButton];
-    [v87 frame];
+    closeButton7 = [(NANowPlayingDockedView *)self closeButton];
+    [closeButton7 frame];
     v88 = CGRectGetMaxX(v177);
-    v89 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v89 frame];
+    playPauseButton7 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton7 frame];
     v90 = v88 - CGRectGetWidth(v178);
-    v91 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v91 frame];
+    playPauseButton8 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton8 frame];
     v93 = v92;
-    v94 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v94 frame];
+    playPauseButton9 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton9 frame];
     v95 = CGRectGetWidth(v179);
-    v96 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v96 frame];
+    playPauseButton10 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton10 frame];
     v97 = CGRectGetHeight(v180);
-    v98 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v98 setFrame:{v90, v93, v95, v97}];
+    playPauseButton11 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton11 setFrame:{v90, v93, v95, v97}];
 
-    v99 = [(NANowPlayingDockedView *)self rewindButton];
-    LOBYTE(v89) = [v99 isHidden];
+    rewindButton7 = [(NANowPlayingDockedView *)self rewindButton];
+    LOBYTE(playPauseButton7) = [rewindButton7 isHidden];
 
-    if ((v89 & 1) == 0)
+    if ((playPauseButton7 & 1) == 0)
     {
-      v100 = [(NANowPlayingDockedView *)self rewindButton];
-      [v100 setHidden:1];
+      rewindButton8 = [(NANowPlayingDockedView *)self rewindButton];
+      [rewindButton8 setHidden:1];
     }
 
-    v101 = [(NANowPlayingDockedView *)self closeButton];
-    v102 = [v101 isHidden];
+    closeButton8 = [(NANowPlayingDockedView *)self closeButton];
+    isHidden = [closeButton8 isHidden];
 
-    if ((v102 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v103 = [(NANowPlayingDockedView *)self closeButton];
-      [v103 setHidden:1];
+      closeButton9 = [(NANowPlayingDockedView *)self closeButton];
+      [closeButton9 setHidden:1];
     }
 
-    v104 = [(NANowPlayingDockedView *)self playPauseButton];
-    [(NANowPlayingDockedView *)self _computeLabelWidthWithLeadingButton:v104];
+    playPauseButton12 = [(NANowPlayingDockedView *)self playPauseButton];
+    [(NANowPlayingDockedView *)self _computeLabelWidthWithLeadingButton:playPauseButton12];
     v86 = v105;
     goto LABEL_27;
   }
 
-  v106 = [(NANowPlayingDockedView *)self rewindButton];
-  v107 = [v106 isHidden];
+  rewindButton9 = [(NANowPlayingDockedView *)self rewindButton];
+  isHidden2 = [rewindButton9 isHidden];
 
-  if (v107)
+  if (isHidden2)
   {
-    v108 = [(NANowPlayingDockedView *)self rewindButton];
-    [v108 setHidden:0];
+    rewindButton10 = [(NANowPlayingDockedView *)self rewindButton];
+    [rewindButton10 setHidden:0];
   }
 
-  v109 = [(NANowPlayingDockedView *)self closeButton];
-  v110 = [v109 isHidden];
+  closeButton10 = [(NANowPlayingDockedView *)self closeButton];
+  isHidden3 = [closeButton10 isHidden];
 
-  if (v110)
+  if (isHidden3)
   {
-    v104 = [(NANowPlayingDockedView *)self closeButton];
-    [v104 setHidden:0];
+    playPauseButton12 = [(NANowPlayingDockedView *)self closeButton];
+    [playPauseButton12 setHidden:0];
 LABEL_27:
   }
 
-  v111 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v111 frame];
+  publisherMarqueeContainer5 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer5 frame];
   MinX = CGRectGetMinX(v181);
-  v113 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v113 frame];
+  publisherMarqueeContainer6 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer6 frame];
   MinY = CGRectGetMinY(v182);
-  v115 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v115 frame];
+  publisherMarqueeContainer7 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer7 frame];
   v116 = CGRectGetHeight(v183);
-  v117 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v117 setFrame:{MinX, MinY, v86, v116}];
+  publisherMarqueeContainer8 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer8 setFrame:{MinX, MinY, v86, v116}];
 
-  v118 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v118 frame];
+  titleMarqueeContainer3 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer3 frame];
   v119 = CGRectGetMinX(v184);
-  v120 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v120 frame];
+  titleMarqueeContainer4 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer4 frame];
   v121 = CGRectGetMinY(v185);
-  v122 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v122 frame];
+  titleMarqueeContainer5 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer5 frame];
   v123 = CGRectGetHeight(v186);
-  v124 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v124 setFrame:{v119, v121, v86, v123}];
+  titleMarqueeContainer6 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer6 setFrame:{v119, v121, v86, v123}];
 
-  v125 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v125 frame];
+  publisherMarqueeContainer9 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer9 frame];
   v127 = v126;
   v129 = v128;
   v131 = v130;
   v133 = v132;
-  v134 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v134 frame];
+  titleMarqueeContainer7 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer7 frame];
   v191.origin.x = v135;
   v191.origin.y = v136;
   v191.size.width = v137;
@@ -754,29 +754,29 @@ LABEL_27:
   v141 = v188.size.width;
   v142 = v188.size.height;
 
-  v143 = [(NANowPlayingDockedView *)self contentView];
+  contentView3 = [(NANowPlayingDockedView *)self contentView];
   v189.origin.x = x;
   v189.origin.y = y;
   v189.size.width = v141;
   v189.size.height = v142;
-  v190 = UIAccessibilityConvertFrameToScreenCoordinates(v189, v143);
+  v190 = UIAccessibilityConvertFrameToScreenCoordinates(v189, contentView3);
   v144 = v190.origin.x;
   v145 = v190.origin.y;
   v146 = v190.size.width;
   v147 = v190.size.height;
-  v148 = [(NANowPlayingDockedView *)self titleLabel];
-  [v148 setAccessibilityFrame:{v144, v145, v146, v147}];
+  titleLabel3 = [(NANowPlayingDockedView *)self titleLabel];
+  [titleLabel3 setAccessibilityFrame:{v144, v145, v146, v147}];
 }
 
-- (void)setPublisher:(id)a3
+- (void)setPublisher:(id)publisher
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  publisherCopy = publisher;
   v5 = NANowPlayingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v4;
+    v31 = publisherCopy;
     _os_log_impl(&dword_1D7987000, v5, OS_LOG_TYPE_DEFAULT, "Docked View setting publisher to %{public}@", buf, 0xCu);
   }
 
@@ -784,7 +784,7 @@ LABEL_27:
   {
     v6 = *MEMORY[0x1E69DDD08];
     v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-    v8 = [v7 fontDescriptor];
+    fontDescriptor = [v7 fontDescriptor];
     v28 = *MEMORY[0x1E69DB8F0];
     v26 = *MEMORY[0x1E69DB990];
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB958]];
@@ -792,7 +792,7 @@ LABEL_27:
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v29 = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v12 = [v8 fontDescriptorByAddingAttributes:v11];
+    v12 = [fontDescriptor fontDescriptorByAddingAttributes:v11];
 
     v13 = MEMORY[0x1E69DB878];
     v14 = [v12 fontDescriptorWithSymbolicTraits:0x8000];
@@ -810,17 +810,17 @@ LABEL_27:
   }
 
   v18 = MEMORY[0x1E69DD250];
-  v19 = [(NANowPlayingDockedView *)self publisherLabel];
+  publisherLabel = [(NANowPlayingDockedView *)self publisherLabel];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __39__NANowPlayingDockedView_setPublisher___block_invoke;
   v22[3] = &unk_1E84EA2D8;
-  v23 = v4;
+  v23 = publisherCopy;
   v24 = v17;
-  v25 = self;
+  selfCopy = self;
   v20 = v17;
-  v21 = v4;
-  [v18 transitionWithView:v19 duration:5242880 options:v22 animations:0 completion:0.25];
+  v21 = publisherCopy;
+  [v18 transitionWithView:publisherLabel duration:5242880 options:v22 animations:0 completion:0.25];
 
   [(NANowPlayingDockedView *)self _updateTitleAccessibilityLabel];
 }
@@ -869,25 +869,25 @@ uint64_t __39__NANowPlayingDockedView_setPublisher___block_invoke(uint64_t a1)
   return [*(a1 + 48) setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  titleCopy = title;
   v5 = NANowPlayingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = v4;
+    v40 = titleCopy;
     _os_log_impl(&dword_1D7987000, v5, OS_LOG_TYPE_DEFAULT, "Docked View setting title to %{public}@", buf, 0xCu);
   }
 
-  v6 = [(NANowPlayingDockedView *)self artworkEnabled];
+  artworkEnabled = [(NANowPlayingDockedView *)self artworkEnabled];
   v7 = MEMORY[0x1E69DB878];
-  if (v6)
+  if (artworkEnabled)
   {
     v8 = *MEMORY[0x1E69DDD28];
     v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-    v10 = [v9 fontDescriptor];
+    fontDescriptor = [v9 fontDescriptor];
     v37 = *MEMORY[0x1E69DB8F0];
     v35 = *MEMORY[0x1E69DB990];
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB958]];
@@ -895,7 +895,7 @@ uint64_t __39__NANowPlayingDockedView_setPublisher___block_invoke(uint64_t a1)
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v38 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    v14 = [v10 fontDescriptorByAddingAttributes:v13];
+    v14 = [fontDescriptor fontDescriptorByAddingAttributes:v13];
 
     v15 = MEMORY[0x1E69DB878];
     v16 = [v14 fontDescriptorWithSymbolicTraits:32770];
@@ -908,8 +908,8 @@ uint64_t __39__NANowPlayingDockedView_setPublisher___block_invoke(uint64_t a1)
   else
   {
     v20 = [MEMORY[0x1E69DB878] systemFontOfSize:17.5 weight:*MEMORY[0x1E69DB980]];
-    v21 = [v20 fontDescriptor];
-    v22 = [v21 fontDescriptorWithSymbolicTraits:64];
+    fontDescriptor2 = [v20 fontDescriptor];
+    v22 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:64];
     v17 = [v7 fontWithDescriptor:v22 size:0.0];
 
     v9 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDD28]];
@@ -936,17 +936,17 @@ uint64_t __39__NANowPlayingDockedView_setPublisher___block_invoke(uint64_t a1)
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
 
   v26 = MEMORY[0x1E69DD250];
-  v27 = [(NANowPlayingDockedView *)self titleLabel];
+  titleLabel = [(NANowPlayingDockedView *)self titleLabel];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __35__NANowPlayingDockedView_setTitle___block_invoke;
   v30[3] = &unk_1E84EA2D8;
   v30[4] = self;
-  v31 = v4;
+  v31 = titleCopy;
   v32 = v25;
   v28 = v25;
-  v29 = v4;
-  [v26 transitionWithView:v27 duration:5242880 options:v30 animations:0 completion:0.25];
+  v29 = titleCopy;
+  [v26 transitionWithView:titleLabel duration:5242880 options:v30 animations:0 completion:0.25];
 
   [(NANowPlayingDockedView *)self _updateTitleAccessibilityLabel];
 }
@@ -965,22 +965,22 @@ uint64_t __35__NANowPlayingDockedView_setTitle___block_invoke(uint64_t a1)
   return [v5 setNeedsLayout];
 }
 
-- (void)setMarqueeRunning:(BOOL)a3
+- (void)setMarqueeRunning:(BOOL)running
 {
-  v3 = a3;
-  v5 = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
-  [v5 setMarqueeEnabled:v3];
+  runningCopy = running;
+  publisherMarqueeContainer = [(NANowPlayingDockedView *)self publisherMarqueeContainer];
+  [publisherMarqueeContainer setMarqueeEnabled:runningCopy];
 
-  v6 = [(NANowPlayingDockedView *)self titleMarqueeContainer];
-  [v6 setMarqueeEnabled:v3];
+  titleMarqueeContainer = [(NANowPlayingDockedView *)self titleMarqueeContainer];
+  [titleMarqueeContainer setMarqueeEnabled:runningCopy];
 }
 
-- (void)setIsPlaying:(BOOL)a3 waiting:(BOOL)a4
+- (void)setIsPlaying:(BOOL)playing waiting:(BOOL)waiting
 {
-  v4 = a4;
-  v5 = a3;
-  [(NANowPlayingDockedView *)self setWaiting:a4];
-  if (v4)
+  waitingCopy = waiting;
+  playingCopy = playing;
+  [(NANowPlayingDockedView *)self setWaiting:waiting];
+  if (waitingCopy)
   {
     v7 = dispatch_time(0, 250000000);
     block[0] = MEMORY[0x1E69E9820];
@@ -993,14 +993,14 @@ uint64_t __35__NANowPlayingDockedView_setTitle___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(NANowPlayingDockedView *)self rewindButton];
-    [v8 setEnabled:1];
+    rewindButton = [(NANowPlayingDockedView *)self rewindButton];
+    [rewindButton setEnabled:1];
   }
 
-  if ([(NANowPlayingDockedView *)self isPlaying]!= v5)
+  if ([(NANowPlayingDockedView *)self isPlaying]!= playingCopy)
   {
-    [(NANowPlayingDockedView *)self setIsPlaying:v5];
-    if (v5)
+    [(NANowPlayingDockedView *)self setIsPlaying:playingCopy];
+    if (playingCopy)
     {
       v9 = @"pause.fill";
     }
@@ -1010,7 +1010,7 @@ uint64_t __35__NANowPlayingDockedView_setTitle___block_invoke(uint64_t a1)
       v9 = @"play.fill";
     }
 
-    if (v5)
+    if (playingCopy)
     {
       v10 = @"pause";
     }
@@ -1020,7 +1020,7 @@ uint64_t __35__NANowPlayingDockedView_setTitle___block_invoke(uint64_t a1)
       v10 = @"play";
     }
 
-    if (v5)
+    if (playingCopy)
     {
       v11 = &selRef_pauseButtonTapped_;
     }
@@ -1034,20 +1034,20 @@ uint64_t __35__NANowPlayingDockedView_setTitle___block_invoke(uint64_t a1)
     v13 = NABundle();
     v14 = [v13 localizedStringForKey:v10 value:&stru_1F52B5BC8 table:0];
 
-    v15 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v15 setImage:v12 forState:0];
+    playPauseButton = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton setImage:v12 forState:0];
 
-    v16 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v16 setAccessibilityLabel:v14];
+    playPauseButton2 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton2 setAccessibilityLabel:v14];
 
-    v17 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v17 removeTarget:self action:0 forControlEvents:64];
+    playPauseButton3 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton3 removeTarget:self action:0 forControlEvents:64];
 
-    v18 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v18 addTarget:self action:*v11 forControlEvents:64];
+    playPauseButton4 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton4 addTarget:self action:*v11 forControlEvents:64];
 
-    v19 = [(NANowPlayingDockedView *)self playPauseButton];
-    [v19 setNeedsLayout];
+    playPauseButton5 = [(NANowPlayingDockedView *)self playPauseButton];
+    [playPauseButton5 setNeedsLayout];
   }
 }
 
@@ -1060,69 +1060,69 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
   }
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v4 = a3;
+  artworkCopy = artwork;
   if ([(NANowPlayingDockedView *)self artworkEnabled])
   {
-    [(NANowPlayingDockedView *)self setArtwork:v4 animated:1];
+    [(NANowPlayingDockedView *)self setArtwork:artworkCopy animated:1];
   }
 }
 
-- (void)setArtwork:(id)a3 animated:(BOOL)a4
+- (void)setArtwork:(id)artwork animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  artworkCopy = artwork;
   if ([(NANowPlayingDockedView *)self artworkEnabled])
   {
-    v6 = [(NANowPlayingDockedView *)self artworkView];
-    [v6 setTrackImage:v8 animated:v4];
+    artworkView = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView setTrackImage:artworkCopy animated:animatedCopy];
 
-    v7 = [(NANowPlayingDockedView *)self artworkView];
-    [v7 sizeToFit];
+    artworkView2 = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView2 sizeToFit];
   }
 }
 
 - (void)_updateTitleAccessibilityLabel
 {
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v3 = [(NANowPlayingDockedView *)self publisherLabel];
-  v4 = [v3 text];
+  publisherLabel = [(NANowPlayingDockedView *)self publisherLabel];
+  text = [publisherLabel text];
 
-  v5 = [(NANowPlayingDockedView *)self titleLabel];
-  v6 = [v5 text];
+  titleLabel = [(NANowPlayingDockedView *)self titleLabel];
+  text2 = [titleLabel text];
 
-  if ([v4 length])
+  if ([text length])
   {
-    [v9 addObject:v4];
+    [v9 addObject:text];
   }
 
-  if ([v6 length])
+  if ([text2 length])
   {
-    [v9 addObject:v6];
+    [v9 addObject:text2];
   }
 
   if ([v9 count])
   {
-    v7 = [v9 componentsJoinedByString:@"\n"];
-    v8 = [(NANowPlayingDockedView *)self titleLabel];
-    [v8 setAccessibilityLabel:v7];
+    titleLabel3 = [v9 componentsJoinedByString:@"\n"];
+    titleLabel2 = [(NANowPlayingDockedView *)self titleLabel];
+    [titleLabel2 setAccessibilityLabel:titleLabel3];
   }
 
   else
   {
-    v7 = [(NANowPlayingDockedView *)self titleLabel];
-    [v7 setAccessibilityLabel:0];
+    titleLabel3 = [(NANowPlayingDockedView *)self titleLabel];
+    [titleLabel3 setAccessibilityLabel:0];
   }
 }
 
-- (id)_imageForPlayPauseButtonWithSystemName:(id)a3
+- (id)_imageForPlayPauseButtonWithSystemName:(id)name
 {
-  v4 = a3;
-  v5 = [(NANowPlayingDockedView *)self artworkEnabled];
-  v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
+  nameCopy = name;
+  artworkEnabled = [(NANowPlayingDockedView *)self artworkEnabled];
+  v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy];
 
-  if (v5)
+  if (artworkEnabled)
   {
     v7 = [MEMORY[0x1E69DCAD8] configurationWithWeight:7];
     v8 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
@@ -1139,13 +1139,13 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
   return v10;
 }
 
-- (UIEdgeInsets)_touchInsetsForFrame:(CGRect)a3
+- (UIEdgeInsets)_touchInsetsForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = fmin((CGRectGetWidth(a3) + -32.0) * 0.5, 0.0);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = fmin((CGRectGetWidth(frame) + -32.0) * 0.5, 0.0);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -1161,22 +1161,22 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
   return result;
 }
 
-- (double)_computeLabelWidthWithLeadingButton:(id)a3
+- (double)_computeLabelWidthWithLeadingButton:(id)button
 {
-  [a3 frame];
+  [button frame];
   MinX = CGRectGetMinX(v8);
   MaxX = 0.0;
   if ([(NANowPlayingDockedView *)self artworkEnabled])
   {
-    v6 = [(NANowPlayingDockedView *)self artworkView];
-    [v6 frame];
+    artworkView = [(NANowPlayingDockedView *)self artworkView];
+    [artworkView frame];
     MaxX = CGRectGetMaxX(v9);
   }
 
   return MinX + -20.0 - MaxX;
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1185,11 +1185,11 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "Docked View Close button tapped", v6, 2u);
   }
 
-  v5 = [(NANowPlayingDockedView *)self delegate];
-  [v5 nowPlayingDockedViewDidTapClose:self];
+  delegate = [(NANowPlayingDockedView *)self delegate];
+  [delegate nowPlayingDockedViewDidTapClose:self];
 }
 
-- (void)pauseButtonTapped:(id)a3
+- (void)pauseButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1198,11 +1198,11 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "Docked View Pause button tapped", v6, 2u);
   }
 
-  v5 = [(NANowPlayingDockedView *)self delegate];
-  [v5 nowPlayingDockedViewDidTapPause:self];
+  delegate = [(NANowPlayingDockedView *)self delegate];
+  [delegate nowPlayingDockedViewDidTapPause:self];
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1211,11 +1211,11 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "Docked View Play button tapped", v6, 2u);
   }
 
-  v5 = [(NANowPlayingDockedView *)self delegate];
-  [v5 nowPlayingDockedViewDidTapPlay:self];
+  delegate = [(NANowPlayingDockedView *)self delegate];
+  [delegate nowPlayingDockedViewDidTapPlay:self];
 }
 
-- (void)rewindButtonTapped:(id)a3
+- (void)rewindButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1224,13 +1224,13 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "Docked View Rewind tapped", v6, 2u);
   }
 
-  v5 = [(NANowPlayingDockedView *)self delegate];
-  [v5 nowPlayingDockedViewDidTapRewind:self];
+  delegate = [(NANowPlayingDockedView *)self delegate];
+  [delegate nowPlayingDockedViewDidTapRewind:self];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(NANowPlayingDockedView *)self menu:a3];
+  v5 = [(NANowPlayingDockedView *)self menu:interaction];
 
   if (v5)
   {
@@ -1250,11 +1250,11 @@ void __47__NANowPlayingDockedView_setIsPlaying_waiting___block_invoke(uint64_t a
   return v6;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   v12.receiver = self;
   v12.super_class = NANowPlayingDockedView;
-  [(NANowPlayingDockedView *)&v12 menuAttachmentPointForConfiguration:a3];
+  [(NANowPlayingDockedView *)&v12 menuAttachmentPointForConfiguration:configuration];
   v5 = v4;
   v7 = v6;
   [(NANowPlayingDockedView *)self safeAreaInsets];

@@ -1,15 +1,15 @@
 @interface CRLWPFontVerificationCache
 - (CRLWPFontVerificationCache)init;
-- (id)filterFontNames:(id)a3 withStatus:(int64_t)a4;
-- (id)filterFontNames:(id)a3 withStatusInSet:(id)a4;
-- (id)filterFontNames:(id)a3 withoutStatus:(int64_t)a4;
-- (id)fontNamesWithStatus:(int64_t)a3;
-- (id)fontNamesWithStatusInSet:(id)a3;
-- (int64_t)statusForFontName:(id)a3;
-- (void)resetFontNames:(id)a3 withStatus:(int64_t)a4;
-- (void)resetFontNames:(id)a3 withStatusInSet:(id)a4;
-- (void)setStatus:(int64_t)a3 forFontName:(id)a4;
-- (void)setStatus:(int64_t)a3 forFontNames:(id)a4;
+- (id)filterFontNames:(id)names withStatus:(int64_t)status;
+- (id)filterFontNames:(id)names withStatusInSet:(id)set;
+- (id)filterFontNames:(id)names withoutStatus:(int64_t)status;
+- (id)fontNamesWithStatus:(int64_t)status;
+- (id)fontNamesWithStatusInSet:(id)set;
+- (int64_t)statusForFontName:(id)name;
+- (void)resetFontNames:(id)names withStatus:(int64_t)status;
+- (void)resetFontNames:(id)names withStatusInSet:(id)set;
+- (void)setStatus:(int64_t)status forFontName:(id)name;
+- (void)setStatus:(int64_t)status forFontNames:(id)names;
 @end
 
 @implementation CRLWPFontVerificationCache
@@ -29,51 +29,51 @@
   return v2;
 }
 
-- (int64_t)statusForFontName:(id)a3
+- (int64_t)statusForFontName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_verifiedFonts objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_verifiedFonts objectForKeyedSubscript:name];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setStatus:(int64_t)a3 forFontName:(id)a4
+- (void)setStatus:(int64_t)status forFontName:(id)name
 {
-  if (a3)
+  if (status)
   {
-    v6 = a4;
-    v8 = [NSNumber numberWithInteger:a3];
+    nameCopy = name;
+    nameCopy2 = [NSNumber numberWithInteger:status];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   }
 
   else
   {
     verifiedFonts = self->_verifiedFonts;
-    v8 = a4;
+    nameCopy2 = name;
     [(NSMutableDictionary *)verifiedFonts removeObjectForKey:?];
   }
 }
 
-- (void)setStatus:(int64_t)a3 forFontNames:(id)a4
+- (void)setStatus:(int64_t)status forFontNames:(id)names
 {
-  v6 = a4;
-  if (a3)
+  namesCopy = names;
+  if (status)
   {
-    v7 = [NSNumber numberWithInteger:a3];
+    v7 = [NSNumber numberWithInteger:status];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v6;
+    v8 = namesCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -103,39 +103,39 @@
 
   else
   {
-    [(NSMutableDictionary *)self->_verifiedFonts removeObjectsForKeys:v6];
+    [(NSMutableDictionary *)self->_verifiedFonts removeObjectsForKeys:namesCopy];
   }
 }
 
-- (void)resetFontNames:(id)a3 withStatus:(int64_t)a4
+- (void)resetFontNames:(id)names withStatus:(int64_t)status
 {
-  if (a4)
+  if (status)
   {
-    v7 = [(CRLWPFontVerificationCache *)self fontNamesWithStatus:a4];
+    v7 = [(CRLWPFontVerificationCache *)self fontNamesWithStatus:status];
     verifiedFonts = self->_verifiedFonts;
-    v6 = [v7 allObjects];
-    [(NSMutableDictionary *)verifiedFonts removeObjectsForKeys:v6];
+    allObjects = [v7 allObjects];
+    [(NSMutableDictionary *)verifiedFonts removeObjectsForKeys:allObjects];
   }
 }
 
-- (void)resetFontNames:(id)a3 withStatusInSet:(id)a4
+- (void)resetFontNames:(id)names withStatusInSet:(id)set
 {
-  v7 = [(CRLWPFontVerificationCache *)self fontNamesWithStatusInSet:a4];
+  v7 = [(CRLWPFontVerificationCache *)self fontNamesWithStatusInSet:set];
   verifiedFonts = self->_verifiedFonts;
-  v6 = [v7 allObjects];
-  [(NSMutableDictionary *)verifiedFonts removeObjectsForKeys:v6];
+  allObjects = [v7 allObjects];
+  [(NSMutableDictionary *)verifiedFonts removeObjectsForKeys:allObjects];
 }
 
-- (id)fontNamesWithStatus:(int64_t)a3
+- (id)fontNamesWithStatus:(int64_t)status
 {
-  if (a3)
+  if (status)
   {
     verifiedFonts = self->_verifiedFonts;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100562FB4;
     v6[3] = &unk_10186F220;
-    v6[4] = a3;
+    v6[4] = status;
     v4 = [(NSMutableDictionary *)verifiedFonts keysOfEntriesPassingTest:v6];
   }
 
@@ -147,34 +147,34 @@
   return v4;
 }
 
-- (id)fontNamesWithStatusInSet:(id)a3
+- (id)fontNamesWithStatusInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   verifiedFonts = self->_verifiedFonts;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10056309C;
   v9[3] = &unk_10186F248;
-  v10 = v4;
-  v6 = v4;
+  v10 = setCopy;
+  v6 = setCopy;
   v7 = [(NSMutableDictionary *)verifiedFonts keysOfEntriesPassingTest:v9];
 
   return v7;
 }
 
-- (id)filterFontNames:(id)a3 withStatus:(int64_t)a4
+- (id)filterFontNames:(id)names withStatus:(int64_t)status
 {
-  v6 = [a3 mutableCopy];
-  if (a4)
+  v6 = [names mutableCopy];
+  if (status)
   {
-    v7 = [(CRLWPFontVerificationCache *)self fontNamesWithStatus:a4];
-    [v6 intersectSet:v7];
+    allKeys = [(CRLWPFontVerificationCache *)self fontNamesWithStatus:status];
+    [v6 intersectSet:allKeys];
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_verifiedFonts allKeys];
-    v8 = [NSSet setWithArray:v7];
+    allKeys = [(NSMutableDictionary *)self->_verifiedFonts allKeys];
+    v8 = [NSSet setWithArray:allKeys];
     [v6 minusSet:v8];
   }
 
@@ -183,28 +183,28 @@
   return v9;
 }
 
-- (id)filterFontNames:(id)a3 withStatusInSet:(id)a4
+- (id)filterFontNames:(id)names withStatusInSet:(id)set
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10056321C;
   v8[3] = &unk_10186F270;
   v8[4] = self;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 objectsPassingTest:v8];
+  setCopy = set;
+  v5 = setCopy;
+  v6 = [names objectsPassingTest:v8];
 
   return v6;
 }
 
-- (id)filterFontNames:(id)a3 withoutStatus:(int64_t)a4
+- (id)filterFontNames:(id)names withoutStatus:(int64_t)status
 {
-  v6 = a3;
+  namesCopy = names;
   v7 = [NSMutableSet setWithObjects:&off_1018E2E98, &off_1018E2EB0, &off_1018E2EC8, &off_1018E2EE0, 0];
-  v8 = [NSNumber numberWithInteger:a4];
+  v8 = [NSNumber numberWithInteger:status];
   [v7 removeObject:v8];
 
-  v9 = [(CRLWPFontVerificationCache *)self filterFontNames:v6 withStatusInSet:v7];
+  v9 = [(CRLWPFontVerificationCache *)self filterFontNames:namesCopy withStatusInSet:v7];
 
   return v9;
 }

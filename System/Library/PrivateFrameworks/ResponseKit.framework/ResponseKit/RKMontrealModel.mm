@@ -1,16 +1,16 @@
 @interface RKMontrealModel
-+ (id)modelForLanguage:(id)a3;
-+ (id)pathForLanguage:(id)a3;
-- (RKMontrealModel)initWithPath:(id)a3;
++ (id)modelForLanguage:(id)language;
++ (id)pathForLanguage:(id)language;
+- (RKMontrealModel)initWithPath:(id)path;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation RKMontrealModel
 
-+ (id)modelForLanguage:(id)a3
++ (id)modelForLanguage:(id)language
 {
-  v4 = [a1 pathForLanguage:a3];
+  v4 = [self pathForLanguage:language];
   pthread_mutex_lock(&+[RKMontrealModel modelForLanguage:]::lock);
   v5 = +[RKMontrealModel modelForLanguage:]::instances;
   if (!+[RKMontrealModel modelForLanguage:]::instances)
@@ -25,7 +25,7 @@
   v8 = [v5 objectForKey:v4];
   if (!v8)
   {
-    v9 = [[a1 alloc] initWithPath:v4];
+    v9 = [[self alloc] initWithPath:v4];
     if (v9)
     {
       v8 = v9;
@@ -43,11 +43,11 @@
   return v8;
 }
 
-- (RKMontrealModel)initWithPath:(id)a3
+- (RKMontrealModel)initWithPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     goto LABEL_10;
   }
@@ -66,13 +66,13 @@
   }
 
   v10 = @"fileLocation";
-  v11[0] = v4;
+  v11[0] = pathCopy;
   v5 = (weak_MRLModelCreate)([MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1]);
   self->_model = v5;
   if (!v5)
   {
 LABEL_10:
-    v6 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -84,11 +84,11 @@ LABEL_10:
   weak_MRLModelSetMaxSequenceLength(self->_model, (kMaxSequenceLength + 1));
 LABEL_9:
   self = self;
-  v6 = self;
+  selfCopy = self;
 LABEL_11:
 
   v7 = *MEMORY[0x277D85DE8];
-  return v6;
+  return selfCopy;
 }
 
 void *__32__RKMontrealModel_initWithPath___block_invoke()
@@ -149,10 +149,10 @@ void *__32__RKMontrealModel_initWithPath___block_invoke()
   }
 }
 
-+ (id)pathForLanguage:(id)a3
++ (id)pathForLanguage:(id)language
 {
-  v3 = a3;
-  v4 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v3];
+  languageCopy = language;
+  v4 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:languageCopy];
 
   v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v4];
   v6 = [@"Polarity-" stringByAppendingString:v4];
@@ -171,17 +171,17 @@ void *__32__RKMontrealModel_initWithPath___block_invoke()
   v9 = v15[5];
   if (v9)
   {
-    v10 = [v9 path];
+    path = [v9 path];
   }
 
   else
   {
-    v10 = 0;
+    path = 0;
   }
 
   _Block_object_dispose(&v14, 8);
 
-  return v10;
+  return path;
 }
 
 void __35__RKMontrealModel_pathForLanguage___block_invoke(uint64_t a1, CFURLRef url, uint64_t a3, uint64_t a4, const void *a5, _BYTE *a6)

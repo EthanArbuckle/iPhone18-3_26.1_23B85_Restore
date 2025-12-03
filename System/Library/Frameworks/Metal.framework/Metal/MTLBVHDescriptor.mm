@@ -3,9 +3,9 @@
 - (MTLBVHDescriptor)init;
 - (PipelineKey)cachedPipelineKey;
 - (unint64_t)maxSubKeyframeTemporalSplits;
-- (void)setBranchingFactor:(unint64_t)a3;
-- (void)setMaxDepth:(unint64_t)a3;
-- (void)setUseTemporalSplits:(BOOL)a3;
+- (void)setBranchingFactor:(unint64_t)factor;
+- (void)setMaxDepth:(unint64_t)depth;
+- (void)setUseTemporalSplits:(BOOL)splits;
 - (void)updatePipelineKey;
 @end
 
@@ -73,8 +73,8 @@
   if (v3)
   {
     v4 = [objc_loadWeak(&self->_geometryDescriptors) objectAtIndexedSubscript:0];
-    v5 = [v4 primitiveType];
-    if (v5 == 1)
+    primitiveType = [v4 primitiveType];
+    if (primitiveType == 1)
     {
       v48 = 0;
       LODWORD(v49) = [v4 boundingBoxStride];
@@ -82,21 +82,21 @@
 
     else
     {
-      if (!v5)
+      if (!primitiveType)
       {
-        v6 = [v4 vertexStride];
-        v7 = [v4 vertexFormat];
-        if (!v6)
+        vertexStride = [v4 vertexStride];
+        vertexFormat = [v4 vertexFormat];
+        if (!vertexStride)
         {
-          LODWORD(v6) = MTLAttributeFormatSize(v7, v8, v9, v10, v11, v12, v13, v14);
+          LODWORD(vertexStride) = MTLAttributeFormatSize(vertexFormat, v8, v9, v10, v11, v12, v13, v14);
         }
 
         v15 = ([v4 vertexFormat] & 0x3F) << 39;
         if ([v4 indexBuffer])
         {
-          v16 = [v4 indexType];
+          indexType = [v4 indexType];
           v17 = 0x1000000;
-          if (!v16)
+          if (!indexType)
           {
             v17 = 0x800000;
           }
@@ -107,7 +107,7 @@
           v17 = 0;
         }
 
-        v50 = v6;
+        v50 = vertexStride;
         v48 = v17 | v15 | (([v4 polygonType] & 3) << 8);
         goto LABEL_16;
       }
@@ -155,7 +155,7 @@ LABEL_17:
   splitCapacity = self->_splitCapacity;
   v44 = BYTE1(self->_primitiveCost);
   v45 = *(&self->_deterministic + 2);
-  v28 = [(MTLBVHDescriptor *)self requiresResourceBuffer];
+  requiresResourceBuffer = [(MTLBVHDescriptor *)self requiresResourceBuffer];
   if (*(&self->_deterministic + 1))
   {
     v29 = 8 * (self->_maxSubKeyframeTemporalSplits & 0xF);
@@ -201,7 +201,7 @@ LABEL_17:
   }
 
   v37 = 0x8000000;
-  if (!v28)
+  if (!requiresResourceBuffer)
   {
     v37 = 0;
   }
@@ -251,29 +251,29 @@ LABEL_17:
   }
 }
 
-- (void)setBranchingFactor:(unint64_t)a3
+- (void)setBranchingFactor:(unint64_t)factor
 {
-  if (self->_branchingFactor != a3)
+  if (self->_branchingFactor != factor)
   {
-    self->_branchingFactor = a3;
+    self->_branchingFactor = factor;
     [(MTLBVHDescriptor *)self updateMaxDepth];
   }
 }
 
-- (void)setUseTemporalSplits:(BOOL)a3
+- (void)setUseTemporalSplits:(BOOL)splits
 {
-  if (*(&self->_deterministic + 1) != a3)
+  if (*(&self->_deterministic + 1) != splits)
   {
-    *(&self->_deterministic + 1) = a3;
+    *(&self->_deterministic + 1) = splits;
     [(MTLBVHDescriptor *)self updateMaxDepth];
   }
 }
 
-- (void)setMaxDepth:(unint64_t)a3
+- (void)setMaxDepth:(unint64_t)depth
 {
-  if (self->_maxDepth != a3)
+  if (self->_maxDepth != depth)
   {
-    self->_maxDepth = a3;
+    self->_maxDepth = depth;
     [(MTLBVHDescriptor *)self updateMaxDepth];
   }
 }

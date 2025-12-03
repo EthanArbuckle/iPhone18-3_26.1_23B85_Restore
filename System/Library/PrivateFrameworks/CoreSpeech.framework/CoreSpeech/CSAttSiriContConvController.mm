@@ -1,25 +1,25 @@
 @interface CSAttSiriContConvController
 - (BOOL)_shouldConfigureAudioForContinuousConversation;
-- (BOOL)shouldRunCCForAudioRecordContext:(id)a3;
-- (CSAttSiriContConvController)initWithAttSiriController:(id)a3;
-- (CSAttSiriContConvController)initWithAttSiriController:(id)a3 supportAttentionLostAndGain:(BOOL)a4;
+- (BOOL)shouldRunCCForAudioRecordContext:(id)context;
+- (CSAttSiriContConvController)initWithAttSiriController:(id)controller;
+- (CSAttSiriContConvController)initWithAttSiriController:(id)controller supportAttentionLostAndGain:(BOOL)gain;
 - (void)_applyGazeSignalMandate;
 - (void)_configureAttendingTimeout;
 - (void)_setupAttendingTimer;
 - (void)_setupClientPendingTimer;
-- (void)_setupGazeNodeWithAttSiriController:(id)a3;
-- (void)_startAttendingWithAudioRecordContext:(id)a3 withRequestId:(id)a4 shouldStartTimer:(BOOL)a5;
-- (void)_stopAttendingForRequestId:(id)a3 isReqCC:(BOOL)a4 forceStop:(BOOL)a5;
+- (void)_setupGazeNodeWithAttSiriController:(id)controller;
+- (void)_startAttendingWithAudioRecordContext:(id)context withRequestId:(id)id shouldStartTimer:(BOOL)timer;
+- (void)_stopAttendingForRequestId:(id)id isReqCC:(BOOL)c forceStop:(BOOL)stop;
 - (void)_stopNodes;
 - (void)_stopTimers;
-- (void)attSiriNode:(id)a3 startSpeechProcessing:(unint64_t)a4;
-- (void)gazeTrackerFaceTrackingMetaDataUpdate:(id)a3 atMachAbsTime:(unint64_t)a4;
+- (void)attSiriNode:(id)node startSpeechProcessing:(unint64_t)processing;
+- (void)gazeTrackerFaceTrackingMetaDataUpdate:(id)update atMachAbsTime:(unint64_t)time;
 - (void)handleAttendingTimeout;
-- (void)relayGazeEstimates:(CGPoint)a3 landmarks:(id)a4;
-- (void)startAttendingWithAudioRecordContext:(id)a3 attendingSiriRequestContext:(id)a4 withRequestId:(id)a5 shouldStartTimer:(BOOL)a6;
+- (void)relayGazeEstimates:(CGPoint)estimates landmarks:(id)landmarks;
+- (void)startAttendingWithAudioRecordContext:(id)context attendingSiriRequestContext:(id)requestContext withRequestId:(id)id shouldStartTimer:(BOOL)timer;
 - (void)startMagusLoggingForTriggerRequest;
-- (void)stopAttendingForRequestId:(id)a3 isReqCC:(BOOL)a4 forceStop:(BOOL)a5;
-- (void)updateSiriOrbLocation:(CGRect)a3;
+- (void)stopAttendingForRequestId:(id)id isReqCC:(BOOL)c forceStop:(BOOL)stop;
+- (void)updateSiriOrbLocation:(CGRect)location;
 @end
 
 @implementation CSAttSiriContConvController
@@ -140,15 +140,15 @@
 {
   v2 = +[CSUtils isContinuousConversationSupported];
   v3 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v4 = [v3 carPlayConnected];
+  carPlayConnected = [v3 carPlayConnected];
 
   v5 = +[CSUtils isBluetoothAudioDeviceConnected];
   v6 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v7 = [v6 hearstRouteStatus];
+  hearstRouteStatus = [v6 hearstRouteStatus];
 
-  if (v7)
+  if (hearstRouteStatus)
   {
-    v8 = v7 == 5;
+    v8 = hearstRouteStatus == 5;
   }
 
   else
@@ -158,7 +158,7 @@
 
   v9 = !v8;
   v10 = v5 ^ 1 | v9;
-  if (v4)
+  if (carPlayConnected)
   {
     v10 = 0;
   }
@@ -183,7 +183,7 @@
     v18 = 1024;
     v19 = v2;
     v20 = 1024;
-    v21 = v4;
+    v21 = carPlayConnected;
     v22 = 1024;
     v23 = v5;
     v24 = 1024;
@@ -273,44 +273,44 @@
   [v8 updateState:0];
 }
 
-- (void)_stopAttendingForRequestId:(id)a3 isReqCC:(BOOL)a4 forceStop:(BOOL)a5
+- (void)_stopAttendingForRequestId:(id)id isReqCC:(BOOL)c forceStop:(BOOL)stop
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  stopCopy = stop;
+  cCopy = c;
+  idCopy = id;
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315906;
     v12 = "[CSAttSiriContConvController _stopAttendingForRequestId:isReqCC:forceStop:]";
     v13 = 2112;
-    v14 = v9;
+    v14 = idCopy;
     v15 = 1024;
-    v16 = v6;
+    v16 = cCopy;
     v17 = 1024;
-    v18 = v5;
+    v18 = stopCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s mhId:%@ isReqCC:%u forceStop:%u", &v11, 0x22u);
   }
 
-  objc_storeStrong(&self->_prevStoppedMhId, a3);
+  objc_storeStrong(&self->_prevStoppedMhId, id);
   [(CSAttSiriContConvController *)self _stopTimers];
-  if (!v6)
+  if (!cCopy)
   {
     [(CSAttSiriContConvController *)self _stopNodes];
   }
 
-  if (v5)
+  if (stopCopy)
   {
     [(CSAttSiriOSDNode *)self->_osdNode stop];
     [(CSAttSiriController *)self->_attSiriController handleEndOfAttendingForRequestId:self->_requestMHUUID];
   }
 }
 
-- (void)_startAttendingWithAudioRecordContext:(id)a3 withRequestId:(id)a4 shouldStartTimer:(BOOL)a5
+- (void)_startAttendingWithAudioRecordContext:(id)context withRequestId:(id)id shouldStartTimer:(BOOL)timer
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  timerCopy = timer;
+  contextCopy = context;
+  idCopy = id;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -323,9 +323,9 @@
     *&v33[4] = 2112;
     *&v33[6] = requestMHUUID;
     *&v33[14] = 2112;
-    *&v33[16] = v10;
+    *&v33[16] = idCopy;
     v34 = 1024;
-    v35 = v5;
+    v35 = timerCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s _isAttending:%u _requestMHUUID:%@ mhId:%@ startTimer:%u", buf, 0x2Cu);
     v11 = CSLogContextFacilityCoreSpeech;
   }
@@ -344,7 +344,7 @@
 
   if (!self->_isAttending)
   {
-    if (self->_prevStoppedMhId && [v10 isEqualToString:?] && !-[CSAttSiriController getPendingActivationStatus](self->_attSiriController, "getPendingActivationStatus"))
+    if (self->_prevStoppedMhId && [idCopy isEqualToString:?] && !-[CSAttSiriController getPendingActivationStatus](self->_attSiriController, "getPendingActivationStatus"))
     {
       v27 = CSLogContextFacilityCoreSpeech;
       if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -355,16 +355,16 @@
       *buf = 136315394;
       v31 = "[CSAttSiriContConvController _startAttendingWithAudioRecordContext:withRequestId:shouldStartTimer:]";
       v32 = 2112;
-      *v33 = v10;
+      *v33 = idCopy;
       v18 = "%s Ignoring attending start request for previously stopped MHId:%@";
       v19 = v27;
     }
 
     else
     {
-      objc_storeStrong(&self->_audioRecordContext, a3);
-      objc_storeStrong(&self->_requestMHUUID, a4);
-      [(CSAttSiriMagusLoggingNode *)self->_magusLoggingNode setMhId:v10];
+      objc_storeStrong(&self->_audioRecordContext, context);
+      objc_storeStrong(&self->_requestMHUUID, id);
+      [(CSAttSiriMagusLoggingNode *)self->_magusLoggingNode setMhId:idCopy];
       [(CSAttSiriMagusLoggingNode *)self->_magusLoggingNode setAudioRecordContext:self->_audioRecordContext];
       [(CSAttSiriMagusLoggingNode *)self->_magusLoggingNode stop];
       [(CSAttSiriOSDNode *)self->_osdNode resetForNewRequestWithRecordContext:self->_audioRecordContext endpointerSettings:0 voiceTriggerInfo:0 osdMode:1];
@@ -375,17 +375,17 @@
       v21 = +[CSFPreferences sharedPreferences];
       v22 = [v21 isGazeSimlModelEnabled] ^ 1;
 
-      v23 = [(CSAttSiriController *)self->_attSiriController attSiriSvcListener];
+      attSiriSvcListener = [(CSAttSiriController *)self->_attSiriController attSiriSvcListener];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_10006B7E4;
       v28[3] = &unk_1002537E8;
       v29 = v22;
       v28[4] = self;
-      [v23 notifyClientsWithBlock:v28];
+      [attSiriSvcListener notifyClientsWithBlock:v28];
 
       self->_isAttending = 1;
-      if (v5)
+      if (timerCopy)
       {
         [(CSAttSiriContConvController *)self _setupAttendingTimer];
       }
@@ -412,9 +412,9 @@
     goto LABEL_20;
   }
 
-  if (v5)
+  if (timerCopy)
   {
-    if ([(NSString *)self->_requestMHUUID isEqualToString:v10])
+    if ([(NSString *)self->_requestMHUUID isEqualToString:idCopy])
     {
       [(CSAttSiriContConvController *)self _setupAttendingTimer];
       v15 = CSLogContextFacilityCoreSpeech;
@@ -436,7 +436,7 @@
     v32 = 2112;
     *v33 = v17;
     *&v33[8] = 2112;
-    *&v33[10] = v10;
+    *&v33[10] = idCopy;
     v18 = "%s Already attending with id: %@, ignore new start attending request for id: %@";
     v19 = v16;
     v20 = 32;
@@ -447,7 +447,7 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)updateSiriOrbLocation:(CGRect)a3
+- (void)updateSiriOrbLocation:(CGRect)location
 {
   if (self->_gazeNode)
   {
@@ -457,7 +457,7 @@ LABEL_21:
     block[2] = sub_10006B9E0;
     block[3] = &unk_10024FAE8;
     block[4] = self;
-    v6 = a3;
+    locationCopy = location;
     dispatch_async(queue, block);
   }
 
@@ -473,12 +473,12 @@ LABEL_21:
   }
 }
 
-- (void)relayGazeEstimates:(CGPoint)a3 landmarks:(id)a4
+- (void)relayGazeEstimates:(CGPoint)estimates landmarks:(id)landmarks
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
+  y = estimates.y;
+  x = estimates.x;
+  landmarksCopy = landmarks;
+  v8 = landmarksCopy;
   if (self->_gazeNode)
   {
     queue = self->_queue;
@@ -489,7 +489,7 @@ LABEL_21:
     v11[4] = self;
     v13 = x;
     v14 = y;
-    v12 = v7;
+    v12 = landmarksCopy;
     dispatch_async(queue, v11);
   }
 
@@ -505,10 +505,10 @@ LABEL_21:
   }
 }
 
-- (void)gazeTrackerFaceTrackingMetaDataUpdate:(id)a3 atMachAbsTime:(unint64_t)a4
+- (void)gazeTrackerFaceTrackingMetaDataUpdate:(id)update atMachAbsTime:(unint64_t)time
 {
-  v6 = a3;
-  v7 = v6;
+  updateCopy = update;
+  v7 = updateCopy;
   if (self->_gazeNode)
   {
     queue = self->_queue;
@@ -517,8 +517,8 @@ LABEL_21:
     block[2] = sub_10006BD64;
     block[3] = &unk_1002533C8;
     block[4] = self;
-    v11 = v6;
-    v12 = a4;
+    v11 = updateCopy;
+    timeCopy = time;
     dispatch_async(queue, block);
   }
 
@@ -534,7 +534,7 @@ LABEL_21:
   }
 }
 
-- (void)attSiriNode:(id)a3 startSpeechProcessing:(unint64_t)a4
+- (void)attSiriNode:(id)node startSpeechProcessing:(unint64_t)processing
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -542,7 +542,7 @@ LABEL_21:
   v5[2] = sub_10006BE58;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = processing;
   dispatch_async(queue, v5);
 }
 
@@ -557,43 +557,43 @@ LABEL_21:
   dispatch_async(queue, block);
 }
 
-- (void)stopAttendingForRequestId:(id)a3 isReqCC:(BOOL)a4 forceStop:(BOOL)a5
+- (void)stopAttendingForRequestId:(id)id isReqCC:(BOOL)c forceStop:(BOOL)stop
 {
-  v8 = a3;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006BF94;
   block[3] = &unk_1002520F0;
-  v14 = a4;
-  v15 = a5;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  cCopy = c;
+  stopCopy = stop;
+  v12 = idCopy;
+  selfCopy = self;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)startAttendingWithAudioRecordContext:(id)a3 attendingSiriRequestContext:(id)a4 withRequestId:(id)a5 shouldStartTimer:(BOOL)a6
+- (void)startAttendingWithAudioRecordContext:(id)context attendingSiriRequestContext:(id)requestContext withRequestId:(id)id shouldStartTimer:(BOOL)timer
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  idCopy = id;
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10006C154;
   v14[3] = &unk_100252420;
-  v18 = a6;
-  v15 = v10;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
-  v13 = v10;
+  timerCopy = timer;
+  v15 = idCopy;
+  v16 = contextCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = idCopy;
   dispatch_async(queue, v14);
 }
 
-- (BOOL)shouldRunCCForAudioRecordContext:(id)a3
+- (BOOL)shouldRunCCForAudioRecordContext:(id)context
 {
-  if (-[CSAttSiriContConvController _shouldDisableCCForAudioRecordType:](self, "_shouldDisableCCForAudioRecordType:", [a3 type]))
+  if (-[CSAttSiriContConvController _shouldDisableCCForAudioRecordType:](self, "_shouldDisableCCForAudioRecordType:", [context type]))
   {
     return 0;
   }
@@ -601,9 +601,9 @@ LABEL_21:
   return [(CSAttSiriContConvController *)self _shouldConfigureAudioForContinuousConversation];
 }
 
-- (void)_setupGazeNodeWithAttSiriController:(id)a3
+- (void)_setupGazeNodeWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -612,7 +612,7 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v10, 0xCu);
   }
 
-  v6 = [[CSAttSiriIOSGazeNode alloc] initWithAttSiriController:v4];
+  v6 = [[CSAttSiriIOSGazeNode alloc] initWithAttSiriController:controllerCopy];
   gazeNode = self->_gazeNode;
   self->_gazeNode = v6;
 
@@ -634,10 +634,10 @@ LABEL_21:
   }
 }
 
-- (CSAttSiriContConvController)initWithAttSiriController:(id)a3 supportAttentionLostAndGain:(BOOL)a4
+- (CSAttSiriContConvController)initWithAttSiriController:(id)controller supportAttentionLostAndGain:(BOOL)gain
 {
-  v4 = a4;
-  v7 = a3;
+  gainCopy = gain;
+  controllerCopy = controller;
   v43.receiver = self;
   v43.super_class = CSAttSiriContConvController;
   v8 = [(CSAttSiriContConvController *)&v43 init];
@@ -649,7 +649,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  objc_storeStrong(&v8->_attSiriController, a3);
+  objc_storeStrong(&v8->_attSiriController, controller);
   v10 = dispatch_queue_create("AttSiriCCController queue", 0);
   queue = v9->_queue;
   v9->_queue = v10;
@@ -661,7 +661,7 @@ LABEL_27:
   if (CSIsIOS())
   {
     [(CSAttSiriContConvController *)v9 _applyGazeSignalMandate];
-    if (v4)
+    if (gainCopy)
     {
       v14 = [[CSAttSiriAttentionNode alloc] initWithAttSiriController:v9->_attSiriController];
       attentionNode = v9->_attentionNode;
@@ -706,9 +706,9 @@ LABEL_27:
     }
 
     v23 = +[CSFPreferences sharedPreferences];
-    v24 = [v23 isAttentiveSiriAudioLoggingEnabled];
+    isAttentiveSiriAudioLoggingEnabled = [v23 isAttentiveSiriAudioLoggingEnabled];
 
-    if (v24)
+    if (isAttentiveSiriAudioLoggingEnabled)
     {
       v25 = [[CSAttSiriMagusLoggingNode alloc] initWithAttSiriController:v9->_attSiriController];
       magusLoggingNode = v9->_magusLoggingNode;
@@ -796,10 +796,10 @@ LABEL_28:
   return v36;
 }
 
-- (CSAttSiriContConvController)initWithAttSiriController:(id)a3
+- (CSAttSiriContConvController)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CSAttSiriContConvController *)self initWithAttSiriController:v4 supportAttentionLostAndGain:+[CSAttSiriAttentionNode supportAttentionLostAndGain]];
+  controllerCopy = controller;
+  v5 = [(CSAttSiriContConvController *)self initWithAttSiriController:controllerCopy supportAttentionLostAndGain:+[CSAttSiriAttentionNode supportAttentionLostAndGain]];
 
   return v5;
 }

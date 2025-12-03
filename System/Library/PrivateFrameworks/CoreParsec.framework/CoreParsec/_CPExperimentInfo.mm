@@ -1,7 +1,7 @@
 @interface _CPExperimentInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPExperimentInfo
@@ -13,28 +13,28 @@
   return v4 ^ [(NSString *)self->_treatmentId hash]^ (2654435761 * self->_deploymentId) ^ (2654435761 * self->_version);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_CPExperimentInfo *)self namespaceId];
-  v6 = [v4 namespaceId];
-  if ((v5 != 0) == (v6 == 0))
+  namespaceId = [(_CPExperimentInfo *)self namespaceId];
+  namespaceId2 = [equalCopy namespaceId];
+  if ((namespaceId != 0) == (namespaceId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_CPExperimentInfo *)self namespaceId];
-  if (v7)
+  namespaceId3 = [(_CPExperimentInfo *)self namespaceId];
+  if (namespaceId3)
   {
-    v8 = v7;
-    v9 = [(_CPExperimentInfo *)self namespaceId];
-    v10 = [v4 namespaceId];
-    v11 = [v9 isEqual:v10];
+    v8 = namespaceId3;
+    namespaceId4 = [(_CPExperimentInfo *)self namespaceId];
+    namespaceId5 = [equalCopy namespaceId];
+    v11 = [namespaceId4 isEqual:namespaceId5];
 
     if (!v11)
     {
@@ -46,20 +46,20 @@
   {
   }
 
-  v5 = [(_CPExperimentInfo *)self experimentId];
-  v6 = [v4 experimentId];
-  if ((v5 != 0) == (v6 == 0))
+  namespaceId = [(_CPExperimentInfo *)self experimentId];
+  namespaceId2 = [equalCopy experimentId];
+  if ((namespaceId != 0) == (namespaceId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_CPExperimentInfo *)self experimentId];
-  if (v12)
+  experimentId = [(_CPExperimentInfo *)self experimentId];
+  if (experimentId)
   {
-    v13 = v12;
-    v14 = [(_CPExperimentInfo *)self experimentId];
-    v15 = [v4 experimentId];
-    v16 = [v14 isEqual:v15];
+    v13 = experimentId;
+    experimentId2 = [(_CPExperimentInfo *)self experimentId];
+    experimentId3 = [equalCopy experimentId];
+    v16 = [experimentId2 isEqual:experimentId3];
 
     if (!v16)
     {
@@ -71,22 +71,22 @@
   {
   }
 
-  v5 = [(_CPExperimentInfo *)self treatmentId];
-  v6 = [v4 treatmentId];
-  if ((v5 != 0) == (v6 == 0))
+  namespaceId = [(_CPExperimentInfo *)self treatmentId];
+  namespaceId2 = [equalCopy treatmentId];
+  if ((namespaceId != 0) == (namespaceId2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_CPExperimentInfo *)self treatmentId];
-  if (v17)
+  treatmentId = [(_CPExperimentInfo *)self treatmentId];
+  if (treatmentId)
   {
-    v18 = v17;
-    v19 = [(_CPExperimentInfo *)self treatmentId];
-    v20 = [v4 treatmentId];
-    v21 = [v19 isEqual:v20];
+    v18 = treatmentId;
+    treatmentId2 = [(_CPExperimentInfo *)self treatmentId];
+    treatmentId3 = [equalCopy treatmentId];
+    v21 = [treatmentId2 isEqual:treatmentId3];
 
     if (!v21)
     {
@@ -99,10 +99,10 @@ LABEL_16:
   }
 
   deploymentId = self->_deploymentId;
-  if (deploymentId == [v4 deploymentId])
+  if (deploymentId == [equalCopy deploymentId])
   {
     version = self->_version;
-    v22 = version == [v4 version];
+    v22 = version == [equalCopy version];
     goto LABEL_18;
   }
 
@@ -113,28 +113,28 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
-  v4 = [(_CPExperimentInfo *)self namespaceId];
+  to;
+  namespaceId = [(_CPExperimentInfo *)self namespaceId];
 
-  if (v4)
+  if (namespaceId)
   {
     namespaceId = self->_namespaceId;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_CPExperimentInfo *)self experimentId];
+  experimentId = [(_CPExperimentInfo *)self experimentId];
 
-  if (v6)
+  if (experimentId)
   {
     experimentId = self->_experimentId;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_CPExperimentInfo *)self treatmentId];
+  treatmentId = [(_CPExperimentInfo *)self treatmentId];
 
-  if (v8)
+  if (treatmentId)
   {
     treatmentId = self->_treatmentId;
     PBDataWriterWriteStringField();

@@ -1,30 +1,30 @@
 @interface SKStarRatingControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_foregroundImageClipBounds;
 - (CGRect)hitRect;
-- (SKStarRatingControl)initWithBackgroundImage:(id)a3 foregroundImage:(id)a4;
+- (SKStarRatingControl)initWithBackgroundImage:(id)image foregroundImage:(id)foregroundImage;
 - (id)_newExplanationLabel;
-- (void)_updateValueForPoint:(CGPoint)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_updateValueForPoint:(CGPoint)point;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setExplanationText:(id)a3;
+- (void)setExplanationText:(id)text;
 - (void)sizeToFit;
 @end
 
 @implementation SKStarRatingControl
 
-- (SKStarRatingControl)initWithBackgroundImage:(id)a3 foregroundImage:(id)a4
+- (SKStarRatingControl)initWithBackgroundImage:(id)image foregroundImage:(id)foregroundImage
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  foregroundImageCopy = foregroundImage;
   v15.receiver = self;
   v15.super_class = SKStarRatingControl;
   v8 = [(SKStarRatingControl *)&v15 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
+    v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     backgroundImageView = v8->_backgroundImageView;
     v8->_backgroundImageView = v9;
 
@@ -34,7 +34,7 @@
     [(UIImageView *)v8->_backgroundImageView setUserInteractionEnabled:0];
     [(UIImageView *)v8->_backgroundImageView sizeToFit];
     [(SKStarRatingControl *)v8 addSubview:v8->_backgroundImageView];
-    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
+    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:foregroundImageCopy];
     foregroundImageView = v8->_foregroundImageView;
     v8->_foregroundImageView = v12;
 
@@ -87,26 +87,26 @@
   [(SKStarRatingControl *)self setFrame:v4, v6];
 }
 
-- (void)setExplanationText:(id)a3
+- (void)setExplanationText:(id)text
 {
-  v11 = a3;
-  v4 = [(UILabel *)self->_explanationLabel text];
-  v5 = [v4 isEqualToString:v11];
+  textCopy = text;
+  text = [(UILabel *)self->_explanationLabel text];
+  v5 = [text isEqualToString:textCopy];
 
-  v6 = v11;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     explanationLabel = self->_explanationLabel;
-    if (v11)
+    if (textCopy)
     {
       if (!explanationLabel)
       {
-        v8 = [(SKStarRatingControl *)self _newExplanationLabel];
+        _newExplanationLabel = [(SKStarRatingControl *)self _newExplanationLabel];
         v9 = self->_explanationLabel;
-        self->_explanationLabel = v8;
+        self->_explanationLabel = _newExplanationLabel;
 
         [(SKStarRatingControl *)self addSubview:self->_explanationLabel];
-        v6 = v11;
+        v6 = textCopy;
         explanationLabel = self->_explanationLabel;
       }
 
@@ -127,18 +127,18 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   p_trackingStartPoint = &self->_trackingStartPoint;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   p_trackingStartPoint->x = v5;
   p_trackingStartPoint->y = v6;
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   v6 = v5 - self->_trackingStartPoint.y;
   self->_trackingLastPoint.x = v7;
   self->_trackingLastPoint.y = v5;
@@ -151,10 +151,10 @@
   return v6 <= 40.0;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   p_trackingLastPoint = &self->_trackingLastPoint;
-  [a3 locationInView:{self, a4}];
+  [touch locationInView:{self, event}];
   p_trackingLastPoint->x = v6;
   p_trackingLastPoint->y = v7;
   [(SKStarRatingControl *)self _updateValueForPoint:?];
@@ -172,10 +172,10 @@
   return CGRectInset(*&v3, v7, v8);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SKStarRatingControl *)self hitRect];
   v10 = x;
   v11 = y;
@@ -214,22 +214,22 @@
 - (id)_newExplanationLabel
 {
   v2 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
   v4 = [MEMORY[0x1E69DB878] systemFontOfSize:11.0];
   [v2 setFont:v4];
 
-  v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v2 setTextColor:v5];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v2 setTextColor:secondaryLabelColor];
 
   return v2;
 }
 
-- (void)_updateValueForPoint:(CGPoint)a3
+- (void)_updateValueForPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(SKStarRatingControl *)self starWidth:a3.x];
+  x = point.x;
+  [(SKStarRatingControl *)self starWidth:point.x];
   v6 = v5;
   [(SKStarRatingControl *)self bounds];
   v8 = ceil((v7 - v6 * 5.0) * 0.25);

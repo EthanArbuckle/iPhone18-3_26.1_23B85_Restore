@@ -1,22 +1,22 @@
 @interface TodayTransitioningLabelView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore27TodayTransitioningLabelView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore27TodayTransitioningLabelView)initWithFrame:(CGRect)frame;
 - (void)layoutDirectionDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation TodayTransitioningLabelView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore27TodayTransitioningLabelView_fadeInLabel))
   {
-    [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore27TodayTransitioningLabelView_fadeInLabel) sizeThatFits:{a3.width, a3.height}];
+    [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore27TodayTransitioningLabelView_fadeInLabel) sizeThatFits:{fits.width, fits.height}];
   }
 
   else
   {
-    [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore27TodayTransitioningLabelView_label) sizeThatFits:{a3.width, a3.height}];
+    [*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore27TodayTransitioningLabelView_label) sizeThatFits:{fits.width, fits.height}];
   }
 
   result.height = v4;
@@ -26,17 +26,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006D300();
 }
 
 - (void)layoutDirectionDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006EB68();
 }
 
-- (_TtC8AppStore27TodayTransitioningLabelView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore27TodayTransitioningLabelView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

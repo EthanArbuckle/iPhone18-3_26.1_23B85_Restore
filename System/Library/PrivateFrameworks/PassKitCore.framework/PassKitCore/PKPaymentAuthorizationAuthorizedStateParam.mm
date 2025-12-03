@@ -1,76 +1,76 @@
 @interface PKPaymentAuthorizationAuthorizedStateParam
-+ (id)paramWithApplePayTrustSignature:(id)a3;
-+ (id)paramWithAuthorizedPeerPaymentQuote:(id)a3;
-+ (id)paramWithInstallmentAuthorizationToken:(id)a3;
-+ (id)paramWithPayment:(id)a3;
-+ (id)paramWithPaymentToken:(id)a3 rewrapResponse:(id)a4;
-+ (id)paramWithPurchase:(id)a3 purchaseTransactionIdentifier:(id)a4;
++ (id)paramWithApplePayTrustSignature:(id)signature;
++ (id)paramWithAuthorizedPeerPaymentQuote:(id)quote;
++ (id)paramWithInstallmentAuthorizationToken:(id)token;
++ (id)paramWithPayment:(id)payment;
++ (id)paramWithPaymentToken:(id)token rewrapResponse:(id)response;
++ (id)paramWithPurchase:(id)purchase purchaseTransactionIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationAuthorizedStateParam
 
-+ (id)paramWithPaymentToken:(id)a3 rewrapResponse:(id)a4
++ (id)paramWithPaymentToken:(id)token rewrapResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 param];
-  [v8 setPaymentToken:v7];
+  responseCopy = response;
+  tokenCopy = token;
+  param = [self param];
+  [param setPaymentToken:tokenCopy];
 
-  [v8 setRewrapResponse:v6];
+  [param setRewrapResponse:responseCopy];
 
-  return v8;
+  return param;
 }
 
-+ (id)paramWithPayment:(id)a3
++ (id)paramWithPayment:(id)payment
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setPayment:v4];
+  paymentCopy = payment;
+  param = [self param];
+  [param setPayment:paymentCopy];
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithPurchase:(id)a3 purchaseTransactionIdentifier:(id)a4
++ (id)paramWithPurchase:(id)purchase purchaseTransactionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 param];
-  [v8 setPurchase:v7];
+  identifierCopy = identifier;
+  purchaseCopy = purchase;
+  param = [self param];
+  [param setPurchase:purchaseCopy];
 
-  [v8 setPurchaseTransactionIdentifier:v6];
+  [param setPurchaseTransactionIdentifier:identifierCopy];
 
-  return v8;
+  return param;
 }
 
-+ (id)paramWithAuthorizedPeerPaymentQuote:(id)a3
++ (id)paramWithAuthorizedPeerPaymentQuote:(id)quote
 {
-  v4 = a3;
-  v5 = [a1 param];
-  v6 = v5[6];
-  v5[6] = v4;
+  quoteCopy = quote;
+  param = [self param];
+  v6 = param[6];
+  param[6] = quoteCopy;
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithApplePayTrustSignature:(id)a3
++ (id)paramWithApplePayTrustSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [a1 param];
-  v6 = v5[7];
-  v5[7] = v4;
+  signatureCopy = signature;
+  param = [self param];
+  v6 = param[7];
+  param[7] = signatureCopy;
 
-  return v5;
+  return param;
 }
 
-+ (id)paramWithInstallmentAuthorizationToken:(id)a3
++ (id)paramWithInstallmentAuthorizationToken:(id)token
 {
-  v4 = a3;
-  v5 = [a1 param];
-  v6 = v5[8];
-  v5[8] = v4;
+  tokenCopy = token;
+  param = [self param];
+  v6 = param[8];
+  param[8] = tokenCopy;
 
-  return v5;
+  return param;
 }
 
 - (id)description

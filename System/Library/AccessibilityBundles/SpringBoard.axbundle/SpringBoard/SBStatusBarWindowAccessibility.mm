@@ -1,5 +1,5 @@
 @interface SBStatusBarWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_wantsFocusEngine;
 - (BOOL)accessibilityElementsHidden;
 - (int64_t)_accessibilitySortPriority;
@@ -7,11 +7,11 @@
 
 @implementation SBStatusBarWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBStatusBarWindow" isKindOfClass:@"UIWindow"];
-  [v3 validateClass:@"UIWindow" hasInstanceMethod:@"_wantsFocusEngine" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBStatusBarWindow" isKindOfClass:@"UIWindow"];
+  [validationsCopy validateClass:@"UIWindow" hasInstanceMethod:@"_wantsFocusEngine" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityElementsHidden
@@ -21,17 +21,17 @@
     return 1;
   }
 
-  v4 = [(SBStatusBarWindowAccessibility *)self storedAccessibilityElementsHidden];
+  storedAccessibilityElementsHidden = [(SBStatusBarWindowAccessibility *)self storedAccessibilityElementsHidden];
 
-  if (!v4)
+  if (!storedAccessibilityElementsHidden)
   {
     return 0;
   }
 
-  v5 = [(SBStatusBarWindowAccessibility *)self storedAccessibilityElementsHidden];
-  v6 = [v5 BOOLValue];
+  storedAccessibilityElementsHidden2 = [(SBStatusBarWindowAccessibility *)self storedAccessibilityElementsHidden];
+  bOOLValue = [storedAccessibilityElementsHidden2 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (int64_t)_accessibilitySortPriority

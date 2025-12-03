@@ -9,30 +9,30 @@
 
 - (uint64_t)coverSheetRegionRole
 {
-  v1 = objc_getAssociatedObject(a1, "coverSheetRegionRole");
-  v2 = [v1 integerValue];
+  v1 = objc_getAssociatedObject(self, "coverSheetRegionRole");
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)coverSheetRegionIsReservedForHorizontalScrolling
 {
-  v1 = objc_getAssociatedObject(a1, "coverSheetRegionReservedForHorizontalScrolling");
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, "coverSheetRegionReservedForHorizontalScrolling");
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setCoverSheetRegionRole:()CSRegion
 {
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  objc_setAssociatedObject(a1, "coverSheetRegionRole", v2, 1);
+  objc_setAssociatedObject(self, "coverSheetRegionRole", v2, 1);
 }
 
 - (void)setCoverSheetRegionReservedForHorizontalScrolling:()CSRegion
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, "coverSheetRegionReservedForHorizontalScrolling", v2, 1);
+  objc_setAssociatedObject(self, "coverSheetRegionReservedForHorizontalScrolling", v2, 1);
 }
 
 @end

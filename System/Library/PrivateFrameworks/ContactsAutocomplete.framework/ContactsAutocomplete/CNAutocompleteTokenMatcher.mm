@@ -1,17 +1,17 @@
 @interface CNAutocompleteTokenMatcher
-+ (BOOL)doSearchTokens:(id)a3 matchNameTokens:(id)a4;
-+ (id)indexesOfNameTokens:(id)a3 matchingSearchToken:(id)a4;
-+ (id)tokensForNameString:(id)a3;
++ (BOOL)doSearchTokens:(id)tokens matchNameTokens:(id)nameTokens;
++ (id)indexesOfNameTokens:(id)tokens matchingSearchToken:(id)token;
++ (id)tokensForNameString:(id)string;
 @end
 
 @implementation CNAutocompleteTokenMatcher
 
-+ (BOOL)doSearchTokens:(id)a3 matchNameTokens:(id)a4
++ (BOOL)doSearchTokens:(id)tokens matchNameTokens:(id)nameTokens
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 <= [v7 count])
+  tokensCopy = tokens;
+  nameTokensCopy = nameTokens;
+  v8 = [tokensCopy count];
+  if (v8 <= [nameTokensCopy count])
   {
     if ((*(*MEMORY[0x277CFBCF8] + 16))())
     {
@@ -20,8 +20,8 @@
 
     else
     {
-      v10 = [v6 firstObject];
-      v11 = [a1 indexesOfNameTokens:v7 matchingSearchToken:v10];
+      firstObject = [tokensCopy firstObject];
+      v11 = [self indexesOfNameTokens:nameTokensCopy matchingSearchToken:firstObject];
       if ((*(*MEMORY[0x277CFBD10] + 16))())
       {
         v9 = 0;
@@ -29,15 +29,15 @@
 
       else
       {
-        v12 = [v6 _cn_tail];
+        _cn_tail = [tokensCopy _cn_tail];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __61__CNAutocompleteTokenMatcher_doSearchTokens_matchNameTokens___block_invoke;
         v15[3] = &unk_2781C41C8;
-        v17 = v12;
-        v18 = a1;
-        v16 = v7;
-        v13 = v12;
+        v17 = _cn_tail;
+        selfCopy = self;
+        v16 = nameTokensCopy;
+        v13 = _cn_tail;
         v9 = [v11 _cn_any:v15];
       }
     }
@@ -60,23 +60,23 @@ uint64_t __61__CNAutocompleteTokenMatcher_doSearchTokens_matchNameTokens___block
   return v5;
 }
 
-+ (id)indexesOfNameTokens:(id)a3 matchingSearchToken:(id)a4
++ (id)indexesOfNameTokens:(id)tokens matchingSearchToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__CNAutocompleteTokenMatcher_indexesOfNameTokens_matchingSearchToken___block_invoke;
   v9[3] = &unk_2781C41F0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 indexesOfObjectsPassingTest:v9];
+  v10 = tokenCopy;
+  v6 = tokenCopy;
+  v7 = [tokens indexesOfObjectsPassingTest:v9];
 
   return v7;
 }
 
-+ (id)tokensForNameString:(id)a3
++ (id)tokensForNameString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
     v4 = MEMORY[0x277CBEBF8];
@@ -89,7 +89,7 @@ uint64_t __61__CNAutocompleteTokenMatcher_doSearchTokens_matchNameTokens___block
       +[CNAutocompleteTokenMatcher tokensForNameString:];
     }
 
-    v4 = [tokensForNameString__cn_once_object_0 tokenizeNameString:v3 inferredNameOrder:0];
+    v4 = [tokensForNameString__cn_once_object_0 tokenizeNameString:stringCopy inferredNameOrder:0];
   }
 
   return v4;

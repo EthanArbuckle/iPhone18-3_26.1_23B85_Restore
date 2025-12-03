@@ -3,11 +3,11 @@
 - (BOOL)isStewie;
 - (NSString)description;
 - (NSString)errorText;
-- (id)_initWithItem:(id)a3 statusType:(int64_t)a4 time:(id)a5 count:(unint64_t)a6 expireStatusType:(int64_t)a7 statusItemSequenceNumber:(unint64_t)a8;
+- (id)_initWithItem:(id)item statusType:(int64_t)type time:(id)time count:(unint64_t)count expireStatusType:(int64_t)statusType statusItemSequenceNumber:(unint64_t)number;
 - (id)_timeStale;
-- (id)copyWithStatusItemSequenceNumber:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setTimeAdded:(id)a3;
+- (id)copyWithStatusItemSequenceNumber:(unint64_t)number;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setTimeAdded:(id)added;
 @end
 
 @implementation IMMessageStatusChatItem
@@ -24,20 +24,20 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_messageItem(self, a2, a3);
+  v4 = objc_msgSend_messageItem(self, a2, zone);
   v5 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__initWithItem_statusType_time_count_expireStatusType_statusItemSequenceNumber_(v5, v6, v4, self->_statusType, self->_time, self->_count, self->_expireStatusType, self->_statusItemSequenceNumber);
 
   return v7;
 }
 
-- (id)copyWithStatusItemSequenceNumber:(unint64_t)a3
+- (id)copyWithStatusItemSequenceNumber:(unint64_t)number
 {
-  v5 = objc_msgSend_messageItem(self, a2, a3);
+  v5 = objc_msgSend_messageItem(self, a2, number);
   v6 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend__initWithItem_statusType_time_count_expireStatusType_statusItemSequenceNumber_(v6, v7, v5, self->_statusType, self->_time, self->_count, self->_expireStatusType, a3);
+  v8 = objc_msgSend__initWithItem_statusType_time_count_expireStatusType_statusItemSequenceNumber_(v6, v7, v5, self->_statusType, self->_time, self->_count, self->_expireStatusType, number);
 
   return v8;
 }
@@ -81,17 +81,17 @@ LABEL_8:
   return timeStale;
 }
 
-- (void)_setTimeAdded:(id)a3
+- (void)_setTimeAdded:(id)added
 {
-  v5 = a3;
-  if (self->_timeAdded != v5)
+  addedCopy = added;
+  if (self->_timeAdded != addedCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_timeAdded, a3);
+    v7 = addedCopy;
+    objc_storeStrong(&self->_timeAdded, added);
     timeStale = self->_timeStale;
     self->_timeStale = 0;
 
-    v5 = v7;
+    addedCopy = v7;
   }
 }
 
@@ -148,23 +148,23 @@ LABEL_8:
   return v16;
 }
 
-- (id)_initWithItem:(id)a3 statusType:(int64_t)a4 time:(id)a5 count:(unint64_t)a6 expireStatusType:(int64_t)a7 statusItemSequenceNumber:(unint64_t)a8
+- (id)_initWithItem:(id)item statusType:(int64_t)type time:(id)time count:(unint64_t)count expireStatusType:(int64_t)statusType statusItemSequenceNumber:(unint64_t)number
 {
-  v14 = a3;
-  v15 = a5;
+  itemCopy = item;
+  timeCopy = time;
   v29.receiver = self;
   v29.super_class = IMMessageStatusChatItem;
-  v16 = [(IMChatItem *)&v29 _initWithItem:v14];
+  v16 = [(IMChatItem *)&v29 _initWithItem:itemCopy];
   v17 = v16;
   if (v16)
   {
-    *(v16 + 7) = a4;
-    objc_storeStrong(v16 + 8, a5);
-    v17[10] = a6;
-    v17[9] = a7;
-    v17[14] = a8;
-    v20 = objc_msgSend_guid(v14, v18, v19);
-    v22 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v21, a8);
+    *(v16 + 7) = type;
+    objc_storeStrong(v16 + 8, time);
+    v17[10] = count;
+    v17[9] = statusType;
+    v17[14] = number;
+    v20 = objc_msgSend_guid(itemCopy, v18, v19);
+    v22 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v21, number);
     v25 = objc_msgSend_stringValue(v22, v23, v24);
     v26 = sub_1A83AC604();
 

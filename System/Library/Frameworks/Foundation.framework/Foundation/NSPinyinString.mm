@@ -1,39 +1,39 @@
 @interface NSPinyinString
-+ (id)alternativesForInputString:(id)a3;
-+ (id)prefixesForInputString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSPinyinString)initWithCoder:(id)a3;
-- (NSPinyinString)initWithString:(id)a3 syllableCount:(unint64_t)a4 lastSyllableIsPartial:(BOOL)a5 score:(unint64_t)a6 replacementCount:(unint64_t)a7 transpositionCount:(unint64_t)a8 insertionCount:(unint64_t)a9 deletionCount:(unint64_t)a10 indexOfFirstModification:(unint64_t)a11 rangeCount:(unint64_t)a12 ranges:(_NSRange *)a13;
-- (_NSRange)nonPinyinRangeAtIndex:(unint64_t)a3;
++ (id)alternativesForInputString:(id)string;
++ (id)prefixesForInputString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (NSPinyinString)initWithCoder:(id)coder;
+- (NSPinyinString)initWithString:(id)string syllableCount:(unint64_t)count lastSyllableIsPartial:(BOOL)partial score:(unint64_t)score replacementCount:(unint64_t)replacementCount transpositionCount:(unint64_t)transpositionCount insertionCount:(unint64_t)insertionCount deletionCount:(unint64_t)self0 indexOfFirstModification:(unint64_t)self1 rangeCount:(unint64_t)self2 ranges:(_NSRange *)self3;
+- (_NSRange)nonPinyinRangeAtIndex:(unint64_t)index;
 - (id)description;
 - (id)nonPinyinIndexSet;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPinyinString
 
-- (NSPinyinString)initWithString:(id)a3 syllableCount:(unint64_t)a4 lastSyllableIsPartial:(BOOL)a5 score:(unint64_t)a6 replacementCount:(unint64_t)a7 transpositionCount:(unint64_t)a8 insertionCount:(unint64_t)a9 deletionCount:(unint64_t)a10 indexOfFirstModification:(unint64_t)a11 rangeCount:(unint64_t)a12 ranges:(_NSRange *)a13
+- (NSPinyinString)initWithString:(id)string syllableCount:(unint64_t)count lastSyllableIsPartial:(BOOL)partial score:(unint64_t)score replacementCount:(unint64_t)replacementCount transpositionCount:(unint64_t)transpositionCount insertionCount:(unint64_t)insertionCount deletionCount:(unint64_t)self0 indexOfFirstModification:(unint64_t)self1 rangeCount:(unint64_t)self2 ranges:(_NSRange *)self3
 {
   v23 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = NSPinyinString;
   v19 = [(NSString *)&v22 init];
-  v19->_string = [a3 copy];
-  v19->_syllableCount = a4;
-  v19->_lastSyllableIsPartial = a5;
-  v19->_score = a6;
-  v19->_replacementCount = a7;
-  v19->_transpositionCount = a8;
-  v19->_insertionCount = a9;
-  v19->_deletionCount = a10;
-  v19->_firstModificationIndex = a11;
-  v19->_rangeCount = a12;
-  if (a12)
+  v19->_string = [string copy];
+  v19->_syllableCount = count;
+  v19->_lastSyllableIsPartial = partial;
+  v19->_score = score;
+  v19->_replacementCount = replacementCount;
+  v19->_transpositionCount = transpositionCount;
+  v19->_insertionCount = insertionCount;
+  v19->_deletionCount = deletionCount;
+  v19->_firstModificationIndex = modification;
+  v19->_rangeCount = rangeCount;
+  if (rangeCount)
   {
-    v20 = malloc_type_malloc(16 * a12, 0x1000040451B5BE8uLL);
+    v20 = malloc_type_malloc(16 * rangeCount, 0x1000040451B5BE8uLL);
     v19->_ranges = v20;
-    memmove(v20, a13, 16 * v19->_rangeCount);
+    memmove(v20, ranges, 16 * v19->_rangeCount);
   }
 
   return v19;
@@ -54,9 +54,9 @@
   [(NSPinyinString *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v13) = 1;
   }
@@ -77,14 +77,14 @@
       goto LABEL_25;
     }
 
-    v13 = -[NSString isEqualToString:](self->_string, "isEqualToString:", [a3 string]);
+    v13 = -[NSString isEqualToString:](self->_string, "isEqualToString:", [equal string]);
     if (!v13)
     {
       return v13;
     }
 
     syllableCount = self->_syllableCount;
-    if (syllableCount != [a3 syllableCount] || (lastSyllableIsPartial = self->_lastSyllableIsPartial, lastSyllableIsPartial != objc_msgSend(a3, "lastSyllableIsPartial")) || (score = self->_score, score != objc_msgSend(a3, "score")) || (rangeCount = self->_rangeCount, rangeCount != objc_msgSend(a3, "numberOfNonPinyinRanges")) || (replacementCount = self->_replacementCount, replacementCount != objc_msgSend(a3, "numberOfReplacements")) || (transpositionCount = self->_transpositionCount, transpositionCount != objc_msgSend(a3, "numberOfTranspositions")) || (insertionCount = self->_insertionCount, insertionCount != objc_msgSend(a3, "numberOfInsertions")) || (deletionCount = self->_deletionCount, deletionCount != objc_msgSend(a3, "numberOfDeletions")) || (firstModificationIndex = self->_firstModificationIndex, firstModificationIndex != objc_msgSend(a3, "indexOfFirstModification")))
+    if (syllableCount != [equal syllableCount] || (lastSyllableIsPartial = self->_lastSyllableIsPartial, lastSyllableIsPartial != objc_msgSend(equal, "lastSyllableIsPartial")) || (score = self->_score, score != objc_msgSend(equal, "score")) || (rangeCount = self->_rangeCount, rangeCount != objc_msgSend(equal, "numberOfNonPinyinRanges")) || (replacementCount = self->_replacementCount, replacementCount != objc_msgSend(equal, "numberOfReplacements")) || (transpositionCount = self->_transpositionCount, transpositionCount != objc_msgSend(equal, "numberOfTranspositions")) || (insertionCount = self->_insertionCount, insertionCount != objc_msgSend(equal, "numberOfInsertions")) || (deletionCount = self->_deletionCount, deletionCount != objc_msgSend(equal, "numberOfDeletions")) || (firstModificationIndex = self->_firstModificationIndex, firstModificationIndex != objc_msgSend(equal, "indexOfFirstModification")))
     {
 LABEL_25:
       LOBYTE(v13) = 0;
@@ -98,7 +98,7 @@ LABEL_25:
       {
         v24 = [(NSPinyinString *)self nonPinyinRangeAtIndex:v23, v30, v31, v32, v33, v34, v35, v36, v37];
         v26 = v25;
-        v28 = v24 == [a3 nonPinyinRangeAtIndex:v23] && v26 == v27;
+        v28 = v24 == [equal nonPinyinRangeAtIndex:v23] && v26 == v27;
         LOBYTE(v13) = v28;
         if (!v28)
         {
@@ -123,10 +123,10 @@ LABEL_25:
 - (id)nonPinyinIndexSet
 {
   v3 = +[(NSIndexSet *)NSMutableIndexSet];
-  v4 = [(NSPinyinString *)self numberOfNonPinyinRanges];
-  if (v4)
+  numberOfNonPinyinRanges = [(NSPinyinString *)self numberOfNonPinyinRanges];
+  if (numberOfNonPinyinRanges)
   {
-    v5 = v4;
+    v5 = numberOfNonPinyinRanges;
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSPinyinString *)self nonPinyinRangeAtIndex:i];
@@ -141,7 +141,7 @@ LABEL_25:
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = +[(NSString *)NSMutableString];
-  v4 = [(NSPinyinString *)self nonPinyinIndexSet];
+  nonPinyinIndexSet = [(NSPinyinString *)self nonPinyinIndexSet];
   v5 = [(NSPinyinString *)self length];
   v9 = 0;
   v10 = &v9;
@@ -154,7 +154,7 @@ LABEL_25:
   v8[5] = self;
   v8[6] = &v9;
   v8[4] = v3;
-  [v4 enumerateRangesUsingBlock:v8];
+  [nonPinyinIndexSet enumerateRangesUsingBlock:v8];
   if (v5 > v10[3])
   {
     [(NSString *)v3 appendString:[(NSString *)self substringWithRange:?]];
@@ -182,56 +182,56 @@ uint64_t __29__NSPinyinString_description__block_invoke(uint64_t result, unint64
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@ requires keyed coding", objc_opt_class()), 0}];
     objc_exception_throw(v10);
   }
 
-  v5 = [(NSPinyinString *)self numberOfNonPinyinRanges];
-  [a3 encodeObject:-[NSPinyinString string](self forKey:{"string"), @"NSString"}];
-  [a3 encodeInt32:-[NSPinyinString syllableCount](self forKey:{"syllableCount"), @"NSSyllableCount"}];
-  [a3 encodeBool:-[NSPinyinString lastSyllableIsPartial](self forKey:{"lastSyllableIsPartial"), @"NSLastSyllableIsPartial"}];
-  [a3 encodeInt32:v5 forKey:@"NSRangeCount"];
-  [a3 encodeInt32:-[NSPinyinString score](self forKey:{"score"), @"NSScore"}];
-  [a3 encodeInt32:-[NSPinyinString numberOfReplacements](self forKey:{"numberOfReplacements"), @"NSReplacementCount"}];
-  [a3 encodeInt32:-[NSPinyinString numberOfTranspositions](self forKey:{"numberOfTranspositions"), @"NSTranspositionCount"}];
-  [a3 encodeInt32:-[NSPinyinString numberOfInsertions](self forKey:{"numberOfInsertions"), @"NSInsertionCount"}];
-  [a3 encodeInt32:-[NSPinyinString numberOfDeletions](self forKey:{"numberOfDeletions"), @"NSDeletionCount"}];
-  [a3 encodeInt32:-[NSPinyinString indexOfFirstModification](self forKey:{"indexOfFirstModification"), @"NSModificationIndex"}];
-  if (v5)
+  numberOfNonPinyinRanges = [(NSPinyinString *)self numberOfNonPinyinRanges];
+  [coder encodeObject:-[NSPinyinString string](self forKey:{"string"), @"NSString"}];
+  [coder encodeInt32:-[NSPinyinString syllableCount](self forKey:{"syllableCount"), @"NSSyllableCount"}];
+  [coder encodeBool:-[NSPinyinString lastSyllableIsPartial](self forKey:{"lastSyllableIsPartial"), @"NSLastSyllableIsPartial"}];
+  [coder encodeInt32:numberOfNonPinyinRanges forKey:@"NSRangeCount"];
+  [coder encodeInt32:-[NSPinyinString score](self forKey:{"score"), @"NSScore"}];
+  [coder encodeInt32:-[NSPinyinString numberOfReplacements](self forKey:{"numberOfReplacements"), @"NSReplacementCount"}];
+  [coder encodeInt32:-[NSPinyinString numberOfTranspositions](self forKey:{"numberOfTranspositions"), @"NSTranspositionCount"}];
+  [coder encodeInt32:-[NSPinyinString numberOfInsertions](self forKey:{"numberOfInsertions"), @"NSInsertionCount"}];
+  [coder encodeInt32:-[NSPinyinString numberOfDeletions](self forKey:{"numberOfDeletions"), @"NSDeletionCount"}];
+  [coder encodeInt32:-[NSPinyinString indexOfFirstModification](self forKey:{"indexOfFirstModification"), @"NSModificationIndex"}];
+  if (numberOfNonPinyinRanges)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    for (i = 0; i != v5; ++i)
+    array = [MEMORY[0x1E695DF70] array];
+    for (i = 0; i != numberOfNonPinyinRanges; ++i)
     {
       v8 = [(NSPinyinString *)self nonPinyinRangeAtIndex:i];
-      [v6 addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v8, v9)}];
+      [array addObject:{+[NSValue valueWithRange:](NSValue, "valueWithRange:", v8, v9)}];
     }
 
-    [a3 encodeObject:v6 forKey:@"NSRanges"];
+    [coder encodeObject:array forKey:@"NSRanges"];
   }
 }
 
-- (NSPinyinString)initWithCoder:(id)a3
+- (NSPinyinString)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@ requires keyed coding", objc_opt_class()), 0}];
     objc_exception_throw(v23);
   }
 
-  v4 = [a3 decodeObjectForKey:@"NSString"];
-  v5 = [a3 decodeInt32ForKey:@"NSSyllableCount"];
-  v6 = [a3 decodeBoolForKey:@"NSLastSyllableIsPartial"];
-  v7 = [a3 decodeInt32ForKey:@"NSRangeCount"];
-  v8 = [a3 decodeInt32ForKey:@"NSScore"];
-  v9 = [a3 decodeInt32ForKey:@"NSReplacementCount"];
-  v10 = [a3 decodeInt32ForKey:@"NSTranspositionCount"];
-  v11 = [a3 decodeInt32ForKey:@"NSInsertionCount"];
-  v12 = [a3 decodeInt32ForKey:@"NSDeletionCount"];
-  v13 = [a3 decodeInt32ForKey:@"NSModificationIndex"];
+  v4 = [coder decodeObjectForKey:@"NSString"];
+  v5 = [coder decodeInt32ForKey:@"NSSyllableCount"];
+  v6 = [coder decodeBoolForKey:@"NSLastSyllableIsPartial"];
+  v7 = [coder decodeInt32ForKey:@"NSRangeCount"];
+  v8 = [coder decodeInt32ForKey:@"NSScore"];
+  v9 = [coder decodeInt32ForKey:@"NSReplacementCount"];
+  v10 = [coder decodeInt32ForKey:@"NSTranspositionCount"];
+  v11 = [coder decodeInt32ForKey:@"NSInsertionCount"];
+  v12 = [coder decodeInt32ForKey:@"NSDeletionCount"];
+  v13 = [coder decodeInt32ForKey:@"NSModificationIndex"];
   if (!v7)
   {
     return [(NSPinyinString *)self initWithString:v4 syllableCount:v5 lastSyllableIsPartial:v6 score:v8 replacementCount:v9 transpositionCount:v10 insertionCount:v11 deletionCount:v12 indexOfFirstModification:v13 rangeCount:0 ranges:0];
@@ -242,7 +242,7 @@ uint64_t __29__NSPinyinString_description__block_invoke(uint64_t result, unint64
   v26 = v6;
   v27 = v5;
   v14 = v7;
-  v15 = [a3 decodeObjectForKey:@"NSRanges"];
+  v15 = [coder decodeObjectForKey:@"NSRanges"];
   if ([v15 count] != v14)
   {
     return [(NSPinyinString *)self initWithString:v4 syllableCount:v27 lastSyllableIsPartial:v6 score:v8 replacementCount:v9 transpositionCount:v10 insertionCount:v11 deletionCount:v12 indexOfFirstModification:v24 rangeCount:0 ranges:0];
@@ -271,16 +271,16 @@ uint64_t __29__NSPinyinString_description__block_invoke(uint64_t result, unint64
   return v21;
 }
 
-- (_NSRange)nonPinyinRangeAtIndex:(unint64_t)a3
+- (_NSRange)nonPinyinRangeAtIndex:(unint64_t)index
 {
   rangeCount = self->_rangeCount;
-  if (rangeCount <= a3)
+  if (rangeCount <= index)
   {
-    v9 = [NSString stringWithFormat:@"index %lu count %lu", a3, rangeCount, v3, v4];
+    v9 = [NSString stringWithFormat:@"index %lu count %lu", index, rangeCount, v3, v4];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v9 userInfo:0]);
   }
 
-  v6 = &self->_ranges[a3];
+  v6 = &self->_ranges[index];
   location = v6->location;
   length = v6->length;
   result.length = length;
@@ -288,24 +288,24 @@ uint64_t __29__NSPinyinString_description__block_invoke(uint64_t result, unint64
   return result;
 }
 
-+ (id)alternativesForInputString:(id)a3
++ (id)alternativesForInputString:(id)string
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [a1 _alternativesForInputString:a3];
+  return [self _alternativesForInputString:string];
 }
 
-+ (id)prefixesForInputString:(id)a3
++ (id)prefixesForInputString:(id)string
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [a1 _prefixesForInputString:a3];
+  return [self _prefixesForInputString:string];
 }
 
 @end

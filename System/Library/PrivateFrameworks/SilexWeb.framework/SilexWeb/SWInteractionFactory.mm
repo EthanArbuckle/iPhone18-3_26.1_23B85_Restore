@@ -1,29 +1,29 @@
 @interface SWInteractionFactory
-- (SWInteractionFactory)initWithNavigationManager:(id)a3;
-- (id)interactionForDictionary:(id)a3;
+- (SWInteractionFactory)initWithNavigationManager:(id)manager;
+- (id)interactionForDictionary:(id)dictionary;
 @end
 
 @implementation SWInteractionFactory
 
-- (SWInteractionFactory)initWithNavigationManager:(id)a3
+- (SWInteractionFactory)initWithNavigationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SWInteractionFactory;
   v6 = [(SWInteractionFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationManager, a3);
+    objc_storeStrong(&v6->_navigationManager, manager);
   }
 
   return v7;
 }
 
-- (id)interactionForDictionary:(id)a3
+- (id)interactionForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"type"];
   if ([v5 isEqualToString:@"interactable"])
   {
     v6 = 1;
@@ -38,13 +38,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v7 = [v4 objectForKey:@"URL"];
+  v7 = [dictionaryCopy objectForKey:@"URL"];
   if (v7 && ([MEMORY[0x1E695DFF8] URLWithString:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = [SWURLInteraction alloc];
-    v11 = [(SWInteractionFactory *)self navigationManager];
-    v12 = [(SWURLInteraction *)v10 initWithURL:v9 navigationManager:v11];
+    navigationManager = [(SWInteractionFactory *)self navigationManager];
+    v12 = [(SWURLInteraction *)v10 initWithURL:v9 navigationManager:navigationManager];
   }
 
   else

@@ -27,9 +27,9 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v4 rc_URLByStandardizingResolvedPath];
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [a1 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:0];
+  rc_URLByStandardizingResolvedPath = [v4 rc_URLByStandardizingResolvedPath];
+  uRLByDeletingLastPathComponent = [rc_URLByStandardizingResolvedPath URLByDeletingLastPathComponent];
+  v8 = [self contentsOfDirectoryAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:0];
 
   v9 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v9)
@@ -45,10 +45,10 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v35 + 1) + 8 * i) rc_URLByStandardizingResolvedPath];
-        v14 = [v13 URLByDeletingPathExtension];
-        v15 = [v14 path];
-        [v5 addObject:v15];
+        rc_URLByStandardizingResolvedPath2 = [*(*(&v35 + 1) + 8 * i) rc_URLByStandardizingResolvedPath];
+        uRLByDeletingPathExtension = [rc_URLByStandardizingResolvedPath2 URLByDeletingPathExtension];
+        path = [uRLByDeletingPathExtension path];
+        [v5 addObject:path];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -57,22 +57,22 @@
     while (v10);
   }
 
-  v16 = [v4 URLByDeletingLastPathComponent];
-  v17 = [v16 path];
+  uRLByDeletingLastPathComponent2 = [v4 URLByDeletingLastPathComponent];
+  path2 = [uRLByDeletingLastPathComponent2 path];
 
-  v18 = [v4 lastPathComponent];
-  v19 = [v18 stringByDeletingPathExtension];
+  lastPathComponent = [v4 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v20 = [v4 pathExtension];
+  pathExtension = [v4 pathExtension];
   v21 = v4;
   v22 = 1;
   v34 = v21;
   while (1)
   {
-    v23 = [v21 rc_URLByStandardizingResolvedPath];
-    v24 = [v23 URLByDeletingPathExtension];
-    v25 = [v24 path];
-    v26 = [v5 containsObject:v25];
+    rc_URLByStandardizingResolvedPath3 = [v21 rc_URLByStandardizingResolvedPath];
+    uRLByDeletingPathExtension2 = [rc_URLByStandardizingResolvedPath3 URLByDeletingPathExtension];
+    path3 = [uRLByDeletingPathExtension2 path];
+    v26 = [v5 containsObject:path3];
 
     if (!v26)
     {
@@ -80,9 +80,9 @@
     }
 
     v27 = MEMORY[0x277CBEBC0];
-    v28 = [v17 stringByAppendingPathComponent:v19];
+    v28 = [path2 stringByAppendingPathComponent:stringByDeletingPathExtension];
     v29 = [v28 stringByAppendingFormat:@"-%li", v22, v34];
-    v30 = [v29 stringByAppendingPathExtension:v20];
+    v30 = [v29 stringByAppendingPathExtension:pathExtension];
     v31 = [v27 fileURLWithPath:v30];
 
     ++v22;
@@ -98,10 +98,10 @@
 {
   if (a3)
   {
-    v4 = [a3 path];
-    if ([a1 fileExistsAtPath:v4])
+    path = [a3 path];
+    if ([self fileExistsAtPath:path])
     {
-      v5 = realpath_DARWIN_EXTSN([v4 fileSystemRepresentation], 0);
+      v5 = realpath_DARWIN_EXTSN([path fileSystemRepresentation], 0);
       if (!v5)
       {
 LABEL_14:
@@ -110,19 +110,19 @@ LABEL_14:
       }
 
       v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v5];
-      v7 = [v6 stringByStandardizingPath];
+      stringByStandardizingPath = [v6 stringByStandardizingPath];
 
       free(v5);
-      if (v7)
+      if (stringByStandardizingPath)
       {
         v5 = 1;
         v14 = 1;
-        if ([a1 fileExistsAtPath:v7 isDirectory:&v14] && (v14 & 1) == 0)
+        if ([self fileExistsAtPath:stringByStandardizingPath isDirectory:&v14] && (v14 & 1) == 0)
         {
           v8 = RCRecordingsDirectoryURL();
-          v9 = [v8 path];
-          v10 = [v9 stringByStandardizingPath];
-          if ([v7 hasPrefix:v10])
+          path2 = [v8 path];
+          stringByStandardizingPath2 = [path2 stringByStandardizingPath];
+          if ([stringByStandardizingPath hasPrefix:stringByStandardizingPath2])
           {
             v5 = 0;
           }
@@ -130,8 +130,8 @@ LABEL_14:
           else
           {
             v11 = RCDiskCacheDirectory();
-            v12 = [v11 stringByStandardizingPath];
-            v5 = [v7 hasPrefix:v12] ^ 1;
+            stringByStandardizingPath3 = [v11 stringByStandardizingPath];
+            v5 = [stringByStandardizingPath hasPrefix:stringByStandardizingPath3] ^ 1;
           }
         }
 
@@ -154,13 +154,13 @@ LABEL_14:
   v9 = [v7 fileURLWithPath:v8];
 
   v10 = [v9 URLByAppendingPathComponent:@"voicememos-purgeable"];
-  if ([a1 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:a4])
+  if ([self createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:a4])
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [v10 URLByAppendingPathComponent:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [v10 URLByAppendingPathComponent:uUIDString];
 
-    v14 = [a1 moveItemAtURL:v6 toURL:v13 error:a4];
+    v14 = [self moveItemAtURL:v6 toURL:v13 error:a4];
     if (v14)
     {
       v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
@@ -185,7 +185,7 @@ LABEL_14:
 - (void)rc_cleanUpAssetsInDirectory:()RCAdditions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [a1 enumeratorAtURL:a3 includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_12];
+  v3 = [self enumeratorAtURL:a3 includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_12];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -207,8 +207,8 @@ LABEL_14:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 pathExtension];
-        v11 = [RCCaptureFormat supportsFileExtension:v10];
+        pathExtension = [v9 pathExtension];
+        v11 = [RCCaptureFormat supportsFileExtension:pathExtension];
 
         if (v11)
         {
@@ -244,11 +244,11 @@ LABEL_14:
 - (uint64_t)rc_path:()RCAdditions isChildOf:
 {
   v5 = a4;
-  v6 = [a3 stringByDeletingLastPathComponent];
-  v7 = [v6 stringByStandardizingPath];
-  v8 = [v5 stringByStandardizingPath];
+  stringByDeletingLastPathComponent = [a3 stringByDeletingLastPathComponent];
+  stringByStandardizingPath = [stringByDeletingLastPathComponent stringByStandardizingPath];
+  stringByStandardizingPath2 = [v5 stringByStandardizingPath];
 
-  v9 = [v7 isEqual:v8];
+  v9 = [stringByStandardizingPath isEqual:stringByStandardizingPath2];
   return v9;
 }
 

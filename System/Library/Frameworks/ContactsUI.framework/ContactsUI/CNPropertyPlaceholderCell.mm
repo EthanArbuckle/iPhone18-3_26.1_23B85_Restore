@@ -1,23 +1,23 @@
 @interface CNPropertyPlaceholderCell
 - (id)labelView;
-- (void)setCardGroupItem:(id)a3;
+- (void)setCardGroupItem:(id)item;
 @end
 
 @implementation CNPropertyPlaceholderCell
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNContactCell *)self cardGroupItem];
+  itemCopy = item;
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
 
-  if (v5 != v4)
+  if (cardGroupItem != itemCopy)
   {
     v8.receiver = self;
     v8.super_class = CNPropertyPlaceholderCell;
-    [(CNContactCell *)&v8 setCardGroupItem:v4];
-    v6 = [v4 title];
-    v7 = [(CNPropertyPlaceholderCell *)self label];
-    [v7 setText:v6];
+    [(CNContactCell *)&v8 setCardGroupItem:itemCopy];
+    title = [itemCopy title];
+    label = [(CNPropertyPlaceholderCell *)self label];
+    [label setText:title];
   }
 }
 
@@ -26,9 +26,9 @@
   label = self->_label;
   if (!label)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_label;
-    self->_label = v4;
+    self->_label = standardLabelView;
 
     label = self->_label;
   }

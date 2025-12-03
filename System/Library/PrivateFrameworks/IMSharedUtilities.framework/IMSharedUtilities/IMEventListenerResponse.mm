@@ -1,33 +1,33 @@
 @interface IMEventListenerResponse
-- (IMEventListenerResponse)initWithSuccess:(BOOL)a3 userInfo:(id)a4 error:(id)a5;
+- (IMEventListenerResponse)initWithSuccess:(BOOL)success userInfo:(id)info error:(id)error;
 - (NSString)description;
 @end
 
 @implementation IMEventListenerResponse
 
-- (IMEventListenerResponse)initWithSuccess:(BOOL)a3 userInfo:(id)a4 error:(id)a5
+- (IMEventListenerResponse)initWithSuccess:(BOOL)success userInfo:(id)info error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = IMEventListenerResponse;
   v11 = [(IMEventListenerResponse *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_userInfo, a4);
-    objc_storeStrong(&v12->_error, a5);
-    if (v10)
+    objc_storeStrong(&v11->_userInfo, info);
+    objc_storeStrong(&v12->_error, error);
+    if (errorCopy)
     {
-      v13 = 0;
+      successCopy = 0;
     }
 
     else
     {
-      v13 = a3;
+      successCopy = success;
     }
 
-    v12->_success = v13;
+    v12->_success = successCopy;
   }
 
   return v12;
@@ -46,9 +46,9 @@
     v4 = @"NO";
   }
 
-  v5 = [(IMEventListenerResponse *)self error];
-  v6 = [(IMEventListenerResponse *)self userInfo];
-  v7 = [v3 stringWithFormat:@"command succeeded: %@, error: %@, userInfo: %@", v4, v5, v6];
+  error = [(IMEventListenerResponse *)self error];
+  userInfo = [(IMEventListenerResponse *)self userInfo];
+  v7 = [v3 stringWithFormat:@"command succeeded: %@, error: %@, userInfo: %@", v4, error, userInfo];
 
   return v7;
 }

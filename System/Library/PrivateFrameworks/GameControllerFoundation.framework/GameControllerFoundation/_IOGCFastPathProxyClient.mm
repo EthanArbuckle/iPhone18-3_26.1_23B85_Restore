@@ -1,14 +1,14 @@
 @interface _IOGCFastPathProxyClient
-+ (id)withIncomingConnection:(uint64_t)a1;
++ (id)withIncomingConnection:(uint64_t)connection;
 - (_IOGCFastPathProxyClient)init;
-- (_IOGCFastPathProxyClient)initWithIncomingConnection:(id)a3;
+- (_IOGCFastPathProxyClient)initWithIncomingConnection:(id)connection;
 - (void)dealloc;
-- (void)handleMessage:(uint64_t)a1;
+- (void)handleMessage:(uint64_t)message;
 @end
 
 @implementation _IOGCFastPathProxyClient
 
-+ (id)withIncomingConnection:(uint64_t)a1
++ (id)withIncomingConnection:(uint64_t)connection
 {
   v2 = a2;
   v3 = [objc_alloc(objc_opt_self()) initWithIncomingConnection:v2];
@@ -16,9 +16,9 @@
   return v3;
 }
 
-- (_IOGCFastPathProxyClient)initWithIncomingConnection:(id)a3
+- (_IOGCFastPathProxyClient)initWithIncomingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = _IOGCFastPathProxyClient;
   v5 = [(_IOGCFastPathProxyClient *)&v16 init];
@@ -27,8 +27,8 @@
   *(v5 + 1) = v6;
 
   v8 = *(v5 + 2);
-  *(v5 + 2) = v4;
-  v9 = v4;
+  *(v5 + 2) = connectionCopy;
+  v9 = connectionCopy;
 
   v10 = *(v5 + 2);
   xpc_connection_get_audit_token();
@@ -46,12 +46,12 @@
   return v12;
 }
 
-- (void)handleMessage:(uint64_t)a1
+- (void)handleMessage:(uint64_t)message
 {
   v85 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!message)
   {
     goto LABEL_65;
   }
@@ -59,7 +59,7 @@
   string = xpc_dictionary_get_string(v3, "selector");
   if (!string)
   {
-    [_IOGCFastPathProxyClient handleMessage:a1];
+    [_IOGCFastPathProxyClient handleMessage:message];
     goto LABEL_65;
   }
 
@@ -85,15 +85,15 @@
 
 LABEL_91:
 
-      xpc_connection_cancel(*(a1 + 16));
+      xpc_connection_cancel(*(message + 16));
       goto LABEL_92;
     }
 
-    if (*(a1 + 60))
+    if (*(message + 60))
     {
       reply = xpc_dictionary_create_reply(v4);
       xpc_dictionary_set_uint64(reply, "status", 0xFFFFFFFFE00002D5);
-      xpc_connection_send_message(*(a1 + 16), reply);
+      xpc_connection_send_message(*(message + 16), reply);
 
 LABEL_92:
       os_activity_scope_leave(state);
@@ -101,16 +101,16 @@ LABEL_92:
       goto LABEL_65;
     }
 
-    v25 = IOServiceOpen(v9, *MEMORY[0x1E69E9A60], 1u, (a1 + 64));
+    v25 = IOServiceOpen(v9, *MEMORY[0x1E69E9A60], 1u, (message + 64));
     if (!v25)
     {
-      *(a1 + 60) = v10;
+      *(message + 60) = v10;
     }
 
     v26 = _gc_log_iokit();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = *(a1 + 60);
+      v27 = *(message + 60);
       LODWORD(input.opaque[0]) = 67109376;
       HIDWORD(input.opaque[0]) = v27;
       LOWORD(input.opaque[1]) = 1024;
@@ -120,7 +120,7 @@ LABEL_92:
 
     v28 = xpc_dictionary_create_reply(v4);
     xpc_dictionary_set_uint64(v28, "status", v25);
-    xpc_connection_send_message(*(a1 + 16), v28);
+    xpc_connection_send_message(*(message + 16), v28);
 
     os_activity_scope_leave(state);
   }
@@ -135,7 +135,7 @@ LABEL_92:
         *state = 0;
         *&state[8] = 0;
         os_activity_scope_enter(v8, state);
-        v18 = *(a1 + 64);
+        v18 = *(message + 64);
         if (v18)
         {
           input.opaque[0] = 0;
@@ -162,11 +162,11 @@ LABEL_92:
             input.opaque[0] = 0;
             input.opaque[1] = 0;
             os_activity_scope_enter(v29, &input);
-            if (!*(a1 + 64))
+            if (!*(message + 64))
             {
               v53 = xpc_dictionary_create_reply(v4);
               xpc_dictionary_set_uint64(v53, "status", 0xFFFFFFFFE00002D8);
-              xpc_connection_send_message(*(a1 + 16), v53);
+              xpc_connection_send_message(*(message + 16), v53);
 
               os_activity_scope_leave(&input);
               goto LABEL_65;
@@ -175,7 +175,7 @@ LABEL_92:
             v30 = xpc_dictionary_get_string(v4, "key");
             if (v30)
             {
-              v31 = *(a1 + 60);
+              v31 = *(message + 60);
               v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v30];
               CFProperty = IORegistryEntryCreateCFProperty(v31, v32, *MEMORY[0x1E695E480], 0);
               v34 = _gc_log_iokit();
@@ -193,7 +193,7 @@ LABEL_92:
               {
                 v35 = xpc_dictionary_create_reply(v4);
                 xpc_dictionary_set_uint64(v35, "value", [CFProperty unsignedIntegerValue]);
-                xpc_connection_send_message(*(a1 + 16), v35);
+                xpc_connection_send_message(*(message + 16), v35);
               }
 
               else
@@ -211,7 +211,7 @@ LABEL_92:
                   v35 = xpc_dictionary_create_reply(v4);
                 }
 
-                xpc_connection_send_message(*(a1 + 16), v35);
+                xpc_connection_send_message(*(message + 16), v35);
               }
 
               goto LABEL_84;
@@ -234,7 +234,7 @@ LABEL_92:
             {
               if (Uid != sel_getQueue_properties_)
               {
-                [_IOGCFastPathProxyClient handleMessage:a1];
+                [_IOGCFastPathProxyClient handleMessage:message];
                 goto LABEL_65;
               }
 
@@ -242,7 +242,7 @@ LABEL_92:
               *state = 0;
               *&state[8] = 0;
               os_activity_scope_enter(v8, state);
-              if (*(a1 + 64))
+              if (*(message + 64))
               {
                 uint64 = xpc_dictionary_get_uint64(v4, "queue");
                 if (uint64)
@@ -266,7 +266,7 @@ LABEL_92:
                     v60 = v59;
                     if (v59)
                     {
-                      v61 = *(a1 + 64);
+                      v61 = *(message + 64);
                       BytePtr = CFDataGetBytePtr(v59);
                       Length = CFDataGetLength(v60);
                       v64 = IOConnectCallMethod(v61, 5u, input.opaque, 1u, BytePtr, Length, 0, 0, outputStruct, buf);
@@ -274,7 +274,7 @@ LABEL_92:
                       {
                         v65 = xpc_dictionary_create_reply(v4);
                         xpc_dictionary_set_uint64(v65, "status", v64);
-                        xpc_connection_send_message(*(a1 + 16), v65);
+                        xpc_connection_send_message(*(message + 16), v65);
                       }
 
                       else
@@ -293,14 +293,14 @@ LABEL_92:
                           v77 = v75;
                           [v65 enumerateKeysAndObjectsUsingBlock:v76];
                           xpc_dictionary_set_value(v73, "properties", v75);
-                          xpc_connection_send_message(*(a1 + 16), v73);
+                          xpc_connection_send_message(*(message + 16), v73);
                         }
 
                         else
                         {
                           v73 = xpc_dictionary_create_reply(v4);
                           xpc_dictionary_set_uint64(v73, "status", 0xFFFFFFFFE00002C9);
-                          xpc_connection_send_message(*(a1 + 16), v73);
+                          xpc_connection_send_message(*(message + 16), v73);
                         }
                       }
                     }
@@ -309,7 +309,7 @@ LABEL_92:
                     {
                       v65 = xpc_dictionary_create_reply(v4);
                       xpc_dictionary_set_uint64(v65, "status", 0xFFFFFFFFE00002C9);
-                      xpc_connection_send_message(*(a1 + 16), v65);
+                      xpc_connection_send_message(*(message + 16), v65);
                     }
                   }
 
@@ -323,7 +323,7 @@ LABEL_92:
                       _os_log_impl(&dword_1D2C3B000, v72, OS_LOG_TYPE_DEFAULT, "Client received '%s' message with missing 'queue' argument", &input, 0xCu);
                     }
 
-                    xpc_connection_cancel(*(a1 + 16));
+                    xpc_connection_cancel(*(message + 16));
                   }
 
                   os_activity_scope_leave(state);
@@ -348,11 +348,11 @@ LABEL_92:
             input.opaque[0] = 0;
             input.opaque[1] = 0;
             os_activity_scope_enter(v29, &input);
-            if (!*(a1 + 64))
+            if (!*(message + 64))
             {
               v68 = xpc_dictionary_create_reply(v4);
               xpc_dictionary_set_uint64(v68, "status", 0xFFFFFFFFE00002D8);
-              xpc_connection_send_message(*(a1 + 16), v68);
+              xpc_connection_send_message(*(message + 16), v68);
 
               goto LABEL_84;
             }
@@ -363,7 +363,7 @@ LABEL_92:
               *outputStruct = 0;
               *buf = 0;
               v49 = MEMORY[0x1E69E9A60];
-              v50 = MEMORY[0x1D38AA7C0](*(a1 + 64), v48, *MEMORY[0x1E69E9A60], outputStruct, buf, 1);
+              v50 = MEMORY[0x1D38AA7C0](*(message + 64), v48, *MEMORY[0x1E69E9A60], outputStruct, buf, 1);
               v51 = _gc_log_iokit();
               if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
               {
@@ -376,7 +376,7 @@ LABEL_92:
               {
                 v52 = xpc_dictionary_create_reply(v4);
                 xpc_dictionary_set_uint64(v52, "status", v50);
-                xpc_connection_send_message(*(a1 + 16), v52);
+                xpc_connection_send_message(*(message + 16), v52);
               }
 
               else
@@ -406,7 +406,7 @@ LABEL_92:
                   xpc_dictionary_set_uint64(v71, "memory_size", *buf);
                 }
 
-                xpc_connection_send_message(*(a1 + 16), v71);
+                xpc_connection_send_message(*(message + 16), v71);
               }
 
               os_activity_scope_leave(&input);
@@ -424,7 +424,7 @@ LABEL_92:
 
 LABEL_75:
 
-            xpc_connection_cancel(*(a1 + 16));
+            xpc_connection_cancel(*(message + 16));
 LABEL_84:
             os_activity_scope_leave(&input);
 
@@ -435,7 +435,7 @@ LABEL_84:
           *state = 0;
           *&state[8] = 0;
           os_activity_scope_enter(v12, state);
-          if (*(a1 + 64))
+          if (*(message + 64))
           {
             input.opaque[0] = 0;
             *outputStruct = 0;
@@ -444,7 +444,7 @@ LABEL_84:
             v41 = v40;
             if (v40)
             {
-              v42 = *(a1 + 64);
+              v42 = *(message + 64);
               v43 = CFDataGetBytePtr(v40);
               v44 = CFDataGetLength(v41);
               v45 = IOConnectCallMethod(v42, 2u, input.opaque, 1u, v43, v44, outputStruct, object_handle, 0, 0);
@@ -459,14 +459,14 @@ LABEL_84:
               v47 = xpc_dictionary_create_reply(v4);
               xpc_dictionary_set_uint64(v47, "status", v45);
               xpc_dictionary_set_uint64(v47, "port", *outputStruct);
-              xpc_connection_send_message(*(a1 + 16), v47);
+              xpc_connection_send_message(*(message + 16), v47);
             }
 
             else
             {
               v47 = xpc_dictionary_create_reply(v4);
               xpc_dictionary_set_uint64(v47, "status", 0xFFFFFFFFE00002C9);
-              xpc_connection_send_message(*(a1 + 16), v47);
+              xpc_connection_send_message(*(message + 16), v47);
             }
 
             os_activity_scope_leave(state);
@@ -476,7 +476,7 @@ LABEL_84:
 LABEL_32:
           v24 = xpc_dictionary_create_reply(v4);
           xpc_dictionary_set_uint64(v24, "status", 0xFFFFFFFFE00002D8);
-          xpc_connection_send_message(*(a1 + 16), v24);
+          xpc_connection_send_message(*(message + 16), v24);
 
           os_activity_scope_leave(state);
           goto LABEL_65;
@@ -486,7 +486,7 @@ LABEL_32:
         *state = 0;
         *&state[8] = 0;
         os_activity_scope_enter(v8, state);
-        v22 = *(a1 + 64);
+        v22 = *(message + 64);
         if (v22)
         {
           input.opaque[0] = 0;
@@ -503,7 +503,7 @@ LABEL_31:
 
           v23 = xpc_dictionary_create_reply(v4);
           xpc_dictionary_set_uint64(v23, "status", v19);
-          xpc_connection_send_message(*(a1 + 16), v23);
+          xpc_connection_send_message(*(message + 16), v23);
 
           goto LABEL_92;
         }
@@ -512,7 +512,7 @@ LABEL_31:
 LABEL_44:
       v36 = xpc_dictionary_create_reply(v4);
       xpc_dictionary_set_uint64(v36, "status", 0xFFFFFFFFE00002D8);
-      xpc_connection_send_message(*(a1 + 16), v36);
+      xpc_connection_send_message(*(message + 16), v36);
 
       goto LABEL_92;
     }
@@ -521,7 +521,7 @@ LABEL_44:
     *state = 0;
     *&state[8] = 0;
     os_activity_scope_enter(v12, state);
-    v13 = *(a1 + 64);
+    v13 = *(message + 64);
     if (!v13)
     {
       goto LABEL_32;
@@ -543,7 +543,7 @@ LABEL_44:
     {
       v17 = xpc_dictionary_create_reply(v4);
       xpc_dictionary_set_uint64(v17, "status", v15);
-      xpc_connection_send_message(*(a1 + 16), v17);
+      xpc_connection_send_message(*(message + 16), v17);
     }
 
     else
@@ -571,7 +571,7 @@ LABEL_44:
         xpc_dictionary_set_uint64(v39, "memory_size", *outputStruct);
       }
 
-      xpc_connection_send_message(*(a1 + 16), v39);
+      xpc_connection_send_message(*(message + 16), v39);
     }
 
     os_activity_scope_leave(state);
@@ -596,7 +596,7 @@ LABEL_65:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D2C3B000, v3, OS_LOG_TYPE_DEFAULT, "%@::dealloc", buf, 0xCu);
   }
 

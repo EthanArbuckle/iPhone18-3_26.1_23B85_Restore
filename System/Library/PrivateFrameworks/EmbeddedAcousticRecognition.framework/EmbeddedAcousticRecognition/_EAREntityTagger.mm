@@ -1,15 +1,15 @@
 @interface _EAREntityTagger
-- (id)tagEntitiesIn:(id)a3;
-- (id)tagEntitiesInArray:(id)a3;
-- (id)tagEntitiesWithTagNamesIn:(id)a3;
+- (id)tagEntitiesIn:(id)in;
+- (id)tagEntitiesInArray:(id)array;
+- (id)tagEntitiesWithTagNamesIn:(id)in;
 @end
 
 @implementation _EAREntityTagger
 
-- (id)tagEntitiesWithTagNamesIn:(id)a3
+- (id)tagEntitiesWithTagNamesIn:(id)in
 {
   sub_1B5AD6664();
-  v4 = self;
+  selfCopy = self;
   sub_1B5A91CB4();
 
   type metadata accessor for _EARExtractedEntity();
@@ -19,12 +19,12 @@
   return v6;
 }
 
-- (id)tagEntitiesIn:(id)a3
+- (id)tagEntitiesIn:(id)in
 {
   v4 = sub_1B5AD6664();
   v6 = v5;
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x68);
-  v8 = self;
+  selfCopy = self;
   v9 = v7(v4, v6);
 
   sub_1B5A920F0(v9);
@@ -37,10 +37,10 @@
   return v12;
 }
 
-- (id)tagEntitiesInArray:(id)a3
+- (id)tagEntitiesInArray:(id)array
 {
   v4 = sub_1B5AD66D4();
-  v5 = self;
+  selfCopy = self;
   sub_1B5A92544(v4);
 
   v6 = sub_1B5AD66E4();

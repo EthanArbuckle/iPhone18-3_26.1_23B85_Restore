@@ -1,38 +1,38 @@
 @interface PKProgressBar
-- (PKProgressBar)initWithFrame:(CGRect)a3;
+- (PKProgressBar)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateLayerColors;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setGradientEndColor:(id)a3;
-- (void)setGradientStartColor:(id)a3;
-- (void)setProgress:(double)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setGradientEndColor:(id)color;
+- (void)setGradientStartColor:(id)color;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation PKProgressBar
 
-- (PKProgressBar)initWithFrame:(CGRect)a3
+- (PKProgressBar)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PKProgressBar;
-  v3 = [(PKProgressBar *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKProgressBar *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemFillColor];
-    [(PKProgressBar *)v3 setBackgroundColor:v4];
+    systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+    [(PKProgressBar *)v3 setBackgroundColor:systemFillColor];
 
     v3->_cornerRadius = 5.0;
-    v5 = [(PKProgressBar *)v3 layer];
-    [v5 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v5 setCornerRadius:v3->_cornerRadius];
-    [v5 setMasksToBounds:1];
-    v6 = [MEMORY[0x1E6979380] layer];
+    layer = [(PKProgressBar *)v3 layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:v3->_cornerRadius];
+    [layer setMasksToBounds:1];
+    layer2 = [MEMORY[0x1E6979380] layer];
     fillLayer = v3->_fillLayer;
-    v3->_fillLayer = v6;
+    v3->_fillLayer = layer2;
 
     [(CAGradientLayer *)v3->_fillLayer setStartPoint:0.0, 0.5];
     [(CAGradientLayer *)v3->_fillLayer setEndPoint:1.0, 0.5];
-    [v5 addSublayer:v3->_fillLayer];
+    [layer addSublayer:v3->_fillLayer];
   }
 
   return v3;
@@ -75,22 +75,22 @@
   [(CAGradientLayer *)self->_fillLayer setFrame:0.0, 0.0, v9, v7];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    v4 = [(PKProgressBar *)self layer];
-    [v4 setCornerRadius:self->_cornerRadius];
+    self->_cornerRadius = radius;
+    layer = [(PKProgressBar *)self layer];
+    [layer setCornerRadius:self->_cornerRadius];
   }
 }
 
-- (void)setGradientStartColor:(id)a3
+- (void)setGradientStartColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     originalStartColor = self->_originalStartColor;
     self->_originalStartColor = v4;
 
@@ -98,12 +98,12 @@
   }
 }
 
-- (void)setGradientEndColor:(id)a3
+- (void)setGradientEndColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [colorCopy copy];
     originalEndColor = self->_originalEndColor;
     self->_originalEndColor = v4;
 
@@ -111,9 +111,9 @@
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v3 = fmax(fmin(a3, 1.0), 0.0);
+  v3 = fmax(fmin(progress, 1.0), 0.0);
   if (self->_progress != v3)
   {
     self->_progress = v3;
@@ -123,13 +123,13 @@
 
 - (void)_updateLayerColors
 {
-  v3 = [(PKProgressBar *)self traitCollection];
+  traitCollection = [(PKProgressBar *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __35__PKProgressBar__updateLayerColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __35__PKProgressBar__updateLayerColors__block_invoke(uint64_t a1)

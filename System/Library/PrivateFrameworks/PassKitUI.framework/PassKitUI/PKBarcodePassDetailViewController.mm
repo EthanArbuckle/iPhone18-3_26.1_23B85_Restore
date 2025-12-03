@@ -4,59 +4,59 @@
 - (BOOL)_linkedAppAvailable;
 - (BOOL)_settingsAvailable;
 - (BOOL)_updateHeaderHeight;
-- (BOOL)handleDeletePassWithUniqueID:(id)a3;
+- (BOOL)handleDeletePassWithUniqueID:(id)d;
 - (BOOL)reloadData;
 - (BOOL)shouldAllowRefresh;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKBarcodePassDetailViewController)initWithPass:(id)a3;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKBarcodePassDetailViewController)initWithPass:(id)pass;
 - (PKPassDeleteHandler)deleteOverrider;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_automaticSelectionCell;
 - (id)_barcodeCell;
 - (id)_deleteCell;
-- (id)_fieldCellForRow:(unint64_t)a3;
-- (id)_fieldForRow:(unint64_t)a3;
-- (id)_locationHelpTextWithLink:(id *)a3 linkRange:(_NSRange *)a4;
-- (id)_locationHelpViewForTableView:(id)a3;
+- (id)_fieldCellForRow:(unint64_t)row;
+- (id)_fieldForRow:(unint64_t)row;
+- (id)_locationHelpTextWithLink:(id *)link linkRange:(_NSRange *)range;
+- (id)_locationHelpViewForTableView:(id)view;
 - (id)_personalizePassCell;
-- (id)_settingsCellForRow:(unint64_t)a3;
+- (id)_settingsCellForRow:(unint64_t)row;
 - (id)linkedApp;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)rowAnimationForReloadingSection:(unint64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)rowAnimationForReloadingSection:(unint64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)_numberOfAvailableSettings;
-- (unint64_t)_settingForRow:(unint64_t)a3;
-- (void)_bluetoothPowerChanged:(id)a3;
-- (void)_passSettingsChanged:(id)a3;
-- (void)_refreshFinished:(BOOL)a3;
+- (unint64_t)_settingForRow:(unint64_t)row;
+- (void)_bluetoothPowerChanged:(id)changed;
+- (void)_passSettingsChanged:(id)changed;
+- (void)_refreshFinished:(BOOL)finished;
 - (void)_reloadPassAndView;
 - (void)_sharePass;
 - (void)_updateNavigationItem;
 - (void)_updatePassProperties;
-- (void)_updateStandardAppearance:(id)a3;
-- (void)_wifiChanged:(id)a3;
-- (void)appViewContentSizeChanged:(id)a3;
+- (void)_updateStandardAppearance:(id)appearance;
+- (void)_wifiChanged:(id)changed;
+- (void)appViewContentSizeChanged:(id)changed;
 - (void)dealloc;
 - (void)loadView;
 - (void)pushSettingsFromViewToModel;
-- (void)refreshControlValueChanged:(id)a3;
-- (void)reloadSection:(unint64_t)a3;
-- (void)reloadSections:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setShowCloseButton:(BOOL)a3;
-- (void)setShowsLinks:(BOOL)a3;
-- (void)setSuppressedContent:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)refreshControlValueChanged:(id)changed;
+- (void)reloadSection:(unint64_t)section;
+- (void)reloadSections:(id)sections;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setShowCloseButton:(BOOL)button;
+- (void)setShowsLinks:(BOOL)links;
+- (void)setSuppressedContent:(unint64_t)content;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -64,25 +64,25 @@
 
 + (BOOL)isWifiEnabled
 {
-  v2 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v3 = [v2 isWiFiEnabled];
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isWiFiEnabled = [mEMORY[0x1E698B6A0] isWiFiEnabled];
 
-  return v3;
+  return isWiFiEnabled;
 }
 
-- (PKBarcodePassDetailViewController)initWithPass:(id)a3
+- (PKBarcodePassDetailViewController)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v22.receiver = self;
   v22.super_class = PKBarcodePassDetailViewController;
   v6 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v22, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 7);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
-    v8 = [(PKPass *)v7->_pass displayProfile];
+    objc_storeStrong(&v6->_pass, pass);
+    displayProfile = [(PKPass *)v7->_pass displayProfile];
     displayProfile = v7->_displayProfile;
-    v7->_displayProfile = v8;
+    v7->_displayProfile = displayProfile;
 
     v10 = [PKPassColorProfile profileForDisplayProfile:v7->_displayProfile];
     colorProfile = v7->_colorProfile;
@@ -95,31 +95,31 @@
     v7->_isWifiEnabled = 1;
     v7->_isLocationEnabled = 1;
     v7->_isBluetoothEnabled = 1;
-    v14 = [(PKBarcodePassDetailViewController *)v7 navigationItem];
+    navigationItem = [(PKBarcodePassDetailViewController *)v7 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v14 pkui_setupScrollEdgeChromelessAppearance];
-      [v14 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     v7->_titleOpacity = 0.0;
     v15 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v15 configureWithDefaultBackground];
     [(PKBarcodePassDetailViewController *)v7 _updateStandardAppearance:v15];
-    [v14 setStandardAppearance:v15];
+    [navigationItem setStandardAppearance:v15];
     [(PKBarcodePassDetailViewController *)v7 _updatePassProperties];
-    v16 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-    [v16 addWiFiObserver:v7 selector:sel__wifiChanged_];
+    mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+    [mEMORY[0x1E698B6A0] addWiFiObserver:v7 selector:sel__wifiChanged_];
 
-    v17 = [MEMORY[0x1E698F468] sharedInstance];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
     btManager = v7->_btManager;
-    v7->_btManager = v17;
+    v7->_btManager = mEMORY[0x1E698F468];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v7 selector:sel__bluetoothPowerChanged_ name:*MEMORY[0x1E698F448] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__bluetoothPowerChanged_ name:*MEMORY[0x1E698F448] object:0];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v7 selector:sel__bluetoothPowerChanged_ name:*MEMORY[0x1E698F458] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__bluetoothPowerChanged_ name:*MEMORY[0x1E698F458] object:0];
 
     PKObservePassSettingsChanged();
   }
@@ -130,11 +130,11 @@
 - (void)dealloc
 {
   PKUnregisterPassSettingsChangedObserver();
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  [v4 removeWiFiObserver:self];
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  [mEMORY[0x1E698B6A0] removeWiFiObserver:self];
 
   refreshTimeout = self->_refreshTimeout;
   if (refreshTimeout)
@@ -157,11 +157,11 @@
   [(PKSectionTableViewController *)&v8 dealloc];
 }
 
-- (void)setShowCloseButton:(BOOL)a3
+- (void)setShowCloseButton:(BOOL)button
 {
-  if (self->_showCloseButton == !a3)
+  if (self->_showCloseButton == !button)
   {
-    self->_showCloseButton = a3;
+    self->_showCloseButton = button;
     [(PKBarcodePassDetailViewController *)self _updateNavigationItem];
   }
 }
@@ -171,7 +171,7 @@
   v14.receiver = self;
   v14.super_class = PKBarcodePassDetailViewController;
   [(PKBarcodePassDetailViewController *)&v14 loadView];
-  v3 = [(PKBarcodePassDetailViewController *)self tableView];
+  tableView = [(PKBarcodePassDetailViewController *)self tableView];
   if ([(PKBarcodePassDetailViewController *)self shouldAllowRefresh])
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCE58]);
@@ -192,40 +192,40 @@
   v8 = self->_passHeaderView;
   if (([(PKPass *)self->_pass isExpired]& 1) != 0)
   {
-    v9 = 1;
+    isVoided = 1;
   }
 
   else
   {
-    v9 = [(PKPass *)self->_pass isVoided];
+    isVoided = [(PKPass *)self->_pass isVoided];
   }
 
-  [(PKPassHeaderView *)v8 setExpiredPass:v9];
+  [(PKPassHeaderView *)v8 setExpiredPass:isVoided];
   [(PKPassHeaderView *)self->_passHeaderView setSmall:1];
   v10 = objc_alloc(MEMORY[0x1E69DD250]);
   v11 = [v10 initWithFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 0.0, self->_headerHeight}];
   headerView = self->_headerView;
   self->_headerView = v11;
 
-  [v3 setTableHeaderView:self->_headerView];
+  [tableView setTableHeaderView:self->_headerView];
   [(UIView *)self->_headerView addSubview:self->_passHeaderView];
-  [v3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"FirstSectionHeaderReuseIdentifier"];
-  v13 = [(PKBarcodePassDetailViewController *)self tableView];
-  [v13 setAccessibilityIdentifier:*MEMORY[0x1E69B99E8]];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"FirstSectionHeaderReuseIdentifier"];
+  tableView2 = [(PKBarcodePassDetailViewController *)self tableView];
+  [tableView2 setAccessibilityIdentifier:*MEMORY[0x1E69B99E8]];
 
   [(PKBarcodePassDetailViewController *)self setShowsLinks:(self->_suppressedContent & 0x10) == 0];
   [(PKBarcodePassDetailViewController *)self _updateHeaderHeight];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKBarcodePassDetailViewController;
-  [(PKBarcodePassDetailViewController *)&v7 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E695FBE8] locationServicesEnabled];
-  if (self->_isLocationEnabled == (v4 ^ 1))
+  [(PKBarcodePassDetailViewController *)&v7 viewWillAppear:appear];
+  locationServicesEnabled = [MEMORY[0x1E695FBE8] locationServicesEnabled];
+  if (self->_isLocationEnabled == (locationServicesEnabled ^ 1))
   {
-    self->_isLocationEnabled = v4;
+    self->_isLocationEnabled = locationServicesEnabled;
     locationHelpView = self->_locationHelpView;
     self->_locationHelpView = 0;
 
@@ -240,11 +240,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKBarcodePassDetailViewController;
-  [(PKBarcodePassDetailViewController *)&v5 viewWillDisappear:a3];
+  [(PKBarcodePassDetailViewController *)&v5 viewWillDisappear:disappear];
   if (self->_didRampScreenBrightness)
   {
     v4 = +[PKBacklightController sharedInstance];
@@ -259,16 +259,16 @@
   v46.receiver = self;
   v46.super_class = PKBarcodePassDetailViewController;
   [(PKBarcodePassDetailViewController *)&v46 viewWillLayoutSubviews];
-  v3 = [(PKBarcodePassDetailViewController *)self tableView];
-  v4 = [(PKBarcodePassDetailViewController *)self navigationItem];
-  [v3 bounds];
+  tableView = [(PKBarcodePassDetailViewController *)self tableView];
+  navigationItem = [(PKBarcodePassDetailViewController *)self navigationItem];
+  [tableView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v3 safeAreaInsets];
+  [tableView safeAreaInsets];
   v12 = v11;
   v14 = v13;
-  [v3 contentSize];
+  [tableView contentSize];
   v16 = v15;
   if (self->_previousLayoutTableViewBoundsSize.width != v8)
   {
@@ -279,7 +279,7 @@
 
   [(PKBarcodePassDetailViewController *)self _offscreenHeaderHeight];
   v18 = v17;
-  [v3 contentInset];
+  [tableView contentInset];
   v20 = v19;
   v21 = v10 - (v12 + v14);
   v22 = v16 - v21;
@@ -292,15 +292,15 @@
 
   if (v20 != v24)
   {
-    [v3 setContentInset:?];
+    [tableView setContentInset:?];
   }
 
-  [v3 adjustedContentInset];
+  [tableView adjustedContentInset];
   v26 = v25;
   v27 = v18 + v25 - v12;
-  v28 = [(UIRefreshControl *)self->_refreshControl superview];
+  superview = [(UIRefreshControl *)self->_refreshControl superview];
 
-  if (v6 >= -v26 || v28 == 0)
+  if (v6 >= -v26 || superview == 0)
   {
     v30 = 0.0;
   }
@@ -312,7 +312,7 @@
 
   v31 = v27 + v30;
   memset(&slice, 0, sizeof(slice));
-  [v3 _rectForTableHeaderView];
+  [tableView _rectForTableHeaderView];
   v35 = v26 + v30;
   v36 = -v35;
   headerHeight = self->_headerHeight;
@@ -343,17 +343,17 @@
   [(PKPassHeaderView *)self->_passHeaderView setFrame:slice.origin.x + self->_headerContentInset.left, slice.origin.y + self->_headerContentInset.top, slice.size.width - (self->_headerContentInset.left + self->_headerContentInset.right), slice.size.height - (self->_headerContentInset.top + self->_headerContentInset.bottom)];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 
   if (self->_titleOpacity != v41)
   {
     self->_titleOpacity = v41;
-    v42 = [v4 standardAppearance];
-    v43 = [v42 copy];
+    standardAppearance = [navigationItem standardAppearance];
+    v43 = [standardAppearance copy];
 
     [(PKBarcodePassDetailViewController *)self _updateStandardAppearance:v43];
-    [v4 setStandardAppearance:v43];
+    [navigationItem setStandardAppearance:v43];
   }
 }
 
@@ -362,24 +362,24 @@
   v4.receiver = self;
   v4.super_class = PKBarcodePassDetailViewController;
   [(PKBarcodePassDetailViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(PKBarcodePassDetailViewController *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(PKBarcodePassDetailViewController *)self tableView];
+  [tableView layoutIfNeeded];
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [v3 _moveContentSubview:self->_headerView toBack:0];
+    [tableView _moveContentSubview:self->_headerView toBack:0];
   }
 
   [(UIView *)self->_headerView setFrame:self->_headerFrame.origin.x, self->_headerFrame.origin.y, self->_headerFrame.size.width, self->_headerFrame.size.height];
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
   LOBYTE(v4) = 0;
-  if (a3 > 2)
+  if (section > 2)
   {
-    if (a3 <= 4)
+    if (section <= 4)
     {
-      if (a3 != 3)
+      if (section != 3)
       {
         if ((self->_suppressedContent & 0x100) == 0)
         {
@@ -400,12 +400,12 @@ LABEL_33:
       return v4;
     }
 
-    if (a3 != 5)
+    if (section != 5)
     {
-      if (a3 == 6)
+      if (section == 6)
       {
-        v6 = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
-        LOBYTE(v4) = [v6 count] != 0;
+        _relevantBuckets = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
+        LOBYTE(v4) = [_relevantBuckets count] != 0;
       }
 
       return v4;
@@ -416,15 +416,15 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v7 = [(PKPass *)self->_pass barcode];
-    LOBYTE(v4) = v7 != 0;
+    barcode = [(PKPass *)self->_pass barcode];
+    LOBYTE(v4) = barcode != 0;
 
     return v4;
   }
 
-  if (a3)
+  if (section)
   {
-    if (a3 == 1)
+    if (section == 1)
     {
 
       return [(PKBarcodePassDetailViewController *)self _settingsAvailable];
@@ -432,7 +432,7 @@ LABEL_33:
 
     else
     {
-      if (a3 != 2)
+      if (section != 2)
       {
         return v4;
       }
@@ -461,9 +461,9 @@ LABEL_33:
   }
 }
 
-- (void)reloadSection:(unint64_t)a3
+- (void)reloadSection:(unint64_t)section
 {
-  switch(a3)
+  switch(section)
   {
     case 1uLL:
       automaticUpdatesCell = self->_automaticUpdatesCell;
@@ -489,24 +489,24 @@ LABEL_33:
 
   v9.receiver = self;
   v9.super_class = PKBarcodePassDetailViewController;
-  [(PKSectionTableViewController *)&v9 reloadSection:a3];
+  [(PKSectionTableViewController *)&v9 reloadSection:section];
 }
 
-- (void)reloadSections:(id)a3
+- (void)reloadSections:(id)sections
 {
-  v4 = a3;
-  if ([v4 containsObject:&unk_1F3CC6FF8])
+  sectionsCopy = sections;
+  if ([sectionsCopy containsObject:&unk_1F3CC6FF8])
   {
     barcodeCell = self->_barcodeCell;
     self->_barcodeCell = 0;
   }
 
-  if ([v4 containsObject:&unk_1F3CC7010])
+  if ([sectionsCopy containsObject:&unk_1F3CC7010])
   {
     [(NSMutableDictionary *)self->_fieldCellsByRow removeAllObjects];
   }
 
-  if ([v4 containsObject:&unk_1F3CC7028])
+  if ([sectionsCopy containsObject:&unk_1F3CC7028])
   {
     automaticUpdatesCell = self->_automaticUpdatesCell;
     self->_automaticUpdatesCell = 0;
@@ -522,7 +522,7 @@ LABEL_33:
 
   v9.receiver = self;
   v9.super_class = PKBarcodePassDetailViewController;
-  [(PKSectionTableViewController *)&v9 reloadSections:v4];
+  [(PKSectionTableViewController *)&v9 reloadSections:sectionsCopy];
 }
 
 - (BOOL)reloadData
@@ -546,9 +546,9 @@ LABEL_33:
   return [(PKSectionTableViewController *)&v8 reloadData];
 }
 
-- (int64_t)rowAnimationForReloadingSection:(unint64_t)a3
+- (int64_t)rowAnimationForReloadingSection:(unint64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
     return 100;
   }
@@ -564,10 +564,10 @@ LABEL_33:
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
-  v5 = [(PKBarcodePassDetailViewController *)self tableView];
-  [v5 separatorInset];
+  tableView = [(PKBarcodePassDetailViewController *)self tableView];
+  [tableView separatorInset];
   v7 = fmax(v6, 10.0);
-  [v5 bounds];
+  [tableView bounds];
   [(PKPassHeaderView *)self->_passHeaderView sizeThatFits:v8 - v7 - v7, 84.0];
   v10 = fmax(v9, 0.0);
   headerHeight = self->_headerHeight;
@@ -607,8 +607,8 @@ LABEL_11:
 LABEL_12:
   [(UIView *)self->_headerView bounds];
   [(UIView *)self->_headerView setBounds:?];
-  [v5 setTableHeaderView:0];
-  [v5 setTableHeaderView:self->_headerView];
+  [tableView setTableHeaderView:0];
+  [tableView setTableHeaderView:self->_headerView];
   v17 = 1;
 LABEL_13:
 
@@ -621,19 +621,19 @@ LABEL_13:
   if (!linkedApp)
   {
     v4 = [PKLinkedAppView alloc];
-    v5 = [(PKPass *)self->_pass storeIdentifiers];
-    v6 = [(PKPass *)self->_pass systemAppBundleIdentifiers];
-    v7 = [(PKPass *)self->_pass appLaunchURL];
-    v8 = [(PKLinkedAppView *)v4 initWithStoreIDs:v5 systemAppBundleIdentifiers:v6 appLaunchURL:v7 reuseIdentifier:0];
+    storeIdentifiers = [(PKPass *)self->_pass storeIdentifiers];
+    systemAppBundleIdentifiers = [(PKPass *)self->_pass systemAppBundleIdentifiers];
+    appLaunchURL = [(PKPass *)self->_pass appLaunchURL];
+    v8 = [(PKLinkedAppView *)v4 initWithStoreIDs:storeIdentifiers systemAppBundleIdentifiers:systemAppBundleIdentifiers appLaunchURL:appLaunchURL reuseIdentifier:0];
     v9 = self->_linkedApp;
     self->_linkedApp = v8;
 
-    v10 = [(PKLinkedAppView *)self->_linkedApp linkedAppView];
-    [v10 setDelegate:self];
+    linkedAppView = [(PKLinkedAppView *)self->_linkedApp linkedAppView];
+    [linkedAppView setDelegate:self];
 
     v11 = self->_linkedApp;
-    v12 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKLinkedAppView *)v11 setBackgroundColor:v12];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKLinkedAppView *)v11 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     linkedApp = self->_linkedApp;
   }
@@ -641,17 +641,17 @@ LABEL_13:
   return linkedApp;
 }
 
-- (void)setShowsLinks:(BOOL)a3
+- (void)setShowsLinks:(BOOL)links
 {
-  v3 = a3;
+  linksCopy = links;
   v14 = *MEMORY[0x1E69E9840];
-  self->_showsLinks = a3;
+  self->_showsLinks = links;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_fieldCellsByRow allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_fieldCellsByRow allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -663,29 +663,29 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setShowLinks:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setShowLinks:linksCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_wifiChanged:(id)a3
+- (void)_wifiChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E698B618]];
-  v6 = [v5 BOOLValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E698B618]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (self->_isWifiEnabled != v6)
+  if (self->_isWifiEnabled != bOOLValue)
   {
-    self->_isWifiEnabled = v6;
+    self->_isWifiEnabled = bOOLValue;
     locationHelpView = self->_locationHelpView;
     self->_locationHelpView = 0;
 
@@ -705,17 +705,17 @@ LABEL_13:
   return [(BluetoothManager *)btManager enabled];
 }
 
-- (void)_bluetoothPowerChanged:(id)a3
+- (void)_bluetoothPowerChanged:(id)changed
 {
-  v4 = [(BluetoothManager *)self->_btManager available];
-  if (v4)
+  available = [(BluetoothManager *)self->_btManager available];
+  if (available)
   {
-    v4 = [(BluetoothManager *)self->_btManager enabled];
+    available = [(BluetoothManager *)self->_btManager enabled];
   }
 
-  if (self->_isBluetoothEnabled != v4)
+  if (self->_isBluetoothEnabled != available)
   {
-    self->_isBluetoothEnabled = v4;
+    self->_isBluetoothEnabled = available;
     locationHelpView = self->_locationHelpView;
     self->_locationHelpView = 0;
 
@@ -723,16 +723,16 @@ LABEL_13:
   }
 }
 
-- (id)_locationHelpTextWithLink:(id *)a3 linkRange:(_NSRange *)a4
+- (id)_locationHelpTextWithLink:(id *)link linkRange:(_NSRange *)range
 {
   showsLinks = self->_showsLinks;
-  v8 = [(PKPass *)self->_pass embeddedBeacons];
-  v9 = [v8 count];
+  embeddedBeacons = [(PKPass *)self->_pass embeddedBeacons];
+  v9 = [embeddedBeacons count];
 
-  v10 = [MEMORY[0x1E695FBE8] isRangingAvailable];
+  isRangingAvailable = [MEMORY[0x1E695FBE8] isRangingAvailable];
   if (!showsLinks)
   {
-    if (!((v9 == 0) | v10 & 1))
+    if (!((v9 == 0) | isRangingAvailable & 1))
     {
 LABEL_30:
       v14 = @"SETTINGS_SHOW_ON_LOCKSCREEN_DESC_NO_BTLE";
@@ -754,7 +754,7 @@ LABEL_31:
     {
       if (v9)
       {
-        if (!self->_isBluetoothEnabled && ((v10 ^ 1) & 1) == 0)
+        if (!self->_isBluetoothEnabled && ((isRangingAvailable ^ 1) & 1) == 0)
         {
           v11 = PKLocalizedString(&cfstr_SettingsShowOn_9.isa);
           v12 = @"prefs:root=Bluetooth";
@@ -762,7 +762,7 @@ LABEL_31:
           goto LABEL_23;
         }
 
-        if (!v10)
+        if (!isRangingAvailable)
         {
           goto LABEL_30;
         }
@@ -828,18 +828,18 @@ LABEL_23:
     v20 = [v18 stringByAppendingString:@" "];
     v21 = [v20 stringByAppendingString:v17];
 
-    if (a3)
+    if (link)
     {
-      *a3 = v12;
+      *link = v12;
     }
 
-    if (a4)
+    if (range)
     {
       v22 = [v21 length];
       v23 = v22 - [v17 length];
       v24 = [v17 length];
-      a4->location = v23;
-      a4->length = v24;
+      range->location = v23;
+      range->length = v24;
     }
   }
 
@@ -853,7 +853,7 @@ LABEL_32:
   return v21;
 }
 
-- (id)_locationHelpViewForTableView:(id)a3
+- (id)_locationHelpViewForTableView:(id)view
 {
   locationHelpView = self->_locationHelpView;
   if (!locationHelpView)
@@ -890,9 +890,9 @@ LABEL_32:
   return locationHelpView;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   result = 0;
   if (v5 > 1)
   {
@@ -900,9 +900,9 @@ LABEL_32:
     {
       if (v5 == 6)
       {
-        v7 = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
-        v8 = [v7 firstObject];
-        v9 = [v8 count];
+        _relevantBuckets = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
+        firstObject = [_relevantBuckets firstObject];
+        v9 = [firstObject count];
 
         return v9;
       }
@@ -927,10 +927,10 @@ LABEL_32:
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v5 section]);
+  pathCopy = path;
+  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v7 = 0;
   if (v6 <= 2)
   {
@@ -938,7 +938,7 @@ LABEL_32:
     {
       if (v6 == 1)
       {
-        v8 = -[PKBarcodePassDetailViewController _settingsCellForRow:](self, "_settingsCellForRow:", [v5 row]);
+        _automaticSelectionCell = -[PKBarcodePassDetailViewController _settingsCellForRow:](self, "_settingsCellForRow:", [pathCopy row]);
       }
 
       else
@@ -948,13 +948,13 @@ LABEL_32:
           goto LABEL_18;
         }
 
-        v8 = [(PKBarcodePassDetailViewController *)self _automaticSelectionCell];
+        _automaticSelectionCell = [(PKBarcodePassDetailViewController *)self _automaticSelectionCell];
       }
     }
 
     else
     {
-      v8 = [(PKBarcodePassDetailViewController *)self linkedApp];
+      _automaticSelectionCell = [(PKBarcodePassDetailViewController *)self linkedApp];
     }
   }
 
@@ -962,7 +962,7 @@ LABEL_32:
   {
     if (v6 == 5)
     {
-      v8 = [(PKBarcodePassDetailViewController *)self _barcodeCell];
+      _automaticSelectionCell = [(PKBarcodePassDetailViewController *)self _barcodeCell];
     }
 
     else
@@ -972,7 +972,7 @@ LABEL_32:
         goto LABEL_18;
       }
 
-      v8 = -[PKBarcodePassDetailViewController _fieldCellForRow:](self, "_fieldCellForRow:", [v5 row]);
+      _automaticSelectionCell = -[PKBarcodePassDetailViewController _fieldCellForRow:](self, "_fieldCellForRow:", [pathCopy row]);
     }
   }
 
@@ -987,31 +987,31 @@ LABEL_32:
     {
       [(PKBarcodePassDetailViewController *)self _personalizePassCell];
     }
-    v8 = ;
+    _automaticSelectionCell = ;
   }
 
-  v7 = v8;
+  v7 = _automaticSelectionCell;
 LABEL_18:
 
   return v7;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  [v7 adjustedContentInset];
+  draggingCopy = dragging;
+  [draggingCopy adjustedContentInset];
   v9 = v8;
   v11 = v10;
-  [v7 contentSize];
+  [draggingCopy contentSize];
   v13 = v12;
-  [v7 bounds];
+  [draggingCopy bounds];
   v15 = v14;
 
   [(PKBarcodePassDetailViewController *)self _offscreenHeaderHeight];
   if (v11 + v9 + v13 >= v16 + v15)
   {
     v17 = v16 - v9;
-    y = a5->y;
+    y = offset->y;
     if (y > -v9 && y < v17)
     {
       if ((v9 + y) / (v9 + v17) <= 0.5)
@@ -1019,26 +1019,26 @@ LABEL_18:
         v17 = -v9;
       }
 
-      a5->y = v17;
+      offset->y = v17;
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKBarcodePassDetailViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKBarcodePassDetailViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v8 == 4)
   {
     v13 = self->_pass;
-    v14 = [(PKPass *)v13 passTypeIdentifier];
+    passTypeIdentifier = [(PKPass *)v13 passTypeIdentifier];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __71__PKBarcodePassDetailViewController_tableView_didSelectRowAtIndexPath___block_invoke;
@@ -1049,7 +1049,7 @@ LABEL_18:
 
   else if (v8 == 3)
   {
-    v9 = [v6 cellForRowAtIndexPath:v7];
+    v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v10 = [PKViewControllerPresentationTarget targetWithPresentingViewController:self sourceView:v9];
 
     pass = self->_pass;
@@ -1057,7 +1057,7 @@ LABEL_18:
     [PKPassDeleteHelper presentDeleteBarcodePassAlertForPass:pass withHandler:WeakRetained presentationTarget:v10];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:{1, v16, v17, v18, v19}];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:{1, v16, v17, v18, v19}];
 }
 
 void __71__PKBarcodePassDetailViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -1107,22 +1107,22 @@ void __71__PKBarcodePassDetailViewController_tableView_didSelectRowAtIndexPath__
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 4)
   {
-    v6 = [(PKPass *)self->_pass personalization];
-    v7 = [v6 localizedDescription];
+    personalization = [(PKPass *)self->_pass personalization];
+    localizedDescription = [personalization localizedDescription];
     goto LABEL_5;
   }
 
   if (v5 == 2)
   {
-    v6 = [(PKPass *)self->_pass organizationName];
-    v7 = PKLocalizedString(&cfstr_SettingsAutoma.isa, &stru_1F3BD5BF0.isa, v6);
+    personalization = [(PKPass *)self->_pass organizationName];
+    localizedDescription = PKLocalizedString(&cfstr_SettingsAutoma.isa, &stru_1F3BD5BF0.isa, personalization);
 LABEL_5:
-    v8 = v7;
+    v8 = localizedDescription;
 
     goto LABEL_7;
   }
@@ -1133,12 +1133,12 @@ LABEL_7:
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 > 0 || (-[PKBarcodePassDetailViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", v6, a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v8))
+  viewCopy = view;
+  if (section > 0 || (-[PKBarcodePassDetailViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", viewCopy, section), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v8))
   {
-    [v6 sectionHeaderHeight];
+    [viewCopy sectionHeaderHeight];
     v10 = v9;
   }
 
@@ -1150,45 +1150,45 @@ LABEL_7:
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 > 0 || (-[PKBarcodePassDetailViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", v6, a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v8))
+  viewCopy = view;
+  if (section > 0 || (-[PKBarcodePassDetailViewController tableView:titleForHeaderInSection:](self, "tableView:titleForHeaderInSection:", viewCopy, section), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"FirstSectionHeaderReuseIdentifier"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"FirstSectionHeaderReuseIdentifier"];
   }
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 1 && [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo])
+  viewCopy = view;
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 1 && [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo])
   {
     v7 = *MEMORY[0x1E69DE3D0];
   }
 
   else
   {
-    [v6 sectionFooterHeight];
+    [viewCopy sectionFooterHeight];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 1 && [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo])
+  viewCopy = view;
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 1 && [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo])
   {
-    v7 = [(PKBarcodePassDetailViewController *)self _locationHelpViewForTableView:v6];
+    v7 = [(PKBarcodePassDetailViewController *)self _locationHelpViewForTableView:viewCopy];
   }
 
   else
@@ -1199,13 +1199,13 @@ LABEL_7:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [a4 section]);
+  viewCopy = view;
+  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [path section]);
   if (v7 && v7 - 5 > 1)
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     v8 = v9;
   }
 
@@ -1217,13 +1217,13 @@ LABEL_7:
   return v8;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [a4 section]);
+  viewCopy = view;
+  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [path section]);
   if (v7 && v7 - 5 > 1)
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     v8 = v9;
   }
 
@@ -1237,18 +1237,18 @@ LABEL_7:
 
 - (void)_reloadPassAndView
 {
-  v3 = [(PKPassHeaderView *)self->_passHeaderView pass];
+  pass = [(PKPassHeaderView *)self->_passHeaderView pass];
   pass = self->_pass;
-  self->_pass = v3;
+  self->_pass = pass;
 
   [(PKBarcodePassDetailViewController *)self _updatePassProperties];
 }
 
-- (BOOL)handleDeletePassWithUniqueID:(id)a3
+- (BOOL)handleDeletePassWithUniqueID:(id)d
 {
   pass = self->_pass;
-  v5 = a3;
-  v6 = [(PKPass *)pass uniqueID];
+  dCopy = d;
+  uniqueID = [(PKPass *)pass uniqueID];
   v7 = PKEqualObjects();
 
   if (v7)
@@ -1262,11 +1262,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)setSuppressedContent:(unint64_t)a3
+- (void)setSuppressedContent:(unint64_t)content
 {
-  if (self->_suppressedContent != a3)
+  if (self->_suppressedContent != content)
   {
-    self->_suppressedContent = a3;
+    self->_suppressedContent = content;
     [(PKPassHeaderView *)self->_passHeaderView setSuppressedContent:?];
     [(PKBarcodePassDetailViewController *)self _updateNavigationItem];
 
@@ -1279,10 +1279,10 @@ LABEL_7:
   [(PKBarcodePassDetailViewController *)self loadViewIfNeeded];
   v3 = MEMORY[0x1E69CD9F8];
   pass = self->_pass;
-  v5 = [(PKPassHeaderView *)self->_passHeaderView passView];
-  v6 = [(PKLinkedAppView *)self->_linkedApp linkedAppView];
-  v7 = [v6 linkedApplication];
-  v8 = [v3 pkui_activityControllerForPass:pass passView:v5 passLinkedApplication:v7];
+  passView = [(PKPassHeaderView *)self->_passHeaderView passView];
+  linkedAppView = [(PKLinkedAppView *)self->_linkedApp linkedAppView];
+  linkedApplication = [linkedAppView linkedApplication];
+  v8 = [v3 pkui_activityControllerForPass:pass passView:passView passLinkedApplication:linkedApplication];
 
   if (v8)
   {
@@ -1347,13 +1347,13 @@ void __47__PKBarcodePassDetailViewController__sharePass__block_invoke(uint64_t a
   [(PKBarcodePassDetailViewController *)self _updateNavigationItem];
   [(PKBarcodePassDetailViewController *)self _updateHeaderHeight];
   [(PKBarcodePassDetailViewController *)self setShowsLinks:(self->_suppressedContent & 0x10) == 0];
-  v3 = [(PKBarcodePassDetailViewController *)self viewIfLoaded];
-  [v3 setNeedsLayout];
+  viewIfLoaded = [(PKBarcodePassDetailViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)_updateNavigationItem
 {
-  v6 = [(PKBarcodePassDetailViewController *)self navigationItem];
+  navigationItem = [(PKBarcodePassDetailViewController *)self navigationItem];
   if (self->_showCloseButton)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__done_];
@@ -1376,38 +1376,38 @@ void __47__PKBarcodePassDetailViewController__sharePass__block_invoke(uint64_t a
     [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9C48]];
   }
 
-  v5 = [(PKPass *)self->_pass localizedDescription];
-  [v6 setTitle:v5];
+  localizedDescription = [(PKPass *)self->_pass localizedDescription];
+  [navigationItem setTitle:localizedDescription];
 
-  [v6 setRightBarButtonItem:v4];
-  [v6 setLeftBarButtonItem:v3];
+  [navigationItem setRightBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
-- (void)_updateStandardAppearance:(id)a3
+- (void)_updateStandardAppearance:(id)appearance
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E69DB650];
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 labelColor];
-  v7 = [v6 colorWithAlphaComponent:self->_titleOpacity];
+  appearanceCopy = appearance;
+  labelColor = [v4 labelColor];
+  v7 = [labelColor colorWithAlphaComponent:self->_titleOpacity];
   v10[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v5 setTitleTextAttributes:v8];
+  [appearanceCopy setTitleTextAttributes:v8];
 }
 
 - (BOOL)_linkedAppAvailable
 {
-  v3 = [(PKPass *)self->_pass storeIdentifiers];
-  if ([v3 count])
+  storeIdentifiers = [(PKPass *)self->_pass storeIdentifiers];
+  if ([storeIdentifiers count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PKPass *)self->_pass systemAppBundleIdentifiers];
-    v4 = [v5 count] != 0;
+    systemAppBundleIdentifiers = [(PKPass *)self->_pass systemAppBundleIdentifiers];
+    v4 = [systemAppBundleIdentifiers count] != 0;
   }
 
   return v4;
@@ -1456,14 +1456,14 @@ void __47__PKBarcodePassDetailViewController__sharePass__block_invoke(uint64_t a
     v5 = self->_deleteCell;
     self->_deleteCell = v4;
 
-    v6 = [(UITableViewCell *)self->_deleteCell textLabel];
+    textLabel = [(UITableViewCell *)self->_deleteCell textLabel];
     v7 = PKLocalizedString(&cfstr_RemovePass.isa);
-    [v6 setText:v7];
+    [textLabel setText:v7];
 
-    v8 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v6 setTextColor:v8];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [textLabel setTextColor:systemRedColor];
 
-    [v6 setTextAlignment:4];
+    [textLabel setTextAlignment:4];
     deleteCell = self->_deleteCell;
   }
 
@@ -1522,16 +1522,16 @@ LABEL_6:
     v5 = self->_personalizePassCell;
     self->_personalizePassCell = v4;
 
-    v6 = [(UITableViewCell *)self->_personalizePassCell textLabel];
+    textLabel = [(UITableViewCell *)self->_personalizePassCell textLabel];
     v7 = PKLocalizedString(&cfstr_Personalizatio_10.isa);
-    [v6 setText:v7];
+    [textLabel setText:v7];
 
-    v8 = [(UITableViewCell *)self->_personalizePassCell textLabel];
-    v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v8 setTextColor:v9];
+    textLabel2 = [(UITableViewCell *)self->_personalizePassCell textLabel];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [textLabel2 setTextColor:systemBlueColor];
 
-    v10 = [(UITableViewCell *)self->_personalizePassCell textLabel];
-    [v10 setTextAlignment:4];
+    textLabel3 = [(UITableViewCell *)self->_personalizePassCell textLabel];
+    [textLabel3 setTextAlignment:4];
 
     personalizePassCell = self->_personalizePassCell;
   }
@@ -1542,13 +1542,13 @@ LABEL_6:
   return v11;
 }
 
-- (unint64_t)_settingForRow:(unint64_t)a3
+- (unint64_t)_settingForRow:(unint64_t)row
 {
   if ([(PKPass *)self->_pass isUpdatable])
   {
-    v5 = [(PKPass *)self->_pass settings];
+    settings = [(PKPass *)self->_pass settings];
     v6 = 0;
-    if ((v5 & 2) != 0)
+    if ((settings & 2) != 0)
     {
       v7 = 1;
     }
@@ -1558,7 +1558,7 @@ LABEL_6:
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if ((v5 & 2) != 0)
+    if ((settings & 2) != 0)
     {
       v8 = 2;
     }
@@ -1576,8 +1576,8 @@ LABEL_6:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo];
-  if (v9)
+  hasTimeOrLocationRelevancyInfo = [(PKPass *)self->_pass hasTimeOrLocationRelevancyInfo];
+  if (hasTimeOrLocationRelevancyInfo)
   {
     v10 = v8;
   }
@@ -1587,28 +1587,28 @@ LABEL_6:
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v8 + v9 <= a3)
+  if (v8 + hasTimeOrLocationRelevancyInfo <= row)
   {
     return 0;
   }
 
-  if (v6 == a3)
+  if (v6 == row)
   {
     return 2;
   }
 
-  if (v7 == a3)
+  if (v7 == row)
   {
     return 128;
   }
 
-  return v10 == a3;
+  return v10 == row;
 }
 
-- (id)_settingsCellForRow:(unint64_t)a3
+- (id)_settingsCellForRow:(unint64_t)row
 {
-  v4 = [(PKBarcodePassDetailViewController *)self _settingForRow:a3];
-  v5 = [(PKPass *)self->_pass settings];
+  v4 = [(PKBarcodePassDetailViewController *)self _settingForRow:row];
+  settings = [(PKPass *)self->_pass settings];
   if (v4 == 1)
   {
     p_showInLockScreenCell = &self->_showInLockScreenCell;
@@ -1623,7 +1623,7 @@ LABEL_6:
 
       [*p_showInLockScreenCell setAccessibilityIdentifier:*MEMORY[0x1E69B9CD0]];
       v12 = *p_showInLockScreenCell;
-      v13 = v5 & 1;
+      v13 = settings & 1;
       goto LABEL_12;
     }
 
@@ -1644,7 +1644,7 @@ LABEL_6:
 
       [*p_showInLockScreenCell setAccessibilityIdentifier:*MEMORY[0x1E69B9438]];
       v12 = *p_showInLockScreenCell;
-      v13 = (v5 & 0x80) == 0;
+      v13 = (settings & 0x80) == 0;
       goto LABEL_12;
     }
 
@@ -1674,7 +1674,7 @@ LABEL_9:
 
   [*p_showInLockScreenCell setAccessibilityIdentifier:*MEMORY[0x1E69B94D0]];
   v12 = *p_showInLockScreenCell;
-  v13 = (v5 >> 1) & 1;
+  v13 = (settings >> 1) & 1;
 LABEL_12:
   [v12 setOn:v13];
   v18 = *p_showInLockScreenCell;
@@ -1684,7 +1684,7 @@ LABEL_13:
   return v18;
 }
 
-- (id)_fieldCellForRow:(unint64_t)a3
+- (id)_fieldCellForRow:(unint64_t)row
 {
   fieldCellsByRow = self->_fieldCellsByRow;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -1694,39 +1694,39 @@ LABEL_13:
   {
     v7 = [[PKBackFieldTableCell alloc] initWithBridgeStyle:0 reuseIdentifier:@"PKBackFieldTableCell"];
     [(PKBackFieldTableCell *)v7 setShowLinks:self->_showsLinks];
-    v8 = [(PKBarcodePassDetailViewController *)self _fieldForRow:a3];
+    v8 = [(PKBarcodePassDetailViewController *)self _fieldForRow:row];
     [(PKBackFieldTableCell *)v7 setField:v8];
 
     v9 = self->_fieldCellsByRow;
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:row];
     [(NSMutableDictionary *)v9 setObject:v7 forKey:v10];
   }
 
   return v7;
 }
 
-- (id)_fieldForRow:(unint64_t)a3
+- (id)_fieldForRow:(unint64_t)row
 {
-  v4 = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
-  v5 = [v4 firstObject];
+  _relevantBuckets = [(PKBarcodePassDetailViewController *)self _relevantBuckets];
+  firstObject = [_relevantBuckets firstObject];
 
-  if ([v5 count] <= a3)
+  if ([firstObject count] <= row)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
+    v6 = [firstObject objectAtIndex:row];
   }
 
   return v6;
 }
 
-- (void)refreshControlValueChanged:(id)a3
+- (void)refreshControlValueChanged:(id)changed
 {
-  v4 = a3;
-  if ([v4 isRefreshing])
+  changedCopy = changed;
+  if ([changedCopy isRefreshing])
   {
     objc_initWeak(&location, self);
     v15[0] = 0;
@@ -1814,7 +1814,7 @@ void __64__PKBarcodePassDetailViewController_refreshControlValueChanged___block_
 LABEL_6:
 }
 
-- (void)_refreshFinished:(BOOL)a3
+- (void)_refreshFinished:(BOOL)finished
 {
   refreshTimeout = self->_refreshTimeout;
   if (refreshTimeout)
@@ -1832,10 +1832,10 @@ LABEL_6:
 
 - (BOOL)shouldAllowRefresh
 {
-  v3 = [(PKPass *)self->_pass webServiceURL];
-  if (v3)
+  webServiceURL = [(PKPass *)self->_pass webServiceURL];
+  if (webServiceURL)
   {
-    v4 = [(PKPass *)self->_pass dataAccessor];
+    dataAccessor = [(PKPass *)self->_pass dataAccessor];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1851,24 +1851,24 @@ LABEL_6:
 - (void)pushSettingsFromViewToModel
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPass *)self->_pass settings];
+  settings = [(PKPass *)self->_pass settings];
   automaticUpdatesCell = self->_automaticUpdatesCell;
   if (automaticUpdatesCell)
   {
     if ([(PKSettingTableCell *)automaticUpdatesCell isOn])
     {
-      v5 = v3 | 2;
+      v5 = settings | 2;
     }
 
     else
     {
-      v5 = v3 & 0xFFFFFFFFFFFFFFFDLL;
+      v5 = settings & 0xFFFFFFFFFFFFFFFDLL;
     }
   }
 
   else
   {
-    v5 = v3;
+    v5 = settings;
   }
 
   showNotificationsCell = self->_showNotificationsCell;
@@ -1913,8 +1913,8 @@ LABEL_6:
     }
   }
 
-  v9 = v5 ^ v3;
-  if (((v5 ^ v3) & 2) != 0)
+  v9 = v5 ^ settings;
+  if (((v5 ^ settings) & 2) != 0)
   {
     v10 = *MEMORY[0x1E69B9EF8];
     v18 = @"on";
@@ -1941,28 +1941,28 @@ LABEL_6:
   }
 }
 
-- (void)_passSettingsChanged:(id)a3
+- (void)_passSettingsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69BBC18]];
-  v7 = [(PKPass *)self->_pass uniqueID];
-  v8 = [v6 isEqual:v7];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69BBC18]];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  v8 = [v6 isEqual:uniqueID];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x1E69BBC10]];
+    userInfo2 = [changedCopy userInfo];
+    v10 = [userInfo2 objectForKey:*MEMORY[0x1E69BBC10]];
 
     if (v10)
     {
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __58__PKBarcodePassDetailViewController__passSettingsChanged___block_invoke;
       v12[3] = &unk_1E80119C8;
       v12[4] = self;
-      v12[5] = v11;
+      v12[5] = unsignedIntegerValue;
       dispatch_async(MEMORY[0x1E69E96A0], v12);
     }
   }
@@ -2000,13 +2000,13 @@ uint64_t __58__PKBarcodePassDetailViewController__passSettingsChanged___block_in
   return result;
 }
 
-- (void)appViewContentSizeChanged:(id)a3
+- (void)appViewContentSizeChanged:(id)changed
 {
-  v4 = [(PKBarcodePassDetailViewController *)self tableView];
-  [v4 beginUpdates];
+  tableView = [(PKBarcodePassDetailViewController *)self tableView];
+  [tableView beginUpdates];
 
-  v5 = [(PKBarcodePassDetailViewController *)self tableView];
-  [v5 endUpdates];
+  tableView2 = [(PKBarcodePassDetailViewController *)self tableView];
+  [tableView2 endUpdates];
 }
 
 - (PKPassDeleteHandler)deleteOverrider

@@ -1,37 +1,37 @@
 @interface TUIAuxiliaryViewState
-- (BOOL)configureNavigationItem:(id)a3 scrollView:(id)a4 extraLeftItems:(id)a5 extraRightItems:(id)a6;
-- (TUIAuxiliaryViewState)initWithSearchControllerDelegate:(id)a3 hostingController:(id)a4 viewVisibilityController:(id)a5;
+- (BOOL)configureNavigationItem:(id)item scrollView:(id)view extraLeftItems:(id)items extraRightItems:(id)rightItems;
+- (TUIAuxiliaryViewState)initWithSearchControllerDelegate:(id)delegate hostingController:(id)controller viewVisibilityController:(id)visibilityController;
 - (UISearchControllerDelegate)searchControllerDelegate;
-- (double)navigationBarBackgroundOpacity:(id)a3 anchors:(id)a4 scrollView:(id)a5;
-- (id)_axBarButtonItemForLargeTitleAccessoryView:(id)a3;
-- (id)_renderItemsForButtonTypeWithFactory:(id)a3 type:(unint64_t)a4 triggerManager:(id)a5;
-- (id)_renderLargeTitleAccessoryViewWithFactory:(id)a3;
-- (id)_renderSearchControllerWithFactory:(id)a3;
-- (id)_renderTitleForType:(unint64_t)a3;
-- (id)navigationBarItemMatchingQuery:(id)a3;
+- (double)navigationBarBackgroundOpacity:(id)opacity anchors:(id)anchors scrollView:(id)view;
+- (id)_axBarButtonItemForLargeTitleAccessoryView:(id)view;
+- (id)_renderItemsForButtonTypeWithFactory:(id)factory type:(unint64_t)type triggerManager:(id)manager;
+- (id)_renderLargeTitleAccessoryViewWithFactory:(id)factory;
+- (id)_renderSearchControllerWithFactory:(id)factory;
+- (id)_renderTitleForType:(unint64_t)type;
+- (id)navigationBarItemMatchingQuery:(id)query;
 - (void)_setupHosting;
-- (void)_updateSearchController:(id)a3;
-- (void)configureSearchControllerIfNeededForNavigationItem:(id)a3;
-- (void)setBarButtonItem:(id)a3 forHostingIdentifier:(id)a4;
-- (void)updateWithRenderModel:(id)a3 factory:(id)a4 triggerManager:(id)a5 promoteAccessory:(BOOL)a6;
+- (void)_updateSearchController:(id)controller;
+- (void)configureSearchControllerIfNeededForNavigationItem:(id)item;
+- (void)setBarButtonItem:(id)item forHostingIdentifier:(id)identifier;
+- (void)updateWithRenderModel:(id)model factory:(id)factory triggerManager:(id)manager promoteAccessory:(BOOL)accessory;
 @end
 
 @implementation TUIAuxiliaryViewState
 
-- (TUIAuxiliaryViewState)initWithSearchControllerDelegate:(id)a3 hostingController:(id)a4 viewVisibilityController:(id)a5
+- (TUIAuxiliaryViewState)initWithSearchControllerDelegate:(id)delegate hostingController:(id)controller viewVisibilityController:(id)visibilityController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  visibilityControllerCopy = visibilityController;
   v16.receiver = self;
   v16.super_class = TUIAuxiliaryViewState;
   v11 = [(TUIAuxiliaryViewState *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_searchControllerDelegate, v8);
-    objc_storeStrong(&v12->_hostingController, a4);
-    objc_storeStrong(&v12->_viewVisibilityController, a5);
+    objc_storeWeak(&v11->_searchControllerDelegate, delegateCopy);
+    objc_storeStrong(&v12->_hostingController, controller);
+    objc_storeStrong(&v12->_viewVisibilityController, visibilityController);
     v13 = [[NSMapTable alloc] initWithKeyOptions:0 valueOptions:5 capacity:3];
     barButtonItems = v12->_barButtonItems;
     v12->_barButtonItems = v13;
@@ -40,45 +40,45 @@
   return v12;
 }
 
-- (void)updateWithRenderModel:(id)a3 factory:(id)a4 triggerManager:(id)a5 promoteAccessory:(BOOL)a6
+- (void)updateWithRenderModel:(id)model factory:(id)factory triggerManager:(id)manager promoteAccessory:(BOOL)accessory
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  objc_storeStrong(&self->_renderModel, a3);
-  v14 = [(TUIAuxiliaryViewState *)self _renderRightNavigationItemsWithFactory:v12 triggerManager:v13];
+  accessoryCopy = accessory;
+  modelCopy = model;
+  factoryCopy = factory;
+  managerCopy = manager;
+  objc_storeStrong(&self->_renderModel, model);
+  v14 = [(TUIAuxiliaryViewState *)self _renderRightNavigationItemsWithFactory:factoryCopy triggerManager:managerCopy];
   rightItems = self->_rightItems;
   self->_rightItems = v14;
 
-  v16 = [(TUIAuxiliaryViewState *)self _renderLeftNavigationItemsWithFactory:v12 triggerManager:v13];
+  v16 = [(TUIAuxiliaryViewState *)self _renderLeftNavigationItemsWithFactory:factoryCopy triggerManager:managerCopy];
   leftItems = self->_leftItems;
   self->_leftItems = v16;
 
-  v18 = [(TUIAuxiliaryViewState *)self _renderNavigationBarTitle:v13];
+  v18 = [(TUIAuxiliaryViewState *)self _renderNavigationBarTitle:managerCopy];
   title = self->_title;
   self->_title = v18;
 
-  v20 = [(TUIAuxiliaryViewState *)self _renderLargeNavigationBarTitle:v13];
+  v20 = [(TUIAuxiliaryViewState *)self _renderLargeNavigationBarTitle:managerCopy];
   largeTitle = self->_largeTitle;
   self->_largeTitle = v20;
 
-  v22 = [(TUIAuxiliaryViewState *)self _renderLargeTitleAccessoryViewWithFactory:v12];
+  v22 = [(TUIAuxiliaryViewState *)self _renderLargeTitleAccessoryViewWithFactory:factoryCopy];
   largeTitleAccessoryView = self->_largeTitleAccessoryView;
   self->_largeTitleAccessoryView = v22;
 
-  if (self->_largeTitleAccessoryView && v6)
+  if (self->_largeTitleAccessoryView && accessoryCopy)
   {
     v24 = [(TUIAuxiliaryViewState *)self _axBarButtonItemForLargeTitleAccessoryView:?];
     if (v24)
     {
-      v45 = v11;
+      v45 = modelCopy;
       if (!self->_rightItems)
       {
         self->_rightItems = &__NSArray0__struct;
       }
 
-      v25 = [v24 accessibilityIdentifier];
+      accessibilityIdentifier = [v24 accessibilityIdentifier];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
@@ -98,9 +98,9 @@ LABEL_8:
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v50 + 1) + 8 * v30) accessibilityIdentifier];
+          accessibilityIdentifier2 = [*(*(&v50 + 1) + 8 * v30) accessibilityIdentifier];
 
-          if (v31 == v25)
+          if (accessibilityIdentifier2 == accessibilityIdentifier)
           {
             break;
           }
@@ -127,16 +127,16 @@ LABEL_14:
         self->_rightItems = v32;
       }
 
-      v33 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
+      hostingIdentifiers = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
 
-      if (v33)
+      if (hostingIdentifiers)
       {
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v34 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
-        v35 = [v34 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        hostingIdentifiers2 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
+        v35 = [hostingIdentifiers2 countByEnumeratingWithState:&v46 objects:v54 count:16];
         if (v35)
         {
           v36 = v35;
@@ -148,7 +148,7 @@ LABEL_14:
             {
               if (*v47 != v37)
               {
-                objc_enumerationMutation(v34);
+                objc_enumerationMutation(hostingIdentifiers2);
               }
 
               [(TUIAuxiliaryViewState *)self setBarButtonItem:v24 forHostingIdentifier:*(*(&v46 + 1) + 8 * v38)];
@@ -156,14 +156,14 @@ LABEL_14:
             }
 
             while (v36 != v38);
-            v36 = [v34 countByEnumeratingWithState:&v46 objects:v54 count:16];
+            v36 = [hostingIdentifiers2 countByEnumeratingWithState:&v46 objects:v54 count:16];
           }
 
           while (v36);
         }
       }
 
-      v11 = v45;
+      modelCopy = v45;
     }
 
     v39 = self->_largeTitleAccessoryView;
@@ -176,22 +176,22 @@ LABEL_14:
     self->_largeTitleAccessoryItem = 0;
   }
 
-  v41 = [(TUIAuxiliaryViewState *)self searchController];
+  searchController = [(TUIAuxiliaryViewState *)self searchController];
 
-  if (v41)
+  if (searchController)
   {
     [(TUIAuxiliaryViewState *)self _updateSearchController:self->_searchController];
   }
 
   else
   {
-    v42 = [(TUIAuxiliaryViewState *)self _renderSearchControllerWithFactory:v12];
+    v42 = [(TUIAuxiliaryViewState *)self _renderSearchControllerWithFactory:factoryCopy];
     if (v42)
     {
       objc_storeStrong(&self->_searchController, v42);
       WeakRetained = objc_loadWeakRetained(&self->_searchControllerDelegate);
-      v44 = [(TUISearchController *)self->_searchController searchController];
-      [v44 setDelegate:WeakRetained];
+      searchController2 = [(TUISearchController *)self->_searchController searchController];
+      [searchController2 setDelegate:WeakRetained];
     }
   }
 
@@ -213,8 +213,8 @@ LABEL_14:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    hostingIdentifiers = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel hostingIdentifiers];
+    v7 = [hostingIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -225,7 +225,7 @@ LABEL_14:
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(hostingIdentifiers);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
@@ -240,7 +240,7 @@ LABEL_14:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [hostingIdentifiers countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -254,25 +254,25 @@ LABEL_14:
   }
 }
 
-- (id)navigationBarItemMatchingQuery:(id)a3
+- (id)navigationBarItemMatchingQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_125908;
   v17 = sub_125918;
   v18 = 0;
-  v5 = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
+  navigationItems = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_125920;
   v9[3] = &unk_2620E8;
-  v6 = v4;
-  v11 = self;
+  v6 = queryCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [navigationItems enumerateObjectsUsingBlock:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -280,10 +280,10 @@ LABEL_14:
   return v7;
 }
 
-- (void)setBarButtonItem:(id)a3 forHostingIdentifier:(id)a4
+- (void)setBarButtonItem:(id)item forHostingIdentifier:(id)identifier
 {
-  v14 = a3;
-  v6 = a4;
+  itemCopy = item;
+  identifierCopy = identifier;
   itemHostMap = self->_itemHostMap;
   if (!itemHostMap)
   {
@@ -294,27 +294,27 @@ LABEL_14:
     itemHostMap = self->_itemHostMap;
   }
 
-  v10 = [(NSMutableDictionary *)itemHostMap objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)itemHostMap objectForKeyedSubscript:identifierCopy];
   v11 = v10;
-  if (!v10 || ([(_TUIAuxiliaryItemHost *)v10 item], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v14))
+  if (!v10 || ([(_TUIAuxiliaryItemHost *)v10 item], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != itemCopy))
   {
-    v13 = [[_TUIAuxiliaryItemHost alloc] initWithIdentifier:v6 hostingController:self->_hostingController item:v14];
+    v13 = [[_TUIAuxiliaryItemHost alloc] initWithIdentifier:identifierCopy hostingController:self->_hostingController item:itemCopy];
 
-    [(NSMutableDictionary *)self->_itemHostMap setObject:v13 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_itemHostMap setObject:v13 forKeyedSubscript:identifierCopy];
     v11 = v13;
   }
 }
 
-- (BOOL)configureNavigationItem:(id)a3 scrollView:(id)a4 extraLeftItems:(id)a5 extraRightItems:(id)a6
+- (BOOL)configureNavigationItem:(id)item scrollView:(id)view extraLeftItems:(id)items extraRightItems:(id)rightItems
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  viewCopy = view;
+  itemsCopy = items;
+  rightItemsCopy = rightItems;
   v14 = self->_leftItems;
   v15 = self->_rightItems;
   v16 = [(NSArray *)v15 count]|| [(NSArray *)v14 count]|| self->_largeTitleAccessoryView != 0;
-  if ([v12 count])
+  if ([itemsCopy count])
   {
     if (v14)
     {
@@ -326,12 +326,12 @@ LABEL_14:
       v17 = &__NSArray0__struct;
     }
 
-    v18 = [v12 arrayByAddingObjectsFromArray:v17];
+    v18 = [itemsCopy arrayByAddingObjectsFromArray:v17];
 
     v14 = v18;
   }
 
-  if ([v13 count])
+  if ([rightItemsCopy count])
   {
     if (v15)
     {
@@ -343,60 +343,60 @@ LABEL_14:
       v19 = &__NSArray0__struct;
     }
 
-    v20 = [v13 arrayByAddingObjectsFromArray:v19];
+    v20 = [rightItemsCopy arrayByAddingObjectsFromArray:v19];
 
     v15 = v20;
   }
 
   if (self->_title || self->_largeTitle)
   {
-    [v10 setTitle:?];
+    [itemCopy setTitle:?];
   }
 
-  [v10 _setLargeTitleAccessoryView:self->_largeTitleAccessoryView alignToBaseline:0];
-  [v10 setRightBarButtonItems:v15 animated:0];
-  [v10 setLeftBarButtonItems:v14 animated:0];
-  v21 = [v11 window];
-  if (v21)
+  [itemCopy _setLargeTitleAccessoryView:self->_largeTitleAccessoryView alignToBaseline:0];
+  [itemCopy setRightBarButtonItems:v15 animated:0];
+  [itemCopy setLeftBarButtonItems:v14 animated:0];
+  window = [viewCopy window];
+  if (window)
   {
-    v22 = v21;
-    [v10 searchController];
+    v22 = window;
+    [itemCopy searchController];
     v33 = v14;
-    v23 = v13;
-    v24 = v12;
-    v25 = v11;
+    v23 = rightItemsCopy;
+    v24 = itemsCopy;
+    v25 = viewCopy;
     v27 = v26 = v16;
-    v28 = [(TUISearchController *)self->_searchController searchController];
+    searchController = [(TUISearchController *)self->_searchController searchController];
 
-    v29 = v27 == v28;
+    v29 = v27 == searchController;
     v16 = v26;
-    v11 = v25;
-    v12 = v24;
-    v13 = v23;
+    viewCopy = v25;
+    itemsCopy = v24;
+    rightItemsCopy = v23;
     v14 = v33;
     if (!v29)
     {
-      v30 = [(TUISearchController *)self->_searchController searchController];
-      [v10 setSearchController:v30];
+      searchController2 = [(TUISearchController *)self->_searchController searchController];
+      [itemCopy setSearchController:searchController2];
 
-      v31 = [(TUISearchController *)self->_searchController searchFilterPalette];
-      [v10 _setBottomPalette:v31];
+      searchFilterPalette = [(TUISearchController *)self->_searchController searchFilterPalette];
+      [itemCopy _setBottomPalette:searchFilterPalette];
 
-      [v11 scrollRectToVisible:0 animated:{0.0, -1.0, 1.0, 1.0}];
+      [viewCopy scrollRectToVisible:0 animated:{0.0, -1.0, 1.0, 1.0}];
     }
   }
 
-  [v10 setHidesSearchBarWhenScrolling:0];
+  [itemCopy setHidesSearchBarWhenScrolling:0];
 
   return v16;
 }
 
-- (id)_axBarButtonItemForLargeTitleAccessoryView:(id)a3
+- (id)_axBarButtonItemForLargeTitleAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 _accessibilityFindUnsortedSubviewDescendantsPassingTest:&stru_262128];
-  v6 = [v5 firstObject];
-  if (v6)
+  viewCopy = view;
+  v5 = [viewCopy _accessibilityFindUnsortedSubviewDescendantsPassingTest:&stru_262128];
+  firstObject = [v5 firstObject];
+  if (firstObject)
   {
     largeTitleAccessoryItem = self->_largeTitleAccessoryItem;
     if (!largeTitleAccessoryItem)
@@ -408,7 +408,7 @@ LABEL_14:
       largeTitleAccessoryItem = self->_largeTitleAccessoryItem;
     }
 
-    [(UIBarButtonItem *)largeTitleAccessoryItem setCustomView:v4];
+    [(UIBarButtonItem *)largeTitleAccessoryItem setCustomView:viewCopy];
     v10 = self->_largeTitleAccessoryItem;
   }
 
@@ -420,21 +420,21 @@ LABEL_14:
   return v10;
 }
 
-- (void)configureSearchControllerIfNeededForNavigationItem:(id)a3
+- (void)configureSearchControllerIfNeededForNavigationItem:(id)item
 {
   searchController = self->_searchController;
-  v5 = a3;
-  v6 = [(TUISearchController *)searchController searchController];
-  [v5 setSearchController:v6];
+  itemCopy = item;
+  searchController = [(TUISearchController *)searchController searchController];
+  [itemCopy setSearchController:searchController];
 
-  v7 = [(TUISearchController *)self->_searchController searchFilterPalette];
-  [v5 _setBottomPalette:v7];
+  searchFilterPalette = [(TUISearchController *)self->_searchController searchFilterPalette];
+  [itemCopy _setBottomPalette:searchFilterPalette];
 }
 
-- (id)_renderItemsForButtonTypeWithFactory:(id)a3 type:(unint64_t)a4 triggerManager:(id)a5
+- (id)_renderItemsForButtonTypeWithFactory:(id)factory type:(unint64_t)type triggerManager:(id)manager
 {
-  v30 = a3;
-  v29 = a5;
+  factoryCopy = factory;
+  managerCopy = manager;
   v28 = objc_alloc_init(NSMutableArray);
   v36 = 0u;
   v37 = 0u;
@@ -456,28 +456,28 @@ LABEL_14:
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        if ([v12 itemType] == a4)
+        if ([v12 itemType] == type)
         {
-          v13 = [v12 observeTrigger];
-          if (!v13 || (v14 = v13, [v12 observeTrigger], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v29, "stateForTriggerWithName:", v15), v17 = objc_msgSend(v12, "observeTriggerValue"), v15, v14, v16 == v17))
+          observeTrigger = [v12 observeTrigger];
+          if (!observeTrigger || (v14 = observeTrigger, [v12 observeTrigger], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(managerCopy, "stateForTriggerWithName:", v15), v17 = objc_msgSend(v12, "observeTriggerValue"), v15, v14, v16 == v17))
           {
-            v18 = [v12 renderItemWithFactory:v30];
+            v18 = [v12 renderItemWithFactory:factoryCopy];
             if (v18)
             {
               [v28 addObject:v18];
-              v19 = [v12 identifier];
-              [(TUIAuxiliaryViewState *)self setBarButtonItem:v18 forIdentifier:v19];
+              identifier = [v12 identifier];
+              [(TUIAuxiliaryViewState *)self setBarButtonItem:v18 forIdentifier:identifier];
 
-              v20 = [v12 hostingIdentifiers];
+              hostingIdentifiers = [v12 hostingIdentifiers];
 
-              if (v20)
+              if (hostingIdentifiers)
               {
                 v34 = 0u;
                 v35 = 0u;
                 v32 = 0u;
                 v33 = 0u;
-                v21 = [v12 hostingIdentifiers];
-                v22 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                hostingIdentifiers2 = [v12 hostingIdentifiers];
+                v22 = [hostingIdentifiers2 countByEnumeratingWithState:&v32 objects:v40 count:16];
                 if (v22)
                 {
                   v23 = v22;
@@ -488,13 +488,13 @@ LABEL_14:
                     {
                       if (*v33 != v24)
                       {
-                        objc_enumerationMutation(v21);
+                        objc_enumerationMutation(hostingIdentifiers2);
                       }
 
                       [(TUIAuxiliaryViewState *)self setBarButtonItem:v18 forHostingIdentifier:*(*(&v32 + 1) + 8 * j)];
                     }
 
-                    v23 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                    v23 = [hostingIdentifiers2 countByEnumeratingWithState:&v32 objects:v40 count:16];
                   }
 
                   while (v23);
@@ -516,14 +516,14 @@ LABEL_14:
   return v26;
 }
 
-- (id)_renderTitleForType:(unint64_t)a3
+- (id)_renderTitleForType:(unint64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  navigationItems = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
+  v5 = [navigationItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -534,18 +534,18 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(navigationItems);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 itemType] == a3)
+        if ([v9 itemType] == type)
         {
-          v10 = [v9 title];
+          title = [v9 title];
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [navigationItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -555,17 +555,17 @@ LABEL_14:
     }
   }
 
-  v10 = 0;
+  title = 0;
 LABEL_11:
 
-  return v10;
+  return title;
 }
 
-- (double)navigationBarBackgroundOpacity:(id)a3 anchors:(id)a4 scrollView:(id)a5
+- (double)navigationBarBackgroundOpacity:(id)opacity anchors:(id)anchors scrollView:(id)view
 {
-  v37 = a3;
-  v8 = a4;
-  v9 = a5;
+  opacityCopy = opacity;
+  anchorsCopy = anchors;
+  viewCopy = view;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -588,29 +588,29 @@ LABEL_11:
 
         v15 = *(*(&v38 + 1) + 8 * i);
         [v15 navigationBarBackgroundOpacity];
-        v16 = [v15 observeTrigger];
-        if (!v16 || (v17 = v16, [v15 observeTrigger], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v37, "stateForTriggerWithName:", v18), v20 = objc_msgSend(v15, "observeTriggerValue"), v18, v17, v19 == v20))
+        observeTrigger = [v15 observeTrigger];
+        if (!observeTrigger || (v17 = observeTrigger, [v15 observeTrigger], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(opacityCopy, "stateForTriggerWithName:", v18), v20 = objc_msgSend(v15, "observeTriggerValue"), v18, v17, v19 == v20))
         {
           [v15 navigationBarBackgroundOpacity];
           v13 = v32;
           goto LABEL_19;
         }
 
-        v21 = [v15 observeTrigger];
+        observeTrigger2 = [v15 observeTrigger];
 
-        if (v8 && v21 && v9)
+        if (anchorsCopy && observeTrigger2 && viewCopy)
         {
-          v22 = [v15 observeTrigger];
-          [v8 offsetForTriggerWithName:v22 inScrollView:v9];
+          observeTrigger3 = [v15 observeTrigger];
+          [anchorsCopy offsetForTriggerWithName:observeTrigger3 inScrollView:viewCopy];
           v24 = v23;
 
-          [v9 contentOffset];
+          [viewCopy contentOffset];
           v26 = v25;
           if ([v15 ignoreInsetsForOpacityTrigger])
           {
-            [v9 safeAreaInsets];
+            [viewCopy safeAreaInsets];
             v28 = v27;
-            [v9 contentInset];
+            [viewCopy contentInset];
             v30 = v28 + v29;
             v26 = v26 + v30;
             v24 = v24 + v30;
@@ -649,15 +649,15 @@ LABEL_19:
   return v34;
 }
 
-- (id)_renderLargeTitleAccessoryViewWithFactory:(id)a3
+- (id)_renderLargeTitleAccessoryViewWithFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v5 = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
-  v6 = [v5 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  navigationItems = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
+  v6 = [navigationItems countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v6)
   {
     v7 = v6;
@@ -668,14 +668,14 @@ LABEL_19:
       {
         if (*v45 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(navigationItems);
         }
 
         v10 = *(*(&v44 + 1) + 8 * i);
         if ([v10 itemType] == &dword_4 + 1)
         {
           objc_storeStrong(&self->_largeTitleAccessoryModel, v10);
-          v12 = [v10 renderViewWithFactory:v4];
+          v12 = [v10 renderViewWithFactory:factoryCopy];
           largeTitleAccessoryContainer = self->_largeTitleAccessoryContainer;
           if (!largeTitleAccessoryContainer)
           {
@@ -690,8 +690,8 @@ LABEL_19:
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v16 = [(UIView *)largeTitleAccessoryContainer subviews];
-          v17 = [v16 countByEnumeratingWithState:&v40 objects:v49 count:16];
+          subviews = [(UIView *)largeTitleAccessoryContainer subviews];
+          v17 = [subviews countByEnumeratingWithState:&v40 objects:v49 count:16];
           if (v17)
           {
             v18 = v17;
@@ -702,13 +702,13 @@ LABEL_19:
               {
                 if (*v41 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(subviews);
                 }
 
                 [*(*(&v40 + 1) + 8 * j) removeFromSuperview];
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v40 objects:v49 count:16];
+              v18 = [subviews countByEnumeratingWithState:&v40 objects:v49 count:16];
             }
 
             while (v18);
@@ -718,17 +718,17 @@ LABEL_19:
           y = CGPointZero.y;
           [v12 bounds];
           [(UIView *)self->_largeTitleAccessoryContainer setBounds:CGPointZero.x, y];
-          v22 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel axAttributes];
-          v23 = [v22 axLabel];
+          axAttributes = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel axAttributes];
+          axLabel = [axAttributes axLabel];
 
-          if (v23)
+          if (axLabel)
           {
             v38 = 0u;
             v39 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v24 = [(UIView *)self->_largeTitleAccessoryContainer interactions];
-            v25 = [v24 countByEnumeratingWithState:&v36 objects:v48 count:16];
+            interactions = [(UIView *)self->_largeTitleAccessoryContainer interactions];
+            v25 = [interactions countByEnumeratingWithState:&v36 objects:v48 count:16];
             if (v25)
             {
               v26 = v25;
@@ -739,7 +739,7 @@ LABEL_19:
                 {
                   if (*v37 != v27)
                   {
-                    objc_enumerationMutation(v24);
+                    objc_enumerationMutation(interactions);
                   }
 
                   v29 = *(*(&v36 + 1) + 8 * k);
@@ -750,7 +750,7 @@ LABEL_19:
                   }
                 }
 
-                v26 = [v24 countByEnumeratingWithState:&v36 objects:v48 count:16];
+                v26 = [interactions countByEnumeratingWithState:&v36 objects:v48 count:16];
               }
 
               while (v26);
@@ -762,9 +762,9 @@ LABEL_19:
 
             [(UIView *)self->_largeTitleAccessoryContainer setShowsLargeContentViewer:1];
             v32 = self->_largeTitleAccessoryContainer;
-            v33 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel axAttributes];
-            v34 = [v33 axLabel];
-            [(UIView *)v32 setLargeContentTitle:v34];
+            axAttributes2 = [(TUIRenderModelNavigationItem *)self->_largeTitleAccessoryModel axAttributes];
+            axLabel2 = [axAttributes2 axLabel];
+            [(UIView *)v32 setLargeContentTitle:axLabel2];
           }
 
           v11 = self->_largeTitleAccessoryContainer;
@@ -773,7 +773,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v7 = [navigationItems countByEnumeratingWithState:&v44 objects:v50 count:16];
       if (v7)
       {
         continue;
@@ -789,15 +789,15 @@ LABEL_31:
   return v11;
 }
 
-- (id)_renderSearchControllerWithFactory:(id)a3
+- (id)_renderSearchControllerWithFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  navigationItems = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
+  v6 = [navigationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -807,18 +807,18 @@ LABEL_31:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(navigationItems);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 itemType] == &dword_4 + 2)
         {
-          v6 = [v9 renderSearchControllerWithFactory:v4];
+          v6 = [v9 renderSearchControllerWithFactory:factoryCopy];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [navigationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -833,15 +833,15 @@ LABEL_11:
   return v6;
 }
 
-- (void)_updateSearchController:(id)a3
+- (void)_updateSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  navigationItems = [(TUIRenderModelAuxiliary *)self->_renderModel navigationItems];
+  v6 = [navigationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -852,18 +852,18 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(navigationItems);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 itemType] == &dword_4 + 2)
         {
-          [v4 configureWithModel:v10];
+          [controllerCopy configureWithModel:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [navigationItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;

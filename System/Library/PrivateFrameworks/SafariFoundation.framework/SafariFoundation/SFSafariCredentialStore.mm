@@ -1,36 +1,36 @@
 @interface SFSafariCredentialStore
-+ (BOOL)_appIsEntitledWebBrowser:(id)a3;
-+ (BOOL)_savedAccount:(id)a3 isRelatedToEntryHighLevelDomains:(id)a4 andWebsiteURL:(id)a5;
++ (BOOL)_appIsEntitledWebBrowser:(id)browser;
++ (BOOL)_savedAccount:(id)account isRelatedToEntryHighLevelDomains:(id)domains andWebsiteURL:(id)l;
 + (BOOL)isAppAutoFillAvailable;
-+ (id)_bestDomainFromApprovedDomainsForWebCredentials:(id)a3 appLinks:(id)a4 otherServices:(id)a5 appID:(id)a6 appNames:(id)a7 allDomains:(id *)a8;
++ (id)_bestDomainFromApprovedDomainsForWebCredentials:(id)credentials appLinks:(id)links otherServices:(id)services appID:(id)d appNames:(id)names allDomains:(id *)domains;
 + (id)_credentialProviderExtensionHelperProxy;
-+ (id)_credentialsForAppID:(id)a3 matchingSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 savedAccounts:(id)a6;
-+ (id)_credentialsForWebBrowserWithWebsiteURL:(id)a3 webFrameIdentifier:(id)a4;
-+ (id)appNamesForAppID:(id)a3;
-+ (id)bestDomainForAutoFillFromDomains:(id)a3 appID:(id)a4;
-+ (id)textSuggestionHeaderForExternalCredential:(id)a3;
-+ (id)titleForCredentialIdentity:(id)a3 formURL:(id)a4;
-+ (int64_t)_scoreForDomain:(id)a3 domainsApprovedForWebCredentials:(id)a4 domainsApprovedForAppLinks:(id)a5 domainsApprovedForOtherServices:(id)a6 appNames:(id)a7;
-+ (void)_approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4;
-+ (void)_approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4;
-+ (void)_fetchKeychainCredentialsIfRequiredForAppID:(id)a3 withSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 webFrameIdentifier:(id)a6 isEntitledWebBrowser:(BOOL)a7 testOptions:(id)a8 completion:(id)a9;
-+ (void)_getAllowedActionForAppCredentialsWithAppID:(id)a3 websiteURL:(id)a4 user:(id)a5 password:(id)a6 shouldAnalyzeExistingCredentials:(BOOL)a7 completionHandler:(id)a8;
-+ (void)_getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID:(id)a3 maximumNumberOfEntriesToReturn:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)_getBundleIDForEnabledCredentialProvidersWithCompletionHandler:(id)a3;
-+ (void)_getDomainsApprovedForWebCredentials:(id *)a3 domainsApprovedForAppLinks:(id *)a4 domainsApprovedForOtherServices:(id *)a5 fromDatabaseEntries:(id)a6;
-+ (void)_getExternalCredentialsForAppID:(id)a3 matchingSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 isEntitledWebBrowser:(BOOL)a6 hasPasskeyRequest:(BOOL)a7 completion:(id)a8;
-+ (void)_sharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4;
-+ (void)_sortCredentials:(id)a3 appID:(id)a4 usingApprovedSharedWebCredentialsDatabaseEntries:(id)a5;
-+ (void)bestDomainAndAllApprovedDatabaseEntriesForAppID:(id)a3 completionHandler:(id)a4;
-+ (void)bestDomainForAppID:(id)a3 completionHandler:(id)a4;
-+ (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)a3;
-+ (void)getAllCredentialsWithCompletionHandler:(id)a3;
-+ (void)getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler:(id)a3;
-+ (void)getAllowedActionForAppCredentialsWithAppID:(id)a3 websiteURL:(id)a4 user:(id)a5 password:(id)a6 completionHandler:(id)a7;
-+ (void)getCanSaveCredentialsWithAppID:(id)a3 websiteURL:(id)a4 completionHandler:(id)a5;
-+ (void)getCredentialsForAppWithAppID:(id)a3 frameIdentifier:(id)a4 externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)a5 websiteURL:(id)a6 testOptions:(id)a7 completionHandler:(id)a8;
-+ (void)getExternalPasskeyCredentialIdentitiesForDomains:(id)a3 completionHandler:(id)a4;
-+ (void)getOneTimeCodeCredentialsForAppWithAppID:(id)a3 externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)a4 websiteURL:(id)a5 completionHandler:(id)a6;
++ (id)_credentialsForAppID:(id)d matchingSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l savedAccounts:(id)accounts;
++ (id)_credentialsForWebBrowserWithWebsiteURL:(id)l webFrameIdentifier:(id)identifier;
++ (id)appNamesForAppID:(id)d;
++ (id)bestDomainForAutoFillFromDomains:(id)domains appID:(id)d;
++ (id)textSuggestionHeaderForExternalCredential:(id)credential;
++ (id)titleForCredentialIdentity:(id)identity formURL:(id)l;
++ (int64_t)_scoreForDomain:(id)domain domainsApprovedForWebCredentials:(id)credentials domainsApprovedForAppLinks:(id)links domainsApprovedForOtherServices:(id)services appNames:(id)names;
++ (void)_approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler;
++ (void)_approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler;
++ (void)_fetchKeychainCredentialsIfRequiredForAppID:(id)d withSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l webFrameIdentifier:(id)identifier isEntitledWebBrowser:(BOOL)browser testOptions:(id)options completion:(id)completion;
++ (void)_getAllowedActionForAppCredentialsWithAppID:(id)d websiteURL:(id)l user:(id)user password:(id)password shouldAnalyzeExistingCredentials:(BOOL)credentials completionHandler:(id)handler;
++ (void)_getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID:(id)d maximumNumberOfEntriesToReturn:(unint64_t)return completionHandler:(id)handler;
++ (void)_getBundleIDForEnabledCredentialProvidersWithCompletionHandler:(id)handler;
++ (void)_getDomainsApprovedForWebCredentials:(id *)credentials domainsApprovedForAppLinks:(id *)links domainsApprovedForOtherServices:(id *)services fromDatabaseEntries:(id)entries;
++ (void)_getExternalCredentialsForAppID:(id)d matchingSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l isEntitledWebBrowser:(BOOL)browser hasPasskeyRequest:(BOOL)request completion:(id)completion;
++ (void)_sharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler;
++ (void)_sortCredentials:(id)credentials appID:(id)d usingApprovedSharedWebCredentialsDatabaseEntries:(id)entries;
++ (void)bestDomainAndAllApprovedDatabaseEntriesForAppID:(id)d completionHandler:(id)handler;
++ (void)bestDomainForAppID:(id)d completionHandler:(id)handler;
++ (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)completion;
++ (void)getAllCredentialsWithCompletionHandler:(id)handler;
++ (void)getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler:(id)handler;
++ (void)getAllowedActionForAppCredentialsWithAppID:(id)d websiteURL:(id)l user:(id)user password:(id)password completionHandler:(id)handler;
++ (void)getCanSaveCredentialsWithAppID:(id)d websiteURL:(id)l completionHandler:(id)handler;
++ (void)getCredentialsForAppWithAppID:(id)d frameIdentifier:(id)identifier externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)domains websiteURL:(id)l testOptions:(id)options completionHandler:(id)handler;
++ (void)getExternalPasskeyCredentialIdentitiesForDomains:(id)domains completionHandler:(id)handler;
++ (void)getOneTimeCodeCredentialsForAppWithAppID:(id)d externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)domains websiteURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation SFSafariCredentialStore
@@ -41,43 +41,43 @@
   if ([v2 shouldAutoFillPasswords])
   {
     v3 = +[SFCredentialProviderExtensionManager sharedManager];
-    v4 = [v3 getEnabledExtensionsSynchronously];
-    v5 = [v4 count];
+    getEnabledExtensionsSynchronously = [v3 getEnabledExtensionsSynchronously];
+    v5 = [getEnabledExtensionsSynchronously count];
 
     if (v5)
     {
-      v6 = 1;
+      shouldAutoFillPasswordsFromKeychain = 1;
     }
 
     else
     {
-      v6 = [v2 shouldAutoFillPasswordsFromKeychain];
+      shouldAutoFillPasswordsFromKeychain = [v2 shouldAutoFillPasswordsFromKeychain];
     }
   }
 
   else
   {
-    v6 = 0;
+    shouldAutoFillPasswordsFromKeychain = 0;
   }
 
-  return v6;
+  return shouldAutoFillPasswordsFromKeychain;
 }
 
-+ (void)getCredentialsForAppWithAppID:(id)a3 frameIdentifier:(id)a4 externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)a5 websiteURL:(id)a6 testOptions:(id)a7 completionHandler:(id)a8
++ (void)getCredentialsForAppWithAppID:(id)d frameIdentifier:(id)identifier externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)domains websiteURL:(id)l testOptions:(id)options completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v33 = a8;
+  dCopy = d;
+  identifierCopy = identifier;
+  domainsCopy = domains;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __170__SFSafariCredentialStore_getCredentialsForAppWithAppID_frameIdentifier_externallyVerifiedAndApprovedSharedWebCredentialDomains_websiteURL_testOptions_completionHandler___block_invoke;
   v52[3] = &unk_279B61C38;
-  v19 = v14;
+  v19 = dCopy;
   v53 = v19;
-  v20 = [v16 safari_mapObjectsUsingBlock:v52];
+  v20 = [domainsCopy safari_mapObjectsUsingBlock:v52];
   v21 = objc_alloc_init(MEMORY[0x277D499C8]);
   v48 = 0;
   v49 = &v48;
@@ -92,7 +92,7 @@
   v47 = &v48;
   v23 = v22;
   v46 = v23;
-  [v21 getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:v15 orApplicationIdentifier:v19 completionHandler:v45];
+  [v21 getIsPasskeyAssertionRequestRunningForWebFrameIdentifier:identifierCopy orApplicationIdentifier:v19 completionHandler:v45];
   v24 = dispatch_time(0, 1500000000);
   if (dispatch_group_wait(v23, v24))
   {
@@ -105,7 +105,7 @@
     *(v49 + 24) = 0;
   }
 
-  v26 = [a1 _appIsEntitledWebBrowser:{v19, v33}];
+  v26 = [self _appIsEntitledWebBrowser:{v19, handlerCopy}];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __170__SFSafariCredentialStore_getCredentialsForAppWithAppID_frameIdentifier_externallyVerifiedAndApprovedSharedWebCredentialDomains_websiteURL_testOptions_completionHandler___block_invoke_6;
@@ -114,18 +114,18 @@
   v36 = v27;
   v28 = v19;
   v37 = v28;
-  v43 = a1;
-  v29 = v17;
+  selfCopy = self;
+  v29 = lCopy;
   v38 = v29;
-  v30 = v15;
+  v30 = identifierCopy;
   v44 = v26;
   v39 = v30;
   v42 = &v48;
-  v31 = v18;
+  v31 = optionsCopy;
   v40 = v31;
   v32 = v34;
   v41 = v32;
-  [a1 _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v28 completionHandler:v35];
+  [self _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v28 completionHandler:v35];
 
   _Block_object_dispose(&v48, 8);
 }
@@ -215,16 +215,16 @@ LABEL_22:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getAllCredentialsWithCompletionHandler:(id)a3
++ (void)getAllCredentialsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SFSafariCredentialStore_getAllCredentialsWithCompletionHandler___block_invoke;
   block[3] = &unk_279B61CF0;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(v4, block);
 }
 
@@ -306,41 +306,41 @@ id __64__SFSafariCredentialStore__highLevelDomainsFromDatabaseEntries___block_in
   return v3;
 }
 
-+ (void)_fetchKeychainCredentialsIfRequiredForAppID:(id)a3 withSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 webFrameIdentifier:(id)a6 isEntitledWebBrowser:(BOOL)a7 testOptions:(id)a8 completion:(id)a9
++ (void)_fetchKeychainCredentialsIfRequiredForAppID:(id)d withSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l webFrameIdentifier:(id)identifier isEntitledWebBrowser:(BOOL)browser testOptions:(id)options completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
+  dCopy = d;
+  entriesCopy = entries;
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v20 = +[SFAutoFillFeatureManager sharedFeatureManager];
-  v21 = [v20 shouldAutoFillPasswordsFromKeychain];
+  shouldAutoFillPasswordsFromKeychain = [v20 shouldAutoFillPasswordsFromKeychain];
 
-  if (v21)
+  if (shouldAutoFillPasswordsFromKeychain)
   {
-    if (a8)
+    if (options)
     {
-      v22 = [objc_alloc(MEMORY[0x277D49B58]) initAndPrewarmSavedAccounts:0 forTesting:1];
+      mEMORY[0x277D49B58] = [objc_alloc(MEMORY[0x277D49B58]) initAndPrewarmSavedAccounts:0 forTesting:1];
     }
 
     else
     {
-      v22 = [MEMORY[0x277D49B58] sharedStore];
+      mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
     }
 
-    v23 = v22;
+    v23 = mEMORY[0x277D49B58];
     v24 = dispatch_get_global_queue(21, 0);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __185__SFSafariCredentialStore__fetchKeychainCredentialsIfRequiredForAppID_withSharedWebCredentialsDatabaseEntries_websiteURL_webFrameIdentifier_isEntitledWebBrowser_testOptions_completion___block_invoke;
     v26[3] = &unk_279B61D60;
-    v34 = a7;
-    v27 = v17;
-    v32 = v19;
-    v33 = a1;
-    v28 = v18;
-    v29 = v15;
-    v30 = v16;
+    browserCopy = browser;
+    v27 = lCopy;
+    v32 = completionCopy;
+    selfCopy = self;
+    v28 = identifierCopy;
+    v29 = dCopy;
+    v30 = entriesCopy;
     v31 = v23;
     v25 = v23;
     [v25 performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:v24 task:v26];
@@ -348,7 +348,7 @@ id __64__SFSafariCredentialStore__highLevelDomainsFromDatabaseEntries___block_in
 
   else
   {
-    (*(v19 + 2))(v19, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
@@ -374,11 +374,11 @@ void __185__SFSafariCredentialStore__fetchKeychainCredentialsIfRequiredForAppID_
   }
 }
 
-+ (id)_credentialsForWebBrowserWithWebsiteURL:(id)a3 webFrameIdentifier:(id)a4
++ (id)_credentialsForWebBrowserWithWebsiteURL:(id)l webFrameIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = 3;
   }
@@ -395,18 +395,18 @@ void __185__SFSafariCredentialStore__fetchKeychainCredentialsIfRequiredForAppID_
   v22 = __Block_byref_object_dispose__1;
   v23 = MEMORY[0x277CBEBF8];
   v8 = objc_alloc(MEMORY[0x277D49B40]);
-  v9 = [MEMORY[0x277D49B70] queryThatMatchesEverything];
-  v10 = [v8 initWithURL:v5 options:v7 userNameQuery:v9 associatedDomainsManager:0 webFrameIdentifier:v6];
+  queryThatMatchesEverything = [MEMORY[0x277D49B70] queryThatMatchesEverything];
+  v10 = [v8 initWithURL:lCopy options:v7 userNameQuery:queryThatMatchesEverything associatedDomainsManager:0 webFrameIdentifier:identifierCopy];
 
-  v11 = [MEMORY[0x277D49B58] sharedStore];
+  mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __86__SFSafariCredentialStore__credentialsForWebBrowserWithWebsiteURL_webFrameIdentifier___block_invoke;
   v15[3] = &unk_279B61DB0;
   v17 = &v18;
-  v12 = v5;
+  v12 = lCopy;
   v16 = v12;
-  [v11 getSavedAccountsMatchingCriteria:v10 withSynchronousCompletionHandler:v15];
+  [mEMORY[0x277D49B58] getSavedAccountsMatchingCriteria:v10 withSynchronousCompletionHandler:v15];
 
   v13 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -454,24 +454,24 @@ SFSafariCredential *__86__SFSafariCredentialStore__credentialsForWebBrowserWithW
   return v4;
 }
 
-+ (id)_credentialsForAppID:(id)a3 matchingSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 savedAccounts:(id)a6
++ (id)_credentialsForAppID:(id)d matchingSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l savedAccounts:(id)accounts
 {
   v85 = *MEMORY[0x277D85DE8];
-  v60 = a3;
-  v10 = a4;
-  v74 = a5;
-  v11 = a6;
+  dCopy = d;
+  entriesCopy = entries;
+  lCopy = l;
+  accountsCopy = accounts;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v69 = [MEMORY[0x277CCA940] set];
   v67 = objc_alloc_init(MEMORY[0x277CCAB00]);
-  v71 = a1;
-  v61 = v10;
-  v13 = [a1 _highLevelDomainsFromDatabaseEntries:v10];
+  selfCopy = self;
+  v61 = entriesCopy;
+  v13 = [self _highLevelDomainsFromDatabaseEntries:entriesCopy];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v14 = v11;
+  v14 = accountsCopy;
   v15 = [v14 countByEnumeratingWithState:&v79 objects:v84 count:16];
   v62 = v12;
   v65 = v14;
@@ -493,37 +493,37 @@ SFSafariCredential *__86__SFSafariCredentialStore__credentialsForWebBrowserWithW
         }
 
         v19 = *(*(&v79 + 1) + 8 * v18);
-        if (([v19 userIsNeverSaveMarker] & 1) == 0 && objc_msgSend(v71, "_savedAccount:isRelatedToEntryHighLevelDomains:andWebsiteURL:", v19, v13, v74))
+        if (([v19 userIsNeverSaveMarker] & 1) == 0 && objc_msgSend(selfCopy, "_savedAccount:isRelatedToEntryHighLevelDomains:andWebsiteURL:", v19, v13, lCopy))
         {
-          v20 = [v19 userVisibleDomain];
-          v21 = [v20 safari_simplifiedSiteNameForCredentialLookup];
+          userVisibleDomain = [v19 userVisibleDomain];
+          safari_simplifiedSiteNameForCredentialLookup = [userVisibleDomain safari_simplifiedSiteNameForCredentialLookup];
 
           v22 = [SFSafariCredential alloc];
-          v72 = [v19 user];
-          v23 = [v19 password];
-          v24 = [v19 lastModifiedDate];
-          v25 = [v19 customTitle];
-          v26 = [v19 sharedGroupName];
-          v27 = [v74 host];
-          v28 = v27;
-          v70 = v21;
-          if (v27)
+          user = [v19 user];
+          password = [v19 password];
+          lastModifiedDate = [v19 lastModifiedDate];
+          customTitle = [v19 customTitle];
+          sharedGroupName = [v19 sharedGroupName];
+          host = [lCopy host];
+          v28 = host;
+          v70 = safari_simplifiedSiteNameForCredentialLookup;
+          if (host)
           {
-            v29 = [(SFSafariCredential *)v22 initWithUser:v72 password:v23 site:v21 creationDate:v24 customTitle:v25 groupName:v26 requestedHost:v27];
+            v29 = [(SFSafariCredential *)v22 initWithUser:user password:password site:safari_simplifiedSiteNameForCredentialLookup creationDate:lastModifiedDate customTitle:customTitle groupName:sharedGroupName requestedHost:host];
           }
 
           else
           {
-            v63 = [v61 firstObject];
-            v30 = [v63 domain];
-            v29 = [(SFSafariCredential *)v22 initWithUser:v72 password:v23 site:v21 creationDate:v24 customTitle:v25 groupName:v26 requestedHost:v30];
+            firstObject = [v61 firstObject];
+            domain = [firstObject domain];
+            v29 = [(SFSafariCredential *)v22 initWithUser:user password:password site:safari_simplifiedSiteNameForCredentialLookup creationDate:lastModifiedDate customTitle:customTitle groupName:sharedGroupName requestedHost:domain];
 
             v12 = v62;
           }
 
-          v31 = [v74 host];
-          v32 = [MEMORY[0x277D49B30] defaultContext];
-          v33 = [v19 lastUsedDateForSite:v31 inContext:v32];
+          host2 = [lCopy host];
+          defaultContext = [MEMORY[0x277D49B30] defaultContext];
+          v33 = [v19 lastUsedDateForSite:host2 inContext:defaultContext];
           [(SFSafariCredential *)v29 setLastUsedDate:v33];
 
           v77 = 0u;
@@ -600,21 +600,21 @@ LABEL_21:
       if (v45 != 1)
       {
         v46 = [v67 objectForKey:v43];
-        v47 = [v46 sites];
-        v48 = [v47 firstObject];
-        v49 = [v48 safari_simplifiedSiteNameForCredentialLookup];
+        sites = [v46 sites];
+        firstObject2 = [sites firstObject];
+        safari_simplifiedSiteNameForCredentialLookup2 = [firstObject2 safari_simplifiedSiteNameForCredentialLookup];
 
         v50 = [SFSafariCredential alloc];
-        v51 = [v43 user];
-        v52 = [v43 password];
-        v53 = [v46 lastModifiedDate];
-        v54 = [v46 customTitle];
-        v55 = [v46 sharedGroupName];
-        v56 = [(SFSafariCredential *)v50 initWithUser:v51 password:v52 site:v49 creationDate:v53 customTitle:v54 groupName:v55 requestedHost:0];
+        user2 = [v43 user];
+        password2 = [v43 password];
+        lastModifiedDate2 = [v46 lastModifiedDate];
+        customTitle2 = [v46 customTitle];
+        sharedGroupName2 = [v46 sharedGroupName];
+        v56 = [(SFSafariCredential *)v50 initWithUser:user2 password:password2 site:safari_simplifiedSiteNameForCredentialLookup2 creationDate:lastModifiedDate2 customTitle:customTitle2 groupName:sharedGroupName2 requestedHost:0];
 
         v13 = v66;
-        v57 = [v43 lastUsedDate];
-        [(SFSafariCredential *)v56 setLastUsedDate:v57];
+        lastUsedDate = [v43 lastUsedDate];
+        [(SFSafariCredential *)v56 setLastUsedDate:lastUsedDate];
 
         v41 = v73;
         -[SFSafariCredential setIsDefaultForAnAssociatedDomain:](v56, "setIsDefaultForAnAssociatedDomain:", [v43 isDefaultForAnAssociatedDomain]);
@@ -629,52 +629,52 @@ LABEL_21:
     while (v41 != v42);
   }
 
-  [v71 _sortCredentials:v12 appID:v60 usingApprovedSharedWebCredentialsDatabaseEntries:v61];
+  [selfCopy _sortCredentials:v12 appID:dCopy usingApprovedSharedWebCredentialsDatabaseEntries:v61];
 
   v58 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (void)getCanSaveCredentialsWithAppID:(id)a3 websiteURL:(id)a4 completionHandler:(id)a5
++ (void)getCanSaveCredentialsWithAppID:(id)d websiteURL:(id)l completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__SFSafariCredentialStore_getCanSaveCredentialsWithAppID_websiteURL_completionHandler___block_invoke;
   v10[3] = &unk_279B61DD8;
-  v11 = v8;
-  v9 = v8;
-  [a1 _getAllowedActionForAppCredentialsWithAppID:a3 websiteURL:a4 user:0 password:0 shouldAnalyzeExistingCredentials:0 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [self _getAllowedActionForAppCredentialsWithAppID:d websiteURL:l user:0 password:0 shouldAnalyzeExistingCredentials:0 completionHandler:v10];
 }
 
-+ (void)getAllowedActionForAppCredentialsWithAppID:(id)a3 websiteURL:(id)a4 user:(id)a5 password:(id)a6 completionHandler:(id)a7
++ (void)getAllowedActionForAppCredentialsWithAppID:(id)d websiteURL:(id)l user:(id)user password:(id)password completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __113__SFSafariCredentialStore_getAllowedActionForAppCredentialsWithAppID_websiteURL_user_password_completionHandler___block_invoke;
   v14[3] = &unk_279B61DD8;
-  v15 = v12;
-  v13 = v12;
-  [a1 _getAllowedActionForAppCredentialsWithAppID:a3 websiteURL:a4 user:a5 password:a6 shouldAnalyzeExistingCredentials:1 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [self _getAllowedActionForAppCredentialsWithAppID:d websiteURL:l user:user password:password shouldAnalyzeExistingCredentials:1 completionHandler:v14];
 }
 
-+ (void)_getAllowedActionForAppCredentialsWithAppID:(id)a3 websiteURL:(id)a4 user:(id)a5 password:(id)a6 shouldAnalyzeExistingCredentials:(BOOL)a7 completionHandler:(id)a8
++ (void)_getAllowedActionForAppCredentialsWithAppID:(id)d websiteURL:(id)l user:(id)user password:(id)password shouldAnalyzeExistingCredentials:(BOOL)credentials completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (([v14 isEqualToString:@"com.apple.Preferences"] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"0000000000.com.apple.findmy") || (+[SFAutoFillFeatureManager sharedFeatureManager](SFAutoFillFeatureManager, "sharedFeatureManager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "shouldAutoFillPasswordsFromKeychain"), v19, (v20 & 1) == 0))
+  dCopy = d;
+  lCopy = l;
+  userCopy = user;
+  passwordCopy = password;
+  handlerCopy = handler;
+  if (([dCopy isEqualToString:@"com.apple.Preferences"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"0000000000.com.apple.findmy") || (+[SFAutoFillFeatureManager sharedFeatureManager](SFAutoFillFeatureManager, "sharedFeatureManager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "shouldAutoFillPasswordsFromKeychain"), v19, (v20 & 1) == 0))
   {
 LABEL_11:
-    (*(v18 + 2))(v18, 0, 0, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0);
     goto LABEL_12;
   }
 
-  if (v16)
+  if (userCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -695,7 +695,7 @@ LABEL_11:
   v45[1] = v45;
   v45[2] = 0x2020000000;
   v46 = 0;
-  if (v14)
+  if (dCopy)
   {
     dispatch_group_enter(v21);
     v41[0] = MEMORY[0x277D85DD0];
@@ -703,9 +703,9 @@ LABEL_11:
     v41[2] = __147__SFSafariCredentialStore__getAllowedActionForAppCredentialsWithAppID_websiteURL_user_password_shouldAnalyzeExistingCredentials_completionHandler___block_invoke;
     v41[3] = &unk_279B61E00;
     v42 = v22;
-    v43 = v14;
+    v43 = dCopy;
     v44 = v45;
-    [a1 _getBundleIDForEnabledCredentialProvidersWithCompletionHandler:v41];
+    [self _getBundleIDForEnabledCredentialProvidersWithCompletionHandler:v41];
   }
 
   dispatch_group_enter(v22);
@@ -722,21 +722,21 @@ LABEL_11:
   v38 = v39;
   v23 = v22;
   v37 = v23;
-  [a1 _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v14 completionHandler:v36];
+  [self _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:dCopy completionHandler:v36];
   v24 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __147__SFSafariCredentialStore__getAllowedActionForAppCredentialsWithAppID_websiteURL_user_password_shouldAnalyzeExistingCredentials_completionHandler___block_invoke_3;
   block[3] = &unk_279B61E28;
   v32 = v45;
-  v31 = v18;
+  v31 = handlerCopy;
   v33 = v39;
-  v35 = a7;
-  v27 = v15;
-  v34 = a1;
-  v28 = v16;
-  v29 = v17;
-  v30 = v14;
+  credentialsCopy = credentials;
+  v27 = lCopy;
+  selfCopy = self;
+  v28 = userCopy;
+  v29 = passwordCopy;
+  v30 = dCopy;
   dispatch_group_notify(v23, v24, block);
 
   _Block_object_dispose(v39, 8);
@@ -1021,13 +1021,13 @@ LABEL_45:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)appNamesForAppID:(id)a3
++ (id)appNamesForAppID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:a3 error:0];
-    v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = [v4 arrayByAddingObject:@"en"];
+    v3 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:d error:0];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v5 = [preferredLanguages arrayByAddingObject:@"en"];
 
     v6 = MEMORY[0x277CBEB98];
     v12[0] = MEMORY[0x277D85DD0];
@@ -1038,15 +1038,15 @@ LABEL_45:
     v7 = v3;
     v8 = [v5 safari_mapAndFilterObjectsUsingBlock:v12];
     v9 = [v6 setWithArray:v8];
-    v10 = [v9 allObjects];
+    allObjects = [v9 allObjects];
   }
 
   else
   {
-    v10 = 0;
+    allObjects = 0;
   }
 
-  return v10;
+  return allObjects;
 }
 
 id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, void *a2)
@@ -1064,48 +1064,48 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)a3
++ (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MEMORY[0x277D499C0]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __86__SFSafariCredentialStore_fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion___block_invoke;
   v7[3] = &unk_279B61E78;
   v8 = v4;
-  v9 = v3;
-  v5 = v3;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = v4;
   [v6 fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:v7];
 }
 
-+ (id)_bestDomainFromApprovedDomainsForWebCredentials:(id)a3 appLinks:(id)a4 otherServices:(id)a5 appID:(id)a6 appNames:(id)a7 allDomains:(id *)a8
++ (id)_bestDomainFromApprovedDomainsForWebCredentials:(id)credentials appLinks:(id)links otherServices:(id)services appID:(id)d appNames:(id)names allDomains:(id *)domains
 {
   v95 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v86 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 count] || objc_msgSend(v86, "count") || objc_msgSend(v13, "count"))
+  credentialsCopy = credentials;
+  linksCopy = links;
+  servicesCopy = services;
+  dCopy = d;
+  namesCopy = names;
+  if ([credentialsCopy count] || objc_msgSend(linksCopy, "count") || objc_msgSend(servicesCopy, "count"))
   {
-    v16 = [v14 rangeOfString:@"."];
-    v17 = v15;
+    v16 = [dCopy rangeOfString:@"."];
+    v17 = namesCopy;
     if (v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [v14 substringFromIndex:v16 + 1];
+      v18 = [dCopy substringFromIndex:v16 + 1];
 
-      v14 = v18;
+      dCopy = v18;
     }
 
-    v78 = [v14 lowercaseString];
+    lowercaseString = [dCopy lowercaseString];
 
-    v83 = [MEMORY[0x277CBEB40] orderedSet];
-    v19 = [v12 allObjects];
-    v20 = [v86 allObjects];
-    v21 = [v19 arrayByAddingObjectsFromArray:v20];
-    v22 = [v13 allObjects];
-    v23 = [v21 arrayByAddingObjectsFromArray:v22];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    allObjects = [credentialsCopy allObjects];
+    allObjects2 = [linksCopy allObjects];
+    v21 = [allObjects arrayByAddingObjectsFromArray:allObjects2];
+    allObjects3 = [servicesCopy allObjects];
+    v23 = [v21 arrayByAddingObjectsFromArray:allObjects3];
 
     v92 = 0u;
     v93 = 0u;
@@ -1116,7 +1116,7 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
     if (!v87)
     {
       v84 = 0;
-      v15 = v17;
+      namesCopy = v17;
       goto LABEL_57;
     }
 
@@ -1124,11 +1124,11 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
     v84 = 0;
     v85 = *v91;
     v25 = 0x279B60000uLL;
-    v15 = v17;
-    v27 = a8;
-    v26 = a1;
-    v70 = v12;
-    v71 = v13;
+    namesCopy = v17;
+    domainsCopy4 = domains;
+    selfCopy3 = self;
+    v70 = credentialsCopy;
+    v71 = servicesCopy;
     v77 = v17;
     while (1)
     {
@@ -1141,7 +1141,7 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
         }
 
         v29 = *(*(&v90 + 1) + 8 * v28);
-        v30 = [v26 _scoreForDomain:v29 domainsApprovedForWebCredentials:v12 domainsApprovedForAppLinks:v86 domainsApprovedForOtherServices:v13 appNames:{v15, v68}];
+        v30 = [selfCopy3 _scoreForDomain:v29 domainsApprovedForWebCredentials:credentialsCopy domainsApprovedForAppLinks:linksCopy domainsApprovedForOtherServices:servicesCopy appNames:{namesCopy, v68}];
         v31 = v30;
         if (v30 <= v24)
         {
@@ -1152,7 +1152,7 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
 
           v32 = v29;
           v33 = v84;
-          v81 = v78;
+          v81 = lowercaseString;
           if (([v33 hasSuffix:v32] & 1) == 0)
           {
             if ([v32 hasSuffix:v33])
@@ -1198,8 +1198,8 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
             }
 
             v41 = v43 == 0;
-            v12 = v70;
-            v13 = v71;
+            credentialsCopy = v70;
+            servicesCopy = v71;
             if (v41)
             {
               v44 = v74;
@@ -1207,7 +1207,7 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
 
             v45 = v42 >= v44;
             v46 = v42 > v44;
-            v26 = a1;
+            selfCopy3 = self;
             if (v45)
             {
               v47 = 0;
@@ -1234,7 +1234,7 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
               v49 = [v73 safari_countOfString:@"."];
               v45 = v48 >= v49;
               v50 = v48 > v49;
-              v13 = v71;
+              servicesCopy = v71;
               if (v45)
               {
                 if (v50)
@@ -1243,17 +1243,17 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
                 }
 
                 v51 = [v72 componentsSeparatedByString:@"."];
-                v52 = [v51 reverseObjectEnumerator];
-                v53 = [v52 allObjects];
-                v75 = [v53 componentsJoinedByString:@"."];
+                reverseObjectEnumerator = [v51 reverseObjectEnumerator];
+                allObjects4 = [reverseObjectEnumerator allObjects];
+                v75 = [allObjects4 componentsJoinedByString:@"."];
 
                 v54 = [v73 componentsSeparatedByString:@"."];
-                v55 = [v54 reverseObjectEnumerator];
-                v56 = [v55 allObjects];
-                v69 = [v56 componentsJoinedByString:@"."];
+                reverseObjectEnumerator2 = [v54 reverseObjectEnumerator];
+                allObjects5 = [reverseObjectEnumerator2 allObjects];
+                v69 = [allObjects5 componentsJoinedByString:@"."];
 
                 v25 = 0x279B60000uLL;
-                v12 = v70;
+                credentialsCopy = v70;
 
                 v68 = lengthOfLongestCommonSubstring(v81, v75);
                 v57 = v69;
@@ -1277,19 +1277,19 @@ id __44__SFSafariCredentialStore_appNamesForAppID___block_invoke(uint64_t a1, vo
                     {
 LABEL_42:
 
-                      v13 = v71;
+                      servicesCopy = v71;
 LABEL_43:
 
-                      v15 = v77;
-                      v27 = a8;
+                      namesCopy = v77;
+                      domainsCopy4 = domains;
                       goto LABEL_44;
                     }
 
                     v68 = [v72 compare:v73];
 
-                    v13 = v71;
-                    v15 = v77;
-                    v27 = a8;
+                    servicesCopy = v71;
+                    namesCopy = v77;
+                    domainsCopy4 = domains;
                     if (v68 != -1)
                     {
                       goto LABEL_44;
@@ -1299,13 +1299,13 @@ LABEL_43:
                   }
                 }
 
-                v13 = v71;
+                servicesCopy = v71;
               }
             }
           }
 
-          v15 = v77;
-          v27 = a8;
+          namesCopy = v77;
+          domainsCopy4 = domains;
         }
 
 LABEL_15:
@@ -1313,17 +1313,17 @@ LABEL_15:
         {
           v34 = v29;
 
-          [v83 insertObject:v34 atIndex:0];
+          [orderedSet insertObject:v34 atIndex:0];
           v24 = v31;
           v84 = v34;
-          v26 = a1;
+          selfCopy3 = self;
           goto LABEL_47;
         }
 
 LABEL_44:
-        if (v27 && ([*(v25 + 3208) domainIsProhibitedForSavingCredentials:v29] & 1) == 0)
+        if (domainsCopy4 && ([*(v25 + 3208) domainIsProhibitedForSavingCredentials:v29] & 1) == 0)
         {
-          [v83 addObject:v29];
+          [orderedSet addObject:v29];
         }
 
 LABEL_47:
@@ -1338,43 +1338,43 @@ LABEL_47:
 LABEL_57:
 
         v62 = v84;
-        if (([v12 containsObject:v84] & 1) == 0)
+        if (([credentialsCopy containsObject:v84] & 1) == 0)
         {
-          v63 = [v84 safari_highLevelDomainForPasswordManager];
+          safari_highLevelDomainForPasswordManager = [v84 safari_highLevelDomainForPasswordManager];
 
-          v62 = v63;
+          v62 = safari_highLevelDomainForPasswordManager;
         }
 
-        v14 = v78;
-        if (a8)
+        dCopy = lowercaseString;
+        if (domains)
         {
-          v64 = [v83 array];
+          array = [orderedSet array];
           v88[0] = MEMORY[0x277D85DD0];
           v88[1] = 3221225472;
           v88[2] = __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredentials_appLinks_otherServices_appID_appNames_allDomains___block_invoke;
           v88[3] = &unk_279B61E50;
-          v89 = v12;
-          *a8 = [v64 safari_mapObjectsUsingBlock:v88];
+          v89 = credentialsCopy;
+          *domains = [array safari_mapObjectsUsingBlock:v88];
         }
 
-        v65 = [v62 safari_simplifiedSiteNameForCredentialLookup];
+        safari_simplifiedSiteNameForCredentialLookup = [v62 safari_simplifiedSiteNameForCredentialLookup];
 
         goto LABEL_62;
       }
     }
   }
 
-  v65 = 0;
-  if (a8)
+  safari_simplifiedSiteNameForCredentialLookup = 0;
+  if (domains)
   {
-    *a8 = 0;
+    *domains = 0;
   }
 
 LABEL_62:
 
   v66 = *MEMORY[0x277D85DE8];
 
-  return v65;
+  return safari_simplifiedSiteNameForCredentialLookup;
 }
 
 id __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredentials_appLinks_otherServices_appID_appNames_allDomains___block_invoke(uint64_t a1, void *a2)
@@ -1405,11 +1405,11 @@ id __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredential
   return v4;
 }
 
-+ (void)_getDomainsApprovedForWebCredentials:(id *)a3 domainsApprovedForAppLinks:(id *)a4 domainsApprovedForOtherServices:(id *)a5 fromDatabaseEntries:(id)a6
++ (void)_getDomainsApprovedForWebCredentials:(id *)credentials domainsApprovedForAppLinks:(id *)links domainsApprovedForOtherServices:(id *)services fromDatabaseEntries:(id)entries
 {
-  v22 = a4;
+  linksCopy = links;
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  entriesCopy = entries;
   v8 = [MEMORY[0x277CBEB58] set];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = [MEMORY[0x277CBEB58] set];
@@ -1417,7 +1417,7 @@ id __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredential
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v7;
+  v11 = entriesCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
@@ -1434,13 +1434,13 @@ id __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredential
         }
 
         v16 = *(*(&v24 + 1) + 8 * v15);
-        v17 = [v16 domain];
-        if (v17)
+        domain = [v16 domain];
+        if (domain)
         {
-          v18 = [v16 service];
-          if (v18 <= 4)
+          service = [v16 service];
+          if (service <= 4)
           {
-            if ((v18 - 1) >= 4)
+            if ((service - 1) >= 4)
             {
               goto LABEL_11;
             }
@@ -1448,23 +1448,23 @@ id __124__SFSafariCredentialStore__bestDomainFromApprovedDomainsForWebCredential
 LABEL_9:
             v19 = v10;
 LABEL_10:
-            [v19 addObject:v17];
+            [v19 addObject:domain];
             goto LABEL_11;
           }
 
           v19 = v8;
-          if (v18 == 7)
+          if (service == 7)
           {
             goto LABEL_10;
           }
 
-          if (v18 == 6)
+          if (service == 6)
           {
             goto LABEL_9;
           }
 
           v19 = v9;
-          if (v18 == 5)
+          if (service == 5)
           {
             goto LABEL_10;
           }
@@ -1483,47 +1483,47 @@ LABEL_11:
     while (v20);
   }
 
-  *a3 = [v8 copy];
-  *v22 = [v9 copy];
-  *a5 = [v10 copy];
+  *credentials = [v8 copy];
+  *linksCopy = [v9 copy];
+  *services = [v10 copy];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)bestDomainForAppID:(id)a3 completionHandler:(id)a4
++ (void)bestDomainForAppID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__SFSafariCredentialStore_bestDomainForAppID_completionHandler___block_invoke;
   v8[3] = &unk_279B61EA0;
-  v9 = v6;
-  v7 = v6;
-  [a1 bestDomainAndAllApprovedDatabaseEntriesForAppID:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [self bestDomainAndAllApprovedDatabaseEntriesForAppID:d completionHandler:v8];
 }
 
-+ (void)bestDomainAndAllApprovedDatabaseEntriesForAppID:(id)a3 completionHandler:(id)a4
++ (void)bestDomainAndAllApprovedDatabaseEntriesForAppID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForAppID_completionHandler___block_invoke;
       v9[3] = &unk_279B61EC8;
-      v12 = a1;
-      v10 = v6;
+      selfCopy = self;
+      v10 = dCopy;
       v11 = v8;
-      [a1 _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v10 completionHandler:v9];
+      [self _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v10 completionHandler:v9];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -1547,35 +1547,35 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
   (*(a1[5] + 16))();
 }
 
-+ (id)bestDomainForAutoFillFromDomains:(id)a3 appID:(id)a4
++ (id)bestDomainForAutoFillFromDomains:(id)domains appID:(id)d
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithArray:v8];
+  dCopy = d;
+  domainsCopy = domains;
+  v9 = [[v6 alloc] initWithArray:domainsCopy];
 
-  v10 = [a1 appNamesForAppID:v7];
-  v11 = [a1 _bestDomainFromApprovedDomainsForWebCredentials:v9 appLinks:0 otherServices:0 appID:v7 appNames:v10 allDomains:0];
+  v10 = [self appNamesForAppID:dCopy];
+  v11 = [self _bestDomainFromApprovedDomainsForWebCredentials:v9 appLinks:0 otherServices:0 appID:dCopy appNames:v10 allDomains:0];
 
   return v11;
 }
 
-+ (BOOL)_savedAccount:(id)a3 isRelatedToEntryHighLevelDomains:(id)a4 andWebsiteURL:(id)a5
++ (BOOL)_savedAccount:(id)account isRelatedToEntryHighLevelDomains:(id)domains andWebsiteURL:(id)l
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v30 = a4;
-  v8 = a5;
-  v9 = [v7 highLevelDomain];
-  v36[0] = v9;
+  accountCopy = account;
+  domainsCopy = domains;
+  lCopy = l;
+  highLevelDomain = [accountCopy highLevelDomain];
+  v36[0] = highLevelDomain;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
 
-  v28 = v7;
-  v11 = [v7 additionalSites];
-  v12 = [v11 safari_mapObjectsUsingBlock:&__block_literal_global_56];
+  v28 = accountCopy;
+  additionalSites = [accountCopy additionalSites];
+  v12 = [additionalSites safari_mapObjectsUsingBlock:&__block_literal_global_56];
   v13 = [v10 arrayByAddingObjectsFromArray:v12];
 
-  v14 = v8 == 0;
+  v14 = lCopy == 0;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -1597,12 +1597,12 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
         }
 
         v20 = *(*(&v31 + 1) + 8 * i);
-        v21 = [v30 containsObject:v20];
-        if (v8)
+        v21 = [domainsCopy containsObject:v20];
+        if (lCopy)
         {
-          v22 = [v8 host];
-          v23 = [v22 safari_highLevelDomainForPasswordManager];
-          v24 = [v20 isEqualToString:v23];
+          host = [lCopy host];
+          safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+          v24 = [v20 isEqualToString:safari_highLevelDomainForPasswordManager];
 
           v14 |= v24;
         }
@@ -1626,12 +1626,12 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
   return v25 & 1;
 }
 
-+ (void)_sortCredentials:(id)a3 appID:(id)a4 usingApprovedSharedWebCredentialsDatabaseEntries:(id)a5
++ (void)_sortCredentials:(id)credentials appID:(id)d usingApprovedSharedWebCredentialsDatabaseEntries:(id)entries
 {
   v41 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v28 = a4;
-  v8 = a5;
+  credentialsCopy = credentials;
+  dCopy = d;
+  entriesCopy = entries;
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -1639,7 +1639,7 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v12 = v8;
+  v12 = entriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v13)
   {
@@ -1655,9 +1655,9 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
         }
 
         v17 = *(*(&v36 + 1) + 8 * i);
-        v18 = [v17 service];
-        v19 = [v17 domain];
-        if (v18 == 5)
+        service = [v17 service];
+        domain = [v17 domain];
+        if (service == 5)
         {
           v20 = v10;
         }
@@ -1667,7 +1667,7 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
           v20 = v11;
         }
 
-        if (v18 == 7)
+        if (service == 7)
         {
           v21 = v9;
         }
@@ -1677,7 +1677,7 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
           v21 = v20;
         }
 
-        [v21 addObject:v19];
+        [v21 addObject:domain];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1686,13 +1686,13 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
     while (v14);
   }
 
-  v22 = [a1 appNamesForAppID:v28];
+  v22 = [self appNamesForAppID:dCopy];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __99__SFSafariCredentialStore__sortCredentials_appID_usingApprovedSharedWebCredentialsDatabaseEntries___block_invoke;
   v30[3] = &unk_279B61F10;
   v34 = v22;
-  v35 = a1;
+  selfCopy = self;
   v31 = v9;
   v32 = v10;
   v33 = v11;
@@ -1700,7 +1700,7 @@ void __93__SFSafariCredentialStore_bestDomainAndAllApprovedDatabaseEntriesForApp
   v24 = v11;
   v25 = v10;
   v26 = v9;
-  [v29 sortWithOptions:16 usingComparator:v30];
+  [credentialsCopy sortWithOptions:16 usingComparator:v30];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -1802,14 +1802,14 @@ uint64_t __99__SFSafariCredentialStore__sortCredentials_appID_usingApprovedShare
   return v13;
 }
 
-+ (int64_t)_scoreForDomain:(id)a3 domainsApprovedForWebCredentials:(id)a4 domainsApprovedForAppLinks:(id)a5 domainsApprovedForOtherServices:(id)a6 appNames:(id)a7
++ (int64_t)_scoreForDomain:(id)domain domainsApprovedForWebCredentials:(id)credentials domainsApprovedForAppLinks:(id)links domainsApprovedForOtherServices:(id)services appNames:(id)names
 {
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if ([a4 containsObject:v11])
+  domainCopy = domain;
+  linksCopy = links;
+  servicesCopy = services;
+  namesCopy = names;
+  if ([credentials containsObject:domainCopy])
   {
     v15 = 6;
   }
@@ -1819,18 +1819,18 @@ uint64_t __99__SFSafariCredentialStore__sortCredentials_appID_usingApprovedShare
     v15 = 0;
   }
 
-  if ([v12 containsObject:v11])
+  if ([linksCopy containsObject:domainCopy])
   {
     v15 += 2;
   }
 
-  v16 = v15 | [v13 containsObject:v11];
-  v17 = [v11 safari_stringByRemovingTopLevelDomainFromHost];
+  v16 = v15 | [servicesCopy containsObject:domainCopy];
+  safari_stringByRemovingTopLevelDomainFromHost = [domainCopy safari_stringByRemovingTopLevelDomainFromHost];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v18 = v14;
+  v18 = namesCopy;
   v19 = [v18 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v19)
   {
@@ -1845,7 +1845,7 @@ uint64_t __99__SFSafariCredentialStore__sortCredentials_appID_usingApprovedShare
           objc_enumerationMutation(v18);
         }
 
-        if ([v17 safari_isCaseInsensitiveEqualToString:*(*(&v34 + 1) + 8 * i)])
+        if ([safari_stringByRemovingTopLevelDomainFromHost safari_isCaseInsensitiveEqualToString:*(*(&v34 + 1) + 8 * i)])
         {
           v16 += 3;
           goto LABEL_25;
@@ -1881,7 +1881,7 @@ uint64_t __99__SFSafariCredentialStore__sortCredentials_appID_usingApprovedShare
           objc_enumerationMutation(v23);
         }
 
-        if ([v17 safari_hasCaseInsensitiveSuffix:{*(*(&v30 + 1) + 8 * j), v30}])
+        if ([safari_stringByRemovingTopLevelDomainFromHost safari_hasCaseInsensitiveSuffix:{*(*(&v30 + 1) + 8 * j), v30}])
         {
           v16 += 2;
           goto LABEL_25;
@@ -1904,21 +1904,21 @@ LABEL_25:
   return v16;
 }
 
-+ (void)_getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID:(id)a3 maximumNumberOfEntriesToReturn:(unint64_t)a4 completionHandler:(id)a5
++ (void)_getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID:(id)d maximumNumberOfEntriesToReturn:(unint64_t)return completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __151__SFSafariCredentialStore__getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID_maximumNumberOfEntriesToReturn_completionHandler___block_invoke;
   v12[3] = &unk_279B61FB0;
-  v15 = a1;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a1 getApprovedSharedWebCredentialsEntriesForAppWithAppID:v11 completionHandler:v12];
+  selfCopy = self;
+  returnCopy = return;
+  v13 = dCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
+  [self getApprovedSharedWebCredentialsEntriesForAppWithAppID:v11 completionHandler:v12];
 }
 
 void __151__SFSafariCredentialStore__getApprovedSharedWebCredentialsEntriesSortedByHighestValueForAppWithAppID_maximumNumberOfEntriesToReturn_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2045,33 +2045,33 @@ id __151__SFSafariCredentialStore__getApprovedSharedWebCredentialsEntriesSortedB
   return v5;
 }
 
-+ (void)_approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4
++ (void)_approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v7 length])
+  dCopy = d;
+  handlerCopy = handler;
+  if ([dCopy length])
   {
-    [a1 _approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:v7 completionHandler:v6];
+    [self _approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:dCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x277CBEBF8]);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8]);
   }
 }
 
-+ (void)_approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4
++ (void)_approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!quirksManager)
   {
     v8 = objc_alloc(MEMORY[0x277D499D8]);
-    v9 = [MEMORY[0x277CCA8D8] safari_safariCoreBundle];
-    v10 = [v9 URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 safari_autoFillQuirksDownloadDirectoryURL];
-    v13 = [v8 initWithBuiltInQuirksURL:v10 downloadsDirectoryURL:v12 resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:*MEMORY[0x277D49D10] updateInterval:0.0];
+    safari_safariCoreBundle = [MEMORY[0x277CCA8D8] safari_safariCoreBundle];
+    v10 = [safari_safariCoreBundle URLForResource:@"WBSAutoFillQuirks" withExtension:@"plist"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    safari_autoFillQuirksDownloadDirectoryURL = [defaultManager safari_autoFillQuirksDownloadDirectoryURL];
+    v13 = [v8 initWithBuiltInQuirksURL:v10 downloadsDirectoryURL:safari_autoFillQuirksDownloadDirectoryURL resourceName:@"AutoFillQuirks" resourceVersion:@"1" updateDateDefaultsKey:*MEMORY[0x277D49D10] updateInterval:0.0];
     v14 = quirksManager;
     quirksManager = v13;
 
@@ -2083,12 +2083,12 @@ id __151__SFSafariCredentialStore__getApprovedSharedWebCredentialsEntriesSortedB
   v17[1] = 3221225472;
   v17[2] = __105__SFSafariCredentialStore__approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID_completionHandler___block_invoke;
   v17[3] = &unk_279B61EC8;
-  v19 = v7;
-  v20 = a1;
-  v18 = v6;
-  v15 = v7;
-  v16 = v6;
-  [a1 _sharedWebCredentialsDatabaseEntriesForAppWithAppID:v16 completionHandler:v17];
+  v19 = handlerCopy;
+  selfCopy = self;
+  v18 = dCopy;
+  v15 = handlerCopy;
+  v16 = dCopy;
+  [self _sharedWebCredentialsDatabaseEntriesForAppWithAppID:v16 completionHandler:v17];
 }
 
 void __105__SFSafariCredentialStore__approvedSharedWebCredentialsDatabaseEntriesForAppWithAppID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2206,12 +2206,12 @@ void __105__SFSafariCredentialStore__approvedSharedWebCredentialsDatabaseEntries
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_sharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)a3 completionHandler:(id)a4
++ (void)_sharedWebCredentialsDatabaseEntriesForAppWithAppID:(id)d completionHandler:(id)handler
 {
   v5 = MEMORY[0x277D547B0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithServiceType:0 applicationIdentifier:v7 domain:0];
+  handlerCopy = handler;
+  dCopy = d;
+  v8 = [[v5 alloc] initWithServiceType:0 applicationIdentifier:dCopy domain:0];
 
   v13 = 0;
   v9 = [MEMORY[0x277D547A8] serviceDetailsWithServiceSpecifier:v8 error:&v13];
@@ -2224,15 +2224,15 @@ void __105__SFSafariCredentialStore__approvedSharedWebCredentialsDatabaseEntries
       [SFSafariCredentialStore _sharedWebCredentialsDatabaseEntriesForAppWithAppID:v11 completionHandler:v10];
     }
 
-    v6[2](v6, MEMORY[0x277CBEBF8]);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8]);
   }
 
   else
   {
     v12 = [v9 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_84];
-    v6[2](v6, v12);
+    handlerCopy[2](handlerCopy, v12);
 
-    v6 = v12;
+    handlerCopy = v12;
   }
 }
 
@@ -2244,20 +2244,20 @@ SFSharedWebCredentialsDatabaseEntry *__97__SFSafariCredentialStore__sharedWebCre
   return v3;
 }
 
-+ (BOOL)_appIsEntitledWebBrowser:(id)a3
++ (BOOL)_appIsEntitledWebBrowser:(id)browser
 {
-  if (!a3)
+  if (!browser)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:a3 error:0];
-  v4 = [v3 entitlements];
+  v3 = [MEMORY[0x277CC1E90] bundleRecordWithApplicationIdentifier:browser error:0];
+  entitlements = [v3 entitlements];
   v5 = objc_opt_self();
-  v6 = [v4 objectForKey:@"com.apple.developer.web-browser" ofClass:v5];
+  v6 = [entitlements objectForKey:@"com.apple.developer.web-browser" ofClass:v5];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(entitlements) = [v6 BOOLValue];
+  return entitlements;
 }
 
 + (id)_credentialProviderExtensionHelperProxy
@@ -2267,24 +2267,24 @@ SFSharedWebCredentialsDatabaseEntry *__97__SFSafariCredentialStore__sharedWebCre
   return v2;
 }
 
-+ (void)_getExternalCredentialsForAppID:(id)a3 matchingSharedWebCredentialsDatabaseEntries:(id)a4 websiteURL:(id)a5 isEntitledWebBrowser:(BOOL)a6 hasPasskeyRequest:(BOOL)a7 completion:(id)a8
++ (void)_getExternalCredentialsForAppID:(id)d matchingSharedWebCredentialsDatabaseEntries:(id)entries websiteURL:(id)l isEntitledWebBrowser:(BOOL)browser hasPasskeyRequest:(BOOL)request completion:(id)completion
 {
-  v9 = a7;
-  v10 = a6;
+  requestCopy = request;
+  browserCopy = browser;
   v33[2] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v16 && v10)
+  dCopy = d;
+  entriesCopy = entries;
+  lCopy = l;
+  completionCopy = completion;
+  if (lCopy && browserCopy)
   {
-    v18 = [v16 host];
-    v19 = v18;
-    if (v18)
+    host = [lCopy host];
+    v19 = host;
+    if (host)
     {
-      v33[0] = v18;
-      v20 = [v18 safari_highLevelDomainForPasswordManager];
-      v33[1] = v20;
+      v33[0] = host;
+      safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+      v33[1] = safari_highLevelDomainForPasswordManager;
       v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
     }
 
@@ -2296,25 +2296,25 @@ SFSharedWebCredentialsDatabaseEntry *__97__SFSafariCredentialStore__sharedWebCre
 
   else
   {
-    v21 = [v15 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_87];
+    v21 = [entriesCopy safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_87];
   }
 
   if ([v21 count])
   {
-    v22 = [a1 _credentialProviderExtensionHelperProxy];
+    _credentialProviderExtensionHelperProxy = [self _credentialProviderExtensionHelperProxy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __164__SFSafariCredentialStore__getExternalCredentialsForAppID_matchingSharedWebCredentialsDatabaseEntries_websiteURL_isEntitledWebBrowser_hasPasskeyRequest_completion___block_invoke_2;
     aBlock[3] = &unk_279B62040;
-    v27 = v16;
-    v32 = a1;
-    v28 = v14;
-    v29 = v15;
-    v31 = v17;
-    v23 = v22;
+    v27 = lCopy;
+    selfCopy = self;
+    v28 = dCopy;
+    v29 = entriesCopy;
+    v31 = completionCopy;
+    v23 = _credentialProviderExtensionHelperProxy;
     v30 = v23;
     v24 = _Block_copy(aBlock);
-    if (v9)
+    if (requestCopy)
     {
       [v23 fetchAllCredentialIdentitiesMatchingDomains:v21 completion:v24];
     }
@@ -2327,7 +2327,7 @@ SFSharedWebCredentialsDatabaseEntry *__97__SFSafariCredentialStore__sharedWebCre
 
   else
   {
-    (*(v17 + 2))(v17, MEMORY[0x277CBEBF8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -2374,18 +2374,18 @@ SFSafariCredential *__164__SFSafariCredentialStore__getExternalCredentialsForApp
   return v9;
 }
 
-+ (id)textSuggestionHeaderForExternalCredential:(id)a3
++ (id)textSuggestionHeaderForExternalCredential:(id)credential
 {
-  v4 = [a3 externalCredential];
-  v5 = [a1 titleForCredentialIdentity:v4 formURL:0];
+  externalCredential = [credential externalCredential];
+  v5 = [self titleForCredentialIdentity:externalCredential formURL:0];
 
   return v5;
 }
 
-+ (id)titleForCredentialIdentity:(id)a3 formURL:(id)a4
++ (id)titleForCredentialIdentity:(id)identity formURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  lCopy = l;
   v7 = +[SFAutoFillFeatureManager sharedFeatureManager];
   if ([v7 shouldAutoFillPasswordsFromKeychain])
   {
@@ -2395,37 +2395,37 @@ SFSafariCredential *__164__SFSafariCredentialStore__getExternalCredentialsForApp
   else
   {
     v9 = +[SFCredentialProviderExtensionManager sharedManager];
-    v10 = [v9 getEnabledExtensionsSynchronously];
-    v8 = [v10 count] > 1;
+    getEnabledExtensionsSynchronously = [v9 getEnabledExtensionsSynchronously];
+    v8 = [getEnabledExtensionsSynchronously count] > 1;
   }
 
-  v11 = [v5 site];
-  v12 = [v6 host];
+  site = [identityCopy site];
+  host = [lCopy host];
 
-  v13 = [v12 safari_isCaseInsensitiveEqualToString:v11];
+  v13 = [host safari_isCaseInsensitiveEqualToString:site];
   if (!v13)
   {
     goto LABEL_14;
   }
 
-  v14 = [v5 type];
-  if (v14 <= 1)
+  type = [identityCopy type];
+  if (type <= 1)
   {
-    if (!v14)
+    if (!type)
     {
       goto LABEL_19;
     }
 
-    if (v14 == 1)
+    if (type == 1)
     {
       if (v8)
       {
         v15 = MEMORY[0x277CCACA8];
 LABEL_26:
         v19 = _WBSLocalizedString();
-        v20 = [v5 owningExtensionState];
-        v21 = [v20 localizedDisplayName];
-        [v15 stringWithFormat:v19, v21, v23];
+        owningExtensionState = [identityCopy owningExtensionState];
+        localizedDisplayName = [owningExtensionState localizedDisplayName];
+        [v15 stringWithFormat:v19, localizedDisplayName, v23];
         goto LABEL_27;
       }
 
@@ -2433,8 +2433,8 @@ LABEL_26:
     }
 
 LABEL_14:
-    v16 = [v5 type];
-    switch(v16)
+    type2 = [identityCopy type];
+    switch(type2)
     {
       case 4:
         v17 = MEMORY[0x277CCACA8];
@@ -2442,9 +2442,9 @@ LABEL_14:
         {
 LABEL_23:
           v19 = _WBSLocalizedString();
-          v20 = [v5 owningExtensionState];
-          v21 = [v20 localizedDisplayName];
-          [v17 stringWithFormat:v19, v11, v21];
+          owningExtensionState = [identityCopy owningExtensionState];
+          localizedDisplayName = [owningExtensionState localizedDisplayName];
+          [v17 stringWithFormat:v19, site, localizedDisplayName];
           v18 = LABEL_27:;
 
 LABEL_29:
@@ -2453,7 +2453,7 @@ LABEL_29:
 
 LABEL_28:
         v19 = _WBSLocalizedString();
-        v18 = [v17 stringWithFormat:v19, v11];
+        v18 = [v17 stringWithFormat:v19, site];
         goto LABEL_29;
       case 2:
         v17 = MEMORY[0x277CCACA8];
@@ -2478,7 +2478,7 @@ LABEL_19:
     goto LABEL_30;
   }
 
-  if (v14 == 2)
+  if (type == 2)
   {
     if (v8)
     {
@@ -2489,7 +2489,7 @@ LABEL_19:
     goto LABEL_33;
   }
 
-  if (v14 != 4)
+  if (type != 4)
   {
     goto LABEL_14;
   }
@@ -2507,16 +2507,16 @@ LABEL_30:
   return v18;
 }
 
-+ (void)_getBundleIDForEnabledCredentialProvidersWithCompletionHandler:(id)a3
++ (void)_getBundleIDForEnabledCredentialProvidersWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[SFCredentialProviderExtensionManager sharedManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __90__SFSafariCredentialStore__getBundleIDForEnabledCredentialProvidersWithCompletionHandler___block_invoke;
   v6[3] = &unk_279B62088;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 getEnabledExtensionsWithCompletion:v6];
 }
 
@@ -2527,18 +2527,18 @@ void __90__SFSafariCredentialStore__getBundleIDForEnabledCredentialProvidersWith
   (*(v2 + 16))(v2, v3);
 }
 
-+ (void)getExternalPasskeyCredentialIdentitiesForDomains:(id)a3 completionHandler:(id)a4
++ (void)getExternalPasskeyCredentialIdentitiesForDomains:(id)domains completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _credentialProviderExtensionHelperProxy];
+  handlerCopy = handler;
+  domainsCopy = domains;
+  _credentialProviderExtensionHelperProxy = [self _credentialProviderExtensionHelperProxy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__SFSafariCredentialStore_getExternalPasskeyCredentialIdentitiesForDomains_completionHandler___block_invoke;
   v10[3] = &unk_279B62088;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchPasskeyCredentialIdentitiesMatchingDomains:v7 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [_credentialProviderExtensionHelperProxy fetchPasskeyCredentialIdentitiesMatchingDomains:domainsCopy completion:v10];
 }
 
 void __94__SFSafariCredentialStore_getExternalPasskeyCredentialIdentitiesForDomains_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2547,17 +2547,17 @@ void __94__SFSafariCredentialStore_getExternalPasskeyCredentialIdentitiesForDoma
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler:(id)a3
++ (void)getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 _credentialProviderExtensionHelperProxy];
+  handlerCopy = handler;
+  _credentialProviderExtensionHelperProxy = [self _credentialProviderExtensionHelperProxy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__SFSafariCredentialStore_getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler___block_invoke;
   v7[3] = &unk_279B62088;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAllPaskeyCredentialIdentitiesWithCompletion:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [_credentialProviderExtensionHelperProxy fetchAllPaskeyCredentialIdentitiesWithCompletion:v7];
 }
 
 void __90__SFSafariCredentialStore_getAllExternalPasskeyCredentialIdentitiesWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2566,26 +2566,26 @@ void __90__SFSafariCredentialStore_getAllExternalPasskeyCredentialIdentitiesWith
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)getOneTimeCodeCredentialsForAppWithAppID:(id)a3 externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)a4 websiteURL:(id)a5 completionHandler:(id)a6
++ (void)getOneTimeCodeCredentialsForAppWithAppID:(id)d externallyVerifiedAndApprovedSharedWebCredentialDomains:(id)domains websiteURL:(id)l completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [a1 _appIsEntitledWebBrowser:v13];
+  domainsCopy = domains;
+  lCopy = l;
+  handlerCopy = handler;
+  dCopy = d;
+  v14 = [self _appIsEntitledWebBrowser:dCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __153__SFSafariCredentialStore_getOneTimeCodeCredentialsForAppWithAppID_externallyVerifiedAndApprovedSharedWebCredentialDomains_websiteURL_completionHandler___block_invoke;
   v18[3] = &unk_279B620F8;
-  v19 = v10;
-  v20 = v11;
+  v19 = domainsCopy;
+  v20 = lCopy;
   v23 = v14;
-  v21 = v12;
-  v22 = a1;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  [a1 _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:v13 completionHandler:v18];
+  v21 = handlerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v16 = lCopy;
+  v17 = domainsCopy;
+  [self _approvedAndValidSharedWebCredentialsDatabaseEntriesForAppWithAppID:dCopy completionHandler:v18];
 }
 
 void __153__SFSafariCredentialStore_getOneTimeCodeCredentialsForAppWithAppID_externallyVerifiedAndApprovedSharedWebCredentialDomains_websiteURL_completionHandler___block_invoke(uint64_t a1, void *a2)

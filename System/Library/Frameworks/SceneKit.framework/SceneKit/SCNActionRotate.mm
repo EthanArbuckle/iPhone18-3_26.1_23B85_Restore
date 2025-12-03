@@ -1,14 +1,14 @@
 @interface SCNActionRotate
-+ (id)rotateByAngle:(double)a3 aroundAxis:(SCNVector3)a4 duration:(double)a5;
-+ (id)rotateByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6;
-+ (id)rotateToAxisAngle:(SCNVector4)a3 duration:(double)a4;
-+ (id)rotateToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6 shortestUnitArc:(BOOL)a7;
++ (id)rotateByAngle:(double)angle aroundAxis:(SCNVector3)axis duration:(double)duration;
++ (id)rotateByX:(double)x y:(double)y z:(double)z duration:(double)duration;
++ (id)rotateToAxisAngle:(SCNVector4)angle duration:(double)duration;
++ (id)rotateToX:(double)x y:(double)y z:(double)z duration:(double)duration shortestUnitArc:(BOOL)arc;
 - (SCNActionRotate)init;
-- (SCNActionRotate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionRotate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionRotate
@@ -25,7 +25,7 @@
   return 0;
 }
 
-- (SCNActionRotate)initWithCoder:(id)a3
+- (SCNActionRotate)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionRotate;
@@ -37,49 +37,49 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNActionRotate;
   [(SCNAction *)&v6 encodeWithCoder:?];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_rotX"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction->var20), @"_rotY"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction->var24), @"_rotZ"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var2), @"_lastRotX"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var2 + 1)), @"_lastRotY"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var3), @"_lastRotZ"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE1(self->_mycaction[1].var15)), @"_isReversed"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE2(self->_mycaction[1].var15)), @"_isRelative"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", LOBYTE(self->_mycaction[1].var15)), @"_isAxisAngle"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE3(self->_mycaction[1].var15)), @"_isUnitArc"}];
-  SCNEncodeVector4(a3, @"_axisRot", COERCE_FLOAT(*&self->_mycaction[1].var4), COERCE_FLOAT(HIDWORD(*&self->_mycaction[1].var4)), COERCE_FLOAT(*&self->_mycaction[1].var5), COERCE_FLOAT(HIDWORD(*&self->_mycaction[1].var4)));
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_rotX"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction->var20), @"_rotY"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction->var24), @"_rotZ"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var2), @"_lastRotX"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var2 + 1)), @"_lastRotY"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var3), @"_lastRotZ"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE1(self->_mycaction[1].var15)), @"_isReversed"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE2(self->_mycaction[1].var15)), @"_isRelative"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", LOBYTE(self->_mycaction[1].var15)), @"_isAxisAngle"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE3(self->_mycaction[1].var15)), @"_isUnitArc"}];
+  SCNEncodeVector4(coder, @"_axisRot", COERCE_FLOAT(*&self->_mycaction[1].var4), COERCE_FLOAT(HIDWORD(*&self->_mycaction[1].var4)), COERCE_FLOAT(*&self->_mycaction[1].var5), COERCE_FLOAT(HIDWORD(*&self->_mycaction[1].var4)));
   mycaction = self->_mycaction;
   if (BYTE3(mycaction[1].var15) == 1)
   {
-    SCNEncodeVector4(a3, @"_qRot", COERCE_FLOAT(*&mycaction[1].var10), COERCE_FLOAT(HIDWORD(*&mycaction[1].var10)), COERCE_FLOAT(mycaction[1].var12), COERCE_FLOAT(HIDWORD(*&mycaction[1].var10)));
+    SCNEncodeVector4(coder, @"_qRot", COERCE_FLOAT(*&mycaction[1].var10), COERCE_FLOAT(HIDWORD(*&mycaction[1].var10)), COERCE_FLOAT(mycaction[1].var12), COERCE_FLOAT(HIDWORD(*&mycaction[1].var10)));
   }
 }
 
-+ (id)rotateByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6
++ (id)rotateByX:(double)x y:(double)y z:(double)z duration:(double)duration
 {
   v10 = objc_alloc_init(SCNActionRotate);
   mycaction = v10->_mycaction;
   BYTE2(mycaction[1].var15) = 1;
-  v12 = a3;
-  mycaction->var19 = v12;
-  v13 = a4;
-  *&v10->_mycaction->var20 = v13;
-  v14 = a5;
-  *&v10->_mycaction->var24 = v14;
-  [(SCNAction *)v10 setDuration:a6];
+  xCopy = x;
+  mycaction->var19 = xCopy;
+  yCopy = y;
+  *&v10->_mycaction->var20 = yCopy;
+  zCopy = z;
+  *&v10->_mycaction->var24 = zCopy;
+  [(SCNAction *)v10 setDuration:duration];
   return v10;
 }
 
-+ (id)rotateByAngle:(double)a3 aroundAxis:(SCNVector3)a4 duration:(double)a5
++ (id)rotateByAngle:(double)angle aroundAxis:(SCNVector3)axis duration:(double)duration
 {
-  z = a4.z;
-  y = a4.y;
-  x = a4.x;
+  z = axis.z;
+  y = axis.y;
+  x = axis.x;
   v10 = objc_alloc_init(SCNActionRotate);
   mycaction = v10->_mycaction;
   *&mycaction[1].var4 = x;
@@ -87,19 +87,19 @@
   BYTE2(mycaction[1].var15) = 1;
   *(&v12[1].var4 + 1) = y;
   *&v10->_mycaction[1].var5 = z;
-  v13 = a3;
-  *(&v10->_mycaction[1].var5 + 1) = v13;
+  angleCopy = angle;
+  *(&v10->_mycaction[1].var5 + 1) = angleCopy;
   LOBYTE(v10->_mycaction[1].var15) = 1;
-  [(SCNAction *)v10 setDuration:a5];
+  [(SCNAction *)v10 setDuration:duration];
   return v10;
 }
 
-+ (id)rotateToAxisAngle:(SCNVector4)a3 duration:(double)a4
++ (id)rotateToAxisAngle:(SCNVector4)angle duration:(double)duration
 {
-  z = a3.z;
-  w = a3.w;
-  x = a3.x;
-  y = a3.y;
+  z = angle.z;
+  w = angle.w;
+  x = angle.x;
+  y = angle.y;
   v5 = objc_alloc_init(SCNActionRotate);
   mycaction = v5->_mycaction;
   *&v7 = __PAIR64__(LODWORD(y), LODWORD(x));
@@ -107,37 +107,37 @@
   BYTE2(mycaction[1].var15) = 0;
   *&mycaction[1].var4 = v7;
   LOBYTE(v5->_mycaction[1].var15) = 1;
-  [(SCNAction *)v5 setDuration:a4];
+  [(SCNAction *)v5 setDuration:duration];
   return v5;
 }
 
-+ (id)rotateToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6 shortestUnitArc:(BOOL)a7
++ (id)rotateToX:(double)x y:(double)y z:(double)z duration:(double)duration shortestUnitArc:(BOOL)arc
 {
   v12 = objc_alloc_init(SCNActionRotate);
   mycaction = v12->_mycaction;
   BYTE2(mycaction[1].var15) = 0;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (a7)
+  xCopy = x;
+  yCopy = y;
+  zCopy = z;
+  if (arc)
   {
-    C3DQuaternionMakeEuler(&mycaction[1].var10, v14, v15, v16);
+    C3DQuaternionMakeEuler(&mycaction[1].var10, xCopy, yCopy, zCopy);
     mycaction = v12->_mycaction;
   }
 
-  mycaction->var19 = v14;
-  *&v12->_mycaction->var20 = v15;
-  *&v12->_mycaction->var24 = v16;
-  [(SCNAction *)v12 setDuration:a6];
-  BYTE3(v12->_mycaction[1].var15) = a7;
+  mycaction->var19 = xCopy;
+  *&v12->_mycaction->var20 = yCopy;
+  *&v12->_mycaction->var24 = zCopy;
+  [(SCNAction *)v12 setDuration:duration];
+  BYTE3(v12->_mycaction[1].var15) = arc;
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SCNActionRotate;
-  result = [(SCNAction *)&v9 copyWithZone:a3];
+  result = [(SCNAction *)&v9 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 272) = LODWORD(mycaction[1].var15);

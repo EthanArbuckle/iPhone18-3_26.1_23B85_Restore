@@ -1,35 +1,35 @@
 @interface SHRegion
-- (SHRegion)initWithGeohash:(id)a3;
-- (SHRegion)initWithLocation:(id)a3;
+- (SHRegion)initWithGeohash:(id)geohash;
+- (SHRegion)initWithLocation:(id)location;
 @end
 
 @implementation SHRegion
 
-- (SHRegion)initWithGeohash:(id)a3
+- (SHRegion)initWithGeohash:(id)geohash
 {
-  v5 = a3;
+  geohashCopy = geohash;
   v9.receiver = self;
   v9.super_class = SHRegion;
   v6 = [(SHRegion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geohash, a3);
+    objc_storeStrong(&v6->_geohash, geohash);
   }
 
   return v7;
 }
 
-- (SHRegion)initWithLocation:(id)a3
+- (SHRegion)initWithLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   v9.receiver = self;
   v9.super_class = SHRegion;
   v6 = [(SHRegion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_location, a3);
+    objc_storeStrong(&v6->_location, location);
   }
 
   return v7;

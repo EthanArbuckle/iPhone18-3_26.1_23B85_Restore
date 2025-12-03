@@ -1,18 +1,18 @@
 @interface PlayerProfileInfoBarView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSArray)accessibilityInfoItemPairs;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlayerProfileInfoBarView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_24E15E02C(width);
   v7 = v6;
 
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_24E15FA4C(width, a4, v7);
+  selfCopy = self;
+  v8 = sub_24E15FA4C(width, in, selfCopy);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -48,27 +48,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E15E524();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E15EEF0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E15EEF0(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E15F0B0(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_24E15F0B0(scrollCopy);
 }
 
 - (NSArray)accessibilityInfoItemPairs
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E15F66C();
 
   if (v3)

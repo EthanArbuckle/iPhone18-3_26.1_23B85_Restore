@@ -1,58 +1,58 @@
 @interface _UICollectionViewLayoutInteractionStateModule
-- (BOOL)_shouldAdjustLayoutToDrawTopSeparatorInSection:(uint64_t)a1;
+- (BOOL)_shouldAdjustLayoutToDrawTopSeparatorInSection:(uint64_t)section;
 - (_UICollectionViewLayoutInteractionStateModuleHost)host;
-- (uint64_t)_itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:(void *)a3 cellGroupingPreference:(_BYTE *)a4 backgroundIsInset:;
-- (uint64_t)enumerateSectionsAfterSectionIndex:(void *)a3 enumerator:;
+- (uint64_t)_itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:(void *)path cellGroupingPreference:(_BYTE *)preference backgroundIsInset:;
+- (uint64_t)enumerateSectionsAfterSectionIndex:(void *)index enumerator:;
 - (uint64_t)itemAtIndexPathIsBeingReordered:(uint64_t)result;
-- (uint64_t)itemAtIndexPathIsSelected:(uint64_t)a1;
-- (uint64_t)selectionGroupingForItemAtIndexPath:(uint64_t)a1;
-- (uint64_t)swipeActionsStyleForSwipedItemAtIndexPath:(uint64_t)a1;
-- (void)_noteCellWillBeginProcessing:(void *)a3 atIndexPath:;
-- (void)initWithHost:(void *)a1;
-- (void)performPreferredAttributesProcessingBlock:(void *)a3 withLayoutAttributes:(void *)a4 forView:;
+- (uint64_t)itemAtIndexPathIsSelected:(uint64_t)selected;
+- (uint64_t)selectionGroupingForItemAtIndexPath:(uint64_t)path;
+- (uint64_t)swipeActionsStyleForSwipedItemAtIndexPath:(uint64_t)path;
+- (void)_noteCellWillBeginProcessing:(void *)processing atIndexPath:;
+- (void)initWithHost:(void *)host;
+- (void)performPreferredAttributesProcessingBlock:(void *)block withLayoutAttributes:(void *)attributes forView:;
 @end
 
 @implementation _UICollectionViewLayoutInteractionStateModule
 
-- (void)initWithHost:(void *)a1
+- (void)initWithHost:(void *)host
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (host)
   {
     if (!v3)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel_initWithHost_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"host"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithHost_ object:host file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"host"}];
     }
 
-    v10.receiver = a1;
+    v10.receiver = host;
     v10.super_class = _UICollectionViewLayoutInteractionStateModule;
     v5 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v5;
+    host = v5;
     if (v5)
     {
       objc_storeWeak(v5 + 3, v4);
-      v6 = [objc_opt_class() invalidationContextClass];
-      v7 = a1[2];
-      a1[2] = v6;
+      invalidationContextClass = [objc_opt_class() invalidationContextClass];
+      v7 = host[2];
+      host[2] = invalidationContextClass;
     }
   }
 
-  return a1;
+  return host;
 }
 
-- (void)performPreferredAttributesProcessingBlock:(void *)a3 withLayoutAttributes:(void *)a4 forView:
+- (void)performPreferredAttributesProcessingBlock:(void *)block withLayoutAttributes:(void *)attributes forView:
 {
   v12 = a2;
-  v7 = a4;
-  if (a1)
+  attributesCopy = attributes;
+  if (self)
   {
-    v8 = a3;
-    v9 = v8;
-    if (v8)
+    blockCopy = block;
+    v9 = blockCopy;
+    if (blockCopy)
     {
-      v10 = v8[288] & 1;
+      v10 = blockCopy[288] & 1;
     }
 
     else
@@ -60,13 +60,13 @@
       v10 = 0;
     }
 
-    v11 = [v8 indexPath];
+    indexPath = [blockCopy indexPath];
 
     if (v10)
     {
-      [(_UICollectionViewLayoutInteractionStateModule *)a1 _noteCellWillBeginProcessing:v7 atIndexPath:v11];
+      [(_UICollectionViewLayoutInteractionStateModule *)self _noteCellWillBeginProcessing:attributesCopy atIndexPath:indexPath];
       v12[2]();
-      [*(a1 + 8) removeObjectForKey:v11];
+      [*(self + 8) removeObjectForKey:indexPath];
     }
 
     else
@@ -76,17 +76,17 @@
   }
 }
 
-- (void)_noteCellWillBeginProcessing:(void *)a3 atIndexPath:
+- (void)_noteCellWillBeginProcessing:(void *)processing atIndexPath:
 {
   v13 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  processingCopy = processing;
+  v6 = processingCopy;
+  if (self)
   {
     v7 = v13;
     if (v13)
     {
-      if (v5)
+      if (processingCopy)
       {
         goto LABEL_4;
       }
@@ -94,8 +94,8 @@
 
     else
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:sel__noteCellWillBeginProcessing_atIndexPath_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"cell"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__noteCellWillBeginProcessing_atIndexPath_ object:self file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"cell"}];
 
       v7 = 0;
       if (v6)
@@ -104,12 +104,12 @@
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel__noteCellWillBeginProcessing_atIndexPath_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__noteCellWillBeginProcessing_atIndexPath_ object:self file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:318 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
 
     v7 = v13;
 LABEL_4:
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     if (v8)
     {
       [v8 setObject:v7 forKeyedSubscript:v6];
@@ -118,22 +118,22 @@ LABEL_4:
     else
     {
       v9 = [MEMORY[0x1E695DF90] dictionaryWithObject:v7 forKey:v6];
-      v10 = *(a1 + 8);
-      *(a1 + 8) = v9;
+      v10 = *(self + 8);
+      *(self + 8) = v9;
     }
   }
 }
 
-- (uint64_t)_itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:(void *)a3 cellGroupingPreference:(_BYTE *)a4 backgroundIsInset:
+- (uint64_t)_itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:(void *)path cellGroupingPreference:(_BYTE *)preference backgroundIsInset:
 {
   v38 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  v9 = [WeakRetained collectionView];
+  WeakRetained = objc_loadWeakRetained((self + 24));
+  collectionView = [WeakRetained collectionView];
 
-  v10 = [v9 _selectionController];
-  v11 = v10;
-  if (!v9 || !v10)
+  _selectionController = [collectionView _selectionController];
+  v11 = _selectionController;
+  if (!collectionView || !_selectionController)
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UICVGrouping", &_MergedGlobals_1402);
     if ((*CategoryCachedImpl & 1) == 0)
@@ -153,7 +153,7 @@ LABEL_4:
     goto LABEL_35;
   }
 
-  if ([v9 _isReorderingItemAtIndexPath:v7])
+  if ([collectionView _isReorderingItemAtIndexPath:v7])
   {
     v12 = __UILogGetCategoryCachedImpl("UICVGrouping", &qword_1ED4A3048);
     if ((*v12 & 1) == 0)
@@ -173,7 +173,7 @@ LABEL_4:
 LABEL_35:
     _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, v14, buf, 0xCu);
 LABEL_8:
-    v16 = 0;
+    _backgroundFillIsCustomized = 0;
     goto LABEL_32;
   }
 
@@ -190,24 +190,24 @@ LABEL_8:
   v18 = v7;
   if (!v18)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:sel__cellForItemAtIndexPath_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__cellForItemAtIndexPath_ object:self file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  v19 = [*(a1 + 8) objectForKeyedSubscript:v18];
+  v19 = [*(self + 8) objectForKeyedSubscript:v18];
   if (!v19)
   {
-    v20 = objc_loadWeakRetained((a1 + 24));
-    v21 = [v20 collectionView];
-    v19 = [v21 cellForItemAtIndexPath:v18];
+    v20 = objc_loadWeakRetained((self + 24));
+    collectionView2 = [v20 collectionView];
+    v19 = [collectionView2 cellForItemAtIndexPath:v18];
   }
 
-  if (a3)
+  if (path)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *a3 = [v19 _backgroundViewConfigurationGrouping];
+      *path = [v19 _backgroundViewConfigurationGrouping];
     }
   }
 
@@ -215,22 +215,22 @@ LABEL_8:
   {
     if (v19)
     {
-      v22 = [v19 _layoutAttributes];
-      v23 = [v19 _isStyledAsHeaderOrFooterFromLayoutAttributes:v22];
+      _layoutAttributes = [v19 _layoutAttributes];
+      v23 = [v19 _isStyledAsHeaderOrFooterFromLayoutAttributes:_layoutAttributes];
 
       if (v23)
       {
-        v16 = 0;
+        _backgroundFillIsCustomized = 0;
       }
 
       else
       {
-        v16 = [v19 _backgroundFillIsCustomized];
+        _backgroundFillIsCustomized = [v19 _backgroundFillIsCustomized];
       }
 
-      if (a4)
+      if (preference)
       {
-        *a4 = [v19 _backgroundIsVerticallyInset];
+        *preference = [v19 _backgroundIsVerticallyInset];
       }
 
       v26 = __UILogGetCategoryCachedImpl("UICVGrouping", &qword_1ED4A3060);
@@ -264,7 +264,7 @@ LABEL_8:
         }
       }
 
-      v16 = 1;
+      _backgroundFillIsCustomized = 1;
     }
   }
 
@@ -282,19 +282,19 @@ LABEL_8:
       }
     }
 
-    v16 = 0;
+    _backgroundFillIsCustomized = 0;
   }
 
 LABEL_32:
-  return v16;
+  return _backgroundFillIsCustomized;
 }
 
-- (uint64_t)selectionGroupingForItemAtIndexPath:(uint64_t)a1
+- (uint64_t)selectionGroupingForItemAtIndexPath:(uint64_t)path
 {
   v54 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!path)
   {
     v9 = 0;
     goto LABEL_11;
@@ -302,12 +302,12 @@ LABEL_32:
 
   if (!v3)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:sel_selectionGroupingForItemAtIndexPath_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_selectionGroupingForItemAtIndexPath_ object:path file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  v6 = [WeakRetained _interactionStateModule:a1 layoutSectionForIndex:{objc_msgSend(v4, "section")}];
+  WeakRetained = objc_loadWeakRetained((path + 24));
+  v6 = [WeakRetained _interactionStateModule:path layoutSectionForIndex:{objc_msgSend(v4, "section")}];
 
   if (!v6)
   {
@@ -328,7 +328,7 @@ LABEL_32:
 
   v43 = 0;
   v42 = 0;
-  v8 = [(_UICollectionViewLayoutInteractionStateModule *)a1 _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v4 cellGroupingPreference:&v43 backgroundIsInset:&v42];
+  v8 = [(_UICollectionViewLayoutInteractionStateModule *)path _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v4 cellGroupingPreference:&v43 backgroundIsInset:&v42];
   v9 = v43;
   if ((v8 & 1) != 0 || v43)
   {
@@ -386,13 +386,13 @@ LABEL_32:
     buf[0] = 0;
     v16 = MEMORY[0x1E696AC88];
     v17 = v4;
-    v18 = [v17 item];
-    v19 = [v17 section];
+    item = [v17 item];
+    section = [v17 section];
 
-    v20 = [v16 indexPathForItem:v18 + 1 inSection:v19];
-    LODWORD(v18) = [(_UICollectionViewLayoutInteractionStateModule *)a1 _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v20 cellGroupingPreference:0 backgroundIsInset:buf];
+    v20 = [v16 indexPathForItem:item + 1 inSection:section];
+    LODWORD(item) = [(_UICollectionViewLayoutInteractionStateModule *)path _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v20 cellGroupingPreference:0 backgroundIsInset:buf];
 
-    v21 = v18 & (buf[0] ^ 1);
+    v21 = item & (buf[0] ^ 1);
     v22 = v17;
     if ([v22 item] <= 0)
     {
@@ -405,7 +405,7 @@ LABEL_32:
       buf[0] = 0;
       if (v23)
       {
-        v24 = [(_UICollectionViewLayoutInteractionStateModule *)a1 _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v23 cellGroupingPreference:0 backgroundIsInset:buf];
+        v24 = [(_UICollectionViewLayoutInteractionStateModule *)path _itemIsSelectedOrHighlightedAndHasBackgroundFillForGroupingAtIndexPath:v23 cellGroupingPreference:0 backgroundIsInset:buf];
         v25 = v24 & (buf[0] ^ 1);
 
         v26 = 1;
@@ -496,21 +496,21 @@ LABEL_11:
   return v9;
 }
 
-- (uint64_t)itemAtIndexPathIsSelected:(uint64_t)a1
+- (uint64_t)itemAtIndexPathIsSelected:(uint64_t)selected
 {
-  if (!a1)
+  if (!selected)
   {
     return 0;
   }
 
   v3 = a2;
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  v5 = [WeakRetained collectionView];
-  v6 = [v5 _selectionController];
-  v7 = v6;
-  if (v6)
+  WeakRetained = objc_loadWeakRetained((selected + 24));
+  collectionView = [WeakRetained collectionView];
+  _selectionController = [collectionView _selectionController];
+  v7 = _selectionController;
+  if (_selectionController)
   {
-    v8 = [*(v6 + 8) containsObject:v3];
+    v8 = [*(_selectionController + 8) containsObject:v3];
   }
 
   else
@@ -528,8 +528,8 @@ LABEL_11:
     v2 = result;
     v3 = a2;
     WeakRetained = objc_loadWeakRetained((v2 + 24));
-    v5 = [WeakRetained collectionView];
-    v6 = [v5 _isReorderingItemAtIndexPath:v3];
+    collectionView = [WeakRetained collectionView];
+    v6 = [collectionView _isReorderingItemAtIndexPath:v3];
 
     return v6;
   }
@@ -537,28 +537,28 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)_shouldAdjustLayoutToDrawTopSeparatorInSection:(uint64_t)a1
+- (BOOL)_shouldAdjustLayoutToDrawTopSeparatorInSection:(uint64_t)section
 {
-  if (!a1)
+  if (!section)
   {
     return 0;
   }
 
   if (a2 < 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel__shouldAdjustLayoutToDrawTopSeparatorInSection_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__shouldAdjustLayoutToDrawTopSeparatorInSection_ object:section file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex >= 0"}];
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  v5 = [WeakRetained collectionView];
+  WeakRetained = objc_loadWeakRetained((section + 24));
+  collectionView = [WeakRetained collectionView];
 
-  v6 = [v5 _collectionViewData];
-  v7 = v6;
+  _collectionViewData = [collectionView _collectionViewData];
+  v7 = _collectionViewData;
   v8 = 0;
-  if (v5 && v6)
+  if (collectionView && _collectionViewData)
   {
-    if ([v5 _shouldAdjustLayoutToDrawTopSeparator])
+    if ([collectionView _shouldAdjustLayoutToDrawTopSeparator])
     {
       v9 = [(UICollectionViewData *)v7 validatedIndexPathForItemAtGlobalIndex:?];
       v10 = v9;
@@ -582,11 +582,11 @@ LABEL_11:
   return v8;
 }
 
-- (uint64_t)enumerateSectionsAfterSectionIndex:(void *)a3 enumerator:
+- (uint64_t)enumerateSectionsAfterSectionIndex:(void *)index enumerator:
 {
-  v5 = a3;
-  v6 = v5;
-  if (!a1)
+  indexCopy = index;
+  v6 = indexCopy;
+  if (!self)
   {
     v11 = 0;
     goto LABEL_18;
@@ -594,8 +594,8 @@ LABEL_11:
 
   if (a2 < 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:sel_enumerateSectionsAfterSectionIndex_enumerator_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_enumerateSectionsAfterSectionIndex_enumerator_ object:self file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"sectionIndex >= 0"}];
 
     if (v6)
     {
@@ -603,25 +603,25 @@ LABEL_11:
     }
   }
 
-  else if (v5)
+  else if (indexCopy)
   {
     goto LABEL_4;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:sel_enumerateSectionsAfterSectionIndex_enumerator_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel_enumerateSectionsAfterSectionIndex_enumerator_ object:self file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
 
 LABEL_4:
-  WeakRetained = objc_loadWeakRetained((a1 + 24));
-  v8 = [WeakRetained collectionView];
-  v9 = [v8 _collectionViewData];
-  v10 = v9;
+  WeakRetained = objc_loadWeakRetained((self + 24));
+  collectionView = [WeakRetained collectionView];
+  _collectionViewData = [collectionView _collectionViewData];
+  v10 = _collectionViewData;
   v11 = 0;
-  if (WeakRetained && v8 && v9)
+  if (WeakRetained && collectionView && _collectionViewData)
   {
-    if ((*(v9 + 96) & 2) == 0)
+    if ((*(_collectionViewData + 96) & 2) == 0)
     {
-      [(UICollectionViewData *)v9 _updateItemCounts];
+      [(UICollectionViewData *)_collectionViewData _updateItemCounts];
     }
 
     v12 = (v10[14] - v10[13]) >> 3;
@@ -632,7 +632,7 @@ LABEL_4:
 
     else
     {
-      v13 = [WeakRetained _interactionStateModule:a1 layoutSectionForIndex:a2 + 1];
+      v13 = [WeakRetained _interactionStateModule:self layoutSectionForIndex:a2 + 1];
       v11 = v13 != 0;
       if (v13)
       {
@@ -640,7 +640,7 @@ LABEL_4:
         v23 = v13 != 0;
         do
         {
-          [WeakRetained _interactionStateModule:a1 spacingAfterLayoutSection:a2];
+          [WeakRetained _interactionStateModule:self spacingAfterLayoutSection:a2];
           v16 = v15;
           v24 = 0;
           v17 = [(UICollectionViewData *)v10 numberOfItemsInSection:?];
@@ -658,7 +658,7 @@ LABEL_4:
             break;
           }
 
-          v14 = [WeakRetained _interactionStateModule:a1 layoutSectionForIndex:v19];
+          v14 = [WeakRetained _interactionStateModule:self layoutSectionForIndex:v19];
           a2 = v19 - 1;
         }
 
@@ -672,23 +672,23 @@ LABEL_18:
   return v11;
 }
 
-- (uint64_t)swipeActionsStyleForSwipedItemAtIndexPath:(uint64_t)a1
+- (uint64_t)swipeActionsStyleForSwipedItemAtIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (path)
   {
     if (!v3)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_swipeActionsStyleForSwipedItemAtIndexPath_ object:a1 file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_swipeActionsStyleForSwipedItemAtIndexPath_ object:path file:@"_UICollectionViewLayoutInteractionStateModule.m" lineNumber:274 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    a1 = [WeakRetained _interactionStateModule:a1 swipeActionsStyleForSwipedItemAtIndexPath:v4];
+    WeakRetained = objc_loadWeakRetained((path + 24));
+    path = [WeakRetained _interactionStateModule:path swipeActionsStyleForSwipedItemAtIndexPath:v4];
   }
 
-  return a1;
+  return path;
 }
 
 - (_UICollectionViewLayoutInteractionStateModuleHost)host

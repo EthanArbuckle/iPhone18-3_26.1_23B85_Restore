@@ -1,27 +1,27 @@
 @interface StoryThumbnailImageGenerator.Request
-- (BOOL)engine:(id)a3 shouldRenderLayout:(id)a4 sprites:(id)a5;
+- (BOOL)engine:(id)engine shouldRenderLayout:(id)layout sprites:(id)sprites;
 - (_TtCC12PhotosUICore28StoryThumbnailImageGeneratorP33_2AC47450565EC896EF788DB342AA90677Request)init;
-- (void)engineSetNeedsUpdate:(id)a3;
+- (void)engineSetNeedsUpdate:(id)update;
 @end
 
 @implementation StoryThumbnailImageGenerator.Request
 
-- (BOOL)engine:(id)a3 shouldRenderLayout:(id)a4 sprites:(id)a5
+- (BOOL)engine:(id)engine shouldRenderLayout:(id)layout sprites:(id)sprites
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  LOBYTE(self) = sub_1A44AB448(v8, v9, v10);
+  engineCopy = engine;
+  layoutCopy = layout;
+  spritesCopy = sprites;
+  selfCopy = self;
+  LOBYTE(self) = sub_1A44AB448(engineCopy, layoutCopy, spritesCopy);
 
   return self & 1;
 }
 
-- (void)engineSetNeedsUpdate:(id)a3
+- (void)engineSetNeedsUpdate:(id)update
 {
   if (*(&self->super.isa + OBJC_IVAR____TtCC12PhotosUICore28StoryThumbnailImageGeneratorP33_2AC47450565EC896EF788DB342AA90677Request_waitingForResources) == 1)
   {
-    [a3 updateIfNeeded];
+    [update updateIfNeeded];
   }
 }
 

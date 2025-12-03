@@ -1,18 +1,18 @@
 @interface MDLVertexDescriptor
-+ (id)_decodeVertexDescriptorAttributesWithCoder:(id)a3;
-+ (id)_decodeVertexDescriptorLayoutsWithCoder:(id)a3;
-+ (id)decodeVertexDescriptorWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_decodeVertexDescriptorAttributesWithCoder:(id)coder;
++ (id)_decodeVertexDescriptorLayoutsWithCoder:(id)coder;
++ (id)decodeVertexDescriptorWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (MDLVertexAttribute)attributeNamed:(NSString *)name;
 - (MDLVertexDescriptor)init;
 - (MDLVertexDescriptor)initWithVertexDescriptor:(MDLVertexDescriptor *)vertexDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_encodeVertexDescriptorAttributesWithCoder:(id)a3;
-- (void)_encodeVertexDescriptorLayoutsWithCoder:(id)a3;
+- (void)_encodeVertexDescriptorAttributesWithCoder:(id)coder;
+- (void)_encodeVertexDescriptorLayoutsWithCoder:(id)coder;
 - (void)addOrReplaceAttribute:(MDLVertexAttribute *)attribute;
-- (void)debugPrintToFile:(__sFILE *)a3;
-- (void)encodeVertexDescriptorWithCoder:(id)a3;
+- (void)debugPrintToFile:(__sFILE *)file;
+- (void)encodeVertexDescriptorWithCoder:(id)coder;
 - (void)removeAttributeNamed:(NSString *)name;
 - (void)reset;
 - (void)setPackedOffsets;
@@ -215,7 +215,7 @@ LABEL_12:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MDLVertexDescriptor alloc];
 
@@ -478,7 +478,7 @@ LABEL_15:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v36 = self;
+  selfCopy = self;
   obj = self->_attributes;
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v3, &v48, v54, 16);
   if (v6)
@@ -528,7 +528,7 @@ LABEL_15:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v18 = v36->_attributes;
+        v18 = selfCopy->_attributes;
         v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v40, v52, 16);
         if (v22)
         {
@@ -569,7 +569,7 @@ LABEL_15:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)debugPrintToFile:(__sFILE *)a3
+- (void)debugPrintToFile:(__sFILE *)file
 {
   v58 = *MEMORY[0x277D85DE8];
   v52 = 0u;
@@ -609,7 +609,7 @@ LABEL_15:
           v23 = sub_239F1DDD8(v22);
           v26 = objc_msgSend_offset(v11, v24, v25);
           v29 = objc_msgSend_bufferIndex(v11, v27, v28);
-          fprintf(a3, "%lu %s %s off=%lu buf%lu\n", v8, v19, v23, v26, v29);
+          fprintf(file, "%lu %s %s off=%lu buf%lu\n", v8, v19, v23, v26, v29);
         }
 
 LABEL_10:
@@ -654,7 +654,7 @@ LABEL_10:
           if (!v42)
           {
             v43 = objc_msgSend_stride(v37, v31, v32);
-            fprintf(a3, "%lu stride=%lu\n", v34, v43);
+            fprintf(file, "%lu stride=%lu\n", v34, v43);
           }
         }
 
@@ -670,10 +670,10 @@ LABEL_10:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToArray = 1;
   }
@@ -683,7 +683,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (objc_msgSend_isEqualToArray_(self->_attributes, v6, v5[1]))
       {
         isEqualToArray = objc_msgSend_isEqualToArray_(self->_layouts, v7, v5[2]);
@@ -754,13 +754,13 @@ LABEL_10:
   return v28;
 }
 
-- (void)_encodeVertexDescriptorLayoutsWithCoder:(id)a3
+- (void)_encodeVertexDescriptorLayoutsWithCoder:(id)coder
 {
-  v29 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_layouts(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
 
-  objc_msgSend_encodeInt32_forKey_(v29, v10, v9, @"layouts.count");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v10, v9, @"layouts.count");
   v11 = v9 << 32;
   if (v9 << 32)
   {
@@ -785,7 +785,7 @@ LABEL_10:
 
       v25 = objc_msgSend_stride(v22, v23, v24);
       v27 = objc_msgSend_stringByAppendingString_(v17, v26, @".stride");
-      objc_msgSend_encodeInteger_forKey_(v29, v28, v25, v27);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v28, v25, v27);
 
       ++v12;
     }
@@ -794,13 +794,13 @@ LABEL_10:
   }
 }
 
-- (void)_encodeVertexDescriptorAttributesWithCoder:(id)a3
+- (void)_encodeVertexDescriptorAttributesWithCoder:(id)coder
 {
-  v52 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_attributes(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
 
-  objc_msgSend_encodeInt32_forKey_(v52, v10, v9, @"attributes.count");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v10, v9, @"attributes.count");
   if (v9 << 32)
   {
     v11 = 0;
@@ -823,24 +823,24 @@ LABEL_10:
 
       v23 = objc_msgSend_name(v20, v21, v22);
       v25 = objc_msgSend_stringByAppendingString_(v15, v24, @".name");
-      objc_msgSend_encodeObject_forKey_(v52, v26, v23, v25);
+      objc_msgSend_encodeObject_forKey_(coderCopy, v26, v23, v25);
 
       v29 = objc_msgSend_bufferIndex(v20, v27, v28);
       v31 = objc_msgSend_stringByAppendingString_(v15, v30, @".bufferIndex");
-      objc_msgSend_encodeInteger_forKey_(v52, v32, v29, v31);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v32, v29, v31);
 
       v35 = objc_msgSend_format(v20, v33, v34);
       v37 = objc_msgSend_stringByAppendingString_(v15, v36, @".format");
-      objc_msgSend_encodeInteger_forKey_(v52, v38, v35, v37);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v38, v35, v37);
 
       v41 = objc_msgSend_offset(v20, v39, v40);
       v43 = objc_msgSend_stringByAppendingString_(v15, v42, @".offset");
-      objc_msgSend_encodeInteger_forKey_(v52, v44, v41, v43);
+      objc_msgSend_encodeInteger_forKey_(coderCopy, v44, v41, v43);
 
       objc_msgSend_time(v20, v45, v46);
       v48 = v47;
       v50 = objc_msgSend_stringByAppendingString_(v15, v49, @".time");
-      objc_msgSend_encodeDouble_forKey_(v52, v51, v50, v48);
+      objc_msgSend_encodeDouble_forKey_(coderCopy, v51, v50, v48);
 
       ++v11;
     }
@@ -849,10 +849,10 @@ LABEL_10:
   }
 }
 
-+ (id)_decodeVertexDescriptorAttributesWithCoder:(id)a3
++ (id)_decodeVertexDescriptorAttributesWithCoder:(id)coder
 {
-  v3 = a3;
-  v5 = objc_msgSend_decodeIntegerForKey_(v3, v4, @"attributes.count");
+  coderCopy = coder;
+  v5 = objc_msgSend_decodeIntegerForKey_(coderCopy, v4, @"attributes.count");
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
   v8 = objc_msgSend_initWithCapacity_(v6, v7, v5);
   if (v5)
@@ -864,23 +864,23 @@ LABEL_10:
       v13 = objc_alloc_init(MDLVertexAttribute);
       v14 = objc_opt_class();
       v16 = objc_msgSend_stringByAppendingString_(v12, v15, @".name");
-      v18 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v17, v14, v16);
+      v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v14, v16);
       objc_msgSend_setName_(v13, v19, v18);
 
       v21 = objc_msgSend_stringByAppendingString_(v12, v20, @".bufferIndex");
-      v23 = objc_msgSend_decodeIntegerForKey_(v3, v22, v21);
+      v23 = objc_msgSend_decodeIntegerForKey_(coderCopy, v22, v21);
       objc_msgSend_setBufferIndex_(v13, v24, v23);
 
       v26 = objc_msgSend_stringByAppendingString_(v12, v25, @".format");
-      v28 = objc_msgSend_decodeIntegerForKey_(v3, v27, v26);
+      v28 = objc_msgSend_decodeIntegerForKey_(coderCopy, v27, v26);
       objc_msgSend_setFormat_(v13, v29, v28);
 
       v31 = objc_msgSend_stringByAppendingString_(v12, v30, @".offset");
-      v33 = objc_msgSend_decodeIntegerForKey_(v3, v32, v31);
+      v33 = objc_msgSend_decodeIntegerForKey_(coderCopy, v32, v31);
       objc_msgSend_setOffset_(v13, v34, v33);
 
       v36 = objc_msgSend_stringByAppendingString_(v12, v35, @".time");
-      objc_msgSend_decodeDoubleForKey_(v3, v37, v36);
+      objc_msgSend_decodeDoubleForKey_(coderCopy, v37, v36);
       objc_msgSend_setTime_(v13, v38, v39);
 
       objc_msgSend_addObject_(v8, v40, v13);
@@ -890,10 +890,10 @@ LABEL_10:
   return v8;
 }
 
-+ (id)_decodeVertexDescriptorLayoutsWithCoder:(id)a3
++ (id)_decodeVertexDescriptorLayoutsWithCoder:(id)coder
 {
-  v3 = a3;
-  v5 = objc_msgSend_decodeIntegerForKey_(v3, v4, @"layouts.count");
+  coderCopy = coder;
+  v5 = objc_msgSend_decodeIntegerForKey_(coderCopy, v4, @"layouts.count");
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
   v8 = objc_msgSend_initWithCapacity_(v6, v7, v5);
   if (v5)
@@ -904,7 +904,7 @@ LABEL_10:
       v12 = objc_msgSend_initWithFormat_(v10, v11, @"layouts[%zu]", i);
       v13 = objc_alloc_init(MDLVertexBufferLayout);
       v15 = objc_msgSend_stringByAppendingString_(v12, v14, @".stride");
-      v17 = objc_msgSend_decodeIntegerForKey_(v3, v16, v15);
+      v17 = objc_msgSend_decodeIntegerForKey_(coderCopy, v16, v15);
       objc_msgSend_setStride_(v13, v18, v17);
 
       objc_msgSend_addObject_(v8, v19, v13);
@@ -914,21 +914,21 @@ LABEL_10:
   return v8;
 }
 
-- (void)encodeVertexDescriptorWithCoder:(id)a3
+- (void)encodeVertexDescriptorWithCoder:(id)coder
 {
-  v6 = a3;
-  objc_msgSend__encodeVertexDescriptorAttributesWithCoder_(self, v4, v6);
-  objc_msgSend__encodeVertexDescriptorLayoutsWithCoder_(self, v5, v6);
+  coderCopy = coder;
+  objc_msgSend__encodeVertexDescriptorAttributesWithCoder_(self, v4, coderCopy);
+  objc_msgSend__encodeVertexDescriptorLayoutsWithCoder_(self, v5, coderCopy);
 }
 
-+ (id)decodeVertexDescriptorWithCoder:(id)a3
++ (id)decodeVertexDescriptorWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(MDLVertexDescriptor);
-  v7 = objc_msgSend__decodeVertexDescriptorAttributesWithCoder_(a1, v6, v4);
+  v7 = objc_msgSend__decodeVertexDescriptorAttributesWithCoder_(self, v6, coderCopy);
   objc_msgSend_setAttributes_(v5, v8, v7);
 
-  v10 = objc_msgSend__decodeVertexDescriptorLayoutsWithCoder_(a1, v9, v4);
+  v10 = objc_msgSend__decodeVertexDescriptorLayoutsWithCoder_(self, v9, coderCopy);
   objc_msgSend_setLayouts_(v5, v11, v10);
 
   return v5;

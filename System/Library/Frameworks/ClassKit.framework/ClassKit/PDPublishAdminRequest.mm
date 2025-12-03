@@ -1,13 +1,13 @@
 @interface PDPublishAdminRequest
 + (id)defaultEndpointInfo;
-- (BOOL)processAdminRequestAccountPayload:(id)a3;
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
-- (BOOL)shouldProcessPayloadWithStatusCode:(int)a3;
+- (BOOL)processAdminRequestAccountPayload:(id)payload;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
+- (BOOL)shouldProcessPayloadWithStatusCode:(int)code;
 - (BOOL)wantsToExecute;
-- (PDPublishAdminRequest)initWithDatabase:(id)a3 adminRequests:(id)a4 requestor:(id)a5;
+- (PDPublishAdminRequest)initWithDatabase:(id)database adminRequests:(id)requests requestor:(id)requestor;
 - (id)customRequestHeaders;
 - (id)requestData;
-- (void)disableSearchIfAccountIsUnapproved:(id)a3;
+- (void)disableSearchIfAccountIsUnapproved:(id)unapproved;
 - (void)finishedResponseProcessing;
 @end
 
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (BOOL)shouldProcessPayloadWithStatusCode:(int)a3
+- (BOOL)shouldProcessPayloadWithStatusCode:(int)code
 {
   result = 1;
-  if ((a3 - 102) > 0xA || ((1 << (a3 - 102)) & 0x481) == 0)
+  if ((code - 102) > 0xA || ((1 << (code - 102)) & 0x481) == 0)
   {
-    return a3 == 1 || a3 == 804;
+    return code == 1 || code == 804;
   }
 
   return result;
@@ -46,46 +46,46 @@
 
 - (id)customRequestHeaders
 {
-  v3 = [(PDPublishAdminRequest *)self requestor];
+  requestor = [(PDPublishAdminRequest *)self requestor];
 
-  if (v3)
+  if (requestor)
   {
-    v4 = [(PDPublishAdminRequest *)self requestor];
-    v5 = [(PDOperation *)self database];
+    requestor2 = [(PDPublishAdminRequest *)self requestor];
+    database = [(PDOperation *)self database];
     v6 = objc_opt_class();
-    v7 = [v4 objectID];
-    v8 = [v5 select:v6 identity:v7];
+    objectID = [requestor2 objectID];
+    v8 = [database select:v6 identity:objectID];
 
     if (v8)
     {
-      [v4 setState:{objc_msgSend(v8, "state")}];
-      v9 = [v8 serverRequestHeaders];
-      [v4 setServerRequestHeaders:v9];
+      [requestor2 setState:{objc_msgSend(v8, "state")}];
+      serverRequestHeaders = [v8 serverRequestHeaders];
+      [requestor2 setServerRequestHeaders:serverRequestHeaders];
     }
 
-    v10 = [v4 serverRequestHeaders];
+    serverRequestHeaders2 = [requestor2 serverRequestHeaders];
   }
 
   else
   {
-    v10 = 0;
+    serverRequestHeaders2 = 0;
   }
 
-  return v10;
+  return serverRequestHeaders2;
 }
 
-- (PDPublishAdminRequest)initWithDatabase:(id)a3 adminRequests:(id)a4 requestor:(id)a5
+- (PDPublishAdminRequest)initWithDatabase:(id)database adminRequests:(id)requests requestor:(id)requestor
 {
-  v9 = a4;
-  v10 = a5;
+  requestsCopy = requests;
+  requestorCopy = requestor;
   v18.receiver = self;
   v18.super_class = PDPublishAdminRequest;
-  v11 = [(PDASMPayloadOperation *)&v18 initWithDatabase:a3];
+  v11 = [(PDASMPayloadOperation *)&v18 initWithDatabase:database];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 242), a4);
-    objc_storeStrong((v12 + 250), a5);
+    objc_storeStrong((v11 + 242), requests);
+    objc_storeStrong((v12 + 250), requestor);
     v13 = objc_opt_new();
     v14 = *(v12 + 266);
     *(v12 + 266) = v13;
@@ -102,8 +102,8 @@
 
 - (BOOL)wantsToExecute
 {
-  v3 = [(PDOperation *)self manager];
-  v4 = sub_100121714(v3);
+  manager = [(PDOperation *)self manager];
+  v4 = sub_100121714(manager);
 
   if (*(&self->_adminRequests + 2))
   {
@@ -117,23 +117,23 @@
 
   v6 = !v5 && [*(&self->_firstRun + 2) count] != 0;
   v7 = +[PDUserDefaults sharedDefaults];
-  v8 = [v7 enableVerboseLogging];
+  enableVerboseLogging = [v7 enableVerboseLogging];
 
-  if (v8 && !v6)
+  if (enableVerboseLogging && !v6)
   {
     if (!v4 && !*(&self->_adminRequests + 2))
     {
       CLSInitLog();
-      v9 = [(PDPublishAdminRequest *)self logSubsystem];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDPublishAdminRequest *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v15 = objc_opt_class();
         v11 = v15;
-        v12 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         v16 = 138543618;
         v17 = v15;
         v18 = 2114;
-        v19 = v12;
+        v19 = operationID;
         v13 = "%{public}@: %{public}@ Skipping operation: no requestor supplied.";
         goto LABEL_18;
       }
@@ -146,19 +146,19 @@ LABEL_15:
     if (BYTE2(self->super._unresolvedMissingEntityIDs) == 1)
     {
       CLSInitLog();
-      v9 = [(PDPublishAdminRequest *)self logSubsystem];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDPublishAdminRequest *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v10 = objc_opt_class();
         v11 = v10;
-        v12 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         v16 = 138543618;
         v17 = v10;
         v18 = 2114;
-        v19 = v12;
+        v19 = operationID;
         v13 = "%{public}@: %{public}@ Skipping operation: no admin requests supplied.";
 LABEL_18:
-        _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, v13, &v16, 0x16u);
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, v13, &v16, 0x16u);
 
         goto LABEL_15;
       }
@@ -172,10 +172,10 @@ LABEL_18:
 
 - (id)requestData
 {
-  v2 = self;
+  selfCopy = self;
   if ([(PDOperation *)self isFinished])
   {
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_69;
   }
 
@@ -186,7 +186,7 @@ LABEL_18:
   v103 = 0u;
   v104 = 0u;
   v69 = 242;
-  obj = *(&v2->_firstRun + 2);
+  obj = *(&selfCopy->_firstRun + 2);
   v6 = [obj countByEnumeratingWithState:&v101 objects:v113 count:16];
   if (v6)
   {
@@ -195,7 +195,7 @@ LABEL_18:
     v7 = 0;
     v72 = *v102;
     v73 = v4;
-    v87 = v2;
+    v87 = selfCopy;
 LABEL_5:
     v8 = 0;
     v78 = v7;
@@ -211,17 +211,17 @@ LABEL_5:
       v75 = v8;
       v9 = *(*(&v101 + 1) + 8 * v8);
       context = objc_autoreleasePoolPush();
-      v86 = [(PDOperation *)v87 database];
+      database = [(PDOperation *)v87 database];
       v92 = objc_opt_new();
-      v10 = [(PDOperation *)v87 manager];
-      if (!sub_100121714(v10))
+      manager = [(PDOperation *)v87 manager];
+      if (!sub_100121714(manager))
       {
         goto LABEL_14;
       }
 
-      v11 = [(PDDPAdminRequestDetails *)v9 organizationID];
+      organizationID = [(PDDPAdminRequestDetails *)v9 organizationID];
 
-      if (!v11)
+      if (!organizationID)
       {
         break;
       }
@@ -234,32 +234,32 @@ LABEL_15:
       [(PDDPEEPayload *)v16 setAdminRequest:v15];
       [v92 addObject:v16];
       v17 = +[PDUserDefaults sharedDefaults];
-      v18 = [v17 enableVerboseLogging];
+      enableVerboseLogging = [v17 enableVerboseLogging];
 
-      if (v18)
+      if (enableVerboseLogging)
       {
-        v19 = [(PDDPEEPayload *)v16 adminRequest];
-        v20 = [v19 hasRequestor];
+        adminRequest = [(PDDPEEPayload *)v16 adminRequest];
+        hasRequestor = [adminRequest hasRequestor];
 
-        if (v20)
+        if (hasRequestor)
         {
           CLSInitLog();
-          v21 = [(PDPublishAdminRequest *)v87 logSubsystem];
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+          logSubsystem = [(PDPublishAdminRequest *)v87 logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
           {
             v54 = objc_opt_class();
             v91 = v54;
-            v55 = [(PDURLRequestOperation *)v87 operationID];
-            v56 = [(PDDPEEPayload *)v16 adminRequest];
-            v57 = [v56 requestor];
-            v58 = [v57 description];
+            operationID = [(PDURLRequestOperation *)v87 operationID];
+            adminRequest2 = [(PDDPEEPayload *)v16 adminRequest];
+            requestor = [adminRequest2 requestor];
+            v58 = [requestor description];
             *buf = 138543874;
             v108 = v54;
             v109 = 2114;
-            v110 = v55;
+            v110 = operationID;
             v111 = 2112;
             v112 = v58;
-            _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ using requestor: %@", buf, 0x20u);
+            _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ using requestor: %@", buf, 0x20u);
           }
         }
       }
@@ -292,10 +292,10 @@ LABEL_15:
             v28 = sub_100086AF0(v9, v26, v15);
             [(PDDPEEPayload *)v27 setAdminRequestAccount:v28];
 
-            v29 = [v26 requestedRoleID];
-            if (v29)
+            requestedRoleID = [v26 requestedRoleID];
+            if (requestedRoleID)
             {
-              v30 = v29;
+              adminRequestAccount = requestedRoleID;
             }
 
             else
@@ -308,40 +308,40 @@ LABEL_15:
               v36 = v88;
               if (!v88)
               {
-                v37 = [v86 select:objc_opt_class() where:@"type = ?" bindings:&off_10021BA90];
+                v37 = [database select:objc_opt_class() where:@"type = ?" bindings:&off_10021BA90];
                 if (!v37)
                 {
                   goto LABEL_44;
                 }
 
                 v38 = v37;
-                v89 = [v37 objectID];
+                objectID = [v37 objectID];
                 v39 = +[PDUserDefaults sharedDefaults];
-                v40 = [v39 enableVerboseLogging];
+                enableVerboseLogging2 = [v39 enableVerboseLogging];
 
-                if (v40)
+                if (enableVerboseLogging2)
                 {
                   CLSInitLog();
-                  v41 = [(PDPublishAdminRequest *)v87 logSubsystem];
-                  if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
+                  logSubsystem2 = [(PDPublishAdminRequest *)v87 logSubsystem];
+                  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
                   {
-                    loga = v41;
+                    loga = logSubsystem2;
                     v44 = objc_opt_class();
                     v82 = v44;
-                    v45 = [(PDURLRequestOperation *)v87 operationID];
+                    operationID2 = [(PDURLRequestOperation *)v87 operationID];
                     *buf = 138543874;
                     v108 = v44;
-                    v41 = loga;
+                    logSubsystem2 = loga;
                     v109 = 2114;
-                    v110 = v45;
+                    v110 = operationID2;
                     v111 = 2112;
-                    v112 = v89;
+                    v112 = objectID;
                     _os_log_debug_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ using default 'student' roleID: %@", buf, 0x20u);
                   }
                 }
 
-                v36 = v89;
-                if (!v89)
+                v36 = objectID;
+                if (!objectID)
                 {
 LABEL_44:
                   v88 = 0;
@@ -349,39 +349,39 @@ LABEL_44:
                 }
               }
 
-              v30 = [(PDDPEEPayload *)v27 adminRequestAccount];
+              adminRequestAccount = [(PDDPEEPayload *)v27 adminRequestAccount];
               v88 = v36;
-              [v30 setRequestedRoleId:v36];
+              [adminRequestAccount setRequestedRoleId:v36];
             }
 
 LABEL_28:
             v31 = +[PDUserDefaults sharedDefaults];
-            v32 = [v31 enableVerboseLogging];
+            enableVerboseLogging3 = [v31 enableVerboseLogging];
 
-            if (v32)
+            if (enableVerboseLogging3)
             {
-              v33 = [(PDDPEEPayload *)v27 adminRequestAccount];
-              v34 = [v33 hasPerson];
+              adminRequestAccount2 = [(PDDPEEPayload *)v27 adminRequestAccount];
+              hasPerson = [adminRequestAccount2 hasPerson];
 
-              if (v34)
+              if (hasPerson)
               {
                 CLSInitLog();
-                v35 = [(PDPublishAdminRequest *)v87 logSubsystem];
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+                logSubsystem3 = [(PDPublishAdminRequest *)v87 logSubsystem];
+                if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
                 {
                   v79 = objc_opt_class();
                   log = v79;
-                  v42 = [(PDURLRequestOperation *)v87 operationID];
-                  v81 = [(PDDPEEPayload *)v27 adminRequestAccount];
-                  v80 = [v81 person];
-                  v43 = [v80 description];
+                  operationID3 = [(PDURLRequestOperation *)v87 operationID];
+                  adminRequestAccount3 = [(PDDPEEPayload *)v27 adminRequestAccount];
+                  person = [adminRequestAccount3 person];
+                  v43 = [person description];
                   *buf = 138543874;
                   v108 = v79;
                   v109 = 2114;
-                  v110 = v42;
+                  v110 = operationID3;
                   v111 = 2112;
                   v112 = v43;
-                  _os_log_debug_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ person info: %@", buf, 0x20u);
+                  _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ person info: %@", buf, 0x20u);
                 }
               }
             }
@@ -413,7 +413,7 @@ LABEL_28:
         v49 = v48;
         v50 = *v94;
         v4 = v73;
-        v2 = v87;
+        selfCopy = v87;
         do
         {
           for (i = 0; i != v49; i = i + 1)
@@ -447,7 +447,7 @@ LABEL_28:
 
         objc_autoreleasePoolPop(context);
         v4 = v73;
-        v2 = v87;
+        selfCopy = v87;
       }
 
       v8 = v75 + 1;
@@ -464,27 +464,27 @@ LABEL_28:
       }
     }
 
-    v10 = sub_1000716B8(v86);
-    [(PDDPAdminRequestDetails *)v9 setOrganizationID:v10];
+    manager = sub_1000716B8(database);
+    [(PDDPAdminRequestDetails *)v9 setOrganizationID:manager];
     v12 = +[PDUserDefaults sharedDefaults];
-    v13 = [v12 enableVerboseLogging];
+    enableVerboseLogging4 = [v12 enableVerboseLogging];
 
-    if (v13)
+    if (enableVerboseLogging4)
     {
       CLSInitLog();
-      v14 = [(PDPublishAdminRequest *)v87 logSubsystem];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      logSubsystem4 = [(PDPublishAdminRequest *)v87 logSubsystem];
+      if (os_log_type_enabled(logSubsystem4, OS_LOG_TYPE_DEBUG))
       {
         v59 = objc_opt_class();
         v60 = v59;
-        v61 = [(PDURLRequestOperation *)v87 operationID];
+        operationID4 = [(PDURLRequestOperation *)v87 operationID];
         *buf = 138543874;
         v108 = v59;
         v109 = 2114;
-        v110 = v61;
+        v110 = operationID4;
         v111 = 2112;
-        v112 = v10;
-        _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ using current organizationID: %@", buf, 0x20u);
+        v112 = manager;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem4, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ using current organizationID: %@", buf, 0x20u);
       }
     }
 
@@ -498,93 +498,93 @@ LABEL_14:
   v7 = 0;
 LABEL_60:
 
-  BYTE2(v2->super._unresolvedMissingEntityIDs) = 0;
-  v62 = [(PDURLRequestOperation *)v2 stats];
-  if (v62 && (v63 = v62[14], v62, v63))
+  BYTE2(selfCopy->super._unresolvedMissingEntityIDs) = 0;
+  stats = [(PDURLRequestOperation *)selfCopy stats];
+  if (stats && (v63 = stats[14], stats, v63))
   {
     if (v7 >= 1)
     {
-      v64 = [*(&v2->super.super.super.super.super.super.super.isa + v69) subarrayWithRange:{v7, objc_msgSend(*(&v2->super.super.super.super.super.super.super.isa + v69), "count") - v7}];
-      v65 = *(&v2->super.super.super.super.super.super.super.isa + v69);
-      *(&v2->super.super.super.super.super.super.super.isa + v69) = v64;
+      v64 = [*(&selfCopy->super.super.super.super.super.super.super.isa + v69) subarrayWithRange:{v7, objc_msgSend(*(&selfCopy->super.super.super.super.super.super.super.isa + v69), "count") - v7}];
+      v65 = *(&selfCopy->super.super.super.super.super.super.super.isa + v69);
+      *(&selfCopy->super.super.super.super.super.super.super.isa + v69) = v64;
     }
 
     if (v85 >= 1)
     {
-      v66 = [*(&v2->_requestor + 2) subarrayWithRange:{v85, objc_msgSend(*(&v2->_requestor + 2), "count") - v85}];
-      v67 = *(&v2->_requestor + 2);
-      *(&v2->_requestor + 2) = v66;
+      v66 = [*(&selfCopy->_requestor + 2) subarrayWithRange:{v85, objc_msgSend(*(&selfCopy->_requestor + 2), "count") - v85}];
+      v67 = *(&selfCopy->_requestor + 2);
+      *(&selfCopy->_requestor + 2) = v66;
     }
 
-    v3 = [v4 immutableData];
+    immutableData = [v4 immutableData];
   }
 
   else
   {
-    [(PDEndpointRequestOperation *)v2 markAsFinished];
-    v3 = 0;
+    [(PDEndpointRequestOperation *)selfCopy markAsFinished];
+    immutableData = 0;
   }
 
 LABEL_69:
 
-  return v3;
+  return immutableData;
 }
 
-- (void)disableSearchIfAccountIsUnapproved:(id)a3
+- (void)disableSearchIfAccountIsUnapproved:(id)unapproved
 {
-  v10 = a3;
-  v4 = [v10 person];
+  unapprovedCopy = unapproved;
+  person = [unapprovedCopy person];
 
-  if (v4)
+  if (person)
   {
-    v5 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v6 = objc_opt_class();
-    v7 = [v10 parentRequestId];
-    v8 = [v5 select:v6 identity:v7];
+    parentRequestId = [unapprovedCopy parentRequestId];
+    v8 = [database select:v6 identity:parentRequestId];
 
     if (v8 && [v8 type] == 2 && objc_msgSend(v8, "approval") != 3)
     {
-      v9 = [v10 person];
-      [v9 setIsRosterSearchAllowed:0];
+      person2 = [unapprovedCopy person];
+      [person2 setIsRosterSearchAllowed:0];
     }
   }
 }
 
-- (BOOL)processAdminRequestAccountPayload:(id)a3
+- (BOOL)processAdminRequestAccountPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 adminRequestAccount];
-  if ([v5 hasPerson])
+  payloadCopy = payload;
+  adminRequestAccount = [payloadCopy adminRequestAccount];
+  if ([adminRequestAccount hasPerson])
   {
-    v6 = [v5 person];
-    [(PDPublishAdminRequest *)self disableSearchIfAccountIsUnapproved:v5];
-    v7 = [(PDOperation *)self manager];
-    v8 = sub_100121714(v7);
+    person = [adminRequestAccount person];
+    [(PDPublishAdminRequest *)self disableSearchIfAccountIsUnapproved:adminRequestAccount];
+    manager = [(PDOperation *)self manager];
+    v8 = sub_100121714(manager);
 
     if (!v8)
     {
       v9 = objc_opt_new();
-      v10 = [(PDOperation *)self database];
-      v11 = [v6 roleLocations];
-      v12 = [v11 count];
+      database = [(PDOperation *)self database];
+      roleLocations = [person roleLocations];
+      v12 = [roleLocations count];
 
       if (v12)
       {
-        v37 = self;
-        v38 = v4;
-        v41 = v5;
+        selfCopy = self;
+        v38 = payloadCopy;
+        v41 = adminRequestAccount;
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        obj = [v6 roleLocations];
+        obj = [person roleLocations];
         v13 = v9;
         v43 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
         if (v43)
         {
           v14 = *v46;
           v15 = &CLSLogAsset_ptr;
-          v39 = v10;
+          v39 = database;
           v40 = v13;
           do
           {
@@ -596,54 +596,54 @@ LABEL_69:
               }
 
               v17 = *(*(&v45 + 1) + 8 * i);
-              if ([v17 hasRoleType] && !objc_msgSend(v17, "hasRoleId") || objc_msgSend(v17, "hasRoleId") && (v18 = objc_opt_class(), objc_msgSend(v17, "roleId"), v19 = objc_claimAutoreleasedReturnValue(), LOBYTE(v18) = objc_msgSend(v10, "entityExistsByClass:identity:", v18, v19), v19, (v18 & 1) == 0))
+              if ([v17 hasRoleType] && !objc_msgSend(v17, "hasRoleId") || objc_msgSend(v17, "hasRoleId") && (v18 = objc_opt_class(), objc_msgSend(v17, "roleId"), v19 = objc_claimAutoreleasedReturnValue(), LOBYTE(v18) = objc_msgSend(database, "entityExistsByClass:identity:", v18, v19), v19, (v18 & 1) == 0))
               {
                 v20 = v15;
                 v21 = v14;
-                v22 = v6;
-                v23 = [v6 personId];
-                v24 = [v17 roleType];
-                if (v24 >= 8)
+                v22 = person;
+                personId = [person personId];
+                roleType = [v17 roleType];
+                if (roleType >= 8)
                 {
-                  v25 = [NSString stringWithFormat:@"(unknown: %i)", v24];
+                  v25 = [NSString stringWithFormat:@"(unknown: %i)", roleType];
                 }
 
                 else
                 {
-                  v25 = *(&off_100206690 + v24);
+                  v25 = *(&off_100206690 + roleType);
                 }
 
-                v26 = [v17 locationId];
-                v27 = [v41 parentRequestId];
-                v28 = [NSString stringWithFormat:@"%@-%@-%@-%@", v23, v25, v26, v27];
+                locationId = [v17 locationId];
+                parentRequestId = [v41 parentRequestId];
+                v28 = [NSString stringWithFormat:@"%@-%@-%@-%@", personId, v25, locationId, parentRequestId];
 
                 [v17 setRoleId:v28];
-                v29 = [[CLSRole alloc] _init];
-                [v29 setObjectID:v28];
-                [v29 setType:{objc_msgSend(v17, "roleType")}];
-                [v29 setPrivileges:&__NSArray0__struct];
+                _init = [[CLSRole alloc] _init];
+                [_init setObjectID:v28];
+                [_init setType:{objc_msgSend(v17, "roleType")}];
+                [_init setPrivileges:&__NSArray0__struct];
                 v13 = v40;
-                [v40 addObject:v29];
+                [v40 addObject:_init];
 
-                v6 = v22;
+                person = v22;
                 v14 = v21;
                 v15 = v20;
-                v10 = v39;
+                database = v39;
               }
 
               v30 = v15[96];
               v31 = objc_opt_class();
-              v32 = [v17 locationId];
-              LOBYTE(v31) = [v10 entityExistsByClass:v31 identity:v32];
+              locationId2 = [v17 locationId];
+              LOBYTE(v31) = [database entityExistsByClass:v31 identity:locationId2];
 
               if ((v31 & 1) == 0)
               {
-                v33 = [objc_alloc(v15[96]) _init];
-                v34 = [v17 locationId];
-                [v33 setObjectID:v34];
+                _init2 = [objc_alloc(v15[96]) _init];
+                locationId3 = [v17 locationId];
+                [_init2 setObjectID:locationId3];
 
-                [v33 setLocationName:&stru_100206880];
-                [v13 addObject:v33];
+                [_init2 setLocationName:&stru_100206880];
+                [v13 addObject:_init2];
               }
             }
 
@@ -653,32 +653,32 @@ LABEL_69:
           while (v43);
         }
 
-        [v10 insertOrUpdateObjects:v13];
-        self = v37;
-        v4 = v38;
+        [database insertOrUpdateObjects:v13];
+        self = selfCopy;
+        payloadCopy = v38;
         v9 = v13;
-        v5 = v41;
+        adminRequestAccount = v41;
       }
     }
   }
 
   v44.receiver = self;
   v44.super_class = PDPublishAdminRequest;
-  v35 = [(PDASMPayloadOperation *)&v44 processAdminRequestAccountPayload:v4];
+  v35 = [(PDASMPayloadOperation *)&v44 processAdminRequestAccountPayload:payloadCopy];
 
   return v35;
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v23.receiver = self;
   v23.super_class = PDPublishAdminRequest;
-  v7 = [(PDASMPayloadOperation *)&v23 processPayloadFromResponse:v6 error:a4];
-  if ([v6 hasStatus])
+  v7 = [(PDASMPayloadOperation *)&v23 processPayloadFromResponse:responseCopy error:error];
+  if ([responseCopy hasStatus])
   {
-    v8 = [v6 status];
-    v9 = [v8 code] == 1;
+    status = [responseCopy status];
+    v9 = [status code] == 1;
   }
 
   else
@@ -686,10 +686,10 @@ LABEL_69:
     v9 = 1;
   }
 
-  if ([v6 type] == 10)
+  if ([responseCopy type] == 10)
   {
-    v10 = [v6 adminRequest];
-    v11 = sub_1000868EC(v10);
+    adminRequest = [responseCopy adminRequest];
+    v11 = sub_1000868EC(adminRequest);
 
     if (v7 && v9)
     {
@@ -699,52 +699,52 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v14 = [v6 status];
+    status2 = [responseCopy status];
 
-    if (!v14)
+    if (!status2)
     {
       goto LABEL_15;
     }
 
-    v12 = v11;
-    v11 = v12;
+    adminRequestAccount = v11;
+    v11 = adminRequestAccount;
   }
 
   else
   {
-    if ([v6 type] != 11 || v9)
+    if ([responseCopy type] != 11 || v9)
     {
       goto LABEL_16;
     }
 
-    v12 = [v6 adminRequestAccount];
-    v13 = [v6 status];
-    v11 = sub_1000871F0(v12, v13);
+    adminRequestAccount = [responseCopy adminRequestAccount];
+    status3 = [responseCopy status];
+    v11 = sub_1000871F0(adminRequestAccount, status3);
   }
 
   if (v11)
   {
-    v15 = [v6 status];
-    v16 = [NSError cls_createErrorWithCode:sub_1001054F0(v15) errorObject:v11 description:0];
+    status4 = [responseCopy status];
+    v16 = [NSError cls_createErrorWithCode:sub_1001054F0(status4) errorObject:v11 description:0];
 
     [*(&self->_successfulObjects + 2) addObject:v16];
     CLSInitLog();
-    v17 = [(PDPublishAdminRequest *)self logSubsystem];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    logSubsystem = [(PDPublishAdminRequest *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = v19;
-      v21 = [(PDURLRequestOperation *)self operationID];
-      v22 = [v6 dictionaryRepresentation];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [responseCopy dictionaryRepresentation];
       *buf = 138544130;
       v25 = v19;
       v26 = 2114;
-      v27 = v21;
+      v27 = operationID;
       v28 = 2112;
-      v29 = v22;
+      v29 = dictionaryRepresentation;
       v30 = 2114;
       v31 = v16;
-      _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ failing payload item %@ with error %{public}@", buf, 0x2Au);
+      _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ failing payload item %@ with error %{public}@", buf, 0x2Au);
     }
 
     goto LABEL_15;
@@ -757,26 +757,26 @@ LABEL_16:
 
 - (void)finishedResponseProcessing
 {
-  v3 = [(PDPublishAdminRequest *)self successfulObjects];
-  v4 = [v3 count];
+  successfulObjects = [(PDPublishAdminRequest *)self successfulObjects];
+  v4 = [successfulObjects count];
 
-  v5 = [(PDPublishAdminRequest *)self failures];
-  v6 = [v5 count];
+  failures = [(PDPublishAdminRequest *)self failures];
+  v6 = [failures count];
 
-  v7 = [(PDOperation *)self operationError];
-  if (!v7)
+  operationError = [(PDOperation *)self operationError];
+  if (!operationError)
   {
     if (v6 < 1 || v4 < 1)
     {
       return;
     }
 
-    v8 = [(PDPublishAdminRequest *)self successfulObjects];
-    v9 = [(PDPublishAdminRequest *)self failures];
-    v10 = [NSError cls_createErrorWithCode:9 successfulObjects:v8 underlyingErrors:v9 description:0];
+    successfulObjects2 = [(PDPublishAdminRequest *)self successfulObjects];
+    failures2 = [(PDPublishAdminRequest *)self failures];
+    v10 = [NSError cls_createErrorWithCode:9 successfulObjects:successfulObjects2 underlyingErrors:failures2 description:0];
 
     [(PDOperation *)self finishWithError:v10];
-    v7 = v10;
+    operationError = v10;
   }
 }
 

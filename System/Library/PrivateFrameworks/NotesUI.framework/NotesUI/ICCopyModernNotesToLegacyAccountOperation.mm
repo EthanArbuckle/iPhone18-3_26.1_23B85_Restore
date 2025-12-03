@@ -1,10 +1,10 @@
 @interface ICCopyModernNotesToLegacyAccountOperation
 - (ICCopyModernNotesToLegacyAccountOperation)init;
-- (ICCopyModernNotesToLegacyAccountOperation)initWithNotes:(id)a3 toFolder:(id)a4 legacyContext:(id)a5 didCopyBlock:(id)a6;
-- (id)copyNote:(id)a3 toFolder:(id)a4;
-- (id)dataForAttachment:(id)a3 outFilename:(id *)a4 outMimeType:(id *)a5;
-- (id)ensureLegacyFolderIsValid:(id)a3;
-- (id)htmlAttributesForAttachment:(id)a3 legacyContentID:(id)a4 tagName:(id *)a5;
+- (ICCopyModernNotesToLegacyAccountOperation)initWithNotes:(id)notes toFolder:(id)folder legacyContext:(id)context didCopyBlock:(id)block;
+- (id)copyNote:(id)note toFolder:(id)folder;
+- (id)dataForAttachment:(id)attachment outFilename:(id *)filename outMimeType:(id *)type;
+- (id)ensureLegacyFolderIsValid:(id)valid;
+- (id)htmlAttributesForAttachment:(id)attachment legacyContentID:(id)d tagName:(id *)name;
 - (void)main;
 @end
 
@@ -17,22 +17,22 @@
   return 0;
 }
 
-- (ICCopyModernNotesToLegacyAccountOperation)initWithNotes:(id)a3 toFolder:(id)a4 legacyContext:(id)a5 didCopyBlock:(id)a6
+- (ICCopyModernNotesToLegacyAccountOperation)initWithNotes:(id)notes toFolder:(id)folder legacyContext:(id)context didCopyBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  notesCopy = notes;
+  folderCopy = folder;
+  contextCopy = context;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = ICCopyModernNotesToLegacyAccountOperation;
   v15 = [(ICCopyModernNotesToLegacyAccountOperation *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sourceNotes, a3);
-    objc_storeStrong(&v16->_destinationFolder, a4);
-    objc_storeStrong(&v16->_legacyContext, a5);
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v15->_sourceNotes, notes);
+    objc_storeStrong(&v16->_destinationFolder, folder);
+    objc_storeStrong(&v16->_legacyContext, context);
+    v17 = _Block_copy(blockCopy);
     didCopyBlock = v16->_didCopyBlock;
     v16->_didCopyBlock = v17;
   }
@@ -42,10 +42,10 @@
 
 - (void)main
 {
-  v3 = [(ICCopyModernNotesToLegacyAccountOperation *)self sourceNotes];
-  v4 = [v3 mutableCopy];
+  sourceNotes = [(ICCopyModernNotesToLegacyAccountOperation *)self sourceNotes];
+  v4 = [sourceNotes mutableCopy];
 
-  v5 = [(ICCopyModernNotesToLegacyAccountOperation *)self destinationFolder];
+  destinationFolder = [(ICCopyModernNotesToLegacyAccountOperation *)self destinationFolder];
   if (([(ICCopyModernNotesToLegacyAccountOperation *)self isCancelled]& 1) == 0)
   {
     do
@@ -55,11 +55,11 @@
         break;
       }
 
-      v6 = [v4 lastObject];
+      lastObject = [v4 lastObject];
       [v4 removeLastObject];
-      v8 = v5;
-      v9 = v6;
-      v7 = v6;
+      v8 = destinationFolder;
+      v9 = lastObject;
+      v7 = lastObject;
       performBlockOnMainThreadAndWait();
     }
 
@@ -99,27 +99,27 @@ void __49__ICCopyModernNotesToLegacyAccountOperation_main__block_invoke(uint64_t
   }
 }
 
-- (id)ensureLegacyFolderIsValid:(id)a3
+- (id)ensureLegacyFolderIsValid:(id)valid
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 managedObjectContext];
+  validCopy = valid;
+  managedObjectContext = [validCopy managedObjectContext];
 
-  if (v5)
+  if (managedObjectContext)
   {
-    v6 = v4;
+    v6 = validCopy;
   }
 
   else
   {
-    v7 = [v4 objectID];
+    objectID = [validCopy objectID];
 
-    if (v7)
+    if (objectID)
     {
-      v8 = [(ICCopyModernNotesToLegacyAccountOperation *)self legacyContext];
-      v9 = [v8 managedObjectContext];
-      v10 = [v4 objectID];
-      v6 = [v9 objectWithID:v10];
+      legacyContext = [(ICCopyModernNotesToLegacyAccountOperation *)self legacyContext];
+      managedObjectContext2 = [legacyContext managedObjectContext];
+      objectID2 = [validCopy objectID];
+      v6 = [managedObjectContext2 objectWithID:objectID2];
     }
 
     else
@@ -139,113 +139,113 @@ void __49__ICCopyModernNotesToLegacyAccountOperation_main__block_invoke(uint64_t
   return v6;
 }
 
-- (id)dataForAttachment:(id)a3 outFilename:(id *)a4 outMimeType:(id *)a5
+- (id)dataForAttachment:(id)attachment outFilename:(id *)filename outMimeType:(id *)type
 {
-  v7 = a3;
-  if ([v7 isUnsupported] && (objc_msgSend(v7, "hasFallbackImage") & 1) != 0 || objc_msgSend(v7, "attachmentType") == 10)
+  attachmentCopy = attachment;
+  if ([attachmentCopy isUnsupported] && (objc_msgSend(attachmentCopy, "hasFallbackImage") & 1) != 0 || objc_msgSend(attachmentCopy, "attachmentType") == 10)
   {
-    v8 = [v7 fallbackImageData];
-    v9 = [v7 fallbackImageURL];
-    v10 = [v9 lastPathComponent];
+    fallbackImageData = [attachmentCopy fallbackImageData];
+    fallbackImageURL = [attachmentCopy fallbackImageURL];
+    lastPathComponent = [fallbackImageURL lastPathComponent];
 
-    v11 = [MEMORY[0x1E69B7680] fallbackImageUTI];
+    fallbackImageUTI = [MEMORY[0x1E69B7680] fallbackImageUTI];
 LABEL_7:
-    v14 = 0;
+    orientedImage = 0;
     goto LABEL_8;
   }
 
-  v12 = [v7 media];
+  media = [attachmentCopy media];
 
-  if (v12)
+  if (media)
   {
-    v13 = [v7 media];
-    v8 = [v13 data];
-    v10 = [v13 filename];
-    v11 = [v7 typeUTI];
+    media2 = [attachmentCopy media];
+    fallbackImageData = [media2 data];
+    lastPathComponent = [media2 filename];
+    fallbackImageUTI = [attachmentCopy typeUTI];
 
     goto LABEL_7;
   }
 
-  if ([v7 attachmentType] == 13)
+  if ([attachmentCopy attachmentType] == 13)
   {
-    v21 = [MEMORY[0x1E69B7678] currentInfo];
-    v14 = [MEMORY[0x1E69B76C0] generateImageForAttachment:v7 fullResolution:1 appearanceInfo:v21];
+    currentInfo = [MEMORY[0x1E69B7678] currentInfo];
+    orientedImage = [MEMORY[0x1E69B76C0] generateImageForAttachment:attachmentCopy fullResolution:1 appearanceInfo:currentInfo];
 
-    v11 = 0;
-    v10 = 0;
+    fallbackImageUTI = 0;
+    lastPathComponent = 0;
   }
 
   else
   {
-    v11 = 0;
-    v10 = 0;
-    v14 = 0;
+    fallbackImageUTI = 0;
+    lastPathComponent = 0;
+    orientedImage = 0;
   }
 
-  v8 = 0;
+  fallbackImageData = 0;
 LABEL_8:
-  if (!(v8 | v14))
+  if (!(fallbackImageData | orientedImage))
   {
-    v15 = [v7 attachmentPreviewImageWithMinSize:1024.0 scale:{768.0, 1.0}];
-    v14 = [v15 orientedImage];
+    v15 = [attachmentCopy attachmentPreviewImageWithMinSize:1024.0 scale:{768.0, 1.0}];
+    orientedImage = [v15 orientedImage];
   }
 
-  if (v14)
+  if (orientedImage)
   {
-    v16 = [v14 ic_PNGData];
+    ic_PNGData = [orientedImage ic_PNGData];
 
-    v17 = [*MEMORY[0x1E6982F28] identifier];
+    identifier = [*MEMORY[0x1E6982F28] identifier];
 
-    v11 = v17;
-    v8 = v16;
+    fallbackImageUTI = identifier;
+    fallbackImageData = ic_PNGData;
   }
 
-  if (!v10 && v11)
+  if (!lastPathComponent && fallbackImageUTI)
   {
-    v10 = [MEMORY[0x1E69B7680] filenameFromUTI:v11];
+    lastPathComponent = [MEMORY[0x1E69B7680] filenameFromUTI:fallbackImageUTI];
   }
 
-  if (a4 && v10)
+  if (filename && lastPathComponent)
   {
-    v18 = v10;
-    *a4 = v10;
+    v18 = lastPathComponent;
+    *filename = lastPathComponent;
   }
 
-  if (a5 && v11)
+  if (type && fallbackImageUTI)
   {
-    v19 = v11;
-    *a5 = v11;
+    v19 = fallbackImageUTI;
+    *type = fallbackImageUTI;
   }
 
-  return v8;
+  return fallbackImageData;
 }
 
-- (id)htmlAttributesForAttachment:(id)a3 legacyContentID:(id)a4 tagName:(id *)a5
+- (id)htmlAttributesForAttachment:(id)attachment legacyContentID:(id)d tagName:(id *)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 URL];
+  attachmentCopy = attachment;
+  dCopy = d;
+  v9 = [attachmentCopy URL];
   if (v9)
   {
-    if (a5)
+    if (name)
     {
-      *a5 = @"a";
+      *name = @"a";
     }
 
     v10 = MEMORY[0x1E696AEC0];
-    if (v8)
+    if (dCopy)
     {
-      v11 = [MEMORY[0x1E69B77F0] htmlObjectAttributesForAttachmentWithContentID:v8];
+      v11 = [MEMORY[0x1E69B77F0] htmlObjectAttributesForAttachmentWithContentID:dCopy];
       [v10 stringWithFormat:@" href=%@><object%@", v9, v11];
     }
 
     else
     {
-      v13 = [v7 title];
-      v11 = v13;
-      if (v13)
+      title = [attachmentCopy title];
+      v11 = title;
+      if (title)
       {
-        v14 = v13;
+        v14 = title;
       }
 
       else
@@ -260,14 +260,14 @@ LABEL_8:
 
   else
   {
-    if (a5)
+    if (name)
     {
-      *a5 = @"object";
+      *name = @"object";
     }
 
-    if (v8)
+    if (dCopy)
     {
-      v12 = [MEMORY[0x1E69B77F0] htmlObjectAttributesForAttachmentWithContentID:v8];
+      v12 = [MEMORY[0x1E69B77F0] htmlObjectAttributesForAttachmentWithContentID:dCopy];
     }
 
     else
@@ -279,31 +279,31 @@ LABEL_8:
   return v12;
 }
 
-- (id)copyNote:(id)a3 toFolder:(id)a4
+- (id)copyNote:(id)note toFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  folderCopy = folder;
   v8 = MEMORY[0x1E69B77B8];
-  v9 = [(ICCopyModernNotesToLegacyAccountOperation *)self legacyContext];
-  v10 = [v8 newNoteBasedOnModernNote:v6 inFolder:v7 context:v9];
+  legacyContext = [(ICCopyModernNotesToLegacyAccountOperation *)self legacyContext];
+  v10 = [v8 newNoteBasedOnModernNote:noteCopy inFolder:folderCopy context:legacyContext];
 
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __63__ICCopyModernNotesToLegacyAccountOperation_copyNote_toFolder___block_invoke;
   v22 = &unk_1E846BF88;
-  v23 = v7;
-  v24 = v6;
-  v25 = self;
+  v23 = folderCopy;
+  v24 = noteCopy;
+  selfCopy = self;
   v11 = v10;
   v26 = v11;
-  v12 = v6;
-  v13 = v7;
+  v12 = noteCopy;
+  v13 = folderCopy;
   v14 = [v12 htmlStringWithAttachmentConversionHandler:&v19];
   [v11 setHtmlString:{v14, v19, v20, v21, v22}];
 
   [v13 addNotesObject:v11];
-  v15 = [v11 managedObjectContext];
-  [v15 processPendingChanges];
+  managedObjectContext = [v11 managedObjectContext];
+  [managedObjectContext processPendingChanges];
 
   v16 = v26;
   v17 = v11;

@@ -1,14 +1,14 @@
 @interface MPSConvolutionDataSourceWrapper_SecureCoding
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MPSConvolutionDataSourceWrapper_SecureCoding)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MPSConvolutionDataSourceWrapper_SecureCoding)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSConvolutionDataSourceWrapper_SecureCoding
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   if (objc_msgSend_isEqualToString_(v5, v6, @"supportsSecureCoding", v7, v8, v9, v10, v11))
   {
     return 1;
@@ -26,12 +26,12 @@
 
   v25.receiver = self;
   v25.super_class = MPSConvolutionDataSourceWrapper_SecureCoding;
-  return [(MPSConvolutionDataSourceWrapper *)&v25 respondsToSelector:a3];
+  return [(MPSConvolutionDataSourceWrapper *)&v25 respondsToSelector:selector];
 }
 
-- (MPSConvolutionDataSourceWrapper_SecureCoding)initWithCoder:(id)a3
+- (MPSConvolutionDataSourceWrapper_SecureCoding)initWithCoder:(id)coder
 {
-  v8 = sub_239D2668C(a3, @"MPSConvolutionDataSourceWrapper.c", @"MPSConvolutionDataSourceWrapper.dataSource", 0, &unk_284D0FAF8, v3, v4, v5);
+  v8 = sub_239D2668C(coder, @"MPSConvolutionDataSourceWrapper.c", @"MPSConvolutionDataSourceWrapper.dataSource", 0, &unk_284D0FAF8, v3, v4, v5);
   if (v8)
   {
     v15 = v8;
@@ -42,7 +42,7 @@
       objc_msgSend_initialize(v16, v17, v18, v19, v20, v21, v22, v23);
       if (!v24->super._batchNorm)
       {
-        v24->super._batchNorm = sub_239D2668C(a3, @"MPSConvolutionDataSourceWrapper.b", @"MPSConvolutionDataSourceWrapper.batchNorm", 0, 0, v25, v26, v27);
+        v24->super._batchNorm = sub_239D2668C(coder, @"MPSConvolutionDataSourceWrapper.b", @"MPSConvolutionDataSourceWrapper.batchNorm", 0, 0, v25, v26, v27);
         objc_opt_class();
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -57,7 +57,7 @@
       }
 
       v34 = objc_opt_class();
-      v31 = sub_239D2668C(a3, @"MPSConvolutionDataSourceWrapper.n", @"MPSConvolutionDataSourceWrapper.neuron", &v34, 0, v28, v29, v30);
+      v31 = sub_239D2668C(coder, @"MPSConvolutionDataSourceWrapper.n", @"MPSConvolutionDataSourceWrapper.neuron", &v34, 0, v28, v29, v30);
       if (v31)
       {
         v32 = v31;
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (objc_msgSend_conformsToProtocol_(self->super._dataSource, a2, &unk_284D09FA0, v3, v4, v5, v6, v7))
   {
@@ -112,8 +112,8 @@
       v44 = strlen(v42);
       if (v44)
       {
-        objc_msgSend_encodeBytes_length_forKey_(a3, v45, v43, v44 + 1, @"MPSConvolutionDataSourceWrapper.c", v46, v47, v48);
-        objc_msgSend_encodeObject_forKey_(a3, v49, dataSource, @"MPSConvolutionDataSourceWrapper.dataSource", v50, v51, v52, v53);
+        objc_msgSend_encodeBytes_length_forKey_(coder, v45, v43, v44 + 1, @"MPSConvolutionDataSourceWrapper.c", v46, v47, v48);
+        objc_msgSend_encodeObject_forKey_(coder, v49, dataSource, @"MPSConvolutionDataSourceWrapper.dataSource", v50, v51, v52, v53);
       }
     }
   }
@@ -149,8 +149,8 @@
         v100 = strlen(v98);
         if (v100)
         {
-          objc_msgSend_encodeBytes_length_forKey_(a3, v101, v99, v100 + 1, @"MPSConvolutionDataSourceWrapper.b", v102, v103, v104);
-          objc_msgSend_encodeObject_forKey_(a3, v105, batchNorm, @"MPSConvolutionDataSourceWrapper.batchNorm", v106, v107, v108, v109);
+          objc_msgSend_encodeBytes_length_forKey_(coder, v101, v99, v100 + 1, @"MPSConvolutionDataSourceWrapper.b", v102, v103, v104);
+          objc_msgSend_encodeObject_forKey_(coder, v105, batchNorm, @"MPSConvolutionDataSourceWrapper.batchNorm", v106, v107, v108, v109);
         }
       }
     }
@@ -188,8 +188,8 @@
         v144 = strlen(v142);
         if (v144)
         {
-          objc_msgSend_encodeBytes_length_forKey_(a3, v145, v143, v144 + 1, @"MPSConvolutionDataSourceWrapper.n", v146, v147, v148);
-          objc_msgSend_encodeObject_forKey_(a3, v149, neuron, @"MPSConvolutionDataSourceWrapper.neuron", v150, v151, v152, v153);
+          objc_msgSend_encodeBytes_length_forKey_(coder, v145, v143, v144 + 1, @"MPSConvolutionDataSourceWrapper.n", v146, v147, v148);
+          objc_msgSend_encodeObject_forKey_(coder, v149, neuron, @"MPSConvolutionDataSourceWrapper.neuron", v150, v151, v152, v153);
         }
       }
     }

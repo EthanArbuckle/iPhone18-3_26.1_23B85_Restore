@@ -1,26 +1,26 @@
 @interface REMTimestampedUUID
-- (BOOL)isEqual:(id)a3;
-- (REMTimestampedUUID)initWithCoder:(id)a3;
-- (REMTimestampedUUID)initWithIdentifier:(id)a3 modifiedOn:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMTimestampedUUID)initWithCoder:(id)coder;
+- (REMTimestampedUUID)initWithIdentifier:(id)identifier modifiedOn:(id)on;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTimestampedUUID
 
-- (REMTimestampedUUID)initWithIdentifier:(id)a3 modifiedOn:(id)a4
+- (REMTimestampedUUID)initWithIdentifier:(id)identifier modifiedOn:(id)on
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  onCopy = on;
   v12.receiver = self;
   v12.super_class = REMTimestampedUUID;
   v9 = [(REMTimestampedUUID *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_modifiedOn, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_modifiedOn, on);
   }
 
   return v10;
@@ -30,34 +30,34 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMTimestampedUUID *)self identifier];
-  v6 = [(REMTimestampedUUID *)self modifiedOn];
-  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@, modifiedOn: %@>", v4, self, v5, v6];
+  identifier = [(REMTimestampedUUID *)self identifier];
+  modifiedOn = [(REMTimestampedUUID *)self modifiedOn];
+  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@, modifiedOn: %@>", v4, self, identifier, modifiedOn];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMTimestampedUUID *)self identifier];
-  v6 = [v4 identifier];
-  v7 = v6;
-  if (v5 == v6)
+  identifier = [(REMTimestampedUUID *)self identifier];
+  identifier2 = [equalCopy identifier];
+  v7 = identifier2;
+  if (identifier == identifier2)
   {
   }
 
   else
   {
-    v8 = [(REMTimestampedUUID *)self identifier];
-    v9 = [v4 identifier];
-    v10 = [v8 isEqual:v9];
+    identifier3 = [(REMTimestampedUUID *)self identifier];
+    identifier4 = [equalCopy identifier];
+    v10 = [identifier3 isEqual:identifier4];
 
     if (!v10)
     {
@@ -67,52 +67,52 @@ LABEL_4:
     }
   }
 
-  v12 = [(REMTimestampedUUID *)self modifiedOn];
-  v13 = [v4 modifiedOn];
-  if (v12 == v13)
+  modifiedOn = [(REMTimestampedUUID *)self modifiedOn];
+  modifiedOn2 = [equalCopy modifiedOn];
+  if (modifiedOn == modifiedOn2)
   {
     v11 = 1;
   }
 
   else
   {
-    v14 = [(REMTimestampedUUID *)self modifiedOn];
-    v15 = [v4 modifiedOn];
-    v11 = [v14 isEqual:v15];
+    modifiedOn3 = [(REMTimestampedUUID *)self modifiedOn];
+    modifiedOn4 = [equalCopy modifiedOn];
+    v11 = [modifiedOn3 isEqual:modifiedOn4];
   }
 
 LABEL_10:
   return v11 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(REMTimestampedUUID *)self identifier];
-  v6 = [(REMTimestampedUUID *)self modifiedOn];
-  v7 = [v4 initWithIdentifier:v5 modifiedOn:v6];
+  identifier = [(REMTimestampedUUID *)self identifier];
+  modifiedOn = [(REMTimestampedUUID *)self modifiedOn];
+  v7 = [v4 initWithIdentifier:identifier modifiedOn:modifiedOn];
 
   return v7;
 }
 
-- (REMTimestampedUUID)initWithCoder:(id)a3
+- (REMTimestampedUUID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedOn"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedOn"];
 
   v7 = [(REMTimestampedUUID *)self initWithIdentifier:v5 modifiedOn:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMTimestampedUUID *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(REMTimestampedUUID *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(REMTimestampedUUID *)self modifiedOn];
-  [v4 encodeObject:v6 forKey:@"modifiedOn"];
+  modifiedOn = [(REMTimestampedUUID *)self modifiedOn];
+  [coderCopy encodeObject:modifiedOn forKey:@"modifiedOn"];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface GKAvatarImage
-- (GKAvatarImage)initWithPNGData:(id)a3 useUIImage:(BOOL)a4;
-- (void)prepareForUsingUIImage:(BOOL)a3;
+- (GKAvatarImage)initWithPNGData:(id)data useUIImage:(BOOL)image;
+- (void)prepareForUsingUIImage:(BOOL)image;
 @end
 
 @implementation GKAvatarImage
 
-- (GKAvatarImage)initWithPNGData:(id)a3 useUIImage:(BOOL)a4
+- (GKAvatarImage)initWithPNGData:(id)data useUIImage:(BOOL)image
 {
-  v4 = a4;
-  v6 = a3;
+  imageCopy = image;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = GKAvatarImage;
   v7 = [(GKAvatarImage *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    if (v4)
+    if (imageCopy)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = dataCopy;
     }
 
     [(GKAvatarImage *)v7 setImageData:v9];
-    if (v4)
+    if (imageCopy)
     {
-      v10 = [MEMORY[0x277D755B8] _gkImageWithCheckedData:v6];
+      v10 = [MEMORY[0x277D755B8] _gkImageWithCheckedData:dataCopy];
       [(GKAvatarImage *)v8 setImage:v10];
     }
 
@@ -41,44 +41,44 @@
   return v8;
 }
 
-- (void)prepareForUsingUIImage:(BOOL)a3
+- (void)prepareForUsingUIImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = [(GKAvatarImage *)self image];
-    if (!v4)
+    image = [(GKAvatarImage *)self image];
+    if (!image)
     {
-      v5 = [(GKAvatarImage *)self imageData];
+      imageData = [(GKAvatarImage *)self imageData];
 
-      if (!v5)
+      if (!imageData)
       {
         return;
       }
 
       v6 = MEMORY[0x277D755B8];
-      v9 = [(GKAvatarImage *)self imageData];
+      imageData2 = [(GKAvatarImage *)self imageData];
       v7 = [v6 _gkImageWithCheckedData:?];
       [(GKAvatarImage *)self setImage:v7];
 LABEL_8:
 
-      v4 = v9;
+      image = imageData2;
     }
   }
 
   else
   {
-    v4 = [(GKAvatarImage *)self imageData];
-    if (!v4)
+    image = [(GKAvatarImage *)self imageData];
+    if (!image)
     {
-      v8 = [(GKAvatarImage *)self image];
+      image2 = [(GKAvatarImage *)self image];
 
-      if (!v8)
+      if (!image2)
       {
         return;
       }
 
-      v9 = [(GKAvatarImage *)self image];
-      v7 = UIImagePNGRepresentation(v9);
+      imageData2 = [(GKAvatarImage *)self image];
+      v7 = UIImagePNGRepresentation(imageData2);
       [(GKAvatarImage *)self setImageData:v7];
       goto LABEL_8;
     }

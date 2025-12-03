@@ -2,49 +2,49 @@
 - (NSString)frameId;
 - (NSString)requestId;
 - (NSString)url;
-- (RWIProtocolPageSearchResult)initWithUrl:(id)a3 frameId:(id)a4 matchesCount:(double)a5;
+- (RWIProtocolPageSearchResult)initWithUrl:(id)url frameId:(id)id matchesCount:(double)count;
 - (double)matchesCount;
-- (void)setFrameId:(id)a3;
-- (void)setMatchesCount:(double)a3;
-- (void)setRequestId:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setFrameId:(id)id;
+- (void)setMatchesCount:(double)count;
+- (void)setRequestId:(id)id;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolPageSearchResult
 
-- (RWIProtocolPageSearchResult)initWithUrl:(id)a3 frameId:(id)a4 matchesCount:(double)a5
+- (RWIProtocolPageSearchResult)initWithUrl:(id)url frameId:(id)id matchesCount:(double)count
 {
-  v8 = a3;
-  v9 = a4;
+  urlCopy = url;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = RWIProtocolPageSearchResult;
   v10 = [(RWIProtocolJSONObject *)&v13 init];
   if (v10)
   {
-    if (!v8)
+    if (!urlCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"url"}];
     }
 
-    if (!v9)
+    if (!idCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"frameId"}];
     }
 
-    [(RWIProtocolPageSearchResult *)v10 setUrl:v8];
-    [(RWIProtocolPageSearchResult *)v10 setFrameId:v9];
-    [(RWIProtocolPageSearchResult *)v10 setMatchesCount:a5];
+    [(RWIProtocolPageSearchResult *)v10 setUrl:urlCopy];
+    [(RWIProtocolPageSearchResult *)v10 setFrameId:idCopy];
+    [(RWIProtocolPageSearchResult *)v10 setMatchesCount:count];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageSearchResult;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -56,11 +56,11 @@
   return v2;
 }
 
-- (void)setFrameId:(id)a3
+- (void)setFrameId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageSearchResult;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"frameId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"frameId"];
 }
 
 - (NSString)frameId
@@ -72,11 +72,11 @@
   return v2;
 }
 
-- (void)setMatchesCount:(double)a3
+- (void)setMatchesCount:(double)count
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageSearchResult;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"matchesCount" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"matchesCount" forKey:count];
 }
 
 - (double)matchesCount
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (void)setRequestId:(id)a3
+- (void)setRequestId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageSearchResult;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"requestId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"requestId"];
 }
 
 - (NSString)requestId

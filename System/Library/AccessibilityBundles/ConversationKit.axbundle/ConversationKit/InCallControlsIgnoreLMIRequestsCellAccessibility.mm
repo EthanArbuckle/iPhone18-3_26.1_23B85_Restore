@@ -13,19 +13,19 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   objc_opt_class();
-  v3 = [v2 contentConfiguration];
+  contentConfiguration = [v2 contentConfiguration];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 - (id)accessibilityValue
 {
   v2 = MEMORY[0x29EDBA0F8];
-  v3 = [(InCallControlsIgnoreLMIRequestsCellAccessibility *)self _axCellSwitch];
-  v4 = [v2 stringWithFormat:@"%d", objc_msgSend(v3, "isOn")];
+  _axCellSwitch = [(InCallControlsIgnoreLMIRequestsCellAccessibility *)self _axCellSwitch];
+  v4 = [v2 stringWithFormat:@"%d", objc_msgSend(_axCellSwitch, "isOn")];
 
   return v4;
 }
@@ -39,17 +39,17 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(InCallControlsIgnoreLMIRequestsCellAccessibility *)self _axCellSwitch];
-  [v2 setOn:objc_msgSend(v2 animated:{"isOn") ^ 1, 1}];
+  _axCellSwitch = [(InCallControlsIgnoreLMIRequestsCellAccessibility *)self _axCellSwitch];
+  [_axCellSwitch setOn:objc_msgSend(_axCellSwitch animated:{"isOn") ^ 1, 1}];
 
-  return v2 != 0;
+  return _axCellSwitch != 0;
 }
 
 - (id)_axCellSwitch
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 accessories];
+  accessories = [v2 accessories];
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -61,7 +61,7 @@
   v6[2] = __65__InCallControlsIgnoreLMIRequestsCellAccessibility__axCellSwitch__block_invoke;
   v6[3] = &unk_29F2B7CD8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [accessories enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

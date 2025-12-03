@@ -1,15 +1,15 @@
 @interface AKAuthorizationSessionManager
 + (id)sharedInstance;
 - (AKAuthorizationSessionManager)init;
-- (BOOL)_hasSessionTimedOutForRequest:(id)a3;
-- (id)_activeSessionForContext:(id)a3 client:(id)a4;
-- (id)_clientBundleIDForContext:(id)a3 client:(id)a4;
-- (id)clientForContext:(id)a3;
-- (id)userResponseWithContext:(id)a3 forClient:(id)a4;
-- (void)beginSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)continueSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)endSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)updateUserResponse:(id)a3 withContext:(id)a4 forClient:(id)a5;
+- (BOOL)_hasSessionTimedOutForRequest:(id)request;
+- (id)_activeSessionForContext:(id)context client:(id)client;
+- (id)_clientBundleIDForContext:(id)context client:(id)client;
+- (id)clientForContext:(id)context;
+- (id)userResponseWithContext:(id)context forClient:(id)client;
+- (void)beginSessionWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)continueSessionWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)endSessionWithContext:(id)context client:(id)client completion:(id)completion;
+- (void)updateUserResponse:(id)response withContext:(id)context forClient:(id)client;
 @end
 
 @implementation AKAuthorizationSessionManager
@@ -63,21 +63,21 @@
   return v9;
 }
 
-- (id)clientForContext:(id)a3
+- (id)clientForContext:(id)context
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] _sessionID];
-  _objc_release(v7);
-  if (v7)
+  objc_storeStrong(location, context);
+  _sessionID = [location[0] _sessionID];
+  _objc_release(_sessionID);
+  if (_sessionID)
   {
     v24 = _AKLogSiwa();
     v23 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100036FE8(v32, [(NSMutableDictionary *)v29->_activeSessions count]);
+      sub_100036FE8(v32, [(NSMutableDictionary *)selfCopy->_activeSessions count]);
       _os_log_impl(&_mh_execute_header, v24, v23, "Number of active sessions: %lu", v32, 0xCu);
     }
 
@@ -86,10 +86,10 @@
     v21 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [location[0] _sessionID];
-      sub_1000194D4(v31, v6);
+      _sessionID2 = [location[0] _sessionID];
+      sub_1000194D4(v31, _sessionID2);
       _os_log_impl(&_mh_execute_header, v22, v21, "Looking for client with session ID: %@", v31, 0xCu);
-      _objc_release(v6);
+      _objc_release(_sessionID2);
     }
 
     objc_storeStrong(&v22, 0);
@@ -100,7 +100,7 @@
     v18 = sub_1000038D4;
     v19 = sub_100011140;
     v20 = 0;
-    activeSessions = v29->_activeSessions;
+    activeSessions = selfCopy->_activeSessions;
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
@@ -137,16 +137,16 @@
   return v3;
 }
 
-- (void)beginSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)beginSessionWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, client);
   v37 = 0;
-  objc_storeStrong(&v37, a5);
+  objc_storeStrong(&v37, completion);
   v31[0] = 0;
   v31[1] = v31;
   v32 = 838860800;
@@ -161,7 +161,7 @@
   v28 = sub_1000038D4;
   v29 = sub_100011140;
   v30 = 0;
-  queue = v40->_trafficQueue;
+  queue = selfCopy->_trafficQueue;
   v16 = _NSConcreteStackBlock;
   v17 = -1073741824;
   v18 = 0;
@@ -169,12 +169,12 @@
   v20 = &unk_1003210A8;
   v21 = _objc_retain(v38);
   v24[0] = _objc_retain(v37);
-  v22 = _objc_retain(v40);
+  v22 = _objc_retain(selfCopy);
   v23 = _objc_retain(location[0]);
   v24[1] = v25;
   v24[2] = v31;
   dispatch_sync(queue, &v16);
-  clearanceQueue = v40->_clearanceQueue;
+  clearanceQueue = selfCopy->_clearanceQueue;
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
@@ -196,24 +196,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)endSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)endSessionWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, client);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  queue = v20->_trafficQueue;
+  objc_storeStrong(&v17, completion);
+  queue = selfCopy->_trafficQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000779E8;
   v12 = &unk_1003200A8;
   v13 = _objc_retain(location[0]);
-  v14 = _objc_retain(v20);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v16 = _objc_retain(v17);
   dispatch_sync(queue, &v8);
@@ -226,35 +226,35 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)continueSessionWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)continueSessionWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v68 = 0;
-  objc_storeStrong(&v68, a4);
+  objc_storeStrong(&v68, client);
   v67 = 0;
-  objc_storeStrong(&v67, a5);
-  v66 = [(AKAuthorizationSessionManager *)v70 _clientBundleIDForContext:location[0] client:v68];
+  objc_storeStrong(&v67, completion);
+  v66 = [(AKAuthorizationSessionManager *)selfCopy _clientBundleIDForContext:location[0] client:v68];
   if (v66)
   {
-    v55 = [(NSMutableDictionary *)v70->_activeSessions objectForKeyedSubscript:v66];
+    v55 = [(NSMutableDictionary *)selfCopy->_activeSessions objectForKeyedSubscript:v66];
     if (v55)
     {
-      v12 = [v55 userResponse];
-      v11 = [v12 selectedRequest];
-      v10 = [v11 requestIdentifier];
-      v46 = [v10 UUIDString];
-      _objc_release(v10);
-      _objc_release(v11);
-      _objc_release(v12);
-      v13 = [location[0] _continuationRequestIdentifier];
-      v14 = [v46 isEqualToString:?];
-      _objc_release(v13);
+      userResponse = [v55 userResponse];
+      selectedRequest = [userResponse selectedRequest];
+      requestIdentifier = [selectedRequest requestIdentifier];
+      uUIDString = [requestIdentifier UUIDString];
+      _objc_release(requestIdentifier);
+      _objc_release(selectedRequest);
+      _objc_release(userResponse);
+      _continuationRequestIdentifier = [location[0] _continuationRequestIdentifier];
+      v14 = [uUIDString isEqualToString:?];
+      _objc_release(_continuationRequestIdentifier);
       if (v14)
       {
-        v36 = [(AKAuthorizationSessionManager *)v70 _hasSessionTimedOutForRequest:v55];
+        v36 = [(AKAuthorizationSessionManager *)selfCopy _hasSessionTimedOutForRequest:v55];
         if ((v36 & 1) == 1)
         {
           oslog = _AKLogSiwa();
@@ -266,7 +266,7 @@
           }
 
           objc_storeStrong(&oslog, 0);
-          clearanceQueue = v70->_clearanceQueue;
+          clearanceQueue = selfCopy->_clearanceQueue;
           v28 = _NSConcreteStackBlock;
           v29 = -1073741824;
           v30 = 0;
@@ -274,14 +274,14 @@
           v32 = &unk_100320EC8;
           v33 = _objc_retain(v67);
           dispatch_sync(clearanceQueue, &v28);
-          [(NSMutableDictionary *)v70->_activeSessions removeObjectForKey:v66];
+          [(NSMutableDictionary *)selfCopy->_activeSessions removeObjectForKey:v66];
           v56 = 1;
           objc_storeStrong(&v33, 0);
         }
 
         else
         {
-          v5 = v70->_clearanceQueue;
+          v5 = selfCopy->_clearanceQueue;
           v21 = _NSConcreteStackBlock;
           v22 = -1073741824;
           v23 = 0;
@@ -309,7 +309,7 @@
         }
 
         objc_storeStrong(&v45, 0);
-        v7 = v70->_clearanceQueue;
+        v7 = selfCopy->_clearanceQueue;
         v37 = _NSConcreteStackBlock;
         v38 = -1073741824;
         v39 = 0;
@@ -321,7 +321,7 @@
         objc_storeStrong(&v42, 0);
       }
 
-      objc_storeStrong(&v46, 0);
+      objc_storeStrong(&uUIDString, 0);
     }
 
     else
@@ -335,7 +335,7 @@
       }
 
       objc_storeStrong(&v54, 0);
-      v15 = v70->_clearanceQueue;
+      v15 = selfCopy->_clearanceQueue;
       v47 = _NSConcreteStackBlock;
       v48 = -1073741824;
       v49 = 0;
@@ -363,7 +363,7 @@
     }
 
     objc_storeStrong(&v65, 0);
-    queue = v70->_clearanceQueue;
+    queue = selfCopy->_clearanceQueue;
     v57 = _NSConcreteStackBlock;
     v58 = -1073741824;
     v59 = 0;
@@ -381,16 +381,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updateUserResponse:(id)a3 withContext:(id)a4 forClient:(id)a5
+- (void)updateUserResponse:(id)response withContext:(id)context forClient:(id)client
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, context);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, client);
   v10 = _AKLogSiwa();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -400,7 +400,7 @@
   }
 
   objc_storeStrong(&v10, 0);
-  v8 = [(AKAuthorizationSessionManager *)v14 _activeSessionForContext:v12 client:v11];
+  v8 = [(AKAuthorizationSessionManager *)selfCopy _activeSessionForContext:v12 client:v11];
   if (v8)
   {
     [v8 setUserResponse:location[0]];
@@ -424,14 +424,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)userResponseWithContext:(id)a3 forClient:(id)a4
+- (id)userResponseWithContext:(id)context forClient:(id)client
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, client);
   v10 = _AKLogSiwa();
   v9 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -441,10 +441,10 @@
   }
 
   objc_storeStrong(&v10, 0);
-  v8 = [(AKAuthorizationSessionManager *)v13 _activeSessionForContext:location[0] client:v11];
+  v8 = [(AKAuthorizationSessionManager *)selfCopy _activeSessionForContext:location[0] client:v11];
   if (v8)
   {
-    v14 = [v8 userResponse];
+    userResponse = [v8 userResponse];
   }
 
   else
@@ -457,31 +457,31 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v14 = 0;
+    userResponse = 0;
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  v4 = v14;
+  v4 = userResponse;
 
   return v4;
 }
 
-- (BOOL)_hasSessionTimedOutForRequest:(id)a3
+- (BOOL)_hasSessionTimedOutForRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v9 = +[NSDate date];
-  v8 = [location[0] requestTime];
+  requestTime = [location[0] requestTime];
   [(NSDate *)v9 timeIntervalSinceDate:?];
   v10 = v3;
-  _objc_release(v8);
+  _objc_release(requestTime);
   _objc_release(v9);
-  v11 = [location[0] context];
-  [v11 _authSessionTimeoutInterval];
+  context = [location[0] context];
+  [context _authSessionTimeoutInterval];
   v12 = 0;
   if (v4 <= 0.0)
   {
@@ -490,71 +490,71 @@
 
   else
   {
-    v13 = [location[0] context];
+    context2 = [location[0] context];
     v12 = 1;
-    [v13 _authSessionTimeoutInterval];
+    [context2 _authSessionTimeoutInterval];
     v7 = v5;
   }
 
   if (v12)
   {
-    _objc_release(v13);
+    _objc_release(context2);
   }
 
-  _objc_release(v11);
+  _objc_release(context);
   objc_storeStrong(location, 0);
   return v10 > v7;
 }
 
-- (id)_clientBundleIDForContext:(id)a3 client:(id)a4
+- (id)_clientBundleIDForContext:(id)context client:(id)client
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = [v13 bundleID];
+  objc_storeStrong(&v13, client);
+  bundleID = [v13 bundleID];
   v10 = 0;
   v9 = 0;
   if ([location[0] _isWebLogin])
   {
-    v11 = [location[0] _proxiedClientServiceID];
+    _proxiedClientServiceID = [location[0] _proxiedClientServiceID];
     v10 = 1;
-    v9 = v11 != 0;
+    v9 = _proxiedClientServiceID != 0;
   }
 
   if (v10)
   {
-    _objc_release(v11);
+    _objc_release(_proxiedClientServiceID);
   }
 
   if (v9)
   {
-    v4 = [location[0] _proxiedClientServiceID];
-    v5 = v12;
-    v12 = v4;
+    _proxiedClientServiceID2 = [location[0] _proxiedClientServiceID];
+    v5 = bundleID;
+    bundleID = _proxiedClientServiceID2;
     _objc_release(v5);
   }
 
-  v7 = _objc_retain(v12);
-  objc_storeStrong(&v12, 0);
+  v7 = _objc_retain(bundleID);
+  objc_storeStrong(&bundleID, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (id)_activeSessionForContext:(id)a3 client:(id)a4
+- (id)_activeSessionForContext:(id)context client:(id)client
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(AKAuthorizationSessionManager *)v10 _clientBundleIDForContext:location[0] client:v8];
-  v6 = [(NSMutableDictionary *)v10->_activeSessions objectForKeyedSubscript:v7];
+  objc_storeStrong(&v8, client);
+  v7 = [(AKAuthorizationSessionManager *)selfCopy _clientBundleIDForContext:location[0] client:v8];
+  v6 = [(NSMutableDictionary *)selfCopy->_activeSessions objectForKeyedSubscript:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);

@@ -1,13 +1,13 @@
 @interface WBSCyclerCloudKitMigrationTestSuite
-+ (BOOL)setValue:(id)a3 forConfigurationKey:(id)a4;
++ (BOOL)setValue:(id)value forConfigurationKey:(id)key;
 - (WBSCyclerCloudKitMigrationTestSuite)init;
-- (id)_errorWithCode:(int64_t)a3;
-- (void)_createRandomBookmarkWithTarget:(id)a3 completionHandler:(id)a4;
-- (void)_fetchBookmarksPriorToMigrationWithTarget:(id)a3 completionHandler:(id)a4;
-- (void)_generateDAVServerIDsForExistingBookmarksWithTarget:(id)a3 completionHandler:(id)a4;
-- (void)_migrateToCloudKitWithTarget:(id)a3 completionHandler:(id)a4;
-- (void)_validateResultsOfMigrationWithTarget:(id)a3 completionHandler:(id)a4;
-- (void)runWithTarget:(id)a3 completionHandler:(id)a4;
+- (id)_errorWithCode:(int64_t)code;
+- (void)_createRandomBookmarkWithTarget:(id)target completionHandler:(id)handler;
+- (void)_fetchBookmarksPriorToMigrationWithTarget:(id)target completionHandler:(id)handler;
+- (void)_generateDAVServerIDsForExistingBookmarksWithTarget:(id)target completionHandler:(id)handler;
+- (void)_migrateToCloudKitWithTarget:(id)target completionHandler:(id)handler;
+- (void)_validateResultsOfMigrationWithTarget:(id)target completionHandler:(id)handler;
+- (void)runWithTarget:(id)target completionHandler:(id)handler;
 @end
 
 @implementation WBSCyclerCloudKitMigrationTestSuite
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)runWithTarget:(id)a3 completionHandler:(id)a4
+- (void)runWithTarget:(id)target completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  handlerCopy = handler;
   if ((shouldMigrateExistingBookmarks & 1) == 0 && ![(WBSCyclerTestSuiteBookmarkAuxiliary *)self->_bookmarkAuxiliary hasPerformedOperation:0])
   {
     v23 = @"forCloudKitTest";
@@ -55,7 +55,7 @@
   {
     if (![(WBSCyclerTestSuiteBookmarkAuxiliary *)self->_bookmarkAuxiliary hasPerformedOperation:2])
     {
-      [(WBSCyclerCloudKitMigrationTestSuite *)self _generateDAVServerIDsForExistingBookmarksWithTarget:v6 completionHandler:v7];
+      [(WBSCyclerCloudKitMigrationTestSuite *)self _generateDAVServerIDsForExistingBookmarksWithTarget:targetCopy completionHandler:handlerCopy];
       goto LABEL_22;
     }
 
@@ -64,7 +64,7 @@
     {
       if (![(WBSCyclerTestSuiteBookmarkAuxiliary *)v10 hasPerformedOperation:3])
       {
-        [(WBSCyclerCloudKitMigrationTestSuite *)self _migrateToCloudKitWithTarget:v6 completionHandler:v7];
+        [(WBSCyclerCloudKitMigrationTestSuite *)self _migrateToCloudKitWithTarget:targetCopy completionHandler:handlerCopy];
         goto LABEL_22;
       }
 
@@ -73,8 +73,8 @@
       v19[2] = __71__WBSCyclerCloudKitMigrationTestSuite_runWithTarget_completionHandler___block_invoke;
       v19[3] = &unk_1E7FB8208;
       v19[4] = self;
-      v20 = v7;
-      [(WBSCyclerCloudKitMigrationTestSuite *)self _validateResultsOfMigrationWithTarget:v6 completionHandler:v19];
+      v20 = handlerCopy;
+      [(WBSCyclerCloudKitMigrationTestSuite *)self _validateResultsOfMigrationWithTarget:targetCopy completionHandler:v19];
       v13 = v20;
       goto LABEL_19;
     }
@@ -90,8 +90,8 @@
         v17[2] = __71__WBSCyclerCloudKitMigrationTestSuite_runWithTarget_completionHandler___block_invoke_2;
         v17[3] = &unk_1E7FB8208;
         v17[4] = self;
-        v18 = v7;
-        [(WBSCyclerCloudKitMigrationTestSuite *)self _validateResultsOfMigrationWithTarget:v6 completionHandler:v17];
+        v18 = handlerCopy;
+        [(WBSCyclerCloudKitMigrationTestSuite *)self _validateResultsOfMigrationWithTarget:targetCopy completionHandler:v17];
         v13 = v18;
 LABEL_19:
 
@@ -101,7 +101,7 @@ LABEL_19:
       v8 = self->_bookmarkAuxiliary;
       v9 = 3;
 LABEL_8:
-      [(WBSCyclerTestSuiteBookmarkAuxiliary *)v8 performOperation:v9 withTarget:v6 completionHandler:v7];
+      [(WBSCyclerTestSuiteBookmarkAuxiliary *)v8 performOperation:v9 withTarget:targetCopy completionHandler:handlerCopy];
       goto LABEL_22;
     }
 
@@ -112,26 +112,26 @@ LABEL_8:
     bookmarkAuxiliary = self->_bookmarkAuxiliary;
     v16 = 4;
 LABEL_15:
-    [(WBSCyclerTestSuiteBookmarkAuxiliary *)bookmarkAuxiliary performOperation:v16 withTarget:v6 options:v14 completionHandler:v7];
+    [(WBSCyclerTestSuiteBookmarkAuxiliary *)bookmarkAuxiliary performOperation:v16 withTarget:targetCopy options:v14 completionHandler:handlerCopy];
 
     goto LABEL_22;
   }
 
-  [(WBSCyclerCloudKitMigrationTestSuite *)self _createRandomBookmarkWithTarget:v6 completionHandler:v7];
+  [(WBSCyclerCloudKitMigrationTestSuite *)self _createRandomBookmarkWithTarget:targetCopy completionHandler:handlerCopy];
 LABEL_22:
 }
 
-+ (BOOL)setValue:(id)a3 forConfigurationKey:(id)a4
++ (BOOL)setValue:(id)value forConfigurationKey:(id)key
 {
-  v5 = a3;
-  v6 = [a4 isEqualToString:@"migrate-existing-bookmarks"];
+  valueCopy = value;
+  v6 = [key isEqualToString:@"migrate-existing-bookmarks"];
   if (v6)
   {
-    v7 = [v5 BOOLValue];
-    shouldMigrateExistingBookmarks = v7;
+    bOOLValue = [valueCopy BOOLValue];
+    shouldMigrateExistingBookmarks = bOOLValue;
     v8 = WBS_LOG_CHANNEL_PREFIXCycler();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v7)
+    if (bOOLValue)
     {
       if (v9)
       {
@@ -155,19 +155,19 @@ LABEL_7:
   return v6;
 }
 
-- (void)_createRandomBookmarkWithTarget:(id)a3 completionHandler:(id)a4
+- (void)_createRandomBookmarkWithTarget:(id)target completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__WBSCyclerCloudKitMigrationTestSuite__createRandomBookmarkWithTarget_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC4FC0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = targetCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = targetCopy;
   [v9 fetchTopLevelBookmarkList:v10];
 }
 
@@ -215,10 +215,10 @@ uint64_t __89__WBSCyclerCloudKitMigrationTestSuite__createRandomBookmarkWithTarg
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_generateDAVServerIDsForExistingBookmarksWithTarget:(id)a3 completionHandler:(id)a4
+- (void)_generateDAVServerIDsForExistingBookmarksWithTarget:(id)target completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  targetCopy = target;
   v8 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -231,9 +231,9 @@ uint64_t __89__WBSCyclerCloudKitMigrationTestSuite__createRandomBookmarkWithTarg
   v11[1] = 3221225472;
   v11[2] = __109__WBSCyclerCloudKitMigrationTestSuite__generateDAVServerIDsForExistingBookmarksWithTarget_completionHandler___block_invoke;
   v11[3] = &unk_1E7FB8300;
-  v12 = v6;
-  v10 = v6;
-  [(WBSCyclerTestSuiteBookmarkAuxiliary *)bookmarkAuxiliary performOperation:2 withTarget:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(WBSCyclerTestSuiteBookmarkAuxiliary *)bookmarkAuxiliary performOperation:2 withTarget:targetCopy completionHandler:v11];
 }
 
 void __109__WBSCyclerCloudKitMigrationTestSuite__generateDAVServerIDsForExistingBookmarksWithTarget_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -258,10 +258,10 @@ void __109__WBSCyclerCloudKitMigrationTestSuite__generateDAVServerIDsForExisting
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchBookmarksPriorToMigrationWithTarget:(id)a3 completionHandler:(id)a4
+- (void)_fetchBookmarksPriorToMigrationWithTarget:(id)target completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  targetCopy = target;
   v8 = WBS_LOG_CHANNEL_PREFIXCycler();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -274,9 +274,9 @@ void __109__WBSCyclerCloudKitMigrationTestSuite__generateDAVServerIDsForExisting
   v10[2] = __99__WBSCyclerCloudKitMigrationTestSuite__fetchBookmarksPriorToMigrationWithTarget_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC4F98;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 fetchTopLevelBookmarkList:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [targetCopy fetchTopLevelBookmarkList:v10];
 }
 
 void __99__WBSCyclerCloudKitMigrationTestSuite__fetchBookmarksPriorToMigrationWithTarget_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -302,28 +302,28 @@ uint64_t __99__WBSCyclerCloudKitMigrationTestSuite__fetchBookmarksPriorToMigrati
   return v2();
 }
 
-- (void)_migrateToCloudKitWithTarget:(id)a3 completionHandler:(id)a4
+- (void)_migrateToCloudKitWithTarget:(id)target completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__WBSCyclerCloudKitMigrationTestSuite__migrateToCloudKitWithTarget_completionHandler___block_invoke;
   v10[3] = &unk_1E7FB6E08;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = targetCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = targetCopy;
   [(WBSCyclerCloudKitMigrationTestSuite *)self _fetchBookmarksPriorToMigrationWithTarget:v9 completionHandler:v10];
 }
 
-- (void)_validateResultsOfMigrationWithTarget:(id)a3 completionHandler:(id)a4
+- (void)_validateResultsOfMigrationWithTarget:(id)target completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  targetCopy = target;
   v8 = objc_alloc_init(WBSCyclerOperationContext);
-  [(WBSCyclerOperationContext *)v8 setTestTarget:v7];
+  [(WBSCyclerOperationContext *)v8 setTestTarget:targetCopy];
 
   bookmarkAuxiliary = self->_bookmarkAuxiliary;
   topLevelBookmarksPriorToMigration = self->_topLevelBookmarksPriorToMigration;
@@ -332,8 +332,8 @@ uint64_t __99__WBSCyclerCloudKitMigrationTestSuite__fetchBookmarksPriorToMigrati
   v12[2] = __95__WBSCyclerCloudKitMigrationTestSuite__validateResultsOfMigrationWithTarget_completionHandler___block_invoke;
   v12[3] = &unk_1E7FB8208;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   [(WBSCyclerTestSuiteBookmarkAuxiliary *)bookmarkAuxiliary fetchAndValidateBookmarksWithExpectedBookmarks:topLevelBookmarksPriorToMigration context:v8 completionHandler:v12];
 }
 
@@ -372,7 +372,7 @@ void __95__WBSCyclerCloudKitMigrationTestSuite__validateResultsOfMigrationWithTa
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_errorWithCode:(int64_t)a3
+- (id)_errorWithCode:(int64_t)code
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -380,7 +380,7 @@ void __95__WBSCyclerCloudKitMigrationTestSuite__validateResultsOfMigrationWithTa
   v5 = [(WBSCyclerCloudKitMigrationTestSuite *)self _descriptionForErrorCode:?];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [v4 errorWithDomain:@"WBSCyclerCloudKitMigrationTestSuiteErrorDomain" code:a3 userInfo:v6];
+  v7 = [v4 errorWithDomain:@"WBSCyclerCloudKitMigrationTestSuiteErrorDomain" code:code userInfo:v6];
 
   return v7;
 }

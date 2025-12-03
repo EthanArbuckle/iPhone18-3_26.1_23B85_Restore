@@ -1,42 +1,42 @@
 @interface ADSystemService
 - (ADSystemService)init;
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4;
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain;
 - (id)_systemDomains;
-- (id)commandsForDomain:(id)a3;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
 - (void)dealloc;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)handleResponse:(id)a3 toCommand:(id)a4 completion:(id)a5;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)handleResponse:(id)response toCommand:(id)command completion:(id)completion;
 @end
 
 @implementation ADSystemService
 
-- (void)handleResponse:(id)a3 toCommand:(id)a4 completion:(id)a5
+- (void)handleResponse:(id)response toCommand:(id)command completion:(id)completion
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  commandCopy = command;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v9 = v7;
-    v10 = v12;
+    v9 = commandCopy;
+    v10 = responseCopy;
     v11 = +[ADCommandCenter sharedCommandCenter];
-    [v11 _handleExtractSpeechDataCompleted:v10 inResponseTo:v9 completion:v8];
+    [v11 _handleExtractSpeechDataCompleted:v10 inResponseTo:v9 completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v164 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
   if (!self->_commandMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
@@ -288,41 +288,41 @@
 
     else
     {
-      [v163 _saUnhandledObject:v164 completion:v12];
+      [v163 _saUnhandledObject:commandCopy completion:replyCopy];
     }
   }
 }
 
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:SATTSGroupIdentifier])
+  commandCopy = command;
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:SATTSGroupIdentifier])
   {
-    if ([v6 isEqualToString:SATTSGetSpeechSynthesisVolumeClassIdentifier])
+    if ([commandCopy isEqualToString:SATTSGetSpeechSynthesisVolumeClassIdentifier])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqualToString:SATTSSetSpeechSynthesisVolumeClassIdentifier];
+      v8 = [commandCopy isEqualToString:SATTSSetSpeechSynthesisVolumeClassIdentifier];
     }
   }
 
   else
   {
-    v9 = [(ADSystemService *)self _systemDomains];
-    v8 = [v9 containsObject:v7];
+    _systemDomains = [(ADSystemService *)self _systemDomains];
+    v8 = [_systemDomains containsObject:domainCopy];
   }
 
   return v8;
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 isEqualToString:SATTSGroupIdentifier])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:SATTSGroupIdentifier])
   {
     v8[0] = SATTSGetSpeechSynthesisVolumeClassIdentifier;
     v8[1] = SATTSSetSpeechSynthesisVolumeClassIdentifier;
@@ -331,10 +331,10 @@
 
   else
   {
-    v6 = [(ADSystemService *)self _systemDomains];
-    if ([v6 containsObject:v4])
+    _systemDomains = [(ADSystemService *)self _systemDomains];
+    if ([_systemDomains containsObject:domainCopy])
     {
-      v5 = [NSArray arrayWithObject:v4];
+      v5 = [NSArray arrayWithObject:domainCopy];
     }
 
     else
@@ -348,10 +348,10 @@
 
 - (id)domains
 {
-  v2 = [(ADSystemService *)self _systemDomains];
-  v3 = [v2 allObjects];
+  _systemDomains = [(ADSystemService *)self _systemDomains];
+  allObjects = [_systemDomains allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)_systemDomains

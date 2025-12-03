@@ -1,21 +1,21 @@
 @interface IMChatNameUtilities
-+ (id)getDisplayNameFromParticipantNames:(id)a3;
++ (id)getDisplayNameFromParticipantNames:(id)names;
 @end
 
 @implementation IMChatNameUtilities
 
-+ (id)getDisplayNameFromParticipantNames:(id)a3
++ (id)getDisplayNameFromParticipantNames:(id)names
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  namesCopy = names;
+  v4 = [namesCopy count];
   if (v4)
   {
     v25 = v4 - 1;
     if (v4 == 1)
     {
-      v5 = [v3 firstObject];
-      v6 = [v5 copy];
+      firstObject = [namesCopy firstObject];
+      v6 = [firstObject copy];
     }
 
     else
@@ -24,8 +24,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v24 = v3;
-      obj = v3;
+      v24 = namesCopy;
+      obj = namesCopy;
       v7 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v7)
       {
@@ -94,7 +94,7 @@
         v6 = 0;
       }
 
-      v3 = v24;
+      namesCopy = v24;
     }
   }
 

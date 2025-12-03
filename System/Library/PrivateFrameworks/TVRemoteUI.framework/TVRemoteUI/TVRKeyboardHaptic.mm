@@ -6,15 +6,15 @@
 
 - (void)play
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 _supportsForceTouch];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _supportsForceTouch = [currentDevice _supportsForceTouch];
 
-  if (v3)
+  if (_supportsForceTouch)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 _tapticEngine];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    _tapticEngine = [currentDevice2 _tapticEngine];
 
-    [v5 actuateFeedback:1];
+    [_tapticEngine actuateFeedback:1];
   }
 
   else

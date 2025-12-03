@@ -6,15 +6,15 @@
 
 - (uint64_t)hf_requiresEthernet
 {
-  if ([a1 communicationProtocol] == 2)
+  if ([self communicationProtocol] == 2)
   {
     return 0;
   }
 
-  result = [a1 supportsIP];
+  result = [self supportsIP];
   if (result)
   {
-    return [a1 supportsWAC] ^ 1;
+    return [self supportsWAC] ^ 1;
   }
 
   return result;

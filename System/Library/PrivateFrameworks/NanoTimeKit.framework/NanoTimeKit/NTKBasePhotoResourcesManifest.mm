@@ -1,23 +1,23 @@
 @interface NTKBasePhotoResourcesManifest
-+ (id)manifestForResourceDirectory:(id)a3;
-- (BOOL)_loadRawManifestAtURL:(id)a3;
-- (BOOL)_validateImageListItem:(id)a3 withError:(id *)a4;
-- (BOOL)resourceWithName:(id)a3 isValidMediaAssetOfType:(id)a4 withMinFileSize:(unint64_t)a5 maxFileSize:(unint64_t)a6;
-- (BOOL)resourceWithNameIsValidImage:(id)a3;
-- (BOOL)validateManifestWithError:(id *)a3;
-- (id)_initWithResourceDirectoryURL:(id)a3;
++ (id)manifestForResourceDirectory:(id)directory;
+- (BOOL)_loadRawManifestAtURL:(id)l;
+- (BOOL)_validateImageListItem:(id)item withError:(id *)error;
+- (BOOL)resourceWithName:(id)name isValidMediaAssetOfType:(id)type withMinFileSize:(unint64_t)size maxFileSize:(unint64_t)fileSize;
+- (BOOL)resourceWithNameIsValidImage:(id)image;
+- (BOOL)validateManifestWithError:(id *)error;
+- (id)_initWithResourceDirectoryURL:(id)l;
 @end
 
 @implementation NTKBasePhotoResourcesManifest
 
-+ (id)manifestForResourceDirectory:(id)a3
++ (id)manifestForResourceDirectory:(id)directory
 {
-  v4 = a3;
-  if (v4 && ([MEMORY[0x277CBEBC0] fileURLWithPath:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  directoryCopy = directory;
+  if (directoryCopy && ([MEMORY[0x277CBEBC0] fileURLWithPath:directoryCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [v5 URLByAppendingPathComponent:@"Images.plist"];
-    v8 = [[a1 alloc] _initWithResourceDirectoryURL:v6];
+    v8 = [[self alloc] _initWithResourceDirectoryURL:v6];
     if ([v8 _loadRawManifestAtURL:v7])
     {
       v9 = v8;
@@ -49,15 +49,15 @@
   return v9;
 }
 
-- (id)_initWithResourceDirectoryURL:(id)a3
+- (id)_initWithResourceDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = NTKBasePhotoResourcesManifest;
   v5 = [(NTKBasePhotoResourcesManifest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     resourceDirectoryURL = v5->_resourceDirectoryURL;
     v5->_resourceDirectoryURL = v6;
   }
@@ -65,9 +65,9 @@
   return v5;
 }
 
-- (BOOL)_loadRawManifestAtURL:(id)a3
+- (BOOL)_loadRawManifestAtURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:?];
     v5 = v4;
@@ -134,12 +134,12 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)_validateImageListItem:(id)a3 withError:(id *)a4
+- (BOOL)_validateImageListItem:(id)item withError:(id *)error
 {
-  v6 = a3;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  itemCopy = item;
+  if (itemCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [(NTKBasePhotoResourcesManifest *)self validateImageListItem:v6 withError:a4];
+    v7 = [(NTKBasePhotoResourcesManifest *)self validateImageListItem:itemCopy withError:error];
   }
 
   else
@@ -156,7 +156,7 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)validateManifestWithError:(id *)a3
+- (BOOL)validateManifestWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   version = self->_version;
@@ -168,14 +168,14 @@ LABEL_22:
       [NTKBasePhotoResourcesManifest validateManifestWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = @"com.apple.nanotimekit.resourceDirectory";
       v10 = 2004;
 LABEL_7:
       [v8 errorWithDomain:v9 code:v10 userInfo:0];
-      *a3 = v11 = 0;
+      *error = v11 = 0;
       return v11;
     }
 
@@ -190,7 +190,7 @@ LABEL_7:
       [NTKBasePhotoResourcesManifest validateManifestWithError:?];
     }
 
-    if (a3)
+    if (error)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = @"com.apple.nanotimekit.photos";
@@ -210,7 +210,7 @@ LABEL_7:
       [NTKBasePhotoResourcesManifest validateManifestWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = @"com.apple.nanotimekit.photos";
@@ -240,12 +240,12 @@ LABEL_7:
           objc_enumerationMutation(v16);
         }
 
-        if (![(NTKBasePhotoResourcesManifest *)self _validateImageListItem:*(*(&v21 + 1) + 8 * i) withError:a3, v21])
+        if (![(NTKBasePhotoResourcesManifest *)self _validateImageListItem:*(*(&v21 + 1) + 8 * i) withError:error, v21])
         {
-          if (a3)
+          if (error)
           {
             [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.resourceDirectory" code:2003 userInfo:0];
-            *a3 = v11 = 0;
+            *error = v11 = 0;
           }
 
           else
@@ -273,21 +273,21 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)resourceWithName:(id)a3 isValidMediaAssetOfType:(id)a4 withMinFileSize:(unint64_t)a5 maxFileSize:(unint64_t)a6
+- (BOOL)resourceWithName:(id)name isValidMediaAssetOfType:(id)type withMinFileSize:(unint64_t)size maxFileSize:(unint64_t)fileSize
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (([v10 hasPrefix:@"~"] & 1) == 0 && (objc_msgSend(v10, "hasPrefix:", @".") & 1) == 0 && !objc_msgSend(v10, "containsString:", @"/"))
+  nameCopy = name;
+  typeCopy = type;
+  if (([nameCopy hasPrefix:@"~"] & 1) == 0 && (objc_msgSend(nameCopy, "hasPrefix:", @".") & 1) == 0 && !objc_msgSend(nameCopy, "containsString:", @"/"))
   {
-    v15 = [v10 pathExtension];
-    v16 = [v15 lowercaseString];
-    v17 = [v11 containsObject:v16];
+    pathExtension = [nameCopy pathExtension];
+    lowercaseString = [pathExtension lowercaseString];
+    v17 = [typeCopy containsObject:lowercaseString];
 
     if ((v17 & 1) == 0)
     {
-      v12 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      uRLByResolvingSymlinksInPath = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
+      if (os_log_type_enabled(uRLByResolvingSymlinksInPath, OS_LOG_TYPE_ERROR))
       {
         [NTKBasePhotoResourcesManifest resourceWithName:isValidMediaAssetOfType:withMinFileSize:maxFileSize:];
       }
@@ -297,12 +297,12 @@ LABEL_32:
 
     resourceDirectoryURL = self->_resourceDirectoryURL;
     p_resourceDirectoryURL = &self->_resourceDirectoryURL;
-    v20 = [(NSURL *)resourceDirectoryURL URLByAppendingPathComponent:v10 isDirectory:0];
-    v12 = [v20 URLByResolvingSymlinksInPath];
+    v20 = [(NSURL *)resourceDirectoryURL URLByAppendingPathComponent:nameCopy isDirectory:0];
+    uRLByResolvingSymlinksInPath = [v20 URLByResolvingSymlinksInPath];
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    v22 = [v12 path];
-    v23 = [v21 attributesOfItemAtPath:v22 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [uRLByResolvingSymlinksInPath path];
+    v23 = [defaultManager attributesOfItemAtPath:path error:0];
 
     if (!v23)
     {
@@ -319,7 +319,7 @@ LABEL_32:
     v25 = [v23 objectForKeyedSubscript:*MEMORY[0x277CCA1E0]];
     if (v25 && (v26 = v25, [v23 objectForKeyedSubscript:v24], v27 = objc_claimAutoreleasedReturnValue(), v37 = v24, v28 = v23, v29 = *MEMORY[0x277CCA1F0], v27, v26, v30 = v27 == v29, v23 = v28, v24 = v37, v30))
     {
-      if ([v23 fileSize] >= a5 && objc_msgSend(v23, "fileSize") <= a6)
+      if ([v23 fileSize] >= size && objc_msgSend(v23, "fileSize") <= fileSize)
       {
         v13 = 1;
         goto LABEL_23;
@@ -328,15 +328,15 @@ LABEL_32:
       v31 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(NSURL *)*p_resourceDirectoryURL lastPathComponent];
-        v35 = [v23 fileSize];
-        v36 = [v12 path];
+        lastPathComponent = [(NSURL *)*p_resourceDirectoryURL lastPathComponent];
+        fileSize = [v23 fileSize];
+        path2 = [uRLByResolvingSymlinksInPath path];
         *buf = 138412802;
-        v39 = v32;
+        v39 = lastPathComponent;
         v40 = 2048;
-        v41 = v35;
+        v41 = fileSize;
         v42 = 2112;
-        v43 = v36;
+        v43 = path2;
         _os_log_error_impl(&dword_22D9C5000, v31, OS_LOG_TYPE_ERROR, "[SANITIZER:%@]: unexpected file size %lu at path '%@'", buf, 0x20u);
 
         goto LABEL_14;
@@ -348,15 +348,15 @@ LABEL_32:
       v31 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [(NSURL *)*p_resourceDirectoryURL lastPathComponent];
+        lastPathComponent = [(NSURL *)*p_resourceDirectoryURL lastPathComponent];
         v33 = [v23 objectForKeyedSubscript:v24];
-        v34 = [v12 path];
+        path3 = [uRLByResolvingSymlinksInPath path];
         *buf = 138412802;
-        v39 = v32;
+        v39 = lastPathComponent;
         v40 = 2112;
         v41 = v33;
         v42 = 2112;
-        v43 = v34;
+        v43 = path3;
         _os_log_error_impl(&dword_22D9C5000, v31, OS_LOG_TYPE_ERROR, "[SANITIZER:%@]: unexpected file type '%@' for asset at path: '%@'", buf, 0x20u);
 
 LABEL_14:
@@ -371,8 +371,8 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  v12 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  uRLByResolvingSymlinksInPath = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
+  if (os_log_type_enabled(uRLByResolvingSymlinksInPath, OS_LOG_TYPE_ERROR))
   {
     [NTKBasePhotoResourcesManifest resourceWithName:isValidMediaAssetOfType:withMinFileSize:maxFileSize:];
   }
@@ -384,13 +384,13 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)resourceWithNameIsValidImage:(id)a3
+- (BOOL)resourceWithNameIsValidImage:(id)image
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(NSURL *)self->_resourceDirectoryURL URLByAppendingPathComponent:a3 isDirectory:0];
+  v4 = [(NSURL *)self->_resourceDirectoryURL URLByAppendingPathComponent:image isDirectory:0];
   v5 = MEMORY[0x277D755B8];
-  v6 = [v4 path];
-  v7 = [v5 imageWithContentsOfFile:v6];
+  path = [v4 path];
+  v7 = [v5 imageWithContentsOfFile:path];
 
   [v7 size];
   if (v8 >= 1.0 && ([v7 size], v9 >= 1.0) && (objc_msgSend(v7, "size"), v10 <= 4096.0) && (objc_msgSend(v7, "size"), v11 <= 4096.0))
@@ -403,16 +403,16 @@ LABEL_7:
     v12 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(NSURL *)self->_resourceDirectoryURL lastPathComponent];
+      lastPathComponent = [(NSURL *)self->_resourceDirectoryURL lastPathComponent];
       [v7 size];
       v16 = NSStringFromCGSize(v25);
-      v17 = [v4 path];
+      path2 = [v4 path];
       v18 = 138412802;
-      v19 = v15;
+      v19 = lastPathComponent;
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
-      v23 = v17;
+      v23 = path2;
       _os_log_error_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_ERROR, "[SANITIZER:%@]: unexpected image dimensions '%@' at path '%@'", &v18, 0x20u);
     }
 

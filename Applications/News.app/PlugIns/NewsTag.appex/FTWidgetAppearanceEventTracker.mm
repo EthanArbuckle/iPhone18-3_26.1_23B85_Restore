@@ -1,7 +1,7 @@
 @interface FTWidgetAppearanceEventTracker
 - (FTWidgetAppearanceEventTracker)init;
-- (FTWidgetAppearanceEventTracker)initWithMaxRowCount:(unint64_t)a3;
-- (void)trackAppearanceAtDate:(id)a3 withHeadlineSource:(id)a4 appConfigTreatmentID:(id)a5 appearanceType:(unint64_t)a6 allItemsCount:(unint64_t)a7;
+- (FTWidgetAppearanceEventTracker)initWithMaxRowCount:(unint64_t)count;
+- (void)trackAppearanceAtDate:(id)date withHeadlineSource:(id)source appConfigTreatmentID:(id)d appearanceType:(unint64_t)type allItemsCount:(unint64_t)count;
 - (void)trackDisappearance;
 @end
 
@@ -30,7 +30,7 @@
   objc_exception_throw(v4);
 }
 
-- (FTWidgetAppearanceEventTracker)initWithMaxRowCount:(unint64_t)a3
+- (FTWidgetAppearanceEventTracker)initWithMaxRowCount:(unint64_t)count
 {
   v22.receiver = self;
   v22.super_class = FTWidgetAppearanceEventTracker;
@@ -40,7 +40,7 @@
     v5 = +[PETEventProperty ft_userGroupProperty];
     v6 = +[PETEventProperty ft_headlineSourceProperty];
     v7 = +[PETEventProperty ft_appearanceTypeProperty];
-    v8 = [PETEventProperty propertyWithName:@"headlines" range:0, a3 + 1];
+    v8 = [PETEventProperty propertyWithName:@"headlines" range:0, count + 1];
     v9 = [PETScalarEventTracker alloc];
     v24[0] = v6;
     v24[1] = v5;
@@ -71,21 +71,21 @@
   return v4;
 }
 
-- (void)trackAppearanceAtDate:(id)a3 withHeadlineSource:(id)a4 appConfigTreatmentID:(id)a5 appearanceType:(unint64_t)a6 allItemsCount:(unint64_t)a7
+- (void)trackAppearanceAtDate:(id)date withHeadlineSource:(id)source appConfigTreatmentID:(id)d appearanceType:(unint64_t)type allItemsCount:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dateCopy = date;
+  sourceCopy = source;
+  dCopy = d;
+  if (!dateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009F1E4();
-    if (v13)
+    if (sourceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (sourceCopy)
   {
     goto LABEL_6;
   }
@@ -96,33 +96,33 @@
   }
 
 LABEL_6:
-  v15 = FTHeadlineSourcePropertyValueWithTodaySource(v13);
-  v16 = FTUserGroupPropertyValueWithAppConfigTreatmentID(v14);
-  v17 = [(FTWidgetAppearanceEventTracker *)self widgetAppearanceEventTracker];
+  v15 = FTHeadlineSourcePropertyValueWithTodaySource(sourceCopy);
+  v16 = FTUserGroupPropertyValueWithAppConfigTreatmentID(dCopy);
+  widgetAppearanceEventTracker = [(FTWidgetAppearanceEventTracker *)self widgetAppearanceEventTracker];
   v26[0] = v15;
   v26[1] = v16;
-  v18 = [NSNumber numberWithUnsignedInteger:a6];
+  v18 = [NSNumber numberWithUnsignedInteger:type];
   v26[2] = v18;
-  v19 = [NSNumber numberWithUnsignedInteger:a7];
+  v19 = [NSNumber numberWithUnsignedInteger:count];
   v26[3] = v19;
   v20 = [NSArray arrayWithObjects:v26 count:4];
-  [v17 trackEventWithPropertyValues:v20];
+  [widgetAppearanceEventTracker trackEventWithPropertyValues:v20];
 
-  v21 = [(FTWidgetAppearanceEventTracker *)self timeOfDayWidgetAppearanceEventTracker];
+  timeOfDayWidgetAppearanceEventTracker = [(FTWidgetAppearanceEventTracker *)self timeOfDayWidgetAppearanceEventTracker];
   v25[0] = v15;
   v25[1] = v16;
-  v22 = FTLocalTimeHourPropertyValue(v12);
+  v22 = FTLocalTimeHourPropertyValue(dateCopy);
   v25[2] = v22;
   v23 = FTTimeZonePropertyValue();
   v25[3] = v23;
   v24 = [NSArray arrayWithObjects:v25 count:4];
-  [v21 trackEventWithPropertyValues:v24];
+  [timeOfDayWidgetAppearanceEventTracker trackEventWithPropertyValues:v24];
 }
 
 - (void)trackDisappearance
 {
-  v2 = [(FTWidgetAppearanceEventTracker *)self widgetDisappearanceEventTracker];
-  [v2 trackEventWithPropertyValues:&__NSArray0__struct];
+  widgetDisappearanceEventTracker = [(FTWidgetAppearanceEventTracker *)self widgetDisappearanceEventTracker];
+  [widgetDisappearanceEventTracker trackEventWithPropertyValues:&__NSArray0__struct];
 }
 
 @end

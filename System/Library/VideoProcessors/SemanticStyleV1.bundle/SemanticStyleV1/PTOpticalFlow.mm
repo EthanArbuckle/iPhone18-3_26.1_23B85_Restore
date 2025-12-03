@@ -1,31 +1,31 @@
 @interface PTOpticalFlow
-- (PTOpticalFlow)initWithDevice:(id)a3 commandQueue:(id)a4 colorSize:(id *)a5 disparitySize:(id *)a6;
-- (id)toTextureArray:(id)a3;
-- (signed)convertCoordToDisplacementMapFWD:(id)a3 displacementFWD:(id)a4 coordFWD:(id)a5;
-- (signed)convertDisplacementToCoordFWD:(id)a3 displacementFWD:(id)a4 coordFWD:(id)a5;
-- (signed)generateDisplacementFWDFromSourceRGBA:(id)a3 destRGBA:(id)a4;
-- (signed)warpCoordFWD:(id)a3 inTexture:(id)a4 coordFWD:(id)a5 outTextureWarped:(id)a6;
-- (signed)warpValid:(id)a3 inTexture:(id)a4 outTextureWarped:(id)a5;
-- (signed)warpValidFill:(id)a3 inTexture:(id)a4 inValidTexture:(id)a5 outTextureWarped:(id)a6;
-- (signed)warp_displacementFWD:(id)a3 inTexture:(id)a4 displacementFWD:(id)a5 outTextureWarped:(id)a6;
+- (PTOpticalFlow)initWithDevice:(id)device commandQueue:(id)queue colorSize:(id *)size disparitySize:(id *)disparitySize;
+- (id)toTextureArray:(id)array;
+- (signed)convertCoordToDisplacementMapFWD:(id)d displacementFWD:(id)wD coordFWD:(id)fWD;
+- (signed)convertDisplacementToCoordFWD:(id)d displacementFWD:(id)wD coordFWD:(id)fWD;
+- (signed)generateDisplacementFWDFromSourceRGBA:(id)a destRGBA:(id)bA;
+- (signed)warpCoordFWD:(id)d inTexture:(id)texture coordFWD:(id)wD outTextureWarped:(id)warped;
+- (signed)warpValid:(id)valid inTexture:(id)texture outTextureWarped:(id)warped;
+- (signed)warpValidFill:(id)fill inTexture:(id)texture inValidTexture:(id)validTexture outTextureWarped:(id)warped;
+- (signed)warp_displacementFWD:(id)d inTexture:(id)texture displacementFWD:(id)wD outTextureWarped:(id)warped;
 @end
 
 @implementation PTOpticalFlow
 
-- (PTOpticalFlow)initWithDevice:(id)a3 commandQueue:(id)a4 colorSize:(id *)a5 disparitySize:(id *)a6
+- (PTOpticalFlow)initWithDevice:(id)device commandQueue:(id)queue colorSize:(id *)size disparitySize:(id *)disparitySize
 {
-  v9 = a3;
+  deviceCopy = device;
   v38.receiver = self;
   v38.super_class = PTOpticalFlow;
-  v10 = a4;
+  queueCopy = queue;
   v11 = [(PTOpticalFlow *)&v38 init];
   device = v11->_device;
-  v11->_device = v9;
-  v13 = v9;
+  v11->_device = deviceCopy;
+  v13 = deviceCopy;
 
-  *&v11->_colorWidth = vmovn_s64(vaddq_s64(vandq_s8(*&a5->var0, vdupq_n_s64(1uLL)), *&a5->var0));
+  *&v11->_colorWidth = vmovn_s64(vaddq_s64(vandq_s8(*&size->var0, vdupq_n_s64(1uLL)), *&size->var0));
   v14 = [NSBundle bundleForClass:objc_opt_class(), v38.receiver, v38.super_class];
-  v15 = [[FigMetalContext alloc] initWithbundle:v14 andOptionalCommandQueue:v10];
+  v15 = [[FigMetalContext alloc] initWithbundle:v14 andOptionalCommandQueue:queueCopy];
 
   metalContext = v11->_metalContext;
   v11->_metalContext = v15;
@@ -78,9 +78,9 @@
   return v11;
 }
 
-- (signed)generateDisplacementFWDFromSourceRGBA:(id)a3 destRGBA:(id)a4
+- (signed)generateDisplacementFWDFromSourceRGBA:(id)a destRGBA:(id)bA
 {
-  if (![(LKTFlowGPU *)self->_lktflowgpuContext estimateFlowFromTexReference:a3 target:a4])
+  if (![(LKTFlowGPU *)self->_lktflowgpuContext estimateFlowFromTexReference:a target:bA])
   {
     return 0;
   }
@@ -100,17 +100,17 @@
   return -1;
 }
 
-- (id)toTextureArray:(id)a3
+- (id)toTextureArray:(id)array
 {
-  v3 = a3;
-  if ([v3 textureType] == &dword_0 + 3)
+  arrayCopy = array;
+  if ([arrayCopy textureType] == &dword_0 + 3)
   {
-    v4 = v3;
+    v4 = arrayCopy;
   }
 
   else
   {
-    v4 = [v3 newTextureViewWithPixelFormat:objc_msgSend(v3 textureType:"pixelFormat") levels:3 slices:0, 1, 0, 1];
+    v4 = [arrayCopy newTextureViewWithPixelFormat:objc_msgSend(arrayCopy textureType:"pixelFormat") levels:3 slices:0, 1, 0, 1];
   }
 
   v5 = v4;
@@ -118,149 +118,149 @@
   return v5;
 }
 
-- (signed)warp_displacementFWD:(id)a3 inTexture:(id)a4 displacementFWD:(id)a5 outTextureWarped:(id)a6
+- (signed)warp_displacementFWD:(id)d inTexture:(id)texture displacementFWD:(id)wD outTextureWarped:(id)warped
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setComputePipelineState:self->warpTexture];
-  [v13 setTexture:v12 atIndex:0];
+  warpedCopy = warped;
+  wDCopy = wD;
+  textureCopy = texture;
+  computeCommandEncoder = [d computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->warpTexture];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v13 setTexture:v10 atIndex:1];
-  [v13 setTexture:v11 atIndex:2];
+  [computeCommandEncoder setTexture:warpedCopy atIndex:1];
+  [computeCommandEncoder setTexture:wDCopy atIndex:2];
 
-  v14 = [v10 width];
-  v15 = [v10 height];
+  width = [warpedCopy width];
+  height = [warpedCopy height];
 
-  v19[0] = v14;
-  v19[1] = v15;
+  v19[0] = width;
+  v19[1] = height;
   v19[2] = 1;
   v17 = vdupq_n_s64(8uLL);
   v18 = 1;
-  [v13 dispatchThreads:v19 threadsPerThreadgroup:&v17];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (signed)warpValid:(id)a3 inTexture:(id)a4 outTextureWarped:(id)a5
+- (signed)warpValid:(id)valid inTexture:(id)texture outTextureWarped:(id)warped
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->warpValidTexture];
-  [v10 setTexture:v9 atIndex:0];
+  warpedCopy = warped;
+  textureCopy = texture;
+  computeCommandEncoder = [valid computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->warpValidTexture];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v10 setTexture:v8 atIndex:1];
-  [v10 setTexture:self->_displacementFWD atIndex:2];
-  v11 = [v8 width];
-  v12 = [v8 height];
+  [computeCommandEncoder setTexture:warpedCopy atIndex:1];
+  [computeCommandEncoder setTexture:self->_displacementFWD atIndex:2];
+  width = [warpedCopy width];
+  height = [warpedCopy height];
 
-  v16[0] = v11;
-  v16[1] = v12;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
   v14 = vdupq_n_s64(8uLL);
   v15 = 1;
-  [v10 dispatchThreads:v16 threadsPerThreadgroup:&v14];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (signed)warpCoordFWD:(id)a3 inTexture:(id)a4 coordFWD:(id)a5 outTextureWarped:(id)a6
+- (signed)warpCoordFWD:(id)d inTexture:(id)texture coordFWD:(id)wD outTextureWarped:(id)warped
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setComputePipelineState:self->warpCoord];
-  [v13 setTexture:v12 atIndex:0];
+  warpedCopy = warped;
+  wDCopy = wD;
+  textureCopy = texture;
+  computeCommandEncoder = [d computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->warpCoord];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v13 setTexture:v10 atIndex:1];
-  [v13 setTexture:v11 atIndex:2];
-  v14 = [v11 width];
-  v15 = [v11 height];
+  [computeCommandEncoder setTexture:warpedCopy atIndex:1];
+  [computeCommandEncoder setTexture:wDCopy atIndex:2];
+  width = [wDCopy width];
+  height = [wDCopy height];
 
-  v19[0] = v14;
-  v19[1] = v15;
+  v19[0] = width;
+  v19[1] = height;
   v19[2] = 1;
   v17 = vdupq_n_s64(8uLL);
   v18 = 1;
-  [v13 dispatchThreads:v19 threadsPerThreadgroup:&v17];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (signed)convertDisplacementToCoordFWD:(id)a3 displacementFWD:(id)a4 coordFWD:(id)a5
+- (signed)convertDisplacementToCoordFWD:(id)d displacementFWD:(id)wD coordFWD:(id)fWD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->displacementToCoord];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
+  fWDCopy = fWD;
+  wDCopy = wD;
+  computeCommandEncoder = [d computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->displacementToCoord];
+  [computeCommandEncoder setTexture:wDCopy atIndex:0];
+  [computeCommandEncoder setTexture:fWDCopy atIndex:1];
 
-  v11 = [v9 width];
-  v12 = [v9 height];
+  width = [wDCopy width];
+  height = [wDCopy height];
 
-  v16[0] = v11;
-  v16[1] = v12;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
   v14 = vdupq_n_s64(8uLL);
   v15 = 1;
-  [v10 dispatchThreads:v16 threadsPerThreadgroup:&v14];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (signed)convertCoordToDisplacementMapFWD:(id)a3 displacementFWD:(id)a4 coordFWD:(id)a5
+- (signed)convertCoordToDisplacementMapFWD:(id)d displacementFWD:(id)wD coordFWD:(id)fWD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->coordToDisplacement];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
+  fWDCopy = fWD;
+  wDCopy = wD;
+  computeCommandEncoder = [d computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->coordToDisplacement];
+  [computeCommandEncoder setTexture:wDCopy atIndex:0];
+  [computeCommandEncoder setTexture:fWDCopy atIndex:1];
 
-  v11 = [v9 width];
-  v12 = [v9 height];
+  width = [wDCopy width];
+  height = [wDCopy height];
 
-  v16[0] = v11;
-  v16[1] = v12;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
   v14 = vdupq_n_s64(8uLL);
   v15 = 1;
-  [v10 dispatchThreads:v16 threadsPerThreadgroup:&v14];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:&v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (signed)warpValidFill:(id)a3 inTexture:(id)a4 inValidTexture:(id)a5 outTextureWarped:(id)a6
+- (signed)warpValidFill:(id)fill inTexture:(id)texture inValidTexture:(id)validTexture outTextureWarped:(id)warped
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setComputePipelineState:self->warpValidFillTexture];
-  [v13 setTexture:v12 atIndex:0];
+  warpedCopy = warped;
+  validTextureCopy = validTexture;
+  textureCopy = texture;
+  computeCommandEncoder = [fill computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->warpValidFillTexture];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v13 setTexture:v11 atIndex:1];
-  [v13 setTexture:v10 atIndex:2];
-  [v13 setTexture:self->_displacementFWD atIndex:3];
-  v14 = [v10 width];
-  v15 = [v10 height];
+  [computeCommandEncoder setTexture:validTextureCopy atIndex:1];
+  [computeCommandEncoder setTexture:warpedCopy atIndex:2];
+  [computeCommandEncoder setTexture:self->_displacementFWD atIndex:3];
+  width = [warpedCopy width];
+  height = [warpedCopy height];
 
-  v19[0] = v14;
-  v19[1] = v15;
+  v19[0] = width;
+  v19[1] = height;
   v19[2] = 1;
   v17 = vdupq_n_s64(8uLL);
   v18 = 1;
-  [v13 dispatchThreads:v19 threadsPerThreadgroup:&v17];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

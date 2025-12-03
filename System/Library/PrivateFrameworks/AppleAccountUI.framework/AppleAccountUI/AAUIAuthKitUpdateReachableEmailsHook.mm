@@ -1,45 +1,45 @@
 @interface AAUIAuthKitUpdateReachableEmailsHook
-- (AAUIAuthKitUpdateReachableEmailsHook)initWithAltDSID:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAuthKitUpdateReachableEmailsHook)initWithAltDSID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_updateAccountWithReachableEmails:(id)a3 completion:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_updateAccountWithReachableEmails:(id)emails completion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAuthKitUpdateReachableEmailsHook
 
-- (AAUIAuthKitUpdateReachableEmailsHook)initWithAltDSID:(id)a3
+- (AAUIAuthKitUpdateReachableEmailsHook)initWithAltDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = AAUIAuthKitUpdateReachableEmailsHook;
   v6 = [(AAUIAuthKitUpdateReachableEmailsHook *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_altDSID, a3);
+    objc_storeStrong(&v6->_altDSID, d);
   }
 
   return v7;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"emails:update"];
+  name = [element name];
+  v4 = [name isEqualToString:@"emails:update"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -54,12 +54,12 @@
   return v7;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
+  completionCopy = completion;
+  attributesCopy = attributes;
   objc_opt_class();
-  v10 = [v9 objectForKeyedSubscript:@"reachableEmails"];
+  v10 = [attributesCopy objectForKeyedSubscript:@"reachableEmails"];
 
   v11 = v10;
   if (objc_opt_isKindOfClass())
@@ -72,17 +72,17 @@
     v12 = 0;
   }
 
-  [(AAUIAuthKitUpdateReachableEmailsHook *)self _updateAccountWithReachableEmails:v12 completion:v8];
+  [(AAUIAuthKitUpdateReachableEmailsHook *)self _updateAccountWithReachableEmails:v12 completion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  modelCopy = model;
   objc_opt_class();
-  v8 = [v7 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"reachableEmails"];
+  v9 = [clientInfo objectForKeyedSubscript:@"reachableEmails"];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -93,19 +93,19 @@
     v10 = 0;
   }
 
-  [(AAUIAuthKitUpdateReachableEmailsHook *)self _updateAccountWithReachableEmails:v10 completion:v6];
+  [(AAUIAuthKitUpdateReachableEmailsHook *)self _updateAccountWithReachableEmails:v10 completion:completionCopy];
 }
 
-- (void)_updateAccountWithReachableEmails:(id)a3 completion:(id)a4
+- (void)_updateAccountWithReachableEmails:(id)emails completion:(id)completion
 {
   v6 = MEMORY[0x1E698DE08];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  emailsCopy = emails;
   v10 = objc_alloc_init(v6);
-  [v10 setReachableEmails:v8];
+  [v10 setReachableEmails:emailsCopy];
 
   v9 = objc_alloc_init(MEMORY[0x1E698DCC0]);
-  [v9 updateUserInformationForAltDSID:self->_altDSID userInformation:v10 completion:v7];
+  [v9 updateUserInformationForAltDSID:self->_altDSID userInformation:v10 completion:completionCopy];
 }
 
 - (RUIServerHookDelegate)delegate

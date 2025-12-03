@@ -1,8 +1,8 @@
 @interface HMWeekDaySchedule
 + (id)logCategory;
 + (id)shortDescription;
-- (HMWeekDaySchedule)initWithCoder:(id)a3;
-- (HMWeekDaySchedule)initWithScheduleRules:(id)a3;
+- (HMWeekDaySchedule)initWithCoder:(id)coder;
+- (HMWeekDaySchedule)initWithScheduleRules:(id)rules;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 @end
@@ -20,8 +20,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMWeekDaySchedule *)self scheduleRules];
-  v5 = [v3 initWithName:@"rules" value:v4];
+  scheduleRules = [(HMWeekDaySchedule *)self scheduleRules];
+  v5 = [v3 initWithName:@"rules" value:scheduleRules];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -30,23 +30,23 @@
   return v6;
 }
 
-- (HMWeekDaySchedule)initWithCoder:(id)a3
+- (HMWeekDaySchedule)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HMWeekDaySchedule;
   return [(HMWeekDaySchedule *)&v4 init];
 }
 
-- (HMWeekDaySchedule)initWithScheduleRules:(id)a3
+- (HMWeekDaySchedule)initWithScheduleRules:(id)rules
 {
-  v5 = a3;
+  rulesCopy = rules;
   v9.receiver = self;
   v9.super_class = HMWeekDaySchedule;
   v6 = [(HMWeekDaySchedule *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduleRules, a3);
+    objc_storeStrong(&v6->_scheduleRules, rules);
   }
 
   return v7;

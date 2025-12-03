@@ -1,11 +1,11 @@
 @interface VTTestProcessorConfiguration
-- (VTTestProcessorConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 flags:(int64_t)a5;
+- (VTTestProcessorConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height flags:(int64_t)flags;
 - (void)dealloc;
 @end
 
 @implementation VTTestProcessorConfiguration
 
-- (VTTestProcessorConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 flags:(int64_t)a5
+- (VTTestProcessorConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height flags:(int64_t)flags
 {
   v26[4] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -14,9 +14,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_frameWidth = a3;
-    v8->_frameHeight = a4;
-    v8->_flags = a5;
+    v8->_frameWidth = width;
+    v8->_frameHeight = height;
+    v8->_flags = flags;
     v10 = [&unk_1F039F9F8 copy];
     v11 = MEMORY[0x1E6966130];
     v9->_frameSupportedPixelFormats = v10;
@@ -25,10 +25,10 @@
     v13 = *MEMORY[0x1E6966208];
     v23[0] = v12;
     v23[1] = v13;
-    v26[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v26[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
     v24 = *MEMORY[0x1E69660B8];
     v14 = v24;
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:height];
     v25 = *MEMORY[0x1E69660D8];
     v16 = v25;
     v17 = MEMORY[0x1E695E0F8];
@@ -38,9 +38,9 @@
     v22[0] = &unk_1F039F9B0;
     v21[0] = v12;
     v21[1] = v13;
-    v22[1] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v22[1] = [MEMORY[0x1E696AD98] numberWithInteger:width];
     v21[2] = v14;
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:height];
     v21[3] = v16;
     v22[2] = v18;
     v22[3] = v17;

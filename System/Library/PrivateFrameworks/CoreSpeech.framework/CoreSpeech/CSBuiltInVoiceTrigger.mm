@@ -1,78 +1,78 @@
 @interface CSBuiltInVoiceTrigger
 - (BOOL)_hasHearstRoutedAndNotInSplitter;
 - (BOOL)_hasPhoneCallOnNonBargeInDevice;
-- (BOOL)_isBuiltInAOPVoiceTriggerEvent:(id)a3;
-- (BOOL)_isVoiceTriggerStateTransitionEvent:(id)a3;
-- (BOOL)_shouldCancelSecondPassResultWithVoiceTriggerInfo:(id)a3;
+- (BOOL)_isBuiltInAOPVoiceTriggerEvent:(id)event;
+- (BOOL)_isVoiceTriggerStateTransitionEvent:(id)event;
+- (BOOL)_shouldCancelSecondPassResultWithVoiceTriggerInfo:(id)info;
 - (BOOL)_shouldCheckHearstStatus;
 - (BOOL)_shouldEnableAPVoiceTrigger;
 - (BOOL)_shouldHandleAOPVoiceTrigger;
 - (BOOL)_shouldReuseBuiltInAudioProvider;
 - (BOOL)_shouldSecondPassKeepAlive;
 - (BOOL)_shouldSkipAudioChunkHandling;
-- (CSBuiltInVoiceTrigger)initWithTargetQueue:(id)a3 withSpeechManager:(id)a4 withAudioRouteChangeMonitor:(id)a5;
+- (CSBuiltInVoiceTrigger)initWithTargetQueue:(id)queue withSpeechManager:(id)manager withAudioRouteChangeMonitor:(id)monitor;
 - (CSSecondPassProgressDelegate)secondPassProgressDelegate;
 - (CSVoiceTriggerDelegate)delegate;
-- (id)_eventName:(unint64_t)a3;
+- (id)_eventName:(unint64_t)name;
 - (id)_firstPassVoiceTriggerSignalEstimate;
-- (id)_stateName:(unint64_t)a3;
+- (id)_stateName:(unint64_t)name;
 - (id)_voiceTriggerFirstPassInfoFromAP;
 - (int64_t)_currentJarvisTriggerMode;
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4;
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5;
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4;
-- (void)CSVoiceTriggerXPCServiceProxy:(id)a3 bypassPhraseSpotter:(BOOL)a4;
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event;
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change;
+- (void)CSVoiceTriggerXPCServiceProxy:(id)proxy bypassPhraseSpotter:(BOOL)spotter;
 - (void)_APModeValidationTimerFired;
-- (void)_addAudioStreamHold:(id)a3;
+- (void)_addAudioStreamHold:(id)hold;
 - (void)_cancelAllAudioStreamHold;
 - (void)_cancelLastAudioStreamHold;
-- (void)_createSecondPassIfNeededWithFirstPassSource:(unint64_t)a3;
-- (void)_forceUpdateCarPlayEndpointWithJarvisConnected:(BOOL)a3;
-- (void)_handleAudioChunk:(id)a3;
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5;
-- (void)_handleVoiceTriggerSecondPassWithSource:(unint64_t)a3 deviceId:(id)a4 event:(id)a5 audioProviderUUID:(id)a6 firstPassInfo:(id)a7;
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
-- (void)_notifyEvent:(unint64_t)a3;
-- (void)_receivedHearstRoutedEvent:(int64_t)a3;
-- (void)_reportVoiceTriggerFirstPassFireFromAPWithSource:(unint64_t)a3 voiceTriggerFirstPassInfo:(id)a4;
-- (void)_requestStartAudioStreamWithSource:(unint64_t)a3 context:(id)a4 completion:(id)a5;
+- (void)_createSecondPassIfNeededWithFirstPassSource:(unint64_t)source;
+- (void)_forceUpdateCarPlayEndpointWithJarvisConnected:(BOOL)connected;
+- (void)_handleAudioChunk:(id)chunk;
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error;
+- (void)_handleVoiceTriggerSecondPassWithSource:(unint64_t)source deviceId:(id)id event:(id)event audioProviderUUID:(id)d firstPassInfo:(id)info;
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel;
+- (void)_notifyEvent:(unint64_t)event;
+- (void)_receivedHearstRoutedEvent:(int64_t)event;
+- (void)_reportVoiceTriggerFirstPassFireFromAPWithSource:(unint64_t)source voiceTriggerFirstPassInfo:(id)info;
+- (void)_requestStartAudioStreamWithSource:(unint64_t)source context:(id)context completion:(id)completion;
 - (void)_reset;
 - (void)_resetFirstExclaveAudioBufferMarkerIfNeeded;
-- (void)_setAsset:(id)a3;
-- (void)_setIsSecondPassRunning:(BOOL)a3;
+- (void)_setAsset:(id)asset;
+- (void)_setIsSecondPassRunning:(BOOL)running;
 - (void)_setupStateMachine;
 - (void)_startAOPVoiceTrigger;
-- (void)_startAPVoiceTriggerWithCompletion:(id)a3;
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4;
-- (void)_startListenWithCompletion:(id)a3;
-- (void)_startVoiceTriggerWithCompletion:(id)a3;
+- (void)_startAPVoiceTriggerWithCompletion:(id)completion;
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion;
+- (void)_startListenWithCompletion:(id)completion;
+- (void)_startVoiceTriggerWithCompletion:(id)completion;
 - (void)_stopAOPVoiceTrigger;
 - (void)_stopAPVoiceTrigger;
 - (void)_stopListening;
 - (void)_teardownSecondPassIfNeeded;
-- (void)_transitAOPModeIfNeeded:(BOOL)a3;
-- (void)_transitAOPModeIfNeededAsync:(BOOL)a3;
-- (void)_transitAOPModeIfNeededSync:(BOOL)a3;
-- (void)_transitVoiceTriggerStatus:(BOOL)a3 force:(BOOL)a4;
-- (void)_updateCurrentSplitterState:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4;
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5;
-- (void)attSiriStateMonitor:(id)a3 didRecieveAttSiriStateChange:(unint64_t)a4;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)audioStreamProvider:(id)a3 numSamplesAvailableInExclave:(unint64_t)a4 hostTime:(unint64_t)a5 arrivalHostTimeToAudioRecorder:(unint64_t)a6 exclaveSampleCount:(unint64_t)a7;
+- (void)_transitAOPModeIfNeeded:(BOOL)needed;
+- (void)_transitAOPModeIfNeededAsync:(BOOL)async;
+- (void)_transitAOPModeIfNeededSync:(BOOL)sync;
+- (void)_transitVoiceTriggerStatus:(BOOL)status force:(BOOL)force;
+- (void)_updateCurrentSplitterState:(unint64_t)state shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion;
+- (void)attSiriStateMonitor:(id)monitor didRecieveAttSiriStateChange:(unint64_t)change;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)audioStreamProvider:(id)provider numSamplesAvailableInExclave:(unint64_t)exclave hostTime:(unint64_t)time arrivalHostTimeToAudioRecorder:(unint64_t)recorder exclaveSampleCount:(unint64_t)count;
 - (void)cancelSecondPassRunning;
-- (void)didIgnoreEvent:(int64_t)a3 from:(int64_t)a4;
-- (void)didTransitFrom:(int64_t)a3 to:(int64_t)a4 by:(int64_t)a5;
-- (void)pendingSecondPassTriggerWasClearedForClient:(unint64_t)a3 deviceId:(id)a4;
+- (void)didIgnoreEvent:(int64_t)event from:(int64_t)from;
+- (void)didTransitFrom:(int64_t)from to:(int64_t)to by:(int64_t)by;
+- (void)pendingSecondPassTriggerWasClearedForClient:(unint64_t)client deviceId:(id)id;
 - (void)reset;
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4;
-- (void)setAsset:(id)a3;
-- (void)setSecondPassProgressDelegate:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5;
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger;
+- (void)setAsset:(id)asset;
+- (void)setSecondPassProgressDelegate:(id)delegate;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason;
 - (void)start;
 @end
 
@@ -152,9 +152,9 @@
     [(CSExclaveFirstPassVoiceTriggerAnalyzing *)self->_exclaveClient stopBargeInVoiceTrigger];
   }
 
-  v4 = [(CSBuiltInVoiceTrigger *)self audioStream];
+  audioStream = [(CSBuiltInVoiceTrigger *)self audioStream];
 
-  if (v4)
+  if (audioStream)
   {
     validationTimer = self->_validationTimer;
     if (validationTimer)
@@ -330,7 +330,7 @@
   return v8;
 }
 
-- (id)_eventName:(unint64_t)a3
+- (id)_eventName:(unint64_t)name
 {
   v10[0] = &off_10025E8B8;
   v10[1] = &off_10025E8A0;
@@ -343,24 +343,24 @@
   v10[4] = &off_10025E900;
   v11[4] = @"kCSFirstPassEventStopped";
   v4 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:5];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:name];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
-    v8 = [v4 objectForKeyedSubscript:v7];
+    v7 = [NSNumber numberWithUnsignedInteger:name];
+    name = [v4 objectForKeyedSubscript:v7];
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"unknown(%tu)", a3];
+    name = [NSString stringWithFormat:@"unknown(%tu)", name];
   }
 
-  return v8;
+  return name;
 }
 
-- (id)_stateName:(unint64_t)a3
+- (id)_stateName:(unint64_t)name
 {
   v10[0] = &off_10025E8A0;
   v10[1] = &off_10025E8B8;
@@ -371,31 +371,31 @@
   v11[2] = @"FirstPassStateAOPtoAPTransition";
   v11[3] = @"FirstPassStateStop";
   v4 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:name];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
-    v8 = [v4 objectForKeyedSubscript:v7];
+    v7 = [NSNumber numberWithUnsignedInteger:name];
+    name = [v4 objectForKeyedSubscript:v7];
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"unknown(%tu)", a3];
+    name = [NSString stringWithFormat:@"unknown(%tu)", name];
   }
 
-  return v8;
+  return name;
 }
 
-- (void)didIgnoreEvent:(int64_t)a3 from:(int64_t)a4
+- (void)didIgnoreEvent:(int64_t)event from:(int64_t)from
 {
   v7 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(CSBuiltInVoiceTrigger *)self _eventName:a3];
-    v10 = [(CSBuiltInVoiceTrigger *)self _stateName:a4];
+    v9 = [(CSBuiltInVoiceTrigger *)self _eventName:event];
+    v10 = [(CSBuiltInVoiceTrigger *)self _stateName:from];
     v11 = 136315650;
     v12 = "[CSBuiltInVoiceTrigger didIgnoreEvent:from:]";
     v13 = 2114;
@@ -406,15 +406,15 @@
   }
 }
 
-- (void)didTransitFrom:(int64_t)a3 to:(int64_t)a4 by:(int64_t)a5
+- (void)didTransitFrom:(int64_t)from to:(int64_t)to by:(int64_t)by
 {
   v9 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(CSBuiltInVoiceTrigger *)self _stateName:a3];
-    v12 = [(CSBuiltInVoiceTrigger *)self _stateName:a4];
-    v13 = [(CSBuiltInVoiceTrigger *)self _eventName:a5];
+    v11 = [(CSBuiltInVoiceTrigger *)self _stateName:from];
+    v12 = [(CSBuiltInVoiceTrigger *)self _stateName:to];
+    v13 = [(CSBuiltInVoiceTrigger *)self _eventName:by];
     *buf = 136315906;
     v20 = "[CSBuiltInVoiceTrigger didTransitFrom:to:by:]";
     v21 = 2114;
@@ -426,14 +426,14 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s from:%{public}@ to:%{public}@ by:%{public}@", buf, 0x2Au);
   }
 
-  if (a3 != 3)
+  if (from != 3)
   {
-    if (!a4)
+    if (!to)
     {
       goto LABEL_15;
     }
 
-    if (a4 == 3)
+    if (to == 3)
     {
 LABEL_14:
       [(CSBuiltInVoiceTrigger *)self _stopAPVoiceTrigger];
@@ -441,7 +441,7 @@ LABEL_14:
       return;
     }
 
-    if (a4 != 2)
+    if (to != 2)
     {
       return;
     }
@@ -460,11 +460,11 @@ LABEL_18:
   }
 
   [(CSBuiltInVoiceTrigger *)self _startAOPVoiceTrigger];
-  if (a4 > 1)
+  if (to > 1)
   {
-    if (a4 != 2)
+    if (to != 2)
     {
-      if (a4 != 3)
+      if (to != 3)
       {
         return;
       }
@@ -475,9 +475,9 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if (a4)
+  if (to)
   {
-    if (a4 != 1)
+    if (to != 1)
     {
       return;
     }
@@ -496,13 +496,13 @@ LABEL_15:
   v16 = +[CSVoiceTriggerInfo sharedInstance];
   [v16 setFirstPassRunningMode:0];
 
-  if (a3 != 3)
+  if (from != 3)
   {
     [(CSBuiltInVoiceTrigger *)self _stopAPVoiceTrigger];
   }
 }
 
-- (void)attSiriStateMonitor:(id)a3 didRecieveAttSiriStateChange:(unint64_t)a4
+- (void)attSiriStateMonitor:(id)monitor didRecieveAttSiriStateChange:(unint64_t)change
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -510,11 +510,11 @@ LABEL_15:
   v5[2] = sub_100155BB0;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = change;
   dispatch_async(queue, v5);
 }
 
-- (void)CSPhoneCallStateMonitor:(id)a3 didRecievePhoneCallStateChange:(unint64_t)a4
+- (void)CSPhoneCallStateMonitor:(id)monitor didRecievePhoneCallStateChange:(unint64_t)change
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -522,7 +522,7 @@ LABEL_15:
   v5[2] = sub_100155CE8;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = change;
   dispatch_async(queue, v5);
 }
 
@@ -626,9 +626,9 @@ LABEL_8:
   return -1;
 }
 
-- (void)_forceUpdateCarPlayEndpointWithJarvisConnected:(BOOL)a3
+- (void)_forceUpdateCarPlayEndpointWithJarvisConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v4 = +[NSDate date];
     FigEndpointCopyActiveCarPlayEndpoint();
@@ -656,7 +656,7 @@ LABEL_8:
   self->_jarvisTriggerModeLogHeartbeat = 0;
 }
 
-- (void)_receivedHearstRoutedEvent:(int64_t)a3
+- (void)_receivedHearstRoutedEvent:(int64_t)event
 {
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -670,10 +670,10 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Received Hearst event: %@", &v8, 0x16u);
   }
 
-  self->_hearstRouteStatus = a3;
+  self->_hearstRouteStatus = event;
 }
 
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -681,13 +681,13 @@ LABEL_8:
   v5[2] = sub_10015641C;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = event;
   dispatch_async(queue, v5);
 }
 
-- (void)_updateCurrentSplitterState:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4
+- (void)_updateCurrentSplitterState:(unint64_t)state shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v7 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -698,19 +698,19 @@ LABEL_8:
     v12 = 1026;
     v13 = currentSplitterState;
     v14 = 1026;
-    v15 = a3;
+    stateCopy = state;
     v16 = 1026;
     v17 = shouldDisableOnSpeakerVerificationInSplitterMode;
     v18 = 1026;
-    v19 = v4;
+    v19 = modeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s Received Wireless Splitter State Change : %{public}d -> %{public}d, shouldDisableSpeakerVerification : %{public}d -> %{public}d", &v10, 0x24u);
   }
 
-  self->_currentSplitterState = a3;
-  self->_shouldDisableOnSpeakerVerificationInSplitterMode = v4;
+  self->_currentSplitterState = state;
+  self->_shouldDisableOnSpeakerVerificationInSplitterMode = modeCopy;
 }
 
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -718,23 +718,23 @@ LABEL_8:
   block[2] = sub_1001566FC;
   block[3] = &unk_100253028;
   block[4] = self;
-  block[5] = a4;
-  v7 = a5;
+  block[5] = change;
+  modeCopy = mode;
   dispatch_async(queue, block);
 }
 
-- (void)pendingSecondPassTriggerWasClearedForClient:(unint64_t)a3 deviceId:(id)a4
+- (void)pendingSecondPassTriggerWasClearedForClient:(unint64_t)client deviceId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001567B4;
   block[3] = &unk_1002533C8;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  clientCopy = client;
+  v10 = idCopy;
+  v8 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -773,13 +773,13 @@ LABEL_8:
   [(CSStateMachine *)v5 addTransitionFrom:3 to:0 for:1];
 }
 
-- (void)_notifyEvent:(unint64_t)a3
+- (void)_notifyEvent:(unint64_t)event
 {
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(CSBuiltInVoiceTrigger *)self _eventName:a3];
+    v7 = [(CSBuiltInVoiceTrigger *)self _eventName:event];
     v8 = 136315394;
     v9 = "[CSBuiltInVoiceTrigger _notifyEvent:]";
     v10 = 2114;
@@ -787,10 +787,10 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s event : %{public}@", &v8, 0x16u);
   }
 
-  [(CSStateMachine *)self->_stateMachine performTransitionForEvent:a3];
+  [(CSStateMachine *)self->_stateMachine performTransitionForEvent:event];
 }
 
-- (void)_createSecondPassIfNeededWithFirstPassSource:(unint64_t)a3
+- (void)_createSecondPassIfNeededWithFirstPassSource:(unint64_t)source
 {
   if (!self->_voiceTriggerSecondPass)
   {
@@ -824,9 +824,9 @@ LABEL_8:
       }
 
       v10 = +[CSFPreferences sharedPreferences];
-      v11 = [v10 bypassPersonalizedHeySiri];
+      bypassPersonalizedHeySiri = [v10 bypassPersonalizedHeySiri];
 
-      if (v11)
+      if (bypassPersonalizedHeySiri)
       {
         v12 = CSLogCategoryVT;
         v13 = 0;
@@ -844,14 +844,14 @@ LABEL_8:
         v13 = !shouldDisableOnSpeakerVerificationInSplitterMode;
       }
 
-      v14 = [[CSVoiceTriggerSecondPass alloc] initWithFirstPassSource:a3 phsEnabled:v13 speechManager:0 supportsMphDetection:0 secondPassQueue:0];
+      v14 = [[CSVoiceTriggerSecondPass alloc] initWithFirstPassSource:source phsEnabled:v13 speechManager:0 supportsMphDetection:0 secondPassQueue:0];
       voiceTriggerSecondPass = self->_voiceTriggerSecondPass;
       self->_voiceTriggerSecondPass = v14;
 
       [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSecondPassClient:1];
       [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:self->_currentAsset];
-      v16 = [(CSBuiltInVoiceTrigger *)self delegate];
-      [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:v16];
+      delegate = [(CSBuiltInVoiceTrigger *)self delegate];
+      [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setDelegate:delegate];
 
       [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass start];
     }
@@ -881,8 +881,8 @@ LABEL_8:
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(CSBuiltInVoiceTrigger *)self audioProvider];
-        [v9 cancelAudioStreamHold:v8];
+        audioProvider = [(CSBuiltInVoiceTrigger *)self audioProvider];
+        [audioProvider cancelAudioStreamHold:v8];
 
         v7 = v7 + 1;
       }
@@ -901,41 +901,41 @@ LABEL_8:
 {
   if ([(NSMutableArray *)self->_audioStreamHoldings count])
   {
-    v4 = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
-    v3 = [(CSBuiltInVoiceTrigger *)self audioProvider];
-    [v3 cancelAudioStreamHold:v4];
+    lastObject = [(NSMutableArray *)self->_audioStreamHoldings lastObject];
+    audioProvider = [(CSBuiltInVoiceTrigger *)self audioProvider];
+    [audioProvider cancelAudioStreamHold:lastObject];
 
     [(NSMutableArray *)self->_audioStreamHoldings removeLastObject];
   }
 }
 
-- (void)_addAudioStreamHold:(id)a3
+- (void)_addAudioStreamHold:(id)hold
 {
-  v4 = a3;
+  holdCopy = hold;
   v6 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:2 clientIdentity:0 requireRecordModeLock:0 requireListeningMicIndicatorLock:5.0];
-  v5 = [(CSAudioProvider *)self->_audioProvider holdAudioStreamWithDescription:v4 option:v6];
+  v5 = [(CSAudioProvider *)self->_audioProvider holdAudioStreamWithDescription:holdCopy option:v6];
 
   [(NSMutableArray *)self->_audioStreamHoldings addObject:v5];
 }
 
-- (void)activationEventNotificationHandler:(id)a3 event:(id)a4 completion:(id)a5
+- (void)activationEventNotificationHandler:(id)handler event:(id)event completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100157088;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = eventCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)CSVoiceTriggerXPCServiceProxy:(id)a3 bypassPhraseSpotter:(BOOL)a4
+- (void)CSVoiceTriggerXPCServiceProxy:(id)proxy bypassPhraseSpotter:(BOOL)spotter
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -943,11 +943,11 @@ LABEL_8:
   v5[2] = sub_10015771C;
   v5[3] = &unk_100253BF8;
   v5[4] = self;
-  v6 = a4;
+  spotterCopy = spotter;
   dispatch_async(queue, v5);
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -966,7 +966,7 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash
 {
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -985,21 +985,21 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger
 {
-  v5 = a4;
+  triggerCopy = trigger;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100157A9C;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = triggerCopy;
+  v7 = triggerCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1010,7 +1010,7 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1021,9 +1021,9 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  if (a5)
+  if (successfully)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1035,14 +1035,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)_shouldCancelSecondPassResultWithVoiceTriggerInfo:(id)a3
+- (BOOL)_shouldCancelSecondPassResultWithVoiceTriggerInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = kVTEItriggerStartMachTime, [v4 objectForKeyedSubscript:kVTEItriggerStartMachTime], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy && (v6 = kVTEItriggerStartMachTime, [infoCopy objectForKeyedSubscript:kVTEItriggerStartMachTime], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = [v5 objectForKeyedSubscript:v6];
-    v9 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
 
     v10 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -1051,7 +1051,7 @@ LABEL_8:
       v18 = 136315650;
       v19 = "[CSBuiltInVoiceTrigger _shouldCancelSecondPassResultWithVoiceTriggerInfo:]";
       v20 = 2048;
-      v21 = v9;
+      v21 = unsignedLongLongValue;
       v22 = 2048;
       v23 = lastSelfTriggerDetectedStartMachTime;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s secondPassTriggerStartHostTime = %llu, _lastSelfTriggerDetectedStartMachTime = %llu", &v18, 0x20u);
@@ -1060,10 +1060,10 @@ LABEL_8:
     v13 = self->_lastSelfTriggerDetectedStartMachTime;
     LODWORD(v11) = 0.5;
     v14 = [CSFTimeUtils secondsToHostTime:v11];
-    v15 = &v9[-v13];
-    if (v9 <= v13)
+    v15 = &unsignedLongLongValue[-v13];
+    if (unsignedLongLongValue <= v13)
     {
-      v15 = (v13 - v9);
+      v15 = (v13 - unsignedLongLongValue);
     }
 
     v16 = v15 <= v14;
@@ -1077,14 +1077,14 @@ LABEL_8:
   return v16;
 }
 
-- (void)_handleSecondPassResult:(id)a3 deviceId:(id)a4 error:(id)a5
+- (void)_handleSecondPassResult:(id)result deviceId:(id)id error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 voiceTriggerEventInfo];
-  v12 = [v8 result];
-  v13 = [(CSBuiltInVoiceTrigger *)self _shouldCancelSecondPassResultWithVoiceTriggerInfo:v11];
+  resultCopy = result;
+  idCopy = id;
+  errorCopy = error;
+  voiceTriggerEventInfo = [resultCopy voiceTriggerEventInfo];
+  result = [resultCopy result];
+  v13 = [(CSBuiltInVoiceTrigger *)self _shouldCancelSecondPassResultWithVoiceTriggerInfo:voiceTriggerEventInfo];
   v14 = CSLogCategoryVT;
   if (v13)
   {
@@ -1096,25 +1096,25 @@ LABEL_8:
       v14 = CSLogCategoryVT;
     }
 
-    v12 = 6;
+    result = 6;
   }
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v10 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 136315906;
     v45 = "[CSBuiltInVoiceTrigger _handleSecondPassResult:deviceId:error:]";
     v46 = 1024;
-    *v47 = v12;
+    *v47 = result;
     *&v47[4] = 2114;
-    *&v47[6] = v11;
+    *&v47[6] = voiceTriggerEventInfo;
     v48 = 2114;
-    v49 = v16;
+    v49 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s Second Pass Result, %d, %{public}@, %{public}@", buf, 0x26u);
   }
 
-  v17 = [v11 mutableCopy];
+  v17 = [voiceTriggerEventInfo mutableCopy];
   if ([(CSBuiltInVoiceTrigger *)self _hasHFPDuringPhoneCall])
   {
     v18 = CSLogCategoryVT;
@@ -1139,9 +1139,9 @@ LABEL_8:
   }
 
   [v17 setValue:v19 forKey:kVTEIExclaveVoiceTrigger];
-  if (v12 > 2)
+  if (result > 2)
   {
-    if (v12 == 3)
+    if (result == 3)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v34 = objc_opt_respondsToSelector();
@@ -1149,14 +1149,14 @@ LABEL_8:
       if (v34)
       {
         v22 = objc_loadWeakRetained(&self->_delegate);
-        [v22 voiceTriggerDidDetectNearMiss:v17 deviceId:v9];
+        [v22 voiceTriggerDidDetectNearMiss:v17 deviceId:idCopy];
         goto LABEL_33;
       }
 
       goto LABEL_34;
     }
 
-    if (v12 == 9)
+    if (result == 9)
     {
       v23 = objc_loadWeakRetained(&self->_delegate);
       v24 = objc_opt_respondsToSelector();
@@ -1175,7 +1175,7 @@ LABEL_34:
         *buf = 136315394;
         v45 = "[CSBuiltInVoiceTrigger _handleSecondPassResult:deviceId:error:]";
         v46 = 1026;
-        *v47 = v12;
+        *v47 = result;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%s Notifying audioProviderInvalidation due to VoiceTrigger result(%{public}d) so Siri client needs to setContext again", buf, 0x12u);
       }
 
@@ -1186,9 +1186,9 @@ LABEL_34:
     goto LABEL_23;
   }
 
-  if (v12 != 1)
+  if (result != 1)
   {
-    if (v12 == 2)
+    if (result == 2)
     {
       v20 = objc_loadWeakRetained(&self->_delegate);
       v21 = objc_opt_respondsToSelector();
@@ -1196,7 +1196,7 @@ LABEL_34:
       if (v21)
       {
         v22 = objc_loadWeakRetained(&self->_delegate);
-        [v22 voiceTriggerDidRejected:v17 deviceId:v9];
+        [v22 voiceTriggerDidRejected:v17 deviceId:idCopy];
 LABEL_33:
 
         goto LABEL_34;
@@ -1210,11 +1210,11 @@ LABEL_23:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
     {
       v41 = v25;
-      v42 = [v10 localizedDescription];
+      localizedDescription2 = [errorCopy localizedDescription];
       *buf = 136315394;
       v45 = "[CSBuiltInVoiceTrigger _handleSecondPassResult:deviceId:error:]";
       v46 = 2114;
-      *v47 = v42;
+      *v47 = localizedDescription2;
       _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "%s VoiceTrigger Second Pass has failed : %{public}@", buf, 0x16u);
     }
 
@@ -1224,10 +1224,10 @@ LABEL_23:
     if (v27)
     {
       v28 = objc_loadWeakRetained(&self->_delegate);
-      [v28 voiceTriggerDidRejected:v17 deviceId:v9];
+      [v28 voiceTriggerDidRejected:v17 deviceId:idCopy];
     }
 
-    if (v12 != 8)
+    if (result != 8)
     {
       goto LABEL_34;
     }
@@ -1242,7 +1242,7 @@ LABEL_23:
   v32 = v31;
   if (v30)
   {
-    [v31 voiceTriggerDidDetectKeyword:v17 deviceId:v9 completion:0];
+    [v31 voiceTriggerDidDetectKeyword:v17 deviceId:idCopy completion:0];
   }
 
   else
@@ -1255,7 +1255,7 @@ LABEL_23:
     }
 
     v32 = objc_loadWeakRetained(&self->_delegate);
-    [v32 voiceTriggerDidDetectKeyword:v17 deviceId:v9];
+    [v32 voiceTriggerDidDetectKeyword:v17 deviceId:idCopy];
   }
 
 LABEL_44:
@@ -1265,12 +1265,12 @@ LABEL_44:
     *buf = 136315394;
     v45 = "[CSBuiltInVoiceTrigger _handleSecondPassResult:deviceId:error:]";
     v46 = 1026;
-    *v47 = v12;
+    *v47 = result;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%s Not notifying audioProviderInvalidation since VoiceTrigger result is %{public}d", buf, 0x12u);
   }
 
 LABEL_37:
-  if ([v8 isSecondChanceCandidate])
+  if ([resultCopy isSecondChanceCandidate])
   {
     v36 = [[CSVoiceTriggerSecondChanceContext alloc] initWithWindowStartTime:mach_absolute_time()];
   }
@@ -1289,30 +1289,30 @@ LABEL_37:
   v43[2] = sub_100158670;
   v43[3] = &unk_100253C98;
   v43[4] = self;
-  v43[5] = v12;
+  v43[5] = result;
   dispatch_async(queue, v43);
 }
 
-- (void)_handleVoiceTriggerSecondPassWithSource:(unint64_t)a3 deviceId:(id)a4 event:(id)a5 audioProviderUUID:(id)a6 firstPassInfo:(id)a7
+- (void)_handleVoiceTriggerSecondPassWithSource:(unint64_t)source deviceId:(id)id event:(id)event audioProviderUUID:(id)d firstPassInfo:(id)info
 {
-  v29 = a4;
-  v30 = a5;
-  v28 = a6;
-  v12 = a7;
+  idCopy = id;
+  eventCopy = event;
+  dCopy = d;
+  infoCopy = info;
   v13 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v37 = "[CSBuiltInVoiceTrigger _handleVoiceTriggerSecondPassWithSource:deviceId:event:audioProviderUUID:firstPassInfo:]";
     v38 = 2114;
-    v39 = v12;
+    v39 = infoCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
   v14 = mach_absolute_time();
-  if (v30)
+  if (eventCopy)
   {
-    v15 = +[CSVoiceTriggerFirstPassMetrics CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:](CSVoiceTriggerFirstPassMetrics, "CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:", [v30 hosttime], v14);
+    v15 = +[CSVoiceTriggerFirstPassMetrics CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:](CSVoiceTriggerFirstPassMetrics, "CSVoiceTriggerFirstPassMetricsWithFirstPassInfoGeneratedTime:firstPassInfoProcessedTime:", [eventCopy hosttime], v14);
   }
 
   else
@@ -1320,7 +1320,7 @@ LABEL_37:
     v15 = 0;
   }
 
-  v16 = [v12 mutableCopy];
+  v16 = [infoCopy mutableCopy];
   v17 = [NSNumber numberWithUnsignedLongLong:v14];
   [v16 setObject:v17 forKeyedSubscript:kVTEIFirstPassFireHostTime];
 
@@ -1332,13 +1332,13 @@ LABEL_37:
 
   [(CSBuiltInVoiceTrigger *)self _setIsSecondPassRunning:1];
   objc_initWeak(buf, self);
-  [(CSBuiltInVoiceTrigger *)self _createSecondPassIfNeededWithFirstPassSource:a3];
+  [(CSBuiltInVoiceTrigger *)self _createSecondPassIfNeededWithFirstPassSource:source];
   v19 = +[NSUUID UUID];
   v20 = [CSVoiceTriggerSecondPassRequestOption alloc];
-  v21 = [(CSBuiltInVoiceTrigger *)self audioProvider];
-  v22 = [v21 UUID];
+  audioProvider = [(CSBuiltInVoiceTrigger *)self audioProvider];
+  uUID = [audioProvider UUID];
   v23 = [v16 copy];
-  v24 = [(CSVoiceTriggerSecondPassRequestOption *)v20 initWithFirstPassSource:a3 deviceId:v29 audioProviderUUID:v22 firstPassInfo:v23 rejectionMHUUID:v19 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:v15 rtModelRequestOptions:0];
+  v24 = [(CSVoiceTriggerSecondPassRequestOption *)v20 initWithFirstPassSource:source deviceId:idCopy audioProviderUUID:uUID firstPassInfo:v23 rejectionMHUUID:v19 isSecondChanceRun:[(CSVoiceTriggerSecondChanceContext *)self->_secondChanceContext shouldRunAsSecondChance] firstpassMetrics:v15 rtModelRequestOptions:0];
 
   [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setSupportsMultiPhraseDetection:[(CSVoiceTriggerUserSelectedPhrase *)self->_multiPhraseSelectedStatus multiPhraseSelected]];
   voiceTriggerSecondPass = self->_voiceTriggerSecondPass;
@@ -1346,13 +1346,13 @@ LABEL_37:
   v31[1] = 3221225472;
   v31[2] = sub_100158A70;
   v31[3] = &unk_100253350;
-  v35[1] = a3;
-  v26 = v12;
+  v35[1] = source;
+  v26 = infoCopy;
   v32 = v26;
   objc_copyWeak(v35, buf);
-  v27 = v29;
+  v27 = idCopy;
   v33 = v27;
-  v34 = self;
+  selfCopy = self;
   [(CSVoiceTriggerSecondPass *)voiceTriggerSecondPass handleVoiceTriggerSecondPassFrom:v24 completion:v31];
   kdebug_trace();
 
@@ -1360,11 +1360,11 @@ LABEL_37:
   objc_destroyWeak(buf);
 }
 
-- (void)_reportVoiceTriggerFirstPassFireFromAPWithSource:(unint64_t)a3 voiceTriggerFirstPassInfo:(id)a4
+- (void)_reportVoiceTriggerFirstPassFireFromAPWithSource:(unint64_t)source voiceTriggerFirstPassInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 == 1 || a3 == 11)
+  if (source == 1 || source == 11)
   {
     [(CSBuiltInVoiceTrigger *)self _addAudioStreamHold:@"APVoiceTriggerDetected"];
     objc_storeStrong(&self->_lastTriggeredOnsetResult, self->_onsetResult);
@@ -1376,18 +1376,18 @@ LABEL_37:
         +[CSMyriadNotifier notifyInEarMyriadTrigger];
       }
 
-      v9 = [(CSBuiltInVoiceTrigger *)self _hasHFPDuringPhoneCall];
+      _hasHFPDuringPhoneCall = [(CSBuiltInVoiceTrigger *)self _hasHFPDuringPhoneCall];
       phoneCallState = self->_phoneCallState;
-      if (a3 == 11 && v9)
+      if (source == 11 && _hasHFPDuringPhoneCall)
       {
         if (phoneCallState == 3)
         {
-          a3 = 9;
+          source = 9;
         }
 
         else
         {
-          a3 = 8;
+          source = 8;
         }
       }
 
@@ -1406,21 +1406,21 @@ LABEL_37:
           v14 = 14;
         }
 
-        if (a3 == 11)
+        if (source == 11)
         {
-          a3 = v14;
+          source = v14;
         }
 
         else
         {
-          a3 = v13;
+          source = v13;
         }
       }
     }
 
-    v15 = [(CSBuiltInVoiceTrigger *)self audioProvider];
-    v16 = [v15 UUID];
-    [(CSBuiltInVoiceTrigger *)self _handleVoiceTriggerSecondPassWithSource:a3 deviceId:0 event:0 audioProviderUUID:v16 firstPassInfo:v6];
+    audioProvider = [(CSBuiltInVoiceTrigger *)self audioProvider];
+    uUID = [audioProvider UUID];
+    [(CSBuiltInVoiceTrigger *)self _handleVoiceTriggerSecondPassWithSource:source deviceId:0 event:0 audioProviderUUID:uUID firstPassInfo:infoCopy];
   }
 
   else
@@ -1457,13 +1457,13 @@ LABEL_37:
   v19[5] = channelSelectionScores;
   v18[5] = kVTEIfirstPassChannelSelectionScores;
   v18[6] = kVTEIfirstPassChannelSelectionDelaySeconds;
-  v8 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-  [v8 delaySecondsForChannelSelection];
+  firstPassConfig = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+  [firstPassConfig delaySecondsForChannelSelection];
   v9 = [NSNumber numberWithFloat:?];
   v19[6] = v9;
   v18[7] = kVTEIfirstPassMasterChannelScoreBoost;
-  v10 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-  [v10 masterChannelScoreBoost];
+  firstPassConfig2 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+  [firstPassConfig2 masterChannelScoreBoost];
   v11 = [NSNumber numberWithFloat:?];
   v19[7] = v11;
   v18[8] = kVTEIfirstPassOnsetChannel;
@@ -1478,18 +1478,18 @@ LABEL_37:
   return v14;
 }
 
-- (void)_keywordAnalyzerNDAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)_keywordAnalyzerNDAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
-  v8 = a3;
-  v9 = COERCE_DOUBLE(a4);
+  iCopy = i;
+  v9 = COERCE_DOUBLE(available);
   [*&v9 bestScore];
   v11 = v10;
   if (v9 != 0.0)
   {
     v12 = +[CSFPreferences sharedPreferences];
-    v13 = [v12 firstPassDebuggingEnabled];
+    firstPassDebuggingEnabled = [v12 firstPassDebuggingEnabled];
 
-    if (v13)
+    if (firstPassDebuggingEnabled)
     {
       v14 = CSLogCategoryVT;
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -1503,9 +1503,9 @@ LABEL_37:
         v54 = 2048;
         v55 = COERCE_DOUBLE([*&v9 bestStart]);
         v56 = 2048;
-        v57 = [*&v9 bestEnd];
+        bestEnd = [*&v9 bestEnd];
         v58 = 1024;
-        LODWORD(v59) = a5;
+        LODWORD(v59) = channel;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s First Pass Score : %lf, First Pass Best Start : %llu, First Pass Best End : %llu, CHANNEL : %d", buf, 0x30u);
       }
     }
@@ -1530,23 +1530,23 @@ LABEL_37:
         v52 = 2050;
         v53 = v11;
         v54 = 2050;
-        v55 = *&a5;
+        v55 = *&channel;
         v56 = 2050;
-        v57 = qword_10029E5A0;
+        bestEnd = qword_10029E5A0;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s NDAPI first pass best score = %{public}.3f for channel = %{public}tu, heartbeat = %{public}lld", buf, 0x2Au);
       }
     }
   }
 
-  if (*&a5 == 0.0)
+  if (*&channel == 0.0)
   {
     ++qword_10029E5A0;
   }
 
   if (!self->_hasTriggerPending)
   {
-    v20 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-    [v20 threshold];
+    firstPassConfig = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+    [firstPassConfig threshold];
     v22 = v21;
 
     if (v11 >= v22)
@@ -1555,19 +1555,19 @@ LABEL_37:
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
       {
         v24 = v23;
-        v25 = [*&v9 samplesAtFire];
-        v26 = [*&v9 phId];
+        samplesAtFire = [*&v9 samplesAtFire];
+        phId = [*&v9 phId];
         delayInSamplesRequiredForChannelSelection = self->_delayInSamplesRequiredForChannelSelection;
         *buf = 136316418;
         v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
         v52 = 2050;
-        v53 = *&a5;
+        v53 = *&channel;
         v54 = 2050;
         v55 = v11;
         v56 = 2050;
-        v57 = v25;
+        bestEnd = samplesAtFire;
         v58 = 2048;
-        v59 = v26;
+        v59 = phId;
         v60 = 2050;
         v61 = delayInSamplesRequiredForChannelSelection;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s NDAPI in channel: %{public}tu passed threshold with score %{public}.3f at sample %{public}tu, best = %tu, setting up decision delay in samples: %{public}tu", buf, 0x3Eu);
@@ -1581,16 +1581,16 @@ LABEL_37:
         *buf = 136315650;
         v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
         v52 = 2050;
-        v53 = *&a5;
+        v53 = *&channel;
         v54 = 2114;
         v55 = v9;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s Set to use the alignment of channel %{public}tu that first crossed the threshold: %{public}@", buf, 0x20u);
       }
 
-      objc_storeStrong(&self->_onsetResult, a4);
+      objc_storeStrong(&self->_onsetResult, available);
       self->_bestScore = -INFINITY;
       self->_bestChannel = 0;
-      self->_onsetChannel = a5;
+      self->_onsetChannel = channel;
       self->_channelSelectionDelay = 0;
       if ([(NSMutableArray *)self->_keywordAnalyzersNDAPI count]>= 2)
       {
@@ -1612,14 +1612,14 @@ LABEL_37:
           *buf = 136315650;
           v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
           v52 = 2050;
-          v53 = *&a5;
+          v53 = *&channel;
           v54 = 2114;
           v55 = v9;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s Update to use the alignment of channel %{public}tu: %{public}@", buf, 0x20u);
         }
 
-        objc_storeStrong(&self->_onsetResult, a4);
-        self->_onsetChannel = a5;
+        objc_storeStrong(&self->_onsetResult, available);
+        self->_onsetChannel = channel;
       }
     }
 
@@ -1629,30 +1629,30 @@ LABEL_37:
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
       {
         v31 = v30;
-        v32 = [*&v9 samplesAtFire];
+        samplesAtFire2 = [*&v9 samplesAtFire];
         *buf = 136315906;
         v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
         v52 = 2050;
         v53 = v11;
         v54 = 2050;
-        v55 = *&a5;
+        v55 = *&channel;
         v56 = 2050;
-        v57 = v32;
+        bestEnd = samplesAtFire2;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%s NDAPI first pass best score for channel selection = %{public}.3f for channel = %{public}tu at sample %{public}tu", buf, 0x2Au);
       }
 
-      if ([(CSVoiceTriggerFirstPassConfig *)self->_firstPassConfig masterChannel]== a5)
+      if ([(CSVoiceTriggerFirstPassConfig *)self->_firstPassConfig masterChannel]== channel)
       {
-        v33 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-        [v33 masterChannelScoreBoost];
+        firstPassConfig2 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+        [firstPassConfig2 masterChannelScoreBoost];
         v11 = v11 + v34;
 
         v35 = CSLogCategoryVT;
         if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
         {
           v36 = v35;
-          v37 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-          [v37 masterChannelScoreBoost];
+          firstPassConfig3 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+          [firstPassConfig3 masterChannelScoreBoost];
           *buf = 136315650;
           v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
           v52 = 2050;
@@ -1663,18 +1663,18 @@ LABEL_37:
         }
       }
 
-      if ([(CSVoiceTriggerFirstPassConfig *)self->_firstPassConfig voiceIsolationChannel]== a5)
+      if ([(CSVoiceTriggerFirstPassConfig *)self->_firstPassConfig voiceIsolationChannel]== channel)
       {
-        v39 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-        [v39 voiceIsolationChannelScoreBoost];
+        firstPassConfig4 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+        [firstPassConfig4 voiceIsolationChannelScoreBoost];
         v11 = v11 + v40;
 
         v41 = CSLogCategoryVT;
         if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
         {
           v42 = v41;
-          v43 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-          [v43 masterChannelScoreBoost];
+          firstPassConfig5 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+          [firstPassConfig5 masterChannelScoreBoost];
           *buf = 136315650;
           v51 = "[CSBuiltInVoiceTrigger _keywordAnalyzerNDAPI:hasResultAvailable:forChannel:]";
           v52 = 2050;
@@ -1686,10 +1686,10 @@ LABEL_37:
       }
 
       v45 = [(NSDictionary *)self->_channelSelectionScores mutableCopy];
-      v46 = [NSString stringWithFormat:@"ch%tu", a5];
+      channel = [NSString stringWithFormat:@"ch%tu", channel];
       *&v47 = v11;
       v48 = [NSNumber numberWithFloat:v47];
-      [(NSDictionary *)v45 setObject:v48 forKey:v46];
+      [(NSDictionary *)v45 setObject:v48 forKey:channel];
 
       channelSelectionScores = self->_channelSelectionScores;
       self->_channelSelectionScores = v45;
@@ -1697,20 +1697,20 @@ LABEL_37:
       if (v11 > self->_bestScore)
       {
         self->_bestScore = v11;
-        self->_bestChannel = a5;
+        self->_bestChannel = channel;
       }
     }
   }
 
   if (!self->_hasTriggerPending)
   {
-    [v8 resetBest];
+    [iCopy resetBest];
   }
 }
 
-- (void)_handleAudioChunk:(id)a3
+- (void)_handleAudioChunk:(id)chunk
 {
-  v20 = a3;
+  chunkCopy = chunk;
   v4 = qword_10029E598;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * qword_10029E598, 1) <= 0x888888888888888uLL)
   {
@@ -1722,10 +1722,10 @@ LABEL_37:
   if (![(CSBuiltInVoiceTrigger *)self _shouldSkipAudioChunkHandling])
   {
     context = objc_autoreleasePoolPush();
-    v5 = [v20 numSamples];
-    if (v5)
+    numSamples = [chunkCopy numSamples];
+    if (numSamples)
     {
-      v6 = v5;
+      v6 = numSamples;
       v7 = 0;
       do
       {
@@ -1740,9 +1740,9 @@ LABEL_37:
         }
 
         v21 = processingChunkSamples;
-        v9 = [v20 subChunkFrom:v7 numSamples:?];
-        v23 = [v9 numSamples];
-        v22 = [v9 numSamples];
+        v9 = [chunkCopy subChunkFrom:v7 numSamples:?];
+        numSamples2 = [v9 numSamples];
+        numSamples3 = [v9 numSamples];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
@@ -1776,8 +1776,8 @@ LABEL_37:
         channelSelectionDelay = self->_channelSelectionDelay;
         if (self->_hasTriggerPending && channelSelectionDelay >= self->_delayInSamplesRequiredForChannelSelection)
         {
-          v18 = [(CSBuiltInVoiceTrigger *)self _voiceTriggerFirstPassInfoFromAP];
-          [(CSBuiltInVoiceTrigger *)self _reportVoiceTriggerFirstPassFireFromAPWithSource:1 voiceTriggerFirstPassInfo:v18];
+          _voiceTriggerFirstPassInfoFromAP = [(CSBuiltInVoiceTrigger *)self _voiceTriggerFirstPassInfoFromAP];
+          [(CSBuiltInVoiceTrigger *)self _reportVoiceTriggerFirstPassFireFromAPWithSource:1 voiceTriggerFirstPassInfo:_voiceTriggerFirstPassInfoFromAP];
 
           [(CSBuiltInVoiceTrigger *)self _reset];
         }
@@ -1787,8 +1787,8 @@ LABEL_37:
           self->_channelSelectionDelay = channelSelectionDelay + v21;
         }
 
-        v6 -= v23;
-        v7 += v22;
+        v6 -= numSamples2;
+        v7 += numSamples3;
       }
 
       while (v6);
@@ -1818,21 +1818,21 @@ LABEL_37:
     return 1;
   }
 
-  v3 = [(CSBuiltInVoiceTrigger *)self _hasHearstRoutedAndNotInSplitter];
+  _hasHearstRoutedAndNotInSplitter = [(CSBuiltInVoiceTrigger *)self _hasHearstRoutedAndNotInSplitter];
   v4 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v5 = [v4 isHearstHijackable];
+  isHearstHijackable = [v4 isHearstHijackable];
 
   if (CSIsHorseman())
   {
-    v6 = 0;
+    _hasHFPDuringPhoneCall = 0;
   }
 
   else
   {
-    v6 = [(CSBuiltInVoiceTrigger *)self _hasHFPDuringPhoneCall];
+    _hasHFPDuringPhoneCall = [(CSBuiltInVoiceTrigger *)self _hasHFPDuringPhoneCall];
   }
 
-  if (!self->_voiceTriggerEnabled || self->_isPhraseSpotterBypassed || ((-[CSBuiltInVoiceTrigger _shouldCheckHearstStatus](self, "_shouldCheckHearstStatus") & v3 & ~v6 | v5) & 1) != 0 || (+[CSAVVCRecordingClientMonitor sharedInstance](CSAVVCRecordingClientMonitor, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 numOfAVVCRecordingClients], v9, v10 >= 2))
+  if (!self->_voiceTriggerEnabled || self->_isPhraseSpotterBypassed || ((-[CSBuiltInVoiceTrigger _shouldCheckHearstStatus](self, "_shouldCheckHearstStatus") & _hasHearstRoutedAndNotInSplitter & ~_hasHFPDuringPhoneCall | isHearstHijackable) & 1) != 0 || (+[CSAVVCRecordingClientMonitor sharedInstance](CSAVVCRecordingClientMonitor, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 numOfAVVCRecordingClients], v9, v10 >= 2))
   {
     v11 = qword_10029E590;
     if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * qword_10029E590, 1) <= 0x1999999999999999uLL)
@@ -1851,13 +1851,13 @@ LABEL_37:
         v21 = 1026;
         v22 = isPhraseSpotterBypassed;
         v23 = 1026;
-        v24 = v3;
+        v24 = _hasHearstRoutedAndNotInSplitter;
         v25 = 1026;
-        v26 = v6;
+        v26 = _hasHFPDuringPhoneCall;
         v27 = 2050;
-        v28 = [v16 numOfAVVCRecordingClients];
+        numOfAVVCRecordingClients = [v16 numOfAVVCRecordingClients];
         v29 = 1026;
-        v30 = v5;
+        v30 = isHearstHijackable;
         v31 = 2050;
         v32 = qword_10029E590;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s Bypass audio here because ::                   1> VoiceTrigger enabled = %{public}d;                   2> phrase spotter bypassed = %{public}d;                   3> should ignore due to hearst routed and not in splitter = %{public}d;                   4> has HFP during call = %{public}d;                   5> AVVC recording client # = %{public}lu                   6> is hearst hijackable = %{public}d;                   heartbeat = %{public}lld", &v17, 0x3Eu);
@@ -1889,21 +1889,21 @@ LABEL_37:
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10015A00C;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 numSamplesAvailableInExclave:(unint64_t)a4 hostTime:(unint64_t)a5 arrivalHostTimeToAudioRecorder:(unint64_t)a6 exclaveSampleCount:(unint64_t)a7
+- (void)audioStreamProvider:(id)provider numSamplesAvailableInExclave:(unint64_t)exclave hostTime:(unint64_t)time arrivalHostTimeToAudioRecorder:(unint64_t)recorder exclaveSampleCount:(unint64_t)count
 {
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
@@ -1911,11 +1911,11 @@ LABEL_37:
   v8[2] = sub_10015A1F8;
   v8[3] = &unk_100253C98;
   v8[4] = self;
-  v8[5] = a7;
+  v8[5] = count;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   v6 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
@@ -1923,7 +1923,7 @@ LABEL_37:
     *buf = 136315394;
     v10 = "[CSBuiltInVoiceTrigger audioStreamProvider:didStopStreamUnexpectedly:]";
     v11 = 2050;
-    v12 = a4;
+    unexpectedlyCopy = unexpectedly;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s stream stopped unexpectedly : %{public}ld", buf, 0x16u);
   }
 
@@ -1933,17 +1933,17 @@ LABEL_37:
   v8[2] = sub_10015A77C;
   v8[3] = &unk_100253C98;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = unexpectedly;
   dispatch_async(queue, v8);
 }
 
-- (BOOL)_isVoiceTriggerStateTransitionEvent:(id)a3
+- (BOOL)_isVoiceTriggerStateTransitionEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  eventCopy = event;
+  if ([eventCopy type] == 1)
   {
-    v4 = [v3 activationInfo];
-    v5 = [v4 objectForKeyedSubscript:@"VoiceTriggerEnabledKey"];
+    activationInfo = [eventCopy activationInfo];
+    v5 = [activationInfo objectForKeyedSubscript:@"VoiceTriggerEnabledKey"];
     v6 = v5 != 0;
   }
 
@@ -1955,13 +1955,13 @@ LABEL_37:
   return v6;
 }
 
-- (BOOL)_isBuiltInAOPVoiceTriggerEvent:(id)a3
+- (BOOL)_isBuiltInAOPVoiceTriggerEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 type] == 1)
+  eventCopy = event;
+  if ([eventCopy type] == 1)
   {
-    v4 = [v3 activationInfo];
-    v5 = [v4 objectForKeyedSubscript:@"VoiceTriggerEnabledKey"];
+    activationInfo = [eventCopy activationInfo];
+    v5 = [activationInfo objectForKeyedSubscript:@"VoiceTriggerEnabledKey"];
     v6 = v5 == 0;
   }
 
@@ -1976,9 +1976,9 @@ LABEL_37:
 - (BOOL)_shouldCheckHearstStatus
 {
   v2 = +[CSSiriEnabledMonitor sharedInstance];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)_hasHearstRoutedAndNotInSplitter
@@ -1998,9 +1998,9 @@ LABEL_37:
   }
 
   v2 = +[CSMXRingtoneMonitor sharedInstance];
-  v3 = [v2 isAnyRingtoneCurrentlyPlaying];
+  isAnyRingtoneCurrentlyPlaying = [v2 isAnyRingtoneCurrentlyPlaying];
 
-  if (v3)
+  if (isAnyRingtoneCurrentlyPlaying)
   {
     return +[CSUtils isIOSDeviceSupportingBargeIn]^ 1;
   }
@@ -2014,9 +2014,9 @@ LABEL_37:
 - (BOOL)_shouldHandleAOPVoiceTrigger
 {
   v3 = +[CSUserSessionActiveMonitor sharedInstance];
-  v4 = [v3 isUserActive];
+  isUserActive = [v3 isUserActive];
 
-  if (v4)
+  if (isUserActive)
   {
     if (self->_isPhraseSpotterBypassed)
     {
@@ -2036,9 +2036,9 @@ LABEL_7:
     else
     {
       v8 = +[CSAudioRouteChangeMonitor sharedInstance];
-      v9 = [v8 isHearstHijackable];
+      isHearstHijackable = [v8 isHearstHijackable];
 
-      if (v9)
+      if (isHearstHijackable)
       {
         v5 = CSLogCategoryVT;
         v6 = os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT);
@@ -2084,9 +2084,9 @@ LABEL_7:
       }
 
       v10 = +[CSSiriClientBehaviorMonitor sharedInstance];
-      v11 = [v10 isStreaming];
+      isStreaming = [v10 isStreaming];
 
-      if (v11)
+      if (isStreaming)
       {
         v5 = CSLogCategoryVT;
         v6 = os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT);
@@ -2158,13 +2158,13 @@ LABEL_7:
 
 - (BOOL)_shouldEnableAPVoiceTrigger
 {
-  v3 = [(CSBuiltInVoiceTrigger *)self _currentState];
-  if (v3 != 1)
+  _currentState = [(CSBuiltInVoiceTrigger *)self _currentState];
+  if (_currentState != 1)
   {
-    LOBYTE(v3) = [(CSBuiltInVoiceTrigger *)self _currentState]== 2;
+    LOBYTE(_currentState) = [(CSBuiltInVoiceTrigger *)self _currentState]== 2;
   }
 
-  return v3;
+  return _currentState;
 }
 
 - (void)_APModeValidationTimerFired
@@ -2181,9 +2181,9 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_startAPVoiceTriggerWithCompletion:(id)a3
+- (void)_startAPVoiceTriggerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -2228,14 +2228,14 @@ LABEL_7:
   objc_copyWeak(&v14, buf);
   dispatch_source_set_event_handler(v12, handler);
   dispatch_resume(self->_validationTimer);
-  [(CSBuiltInVoiceTrigger *)self _startVoiceTriggerWithCompletion:v4];
+  [(CSBuiltInVoiceTrigger *)self _startVoiceTriggerWithCompletion:completionCopy];
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (void)_startVoiceTriggerWithCompletion:(id)a3
+- (void)_startVoiceTriggerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -2254,9 +2254,9 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Already started listen polling, skip", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -2268,16 +2268,16 @@ LABEL_7:
     v7[2] = sub_10015B71C;
     v7[3] = &unk_100253270;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CSBuiltInVoiceTrigger *)self _startListenPollingWithInterval:v7 completion:1.0];
   }
 }
 
 - (void)_stopListening
 {
-  v3 = [(CSBuiltInVoiceTrigger *)self audioStream];
+  audioStream = [(CSBuiltInVoiceTrigger *)self audioStream];
 
-  if (v3)
+  if (audioStream)
   {
     v4 = CSLogCategoryVT;
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -2298,20 +2298,20 @@ LABEL_7:
   }
 }
 
-- (void)_requestStartAudioStreamWithSource:(unint64_t)a3 context:(id)a4 completion:(id)a5
+- (void)_requestStartAudioStreamWithSource:(unint64_t)source context:(id)context completion:(id)completion
 {
-  v8 = a4;
+  contextCopy = context;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10015BF50;
   v32[3] = &unk_100253220;
-  v9 = a5;
-  v33 = v9;
+  completionCopy = completion;
+  v33 = completionCopy;
   v10 = objc_retainBlock(v32);
-  v11 = [(CSBuiltInVoiceTrigger *)self _shouldReuseBuiltInAudioProvider];
-  if (a3 == 1)
+  _shouldReuseBuiltInAudioProvider = [(CSBuiltInVoiceTrigger *)self _shouldReuseBuiltInAudioProvider];
+  if (source == 1)
   {
-    if (v11)
+    if (_shouldReuseBuiltInAudioProvider)
     {
       v12 = [(CSSpeechManager *)self->_speechManager audioProviderWithStreamID:1];
       if (v12)
@@ -2361,11 +2361,11 @@ LABEL_9:
           if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
           {
             v26 = v24;
-            v27 = [v23 localizedDescription];
+            localizedDescription = [v23 localizedDescription];
             *buf = 136315394;
             v35 = "[CSBuiltInVoiceTrigger _requestStartAudioStreamWithSource:context:completion:]";
             v36 = 2114;
-            v37 = v27;
+            v37 = localizedDescription;
             _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Failed to get audio stream : %{public}@", buf, 0x16u);
           }
         }
@@ -2379,13 +2379,13 @@ LABEL_9:
 
   speechManager = self->_speechManager;
   v31 = 0;
-  v13 = [(CSSpeechManager *)speechManager audioProviderWithContext:v8 error:&v31];
+  v13 = [(CSSpeechManager *)speechManager audioProviderWithContext:contextCopy error:&v31];
   v15 = v31;
   if (v13)
   {
     [(CSBuiltInVoiceTrigger *)self setAudioProvider:v13];
     v14 = objc_alloc_init(CSAudioStreamRequest);
-    if (a3 > 0xC || ((1 << a3) & 0x1306) == 0)
+    if (source > 0xC || ((1 << source) & 0x1306) == 0)
     {
       goto LABEL_9;
     }
@@ -2397,11 +2397,11 @@ LABEL_9:
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
   {
     v28 = v25;
-    v29 = [v15 localizedDescription];
+    localizedDescription2 = [v15 localizedDescription];
     *buf = 136315394;
     v35 = "[CSBuiltInVoiceTrigger _requestStartAudioStreamWithSource:context:completion:]";
     v36 = 2114;
-    v37 = v29;
+    v37 = localizedDescription2;
     _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s Getting audio stream provider has failed : %{public}@", buf, 0x16u);
   }
 
@@ -2409,9 +2409,9 @@ LABEL_9:
 LABEL_21:
 }
 
-- (void)_startListenWithCompletion:(id)a3
+- (void)_startListenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -2424,7 +2424,7 @@ LABEL_21:
   v16[1] = 3221225472;
   v16[2] = sub_10015C184;
   v16[3] = &unk_100253220;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   v7 = objc_retainBlock(v16);
   v8 = +[CSAudioRecordContext contextForBuiltInVoiceTrigger];
@@ -2433,9 +2433,9 @@ LABEL_21:
   if (phoneCallState != 2 && phoneCallState != 4)
   {
     v11 = +[CSMXRingtoneMonitor sharedInstance];
-    v12 = [v11 isAnyRingtoneCurrentlyPlaying];
+    isAnyRingtoneCurrentlyPlaying = [v11 isAnyRingtoneCurrentlyPlaying];
 
-    if (v12)
+    if (isAnyRingtoneCurrentlyPlaying)
     {
       v10 = 8;
     }
@@ -2464,9 +2464,9 @@ LABEL_10:
   [(CSBuiltInVoiceTrigger *)self _requestStartAudioStreamWithSource:v10 context:v8 completion:v14];
 }
 
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -2490,8 +2490,8 @@ LABEL_10:
 
   else
   {
-    v9 = [(CSBuiltInVoiceTrigger *)self audioStream];
-    if ([v9 isStreaming])
+    audioStream = [(CSBuiltInVoiceTrigger *)self audioStream];
+    if ([audioStream isStreaming])
     {
     }
 
@@ -2506,8 +2506,8 @@ LABEL_10:
         v12[2] = sub_10015C834;
         v12[3] = &unk_1002531F8;
         v12[4] = self;
-        v14 = a3;
-        v13 = v6;
+        intervalCopy = interval;
+        v13 = completionCopy;
         [(CSBuiltInVoiceTrigger *)self _startListenWithCompletion:v12];
 
         goto LABEL_15;
@@ -2523,17 +2523,17 @@ LABEL_10:
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_15:
 }
 
-- (void)_transitAOPModeIfNeeded:(BOOL)a3
+- (void)_transitAOPModeIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
@@ -2541,19 +2541,19 @@ LABEL_15:
     v7 = 136315650;
     v8 = "[CSBuiltInVoiceTrigger _transitAOPModeIfNeeded:]";
     v9 = 1024;
-    v10 = [(CSBuiltInVoiceTrigger *)self voiceTriggerEnabled];
+    voiceTriggerEnabled = [(CSBuiltInVoiceTrigger *)self voiceTriggerEnabled];
     v11 = 1024;
-    v12 = v3;
+    v12 = neededCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s voiceTriggerEnabled : %d, enable AOP mode : %d", &v7, 0x18u);
   }
 
   if ([(CSBuiltInVoiceTrigger *)self voiceTriggerEnabled])
   {
-    [(CSBuiltInVoiceTrigger *)self _notifyEvent:v3];
+    [(CSBuiltInVoiceTrigger *)self _notifyEvent:neededCopy];
   }
 }
 
-- (void)_transitAOPModeIfNeededSync:(BOOL)a3
+- (void)_transitAOPModeIfNeededSync:(BOOL)sync
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -2561,11 +2561,11 @@ LABEL_15:
   v4[2] = sub_10015CBD8;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  syncCopy = sync;
   dispatch_sync(queue, v4);
 }
 
-- (void)_transitAOPModeIfNeededAsync:(BOOL)a3
+- (void)_transitAOPModeIfNeededAsync:(BOOL)async
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -2573,27 +2573,27 @@ LABEL_15:
   v4[2] = sub_10015CC60;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  asyncCopy = async;
   dispatch_async(queue, v4);
 }
 
-- (void)_transitVoiceTriggerStatus:(BOOL)a3 force:(BOOL)a4
+- (void)_transitVoiceTriggerStatus:(BOOL)status force:(BOOL)force
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10015CCEC;
   v5[3] = &unk_1002531A8;
-  v6 = a3;
+  statusCopy = status;
   v5[4] = self;
-  v7 = a4;
+  forceCopy = force;
   dispatch_async(queue, v5);
 }
 
-- (void)_setIsSecondPassRunning:(BOOL)a3
+- (void)_setIsSecondPassRunning:(BOOL)running
 {
-  v3 = a3;
-  self->_isSecondPassRunning = a3;
+  runningCopy = running;
+  self->_isSecondPassRunning = running;
   WeakRetained = objc_loadWeakRetained(&self->_secondPassProgressDelegate);
   if (WeakRetained)
   {
@@ -2602,7 +2602,7 @@ LABEL_15:
 
     if (v7)
     {
-      if (v3)
+      if (runningCopy)
       {
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
@@ -2624,29 +2624,29 @@ LABEL_15:
   }
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
     if (+[CSUtils isExclaveHardware])
     {
-      v6 = [v5 assetVariant] == 2 && objc_msgSend(v5, "assetProvider") == 2;
+      v6 = [assetCopy assetVariant] == 2 && objc_msgSend(assetCopy, "assetProvider") == 2;
       v8 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
       [(CSExclaveAssetsControlling *)self->_exclaveAssetsController setAssetForLocale:v8 isOTA:v6 completion:&stru_100253130];
     }
 
-    objc_storeStrong(&self->_currentAsset, a3);
+    objc_storeStrong(&self->_currentAsset, asset);
     v9 = [CSVoiceTriggerFirstPassConfigDecoder decodeConfigFrom:self->_currentAsset];
     [(CSBuiltInVoiceTrigger *)self setFirstPassConfig:v9];
-    v10 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-    [v10 delaySecondsForChannelSelection];
+    firstPassConfig = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+    [firstPassConfig delaySecondsForChannelSelection];
     v12 = v11;
     +[CSConfig inputRecordingSampleRate];
     self->_delayInSamplesRequiredForChannelSelection = (v12 * v13);
 
-    v14 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-    [v14 processingChunkSeconds];
+    firstPassConfig2 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+    [firstPassConfig2 processingChunkSeconds];
     v16 = v15;
     +[CSConfig inputRecordingSampleRate];
     self->_processingChunkSamples = (v16 * v17);
@@ -2666,27 +2666,27 @@ LABEL_15:
 
     v21 = +[CSPowerLogger sharedPowerLogger];
     v22 = +[CSVoiceTriggerEnabledMonitor sharedInstance];
-    v23 = [v22 isEnabled];
+    isEnabled = [v22 isEnabled];
     v24 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-    v25 = [(CSAsset *)self->_currentAsset configVersion];
-    [v21 powerLogSiriConfigWithVoiceTriggerEnabled:v23 withLanguage:v24 withModelVersion:v25];
+    configVersion = [(CSAsset *)self->_currentAsset configVersion];
+    [v21 powerLogSiriConfigWithVoiceTriggerEnabled:isEnabled withLanguage:v24 withModelVersion:configVersion];
 
-    v26 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-    v27 = [v26 configPathNDAPI];
+    firstPassConfig3 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+    configPathNDAPI = [firstPassConfig3 configPathNDAPI];
 
-    v28 = [(CSAsset *)self->_currentAsset resourcePath];
-    v29 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
-    v30 = [v29 processingChannelsBitset];
+    resourcePath = [(CSAsset *)self->_currentAsset resourcePath];
+    firstPassConfig4 = [(CSBuiltInVoiceTrigger *)self firstPassConfig];
+    processingChannelsBitset = [firstPassConfig4 processingChannelsBitset];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_10015D568;
     v33[3] = &unk_100253158;
-    v31 = v27;
+    v31 = configPathNDAPI;
     v34 = v31;
-    v35 = self;
-    v32 = v28;
+    selfCopy = self;
+    v32 = resourcePath;
     v36 = v32;
-    [CSUtils iterateBitset:v30 block:v33];
+    [CSUtils iterateBitset:processingChannelsBitset block:v33];
 
     [(CSBuiltInVoiceTrigger *)self _reset];
     if ([(CSBuiltInVoiceTrigger *)self _shouldEnableAOPVoiceTrigger])
@@ -2694,7 +2694,7 @@ LABEL_15:
       [(CSBuiltInVoiceTrigger *)self _startAOPVoiceTrigger];
     }
 
-    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:v5];
+    [(CSVoiceTriggerSecondPass *)self->_voiceTriggerSecondPass setAsset:assetCopy];
     if (!self->_firstTimeAssetConfigured)
     {
       self->_firstTimeAssetConfigured = 1;
@@ -2713,23 +2713,23 @@ LABEL_15:
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10015D9A4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setSecondPassProgressDelegate:(id)a3
+- (void)setSecondPassProgressDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -2737,8 +2737,8 @@ LABEL_15:
   block[2] = sub_10015DA7C;
   block[3] = &unk_1002538D8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -2882,11 +2882,11 @@ LABEL_15:
   objc_destroyWeak(buf);
 }
 
-- (CSBuiltInVoiceTrigger)initWithTargetQueue:(id)a3 withSpeechManager:(id)a4 withAudioRouteChangeMonitor:(id)a5
+- (CSBuiltInVoiceTrigger)initWithTargetQueue:(id)queue withSpeechManager:(id)manager withAudioRouteChangeMonitor:(id)monitor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
+  monitorCopy = monitor;
   v47.receiver = self;
   v47.super_class = CSBuiltInVoiceTrigger;
   v11 = [(CSBuiltInVoiceTrigger *)&v47 init];
@@ -2896,15 +2896,15 @@ LABEL_15:
     v13 = *(v11 + 7);
     *(v11 + 7) = v12;
 
-    if (v8)
+    if (queueCopy)
     {
-      dispatch_set_target_queue(*(v11 + 7), v8);
+      dispatch_set_target_queue(*(v11 + 7), queueCopy);
     }
 
     v14 = +[NSUUID UUID];
-    v15 = [v14 UUIDString];
+    uUIDString = [v14 UUIDString];
 
-    v16 = [NSString stringWithFormat:@"builtInVoiceTrigger-%@", v15];
+    v16 = [NSString stringWithFormat:@"builtInVoiceTrigger-%@", uUIDString];
     [v11 setName:v16];
 
     [v11 _setupStateMachine];
@@ -2949,11 +2949,11 @@ LABEL_15:
       *(v11 + 20) = v26;
 
       [*(v11 + 20) setSecondPassClient:1];
-      v28 = [v11 delegate];
-      [*(v11 + 20) setDelegate:v28];
+      delegate = [v11 delegate];
+      [*(v11 + 20) setDelegate:delegate];
     }
 
-    objc_storeStrong(v11 + 38, a4);
+    objc_storeStrong(v11 + 38, manager);
     if (!*(v11 + 38))
     {
       v29 = +[CSSpeechManager sharedManager];
@@ -2961,7 +2961,7 @@ LABEL_15:
       *(v11 + 38) = v29;
     }
 
-    objc_storeStrong(v11 + 37, a5);
+    objc_storeStrong(v11 + 37, monitor);
     if (!*(v11 + 37))
     {
       v31 = +[CSAudioRouteChangeMonitor sharedInstance];

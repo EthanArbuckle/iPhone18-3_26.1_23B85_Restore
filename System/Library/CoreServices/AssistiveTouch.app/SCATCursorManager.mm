@@ -1,42 +1,42 @@
 @interface SCATCursorManager
 - (NSString)description;
-- (SCATCursorManager)initWithDisplaySource:(id)a3;
+- (SCATCursorManager)initWithDisplaySource:(id)source;
 - (SCATCursorManagerDelegate)delegate;
-- (id)_cursorPathAndFrame:(CGRect *)a3 cornerRadius:(double *)a4 forElementFrame:(CGRect)a5 inDisplayContext:(id)a6 target:(id)a7;
+- (id)_cursorPathAndFrame:(CGRect *)frame cornerRadius:(double *)radius forElementFrame:(CGRect)elementFrame inDisplayContext:(id)context target:(id)target;
 - (id)cursors;
-- (id)displayContextForCursor:(id)a3;
-- (id)displayContextForCursor:(id)a3 forDisplayID:(unsigned int)a4;
-- (void)_path:(id *)a3 frame:(CGRect *)a4 cornerRadius:(double *)a5 isSimpleRect:(BOOL *)a6 forFocusContext:(id)a7 cursor:(id)a8;
-- (void)_reorderLayersIfNeededForDisplayID:(unsigned int)a3;
-- (void)_theme:(int64_t *)a3 level:(int64_t *)a4 forFocusContext:(id)a5 cursor:(id)a6 options:(int)a7;
-- (void)_updateCursor:(id)a3 withFocusContext:(id)a4 shouldAnimate:(BOOL)a5 options:(int)a6;
-- (void)_updateZoom:(CGRect)a3 withElement:(id)a4 cursorController:(id)a5;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)beginSelectTimeoutAnimation:(double)a3;
+- (id)displayContextForCursor:(id)cursor;
+- (id)displayContextForCursor:(id)cursor forDisplayID:(unsigned int)d;
+- (void)_path:(id *)_path frame:(CGRect *)frame cornerRadius:(double *)radius isSimpleRect:(BOOL *)rect forFocusContext:(id)context cursor:(id)cursor;
+- (void)_reorderLayersIfNeededForDisplayID:(unsigned int)d;
+- (void)_theme:(int64_t *)_theme level:(int64_t *)level forFocusContext:(id)context cursor:(id)cursor options:(int)options;
+- (void)_updateCursor:(id)cursor withFocusContext:(id)context shouldAnimate:(BOOL)animate options:(int)options;
+- (void)_updateZoom:(CGRect)zoom withElement:(id)element cursorController:(id)controller;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)beginSelectTimeoutAnimation:(double)animation;
 - (void)cancelSelectTimeoutAnimationIfNeeded;
 - (void)dealloc;
-- (void)didUpdateSignalQuality:(int64_t)a3;
-- (void)hideCursor:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateMainCursorWithElement:(id)a3;
-- (void)updateWithFocusContext:(id)a3 animated:(BOOL)a4 options:(int)a5;
+- (void)didUpdateSignalQuality:(int64_t)quality;
+- (void)hideCursor:(BOOL)cursor animated:(BOOL)animated;
+- (void)updateMainCursorWithElement:(id)element;
+- (void)updateWithFocusContext:(id)context animated:(BOOL)animated options:(int)options;
 @end
 
 @implementation SCATCursorManager
 
-- (SCATCursorManager)initWithDisplaySource:(id)a3
+- (SCATCursorManager)initWithDisplaySource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = SCATCursorManager;
   v5 = [(SCATCursorManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATCursorManager *)v5 setDisplaySourceDelegate:v4];
+    [(SCATCursorManager *)v5 setDisplaySourceDelegate:sourceCopy];
     v7 = objc_alloc_init(SCATCursorController);
     [(SCATCursorManager *)v6 setFocusedItemCursorController:v7];
-    v8 = [(SCATCursorManager *)v6 focusedItemCursorController];
-    [v8 setIsFocusedItemCursorController:1];
+    focusedItemCursorController = [(SCATCursorManager *)v6 focusedItemCursorController];
+    [focusedItemCursorController setIsFocusedItemCursorController:1];
 
     [(SCATCursorController *)v7 setDelegate:v6];
     v9 = objc_alloc_init(SCATCursorController);
@@ -55,12 +55,12 @@
 - (void)dealloc
 {
   [(SCATCursorManager *)self setFocusedItemCursorController:self->_focusedItemCursorController];
-  v3 = [(SCATCursorManager *)self containingGroupCursorController];
-  [v3 setDelegate:0];
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  [containingGroupCursorController setDelegate:0];
 
   [(SCATCursorManager *)self setContainingGroupCursorController:self->_containingGroupCursorController];
-  v4 = [(SCATCursorManager *)self menuItemCursorController];
-  [v4 setDelegate:0];
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  [menuItemCursorController setDelegate:0];
 
   [(SCATCursorManager *)self setMenuItemCursorController:self->_menuItemCursorController];
   v5.receiver = self;
@@ -71,53 +71,53 @@
 - (NSString)description
 {
   v3 = [NSNumber numberWithBool:[(SCATCursorManager *)self isCursorUIHidden]];
-  v4 = [(SCATCursorManager *)self focusedItemCursorController];
-  v5 = [(SCATCursorManager *)self containingGroupCursorController];
-  v6 = [(SCATCursorManager *)self menuItemCursorController];
-  v7 = [NSString stringWithFormat:@"SCATCursorManager:<%p>. HIDDEN:%@\n\tFocusCursor:%@\n\tGroupCursor:%@\n\tMenuCursor:%@\n\t", self, v3, v4, v5, v6];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  v7 = [NSString stringWithFormat:@"SCATCursorManager:<%p>. HIDDEN:%@\n\tFocusCursor:%@\n\tGroupCursor:%@\n\tMenuCursor:%@\n\t", self, v3, focusedItemCursorController, containingGroupCursorController, menuItemCursorController];
 
   return v7;
 }
 
-- (id)displayContextForCursor:(id)a3
+- (id)displayContextForCursor:(id)cursor
 {
-  v4 = a3;
-  v5 = [(SCATCursorManager *)self menuItemCursorController];
-  v6 = [v4 isEqual:v5];
+  cursorCopy = cursor;
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  v6 = [cursorCopy isEqual:menuItemCursorController];
 
-  v7 = [(SCATCursorManager *)self displaySourceDelegate];
-  v8 = v7;
+  displaySourceDelegate = [(SCATCursorManager *)self displaySourceDelegate];
+  v8 = displaySourceDelegate;
   if (v6)
   {
-    [v7 scatFrontCursorUIContext];
+    [displaySourceDelegate scatFrontCursorUIContext];
   }
 
   else
   {
-    [v7 scatBackCursorUIContext];
+    [displaySourceDelegate scatBackCursorUIContext];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)displayContextForCursor:(id)a3 forDisplayID:(unsigned int)a4
+- (id)displayContextForCursor:(id)cursor forDisplayID:(unsigned int)d
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(SCATCursorManager *)self menuItemCursorController];
-  v8 = [v6 isEqual:v7];
+  v4 = *&d;
+  cursorCopy = cursor;
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  v8 = [cursorCopy isEqual:menuItemCursorController];
 
-  v9 = [(SCATCursorManager *)self displaySourceDelegate];
-  v10 = v9;
+  displaySourceDelegate = [(SCATCursorManager *)self displaySourceDelegate];
+  v10 = displaySourceDelegate;
   if (v8)
   {
-    [v9 scatFrontCursorUIContextForDisplayID:v4];
+    [displaySourceDelegate scatFrontCursorUIContextForDisplayID:v4];
   }
 
   else
   {
-    [v9 scatBackCursorUIContextForDisplayID:v4];
+    [displaySourceDelegate scatBackCursorUIContextForDisplayID:v4];
   }
   v11 = ;
 
@@ -126,46 +126,46 @@
 
 - (id)cursors
 {
-  v3 = [(SCATCursorManager *)self focusedItemCursorController];
-  v4 = [(SCATCursorManager *)self containingGroupCursorController];
-  v8[1] = v4;
-  v5 = [(SCATCursorManager *)self menuItemCursorController];
-  v8[2] = v5;
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  v8[1] = containingGroupCursorController;
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  v8[2] = menuItemCursorController;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (void)_updateZoom:(CGRect)a3 withElement:(id)a4 cursorController:(id)a5
+- (void)_updateZoom:(CGRect)zoom withElement:(id)element cursorController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v29 = a4;
-  v11 = a5;
+  height = zoom.size.height;
+  width = zoom.size.width;
+  y = zoom.origin.y;
+  x = zoom.origin.x;
+  elementCopy = element;
+  controllerCopy = controller;
   if (_AXSZoomTouchEnabled())
   {
-    v12 = [v29 scatTraits];
-    if ((kAXIsEditingTrait & v12) != 0)
+    scatTraits = [elementCopy scatTraits];
+    if ((kAXIsEditingTrait & scatTraits) != 0)
     {
-      [v29 scatTextCursorFrame];
+      [elementCopy scatTextCursorFrame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v21 = +[ZoomServices sharedInstance];
-      v22 = [(SCATCursorManager *)self displayContextForCursor:v11];
-      v23 = [v22 window];
-      v24 = [v23 screen];
-      v25 = [v24 displayIdentity];
-      -[UIView notifyZoomFocusDidChangeWithType:rect:contextId:displayId:](v21, "notifyZoomFocusDidChangeWithType:rect:contextId:displayId:", 3, 0, [v25 displayID], v14, v16, v18, v20);
+      v22 = [(SCATCursorManager *)self displayContextForCursor:controllerCopy];
+      window = [v22 window];
+      screen = [window screen];
+      displayIdentity = [screen displayIdentity];
+      -[UIView notifyZoomFocusDidChangeWithType:rect:contextId:displayId:](v21, "notifyZoomFocusDidChangeWithType:rect:contextId:displayId:", 3, 0, [displayIdentity displayID], v14, v16, v18, v20);
 
 LABEL_12:
       goto LABEL_13;
     }
 
-    v26 = v12;
+    v26 = scatTraits;
     if (AXDeviceIsPhoneIdiom())
     {
       if (width <= 250.0 || (kAXButtonTrait & v26) != 0)
@@ -185,7 +185,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    v21 = [(SCATCursorManager *)self displayContextForCursor:v11];
+    v21 = [(SCATCursorManager *)self displayContextForCursor:controllerCopy];
     v31.origin.x = x;
     v31.origin.y = y;
     v31.size.width = width;
@@ -197,15 +197,15 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_updateCursor:(id)a3 withFocusContext:(id)a4 shouldAnimate:(BOOL)a5 options:(int)a6
+- (void)_updateCursor:(id)cursor withFocusContext:(id)context shouldAnimate:(BOOL)animate options:(int)options
 {
-  v6 = *&a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  v6 = *&options;
+  animateCopy = animate;
+  cursorCopy = cursor;
+  contextCopy = context;
   v25 = 0;
   v24 = 0;
-  [(SCATCursorManager *)self _theme:&v25 level:&v24 forFocusContext:v11 cursor:v10 options:v6];
+  [(SCATCursorManager *)self _theme:&v25 level:&v24 forFocusContext:contextCopy cursor:cursorCopy options:v6];
   v12 = 1;
   v23 = 1;
   size = CGRectZero.size;
@@ -215,7 +215,7 @@ LABEL_13:
   if (v24)
   {
     v19 = 0;
-    [(SCATCursorManager *)self _path:&v19 frame:&origin cornerRadius:&v20 isSimpleRect:&v23 forFocusContext:v11 cursor:v10];
+    [(SCATCursorManager *)self _path:&v19 frame:&origin cornerRadius:&v20 isSimpleRect:&v23 forFocusContext:contextCopy cursor:cursorCopy];
     v14 = v19;
     v15 = v24;
     v16 = v20;
@@ -229,37 +229,37 @@ LABEL_13:
     v16 = 0.0;
   }
 
-  [v10 updateTheme:v25 level:v15 path:v14 frame:v12 & 1 cornerRadius:v7 isSimpleRect:v6 animated:origin options:{v22, v16}];
-  v17 = [(SCATCursorManager *)self focusedItemCursorController];
-  if (v17 != v10)
+  [cursorCopy updateTheme:v25 level:v15 path:v14 frame:v12 & 1 cornerRadius:animateCopy isSimpleRect:v6 animated:origin options:{v22, v16}];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  if (focusedItemCursorController != cursorCopy)
   {
     goto LABEL_7;
   }
 
-  v18 = [v11 shouldBeTrackedByZoom];
+  shouldBeTrackedByZoom = [contextCopy shouldBeTrackedByZoom];
 
-  if (v18)
+  if (shouldBeTrackedByZoom)
   {
-    v17 = [v11 element];
-    [(SCATCursorManager *)self _updateZoom:v17 withElement:v10 cursorController:origin, v22];
+    focusedItemCursorController = [contextCopy element];
+    [(SCATCursorManager *)self _updateZoom:focusedItemCursorController withElement:cursorCopy cursorController:origin, v22];
 LABEL_7:
   }
 }
 
-- (void)updateWithFocusContext:(id)a3 animated:(BOOL)a4 options:(int)a5
+- (void)updateWithFocusContext:(id)context animated:(BOOL)animated options:(int)options
 {
-  v5 = *&a5;
-  v6 = a4;
-  v8 = a3;
-  -[SCATCursorManager _reorderLayersIfNeededForDisplayID:](self, "_reorderLayersIfNeededForDisplayID:", [v8 displayID]);
-  if (v8)
+  v5 = *&options;
+  animatedCopy = animated;
+  contextCopy = context;
+  -[SCATCursorManager _reorderLayersIfNeededForDisplayID:](self, "_reorderLayersIfNeededForDisplayID:", [contextCopy displayID]);
+  if (contextCopy)
   {
     v20 = 0uLL;
     v21 = 0uLL;
     *(&v18 + 1) = 0;
     v19 = 0uLL;
-    v9 = [(SCATCursorManager *)self cursors];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    cursors = [(SCATCursorManager *)self cursors];
+    v10 = [cursors countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -270,13 +270,13 @@ LABEL_7:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(cursors);
           }
 
-          [(SCATCursorManager *)self _updateCursor:*(*(&v18 + 1) + 8 * i) withFocusContext:v8 shouldAnimate:v6 options:v5];
+          [(SCATCursorManager *)self _updateCursor:*(*(&v18 + 1) + 8 * i) withFocusContext:contextCopy shouldAnimate:animatedCopy options:v5];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v11 = [cursors countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v11);
@@ -289,8 +289,8 @@ LABEL_7:
     v25 = 0uLL;
     v22 = 0uLL;
     v23 = 0uLL;
-    v9 = [(SCATCursorManager *)self cursors];
-    v14 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    cursors = [(SCATCursorManager *)self cursors];
+    v14 = [cursors countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -301,13 +301,13 @@ LABEL_7:
         {
           if (*v23 != v16)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(cursors);
           }
 
-          [*(*(&v22 + 1) + 8 * j) updateLevel:0 animated:v6 options:v5];
+          [*(*(&v22 + 1) + 8 * j) updateLevel:0 animated:animatedCopy options:v5];
         }
 
-        v15 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v15 = [cursors countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v15);
@@ -315,20 +315,20 @@ LABEL_7:
   }
 }
 
-- (void)updateMainCursorWithElement:(id)a3
+- (void)updateMainCursorWithElement:(id)element
 {
-  v4 = a3;
-  -[SCATCursorManager _reorderLayersIfNeededForDisplayID:](self, "_reorderLayersIfNeededForDisplayID:", [v4 scatDisplayId]);
-  v6 = [SCATFocusContext adHocFocusContext:v4];
+  elementCopy = element;
+  -[SCATCursorManager _reorderLayersIfNeededForDisplayID:](self, "_reorderLayersIfNeededForDisplayID:", [elementCopy scatDisplayId]);
+  v6 = [SCATFocusContext adHocFocusContext:elementCopy];
 
-  v5 = [(SCATCursorManager *)self focusedItemCursorController];
-  [(SCATCursorManager *)self _updateCursor:v5 withFocusContext:v6 shouldAnimate:0 options:0];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  [(SCATCursorManager *)self _updateCursor:focusedItemCursorController withFocusContext:v6 shouldAnimate:0 options:0];
 }
 
-- (void)beginSelectTimeoutAnimation:(double)a3
+- (void)beginSelectTimeoutAnimation:(double)animation
 {
-  v5 = [(SCATCursorManager *)self focusedItemCursorController];
-  v10 = [v5 cursorBackgroundLayer];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  cursorBackgroundLayer = [focusedItemCursorController cursorBackgroundLayer];
 
   v6 = [CABasicAnimation animationWithKeyPath:@"fillColor"];
   [v6 setValue:@"scatBeginSelectTimeoutAnimation" forKey:@"scatAnimationID"];
@@ -338,10 +338,10 @@ LABEL_7:
   v8 = AXSAssistiveTouchCursorColor();
   CopyWithAlpha = CGColorCreateCopyWithAlpha(v8, 0.5);
   [v6 setToValue:CopyWithAlpha];
-  [v6 setDuration:a3];
+  [v6 setDuration:animation];
   [v6 setDelegate:self];
   [v6 setRemovedOnCompletion:0];
-  [v10 addAnimation:v6 forKey:@"scatBeginSelectTimeoutAnimation"];
+  [cursorBackgroundLayer addAnimation:v6 forKey:@"scatBeginSelectTimeoutAnimation"];
   if (CopyWithAlpha)
   {
     CFRelease(CopyWithAlpha);
@@ -350,24 +350,24 @@ LABEL_7:
 
 - (void)cancelSelectTimeoutAnimationIfNeeded
 {
-  v2 = [(SCATCursorManager *)self focusedItemCursorController];
-  v3 = [v2 cursorBackgroundLayer];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  cursorBackgroundLayer = [focusedItemCursorController cursorBackgroundLayer];
 
-  [v3 removeAnimationForKey:@"scatBeginSelectTimeoutAnimation"];
+  [cursorBackgroundLayer removeAnimationForKey:@"scatBeginSelectTimeoutAnimation"];
 }
 
-- (void)hideCursor:(BOOL)a3 animated:(BOOL)a4
+- (void)hideCursor:(BOOL)cursor animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(SCATCursorManager *)self isCursorUIHidden]!= a3)
+  animatedCopy = animated;
+  cursorCopy = cursor;
+  if ([(SCATCursorManager *)self isCursorUIHidden]!= cursor)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(SCATCursorManager *)self cursors];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    cursors = [(SCATCursorManager *)self cursors];
+    v8 = [cursors countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -379,59 +379,59 @@ LABEL_7:
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(cursors);
           }
 
-          [*(*(&v12 + 1) + 8 * v11) hide:v5 animate:v4];
+          [*(*(&v12 + 1) + 8 * v11) hide:cursorCopy animate:animatedCopy];
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [cursors countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
     }
 
-    [(SCATCursorManager *)self setCursorUIHidden:v5];
+    [(SCATCursorManager *)self setCursorUIHidden:cursorCopy];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [a3 valueForKey:{@"scatAnimationID", a4}];
+  v5 = [stop valueForKey:{@"scatAnimationID", finished}];
   v6 = [v5 isEqualToString:@"scatBeginSelectTimeoutAnimation"];
 
   if (v6)
   {
-    v7 = [(SCATCursorManager *)self focusedItemCursorController];
-    v10 = [v7 cursorBackgroundLayer];
+    focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+    cursorBackgroundLayer = [focusedItemCursorController cursorBackgroundLayer];
 
     v8 = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
     [v8 setValue:@"scatEndSelectTimeoutAnimation" forKey:@"scatAnimationID"];
-    v9 = [v10 restingStrokeColor];
-    [v8 setToValue:{objc_msgSend(v9, "CGColor")}];
+    restingStrokeColor = [cursorBackgroundLayer restingStrokeColor];
+    [v8 setToValue:{objc_msgSend(restingStrokeColor, "CGColor")}];
 
     [v8 setDuration:0.3];
     [v8 setRemovedOnCompletion:1];
-    [v10 addAnimation:v8 forKey:@"scatEndSelectTimeoutAnimation"];
+    [cursorBackgroundLayer addAnimation:v8 forKey:@"scatEndSelectTimeoutAnimation"];
   }
 }
 
-- (void)didUpdateSignalQuality:(int64_t)a3
+- (void)didUpdateSignalQuality:(int64_t)quality
 {
-  v4 = [(SCATCursorManager *)self focusedItemCursorController];
-  [v4 didUpdateSignalQuality:a3];
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  [focusedItemCursorController didUpdateSignalQuality:quality];
 }
 
-- (void)_reorderLayersIfNeededForDisplayID:(unsigned int)a3
+- (void)_reorderLayersIfNeededForDisplayID:(unsigned int)d
 {
-  v5 = [(SCATCursorManager *)self focusedItemCursorController];
-  v11[0] = v5;
-  v6 = [(SCATCursorManager *)self containingGroupCursorController];
-  v11[1] = v6;
-  v7 = [(SCATCursorManager *)self menuItemCursorController];
-  v11[2] = v7;
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  v11[0] = focusedItemCursorController;
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  v11[1] = containingGroupCursorController;
+  menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+  v11[2] = menuItemCursorController;
   v8 = [NSArray arrayWithObjects:v11 count:3];
 
   v9[0] = _NSConcreteStackBlock;
@@ -439,66 +439,66 @@ LABEL_7:
   v9[2] = sub_1000D3E6C;
   v9[3] = &unk_1001D7290;
   v9[4] = self;
-  v10 = a3;
+  dCopy = d;
   [v8 enumerateObjectsUsingBlock:v9];
 }
 
-- (void)_theme:(int64_t *)a3 level:(int64_t *)a4 forFocusContext:(id)a5 cursor:(id)a6 options:(int)a7
+- (void)_theme:(int64_t *)_theme level:(int64_t *)level forFocusContext:(id)context cursor:(id)cursor options:(int)options
 {
-  v7 = a7;
-  v46 = a5;
-  v12 = a6;
-  v13 = [(SCATCursorManager *)self focusedItemCursorController];
-  v14 = [v12 isEqual:v13];
+  optionsCopy = options;
+  contextCopy = context;
+  cursorCopy = cursor;
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  v14 = [cursorCopy isEqual:focusedItemCursorController];
 
   if (v14)
   {
-    v15 = [v46 element];
-    v16 = [v46 menuElement];
+    element = [contextCopy element];
+    menuElement = [contextCopy menuElement];
 
-    if (v15 != v16)
+    if (element != menuElement)
     {
-      if ((v7 & 8) != 0)
+      if ((optionsCopy & 8) != 0)
       {
-        v22 = 4;
+        unsignedIntValue = 4;
         goto LABEL_37;
       }
 
-      v17 = [v46 element];
-      v18 = [v17 scatOverrideCursorTheme];
+      element2 = [contextCopy element];
+      scatOverrideCursorTheme = [element2 scatOverrideCursorTheme];
 
-      v19 = [v46 element];
-      v20 = v19;
-      if (v18)
+      element3 = [contextCopy element];
+      v20 = element3;
+      if (scatOverrideCursorTheme)
       {
-        v21 = [v19 scatOverrideCursorTheme];
-        v22 = [v21 unsignedIntValue];
+        scatOverrideCursorTheme2 = [element3 scatOverrideCursorTheme];
+        unsignedIntValue = [scatOverrideCursorTheme2 unsignedIntValue];
 
 LABEL_37:
         v39 = 1;
         goto LABEL_38;
       }
 
-      v40 = [v19 scatIndicatesOwnFocus];
+      scatIndicatesOwnFocus = [element3 scatIndicatesOwnFocus];
 
-      if ((v40 & 1) == 0)
+      if ((scatIndicatesOwnFocus & 1) == 0)
       {
-        if ([v46 selectBehavior] == 4)
+        if ([contextCopy selectBehavior] == 4)
         {
-          v22 = 3;
+          unsignedIntValue = 3;
           goto LABEL_37;
         }
 
-        if ([v46 selectBehavior] == 1)
+        if ([contextCopy selectBehavior] == 1)
         {
           v39 = 1;
-          v22 = 1;
+          unsignedIntValue = 1;
           goto LABEL_38;
         }
 
-        [v46 selectBehavior];
+        [contextCopy selectBehavior];
 LABEL_36:
-        v22 = 0;
+        unsignedIntValue = 0;
         goto LABEL_37;
       }
     }
@@ -506,49 +506,49 @@ LABEL_36:
     goto LABEL_26;
   }
 
-  v23 = [(SCATCursorManager *)self containingGroupCursorController];
-  v24 = [v12 isEqual:v23];
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  v24 = [cursorCopy isEqual:containingGroupCursorController];
 
   if (v24)
   {
-    v25 = [v46 element];
-    v26 = [v25 scatHidesGroupCursorWhenFocused];
+    element4 = [contextCopy element];
+    scatHidesGroupCursorWhenFocused = [element4 scatHidesGroupCursorWhenFocused];
 
-    if (v26)
+    if (scatHidesGroupCursorWhenFocused)
     {
       goto LABEL_26;
     }
 
-    v27 = [v46 element];
-    v28 = [v46 menuElement];
+    element5 = [contextCopy element];
+    menuElement2 = [contextCopy menuElement];
 
-    if (v27 == v28)
+    if (element5 == menuElement2)
     {
       goto LABEL_26;
     }
 
-    if ([v46 selectBehavior] == 4)
+    if ([contextCopy selectBehavior] == 4)
     {
-      v29 = [v46 element];
-      v30 = [v29 scatIsAuxiliaryElement];
+      element6 = [contextCopy element];
+      scatIsAuxiliaryElement = [element6 scatIsAuxiliaryElement];
     }
 
     else
     {
-      v30 = 1;
+      scatIsAuxiliaryElement = 1;
     }
 
     v39 = 0;
-    v22 = 0;
-    if ((v7 & 1) == 0 && v30)
+    unsignedIntValue = 0;
+    if ((optionsCopy & 1) == 0 && scatIsAuxiliaryElement)
     {
-      v41 = [v46 element];
-      if ([v41 scatIndicatesOwnFocus])
+      element7 = [contextCopy element];
+      if ([element7 scatIndicatesOwnFocus])
       {
-        v42 = [v46 element];
-        v43 = [v42 scatIsAuxiliaryElement];
+        element8 = [contextCopy element];
+        scatIsAuxiliaryElement2 = [element8 scatIsAuxiliaryElement];
 
-        if (!v43)
+        if (!scatIsAuxiliaryElement2)
         {
           goto LABEL_26;
         }
@@ -558,46 +558,46 @@ LABEL_36:
       {
       }
 
-      v44 = [v46 parentGroup];
-      v45 = v44;
-      if (v44 && ![v44 isRootGroup])
+      parentGroup = [contextCopy parentGroup];
+      v45 = parentGroup;
+      if (parentGroup && ![parentGroup isRootGroup])
       {
-        v22 = 2;
+        unsignedIntValue = 2;
         v39 = 1;
       }
 
       else
       {
         v39 = 0;
-        v22 = 0;
+        unsignedIntValue = 0;
       }
     }
   }
 
   else
   {
-    v31 = [(SCATCursorManager *)self menuItemCursorController];
-    v32 = [v12 isEqual:v31];
+    menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+    v32 = [cursorCopy isEqual:menuItemCursorController];
 
     if (!v32)
     {
       goto LABEL_36;
     }
 
-    v33 = [v46 menuElement];
-    if (!v33 || (v34 = v33, -[SCATCursorManager delegate](self, "delegate"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 cursorManagerShouldHideMenuCursor:self], v35, v34, (v36 & 1) != 0))
+    menuElement3 = [contextCopy menuElement];
+    if (!menuElement3 || (v34 = menuElement3, -[SCATCursorManager delegate](self, "delegate"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 cursorManagerShouldHideMenuCursor:self], v35, v34, (v36 & 1) != 0))
     {
 LABEL_26:
       v39 = 0;
-      v22 = 0;
+      unsignedIntValue = 0;
       goto LABEL_38;
     }
 
-    v37 = [v46 menuElement];
-    v38 = [v46 element];
+    menuElement4 = [contextCopy menuElement];
+    element9 = [contextCopy element];
 
-    v22 = 0;
-    if (v37 == v38)
+    unsignedIntValue = 0;
+    if (menuElement4 == element9)
     {
       v39 = 1;
     }
@@ -609,50 +609,50 @@ LABEL_26:
   }
 
 LABEL_38:
-  if (a4)
+  if (level)
   {
-    *a4 = v39;
+    *level = v39;
   }
 
-  if (a3)
+  if (_theme)
   {
-    *a3 = v22;
+    *_theme = unsignedIntValue;
   }
 }
 
-- (void)_path:(id *)a3 frame:(CGRect *)a4 cornerRadius:(double *)a5 isSimpleRect:(BOOL *)a6 forFocusContext:(id)a7 cursor:(id)a8
+- (void)_path:(id *)_path frame:(CGRect *)frame cornerRadius:(double *)radius isSimpleRect:(BOOL *)rect forFocusContext:(id)context cursor:(id)cursor
 {
-  v13 = a7;
-  v14 = a8;
+  contextCopy = context;
+  cursorCopy = cursor;
   size = CGRectZero.size;
   origin = CGRectZero.origin;
   v48 = size;
-  v16 = -[SCATCursorManager displayContextForCursor:forDisplayID:](self, "displayContextForCursor:forDisplayID:", v14, [v13 displayID]);
-  v17 = [(SCATCursorManager *)self focusedItemCursorController];
-  v18 = [v14 isEqual:v17];
+  v16 = -[SCATCursorManager displayContextForCursor:forDisplayID:](self, "displayContextForCursor:forDisplayID:", cursorCopy, [contextCopy displayID]);
+  focusedItemCursorController = [(SCATCursorManager *)self focusedItemCursorController];
+  v18 = [cursorCopy isEqual:focusedItemCursorController];
 
   if (v18)
   {
-    v19 = [v13 element];
+    element = [contextCopy element];
 LABEL_3:
-    v20 = v19;
+    v30ParentGroup = element;
     goto LABEL_4;
   }
 
-  v28 = [(SCATCursorManager *)self containingGroupCursorController];
-  v29 = [v14 isEqual:v28];
+  containingGroupCursorController = [(SCATCursorManager *)self containingGroupCursorController];
+  v29 = [cursorCopy isEqual:containingGroupCursorController];
 
   if (!v29)
   {
-    v31 = [(SCATCursorManager *)self menuItemCursorController];
-    v23 = [v14 isEqual:v31];
+    menuItemCursorController = [(SCATCursorManager *)self menuItemCursorController];
+    v23 = [cursorCopy isEqual:menuItemCursorController];
 
     if (!v23)
     {
-      v20 = 0;
+      v30ParentGroup = 0;
 LABEL_21:
       v21 = 0;
-      if (!a3)
+      if (!_path)
       {
         goto LABEL_23;
       }
@@ -660,39 +660,39 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v19 = [v13 menuElement];
+    element = [contextCopy menuElement];
     goto LABEL_3;
   }
 
-  v30 = [v13 parentGroup];
-  if ([v30 scatIsAuxiliaryElement])
+  parentGroup = [contextCopy parentGroup];
+  if ([parentGroup scatIsAuxiliaryElement])
   {
     do
     {
-      v20 = [v30 parentGroup];
+      v30ParentGroup = [parentGroup parentGroup];
 
-      v30 = v20;
+      parentGroup = v30ParentGroup;
     }
 
-    while (([v20 scatIsAuxiliaryElement] & 1) != 0);
+    while (([v30ParentGroup scatIsAuxiliaryElement] & 1) != 0);
   }
 
   else
   {
-    v20 = v30;
+    v30ParentGroup = parentGroup;
   }
 
 LABEL_4:
-  if (!v20)
+  if (!v30ParentGroup)
   {
 LABEL_16:
     LOBYTE(v23) = 0;
     goto LABEL_21;
   }
 
-  if (![v20 scatPath])
+  if (![v30ParentGroup scatPath])
   {
-    [v20 scatFrame];
+    [v30ParentGroup scatFrame];
     v33 = v32;
     v35 = v34;
     v37 = v36;
@@ -707,9 +707,9 @@ LABEL_16:
     v50.size.height = v39;
     if (!CGRectEqualToRect(v49, v50))
     {
-      v21 = [(SCATCursorManager *)self _cursorPathAndFrame:&origin cornerRadius:a5 forElementFrame:v16 inDisplayContext:v20 target:v33, v35, v37, v39];
+      v21 = [(SCATCursorManager *)self _cursorPathAndFrame:&origin cornerRadius:radius forElementFrame:v16 inDisplayContext:v30ParentGroup target:v33, v35, v37, v39];
       LOBYTE(v23) = 1;
-      if (a3)
+      if (_path)
       {
         goto LABEL_22;
       }
@@ -720,8 +720,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v21 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v20 scatPath]);
-  if ([v20 scatPathIsInSceneReferenceSpace])
+  v21 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v30ParentGroup scatPath]);
+  if ([v30ParentGroup scatPathIsInSceneReferenceSpace])
   {
     v22 = [v21 convertPathToView:v16];
 
@@ -732,51 +732,51 @@ LABEL_16:
     v48.width = v26;
     v48.height = v27;
     v21 = v22;
-    if (!a3)
+    if (!_path)
     {
       goto LABEL_23;
     }
 
 LABEL_22:
     v44 = v21;
-    *a3 = v21;
+    *_path = v21;
     goto LABEL_23;
   }
 
-  [v20 scatFrame];
+  [v30ParentGroup scatFrame];
   [HNDScreen convertRect:v16 toView:?];
   LOBYTE(v23) = 0;
   origin.x = v40;
   origin.y = v41;
   v48.width = v42;
   v48.height = v43;
-  if (a3)
+  if (_path)
   {
     goto LABEL_22;
   }
 
 LABEL_23:
-  if (a6)
+  if (rect)
   {
-    *a6 = v23;
+    *rect = v23;
   }
 
-  if (a4)
+  if (frame)
   {
     v45 = v48;
-    a4->origin = origin;
-    a4->size = v45;
+    frame->origin = origin;
+    frame->size = v45;
   }
 }
 
-- (id)_cursorPathAndFrame:(CGRect *)a3 cornerRadius:(double *)a4 forElementFrame:(CGRect)a5 inDisplayContext:(id)a6 target:(id)a7
+- (id)_cursorPathAndFrame:(CGRect *)frame cornerRadius:(double *)radius forElementFrame:(CGRect)elementFrame inDisplayContext:(id)context target:(id)target
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a6;
-  v16 = a7;
+  height = elementFrame.size.height;
+  width = elementFrame.size.width;
+  y = elementFrame.origin.y;
+  x = elementFrame.origin.x;
+  contextCopy = context;
+  targetCopy = target;
   v82.origin.x = CGRectZero.origin.x;
   v82.origin.y = CGRectZero.origin.y;
   v82.size.width = CGRectZero.size.width;
@@ -790,12 +790,12 @@ LABEL_23:
     _AXAssert();
   }
 
-  v17 = [(SCATCursorManager *)self styleProvider];
-  [v17 cursorBackgroundBorderWidth];
+  styleProvider = [(SCATCursorManager *)self styleProvider];
+  [styleProvider cursorBackgroundBorderWidth];
   v19 = v18;
 
-  v20 = [(SCATCursorManager *)self styleProvider];
-  [v20 cursorElementPadding];
+  styleProvider2 = [(SCATCursorManager *)self styleProvider];
+  [styleProvider2 cursorElementPadding];
   v22 = v21;
 
   v76.origin.x = x;
@@ -825,14 +825,14 @@ LABEL_23:
     v26 = 40.0;
   }
 
-  v27 = [v15 _screen];
-  [v27 nativeBounds];
+  _screen = [contextCopy _screen];
+  [_screen nativeBounds];
   v32 = sub_100042840(v23, v25, v24, v26, v28, v29, v30, v31);
   v34 = v33;
   v36 = v35;
   v38 = v37;
 
-  [HNDScreen convertRect:v15 toView:v32, v34, v36, v38];
+  [HNDScreen convertRect:contextCopy toView:v32, v34, v36, v38];
   v40 = v39;
   v68 = v41;
   v42 = v78.size.width;
@@ -856,7 +856,7 @@ LABEL_23:
   if (!CGFloatIsValid() || v47 <= 0.0 || v48 <= 0.0)
   {
 LABEL_25:
-    if (!a3)
+    if (!frame)
     {
       goto LABEL_27;
     }
@@ -865,10 +865,10 @@ LABEL_25:
   }
 
   v67 = v40;
-  if ([v16 isGroup])
+  if ([targetCopy isGroup])
   {
-    v66 = a4;
-    v50 = v16;
+    radiusCopy = radius;
+    v50 = targetCopy;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -889,9 +889,9 @@ LABEL_25:
           }
 
           v56 = *(*(&v69 + 1) + 8 * i);
-          v57 = [(SCATCursorManager *)self styleProvider];
+          styleProvider3 = [(SCATCursorManager *)self styleProvider];
           [v56 frame];
-          [v57 cursorRoundedRectCornerRadiusForSize:{v58, v59}];
+          [styleProvider3 cursorRoundedRectCornerRadiusForSize:{v58, v59}];
           v54 = fmin(v54, v60 - v44);
         }
 
@@ -906,7 +906,7 @@ LABEL_25:
       v54 = 1.79769313e308;
     }
 
-    a4 = v66;
+    radius = radiusCopy;
   }
 
   else
@@ -914,25 +914,25 @@ LABEL_25:
     v54 = 1.79769313e308;
   }
 
-  v62 = [(SCATCursorManager *)self styleProvider];
-  [v62 cursorRoundedRectCornerRadiusForSize:{v47, v48}];
+  styleProvider4 = [(SCATCursorManager *)self styleProvider];
+  [styleProvider4 cursorRoundedRectCornerRadiusForSize:{v47, v48}];
   v64 = v63 - v44;
 
   v65 = fmin(v64, v54);
-  if (a4)
+  if (radius)
   {
-    *a4 = v65;
+    *radius = v65;
   }
 
   v49 = [UIBezierPath bezierPathWithRoundedRect:v45 cornerRadius:v46, v47, v48, v65];
   v40 = v67;
-  if (a3)
+  if (frame)
   {
 LABEL_26:
-    a3->origin.x = v40;
-    a3->origin.y = v68;
-    a3->size.width = v42;
-    a3->size.height = v43;
+    frame->origin.x = v40;
+    frame->origin.y = v68;
+    frame->size.width = v42;
+    frame->size.height = v43;
   }
 
 LABEL_27:

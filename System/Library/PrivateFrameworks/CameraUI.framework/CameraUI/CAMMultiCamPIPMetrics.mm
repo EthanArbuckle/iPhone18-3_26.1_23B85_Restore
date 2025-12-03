@@ -1,34 +1,34 @@
 @interface CAMMultiCamPIPMetrics
-- (CAMMultiCamPIPMetrics)initWithTimestamp:(id *)a3 frame:(CGRect)a4 cornerRadius:(double)a5 borderWidth:(double)a6 borderColor:(CGColor *)a7 videoResolution:(int64_t)a8;
+- (CAMMultiCamPIPMetrics)initWithTimestamp:(id *)timestamp frame:(CGRect)frame cornerRadius:(double)radius borderWidth:(double)width borderColor:(CGColor *)color videoResolution:(int64_t)resolution;
 - (CGRect)frame;
 - (CGRect)frameInCoreImageLandscapeCoordinateSpace;
 @end
 
 @implementation CAMMultiCamPIPMetrics
 
-- (CAMMultiCamPIPMetrics)initWithTimestamp:(id *)a3 frame:(CGRect)a4 cornerRadius:(double)a5 borderWidth:(double)a6 borderColor:(CGColor *)a7 videoResolution:(int64_t)a8
+- (CAMMultiCamPIPMetrics)initWithTimestamp:(id *)timestamp frame:(CGRect)frame cornerRadius:(double)radius borderWidth:(double)width borderColor:(CGColor *)color videoResolution:(int64_t)resolution
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = CAMMultiCamPIPMetrics;
   v17 = [(CAMMultiCamPIPMetrics *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    v19 = *&a3->var0;
-    *(v17 + 7) = a3->var3;
+    v19 = *&timestamp->var0;
+    *(v17 + 7) = timestamp->var3;
     *(v17 + 40) = v19;
     *(v17 + 8) = x;
     *(v17 + 9) = y;
     *(v17 + 10) = width;
     *(v17 + 11) = height;
-    *(v17 + 1) = a5;
-    *(v17 + 2) = a6;
-    *(v17 + 3) = a7;
-    *(v17 + 4) = a8;
+    *(v17 + 1) = radius;
+    *(v17 + 2) = width;
+    *(v17 + 3) = color;
+    *(v17 + 4) = resolution;
     v20 = v17;
   }
 

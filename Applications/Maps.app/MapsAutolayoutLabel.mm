@@ -11,9 +11,9 @@
   right = UIEdgeInsetsZero.right;
   if ([(MapsAutolayoutLabel *)self shouldInsetAlignmentToAscender])
   {
-    v6 = [(MapsAutolayoutLabel *)self font];
-    [v6 lineHeight];
-    [v6 ascender];
+    font = [(MapsAutolayoutLabel *)self font];
+    [font lineHeight];
+    [font ascender];
     UIRoundToViewScale();
     top = v7;
   }

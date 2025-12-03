@@ -1,56 +1,56 @@
 @interface HDMCPluginServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (BOOL)_queue_deleteSamplesOfType:(id)a3 onDayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)_queue_insertSamplesWithClientSource:(id)a3 creationDate:(id)a4 error:(id *)a5;
-- (BOOL)_queue_reconcileSamplesToDeriveDaySummary:(id)a3 analysis:(id)a4 canOverrideCreationDate:(BOOL)a5 error:(id *)a6;
-- (BOOL)_queue_saveBleedingFlowByDayIndex:(id)a3 forBleedingType:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)_queue_saveCategorySampleByDayIndex:(id)a3 calendarCache:(id)a4 readValueFromDaySummary:(id)a5 categoryTypeIdentifier:(id)a6 makeCategorySample:(id)a7 error:(id *)a8;
-- (BOOL)_queue_saveIntermenstrualBleedingByDayIndex:(id)a3 calendarCache:(id)a4 error:(id *)a5;
-- (BOOL)_queue_saveLastMenstrualPeriodWithDayIndexRange:(id)a3 calendarCache:(id)a4 error:(id *)a5;
-- (BOOL)_queue_saveMenstrualFlow:(int64_t)a3 forEachDayInRange:(id)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)_queue_saveMenstrualFlowByDayIndex:(id)a3 calendarCache:(id)a4 error:(id *)a5;
-- (BOOL)_queue_saveMenstrualFlowUpdatingAdjacentDays:(int64_t)a3 dayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)_queue_savePeriodStartedOnDayIndex:(int64_t)a3 endedOnDayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)_queue_updateStartOfCycleMetadataForModifiedDayIndex:(int64_t)a3 calendarCache:(id)a4 canOverrideCreationDate:(BOOL)a5 error:(id *)a6;
-- (BOOL)_queue_updateUnderlyingSamplesToReplaceDaySummary:(id)a3 withDaySummary:(id)a4 calendarCache:(id)a5 canOverrideCreationDate:(BOOL)a6 error:(id *)a7;
-- (HDMCPluginServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7;
-- (id)_queue_mostRecentMenstrualFlowSampleWithError:(id *)a3 requiringBeforeDay:(int64_t)a4 calendarCache:(id)a5;
-- (id)_samplesToInsertForUpdateFromDaySummary:(id)a3 toDaySummary:(id)a4 typesToDelete:(id *)a5 calendarCache:(id)a6;
+- (BOOL)_queue_deleteSamplesOfType:(id)type onDayIndex:(int64_t)index calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_insertSamplesWithClientSource:(id)source creationDate:(id)date error:(id *)error;
+- (BOOL)_queue_reconcileSamplesToDeriveDaySummary:(id)summary analysis:(id)analysis canOverrideCreationDate:(BOOL)date error:(id *)error;
+- (BOOL)_queue_saveBleedingFlowByDayIndex:(id)index forBleedingType:(int64_t)type calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_saveCategorySampleByDayIndex:(id)index calendarCache:(id)cache readValueFromDaySummary:(id)summary categoryTypeIdentifier:(id)identifier makeCategorySample:(id)sample error:(id *)error;
+- (BOOL)_queue_saveIntermenstrualBleedingByDayIndex:(id)index calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_saveLastMenstrualPeriodWithDayIndexRange:(id)range calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_saveMenstrualFlow:(int64_t)flow forEachDayInRange:(id)range calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_saveMenstrualFlowByDayIndex:(id)index calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_saveMenstrualFlowUpdatingAdjacentDays:(int64_t)days dayIndex:(int64_t)index calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_savePeriodStartedOnDayIndex:(int64_t)index endedOnDayIndex:(int64_t)dayIndex calendarCache:(id)cache error:(id *)error;
+- (BOOL)_queue_updateStartOfCycleMetadataForModifiedDayIndex:(int64_t)index calendarCache:(id)cache canOverrideCreationDate:(BOOL)date error:(id *)error;
+- (BOOL)_queue_updateUnderlyingSamplesToReplaceDaySummary:(id)summary withDaySummary:(id)daySummary calendarCache:(id)cache canOverrideCreationDate:(BOOL)date error:(id *)error;
+- (HDMCPluginServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension;
+- (id)_queue_mostRecentMenstrualFlowSampleWithError:(id *)error requiringBeforeDay:(int64_t)day calendarCache:(id)cache;
+- (id)_samplesToInsertForUpdateFromDaySummary:(id)summary toDaySummary:(id)daySummary typesToDelete:(id *)delete calendarCache:(id)cache;
 - (void)_queue_updateLastLoggedInExperienceDate;
-- (void)_submitPredictionAccuracyAnalyticWithDayIndex:(int64_t)a3 oldMenstrualFlow:(int64_t)a4 newMenstrualFlow:(int64_t)a5 analysis:(id)a6 isLoggingMultipleDays:(BOOL)a7;
+- (void)_submitPredictionAccuracyAnalyticWithDayIndex:(int64_t)index oldMenstrualFlow:(int64_t)flow newMenstrualFlow:(int64_t)menstrualFlow analysis:(id)analysis isLoggingMultipleDays:(BOOL)days;
 - (void)_triggerImmediateSync;
-- (void)remote_confirmAndSaveDeviationWithMenstrualFlowByDayIndex:(id)a3 intermenstrualBleedingByDayIndex:(id)a4 addedCycleFactors:(id)a5 initialAnalysisWindow:(id)a6 completion:(id)a7;
-- (void)remote_fetchCurrentAnalysisWithCompletion:(id)a3;
-- (void)remote_fetchCurrentPregnancyModelWithCompletion:(id)a3;
-- (void)remote_fetchScheduledNotificationsWithCompletion:(id)a3;
-- (void)remote_saveBleedingFlow:(int64_t)a3 forBleedingType:(int64_t)a4 dayIndex:(int64_t)a5 completion:(id)a6;
-- (void)remote_saveBleedingFlowByDayIndex:(id)a3 forBleedingType:(int64_t)a4 completion:(id)a5;
-- (void)remote_saveDaySummaries:(id)a3 canOverrideCreationDate:(BOOL)a4 completion:(id)a5;
-- (void)remote_saveLastMenstrualPeriodWithDayIndexRange:(id)a3 completion:(id)a4;
-- (void)remote_saveMenstrualFlow:(int64_t)a3 dayIndex:(int64_t)a4 updateAdjacentDays:(BOOL)a5 completion:(id)a6;
-- (void)remote_savePeriodEndedOnDayIndex:(int64_t)a3 completion:(id)a4;
-- (void)remote_savePeriodNotYetEndedWithCompletion:(id)a3;
-- (void)remote_savePeriodNotYetStartedWithCompletion:(id)a3;
-- (void)remote_savePeriodStartedOnDayIndex:(int64_t)a3 completion:(id)a4;
-- (void)remote_savePeriodStartedOnDayIndex:(int64_t)a3 endedOnDayIndex:(int64_t)a4 completion:(id)a5;
-- (void)remote_triggerAnalysisForDebugReason:(id)a3 completion:(id)a4;
+- (void)remote_confirmAndSaveDeviationWithMenstrualFlowByDayIndex:(id)index intermenstrualBleedingByDayIndex:(id)dayIndex addedCycleFactors:(id)factors initialAnalysisWindow:(id)window completion:(id)completion;
+- (void)remote_fetchCurrentAnalysisWithCompletion:(id)completion;
+- (void)remote_fetchCurrentPregnancyModelWithCompletion:(id)completion;
+- (void)remote_fetchScheduledNotificationsWithCompletion:(id)completion;
+- (void)remote_saveBleedingFlow:(int64_t)flow forBleedingType:(int64_t)type dayIndex:(int64_t)index completion:(id)completion;
+- (void)remote_saveBleedingFlowByDayIndex:(id)index forBleedingType:(int64_t)type completion:(id)completion;
+- (void)remote_saveDaySummaries:(id)summaries canOverrideCreationDate:(BOOL)date completion:(id)completion;
+- (void)remote_saveLastMenstrualPeriodWithDayIndexRange:(id)range completion:(id)completion;
+- (void)remote_saveMenstrualFlow:(int64_t)flow dayIndex:(int64_t)index updateAdjacentDays:(BOOL)days completion:(id)completion;
+- (void)remote_savePeriodEndedOnDayIndex:(int64_t)index completion:(id)completion;
+- (void)remote_savePeriodNotYetEndedWithCompletion:(id)completion;
+- (void)remote_savePeriodNotYetStartedWithCompletion:(id)completion;
+- (void)remote_savePeriodStartedOnDayIndex:(int64_t)index completion:(id)completion;
+- (void)remote_savePeriodStartedOnDayIndex:(int64_t)index endedOnDayIndex:(int64_t)dayIndex completion:(id)completion;
+- (void)remote_triggerAnalysisForDebugReason:(id)reason completion:(id)completion;
 @end
 
 @implementation HDMCPluginServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D11920]];
 
   if (v16)
   {
-    v17 = [[HDMCPluginServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14 profileExtension:v16];
+    v17 = [[HDMCPluginServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy profileExtension:v16];
   }
 
   else
@@ -58,10 +58,10 @@
     v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
     if (v18)
     {
-      if (a7)
+      if (error)
       {
         v19 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -76,26 +76,26 @@
   return v17;
 }
 
-- (HDMCPluginServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7
+- (HDMCPluginServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension
 {
-  v13 = a5;
-  v14 = a7;
+  clientCopy = client;
+  extensionCopy = extension;
   v21.receiver = self;
   v21.super_class = HDMCPluginServer;
-  v15 = [(HDStandardTaskServer *)&v21 initWithUUID:a3 configuration:a4 client:v13 delegate:a6];
+  v15 = [(HDStandardTaskServer *)&v21 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v15)
   {
-    v16 = [v13 profile];
-    objc_storeWeak(&v15->_profile, v16);
+    profile = [clientCopy profile];
+    objc_storeWeak(&v15->_profile, profile);
 
-    objc_storeStrong(&v15->_profileExtension, a7);
-    objc_storeStrong(&v15->_client, a5);
+    objc_storeStrong(&v15->_profileExtension, extension);
+    objc_storeStrong(&v15->_client, client);
     v17 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v17;
 
-    v19 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v19 addObject:v15];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v15];
   }
 
   return v15;
@@ -111,10 +111,10 @@
   return v2;
 }
 
-- (void)remote_fetchScheduledNotificationsWithCompletion:(id)a3
+- (void)remote_fetchScheduledNotificationsWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -132,8 +132,8 @@
   v11[2] = __69__HDMCPluginServer_remote_fetchScheduledNotificationsWithCompletion___block_invoke;
   v11[3] = &unk_27865AEF0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -149,11 +149,11 @@ void __69__HDMCPluginServer_remote_fetchScheduledNotificationsWithCompletion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)remote_saveDaySummaries:(id)a3 canOverrideCreationDate:(BOOL)a4 completion:(id)a5
+- (void)remote_saveDaySummaries:(id)summaries canOverrideCreationDate:(BOOL)date completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  summariesCopy = summaries;
+  completionCopy = completion;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@ void __69__HDMCPluginServer_remote_fetchScheduledNotificationsWithCompletion___b
     v12 = objc_opt_class();
     v13 = MEMORY[0x277CCABB0];
     v14 = v12;
-    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(summariesCopy, "count")}];
     *buf = 138543618;
     v25 = v12;
     v26 = 2112;
@@ -176,11 +176,11 @@ void __69__HDMCPluginServer_remote_fetchScheduledNotificationsWithCompletion___b
   v20[2] = __79__HDMCPluginServer_remote_saveDaySummaries_canOverrideCreationDate_completion___block_invoke;
   v20[3] = &unk_27865B0C0;
   v20[4] = self;
-  v21 = v8;
-  v23 = a4;
-  v22 = v9;
-  v17 = v9;
-  v18 = v8;
+  v21 = summariesCopy;
+  dateCopy = date;
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = summariesCopy;
   dispatch_async(queue, v20);
 
   v19 = *MEMORY[0x277D85DE8];
@@ -251,10 +251,10 @@ LABEL_3:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_saveBleedingFlow:(int64_t)a3 forBleedingType:(int64_t)a4 dayIndex:(int64_t)a5 completion:(id)a6
+- (void)remote_saveBleedingFlow:(int64_t)flow forBleedingType:(int64_t)type dayIndex:(int64_t)index completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -263,17 +263,17 @@ LABEL_3:
     v12 = objc_opt_class();
     v27 = v12;
     v13 = HKSensitiveLogItem();
-    v26 = v10;
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v26 = completionCopy;
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v14 = HKSensitiveLogItem();
     v15 = HKSensitiveLogItem();
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:flow];
     HKSensitiveLogItem();
-    v17 = v28 = a3;
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v17 = v28 = flow;
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     HKSensitiveLogItem();
-    v29 = a5;
-    v20 = v19 = a4;
+    indexCopy = index;
+    v20 = v19 = type;
     *buf = 138544642;
     v36 = v12;
     v37 = 2112;
@@ -288,11 +288,11 @@ LABEL_3:
     v46 = v20;
     _os_log_impl(&dword_2293D1000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Save %@: %@, %@: %@, day: %@", buf, 0x3Eu);
 
-    v10 = v26;
-    a4 = v19;
-    a5 = v29;
+    completionCopy = v26;
+    type = v19;
+    index = indexCopy;
 
-    a3 = v28;
+    flow = v28;
   }
 
   queue = self->_queue;
@@ -300,12 +300,12 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __80__HDMCPluginServer_remote_saveBleedingFlow_forBleedingType_dayIndex_completion___block_invoke;
   block[3] = &unk_27865B0E8;
-  v32 = a5;
-  v33 = a3;
-  v34 = a4;
+  indexCopy2 = index;
+  flowCopy = flow;
+  typeCopy = type;
   block[4] = self;
-  v31 = v10;
-  v22 = v10;
+  v31 = completionCopy;
+  v22 = completionCopy;
   dispatch_async(queue, block);
 
   v23 = *MEMORY[0x277D85DE8];
@@ -330,11 +330,11 @@ void __80__HDMCPluginServer_remote_saveBleedingFlow_forBleedingType_dayIndex_com
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_saveBleedingFlowByDayIndex:(id)a3 forBleedingType:(int64_t)a4 completion:(id)a5
+- (void)remote_saveBleedingFlowByDayIndex:(id)index forBleedingType:(int64_t)type completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  indexCopy = index;
+  completionCopy = completion;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -343,9 +343,9 @@ void __80__HDMCPluginServer_remote_saveBleedingFlow_forBleedingType_dayIndex_com
     v11 = objc_opt_class();
     v22 = v11;
     v12 = HKSensitiveLogItem();
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v14 = HKSensitiveLogItem();
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(indexCopy, "count")}];
     v16 = HKSensitiveLogItem();
     *buf = 138544130;
     v28 = v11;
@@ -364,11 +364,11 @@ void __80__HDMCPluginServer_remote_saveBleedingFlow_forBleedingType_dayIndex_com
   block[2] = __81__HDMCPluginServer_remote_saveBleedingFlowByDayIndex_forBleedingType_completion___block_invoke;
   block[3] = &unk_27865B110;
   block[4] = self;
-  v24 = v8;
-  v25 = v9;
-  v26 = a4;
-  v18 = v9;
-  v19 = v8;
+  v24 = indexCopy;
+  v25 = completionCopy;
+  typeCopy = type;
+  v18 = completionCopy;
+  v19 = indexCopy;
   dispatch_async(queue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -386,11 +386,11 @@ void __81__HDMCPluginServer_remote_saveBleedingFlowByDayIndex_forBleedingType_co
   (*(a1[6] + 16))();
 }
 
-- (void)remote_saveMenstrualFlow:(int64_t)a3 dayIndex:(int64_t)a4 updateAdjacentDays:(BOOL)a5 completion:(id)a6
+- (void)remote_saveMenstrualFlow:(int64_t)flow dayIndex:(int64_t)index updateAdjacentDays:(BOOL)days completion:(id)completion
 {
-  v6 = a5;
+  daysCopy = days;
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -399,9 +399,9 @@ void __81__HDMCPluginServer_remote_saveBleedingFlowByDayIndex_forBleedingType_co
     v12 = objc_opt_class();
     v13 = MEMORY[0x277CCABB0];
     v22 = v12;
-    v14 = [v13 numberWithInteger:a3];
+    v14 = [v13 numberWithInteger:flow];
     v15 = HKSensitiveLogItem();
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v17 = HKSensitiveLogItem();
     *buf = 138544130;
     v29 = v12;
@@ -410,7 +410,7 @@ void __81__HDMCPluginServer_remote_saveBleedingFlowByDayIndex_forBleedingType_co
     v32 = 2112;
     v33 = v17;
     v34 = 1024;
-    v35 = v6;
+    v35 = daysCopy;
     _os_log_impl(&dword_2293D1000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Save menstrual flow: %@, day: %@, update adjacent days: %d", buf, 0x26u);
   }
 
@@ -419,12 +419,12 @@ void __81__HDMCPluginServer_remote_saveBleedingFlowByDayIndex_forBleedingType_co
   block[1] = 3221225472;
   block[2] = __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays_completion___block_invoke;
   block[3] = &unk_27865B138;
-  v27 = v6;
-  v25 = a3;
-  v26 = a4;
+  v27 = daysCopy;
+  flowCopy = flow;
+  indexCopy = index;
   block[4] = self;
-  v24 = v10;
-  v19 = v10;
+  v24 = completionCopy;
+  v19 = completionCopy;
   dispatch_async(queue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -462,15 +462,15 @@ void __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_confirmAndSaveDeviationWithMenstrualFlowByDayIndex:(id)a3 intermenstrualBleedingByDayIndex:(id)a4 addedCycleFactors:(id)a5 initialAnalysisWindow:(id)a6 completion:(id)a7
+- (void)remote_confirmAndSaveDeviationWithMenstrualFlowByDayIndex:(id)index intermenstrualBleedingByDayIndex:(id)dayIndex addedCycleFactors:(id)factors initialAnalysisWindow:(id)window completion:(id)completion
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = window.var1;
+  var0 = window.var0;
   v65 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v49 = a7;
+  indexCopy = index;
+  dayIndexCopy = dayIndex;
+  factorsCopy = factors;
+  completionCopy = completion;
   _HKInitializeLogging();
   v15 = MEMORY[0x277CCC2E8];
   v16 = *MEMORY[0x277CCC2E8];
@@ -497,7 +497,7 @@ void __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays
     v24 = objc_opt_class();
     v25 = MEMORY[0x277CCABB0];
     v26 = v24;
-    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(indexCopy, "count")}];
     v28 = HKSensitiveLogItem();
     *buf = 138543874;
     v60 = v24;
@@ -516,7 +516,7 @@ void __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays
     v31 = objc_opt_class();
     v32 = MEMORY[0x277CCABB0];
     v33 = v31;
-    v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
+    v34 = [v32 numberWithUnsignedInteger:{objc_msgSend(dayIndexCopy, "count")}];
     v35 = HKSensitiveLogItem();
     *buf = 138543874;
     v60 = v31;
@@ -535,7 +535,7 @@ void __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays
     v38 = objc_opt_class();
     v39 = MEMORY[0x277CCABB0];
     v40 = v38;
-    v41 = [v39 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+    v41 = [v39 numberWithUnsignedInteger:{objc_msgSend(factorsCopy, "count")}];
     v42 = HKSensitiveLogItem();
     *buf = 138543874;
     v60 = v38;
@@ -552,16 +552,16 @@ void __84__HDMCPluginServer_remote_saveMenstrualFlow_dayIndex_updateAdjacentDays
   block[2] = __162__HDMCPluginServer_remote_confirmAndSaveDeviationWithMenstrualFlowByDayIndex_intermenstrualBleedingByDayIndex_addedCycleFactors_initialAnalysisWindow_completion___block_invoke;
   block[3] = &unk_27865B1B0;
   block[4] = self;
-  v53 = v12;
-  v54 = v13;
-  v55 = v14;
+  v53 = indexCopy;
+  v54 = dayIndexCopy;
+  v55 = factorsCopy;
   v57 = v51;
   v58 = var1;
-  v56 = v49;
-  v44 = v49;
-  v45 = v14;
-  v46 = v13;
-  v47 = v12;
+  v56 = completionCopy;
+  v44 = completionCopy;
+  v45 = factorsCopy;
+  v46 = dayIndexCopy;
+  v47 = indexCopy;
   dispatch_async(queue, block);
 
   v48 = *MEMORY[0x277D85DE8];
@@ -741,12 +741,12 @@ BOOL __162__HDMCPluginServer_remote_confirmAndSaveDeviationWithMenstrualFlowByDa
   return v5 >= *(a1 + 40);
 }
 
-- (void)remote_saveLastMenstrualPeriodWithDayIndexRange:(id)a3 completion:(id)a4
+- (void)remote_saveLastMenstrualPeriodWithDayIndexRange:(id)range completion:(id)completion
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -771,8 +771,8 @@ BOOL __162__HDMCPluginServer_remote_confirmAndSaveDeviationWithMenstrualFlowByDa
   v19 = var0;
   v20 = var1;
   v17[4] = self;
-  v18 = v7;
-  v15 = v7;
+  v18 = completionCopy;
+  v15 = completionCopy;
   dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -788,12 +788,12 @@ void __79__HDMCPluginServer_remote_saveLastMenstrualPeriodWithDayIndexRange_comp
   (*(a1[5] + 16))();
 }
 
-- (void)remote_savePeriodNotYetStartedWithCompletion:(id)a3
+- (void)remote_savePeriodNotYetStartedWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v6 = [v5 currentCalendar];
+  currentCalendar = [v5 currentCalendar];
   v7 = HKMCTodayIndex();
 
   if (HKShowSensitiveLogItems())
@@ -822,9 +822,9 @@ void __79__HDMCPluginServer_remote_saveLastMenstrualPeriodWithDayIndexRange_comp
   v18[3] = &unk_27865B110;
   v18[4] = self;
   v19 = v5;
-  v20 = v4;
+  v20 = completionCopy;
   v21 = v7;
-  v15 = v4;
+  v15 = completionCopy;
   v16 = v5;
   dispatch_async(queue, v18);
 
@@ -864,12 +864,12 @@ void __65__HDMCPluginServer_remote_savePeriodNotYetStartedWithCompletion___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_savePeriodNotYetEndedWithCompletion:(id)a3
+- (void)remote_savePeriodNotYetEndedWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v6 = [v5 currentCalendar];
+  currentCalendar = [v5 currentCalendar];
   v7 = HKMCTodayIndex();
 
   if (HKShowSensitiveLogItems())
@@ -898,9 +898,9 @@ void __65__HDMCPluginServer_remote_savePeriodNotYetStartedWithCompletion___block
   v18[3] = &unk_27865B110;
   v18[4] = self;
   v19 = v5;
-  v20 = v4;
+  v20 = completionCopy;
   v21 = v7;
-  v15 = v4;
+  v15 = completionCopy;
   v16 = v5;
   dispatch_async(queue, v18);
 
@@ -944,12 +944,12 @@ void __63__HDMCPluginServer_remote_savePeriodNotYetEndedWithCompletion___block_i
   }
 }
 
-- (void)remote_savePeriodStartedOnDayIndex:(int64_t)a3 completion:(id)a4
+- (void)remote_savePeriodStartedOnDayIndex:(int64_t)index completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v8 = [v7 currentCalendar];
+  currentCalendar = [v7 currentCalendar];
   v9 = HKMCTodayIndex();
 
   if (HKShowSensitiveLogItems())
@@ -962,7 +962,7 @@ void __63__HDMCPluginServer_remote_savePeriodNotYetEndedWithCompletion___block_i
       v12 = objc_opt_class();
       v13 = MEMORY[0x277CCABB0];
       v14 = v12;
-      v15 = [v13 numberWithInteger:a3];
+      v15 = [v13 numberWithInteger:index];
       v16 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
       *buf = 138543874;
       v27 = v12;
@@ -979,13 +979,13 @@ void __63__HDMCPluginServer_remote_savePeriodNotYetEndedWithCompletion___block_i
   block[1] = 3221225472;
   block[2] = __66__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_completion___block_invoke;
   block[3] = &unk_27865B200;
-  v24 = a3;
+  indexCopy = index;
   v25 = v9;
   v22 = v7;
-  v23 = v6;
+  v23 = completionCopy;
   block[4] = self;
   v18 = v7;
-  v19 = v6;
+  v19 = completionCopy;
   dispatch_async(queue, block);
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1010,10 +1010,10 @@ void __66__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_completion___bloc
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)remote_savePeriodStartedOnDayIndex:(int64_t)a3 endedOnDayIndex:(int64_t)a4 completion:(id)a5
+- (void)remote_savePeriodStartedOnDayIndex:(int64_t)index endedOnDayIndex:(int64_t)dayIndex completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   if (HKShowSensitiveLogItems())
   {
     _HKInitializeLogging();
@@ -1024,8 +1024,8 @@ void __66__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_completion___bloc
       v11 = objc_opt_class();
       v12 = MEMORY[0x277CCABB0];
       v13 = v11;
-      v14 = [v12 numberWithInteger:a3];
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v14 = [v12 numberWithInteger:index];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:dayIndex];
       *buf = 138543874;
       v24 = v11;
       v25 = 2112;
@@ -1041,11 +1041,11 @@ void __66__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_completion___bloc
   v19[1] = 3221225472;
   v19[2] = __82__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_endedOnDayIndex_completion___block_invoke;
   v19[3] = &unk_27865B1D8;
-  v21 = a3;
-  v22 = a4;
+  indexCopy = index;
+  dayIndexCopy = dayIndex;
   v19[4] = self;
-  v20 = v8;
-  v17 = v8;
+  v20 = completionCopy;
+  v17 = completionCopy;
   dispatch_async(queue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1063,10 +1063,10 @@ void __82__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_endedOnDayIndex_c
   (*(a1[5] + 16))();
 }
 
-- (void)remote_savePeriodEndedOnDayIndex:(int64_t)a3 completion:(id)a4
+- (void)remote_savePeriodEndedOnDayIndex:(int64_t)index completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   if (HKShowSensitiveLogItems())
   {
     _HKInitializeLogging();
@@ -1077,7 +1077,7 @@ void __82__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_endedOnDayIndex_c
       v9 = objc_opt_class();
       v10 = MEMORY[0x277CCABB0];
       v11 = v9;
-      v12 = [v10 numberWithInteger:a3];
+      v12 = [v10 numberWithInteger:index];
       *buf = 138543618;
       v20 = v9;
       v21 = 2112;
@@ -1091,10 +1091,10 @@ void __82__HDMCPluginServer_remote_savePeriodStartedOnDayIndex_endedOnDayIndex_c
   block[1] = 3221225472;
   block[2] = __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_invoke;
   block[3] = &unk_27865B228;
-  v17 = v6;
-  v18 = a3;
+  v17 = completionCopy;
+  indexCopy = index;
   block[4] = self;
-  v14 = v6;
+  v14 = completionCopy;
   dispatch_async(queue, block);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1140,11 +1140,11 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
   }
 }
 
-- (void)remote_triggerAnalysisForDebugReason:(id)a3 completion:(id)a4
+- (void)remote_triggerAnalysisForDebugReason:(id)reason completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1153,24 +1153,24 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
     *buf = 138543618;
     v17 = objc_opt_class();
     v18 = 2114;
-    v19 = v6;
+    v19 = reasonCopy;
     v10 = v17;
     _os_log_impl(&dword_2293D1000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Trigger analysis for %{public}@", buf, 0x16u);
   }
 
-  v11 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
+  analysisManager = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
   v15 = 0;
-  v12 = [v11 analyzeWithError:&v15];
+  v12 = [analysisManager analyzeWithError:&v15];
   v13 = v15;
 
-  v7[2](v7, v12 != 0, v13);
+  completionCopy[2](completionCopy, v12 != 0, v13);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchCurrentAnalysisWithCompletion:(id)a3
+- (void)remote_fetchCurrentAnalysisWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1182,31 +1182,31 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
     _os_log_impl(&dword_2293D1000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetch current analysis", buf, 0xCu);
   }
 
-  v8 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
-  v9 = [v8 currentAnalysis];
-  v10 = v9;
-  if (v9)
+  analysisManager = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
+  currentAnalysis = [analysisManager currentAnalysis];
+  v10 = currentAnalysis;
+  if (currentAnalysis)
   {
-    v11 = v9;
+    v11 = currentAnalysis;
     v12 = 0;
   }
 
   else
   {
-    v13 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
+    analysisManager2 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
     v15 = 0;
-    v11 = [v13 analyzeWithError:&v15];
+    v11 = [analysisManager2 analyzeWithError:&v15];
     v12 = v15;
   }
 
-  v4[2](v4, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchCurrentPregnancyModelWithCompletion:(id)a3
+- (void)remote_fetchCurrentPregnancyModelWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1218,26 +1218,26 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
     _os_log_impl(&dword_2293D1000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetch current pregnancy model", v11, 0xCu);
   }
 
-  v8 = [(HDMCProfileExtension *)self->_profileExtension getPregnancyModelProvider];
-  v9 = [v8 getCurrentPregnancyModel];
-  v4[2](v4, v9, 0);
+  getPregnancyModelProvider = [(HDMCProfileExtension *)self->_profileExtension getPregnancyModelProvider];
+  getCurrentPregnancyModel = [getPregnancyModelProvider getCurrentPregnancyModel];
+  completionCopy[2](completionCopy, getCurrentPregnancyModel, 0);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_reconcileSamplesToDeriveDaySummary:(id)a3 analysis:(id)a4 canOverrideCreationDate:(BOOL)a5 error:(id *)a6
+- (BOOL)_queue_reconcileSamplesToDeriveDaySummary:(id)summary analysis:(id)analysis canOverrideCreationDate:(BOOL)date error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  summaryCopy = summary;
+  analysisCopy = analysis;
   v12 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v13 = [v10 dayIndex];
+  dayIndex = [summaryCopy dayIndex];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [HDMCDaySummaryEnumerator daySummaryAtIndex:v13 profile:WeakRetained calendarCache:v12 error:a6];
+  v15 = [HDMCDaySummaryEnumerator daySummaryAtIndex:dayIndex profile:WeakRetained calendarCache:v12 error:error];
 
-  if (v15 || !*a6)
+  if (v15 || !*error)
   {
-    v16 = [v10 isEqual:v15];
+    v16 = [summaryCopy isEqual:v15];
     _HKInitializeLogging();
     v17 = *MEMORY[0x277CCC2E8];
     v18 = os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT);
@@ -1248,11 +1248,11 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
         v19 = v17;
         *buf = 138543362;
         v42 = objc_opt_class();
-        v20 = v11;
+        v20 = analysisCopy;
         v21 = v42;
         _os_log_impl(&dword_2293D1000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping update of identical day summary", buf, 0xCu);
 
-        v11 = v20;
+        analysisCopy = v20;
       }
 
       v22 = 1;
@@ -1260,7 +1260,7 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
 
     else
     {
-      v34 = a5;
+      dateCopy = date;
       if (v18)
       {
         log = v17;
@@ -1268,7 +1268,7 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
         v33 = v23;
         v24 = HKSensitiveLogItem();
         HKSensitiveLogItem();
-        v26 = v25 = v11;
+        v26 = v25 = analysisCopy;
         *buf = 138543874;
         v42 = v23;
         v43 = 2112;
@@ -1277,7 +1277,7 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
         v46 = v26;
         _os_log_impl(&dword_2293D1000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Reconcile underlying samples to derive summary: %@, old summary: %@", buf, 0x20u);
 
-        v11 = v25;
+        analysisCopy = v25;
       }
 
       v27 = objc_alloc_init(MEMORY[0x277D10788]);
@@ -1285,18 +1285,18 @@ void __64__HDMCPluginServer_remote_savePeriodEndedOnDayIndex_completion___block_
       [v27 setRequiresProtectedData:1];
       [v27 setRequiresWrite:1];
       v28 = objc_loadWeakRetained(&self->_profile);
-      v29 = [v28 database];
+      database = [v28 database];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analysis_canOverrideCreationDate_error___block_invoke;
       v35[3] = &unk_27865B250;
       v35[4] = self;
       v36 = v15;
-      v37 = v10;
+      v37 = summaryCopy;
       v38 = v12;
-      v40 = v34;
-      v39 = v11;
-      v22 = [v29 performTransactionWithContext:v27 error:a6 block:v35 inaccessibilityHandler:0];
+      v40 = dateCopy;
+      v39 = analysisCopy;
+      v22 = [database performTransactionWithContext:v27 error:error block:v35 inaccessibilityHandler:0];
     }
   }
 
@@ -1322,18 +1322,18 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
   return result;
 }
 
-- (BOOL)_queue_updateUnderlyingSamplesToReplaceDaySummary:(id)a3 withDaySummary:(id)a4 calendarCache:(id)a5 canOverrideCreationDate:(BOOL)a6 error:(id *)a7
+- (BOOL)_queue_updateUnderlyingSamplesToReplaceDaySummary:(id)summary withDaySummary:(id)daySummary calendarCache:(id)cache canOverrideCreationDate:(BOOL)date error:(id *)error
 {
-  v62 = a6;
+  dateCopy = date;
   v85 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v69 = [v11 dayIndex];
+  summaryCopy = summary;
+  daySummaryCopy = daySummary;
+  cacheCopy = cache;
+  dayIndex = [daySummaryCopy dayIndex];
   v77 = 0;
-  v65 = v11;
-  v66 = v10;
-  v64 = [(HDMCPluginServer *)self _samplesToInsertForUpdateFromDaySummary:v10 toDaySummary:v11 typesToDelete:&v77 calendarCache:v12];
+  v65 = daySummaryCopy;
+  v66 = summaryCopy;
+  v64 = [(HDMCPluginServer *)self _samplesToInsertForUpdateFromDaySummary:summaryCopy toDaySummary:daySummaryCopy typesToDelete:&v77 calendarCache:cacheCopy];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -1346,7 +1346,7 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
     v15 = v13;
     v16 = 0;
     v17 = *v74;
-    v67 = self;
+    selfCopy = self;
     while (2)
     {
       v18 = 0;
@@ -1360,7 +1360,7 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
 
         v20 = *(*(&v73 + 1) + 8 * v18);
         v72 = v19;
-        v21 = [(HDMCPluginServer *)self _queue_deleteSamplesOfType:v20 onDayIndex:v69 calendarCache:v12 error:&v72];
+        v21 = [(HDMCPluginServer *)self _queue_deleteSamplesOfType:v20 onDayIndex:dayIndex calendarCache:cacheCopy error:&v72];
         v16 = v72;
 
         if (!v21)
@@ -1381,14 +1381,14 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
           v24 = v15;
           v25 = v16;
           v26 = v17;
-          v27 = v12;
+          v27 = cacheCopy;
           v28 = objc_opt_class();
           v29 = v28;
           v30 = HKSensitiveLogItem();
-          v31 = [MEMORY[0x277CCABB0] numberWithInteger:v69];
+          v31 = [MEMORY[0x277CCABB0] numberWithInteger:dayIndex];
           *buf = 138543874;
           v79 = v28;
-          v12 = v27;
+          cacheCopy = v27;
           v17 = v26;
           v16 = v25;
           v15 = v24;
@@ -1398,7 +1398,7 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
           v83 = v31;
           _os_log_impl(&dword_2293D1000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deleted samples of type: %@ for day index: %{public}@", buf, 0x20u);
 
-          self = v67;
+          self = selfCopy;
           v14 = MEMORY[0x277CCC2E8];
         }
 
@@ -1433,7 +1433,7 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
     v40 = v14;
     v41 = MEMORY[0x277CCABB0];
     v42 = v39;
-    v43 = [v41 numberWithBool:v62];
+    v43 = [v41 numberWithBool:dateCopy];
     *buf = 138543618;
     v79 = v39;
     v80 = 2114;
@@ -1444,7 +1444,7 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
   }
 
   v35 = v65;
-  if (v62 && [v65 menstrualFlowModificationDayIndex] >= 1)
+  if (dateCopy && [v65 menstrualFlowModificationDayIndex] >= 1)
   {
     _HKInitializeLogging();
     v44 = *v14;
@@ -1465,15 +1465,15 @@ uint64_t __101__HDMCPluginServer__queue_reconcileSamplesToDeriveDaySummary_analy
     v50 = [v64 hk_filter:&__block_literal_global_5];
     [v33 removeObjectsInArray:v50];
     v51 = MEMORY[0x277CBEAA8];
-    v52 = [v65 menstrualFlowModificationDayIndex];
-    v53 = [v12 currentCalendar];
-    v54 = [v51 hk_noonWithDayIndex:v52 calendar:v53];
+    menstrualFlowModificationDayIndex = [v65 menstrualFlowModificationDayIndex];
+    currentCalendar = [cacheCopy currentCalendar];
+    v54 = [v51 hk_noonWithDayIndex:menstrualFlowModificationDayIndex calendar:currentCalendar];
 
     v71 = v16;
-    LODWORD(v53) = [(HDMCPluginServer *)self _queue_insertSamplesWithClientSource:v50 creationDate:v54 error:&v71];
+    LODWORD(currentCalendar) = [(HDMCPluginServer *)self _queue_insertSamplesWithClientSource:v50 creationDate:v54 error:&v71];
     v55 = v71;
 
-    if (!v53)
+    if (!currentCalendar)
     {
       v32 = 0;
       v16 = v55;
@@ -1496,10 +1496,10 @@ LABEL_24:
   v58 = v57;
   if (v57)
   {
-    if (a7)
+    if (error)
     {
       v59 = v57;
-      *a7 = v58;
+      *error = v58;
     }
 
     else
@@ -1521,151 +1521,151 @@ uint64_t __129__HDMCPluginServer__queue_updateUnderlyingSamplesToReplaceDaySumma
   return v4;
 }
 
-- (id)_samplesToInsertForUpdateFromDaySummary:(id)a3 toDaySummary:(id)a4 typesToDelete:(id *)a5 calendarCache:(id)a6
+- (id)_samplesToInsertForUpdateFromDaySummary:(id)summary toDaySummary:(id)daySummary typesToDelete:(id *)delete calendarCache:(id)cache
 {
   v107 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v10;
-  v13 = v11;
-  v14 = a6;
-  v15 = [v12 dayIndex];
-  v16 = [v13 dayIndex];
-  if (v12 && v15 != v16)
+  summaryCopy = summary;
+  daySummaryCopy = daySummary;
+  v12 = summaryCopy;
+  v13 = daySummaryCopy;
+  cacheCopy = cache;
+  dayIndex = [v12 dayIndex];
+  dayIndex2 = [v13 dayIndex];
+  if (v12 && dayIndex != dayIndex2)
   {
     [HDMCPluginServer _samplesToInsertForUpdateFromDaySummary:a2 toDaySummary:self typesToDelete:? calendarCache:?];
   }
 
-  v17 = [v13 dayIndex];
+  dayIndex3 = [v13 dayIndex];
   v18 = MEMORY[0x277CBEAA8];
-  v19 = [v14 currentCalendar];
-  v20 = [v18 hk_noonWithDayIndex:v17 calendar:v19];
+  currentCalendar = [cacheCopy currentCalendar];
+  v20 = [v18 hk_noonWithDayIndex:dayIndex3 calendar:currentCalendar];
 
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
-  v23 = [v13 menstrualFlow];
-  if (v23 != [v12 menstrualFlow] || (objc_msgSend(v13, "startOfCycleFromCycleTracking"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "startOfCycleFromCycleTracking"), v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v24 != v25))
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  menstrualFlow = [v13 menstrualFlow];
+  if (menstrualFlow != [v12 menstrualFlow] || (objc_msgSend(v13, "startOfCycleFromCycleTracking"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "startOfCycleFromCycleTracking"), v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v24 != v25))
   {
     v26 = MEMORY[0x277CCD0B0];
-    v27 = [v13 menstrualFlow];
-    v28 = [v13 startOfCycleFromCycleTracking];
-    v29 = [v26 hkmc_categorySampleWithMenstrualFlow:v27 date:v20 startOfCycle:{objc_msgSend(v28, "BOOLValue")}];
+    menstrualFlow2 = [v13 menstrualFlow];
+    startOfCycleFromCycleTracking = [v13 startOfCycleFromCycleTracking];
+    v29 = [v26 hkmc_categorySampleWithMenstrualFlow:menstrualFlow2 date:v20 startOfCycle:{objc_msgSend(startOfCycleFromCycleTracking, "BOOLValue")}];
 
     if (v29)
     {
-      [v22 addObject:v29];
+      [array2 addObject:v29];
     }
 
     if ([v12 menstrualFlow])
     {
       v30 = [MEMORY[0x277CCD720] dataTypeWithCode:95];
-      [v21 addObject:v30];
+      [array addObject:v30];
     }
   }
 
-  v31 = [v13 bleedingInPregnancyFlow];
-  if (v31 != [v12 bleedingInPregnancyFlow])
+  bleedingInPregnancyFlow = [v13 bleedingInPregnancyFlow];
+  if (bleedingInPregnancyFlow != [v12 bleedingInPregnancyFlow])
   {
     v32 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithBleedingFlow:objc_msgSend(v13 forBleedingType:"bleedingInPregnancyFlow") date:1 startOfCycle:{v20, 0}];
     if (v32)
     {
-      [v22 addObject:v32];
+      [array2 addObject:v32];
     }
 
     if ([v12 bleedingInPregnancyFlow])
     {
       v33 = [MEMORY[0x277CCD720] dataTypeWithCode:313];
-      [v21 addObject:v33];
+      [array addObject:v33];
     }
   }
 
-  v34 = [v13 bleedingAfterPregnancyFlow];
-  if (v34 != [v12 bleedingAfterPregnancyFlow])
+  bleedingAfterPregnancyFlow = [v13 bleedingAfterPregnancyFlow];
+  if (bleedingAfterPregnancyFlow != [v12 bleedingAfterPregnancyFlow])
   {
     v35 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithBleedingFlow:objc_msgSend(v13 forBleedingType:"bleedingAfterPregnancyFlow") date:2 startOfCycle:{v20, 0}];
     if (v35)
     {
-      [v22 addObject:v35];
+      [array2 addObject:v35];
     }
 
     if ([v12 bleedingAfterPregnancyFlow])
     {
       v36 = [MEMORY[0x277CCD720] dataTypeWithCode:314];
-      [v21 addObject:v36];
+      [array addObject:v36];
     }
   }
 
-  v37 = [v13 cervicalMucusQuality];
-  if (v37 != [v12 cervicalMucusQuality])
+  cervicalMucusQuality = [v13 cervicalMucusQuality];
+  if (cervicalMucusQuality != [v12 cervicalMucusQuality])
   {
     v38 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithCervicalMucusQuality:objc_msgSend(v13 date:{"cervicalMucusQuality"), v20}];
     if (v38)
     {
-      [v22 addObject:v38];
+      [array2 addObject:v38];
     }
 
     if ([v12 cervicalMucusQuality])
     {
       v39 = [MEMORY[0x277CCD720] dataTypeWithCode:91];
-      [v21 addObject:v39];
+      [array addObject:v39];
     }
   }
 
-  v40 = [v13 ovulationTestResult];
-  if (v40 != [v12 ovulationTestResult])
+  ovulationTestResult = [v13 ovulationTestResult];
+  if (ovulationTestResult != [v12 ovulationTestResult])
   {
     v41 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithOvulationTestResult:objc_msgSend(v13 date:{"ovulationTestResult"), v20}];
     if (v41)
     {
-      [v22 addObject:v41];
+      [array2 addObject:v41];
     }
 
     if ([v12 ovulationTestResult])
     {
       v42 = [MEMORY[0x277CCD720] dataTypeWithCode:92];
-      [v21 addObject:v42];
+      [array addObject:v42];
     }
   }
 
-  v43 = [v13 pregnancyTestResult];
-  if (v43 != [v12 pregnancyTestResult])
+  pregnancyTestResult = [v13 pregnancyTestResult];
+  if (pregnancyTestResult != [v12 pregnancyTestResult])
   {
     v44 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithPregnancyTestResult:objc_msgSend(v13 date:{"pregnancyTestResult"), v20}];
     if (v44)
     {
-      [v22 addObject:v44];
+      [array2 addObject:v44];
     }
 
     if ([v12 pregnancyTestResult])
     {
       v45 = [MEMORY[0x277CCD720] dataTypeWithCode:243];
-      [v21 addObject:v45];
+      [array addObject:v45];
     }
   }
 
-  v46 = [v13 progesteroneTestResult];
-  if (v46 != [v12 progesteroneTestResult])
+  progesteroneTestResult = [v13 progesteroneTestResult];
+  if (progesteroneTestResult != [v12 progesteroneTestResult])
   {
     v47 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithProgesteroneTestResult:objc_msgSend(v13 date:{"progesteroneTestResult"), v20}];
     if (v47)
     {
-      [v22 addObject:v47];
+      [array2 addObject:v47];
     }
 
     if ([v12 progesteroneTestResult])
     {
       v48 = [MEMORY[0x277CCD720] dataTypeWithCode:244];
-      [v21 addObject:v48];
+      [array addObject:v48];
     }
   }
 
-  v49 = [v13 intermenstrualBleeding];
-  if (v49 != [v12 intermenstrualBleeding])
+  intermenstrualBleeding = [v13 intermenstrualBleeding];
+  if (intermenstrualBleeding != [v12 intermenstrualBleeding])
   {
     if ([v13 intermenstrualBleeding])
     {
       v50 = [MEMORY[0x277CCD0B0] hkmc_intermenstrualBleedingCategorySampleWithDate:v20];
-      v51 = v22;
+      v51 = array2;
     }
 
     else
@@ -1676,26 +1676,26 @@ uint64_t __129__HDMCPluginServer__queue_updateUnderlyingSamplesToReplaceDaySumma
       }
 
       v50 = [MEMORY[0x277CCD720] dataTypeWithCode:96];
-      v51 = v21;
+      v51 = array;
     }
 
     [v51 addObject:v50];
   }
 
 LABEL_53:
-  v52 = [v13 sexualActivity];
-  if (v52 != [v12 sexualActivity])
+  sexualActivity = [v13 sexualActivity];
+  if (sexualActivity != [v12 sexualActivity])
   {
     v53 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithSexualActivity:objc_msgSend(v13 date:{"sexualActivity"), v20}];
     if (v53)
     {
-      [v22 addObject:v53];
+      [array2 addObject:v53];
     }
 
     if ([v12 sexualActivity])
     {
       v54 = [MEMORY[0x277CCD720] dataTypeWithCode:97];
-      [v21 addObject:v54];
+      [array addObject:v54];
     }
   }
 
@@ -1735,7 +1735,7 @@ LABEL_53:
         v66 = [MEMORY[0x277CCD0B0] hkmc_categorySampleWithMenstrualSymptom:objc_msgSend(*(*(&v101 + 1) + 8 * i) date:{"integerValue"), v20}];
         if (v66)
         {
-          [v22 addObject:v66];
+          [array2 addObject:v66];
         }
       }
 
@@ -1770,7 +1770,7 @@ LABEL_53:
         if (v73 != v71)
         {
           v74 = [MEMORY[0x277CCD720] dataTypeWithCode:v73];
-          [v21 addObject:v74];
+          [array addObject:v74];
         }
       }
 
@@ -1780,10 +1780,10 @@ LABEL_53:
     while (v69);
   }
 
-  v75 = [v96 basalBodyTemperature];
-  v76 = [v93 basalBodyTemperature];
-  v77 = v76;
-  if (v75 == v76)
+  basalBodyTemperature = [v96 basalBodyTemperature];
+  basalBodyTemperature2 = [v93 basalBodyTemperature];
+  v77 = basalBodyTemperature2;
+  if (basalBodyTemperature == basalBodyTemperature2)
   {
 
 LABEL_87:
@@ -1791,13 +1791,13 @@ LABEL_87:
     goto LABEL_88;
   }
 
-  v78 = [v93 basalBodyTemperature];
-  if (v78)
+  basalBodyTemperature3 = [v93 basalBodyTemperature];
+  if (basalBodyTemperature3)
   {
-    v79 = v78;
-    v80 = [v96 basalBodyTemperature];
-    v81 = [v93 basalBodyTemperature];
-    v91 = [v80 isEqual:v81];
+    v79 = basalBodyTemperature3;
+    basalBodyTemperature4 = [v96 basalBodyTemperature];
+    basalBodyTemperature5 = [v93 basalBodyTemperature];
+    v91 = [basalBodyTemperature4 isEqual:basalBodyTemperature5];
 
     v82 = v96;
     if (v91)
@@ -1812,40 +1812,40 @@ LABEL_87:
     v82 = v96;
   }
 
-  v83 = [v82 basalBodyTemperature];
+  basalBodyTemperature6 = [v82 basalBodyTemperature];
 
-  if (v83)
+  if (basalBodyTemperature6)
   {
     v84 = MEMORY[0x277CCD800];
-    v85 = [v82 basalBodyTemperature];
-    v86 = [v84 hkmc_quantitySampleWithBasalBodyTemperature:v85 date:v20];
+    basalBodyTemperature7 = [v82 basalBodyTemperature];
+    v86 = [v84 hkmc_quantitySampleWithBasalBodyTemperature:basalBodyTemperature7 date:v20];
 
-    [v22 addObject:v86];
+    [array2 addObject:v86];
   }
 
-  v87 = [v93 basalBodyTemperature];
+  basalBodyTemperature8 = [v93 basalBodyTemperature];
 
-  if (v87)
+  if (basalBodyTemperature8)
   {
-    v75 = [MEMORY[0x277CCD720] dataTypeWithCode:90];
-    [v21 addObject:v75];
+    basalBodyTemperature = [MEMORY[0x277CCD720] dataTypeWithCode:90];
+    [array addObject:basalBodyTemperature];
     goto LABEL_87;
   }
 
 LABEL_88:
-  v88 = v21;
-  *a5 = v21;
+  v88 = array;
+  *delete = array;
 
   v89 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array2;
 }
 
-- (BOOL)_queue_saveBleedingFlowByDayIndex:(id)a3 forBleedingType:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6
+- (BOOL)_queue_saveBleedingFlowByDayIndex:(id)index forBleedingType:(int64_t)type calendarCache:(id)cache error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  switch(a4)
+  indexCopy = index;
+  cacheCopy = cache;
+  switch(type)
   {
     case 2:
       v14 = *MEMORY[0x277CCB8F8];
@@ -1857,10 +1857,10 @@ LABEL_88:
       v15 = &__block_literal_global_347;
       v16 = &__block_literal_global_350;
 LABEL_7:
-      v13 = [(HDMCPluginServer *)self _queue_saveCategorySampleByDayIndex:v11 calendarCache:v12 readValueFromDaySummary:v15 categoryTypeIdentifier:v14 makeCategorySample:v16 error:a6];
+      v13 = [(HDMCPluginServer *)self _queue_saveCategorySampleByDayIndex:indexCopy calendarCache:cacheCopy readValueFromDaySummary:v15 categoryTypeIdentifier:v14 makeCategorySample:v16 error:error];
       goto LABEL_8;
     case 0:
-      v13 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:v11 calendarCache:v12 error:a6];
+      v13 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:indexCopy calendarCache:cacheCopy error:error];
 LABEL_8:
       v6 = v13;
       break;
@@ -1869,24 +1869,24 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_queue_saveMenstrualFlowUpdatingAdjacentDays:(int64_t)a3 dayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6
+- (BOOL)_queue_saveMenstrualFlowUpdatingAdjacentDays:(int64_t)days dayIndex:(int64_t)index calendarCache:(id)cache error:(id *)error
 {
   v10 = objc_alloc_init(MEMORY[0x277D10788]);
   [v10 setCacheScope:1];
   [v10 setRequiresProtectedData:1];
   [v10 setRequiresWrite:1];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_dayIndex_calendarCache_error___block_invoke;
   v14[3] = &unk_27865B2D8;
   v14[4] = self;
-  v14[5] = a4;
-  v14[6] = a3;
-  LOBYTE(a6) = [v12 performTransactionWithContext:v10 error:a6 block:v14 inaccessibilityHandler:0];
+  v14[5] = index;
+  v14[6] = days;
+  LOBYTE(error) = [database performTransactionWithContext:v10 error:error block:v14 inaccessibilityHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_dayIndex_calendarCache_error___block_invoke(void *a1, uint64_t a2, uint64_t a3)
@@ -1930,11 +1930,11 @@ uint64_t __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_day
   return v18;
 }
 
-- (void)_submitPredictionAccuracyAnalyticWithDayIndex:(int64_t)a3 oldMenstrualFlow:(int64_t)a4 newMenstrualFlow:(int64_t)a5 analysis:(id)a6 isLoggingMultipleDays:(BOOL)a7
+- (void)_submitPredictionAccuracyAnalyticWithDayIndex:(int64_t)index oldMenstrualFlow:(int64_t)flow newMenstrualFlow:(int64_t)menstrualFlow analysis:(id)analysis isLoggingMultipleDays:(BOOL)days
 {
-  v7 = a7;
+  daysCopy = days;
   v63 = *MEMORY[0x277D85DE8];
-  v12 = a6;
+  analysisCopy = analysis;
   _HKInitializeLogging();
   v13 = MEMORY[0x277CCC2E8];
   v14 = *MEMORY[0x277CCC2E8];
@@ -1949,15 +1949,15 @@ uint64_t __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_day
 
   if ((HKMCDaySummaryBleedingFlowHasFlow() & 1) == 0 && HKMCDaySummaryBleedingFlowHasFlow())
   {
-    if (v12)
+    if (analysisCopy)
     {
-      v55 = a3;
-      v56 = v7;
+      indexCopy = index;
+      v56 = daysCopy;
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v18 = [WeakRetained featureSettingsManager];
+      featureSettingsManager = [WeakRetained featureSettingsManager];
       v19 = *MEMORY[0x277CCC090];
       v60 = 0;
-      v20 = [v18 featureSettingsForFeatureIdentifier:v19 error:&v60];
+      v20 = [featureSettingsManager featureSettingsForFeatureIdentifier:v19 error:&v60];
       v21 = v60;
 
       v22 = v20;
@@ -1988,56 +1988,56 @@ uint64_t __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_day
           {
             if ([v54 menstruationProjectionsEnabled])
             {
-              v32 = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
-              v33 = [v32 areAllMenstruationPredictionAlgorithmAttributesSupported];
+              settingsManager = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
+              areAllMenstruationPredictionAlgorithmAttributesSupported = [settingsManager areAllMenstruationPredictionAlgorithmAttributesSupported];
             }
 
             else
             {
-              v33 = 0;
+              areAllMenstruationPredictionAlgorithmAttributesSupported = 0;
             }
 
             if ([v54 fertileWindowProjectionsEnabled])
             {
-              v35 = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
-              v36 = [v35 areAllFertileWindowPredictionAlgorithmAttributesSupported];
+              settingsManager2 = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
+              areAllFertileWindowPredictionAlgorithmAttributesSupported = [settingsManager2 areAllFertileWindowPredictionAlgorithmAttributesSupported];
             }
 
             else
             {
-              v36 = 0;
+              areAllFertileWindowPredictionAlgorithmAttributesSupported = 0;
             }
 
-            v37 = v33;
-            v38 = v33 | v36;
-            v39 = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
-            v51 = [v39 internalCycleFactorsOverrideEnabled];
+            v37 = areAllMenstruationPredictionAlgorithmAttributesSupported;
+            v38 = areAllMenstruationPredictionAlgorithmAttributesSupported | areAllFertileWindowPredictionAlgorithmAttributesSupported;
+            settingsManager3 = [(HDMCProfileExtension *)self->_profileExtension settingsManager];
+            internalCycleFactorsOverrideEnabled = [settingsManager3 internalCycleFactorsOverrideEnabled];
 
             v50 = MEMORY[0x277D119D8];
             if (v38)
             {
               v40 = *MEMORY[0x277CCBEA0];
               v48 = [v27 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-              v49 = [v48 areAllRequirementsSatisfied];
+              areAllRequirementsSatisfied = [v48 areAllRequirementsSatisfied];
               v41 = v53;
               v47 = [v53 objectForKeyedSubscript:v40];
-              v42 = [v47 areAllRequirementsSatisfied];
+              areAllRequirementsSatisfied2 = [v47 areAllRequirementsSatisfied];
             }
 
             else
             {
-              v49 = 0;
-              v42 = 0;
+              areAllRequirementsSatisfied = 0;
+              areAllRequirementsSatisfied2 = 0;
               v41 = v53;
             }
 
-            v43 = [v41 isOnboardingRecordPresent];
-            v44 = [v12 cycles];
-            BYTE3(v46) = v51;
-            BYTE2(v46) = v43;
-            BYTE1(v46) = v42;
-            LOBYTE(v46) = v49;
-            [v50 submitMetricWithDayIndex:v55 oldMenstrualFlow:a4 newMenstrualFlow:a5 analysis:v12 isLoggingMultipleDays:v56 periodPredictionEnabled:v37 heartRateBasedPredictionEnabled:v46 wristTemperatureBasedPredictionEnabled:v44 isWristTemperatureInputDelivered:? internalLiveOnCycleFactorOverrideEnabled:? cycles:?];
+            isOnboardingRecordPresent = [v41 isOnboardingRecordPresent];
+            cycles = [analysisCopy cycles];
+            BYTE3(v46) = internalCycleFactorsOverrideEnabled;
+            BYTE2(v46) = isOnboardingRecordPresent;
+            BYTE1(v46) = areAllRequirementsSatisfied2;
+            LOBYTE(v46) = areAllRequirementsSatisfied;
+            [v50 submitMetricWithDayIndex:indexCopy oldMenstrualFlow:flow newMenstrualFlow:menstrualFlow analysis:analysisCopy isLoggingMultipleDays:v56 periodPredictionEnabled:v37 heartRateBasedPredictionEnabled:v46 wristTemperatureBasedPredictionEnabled:cycles isWristTemperatureInputDelivered:? internalLiveOnCycleFactorOverrideEnabled:? cycles:?];
 
             v22 = v54;
             if (v38)
@@ -2093,35 +2093,35 @@ uint64_t __94__HDMCPluginServer__queue_saveMenstrualFlowUpdatingAdjacentDays_day
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_saveMenstrualFlowByDayIndex:(id)a3 calendarCache:(id)a4 error:(id *)a5
+- (BOOL)_queue_saveMenstrualFlowByDayIndex:(id)index calendarCache:(id)cache error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  indexCopy = index;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v8 count])
+  if ([indexCopy count])
   {
-    v10 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
-    v11 = [v10 currentAnalysis];
+    analysisManager = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
+    currentAnalysis = [analysisManager currentAnalysis];
 
-    v12 = [v9 currentCalendar];
+    currentCalendar = [cacheCopy currentCalendar];
     v13 = objc_alloc_init(MEMORY[0x277D10788]);
     [v13 setCacheScope:1];
     [v13 setRequiresProtectedData:1];
     [v13 setRequiresWrite:1];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v15 = [WeakRetained database];
+    database = [WeakRetained database];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __75__HDMCPluginServer__queue_saveMenstrualFlowByDayIndex_calendarCache_error___block_invoke;
     v20[3] = &unk_27865ACF8;
-    v21 = v8;
-    v22 = self;
-    v23 = v9;
-    v24 = v12;
-    v25 = v11;
-    v16 = v11;
-    v17 = v12;
-    v18 = [v15 performTransactionWithContext:v13 error:a5 block:v20 inaccessibilityHandler:0];
+    v21 = indexCopy;
+    selfCopy = self;
+    v23 = cacheCopy;
+    v24 = currentCalendar;
+    v25 = currentAnalysis;
+    v16 = currentAnalysis;
+    v17 = currentCalendar;
+    v18 = [database performTransactionWithContext:v13 error:error block:v20 inaccessibilityHandler:0];
   }
 
   else
@@ -2273,39 +2273,39 @@ uint64_t __75__HDMCPluginServer__queue_saveMenstrualFlowByDayIndex_calendarCache
   return [v8 _triggerImmediateSync];
 }
 
-- (BOOL)_queue_saveCategorySampleByDayIndex:(id)a3 calendarCache:(id)a4 readValueFromDaySummary:(id)a5 categoryTypeIdentifier:(id)a6 makeCategorySample:(id)a7 error:(id *)a8
+- (BOOL)_queue_saveCategorySampleByDayIndex:(id)index calendarCache:(id)cache readValueFromDaySummary:(id)summary categoryTypeIdentifier:(id)identifier makeCategorySample:(id)sample error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  indexCopy = index;
+  cacheCopy = cache;
+  summaryCopy = summary;
+  identifierCopy = identifier;
+  sampleCopy = sample;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v14 count])
+  if ([indexCopy count])
   {
-    v19 = [v15 currentCalendar];
-    v26 = v16;
+    currentCalendar = [cacheCopy currentCalendar];
+    v26 = summaryCopy;
     v20 = objc_alloc_init(MEMORY[0x277D10788]);
     [v20 setCacheScope:1];
     [v20 setRequiresProtectedData:1];
     [v20 setRequiresWrite:1];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v22 = [WeakRetained database];
+    database = [WeakRetained database];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __142__HDMCPluginServer__queue_saveCategorySampleByDayIndex_calendarCache_readValueFromDaySummary_categoryTypeIdentifier_makeCategorySample_error___block_invoke;
     v27[3] = &unk_27865B328;
-    v28 = v14;
-    v29 = self;
-    v30 = v15;
+    v28 = indexCopy;
+    selfCopy = self;
+    v30 = cacheCopy;
     v33 = v26;
-    v31 = v17;
-    v32 = v19;
-    v34 = v18;
-    v23 = v19;
-    v24 = [v22 performTransactionWithContext:v20 error:a8 block:v27 inaccessibilityHandler:0];
+    v31 = identifierCopy;
+    v32 = currentCalendar;
+    v34 = sampleCopy;
+    v23 = currentCalendar;
+    v24 = [database performTransactionWithContext:v20 error:error block:v27 inaccessibilityHandler:0];
 
-    v16 = v26;
+    summaryCopy = v26;
   }
 
   else
@@ -2442,30 +2442,30 @@ LABEL_23:
   return v33;
 }
 
-- (BOOL)_queue_saveIntermenstrualBleedingByDayIndex:(id)a3 calendarCache:(id)a4 error:(id *)a5
+- (BOOL)_queue_saveIntermenstrualBleedingByDayIndex:(id)index calendarCache:(id)cache error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  indexCopy = index;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v8 count])
+  if ([indexCopy count])
   {
-    v10 = [v9 currentCalendar];
+    currentCalendar = [cacheCopy currentCalendar];
     v11 = objc_alloc_init(MEMORY[0x277D10788]);
     [v11 setCacheScope:1];
     [v11 setRequiresProtectedData:1];
     [v11 setRequiresWrite:1];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v13 = [WeakRetained database];
+    database = [WeakRetained database];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __84__HDMCPluginServer__queue_saveIntermenstrualBleedingByDayIndex_calendarCache_error___block_invoke;
     v17[3] = &unk_27865B350;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
-    v21 = v10;
-    v14 = v10;
-    v15 = [v13 performTransactionWithContext:v11 error:a5 block:v17 inaccessibilityHandler:0];
+    v18 = indexCopy;
+    selfCopy = self;
+    v20 = cacheCopy;
+    v21 = currentCalendar;
+    v14 = currentCalendar;
+    v15 = [database performTransactionWithContext:v11 error:error block:v17 inaccessibilityHandler:0];
   }
 
   else
@@ -2588,34 +2588,34 @@ LABEL_19:
   return v31;
 }
 
-- (BOOL)_queue_saveLastMenstrualPeriodWithDayIndexRange:(id)a3 calendarCache:(id)a4 error:(id *)a5
+- (BOOL)_queue_saveLastMenstrualPeriodWithDayIndexRange:(id)range calendarCache:(id)cache error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a4;
-  v10 = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
-  v11 = [v10 currentAnalysis];
+  var1 = range.var1;
+  var0 = range.var0;
+  cacheCopy = cache;
+  analysisManager = [(HDMCProfileExtension *)self->_profileExtension analysisManager];
+  currentAnalysis = [analysisManager currentAnalysis];
 
   v12 = objc_alloc_init(MEMORY[0x277D10788]);
   [v12 setCacheScope:1];
   [v12 setRequiresProtectedData:1];
   [v12 setRequiresWrite:1];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_calendarCache_error___block_invoke;
   v18[3] = &unk_27865B3A0;
   v22 = var0;
   v23 = var1;
-  v19 = v9;
-  v20 = self;
-  v21 = v11;
-  v15 = v11;
-  v16 = v9;
-  LOBYTE(a5) = [v14 performTransactionWithContext:v12 error:a5 block:v18 inaccessibilityHandler:0];
+  v19 = cacheCopy;
+  selfCopy = self;
+  v21 = currentAnalysis;
+  v15 = currentAnalysis;
+  v16 = cacheCopy;
+  LOBYTE(error) = [database performTransactionWithContext:v12 error:error block:v18 inaccessibilityHandler:0];
 
-  return a5;
+  return error;
 }
 
 uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_calendarCache_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2762,11 +2762,11 @@ uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_
   return [v3 _submitPredictionAccuracyAnalyticWithDayIndex:v2 oldMenstrualFlow:v4 newMenstrualFlow:2 analysis:v5 isLoggingMultipleDays:v6];
 }
 
-- (BOOL)_queue_saveMenstrualFlow:(int64_t)a3 forEachDayInRange:(id)a4 calendarCache:(id)a5 error:(id *)a6
+- (BOOL)_queue_saveMenstrualFlow:(int64_t)flow forEachDayInRange:(id)range calendarCache:(id)cache error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_queue);
   v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:var1];
   v12 = var0 + var1;
@@ -2774,7 +2774,7 @@ uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_
   {
     do
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:flow];
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:var0];
       [v11 setObject:v13 forKeyedSubscript:v14];
 
@@ -2785,47 +2785,47 @@ uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_
   }
 
   while (v12 > var0);
-  v15 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:v11 calendarCache:v10 error:a6];
+  v15 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:v11 calendarCache:cacheCopy error:error];
 
   return v15;
 }
 
-- (BOOL)_queue_savePeriodStartedOnDayIndex:(int64_t)a3 endedOnDayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6
+- (BOOL)_queue_savePeriodStartedOnDayIndex:(int64_t)index endedOnDayIndex:(int64_t)dayIndex calendarCache:(id)cache error:(id *)error
 {
-  v10 = a5;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a4 - a3 + 1];
-  if (a4 >= a3)
+  v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:dayIndex - index + 1];
+  if (dayIndex >= index)
   {
     do
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:index];
       [v11 setObject:&unk_283CC32B8 forKeyedSubscript:v12];
 
-      ++a3;
+      ++index;
     }
 
-    while (a4 + 1 != a3);
+    while (dayIndex + 1 != index);
   }
 
-  v13 = [v10 currentCalendar];
+  currentCalendar = [cacheCopy currentCalendar];
   v14 = HKMCTodayIndex();
 
-  if (v14 - 1 == a4)
+  if (v14 - 1 == dayIndex)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
     [v11 setObject:&unk_283CC32D0 forKeyedSubscript:v15];
   }
 
-  v16 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:v11 calendarCache:v10 error:a6];
+  v16 = [(HDMCPluginServer *)self _queue_saveMenstrualFlowByDayIndex:v11 calendarCache:cacheCopy error:error];
 
   return v16;
 }
 
-- (id)_queue_mostRecentMenstrualFlowSampleWithError:(id *)a3 requiringBeforeDay:(int64_t)a4 calendarCache:(id)a5
+- (id)_queue_mostRecentMenstrualFlowSampleWithError:(id *)error requiringBeforeDay:(int64_t)day calendarCache:(id)cache
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_queue);
   v28 = 0;
   v29 = &v28;
@@ -2854,13 +2854,13 @@ uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_
   v27[2] = __99__HDMCPluginServer__queue_mostRecentMenstrualFlowSampleWithError_requiringBeforeDay_calendarCache___block_invoke;
   v27[3] = &unk_27865A6F8;
   v27[4] = &v28;
-  [v12 enumerateWithError:a3 handler:v27];
+  [v12 enumerateWithError:error handler:v27];
   v16 = v29[5];
   if (v16)
   {
-    v17 = [v8 currentCalendar];
-    v18 = [v16 hk_dayIndexRangeWithCalendar:v17];
-    v21 = v19 > 0 && v18 + v19 <= a4;
+    currentCalendar = [cacheCopy currentCalendar];
+    v18 = [v16 hk_dayIndexRangeWithCalendar:currentCalendar];
+    v21 = v19 > 0 && v18 + v19 <= day;
 
     if (v21)
     {
@@ -2869,13 +2869,13 @@ uint64_t __88__HDMCPluginServer__queue_saveLastMenstrualPeriodWithDayIndexRange_
     }
 
     v23 = MEMORY[0x277CCA9B8];
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-    [v23 hk_assignError:a3 code:100 format:{@"Most recent menstrual flow is not before day %@", v24}];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:day];
+    [v23 hk_assignError:error code:100 format:{@"Most recent menstrual flow is not before day %@", v24}];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:@"Most recent menstrual flow is nil"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Most recent menstrual flow is nil"];
   }
 
   v22 = 0;
@@ -2887,11 +2887,11 @@ LABEL_13:
   return v22;
 }
 
-- (BOOL)_queue_updateStartOfCycleMetadataForModifiedDayIndex:(int64_t)a3 calendarCache:(id)a4 canOverrideCreationDate:(BOOL)a5 error:(id *)a6
+- (BOOL)_queue_updateStartOfCycleMetadataForModifiedDayIndex:(int64_t)index calendarCache:(id)cache canOverrideCreationDate:(BOOL)date error:(id *)error
 {
-  v73 = a5;
+  dateCopy = date;
   v108 = *MEMORY[0x277D85DE8];
-  v74 = a4;
+  cacheCopy = cache;
   _HKInitializeLogging();
   v9 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -2900,7 +2900,7 @@ LABEL_13:
     v11 = objc_opt_class();
     v12 = MEMORY[0x277CCABB0];
     v13 = v11;
-    v14 = [v12 numberWithInteger:a3];
+    v14 = [v12 numberWithInteger:index];
     *buf = 138543618;
     v98 = v11;
     v99 = 2112;
@@ -2908,14 +2908,14 @@ LABEL_13:
     _os_log_impl(&dword_2293D1000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating start of cycle metadata for modified day: %@", buf, 0x16u);
   }
 
-  v79 = a3;
-  v15 = a3 - 20;
+  indexCopy = index;
+  v15 = index - 20;
   v16 = objc_alloc_init(MEMORY[0x277D0FCC0]);
   v17 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:41];
   v18 = [HDMCDaySummaryEnumerator alloc];
-  v19 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   LOBYTE(v67) = 0;
-  v20 = [(HDMCDaySummaryEnumerator *)v18 initWithProfile:v19 calendarCache:v74 dayIndexRange:v15 ascending:41 includeFactors:1 includeWristTemperature:0, v67];
+  v20 = [(HDMCDaySummaryEnumerator *)v18 initWithProfile:profile calendarCache:cacheCopy dayIndexRange:v15 ascending:41 includeFactors:1 includeWristTemperature:0, v67];
 
   v95 = 0;
   v90[0] = MEMORY[0x277D85DD0];
@@ -2943,7 +2943,7 @@ LABEL_13:
       v69 = v22;
       v70 = v20;
       v71 = v21;
-      v72 = self;
+      selfCopy = self;
       v27 = [MEMORY[0x277CBEB58] set];
       v28 = [MEMORY[0x277CBEB58] set];
       v85 = 0u;
@@ -2952,7 +2952,7 @@ LABEL_13:
       v88 = 0u;
       v29 = v25;
       v30 = [v29 countByEnumeratingWithState:&v85 objects:v107 count:16];
-      v31 = v79;
+      v31 = indexCopy;
       if (v30)
       {
         v32 = v30;
@@ -2968,9 +2968,9 @@ LABEL_13:
             }
 
             v36 = *(*(&v85 + 1) + 8 * i);
-            v37 = [v36 julianDayOfMenstruationStart];
+            julianDayOfMenstruationStart = [v36 julianDayOfMenstruationStart];
             LODWORD(v36) = [v36 isDeterminant];
-            v38 = [MEMORY[0x277CCABB0] numberWithInteger:v37];
+            v38 = [MEMORY[0x277CCABB0] numberWithInteger:julianDayOfMenstruationStart];
             if (v36)
             {
               v39 = v27;
@@ -3015,7 +3015,7 @@ LABEL_13:
         v106 = v47;
         _os_log_impl(&dword_2293D1000, v41, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received %@ cycles from analyzing %@ summaries, start days: %@, indeterminant start days: %@", buf, 0x34u);
 
-        v31 = v79;
+        v31 = indexCopy;
       }
 
       v83 = 0u;
@@ -3043,17 +3043,17 @@ LABEL_13:
             v54 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v53, "dayIndex")}];
             if ([v53 dayIndex] >= v31)
             {
-              v55 = [v53 startOfCycleFromCycleTracking];
+              startOfCycleFromCycleTracking = [v53 startOfCycleFromCycleTracking];
 
-              if (v55)
+              if (startOfCycleFromCycleTracking)
               {
                 if (([v28 containsObject:v54] & 1) == 0)
                 {
-                  v56 = [v53 startOfCycleFromCycleTracking];
-                  v57 = [v56 BOOLValue];
+                  startOfCycleFromCycleTracking2 = [v53 startOfCycleFromCycleTracking];
+                  bOOLValue = [startOfCycleFromCycleTracking2 BOOLValue];
 
                   v58 = [v27 containsObject:v54];
-                  if (v57 != v58)
+                  if (bOOLValue != v58)
                   {
                     v59 = v58;
                     v60 = [v53 mutableCopy];
@@ -3062,7 +3062,7 @@ LABEL_13:
 
                     v62 = [v60 copy];
                     v80 = v78;
-                    v75 = [(HDMCPluginServer *)v72 _queue_updateUnderlyingSamplesToReplaceDaySummary:v53 withDaySummary:v62 calendarCache:v74 canOverrideCreationDate:v73 error:&v80];
+                    v75 = [(HDMCPluginServer *)selfCopy _queue_updateUnderlyingSamplesToReplaceDaySummary:v53 withDaySummary:v62 calendarCache:cacheCopy canOverrideCreationDate:dateCopy error:&v80];
                     v24 = v80;
 
                     if (!v75)
@@ -3077,7 +3077,7 @@ LABEL_13:
                     v78 = v24;
                   }
 
-                  v31 = v79;
+                  v31 = indexCopy;
                   v48 = v77;
                 }
               }
@@ -3114,11 +3114,11 @@ LABEL_39:
     v29 = v26;
     if (v29)
     {
-      if (a6)
+      if (error)
       {
         v64 = v29;
         v63 = 0;
-        *a6 = v29;
+        *error = v29;
 LABEL_42:
         v24 = v29;
 LABEL_43:
@@ -3157,26 +3157,26 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
   [*(a1 + 32) addObject:v7];
 }
 
-- (BOOL)_queue_insertSamplesWithClientSource:(id)a3 creationDate:(id)a4 error:(id *)a5
+- (BOOL)_queue_insertSamplesWithClientSource:(id)source creationDate:(id)date error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  sourceCopy = source;
+  dateCopy = date;
+  if ([sourceCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v11 = [WeakRetained sourceManager];
-    v12 = [v11 createOrUpdateSourceForClient:self->_client error:a5];
+    sourceManager = [WeakRetained sourceManager];
+    v12 = [sourceManager createOrUpdateSourceForClient:self->_client error:error];
 
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_profile);
-      v14 = [v13 dataProvenanceManager];
-      v15 = [v14 localDataProvenanceForSourceEntity:v12 version:0 deviceEntity:0];
+      dataProvenanceManager = [v13 dataProvenanceManager];
+      v15 = [dataProvenanceManager localDataProvenanceForSourceEntity:v12 version:0 deviceEntity:0];
 
-      if (v9)
+      if (dateCopy)
       {
-        MEMORY[0x22AACBDF0](v9);
+        MEMORY[0x22AACBDF0](dateCopy);
       }
 
       else
@@ -3186,8 +3186,8 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
 
       v18 = Current;
       v19 = objc_loadWeakRetained(&self->_profile);
-      v20 = [v19 dataManager];
-      v17 = [v20 insertDataObjects:v8 withProvenance:v15 creationDate:1 skipInsertionFilter:a5 error:v18];
+      dataManager = [v19 dataManager];
+      v17 = [dataManager insertDataObjects:sourceCopy withProvenance:v15 creationDate:1 skipInsertionFilter:error error:v18];
 
       _HKInitializeLogging();
       v21 = *MEMORY[0x277CCC2E8];
@@ -3197,7 +3197,7 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
         v23 = objc_opt_class();
         v24 = MEMORY[0x277CCABB0];
         v29 = v23;
-        v25 = [v24 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+        v25 = [v24 numberWithUnsignedInteger:{objc_msgSend(sourceCopy, "count")}];
         v26 = HKSensitiveLogItem();
         *buf = 138544386;
         v31 = v23;
@@ -3206,7 +3206,7 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
         v34 = 2112;
         v35 = v26;
         v36 = 2114;
-        v37 = v9;
+        v37 = dateCopy;
         v38 = 2112;
         v39 = v12;
         _os_log_impl(&dword_2293D1000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Inserted %@ samples: %@ @ %{public}@, source: %@", buf, 0x34u);
@@ -3242,11 +3242,11 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_deleteSamplesOfType:(id)a3 onDayIndex:(int64_t)a4 calendarCache:(id)a5 error:(id *)a6
+- (BOOL)_queue_deleteSamplesOfType:(id)type onDayIndex:(int64_t)index calendarCache:(id)cache error:(id *)error
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v44 = a5;
+  typeCopy = type;
+  cacheCopy = cache;
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -3257,22 +3257,22 @@ void __117__HDMCPluginServer__queue_updateStartOfCycleMetadataForModifiedDayInde
   v61 = __Block_byref_object_copy__9;
   v62 = __Block_byref_object_dispose__9;
   v63 = 0;
-  v43 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = MEMORY[0x277D10848];
-  v42 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v69 = *MEMORY[0x277D10400];
   v70[0] = MEMORY[0x277CBEC38];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v70 forKeys:&v69 count:1];
-  v12 = [MEMORY[0x277D10B70] hdmc_predicateForSamplesInDayIndexRange:{a4, 1}];
+  v12 = [MEMORY[0x277D10B70] hdmc_predicateForSamplesInDayIndexRange:{index, 1}];
   v13 = (v59 + 5);
   obj = v59[5];
-  v40 = [v9 samplesWithType:v39 profile:WeakRetained encodingOptions:v11 predicate:v12 limit:0 anchor:0 error:&obj];
+  v40 = [v9 samplesWithType:typeCopy profile:WeakRetained encodingOptions:v11 predicate:v12 limit:0 anchor:0 error:&obj];
   objc_storeStrong(v13, obj);
 
   if (v40)
   {
-    v41 = [v44 currentCalendar];
+    currentCalendar = [cacheCopy currentCalendar];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -3292,32 +3292,32 @@ LABEL_4:
         }
 
         v18 = *(*(&v53 + 1) + 8 * v17);
-        v19 = [v18 _timeZone];
-        v20 = [v44 calendarForTimeZone:v19];
+        _timeZone = [v18 _timeZone];
+        v20 = [cacheCopy calendarForTimeZone:_timeZone];
         v21 = [v18 hk_dayIndexRangeWithCalendar:v20];
         v23 = v22;
 
-        if (a4 >= v21 && a4 - v21 < v23)
+        if (index >= v21 && index - v21 < v23)
         {
           if (v23 >= 2)
           {
             v25 = [MEMORY[0x277CCAB58] hk_indexSetWithDayIndexRange:{v21, v23}];
-            [v25 removeIndex:a4];
+            [v25 removeIndex:index];
             v46[0] = MEMORY[0x277D85DD0];
             v46[1] = 3221225472;
             v46[2] = __78__HDMCPluginServer__queue_deleteSamplesOfType_onDayIndex_calendarCache_error___block_invoke;
             v46[3] = &unk_27865B3F0;
-            v47 = v41;
+            v47 = currentCalendar;
             v48 = v18;
             v50 = &v64;
-            v49 = v42;
+            v49 = selfCopy;
             v51 = &v58;
-            v52 = a4;
+            indexCopy = index;
             [v25 hk_enumerateDayIndexRangesUsingBlock:v46];
           }
 
-          v26 = [v18 UUID];
-          [v43 addObject:v26];
+          uUID = [v18 UUID];
+          [array addObject:uUID];
 
           if (!*(v65 + 24))
           {
@@ -3341,15 +3341,15 @@ LABEL_4:
     if (*(v65 + 24) == 1)
     {
       v27 = objc_alloc_init(MEMORY[0x277D10688]);
-      v28 = objc_loadWeakRetained(&v42->_profile);
-      v29 = [v28 dataManager];
+      v28 = objc_loadWeakRetained(&selfCopy->_profile);
+      dataManager = [v28 dataManager];
       v30 = (v59 + 5);
       v45 = v59[5];
-      v31 = [v29 deleteObjectsWithUUIDCollection:v43 configuration:v27 error:&v45];
+      v31 = [dataManager deleteObjectsWithUUIDCollection:array configuration:v27 error:&v45];
       objc_storeStrong(v30, v45);
       *(v65 + 24) = v31;
 
-      [(HDMCPluginServer *)v42 _queue_updateLastLoggedInExperienceDate];
+      [(HDMCPluginServer *)selfCopy _queue_updateLastLoggedInExperienceDate];
     }
   }
 
@@ -3357,10 +3357,10 @@ LABEL_4:
   v33 = v32;
   if (v32)
   {
-    if (a6)
+    if (error)
     {
       v34 = v32;
-      *a6 = v33;
+      *error = v33;
     }
 
     else
@@ -3499,8 +3499,8 @@ LABEL_10:
 
 - (void)_triggerImmediateSync
 {
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 nanoSyncManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  nanoSyncManager = [profile nanoSyncManager];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v14[0] = MEMORY[0x277D85DD0];
@@ -3508,12 +3508,12 @@ LABEL_10:
   v14[2] = __41__HDMCPluginServer__triggerImmediateSync__block_invoke;
   v14[3] = &unk_27865A7A0;
   v14[4] = self;
-  [v4 syncHealthDataWithOptions:0 reason:v6 completion:v14];
+  [nanoSyncManager syncHealthDataWithOptions:0 reason:v6 completion:v14];
 
   v7 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
   v8 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v7];
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [v9 cloudSyncManager];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile2 cloudSyncManager];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13[0] = MEMORY[0x277D85DD0];
@@ -3521,7 +3521,7 @@ LABEL_10:
   v13[2] = __41__HDMCPluginServer__triggerImmediateSync__block_invoke_383;
   v13[3] = &unk_27865A7A0;
   v13[4] = self;
-  [v10 syncWithRequest:v8 reason:v12 completion:v13];
+  [cloudSyncManager syncWithRequest:v8 reason:v12 completion:v13];
 }
 
 void __41__HDMCPluginServer__triggerImmediateSync__block_invoke(uint64_t a1, int a2, void *a3)

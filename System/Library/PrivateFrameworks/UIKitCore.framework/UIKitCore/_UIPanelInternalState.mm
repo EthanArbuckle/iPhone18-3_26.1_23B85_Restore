@@ -1,61 +1,61 @@
 @interface _UIPanelInternalState
 - (UIPanelControllerDelegate)delegate;
-- (double)_defaultWidthForViewController:(id)a3 parentWidth:(double)a4;
-- (id)_allowedLeadingWidthsForParentWidth:(double)a3;
-- (id)_allowedSupplementaryWidthsForParentWidth:(double)a3;
-- (id)_allowedTrailingWidthsForParentWidth:(double)a3;
-- (id)_allowedWidthsForViewController:(id)a3 parentWidth:(double)a4;
-- (id)_stateForInteractiveRequest:(id)a3 withAffectedSides:(int64_t)a4 inPossibleStates:(id)a5;
-- (id)computePossibleStatesGivenParentView:(id)a3 withSize:(CGSize)a4 forceOverlay:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_defaultWidthForViewController:(id)controller parentWidth:(double)width;
+- (id)_allowedLeadingWidthsForParentWidth:(double)width;
+- (id)_allowedSupplementaryWidthsForParentWidth:(double)width;
+- (id)_allowedTrailingWidthsForParentWidth:(double)width;
+- (id)_allowedWidthsForViewController:(id)controller parentWidth:(double)width;
+- (id)_stateForInteractiveRequest:(id)request withAffectedSides:(int64_t)sides inPossibleStates:(id)states;
+- (id)computePossibleStatesGivenParentView:(id)view withSize:(CGSize)size forceOverlay:(BOOL)overlay;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setLeadingViewController:(id)a3;
-- (void)setMainViewController:(id)a3;
-- (void)setSupplementaryViewController:(id)a3;
-- (void)setTrailingViewController:(id)a3;
+- (void)setLeadingViewController:(id)controller;
+- (void)setMainViewController:(id)controller;
+- (void)setSupplementaryViewController:(id)controller;
+- (void)setTrailingViewController:(id)controller;
 @end
 
 @implementation _UIPanelInternalState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(_UIPanelInternalState *)self mainViewController];
-  [v4 setMainViewController:v5];
+  mainViewController = [(_UIPanelInternalState *)self mainViewController];
+  [v4 setMainViewController:mainViewController];
 
-  v6 = [(_UIPanelInternalState *)self leadingViewController];
-  [v4 setLeadingViewController:v6];
+  leadingViewController = [(_UIPanelInternalState *)self leadingViewController];
+  [v4 setLeadingViewController:leadingViewController];
 
-  v7 = [(_UIPanelInternalState *)self trailingViewController];
-  [v4 setTrailingViewController:v7];
+  trailingViewController = [(_UIPanelInternalState *)self trailingViewController];
+  [v4 setTrailingViewController:trailingViewController];
 
-  v8 = [(_UIPanelInternalState *)self supplementaryViewController];
-  [v4 setSupplementaryViewController:v8];
+  supplementaryViewController = [(_UIPanelInternalState *)self supplementaryViewController];
+  [v4 setSupplementaryViewController:supplementaryViewController];
 
-  v9 = [(_UIPanelInternalState *)self collapsedViewController];
-  [v4 setCollapsedViewController:v9];
+  collapsedViewController = [(_UIPanelInternalState *)self collapsedViewController];
+  [v4 setCollapsedViewController:collapsedViewController];
 
-  v10 = [(_UIPanelInternalState *)self preservedDetailController];
-  [v4 setPreservedDetailController:v10];
+  preservedDetailController = [(_UIPanelInternalState *)self preservedDetailController];
+  [v4 setPreservedDetailController:preservedDetailController];
 
-  v11 = [(_UIPanelInternalState *)self delegate];
-  [v4 setDelegate:v11];
+  delegate = [(_UIPanelInternalState *)self delegate];
+  [v4 setDelegate:delegate];
 
-  v12 = [(_UIPanelInternalState *)self configuration];
-  [v4 setConfiguration:v12];
+  configuration = [(_UIPanelInternalState *)self configuration];
+  [v4 setConfiguration:configuration];
 
-  v13 = [(_UIPanelInternalState *)self stateRequest];
-  [v4 setStateRequest:v13];
+  stateRequest = [(_UIPanelInternalState *)self stateRequest];
+  [v4 setStateRequest:stateRequest];
 
-  v14 = [(_UIPanelInternalState *)self externallyAnimatingStateRequest];
-  [v4 setExternallyAnimatingStateRequest:v14];
+  externallyAnimatingStateRequest = [(_UIPanelInternalState *)self externallyAnimatingStateRequest];
+  [v4 setExternallyAnimatingStateRequest:externallyAnimatingStateRequest];
 
   [v4 setExternallyAnimatingAffectedSides:{-[_UIPanelInternalState externallyAnimatingAffectedSides](self, "externallyAnimatingAffectedSides")}];
-  v15 = [(_UIPanelInternalState *)self animationState];
-  [v4 setAnimationState:v15];
+  animationState = [(_UIPanelInternalState *)self animationState];
+  [v4 setAnimationState:animationState];
 
-  v16 = [(_UIPanelInternalState *)self interactiveStateRequest];
-  [v4 setInteractiveStateRequest:v16];
+  interactiveStateRequest = [(_UIPanelInternalState *)self interactiveStateRequest];
+  [v4 setInteractiveStateRequest:interactiveStateRequest];
 
   [v4 setCollapsedState:{-[_UIPanelInternalState collapsedState](self, "collapsedState")}];
   [(_UIPanelInternalState *)self keyboardAdjustment];
@@ -63,32 +63,32 @@
   return v4;
 }
 
-- (void)setLeadingViewController:(id)a3
+- (void)setLeadingViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(_UIPanelInternalState *)self mainViewController];
+    mainViewController = [(_UIPanelInternalState *)self mainViewController];
 
-    if (v5 == v4)
+    if (mainViewController == controllerCopy)
     {
       [(_UIPanelInternalState *)self setMainViewController:0];
     }
 
     else
     {
-      v6 = [(_UIPanelInternalState *)self trailingViewController];
+      trailingViewController = [(_UIPanelInternalState *)self trailingViewController];
 
-      if (v6 == v4)
+      if (trailingViewController == controllerCopy)
       {
         [(_UIPanelInternalState *)self setTrailingViewController:0];
       }
 
       else
       {
-        v7 = [(_UIPanelInternalState *)self supplementaryViewController];
+        supplementaryViewController = [(_UIPanelInternalState *)self supplementaryViewController];
 
-        if (v7 == v4)
+        if (supplementaryViewController == controllerCopy)
         {
           [(_UIPanelInternalState *)self setSupplementaryViewController:0];
         }
@@ -97,35 +97,35 @@
   }
 
   leadingViewController = self->_leadingViewController;
-  self->_leadingViewController = v4;
+  self->_leadingViewController = controllerCopy;
 }
 
-- (void)setSupplementaryViewController:(id)a3
+- (void)setSupplementaryViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(_UIPanelInternalState *)self mainViewController];
+    mainViewController = [(_UIPanelInternalState *)self mainViewController];
 
-    if (v5 == v4)
+    if (mainViewController == controllerCopy)
     {
       [(_UIPanelInternalState *)self setMainViewController:0];
     }
 
     else
     {
-      v6 = [(_UIPanelInternalState *)self leadingViewController];
+      leadingViewController = [(_UIPanelInternalState *)self leadingViewController];
 
-      if (v6 == v4)
+      if (leadingViewController == controllerCopy)
       {
         [(_UIPanelInternalState *)self setLeadingViewController:0];
       }
 
       else
       {
-        v7 = [(_UIPanelInternalState *)self trailingViewController];
+        trailingViewController = [(_UIPanelInternalState *)self trailingViewController];
 
-        if (v7 == v4)
+        if (trailingViewController == controllerCopy)
         {
           [(_UIPanelInternalState *)self setTrailingViewController:0];
         }
@@ -134,35 +134,35 @@
   }
 
   supplementaryViewController = self->_supplementaryViewController;
-  self->_supplementaryViewController = v4;
+  self->_supplementaryViewController = controllerCopy;
 }
 
-- (void)setMainViewController:(id)a3
+- (void)setMainViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(_UIPanelInternalState *)self leadingViewController];
+    leadingViewController = [(_UIPanelInternalState *)self leadingViewController];
 
-    if (v5 == v4)
+    if (leadingViewController == controllerCopy)
     {
       [(_UIPanelInternalState *)self setLeadingViewController:0];
     }
 
     else
     {
-      v6 = [(_UIPanelInternalState *)self trailingViewController];
+      trailingViewController = [(_UIPanelInternalState *)self trailingViewController];
 
-      if (v6 == v4)
+      if (trailingViewController == controllerCopy)
       {
         [(_UIPanelInternalState *)self setTrailingViewController:0];
       }
 
       else
       {
-        v7 = [(_UIPanelInternalState *)self supplementaryViewController];
+        supplementaryViewController = [(_UIPanelInternalState *)self supplementaryViewController];
 
-        if (v7 == v4)
+        if (supplementaryViewController == controllerCopy)
         {
           [(_UIPanelInternalState *)self setSupplementaryViewController:0];
         }
@@ -171,35 +171,35 @@
   }
 
   mainViewController = self->_mainViewController;
-  self->_mainViewController = v4;
+  self->_mainViewController = controllerCopy;
 }
 
-- (void)setTrailingViewController:(id)a3
+- (void)setTrailingViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(_UIPanelInternalState *)self leadingViewController];
+    leadingViewController = [(_UIPanelInternalState *)self leadingViewController];
 
-    if (v5 == v4)
+    if (leadingViewController == controllerCopy)
     {
       [(_UIPanelInternalState *)self setLeadingViewController:0];
     }
 
     else
     {
-      v6 = [(_UIPanelInternalState *)self mainViewController];
+      mainViewController = [(_UIPanelInternalState *)self mainViewController];
 
-      if (v6 == v4)
+      if (mainViewController == controllerCopy)
       {
         [(_UIPanelInternalState *)self setMainViewController:0];
       }
 
       else
       {
-        v7 = [(_UIPanelInternalState *)self supplementaryViewController];
+        supplementaryViewController = [(_UIPanelInternalState *)self supplementaryViewController];
 
-        if (v7 == v4)
+        if (supplementaryViewController == controllerCopy)
         {
           [(_UIPanelInternalState *)self setSupplementaryViewController:0];
         }
@@ -208,22 +208,22 @@
   }
 
   trailingViewController = self->_trailingViewController;
-  self->_trailingViewController = v4;
+  self->_trailingViewController = controllerCopy;
 }
 
-- (id)_allowedWidthsForViewController:(id)a3 parentWidth:(double)a4
+- (id)_allowedWidthsForViewController:(id)controller parentWidth:(double)width
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v6 _preferredContentSizes];
-  if ([v8 count])
+  controllerCopy = controller;
+  array = [MEMORY[0x1E695DF70] array];
+  _preferredContentSizes = [controllerCopy _preferredContentSizes];
+  if ([_preferredContentSizes count])
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v8;
+    v9 = _preferredContentSizes;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -242,7 +242,7 @@
           if (v14 > 0.0)
           {
             v15 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-            [v7 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -255,40 +255,40 @@
     goto LABEL_18;
   }
 
-  if ([v6 _isNavigationController])
+  if ([controllerCopy _isNavigationController])
   {
-    [v6 _preferredContentSizeForcingLoad:0];
+    [controllerCopy _preferredContentSizeForcingLoad:0];
   }
 
   else
   {
-    [v6 preferredContentSize];
+    [controllerCopy preferredContentSize];
   }
 
-  if (v16 > 0.0 || ([(_UIPanelInternalState *)self _defaultWidthForViewController:v6 parentWidth:a4], v17 > 0.0))
+  if (v16 > 0.0 || ([(_UIPanelInternalState *)self _defaultWidthForViewController:controllerCopy parentWidth:width], v17 > 0.0))
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    [v7 addObject:v9];
+    [array addObject:v9];
 LABEL_18:
   }
 
-  if ([v7 count] >= 2)
+  if ([array count] >= 2)
   {
-    v18 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-    v19 = [v18 allObjects];
-    v20 = [v19 mutableCopy];
+    v18 = [MEMORY[0x1E695DFD8] setWithArray:array];
+    allObjects = [v18 allObjects];
+    v20 = [allObjects mutableCopy];
 
-    v7 = v20;
+    array = v20;
   }
 
-  [v7 sortUsingSelector:sel_compare_];
+  [array sortUsingSelector:sel_compare_];
 
-  return v7;
+  return array;
 }
 
-- (double)_defaultWidthForViewController:(id)a3 parentWidth:(double)a4
+- (double)_defaultWidthForViewController:(id)controller parentWidth:(double)width
 {
-  v6 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -296,27 +296,27 @@ LABEL_18:
   if (v8)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 panelController:0 expectedWidthForColumnForViewController:v6];
+    [v10 panelController:0 expectedWidthForColumnForViewController:controllerCopy];
     v9 = v11;
   }
 
-  v12 = [v6 traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [controllerCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 > 1)
+  if (userInterfaceIdiom > 1)
   {
-    if (v13 != 2 && v13 != 8)
+    if (userInterfaceIdiom != 2 && userInterfaceIdiom != 8)
     {
       goto LABEL_16;
     }
 
     v16 = 0.33;
 LABEL_15:
-    v9 = ceil(a4 * v16);
+    v9 = ceil(width * v16);
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!userInterfaceIdiom)
   {
     if (v9 != 0.0)
     {
@@ -327,10 +327,10 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v13 == 1 && v9 == 0.0)
+  if (userInterfaceIdiom == 1 && v9 == 0.0)
   {
-    v14 = [objc_opt_self() mainScreen];
-    [v14 _referenceBounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen _referenceBounds];
     Height = CGRectGetHeight(v18);
 
     if (Height <= 1210.0)
@@ -349,125 +349,125 @@ LABEL_16:
   return v9;
 }
 
-- (id)_allowedLeadingWidthsForParentWidth:(double)a3
+- (id)_allowedLeadingWidthsForParentWidth:(double)width
 {
-  v5 = [(_UIPanelInternalState *)self configuration];
-  v6 = [v5 leadingWidths];
-  v7 = [v6 count];
+  configuration = [(_UIPanelInternalState *)self configuration];
+  leadingWidths = [configuration leadingWidths];
+  v7 = [leadingWidths count];
 
   if (v7)
   {
-    v8 = [(_UIPanelInternalState *)self configuration];
-    [v8 leadingWidths];
+    configuration2 = [(_UIPanelInternalState *)self configuration];
+    [configuration2 leadingWidths];
   }
 
   else
   {
-    v8 = [(_UIPanelInternalState *)self leadingViewController];
-    [(_UIPanelInternalState *)self _allowedWidthsForViewController:v8 parentWidth:a3];
+    configuration2 = [(_UIPanelInternalState *)self leadingViewController];
+    [(_UIPanelInternalState *)self _allowedWidthsForViewController:configuration2 parentWidth:width];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)_allowedTrailingWidthsForParentWidth:(double)a3
+- (id)_allowedTrailingWidthsForParentWidth:(double)width
 {
-  v5 = [(_UIPanelInternalState *)self configuration];
-  v6 = [v5 trailingWidths];
-  v7 = [v6 count];
+  configuration = [(_UIPanelInternalState *)self configuration];
+  trailingWidths = [configuration trailingWidths];
+  v7 = [trailingWidths count];
 
   if (v7)
   {
-    v8 = [(_UIPanelInternalState *)self configuration];
-    [v8 trailingWidths];
+    configuration2 = [(_UIPanelInternalState *)self configuration];
+    [configuration2 trailingWidths];
   }
 
   else
   {
-    v8 = [(_UIPanelInternalState *)self trailingViewController];
-    [(_UIPanelInternalState *)self _allowedWidthsForViewController:v8 parentWidth:a3];
+    configuration2 = [(_UIPanelInternalState *)self trailingViewController];
+    [(_UIPanelInternalState *)self _allowedWidthsForViewController:configuration2 parentWidth:width];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)_allowedSupplementaryWidthsForParentWidth:(double)a3
+- (id)_allowedSupplementaryWidthsForParentWidth:(double)width
 {
-  v5 = [(_UIPanelInternalState *)self configuration];
-  v6 = [v5 supplementaryWidths];
-  v7 = [v6 count];
+  configuration = [(_UIPanelInternalState *)self configuration];
+  supplementaryWidths = [configuration supplementaryWidths];
+  v7 = [supplementaryWidths count];
 
   if (v7)
   {
-    v8 = [(_UIPanelInternalState *)self configuration];
-    [v8 supplementaryWidths];
+    configuration2 = [(_UIPanelInternalState *)self configuration];
+    [configuration2 supplementaryWidths];
   }
 
   else
   {
-    v8 = [(_UIPanelInternalState *)self supplementaryViewController];
-    [(_UIPanelInternalState *)self _allowedWidthsForViewController:v8 parentWidth:a3];
+    configuration2 = [(_UIPanelInternalState *)self supplementaryViewController];
+    [(_UIPanelInternalState *)self _allowedWidthsForViewController:configuration2 parentWidth:width];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)computePossibleStatesGivenParentView:(id)a3 withSize:(CGSize)a4 forceOverlay:(BOOL)a5
+- (id)computePossibleStatesGivenParentView:(id)view withSize:(CGSize)size forceOverlay:(BOOL)overlay
 {
-  v5 = a5;
-  width = a4.width;
+  overlayCopy = overlay;
+  width = size.width;
   v143 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DF70] array];
+  viewCopy = view;
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84___UIPanelInternalState_computePossibleStatesGivenParentView_withSize_forceOverlay___block_invoke;
   aBlock[3] = &unk_1E7103710;
   aBlock[4] = self;
-  v10 = v9;
+  v10 = array;
   v137 = v10;
   v11 = _Block_copy(aBlock);
   if ([(_UIPanelInternalState *)self collapsedState]!= 1 && [(_UIPanelInternalState *)self collapsedState]!= 2)
   {
-    v108 = v5;
+    v108 = overlayCopy;
     v102 = v11;
     v79 = v10;
-    v12 = [(_UIPanelInternalState *)self configuration];
+    configuration = [(_UIPanelInternalState *)self configuration];
     v132[0] = MEMORY[0x1E69E9820];
     v132[1] = 3221225472;
     v133 = __84___UIPanelInternalState_computePossibleStatesGivenParentView_withSize_forceOverlay___block_invoke_3;
     v134 = &unk_1E7103758;
-    v80 = v8;
-    v13 = v8;
+    v80 = viewCopy;
+    v13 = viewCopy;
     v135 = v13;
     v126[0] = MEMORY[0x1E69E9820];
     v126[1] = 3221225472;
     v127 = __84___UIPanelInternalState_computePossibleStatesGivenParentView_withSize_forceOverlay___block_invoke_203;
     v128 = &unk_1E7103780;
     v131 = width;
-    v14 = v12;
+    v14 = configuration;
     v129 = v14;
     v15 = v13;
     v130 = v15;
-    v16 = [v14 leadingMayBeHidden];
-    v17 = [v14 trailingMayBeHidden];
-    v110 = [v14 supplementaryMayBeHidden];
-    v18 = [v14 supplementaryEdge];
-    v19 = [(_UIPanelInternalState *)self leadingViewController];
+    leadingMayBeHidden = [v14 leadingMayBeHidden];
+    trailingMayBeHidden = [v14 trailingMayBeHidden];
+    supplementaryMayBeHidden = [v14 supplementaryMayBeHidden];
+    supplementaryEdge = [v14 supplementaryEdge];
+    leadingViewController = [(_UIPanelInternalState *)self leadingViewController];
     v20 = [(_UIPanelInternalState *)self _allowedLeadingWidthsForParentWidth:width];
-    v21 = v133(v132, v19, v20, v16);
+    v21 = v133(v132, leadingViewController, v20, leadingMayBeHidden);
 
-    v22 = [(_UIPanelInternalState *)self trailingViewController];
+    trailingViewController = [(_UIPanelInternalState *)self trailingViewController];
     v23 = [(_UIPanelInternalState *)self _allowedTrailingWidthsForParentWidth:width];
-    v24 = v133(v132, v22, v23, v17);
+    v24 = v133(v132, trailingViewController, v23, trailingMayBeHidden);
 
-    v25 = [(_UIPanelInternalState *)self supplementaryViewController];
-    v101 = self;
+    supplementaryViewController = [(_UIPanelInternalState *)self supplementaryViewController];
+    selfCopy = self;
     v26 = [(_UIPanelInternalState *)self _allowedSupplementaryWidthsForParentWidth:width];
-    v27 = v133(v132, v25, v26, v110);
+    v27 = v133(v132, supplementaryViewController, v26, supplementaryMayBeHidden);
 
     v28 = __84___UIPanelInternalState_computePossibleStatesGivenParentView_withSize_forceOverlay___block_invoke_2_205(v21);
     v85 = v24;
@@ -516,7 +516,7 @@ LABEL_16:
     v36 = 0.0;
     v107 = 0.0;
     v109 = 0.0;
-    v37 = v18;
+    v37 = supplementaryEdge;
     while (1)
     {
       v38 = 0;
@@ -629,8 +629,8 @@ LABEL_16:
                         v59 = v45;
                       }
 
-                      v60 = [v111 allowTotalWidthGreaterThanParent];
-                      if (!v60 && v58 != 0.0 && v59 != 0.0)
+                      allowTotalWidthGreaterThanParent = [v111 allowTotalWidthGreaterThanParent];
+                      if (!allowTotalWidthGreaterThanParent && v58 != 0.0 && v59 != 0.0)
                       {
                         if (os_variant_has_internal_diagnostics())
                         {
@@ -656,7 +656,7 @@ LABEL_16:
                       }
 
                       v61 = width;
-                      if ((v60 & 1) == 0)
+                      if ((allowTotalWidthGreaterThanParent & 1) == 0)
                       {
                         (v127)(v126, 0, v58, v59);
                       }
@@ -740,7 +740,7 @@ LABEL_16:
 
                         if (v56 <= v30)
                         {
-                          BYTE4(v100) |= v18 != 0;
+                          BYTE4(v100) |= supplementaryEdge != 0;
                           v103 |= v65 == 0;
                           v36 = 0.0;
                           v71 = v109;
@@ -763,11 +763,11 @@ LABEL_16:
                           v109 = v71;
                           LOBYTE(v100) = 1;
 LABEL_62:
-                          v67 = [(_UIPanelInternalState *)v101 stateRequest];
-                          [v67 supplementaryWidth];
+                          stateRequest = [(_UIPanelInternalState *)selfCopy stateRequest];
+                          [stateRequest supplementaryWidth];
 
                           v68 = 0.0;
-                          if ((v60 & v66) == 1 && v56 > 0.0 && v99 > 0.0)
+                          if ((allowTotalWidthGreaterThanParent & v66) == 1 && v56 > 0.0 && v99 > 0.0)
                           {
                             [v97 _currentScreenScale];
                             if (v65)
@@ -865,7 +865,7 @@ LABEL_113:
         v10 = v79;
         _updateTreatsHiddenAsOverlapsInStates(v79, v103 & 1, BYTE4(v100) & 1, v100 & 1);
 
-        v8 = v80;
+        viewCopy = v80;
         v11 = v102;
         goto LABEL_114;
       }
@@ -879,60 +879,60 @@ LABEL_114:
   return v10;
 }
 
-- (id)_stateForInteractiveRequest:(id)a3 withAffectedSides:(int64_t)a4 inPossibleStates:(id)a5
+- (id)_stateForInteractiveRequest:(id)request withAffectedSides:(int64_t)sides inPossibleStates:(id)states
 {
   v114 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 _closestEqualOrLargerState:v9];
+  requestCopy = request;
+  statesCopy = states;
+  v10 = [requestCopy _closestEqualOrLargerState:statesCopy];
   v11 = [v10 copy];
 
-  v12 = [v11 _leadingEntirelyOverlapsMain];
-  v100 = [v11 _trailingEntirelyOverlapsMain];
-  v101 = [v11 _supplementaryEntirelyOverlapsMain];
-  v13 = [(_UIPanelInternalState *)self configuration];
-  [v11 setConfiguration:v13];
+  _leadingEntirelyOverlapsMain = [v11 _leadingEntirelyOverlapsMain];
+  _trailingEntirelyOverlapsMain = [v11 _trailingEntirelyOverlapsMain];
+  _supplementaryEntirelyOverlapsMain = [v11 _supplementaryEntirelyOverlapsMain];
+  configuration = [(_UIPanelInternalState *)self configuration];
+  [v11 setConfiguration:configuration];
 
-  [v8 leadingWidth];
+  [requestCopy leadingWidth];
   v15 = v14;
   [v11 leadingWidth];
   v17 = v15 - v16;
   [v11 _leadingOverlayWidth];
   [v11 _setLeadingOverlayWidth:v18 + v17];
-  [v8 trailingWidth];
+  [requestCopy trailingWidth];
   v20 = v19;
   [v11 trailingWidth];
   v22 = v20 - v21;
   [v11 _trailingOverlayWidth];
   [v11 _setTrailingOverlayWidth:v23 + v22];
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   v25 = v24;
   [v11 supplementaryWidth];
   v27 = v25 - v26;
   [v11 _supplementaryOverlayWidth];
   [v11 _setSupplementaryOverlayWidth:v28 + v27];
-  [v8 leadingWidth];
+  [requestCopy leadingWidth];
   [v11 setLeadingWidth:?];
-  [v8 leadingOffscreenWidth];
+  [requestCopy leadingOffscreenWidth];
   [v11 setLeadingOffscreenWidth:?];
-  [v8 trailingWidth];
+  [requestCopy trailingWidth];
   [v11 setTrailingWidth:?];
-  [v8 trailingOffscreenWidth];
+  [requestCopy trailingOffscreenWidth];
   [v11 setTrailingOffscreenWidth:?];
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   [v11 setSupplementaryWidth:?];
-  [v8 supplementaryOffscreenWidth];
+  [requestCopy supplementaryOffscreenWidth];
   [v11 setSupplementaryOffscreenWidth:?];
-  [v8 rubberBandInset];
+  [requestCopy rubberBandInset];
   [v11 set_rubberBandInset:?];
-  v29 = [(_UIPanelInternalState *)self configuration];
-  v30 = a4 & 1;
-  if ([v29 leadingMayBeHidden])
+  configuration2 = [(_UIPanelInternalState *)self configuration];
+  v30 = sides & 1;
+  if ([configuration2 leadingMayBeHidden])
   {
-    [v8 leadingWidth];
-    if (v31 <= 0.0 && ([v8 leadingOffscreenWidth], v32 <= 0.0))
+    [requestCopy leadingWidth];
+    if (v31 <= 0.0 && ([requestCopy leadingOffscreenWidth], v32 <= 0.0))
     {
-      v33 = a4 & 1;
+      v33 = sides & 1;
     }
 
     else
@@ -946,18 +946,18 @@ LABEL_114:
     v33 = 0;
   }
 
-  v102 = a4;
-  v103 = v9;
-  if ([v29 supplementaryEdge] || !objc_msgSend(v29, "supplementaryMayBeHidden"))
+  sidesCopy = sides;
+  v103 = statesCopy;
+  if ([configuration2 supplementaryEdge] || !objc_msgSend(configuration2, "supplementaryMayBeHidden"))
   {
     v30 = 0;
     goto LABEL_12;
   }
 
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   if (v34 <= 0.0)
   {
-    [v8 supplementaryOffscreenWidth];
+    [requestCopy supplementaryOffscreenWidth];
     if (v35 <= 0.0)
     {
 LABEL_12:
@@ -973,12 +973,12 @@ LABEL_12:
 
   LOBYTE(v30) = 1;
 LABEL_13:
-  LODWORD(v98) = v12;
+  LODWORD(v98) = _leadingEntirelyOverlapsMain;
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v37 = v9;
+  v37 = statesCopy;
   v38 = [v37 countByEnumeratingWithState:&v108 objects:v113 count:16];
   if (v38)
   {
@@ -1032,21 +1032,21 @@ LABEL_13:
     v42 = 0.0;
   }
 
-  [v8 leadingWidth];
+  [requestCopy leadingWidth];
   v50 = v49;
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   v52 = v51;
   if (v33)
   {
-    [v8 leadingOffscreenWidth];
-    a4 = v102;
+    [requestCopy leadingOffscreenWidth];
+    sides = sidesCopy;
     v53 = v98;
     if (v54 <= 0.0)
     {
       v55 = 0;
       if (v42 > 0.0 && v50 < v42)
       {
-        v55 = v102 | (v50 > 0.0);
+        v55 = sidesCopy | (v50 > 0.0);
       }
     }
 
@@ -1059,7 +1059,7 @@ LABEL_13:
   else
   {
     v55 = 0;
-    a4 = v102;
+    sides = sidesCopy;
     v53 = v98;
   }
 
@@ -1072,7 +1072,7 @@ LABEL_13:
 
   if ((v57 & 1) == 0 && v52 < v41)
   {
-    v56 = v52 > 0.0 || (a4 & 5) == 5;
+    v56 = v52 > 0.0 || (sides & 5) == 5;
   }
 
   v36 = 0.0;
@@ -1093,7 +1093,7 @@ LABEL_13:
   {
     [v11 setSupplementaryWidth:v41];
     [v11 setSupplementaryDragOffset:v41 - v52];
-    if (v101)
+    if (_supplementaryEntirelyOverlapsMain)
     {
       [v11 _setSupplementaryOverlayWidth:v41];
     }
@@ -1101,10 +1101,10 @@ LABEL_13:
 
   else
   {
-    [v8 supplementaryOffscreenWidth];
+    [requestCopy supplementaryOffscreenWidth];
     if (v61 > 0.0)
     {
-      [v8 supplementaryWidth];
+      [requestCopy supplementaryWidth];
       if (v62 == 0.0)
       {
         [v11 supplementaryOffscreenWidth];
@@ -1113,7 +1113,7 @@ LABEL_13:
     }
   }
 
-  v9 = v103;
+  statesCopy = v103;
   if (v36 != 0.0)
   {
     [v11 supplementaryDragOffset];
@@ -1121,13 +1121,13 @@ LABEL_13:
   }
 
 LABEL_60:
-  v64 = (a4 >> 1) & 1;
-  if ([v29 trailingMayBeHidden])
+  v64 = (sides >> 1) & 1;
+  if ([configuration2 trailingMayBeHidden])
   {
-    [v8 trailingWidth];
-    if (v65 <= 0.0 && ([v8 trailingOffscreenWidth], v66 <= 0.0))
+    [requestCopy trailingWidth];
+    if (v65 <= 0.0 && ([requestCopy trailingOffscreenWidth], v66 <= 0.0))
     {
-      v67 = (a4 >> 1) & 1;
+      v67 = (sides >> 1) & 1;
     }
 
     else
@@ -1141,17 +1141,17 @@ LABEL_60:
     LODWORD(v67) = 0;
   }
 
-  if ([v29 supplementaryEdge] != 1 || !objc_msgSend(v29, "supplementaryMayBeHidden"))
+  if ([configuration2 supplementaryEdge] != 1 || !objc_msgSend(configuration2, "supplementaryMayBeHidden"))
   {
     LODWORD(v69) = 0;
     goto LABEL_71;
   }
 
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   if (v68 <= 0.0)
   {
-    [v8 supplementaryOffscreenWidth];
-    v69 = (a4 >> 1) & 1;
+    [requestCopy supplementaryOffscreenWidth];
+    v69 = (sides >> 1) & 1;
     if (v70 <= 0.0)
     {
 LABEL_71:
@@ -1171,7 +1171,7 @@ LABEL_72:
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v71 = v9;
+  v71 = statesCopy;
   v72 = [v71 countByEnumeratingWithState:&v104 objects:v112 count:16];
   if (v72)
   {
@@ -1225,13 +1225,13 @@ LABEL_72:
     v76 = 0.0;
   }
 
-  [v8 trailingWidth];
+  [requestCopy trailingWidth];
   v84 = v83;
-  [v8 supplementaryWidth];
+  [requestCopy supplementaryWidth];
   v86 = v85;
   if (v67)
   {
-    [v8 trailingOffscreenWidth];
+    [requestCopy trailingOffscreenWidth];
     if (v87 <= 0.0)
     {
       v88 = 0;
@@ -1269,7 +1269,7 @@ LABEL_72:
 
   if ((v90 & 1) == 0 && v86 < v75)
   {
-    v89 = v86 > 0.0 || (v102 & 6) == 6;
+    v89 = v86 > 0.0 || (sidesCopy & 6) == 6;
   }
 
   if (v88)
@@ -1282,7 +1282,7 @@ LABEL_72:
     }
 
     [v11 setTrailingDragOffset:{v76 - v84 - v36, v99}];
-    if (v100)
+    if (_trailingEntirelyOverlapsMain)
     {
       [v11 _setTrailingOverlayWidth:v76];
     }
@@ -1292,7 +1292,7 @@ LABEL_72:
   {
     [v11 setSupplementaryWidth:v75];
     [v11 setSupplementaryDragOffset:v75 - v86];
-    if (v101)
+    if (_supplementaryEntirelyOverlapsMain)
     {
       [v11 _setSupplementaryOverlayWidth:v75];
     }
@@ -1300,10 +1300,10 @@ LABEL_72:
 
   else
   {
-    [v8 supplementaryOffscreenWidth];
+    [requestCopy supplementaryOffscreenWidth];
     if (v94 > 0.0)
     {
-      [v8 supplementaryWidth];
+      [requestCopy supplementaryWidth];
       if (v95 == 0.0)
       {
         [v11 supplementaryOffscreenWidth];
@@ -1312,7 +1312,7 @@ LABEL_72:
     }
   }
 
-  v9 = v103;
+  statesCopy = v103;
   if (v36 != 0.0)
   {
     [v11 supplementaryDragOffset];

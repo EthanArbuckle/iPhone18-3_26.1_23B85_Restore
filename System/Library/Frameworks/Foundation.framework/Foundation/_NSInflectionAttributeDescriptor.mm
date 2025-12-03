@@ -1,16 +1,16 @@
 @interface _NSInflectionAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSInflectionAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
   if (_NSIsNSNumber())
   {
-    if ([a3 BOOLValue])
+    if ([value BOOLValue])
     {
-      return a3;
+      return value;
     }
 
     else
@@ -21,7 +21,7 @@
 
   else if (_NSIsNSDictionary())
   {
-    result = [[NSMorphology alloc] _initWithExternalRepresentationDictionary:a3];
+    result = [[NSMorphology alloc] _initWithExternalRepresentationDictionary:value];
     if (result)
     {
       v5 = [[NSInflectionRuleExplicit alloc] initWithMorphology:result];

@@ -1,7 +1,7 @@
 @interface RecordingTimeDisplayView
-- (RecordingTimeDisplayView)initWithFrame:(CGRect)a3;
+- (RecordingTimeDisplayView)initWithFrame:(CGRect)frame;
 - (id)timerLabelFont;
-- (void)contentSizeCategoryChanged:(id)a3;
+- (void)contentSizeCategoryChanged:(id)changed;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)updateConstraints;
@@ -9,11 +9,11 @@
 
 @implementation RecordingTimeDisplayView
 
-- (RecordingTimeDisplayView)initWithFrame:(CGRect)a3
+- (RecordingTimeDisplayView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = RecordingTimeDisplayView;
-  v3 = [(RecordingTimeDisplayView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RecordingTimeDisplayView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -53,7 +53,7 @@
   [(RecordingTimeDisplayView *)&v4 dealloc];
 }
 
-- (void)contentSizeCategoryChanged:(id)a3
+- (void)contentSizeCategoryChanged:(id)changed
 {
   [(RecordingTimeDisplayView *)self setNeedsLayout];
 
@@ -65,14 +65,14 @@
   v9.receiver = self;
   v9.super_class = RecordingTimeDisplayView;
   [(RecordingTimeDisplayView *)&v9 layoutSubviews];
-  v3 = [(RecordingTimeDisplayView *)self timerLabelFont];
-  v4 = [(RecordingTimeDisplayView *)self timerLabel];
-  [v4 setFont:v3];
+  timerLabelFont = [(RecordingTimeDisplayView *)self timerLabelFont];
+  timerLabel = [(RecordingTimeDisplayView *)self timerLabel];
+  [timerLabel setFont:timerLabelFont];
 
-  v5 = [UIApp preferredContentSizeCategory];
-  LODWORD(v4) = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  LODWORD(timerLabel) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  if (v4)
+  if (timerLabel)
   {
     v6 = 4.5;
   }
@@ -82,15 +82,15 @@
     v6 = 2.5;
   }
 
-  v7 = [(RecordingTimeDisplayView *)self dotView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v6];
+  dotView = [(RecordingTimeDisplayView *)self dotView];
+  layer = [dotView layer];
+  [layer setCornerRadius:v6];
 }
 
 - (id)timerLabelFont
 {
-  v2 = [UIApp preferredContentSizeCategory];
-  v3 = [UIFont appropriateContentSizeCategoryForCategory:v2 maxCategory:UIContentSizeCategoryAccessibilityMedium];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v3 = [UIFont appropriateContentSizeCategoryForCategory:preferredContentSizeCategory maxCategory:UIContentSizeCategoryAccessibilityMedium];
   v4 = CTFontDescriptorCreateWithTextStyle();
   v12 = UIFontDescriptorTraitsAttribute;
   v10 = UIFontSymbolicTrait;
@@ -110,18 +110,18 @@
   v47.receiver = self;
   v47.super_class = RecordingTimeDisplayView;
   [(RecordingTimeDisplayView *)&v47 updateConstraints];
-  v3 = [(RecordingTimeDisplayView *)self constraints];
+  constraints = [(RecordingTimeDisplayView *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
-    v4 = [(RecordingTimeDisplayView *)self constraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    constraints2 = [(RecordingTimeDisplayView *)self constraints];
+    [NSLayoutConstraint deactivateConstraints:constraints2];
 
     [(RecordingTimeDisplayView *)self setConstraints:0];
   }
 
-  v5 = [UIApp preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = 9.0;
   }
@@ -132,66 +132,66 @@
   }
 
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [(RecordingTimeDisplayView *)self dotView];
-  v9 = [v8 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:v6];
+  dotView = [(RecordingTimeDisplayView *)self dotView];
+  widthAnchor = [dotView widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:v6];
   [v7 addObject:v10];
 
-  v11 = [(RecordingTimeDisplayView *)self dotView];
-  v12 = [v11 heightAnchor];
-  v13 = [v12 constraintEqualToConstant:v6];
+  dotView2 = [(RecordingTimeDisplayView *)self dotView];
+  heightAnchor = [dotView2 heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:v6];
   [v7 addObject:v13];
 
-  v14 = [(RecordingTimeDisplayView *)self dotView];
-  v15 = [v14 leadingAnchor];
-  v16 = [(RecordingTimeDisplayView *)self leadingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  dotView3 = [(RecordingTimeDisplayView *)self dotView];
+  leadingAnchor = [dotView3 leadingAnchor];
+  leadingAnchor2 = [(RecordingTimeDisplayView *)self leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v7 addObject:v17];
 
-  v18 = [(RecordingTimeDisplayView *)self dotView];
-  v19 = [v18 centerYAnchor];
-  v20 = [(RecordingTimeDisplayView *)self centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  dotView4 = [(RecordingTimeDisplayView *)self dotView];
+  centerYAnchor = [dotView4 centerYAnchor];
+  centerYAnchor2 = [(RecordingTimeDisplayView *)self centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v7 addObject:v21];
 
-  v22 = [(RecordingTimeDisplayView *)self timerLabel];
-  v23 = [v22 leadingAnchor];
-  v24 = [(RecordingTimeDisplayView *)self dotView];
-  v25 = [v24 trailingAnchor];
-  v26 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v26);
+  timerLabel = [(RecordingTimeDisplayView *)self timerLabel];
+  leadingAnchor3 = [timerLabel leadingAnchor];
+  dotView5 = [(RecordingTimeDisplayView *)self dotView];
+  trailingAnchor = [dotView5 trailingAnchor];
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
   v28 = 4.0;
   if (IsAccessibilityCategory)
   {
     v28 = 6.0;
   }
 
-  v29 = [v23 constraintEqualToAnchor:v25 constant:v28];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v28];
   [v7 addObject:v29];
 
-  v30 = [(RecordingTimeDisplayView *)self timerLabel];
-  v31 = [v30 centerYAnchor];
-  v32 = [(RecordingTimeDisplayView *)self dotView];
-  v33 = [v32 centerYAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  timerLabel2 = [(RecordingTimeDisplayView *)self timerLabel];
+  centerYAnchor3 = [timerLabel2 centerYAnchor];
+  dotView6 = [(RecordingTimeDisplayView *)self dotView];
+  centerYAnchor4 = [dotView6 centerYAnchor];
+  v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v7 addObject:v34];
 
-  v35 = [(RecordingTimeDisplayView *)self timerLabel];
-  v36 = [v35 trailingAnchor];
-  v37 = [(RecordingTimeDisplayView *)self trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  timerLabel3 = [(RecordingTimeDisplayView *)self timerLabel];
+  trailingAnchor2 = [timerLabel3 trailingAnchor];
+  trailingAnchor3 = [(RecordingTimeDisplayView *)self trailingAnchor];
+  v38 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v7 addObject:v38];
 
-  v39 = [(RecordingTimeDisplayView *)self timerLabel];
-  v40 = [v39 topAnchor];
-  v41 = [(RecordingTimeDisplayView *)self topAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  timerLabel4 = [(RecordingTimeDisplayView *)self timerLabel];
+  topAnchor = [timerLabel4 topAnchor];
+  topAnchor2 = [(RecordingTimeDisplayView *)self topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v7 addObject:v42];
 
-  v43 = [(RecordingTimeDisplayView *)self timerLabel];
-  v44 = [v43 bottomAnchor];
-  v45 = [(RecordingTimeDisplayView *)self bottomAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  timerLabel5 = [(RecordingTimeDisplayView *)self timerLabel];
+  bottomAnchor = [timerLabel5 bottomAnchor];
+  bottomAnchor2 = [(RecordingTimeDisplayView *)self bottomAnchor];
+  v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v7 addObject:v46];
 
   [NSLayoutConstraint activateConstraints:v7];

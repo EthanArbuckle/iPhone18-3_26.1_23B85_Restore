@@ -1,84 +1,84 @@
 @interface CPLPrequeliteVariable
-+ (CPLPrequeliteVariable)variableWithName:(id)a3 defaultValue:(id)a4 forTable:(id)a5 type:(id)a6;
-+ (CPLPrequeliteVariable)variableWithName:(id)a3 defaultValue:(id)a4 type:(id)a5;
-+ (id)indexVariableForVariableWithName:(id)a3 forTable:(id)a4;
-- (BOOL)hasCachedValueForIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CPLPrequeliteVariable)initWithName:(id)a3 defaultValue:(id)a4 table:(id)a5 type:(id)a6;
++ (CPLPrequeliteVariable)variableWithName:(id)name defaultValue:(id)value forTable:(id)table type:(id)type;
++ (CPLPrequeliteVariable)variableWithName:(id)name defaultValue:(id)value type:(id)type;
++ (id)indexVariableForVariableWithName:(id)name forTable:(id)table;
+- (BOOL)hasCachedValueForIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (CPLPrequeliteVariable)initWithName:(id)name defaultValue:(id)value table:(id)table type:(id)type;
 - (NSString)description;
-- (id)bindableValueForValue:(id)a3;
-- (id)cachedValueForIdentifier:(id)a3;
-- (id)columnDefinitionWithDefaultValue:(id)a3;
+- (id)bindableValueForValue:(id)value;
+- (id)cachedValueForIdentifier:(id)identifier;
+- (id)columnDefinitionWithDefaultValue:(id)value;
 - (id)redactedDescription;
 - (void)discardCachedValue;
-- (void)setCachedValue:(id)a3 forIdentifier:(id)a4;
+- (void)setCachedValue:(id)value forIdentifier:(id)identifier;
 @end
 
 @implementation CPLPrequeliteVariable
 
-+ (CPLPrequeliteVariable)variableWithName:(id)a3 defaultValue:(id)a4 type:(id)a5
++ (CPLPrequeliteVariable)variableWithName:(id)name defaultValue:(id)value type:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 defaultValue:v9 table:0 type:v8];
+  typeCopy = type;
+  valueCopy = value;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy defaultValue:valueCopy table:0 type:typeCopy];
 
   return v11;
 }
 
-+ (CPLPrequeliteVariable)variableWithName:(id)a3 defaultValue:(id)a4 forTable:(id)a5 type:(id)a6
++ (CPLPrequeliteVariable)variableWithName:(id)name defaultValue:(id)value forTable:(id)table type:(id)type
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithName:v13 defaultValue:v12 table:v11 type:v10];
+  typeCopy = type;
+  tableCopy = table;
+  valueCopy = value;
+  nameCopy = name;
+  v14 = [[self alloc] initWithName:nameCopy defaultValue:valueCopy table:tableCopy type:typeCopy];
 
   return v14;
 }
 
-+ (id)indexVariableForVariableWithName:(id)a3 forTable:(id)a4
++ (id)indexVariableForVariableWithName:(id)name forTable:(id)table
 {
-  v6 = a4;
-  v7 = [a3 stringByAppendingString:@".idx"];
-  v8 = [a1 alloc];
+  tableCopy = table;
+  v7 = [name stringByAppendingString:@".idx"];
+  v8 = [self alloc];
   v9 = +[CPLPrequeliteType integerType];
-  v10 = [v8 initWithName:v7 defaultValue:0 table:v6 type:v9];
+  v10 = [v8 initWithName:v7 defaultValue:0 table:tableCopy type:v9];
 
   return v10;
 }
 
-- (CPLPrequeliteVariable)initWithName:(id)a3 defaultValue:(id)a4 table:(id)a5 type:(id)a6
+- (CPLPrequeliteVariable)initWithName:(id)name defaultValue:(id)value table:(id)table type:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  valueCopy = value;
+  tableCopy = table;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = CPLPrequeliteVariable;
   v14 = [(CPLPrequeliteVariable *)&v22 init];
   if (v14)
   {
-    if (v12)
+    if (tableCopy)
     {
-      v15 = [v12 tableName];
-      v16 = [NSString stringWithFormat:@"%@.%@", v15, v10];
+      tableName = [tableCopy tableName];
+      nameCopy = [NSString stringWithFormat:@"%@.%@", tableName, nameCopy];
 
-      v10 = v16;
+      nameCopy = nameCopy;
     }
 
-    objc_storeStrong(&v14->_table, a5);
-    v17 = [v10 copy];
+    objc_storeStrong(&v14->_table, table);
+    v17 = [nameCopy copy];
     variableName = v14->_variableName;
     v14->_variableName = v17;
 
-    objc_storeStrong(&v14->_type, a6);
-    v19 = [PQLNameInjection nameWithString:v10];
+    objc_storeStrong(&v14->_type, type);
+    v19 = [PQLNameInjection nameWithString:nameCopy];
     injection = v14->_injection;
     v14->_injection = v19;
 
-    objc_storeStrong(&v14->_defaultValue, a4);
-    v14->_allowsNull = v11 == 0;
+    objc_storeStrong(&v14->_defaultValue, value);
+    v14->_allowsNull = valueCopy == 0;
   }
 
   return v14;
@@ -117,10 +117,10 @@
   return v3;
 }
 
-- (BOOL)hasCachedValueForIdentifier:(id)a3
+- (BOOL)hasCachedValueForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (self->_shouldNotCacheValue || !self->_cachedValueIdentifier)
   {
     v6 = 0;
@@ -128,17 +128,17 @@
 
   else
   {
-    v6 = [v4 isEqual:?];
+    v6 = [identifierCopy isEqual:?];
   }
 
   return v6;
 }
 
-- (id)cachedValueForIdentifier:(id)a3
+- (id)cachedValueForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_shouldNotCacheValue && self->_cachedValueIdentifier && [v4 isEqual:?])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (!self->_shouldNotCacheValue && self->_cachedValueIdentifier && [identifierCopy isEqual:?])
   {
     v6 = self->_cachedValue;
   }
@@ -151,14 +151,14 @@
   return v6;
 }
 
-- (void)setCachedValue:(id)a3 forIdentifier:(id)a4
+- (void)setCachedValue:(id)value forIdentifier:(id)identifier
 {
-  v8 = a3;
-  v7 = a4;
+  valueCopy = value;
+  identifierCopy = identifier;
   if (!self->_shouldNotCacheValue)
   {
-    objc_storeStrong(&self->_cachedValueIdentifier, a4);
-    objc_storeStrong(&self->_cachedValue, a3);
+    objc_storeStrong(&self->_cachedValueIdentifier, identifier);
+    objc_storeStrong(&self->_cachedValue, value);
   }
 }
 
@@ -171,12 +171,12 @@
   self->_cachedValueIdentifier = 0;
 }
 
-- (id)bindableValueForValue:(id)a3
+- (id)bindableValueForValue:(id)value
 {
-  v4 = a3;
-  if (v4 || self->_allowsNull)
+  valueCopy = value;
+  if (valueCopy || self->_allowsNull)
   {
-    v5 = [(CPLPrequeliteType *)self->_type _bindableValueForValue:v4];
+    defaultValueForNull = [(CPLPrequeliteType *)self->_type _bindableValueForValue:valueCopy];
   }
 
   else
@@ -184,26 +184,26 @@
     defaultValue = self->_defaultValue;
     if (defaultValue)
     {
-      v5 = defaultValue;
+      defaultValueForNull = defaultValue;
     }
 
     else
     {
-      v5 = [(CPLPrequeliteType *)self->_type defaultValueForNull];
+      defaultValueForNull = [(CPLPrequeliteType *)self->_type defaultValueForNull];
     }
   }
 
-  v6 = v5;
+  v6 = defaultValueForNull;
 
   return v6;
 }
 
-- (id)columnDefinitionWithDefaultValue:(id)a3
+- (id)columnDefinitionWithDefaultValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v4 = self->_defaultValue;
+    valueCopy = self->_defaultValue;
   }
 
   v5 = objc_alloc_init(NSMutableData);
@@ -224,7 +224,7 @@
     [v5 appendBytes:" NOT NULL" length:9];
   }
 
-  if (v4)
+  if (valueCopy)
   {
     [v5 appendBytes:" DEFAULT " length:9];
     v8 = [(CPLPrequeliteType *)self->_type rawInjectionForValue:self->_defaultValue];
@@ -237,10 +237,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -248,9 +248,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4->_type)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy->_type)
     {
-      v5 = [(NSString *)self->_variableName isEqualToString:v4->_variableName];
+      v5 = [(NSString *)self->_variableName isEqualToString:equalCopy->_variableName];
     }
 
     else

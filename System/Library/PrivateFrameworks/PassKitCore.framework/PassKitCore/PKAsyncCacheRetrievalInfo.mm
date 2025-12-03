@@ -1,8 +1,8 @@
 @interface PKAsyncCacheRetrievalInfo
 - (PKAsyncCacheRetrievalInfo)init;
-- (id)synchronouslyRetrieve:(id)a3 outDeliveryBlocks:(id *)a4;
-- (void)addDeliveryBlock:(id)a3;
-- (void)deliverItem:(id)a3;
+- (id)synchronouslyRetrieve:(id)retrieve outDeliveryBlocks:(id *)blocks;
+- (void)addDeliveryBlock:(id)block;
+- (void)deliverItem:(id)item;
 @end
 
 @implementation PKAsyncCacheRetrievalInfo
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (void)addDeliveryBlock:(id)a3
+- (void)addDeliveryBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v9 = v4;
+    v9 = blockCopy;
     os_unfair_lock_lock(&self->_lock);
     if (self->_itemFetched)
     {
@@ -48,13 +48,13 @@
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    v4 = v9;
+    blockCopy = v9;
   }
 }
 
-- (id)synchronouslyRetrieve:(id)a3 outDeliveryBlocks:(id *)a4
+- (id)synchronouslyRetrieve:(id)retrieve outDeliveryBlocks:(id *)blocks
 {
-  v6 = a3;
+  retrieveCopy = retrieve;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -65,7 +65,7 @@
   if (self->_itemFetched)
   {
     objc_storeStrong(v13 + 5, self->_item);
-    if (!a4)
+    if (!blocks)
     {
       goto LABEL_10;
     }
@@ -73,19 +73,19 @@
     goto LABEL_7;
   }
 
-  if (v6)
+  if (retrieveCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __69__PKAsyncCacheRetrievalInfo_synchronouslyRetrieve_outDeliveryBlocks___block_invoke;
     v11[3] = &unk_1E79CA668;
     v11[4] = &v12;
-    v6[2](v6, v11);
+    retrieveCopy[2](retrieveCopy, v11);
   }
 
   objc_storeStrong(&self->_item, v13[5]);
   self->_itemFetched = 1;
-  if (a4)
+  if (blocks)
   {
 LABEL_7:
     v7 = [(NSMutableArray *)self->_deliveryBlocks count];
@@ -94,8 +94,8 @@ LABEL_7:
       v7 = [(NSMutableArray *)self->_deliveryBlocks copy];
     }
 
-    v8 = *a4;
-    *a4 = v7;
+    v8 = *blocks;
+    *blocks = v7;
 
     [(NSMutableArray *)self->_deliveryBlocks removeAllObjects];
   }
@@ -108,12 +108,12 @@ LABEL_10:
   return v9;
 }
 
-- (void)deliverItem:(id)a3
+- (void)deliverItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_item, a3);
+  objc_storeStrong(&self->_item, item);
   self->_itemFetched = 1;
   if ([(NSMutableArray *)self->_deliveryBlocks count])
   {

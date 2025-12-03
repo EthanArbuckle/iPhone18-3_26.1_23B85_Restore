@@ -1,45 +1,45 @@
 @interface DTVMTrackingService
-+ (void)registerCapabilities:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
 - (id)requestVMSnapshot;
-- (void)messageReceived:(id)a3;
-- (void)setTargetPid:(id)a3 referenceDate:(id)a4;
+- (void)messageReceived:(id)received;
+- (void)setTargetPid:(id)pid referenceDate:(id)date;
 @end
 
 @implementation DTVMTrackingService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.instruments.server.services.vmtracking" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.vmtracking.immediate" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.vmtracking.deferred" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.dt.services.capabilities.vmtracking" withVersion:1 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.vmtracking" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.vmtracking.immediate" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.vmtracking.deferred" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.dt.services.capabilities.vmtracking" withVersion:1 forClass:self];
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  v4 = a3;
-  if (*MEMORY[0x277D03698] == v4)
+  receivedCopy = received;
+  if (*MEMORY[0x277D03698] == receivedCopy)
   {
     targetTask = self->_targetTask;
     if (targetTask + 1 >= 2)
     {
-      v6 = v4;
+      v6 = receivedCopy;
       mach_port_deallocate(*MEMORY[0x277D85F48], targetTask);
-      v4 = v6;
+      receivedCopy = v6;
       self->_targetTask = 0;
     }
   }
 }
 
-- (void)setTargetPid:(id)a3 referenceDate:(id)a4
+- (void)setTargetPid:(id)pid referenceDate:(id)date
 {
-  v6 = a3;
-  v5 = +[DTInstrumentServer taskForPid:](DTInstrumentServer, "taskForPid:", [v6 intValue]);
+  pidCopy = pid;
+  v5 = +[DTInstrumentServer taskForPid:](DTInstrumentServer, "taskForPid:", [pidCopy intValue]);
   self->_targetTask = v5;
   if (v5 + 1 >= 2)
   {
-    self->_targetPid = [v6 intValue];
+    self->_targetPid = [pidCopy intValue];
   }
 }
 

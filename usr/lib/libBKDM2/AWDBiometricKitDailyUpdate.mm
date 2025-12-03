@@ -1,77 +1,77 @@
 @interface AWDBiometricKitDailyUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)baseTemplateFeatureCountAtIndex:(unint64_t)a3;
-- (unsigned)bioCheckInfoAtIndex:(unint64_t)a3;
-- (unsigned)bioCheckResultAtIndex:(unint64_t)a3;
-- (unsigned)matchingBinCountsAtIndex:(unint64_t)a3;
-- (unsigned)matchingIdentityCountsAtIndex:(unint64_t)a3;
-- (unsigned)matchingTemplateTypeCountsAtIndex:(unint64_t)a3;
-- (unsigned)onlineUpdateTemplateFeatureCountAtIndex:(unint64_t)a3;
-- (unsigned)passcodeUpdateAtIndex:(unint64_t)a3;
-- (unsigned)passcodeUpdateTemplateFeatureCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)baseTemplateFeatureCountAtIndex:(unint64_t)index;
+- (unsigned)bioCheckInfoAtIndex:(unint64_t)index;
+- (unsigned)bioCheckResultAtIndex:(unint64_t)index;
+- (unsigned)matchingBinCountsAtIndex:(unint64_t)index;
+- (unsigned)matchingIdentityCountsAtIndex:(unint64_t)index;
+- (unsigned)matchingTemplateTypeCountsAtIndex:(unint64_t)index;
+- (unsigned)onlineUpdateTemplateFeatureCountAtIndex:(unint64_t)index;
+- (unsigned)passcodeUpdateAtIndex:(unint64_t)index;
+- (unsigned)passcodeUpdateTemplateFeatureCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApplePayEnabled:(BOOL)a3;
-- (void)setHasAttentionDetectionEnabled:(BOOL)a3;
-- (void)setHasAutoRetryEnabled:(BOOL)a3;
-- (void)setHasBaseTemplateFeatureCountType0Identity0:(BOOL)a3;
-- (void)setHasBaseTemplateFeatureCountType0Identity1:(BOOL)a3;
-- (void)setHasBaseTemplateFeatureCountType1Identity0:(BOOL)a3;
-- (void)setHasBaseTemplateFeatureCountType1Identity1:(BOOL)a3;
-- (void)setHasBioLockoutCount:(BOOL)a3;
-- (void)setHasCameraInterlock:(BOOL)a3;
-- (void)setHasCombinedSequenceEnabled:(BOOL)a3;
-- (void)setHasEnrolledIdentityCount:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountTotal:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountType0:(BOOL)a3;
-- (void)setHasEnrolledTemplateCountType1:(BOOL)a3;
-- (void)setHasMatchAttemptsFaceDetectedType0:(BOOL)a3;
-- (void)setHasMatchAttemptsFaceDetectedType1:(BOOL)a3;
-- (void)setHasMatchAttemptsFailedType0:(BOOL)a3;
-- (void)setHasMatchAttemptsFailedType1:(BOOL)a3;
-- (void)setHasMatchAttemptsSuccessfulType0:(BOOL)a3;
-- (void)setHasMatchAttemptsSuccessfulType1:(BOOL)a3;
-- (void)setHasMatchAttemptsType0:(BOOL)a3;
-- (void)setHasMatchAttemptsType1:(BOOL)a3;
-- (void)setHasMatchingCountDouble01:(BOOL)a3;
-- (void)setHasMatchingCountDouble02:(BOOL)a3;
-- (void)setHasMatchingCountDouble03:(BOOL)a3;
-- (void)setHasMatchingCountDouble04:(BOOL)a3;
-- (void)setHasMatchingTemplateCountType0Identity0:(BOOL)a3;
-- (void)setHasMatchingTemplateCountType0Identity1:(BOOL)a3;
-- (void)setHasMatchingTemplateCountType1Identity0:(BOOL)a3;
-- (void)setHasMatchingTemplateCountType1Identity1:(BOOL)a3;
-- (void)setHasOnlineUnlockCount:(BOOL)a3;
-- (void)setHasOnlineUnlockCountType0:(BOOL)a3;
-- (void)setHasOnlineUnlockCountType1:(BOOL)a3;
-- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity0:(BOOL)a3;
-- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity1:(BOOL)a3;
-- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity0:(BOOL)a3;
-- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity1:(BOOL)a3;
-- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity0:(BOOL)a3;
-- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity1:(BOOL)a3;
-- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity0:(BOOL)a3;
-- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity1:(BOOL)a3;
-- (void)setHasShortTermUnlockCount:(BOOL)a3;
-- (void)setHasShortTermUnlockCountType0:(BOOL)a3;
-- (void)setHasShortTermUnlockCountType1:(BOOL)a3;
-- (void)setHasStaticUnlockCount:(BOOL)a3;
-- (void)setHasStaticUnlockCountType0:(BOOL)a3;
-- (void)setHasStaticUnlockCountType1:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalMatchAttempts:(BOOL)a3;
-- (void)setHasTotalMatchAttemptsFaceDetected:(BOOL)a3;
-- (void)setHasTotalMatchAttemptsFailed:(BOOL)a3;
-- (void)setHasTotalMatchAttemptsSuccessful:(BOOL)a3;
-- (void)setHasType1MatchEnabled:(BOOL)a3;
-- (void)setHasUnlockEnabled:(BOOL)a3;
-- (void)setHasYogiErrorDays:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasApplePayEnabled:(BOOL)enabled;
+- (void)setHasAttentionDetectionEnabled:(BOOL)enabled;
+- (void)setHasAutoRetryEnabled:(BOOL)enabled;
+- (void)setHasBaseTemplateFeatureCountType0Identity0:(BOOL)identity0;
+- (void)setHasBaseTemplateFeatureCountType0Identity1:(BOOL)identity1;
+- (void)setHasBaseTemplateFeatureCountType1Identity0:(BOOL)identity0;
+- (void)setHasBaseTemplateFeatureCountType1Identity1:(BOOL)identity1;
+- (void)setHasBioLockoutCount:(BOOL)count;
+- (void)setHasCameraInterlock:(BOOL)interlock;
+- (void)setHasCombinedSequenceEnabled:(BOOL)enabled;
+- (void)setHasEnrolledIdentityCount:(BOOL)count;
+- (void)setHasEnrolledTemplateCountTotal:(BOOL)total;
+- (void)setHasEnrolledTemplateCountType0:(BOOL)type0;
+- (void)setHasEnrolledTemplateCountType1:(BOOL)type1;
+- (void)setHasMatchAttemptsFaceDetectedType0:(BOOL)type0;
+- (void)setHasMatchAttemptsFaceDetectedType1:(BOOL)type1;
+- (void)setHasMatchAttemptsFailedType0:(BOOL)type0;
+- (void)setHasMatchAttemptsFailedType1:(BOOL)type1;
+- (void)setHasMatchAttemptsSuccessfulType0:(BOOL)type0;
+- (void)setHasMatchAttemptsSuccessfulType1:(BOOL)type1;
+- (void)setHasMatchAttemptsType0:(BOOL)type0;
+- (void)setHasMatchAttemptsType1:(BOOL)type1;
+- (void)setHasMatchingCountDouble01:(BOOL)double01;
+- (void)setHasMatchingCountDouble02:(BOOL)double02;
+- (void)setHasMatchingCountDouble03:(BOOL)double03;
+- (void)setHasMatchingCountDouble04:(BOOL)double04;
+- (void)setHasMatchingTemplateCountType0Identity0:(BOOL)identity0;
+- (void)setHasMatchingTemplateCountType0Identity1:(BOOL)identity1;
+- (void)setHasMatchingTemplateCountType1Identity0:(BOOL)identity0;
+- (void)setHasMatchingTemplateCountType1Identity1:(BOOL)identity1;
+- (void)setHasOnlineUnlockCount:(BOOL)count;
+- (void)setHasOnlineUnlockCountType0:(BOOL)type0;
+- (void)setHasOnlineUnlockCountType1:(BOOL)type1;
+- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity0:(BOOL)identity0;
+- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity1:(BOOL)identity1;
+- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity0:(BOOL)identity0;
+- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity1:(BOOL)identity1;
+- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity0:(BOOL)identity0;
+- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity1:(BOOL)identity1;
+- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity0:(BOOL)identity0;
+- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity1:(BOOL)identity1;
+- (void)setHasShortTermUnlockCount:(BOOL)count;
+- (void)setHasShortTermUnlockCountType0:(BOOL)type0;
+- (void)setHasShortTermUnlockCountType1:(BOOL)type1;
+- (void)setHasStaticUnlockCount:(BOOL)count;
+- (void)setHasStaticUnlockCountType0:(BOOL)type0;
+- (void)setHasStaticUnlockCountType1:(BOOL)type1;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalMatchAttempts:(BOOL)attempts;
+- (void)setHasTotalMatchAttemptsFaceDetected:(BOOL)detected;
+- (void)setHasTotalMatchAttemptsFailed:(BOOL)failed;
+- (void)setHasTotalMatchAttemptsSuccessful:(BOOL)successful;
+- (void)setHasType1MatchEnabled:(BOOL)enabled;
+- (void)setHasUnlockEnabled:(BOOL)enabled;
+- (void)setHasYogiErrorDays:(BOOL)days;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBiometricKitDailyUpdate
@@ -92,10 +92,10 @@
   [(AWDBiometricKitDailyUpdate *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 2;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -103,58 +103,58 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (unsigned)baseTemplateFeatureCountAtIndex:(unint64_t)a3
+- (unsigned)baseTemplateFeatureCountAtIndex:(unint64_t)index
 {
   p_baseTemplateFeatureCounts = &self->_baseTemplateFeatureCounts;
   count = self->_baseTemplateFeatureCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_baseTemplateFeatureCounts->list[a3];
+  return p_baseTemplateFeatureCounts->list[index];
 }
 
-- (unsigned)onlineUpdateTemplateFeatureCountAtIndex:(unint64_t)a3
+- (unsigned)onlineUpdateTemplateFeatureCountAtIndex:(unint64_t)index
 {
   p_onlineUpdateTemplateFeatureCounts = &self->_onlineUpdateTemplateFeatureCounts;
   count = self->_onlineUpdateTemplateFeatureCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_onlineUpdateTemplateFeatureCounts->list[a3];
+  return p_onlineUpdateTemplateFeatureCounts->list[index];
 }
 
-- (unsigned)passcodeUpdateTemplateFeatureCountAtIndex:(unint64_t)a3
+- (unsigned)passcodeUpdateTemplateFeatureCountAtIndex:(unint64_t)index
 {
   p_passcodeUpdateTemplateFeatureCounts = &self->_passcodeUpdateTemplateFeatureCounts;
   count = self->_passcodeUpdateTemplateFeatureCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_passcodeUpdateTemplateFeatureCounts->list[a3];
+  return p_passcodeUpdateTemplateFeatureCounts->list[index];
 }
 
-- (void)setHasUnlockEnabled:(BOOL)a3
+- (void)setHasUnlockEnabled:(BOOL)enabled
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -162,10 +162,10 @@
   self->_has = (*&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasApplePayEnabled:(BOOL)a3
+- (void)setHasApplePayEnabled:(BOOL)enabled
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -173,10 +173,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasAttentionDetectionEnabled:(BOOL)a3
+- (void)setHasAttentionDetectionEnabled:(BOOL)enabled
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -184,10 +184,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchingCountDouble01:(BOOL)a3
+- (void)setHasMatchingCountDouble01:(BOOL)double01
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!double01)
   {
     v3 = 0;
   }
@@ -195,10 +195,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasMatchingCountDouble02:(BOOL)a3
+- (void)setHasMatchingCountDouble02:(BOOL)double02
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!double02)
   {
     v3 = 0;
   }
@@ -206,10 +206,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasMatchingCountDouble03:(BOOL)a3
+- (void)setHasMatchingCountDouble03:(BOOL)double03
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!double03)
   {
     v3 = 0;
   }
@@ -217,10 +217,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasMatchingCountDouble04:(BOOL)a3
+- (void)setHasMatchingCountDouble04:(BOOL)double04
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!double04)
   {
     v3 = 0;
   }
@@ -228,10 +228,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasStaticUnlockCount:(BOOL)a3
+- (void)setHasStaticUnlockCount:(BOOL)count
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -239,10 +239,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOnlineUnlockCount:(BOOL)a3
+- (void)setHasOnlineUnlockCount:(BOOL)count
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -250,10 +250,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasShortTermUnlockCount:(BOOL)a3
+- (void)setHasShortTermUnlockCount:(BOOL)count
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -261,42 +261,42 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (unsigned)matchingBinCountsAtIndex:(unint64_t)a3
+- (unsigned)matchingBinCountsAtIndex:(unint64_t)index
 {
   p_matchingBinCounts = &self->_matchingBinCounts;
   count = self->_matchingBinCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matchingBinCounts->list[a3];
+  return p_matchingBinCounts->list[index];
 }
 
-- (unsigned)matchingTemplateTypeCountsAtIndex:(unint64_t)a3
+- (unsigned)matchingTemplateTypeCountsAtIndex:(unint64_t)index
 {
   p_matchingTemplateTypeCounts = &self->_matchingTemplateTypeCounts;
   count = self->_matchingTemplateTypeCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matchingTemplateTypeCounts->list[a3];
+  return p_matchingTemplateTypeCounts->list[index];
 }
 
-- (void)setHasCameraInterlock:(BOOL)a3
+- (void)setHasCameraInterlock:(BOOL)interlock
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!interlock)
   {
     v3 = 0;
   }
@@ -304,58 +304,58 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (unsigned)bioCheckInfoAtIndex:(unint64_t)a3
+- (unsigned)bioCheckInfoAtIndex:(unint64_t)index
 {
   p_bioCheckInfos = &self->_bioCheckInfos;
   count = self->_bioCheckInfos.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_bioCheckInfos->list[a3];
+  return p_bioCheckInfos->list[index];
 }
 
-- (unsigned)bioCheckResultAtIndex:(unint64_t)a3
+- (unsigned)bioCheckResultAtIndex:(unint64_t)index
 {
   p_bioCheckResults = &self->_bioCheckResults;
   count = self->_bioCheckResults.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_bioCheckResults->list[a3];
+  return p_bioCheckResults->list[index];
 }
 
-- (unsigned)passcodeUpdateAtIndex:(unint64_t)a3
+- (unsigned)passcodeUpdateAtIndex:(unint64_t)index
 {
   p_passcodeUpdates = &self->_passcodeUpdates;
   count = self->_passcodeUpdates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_passcodeUpdates->list[a3];
+  return p_passcodeUpdates->list[index];
 }
 
-- (void)setHasEnrolledIdentityCount:(BOOL)a3
+- (void)setHasEnrolledIdentityCount:(BOOL)count
 {
   v3 = 128;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -363,26 +363,26 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (unsigned)matchingIdentityCountsAtIndex:(unint64_t)a3
+- (unsigned)matchingIdentityCountsAtIndex:(unint64_t)index
 {
   p_matchingIdentityCounts = &self->_matchingIdentityCounts;
   count = self->_matchingIdentityCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x29EDB8DD0];
     v7 = *MEMORY[0x29EDB8D10];
-    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matchingIdentityCounts->list[a3];
+  return p_matchingIdentityCounts->list[index];
 }
 
-- (void)setHasCombinedSequenceEnabled:(BOOL)a3
+- (void)setHasCombinedSequenceEnabled:(BOOL)enabled
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -390,10 +390,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasBioLockoutCount:(BOOL)a3
+- (void)setHasBioLockoutCount:(BOOL)count
 {
   v3 = 64;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -401,10 +401,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasAutoRetryEnabled:(BOOL)a3
+- (void)setHasAutoRetryEnabled:(BOOL)enabled
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -412,10 +412,10 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasYogiErrorDays:(BOOL)a3
+- (void)setHasYogiErrorDays:(BOOL)days
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!days)
   {
     v3 = 0;
   }
@@ -423,10 +423,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalMatchAttempts:(BOOL)a3
+- (void)setHasTotalMatchAttempts:(BOOL)attempts
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!attempts)
   {
     v3 = 0;
   }
@@ -434,10 +434,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalMatchAttemptsSuccessful:(BOOL)a3
+- (void)setHasTotalMatchAttemptsSuccessful:(BOOL)successful
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!successful)
   {
     v3 = 0;
   }
@@ -445,10 +445,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalMatchAttemptsFailed:(BOOL)a3
+- (void)setHasTotalMatchAttemptsFailed:(BOOL)failed
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!failed)
   {
     v3 = 0;
   }
@@ -456,10 +456,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalMatchAttemptsFaceDetected:(BOOL)a3
+- (void)setHasTotalMatchAttemptsFaceDetected:(BOOL)detected
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!detected)
   {
     v3 = 0;
   }
@@ -467,10 +467,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsType0:(BOOL)a3
+- (void)setHasMatchAttemptsType0:(BOOL)type0
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -478,10 +478,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsSuccessfulType0:(BOOL)a3
+- (void)setHasMatchAttemptsSuccessfulType0:(BOOL)type0
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -489,10 +489,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsFailedType0:(BOOL)a3
+- (void)setHasMatchAttemptsFailedType0:(BOOL)type0
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -500,10 +500,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsFaceDetectedType0:(BOOL)a3
+- (void)setHasMatchAttemptsFaceDetectedType0:(BOOL)type0
 {
   v3 = 2048;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -511,10 +511,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasMatchAttemptsType1:(BOOL)a3
+- (void)setHasMatchAttemptsType1:(BOOL)type1
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -522,10 +522,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsSuccessfulType1:(BOOL)a3
+- (void)setHasMatchAttemptsSuccessfulType1:(BOOL)type1
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -533,10 +533,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsFailedType1:(BOOL)a3
+- (void)setHasMatchAttemptsFailedType1:(BOOL)type1
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -544,10 +544,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasMatchAttemptsFaceDetectedType1:(BOOL)a3
+- (void)setHasMatchAttemptsFaceDetectedType1:(BOOL)type1
 {
   v3 = 4096;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -555,10 +555,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasStaticUnlockCountType0:(BOOL)a3
+- (void)setHasStaticUnlockCountType0:(BOOL)type0
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -566,10 +566,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOnlineUnlockCountType0:(BOOL)a3
+- (void)setHasOnlineUnlockCountType0:(BOOL)type0
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -577,10 +577,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasShortTermUnlockCountType0:(BOOL)a3
+- (void)setHasShortTermUnlockCountType0:(BOOL)type0
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -588,10 +588,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasStaticUnlockCountType1:(BOOL)a3
+- (void)setHasStaticUnlockCountType1:(BOOL)type1
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -599,10 +599,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOnlineUnlockCountType1:(BOOL)a3
+- (void)setHasOnlineUnlockCountType1:(BOOL)type1
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -610,10 +610,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasShortTermUnlockCountType1:(BOOL)a3
+- (void)setHasShortTermUnlockCountType1:(BOOL)type1
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -621,10 +621,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasBaseTemplateFeatureCountType0Identity0:(BOOL)a3
+- (void)setHasBaseTemplateFeatureCountType0Identity0:(BOOL)identity0
 {
   v3 = 4;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -632,10 +632,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity0:(BOOL)a3
+- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity0:(BOOL)identity0
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -643,10 +643,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity0:(BOOL)a3
+- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity0:(BOOL)identity0
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -654,10 +654,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasBaseTemplateFeatureCountType0Identity1:(BOOL)a3
+- (void)setHasBaseTemplateFeatureCountType0Identity1:(BOOL)identity1
 {
   v3 = 8;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -665,10 +665,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity1:(BOOL)a3
+- (void)setHasOnlineUpdateTemplateFeatureCountType0Identity1:(BOOL)identity1
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -676,10 +676,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity1:(BOOL)a3
+- (void)setHasPasscodeUpdateTemplateFeatureCountType0Identity1:(BOOL)identity1
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -687,10 +687,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasBaseTemplateFeatureCountType1Identity0:(BOOL)a3
+- (void)setHasBaseTemplateFeatureCountType1Identity0:(BOOL)identity0
 {
   v3 = 16;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -698,10 +698,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity0:(BOOL)a3
+- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity0:(BOOL)identity0
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -709,10 +709,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity0:(BOOL)a3
+- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity0:(BOOL)identity0
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -720,10 +720,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasBaseTemplateFeatureCountType1Identity1:(BOOL)a3
+- (void)setHasBaseTemplateFeatureCountType1Identity1:(BOOL)identity1
 {
   v3 = 32;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -731,10 +731,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity1:(BOOL)a3
+- (void)setHasOnlineUpdateTemplateFeatureCountType1Identity1:(BOOL)identity1
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -742,10 +742,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity1:(BOOL)a3
+- (void)setHasPasscodeUpdateTemplateFeatureCountType1Identity1:(BOOL)identity1
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -753,10 +753,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasType1MatchEnabled:(BOOL)a3
+- (void)setHasType1MatchEnabled:(BOOL)enabled
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -764,10 +764,10 @@
   self->_has = (*&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountType0:(BOOL)a3
+- (void)setHasEnrolledTemplateCountType0:(BOOL)type0
 {
   v3 = 512;
-  if (!a3)
+  if (!type0)
   {
     v3 = 0;
   }
@@ -775,10 +775,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountType1:(BOOL)a3
+- (void)setHasEnrolledTemplateCountType1:(BOOL)type1
 {
   v3 = 1024;
-  if (!a3)
+  if (!type1)
   {
     v3 = 0;
   }
@@ -786,10 +786,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasEnrolledTemplateCountTotal:(BOOL)a3
+- (void)setHasEnrolledTemplateCountTotal:(BOOL)total
 {
   v3 = 256;
-  if (!a3)
+  if (!total)
   {
     v3 = 0;
   }
@@ -797,10 +797,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasMatchingTemplateCountType0Identity0:(BOOL)a3
+- (void)setHasMatchingTemplateCountType0Identity0:(BOOL)identity0
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -808,10 +808,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasMatchingTemplateCountType0Identity1:(BOOL)a3
+- (void)setHasMatchingTemplateCountType0Identity1:(BOOL)identity1
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -819,10 +819,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasMatchingTemplateCountType1Identity0:(BOOL)a3
+- (void)setHasMatchingTemplateCountType1Identity0:(BOOL)identity0
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!identity0)
   {
     v3 = 0;
   }
@@ -830,10 +830,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasMatchingTemplateCountType1Identity1:(BOOL)a3
+- (void)setHasMatchingTemplateCountType1Identity1:(BOOL)identity1
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!identity1)
   {
     v3 = 0;
   }
@@ -847,35 +847,35 @@
   v8.receiver = self;
   v8.super_class = AWDBiometricKitDailyUpdate;
   v4 = [(AWDBiometricKitDailyUpdate *)&v8 description];
-  v5 = [(AWDBiometricKitDailyUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDBiometricKitDailyUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"baseTemplateFeatureCount"];
+  [dictionary setObject:v5 forKey:@"baseTemplateFeatureCount"];
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"onlineUpdateTemplateFeatureCount"];
+  [dictionary setObject:v6 forKey:@"onlineUpdateTemplateFeatureCount"];
 
   v7 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v7 forKey:@"passcodeUpdateTemplateFeatureCount"];
+  [dictionary setObject:v7 forKey:@"passcodeUpdateTemplateFeatureCount"];
 
   has = self->_has;
   if ((*&has & 0x80000000000000) != 0)
   {
     v22 = [MEMORY[0x29EDBA070] numberWithBool:self->_unlockEnabled];
-    [v3 setObject:v22 forKey:@"unlockEnabled"];
+    [dictionary setObject:v22 forKey:@"unlockEnabled"];
 
     has = self->_has;
     if ((*&has & 0x2000000000000) == 0)
@@ -896,7 +896,7 @@ LABEL_5:
   }
 
   v23 = [MEMORY[0x29EDBA070] numberWithBool:self->_applePayEnabled];
-  [v3 setObject:v23 forKey:@"applePayEnabled"];
+  [dictionary setObject:v23 forKey:@"applePayEnabled"];
 
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
@@ -912,7 +912,7 @@ LABEL_6:
 
 LABEL_65:
   v24 = [MEMORY[0x29EDBA070] numberWithBool:self->_attentionDetectionEnabled];
-  [v3 setObject:v24 forKey:@"attentionDetectionEnabled"];
+  [dictionary setObject:v24 forKey:@"attentionDetectionEnabled"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -928,7 +928,7 @@ LABEL_7:
 
 LABEL_66:
   v25 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingCountDouble01];
-  [v3 setObject:v25 forKey:@"matchingCountDouble01"];
+  [dictionary setObject:v25 forKey:@"matchingCountDouble01"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -944,7 +944,7 @@ LABEL_8:
 
 LABEL_67:
   v26 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingCountDouble02];
-  [v3 setObject:v26 forKey:@"matchingCountDouble02"];
+  [dictionary setObject:v26 forKey:@"matchingCountDouble02"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -960,7 +960,7 @@ LABEL_9:
 
 LABEL_68:
   v27 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingCountDouble03];
-  [v3 setObject:v27 forKey:@"matchingCountDouble03"];
+  [dictionary setObject:v27 forKey:@"matchingCountDouble03"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -976,7 +976,7 @@ LABEL_10:
 
 LABEL_69:
   v28 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingCountDouble04];
-  [v3 setObject:v28 forKey:@"matchingCountDouble04"];
+  [dictionary setObject:v28 forKey:@"matchingCountDouble04"];
 
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
@@ -992,7 +992,7 @@ LABEL_11:
 
 LABEL_70:
   v29 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_staticUnlockCount];
-  [v3 setObject:v29 forKey:@"staticUnlockCount"];
+  [dictionary setObject:v29 forKey:@"staticUnlockCount"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -1008,51 +1008,51 @@ LABEL_12:
 
 LABEL_71:
   v30 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUnlockCount];
-  [v3 setObject:v30 forKey:@"onlineUnlockCount"];
+  [dictionary setObject:v30 forKey:@"onlineUnlockCount"];
 
   if ((*&self->_has & 0x4000000000) != 0)
   {
 LABEL_13:
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_shortTermUnlockCount];
-    [v3 setObject:v9 forKey:@"shortTermUnlockCount"];
+    [dictionary setObject:v9 forKey:@"shortTermUnlockCount"];
   }
 
 LABEL_14:
   v10 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v10 forKey:@"matchingBinCounts"];
+  [dictionary setObject:v10 forKey:@"matchingBinCounts"];
 
   v11 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v11 forKey:@"matchingTemplateTypeCounts"];
+  [dictionary setObject:v11 forKey:@"matchingTemplateTypeCounts"];
 
   if ((*(&self->_has + 6) & 0x10) != 0)
   {
     v12 = [MEMORY[0x29EDBA070] numberWithBool:self->_cameraInterlock];
-    [v3 setObject:v12 forKey:@"cameraInterlock"];
+    [dictionary setObject:v12 forKey:@"cameraInterlock"];
   }
 
   v13 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v13 forKey:@"bioCheckInfo"];
+  [dictionary setObject:v13 forKey:@"bioCheckInfo"];
 
   v14 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v14 forKey:@"bioCheckResult"];
+  [dictionary setObject:v14 forKey:@"bioCheckResult"];
 
   v15 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v15 forKey:@"passcodeUpdate"];
+  [dictionary setObject:v15 forKey:@"passcodeUpdate"];
 
   if ((*&self->_has & 0x80) != 0)
   {
     v16 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledIdentityCount];
-    [v3 setObject:v16 forKey:@"enrolledIdentityCount"];
+    [dictionary setObject:v16 forKey:@"enrolledIdentityCount"];
   }
 
   v17 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v17 forKey:@"matchingIdentityCounts"];
+  [dictionary setObject:v17 forKey:@"matchingIdentityCounts"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20000000000000) != 0)
   {
     v31 = [MEMORY[0x29EDBA070] numberWithBool:self->_combinedSequenceEnabled];
-    [v3 setObject:v31 forKey:@"combinedSequenceEnabled"];
+    [dictionary setObject:v31 forKey:@"combinedSequenceEnabled"];
 
     v18 = self->_has;
     if ((*&v18 & 1) == 0)
@@ -1073,7 +1073,7 @@ LABEL_20:
   }
 
   v32 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_bioLockoutTime];
-  [v3 setObject:v32 forKey:@"bioLockoutTime"];
+  [dictionary setObject:v32 forKey:@"bioLockoutTime"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40) == 0)
@@ -1089,7 +1089,7 @@ LABEL_21:
 
 LABEL_75:
   v33 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_bioLockoutCount];
-  [v3 setObject:v33 forKey:@"bioLockoutCount"];
+  [dictionary setObject:v33 forKey:@"bioLockoutCount"];
 
   v18 = self->_has;
   if ((*&v18 & 0x8000000000000) == 0)
@@ -1105,7 +1105,7 @@ LABEL_22:
 
 LABEL_76:
   v34 = [MEMORY[0x29EDBA070] numberWithBool:self->_autoRetryEnabled];
-  [v3 setObject:v34 forKey:@"autoRetryEnabled"];
+  [dictionary setObject:v34 forKey:@"autoRetryEnabled"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000000000000) == 0)
@@ -1121,7 +1121,7 @@ LABEL_23:
 
 LABEL_77:
   v35 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_yogiErrorDays];
-  [v3 setObject:v35 forKey:@"yogiErrorDays"];
+  [dictionary setObject:v35 forKey:@"yogiErrorDays"];
 
   v18 = self->_has;
   if ((*&v18 & 0x100000000000) == 0)
@@ -1137,7 +1137,7 @@ LABEL_24:
 
 LABEL_78:
   v36 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_totalMatchAttempts];
-  [v3 setObject:v36 forKey:@"totalMatchAttempts"];
+  [dictionary setObject:v36 forKey:@"totalMatchAttempts"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800000000000) == 0)
@@ -1153,7 +1153,7 @@ LABEL_25:
 
 LABEL_79:
   v37 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_totalMatchAttemptsSuccessful];
-  [v3 setObject:v37 forKey:@"totalMatchAttemptsSuccessful"];
+  [dictionary setObject:v37 forKey:@"totalMatchAttemptsSuccessful"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400000000000) == 0)
@@ -1169,7 +1169,7 @@ LABEL_26:
 
 LABEL_80:
   v38 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_totalMatchAttemptsFailed];
-  [v3 setObject:v38 forKey:@"totalMatchAttemptsFailed"];
+  [dictionary setObject:v38 forKey:@"totalMatchAttemptsFailed"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200000000000) == 0)
@@ -1185,7 +1185,7 @@ LABEL_27:
 
 LABEL_81:
   v39 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_totalMatchAttemptsFaceDetected];
-  [v3 setObject:v39 forKey:@"totalMatchAttemptsFaceDetected"];
+  [dictionary setObject:v39 forKey:@"totalMatchAttemptsFaceDetected"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20000) == 0)
@@ -1201,7 +1201,7 @@ LABEL_28:
 
 LABEL_82:
   v40 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsType0];
-  [v3 setObject:v40 forKey:@"matchAttemptsType0"];
+  [dictionary setObject:v40 forKey:@"matchAttemptsType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x8000) == 0)
@@ -1217,7 +1217,7 @@ LABEL_29:
 
 LABEL_83:
   v41 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsSuccessfulType0];
-  [v3 setObject:v41 forKey:@"matchAttemptsSuccessfulType0"];
+  [dictionary setObject:v41 forKey:@"matchAttemptsSuccessfulType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000) == 0)
@@ -1233,7 +1233,7 @@ LABEL_30:
 
 LABEL_84:
   v42 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsFailedType0];
-  [v3 setObject:v42 forKey:@"matchAttemptsFailedType0"];
+  [dictionary setObject:v42 forKey:@"matchAttemptsFailedType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800) == 0)
@@ -1249,7 +1249,7 @@ LABEL_31:
 
 LABEL_85:
   v43 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsFaceDetectedType0];
-  [v3 setObject:v43 forKey:@"matchAttemptsFaceDetectedType0"];
+  [dictionary setObject:v43 forKey:@"matchAttemptsFaceDetectedType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40000) == 0)
@@ -1265,7 +1265,7 @@ LABEL_32:
 
 LABEL_86:
   v44 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsType1];
-  [v3 setObject:v44 forKey:@"matchAttemptsType1"];
+  [dictionary setObject:v44 forKey:@"matchAttemptsType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000) == 0)
@@ -1281,7 +1281,7 @@ LABEL_33:
 
 LABEL_87:
   v45 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsSuccessfulType1];
-  [v3 setObject:v45 forKey:@"matchAttemptsSuccessfulType1"];
+  [dictionary setObject:v45 forKey:@"matchAttemptsSuccessfulType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x4000) == 0)
@@ -1297,7 +1297,7 @@ LABEL_34:
 
 LABEL_88:
   v46 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsFailedType1];
-  [v3 setObject:v46 forKey:@"matchAttemptsFailedType1"];
+  [dictionary setObject:v46 forKey:@"matchAttemptsFailedType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000) == 0)
@@ -1313,7 +1313,7 @@ LABEL_35:
 
 LABEL_89:
   v47 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchAttemptsFaceDetectedType1];
-  [v3 setObject:v47 forKey:@"matchAttemptsFaceDetectedType1"];
+  [dictionary setObject:v47 forKey:@"matchAttemptsFaceDetectedType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40000000000) == 0)
@@ -1329,7 +1329,7 @@ LABEL_36:
 
 LABEL_90:
   v48 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_staticUnlockCountType0];
-  [v3 setObject:v48 forKey:@"staticUnlockCountType0"];
+  [dictionary setObject:v48 forKey:@"staticUnlockCountType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000000) == 0)
@@ -1345,7 +1345,7 @@ LABEL_37:
 
 LABEL_91:
   v49 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUnlockCountType0];
-  [v3 setObject:v49 forKey:@"onlineUnlockCountType0"];
+  [dictionary setObject:v49 forKey:@"onlineUnlockCountType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x8000000000) == 0)
@@ -1361,7 +1361,7 @@ LABEL_38:
 
 LABEL_92:
   v50 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_shortTermUnlockCountType0];
-  [v3 setObject:v50 forKey:@"shortTermUnlockCountType0"];
+  [dictionary setObject:v50 forKey:@"shortTermUnlockCountType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80000000000) == 0)
@@ -1377,7 +1377,7 @@ LABEL_39:
 
 LABEL_93:
   v51 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_staticUnlockCountType1];
-  [v3 setObject:v51 forKey:@"staticUnlockCountType1"];
+  [dictionary setObject:v51 forKey:@"staticUnlockCountType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20000000) == 0)
@@ -1393,7 +1393,7 @@ LABEL_40:
 
 LABEL_94:
   v52 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUnlockCountType1];
-  [v3 setObject:v52 forKey:@"onlineUnlockCountType1"];
+  [dictionary setObject:v52 forKey:@"onlineUnlockCountType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000000000) == 0)
@@ -1409,7 +1409,7 @@ LABEL_41:
 
 LABEL_95:
   v53 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_shortTermUnlockCountType1];
-  [v3 setObject:v53 forKey:@"shortTermUnlockCountType1"];
+  [dictionary setObject:v53 forKey:@"shortTermUnlockCountType1"];
 
   v18 = self->_has;
   if ((*&v18 & 4) == 0)
@@ -1425,7 +1425,7 @@ LABEL_42:
 
 LABEL_96:
   v54 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_baseTemplateFeatureCountType0Identity0];
-  [v3 setObject:v54 forKey:@"baseTemplateFeatureCountType0Identity0"];
+  [dictionary setObject:v54 forKey:@"baseTemplateFeatureCountType0Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40000000) == 0)
@@ -1441,7 +1441,7 @@ LABEL_43:
 
 LABEL_97:
   v55 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUpdateTemplateFeatureCountType0Identity0];
-  [v3 setObject:v55 forKey:@"onlineUpdateTemplateFeatureCountType0Identity0"];
+  [dictionary setObject:v55 forKey:@"onlineUpdateTemplateFeatureCountType0Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400000000) == 0)
@@ -1457,7 +1457,7 @@ LABEL_44:
 
 LABEL_98:
   v56 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_passcodeUpdateTemplateFeatureCountType0Identity0];
-  [v3 setObject:v56 forKey:@"passcodeUpdateTemplateFeatureCountType0Identity0"];
+  [dictionary setObject:v56 forKey:@"passcodeUpdateTemplateFeatureCountType0Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 8) == 0)
@@ -1473,7 +1473,7 @@ LABEL_45:
 
 LABEL_99:
   v57 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_baseTemplateFeatureCountType0Identity1];
-  [v3 setObject:v57 forKey:@"baseTemplateFeatureCountType0Identity1"];
+  [dictionary setObject:v57 forKey:@"baseTemplateFeatureCountType0Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x80000000) == 0)
@@ -1489,7 +1489,7 @@ LABEL_46:
 
 LABEL_100:
   v58 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUpdateTemplateFeatureCountType0Identity1];
-  [v3 setObject:v58 forKey:@"onlineUpdateTemplateFeatureCountType0Identity1"];
+  [dictionary setObject:v58 forKey:@"onlineUpdateTemplateFeatureCountType0Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800000000) == 0)
@@ -1505,7 +1505,7 @@ LABEL_47:
 
 LABEL_101:
   v59 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_passcodeUpdateTemplateFeatureCountType0Identity1];
-  [v3 setObject:v59 forKey:@"passcodeUpdateTemplateFeatureCountType0Identity1"];
+  [dictionary setObject:v59 forKey:@"passcodeUpdateTemplateFeatureCountType0Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10) == 0)
@@ -1521,7 +1521,7 @@ LABEL_48:
 
 LABEL_102:
   v60 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_baseTemplateFeatureCountType1Identity0];
-  [v3 setObject:v60 forKey:@"baseTemplateFeatureCountType1Identity0"];
+  [dictionary setObject:v60 forKey:@"baseTemplateFeatureCountType1Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x100000000) == 0)
@@ -1537,7 +1537,7 @@ LABEL_49:
 
 LABEL_103:
   v61 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUpdateTemplateFeatureCountType1Identity0];
-  [v3 setObject:v61 forKey:@"onlineUpdateTemplateFeatureCountType1Identity0"];
+  [dictionary setObject:v61 forKey:@"onlineUpdateTemplateFeatureCountType1Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000000000) == 0)
@@ -1553,7 +1553,7 @@ LABEL_50:
 
 LABEL_104:
   v62 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_passcodeUpdateTemplateFeatureCountType1Identity0];
-  [v3 setObject:v62 forKey:@"passcodeUpdateTemplateFeatureCountType1Identity0"];
+  [dictionary setObject:v62 forKey:@"passcodeUpdateTemplateFeatureCountType1Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x20) == 0)
@@ -1569,7 +1569,7 @@ LABEL_51:
 
 LABEL_105:
   v63 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_baseTemplateFeatureCountType1Identity1];
-  [v3 setObject:v63 forKey:@"baseTemplateFeatureCountType1Identity1"];
+  [dictionary setObject:v63 forKey:@"baseTemplateFeatureCountType1Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200000000) == 0)
@@ -1585,7 +1585,7 @@ LABEL_52:
 
 LABEL_106:
   v64 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_onlineUpdateTemplateFeatureCountType1Identity1];
-  [v3 setObject:v64 forKey:@"onlineUpdateTemplateFeatureCountType1Identity1"];
+  [dictionary setObject:v64 forKey:@"onlineUpdateTemplateFeatureCountType1Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000000000) == 0)
@@ -1601,7 +1601,7 @@ LABEL_53:
 
 LABEL_107:
   v65 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_passcodeUpdateTemplateFeatureCountType1Identity1];
-  [v3 setObject:v65 forKey:@"passcodeUpdateTemplateFeatureCountType1Identity1"];
+  [dictionary setObject:v65 forKey:@"passcodeUpdateTemplateFeatureCountType1Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40000000000000) == 0)
@@ -1617,7 +1617,7 @@ LABEL_54:
 
 LABEL_108:
   v66 = [MEMORY[0x29EDBA070] numberWithBool:self->_type1MatchEnabled];
-  [v3 setObject:v66 forKey:@"type1MatchEnabled"];
+  [dictionary setObject:v66 forKey:@"type1MatchEnabled"];
 
   v18 = self->_has;
   if ((*&v18 & 0x200) == 0)
@@ -1633,7 +1633,7 @@ LABEL_55:
 
 LABEL_109:
   v67 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountType0];
-  [v3 setObject:v67 forKey:@"enrolledTemplateCountType0"];
+  [dictionary setObject:v67 forKey:@"enrolledTemplateCountType0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x400) == 0)
@@ -1649,7 +1649,7 @@ LABEL_56:
 
 LABEL_110:
   v68 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountType1];
-  [v3 setObject:v68 forKey:@"enrolledTemplateCountType1"];
+  [dictionary setObject:v68 forKey:@"enrolledTemplateCountType1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x100) == 0)
@@ -1665,7 +1665,7 @@ LABEL_57:
 
 LABEL_111:
   v69 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_enrolledTemplateCountTotal];
-  [v3 setObject:v69 forKey:@"enrolledTemplateCountTotal"];
+  [dictionary setObject:v69 forKey:@"enrolledTemplateCountTotal"];
 
   v18 = self->_has;
   if ((*&v18 & 0x800000) == 0)
@@ -1681,7 +1681,7 @@ LABEL_58:
 
 LABEL_112:
   v70 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingTemplateCountType0Identity0];
-  [v3 setObject:v70 forKey:@"matchingTemplateCountType0Identity0"];
+  [dictionary setObject:v70 forKey:@"matchingTemplateCountType0Identity0"];
 
   v18 = self->_has;
   if ((*&v18 & 0x1000000) == 0)
@@ -1694,7 +1694,7 @@ LABEL_59:
 
 LABEL_114:
     v72 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingTemplateCountType1Identity0];
-    [v3 setObject:v72 forKey:@"matchingTemplateCountType1Identity0"];
+    [dictionary setObject:v72 forKey:@"matchingTemplateCountType1Identity0"];
 
     if ((*&self->_has & 0x4000000) == 0)
     {
@@ -1706,7 +1706,7 @@ LABEL_114:
 
 LABEL_113:
   v71 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingTemplateCountType0Identity1];
-  [v3 setObject:v71 forKey:@"matchingTemplateCountType0Identity1"];
+  [dictionary setObject:v71 forKey:@"matchingTemplateCountType0Identity1"];
 
   v18 = self->_has;
   if ((*&v18 & 0x2000000) != 0)
@@ -1719,24 +1719,24 @@ LABEL_60:
   {
 LABEL_61:
     v19 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_matchingTemplateCountType1Identity1];
-    [v3 setObject:v19 forKey:@"matchingTemplateCountType1Identity1"];
+    [dictionary setObject:v19 forKey:@"matchingTemplateCountType1Identity1"];
   }
 
 LABEL_62:
-  v20 = v3;
+  v20 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v81 = v4;
+  toCopy = to;
+  v81 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v81;
+    toCopy = v81;
   }
 
   if (self->_baseTemplateFeatureCounts.count)
@@ -1746,7 +1746,7 @@ LABEL_62:
     {
       v7 = self->_baseTemplateFeatureCounts.list[v6];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v6;
     }
 
@@ -1760,7 +1760,7 @@ LABEL_62:
     {
       v9 = self->_onlineUpdateTemplateFeatureCounts.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v8;
     }
 
@@ -1774,7 +1774,7 @@ LABEL_62:
     {
       v11 = self->_passcodeUpdateTemplateFeatureCounts.list[v10];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v10;
     }
 
@@ -1786,7 +1786,7 @@ LABEL_62:
   {
     unlockEnabled = self->_unlockEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v81;
+    toCopy = v81;
     has = self->_has;
     if ((*&has & 0x2000000000000) == 0)
     {
@@ -1807,7 +1807,7 @@ LABEL_14:
 
   applePayEnabled = self->_applePayEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x4000000000000) == 0)
   {
@@ -1823,7 +1823,7 @@ LABEL_15:
 LABEL_94:
   attentionDetectionEnabled = self->_attentionDetectionEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1839,7 +1839,7 @@ LABEL_16:
 LABEL_95:
   matchingCountDouble01 = self->_matchingCountDouble01;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1855,7 +1855,7 @@ LABEL_17:
 LABEL_96:
   matchingCountDouble02 = self->_matchingCountDouble02;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1871,7 +1871,7 @@ LABEL_18:
 LABEL_97:
   matchingCountDouble03 = self->_matchingCountDouble03;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1887,7 +1887,7 @@ LABEL_19:
 LABEL_98:
   matchingCountDouble04 = self->_matchingCountDouble04;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -1903,7 +1903,7 @@ LABEL_20:
 LABEL_99:
   staticUnlockCount = self->_staticUnlockCount;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1919,13 +1919,13 @@ LABEL_21:
 LABEL_100:
   onlineUnlockCount = self->_onlineUnlockCount;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   if ((*&self->_has & 0x4000000000) != 0)
   {
 LABEL_22:
     shortTermUnlockCount = self->_shortTermUnlockCount;
     PBDataWriterWriteUint32Field();
-    v4 = v81;
+    toCopy = v81;
   }
 
 LABEL_23:
@@ -1936,7 +1936,7 @@ LABEL_23:
     {
       v15 = self->_matchingBinCounts.list[v14];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v14;
     }
 
@@ -1950,7 +1950,7 @@ LABEL_23:
     {
       v17 = self->_matchingTemplateTypeCounts.list[v16];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v16;
     }
 
@@ -1961,7 +1961,7 @@ LABEL_23:
   {
     cameraInterlock = self->_cameraInterlock;
     PBDataWriterWriteBOOLField();
-    v4 = v81;
+    toCopy = v81;
   }
 
   if (self->_bioCheckInfos.count)
@@ -1971,7 +1971,7 @@ LABEL_23:
     {
       v20 = self->_bioCheckInfos.list[v19];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v19;
     }
 
@@ -1985,7 +1985,7 @@ LABEL_23:
     {
       v22 = self->_bioCheckResults.list[v21];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v21;
     }
 
@@ -1999,7 +1999,7 @@ LABEL_23:
     {
       v24 = self->_passcodeUpdates.list[v23];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v23;
     }
 
@@ -2010,7 +2010,7 @@ LABEL_23:
   {
     enrolledIdentityCount = self->_enrolledIdentityCount;
     PBDataWriterWriteUint32Field();
-    v4 = v81;
+    toCopy = v81;
   }
 
   if (self->_matchingIdentityCounts.count)
@@ -2020,7 +2020,7 @@ LABEL_23:
     {
       v27 = self->_matchingIdentityCounts.list[v26];
       PBDataWriterWriteUint32Field();
-      v4 = v81;
+      toCopy = v81;
       ++v26;
     }
 
@@ -2032,7 +2032,7 @@ LABEL_23:
   {
     combinedSequenceEnabled = self->_combinedSequenceEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v81;
+    toCopy = v81;
     v28 = self->_has;
     if ((*&v28 & 1) == 0)
     {
@@ -2053,7 +2053,7 @@ LABEL_47:
 
   bioLockoutTime = self->_bioLockoutTime;
   PBDataWriterWriteUint64Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x40) == 0)
   {
@@ -2069,7 +2069,7 @@ LABEL_48:
 LABEL_104:
   bioLockoutCount = self->_bioLockoutCount;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x8000000000000) == 0)
   {
@@ -2085,7 +2085,7 @@ LABEL_49:
 LABEL_105:
   autoRetryEnabled = self->_autoRetryEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x1000000000000) == 0)
   {
@@ -2101,7 +2101,7 @@ LABEL_50:
 LABEL_106:
   yogiErrorDays = self->_yogiErrorDays;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x100000000000) == 0)
   {
@@ -2117,7 +2117,7 @@ LABEL_51:
 LABEL_107:
   totalMatchAttempts = self->_totalMatchAttempts;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x800000000000) == 0)
   {
@@ -2133,7 +2133,7 @@ LABEL_52:
 LABEL_108:
   totalMatchAttemptsSuccessful = self->_totalMatchAttemptsSuccessful;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x400000000000) == 0)
   {
@@ -2149,7 +2149,7 @@ LABEL_53:
 LABEL_109:
   totalMatchAttemptsFailed = self->_totalMatchAttemptsFailed;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x200000000000) == 0)
   {
@@ -2165,7 +2165,7 @@ LABEL_54:
 LABEL_110:
   totalMatchAttemptsFaceDetected = self->_totalMatchAttemptsFaceDetected;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x20000) == 0)
   {
@@ -2181,7 +2181,7 @@ LABEL_55:
 LABEL_111:
   matchAttemptsType0 = self->_matchAttemptsType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x8000) == 0)
   {
@@ -2197,7 +2197,7 @@ LABEL_56:
 LABEL_112:
   matchAttemptsSuccessfulType0 = self->_matchAttemptsSuccessfulType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x2000) == 0)
   {
@@ -2213,7 +2213,7 @@ LABEL_57:
 LABEL_113:
   matchAttemptsFailedType0 = self->_matchAttemptsFailedType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x800) == 0)
   {
@@ -2229,7 +2229,7 @@ LABEL_58:
 LABEL_114:
   matchAttemptsFaceDetectedType0 = self->_matchAttemptsFaceDetectedType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x40000) == 0)
   {
@@ -2245,7 +2245,7 @@ LABEL_59:
 LABEL_115:
   matchAttemptsType1 = self->_matchAttemptsType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x10000) == 0)
   {
@@ -2261,7 +2261,7 @@ LABEL_60:
 LABEL_116:
   matchAttemptsSuccessfulType1 = self->_matchAttemptsSuccessfulType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x4000) == 0)
   {
@@ -2277,7 +2277,7 @@ LABEL_61:
 LABEL_117:
   matchAttemptsFailedType1 = self->_matchAttemptsFailedType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x1000) == 0)
   {
@@ -2293,7 +2293,7 @@ LABEL_62:
 LABEL_118:
   matchAttemptsFaceDetectedType1 = self->_matchAttemptsFaceDetectedType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x40000000000) == 0)
   {
@@ -2309,7 +2309,7 @@ LABEL_63:
 LABEL_119:
   staticUnlockCountType0 = self->_staticUnlockCountType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x10000000) == 0)
   {
@@ -2325,7 +2325,7 @@ LABEL_64:
 LABEL_120:
   onlineUnlockCountType0 = self->_onlineUnlockCountType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x8000000000) == 0)
   {
@@ -2341,7 +2341,7 @@ LABEL_65:
 LABEL_121:
   shortTermUnlockCountType0 = self->_shortTermUnlockCountType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x80000000000) == 0)
   {
@@ -2357,7 +2357,7 @@ LABEL_66:
 LABEL_122:
   staticUnlockCountType1 = self->_staticUnlockCountType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x20000000) == 0)
   {
@@ -2373,7 +2373,7 @@ LABEL_67:
 LABEL_123:
   onlineUnlockCountType1 = self->_onlineUnlockCountType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x10000000000) == 0)
   {
@@ -2389,7 +2389,7 @@ LABEL_68:
 LABEL_124:
   shortTermUnlockCountType1 = self->_shortTermUnlockCountType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 4) == 0)
   {
@@ -2405,7 +2405,7 @@ LABEL_69:
 LABEL_125:
   baseTemplateFeatureCountType0Identity0 = self->_baseTemplateFeatureCountType0Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x40000000) == 0)
   {
@@ -2421,7 +2421,7 @@ LABEL_70:
 LABEL_126:
   onlineUpdateTemplateFeatureCountType0Identity0 = self->_onlineUpdateTemplateFeatureCountType0Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x400000000) == 0)
   {
@@ -2437,7 +2437,7 @@ LABEL_71:
 LABEL_127:
   passcodeUpdateTemplateFeatureCountType0Identity0 = self->_passcodeUpdateTemplateFeatureCountType0Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 8) == 0)
   {
@@ -2453,7 +2453,7 @@ LABEL_72:
 LABEL_128:
   baseTemplateFeatureCountType0Identity1 = self->_baseTemplateFeatureCountType0Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x80000000) == 0)
   {
@@ -2469,7 +2469,7 @@ LABEL_73:
 LABEL_129:
   onlineUpdateTemplateFeatureCountType0Identity1 = self->_onlineUpdateTemplateFeatureCountType0Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x800000000) == 0)
   {
@@ -2485,7 +2485,7 @@ LABEL_74:
 LABEL_130:
   passcodeUpdateTemplateFeatureCountType0Identity1 = self->_passcodeUpdateTemplateFeatureCountType0Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x10) == 0)
   {
@@ -2501,7 +2501,7 @@ LABEL_75:
 LABEL_131:
   baseTemplateFeatureCountType1Identity0 = self->_baseTemplateFeatureCountType1Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x100000000) == 0)
   {
@@ -2517,7 +2517,7 @@ LABEL_76:
 LABEL_132:
   onlineUpdateTemplateFeatureCountType1Identity0 = self->_onlineUpdateTemplateFeatureCountType1Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x1000000000) == 0)
   {
@@ -2533,7 +2533,7 @@ LABEL_77:
 LABEL_133:
   passcodeUpdateTemplateFeatureCountType1Identity0 = self->_passcodeUpdateTemplateFeatureCountType1Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x20) == 0)
   {
@@ -2549,7 +2549,7 @@ LABEL_78:
 LABEL_134:
   baseTemplateFeatureCountType1Identity1 = self->_baseTemplateFeatureCountType1Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x200000000) == 0)
   {
@@ -2565,7 +2565,7 @@ LABEL_79:
 LABEL_135:
   onlineUpdateTemplateFeatureCountType1Identity1 = self->_onlineUpdateTemplateFeatureCountType1Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x2000000000) == 0)
   {
@@ -2581,7 +2581,7 @@ LABEL_80:
 LABEL_136:
   passcodeUpdateTemplateFeatureCountType1Identity1 = self->_passcodeUpdateTemplateFeatureCountType1Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x40000000000000) == 0)
   {
@@ -2597,7 +2597,7 @@ LABEL_81:
 LABEL_137:
   type1MatchEnabled = self->_type1MatchEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x200) == 0)
   {
@@ -2613,7 +2613,7 @@ LABEL_82:
 LABEL_138:
   enrolledTemplateCountType0 = self->_enrolledTemplateCountType0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x400) == 0)
   {
@@ -2629,7 +2629,7 @@ LABEL_83:
 LABEL_139:
   enrolledTemplateCountType1 = self->_enrolledTemplateCountType1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x100) == 0)
   {
@@ -2645,7 +2645,7 @@ LABEL_84:
 LABEL_140:
   enrolledTemplateCountTotal = self->_enrolledTemplateCountTotal;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x800000) == 0)
   {
@@ -2661,7 +2661,7 @@ LABEL_85:
 LABEL_141:
   matchingTemplateCountType0Identity0 = self->_matchingTemplateCountType0Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x1000000) == 0)
   {
@@ -2677,7 +2677,7 @@ LABEL_86:
 LABEL_142:
   matchingTemplateCountType0Identity1 = self->_matchingTemplateCountType0Identity1;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   v28 = self->_has;
   if ((*&v28 & 0x2000000) == 0)
   {
@@ -2693,35 +2693,35 @@ LABEL_87:
 LABEL_143:
   matchingTemplateCountType1Identity0 = self->_matchingTemplateCountType1Identity0;
   PBDataWriterWriteUint32Field();
-  v4 = v81;
+  toCopy = v81;
   if ((*&self->_has & 0x4000000) != 0)
   {
 LABEL_88:
     matchingTemplateCountType1Identity1 = self->_matchingTemplateCountType1Identity1;
     PBDataWriterWriteUint32Field();
-    v4 = v81;
+    toCopy = v81;
   }
 
 LABEL_89:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[29] = self->_timestamp;
-    *(v4 + 436) |= 2uLL;
+    toCopy[29] = self->_timestamp;
+    *(toCopy + 436) |= 2uLL;
   }
 
-  v34 = v4;
+  v34 = toCopy;
   if ([(AWDBiometricKitDailyUpdate *)self baseTemplateFeatureCountsCount])
   {
     [v34 clearBaseTemplateFeatureCounts];
-    v5 = [(AWDBiometricKitDailyUpdate *)self baseTemplateFeatureCountsCount];
-    if (v5)
+    baseTemplateFeatureCountsCount = [(AWDBiometricKitDailyUpdate *)self baseTemplateFeatureCountsCount];
+    if (baseTemplateFeatureCountsCount)
     {
-      v6 = v5;
+      v6 = baseTemplateFeatureCountsCount;
       for (i = 0; i != v6; ++i)
       {
         [v34 addBaseTemplateFeatureCount:{-[AWDBiometricKitDailyUpdate baseTemplateFeatureCountAtIndex:](self, "baseTemplateFeatureCountAtIndex:", i)}];
@@ -2732,10 +2732,10 @@ LABEL_89:
   if ([(AWDBiometricKitDailyUpdate *)self onlineUpdateTemplateFeatureCountsCount])
   {
     [v34 clearOnlineUpdateTemplateFeatureCounts];
-    v8 = [(AWDBiometricKitDailyUpdate *)self onlineUpdateTemplateFeatureCountsCount];
-    if (v8)
+    onlineUpdateTemplateFeatureCountsCount = [(AWDBiometricKitDailyUpdate *)self onlineUpdateTemplateFeatureCountsCount];
+    if (onlineUpdateTemplateFeatureCountsCount)
     {
-      v9 = v8;
+      v9 = onlineUpdateTemplateFeatureCountsCount;
       for (j = 0; j != v9; ++j)
       {
         [v34 addOnlineUpdateTemplateFeatureCount:{-[AWDBiometricKitDailyUpdate onlineUpdateTemplateFeatureCountAtIndex:](self, "onlineUpdateTemplateFeatureCountAtIndex:", j)}];
@@ -2746,10 +2746,10 @@ LABEL_89:
   if ([(AWDBiometricKitDailyUpdate *)self passcodeUpdateTemplateFeatureCountsCount])
   {
     [v34 clearPasscodeUpdateTemplateFeatureCounts];
-    v11 = [(AWDBiometricKitDailyUpdate *)self passcodeUpdateTemplateFeatureCountsCount];
-    if (v11)
+    passcodeUpdateTemplateFeatureCountsCount = [(AWDBiometricKitDailyUpdate *)self passcodeUpdateTemplateFeatureCountsCount];
+    if (passcodeUpdateTemplateFeatureCountsCount)
     {
-      v12 = v11;
+      v12 = passcodeUpdateTemplateFeatureCountsCount;
       for (k = 0; k != v12; ++k)
       {
         [v34 addPasscodeUpdateTemplateFeatureCount:{-[AWDBiometricKitDailyUpdate passcodeUpdateTemplateFeatureCountAtIndex:](self, "passcodeUpdateTemplateFeatureCountAtIndex:", k)}];
@@ -2898,10 +2898,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self matchingBinCountsCount])
   {
     [v34 clearMatchingBinCounts];
-    v15 = [(AWDBiometricKitDailyUpdate *)self matchingBinCountsCount];
-    if (v15)
+    matchingBinCountsCount = [(AWDBiometricKitDailyUpdate *)self matchingBinCountsCount];
+    if (matchingBinCountsCount)
     {
-      v16 = v15;
+      v16 = matchingBinCountsCount;
       for (m = 0; m != v16; ++m)
       {
         [v34 addMatchingBinCounts:{-[AWDBiometricKitDailyUpdate matchingBinCountsAtIndex:](self, "matchingBinCountsAtIndex:", m)}];
@@ -2912,10 +2912,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self matchingTemplateTypeCountsCount])
   {
     [v34 clearMatchingTemplateTypeCounts];
-    v18 = [(AWDBiometricKitDailyUpdate *)self matchingTemplateTypeCountsCount];
-    if (v18)
+    matchingTemplateTypeCountsCount = [(AWDBiometricKitDailyUpdate *)self matchingTemplateTypeCountsCount];
+    if (matchingTemplateTypeCountsCount)
     {
-      v19 = v18;
+      v19 = matchingTemplateTypeCountsCount;
       for (n = 0; n != v19; ++n)
       {
         [v34 addMatchingTemplateTypeCounts:{-[AWDBiometricKitDailyUpdate matchingTemplateTypeCountsAtIndex:](self, "matchingTemplateTypeCountsAtIndex:", n)}];
@@ -2932,10 +2932,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self bioCheckInfosCount])
   {
     [v34 clearBioCheckInfos];
-    v21 = [(AWDBiometricKitDailyUpdate *)self bioCheckInfosCount];
-    if (v21)
+    bioCheckInfosCount = [(AWDBiometricKitDailyUpdate *)self bioCheckInfosCount];
+    if (bioCheckInfosCount)
     {
-      v22 = v21;
+      v22 = bioCheckInfosCount;
       for (ii = 0; ii != v22; ++ii)
       {
         [v34 addBioCheckInfo:{-[AWDBiometricKitDailyUpdate bioCheckInfoAtIndex:](self, "bioCheckInfoAtIndex:", ii)}];
@@ -2946,10 +2946,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self bioCheckResultsCount])
   {
     [v34 clearBioCheckResults];
-    v24 = [(AWDBiometricKitDailyUpdate *)self bioCheckResultsCount];
-    if (v24)
+    bioCheckResultsCount = [(AWDBiometricKitDailyUpdate *)self bioCheckResultsCount];
+    if (bioCheckResultsCount)
     {
-      v25 = v24;
+      v25 = bioCheckResultsCount;
       for (jj = 0; jj != v25; ++jj)
       {
         [v34 addBioCheckResult:{-[AWDBiometricKitDailyUpdate bioCheckResultAtIndex:](self, "bioCheckResultAtIndex:", jj)}];
@@ -2960,10 +2960,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self passcodeUpdatesCount])
   {
     [v34 clearPasscodeUpdates];
-    v27 = [(AWDBiometricKitDailyUpdate *)self passcodeUpdatesCount];
-    if (v27)
+    passcodeUpdatesCount = [(AWDBiometricKitDailyUpdate *)self passcodeUpdatesCount];
+    if (passcodeUpdatesCount)
     {
-      v28 = v27;
+      v28 = passcodeUpdatesCount;
       for (kk = 0; kk != v28; ++kk)
       {
         [v34 addPasscodeUpdate:{-[AWDBiometricKitDailyUpdate passcodeUpdateAtIndex:](self, "passcodeUpdateAtIndex:", kk)}];
@@ -2980,10 +2980,10 @@ LABEL_26:
   if ([(AWDBiometricKitDailyUpdate *)self matchingIdentityCountsCount])
   {
     [v34 clearMatchingIdentityCounts];
-    v30 = [(AWDBiometricKitDailyUpdate *)self matchingIdentityCountsCount];
-    if (v30)
+    matchingIdentityCountsCount = [(AWDBiometricKitDailyUpdate *)self matchingIdentityCountsCount];
+    if (matchingIdentityCountsCount)
     {
-      v31 = v30;
+      v31 = matchingIdentityCountsCount;
       for (mm = 0; mm != v31; ++mm)
       {
         [v34 addMatchingIdentityCounts:{-[AWDBiometricKitDailyUpdate matchingIdentityCountsAtIndex:](self, "matchingIdentityCountsAtIndex:", mm)}];
@@ -3626,9 +3626,9 @@ LABEL_97:
 LABEL_98:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if ((*&self->_has & 2) != 0)
   {
@@ -4433,18 +4433,18 @@ LABEL_62:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_80;
   }
 
-  v5 = *(v4 + 436);
+  v5 = *(equalCopy + 436);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v5 & 2) == 0 || self->_timestamp != *(v4 + 29))
+    if ((v5 & 2) == 0 || self->_timestamp != *(equalCopy + 29))
     {
       goto LABEL_80;
     }
@@ -4461,7 +4461,7 @@ LABEL_62:
   }
 
   has = self->_has;
-  v7 = *(v4 + 436);
+  v7 = *(equalCopy + 436);
   if ((*&has & 0x80000000000000) != 0)
   {
     if ((v7 & 0x80000000000000) == 0)
@@ -4469,16 +4469,16 @@ LABEL_62:
       goto LABEL_80;
     }
 
-    v8 = v4[434];
+    v8 = equalCopy[434];
     if (self->_unlockEnabled)
     {
-      if ((v4[434] & 1) == 0)
+      if ((equalCopy[434] & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (v4[434])
+    else if (equalCopy[434])
     {
       goto LABEL_80;
     }
@@ -4496,16 +4496,16 @@ LABEL_62:
       goto LABEL_80;
     }
 
-    v9 = v4[428];
+    v9 = equalCopy[428];
     if (self->_applePayEnabled)
     {
-      if ((v4[428] & 1) == 0)
+      if ((equalCopy[428] & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (v4[428])
+    else if (equalCopy[428])
     {
       goto LABEL_80;
     }
@@ -4523,16 +4523,16 @@ LABEL_62:
       goto LABEL_80;
     }
 
-    v10 = v4[429];
+    v10 = equalCopy[429];
     if (self->_attentionDetectionEnabled)
     {
-      if ((v4[429] & 1) == 0)
+      if ((equalCopy[429] & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (v4[429])
+    else if (equalCopy[429])
     {
       goto LABEL_80;
     }
@@ -4545,7 +4545,7 @@ LABEL_62:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_matchingCountDouble01 != *(v4 + 77))
+    if ((v7 & 0x80000) == 0 || self->_matchingCountDouble01 != *(equalCopy + 77))
     {
       goto LABEL_80;
     }
@@ -4558,7 +4558,7 @@ LABEL_62:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_matchingCountDouble02 != *(v4 + 78))
+    if ((v7 & 0x100000) == 0 || self->_matchingCountDouble02 != *(equalCopy + 78))
     {
       goto LABEL_80;
     }
@@ -4571,7 +4571,7 @@ LABEL_62:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_matchingCountDouble03 != *(v4 + 79))
+    if ((v7 & 0x200000) == 0 || self->_matchingCountDouble03 != *(equalCopy + 79))
     {
       goto LABEL_80;
     }
@@ -4584,7 +4584,7 @@ LABEL_62:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_matchingCountDouble04 != *(v4 + 80))
+    if ((v7 & 0x400000) == 0 || self->_matchingCountDouble04 != *(equalCopy + 80))
     {
       goto LABEL_80;
     }
@@ -4597,7 +4597,7 @@ LABEL_62:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v7 & 0x20000000000) == 0 || self->_staticUnlockCount != *(v4 + 99))
+    if ((v7 & 0x20000000000) == 0 || self->_staticUnlockCount != *(equalCopy + 99))
     {
       goto LABEL_80;
     }
@@ -4610,7 +4610,7 @@ LABEL_62:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v7 & 0x8000000) == 0 || self->_onlineUnlockCount != *(v4 + 85))
+    if ((v7 & 0x8000000) == 0 || self->_onlineUnlockCount != *(equalCopy + 85))
     {
       goto LABEL_80;
     }
@@ -4623,7 +4623,7 @@ LABEL_62:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v7 & 0x4000000000) == 0 || self->_shortTermUnlockCount != *(v4 + 96))
+    if ((v7 & 0x4000000000) == 0 || self->_shortTermUnlockCount != *(equalCopy + 96))
     {
       goto LABEL_80;
     }
@@ -4639,7 +4639,7 @@ LABEL_62:
     goto LABEL_80;
   }
 
-  v11 = *(v4 + 436);
+  v11 = *(equalCopy + 436);
   if ((*(&self->_has + 6) & 0x10) != 0)
   {
     if ((v11 & 0x10000000000000) == 0)
@@ -4647,16 +4647,16 @@ LABEL_62:
       goto LABEL_80;
     }
 
-    v15 = v4[431];
+    v15 = equalCopy[431];
     if (self->_cameraInterlock)
     {
-      if ((v4[431] & 1) == 0)
+      if ((equalCopy[431] & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (v4[431])
+    else if (equalCopy[431])
     {
       goto LABEL_80;
     }
@@ -4672,10 +4672,10 @@ LABEL_62:
     goto LABEL_80;
   }
 
-  v12 = *(v4 + 436);
+  v12 = *(equalCopy + 436);
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((v12 & 0x80) == 0 || self->_enrolledIdentityCount != *(v4 + 65))
+    if ((v12 & 0x80) == 0 || self->_enrolledIdentityCount != *(equalCopy + 65))
     {
       goto LABEL_80;
     }
@@ -4689,7 +4689,7 @@ LABEL_62:
   if (PBRepeatedUInt32IsEqual())
   {
     v16 = self->_has;
-    v17 = *(v4 + 436);
+    v17 = *(equalCopy + 436);
     if ((*&v16 & 0x20000000000000) != 0)
     {
       if ((v17 & 0x20000000000000) == 0)
@@ -4697,16 +4697,16 @@ LABEL_62:
         goto LABEL_80;
       }
 
-      v18 = v4[432];
+      v18 = equalCopy[432];
       if (self->_combinedSequenceEnabled)
       {
-        if ((v4[432] & 1) == 0)
+        if ((equalCopy[432] & 1) == 0)
         {
           goto LABEL_80;
         }
       }
 
-      else if (v4[432])
+      else if (equalCopy[432])
       {
         goto LABEL_80;
       }
@@ -4719,7 +4719,7 @@ LABEL_62:
 
     if (*&v16)
     {
-      if ((v17 & 1) == 0 || self->_bioLockoutTime != *(v4 + 28))
+      if ((v17 & 1) == 0 || self->_bioLockoutTime != *(equalCopy + 28))
       {
         goto LABEL_80;
       }
@@ -4732,7 +4732,7 @@ LABEL_62:
 
     if ((*&v16 & 0x40) != 0)
     {
-      if ((v17 & 0x40) == 0 || self->_bioLockoutCount != *(v4 + 64))
+      if ((v17 & 0x40) == 0 || self->_bioLockoutCount != *(equalCopy + 64))
       {
         goto LABEL_80;
       }
@@ -4750,16 +4750,16 @@ LABEL_62:
         goto LABEL_80;
       }
 
-      v19 = v4[430];
+      v19 = equalCopy[430];
       if (self->_autoRetryEnabled)
       {
-        if ((v4[430] & 1) == 0)
+        if ((equalCopy[430] & 1) == 0)
         {
           goto LABEL_80;
         }
       }
 
-      else if (v4[430])
+      else if (equalCopy[430])
       {
         goto LABEL_80;
       }
@@ -4772,7 +4772,7 @@ LABEL_62:
 
     if ((*&v16 & 0x1000000000000) != 0)
     {
-      if ((v17 & 0x1000000000000) == 0 || self->_yogiErrorDays != *(v4 + 106))
+      if ((v17 & 0x1000000000000) == 0 || self->_yogiErrorDays != *(equalCopy + 106))
       {
         goto LABEL_80;
       }
@@ -4785,7 +4785,7 @@ LABEL_62:
 
     if ((*&v16 & 0x100000000000) != 0)
     {
-      if ((v17 & 0x100000000000) == 0 || self->_totalMatchAttempts != *(v4 + 102))
+      if ((v17 & 0x100000000000) == 0 || self->_totalMatchAttempts != *(equalCopy + 102))
       {
         goto LABEL_80;
       }
@@ -4798,7 +4798,7 @@ LABEL_62:
 
     if ((*&v16 & 0x800000000000) != 0)
     {
-      if ((v17 & 0x800000000000) == 0 || self->_totalMatchAttemptsSuccessful != *(v4 + 105))
+      if ((v17 & 0x800000000000) == 0 || self->_totalMatchAttemptsSuccessful != *(equalCopy + 105))
       {
         goto LABEL_80;
       }
@@ -4811,7 +4811,7 @@ LABEL_62:
 
     if ((*&v16 & 0x400000000000) != 0)
     {
-      if ((v17 & 0x400000000000) == 0 || self->_totalMatchAttemptsFailed != *(v4 + 104))
+      if ((v17 & 0x400000000000) == 0 || self->_totalMatchAttemptsFailed != *(equalCopy + 104))
       {
         goto LABEL_80;
       }
@@ -4824,7 +4824,7 @@ LABEL_62:
 
     if ((*&v16 & 0x200000000000) != 0)
     {
-      if ((v17 & 0x200000000000) == 0 || self->_totalMatchAttemptsFaceDetected != *(v4 + 103))
+      if ((v17 & 0x200000000000) == 0 || self->_totalMatchAttemptsFaceDetected != *(equalCopy + 103))
       {
         goto LABEL_80;
       }
@@ -4837,7 +4837,7 @@ LABEL_62:
 
     if ((*&v16 & 0x20000) != 0)
     {
-      if ((v17 & 0x20000) == 0 || self->_matchAttemptsType0 != *(v4 + 75))
+      if ((v17 & 0x20000) == 0 || self->_matchAttemptsType0 != *(equalCopy + 75))
       {
         goto LABEL_80;
       }
@@ -4850,7 +4850,7 @@ LABEL_62:
 
     if ((*&v16 & 0x8000) != 0)
     {
-      if ((v17 & 0x8000) == 0 || self->_matchAttemptsSuccessfulType0 != *(v4 + 73))
+      if ((v17 & 0x8000) == 0 || self->_matchAttemptsSuccessfulType0 != *(equalCopy + 73))
       {
         goto LABEL_80;
       }
@@ -4863,7 +4863,7 @@ LABEL_62:
 
     if ((*&v16 & 0x2000) != 0)
     {
-      if ((v17 & 0x2000) == 0 || self->_matchAttemptsFailedType0 != *(v4 + 71))
+      if ((v17 & 0x2000) == 0 || self->_matchAttemptsFailedType0 != *(equalCopy + 71))
       {
         goto LABEL_80;
       }
@@ -4876,7 +4876,7 @@ LABEL_62:
 
     if ((*&v16 & 0x800) != 0)
     {
-      if ((v17 & 0x800) == 0 || self->_matchAttemptsFaceDetectedType0 != *(v4 + 69))
+      if ((v17 & 0x800) == 0 || self->_matchAttemptsFaceDetectedType0 != *(equalCopy + 69))
       {
         goto LABEL_80;
       }
@@ -4889,7 +4889,7 @@ LABEL_62:
 
     if ((*&v16 & 0x40000) != 0)
     {
-      if ((v17 & 0x40000) == 0 || self->_matchAttemptsType1 != *(v4 + 76))
+      if ((v17 & 0x40000) == 0 || self->_matchAttemptsType1 != *(equalCopy + 76))
       {
         goto LABEL_80;
       }
@@ -4902,7 +4902,7 @@ LABEL_62:
 
     if ((*&v16 & 0x10000) != 0)
     {
-      if ((v17 & 0x10000) == 0 || self->_matchAttemptsSuccessfulType1 != *(v4 + 74))
+      if ((v17 & 0x10000) == 0 || self->_matchAttemptsSuccessfulType1 != *(equalCopy + 74))
       {
         goto LABEL_80;
       }
@@ -4915,7 +4915,7 @@ LABEL_62:
 
     if ((*&v16 & 0x4000) != 0)
     {
-      if ((v17 & 0x4000) == 0 || self->_matchAttemptsFailedType1 != *(v4 + 72))
+      if ((v17 & 0x4000) == 0 || self->_matchAttemptsFailedType1 != *(equalCopy + 72))
       {
         goto LABEL_80;
       }
@@ -4928,7 +4928,7 @@ LABEL_62:
 
     if ((*&v16 & 0x1000) != 0)
     {
-      if ((v17 & 0x1000) == 0 || self->_matchAttemptsFaceDetectedType1 != *(v4 + 70))
+      if ((v17 & 0x1000) == 0 || self->_matchAttemptsFaceDetectedType1 != *(equalCopy + 70))
       {
         goto LABEL_80;
       }
@@ -4941,7 +4941,7 @@ LABEL_62:
 
     if ((*&v16 & 0x40000000000) != 0)
     {
-      if ((v17 & 0x40000000000) == 0 || self->_staticUnlockCountType0 != *(v4 + 100))
+      if ((v17 & 0x40000000000) == 0 || self->_staticUnlockCountType0 != *(equalCopy + 100))
       {
         goto LABEL_80;
       }
@@ -4954,7 +4954,7 @@ LABEL_62:
 
     if ((*&v16 & 0x10000000) != 0)
     {
-      if ((v17 & 0x10000000) == 0 || self->_onlineUnlockCountType0 != *(v4 + 86))
+      if ((v17 & 0x10000000) == 0 || self->_onlineUnlockCountType0 != *(equalCopy + 86))
       {
         goto LABEL_80;
       }
@@ -4967,7 +4967,7 @@ LABEL_62:
 
     if ((*&v16 & 0x8000000000) != 0)
     {
-      if ((v17 & 0x8000000000) == 0 || self->_shortTermUnlockCountType0 != *(v4 + 97))
+      if ((v17 & 0x8000000000) == 0 || self->_shortTermUnlockCountType0 != *(equalCopy + 97))
       {
         goto LABEL_80;
       }
@@ -4980,7 +4980,7 @@ LABEL_62:
 
     if ((*&v16 & 0x80000000000) != 0)
     {
-      if ((v17 & 0x80000000000) == 0 || self->_staticUnlockCountType1 != *(v4 + 101))
+      if ((v17 & 0x80000000000) == 0 || self->_staticUnlockCountType1 != *(equalCopy + 101))
       {
         goto LABEL_80;
       }
@@ -4993,7 +4993,7 @@ LABEL_62:
 
     if ((*&v16 & 0x20000000) != 0)
     {
-      if ((v17 & 0x20000000) == 0 || self->_onlineUnlockCountType1 != *(v4 + 87))
+      if ((v17 & 0x20000000) == 0 || self->_onlineUnlockCountType1 != *(equalCopy + 87))
       {
         goto LABEL_80;
       }
@@ -5006,7 +5006,7 @@ LABEL_62:
 
     if ((*&v16 & 0x10000000000) != 0)
     {
-      if ((v17 & 0x10000000000) == 0 || self->_shortTermUnlockCountType1 != *(v4 + 98))
+      if ((v17 & 0x10000000000) == 0 || self->_shortTermUnlockCountType1 != *(equalCopy + 98))
       {
         goto LABEL_80;
       }
@@ -5019,7 +5019,7 @@ LABEL_62:
 
     if ((*&v16 & 4) != 0)
     {
-      if ((v17 & 4) == 0 || self->_baseTemplateFeatureCountType0Identity0 != *(v4 + 60))
+      if ((v17 & 4) == 0 || self->_baseTemplateFeatureCountType0Identity0 != *(equalCopy + 60))
       {
         goto LABEL_80;
       }
@@ -5032,7 +5032,7 @@ LABEL_62:
 
     if ((*&v16 & 0x40000000) != 0)
     {
-      if ((v17 & 0x40000000) == 0 || self->_onlineUpdateTemplateFeatureCountType0Identity0 != *(v4 + 88))
+      if ((v17 & 0x40000000) == 0 || self->_onlineUpdateTemplateFeatureCountType0Identity0 != *(equalCopy + 88))
       {
         goto LABEL_80;
       }
@@ -5045,7 +5045,7 @@ LABEL_62:
 
     if ((*&v16 & 0x400000000) != 0)
     {
-      if ((v17 & 0x400000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType0Identity0 != *(v4 + 92))
+      if ((v17 & 0x400000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType0Identity0 != *(equalCopy + 92))
       {
         goto LABEL_80;
       }
@@ -5058,7 +5058,7 @@ LABEL_62:
 
     if ((*&v16 & 8) != 0)
     {
-      if ((v17 & 8) == 0 || self->_baseTemplateFeatureCountType0Identity1 != *(v4 + 61))
+      if ((v17 & 8) == 0 || self->_baseTemplateFeatureCountType0Identity1 != *(equalCopy + 61))
       {
         goto LABEL_80;
       }
@@ -5071,7 +5071,7 @@ LABEL_62:
 
     if ((*&v16 & 0x80000000) != 0)
     {
-      if ((v17 & 0x80000000) == 0 || self->_onlineUpdateTemplateFeatureCountType0Identity1 != *(v4 + 89))
+      if ((v17 & 0x80000000) == 0 || self->_onlineUpdateTemplateFeatureCountType0Identity1 != *(equalCopy + 89))
       {
         goto LABEL_80;
       }
@@ -5084,7 +5084,7 @@ LABEL_62:
 
     if ((*&v16 & 0x800000000) != 0)
     {
-      if ((v17 & 0x800000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType0Identity1 != *(v4 + 93))
+      if ((v17 & 0x800000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType0Identity1 != *(equalCopy + 93))
       {
         goto LABEL_80;
       }
@@ -5097,7 +5097,7 @@ LABEL_62:
 
     if ((*&v16 & 0x10) != 0)
     {
-      if ((v17 & 0x10) == 0 || self->_baseTemplateFeatureCountType1Identity0 != *(v4 + 62))
+      if ((v17 & 0x10) == 0 || self->_baseTemplateFeatureCountType1Identity0 != *(equalCopy + 62))
       {
         goto LABEL_80;
       }
@@ -5110,7 +5110,7 @@ LABEL_62:
 
     if ((*&v16 & 0x100000000) != 0)
     {
-      if ((v17 & 0x100000000) == 0 || self->_onlineUpdateTemplateFeatureCountType1Identity0 != *(v4 + 90))
+      if ((v17 & 0x100000000) == 0 || self->_onlineUpdateTemplateFeatureCountType1Identity0 != *(equalCopy + 90))
       {
         goto LABEL_80;
       }
@@ -5123,7 +5123,7 @@ LABEL_62:
 
     if ((*&v16 & 0x1000000000) != 0)
     {
-      if ((v17 & 0x1000000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType1Identity0 != *(v4 + 94))
+      if ((v17 & 0x1000000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType1Identity0 != *(equalCopy + 94))
       {
         goto LABEL_80;
       }
@@ -5136,7 +5136,7 @@ LABEL_62:
 
     if ((*&v16 & 0x20) != 0)
     {
-      if ((v17 & 0x20) == 0 || self->_baseTemplateFeatureCountType1Identity1 != *(v4 + 63))
+      if ((v17 & 0x20) == 0 || self->_baseTemplateFeatureCountType1Identity1 != *(equalCopy + 63))
       {
         goto LABEL_80;
       }
@@ -5149,7 +5149,7 @@ LABEL_62:
 
     if ((*&v16 & 0x200000000) != 0)
     {
-      if ((v17 & 0x200000000) == 0 || self->_onlineUpdateTemplateFeatureCountType1Identity1 != *(v4 + 91))
+      if ((v17 & 0x200000000) == 0 || self->_onlineUpdateTemplateFeatureCountType1Identity1 != *(equalCopy + 91))
       {
         goto LABEL_80;
       }
@@ -5162,7 +5162,7 @@ LABEL_62:
 
     if ((*&v16 & 0x2000000000) != 0)
     {
-      if ((v17 & 0x2000000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType1Identity1 != *(v4 + 95))
+      if ((v17 & 0x2000000000) == 0 || self->_passcodeUpdateTemplateFeatureCountType1Identity1 != *(equalCopy + 95))
       {
         goto LABEL_80;
       }
@@ -5180,16 +5180,16 @@ LABEL_62:
         goto LABEL_80;
       }
 
-      v20 = v4[433];
+      v20 = equalCopy[433];
       if (self->_type1MatchEnabled)
       {
-        if ((v4[433] & 1) == 0)
+        if ((equalCopy[433] & 1) == 0)
         {
           goto LABEL_80;
         }
       }
 
-      else if (v4[433])
+      else if (equalCopy[433])
       {
         goto LABEL_80;
       }
@@ -5202,7 +5202,7 @@ LABEL_62:
 
     if ((*&v16 & 0x200) != 0)
     {
-      if ((v17 & 0x200) == 0 || self->_enrolledTemplateCountType0 != *(v4 + 67))
+      if ((v17 & 0x200) == 0 || self->_enrolledTemplateCountType0 != *(equalCopy + 67))
       {
         goto LABEL_80;
       }
@@ -5215,7 +5215,7 @@ LABEL_62:
 
     if ((*&v16 & 0x400) != 0)
     {
-      if ((v17 & 0x400) == 0 || self->_enrolledTemplateCountType1 != *(v4 + 68))
+      if ((v17 & 0x400) == 0 || self->_enrolledTemplateCountType1 != *(equalCopy + 68))
       {
         goto LABEL_80;
       }
@@ -5228,7 +5228,7 @@ LABEL_62:
 
     if ((*&v16 & 0x100) != 0)
     {
-      if ((v17 & 0x100) == 0 || self->_enrolledTemplateCountTotal != *(v4 + 66))
+      if ((v17 & 0x100) == 0 || self->_enrolledTemplateCountTotal != *(equalCopy + 66))
       {
         goto LABEL_80;
       }
@@ -5241,7 +5241,7 @@ LABEL_62:
 
     if ((*&v16 & 0x800000) != 0)
     {
-      if ((v17 & 0x800000) == 0 || self->_matchingTemplateCountType0Identity0 != *(v4 + 81))
+      if ((v17 & 0x800000) == 0 || self->_matchingTemplateCountType0Identity0 != *(equalCopy + 81))
       {
         goto LABEL_80;
       }
@@ -5254,7 +5254,7 @@ LABEL_62:
 
     if ((*&v16 & 0x1000000) != 0)
     {
-      if ((v17 & 0x1000000) == 0 || self->_matchingTemplateCountType0Identity1 != *(v4 + 82))
+      if ((v17 & 0x1000000) == 0 || self->_matchingTemplateCountType0Identity1 != *(equalCopy + 82))
       {
         goto LABEL_80;
       }
@@ -5267,7 +5267,7 @@ LABEL_62:
 
     if ((*&v16 & 0x2000000) != 0)
     {
-      if ((v17 & 0x2000000) == 0 || self->_matchingTemplateCountType1Identity0 != *(v4 + 83))
+      if ((v17 & 0x2000000) == 0 || self->_matchingTemplateCountType1Identity0 != *(equalCopy + 83))
       {
         goto LABEL_80;
       }
@@ -5280,11 +5280,11 @@ LABEL_62:
 
     if ((*&v16 & 0x4000000) == 0)
     {
-      v13 = (*(v4 + 436) & 0x4000000) == 0;
+      v13 = (*(equalCopy + 436) & 0x4000000) == 0;
       goto LABEL_81;
     }
 
-    if ((v17 & 0x4000000) != 0 && self->_matchingTemplateCountType1Identity1 == *(v4 + 84))
+    if ((v17 & 0x4000000) != 0 && self->_matchingTemplateCountType1Identity1 == *(equalCopy + 84))
     {
       v13 = 1;
       goto LABEL_81;
@@ -6073,40 +6073,40 @@ LABEL_74:
   return v69 ^ v70 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 436) & 2) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 436) & 2) != 0)
   {
-    self->_timestamp = v4[29];
+    self->_timestamp = fromCopy[29];
     *&self->_has |= 2uLL;
   }
 
-  v34 = v4;
-  v5 = [v4 baseTemplateFeatureCountsCount];
-  if (v5)
+  v34 = fromCopy;
+  baseTemplateFeatureCountsCount = [fromCopy baseTemplateFeatureCountsCount];
+  if (baseTemplateFeatureCountsCount)
   {
-    v6 = v5;
+    v6 = baseTemplateFeatureCountsCount;
     for (i = 0; i != v6; ++i)
     {
       -[AWDBiometricKitDailyUpdate addBaseTemplateFeatureCount:](self, "addBaseTemplateFeatureCount:", [v34 baseTemplateFeatureCountAtIndex:i]);
     }
   }
 
-  v8 = [v34 onlineUpdateTemplateFeatureCountsCount];
-  if (v8)
+  onlineUpdateTemplateFeatureCountsCount = [v34 onlineUpdateTemplateFeatureCountsCount];
+  if (onlineUpdateTemplateFeatureCountsCount)
   {
-    v9 = v8;
+    v9 = onlineUpdateTemplateFeatureCountsCount;
     for (j = 0; j != v9; ++j)
     {
       -[AWDBiometricKitDailyUpdate addOnlineUpdateTemplateFeatureCount:](self, "addOnlineUpdateTemplateFeatureCount:", [v34 onlineUpdateTemplateFeatureCountAtIndex:j]);
     }
   }
 
-  v11 = [v34 passcodeUpdateTemplateFeatureCountsCount];
-  if (v11)
+  passcodeUpdateTemplateFeatureCountsCount = [v34 passcodeUpdateTemplateFeatureCountsCount];
+  if (passcodeUpdateTemplateFeatureCountsCount)
   {
-    v12 = v11;
+    v12 = passcodeUpdateTemplateFeatureCountsCount;
     for (k = 0; k != v12; ++k)
     {
       -[AWDBiometricKitDailyUpdate addPasscodeUpdateTemplateFeatureCount:](self, "addPasscodeUpdateTemplateFeatureCount:", [v34 passcodeUpdateTemplateFeatureCountAtIndex:k]);
@@ -6251,20 +6251,20 @@ LABEL_22:
   }
 
 LABEL_23:
-  v15 = [v34 matchingBinCountsCount];
-  if (v15)
+  matchingBinCountsCount = [v34 matchingBinCountsCount];
+  if (matchingBinCountsCount)
   {
-    v16 = v15;
+    v16 = matchingBinCountsCount;
     for (m = 0; m != v16; ++m)
     {
       -[AWDBiometricKitDailyUpdate addMatchingBinCounts:](self, "addMatchingBinCounts:", [v34 matchingBinCountsAtIndex:m]);
     }
   }
 
-  v18 = [v34 matchingTemplateTypeCountsCount];
-  if (v18)
+  matchingTemplateTypeCountsCount = [v34 matchingTemplateTypeCountsCount];
+  if (matchingTemplateTypeCountsCount)
   {
-    v19 = v18;
+    v19 = matchingTemplateTypeCountsCount;
     for (n = 0; n != v19; ++n)
     {
       -[AWDBiometricKitDailyUpdate addMatchingTemplateTypeCounts:](self, "addMatchingTemplateTypeCounts:", [v34 matchingTemplateTypeCountsAtIndex:n]);
@@ -6277,30 +6277,30 @@ LABEL_23:
     *&self->_has |= 0x10000000000000uLL;
   }
 
-  v21 = [v34 bioCheckInfosCount];
-  if (v21)
+  bioCheckInfosCount = [v34 bioCheckInfosCount];
+  if (bioCheckInfosCount)
   {
-    v22 = v21;
+    v22 = bioCheckInfosCount;
     for (ii = 0; ii != v22; ++ii)
     {
       -[AWDBiometricKitDailyUpdate addBioCheckInfo:](self, "addBioCheckInfo:", [v34 bioCheckInfoAtIndex:ii]);
     }
   }
 
-  v24 = [v34 bioCheckResultsCount];
-  if (v24)
+  bioCheckResultsCount = [v34 bioCheckResultsCount];
+  if (bioCheckResultsCount)
   {
-    v25 = v24;
+    v25 = bioCheckResultsCount;
     for (jj = 0; jj != v25; ++jj)
     {
       -[AWDBiometricKitDailyUpdate addBioCheckResult:](self, "addBioCheckResult:", [v34 bioCheckResultAtIndex:jj]);
     }
   }
 
-  v27 = [v34 passcodeUpdatesCount];
-  if (v27)
+  passcodeUpdatesCount = [v34 passcodeUpdatesCount];
+  if (passcodeUpdatesCount)
   {
-    v28 = v27;
+    v28 = passcodeUpdatesCount;
     for (kk = 0; kk != v28; ++kk)
     {
       -[AWDBiometricKitDailyUpdate addPasscodeUpdate:](self, "addPasscodeUpdate:", [v34 passcodeUpdateAtIndex:kk]);
@@ -6313,10 +6313,10 @@ LABEL_23:
     *&self->_has |= 0x80uLL;
   }
 
-  v30 = [v34 matchingIdentityCountsCount];
-  if (v30)
+  matchingIdentityCountsCount = [v34 matchingIdentityCountsCount];
+  if (matchingIdentityCountsCount)
   {
-    v31 = v30;
+    v31 = matchingIdentityCountsCount;
     for (mm = 0; mm != v31; ++mm)
     {
       -[AWDBiometricKitDailyUpdate addMatchingIdentityCounts:](self, "addMatchingIdentityCounts:", [v34 matchingIdentityCountsAtIndex:mm]);

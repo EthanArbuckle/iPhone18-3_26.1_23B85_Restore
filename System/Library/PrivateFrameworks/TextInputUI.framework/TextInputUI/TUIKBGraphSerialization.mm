@@ -1,61 +1,61 @@
 @interface TUIKBGraphSerialization
 + (id)separatorCharacterSet;
-- ($000CCD7ED2ADA2E18343834BA3C2DAF0)UIKBValueForOffset:(int *)a3;
-- (CGRect)CGRectForOffset:(int *)a3;
+- ($000CCD7ED2ADA2E18343834BA3C2DAF0)UIKBValueForOffset:(int *)offset;
+- (CGRect)CGRectForOffset:(int *)offset;
 - (NSData)serializedData;
 - (TUIKBGraphSerialization)init;
-- (float)bareFloatForOffset:(int *)a3;
-- (float)compressedFloatForOffset:(int *)a3 withKind:(unsigned __int8)a4;
-- (id)UIKBTreeForOffset:(int *)a3 withFlags:(unint64_t)a4;
-- (id)_UIKBTreeForOffset:(int *)a3 withFlags:(unint64_t)a4;
-- (id)arrayForOffset:(int *)a3 withCount:(unint64_t)a4;
-- (id)dataForArray:(id)a3;
-- (id)dataForCGRect:(CGRect)a3;
-- (id)dataForCompressedFloat:(float)a3 kind:(unsigned __int8 *)a4;
-- (id)dataForCompressedInt:(int64_t)a3;
-- (id)dataForCompressedUInt:(unint64_t)a3;
-- (id)dataForDictionary:(id)a3;
-- (id)dataForFloat:(float)a3;
-- (id)dataForGeometry:(id)a3;
-- (id)dataForInt:(int)a3;
-- (id)dataForMergeAction:(id)a3;
-- (id)dataForObject:(id)a3;
-- (id)dataForOffsetObject:(id)a3;
-- (id)dataForReference:(int)a3;
-- (id)dataForSet:(id)a3;
-- (id)dataForShape:(id)a3;
-- (id)dataForSimpleString:(id)a3;
-- (id)dataForString:(id)a3;
-- (id)dataForStringConcat:(id)a3;
-- (id)dataForUIKBTree:(id)a3;
-- (id)dataForUIKBValue:(id)a3;
-- (id)dictionaryForOffset:(int *)a3 nonEmpty:(BOOL)a4;
-- (id)geometryForOffset:(int *)a3 withFlags:(unint64_t)a4;
-- (id)keyboardForName:(id)a3;
-- (id)keyboardPrefixForWidth:(float)a3 andEdge:(BOOL)a4;
-- (id)keyboardSuffixForPortraitWidth:(float)a3;
-- (id)mergeActionForOffset:(int *)a3 withFlags:(unint64_t)a4;
-- (id)mutableDataForObjectType:(unsigned __int8)a3 withSize:(unint64_t)a4;
-- (id)objectForOffset:(int *)a3;
-- (id)refArrayForOffset:(int *)a3 withCount:(unint64_t)a4;
-- (id)relativeRefArrayForOffset:(int *)a3 withCount:(unint64_t)a4;
-- (id)sanitizedDictionary:(id)a3;
-- (id)setForOffset:(int *)a3 nonEmpty:(BOOL)a4;
-- (id)shapeForOffset:(int *)a3 withFlags:(unint64_t)a4;
-- (id)simpleStringForOffset:(int *)a3 withUTF8Length:(unint64_t)a4;
+- (float)bareFloatForOffset:(int *)offset;
+- (float)compressedFloatForOffset:(int *)offset withKind:(unsigned __int8)kind;
+- (id)UIKBTreeForOffset:(int *)offset withFlags:(unint64_t)flags;
+- (id)_UIKBTreeForOffset:(int *)offset withFlags:(unint64_t)flags;
+- (id)arrayForOffset:(int *)offset withCount:(unint64_t)count;
+- (id)dataForArray:(id)array;
+- (id)dataForCGRect:(CGRect)rect;
+- (id)dataForCompressedFloat:(float)float kind:(unsigned __int8 *)kind;
+- (id)dataForCompressedInt:(int64_t)int;
+- (id)dataForCompressedUInt:(unint64_t)int;
+- (id)dataForDictionary:(id)dictionary;
+- (id)dataForFloat:(float)float;
+- (id)dataForGeometry:(id)geometry;
+- (id)dataForInt:(int)int;
+- (id)dataForMergeAction:(id)action;
+- (id)dataForObject:(id)object;
+- (id)dataForOffsetObject:(id)object;
+- (id)dataForReference:(int)reference;
+- (id)dataForSet:(id)set;
+- (id)dataForShape:(id)shape;
+- (id)dataForSimpleString:(id)string;
+- (id)dataForString:(id)string;
+- (id)dataForStringConcat:(id)concat;
+- (id)dataForUIKBTree:(id)tree;
+- (id)dataForUIKBValue:(id)value;
+- (id)dictionaryForOffset:(int *)offset nonEmpty:(BOOL)empty;
+- (id)geometryForOffset:(int *)offset withFlags:(unint64_t)flags;
+- (id)keyboardForName:(id)name;
+- (id)keyboardPrefixForWidth:(float)width andEdge:(BOOL)edge;
+- (id)keyboardSuffixForPortraitWidth:(float)width;
+- (id)mergeActionForOffset:(int *)offset withFlags:(unint64_t)flags;
+- (id)mutableDataForObjectType:(unsigned __int8)type withSize:(unint64_t)size;
+- (id)objectForOffset:(int *)offset;
+- (id)refArrayForOffset:(int *)offset withCount:(unint64_t)count;
+- (id)relativeRefArrayForOffset:(int *)offset withCount:(unint64_t)count;
+- (id)sanitizedDictionary:(id)dictionary;
+- (id)setForOffset:(int *)offset nonEmpty:(BOOL)empty;
+- (id)shapeForOffset:(int *)offset withFlags:(unint64_t)flags;
+- (id)simpleStringForOffset:(int *)offset withUTF8Length:(unint64_t)length;
 - (id)statistics;
-- (id)stringConcatForOffset:(int *)a3 withComponentCount:(unint64_t)a4;
-- (id)stringsBySplittingString:(id)a3 afterCharactersInSet:(id)a4;
-- (int)_serializedOffsetForObject:(id)a3;
-- (unint64_t)compressedIntForOffset:(int *)a3;
-- (unint64_t)compressedUIntForOffset:(int *)a3;
-- (void)addKeyboardPrefix:(id)a3 forWidth:(float)a4 minEdge:(BOOL)a5;
+- (id)stringConcatForOffset:(int *)offset withComponentCount:(unint64_t)count;
+- (id)stringsBySplittingString:(id)string afterCharactersInSet:(id)set;
+- (int)_serializedOffsetForObject:(id)object;
+- (unint64_t)compressedIntForOffset:(int *)offset;
+- (unint64_t)compressedUIntForOffset:(int *)offset;
+- (void)addKeyboardPrefix:(id)prefix forWidth:(float)width minEdge:(BOOL)edge;
 - (void)dealloc;
-- (void)persistData:(id)a3 forObject:(id)a4;
-- (void)preheatWithStatistics:(id)a3;
+- (void)persistData:(id)data forObject:(id)object;
+- (void)preheatWithStatistics:(id)statistics;
 - (void)reset;
-- (void)serializeObject:(id)a3;
-- (void)setSerializedData:(id)a3;
+- (void)serializeObject:(id)object;
+- (void)setSerializedData:(id)data;
 @end
 
 @implementation TUIKBGraphSerialization
@@ -87,11 +87,11 @@
   [(TUIKBGraphSerialization *)&v3 dealloc];
 }
 
-- (id)keyboardPrefixForWidth:(float)a3 andEdge:(BOOL)a4
+- (id)keyboardPrefixForWidth:(float)width andEdge:(BOOL)edge
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = 56;
-  if (a4)
+  if (edge)
   {
     v5 = 48;
   }
@@ -119,7 +119,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         [v12 floatValue];
-        if (v13 <= a3)
+        if (v13 <= width)
         {
           return [v6 objectForKey:v12];
         }
@@ -166,25 +166,25 @@ uint64_t __58__TUIKBGraphSerialization_keyboardPrefixForWidth_andEdge___block_in
   }
 }
 
-- (id)keyboardSuffixForPortraitWidth:(float)a3
+- (id)keyboardSuffixForPortraitWidth:(float)width
 {
-  if (a3 < 320.0)
+  if (width < 320.0)
   {
     return @"Mini";
   }
 
-  if (a3 < 730.0)
+  if (width < 730.0)
   {
     return @"Small";
   }
 
   v4 = @"Grand";
-  if (a3 < 1024.0)
+  if (width < 1024.0)
   {
     v4 = @"Large";
   }
 
-  if (a3 >= 815.0)
+  if (width >= 815.0)
   {
     return v4;
   }
@@ -195,10 +195,10 @@ uint64_t __58__TUIKBGraphSerialization_keyboardPrefixForWidth_andEdge___block_in
   }
 }
 
-- (void)addKeyboardPrefix:(id)a3 forWidth:(float)a4 minEdge:(BOOL)a5
+- (void)addKeyboardPrefix:(id)prefix forWidth:(float)width minEdge:(BOOL)edge
 {
   v6 = 56;
-  if (a5)
+  if (edge)
   {
     v6 = 48;
   }
@@ -206,73 +206,73 @@ uint64_t __58__TUIKBGraphSerialization_keyboardPrefixForWidth_andEdge___block_in
   v7 = *(&self->super.isa + v6);
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:?];
 
-  [v7 setObject:a3 forKey:v8];
+  [v7 setObject:prefix forKey:v8];
 }
 
-- (id)objectForOffset:(int *)a3
+- (id)objectForOffset:(int *)offset
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:*a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:*offset];
   v6 = [(NSMutableDictionary *)[(TUIKBGraphSerialization *)self deserializationCache] objectForKey:v5];
   if (!v6)
   {
-    v8 = [(NSData *)self->_graphData bytes];
-    v9 = *a3;
-    v10 = v8[v9];
-    *a3 = v9 + 1;
+    bytes = [(NSData *)self->_graphData bytes];
+    v9 = *offset;
+    v10 = bytes[v9];
+    *offset = v9 + 1;
     v11 = v10 & 0xF;
     v12 = v10 >> 4;
     if ((v10 >> 4) == 15)
     {
-      v12 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:a3];
+      v12 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:offset];
     }
 
     switch(v11)
     {
       case 0:
-        v17 = [(TUIKBGraphSerialization *)self intValueForOffset:a3, v12];
+        v17 = [(TUIKBGraphSerialization *)self intValueForOffset:offset, v12];
         return [(TUIKBGraphSerialization *)self objectForOffset:&v17];
       case 1:
-        v15 = [(TUIKBGraphSerialization *)self intValueForOffset:a3, v12];
+        v15 = [(TUIKBGraphSerialization *)self intValueForOffset:offset, v12];
         v16 = MEMORY[0x1E696AD98];
 
         return [v16 numberWithInt:v15];
       case 2:
-        [(TUIKBGraphSerialization *)self floatValueForOffset:a3, v12];
+        [(TUIKBGraphSerialization *)self floatValueForOffset:offset, v12];
         v14 = MEMORY[0x1E696AD98];
 
         return [v14 numberWithFloat:?];
       case 3:
-        v13 = [(TUIKBGraphSerialization *)self simpleStringForOffset:a3 withUTF8Length:v12];
+        v13 = [(TUIKBGraphSerialization *)self simpleStringForOffset:offset withUTF8Length:v12];
         goto LABEL_24;
       case 4:
-        v13 = [(TUIKBGraphSerialization *)self stringConcatForOffset:a3 withComponentCount:v12];
+        v13 = [(TUIKBGraphSerialization *)self stringConcatForOffset:offset withComponentCount:v12];
         goto LABEL_24;
       case 5:
-        v13 = [(TUIKBGraphSerialization *)self arrayForOffset:a3 withCount:v12];
+        v13 = [(TUIKBGraphSerialization *)self arrayForOffset:offset withCount:v12];
         goto LABEL_24;
       case 6:
-        v13 = [(TUIKBGraphSerialization *)self setForOffset:a3 nonEmpty:v12 != 0];
+        v13 = [(TUIKBGraphSerialization *)self setForOffset:offset nonEmpty:v12 != 0];
         goto LABEL_24;
       case 7:
-        v13 = [(TUIKBGraphSerialization *)self dictionaryForOffset:a3 nonEmpty:v12 != 0];
+        v13 = [(TUIKBGraphSerialization *)self dictionaryForOffset:offset nonEmpty:v12 != 0];
         goto LABEL_24;
       case 8:
-        v13 = [(TUIKBGraphSerialization *)self geometryForOffset:a3 withFlags:v12];
+        v13 = [(TUIKBGraphSerialization *)self geometryForOffset:offset withFlags:v12];
         goto LABEL_24;
       case 9:
-        v13 = [(TUIKBGraphSerialization *)self shapeForOffset:a3 withFlags:v12];
+        v13 = [(TUIKBGraphSerialization *)self shapeForOffset:offset withFlags:v12];
         goto LABEL_24;
       case 10:
-        v13 = [(TUIKBGraphSerialization *)self mergeActionForOffset:a3 withFlags:v12];
+        v13 = [(TUIKBGraphSerialization *)self mergeActionForOffset:offset withFlags:v12];
         goto LABEL_24;
       case 11:
-        v13 = [(TUIKBGraphSerialization *)self UIKBTreeForOffset:a3 withFlags:v12];
+        v13 = [(TUIKBGraphSerialization *)self UIKBTreeForOffset:offset withFlags:v12];
         goto LABEL_24;
       case 12:
-        v13 = [(TUIKBGraphSerialization *)self refArrayForOffset:a3 withCount:v12];
+        v13 = [(TUIKBGraphSerialization *)self refArrayForOffset:offset withCount:v12];
         goto LABEL_24;
       case 13:
-        v13 = [(TUIKBGraphSerialization *)self relativeRefArrayForOffset:a3 withCount:v12];
+        v13 = [(TUIKBGraphSerialization *)self relativeRefArrayForOffset:offset withCount:v12];
 LABEL_24:
         v6 = v13;
         if (v13 && [(TUIKBGraphSerialization *)self deserializationCache])
@@ -289,15 +289,15 @@ LABEL_24:
   return v6;
 }
 
-- (id)_UIKBTreeForOffset:(int *)a3 withFlags:(unint64_t)a4
+- (id)_UIKBTreeForOffset:(int *)offset withFlags:(unint64_t)flags
 {
-  v4 = a4;
-  ++*a3;
+  flagsCopy = flags;
+  ++*offset;
   v7 = [(TUIKBGraphSerialization *)self intValueForOffset:?];
-  if (v4)
+  if (flagsCopy)
   {
-    v8 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
-    if ((v4 & 2) != 0)
+    v8 = [(TUIKBGraphSerialization *)self objectForOffset:offset];
+    if ((flagsCopy & 2) != 0)
     {
       goto LABEL_3;
     }
@@ -306,21 +306,21 @@ LABEL_24:
   else
   {
     v8 = 0;
-    if ((v4 & 2) != 0)
+    if ((flagsCopy & 2) != 0)
     {
 LABEL_3:
-      v9 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
+      dictionary = [(TUIKBGraphSerialization *)self objectForOffset:offset];
       goto LABEL_6;
     }
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
 LABEL_6:
-  v10 = v9;
-  if ((v4 & 4) != 0)
+  v10 = dictionary;
+  if ((flagsCopy & 4) != 0)
   {
-    v11 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
-    if ((v4 & 8) != 0)
+    v11 = [(TUIKBGraphSerialization *)self objectForOffset:offset];
+    if ((flagsCopy & 8) != 0)
     {
       goto LABEL_8;
     }
@@ -331,13 +331,13 @@ LABEL_10:
   }
 
   v11 = 0;
-  if ((v4 & 8) == 0)
+  if ((flagsCopy & 8) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_8:
-  v12 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
+  v12 = [(TUIKBGraphSerialization *)self objectForOffset:offset];
 LABEL_11:
   v13 = [objc_alloc(MEMORY[0x1E69DCB88]) initWithType:v7 withName:v8 withProperties:v10 withSubtrees:v11 withCache:v12];
   if (([v13 isLeafType] & 1) == 0 && !v11)
@@ -348,62 +348,62 @@ LABEL_11:
   return v13;
 }
 
-- (id)UIKBTreeForOffset:(int *)a3 withFlags:(unint64_t)a4
+- (id)UIKBTreeForOffset:(int *)offset withFlags:(unint64_t)flags
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [(TUIKBGraphSerialization *)self _UIKBTreeForOffset:a3 withFlags:a4];
+  v8 = [(TUIKBGraphSerialization *)self _UIKBTreeForOffset:offset withFlags:flags];
   objc_autoreleasePoolPop(v7);
 
   return v8;
 }
 
-- (id)mergeActionForOffset:(int *)a3 withFlags:(unint64_t)a4
+- (id)mergeActionForOffset:(int *)offset withFlags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v7 = objc_alloc_init(MEMORY[0x1E69DCB40]);
-  [v7 setRemainingKeyName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
-  [v7 setDisappearingKeyName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
-  if (v4)
+  [v7 setRemainingKeyName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
+  [v7 setDisappearingKeyName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
+  if (flagsCopy)
   {
-    [v7 setOrderedKeyList:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
+    [v7 setOrderedKeyList:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
   }
 
-  if ((v4 & 2) != 0)
+  if ((flagsCopy & 2) != 0)
   {
-    [v7 setFactors:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
+    [v7 setFactors:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
   }
 
   return v7;
 }
 
-- (id)shapeForOffset:(int *)a3 withFlags:(unint64_t)a4
+- (id)shapeForOffset:(int *)offset withFlags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v7 = objc_alloc_init(MEMORY[0x1E69DCB70]);
-  if (v4)
+  if (flagsCopy)
   {
-    [v7 setGeometry:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
+    [v7 setGeometry:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
   }
 
-  [(TUIKBGraphSerialization *)self CGRectForOffset:a3];
+  [(TUIKBGraphSerialization *)self CGRectForOffset:offset];
   [v7 setFrame:?];
-  [(TUIKBGraphSerialization *)self CGRectForOffset:a3];
+  [(TUIKBGraphSerialization *)self CGRectForOffset:offset];
   [v7 setPaddedFrame:?];
   return v7;
 }
 
-- (CGRect)CGRectForOffset:(int *)a3
+- (CGRect)CGRectForOffset:(int *)offset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(NSData *)self->_graphData bytes];
+  bytes = [(NSData *)self->_graphData bytes];
   v6 = 0;
-  v7 = *a3;
-  v8 = v5[v7];
-  *a3 = v7 + 1;
+  v7 = *offset;
+  v8 = bytes[v7];
+  *offset = v7 + 1;
   v9 = v15;
   do
   {
-    [(TUIKBGraphSerialization *)self compressedFloatForOffset:a3 withKind:(v8 >> v6) & 3];
+    [(TUIKBGraphSerialization *)self compressedFloatForOffset:offset withKind:(v8 >> v6) & 3];
     *v9++ = v10;
     v6 += 2;
   }
@@ -420,37 +420,37 @@ LABEL_11:
   return result;
 }
 
-- (id)geometryForOffset:(int *)a3 withFlags:(unint64_t)a4
+- (id)geometryForOffset:(int *)offset withFlags:(unint64_t)flags
 {
   v7 = objc_alloc_init(MEMORY[0x1E69DCB18]);
-  [v7 setName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
-  v8 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  [v7 setName:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
+  v8 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setX:{v8, v9}];
-  v10 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v10 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setY:{v10, v11}];
-  v12 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v12 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setW:{v12, v13}];
-  v14 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v14 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setH:{v14, v15}];
-  v16 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v16 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setPaddingTop:{v16, v17}];
-  v18 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v18 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setPaddingLeft:{v18, v19}];
-  v20 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v20 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setPaddingBottom:{v20, v21}];
-  v22 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:a3];
+  v22 = [(TUIKBGraphSerialization *)self UIKBValueForOffset:offset];
   [v7 setPaddingRight:{v22, v23}];
-  [v7 setExplicitlySpecified:a4 & 1];
-  [v7 setIsTemplate:(a4 >> 1) & 1];
+  [v7 setExplicitlySpecified:flags & 1];
+  [v7 setIsTemplate:(flags >> 1) & 1];
   return v7;
 }
 
-- ($000CCD7ED2ADA2E18343834BA3C2DAF0)UIKBValueForOffset:(int *)a3
+- ($000CCD7ED2ADA2E18343834BA3C2DAF0)UIKBValueForOffset:(int *)offset
 {
-  v5 = [(NSData *)self->_graphData bytes];
-  v6 = *a3;
-  v7 = v5[v6];
-  *a3 = v6 + 1;
+  bytes = [(NSData *)self->_graphData bytes];
+  v6 = *offset;
+  v7 = bytes[v6];
+  *offset = v6 + 1;
   if ((v7 & 0xF) == 0xF)
   {
     v8 = 100;
@@ -461,7 +461,7 @@ LABEL_11:
     v8 = v7 & 0xF;
   }
 
-  [(TUIKBGraphSerialization *)self compressedFloatForOffset:a3 withKind:v7 >> 4];
+  [(TUIKBGraphSerialization *)self compressedFloatForOffset:offset withKind:v7 >> 4];
   v10 = v9;
   v11 = v8;
   result.var1 = v11;
@@ -469,12 +469,12 @@ LABEL_11:
   return result;
 }
 
-- (id)dictionaryForOffset:(int *)a3 nonEmpty:(BOOL)a4
+- (id)dictionaryForOffset:(int *)offset nonEmpty:(BOOL)empty
 {
-  if (a4)
+  if (empty)
   {
     v7 = [(TUIKBGraphSerialization *)self objectForOffset:?];
-    v8 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
+    v8 = [(TUIKBGraphSerialization *)self objectForOffset:offset];
     v9 = MEMORY[0x1E695DF90];
 
     return [v9 dictionaryWithObjects:v8 forKeys:v7];
@@ -488,11 +488,11 @@ LABEL_11:
   }
 }
 
-- (id)setForOffset:(int *)a3 nonEmpty:(BOOL)a4
+- (id)setForOffset:(int *)offset nonEmpty:(BOOL)empty
 {
-  if (a4)
+  if (empty)
   {
-    v5 = [(TUIKBGraphSerialization *)self objectForOffset:a3];
+    v5 = [(TUIKBGraphSerialization *)self objectForOffset:offset];
     v6 = MEMORY[0x1E695DFD8];
 
     return [v6 setWithArray:v5];
@@ -506,10 +506,10 @@ LABEL_11:
   }
 }
 
-- (id)relativeRefArrayForOffset:(int *)a3 withCount:(unint64_t)a4
+- (id)relativeRefArrayForOffset:(int *)offset withCount:(unint64_t)count
 {
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  if (count)
   {
     v8 = 0;
     v9 = 0;
@@ -517,12 +517,12 @@ LABEL_11:
     {
       if (v8)
       {
-        v9 += [(TUIKBGraphSerialization *)self compressedIntForOffset:a3];
+        v9 += [(TUIKBGraphSerialization *)self compressedIntForOffset:offset];
       }
 
       else
       {
-        v9 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:a3];
+        v9 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:offset];
       }
 
       v11 = v9;
@@ -530,108 +530,108 @@ LABEL_11:
       ++v8;
     }
 
-    while (a4 != v8);
+    while (count != v8);
   }
 
   return v7;
 }
 
-- (id)refArrayForOffset:(int *)a3 withCount:(unint64_t)a4
+- (id)refArrayForOffset:(int *)offset withCount:(unint64_t)count
 {
-  v4 = a4;
-  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:a4]; v4; --v4)
+  countCopy = count;
+  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:count]; countCopy; --countCopy)
   {
-    v9 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:a3];
+    v9 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:offset];
     [i addObject:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", &v9)}];
   }
 
   return i;
 }
 
-- (id)arrayForOffset:(int *)a3 withCount:(unint64_t)a4
+- (id)arrayForOffset:(int *)offset withCount:(unint64_t)count
 {
-  v4 = a4;
-  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:a4]; v4; --v4)
+  countCopy = count;
+  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:count]; countCopy; --countCopy)
   {
-    [i addObject:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", a3)}];
+    [i addObject:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", offset)}];
   }
 
   return i;
 }
 
-- (id)stringConcatForOffset:(int *)a3 withComponentCount:(unint64_t)a4
+- (id)stringConcatForOffset:(int *)offset withComponentCount:(unint64_t)count
 {
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  if (count)
   {
     v8 = 1;
     do
     {
-      v11 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:a3];
+      v11 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:offset];
       [v7 addObject:{-[TUIKBGraphSerialization objectForOffset:](self, "objectForOffset:", &v11)}];
       v9 = v8++;
     }
 
-    while (v9 < a4);
+    while (v9 < count);
   }
 
   return [v7 componentsJoinedByString:&stru_1F03BA8F8];
 }
 
-- (id)simpleStringForOffset:(int *)a3 withUTF8Length:(unint64_t)a4
+- (id)simpleStringForOffset:(int *)offset withUTF8Length:(unint64_t)length
 {
-  v6 = [(NSData *)self->_graphData bytes];
-  result = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v6[*a3] length:a4 encoding:4];
-  *a3 += a4;
+  bytes = [(NSData *)self->_graphData bytes];
+  result = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&bytes[*offset] length:length encoding:4];
+  *offset += length;
   return result;
 }
 
-- (float)compressedFloatForOffset:(int *)a3 withKind:(unsigned __int8)a4
+- (float)compressedFloatForOffset:(int *)offset withKind:(unsigned __int8)kind
 {
-  if (a4 == 3)
+  if (kind == 3)
   {
 
-    [(TUIKBGraphSerialization *)self bareFloatForOffset:a3];
+    [(TUIKBGraphSerialization *)self bareFloatForOffset:offset];
   }
 
-  else if (a4 == 2)
+  else if (kind == 2)
   {
-    return [(TUIKBGraphSerialization *)self compressedIntForOffset:a3, v4, v5]/ 6.0;
+    return [(TUIKBGraphSerialization *)self compressedIntForOffset:offset, v4, v5]/ 6.0;
   }
 
   else
   {
     result = 0.0;
-    if (a4 == 1)
+    if (kind == 1)
     {
-      return [(TUIKBGraphSerialization *)self compressedIntForOffset:a3, 0.0, v4, v5];
+      return [(TUIKBGraphSerialization *)self compressedIntForOffset:offset, 0.0, v4, v5];
     }
   }
 
   return result;
 }
 
-- (float)bareFloatForOffset:(int *)a3
+- (float)bareFloatForOffset:(int *)offset
 {
-  v4 = [(NSData *)self->_graphData bytes];
-  v5 = *a3;
-  *a3 = v5 + 4;
-  return *&v4[v5];
+  bytes = [(NSData *)self->_graphData bytes];
+  v5 = *offset;
+  *offset = v5 + 4;
+  return *&bytes[v5];
 }
 
-- (unint64_t)compressedUIntForOffset:(int *)a3
+- (unint64_t)compressedUIntForOffset:(int *)offset
 {
-  v4 = [(NSData *)self->_graphData bytes];
+  bytes = [(NSData *)self->_graphData bytes];
   v5 = 0;
   result = 0;
-  v7 = *a3;
+  v7 = *offset;
   v8 = v7 + 1;
-  v9 = &v4[v7];
+  v9 = &bytes[v7];
   do
   {
     v10 = *v9++;
     result |= (v10 & 0x7F) << v5;
-    *a3 = v8;
+    *offset = v8;
     v5 += 7;
     ++v8;
   }
@@ -640,25 +640,25 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)compressedIntForOffset:(int *)a3
+- (unint64_t)compressedIntForOffset:(int *)offset
 {
-  v4 = [(NSData *)self->_graphData bytes];
-  v5 = *a3;
-  v6 = v4[v5];
-  v7 = v4[v5];
+  bytes = [(NSData *)self->_graphData bytes];
+  v5 = *offset;
+  v6 = bytes[v5];
+  v7 = bytes[v5];
   v8 = v7 & 0x3F;
   v9 = v5 + 1;
-  *a3 = v5 + 1;
+  *offset = v5 + 1;
   if (v6 < 0)
   {
     v10 = v5 + 2;
-    v11 = &v4[v9];
+    v11 = &bytes[v9];
     v12 = 6;
     do
     {
       v13 = *v11++;
       v8 |= (v13 & 0x7F) << v12;
-      *a3 = v10;
+      *offset = v10;
       v12 += 7;
       ++v10;
     }
@@ -677,43 +677,43 @@ LABEL_11:
   }
 }
 
-- (id)keyboardForName:(id)a3
+- (id)keyboardForName:(id)name
 {
   v5 = [(NSDictionary *)self->_keyboardOffsets objectForKey:?];
   if (v5)
   {
-    v7 = [v5 intValue];
-    return [(TUIKBGraphSerialization *)self objectForOffset:&v7];
+    intValue = [v5 intValue];
+    return [(TUIKBGraphSerialization *)self objectForOffset:&intValue];
   }
 
   else
   {
-    [MEMORY[0x1E695DFD8] setWithObject:a3];
+    [MEMORY[0x1E695DFD8] setWithObject:name];
     _CFPropertyListCreateFiltered();
     return 0;
   }
 }
 
-- (void)setSerializedData:(id)a3
+- (void)setSerializedData:(id)data
 {
-  self->_serializedData = a3;
+  self->_serializedData = data;
 
-  self->_graphData = a3;
+  self->_graphData = data;
   v11 = 0;
 
   self->_minEdgeWidths = [-[TUIKBGraphSerialization objectForOffset:](self objectForOffset:{&v11), "mutableCopy"}];
   self->_maxEdgeWidths = [-[TUIKBGraphSerialization objectForOffset:](self objectForOffset:{&v11), "mutableCopy"}];
   v5 = [(TUIKBGraphSerialization *)self compressedUIntForOffset:&v11];
-  v6 = [(NSData *)self->_graphData bytes];
+  bytes = [(NSData *)self->_graphData bytes];
   v7 = v11;
 
-  self->_keyboardOffsetsData = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:&v6[v7] length:v5 freeWhenDone:0];
+  self->_keyboardOffsetsData = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:&bytes[v7] length:v5 freeWhenDone:0];
   self->_keyboardOffsets = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = v11 + v5;
   v11 += v5;
   v9 = MEMORY[0x1E695DEF0];
-  v10 = [a3 length];
-  self->_graphData = [v9 dataWithBytesNoCopy:&v6[v8] length:v10 - v11 freeWhenDone:0];
+  v10 = [data length];
+  self->_graphData = [v9 dataWithBytesNoCopy:&bytes[v8] length:v10 - v11 freeWhenDone:0];
 }
 
 - (NSData)serializedData
@@ -723,12 +723,12 @@ LABEL_11:
   if (!serializedData)
   {
     self->_disableOffsets = 1;
-    v4 = [(NSDictionary *)self->_keyboardOffsets allKeys];
+    allKeys = [(NSDictionary *)self->_keyboardOffsets allKeys];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v5 = [(NSArray *)allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -739,7 +739,7 @@ LABEL_11:
         {
           if (*v19 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
@@ -748,20 +748,20 @@ LABEL_11:
           if (objc_opt_isKindOfClass())
           {
             v11 = [(NSDictionary *)self->_keyboardOffsets objectForKey:v10];
-            v12 = [(TUIKBGraphSerialization *)self keyboardOffsets];
+            keyboardOffsets = [(TUIKBGraphSerialization *)self keyboardOffsets];
             if (v11)
             {
-              [(NSMutableDictionary *)v12 setObject:v11 forKey:v9];
+              [(NSMutableDictionary *)keyboardOffsets setObject:v11 forKey:v9];
             }
 
             else
             {
-              [(NSMutableDictionary *)v12 removeObjectForKey:v9];
+              [(NSMutableDictionary *)keyboardOffsets removeObjectForKey:v9];
             }
           }
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v6 = [(NSArray *)allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v6);
@@ -784,16 +784,16 @@ LABEL_11:
   return serializedData;
 }
 
-- (void)preheatWithStatistics:(id)a3
+- (void)preheatWithStatistics:(id)statistics
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a3 allKeys];
+  allKeys = [statistics allKeys];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke;
   v15[3] = &unk_1E72D82D0;
-  v15[4] = a3;
-  v6 = [v5 sortedArrayUsingComparator:v15];
+  v15[4] = statistics;
+  v6 = [allKeys sortedArrayUsingComparator:v15];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -851,23 +851,23 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
   return v2;
 }
 
-- (void)serializeObject:(id)a3
+- (void)serializeObject:(id)object
 {
   if (!self->_disableOffsets)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [-[NSMutableDictionary objectForKey:](self->_referenceCount objectForKey:{a3), "integerValue"}];
-      -[NSMutableDictionary setObject:forKey:](self->_referenceCount, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1], a3);
+      v5 = [-[NSMutableDictionary objectForKey:](self->_referenceCount objectForKey:{object), "integerValue"}];
+      -[NSMutableDictionary setObject:forKey:](self->_referenceCount, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1], object);
     }
 
-    if (![(TUIKBGraphSerialization *)self dataForOffsetObject:a3])
+    if (![(TUIKBGraphSerialization *)self dataForOffsetObject:object])
     {
-      v6 = [(TUIKBGraphSerialization *)self dataForObject:a3];
+      v6 = [(TUIKBGraphSerialization *)self dataForObject:object];
       if (v6)
       {
-        [(TUIKBGraphSerialization *)self persistData:v6 forObject:a3];
+        [(TUIKBGraphSerialization *)self persistData:v6 forObject:object];
       }
     }
 
@@ -875,9 +875,9 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
   }
 }
 
-- (int)_serializedOffsetForObject:(id)a3
+- (int)_serializedOffsetForObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return -1;
   }
@@ -891,32 +891,32 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
   return [v3 intValue];
 }
 
-- (void)persistData:(id)a3 forObject:(id)a4
+- (void)persistData:(id)data forObject:(id)object
 {
-  if (a3)
+  if (data)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a4 type] == 1)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [object type] == 1)
     {
-      v7 = [(TUIKBGraphSerialization *)self keyboardOffsets];
-      -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSData length](self->_graphData, "length")}], objc_msgSend(a4, "name"));
+      keyboardOffsets = [(TUIKBGraphSerialization *)self keyboardOffsets];
+      -[NSMutableDictionary setObject:forKey:](keyboardOffsets, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSData length](self->_graphData, "length")}], objc_msgSend(object, "name"));
     }
 
-    -[NSMapTable setObject:forKey:](self->_serializedOffsets, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSData length](self->_graphData, "length")}], a4);
-    v8 = [(TUIKBGraphSerialization *)self graphData];
+    -[NSMapTable setObject:forKey:](self->_serializedOffsets, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSData length](self->_graphData, "length")}], object);
+    graphData = [(TUIKBGraphSerialization *)self graphData];
 
-    [(NSMutableData *)v8 appendData:a3];
+    [(NSMutableData *)graphData appendData:data];
   }
 }
 
-- (id)dataForObject:(id)a3
+- (id)dataForObject:(id)object
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 intValue];
+    intValue = [object intValue];
 
-    return [(TUIKBGraphSerialization *)self dataForInt:v5];
+    return [(TUIKBGraphSerialization *)self dataForInt:intValue];
   }
 
   else
@@ -925,7 +925,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
     if (objc_opt_isKindOfClass())
     {
 
-      return [(TUIKBGraphSerialization *)self dataForString:a3];
+      return [(TUIKBGraphSerialization *)self dataForString:object];
     }
 
     else
@@ -934,7 +934,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
       if (objc_opt_isKindOfClass())
       {
 
-        return [(TUIKBGraphSerialization *)self dataForArray:a3];
+        return [(TUIKBGraphSerialization *)self dataForArray:object];
       }
 
       else
@@ -943,7 +943,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
         if (objc_opt_isKindOfClass())
         {
 
-          return [(TUIKBGraphSerialization *)self dataForSet:a3];
+          return [(TUIKBGraphSerialization *)self dataForSet:object];
         }
 
         else
@@ -952,7 +952,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
           if (objc_opt_isKindOfClass())
           {
 
-            return [(TUIKBGraphSerialization *)self dataForDictionary:a3];
+            return [(TUIKBGraphSerialization *)self dataForDictionary:object];
           }
 
           else
@@ -961,7 +961,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
             if (objc_opt_isKindOfClass())
             {
 
-              return [(TUIKBGraphSerialization *)self dataForGeometry:a3];
+              return [(TUIKBGraphSerialization *)self dataForGeometry:object];
             }
 
             else
@@ -970,7 +970,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
               if (objc_opt_isKindOfClass())
               {
 
-                return [(TUIKBGraphSerialization *)self dataForShape:a3];
+                return [(TUIKBGraphSerialization *)self dataForShape:object];
               }
 
               else
@@ -979,7 +979,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
                 if (objc_opt_isKindOfClass())
                 {
 
-                  return [(TUIKBGraphSerialization *)self dataForMergeAction:a3];
+                  return [(TUIKBGraphSerialization *)self dataForMergeAction:object];
                 }
 
                 else
@@ -988,7 +988,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
                   if (objc_opt_isKindOfClass())
                   {
 
-                    return [(TUIKBGraphSerialization *)self dataForUIKBTree:a3];
+                    return [(TUIKBGraphSerialization *)self dataForUIKBTree:object];
                   }
 
                   else
@@ -1005,62 +1005,62 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
   }
 }
 
-- (id)dataForOffsetObject:(id)a3
+- (id)dataForOffsetObject:(id)object
 {
   if (self->_disableOffsets)
   {
     return 0;
   }
 
-  v4 = [(NSMapTable *)self->_serializedOffsets objectForKey:a3];
+  v4 = [(NSMapTable *)self->_serializedOffsets objectForKey:object];
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return [(TUIKBGraphSerialization *)self dataForReference:v5];
+  return [(TUIKBGraphSerialization *)self dataForReference:intValue];
 }
 
-- (id)dataForUIKBTree:(id)a3
+- (id)dataForUIKBTree:(id)tree
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a3 type] == 9)
+  if ([tree type] == 9)
   {
-    v5 = [a3 shape];
+    shape = [tree shape];
 
-    return [(TUIKBGraphSerialization *)self dataForShape:v5];
+    return [(TUIKBGraphSerialization *)self dataForShape:shape];
   }
 
-  if ([a3 type] != 10)
+  if ([tree type] != 10)
   {
-    v8 = [(TUIKBGraphSerialization *)self dataForOffsetObject:a3];
+    v8 = [(TUIKBGraphSerialization *)self dataForOffsetObject:tree];
     if (v8)
     {
       return v8;
     }
 
-    if ([a3 type] == 1)
+    if ([tree type] == 1)
     {
-      v9 = [objc_msgSend(a3 "properties")];
+      v9 = [objc_msgSend(tree "properties")];
       if (v9)
       {
-        -[NSMutableDictionary setObject:forKey:](-[TUIKBGraphSerialization keyboardOffsets](self, "keyboardOffsets"), "setObject:forKey:", v9, [a3 name]);
+        -[NSMutableDictionary setObject:forKey:](-[TUIKBGraphSerialization keyboardOffsets](self, "keyboardOffsets"), "setObject:forKey:", v9, [tree name]);
         return 0;
       }
     }
 
-    v10 = [a3 properties];
-    v11 = [objc_msgSend(a3 "subtrees")];
-    if ([a3 type] == 2)
+    properties = [tree properties];
+    v11 = [objc_msgSend(tree "subtrees")];
+    if ([tree type] == 2)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v12 = [a3 subtrees];
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      subtrees = [tree subtrees];
+      v13 = [subtrees countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1071,13 +1071,13 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
           {
             if (*v25 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(subtrees);
             }
 
             v17 = *(*(&v24 + 1) + 8 * i);
             if ([v17 type] == 10)
             {
-              v10 = [v17 properties];
+              properties = [v17 properties];
             }
 
             else if ([v17 type] != 14)
@@ -1088,21 +1088,21 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
             [v11 removeObject:v17];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v14 = [subtrees countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v14);
       }
 
-      if (![(TUIKBGraphSerialization *)self dataForOffsetObject:v10])
+      if (![(TUIKBGraphSerialization *)self dataForOffsetObject:properties])
       {
-        [(TUIKBGraphSerialization *)self serializeObject:v10];
+        [(TUIKBGraphSerialization *)self serializeObject:properties];
       }
     }
 
-    v18 = [a3 name];
-    v19 = [v10 count];
-    if (v18)
+    name = [tree name];
+    v19 = [properties count];
+    if (name)
     {
       v20 = 3;
     }
@@ -1119,7 +1119,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
 
     else
     {
-      v21 = v18 != 0;
+      v21 = name != 0;
     }
 
     if ([v11 count])
@@ -1127,23 +1127,23 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
       v21 |= 4u;
     }
 
-    v22 = [a3 cache];
+    cache = [tree cache];
     v23 = v21 | 8;
-    if (!v22)
+    if (!cache)
     {
       v23 = v21;
     }
 
     v8 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:11 withFlags:v23];
-    [v8 appendData:{-[TUIKBGraphSerialization dataForInt:](self, "dataForInt:", objc_msgSend(a3, "type"))}];
-    if ([a3 name])
+    [v8 appendData:{-[TUIKBGraphSerialization dataForInt:](self, "dataForInt:", objc_msgSend(tree, "type"))}];
+    if ([tree name])
     {
-      [v8 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(a3, "name"))}];
+      [v8 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(tree, "name"))}];
     }
 
-    if ([v10 count])
+    if ([properties count])
     {
-      [v8 appendData:{-[TUIKBGraphSerialization dataForDictionary:](self, "dataForDictionary:", v10)}];
+      [v8 appendData:{-[TUIKBGraphSerialization dataForDictionary:](self, "dataForDictionary:", properties)}];
     }
 
     if ([v11 count])
@@ -1151,26 +1151,26 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
       [v8 appendData:{-[TUIKBGraphSerialization dataForArray:](self, "dataForArray:", v11)}];
     }
 
-    if ([a3 cache])
+    if ([tree cache])
     {
-      [v8 appendData:{-[TUIKBGraphSerialization dataForDictionary:](self, "dataForDictionary:", objc_msgSend(a3, "cache"))}];
+      [v8 appendData:{-[TUIKBGraphSerialization dataForDictionary:](self, "dataForDictionary:", objc_msgSend(tree, "cache"))}];
     }
 
     return v8;
   }
 
-  v7 = [a3 properties];
+  properties2 = [tree properties];
 
-  return [(TUIKBGraphSerialization *)self dataForDictionary:v7];
+  return [(TUIKBGraphSerialization *)self dataForDictionary:properties2];
 }
 
-- (id)dataForMergeAction:(id)a3
+- (id)dataForMergeAction:(id)action
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (!v5)
   {
-    v6 = [objc_msgSend(a3 "orderedKeyList")];
-    v7 = [a3 factors];
+    v6 = [objc_msgSend(action "orderedKeyList")];
+    factors = [action factors];
     if (v6)
     {
       v8 = 3;
@@ -1181,7 +1181,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
       v8 = 2;
     }
 
-    if (v7)
+    if (factors)
     {
       v9 = v8;
     }
@@ -1192,34 +1192,34 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
     }
 
     v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:10 withFlags:v9];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(a3, "remainingKeyName"))}];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(a3, "disappearingKeyName"))}];
-    if ([objc_msgSend(a3 "orderedKeyList")])
+    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(action, "remainingKeyName"))}];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(action, "disappearingKeyName"))}];
+    if ([objc_msgSend(action "orderedKeyList")])
     {
-      [v5 appendData:{-[TUIKBGraphSerialization dataForArray:](self, "dataForArray:", objc_msgSend(a3, "orderedKeyList"))}];
+      [v5 appendData:{-[TUIKBGraphSerialization dataForArray:](self, "dataForArray:", objc_msgSend(action, "orderedKeyList"))}];
     }
 
-    if ([a3 factors])
+    if ([action factors])
     {
-      [v5 appendData:{-[TUIKBGraphSerialization dataForGeometry:](self, "dataForGeometry:", objc_msgSend(a3, "factors"))}];
+      [v5 appendData:{-[TUIKBGraphSerialization dataForGeometry:](self, "dataForGeometry:", objc_msgSend(action, "factors"))}];
     }
   }
 
   return v5;
 }
 
-- (id)dataForShape:(id)a3
+- (id)dataForShape:(id)shape
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (!v5)
   {
-    if ([a3 geometry])
+    if ([shape geometry])
     {
-      v6 = [objc_msgSend(a3 "geometry")];
+      v6 = [objc_msgSend(shape "geometry")];
       v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:9 withFlags:v6];
       if (v6)
       {
-        [v5 appendData:{-[TUIKBGraphSerialization dataForGeometry:](self, "dataForGeometry:", objc_msgSend(a3, "geometry"))}];
+        [v5 appendData:{-[TUIKBGraphSerialization dataForGeometry:](self, "dataForGeometry:", objc_msgSend(shape, "geometry"))}];
       }
     }
 
@@ -1228,89 +1228,89 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
       v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:9 withFlags:0];
     }
 
-    [a3 frame];
+    [shape frame];
     [v5 appendData:{-[TUIKBGraphSerialization dataForCGRect:](self, "dataForCGRect:")}];
-    [a3 paddedFrame];
+    [shape paddedFrame];
     [v5 appendData:{-[TUIKBGraphSerialization dataForCGRect:](self, "dataForCGRect:")}];
   }
 
   return v5;
 }
 
-- (id)dataForCGRect:(CGRect)a3
+- (id)dataForCGRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E695DF88] data];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  data = [MEMORY[0x1E695DF88] data];
   v15 = 0;
-  [v8 appendBytes:&v15 length:1];
+  [data appendBytes:&v15 length:1];
   v14 = 0;
   *&v9 = x;
-  [v8 appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v9)}];
+  [data appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v9)}];
   v15 |= v14;
   *&v10 = y;
-  [v8 appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v10)}];
+  [data appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v10)}];
   v15 |= 4 * v14;
   *&v11 = width;
-  [v8 appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v11)}];
+  [data appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v11)}];
   v15 |= 16 * v14;
   *&v12 = height;
-  [v8 appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v12)}];
+  [data appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v14, v12)}];
   v15 |= v14 << 6;
-  [v8 replaceBytesInRange:0 withBytes:{1, &v15}];
-  return v8;
+  [data replaceBytesInRange:0 withBytes:{1, &v15}];
+  return data;
 }
 
-- (id)dataForGeometry:(id)a3
+- (id)dataForGeometry:(id)geometry
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (!v5)
   {
-    v6 = [a3 explicitlySpecified];
-    if ([a3 isTemplate])
+    explicitlySpecified = [geometry explicitlySpecified];
+    if ([geometry isTemplate])
     {
-      v7 = v6 | 2;
+      v7 = explicitlySpecified | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = explicitlySpecified;
     }
 
     v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:8 withFlags:v7];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(a3, "name"))}];
-    v8 = [a3 x];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForString:](self, "dataForString:", objc_msgSend(geometry, "name"))}];
+    v8 = [geometry x];
     [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v8, v9)}];
-    v10 = [a3 y];
+    v10 = [geometry y];
     [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v10, v11)}];
-    v12 = [a3 w];
+    v12 = [geometry w];
     [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v12, v13)}];
-    v14 = [a3 h];
+    v14 = [geometry h];
     [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v14, v15)}];
-    v16 = [a3 paddingTop];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v16, v17)}];
-    v18 = [a3 paddingLeft];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v18, v19)}];
-    v20 = [a3 paddingBottom];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v20, v21)}];
-    v22 = [a3 paddingRight];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", v22, v23)}];
+    paddingTop = [geometry paddingTop];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", paddingTop, v17)}];
+    paddingLeft = [geometry paddingLeft];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", paddingLeft, v19)}];
+    paddingBottom = [geometry paddingBottom];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", paddingBottom, v21)}];
+    paddingRight = [geometry paddingRight];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForUIKBValue:](self, "dataForUIKBValue:", paddingRight, v23)}];
   }
 
   return v5;
 }
 
-- (id)dataForUIKBValue:(id)a3
+- (id)dataForUIKBValue:(id)value
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [MEMORY[0x1E695DF88] data];
+  var1 = value.var1;
+  var0 = value.var0;
+  data = [MEMORY[0x1E695DF88] data];
   v11 = 0;
-  [v6 appendBytes:&v11 length:1];
+  [data appendBytes:&v11 length:1];
   *&v7 = var0;
-  [v6 appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v11, v7)}];
+  [data appendData:{-[TUIKBGraphSerialization dataForCompressedFloat:kind:](self, "dataForCompressedFloat:kind:", &v11, v7)}];
   if (var1 == 100)
   {
     v8 = 15;
@@ -1322,11 +1322,11 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
   }
 
   v10 = v8 | (16 * v11);
-  [v6 replaceBytesInRange:0 withBytes:{1, &v10}];
-  return v6;
+  [data replaceBytesInRange:0 withBytes:{1, &v10}];
+  return data;
 }
 
-- (id)dataForDictionary:(id)a3
+- (id)dataForDictionary:(id)dictionary
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (v5)
@@ -1334,7 +1334,7 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
     return v5;
   }
 
-  v6 = [(TUIKBGraphSerialization *)self sanitizedDictionary:a3];
+  v6 = [(TUIKBGraphSerialization *)self sanitizedDictionary:dictionary];
   if ([v6 count] >= 1)
   {
     v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:7 withSize:1];
@@ -1343,13 +1343,13 @@ uint64_t __49__TUIKBGraphSerialization_preheatWithStatistics___block_invoke(uint
     v17 = 0x3052000000;
     v18 = __Block_byref_object_copy__12715;
     v19 = __Block_byref_object_dispose__12716;
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = 0;
     v10 = &v9;
     v11 = 0x3052000000;
     v12 = __Block_byref_object_copy__12715;
     v13 = __Block_byref_object_dispose__12716;
-    v14 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __45__TUIKBGraphSerialization_dataForDictionary___block_invoke;
@@ -1375,16 +1375,16 @@ uint64_t __45__TUIKBGraphSerialization_dataForDictionary___block_invoke(uint64_t
   return [v5 addObject:a3];
 }
 
-- (id)sanitizedDictionary:(id)a3
+- (id)sanitizedDictionary:(id)dictionary
 {
-  v4 = [a3 mutableCopy];
+  v4 = [dictionary mutableCopy];
   [v4 removeObjectForKey:@"KBother"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__TUIKBGraphSerialization_sanitizedDictionary___block_invoke;
   v6[3] = &unk_1E72D8280;
   v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v6];
   return v4;
 }
 
@@ -1509,7 +1509,7 @@ LABEL_8:
   return [v9 setObject:v7 forKey:v8];
 }
 
-- (id)dataForSet:(id)a3
+- (id)dataForSet:(id)set
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (v5)
@@ -1517,17 +1517,17 @@ LABEL_8:
     return v5;
   }
 
-  if ([a3 count] >= 1)
+  if ([set count] >= 1)
   {
     v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:6 withSize:1];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForArray:](self, "dataForArray:", objc_msgSend(a3, "allObjects"))}];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForArray:](self, "dataForArray:", objc_msgSend(set, "allObjects"))}];
     return v5;
   }
 
   return [(TUIKBGraphSerialization *)self mutableDataForObjectType:6 withSize:0];
 }
 
-- (id)dataForArray:(id)a3
+- (id)dataForArray:(id)array
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
@@ -1535,12 +1535,12 @@ LABEL_8:
   {
     if (self->_disableOffsets)
     {
-      v5 = -[TUIKBGraphSerialization mutableDataForObjectType:withSize:](self, "mutableDataForObjectType:withSize:", 5, [a3 count]);
+      v5 = -[TUIKBGraphSerialization mutableDataForObjectType:withSize:](self, "mutableDataForObjectType:withSize:", 5, [array count]);
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v7 = [a3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v7 = [array countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v7)
       {
         v8 = v7;
@@ -1551,7 +1551,7 @@ LABEL_8:
           {
             if (*v26 != v9)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(array);
             }
 
             v11 = *(*(&v25 + 1) + 8 * i);
@@ -1573,7 +1573,7 @@ LABEL_8:
             [v5 appendData:v12];
           }
 
-          v8 = [a3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v8 = [array countByEnumeratingWithState:&v25 objects:v30 count:16];
         }
 
         while (v8);
@@ -1582,12 +1582,12 @@ LABEL_8:
 
     else
     {
-      v13 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v14 = [a3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v14 = [array countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1598,7 +1598,7 @@ LABEL_8:
           {
             if (*v22 != v16)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(array);
             }
 
             v18 = *(*(&v21 + 1) + 8 * j);
@@ -1609,29 +1609,29 @@ LABEL_8:
               v19 = [(TUIKBGraphSerialization *)self _serializedOffsetForObject:v18];
             }
 
-            [v13 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
+            [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
           }
 
-          v15 = [a3 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v15 = [array countByEnumeratingWithState:&v21 objects:v29 count:16];
         }
 
         while (v15);
       }
 
-      v5 = -[TUIKBGraphSerialization mutableDataForObjectType:withSize:](self, "mutableDataForObjectType:withSize:", 13, [a3 count]);
-      if ([v13 count])
+      v5 = -[TUIKBGraphSerialization mutableDataForObjectType:withSize:](self, "mutableDataForObjectType:withSize:", 13, [array count]);
+      if ([array count])
       {
-        [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", objc_msgSend(objc_msgSend(v13, "objectAtIndexedSubscript:", 0), "intValue"))}];
-        if ([v13 count] >= 2)
+        [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", 0), "intValue"))}];
+        if ([array count] >= 2)
         {
           v20 = 1;
           do
           {
-            [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedInt:](self, "dataForCompressedInt:", (objc_msgSend(objc_msgSend(v13, "objectAtIndexedSubscript:", v20), "intValue") - objc_msgSend(objc_msgSend(v13, "objectAtIndexedSubscript:", v20 - 1), "intValue")))}];
+            [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedInt:](self, "dataForCompressedInt:", (objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v20), "intValue") - objc_msgSend(objc_msgSend(array, "objectAtIndexedSubscript:", v20 - 1), "intValue")))}];
             ++v20;
           }
 
-          while (v20 < [v13 count]);
+          while (v20 < [array count]);
         }
       }
     }
@@ -1640,41 +1640,41 @@ LABEL_8:
   return v5;
 }
 
-- (id)dataForString:(id)a3
+- (id)dataForString:(id)string
 {
   if ([(TUIKBGraphSerialization *)self stringIsSimple:?]|| self->_disableOffsets)
   {
 
-    return [(TUIKBGraphSerialization *)self dataForSimpleString:a3];
+    return [(TUIKBGraphSerialization *)self dataForSimpleString:string];
   }
 
   else
   {
 
-    return [(TUIKBGraphSerialization *)self dataForStringConcat:a3];
+    return [(TUIKBGraphSerialization *)self dataForStringConcat:string];
   }
 }
 
-- (id)dataForSimpleString:(id)a3
+- (id)dataForSimpleString:(id)string
 {
   v5 = [(TUIKBGraphSerialization *)self dataForOffsetObject:?];
   if (!v5)
   {
-    v6 = [a3 lengthOfBytesUsingEncoding:4];
+    v6 = [string lengthOfBytesUsingEncoding:4];
     v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:3 withSize:v6];
     if (v6 >= 1)
     {
-      [v5 appendBytes:objc_msgSend(a3 length:{"cStringUsingEncoding:", 4), v6}];
+      [v5 appendBytes:objc_msgSend(string length:{"cStringUsingEncoding:", 4), v6}];
     }
   }
 
   return v5;
 }
 
-- (id)dataForStringConcat:(id)a3
+- (id)dataForStringConcat:(id)concat
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = -[TUIKBGraphSerialization stringsBySplittingString:afterCharactersInSet:](self, "stringsBySplittingString:afterCharactersInSet:", a3, [objc_opt_class() separatorCharacterSet]);
+  v4 = -[TUIKBGraphSerialization stringsBySplittingString:afterCharactersInSet:](self, "stringsBySplittingString:afterCharactersInSet:", concat, [objc_opt_class() separatorCharacterSet]);
   v5 = -[TUIKBGraphSerialization mutableDataForObjectType:withSize:](self, "mutableDataForObjectType:withSize:", 4, [v4 count]);
   v12 = 0u;
   v13 = 0u;
@@ -1708,96 +1708,96 @@ LABEL_8:
   return v5;
 }
 
-- (id)stringsBySplittingString:(id)a3 afterCharactersInSet:(id)a4
+- (id)stringsBySplittingString:(id)string afterCharactersInSet:(id)set
 {
-  v6 = [a3 length];
-  v7 = [MEMORY[0x1E695DF70] array];
+  v6 = [string length];
+  array = [MEMORY[0x1E695DF70] array];
   if (v6)
   {
     v8 = 0;
     do
     {
-      v9 = [a3 rangeOfCharacterFromSet:a4 options:0 range:{v8, v6}];
+      v9 = [string rangeOfCharacterFromSet:set options:0 range:{v8, v6}];
       if (v9 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = v10 - v8 + v9;
       }
 
-      [v7 addObject:{objc_msgSend(a3, "substringWithRange:", v8, v6)}];
+      [array addObject:{objc_msgSend(string, "substringWithRange:", v8, v6)}];
       v8 += v6;
-      v11 = [a3 length];
+      v11 = [string length];
       v6 = v11 - v8;
     }
 
     while (v11 != v8);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)dataForReference:(int)a3
+- (id)dataForReference:(int)reference
 {
   v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:0];
-  [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", a3)}];
+  [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", reference)}];
   return v5;
 }
 
-- (id)dataForFloat:(float)a3
+- (id)dataForFloat:(float)float
 {
   v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:2];
-  *&v6 = a3;
+  *&v6 = float;
   [v5 appendData:{-[TUIKBGraphSerialization dataForBareFloat:](self, "dataForBareFloat:", v6)}];
   return v5;
 }
 
-- (id)dataForInt:(int)a3
+- (id)dataForInt:(int)int
 {
   v5 = [(TUIKBGraphSerialization *)self mutableDataForObjectType:1];
-  [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", a3)}];
+  [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", int)}];
   return v5;
 }
 
-- (id)dataForCompressedFloat:(float)a3 kind:(unsigned __int8 *)a4
+- (id)dataForCompressedFloat:(float)float kind:(unsigned __int8 *)kind
 {
-  if (a3 == 0.0)
+  if (float == 0.0)
   {
-    *a4 = 0;
+    *kind = 0;
     return [MEMORY[0x1E695DEF0] data];
   }
 
-  if (a3 > 0.0)
+  if (float > 0.0)
   {
-    if (vabds_f32(roundf(a3), a3) < 0.001)
+    if (vabds_f32(roundf(float), float) < 0.001)
     {
-      *a4 = 1;
-      v5 = llroundf(a3);
+      *kind = 1;
+      v5 = llroundf(float);
       return [(TUIKBGraphSerialization *)self dataForCompressedInt:v5];
     }
 
-    if (fabsf(roundf(a3 * 6.0) - (a3 * 6.0)) < 0.001)
+    if (fabsf(roundf(float * 6.0) - (float * 6.0)) < 0.001)
     {
-      *a4 = 2;
-      v5 = llroundf(a3 * 6.0);
+      *kind = 2;
+      v5 = llroundf(float * 6.0);
       return [(TUIKBGraphSerialization *)self dataForCompressedInt:v5];
     }
   }
 
-  *a4 = 3;
+  *kind = 3;
   return [(TUIKBGraphSerialization *)self dataForBareFloat:?];
 }
 
-- (id)dataForCompressedUInt:(unint64_t)a3
+- (id)dataForCompressedUInt:(unint64_t)int
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (int)
   {
     v3 = 0;
     do
     {
-      v4 = a3 > 0x7F;
-      v5 = a3 > 0x7F;
-      v6 = a3 & 0x7F;
-      a3 >>= 7;
+      v4 = int > 0x7F;
+      v5 = int > 0x7F;
+      v6 = int & 0x7F;
+      int >>= 7;
       v9[v3++] = v6 | (v5 << 7);
     }
 
@@ -1814,10 +1814,10 @@ LABEL_8:
   return [MEMORY[0x1E695DEF0] dataWithBytes:v9 length:v7];
 }
 
-- (id)dataForCompressedInt:(int64_t)a3
+- (id)dataForCompressedInt:(int64_t)int
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!int)
   {
     v12[0] = 0;
 LABEL_12:
@@ -1825,29 +1825,29 @@ LABEL_12:
     return [MEMORY[0x1E695DEF0] dataWithBytes:v12 length:v10];
   }
 
-  if (a3 >= 0)
+  if (int >= 0)
   {
-    v3 = a3;
+    intCopy = int;
   }
 
   else
   {
-    v3 = -a3;
+    intCopy = -int;
   }
 
-  v4 = (a3 >> 57) & 0x40 | v3 & 0x3F;
-  if (v3 >= 0x40)
+  v4 = (int >> 57) & 0x40 | intCopy & 0x3F;
+  if (intCopy >= 0x40)
   {
     v4 |= 0x80u;
   }
 
   v12[0] = v4;
-  if (v3 < 0x40)
+  if (intCopy < 0x40)
   {
     goto LABEL_12;
   }
 
-  v5 = v3 >> 6;
+  v5 = intCopy >> 6;
   v6 = 1;
   do
   {
@@ -1863,18 +1863,18 @@ LABEL_12:
   return [MEMORY[0x1E695DEF0] dataWithBytes:v12 length:v10];
 }
 
-- (id)mutableDataForObjectType:(unsigned __int8)a3 withSize:(unint64_t)a4
+- (id)mutableDataForObjectType:(unsigned __int8)type withSize:(unint64_t)size
 {
-  if (a4 > 0xE)
+  if (size > 0xE)
   {
-    v8 = a3 | 0xF0;
+    v8 = type | 0xF0;
     v5 = [MEMORY[0x1E695DF88] dataWithBytes:&v8 length:1];
-    [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", a4)}];
+    [v5 appendData:{-[TUIKBGraphSerialization dataForCompressedUInt:](self, "dataForCompressedUInt:", size)}];
   }
 
   else
   {
-    v9 = a3 | (16 * a4);
+    v9 = type | (16 * size);
     return [MEMORY[0x1E695DF88] dataWithBytes:&v9 length:1];
   }
 
@@ -1890,8 +1890,8 @@ LABEL_12:
   [(NSMutableDictionary *)self->_referenceCount removeAllObjects];
   self->_keyboardOffsetsData = 0;
   [(NSMutableDictionary *)[(TUIKBGraphSerialization *)self keyboardOffsets] removeAllObjects];
-  v3 = [(TUIKBGraphSerialization *)self graphData];
-  -[NSMutableData setData:](v3, "setData:", [MEMORY[0x1E695DEF0] data]);
+  graphData = [(TUIKBGraphSerialization *)self graphData];
+  -[NSMutableData setData:](graphData, "setData:", [MEMORY[0x1E695DEF0] data]);
 
   self->_serializedData = 0;
   self->_currentFileType = -1;

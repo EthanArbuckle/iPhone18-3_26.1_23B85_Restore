@@ -1,21 +1,21 @@
 @interface PKBaseCarCommandHandler
-- (BOOL)_carKeyPass:(id)a3 correspondsToAllSpokenPhrase:(id)a4;
-- (BOOL)_findExactMatchOnSpokenPhraseForCarPass:(id)a3 spokenPhrase:(id)a4 completion:(id)a5;
+- (BOOL)_carKeyPass:(id)pass correspondsToAllSpokenPhrase:(id)phrase;
+- (BOOL)_findExactMatchOnSpokenPhraseForCarPass:(id)pass spokenPhrase:(id)phrase completion:(id)completion;
 - (BOOL)isCarReadyForCommunication;
-- (BOOL)isCurrentFunctionAlreadyInDesiredState:(int64_t)a3;
+- (BOOL)isCurrentFunctionAlreadyInDesiredState:(int64_t)state;
 - (PKBaseCarCommandHandler)init;
-- (PKBaseCarCommandHandler)initWithDelegate:(id)a3;
+- (PKBaseCarCommandHandler)initWithDelegate:(id)delegate;
 - (PKIntentHandlerDelegate)delegate;
-- (id)_carKeyPassForUniqueIdentifier:(id)a3;
-- (id)_getVehicleReport:(id)a3;
+- (id)_carKeyPassForUniqueIdentifier:(id)identifier;
+- (id)_getVehicleReport:(id)report;
 - (id)handleGetCurrentFunctionState;
-- (int64_t)prepareCarWithResolvedCarName:(id)a3 toHandleDesiredFunctions:(id)a4;
-- (void)_secureElementPassCorrespondingToPhrase:(id)a3 completion:(id)a4;
+- (int64_t)prepareCarWithResolvedCarName:(id)name toHandleDesiredFunctions:(id)functions;
+- (void)_secureElementPassCorrespondingToPhrase:(id)phrase completion:(id)completion;
 - (void)dealloc;
-- (void)handlePerformAction:(int64_t)a3 withDesiredStatus:(int64_t)a4 completion:(id)a5;
-- (void)handleSetCurrentFunctionToDesiredStatus:(int64_t)a3 withCompletion:(id)a4;
+- (void)handlePerformAction:(int64_t)action withDesiredStatus:(int64_t)status completion:(id)completion;
+- (void)handleSetCurrentFunctionToDesiredStatus:(int64_t)status withCompletion:(id)completion;
 - (void)invalidate;
-- (void)resolveCarNameForSpokenString:(id)a3 withCompletion:(id)a4;
+- (void)resolveCarNameForSpokenString:(id)string withCompletion:(id)completion;
 @end
 
 @implementation PKBaseCarCommandHandler
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (PKBaseCarCommandHandler)initWithDelegate:(id)a3
+- (PKBaseCarCommandHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKBaseCarCommandHandler;
   v5 = [(PKBaseCarCommandHandler *)&v12 init];
@@ -57,7 +57,7 @@
     queue = v5->_queue;
     v5->_queue = v9;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
@@ -85,20 +85,20 @@
   }
 }
 
-- (id)_carKeyPassForUniqueIdentifier:(id)a3
+- (id)_carKeyPassForUniqueIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[PKPassLibrary sharedInstance];
-  v5 = [v4 passWithUniqueID:v3];
+  v5 = [v4 passWithUniqueID:identifierCopy];
 
-  v6 = [v5 secureElementPass];
+  secureElementPass = [v5 secureElementPass];
 
-  return v6;
+  return secureElementPass;
 }
 
-- (id)_getVehicleReport:(id)a3
+- (id)_getVehicleReport:(id)report
 {
-  v3 = a3;
+  reportCopy = report;
   v20 = 0;
   v4 = [PKGetClassNFDigitalCarKeySession() vehicleReports:&v20];
   v5 = v20;
@@ -122,15 +122,15 @@
     v17 = sub_2958;
     v18 = sub_2968;
     v19 = 0;
-    v8 = [v3 devicePrimaryPaymentApplication];
-    v9 = [v8 subcredentials];
+    devicePrimaryPaymentApplication = [reportCopy devicePrimaryPaymentApplication];
+    subcredentials = [devicePrimaryPaymentApplication subcredentials];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_2970;
     v11[3] = &unk_1CFCF8;
     v13 = buf;
     v12 = v4;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [subcredentials enumerateObjectsUsingBlock:v11];
 
     v7 = *(v15 + 5);
     _Block_object_dispose(buf, 8);
@@ -139,10 +139,10 @@
   return v7;
 }
 
-- (void)_secureElementPassCorrespondingToPhrase:(id)a3 completion:(id)a4
+- (void)_secureElementPassCorrespondingToPhrase:(id)phrase completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  phraseCopy = phrase;
   v8 = +[PKPassLibrary sharedInstance];
   v9 = [v8 passesOfType:1];
 
@@ -155,18 +155,18 @@
   }
 
   v11 = [v9 pk_objectsPassingTest:&stru_1CFD38];
-  v12 = [v7 spokenPhrase];
+  spokenPhrase = [phraseCopy spokenPhrase];
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v12;
+    v16 = spokenPhrase;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Spoken Phrase: %@", &v15, 0xCu);
   }
 
-  if (![(PKBaseCarCommandHandler *)self _findExactMatchOnSpokenPhraseForCarPass:v9 spokenPhrase:v12 completion:v6])
+  if (![(PKBaseCarCommandHandler *)self _findExactMatchOnSpokenPhraseForCarPass:v9 spokenPhrase:spokenPhrase completion:completionCopy])
   {
-    if (v12)
+    if (spokenPhrase)
     {
       v13 = +[NSSet set];
     }
@@ -183,24 +183,24 @@
     }
 
     v14 = v13;
-    v6[2](v6, v13);
+    completionCopy[2](completionCopy, v13);
   }
 }
 
-- (BOOL)_findExactMatchOnSpokenPhraseForCarPass:(id)a3 spokenPhrase:(id)a4 completion:(id)a5
+- (BOOL)_findExactMatchOnSpokenPhraseForCarPass:(id)pass spokenPhrase:(id)phrase completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  passCopy = pass;
+  phraseCopy = phrase;
+  completionCopy = completion;
+  if (phraseCopy)
   {
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_2DD8;
     v21 = &unk_1CFD60;
-    v22 = self;
-    v23 = v9;
-    v11 = [v8 pk_objectsPassingTest:&v18];
+    selfCopy = self;
+    v23 = phraseCopy;
+    v11 = [passCopy pk_objectsPassingTest:&v18];
     v12 = [v11 count];
     v13 = v12 != 0;
     if (v12)
@@ -215,7 +215,7 @@
       }
 
       v16 = [NSSet setWithArray:v11];
-      v10[2](v10, v16);
+      completionCopy[2](completionCopy, v16);
     }
   }
 
@@ -227,18 +227,18 @@
   return v13;
 }
 
-- (BOOL)_carKeyPass:(id)a3 correspondsToAllSpokenPhrase:(id)a4
+- (BOOL)_carKeyPass:(id)pass correspondsToAllSpokenPhrase:(id)phrase
 {
-  v5 = a3;
-  v6 = [a4 lowercaseString];
+  passCopy = pass;
+  lowercaseString = [phrase lowercaseString];
   v7 = +[NSCharacterSet whitespaceCharacterSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  v8 = [lowercaseString componentsSeparatedByCharactersInSet:v7];
 
   v9 = [NSPredicate predicateWithFormat:@"SELF != ''"];
   v10 = [v8 filteredArrayUsingPredicate:v9];
 
-  v11 = [v5 localizedDescription];
-  v12 = [v11 lowercaseString];
+  localizedDescription = [passCopy localizedDescription];
+  lowercaseString2 = [localizedDescription lowercaseString];
 
   v22 = 0u;
   v23 = 0u;
@@ -259,7 +259,7 @@
           objc_enumerationMutation(v13);
         }
 
-        if (![v12 containsString:{*(*(&v20 + 1) + 8 * i), v20}])
+        if (![lowercaseString2 containsString:{*(*(&v20 + 1) + 8 * i), v20}])
         {
           v18 = 0;
           goto LABEL_11;
@@ -282,23 +282,23 @@ LABEL_11:
   return v18;
 }
 
-- (void)resolveCarNameForSpokenString:(id)a3 withCompletion:(id)a4
+- (void)resolveCarNameForSpokenString:(id)string withCompletion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_3060;
   v8[3] = &unk_1CFDC8;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  stringCopy = string;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = stringCopy;
   [(PKBaseCarCommandHandler *)self _secureElementPassCorrespondingToPhrase:v7 completion:v8];
 }
 
-- (int64_t)prepareCarWithResolvedCarName:(id)a3 toHandleDesiredFunctions:(id)a4
+- (int64_t)prepareCarWithResolvedCarName:(id)name toHandleDesiredFunctions:(id)functions
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  functionsCopy = functions;
   currentFunction = self->_currentFunction;
   self->_currentFunction = 0;
 
@@ -308,8 +308,8 @@ LABEL_11:
   currentCarKeyPass = self->_currentCarKeyPass;
   self->_currentCarKeyPass = 0;
 
-  v11 = [v6 vocabularyIdentifier];
-  v12 = [(PKBaseCarCommandHandler *)self _carKeyPassForUniqueIdentifier:v11];
+  vocabularyIdentifier = [nameCopy vocabularyIdentifier];
+  v12 = [(PKBaseCarCommandHandler *)self _carKeyPassForUniqueIdentifier:vocabularyIdentifier];
   if (v12)
   {
     objc_storeStrong(&self->_currentCarKeyPass, v12);
@@ -333,7 +333,7 @@ LABEL_11:
         v25 = 2;
       }
 
-      v27 = v14;
+      supportedCarKeyIntents = v14;
       goto LABEL_40;
     }
 
@@ -343,15 +343,15 @@ LABEL_11:
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Retrieved vehicle report. Retrieving function.", buf, 2u);
     }
 
-    v37 = v11;
-    v39 = v6;
+    v37 = vocabularyIdentifier;
+    v39 = nameCopy;
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v38 = v7;
-    v16 = v7;
+    v38 = functionsCopy;
+    v16 = functionsCopy;
     v17 = [v16 countByEnumeratingWithState:&v41 objects:v49 count:16];
     oslog = v14;
     if (v17)
@@ -391,13 +391,13 @@ LABEL_11:
       v20 = 0;
     }
 
-    v26 = [v40 supportedSiriIntents];
-    v27 = [v26 supportedCarKeyIntents];
+    supportedSiriIntents = [v40 supportedSiriIntents];
+    supportedCarKeyIntents = [supportedSiriIntents supportedCarKeyIntents];
 
-    if ((v19 & 1) != 0 && v27 && ([v27 containsObject:v20] & 1) == 0)
+    if ((v19 & 1) != 0 && supportedCarKeyIntents && ([supportedCarKeyIntents containsObject:v20] & 1) == 0)
     {
       p_super = oslog;
-      v11 = v37;
+      vocabularyIdentifier = v37;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
@@ -411,7 +411,7 @@ LABEL_11:
     {
       p_super = oslog;
       v29 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
-      v11 = v37;
+      vocabularyIdentifier = v37;
       if (v19)
       {
         if (v29)
@@ -422,8 +422,8 @@ LABEL_11:
 
         v30 = [v13 getStatusForRKEFunction:v20];
         v31 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
-        v7 = v38;
-        v6 = v39;
+        functionsCopy = v38;
+        nameCopy = v39;
         if (v30)
         {
           if (v31)
@@ -469,8 +469,8 @@ LABEL_37:
     }
 
     v25 = 2;
-    v7 = v38;
-    v6 = v39;
+    functionsCopy = v38;
+    nameCopy = v39;
 LABEL_39:
 
 LABEL_40:
@@ -532,10 +532,10 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)isCurrentFunctionAlreadyInDesiredState:(int64_t)a3
+- (BOOL)isCurrentFunctionAlreadyInDesiredState:(int64_t)state
 {
-  v4 = [(NSNumber *)self->_currentFunctionStatus integerValue];
-  if (v4 == a3)
+  integerValue = [(NSNumber *)self->_currentFunctionStatus integerValue];
+  if (integerValue == state)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -545,33 +545,33 @@ LABEL_41:
     }
   }
 
-  return v4 == a3;
+  return integerValue == state;
 }
 
-- (void)handlePerformAction:(int64_t)a3 withDesiredStatus:(int64_t)a4 completion:(id)a5
+- (void)handlePerformAction:(int64_t)action withDesiredStatus:(int64_t)status completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if ([(PKBaseCarCommandHandler *)self isCarReadyForCommunication])
   {
-    if ([(PKBaseCarCommandHandler *)self isCurrentFunctionAlreadyInDesiredState:a4])
+    if ([(PKBaseCarCommandHandler *)self isCurrentFunctionAlreadyInDesiredState:status])
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
     {
-      v9 = [NSNumber numberWithInteger:a3];
+      v9 = [NSNumber numberWithInteger:action];
       v10 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         currentFunction = self->_currentFunction;
-        v12 = [(PKSecureElementPass *)self->_currentCarKeyPass uniqueID];
+        uniqueID = [(PKSecureElementPass *)self->_currentCarKeyPass uniqueID];
         *buf = 138412802;
         *&buf[4] = v9;
         *&buf[12] = 2112;
         *&buf[14] = currentFunction;
         *&buf[22] = 2112;
-        v49 = v12;
+        v49 = uniqueID;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Sending action (%@) to function (%@) on car (%@).", buf, 0x20u);
       }
 
@@ -579,7 +579,7 @@ LABEL_41:
       v46[1] = 3221225472;
       v46[2] = sub_3F60;
       v46[3] = &unk_1CFE18;
-      v47 = v8;
+      v47 = completionCopy;
       v13 = objc_retainBlock(v46);
       objc_initWeak(&location, self);
       *buf = 0;
@@ -657,13 +657,13 @@ LABEL_41:
 
   else
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)handleSetCurrentFunctionToDesiredStatus:(int64_t)a3 withCompletion:(id)a4
+- (void)handleSetCurrentFunctionToDesiredStatus:(int64_t)status withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_currentCarKeyPass && (v7 = self->_currentFunction) != 0 && self->_currentFunctionStatus)
   {
     v8 = PKLogFacilityTypeGetObject();
@@ -672,12 +672,12 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = v7;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = status;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Requesting to set function (%@) to state (%li)", buf, 0x16u);
     }
 
-    v9 = [(NSNumber *)self->_currentFunctionStatus integerValue];
-    if (v9 == a3)
+    integerValue = [(NSNumber *)self->_currentFunctionStatus integerValue];
+    if (integerValue == status)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -685,31 +685,31 @@ LABEL_41:
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Function all ready in desired state.", buf, 2u);
       }
 
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else if (self->_currentFunction && self->_currentCarKeyPass)
     {
-      if (v9 > 4)
+      if (integerValue > 4)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = off_1CFED8[v9];
+        v11 = off_1CFED8[integerValue];
       }
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         currentFunction = self->_currentFunction;
-        v13 = [(PKSecureElementPass *)self->_currentCarKeyPass uniqueID];
+        uniqueID = [(PKSecureElementPass *)self->_currentCarKeyPass uniqueID];
         *buf = 138412802;
         *&buf[4] = v11;
         *&buf[12] = 2112;
         *&buf[14] = currentFunction;
         *&buf[22] = 2112;
-        v49 = v13;
+        v49 = uniqueID;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Sending action (%@) to function (%@) on car (%@).", buf, 0x20u);
       }
 
@@ -717,7 +717,7 @@ LABEL_41:
       v46[1] = 3221225472;
       v46[2] = sub_4A98;
       v46[3] = &unk_1CFE18;
-      v47 = v6;
+      v47 = completionCopy;
       v14 = objc_retainBlock(v46);
       objc_initWeak(&location, self);
       *buf = 0;
@@ -799,7 +799,7 @@ LABEL_41:
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: Not NearField linkable or we're missing vital information, cannot send action.", buf, 2u);
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -812,7 +812,7 @@ LABEL_41:
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "PKBaseCarCommandHandler: No car was specified, or we were unable to retrieve the function and function status. Either we have no cars stored, or this is an error and we failed to set the identifier.", buf, 2u);
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

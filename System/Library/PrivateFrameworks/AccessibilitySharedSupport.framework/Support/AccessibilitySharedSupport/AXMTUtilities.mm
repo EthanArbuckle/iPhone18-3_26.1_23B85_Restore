@@ -1,33 +1,33 @@
 @interface AXMTUtilities
 + (AXMTUtilities)sharedInstance;
-+ (int64_t)errorCodeForFaceKitPayload:(id)a3 lastReportedFailureNumber:(id)a4;
++ (int64_t)errorCodeForFaceKitPayload:(id)payload lastReportedFailureNumber:(id)number;
 - (AXMTUtilities)init;
-- (CGPoint)convertPoint:(CGPoint)a3 fromOrientation:(int64_t)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toOrientation:(int64_t)a4;
-- (CGPoint)convertPointFromDeviceOrientation:(CGPoint)a3;
-- (CGPoint)convertPointFromInterfaceOrientation:(CGPoint)a3;
-- (CGPoint)convertPointToDeviceOrientation:(CGPoint)a3;
-- (CGPoint)convertPointToInterfaceOrientation:(CGPoint)a3;
+- (CGPoint)convertPoint:(CGPoint)point fromOrientation:(int64_t)orientation;
+- (CGPoint)convertPoint:(CGPoint)point toOrientation:(int64_t)orientation;
+- (CGPoint)convertPointFromDeviceOrientation:(CGPoint)orientation;
+- (CGPoint)convertPointFromInterfaceOrientation:(CGPoint)orientation;
+- (CGPoint)convertPointToDeviceOrientation:(CGPoint)orientation;
+- (CGPoint)convertPointToInterfaceOrientation:(CGPoint)orientation;
 - (CGRect)_screenBounds;
 - (CGRect)_screenBoundsFromFrontBoard;
 - (CGRect)screenBoundsAccountingForInterfaceOrientation;
 - (CGRect)screenBoundsAccountingForPhysicalDeviceOrientation;
-- (void)_accelerometerDataUpdated:(id)a3;
+- (void)_accelerometerDataUpdated:(id)updated;
 - (void)_checkBackboardEffectiveDeviceOrientation;
 - (void)_checkBackboardOrientationLockStatus;
-- (void)_deviceOrientationChanged:(int64_t)a3;
-- (void)_handleAccelerometerDataUpdate:(id)a3;
-- (void)_interfaceOrientationChanged:(int64_t)a3;
+- (void)_deviceOrientationChanged:(int64_t)changed;
+- (void)_handleAccelerometerDataUpdate:(id)update;
+- (void)_interfaceOrientationChanged:(int64_t)changed;
 - (void)_startMonitoringEffectiveDeviceOrientation;
 - (void)_startMonitoringOrientationLockStatus;
 - (void)_stopMonitoringEffectiveDeviceOrientation;
 - (void)_stopMonitoringOrientationLockStatus;
 - (void)_tearDownMotionManager;
-- (void)_updateForDeviceOrientationOverride:(id)a3;
+- (void)_updateForDeviceOrientationOverride:(id)override;
 - (void)_updateScreenBounds;
 - (void)dealloc;
-- (void)registerListener:(id)a3 needsPhysicalOrientationEvents:(BOOL)a4;
-- (void)unregisterListener:(id)a3;
+- (void)registerListener:(id)listener needsPhysicalOrientationEvents:(BOOL)events;
+- (void)unregisterListener:(id)listener;
 @end
 
 @implementation AXMTUtilities
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000CC14;
   block[3] = &unk_100048BE0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100054548 != -1)
   {
     dispatch_once(&qword_100054548, block);
@@ -173,16 +173,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXMTUtilities *)self currentInterfaceOrientation];
-  v12 = [(AXMTUtilities *)self _listeners];
-  v13 = [v12 count];
+  currentInterfaceOrientation = [(AXMTUtilities *)self currentInterfaceOrientation];
+  _listeners = [(AXMTUtilities *)self _listeners];
+  v13 = [_listeners count];
 
   if (!v13)
   {
-    v11 = [UIDevice currentDeviceOrientationAllowingAmbiguous:0];
+    currentInterfaceOrientation = [UIDevice currentDeviceOrientationAllowingAmbiguous:0];
   }
 
-  if ((v11 - 3) >= 2)
+  if ((currentInterfaceOrientation - 3) >= 2)
   {
     v14 = v10;
   }
@@ -192,7 +192,7 @@
     v14 = v8;
   }
 
-  if ((v11 - 3) >= 2)
+  if ((currentInterfaceOrientation - 3) >= 2)
   {
     v15 = v8;
   }
@@ -218,16 +218,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXMTUtilities *)self currentDeviceOrientation];
-  v12 = [(AXMTUtilities *)self _listeners];
-  v13 = [v12 count];
+  currentDeviceOrientation = [(AXMTUtilities *)self currentDeviceOrientation];
+  _listeners = [(AXMTUtilities *)self _listeners];
+  v13 = [_listeners count];
 
   if (!v13)
   {
-    v11 = [UIDevice currentDeviceOrientationAllowingAmbiguous:0];
+    currentDeviceOrientation = [UIDevice currentDeviceOrientationAllowingAmbiguous:0];
   }
 
-  if ((v11 - 3) >= 2)
+  if ((currentDeviceOrientation - 3) >= 2)
   {
     v14 = v8;
   }
@@ -237,7 +237,7 @@
     v14 = v10;
   }
 
-  if ((v11 - 3) >= 2)
+  if ((currentDeviceOrientation - 3) >= 2)
   {
     v15 = v10;
   }
@@ -256,38 +256,38 @@
   return result;
 }
 
-- (CGPoint)convertPointToDeviceOrientation:(CGPoint)a3
+- (CGPoint)convertPointToDeviceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXMTUtilities *)self currentDeviceOrientation];
+  y = orientation.y;
+  x = orientation.x;
+  currentDeviceOrientation = [(AXMTUtilities *)self currentDeviceOrientation];
 
-  [(AXMTUtilities *)self convertPoint:v6 toOrientation:x, y];
+  [(AXMTUtilities *)self convertPoint:currentDeviceOrientation toOrientation:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)convertPointToInterfaceOrientation:(CGPoint)a3
+- (CGPoint)convertPointToInterfaceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXMTUtilities *)self currentInterfaceOrientation];
+  y = orientation.y;
+  x = orientation.x;
+  currentInterfaceOrientation = [(AXMTUtilities *)self currentInterfaceOrientation];
 
-  [(AXMTUtilities *)self convertPoint:v6 toOrientation:x, y];
+  [(AXMTUtilities *)self convertPoint:currentInterfaceOrientation toOrientation:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toOrientation:(int64_t)a4
+- (CGPoint)convertPoint:(CGPoint)point toOrientation:(int64_t)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTUtilities *)self _screenBounds];
   v9 = v8 - y;
   v10 = v7 - x;
-  if (a4 == 2)
+  if (orientation == 2)
   {
     v11 = v7 - x;
   }
@@ -297,7 +297,7 @@
     v11 = x;
   }
 
-  if (a4 == 2)
+  if (orientation == 2)
   {
     v12 = v8 - y;
   }
@@ -307,7 +307,7 @@
     v12 = y;
   }
 
-  if (a4 == 3)
+  if (orientation == 3)
   {
     v11 = y;
   }
@@ -317,7 +317,7 @@
     v10 = v12;
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v10 = x;
   }
@@ -332,46 +332,46 @@
   return result;
 }
 
-- (CGPoint)convertPointFromDeviceOrientation:(CGPoint)a3
+- (CGPoint)convertPointFromDeviceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXMTUtilities *)self currentDeviceOrientation];
+  y = orientation.y;
+  x = orientation.x;
+  currentDeviceOrientation = [(AXMTUtilities *)self currentDeviceOrientation];
 
-  [(AXMTUtilities *)self convertPoint:v6 fromOrientation:x, y];
+  [(AXMTUtilities *)self convertPoint:currentDeviceOrientation fromOrientation:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)convertPointFromInterfaceOrientation:(CGPoint)a3
+- (CGPoint)convertPointFromInterfaceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AXMTUtilities *)self currentInterfaceOrientation];
+  y = orientation.y;
+  x = orientation.x;
+  currentInterfaceOrientation = [(AXMTUtilities *)self currentInterfaceOrientation];
 
-  [(AXMTUtilities *)self convertPoint:v6 fromOrientation:x, y];
+  [(AXMTUtilities *)self convertPoint:currentInterfaceOrientation fromOrientation:x, y];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromOrientation:(int64_t)a4
+- (CGPoint)convertPoint:(CGPoint)point fromOrientation:(int64_t)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTUtilities *)self _screenBounds];
   v8 = v7 - x;
   v10 = v9 - y;
   v11 = v7 - y;
   v12 = v9 - x;
-  if (a4 != 2)
+  if (orientation != 2)
   {
     v12 = x;
     v11 = y;
   }
 
-  if (a4 == 3)
+  if (orientation == 3)
   {
     v13 = x;
   }
@@ -382,7 +382,7 @@
     v13 = v11;
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v10 = y;
   }
@@ -397,32 +397,32 @@
   return result;
 }
 
-- (void)registerListener:(id)a3 needsPhysicalOrientationEvents:(BOOL)a4
+- (void)registerListener:(id)listener needsPhysicalOrientationEvents:(BOOL)events
 {
-  v4 = a4;
-  v6 = a3;
+  eventsCopy = events;
+  listenerCopy = listener;
   v7 = AXSSLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_10000FAA0();
   }
 
-  v8 = [(AXMTUtilities *)self _listeners];
-  v9 = [v8 count];
+  _listeners = [(AXMTUtilities *)self _listeners];
+  v9 = [_listeners count];
 
-  v10 = [(AXMTUtilities *)self _listeners];
-  [v10 addPointer:v6];
+  _listeners2 = [(AXMTUtilities *)self _listeners];
+  [_listeners2 addPointer:listenerCopy];
 
-  if (v4)
+  if (eventsCopy)
   {
-    v11 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-    v12 = [v11 count];
+    _listenersForDeviceOrientationEvents = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+    v12 = [_listenersForDeviceOrientationEvents count];
 
     if (v12)
     {
 LABEL_16:
-      v29 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-      [v29 addPointer:v6];
+      _listenersForDeviceOrientationEvents2 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+      [_listenersForDeviceOrientationEvents2 addPointer:listenerCopy];
 
       goto LABEL_17;
     }
@@ -430,44 +430,44 @@ LABEL_16:
     v13 = objc_alloc_init(NSOperationQueue);
     [(AXMTUtilities *)self set_motionManagerCallbackQueue:v13];
 
-    v14 = [(AXMTUtilities *)self _motionManagerCallbackQueue];
-    [v14 setMaxConcurrentOperationCount:1];
+    _motionManagerCallbackQueue = [(AXMTUtilities *)self _motionManagerCallbackQueue];
+    [_motionManagerCallbackQueue setMaxConcurrentOperationCount:1];
 
-    v15 = [(AXMTUtilities *)self _motionManagerCallbackQueue];
-    [v15 setQualityOfService:33];
+    _motionManagerCallbackQueue2 = [(AXMTUtilities *)self _motionManagerCallbackQueue];
+    [_motionManagerCallbackQueue2 setQualityOfService:33];
 
     v16 = objc_alloc_init(CMMotionManager);
     [(AXMTUtilities *)self set_motionManager:v16];
 
-    v17 = [(AXMTUtilities *)self _motionManager];
-    v18 = [v17 isAccelerometerAvailable];
+    _motionManager = [(AXMTUtilities *)self _motionManager];
+    isAccelerometerAvailable = [_motionManager isAccelerometerAvailable];
 
-    if (v18)
+    if (isAccelerometerAvailable)
     {
-      v19 = [(AXMTUtilities *)self _motionManager];
-      [v19 setAccelerometerUpdateInterval:1.0];
+      _motionManager2 = [(AXMTUtilities *)self _motionManager];
+      [_motionManager2 setAccelerometerUpdateInterval:1.0];
 
-      v20 = [(AXMTUtilities *)self _motionManager];
-      v21 = [(AXMTUtilities *)self _motionManagerCallbackQueue];
+      _motionManager3 = [(AXMTUtilities *)self _motionManager];
+      _motionManagerCallbackQueue3 = [(AXMTUtilities *)self _motionManagerCallbackQueue];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_10000D804;
       v37[3] = &unk_100048D30;
       v37[4] = self;
-      [v20 startAccelerometerUpdatesToQueue:v21 withHandler:v37];
+      [_motionManager3 startAccelerometerUpdatesToQueue:_motionManagerCallbackQueue3 withHandler:v37];
 
-      v22 = [(AXMTUtilities *)self _motionManager];
-      v23 = [v22 accelerometerData];
-      if (v23)
+      _motionManager4 = [(AXMTUtilities *)self _motionManager];
+      accelerometerData = [_motionManager4 accelerometerData];
+      if (accelerometerData)
       {
-        v24 = v23;
-        v25 = [(AXMTUtilities *)self orientationLocked];
+        v24 = accelerometerData;
+        orientationLocked = [(AXMTUtilities *)self orientationLocked];
 
-        if ((v25 & 1) == 0)
+        if ((orientationLocked & 1) == 0)
         {
-          v26 = [(AXMTUtilities *)self _motionManager];
-          v27 = [v26 accelerometerData];
-          [(AXMTUtilities *)self _handleAccelerometerDataUpdate:v27];
+          _motionManager5 = [(AXMTUtilities *)self _motionManager];
+          accelerometerData2 = [_motionManager5 accelerometerData];
+          [(AXMTUtilities *)self _handleAccelerometerDataUpdate:accelerometerData2];
 
 LABEL_11:
           goto LABEL_16;
@@ -488,8 +488,8 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    v26 = AXSSLogForCategory();
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    _motionManager5 = AXSSLogForCategory();
+    if (os_log_type_enabled(_motionManager5, OS_LOG_TYPE_ERROR))
     {
       sub_10000FB3C();
     }
@@ -510,77 +510,77 @@ LABEL_17:
     v31 = objc_alloc_init(FBSOrientationObserver);
     [(AXMTUtilities *)self set_orientationObserver:v31];
 
-    v32 = [(AXMTUtilities *)self _orientationObserver];
-    [v32 setHandler:v30];
+    _orientationObserver = [(AXMTUtilities *)self _orientationObserver];
+    [_orientationObserver setHandler:v30];
 
-    v33 = [(AXMTUtilities *)self _orientationObserver];
-    -[AXMTUtilities setCurrentInterfaceOrientation:](self, "setCurrentInterfaceOrientation:", [v33 activeInterfaceOrientation]);
+    _orientationObserver2 = [(AXMTUtilities *)self _orientationObserver];
+    -[AXMTUtilities setCurrentInterfaceOrientation:](self, "setCurrentInterfaceOrientation:", [_orientationObserver2 activeInterfaceOrientation]);
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)unregisterListener:(id)a3
+- (void)unregisterListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = AXSSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10000FD44();
   }
 
-  v6 = [(AXMTUtilities *)self _listeners];
-  if ([v6 count])
+  _listeners = [(AXMTUtilities *)self _listeners];
+  if ([_listeners count])
   {
     v7 = 0;
-    while ([v6 pointerAtIndex:v7] != v4)
+    while ([_listeners pointerAtIndex:v7] != listenerCopy)
     {
-      if (++v7 >= [v6 count])
+      if (++v7 >= [_listeners count])
       {
         goto LABEL_9;
       }
     }
 
-    [v6 removePointerAtIndex:v7];
+    [_listeners removePointerAtIndex:v7];
   }
 
 LABEL_9:
-  [v6 compact];
-  v8 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-  if ([v8 count])
+  [_listeners compact];
+  _listenersForDeviceOrientationEvents = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+  if ([_listenersForDeviceOrientationEvents count])
   {
     v9 = 0;
-    while ([v8 pointerAtIndex:v9] != v4)
+    while ([_listenersForDeviceOrientationEvents pointerAtIndex:v9] != listenerCopy)
     {
-      if (++v9 >= [v8 count])
+      if (++v9 >= [_listenersForDeviceOrientationEvents count])
       {
         goto LABEL_15;
       }
     }
 
-    [v8 removePointerAtIndex:v9];
+    [_listenersForDeviceOrientationEvents removePointerAtIndex:v9];
   }
 
 LABEL_15:
-  [v8 addPointer:0];
-  [v8 compact];
-  if (![v8 count])
+  [_listenersForDeviceOrientationEvents addPointer:0];
+  [_listenersForDeviceOrientationEvents compact];
+  if (![_listenersForDeviceOrientationEvents count])
   {
     [(AXMTUtilities *)self _tearDownMotionManager];
   }
 
-  if (![v6 count])
+  if (![_listeners count])
   {
-    v10 = [(AXMTUtilities *)self _orientationObserver];
-    [v10 invalidate];
+    _orientationObserver = [(AXMTUtilities *)self _orientationObserver];
+    [_orientationObserver invalidate];
 
     [(AXMTUtilities *)self set_orientationObserver:0];
     [(AXMTUtilities *)self setCurrentInterfaceOrientation:0];
   }
 }
 
-- (void)_updateForDeviceOrientationOverride:(id)a3
+- (void)_updateForDeviceOrientationOverride:(id)override
 {
   if (AXSSIsAppleInternalBuild())
   {
@@ -621,12 +621,12 @@ LABEL_15:
   }
 }
 
-- (void)_handleAccelerometerDataUpdate:(id)a3
+- (void)_handleAccelerometerDataUpdate:(id)update
 {
-  v4 = a3;
-  if (v4 && ![(AXMTUtilities *)self orientationLocked]&& (!AXSSIsAppleInternalBuild() || ![(AXMTUtilities *)self ignoreAccelerometerUpdatesForAutomation]))
+  updateCopy = update;
+  if (updateCopy && ![(AXMTUtilities *)self orientationLocked]&& (!AXSSIsAppleInternalBuild() || ![(AXMTUtilities *)self ignoreAccelerometerUpdatesForAutomation]))
   {
-    [v4 acceleration];
+    [updateCopy acceleration];
     v6 = fabs(v5);
     v8 = fabs(v7);
     v9 = 3;
@@ -673,15 +673,15 @@ LABEL_15:
     v12[2] = sub_10000DE88;
     v12[3] = &unk_100048948;
     v12[4] = self;
-    v13 = v4;
+    v13 = updateCopy;
     dispatch_async(&_dispatch_main_q, v12);
   }
 }
 
 - (void)_tearDownMotionManager
 {
-  v3 = [(AXMTUtilities *)self _motionManager];
-  [v3 stopAccelerometerUpdates];
+  _motionManager = [(AXMTUtilities *)self _motionManager];
+  [_motionManager stopAccelerometerUpdates];
 
   [(AXMTUtilities *)self set_motionManager:0];
   [(AXMTUtilities *)self set_motionManagerCallbackQueue:0];
@@ -689,7 +689,7 @@ LABEL_15:
   [(AXMTUtilities *)self setCurrentDeviceOrientation:0];
 }
 
-- (void)_deviceOrientationChanged:(int64_t)a3
+- (void)_deviceOrientationChanged:(int64_t)changed
 {
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -701,8 +701,8 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _listenersForDeviceOrientationEvents = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+  v6 = [_listenersForDeviceOrientationEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -714,7 +714,7 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_listenersForDeviceOrientationEvents);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -727,25 +727,25 @@ LABEL_15:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_listenersForDeviceOrientationEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-  [v11 compact];
+  _listenersForDeviceOrientationEvents2 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+  [_listenersForDeviceOrientationEvents2 compact];
 }
 
-- (void)_accelerometerDataUpdated:(id)a3
+- (void)_accelerometerDataUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _listenersForDeviceOrientationEvents = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+  v6 = [_listenersForDeviceOrientationEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -757,32 +757,32 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_listenersForDeviceOrientationEvents);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v10 axmtUtilities_accelerometerDataUpdated:v4];
+          [v10 axmtUtilities_accelerometerDataUpdated:updatedCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_listenersForDeviceOrientationEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
-  [v11 compact];
+  _listenersForDeviceOrientationEvents2 = [(AXMTUtilities *)self _listenersForDeviceOrientationEvents];
+  [_listenersForDeviceOrientationEvents2 compact];
 }
 
-- (void)_interfaceOrientationChanged:(int64_t)a3
+- (void)_interfaceOrientationChanged:(int64_t)changed
 {
-  [(AXMTUtilities *)self setCurrentInterfaceOrientation:a3];
+  [(AXMTUtilities *)self setCurrentInterfaceOrientation:changed];
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -793,8 +793,8 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(AXMTUtilities *)self _listeners];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _listeners = [(AXMTUtilities *)self _listeners];
+  v6 = [_listeners countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -806,7 +806,7 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_listeners);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -819,14 +819,14 @@ LABEL_15:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_listeners countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(AXMTUtilities *)self _listeners];
-  [v11 compact];
+  _listeners2 = [(AXMTUtilities *)self _listeners];
+  [_listeners2 compact];
 }
 
 - (void)_startMonitoringOrientationLockStatus
@@ -944,11 +944,11 @@ LABEL_15:
     v4 = AXSSLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(AXMTUtilities *)self bksEffectiveOrientation];
+      bksEffectiveOrientation = [(AXMTUtilities *)self bksEffectiveOrientation];
       *buf = 136315394;
       v8 = "[AXMTUtilities _checkBackboardEffectiveDeviceOrientation]";
       v9 = 2048;
-      v10 = v5;
+      v10 = bksEffectiveOrientation;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s: Detected effective orientation from backboard: %ld", buf, 0x16u);
     }
   }
@@ -1021,10 +1021,10 @@ LABEL_15:
 - (CGRect)_screenBoundsFromFrontBoard
 {
   v2 = objc_alloc_init(FBSDisplayMonitor);
-  v3 = [v2 mainConfiguration];
-  v4 = [v3 currentMode];
+  mainConfiguration = [v2 mainConfiguration];
+  currentMode = [mainConfiguration currentMode];
 
-  [v4 size];
+  [currentMode size];
   v6 = v5;
   v8 = v7;
 
@@ -1039,10 +1039,10 @@ LABEL_15:
   return result;
 }
 
-+ (int64_t)errorCodeForFaceKitPayload:(id)a3 lastReportedFailureNumber:(id)a4
++ (int64_t)errorCodeForFaceKitPayload:(id)payload lastReportedFailureNumber:(id)number
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  numberCopy = number;
   if (qword_100054570 != -1)
   {
     sub_1000100E0();
@@ -1077,7 +1077,7 @@ LABEL_15:
     goto LABEL_30;
   }
 
-  v10 = [v5 objectForKeyedSubscript:*v7];
+  v10 = [payloadCopy objectForKeyedSubscript:*v7];
   if (v10)
   {
     v38 = 0;
@@ -1172,7 +1172,7 @@ LABEL_30:
     return result;
   }
 
-  v22 = [v5 objectForKeyedSubscript:*v19];
+  v22 = [payloadCopy objectForKeyedSubscript:*v19];
   v23 = v22;
   v33 = 0;
   v34 = &v33;
@@ -1192,14 +1192,14 @@ LABEL_30:
   }
 
   v25 = v24[3];
-  if (v6 && !v25)
+  if (numberCopy && !v25)
   {
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10000F2DC;
     v27[3] = &unk_100048E10;
     v27[4] = &v29;
-    v27[5] = [v6 integerValue];
+    v27[5] = [numberCopy integerValue];
     [qword_100054568 enumerateObjectsUsingBlock:v27];
     v24 = v30;
     v25 = v30[3];

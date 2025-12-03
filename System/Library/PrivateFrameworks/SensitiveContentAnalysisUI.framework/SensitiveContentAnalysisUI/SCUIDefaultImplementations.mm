@@ -1,24 +1,24 @@
 @interface SCUIDefaultImplementations
-+ (void)didAskForMoreHelpWithPresentingViewController:(id)a3;
-+ (void)didMessageSomeoneWithInterventionType:(int64_t)a3;
++ (void)didAskForMoreHelpWithPresentingViewController:(id)controller;
++ (void)didMessageSomeoneWithInterventionType:(int64_t)type;
 - (SCUIDefaultImplementations)init;
 @end
 
 @implementation SCUIDefaultImplementations
 
-+ (void)didMessageSomeoneWithInterventionType:(int64_t)a3
++ (void)didMessageSomeoneWithInterventionType:(int64_t)type
 {
   v4 = objc_opt_self();
 
   [v4 openChatWithParentsForInterventionType_];
 }
 
-+ (void)didAskForMoreHelpWithPresentingViewController:(id)a3
++ (void)didAskForMoreHelpWithPresentingViewController:(id)controller
 {
   v4 = objc_allocWithZone(SCUIMoreHelpWebViewController);
-  v6 = a3;
+  controllerCopy = controller;
   v5 = [v4 init];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  [controllerCopy presentViewController:v5 animated:1 completion:0];
 }
 
 - (SCUIDefaultImplementations)init

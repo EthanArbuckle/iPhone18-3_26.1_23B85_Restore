@@ -1,33 +1,33 @@
 @interface IMTranslatedMessagePart
-- (BOOL)languagePairsAreIdenticalTo:(id)a3;
-- (IMTranslatedMessagePart)initWithCoder:(id)a3;
-- (IMTranslatedMessagePart)initWithDictionaryRepresentation:(id)a3;
-- (IMTranslatedMessagePart)initWithSourceLanguage:(id)a3 translationLanguage:(id)a4 translatedText:(id)a5;
+- (BOOL)languagePairsAreIdenticalTo:(id)to;
+- (IMTranslatedMessagePart)initWithCoder:(id)coder;
+- (IMTranslatedMessagePart)initWithDictionaryRepresentation:(id)representation;
+- (IMTranslatedMessagePart)initWithSourceLanguage:(id)language translationLanguage:(id)translationLanguage translatedText:(id)text;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMTranslatedMessagePart
 
-- (IMTranslatedMessagePart)initWithSourceLanguage:(id)a3 translationLanguage:(id)a4 translatedText:(id)a5
+- (IMTranslatedMessagePart)initWithSourceLanguage:(id)language translationLanguage:(id)translationLanguage translatedText:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  languageCopy = language;
+  translationLanguageCopy = translationLanguage;
+  textCopy = text;
   v19.receiver = self;
   v19.super_class = IMTranslatedMessagePart;
   v11 = [(IMTranslatedMessagePart *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [languageCopy copy];
     sourceLanguage = v11->_sourceLanguage;
     v11->_sourceLanguage = v12;
 
-    v14 = [v9 copy];
+    v14 = [translationLanguageCopy copy];
     translationLanguage = v11->_translationLanguage;
     v11->_translationLanguage = v14;
 
-    v16 = [v10 copy];
+    v16 = [textCopy copy];
     translatedText = v11->_translatedText;
     v11->_translatedText = v16;
   }
@@ -35,23 +35,23 @@
   return v11;
 }
 
-- (IMTranslatedMessagePart)initWithDictionaryRepresentation:(id)a3
+- (IMTranslatedMessagePart)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = IMTranslatedMessagePart;
   v5 = [(IMTranslatedMessagePart *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sourceLanguage"];
+    v6 = [representationCopy objectForKeyedSubscript:@"sourceLanguage"];
     sourceLanguage = v5->_sourceLanguage;
     v5->_sourceLanguage = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"translationLanguage"];
+    v8 = [representationCopy objectForKeyedSubscript:@"translationLanguage"];
     translationLanguage = v5->_translationLanguage;
     v5->_translationLanguage = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"translatedText"];
+    v10 = [representationCopy objectForKeyedSubscript:@"translatedText"];
     translatedText = v5->_translatedText;
     v5->_translatedText = v10;
   }
@@ -61,25 +61,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_sourceLanguage forKeyedSubscript:@"sourceLanguage"];
-  [v3 setObject:self->_translationLanguage forKeyedSubscript:@"translationLanguage"];
-  [v3 setObject:self->_translatedText forKeyedSubscript:@"translatedText"];
-  v4 = [v3 copy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_sourceLanguage forKeyedSubscript:@"sourceLanguage"];
+  [dictionary setObject:self->_translationLanguage forKeyedSubscript:@"translationLanguage"];
+  [dictionary setObject:self->_translatedText forKeyedSubscript:@"translatedText"];
+  v4 = [dictionary copy];
 
   return v4;
 }
 
-- (BOOL)languagePairsAreIdenticalTo:(id)a3
+- (BOOL)languagePairsAreIdenticalTo:(id)to
 {
-  v4 = a3;
-  v5 = [(IMTranslatedMessagePart *)self sourceLanguage];
-  v6 = [v4 sourceLanguage];
-  if ([v5 isEqualToString:v6])
+  toCopy = to;
+  sourceLanguage = [(IMTranslatedMessagePart *)self sourceLanguage];
+  sourceLanguage2 = [toCopy sourceLanguage];
+  if ([sourceLanguage isEqualToString:sourceLanguage2])
   {
-    v7 = [(IMTranslatedMessagePart *)self translationLanguage];
-    v8 = [v4 translationLanguage];
-    v9 = [v7 isEqualToString:v8];
+    translationLanguage = [(IMTranslatedMessagePart *)self translationLanguage];
+    translationLanguage2 = [toCopy translationLanguage];
+    v9 = [translationLanguage isEqualToString:translationLanguage2];
   }
 
   else
@@ -90,32 +90,32 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceLanguage = self->_sourceLanguage;
-  v5 = a3;
-  [v5 encodeObject:sourceLanguage forKey:@"sourceLanguage"];
-  [v5 encodeObject:self->_translationLanguage forKey:@"translationLanguage"];
-  [v5 encodeObject:self->_translatedText forKey:@"translatedText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceLanguage forKey:@"sourceLanguage"];
+  [coderCopy encodeObject:self->_translationLanguage forKey:@"translationLanguage"];
+  [coderCopy encodeObject:self->_translatedText forKey:@"translatedText"];
 }
 
-- (IMTranslatedMessagePart)initWithCoder:(id)a3
+- (IMTranslatedMessagePart)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = IMTranslatedMessagePart;
   v5 = [(IMTranslatedMessagePart *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceLanguage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceLanguage"];
     sourceLanguage = v5->_sourceLanguage;
     v5->_sourceLanguage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translationLanguage"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translationLanguage"];
     translationLanguage = v5->_translationLanguage;
     v5->_translationLanguage = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translatedText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translatedText"];
     translatedText = v5->_translatedText;
     v5->_translatedText = v10;
   }

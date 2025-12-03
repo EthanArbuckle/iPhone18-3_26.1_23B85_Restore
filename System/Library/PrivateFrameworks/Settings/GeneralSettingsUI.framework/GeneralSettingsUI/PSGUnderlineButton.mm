@@ -1,15 +1,15 @@
 @interface PSGUnderlineButton
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PSGUnderlineButton
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, 1.0);
-  v5 = [(PSGUnderlineButton *)self currentTitleShadowColor];
-  [v5 set];
+  currentTitleShadowColor = [(PSGUnderlineButton *)self currentTitleShadowColor];
+  [currentTitleShadowColor set];
 
   [(PSGUnderlineButton *)self bounds];
   v7 = v6;
@@ -18,8 +18,8 @@
   CGContextMoveToPoint(CurrentContext, self->_linePadding, v8 + -2.0);
   CGContextAddLineToPoint(CurrentContext, v7, v10);
   CGContextStrokePath(CurrentContext);
-  v11 = [(PSGUnderlineButton *)self currentTitleColor];
-  [v11 set];
+  currentTitleColor = [(PSGUnderlineButton *)self currentTitleColor];
+  [currentTitleColor set];
 
   v12 = v9 + -3.0;
   CGContextMoveToPoint(CurrentContext, self->_linePadding, v12);

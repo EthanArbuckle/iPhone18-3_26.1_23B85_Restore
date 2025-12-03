@@ -1,16 +1,16 @@
 @interface CRKJSONConverter
-+ (id)JSONArrayForArray:(id)a3;
-+ (id)JSONDictionaryForDictionary:(id)a3;
-+ (id)bestEffortJSONObjectForObject:(id)a3;
-+ (id)stringForDate:(id)a3;
-+ (id)stringForObject:(id)a3;
++ (id)JSONArrayForArray:(id)array;
++ (id)JSONDictionaryForDictionary:(id)dictionary;
++ (id)bestEffortJSONObjectForObject:(id)object;
++ (id)stringForDate:(id)date;
++ (id)stringForObject:(id)object;
 @end
 
 @implementation CRKJSONConverter
 
-+ (id)JSONArrayForArray:(id)a3
++ (id)JSONArrayForArray:(id)array
 {
-  v3 = [a1 bestEffortJSONObjectForObject:a3];
+  v3 = [self bestEffortJSONObjectForObject:array];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,9 +20,9 @@
   return v3;
 }
 
-+ (id)JSONDictionaryForDictionary:(id)a3
++ (id)JSONDictionaryForDictionary:(id)dictionary
 {
-  v3 = [a1 bestEffortJSONObjectForObject:a3];
+  v3 = [self bestEffortJSONObjectForObject:dictionary];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -32,12 +32,12 @@
   return v3;
 }
 
-+ (id)bestEffortJSONObjectForObject:(id)a3
++ (id)bestEffortJSONObjectForObject:(id)object
 {
-  v4 = a3;
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v4] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objectCopy = object;
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:objectCopy] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = objectCopy;
 LABEL_5:
     v6 = v5;
     goto LABEL_6;
@@ -48,7 +48,7 @@ LABEL_5:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v4 dictionaryValue];
+      dictionaryValue = [objectCopy dictionaryValue];
     }
 
     else
@@ -61,25 +61,25 @@ LABEL_5:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v5 = [a1 stringForObject:v4];
+            v5 = [self stringForObject:objectCopy];
             goto LABEL_5;
           }
 
-          v8 = v4;
+          v8 = objectCopy;
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             +[CRKJSONConverter bestEffortJSONObjectForObject:];
           }
 
-          v10 = [v8 allObjects];
-          v13 = [a1 JSONArrayForArray:v10];
+          allObjects = [v8 allObjects];
+          v13 = [self JSONArrayForArray:allObjects];
           v6 = [v13 sortedArrayUsingSelector:sel_compare_];
 
           goto LABEL_13;
         }
 
-        v8 = v4;
+        v8 = objectCopy;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -90,22 +90,22 @@ LABEL_5:
         v14[1] = 3221225472;
         v14[2] = __50__CRKJSONConverter_bestEffortJSONObjectForObject___block_invoke_2;
         v14[3] = &__block_descriptor_40_e8__16__0_8l;
-        v14[4] = a1;
+        v14[4] = self;
         v12 = [v8 crk_mapUsingBlock:v14];
 LABEL_19:
         v6 = v12;
         goto LABEL_20;
       }
 
-      v11 = [v4 dictionaryRepresentation];
+      dictionaryValue = [objectCopy dictionaryRepresentation];
     }
 
-    v8 = v11;
-    v12 = [a1 bestEffortJSONObjectForObject:v11];
+    v8 = dictionaryValue;
+    v12 = [self bestEffortJSONObjectForObject:dictionaryValue];
     goto LABEL_19;
   }
 
-  v8 = v4;
+  v8 = objectCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -118,10 +118,10 @@ LABEL_19:
   v15[2] = __50__CRKJSONConverter_bestEffortJSONObjectForObject___block_invoke;
   v15[3] = &unk_278DC3530;
   v16 = v9;
-  v17 = a1;
-  v10 = v9;
+  selfCopy = self;
+  allObjects = v9;
   [v8 enumerateKeysAndObjectsUsingBlock:v15];
-  v6 = [v10 copy];
+  v6 = [allObjects copy];
 
 LABEL_13:
 LABEL_20:
@@ -142,13 +142,13 @@ void __50__CRKJSONConverter_bestEffortJSONObjectForObject___block_invoke(uint64_
   [v7 setObject:v9 forKeyedSubscript:v8];
 }
 
-+ (id)stringForObject:(id)a3
++ (id)stringForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
 LABEL_3:
     v6 = v5;
     goto LABEL_13;
@@ -157,14 +157,14 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       +[CRKJSONConverter stringForObject:];
     }
 
-    v8 = [a1 stringForDate:v7];
+    v8 = [self stringForDate:v7];
   }
 
   else
@@ -174,18 +174,18 @@ LABEL_3:
     {
       if (objc_opt_respondsToSelector())
       {
-        [v4 stringValue];
+        [objectCopy stringValue];
       }
 
       else
       {
-        [v4 description];
+        [objectCopy description];
       }
       v5 = ;
       goto LABEL_3;
     }
 
-    v7 = v4;
+    v7 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -202,12 +202,12 @@ LABEL_13:
   return v6;
 }
 
-+ (id)stringForDate:(id)a3
++ (id)stringForDate:(id)date
 {
   v3 = MEMORY[0x277CBEBB0];
-  v4 = a3;
+  dateCopy = date;
   v5 = [v3 timeZoneWithAbbreviation:@"GMT"];
-  v6 = [MEMORY[0x277CCAA68] stringFromDate:v4 timeZone:v5 formatOptions:1907];
+  v6 = [MEMORY[0x277CCAA68] stringFromDate:dateCopy timeZone:v5 formatOptions:1907];
 
   return v6;
 }

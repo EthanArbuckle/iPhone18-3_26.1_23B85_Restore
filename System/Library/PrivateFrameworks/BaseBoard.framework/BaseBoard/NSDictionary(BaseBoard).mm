@@ -15,58 +15,58 @@
 
 - (uint64_t)bs_BOOLForKey:()BaseBoard
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)bs_safeNumberForKey:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return [a1 bs_safeObjectForKey:a3 ofType:v5];
+  return [self bs_safeObjectForKey:a3 ofType:v5];
 }
 
 - (uint64_t)bs_safeStringForKey:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return [a1 bs_safeObjectForKey:a3 ofType:v5];
+  return [self bs_safeObjectForKey:a3 ofType:v5];
 }
 
 - (uint64_t)bs_safeURLForKey:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return [a1 bs_safeObjectForKey:a3 ofType:v5];
+  return [self bs_safeObjectForKey:a3 ofType:v5];
 }
 
 - (uint64_t)bs_safeArrayForKey:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return [a1 bs_safeObjectForKey:a3 ofType:v5];
+  return [self bs_safeObjectForKey:a3 ofType:v5];
 }
 
 - (uint64_t)bs_safeDictionaryForKey:()BaseBoard
 {
   v5 = objc_opt_class();
 
-  return [a1 bs_safeObjectForKey:a3 ofType:v5];
+  return [self bs_safeObjectForKey:a3 ofType:v5];
 }
 
 - (void)bs_safeObjectForKey:()BaseBoard ofType:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1)
   {
     if (objc_opt_isKindOfClass())
@@ -107,7 +107,7 @@
 
 - (id)bs_filter:()BaseBoard
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v6 = v5;
   if (a3)
   {
@@ -117,12 +117,12 @@
     v8[3] = &unk_1E72CAB20;
     v10 = a3;
     v9 = v5;
-    [a1 bs_each:v8];
+    [self bs_each:v8];
   }
 
   else
   {
-    [v5 addEntriesFromDictionary:a1];
+    [v5 addEntriesFromDictionary:self];
   }
 
   return v6;
@@ -132,8 +132,8 @@
 {
   if ([a3 count] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [a1 mutableCopy];
-    v6 = v5;
+    v5 = [self mutableCopy];
+    selfCopy = v5;
     if (a3)
     {
       [v5 addEntriesFromDictionary:a3];
@@ -142,10 +142,10 @@
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

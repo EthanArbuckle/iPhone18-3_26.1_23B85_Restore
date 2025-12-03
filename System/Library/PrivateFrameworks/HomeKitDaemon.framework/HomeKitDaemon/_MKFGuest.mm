@@ -1,11 +1,11 @@
 @interface _MKFGuest
 + (NSPredicate)homeRelation;
-+ (id)findGuestUsingReverseShareID:(id)a3 homeModelID:(id)a4 context:(id)a5;
++ (id)findGuestUsingReverseShareID:(id)d homeModelID:(id)iD context:(id)context;
 + (id)logCategory;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (BOOL)isResidentSyncParticipant;
 - (BOOL)isRestrictedGuest;
-- (BOOL)populateWorkingStoreFromRestrictedGuestSchedule:(id)a3;
+- (BOOL)populateWorkingStoreFromRestrictedGuestSchedule:(id)schedule;
 - (MKFGuestDatabaseID)databaseID;
 - (NSArray)allowedAccessories;
 - (NSArray)bulletinConditions;
@@ -17,20 +17,20 @@
 - (NSArray)yearDayScheduleRules;
 - (id)allowedAccessoryUUIDs;
 - (id)castIfMemberIsGuest;
-- (id)characteristicBulletinRegistrationForAccessory:(id)a3 serviceInstanceID:(id)a4 characteristicInstanceID:(id)a5 deviceIdsIdentifier:(id)a6 context:(id)a7;
-- (id)createAllowedAccessoriesRelationOfType:(id)a3 modelID:(id)a4;
-- (id)createBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)createNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)findUserActivityStatusForType:(unint64_t)a3;
-- (id)materializeOrCreateAllowedAccessoriesRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)matterBulletinRegistrationForEndpointID:(id)a3 accessoryUUID:(id)a4 deviceIdsIdentifier:(id)a5 context:(id)a6;
+- (id)characteristicBulletinRegistrationForAccessory:(id)accessory serviceInstanceID:(id)d characteristicInstanceID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context;
+- (id)createAllowedAccessoriesRelationOfType:(id)type modelID:(id)d;
+- (id)createBulletinRegistrationsRelationOfType:(id)type modelID:(id)d;
+- (id)createNotificationRegistrationsRelationOfType:(id)type modelID:(id)d;
+- (id)findUserActivityStatusForType:(unint64_t)type;
+- (id)materializeOrCreateAllowedAccessoriesRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)matterBulletinRegistrationForEndpointID:(id)d accessoryUUID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context;
 - (id)restrictedGuestSchedule;
 - (void)dematerializeAllowedAccessoriesRelationship;
 - (void)dematerializeWeekDayRuleRelationship;
 - (void)dematerializeYearDayRuleRelationship;
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4;
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context;
 @end
 
 @implementation _MKFGuest
@@ -38,49 +38,49 @@
 - (NSArray)yearDayScheduleRules
 {
   v2 = [(_MKFGuest *)self valueForKey:@"yearDayScheduleRules_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)weekDayScheduleRules
 {
   v2 = [(_MKFGuest *)self valueForKey:@"weekDayScheduleRules_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)userActivityStatuses
 {
   v2 = [(_MKFGuest *)self valueForKey:@"userActivityStatuses_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)presenceEvents
 {
   v2 = [(_MKFGuest *)self valueForKey:@"presenceEvents_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createNotificationRegistrationsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"notificationRegistrations_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"notificationRegistrations_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"notificationRegistrations_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"notificationRegistrations_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -88,25 +88,25 @@
 - (NSArray)notificationRegistrations
 {
   v2 = [(_MKFGuest *)self valueForKey:@"notificationRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createBulletinRegistrationsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -114,33 +114,33 @@
 - (NSArray)bulletinRegistrations
 {
   v2 = [(_MKFGuest *)self valueForKey:@"bulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)bulletinConditions
 {
   v2 = [(_MKFGuest *)self valueForKey:@"bulletinConditions_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createAllowedAccessoriesRelationOfType:(id)a3 modelID:(id)a4
+- (id)createAllowedAccessoriesRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"allowedAccessories_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"allowedAccessories_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateAllowedAccessoriesRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateAllowedAccessoriesRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"allowedAccessories_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"allowedAccessories_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -148,9 +148,9 @@
 - (NSArray)allowedAccessories
 {
   v2 = [(_MKFGuest *)self valueForKey:@"allowedAccessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFGuestDatabaseID)databaseID
@@ -160,15 +160,15 @@
   return v2;
 }
 
-- (id)findUserActivityStatusForType:(unint64_t)a3
+- (id)findUserActivityStatusForType:(unint64_t)type
 {
-  v4 = [(_MKFGuest *)self userActivityStatuses];
+  userActivityStatuses = [(_MKFGuest *)self userActivityStatuses];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43___MKFGuest_findUserActivityStatusForType___block_invoke;
   v7[3] = &__block_descriptor_40_e40_B32__0___MKFUserActivityStatus__8Q16_B24l;
-  v7[4] = a3;
-  v5 = [v4 hmf_objectPassingTest:v7];
+  v7[4] = type;
+  v5 = [userActivityStatuses hmf_objectPassingTest:v7];
 
   return v5;
 }
@@ -191,30 +191,30 @@
   [(_MKFGuest *)self setValue:v3 forKey:@"allowedAccessories_"];
 }
 
-- (id)matterBulletinRegistrationForEndpointID:(id)a3 accessoryUUID:(id)a4 deviceIdsIdentifier:(id)a5 context:(id)a6
+- (id)matterBulletinRegistrationForEndpointID:(id)d accessoryUUID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v13 hmd_assertIsExecuting];
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v14 = +[_MKFMatterBulletinRegistration fetchRequest];
-  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K contains %@) AND (%K.%K.modelID contains %@)", @"guest", self, @"deviceIdsIdentifier", v12, @"matterPaths_", @"endpointID", v10, @"matterPaths_", @"accessory", v11];
-  [v14 setPredicate:v15];
+  iDCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K contains %@) AND (%K.%K.modelID contains %@)", @"guest", self, @"deviceIdsIdentifier", identifierCopy, @"matterPaths_", @"endpointID", dCopy, @"matterPaths_", @"accessory", iDCopy];
+  [v14 setPredicate:iDCopy];
 
   v26 = 0;
-  v16 = [v13 executeFetchRequest:v14 error:&v26];
+  v16 = [contextCopy executeFetchRequest:v14 error:&v26];
   v17 = v26;
   if (v16)
   {
-    v18 = [v16 firstObject];
+    firstObject = [v16 firstObject];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -223,9 +223,9 @@
       *buf = 138544130;
       v28 = v22;
       v29 = 2112;
-      v30 = v10;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = iDCopy;
       v33 = 2112;
       v34 = v17;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch Matter bulletin registration with endpointID %@: on accessory %@, error: %@", buf, 0x2Au);
@@ -234,56 +234,56 @@
     }
 
     objc_autoreleasePoolPop(v19);
-    v18 = 0;
+    firstObject = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return firstObject;
 }
 
-- (id)characteristicBulletinRegistrationForAccessory:(id)a3 serviceInstanceID:(id)a4 characteristicInstanceID:(id)a5 deviceIdsIdentifier:(id)a6 context:(id)a7
+- (id)characteristicBulletinRegistrationForAccessory:(id)accessory serviceInstanceID:(id)d characteristicInstanceID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context
 {
   v53[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v38 = a7;
+  accessoryCopy = accessory;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = +[_MKFCharacteristicBulletinRegistration fetchRequest];
   v37 = MEMORY[0x277CCAC30];
   v39 = HAPInstanceIDFromValue();
-  v41 = v13;
+  v41 = iDCopy;
   v53[0] = v39;
-  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v13, "longLongValue")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(iDCopy, "longLongValue")}];
   v53[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
   v18 = HAPInstanceIDFromValue();
   v52[0] = v18;
-  v42 = v12;
-  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v12, "longLongValue")}];
+  v42 = dCopy;
+  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(dCopy, "longLongValue")}];
   v52[1] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
-  v21 = v11;
-  v35 = v11;
-  v22 = v14;
-  v23 = [v37 predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K IN %@) AND (%K.%K.%K IN %@) AND (%K.%K.%K.modelID == %@)", @"guest", self, @"deviceIdsIdentifier", v14, @"characteristic", @"instanceID", v17, @"characteristic", @"service", @"instanceID", v20, @"characteristic", @"service", @"accessory", v35];
+  v21 = accessoryCopy;
+  v35 = accessoryCopy;
+  v22 = identifierCopy;
+  v23 = [v37 predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K IN %@) AND (%K.%K.%K IN %@) AND (%K.%K.%K.modelID == %@)", @"guest", self, @"deviceIdsIdentifier", identifierCopy, @"characteristic", @"instanceID", v17, @"characteristic", @"service", @"instanceID", v20, @"characteristic", @"service", @"accessory", v35];
   [v15 setPredicate:v23];
 
   v24 = v15;
   v43 = 0;
-  v25 = [v38 executeFetchRequest:v15 error:&v43];
+  v25 = [contextCopy executeFetchRequest:v15 error:&v43];
   v26 = v43;
   if (v25)
   {
-    v27 = [v25 firstObject];
+    firstObject = [v25 firstObject];
     v28 = v41;
   }
 
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     v28 = v41;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -304,43 +304,43 @@
     }
 
     objc_autoreleasePoolPop(v29);
-    v27 = 0;
+    firstObject = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v27;
+  return firstObject;
 }
 
-- (BOOL)populateWorkingStoreFromRestrictedGuestSchedule:(id)a3
+- (BOOL)populateWorkingStoreFromRestrictedGuestSchedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   [(_MKFGuest *)self dematerializeWeekDayRuleRelationship];
   [(_MKFGuest *)self dematerializeYearDayRuleRelationship];
   v5 = 1;
-  if (v4)
+  if (scheduleCopy)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 1;
-    v6 = [v4 weekDayRules];
+    weekDayRules = [scheduleCopy weekDayRules];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61___MKFGuest_populateWorkingStoreFromRestrictedGuestSchedule___block_invoke;
     v10[3] = &unk_27867D420;
     v10[4] = self;
     v10[5] = &v11;
-    [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+    [weekDayRules hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 
-    v7 = [v4 yearDayRules];
+    yearDayRules = [scheduleCopy yearDayRules];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __61___MKFGuest_populateWorkingStoreFromRestrictedGuestSchedule___block_invoke_26;
     v9[3] = &unk_27867D448;
     v9[4] = self;
     v9[5] = &v11;
-    [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+    [yearDayRules hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 
     v5 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
@@ -351,11 +351,11 @@
 
 - (id)restrictedGuestSchedule
 {
-  v3 = [(_MKFGuest *)self weekDayScheduleRules];
-  v4 = [v3 na_map:&__block_literal_global_153539];
+  weekDayScheduleRules = [(_MKFGuest *)self weekDayScheduleRules];
+  v4 = [weekDayScheduleRules na_map:&__block_literal_global_153539];
 
-  v5 = [(_MKFGuest *)self yearDayScheduleRules];
-  v6 = [v5 na_map:&__block_literal_global_22_153540];
+  yearDayScheduleRules = [(_MKFGuest *)self yearDayScheduleRules];
+  v6 = [yearDayScheduleRules na_map:&__block_literal_global_22_153540];
 
   v7 = [objc_alloc(MEMORY[0x277CD1D78]) initWithWeekDayRules:v4 yearDayRules:v6];
 
@@ -366,15 +366,15 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(_MKFGuest *)self allowedAccessories];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  allowedAccessories = [(_MKFGuest *)self allowedAccessories];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(allowedAccessories, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(_MKFGuest *)self allowedAccessories];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allowedAccessories2 = [(_MKFGuest *)self allowedAccessories];
+  v7 = [allowedAccessories2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -385,18 +385,18 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allowedAccessories2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 modelID];
-        [v5 addObject:v13];
+        modelID = [v11 modelID];
+        [v5 addObject:modelID];
 
         objc_autoreleasePoolPop(v12);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allowedAccessories2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -410,11 +410,11 @@
 
 - (id)castIfMemberIsGuest
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -429,16 +429,16 @@
 
 - (BOOL)isRestrictedGuest
 {
-  v2 = [(_MKFGuest *)self privilege];
-  v3 = [v2 isEqualToNumber:&unk_283E73598];
+  privilege = [(_MKFGuest *)self privilege];
+  v3 = [privilege isEqualToNumber:&unk_283E73598];
 
   return v3;
 }
 
 - (BOOL)isResidentSyncParticipant
 {
-  v2 = [(_MKFGuest *)self privilege];
-  v3 = +[_MKFUser isResidentSyncParticipantWithPrivilege:](_MKFUser, "isResidentSyncParticipantWithPrivilege:", [v2 unsignedIntegerValue]);
+  privilege = [(_MKFGuest *)self privilege];
+  v3 = +[_MKFUser isResidentSyncParticipantWithPrivilege:](_MKFUser, "isResidentSyncParticipantWithPrivilege:", [privilege unsignedIntegerValue]);
 
   return v3;
 }
@@ -467,30 +467,30 @@
   return v3;
 }
 
-+ (id)findGuestUsingReverseShareID:(id)a3 homeModelID:(id)a4 context:(id)a5
++ (id)findGuestUsingReverseShareID:(id)d homeModelID:(id)iD context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v11 = +[_MKFGuest fetchRequest];
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K.%K == %@", @"reverseShareID", v8, @"home", @"modelID", v9];
-  [v11 setPredicate:v12];
+  iDCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K.%K == %@", @"reverseShareID", dCopy, @"home", @"modelID", iDCopy];
+  [v11 setPredicate:iDCopy];
 
   [v11 setFetchLimit:2];
   v24 = 0;
-  v13 = [v10 executeFetchRequest:v11 error:&v24];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v24];
   v14 = v24;
   if (v13)
   {
     if ([v13 count] == 1)
     {
-      v15 = [v13 firstObject];
+      firstObject = [v13 firstObject];
       goto LABEL_10;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -508,7 +508,7 @@
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -524,17 +524,17 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v16);
-  v15 = 0;
+  firstObject = 0;
 LABEL_10:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -546,14 +546,14 @@ LABEL_10:
   objc_exception_throw(v10);
 }
 
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context
 {
-  v11 = a3;
-  v6 = self;
-  v7 = a4;
-  if ([(_MKFGuest *)v6 conformsToProtocol:&unk_283EF3CF0])
+  conditionsCopy = conditions;
+  selfCopy = self;
+  contextCopy = context;
+  if ([(_MKFGuest *)selfCopy conformsToProtocol:&unk_283EF3CF0])
   {
-    v8 = v6;
+    v8 = selfCopy;
   }
 
   else
@@ -563,11 +563,11 @@ LABEL_10:
 
   v9 = v8;
 
-  v10 = [v7 targetUser];
+  targetUser = [contextCopy targetUser];
 
-  if (v9 == v10)
+  if (v9 == targetUser)
   {
-    [v11 addCondition:@"userIsTargetUser"];
+    [conditionsCopy addCondition:@"userIsTargetUser"];
   }
 }
 

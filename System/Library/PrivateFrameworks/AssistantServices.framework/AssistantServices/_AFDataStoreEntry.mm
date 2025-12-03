@@ -1,18 +1,18 @@
 @interface _AFDataStoreEntry
-- (_AFDataStoreEntry)initWithPropertyListRepresentation:(id)a3 error:(id *)p_isa;
-- (_AFDataStoreEntry)initWithType:(int64_t)a3 value:(id)a4;
+- (_AFDataStoreEntry)initWithPropertyListRepresentation:(id)representation error:(id *)p_isa;
+- (_AFDataStoreEntry)initWithType:(int64_t)type value:(id)value;
 - (id)_propertyListStringForType;
-- (id)_valueForPropertyListRepresentation:(id)a3 type:(int64_t)a4;
+- (id)_valueForPropertyListRepresentation:(id)representation type:(int64_t)type;
 - (id)_valuePropertyListRepresentation;
 - (id)propertyListRepresentation;
 @end
 
 @implementation _AFDataStoreEntry
 
-- (_AFDataStoreEntry)initWithPropertyListRepresentation:(id)a3 error:(id *)p_isa
+- (_AFDataStoreEntry)initWithPropertyListRepresentation:(id)representation error:(id *)p_isa
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v7 = objc_alloc_init(AFDictionarySchema);
   v8 = [AFCoercion typeAssertionWithClass:objc_opt_class()];
   [(AFDictionarySchema *)v7 setObjectCoercion:v8 forKey:@"Version"];
@@ -20,11 +20,11 @@
   v9 = [AFCoercion typeAssertionWithClass:objc_opt_class()];
   [(AFDictionarySchema *)v7 setObjectCoercion:v9 forKey:@"Type"];
 
-  v10 = [(AFDictionarySchema *)v7 coerceObject:v6 error:p_isa];
+  v10 = [(AFDictionarySchema *)v7 coerceObject:representationCopy error:p_isa];
   v11 = [v10 objectForKey:@"Version"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  if (v12 == 1)
+  if (integerValue == 1)
   {
     v13 = [v10 objectForKey:@"Type"];
     v14 = [(_AFDataStoreEntry *)self _typeForPropertyListString:v13];
@@ -40,8 +40,8 @@
 
     else if (p_isa)
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to decode value for data store entry %@", v6];
-      *p_isa = [AFConversationError errorWithCode:300 localizedFailureReason:v18];
+      representationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to decode value for data store entry %@", representationCopy];
+      *p_isa = [AFConversationError errorWithCode:300 localizedFailureReason:representationCopy];
 
       p_isa = 0;
     }
@@ -55,7 +55,7 @@
       *buf = 136315394;
       v22 = "[_AFDataStoreEntry initWithPropertyListRepresentation:error:]";
       v23 = 2050;
-      v24 = v12;
+      v24 = integerValue;
       _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s unable to deserialize property list with version %{public}ld; returning nil", buf, 0x16u);
     }
 
@@ -68,23 +68,23 @@
 
 - (id)propertyListRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:&unk_1F056DA88 forKey:@"Version"];
-  v4 = [(_AFDataStoreEntry *)self _propertyListStringForType];
-  [v3 setObject:v4 forKey:@"Type"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F056DA88 forKey:@"Version"];
+  _propertyListStringForType = [(_AFDataStoreEntry *)self _propertyListStringForType];
+  [dictionary setObject:_propertyListStringForType forKey:@"Type"];
 
-  v5 = [(_AFDataStoreEntry *)self _valuePropertyListRepresentation];
-  [v3 setObject:v5 forKey:@"Value"];
+  _valuePropertyListRepresentation = [(_AFDataStoreEntry *)self _valuePropertyListRepresentation];
+  [dictionary setObject:_valuePropertyListRepresentation forKey:@"Value"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)_valueForPropertyListRepresentation:(id)a3 type:(int64_t)a4
+- (id)_valueForPropertyListRepresentation:(id)representation type:(int64_t)type
 {
-  v5 = a3;
-  if (a4 == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  representationCopy = representation;
+  if (type == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = v5;
+    v6 = representationCopy;
     v7 = objc_alloc_init(AFImagePNGData);
     v8 = [v6 objectForKey:@"PNGData"];
     [(AFImagePNGData *)v7 setImageData:v8];
@@ -110,24 +110,24 @@
   {
     v3 = MEMORY[0x1E695DF90];
     v4 = value;
-    v5 = [v3 dictionary];
-    v6 = [v4 imageData];
-    [v5 setObject:v6 forKey:@"PNGData"];
+    dictionary = [v3 dictionary];
+    imageData = [v4 imageData];
+    [dictionary setObject:imageData forKey:@"PNGData"];
 
     v7 = MEMORY[0x1E696AD98];
     [v4 scale];
     v9 = v8;
 
     v10 = [v7 numberWithDouble:v9];
-    [v5 setObject:v10 forKey:@"Scale"];
+    [dictionary setObject:v10 forKey:@"Scale"];
   }
 
   else
   {
-    v5 = value;
+    dictionary = value;
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)_propertyListStringForType
@@ -143,17 +143,17 @@
   }
 }
 
-- (_AFDataStoreEntry)initWithType:(int64_t)a3 value:(id)a4
+- (_AFDataStoreEntry)initWithType:(int64_t)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = _AFDataStoreEntry;
   v8 = [(_AFDataStoreEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;

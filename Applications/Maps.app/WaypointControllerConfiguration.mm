@@ -1,5 +1,5 @@
 @interface WaypointControllerConfiguration
-- (WaypointControllerConfiguration)initWithRequests:(id)a3 traits:(id)a4;
+- (WaypointControllerConfiguration)initWithRequests:(id)requests traits:(id)traits;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -13,9 +13,9 @@
   v5 = [v3 initWithString:v4];
 
   v6 = +[GEOPlatform sharedPlatform];
-  v7 = [v6 isInternalInstall];
+  isInternalInstall = [v6 isInternalInstall];
 
-  if (v7)
+  if (isInternalInstall)
   {
     [v5 appendFormat:@"\ntraits:(%@)", self->_traits];
   }
@@ -39,11 +39,11 @@
   return v6;
 }
 
-- (WaypointControllerConfiguration)initWithRequests:(id)a3 traits:(id)a4
+- (WaypointControllerConfiguration)initWithRequests:(id)requests traits:(id)traits
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count] <= 1)
+  requestsCopy = requests;
+  traitsCopy = traits;
+  if ([requestsCopy count] <= 1)
   {
     v9 = sub_100798A3C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -53,7 +53,7 @@
       *buf = 138412546;
       v17 = v11;
       v18 = 2112;
-      v19 = v7;
+      v19 = requestsCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "%@ is being initialized with insufficient waypoints(%@). This is not supported.", buf, 0x16u);
     }
   }
@@ -64,8 +64,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requests, a3);
-    objc_storeStrong(&v13->_traits, a4);
+    objc_storeStrong(&v12->_requests, requests);
+    objc_storeStrong(&v13->_traits, traits);
   }
 
   return v13;

@@ -1,8 +1,8 @@
 @interface _UIUpdateCycleDebugOverlay
 + (id)instance;
 - (void)_updateCompleted;
-- (void)addBorderToWindow:(id)a3;
-- (void)removeBorderFromWindow:(id)a3;
+- (void)addBorderToWindow:(id)window;
+- (void)removeBorderFromWindow:(id)window;
 @end
 
 @implementation _UIUpdateCycleDebugOverlay
@@ -45,14 +45,14 @@
   }
 }
 
-- (void)addBorderToWindow:(id)a3
+- (void)addBorderToWindow:(id)window
 {
-  v4 = a3;
-  v5 = v4;
+  windowCopy = window;
+  v5 = windowCopy;
   windowWithBorder = self->_windowWithBorder;
   if (windowWithBorder)
   {
-    v7 = windowWithBorder == v4;
+    v7 = windowWithBorder == windowCopy;
   }
 
   else
@@ -65,29 +65,29 @@
     [(_UIUpdateCycleDebugOverlay *)self removeBorderFromWindow:?];
   }
 
-  v8 = [(UIView *)v5 layer];
-  [v8 setBorderWidth:12.0];
+  layer = [(UIView *)v5 layer];
+  [layer setBorderWidth:12.0];
 
   v9 = +[UIColor redColor];
-  v10 = [v9 CGColor];
-  v11 = [(UIView *)v5 layer];
-  [v11 setBorderColor:v10];
+  cGColor = [v9 CGColor];
+  layer2 = [(UIView *)v5 layer];
+  [layer2 setBorderColor:cGColor];
 
   v12 = self->_windowWithBorder;
   self->_windowWithBorder = v5;
 }
 
-- (void)removeBorderFromWindow:(id)a3
+- (void)removeBorderFromWindow:(id)window
 {
-  v4 = a3;
-  v5 = [v4 layer];
-  [v5 setBorderWidth:0.0];
+  windowCopy = window;
+  layer = [windowCopy layer];
+  [layer setBorderWidth:0.0];
 
   v6 = +[UIColor clearColor];
-  v7 = [v6 CGColor];
-  v8 = [v4 layer];
+  cGColor = [v6 CGColor];
+  layer2 = [windowCopy layer];
 
-  [v8 setBorderColor:v7];
+  [layer2 setBorderColor:cGColor];
   windowWithBorder = self->_windowWithBorder;
   self->_windowWithBorder = 0;
 }

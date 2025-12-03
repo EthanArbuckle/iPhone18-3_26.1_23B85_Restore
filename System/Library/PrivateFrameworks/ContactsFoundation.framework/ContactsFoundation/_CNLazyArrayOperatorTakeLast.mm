@@ -1,19 +1,19 @@
 @interface _CNLazyArrayOperatorTakeLast
-- (_CNLazyArrayOperatorTakeLast)initWithInput:(id)a3 limit:(unint64_t)a4;
+- (_CNLazyArrayOperatorTakeLast)initWithInput:(id)input limit:(unint64_t)limit;
 - (id)nextObject;
 - (void)fillBuffer;
 @end
 
 @implementation _CNLazyArrayOperatorTakeLast
 
-- (_CNLazyArrayOperatorTakeLast)initWithInput:(id)a3 limit:(unint64_t)a4
+- (_CNLazyArrayOperatorTakeLast)initWithInput:(id)input limit:(unint64_t)limit
 {
   v10.receiver = self;
   v10.super_class = _CNLazyArrayOperatorTakeLast;
-  v5 = [(_CNLazyArrayOperator *)&v10 initWithInput:a3];
+  v5 = [(_CNLazyArrayOperator *)&v10 initWithInput:input];
   if (v5)
   {
-    v6 = [CNQueue boundedQueueWithCapacity:a4];
+    v6 = [CNQueue boundedQueueWithCapacity:limit];
     buffer = v5->_buffer;
     v5->_buffer = v6;
 
@@ -41,21 +41,21 @@
   if (!self->_haveFilledBuffer)
   {
     self->_haveFilledBuffer = 1;
-    v3 = [(_CNLazyArrayOperator *)self input];
-    v4 = [v3 nextObject];
+    input = [(_CNLazyArrayOperator *)self input];
+    nextObject = [input nextObject];
 
-    if (v4)
+    if (nextObject)
     {
       do
       {
-        [(CNQueue *)self->_buffer enqueue:v4];
-        v5 = [(_CNLazyArrayOperator *)self input];
-        v6 = [v5 nextObject];
+        [(CNQueue *)self->_buffer enqueue:nextObject];
+        input2 = [(_CNLazyArrayOperator *)self input];
+        nextObject2 = [input2 nextObject];
 
-        v4 = v6;
+        nextObject = nextObject2;
       }
 
-      while (v6);
+      while (nextObject2);
     }
   }
 }

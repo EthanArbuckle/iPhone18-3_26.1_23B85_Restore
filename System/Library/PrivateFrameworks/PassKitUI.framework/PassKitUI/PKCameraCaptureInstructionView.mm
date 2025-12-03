@@ -1,38 +1,38 @@
 @interface PKCameraCaptureInstructionView
 - (BOOL)isBuddyiPad;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCameraCaptureInstructionView)initWithFrame:(CGRect)a3 context:(int64_t)a4 primaryAction:(id)a5 primaryActionTitle:(id)a6 secondaryAction:(id)a7 secondaryActionTitle:(id)a8;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCameraCaptureInstructionView)initWithFrame:(CGRect)frame context:(int64_t)context primaryAction:(id)action primaryActionTitle:(id)title secondaryAction:(id)secondaryAction secondaryActionTitle:(id)actionTitle;
 - (void)layoutSubviews;
 - (void)removeSecondaryButton;
 - (void)setupHeaderView;
-- (void)setupPrimaryButtonWithTitle:(id)a3 action:(id)a4;
+- (void)setupPrimaryButtonWithTitle:(id)title action:(id)action;
 - (void)setupScrollView;
-- (void)setupSecondaryButtonWithTitle:(id)a3 action:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setupSecondaryButtonWithTitle:(id)title action:(id)action;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKCameraCaptureInstructionView
 
-- (PKCameraCaptureInstructionView)initWithFrame:(CGRect)a3 context:(int64_t)a4 primaryAction:(id)a5 primaryActionTitle:(id)a6 secondaryAction:(id)a7 secondaryActionTitle:(id)a8
+- (PKCameraCaptureInstructionView)initWithFrame:(CGRect)frame context:(int64_t)context primaryAction:(id)action primaryActionTitle:(id)title secondaryAction:(id)secondaryAction secondaryActionTitle:(id)actionTitle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
+  titleCopy = title;
+  secondaryActionCopy = secondaryAction;
+  actionTitleCopy = actionTitle;
   v24.receiver = self;
   v24.super_class = PKCameraCaptureInstructionView;
-  v21 = [(PKCameraCaptureInstructionView *)&v24 initWithFrame:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = [(PKCameraCaptureInstructionView *)&v24 initWithFrame:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    v21->_context = a4;
-    [(PKCameraCaptureInstructionView *)v21 setupScrollView];
-    [(PKCameraCaptureInstructionView *)v22 setupPrimaryButtonWithTitle:v18 action:v17];
-    [(PKCameraCaptureInstructionView *)v22 setupSecondaryButtonWithTitle:v20 action:v19];
+    height->_context = context;
+    [(PKCameraCaptureInstructionView *)height setupScrollView];
+    [(PKCameraCaptureInstructionView *)v22 setupPrimaryButtonWithTitle:titleCopy action:actionCopy];
+    [(PKCameraCaptureInstructionView *)v22 setupSecondaryButtonWithTitle:actionTitleCopy action:secondaryActionCopy];
     [(PKCameraCaptureInstructionView *)v22 setupHeaderView];
   }
 
@@ -50,19 +50,19 @@
   [(PKCameraCaptureInstructionView *)self addSubview:v5];
 }
 
-- (void)setupPrimaryButtonWithTitle:(id)a3 action:(id)a4
+- (void)setupPrimaryButtonWithTitle:(id)title action:(id)action
 {
-  if (a4)
+  if (action)
   {
     v6 = MEMORY[0x1E69DC740];
     v7 = *MEMORY[0x1E69DDCF8];
     v8 = *MEMORY[0x1E69DDC30];
-    v9 = a4;
-    v10 = a3;
+    actionCopy = action;
+    titleCopy = title;
     v11 = PKFontForDefaultDesign(v7, v8);
-    v14 = [v6 pkui_plainConfigurationWithTitle:v10 font:v11];
+    v14 = [v6 pkui_plainConfigurationWithTitle:titleCopy font:v11];
 
-    v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v14 primaryAction:v9];
+    v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v14 primaryAction:actionCopy];
 
     primaryButton = self->_primaryButton;
     self->_primaryButton = v12;
@@ -83,18 +83,18 @@ void __69__PKCameraCaptureInstructionView_setupPrimaryButtonWithTitle_action___b
   [v4 setNumberOfLines:3];
 }
 
-- (void)setupSecondaryButtonWithTitle:(id)a3 action:(id)a4
+- (void)setupSecondaryButtonWithTitle:(id)title action:(id)action
 {
-  v13 = a3;
-  v6 = a4;
+  titleCopy = title;
+  actionCopy = action;
   IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
-  if (v6 && IsSetupAssistant)
+  if (actionCopy && IsSetupAssistant)
   {
     v8 = MEMORY[0x1E69DC740];
     v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC30]);
-    v10 = [v8 pkui_plainConfigurationWithTitle:v13 font:v9];
+    v10 = [v8 pkui_plainConfigurationWithTitle:titleCopy font:v9];
 
-    v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v10 primaryAction:v6];
+    v11 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v10 primaryAction:actionCopy];
     secondaryButton = self->_secondaryButton;
     self->_secondaryButton = v11;
 
@@ -121,8 +121,8 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
   headerView = self->_headerView;
   self->_headerView = v4;
 
-  v6 = [(PKCameraCaptureInstructionView *)self isBuddyiPad];
-  if (v6)
+  isBuddyiPad = [(PKCameraCaptureInstructionView *)self isBuddyiPad];
+  if (isBuddyiPad)
   {
     v7 = 1;
   }
@@ -132,7 +132,7 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
     v7 = 3;
   }
 
-  if (v6)
+  if (isBuddyiPad)
   {
     v8 = 20.0;
   }
@@ -142,7 +142,7 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
     v8 = 10.0;
   }
 
-  if (v6)
+  if (isBuddyiPad)
   {
     v9 = 19.0;
   }
@@ -168,18 +168,18 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
   self->_secondaryButton = 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKCameraCaptureInstructionView;
-  [(PKCameraCaptureInstructionView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(PKCameraCaptureInstructionView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(PKCameraCaptureInstructionView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(PKCameraCaptureInstructionView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -188,9 +188,9 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = PKUIGetMinScreenWidthType() - 5;
   if (v5 > 9)
   {
@@ -241,8 +241,8 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
   v58.size.width = v17;
   v58.size.height = v18;
   [(PKTableHeaderView *)self->_headerView setFrame:?];
-  v19 = [(UIButton *)self->_primaryButton titleLabel];
-  [v19 sizeThatFits:{v11, v10}];
+  titleLabel = [(UIButton *)self->_primaryButton titleLabel];
+  [titleLabel sizeThatFits:{v11, v10}];
 
   [(UIButton *)self->_primaryButton sizeThatFits:v11, v10];
   v63 = v14;
@@ -270,8 +270,8 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
   if (self->_secondaryButton)
   {
     MaxY = CGRectGetMaxY(v58);
-    v27 = [(UIButton *)self->_secondaryButton titleLabel];
-    [v27 sizeThatFits:{v11, v10}];
+    titleLabel2 = [(UIButton *)self->_secondaryButton titleLabel];
+    [titleLabel2 sizeThatFits:{v11, v10}];
     v60 = v21;
 
     [(UIButton *)self->_secondaryButton sizeThatFits:v11, v10];
@@ -304,9 +304,9 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
       v42 = MaxY;
       v43 = rect;
       v44 = CGRectGetMaxY(*(&v40 - 3));
-      v45 = [(PKCameraCaptureInstructionView *)self isBuddyiPad];
+      isBuddyiPad = [(PKCameraCaptureInstructionView *)self isBuddyiPad];
       v46 = 9.0;
-      if (v45)
+      if (isBuddyiPad)
       {
         v46 = 19.0;
       }
@@ -378,10 +378,10 @@ void __71__PKCameraCaptureInstructionView_setupSecondaryButtonWithTitle_action__
 
 - (BOOL)isBuddyiPad
 {
-  v2 = [(PKCameraCaptureInstructionView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(PKCameraCaptureInstructionView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }

@@ -13,14 +13,14 @@
 
 + (id)ef_orCompoundPredicateForOptionalPredicate:()EmailFoundationAdditions second:
 {
-  v4 = [a1 _ef_compoundPredicateForOptionalPredicate:a3 second:a4 isAnd:0];
+  v4 = [self _ef_compoundPredicateForOptionalPredicate:a3 second:a4 isAnd:0];
 
   return v4;
 }
 
 + (id)ef_andCompoundPredicateForOptionalPredicate:()EmailFoundationAdditions second:
 {
-  v4 = [a1 _ef_compoundPredicateForOptionalPredicate:a3 second:a4 isAnd:1];
+  v4 = [self _ef_compoundPredicateForOptionalPredicate:a3 second:a4 isAnd:1];
 
   return v4;
 }
@@ -73,21 +73,21 @@
 
 + (id)ef_orCompoundPredicateWithSubpredicates:()EmailFoundationAdditions
 {
-  v3 = [a1 _ef_compoundPredicateWithSubpredicates:a3 isAnd:0];
+  v3 = [self _ef_compoundPredicateWithSubpredicates:a3 isAnd:0];
 
   return v3;
 }
 
 + (id)ef_andCompoundPredicateWithSubpredicates:()EmailFoundationAdditions
 {
-  v3 = [a1 _ef_compoundPredicateWithSubpredicates:a3 isAnd:1];
+  v3 = [self _ef_compoundPredicateWithSubpredicates:a3 isAnd:1];
 
   return v3;
 }
 
 + (id)ef_andCompoundPredicateWithSubpredicatesForSearchQuery:()EmailFoundationAdditions
 {
-  v3 = [a1 _ef_compoundPredicateWithSubpredicatesForSearch:a3 isAnd:1];
+  v3 = [self _ef_compoundPredicateWithSubpredicatesForSearch:a3 isAnd:1];
 
   return v3;
 }
@@ -99,7 +99,7 @@
   {
     if ([v5 count] == 1)
     {
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
     }
 
     else
@@ -113,10 +113,10 @@
       {
         [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v5];
       }
-      v6 = ;
+      firstObject = ;
     }
 
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
@@ -146,7 +146,7 @@
   {
     if ([v5 count] == 1)
     {
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
     }
 
     else
@@ -161,10 +161,10 @@
       {
         [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v8];
       }
-      v6 = ;
+      firstObject = ;
     }
 
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else

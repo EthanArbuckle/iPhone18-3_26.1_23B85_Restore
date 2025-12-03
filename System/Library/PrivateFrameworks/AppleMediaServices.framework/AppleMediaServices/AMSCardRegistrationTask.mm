@@ -1,26 +1,26 @@
 @interface AMSCardRegistrationTask
-- (AMSCardRegistrationTask)initWithCountryCode:(id)a3 merchantIdentifier:(id)a4;
+- (AMSCardRegistrationTask)initWithCountryCode:(id)code merchantIdentifier:(id)identifier;
 - (id)_performCardRegistration;
 - (id)performCardRegistration;
-- (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)a3;
+- (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)context;
 @end
 
 @implementation AMSCardRegistrationTask
 
-- (AMSCardRegistrationTask)initWithCountryCode:(id)a3 merchantIdentifier:(id)a4
+- (AMSCardRegistrationTask)initWithCountryCode:(id)code merchantIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = AMSCardRegistrationTask;
   v8 = [(AMSTask *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [codeCopy copy];
     countryCode = v8->_countryCode;
     v8->_countryCode = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     merchantIdentifier = v8->_merchantIdentifier;
     v8->_merchantIdentifier = v11;
   }
@@ -459,18 +459,18 @@ LABEL_24:
 LABEL_49:
 }
 
-- (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)a3
+- (void)_sendAutoBugCaptureReportWithSubtypeContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -487,12 +487,12 @@ LABEL_49:
       [v9 stringWithFormat:@"%@: ", v10];
     }
     v12 = ;
-    v13 = AMSHashIfNeeded(v5);
+    v13 = AMSHashIfNeeded(contextCopy);
     *buf = 138543618;
     v20 = v12;
     v21 = 2114;
     v22 = v13;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Sending Auto Bug Capture report for subtype context: %{public}@.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Sending Auto Bug Capture report for subtype context: %{public}@.", buf, 0x16u);
     if (v8)
     {
 
@@ -502,8 +502,8 @@ LABEL_49:
 
   v14 = [AMSAutoBugCaptureReport alloc];
   v15 = +[AMSProcessInfo currentProcess];
-  v16 = [v15 bundleIdentifier];
-  v17 = [(AMSAutoBugCaptureReport *)v14 initWithDomain:@"AppleMediaServices" type:@"AMSCardRegistrationTask" subtype:@"Failure" subtypeContext:v5 process:v16 thresholdValues:0];
+  bundleIdentifier = [v15 bundleIdentifier];
+  v17 = [(AMSAutoBugCaptureReport *)v14 initWithDomain:@"AppleMediaServices" type:@"AMSCardRegistrationTask" subtype:@"Failure" subtypeContext:contextCopy process:bundleIdentifier thresholdValues:0];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;

@@ -1,17 +1,17 @@
 @interface HFScheduleUtilities
-+ (id)localizedDetailedStringForRule:(id)a3;
-+ (id)localizedMainStringForRule:(id)a3;
-+ (id)localizedStringForRule:(id)a3;
-+ (id)localizedStringForSchedule:(id)a3;
-+ (id)localizedStringFromScheduleType:(unint64_t)a3;
-+ (id)sortedScheduleRules:(id)a3;
++ (id)localizedDetailedStringForRule:(id)rule;
++ (id)localizedMainStringForRule:(id)rule;
++ (id)localizedStringForRule:(id)rule;
++ (id)localizedStringForSchedule:(id)schedule;
++ (id)localizedStringFromScheduleType:(unint64_t)type;
++ (id)sortedScheduleRules:(id)rules;
 @end
 
 @implementation HFScheduleUtilities
 
-+ (id)localizedStringFromScheduleType:(unint64_t)a3
++ (id)localizedStringFromScheduleType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v4 = @"HFScheduleType_Custom";
@@ -26,9 +26,9 @@ LABEL_7:
       goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"HFScheduleUtilities.m" lineNumber:26 description:{@"Unknown schedule type [%@]", v9}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleUtilities.m" lineNumber:26 description:{@"Unknown schedule type [%@]", v9}];
 
   v5 = @"Unknown";
 LABEL_9:
@@ -36,28 +36,28 @@ LABEL_9:
   return v5;
 }
 
-+ (id)localizedStringForSchedule:(id)a3
++ (id)localizedStringForSchedule:(id)schedule
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  scheduleCopy = schedule;
+  v6 = scheduleCopy;
+  if (scheduleCopy)
   {
-    v7 = [v5 rules];
-    v8 = [v7 anyObject];
+    rules = [scheduleCopy rules];
+    anyObject = [rules anyObject];
 
-    v9 = [v8 isYearDayRule];
-    v10 = [v6 rules];
-    v11 = [v10 count];
+    isYearDayRule = [anyObject isYearDayRule];
+    rules2 = [v6 rules];
+    v11 = [rules2 count];
 
     if (v11 < 2)
     {
-      v16 = [a1 localizedStringForRule:v8];
+      v16 = [self localizedStringForRule:anyObject];
     }
 
     else
     {
-      if (v9)
+      if (isYearDayRule)
       {
         v12 = @"HFSchedule_MultipleDates";
       }
@@ -80,13 +80,13 @@ LABEL_9:
     {
       v14 = NSStringFromSelector(a2);
       v19 = 138412546;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_20D9BF000, v13, OS_LOG_TYPE_DEFAULT, "%@: %@ No schedule provided. Returning default string with assumption that access is always allowed.", &v19, 0x16u);
     }
 
-    v15 = [a1 localizedStringForRule:0];
+    v15 = [self localizedStringForRule:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -94,42 +94,42 @@ LABEL_9:
   return v15;
 }
 
-+ (id)localizedStringForRule:(id)a3
++ (id)localizedStringForRule:(id)rule
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  ruleCopy = rule;
+  v6 = ruleCopy;
+  if (!ruleCopy)
   {
     v9 = HFLogForCategory(0x4CuLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2112;
       v25 = v10;
       _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "%@: %@ No rule provided. Returning default string with assumption that access is always allowed.", buf, 0x16u);
     }
 
-    v7 = a1;
+    selfCopy3 = self;
     v8 = 0;
     goto LABEL_7;
   }
 
-  if ([v5 isYearDayRule])
+  if ([ruleCopy isYearDayRule])
   {
-    v7 = a1;
+    selfCopy3 = self;
     v8 = v6;
 LABEL_7:
-    v11 = [v7 localizedMainStringForRule:v8];
+    v11 = [selfCopy3 localizedMainStringForRule:v8];
     goto LABEL_8;
   }
 
   if ([v6 isWeekDayRule])
   {
-    v14 = [a1 localizedMainStringForRule:v6];
-    v21 = [a1 localizedDetailedStringForRule:v6];
+    v14 = [self localizedMainStringForRule:v6];
+    v21 = [self localizedDetailedStringForRule:v6];
     v11 = HFLocalizedStringWithFormat(@"HFScheduleRuleTimeInterval_FormatString", @"%@%@", v15, v16, v17, v18, v19, v20, v14);
   }
 
@@ -145,19 +145,19 @@ LABEL_8:
   return v11;
 }
 
-+ (id)localizedMainStringForRule:(id)a3
++ (id)localizedMainStringForRule:(id)rule
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  ruleCopy = rule;
+  v6 = ruleCopy;
+  if (!ruleCopy)
   {
     v14 = HFLogForCategory(0x4CuLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v38 = a1;
+      selfCopy = self;
       v39 = 2112;
       v40 = v15;
       _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "%@: %@ No rule provided. Returning default main string with assumption that access is always allowed.", buf, 0x16u);
@@ -167,19 +167,19 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v5 isYearDayRule])
+  if ([ruleCopy isYearDayRule])
   {
     v7 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v7 setDateStyle:2];
     [v7 setTimeStyle:0];
-    v8 = [v6 yearDayRule];
-    v9 = [v8 validFrom];
+    yearDayRule = [v6 yearDayRule];
+    validFrom = [yearDayRule validFrom];
 
-    v10 = [v6 yearDayRule];
-    v11 = [v10 validUntil];
+    yearDayRule2 = [v6 yearDayRule];
+    validUntil = [yearDayRule2 validUntil];
 
-    v12 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-    v13 = [v12 isDateInToday:v9];
+    hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+    v13 = [hf_sharedCalendar isDateInToday:validFrom];
 
     if (v13)
     {
@@ -188,11 +188,11 @@ LABEL_8:
 
     else
     {
-      [v7 stringFromDate:v9];
+      [v7 stringFromDate:validFrom];
     }
     v18 = ;
-    v19 = [MEMORY[0x277CBEAA8] distantFuture];
-    v20 = [v19 isEqualToDate:v11];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v20 = [distantFuture isEqualToDate:validUntil];
 
     if (v20)
     {
@@ -201,7 +201,7 @@ LABEL_8:
 
     else
     {
-      [v7 stringFromDate:v11];
+      [v7 stringFromDate:validUntil];
     }
     v36 = ;
     v17 = HFLocalizedStringWithFormat(@"HFScheduleRuleDateInterval_FormatString", @"%@%@", v21, v22, v23, v24, v25, v26, v18);
@@ -226,17 +226,17 @@ LABEL_8:
   v7 = objc_alloc_init(MEMORY[0x277CCA978]);
   [v7 setDateStyle:0];
   [v7 setTimeStyle:1];
-  v29 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v30 = [v6 weekDayRule];
-  v31 = [v30 startTime];
-  v9 = [v29 dateFromComponents:v31];
+  hf_sharedCalendar2 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  weekDayRule = [v6 weekDayRule];
+  startTime = [weekDayRule startTime];
+  validFrom = [hf_sharedCalendar2 dateFromComponents:startTime];
 
-  v32 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v33 = [v6 weekDayRule];
-  v34 = [v33 endTime];
-  v35 = [v32 dateFromComponents:v34];
+  hf_sharedCalendar3 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  weekDayRule2 = [v6 weekDayRule];
+  endTime = [weekDayRule2 endTime];
+  v35 = [hf_sharedCalendar3 dateFromComponents:endTime];
 
-  v17 = [v7 stringFromDate:v9 toDate:v35];
+  v17 = [v7 stringFromDate:validFrom toDate:v35];
 
 LABEL_18:
 LABEL_19:
@@ -246,22 +246,22 @@ LABEL_19:
   return v17;
 }
 
-+ (id)localizedDetailedStringForRule:(id)a3
++ (id)localizedDetailedStringForRule:(id)rule
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  ruleCopy = rule;
+  v6 = ruleCopy;
+  if (ruleCopy)
   {
-    if ([v5 isYearDayRule])
+    if ([ruleCopy isYearDayRule])
     {
       v7 = _HFLocalizedStringWithDefaultValue(@"HFScheduleRuleTime_AllDay", @"HFScheduleRuleTime_AllDay", 1);
     }
 
     else if ([v6 isWeekDayRule])
     {
-      v11 = [v6 weekDayRule];
-      [v11 daysOfTheWeek];
+      weekDayRule = [v6 weekDayRule];
+      [weekDayRule daysOfTheWeek];
       v12 = HMDaysOfTheWeekToDateComponents();
 
       v7 = [MEMORY[0x277CD1EB0] hf_recurrenceNaturalLanguageStringWithRecurrences:v12 isEditor:0];
@@ -282,7 +282,7 @@ LABEL_19:
     {
       v9 = NSStringFromSelector(a2);
       v15 = 138412546;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "%@: %@ No rule provided. Returning empty detailed string.", &v15, 0x16u);
@@ -296,11 +296,11 @@ LABEL_19:
   return v10;
 }
 
-+ (id)sortedScheduleRules:(id)a3
++ (id)sortedScheduleRules:(id)rules
 {
-  v4 = a3;
-  v5 = [a1 sortComparatorForScheduleRules];
-  v6 = [v4 sortedArrayUsingComparator:v5];
+  rulesCopy = rules;
+  sortComparatorForScheduleRules = [self sortComparatorForScheduleRules];
+  v6 = [rulesCopy sortedArrayUsingComparator:sortComparatorForScheduleRules];
 
   return v6;
 }

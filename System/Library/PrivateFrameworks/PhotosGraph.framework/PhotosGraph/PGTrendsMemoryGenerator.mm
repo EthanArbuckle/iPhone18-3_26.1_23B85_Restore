@@ -1,16 +1,16 @@
 @interface PGTrendsMemoryGenerator
 + (id)allTrendSceneFeatureLabels;
 + (id)trendsConfigurations;
-- (PGTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4;
+- (PGTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations;
 - (id)_trendSceneFeatureLabelsToRequireKnownPeopleInCuration;
-- (id)allTrendSceneFeatureNodesInGraph:(id)a3;
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5;
-- (id)filteredMomentNodes:(id)a3 withSceneLabel:(id)a4 inGraph:(id)a5;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (id)validSceneFeatureNodesInGraph:(id)a3;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (id)allTrendSceneFeatureNodesInGraph:(id)graph;
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory;
+- (id)filteredMomentNodes:(id)nodes withSceneLabel:(id)label inGraph:(id)graph;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (id)validSceneFeatureNodesInGraph:(id)graph;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGTrendsMemoryGenerator
@@ -28,66 +28,66 @@
   return v4;
 }
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v11 = a7;
-  v12 = a8;
-  v13 = a3;
-  v14 = [v13 memoryFeatureNodes];
-  v15 = [v13 memoryMomentNodes];
+  contextCopy = context;
+  graphCopy = graph;
+  memoryCopy = memory;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
 
-  v16 = [v15 temporarySet];
+  temporarySet = [memoryMomentNodes temporarySet];
 
-  v17 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:v14];
-  v18 = [(PGTrendsMemoryGenerator *)self allTrendSceneFeatureNodesInGraph:v12];
+  v17 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:memoryFeatureNodes];
+  v18 = [(PGTrendsMemoryGenerator *)self allTrendSceneFeatureNodesInGraph:graphCopy];
 
   v19 = [v17 collectionByIntersecting:v18];
 
   if ([v19 count] == 1)
   {
-    v20 = [v19 labels];
-    v21 = [v20 anyObject];
+    labels = [v19 labels];
+    anyObject = [labels anyObject];
 
     v22 = objc_alloc_init(PGTimeTitleOptions);
-    [(PGTimeTitleOptions *)v22 setMomentNodes:v16];
+    [(PGTimeTitleOptions *)v22 setMomentNodes:temporarySet];
     [(PGTimeTitleOptions *)v22 setAllowedFormats:20];
-    v23 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:v14];
+    v23 = [(PGGraphNodeCollection *)PGGraphYearNodeCollection subsetInCollection:memoryFeatureNodes];
     if ([v23 count] == 1)
     {
       [(PGTimeTitleOptions *)v22 setFeaturedYearNodes:v23];
     }
 
     v37 = v23;
-    v24 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection subsetInCollection:v14];
+    v24 = [(PGGraphNodeCollection *)PGGraphOverTheYearsNodeCollection subsetInCollection:memoryFeatureNodes];
     -[PGTimeTitleOptions setFilterForSignificantDateNodes:](v22, "setFilterForSignificantDateNodes:", [v24 count] == 0);
-    v25 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v14];
+    v25 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
     if ([v25 count])
     {
       v26 = [PGTrendsMemoryTitleGenerator alloc];
-      v27 = [v25 anyNode];
-      v28 = [(PGTrendsMemoryTitleGenerator *)v26 initWithMomentNodes:v16 sceneFeatureLabel:v21 personNode:v27 titleGenerationContext:v11 timeTitleOptions:v22];
+      anyNode = [v25 anyNode];
+      v28 = [(PGTrendsMemoryTitleGenerator *)v26 initWithMomentNodes:temporarySet sceneFeatureLabel:anyObject personNode:anyNode titleGenerationContext:contextCopy timeTitleOptions:v22];
     }
 
     else
     {
-      v36 = v11;
-      v27 = [(PGGraphNodeCollection *)PGGraphLocationCityNodeCollection subsetInCollection:v14];
-      v30 = [v27 count];
+      v36 = contextCopy;
+      anyNode = [(PGGraphNodeCollection *)PGGraphLocationCityNodeCollection subsetInCollection:memoryFeatureNodes];
+      v30 = [anyNode count];
       v31 = [PGTrendsMemoryTitleGenerator alloc];
       v32 = v31;
       if (v30)
       {
-        [v27 anyNode];
-        v33 = v35 = v16;
-        v11 = v36;
-        v29 = [(PGTrendsMemoryTitleGenerator *)v32 initWithMomentNodes:v35 sceneFeatureLabel:v21 cityNode:v33 titleGenerationContext:v36 timeTitleOptions:v22];
+        [anyNode anyNode];
+        v33 = v35 = temporarySet;
+        contextCopy = v36;
+        v29 = [(PGTrendsMemoryTitleGenerator *)v32 initWithMomentNodes:v35 sceneFeatureLabel:anyObject cityNode:v33 titleGenerationContext:v36 timeTitleOptions:v22];
 
-        v16 = v35;
+        temporarySet = v35;
         goto LABEL_12;
       }
 
-      v11 = v36;
-      v28 = [(PGTrendsMemoryTitleGenerator *)v31 initWithMomentNodes:v16 sceneFeatureLabel:v21 titleGenerationContext:v36 timeTitleOptions:v22];
+      contextCopy = v36;
+      v28 = [(PGTrendsMemoryTitleGenerator *)v31 initWithMomentNodes:temporarySet sceneFeatureLabel:anyObject titleGenerationContext:v36 timeTitleOptions:v22];
     }
 
     v29 = v28;
@@ -108,10 +108,10 @@ LABEL_13:
   return v29;
 }
 
-- (id)allTrendSceneFeatureNodesInGraph:(id)a3
+- (id)allTrendSceneFeatureNodesInGraph:(id)graph
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   allTrendsSceneFeatureNodesInGraph = self->_allTrendsSceneFeatureNodesInGraph;
   if (!allTrendsSceneFeatureNodesInGraph)
   {
@@ -135,8 +135,8 @@ LABEL_13:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v28 + 1) + 8 * i) featureLabel];
-          [v6 addObject:v12];
+          featureLabel = [*(*(&v28 + 1) + 8 * i) featureLabel];
+          [v6 addObject:featureLabel];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -164,8 +164,8 @@ LABEL_13:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v24 + 1) + 8 * j) featureLabel];
-          [v6 addObject:v18];
+          featureLabel2 = [*(*(&v24 + 1) + 8 * j) featureLabel];
+          [v6 addObject:featureLabel2];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -176,12 +176,12 @@ LABEL_13:
 
     if ([v6 count])
     {
-      v19 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:v6 inGraph:v4];
+      v19 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:v6 inGraph:graphCopy];
     }
 
     else
     {
-      v19 = [(MAElementCollection *)[PGGraphSceneFeatureNodeCollection alloc] initWithGraph:v4];
+      v19 = [(MAElementCollection *)[PGGraphSceneFeatureNodeCollection alloc] initWithGraph:graphCopy];
     }
 
     v20 = self->_allTrendsSceneFeatureNodesInGraph;
@@ -214,31 +214,31 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
   return v4;
 }
 
-- (id)curationOptionsWithRequiredAssetUUIDs:(id)a3 eligibleAssetUUIDs:(id)a4 triggeredMemory:(id)a5
+- (id)curationOptionsWithRequiredAssetUUIDs:(id)ds eligibleAssetUUIDs:(id)iDs triggeredMemory:(id)memory
 {
   v7.receiver = self;
   v7.super_class = PGTrendsMemoryGenerator;
-  v5 = [(PGMemoryGenerator *)&v7 curationOptionsWithRequiredAssetUUIDs:a3 eligibleAssetUUIDs:a4 triggeredMemory:a5];
+  v5 = [(PGMemoryGenerator *)&v7 curationOptionsWithRequiredAssetUUIDs:ds eligibleAssetUUIDs:iDs triggeredMemory:memory];
   [v5 setMinimumNumberOfItems:15];
   [v5 setFailIfMinimumDurationNotReached:1];
 
   return v5;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
   v11.receiver = self;
   v11.super_class = PGTrendsMemoryGenerator;
-  v5 = a3;
-  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:v5 inGraph:a4];
-  v7 = [v5 memoryFeatureNodes];
+  memoryCopy = memory;
+  v6 = [(PGMemoryGenerator *)&v11 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graph];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
 
-  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v7];
+  v8 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
   if ([v8 count])
   {
-    v9 = [v8 localIdentifiers];
-    [v6 setReferencePersonLocalIdentifiers:v9];
+    localIdentifiers = [v8 localIdentifiers];
+    [v6 setReferencePersonLocalIdentifiers:localIdentifiers];
 
     [v6 setMinimumNumberOfReferencePersons:0];
   }
@@ -246,67 +246,67 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
   return v6;
 }
 
-- (id)filteredMomentNodes:(id)a3 withSceneLabel:(id)a4 inGraph:(id)a5
+- (id)filteredMomentNodes:(id)nodes withSceneLabel:(id)label inGraph:(id)graph
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"Snow"])
+  nodesCopy = nodes;
+  labelCopy = label;
+  graphCopy = graph;
+  if ([labelCopy isEqualToString:@"Snow"])
   {
     winterSportMomentNodes = self->_winterSportMomentNodes;
     if (!winterSportMomentNodes)
     {
       v24[0] = @"WinterSport";
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-      v13 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v12 inGraph:v10];
+      v13 = [PGGraphMeaningNodeCollection meaningNodesWithMeaningLabels:v12 inGraph:graphCopy];
 
-      v14 = [v13 momentNodes];
+      momentNodes = [v13 momentNodes];
       v15 = self->_winterSportMomentNodes;
-      self->_winterSportMomentNodes = v14;
+      self->_winterSportMomentNodes = momentNodes;
 
       winterSportMomentNodes = self->_winterSportMomentNodes;
     }
 
-    v16 = [v8 collectionBySubtracting:winterSportMomentNodes];
+    v16 = [nodesCopy collectionBySubtracting:winterSportMomentNodes];
 
-    v8 = v16;
+    nodesCopy = v16;
   }
 
-  if ([v9 isEqualToString:@"Cooking"])
+  if ([labelCopy isEqualToString:@"Cooking"])
   {
     restaurantMomentNodes = self->_restaurantMomentNodes;
     if (!restaurantMomentNodes)
     {
-      v18 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:v10];
-      v19 = [v18 momentNodes];
+      v18 = [PGGraphBusinessNodeCollection restaurantBusinessNodesInGraph:graphCopy];
+      momentNodes2 = [v18 momentNodes];
       v20 = self->_restaurantMomentNodes;
-      self->_restaurantMomentNodes = v19;
+      self->_restaurantMomentNodes = momentNodes2;
 
       restaurantMomentNodes = self->_restaurantMomentNodes;
     }
 
-    v21 = [v8 collectionBySubtracting:restaurantMomentNodes];
+    v21 = [nodesCopy collectionBySubtracting:restaurantMomentNodes];
 
-    v8 = v21;
+    nodesCopy = v21;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return nodesCopy;
 }
 
-- (id)validSceneFeatureNodesInGraph:(id)a3
+- (id)validSceneFeatureNodesInGraph:(id)graph
 {
   v26 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  graphCopy = graph;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(PGTrendsMemoryGenerator *)self configurations];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  configurations = [(PGTrendsMemoryGenerator *)self configurations];
+  v6 = [configurations countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -317,20 +317,20 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(configurations);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 featureLabel];
-        if (v11)
+        featureLabel = [v10 featureLabel];
+        if (featureLabel)
         {
-          v12 = [v10 validTrendTypes];
-          v13 = [(PGTrendsMemoryGenerator *)self trendType];
-          v14 = [v12 containsObject:v13];
+          validTrendTypes = [v10 validTrendTypes];
+          trendType = [(PGTrendsMemoryGenerator *)self trendType];
+          v14 = [validTrendTypes containsObject:trendType];
 
           if (v14)
           {
-            [v4 addObject:v11];
+            [v4 addObject:featureLabel];
           }
         }
 
@@ -341,7 +341,7 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [configurations countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);
@@ -349,12 +349,12 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
 
   if ([v4 count])
   {
-    v15 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:v4 inGraph:v19];
+    v15 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneNames:v4 inGraph:graphCopy];
   }
 
   else
   {
-    v15 = [(MAElementCollection *)[PGGraphSceneFeatureNodeCollection alloc] initWithGraph:v19];
+    v15 = [(MAElementCollection *)[PGGraphSceneFeatureNodeCollection alloc] initWithGraph:graphCopy];
   }
 
   v16 = v15;
@@ -364,11 +364,11 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
   return v16;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:v6];
+  graphCopy = graph;
+  blockCopy = block;
+  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:graphCopy];
   if ([v8 count])
   {
     v9 = MEMORY[0x277D22BF8];
@@ -380,8 +380,8 @@ uint64_t __101__PGTrendsMemoryGenerator_relevantFeederForTriggeredMemory_inGraph
     v12[2] = __81__PGTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
     v12[3] = &unk_278889518;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = graphCopy;
+    v14 = blockCopy;
     [v11 enumerateTargetsBySourceWithBlock:v12];
   }
 }
@@ -401,34 +401,34 @@ void __81__PGTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_us
   (*(v12 + 16))(v12, v14, v13, a4);
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 16001;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 16002;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -439,16 +439,16 @@ void __81__PGTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_us
   return result;
 }
 
-- (PGTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4
+- (PGTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations
 {
-  v7 = a4;
+  configurationsCopy = configurations;
   v21.receiver = self;
   v21.super_class = PGTrendsMemoryGenerator;
-  v8 = [(PGMemoryGenerator *)&v21 initWithMemoryGenerationContext:a3];
+  v8 = [(PGMemoryGenerator *)&v21 initWithMemoryGenerationContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configurations, a4);
+    objc_storeStrong(&v8->_configurations, configurations);
     v9->_requireSceneProcessingMeetsThresholdOverTime = 1;
     v9->_requireFaceProcessingMeetsThresholdOverTime = 0;
     v10 = objc_alloc_init(PGMemoryMomentRequirements);
@@ -515,13 +515,13 @@ void __81__PGTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_us
     if (![v3 count])
     {
       v4 = +[PGLogging sharedLogging];
-      v5 = [v4 loggingConnection];
+      loggingConnection = [v4 loggingConnection];
 
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v28 = @"com.apple.photos.memories.trendsmemory.trendsscenes";
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "PGTrendsMemoryGenerator: Couldn't load remote configuration dictionary from key: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGTrendsMemoryGenerator: Couldn't load remote configuration dictionary from key: %@", buf, 0xCu);
       }
     }
 

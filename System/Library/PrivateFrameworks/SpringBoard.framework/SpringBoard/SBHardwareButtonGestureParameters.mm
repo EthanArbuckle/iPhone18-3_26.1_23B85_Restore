@@ -1,14 +1,14 @@
 @interface SBHardwareButtonGestureParameters
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 @end
 
 @implementation SBHardwareButtonGestureParameters
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SBHardwareButtonGestureParameters allocWithZone:?]];
   [(SBHardwareButtonGestureParameters *)self multiplePressTimeInterval];
@@ -19,7 +19,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[SBMutableHardwareButtonGestureParameters allocWithZone:?]];
   [(SBMutableHardwareButtonGestureParameters *)v4 setMaximumPressCount:[(SBHardwareButtonGestureParameters *)self maximumPressCount]];
@@ -32,30 +32,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHardwareButtonGestureParameters *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHardwareButtonGestureParameters *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHardwareButtonGestureParameters *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHardwareButtonGestureParameters *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHardwareButtonGestureParameters *)self succinctDescriptionBuilder];
-  v5 = [v4 appendInteger:-[SBHardwareButtonGestureParameters maximumPressCount](self withName:{"maximumPressCount"), @"maximumPressCount"}];
+  succinctDescriptionBuilder = [(SBHardwareButtonGestureParameters *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendInteger:-[SBHardwareButtonGestureParameters maximumPressCount](self withName:{"maximumPressCount"), @"maximumPressCount"}];
   [(SBHardwareButtonGestureParameters *)self longPressTimeInterval];
-  v6 = [v4 appendTimeInterval:@"longPressTimeInterval" withName:0 decomposeUnits:?];
+  v6 = [succinctDescriptionBuilder appendTimeInterval:@"longPressTimeInterval" withName:0 decomposeUnits:?];
   [(SBHardwareButtonGestureParameters *)self multiplePressTimeInterval];
-  v7 = [v4 appendTimeInterval:@"multiplePressTimeInterval" withName:0 decomposeUnits:?];
+  v7 = [succinctDescriptionBuilder appendTimeInterval:@"multiplePressTimeInterval" withName:0 decomposeUnits:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

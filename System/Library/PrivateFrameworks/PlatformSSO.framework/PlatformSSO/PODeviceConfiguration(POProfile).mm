@@ -7,40 +7,40 @@
 - (uint64_t)updateWithProfile:()POProfile
 {
   v4 = a3;
-  [a1 setCreateUsersEnabled:{objc_msgSend(v4, "createUsersEnabled")}];
-  [a1 setCreateFirstUserDuringSetupEnabled:{objc_msgSend(v4, "createFirstUserDuringSetupEnabled")}];
-  [a1 setAuthorizationEnabled:{objc_msgSend(v4, "authorizationEnabled")}];
-  v5 = [v4 tokenToUserMapping];
-  [a1 setTokenToUserMapping:v5];
+  [self setCreateUsersEnabled:{objc_msgSend(v4, "createUsersEnabled")}];
+  [self setCreateFirstUserDuringSetupEnabled:{objc_msgSend(v4, "createFirstUserDuringSetupEnabled")}];
+  [self setAuthorizationEnabled:{objc_msgSend(v4, "authorizationEnabled")}];
+  tokenToUserMapping = [v4 tokenToUserMapping];
+  [self setTokenToUserMapping:tokenToUserMapping];
 
-  [a1 setNewUserAuthorizationMode:{objc_msgSend(v4, "newUserAuthorizationMode")}];
-  [a1 setUserAuthorizationMode:{objc_msgSend(v4, "userAuthorizationMode")}];
-  v6 = [v4 accountDisplayName];
-  [a1 setAccountDisplayName:v6];
+  [self setNewUserAuthorizationMode:{objc_msgSend(v4, "newUserAuthorizationMode")}];
+  [self setUserAuthorizationMode:{objc_msgSend(v4, "userAuthorizationMode")}];
+  accountDisplayName = [v4 accountDisplayName];
+  [self setAccountDisplayName:accountDisplayName];
 
-  v7 = [v4 loginFrequency];
-  [a1 setLoginFrequency:v7];
+  loginFrequency = [v4 loginFrequency];
+  [self setLoginFrequency:loginFrequency];
 
-  [a1 setFileVaultPolicy:{objc_msgSend(v4, "fileVaultPolicy")}];
-  [a1 setLoginPolicy:{objc_msgSend(v4, "loginPolicy")}];
-  [a1 setUnlockPolicy:{objc_msgSend(v4, "unlockPolicy")}];
-  [a1 setOfflineGracePeriod:{objc_msgSend(v4, "offlineGracePeriod")}];
-  v8 = [v4 nonPlatformSSOAccounts];
-  [a1 setNonPlatformSSOAccounts:v8];
+  [self setFileVaultPolicy:{objc_msgSend(v4, "fileVaultPolicy")}];
+  [self setLoginPolicy:{objc_msgSend(v4, "loginPolicy")}];
+  [self setUnlockPolicy:{objc_msgSend(v4, "unlockPolicy")}];
+  [self setOfflineGracePeriod:{objc_msgSend(v4, "offlineGracePeriod")}];
+  nonPlatformSSOAccounts = [v4 nonPlatformSSOAccounts];
+  [self setNonPlatformSSOAccounts:nonPlatformSSOAccounts];
 
-  [a1 setRequireAuthGracePeriod:{objc_msgSend(v4, "requireAuthGracePeriod")}];
-  [a1 setAllowDeviceIdentifiersInAttestation:{objc_msgSend(v4, "allowDeviceIdentifiersInAttestation")}];
-  v9 = [v4 createUserAuthenticationMethods];
-  [a1 setCreateUserLoginTypes:v9];
+  [self setRequireAuthGracePeriod:{objc_msgSend(v4, "requireAuthGracePeriod")}];
+  [self setAllowDeviceIdentifiersInAttestation:{objc_msgSend(v4, "allowDeviceIdentifiersInAttestation")}];
+  createUserAuthenticationMethods = [v4 createUserAuthenticationMethods];
+  [self setCreateUserLoginTypes:createUserAuthenticationMethods];
 
-  [a1 setAllowAccessTokenExpressMode:{objc_msgSend(v4, "allowAccessKeyExpressMode")}];
-  v10 = [v4 accessKeyReaderGroupIdentifier];
-  [a1 setAccessTokenReaderGroupIdentifier:v10];
+  [self setAllowAccessTokenExpressMode:{objc_msgSend(v4, "allowAccessKeyExpressMode")}];
+  accessKeyReaderGroupIdentifier = [v4 accessKeyReaderGroupIdentifier];
+  [self setAccessTokenReaderGroupIdentifier:accessKeyReaderGroupIdentifier];
 
-  [a1 setSynchronizeProfilePicture:{objc_msgSend(v4, "synchronizeProfilePicture")}];
-  v11 = [v4 temporarySessionQuickLogin];
+  [self setSynchronizeProfilePicture:{objc_msgSend(v4, "synchronizeProfilePicture")}];
+  temporarySessionQuickLogin = [v4 temporarySessionQuickLogin];
 
-  return [a1 setTemporarySessionQuickLogin:v11];
+  return [self setTemporarySessionQuickLogin:temporarySessionQuickLogin];
 }
 
 @end

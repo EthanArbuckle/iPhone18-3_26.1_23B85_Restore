@@ -1,14 +1,14 @@
 @interface OADProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMergedPropertyForSelector:(SEL)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMergedPropertyForSelector:(SEL)selector;
 - (OADProperties)init;
 - (OADProperties)initWithDefaults;
 - (id)description;
-- (id)overrideForSelector:(SEL)a3 mustExist:(BOOL)a4;
-- (void)changeParentPreservingEffectiveValues:(id)a3;
+- (id)overrideForSelector:(SEL)selector mustExist:(BOOL)exist;
+- (void)changeParentPreservingEffectiveValues:(id)values;
 - (void)flatten;
-- (void)setMergedWithParent:(BOOL)a3;
-- (void)setParent:(id)a3;
+- (void)setMergedWithParent:(BOOL)parent;
+- (void)setParent:(id)parent;
 @end
 
 @implementation OADProperties
@@ -35,38 +35,38 @@
   if (v2)
   {
     *(v2 + 16) |= 3u;
-    v4 = [objc_opt_class() defaultProperties];
-    [(OADProperties *)v3 setParent:v4];
+    defaultProperties = [objc_opt_class() defaultProperties];
+    [(OADProperties *)v3 setParent:defaultProperties];
   }
 
   return v3;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v7 = a3;
-  v5 = [(OADProperties *)v7 parent];
-  if (v5)
+  parentCopy = parent;
+  parent = [(OADProperties *)parentCopy parent];
+  if (parent)
   {
     do
     {
-      v6 = [v5 parent];
+      v5Parent = [parent parent];
 
-      v5 = v6;
+      parent = v5Parent;
     }
 
-    while (v6);
+    while (v5Parent);
   }
 
-  if (v7 != self)
+  if (parentCopy != self)
   {
-    objc_storeStrong(&self->mParent, a3);
+    objc_storeStrong(&self->mParent, parent);
   }
 }
 
-- (void)setMergedWithParent:(BOOL)a3
+- (void)setMergedWithParent:(BOOL)parent
 {
-  if (a3)
+  if (parent)
   {
     v3 = 2;
   }
@@ -79,40 +79,40 @@
   *(self + 16) = *(self + 16) & 0xFD | v3;
 }
 
-- (id)overrideForSelector:(SEL)a3 mustExist:(BOOL)a4
+- (id)overrideForSelector:(SEL)selector mustExist:(BOOL)exist
 {
-  v6 = self;
+  selfCopy = self;
   while (1)
   {
-    v7 = *(v6 + 16);
-    *(v6 + 16) = v7 & 0xFD;
-    v8 = ([(OADProperties *)v6 methodForSelector:a3])(v6, a3);
-    *(v6 + 16) = *(v6 + 16) & 0xFD | v7 & 2;
+    v7 = *(selfCopy + 16);
+    *(selfCopy + 16) = v7 & 0xFD;
+    v8 = ([(OADProperties *)selfCopy methodForSelector:selector])(selfCopy, selector);
+    *(selfCopy + 16) = *(selfCopy + 16) & 0xFD | v7 & 2;
     if (v8)
     {
       break;
     }
 
-    mParent = v6->mParent;
-    if (!mParent && a4)
+    mParent = selfCopy->mParent;
+    if (!mParent && exist)
     {
       break;
     }
 
     v10 = mParent;
 
-    v6 = v10;
+    selfCopy = v10;
     if (!mParent)
     {
-      v6 = 0;
+      selfCopy = 0;
       break;
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isMergedPropertyForSelector:(SEL)a3
+- (BOOL)isMergedPropertyForSelector:(SEL)selector
 {
   mParent = self->mParent;
   if (!mParent || (*(self + 16) & 2) == 0 || (*(mParent + 16) & 1) == 0)
@@ -123,19 +123,19 @@
   v6 = [(OADProperties *)mParent methodForSelector:?];
   v7 = self->mParent;
 
-  return v6(v7, a3);
+  return v6(v7, selector);
 }
 
-- (void)changeParentPreservingEffectiveValues:(id)a3
+- (void)changeParentPreservingEffectiveValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   [(OADProperties *)self setMergedWithParent:0];
-  [(OADProperties *)self fixPropertiesForChangingParentPreservingEffectiveValues:v5];
-  v4 = [(OADProperties *)self parent];
+  [(OADProperties *)self fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  parent = [(OADProperties *)self parent];
 
-  if (v4 != v5)
+  if (parent != valuesCopy)
   {
-    [(OADProperties *)self setParent:v5];
+    [(OADProperties *)self setParent:valuesCopy];
   }
 }
 
@@ -148,21 +148,21 @@
   [(OADProperties *)mParent flatten];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
-    v7 = [v6 parent];
-    v8 = (v7 != 0) ^ (self->mParent == 0);
+    v6 = equalCopy;
+    parent = [v6 parent];
+    v8 = (parent != 0) ^ (self->mParent == 0);
 
     if (v8)
     {
-      v9 = [v6 parent];
-      if (!v9 || ([v6 parent], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", self->mParent), v10, v9, (v11 & 1) != 0))
+      parent2 = [v6 parent];
+      if (!parent2 || ([v6 parent], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", self->mParent), v10, parent2, (v11 & 1) != 0))
       {
         if ([v6 isMerged] == (*(self + 16) & 1))
         {

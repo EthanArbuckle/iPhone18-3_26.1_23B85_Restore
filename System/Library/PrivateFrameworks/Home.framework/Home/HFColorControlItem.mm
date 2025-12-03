@@ -1,21 +1,21 @@
 @interface HFColorControlItem
 + (id)colorCharacteristicTypes;
 + (id)na_identity;
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3;
+- (BOOL)canCopyWithCharacteristicOptions:(id)options;
 - (BOOL)naturalLightingEnabled;
 - (BOOL)supportsNaturalLighting;
 - (BOOL)supportsRGBColor;
-- (HFColorControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5;
-- (HFColorControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
+- (HFColorControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results;
+- (HFColorControlItem)initWithValueSource:(id)source displayResults:(id)results;
 - (HFColorProfile)colorProfile;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)normalizedValueForValue:(id)a3;
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4;
-- (id)valueForCharacteristicValues:(id)a3;
-- (id)writeValue:(id)a3;
-- (void)_logForNaturalLightUserStudy:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)normalizedValueForValue:(id)value;
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response;
+- (id)valueForCharacteristicValues:(id)values;
+- (id)writeValue:(id)value;
+- (void)_logForNaturalLightUserStudy:(id)study;
 @end
 
 @implementation HFColorControlItem
@@ -48,19 +48,19 @@ void __46__HFColorControlItem_colorCharacteristicTypes__block_invoke_2()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (HFColorControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFColorControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() colorCharacteristicTypes];
+  sourceCopy = source;
+  resultsCopy = results;
+  colorCharacteristicTypes = [objc_opt_class() colorCharacteristicTypes];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__HFColorControlItem_initWithValueSource_displayResults___block_invoke;
   v18[3] = &unk_277DF3130;
-  v19 = v6;
-  v9 = v6;
-  v10 = [v8 na_filter:v18];
+  v19 = sourceCopy;
+  v9 = sourceCopy;
+  v10 = [colorCharacteristicTypes na_filter:v18];
 
   v11 = [HFControlItemCharacteristicOptions alloc];
   v20 = &unk_282525068;
@@ -70,7 +70,7 @@ void __46__HFColorControlItem_colorCharacteristicTypes__block_invoke_2()
 
   v17.receiver = self;
   v17.super_class = HFColorControlItem;
-  v14 = [(HFControlItem *)&v17 initWithValueSource:v9 characteristicOptions:v13 displayResults:v7];
+  v14 = [(HFControlItem *)&v17 initWithValueSource:v9 characteristicOptions:v13 displayResults:resultsCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
@@ -84,32 +84,32 @@ BOOL __57__HFColorControlItem_initWithValueSource_displayResults___block_invoke(
   return v3;
 }
 
-- (HFColorControlItem)initWithValueSource:(id)a3 characteristicOptions:(id)a4 displayResults:(id)a5
+- (HFColorControlItem)initWithValueSource:(id)source characteristicOptions:(id)options displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFColorControlItem.m" lineNumber:64 description:{@"%s is unavailable; use %@ instead", "-[HFColorControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFColorControlItem.m" lineNumber:64 description:{@"%s is unavailable; use %@ instead", "-[HFColorControlItem initWithValueSource:characteristicOptions:displayResults:]", v8}];
 
   return 0;
 }
 
-- (BOOL)canCopyWithCharacteristicOptions:(id)a3
+- (BOOL)canCopyWithCharacteristicOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(HFControlItem *)self characteristicOptions];
-  v6 = [v4 isEqual:v5];
+  optionsCopy = options;
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v6 = [optionsCopy isEqual:characteristicOptions];
 
   return v6;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFColorControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFColorControlItem *)self canCopyWithCharacteristicOptions:options])
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(HFControlItem *)self displayResults];
-    v9 = [v7 initWithValueSource:v6 displayResults:v8];
+    displayResults = [(HFControlItem *)self displayResults];
+    v9 = [v7 initWithValueSource:sourceCopy displayResults:displayResults];
 
     [v9 copyLatestResultsFromItem:self];
   }
@@ -160,8 +160,8 @@ uint64_t __55__HFColorControlItem_supportsItemRepresentingServices___block_invok
   }
 
   v3 = qword_280E03C98;
-  v4 = [(HFControlItem *)self characteristicOptions];
-  v5 = [v4 characteristicTypesForUsage:0];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v5 = [characteristicOptions characteristicTypesForUsage:0];
   v6 = [v3 isSubsetOfSet:v5];
 
   return v6;
@@ -180,24 +180,24 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 minimumValue];
-    v5 = v4;
-    if (!v4)
+    minimumValue = [v2 minimumValue];
+    v5 = minimumValue;
+    if (!minimumValue)
     {
-      v4 = &unk_282525080;
+      minimumValue = &unk_282525080;
     }
 
-    [v4 floatValue];
+    [minimumValue floatValue];
     v7 = v6;
 
-    v8 = [v3 maximumValue];
-    v9 = v8;
-    if (!v8)
+    maximumValue = [v3 maximumValue];
+    v9 = maximumValue;
+    if (!maximumValue)
     {
-      v8 = &unk_282525098;
+      maximumValue = &unk_282525098;
     }
 
-    [v8 floatValue];
+    [maximumValue floatValue];
     v11 = v10;
 
     v12 = [HFTemperatureColorProfile alloc];
@@ -214,17 +214,17 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   return v15;
 }
 
-- (void)_logForNaturalLightUserStudy:(id)a3
+- (void)_logForNaturalLightUserStudy:(id)study
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  studyCopy = study;
   if (+[HFUtilities isInternalInstall])
   {
     objc_opt_class();
-    v5 = [(HFControlItem *)self valueSource];
+    valueSource = [(HFControlItem *)self valueSource];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = valueSource;
     }
 
     else
@@ -235,11 +235,11 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
     v7 = v6;
 
     objc_opt_class();
-    v8 = [v7 valueSource];
+    valueSource2 = [v7 valueSource];
 
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = valueSource2;
     }
 
     else
@@ -249,23 +249,23 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
 
     v10 = v9;
 
-    v11 = [v10 originalValueSource];
+    originalValueSource = [v10 originalValueSource];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [(HFControlItem *)self valueSource];
-      v13 = [v12 allServices];
-      v14 = [v13 anyObject];
-      v15 = [v14 name];
+      valueSource3 = [(HFControlItem *)self valueSource];
+      allServices = [valueSource3 allServices];
+      anyObject = [allServices anyObject];
+      name = [anyObject name];
 
       v16 = HFLogForCategory(0x4BuLL);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412802;
-        v19 = v15;
+        v19 = name;
         v20 = 2112;
-        v21 = v4;
+        v21 = studyCopy;
         v22 = 2112;
         v23 = objc_opt_class();
         _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "User changed color for light %@. Value: %@. Value Source: %@", &v18, 0x20u);
@@ -276,11 +276,11 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -293,17 +293,17 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
 
   v7 = v6;
 
-  v8 = [v7 temperatureColor];
-  v9 = [v7 RGBColor];
-  v10 = v9;
-  if (v8)
+  temperatureColor = [v7 temperatureColor];
+  rGBColor = [v7 RGBColor];
+  v10 = rGBColor;
+  if (temperatureColor)
   {
-    [v8 valueDescriptionInKelvin];
+    [temperatureColor valueDescriptionInKelvin];
   }
 
   else
   {
-    [v9 valueDescription];
+    [rGBColor valueDescription];
   }
   v11 = ;
   [(HFColorControlItem *)self _logForNaturalLightUserStudy:v11];
@@ -335,21 +335,21 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   return v12;
 }
 
-- (id)normalizedValueForValue:(id)a3
+- (id)normalizedValueForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     NSLog(&cfstr_AttemptingToNo.isa);
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = HFColorControlItem;
-    v5 = [(HFControlItem *)&v8 normalizedValueForValue:v4];
+    v5 = [(HFControlItem *)&v8 normalizedValueForValue:valueCopy];
   }
 
   v6 = v5;
@@ -357,25 +357,25 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   return v6;
 }
 
-- (id)valueForCharacteristicType:(id)a3 inBatchReadResponse:(id)a4
+- (id)valueForCharacteristicType:(id)type inBatchReadResponse:(id)response
 {
-  v4 = [a4 responseForCharacteristicType:a3 aggregationPolicy:1];
-  v5 = [v4 value];
+  v4 = [response responseForCharacteristicType:type aggregationPolicy:1];
+  value = [v4 value];
 
-  return v5;
+  return value;
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__HFColorControlItem_valueForCharacteristicValues___block_invoke;
   aBlock[3] = &unk_277E01390;
-  v5 = v4;
+  v5 = valuesCopy;
   v39 = v5;
-  v40 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
   v7 = v6[2](v6, *MEMORY[0x277CCF8D8], 360.0);
   v8 = v6[2](v6, *MEMORY[0x277CCFA30], 100.0);
@@ -421,7 +421,7 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
   }
 
   v37 = v7;
-  v22 = [(HFColorControlItem *)self colorProfile];
+  colorProfile = [(HFColorControlItem *)self colorProfile];
   v23 = [HFTemperatureColor alloc];
   [v11 floatValue];
   v24 = [(HFTemperatureColor *)v23 initWithTemperatureInMired:?];
@@ -432,7 +432,7 @@ void __38__HFColorControlItem_supportsRGBColor__block_invoke_2()
 
   [v11 floatValue];
   v26 = v25;
-  [v22 minimumTemperature];
+  [colorProfile minimumTemperature];
   if (v26 != v27)
   {
     goto LABEL_12;
@@ -500,12 +500,12 @@ id __51__HFColorControlItem_valueForCharacteristicValues___block_invoke(uint64_t
   return v11;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -518,17 +518,17 @@ id __51__HFColorControlItem_valueForCharacteristicValues___block_invoke(uint64_t
 
   v7 = v6;
 
-  v8 = [(HFControlItem *)self characteristicOptions];
-  v9 = [v8 characteristicTypesForUsage:0];
+  characteristicOptions = [(HFControlItem *)self characteristicOptions];
+  v9 = [characteristicOptions characteristicTypesForUsage:0];
   v10 = *MEMORY[0x277CCF7D8];
   v11 = [v9 containsObject:*MEMORY[0x277CCF7D8]];
 
-  v12 = [(HFColorControlItem *)self supportsRGBColor];
-  v13 = [v7 preferredColorPrimitive];
+  supportsRGBColor = [(HFColorControlItem *)self supportsRGBColor];
+  preferredColorPrimitive = [v7 preferredColorPrimitive];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass() & v11;
 
-  if ((v14 & 1) != 0 || v12)
+  if ((v14 & 1) != 0 || supportsRGBColor)
   {
     if (v14)
     {
@@ -536,11 +536,11 @@ id __51__HFColorControlItem_valueForCharacteristicValues___block_invoke(uint64_t
     }
 
 LABEL_9:
-    if (v12 && ([v7 RGBColor], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
+    if (supportsRGBColor && ([v7 RGBColor], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
     {
       v33 = 0;
-      v22 = [v7 RGBColor];
-      [v22 getHue:&v33 + 4 saturation:&v33 brightness:0];
+      rGBColor = [v7 RGBColor];
+      [rGBColor getHue:&v33 + 4 saturation:&v33 brightness:0];
 
       *&v23 = *(&v33 + 1) * 360.0;
       v24 = [MEMORY[0x277CCABB0] numberWithFloat:v23];
@@ -578,9 +578,9 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  v15 = [v7 temperatureColor];
+  temperatureColor = [v7 temperatureColor];
 
-  if (!v15)
+  if (!temperatureColor)
   {
     goto LABEL_9;
   }
@@ -588,8 +588,8 @@ LABEL_9:
 LABEL_7:
   v36 = v10;
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v7 temperatureColor];
-  [v17 temperatureInMired];
+  temperatureColor2 = [v7 temperatureColor];
+  [temperatureColor2 temperatureInMired];
   v18 = [v16 numberWithFloat:?];
   v37[0] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
@@ -601,13 +601,13 @@ LABEL_16:
   return v20;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HFColorControlItem;
-  v5 = [(HFControlItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HFControlItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__HFColorControlItem__subclass_updateWithOptions___block_invoke;
@@ -660,7 +660,7 @@ id __50__HFColorControlItem__subclass_updateWithOptions___block_invoke(uint64_t 
   v4[1] = 3221225472;
   v4[2] = __33__HFColorControlItem_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __33__HFColorControlItem_na_identity__block_invoke(v4);
 
   return v2;
@@ -719,10 +719,10 @@ uint64_t __33__HFColorControlItem_na_identity__block_invoke_4(uint64_t a1, void 
 
 - (BOOL)supportsNaturalLighting
 {
-  v2 = [(HFControlItem *)self valueSource];
-  if ([v2 conformsToProtocol:&unk_28252FC50])
+  valueSource = [(HFControlItem *)self valueSource];
+  if ([valueSource conformsToProtocol:&unk_28252FC50])
   {
-    v3 = v2;
+    v3 = valueSource;
   }
 
   else
@@ -732,16 +732,16 @@ uint64_t __33__HFColorControlItem_na_identity__block_invoke_4(uint64_t a1, void 
 
   v4 = v3;
 
-  v5 = [v4 isNaturalLightingSupported];
-  return v5;
+  isNaturalLightingSupported = [v4 isNaturalLightingSupported];
+  return isNaturalLightingSupported;
 }
 
 - (BOOL)naturalLightingEnabled
 {
-  v2 = [(HFControlItem *)self valueSource];
-  if ([v2 conformsToProtocol:&unk_28252FC50])
+  valueSource = [(HFControlItem *)self valueSource];
+  if ([valueSource conformsToProtocol:&unk_28252FC50])
   {
-    v3 = v2;
+    v3 = valueSource;
   }
 
   else
@@ -751,8 +751,8 @@ uint64_t __33__HFColorControlItem_na_identity__block_invoke_4(uint64_t a1, void 
 
   v4 = v3;
 
-  v5 = [v4 isNaturalLightingEnabled];
-  return v5;
+  isNaturalLightingEnabled = [v4 isNaturalLightingEnabled];
+  return isNaturalLightingEnabled;
 }
 
 @end

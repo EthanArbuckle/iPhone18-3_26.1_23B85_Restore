@@ -4,20 +4,20 @@
 - (AVTAvatarDescriptor)avatarDescriptor;
 - (AVTStickerConfiguration)poseConfiguration;
 - (BOOL)avatarRecordIsEditable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)poseHasBody;
 - (CGAffineTransform)cropTransform;
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5;
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6;
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseName:(id)a4 pose:(id)a5 backgroundColorDescription:(id)a6;
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseName:(id)a4 pose:(id)a5 backgroundColorDescription:(id)a6 cropTransform:(CGAffineTransform *)a7;
-- (CNMemojiMetadata)initWithBackgroundColorDescription:(id)a3;
-- (CNMemojiMetadata)initWithCoder:(id)a3;
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description;
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform;
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseName:(id)name pose:(id)pose backgroundColorDescription:(id)description;
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseName:(id)name pose:(id)pose backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform;
+- (CNMemojiMetadata)initWithBackgroundColorDescription:(id)description;
+- (CNMemojiMetadata)initWithCoder:(id)coder;
 - (NSData)avatarRecordData;
 - (NSData)poseConfigurationData;
 - (NSString)avatarRecordIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNMemojiMetadata
@@ -43,36 +43,36 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseName:(id)a4 pose:(id)a5 backgroundColorDescription:(id)a6
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseName:(id)name pose:(id)pose backgroundColorDescription:(id)description
 {
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   v8[0] = *MEMORY[0x1E695EFD0];
   v8[1] = v6;
   v8[2] = *(MEMORY[0x1E695EFD0] + 32);
-  return [(CNMemojiMetadata *)self initWithAvatarRecord:a3 poseName:a4 pose:a5 backgroundColorDescription:a6 cropTransform:v8];
+  return [(CNMemojiMetadata *)self initWithAvatarRecord:record poseName:name pose:pose backgroundColorDescription:description cropTransform:v8];
 }
 
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseName:(id)a4 pose:(id)a5 backgroundColorDescription:(id)a6 cropTransform:(CGAffineTransform *)a7
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseName:(id)name pose:(id)pose backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  recordCopy = record;
+  nameCopy = name;
+  poseCopy = pose;
+  descriptionCopy = description;
   v29.receiver = self;
   v29.super_class = CNMemojiMetadata;
   v17 = [(CNMemojiMetadata *)&v29 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_avatarRecord, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_avatarRecord, record);
+    v19 = [nameCopy copy];
     poseName = v18->_poseName;
     v18->_poseName = v19;
 
-    objc_storeStrong(&v18->_pose, a5);
-    if (v16)
+    objc_storeStrong(&v18->_pose, pose);
+    if (descriptionCopy)
     {
-      v21 = [v16 copy];
+      v21 = [descriptionCopy copy];
     }
 
     else
@@ -87,9 +87,9 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
     backgroundParameters = v18->_backgroundParameters;
     v18->_backgroundParameters = v23;
 
-    v25 = *&a7->a;
-    v26 = *&a7->tx;
-    *&v18->_cropTransform.c = *&a7->c;
+    v25 = *&transform->a;
+    v26 = *&transform->tx;
+    *&v18->_cropTransform.c = *&transform->c;
     *&v18->_cropTransform.tx = v26;
     *&v18->_cropTransform.a = v25;
     v27 = v18;
@@ -98,55 +98,55 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
   return v18;
 }
 
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 name];
-  v12 = [v9 physicalizedPose];
+  descriptionCopy = description;
+  configurationCopy = configuration;
+  recordCopy = record;
+  name = [configurationCopy name];
+  physicalizedPose = [configurationCopy physicalizedPose];
 
   v13 = *(MEMORY[0x1E695EFD0] + 16);
   v16[0] = *MEMORY[0x1E695EFD0];
   v16[1] = v13;
   v16[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v14 = [(CNMemojiMetadata *)self initWithAvatarRecord:v10 poseName:v11 pose:v12 backgroundColorDescription:v8 cropTransform:v16];
+  v14 = [(CNMemojiMetadata *)self initWithAvatarRecord:recordCopy poseName:name pose:physicalizedPose backgroundColorDescription:descriptionCopy cropTransform:v16];
 
   return v14;
 }
 
-- (CNMemojiMetadata)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 backgroundColorDescription:(id)a5 cropTransform:(CGAffineTransform *)a6
+- (CNMemojiMetadata)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration backgroundColorDescription:(id)description cropTransform:(CGAffineTransform *)transform
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 name];
-  v14 = [v11 physicalizedPose];
+  descriptionCopy = description;
+  configurationCopy = configuration;
+  recordCopy = record;
+  name = [configurationCopy name];
+  physicalizedPose = [configurationCopy physicalizedPose];
 
-  v15 = *&a6->c;
-  v18[0] = *&a6->a;
+  v15 = *&transform->c;
+  v18[0] = *&transform->a;
   v18[1] = v15;
-  v18[2] = *&a6->tx;
-  v16 = [(CNMemojiMetadata *)self initWithAvatarRecord:v12 poseName:v13 pose:v14 backgroundColorDescription:v10 cropTransform:v18];
+  v18[2] = *&transform->tx;
+  v16 = [(CNMemojiMetadata *)self initWithAvatarRecord:recordCopy poseName:name pose:physicalizedPose backgroundColorDescription:descriptionCopy cropTransform:v18];
 
   return v16;
 }
 
-- (CNMemojiMetadata)initWithBackgroundColorDescription:(id)a3
+- (CNMemojiMetadata)initWithBackgroundColorDescription:(id)description
 {
   v3 = *(MEMORY[0x1E695EFD0] + 16);
   v5[0] = *MEMORY[0x1E695EFD0];
   v5[1] = v3;
   v5[2] = *(MEMORY[0x1E695EFD0] + 32);
-  return [(CNMemojiMetadata *)self initWithAvatarRecord:0 poseName:0 pose:0 backgroundColorDescription:a3 cropTransform:v5];
+  return [(CNMemojiMetadata *)self initWithAvatarRecord:0 poseName:0 pose:0 backgroundColorDescription:description cropTransform:v5];
 }
 
 - (AVTStickerConfiguration)poseConfiguration
 {
-  v3 = [(CNMemojiMetadata *)self avatarRecord];
-  v4 = [(CNMemojiMetadata *)self poseName];
-  v5 = [(CNMemojiMetadata *)self pose];
-  v6 = [CNMemojiMetadataUtilities stickerConfigurationForAvatarRecord:v3 stickerName:v4 pose:v5];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
+  poseName = [(CNMemojiMetadata *)self poseName];
+  pose = [(CNMemojiMetadata *)self pose];
+  v6 = [CNMemojiMetadataUtilities stickerConfigurationForAvatarRecord:avatarRecord stickerName:poseName pose:pose];
 
   [v6 loadIfNeeded];
 
@@ -155,13 +155,13 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
 
 - (AVTAvatar)avatar
 {
-  v3 = [(CNMemojiMetadata *)self avatarRecord];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
 
-  if (v3)
+  if (avatarRecord)
   {
     AVTAvatarRecordRenderingClass = getAVTAvatarRecordRenderingClass();
-    v5 = [(CNMemojiMetadata *)self avatarRecord];
-    v6 = [(objc_class *)AVTAvatarRecordRenderingClass avatarForRecord:v5];
+    avatarRecord2 = [(CNMemojiMetadata *)self avatarRecord];
+    v6 = [(objc_class *)AVTAvatarRecordRenderingClass avatarForRecord:avatarRecord2];
   }
 
   else
@@ -174,13 +174,13 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
 
 - (AVTAvatarDescriptor)avatarDescriptor
 {
-  v3 = [(CNMemojiMetadata *)self avatarRecord];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
 
-  if (v3)
+  if (avatarRecord)
   {
     AVTAvatarRecordRenderingClass = getAVTAvatarRecordRenderingClass();
-    v5 = [(CNMemojiMetadata *)self avatarRecord];
-    v6 = [(objc_class *)AVTAvatarRecordRenderingClass avatarDescriptorForRecord:v5];
+    avatarRecord2 = [(CNMemojiMetadata *)self avatarRecord];
+    v6 = [(objc_class *)AVTAvatarRecordRenderingClass avatarDescriptorForRecord:avatarRecord2];
   }
 
   else
@@ -193,53 +193,53 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
 
 - (NSString)avatarRecordIdentifier
 {
-  v2 = [(CNMemojiMetadata *)self avatarRecord];
-  v3 = [v2 identifier];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
+  identifier = [avatarRecord identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSData)avatarRecordData
 {
   AVTAvatarRecordSerializerClass = getAVTAvatarRecordSerializerClass();
-  v4 = [(CNMemojiMetadata *)self avatarRecord];
-  v5 = [(objc_class *)AVTAvatarRecordSerializerClass dataFromAvatarRecord:v4];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
+  v5 = [(objc_class *)AVTAvatarRecordSerializerClass dataFromAvatarRecord:avatarRecord];
 
   return v5;
 }
 
 - (BOOL)avatarRecordIsEditable
 {
-  v2 = [(CNMemojiMetadata *)self avatarRecord];
-  v3 = [v2 isEditable];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
+  isEditable = [avatarRecord isEditable];
 
-  return v3;
+  return isEditable;
 }
 
 - (NSData)poseConfigurationData
 {
-  v2 = [(CNMemojiMetadata *)self poseConfiguration];
-  v3 = [CNMemojiMetadataUtilities dataForPoseConfiguration:v2];
+  poseConfiguration = [(CNMemojiMetadata *)self poseConfiguration];
+  v3 = [CNMemojiMetadataUtilities dataForPoseConfiguration:poseConfiguration];
 
   return v3;
 }
 
 - (BOOL)poseHasBody
 {
-  v3 = [(CNMemojiMetadata *)self poseConfiguration];
-  [v3 loadIfNeeded];
+  poseConfiguration = [(CNMemojiMetadata *)self poseConfiguration];
+  [poseConfiguration loadIfNeeded];
 
-  v4 = [(CNMemojiMetadata *)self poseConfiguration];
-  v5 = [v4 bodyPose];
-  LOBYTE(v3) = v5 != 0;
+  poseConfiguration2 = [(CNMemojiMetadata *)self poseConfiguration];
+  bodyPose = [poseConfiguration2 bodyPose];
+  LOBYTE(poseConfiguration) = bodyPose != 0;
 
-  return v3;
+  return poseConfiguration;
 }
 
-- (CNMemojiMetadata)initWithCoder:(id)a3
+- (CNMemojiMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"version"];
   if (v5 >= 3)
   {
     v44 = v5;
@@ -249,23 +249,23 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
       [(CNMemojiMetadata *)v44 initWithCoder:v45];
     }
 
-    v46 = 0;
+    selfCopy2 = 0;
   }
 
   else
   {
-    v53 = self;
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorDescription"];
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecordData"];
+    selfCopy = self;
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorDescription"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecordData"];
     v50 = [(objc_class *)getAVTAvatarRecordSerializerClass() avatarRecordFromData:v51];
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poseName"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poseName"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"poseRepresentation"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"poseRepresentation"];
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
@@ -273,7 +273,7 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [v13 setWithObjects:{v14, v15, v16, v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"posePhysicsStatesRepresentation"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"posePhysicsStatesRepresentation"];
 
     v60 = 0;
     v61 = &v60;
@@ -295,7 +295,7 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
     _Block_object_dispose(&v60, 8);
     v22 = [[v20 alloc] initWithPoseRepresentation:v12 physicsStatesRepresentation:v19];
     v23 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v24 = [v4 decodeArrayOfObjectsOfClasses:v23 forKey:@"cropTransformValues"];
+    v24 = [coderCopy decodeArrayOfObjectsOfClasses:v23 forKey:@"cropTransformValues"];
 
     if (v24)
     {
@@ -341,33 +341,33 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
     v57 = v37;
     v58 = v40;
     v59 = v43;
-    self = [(CNMemojiMetadata *)v53 initWithAvatarRecord:v50 poseName:v49 pose:v22 backgroundColorDescription:v52 cropTransform:&v54];
+    self = [(CNMemojiMetadata *)selfCopy initWithAvatarRecord:v50 poseName:v49 pose:v22 backgroundColorDescription:v52 cropTransform:&v54];
 
-    v46 = self;
+    selfCopy2 = self;
   }
 
-  return v46;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeInt:2 forKey:@"version"];
-  [v4 encodeObject:self->_backgroundColorDescription forKey:@"backgroundColorDescription"];
+  coderCopy = coder;
+  [coderCopy encodeInt:2 forKey:@"version"];
+  [coderCopy encodeObject:self->_backgroundColorDescription forKey:@"backgroundColorDescription"];
   if (self->_avatarRecord)
   {
     v5 = [(objc_class *)getAVTAvatarRecordSerializerClass() dataFromAvatarRecord:self->_avatarRecord];
-    [v4 encodeObject:v5 forKey:@"avatarRecordData"];
+    [coderCopy encodeObject:v5 forKey:@"avatarRecordData"];
   }
 
-  [v4 encodeObject:self->_poseName forKey:@"poseName"];
-  v6 = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
-  v7 = [v6 dictionaryRepresentation];
-  [v4 encodeObject:v7 forKey:@"poseRepresentation"];
+  [coderCopy encodeObject:self->_poseName forKey:@"poseName"];
+  pose = [(AVTAvatarPhysicalizedPose *)self->_pose pose];
+  dictionaryRepresentation = [pose dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"poseRepresentation"];
 
   v8 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:self->_pose];
-  [v4 encodeObject:v8 forKey:@"posePhysicsStatesRepresentation"];
+  [coderCopy encodeObject:v8 forKey:@"posePhysicsStatesRepresentation"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_cropTransform.a];
   v16[0] = v9;
@@ -383,26 +383,26 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
   v16[5] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:6];
 
-  [v4 encodeObject:v15 forKey:@"cropTransformValues"];
+  [coderCopy encodeObject:v15 forKey:@"cropTransformValues"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNMemojiMetadata alloc];
-  v5 = [(CNMemojiMetadata *)self avatarRecord];
-  v6 = [(CNMemojiMetadata *)self poseName];
-  v7 = [(CNMemojiMetadata *)self pose];
-  v8 = [(CNMemojiMetadata *)self backgroundColorDescription];
+  avatarRecord = [(CNMemojiMetadata *)self avatarRecord];
+  poseName = [(CNMemojiMetadata *)self poseName];
+  pose = [(CNMemojiMetadata *)self pose];
+  backgroundColorDescription = [(CNMemojiMetadata *)self backgroundColorDescription];
   [(CNMemojiMetadata *)self cropTransform];
-  v9 = [(CNMemojiMetadata *)v4 initWithAvatarRecord:v5 poseName:v6 pose:v7 backgroundColorDescription:v8 cropTransform:&v11];
+  v9 = [(CNMemojiMetadata *)v4 initWithAvatarRecord:avatarRecord poseName:poseName pose:pose backgroundColorDescription:backgroundColorDescription cropTransform:&v11];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v22 = 1;
   }
@@ -410,12 +410,12 @@ uint64_t __23__CNMemojiMetadata_log__block_invoke()
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNMemojiMetadata backgroundColorDescription](self, "backgroundColorDescription"), v6 = -[CNMemojiMetadata backgroundColorDescription](v4, "backgroundColorDescription"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNMemojiMetadata avatarRecord](self, "avatarRecord"), v8 = -[CNMemojiMetadata avatarRecord](v4, "avatarRecord"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNMemojiMetadata poseName](self, "poseName"), v10 = -[CNMemojiMetadata poseName](v4, "poseName"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && (-[CNMemojiMetadata pose](self, "pose"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "pose"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "dictionaryRepresentation"), v13 = objc_claimAutoreleasedReturnValue(), -[CNMemojiMetadata pose](v4, "pose"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "pose"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "dictionaryRepresentation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v13, "isEqualToDictionary:", v16), v16, v15, v14, v13, v12, v11, v17))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNMemojiMetadata backgroundColorDescription](self, "backgroundColorDescription"), v6 = -[CNMemojiMetadata backgroundColorDescription](equalCopy, "backgroundColorDescription"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNMemojiMetadata avatarRecord](self, "avatarRecord"), v8 = -[CNMemojiMetadata avatarRecord](equalCopy, "avatarRecord"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNMemojiMetadata poseName](self, "poseName"), v10 = -[CNMemojiMetadata poseName](equalCopy, "poseName"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && (-[CNMemojiMetadata pose](self, "pose"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "pose"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "dictionaryRepresentation"), v13 = objc_claimAutoreleasedReturnValue(), -[CNMemojiMetadata pose](equalCopy, "pose"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "pose"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "dictionaryRepresentation"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v13, "isEqualToDictionary:", v16), v16, v15, v14, v13, v12, v11, v17))
     {
-      v18 = [(CNMemojiMetadata *)self pose];
-      v19 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:v18];
-      v20 = [(CNMemojiMetadata *)v4 pose];
-      v21 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:v20];
+      pose = [(CNMemojiMetadata *)self pose];
+      v19 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:pose];
+      pose2 = [(CNMemojiMetadata *)equalCopy pose];
+      v21 = [CNMemojiMetadataUtilities physicsStatesDictionaryRepresentationForPose:pose2];
       v22 = [v19 isEqualToDictionary:v21];
     }
 

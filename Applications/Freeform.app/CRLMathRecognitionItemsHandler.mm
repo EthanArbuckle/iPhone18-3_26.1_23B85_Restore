@@ -1,5 +1,5 @@
 @interface CRLMathRecognitionItemsHandler
-- (CGAffineTransform)mathViewControllerDrawingTransform:(SEL)a3;
+- (CGAffineTransform)mathViewControllerDrawingTransform:(SEL)transform;
 - (CRLFreehandDrawingLayout)layout;
 - (CRLFreehandDrawingRep)rep;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
@@ -7,19 +7,19 @@
 - (NSString)crlaxRecognizedMathDescription;
 - (_TtC8Freeform28CRLMathCalculationController)mathCalculationController;
 - (_TtC8Freeform30CRLMathRecognitionItemsHandler)init;
-- (id)mathViewController:(id)a3 coordinateSpaceForDrawing:(id)a4;
-- (id)mathViewController:(id)a3 createTypesetImageForExpression:(id)a4 latex:(BOOL)a5 fontSize:(double)a6;
-- (id)mathViewController:(id)a3 createTypesetImageForItemUUID:(id)a4 showResult:(BOOL)a5 fontSize:(double)a6;
-- (id)mathViewController:(id)a3 createTypesetViewControllerForExpression:(id)a4 latex:(BOOL)a5 fontSize:(double)a6;
-- (id)mathViewController:(id)a3 resultForLocale:(id)a4 itemUUID:(id)a5;
-- (id)mathViewControllerDrawing:(id)a3;
-- (id)mathViewControllerTiledView:(id)a3;
-- (void)mathViewController:(id)a3 didUpdateExpressions:(id)a4 newExpressions:(id)a5 removedExpressions:(id)a6 mathItems:(id)a7;
-- (void)mathViewController:(id)a3 setShouldSolve:(BOOL)a4 item:(id)a5 heroStroke:(id)a6 flag:(unint64_t)a7 undoable:(BOOL)a8;
-- (void)mathViewControllerDidDismissPopoverUI:(id)a3;
-- (void)mathViewControllerUpdateFrameForContainer:(id)a3;
-- (void)setComputedResultVisibilityStates:(id)a3;
-- (void)setMathViewController:(id)a3;
+- (id)mathViewController:(id)controller coordinateSpaceForDrawing:(id)drawing;
+- (id)mathViewController:(id)controller createTypesetImageForExpression:(id)expression latex:(BOOL)latex fontSize:(double)size;
+- (id)mathViewController:(id)controller createTypesetImageForItemUUID:(id)d showResult:(BOOL)result fontSize:(double)size;
+- (id)mathViewController:(id)controller createTypesetViewControllerForExpression:(id)expression latex:(BOOL)latex fontSize:(double)size;
+- (id)mathViewController:(id)controller resultForLocale:(id)locale itemUUID:(id)d;
+- (id)mathViewControllerDrawing:(id)drawing;
+- (id)mathViewControllerTiledView:(id)view;
+- (void)mathViewController:(id)controller didUpdateExpressions:(id)expressions newExpressions:(id)newExpressions removedExpressions:(id)removedExpressions mathItems:(id)items;
+- (void)mathViewController:(id)controller setShouldSolve:(BOOL)solve item:(id)item heroStroke:(id)stroke flag:(unint64_t)flag undoable:(BOOL)undoable;
+- (void)mathViewControllerDidDismissPopoverUI:(id)i;
+- (void)mathViewControllerUpdateFrameForContainer:(id)container;
+- (void)setComputedResultVisibilityStates:(id)states;
+- (void)setMathViewController:(id)controller;
 - (void)updateCalculateDocumentProvider;
 - (void)updateMathSolvingStyle;
 - (void)willBeRemoved;
@@ -34,11 +34,11 @@
   return Strong;
 }
 
-- (void)setMathViewController:(id)a3
+- (void)setMathViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform30CRLMathRecognitionItemsHandler_mathViewController);
-  *(self + OBJC_IVAR____TtC8Freeform30CRLMathRecognitionItemsHandler_mathViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform30CRLMathRecognitionItemsHandler_mathViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (NSDictionary)computedResultVisibilityStates
@@ -52,7 +52,7 @@
   return v2.super.isa;
 }
 
-- (void)setComputedResultVisibilityStates:(id)a3
+- (void)setComputedResultVisibilityStates:(id)states
 {
   type metadata accessor for UUID();
   sub_10099D754(&qword_1019FB870, &type metadata accessor for UUID);
@@ -64,7 +64,7 @@
 
 - (CRLInteractiveCanvasController)interactiveCanvasController
 {
-  v2 = self;
+  selfCopy = self;
   sub_100995DA0();
   v4 = v3;
 
@@ -73,25 +73,25 @@
 
 - (_TtC8Freeform28CRLMathCalculationController)mathCalculationController
 {
-  v2 = self;
+  selfCopy = self;
   sub_100995DA0();
   if (v3)
   {
     v4 = v3;
-    v5 = [v3 mathCalculationController];
+    mathCalculationController = [v3 mathCalculationController];
   }
 
   else
   {
-    v5 = 0;
+    mathCalculationController = 0;
   }
 
-  return v5;
+  return mathCalculationController;
 }
 
 - (CRLFreehandDrawingRep)rep
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10099628C();
 
   return v3;
@@ -99,23 +99,23 @@
 
 - (void)updateMathSolvingStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_100996A04();
 }
 
 - (void)willBeRemoved
 {
-  v2 = self;
+  selfCopy = self;
   sub_100999870();
 }
 
-- (id)mathViewControllerDrawing:(id)a3
+- (id)mathViewControllerDrawing:(id)drawing
 {
   v5 = sub_1005B981C(&qword_101A01C10);
   __chkstk_darwin(v5 - 8);
   v7 = &v16 - v6;
-  v8 = a3;
-  v9 = self;
+  drawingCopy = drawing;
+  selfCopy = self;
   sub_10099A39C(v7);
 
   v10 = type metadata accessor for PKDrawing();
@@ -132,32 +132,32 @@
   return v13;
 }
 
-- (id)mathViewControllerTiledView:(id)a3
+- (id)mathViewControllerTiledView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   sub_100995DA0();
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 freehandDrawingToolkit];
+    freehandDrawingToolkit = [v4 freehandDrawingToolkit];
 
-    if (v6)
+    if (freehandDrawingToolkit)
     {
-      v7 = [v6 pkCanvasView];
+      pkCanvasView = [freehandDrawingToolkit pkCanvasView];
 
-      v6 = [v7 _tiledView];
+      freehandDrawingToolkit = [pkCanvasView _tiledView];
     }
   }
 
   else
   {
-    v6 = 0;
+    freehandDrawingToolkit = 0;
   }
 
-  return v6;
+  return freehandDrawingToolkit;
 }
 
-- (CGAffineTransform)mathViewControllerDrawingTransform:(SEL)a3
+- (CGAffineTransform)mathViewControllerDrawingTransform:(SEL)transform
 {
   retstr->a = 1.0;
   retstr->b = 0.0;
@@ -168,15 +168,15 @@
   return self;
 }
 
-- (id)mathViewController:(id)a3 coordinateSpaceForDrawing:(id)a4
+- (id)mathViewController:(id)controller coordinateSpaceForDrawing:(id)drawing
 {
   v7 = type metadata accessor for PKDrawing();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  controllerCopy = controller;
+  drawingCopy = drawing;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   v14 = sub_10099DA68();
@@ -185,42 +185,42 @@
   return v14;
 }
 
-- (id)mathViewController:(id)a3 createTypesetViewControllerForExpression:(id)a4 latex:(BOOL)a5 fontSize:(double)a6
+- (id)mathViewController:(id)controller createTypesetViewControllerForExpression:(id)expression latex:(BOOL)latex fontSize:(double)size
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  v14 = sub_10099E1AC(v9, v11, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  v14 = sub_10099E1AC(v9, v11, latex);
 
   return v14;
 }
 
-- (void)mathViewController:(id)a3 setShouldSolve:(BOOL)a4 item:(id)a5 heroStroke:(id)a6 flag:(unint64_t)a7 undoable:(BOOL)a8
+- (void)mathViewController:(id)controller setShouldSolve:(BOOL)solve item:(id)item heroStroke:(id)stroke flag:(unint64_t)flag undoable:(BOOL)undoable
 {
-  v8 = a8;
+  undoableCopy = undoable;
   v14 = type metadata accessor for PKStroke();
   v15 = *(v14 - 8);
   __chkstk_darwin(v14);
   v17 = &v22 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = self;
+  controllerCopy = controller;
+  itemCopy = item;
+  strokeCopy = stroke;
+  selfCopy = self;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
-  sub_10099E44C(a4, v19, v17, v8);
+  sub_10099E44C(solve, itemCopy, v17, undoableCopy);
   (*(v15 + 8))(v17, v14);
 }
 
-- (void)mathViewControllerDidDismissPopoverUI:(id)a3
+- (void)mathViewControllerDidDismissPopoverUI:(id)i
 {
-  v4 = a3;
-  v5 = self;
+  iCopy = i;
+  selfCopy = self;
   sub_10099E640();
 }
 
-- (id)mathViewController:(id)a3 resultForLocale:(id)a4 itemUUID:(id)a5
+- (id)mathViewController:(id)controller resultForLocale:(id)locale itemUUID:(id)d
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -232,7 +232,7 @@
   v13 = &v23 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Locale._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = self;
+  selfCopy = self;
   sub_100995DA0();
   if (v15 && (v16 = v15, v17 = [v15 mathCalculationController], v16, v17))
   {
@@ -263,15 +263,15 @@ LABEL_7:
   return v21;
 }
 
-- (id)mathViewController:(id)a3 createTypesetImageForItemUUID:(id)a4 showResult:(BOOL)a5 fontSize:(double)a6
+- (id)mathViewController:(id)controller createTypesetImageForItemUUID:(id)d showResult:(BOOL)result fontSize:(double)size
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_10099E764(v11);
   v15 = v14;
 
@@ -280,18 +280,18 @@ LABEL_7:
   return v15;
 }
 
-- (id)mathViewController:(id)a3 createTypesetImageForExpression:(id)a4 latex:(BOOL)a5 fontSize:(double)a6
+- (id)mathViewController:(id)controller createTypesetImageForExpression:(id)expression latex:(BOOL)latex fontSize:(double)size
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  v14 = sub_10099E870(v9, v11, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  v14 = sub_10099E870(v9, v11, latex);
 
   return v14;
 }
 
-- (void)mathViewController:(id)a3 didUpdateExpressions:(id)a4 newExpressions:(id)a5 removedExpressions:(id)a6 mathItems:(id)a7
+- (void)mathViewController:(id)controller didUpdateExpressions:(id)expressions newExpressions:(id)newExpressions removedExpressions:(id)removedExpressions mathItems:(id)items
 {
   type metadata accessor for UUID();
   sub_10099D754(&qword_1019FB870, &type metadata accessor for UUID);
@@ -300,27 +300,27 @@ LABEL_7:
   v11 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100006370(0, &qword_101A0A358);
   v12 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_10099EB6C(v9, v10, v11, v12);
 }
 
-- (void)mathViewControllerUpdateFrameForContainer:(id)a3
+- (void)mathViewControllerUpdateFrameForContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
+  containerCopy = container;
+  selfCopy = self;
   sub_1009A0CF8();
 }
 
 - (void)updateCalculateDocumentProvider
 {
-  v2 = self;
+  selfCopy = self;
   sub_10099AFD4();
 }
 
 - (NSString)crlaxRecognizedMathDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_10099C744();
   v4 = v3;
 

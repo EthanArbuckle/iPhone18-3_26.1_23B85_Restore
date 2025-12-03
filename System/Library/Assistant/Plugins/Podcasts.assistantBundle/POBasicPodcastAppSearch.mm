@@ -1,20 +1,20 @@
 @interface POBasicPodcastAppSearch
-- (id)modelObjectsAsSAMPCollections:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (id)modelObjectsAsSAMPCollections:(id)collections;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation POBasicPodcastAppSearch
 
-- (id)modelObjectsAsSAMPCollections:(id)a3
+- (id)modelObjectsAsSAMPCollections:(id)collections
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  collectionsCopy = collections;
   v8 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5, v6, v7);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v3;
+  v9 = collectionsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v25, v29, 16);
   if (v11)
   {
@@ -44,10 +44,10 @@
   return v8;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   POLogInitIfNeeded();
   v5 = MEMORY[0x277D86220];
   if (POLogContextCommand)
@@ -129,7 +129,7 @@
   }
 
   v70 = objc_msgSend_dictionary(v13, v44, v45, v46, v47);
-  v4[2](v4, v70);
+  completionCopy[2](completionCopy, v70);
 
   v71 = *MEMORY[0x277D85DE8];
 }

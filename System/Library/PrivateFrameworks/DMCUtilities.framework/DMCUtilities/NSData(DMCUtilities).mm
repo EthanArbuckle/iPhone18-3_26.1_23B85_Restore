@@ -12,15 +12,15 @@
 - (id)DMCHexString
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = v10 - ((2 * v2 + 16) & 0xFFFFFFFFFFFFFFF0);
   if (v2)
   {
     v5 = v10 - ((2 * v2 + 16) & 0xFFFFFFFFFFFFFFF0);
     do
     {
-      v6 = *v3++;
+      v6 = *bytes++;
       *v5 = DMCHexString_digits[v6 >> 4];
       v4 = v5 + 2;
       v5[1] = DMCHexString_digits[v6 & 0xF];
@@ -41,7 +41,7 @@
 - (id)DMCSHA256Hash
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -53,32 +53,32 @@
   v45 = *MEMORY[0x1E69E9840];
   v8 = a3;
   v42 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8 isDirectory:&v42];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8 isDirectory:&v42];
   v11 = v42;
 
   if (!v10 || (v11 & 1) == 0)
   {
     v38 = a5;
     v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
-    v15 = [v14 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
-    v19 = [v18 substringToIndex:8];
-    v20 = [v14 lastPathComponent];
-    v21 = [v16 stringWithFormat:@".temp-%@-%@", v19, v20];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v19 = [uUIDString substringToIndex:8];
+    lastPathComponent = [v14 lastPathComponent];
+    v21 = [v16 stringWithFormat:@".temp-%@-%@", v19, lastPathComponent];
 
-    v22 = v15;
-    v23 = [v15 URLByAppendingPathComponent:v21];
+    v22 = uRLByDeletingLastPathComponent;
+    v23 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v21];
     v41 = 0;
-    LOBYTE(v20) = [a1 writeToURL:v23 options:a4 error:&v41];
+    LOBYTE(lastPathComponent) = [self writeToURL:v23 options:a4 error:&v41];
     v24 = v41;
-    if (v20)
+    if (lastPathComponent)
     {
-      v25 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v40 = v24;
-      v26 = [v25 replaceItemAtURL:v14 withItemAtURL:v23 backupItemName:0 options:1 resultingItemURL:0 error:&v40];
+      v26 = [defaultManager2 replaceItemAtURL:v14 withItemAtURL:v23 backupItemName:0 options:1 resultingItemURL:0 error:&v40];
       v27 = v40;
 
       v28 = *DMCLogObjects();
@@ -110,9 +110,9 @@
         *v38 = v27;
       }
 
-      v33 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
       v39 = v27;
-      v34 = [v33 removeItemAtURL:v23 error:&v39];
+      v34 = [defaultManager3 removeItemAtURL:v23 error:&v39];
       v24 = v39;
 
       if ((v34 & 1) == 0)
@@ -180,8 +180,8 @@ LABEL_26:
 
 - (uint64_t)DMCAtomicWriteToURL:()DMCUtilities writeOptions:error:
 {
-  v8 = [a3 path];
-  v9 = [a1 DMCAtomicWriteToPath:v8 writeOptions:a4 error:a5];
+  path = [a3 path];
+  v9 = [self DMCAtomicWriteToPath:path writeOptions:a4 error:a5];
 
   return v9;
 }

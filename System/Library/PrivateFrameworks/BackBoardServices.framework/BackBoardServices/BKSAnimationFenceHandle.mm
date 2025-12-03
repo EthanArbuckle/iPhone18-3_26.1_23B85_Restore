@@ -1,16 +1,16 @@
 @interface BKSAnimationFenceHandle
-+ (id)newFenceHandleForCAFenceHandle:(id)a3;
-+ (id)newFenceHandleForContext:(id)a3;
++ (id)newFenceHandleForCAFenceHandle:(id)handle;
++ (id)newFenceHandleForContext:(id)context;
 - (BKSAnimationFenceHandle)init;
-- (BKSAnimationFenceHandle)initWithBSXPCCoder:(id)a3;
-- (BKSAnimationFenceHandle)initWithCoder:(id)a3;
-- (BKSAnimationFenceHandle)initWithXPCDictionary:(id)a3;
-- (id)_initWithCAFenceHandle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BKSAnimationFenceHandle)initWithBSXPCCoder:(id)coder;
+- (BKSAnimationFenceHandle)initWithCoder:(id)coder;
+- (BKSAnimationFenceHandle)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithCAFenceHandle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)CAPort;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BKSAnimationFenceHandle
@@ -23,67 +23,67 @@
   [(BKSAnimationFenceHandle *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [BKSAnimationFenceHandle alloc];
-  v6 = [(CAFenceHandle *)self->_caFence copyWithZone:a3];
+  v6 = [(CAFenceHandle *)self->_caFence copyWithZone:zone];
   v7 = [(BKSAnimationFenceHandle *)v5 _initWithCAFenceHandle:v6];
 
   return v7;
 }
 
-- (BKSAnimationFenceHandle)initWithCoder:(id)a3
+- (BKSAnimationFenceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   getCAFenceHandleClass();
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"f"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"f"];
 
   v6 = [(BKSAnimationFenceHandle *)self _initWithCAFenceHandle:v5];
   return v6;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CAFenceHandle *)self->_caFence createXPCRepresentation];
-  if (v4)
+  coderCopy = coder;
+  createXPCRepresentation = [(CAFenceHandle *)self->_caFence createXPCRepresentation];
+  if (createXPCRepresentation)
   {
-    [v5 encodeXPCObject:v4 forKey:@"f"];
+    [coderCopy encodeXPCObject:createXPCRepresentation forKey:@"f"];
   }
 }
 
-- (BKSAnimationFenceHandle)initWithBSXPCCoder:(id)a3
+- (BKSAnimationFenceHandle)initWithBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"f"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"f"];
   v5 = [getCAFenceHandleClass() handleFromXPCRepresentation:v4];
   v6 = [(BKSAnimationFenceHandle *)self _initWithCAFenceHandle:v5];
 
   return v6;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    xdict = v4;
-    v5 = [(CAFenceHandle *)self->_caFence createXPCRepresentation];
-    if (v5)
+    xdict = dictionaryCopy;
+    createXPCRepresentation = [(CAFenceHandle *)self->_caFence createXPCRepresentation];
+    if (createXPCRepresentation)
     {
-      xpc_dictionary_set_value(xdict, "f", v5);
+      xpc_dictionary_set_value(xdict, "f", createXPCRepresentation);
     }
 
-    v4 = xdict;
+    dictionaryCopy = xdict;
   }
 }
 
-- (BKSAnimationFenceHandle)initWithXPCDictionary:(id)a3
+- (BKSAnimationFenceHandle)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   CAFenceHandleClass = getCAFenceHandleClass();
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = xpc_dictionary_get_value(v4, "f");
+    v6 = xpc_dictionary_get_value(dictionaryCopy, "f");
   }
 
   else
@@ -94,7 +94,7 @@
   v7 = [CAFenceHandleClass handleFromXPCRepresentation:v6];
   v8 = [(BKSAnimationFenceHandle *)self _initWithCAFenceHandle:v7];
 
-  if (v4)
+  if (dictionaryCopy)
   {
   }
 
@@ -129,16 +129,16 @@ uint64_t __33__BKSAnimationFenceHandle_CAPort__block_invoke(uint64_t result, int
   return result;
 }
 
-- (id)_initWithCAFenceHandle:(id)a3
+- (id)_initWithCAFenceHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = BKSAnimationFenceHandle;
   v6 = [(BKSAnimationFenceHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_caFence, a3);
+    objc_storeStrong(&v6->_caFence, handle);
   }
 
   return v7;
@@ -146,32 +146,32 @@ uint64_t __33__BKSAnimationFenceHandle_CAPort__block_invoke(uint64_t result, int
 
 - (BKSAnimationFenceHandle)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BKSAnimationFence.m" lineNumber:27 description:{@"you can't instantiate %@ directly", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BKSAnimationFence.m" lineNumber:27 description:{@"you can't instantiate %@ directly", objc_opt_class()}];
 
   return 0;
 }
 
-+ (id)newFenceHandleForCAFenceHandle:(id)a3
++ (id)newFenceHandleForCAFenceHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [[BKSAnimationFenceHandle alloc] _initWithCAFenceHandle:v3];
+  handleCopy = handle;
+  v4 = [[BKSAnimationFenceHandle alloc] _initWithCAFenceHandle:handleCopy];
 
   return v4;
 }
 
-+ (id)newFenceHandleForContext:(id)a3
++ (id)newFenceHandleForContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"BKSAnimationFence.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSAnimationFence.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
-  v6 = [getCAFenceHandleClass() newFenceFromDefaultServer];
-  [v5 addFence:v6];
-  v7 = [BKSAnimationFenceHandle newFenceHandleForCAFenceHandle:v6];
+  newFenceFromDefaultServer = [getCAFenceHandleClass() newFenceFromDefaultServer];
+  [contextCopy addFence:newFenceFromDefaultServer];
+  v7 = [BKSAnimationFenceHandle newFenceHandleForCAFenceHandle:newFenceFromDefaultServer];
 
   return v7;
 }

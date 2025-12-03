@@ -1,7 +1,7 @@
 @interface TapOffGestureRecognizer
 - (TapOffGestureRecognizer)init;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TapOffGestureRecognizer
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(NSMutableSet *)self->_touches unionSet:a3, a4];
+  [(NSMutableSet *)self->_touches unionSet:began, event];
 
   [(TapOffGestureRecognizer *)self setState:2];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(NSMutableSet *)self->_touches minusSet:a3, a4];
+  [(NSMutableSet *)self->_touches minusSet:ended, event];
   if (![(NSMutableSet *)self->_touches count])
   {
 

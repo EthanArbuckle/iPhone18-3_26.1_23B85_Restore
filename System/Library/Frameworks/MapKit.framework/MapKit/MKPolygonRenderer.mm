@@ -2,25 +2,25 @@
 - (BOOL)_canProvideVectorGeometry;
 - (CGFloat)strokeEnd;
 - (CGFloat)strokeStart;
-- (MKPolygonRenderer)initWithCoder:(id)a3;
+- (MKPolygonRenderer)initWithCoder:(id)coder;
 - (MKPolygonRenderer)initWithPolygon:(MKPolygon *)polygon;
 - (id)_vectorGeometry;
-- (id)vectorDataForOverlay:(id)a3;
-- (void)_decodePropertiesWithCoder:(id)a3;
+- (id)vectorDataForOverlay:(id)overlay;
+- (void)_decodePropertiesWithCoder:(id)coder;
 - (void)_performInitialConfiguration;
 - (void)_updateRenderColors;
 - (void)createPath;
-- (void)encodeWithCoder:(id)a3;
-- (void)fillPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)setAlpha:(double)a3;
-- (void)setFillColor:(id)a3;
-- (void)setLineJoin:(int)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setMiterLimit:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fillPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)setAlpha:(double)alpha;
+- (void)setFillColor:(id)color;
+- (void)setLineJoin:(int)join;
+- (void)setLineWidth:(double)width;
+- (void)setMiterLimit:(double)limit;
+- (void)setStrokeColor:(id)color;
 - (void)setStrokeEnd:(CGFloat)strokeEnd;
 - (void)setStrokeStart:(CGFloat)strokeStart;
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4;
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context;
 @end
 
 @implementation MKPolygonRenderer
@@ -29,13 +29,13 @@
 {
   if (self->_vectorData)
   {
-    v3 = [(MKOverlayRenderer *)self _mapView];
+    _mapView = [(MKOverlayRenderer *)self _mapView];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __40__MKPolygonRenderer__updateRenderColors__block_invoke;
     v5[3] = &unk_1E76CDB38;
     v5[4] = self;
-    [v3 _withEffectiveTraitCollection:v5];
+    [_mapView _withEffectiveTraitCollection:v5];
   }
 
   v4.receiver = self;
@@ -53,19 +53,19 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 208) setStrokeColor:{objc_msgSend(v4, "CGColor")}];
 }
 
-- (id)vectorDataForOverlay:(id)a3
+- (id)vectorDataForOverlay:(id)overlay
 {
   if ([(MKPolygonRenderer *)self _canProvideVectorGeometry])
   {
-    v4 = [(MKPolygonRenderer *)self _vectorGeometry];
+    _vectorGeometry = [(MKPolygonRenderer *)self _vectorGeometry];
   }
 
   else
   {
-    v4 = 0;
+    _vectorGeometry = 0;
   }
 
-  return v4;
+  return _vectorGeometry;
 }
 
 - (id)_vectorGeometry
@@ -74,10 +74,10 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
   if (!self->_vectorData && [(MKPolygonRenderer *)self _canProvideVectorGeometry])
   {
     v3 = objc_alloc(MEMORY[0x1E69DF4C8]);
-    v4 = [(MKOverlayRenderer *)self overlay];
-    v5 = [v4 points];
-    v6 = [(MKOverlayRenderer *)self overlay];
-    v7 = [v3 initWithMapPoints:v5 count:{objc_msgSend(v6, "pointCount")}];
+    overlay = [(MKOverlayRenderer *)self overlay];
+    points = [overlay points];
+    overlay2 = [(MKOverlayRenderer *)self overlay];
+    v7 = [v3 initWithMapPoints:points count:{objc_msgSend(overlay2, "pointCount")}];
 
     v8 = objc_alloc(MEMORY[0x1E69DF4D0]);
     v18[0] = v7;
@@ -88,23 +88,23 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
 
     [(MKOverlayPathRenderer *)self lineWidth];
     [(VKVectorOverlayPolygonGroup *)self->_vectorData setLineWidth:?];
-    v12 = [(MKOverlayPathRenderer *)self lineJoin];
-    if (v12 == kCGLineJoinBevel)
+    lineJoin = [(MKOverlayPathRenderer *)self lineJoin];
+    if (lineJoin == kCGLineJoinBevel)
     {
       v13 = 1;
     }
 
     else
     {
-      v13 = 2 * (v12 == kCGLineJoinMiter);
+      v13 = 2 * (lineJoin == kCGLineJoinMiter);
     }
 
     [(VKVectorOverlayPolygonGroup *)self->_vectorData setLineJoin:v13];
-    v14 = [(MKOverlayPathRenderer *)self fillColor];
-    -[VKVectorOverlayPolygonGroup setFillColor:](self->_vectorData, "setFillColor:", [v14 CGColor]);
+    fillColor = [(MKOverlayPathRenderer *)self fillColor];
+    -[VKVectorOverlayPolygonGroup setFillColor:](self->_vectorData, "setFillColor:", [fillColor CGColor]);
 
-    v15 = [(MKOverlayPathRenderer *)self strokeColor];
-    -[VKVectorOverlayPolygonGroup setStrokeColor:](self->_vectorData, "setStrokeColor:", [v15 CGColor]);
+    strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+    -[VKVectorOverlayPolygonGroup setStrokeColor:](self->_vectorData, "setStrokeColor:", [strokeColor CGColor]);
 
     [(MKOverlayRenderer *)self alpha];
     [(VKVectorOverlayPolygonGroup *)self->_vectorData setAlpha:?];
@@ -122,23 +122,23 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
   result = 0;
   if (![(MKOverlayPathRenderer *)self shouldRasterize]&& ![(MKOverlayPathRenderer *)self _externalSubclassOverridesDrawingMethods])
   {
-    v3 = [(MKOverlayPathRenderer *)self lineDashPattern];
-    v4 = [v3 count];
+    lineDashPattern = [(MKOverlayPathRenderer *)self lineDashPattern];
+    v4 = [lineDashPattern count];
 
     if (!v4)
     {
-      v5 = [(MKOverlayRenderer *)self overlay];
-      v6 = [v5 _isSimple];
+      overlay = [(MKOverlayRenderer *)self overlay];
+      _isSimple = [overlay _isSimple];
 
-      if (v6)
+      if (_isSimple)
       {
-        v7 = [(MKOverlayPathRenderer *)self strokeColor];
-        Pattern = CGColorGetPattern([v7 CGColor]);
+        strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+        Pattern = CGColorGetPattern([strokeColor CGColor]);
 
         if (!Pattern)
         {
-          v9 = [(MKOverlayPathRenderer *)self fillColor];
-          v10 = CGColorGetPattern([v9 CGColor]);
+          fillColor = [(MKOverlayPathRenderer *)self fillColor];
+          v10 = CGColorGetPattern([fillColor CGColor]);
 
           if (!v10 && self->_strokeStart <= 0.0 && self->_strokeEnd >= 1.0)
           {
@@ -152,7 +152,7 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v7.receiver = self;
   v7.super_class = MKPolygonRenderer;
@@ -164,38 +164,38 @@ void __40__MKPolygonRenderer__updateRenderColors__block_invoke(uint64_t a1)
   v6[3] = &unk_1E76CD230;
   v6[4] = self;
   v6[5] = v5;
-  *&v6[6] = a3;
+  *&v6[6] = alpha;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"alpha" withStepHandler:v6];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MKOverlayPathRenderer *)self strokeColor];
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+  v6 = strokeColor;
+  if (strokeColor)
   {
-    v7 = v5;
+    clearColor = strokeColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v8 = v7;
+  v8 = clearColor;
 
   v15.receiver = self;
   v15.super_class = MKPolygonRenderer;
-  [(MKOverlayPathRenderer *)&v15 setStrokeColor:v4];
+  [(MKOverlayPathRenderer *)&v15 setStrokeColor:colorCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __36__MKPolygonRenderer_setStrokeColor___block_invoke;
   v11[3] = &unk_1E76CCF90;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v8;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"strokeColor" withStepHandler:v11];
 }
@@ -215,34 +215,34 @@ void __36__MKPolygonRenderer_setStrokeColor___block_invoke(uint64_t a1, float a2
   [*(*(a1 + 48) + 208) setStrokeColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MKOverlayPathRenderer *)self fillColor];
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  fillColor = [(MKOverlayPathRenderer *)self fillColor];
+  v6 = fillColor;
+  if (fillColor)
   {
-    v7 = v5;
+    clearColor = fillColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v8 = v7;
+  v8 = clearColor;
 
   v15.receiver = self;
   v15.super_class = MKPolygonRenderer;
-  [(MKOverlayPathRenderer *)&v15 setFillColor:v4];
+  [(MKOverlayPathRenderer *)&v15 setFillColor:colorCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34__MKPolygonRenderer_setFillColor___block_invoke;
   v11[3] = &unk_1E76CCF90;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v8;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"fillColor" withStepHandler:v11];
 }
@@ -262,21 +262,21 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   [*(*(a1 + 48) + 208) setFillColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setMiterLimit:(double)a3
+- (void)setMiterLimit:(double)limit
 {
   v5.receiver = self;
   v5.super_class = MKPolygonRenderer;
   [(MKOverlayPathRenderer *)&v5 setMiterLimit:?];
-  [(VKVectorOverlayPolygonGroup *)self->_vectorData setMiterLimit:a3];
+  [(VKVectorOverlayPolygonGroup *)self->_vectorData setMiterLimit:limit];
 }
 
-- (void)setLineJoin:(int)a3
+- (void)setLineJoin:(int)join
 {
-  v5 = a3 == 0;
+  v5 = join == 0;
   v7.receiver = self;
   v7.super_class = MKPolygonRenderer;
   [(MKOverlayPathRenderer *)&v7 setLineJoin:?];
-  if (a3 == 2)
+  if (join == 2)
   {
     v6 = 1;
   }
@@ -289,15 +289,15 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   [(VKVectorOverlayPolygonGroup *)self->_vectorData setLineJoin:v6];
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   v7.receiver = self;
   v7.super_class = MKPolygonRenderer;
   [(MKOverlayPathRenderer *)&v7 setLineWidth:?];
   [(VKVectorOverlayPolygonGroup *)self->_vectorData lineWidth];
-  if (fabs(a3) < 0.000001 || fabs(v5) < 0.000001)
+  if (fabs(width) < 0.000001 || fabs(v5) < 0.000001)
   {
-    [(VKVectorOverlayPolygonGroup *)self->_vectorData setLineWidth:a3];
+    [(VKVectorOverlayPolygonGroup *)self->_vectorData setLineWidth:width];
   }
 
   else
@@ -308,7 +308,7 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
     v6[3] = &unk_1E76CD230;
     v6[4] = self;
     *&v6[5] = v5;
-    *&v6[6] = a3;
+    *&v6[6] = width;
     [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"lineWidth" withStepHandler:v6];
   }
 }
@@ -321,8 +321,8 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   {
     [(MKPolygonRenderer *)obj willChangeValueForKey:@"strokeEnd"];
     obj->_strokeEnd = strokeEnd;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKPolygonRenderer *)obj didChangeValueForKey:@"strokeEnd"];
   }
@@ -338,8 +338,8 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   {
     [(MKPolygonRenderer *)obj willChangeValueForKey:@"strokeStart"];
     obj->_strokeStart = strokeStart;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKPolygonRenderer *)obj didChangeValueForKey:@"strokeStart"];
   }
@@ -349,45 +349,45 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
 
 - (CGFloat)strokeEnd
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeEnd = v2->_strokeEnd;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeEnd = selfCopy->_strokeEnd;
+  objc_sync_exit(selfCopy);
 
   return strokeEnd;
 }
 
 - (CGFloat)strokeStart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeStart = v2->_strokeStart;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeStart = selfCopy->_strokeStart;
+  objc_sync_exit(selfCopy);
 
   return strokeStart;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MKOverlayRenderer *)self overlay];
-  [v4 encodeObject:v5 forKey:@"MKPolygonRendererPolygon"];
+  coderCopy = coder;
+  overlay = [(MKOverlayRenderer *)self overlay];
+  [coderCopy encodeObject:overlay forKey:@"MKPolygonRendererPolygon"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeStart];
-  [v4 encodeObject:v6 forKey:@"MKPolygonRendererStrokeStart"];
+  [coderCopy encodeObject:v6 forKey:@"MKPolygonRendererStrokeStart"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeEnd];
-  [v4 encodeObject:v7 forKey:@"MKPolygonRendererStrokeEnd"];
+  [coderCopy encodeObject:v7 forKey:@"MKPolygonRendererStrokeEnd"];
 
   v8.receiver = self;
   v8.super_class = MKPolygonRenderer;
-  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:coderCopy];
 }
 
-- (void)_decodePropertiesWithCoder:(id)a3
+- (void)_decodePropertiesWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererStrokeStart"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererStrokeStart"];
   v6 = v5;
   if (v5)
   {
@@ -395,7 +395,7 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
     self->_strokeStart = v7;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererStrokeEnd"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererStrokeEnd"];
   v9 = v8;
   if (v8)
   {
@@ -405,18 +405,18 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
 
   v11.receiver = self;
   v11.super_class = MKPolygonRenderer;
-  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:coderCopy];
 }
 
-- (MKPolygonRenderer)initWithCoder:(id)a3
+- (MKPolygonRenderer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererPolygon"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKPolygonRendererPolygon"];
   v6 = [(MKPolygonRenderer *)self initWithPolygon:v5];
   v7 = v6;
   if (v6)
   {
-    [(MKPolygonRenderer *)v6 _decodePropertiesWithCoder:v4];
+    [(MKPolygonRenderer *)v6 _decodePropertiesWithCoder:coderCopy];
   }
 
   return v7;
@@ -431,12 +431,12 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   self->_strokeEnd = 1.0;
 }
 
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [(MKOverlayPathRenderer *)self strokeColor];
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
 
-  if (a3 && v5)
+  if (path && strokeColor)
   {
     [(MKPolygonRenderer *)self strokeStart];
     v7 = v6;
@@ -450,26 +450,26 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
       LineJoin = CGContextGetLineJoin();
       CGContextGetMiterLimit();
       v15 = v14;
-      v16 = [(MKOverlayRenderer *)self overlay];
+      overlay = [(MKOverlayRenderer *)self overlay];
       [(MKOverlayRenderer *)self _originMapPoint];
-      StrokeClipPathForPolygon = _MKPolygonRendererCreateStrokeClipPathForPolygon(v16, v17, v18, v7, v9);
+      StrokeClipPathForPolygon = _MKPolygonRendererCreateStrokeClipPathForPolygon(overlay, v17, v18, v7, v9);
 
       if (StrokeClipPathForPolygon)
       {
         CopyByStrokingPath = CGPathCreateCopyByStrokingPath(StrokeClipPathForPolygon, 0, v11, kCGLineCapButt, LineJoin, v15);
-        CGContextAddPath(a4, CopyByStrokingPath);
+        CGContextAddPath(context, CopyByStrokingPath);
         CGPathRelease(StrokeClipPathForPolygon);
         CGPathRelease(CopyByStrokingPath);
       }
 
-      v21 = [(MKOverlayRenderer *)self overlay];
-      v22 = [v21 interiorPolygons];
+      overlay2 = [(MKOverlayRenderer *)self overlay];
+      interiorPolygons = [overlay2 interiorPolygons];
 
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v23 = v22;
+      v23 = interiorPolygons;
       v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v24)
       {
@@ -505,7 +505,7 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
             if (v31)
             {
               v33 = _MKCGPathCreateCopyByStrokingPath(v31, v26, LineCap, LineJoin, v11, v15);
-              CGContextAddPath(a4, v33);
+              CGContextAddPath(context, v33);
               CGPathRelease(v32);
               CGPathRelease(v33);
             }
@@ -517,25 +517,25 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
         while (v24);
       }
 
-      CGContextClip(a4);
+      CGContextClip(context);
     }
 
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
-    CGContextStrokePath(a4);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
+    CGContextStrokePath(context);
   }
 }
 
-- (void)fillPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)fillPath:(CGPath *)path inContext:(CGContext *)context
 {
-  v6 = [(MKOverlayPathRenderer *)self fillColor];
+  fillColor = [(MKOverlayPathRenderer *)self fillColor];
 
-  if (a3 && v6)
+  if (path && fillColor)
   {
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
 
-    CGContextDrawPath(a4, kCGPathEOFill);
+    CGContextDrawPath(context, kCGPathEOFill);
   }
 }
 
@@ -545,17 +545,17 @@ void __34__MKPolygonRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   [(MKOverlayRenderer *)self _originMapPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(MKOverlayRenderer *)self overlay];
-  PathForPolygon = CreatePathForPolygon(v7, v4, v6);
+  overlay = [(MKOverlayRenderer *)self overlay];
+  PathForPolygon = CreatePathForPolygon(overlay, v4, v6);
 
-  v9 = [(MKOverlayRenderer *)self overlay];
-  v10 = [v9 interiorPolygons];
+  overlay2 = [(MKOverlayRenderer *)self overlay];
+  interiorPolygons = [overlay2 interiorPolygons];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v10;
+  v11 = interiorPolygons;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {

@@ -1,30 +1,30 @@
 @interface AttributionViewWrapperView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithCoder:(id)a3;
-- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithFrame:(CGRect)a3;
-- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithCoder:(id)a3;
-- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithCoder:(id)coder;
+- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithFrame:(CGRect)frame;
+- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithCoder:(id)coder;
+- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateStyle;
 @end
 
 @implementation AttributionViewWrapperView
 
-- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithCoder:(id)a3
+- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithCoder:(id)coder
 {
   result = sub_1D7D3160C();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView_attributionView);
   swift_getObjectType();
-  v7 = self;
+  selfCopy = self;
   sub_1D7D2F76C();
   [*v6 bounds];
   v9 = v8;
@@ -47,11 +47,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BB6C20();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5 = sub_1D7D2FBCC();
   v6 = *(v5 - 8);
@@ -60,11 +60,11 @@
   v10 = type metadata accessor for AttributionViewWrapperView();
   v14.receiver = self;
   v14.super_class = v10;
-  v11 = a3;
-  v12 = self;
-  [(AttributionViewWrapperView *)&v14 traitCollectionDidChange:v11];
-  v13 = [(AttributionViewWrapperView *)v12 traitCollection];
-  sub_1D7B12670(v13, v9);
+  changeCopy = change;
+  selfCopy = self;
+  [(AttributionViewWrapperView *)&v14 traitCollectionDidChange:changeCopy];
+  traitCollection = [(AttributionViewWrapperView *)selfCopy traitCollection];
+  sub_1D7B12670(traitCollection, v9);
 
   swift_getObjectType();
   sub_1D7D2F77C();
@@ -72,14 +72,14 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticlesP33_AB2C07DEED72E6BCD424DDADA40C3A3026AttributionViewWrapperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithCoder:(id)a3
+- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithCoder:(id)coder
 {
   result = sub_1D7D3160C();
   __break(1u);
@@ -88,11 +88,11 @@
 
 - (void)updateStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BB6D3C();
 }
 
-- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticlesP33_D28D6015DE731BE624B02DB54B95AB0426AttributionViewWrapperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

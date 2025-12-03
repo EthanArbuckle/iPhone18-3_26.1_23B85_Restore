@@ -1,31 +1,31 @@
 @interface MPCPlaybackEngineEventStream
-- (BOOL)performQueryReturningBOOL:(id)a3;
+- (BOOL)performQueryReturningBOOL:(id)l;
 - (MPCPlabackEngineEventStreamTestingDelegate)testingDelegate;
 - (MPCPlaybackEngineEvent)lastEvent;
-- (MPCPlaybackEngineEventStream)initWithDatabaseCreationBlock:(id)a3;
-- (MPCPlaybackEngineEventStream)initWithParameters:(id)a3;
-- (id)cachedEventWithTypes:(void *)a3 matchingPayload:(void *)a4 cursor:;
+- (MPCPlaybackEngineEventStream)initWithDatabaseCreationBlock:(id)block;
+- (MPCPlaybackEngineEventStream)initWithParameters:(id)parameters;
+- (id)cachedEventWithTypes:(void *)types matchingPayload:(void *)payload cursor:;
 - (id)debugDescription;
-- (id)eventDeliveryDeferralAssertionOfType:(int64_t)a3 forReason:(id)a4 withTimeout:(double)a5;
-- (id)lastEventsWithCount:(int64_t)a3;
-- (id)performQueryReturningObject:(id)a3;
+- (id)eventDeliveryDeferralAssertionOfType:(int64_t)type forReason:(id)reason withTimeout:(double)timeout;
+- (id)lastEventsWithCount:(int64_t)count;
+- (id)performQueryReturningObject:(id)object;
 - (os_unfair_lock_s)_hasNoDeferralAssertions;
 - (uint64_t)isPerformingQuery;
 - (void)_onQueue_flushAndInvalidate;
 - (void)_onQueue_flushIfReady;
-- (void)_removeAllDatabasePackagesIn:(void *)a3 withPrefix:;
-- (void)addConsumer:(id)a3;
+- (void)_removeAllDatabasePackagesIn:(void *)in withPrefix:;
+- (void)addConsumer:(id)consumer;
 - (void)dealloc;
-- (void)emitEventType:(id)a3 payload:(id)a4;
-- (void)emitEventType:(id)a3 payload:(id)a4 atTime:(id *)a5;
+- (void)emitEventType:(id)type payload:(id)payload;
+- (void)emitEventType:(id)type payload:(id)payload atTime:(id *)time;
 - (void)flushEvents;
-- (void)flushEventsWithConsumer:(id)a3 fromTimestamp:(unint64_t)a4 untilTimestamp:(unint64_t)a5;
+- (void)flushEventsWithConsumer:(id)consumer fromTimestamp:(unint64_t)timestamp untilTimestamp:(unint64_t)untilTimestamp;
 - (void)invalidate;
-- (void)performQuery:(id)a3;
-- (void)removeConsumer:(id)a3;
-- (void)resetConsumerEventDeliveryToTimestamp:(unint64_t)a3;
+- (void)performQuery:(id)query;
+- (void)removeConsumer:(id)consumer;
+- (void)resetConsumerEventDeliveryToTimestamp:(unint64_t)timestamp;
 - (void)scheduleInvalidation;
-- (void)setMaximumEventDeliveryTimestamp:(unint64_t)a3;
+- (void)setMaximumEventDeliveryTimestamp:(unint64_t)timestamp;
 - (void)sql;
 @end
 
@@ -52,8 +52,8 @@
 
     else if ((os_trace_get_mode() & 8) != 0)
     {
-      v4 = [*&v1[12]._os_unfair_lock_opaque allObjects];
-      v5 = [v4 msv_filter:&__block_literal_global_5283];
+      allObjects = [*&v1[12]._os_unfair_lock_opaque allObjects];
+      v5 = [allObjects msv_filter:&__block_literal_global_5283];
       v3 = [v5 count];
     }
 
@@ -71,35 +71,35 @@
 
 - (void)sql
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[9];
+    v2 = self[9];
     if (!v2)
     {
-      v2 = a1[8];
+      v2 = self[8];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_onQueue_flushIfReady
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 96) <= 0 && ([*(a1 + 104) msv_isFuture] & 1) == 0 && -[MPCPlaybackEngineEventStream _hasNoDeferralAssertions](a1) && (*(a1 + 17) & 1) == 0)
+  if (self && *(self + 96) <= 0 && ([*(self + 104) msv_isFuture] & 1) == 0 && -[MPCPlaybackEngineEventStream _hasNoDeferralAssertions](self) && (*(self + 17) & 1) == 0)
   {
-    v2 = *(a1 + 104);
-    *(a1 + 96) = 0;
-    *(a1 + 104) = 0;
+    v2 = *(self + 104);
+    *(self + 96) = 0;
+    *(self + 104) = 0;
 
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = *(a1 + 40);
+    v3 = *(self + 40);
     v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
@@ -127,7 +127,7 @@
   }
 }
 
-- (void)resetConsumerEventDeliveryToTimestamp:(unint64_t)a3
+- (void)resetConsumerEventDeliveryToTimestamp:(unint64_t)timestamp
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -135,7 +135,7 @@
   v4[2] = __70__MPCPlaybackEngineEventStream_resetConsumerEventDeliveryToTimestamp___block_invoke;
   v4[3] = &unk_1E8239338;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = timestamp;
   dispatch_async(queue, v4);
 }
 
@@ -173,7 +173,7 @@ void __70__MPCPlaybackEngineEventStream_resetConsumerEventDeliveryToTimestamp___
   }
 }
 
-- (void)setMaximumEventDeliveryTimestamp:(unint64_t)a3
+- (void)setMaximumEventDeliveryTimestamp:(unint64_t)timestamp
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -181,7 +181,7 @@ void __70__MPCPlaybackEngineEventStream_resetConsumerEventDeliveryToTimestamp___
   v4[2] = __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block_invoke;
   v4[3] = &unk_1E8239338;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = timestamp;
   dispatch_async(queue, v4);
 }
 
@@ -219,7 +219,7 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
   }
 }
 
-- (id)lastEventsWithCount:(int64_t)a3
+- (id)lastEventsWithCount:(int64_t)count
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_invalidated)
@@ -231,7 +231,7 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
       v17 = 138543618;
       v18 = engineID;
       v19 = 1024;
-      v20 = a3;
+      countCopy = count;
       _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] lastEventsWithCount:%d | returning empty [invalidated]", &v17, 0x12u);
     }
 
@@ -243,15 +243,15 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
     v8 = [(MPCPlaybackEngineEventStream *)self sql];
     v9 = [v8 statementWithString:@"SELECT identifier error:{type, monoAbsolute, monoContinuous, monoTimebaseNS, userNS, threadPriority, payload, _ns FROM events ORDER BY _ns LIMIT @count", 0}];
 
-    [v9 bindInt64Value:a3 toParameterNamed:@"@count"];
+    [v9 bindInt64Value:count toParameterNamed:@"@count"];
     v10 = [(MPCPlaybackEngineEventStream *)self sql];
     v11 = [v10 resultsForStatement:v9];
 
-    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
-    v12 = [v11 nextObject];
-    if (v12)
+    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+    nextObject = [v11 nextObject];
+    if (nextObject)
     {
-      v13 = v12;
+      v13 = nextObject;
       do
       {
         v14 = [MPCPlaybackEngineEvent eventFromRowResult:v13];
@@ -260,12 +260,12 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
           [v7 addObject:v14];
         }
 
-        v15 = [v11 nextObject];
+        nextObject2 = [v11 nextObject];
 
-        v13 = v15;
+        v13 = nextObject2;
       }
 
-      while (v15);
+      while (nextObject2);
     }
 
     [v9 invalidate];
@@ -277,14 +277,14 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
 - (MPCPlaybackEngineEvent)lastEvent
 {
   v2 = [(MPCPlaybackEngineEventStream *)self lastEventsWithCount:1];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)performQueryReturningBOOL:(id)a3
+- (BOOL)performQueryReturningBOOL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -294,7 +294,7 @@ void __65__MPCPlaybackEngineEventStream_setMaximumEventDeliveryTimestamp___block
   v7[2] = __58__MPCPlaybackEngineEventStream_performQueryReturningBOOL___block_invoke;
   v7[3] = &unk_1E82324E8;
   v9 = &v10;
-  v5 = v4;
+  v5 = lCopy;
   v8 = v5;
   [(MPCPlaybackEngineEventStream *)self performQuery:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -310,9 +310,9 @@ uint64_t __58__MPCPlaybackEngineEventStream_performQueryReturningBOOL___block_in
   return result;
 }
 
-- (id)performQueryReturningObject:(id)a3
+- (id)performQueryReturningObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -324,7 +324,7 @@ uint64_t __58__MPCPlaybackEngineEventStream_performQueryReturningBOOL___block_in
   v8[2] = __60__MPCPlaybackEngineEventStream_performQueryReturningObject___block_invoke;
   v8[3] = &unk_1E82324E8;
   v10 = &v11;
-  v5 = v4;
+  v5 = objectCopy;
   v9 = v5;
   [(MPCPlaybackEngineEventStream *)self performQuery:v8];
   v6 = v12[5];
@@ -344,9 +344,9 @@ uint64_t __60__MPCPlaybackEngineEventStream_performQueryReturningObject___block_
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)performQuery:(id)a3
+- (void)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   os_unfair_lock_lock(&self->_lock);
   self->_isPerformingQuery = 1;
   os_unfair_lock_unlock(&self->_lock);
@@ -356,8 +356,8 @@ uint64_t __60__MPCPlaybackEngineEventStream_performQueryReturningObject___block_
   v7[2] = __45__MPCPlaybackEngineEventStream_performQuery___block_invoke;
   v7[3] = &unk_1E8239170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_sync(queue, v7);
   os_unfair_lock_lock(&self->_lock);
   self->_isPerformingQuery = 0;
@@ -375,15 +375,15 @@ void __45__MPCPlaybackEngineEventStream_performQuery___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)cachedEventWithTypes:(void *)a3 matchingPayload:(void *)a4 cursor:
+- (id)cachedEventWithTypes:(void *)types matchingPayload:(void *)payload cursor:
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  typesCopy = types;
+  payloadCopy = payload;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 80));
+    dispatch_assert_queue_V2(*(self + 80));
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -405,7 +405,7 @@ void __45__MPCPlaybackEngineEventStream_performQuery___block_invoke(uint64_t a1)
 
           if (!_MPCPlaybackEngineEventTypeIsCacheable(*(*(&v22 + 1) + 8 * i)))
           {
-            a1 = 0;
+            self = 0;
             goto LABEL_15;
           }
         }
@@ -420,10 +420,10 @@ void __45__MPCPlaybackEngineEventStream_performQuery___block_invoke(uint64_t a1)
       }
     }
 
-    if (v8)
+    if (typesCopy)
     {
-      v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-      _MPCPlaybackEngineEventFlattenPayload(v8, v15, &unk_1F4599850);
+      v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(typesCopy, "count")}];
+      _MPCPlaybackEngineEventFlattenPayload(typesCopy, v15, &unk_1F4599850);
     }
 
     else
@@ -431,21 +431,21 @@ void __45__MPCPlaybackEngineEventStream_performQuery___block_invoke(uint64_t a1)
       v15 = 0;
     }
 
-    v16 = [*(a1 + 56) reverseObjectEnumerator];
+    reverseObjectEnumerator = [*(self + 56) reverseObjectEnumerator];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __76__MPCPlaybackEngineEventStream_cachedEventWithTypes_matchingPayload_cursor___block_invoke;
     v18[3] = &unk_1E8232538;
     v19 = v10;
-    v20 = v9;
+    v20 = payloadCopy;
     v21 = v15;
     v10 = v15;
-    a1 = [v16 msv_firstWhere:v18];
+    self = [reverseObjectEnumerator msv_firstWhere:v18];
 
 LABEL_15:
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __76__MPCPlaybackEngineEventStream_cachedEventWithTypes_matchingPayload_cursor___block_invoke(uint64_t a1, void *a2)
@@ -514,13 +514,13 @@ void __76__MPCPlaybackEngineEventStream_cachedEventWithTypes_matchingPayload_cur
   }
 }
 
-- (void)flushEventsWithConsumer:(id)a3 fromTimestamp:(unint64_t)a4 untilTimestamp:(unint64_t)a5
+- (void)flushEventsWithConsumer:(id)consumer fromTimestamp:(unint64_t)timestamp untilTimestamp:(unint64_t)untilTimestamp
 {
-  v8 = a3;
-  v9 = [[_MPCPlaybackEngineEventStreamSubscription alloc] initWithConsumer:v8 eventStream:self];
-  [(_MPCPlaybackEngineEventStreamSubscription *)v9 setLastEventSuccessTimestamp:a4];
-  [(_MPCPlaybackEngineEventStreamSubscription *)v9 setMaximumEventDeliveryTimestamp:a5];
-  [v8 subscribeToEventStream:v9];
+  consumerCopy = consumer;
+  v9 = [[_MPCPlaybackEngineEventStreamSubscription alloc] initWithConsumer:consumerCopy eventStream:self];
+  [(_MPCPlaybackEngineEventStreamSubscription *)v9 setLastEventSuccessTimestamp:timestamp];
+  [(_MPCPlaybackEngineEventStreamSubscription *)v9 setMaximumEventDeliveryTimestamp:untilTimestamp];
+  [consumerCopy subscribeToEventStream:v9];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -542,11 +542,11 @@ void __85__MPCPlaybackEngineEventStream_flushEventsWithConsumer_fromTimestamp_un
 
 - (uint64_t)isPerformingQuery
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 16);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 16);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -602,26 +602,26 @@ void __43__MPCPlaybackEngineEventStream_flushEvents__block_invoke(uint64_t a1)
   }
 }
 
-- (void)emitEventType:(id)a3 payload:(id)a4 atTime:(id *)a5
+- (void)emitEventType:(id)type payload:(id)payload atTime:(id *)time
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  payloadCopy = payload;
   v40 = 0.0;
   v38 = 0u;
   v39 = 0u;
   MPCPlaybackEngineEventGetMonotonicTime(&v38);
-  if ((a5->var0 & 1) == 0)
+  if ((time->var0 & 1) == 0)
   {
     v11 = v39;
-    *&a5->var0 = v38;
-    *&a5->var2 = v11;
-    a5->var4 = v40;
+    *&time->var0 = v38;
+    *&time->var2 = v11;
+    time->var4 = v40;
   }
 
   v22 = vdupq_n_s64(0x41CDCD6500000000uLL);
   v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{vaddvq_f64(vdivq_f64(vcvtq_f64_u64(v39), v22)), *&v22}];
-  v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{vaddvq_f64(vdivq_f64(vcvtq_f64_u64(*&a5->var2), v23))}];
+  v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{vaddvq_f64(vdivq_f64(vcvtq_f64_u64(*&time->var2), v23))}];
   if (self->_invalidated)
   {
     v14 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
@@ -632,7 +632,7 @@ void __43__MPCPlaybackEngineEventStream_flushEvents__block_invoke(uint64_t a1)
       *buf = 138543874;
       v42 = engineID;
       v43 = 2114;
-      v44 = v9;
+      v44 = typeCopy;
       v45 = 2048;
       v46 = v16;
       _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] emitEventType:%{public}@ | dropping event [invalidated] time=%{time_t}zd", buf, 0x20u);
@@ -641,12 +641,12 @@ void __43__MPCPlaybackEngineEventStream_flushEvents__block_invoke(uint64_t a1)
 
   else
   {
-    v17 = a5->var2 + a5->var3;
-    v18 = [(MPCPlaybackEngineEventStream *)self testingDelegate];
+    v17 = time->var2 + time->var3;
+    testingDelegate = [(MPCPlaybackEngineEventStream *)self testingDelegate];
 
-    if (!v18)
+    if (!testingDelegate)
     {
-      _MPCPlaybackEngineEventStreamValidateSystemTime(v9, v17);
+      _MPCPlaybackEngineEventStreamValidateSystemTime(typeCopy, v17);
     }
 
     v19 = MSVGetCurrentThreadPriority();
@@ -656,19 +656,19 @@ void __43__MPCPlaybackEngineEventStream_flushEvents__block_invoke(uint64_t a1)
     block[2] = __61__MPCPlaybackEngineEventStream_emitEventType_payload_atTime___block_invoke;
     block[3] = &unk_1E82324C0;
     block[4] = self;
-    v25 = v9;
+    v25 = typeCopy;
     v26 = v13;
-    v21 = *&a5->var2;
-    v29 = *&a5->var0;
+    v21 = *&time->var2;
+    v29 = *&time->var0;
     v30 = v21;
-    var4 = a5->var4;
+    var4 = time->var4;
     v32 = v38;
     v33 = v39;
     v34 = v40;
     v27 = v12;
     v35 = a2;
     v37 = v19;
-    v28 = v10;
+    v28 = payloadCopy;
     v36 = v17;
     dispatch_async(queue, block);
   }
@@ -1101,43 +1101,43 @@ void __61__MPCPlaybackEngineEventStream_emitEventType_payload_atTime___block_inv
   *(v2 + 72) = 0;
 }
 
-- (void)emitEventType:(id)a3 payload:(id)a4
+- (void)emitEventType:(id)type payload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
+  payloadCopy = payload;
+  typeCopy = type;
   MPCPlaybackEngineEventGetMonotonicTime(v8);
-  [(MPCPlaybackEngineEventStream *)self emitEventType:v7 payload:v6 atTime:v8];
+  [(MPCPlaybackEngineEventStream *)self emitEventType:typeCopy payload:payloadCopy atTime:v8];
 }
 
-- (id)eventDeliveryDeferralAssertionOfType:(int64_t)a3 forReason:(id)a4 withTimeout:(double)a5
+- (id)eventDeliveryDeferralAssertionOfType:(int64_t)type forReason:(id)reason withTimeout:(double)timeout
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (!v9)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v10 = [[_MPCPlaybackEngineEventStreamDeferralAssertion alloc] initWithEventStream:self type:a3 reason:v9 timeout:a5];
+  v10 = [[_MPCPlaybackEngineEventStreamDeferralAssertion alloc] initWithEventStream:self type:type reason:reasonCopy timeout:timeout];
   os_unfair_lock_lock(&self->_lock);
   [(NSHashTable *)self->_deferralAssertions addObject:v10];
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     engineID = self->_engineID;
-    v13 = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)v10 identifier];
+    identifier = [(_MPCPlaybackEngineEventStreamDeferralAssertion *)v10 identifier];
     v14 = [(NSHashTable *)self->_deferralAssertions count];
     *buf = 138544642;
     v18 = engineID;
     v19 = 1024;
-    v20 = a3;
+    typeCopy = type;
     v21 = 2048;
-    v22 = a5;
+    timeoutCopy = timeout;
     v23 = 2114;
-    v24 = v9;
+    v24 = reasonCopy;
     v25 = 2114;
-    v26 = v13;
+    v26 = identifier;
     v27 = 1024;
     v28 = v14;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "[EVS:%{public}@] eventDeliveryDeferralAssertionOfType:%d reason:… timeout:%g | taking assertion [%{public}@] id=%{public}@ assertionCount=%d", buf, 0x36u);
@@ -1148,21 +1148,21 @@ void __61__MPCPlaybackEngineEventStream_emitEventType_payload_atTime___block_inv
   return v10;
 }
 
-- (void)removeConsumer:(id)a3
+- (void)removeConsumer:(id)consumer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     engineID = self->_engineID;
-    v7 = [objc_opt_class() identifier];
+    identifier = [objc_opt_class() identifier];
     *buf = 138543874;
     v13 = engineID;
     v14 = 2114;
-    v15 = v7;
+    v15 = identifier;
     v16 = 2048;
-    v17 = v4;
+    v17 = consumerCopy;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@] removeConsumer:<%{public}@: %p>", buf, 0x20u);
   }
 
@@ -1172,8 +1172,8 @@ void __61__MPCPlaybackEngineEventStream_emitEventType_payload_atTime___block_inv
   v10[2] = __47__MPCPlaybackEngineEventStream_removeConsumer___block_invoke;
   v10[3] = &unk_1E82392C0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = consumerCopy;
+  v9 = consumerCopy;
   dispatch_async(queue, v10);
 }
 
@@ -1218,21 +1218,21 @@ void __47__MPCPlaybackEngineEventStream_removeConsumer___block_invoke(uint64_t a
   }
 }
 
-- (void)addConsumer:(id)a3
+- (void)addConsumer:(id)consumer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     engineID = self->_engineID;
-    v7 = [objc_opt_class() identifier];
+    identifier = [objc_opt_class() identifier];
     *buf = 138543874;
     v14 = engineID;
     v15 = 2114;
-    v16 = v7;
+    v16 = identifier;
     v17 = 2048;
-    v18 = v4;
+    v18 = consumerCopy;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEBUG, "[EVS:%{public}@] addConsumer:<%{public}@: %p>", buf, 0x20u);
   }
 
@@ -1241,9 +1241,9 @@ void __47__MPCPlaybackEngineEventStream_removeConsumer___block_invoke(uint64_t a
   v10[1] = 3221225472;
   v10[2] = __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke;
   v10[3] = &unk_1E82392C0;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
+  v11 = consumerCopy;
+  selfCopy = self;
+  v9 = consumerCopy;
   dispatch_async(queue, v10);
 }
 
@@ -1287,25 +1287,25 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
 - (void)_onQueue_flushAndInvalidate
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 17) & 1) == 0)
+  if (self && (*(self + 17) & 1) == 0)
   {
     v2 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = *(a1 + 24);
+      v3 = *(self + 24);
       *buf = 138543362;
       v28 = v3;
       _os_log_impl(&dword_1C5C61000, v2, OS_LOG_TYPE_DEFAULT, "[EVS:%{public}@] invalidate | invalidating event stream", buf, 0xCu);
     }
 
-    os_unfair_lock_lock((a1 + 8));
-    [*(a1 + 48) removeAllObjects];
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    [*(self + 48) removeAllObjects];
+    os_unfair_lock_unlock((self + 8));
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v4 = *(a1 + 40);
+    v4 = *(self + 40);
     v5 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v5)
     {
@@ -1323,8 +1323,8 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
           v9 = *(*(&v23 + 1) + 8 * i);
           [v9 _onQueue_flush];
           [v9 cancelSubscription];
-          v10 = [v9 consumer];
-          [v10 unsubscribeFromEventStream:v9];
+          consumer = [v9 consumer];
+          [consumer unsubscribeFromEventStream:v9];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
@@ -1333,21 +1333,21 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
       while (v6);
     }
 
-    *(a1 + 17) = 1;
-    v11 = [*(a1 + 64) databaseURL];
+    *(self + 17) = 1;
+    databaseURL = [*(self + 64) databaseURL];
     v12 = objc_autoreleasePoolPush();
-    v13 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    v13 = *(self + 72);
+    *(self + 72) = 0;
 
-    v14 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v14 = *(self + 64);
+    *(self + 64) = 0;
 
     objc_autoreleasePoolPop(v12);
-    if (v11)
+    if (databaseURL)
     {
-      v15 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v22 = 0;
-      [v15 removeItemAtURL:v11 error:&v22];
+      [defaultManager removeItemAtURL:databaseURL error:&v22];
       v16 = v22;
 
       v17 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
@@ -1356,14 +1356,14 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v19 = *(a1 + 24);
-          v20 = [v16 treeDescription];
+          v19 = *(self + 24);
+          treeDescription = [v16 treeDescription];
           *buf = 138543874;
           v28 = v19;
           v29 = 2114;
-          v30 = v11;
+          v30 = databaseURL;
           v31 = 2114;
-          v32 = v20;
+          v32 = treeDescription;
           _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] invalidate | removing database [invalidation] url=%{public}@ error=%{public}@", buf, 0x20u);
         }
       }
@@ -1372,11 +1372,11 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = *(a1 + 24);
+          v21 = *(self + 24);
           *buf = 138543618;
           v28 = v21;
           v29 = 2114;
-          v30 = v11;
+          v30 = databaseURL;
           _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[EVS:%{public}@] invalidate | removing database [invalidation] url=%{public}@", buf, 0x16u);
         }
 
@@ -1410,8 +1410,8 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:310 description:@"EVS: deallocated before invalidation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlaybackEngineEventStream.m" lineNumber:310 description:@"EVS: deallocated before invalidation"];
   }
 
   notify_cancel(self->_deferralDebugToken);
@@ -1420,17 +1420,17 @@ void __44__MPCPlaybackEngineEventStream_addConsumer___block_invoke(uint64_t a1)
   [(MPCPlaybackEngineEventStream *)&v5 dealloc];
 }
 
-- (MPCPlaybackEngineEventStream)initWithParameters:(id)a3
+- (MPCPlaybackEngineEventStream)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke;
   v8[3] = &unk_1E8232498;
-  v9 = self;
-  v10 = v4;
-  v5 = v4;
-  v6 = [(MPCPlaybackEngineEventStream *)v9 initWithDatabaseCreationBlock:v8];
+  selfCopy = self;
+  v10 = parametersCopy;
+  v5 = parametersCopy;
+  v6 = [(MPCPlaybackEngineEventStream *)selfCopy initWithDatabaseCreationBlock:v8];
 
   return v6;
 }
@@ -1608,21 +1608,21 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
   }
 }
 
-- (void)_removeAllDatabasePackagesIn:(void *)a3 withPrefix:
+- (void)_removeAllDatabasePackagesIn:(void *)in withPrefix:
 {
   v51[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v33 = a3;
-  v34 = a1;
-  if (a1)
+  inCopy = in;
+  selfCopy = self;
+  if (self)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v7 = *MEMORY[0x1E695DB78];
     v51[0] = *MEMORY[0x1E695DB78];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
     v43 = 0;
-    v35 = v6;
-    v9 = [v6 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v8 options:4 error:&v43];
+    v35 = defaultManager;
+    v9 = [defaultManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v8 options:4 error:&v43];
     v10 = v43;
 
     if (v10)
@@ -1630,7 +1630,7 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
       v11 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = *(v34 + 24);
+        v12 = *(selfCopy + 24);
         *buf = 138543875;
         v46 = v12;
         v47 = 2113;
@@ -1656,7 +1656,7 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
         v32 = v5;
         v10 = 0;
         v15 = *v40;
-        v16 = v33;
+        v16 = inCopy;
         do
         {
           v17 = 0;
@@ -1681,7 +1681,7 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
                 v26 = os_log_create("com.apple.amp.mediaplaybackcore", "PlaybackEventStream");
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
-                  v29 = *(v34 + 24);
+                  v29 = *(selfCopy + 24);
                   *buf = 138543875;
                   v46 = v29;
                   v47 = 2113;
@@ -1704,15 +1704,15 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
                 {
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                   {
-                    v27 = *(v34 + 24);
-                    v28 = [v24 treeDescription];
+                    v27 = *(selfCopy + 24);
+                    treeDescription = [v24 treeDescription];
                     *buf = 138543874;
                     v46 = v27;
-                    v16 = v33;
+                    v16 = inCopy;
                     v47 = 2114;
                     v48 = v18;
                     v49 = 2114;
-                    v50 = v28;
+                    v50 = treeDescription;
                     _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_ERROR, "[EVS:%{public}@] _removeAllDatabasePackages | removing database package [] url=%{public}@ error=%{public}@", buf, 0x20u);
                   }
 
@@ -1723,7 +1723,7 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
                 {
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                   {
-                    v30 = *(v34 + 24);
+                    v30 = *(selfCopy + 24);
                     *buf = 138543618;
                     v46 = v30;
                     v47 = 2114;
@@ -1760,9 +1760,9 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
   }
 }
 
-- (MPCPlaybackEngineEventStream)initWithDatabaseCreationBlock:(id)a3
+- (MPCPlaybackEngineEventStream)initWithDatabaseCreationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = MPCPlaybackEngineEventStream;
   v5 = [(MPCPlaybackEngineEventStream *)&v23 init];
@@ -1778,9 +1778,9 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
     v11 = *(v5 + 11);
     *(v5 + 11) = v10;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = *(v5 + 5);
-    *(v5 + 5) = v12;
+    *(v5 + 5) = array;
 
     v14 = [MEMORY[0x1E696AC70] hashTableWithOptions:5];
     v15 = *(v5 + 6);
@@ -1799,7 +1799,7 @@ void __51__MPCPlaybackEngineEventStream_initWithParameters___block_invoke_23(uin
     v20[2] = __62__MPCPlaybackEngineEventStream_initWithDatabaseCreationBlock___block_invoke;
     v20[3] = &unk_1E8239170;
     v21 = v5;
-    v22 = v4;
+    v22 = blockCopy;
     dispatch_async(v18, v20);
   }
 

@@ -1,19 +1,19 @@
 @interface OfflineRegionSelectorOverlayView
-- (CGRect)_clampedRectFromRect:(CGRect)a3;
-- (CGRect)_selectedRectFromHandle:(id)a3 withTranslation:(CGPoint)a4;
+- (CGRect)_clampedRectFromRect:(CGRect)rect;
+- (CGRect)_selectedRectFromHandle:(id)handle withTranslation:(CGPoint)translation;
 - (CGRect)selectedRectFrame;
 - (OfflineRegionSelectorActionCoordination)regionSelectorDelegate;
 - (OfflineRegionSelectorOverlayView)init;
-- (OfflineRegionSelectorOverlayView)initWithCoder:(id)a3;
-- (OfflineRegionSelectorOverlayView)initWithFrame:(CGRect)a3;
-- (id)offlineRegionSelectorCropHandleToString:(unint64_t)a3;
+- (OfflineRegionSelectorOverlayView)initWithCoder:(id)coder;
+- (OfflineRegionSelectorOverlayView)initWithFrame:(CGRect)frame;
+- (id)offlineRegionSelectorCropHandleToString:(unint64_t)string;
 - (void)_commonInit;
-- (void)_handlePanGesture:(id)a3;
-- (void)_setSelectedRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)animateForDownloadWithCompletion:(id)a3;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_setSelectedRect:(CGRect)rect animated:(BOOL)animated;
+- (void)animateForDownloadWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setInitialSelectedRect:(CGRect)a3 animated:(BOOL)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setInitialSelectedRect:(CGRect)rect animated:(BOOL)animated;
 @end
 
 @implementation OfflineRegionSelectorOverlayView
@@ -25,14 +25,14 @@
   return WeakRetained;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v17 = a3;
-  v4 = [v17 view];
+  gestureCopy = gesture;
+  view = [gestureCopy view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = view;
   }
 
   else
@@ -42,7 +42,7 @@
 
   v6 = v5;
 
-  [v17 translationInView:self];
+  [gestureCopy translationInView:self];
   [(OfflineRegionSelectorOverlayView *)self _selectedRectFromHandle:v6 withTranslation:?];
   v8 = v7;
   v10 = v9;
@@ -50,42 +50,42 @@
   v14 = v13;
 
   [(OfflineRegionSelectorOverlayView *)self _setSelectedRect:v8, v10, v12, v14];
-  [v17 setTranslation:self inView:{CGPointZero.x, CGPointZero.y}];
-  if ([v17 state] == 1)
+  [gestureCopy setTranslation:self inView:{CGPointZero.x, CGPointZero.y}];
+  if ([gestureCopy state] == 1)
   {
     [(UIImpactFeedbackGenerator *)self->_hapticGenerator impactOccurred];
-    v15 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
-    [v15 willAdjustSelectedRegion];
+    regionSelectorDelegate = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
+    [regionSelectorDelegate willAdjustSelectedRegion];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if ([v17 state] == 3 || objc_msgSend(v17, "state") == 4)
+  if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    v16 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
-    [v16 didAdjustSelectedRegion];
+    regionSelectorDelegate2 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
+    [regionSelectorDelegate2 didAdjustSelectedRegion];
 
-    v15 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
-    [v15 didAdjustSelectorCropHandle];
+    regionSelectorDelegate = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
+    [regionSelectorDelegate didAdjustSelectorCropHandle];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (CGRect)_selectedRectFromHandle:(id)a3 withTranslation:(CGPoint)a4
+- (CGRect)_selectedRectFromHandle:(id)handle withTranslation:(CGPoint)translation
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = translation.y;
+  x = translation.x;
+  handleCopy = handle;
   [(UIView *)self->_outlineView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 handle];
-  if (v16 <= 5 && ((1 << v16) & 0x31) != 0)
+  handle = [handleCopy handle];
+  if (handle <= 5 && ((1 << handle) & 0x31) != 0)
   {
     v17 = v15 - y;
     if (v15 - y >= 78.0)
@@ -95,8 +95,8 @@ LABEL_10:
     }
   }
 
-  v18 = [v7 handle];
-  if (v18 <= 6 && ((0x52u >> v18) & 1) != 0)
+  handle2 = [handleCopy handle];
+  if (handle2 <= 6 && ((0x52u >> handle2) & 1) != 0)
   {
     v19 = v13 - x;
     if (v13 - x >= 78.0)
@@ -106,8 +106,8 @@ LABEL_10:
     }
   }
 
-  v20 = [v7 handle];
-  if (((v20 < 8) & (0xA8u >> v20)) != 0)
+  handle3 = [handleCopy handle];
+  if (((handle3 < 8) & (0xA8u >> handle3)) != 0)
   {
     v21 = v13 + x;
   }
@@ -117,8 +117,8 @@ LABEL_10:
     v21 = v13;
   }
 
-  v22 = [v7 handle];
-  if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 2 || v22 == 7)
+  handle4 = [handleCopy handle];
+  if ((handle4 & 0xFFFFFFFFFFFFFFFBLL) == 2 || handle4 == 7)
   {
     v24 = v15 + y;
   }
@@ -139,14 +139,14 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)_clampedRectFromRect:(CGRect)a3
+- (CGRect)_clampedRectFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(OfflineRegionSelectorOverlayView *)self viewportLayoutGuide];
-  [v7 layoutFrame];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewportLayoutGuide = [(OfflineRegionSelectorOverlayView *)self viewportLayoutGuide];
+  [viewportLayoutGuide layoutFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -198,7 +198,7 @@ LABEL_10:
   v21 = v9;
   if (MinY - CGRectGetMinY(v44) >= 35.0)
   {
-    v23 = rect;
+    rectCopy2 = rect;
   }
 
   else
@@ -210,7 +210,7 @@ LABEL_10:
     v22 = CGRectGetMinY(v45);
     v46.origin.x = v9;
     v46.origin.y = v18;
-    v23 = rect;
+    rectCopy2 = rect;
     v46.size.width = rect;
     v46.size.height = v15;
     v37 = height + v22 + -35.0 - CGRectGetMinY(v46);
@@ -223,7 +223,7 @@ LABEL_10:
 
   v48.origin.x = v21;
   v48.origin.y = v18;
-  v48.size.width = v23;
+  v48.size.width = rectCopy2;
   v48.size.height = v15;
   MaxX = CGRectGetMaxX(v48);
   v49.origin.x = x;
@@ -236,14 +236,14 @@ LABEL_10:
   {
     v50.origin.x = v21;
     v50.origin.y = v18;
-    v50.size.width = v23;
+    v50.size.width = rectCopy2;
     v50.size.height = v15;
     v25 = -35.0 - x + CGRectGetMaxX(v50);
   }
 
   v51.origin.x = v21;
   v51.origin.y = v18;
-  v51.size.width = v23;
+  v51.size.width = rectCopy2;
   v51.size.height = v15;
   MaxY = CGRectGetMaxY(v51);
   recta = x;
@@ -256,7 +256,7 @@ LABEL_10:
   {
     v53.origin.x = v21;
     v53.origin.y = v18;
-    v53.size.width = v23;
+    v53.size.width = rectCopy2;
     v53.size.height = v15;
     v27 = -35.0 - v36 + CGRectGetMaxY(v53);
   }
@@ -272,12 +272,12 @@ LABEL_10:
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OfflineRegionSelectorOverlayView *)self bounds];
   v33.origin.x = v8;
   v33.origin.y = v9;
@@ -313,20 +313,20 @@ LABEL_10:
     v32.size.height = v19;
     if (!CGRectIsEmpty(v32))
     {
-      v22 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
-      [v22 willAdjustSelectedRegion];
+      regionSelectorDelegate = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
+      [regionSelectorDelegate willAdjustSelectedRegion];
 
       [(OfflineRegionSelectorOverlayView *)self _setSelectedRect:v20, v21, v17, v19];
-      v23 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
-      [v23 didAdjustSelectedRegion];
+      regionSelectorDelegate2 = [(OfflineRegionSelectorOverlayView *)self regionSelectorDelegate];
+      [regionSelectorDelegate2 didAdjustSelectedRegion];
     }
   }
 }
 
-- (void)_setSelectedRect:(CGRect)a3 animated:(BOOL)a4
+- (void)_setSelectedRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  [(OfflineRegionSelectorOverlayView *)self _clampedRectFromRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  animatedCopy = animated;
+  [(OfflineRegionSelectorOverlayView *)self _clampedRectFromRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100693224;
@@ -338,7 +338,7 @@ LABEL_10:
   v12[8] = v9;
   v10 = objc_retainBlock(v12);
   v11 = v10;
-  if (v4)
+  if (animatedCopy)
   {
     [(OfflineRegionSelectorOverlayView *)self frame];
     [(UIView *)self->_outlineView setFrame:?];
@@ -367,11 +367,11 @@ LABEL_10:
   }
 }
 
-- (void)setInitialSelectedRect:(CGRect)a3 animated:(BOOL)a4
+- (void)setInitialSelectedRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   p_initialSelectedRect = &self->_initialSelectedRect;
-  self->_initialSelectedRect = a3;
+  self->_initialSelectedRect = rect;
   [(OfflineRegionSelectorOverlayView *)self bounds];
   if (CGRectIsEmpty(v12))
   {
@@ -392,7 +392,7 @@ LABEL_10:
       y = CGRectGetMidY(*p_initialSelectedRect) - height * 0.5;
     }
 
-    [(OfflineRegionSelectorOverlayView *)self _setSelectedRect:v4 animated:x, y, width, height];
+    [(OfflineRegionSelectorOverlayView *)self _setSelectedRect:animatedCopy animated:x, y, width, height];
   }
 }
 
@@ -406,9 +406,9 @@ LABEL_10:
   return result;
 }
 
-- (void)animateForDownloadWithCompletion:(id)a3
+- (void)animateForDownloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(UIView *)self->_downloadCameraSnapshotView setAlpha:0.0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -420,8 +420,8 @@ LABEL_10:
   v6[2] = sub_100693574;
   v6[3] = &unk_101655D58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [UIView animateWithDuration:v8 animations:v6 completion:0.3];
 }
 
@@ -442,8 +442,8 @@ LABEL_10:
   [(OfflineRegionSelectorOverlayView *)self addSubview:self->_checkerboardImageView];
   LODWORD(v10) = 1148846080;
   v11 = [(UIImageView *)self->_checkerboardImageView _maps_constraintsEqualToEdgesOfView:self insets:UIEdgeInsetsZero.top priority:left, bottom, right, v10];
-  v12 = [v11 allConstraints];
-  [NSLayoutConstraint activateConstraints:v12];
+  allConstraints = [v11 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
   v13 = [UIView alloc];
   y = CGRectZero.origin.y;
@@ -462,40 +462,40 @@ LABEL_10:
   [(OfflineRegionSelectorOverlayView *)self addSubview:self->_downloadCameraSnapshotView];
   LODWORD(v19) = 1148846080;
   v20 = [(UIView *)self->_downloadCameraSnapshotView _maps_constraintsEqualToEdgesOfView:self insets:UIEdgeInsetsZero.top priority:left, bottom, right, v19];
-  v21 = [v20 allConstraints];
-  [NSLayoutConstraint activateConstraints:v21];
+  allConstraints2 = [v20 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints2];
 
   v22 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, obja}];
   outlineView = self->_outlineView;
   self->_outlineView = v22;
 
   [(UIView *)self->_outlineView setUserInteractionEnabled:0];
-  v24 = [(UIView *)self->_outlineView layer];
-  [v24 setCornerRadius:16.0];
+  layer = [(UIView *)self->_outlineView layer];
+  [layer setCornerRadius:16.0];
 
   v25 = +[UIColor blackColor];
-  v26 = [v25 CGColor];
-  v27 = [(UIView *)self->_outlineView layer];
-  [v27 setShadowColor:v26];
+  cGColor = [v25 CGColor];
+  layer2 = [(UIView *)self->_outlineView layer];
+  [layer2 setShadowColor:cGColor];
 
-  v28 = [(UIView *)self->_outlineView layer];
-  [v28 setShadowRadius:6.0];
+  layer3 = [(UIView *)self->_outlineView layer];
+  [layer3 setShadowRadius:6.0];
 
-  v29 = [(UIView *)self->_outlineView layer];
+  layer4 = [(UIView *)self->_outlineView layer];
   LODWORD(v30) = 1051931443;
-  [v29 setShadowOpacity:v30];
+  [layer4 setShadowOpacity:v30];
 
   height = CGSizeZero.height;
-  v32 = [(UIView *)self->_outlineView layer];
-  [v32 setShadowOffset:{CGSizeZero.width, height}];
+  layer5 = [(UIView *)self->_outlineView layer];
+  [layer5 setShadowOffset:{CGSizeZero.width, height}];
 
   v33 = +[UIColor whiteColor];
-  v34 = [v33 CGColor];
-  v35 = [(UIView *)self->_outlineView layer];
-  [v35 setBorderColor:v34];
+  cGColor2 = [v33 CGColor];
+  layer6 = [(UIView *)self->_outlineView layer];
+  [layer6 setBorderColor:cGColor2];
 
-  v36 = [(UIView *)self->_outlineView layer];
-  [v36 setBorderWidth:3.0];
+  layer7 = [(UIView *)self->_outlineView layer];
+  [layer7 setBorderWidth:3.0];
 
   [(UIView *)self->_outlineView setAccessibilityIdentifier:@"OfflineRegionOutline"];
   [(OfflineRegionSelectorOverlayView *)self addSubview:self->_outlineView];
@@ -503,35 +503,35 @@ LABEL_10:
   checkerboardKnockoutMask = self->_checkerboardKnockoutMask;
   self->_checkerboardKnockoutMask = v37;
 
-  v39 = [(UIView *)self->_checkerboardKnockoutMask layer];
-  [v39 setCornerRadius:16.0];
+  layer8 = [(UIView *)self->_checkerboardKnockoutMask layer];
+  [layer8 setCornerRadius:16.0];
 
   v40 = +[UIColor blackColor];
   [(UIView *)self->_checkerboardKnockoutMask setBackgroundColor:v40];
 
-  v41 = [(UIView *)self->_checkerboardKnockoutMask layer];
-  v42 = [(UIImageView *)self->_checkerboardImageView layer];
-  [v42 setMask:v41];
+  layer9 = [(UIView *)self->_checkerboardKnockoutMask layer];
+  layer10 = [(UIImageView *)self->_checkerboardImageView layer];
+  [layer10 setMask:layer9];
 
-  v43 = [(UIImageView *)self->_checkerboardImageView layer];
-  [v43 setInvertsMask:1];
+  layer11 = [(UIImageView *)self->_checkerboardImageView layer];
+  [layer11 setInvertsMask:1];
 
   v44 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, obja}];
   downloadCameraSnapshotKnockoutMask = self->_downloadCameraSnapshotKnockoutMask;
   self->_downloadCameraSnapshotKnockoutMask = v44;
 
-  v46 = [(UIView *)self->_downloadCameraSnapshotKnockoutMask layer];
-  [v46 setCornerRadius:16.0];
+  layer12 = [(UIView *)self->_downloadCameraSnapshotKnockoutMask layer];
+  [layer12 setCornerRadius:16.0];
 
   v47 = +[UIColor blackColor];
   [(UIView *)self->_downloadCameraSnapshotKnockoutMask setBackgroundColor:v47];
 
-  v48 = [(UIView *)self->_downloadCameraSnapshotKnockoutMask layer];
-  v49 = [(UIView *)self->_downloadCameraSnapshotView layer];
-  [v49 setMask:v48];
+  layer13 = [(UIView *)self->_downloadCameraSnapshotKnockoutMask layer];
+  layer14 = [(UIView *)self->_downloadCameraSnapshotView layer];
+  [layer14 setMask:layer13];
 
-  v50 = [(UIView *)self->_downloadCameraSnapshotView layer];
-  [v50 setInvertsMask:1];
+  layer15 = [(UIView *)self->_downloadCameraSnapshotView layer];
+  [layer15 setInvertsMask:1];
 
   v51 = objc_alloc_init(NSMutableDictionary);
   handleViews = self->_handleViews;
@@ -556,11 +556,11 @@ LABEL_10:
           objc_enumerationMutation(obj);
         }
 
-        v57 = [*(*(&v68 + 1) + 8 * i) unsignedIntValue];
-        v58 = [[OfflineRegionSelectorCropHandleView alloc] initWithHandle:v57];
+        unsignedIntValue = [*(*(&v68 + 1) + 8 * i) unsignedIntValue];
+        v58 = [[OfflineRegionSelectorCropHandleView alloc] initWithHandle:unsignedIntValue];
         [(OfflineRegionSelectorCropHandleView *)v58 setTranslatesAutoresizingMaskIntoConstraints:0];
         [(OfflineRegionSelectorCropHandleView *)v58 setAccessibilityIdentifier:@"OfflineRegionSelectorCropHandle"];
-        v59 = [(OfflineRegionSelectorOverlayView *)self offlineRegionSelectorCropHandleToString:v57];
+        v59 = [(OfflineRegionSelectorOverlayView *)self offlineRegionSelectorCropHandleToString:unsignedIntValue];
         [(OfflineRegionSelectorCropHandleView *)v58 setAccessibilityLabel:v59];
 
         v60 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"_handlePanGesture:"];
@@ -571,7 +571,7 @@ LABEL_10:
         [NSLayoutConstraint activateConstraints:v61];
 
         v62 = self->_handleViews;
-        v63 = [NSNumber numberWithUnsignedInteger:v57];
+        v63 = [NSNumber numberWithUnsignedInteger:unsignedIntValue];
         [(NSMutableDictionary *)v62 setObject:v58 forKeyedSubscript:v63];
       }
 
@@ -586,24 +586,24 @@ LABEL_10:
   self->_hapticGenerator = v64;
 }
 
-- (id)offlineRegionSelectorCropHandleToString:(unint64_t)a3
+- (id)offlineRegionSelectorCropHandleToString:(unint64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_101625C80 + a3);
+    return *(&off_101625C80 + string);
   }
 }
 
-- (OfflineRegionSelectorOverlayView)initWithCoder:(id)a3
+- (OfflineRegionSelectorOverlayView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OfflineRegionSelectorOverlayView;
-  v3 = [(OfflineRegionSelectorOverlayView *)&v6 initWithCoder:a3];
+  v3 = [(OfflineRegionSelectorOverlayView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -613,11 +613,11 @@ LABEL_10:
   return v4;
 }
 
-- (OfflineRegionSelectorOverlayView)initWithFrame:(CGRect)a3
+- (OfflineRegionSelectorOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OfflineRegionSelectorOverlayView;
-  v3 = [(OfflineRegionSelectorOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OfflineRegionSelectorOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

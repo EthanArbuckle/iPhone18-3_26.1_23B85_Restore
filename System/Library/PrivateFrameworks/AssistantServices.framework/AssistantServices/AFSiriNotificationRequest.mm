@@ -1,16 +1,16 @@
 @interface AFSiriNotificationRequest
-- (AFSiriNotificationRequest)initWithNotifications:(id)a3 sourceAppId:(id)a4;
+- (AFSiriNotificationRequest)initWithNotifications:(id)notifications sourceAppId:(id)id;
 @end
 
 @implementation AFSiriNotificationRequest
 
-- (AFSiriNotificationRequest)initWithNotifications:(id)a3 sourceAppId:(id)a4
+- (AFSiriNotificationRequest)initWithNotifications:(id)notifications sourceAppId:(id)id
 {
-  v6 = a4;
-  v7 = [a3 firstObject];
+  idCopy = id;
+  firstObject = [notifications firstObject];
   v10.receiver = self;
   v10.super_class = AFSiriNotificationRequest;
-  v8 = [(AFSiriUserNotificationRequest *)&v10 initWithUserNotification:v7 sourceAppId:v6];
+  v8 = [(AFSiriUserNotificationRequest *)&v10 initWithUserNotification:firstObject sourceAppId:idCopy];
 
   return v8;
 }

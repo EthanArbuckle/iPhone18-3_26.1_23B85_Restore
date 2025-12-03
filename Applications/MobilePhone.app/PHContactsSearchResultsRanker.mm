@@ -1,7 +1,7 @@
 @interface PHContactsSearchResultsRanker
 - (PHContactsSearchResultsRanker)init;
-- (id)autocompleteSuggestionForContact:(id)a3 phoneNumber:(id)a4;
-- (id)rankContactSearchResults:(id)a3;
+- (id)autocompleteSuggestionForContact:(id)contact phoneNumber:(id)number;
+- (id)rankContactSearchResults:(id)results;
 @end
 
 @implementation PHContactsSearchResultsRanker
@@ -30,15 +30,15 @@
   return v2;
 }
 
-- (id)rankContactSearchResults:(id)a3
+- (id)rankContactSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = +[NSMutableArray array];
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v51 = [v4 count];
+    v51 = [resultsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[ContactsSearchResultsRanker] Received request to rank %lu contacts", buf, 0xCu);
   }
 
@@ -47,7 +47,7 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = v4;
+  v8 = resultsCopy;
   v9 = [v8 countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v9)
   {
@@ -68,18 +68,18 @@
         }
 
         v13 = *(*(&v46 + 1) + 8 * v12);
-        v14 = [v13 contact];
-        v15 = [v14 identifier];
-        [v7 setObject:v13 forKeyedSubscript:v15];
+        contact = [v13 contact];
+        identifier = [contact identifier];
+        [v7 setObject:v13 forKeyedSubscript:identifier];
 
-        v16 = [v13 preferredPhoneNumber];
+        preferredPhoneNumber = [v13 preferredPhoneNumber];
 
-        if (v16)
+        if (preferredPhoneNumber)
         {
-          v17 = [v13 preferredPhoneNumber];
-          v18 = [(PHContactsSearchResultsRanker *)self autocompleteSuggestionForContact:v14 phoneNumber:v17];
+          preferredPhoneNumber2 = [v13 preferredPhoneNumber];
+          phoneNumbers = [(PHContactsSearchResultsRanker *)self autocompleteSuggestionForContact:contact phoneNumber:preferredPhoneNumber2];
 
-          [v5 addObject:v18];
+          [v5 addObject:phoneNumbers];
         }
 
         else
@@ -88,8 +88,8 @@
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v18 = [v14 phoneNumbers];
-          v19 = [v18 countByEnumeratingWithState:&v42 objects:v54 count:16];
+          phoneNumbers = [contact phoneNumbers];
+          v19 = [phoneNumbers countByEnumeratingWithState:&v42 objects:v54 count:16];
           if (v19)
           {
             v20 = v19;
@@ -101,10 +101,10 @@ LABEL_12:
             {
               if (*v43 != v22)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(phoneNumbers);
               }
 
-              v24 = [(PHContactsSearchResultsRanker *)self autocompleteSuggestionForContact:v14 phoneNumber:*(*(&v42 + 1) + 8 * v23)];
+              v24 = [(PHContactsSearchResultsRanker *)self autocompleteSuggestionForContact:contact phoneNumber:*(*(&v42 + 1) + 8 * v23)];
               [v5 addObject:v24];
 
               if (v21 == 4)
@@ -116,7 +116,7 @@ LABEL_12:
               ++v21;
               if (v20 == v23)
               {
-                v20 = [v18 countByEnumeratingWithState:&v42 objects:v54 count:16];
+                v20 = [phoneNumbers countByEnumeratingWithState:&v42 objects:v54 count:16];
                 if (v20)
                 {
                   goto LABEL_12;
@@ -155,9 +155,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[ContactsSearchResultsRanker] Created %lu candidates from %lu contacts", buf, 0x16u);
   }
 
-  v28 = [(PHContactsSearchResultsRanker *)self model];
-  v29 = [(PHContactsSearchResultsRanker *)self context];
-  v30 = [v28 rankedAutocompleteSuggestionsFromContext:v29 candidates:v5];
+  model = [(PHContactsSearchResultsRanker *)self model];
+  context = [(PHContactsSearchResultsRanker *)self context];
+  v30 = [model rankedAutocompleteSuggestionsFromContext:context candidates:v5];
 
   v31 = objc_alloc_init(NSMutableArray);
   if ([v30 count])
@@ -205,17 +205,17 @@ void __58__PHContactsSearchResultsRanker_rankContactSearchResults___block_invoke
   }
 }
 
-- (id)autocompleteSuggestionForContact:(id)a3 phoneNumber:(id)a4
+- (id)autocompleteSuggestionForContact:(id)contact phoneNumber:(id)number
 {
-  v5 = a3;
-  v6 = [a4 value];
-  v7 = [v6 unformattedInternationalStringValue];
+  contactCopy = contact;
+  value = [number value];
+  unformattedInternationalStringValue = [value unformattedInternationalStringValue];
 
   v8 = [_PSAutocompleteSuggestion alloc];
-  v9 = [v5 displayName];
-  v10 = [v5 identifier];
+  displayName = [contactCopy displayName];
+  identifier = [contactCopy identifier];
 
-  v11 = [v8 initWithChatGuid:0 chatHandles:0 displayName:v9 handle:v7 contactIdentifier:v10 resultSourceType:16 autocompleteResult:0 recipients:0];
+  v11 = [v8 initWithChatGuid:0 chatHandles:0 displayName:displayName handle:unformattedInternationalStringValue contactIdentifier:identifier resultSourceType:16 autocompleteResult:0 recipients:0];
 
   return v11;
 }

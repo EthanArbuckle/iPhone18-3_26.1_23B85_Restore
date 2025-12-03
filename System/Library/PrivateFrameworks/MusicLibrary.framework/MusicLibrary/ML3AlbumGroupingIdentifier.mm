@@ -1,6 +1,6 @@
 @interface ML3AlbumGroupingIdentifier
-- (BOOL)isEqual:(id)a3;
-- (ML3AlbumGroupingIdentifier)initWithAlbumArtistPersistentID:(int64_t)a3 groupingKey:(id)a4 feedURL:(id)a5 seasonNumber:(int64_t)a6 compilation:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (ML3AlbumGroupingIdentifier)initWithAlbumArtistPersistentID:(int64_t)d groupingKey:(id)key feedURL:(id)l seasonNumber:(int64_t)number compilation:(BOOL)compilation;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -24,15 +24,15 @@
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([(NSString *)self->_feedURL length])
     {
-      v5 = v4[4];
+      v5 = equalCopy[4];
       v6 = self->_feedURL;
       v7 = v5;
       v8 = v7;
@@ -47,7 +47,7 @@
       if (v9)
       {
 LABEL_12:
-        v14 = v4[3];
+        v14 = equalCopy[3];
         v11 = self->_groupingKey;
         v12 = v14;
         if (v11 != v12)
@@ -65,9 +65,9 @@ LABEL_14:
       }
     }
 
-    else if (self->_albumArtistPersistentID == v4[2] && self->_seasonNumber == v4[5])
+    else if (self->_albumArtistPersistentID == equalCopy[2] && self->_seasonNumber == equalCopy[5])
     {
-      v10 = v4[3];
+      v10 = equalCopy[3];
       v11 = self->_groupingKey;
       v12 = v10;
       if (v11 != v12)
@@ -106,31 +106,31 @@ LABEL_16:
   return v6;
 }
 
-- (ML3AlbumGroupingIdentifier)initWithAlbumArtistPersistentID:(int64_t)a3 groupingKey:(id)a4 feedURL:(id)a5 seasonNumber:(int64_t)a6 compilation:(BOOL)a7
+- (ML3AlbumGroupingIdentifier)initWithAlbumArtistPersistentID:(int64_t)d groupingKey:(id)key feedURL:(id)l seasonNumber:(int64_t)number compilation:(BOOL)compilation
 {
-  v13 = a4;
-  v14 = a5;
+  keyCopy = key;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = ML3AlbumGroupingIdentifier;
   v15 = [(ML3AlbumGroupingIdentifier *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    v15->_albumArtistPersistentID = a3;
-    objc_storeStrong(&v15->_groupingKey, a4);
-    objc_storeStrong(&v16->_feedURL, a5);
-    v16->_seasonNumber = a6;
-    v16->_compilation = a7;
-    v17 = [MEMORY[0x277CBEB28] data];
-    [v17 appendBytes:"<<" length:2];
-    [v17 appendBytes:&v16->_albumArtistPersistentID length:8];
-    [v17 appendBytes:"<<" length:2];
-    [v17 appendData:v16->_groupingKey];
-    [v17 appendBytes:"<<" length:2];
-    [v17 appendBytes:-[NSString UTF8String](v16->_feedURL length:{"UTF8String"), strlen(-[NSString UTF8String](v16->_feedURL, "UTF8String"))}];
-    [v17 appendBytes:"<<" length:2];
-    [v17 appendBytes:&v16->_seasonNumber length:8];
-    v18 = [v17 copy];
+    v15->_albumArtistPersistentID = d;
+    objc_storeStrong(&v15->_groupingKey, key);
+    objc_storeStrong(&v16->_feedURL, l);
+    v16->_seasonNumber = number;
+    v16->_compilation = compilation;
+    data = [MEMORY[0x277CBEB28] data];
+    [data appendBytes:"<<" length:2];
+    [data appendBytes:&v16->_albumArtistPersistentID length:8];
+    [data appendBytes:"<<" length:2];
+    [data appendData:v16->_groupingKey];
+    [data appendBytes:"<<" length:2];
+    [data appendBytes:-[NSString UTF8String](v16->_feedURL length:{"UTF8String"), strlen(-[NSString UTF8String](v16->_feedURL, "UTF8String"))}];
+    [data appendBytes:"<<" length:2];
+    [data appendBytes:&v16->_seasonNumber length:8];
+    v18 = [data copy];
     keyValue = v16->_keyValue;
     v16->_keyValue = v18;
   }

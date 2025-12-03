@@ -1,6 +1,6 @@
 @interface OSLogPersistence
 - (BOOL)allowSensitive;
-- (BOOL)streamChunks:(id)a3 andEntries:(id)a4 flags:(unsigned int)a5;
+- (BOOL)streamChunks:(id)chunks andEntries:(id)entries flags:(unsigned int)flags;
 - (NSDictionary)statistics;
 - (OSLogPersistence)init;
 - (OSLogPersistenceDelegate)delegate;
@@ -8,14 +8,14 @@
 - (int64_t)archiveVersion;
 - (void)_openFiles;
 - (void)_openLocalPersistenceDir;
-- (void)_openPath:(id)a3;
+- (void)_openPath:(id)path;
 - (void)dealloc;
-- (void)enumerateFromLastBootWithBlock:(id)a3;
-- (void)enumerateFromStartDate:(id)a3 toEndDate:(id)a4 withBlock:(id)a5;
-- (void)fetchFromStartDate:(id)a3 toEndDate:(id)a4;
-- (void)setLogArchive:(id)a3;
-- (void)setLogFile:(id)a3;
-- (void)setPredicate:(id)a3;
+- (void)enumerateFromLastBootWithBlock:(id)block;
+- (void)enumerateFromStartDate:(id)date toEndDate:(id)endDate withBlock:(id)block;
+- (void)fetchFromStartDate:(id)date toEndDate:(id)endDate;
+- (void)setLogArchive:(id)archive;
+- (void)setLogFile:(id)file;
+- (void)setPredicate:(id)predicate;
 @end
 
 @implementation OSLogPersistence
@@ -262,10 +262,10 @@ LABEL_25:
   return 1;
 }
 
-- (void)fetchFromStartDate:(id)a3 toEndDate:(id)a4
+- (void)fetchFromStartDate:(id)date toEndDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -283,13 +283,13 @@ LABEL_25:
     v10[4] = self;
     v9 = WeakRetained;
     v11 = v9;
-    [(OSLogPersistence *)self enumerateFromStartDate:v6 toEndDate:v7 withBlock:v10];
+    [(OSLogPersistence *)self enumerateFromStartDate:dateCopy toEndDate:endDateCopy withBlock:v10];
     if ([v14[5] count])
     {
       [v9 persistence:self results:v14[5] error:0];
     }
 
-    [v9 persistenceDidFinishReadingForStartDate:v6 endDate:v7];
+    [v9 persistenceDidFinishReadingForStartDate:dateCopy endDate:endDateCopy];
 
     _Block_object_dispose(&v13, 8);
   }
@@ -313,15 +313,15 @@ uint64_t __49__OSLogPersistence_fetchFromStartDate_toEndDate___block_invoke(uint
   return 1;
 }
 
-- (void)enumerateFromLastBootWithBlock:(id)a3
+- (void)enumerateFromLastBootWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_index)
   {
     [(OSLogPersistence *)self _openFiles];
   }
 
-  v5 = [(OSLogPersistence *)self allowSensitive];
+  allowSensitive = [(OSLogPersistence *)self allowSensitive];
   options = self->_options;
   index = self->_index;
   v11[0] = MEMORY[0x277D85DD0];
@@ -330,18 +330,18 @@ uint64_t __49__OSLogPersistence_fetchFromStartDate_toEndDate___block_invoke(uint
   v11[3] = &unk_2787AE0F8;
   if ((options & 3) != 0)
   {
-    v8 = !v5 & 0xFFFFFFFD | (2 * (options & 1)) | 4;
+    v8 = !allowSensitive & 0xFFFFFFFD | (2 * (options & 1)) | 4;
   }
 
   else
   {
-    v8 = !v5 & 0xFFFFFFFD | (2 * (options & 1));
+    v8 = !allowSensitive & 0xFFFFFFFD | (2 * (options & 1));
   }
 
   v9 = v8 & 0xFFFFFFBF | (((options >> 5) & 1) << 6);
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [(_OSLogIndex *)index enumerateEntriesFromLastBootWithOptions:v9 usingBlock:v11];
 }
 
@@ -363,12 +363,12 @@ uint64_t __51__OSLogPersistence_enumerateFromLastBootWithBlock___block_invoke(ui
   return v5;
 }
 
-- (void)enumerateFromStartDate:(id)a3 toEndDate:(id)a4 withBlock:(id)a5
+- (void)enumerateFromStartDate:(id)date toEndDate:(id)endDate withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 timeIntervalSince1970];
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
+  [dateCopy timeIntervalSince1970];
   if (v11 <= 0.0)
   {
     v13 = 0;
@@ -376,11 +376,11 @@ uint64_t __51__OSLogPersistence_enumerateFromLastBootWithBlock___block_invoke(ui
 
   else
   {
-    [v8 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v13 = (v12 * 1000000000.0);
   }
 
-  [v9 timeIntervalSince1970];
+  [endDateCopy timeIntervalSince1970];
   if (v14 <= 0.0)
   {
     v16 = 0;
@@ -388,7 +388,7 @@ uint64_t __51__OSLogPersistence_enumerateFromLastBootWithBlock___block_invoke(ui
 
   else
   {
-    [v9 timeIntervalSince1970];
+    [endDateCopy timeIntervalSince1970];
     v16 = (v15 * 1000000000.0);
   }
 
@@ -402,9 +402,9 @@ uint64_t __51__OSLogPersistence_enumerateFromLastBootWithBlock___block_invoke(ui
     v16 = -1;
   }
 
-  v18 = [(OSLogPersistence *)self allowSensitive];
+  allowSensitive = [(OSLogPersistence *)self allowSensitive];
   options = self->_options;
-  v20 = !v18 & 0xFFFFFFFD | (2 * (options & 1));
+  v20 = !allowSensitive & 0xFFFFFFFD | (2 * (options & 1));
   index = self->_index;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -421,8 +421,8 @@ uint64_t __51__OSLogPersistence_enumerateFromLastBootWithBlock___block_invoke(ui
   }
 
   v24[4] = self;
-  v25 = v10;
-  v23 = v10;
+  v25 = blockCopy;
+  v23 = blockCopy;
   [(_OSLogIndex *)index enumerateEntriesFrom:v13 to:v16 options:v22 usingBlock:v24];
 }
 
@@ -459,10 +459,10 @@ uint64_t __63__OSLogPersistence_enumerateFromStartDate_toEndDate_withBlock___blo
   return v6;
 }
 
-- (BOOL)streamChunks:(id)a3 andEntries:(id)a4 flags:(unsigned int)a5
+- (BOOL)streamChunks:(id)chunks andEntries:(id)entries flags:(unsigned int)flags
 {
-  v8 = a3;
-  v9 = a4;
+  chunksCopy = chunks;
+  entriesCopy = entries;
   v18 = 0u;
   memset(v17, 0, sizeof(v17));
   v13 = 0;
@@ -471,9 +471,9 @@ uint64_t __63__OSLogPersistence_enumerateFromStartDate_toEndDate_withBlock___blo
   v16 = 0;
   *__error() = 3;
   _chunk_support_context_init(v17);
-  *&v18 = v9;
-  *(&v18 + 1) = v8;
-  LODWORD(v17[0]) = a5;
+  *&v18 = entriesCopy;
+  *(&v18 + 1) = chunksCopy;
+  LODWORD(v17[0]) = flags;
   index = self->_index;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -483,10 +483,10 @@ uint64_t __63__OSLogPersistence_enumerateFromStartDate_toEndDate_withBlock___blo
   v12[5] = v17;
   [(_OSLogIndex *)index enumerateFilesUsingBlock:v12];
   _chunk_support_context_clear(v17);
-  LOBYTE(a5) = *(v14 + 24);
+  LOBYTE(flags) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
 
-  return a5;
+  return flags;
 }
 
 uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uint64_t a1, int a2, uint64_t a3, unint64_t a4)
@@ -539,15 +539,15 @@ uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uin
   result = self->_version;
   if (result)
   {
-    v3 = [result state];
-    if (v3 > 3)
+    state = [result state];
+    if (state > 3)
     {
       return 2;
     }
 
     else
     {
-      return qword_22E0818E0[v3];
+      return qword_22E0818E0[state];
     }
   }
 
@@ -583,31 +583,31 @@ uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uin
   return 1;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  v15 = a3;
-  if (v15)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v4 = [[_OSLogPredicateMapper alloc] initWithPredicate:v15 andValidate:0];
+    v4 = [[_OSLogPredicateMapper alloc] initWithPredicate:predicateCopy andValidate:0];
     v5 = [_OSLogLegacyPredicateMapper alloc];
-    v6 = [(_OSLogPredicateMapper *)v4 mappedPredicate];
-    v7 = [(_OSLogPredicateMapper *)v5 initWithPredicate:v6];
+    mappedPredicate = [(_OSLogPredicateMapper *)v4 mappedPredicate];
+    v7 = [(_OSLogPredicateMapper *)v5 initWithPredicate:mappedPredicate];
 
-    v8 = [(_OSLogPredicateMapper *)v7 mappedPredicate];
+    mappedPredicate2 = [(_OSLogPredicateMapper *)v7 mappedPredicate];
 
-    if (!v8)
+    if (!mappedPredicate2)
     {
       v11 = MEMORY[0x277CBEAD8];
-      v12 = [(_OSLogPredicateMapper *)v7 validationErrors];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      validationErrors = [(_OSLogPredicateMapper *)v7 validationErrors];
+      v13 = [validationErrors componentsJoinedByString:@"\n"];
       v14 = [v11 exceptionWithName:@"OSLogInvalidPredicateException" reason:v13 userInfo:0];
 
       objc_exception_throw(v14);
     }
 
-    v9 = [(_OSLogPredicateMapper *)v7 mappedPredicate];
+    mappedPredicate3 = [(_OSLogPredicateMapper *)v7 mappedPredicate];
     predicate = self->_predicate;
-    self->_predicate = v9;
+    self->_predicate = mappedPredicate3;
 
     if (([(_OSLogPredicateMapper *)v4 flags]& 2) != 0)
     {
@@ -627,38 +627,38 @@ uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uin
   }
 }
 
-- (void)setLogArchive:(id)a3
+- (void)setLogArchive:(id)archive
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  archiveCopy = archive;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  if ([v5 isFileURL])
+  if ([archiveCopy isFileURL])
   {
-    v7 = [v5 path];
-    v8 = [v7 pathExtension];
-    v9 = [v8 isEqualToString:@"logarchive"];
+    path = [archiveCopy path];
+    pathExtension = [path pathExtension];
+    v9 = [pathExtension isEqualToString:@"logarchive"];
 
     if (v9)
     {
-      if ([v6 fileExistsAtPath:v7 isDirectory:&v15])
+      if ([defaultManager fileExistsAtPath:path isDirectory:&v15])
       {
         if (v15)
         {
-          objc_storeStrong(&self->_logArchive, a3);
+          objc_storeStrong(&self->_logArchive, archive);
           [(OSLogPersistence *)self _openFiles];
 
           goto LABEL_6;
         }
 
         v10 = MEMORY[0x277CBEAD8];
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log archive named '%@' is not a package.", v7];
+        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log archive named '%@' is not a package.", path];
         v12 = @"Log archive is not a package.";
       }
 
       else
       {
         v10 = MEMORY[0x277CBEAD8];
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log archive named '%@' not found.", v7];
+        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log archive named '%@' not found.", path];
         v12 = @"File not Found";
       }
     }
@@ -666,7 +666,7 @@ uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uin
     else
     {
       v10 = MEMORY[0x277CBEAD8];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File name does not end with .logarchive (%@)", v7];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File name does not end with .logarchive (%@)", path];
       v12 = @"Invalid archive provided";
     }
 
@@ -679,33 +679,33 @@ uint64_t __50__OSLogPersistence_streamChunks_andEntries_flags___block_invoke(uin
 LABEL_6:
 }
 
-- (void)setLogFile:(id)a3
+- (void)setLogFile:(id)file
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  if (([v5 isFileURL] & 1) == 0)
+  if (([fileCopy isFileURL] & 1) == 0)
   {
     [(OSLogPersistence *)self _openFiles];
     goto LABEL_7;
   }
 
-  v7 = [v5 path];
-  v8 = [v7 pathExtension];
-  v9 = [v8 isEqualToString:@"tracev3"];
+  path = [fileCopy path];
+  pathExtension = [path pathExtension];
+  v9 = [pathExtension isEqualToString:@"tracev3"];
 
   if ((v9 & 1) == 0)
   {
     v10 = MEMORY[0x277CBEAD8];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File name does not end with .tracev3 (%@)", v7];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"File name does not end with .tracev3 (%@)", path];
     v12 = @"Invalid file provided";
     goto LABEL_11;
   }
 
-  if (([v6 fileExistsAtPath:v7 isDirectory:&v15] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:path isDirectory:&v15] & 1) == 0)
   {
     v10 = MEMORY[0x277CBEAD8];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log file named '%@' not found.", v7];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log file named '%@' not found.", path];
     v12 = @"File not Found";
     goto LABEL_11;
   }
@@ -713,7 +713,7 @@ LABEL_6:
   if (v15 == 1)
   {
     v10 = MEMORY[0x277CBEAD8];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log file named '%@' is not a regular file.", v7];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Log file named '%@' is not a regular file.", path];
     v12 = @"File is not a regular file.";
 LABEL_11:
     v13 = [v10 exceptionWithName:v12 reason:v11 userInfo:0];
@@ -722,7 +722,7 @@ LABEL_11:
     objc_exception_throw(v13);
   }
 
-  objc_storeStrong(&self->_logFile, a3);
+  objc_storeStrong(&self->_logFile, file);
   [(OSLogPersistence *)self _openFiles];
 
 LABEL_7:
@@ -762,31 +762,31 @@ LABEL_7:
   logFile = self->_logFile;
   if (logFile || self->_logArchive)
   {
-    v5 = [(NSURL *)logFile path];
-    if ([v5 isEqualToString:v12])
+    path = [(NSURL *)logFile path];
+    if ([path isEqualToString:v12])
     {
     }
 
     else
     {
-      v6 = [(NSURL *)self->_logArchive path];
-      v7 = [v6 isEqualToString:v12];
+      path2 = [(NSURL *)self->_logArchive path];
+      v7 = [path2 isEqualToString:v12];
 
       if (!v7)
       {
-        v8 = [(NSURL *)self->_logArchive path];
-        v9 = v8;
-        if (v8)
+        path3 = [(NSURL *)self->_logArchive path];
+        v9 = path3;
+        if (path3)
         {
-          v10 = v8;
+          path4 = path3;
         }
 
         else
         {
-          v10 = [(NSURL *)self->_logFile path];
+          path4 = [(NSURL *)self->_logFile path];
         }
 
-        v11 = v10;
+        v11 = path4;
 
         [(OSLogPersistence *)self _openPath:v11];
         goto LABEL_13;
@@ -798,11 +798,11 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)_openPath:(id)a3
+- (void)_openPath:(id)path
 {
-  v27 = a3;
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v27];
-  v5 = [v27 hasSuffix:@".logarchive"];
+  pathCopy = path;
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
+  v5 = [pathCopy hasSuffix:@".logarchive"];
   [(_OSLogCollectionReference *)self->_oslcr close];
   v6 = [_OSLogCollectionReference referenceWithURL:v4 error:0];
   oslcr = self->_oslcr;
@@ -819,9 +819,9 @@ LABEL_13:
 
   if ([(_OSLogVersioning *)self->_version state]== 1)
   {
-    v10 = [(_OSLogCollectionReference *)self->_oslcr timesyncReference];
+    timesyncReference = [(_OSLogCollectionReference *)self->_oslcr timesyncReference];
 
-    if (!v10)
+    if (!timesyncReference)
     {
       [(_OSLogCollectionReference *)self->_oslcr close];
       v11 = [_OSLogCollectionReference referenceWithURL:v4 error:0];
@@ -835,7 +835,7 @@ LABEL_13:
 
     if ((v5 & 1) == 0)
     {
-      v15 = open([v27 fileSystemRepresentation], 0);
+      v15 = open([pathCopy fileSystemRepresentation], 0);
       v16 = [[_OSLogChunkFile alloc] initWithFileDescriptor:v15 error:0];
       if (v16)
       {
@@ -858,16 +858,16 @@ LABEL_13:
       }
     }
 
-    v17 = [(_OSLogIndex *)self->_index persistStartWalltime];
-    v18 = [(_OSLogIndex *)self->_index specialStartWalltime];
-    if (v17 >= v18)
+    persistStartWalltime = [(_OSLogIndex *)self->_index persistStartWalltime];
+    specialStartWalltime = [(_OSLogIndex *)self->_index specialStartWalltime];
+    if (persistStartWalltime >= specialStartWalltime)
     {
-      v19 = v18;
+      v19 = specialStartWalltime;
     }
 
     else
     {
-      v19 = v17;
+      v19 = persistStartWalltime;
     }
 
     v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v19 / 0x3B9ACA00)];
@@ -875,8 +875,8 @@ LABEL_13:
     self->_startDate = v20;
 
     objc_storeStrong(&self->_sparseDataStart, self->_startDate);
-    v22 = [(_OSLogIndex *)self->_index endWalltime];
-    v23 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v22 / 0x3B9ACA00)];
+    endWalltime = [(_OSLogIndex *)self->_index endWalltime];
+    v23 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(endWalltime / 0x3B9ACA00)];
     endDate = self->_endDate;
     self->_endDate = v23;
   }
@@ -936,14 +936,14 @@ LABEL_13:
         [(_OSLogIndex *)self->_index insertChunkStore:v21];
       }
 
-      v17 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
       startDate = self->_startDate;
-      self->_startDate = v17;
+      self->_startDate = distantPast;
 
       objc_storeStrong(&self->_sparseDataStart, self->_startDate);
-      v19 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       endDate = self->_endDate;
-      self->_endDate = v19;
+      self->_endDate = date;
     }
   }
 }

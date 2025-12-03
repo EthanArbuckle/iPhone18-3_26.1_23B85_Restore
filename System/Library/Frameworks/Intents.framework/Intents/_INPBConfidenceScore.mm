@@ -1,13 +1,13 @@
 @interface _INPBConfidenceScore
-- (BOOL)isEqual:(id)a3;
-- (_INPBConfidenceScore)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBConfidenceScore)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addComponents:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setComponents:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addComponents:(id)components;
+- (void)encodeWithCoder:(id)coder;
+- (void)setComponents:(id)components;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBConfidenceScore
@@ -15,18 +15,18 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBConfidenceScore *)self hasAggregateScore])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBConfidenceScore *)self aggregateScore];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"aggregateScore"];
+    [dictionary setObject:v5 forKeyedSubscript:@"aggregateScore"];
   }
 
   if ([(NSArray *)self->_components count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -46,8 +46,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -56,12 +56,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"components"];
+    [dictionary setObject:array forKeyedSubscript:@"components"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -107,23 +107,23 @@
   return [(NSArray *)self->_components hash]^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBConfidenceScore *)self hasAggregateScore];
-    if (v5 == [v4 hasAggregateScore])
+    hasAggregateScore = [(_INPBConfidenceScore *)self hasAggregateScore];
+    if (hasAggregateScore == [equalCopy hasAggregateScore])
     {
-      if (!-[_INPBConfidenceScore hasAggregateScore](self, "hasAggregateScore") || ![v4 hasAggregateScore] || (aggregateScore = self->_aggregateScore, objc_msgSend(v4, "aggregateScore"), aggregateScore == v7))
+      if (!-[_INPBConfidenceScore hasAggregateScore](self, "hasAggregateScore") || ![equalCopy hasAggregateScore] || (aggregateScore = self->_aggregateScore, objc_msgSend(equalCopy, "aggregateScore"), aggregateScore == v7))
       {
-        v8 = [(_INPBConfidenceScore *)self components];
-        v9 = [v4 components];
-        v10 = v9;
-        if ((v8 != 0) != (v9 == 0))
+        components = [(_INPBConfidenceScore *)self components];
+        components2 = [equalCopy components];
+        v10 = components2;
+        if ((components != 0) != (components2 == 0))
         {
-          v11 = [(_INPBConfidenceScore *)self components];
-          if (!v11)
+          components3 = [(_INPBConfidenceScore *)self components];
+          if (!components3)
           {
 
 LABEL_14:
@@ -131,10 +131,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v12 = v11;
-          v13 = [(_INPBConfidenceScore *)self components];
-          v14 = [v4 components];
-          v15 = [v13 isEqual:v14];
+          v12 = components3;
+          components4 = [(_INPBConfidenceScore *)self components];
+          components5 = [equalCopy components];
+          v15 = [components4 isEqual:components5];
 
           if (v15)
           {
@@ -155,7 +155,7 @@ LABEL_12:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBConfidenceScore allocWithZone:](_INPBConfidenceScore init];
   if ([(_INPBConfidenceScore *)self hasAggregateScore])
@@ -164,40 +164,40 @@ LABEL_12:
     [(_INPBConfidenceScore *)v5 setAggregateScore:?];
   }
 
-  v6 = [(NSArray *)self->_components copyWithZone:a3];
+  v6 = [(NSArray *)self->_components copyWithZone:zone];
   [(_INPBConfidenceScore *)v5 setComponents:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBConfidenceScore *)self data];
+  coderCopy = coder;
+  data = [(_INPBConfidenceScore *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBConfidenceScore)initWithCoder:(id)a3
+- (_INPBConfidenceScore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBConfidenceScore *)self initWithData:v6];
+    self = [(_INPBConfidenceScore *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBConfidenceScore *)self hasAggregateScore])
   {
     aggregateScore = self->_aggregateScore;
@@ -239,27 +239,27 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addComponents:(id)a3
+- (void)addComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   components = self->_components;
-  v8 = v4;
+  v8 = componentsCopy;
   if (!components)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_components;
-    self->_components = v6;
+    self->_components = array;
 
-    v4 = v8;
+    componentsCopy = v8;
     components = self->_components;
   }
 
-  [(NSArray *)components addObject:v4];
+  [(NSArray *)components addObject:componentsCopy];
 }
 
-- (void)setComponents:(id)a3
+- (void)setComponents:(id)components
 {
-  v4 = [a3 mutableCopy];
+  v4 = [components mutableCopy];
   components = self->_components;
   self->_components = v4;
 

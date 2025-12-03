@@ -1,10 +1,10 @@
 @interface EDSearchableIndexDiagnosticsController
 + (OS_os_log)log;
 - (EDPersistence)persistence;
-- (EDSearchableIndexDiagnosticsController)initWithPersistence:(id)a3;
-- (id)_localDiagnosticsFromStatistics:(id)a3;
-- (id)_remoteDiagnosticsFromStatistics:(id)a3;
-- (void)_logDebuggingDiagnostics:(id)a3 forKey:(id)a4;
+- (EDSearchableIndexDiagnosticsController)initWithPersistence:(id)persistence;
+- (id)_localDiagnosticsFromStatistics:(id)statistics;
+- (id)_remoteDiagnosticsFromStatistics:(id)statistics;
+- (void)_logDebuggingDiagnostics:(id)diagnostics forKey:(id)key;
 - (void)_registerDebuggingDiagnosticsCaptureHandler;
 - (void)_startLoggingDebuggingDiagnostics;
 - (void)_stopCollection;
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __45__EDSearchableIndexDiagnosticsController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_86 != -1)
   {
     dispatch_once(&log_onceToken_86, block);
@@ -41,16 +41,16 @@ void __45__EDSearchableIndexDiagnosticsController_log__block_invoke(uint64_t a1)
   log_log_86 = v1;
 }
 
-- (EDSearchableIndexDiagnosticsController)initWithPersistence:(id)a3
+- (EDSearchableIndexDiagnosticsController)initWithPersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   v8.receiver = self;
   v8.super_class = EDSearchableIndexDiagnosticsController;
   v5 = [(EDSearchableIndexDiagnosticsController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_persistence, v4);
+    objc_storeWeak(&v5->_persistence, persistenceCopy);
   }
 
   return v6;
@@ -90,42 +90,42 @@ void __45__EDSearchableIndexDiagnosticsController_log__block_invoke(uint64_t a1)
   [(EDSearchableIndexDiagnosticsController *)self _stopLoggingDebuggingDiagnostics];
 }
 
-- (id)_localDiagnosticsFromStatistics:(id)a3
+- (id)_localDiagnosticsFromStatistics:(id)statistics
 {
-  v3 = a3;
+  statisticsCopy = statistics;
   v4 = [EDSearchableIndexDiagnosticsSnapshot alloc];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AA20]];
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AA88]];
-  v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AAA0]];
-  v9 = [(EDSearchableIndexDiagnosticsSnapshot *)v4 initWithDate:v5 indexableMessages:v6 messagesIndexed:v7 messagesToRedonate:v8 turboMode:+[EDSearchableIndexScheduler isTurboModeIndexingEnabled]];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AA20]];
+  v7 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AA88]];
+  v8 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AAA0]];
+  v9 = [(EDSearchableIndexDiagnosticsSnapshot *)v4 initWithDate:date indexableMessages:v6 messagesIndexed:v7 messagesToRedonate:v8 turboMode:+[EDSearchableIndexScheduler isTurboModeIndexingEnabled]];
 
   return v9;
 }
 
-- (id)_remoteDiagnosticsFromStatistics:(id)a3
+- (id)_remoteDiagnosticsFromStatistics:(id)statistics
 {
-  v3 = a3;
+  statisticsCopy = statistics;
   v4 = [EDSearchableIndexDiagnosticsSnapshot alloc];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AA30]];
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AAE8]];
-  v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E699AAF8]];
-  v9 = [(EDSearchableIndexDiagnosticsSnapshot *)v4 initWithDate:v5 indexableMessages:v6 messagesIndexed:v7 messagesToRedonate:v8 turboMode:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AA30]];
+  v7 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AAE8]];
+  v8 = [statisticsCopy objectForKeyedSubscript:*MEMORY[0x1E699AAF8]];
+  v9 = [(EDSearchableIndexDiagnosticsSnapshot *)v4 initWithDate:date indexableMessages:v6 messagesIndexed:v7 messagesToRedonate:v8 turboMode:0];
 
   return v9;
 }
 
-- (void)_logDebuggingDiagnostics:(id)a3 forKey:(id)a4
+- (void)_logDebuggingDiagnostics:(id)diagnostics forKey:(id)key
 {
-  v14 = a3;
-  v5 = a4;
-  if (v14)
+  diagnosticsCopy = diagnostics;
+  keyCopy = key;
+  if (diagnosticsCopy)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc(MEMORY[0x1E695DF70]);
-    v8 = [MEMORY[0x1E695E000] em_userDefaults];
-    v9 = [v8 objectForKey:v5];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v9 = [em_userDefaults objectForKey:keyCopy];
     v10 = [v7 initWithArray:v9];
 
     if ([v10 count] >= 0x151)
@@ -133,12 +133,12 @@ void __45__EDSearchableIndexDiagnosticsController_log__block_invoke(uint64_t a1)
       [v10 removeObjectAtIndex:0];
     }
 
-    v11 = [v14 dictionaryRepresentation];
-    [v10 addObject:v11];
+    dictionaryRepresentation = [diagnosticsCopy dictionaryRepresentation];
+    [v10 addObject:dictionaryRepresentation];
 
-    v12 = [MEMORY[0x1E695E000] em_userDefaults];
+    em_userDefaults2 = [MEMORY[0x1E695E000] em_userDefaults];
     v13 = [v10 copy];
-    [v12 setObject:v13 forKey:v5];
+    [em_userDefaults2 setObject:v13 forKey:keyCopy];
 
     objc_autoreleasePoolPop(v6);
   }
@@ -146,27 +146,27 @@ void __45__EDSearchableIndexDiagnosticsController_log__block_invoke(uint64_t a1)
 
 - (void)_startLoggingDebuggingDiagnostics
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
-    v5 = [(EDSearchableIndexDiagnosticsController *)self indexingDiagnosticsScheduler];
-    if (!v5)
+    indexingDiagnosticsScheduler = [(EDSearchableIndexDiagnosticsController *)self indexingDiagnosticsScheduler];
+    if (!indexingDiagnosticsScheduler)
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:@"com.apple.mail.searchableIndex.indexingDiagnosticsCollector"];
-      [v5 setQualityOfService:9];
-      [v5 setRepeats:1];
-      [v5 setInterval:1800.0];
-      [v5 setTolerance:300.0];
+      indexingDiagnosticsScheduler = [objc_alloc(MEMORY[0x1E696AAD0]) initWithIdentifier:@"com.apple.mail.searchableIndex.indexingDiagnosticsCollector"];
+      [indexingDiagnosticsScheduler setQualityOfService:9];
+      [indexingDiagnosticsScheduler setRepeats:1];
+      [indexingDiagnosticsScheduler setInterval:1800.0];
+      [indexingDiagnosticsScheduler setTolerance:300.0];
       objc_initWeak(&location, self);
       v6 = MEMORY[0x1E69E9820];
       v7 = 3221225472;
       v8 = __75__EDSearchableIndexDiagnosticsController__startLoggingDebuggingDiagnostics__block_invoke;
       v9 = &unk_1E82532E0;
       objc_copyWeak(&v10, &location);
-      [v5 scheduleWithBlock:&v6];
-      [(EDSearchableIndexDiagnosticsController *)self setIndexingDiagnosticsScheduler:v5, v6, v7, v8, v9];
+      [indexingDiagnosticsScheduler scheduleWithBlock:&v6];
+      [(EDSearchableIndexDiagnosticsController *)self setIndexingDiagnosticsScheduler:indexingDiagnosticsScheduler, v6, v7, v8, v9];
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
     }
@@ -233,14 +233,14 @@ id __85__EDSearchableIndexDiagnosticsController__registerDebuggingDiagnosticsCap
 
 - (void)_stopLoggingDebuggingDiagnostics
 {
-  v2 = [(EDSearchableIndexDiagnosticsController *)self indexingDiagnosticsScheduler];
-  [v2 invalidate];
+  indexingDiagnosticsScheduler = [(EDSearchableIndexDiagnosticsController *)self indexingDiagnosticsScheduler];
+  [indexingDiagnosticsScheduler invalidate];
 }
 
 - (void)_unregisterDebuggingDiagnosticsCaptureHandler
 {
-  v3 = [(EDSearchableIndexDiagnosticsController *)self stateCancelable];
-  [v3 cancel];
+  stateCancelable = [(EDSearchableIndexDiagnosticsController *)self stateCancelable];
+  [stateCancelable cancel];
 
   [(EDSearchableIndexDiagnosticsController *)self setStateCancelable:0];
 }

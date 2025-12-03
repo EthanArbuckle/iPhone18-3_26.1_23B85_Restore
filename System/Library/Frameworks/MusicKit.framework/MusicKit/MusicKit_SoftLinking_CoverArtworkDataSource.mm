@@ -2,21 +2,21 @@
 + (MusicKit_SoftLinking_CoverArtworkDataSource)sharedDataSource;
 + (id)_bundle;
 - (MusicKit_SoftLinking_CoverArtworkDataSource)init;
-- (double)roundValueFor:(double)a3 toScale:(double)a4;
-- (id)_cacheIdentifierForCoverArtworkRecipeToken:(id)a3 withSize:(CGSize)a4;
-- (id)_coverArtworkImageWithSize:(CGSize)a3 destinationScale:(double)a4 coverArtworkToken:(id)a5;
-- (id)_errorWithDescription:(id)a3;
-- (id)_generateAngularGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateGradientArchesImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateGradientSoundwaveImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateGradientVinylImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateLinearGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateNineDotGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateRadialGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)_generateSimpleGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)imageForCoverArtworkRecipe:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (double)roundValueFor:(double)for toScale:(double)scale;
+- (id)_cacheIdentifierForCoverArtworkRecipeToken:(id)token withSize:(CGSize)size;
+- (id)_coverArtworkImageWithSize:(CGSize)size destinationScale:(double)scale coverArtworkToken:(id)token;
+- (id)_errorWithDescription:(id)description;
+- (id)_generateAngularGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateGradientArchesImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateGradientSoundwaveImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateGradientVinylImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateLinearGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateNineDotGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateRadialGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)_generateSimpleGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)imageForCoverArtworkRecipe:(id)recipe;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_CoverArtworkDataSource
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  v5 = [v4 token];
-  if (v5 && ([v4 fittingSize], -[MusicKit_SoftLinking_CoverArtworkDataSource _cacheIdentifierForCoverArtworkRecipeToken:withSize:](self, "_cacheIdentifierForCoverArtworkRecipeToken:withSize:", v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  if (token && ([catalogCopy fittingSize], -[MusicKit_SoftLinking_CoverArtworkDataSource _cacheIdentifierForCoverArtworkRecipeToken:withSize:](self, "_cacheIdentifierForCoverArtworkRecipeToken:withSize:", token), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [(NSCache *)self->_cache objectForKey:v6];
@@ -66,18 +66,18 @@
   return v8;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
-  if (v8)
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
+  if (token)
   {
-    [v6 fittingSize];
+    [catalogCopy fittingSize];
     v10 = v9;
     v12 = v11;
-    [v6 destinationScale];
-    v14 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _coverArtworkImageWithSize:v8 destinationScale:v10 coverArtworkToken:v12, v13];
+    [catalogCopy destinationScale];
+    v14 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _coverArtworkImageWithSize:token destinationScale:v10 coverArtworkToken:v12, v13];
     v24 = 0;
     v25 = &v24;
     v26 = 0x2050000000;
@@ -96,35 +96,35 @@
 
     v16 = v15;
     _Block_object_dispose(&v24, 8);
-    v17 = [v15 representationForVisualIdentity:v8 withSize:v14 image:{v10, v12}];
-    v18 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _cacheIdentifierForCoverArtworkRecipeToken:v8 withSize:v10, v12];
+    v17 = [v15 representationForVisualIdentity:token withSize:v14 image:{v10, v12}];
+    v18 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _cacheIdentifierForCoverArtworkRecipeToken:token withSize:v10, v12];
     if (v18)
     {
       [(NSCache *)self->_cache setObject:v17 forKey:v18];
     }
 
-    v7[2](v7, v17, 0);
+    handlerCopy[2](handlerCopy, v17, 0);
   }
 
   else
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v6 token];
-    v21 = [v19 stringWithFormat:@"MPArtworkCatalog token can not be converted to MusicKit_SoftLinking_CoverArtworkToken: %@", v20];
+    token2 = [catalogCopy token];
+    v21 = [v19 stringWithFormat:@"MPArtworkCatalog token can not be converted to MusicKit_SoftLinking_CoverArtworkToken: %@", token2];
     v22 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _errorWithDescription:v21];
 
-    (v7)[2](v7, 0, v22);
+    (handlerCopy)[2](handlerCopy, 0, v22);
   }
 }
 
-- (id)_cacheIdentifierForCoverArtworkRecipeToken:(id)a3 withSize:(CGSize)a4
+- (id)_cacheIdentifierForCoverArtworkRecipeToken:(id)token withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a3 stringRepresentation];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  stringRepresentation = [token stringRepresentation];
+  if (stringRepresentation)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, width: %f, height: %f", v6, *&width, *&height];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, width: %f, height: %f", stringRepresentation, *&width, *&height];
   }
 
   else
@@ -135,14 +135,14 @@
   return v7;
 }
 
-- (id)_coverArtworkImageWithSize:(CGSize)a3 destinationScale:(double)a4 coverArtworkToken:(id)a5
+- (id)_coverArtworkImageWithSize:(CGSize)size destinationScale:(double)scale coverArtworkToken:(id)token
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = [v9 playlistName];
-  v11 = [getUIGraphicsImageRendererFormatClass() preferredFormat];
-  [v11 setScale:a4];
+  height = size.height;
+  width = size.width;
+  tokenCopy = token;
+  playlistName = [tokenCopy playlistName];
+  preferredFormat = [getUIGraphicsImageRendererFormatClass() preferredFormat];
+  [preferredFormat setScale:scale];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -161,7 +161,7 @@
 
   v13 = v12;
   _Block_object_dispose(&v39, 8);
-  v14 = [v10 _containsEmoji];
+  _containsEmoji = [playlistName _containsEmoji];
   if (width >= 270.0)
   {
     v15 = width;
@@ -172,7 +172,7 @@
     v15 = 270.0;
   }
 
-  if (v14)
+  if (_containsEmoji)
   {
     v16 = height;
   }
@@ -182,7 +182,7 @@
     v16 = v15;
   }
 
-  if (v14)
+  if (_containsEmoji)
   {
     v17 = width;
   }
@@ -192,7 +192,7 @@
     v17 = v15;
   }
 
-  v18 = [objc_alloc(getUIGraphicsImageRendererClass()) initWithSize:v11 format:{v17, v16}];
+  v18 = [objc_alloc(getUIGraphicsImageRendererClass()) initWithSize:preferredFormat format:{v17, v16}];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __109__MusicKit_SoftLinking_CoverArtworkDataSource__coverArtworkImageWithSize_destinationScale_coverArtworkToken___block_invoke;
@@ -200,12 +200,12 @@
   v35 = v17;
   v36 = v16;
   v31[4] = self;
-  v19 = v9;
+  v19 = tokenCopy;
   v32 = v19;
-  v20 = v10;
+  v20 = playlistName;
   v33 = v20;
   v37 = 270.0 / v17;
-  v21 = v11;
+  v21 = preferredFormat;
   v34 = v21;
   v22 = [v18 imageWithActions:v31];
   if (v17 != width || v16 != height)
@@ -225,12 +225,12 @@
   return v22;
 }
 
-- (double)roundValueFor:(double)a3 toScale:(double)a4
+- (double)roundValueFor:(double)for toScale:(double)scale
 {
   v4 = 0;
-  if (a4 != 0.0)
+  if (scale != 0.0)
   {
-    v5 = fabs(a4);
+    v5 = fabs(scale);
     v4 = v5 != INFINITY;
     if (v5 > fmax(v5 * 0.0000000149011612, 0.0))
     {
@@ -238,27 +238,27 @@
     }
   }
 
-  if (a4 < 0.0)
+  if (scale < 0.0)
   {
     v4 = 1;
   }
 
-  v6 = 1.0;
+  scaleCopy = 1.0;
   if (!v4)
   {
-    v6 = a4;
+    scaleCopy = scale;
   }
 
-  return round(a3 * a4) / v6;
+  return round(for * scale) / scaleCopy;
 }
 
-- (id)_errorWithDescription:(id)a3
+- (id)_errorWithDescription:(id)description
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277CCA068];
-  v10[0] = a3;
+  v10[0] = description;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [v3 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MusicKit_SoftLinking_CoverArtworkRecipeError" code:0 userInfo:v5];
 
@@ -267,88 +267,88 @@
   return v6;
 }
 
-- (id)imageForCoverArtworkRecipe:(id)a3
+- (id)imageForCoverArtworkRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [v4 version];
-  v6 = [v5 isEqual:@"1.0"];
+  recipeCopy = recipe;
+  version = [recipeCopy version];
+  v6 = [version isEqual:@"1.0"];
 
   if (!v6)
   {
     goto LABEL_11;
   }
 
-  v7 = [v4 backgroundColor];
-  if (!v7)
+  backgroundColor = [recipeCopy backgroundColor];
+  if (!backgroundColor)
   {
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [v4 primaryColor];
-  if (v9)
+  preferredFormat = backgroundColor;
+  primaryColor = [recipeCopy primaryColor];
+  if (primaryColor)
   {
-    v10 = v9;
-    v11 = [v4 secondaryColor];
-    if (!v11)
+    v10 = primaryColor;
+    secondaryColor = [recipeCopy secondaryColor];
+    if (!secondaryColor)
     {
       goto LABEL_27;
     }
 
-    v12 = [v4 tertiaryColor];
+    tertiaryColor = [recipeCopy tertiaryColor];
 
-    if (v12)
+    if (tertiaryColor)
     {
-      v8 = [getUIGraphicsImageRendererFormatClass() preferredFormat];
-      v10 = [objc_alloc(getUIGraphicsImageRendererClass()) initWithSize:v8 format:{180.0, 180.0}];
+      preferredFormat = [getUIGraphicsImageRendererFormatClass() preferredFormat];
+      v10 = [objc_alloc(getUIGraphicsImageRendererClass()) initWithSize:preferredFormat format:{180.0, 180.0}];
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
-      v14 = [v4 expression];
-      v11 = 0;
-      if (v14 > 4)
+      expression = [recipeCopy expression];
+      secondaryColor = 0;
+      if (expression > 4)
       {
-        if (v14 > 6)
+        if (expression > 6)
         {
-          if (v14 == 7)
+          if (expression == 7)
           {
-            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientArchesImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientArchesImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
             goto LABEL_26;
           }
 
-          if (v14 == 8)
+          if (expression == 8)
           {
-            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateNineDotGradientImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateNineDotGradientImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
             goto LABEL_26;
           }
 
           goto LABEL_27;
         }
 
-        if (v14 == 5)
+        if (expression == 5)
         {
-          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateAngularGradientImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateAngularGradientImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
         }
 
         else
         {
-          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateRadialGradientImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateRadialGradientImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
         }
       }
 
       else
       {
-        if (v14 <= 2)
+        if (expression <= 2)
         {
-          if (v14 == 1)
+          if (expression == 1)
           {
-            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateSimpleGradientImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateSimpleGradientImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
             goto LABEL_26;
           }
 
-          if (v14 == 2)
+          if (expression == 2)
           {
-            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientVinylImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+            v15 = [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientVinylImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
 LABEL_26:
-            v11 = v15;
+            secondaryColor = v15;
           }
 
 LABEL_27:
@@ -356,14 +356,14 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        if (v14 == 3)
+        if (expression == 3)
         {
-          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateLinearGradientImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateLinearGradientImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
         }
 
         else
         {
-          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientSoundwaveImageForCoverArtworkRecipe:v4 withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
+          [(MusicKit_SoftLinking_CoverArtworkDataSource *)self _generateGradientSoundwaveImageForCoverArtworkRecipe:recipeCopy withImageRenderer:v10 size:DeviceRGB andSpace:180.0, 180.0];
         }
       }
       v15 = ;
@@ -371,233 +371,233 @@ LABEL_27:
     }
 
 LABEL_11:
-    v11 = 0;
+    secondaryColor = 0;
     goto LABEL_29;
   }
 
-  v11 = 0;
+  secondaryColor = 0;
 LABEL_28:
 
 LABEL_29:
 
-  return v11;
+  return secondaryColor;
 }
 
-- (id)_generateSimpleGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateSimpleGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __129__MusicKit_SoftLinking_CoverArtworkDataSource__generateSimpleGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
-    v18[4] = v12;
+    v18[4] = backgroundColor;
     *&v18[5] = width;
     *&v18[6] = height;
-    v18[7] = v15;
-    v18[8] = a6;
-    v18[9] = v13;
-    v16 = [v10 imageWithActions:v18];
+    v18[7] = tertiaryColor;
+    v18[8] = space;
+    v18[9] = primaryColor;
+    v16 = [rendererCopy imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateGradientVinylImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateGradientVinylImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __128__MusicKit_SoftLinking_CoverArtworkDataSource__generateGradientVinylImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &unk_2782297E8;
-    v20 = v12;
+    v20 = backgroundColor;
     v21 = width;
     v22 = height;
-    v23 = v15;
-    v24 = a6;
-    v25 = v14;
-    v19 = v10;
+    v23 = tertiaryColor;
+    spaceCopy = space;
+    v25 = secondaryColor;
+    v19 = rendererCopy;
     v16 = [v19 imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateLinearGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateLinearGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __129__MusicKit_SoftLinking_CoverArtworkDataSource__generateLinearGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
-    v18[4] = v12;
+    v18[4] = backgroundColor;
     *&v18[5] = width;
     *&v18[6] = height;
-    v18[7] = v13;
-    v18[8] = v14;
-    v18[9] = a6;
-    v16 = [v10 imageWithActions:v18];
+    v18[7] = primaryColor;
+    v18[8] = secondaryColor;
+    v18[9] = space;
+    v16 = [rendererCopy imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateGradientSoundwaveImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateGradientSoundwaveImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __132__MusicKit_SoftLinking_CoverArtworkDataSource__generateGradientSoundwaveImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
-    v18[4] = v15;
+    v18[4] = tertiaryColor;
     *&v18[5] = width;
     *&v18[6] = height;
-    v18[7] = v12;
-    v18[8] = v13;
-    v18[9] = a6;
-    v16 = [v10 imageWithActions:v18];
+    v18[7] = backgroundColor;
+    v18[8] = primaryColor;
+    v18[9] = space;
+    v16 = [rendererCopy imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateAngularGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateAngularGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __130__MusicKit_SoftLinking_CoverArtworkDataSource__generateAngularGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
-    v18[4] = v12;
-    v18[5] = v14;
-    v18[6] = v15;
-    v18[7] = a6;
+    v18[4] = backgroundColor;
+    v18[5] = secondaryColor;
+    v18[6] = tertiaryColor;
+    v18[7] = space;
     *&v18[8] = width;
     *&v18[9] = height;
-    v16 = [v10 imageWithActions:v18];
+    v16 = [rendererCopy imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateRadialGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateRadialGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __129__MusicKit_SoftLinking_CoverArtworkDataSource__generateRadialGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v18[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
-    v18[4] = v15;
-    v18[5] = v12;
-    v18[6] = v13;
-    v18[7] = a6;
+    v18[4] = tertiaryColor;
+    v18[5] = backgroundColor;
+    v18[6] = primaryColor;
+    v18[7] = space;
     *&v18[8] = width;
     *&v18[9] = height;
-    v16 = [v10 imageWithActions:v18];
+    v16 = [rendererCopy imageWithActions:v18];
   }
 
   return v16;
 }
 
-- (id)_generateGradientArchesImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateGradientArchesImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v14 = [v12 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v15 = [v12 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v16 = [v12 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v17 = 0;
-  if (v13 && v14 && v15 && v16)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -608,14 +608,14 @@ LABEL_29:
     v33[4] = self;
     *&v33[7] = width;
     *&v33[8] = height;
-    v18 = [v11 imageWithActions:v33];
+    v18 = [rendererCopy imageWithActions:v33];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __129__MusicKit_SoftLinking_CoverArtworkDataSource__generateGradientArchesImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke_2;
     v21[3] = &unk_2782297C0;
-    v24 = v14;
-    v25 = v16;
-    v26 = a6;
+    v24 = primaryColor;
+    v25 = tertiaryColor;
+    spaceCopy = space;
     v27 = width;
     v28 = height;
     v29 = 0;
@@ -623,60 +623,60 @@ LABEL_29:
     v31 = width;
     v32 = height;
     v22 = v18;
-    v23 = v13;
+    v23 = backgroundColor;
     v19 = v18;
-    v17 = [v11 imageWithActions:v21];
+    v17 = [rendererCopy imageWithActions:v21];
   }
 
   return v17;
 }
 
-- (id)_generateNineDotGradientImageForCoverArtworkRecipe:(id)a3 withImageRenderer:(id)a4 size:(CGSize)a5 andSpace:(CGColorSpace *)a6
+- (id)_generateNineDotGradientImageForCoverArtworkRecipe:(id)recipe withImageRenderer:(id)renderer size:(CGSize)size andSpace:(CGColorSpace *)space
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 backgroundColor];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  recipeCopy = recipe;
+  backgroundColor = [recipeCopy backgroundColor];
 
-  v13 = [v11 primaryColor];
+  primaryColor = [recipeCopy primaryColor];
 
-  v14 = [v11 secondaryColor];
+  secondaryColor = [recipeCopy secondaryColor];
 
-  v15 = [v11 tertiaryColor];
+  tertiaryColor = [recipeCopy tertiaryColor];
 
   v16 = 0;
-  if (v12 && v13 && v14 && v15)
+  if (backgroundColor && primaryColor && secondaryColor && tertiaryColor)
   {
-    v17 = [getUIColorClass() colorWithCGColor:v15];
+    v17 = [getUIColorClass() colorWithCGColor:tertiaryColor];
     v18 = objc_alloc(getUIGraphicsImageRendererClass());
-    v19 = [v10 format];
-    v20 = [v18 initWithSize:v19 format:{width * 1.1, height * 1.1}];
+    format = [rendererCopy format];
+    v20 = [v18 initWithSize:format format:{width * 1.1, height * 1.1}];
 
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __130__MusicKit_SoftLinking_CoverArtworkDataSource__generateNineDotGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke;
     v52[3] = &unk_2782297E8;
-    v54 = v12;
+    v54 = backgroundColor;
     v55 = width * 1.1;
     v56 = height * 1.1;
-    v57 = v14;
+    v57 = secondaryColor;
     v21 = v17;
     v53 = v21;
-    v58 = v15;
-    v59 = a6;
+    v58 = tertiaryColor;
+    spaceCopy = space;
     v22 = [v20 imageWithActions:v52];
     [v22 scale];
     v24 = width * v23;
     [v22 scale];
     v26 = height * v25;
     v27 = height * v25 * 0.05;
-    v28 = [v22 CGImage];
+    cGImage = [v22 CGImage];
     v61.origin.x = v24 * 0.05;
     v61.origin.y = v27;
     v61.size.width = v24;
     v61.size.height = v26;
-    v29 = CGImageCreateWithImageInRect(v28, v61);
+    v29 = CGImageCreateWithImageInRect(cGImage, v61);
     v37 = [objc_alloc(getUIImageClass(v29 v30];
 
     v51[0] = MEMORY[0x277D85DD0];
@@ -685,7 +685,7 @@ LABEL_29:
     v51[3] = &__block_descriptor_48_e40_v16__0__UIGraphicsImageRendererContext_8l;
     *&v51[4] = width;
     *&v51[5] = height;
-    v38 = [v10 imageWithActions:v51];
+    v38 = [rendererCopy imageWithActions:v51];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __130__MusicKit_SoftLinking_CoverArtworkDataSource__generateNineDotGradientImageForCoverArtworkRecipe_withImageRenderer_size_andSpace___block_invoke_3;
@@ -700,7 +700,7 @@ LABEL_29:
     v39 = v37;
     v40 = v38;
     v41 = v21;
-    v16 = [v10 imageWithActions:v43];
+    v16 = [rendererCopy imageWithActions:v43];
   }
 
   return v16;
@@ -712,7 +712,7 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = __54__MusicKit_SoftLinking_CoverArtworkDataSource__bundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundle_sOnceToken != -1)
   {
     dispatch_once(&_bundle_sOnceToken, block);

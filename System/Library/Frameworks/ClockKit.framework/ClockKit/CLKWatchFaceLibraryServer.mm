@@ -3,8 +3,8 @@
 - (void)_clearConnection;
 - (void)_queue_setupConnectionIfNeeded;
 - (void)dealloc;
-- (void)openWatchFaceURLWithSecurityScopedURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)validateFaceType:(id)a3 faceBundleId:(id)a4 completionHandler:(id)a5;
+- (void)openWatchFaceURLWithSecurityScopedURL:(id)l sourceApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)validateFaceType:(id)type faceBundleId:(id)id completionHandler:(id)handler;
 @end
 
 @implementation CLKWatchFaceLibraryServer
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __43__CLKWatchFaceLibraryServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -81,21 +81,21 @@ void __59__CLKWatchFaceLibraryServer__queue_setupConnectionIfNeeded__block_invok
   self->_connection = 0;
 }
 
-- (void)openWatchFaceURLWithSecurityScopedURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)openWatchFaceURLWithSecurityScopedURL:(id)l sourceApplicationBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  lCopy = l;
   [(CLKWatchFaceLibraryServer *)self _queue_setupConnectionIfNeeded];
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __119__CLKWatchFaceLibraryServer_openWatchFaceURLWithSecurityScopedURL_sourceApplicationBundleIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_278A1E728;
-  v15 = v8;
-  v12 = v8;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v14];
-  [v13 openWatchFaceURLWithSecurityScopedURL:v10 sourceApplicationBundleIdentifier:v9 completionHandler:v12];
+  [v13 openWatchFaceURLWithSecurityScopedURL:lCopy sourceApplicationBundleIdentifier:identifierCopy completionHandler:v12];
 }
 
 void __119__CLKWatchFaceLibraryServer_openWatchFaceURLWithSecurityScopedURL_sourceApplicationBundleIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -110,21 +110,21 @@ void __119__CLKWatchFaceLibraryServer_openWatchFaceURLWithSecurityScopedURL_sour
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)validateFaceType:(id)a3 faceBundleId:(id)a4 completionHandler:(id)a5
+- (void)validateFaceType:(id)type faceBundleId:(id)id completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  idCopy = id;
+  typeCopy = type;
   [(CLKWatchFaceLibraryServer *)self _queue_setupConnectionIfNeeded];
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__CLKWatchFaceLibraryServer_validateFaceType_faceBundleId_completionHandler___block_invoke;
   v14[3] = &unk_278A1E728;
-  v15 = v8;
-  v12 = v8;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v14];
-  [v13 validateFaceType:v10 faceBundleId:v9 completionHandler:v12];
+  [v13 validateFaceType:typeCopy faceBundleId:idCopy completionHandler:v12];
 }
 
 void __77__CLKWatchFaceLibraryServer_validateFaceType_faceBundleId_completionHandler___block_invoke(uint64_t a1, void *a2)

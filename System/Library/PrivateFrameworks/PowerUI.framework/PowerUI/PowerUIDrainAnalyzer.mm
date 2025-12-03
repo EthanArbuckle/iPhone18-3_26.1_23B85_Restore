@@ -52,9 +52,9 @@ uint64_t __38__PowerUIDrainAnalyzer_sharedInstance__block_invoke()
     notificationQueue = v2->_notificationQueue;
     v2->_notificationQueue = v9;
 
-    v11 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = v2->_context;
-    v2->_context = v11;
+    v2->_context = userContext;
 
     v13 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.powerui.lowSOCAnalyzer"];
     defaults = v2->_defaults;
@@ -309,12 +309,12 @@ void __49__PowerUIDrainAnalyzer_scheduleAnalyticsActivity__block_invoke(uint64_t
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
-  v4 = [MEMORY[0x277D36CC8] predictor];
-  v5 = [v4 lowSOCPredictionOutput];
-  v6 = [v5 lowSOCPredicted];
+  predictor = [MEMORY[0x277D36CC8] predictor];
+  lowSOCPredictionOutput = [predictor lowSOCPredictionOutput];
+  lowSOCPredicted = [lowSOCPredictionOutput lowSOCPredicted];
   log = self->_log;
   v8 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (lowSOCPredicted)
   {
     if (v8)
     {
@@ -335,15 +335,15 @@ LABEL_6:
   }
 
   defaults = self->_defaults;
-  v11 = [v5 modelVersion];
-  [(NSUserDefaults *)defaults setObject:v11 forKey:@"modelVersion"];
+  modelVersion = [lowSOCPredictionOutput modelVersion];
+  [(NSUserDefaults *)defaults setObject:modelVersion forKey:@"modelVersion"];
 
   v12 = self->_defaults;
-  v13 = [MEMORY[0x277CBEAA8] date];
-  [(NSUserDefaults *)v12 setObject:v13 forKey:@"predictionTime"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSUserDefaults *)v12 setObject:date forKey:@"predictionTime"];
 
   v14 = self->_defaults;
-  v15 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v15 = [MEMORY[0x277CCABB0] numberWithBool:lowSOCPredicted];
   [(NSUserDefaults *)v14 setObject:v15 forKey:@"predictionResult"];
 
   v16 = self->_defaults;
@@ -352,7 +352,7 @@ LABEL_6:
 
   v18 = self->_defaults;
   v19 = MEMORY[0x277CCABB0];
-  [v5 confidence];
+  [lowSOCPredictionOutput confidence];
   v20 = [v19 numberWithDouble:?];
   [(NSUserDefaults *)v18 setObject:v20 forKey:@"predictionConfidence"];
 
@@ -409,50 +409,50 @@ void __42__PowerUIDrainAnalyzer_updateLPMAndMinSOC__block_invoke(uint64_t a1)
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
       v7 = [(NSUserDefaults *)self->_defaults objectForKey:@"startSOC"];
       if (v7)
       {
         v8 = [(NSUserDefaults *)self->_defaults objectForKey:@"startSOC"];
-        v9 = [v8 integerValue];
+        integerValue = [v8 integerValue];
       }
 
       else
       {
-        v9 = -1;
+        integerValue = -1;
       }
 
       v12 = [(NSUserDefaults *)self->_defaults objectForKey:@"wasInLPM"];
       if (v12)
       {
         v13 = [(NSUserDefaults *)self->_defaults objectForKey:@"wasInLPM"];
-        v14 = [v13 BOOLValue];
+        bOOLValue2 = [v13 BOOLValue];
       }
 
       else
       {
-        v14 = 0;
+        bOOLValue2 = 0;
       }
 
-      v15 = [MEMORY[0x277CBEB38] dictionary];
-      v16 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-      [v15 setObject:v16 forKeyedSubscript:@"startSOC"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v16 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+      [dictionary setObject:v16 forKeyedSubscript:@"startSOC"];
 
       v17 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
       v18 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
-      [v15 setObject:v18 forKeyedSubscript:@"endSOC"];
+      [dictionary setObject:v18 forKeyedSubscript:@"endSOC"];
 
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:self->_minBatteryLevel];
-      [v15 setObject:v19 forKeyedSubscript:@"minSOC"];
+      [dictionary setObject:v19 forKeyedSubscript:@"minSOC"];
 
       v20 = [(NSUserDefaults *)self->_defaults objectForKey:@"kDefaultsMinSOCDate"];
       v21 = MEMORY[0x277CCABB0];
       [v20 timeIntervalSinceNow];
       v23 = [v21 numberWithDouble:v22 / -60.0];
-      [v15 setObject:v23 forKeyedSubscript:@"minSOCDate"];
+      [dictionary setObject:v23 forKeyedSubscript:@"minSOCDate"];
 
-      v24 = [MEMORY[0x277CCABB0] numberWithBool:v6];
-      [v15 setObject:v24 forKeyedSubscript:@"wasLowSOCPredicted"];
+      v24 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+      [dictionary setObject:v24 forKeyedSubscript:@"wasLowSOCPredicted"];
 
       v25 = [(NSUserDefaults *)self->_defaults objectForKey:@"predictionConfidence"];
       if (v25)
@@ -468,34 +468,34 @@ void __42__PowerUIDrainAnalyzer_updateLPMAndMinSOC__block_invoke(uint64_t a1)
       }
 
       v29 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-      [v15 setObject:v29 forKeyedSubscript:@"predictionConfidence"];
+      [dictionary setObject:v29 forKeyedSubscript:@"predictionConfidence"];
 
       v30 = MEMORY[0x277CCABB0];
       [v3 timeIntervalSinceNow];
       v32 = [v30 numberWithDouble:v31 / -60.0];
-      [v15 setObject:v32 forKeyedSubscript:@"intervalFromPrediction"];
+      [dictionary setObject:v32 forKeyedSubscript:@"intervalFromPrediction"];
 
       v33 = [MEMORY[0x277CCABB0] numberWithInteger:self->_minBatteryLevel - 15];
-      [v15 setObject:v33 forKeyedSubscript:@"minSOCDiff"];
+      [dictionary setObject:v33 forKeyedSubscript:@"minSOCDiff"];
 
-      v34 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-      [v15 setObject:v34 forKeyedSubscript:@"wasInLPM"];
+      v34 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
+      [dictionary setObject:v34 forKeyedSubscript:@"wasInLPM"];
 
       if (self->_minBatteryLevel > 15)
       {
         v35 = MEMORY[0x277CBEC28];
-        [v15 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"wasActualLowSOC"];
+        [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"wasActualLowSOC"];
         v36 = MEMORY[0x277CBEC38];
       }
 
       else
       {
         v35 = MEMORY[0x277CBEC38];
-        [v15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"wasActualLowSOC"];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"wasActualLowSOC"];
         v36 = MEMORY[0x277CBEC28];
       }
 
-      if (v6)
+      if (bOOLValue)
       {
         v37 = v35;
       }
@@ -505,21 +505,21 @@ void __42__PowerUIDrainAnalyzer_updateLPMAndMinSOC__block_invoke(uint64_t a1)
         v37 = v36;
       }
 
-      [v15 setObject:v37 forKeyedSubscript:@"isPredictionTrue"];
+      [dictionary setObject:v37 forKeyedSubscript:@"isPredictionTrue"];
       v38 = [(NSUserDefaults *)self->_defaults objectForKey:@"modelVersion"];
-      [v15 setObject:v38 forKeyedSubscript:@"modelInfo"];
+      [dictionary setObject:v38 forKeyedSubscript:@"modelInfo"];
 
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v43 = v15;
+        v43 = dictionary;
         _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Sending to analytics %@", buf, 0xCu);
       }
 
-      if ([v15 count])
+      if ([dictionary count])
       {
-        v41 = v15;
+        v41 = dictionary;
         AnalyticsSendEventLazy();
       }
     }

@@ -1,73 +1,73 @@
 @interface TAAccessoryInformation
 - (BOOL)isCapableOfBOM;
 - (BOOL)isCapableOfPrecisionFinding;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHawkeyeAudioAccessory;
-- (TAAccessoryInformation)initWithCoder:(id)a3;
-- (TAAccessoryInformation)initWithDeviceUUID:(id)a3 deviceType:(unint64_t)a4 productData:(id)a5 manufacturerName:(id)a6 modelName:(id)a7 firmwareVersion:(id)a8 accessoryCategory:(id)a9 accessoryCapabilities:(id)a10 serialNumber:(id)a11 protocolImplementation:(int64_t)a12 networkID:(int64_t)a13 batteryType:(int64_t)a14 batteryLevel:(int64_t)a15;
-- (id)accessoryTypeNameWithAdvTypeString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAAccessoryInformation)initWithCoder:(id)coder;
+- (TAAccessoryInformation)initWithDeviceUUID:(id)d deviceType:(unint64_t)type productData:(id)data manufacturerName:(id)name modelName:(id)modelName firmwareVersion:(id)version accessoryCategory:(id)category accessoryCapabilities:(id)self0 serialNumber:(id)self1 protocolImplementation:(int64_t)self2 networkID:(int64_t)self3 batteryType:(int64_t)self4 batteryLevel:(int64_t)self5;
+- (id)accessoryTypeNameWithAdvTypeString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
 - (unsigned)productId;
 - (unsigned)vendorId;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAAccessoryInformation
 
-- (TAAccessoryInformation)initWithDeviceUUID:(id)a3 deviceType:(unint64_t)a4 productData:(id)a5 manufacturerName:(id)a6 modelName:(id)a7 firmwareVersion:(id)a8 accessoryCategory:(id)a9 accessoryCapabilities:(id)a10 serialNumber:(id)a11 protocolImplementation:(int64_t)a12 networkID:(int64_t)a13 batteryType:(int64_t)a14 batteryLevel:(int64_t)a15
+- (TAAccessoryInformation)initWithDeviceUUID:(id)d deviceType:(unint64_t)type productData:(id)data manufacturerName:(id)name modelName:(id)modelName firmwareVersion:(id)version accessoryCategory:(id)category accessoryCapabilities:(id)self0 serialNumber:(id)self1 protocolImplementation:(int64_t)self2 networkID:(int64_t)self3 batteryType:(int64_t)self4 batteryLevel:(int64_t)self5
 {
-  v21 = a3;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v27 = a10;
-  v28 = a11;
+  dCopy = d;
+  dataCopy = data;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  versionCopy = version;
+  categoryCopy = category;
+  capabilitiesCopy = capabilities;
+  numberCopy = number;
   v47.receiver = self;
   v47.super_class = TAAccessoryInformation;
   v29 = [(TAAccessoryInformation *)&v47 init];
   if (v29)
   {
-    v30 = [v21 copy];
+    v30 = [dCopy copy];
     identifier = v29->_identifier;
     v29->_identifier = v30;
 
-    v29->_deviceType = a4;
-    v32 = [v22 copy];
+    v29->_deviceType = type;
+    v32 = [dataCopy copy];
     productData = v29->_productData;
     v29->_productData = v32;
 
-    v34 = [v23 copy];
+    v34 = [nameCopy copy];
     manufacturerName = v29->_manufacturerName;
     v29->_manufacturerName = v34;
 
-    v36 = [v24 copy];
+    v36 = [modelNameCopy copy];
     modelName = v29->_modelName;
     v29->_modelName = v36;
 
-    v38 = [v25 copy];
+    v38 = [versionCopy copy];
     firmwareVersion = v29->_firmwareVersion;
     v29->_firmwareVersion = v38;
 
-    v40 = [v26 copy];
+    v40 = [categoryCopy copy];
     accessoryCategory = v29->_accessoryCategory;
     v29->_accessoryCategory = v40;
 
-    v42 = [v27 copy];
+    v42 = [capabilitiesCopy copy];
     accessoryCapabilities = v29->_accessoryCapabilities;
     v29->_accessoryCapabilities = v42;
 
-    v44 = [v28 copy];
+    v44 = [numberCopy copy];
     serialNumber = v29->_serialNumber;
     v29->_serialNumber = v44;
 
-    v29->_protocolImplementation = a12;
-    v29->_networkID = a13;
-    v29->_batteryType = a14;
-    v29->_batteryLevel = a15;
+    v29->_protocolImplementation = implementation;
+    v29->_networkID = iD;
+    v29->_batteryType = batteryType;
+    v29->_batteryLevel = level;
   }
 
   return v29;
@@ -75,12 +75,12 @@
 
 - (BOOL)isCapableOfPrecisionFinding
 {
-  v3 = [(TAAccessoryInformation *)self accessoryCapabilities];
+  accessoryCapabilities = [(TAAccessoryInformation *)self accessoryCapabilities];
 
-  if (v3 && (-[TAAccessoryInformation accessoryCapabilities](self, "accessoryCapabilities"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5 == 4) && -[TAAccessoryInformation deviceType](self, "deviceType") == 1)
+  if (accessoryCapabilities && (-[TAAccessoryInformation accessoryCapabilities](self, "accessoryCapabilities"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5 == 4) && -[TAAccessoryInformation deviceType](self, "deviceType") == 1)
   {
-    v6 = [(TAAccessoryInformation *)self accessoryCapabilities];
-    v7 = *[v6 bytes];
+    accessoryCapabilities2 = [(TAAccessoryInformation *)self accessoryCapabilities];
+    v7 = *[accessoryCapabilities2 bytes];
 
     return (v7 >> 7) & 1;
   }
@@ -95,39 +95,39 @@
 
 - (BOOL)isCapableOfBOM
 {
-  v3 = [(TAAccessoryInformation *)self accessoryCapabilities];
+  accessoryCapabilities = [(TAAccessoryInformation *)self accessoryCapabilities];
 
-  if (!v3)
+  if (!accessoryCapabilities)
   {
     return 0;
   }
 
-  v4 = [(TAAccessoryInformation *)self accessoryCapabilities];
-  v5 = [v4 length];
+  accessoryCapabilities2 = [(TAAccessoryInformation *)self accessoryCapabilities];
+  v5 = [accessoryCapabilities2 length];
 
   if (v5 != 4)
   {
     return 0;
   }
 
-  v6 = [(TAAccessoryInformation *)self accessoryCapabilities];
-  v7 = *[v6 bytes];
+  accessoryCapabilities3 = [(TAAccessoryInformation *)self accessoryCapabilities];
+  v7 = *[accessoryCapabilities3 bytes];
 
   return (~v7 & 0x102) == 0;
 }
 
 - (unsigned)vendorId
 {
-  v3 = [(TAAccessoryInformation *)self productData];
-  v4 = [v3 length];
+  productData = [(TAAccessoryInformation *)self productData];
+  v4 = [productData length];
 
   if (v4 != 8)
   {
     return 0;
   }
 
-  v5 = [(TAAccessoryInformation *)self productData];
-  v6 = [v5 subdataWithRange:{0, 4}];
+  productData2 = [(TAAccessoryInformation *)self productData];
+  v6 = [productData2 subdataWithRange:{0, 4}];
 
   v7 = *[v6 bytes];
   return v7;
@@ -135,16 +135,16 @@
 
 - (unsigned)productId
 {
-  v3 = [(TAAccessoryInformation *)self productData];
-  v4 = [v3 length];
+  productData = [(TAAccessoryInformation *)self productData];
+  v4 = [productData length];
 
   if (v4 != 8)
   {
     return 0;
   }
 
-  v5 = [(TAAccessoryInformation *)self productData];
-  v6 = [v5 subdataWithRange:{4, 4}];
+  productData2 = [(TAAccessoryInformation *)self productData];
+  v6 = [productData2 subdataWithRange:{4, 4}];
 
   v7 = *[v6 bytes];
   return v7;
@@ -178,57 +178,57 @@
   return v7;
 }
 
-- (id)accessoryTypeNameWithAdvTypeString:(id)a3
+- (id)accessoryTypeNameWithAdvTypeString:(id)string
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = [(TAAccessoryInformation *)self deviceType]- 1;
   if (v5 > 3)
   {
-    v6 = @"Unknown";
-    v7 = @"Unknown";
+    manufacturerName2 = @"Unknown";
+    modelName2 = @"Unknown";
     v8 = @"Unknown";
   }
 
   else
   {
-    v6 = off_279DD1928[v5];
-    v7 = off_279DD1948[v5];
+    manufacturerName2 = off_279DD1928[v5];
+    modelName2 = off_279DD1948[v5];
     v8 = off_279DD1968[v5];
   }
 
-  if (v4)
+  if (stringCopy)
   {
     v28[0] = v8;
-    v28[1] = v4;
+    v28[1] = stringCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
     v8 = [v9 componentsJoinedByString:@":"];
   }
 
-  v10 = [(TAAccessoryInformation *)self manufacturerName];
-  v11 = [v10 length];
+  manufacturerName = [(TAAccessoryInformation *)self manufacturerName];
+  v11 = [manufacturerName length];
 
   if (v11)
   {
-    v6 = [(TAAccessoryInformation *)self manufacturerName];
+    manufacturerName2 = [(TAAccessoryInformation *)self manufacturerName];
   }
 
-  v12 = [(TAAccessoryInformation *)self modelName];
-  v13 = [v12 length];
+  modelName = [(TAAccessoryInformation *)self modelName];
+  v13 = [modelName length];
 
   if (v13)
   {
-    v7 = [(TAAccessoryInformation *)self modelName];
+    modelName2 = [(TAAccessoryInformation *)self modelName];
   }
 
-  v14 = [(TAAccessoryInformation *)self productData];
-  v15 = [v14 length];
+  productData = [(TAAccessoryInformation *)self productData];
+  v15 = [productData length];
 
   if (v15 == 8)
   {
-    v16 = [(TAAccessoryInformation *)self vendorId];
-    v17 = [(TAAccessoryInformation *)self productId];
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%X:%X", v16, v17];
+    vendorId = [(TAAccessoryInformation *)self vendorId];
+    productId = [(TAAccessoryInformation *)self productId];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%X:%X", vendorId, productId];
   }
 
   else
@@ -239,8 +239,8 @@
   if ([(__CFString *)v18 isEqualToString:@"Unknown"])
   {
     v27[0] = v8;
-    v27[1] = v6;
-    v27[2] = v7;
+    v27[1] = manufacturerName2;
+    v27[2] = modelName2;
     v19 = MEMORY[0x277CBEA60];
     v20 = v27;
     v21 = 3;
@@ -249,8 +249,8 @@
   else
   {
     v26[0] = v8;
-    v26[1] = v6;
-    v26[2] = v7;
+    v26[1] = manufacturerName2;
+    v26[2] = modelName2;
     v26[3] = v18;
     v19 = MEMORY[0x277CBEA60];
     v20 = v26;
@@ -265,10 +265,10 @@
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -278,76 +278,76 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(TAAccessoryInformation *)self identifier];
-      v9 = [(TAAccessoryInformation *)v7 identifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      identifier = [(TAAccessoryInformation *)self identifier];
+      identifier2 = [(TAAccessoryInformation *)v7 identifier];
+      if (identifier != identifier2)
       {
-        v3 = [(TAAccessoryInformation *)self identifier];
-        v4 = [(TAAccessoryInformation *)v7 identifier];
-        if (![v3 isEqual:v4])
+        identifier3 = [(TAAccessoryInformation *)self identifier];
+        identifier4 = [(TAAccessoryInformation *)v7 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_58;
         }
       }
 
-      v11 = [(TAAccessoryInformation *)self deviceType];
-      if (v11 != [(TAAccessoryInformation *)v7 deviceType])
+      deviceType = [(TAAccessoryInformation *)self deviceType];
+      if (deviceType != [(TAAccessoryInformation *)v7 deviceType])
       {
         v10 = 0;
         goto LABEL_57;
       }
 
-      v12 = [(TAAccessoryInformation *)self productData];
-      v13 = [(TAAccessoryInformation *)v7 productData];
-      if (v12 == v13)
+      productData = [(TAAccessoryInformation *)self productData];
+      productData2 = [(TAAccessoryInformation *)v7 productData];
+      if (productData == productData2)
       {
-        v71 = v3;
+        v71 = identifier3;
       }
 
       else
       {
-        v14 = [(TAAccessoryInformation *)self productData];
-        v69 = [(TAAccessoryInformation *)v7 productData];
-        if (![v14 isEqual:?])
+        productData3 = [(TAAccessoryInformation *)self productData];
+        productData4 = [(TAAccessoryInformation *)v7 productData];
+        if (![productData3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_55;
         }
 
-        v71 = v3;
-        v3 = v14;
+        v71 = identifier3;
+        identifier3 = productData3;
       }
 
-      v15 = [(TAAccessoryInformation *)self manufacturerName];
-      v73 = [(TAAccessoryInformation *)v7 manufacturerName];
-      v74 = v15;
-      v72 = v13;
-      v70 = v12;
-      if (v15 != v73)
+      manufacturerName = [(TAAccessoryInformation *)self manufacturerName];
+      manufacturerName2 = [(TAAccessoryInformation *)v7 manufacturerName];
+      v74 = manufacturerName;
+      v72 = productData2;
+      v70 = productData;
+      if (manufacturerName != manufacturerName2)
       {
-        v16 = [(TAAccessoryInformation *)self manufacturerName];
-        v65 = [(TAAccessoryInformation *)v7 manufacturerName];
-        v66 = v16;
-        if (![v16 isEqual:?])
+        manufacturerName3 = [(TAAccessoryInformation *)self manufacturerName];
+        manufacturerName4 = [(TAAccessoryInformation *)v7 manufacturerName];
+        v66 = manufacturerName3;
+        if (![manufacturerName3 isEqual:?])
         {
           v10 = 0;
-          v17 = v73;
+          v17 = manufacturerName2;
           v18 = v74;
 LABEL_53:
 
 LABEL_54:
-          v12 = v70;
-          v13 = v72;
-          v14 = v3;
-          v3 = v71;
+          productData = v70;
+          productData2 = v72;
+          productData3 = identifier3;
+          identifier3 = v71;
           if (v70 == v72)
           {
 LABEL_56:
 
 LABEL_57:
-            if (v8 == v9)
+            if (identifier == identifier2)
             {
 LABEL_59:
 
@@ -365,20 +365,20 @@ LABEL_55:
         }
       }
 
-      v19 = [(TAAccessoryInformation *)self modelName];
-      v67 = [(TAAccessoryInformation *)v7 modelName];
-      v68 = v19;
-      v63 = v3;
-      if (v19 != v67)
+      modelName = [(TAAccessoryInformation *)self modelName];
+      modelName2 = [(TAAccessoryInformation *)v7 modelName];
+      v68 = modelName;
+      v63 = identifier3;
+      if (modelName != modelName2)
       {
-        v20 = [(TAAccessoryInformation *)self modelName];
-        v60 = [(TAAccessoryInformation *)v7 modelName];
-        v61 = v20;
-        if (![v20 isEqual:?])
+        modelName3 = [(TAAccessoryInformation *)self modelName];
+        modelName4 = [(TAAccessoryInformation *)v7 modelName];
+        v61 = modelName3;
+        if (![modelName3 isEqual:?])
         {
-          v17 = v73;
+          v17 = manufacturerName2;
           v10 = 0;
-          v21 = v67;
+          v21 = modelName2;
           v22 = v68;
 LABEL_51:
 
@@ -393,47 +393,47 @@ LABEL_52:
         }
       }
 
-      v23 = [(TAAccessoryInformation *)self firmwareVersion];
-      v62 = [(TAAccessoryInformation *)v7 firmwareVersion];
-      v64 = v23;
-      if (v23 != v62)
+      firmwareVersion = [(TAAccessoryInformation *)self firmwareVersion];
+      firmwareVersion2 = [(TAAccessoryInformation *)v7 firmwareVersion];
+      v64 = firmwareVersion;
+      if (firmwareVersion != firmwareVersion2)
       {
-        v24 = [(TAAccessoryInformation *)self firmwareVersion];
-        v56 = [(TAAccessoryInformation *)v7 firmwareVersion];
-        v57 = v24;
-        if (![v24 isEqual:?])
+        firmwareVersion3 = [(TAAccessoryInformation *)self firmwareVersion];
+        firmwareVersion4 = [(TAAccessoryInformation *)v7 firmwareVersion];
+        v57 = firmwareVersion3;
+        if (![firmwareVersion3 isEqual:?])
         {
           v10 = 0;
-          v25 = v62;
+          v25 = firmwareVersion2;
           goto LABEL_48;
         }
       }
 
-      v26 = [(TAAccessoryInformation *)self accessoryCategory];
-      v58 = [(TAAccessoryInformation *)v7 accessoryCategory];
-      v59 = v26;
-      if (v26 != v58)
+      accessoryCategory = [(TAAccessoryInformation *)self accessoryCategory];
+      accessoryCategory2 = [(TAAccessoryInformation *)v7 accessoryCategory];
+      v59 = accessoryCategory;
+      if (accessoryCategory != accessoryCategory2)
       {
-        v27 = [(TAAccessoryInformation *)self accessoryCategory];
-        v53 = [(TAAccessoryInformation *)v7 accessoryCategory];
-        v54 = v27;
-        if (![v27 isEqual:?])
+        accessoryCategory3 = [(TAAccessoryInformation *)self accessoryCategory];
+        accessoryCategory4 = [(TAAccessoryInformation *)v7 accessoryCategory];
+        v54 = accessoryCategory3;
+        if (![accessoryCategory3 isEqual:?])
         {
           v10 = 0;
-          v28 = v58;
+          v28 = accessoryCategory2;
 LABEL_46:
 
 LABEL_47:
-          v25 = v62;
-          if (v64 == v62)
+          v25 = firmwareVersion2;
+          if (v64 == firmwareVersion2)
           {
-            v3 = v63;
-            v17 = v73;
+            identifier3 = v63;
+            v17 = manufacturerName2;
 LABEL_50:
 
-            v21 = v67;
+            v21 = modelName2;
             v22 = v68;
-            if (v68 == v67)
+            if (v68 == modelName2)
             {
               goto LABEL_52;
             }
@@ -442,32 +442,32 @@ LABEL_50:
           }
 
 LABEL_48:
-          v3 = v63;
-          v17 = v73;
+          identifier3 = v63;
+          v17 = manufacturerName2;
 
           goto LABEL_50;
         }
       }
 
-      v29 = [(TAAccessoryInformation *)self accessoryCapabilities];
-      v30 = [(TAAccessoryInformation *)v7 accessoryCapabilities];
-      v55 = v29;
-      v52 = v30;
-      if (v29 != v30)
+      accessoryCapabilities = [(TAAccessoryInformation *)self accessoryCapabilities];
+      accessoryCapabilities2 = [(TAAccessoryInformation *)v7 accessoryCapabilities];
+      v55 = accessoryCapabilities;
+      v52 = accessoryCapabilities2;
+      if (accessoryCapabilities != accessoryCapabilities2)
       {
-        v31 = v30;
-        v32 = [(TAAccessoryInformation *)self accessoryCapabilities];
-        v49 = [(TAAccessoryInformation *)v7 accessoryCapabilities];
-        v50 = v32;
-        if (![v32 isEqual:?])
+        v31 = accessoryCapabilities2;
+        accessoryCapabilities3 = [(TAAccessoryInformation *)self accessoryCapabilities];
+        accessoryCapabilities4 = [(TAAccessoryInformation *)v7 accessoryCapabilities];
+        v50 = accessoryCapabilities3;
+        if (![accessoryCapabilities3 isEqual:?])
         {
           v10 = 0;
           v33 = v55;
 LABEL_44:
 
 LABEL_45:
-          v28 = v58;
-          if (v59 == v58)
+          v28 = accessoryCategory2;
+          if (v59 == accessoryCategory2)
           {
             goto LABEL_47;
           }
@@ -476,22 +476,22 @@ LABEL_45:
         }
       }
 
-      v34 = [(TAAccessoryInformation *)self serialNumber];
-      v35 = [(TAAccessoryInformation *)v7 serialNumber];
-      v51 = v34;
-      v36 = v34 == v35;
-      v37 = v35;
+      serialNumber = [(TAAccessoryInformation *)self serialNumber];
+      serialNumber2 = [(TAAccessoryInformation *)v7 serialNumber];
+      v51 = serialNumber;
+      v36 = serialNumber == serialNumber2;
+      v37 = serialNumber2;
       if (v36)
       {
-        v48 = v35;
+        v48 = serialNumber2;
       }
 
       else
       {
-        v38 = [(TAAccessoryInformation *)self serialNumber];
-        v46 = [(TAAccessoryInformation *)v7 serialNumber];
-        v47 = v38;
-        if (![v38 isEqual:?])
+        serialNumber3 = [(TAAccessoryInformation *)self serialNumber];
+        serialNumber4 = [(TAAccessoryInformation *)v7 serialNumber];
+        v47 = serialNumber3;
+        if (![serialNumber3 isEqual:?])
         {
           v10 = 0;
           v44 = v51;
@@ -501,11 +501,11 @@ LABEL_45:
         v48 = v37;
       }
 
-      v39 = [(TAAccessoryInformation *)self protocolImplementation];
-      if (v39 == [(TAAccessoryInformation *)v7 protocolImplementation]&& (v40 = [(TAAccessoryInformation *)self networkID], v40 == [(TAAccessoryInformation *)v7 networkID]) && (v41 = [(TAAccessoryInformation *)self batteryType], v41 == [(TAAccessoryInformation *)v7 batteryType]))
+      protocolImplementation = [(TAAccessoryInformation *)self protocolImplementation];
+      if (protocolImplementation == [(TAAccessoryInformation *)v7 protocolImplementation]&& (v40 = [(TAAccessoryInformation *)self networkID], v40 == [(TAAccessoryInformation *)v7 networkID]) && (v41 = [(TAAccessoryInformation *)self batteryType], v41 == [(TAAccessoryInformation *)v7 batteryType]))
       {
-        v42 = [(TAAccessoryInformation *)self batteryLevel];
-        v10 = v42 == [(TAAccessoryInformation *)v7 batteryLevel];
+        batteryLevel = [(TAAccessoryInformation *)self batteryLevel];
+        v10 = batteryLevel == [(TAAccessoryInformation *)v7 batteryLevel];
         v43 = v10;
       }
 
@@ -548,11 +548,11 @@ LABEL_60:
 {
   v52[13] = *MEMORY[0x277D85DE8];
   v51[0] = @"identifier";
-  v50 = [(TAAccessoryInformation *)self identifier];
-  if (v50)
+  identifier = [(TAAccessoryInformation *)self identifier];
+  if (identifier)
   {
-    v34 = [(TAAccessoryInformation *)self identifier];
-    v3 = [v34 description];
+    identifier2 = [(TAAccessoryInformation *)self identifier];
+    v3 = [identifier2 description];
   }
 
   else
@@ -566,11 +566,11 @@ LABEL_60:
   v49 = [TASPAdvertisement TASPAdvertisementDeviceTypeToString:[(TAAccessoryInformation *)self deviceType]];
   v52[1] = v49;
   v51[2] = @"productData";
-  v4 = [(TAAccessoryInformation *)self productData];
-  if (v4)
+  productData = [(TAAccessoryInformation *)self productData];
+  if (productData)
   {
-    v33 = [(TAAccessoryInformation *)self productData];
-    v5 = [v33 description];
+    productData2 = [(TAAccessoryInformation *)self productData];
+    v5 = [productData2 description];
   }
 
   else
@@ -581,11 +581,11 @@ LABEL_60:
   v42 = v5;
   v52[2] = v5;
   v51[3] = @"manufacturer";
-  v6 = [(TAAccessoryInformation *)self manufacturerName];
-  if (v6)
+  manufacturerName = [(TAAccessoryInformation *)self manufacturerName];
+  if (manufacturerName)
   {
-    v32 = [(TAAccessoryInformation *)self manufacturerName];
-    v7 = [v32 description];
+    manufacturerName2 = [(TAAccessoryInformation *)self manufacturerName];
+    v7 = [manufacturerName2 description];
   }
 
   else
@@ -596,11 +596,11 @@ LABEL_60:
   v41 = v7;
   v52[3] = v7;
   v51[4] = @"model";
-  v8 = [(TAAccessoryInformation *)self modelName];
-  if (v8)
+  modelName = [(TAAccessoryInformation *)self modelName];
+  if (modelName)
   {
-    v31 = [(TAAccessoryInformation *)self modelName];
-    v9 = [v31 description];
+    modelName2 = [(TAAccessoryInformation *)self modelName];
+    v9 = [modelName2 description];
   }
 
   else
@@ -611,11 +611,11 @@ LABEL_60:
   v40 = v9;
   v52[4] = v9;
   v51[5] = @"FV";
-  v46 = [(TAAccessoryInformation *)self firmwareVersion];
-  if (v46)
+  firmwareVersion = [(TAAccessoryInformation *)self firmwareVersion];
+  if (firmwareVersion)
   {
-    v30 = [(TAAccessoryInformation *)self firmwareVersion];
-    v10 = [v30 description];
+    firmwareVersion2 = [(TAAccessoryInformation *)self firmwareVersion];
+    v10 = [firmwareVersion2 description];
   }
 
   else
@@ -626,11 +626,11 @@ LABEL_60:
   v39 = v10;
   v52[5] = v10;
   v51[6] = @"category";
-  v11 = [(TAAccessoryInformation *)self accessoryCategory];
-  if (v11)
+  accessoryCategory = [(TAAccessoryInformation *)self accessoryCategory];
+  if (accessoryCategory)
   {
-    v29 = [(TAAccessoryInformation *)self accessoryCategory];
-    v12 = [v29 description];
+    accessoryCategory2 = [(TAAccessoryInformation *)self accessoryCategory];
+    v12 = [accessoryCategory2 description];
   }
 
   else
@@ -641,11 +641,11 @@ LABEL_60:
   v38 = v12;
   v52[6] = v12;
   v51[7] = @"capabilities";
-  v44 = [(TAAccessoryInformation *)self accessoryCapabilities];
-  if (v44)
+  accessoryCapabilities = [(TAAccessoryInformation *)self accessoryCapabilities];
+  if (accessoryCapabilities)
   {
-    v28 = [(TAAccessoryInformation *)self accessoryCapabilities];
-    v13 = [v28 description];
+    accessoryCapabilities2 = [(TAAccessoryInformation *)self accessoryCapabilities];
+    v13 = [accessoryCapabilities2 description];
   }
 
   else
@@ -656,11 +656,11 @@ LABEL_60:
   v37 = v13;
   v52[7] = v13;
   v51[8] = @"serialNumber";
-  v14 = [(TAAccessoryInformation *)self serialNumber];
-  if (v14)
+  serialNumber = [(TAAccessoryInformation *)self serialNumber];
+  if (serialNumber)
   {
-    v27 = [(TAAccessoryInformation *)self serialNumber];
-    v15 = [v27 description];
+    serialNumber2 = [(TAAccessoryInformation *)self serialNumber];
+    v15 = [serialNumber2 description];
   }
 
   else
@@ -671,9 +671,9 @@ LABEL_60:
   v36 = v15;
   v52[8] = v15;
   v51[9] = @"protocolImplementation";
-  v16 = [(TAAccessoryInformation *)self protocolImplementation];
-  v48 = v4;
-  if (v16)
+  protocolImplementation = [(TAAccessoryInformation *)self protocolImplementation];
+  v48 = productData;
+  if (protocolImplementation)
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[TAAccessoryInformation protocolImplementation](self, "protocolImplementation")];
   }
@@ -686,9 +686,9 @@ LABEL_60:
   v35 = v17;
   v52[9] = v17;
   v51[10] = @"networkID";
-  v18 = [(TAAccessoryInformation *)self networkID];
-  v47 = v6;
-  if (v18)
+  networkID = [(TAAccessoryInformation *)self networkID];
+  v47 = manufacturerName;
+  if (networkID)
   {
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[TAAccessoryInformation networkID](self, "networkID")];
   }
@@ -698,11 +698,11 @@ LABEL_60:
     v19 = &stru_287F632C0;
   }
 
-  v45 = v8;
+  v45 = modelName;
   v52[10] = v19;
   v51[11] = @"batteryType";
-  v20 = [(TAAccessoryInformation *)self batteryType];
-  if (v20)
+  batteryType = [(TAAccessoryInformation *)self batteryType];
+  if (batteryType)
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[TAAccessoryInformation batteryType](self, "batteryType")];
   }
@@ -714,8 +714,8 @@ LABEL_60:
 
   v52[11] = v21;
   v51[12] = @"batteryLevel";
-  v22 = [(TAAccessoryInformation *)self batteryLevel];
-  if (v22)
+  batteryLevel = [(TAAccessoryInformation *)self batteryLevel];
+  if (batteryLevel)
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[TAAccessoryInformation batteryLevel](self, "batteryLevel")];
   }
@@ -727,35 +727,35 @@ LABEL_60:
 
   v52[12] = v23;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:13];
-  if (v22)
+  if (batteryLevel)
   {
   }
 
-  if (v20)
+  if (batteryType)
   {
   }
 
-  if (v18)
+  if (networkID)
   {
   }
 
-  if (v16)
+  if (protocolImplementation)
   {
   }
 
-  if (v14)
+  if (serialNumber)
   {
   }
 
-  if (v44)
+  if (accessoryCapabilities)
   {
   }
 
-  if (v11)
+  if (accessoryCategory)
   {
   }
 
-  if (v46)
+  if (firmwareVersion)
   {
   }
 
@@ -771,7 +771,7 @@ LABEL_60:
   {
   }
 
-  if (v50)
+  if (identifier)
   {
   }
 
@@ -782,9 +782,9 @@ LABEL_60:
 
 - (id)description
 {
-  v3 = [(TAAccessoryInformation *)self descriptionDictionary];
+  descriptionDictionary = [(TAAccessoryInformation *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -794,95 +794,95 @@ LABEL_60:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v15 = [TAAccessoryInformation allocWithZone:a3];
-  v14 = [(TAAccessoryInformation *)self identifier];
-  v13 = [(TAAccessoryInformation *)self deviceType];
-  v12 = [(TAAccessoryInformation *)self productData];
-  v4 = [(TAAccessoryInformation *)self manufacturerName];
-  v5 = [(TAAccessoryInformation *)self modelName];
-  v6 = [(TAAccessoryInformation *)self firmwareVersion];
-  v7 = [(TAAccessoryInformation *)self accessoryCategory];
-  v8 = [(TAAccessoryInformation *)self accessoryCapabilities];
-  v9 = [(TAAccessoryInformation *)self serialNumber];
-  v10 = [(TAAccessoryInformation *)v15 initWithDeviceUUID:v14 deviceType:v13 productData:v12 manufacturerName:v4 modelName:v5 firmwareVersion:v6 accessoryCategory:v7 accessoryCapabilities:v8 serialNumber:v9 protocolImplementation:[(TAAccessoryInformation *)self protocolImplementation] networkID:[(TAAccessoryInformation *)self networkID] batteryType:[(TAAccessoryInformation *)self batteryType] batteryLevel:[(TAAccessoryInformation *)self batteryLevel]];
+  v15 = [TAAccessoryInformation allocWithZone:zone];
+  identifier = [(TAAccessoryInformation *)self identifier];
+  deviceType = [(TAAccessoryInformation *)self deviceType];
+  productData = [(TAAccessoryInformation *)self productData];
+  manufacturerName = [(TAAccessoryInformation *)self manufacturerName];
+  modelName = [(TAAccessoryInformation *)self modelName];
+  firmwareVersion = [(TAAccessoryInformation *)self firmwareVersion];
+  accessoryCategory = [(TAAccessoryInformation *)self accessoryCategory];
+  accessoryCapabilities = [(TAAccessoryInformation *)self accessoryCapabilities];
+  serialNumber = [(TAAccessoryInformation *)self serialNumber];
+  v10 = [(TAAccessoryInformation *)v15 initWithDeviceUUID:identifier deviceType:deviceType productData:productData manufacturerName:manufacturerName modelName:modelName firmwareVersion:firmwareVersion accessoryCategory:accessoryCategory accessoryCapabilities:accessoryCapabilities serialNumber:serialNumber protocolImplementation:[(TAAccessoryInformation *)self protocolImplementation] networkID:[(TAAccessoryInformation *)self networkID] batteryType:[(TAAccessoryInformation *)self batteryType] batteryLevel:[(TAAccessoryInformation *)self batteryLevel]];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_deviceType forKey:@"deviceType"];
-  [v5 encodeObject:self->_productData forKey:@"productData"];
-  [v5 encodeObject:self->_manufacturerName forKey:@"manufacturer"];
-  [v5 encodeObject:self->_modelName forKey:@"model"];
-  [v5 encodeObject:self->_firmwareVersion forKey:@"FV"];
-  [v5 encodeObject:self->_accessoryCategory forKey:@"category"];
-  [v5 encodeObject:self->_accessoryCapabilities forKey:@"capabilities"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeInteger:self->_protocolImplementation forKey:@"protocolImplementation"];
-  [v5 encodeInteger:self->_networkID forKey:@"networkID"];
-  [v5 encodeInteger:self->_batteryType forKey:@"batteryType"];
-  [v5 encodeInteger:self->_batteryLevel forKey:@"batteryLevel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_deviceType forKey:@"deviceType"];
+  [coderCopy encodeObject:self->_productData forKey:@"productData"];
+  [coderCopy encodeObject:self->_manufacturerName forKey:@"manufacturer"];
+  [coderCopy encodeObject:self->_modelName forKey:@"model"];
+  [coderCopy encodeObject:self->_firmwareVersion forKey:@"FV"];
+  [coderCopy encodeObject:self->_accessoryCategory forKey:@"category"];
+  [coderCopy encodeObject:self->_accessoryCapabilities forKey:@"capabilities"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeInteger:self->_protocolImplementation forKey:@"protocolImplementation"];
+  [coderCopy encodeInteger:self->_networkID forKey:@"networkID"];
+  [coderCopy encodeInteger:self->_batteryType forKey:@"batteryType"];
+  [coderCopy encodeInteger:self->_batteryLevel forKey:@"batteryLevel"];
 }
 
-- (TAAccessoryInformation)initWithCoder:(id)a3
+- (TAAccessoryInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  self->_deviceType = [v4 decodeIntegerForKey:@"deviceType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productData"];
+  self->_deviceType = [coderCopy decodeIntegerForKey:@"deviceType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productData"];
   productData = self->_productData;
   self->_productData = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
   manufacturerName = self->_manufacturerName;
   self->_manufacturerName = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
   modelName = self->_modelName;
   self->_modelName = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FV"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FV"];
   firmwareVersion = self->_firmwareVersion;
   self->_firmwareVersion = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
   accessoryCategory = self->_accessoryCategory;
   self->_accessoryCategory = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
   accessoryCapabilities = self->_accessoryCapabilities;
   self->_accessoryCapabilities = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
   serialNumber = self->_serialNumber;
   self->_serialNumber = v19;
 
-  self->_protocolImplementation = [v4 decodeInt32ForKey:@"protocolImplementation"];
-  self->_networkID = [v4 decodeIntegerForKey:@"networkID"];
-  self->_batteryType = [v4 decodeIntegerForKey:@"batteryType"];
-  v21 = [v4 decodeIntegerForKey:@"batteryLevel"];
+  self->_protocolImplementation = [coderCopy decodeInt32ForKey:@"protocolImplementation"];
+  self->_networkID = [coderCopy decodeIntegerForKey:@"networkID"];
+  self->_batteryType = [coderCopy decodeIntegerForKey:@"batteryType"];
+  v21 = [coderCopy decodeIntegerForKey:@"batteryLevel"];
 
   self->_batteryLevel = v21;
   return self;

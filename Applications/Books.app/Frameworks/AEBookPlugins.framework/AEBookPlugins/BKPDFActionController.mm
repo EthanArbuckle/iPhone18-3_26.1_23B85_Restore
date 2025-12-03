@@ -1,7 +1,7 @@
 @interface BKPDFActionController
-- (BOOL)_bookHasCapability:(id)a3;
-- (BOOL)_isEmailAllowedForBook:(id)a3;
-- (BOOL)_isPrintingAllowedForBook:(id)a3;
+- (BOOL)_bookHasCapability:(id)capability;
+- (BOOL)_isEmailAllowedForBook:(id)book;
+- (BOOL)_isPrintingAllowedForBook:(id)book;
 - (BOOL)canAirDrop;
 - (BOOL)canEmailBook;
 - (BOOL)canPrintBook;
@@ -15,19 +15,19 @@
 {
   v8.receiver = self;
   v8.super_class = BKPDFActionController;
-  v3 = [(BKActionController *)&v8 activityItems];
+  activityItems = [(BKActionController *)&v8 activityItems];
   v4 = [BKActivityPDFLinkPresentationItemSource alloc];
-  v5 = [(BKActionController *)self bookInfo];
-  v6 = [(BKActivityPDFLinkPresentationItemSource *)v4 initWithBookInfo:v5];
+  bookInfo = [(BKActionController *)self bookInfo];
+  v6 = [(BKActivityPDFLinkPresentationItemSource *)v4 initWithBookInfo:bookInfo];
 
-  [v3 addObject:v6];
+  [activityItems addObject:v6];
 
-  return v3;
+  return activityItems;
 }
 
-- (BOOL)_isPrintingAllowedForBook:(id)a3
+- (BOOL)_isPrintingAllowedForBook:(id)book
 {
-  v3 = [a3 url];
+  v3 = [book url];
   v4 = NSClassFromString(@"UIPrintInteractionController");
   if (v4 && [(objc_class *)v4 canPrintURL:v3])
   {
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (BOOL)_bookHasCapability:(id)a3
+- (BOOL)_bookHasCapability:(id)capability
 {
-  if ([a3 isManagedBook])
+  if ([capability isManagedBook])
   {
     v3 = 2;
   }
@@ -58,26 +58,26 @@
   return [MFMailComposeViewController canSendMailSourceAccountManagement:v3];
 }
 
-- (BOOL)_isEmailAllowedForBook:(id)a3
+- (BOOL)_isEmailAllowedForBook:(id)book
 {
-  v4 = a3;
-  if ([(BKPDFActionController *)self _bookHasCapability:v4])
+  bookCopy = book;
+  if ([(BKPDFActionController *)self _bookHasCapability:bookCopy])
   {
-    v5 = [v4 bookBundlePath];
-    v6 = [NSURL fileURLWithPath:v5];
+    bookBundlePath = [bookCopy bookBundlePath];
+    v6 = [NSURL fileURLWithPath:bookBundlePath];
     v7 = +[NSFileManager defaultManager];
     v8 = v7;
-    if (v6 && [v7 fileExistsAtPath:v5])
+    if (v6 && [v7 fileExistsAtPath:bookBundlePath])
     {
-      v9 = [v8 attributesOfItemAtPath:v5 error:0];
+      v9 = [v8 attributesOfItemAtPath:bookBundlePath error:0];
       v10 = v9;
       v13 = 0;
       if (v9)
       {
         v11 = [v9 objectForKey:NSFileSize];
-        v12 = [v11 unsignedLongLongValue];
+        unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-        if (v12 < 0x12C0001)
+        if (unsignedLongLongValue < 0x12C0001)
         {
           v13 = 1;
         }
@@ -103,19 +103,19 @@
   if (![(BKPDFActionController *)self didComputePrintingAllowed])
   {
     [(BKPDFActionController *)self setDidComputePrintingAllowed:1];
-    v3 = [(BKActionController *)self bookInfo];
-    [(BKPDFActionController *)self setIsPrintingAllowed:[(BKPDFActionController *)self _isPrintingAllowedForBook:v3]];
+    bookInfo = [(BKActionController *)self bookInfo];
+    [(BKPDFActionController *)self setIsPrintingAllowed:[(BKPDFActionController *)self _isPrintingAllowedForBook:bookInfo]];
   }
 
   v6.receiver = self;
   v6.super_class = BKPDFActionController;
-  v4 = [(BKActionController *)&v6 canPrintBook];
-  if (v4)
+  canPrintBook = [(BKActionController *)&v6 canPrintBook];
+  if (canPrintBook)
   {
-    LOBYTE(v4) = [(BKPDFActionController *)self isPrintingAllowed];
+    LOBYTE(canPrintBook) = [(BKPDFActionController *)self isPrintingAllowed];
   }
 
-  return v4;
+  return canPrintBook;
 }
 
 - (BOOL)canEmailBook
@@ -123,8 +123,8 @@
   if (![(BKPDFActionController *)self didComputeMailingAllowed])
   {
     [(BKPDFActionController *)self setDidComputeMailingAllowed:1];
-    v3 = [(BKActionController *)self bookInfo];
-    [(BKPDFActionController *)self setIsMailingAllowed:[(BKPDFActionController *)self _isEmailAllowedForBook:v3]];
+    bookInfo = [(BKActionController *)self bookInfo];
+    [(BKPDFActionController *)self setIsMailingAllowed:[(BKPDFActionController *)self _isEmailAllowedForBook:bookInfo]];
   }
 
   return [(BKPDFActionController *)self isMailingAllowed];
@@ -132,47 +132,47 @@
 
 - (BOOL)canAirDrop
 {
-  v2 = [(BKActionController *)self bookInfo];
-  v3 = [v2 isManagedBook];
+  bookInfo = [(BKActionController *)self bookInfo];
+  isManagedBook = [bookInfo isManagedBook];
 
-  return v3 ^ 1;
+  return isManagedBook ^ 1;
 }
 
 - (void)_setActivities
 {
   if ([(BKPDFActionController *)self canEmailBook])
   {
-    v3 = [(BKActionController *)self includedActivityTypes];
-    [v3 addObject:UIActivityTypeMail];
+    includedActivityTypes = [(BKActionController *)self includedActivityTypes];
+    [includedActivityTypes addObject:UIActivityTypeMail];
 
-    v4 = [(BKActionController *)self includedActivityTypes];
-    [v4 addObject:UIActivityTypeMessage];
+    includedActivityTypes2 = [(BKActionController *)self includedActivityTypes];
+    [includedActivityTypes2 addObject:UIActivityTypeMessage];
   }
 
   if ([(BKPDFActionController *)self canPrintBook])
   {
-    v5 = [(BKActionController *)self includedActivityTypes];
-    [v5 addObject:UIActivityTypePrint];
+    includedActivityTypes3 = [(BKActionController *)self includedActivityTypes];
+    [includedActivityTypes3 addObject:UIActivityTypePrint];
   }
 
   v6 = +[BCProgressKitController sharedController];
-  v7 = [(BKActionController *)self bookInfo];
-  v8 = [v7 assetID];
-  v9 = [v6 isTrackingAssetID:v8];
+  bookInfo = [(BKActionController *)self bookInfo];
+  assetID = [bookInfo assetID];
+  v9 = [v6 isTrackingAssetID:assetID];
 
   if (v9)
   {
-    v10 = [(BKActionController *)self includedActivityTypes];
-    [v10 addObject:IMActivityTypeSaveToClassKitApp];
+    includedActivityTypes4 = [(BKActionController *)self includedActivityTypes];
+    [includedActivityTypes4 addObject:IMActivityTypeSaveToClassKitApp];
 
-    v11 = [(BKActionController *)self includedActivityTypes];
-    [v11 addObject:IMActivityTypeShareToClassKitApp];
+    includedActivityTypes5 = [(BKActionController *)self includedActivityTypes];
+    [includedActivityTypes5 addObject:IMActivityTypeShareToClassKitApp];
   }
 
   if (![(BKPDFActionController *)self canMarkupAsPDF])
   {
-    v12 = [(BKActionController *)self excludedActivityTypes];
-    [v12 addObject:UIActivityTypeMarkupAsPDF];
+    excludedActivityTypes = [(BKActionController *)self excludedActivityTypes];
+    [excludedActivityTypes addObject:UIActivityTypeMarkupAsPDF];
   }
 
   if ([(BKPDFActionController *)self canAirDrop])

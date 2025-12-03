@@ -1,27 +1,27 @@
 @interface CAMSmartStylesDescriptionOverlayView
-- (double)maxDescriptionTextWidthForNarrowWidth:(BOOL)a3 isLandscape:(BOOL)a4 usingFontSizeMultiplier:(double)a5;
+- (double)maxDescriptionTextWidthForNarrowWidth:(BOOL)width isLandscape:(BOOL)landscape usingFontSizeMultiplier:(double)multiplier;
 @end
 
 @implementation CAMSmartStylesDescriptionOverlayView
 
-- (double)maxDescriptionTextWidthForNarrowWidth:(BOOL)a3 isLandscape:(BOOL)a4 usingFontSizeMultiplier:(double)a5
+- (double)maxDescriptionTextWidthForNarrowWidth:(BOOL)width isLandscape:(BOOL)landscape usingFontSizeMultiplier:(double)multiplier
 {
-  v5 = a4;
-  v6 = a3;
+  landscapeCopy = landscape;
+  widthCopy = width;
   [(CAMDescriptionOverlayView *)self additionalSpacing];
   v8 = 370.0;
-  if (v6)
+  if (widthCopy)
   {
     v8 = 340.0;
   }
 
-  if (v5)
+  if (landscapeCopy)
   {
     v7 = 0.0;
   }
 
   result = v8 + v7;
-  if (v5)
+  if (landscapeCopy)
   {
 
     UICeilToViewScale();

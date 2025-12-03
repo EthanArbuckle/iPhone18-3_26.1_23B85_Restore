@@ -1,21 +1,21 @@
 @interface CMWalkingBoutMobilityMetrics
-+ (BoutMetrics)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMWalkingBoutMobilityMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMWalkingBoutMobilityMetrics)initWithCoder:(id)a3;
-- (CMWalkingBoutMobilityMetrics)initWithRecordId:(unint64_t)a3 startTime:(id)a4 endTime:(id)a5 stepCount:(int)a6 workoutType:(int)a7 numGaitMetrics:(int)a8 deviceSide:(int64_t)a9 walkingSpeed:(double)a10 doubleSupportPercentage:(double)a11 stepLength:(double)a12 asymmetryPercentage:(double)a13 userHeight:(double)a14 userWeight:(double)a15 isHeightSet:(BOOL)a16 isWeightSet:(BOOL)a17 boundaryType:(int64_t)a18 cycleTimeMean:(double)a19 terminationReason:(int64_t)a20 invalidGradePercentage:(double)a21 segmentsRejectedByIsSwingStanceCycle:(unsigned int)a22 segmentsRejectedByIsNotRunning:(unsigned int)a23 segmentsRejectedByIsFeasibleWalkingSpeed:(unsigned int)a24 segmentsRejectedByIsPendular:(unsigned int)a25 segmentsRejectedByIsSufficientVerticalTwist:(unsigned int)a26 segmentsRejectedByIsCadenceConcordant:(unsigned int)a27 walkingSpeedRejectionStatus:(unsigned int)a28 doubleSupportPercentageRejectionStatus:(unsigned int)a29 stepLengthRejectionStatus:(unsigned int)a30 asymmetryPercentageRejectionStatus:(unsigned int)a31 stepLengthEntropy:(double)a32 stepLengthPoincareSD1:(double)a33 stepLengthPoincareSD2:(double)a34 cycleTimeEntropy:(double)a35 cycleTimePoincareSD1:(double)a36 cycleTimePoincareSD2:(double)a37 stepIndexOfHarmonicityAP:(double)a38 stepIndexOfHarmonicityML:(double)a39 stepIndexOfHarmonicityVT:(double)a40 swingIndexOfHarmonicityAP:(double)a41 swingIndexOfHarmonicityML:(double)a42 swingIndexOfHarmonicityVT:(double)a43;
-- (CMWalkingBoutMobilityMetrics)initWithSample:(BoutMetrics *)a3;
++ (BoutMetrics)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMWalkingBoutMobilityMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMWalkingBoutMobilityMetrics)initWithCoder:(id)coder;
+- (CMWalkingBoutMobilityMetrics)initWithRecordId:(unint64_t)id startTime:(id)time endTime:(id)endTime stepCount:(int)count workoutType:(int)type numGaitMetrics:(int)metrics deviceSide:(int64_t)side walkingSpeed:(double)self0 doubleSupportPercentage:(double)self1 stepLength:(double)self2 asymmetryPercentage:(double)self3 userHeight:(double)self4 userWeight:(double)self5 isHeightSet:(BOOL)self6 isWeightSet:(BOOL)self7 boundaryType:(int64_t)self8 cycleTimeMean:(double)self9 terminationReason:(int64_t)reason invalidGradePercentage:(double)gradePercentage segmentsRejectedByIsSwingStanceCycle:(unsigned int)cycle segmentsRejectedByIsNotRunning:(unsigned int)running segmentsRejectedByIsFeasibleWalkingSpeed:(unsigned int)walkingSpeed segmentsRejectedByIsPendular:(unsigned int)pendular segmentsRejectedByIsSufficientVerticalTwist:(unsigned int)twist segmentsRejectedByIsCadenceConcordant:(unsigned int)concordant walkingSpeedRejectionStatus:(unsigned int)status doubleSupportPercentageRejectionStatus:(unsigned int)rejectionStatus stepLengthRejectionStatus:(unsigned int)id0 asymmetryPercentageRejectionStatus:(unsigned int)id1 stepLengthEntropy:(double)id2 stepLengthPoincareSD1:(double)id3 stepLengthPoincareSD2:(double)id4 cycleTimeEntropy:(double)id5 cycleTimePoincareSD1:(double)id6 cycleTimePoincareSD2:(double)id7 stepIndexOfHarmonicityAP:(double)id8 stepIndexOfHarmonicityML:(double)id9 stepIndexOfHarmonicityVT:(double)time0 swingIndexOfHarmonicityAP:(double)time1 swingIndexOfHarmonicityML:(double)time2 swingIndexOfHarmonicityVT:(double)time3;
+- (CMWalkingBoutMobilityMetrics)initWithSample:(BoutMetrics *)sample;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMWalkingBoutMobilityMetrics
 
-- (CMWalkingBoutMobilityMetrics)initWithRecordId:(unint64_t)a3 startTime:(id)a4 endTime:(id)a5 stepCount:(int)a6 workoutType:(int)a7 numGaitMetrics:(int)a8 deviceSide:(int64_t)a9 walkingSpeed:(double)a10 doubleSupportPercentage:(double)a11 stepLength:(double)a12 asymmetryPercentage:(double)a13 userHeight:(double)a14 userWeight:(double)a15 isHeightSet:(BOOL)a16 isWeightSet:(BOOL)a17 boundaryType:(int64_t)a18 cycleTimeMean:(double)a19 terminationReason:(int64_t)a20 invalidGradePercentage:(double)a21 segmentsRejectedByIsSwingStanceCycle:(unsigned int)a22 segmentsRejectedByIsNotRunning:(unsigned int)a23 segmentsRejectedByIsFeasibleWalkingSpeed:(unsigned int)a24 segmentsRejectedByIsPendular:(unsigned int)a25 segmentsRejectedByIsSufficientVerticalTwist:(unsigned int)a26 segmentsRejectedByIsCadenceConcordant:(unsigned int)a27 walkingSpeedRejectionStatus:(unsigned int)a28 doubleSupportPercentageRejectionStatus:(unsigned int)a29 stepLengthRejectionStatus:(unsigned int)a30 asymmetryPercentageRejectionStatus:(unsigned int)a31 stepLengthEntropy:(double)a32 stepLengthPoincareSD1:(double)a33 stepLengthPoincareSD2:(double)a34 cycleTimeEntropy:(double)a35 cycleTimePoincareSD1:(double)a36 cycleTimePoincareSD2:(double)a37 stepIndexOfHarmonicityAP:(double)a38 stepIndexOfHarmonicityML:(double)a39 stepIndexOfHarmonicityVT:(double)a40 swingIndexOfHarmonicityAP:(double)a41 swingIndexOfHarmonicityML:(double)a42 swingIndexOfHarmonicityVT:(double)a43
+- (CMWalkingBoutMobilityMetrics)initWithRecordId:(unint64_t)id startTime:(id)time endTime:(id)endTime stepCount:(int)count workoutType:(int)type numGaitMetrics:(int)metrics deviceSide:(int64_t)side walkingSpeed:(double)self0 doubleSupportPercentage:(double)self1 stepLength:(double)self2 asymmetryPercentage:(double)self3 userHeight:(double)self4 userWeight:(double)self5 isHeightSet:(BOOL)self6 isWeightSet:(BOOL)self7 boundaryType:(int64_t)self8 cycleTimeMean:(double)self9 terminationReason:(int64_t)reason invalidGradePercentage:(double)gradePercentage segmentsRejectedByIsSwingStanceCycle:(unsigned int)cycle segmentsRejectedByIsNotRunning:(unsigned int)running segmentsRejectedByIsFeasibleWalkingSpeed:(unsigned int)walkingSpeed segmentsRejectedByIsPendular:(unsigned int)pendular segmentsRejectedByIsSufficientVerticalTwist:(unsigned int)twist segmentsRejectedByIsCadenceConcordant:(unsigned int)concordant walkingSpeedRejectionStatus:(unsigned int)status doubleSupportPercentageRejectionStatus:(unsigned int)rejectionStatus stepLengthRejectionStatus:(unsigned int)id0 asymmetryPercentageRejectionStatus:(unsigned int)id1 stepLengthEntropy:(double)id2 stepLengthPoincareSD1:(double)id3 stepLengthPoincareSD2:(double)id4 cycleTimeEntropy:(double)id5 cycleTimePoincareSD1:(double)id6 cycleTimePoincareSD2:(double)id7 stepIndexOfHarmonicityAP:(double)id8 stepIndexOfHarmonicityML:(double)id9 stepIndexOfHarmonicityVT:(double)time0 swingIndexOfHarmonicityAP:(double)time1 swingIndexOfHarmonicityML:(double)time2 swingIndexOfHarmonicityVT:(double)time3
 {
   v60.receiver = self;
   v60.super_class = CMWalkingBoutMobilityMetrics;
@@ -23,53 +23,53 @@
   v58 = v57;
   if (v57)
   {
-    v57->fRecordId = a3;
-    v57->fStartDate = a4;
-    v58->fEndDate = a5;
-    v58->fStepCount = a6;
-    v58->fWorkoutType = a7;
-    v58->fNumGaitMetrics = a8;
-    v58->fDeviceSide = a9;
-    v58->fWalkingSpeed = a10;
-    v58->fDoubleSupportPercentage = a11;
-    v58->fStepLength = a12;
-    v58->fAsymmetryPercentage = a13;
-    v58->fUserHeight = a14;
-    v58->fIsHeightSet = a16;
-    v58->fUserWeight = a15;
-    v58->fIsWeightSet = a17;
-    v58->fBoundaryType = a18;
-    v58->fCycleTimeMean = a19;
-    v58->fTerminationReason = a20;
-    v58->fInvalidGradePercentage = a21;
-    v58->fSegmentsRejectedByIsSwingStanceCycle = a22;
-    v58->fSegmentsRejectedByIsNotRunning = a23;
-    v58->fSegmentsRejectedByIsFeasibleWalkingSpeed = a24;
-    v58->fSegmentsRejectedByIsPendular = a25;
-    v58->fSegmentsRejectedByIsSufficientVerticalTwist = a26;
-    v58->fSegmentsRejectedByIsCadenceConcordant = a27;
-    v58->fWalkingSpeedRejectionStatus = a28;
-    v58->fDoubleSupportPercentageRejectionStatus = a29;
-    v58->fStepLengthRejectionStatus = a30;
-    v58->fAsymmetryPercentageRejectionStatus = a31;
-    v58->fStepLengthEntropy = a32;
-    v58->fStepLengthPoincareSD1 = a33;
-    v58->fStepLengthPoincareSD2 = a34;
-    v58->fCycleTimeEntropy = a35;
-    v58->fCycleTimePoincareSD1 = a36;
-    v58->fCycleTimePoincareSD2 = a37;
-    v58->fStepIndexOfHarmonicityAP = a38;
-    v58->fStepIndexOfHarmonicityML = a39;
-    v58->fStepIndexOfHarmonicityVT = a40;
-    v58->fSwingIndexOfHarmonicityAP = a41;
-    v58->fSwingIndexOfHarmonicityML = a42;
-    v58->fSwingIndexOfHarmonicityVT = a43;
+    v57->fRecordId = id;
+    v57->fStartDate = time;
+    v58->fEndDate = endTime;
+    v58->fStepCount = count;
+    v58->fWorkoutType = type;
+    v58->fNumGaitMetrics = metrics;
+    v58->fDeviceSide = side;
+    v58->fWalkingSpeed = speed;
+    v58->fDoubleSupportPercentage = percentage;
+    v58->fStepLength = length;
+    v58->fAsymmetryPercentage = asymmetryPercentage;
+    v58->fUserHeight = height;
+    v58->fIsHeightSet = set;
+    v58->fUserWeight = weight;
+    v58->fIsWeightSet = weightSet;
+    v58->fBoundaryType = boundaryType;
+    v58->fCycleTimeMean = mean;
+    v58->fTerminationReason = reason;
+    v58->fInvalidGradePercentage = gradePercentage;
+    v58->fSegmentsRejectedByIsSwingStanceCycle = cycle;
+    v58->fSegmentsRejectedByIsNotRunning = running;
+    v58->fSegmentsRejectedByIsFeasibleWalkingSpeed = walkingSpeed;
+    v58->fSegmentsRejectedByIsPendular = pendular;
+    v58->fSegmentsRejectedByIsSufficientVerticalTwist = twist;
+    v58->fSegmentsRejectedByIsCadenceConcordant = concordant;
+    v58->fWalkingSpeedRejectionStatus = status;
+    v58->fDoubleSupportPercentageRejectionStatus = rejectionStatus;
+    v58->fStepLengthRejectionStatus = lengthRejectionStatus;
+    v58->fAsymmetryPercentageRejectionStatus = percentageRejectionStatus;
+    v58->fStepLengthEntropy = entropy;
+    v58->fStepLengthPoincareSD1 = d1;
+    v58->fStepLengthPoincareSD2 = d2;
+    v58->fCycleTimeEntropy = timeEntropy;
+    v58->fCycleTimePoincareSD1 = sD1;
+    v58->fCycleTimePoincareSD2 = sD2;
+    v58->fStepIndexOfHarmonicityAP = p;
+    v58->fStepIndexOfHarmonicityML = l;
+    v58->fStepIndexOfHarmonicityVT = t;
+    v58->fSwingIndexOfHarmonicityAP = aP;
+    v58->fSwingIndexOfHarmonicityML = mL;
+    v58->fSwingIndexOfHarmonicityVT = vT;
   }
 
   return v58;
 }
 
-- (CMWalkingBoutMobilityMetrics)initWithSample:(BoutMetrics *)a3
+- (CMWalkingBoutMobilityMetrics)initWithSample:(BoutMetrics *)sample
 {
   v19.receiver = self;
   v19.super_class = CMWalkingBoutMobilityMetrics;
@@ -77,51 +77,51 @@
   v5 = v4;
   if (v4)
   {
-    v4->fRecordId = a3->var0;
+    v4->fRecordId = sample->var0;
     v6 = objc_alloc(MEMORY[0x1E695DF00]);
-    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, a3->var1);
+    v5->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, sample->var1);
     v9 = objc_alloc(MEMORY[0x1E695DF00]);
-    v5->fEndDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v9, v10, v11, a3->var2);
-    v5->fWalkingSpeed = a3->var17;
-    v5->fDoubleSupportPercentage = a3->var18;
-    v5->fStepLength = a3->var19;
-    var37 = a3->var37;
-    v13 = *&a3->var21;
-    v5->fAsymmetryPercentage = a3->var20;
+    v5->fEndDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v9, v10, v11, sample->var2);
+    v5->fWalkingSpeed = sample->var17;
+    v5->fDoubleSupportPercentage = sample->var18;
+    v5->fStepLength = sample->var19;
+    var37 = sample->var37;
+    v13 = *&sample->var21;
+    v5->fAsymmetryPercentage = sample->var20;
     v5->fUserHeight = var37;
-    v5->fUserWeight = a3->var39;
-    v5->fCycleTimeMean = a3->var10;
-    v5->fInvalidGradePercentage = a3->var7;
-    v5->fStepLengthEntropy = a3->var11;
-    v5->fStepLengthPoincareSD1 = a3->var12;
-    v5->fStepLengthPoincareSD2 = a3->var13;
-    v5->fCycleTimeEntropy = a3->var14;
-    v5->fCycleTimePoincareSD1 = a3->var15;
-    v5->fCycleTimePoincareSD2 = a3->var16;
+    v5->fUserWeight = sample->var39;
+    v5->fCycleTimeMean = sample->var10;
+    v5->fInvalidGradePercentage = sample->var7;
+    v5->fStepLengthEntropy = sample->var11;
+    v5->fStepLengthPoincareSD1 = sample->var12;
+    v5->fStepLengthPoincareSD2 = sample->var13;
+    v5->fCycleTimeEntropy = sample->var14;
+    v5->fCycleTimePoincareSD1 = sample->var15;
+    v5->fCycleTimePoincareSD2 = sample->var16;
     v14 = vcvtq_f64_f32(v13);
-    v15 = *&a3->var25;
-    v16 = vcvtq_f64_f32(*&a3->var23);
+    v15 = *&sample->var25;
+    v16 = vcvtq_f64_f32(*&sample->var23);
     *&v5->fStepIndexOfHarmonicityAP = v14;
     *&v5->fStepIndexOfHarmonicityVT = v16;
-    v5->fStepCount = a3->var3;
-    var5 = a3->var5;
-    v5->fWorkoutType = a3->var4;
-    v5->fNumGaitMetrics = a3->var6;
-    v5->fDeviceSide = a3->var8;
-    v5->fIsHeightSet = a3->var38;
-    v5->fIsWeightSet = a3->var40;
-    v5->fBoundaryType = a3->var9;
+    v5->fStepCount = sample->var3;
+    var5 = sample->var5;
+    v5->fWorkoutType = sample->var4;
+    v5->fNumGaitMetrics = sample->var6;
+    v5->fDeviceSide = sample->var8;
+    v5->fIsHeightSet = sample->var38;
+    v5->fIsWeightSet = sample->var40;
+    v5->fBoundaryType = sample->var9;
     v5->fTerminationReason = var5;
-    v5->fSegmentsRejectedByIsSwingStanceCycle = a3->var27;
-    v5->fSegmentsRejectedByIsNotRunning = a3->var28;
-    v5->fSegmentsRejectedByIsFeasibleWalkingSpeed = a3->var29;
-    v5->fSegmentsRejectedByIsPendular = a3->var30;
-    v5->fSegmentsRejectedByIsSufficientVerticalTwist = a3->var31;
-    v5->fSegmentsRejectedByIsCadenceConcordant = a3->var32;
-    v5->fWalkingSpeedRejectionStatus = a3->var33;
-    v5->fDoubleSupportPercentageRejectionStatus = a3->var34;
-    v5->fStepLengthRejectionStatus = a3->var35;
-    v5->fAsymmetryPercentageRejectionStatus = a3->var36;
+    v5->fSegmentsRejectedByIsSwingStanceCycle = sample->var27;
+    v5->fSegmentsRejectedByIsNotRunning = sample->var28;
+    v5->fSegmentsRejectedByIsFeasibleWalkingSpeed = sample->var29;
+    v5->fSegmentsRejectedByIsPendular = sample->var30;
+    v5->fSegmentsRejectedByIsSufficientVerticalTwist = sample->var31;
+    v5->fSegmentsRejectedByIsCadenceConcordant = sample->var32;
+    v5->fWalkingSpeedRejectionStatus = sample->var33;
+    v5->fDoubleSupportPercentageRejectionStatus = sample->var34;
+    v5->fStepLengthRejectionStatus = sample->var35;
+    v5->fAsymmetryPercentageRejectionStatus = sample->var36;
     *&v5->fSwingIndexOfHarmonicityML = vcvtq_f64_f32(v15);
   }
 
@@ -135,87 +135,87 @@
   [(CMWalkingBoutMobilityMetrics *)&v3 dealloc];
 }
 
-- (CMWalkingBoutMobilityMetrics)initWithCoder:(id)a3
+- (CMWalkingBoutMobilityMetrics)initWithCoder:(id)coder
 {
   v75.receiver = self;
   v75.super_class = CMWalkingBoutMobilityMetrics;
   v5 = [(CMWalkingBoutMobilityMetrics *)&v75 init];
   if (v5)
   {
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v4, @"kCMWalkingBoutMobilityMetricsCodingKeyRecordId");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v4, @"kCMWalkingBoutMobilityMetricsCodingKeyRecordId");
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"kCMWalkingBoutMobilityMetricsCodingKeyStartDate");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v7, v6, @"kCMWalkingBoutMobilityMetricsCodingKeyStartDate");
     v5->fStartDate = objc_msgSend_copy(v8, v9, v10);
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMWalkingBoutMobilityMetricsCodingKeyEndDate");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMWalkingBoutMobilityMetricsCodingKeyEndDate");
     v5->fEndDate = objc_msgSend_copy(v13, v14, v15);
-    v5->fStepCount = objc_msgSend_decodeIntegerForKey_(a3, v16, @"kCMWalkingBoutMobilityMetricsCodingKeyStepCount");
-    v5->fWorkoutType = objc_msgSend_decodeIntegerForKey_(a3, v17, @"kCMWalkingBoutMobilityMetricsCodingKeyWorkoutType");
-    v5->fNumGaitMetrics = objc_msgSend_decodeIntegerForKey_(a3, v18, @"kCMWalkingBoutMobilityMetricsCodingKeyNumGaitMetrics");
-    v5->fDeviceSide = objc_msgSend_decodeIntegerForKey_(a3, v19, @"kCMWalkingBoutMobilityMetricsCodingKeyDeviceSide");
-    objc_msgSend_decodeDoubleForKey_(a3, v20, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeed");
+    v5->fStepCount = objc_msgSend_decodeIntegerForKey_(coder, v16, @"kCMWalkingBoutMobilityMetricsCodingKeyStepCount");
+    v5->fWorkoutType = objc_msgSend_decodeIntegerForKey_(coder, v17, @"kCMWalkingBoutMobilityMetricsCodingKeyWorkoutType");
+    v5->fNumGaitMetrics = objc_msgSend_decodeIntegerForKey_(coder, v18, @"kCMWalkingBoutMobilityMetricsCodingKeyNumGaitMetrics");
+    v5->fDeviceSide = objc_msgSend_decodeIntegerForKey_(coder, v19, @"kCMWalkingBoutMobilityMetricsCodingKeyDeviceSide");
+    objc_msgSend_decodeDoubleForKey_(coder, v20, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeed");
     v5->fWalkingSpeed = v21;
-    objc_msgSend_decodeDoubleForKey_(a3, v22, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentage");
+    objc_msgSend_decodeDoubleForKey_(coder, v22, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentage");
     v5->fDoubleSupportPercentage = v23;
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLength");
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLength");
     v5->fStepLength = v25;
-    objc_msgSend_decodeDoubleForKey_(a3, v26, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentage");
+    objc_msgSend_decodeDoubleForKey_(coder, v26, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentage");
     v5->fAsymmetryPercentage = v27;
-    objc_msgSend_decodeDoubleForKey_(a3, v28, @"kCMWalkingBoutMobilityMetricsCodingKeyUserHeight");
+    objc_msgSend_decodeDoubleForKey_(coder, v28, @"kCMWalkingBoutMobilityMetricsCodingKeyUserHeight");
     v5->fUserHeight = v29;
-    v5->fIsHeightSet = objc_msgSend_decodeIntegerForKey_(a3, v30, @"kCMWalkingBoutMobilityMetricsCodingKeyIsHeightSet") != 0;
-    objc_msgSend_decodeDoubleForKey_(a3, v31, @"kCMWalkingBoutMobilityMetricsCodingKeyUserWeight");
+    v5->fIsHeightSet = objc_msgSend_decodeIntegerForKey_(coder, v30, @"kCMWalkingBoutMobilityMetricsCodingKeyIsHeightSet") != 0;
+    objc_msgSend_decodeDoubleForKey_(coder, v31, @"kCMWalkingBoutMobilityMetricsCodingKeyUserWeight");
     v5->fUserWeight = v32;
-    v5->fIsWeightSet = objc_msgSend_decodeIntegerForKey_(a3, v33, @"kCMWalkingBoutMobilityMetricsCodingKeyIsWeightSet") != 0;
-    v5->fBoundaryType = objc_msgSend_decodeIntegerForKey_(a3, v34, @"kCMWalkingBoutMobilityMetricsCodingKeyBoundaryType");
-    objc_msgSend_decodeDoubleForKey_(a3, v35, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeMean");
+    v5->fIsWeightSet = objc_msgSend_decodeIntegerForKey_(coder, v33, @"kCMWalkingBoutMobilityMetricsCodingKeyIsWeightSet") != 0;
+    v5->fBoundaryType = objc_msgSend_decodeIntegerForKey_(coder, v34, @"kCMWalkingBoutMobilityMetricsCodingKeyBoundaryType");
+    objc_msgSend_decodeDoubleForKey_(coder, v35, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeMean");
     v5->fCycleTimeMean = v36;
-    v5->fTerminationReason = objc_msgSend_decodeIntegerForKey_(a3, v37, @"kCMWalkingBoutMobilityMetricsCodingKeyTerminationReason");
-    objc_msgSend_decodeDoubleForKey_(a3, v38, @"kCMWalkingBoutMobilityMetricsCodingKeyInvalidGradePercentage");
+    v5->fTerminationReason = objc_msgSend_decodeIntegerForKey_(coder, v37, @"kCMWalkingBoutMobilityMetricsCodingKeyTerminationReason");
+    objc_msgSend_decodeDoubleForKey_(coder, v38, @"kCMWalkingBoutMobilityMetricsCodingKeyInvalidGradePercentage");
     v5->fInvalidGradePercentage = v39;
-    v5->fSegmentsRejectedByIsSwingStanceCycle = objc_msgSend_decodeInt32ForKey_(a3, v40, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSwingStanceCycle");
-    v5->fSegmentsRejectedByIsNotRunning = objc_msgSend_decodeInt32ForKey_(a3, v41, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsNotRunning");
-    v5->fSegmentsRejectedByIsFeasibleWalkingSpeed = objc_msgSend_decodeInt32ForKey_(a3, v42, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsFeasibleWalkingSpeed");
-    v5->fSegmentsRejectedByIsPendular = objc_msgSend_decodeInt32ForKey_(a3, v43, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsPendular");
-    v5->fSegmentsRejectedByIsSufficientVerticalTwist = objc_msgSend_decodeInt32ForKey_(a3, v44, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSufficientVerticalTwist");
-    v5->fSegmentsRejectedByIsCadenceConcordant = objc_msgSend_decodeInt32ForKey_(a3, v45, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsCadenceConcordant");
-    v5->fWalkingSpeedRejectionStatus = objc_msgSend_decodeInt32ForKey_(a3, v46, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeedRejectionStatus");
-    v5->fDoubleSupportPercentageRejectionStatus = objc_msgSend_decodeInt32ForKey_(a3, v47, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentageRejectionStatus");
-    v5->fStepLengthRejectionStatus = objc_msgSend_decodeInt32ForKey_(a3, v48, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthRejectionStatus");
-    v5->fAsymmetryPercentageRejectionStatus = objc_msgSend_decodeInt32ForKey_(a3, v49, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentageRejectionStatus");
-    objc_msgSend_decodeDoubleForKey_(a3, v50, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthEntropy");
+    v5->fSegmentsRejectedByIsSwingStanceCycle = objc_msgSend_decodeInt32ForKey_(coder, v40, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSwingStanceCycle");
+    v5->fSegmentsRejectedByIsNotRunning = objc_msgSend_decodeInt32ForKey_(coder, v41, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsNotRunning");
+    v5->fSegmentsRejectedByIsFeasibleWalkingSpeed = objc_msgSend_decodeInt32ForKey_(coder, v42, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsFeasibleWalkingSpeed");
+    v5->fSegmentsRejectedByIsPendular = objc_msgSend_decodeInt32ForKey_(coder, v43, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsPendular");
+    v5->fSegmentsRejectedByIsSufficientVerticalTwist = objc_msgSend_decodeInt32ForKey_(coder, v44, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSufficientVerticalTwist");
+    v5->fSegmentsRejectedByIsCadenceConcordant = objc_msgSend_decodeInt32ForKey_(coder, v45, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsCadenceConcordant");
+    v5->fWalkingSpeedRejectionStatus = objc_msgSend_decodeInt32ForKey_(coder, v46, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeedRejectionStatus");
+    v5->fDoubleSupportPercentageRejectionStatus = objc_msgSend_decodeInt32ForKey_(coder, v47, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentageRejectionStatus");
+    v5->fStepLengthRejectionStatus = objc_msgSend_decodeInt32ForKey_(coder, v48, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthRejectionStatus");
+    v5->fAsymmetryPercentageRejectionStatus = objc_msgSend_decodeInt32ForKey_(coder, v49, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentageRejectionStatus");
+    objc_msgSend_decodeDoubleForKey_(coder, v50, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthEntropy");
     v5->fStepLengthEntropy = v51;
-    objc_msgSend_decodeDoubleForKey_(a3, v52, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD1");
+    objc_msgSend_decodeDoubleForKey_(coder, v52, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD1");
     v5->fStepLengthPoincareSD1 = v53;
-    objc_msgSend_decodeDoubleForKey_(a3, v54, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD2");
+    objc_msgSend_decodeDoubleForKey_(coder, v54, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD2");
     v5->fStepLengthPoincareSD2 = v55;
-    objc_msgSend_decodeDoubleForKey_(a3, v56, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeEntropy");
+    objc_msgSend_decodeDoubleForKey_(coder, v56, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeEntropy");
     v5->fCycleTimeEntropy = v57;
-    objc_msgSend_decodeDoubleForKey_(a3, v58, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD1");
+    objc_msgSend_decodeDoubleForKey_(coder, v58, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD1");
     v5->fCycleTimePoincareSD1 = v59;
-    objc_msgSend_decodeDoubleForKey_(a3, v60, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD2");
+    objc_msgSend_decodeDoubleForKey_(coder, v60, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD2");
     v5->fCycleTimePoincareSD2 = v61;
-    objc_msgSend_decodeDoubleForKey_(a3, v62, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityAP");
+    objc_msgSend_decodeDoubleForKey_(coder, v62, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityAP");
     v5->fStepIndexOfHarmonicityAP = v63;
-    objc_msgSend_decodeDoubleForKey_(a3, v64, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityML");
+    objc_msgSend_decodeDoubleForKey_(coder, v64, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityML");
     v5->fStepIndexOfHarmonicityML = v65;
-    objc_msgSend_decodeDoubleForKey_(a3, v66, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityVT");
+    objc_msgSend_decodeDoubleForKey_(coder, v66, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityVT");
     v5->fStepIndexOfHarmonicityVT = v67;
-    objc_msgSend_decodeDoubleForKey_(a3, v68, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityAP");
+    objc_msgSend_decodeDoubleForKey_(coder, v68, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityAP");
     v5->fSwingIndexOfHarmonicityAP = v69;
-    objc_msgSend_decodeDoubleForKey_(a3, v70, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityML");
+    objc_msgSend_decodeDoubleForKey_(coder, v70, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityML");
     v5->fSwingIndexOfHarmonicityML = v71;
-    objc_msgSend_decodeDoubleForKey_(a3, v72, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityVT");
+    objc_msgSend_decodeDoubleForKey_(coder, v72, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityVT");
     v5->fSwingIndexOfHarmonicityVT = v73;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   fRecordId = self->fRecordId;
-  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(self->fStartDate, a2, zone);
   v7 = v6;
   objc_msgSend_timeIntervalSinceReferenceDate(self->fEndDate, v8, v9);
   v11 = v10;
@@ -246,7 +246,7 @@
   v34 = *&self->fSegmentsRejectedByIsSwingStanceCycle;
   v25 = *&self->fStepLengthRejectionStatus;
   v26 = objc_opt_class();
-  v28 = objc_msgSend_allocWithZone_(v26, v27, a3);
+  v28 = objc_msgSend_allocWithZone_(v26, v27, zone);
   v40 = fRecordId;
   v41 = v7;
   v42 = v11;
@@ -274,54 +274,54 @@
   return objc_msgSend_initWithSample_(v28, v29, &v40);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->fRecordId, @"kCMWalkingBoutMobilityMetricsCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fStartDate, @"kCMWalkingBoutMobilityMetricsCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fEndDate, @"kCMWalkingBoutMobilityMetricsCodingKeyEndDate");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->fStepCount, @"kCMWalkingBoutMobilityMetricsCodingKeyStepCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->fWorkoutType, @"kCMWalkingBoutMobilityMetricsCodingKeyWorkoutType");
-  objc_msgSend_encodeInteger_forKey_(a3, v9, self->fNumGaitMetrics, @"kCMWalkingBoutMobilityMetricsCodingKeyNumGaitMetrics");
-  objc_msgSend_encodeInteger_forKey_(a3, v10, self->fDeviceSide, @"kCMWalkingBoutMobilityMetricsCodingKeyDeviceSide");
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeed", self->fWalkingSpeed);
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentage", self->fDoubleSupportPercentage);
-  objc_msgSend_encodeDouble_forKey_(a3, v13, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLength", self->fStepLength);
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentage", self->fAsymmetryPercentage);
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"kCMWalkingBoutMobilityMetricsCodingKeyUserHeight", self->fUserHeight);
-  objc_msgSend_encodeInteger_forKey_(a3, v16, self->fIsHeightSet, @"kCMWalkingBoutMobilityMetricsCodingKeyIsHeightSet");
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"kCMWalkingBoutMobilityMetricsCodingKeyUserWeight", self->fUserWeight);
-  objc_msgSend_encodeInteger_forKey_(a3, v18, self->fIsWeightSet, @"kCMWalkingBoutMobilityMetricsCodingKeyIsWeightSet");
-  objc_msgSend_encodeInteger_forKey_(a3, v19, self->fBoundaryType, @"kCMWalkingBoutMobilityMetricsCodingKeyBoundaryType");
-  objc_msgSend_encodeDouble_forKey_(a3, v20, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeMean", self->fCycleTimeMean);
-  objc_msgSend_encodeInteger_forKey_(a3, v21, self->fTerminationReason, @"kCMWalkingBoutMobilityMetricsCodingKeyTerminationReason");
-  objc_msgSend_encodeDouble_forKey_(a3, v22, @"kCMWalkingBoutMobilityMetricsCodingKeyInvalidGradePercentage", self->fInvalidGradePercentage);
-  objc_msgSend_encodeInt32_forKey_(a3, v23, self->fSegmentsRejectedByIsSwingStanceCycle, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSwingStanceCycle");
-  objc_msgSend_encodeInt32_forKey_(a3, v24, self->fSegmentsRejectedByIsNotRunning, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsNotRunning");
-  objc_msgSend_encodeInt32_forKey_(a3, v25, self->fSegmentsRejectedByIsFeasibleWalkingSpeed, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsFeasibleWalkingSpeed");
-  objc_msgSend_encodeInt32_forKey_(a3, v26, self->fSegmentsRejectedByIsPendular, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsPendular");
-  objc_msgSend_encodeInt32_forKey_(a3, v27, self->fSegmentsRejectedByIsSufficientVerticalTwist, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSufficientVerticalTwist");
-  objc_msgSend_encodeInt32_forKey_(a3, v28, self->fSegmentsRejectedByIsCadenceConcordant, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsCadenceConcordant");
-  objc_msgSend_encodeInt32_forKey_(a3, v29, self->fWalkingSpeedRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeedRejectionStatus");
-  objc_msgSend_encodeInt32_forKey_(a3, v30, self->fDoubleSupportPercentageRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentageRejectionStatus");
-  objc_msgSend_encodeInt32_forKey_(a3, v31, self->fStepLengthRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthRejectionStatus");
-  objc_msgSend_encodeInt32_forKey_(a3, v32, self->fAsymmetryPercentageRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentageRejectionStatus");
-  objc_msgSend_encodeDouble_forKey_(a3, v33, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthEntropy", self->fStepLengthEntropy);
-  objc_msgSend_encodeDouble_forKey_(a3, v34, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD1", self->fStepLengthPoincareSD1);
-  objc_msgSend_encodeDouble_forKey_(a3, v35, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD2", self->fStepLengthPoincareSD2);
-  objc_msgSend_encodeDouble_forKey_(a3, v36, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeEntropy", self->fCycleTimeEntropy);
-  objc_msgSend_encodeDouble_forKey_(a3, v37, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD1", self->fCycleTimePoincareSD1);
-  objc_msgSend_encodeDouble_forKey_(a3, v38, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD2", self->fCycleTimePoincareSD2);
-  objc_msgSend_encodeDouble_forKey_(a3, v39, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityAP", self->fStepIndexOfHarmonicityAP);
-  objc_msgSend_encodeDouble_forKey_(a3, v40, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityML", self->fStepIndexOfHarmonicityML);
-  objc_msgSend_encodeDouble_forKey_(a3, v41, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityVT", self->fStepIndexOfHarmonicityVT);
-  objc_msgSend_encodeDouble_forKey_(a3, v42, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityAP", self->fSwingIndexOfHarmonicityAP);
-  objc_msgSend_encodeDouble_forKey_(a3, v43, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityML", self->fSwingIndexOfHarmonicityML);
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->fRecordId, @"kCMWalkingBoutMobilityMetricsCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fStartDate, @"kCMWalkingBoutMobilityMetricsCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fEndDate, @"kCMWalkingBoutMobilityMetricsCodingKeyEndDate");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->fStepCount, @"kCMWalkingBoutMobilityMetricsCodingKeyStepCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->fWorkoutType, @"kCMWalkingBoutMobilityMetricsCodingKeyWorkoutType");
+  objc_msgSend_encodeInteger_forKey_(coder, v9, self->fNumGaitMetrics, @"kCMWalkingBoutMobilityMetricsCodingKeyNumGaitMetrics");
+  objc_msgSend_encodeInteger_forKey_(coder, v10, self->fDeviceSide, @"kCMWalkingBoutMobilityMetricsCodingKeyDeviceSide");
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeed", self->fWalkingSpeed);
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentage", self->fDoubleSupportPercentage);
+  objc_msgSend_encodeDouble_forKey_(coder, v13, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLength", self->fStepLength);
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentage", self->fAsymmetryPercentage);
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"kCMWalkingBoutMobilityMetricsCodingKeyUserHeight", self->fUserHeight);
+  objc_msgSend_encodeInteger_forKey_(coder, v16, self->fIsHeightSet, @"kCMWalkingBoutMobilityMetricsCodingKeyIsHeightSet");
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"kCMWalkingBoutMobilityMetricsCodingKeyUserWeight", self->fUserWeight);
+  objc_msgSend_encodeInteger_forKey_(coder, v18, self->fIsWeightSet, @"kCMWalkingBoutMobilityMetricsCodingKeyIsWeightSet");
+  objc_msgSend_encodeInteger_forKey_(coder, v19, self->fBoundaryType, @"kCMWalkingBoutMobilityMetricsCodingKeyBoundaryType");
+  objc_msgSend_encodeDouble_forKey_(coder, v20, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeMean", self->fCycleTimeMean);
+  objc_msgSend_encodeInteger_forKey_(coder, v21, self->fTerminationReason, @"kCMWalkingBoutMobilityMetricsCodingKeyTerminationReason");
+  objc_msgSend_encodeDouble_forKey_(coder, v22, @"kCMWalkingBoutMobilityMetricsCodingKeyInvalidGradePercentage", self->fInvalidGradePercentage);
+  objc_msgSend_encodeInt32_forKey_(coder, v23, self->fSegmentsRejectedByIsSwingStanceCycle, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSwingStanceCycle");
+  objc_msgSend_encodeInt32_forKey_(coder, v24, self->fSegmentsRejectedByIsNotRunning, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsNotRunning");
+  objc_msgSend_encodeInt32_forKey_(coder, v25, self->fSegmentsRejectedByIsFeasibleWalkingSpeed, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsFeasibleWalkingSpeed");
+  objc_msgSend_encodeInt32_forKey_(coder, v26, self->fSegmentsRejectedByIsPendular, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsPendular");
+  objc_msgSend_encodeInt32_forKey_(coder, v27, self->fSegmentsRejectedByIsSufficientVerticalTwist, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsSufficientVerticalTwist");
+  objc_msgSend_encodeInt32_forKey_(coder, v28, self->fSegmentsRejectedByIsCadenceConcordant, @"kCMWalkingBoutMobilityMetricsCodingKeySegmentsRejectedByIsCadenceConcordant");
+  objc_msgSend_encodeInt32_forKey_(coder, v29, self->fWalkingSpeedRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyWalkingSpeedRejectionStatus");
+  objc_msgSend_encodeInt32_forKey_(coder, v30, self->fDoubleSupportPercentageRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyDoubleSupportPercentageRejectionStatus");
+  objc_msgSend_encodeInt32_forKey_(coder, v31, self->fStepLengthRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthRejectionStatus");
+  objc_msgSend_encodeInt32_forKey_(coder, v32, self->fAsymmetryPercentageRejectionStatus, @"kCMWalkingBoutMobilityMetricsCodingKeyAsymmetryPercentageRejectionStatus");
+  objc_msgSend_encodeDouble_forKey_(coder, v33, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthEntropy", self->fStepLengthEntropy);
+  objc_msgSend_encodeDouble_forKey_(coder, v34, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD1", self->fStepLengthPoincareSD1);
+  objc_msgSend_encodeDouble_forKey_(coder, v35, @"kCMWalkingBoutMobilityMetricsCodingKeyStepLengthPoincareSD2", self->fStepLengthPoincareSD2);
+  objc_msgSend_encodeDouble_forKey_(coder, v36, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimeEntropy", self->fCycleTimeEntropy);
+  objc_msgSend_encodeDouble_forKey_(coder, v37, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD1", self->fCycleTimePoincareSD1);
+  objc_msgSend_encodeDouble_forKey_(coder, v38, @"kCMWalkingBoutMobilityMetricsCodingKeyCycleTimePoincareSD2", self->fCycleTimePoincareSD2);
+  objc_msgSend_encodeDouble_forKey_(coder, v39, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityAP", self->fStepIndexOfHarmonicityAP);
+  objc_msgSend_encodeDouble_forKey_(coder, v40, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityML", self->fStepIndexOfHarmonicityML);
+  objc_msgSend_encodeDouble_forKey_(coder, v41, @"kCMWalkingBoutMobilityMetricsCodingKeyStepIndexOfHarmonicityVT", self->fStepIndexOfHarmonicityVT);
+  objc_msgSend_encodeDouble_forKey_(coder, v42, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityAP", self->fSwingIndexOfHarmonicityAP);
+  objc_msgSend_encodeDouble_forKey_(coder, v43, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityML", self->fSwingIndexOfHarmonicityML);
   fSwingIndexOfHarmonicityVT = self->fSwingIndexOfHarmonicityVT;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v44, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityVT", fSwingIndexOfHarmonicityVT);
+  objc_msgSend_encodeDouble_forKey_(coder, v44, @"kCMWalkingBoutMobilityMetricsCodingKeySwingIndexOfHarmonicityVT", fSwingIndexOfHarmonicityVT);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -330,167 +330,167 @@
   }
 
   v7 = objc_msgSend_recordId(self, v5, v6);
-  if (v7 != objc_msgSend_recordId(a3, v8, v9))
+  if (v7 != objc_msgSend_recordId(equal, v8, v9))
   {
     goto LABEL_47;
   }
 
-  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(a3, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(a3, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
+  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(equal, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(equal, v15, v16), (isEqualToDate = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
   {
-    if (!objc_msgSend_endDate(self, v12, v13) && !objc_msgSend_endDate(a3, v20, v21) || (v22 = objc_msgSend_endDate(self, v20, v21), v25 = objc_msgSend_endDate(a3, v23, v24), (isEqualToDate = objc_msgSend_isEqualToDate_(v22, v26, v25)) != 0))
+    if (!objc_msgSend_endDate(self, v12, v13) && !objc_msgSend_endDate(equal, v20, v21) || (v22 = objc_msgSend_endDate(self, v20, v21), v25 = objc_msgSend_endDate(equal, v23, v24), (isEqualToDate = objc_msgSend_isEqualToDate_(v22, v26, v25)) != 0))
     {
       v27 = objc_msgSend_stepCount(self, v20, v21);
-      if (v27 == objc_msgSend_stepCount(a3, v28, v29))
+      if (v27 == objc_msgSend_stepCount(equal, v28, v29))
       {
         v32 = objc_msgSend_workoutType(self, v30, v31);
-        if (v32 == objc_msgSend_workoutType(a3, v33, v34))
+        if (v32 == objc_msgSend_workoutType(equal, v33, v34))
         {
           v37 = objc_msgSend_numGaitMetrics(self, v35, v36);
-          if (v37 == objc_msgSend_numGaitMetrics(a3, v38, v39))
+          if (v37 == objc_msgSend_numGaitMetrics(equal, v38, v39))
           {
             v42 = objc_msgSend_deviceSide(self, v40, v41);
-            if (v42 == objc_msgSend_deviceSide(a3, v43, v44))
+            if (v42 == objc_msgSend_deviceSide(equal, v43, v44))
             {
               objc_msgSend_walkingSpeed(self, v45, v46);
               v48 = v47;
-              objc_msgSend_walkingSpeed(a3, v49, v50);
+              objc_msgSend_walkingSpeed(equal, v49, v50);
               if (v48 == v53)
               {
                 objc_msgSend_doubleSupportPercentage(self, v51, v52);
                 v55 = v54;
-                objc_msgSend_doubleSupportPercentage(a3, v56, v57);
+                objc_msgSend_doubleSupportPercentage(equal, v56, v57);
                 if (v55 == v60)
                 {
                   objc_msgSend_stepLength(self, v58, v59);
                   v62 = v61;
-                  objc_msgSend_stepLength(a3, v63, v64);
+                  objc_msgSend_stepLength(equal, v63, v64);
                   if (v62 == v67)
                   {
                     objc_msgSend_asymmetryPercentage(self, v65, v66);
                     v69 = v68;
-                    objc_msgSend_asymmetryPercentage(a3, v70, v71);
+                    objc_msgSend_asymmetryPercentage(equal, v70, v71);
                     if (v69 == v74)
                     {
                       objc_msgSend_userHeight(self, v72, v73);
                       v76 = v75;
-                      objc_msgSend_userHeight(a3, v77, v78);
+                      objc_msgSend_userHeight(equal, v77, v78);
                       if (v76 == v81)
                       {
                         isHeightSet = objc_msgSend_isHeightSet(self, v79, v80);
-                        if (isHeightSet == objc_msgSend_isHeightSet(a3, v83, v84))
+                        if (isHeightSet == objc_msgSend_isHeightSet(equal, v83, v84))
                         {
                           objc_msgSend_userWeight(self, v85, v86);
                           v88 = v87;
-                          objc_msgSend_userWeight(a3, v89, v90);
+                          objc_msgSend_userWeight(equal, v89, v90);
                           if (v88 == v93)
                           {
                             isWeightSet = objc_msgSend_isWeightSet(self, v91, v92);
-                            if (isWeightSet == objc_msgSend_isWeightSet(a3, v95, v96))
+                            if (isWeightSet == objc_msgSend_isWeightSet(equal, v95, v96))
                             {
                               v99 = objc_msgSend_boundaryType(self, v97, v98);
-                              if (v99 == objc_msgSend_boundaryType(a3, v100, v101))
+                              if (v99 == objc_msgSend_boundaryType(equal, v100, v101))
                               {
                                 objc_msgSend_cycleTimeMean(self, v102, v103);
                                 v105 = v104;
-                                objc_msgSend_cycleTimeMean(a3, v106, v107);
+                                objc_msgSend_cycleTimeMean(equal, v106, v107);
                                 if (v105 == v110)
                                 {
                                   v111 = objc_msgSend_terminationReason(self, v108, v109);
-                                  if (v111 == objc_msgSend_terminationReason(a3, v112, v113))
+                                  if (v111 == objc_msgSend_terminationReason(equal, v112, v113))
                                   {
                                     objc_msgSend_invalidGradePercentage(self, v114, v115);
                                     v117 = v116;
-                                    objc_msgSend_invalidGradePercentage(a3, v118, v119);
+                                    objc_msgSend_invalidGradePercentage(equal, v118, v119);
                                     if (v117 == v122)
                                     {
                                       IsSwingStanceCycle = objc_msgSend_segmentsRejectedByIsSwingStanceCycle(self, v120, v121);
-                                      if (IsSwingStanceCycle == objc_msgSend_segmentsRejectedByIsSwingStanceCycle(a3, v124, v125))
+                                      if (IsSwingStanceCycle == objc_msgSend_segmentsRejectedByIsSwingStanceCycle(equal, v124, v125))
                                       {
                                         IsNotRunning = objc_msgSend_segmentsRejectedByIsNotRunning(self, v126, v127);
-                                        if (IsNotRunning == objc_msgSend_segmentsRejectedByIsNotRunning(a3, v129, v130))
+                                        if (IsNotRunning == objc_msgSend_segmentsRejectedByIsNotRunning(equal, v129, v130))
                                         {
                                           IsFeasibleWalkingSpeed = objc_msgSend_segmentsRejectedByIsFeasibleWalkingSpeed(self, v131, v132);
-                                          if (IsFeasibleWalkingSpeed == objc_msgSend_segmentsRejectedByIsFeasibleWalkingSpeed(a3, v134, v135))
+                                          if (IsFeasibleWalkingSpeed == objc_msgSend_segmentsRejectedByIsFeasibleWalkingSpeed(equal, v134, v135))
                                           {
                                             IsPendular = objc_msgSend_segmentsRejectedByIsPendular(self, v136, v137);
-                                            if (IsPendular == objc_msgSend_segmentsRejectedByIsPendular(a3, v139, v140))
+                                            if (IsPendular == objc_msgSend_segmentsRejectedByIsPendular(equal, v139, v140))
                                             {
                                               IsSufficientVerticalTwist = objc_msgSend_segmentsRejectedByIsSufficientVerticalTwist(self, v141, v142);
-                                              if (IsSufficientVerticalTwist == objc_msgSend_segmentsRejectedByIsSufficientVerticalTwist(a3, v144, v145))
+                                              if (IsSufficientVerticalTwist == objc_msgSend_segmentsRejectedByIsSufficientVerticalTwist(equal, v144, v145))
                                               {
                                                 IsCadenceConcordant = objc_msgSend_segmentsRejectedByIsCadenceConcordant(self, v146, v147);
-                                                if (IsCadenceConcordant == objc_msgSend_segmentsRejectedByIsCadenceConcordant(a3, v149, v150))
+                                                if (IsCadenceConcordant == objc_msgSend_segmentsRejectedByIsCadenceConcordant(equal, v149, v150))
                                                 {
                                                   v153 = objc_msgSend_walkingSpeedRejectionStatus(self, v151, v152);
-                                                  if (v153 == objc_msgSend_walkingSpeedRejectionStatus(a3, v154, v155))
+                                                  if (v153 == objc_msgSend_walkingSpeedRejectionStatus(equal, v154, v155))
                                                   {
                                                     v158 = objc_msgSend_doubleSupportPercentageRejectionStatus(self, v156, v157);
-                                                    if (v158 == objc_msgSend_doubleSupportPercentageRejectionStatus(a3, v159, v160))
+                                                    if (v158 == objc_msgSend_doubleSupportPercentageRejectionStatus(equal, v159, v160))
                                                     {
                                                       v163 = objc_msgSend_stepLengthRejectionStatus(self, v161, v162);
-                                                      if (v163 == objc_msgSend_stepLengthRejectionStatus(a3, v164, v165))
+                                                      if (v163 == objc_msgSend_stepLengthRejectionStatus(equal, v164, v165))
                                                       {
                                                         v168 = objc_msgSend_asymmetryPercentageRejectionStatus(self, v166, v167);
-                                                        if (v168 == objc_msgSend_asymmetryPercentageRejectionStatus(a3, v169, v170))
+                                                        if (v168 == objc_msgSend_asymmetryPercentageRejectionStatus(equal, v169, v170))
                                                         {
                                                           objc_msgSend_stepLengthEntropy(self, v171, v172);
                                                           v174 = v173;
-                                                          objc_msgSend_stepLengthEntropy(a3, v175, v176);
+                                                          objc_msgSend_stepLengthEntropy(equal, v175, v176);
                                                           if (v174 == v179)
                                                           {
                                                             objc_msgSend_stepLengthPoincareSD1(self, v177, v178);
                                                             v181 = v180;
-                                                            objc_msgSend_stepLengthPoincareSD1(a3, v182, v183);
+                                                            objc_msgSend_stepLengthPoincareSD1(equal, v182, v183);
                                                             if (v181 == v186)
                                                             {
                                                               objc_msgSend_stepLengthPoincareSD2(self, v184, v185);
                                                               v188 = v187;
-                                                              objc_msgSend_stepLengthPoincareSD2(a3, v189, v190);
+                                                              objc_msgSend_stepLengthPoincareSD2(equal, v189, v190);
                                                               if (v188 == v193)
                                                               {
                                                                 objc_msgSend_cycleTimeEntropy(self, v191, v192);
                                                                 v195 = v194;
-                                                                objc_msgSend_cycleTimeEntropy(a3, v196, v197);
+                                                                objc_msgSend_cycleTimeEntropy(equal, v196, v197);
                                                                 if (v195 == v200)
                                                                 {
                                                                   objc_msgSend_cycleTimePoincareSD1(self, v198, v199);
                                                                   v202 = v201;
-                                                                  objc_msgSend_cycleTimePoincareSD1(a3, v203, v204);
+                                                                  objc_msgSend_cycleTimePoincareSD1(equal, v203, v204);
                                                                   if (v202 == v207)
                                                                   {
                                                                     objc_msgSend_cycleTimePoincareSD2(self, v205, v206);
                                                                     v209 = v208;
-                                                                    objc_msgSend_cycleTimePoincareSD2(a3, v210, v211);
+                                                                    objc_msgSend_cycleTimePoincareSD2(equal, v210, v211);
                                                                     if (v209 == v214)
                                                                     {
                                                                       objc_msgSend_stepIndexOfHarmonicityAP(self, v212, v213);
                                                                       v216 = v215;
-                                                                      objc_msgSend_stepIndexOfHarmonicityAP(a3, v217, v218);
+                                                                      objc_msgSend_stepIndexOfHarmonicityAP(equal, v217, v218);
                                                                       if (v216 == v221)
                                                                       {
                                                                         objc_msgSend_stepIndexOfHarmonicityML(self, v219, v220);
                                                                         v223 = v222;
-                                                                        objc_msgSend_stepIndexOfHarmonicityML(a3, v224, v225);
+                                                                        objc_msgSend_stepIndexOfHarmonicityML(equal, v224, v225);
                                                                         if (v223 == v228)
                                                                         {
                                                                           objc_msgSend_stepIndexOfHarmonicityVT(self, v226, v227);
                                                                           v230 = v229;
-                                                                          objc_msgSend_stepIndexOfHarmonicityVT(a3, v231, v232);
+                                                                          objc_msgSend_stepIndexOfHarmonicityVT(equal, v231, v232);
                                                                           if (v230 == v235)
                                                                           {
                                                                             objc_msgSend_swingIndexOfHarmonicityAP(self, v233, v234);
                                                                             v237 = v236;
-                                                                            objc_msgSend_swingIndexOfHarmonicityAP(a3, v238, v239);
+                                                                            objc_msgSend_swingIndexOfHarmonicityAP(equal, v238, v239);
                                                                             if (v237 == v242)
                                                                             {
                                                                               objc_msgSend_swingIndexOfHarmonicityML(self, v240, v241);
                                                                               v244 = v243;
-                                                                              objc_msgSend_swingIndexOfHarmonicityML(a3, v245, v246);
+                                                                              objc_msgSend_swingIndexOfHarmonicityML(equal, v245, v246);
                                                                               if (v244 == v249)
                                                                               {
                                                                                 objc_msgSend_swingIndexOfHarmonicityVT(self, v247, v248);
                                                                                 v251 = v250;
-                                                                                objc_msgSend_swingIndexOfHarmonicityVT(a3, v252, v253);
+                                                                                objc_msgSend_swingIndexOfHarmonicityVT(equal, v252, v253);
                                                                                 LOBYTE(isEqualToDate) = v251 == v254;
                                                                                 return isEqualToDate;
                                                                               }
@@ -607,7 +607,7 @@ LABEL_47:
   return objc_msgSend_stringWithFormat_(v149, v122, @"%@, <recordId, %lu, startDate, %@, endDate, %@, stepCount, %.3d, workoutType, %lu, numGaitMetrics, %d, deviceSide, %lu, walkingSpeed, %f, doubleSupportPercentage, %f, stepLength, %f, asymmetryPercentage, %f, userHeight, %f, isHeightSet, %d, userWeight, %f, isWeightSet, %d, boundaryType, %lu, cycleTimeMean, %f, terminationReason, %lu, invalidGradePercentage, %f, segmentsRejectedByIsSwingStanceCycle, %d, segmentsRejectedByIsNotRunning, %d, segmentsRejectedByIsFeasibleWalkingSpeed, %d, segmentsRejectedByIsPendular, %d, segmentsRejectedByIsSufficientVerticalTwist, %d, segmentsRejectedByIsCadenceConcordant, %d, walkingSpeedRejectionStatus, %d, stepLengthRejectionStatus, %d, doubleSupportPercentageRejectionStatus, %d, asymmetryPercentageRejectionStatus, %d, stepLengthEntropy, %f, stepLengthPoincareSD1, %f, stepLengthPoincareSD2, %f, cycleTimeEntropy, %f, cycleTimePoincareSD1, %f, cycleTimePoincareSD2, %f, stepIndexOfHarmonicityAP, %f, stepIndexOfHarmonicityML, %f, stepIndexOfHarmonicityVT, %f, swingIndexOfHarmonicityAP, %f, swingIndexOfHarmonicityML, %f, swingIndexOfHarmonicityVT, %f>", v148, v147, started, v145, v144, v143, v142, v141, v140, v139, v138, v137, v136, isHeightSet, v134, isWeightSet, v132, v131, v130, v129, IsSwingStanceCycle, IsNotRunning, IsFeasibleWalkingSpeed, IsPendular, IsSufficientVerticalTwist, IsCadenceConcordant, v69, v72, v75, v78, v127, v126, v125, v91, v95, v99, v103, v107, v111, v115, v119, v123);
 }
 
-+ (BoutMetrics)inputFromPreparedStatement:(SEL)a3
++ (BoutMetrics)inputFromPreparedStatement:(SEL)statement
 {
   retstr->var0 = sqlite3_column_int(a4, 0);
   retstr->var1 = sqlite3_column_double(a4, 1);
@@ -671,9 +671,9 @@ LABEL_47:
   return v5;
 }
 
-- (CMWalkingBoutMobilityMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMWalkingBoutMobilityMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMWalkingBoutMobilityMetrics;
@@ -682,7 +682,7 @@ LABEL_47:
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

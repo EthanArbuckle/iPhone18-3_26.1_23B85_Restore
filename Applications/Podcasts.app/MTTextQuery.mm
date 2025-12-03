@@ -1,13 +1,13 @@
 @interface MTTextQuery
-- (id)titleForPodcastUuid:(id)a3;
-- (void)runQueryWithText:(id)a3;
+- (id)titleForPodcastUuid:(id)uuid;
+- (void)runQueryWithText:(id)text;
 @end
 
 @implementation MTTextQuery
 
-- (void)runQueryWithText:(id)a3
+- (void)runQueryWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [NSSortDescriptor sortDescriptorWithKey:kEpisodePubDate ascending:0];
   v75[0] = v5;
   v6 = [NSSortDescriptor sortDescriptorWithKey:kEpisodeEpisodeNumber ascending:0];
@@ -26,11 +26,11 @@
   [(MTLibraryQuery *)self setPodcastSortDescriptors:v11];
 
   v12 = +[MTCategory sortDescriptorsForCategoriesInSearch];
-  v53 = self;
+  selfCopy = self;
   [(MTLibraryQuery *)self setCategorySortDescriptors:v12];
 
   v13 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v14 = [v4 stringByTrimmingCharactersInSet:v13];
+  v14 = [textCopy stringByTrimmingCharactersInSet:v13];
   v15 = +[NSCharacterSet whitespaceCharacterSet];
   v16 = [v14 componentsSeparatedByCharactersInSet:v15];
 
@@ -132,30 +132,30 @@
 
   v51 = v50;
   v52 = [NSCompoundPredicate andPredicateWithSubpredicates:v62];
-  [(MTLibraryQuery *)v53 runQueryWithPodcastPredicate:v59 episodePredicate:v44 channelPredicate:v51 categoryPredicate:v52];
+  [(MTLibraryQuery *)selfCopy runQueryWithPodcastPredicate:v59 episodePredicate:v44 channelPredicate:v51 categoryPredicate:v52];
 }
 
-- (id)titleForPodcastUuid:(id)a3
+- (id)titleForPodcastUuid:(id)uuid
 {
-  v3 = a3;
+  uuidCopy = uuid;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_100008960;
   v18 = sub_10003B494;
   v19 = 0;
-  if (v3)
+  if (uuidCopy)
   {
     v4 = +[MTDB sharedInstance];
-    v5 = [v4 mainOrPrivateContext];
+    mainOrPrivateContext = [v4 mainOrPrivateContext];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10007F370;
     v10[3] = &unk_1004D87E8;
-    v6 = v5;
+    v6 = mainOrPrivateContext;
     v11 = v6;
-    v12 = v3;
+    v12 = uuidCopy;
     v13 = &v14;
     [v6 performBlockAndWait:v10];
 

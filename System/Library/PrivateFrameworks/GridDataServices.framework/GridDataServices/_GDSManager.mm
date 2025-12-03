@@ -1,21 +1,21 @@
 @interface _GDSManager
-+ (id)managerWithID:(id)a3 locationBundlePath:(id)a4;
-- (_GDSManager)initWithID:(id)a3 locationBundlePath:(id)a4;
-- (id)carbonIntensityHistoryForBA:(id)a3 from:(id)a4 to:(id)a5;
++ (id)managerWithID:(id)d locationBundlePath:(id)path;
+- (_GDSManager)initWithID:(id)d locationBundlePath:(id)path;
+- (id)carbonIntensityHistoryForBA:(id)a from:(id)from to:(id)to;
 - (id)getFakeMarginalEmissionForecast;
 - (id)latestBalancingAuthority;
-- (id)latestBalancingAuthorityWithError:(id *)a3;
+- (id)latestBalancingAuthorityWithError:(id *)error;
 - (id)latestMarginalEmissionForecast;
 - (void)dealloc;
-- (void)fixMarginalEmissionForecast:(id)a3;
+- (void)fixMarginalEmissionForecast:(id)forecast;
 - (void)latestBalancingAuthority;
 - (void)latestMarginalEmissionForecast;
-- (void)registerClientID:(id)a3 locationBundlePath:(id)a4;
-- (void)setFakeConfigURL:(id)a3;
-- (void)setFakeSecret:(id)a3;
-- (void)setFakeSecretVersion:(id)a3;
-- (void)setFakeServerURL:(id)a3;
-- (void)triggerBAUpdateWithHandler:(id)a3;
+- (void)registerClientID:(id)d locationBundlePath:(id)path;
+- (void)setFakeConfigURL:(id)l;
+- (void)setFakeSecret:(id)secret;
+- (void)setFakeSecretVersion:(id)version;
+- (void)setFakeServerURL:(id)l;
+- (void)triggerBAUpdateWithHandler:(id)handler;
 - (void)unFixMarginalEmissionForecast;
 - (void)unSetFakeConfigURL;
 - (void)unSetFakeSecret;
@@ -25,11 +25,11 @@
 
 @implementation _GDSManager
 
-- (_GDSManager)initWithID:(id)a3 locationBundlePath:(id)a4
+- (_GDSManager)initWithID:(id)d locationBundlePath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = _GDSManager;
   v9 = [(_GDSManager *)&v26 init];
@@ -51,11 +51,11 @@
     [(NSXPCConnection *)v9->_connection setRemoteObjectInterface:v16];
 
     [(NSXPCConnection *)v9->_connection resume];
-    objc_storeStrong(&v9->_clientID, a3);
-    objc_storeStrong(&v9->_locBundlePath, a4);
+    objc_storeStrong(&v9->_clientID, d);
+    objc_storeStrong(&v9->_locBundlePath, path);
     v17 = +[_GDSBalancingAuthority loadRegistrations];
     v18 = [v17 objectForKeyedSubscript:v9->_clientID];
-    if (!v18 || (v19 = v18, [v17 objectForKeyedSubscript:v9->_clientID], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", v8), v20, v19, (v21 & 1) == 0))
+    if (!v18 || (v19 = v18, [v17 objectForKeyedSubscript:v9->_clientID], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", pathCopy), v20, v19, (v21 & 1) == 0))
     {
       v22 = [(_GDSManager *)v9 log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@
         _os_log_impl(&dword_2507E1000, v22, OS_LOG_TYPE_DEFAULT, "Registering client %@", buf, 0xCu);
       }
 
-      [(_GDSManager *)v9 registerClientID:v7 locationBundlePath:v8];
+      [(_GDSManager *)v9 registerClientID:dCopy locationBundlePath:pathCopy];
     }
   }
 
@@ -74,19 +74,19 @@
   return v9;
 }
 
-+ (id)managerWithID:(id)a3 locationBundlePath:(id)a4
++ (id)managerWithID:(id)d locationBundlePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  pathCopy = path;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48___GDSManager_managerWithID_locationBundlePath___block_invoke;
   v13[3] = &unk_27969E078;
-  v14 = v5;
-  v15 = v6;
+  v14 = dCopy;
+  v15 = pathCopy;
   v7 = managerWithID_locationBundlePath__once;
-  v8 = v6;
-  v9 = v5;
+  v8 = pathCopy;
+  v9 = dCopy;
   if (v7 != -1)
   {
     dispatch_once(&managerWithID_locationBundlePath__once, v13);
@@ -98,10 +98,10 @@
   return v10;
 }
 
-- (void)registerClientID:(id)a3 locationBundlePath:(id)a4
+- (void)registerClientID:(id)d locationBundlePath:(id)path
 {
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  dCopy = d;
   v9 = [(_GDSManager *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,12 +123,12 @@
   v12[3] = &unk_27969E0A0;
   v12[4] = self;
   v12[5] = a2;
-  [v11 registerClientID:v8 locationBundlePath:v7 handler:v12];
+  [v11 registerClientID:dCopy locationBundlePath:pathCopy handler:v12];
 }
 
-- (void)triggerBAUpdateWithHandler:(id)a3
+- (void)triggerBAUpdateWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(_GDSManager *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -149,10 +149,10 @@
   v11[1] = 3221225472;
   v11[2] = __42___GDSManager_triggerBAUpdateWithHandler___block_invoke_63;
   v11[3] = &unk_27969E0C8;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = a2;
   v11[4] = self;
-  v10 = v5;
+  v10 = handlerCopy;
   [v8 updateBAClientID:clientID handler:v11];
 }
 
@@ -173,7 +173,7 @@
   return v3;
 }
 
-- (id)latestBalancingAuthorityWithError:(id *)a3
+- (id)latestBalancingAuthorityWithError:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
   v5 = +[_GDSBalancingAuthority loadBalancingAuthorityStatus];
@@ -189,7 +189,7 @@
     v43 = *MEMORY[0x277CCA450];
     v44[0] = @"Failed to get latest BA. Location availability status not found";
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-    *a3 = [v16 errorWithDomain:@"com.apple.gds" code:2 userInfo:v17];
+    *error = [v16 errorWithDomain:@"com.apple.gds" code:2 userInfo:v17];
 
     goto LABEL_17;
   }
@@ -208,15 +208,15 @@
     v41 = *MEMORY[0x277CCA450];
     v42 = @"Failed to get latest BA. Location availability status not found for client";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    *a3 = [v19 errorWithDomain:@"com.apple.gds" code:1 userInfo:v20];
+    *error = [v19 errorWithDomain:@"com.apple.gds" code:1 userInfo:v20];
 
     goto LABEL_17;
   }
 
   v7 = [v5 objectForKeyedSubscript:self->_clientID];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -229,7 +229,7 @@
     v39 = *MEMORY[0x277CCA450];
     v40 = @"Failed to get latest BA. Location authorization not available for client";
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-    *a3 = [v22 errorWithDomain:@"com.apple.gds" code:2 userInfo:v23];
+    *error = [v22 errorWithDomain:@"com.apple.gds" code:2 userInfo:v23];
 
 LABEL_17:
     AnalyticsSendEventLazy();
@@ -238,8 +238,8 @@ LABEL_17:
   }
 
   v9 = +[_GDSBalancingAuthority currentBalancingAuthority];
-  v10 = [v9 name];
-  v11 = [v10 isEqualToString:@"Unkown"];
+  name = [v9 name];
+  v11 = [name isEqualToString:@"Unkown"];
 
   if (v11)
   {
@@ -253,7 +253,7 @@ LABEL_17:
     v37 = *MEMORY[0x277CCA450];
     v38 = @"Failed to get latest BA. Unable to find BA name";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    *a3 = [v13 errorWithDomain:@"com.apple.gds" code:3 userInfo:v14];
+    *error = [v13 errorWithDomain:@"com.apple.gds" code:3 userInfo:v14];
   }
 
   AnalyticsSendEventLazy();
@@ -261,15 +261,15 @@ LABEL_17:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     v27 = v26;
-    v28 = [v9 name];
-    v29 = [v9 identifier];
-    v30 = [v9 lastUpdatedDate];
+    name2 = [v9 name];
+    identifier = [v9 identifier];
+    lastUpdatedDate = [v9 lastUpdatedDate];
     v31 = 138412802;
-    v32 = v28;
+    v32 = name2;
     v33 = 2112;
-    v34 = v29;
+    v34 = identifier;
     v35 = 2112;
-    v36 = v30;
+    v36 = lastUpdatedDate;
     _os_log_impl(&dword_2507E1000, v27, OS_LOG_TYPE_DEFAULT, "Balancing Authority Output Name:%@, ID:%@, Date:%@", &v31, 0x20u);
   }
 
@@ -282,9 +282,9 @@ LABEL_18:
 
 - (id)latestMarginalEmissionForecast
 {
-  v3 = [(_GDSManager *)self latestBalancingAuthority];
-  v4 = [(_GDSManager *)self getFakeMarginalEmissionForecast];
-  if (v4)
+  latestBalancingAuthority = [(_GDSManager *)self latestBalancingAuthority];
+  getFakeMarginalEmissionForecast = [(_GDSManager *)self getFakeMarginalEmissionForecast];
+  if (getFakeMarginalEmissionForecast)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -293,17 +293,17 @@ LABEL_18:
       _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Returning the fake forecast set in defaults.", v11, 2u);
     }
 
-    v6 = v4;
+    v6 = getFakeMarginalEmissionForecast;
   }
 
   else
   {
-    v7 = [v3 identifier];
+    identifier = [latestBalancingAuthority identifier];
 
-    if (v7)
+    if (identifier)
     {
       v8 = +[_GDSServerConnection sharedInstance];
-      v6 = [v8 fetchMarginalEmissionForecastFor:v3];
+      v6 = [v8 fetchMarginalEmissionForecastFor:latestBalancingAuthority];
     }
 
     else
@@ -321,17 +321,17 @@ LABEL_18:
   return v6;
 }
 
-- (id)carbonIntensityHistoryForBA:(id)a3 from:(id)a4 to:(id)a5
+- (id)carbonIntensityHistoryForBA:(id)a from:(id)from to:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  aCopy = a;
+  fromCopy = from;
+  toCopy = to;
+  v11 = toCopy;
+  if (aCopy && fromCopy && toCopy)
   {
     v12 = +[_GDSServerConnection sharedInstance];
-    v13 = [v12 fetchCarbonIntensityHistoryForBA:v8 from:v9 to:v11];
+    v13 = [v12 fetchCarbonIntensityHistoryForBA:aCopy from:fromCopy to:v11];
   }
 
   else
@@ -340,9 +340,9 @@ LABEL_18:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412802;
-      v18 = v8;
+      v18 = aCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = fromCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_error_impl(&dword_2507E1000, log, OS_LOG_TYPE_ERROR, "Parameters not specified BA:%@ startDate:%@ endDate:%@", &v17, 0x20u);
@@ -356,9 +356,9 @@ LABEL_18:
   return v13;
 }
 
-- (void)fixMarginalEmissionForecast:(id)a3
+- (void)fixMarginalEmissionForecast:(id)forecast
 {
-  v4 = a3;
+  forecastCopy = forecast;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,8 +366,8 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Fixing the marginal emission forecast.", v7, 2u);
   }
 
-  v6 = [(_GDSManager *)self fakeDataDefaults];
-  [v6 setObject:v4 forKey:@"fakeForecast"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults setObject:forecastCopy forKey:@"fakeForecast"];
 }
 
 - (void)unFixMarginalEmissionForecast
@@ -379,13 +379,13 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Unfixing the marginal emission forecast.", v5, 2u);
   }
 
-  v4 = [(_GDSManager *)self fakeDataDefaults];
-  [v4 removeObjectForKey:@"fakeForecast"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults removeObjectForKey:@"fakeForecast"];
 }
 
-- (void)setFakeSecret:(id)a3
+- (void)setFakeSecret:(id)secret
 {
-  v4 = a3;
+  secretCopy = secret;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,8 +393,8 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Setting the HMAC secret.", v7, 2u);
   }
 
-  v6 = [(_GDSManager *)self fakeDataDefaults];
-  [v6 setObject:v4 forKey:@"fakeSecret"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults setObject:secretCopy forKey:@"fakeSecret"];
 }
 
 - (void)unSetFakeSecret
@@ -406,13 +406,13 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Unsetting the HMAC secret.", v5, 2u);
   }
 
-  v4 = [(_GDSManager *)self fakeDataDefaults];
-  [v4 removeObjectForKey:@"fakeSecret"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults removeObjectForKey:@"fakeSecret"];
 }
 
-- (void)setFakeSecretVersion:(id)a3
+- (void)setFakeSecretVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -420,8 +420,8 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Setting the HMAC secret version.", v7, 2u);
   }
 
-  v6 = [(_GDSManager *)self fakeDataDefaults];
-  [v6 setObject:v4 forKey:@"fakeSecretVersion"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults setObject:versionCopy forKey:@"fakeSecretVersion"];
 }
 
 - (void)unSetFakeSecretVersion
@@ -433,13 +433,13 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Unsetting the HMAC secret version", v5, 2u);
   }
 
-  v4 = [(_GDSManager *)self fakeDataDefaults];
-  [v4 removeObjectForKey:@"fakeSecretVersion"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults removeObjectForKey:@"fakeSecretVersion"];
 }
 
-- (void)setFakeConfigURL:(id)a3
+- (void)setFakeConfigURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -447,8 +447,8 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Setting the configURL.", v7, 2u);
   }
 
-  v6 = [(_GDSManager *)self fakeDataDefaults];
-  [v6 setObject:v4 forKey:@"fakeConfigURL"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults setObject:lCopy forKey:@"fakeConfigURL"];
 }
 
 - (void)unSetFakeConfigURL
@@ -460,13 +460,13 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Unsetting the configURL.", v5, 2u);
   }
 
-  v4 = [(_GDSManager *)self fakeDataDefaults];
-  [v4 removeObjectForKey:@"fakeConfigURL"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults removeObjectForKey:@"fakeConfigURL"];
 }
 
-- (void)setFakeServerURL:(id)a3
+- (void)setFakeServerURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -474,8 +474,8 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Setting the serverURL.", v7, 2u);
   }
 
-  v6 = [(_GDSManager *)self fakeDataDefaults];
-  [v6 setObject:v4 forKey:@"fakeServerURL"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults setObject:lCopy forKey:@"fakeServerURL"];
 }
 
 - (void)unSetFakeServerURL
@@ -487,23 +487,23 @@ LABEL_18:
     _os_log_impl(&dword_2507E1000, log, OS_LOG_TYPE_DEFAULT, "Unsetting the serverURL.", v5, 2u);
   }
 
-  v4 = [(_GDSManager *)self fakeDataDefaults];
-  [v4 removeObjectForKey:@"fakeServerURL"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  [fakeDataDefaults removeObjectForKey:@"fakeServerURL"];
 }
 
 - (id)getFakeMarginalEmissionForecast
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(_GDSManager *)self fakeDataDefaults];
-  v4 = [v3 arrayForKey:@"fakeForecast"];
+  fakeDataDefaults = [(_GDSManager *)self fakeDataDefaults];
+  v4 = [fakeDataDefaults arrayForKey:@"fakeForecast"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = [MEMORY[0x277CBEAA8] now];
-    v25 = v5;
-    v23 = [v5 components:192 fromDate:v7];
+    v25 = currentCalendar;
+    v23 = [currentCalendar components:192 fromDate:v7];
     v24 = v7;
     v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v7 sinceDate:{-fmod((objc_msgSend(v23, "second") + 60 * objc_msgSend(v23, "minute")), 900.0)}];
     v27 = 0u;
@@ -572,7 +572,7 @@ LABEL_18:
 - (void)latestBalancingAuthority
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = [a1 userInfo];
+  userInfo = [self userInfo];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 
@@ -595,11 +595,11 @@ LABEL_18:
 - (void)latestMarginalEmissionForecast
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 name];
+  selfCopy = self;
+  name = [a2 name];
   v6 = 138412290;
-  v7 = v4;
-  _os_log_error_impl(&dword_2507E1000, v3, OS_LOG_TYPE_ERROR, "Parameter not specified BA:%@", &v6, 0xCu);
+  v7 = name;
+  _os_log_error_impl(&dword_2507E1000, selfCopy, OS_LOG_TYPE_ERROR, "Parameter not specified BA:%@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }

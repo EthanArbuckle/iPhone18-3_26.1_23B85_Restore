@@ -1,6 +1,6 @@
 @interface SSSDebugScreenshotMangerView
 - (CGSize)intrinsicContentSize;
-- (SSSDebugScreenshotMangerView)initWithFrame:(CGRect)a3;
+- (SSSDebugScreenshotMangerView)initWithFrame:(CGRect)frame;
 - (id)_labelAttributedString;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation SSSDebugScreenshotMangerView
 
-- (SSSDebugScreenshotMangerView)initWithFrame:(CGRect)a3
+- (SSSDebugScreenshotMangerView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = SSSDebugScreenshotMangerView;
-  v3 = [(SSSDebugScreenshotMangerView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSDebugScreenshotMangerView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = +[UIColor darkGrayColor];
   v5 = [v4 colorWithAlphaComponent:0.5];
   [(SSSDebugScreenshotMangerView *)v3 setBackgroundColor:v5];
@@ -57,26 +57,26 @@
 {
   v2 = objc_alloc_init(NSMutableAttributedString);
   v3 = +[SSSScreenshotManager sharedScreenshotManager];
-  v25 = [v3 environmentDescriptionIdentifiersBeingRemoved];
+  environmentDescriptionIdentifiersBeingRemoved = [v3 environmentDescriptionIdentifiersBeingRemoved];
 
   v4 = +[SSSScreenshotManager sharedScreenshotManager];
-  v24 = [v4 environmentDescriptionIdentifiersBeingSaved];
+  environmentDescriptionIdentifiersBeingSaved = [v4 environmentDescriptionIdentifiersBeingSaved];
 
   v5 = +[SSSScreenshotManager sharedScreenshotManager];
-  v23 = [v5 environmentDescriptionIdentifiersUIIsInterestedIn];
+  environmentDescriptionIdentifiersUIIsInterestedIn = [v5 environmentDescriptionIdentifiersUIIsInterestedIn];
 
   v6 = +[SSSScreenshotManager sharedScreenshotManager];
-  v7 = [v6 environmentDescriptionIdentifiersInActiveDragSession];
+  environmentDescriptionIdentifiersInActiveDragSession = [v6 environmentDescriptionIdentifiersInActiveDragSession];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
   v8 = +[SSSScreenshotManager sharedScreenshotManager];
-  v9 = [v8 environmentDescriptionIdentifiersBeingTracked];
+  environmentDescriptionIdentifiersBeingTracked = [v8 environmentDescriptionIdentifiersBeingTracked];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  obj = environmentDescriptionIdentifiersBeingTracked;
+  v10 = [environmentDescriptionIdentifiersBeingTracked countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -93,13 +93,13 @@
         v14 = *(*(&v26 + 1) + 8 * i);
         v15 = [[NSMutableAttributedString alloc] initWithString:v14];
         v16 = +[NSMutableDictionary dictionary];
-        if ([v25 containsObject:v14])
+        if ([environmentDescriptionIdentifiersBeingRemoved containsObject:v14])
         {
           v17 = +[UIColor redColor];
           [v16 setValue:v17 forKey:NSForegroundColorAttributeName];
         }
 
-        if ([v24 containsObject:v14])
+        if ([environmentDescriptionIdentifiersBeingSaved containsObject:v14])
         {
           v18 = +[UIColor greenColor];
           [v16 setValue:v18 forKey:NSUnderlineColorAttributeName];
@@ -107,13 +107,13 @@
           [v16 setValue:&off_1000BE5D0 forKey:NSUnderlineStyleAttributeName];
         }
 
-        if ([v23 containsObject:v14])
+        if ([environmentDescriptionIdentifiersUIIsInterestedIn containsObject:v14])
         {
           v19 = +[UIColor blueColor];
           [v16 setValue:v19 forKey:NSBackgroundColorAttributeName];
         }
 
-        if ([v7 containsObject:v14])
+        if ([environmentDescriptionIdentifiersInActiveDragSession containsObject:v14])
         {
           [v16 setValue:&off_1000BE5D0 forKey:NSObliquenessAttributeName];
         }
@@ -139,8 +139,8 @@
   [(SSSDebugScreenshotMangerView *)self bounds];
   [(UILabel *)debugLabel setFrame:?];
   v4 = self->_debugLabel;
-  v5 = [(SSSDebugScreenshotMangerView *)self _labelAttributedString];
-  [(UILabel *)v4 setAttributedText:v5];
+  _labelAttributedString = [(SSSDebugScreenshotMangerView *)self _labelAttributedString];
+  [(UILabel *)v4 setAttributedText:_labelAttributedString];
 }
 
 @end

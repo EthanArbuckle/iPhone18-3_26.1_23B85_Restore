@@ -1,59 +1,59 @@
 @interface SWShareableContent
-- (BOOL)canLoadObjectOfClass:(Class)a3;
+- (BOOL)canLoadObjectOfClass:(Class)class;
 - (BOOL)hasPossibleCollaborationRepresentation;
-- (BOOL)hasRepresentationConformingToTypeIdentifier:(id)a3;
+- (BOOL)hasRepresentationConformingToTypeIdentifier:(id)identifier;
 - (NSArray)itemProviders;
 - (NSItemProvider)itemProvider;
-- (SWShareableContent)initWithCoder:(id)a3;
-- (SWShareableContent)initWithSourceSceneIdentifier:(id)a3 sourceBundleIdentifier:(id)a4 metadata:(id)a5 representations:(id)a6 highlightURL:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9;
+- (SWShareableContent)initWithCoder:(id)coder;
+- (SWShareableContent)initWithSourceSceneIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier metadata:(id)metadata representations:(id)representations highlightURL:(id)l initiatorHandle:(id)handle initiatorNameComponents:(id)components;
 - (id)description;
 - (id)registeredOpenInPlaceTypeIdentifiers;
 - (id)registeredTypeIdentifiers;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadRepresentationForTypeIdentifier:(id)a3 itemProviderIndex:(int64_t)a4 completionHandler:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadRepresentationForTypeIdentifier:(id)identifier itemProviderIndex:(int64_t)index completionHandler:(id)handler;
 @end
 
 @implementation SWShareableContent
 
-- (SWShareableContent)initWithSourceSceneIdentifier:(id)a3 sourceBundleIdentifier:(id)a4 metadata:(id)a5 representations:(id)a6 highlightURL:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9
+- (SWShareableContent)initWithSourceSceneIdentifier:(id)identifier sourceBundleIdentifier:(id)bundleIdentifier metadata:(id)metadata representations:(id)representations highlightURL:(id)l initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  metadataCopy = metadata;
+  representationsCopy = representations;
+  lCopy = l;
+  handleCopy = handle;
+  componentsCopy = components;
   v38.receiver = self;
   v38.super_class = SWShareableContent;
   v22 = [(SWShareableContent *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [identifierCopy copy];
     sourceSceneIdentifier = v22->_sourceSceneIdentifier;
     v22->_sourceSceneIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [bundleIdentifierCopy copy];
     sourceBundleIdentifier = v22->_sourceBundleIdentifier;
     v22->_sourceBundleIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [metadataCopy copy];
     metadata = v22->_metadata;
     v22->_metadata = v27;
 
-    v29 = [v18 copy];
+    v29 = [representationsCopy copy];
     representations = v22->_representations;
     v22->_representations = v29;
 
-    v31 = [v19 copy];
+    v31 = [lCopy copy];
     highlightURL = v22->_highlightURL;
     v22->_highlightURL = v31;
 
-    v33 = [v20 copy];
+    v33 = [handleCopy copy];
     initiatorHandle = v22->_initiatorHandle;
     v22->_initiatorHandle = v33;
 
-    v35 = [v21 copy];
+    v35 = [componentsCopy copy];
     initiatorNameComponents = v22->_initiatorNameComponents;
     v22->_initiatorNameComponents = v35;
   }
@@ -64,26 +64,26 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(SWShareableContent *)self sourceSceneIdentifier];
-  [v3 appendFormat:@" sourceSceneIdentifier=%@", v4];
+  sourceSceneIdentifier = [(SWShareableContent *)self sourceSceneIdentifier];
+  [v3 appendFormat:@" sourceSceneIdentifier=%@", sourceSceneIdentifier];
 
-  v5 = [(SWShareableContent *)self sourceBundleIdentifier];
-  [v3 appendFormat:@" sourceBundleIdentifier=%@", v5];
+  sourceBundleIdentifier = [(SWShareableContent *)self sourceBundleIdentifier];
+  [v3 appendFormat:@" sourceBundleIdentifier=%@", sourceBundleIdentifier];
 
-  v6 = [(SWShareableContent *)self metadata];
-  [v3 appendFormat:@" metadata=%@", v6];
+  metadata = [(SWShareableContent *)self metadata];
+  [v3 appendFormat:@" metadata=%@", metadata];
 
-  v7 = [(SWShareableContent *)self representations];
-  [v3 appendFormat:@" representations=%@", v7];
+  representations = [(SWShareableContent *)self representations];
+  [v3 appendFormat:@" representations=%@", representations];
 
-  v8 = [(SWShareableContent *)self highlightURL];
-  [v3 appendFormat:@" highlightURL=%@", v8];
+  highlightURL = [(SWShareableContent *)self highlightURL];
+  [v3 appendFormat:@" highlightURL=%@", highlightURL];
 
-  v9 = [(SWShareableContent *)self initiatorHandle];
-  [v3 appendFormat:@" initiatorHandle=%@", v9];
+  initiatorHandle = [(SWShareableContent *)self initiatorHandle];
+  [v3 appendFormat:@" initiatorHandle=%@", initiatorHandle];
 
-  v10 = [(SWShareableContent *)self initiatorNameComponents];
-  [v3 appendFormat:@" initiatorNameComponents=%@", v10];
+  initiatorNameComponents = [(SWShareableContent *)self initiatorNameComponents];
+  [v3 appendFormat:@" initiatorNameComponents=%@", initiatorNameComponents];
 
   [v3 appendString:@">"];
   v11 = [v3 copy];
@@ -95,15 +95,15 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(SWShareableContent *)self representations];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  representations = [(SWShareableContent *)self representations];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(representations, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(SWShareableContent *)self representations];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  representations2 = [(SWShareableContent *)self representations];
+  v7 = [representations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -114,14 +114,14 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(representations2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) typeIdentifier];
-        [v5 addObject:v11];
+        typeIdentifier = [*(*(&v15 + 1) + 8 * i) typeIdentifier];
+        [v5 addObject:typeIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [representations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -137,15 +137,15 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(SWShareableContent *)self representations];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  representations = [(SWShareableContent *)self representations];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(representations, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SWShareableContent *)self representations];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  representations2 = [(SWShareableContent *)self representations];
+  v7 = [representations2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -156,18 +156,18 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(representations2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 preferredRepresentation] == 2)
         {
-          v12 = [v11 typeIdentifier];
-          [v5 addObject:v12];
+          typeIdentifier = [v11 typeIdentifier];
+          [v5 addObject:typeIdentifier];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [representations2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -179,16 +179,16 @@
   return v13;
 }
 
-- (BOOL)hasRepresentationConformingToTypeIdentifier:(id)a3
+- (BOOL)hasRepresentationConformingToTypeIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SWShareableContent *)self itemProviders];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  itemProviders = [(SWShareableContent *)self itemProviders];
+  v6 = [itemProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -198,17 +198,17 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemProviders);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationConformingToTypeIdentifier:v4 fileOptions:0])
+        if ([*(*(&v11 + 1) + 8 * i) hasRepresentationConformingToTypeIdentifier:identifierCopy fileOptions:0])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [itemProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -224,15 +224,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)canLoadObjectOfClass:(Class)a3
+- (BOOL)canLoadObjectOfClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SWShareableContent *)self itemProviders];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  itemProviders = [(SWShareableContent *)self itemProviders];
+  v5 = [itemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -243,17 +243,17 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemProviders);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) canLoadObjectOfClass:a3])
+        if ([*(*(&v12 + 1) + 8 * i) canLoadObjectOfClass:class])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [itemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -277,8 +277,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SWShareableContent *)self itemProviders];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  itemProviders = [(SWShareableContent *)self itemProviders];
+  v3 = [itemProviders countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -288,7 +288,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(itemProviders);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) sl_hasPossibleCollaborationRepresentation])
@@ -298,7 +298,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [itemProviders countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -314,44 +314,44 @@ LABEL_11:
   return v3;
 }
 
-- (void)loadRepresentationForTypeIdentifier:(id)a3 itemProviderIndex:(int64_t)a4 completionHandler:(id)a5
+- (void)loadRepresentationForTypeIdentifier:(id)identifier itemProviderIndex:(int64_t)index completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = [(SWShareableContent *)self representationProvider];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  representationProvider = [(SWShareableContent *)self representationProvider];
 
-  if (v9)
+  if (representationProvider)
   {
-    v10 = [(SWShareableContent *)self representationProvider];
-    [v10 loadRepresentationForContent:self typeIdentifier:v11 itemProviderIndex:a4 completionHandler:v8];
+    representationProvider2 = [(SWShareableContent *)self representationProvider];
+    [representationProvider2 loadRepresentationForContent:self typeIdentifier:identifierCopy itemProviderIndex:index completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
 - (NSItemProvider)itemProvider
 {
-  v2 = [(SWShareableContent *)self itemProviders];
-  v3 = [v2 firstObject];
+  itemProviders = [(SWShareableContent *)self itemProviders];
+  firstObject = [itemProviders firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)itemProviders
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SWShareableContent *)self representations];
+  array = [MEMORY[0x1E695DF70] array];
+  representations = [(SWShareableContent *)self representations];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __35__SWShareableContent_itemProviders__block_invoke;
   v11 = &unk_1E7FDE1A0;
-  v12 = self;
-  v13 = v3;
-  v5 = v3;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  selfCopy = self;
+  v13 = array;
+  v5 = array;
+  [representations enumerateObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -468,45 +468,45 @@ void __35__SWShareableContent_itemProviders__block_invoke_3(uint64_t a1, void *a
   }
 }
 
-- (SWShareableContent)initWithCoder:(id)a3
+- (SWShareableContent)initWithCoder:(id)coder
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_opt_class();
     v6 = NSStringFromSelector(sel_sourceSceneIdentifier);
-    v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+    v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(sel_sourceBundleIdentifier);
-    v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_metadata);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
     v17 = NSStringFromSelector(sel_registeredTypeIdentifiers);
-    v18 = [v4 decodeObjectOfClasses:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClasses:v16 forKey:v17];
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(sel_highlightURL);
-    v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
 
     v22 = objc_opt_class();
     v23 = NSStringFromSelector(sel_initiatorHandle);
-    v24 = [v4 decodeObjectOfClass:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClass:v22 forKey:v23];
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_initiatorNameComponents);
-    v27 = [v4 decodeObjectOfClass:v25 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
 
     self = [(SWShareableContent *)self initWithSourceSceneIdentifier:v7 sourceBundleIdentifier:v10 metadata:v13 representations:v18 highlightURL:v21 initiatorHandle:v24 initiatorNameComponents:v27];
-    v28 = self;
+    selfCopy = self;
   }
 
   else
@@ -517,49 +517,49 @@ void __35__SWShareableContent_itemProviders__block_invoke_3(uint64_t a1, void *a
     v36[0] = @"This type only supports encoding and decoding via NSXPCCoder.";
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v32 = [v29 errorWithDomain:v30 code:4866 userInfo:v31];
-    [v4 failWithError:v32];
+    [coderCopy failWithError:v32];
 
-    v28 = 0;
+    selfCopy = 0;
   }
 
   v33 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SWShareableContent *)self sourceSceneIdentifier];
+    sourceSceneIdentifier = [(SWShareableContent *)self sourceSceneIdentifier];
     v6 = NSStringFromSelector(sel_sourceSceneIdentifier);
-    [v4 encodeObject:v5 forKey:v6];
+    [coderCopy encodeObject:sourceSceneIdentifier forKey:v6];
 
-    v7 = [(SWShareableContent *)self sourceBundleIdentifier];
+    sourceBundleIdentifier = [(SWShareableContent *)self sourceBundleIdentifier];
     v8 = NSStringFromSelector(sel_sourceBundleIdentifier);
-    [v4 encodeObject:v7 forKey:v8];
+    [coderCopy encodeObject:sourceBundleIdentifier forKey:v8];
 
-    v9 = [(SWShareableContent *)self metadata];
+    metadata = [(SWShareableContent *)self metadata];
     v10 = NSStringFromSelector(sel_metadata);
-    [v4 encodeObject:v9 forKey:v10];
+    [coderCopy encodeObject:metadata forKey:v10];
 
-    v11 = [(SWShareableContent *)self representations];
+    representations = [(SWShareableContent *)self representations];
     v12 = NSStringFromSelector(sel_representations);
-    [v4 encodeObject:v11 forKey:v12];
+    [coderCopy encodeObject:representations forKey:v12];
 
-    v13 = [(SWShareableContent *)self highlightURL];
+    highlightURL = [(SWShareableContent *)self highlightURL];
     v14 = NSStringFromSelector(sel_highlightURL);
-    [v4 encodeObject:v13 forKey:v14];
+    [coderCopy encodeObject:highlightURL forKey:v14];
 
-    v15 = [(SWShareableContent *)self initiatorHandle];
+    initiatorHandle = [(SWShareableContent *)self initiatorHandle];
     v16 = NSStringFromSelector(sel_initiatorHandle);
-    [v4 encodeObject:v15 forKey:v16];
+    [coderCopy encodeObject:initiatorHandle forKey:v16];
 
-    v17 = [(SWShareableContent *)self initiatorNameComponents];
+    initiatorNameComponents = [(SWShareableContent *)self initiatorNameComponents];
     v18 = NSStringFromSelector(sel_initiatorNameComponents);
-    [v4 encodeObject:v17 forKey:v18];
+    [coderCopy encodeObject:initiatorNameComponents forKey:v18];
   }
 
   else
@@ -570,7 +570,7 @@ void __35__SWShareableContent_itemProviders__block_invoke_3(uint64_t a1, void *a
     v25[0] = @"This type only supports encoding and decoding via NSXPCCoder.";
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v22 = [v19 errorWithDomain:v20 code:4866 userInfo:v21];
-    [v4 failWithError:v22];
+    [coderCopy failWithError:v22];
   }
 
   v23 = *MEMORY[0x1E69E9840];

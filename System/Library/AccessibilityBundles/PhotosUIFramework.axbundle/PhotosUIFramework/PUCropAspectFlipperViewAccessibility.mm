@@ -1,19 +1,19 @@
 @interface PUCropAspectFlipperViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setAspectRatioOrientation:(int64_t)a3;
+- (void)setAspectRatioOrientation:(int64_t)orientation;
 @end
 
 @implementation PUCropAspectFlipperViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUCropAspectFlipperView" hasInstanceVariable:@"_horizontalAspectButton" withType:"UIButton"];
-  [v3 validateClass:@"PUCropAspectFlipperView" hasInstanceVariable:@"_verticalAspectButton" withType:"UIButton"];
-  [v3 validateClass:@"PUCropAspectFlipperView" hasInstanceMethod:@"setAspectRatioOrientation:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"PUCropToolController"];
-  [v3 validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUCropAspectFlipperView" hasInstanceVariable:@"_horizontalAspectButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PUCropAspectFlipperView" hasInstanceVariable:@"_verticalAspectButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PUCropAspectFlipperView" hasInstanceMethod:@"setAspectRatioOrientation:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"PUCropToolController"];
+  [validationsCopy validateClass:@"PUCropToolController" hasInstanceMethod:@"cropAspectViewController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,14 +33,14 @@
   [v6 _setAccessibilityLabelBlock:&__block_literal_global_504];
 }
 
-- (void)setAspectRatioOrientation:(int64_t)a3
+- (void)setAspectRatioOrientation:(int64_t)orientation
 {
   v7.receiver = self;
   v7.super_class = PUCropAspectFlipperViewAccessibility;
-  [(PUCropAspectFlipperViewAccessibility *)&v7 setAspectRatioOrientation:a3];
+  [(PUCropAspectFlipperViewAccessibility *)&v7 setAspectRatioOrientation:orientation];
   v4 = [(PUCropAspectFlipperViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_512 startWithSelf:1];
-  v5 = [v4 _accessibilityViewController];
-  v6 = [v5 safeValueForKey:@"cropAspectViewController"];
+  _accessibilityViewController = [v4 _accessibilityViewController];
+  v6 = [_accessibilityViewController safeValueForKey:@"cropAspectViewController"];
   [(PUCropAspectFlipperViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   [v6 _accessibilityLoadAccessibilityInformation];
 }

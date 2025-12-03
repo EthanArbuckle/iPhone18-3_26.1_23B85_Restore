@@ -3,8 +3,8 @@
 - (SVXClientServiceManager)init;
 - (id)_connection;
 - (void)_connect;
-- (void)clientServiceConnectionDidInvalidate:(id)a3;
-- (void)getClientServiceUsingBlock:(id)a3 errorHandler:(id)a4;
+- (void)clientServiceConnectionDidInvalidate:(id)invalidate;
+- (void)getClientServiceUsingBlock:(id)block errorHandler:(id)handler;
 @end
 
 @implementation SVXClientServiceManager
@@ -25,8 +25,8 @@
     outputAudioPowerService = self->_outputAudioPowerService;
     speechSynthesisService = self->_speechSynthesisService;
     keepAliveService = self->_keepAliveService;
-    v13 = [MEMORY[0x277CEF2C8] currentContext];
-    v14 = [(SVXClientServiceConnection *)v18 initWithQueuePerformer:performer activationService:activationService audioSystemService:audioSystemService deviceService:deviceService inputAudioPowerService:inputAudioPowerService outputAudioPowerService:outputAudioPowerService sessionService:sessionService speechSynthesisService:speechSynthesisService keepAliveService:keepAliveService instanceContext:v13 delegate:self];
+    currentContext = [MEMORY[0x277CEF2C8] currentContext];
+    v14 = [(SVXClientServiceConnection *)v18 initWithQueuePerformer:performer activationService:activationService audioSystemService:audioSystemService deviceService:deviceService inputAudioPowerService:inputAudioPowerService outputAudioPowerService:outputAudioPowerService sessionService:sessionService speechSynthesisService:speechSynthesisService keepAliveService:keepAliveService instanceContext:currentContext delegate:self];
     v15 = self->_connection;
     self->_connection = v14;
 
@@ -47,17 +47,17 @@
   [(SVXPerforming *)performer performBlock:v3 withOptions:0];
 }
 
-- (void)clientServiceConnectionDidInvalidate:(id)a3
+- (void)clientServiceConnectionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   performer = self->_performer;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SVXClientServiceManager_clientServiceConnectionDidInvalidate___block_invoke;
   v7[3] = &unk_279C68FE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
   [(SVXPerforming *)performer performBlock:v7];
 }
 
@@ -78,17 +78,17 @@ uint64_t __64__SVXClientServiceManager_clientServiceConnectionDidInvalidate___bl
   return result;
 }
 
-- (void)getClientServiceUsingBlock:(id)a3 errorHandler:(id)a4
+- (void)getClientServiceUsingBlock:(id)block errorHandler:(id)handler
 {
-  v5 = a3;
+  blockCopy = block;
   performer = self->_performer;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__SVXClientServiceManager_getClientServiceUsingBlock_errorHandler___block_invoke;
   v8[3] = &unk_279C68EF8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(SVXPerforming *)performer performBlock:v8];
 }
 
@@ -113,9 +113,9 @@ void __67__SVXClientServiceManager_getClientServiceUsingBlock_errorHandler___blo
     performer = v2->_performer;
     v2->_performer = v3;
 
-    v5 = [MEMORY[0x277CEF158] sharedAnalytics];
+    mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
     analytics = v2->_analytics;
-    v2->_analytics = v5;
+    v2->_analytics = mEMORY[0x277CEF158];
 
     v7 = [[SVXClientActivationService alloc] initWithClientServiceProvider:v2 analytics:v2->_analytics performer:v2->_performer];
     activationService = v2->_activationService;

@@ -1,27 +1,27 @@
 @interface SelectedCheckboxFromIcon__generated__Output
-- (SelectedCheckboxFromIcon__generated__Output)initWithLabelProbability:(id)a3 label:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (SelectedCheckboxFromIcon__generated__Output)initWithLabelProbability:(id)probability label:(id)label;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SelectedCheckboxFromIcon__generated__Output
 
-- (SelectedCheckboxFromIcon__generated__Output)initWithLabelProbability:(id)a3 label:(id)a4
+- (SelectedCheckboxFromIcon__generated__Output)initWithLabelProbability:(id)probability label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  probabilityCopy = probability;
+  labelCopy = label;
   if (self)
   {
-    objc_storeStrong(&self->_labelProbability, a3);
-    objc_storeStrong(&self->_label, a4);
+    objc_storeStrong(&self->_labelProbability, probability);
+    objc_storeStrong(&self->_label, label);
   }
 
   return self;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"labelProbability"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"labelProbability"])
   {
     v5 = [MEMORY[0x1E695FE60] featureValueWithDictionary:self->_labelProbability error:0];
 LABEL_5:
@@ -29,7 +29,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"label"])
+  if ([nameCopy isEqualToString:@"label"])
   {
     v5 = [MEMORY[0x1E695FE60] featureValueWithString:self->_label];
     goto LABEL_5;

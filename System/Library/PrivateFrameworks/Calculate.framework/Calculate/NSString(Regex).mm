@@ -12,10 +12,10 @@
   v10[1] = 3221225472;
   v10[2] = __71__NSString_Regex__calc_stringByReplacingOccurrencesOfRegex_usingBlock___block_invoke;
   v10[3] = &unk_1E815C4B8;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 calc_stringByReplacingOccurrencesOfRegex:a3 usingBlockWithResult:v10];
+  v8 = [self calc_stringByReplacingOccurrencesOfRegex:a3 usingBlockWithResult:v10];
 
   return v8;
 }
@@ -24,8 +24,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 length];
+  selfCopy = self;
+  v9 = [selfCopy length];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -41,7 +41,7 @@
   aBlock[2] = __81__NSString_Regex__calc_stringByReplacingOccurrencesOfRegex_usingBlockWithResult___block_invoke;
   aBlock[3] = &unk_1E815C1E8;
   v24 = &v27;
-  v10 = v8;
+  v10 = selfCopy;
   v23 = v10;
   v25 = v26;
   v11 = _Block_copy(aBlock);

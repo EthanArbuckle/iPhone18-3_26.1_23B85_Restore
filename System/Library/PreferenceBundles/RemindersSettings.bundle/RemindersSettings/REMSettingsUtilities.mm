@@ -1,106 +1,106 @@
 @interface REMSettingsUtilities
-+ (id)groupSpecifierWithHeader:(id)a3 footer:(id)a4;
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 scope:(unint64_t)a7 titles:(id)a8 values:(id)a9;
-+ (id)radioGroupSpecifierWithHeader:(id)a3 footer:(id)a4 keyName:(id)a5 scope:(unint64_t)a6;
-+ (id)standardButtonSpecifierNamed:(id)a3 target:(id)a4 selector:(SEL)a5;
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 scope:(unint64_t)a9 set:(SEL)a10 get:(SEL)a11;
-+ (void)_applyKey:(id)a3 scope:(unint64_t)a4 toSpecifier:(id)a5;
++ (id)groupSpecifierWithHeader:(id)header footer:(id)footer;
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope titles:(id)titles values:(id)values;
++ (id)radioGroupSpecifierWithHeader:(id)header footer:(id)footer keyName:(id)name scope:(unint64_t)scope;
++ (id)standardButtonSpecifierNamed:(id)named target:(id)target selector:(SEL)selector;
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope set:(SEL)self0 get:(SEL)self1;
++ (void)_applyKey:(id)key scope:(unint64_t)scope toSpecifier:(id)specifier;
 @end
 
 @implementation REMSettingsUtilities
 
-+ (id)groupSpecifierWithHeader:(id)a3 footer:(id)a4
++ (id)groupSpecifierWithHeader:(id)header footer:(id)footer
 {
-  v5 = a4;
-  v6 = [PSSpecifier groupSpecifierWithName:a3];
+  footerCopy = footer;
+  v6 = [PSSpecifier groupSpecifierWithName:header];
   v7 = v6;
-  if (v5)
+  if (footerCopy)
   {
-    [v6 setProperty:v5 forKey:PSFooterTextGroupKey];
+    [v6 setProperty:footerCopy forKey:PSFooterTextGroupKey];
   }
 
   return v7;
 }
 
-+ (id)radioGroupSpecifierWithHeader:(id)a3 footer:(id)a4 keyName:(id)a5 scope:(unint64_t)a6
++ (id)radioGroupSpecifierWithHeader:(id)header footer:(id)footer keyName:(id)name scope:(unint64_t)scope
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [PSSpecifier groupSpecifierWithName:a3];
+  footerCopy = footer;
+  nameCopy = name;
+  v12 = [PSSpecifier groupSpecifierWithName:header];
   v13 = v12;
-  if (v10)
+  if (footerCopy)
   {
-    [v12 setProperty:v10 forKey:PSFooterTextGroupKey];
+    [v12 setProperty:footerCopy forKey:PSFooterTextGroupKey];
   }
 
   [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:PSIsRadioGroupKey];
-  [a1 _applyKey:v11 scope:a6 toSpecifier:v13];
+  [self _applyKey:nameCopy scope:scope toSpecifier:v13];
 
   return v13;
 }
 
-+ (id)standardPreferenceSpecifierNamed:(id)a3 target:(id)a4 cell:(int64_t)a5 detail:(Class)a6 keyName:(id)a7 defaultValue:(id)a8 scope:(unint64_t)a9 set:(SEL)a10 get:(SEL)a11
++ (id)standardPreferenceSpecifierNamed:(id)named target:(id)target cell:(int64_t)cell detail:(Class)detail keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope set:(SEL)self0 get:(SEL)self1
 {
-  v16 = a10;
-  v17 = a8;
-  if (!a10)
+  setCopy = set;
+  valueCopy = value;
+  if (!set)
   {
-    v16 = "setPreferenceValue:specifier:";
+    setCopy = "setPreferenceValue:specifier:";
   }
 
-  if (a11)
+  if (get)
   {
-    v18 = a11;
+    getCopy = get;
   }
 
   else
   {
-    v18 = "readPreferenceValue:";
+    getCopy = "readPreferenceValue:";
   }
 
-  v19 = a7;
-  v20 = [PSSpecifier preferenceSpecifierNamed:a3 target:a4 set:v16 get:v18 detail:a6 cell:a5 edit:a6];
+  nameCopy = name;
+  v20 = [PSSpecifier preferenceSpecifierNamed:named target:target set:setCopy get:getCopy detail:detail cell:cell edit:detail];
   v21 = v20;
-  if (v17)
+  if (valueCopy)
   {
-    [v20 setObject:v17 forKeyedSubscript:PSDefaultValueKey];
+    [v20 setObject:valueCopy forKeyedSubscript:PSDefaultValueKey];
   }
 
   [v21 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-  [a1 _applyKey:v19 scope:a9 toSpecifier:v21];
+  [self _applyKey:nameCopy scope:scope toSpecifier:v21];
 
   return v21;
 }
 
-+ (id)standardButtonSpecifierNamed:(id)a3 target:(id)a4 selector:(SEL)a5
++ (id)standardButtonSpecifierNamed:(id)named target:(id)target selector:(SEL)selector
 {
-  v6 = [PSSpecifier preferenceSpecifierNamed:a3 target:a4 set:0 get:0 detail:0 cell:13 edit:0];
+  v6 = [PSSpecifier preferenceSpecifierNamed:named target:target set:0 get:0 detail:0 cell:13 edit:0];
   [v6 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-  [v6 setButtonAction:a5];
+  [v6 setButtonAction:selector];
 
   return v6;
 }
 
-+ (id)linkListPreferenceSpecifierNamed:(id)a3 target:(id)a4 keyName:(id)a5 defaultValue:(id)a6 scope:(unint64_t)a7 titles:(id)a8 values:(id)a9
++ (id)linkListPreferenceSpecifierNamed:(id)named target:(id)target keyName:(id)name defaultValue:(id)value scope:(unint64_t)scope titles:(id)titles values:(id)values
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [a1 standardPreferenceSpecifierNamed:v21 target:v20 cell:2 detail:objc_opt_class() keyName:v19 defaultValue:v18 scope:a7];
+  valuesCopy = values;
+  titlesCopy = titles;
+  valueCopy = value;
+  nameCopy = name;
+  targetCopy = target;
+  namedCopy = named;
+  v22 = [self standardPreferenceSpecifierNamed:namedCopy target:targetCopy cell:2 detail:objc_opt_class() keyName:nameCopy defaultValue:valueCopy scope:scope];
 
-  [v22 setValues:v16 titles:v17];
+  [v22 setValues:valuesCopy titles:titlesCopy];
 
   return v22;
 }
 
-+ (void)_applyKey:(id)a3 scope:(unint64_t)a4 toSpecifier:(id)a5
++ (void)_applyKey:(id)key scope:(unint64_t)scope toSpecifier:(id)specifier
 {
-  v12 = a5;
-  [v12 setObject:a3 forKeyedSubscript:PSKeyNameKey];
-  if (!a4)
+  specifierCopy = specifier;
+  [specifierCopy setObject:key forKeyedSubscript:PSKeyNameKey];
+  if (!scope)
   {
     v9 = &REMDaemonBundleIdentifier;
 LABEL_7:
@@ -109,27 +109,27 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 != 1)
+  if (scope != 1)
   {
-    v7 = v12;
-    if (a4 != 2)
+    v7 = specifierCopy;
+    if (scope != 2)
     {
       goto LABEL_9;
     }
 
     v8 = REMAppGroupBundleIdentifier;
-    [v12 setObject:REMAppGroupBundleIdentifier forKeyedSubscript:PSAppGroupBundleIDKey];
-    [v12 setObject:v8 forKeyedSubscript:PSContainerBundleIDKey];
+    [specifierCopy setObject:REMAppGroupBundleIdentifier forKeyedSubscript:PSAppGroupBundleIDKey];
+    [specifierCopy setObject:v8 forKeyedSubscript:PSContainerBundleIDKey];
     v9 = &REMAppBundleIdentifier;
     goto LABEL_7;
   }
 
   v10 = REMAppBundleIdentifier;
-  [v12 setObject:REMAppBundleIdentifier forKeyedSubscript:PSDefaultsKey];
+  [specifierCopy setObject:REMAppBundleIdentifier forKeyedSubscript:PSDefaultsKey];
   v11 = &PSContainerBundleIDKey;
 LABEL_8:
-  [v12 setObject:v10 forKeyedSubscript:*v11];
-  v7 = v12;
+  [specifierCopy setObject:v10 forKeyedSubscript:*v11];
+  v7 = specifierCopy;
 LABEL_9:
 }
 

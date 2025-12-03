@@ -1,9 +1,9 @@
 @interface CRPluginManager
 + (id)defaultPluginPath;
-- (CRPluginManager)initWithPath:(id)a3;
+- (CRPluginManager)initWithPath:(id)path;
 - (id)addressHandlers;
-- (void)_addAddressHandler:(id)a3;
-- (void)_loadPluginBundle:(id)a3;
+- (void)_addAddressHandler:(id)handler;
+- (void)_loadPluginBundle:(id)bundle;
 - (void)_loadPlugins;
 - (void)dealloc;
 @end
@@ -20,14 +20,14 @@
   return qword_100034370;
 }
 
-- (CRPluginManager)initWithPath:(id)a3
+- (CRPluginManager)initWithPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CRPluginManager;
   v4 = [(CRPluginManager *)&v6 init];
   if (v4)
   {
-    v4->_path = [a3 copy];
+    v4->_path = [path copy];
     v4->_addressHandlersByKind = objc_alloc_init(NSMutableDictionary);
     [(CRPluginManager *)v4 _loadPlugins];
   }
@@ -87,37 +87,37 @@
   }
 }
 
-- (void)_loadPluginBundle:(id)a3
+- (void)_loadPluginBundle:(id)bundle
 {
   v6 = 0;
-  if ([a3 loadAndReturnError:&v6])
+  if ([bundle loadAndReturnError:&v6])
   {
-    v5 = [a3 principalClass];
-    if ([v5 conformsToProtocol:&OBJC_PROTOCOL___CRAddressHandler])
+    principalClass = [bundle principalClass];
+    if ([principalClass conformsToProtocol:&OBJC_PROTOCOL___CRAddressHandler])
     {
-      [(CRPluginManager *)self _addAddressHandler:[CRAddressHandler addressHandlerWithPrincipalClass:v5]];
+      [(CRPluginManager *)self _addAddressHandler:[CRAddressHandler addressHandlerWithPrincipalClass:principalClass]];
     }
 
     else
     {
-      NSLog(@"no conforming principal class found in %@", a3);
+      NSLog(@"no conforming principal class found in %@", bundle);
     }
   }
 
   else
   {
-    NSLog(@"unable to load plugin bundle %@: %@", a3, v6);
+    NSLog(@"unable to load plugin bundle %@: %@", bundle, v6);
   }
 }
 
-- (void)_addAddressHandler:(id)a3
+- (void)_addAddressHandler:(id)handler
 {
-  v5 = [a3 supportedAddressKinds];
-  v6 = [NSMutableSet setWithSet:v5];
+  supportedAddressKinds = [handler supportedAddressKinds];
+  v6 = [NSMutableSet setWithSet:supportedAddressKinds];
   [(NSMutableSet *)v6 intersectSet:[NSSet setWithArray:[(NSMutableDictionary *)self->_addressHandlersByKind allKeys]]];
   if ([(NSMutableSet *)v6 count])
   {
-    v7 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"ERROR: %@ attempting to register multiple sync transformers for kinds: {%@}\n\tregistered transformers:\n", a3, [-[NSMutableSet allObjects](v6 "allObjects")]);
+    v7 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"ERROR: %@ attempting to register multiple sync transformers for kinds: {%@}\n\tregistered transformers:\n", handler, [-[NSMutableSet allObjects](v6 "allObjects")]);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -157,7 +157,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v12 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    v12 = [supportedAddressKinds countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -169,15 +169,15 @@
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(supportedAddressKinds);
           }
 
-          [(NSMutableDictionary *)self->_addressHandlersByKind setObject:a3 forKey:*(*(&v16 + 1) + 8 * v15)];
+          [(NSMutableDictionary *)self->_addressHandlersByKind setObject:handler forKey:*(*(&v16 + 1) + 8 * v15)];
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [supportedAddressKinds countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);

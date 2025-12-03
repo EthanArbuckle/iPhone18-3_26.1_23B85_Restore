@@ -1,44 +1,44 @@
 @interface CRKIDSWaitAndSendIDSMessageOperation
-- (CRKIDSWaitAndSendIDSMessageOperation)initWithIDSLocalPrimitives:(id)a3 IDSReadinessEvaluator:(id)a4 message:(id)a5 destinationAddress:(id)a6 sourceAppleID:(id)a7 options:(id)a8;
+- (CRKIDSWaitAndSendIDSMessageOperation)initWithIDSLocalPrimitives:(id)primitives IDSReadinessEvaluator:(id)evaluator message:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options;
 - (void)cancel;
-- (void)evaluateReadinessOperationDidFinish:(id)a3;
+- (void)evaluateReadinessOperationDidFinish:(id)finish;
 - (void)main;
 - (void)run;
 - (void)sendMessage;
-- (void)sendMessageOperationDidFinish:(id)a3;
+- (void)sendMessageOperationDidFinish:(id)finish;
 @end
 
 @implementation CRKIDSWaitAndSendIDSMessageOperation
 
-- (CRKIDSWaitAndSendIDSMessageOperation)initWithIDSLocalPrimitives:(id)a3 IDSReadinessEvaluator:(id)a4 message:(id)a5 destinationAddress:(id)a6 sourceAppleID:(id)a7 options:(id)a8
+- (CRKIDSWaitAndSendIDSMessageOperation)initWithIDSLocalPrimitives:(id)primitives IDSReadinessEvaluator:(id)evaluator message:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  primitivesCopy = primitives;
+  evaluatorCopy = evaluator;
+  messageCopy = message;
+  addressCopy = address;
+  dCopy = d;
+  optionsCopy = options;
   v32.receiver = self;
   v32.super_class = CRKIDSWaitAndSendIDSMessageOperation;
   v21 = [(CRKIDSWaitAndSendIDSMessageOperation *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_IDSLocalPrimitives, a3);
-    objc_storeStrong(&v22->_readinessEvaluator, a4);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_IDSLocalPrimitives, primitives);
+    objc_storeStrong(&v22->_readinessEvaluator, evaluator);
+    v23 = [messageCopy copy];
     message = v22->_message;
     v22->_message = v23;
 
-    v25 = [v18 copy];
+    v25 = [addressCopy copy];
     destinationAddress = v22->_destinationAddress;
     v22->_destinationAddress = v25;
 
-    v27 = [v19 copy];
+    v27 = [dCopy copy];
     sourceAppleID = v22->_sourceAppleID;
     v22->_sourceAppleID = v27;
 
-    v29 = [v20 copy];
+    v29 = [optionsCopy copy];
     options = v22->_options;
     v22->_options = v29;
   }
@@ -82,43 +82,43 @@ void __46__CRKIDSWaitAndSendIDSMessageOperation_cancel__block_invoke(uint64_t a1
 {
   if ([(CRKIDSWaitAndSendIDSMessageOperation *)self isCanceled])
   {
-    v7 = CATErrorWithCodeAndUserInfo();
+    crk_backgroundQueue = CATErrorWithCodeAndUserInfo();
     [(CRKIDSWaitAndSendIDSMessageOperation *)self endOperationWithError:?];
   }
 
   else
   {
-    v3 = [(CRKIDSWaitAndSendIDSMessageOperation *)self readinessEvaluator];
-    v4 = [v3 operationToEvaluateIDSReadiness];
-    [(CRKIDSWaitAndSendIDSMessageOperation *)self setEvaluateReadinessOperation:v4];
+    readinessEvaluator = [(CRKIDSWaitAndSendIDSMessageOperation *)self readinessEvaluator];
+    operationToEvaluateIDSReadiness = [readinessEvaluator operationToEvaluateIDSReadiness];
+    [(CRKIDSWaitAndSendIDSMessageOperation *)self setEvaluateReadinessOperation:operationToEvaluateIDSReadiness];
 
-    v5 = [(CRKIDSWaitAndSendIDSMessageOperation *)self evaluateReadinessOperation];
-    [v5 addTarget:self selector:sel_evaluateReadinessOperationDidFinish_ forOperationEvents:6];
+    evaluateReadinessOperation = [(CRKIDSWaitAndSendIDSMessageOperation *)self evaluateReadinessOperation];
+    [evaluateReadinessOperation addTarget:self selector:sel_evaluateReadinessOperationDidFinish_ forOperationEvents:6];
 
-    v7 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-    v6 = [(CRKIDSWaitAndSendIDSMessageOperation *)self evaluateReadinessOperation];
-    [v7 addOperation:v6];
+    crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+    evaluateReadinessOperation2 = [(CRKIDSWaitAndSendIDSMessageOperation *)self evaluateReadinessOperation];
+    [crk_backgroundQueue addOperation:evaluateReadinessOperation2];
   }
 }
 
-- (void)evaluateReadinessOperationDidFinish:(id)a3
+- (void)evaluateReadinessOperationDidFinish:(id)finish
 {
-  v7 = a3;
+  finishCopy = finish;
   if ([(CRKIDSWaitAndSendIDSMessageOperation *)self isCanceled])
   {
-    v4 = CATErrorWithCodeAndUserInfo();
+    error2 = CATErrorWithCodeAndUserInfo();
 LABEL_5:
-    v6 = v4;
-    [(CRKIDSWaitAndSendIDSMessageOperation *)self endOperationWithError:v4];
+    v6 = error2;
+    [(CRKIDSWaitAndSendIDSMessageOperation *)self endOperationWithError:error2];
 
     goto LABEL_6;
   }
 
-  v5 = [v7 error];
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
-    v4 = [v7 error];
+    error2 = [finishCopy error];
     goto LABEL_5;
   }
 
@@ -129,40 +129,40 @@ LABEL_6:
 - (void)sendMessage
 {
   v3 = [CRKIDSSendMessageOperation alloc];
-  v4 = [(CRKIDSWaitAndSendIDSMessageOperation *)self IDSLocalPrimitives];
-  v5 = [(CRKIDSWaitAndSendIDSMessageOperation *)self message];
-  v6 = [(CRKIDSWaitAndSendIDSMessageOperation *)self destinationAddress];
-  v7 = [(CRKIDSWaitAndSendIDSMessageOperation *)self sourceAppleID];
-  v8 = [(CRKIDSWaitAndSendIDSMessageOperation *)self options];
-  v9 = [(CRKIDSSendMessageOperation *)v3 initWithIDSLocalPrimitives:v4 message:v5 destinationAddress:v6 sourceAppleID:v7 options:v8];
+  iDSLocalPrimitives = [(CRKIDSWaitAndSendIDSMessageOperation *)self IDSLocalPrimitives];
+  message = [(CRKIDSWaitAndSendIDSMessageOperation *)self message];
+  destinationAddress = [(CRKIDSWaitAndSendIDSMessageOperation *)self destinationAddress];
+  sourceAppleID = [(CRKIDSWaitAndSendIDSMessageOperation *)self sourceAppleID];
+  options = [(CRKIDSWaitAndSendIDSMessageOperation *)self options];
+  v9 = [(CRKIDSSendMessageOperation *)v3 initWithIDSLocalPrimitives:iDSLocalPrimitives message:message destinationAddress:destinationAddress sourceAppleID:sourceAppleID options:options];
   [(CRKIDSWaitAndSendIDSMessageOperation *)self setSendMessageOperation:v9];
 
-  v10 = [(CRKIDSWaitAndSendIDSMessageOperation *)self sendMessageOperation];
-  [v10 addTarget:self selector:sel_sendMessageOperationDidFinish_ forOperationEvents:6];
+  sendMessageOperation = [(CRKIDSWaitAndSendIDSMessageOperation *)self sendMessageOperation];
+  [sendMessageOperation addTarget:self selector:sel_sendMessageOperationDidFinish_ forOperationEvents:6];
 
-  v12 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  v11 = [(CRKIDSWaitAndSendIDSMessageOperation *)self sendMessageOperation];
-  [v12 addOperation:v11];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  sendMessageOperation2 = [(CRKIDSWaitAndSendIDSMessageOperation *)self sendMessageOperation];
+  [crk_backgroundQueue addOperation:sendMessageOperation2];
 }
 
-- (void)sendMessageOperationDidFinish:(id)a3
+- (void)sendMessageOperationDidFinish:(id)finish
 {
-  v7 = a3;
+  finishCopy = finish;
   if ([(CRKIDSWaitAndSendIDSMessageOperation *)self isCanceled])
   {
-    v4 = CATErrorWithCodeAndUserInfo();
+    error2 = CATErrorWithCodeAndUserInfo();
 LABEL_5:
-    v6 = v4;
-    [(CRKIDSWaitAndSendIDSMessageOperation *)self endOperationWithError:v4];
+    v6 = error2;
+    [(CRKIDSWaitAndSendIDSMessageOperation *)self endOperationWithError:error2];
 
     goto LABEL_6;
   }
 
-  v5 = [v7 error];
+  error = [finishCopy error];
 
-  if (v5)
+  if (error)
   {
-    v4 = [v7 error];
+    error2 = [finishCopy error];
     goto LABEL_5;
   }
 

@@ -1,15 +1,15 @@
 @interface PXContentSyndicationPhotoKitAssetGroup
-- (PXContentSyndicationPhotoKitAssetGroup)initWithAssets:(id)a3;
+- (PXContentSyndicationPhotoKitAssetGroup)initWithAssets:(id)assets;
 @end
 
 @implementation PXContentSyndicationPhotoKitAssetGroup
 
-- (PXContentSyndicationPhotoKitAssetGroup)initWithAssets:(id)a3
+- (PXContentSyndicationPhotoKitAssetGroup)initWithAssets:(id)assets
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  assetsCopy = assets;
+  v5 = assetsCopy;
+  if (assetsCopy && [assetsCopy count])
   {
     v51.receiver = self;
     v51.super_class = PXContentSyndicationPhotoKitAssetGroup;
@@ -52,15 +52,15 @@
             if ([v16 px_isSyndicatedAsset])
             {
               [v16 fetchPropertySetsIfNeeded];
-              v17 = [v16 curationProperties];
-              v18 = [v17 syndicationIdentifier];
+              curationProperties = [v16 curationProperties];
+              syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-              if (!v18)
+              if (!syndicationIdentifier)
               {
                 PXAssertGetLog();
               }
 
-              [v46 addObject:v18];
+              [v46 addObject:syndicationIdentifier];
               if ([v16 px_isUnsavedSyndicatedAsset])
               {
                 v19 = v11;
@@ -68,16 +68,16 @@
                 v21 = v10;
                 [v44 addObject:v16];
                 v22 = MEMORY[0x1E6978630];
-                v52 = v18;
+                v52 = syndicationIdentifier;
                 v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
-                v24 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-                v25 = [v24 librarySpecificFetchOptions];
-                v26 = [v22 fetchAssetsWithSyndicationIdentifiers:v23 options:v25];
+                mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+                librarySpecificFetchOptions = [mEMORY[0x1E69789A8] librarySpecificFetchOptions];
+                v26 = [v22 fetchAssetsWithSyndicationIdentifiers:v23 options:librarySpecificFetchOptions];
 
-                v27 = [v26 firstObject];
-                if ([v27 sourceType] == 8)
+                firstObject = [v26 firstObject];
+                if ([firstObject sourceType] == 8)
                 {
-                  [v42 addObject:v27];
+                  [v42 addObject:firstObject];
                 }
 
                 v10 = v21;
@@ -128,15 +128,15 @@
     }
 
     self = v7;
-    v38 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v38 = 0;
+    selfCopy = 0;
   }
 
-  return v38;
+  return selfCopy;
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface QLThumbnailAdditionEntry
 - (NSString)unparsedVolumeUUID;
-- (QLThumbnailAdditionEntry)initWithCoder:(id)a3;
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (QLThumbnailAdditionEntry)initWithCoder:(id)coder;
+- (id)initFromPQLResultSet:(id)set error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLThumbnailAdditionEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(QLThumbnailAdditionEntry *)self lastHitDate];
-  [v4 encodeObject:v5 forKey:@"date"];
+  coderCopy = coder;
+  lastHitDate = [(QLThumbnailAdditionEntry *)self lastHitDate];
+  [coderCopy encodeObject:lastHitDate forKey:@"date"];
 
-  [v4 encodeInt64:-[QLThumbnailAdditionEntry documentID](self forKey:{"documentID"), @"docId"}];
-  [v4 encodeInt64:-[QLThumbnailAdditionEntry size](self forKey:{"size"), @"size"}];
-  v6 = [(QLThumbnailAdditionEntry *)self lastSeenURL];
-  [v4 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeInt64:-[QLThumbnailAdditionEntry documentID](self forKey:{"documentID"), @"docId"}];
+  [coderCopy encodeInt64:-[QLThumbnailAdditionEntry size](self forKey:{"size"), @"size"}];
+  lastSeenURL = [(QLThumbnailAdditionEntry *)self lastSeenURL];
+  [coderCopy encodeObject:lastSeenURL forKey:@"url"];
 
-  v7 = [(QLThumbnailAdditionEntry *)self vol_uuid];
-  [v4 encodeObject:v7 forKey:@"vol_uuid"];
+  vol_uuid = [(QLThumbnailAdditionEntry *)self vol_uuid];
+  [coderCopy encodeObject:vol_uuid forKey:@"vol_uuid"];
 }
 
-- (QLThumbnailAdditionEntry)initWithCoder:(id)a3
+- (QLThumbnailAdditionEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = QLThumbnailAdditionEntry;
   v5 = [(QLThumbnailAdditionEntry *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     [(QLThumbnailAdditionEntry *)v5 setLastHitDate:v6];
 
-    -[QLThumbnailAdditionEntry setDocumentID:](v5, "setDocumentID:", [v4 decodeInt64ForKey:@"docId"]);
-    -[QLThumbnailAdditionEntry setSize:](v5, "setSize:", [v4 decodeInt64ForKey:@"size"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    -[QLThumbnailAdditionEntry setDocumentID:](v5, "setDocumentID:", [coderCopy decodeInt64ForKey:@"docId"]);
+    -[QLThumbnailAdditionEntry setSize:](v5, "setSize:", [coderCopy decodeInt64ForKey:@"size"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     [(QLThumbnailAdditionEntry *)v5 setLastSeenURL:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vol_uuid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vol_uuid"];
     [(QLThumbnailAdditionEntry *)v5 setVol_uuid:v8];
   }
 
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (id)initFromPQLResultSet:(id)a3 error:(id *)a4
+- (id)initFromPQLResultSet:(id)set error:(id *)error
 {
-  v6 = a3;
+  setCopy = set;
   v15.receiver = self;
   v15.super_class = QLThumbnailAdditionEntry;
   v7 = [(QLThumbnailAdditionEntry *)&v15 init];
@@ -72,32 +72,32 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v6 columns] == 5 || objc_msgSend(v6, "columns") == 4)
+  if ([setCopy columns] == 5 || objc_msgSend(setCopy, "columns") == 4)
   {
-    -[QLThumbnailAdditionEntry setDocumentID:](v7, "setDocumentID:", [v6 unsignedLongLongAtIndex:0]);
-    v8 = [v6 dataAtIndex:1];
+    -[QLThumbnailAdditionEntry setDocumentID:](v7, "setDocumentID:", [setCopy unsignedLongLongAtIndex:0]);
+    v8 = [setCopy dataAtIndex:1];
     [(QLThumbnailAdditionEntry *)v7 setVol_uuid:v8];
 
-    v9 = [v6 dateAtIndex:2];
+    v9 = [setCopy dateAtIndex:2];
     [(QLThumbnailAdditionEntry *)v7 setLastHitDate:v9];
 
     v10 = MEMORY[0x1E695DFF8];
-    v11 = [v6 stringAtIndex:3];
+    v11 = [setCopy stringAtIndex:3];
     v12 = [v10 fileURLWithPath:v11];
     [(QLThumbnailAdditionEntry *)v7 setLastSeenURL:v12];
 
-    if ([v6 columns] == 5)
+    if ([setCopy columns] == 5)
     {
-      -[QLThumbnailAdditionEntry setSize:](v7, "setSize:", [v6 unsignedLongLongAtIndex:4]);
+      -[QLThumbnailAdditionEntry setSize:](v7, "setSize:", [setCopy unsignedLongLongAtIndex:4]);
     }
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithSqliteCode:20 andMessage:@"This result set should have four or five columns"];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else

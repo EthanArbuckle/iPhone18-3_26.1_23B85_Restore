@@ -1,78 +1,78 @@
 @interface IDSUTunController
 + (IDSUTunController)sharedInstance;
-- (BOOL)handleIncomingPacket:(id *)a3 fromDeviceToken:(id)a4;
-- (BOOL)isConnected:(id)a3 deviceConnectionInfo:(id)a4;
-- (BOOL)peerSupportsASQUIC:(id)a3;
-- (BOOL)setupIPsecLinkForDeviceConnectionInfo:(id)a3;
-- (BOOL)setupUTunForDeviceConnectionInfo:(id)a3;
+- (BOOL)handleIncomingPacket:(id *)packet fromDeviceToken:(id)token;
+- (BOOL)isConnected:(id)connected deviceConnectionInfo:(id)info;
+- (BOOL)peerSupportsASQUIC:(id)c;
+- (BOOL)setupIPsecLinkForDeviceConnectionInfo:(id)info;
+- (BOOL)setupUTunForDeviceConnectionInfo:(id)info;
 - (IDSUTunController)init;
-- (id)_prepareConnectionInfoWithCBUUID:(id)a3 deviceUniqueID:(id)a4 shouldUseServiceConnector:(BOOL)a5 identityPair:(id)a6 remoteDeviceEncryptionInfo:(id)a7;
-- (id)controlChannelVersionForCbuuid:(id)a3;
+- (id)_prepareConnectionInfoWithCBUUID:(id)d deviceUniqueID:(id)iD shouldUseServiceConnector:(BOOL)connector identityPair:(id)pair remoteDeviceEncryptionInfo:(id)info;
+- (id)controlChannelVersionForCbuuid:(id)cbuuid;
 - (id)copyLinkStatsDict;
 - (id)defaultPairedDeviceIdentityPair;
-- (id)onTransportThread_PerServiceDataTransferredForDevice:(id)a3 services:(id)a4;
-- (id)perServiceDataReceivedForDevice:(id)a3 services:(id)a4;
-- (id)perServiceDataSentForDevice:(id)a3 services:(id)a4;
-- (id)perServiceDataTransferredForDevice:(id)a3 services:(id)a4;
-- (id)setupNewDeviceConnectionInfoForCbuuid:(id)a3 deviceUniqueID:(id)a4 identityPair:(id)a5 remoteDeviceEncryptionInfo:(id)a6 shouldUseServiceConnector:(BOOL)a7;
-- (int)processCompressionRequest:(id)a3 fromDeviceConnectionInfo:(id)a4;
-- (int)processCompressionResponse:(id)a3 fromDeviceConnectionInfo:(id)a4;
-- (unint64_t)onTransportThread_SendWithConnectionContext:(id)a3 packetBuffer:(id *)a4;
-- (unint64_t)totalPacketsReceivedForDevice:(id)a3 services:(id)a4;
-- (unint64_t)totalPacketsSentForDevice:(id)a3 services:(id)a4;
-- (unsigned)handleUtunChannelWrite:(id)a3 source:(sockaddr *)a4 destination:(sockaddr *)a5 upperProtocol:(unsigned __int8)a6 bytes:(const void *)a7 bytesLen:(unint64_t)a8;
-- (void)_getStallDetectorForConnection:(id)a3 deviceConnecionInfo:(id)a4;
+- (id)onTransportThread_PerServiceDataTransferredForDevice:(id)device services:(id)services;
+- (id)perServiceDataReceivedForDevice:(id)device services:(id)services;
+- (id)perServiceDataSentForDevice:(id)device services:(id)services;
+- (id)perServiceDataTransferredForDevice:(id)device services:(id)services;
+- (id)setupNewDeviceConnectionInfoForCbuuid:(id)cbuuid deviceUniqueID:(id)d identityPair:(id)pair remoteDeviceEncryptionInfo:(id)info shouldUseServiceConnector:(BOOL)connector;
+- (int)processCompressionRequest:(id)request fromDeviceConnectionInfo:(id)info;
+- (int)processCompressionResponse:(id)response fromDeviceConnectionInfo:(id)info;
+- (unint64_t)onTransportThread_SendWithConnectionContext:(id)context packetBuffer:(id *)buffer;
+- (unint64_t)totalPacketsReceivedForDevice:(id)device services:(id)services;
+- (unint64_t)totalPacketsSentForDevice:(id)device services:(id)services;
+- (unsigned)handleUtunChannelWrite:(id)write source:(sockaddr *)source destination:(sockaddr *)destination upperProtocol:(unsigned __int8)protocol bytes:(const void *)bytes bytesLen:(unint64_t)len;
+- (void)_getStallDetectorForConnection:(id)connection deviceConnecionInfo:(id)info;
 - (void)_reloadSettings;
-- (void)addPairedDevice:(id)a3 shouldPairDirectlyOverIPsec:(BOOL)a4;
-- (void)checkSuspendTrafficForDevice:(id)a3 wait:(BOOL)a4;
-- (void)cleanupSocketsForClient:(id)a3;
+- (void)addPairedDevice:(id)device shouldPairDirectlyOverIPsec:(BOOL)psec;
+- (void)checkSuspendTrafficForDevice:(id)device wait:(BOOL)wait;
+- (void)cleanupSocketsForClient:(id)client;
 - (void)clearStats;
-- (void)closeDataConnectionWithDeviceConnectionInfo:(id)a3 options:(id)a4;
-- (void)closeSocketWithOptions:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)connectGlobalLinkForDevice:(id)a3 sessionInfo:(id)a4 connectReadyHandler:(id)a5 withLocalInterfacePreference:(int)a6;
-- (void)connectPairedDevice:(id)a3;
-- (void)createConnectionDataForDevice:(id)a3 localPartyID:(id)a4 dataReadyHandler:(id)a5;
-- (void)deletePairedDevice:(id)a3;
-- (void)didConnectControlChannelForDeviceConnectionInfo:(id)a3 connection:(id)a4 error:(id)a5;
-- (void)didUpdatePairedDevice:(id)a3;
-- (void)disconnectGlobalLinkForDevice:(id)a3 isReinitiating:(BOOL)a4 completionHandler:(id)a5;
-- (void)doCheckSuspendTrafficForDevice:(id)a3;
-- (void)getLinkInformationForDevice:(id)a3 completionHandler:(id)a4;
-- (void)handleAllocateRequestFailureForDevice:(id)a3 requestID:(id)a4 errorCode:(int)a5;
-- (void)handleIPPayload:(const void *)a3 bytesLength:(unint64_t)a4 source:(sockaddr *)a5 destination:(sockaddr *)a6 upperProtocol:(unsigned __int8)a7 forDeviceConnectionInfo:(id)a8 flush:(BOOL)a9 callerShouldStop:(BOOL *)a10;
-- (void)handleUtunChannelRead:(id)a3 limit:(unsigned int)a4;
-- (void)internalOpenSocketWithDestination:(id)a3 localSA:(id)a4 remoteSA:(id)a5 protocol:(int)a6 trafficClass:(int)a7 completionHandler:(id)a8;
-- (void)internalStartConnectionWithEndpoint:(id)a3 service:(const char *)a4 parameters:(id)a5 serviceConnector:(id)a6 trafficClass:(int)a7 completionHandler:(id)a8;
-- (void)link:(id)a3 didConnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didDisconnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 hasSpaceAvailable:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)obliterateConnectionInfoForCBUUID:(id)a3;
-- (void)obliterateConnectionInfoForCBUUID:(id)a3 completionBlock:(id)a4 completionQueue:(id)a5;
-- (void)openSocketWithOptions:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)prepareControlChannelForDeviceConnectionInfo:(id)a3 genericConnection:(id)a4;
-- (void)prepareDefaultPairedConnectionInfoWithDeviceUniqueID:(id)a3 shouldUseServiceConnector:(BOOL)a4;
-- (void)processRemoteConnectionDataForDevice:(id)a3 remoteConnectionData:(id)a4 completionHandler:(id)a5;
-- (void)receiveControlChannelMessage:(id)a3 fromCbuuid:(id)a4 deviceUniqueID:(id)a5;
-- (void)releasePortIfNecessary:(IDSPortMap *)a3 port:(unsigned __int16)a4;
-- (void)removeConnection:(id)a3 fromDeviceConnectionInfo:(id)a4 removeCode:(int64_t)a5 removeReason:(id)a6;
-- (void)resetAllConnectionsForDevice:(id)a3;
-- (void)resetIPsecTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4;
-- (void)resetTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4;
-- (void)resetUTunTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4;
-- (void)resumeSocketWithOptions:(id)a3 shouldLogCall:(BOOL)a4;
-- (void)sendOTRNegotiationMessage:(id)a3 negotiationCount:(unsigned int)a4 negotiationData:(id)a5;
-- (void)sendSuspendOTRNegotiationMessage:(id)a3;
-- (void)setLinkPreferences:(id)a3;
-- (void)setupDataConnectionWithDeviceConnectionInfo:(id)a3 options:(id)a4;
-- (void)startCompressionForConnection:(id)a3 deviceConnectionInfo:(id)a4;
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6;
-- (void)startControlChannelWithDevice:(id)a3;
-- (void)startDataChannelWithDevice:(id)a3 genericConnection:(id)a4 serviceConnectorService:(id)a5;
-- (void)startGlobalLinkForDevice:(id)a3;
-- (void)startUDPGlobalLinkForDevice:(id)a3;
-- (void)stopGlobalLinkForDevice:(id)a3;
-- (void)stopUDPGlobalLinkForDevice:(id)a3;
-- (void)suspendSocketWithOptions:(id)a3;
+- (void)closeDataConnectionWithDeviceConnectionInfo:(id)info options:(id)options;
+- (void)closeSocketWithOptions:(id)options queue:(id)queue completionHandler:(id)handler;
+- (void)connectGlobalLinkForDevice:(id)device sessionInfo:(id)info connectReadyHandler:(id)handler withLocalInterfacePreference:(int)preference;
+- (void)connectPairedDevice:(id)device;
+- (void)createConnectionDataForDevice:(id)device localPartyID:(id)d dataReadyHandler:(id)handler;
+- (void)deletePairedDevice:(id)device;
+- (void)didConnectControlChannelForDeviceConnectionInfo:(id)info connection:(id)connection error:(id)error;
+- (void)didUpdatePairedDevice:(id)device;
+- (void)disconnectGlobalLinkForDevice:(id)device isReinitiating:(BOOL)reinitiating completionHandler:(id)handler;
+- (void)doCheckSuspendTrafficForDevice:(id)device;
+- (void)getLinkInformationForDevice:(id)device completionHandler:(id)handler;
+- (void)handleAllocateRequestFailureForDevice:(id)device requestID:(id)d errorCode:(int)code;
+- (void)handleIPPayload:(const void *)payload bytesLength:(unint64_t)length source:(sockaddr *)source destination:(sockaddr *)destination upperProtocol:(unsigned __int8)protocol forDeviceConnectionInfo:(id)info flush:(BOOL)flush callerShouldStop:(BOOL *)self0;
+- (void)handleUtunChannelRead:(id)read limit:(unsigned int)limit;
+- (void)internalOpenSocketWithDestination:(id)destination localSA:(id)a remoteSA:(id)sA protocol:(int)protocol trafficClass:(int)class completionHandler:(id)handler;
+- (void)internalStartConnectionWithEndpoint:(id)endpoint service:(const char *)service parameters:(id)parameters serviceConnector:(id)connector trafficClass:(int)class completionHandler:(id)handler;
+- (void)link:(id)link didConnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link didDisconnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link hasSpaceAvailable:(BOOL)available deviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)obliterateConnectionInfoForCBUUID:(id)d;
+- (void)obliterateConnectionInfoForCBUUID:(id)d completionBlock:(id)block completionQueue:(id)queue;
+- (void)openSocketWithOptions:(id)options queue:(id)queue completionHandler:(id)handler;
+- (void)prepareControlChannelForDeviceConnectionInfo:(id)info genericConnection:(id)connection;
+- (void)prepareDefaultPairedConnectionInfoWithDeviceUniqueID:(id)d shouldUseServiceConnector:(BOOL)connector;
+- (void)processRemoteConnectionDataForDevice:(id)device remoteConnectionData:(id)data completionHandler:(id)handler;
+- (void)receiveControlChannelMessage:(id)message fromCbuuid:(id)cbuuid deviceUniqueID:(id)d;
+- (void)releasePortIfNecessary:(IDSPortMap *)necessary port:(unsigned __int16)port;
+- (void)removeConnection:(id)connection fromDeviceConnectionInfo:(id)info removeCode:(int64_t)code removeReason:(id)reason;
+- (void)resetAllConnectionsForDevice:(id)device;
+- (void)resetIPsecTCPConnection:(id)connection forDeviceConnectionInfo:(id)info;
+- (void)resetTCPConnection:(id)connection forDeviceConnectionInfo:(id)info;
+- (void)resetUTunTCPConnection:(id)connection forDeviceConnectionInfo:(id)info;
+- (void)resumeSocketWithOptions:(id)options shouldLogCall:(BOOL)call;
+- (void)sendOTRNegotiationMessage:(id)message negotiationCount:(unsigned int)count negotiationData:(id)data;
+- (void)sendSuspendOTRNegotiationMessage:(id)message;
+- (void)setLinkPreferences:(id)preferences;
+- (void)setupDataConnectionWithDeviceConnectionInfo:(id)info options:(id)options;
+- (void)startCompressionForConnection:(id)connection deviceConnectionInfo:(id)info;
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check;
+- (void)startControlChannelWithDevice:(id)device;
+- (void)startDataChannelWithDevice:(id)device genericConnection:(id)connection serviceConnectorService:(id)service;
+- (void)startGlobalLinkForDevice:(id)device;
+- (void)startUDPGlobalLinkForDevice:(id)device;
+- (void)stopGlobalLinkForDevice:(id)device;
+- (void)stopUDPGlobalLinkForDevice:(id)device;
+- (void)suspendSocketWithOptions:(id)options;
 @end
 
 @implementation IDSUTunController
@@ -94,19 +94,19 @@
   IMSyncronizeAppPreferences();
   self->_logPackets = IMGetDomainBoolForKey();
   v3 = +[IMLockdownManager sharedInstance];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     self->_encryptionEnabled = IMGetDomainBoolForKeyWithDefaultValue();
     self->_encryptionEnabled = IMGetDomainBoolForKeyWithDefaultValue() ^ 1;
     self->_controlChannelEncryptionDisabled = IMGetDomainBoolForKeyWithDefaultValue();
     self->_vifShouldReadMultiple = IMGetDomainBoolForKeyWithDefaultValue();
     v5 = IMGetDomainValueForKey();
-    v6 = [v5 unsignedIntValue];
-    if (v6)
+    unsignedIntValue = [v5 unsignedIntValue];
+    if (unsignedIntValue)
     {
-      v7 = v6;
+      v7 = unsignedIntValue;
     }
 
     else
@@ -185,11 +185,11 @@
   sub_10000C18C(&self->_deviceConnectionInfoTableByCbuuid, v19);
 }
 
-- (void)_getStallDetectorForConnection:(id)a3 deviceConnecionInfo:(id)a4
+- (void)_getStallDetectorForConnection:(id)connection deviceConnecionInfo:(id)info
 {
-  v6 = a3;
-  v7 = [a4 cbuuid];
-  v8 = [v7 isEqualToString:kIDSDefaultPairedDeviceID];
+  connectionCopy = connection;
+  cbuuid = [info cbuuid];
+  v8 = [cbuuid isEqualToString:kIDSDefaultPairedDeviceID];
 
   if (!v8)
   {
@@ -197,29 +197,29 @@
   }
 
   v9 = +[IMLockdownManager sharedInstance];
-  v10 = [v9 isInternalInstall];
+  isInternalInstall = [v9 isInternalInstall];
 
-  if (!v10)
+  if (!isInternalInstall)
   {
     goto LABEL_18;
   }
 
-  v11 = [v6 connectionID];
+  connectionID = [connectionCopy connectionID];
 
-  if (v11)
+  if (connectionID)
   {
-    v12 = [v6 connectionID];
-    v13 = [v12 service];
-    v14 = [v13 isEqualToString:@"localdelivery"];
+    connectionID2 = [connectionCopy connectionID];
+    service = [connectionID2 service];
+    v14 = [service isEqualToString:@"localdelivery"];
 
     if (!v14)
     {
       goto LABEL_18;
     }
 
-    v15 = [v6 connectionID];
-    v16 = [v15 name];
-    v17 = [v16 isEqualToString:@"UTunDelivery-Default-Urgent"];
+    connectionID3 = [connectionCopy connectionID];
+    name = [connectionID3 name];
+    v17 = [name isEqualToString:@"UTunDelivery-Default-Urgent"];
 
     if (v17)
     {
@@ -228,9 +228,9 @@
 
     else
     {
-      v24 = [v6 connectionID];
-      v25 = [v24 name];
-      v26 = [v25 isEqualToString:@"UTunDelivery-Default-Default"];
+      connectionID4 = [connectionCopy connectionID];
+      name2 = [connectionID4 name];
+      v26 = [name2 isEqualToString:@"UTunDelivery-Default-Default"];
 
       if (!v26)
       {
@@ -243,19 +243,19 @@
 
   else
   {
-    v19 = [v6 addressPair];
-    v20 = [v19 localAddress];
-    if ([v20 saPortHostOrder] != 1024)
+    addressPair = [connectionCopy addressPair];
+    localAddress = [addressPair localAddress];
+    if ([localAddress saPortHostOrder] != 1024)
     {
 
       goto LABEL_14;
     }
 
-    v21 = [v6 addressPair];
-    v22 = [v21 remoteAddress];
-    v23 = [v22 saPortHostOrder];
+    addressPair2 = [connectionCopy addressPair];
+    remoteAddress = [addressPair2 remoteAddress];
+    saPortHostOrder = [remoteAddress saPortHostOrder];
 
-    if (!v23)
+    if (!saPortHostOrder)
     {
       goto LABEL_14;
     }
@@ -263,21 +263,21 @@
     v18 = @"kUTunConnectionControlChannelOutgoingDetectorName";
   }
 
-  [v6 setOutgoingStallDetectorName:v18];
-  [v6 _createStallDetectorWithName:v18];
+  [connectionCopy setOutgoingStallDetectorName:v18];
+  [connectionCopy _createStallDetectorWithName:v18];
 LABEL_14:
-  v27 = [v6 outgoingStallDetectorName];
+  outgoingStallDetectorName = [connectionCopy outgoingStallDetectorName];
 
-  if (v27)
+  if (outgoingStallDetectorName)
   {
     v28 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v6 outgoingStallDetectorName];
+      outgoingStallDetectorName2 = [connectionCopy outgoingStallDetectorName];
       v30 = 138412546;
-      v31 = self;
+      selfCopy = self;
       v32 = 2112;
-      v33 = v29;
+      v33 = outgoingStallDetectorName2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@: created the stall detector for %@", &v30, 0x16u);
     }
   }
@@ -285,40 +285,40 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)handleIPPayload:(const void *)a3 bytesLength:(unint64_t)a4 source:(sockaddr *)a5 destination:(sockaddr *)a6 upperProtocol:(unsigned __int8)a7 forDeviceConnectionInfo:(id)a8 flush:(BOOL)a9 callerShouldStop:(BOOL *)a10
+- (void)handleIPPayload:(const void *)payload bytesLength:(unint64_t)length source:(sockaddr *)source destination:(sockaddr *)destination upperProtocol:(unsigned __int8)protocol forDeviceConnectionInfo:(id)info flush:(BOOL)flush callerShouldStop:(BOOL *)self0
 {
-  v10 = a7;
-  v14 = a8;
-  if (a10)
+  protocolCopy = protocol;
+  infoCopy = info;
+  if (stop)
   {
-    *a10 = 0;
+    *stop = 0;
   }
 
-  if (v10 == 17)
+  if (protocolCopy == 17)
   {
     kdebug_trace();
   }
 
-  v178 = self;
-  if (a4 > 7)
+  selfCopy = self;
+  if (length > 7)
   {
-    if (v10 != 6 && v10 != 17)
+    if (protocolCopy != 6 && protocolCopy != 17)
     {
       v22 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 vifName];
-        v24 = [NSData dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+        vifName = [infoCopy vifName];
+        v24 = [NSData dataWithBytesNoCopy:payload length:length freeWhenDone:0];
         LODWORD(buf[0]) = 138412802;
-        *(buf + 4) = v23;
+        *(buf + 4) = vifName;
         WORD6(buf[0]) = 1024;
-        *(buf + 14) = v10;
+        *(buf + 14) = protocolCopy;
         WORD1(buf[1]) = 2112;
         *(&buf[1] + 4) = v24;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%@: dropping unknown proto[%u] packet [%@]", buf, 0x1Cu);
       }
 
-      if (a9)
+      if (flush)
       {
         goto LABEL_64;
       }
@@ -326,7 +326,7 @@ LABEL_18:
       goto LABEL_238;
     }
 
-    if (self->_logPackets && v10 == 17 && byte_100CBF3D8)
+    if (self->_logPackets && protocolCopy == 17 && byte_100CBF3D8)
     {
       if (qword_100CBF438 != -1)
       {
@@ -334,23 +334,23 @@ LABEL_18:
       }
 
       v18 = mach_continuous_time();
-      if (a4 <= 0x27)
+      if (length <= 0x27)
       {
         v19 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v14 vifName];
-          v21 = [NSData dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+          vifName2 = [infoCopy vifName];
+          v21 = [NSData dataWithBytesNoCopy:payload length:length freeWhenDone:0];
           LODWORD(buf[0]) = 138412802;
-          *(buf + 4) = v20;
+          *(buf + 4) = vifName2;
           WORD6(buf[0]) = 2112;
           *(buf + 14) = v21;
           WORD3(buf[1]) = 2048;
-          *(&buf[1] + 1) = a4;
+          *(&buf[1] + 1) = length;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@: dropping packet %@ of length %zu", buf, 0x20u);
         }
 
-        if (a9)
+        if (flush)
         {
           goto LABEL_64;
         }
@@ -358,12 +358,12 @@ LABEL_18:
         goto LABEL_238;
       }
 
-      if (xmmword_100CBF3E8 == *(a3 + 1) && *(&xmmword_100CBF3E8 + 1) == *(a3 + 2) && qword_100CBF3F8 == *(a3 + 3) && unk_100CBF400 == *(a3 + 4))
+      if (xmmword_100CBF3E8 == *(payload + 1) && *(&xmmword_100CBF3E8 + 1) == *(payload + 2) && qword_100CBF3F8 == *(payload + 3) && unk_100CBF400 == *(payload + 4))
       {
         byte_100CBF3D8 = 0;
         *&qword_100CBF3E0 = *&qword_100CBF3C0 * v18;
         v45 = qword_100CD3D68;
-        v46 = [IDSUTunTimingLogger kernelTestEventWithTimestamp:"kernelTestEventWithTimestamp:kernelTime:bytes:" kernelTime:a4 - 8 bytes:?];
+        v46 = [IDSUTunTimingLogger kernelTestEventWithTimestamp:"kernelTestEventWithTimestamp:kernelTime:bytes:" kernelTime:length - 8 bytes:?];
         [v45 addEvent:v46];
 
         goto LABEL_238;
@@ -380,36 +380,36 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "udp timing test: kernel test timed out", buf, 2u);
         }
 
-        self = v178;
+        self = selfCopy;
       }
     }
 
-    if (v10 == 17 && self->_logPackets)
+    if (protocolCopy == 17 && self->_logPackets)
     {
       qword_100CBF418 = mach_continuous_time();
       qword_100CBF410 = qword_100CBF418;
-      self = v178;
+      self = selfCopy;
     }
 
-    if (v10 == 6)
+    if (protocolCopy == 6)
     {
-      if (a4 <= 0x13)
+      if (length <= 0x13)
       {
         v29 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v14 vifName];
-          v31 = [NSData dataWithBytesNoCopy:a3 length:a4 & 0x1F freeWhenDone:0];
+          vifName3 = [infoCopy vifName];
+          v31 = [NSData dataWithBytesNoCopy:payload length:length & 0x1F freeWhenDone:0];
           LODWORD(buf[0]) = 138412802;
-          *(buf + 4) = v30;
+          *(buf + 4) = vifName3;
           WORD6(buf[0]) = 2112;
           *(buf + 14) = v31;
           WORD3(buf[1]) = 1024;
-          DWORD2(buf[1]) = a4;
+          DWORD2(buf[1]) = length;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%@: dropping packet %@ of length %u", buf, 0x1Cu);
         }
 
-        if (a9)
+        if (flush)
         {
           goto LABEL_64;
         }
@@ -417,9 +417,9 @@ LABEL_18:
         goto LABEL_238;
       }
 
-      v172 = (*(a3 + 12) >> 2) & 0x3C;
-      LODWORD(v173) = bswap32(*(a3 + 1));
-      HIDWORD(v173) = *(a3 + 13);
+      v172 = (*(payload + 12) >> 2) & 0x3C;
+      LODWORD(v173) = bswap32(*(payload + 1));
+      HIDWORD(v173) = *(payload + 13);
     }
 
     else
@@ -428,30 +428,30 @@ LABEL_18:
       v172 = 0;
     }
 
-    v174 = __rev16(*(a3 + 1));
-    v175 = __rev16(*a3);
+    v174 = __rev16(*(payload + 1));
+    v175 = __rev16(*payload);
     if (self->_logPackets)
     {
       v32 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4 >= 0x28)
+        if (length >= 0x28)
         {
-          v33 = 40;
+          lengthCopy = 40;
         }
 
         else
         {
-          v33 = a4;
+          lengthCopy = length;
         }
 
-        v34 = [v14 vifName];
-        v35 = [NSData dataWithBytesNoCopy:a3 length:v33 freeWhenDone:0];
+        vifName4 = [infoCopy vifName];
+        v35 = [NSData dataWithBytesNoCopy:payload length:lengthCopy freeWhenDone:0];
         v36 = v35;
         LODWORD(buf[0]) = 138413826;
         v37 = " ...";
-        *(buf + 4) = v34;
-        if (a4 < 0x29)
+        *(buf + 4) = vifName4;
+        if (length < 0x29)
         {
           v37 = "";
         }
@@ -461,9 +461,9 @@ LABEL_18:
         WORD1(buf[1]) = 1024;
         DWORD1(buf[1]) = v174;
         WORD4(buf[1]) = 1024;
-        *(&buf[1] + 10) = v10;
+        *(&buf[1] + 10) = protocolCopy;
         HIWORD(buf[1]) = 2048;
-        *&buf[2] = a4;
+        *&buf[2] = length;
         WORD4(buf[2]) = 2112;
         *(&buf[2] + 10) = v35;
         WORD1(buf[3]) = 2080;
@@ -472,21 +472,21 @@ LABEL_18:
       }
     }
 
-    if ([v14 suspendTraffic])
+    if ([infoCopy suspendTraffic])
     {
       v38 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [v14 vifName];
-        v40 = v14[1];
+        vifName5 = [infoCopy vifName];
+        v40 = infoCopy[1];
         LODWORD(buf[0]) = 138412546;
-        *(buf + 4) = v39;
+        *(buf + 4) = vifName5;
         WORD6(buf[0]) = 2112;
         *(buf + 14) = v40;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%@: device %@ is suspending traffic", buf, 0x16u);
       }
 
-      if (a9)
+      if (flush)
       {
         goto LABEL_64;
       }
@@ -494,11 +494,11 @@ LABEL_18:
       goto LABEL_238;
     }
 
-    v177 = sub_1006C2FC8([v14 connectionsTableByLocalRemotePortKey], v174 | (v175 << 16));
+    v177 = sub_1006C2FC8([infoCopy connectionsTableByLocalRemotePortKey], v174 | (v175 << 16));
     if (v177)
     {
       v44 = 0;
-      if (v10 == 17 && v178->_logPackets)
+      if (protocolCopy == 17 && selfCopy->_logPackets)
       {
         v44 = mach_continuous_time();
       }
@@ -506,33 +506,33 @@ LABEL_18:
 
     else
     {
-      if (v10 != 6 || (v173 & 0x400000000) == 0)
+      if (protocolCopy != 6 || (v173 & 0x400000000) == 0)
       {
         v58 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
-          v59 = [v14 vifName];
+          vifName6 = [infoCopy vifName];
           LODWORD(buf[0]) = 138413058;
-          *(buf + 4) = v59;
+          *(buf + 4) = vifName6;
           WORD6(buf[0]) = 1024;
           *(buf + 14) = v175;
           WORD1(buf[1]) = 1024;
           DWORD1(buf[1]) = v174;
           WORD4(buf[1]) = 2112;
-          *(&buf[1] + 10) = v14;
+          *(&buf[1] + 10) = infoCopy;
           _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%@: cannot find connection for outgoing packet [%u => %u] in [%@]", buf, 0x22u);
         }
 
         if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
         {
-          v170 = [v14 vifName];
+          vifName7 = [infoCopy vifName];
           _IDSLogV();
         }
 
-        if (v10 == 6)
+        if (protocolCopy == 6)
         {
           memset(__n_4, 170, sizeof(__n_4));
-          v60 = *(a3 + 2);
+          v60 = *(payload + 2);
           v61 = +[IDSFoundationLog utunController];
           v62 = bswap32(v60);
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -545,26 +545,26 @@ LABEL_18:
           }
 
           sub_10062704C(__n_4, v174, v175, v62, (((HIDWORD(v173) >> 1) & 1) == 0) + v173);
-          v63 = [v14 remoteSA];
-          v64 = [v63 sa6];
-          v65 = [v14 localSA];
-          tcp6checksum((v64 + 8), ([v65 sa6] + 8), __n_4, 0x14uLL);
+          remoteSA = [infoCopy remoteSA];
+          v64 = [remoteSA sa6];
+          localSA = [infoCopy localSA];
+          tcp6checksum((v64 + 8), ([localSA sa6] + 8), __n_4, 0x14uLL);
 
-          if (v14[2079])
+          if (infoCopy[2079])
           {
-            v66 = [v14 remoteSA];
-            v67 = [v66 sa];
-            v68 = [v14 localSA];
-            v69 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](v178, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", v14, v67, [v68 sa], 6, __n_4, 20);
+            remoteSA2 = [infoCopy remoteSA];
+            v67 = [remoteSA2 sa];
+            localSA2 = [infoCopy localSA];
+            v69 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](selfCopy, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", infoCopy, v67, [localSA2 sa], 6, __n_4, 20);
           }
 
           else
           {
-            [v14 vifRef];
-            v66 = [v14 remoteSA];
-            [v66 sa];
-            v68 = [v14 localSA];
-            [v68 sa];
+            [infoCopy vifRef];
+            remoteSA2 = [infoCopy remoteSA];
+            [remoteSA2 sa];
+            localSA2 = [infoCopy localSA];
+            [localSA2 sa];
             v69 = NEVirtualInterfaceWriteIPPayload();
           }
 
@@ -573,16 +573,16 @@ LABEL_18:
           v156 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v156, OS_LOG_TYPE_DEFAULT))
           {
-            v157 = [v14 vifName];
-            v158 = [v14 localSA];
-            v159 = [v14 remoteSA];
+            vifName8 = [infoCopy vifName];
+            localSA3 = [infoCopy localSA];
+            remoteSA3 = [infoCopy remoteSA];
             v160 = [NSData dataWithBytesNoCopy:__n_4 length:20 freeWhenDone:0];
             LODWORD(buf[0]) = 138413314;
-            *(buf + 4) = v157;
+            *(buf + 4) = vifName8;
             WORD6(buf[0]) = 2112;
-            *(buf + 14) = v158;
+            *(buf + 14) = localSA3;
             WORD3(buf[1]) = 2112;
-            *(&buf[1] + 1) = v159;
+            *(&buf[1] + 1) = remoteSA3;
             LOWORD(buf[2]) = 1024;
             *(&buf[2] + 2) = v155;
             WORD3(buf[2]) = 2112;
@@ -591,12 +591,12 @@ LABEL_18:
           }
         }
 
-        if (a9)
+        if (flush)
         {
-          linkManager = v178->_linkManager;
-          v162 = [v14 deviceUniqueID];
-          v163 = [v14 cbuuid];
-          [(IDSLinkManager *)linkManager flushBuffer:0 toDeviceUniqueID:v162 cbuuid:v163];
+          linkManager = selfCopy->_linkManager;
+          deviceUniqueID = [infoCopy deviceUniqueID];
+          cbuuid = [infoCopy cbuuid];
+          [(IDSLinkManager *)linkManager flushBuffer:0 toDeviceUniqueID:deviceUniqueID cbuuid:cbuuid];
         }
 
         goto LABEL_237;
@@ -605,24 +605,24 @@ LABEL_18:
       v44 = 0;
     }
 
-    v47 = [v177 compressionInfo];
-    if ([v47 state] <= 1)
+    compressionInfo = [v177 compressionInfo];
+    if ([compressionInfo state] <= 1)
     {
     }
 
     else
     {
-      v48 = [v177 compressionInfo];
-      v49 = [v48 localContext] == 0;
+      compressionInfo2 = [v177 compressionInfo];
+      v49 = [compressionInfo2 localContext] == 0;
 
       if (!v49)
       {
-        v50 = [v177 compressionInfo];
-        v171 = [v50 localCID];
+        compressionInfo3 = [v177 compressionInfo];
+        localCID = [compressionInfo3 localCID];
 
-        *__n_4 = a3;
-        v51 = [v177 compressionInfo];
-        [v51 localContext];
+        *__n_4 = payload;
+        compressionInfo4 = [v177 compressionInfo];
+        [compressionInfo4 localContext];
         v52 = IDSHC_Compress();
 
         if (v52)
@@ -630,9 +630,9 @@ LABEL_18:
           v53 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [v14 vifName];
+            vifName9 = [infoCopy vifName];
             LODWORD(buf[0]) = 138412546;
-            *(buf + 4) = v54;
+            *(buf + 4) = vifName9;
             WORD6(buf[0]) = 2048;
             *(buf + 14) = v52;
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%@: IDSHC_Compress failed (%lu), revert back to un-compressed", buf, 0x16u);
@@ -640,11 +640,11 @@ LABEL_18:
         }
 
         v55 = *__n_4;
-        if (v171 < 0x10)
+        if (localCID < 0x10)
         {
           --*__n_4;
-          __n = a4 + 1;
-          if (v10 == 6)
+          __n = length + 1;
+          if (protocolCopy == 6)
           {
             v70 = -96;
           }
@@ -654,14 +654,14 @@ LABEL_18:
             v70 = 0x80;
           }
 
-          *(v55 - 1) = v171 | v70;
+          *(v55 - 1) = localCID | v70;
         }
 
         else
         {
           *__n_4 -= 3;
-          __n = a4 + 3;
-          if (v10 == 6)
+          __n = length + 3;
+          if (protocolCopy == 6)
           {
             v56 = -80;
           }
@@ -672,8 +672,8 @@ LABEL_18:
           }
 
           *(v55 - 3) = v56;
-          *(*__n_4 + 1) = BYTE1(v171);
-          *(*__n_4 + 2) = v171;
+          *(*__n_4 + 1) = BYTE1(localCID);
+          *(*__n_4 + 2) = localCID;
         }
 
         v71 = v52 == 0;
@@ -686,32 +686,32 @@ LABEL_18:
           goto LABEL_106;
         }
 
-        v57 = v171;
+        v57 = localCID;
 LABEL_102:
-        v171 = v57;
-        if (v10 == 6)
+        localCID = v57;
+        if (protocolCopy == 6)
         {
-          tcp6checksum(0, 0, a3, a4);
+          tcp6checksum(0, 0, payload, length);
           v73 = 32;
         }
 
         else
         {
-          udp6checksum(0, 0, a3, a4);
+          udp6checksum(0, 0, payload, length);
           v73 = 0;
         }
 
         v72 = _IDSLinkPacketBufferCreate();
         **v72 = v73;
-        memcpy((*v72 + 1), a3, a4);
+        memcpy((*v72 + 1), payload, length);
         v74 = 0;
-        v72[2] = a4 + 1;
+        v72[2] = length + 1;
 LABEL_106:
-        logPackets = v178->_logPackets;
-        if (v10 == 17 && logPackets)
+        logPackets = selfCopy->_logPackets;
+        if (protocolCopy == 17 && logPackets)
         {
           qword_100CBF428 = mach_continuous_time() - v44;
-          logPackets = v178->_logPackets;
+          logPackets = selfCopy->_logPackets;
         }
 
         if ((v74 & logPackets) == 1)
@@ -730,12 +730,12 @@ LABEL_106:
               v78 = v76;
             }
 
-            v79 = [v14 vifName];
+            vifName10 = [infoCopy vifName];
             v80 = [NSData dataWithBytesNoCopy:*v72 length:v78 freeWhenDone:0];
             v81 = v80;
             LODWORD(buf[0]) = 138414338;
             v82 = " ...";
-            *(buf + 4) = v79;
+            *(buf + 4) = vifName10;
             *(buf + 14) = 1;
             WORD6(buf[0]) = 1024;
             if (v76 < 0x15)
@@ -744,9 +744,9 @@ LABEL_106:
             }
 
             WORD1(buf[1]) = 1024;
-            DWORD1(buf[1]) = v10 == 6;
+            DWORD1(buf[1]) = protocolCopy == 6;
             WORD4(buf[1]) = 1024;
-            *(&buf[1] + 10) = v171;
+            *(&buf[1] + 10) = localCID;
             HIWORD(buf[1]) = 1024;
             LODWORD(buf[2]) = v175;
             WORD2(buf[2]) = 1024;
@@ -761,27 +761,27 @@ LABEL_106:
           }
         }
 
-        if (v178->_encryptionEnabled && [v177 encryptionEnabled])
+        if (selfCopy->_encryptionEnabled && [v177 encryptionEnabled])
         {
-          v83 = [v177 seqSend];
-          v84 = sub_10050CB8C([v177 encryptionState], v83, *v72, v72[2], 1);
+          seqSend = [v177 seqSend];
+          v84 = sub_10050CB8C([v177 encryptionState], seqSend, *v72, v72[2], 1);
           if (v84)
           {
-            v85 = [v14 portMap];
-            v86 = [v177 addressPair];
-            v87 = [v86 localAddress];
-            -[IDSUTunController releasePortIfNecessary:port:](v178, "releasePortIfNecessary:port:", v85, [v87 saPortHostOrder]);
+            portMap = [infoCopy portMap];
+            addressPair = [v177 addressPair];
+            localAddress = [addressPair localAddress];
+            -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap, [localAddress saPortHostOrder]);
 
             v88 = [NSString stringWithFormat:@"Encryption failure: %u", v84];
-            [(IDSUTunController *)v178 removeConnection:v177 fromDeviceConnectionInfo:v14 removeCode:5301 removeReason:v88];
+            [(IDSUTunController *)selfCopy removeConnection:v177 fromDeviceConnectionInfo:infoCopy removeCode:5301 removeReason:v88];
 
             _IDSLinkPacketBufferRelease();
-            if (a9)
+            if (flush)
             {
-              v89 = v178->_linkManager;
-              v90 = [v14 deviceUniqueID];
-              v91 = [v14 cbuuid];
-              [(IDSLinkManager *)v89 flushBuffer:0 toDeviceUniqueID:v90 cbuuid:v91];
+              v89 = selfCopy->_linkManager;
+              deviceUniqueID2 = [infoCopy deviceUniqueID];
+              cbuuid2 = [infoCopy cbuuid];
+              [(IDSLinkManager *)v89 flushBuffer:0 toDeviceUniqueID:deviceUniqueID2 cbuuid:cbuuid2];
             }
 
             goto LABEL_237;
@@ -791,15 +791,15 @@ LABEL_106:
           v92 = *v72;
           v93 = *v72;
           **v72 = 224;
-          v94 = [v177 seqSend];
-          v93[2] = HIBYTE(v94);
-          v92[3] = v94;
-          v95 = [v177 SSRCSend];
-          v92[4] = HIBYTE(v95);
-          v92[5] = BYTE2(v95);
-          v92[6] = BYTE1(v95);
-          v92[7] = v95;
-          [v177 setSeqSend:(v83 + 1)];
+          seqSend2 = [v177 seqSend];
+          v93[2] = HIBYTE(seqSend2);
+          v92[3] = seqSend2;
+          sSRCSend = [v177 SSRCSend];
+          v92[4] = HIBYTE(sSRCSend);
+          v92[5] = BYTE2(sSRCSend);
+          v92[6] = BYTE1(sSRCSend);
+          v92[7] = sSRCSend;
+          [v177 setSeqSend:(seqSend + 1)];
         }
 
         *(v72 + 38) = [v177 isCloudEnabled];
@@ -807,15 +807,15 @@ LABEL_106:
         *(v72 + 41) = [v177 isDefaultPairedDevice];
         if (v72[2] > 675)
         {
-          v96 = 0;
+          isRealTime = 0;
         }
 
         else
         {
-          v96 = [v177 isRealTime];
+          isRealTime = [v177 isRealTime];
         }
 
-        *(v72 + 42) = v96;
+        *(v72 + 42) = isRealTime;
         if (*(v72 + 39) == 1)
         {
           v97 = 99;
@@ -823,18 +823,18 @@ LABEL_106:
         }
 
         *(v72 + 305) = [v177 sdNumberNoClose];
-        v103 = [v177 priority];
-        if (v103 <= 299)
+        priority = [v177 priority];
+        if (priority <= 299)
         {
-          if (!v103)
+          if (!priority)
           {
             v97 = 45;
             goto LABEL_130;
           }
 
-          if (v103 != 100)
+          if (priority != 100)
           {
-            if (v103 == 200)
+            if (priority == 200)
             {
               v97 = 100;
               goto LABEL_130;
@@ -846,11 +846,11 @@ LABEL_106:
           v97 = 115;
         }
 
-        else if (v103 > 699)
+        else if (priority > 699)
         {
-          if (v103 != 700)
+          if (priority != 700)
           {
-            if (v103 == 800)
+            if (priority == 800)
             {
               v97 = 97;
               goto LABEL_130;
@@ -864,9 +864,9 @@ LABEL_106:
 
         else
         {
-          if (v103 != 300)
+          if (priority != 300)
           {
-            if (v103 == 600)
+            if (priority == 600)
             {
               v97 = 114;
               goto LABEL_130;
@@ -889,28 +889,28 @@ LABEL_130:
 
         v98 = mach_continuous_time();
         v99 = *&qword_100CBF3C0;
-        v100 = [v177 addressPair];
-        v101 = [v100 localAddress];
+        addressPair2 = [v177 addressPair];
+        localAddress2 = [addressPair2 localAddress];
         v102 = v99 * v98;
-        if ([v101 saPortHostOrder] == 1024)
+        if ([localAddress2 saPortHostOrder] == 1024)
         {
         }
 
         else
         {
-          v104 = [v177 addressPair];
-          v105 = [v104 remoteAddress];
-          v106 = [v105 saPortHostOrder] == 1024;
+          addressPair3 = [v177 addressPair];
+          remoteAddress = [addressPair3 remoteAddress];
+          v106 = [remoteAddress saPortHostOrder] == 1024;
 
           if (!v106 && [v177 priority] != 300)
           {
-            v107 = [v14 highPriorityConnectionSendingSet];
-            v108 = [v107 count] == 0;
+            highPriorityConnectionSendingSet = [infoCopy highPriorityConnectionSendingSet];
+            v108 = [highPriorityConnectionSendingSet count] == 0;
 
             if (!v108)
             {
               [v177 lastSuccessfulSentTime];
-              v110 = v10 != 6;
+              v110 = protocolCopy != 6;
               if (v102 - v109 > 0.5)
               {
                 v110 = 1;
@@ -918,9 +918,9 @@ LABEL_130:
 
               if (!v110)
               {
-                if (v172 == a4)
+                if (v172 == length)
                 {
-                  if (!v178->_logPackets)
+                  if (!selfCopy->_logPackets)
                   {
                     goto LABEL_150;
                   }
@@ -928,22 +928,22 @@ LABEL_130:
                   v111 = +[IDSFoundationLog utunController];
                   if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
                   {
-                    v112 = [v14 vifName];
-                    v113 = [v177 localConnectionGUID];
-                    v114 = [v14 highPriorityConnectionSendingSet];
+                    vifName11 = [infoCopy vifName];
+                    localConnectionGUID = [v177 localConnectionGUID];
+                    highPriorityConnectionSendingSet2 = [infoCopy highPriorityConnectionSendingSet];
                     LODWORD(buf[0]) = 138412802;
-                    *(buf + 4) = v112;
+                    *(buf + 4) = vifName11;
                     WORD6(buf[0]) = 2112;
-                    *(buf + 14) = v113;
+                    *(buf + 14) = localConnectionGUID;
                     WORD3(buf[1]) = 2112;
-                    *(&buf[1] + 1) = v114;
+                    *(&buf[1] + 1) = highPriorityConnectionSendingSet2;
                     _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%@: passing through low priority ack for [%@] - current busy high priority set(%@)", buf, 0x20u);
                   }
                 }
 
                 else
                 {
-                  if (!v178->_logPackets)
+                  if (!selfCopy->_logPackets)
                   {
                     goto LABEL_150;
                   }
@@ -951,24 +951,24 @@ LABEL_130:
                   v111 = +[IDSFoundationLog utunController];
                   if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
                   {
-                    v164 = [v14 vifName];
-                    v165 = [v177 localConnectionGUID];
-                    v166 = [v14 highPriorityConnectionSendingSet];
+                    vifName12 = [infoCopy vifName];
+                    localConnectionGUID2 = [v177 localConnectionGUID];
+                    highPriorityConnectionSendingSet3 = [infoCopy highPriorityConnectionSendingSet];
                     LODWORD(buf[0]) = 138412802;
-                    *(buf + 4) = v164;
+                    *(buf + 4) = vifName12;
                     WORD6(buf[0]) = 2112;
-                    *(buf + 14) = v165;
+                    *(buf + 14) = localConnectionGUID2;
                     WORD3(buf[1]) = 2112;
-                    *(&buf[1] + 1) = v166;
+                    *(&buf[1] + 1) = highPriorityConnectionSendingSet3;
                     _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "%@: cannot send low priority [%@] - current busy high priority set(%@)", buf, 0x20u);
                   }
                 }
 
 LABEL_150:
-                v115 = [v177 stateFlags];
+                stateFlags = [v177 stateFlags];
                 v116 = BYTE4(v173) & 2;
-                v117 = v173 + a4 - v172 + (v116 >> 1);
-                if ((v115 & 0x40) != 0)
+                v117 = v173 + length - v172 + (v116 >> 1);
+                if ((stateFlags & 0x40) != 0)
                 {
                   if (v117 - [v177 expectedNextOutgoingSequenceNumber] <= 0x3FFFFFFE)
                   {
@@ -978,7 +978,7 @@ LABEL_150:
 
                 else
                 {
-                  [v177 setStateFlags:v115 | 0x40];
+                  [v177 setStateFlags:stateFlags | 0x40];
                   [v177 setExpectedNextOutgoingSequenceNumber:v117];
                   [v177 setConnectionSetupStartTime:sub_10062118C()];
                   v118 = +[IDSFoundationLog utunController];
@@ -990,14 +990,14 @@ LABEL_150:
                   }
                 }
 
-                v120 = v178;
-                if (v178->_logPackets)
+                v120 = selfCopy;
+                if (selfCopy->_logPackets)
                 {
                   v121 = +[IDSFoundationLog utunController];
                   if (os_log_type_enabled(v121, OS_LOG_TYPE_DEFAULT))
                   {
                     v122 = v116 == 0;
-                    v123 = [v14 vifName];
+                    vifName13 = [infoCopy vifName];
                     v124 = "S";
                     if (v122)
                     {
@@ -1035,11 +1035,11 @@ LABEL_150:
                       v127 = "";
                     }
 
-                    v128 = [v177 expectedNextOutgoingSequenceNumber];
+                    expectedNextOutgoingSequenceNumber = [v177 expectedNextOutgoingSequenceNumber];
                     LODWORD(buf[0]) = 138414082;
-                    *(buf + 4) = v123;
+                    *(buf + 4) = vifName13;
                     WORD6(buf[0]) = 1024;
-                    *(buf + 14) = a4;
+                    *(buf + 14) = length;
                     WORD1(buf[1]) = 1024;
                     DWORD1(buf[1]) = HIDWORD(v173);
                     WORD4(buf[1]) = 2080;
@@ -1051,23 +1051,23 @@ LABEL_150:
                     WORD3(buf[3]) = 2080;
                     *(&buf[3] + 1) = v127;
                     LOWORD(buf[4]) = 1024;
-                    *(&buf[4] + 2) = v128;
+                    *(&buf[4] + 2) = expectedNextOutgoingSequenceNumber;
                     _os_log_impl(&_mh_execute_header, v121, OS_LOG_TYPE_DEFAULT, "%@: Sending TCP %uB (flags[%02X] [%s%s%s%s])) noseq:%08x", buf, 0x46u);
                   }
 
-                  v120 = v178;
+                  v120 = selfCopy;
                 }
 
                 if (!v120->_isSimulateResetLoopTest && (BYTE4(v173) & 0x12) == 2)
                 {
-                  v129 = [v14 controlChannel];
-                  v130 = [v129 didReceiveReestablishmentRequest];
+                  controlChannel = [infoCopy controlChannel];
+                  didReceiveReestablishmentRequest = [controlChannel didReceiveReestablishmentRequest];
 
-                  if (v130)
+                  if (didReceiveReestablishmentRequest)
                   {
                     v131 = sub_10062118C();
-                    v132 = [v14 controlChannel];
-                    [v132 reestablishmentRequestReceiveTime];
+                    controlChannel2 = [infoCopy controlChannel];
+                    [controlChannel2 reestablishmentRequestReceiveTime];
                     v134 = v131 - v133 < 30.0;
 
                     if (v134)
@@ -1084,8 +1084,8 @@ LABEL_150:
                       goto LABEL_237;
                     }
 
-                    v136 = [v14 controlChannel];
-                    [v136 setDidReceiveReestablishmentRequest:0];
+                    controlChannel3 = [infoCopy controlChannel];
+                    [controlChannel3 setDidReceiveReestablishmentRequest:0];
 
                     v137 = +[IDSFoundationLog utunController];
                     if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
@@ -1100,18 +1100,18 @@ LABEL_150:
 LABEL_190:
                 [v177 setPacketsSent:{objc_msgSend(v177, "packetsSent") + 1}];
                 [v177 setBytesSent:{objc_msgSend(v177, "bytesSent") + v72[2]}];
-                if (v10 == 17)
+                if (protocolCopy == 17)
                 {
                   kdebug_trace();
                 }
 
-                *(v72 + 40) = a9;
-                v138 = [(IDSLinkManager *)v178->_linkManager sendPacketBuffer:v72 toDeviceUniqueID:v14[2] cbuuid:v14[1]];
+                *(v72 + 40) = flush;
+                v138 = [(IDSLinkManager *)selfCopy->_linkManager sendPacketBuffer:v72 toDeviceUniqueID:infoCopy[2] cbuuid:infoCopy[1]];
                 v139 = v138;
-                if (v178->_isSimulateResetLoopTest && (BYTE4(v173) & 0x12) == 2)
+                if (selfCopy->_isSimulateResetLoopTest && (BYTE4(v173) & 0x12) == 2)
                 {
-                  v140 = sub_10000FAC0(&v178->_deviceConnectionInfoTableByCbuuid, kIDSDefaultPairedDeviceID);
-                  v141 = sub_1006C2FC8([v14 connectionsTableByLocalRemotePortKey], 67109888);
+                  v140 = sub_10000FAC0(&selfCopy->_deviceConnectionInfoTableByCbuuid, kIDSDefaultPairedDeviceID);
+                  v141 = sub_1006C2FC8([infoCopy connectionsTableByLocalRemotePortKey], 67109888);
                   v142 = OSLogHandleForTransportCategory();
                   if (os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
                   {
@@ -1131,8 +1131,8 @@ LABEL_190:
                     }
                   }
 
-                  [(IDSUTunController *)v178 resetTCPConnection:v141 forDeviceConnectionInfo:v140];
-                  v178->_isSimulateResetLoopTest = 0;
+                  [(IDSUTunController *)selfCopy resetTCPConnection:v141 forDeviceConnectionInfo:v140];
+                  selfCopy->_isSimulateResetLoopTest = 0;
 
                   goto LABEL_237;
                 }
@@ -1142,20 +1142,20 @@ LABEL_190:
                   if (!v138)
                   {
                     [v177 setLastSuccessfulSentTime:v102];
-                    v148 = [v177 outgoingStallDetector];
+                    outgoingStallDetector = [v177 outgoingStallDetector];
 
-                    if (v148)
+                    if (outgoingStallDetector)
                     {
-                      v149 = [v177 outgoingStallDetector];
-                      [v149 consumeBytes:a4];
+                      outgoingStallDetector2 = [v177 outgoingStallDetector];
+                      [outgoingStallDetector2 consumeBytes:length];
                     }
 
-                    if (v10 == 17 && v178->_logPackets)
+                    if (protocolCopy == 17 && selfCopy->_logPackets)
                     {
                       v150 = sub_10062118C();
                       v151 = qword_100CD3D68;
-                      v152 = a4 - 8;
-                      v153 = [IDSUTunTimingLogger outgoingEventWithTimestamp:a4 - 8 duration:v150 processTime:v150 - qword_100CBF410 * *&qword_100CBF3C0 compressionTime:*&qword_100CBF3C0 * qword_100CBF420 sendTime:*&qword_100CBF3C0 * qword_100CBF428 bytes:v150 - qword_100CBF418 * *&qword_100CBF3C0];
+                      v152 = length - 8;
+                      v153 = [IDSUTunTimingLogger outgoingEventWithTimestamp:length - 8 duration:v150 processTime:v150 - qword_100CBF410 * *&qword_100CBF3C0 compressionTime:*&qword_100CBF3C0 * qword_100CBF420 sendTime:*&qword_100CBF3C0 * qword_100CBF428 bytes:v150 - qword_100CBF418 * *&qword_100CBF3C0];
                       [v151 addEvent:v153];
 
                       if (sub_10062118C() - *&qword_100CBF3E0 > 0.5)
@@ -1217,11 +1217,11 @@ LABEL_205:
                     v143 = +[IDSFoundationLog utunController];
                     if (os_log_type_enabled(v143, OS_LOG_TYPE_DEFAULT))
                     {
-                      v144 = [v14 utunSocket];
+                      utunSocket = [infoCopy utunSocket];
                       LODWORD(buf[0]) = 67109376;
                       DWORD1(buf[0]) = v139;
                       WORD4(buf[0]) = 1024;
-                      *(buf + 10) = v144;
+                      *(buf + 10) = utunSocket;
                       _os_log_impl(&_mh_execute_header, v143, OS_LOG_TYPE_DEFAULT, "[throughput] sendPacketBuffer error %u (s: %d)", buf, 0xEu);
                     }
 
@@ -1241,20 +1241,20 @@ LABEL_237:
                   }
                 }
 
-                v145 = v14[2079] == 0;
+                v145 = infoCopy[2079] == 0;
                 v146 = +[IDSFoundationLog utunController];
                 v147 = os_log_type_enabled(v146, OS_LOG_TYPE_DEFAULT);
                 if (v145)
                 {
                   if (v147)
                   {
-                    v154 = [v14 utunSocket];
+                    utunSocket2 = [infoCopy utunSocket];
                     LODWORD(buf[0]) = 67109120;
-                    DWORD1(buf[0]) = v154;
+                    DWORD1(buf[0]) = utunSocket2;
                     _os_log_impl(&_mh_execute_header, v146, OS_LOG_TYPE_DEFAULT, "[throughput] link throttling (s: %d)", buf, 8u);
                   }
 
-                  [v14 utunSocket];
+                  [infoCopy utunSocket];
                 }
 
                 else
@@ -1269,9 +1269,9 @@ LABEL_237:
                 }
 
                 IDSTransportThreadSuspendSocket();
-                if (a10)
+                if (stop)
                 {
-                  *a10 = 1;
+                  *stop = 1;
                 }
 
                 goto LABEL_237;
@@ -1280,9 +1280,9 @@ LABEL_237:
           }
         }
 
-        if (v10 != 6)
+        if (protocolCopy != 6)
         {
-          if (v178->_logPackets)
+          if (selfCopy->_logPackets)
           {
             v119 = mach_continuous_time();
             qword_100CBF420 = v119 - qword_100CBF418;
@@ -1303,34 +1303,34 @@ LABEL_237:
   v15 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v14 vifName];
-    v17 = [NSData dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+    vifName14 = [infoCopy vifName];
+    v17 = [NSData dataWithBytesNoCopy:payload length:length freeWhenDone:0];
     LODWORD(buf[0]) = 138412802;
-    *(buf + 4) = v16;
+    *(buf + 4) = vifName14;
     WORD6(buf[0]) = 2112;
     *(buf + 14) = v17;
     WORD3(buf[1]) = 2048;
-    *(&buf[1] + 1) = a4;
+    *(&buf[1] + 1) = length;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: dropping packet %@ of length %zu", buf, 0x20u);
   }
 
-  if (a9)
+  if (flush)
   {
 LABEL_64:
-    v41 = v178->_linkManager;
-    v42 = [v14 deviceUniqueID];
-    v43 = [v14 cbuuid];
-    [(IDSLinkManager *)v41 flushBuffer:0 toDeviceUniqueID:v42 cbuuid:v43];
+    v41 = selfCopy->_linkManager;
+    deviceUniqueID3 = [infoCopy deviceUniqueID];
+    cbuuid3 = [infoCopy cbuuid];
+    [(IDSLinkManager *)v41 flushBuffer:0 toDeviceUniqueID:deviceUniqueID3 cbuuid:cbuuid3];
   }
 
 LABEL_238:
 }
 
-- (void)handleUtunChannelRead:(id)a3 limit:(unsigned int)a4
+- (void)handleUtunChannelRead:(id)read limit:(unsigned int)limit
 {
-  v6 = a3;
-  [v6 utunChannel];
-  [v6 utunChannelRxRing];
+  readCopy = read;
+  [readCopy utunChannel];
+  [readCopy utunChannelRxRing];
   v7 = os_channel_available_slot_count();
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -1342,19 +1342,19 @@ LABEL_238:
   if (v7)
   {
     v9 = v7;
-    if (a4)
+    if (limit)
     {
-      v10 = a4;
+      limitCopy = limit;
     }
 
     else
     {
-      v10 = -1;
+      limitCopy = -1;
     }
 
-    if (v7 >= v10)
+    if (v7 >= limitCopy)
     {
-      v11 = v10;
+      v11 = limitCopy;
     }
 
     else
@@ -1370,11 +1370,11 @@ LABEL_238:
     v12 = 1;
     do
     {
-      ++v6[4166];
+      ++readCopy[4166];
       if (WORD1(v17) >= 4uLL && *v18 == 503316480)
       {
         LOBYTE(v15) = v11 == v12;
-        [(IDSUTunController *)self handleIPPayload:v18 + 44 bytesLength:WORD1(v17) - 44 source:0 destination:0 upperProtocol:*(v18 + 10) forDeviceConnectionInfo:v6 flush:v15 callerShouldStop:&v16];
+        [(IDSUTunController *)self handleIPPayload:v18 + 44 bytesLength:WORD1(v17) - 44 source:0 destination:0 upperProtocol:*(v18 + 10) forDeviceConnectionInfo:readCopy flush:v15 callerShouldStop:&v16];
       }
 
       if (!os_channel_get_next_slot())
@@ -1397,34 +1397,34 @@ LABEL_238:
       goto LABEL_17;
     }
 
-    v13 = [v6 utunChannelRxCount];
-    v14 = [v6 utunChannelRxRingSize] >> 1;
+    utunChannelRxCount = [readCopy utunChannelRxCount];
+    v14 = [readCopy utunChannelRxRingSize] >> 1;
     if (v11 < v14)
     {
       v14 = v11;
     }
 
-    if (v9 == 1 || v13 >= v14)
+    if (v9 == 1 || utunChannelRxCount >= v14)
     {
 LABEL_17:
-      [v6 setUtunChannelRxCount:0];
+      [readCopy setUtunChannelRxCount:0];
       os_channel_sync();
     }
   }
 }
 
-- (unsigned)handleUtunChannelWrite:(id)a3 source:(sockaddr *)a4 destination:(sockaddr *)a5 upperProtocol:(unsigned __int8)a6 bytes:(const void *)a7 bytesLen:(unint64_t)a8
+- (unsigned)handleUtunChannelWrite:(id)write source:(sockaddr *)source destination:(sockaddr *)destination upperProtocol:(unsigned __int8)protocol bytes:(const void *)bytes bytesLen:(unint64_t)len
 {
-  v14 = a3;
-  [v14 utunChannel];
-  [v14 utunChannelTxRing];
+  writeCopy = write;
+  [writeCopy utunChannel];
+  [writeCopy utunChannelTxRing];
   v15 = os_channel_available_slot_count();
   *&v16 = 0xAAAAAAAAAAAAAAAALL;
   *(&v16 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v27 = v16;
   if (!v15)
   {
-    if (v14[2084] == 0.0)
+    if (writeCopy[2084] == 0.0)
     {
       ignoreUTunChannelWriteSignal = self->_ignoreUTunChannelWriteSignal;
       v17 = +[IDSFoundationLog utunController];
@@ -1442,7 +1442,7 @@ LABEL_17:
           sub_10092D8D8();
         }
 
-        v14[2084] = *&qword_100CBF3C0 * mach_continuous_time();
+        writeCopy[2084] = *&qword_100CBF3C0 * mach_continuous_time();
         os_channel_get_fd();
         IDSTransportThreadResumeSocket();
         goto LABEL_33;
@@ -1464,7 +1464,7 @@ LABEL_17:
 
       v20 = mach_continuous_time();
       v21 = *&qword_100CBF3C0;
-      v22 = v14[2084];
+      v22 = writeCopy[2084];
       v17 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -1477,7 +1477,7 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  if (a4->sa_family != 30 || a5->sa_family != 30)
+  if (source->sa_family != 30 || destination->sa_family != 30)
   {
     v18 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1519,20 +1519,20 @@ LABEL_17:
   MEMORY[0xAAAAAAAAAAAAAAAE] = 0u;
   MEMORY[0xAAAAAAAAAAAAAABE] = 0u;
   MEMORY[0xAAAAAAAAAAAAAACE] = 0;
-  MEMORY[0xAAAAAAAAAAAAAAB6] = *&a4->sa_data[6];
-  MEMORY[0xAAAAAAAAAAAAAAC6] = *&a5->sa_data[6];
-  MEMORY[0xAAAAAAAAAAAAAAB2] = bswap32(a8) >> 16;
-  MEMORY[0xAAAAAAAAAAAAAAB4] = a6;
+  MEMORY[0xAAAAAAAAAAAAAAB6] = *&source->sa_data[6];
+  MEMORY[0xAAAAAAAAAAAAAAC6] = *&destination->sa_data[6];
+  MEMORY[0xAAAAAAAAAAAAAAB2] = bswap32(len) >> 16;
+  MEMORY[0xAAAAAAAAAAAAAAB4] = protocol;
   MEMORY[0xAAAAAAAAAAAAAAAE] = 96;
-  if (a8 + 44 > [v14 utunChannelMaxSlotSize])
+  if (len + 44 > [writeCopy utunChannelMaxSlotSize])
   {
     v17 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *&v29 = (a8 + 44);
+      *&v29 = (len + 44);
       v30 = 2048;
-      v31 = [v14 utunChannelMaxSlotSize];
+      utunChannelMaxSlotSize = [writeCopy utunChannelMaxSlotSize];
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "problem: handleUtunChannelWrite: packet too large %lu > %lu", buf, 0x16u);
     }
 
@@ -1543,7 +1543,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  memmove(0xAAAAAAAAAAAAAAD6, a7, a8);
+  memmove(0xAAAAAAAAAAAAAAD6, bytes, len);
   os_channel_set_slot_properties();
   os_channel_advance_slot();
   os_channel_sync();
@@ -1553,9 +1553,9 @@ LABEL_34:
   return v25;
 }
 
-- (BOOL)setupUTunForDeviceConnectionInfo:(id)a3
+- (BOOL)setupUTunForDeviceConnectionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   memset(v116, 170, 20);
   v115 = 0xAAAAAAAAAAAAAAAALL;
   v4 = NEVirtualInterfaceCreate();
@@ -1563,8 +1563,8 @@ LABEL_34:
   {
 LABEL_7:
     oslog = NEVirtualInterfaceCopyName();
-    [v3 setVifName:oslog];
-    [v3 setVifRef:v4];
+    [infoCopy setVifName:oslog];
+    [infoCopy setVifRef:v4];
     LODWORD(v116[2]) = 0;
     v116[1] = 0;
     v115 = 7708;
@@ -1583,10 +1583,10 @@ LABEL_7:
     v12 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v3 vifName];
+      vifName = [infoCopy vifName];
       v14 = [IDSSockAddrWrapper wrapperWithSockAddr:&v115];
       *buf = 138412802;
-      *&buf[4] = v13;
+      *&buf[4] = vifName;
       *&buf[12] = 2112;
       *&buf[14] = v14;
       *&buf[22] = 2112;
@@ -1597,20 +1597,20 @@ LABEL_7:
     v15 = NEVirtualInterfaceDupSocket();
     if ((v15 & 0x80000000) == 0)
     {
-      [v3 setUtunSocket:v15];
+      [infoCopy setUtunSocket:v15];
       v16 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v3 cbuuid];
+        cbuuid = [infoCopy cbuuid];
         *buf = 67109378;
         *&buf[4] = v15;
         *&buf[8] = 2112;
-        *&buf[10] = v17;
+        *&buf[10] = cbuuid;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Get raw socket %d for device %@", buf, 0x12u);
       }
 
       NEVirtualInterfaceSetReadAutomatically();
-      v18 = self;
+      selfCopy2 = self;
       if (!self->_vifUseChannel)
       {
         goto LABEL_35;
@@ -1649,14 +1649,14 @@ LABEL_7:
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "use skywalk channel for utun", v113, 2u);
               }
 
-              [v3 setUtunNexusUUID:buf];
-              [v3 setUtunChannel:extended];
-              [v3 setUtunChannelMaxSlotSize:v100.ai_flags];
+              [infoCopy setUtunNexusUUID:buf];
+              [infoCopy setUtunChannel:extended];
+              [infoCopy setUtunChannelMaxSlotSize:v100.ai_flags];
               os_channel_ring_id();
-              [v3 setUtunChannelTxRing:os_channel_tx_ring()];
+              [infoCopy setUtunChannelTxRing:os_channel_tx_ring()];
               os_channel_ring_id();
-              [v3 setUtunChannelRxRing:os_channel_rx_ring()];
-              [v3 setUtunChannelRxRingSize:*out];
+              [infoCopy setUtunChannelRxRing:os_channel_rx_ring()];
+              [infoCopy setUtunChannelRxRingSize:*out];
               os_channel_attr_destroy();
 LABEL_53:
               v43 = NEVirtualInterfaceSetMTU();
@@ -1664,8 +1664,8 @@ LABEL_53:
               v45 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
               {
-                v46 = [v3 vifName];
-                v47 = v46;
+                vifName2 = [infoCopy vifName];
+                v47 = vifName2;
                 if (v43)
                 {
                   v48 = 0;
@@ -1677,7 +1677,7 @@ LABEL_53:
                 }
 
                 *buf = 138413058;
-                *&buf[4] = v46;
+                *&buf[4] = vifName2;
                 *&buf[12] = 1024;
                 *&buf[14] = 1380;
                 *&buf[18] = 1024;
@@ -1692,8 +1692,8 @@ LABEL_53:
               v51 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
               {
-                v52 = [v3 vifName];
-                v53 = v52;
+                vifName3 = [infoCopy vifName];
+                v53 = vifName3;
                 if (v49)
                 {
                   v54 = 0;
@@ -1705,7 +1705,7 @@ LABEL_53:
                 }
 
                 *buf = 138413058;
-                *&buf[4] = v52;
+                *&buf[4] = vifName3;
                 *&buf[12] = 2112;
                 *&buf[14] = v11;
                 *&buf[22] = 1024;
@@ -1720,8 +1720,8 @@ LABEL_53:
               v57 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
               {
-                v58 = [v3 vifName];
-                v59 = v58;
+                vifName4 = [infoCopy vifName];
+                v59 = vifName4;
                 if (v55)
                 {
                   v60 = 0;
@@ -1733,7 +1733,7 @@ LABEL_53:
                 }
 
                 *buf = 138412802;
-                *&buf[4] = v58;
+                *&buf[4] = vifName4;
                 *&buf[12] = 1024;
                 *&buf[14] = v55;
                 *&buf[18] = 1024;
@@ -1746,8 +1746,8 @@ LABEL_53:
               v63 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
               {
-                v64 = [v3 vifName];
-                v65 = v64;
+                vifName5 = [infoCopy vifName];
+                v65 = vifName5;
                 if (updated)
                 {
                   v66 = 0;
@@ -1759,7 +1759,7 @@ LABEL_53:
                 }
 
                 *buf = 138412802;
-                *&buf[4] = v64;
+                *&buf[4] = vifName5;
                 *&buf[12] = 1024;
                 *&buf[14] = updated;
                 *&buf[18] = 1024;
@@ -1778,9 +1778,9 @@ LABEL_53:
                 v69 = +[IDSFoundationLog utunController];
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
                 {
-                  v70 = [v3 vifName];
+                  vifName6 = [infoCopy vifName];
                   *buf = 138412290;
-                  *&buf[4] = v70;
+                  *&buf[4] = vifName6;
                   _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%@: getaddrinfo failed!!", buf, 0xCu);
                 }
 
@@ -1792,27 +1792,27 @@ LABEL_53:
               else
               {
                 v71 = [IDSSockAddrWrapper wrapperWithSockAddr:*(*v99 + 32)];
-                [v3 setLocalSA:v71];
+                [infoCopy setLocalSA:v71];
 
                 freeaddrinfo(*v99);
                 v72 = +[IDSFoundationLog utunController];
                 if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
                 {
-                  v73 = [v3 vifName];
-                  v74 = [v3 localSA];
-                  v75 = [v3 localSA];
-                  v76 = *([v75 sa6] + 6);
+                  vifName7 = [infoCopy vifName];
+                  localSA = [infoCopy localSA];
+                  localSA2 = [infoCopy localSA];
+                  v76 = *([localSA2 sa6] + 6);
                   *buf = 138412802;
-                  *&buf[4] = v73;
+                  *&buf[4] = vifName7;
                   *&buf[12] = 2112;
-                  *&buf[14] = v74;
+                  *&buf[14] = localSA;
                   *&buf[22] = 1024;
                   *v118 = v76;
                   _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%@: result localSA: [%@ @ %u]", buf, 0x1Cu);
                 }
 
-                v77 = [v3 localSA];
-                v78 = [v77 sa6];
+                localSA3 = [infoCopy localSA];
+                v78 = [localSA3 sa6];
                 LODWORD(v116[2]) = 0;
                 v116[1] = 0;
                 v115 = 7708;
@@ -1825,33 +1825,33 @@ LABEL_53:
                 arc4random_buf(&v116[1], 8uLL);
 
                 v79 = [IDSSockAddrWrapper wrapperWithSockAddr:&v115];
-                [v3 setRemoteSA:v79];
+                [infoCopy setRemoteSA:v79];
 
                 *&out[29] = 0xAAAAAAAAAAAAAAAALL;
                 *&v80 = 0xAAAAAAAAAAAAAAAALL;
                 *(&v80 + 1) = 0xAAAAAAAAAAAAAAAALL;
                 *out = v80;
                 *&out[16] = v80;
-                uuid_unparse_upper([v3 selfInstanceID], out);
+                uuid_unparse_upper([infoCopy selfInstanceID], out);
                 v81 = OSLogHandleForTransportCategory();
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
                 {
-                  v82 = [v3 vifName];
-                  v83 = [v3 cbuuid];
-                  v84 = [v3 deviceUniqueID];
-                  v85 = [v3 remoteSA];
+                  vifName8 = [infoCopy vifName];
+                  cbuuid2 = [infoCopy cbuuid];
+                  deviceUniqueID = [infoCopy deviceUniqueID];
+                  remoteSA = [infoCopy remoteSA];
                   *buf = 138413570;
-                  *&buf[4] = v82;
+                  *&buf[4] = vifName8;
                   *&buf[12] = 2112;
-                  *&buf[14] = v83;
+                  *&buf[14] = cbuuid2;
                   *&buf[22] = 2112;
-                  *v118 = v84;
+                  *v118 = deviceUniqueID;
                   *&v118[8] = 2112;
-                  v119 = v85;
+                  v119 = remoteSA;
                   v120 = 2080;
                   v121 = out;
                   v122 = 2112;
-                  v123 = v3;
+                  v123 = infoCopy;
                   _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "%@: created mapping [%@ / %@] <=> [%@] (selfInstanceID[%s] %@)", buf, 0x3Eu);
                 }
 
@@ -1859,29 +1859,29 @@ LABEL_53:
                 {
                   if (_IDSShouldLogTransport())
                   {
-                    v86 = [v3 vifName];
-                    v87 = [v3 cbuuid];
-                    v88 = [v3 deviceUniqueID];
-                    v93 = [v3 remoteSA];
+                    vifName9 = [infoCopy vifName];
+                    cbuuid3 = [infoCopy cbuuid];
+                    deviceUniqueID2 = [infoCopy deviceUniqueID];
+                    remoteSA2 = [infoCopy remoteSA];
                     _IDSLogTransport();
 
                     if (_IDSShouldLog())
                     {
-                      v89 = [v3 vifName];
-                      v90 = [v3 cbuuid];
-                      v91 = [v3 deviceUniqueID];
-                      v94 = [v3 remoteSA];
+                      vifName10 = [infoCopy vifName];
+                      cbuuid4 = [infoCopy cbuuid];
+                      deviceUniqueID3 = [infoCopy deviceUniqueID];
+                      remoteSA3 = [infoCopy remoteSA];
                       _IDSLogV();
                     }
                   }
                 }
 
-                if (v3[2079])
+                if (infoCopy[2079])
                 {
                   os_channel_get_fd();
                 }
 
-                v98 = v3;
+                v98 = infoCopy;
                 v97 = v98;
                 IDSTransportThreadAddSocket();
                 [v97 setLinkLayerConnected:{-[IDSLinkManager isConnectedToDeviceID:](self->_linkManager, "isConnectedToDeviceID:", v97[1])}];
@@ -1917,16 +1917,16 @@ LABEL_90:
       }
 
 LABEL_34:
-      v18 = self;
+      selfCopy2 = self;
 LABEL_35:
-      if (v18->_vifShouldReadMultiple)
+      if (selfCopy2->_vifShouldReadMultiple)
       {
         v107 = _NSConcreteStackBlock;
         v108 = 3221225472;
         v109 = sub_10062A7CC;
         v110 = &unk_100BE2AD0;
-        v111 = v18;
-        v26 = v3;
+        v111 = selfCopy2;
+        v26 = infoCopy;
         v112 = v26;
         MultipleIPPayloadsHandler = NEVirtualInterfaceSetReadMultipleIPPayloadsHandler();
         v28 = *__error();
@@ -1985,8 +1985,8 @@ LABEL_35:
         v102 = 3221225472;
         v103 = sub_10062A860;
         v104 = &unk_100BE2AF8;
-        v105 = v18;
-        v37 = v3;
+        v105 = selfCopy2;
+        v37 = infoCopy;
         v106 = v37;
         IPPayloadHandler = NEVirtualInterfaceSetReadIPPayloadHandler();
         v39 = *__error();
@@ -2035,9 +2035,9 @@ LABEL_35:
     v6 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 cbuuid];
+      cbuuid5 = [infoCopy cbuuid];
       *buf = 138412546;
-      *&buf[4] = v7;
+      *&buf[4] = cbuuid5;
       *&buf[12] = 1024;
       *&buf[14] = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "NEVICreate failed for %@! - %d try", buf, 0x12u);
@@ -2060,9 +2060,9 @@ LABEL_35:
   oslog = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v3 cbuuid];
+    cbuuid6 = [infoCopy cbuuid];
     *buf = 138412546;
-    *&buf[4] = v24;
+    *&buf[4] = cbuuid6;
     *&buf[12] = 1024;
     *&buf[14] = 3;
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "NEVICreate failed for %@! after %d tries", buf, 0x12u);
@@ -2074,22 +2074,22 @@ LABEL_91:
   return v23;
 }
 
-- (void)startDataChannelWithDevice:(id)a3 genericConnection:(id)a4 serviceConnectorService:(id)a5
+- (void)startDataChannelWithDevice:(id)device genericConnection:(id)connection serviceConnectorService:(id)service
 {
-  v147 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(IDSUTunController *)self stringComponentsForServiceConnectorService:v9];
+  deviceCopy = device;
+  connectionCopy = connection;
+  serviceCopy = service;
+  v10 = [(IDSUTunController *)self stringComponentsForServiceConnectorService:serviceCopy];
   if ([v10 count] <= 2)
   {
     v11 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v147 vifName];
+      vifName = [deviceCopy vifName];
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = vifName;
       *&buf[12] = 2112;
-      *&buf[14] = v9;
+      *&buf[14] = serviceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: service string %@ needs to have 3 components", buf, 0x16u);
     }
   }
@@ -2111,16 +2111,16 @@ LABEL_91:
   v17 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v147 vifName];
-    v19 = [v147 serviceConnectionCache];
+    vifName2 = [deviceCopy vifName];
+    serviceConnectionCache = [deviceCopy serviceConnectionCache];
     *buf = 138413058;
-    *&buf[4] = v18;
+    *&buf[4] = vifName2;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = connectionCopy;
     v162 = 2112;
-    v163 = v9;
+    v163 = serviceCopy;
     v164 = 2112;
-    v165 = v19;
+    v165 = serviceConnectionCache;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: startDataChannelWithDevice called with generic connection %@ for service %@ connection-cache %@", buf, 0x2Au);
   }
 
@@ -2135,15 +2135,15 @@ LABEL_91:
   }
 
   v144 = v13;
-  v145 = v9;
+  v145 = serviceCopy;
   v129 = v20;
-  if (![v147 shouldUseServiceConnector])
+  if (![deviceCopy shouldUseServiceConnector])
   {
     v124 = 0;
     v146 = 0;
     v143 = 0;
     v136 = 4;
-    v22 = v9;
+    v22 = serviceCopy;
     v23 = v13;
     goto LABEL_36;
   }
@@ -2159,18 +2159,18 @@ LABEL_91:
   }
 
   v136 = v21;
-  if (_IDSSupportsDirectMessaging() && [v8 isDirectMsgChannel])
+  if (_IDSSupportsDirectMessaging() && [connectionCopy isDirectMsgChannel])
   {
-    if ([v8 dataProtectionClass] == 2)
+    if ([connectionCopy dataProtectionClass] == 2)
     {
       v136 = 4;
     }
 
     else
     {
-      v24 = [v8 dataProtectionClass];
+      dataProtectionClass = [connectionCopy dataProtectionClass];
       v25 = v136;
-      if (!v24)
+      if (!dataProtectionClass)
       {
         v25 = 3;
       }
@@ -2180,15 +2180,15 @@ LABEL_91:
   }
 
   v146 = [NSString stringWithUTF8String:"61314"];
-  v26 = [v147 serviceConnector];
+  serviceConnector = [deviceCopy serviceConnector];
   if (v20)
   {
     v27 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v147 vifName];
+      vifName3 = [deviceCopy vifName];
       *buf = 138412546;
-      *&buf[4] = v28;
+      *&buf[4] = vifName3;
       *&buf[12] = 2112;
       *&buf[14] = v14;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%@: calling internalStartConnectionWithEndpoint with cloud option for service %@", buf, 0x16u);
@@ -2196,32 +2196,32 @@ LABEL_91:
 
     v29 = [NSString stringWithUTF8String:"61315"];
 
-    v30 = [v147 cloudServiceConnector];
+    cloudServiceConnector = [deviceCopy cloudServiceConnector];
 
     v146 = v29;
-    v26 = v30;
+    serviceConnector = cloudServiceConnector;
   }
 
   v31 = [NSUUID alloc];
   v32 = +[IDSPairingManager sharedInstance];
-  v33 = [v32 pairedDeviceUUIDString];
-  v34 = [v31 initWithUUIDString:v33];
+  pairedDeviceUUIDString = [v32 pairedDeviceUUIDString];
+  v34 = [v31 initWithUUIDString:pairedDeviceUUIDString];
 
   if (v34)
   {
-    v35 = self;
-    v143 = v26;
+    selfCopy = self;
+    v143 = serviceConnector;
     v126 = v15;
     v36 = v14;
-    v37 = v8;
+    v37 = connectionCopy;
     v38 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v34];
     v39 = [[NREndpoint alloc] initWithDeviceIdentifier:v38 portString:v146 dataProtectionClass:v136 service:v145];
-    v40 = [v39 usesASQUIC];
+    usesASQUIC = [v39 usesASQUIC];
     v41 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       v42 = @"NO";
-      if (v40)
+      if (usesASQUIC)
       {
         v42 = @"YES";
       }
@@ -2233,44 +2233,44 @@ LABEL_91:
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "startDataChannelWithDevice:service %@, usesASQUIC: %@", buf, 0x16u);
     }
 
-    v124 = v40;
+    v124 = usesASQUIC;
 
-    v43 = [v39 copyEndpoint];
-    v146 = v43;
-    v8 = v37;
+    copyEndpoint = [v39 copyEndpoint];
+    v146 = copyEndpoint;
+    connectionCopy = v37;
     v22 = v145;
     v23 = v144;
     v14 = v36;
     v15 = v126;
-    self = v35;
+    self = selfCopy;
 LABEL_36:
     v150[0] = _NSConcreteStackBlock;
     v150[1] = 3221225472;
     v150[2] = sub_10062BC60;
     v150[3] = &unk_100BE2B98;
-    v44 = v147;
+    v44 = deviceCopy;
     v151 = v44;
-    v45 = v8;
+    v45 = connectionCopy;
     v152 = v45;
     v153 = v23;
     v154 = v14;
     v158 = v139;
     v140 = v15;
     v155 = v140;
-    v156 = self;
+    selfCopy2 = self;
     v46 = v22;
     v157 = v46;
     v47 = objc_retainBlock(v150);
     v135 = v14;
-    v131 = self;
+    selfCopy3 = self;
     if ([v44 shouldUseServiceConnector])
     {
-      v123 = v8;
+      v123 = connectionCopy;
       if (v45)
       {
-        v48 = [v44 serviceConnectionCache];
+        serviceConnectionCache2 = [v44 serviceConnectionCache];
         v49 = v46;
-        v50 = [v48 objectForKey:v46];
+        v50 = [serviceConnectionCache2 objectForKey:v46];
 
         v122 = v50;
         if (v50)
@@ -2278,9 +2278,9 @@ LABEL_36:
           v51 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [v44 vifName];
+            vifName4 = [v44 vifName];
             *buf = 138412802;
-            *&buf[4] = v52;
+            *&buf[4] = vifName4;
             *&buf[12] = 2112;
             *&buf[14] = v122;
             v162 = 2112;
@@ -2288,16 +2288,16 @@ LABEL_36:
             _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "%@: found service connection %@ in cache for service %@", buf, 0x20u);
           }
 
-          v53 = v122;
+          addressPair3 = v122;
           [v45 setServiceConnection:v122];
-          v54 = [v44 serviceConnectionCache];
-          [v54 removeObjectForKey:v49];
+          serviceConnectionCache3 = [v44 serviceConnectionCache];
+          [serviceConnectionCache3 removeObjectForKey:v49];
 
           [v45 socketTrafficClass];
           v55 = TrafficClassForIDSOpenSocketPriorityLevel();
           (v47[2])(v47, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, v122, v55, 0);
-          v8 = v123;
-          v26 = v143;
+          connectionCopy = v123;
+          serviceConnector = v143;
           v56 = v144;
           goto LABEL_64;
         }
@@ -2310,25 +2310,25 @@ LABEL_36:
           if (v124)
           {
             v69 = [IDSGenericConnectionID idWithAccount:@"idstest" service:@"localdelivery" name:@"UTunDelivery-Default-Urgent-D-Relay"];
-            v70 = [v44 connectionsByID];
+            connectionsByID = [v44 connectionsByID];
             v137 = v69;
-            v71 = [v70 objectForKey:v69];
+            v71 = [connectionsByID objectForKey:v69];
 
             v142 = v71;
-            v72 = [v71 serviceConnection];
-            if (v72)
+            serviceConnection = [v71 serviceConnection];
+            if (serviceConnection)
             {
-              v131->_isocPipeAssertedForRelayConnection = 1;
+              selfCopy3->_isocPipeAssertedForRelayConnection = 1;
               v73 = im_primary_queue();
               dispatch_async(v73, &stru_100BE2BB8);
 
-              v74 = nw_connection_copy_parameters(v72);
+              v74 = nw_connection_copy_parameters(serviceConnection);
               v75 = nw_protocol_copy_quic_definition();
               v76 = nw_parameters_copy_protocol_options_for_definition();
 
               nw_quic_stream_set_is_datagram();
               v77 = +[IDSFoundationLog utunController];
-              v26 = v143;
+              serviceConnector = v143;
               if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
@@ -2338,7 +2338,7 @@ LABEL_36:
               v132 = v76;
               nw_quic_set_phone_call_relay_optimization();
               v78 = +[IDSFoundationLog utunController];
-              v8 = v123;
+              connectionCopy = v123;
               if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
@@ -2355,27 +2355,27 @@ LABEL_36:
               v132 = [NSDictionary dictionaryWithObject:v74 forKey:NSLocalizedDescriptionKey];
               v80 = [NSError errorWithDomain:@"IDSUTun" code:5071 userInfo:?];
               v79 = 0;
-              v8 = v123;
-              v26 = v143;
+              connectionCopy = v123;
+              serviceConnector = v143;
             }
           }
 
           else
           {
             v134 = v10;
-            v101 = [v45 addressPair];
-            v102 = [v101 remoteAddress];
-            v103 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [v102 saPortHostOrder]);
+            addressPair = [v45 addressPair];
+            remoteAddress = [addressPair remoteAddress];
+            v103 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [remoteAddress saPortHostOrder]);
 
             v130 = v45;
-            v104 = [v45 addressPair];
-            v105 = [v104 localAddress];
-            v106 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [v105 saPortHostOrder]);
+            addressPair2 = [v45 addressPair];
+            localAddress = [addressPair2 localAddress];
+            v106 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [localAddress saPortHostOrder]);
 
             v107 = [NSUUID alloc];
             v108 = +[IDSPairingManager sharedInstance];
-            v109 = [v108 pairedDeviceUUIDString];
-            v110 = [v107 initWithUUIDString:v109];
+            pairedDeviceUUIDString2 = [v108 pairedDeviceUUIDString];
+            v110 = [v107 initWithUUIDString:pairedDeviceUUIDString2];
 
             v125 = v110;
             v74 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v110];
@@ -2383,22 +2383,22 @@ LABEL_36:
             v111 = [[NREndpoint alloc] initWithDeviceIdentifier:v74 portString:v103 dataProtectionClass:4];
             v142 = v106;
             v112 = [[NRParametersPhoneCallRelay alloc] initWithLocalPort:v106];
-            v113 = [v112 copyParameters];
+            copyParameters = [v112 copyParameters];
             v132 = v111;
-            v114 = [v111 copyEndpoint];
-            v79 = nw_connection_create(v114, v113);
+            copyEndpoint2 = [v111 copyEndpoint];
+            v79 = nw_connection_create(copyEndpoint2, copyParameters);
             v115 = +[IDSFoundationLog utunController];
             if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
             {
-              v116 = [v44 vifName];
+              vifName5 = [v44 vifName];
               *buf = 138413570;
-              *&buf[4] = v116;
+              *&buf[4] = vifName5;
               *&buf[12] = 2112;
               *&buf[14] = v79;
               v162 = 2112;
               v163 = v49;
               v164 = 2112;
-              v165 = v114;
+              v165 = copyEndpoint2;
               v166 = 2112;
               v167 = v142;
               v168 = 2112;
@@ -2407,10 +2407,10 @@ LABEL_36:
             }
 
             v80 = 0;
-            v8 = v123;
-            v72 = v125;
+            connectionCopy = v123;
+            serviceConnection = v125;
             v10 = v134;
-            v26 = v143;
+            serviceConnector = v143;
             v45 = v130;
           }
 
@@ -2420,9 +2420,9 @@ LABEL_36:
             v118 = [NSDictionary dictionaryWithObject:v117 forKey:NSLocalizedDescriptionKey];
             v119 = [NSError errorWithDomain:@"IDSUTun" code:5071 userInfo:v118];
 
-            v26 = v143;
+            serviceConnector = v143;
             v80 = v119;
-            v8 = v123;
+            connectionCopy = v123;
           }
 
           [v45 socketTrafficClass];
@@ -2431,7 +2431,7 @@ LABEL_36:
           (v121[2])(v121, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, v79, v120, v80);
 
           v15 = v127;
-          v53 = 0;
+          addressPair3 = 0;
           v56 = v144;
           goto LABEL_64;
         }
@@ -2443,8 +2443,8 @@ LABEL_36:
       [v45 setDefaultPairedDeviceEndpoint:v146];
       v81 = [NSUUID alloc];
       v82 = +[IDSPairingManager sharedInstance];
-      v83 = [v82 pairedDeviceUUIDString];
-      v84 = [v81 initWithUUIDString:v83];
+      pairedDeviceUUIDString3 = [v82 pairedDeviceUUIDString];
+      v84 = [v81 initWithUUIDString:pairedDeviceUUIDString3];
 
       v85 = v84;
       v86 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v84];
@@ -2457,7 +2457,7 @@ LABEL_36:
       v91 = v45;
       v92 = v90;
 
-      v93 = [v92 copyParameters];
+      copyParameters2 = [v92 copyParameters];
       if (v124)
       {
         if ([v140 containsString:@"Relay"])
@@ -2480,7 +2480,7 @@ LABEL_36:
             _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "IDSUTunController:startDataChannelWithDevice: nw_quic_connection_set_max_datagram_frame_size for %@", buf, 0xCu);
           }
 
-          v96 = nw_parameters_copy_default_protocol_stack(v93);
+          v96 = nw_parameters_copy_default_protocol_stack(copyParameters2);
           iterate_block[0] = _NSConcreteStackBlock;
           iterate_block[1] = 3221225472;
           iterate_block[2] = sub_10062D70C;
@@ -2506,41 +2506,41 @@ LABEL_36:
       }
 
       nw_parameters_set_traffic_class();
-      v100 = [v46 UTF8String];
+      uTF8String = [v46 UTF8String];
       [v91 socketTrafficClass];
-      v26 = v143;
-      [(IDSUTunController *)self internalStartConnectionWithEndpoint:v146 service:v100 parameters:v93 serviceConnector:v143 trafficClass:TrafficClassForIDSOpenSocketPriorityLevel() completionHandler:v47];
+      serviceConnector = v143;
+      [(IDSUTunController *)self internalStartConnectionWithEndpoint:v146 service:uTF8String parameters:copyParameters2 serviceConnector:v143 trafficClass:TrafficClassForIDSOpenSocketPriorityLevel() completionHandler:v47];
 
-      v8 = v123;
+      connectionCopy = v123;
       v56 = v144;
       v15 = v128;
       v10 = v133;
-      v53 = v85;
+      addressPair3 = v85;
       goto LABEL_64;
     }
 
     isa = v44[1].isa;
-    v53 = [v45 addressPair];
-    v57 = [v53 localAddress];
+    addressPair3 = [v45 addressPair];
+    localAddress2 = [addressPair3 localAddress];
     [v45 addressPair];
-    v59 = v58 = v8;
-    v60 = [v59 remoteAddress];
+    v59 = v58 = connectionCopy;
+    remoteAddress2 = [v59 remoteAddress];
     v61 = v47;
     v62 = v10;
     v63 = v15;
-    v64 = [v45 protocol];
+    protocol = [v45 protocol];
     [v45 priority];
     v65 = TrafficClassForIDSOpenSocketPriorityLevel();
-    v66 = v64;
+    v66 = protocol;
     v15 = v63;
     v10 = v62;
     v47 = v61;
-    [(IDSUTunController *)v131 internalOpenSocketWithDestination:isa localSA:v57 remoteSA:v60 protocol:v66 trafficClass:v65 completionHandler:v61];
+    [(IDSUTunController *)selfCopy3 internalOpenSocketWithDestination:isa localSA:localAddress2 remoteSA:remoteAddress2 protocol:v66 trafficClass:v65 completionHandler:v61];
 
-    v8 = v58;
+    connectionCopy = v58;
     v56 = v144;
 
-    v26 = v143;
+    serviceConnector = v143;
 LABEL_64:
 
     v67 = v151;
@@ -2551,9 +2551,9 @@ LABEL_64:
   v67 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {
-    v68 = [v147 vifName];
+    vifName6 = [deviceCopy vifName];
     *buf = 138412290;
-    *&buf[4] = v68;
+    *&buf[4] = vifName6;
     _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%@: Asked to set up a connection when we dont have a paired device!  Aborting...", buf, 0xCu);
   }
 
@@ -2561,28 +2561,28 @@ LABEL_64:
 LABEL_65:
 }
 
-- (BOOL)setupIPsecLinkForDeviceConnectionInfo:(id)a3
+- (BOOL)setupIPsecLinkForDeviceConnectionInfo:(id)info
 {
-  v3 = a3;
-  [v3 setShouldUseServiceConnector:1];
-  [v3 setVifName:@"IPsecLink"];
+  infoCopy = info;
+  [infoCopy setShouldUseServiceConnector:1];
+  [infoCopy setVifName:@"IPsecLink"];
   v11 = 7708;
   v12 = 0;
   v14 = 0;
   v13 = 0;
   v15 = 0;
   v4 = [IDSSockAddrWrapper wrapperWithSockAddr:&v11];
-  [v3 setLocalSA:v4];
+  [infoCopy setLocalSA:v4];
 
   v5 = [IDSSockAddrWrapper wrapperWithSockAddr:&v11];
-  [v3 setRemoteSA:v5];
+  [infoCopy setRemoteSA:v5];
 
   v6 = nw_parameters_create();
   nw_parameters_set_required_interface_subtype();
   v7 = nw_service_connector_create();
-  [v3 setServiceConnector:v7];
+  [infoCopy setServiceConnector:v7];
   v8 = nw_service_connector_create();
-  [v3 setCloudServiceConnector:v8];
+  [infoCopy setCloudServiceConnector:v8];
   nw_service_connector_start();
   nw_service_connector_start();
   v9 = +[IDSFoundationLog utunController];
@@ -2595,55 +2595,55 @@ LABEL_65:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "setupIPsecLinkForDeviceConnectionInfo serviceConnector %@ cloudServiceConnector %@", buf, 0x16u);
   }
 
-  [v3 setLinkLayerConnected:1];
+  [infoCopy setLinkLayerConnected:1];
   return 1;
 }
 
-- (id)setupNewDeviceConnectionInfoForCbuuid:(id)a3 deviceUniqueID:(id)a4 identityPair:(id)a5 remoteDeviceEncryptionInfo:(id)a6 shouldUseServiceConnector:(BOOL)a7
+- (id)setupNewDeviceConnectionInfoForCbuuid:(id)cbuuid deviceUniqueID:(id)d identityPair:(id)pair remoteDeviceEncryptionInfo:(id)info shouldUseServiceConnector:(BOOL)connector
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  connectorCopy = connector;
+  cbuuidCopy = cbuuid;
+  dCopy = d;
+  pairCopy = pair;
+  infoCopy = info;
   v16 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = @"NO";
     *buf = 138412802;
-    v36 = v12;
+    v36 = cbuuidCopy;
     v37 = 2112;
-    if (v7)
+    if (connectorCopy)
     {
       v17 = @"YES";
     }
 
-    v38 = v13;
+    v38 = dCopy;
     v39 = 2112;
     v40 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "setupNewDeviceConnectionInfoForCbuuid %@ deviceUniqueID %@ shouldUseServiceConnector %@", buf, 0x20u);
   }
 
   v18 = objc_alloc_init(IDSDeviceConnectionInfo);
-  [(IDSDeviceConnectionInfo *)v18 setCbuuid:v12];
-  [(IDSDeviceConnectionInfo *)v18 setDeviceUniqueID:v13];
-  if (v7)
+  [(IDSDeviceConnectionInfo *)v18 setCbuuid:cbuuidCopy];
+  [(IDSDeviceConnectionInfo *)v18 setDeviceUniqueID:dCopy];
+  if (connectorCopy)
   {
     [(IDSDeviceConnectionInfo *)v18 setLinkLayerConnected:1];
   }
 
   else
   {
-    v19 = [(IDSUTunController *)self linkManager];
-    -[IDSDeviceConnectionInfo setLinkLayerConnected:](v18, "setLinkLayerConnected:", [v19 isConnectedToDeviceID:v12]);
+    linkManager = [(IDSUTunController *)self linkManager];
+    -[IDSDeviceConnectionInfo setLinkLayerConnected:](v18, "setLinkLayerConnected:", [linkManager isConnectedToDeviceID:cbuuidCopy]);
   }
 
   pthread_mutex_lock(&self->_deviceConnectionInfoTableByCbuuidLock);
-  sub_1006C3304(&self->_deviceConnectionInfoTableByCbuuid.tableSize, v12, v18);
+  sub_1006C3304(&self->_deviceConnectionInfoTableByCbuuid.tableSize, cbuuidCopy, v18);
   pthread_mutex_unlock(&self->_deviceConnectionInfoTableByCbuuidLock);
-  v20 = [v12 isEqualToString:kIDSDefaultPairedDeviceID];
-  [(IDSDeviceConnectionInfo *)v18 setShouldUseServiceConnector:v7];
-  if (v7)
+  v20 = [cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID];
+  [(IDSDeviceConnectionInfo *)v18 setShouldUseServiceConnector:connectorCopy];
+  if (connectorCopy)
   {
     v21 = [(IDSUTunController *)self setupIPsecLinkForDeviceConnectionInfo:v18];
   }
@@ -2662,16 +2662,16 @@ LABEL_65:
     v30[3] = &unk_100BE2C30;
     v34 = v20;
     v30[4] = self;
-    v31 = v12;
+    v31 = cbuuidCopy;
     v23 = v18;
     v32 = v23;
-    v33 = v13;
-    v24 = [(IDSUTunControlChannel *)v22 initWithDeviceUniqueID:v33 cbuuid:v31 shouldUseServiceConnector:v7 receiveHandler:v30];
-    [(IDSUTunControlChannel *)v24 setRemoteDeviceEncryptionInfo:v15];
+    v33 = dCopy;
+    v24 = [(IDSUTunControlChannel *)v22 initWithDeviceUniqueID:v33 cbuuid:v31 shouldUseServiceConnector:connectorCopy receiveHandler:v30];
+    [(IDSUTunControlChannel *)v24 setRemoteDeviceEncryptionInfo:infoCopy];
     [(IDSUTunControlChannel *)v24 setDisableEncryption:self->_controlChannelEncryptionDisabled];
-    if (v14 && !v7)
+    if (pairCopy && !connectorCopy)
     {
-      [(IDSUTunControlChannel *)v24 setIdentityPair:v14];
+      [(IDSUTunControlChannel *)v24 setIdentityPair:pairCopy];
       [(IDSUTunControlChannel *)v24 encryptControlChannelForStoredIdentities];
     }
 
@@ -2711,7 +2711,7 @@ LABEL_65:
     IDSTransportThreadRemoveSocket();
     [(IDSDeviceConnectionInfo *)v18 cancelBlocksOnLinkConnect];
     [(IDSDeviceConnectionInfo *)v18 invalidate];
-    sub_1006C361C(&self->_deviceConnectionInfoTableByCbuuid, v12);
+    sub_1006C361C(&self->_deviceConnectionInfoTableByCbuuid, cbuuidCopy);
     v25 = 0;
   }
 
@@ -2738,14 +2738,14 @@ LABEL_11:
 
     sub_1006C32C0(&v2->_deviceConnectionInfoTableByCbuuid, 32);
     pthread_mutex_init(&v2->_deviceConnectionInfoTableByCbuuidLock, 0);
-    v5 = [(IDSUTunController *)v2 defaultPairedDeviceIdentityPair];
+    defaultPairedDeviceIdentityPair = [(IDSUTunController *)v2 defaultPairedDeviceIdentityPair];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_10062E954;
     v22 = &unk_100BD9BE0;
     v6 = v2;
     v23 = v6;
-    v24 = v5 == 0;
+    v24 = defaultPairedDeviceIdentityPair == 0;
     IDSTransportThreadAddSyncBlock();
     [(IDSUTunController *)v6 _reloadSettings];
     if (!v6->_controlChannelVersionCache)
@@ -2795,22 +2795,22 @@ LABEL_15:
   return v15;
 }
 
-- (void)internalStartConnectionWithEndpoint:(id)a3 service:(const char *)a4 parameters:(id)a5 serviceConnector:(id)a6 trafficClass:(int)a7 completionHandler:(id)a8
+- (void)internalStartConnectionWithEndpoint:(id)endpoint service:(const char *)service parameters:(id)parameters serviceConnector:(id)connector trafficClass:(int)class completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = objc_retainBlock(a8);
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  connectorCopy = connector;
+  v15 = objc_retainBlock(handler);
   CFAbsoluteTimeGetCurrent();
   v16 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
-    v19 = a4;
+    serviceCopy = service;
     v20 = 2112;
-    v21 = v12;
+    v21 = endpointCopy;
     v22 = 2112;
-    v23 = v13;
+    v23 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "IPsecLink: starting service connector for %s on %@ with parameters %@", buf, 0x20u);
   }
 
@@ -2818,42 +2818,42 @@ LABEL_15:
   nw_service_connector_start_request();
 }
 
-- (void)prepareControlChannelForDeviceConnectionInfo:(id)a3 genericConnection:(id)a4
+- (void)prepareControlChannelForDeviceConnectionInfo:(id)info genericConnection:(id)connection
 {
-  v9 = a3;
-  v5 = a4;
-  [v5 setUint32Key:67109888];
-  [v5 setIsCloudEnabled:1];
-  [v5 setIsControlChannel:1];
-  v6 = [v9 cbuuid];
-  [v5 setIsDefaultPairedDevice:{objc_msgSend(v6, "isEqualToString:", kIDSDefaultPairedDeviceID)}];
+  infoCopy = info;
+  connectionCopy = connection;
+  [connectionCopy setUint32Key:67109888];
+  [connectionCopy setIsCloudEnabled:1];
+  [connectionCopy setIsControlChannel:1];
+  cbuuid = [infoCopy cbuuid];
+  [connectionCopy setIsDefaultPairedDevice:{objc_msgSend(cbuuid, "isEqualToString:", kIDSDefaultPairedDeviceID)}];
 
-  v7 = sub_1006C2FC8([v9 connectionsTableByLocalRemotePortKey], objc_msgSend(v5, "uint32Key"));
+  v7 = sub_1006C2FC8([infoCopy connectionsTableByLocalRemotePortKey], objc_msgSend(connectionCopy, "uint32Key"));
   v8 = v7;
   if (v7)
   {
     [v7 invalidate];
   }
 
-  sub_1006C2CB0([v9 connectionsTableByLocalRemotePortKey], objc_msgSend(v5, "uint32Key"), v5);
+  sub_1006C2CB0([infoCopy connectionsTableByLocalRemotePortKey], objc_msgSend(connectionCopy, "uint32Key"), connectionCopy);
 }
 
-- (void)didConnectControlChannelForDeviceConnectionInfo:(id)a3 connection:(id)a4 error:(id)a5
+- (void)didConnectControlChannelForDeviceConnectionInfo:(id)info connection:(id)connection error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
+  errorCopy = error;
   v11 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = connectionCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "control channel: didConnectControlChannelForDeviceConnectionInfo called: connection %@ error %@", buf, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
     dword_100CB2100 = 4;
     qword_100CBF430 = 0;
@@ -2861,20 +2861,20 @@ LABEL_15:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = connectionCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice: finished with [%@]", buf, 0xCu);
     }
 
-    v19 = [v8 cbuuid];
+    cbuuid = [infoCopy cbuuid];
     v20 = kIDSDefaultPairedDeviceID;
-    v21 = [v19 isEqualToString:kIDSDefaultPairedDeviceID];
+    v21 = [cbuuid isEqualToString:kIDSDefaultPairedDeviceID];
 
     if (v21)
     {
       v22 = [NSUUID alloc];
       v23 = +[IDSCurrentDevice sharedInstance];
-      v24 = [v23 deviceIdentifier];
-      v71 = [v22 initWithUUIDString:v24];
+      deviceIdentifier = [v23 deviceIdentifier];
+      v71 = [v22 initWithUUIDString:deviceIdentifier];
     }
 
     else
@@ -2884,18 +2884,18 @@ LABEL_15:
       v71 = [[NSUUID alloc] initWithUUIDBytes:buf];
     }
 
-    v66 = self;
+    selfCopy = self;
     v31 = +[IMDeviceSupport sharedInstance];
-    v32 = [v31 productName];
+    productName = [v31 productName];
 
     v33 = +[IMDeviceSupport sharedInstance];
-    v70 = [v33 productVersion];
+    productVersion = [v33 productVersion];
 
     v34 = +[IMDeviceSupport sharedInstance];
-    v69 = [v34 productBuildVersion];
+    productBuildVersion = [v34 productBuildVersion];
 
     v35 = +[IMDeviceSupport sharedInstance];
-    v68 = [v35 model];
+    model = [v35 model];
 
     v73 = -1431655766;
     v74 = -1431655766;
@@ -2916,8 +2916,8 @@ LABEL_15:
 
     if (_IDSSupportsDirectMessaging())
     {
-      v39 = [v8 cbuuid];
-      v40 = [v39 isEqualToString:v20];
+      cbuuid2 = [infoCopy cbuuid];
+      v40 = [cbuuid2 isEqualToString:v20];
 
       if (v40)
       {
@@ -2937,11 +2937,11 @@ LABEL_15:
 
     v42 = objc_alloc_init(IDSUTunControlMessage_Hello);
     [(IDSUTunControlMessage_Hello *)v42 setControlChannelVersion:@"5"];
-    v67 = v32;
-    [(IDSUTunControlMessage_Hello *)v42 setProductName:v32];
-    [(IDSUTunControlMessage_Hello *)v42 setProductVersion:v70];
-    [(IDSUTunControlMessage_Hello *)v42 setProductBuildVersion:v69];
-    [(IDSUTunControlMessage_Hello *)v42 setModel:v68];
+    v67 = productName;
+    [(IDSUTunControlMessage_Hello *)v42 setProductName:productName];
+    [(IDSUTunControlMessage_Hello *)v42 setProductVersion:productVersion];
+    [(IDSUTunControlMessage_Hello *)v42 setProductBuildVersion:productBuildVersion];
+    [(IDSUTunControlMessage_Hello *)v42 setModel:model];
     v43 = [NSNumber numberWithUnsignedInt:v74];
     [(IDSUTunControlMessage_Hello *)v42 setPairingProtocolVersion:v43];
 
@@ -2956,48 +2956,48 @@ LABEL_15:
 
     [(IDSUTunControlMessage_Hello *)v42 setServiceMinCompatibilityVersion:&off_100C3CE50];
     [(IDSUTunControlMessage_Hello *)v42 setDeviceUniqueID:v71];
-    v47 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v8, "selfInstanceID")}];
+    v47 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(infoCopy, "selfInstanceID")}];
     [(IDSUTunControlMessage_Hello *)v42 setInstanceID:v47];
-    v48 = [(IDSUTunControlMessage_Hello *)v42 data];
+    data = [(IDSUTunControlMessage_Hello *)v42 data];
     v49 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [v48 length];
+      v50 = [data length];
       *buf = 134217984;
       *&buf[4] = v50;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice: sending hello message of size = %lu", buf, 0xCu);
     }
 
-    v51 = [v8 controlChannel];
-    [v51 setConnecting:0];
+    controlChannel = [infoCopy controlChannel];
+    [controlChannel setConnecting:0];
 
-    v52 = [v8 controlChannel];
-    [v52 useConnection:v9 withFirstMessage:v48];
+    controlChannel2 = [infoCopy controlChannel];
+    [controlChannel2 useConnection:connectionCopy withFirstMessage:data];
 
-    v53 = [v8 controlChannel];
-    v54 = [v53 isReadyForEncrypting];
+    controlChannel3 = [infoCopy controlChannel];
+    isReadyForEncrypting = [controlChannel3 isReadyForEncrypting];
 
-    if (v54)
+    if (isReadyForEncrypting)
     {
-      [(IDSLinkManager *)v66->_linkManager setRequireBT:0];
+      [(IDSLinkManager *)selfCopy->_linkManager setRequireBT:0];
     }
 
     if (_IDSSupportsDirectMessaging())
     {
-      v55 = [v8 cbuuid];
-      v56 = [v55 isEqualToString:v20];
+      cbuuid3 = [infoCopy cbuuid];
+      v56 = [cbuuid3 isEqualToString:v20];
 
       if (v56)
       {
         v81 = 14;
         v57 = +[IDSDaemon sharedInstance];
-        v58 = [v57 copyDirectMessagingInfo];
+        copyDirectMessagingInfo = [v57 copyDirectMessagingInfo];
 
-        if ([v58 length] > 8)
+        if ([copyDirectMessagingInfo length] > 8)
         {
           v60 = objc_alloc_init(NSMutableData);
           [v60 appendBytes:&v81 length:1];
-          [v60 appendData:v58];
+          [v60 appendData:copyDirectMessagingInfo];
           v59 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
           {
@@ -3018,8 +3018,8 @@ LABEL_15:
           v60 = 0;
         }
 
-        v65 = [v8 controlChannel];
-        [v65 sendMessage:v60];
+        controlChannel4 = [infoCopy controlChannel];
+        [controlChannel4 sendMessage:v60];
       }
     }
 
@@ -3027,34 +3027,34 @@ LABEL_15:
     goto LABEL_57;
   }
 
-  v12 = [v8 controlChannel];
-  [v12 setConnecting:0];
+  controlChannel5 = [infoCopy controlChannel];
+  [controlChannel5 setConnecting:0];
 
-  v13 = [v8 controlChannel];
-  v14 = [v13 connected];
+  controlChannel6 = [infoCopy controlChannel];
+  connected = [controlChannel6 connected];
 
   v15 = +[IDSFoundationLog utunController];
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (!v14)
+  if (!connected)
   {
     if (v16)
     {
-      v25 = v8[1];
+      v25 = infoCopy[1];
       *buf = 138412546;
       *&buf[4] = v25;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = errorCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice: error creating control channel with [%@] [%@]", buf, 0x16u);
     }
 
     v26 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = v8[1];
+      v27 = infoCopy[1];
       *buf = 138412546;
       *&buf[4] = v27;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = errorCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "UTunController control channel for [%@] creation failed: %@", buf, 0x16u);
     }
 
@@ -3067,11 +3067,11 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "For the fixedInterface case, obliterate the connection.", buf, 2u);
       }
 
-      [(IDSUTunController *)self obliterateConnectionInfoForCBUUID:v8[1] completionBlock:0 completionQueue:0];
+      [(IDSUTunController *)self obliterateConnectionInfoForCBUUID:infoCopy[1] completionBlock:0 completionQueue:0];
     }
 
-    v29 = [v8 cbuuid];
-    v30 = [v29 isEqualToString:kIDSDefaultPairedDeviceID];
+    cbuuid4 = [infoCopy cbuuid];
+    v30 = [cbuuid4 isEqualToString:kIDSDefaultPairedDeviceID];
 
     if (v30)
     {
@@ -3110,8 +3110,8 @@ LABEL_15:
     v76 = 3221225472;
     v77 = sub_10062F924;
     v78 = &unk_100BD9AA8;
-    v79 = self;
-    v80 = v8;
+    selfCopy2 = self;
+    v80 = infoCopy;
     IDSTransportThreadAddBlockAfter();
     v63 = dword_100CB2100 + dword_100CB2100 / 2;
     if (v63 >= 60)
@@ -3128,64 +3128,64 @@ LABEL_57:
 
   if (v16)
   {
-    v17 = [v8 vifName];
+    vifName = [infoCopy vifName];
     *buf = 138412546;
-    *&buf[4] = v17;
+    *&buf[4] = vifName;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = errorCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: start_request returns error but control channel fine - assuming connected via available block. Error %@", buf, 0x16u);
   }
 
 LABEL_58:
 }
 
-- (void)startControlChannelWithDevice:(id)a3
+- (void)startControlChannelWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 controlChannel];
-  if ([v5 connecting])
+  deviceCopy = device;
+  controlChannel = [deviceCopy controlChannel];
+  if ([controlChannel connecting])
   {
   }
 
   else
   {
-    v6 = [v4 controlChannel];
-    v7 = [v6 connected];
+    controlChannel2 = [deviceCopy controlChannel];
+    connected = [controlChannel2 connected];
 
-    if (!v7)
+    if (!connected)
     {
 LABEL_8:
-      v12 = [v4 controlChannel];
-      [v12 setConnecting:1];
+      controlChannel3 = [deviceCopy controlChannel];
+      [controlChannel3 setConnecting:1];
 
-      v13 = [v4 localSA];
-      v9 = [IDSSockAddrWrapper wrapperWithWrapper:v13 andPortHostOrder:1024];
+      localSA = [deviceCopy localSA];
+      v9 = [IDSSockAddrWrapper wrapperWithWrapper:localSA andPortHostOrder:1024];
 
-      v14 = [v4 remoteSA];
-      v15 = [IDSSockAddrWrapper wrapperWithWrapper:v14 andPortHostOrder:1024];
+      remoteSA = [deviceCopy remoteSA];
+      v15 = [IDSSockAddrWrapper wrapperWithWrapper:remoteSA andPortHostOrder:1024];
 
       v16 = [IDSSockAddrWrapperPair wrapperPairWithLocalAddress:v9 remoteAddress:v15];
       v17 = [[IDSGenericConnection alloc] initWithAddressPair:v16 protocol:6];
-      LODWORD(v13) = [v4 shouldUseServiceConnector];
+      LODWORD(localSA) = [deviceCopy shouldUseServiceConnector];
       v18 = +[IDSFoundationLog utunController];
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-      if (v13)
+      if (localSA)
       {
         v57 = v17;
         v59 = v16;
         v61 = v15;
         if (v19)
         {
-          v20 = [v4 cbuuid];
+          cbuuid = [deviceCopy cbuuid];
           *buf = 138412290;
-          v71 = v20;
+          v71 = cbuuid;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice over ipsec path for %@", buf, 0xCu);
         }
 
         v21 = [NSUUID alloc];
         v22 = +[IDSPairingManager sharedInstance];
-        v23 = [v22 pairedDeviceUUIDString];
-        v24 = [v21 initWithUUIDString:v23];
+        pairedDeviceUUIDString = [v22 pairedDeviceUUIDString];
+        v24 = [v21 initWithUUIDString:pairedDeviceUUIDString];
 
         if (v24)
         {
@@ -3194,25 +3194,25 @@ LABEL_8:
           v27 = [NSString stringWithUTF8String:"61315"];
           v55 = [v26 initWithDeviceIdentifier:v25 portString:v27 dataProtectionClass:4 service:@"ids-control-channel"];
 
-          v28 = [v55 copyEndpoint];
+          copyEndpoint = [v55 copyEndpoint];
           v29 = [NRParametersServiceConnection alloc];
           v76 = NRParametersOptionAllowsQR;
           v77 = &__kCFBooleanTrue;
           v30 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
           v31 = [v29 initWithDeviceIdentifier:v25 dataProtectionClass:4 options:v30];
 
-          v32 = [v31 copyParameters];
+          copyParameters = [v31 copyParameters];
           nw_parameters_set_traffic_class();
-          v33 = [v4 cloudServiceConnector];
+          cloudServiceConnector = [deviceCopy cloudServiceConnector];
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = sub_1006303BC;
           v67[3] = &unk_100BE2CE0;
           v67[4] = self;
-          v68 = v4;
+          v68 = deviceCopy;
           v17 = v57;
           v69 = v57;
-          [(IDSUTunController *)self internalStartConnectionWithEndpoint:v28 service:"ids-control-channel" parameters:v32 serviceConnector:v33 trafficClass:900 completionHandler:v67];
+          [(IDSUTunController *)self internalStartConnectionWithEndpoint:copyEndpoint service:"ids-control-channel" parameters:copyParameters serviceConnector:cloudServiceConnector trafficClass:900 completionHandler:v67];
         }
 
         else
@@ -3236,54 +3236,54 @@ LABEL_8:
       {
         if (v19)
         {
-          v35 = [v4 cbuuid];
+          cbuuid2 = [deviceCopy cbuuid];
           *buf = 138412290;
-          v71 = v35;
+          v71 = cbuuid2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice over utun/bt path for %@", buf, 0xCu);
         }
 
-        v36 = v4[1];
+        v36 = deviceCopy[1];
         v63[0] = _NSConcreteStackBlock;
         v63[1] = 3221225472;
         v63[2] = sub_10063044C;
         v63[3] = &unk_100BE2CE0;
-        v37 = v4;
+        v37 = deviceCopy;
         v64 = v37;
         v38 = v17;
         v65 = v38;
-        v66 = self;
+        selfCopy = self;
         [(IDSUTunController *)self internalOpenSocketWithDestination:v36 localSA:v9 remoteSA:v15 protocol:6 trafficClass:900 completionHandler:v63];
-        v39 = [v37 controlChannelCachedSYN];
+        controlChannelCachedSYN = [v37 controlChannelCachedSYN];
 
-        if (v39)
+        if (controlChannelCachedSYN)
         {
-          v56 = self;
+          selfCopy2 = self;
           v58 = v17;
           v62 = v15;
           v60 = v16;
           if (v37[2079])
           {
-            v54 = [v16 remoteAddress];
-            v40 = [v54 sa];
-            v41 = [v16 localAddress];
-            v42 = [v41 sa];
-            v43 = [v37 controlChannelCachedSYN];
-            v44 = [v43 bytes];
-            v45 = [v37 controlChannelCachedSYN];
-            v46 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](v56, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", v37, v40, v42, 6, v44, [v45 length]);
+            remoteAddress = [v16 remoteAddress];
+            v40 = [remoteAddress sa];
+            localAddress = [v16 localAddress];
+            v42 = [localAddress sa];
+            controlChannelCachedSYN2 = [v37 controlChannelCachedSYN];
+            bytes = [controlChannelCachedSYN2 bytes];
+            controlChannelCachedSYN3 = [v37 controlChannelCachedSYN];
+            v46 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](selfCopy2, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", v37, v40, v42, 6, bytes, [controlChannelCachedSYN3 length]);
           }
 
           else
           {
             [v37 vifRef];
-            v54 = [v16 remoteAddress];
-            [v54 sa];
-            v41 = [v16 localAddress];
-            [v41 sa];
-            v43 = [v37 controlChannelCachedSYN];
-            [v43 bytes];
-            v45 = [v37 controlChannelCachedSYN];
-            [v45 length];
+            remoteAddress = [v16 remoteAddress];
+            [remoteAddress sa];
+            localAddress = [v16 localAddress];
+            [localAddress sa];
+            controlChannelCachedSYN2 = [v37 controlChannelCachedSYN];
+            [controlChannelCachedSYN2 bytes];
+            controlChannelCachedSYN3 = [v37 controlChannelCachedSYN];
+            [controlChannelCachedSYN3 length];
             v46 = NEVirtualInterfaceWriteIPPayload();
           }
 
@@ -3292,21 +3292,21 @@ LABEL_8:
           v49 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v50 = [v37 vifName];
-            v51 = [v37 controlChannelCachedSYN];
+            vifName = [v37 vifName];
+            controlChannelCachedSYN4 = [v37 controlChannelCachedSYN];
             *buf = 138412802;
-            v71 = v50;
+            v71 = vifName;
             v72 = 1024;
             v73 = v48;
             v74 = 2112;
-            v75 = v51;
+            v75 = controlChannelCachedSYN4;
             _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%@: write cached control channel syn neRet=%d\n\t\t<= data[%@]", buf, 0x1Cu);
           }
 
-          v52 = [v37 controlChannelCachedSYN];
-          v53 = [v52 bytes];
+          controlChannelCachedSYN5 = [v37 controlChannelCachedSYN];
+          bytes2 = [controlChannelCachedSYN5 bytes];
 
-          [(IDSGenericConnection *)v38 setFirstIncomingSYNSequenceNumber:bswap32(v53[1])];
+          [(IDSGenericConnection *)v38 setFirstIncomingSYNSequenceNumber:bswap32(bytes2[1])];
           [v37 setControlChannelCachedSYN:0];
           [(IDSGenericConnection *)v38 setStateFlags:128];
           v16 = v60;
@@ -3318,7 +3318,7 @@ LABEL_8:
 
           v17 = v58;
           [(IDSGenericConnection *)v38 setFirstPacketReceiveTime:*&qword_100CBF3C0 * mach_continuous_time()];
-          [(IDSGenericConnection *)v38 reportToAWD:[(IDSLinkManager *)v56->_linkManager currentLinkType:v37[1]] connectionType:1 error:0];
+          [(IDSGenericConnection *)v38 reportToAWD:[(IDSLinkManager *)selfCopy2->_linkManager currentLinkType:v37[1]] connectionType:1 error:0];
         }
 
         v24 = v64;
@@ -3335,9 +3335,9 @@ LABEL_8:
   {
     if (v10)
     {
-      v11 = [v4 cbuuid];
+      cbuuid3 = [deviceCopy cbuuid];
       *buf = 138412290;
-      v71 = v11;
+      v71 = cbuuid3;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice called but already connecting/connected - force continue %@", buf, 0xCu);
     }
 
@@ -3346,85 +3346,85 @@ LABEL_8:
 
   if (v10)
   {
-    v34 = [v4 cbuuid];
+    cbuuid4 = [deviceCopy cbuuid];
     *buf = 138412290;
-    v71 = v34;
+    v71 = cbuuid4;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "startControlChannelWithDevice called but already connecting/connected - returning %@", buf, 0xCu);
   }
 
 LABEL_32:
 }
 
-- (void)resetTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4
+- (void)resetTCPConnection:(id)connection forDeviceConnectionInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   v8 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "reset TCP for genericConnection %@", &v9, 0xCu);
   }
 
-  if ([v7 shouldUseServiceConnector])
+  if ([infoCopy shouldUseServiceConnector])
   {
-    [(IDSUTunController *)self resetIPsecTCPConnection:v6 forDeviceConnectionInfo:v7];
+    [(IDSUTunController *)self resetIPsecTCPConnection:connectionCopy forDeviceConnectionInfo:infoCopy];
   }
 
   else
   {
-    [(IDSUTunController *)self resetUTunTCPConnection:v6 forDeviceConnectionInfo:v7];
+    [(IDSUTunController *)self resetUTunTCPConnection:connectionCopy forDeviceConnectionInfo:infoCopy];
   }
 }
 
-- (void)resetIPsecTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4
+- (void)resetIPsecTCPConnection:(id)connection forDeviceConnectionInfo:(id)info
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 serviceConnection];
+    serviceConnection = [connectionCopy serviceConnection];
     v7 = 138412546;
-    v8 = v4;
+    v8 = connectionCopy;
     v9 = 2112;
-    v10 = v6;
+    v10 = serviceConnection;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "reset TCP for genericConnection %@ serviceConnection %@", &v7, 0x16u);
   }
 
-  [v4 _closeSockets];
-  [v4 setStateFlags:{objc_msgSend(v4, "stateFlags") | 0x200}];
+  [connectionCopy _closeSockets];
+  [connectionCopy setStateFlags:{objc_msgSend(connectionCopy, "stateFlags") | 0x200}];
 }
 
-- (void)resetUTunTCPConnection:(id)a3 forDeviceConnectionInfo:(id)a4
+- (void)resetUTunTCPConnection:(id)connection forDeviceConnectionInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   memset(v76, 170, sizeof(v76));
-  v7 = [v5 expectedNextIncomingSequenceNumber];
-  v8 = [v5 expectedNextOutgoingSequenceNumber];
+  expectedNextIncomingSequenceNumber = [connectionCopy expectedNextIncomingSequenceNumber];
+  expectedNextOutgoingSequenceNumber = [connectionCopy expectedNextOutgoingSequenceNumber];
   v9 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v5;
+    *&buf[4] = connectionCopy;
     *&buf[12] = 1024;
-    *&buf[14] = v7;
+    *&buf[14] = expectedNextIncomingSequenceNumber;
     *&buf[18] = 1024;
-    *&buf[20] = v8;
+    *&buf[20] = expectedNextOutgoingSequenceNumber;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "reset TCP for genericConnection %@ using seq:%08x ack:%08x", buf, 0x18u);
   }
 
-  v10 = [v5 addressPair];
-  v11 = [v10 remoteAddress];
-  v12 = [v11 saPortHostOrder];
-  v13 = [v5 addressPair];
-  v14 = [v13 localAddress];
-  sub_10062704C(v76, v12, [v14 saPortHostOrder], v7, v8);
+  addressPair = [connectionCopy addressPair];
+  remoteAddress = [addressPair remoteAddress];
+  saPortHostOrder = [remoteAddress saPortHostOrder];
+  addressPair2 = [connectionCopy addressPair];
+  localAddress = [addressPair2 localAddress];
+  sub_10062704C(v76, saPortHostOrder, [localAddress saPortHostOrder], expectedNextIncomingSequenceNumber, expectedNextOutgoingSequenceNumber);
 
-  v15 = v5;
-  v16 = [v15 sdCopy];
-  if (v16 != -1)
+  v15 = connectionCopy;
+  sdCopy = [v15 sdCopy];
+  if (sdCopy != -1)
   {
     v101 = 0xAAAAAAAAAAAAAAAALL;
     *&v17 = 0xAAAAAAAAAAAAAAAALL;
@@ -3456,7 +3456,7 @@ LABEL_32:
     *buf = v17;
     *&buf[16] = v17;
     v70 = 424;
-    if (!getsockopt(v16, 6, 512, buf, &v70))
+    if (!getsockopt(sdCopy, 6, 512, buf, &v70))
     {
       v18 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3464,8 +3464,8 @@ LABEL_32:
         v19 = buf[0];
         v20 = DWORD1(v78);
         v21 = DWORD2(v78);
-        v22 = [v15 expectedNextIncomingSequenceNumber];
-        v23 = [v15 expectedNextOutgoingSequenceNumber];
+        expectedNextIncomingSequenceNumber2 = [v15 expectedNextIncomingSequenceNumber];
+        expectedNextOutgoingSequenceNumber2 = [v15 expectedNextOutgoingSequenceNumber];
         *v71 = 67110144;
         *v72 = v19;
         *&v72[4] = 1024;
@@ -3473,40 +3473,40 @@ LABEL_32:
         LOWORD(v73) = 1024;
         *(&v73 + 2) = v21;
         HIWORD(v73) = 1024;
-        *v74 = v22;
+        *v74 = expectedNextIncomingSequenceNumber2;
         *&v74[4] = 1024;
-        v75[0] = v23;
+        v75[0] = expectedNextOutgoingSequenceNumber2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "TCP info (%u) tcpi_snd_nxt:%08x tcpi_rcv_nxt:%08x (connection: in:%08x out:%08x)", v71, 0x20u);
       }
     }
   }
 
-  v24 = [v15 addressPair];
-  v25 = [v24 remoteAddress];
-  v26 = [v25 sa6];
-  v27 = [v15 addressPair];
-  v28 = [v27 localAddress];
-  tcp6checksum((v26 + 8), ([v28 sa6] + 8), v76, 0x14uLL);
+  addressPair3 = [v15 addressPair];
+  remoteAddress2 = [addressPair3 remoteAddress];
+  v26 = [remoteAddress2 sa6];
+  addressPair4 = [v15 addressPair];
+  localAddress2 = [addressPair4 localAddress];
+  tcp6checksum((v26 + 8), ([localAddress2 sa6] + 8), v76, 0x14uLL);
 
-  if (v6[2079])
+  if (infoCopy[2079])
   {
-    v29 = [v15 addressPair];
-    v30 = [v29 remoteAddress];
-    v31 = [v30 sa];
-    v32 = [v15 addressPair];
-    v33 = [v32 localAddress];
-    v34 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](self, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", v6, v31, [v33 sa], 6, v76, 20);
+    addressPair5 = [v15 addressPair];
+    remoteAddress3 = [addressPair5 remoteAddress];
+    v31 = [remoteAddress3 sa];
+    addressPair6 = [v15 addressPair];
+    localAddress3 = [addressPair6 localAddress];
+    v34 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](self, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", infoCopy, v31, [localAddress3 sa], 6, v76, 20);
   }
 
   else
   {
-    [v6 vifRef];
-    v29 = [v15 addressPair];
-    v30 = [v29 remoteAddress];
-    [v30 sa];
-    v32 = [v15 addressPair];
-    v33 = [v32 localAddress];
-    [v33 sa];
+    [infoCopy vifRef];
+    addressPair5 = [v15 addressPair];
+    remoteAddress3 = [addressPair5 remoteAddress];
+    [remoteAddress3 sa];
+    addressPair6 = [v15 addressPair];
+    localAddress3 = [addressPair6 localAddress];
+    [localAddress3 sa];
     v34 = NEVirtualInterfaceWriteIPPayload();
   }
 
@@ -3515,14 +3515,14 @@ LABEL_32:
   v36 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [v6 vifName];
-    v38 = [v15 addressPair];
-    v39 = [v38 shortDescription];
+    vifName = [infoCopy vifName];
+    addressPair7 = [v15 addressPair];
+    shortDescription = [addressPair7 shortDescription];
     v40 = [NSData dataWithBytesNoCopy:v76 length:20 freeWhenDone:0];
     *buf = 138413058;
-    *&buf[4] = v37;
+    *&buf[4] = vifName;
     *&buf[12] = 2112;
-    *&buf[14] = v39;
+    *&buf[14] = shortDescription;
     *&buf[22] = 1024;
     *&buf[24] = v35;
     *&buf[28] = 2112;
@@ -3530,16 +3530,16 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%@: write generated reset ports[%@] neRet=%d\n\t\t<= data[%@]", buf, 0x26u);
   }
 
-  v41 = [v15 sdCopy];
-  if (v41 == -1 && (v41 = [v15 sdOriginal], v41 == -1) && (v41 = objc_msgSend(v15, "sd"), v41 == -1))
+  sdCopy2 = [v15 sdCopy];
+  if (sdCopy2 == -1 && (sdCopy2 = [v15 sdOriginal], sdCopy2 == -1) && (sdCopy2 = objc_msgSend(v15, "sd"), sdCopy2 == -1))
   {
-    v67 = [v15 serviceConnection];
-    if (!v67)
+    serviceConnection = [v15 serviceConnection];
+    if (!serviceConnection)
     {
       goto LABEL_24;
     }
 
-    v68 = v67;
+    v68 = serviceConnection;
     connected_socket = nw_connection_get_connected_socket();
 
     if (connected_socket == -1)
@@ -3550,7 +3550,7 @@ LABEL_32:
 
   else
   {
-    connected_socket = v41;
+    connected_socket = sdCopy2;
   }
 
   v101 = 0xAAAAAAAAAAAAAAAALL;
@@ -3585,40 +3585,40 @@ LABEL_32:
   v70 = 424;
   if (!getsockopt(connected_socket, 6, 512, buf, &v70))
   {
-    v44 = [v15 addressPair];
-    v45 = [v44 remoteAddress];
-    v46 = [v45 saPortHostOrder];
-    v47 = [v15 addressPair];
-    v48 = [v47 localAddress];
-    v49 = [v48 saPortHostOrder];
-    sub_10062704C(v76, v46, v49, SDWORD2(v78), SDWORD1(v78));
+    addressPair8 = [v15 addressPair];
+    remoteAddress4 = [addressPair8 remoteAddress];
+    saPortHostOrder2 = [remoteAddress4 saPortHostOrder];
+    addressPair9 = [v15 addressPair];
+    localAddress4 = [addressPair9 localAddress];
+    saPortHostOrder3 = [localAddress4 saPortHostOrder];
+    sub_10062704C(v76, saPortHostOrder2, saPortHostOrder3, SDWORD2(v78), SDWORD1(v78));
 
-    v50 = [v15 addressPair];
-    v51 = [v50 remoteAddress];
-    v52 = [v51 sa6];
-    v53 = [v15 addressPair];
-    v54 = [v53 localAddress];
-    tcp6checksum((v52 + 8), ([v54 sa6] + 8), v76, 0x14uLL);
+    addressPair10 = [v15 addressPair];
+    remoteAddress5 = [addressPair10 remoteAddress];
+    v52 = [remoteAddress5 sa6];
+    addressPair11 = [v15 addressPair];
+    localAddress5 = [addressPair11 localAddress];
+    tcp6checksum((v52 + 8), ([localAddress5 sa6] + 8), v76, 0x14uLL);
 
-    if (v6[2079])
+    if (infoCopy[2079])
     {
-      v55 = [v15 addressPair];
-      v56 = [v55 remoteAddress];
-      v57 = [v56 sa];
-      v58 = [v15 addressPair];
-      v59 = [v58 localAddress];
-      v60 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](self, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", v6, v57, [v59 sa], 6, v76, 20);
+      addressPair12 = [v15 addressPair];
+      remoteAddress6 = [addressPair12 remoteAddress];
+      v57 = [remoteAddress6 sa];
+      addressPair13 = [v15 addressPair];
+      localAddress6 = [addressPair13 localAddress];
+      v60 = -[IDSUTunController handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:](self, "handleUtunChannelWrite:source:destination:upperProtocol:bytes:bytesLen:", infoCopy, v57, [localAddress6 sa], 6, v76, 20);
     }
 
     else
     {
-      [v6 vifRef];
-      v55 = [v15 addressPair];
-      v56 = [v55 remoteAddress];
-      [v56 sa];
-      v58 = [v15 addressPair];
-      v59 = [v58 localAddress];
-      [v59 sa];
+      [infoCopy vifRef];
+      addressPair12 = [v15 addressPair];
+      remoteAddress6 = [addressPair12 remoteAddress];
+      [remoteAddress6 sa];
+      addressPair13 = [v15 addressPair];
+      localAddress6 = [addressPair13 localAddress];
+      [localAddress6 sa];
       v60 = NEVirtualInterfaceWriteIPPayload();
     }
 
@@ -3627,14 +3627,14 @@ LABEL_32:
     v62 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
-      v63 = [v6 vifName];
-      v64 = [v15 addressPair];
-      v65 = [v64 shortDescription];
+      vifName2 = [infoCopy vifName];
+      addressPair14 = [v15 addressPair];
+      shortDescription2 = [addressPair14 shortDescription];
       v66 = [NSData dataWithBytesNoCopy:v76 length:20 freeWhenDone:0];
       *v71 = 138413058;
-      *v72 = v63;
+      *v72 = vifName2;
       *&v72[8] = 2112;
-      v73 = v65;
+      v73 = shortDescription2;
       *v74 = 1024;
       *&v74[2] = v61;
       LOWORD(v75[0]) = 2112;
@@ -3647,29 +3647,29 @@ LABEL_24:
   [v15 setStateFlags:{objc_msgSend(v15, "stateFlags", self) | 0x20}];
 }
 
-- (void)removeConnection:(id)a3 fromDeviceConnectionInfo:(id)a4 removeCode:(int64_t)a5 removeReason:(id)a6
+- (void)removeConnection:(id)connection fromDeviceConnectionInfo:(id)info removeCode:(int64_t)code removeReason:(id)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  connectionCopy = connection;
+  infoCopy = info;
+  reasonCopy = reason;
+  if (connectionCopy)
   {
     v13 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v41 = v12;
+      v41 = reasonCopy;
       v42 = 2112;
-      v43 = v10;
+      v43 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@: closing connection %@", buf, 0x16u);
     }
 
-    if ([v10 protocol] == 6)
+    if ([connectionCopy protocol] == 6)
     {
-      [(IDSUTunController *)self resetTCPConnection:v10 forDeviceConnectionInfo:v11];
+      [(IDSUTunController *)self resetTCPConnection:connectionCopy forDeviceConnectionInfo:infoCopy];
     }
 
-    if ([v10 protocol] == 17 && self->_isocPipeAssertedForRelayConnection)
+    if ([connectionCopy protocol] == 17 && self->_isocPipeAssertedForRelayConnection)
     {
       v14 = im_primary_queue();
       dispatch_async(v14, &stru_100BE2D00);
@@ -3677,81 +3677,81 @@ LABEL_24:
       self->_isocPipeAssertedForRelayConnection = 0;
     }
 
-    [(IDSUTunController *)self resetIPsecTCPConnection:v10 forDeviceConnectionInfo:v11];
-    if ([v10 priority] == 300)
+    [(IDSUTunController *)self resetIPsecTCPConnection:connectionCopy forDeviceConnectionInfo:infoCopy];
+    if ([connectionCopy priority] == 300)
     {
-      v15 = [v11 highPriorityConnectionSendingSet];
-      v16 = [v10 localConnectionGUID];
-      [v15 removeObject:v16];
+      highPriorityConnectionSendingSet = [infoCopy highPriorityConnectionSendingSet];
+      localConnectionGUID = [connectionCopy localConnectionGUID];
+      [highPriorityConnectionSendingSet removeObject:localConnectionGUID];
     }
 
-    v17 = [v10 compressionInfo];
-    v18 = [v17 state];
+    compressionInfo = [connectionCopy compressionInfo];
+    state = [compressionInfo state];
 
-    if (v18 >= 1)
+    if (state >= 1)
     {
-      v19 = [v10 compressionInfo];
-      [v11 clearLocalCID:{objc_msgSend(v19, "localCID")}];
+      compressionInfo2 = [connectionCopy compressionInfo];
+      [infoCopy clearLocalCID:{objc_msgSend(compressionInfo2, "localCID")}];
     }
 
-    v20 = [v10 connectionID];
+    connectionID = [connectionCopy connectionID];
 
-    if (v20)
+    if (connectionID)
     {
-      v21 = [v11 connectionsByID];
-      v22 = [v10 connectionID];
-      [v21 removeObjectForKey:v22];
+      connectionsByID = [infoCopy connectionsByID];
+      connectionID2 = [connectionCopy connectionID];
+      [connectionsByID removeObjectForKey:connectionID2];
     }
 
-    if (([v10 stateFlags] & 2) == 0)
+    if (([connectionCopy stateFlags] & 2) == 0)
     {
-      v23 = [v10 openSocketCompletionHandler];
+      openSocketCompletionHandler = [connectionCopy openSocketCompletionHandler];
 
-      if (v23)
+      if (openSocketCompletionHandler)
       {
-        [v10 setStateFlags:{objc_msgSend(v10, "stateFlags") | 2}];
-        v24 = [v10 openSocketCompletionHandler];
-        [v10 setOpenSocketCompletionHandler:0];
-        v25 = [NSDictionary dictionaryWithObject:v12 forKey:NSLocalizedDescriptionKey];
-        v26 = [NSError errorWithDomain:@"IDSUTun" code:a5 userInfo:v25];
+        [connectionCopy setStateFlags:{objc_msgSend(connectionCopy, "stateFlags") | 2}];
+        openSocketCompletionHandler2 = [connectionCopy openSocketCompletionHandler];
+        [connectionCopy setOpenSocketCompletionHandler:0];
+        v25 = [NSDictionary dictionaryWithObject:reasonCopy forKey:NSLocalizedDescriptionKey];
+        v26 = [NSError errorWithDomain:@"IDSUTun" code:code userInfo:v25];
 
-        v27 = [v10 completionQueue];
+        completionQueue = [connectionCopy completionQueue];
         v34 = _NSConcreteStackBlock;
         v35 = 3221225472;
         v36 = sub_1006318E8;
         v37 = &unk_100BD7298;
         v38 = v26;
-        v39 = v24;
+        v39 = openSocketCompletionHandler2;
         v28 = v26;
-        v29 = v24;
-        dispatch_async(v27, &v34);
+        v29 = openSocketCompletionHandler2;
+        dispatch_async(completionQueue, &v34);
       }
     }
 
-    v30 = [v10 addressPair];
+    addressPair = [connectionCopy addressPair];
 
-    if (v30)
+    if (addressPair)
     {
-      sub_1006C30B8([v11 connectionsTableByLocalRemotePortKey], objc_msgSend(v10, "uint32Key"));
+      sub_1006C30B8([infoCopy connectionsTableByLocalRemotePortKey], objc_msgSend(connectionCopy, "uint32Key"));
     }
 
-    if ([v10 encryptionEnabled])
+    if ([connectionCopy encryptionEnabled])
     {
-      sub_1006C30B8([v11 outgoingEncryptionTableBySSRC], objc_msgSend(v10, "SSRCSend"));
-      sub_1006C30B8([v11 incomingEncryptionTableBySSRC], objc_msgSend(v10, "SSRCRecv"));
+      sub_1006C30B8([infoCopy outgoingEncryptionTableBySSRC], objc_msgSend(connectionCopy, "SSRCSend"));
+      sub_1006C30B8([infoCopy incomingEncryptionTableBySSRC], objc_msgSend(connectionCopy, "SSRCRecv"));
     }
 
-    [v10 invalidate];
-    if ([v10 shouldStopBTDatagramLink])
+    [connectionCopy invalidate];
+    if ([connectionCopy shouldStopBTDatagramLink])
     {
-      [v10 setShouldStopBTDatagramLink:0];
+      [connectionCopy setShouldStopBTDatagramLink:0];
       v31 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v10 connectionID];
-        v33 = [v32 service];
+        connectionID3 = [connectionCopy connectionID];
+        service = [connectionID3 service];
         *buf = 138412290;
-        v41 = v33;
+        v41 = service;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "closeSocket for %@ using BT datagram link - stop", buf, 0xCu);
       }
 
@@ -3760,18 +3760,18 @@ LABEL_24:
   }
 }
 
-- (void)resetAllConnectionsForDevice:(id)a3
+- (void)resetAllConnectionsForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 connectionsByID];
-  v6 = [v5 allValues];
-  v7 = [v6 _copyForEnumerating];
+  deviceCopy = device;
+  connectionsByID = [deviceCopy connectionsByID];
+  allValues = [connectionsByID allValues];
+  _copyForEnumerating = [allValues _copyForEnumerating];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v7;
+  obj = _copyForEnumerating;
   v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -3788,12 +3788,12 @@ LABEL_24:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [v4 portMap];
-        v14 = [v12 addressPair];
-        v15 = [v14 localAddress];
-        -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", v13, [v15 saPortHostOrder]);
+        portMap = [deviceCopy portMap];
+        addressPair = [v12 addressPair];
+        localAddress = [addressPair localAddress];
+        -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", portMap, [localAddress saPortHostOrder]);
 
-        [(IDSUTunController *)self removeConnection:v12 fromDeviceConnectionInfo:v4 removeCode:5031 removeReason:@"resetting all connections"];
+        [(IDSUTunController *)self removeConnection:v12 fromDeviceConnectionInfo:deviceCopy removeCode:5031 removeReason:@"resetting all connections"];
         v11 = v11 + 1;
       }
 
@@ -3804,12 +3804,12 @@ LABEL_24:
     while (v9);
   }
 
-  [(IDSUTunController *)self checkSuspendTrafficForDevice:v4 wait:1];
+  [(IDSUTunController *)self checkSuspendTrafficForDevice:deviceCopy wait:1];
 }
 
-- (BOOL)handleIncomingPacket:(id *)a3 fromDeviceToken:(id)a4
+- (BOOL)handleIncomingPacket:(id *)packet fromDeviceToken:(id)token
 {
-  v175 = a4;
+  tokenCopy = token;
   logPackets = self->_logPackets;
   if (logPackets)
   {
@@ -3829,14 +3829,14 @@ LABEL_24:
 
   else
   {
-    v8 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, v175);
+    v8 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, tokenCopy);
     if (!v8)
     {
       v8 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v175;
+        *&buf[4] = tokenCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@: waiting for first openSocket", buf, 0xCu);
       }
 
@@ -3845,10 +3845,10 @@ LABEL_24:
     }
   }
 
-  var2 = a3->var2;
+  var2 = packet->var2;
   if (var2)
   {
-    var0 = a3->var0;
+    var0 = packet->var0;
     if (self->_encryptionEnabled && (v11 = *var0, v11 >= 0xE0))
     {
       if (var2 <= 7)
@@ -3857,7 +3857,7 @@ LABEL_24:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 1024;
           *&buf[14] = var2;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: incoming packet not enough bytes for encryption header %d", buf, 0x12u);
@@ -3878,7 +3878,7 @@ LABEL_236:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: encryption expects 0xe000 - packet is corrupt", buf, 0xCu);
         }
 
@@ -3909,7 +3909,7 @@ LABEL_236:
           v129 = v128;
           v130 = " ...";
           *buf = 138413058;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 1024;
           if (var2 < 0x29)
           {
@@ -3935,7 +3935,7 @@ LABEL_236:
         if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 2112;
           *&buf[14] = v174;
           *&buf[22] = 1024;
@@ -3956,14 +3956,14 @@ LABEL_236:
         v134 = v133;
         if (v133 != 4)
         {
-          v135 = [v8 portMap];
-          v136 = [v25 addressPair];
-          v137 = [v136 localAddress];
-          -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", v135, [v137 saPortHostOrder]);
+          portMap = [v8 portMap];
+          addressPair = [v25 addressPair];
+          localAddress = [addressPair localAddress];
+          -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", portMap, [localAddress saPortHostOrder]);
 
-          v138 = [NSString stringWithFormat:@"Decryption failure: %u", v134];
+          v134 = [NSString stringWithFormat:@"Decryption failure: %u", v134];
           v25 = v174;
-          [(IDSUTunController *)self removeConnection:v174 fromDeviceConnectionInfo:v8 removeCode:5301 removeReason:v138];
+          [(IDSUTunController *)self removeConnection:v174 fromDeviceConnectionInfo:v8 removeCode:5301 removeReason:v134];
         }
 
         goto LABEL_236;
@@ -3984,16 +3984,16 @@ LABEL_236:
     {
       if (v15 != 1)
       {
-        v19 = [v174 encryptionEnabled];
+        encryptionEnabled = [v174 encryptionEnabled];
         oslog = +[IDSFoundationLog utunController];
         v20 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
-        if (!v19)
+        if (!encryptionEnabled)
         {
           if (v20)
           {
             v26 = [NSData dataWithBytesNoCopy:var0 length:var2 freeWhenDone:0];
             *buf = 138412802;
-            *&buf[4] = v175;
+            *&buf[4] = tokenCopy;
             *&buf[12] = 1024;
             *&buf[14] = (v14 >> 5) & 3;
             *&buf[18] = 2112;
@@ -4008,7 +4008,7 @@ LABEL_236:
         {
           v21 = [NSData dataWithBytesNoCopy:var0 length:var2 freeWhenDone:0];
           *buf = 138412802;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 1024;
           *&buf[14] = (v14 >> 5) & 3;
           *&buf[18] = 2112;
@@ -4035,8 +4035,8 @@ LABEL_233:
       oslog = 0;
       v179 = (var0 + 1);
       v178 = var2 - 1;
-      v168 = bswap32(*(var0 + 1)) >> 16;
-      v169 = __rev16(*(var0 + 3));
+      saPortHostOrder = bswap32(*(var0 + 1)) >> 16;
+      saPortHostOrder2 = __rev16(*(var0 + 3));
       v167 = 0xAAAAAAAAAAAAAAAALL;
       v171 = 43690;
       goto LABEL_24;
@@ -4075,7 +4075,7 @@ LABEL_40:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            *&buf[4] = v175;
+            *&buf[4] = tokenCopy;
             *&buf[12] = 1024;
             *&buf[14] = var2;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@: incoming packet not enough bytes for largeCID %d", buf, 0x12u);
@@ -4101,20 +4101,20 @@ LABEL_67:
     v178 = v27 + var2;
     if (v174)
     {
-      v30 = [v174 compressionInfo];
-      v31 = [v30 remoteCID];
+      compressionInfo = [v174 compressionInfo];
+      remoteCID = [compressionInfo remoteCID];
 
-      if (v31 != v171)
+      if (remoteCID != v171)
       {
         v32 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [v8 vifName];
-          v34 = [v174 compressionInfo];
+          vifName = [v8 vifName];
+          compressionInfo2 = [v174 compressionInfo];
           *buf = 138412802;
-          *&buf[4] = v33;
+          *&buf[4] = vifName;
           *&buf[12] = 1024;
-          *&buf[14] = [v34 remoteCID];
+          *&buf[14] = [compressionInfo2 remoteCID];
           *&buf[18] = 1024;
           *&buf[20] = v171;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%@: found connection with mismatched (remoteCID 0x%04x != remoteCID 0x%04x)", buf, 0x18u);
@@ -4151,9 +4151,9 @@ LABEL_67:
         v84 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
         {
-          v85 = [v8 vifName];
+          vifName2 = [v8 vifName];
           *v188 = 138412546;
-          v189 = v85;
+          v189 = vifName2;
           v190 = 1024;
           v191 = v171;
           _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, "%@: failed to resolve connection for remoteCID 0x%04x", v188, 0x12u);
@@ -4170,29 +4170,29 @@ LABEL_67:
       }
     }
 
-    v86 = [v174 compressionInfo];
-    v87 = [v86 remoteContext] == 0;
+    compressionInfo3 = [v174 compressionInfo];
+    v87 = [compressionInfo3 remoteContext] == 0;
 
     if (v87)
     {
       v58 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v91 = [v8 vifName];
-        v92 = [v174 compressionInfo];
-        v93 = [v92 remoteCID];
+        vifName3 = [v8 vifName];
+        compressionInfo4 = [v174 compressionInfo];
+        remoteCID2 = [compressionInfo4 remoteCID];
         *buf = 138412546;
-        *&buf[4] = v91;
+        *&buf[4] = vifName3;
         *&buf[12] = 1024;
-        *&buf[14] = v93;
+        *&buf[14] = remoteCID2;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%@: remoteContext is nil for remoteCID %d, decompression failed.", buf, 0x12u);
       }
 
       goto LABEL_112;
     }
 
-    v88 = [v174 compressionInfo];
-    [v88 remoteContext];
+    compressionInfo5 = [v174 compressionInfo];
+    [compressionInfo5 remoteContext];
     v89 = IDSHC_DecompressSimple();
 
     if (v89)
@@ -4200,9 +4200,9 @@ LABEL_67:
       v18 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v90 = [v8 vifName];
+        vifName4 = [v8 vifName];
         *buf = 138412546;
-        *&buf[4] = v90;
+        *&buf[4] = vifName4;
         *&buf[12] = 2048;
         *&buf[14] = v89;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: IDSHC_DecompressSimple failed (%lu)", buf, 0x16u);
@@ -4211,13 +4211,13 @@ LABEL_67:
       goto LABEL_150;
     }
 
-    v95 = [v174 addressPair];
-    v96 = [v95 remoteAddress];
-    v168 = [v96 saPortHostOrder];
+    addressPair2 = [v174 addressPair];
+    remoteAddress = [addressPair2 remoteAddress];
+    saPortHostOrder = [remoteAddress saPortHostOrder];
 
-    v97 = [v174 addressPair];
-    v98 = [v97 localAddress];
-    v169 = [v98 saPortHostOrder];
+    addressPair3 = [v174 addressPair];
+    localAddress2 = [addressPair3 localAddress];
+    saPortHostOrder2 = [localAddress2 saPortHostOrder];
 
 LABEL_24:
     if (v15)
@@ -4228,7 +4228,7 @@ LABEL_24:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 1024;
           *&buf[14] = v178;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: incoming packet not enough bytes for TCP header %d", buf, 0x12u);
@@ -4254,7 +4254,7 @@ LABEL_235:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v175;
+          *&buf[4] = tokenCopy;
           *&buf[12] = 1024;
           *&buf[14] = v178;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: incoming packet not enough bytes for UDP header %d", buf, 0x12u);
@@ -4276,7 +4276,7 @@ LABEL_235:
 LABEL_60:
     if (!v174)
     {
-      v174 = sub_1006C2FC8([v8 connectionsTableByLocalRemotePortKey], v168 | (v169 << 16));
+      v174 = sub_1006C2FC8([v8 connectionsTableByLocalRemotePortKey], saPortHostOrder | (saPortHostOrder2 << 16));
     }
 
     if ((v14 & 0x80) != 0)
@@ -4302,7 +4302,7 @@ LABEL_76:
           v37 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v164 = [v8 vifName];
+            vifName5 = [v8 vifName];
             v163 = v178;
             v38 = v179->u8[13];
             if ((v38 & 2) != 0)
@@ -4341,9 +4341,9 @@ LABEL_76:
 
             v159 = v42;
             v160 = v41;
-            v43 = [v174 flagsString];
+            flagsString = [v174 flagsString];
             *buf = 138414850;
-            *&buf[4] = v164;
+            *&buf[4] = vifName5;
             *&buf[12] = 1024;
             *&buf[14] = v163;
             *&buf[18] = 1024;
@@ -4357,11 +4357,11 @@ LABEL_76:
             *v181 = 2080;
             *&v181[2] = v159;
             LOWORD(v182) = 1024;
-            *(&v182 + 2) = v169;
+            *(&v182 + 2) = saPortHostOrder2;
             HIWORD(v182) = 1024;
-            v183 = v168;
+            v183 = saPortHostOrder;
             v184 = 2112;
-            v185 = v43;
+            v185 = flagsString;
             v186 = 2048;
             v187 = v174;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@: Got TCP %dB (flags[%02X] [%s%s%s%s])) for %u <= %u (connection %@ (%p))", buf, 0x60u);
@@ -4370,9 +4370,9 @@ LABEL_76:
 
         if (v174)
         {
-          v44 = [v174 connectionID];
-          v45 = [v44 service];
-          if ([v45 isEqualToString:@"localdelivery"])
+          connectionID = [v174 connectionID];
+          service = [connectionID service];
+          if ([service isEqualToString:@"localdelivery"])
           {
             v46 = 2;
           }
@@ -4384,10 +4384,10 @@ LABEL_76:
 
           v165 = v46;
 
-          v47 = [v8 remoteSA];
-          v48 = [v47 sa6];
-          v49 = [v8 localSA];
-          v50 = [v49 sa6];
+          remoteSA = [v8 remoteSA];
+          v48 = [remoteSA sa6];
+          localSA = [v8 localSA];
+          v50 = [localSA sa6];
           tcp6checksum((v48 + 8), (v50 + 8), v179, v178);
 
           v51 = v178;
@@ -4398,28 +4398,28 @@ LABEL_76:
             v115 = +[IDSFoundationLog utunController];
             if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
             {
-              v131 = [v8 vifName];
+              vifName6 = [v8 vifName];
               *buf = 138412290;
-              *&buf[4] = v131;
+              *&buf[4] = vifName6;
               _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "%@: dropping TCP (unencrypted) - expect to be encrypted", buf, 0xCu);
             }
           }
 
           else
           {
-            v54 = [v174 stateFlags];
-            v55 = v54;
+            stateFlags = [v174 stateFlags];
+            v55 = stateFlags;
             v56 = bswap32(v52);
             v57 = (v56 + v51 - v53);
             if ((v179->i8[13] & 2) == 0)
             {
-              if ((v54 & 0x80) == 0)
+              if ((stateFlags & 0x80) == 0)
               {
                 v58 = +[IDSFoundationLog utunController];
                 if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
                 {
-                  v59 = [v8 vifName];
-                  v60 = v59;
+                  vifName7 = [v8 vifName];
+                  v60 = vifName7;
                   v61 = v179->u8[13];
                   v62 = "S";
                   if ((v61 & 2) == 0)
@@ -4434,7 +4434,7 @@ LABEL_76:
                     v63 = "";
                   }
 
-                  *&buf[4] = v59;
+                  *&buf[4] = vifName7;
                   *&buf[12] = 1024;
                   *&buf[14] = v178;
                   if ((v61 & 8) != 0)
@@ -4468,9 +4468,9 @@ LABEL_76:
                   *v181 = 2080;
                   *&v181[2] = v65;
                   LOWORD(v182) = 1024;
-                  *(&v182 + 2) = v169;
+                  *(&v182 + 2) = saPortHostOrder2;
                   HIWORD(v182) = 1024;
-                  v183 = v168;
+                  v183 = saPortHostOrder;
                   _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%@: dropping TCP (unexpected - no first packet) %dB (flags[%02X] [%s%s%s%s])) for %u <= %u", buf, 0x4Cu);
                 }
 
@@ -4502,15 +4502,15 @@ LABEL_112:
               *(v174 + 4872) = v100;
               if (v100 != 0.0)
               {
-                v101 = [v174 idsDeviceConnectionUUID];
-                v102 = v101 == 0;
+                idsDeviceConnectionUUID = [v174 idsDeviceConnectionUUID];
+                v102 = idsDeviceConnectionUUID == 0;
 
                 if (!v102)
                 {
                   v103 = +[IDSDeviceConnectionAWDMetrics sharedInstance];
                   v104 = *(v174 + 4872);
-                  v105 = [v174 idsDeviceConnectionUUID];
-                  [v103 setFirstPacketReceiveTime:v105 forConnectionUUID:v104];
+                  idsDeviceConnectionUUID2 = [v174 idsDeviceConnectionUUID];
+                  [v103 setFirstPacketReceiveTime:idsDeviceConnectionUUID2 forConnectionUUID:v104];
                 }
               }
 
@@ -4522,9 +4522,9 @@ LABEL_112:
               goto LABEL_141;
             }
 
-            if ((v54 & 0x80) == 0)
+            if ((stateFlags & 0x80) == 0)
             {
-              [v174 setStateFlags:v54 | 0x80];
+              [v174 setStateFlags:stateFlags | 0x80];
               [v174 setFirstPacketReceiveTime:sub_10062118C()];
               [v174 setFirstIncomingSYNSequenceNumber:v56];
               [v174 setExpectedNextIncomingSequenceNumber:(v57 + 1)];
@@ -4558,7 +4558,7 @@ LABEL_186:
               goto LABEL_212;
             }
 
-            if (v169 != 1024 || v56 == [v174 firstIncomingSYNSequenceNumber] || (v179->i8[13] & 0x10) != 0)
+            if (saPortHostOrder2 != 1024 || v56 == [v174 firstIncomingSYNSequenceNumber] || (v179->i8[13] & 0x10) != 0)
             {
               goto LABEL_186;
             }
@@ -4598,19 +4598,19 @@ LABEL_186:
             v112 = [NSData dataWithBytes:v179 length:v178];
             [v8 setControlChannelCachedSYN:v112];
 
-            v113 = [v8 controlChannel];
-            [v113 setDidReceiveReestablishmentRequest:1];
+            controlChannel = [v8 controlChannel];
+            [controlChannel setDidReceiveReestablishmentRequest:1];
 
-            v114 = [v8 controlChannel];
-            [v114 setReestablishmentRequestReceiveTime:sub_10062118C()];
+            controlChannel2 = [v8 controlChannel];
+            [controlChannel2 setReestablishmentRequestReceiveTime:sub_10062118C()];
 
             v115 = +[IDSFoundationLog utunController];
             if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
             {
-              v116 = [v8 controlChannel];
-              v117 = [v116 didReceiveReestablishmentRequest];
+              controlChannel3 = [v8 controlChannel];
+              didReceiveReestablishmentRequest = [controlChannel3 didReceiveReestablishmentRequest];
               v118 = @"NO";
-              if (v117)
+              if (didReceiveReestablishmentRequest)
               {
                 v118 = @"YES";
               }
@@ -4629,8 +4629,8 @@ LABEL_206:
         v71 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
         {
-          v72 = [v8 vifName];
-          v73 = v72;
+          vifName8 = [v8 vifName];
+          v73 = vifName8;
           v74 = v179->u8[13];
           v75 = "S";
           if ((v74 & 2) == 0)
@@ -4645,7 +4645,7 @@ LABEL_206:
             v76 = "";
           }
 
-          *&buf[4] = v72;
+          *&buf[4] = vifName8;
           *&buf[12] = 1024;
           *&buf[14] = v178;
           if ((v74 & 8) != 0)
@@ -4679,9 +4679,9 @@ LABEL_206:
           *v181 = 2080;
           *&v181[2] = v78;
           LOWORD(v182) = 1024;
-          *(&v182 + 2) = v169;
+          *(&v182 + 2) = saPortHostOrder2;
           HIWORD(v182) = 1024;
-          v183 = v168;
+          v183 = saPortHostOrder;
           _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%@: dropping TCP (no connection) %dB (flags[%02X] [%s%s%s%s])) for %u <= %u", buf, 0x4Cu);
         }
       }
@@ -4692,25 +4692,25 @@ LABEL_206:
         {
           if (!self->_encryptionEnabled || v13 || (*(v174 + 4784) & 1) == 0)
           {
-            v66 = [v174 readHandler];
+            readHandler = [v174 readHandler];
 
-            if (v66)
+            if (readHandler)
             {
               v67 = &v179->i8[8];
               v68 = v178 - 8;
-              a3->var1 = v68;
-              a3->var2 = v68;
-              a3->var0 = v67;
-              v69 = [v174 readHandler];
-              (v69)[2](v69, a3);
+              packet->var1 = v68;
+              packet->var2 = v68;
+              packet->var0 = v67;
+              readHandler2 = [v174 readHandler];
+              (readHandler2)[2](readHandler2, packet);
 
               goto LABEL_233;
             }
 
-            v122 = [v8 remoteSA];
-            v123 = [v122 sa6];
-            v124 = [v8 localSA];
-            v125 = [v124 sa6];
+            remoteSA2 = [v8 remoteSA];
+            v123 = [remoteSA2 sa6];
+            localSA2 = [v8 localSA];
+            v125 = [localSA2 sa6];
             udp6checksum(v123 + 8, v125 + 8, v179, v178);
 
             if (logPackets)
@@ -4729,20 +4729,20 @@ LABEL_206:
 LABEL_212:
             if (v8[2079].isa)
             {
-              v139 = [v8 remoteSA];
-              v140 = [v139 sa];
-              v141 = [v8 localSA];
-              v142 = [v141 sa];
+              remoteSA3 = [v8 remoteSA];
+              v140 = [remoteSA3 sa];
+              localSA3 = [v8 localSA];
+              v142 = [localSA3 sa];
               v143 = [(IDSUTunController *)self handleUtunChannelWrite:v8 source:v140 destination:v142 upperProtocol:v170 bytes:v179 bytesLen:v178];
             }
 
             else
             {
               [v8 vifRef];
-              v139 = [v8 remoteSA];
-              [v139 sa];
-              v141 = [v8 localSA];
-              [v141 sa];
+              remoteSA3 = [v8 remoteSA];
+              [remoteSA3 sa];
+              localSA3 = [v8 localSA];
+              [localSA3 sa];
               v143 = NEVirtualInterfaceWriteIPPayload();
             }
 
@@ -4763,10 +4763,10 @@ LABEL_212:
                 v148 = +[IDSFoundationLog utunController];
                 if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
                 {
-                  v149 = [v8 vifName];
+                  vifName9 = [v8 vifName];
                   v150 = " ...";
                   *buf = 138414338;
-                  *&buf[4] = v149;
+                  *&buf[4] = vifName9;
                   *&buf[12] = 1024;
                   if (v167 < 0x15)
                   {
@@ -4779,9 +4779,9 @@ LABEL_212:
                   *&buf[24] = 1024;
                   *&buf[26] = v170;
                   *&buf[30] = 1024;
-                  *&buf[32] = v168;
+                  *&buf[32] = saPortHostOrder;
                   *&buf[36] = 1024;
-                  *&buf[38] = v169;
+                  *&buf[38] = saPortHostOrder2;
                   *&buf[42] = 2048;
                   *&buf[44] = v167;
                   *&buf[52] = 2112;
@@ -4801,8 +4801,8 @@ LABEL_212:
                   v151 = 40;
                 }
 
-                v153 = [v8 vifName];
-                v154 = [v174 expectedNextIncomingSequenceNumber];
+                vifName10 = [v8 vifName];
+                expectedNextIncomingSequenceNumber = [v174 expectedNextIncomingSequenceNumber];
                 v155 = [NSData dataWithBytesNoCopy:v179 length:v151 freeWhenDone:0];
                 v156 = v155;
                 *buf = 138414082;
@@ -4816,17 +4816,17 @@ LABEL_212:
                   v157 = " ...";
                 }
 
-                *&buf[4] = v153;
+                *&buf[4] = vifName10;
                 *&buf[12] = 1024;
                 *&buf[14] = v170;
                 *&buf[18] = 1024;
-                *&buf[20] = v169;
+                *&buf[20] = saPortHostOrder2;
                 *&buf[24] = 1024;
-                *&buf[26] = v168;
+                *&buf[26] = saPortHostOrder;
                 *&buf[30] = 1024;
                 *&buf[32] = v144;
                 *&buf[36] = 1024;
-                *&buf[38] = v154;
+                *&buf[38] = expectedNextIncomingSequenceNumber;
                 *&buf[42] = 2112;
                 *&buf[44] = v155;
                 *&buf[52] = 2080;
@@ -4836,22 +4836,22 @@ LABEL_212:
             }
 
             [v174 setPacketsReceived:{objc_msgSend(v174, "packetsReceived") + 1}];
-            [v174 setBytesReceived:{objc_msgSend(v174, "bytesReceived") + a3->var2}];
+            [v174 setBytesReceived:{objc_msgSend(v174, "bytesReceived") + packet->var2}];
             goto LABEL_233;
           }
 
           v115 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
           {
-            v132 = [v8 vifName];
+            vifName11 = [v8 vifName];
             *buf = 138413058;
-            *&buf[4] = v132;
+            *&buf[4] = vifName11;
             *&buf[12] = 1024;
             *&buf[14] = v178;
             *&buf[18] = 1024;
-            *&buf[20] = v169;
+            *&buf[20] = saPortHostOrder2;
             *&buf[24] = 1024;
-            *&buf[26] = v168;
+            *&buf[26] = saPortHostOrder;
             _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "%@: dropping UDP (unencrypted) %dB for %u <= %u", buf, 0x1Eu);
           }
 
@@ -4861,15 +4861,15 @@ LABEL_212:
         v71 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
         {
-          v94 = [v8 vifName];
+          vifName12 = [v8 vifName];
           *buf = 138413058;
-          *&buf[4] = v94;
+          *&buf[4] = vifName12;
           *&buf[12] = 1024;
           *&buf[14] = v178;
           *&buf[18] = 1024;
-          *&buf[20] = v169;
+          *&buf[20] = saPortHostOrder2;
           *&buf[24] = 1024;
-          *&buf[26] = v168;
+          *&buf[26] = saPortHostOrder;
           _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%@: dropping UDP (no connection) %dB for %u <= %u", buf, 0x1Eu);
         }
       }
@@ -4885,9 +4885,9 @@ LABEL_158:
       v18 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v70 = [v8 vifName];
+        vifName13 = [v8 vifName];
         *buf = 138412546;
-        *&buf[4] = v70;
+        *&buf[4] = vifName13;
         *&buf[12] = 2112;
         *&buf[14] = v174;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@: checksum failed for connection %@", buf, 0x16u);
@@ -4903,7 +4903,7 @@ LABEL_158:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v175;
+    *&buf[4] = tokenCopy;
     *&buf[12] = 1024;
     *&buf[14] = 0;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: incoming packet not enough bytes to parse %d", buf, 0x12u);
@@ -4915,13 +4915,13 @@ LABEL_237:
   return v13;
 }
 
-- (void)internalOpenSocketWithDestination:(id)a3 localSA:(id)a4 remoteSA:(id)a5 protocol:(int)a6 trafficClass:(int)a7 completionHandler:(id)a8
+- (void)internalOpenSocketWithDestination:(id)destination localSA:(id)a remoteSA:(id)sA protocol:(int)protocol trafficClass:(int)class completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  if (a6 == 17)
+  destinationCopy = destination;
+  aCopy = a;
+  sACopy = sA;
+  handlerCopy = handler;
+  if (protocol == 17)
   {
     v17 = 2;
   }
@@ -4935,11 +4935,11 @@ LABEL_237:
   if (v18 == -1)
   {
     v21 = __error();
-    v22 = [NSString stringWithFormat:@"device %@: socket() failed: errno=%d: %s", v13, *v21, strerror(*v21)];
+    v22 = [NSString stringWithFormat:@"device %@: socket() failed: errno=%d: %s", destinationCopy, *v21, strerror(*v21)];
     v23 = [NSDictionary dictionaryWithObject:v22 forKey:NSLocalizedDescriptionKey];
     v24 = [NSError errorWithDomain:@"IDSUTun" code:5001 userInfo:v23];
 
-    (*(v16 + 2))(v16, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, a7, v24);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, class, v24);
     IDSAssertNonFatalErrnoWithSource();
 
     goto LABEL_25;
@@ -4955,19 +4955,19 @@ LABEL_237:
   setsockopt(v19, 0xFFFF, 4, &v44, 4u);
   v43 = 1;
   setsockopt(v19, 0xFFFF, 512, &v43, 4u);
-  if (a6 == 6)
+  if (protocol == 6)
   {
     *buf = 1;
     setsockopt(v19, 6, 521, buf, 4u);
-    if (a7 <= 699)
+    if (class <= 699)
     {
-      if (a7 != 500 && a7 != 600)
+      if (class != 500 && class != 600)
       {
         goto LABEL_15;
       }
     }
 
-    else if (a7 != 700 && a7 != 900 && a7 != 800)
+    else if (class != 700 && class != 900 && class != 800)
     {
       goto LABEL_15;
     }
@@ -4977,19 +4977,19 @@ LABEL_237:
   }
 
 LABEL_15:
-  sub_10062CDEC(v19, a7);
-  v25 = bind(v19, [v14 sa], 0x1Cu);
+  sub_10062CDEC(v19, class);
+  v25 = bind(v19, [aCopy sa], 0x1Cu);
   v26 = *__error();
   v27 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = v15;
-    v29 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v14 sa6] + 8, 16);
-    v30 = *([v14 sa6] + 6);
+    v28 = sACopy;
+    v29 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [aCopy sa6] + 8, 16);
+    v30 = *([aCopy sa6] + 6);
     *buf = 138413570;
-    v47 = v13;
+    v47 = destinationCopy;
     v48 = 2112;
-    *v49 = v14;
+    *v49 = aCopy;
     *&v49[8] = 2112;
     v50 = v29;
     v51 = 1024;
@@ -5000,28 +5000,28 @@ LABEL_15:
     v56 = v26;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "for device %@: binding to [%@ [%@] @ scopeid=%d] iRet=%d (errno=%d)", buf, 0x32u);
 
-    v15 = v28;
+    sACopy = v28;
   }
 
   if (v25)
   {
     close(v19);
-    v31 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"device %@: can't bind to [%@ @ scopeid=%d]: errno=%d: %s", v13, v14, *([v14 sa6] + 6), v26, strerror(v26));
+    v31 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"device %@: can't bind to [%@ @ scopeid=%d]: errno=%d: %s", destinationCopy, aCopy, *([aCopy sa6] + 6), v26, strerror(v26));
     v32 = [NSDictionary dictionaryWithObject:v31 forKey:NSLocalizedDescriptionKey];
     v33 = [NSError errorWithDomain:@"IDSUTun" code:5002 userInfo:v32];
 
-    (*(v16 + 2))(v16, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, a7, v33);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, class, v33);
   }
 
   else
   {
-    v34 = connect(v19, [v15 sa], 0x1Cu);
+    v34 = connect(v19, [sACopy sa], 0x1Cu);
     v35 = *__error();
     v36 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = +[IDSSockAddrWrapper wrapperWithSockAddr:](IDSSockAddrWrapper, "wrapperWithSockAddr:", [v15 sa]);
-      v38 = *([v15 sa6] + 6);
+      v37 = +[IDSSockAddrWrapper wrapperWithSockAddr:](IDSSockAddrWrapper, "wrapperWithSockAddr:", [sACopy sa]);
+      v38 = *([sACopy sa6] + 6);
       *buf = 138413058;
       v47 = v37;
       v48 = 1024;
@@ -5035,49 +5035,49 @@ LABEL_15:
 
     if (!v34 || v35 == 36)
     {
-      (*(v16 + 2))(v16, 0, 0, 0, 0, v19, 0, 0, -1, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v19, 0, 0, -1, 0);
     }
 
     else
     {
       close(v19);
-      v39 = [NSString stringWithFormat:@"device %@: can't connect to %@: errno=%d: %s", v13, v15, v35, strerror(v35)];
+      v39 = [NSString stringWithFormat:@"device %@: can't connect to %@: errno=%d: %s", destinationCopy, sACopy, v35, strerror(v35)];
       v40 = [NSDictionary dictionaryWithObject:v39 forKey:NSLocalizedDescriptionKey];
       v41 = [NSError errorWithDomain:@"IDSUTun" code:5003 userInfo:v40];
 
-      (*(v16 + 2))(v16, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, -1, v41);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, 0xFFFFFFFFLL, 0, 0, -1, v41);
     }
   }
 
 LABEL_25:
 }
 
-- (int)processCompressionRequest:(id)a3 fromDeviceConnectionInfo:(id)a4
+- (int)processCompressionRequest:(id)request fromDeviceConnectionInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  infoCopy = info;
   v7 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 vifName];
+    vifName = [infoCopy vifName];
     *buf = 138412546;
-    v76 = v8;
+    v76 = vifName;
     v77 = 2112;
-    *v78 = v5;
+    *v78 = requestCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: got control message: compression_req %@", buf, 0x16u);
   }
 
-  v9 = [v5 length];
-  v10 = [v5 bytes];
+  v9 = [requestCopy length];
+  bytes = [requestCopy bytes];
   if (v9 > 0xA)
   {
-    v16 = v10;
-    v74 = v6;
-    v17 = bswap32(*(v10 + 1)) >> 16;
-    v18 = bswap32(*(v10 + 3)) >> 16;
-    v19 = bswap32(*(v10 + 5)) >> 16;
-    v20 = bswap32(*(v10 + 7)) >> 16;
-    v21 = bswap32(*(v10 + 9)) >> 16;
+    v16 = bytes;
+    v74 = infoCopy;
+    v17 = bswap32(*(bytes + 1)) >> 16;
+    v18 = bswap32(*(bytes + 3)) >> 16;
+    v19 = bswap32(*(bytes + 5)) >> 16;
+    v20 = bswap32(*(bytes + 7)) >> 16;
+    v21 = bswap32(*(bytes + 9)) >> 16;
     v22 = v17 + v18 + v19 + v20 + v21 + 23;
     if (v9 != v22)
     {
@@ -5085,14 +5085,14 @@ LABEL_25:
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v57 = 1;
-        v6 = v74;
+        infoCopy = v74;
         goto LABEL_52;
       }
 
-      v6 = v74;
-      v12 = [v74 vifName];
+      infoCopy = v74;
+      vifName2 = [v74 vifName];
       *buf = 138412802;
-      v76 = v12;
+      v76 = vifName2;
       v77 = 1024;
       *v78 = v9;
       *&v78[4] = 2048;
@@ -5103,17 +5103,17 @@ LABEL_25:
       goto LABEL_24;
     }
 
-    v23 = v10 + 23;
-    v11 = [[NSString alloc] initWithBytes:v10 + 23 length:v17 encoding:4];
+    v23 = bytes + 23;
+    v11 = [[NSString alloc] initWithBytes:bytes + 23 length:v17 encoding:4];
     if (!v11)
     {
       v25 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v74;
-        v59 = [v74 vifName];
+        infoCopy = v74;
+        vifName3 = [v74 vifName];
         *buf = 138412290;
-        v76 = v59;
+        v76 = vifName3;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionRequest cannot decode remoteConnectionGUID", buf, 0xCu);
 
         v57 = 2;
@@ -5122,7 +5122,7 @@ LABEL_25:
       else
       {
         v57 = 2;
-        v6 = v74;
+        infoCopy = v74;
       }
 
       goto LABEL_51;
@@ -5135,10 +5135,10 @@ LABEL_25:
       v29 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v74;
-        v60 = [v74 vifName];
+        infoCopy = v74;
+        vifName4 = [v74 vifName];
         *buf = 138412290;
-        v76 = v60;
+        v76 = vifName4;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionRequest cannot decode localConnectionGUID", buf, 0xCu);
 
         v57 = 2;
@@ -5147,7 +5147,7 @@ LABEL_25:
       else
       {
         v57 = 2;
-        v6 = v74;
+        infoCopy = v74;
       }
 
       goto LABEL_50;
@@ -5160,9 +5160,9 @@ LABEL_25:
     v26 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v74 vifName];
+      vifName5 = [v74 vifName];
       *buf = 138413314;
-      v76 = v27;
+      v76 = vifName5;
       v77 = 1024;
       *v78 = v72;
       *&v78[4] = 1024;
@@ -5179,12 +5179,12 @@ LABEL_25:
     if (!v29)
     {
       v31 = +[IDSFoundationLog utunController];
-      v6 = v74;
+      infoCopy = v74;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [v74 vifName];
+        vifName6 = [v74 vifName];
         *buf = 138412290;
-        v76 = v61;
+        v76 = vifName6;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionRequest cannot decode account", buf, 0xCu);
       }
 
@@ -5194,15 +5194,15 @@ LABEL_25:
 
     v30 = &v28[v19];
     v31 = [[NSString alloc] initWithBytes:v30 length:v20 encoding:4];
-    v6 = v74;
+    infoCopy = v74;
     if (!v31)
     {
       v32 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v62 = [v74 vifName];
+        vifName7 = [v74 vifName];
         *buf = 138412290;
-        v76 = v62;
+        v76 = vifName7;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionRequest cannot decode service", buf, 0xCu);
       }
 
@@ -5216,9 +5216,9 @@ LABEL_25:
       v58 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v74 vifName];
+        vifName8 = [v74 vifName];
         *buf = 138412290;
-        v76 = v63;
+        v76 = vifName8;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionRequest cannot decode name", buf, 0xCu);
       }
 
@@ -5227,15 +5227,15 @@ LABEL_25:
     }
 
     v33 = [IDSGenericConnectionID idWithAccount:v29 service:v31 name:v32];
-    v34 = [v74 connectionsByID];
+    connectionsByID = [v74 connectionsByID];
     v69 = v33;
-    v35 = [v34 objectForKey:v33];
+    v35 = [connectionsByID objectForKey:v33];
 
     v36 = v35;
     if (v35)
     {
-      v37 = [v35 localConnectionGUID];
-      if ([v37 isEqualToString:v25])
+      localConnectionGUID = [v35 localConnectionGUID];
+      if ([localConnectionGUID isEqualToString:v25])
       {
         [v36 remoteConnectionGUID];
         v38 = v68 = v36;
@@ -5247,13 +5247,13 @@ LABEL_25:
           v40 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
-            v41 = [v74 vifName];
-            v42 = [v68 addressPair];
-            v43 = [v42 shortDescription];
+            vifName9 = [v74 vifName];
+            addressPair = [v68 addressPair];
+            shortDescription = [addressPair shortDescription];
             *buf = 138412546;
-            v76 = v41;
+            v76 = vifName9;
             v77 = 2112;
-            *v78 = v43;
+            *v78 = shortDescription;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%@: processCompressionRequest resolved connection ports[%@]", buf, 0x16u);
 
             v36 = v68;
@@ -5264,32 +5264,32 @@ LABEL_25:
           [v45 setRemoteCID:v73];
 
           [v44 protocol];
-          v46 = [v44 addressPair];
-          v47 = [v46 remoteAddress];
-          [v47 saPortHostOrder];
+          addressPair2 = [v44 addressPair];
+          remoteAddress = [addressPair2 remoteAddress];
+          [remoteAddress saPortHostOrder];
 
-          v48 = [v44 addressPair];
-          v49 = [v48 localAddress];
-          [v49 saPortHostOrder];
+          addressPair3 = [v44 addressPair];
+          localAddress = [addressPair3 localAddress];
+          [localAddress saPortHostOrder];
 
           IDSHC_CreateContext();
-          v50 = [v44 compressionInfo];
-          [v50 setRemoteContext:0];
+          compressionInfo = [v44 compressionInfo];
+          [compressionInfo setRemoteContext:0];
 
-          v51 = [v44 localConnectionGUID];
-          v52 = [v44 remoteConnectionGUID];
-          v53 = sub_100634894(v72, v51, v52, v29, v31, v32);
+          localConnectionGUID2 = [v44 localConnectionGUID];
+          remoteConnectionGUID = [v44 remoteConnectionGUID];
+          v53 = sub_100634894(v72, localConnectionGUID2, remoteConnectionGUID, v29, v31, v32);
 
-          v6 = v74;
-          v54 = [v74 controlChannel];
-          [v54 sendMessage:v53];
+          infoCopy = v74;
+          controlChannel = [v74 controlChannel];
+          [controlChannel sendMessage:v53];
 
           v55 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [v74 vifName];
+            vifName10 = [v74 vifName];
             *buf = 138412546;
-            v76 = v56;
+            v76 = vifName10;
             v77 = 2112;
             *v78 = v53;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%@: sending control message: compression_resp %@", buf, 0x16u);
@@ -5340,9 +5340,9 @@ LABEL_51:
   v11 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 vifName];
+    vifName2 = [infoCopy vifName];
     *buf = 138412546;
-    v76 = v12;
+    v76 = vifName2;
     v77 = 2048;
     *v78 = v9;
     v13 = "%@: UTCMType_CompressionRequest has invalid header length (%lu)";
@@ -5358,42 +5358,42 @@ LABEL_52:
   return v57;
 }
 
-- (int)processCompressionResponse:(id)a3 fromDeviceConnectionInfo:(id)a4
+- (int)processCompressionResponse:(id)response fromDeviceConnectionInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  infoCopy = info;
   v7 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 vifName];
+    vifName = [infoCopy vifName];
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = vifName;
     v77 = 2112;
-    *v78 = v5;
+    *v78 = responseCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: got control message: compression_resp %@", buf, 0x16u);
   }
 
-  v9 = [v5 length];
-  v10 = [v5 bytes];
+  v9 = [responseCopy length];
+  bytes = [responseCopy bytes];
   if (v9 > 0xA)
   {
-    v14 = v10;
-    v75 = v6;
-    v15 = bswap32(*(v10 + 1)) >> 16;
-    v16 = bswap32(*(v10 + 3)) >> 16;
-    v17 = bswap32(*(v10 + 5)) >> 16;
-    v18 = bswap32(*(v10 + 7)) >> 16;
-    v19 = bswap32(*(v10 + 9)) >> 16;
+    v14 = bytes;
+    v75 = infoCopy;
+    v15 = bswap32(*(bytes + 1)) >> 16;
+    v16 = bswap32(*(bytes + 3)) >> 16;
+    v17 = bswap32(*(bytes + 5)) >> 16;
+    v18 = bswap32(*(bytes + 7)) >> 16;
+    v19 = bswap32(*(bytes + 9)) >> 16;
     v20 = v15 + v16 + v17 + v18 + v19 + 13;
     if (v9 != v20)
     {
       v56 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v75;
-        v57 = [v75 vifName];
+        infoCopy = v75;
+        vifName2 = [v75 vifName];
         *buf = 138412802;
-        *&buf[4] = v57;
+        *&buf[4] = vifName2;
         v77 = 1024;
         *v78 = v9;
         *&v78[4] = 2048;
@@ -5406,24 +5406,24 @@ LABEL_52:
       else
       {
         v13 = 1;
-        v6 = v75;
+        infoCopy = v75;
       }
 
       v11 = v56;
       goto LABEL_55;
     }
 
-    v21 = v10 + 13;
-    v22 = [[NSString alloc] initWithBytes:v10 + 13 length:v15 encoding:4];
+    v21 = bytes + 13;
+    v22 = [[NSString alloc] initWithBytes:bytes + 13 length:v15 encoding:4];
     if (!v22)
     {
       v24 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v75;
-        v58 = [v75 vifName];
+        infoCopy = v75;
+        vifName3 = [v75 vifName];
         *buf = 138412290;
-        *&buf[4] = v58;
+        *&buf[4] = vifName3;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionResponse cannot decode remoteConnectionGUID", buf, 0xCu);
 
         v13 = 2;
@@ -5432,7 +5432,7 @@ LABEL_52:
       else
       {
         v13 = 2;
-        v6 = v75;
+        infoCopy = v75;
       }
 
       v11 = 0;
@@ -5447,10 +5447,10 @@ LABEL_52:
       v11 = v22;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v75;
-        v59 = [v75 vifName];
+        infoCopy = v75;
+        vifName4 = [v75 vifName];
         *buf = 138412290;
-        *&buf[4] = v59;
+        *&buf[4] = vifName4;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionResponse cannot decode localConnectionGUID", buf, 0xCu);
 
         v13 = 2;
@@ -5459,7 +5459,7 @@ LABEL_52:
       else
       {
         v13 = 2;
-        v6 = v75;
+        infoCopy = v75;
       }
 
       goto LABEL_53;
@@ -5488,7 +5488,7 @@ LABEL_52:
       v30 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v75;
+        infoCopy = v75;
         [v75 vifName];
         v61 = v60 = v24;
         *buf = 138412290;
@@ -5502,7 +5502,7 @@ LABEL_52:
       else
       {
         v13 = 2;
-        v6 = v75;
+        infoCopy = v75;
       }
 
       goto LABEL_52;
@@ -5515,7 +5515,7 @@ LABEL_52:
       v31 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = v75;
+        infoCopy = v75;
         [v75 vifName];
         v63 = v62 = v24;
         *buf = 138412290;
@@ -5529,7 +5529,7 @@ LABEL_52:
       else
       {
         v13 = 2;
-        v6 = v75;
+        infoCopy = v75;
       }
 
       goto LABEL_51;
@@ -5539,7 +5539,7 @@ LABEL_52:
     if (!v31)
     {
       v64 = +[IDSFoundationLog utunController];
-      v6 = v75;
+      infoCopy = v75;
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
         [v75 vifName];
@@ -5557,17 +5557,17 @@ LABEL_52:
 
     v74 = v24;
     v32 = [IDSGenericConnectionID idWithAccount:v28 service:v30 name:v31];
-    v33 = [v75 connectionsByID];
+    connectionsByID = [v75 connectionsByID];
     v71 = v32;
-    v34 = [v33 objectForKey:v32];
+    v34 = [connectionsByID objectForKey:v32];
 
     if (v34)
     {
-      v35 = [v34 localConnectionGUID];
-      if ([v35 isEqualToString:v74])
+      localConnectionGUID = [v34 localConnectionGUID];
+      if ([localConnectionGUID isEqualToString:v74])
       {
-        v36 = [v34 remoteConnectionGUID];
-        v37 = [v36 isEqualToString:v22];
+        remoteConnectionGUID = [v34 remoteConnectionGUID];
+        v37 = [remoteConnectionGUID isEqualToString:v22];
 
         if (v37)
         {
@@ -5576,65 +5576,65 @@ LABEL_52:
           {
             [v75 vifName];
             v39 = log = v38;
-            v40 = [v34 addressPair];
-            v41 = [v40 shortDescription];
+            addressPair = [v34 addressPair];
+            shortDescription = [addressPair shortDescription];
             *buf = 138412546;
             *&buf[4] = v39;
             v77 = 2112;
-            *v78 = v41;
+            *v78 = shortDescription;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%@: processCompressionResponse resolved connection ports[%@]", buf, 0x16u);
 
             v38 = log;
           }
 
-          v42 = [v34 compressionInfo];
-          v43 = [v42 reqCount];
+          compressionInfo = [v34 compressionInfo];
+          reqCount = [compressionInfo reqCount];
 
-          if (v43 <= v72)
+          if (reqCount <= v72)
           {
             v44 = +[IDSFoundationLog utunController];
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
             {
-              v45 = [v75 vifName];
+              vifName5 = [v75 vifName];
               *buf = 138412546;
-              *&buf[4] = v45;
+              *&buf[4] = vifName5;
               v77 = 1024;
               *v78 = v72;
               _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%@: compression_req (%u) acknowledged!", buf, 0x12u);
             }
 
-            v46 = [v34 compressionInfo];
-            [v46 setReqCount:v72];
+            compressionInfo2 = [v34 compressionInfo];
+            [compressionInfo2 setReqCount:v72];
           }
 
           *buf = 0;
           [v34 protocol];
-          v47 = [v34 compressionInfo];
-          [v47 localCID];
+          compressionInfo3 = [v34 compressionInfo];
+          [compressionInfo3 localCID];
 
-          v48 = [v34 addressPair];
-          v49 = [v48 localAddress];
-          [v49 saPortHostOrder];
+          addressPair2 = [v34 addressPair];
+          localAddress = [addressPair2 localAddress];
+          [localAddress saPortHostOrder];
 
-          v50 = [v34 addressPair];
-          v51 = [v50 remoteAddress];
-          [v51 saPortHostOrder];
+          addressPair3 = [v34 addressPair];
+          remoteAddress = [addressPair3 remoteAddress];
+          [remoteAddress saPortHostOrder];
 
-          v52 = [v34 compressionInfo];
-          [v52 lastSentSeq];
+          compressionInfo4 = [v34 compressionInfo];
+          [compressionInfo4 lastSentSeq];
 
-          v53 = [v34 compressionInfo];
-          [v53 lastSentAck];
+          compressionInfo5 = [v34 compressionInfo];
+          [compressionInfo5 lastSentAck];
 
           IDSHC_CreateContext();
-          v54 = [v34 compressionInfo];
-          [v54 setLocalContext:*buf];
+          compressionInfo6 = [v34 compressionInfo];
+          [compressionInfo6 setLocalContext:*buf];
 
-          v55 = [v34 compressionInfo];
-          [v55 setState:2];
+          compressionInfo7 = [v34 compressionInfo];
+          [compressionInfo7 setState:2];
 
           v13 = 0;
-          v6 = v75;
+          infoCopy = v75;
 LABEL_49:
 
           v24 = v74;
@@ -5657,12 +5657,12 @@ LABEL_54:
     }
 
     v67 = +[IDSFoundationLog utunController];
-    v6 = v75;
+    infoCopy = v75;
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
-      v68 = [v75 vifName];
+      vifName6 = [v75 vifName];
       *buf = 138412802;
-      *&buf[4] = v68;
+      *&buf[4] = vifName6;
       v77 = 2112;
       *v78 = v74;
       *&v78[8] = 2112;
@@ -5677,9 +5677,9 @@ LABEL_54:
   v11 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 vifName];
+    vifName7 = [infoCopy vifName];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = vifName7;
     v77 = 2048;
     *v78 = v9;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CompressionResponse has invalid header length (%lu)", buf, 0x16u);
@@ -5691,33 +5691,33 @@ LABEL_55:
   return v13;
 }
 
-- (void)startCompressionForConnection:(id)a3 deviceConnectionInfo:(id)a4
+- (void)startCompressionForConnection:(id)connection deviceConnectionInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  infoCopy = info;
   v7 = +[IDSFoundationLog utunController];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v5 && v6)
+  if (connectionCopy && infoCopy)
   {
     if (v8)
     {
-      v9 = [v5 addressPair];
-      v10 = [v9 shortDescription];
+      addressPair = [connectionCopy addressPair];
+      shortDescription = [addressPair shortDescription];
       *buf = 138412290;
-      v51 = v10;
+      v51 = shortDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "startCompressionForConnection ports[%@]", buf, 0xCu);
     }
 
-    v11 = [v6 nextAvailableLocalCID];
+    nextAvailableLocalCID = [infoCopy nextAvailableLocalCID];
     v7 = +[IDSFoundationLog utunController];
     v12 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v11 == 0xFFFF)
+    if (nextAvailableLocalCID == 0xFFFF)
     {
       if (v12)
       {
-        v38 = [v6 vifName];
+        vifName = [infoCopy vifName];
         *buf = 138412290;
-        v51 = v38;
+        v51 = vifName;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: failed to get local CID", buf, 0xCu);
       }
     }
@@ -5726,93 +5726,93 @@ LABEL_55:
     {
       if (v12)
       {
-        v13 = [v6 vifName];
+        vifName2 = [infoCopy vifName];
         *buf = 138412546;
-        v51 = v13;
+        v51 = vifName2;
         v52 = 1024;
-        LODWORD(v53) = v11;
+        LODWORD(v53) = nextAvailableLocalCID;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: resolved next available localCID 0x%04x", buf, 0x12u);
       }
 
-      v14 = [v5 compressionInfo];
-      [v14 setLocalCID:v11];
+      compressionInfo = [connectionCopy compressionInfo];
+      [compressionInfo setLocalCID:nextAvailableLocalCID];
 
-      v15 = [v5 compressionInfo];
-      [v15 setReqCount:{(objc_msgSend(v15, "reqCount") + 1)}];
+      compressionInfo2 = [connectionCopy compressionInfo];
+      [compressionInfo2 setReqCount:{(objc_msgSend(compressionInfo2, "reqCount") + 1)}];
 
-      [v5 setCompressionState:1];
-      v16 = [v5 compressionInfo];
-      v46 = [v16 reqCount];
+      [connectionCopy setCompressionState:1];
+      compressionInfo3 = [connectionCopy compressionInfo];
+      reqCount = [compressionInfo3 reqCount];
 
-      v17 = [v5 compressionInfo];
-      HIDWORD(v45) = [v17 lastSentSeq];
+      compressionInfo4 = [connectionCopy compressionInfo];
+      HIDWORD(v45) = [compressionInfo4 lastSentSeq];
 
-      v18 = [v5 compressionInfo];
-      LODWORD(v45) = [v18 lastSentAck];
+      compressionInfo5 = [connectionCopy compressionInfo];
+      LODWORD(v45) = [compressionInfo5 lastSentAck];
 
-      v19 = [v5 connectionID];
-      v20 = [v19 account];
+      connectionID = [connectionCopy connectionID];
+      account = [connectionID account];
 
-      v21 = [v5 connectionID];
-      v22 = [v21 service];
+      connectionID2 = [connectionCopy connectionID];
+      service = [connectionID2 service];
 
-      v23 = [v5 connectionID];
-      [v23 name];
-      v24 = v49 = v6;
+      connectionID3 = [connectionCopy connectionID];
+      [connectionID3 name];
+      v24 = v49 = infoCopy;
 
-      v25 = [v5 localConnectionGUID];
-      v26 = [v5 remoteConnectionGUID];
-      v44 = v25;
-      v27 = v25;
-      v7 = v20;
-      v28 = v22;
-      v39 = v11;
+      localConnectionGUID = [connectionCopy localConnectionGUID];
+      remoteConnectionGUID = [connectionCopy remoteConnectionGUID];
+      v44 = localConnectionGUID;
+      v27 = localConnectionGUID;
+      v7 = account;
+      v28 = service;
+      v39 = nextAvailableLocalCID;
       v29 = v24;
-      v42 = [v25 UTF8String];
-      LODWORD(v24) = strlen(v42);
-      v43 = v26;
-      v41 = [v26 UTF8String];
-      LODWORD(v25) = strlen(v41);
-      v40 = [v7 UTF8String];
+      uTF8String = [localConnectionGUID UTF8String];
+      LODWORD(v24) = strlen(uTF8String);
+      v43 = remoteConnectionGUID;
+      uTF8String2 = [remoteConnectionGUID UTF8String];
+      LODWORD(localConnectionGUID) = strlen(uTF8String2);
+      uTF8String3 = [v7 UTF8String];
 
-      v30 = strlen(v40);
-      v31 = [v28 UTF8String];
+      v30 = strlen(uTF8String3);
+      uTF8String4 = [v28 UTF8String];
       v48 = v28;
 
-      LODWORD(v22) = strlen(v31);
-      v32 = [v29 UTF8String];
+      LODWORD(service) = strlen(uTF8String4);
+      uTF8String5 = [v29 UTF8String];
       v47 = v29;
 
-      v33 = strlen(v32);
+      v33 = strlen(uTF8String5);
       LOWORD(v28) = v33;
       v54 = 4;
       v55 = bswap32(v24) >> 16;
-      v56 = bswap32(v25) >> 16;
+      v56 = bswap32(localConnectionGUID) >> 16;
       v57 = bswap32(v30) >> 16;
-      v58 = bswap32(v22) >> 16;
+      v58 = bswap32(service) >> 16;
       v59 = bswap32(v33) >> 16;
-      *buf = __rev16(v46);
+      *buf = __rev16(reqCount);
       *&buf[2] = __rev16(v39);
       v51 = _byteswap_uint64(v45);
       v34 = objc_alloc_init(NSMutableData);
       [v34 appendBytes:&v54 length:11];
       [v34 appendBytes:buf length:12];
-      [v34 appendBytes:v42 length:v24];
-      [v34 appendBytes:v41 length:v25];
-      v6 = v49;
-      [v34 appendBytes:v40 length:v30];
-      [v34 appendBytes:v31 length:v22];
-      [v34 appendBytes:v32 length:v28];
+      [v34 appendBytes:uTF8String length:v24];
+      [v34 appendBytes:uTF8String2 length:localConnectionGUID];
+      infoCopy = v49;
+      [v34 appendBytes:uTF8String3 length:v30];
+      [v34 appendBytes:uTF8String4 length:service];
+      [v34 appendBytes:uTF8String5 length:v28];
 
-      v35 = [v49 controlChannel];
-      [v35 sendMessage:v34];
+      controlChannel = [v49 controlChannel];
+      [controlChannel sendMessage:v34];
 
       v36 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v49 vifName];
+        vifName3 = [v49 vifName];
         *buf = 138412546;
-        v51 = v37;
+        v51 = vifName3;
         v52 = 2112;
         v53 = v34;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%@: sending control message: compression_req (%@)", buf, 0x16u);
@@ -5827,41 +5827,41 @@ LABEL_55:
   }
 }
 
-- (void)receiveControlChannelMessage:(id)a3 fromCbuuid:(id)a4 deviceUniqueID:(id)a5
+- (void)receiveControlChannelMessage:(id)message fromCbuuid:(id)cbuuid deviceUniqueID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v322 = self;
-  v323 = a5;
-  v324 = v9;
-  v325 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, v9);
+  messageCopy = message;
+  cbuuidCopy = cbuuid;
+  selfCopy = self;
+  dCopy = d;
+  v324 = cbuuidCopy;
+  v325 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, cbuuidCopy);
   v10 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v325 vifName];
+    vifName = [v325 vifName];
     *buf = 138412290;
-    v332 = v11;
+    v332 = vifName;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: control message parsing..", buf, 0xCu);
   }
 
-  v12 = v8;
-  v13 = [v8 bytes];
-  v14 = [v8 length];
+  v12 = messageCopy;
+  bytes = [messageCopy bytes];
+  v14 = [messageCopy length];
   if (!v14)
   {
     v17 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v325 vifName];
+      vifName2 = [v325 vifName];
       *buf = 138412290;
-      v332 = v19;
+      v332 = vifName2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: control message too small", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  v15 = *v13;
+  v15 = *bytes;
   v16 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -5874,41 +5874,41 @@ LABEL_55:
   {
     case 1:
       v23 = [IDSUTunControlMessage_Hello alloc];
-      v24 = [v325 vifName];
-      v25 = [(IDSUTunControlMessage_Hello *)v23 initWithBytes:v13 length:v14 loggingPrefixString:v24];
+      vifName3 = [v325 vifName];
+      v25 = [(IDSUTunControlMessage_Hello *)v23 initWithBytes:bytes length:v14 loggingPrefixString:vifName3];
 
-      v26 = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
-      LODWORD(v24) = v26 == 0;
+      controlChannelVersion = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
+      LODWORD(vifName3) = controlChannelVersion == 0;
 
-      if (v24)
+      if (vifName3)
       {
         v90 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
         {
-          v91 = [v325 vifName];
+          vifName4 = [v325 vifName];
           *buf = 138412290;
-          v332 = v91;
+          v332 = vifName4;
           _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%@: control message: hello control channel version is nil", buf, 0xCu);
         }
       }
 
       else
       {
-        v27 = [(IDSUTunControlMessage_Hello *)v25 instanceID];
-        [v27 getUUIDBytes:{objc_msgSend(v325, "instanceID")}];
+        instanceID = [(IDSUTunControlMessage_Hello *)v25 instanceID];
+        [instanceID getUUIDBytes:{objc_msgSend(v325, "instanceID")}];
 
-        v28 = [(IDSUTunControlMessage_Hello *)v25 capabilityFlags];
-        [v325 setCapabilityFlags:{objc_msgSend(v28, "unsignedLongLongValue")}];
+        capabilityFlags = [(IDSUTunControlMessage_Hello *)v25 capabilityFlags];
+        [v325 setCapabilityFlags:{objc_msgSend(capabilityFlags, "unsignedLongLongValue")}];
 
-        v29 = [(IDSUTunControlMessage_Hello *)v25 serviceMinCompatibilityVersion];
-        [v325 setServiceMinCompatibilityVersion:{objc_msgSend(v29, "unsignedIntValue")}];
+        serviceMinCompatibilityVersion = [(IDSUTunControlMessage_Hello *)v25 serviceMinCompatibilityVersion];
+        [v325 setServiceMinCompatibilityVersion:{objc_msgSend(serviceMinCompatibilityVersion, "unsignedIntValue")}];
 
         v30 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [v325 vifName];
+          vifName5 = [v325 vifName];
           *buf = 138412546;
-          v332 = v31;
+          v332 = vifName5;
           v333 = 2112;
           *v334 = v25;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%@: got control message: %@", buf, 0x16u);
@@ -5933,17 +5933,17 @@ LABEL_55:
             goto LABEL_115;
           }
 
-          v96 = [v325 controlChannel];
-          [v96 setChecksumEnabled:1];
+          controlChannel = [v325 controlChannel];
+          [controlChannel setChecksumEnabled:1];
         }
 
-        v97 = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
-        [v325 setControlChannelVersion:v97];
+        controlChannelVersion2 = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
+        [v325 setControlChannelVersion:controlChannelVersion2];
 
         os_unfair_lock_lock(&self->_controlChannelVersionCacheLock);
         controlChannelVersionCache = self->_controlChannelVersionCache;
-        v99 = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
-        [(NSMutableDictionary *)controlChannelVersionCache setObject:v99 forKey:v324];
+        controlChannelVersion3 = [(IDSUTunControlMessage_Hello *)v25 controlChannelVersion];
+        [(NSMutableDictionary *)controlChannelVersionCache setObject:controlChannelVersion3 forKey:v324];
 
         os_unfair_lock_unlock(&self->_controlChannelVersionCacheLock);
         if ([v324 isEqualToString:kIDSDefaultPairedDeviceID])
@@ -5958,13 +5958,13 @@ LABEL_55:
           dispatch_async(v100, v328);
         }
 
-        v101 = [v325 controlChannel];
-        v102 = [v101 didReceiveReestablishmentRequest];
+        controlChannel2 = [v325 controlChannel];
+        didReceiveReestablishmentRequest = [controlChannel2 didReceiveReestablishmentRequest];
 
-        if (v102)
+        if (didReceiveReestablishmentRequest)
         {
-          v103 = [v325 controlChannel];
-          [v103 setDidReceiveReestablishmentRequest:0];
+          controlChannel3 = [v325 controlChannel];
+          [controlChannel3 setDidReceiveReestablishmentRequest:0];
 
           v104 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
@@ -5995,14 +5995,14 @@ LABEL_115:
     case 13:
       if (v14 > 0xF)
       {
-        log = v13[1];
-        v307 = *(v13 + 1);
-        v309 = *(v13 + 2);
-        v36 = *(v13 + 3);
-        oslog = *(v13 + 4);
-        v37 = *(v13 + 5);
-        v38 = *(v13 + 6);
-        v39 = *(v13 + 7);
+        log = bytes[1];
+        v307 = *(bytes + 1);
+        v309 = *(bytes + 2);
+        v36 = *(bytes + 3);
+        oslog = *(bytes + 4);
+        v37 = *(bytes + 5);
+        v38 = *(bytes + 6);
+        v39 = *(bytes + 7);
         v40 = _IDSSupportsDirectMessaging();
         if (v15 == 13)
         {
@@ -6020,9 +6020,9 @@ LABEL_115:
           v42 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [v325 vifName];
+            vifName6 = [v325 vifName];
             *buf = 138412290;
-            v332 = v43;
+            v332 = vifName6;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannelForDirectMsg processing request", buf, 0xCu);
           }
 
@@ -6044,9 +6044,9 @@ LABEL_115:
           v17 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v89 = [v325 vifName];
+            vifName7 = [v325 vifName];
             *buf = 138413314;
-            v332 = v89;
+            v332 = vifName7;
             v333 = 1024;
             *v334 = v78;
             *&v334[4] = 1024;
@@ -6068,9 +6068,9 @@ LABEL_115:
           v17 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v95 = [v325 vifName];
+            vifName8 = [v325 vifName];
             *buf = 138412802;
-            v332 = v95;
+            v332 = vifName8;
             v333 = 1024;
             *v334 = v14;
             *&v334[4] = 2048;
@@ -6082,7 +6082,7 @@ LABEL_115:
         }
 
         v84 = v81;
-        v85 = v13 + 16;
+        v85 = bytes + 16;
         v86 = [[NSString alloc] initWithBytes:v85 length:v78 encoding:4];
         if (v86)
         {
@@ -6097,9 +6097,9 @@ LABEL_152:
               v126 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v126, OS_LOG_TYPE_DEFAULT))
               {
-                v127 = [v325 vifName];
+                vifName9 = [v325 vifName];
                 *buf = 138412290;
-                v332 = v127;
+                v332 = vifName9;
                 _os_log_impl(&_mh_execute_header, v126, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel cannot decode remoteConnectionGUID", buf, 0xCu);
               }
 
@@ -6107,12 +6107,12 @@ LABEL_152:
               {
                 if (_IDSShouldLogTransport())
                 {
-                  v264 = [v325 vifName];
+                  vifName10 = [v325 vifName];
                   _IDSLogTransport();
 
                   if (_IDSShouldLog())
                   {
-                    v265 = [v325 vifName];
+                    vifName11 = [v325 vifName];
                     _IDSLogV();
                   }
                 }
@@ -6127,9 +6127,9 @@ LABEL_152:
               v139 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v139, OS_LOG_TYPE_DEFAULT))
               {
-                v140 = [v325 vifName];
+                vifName12 = [v325 vifName];
                 *buf = 138412290;
-                v332 = v140;
+                v332 = vifName12;
                 _os_log_impl(&_mh_execute_header, v139, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel cannot decode service", buf, 0xCu);
               }
 
@@ -6143,7 +6143,7 @@ LABEL_152:
                 goto LABEL_334;
               }
 
-              v266 = [v325 vifName];
+              vifName13 = [v325 vifName];
               _IDSLogTransport();
 
               if (!_IDSShouldLog())
@@ -6151,7 +6151,7 @@ LABEL_152:
                 goto LABEL_334;
               }
 
-              v120 = [v325 vifName];
+              vifName14 = [v325 vifName];
               _IDSLogV();
 LABEL_333:
 
@@ -6161,15 +6161,15 @@ LABEL_335:
               goto LABEL_336;
             }
 
-            v120 = [[NSString alloc] initWithBytes:&v87[v79 + v80] length:v84 encoding:4];
-            if (!v120)
+            vifName14 = [[NSString alloc] initWithBytes:&v87[v79 + v80] length:v84 encoding:4];
+            if (!vifName14)
             {
               v146 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v146, OS_LOG_TYPE_DEFAULT))
               {
-                v147 = [v325 vifName];
+                vifName15 = [v325 vifName];
                 *buf = 138412290;
-                v332 = v147;
+                v332 = vifName15;
                 _os_log_impl(&_mh_execute_header, v146, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel cannot decode name", buf, 0xCu);
               }
 
@@ -6177,12 +6177,12 @@ LABEL_335:
               {
                 if (_IDSShouldLogTransport())
                 {
-                  v269 = [v325 vifName];
+                  vifName16 = [v325 vifName];
                   _IDSLogTransport();
 
                   if (_IDSShouldLog())
                   {
-                    v270 = [v325 vifName];
+                    vifName17 = [v325 vifName];
                     _IDSLogV();
                   }
                 }
@@ -6197,9 +6197,9 @@ LABEL_335:
               v121 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v121, OS_LOG_TYPE_DEFAULT))
               {
-                v122 = [v325 vifName];
+                vifName18 = [v325 vifName];
                 *buf = 138412546;
-                v332 = v122;
+                v332 = vifName18;
                 v333 = 2048;
                 *v334 = v292;
                 _os_log_impl(&_mh_execute_header, v121, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannelForDirectMsg flags: %#llx", buf, 0x16u);
@@ -6211,25 +6211,25 @@ LABEL_335:
               v292 = 0;
             }
 
-            v301 = [IDSGenericConnectionID idWithAccount:v306 service:v303 name:v120];
-            v148 = [v325 connectionsByID];
-            v149 = [v148 objectForKey:v301];
+            v301 = [IDSGenericConnectionID idWithAccount:v306 service:v303 name:vifName14];
+            connectionsByID = [v325 connectionsByID];
+            v149 = [connectionsByID objectForKey:v301];
 
-            v150 = [v325 localSA];
+            localSA = [v325 localSA];
             v151 = __rev16(v309);
-            v311 = [IDSSockAddrWrapper wrapperWithWrapper:v150 andPortHostOrder:v151];
+            v311 = [IDSSockAddrWrapper wrapperWithWrapper:localSA andPortHostOrder:v151];
 
-            v152 = [v325 remoteSA];
+            remoteSA = [v325 remoteSA];
             v295 = __rev16(v307);
-            v308 = [IDSSockAddrWrapper wrapperWithWrapper:v152 andPortHostOrder:?];
+            v308 = [IDSSockAddrWrapper wrapperWithWrapper:remoteSA andPortHostOrder:?];
 
             v298 = [IDSSockAddrWrapperPair wrapperPairWithLocalAddress:v311 remoteAddress:v308];
             v153 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
             {
-              v154 = [v325 vifName];
+              vifName19 = [v325 vifName];
               *buf = 138414850;
-              v332 = v154;
+              v332 = vifName19;
               v333 = 1024;
               *v334 = log;
               *&v334[4] = 1024;
@@ -6245,7 +6245,7 @@ LABEL_335:
               *&v336[8] = 2112;
               *v337 = v303;
               *&v337[8] = 2112;
-              *v338 = v120;
+              *v338 = vifName14;
               *&v338[8] = 2112;
               *v339 = v149;
               *&v339[8] = 2112;
@@ -6261,7 +6261,7 @@ LABEL_335:
                 v282 = v149;
                 v283 = v325;
                 v280 = v303;
-                v281 = v120;
+                v281 = vifName14;
                 v278 = oslogb;
                 v279 = v306;
                 v276 = v295;
@@ -6276,7 +6276,7 @@ LABEL_335:
                   v282 = v149;
                   v283 = v325;
                   v280 = v303;
-                  v281 = v120;
+                  v281 = vifName14;
                   v278 = oslogb;
                   v279 = v306;
                   v276 = v295;
@@ -6304,8 +6304,8 @@ LABEL_332:
 
             if (oslogb && v149)
             {
-              v155 = [(IDSGenericConnection *)v149 localConnectionGUID];
-              v156 = [v155 isEqualToString:oslogb];
+              localConnectionGUID = [(IDSGenericConnection *)v149 localConnectionGUID];
+              v156 = [localConnectionGUID isEqualToString:oslogb];
 
               if ((v156 & 1) == 0)
               {
@@ -6316,9 +6316,9 @@ LABEL_332:
                   _os_log_impl(&_mh_execute_header, v157, OS_LOG_TYPE_DEFAULT, "control message not for current connection - assume local is current for now (message is old) and send CloseChannel for remote attempt", buf, 2u);
                 }
 
-                v158 = [v325 controlChannel];
-                v159 = sub_10062D4A4(0, v86, v306, v303, v120);
-                [v158 sendMessage:v159];
+                controlChannel4 = [v325 controlChannel];
+                v159 = sub_10062D4A4(0, v86, v306, v303, vifName14);
+                [controlChannel4 sendMessage:v159];
 
                 goto LABEL_332;
               }
@@ -6353,27 +6353,27 @@ LABEL_332:
 
             if (([(IDSGenericConnection *)v149 stateFlags]& 8) == 0)
             {
-              v179 = [(IDSGenericConnection *)v149 localConnectionGUID];
-              v180 = [v179 compare:v86] == 1;
+              localConnectionGUID2 = [(IDSGenericConnection *)v149 localConnectionGUID];
+              v180 = [localConnectionGUID2 compare:v86] == 1;
 
               if (v180)
               {
                 v181 = +[IDSFoundationLog utunController];
                 if (os_log_type_enabled(v181, OS_LOG_TYPE_DEFAULT))
                 {
-                  v182 = [v325 vifName];
-                  v183 = [(IDSGenericConnection *)v149 localConnectionGUID];
+                  vifName20 = [v325 vifName];
+                  localConnectionGUID3 = [(IDSGenericConnection *)v149 localConnectionGUID];
                   *buf = 138412546;
-                  v332 = v182;
+                  v332 = vifName20;
                   v333 = 2112;
-                  *v334 = v183;
+                  *v334 = localConnectionGUID3;
                   _os_log_impl(&_mh_execute_header, v181, OS_LOG_TYPE_DEFAULT, "%@: found connection [%@] - remote wins", buf, 0x16u);
                 }
 
-                v184 = [v325 portMap];
-                v185 = [(IDSGenericConnection *)v149 addressPair];
-                v186 = [v185 localAddress];
-                -[IDSUTunController releasePortIfNecessary:port:](v322, "releasePortIfNecessary:port:", v184, [v186 saPortHostOrder]);
+                portMap = [v325 portMap];
+                addressPair = [(IDSGenericConnection *)v149 addressPair];
+                localAddress = [addressPair localAddress];
+                -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap, [localAddress saPortHostOrder]);
 
                 [(IDSGenericConnection *)v149 setAddressPair:v298];
               }
@@ -6381,54 +6381,54 @@ LABEL_332:
               goto LABEL_290;
             }
 
-            v190 = [v325 portMap];
-            v191 = [(IDSGenericConnection *)v149 addressPair];
-            v192 = [v191 localAddress];
-            -[IDSUTunController releasePortIfNecessary:port:](v322, "releasePortIfNecessary:port:", v190, [v192 saPortHostOrder]);
+            portMap2 = [v325 portMap];
+            addressPair2 = [(IDSGenericConnection *)v149 addressPair];
+            localAddress2 = [addressPair2 localAddress];
+            -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap2, [localAddress2 saPortHostOrder]);
 
-            [(IDSUTunController *)v322 removeConnection:v149 fromDeviceConnectionInfo:v325 removeCode:5050 removeReason:@"stale connection"];
-            [(IDSUTunController *)v322 checkSuspendTrafficForDevice:v325 wait:1];
+            [(IDSUTunController *)selfCopy removeConnection:v149 fromDeviceConnectionInfo:v325 removeCode:5050 removeReason:@"stale connection"];
+            [(IDSUTunController *)selfCopy checkSuspendTrafficForDevice:v325 wait:1];
 LABEL_287:
             v149 = [[IDSGenericConnection alloc] initWithConnectionID:v301 protocol:log isCloudEnabled:0];
-            v193 = [v325 cbuuid];
-            -[IDSGenericConnection setIsDefaultPairedDevice:](v149, "setIsDefaultPairedDevice:", [v193 isEqualToString:kIDSDefaultPairedDeviceID]);
+            cbuuid = [v325 cbuuid];
+            -[IDSGenericConnection setIsDefaultPairedDevice:](v149, "setIsDefaultPairedDevice:", [cbuuid isEqualToString:kIDSDefaultPairedDeviceID]);
 
             [(IDSGenericConnection *)v149 setAddressPair:v298];
-            v194 = [v325 connectionsByID];
-            [v194 setObject:v149 forKey:v301];
+            connectionsByID2 = [v325 connectionsByID];
+            [connectionsByID2 setObject:v149 forKey:v301];
 
             v195 = +[IDSFoundationLog utunController];
             if (os_log_type_enabled(v195, OS_LOG_TYPE_DEFAULT))
             {
-              v196 = [v325 vifName];
-              v197 = [(IDSGenericConnection *)v149 localConnectionGUID];
-              v198 = v197;
-              v199 = [v197 UTF8String];
+              vifName21 = [v325 vifName];
+              localConnectionGUID4 = [(IDSGenericConnection *)v149 localConnectionGUID];
+              v198 = localConnectionGUID4;
+              uTF8String = [localConnectionGUID4 UTF8String];
               *buf = 138413058;
-              v332 = v196;
+              v332 = vifName21;
               v333 = 1024;
               *v334 = v151;
               *&v334[4] = 1024;
               *&v334[6] = v295;
               *&v334[10] = 2080;
-              *&v334[12] = v199;
+              *&v334[12] = uTF8String;
               _os_log_impl(&_mh_execute_header, v195, OS_LOG_TYPE_DEFAULT, "%@: send setup channel message ports[%u:::%u] guid[%s]", buf, 0x22u);
             }
 
-            v200 = [v325 controlChannel];
-            v201 = [(IDSGenericConnection *)v149 localConnectionGUID];
-            v202 = sub_100639644(log, v151, v295, v201, v86, v306, v303, v120, v15 == 13, v292);
-            [v200 sendMessage:v202];
+            controlChannel5 = [v325 controlChannel];
+            localConnectionGUID5 = [(IDSGenericConnection *)v149 localConnectionGUID];
+            v202 = sub_100639644(log, v151, v295, localConnectionGUID5, v86, v306, v303, vifName14, v15 == 13, v292);
+            [controlChannel5 sendMessage:v202];
 
             [(IDSGenericConnection *)v149 setStateFlags:[(IDSGenericConnection *)v149 stateFlags]| 4];
             [(IDSGenericConnection *)v149 setConnectionSetupStartTime:sub_10062118C()];
 LABEL_290:
-            v203 = [(IDSGenericConnection *)v149 addressPair];
-            v204 = [v203 localAddress];
-            v205 = [v204 saPortHostOrder];
-            v206 = [(IDSGenericConnection *)v149 addressPair];
-            v207 = [v206 remoteAddress];
-            -[IDSGenericConnection setUint32Key:](v149, "setUint32Key:", (v205 << 16) | [v207 saPortHostOrder]);
+            addressPair3 = [(IDSGenericConnection *)v149 addressPair];
+            localAddress3 = [addressPair3 localAddress];
+            saPortHostOrder = [localAddress3 saPortHostOrder];
+            addressPair4 = [(IDSGenericConnection *)v149 addressPair];
+            remoteAddress = [addressPair4 remoteAddress];
+            -[IDSGenericConnection setUint32Key:](v149, "setUint32Key:", (saPortHostOrder << 16) | [remoteAddress saPortHostOrder]);
 
             v208 = sub_1006C2FC8([v325 connectionsTableByLocalRemotePortKey], -[IDSGenericConnection uint32Key](v149, "uint32Key"));
             v209 = v208;
@@ -6469,12 +6469,12 @@ LABEL_290:
 
             [(IDSGenericConnection *)v149 setSocketTrafficClass:v210];
 LABEL_328:
-            v255 = [v301 serviceConnectorServiceForAccount];
-            [(IDSUTunController *)v322 startDataChannelWithDevice:v325 genericConnection:v149 serviceConnectorService:v255];
+            serviceConnectorServiceForAccount = [v301 serviceConnectorServiceForAccount];
+            [(IDSUTunController *)selfCopy startDataChannelWithDevice:v325 genericConnection:v149 serviceConnectorService:serviceConnectorServiceForAccount];
             if (v315 && [v324 isEqualToString:kIDSDefaultPairedDeviceID])
             {
               v256 = +[IDSDaemon daemon];
-              [v256 receivedDirectMsgSocketRequestForService:v303 stream:v120 flags:v292];
+              [v256 receivedDirectMsgSocketRequestForService:v303 stream:vifName14 flags:v292];
             }
 
             goto LABEL_332;
@@ -6490,9 +6490,9 @@ LABEL_328:
           v128 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
           {
-            v129 = [v325 vifName];
+            vifName22 = [v325 vifName];
             *buf = 138412290;
-            v332 = v129;
+            v332 = vifName22;
             _os_log_impl(&_mh_execute_header, v128, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel cannot decode account", buf, 0xCu);
           }
 
@@ -6506,7 +6506,7 @@ LABEL_328:
             goto LABEL_336;
           }
 
-          v260 = [v325 vifName];
+          vifName23 = [v325 vifName];
           _IDSLogTransport();
 
           if (!_IDSShouldLog())
@@ -6520,9 +6520,9 @@ LABEL_328:
           v108 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
           {
-            v109 = [v325 vifName];
+            vifName24 = [v325 vifName];
             *buf = 138412290;
-            v332 = v109;
+            v332 = vifName24;
             _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel cannot decode remoteConnectionGUID", buf, 0xCu);
           }
 
@@ -6536,7 +6536,7 @@ LABEL_328:
             goto LABEL_336;
           }
 
-          v260 = [v325 vifName];
+          vifName23 = [v325 vifName];
           _IDSLogTransport();
 
           if (!_IDSShouldLog())
@@ -6545,7 +6545,7 @@ LABEL_328:
           }
         }
 
-        v261 = [v325 vifName];
+        vifName25 = [v325 vifName];
         _IDSLogV();
 
 LABEL_336:
@@ -6555,9 +6555,9 @@ LABEL_336:
       v17 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v325 vifName];
+        vifName26 = [v325 vifName];
         *buf = 138412290;
-        v332 = v18;
+        v332 = vifName26;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_SetupChannel insufficient header", buf, 0xCu);
       }
 
@@ -6571,29 +6571,29 @@ LABEL_14:
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v325 vifName];
+          vifName27 = [v325 vifName];
           *buf = 138412290;
-          v332 = v34;
+          v332 = vifName27;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel insufficient header", buf, 0xCu);
         }
 
         goto LABEL_13;
       }
 
-      v58 = __rev16(*(v13 + 1));
-      v59 = __rev16(*(v13 + 3));
-      v60 = __rev16(*(v13 + 5));
-      v61 = __rev16(*(v13 + 7));
-      v62 = __rev16(*(v13 + 9));
+      v58 = __rev16(*(bytes + 1));
+      v59 = __rev16(*(bytes + 3));
+      v60 = __rev16(*(bytes + 5));
+      v61 = __rev16(*(bytes + 7));
+      v62 = __rev16(*(bytes + 9));
       v63 = v58 + v59 + v60 + v61 + v62 + 11;
       if (v14 != v63)
       {
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v92 = [v325 vifName];
+          vifName28 = [v325 vifName];
           *buf = 138412802;
-          v332 = v92;
+          v332 = vifName28;
           v333 = 1024;
           *v334 = v14;
           *&v334[4] = 2048;
@@ -6606,16 +6606,16 @@ LABEL_14:
 
       if (v58)
       {
-        v51 = [[NSString alloc] initWithBytes:v13 + 11 length:v58 encoding:4];
-        if (!v51)
+        controlChannel12 = [[NSString alloc] initWithBytes:bytes + 11 length:v58 encoding:4];
+        if (!controlChannel12)
         {
-          v51 = +[IDSFoundationLog utunController];
-          if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
+          controlChannel12 = +[IDSFoundationLog utunController];
+          if (os_log_type_enabled(controlChannel12, OS_LOG_TYPE_DEFAULT))
           {
-            v64 = [v325 vifName];
+            vifName29 = [v325 vifName];
             *buf = 138412290;
-            v332 = v64;
-            _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode remoteConnectionGUID", buf, 0xCu);
+            v332 = vifName29;
+            _os_log_impl(&_mh_execute_header, controlChannel12, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode remoteConnectionGUID", buf, 0xCu);
           }
 
           goto LABEL_125;
@@ -6624,20 +6624,20 @@ LABEL_14:
 
       else
       {
-        v51 = 0;
+        controlChannel12 = 0;
       }
 
       if (v59)
       {
-        oslogc = [[NSString alloc] initWithBytes:&v13[v58 + 11] length:v59 encoding:4];
+        oslogc = [[NSString alloc] initWithBytes:&bytes[v58 + 11] length:v59 encoding:4];
         if (!oslogc)
         {
           oslogc = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(oslogc, OS_LOG_TYPE_DEFAULT))
           {
-            v107 = [v325 vifName];
+            vifName30 = [v325 vifName];
             *buf = 138412290;
-            v332 = v107;
+            v332 = vifName30;
             _os_log_impl(&_mh_execute_header, oslogc, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode localConnectionGUID", buf, 0xCu);
           }
 
@@ -6650,16 +6650,16 @@ LABEL_14:
         oslogc = 0;
       }
 
-      v110 = &v13[v58 + 11 + v59];
+      v110 = &bytes[v58 + 11 + v59];
       v111 = [[NSString alloc] initWithBytes:v110 length:v60 encoding:4];
       if (!v111)
       {
         v113 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v113, OS_LOG_TYPE_DEFAULT))
         {
-          v123 = [v325 vifName];
+          vifName31 = [v325 vifName];
           *buf = 138412290;
-          v332 = v123;
+          v332 = vifName31;
           _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode account", buf, 0xCu);
         }
 
@@ -6673,9 +6673,9 @@ LABEL_14:
         v114 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v114, OS_LOG_TYPE_DEFAULT))
         {
-          v130 = [v325 vifName];
+          vifName32 = [v325 vifName];
           *buf = 138412290;
-          v332 = v130;
+          v332 = vifName32;
           _os_log_impl(&_mh_execute_header, v114, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode service", buf, 0xCu);
         }
 
@@ -6688,9 +6688,9 @@ LABEL_14:
         loga = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT))
         {
-          v143 = [v325 vifName];
+          vifName33 = [v325 vifName];
           *buf = 138412290;
-          v332 = v143;
+          v332 = vifName33;
           _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_CloseChannel cannot decode name", buf, 0xCu);
         }
 
@@ -6698,19 +6698,19 @@ LABEL_14:
       }
 
       loga = [IDSGenericConnectionID idWithAccount:v111 service:v113 name:v114];
-      v115 = [v325 connectionsByID];
-      v317 = [v115 objectForKey:loga];
+      connectionsByID3 = [v325 connectionsByID];
+      v317 = [connectionsByID3 objectForKey:loga];
 
       v116 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
       {
-        v117 = [v325 vifName];
+        vifName34 = [v325 vifName];
         *buf = 138414082;
-        v332 = v117;
+        v332 = vifName34;
         v333 = 2112;
         *v334 = oslogc;
         *&v334[8] = 2112;
-        *&v334[10] = v51;
+        *&v334[10] = controlChannel12;
         *&v334[18] = 2112;
         *&v334[20] = v111;
         *v335 = 2112;
@@ -6733,7 +6733,7 @@ LABEL_14:
           v280 = v325;
           v277 = v113;
           v278 = v114;
-          v275 = v51;
+          v275 = controlChannel12;
           v259 = v276 = v111;
           v274 = oslogc;
           _IDSLogTransport();
@@ -6745,7 +6745,7 @@ LABEL_14:
             v280 = v325;
             v277 = v113;
             v278 = v114;
-            v275 = v51;
+            v275 = controlChannel12;
             v259 = v276 = v111;
             v274 = oslogc;
             _IDSLogV();
@@ -6758,8 +6758,8 @@ LABEL_14:
         goto LABEL_250;
       }
 
-      v118 = [v317 remoteConnectionGUID];
-      v119 = [v118 isEqualToString:v51];
+      remoteConnectionGUID = [v317 remoteConnectionGUID];
+      v119 = [remoteConnectionGUID isEqualToString:controlChannel12];
 
       if (v119)
       {
@@ -6771,8 +6771,8 @@ LABEL_14:
 
       else
       {
-        v163 = [v317 localConnectionGUID];
-        v164 = [v163 isEqualToString:oslogc];
+        localConnectionGUID6 = [v317 localConnectionGUID];
+        v164 = [localConnectionGUID6 isEqualToString:oslogc];
 
         if (!v164 || ([v317 stateFlags]& 0x20) != 0)
         {
@@ -6786,13 +6786,13 @@ LABEL_14:
         }
       }
 
-      v166 = [v325 portMap];
-      v167 = [v317 addressPair];
-      v168 = [v167 localAddress];
-      -[IDSUTunController releasePortIfNecessary:port:](v322, "releasePortIfNecessary:port:", v166, [v168 saPortHostOrder]);
+      portMap3 = [v325 portMap];
+      addressPair5 = [v317 addressPair];
+      localAddress4 = [addressPair5 localAddress];
+      -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap3, [localAddress4 saPortHostOrder]);
 
-      [(IDSUTunController *)v322 removeConnection:v317 fromDeviceConnectionInfo:v325 removeCode:5051 removeReason:@"remote close"];
-      [(IDSUTunController *)v322 checkSuspendTrafficForDevice:v325 wait:1];
+      [(IDSUTunController *)selfCopy removeConnection:v317 fromDeviceConnectionInfo:v325 removeCode:5051 removeReason:@"remote close"];
+      [(IDSUTunController *)selfCopy checkSuspendTrafficForDevice:v325 wait:1];
 LABEL_250:
 
 LABEL_251:
@@ -6803,10 +6803,10 @@ LABEL_254:
 
       goto LABEL_125;
     case 4:
-      [(IDSUTunController *)self processCompressionRequest:v8 fromDeviceConnectionInfo:v325];
+      [(IDSUTunController *)self processCompressionRequest:messageCopy fromDeviceConnectionInfo:v325];
       goto LABEL_14;
     case 5:
-      [(IDSUTunController *)self processCompressionResponse:v8 fromDeviceConnectionInfo:v325];
+      [(IDSUTunController *)self processCompressionResponse:messageCopy fromDeviceConnectionInfo:v325];
       goto LABEL_14;
     case 6:
       if (v14 <= 0x17)
@@ -6814,29 +6814,29 @@ LABEL_254:
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v325 vifName];
+          vifName35 = [v325 vifName];
           *buf = 138412290;
-          v332 = v46;
+          v332 = vifName35;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel insufficient header", buf, 0xCu);
         }
 
         goto LABEL_13;
       }
 
-      v70 = __rev16(*(v13 + 3));
-      v71 = __rev16(*(v13 + 5));
-      v72 = __rev16(*(v13 + 6));
-      v73 = __rev16(*(v13 + 7));
-      v74 = __rev16(*(v13 + 11));
+      v70 = __rev16(*(bytes + 3));
+      v71 = __rev16(*(bytes + 5));
+      v72 = __rev16(*(bytes + 6));
+      v73 = __rev16(*(bytes + 7));
+      v74 = __rev16(*(bytes + 11));
       if (!v70 || !v71 || !v72 || !v73 || !v74)
       {
         v93 = v74;
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v94 = [v325 vifName];
+          vifName36 = [v325 vifName];
           *buf = 138413570;
-          v332 = v94;
+          v332 = vifName36;
           v333 = 1024;
           *v334 = v70;
           *&v334[4] = 1024;
@@ -6853,16 +6853,16 @@ LABEL_254:
         goto LABEL_13;
       }
 
-      v75 = __rev16(*(v13 + 4));
+      v75 = __rev16(*(bytes + 4));
       v76 = v70 + v75 + v71 + v72 + v73 + v74 + 24;
       if (v14 != v76)
       {
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v105 = [v325 vifName];
+          vifName37 = [v325 vifName];
           *buf = 138412802;
-          v332 = v105;
+          v332 = vifName37;
           v333 = 1024;
           *v334 = v14;
           *&v334[4] = 2048;
@@ -6874,15 +6874,15 @@ LABEL_254:
       }
 
       v291 = v74;
-      v305 = v13[1];
-      v299 = *(v13 + 1);
-      v302 = *(v13 + 2);
-      v293 = *(v13 + 4);
-      v296 = *(v13 + 10);
-      osloga = [[NSString alloc] initWithBytes:v13 + 24 length:v70 encoding:4];
+      v305 = bytes[1];
+      v299 = *(bytes + 1);
+      v302 = *(bytes + 2);
+      v293 = *(bytes + 4);
+      v296 = *(bytes + 10);
+      osloga = [[NSString alloc] initWithBytes:bytes + 24 length:v70 encoding:4];
       if (osloga)
       {
-        v77 = &v13[v70 + 24];
+        v77 = &bytes[v70 + 24];
         if (!v75)
         {
           v316 = 0;
@@ -6893,9 +6893,9 @@ LABEL_182:
             v141 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v141, OS_LOG_TYPE_DEFAULT))
             {
-              v142 = [v325 vifName];
+              vifName38 = [v325 vifName];
               *buf = 138412290;
-              v332 = v142;
+              v332 = vifName38;
               _os_log_impl(&_mh_execute_header, v141, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel cannot decode remoteConnectionGUID", buf, 0xCu);
             }
 
@@ -6903,12 +6903,12 @@ LABEL_182:
             {
               if (_IDSShouldLogTransport())
               {
-                v267 = [v325 vifName];
+                vifName39 = [v325 vifName];
                 _IDSLogTransport();
 
                 if (_IDSShouldLog())
                 {
-                  v268 = [v325 vifName];
+                  vifName40 = [v325 vifName];
                   _IDSLogV();
                 }
               }
@@ -6924,9 +6924,9 @@ LABEL_182:
             v160 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v160, OS_LOG_TYPE_DEFAULT))
             {
-              v161 = [v325 vifName];
+              vifName41 = [v325 vifName];
               *buf = 138412290;
-              v332 = v161;
+              v332 = vifName41;
               _os_log_impl(&_mh_execute_header, v160, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel cannot decode service", buf, 0xCu);
             }
 
@@ -6940,7 +6940,7 @@ LABEL_182:
               goto LABEL_323;
             }
 
-            v271 = [v325 vifName];
+            vifName42 = [v325 vifName];
             _IDSLogTransport();
 
             if (!_IDSShouldLog())
@@ -6948,7 +6948,7 @@ LABEL_182:
               goto LABEL_323;
             }
 
-            v162 = [v325 vifName];
+            vifName43 = [v325 vifName];
             _IDSLogV();
 LABEL_322:
 
@@ -6965,9 +6965,9 @@ LABEL_324:
             v169 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v169, OS_LOG_TYPE_DEFAULT))
             {
-              v170 = [v325 vifName];
+              vifName44 = [v325 vifName];
               *buf = 138412290;
-              v332 = v170;
+              v332 = vifName44;
               _os_log_impl(&_mh_execute_header, v169, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel cannot decode name", buf, 0xCu);
             }
 
@@ -6975,12 +6975,12 @@ LABEL_324:
             {
               if (_IDSShouldLogTransport())
               {
-                v272 = [v325 vifName];
+                vifName45 = [v325 vifName];
                 _IDSLogTransport();
 
                 if (_IDSShouldLog())
                 {
-                  v273 = [v325 vifName];
+                  vifName46 = [v325 vifName];
                   _IDSLogV();
                 }
               }
@@ -6990,16 +6990,16 @@ LABEL_324:
           }
 
           v289 = [IDSGenericConnectionID idWithAccount:logb service:v310 name:?];
-          v133 = [v325 connectionsByID];
-          v134 = [v133 objectForKey:v289];
+          connectionsByID4 = [v325 connectionsByID];
+          v134 = [connectionsByID4 objectForKey:v289];
 
-          v135 = [v325 localSA];
+          localSA2 = [v325 localSA];
           v287 = __rev16(v302);
-          v304 = [IDSSockAddrWrapper wrapperWithWrapper:v135 andPortHostOrder:?];
+          v304 = [IDSSockAddrWrapper wrapperWithWrapper:localSA2 andPortHostOrder:?];
 
-          v136 = [v325 remoteSA];
+          remoteSA2 = [v325 remoteSA];
           v286 = __rev16(v299);
-          v300 = [IDSSockAddrWrapper wrapperWithWrapper:v136 andPortHostOrder:?];
+          v300 = [IDSSockAddrWrapper wrapperWithWrapper:remoteSA2 andPortHostOrder:?];
 
           v288 = [IDSSockAddrWrapperPair wrapperPairWithLocalAddress:v304 remoteAddress:v300];
           v294 = bswap32(v293);
@@ -7007,9 +7007,9 @@ LABEL_324:
           v137 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
           {
-            v138 = [v325 vifName];
+            vifName47 = [v325 vifName];
             *buf = 138415362;
-            v332 = v138;
+            v332 = vifName47;
             v333 = 1024;
             *v334 = v294;
             *&v334[4] = 1024;
@@ -7090,8 +7090,8 @@ LABEL_324:
 
           if (v316 && v134)
           {
-            v171 = [(IDSGenericConnection *)v134 localConnectionGUID];
-            v172 = [v171 isEqualToString:v316];
+            localConnectionGUID7 = [(IDSGenericConnection *)v134 localConnectionGUID];
+            v172 = [localConnectionGUID7 isEqualToString:v316];
 
             if ((v172 & 1) == 0)
             {
@@ -7102,9 +7102,9 @@ LABEL_324:
                 _os_log_impl(&_mh_execute_header, v173, OS_LOG_TYPE_DEFAULT, "control message not for current connection - assume local is current for now (message is old) and send CloseChannel for remote attempt", buf, 2u);
               }
 
-              v174 = [v325 controlChannel];
+              controlChannel6 = [v325 controlChannel];
               v175 = sub_10062D4A4(0, osloga, logb, v310, v290);
-              [v174 sendMessage:v175];
+              [controlChannel6 sendMessage:v175];
 
               goto LABEL_320;
             }
@@ -7133,7 +7133,7 @@ LABEL_285:
 
 LABEL_320:
 LABEL_321:
-              v162 = v290;
+              vifName43 = v290;
               goto LABEL_322;
             }
           }
@@ -7149,12 +7149,12 @@ LABEL_321:
               v189 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v189, OS_LOG_TYPE_DEFAULT))
               {
-                v257 = [v325 vifName];
-                v258 = [(IDSGenericConnection *)v134 keyMaterialLength];
+                vifName48 = [v325 vifName];
+                keyMaterialLength = [(IDSGenericConnection *)v134 keyMaterialLength];
                 *buf = 138412802;
-                v332 = v257;
+                v332 = vifName48;
                 v333 = 1024;
-                *v334 = v258;
+                *v334 = keyMaterialLength;
                 *&v334[4] = 1024;
                 *&v334[6] = v291;
                 _os_log_impl(&_mh_execute_header, v189, OS_LOG_TYPE_DEFAULT, "%@: nonmatching key material length (local:%u remote:%u)", buf, 0x18u);
@@ -7163,27 +7163,27 @@ LABEL_321:
               goto LABEL_285;
             }
 
-            v211 = [(IDSGenericConnection *)v134 localConnectionGUID];
-            v212 = [v211 compare:osloga] == 1;
+            localConnectionGUID8 = [(IDSGenericConnection *)v134 localConnectionGUID];
+            v212 = [localConnectionGUID8 compare:osloga] == 1;
 
             if (v212)
             {
               v213 = +[IDSFoundationLog utunController];
               if (os_log_type_enabled(v213, OS_LOG_TYPE_DEFAULT))
               {
-                v214 = [v325 vifName];
-                v215 = [(IDSGenericConnection *)v134 localConnectionGUID];
+                vifName49 = [v325 vifName];
+                localConnectionGUID9 = [(IDSGenericConnection *)v134 localConnectionGUID];
                 *buf = 138412546;
-                v332 = v214;
+                v332 = vifName49;
                 v333 = 2112;
-                *v334 = v215;
+                *v334 = localConnectionGUID9;
                 _os_log_impl(&_mh_execute_header, v213, OS_LOG_TYPE_DEFAULT, "%@: found connection [%@] - remote wins", buf, 0x16u);
               }
 
-              v216 = [v325 portMap];
-              v217 = [(IDSGenericConnection *)v134 addressPair];
-              v218 = [v217 localAddress];
-              -[IDSUTunController releasePortIfNecessary:port:](v322, "releasePortIfNecessary:port:", v216, [v218 saPortHostOrder]);
+              portMap4 = [v325 portMap];
+              addressPair6 = [(IDSGenericConnection *)v134 addressPair];
+              localAddress5 = [addressPair6 localAddress];
+              -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap4, [localAddress5 saPortHostOrder]);
 
               [(IDSGenericConnection *)v134 setAddressPair:v288];
             }
@@ -7191,37 +7191,37 @@ LABEL_321:
 LABEL_313:
             [(IDSGenericConnection *)v134 setSSRCRecv:v294];
             [(IDSGenericConnection *)v134 setSeqRecvStart:v297];
-            v239 = [(IDSGenericConnection *)v134 localKeyMaterial];
+            localKeyMaterial = [(IDSGenericConnection *)v134 localKeyMaterial];
             v240 = v291;
             v241 = &v132[v73];
             do
             {
               v242 = *v241++;
-              *v239++ ^= v242;
+              *localKeyMaterial++ ^= v242;
               --v240;
             }
 
             while (v240);
             bzero(&v132[v73], v291);
-            v243 = [v325 controlChannelVersion];
-            v244 = [v243 intValue] == 1;
+            controlChannelVersion4 = [v325 controlChannelVersion];
+            v244 = [controlChannelVersion4 intValue] == 1;
 
             if (!v244)
             {
               [(IDSGenericConnection *)v134 setSrtpProtocolVersion:1];
             }
 
-            v245 = [(IDSGenericConnection *)v134 localConnectionGUID];
-            v246 = [v245 compare:osloga] == 1;
+            localConnectionGUID10 = [(IDSGenericConnection *)v134 localConnectionGUID];
+            v246 = [localConnectionGUID10 compare:osloga] == 1;
 
             sub_10050C5E0([(IDSGenericConnection *)v134 encryptionState], [(IDSGenericConnection *)v134 localKeyMaterial], [(IDSGenericConnection *)v134 keyMaterialLength], v246, [(IDSGenericConnection *)v134 SSRCSend], [(IDSGenericConnection *)v134 seqSendStart], [(IDSGenericConnection *)v134 SSRCRecv], [(IDSGenericConnection *)v134 seqRecvStart], [(IDSGenericConnection *)v134 srtpProtocolVersion]);
             sub_1006C2CB0([v325 incomingEncryptionTableBySSRC], -[IDSGenericConnection SSRCRecv](v134, "SSRCRecv"), v134);
-            v247 = [(IDSGenericConnection *)v134 addressPair];
-            v248 = [v247 localAddress];
-            v249 = [v248 saPortHostOrder];
-            v250 = [(IDSGenericConnection *)v134 addressPair];
-            v251 = [v250 remoteAddress];
-            -[IDSGenericConnection setUint32Key:](v134, "setUint32Key:", (v249 << 16) | [v251 saPortHostOrder]);
+            addressPair7 = [(IDSGenericConnection *)v134 addressPair];
+            localAddress6 = [addressPair7 localAddress];
+            saPortHostOrder2 = [localAddress6 saPortHostOrder];
+            addressPair8 = [(IDSGenericConnection *)v134 addressPair];
+            remoteAddress2 = [addressPair8 remoteAddress];
+            -[IDSGenericConnection setUint32Key:](v134, "setUint32Key:", (saPortHostOrder2 << 16) | [remoteAddress2 saPortHostOrder]);
 
             v252 = sub_1006C2FC8([v325 connectionsTableByLocalRemotePortKey], -[IDSGenericConnection uint32Key](v134, "uint32Key"));
             v253 = v252;
@@ -7233,27 +7233,27 @@ LABEL_313:
             sub_1006C2CB0([v325 connectionsTableByLocalRemotePortKey], -[IDSGenericConnection uint32Key](v134, "uint32Key"), v134);
             [(IDSGenericConnection *)v134 setStateFlags:[(IDSGenericConnection *)v134 stateFlags]| 8];
             [(IDSGenericConnection *)v134 setRemoteConnectionGUID:osloga];
-            v254 = [v289 serviceConnectorServiceForAccount];
-            [(IDSUTunController *)v322 startDataChannelWithDevice:v325 genericConnection:v134 serviceConnectorService:v254];
+            serviceConnectorServiceForAccount2 = [v289 serviceConnectorServiceForAccount];
+            [(IDSUTunController *)selfCopy startDataChannelWithDevice:v325 genericConnection:v134 serviceConnectorService:serviceConnectorServiceForAccount2];
 
             goto LABEL_320;
           }
 
-          v219 = [v325 portMap];
-          v220 = [(IDSGenericConnection *)v134 addressPair];
-          v221 = [v220 localAddress];
-          -[IDSUTunController releasePortIfNecessary:port:](v322, "releasePortIfNecessary:port:", v219, [v221 saPortHostOrder]);
+          portMap5 = [v325 portMap];
+          addressPair9 = [(IDSGenericConnection *)v134 addressPair];
+          localAddress7 = [addressPair9 localAddress];
+          -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap5, [localAddress7 saPortHostOrder]);
 
-          [(IDSUTunController *)v322 removeConnection:v134 fromDeviceConnectionInfo:v325 removeCode:5050 removeReason:@"stale connection"];
-          [(IDSUTunController *)v322 checkSuspendTrafficForDevice:v325 wait:1];
+          [(IDSUTunController *)selfCopy removeConnection:v134 fromDeviceConnectionInfo:v325 removeCode:5050 removeReason:@"stale connection"];
+          [(IDSUTunController *)selfCopy checkSuspendTrafficForDevice:v325 wait:1];
 LABEL_306:
           v134 = [[IDSGenericConnection alloc] initWithConnectionID:v289 protocol:v305 keyMaterialLength:v291 isCloudEnabled:0];
-          v222 = [v325 cbuuid];
-          -[IDSGenericConnection setIsDefaultPairedDevice:](v134, "setIsDefaultPairedDevice:", [v222 isEqualToString:kIDSDefaultPairedDeviceID]);
+          cbuuid2 = [v325 cbuuid];
+          -[IDSGenericConnection setIsDefaultPairedDevice:](v134, "setIsDefaultPairedDevice:", [cbuuid2 isEqualToString:kIDSDefaultPairedDeviceID]);
 
           [(IDSGenericConnection *)v134 setAddressPair:v288];
-          v223 = [v325 connectionsByID];
-          [v223 setObject:v134 forKey:v289];
+          connectionsByID5 = [v325 connectionsByID];
+          [connectionsByID5 setObject:v134 forKey:v289];
 
           do
           {
@@ -7270,31 +7270,31 @@ LABEL_306:
           v227 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v227, OS_LOG_TYPE_DEFAULT))
           {
-            v228 = [v325 vifName];
-            v229 = [(IDSGenericConnection *)v134 localConnectionGUID];
-            v230 = v229;
-            v231 = [v229 UTF8String];
-            v232 = [(IDSGenericConnection *)v134 seqSendStart];
+            vifName50 = [v325 vifName];
+            localConnectionGUID11 = [(IDSGenericConnection *)v134 localConnectionGUID];
+            v230 = localConnectionGUID11;
+            uTF8String2 = [localConnectionGUID11 UTF8String];
+            seqSendStart = [(IDSGenericConnection *)v134 seqSendStart];
             *buf = 138413570;
-            v332 = v228;
+            v332 = vifName50;
             v333 = 1024;
             *v334 = v287;
             *&v334[4] = 1024;
             *&v334[6] = v286;
             *&v334[10] = 2080;
-            *&v334[12] = v231;
+            *&v334[12] = uTF8String2;
             *&v334[20] = 1024;
             *&v334[22] = v224;
             *&v334[26] = 1024;
-            *v335 = v232;
+            *v335 = seqSendStart;
             _os_log_impl(&_mh_execute_header, v227, OS_LOG_TYPE_DEFAULT, "%@: send setup encrypted channel message ports[%u:::%u] guid[%s] ssrc:%08x startSeq:%04x", buf, 0x2Eu);
           }
 
-          v233 = [v325 controlChannel];
-          v234 = [(IDSGenericConnection *)v134 localConnectionGUID];
-          v235 = [(IDSGenericConnection *)v134 seqSendStart];
-          v236 = sub_1006398CC(v305, v287, v286, v234, osloga, logb, v310, v290, v224, SBYTE1(v224), SBYTE2(v224), SBYTE3(v224), v235, SHIBYTE(v235), [(IDSGenericConnection *)v134 localKeyMaterial], [(IDSGenericConnection *)v134 keyMaterialLength]);
-          [v233 sendMessage:v236];
+          controlChannel7 = [v325 controlChannel];
+          localConnectionGUID12 = [(IDSGenericConnection *)v134 localConnectionGUID];
+          seqSendStart2 = [(IDSGenericConnection *)v134 seqSendStart];
+          v236 = sub_1006398CC(v305, v287, v286, localConnectionGUID12, osloga, logb, v310, v290, v224, SBYTE1(v224), SBYTE2(v224), SBYTE3(v224), seqSendStart2, SHIBYTE(seqSendStart2), [(IDSGenericConnection *)v134 localKeyMaterial], [(IDSGenericConnection *)v134 keyMaterialLength]);
+          [controlChannel7 sendMessage:v236];
 
           [(IDSGenericConnection *)v134 setStateFlags:[(IDSGenericConnection *)v134 stateFlags]| 4];
           [(IDSGenericConnection *)v134 setConnectionSetupStartTime:sub_10062118C()];
@@ -7310,7 +7310,7 @@ LABEL_306:
           goto LABEL_313;
         }
 
-        v316 = [[NSString alloc] initWithBytes:&v13[v70 + 24] length:v75 encoding:4];
+        v316 = [[NSString alloc] initWithBytes:&bytes[v70 + 24] length:v75 encoding:4];
         if (v316)
         {
           v77 += v75;
@@ -7320,9 +7320,9 @@ LABEL_306:
         v144 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v144, OS_LOG_TYPE_DEFAULT))
         {
-          v145 = [v325 vifName];
+          vifName51 = [v325 vifName];
           *buf = 138412290;
-          v332 = v145;
+          v332 = vifName51;
           _os_log_impl(&_mh_execute_header, v144, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel cannot decode account", buf, 0xCu);
         }
 
@@ -7336,7 +7336,7 @@ LABEL_306:
           goto LABEL_325;
         }
 
-        v262 = [v325 vifName];
+        vifName52 = [v325 vifName];
         _IDSLogTransport();
 
         if (!_IDSShouldLog())
@@ -7350,9 +7350,9 @@ LABEL_306:
         v124 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
         {
-          v125 = [v325 vifName];
+          vifName53 = [v325 vifName];
           *buf = 138412290;
-          v332 = v125;
+          v332 = vifName53;
           _os_log_impl(&_mh_execute_header, v124, OS_LOG_TYPE_DEFAULT, "%@: SetupEncryptedChannel cannot decode remoteConnectionGUID", buf, 0xCu);
         }
 
@@ -7366,7 +7366,7 @@ LABEL_306:
           goto LABEL_325;
         }
 
-        v262 = [v325 vifName];
+        vifName52 = [v325 vifName];
         _IDSLogTransport();
 
         if (!_IDSShouldLog())
@@ -7375,29 +7375,29 @@ LABEL_306:
         }
       }
 
-      v263 = [v325 vifName];
+      vifName54 = [v325 vifName];
       _IDSLogV();
 
 LABEL_325:
       goto LABEL_14;
     case 7:
-      v35 = [v325 controlChannel];
-      [v35 processFairplayHostSessionInfo:v8];
+      controlChannel8 = [v325 controlChannel];
+      [controlChannel8 processFairplayHostSessionInfo:messageCopy];
 
       goto LABEL_14;
     case 8:
-      v48 = [v325 controlChannel];
-      [v48 processFairplayDeviceInfo:v8];
+      controlChannel9 = [v325 controlChannel];
+      [controlChannel9 processFairplayDeviceInfo:messageCopy];
 
       goto LABEL_14;
     case 9:
-      v22 = [v325 controlChannel];
-      [v22 processFairplayDeviceSessionInfo:v8];
+      controlChannel10 = [v325 controlChannel];
+      [controlChannel10 processFairplayDeviceSessionInfo:messageCopy];
 
       goto LABEL_14;
     case 10:
-      v47 = [v325 controlChannel];
-      [v47 processOTRNegotiationMessage:v8];
+      controlChannel11 = [v325 controlChannel];
+      [controlChannel11 processOTRNegotiationMessage:messageCopy];
 
       goto LABEL_14;
     case 11:
@@ -7406,26 +7406,26 @@ LABEL_325:
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v325 vifName];
+          vifName55 = [v325 vifName];
           *buf = 138412290;
-          v332 = v20;
+          v332 = vifName55;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_EncryptControlChannel missing data", buf, 0xCu);
         }
 
         goto LABEL_13;
       }
 
-      v50 = v13[1];
-      v51 = [v325 controlChannel];
-      v52 = [v51 isReadyForEncrypting];
-      v53 = [v51 isDefaultPairedDevicePairedLocally];
-      v54 = [v51 isDefaultPairedDevicePairedRemotely];
+      v50 = bytes[1];
+      controlChannel12 = [v325 controlChannel];
+      isReadyForEncrypting = [controlChannel12 isReadyForEncrypting];
+      isDefaultPairedDevicePairedLocally = [controlChannel12 isDefaultPairedDevicePairedLocally];
+      isDefaultPairedDevicePairedRemotely = [controlChannel12 isDefaultPairedDevicePairedRemotely];
       v55 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
-        v56 = [v325 vifName];
+        vifName56 = [v325 vifName];
         *buf = 138413826;
-        v332 = v56;
+        v332 = vifName56;
         v333 = 1024;
         *v334 = v50;
         *&v334[4] = 1024;
@@ -7433,25 +7433,25 @@ LABEL_325:
         *&v334[10] = 1024;
         *&v334[12] = v50 & 1;
         *&v334[16] = 1024;
-        *&v334[18] = v52;
+        *&v334[18] = isReadyForEncrypting;
         *&v334[22] = 1024;
-        *&v334[24] = v53;
+        *&v334[24] = isDefaultPairedDevicePairedLocally;
         *v335 = 1024;
-        *&v335[2] = v54;
+        *&v335[2] = isDefaultPairedDevicePairedRemotely;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%@: got control message: encrypt control channel flags %d ispairedlocally %d ispairedremotely %d (isencrypting: %d ispairedlocally %d ispairedremotely %d)", buf, 0x30u);
       }
 
-      if (v52)
+      if (isReadyForEncrypting)
       {
         goto LABEL_125;
       }
 
-      [v51 setIsDefaultPairedDevicePairedRemotely:v50 & 1];
+      [controlChannel12 setIsDefaultPairedDevicePairedRemotely:v50 & 1];
       if ((~v50 & 3) != 0)
       {
         if (v50)
         {
-          v106 = v53;
+          v106 = isDefaultPairedDevicePairedLocally;
         }
 
         else
@@ -7467,20 +7467,20 @@ LABEL_125:
         }
 
         v57 = sub_10063952C(1);
-        [v51 sendPriorityMessage:v57];
+        [controlChannel12 sendPriorityMessage:v57];
       }
 
       else
       {
         v57 = sub_1006C2FC8([v325 connectionsTableByLocalRemotePortKey], 67109888);
-        [(IDSUTunController *)v322 resetTCPConnection:v57 forDeviceConnectionInfo:v325];
-        [v51 encryptControlChannelForStoredIdentities];
+        [(IDSUTunController *)selfCopy resetTCPConnection:v57 forDeviceConnectionInfo:v325];
+        [controlChannel12 encryptControlChannelForStoredIdentities];
       }
 
       goto LABEL_125;
     case 12:
-      v21 = [v325 controlChannel];
-      [v21 processSuspendOTRNegotiationMessage:v8];
+      controlChannel13 = [v325 controlChannel];
+      [controlChannel13 processSuspendOTRNegotiationMessage:messageCopy];
 
       goto LABEL_14;
     case 14:
@@ -7489,9 +7489,9 @@ LABEL_125:
         v17 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v325 vifName];
+          vifName57 = [v325 vifName];
           *buf = 138412290;
-          v332 = v45;
+          v332 = vifName57;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: UTCMType_DirectMsgInfo insufficient header", buf, 0xCu);
         }
 
@@ -7503,13 +7503,13 @@ LABEL_125:
         v65 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
         {
-          v66 = [v325 vifName];
+          vifName58 = [v325 vifName];
           *buf = 138412290;
-          v332 = v66;
+          v332 = vifName58;
           _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%@: got control message: direct message info", buf, 0xCu);
         }
 
-        v67 = [[NSData alloc] initWithBytes:v13 + 1 length:v14 - 1];
+        v67 = [[NSData alloc] initWithBytes:bytes + 1 length:v14 - 1];
         v68 = im_primary_queue();
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
@@ -7525,9 +7525,9 @@ LABEL_125:
       v17 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [v325 vifName];
+        vifName59 = [v325 vifName];
         *buf = 138412546;
-        v332 = v49;
+        v332 = vifName59;
         v333 = 1024;
         *v334 = v15;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: got invalid control message %d", buf, 0x12u);
@@ -7537,51 +7537,51 @@ LABEL_125:
   }
 }
 
-- (id)controlChannelVersionForCbuuid:(id)a3
+- (id)controlChannelVersionForCbuuid:(id)cbuuid
 {
-  v4 = a3;
+  cbuuidCopy = cbuuid;
   os_unfair_lock_lock(&self->_controlChannelVersionCacheLock);
-  v5 = [(NSMutableDictionary *)self->_controlChannelVersionCache objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_controlChannelVersionCache objectForKey:cbuuidCopy];
 
   os_unfair_lock_unlock(&self->_controlChannelVersionCacheLock);
 
   return v5;
 }
 
-- (void)setupDataConnectionWithDeviceConnectionInfo:(id)a3 options:(id)a4
+- (void)setupDataConnectionWithDeviceConnectionInfo:(id)info options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v145 = [v6 objectForKey:@"account"];
-  v7 = [v6 objectForKey:@"service"];
+  infoCopy = info;
+  optionsCopy = options;
+  v145 = [optionsCopy objectForKey:@"account"];
+  v7 = [optionsCopy objectForKey:@"service"];
   if (v7)
   {
-    v142 = [v6 objectForKey:IDSOpenSocketOptionStreamNameKey];
-    v140 = [v6 objectForKey:@"protocol"];
-    v134 = [v6 objectForKey:IDSOpenSocketOptionClientIDKey];
-    v137 = [v6 objectForKey:IDSOpenSocketOptionConnectionUUIDKey];
-    v8 = [v6 objectForKey:IDSOpenSocketOptionPriorityKey];
+    v142 = [optionsCopy objectForKey:IDSOpenSocketOptionStreamNameKey];
+    v140 = [optionsCopy objectForKey:@"protocol"];
+    v134 = [optionsCopy objectForKey:IDSOpenSocketOptionClientIDKey];
+    v137 = [optionsCopy objectForKey:IDSOpenSocketOptionConnectionUUIDKey];
+    v8 = [optionsCopy objectForKey:IDSOpenSocketOptionPriorityKey];
     v139 = v8;
     if (v8)
     {
-      v130 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v130 = 200;
+      integerValue = 200;
     }
 
-    v10 = [v6 objectForKey:IDSOpenSocketOptionCloudEnabledKey];
-    v127 = [v10 BOOLValue];
+    v10 = [optionsCopy objectForKey:IDSOpenSocketOptionCloudEnabledKey];
+    bOOLValue = [v10 BOOLValue];
 
     if (_IDSSupportsDirectMessaging())
     {
-      v11 = [v6 objectForKey:IDSOpenSocketOptionIsDirectMsgSocket];
-      v12 = [v11 BOOLValue];
+      v11 = [optionsCopy objectForKey:IDSOpenSocketOptionIsDirectMsgSocket];
+      bOOLValue2 = [v11 BOOLValue];
 
-      v125 = v12;
-      switch(v130)
+      v125 = bOOLValue2;
+      switch(integerValue)
       {
         case 100:
           v13 = 16;
@@ -7597,22 +7597,22 @@ LABEL_125:
           break;
       }
 
-      v14 = [v6 objectForKey:IDSOpenSocketOptionDataProtectionClass];
-      v15 = [v14 unsignedIntValue];
+      v14 = [optionsCopy objectForKey:IDSOpenSocketOptionDataProtectionClass];
+      unsignedIntValue = [v14 unsignedIntValue];
 
-      if (v15 == 2)
+      if (unsignedIntValue == 2)
       {
         v13 |= 1uLL;
       }
 
-      else if (!v15)
+      else if (!unsignedIntValue)
       {
         v13 |= 2uLL;
       }
 
-      v16 = [v6 objectForKey:IDSOpenSocketOptionDirectMsgType];
-      v17 = [v16 unsignedShortValue];
-      switch(v17)
+      v16 = [optionsCopy objectForKey:IDSOpenSocketOptionDirectMsgType];
+      unsignedShortValue = [v16 unsignedShortValue];
+      switch(unsignedShortValue)
       {
         case 1:
           v13 |= 0x20uLL;
@@ -7646,7 +7646,7 @@ LABEL_125:
     {
       if (([v7 isEqualToIgnoringCase:@"com.apple.private.alloy.fignero"] & 1) == 0)
       {
-        v133 = v130;
+        v133 = integerValue;
         if (![v7 isEqualToIgnoringCase:@"com.apple.private.alloy.willow.proxy"])
         {
           goto LABEL_35;
@@ -7658,7 +7658,7 @@ LABEL_125:
 
     v133 = v18;
 LABEL_35:
-    v19 = [v6 objectForKey:IDSOpenSocketOptionEncryptionMethodKey];
+    v19 = [optionsCopy objectForKey:IDSOpenSocketOptionEncryptionMethodKey];
     v138 = v19;
     if (v19)
     {
@@ -7679,9 +7679,9 @@ LABEL_35:
         v21 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v5 vifName];
+          vifName = [infoCopy vifName];
           *buf = 138412802;
-          *v159 = v22;
+          *v159 = vifName;
           *&v159[8] = 2112;
           *v160 = v143;
           *&v160[8] = 2112;
@@ -7702,44 +7702,44 @@ LABEL_35:
     }
 
     v126 = v23;
-    v24 = [v6 objectForKey:IDSOpenSocketOptionRealTimeKey];
-    v128 = [v24 BOOLValue];
+    v24 = [optionsCopy objectForKey:IDSOpenSocketOptionRealTimeKey];
+    bOOLValue3 = [v24 BOOLValue];
 
-    v25 = [v5 cbuuid];
-    if ([v25 isEqualToString:kIDSDefaultPairedDeviceID])
+    cbuuid = [infoCopy cbuuid];
+    if ([cbuuid isEqualToString:kIDSDefaultPairedDeviceID])
     {
-      v135 = 1;
+      bOOLValue4 = 1;
     }
 
     else
     {
-      v26 = [v6 objectForKey:IDSDevicePropertyDefaultPairedDevice];
-      v135 = [v26 BOOLValue];
+      v26 = [optionsCopy objectForKey:IDSDevicePropertyDefaultPairedDevice];
+      bOOLValue4 = [v26 BOOLValue];
     }
 
-    v132 = [v6 objectForKey:IDSOpenSocketOptionCBUUIDKey];
-    if (v135)
+    v132 = [optionsCopy objectForKey:IDSOpenSocketOptionCBUUIDKey];
+    if (bOOLValue4)
     {
       v131 = IDSDeviceDefaultPairedDeviceUniqueID;
     }
 
     else
     {
-      v131 = [v6 objectForKey:IDSOpenSocketOptionDeviceUniqueIDKey];
+      v131 = [optionsCopy objectForKey:IDSOpenSocketOptionDeviceUniqueIDKey];
     }
 
     v144 = [IDSGenericConnectionID idWithAccount:v145 service:v7 name:v142];
-    v27 = [v5 connectionsByID];
-    v28 = [v27 objectForKey:v144];
+    connectionsByID = [infoCopy connectionsByID];
+    v28 = [connectionsByID objectForKey:v144];
 
     if (v28)
     {
       v29 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v5 vifName];
+        vifName2 = [infoCopy vifName];
         *buf = 138412802;
-        *v159 = v30;
+        *v159 = vifName2;
         *&v159[8] = 2112;
         *v160 = v28;
         *&v160[8] = 2112;
@@ -7749,23 +7749,23 @@ LABEL_35:
 
       if (([(IDSGenericConnection *)v28 stateFlags]& 1) == 0)
       {
-        v31 = [v6 objectForKeyedSubscript:@"connectionContext"];
+        v31 = [optionsCopy objectForKeyedSubscript:@"connectionContext"];
         v32 = v31;
         if (v31)
         {
-          [v31 setDeviceConnectionInfo:v5];
+          [v31 setDeviceConnectionInfo:infoCopy];
           [v32 setConnection:v28];
-          v33 = [v32 readHandler];
-          [(IDSGenericConnection *)v28 setReadHandler:v33];
+          readHandler = [v32 readHandler];
+          [(IDSGenericConnection *)v28 setReadHandler:readHandler];
 
           v34 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [v5 vifName];
-            v36 = [v32 readHandler];
-            v37 = objc_retainBlock(v36);
+            vifName3 = [infoCopy vifName];
+            readHandler2 = [v32 readHandler];
+            v37 = objc_retainBlock(readHandler2);
             *buf = 138412802;
-            *v159 = v35;
+            *v159 = vifName3;
             *&v159[8] = 2048;
             *v160 = v37;
             *&v160[8] = 2112;
@@ -7775,20 +7775,20 @@ LABEL_35:
         }
 
         [(IDSGenericConnection *)v28 setClientID:v134];
-        [(IDSGenericConnection *)v28 setPriority:v130];
+        [(IDSGenericConnection *)v28 setPriority:integerValue];
         [(IDSGenericConnection *)v28 setSocketTrafficClass:v133];
         [(IDSGenericConnection *)v28 setStateFlags:[(IDSGenericConnection *)v28 stateFlags]| 1];
-        [(IDSGenericConnection *)v28 setIsCloudEnabled:v127];
-        [(IDSGenericConnection *)v28 setIsDefaultPairedDevice:v135];
-        [(IDSGenericConnection *)v28 setIsRealTime:v128];
+        [(IDSGenericConnection *)v28 setIsCloudEnabled:bOOLValue];
+        [(IDSGenericConnection *)v28 setIsDefaultPairedDevice:bOOLValue4];
+        [(IDSGenericConnection *)v28 setIsRealTime:bOOLValue3];
         if (v137)
         {
           [(IDSGenericConnection *)v28 setIdsDeviceConnectionUUID:v137];
           v38 = +[IDSDeviceConnectionAWDMetrics sharedInstance];
           [(IDSGenericConnection *)v28 connectionInitTime];
           v40 = v39;
-          v41 = [(IDSGenericConnection *)v28 idsDeviceConnectionUUID];
-          [v38 setConnectionInitTime:v41 forConnectionUUID:v40];
+          idsDeviceConnectionUUID = [(IDSGenericConnection *)v28 idsDeviceConnectionUUID];
+          [v38 setConnectionInitTime:idsDeviceConnectionUUID forConnectionUUID:v40];
 
           [(IDSGenericConnection *)v28 firstDataPacketReceiveTime];
           if (v42 != 0.0)
@@ -7796,23 +7796,23 @@ LABEL_35:
             v43 = +[IDSDeviceConnectionAWDMetrics sharedInstance];
             [(IDSGenericConnection *)v28 firstDataPacketReceiveTime];
             v45 = v44;
-            v46 = [(IDSGenericConnection *)v28 idsDeviceConnectionUUID];
-            [v43 setFirstPacketReceiveTime:v46 forConnectionUUID:v45];
+            idsDeviceConnectionUUID2 = [(IDSGenericConnection *)v28 idsDeviceConnectionUUID];
+            [v43 setFirstPacketReceiveTime:idsDeviceConnectionUUID2 forConnectionUUID:v45];
           }
         }
 
-        if (![(IDSUTunController *)self isConnected:v28 deviceConnectionInfo:v5])
+        if (![(IDSUTunController *)self isConnected:v28 deviceConnectionInfo:infoCopy])
         {
-          v86 = [v6 objectForKey:IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket];
-          v87 = [v86 BOOLValue];
+          v86 = [optionsCopy objectForKey:IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket];
+          bOOLValue5 = [v86 BOOLValue];
 
-          if (v87)
+          if (bOOLValue5)
           {
             [(IDSGenericConnection *)v28 setShouldSetAllowlistUUIDForStreamingSocket:1];
           }
 
-          v88 = [v6 objectForKey:@"completionHandler"];
-          v89 = [v6 objectForKey:@"completionHandlerQueue"];
+          v88 = [optionsCopy objectForKey:@"completionHandler"];
+          v89 = [optionsCopy objectForKey:@"completionHandlerQueue"];
           [(IDSGenericConnection *)v28 setCompletionQueue:v89];
           [(IDSGenericConnection *)v28 setOpenSocketCompletionHandler:v88];
           goto LABEL_121;
@@ -7820,13 +7820,13 @@ LABEL_35:
 
         [(IDSGenericConnection *)v28 setStateFlags:[(IDSGenericConnection *)v28 stateFlags]| 2];
         v47 = [(IDSGenericConnection *)v28 sd];
-        v136 = [(IDSGenericConnection *)v28 connectError];
+        connectError = [(IDSGenericConnection *)v28 connectError];
         [(IDSGenericConnection *)v28 setSd:0xFFFFFFFFLL];
         [(IDSGenericConnection *)v28 setConnectError:0];
         v48 = TrafficClassForIDSOpenSocketPriorityLevel();
         sub_10062CDEC(v47, v48);
-        v49 = [v6 objectForKey:IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket];
-        v50 = [v49 BOOLValue];
+        v49 = [optionsCopy objectForKey:IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket];
+        bOOLValue6 = [v49 BOOLValue];
 
         if (v47 == -1)
         {
@@ -7835,13 +7835,13 @@ LABEL_35:
 
         else
         {
-          v51 = v50;
+          v51 = bOOLValue6;
         }
 
         if (v51 != 1)
         {
 LABEL_116:
-          if (v128)
+          if (bOOLValue3)
           {
             [(IDSGenericConnection *)v28 setShouldStopBTDatagramLink:1];
             v114 = +[IDSFoundationLog utunController];
@@ -7856,22 +7856,22 @@ LABEL_116:
           }
 
           linkManager = self->_linkManager;
-          v116 = [v5 cbuuid];
-          v117 = [(IDSLinkManager *)linkManager currentLinkType:v116];
+          cbuuid2 = [infoCopy cbuuid];
+          v117 = [(IDSLinkManager *)linkManager currentLinkType:cbuuid2];
 
-          v88 = [v6 objectForKey:@"completionHandlerQueue"];
+          v88 = [optionsCopy objectForKey:@"completionHandlerQueue"];
           v150[0] = _NSConcreteStackBlock;
           v150[1] = 3221225472;
           v150[2] = sub_10063B420;
           v150[3] = &unk_100BE2D50;
           v151 = v28;
-          v152 = v6;
+          v152 = optionsCopy;
           v157 = v47;
           v155 = v117;
           v156 = v133;
-          v153 = v5;
-          v154 = v136;
-          v89 = v136;
+          v153 = infoCopy;
+          v154 = connectError;
+          v89 = connectError;
           dispatch_async(v88, v150);
 
 LABEL_121:
@@ -7924,23 +7924,23 @@ LABEL_114:
         goto LABEL_116;
       }
 
-      v60 = [v5 portMap];
-      v61 = [(IDSGenericConnection *)v28 addressPair];
-      v62 = [v61 localAddress];
-      -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", v60, [v62 saPortHostOrder]);
+      portMap = [infoCopy portMap];
+      addressPair = [(IDSGenericConnection *)v28 addressPair];
+      localAddress = [addressPair localAddress];
+      -[IDSUTunController releasePortIfNecessary:port:](self, "releasePortIfNecessary:port:", portMap, [localAddress saPortHostOrder]);
 
-      [(IDSUTunController *)self removeConnection:v28 fromDeviceConnectionInfo:v5 removeCode:5102 removeReason:@"replace existing connection"];
+      [(IDSUTunController *)self removeConnection:v28 fromDeviceConnectionInfo:infoCopy removeCode:5102 removeReason:@"replace existing connection"];
     }
 
     LOWORD(v164[0]) = -21846;
-    if (sub_1005B07E0([v5 portMap], v164))
+    if (sub_1005B07E0([infoCopy portMap], v164))
     {
       v63 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
-        v64 = [v5 vifName];
+        vifName4 = [infoCopy vifName];
         *buf = 138412802;
-        *v159 = v64;
+        *v159 = vifName4;
         *&v159[8] = 2112;
         *v160 = v7;
         *&v160[8] = 2112;
@@ -7948,13 +7948,13 @@ LABEL_114:
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%@: cannot allocate new port for service %@ name %@", buf, 0x20u);
       }
 
-      queue = [v6 objectForKey:@"completionHandlerQueue"];
+      queue = [optionsCopy objectForKey:@"completionHandlerQueue"];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10063B57C;
       block[3] = &unk_100BE04B0;
-      v147 = v5;
-      v148 = v6;
+      v147 = infoCopy;
+      v148 = optionsCopy;
       v149 = v133;
       v65 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, block);
       dispatch_async(queue, v65);
@@ -7965,7 +7965,7 @@ LABEL_114:
 
     else
     {
-      if ([v5 shouldUseServiceConnector])
+      if ([infoCopy shouldUseServiceConnector])
       {
         v68 = -4222;
       }
@@ -7976,23 +7976,23 @@ LABEL_114:
       }
 
       v124 = v68;
-      v69 = [v5 localSA];
-      queue = [IDSSockAddrWrapper wrapperWithWrapper:v69 andPortHostOrder:LOWORD(v164[0])];
+      localSA = [infoCopy localSA];
+      queue = [IDSSockAddrWrapper wrapperWithWrapper:localSA andPortHostOrder:LOWORD(v164[0])];
 
-      v70 = [v5 remoteSA];
-      v123 = [IDSSockAddrWrapper wrapperWithWrapper:v70 andPortHostOrder:v124];
+      remoteSA = [infoCopy remoteSA];
+      v123 = [IDSSockAddrWrapper wrapperWithWrapper:remoteSA andPortHostOrder:v124];
 
       v122 = [IDSSockAddrWrapperPair wrapperPairWithLocalAddress:queue remoteAddress:v123];
-      LODWORD(v70) = self->_encryptionEnabled;
+      LODWORD(remoteSA) = self->_encryptionEnabled;
       v71 = [IDSGenericConnection alloc];
-      if (v70 & v20)
+      if (remoteSA & v20)
       {
-        v67 = [(IDSGenericConnection *)v71 initWithConnectionID:v144 protocol:v126 keyMaterialLength:60 isCloudEnabled:v127];
+        v67 = [(IDSGenericConnection *)v71 initWithConnectionID:v144 protocol:v126 keyMaterialLength:60 isCloudEnabled:bOOLValue];
 
         do
         {
           v72 = arc4random();
-          v73 = sub_1006C2FC8([v5 outgoingEncryptionTableBySSRC], v72);
+          v73 = sub_1006C2FC8([infoCopy outgoingEncryptionTableBySSRC], v72);
           v74 = v73 == 0;
         }
 
@@ -8005,80 +8005,80 @@ LABEL_114:
         v75 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
         {
-          v76 = [v5 vifName];
+          vifName5 = [infoCopy vifName];
           v77 = LOWORD(v164[0]);
-          v78 = [(IDSGenericConnection *)v67 localConnectionGUID];
-          v79 = v78;
-          v80 = [v78 UTF8String];
-          v81 = [(IDSGenericConnection *)v67 seqSendStart];
+          localConnectionGUID = [(IDSGenericConnection *)v67 localConnectionGUID];
+          v79 = localConnectionGUID;
+          uTF8String = [localConnectionGUID UTF8String];
+          seqSendStart = [(IDSGenericConnection *)v67 seqSendStart];
           *buf = 138413570;
-          *v159 = v76;
+          *v159 = vifName5;
           *&v159[8] = 1024;
           *v160 = v77;
           *&v160[4] = 1024;
           *&v160[6] = v124;
           *v161 = 2080;
-          *&v161[2] = v80;
+          *&v161[2] = uTF8String;
           LOWORD(v162) = 1024;
           *(&v162 + 2) = v72;
           HIWORD(v162) = 1024;
-          v163 = v81;
+          v163 = seqSendStart;
           _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "%@: send setup encrypted channel message ports[%u:::%u] guid[%s] ssrc:%08x startSeq:%04x", buf, 0x2Eu);
         }
 
         v82 = v164[0];
-        v83 = [(IDSGenericConnection *)v67 localConnectionGUID];
-        v84 = [(IDSGenericConnection *)v67 seqSendStart];
-        v85 = sub_1006398CC(v126, v82, v124, v83, 0, v145, v7, v142, v72, SBYTE1(v72), SBYTE2(v72), SBYTE3(v72), v84, SHIBYTE(v84), [(IDSGenericConnection *)v67 localKeyMaterial], [(IDSGenericConnection *)v67 keyMaterialLength]);
+        localConnectionGUID2 = [(IDSGenericConnection *)v67 localConnectionGUID];
+        seqSendStart2 = [(IDSGenericConnection *)v67 seqSendStart];
+        v85 = sub_1006398CC(v126, v82, v124, localConnectionGUID2, 0, v145, v7, v142, v72, SBYTE1(v72), SBYTE2(v72), SBYTE3(v72), seqSendStart2, SHIBYTE(seqSendStart2), [(IDSGenericConnection *)v67 localKeyMaterial], [(IDSGenericConnection *)v67 keyMaterialLength]);
 
-        sub_1006C2CB0([v5 outgoingEncryptionTableBySSRC], -[IDSGenericConnection SSRCSend](v67, "SSRCSend"), v67);
+        sub_1006C2CB0([infoCopy outgoingEncryptionTableBySSRC], -[IDSGenericConnection SSRCSend](v67, "SSRCSend"), v67);
       }
 
       else
       {
-        v67 = [(IDSGenericConnection *)v71 initWithConnectionID:v144 protocol:v126 isCloudEnabled:v127];
+        v67 = [(IDSGenericConnection *)v71 initWithConnectionID:v144 protocol:v126 isCloudEnabled:bOOLValue];
 
         v90 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
         {
-          v91 = [v5 vifName];
+          vifName6 = [infoCopy vifName];
           v92 = LOWORD(v164[0]);
-          v93 = [(IDSGenericConnection *)v67 localConnectionGUID];
-          v94 = v93;
-          v95 = [v93 UTF8String];
+          localConnectionGUID3 = [(IDSGenericConnection *)v67 localConnectionGUID];
+          v94 = localConnectionGUID3;
+          uTF8String2 = [localConnectionGUID3 UTF8String];
           *buf = 138413058;
-          *v159 = v91;
+          *v159 = vifName6;
           *&v159[8] = 1024;
           *v160 = v92;
           *&v160[4] = 1024;
           *&v160[6] = v124;
           *v161 = 2080;
-          *&v161[2] = v95;
+          *&v161[2] = uTF8String2;
           _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%@: send setup channel message ports[%u:::%u] guid[%s]", buf, 0x22u);
         }
 
         v96 = v164[0];
-        v97 = [(IDSGenericConnection *)v67 localConnectionGUID];
-        v85 = sub_100639644(v126, v96, v124, v97, 0, v145, v7, v142, v125, v13);
+        localConnectionGUID4 = [(IDSGenericConnection *)v67 localConnectionGUID];
+        v85 = sub_100639644(v126, v96, v124, localConnectionGUID4, 0, v145, v7, v142, v125, v13);
       }
 
-      v98 = [v6 objectForKeyedSubscript:@"connectionContext"];
+      v98 = [optionsCopy objectForKeyedSubscript:@"connectionContext"];
       v99 = v98;
       if (v98)
       {
-        [v98 setDeviceConnectionInfo:v5];
+        [v98 setDeviceConnectionInfo:infoCopy];
         [v99 setConnection:v67];
-        v100 = [v99 readHandler];
-        [(IDSGenericConnection *)v67 setReadHandler:v100];
+        readHandler3 = [v99 readHandler];
+        [(IDSGenericConnection *)v67 setReadHandler:readHandler3];
 
         v101 = +[IDSFoundationLog utunController];
         if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
         {
-          v102 = [v5 vifName];
-          v103 = [v99 readHandler];
-          v104 = objc_retainBlock(v103);
+          vifName7 = [infoCopy vifName];
+          readHandler4 = [v99 readHandler];
+          v104 = objc_retainBlock(readHandler4);
           *buf = 138412802;
-          *v159 = v102;
+          *v159 = vifName7;
           *&v159[8] = 2048;
           *v160 = v104;
           *&v160[8] = 2112;
@@ -8087,13 +8087,13 @@ LABEL_114:
         }
       }
 
-      [(IDSGenericConnection *)v67 setPriority:v130];
+      [(IDSGenericConnection *)v67 setPriority:integerValue];
       [(IDSGenericConnection *)v67 setSocketTrafficClass:v133];
       [(IDSGenericConnection *)v67 setHasMoreData:1];
       [(IDSGenericConnection *)v67 setStateFlags:1];
-      v105 = [v6 objectForKey:@"completionHandler"];
+      v105 = [optionsCopy objectForKey:@"completionHandler"];
       [(IDSGenericConnection *)v67 setOpenSocketCompletionHandler:v105];
-      v106 = [v6 objectForKey:@"completionHandlerQueue"];
+      v106 = [optionsCopy objectForKey:@"completionHandlerQueue"];
       [(IDSGenericConnection *)v67 setCompletionQueue:v106];
       [(IDSGenericConnection *)v67 setAddressPair:v122];
       [(IDSGenericConnection *)v67 setClientID:v134];
@@ -8102,43 +8102,43 @@ LABEL_114:
         [(IDSGenericConnection *)v67 setIdsDeviceConnectionUUID:v137];
       }
 
-      v107 = [v5 connectionsByID];
-      [v107 setObject:v67 forKey:v144];
+      connectionsByID2 = [infoCopy connectionsByID];
+      [connectionsByID2 setObject:v67 forKey:v144];
 
       v108 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
       {
-        v109 = [v5 vifName];
+        vifName8 = [infoCopy vifName];
         *buf = 138413058;
-        *v159 = v109;
+        *v159 = vifName8;
         *&v159[8] = 2112;
         *v160 = v67;
         *&v160[8] = 2112;
         *v161 = v144;
         *&v161[8] = 2112;
-        v162 = v5;
+        v162 = infoCopy;
         _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, "%@: setting up new connection [%@] for ID [%@] deviceInfo[%@]", buf, 0x2Au);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        [v5 vifName];
+        [infoCopy vifName];
         v120 = v144;
-        v118 = v121 = v5;
+        v118 = v121 = infoCopy;
         v119 = v67;
         _IDSLogV();
       }
 
-      v110 = [v6 objectForKey:{IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket, v118, v119, v120, v121}];
-      v111 = [v110 BOOLValue];
+      v110 = [optionsCopy objectForKey:{IDSOpenSocketOptionSetAllowlistUUIDForStreamingSocket, v118, v119, v120, v121}];
+      bOOLValue7 = [v110 BOOLValue];
 
-      if (v111)
+      if (bOOLValue7)
       {
         [(IDSGenericConnection *)v67 setShouldSetAllowlistUUIDForStreamingSocket:1];
       }
 
-      v112 = [v5 controlChannel];
-      [v112 sendMessage:v85];
+      controlChannel = [infoCopy controlChannel];
+      [controlChannel sendMessage:v85];
 
       [(IDSGenericConnection *)v67 setStateFlags:[(IDSGenericConnection *)v67 stateFlags]| 4];
       if (qword_100CBF438 != -1)
@@ -8147,9 +8147,9 @@ LABEL_114:
       }
 
       [(IDSGenericConnection *)v67 setConnectionSetupStartTime:*&qword_100CBF3C0 * mach_continuous_time()];
-      [(IDSGenericConnection *)v67 setIsDefaultPairedDevice:v135];
-      [(IDSGenericConnection *)v67 setIsRealTime:v128];
-      if (v128)
+      [(IDSGenericConnection *)v67 setIsDefaultPairedDevice:bOOLValue4];
+      [(IDSGenericConnection *)v67 setIsRealTime:bOOLValue3];
+      if (bOOLValue3)
       {
         [(IDSGenericConnection *)v67 setShouldStopBTDatagramLink:1];
         v113 = +[IDSFoundationLog utunController];
@@ -8180,25 +8180,25 @@ LABEL_114:
 LABEL_123:
 }
 
-- (void)closeDataConnectionWithDeviceConnectionInfo:(id)a3 options:(id)a4
+- (void)closeDataConnectionWithDeviceConnectionInfo:(id)info options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"account"];
-  v9 = [v7 objectForKey:@"service"];
-  v10 = [v7 objectForKey:IDSOpenSocketOptionStreamNameKey];
+  infoCopy = info;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKey:@"account"];
+  v9 = [optionsCopy objectForKey:@"service"];
+  v10 = [optionsCopy objectForKey:IDSOpenSocketOptionStreamNameKey];
   v11 = [IDSGenericConnectionID idWithAccount:v8 service:v9 name:v10];
-  v12 = [v6 connectionsByID];
-  v13 = [v12 objectForKey:v11];
+  connectionsByID = [infoCopy connectionsByID];
+  v13 = [connectionsByID objectForKey:v11];
 
   v14 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 vifName];
+    vifName = [infoCopy vifName];
     *buf = 138412802;
-    v30 = v15;
+    v30 = vifName;
     v31 = 2112;
-    v32 = v7;
+    v32 = optionsCopy;
     v33 = 2112;
     v34 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: closeSocketWithOptions called with options [%@] (connection %@)", buf, 0x20u);
@@ -8207,20 +8207,20 @@ LABEL_123:
   if (v13 && ([v13 stateFlags] & 1) != 0)
   {
     v16 = v8;
-    v17 = self;
-    v18 = [v13 localConnectionGUID];
-    v19 = [v13 remoteConnectionGUID];
+    selfCopy = self;
+    localConnectionGUID = [v13 localConnectionGUID];
+    remoteConnectionGUID = [v13 remoteConnectionGUID];
     v28 = v16;
-    v20 = sub_10062D4A4(v18, v19, v16, v9, v10);
+    v20 = sub_10062D4A4(localConnectionGUID, remoteConnectionGUID, v16, v9, v10);
 
     if (v20)
     {
       v21 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 vifName];
+        vifName2 = [infoCopy vifName];
         *buf = 138412802;
-        v30 = v22;
+        v30 = vifName2;
         v31 = 2112;
         v32 = v20;
         v33 = 2112;
@@ -8228,17 +8228,17 @@ LABEL_123:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@: close channel control message [%@] created for connection %@", buf, 0x20u);
       }
 
-      v23 = [v6 controlChannel];
-      [v23 sendMessage:v20];
+      controlChannel = [infoCopy controlChannel];
+      [controlChannel sendMessage:v20];
     }
 
-    v24 = [v6 portMap];
-    v25 = [v13 addressPair];
-    [v25 localAddress];
+    portMap = [infoCopy portMap];
+    addressPair = [v13 addressPair];
+    [addressPair localAddress];
     v26 = v27 = v20;
-    -[IDSUTunController releasePortIfNecessary:port:](v17, "releasePortIfNecessary:port:", v24, [v26 saPortHostOrder]);
+    -[IDSUTunController releasePortIfNecessary:port:](selfCopy, "releasePortIfNecessary:port:", portMap, [v26 saPortHostOrder]);
 
-    [(IDSUTunController *)v17 removeConnection:v13 fromDeviceConnectionInfo:v6 removeCode:5103 removeReason:@"closeSocketWithOptions called"];
+    [(IDSUTunController *)selfCopy removeConnection:v13 fromDeviceConnectionInfo:infoCopy removeCode:5103 removeReason:@"closeSocketWithOptions called"];
     v8 = v28;
   }
 }
@@ -8267,10 +8267,10 @@ LABEL_123:
   }
 
   v6 = +[IDSPairingManager sharedInstance];
-  v7 = [v6 pairedDevicePublicKey];
+  pairedDevicePublicKey = [v6 pairedDevicePublicKey];
 
   v13 = 0;
-  v8 = [IDSMPPublicLegacyIdentity identityWithData:v7 error:&v13];
+  v8 = [IDSMPPublicLegacyIdentity identityWithData:pairedDevicePublicKey error:&v13];
   v9 = v13;
   if (v8)
   {
@@ -8287,7 +8287,7 @@ LABEL_123:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v7;
+      v15 = pairedDevicePublicKey;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Failed creating public identity from data: %@  (Error: %@)", buf, 0x16u);
@@ -8300,11 +8300,11 @@ LABEL_13:
   return v10;
 }
 
-- (id)_prepareConnectionInfoWithCBUUID:(id)a3 deviceUniqueID:(id)a4 shouldUseServiceConnector:(BOOL)a5 identityPair:(id)a6 remoteDeviceEncryptionInfo:(id)a7
+- (id)_prepareConnectionInfoWithCBUUID:(id)d deviceUniqueID:(id)iD shouldUseServiceConnector:(BOOL)connector identityPair:(id)pair remoteDeviceEncryptionInfo:(id)info
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = [(IDSUTunController *)self setupNewDeviceConnectionInfoForCbuuid:v12 deviceUniqueID:a4 identityPair:a6 remoteDeviceEncryptionInfo:a7 shouldUseServiceConnector:v9];
+  connectorCopy = connector;
+  dCopy = d;
+  v13 = [(IDSUTunController *)self setupNewDeviceConnectionInfoForCbuuid:dCopy deviceUniqueID:iD identityPair:pair remoteDeviceEncryptionInfo:info shouldUseServiceConnector:connectorCopy];
   if (v13)
   {
     [(IDSLinkManager *)self->_linkManager triggerFixedInterfaceLinksDidConnect];
@@ -8317,7 +8317,7 @@ LABEL_13:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v12;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: UTunController unable to create new device - cannot continue", &v17, 0xCu);
     }
   }
@@ -8325,20 +8325,20 @@ LABEL_13:
   return v13;
 }
 
-- (void)prepareDefaultPairedConnectionInfoWithDeviceUniqueID:(id)a3 shouldUseServiceConnector:(BOOL)a4
+- (void)prepareDefaultPairedConnectionInfoWithDeviceUniqueID:(id)d shouldUseServiceConnector:(BOOL)connector
 {
-  v5 = a3;
-  v4 = v5;
+  dCopy = d;
+  v4 = dCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)openSocketWithOptions:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)openSocketWithOptions:(id)options queue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 mutableCopy];
-  v11 = [v9 copy];
+  optionsCopy = options;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v10 = [optionsCopy mutableCopy];
+  v11 = [handlerCopy copy];
 
   v12 = objc_retainBlock(v11);
   if (v12)
@@ -8346,9 +8346,9 @@ LABEL_13:
     CFDictionarySetValue(v10, @"completionHandler", v12);
   }
 
-  if (v8)
+  if (queueCopy)
   {
-    v13 = v8;
+    v13 = queueCopy;
   }
 
   else
@@ -8365,9 +8365,9 @@ LABEL_13:
 LABEL_7:
   v14 = [(__CFDictionary *)v10 objectForKey:IDSOpenSocketOptionCBUUIDKey];
   v15 = [(__CFDictionary *)v10 objectForKey:IDSDevicePropertyDefaultPairedDevice];
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue)
   {
     v17 = IDSDeviceDefaultPairedDeviceUniqueID;
   }
@@ -8387,57 +8387,57 @@ LABEL_7:
   [(__CFDictionary *)v10 objectForKeyedSubscript:IDSOpenSocketOptionRemoteDeviceEncryptionInfoKey];
   v25 = v14;
   v26 = v10;
-  v27 = v7;
+  v27 = optionsCopy;
   v29 = v28 = v17;
   v20 = v29;
   v21 = v17;
-  v22 = v7;
+  v22 = optionsCopy;
   v23 = v10;
   v24 = v14;
   IDSTransportThreadAddBlock();
 }
 
-- (void)cleanupSocketsForClient:(id)a3
+- (void)cleanupSocketsForClient:(id)client
 {
-  v4 = a3;
-  v3 = v4;
+  clientCopy = client;
+  v3 = clientCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)closeSocketWithOptions:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)closeSocketWithOptions:(id)options queue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v11;
-  v9 = v12;
-  v10 = v7;
+  optionsCopy = options;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v8 = queueCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)doCheckSuspendTrafficForDevice:(id)a3
+- (void)doCheckSuspendTrafficForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (qword_100CBF438 != -1)
   {
     sub_10092D900();
   }
 
   v5 = *&qword_100CBF3C0 * mach_continuous_time();
-  [v4 suspendTrafficCheckTime];
+  [deviceCopy suspendTrafficCheckTime];
   if (v6 <= v5)
   {
-    v10 = [v4 connectionsByID];
-    v11 = [v10 count];
+    connectionsByID = [deviceCopy connectionsByID];
+    v11 = [connectionsByID count];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v4 connectionsByID];
-    v13 = [v12 allValues];
+    connectionsByID2 = [deviceCopy connectionsByID];
+    allValues = [connectionsByID2 allValues];
 
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v34 count:16];
+    v14 = [allValues countByEnumeratingWithState:&v20 objects:v34 count:16];
     if (v14)
     {
       v15 = v14;
@@ -8449,13 +8449,13 @@ LABEL_7:
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allValues);
           }
 
           v16 += [*(*(&v20 + 1) + 8 * i) suspended];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v34 count:16];
+        v15 = [allValues countByEnumeratingWithState:&v20 objects:v34 count:16];
       }
 
       while (v15);
@@ -8478,32 +8478,32 @@ LABEL_7:
 
     if (v11 == v16)
     {
-      if (v4[2079])
+      if (deviceCopy[2079])
       {
         os_channel_get_fd();
       }
 
       else
       {
-        [v4 utunSocket];
+        [deviceCopy utunSocket];
       }
 
       IDSTransportThreadSuspendSocket();
-      [v4 setSuspendTraffic:1];
-      [(IDSLinkManager *)self->_linkManager stopLinkForDeviceUniqueID:v4[2] cbuuid:v4[1] disconnectWP:1];
+      [deviceCopy setSuspendTraffic:1];
+      [(IDSLinkManager *)self->_linkManager stopLinkForDeviceUniqueID:deviceCopy[2] cbuuid:deviceCopy[1] disconnectWP:1];
     }
 
     else
     {
-      [v4 setSuspendTraffic:0];
+      [deviceCopy setSuspendTraffic:0];
     }
 
-    [v4 setSuspendTrafficCheckTime:0.0];
+    [deviceCopy setSuspendTrafficCheckTime:0.0];
   }
 
   else
   {
-    [v4 suspendTrafficCheckTime];
+    [deviceCopy suspendTrafficCheckTime];
     v8 = v7 - v5 + 0.5;
     v9 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -8517,28 +8517,28 @@ LABEL_7:
     v25 = 3221225472;
     v26 = sub_10063E44C;
     v27 = &unk_100BD9AA8;
-    v28 = self;
-    v29 = v4;
+    selfCopy = self;
+    v29 = deviceCopy;
     IDSTransportThreadAddBlockAfter();
   }
 }
 
-- (void)checkSuspendTrafficForDevice:(id)a3 wait:(BOOL)a4
+- (void)checkSuspendTrafficForDevice:(id)device wait:(BOOL)wait
 {
-  v6 = a3;
+  deviceCopy = device;
   if (qword_100CBF438 != -1)
   {
     sub_10092D900();
   }
 
   v7 = mach_continuous_time();
-  if (a4)
+  if (wait)
   {
     v8 = *&qword_100CBF3C0 * v7;
-    [v6 suspendTrafficCheckTime];
+    [deviceCopy suspendTrafficCheckTime];
     if (v9 == 0.0)
     {
-      [v6 setSuspendTrafficCheckTime:v8 + 15.0];
+      [deviceCopy setSuspendTrafficCheckTime:v8 + 15.0];
       v10 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -8547,7 +8547,7 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Scheduling a suspend traffic check in %0.2lf seconds", buf, 0xCu);
       }
 
-      v14 = v6;
+      v14 = deviceCopy;
       IDSTransportThreadAddBlockAfter();
     }
 
@@ -8557,57 +8557,57 @@ LABEL_7:
       v12 = v8 + 15.0;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 suspendTrafficCheckTime];
+        [deviceCopy suspendTrafficCheckTime];
         *buf = 134217984;
         v16 = v12 - v13;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Extending suspend traffic check by %0.2lf seconds", buf, 0xCu);
       }
 
-      [v6 setSuspendTrafficCheckTime:v12];
+      [deviceCopy setSuspendTrafficCheckTime:v12];
     }
   }
 
   else
   {
-    [v6 setSuspendTrafficCheckTime:0.0];
-    [(IDSUTunController *)self doCheckSuspendTrafficForDevice:v6];
+    [deviceCopy setSuspendTrafficCheckTime:0.0];
+    [(IDSUTunController *)self doCheckSuspendTrafficForDevice:deviceCopy];
   }
 }
 
-- (void)suspendSocketWithOptions:(id)a3
+- (void)suspendSocketWithOptions:(id)options
 {
-  v4 = a3;
-  v3 = v4;
+  optionsCopy = options;
+  v3 = optionsCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (BOOL)peerSupportsASQUIC:(id)a3
+- (BOOL)peerSupportsASQUIC:(id)c
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"account"];
-  v5 = [v3 objectForKey:@"service"];
-  v6 = [v3 objectForKey:IDSOpenSocketOptionStreamNameKey];
+  cCopy = c;
+  v4 = [cCopy objectForKey:@"account"];
+  v5 = [cCopy objectForKey:@"service"];
+  v6 = [cCopy objectForKey:IDSOpenSocketOptionStreamNameKey];
 
   v7 = [IDSGenericConnectionID idWithAccount:v4 service:v5 name:v6];
   v8 = [NSString stringWithUTF8String:"61314"];
   v9 = [NSUUID alloc];
   v10 = +[IDSPairingManager sharedInstance];
-  v11 = [v10 pairedDeviceUUIDString];
-  v12 = [v9 initWithUUIDString:v11];
+  pairedDeviceUUIDString = [v10 pairedDeviceUUIDString];
+  v12 = [v9 initWithUUIDString:pairedDeviceUUIDString];
 
   if (v12)
   {
     v13 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v12];
     v14 = [NREndpoint alloc];
-    v15 = [v7 serviceConnectorServiceForAccount];
-    v16 = [v14 initWithDeviceIdentifier:v13 portString:v8 dataProtectionClass:4 service:v15];
+    serviceConnectorServiceForAccount = [v7 serviceConnectorServiceForAccount];
+    v16 = [v14 initWithDeviceIdentifier:v13 portString:v8 dataProtectionClass:4 service:serviceConnectorServiceForAccount];
 
-    v17 = [v16 usesASQUIC];
+    usesASQUIC = [v16 usesASQUIC];
     v18 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = @"NO";
-      if (v17)
+      if (usesASQUIC)
       {
         v19 = @"YES";
       }
@@ -8627,29 +8627,29 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "peerSupportsASQUIC: no paired device found", &v21, 2u);
     }
 
-    LOBYTE(v17) = 0;
+    LOBYTE(usesASQUIC) = 0;
   }
 
-  return v17;
+  return usesASQUIC;
 }
 
-- (void)resumeSocketWithOptions:(id)a3 shouldLogCall:(BOOL)a4
+- (void)resumeSocketWithOptions:(id)options shouldLogCall:(BOOL)call
 {
-  v5 = a3;
-  v4 = v5;
+  optionsCopy = options;
+  v4 = optionsCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)releasePortIfNecessary:(IDSPortMap *)a3 port:(unsigned __int16)a4
+- (void)releasePortIfNecessary:(IDSPortMap *)necessary port:(unsigned __int16)port
 {
-  v4 = a4;
-  if ((a4 & 0xFFFE) == 0x400)
+  portCopy = port;
+  if ((port & 0xFFFE) == 0x400)
   {
     v5 = +[IDSFoundationLog utunController];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v4;
+      v6[1] = portCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "can't release a reserved port: %u", v6, 8u);
     }
   }
@@ -8657,113 +8657,113 @@ LABEL_7:
   else
   {
 
-    sub_1005B0FD0(a3, a4);
+    sub_1005B0FD0(necessary, port);
   }
 }
 
-- (void)startUDPGlobalLinkForDevice:(id)a3
+- (void)startUDPGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)stopUDPGlobalLinkForDevice:(id)a3
+- (void)stopUDPGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)createConnectionDataForDevice:(id)a3 localPartyID:(id)a4 dataReadyHandler:(id)a5
+- (void)createConnectionDataForDevice:(id)device localPartyID:(id)d dataReadyHandler:(id)handler
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  deviceCopy = device;
+  dCopy = d;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = dCopy;
+  v10 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)processRemoteConnectionDataForDevice:(id)a3 remoteConnectionData:(id)a4 completionHandler:(id)a5
+- (void)processRemoteConnectionDataForDevice:(id)device remoteConnectionData:(id)data completionHandler:(id)handler
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  deviceCopy = device;
+  dataCopy = data;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = dataCopy;
+  v10 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check
 {
-  v7 = a3;
-  v10 = a5;
-  v8 = v10;
-  v9 = v7;
+  deviceCopy = device;
+  dCopy = d;
+  v8 = dCopy;
+  v9 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)stopGlobalLinkForDevice:(id)a3
+- (void)stopGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)startGlobalLinkForDevice:(id)a3
+- (void)startGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)connectGlobalLinkForDevice:(id)a3 sessionInfo:(id)a4 connectReadyHandler:(id)a5 withLocalInterfacePreference:(int)a6
+- (void)connectGlobalLinkForDevice:(id)device sessionInfo:(id)info connectReadyHandler:(id)handler withLocalInterfacePreference:(int)preference
 {
-  v8 = a3;
-  v12 = a4;
-  v13 = a5;
-  v9 = v13;
-  v10 = v12;
-  v11 = v8;
+  deviceCopy = device;
+  infoCopy = info;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  v10 = infoCopy;
+  v11 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)disconnectGlobalLinkForDevice:(id)a3 isReinitiating:(BOOL)a4 completionHandler:(id)a5
+- (void)disconnectGlobalLinkForDevice:(id)device isReinitiating:(BOOL)reinitiating completionHandler:(id)handler
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  deviceCopy = device;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)handleAllocateRequestFailureForDevice:(id)a3 requestID:(id)a4 errorCode:(int)a5
+- (void)handleAllocateRequestFailureForDevice:(id)device requestID:(id)d errorCode:(int)code
 {
-  v6 = a3;
-  v9 = a4;
-  v7 = v9;
-  v8 = v6;
+  deviceCopy = device;
+  dCopy = d;
+  v7 = dCopy;
+  v8 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)getLinkInformationForDevice:(id)a3 completionHandler:(id)a4
+- (void)getLinkInformationForDevice:(id)device completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  deviceCopy = device;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)obliterateConnectionInfoForCBUUID:(id)a3
+- (void)obliterateConnectionInfoForCBUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSPairingManager sharedInstance];
-  v6 = [v5 pairedDeviceUUIDString];
-  v7 = [v4 isEqualToString:v6];
+  pairedDeviceUUIDString = [v5 pairedDeviceUUIDString];
+  v7 = [dCopy isEqualToString:pairedDeviceUUIDString];
 
   if (v7)
   {
@@ -8782,36 +8782,36 @@ LABEL_7:
   }
 }
 
-- (void)obliterateConnectionInfoForCBUUID:(id)a3 completionBlock:(id)a4 completionQueue:(id)a5
+- (void)obliterateConnectionInfoForCBUUID:(id)d completionBlock:(id)block completionQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = a5;
-  v13 = v8;
-  v9 = v12;
-  v10 = v8;
-  v11 = v7;
+  dCopy = d;
+  blockCopy = block;
+  queueCopy = queue;
+  v13 = blockCopy;
+  v9 = queueCopy;
+  v10 = blockCopy;
+  v11 = dCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)addPairedDevice:(id)a3 shouldPairDirectlyOverIPsec:(BOOL)a4
+- (void)addPairedDevice:(id)device shouldPairDirectlyOverIPsec:(BOOL)psec
 {
-  v5 = a3;
-  v4 = v5;
+  deviceCopy = device;
+  v4 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)connectPairedDevice:(id)a3
+- (void)connectPairedDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)deletePairedDevice:(id)a3
+- (void)deletePairedDevice:(id)device
 {
-  v4 = a3;
-  v3 = v4;
+  deviceCopy = device;
+  v3 = deviceCopy;
   IDSTransportThreadAddBlock();
 }
 
@@ -8830,11 +8830,11 @@ LABEL_7:
   return v2;
 }
 
-- (id)onTransportThread_PerServiceDataTransferredForDevice:(id)a3 services:(id)a4
+- (id)onTransportThread_PerServiceDataTransferredForDevice:(id)device services:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  deviceCopy = device;
+  servicesCopy = services;
+  if ([deviceCopy length])
   {
     *&v25 = 0;
     *(&v25 + 1) = &v25;
@@ -8842,22 +8842,22 @@ LABEL_7:
     v27 = sub_10000AAB4;
     v28 = sub_10000BCCC;
     v29 = 0;
-    v8 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, v6);
+    v8 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, deviceCopy);
     if (v8)
     {
       os_unfair_lock_lock(&unk_100CBF440);
       v9 = [qword_100CBF3B0 mutableCopy];
       os_unfair_lock_unlock(&unk_100CBF440);
-      v10 = [v8 connectionsTableByLocalRemotePortKey];
+      connectionsTableByLocalRemotePortKey = [v8 connectionsTableByLocalRemotePortKey];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10064115C;
       v17[3] = &unk_100BE2F50;
-      v18 = v7;
+      v18 = servicesCopy;
       v20 = &v25;
       v11 = v9;
       v19 = v11;
-      sub_10000C280(v10, v17);
+      sub_10000C280(connectionsTableByLocalRemotePortKey, v17);
     }
 
     v12 = OSLogHandleForIDSCategory();
@@ -8897,11 +8897,11 @@ LABEL_7:
   return v14;
 }
 
-- (id)perServiceDataTransferredForDevice:(id)a3 services:(id)a4
+- (id)perServiceDataTransferredForDevice:(id)device services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  deviceCopy = device;
+  servicesCopy = services;
+  if ([deviceCopy length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -8909,8 +8909,8 @@ LABEL_7:
     v14 = sub_10000AAB4;
     v15 = sub_10000BCCC;
     v16 = 0;
-    v10 = v5;
-    v11 = v6;
+    v10 = deviceCopy;
+    v11 = servicesCopy;
     IDSTransportThreadAddSyncBlock();
     v7 = *(*(&buf + 1) + 40);
 
@@ -8933,11 +8933,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)perServiceDataSentForDevice:(id)a3 services:(id)a4
+- (id)perServiceDataSentForDevice:(id)device services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  deviceCopy = device;
+  servicesCopy = services;
+  if ([deviceCopy length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -8945,8 +8945,8 @@ LABEL_7:
     v14 = sub_10000AAB4;
     v15 = sub_10000BCCC;
     v16 = 0;
-    v10 = v5;
-    v11 = v6;
+    v10 = deviceCopy;
+    v11 = servicesCopy;
     IDSTransportThreadAddSyncBlock();
     v7 = *(*(&buf + 1) + 40);
 
@@ -8969,11 +8969,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)perServiceDataReceivedForDevice:(id)a3 services:(id)a4
+- (id)perServiceDataReceivedForDevice:(id)device services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  deviceCopy = device;
+  servicesCopy = services;
+  if ([deviceCopy length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -8981,8 +8981,8 @@ LABEL_7:
     v14 = sub_10000AAB4;
     v15 = sub_10000BCCC;
     v16 = 0;
-    v10 = v5;
-    v11 = v6;
+    v10 = deviceCopy;
+    v11 = servicesCopy;
     IDSTransportThreadAddSyncBlock();
     v7 = *(*(&buf + 1) + 40);
 
@@ -9005,16 +9005,16 @@ LABEL_7:
   return v7;
 }
 
-- (unint64_t)totalPacketsSentForDevice:(id)a3 services:(id)a4
+- (unint64_t)totalPacketsSentForDevice:(id)device services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  servicesCopy = services;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v9 = v5;
-  v10 = v6;
+  v9 = deviceCopy;
+  v10 = servicesCopy;
   IDSTransportThreadAddSyncBlock();
   v7 = v12[3];
 
@@ -9022,16 +9022,16 @@ LABEL_7:
   return v7;
 }
 
-- (unint64_t)totalPacketsReceivedForDevice:(id)a3 services:(id)a4
+- (unint64_t)totalPacketsReceivedForDevice:(id)device services:(id)services
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  servicesCopy = services;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v9 = v5;
-  v10 = v6;
+  v9 = deviceCopy;
+  v10 = servicesCopy;
   IDSTransportThreadAddSyncBlock();
   v7 = v12[3];
 
@@ -9039,35 +9039,35 @@ LABEL_7:
   return v7;
 }
 
-- (void)setLinkPreferences:(id)a3
+- (void)setLinkPreferences:(id)preferences
 {
-  v4 = a3;
-  v3 = v4;
+  preferencesCopy = preferences;
+  v3 = preferencesCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)sendOTRNegotiationMessage:(id)a3 negotiationCount:(unsigned int)a4 negotiationData:(id)a5
+- (void)sendOTRNegotiationMessage:(id)message negotiationCount:(unsigned int)count negotiationData:(id)data
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  messageCopy = message;
+  dataCopy = data;
+  v7 = dataCopy;
+  v8 = messageCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)sendSuspendOTRNegotiationMessage:(id)a3
+- (void)sendSuspendOTRNegotiationMessage:(id)message
 {
-  v4 = a3;
-  v3 = v4;
+  messageCopy = message;
+  v3 = messageCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)link:(id)a3 didConnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didConnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, v10);
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v11 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, cbuuidCopy);
   v12 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -9085,30 +9085,30 @@ LABEL_7:
   if (v11)
   {
     v13 = +[IDSDevicePolicyController sharedInstance];
-    v14 = [v13 shouldBlackOutDeviceWithCbuuid:v10];
+    v14 = [v13 shouldBlackOutDeviceWithCbuuid:cbuuidCopy];
 
     if (v14)
     {
       v15 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v11 controlChannel];
-        v17 = [v16 deviceUniqueID];
+        controlChannel = [v11 controlChannel];
+        deviceUniqueID = [controlChannel deviceUniqueID];
         *buf = 138412546;
-        v24 = v10;
+        v24 = cbuuidCopy;
         v25 = 2112;
-        v26 = v17;
+        v26 = deviceUniqueID;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Device %@/%@ is blacked out due to fairplay failures", buf, 0x16u);
       }
 
-      [(IDSLinkManager *)self->_linkManager stopLinkForDeviceUniqueID:v9 cbuuid:v10 disconnectWP:1];
+      [(IDSLinkManager *)self->_linkManager stopLinkForDeviceUniqueID:dCopy cbuuid:cbuuidCopy disconnectWP:1];
     }
 
     else
     {
-      v18 = [v11 vifName];
-      v19 = v18;
-      sub_100642B5C([v18 UTF8String], 1);
+      vifName = [v11 vifName];
+      v19 = vifName;
+      sub_100642B5C([vifName UTF8String], 1);
 
       if (([v11 linkLayerConnected] & 1) == 0)
       {
@@ -9120,7 +9120,7 @@ LABEL_7:
 
         mach_continuous_time();
         [v11 linkLayerDisconnectTime];
-        if ([v10 isEqualToString:kIDSDefaultPairedDeviceID])
+        if ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID])
         {
           v20 = +[IDSFoundationLog utunController];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -9129,8 +9129,8 @@ LABEL_7:
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "link is connected for default paired device, check suspended OTR sessions...", buf, 2u);
           }
 
-          v21 = [v11 controlChannel];
-          [v21 resumeOTRNegotiation];
+          controlChannel2 = [v11 controlChannel];
+          [controlChannel2 resumeOTRNegotiation];
         }
       }
 
@@ -9151,12 +9151,12 @@ LABEL_7:
   }
 }
 
-- (void)link:(id)a3 didDisconnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didDisconnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, v10);
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v11 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, cbuuidCopy);
   v12 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -9173,9 +9173,9 @@ LABEL_7:
 
   if (v11)
   {
-    v13 = [v11 vifName];
-    v14 = v13;
-    sub_100642B5C([v13 UTF8String], 0);
+    vifName = [v11 vifName];
+    v14 = vifName;
+    sub_100642B5C([vifName UTF8String], 0);
 
     if ([v11 linkLayerConnected])
     {
@@ -9188,7 +9188,7 @@ LABEL_7:
       [v11 setLinkLayerDisconnectTime:*&qword_100CBF3C0 * mach_continuous_time()];
     }
 
-    if ([v10 isEqualToString:{kIDSDefaultPairedDeviceID, v15}])
+    if ([cbuuidCopy isEqualToString:{kIDSDefaultPairedDeviceID, v15}])
     {
       if (v11[2079])
       {
@@ -9220,10 +9220,10 @@ LABEL_7:
   }
 }
 
-- (void)link:(id)a3 hasSpaceAvailable:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6
+- (void)link:(id)link hasSpaceAvailable:(BOOL)available deviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v6 = a4;
-  v7 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, a6);
+  availableCopy = available;
+  v7 = sub_10000FAC0(&self->_deviceConnectionInfoTableByCbuuid, cbuuid);
   if (v7)
   {
     v8 = +[IDSFoundationLog utunController];
@@ -9231,14 +9231,14 @@ LABEL_7:
     {
       v9 = v7[1];
       v11[0] = 67109378;
-      v11[1] = v6;
+      v11[1] = availableCopy;
       v12 = 2112;
       v13 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[throughput] Has space available(%d) for device %@", v11, 0x12u);
     }
 
     v10 = v7[2079];
-    if (v6)
+    if (availableCopy)
     {
       if (v10)
       {
@@ -9270,30 +9270,30 @@ LABEL_7:
   }
 }
 
-- (void)didUpdatePairedDevice:(id)a3
+- (void)didUpdatePairedDevice:(id)device
 {
-  v3 = [(IDSUTunController *)self defaultPairedDeviceIdentityPair];
+  defaultPairedDeviceIdentityPair = [(IDSUTunController *)self defaultPairedDeviceIdentityPair];
   v4 = +[IDSFoundationLog utunController];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = v3;
+    v7 = defaultPairedDeviceIdentityPair;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "localdevicecontroller callback [%@]", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = defaultPairedDeviceIdentityPair;
   IDSTransportThreadAddBlock();
 }
 
 - (void)clearStats
 {
   os_unfair_lock_lock(&unk_100CBF440);
-  v2 = [qword_100CBF3B0 allValues];
+  allValues = [qword_100CBF3B0 allValues];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -9305,7 +9305,7 @@ LABEL_7:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v8 + 1) + 8 * v6);
@@ -9321,7 +9321,7 @@ LABEL_7:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -9330,42 +9330,42 @@ LABEL_7:
   os_unfair_lock_unlock(&unk_100CBF440);
 }
 
-- (unint64_t)onTransportThread_SendWithConnectionContext:(id)a3 packetBuffer:(id *)a4
+- (unint64_t)onTransportThread_SendWithConnectionContext:(id)context packetBuffer:(id *)buffer
 {
-  v6 = a3;
+  contextCopy = context;
   IDSLinkPacketBufferAddBufferStart();
-  v7 = [v6 connection];
-  v8 = [v7 uint32Key];
+  connection = [contextCopy connection];
+  uint32Key = [connection uint32Key];
 
-  *a4->var0 = HIBYTE(v8);
-  a4->var0[1] = BYTE2(v8);
-  a4->var0[2] = BYTE1(v8);
-  a4->var0[3] = v8;
-  a4->var0[4] = BYTE1(a4->var2);
-  a4->var0[5] = a4->var2;
-  a4->var0[7] = 0;
-  a4->var0[6] = 0;
-  var0 = a4->var0;
-  var2 = a4->var2;
-  v11 = [v6 deviceConnectionInfo];
+  *buffer->var0 = HIBYTE(uint32Key);
+  buffer->var0[1] = BYTE2(uint32Key);
+  buffer->var0[2] = BYTE1(uint32Key);
+  buffer->var0[3] = uint32Key;
+  buffer->var0[4] = BYTE1(buffer->var2);
+  buffer->var0[5] = buffer->var2;
+  buffer->var0[7] = 0;
+  buffer->var0[6] = 0;
+  var0 = buffer->var0;
+  var2 = buffer->var2;
+  deviceConnectionInfo = [contextCopy deviceConnectionInfo];
 
   LOBYTE(v13) = 1;
-  [(IDSUTunController *)self handleIPPayload:var0 bytesLength:var2 source:0 destination:0 upperProtocol:17 forDeviceConnectionInfo:v11 flush:v13 callerShouldStop:0];
+  [(IDSUTunController *)self handleIPPayload:var0 bytesLength:var2 source:0 destination:0 upperProtocol:17 forDeviceConnectionInfo:deviceConnectionInfo flush:v13 callerShouldStop:0];
 
   _IDSLinkPacketBufferRelease();
   return 0;
 }
 
-- (BOOL)isConnected:(id)a3 deviceConnectionInfo:(id)a4
+- (BOOL)isConnected:(id)connected deviceConnectionInfo:(id)info
 {
-  v5 = a3;
-  if ([a4 shouldUseServiceConnector])
+  connectedCopy = connected;
+  if ([info shouldUseServiceConnector])
   {
-    v6 = [v5 serviceConnection];
-    if (v6)
+    serviceConnection = [connectedCopy serviceConnection];
+    if (serviceConnection)
     {
-      v7 = [v5 connectError];
-      v8 = v7 == 0;
+      connectError = [connectedCopy connectError];
+      v8 = connectError == 0;
     }
 
     else
@@ -9376,14 +9376,14 @@ LABEL_7:
 
   else
   {
-    if ([v5 sd] == -1)
+    if ([connectedCopy sd] == -1)
     {
       v8 = 0;
       goto LABEL_8;
     }
 
-    v6 = [v5 connectError];
-    v8 = v6 != 0;
+    serviceConnection = [connectedCopy connectError];
+    v8 = serviceConnection != 0;
   }
 
 LABEL_8:

@@ -1,22 +1,22 @@
 @interface WFGalleryPage
 + (NSDictionary)properties;
-- (WFGalleryPage)initWithIdentifier:(id)a3 name:(id)a4 minVersion:(id)a5 isRoot:(id)a6 banners:(id)a7 collections:(id)a8 language:(id)a9 base:(id)a10 persistentIdentifier:(id)a11;
-- (id)subPageMatchingName:(id)a3;
-- (id)subPageWithIdentifier:(id)a3;
+- (WFGalleryPage)initWithIdentifier:(id)identifier name:(id)name minVersion:(id)version isRoot:(id)root banners:(id)banners collections:(id)collections language:(id)language base:(id)self0 persistentIdentifier:(id)self1;
+- (id)subPageMatchingName:(id)name;
+- (id)subPageWithIdentifier:(id)identifier;
 @end
 
 @implementation WFGalleryPage
 
-- (id)subPageWithIdentifier:(id)a3
+- (id)subPageWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFGalleryPage *)self identifier];
-  v6 = [v5 isEqual:v4];
+  identifierCopy = identifier;
+  identifier = [(WFGalleryPage *)self identifier];
+  v6 = [identifier isEqual:identifierCopy];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -25,8 +25,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(WFGalleryPage *)self banners];
-    v9 = [v8 valueForKey:@"detailPage"];
+    banners = [(WFGalleryPage *)self banners];
+    v9 = [banners valueForKey:@"detailPage"];
 
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
@@ -42,10 +42,10 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) subPageWithIdentifier:v4];
+          v14 = [*(*(&v17 + 1) + 8 * i) subPageWithIdentifier:identifierCopy];
           if (v14)
           {
-            v7 = v14;
+            selfCopy = v14;
 
             goto LABEL_13;
           }
@@ -61,22 +61,22 @@
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)subPageMatchingName:(id)a3
+- (id)subPageMatchingName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFGalleryPage *)self name];
-  v6 = [v5 rangeOfString:v4 options:129];
+  nameCopy = name;
+  name = [(WFGalleryPage *)self name];
+  v6 = [name rangeOfString:nameCopy options:129];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -84,8 +84,8 @@ LABEL_13:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(WFGalleryPage *)self banners];
-    v8 = [v7 valueForKey:@"detailPage"];
+    banners = [(WFGalleryPage *)self banners];
+    v8 = [banners valueForKey:@"detailPage"];
 
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
@@ -101,10 +101,10 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) subPageMatchingName:v4];
+          v13 = [*(*(&v17 + 1) + 8 * i) subPageMatchingName:nameCopy];
           if (v13)
           {
-            v14 = v13;
+            selfCopy = v13;
 
             goto LABEL_13;
           }
@@ -120,65 +120,65 @@ LABEL_13:
       }
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = self;
+    selfCopy = self;
   }
 
 LABEL_13:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return selfCopy;
 }
 
-- (WFGalleryPage)initWithIdentifier:(id)a3 name:(id)a4 minVersion:(id)a5 isRoot:(id)a6 banners:(id)a7 collections:(id)a8 language:(id)a9 base:(id)a10 persistentIdentifier:(id)a11
+- (WFGalleryPage)initWithIdentifier:(id)identifier name:(id)name minVersion:(id)version isRoot:(id)root banners:(id)banners collections:(id)collections language:(id)language base:(id)self0 persistentIdentifier:(id)self1
 {
-  v44 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  identifierCopy = identifier;
+  nameCopy = name;
+  versionCopy = version;
+  rootCopy = root;
+  bannersCopy = banners;
+  collectionsCopy = collections;
+  languageCopy = language;
+  baseCopy = base;
+  persistentIdentifierCopy = persistentIdentifier;
   v45.receiver = self;
   v45.super_class = WFGalleryPage;
   v24 = [(WFGalleryPage *)&v45 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_identifier, a3);
-    v26 = [v16 copy];
+    objc_storeStrong(&v24->_identifier, identifier);
+    v26 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v26;
 
-    v28 = [v17 copy];
+    v28 = [versionCopy copy];
     minVersion = v25->_minVersion;
     v25->_minVersion = v28;
 
-    v30 = [v18 copy];
+    v30 = [rootCopy copy];
     isRoot = v25->_isRoot;
     v25->_isRoot = v30;
 
-    v32 = [v19 copy];
+    v32 = [bannersCopy copy];
     banners = v25->_banners;
     v25->_banners = v32;
 
-    v34 = [v20 copy];
+    v34 = [collectionsCopy copy];
     collections = v25->_collections;
     v25->_collections = v34;
 
-    v36 = [v21 copy];
+    v36 = [languageCopy copy];
     language = v25->_language;
     v25->_language = v36;
 
-    objc_storeStrong(&v25->_base, a10);
-    v38 = [v23 copy];
+    objc_storeStrong(&v25->_base, base);
+    v38 = [persistentIdentifierCopy copy];
     persistentIdentifier = v25->_persistentIdentifier;
     v25->_persistentIdentifier = v38;
 

@@ -1,10 +1,10 @@
 @interface AVAudioDevice
-- (AVAudioDevice)initWithDeviceID:(id)a3;
-- (BOOL)copyStreamIDArray:(unsigned int *)a3 length:(unsigned int *)a4;
-- (BOOL)deviceHasNonTapStreamsInStreamList:(unsigned int *)a3 length:(unsigned int)a4;
+- (AVAudioDevice)initWithDeviceID:(id)d;
+- (BOOL)copyStreamIDArray:(unsigned int *)array length:(unsigned int *)length;
+- (BOOL)deviceHasNonTapStreamsInStreamList:(unsigned int *)list length:(unsigned int)length;
 - (BOOL)hasRealInputStream;
 - (BOOL)isAggregableDevice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSomethingConnectedToJack;
 - (BOOL)isValidDevice;
 - (BOOL)isValidInputDevice;
@@ -16,7 +16,7 @@
 
 @implementation AVAudioDevice
 
-- (AVAudioDevice)initWithDeviceID:(id)a3
+- (AVAudioDevice)initWithDeviceID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -24,7 +24,7 @@
   v4 = [(AVAudioDevice *)&v8 init];
   if (v4)
   {
-    v4->_deviceID = [a3 copy];
+    v4->_deviceID = [d copy];
     v4->_preferredDevice = [(AVAudioDevice *)v4 isBluetoothDevice];
     if (!v4->_deviceName)
     {
@@ -53,7 +53,7 @@
       v15 = 2112;
       v16 = v4;
       v17 = 2112;
-      v18 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVAudioDevice-initWithDeviceID self=%@ initDeviceID=%@", buf, 0x30u);
     }
   }
@@ -104,21 +104,21 @@
   return deviceName;
 }
 
-- (BOOL)copyStreamIDArray:(unsigned int *)a3 length:(unsigned int *)a4
+- (BOOL)copyStreamIDArray:(unsigned int *)array length:(unsigned int *)length
 {
-  v4 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
   v44 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!array || !length)
   {
     return self;
   }
 
-  v7 = [(NSNumber *)v4->_deviceID unsignedIntegerValue];
+  unsignedIntegerValue = [(NSNumber *)selfCopy->_deviceID unsignedIntegerValue];
   *&inAddress.mSelector = 0x696E707473746D23;
   inAddress.mElement = 0;
   outDataSize = 0;
-  PropertyDataSize = AudioObjectGetPropertyDataSize(v7, &inAddress, 0, 0, &outDataSize);
+  PropertyDataSize = AudioObjectGetPropertyDataSize(unsignedIntegerValue, &inAddress, 0, 0, &outDataSize);
   v9 = outDataSize;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (PropertyDataSize)
@@ -150,7 +150,7 @@
       v36 = 1024;
       v37 = 218;
       v38 = 2048;
-      *v39 = v7;
+      *v39 = unsignedIntegerValue;
       *&v39[8] = 1024;
       *&v39[10] = outDataSize;
       v40 = 1024;
@@ -181,7 +181,7 @@ LABEL_31:
         v38 = 1024;
         *v39 = outDataSize;
         *&v39[4] = 2048;
-        *&v39[6] = v7;
+        *&v39[6] = unsignedIntegerValue;
         v40 = 1024;
         v41 = 0;
         _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AudioObjectGetPropertyDataSize for kAudioDevicePropertyStreams returned streamListDataSizeBytes=%u for deviceID=%lu with status=%d", buf, 0x32u);
@@ -199,7 +199,7 @@ LABEL_31:
       v38 = 1024;
       *v39 = outDataSize;
       *&v39[4] = 2048;
-      *&v39[6] = v7;
+      *&v39[6] = unsignedIntegerValue;
       v40 = 1024;
       v41 = 0;
       _os_log_debug_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEBUG, " [%s] %s:%d AudioObjectGetPropertyDataSize for kAudioDevicePropertyStreams returned streamListDataSizeBytes=%u for deviceID=%lu with status=%d", buf, 0x32u);
@@ -228,7 +228,7 @@ LABEL_31:
 
   v19 = v18;
   ioDataSize = outDataSize;
-  PropertyData = AudioObjectGetPropertyData(v7, &inAddress, 0, 0, &ioDataSize, v18);
+  PropertyData = AudioObjectGetPropertyData(unsignedIntegerValue, &inAddress, 0, 0, &ioDataSize, v18);
   if (PropertyData || outDataSize != ioDataSize)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -306,16 +306,16 @@ LABEL_31:
     }
   }
 
-  *a3 = v19;
-  *a4 = v17;
+  *array = v19;
+  *length = v17;
   LOBYTE(self) = 1;
   return self;
 }
 
-- (BOOL)deviceHasNonTapStreamsInStreamList:(unsigned int *)a3 length:(unsigned int)a4
+- (BOOL)deviceHasNonTapStreamsInStreamList:(unsigned int *)list length:(unsigned int)length
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!list)
   {
     return 0;
   }
@@ -323,7 +323,7 @@ LABEL_31:
   *&inAddress.mSelector = 0x676C6F6274617073;
   inAddress.mElement = 0;
   outData = 0;
-  if (!a4)
+  if (!length)
   {
     v19 = 1;
 LABEL_17:
@@ -348,7 +348,7 @@ LABEL_17:
         v38 = 2112;
         *v39 = deviceName;
         *&v39[8] = 1024;
-        *v40 = a4;
+        *v40 = length;
         *&v40[4] = 1024;
         v41 = outData;
         _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d deviceHasOnlyTapStreamInputs=%{BOOL}d, _deviceId=%@, _deviceName [%@], streamListLength=%u, isTapStream=%u", buf, 0x42u);
@@ -358,9 +358,9 @@ LABEL_17:
     return 0;
   }
 
-  v6 = a3;
+  listCopy = list;
   ioDataSize = 4;
-  HasProperty = AudioObjectHasProperty(*a3, &inAddress);
+  HasProperty = AudioObjectHasProperty(*list, &inAddress);
   if (HasProperty)
   {
     v8 = HasProperty;
@@ -368,7 +368,7 @@ LABEL_17:
     v10 = 1;
     while (1)
     {
-      PropertyData = AudioObjectGetPropertyData(*v6, &inAddress, 0, 0, &ioDataSize, &outData);
+      PropertyData = AudioObjectGetPropertyData(*listCopy, &inAddress, 0, 0, &ioDataSize, &outData);
       if (PropertyData)
       {
         v12 = PropertyData;
@@ -378,7 +378,7 @@ LABEL_17:
           v14 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v15 = *v6;
+            v15 = *listCopy;
             v16 = self->_deviceID;
             *buf = 136316930;
             v29 = v13;
@@ -395,7 +395,7 @@ LABEL_17:
             *&v39[4] = 1024;
             *&v39[6] = v9;
             *v40 = 1024;
-            *&v40[2] = a4;
+            *&v40[2] = length;
             _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unable to get kAudioStreamPropertyIsTapStream data from streamID=%u on _deviceID=%@, status=%d - array value i=%u out of total=%u", buf, 0x3Eu);
           }
         }
@@ -411,15 +411,15 @@ LABEL_17:
         v8 = 1;
       }
 
-      if (a4 == v9)
+      if (length == v9)
       {
         break;
       }
 
-      v10 = v9 < a4;
+      v10 = v9 < length;
       ioDataSize = 4;
-      v17 = v6[1];
-      ++v6;
+      v17 = listCopy[1];
+      ++listCopy;
       v18 = AudioObjectHasProperty(v17, &inAddress);
       v8 = v18;
       ++v9;
@@ -464,14 +464,14 @@ LABEL_17:
 - (BOOL)isValidInputDevice
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioDevice *)self hasRealInputStream];
-  v4 = [(AVAudioDevice *)self isAggregableDevice];
-  v5 = [(AVAudioDevice *)self isSomethingConnectedToJack];
-  v6 = v5;
+  hasRealInputStream = [(AVAudioDevice *)self hasRealInputStream];
+  isAggregableDevice = [(AVAudioDevice *)self isAggregableDevice];
+  isSomethingConnectedToJack = [(AVAudioDevice *)self isSomethingConnectedToJack];
+  v6 = isSomethingConnectedToJack;
   v7 = 0;
-  if (v3 && v4)
+  if (hasRealInputStream && isAggregableDevice)
   {
-    v7 = !self->_isLineIn || v5;
+    v7 = !self->_isLineIn || isSomethingConnectedToJack;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -490,9 +490,9 @@ LABEL_17:
       v18 = 1024;
       v19 = v7;
       v20 = 1024;
-      v21 = v3;
+      v21 = hasRealInputStream;
       v22 = 1024;
-      v23 = v4;
+      v23 = isAggregableDevice;
       v24 = 1024;
       v25 = isLineIn;
       v26 = 1024;
@@ -543,7 +543,7 @@ LABEL_17:
   return outData != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -552,9 +552,9 @@ LABEL_17:
   }
 
   deviceID = self->_deviceID;
-  v6 = [a3 deviceID];
+  deviceID = [equal deviceID];
 
-  return [(NSNumber *)deviceID isEqualToNumber:v6];
+  return [(NSNumber *)deviceID isEqualToNumber:deviceID];
 }
 
 - (void)copyStreamIDArray:(uint64_t)a1 length:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

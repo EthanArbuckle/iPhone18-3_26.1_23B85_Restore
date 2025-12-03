@@ -1,29 +1,29 @@
 @interface _RECoreLocationLocationManager
-- (_RECoreLocationLocationManager)initWithEffectiveBundlePath:(id)a3;
+- (_RECoreLocationLocationManager)initWithEffectiveBundlePath:(id)path;
 - (id)currentLocation;
 - (id)currentVisit;
 - (void)_assessLocationAfterUnavailableFailure;
-- (void)_notifyUpdateHandlersWithError:(id)a3;
-- (void)_notifyVisitUpdateHandlersWithVisit:(id)a3;
-- (void)_updateLocation:(id)a3;
-- (void)_updateVisit:(id)a3;
+- (void)_notifyUpdateHandlersWithError:(id)error;
+- (void)_notifyVisitUpdateHandlersWithVisit:(id)visit;
+- (void)_updateLocation:(id)location;
+- (void)_updateVisit:(id)visit;
 - (void)dealloc;
-- (void)fetchPlaceInferencesWithHandler:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)startLocationUpdatesWithHandler:(id)a3;
-- (void)startVisitUpdatesWithHandler:(id)a3;
+- (void)fetchPlaceInferencesWithHandler:(id)handler;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)startLocationUpdatesWithHandler:(id)handler;
+- (void)startVisitUpdatesWithHandler:(id)handler;
 - (void)stopLocationUpdates;
 - (void)stopVisitUpdates;
 @end
 
 @implementation _RECoreLocationLocationManager
 
-- (_RECoreLocationLocationManager)initWithEffectiveBundlePath:(id)a3
+- (_RECoreLocationLocationManager)initWithEffectiveBundlePath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = _RECoreLocationLocationManager;
   v5 = [(_RECoreLocationLocationManager *)&v19 init];
@@ -38,7 +38,7 @@
     v16[1] = 3221225472;
     v16[2] = __62___RECoreLocationLocationManager_initWithEffectiveBundlePath___block_invoke;
     v16[3] = &unk_2785F9AE0;
-    v17 = v4;
+    v17 = pathCopy;
     v8 = v5;
     v18 = v8;
     dispatch_async(MEMORY[0x277D85CD0], v16);
@@ -102,16 +102,16 @@
   return v3;
 }
 
-- (void)startLocationUpdatesWithHandler:(id)a3
+- (void)startLocationUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66___RECoreLocationLocationManager_startLocationUpdatesWithHandler___block_invoke;
   block[3] = &unk_2785F9A40;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v11 = v6;
   dispatch_async(queue, block);
   v8[0] = MEMORY[0x277D85DD0];
@@ -135,17 +135,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)startVisitUpdatesWithHandler:(id)a3
+- (void)startVisitUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63___RECoreLocationLocationManager_startVisitUpdatesWithHandler___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -160,59 +160,59 @@
   dispatch_async(queue, block);
 }
 
-- (void)fetchPlaceInferencesWithHandler:(id)a3
+- (void)fetchPlaceInferencesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66___RECoreLocationLocationManager_fetchPlaceInferencesWithHandler___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69___RECoreLocationLocationManager_locationManager_didUpdateLocations___block_invoke;
   v8[3] = &unk_2785F9AE0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = locationsCopy;
+  selfCopy = self;
+  v7 = locationsCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v5 = a4;
+  visitCopy = visit;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59___RECoreLocationLocationManager_locationManager_didVisit___block_invoke;
   v8[3] = &unk_2785F9AE0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = visitCopy;
+  v7 = visitCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67___RECoreLocationLocationManager_locationManager_didFailWithError___block_invoke;
   v8[3] = &unk_2785F9AE0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
@@ -223,8 +223,8 @@
   currentLocation = self->_currentLocation;
   if (currentLocation)
   {
-    v4 = [(CLLocation *)currentLocation timestamp];
-    [v4 timeIntervalSinceNow];
+    timestamp = [(CLLocation *)currentLocation timestamp];
+    [timestamp timeIntervalSinceNow];
     if (v5 < 0.0)
     {
       v5 = -v5;
@@ -242,47 +242,47 @@
   [(NSLock *)locationAccessLock unlock];
 }
 
-- (void)_updateLocation:(id)a3
+- (void)_updateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_queue);
   [(NSLock *)self->_locationAccessLock lock];
   currentLocation = self->_currentLocation;
-  self->_currentLocation = v4;
-  v6 = v4;
+  self->_currentLocation = locationCopy;
+  v6 = locationCopy;
 
   [(NSLock *)self->_locationAccessLock unlock];
 }
 
-- (void)_updateVisit:(id)a3
+- (void)_updateVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   [(NSLock *)self->_visitAccessLock lock];
   currentVisit = self->_currentVisit;
-  self->_currentVisit = v4;
-  v6 = v4;
+  self->_currentVisit = visitCopy;
+  v6 = visitCopy;
 
   [(NSLock *)self->_visitAccessLock unlock];
 }
 
-- (void)_notifyUpdateHandlersWithError:(id)a3
+- (void)_notifyUpdateHandlersWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v5 = MEMORY[0x22AABC5E0](self->_handler);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65___RECoreLocationLocationManager__notifyUpdateHandlersWithError___block_invoke;
   block[3] = &unk_2785FC070;
-  v9 = v4;
+  v9 = errorCopy;
   v10 = v5;
   block[4] = self;
-  v6 = v4;
+  v6 = errorCopy;
   v7 = v5;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_notifyVisitUpdateHandlersWithVisit:(id)a3
+- (void)_notifyVisitUpdateHandlersWithVisit:(id)visit
 {
   dispatch_assert_queue_V2(self->_queue);
   v4 = MEMORY[0x22AABC5E0](self->_visitHandler);

@@ -1,10 +1,10 @@
 @interface PCMediaTransferContext
-- (PCMediaTransferContext)initWithCoder:(id)a3;
+- (PCMediaTransferContext)initWithCoder:(id)coder;
 @end
 
 @implementation PCMediaTransferContext
 
-- (PCMediaTransferContext)initWithCoder:(id)a3
+- (PCMediaTransferContext)initWithCoder:(id)coder
 {
   v3 = [(PCMediaTransferContext *)self init];
   v4 = v3;

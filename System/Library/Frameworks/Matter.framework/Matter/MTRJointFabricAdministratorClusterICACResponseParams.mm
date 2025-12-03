@@ -1,9 +1,9 @@
 @interface MTRJointFabricAdministratorClusterICACResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRJointFabricAdministratorClusterICACResponseParams)init;
-- (MTRJointFabricAdministratorClusterICACResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
-- (MTRJointFabricAdministratorClusterICACResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRJointFabricAdministratorClusterICACResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
+- (MTRJointFabricAdministratorClusterICACResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricAdministratorClusterICACResponseParams);
-  v5 = [(MTRJointFabricAdministratorClusterICACResponseParams *)self statusCode];
-  [(MTRJointFabricAdministratorClusterICACResponseParams *)v4 setStatusCode:v5];
+  statusCode = [(MTRJointFabricAdministratorClusterICACResponseParams *)self statusCode];
+  [(MTRJointFabricAdministratorClusterICACResponseParams *)v4 setStatusCode:statusCode];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRJointFabricAdministratorClusterICACResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRJointFabricAdministratorClusterICACResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRJointFabricAdministratorClusterICACResponseParams;
   v7 = [(MTRJointFabricAdministratorClusterICACResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1875 commandID:3 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1875 commandID:3 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -76,7 +76,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -87,7 +87,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRJointFabricAdministratorClusterICACResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRJointFabricAdministratorClusterICACResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRJointFabricAdministratorClusterICACResponseParams;
@@ -95,7 +95,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRJointFabricAdministratorClusterICACResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRJointFabricAdministratorClusterICACResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -111,9 +111,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRJointFabricAdministratorClusterICACResponseParams *)self setStatusCode:v4];
 
   v5 = 0;

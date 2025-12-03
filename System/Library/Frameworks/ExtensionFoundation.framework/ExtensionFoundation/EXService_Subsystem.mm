@@ -1,7 +1,7 @@
 @interface EXService_Subsystem
 + (id)initForPlugInKit;
 + (id)sharedInstance;
-- (void)beginUsing:(id)a3 withBundle:(id)a4;
+- (void)beginUsing:(id)using withBundle:(id)bundle;
 @end
 
 @implementation EXService_Subsystem
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __37__EXService_Subsystem_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_1 != -1)
   {
     dispatch_once(&sharedInstance_once_1, block);
@@ -37,18 +37,18 @@
   return v3;
 }
 
-- (void)beginUsing:(id)a3 withBundle:(id)a4
+- (void)beginUsing:(id)using withBundle:(id)bundle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  usingCopy = using;
+  bundleCopy = bundle;
   v8 = _EXLegacyLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v7;
+    v20 = bundleCopy;
     _os_log_impl(&dword_1847D1000, v8, OS_LOG_TYPE_DEFAULT, "Begin using %{public}@ for bundle %{public}@", &v17, 0x16u);
   }
 
@@ -65,8 +65,8 @@
   }
 
   v10 = v9;
-  v11 = [v9 runLoopType];
-  v12 = [v11 isEqualToString:@"NSRunLoop"];
+  runLoopType = [v9 runLoopType];
+  v12 = [runLoopType isEqualToString:@"NSRunLoop"];
 
   v13 = _EXDefaultLog();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);

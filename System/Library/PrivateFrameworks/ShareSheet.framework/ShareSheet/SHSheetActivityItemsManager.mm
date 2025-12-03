@@ -1,43 +1,43 @@
 @interface SHSheetActivityItemsManager
-+ (id)_placeholderActivityItemValuesForActivityItem:(id)a3 activityViewController:(id)a4 shouldUpdateMappings:(BOOL)a5;
-- (BOOL)_configureContentManagedForActivityItem:(id)a3 activityItemValue:(id)a4 outURLs:(id)a5 outScopedURLs:(id)a6 activity:(id)a7;
-- (BOOL)_supportsWebpagesForActivity:(id)a3;
++ (id)_placeholderActivityItemValuesForActivityItem:(id)item activityViewController:(id)controller shouldUpdateMappings:(BOOL)mappings;
+- (BOOL)_configureContentManagedForActivityItem:(id)item activityItemValue:(id)value outURLs:(id)ls outScopedURLs:(id)rLs activity:(id)activity;
+- (BOOL)_supportsWebpagesForActivity:(id)activity;
 - (NSArray)linkMetadataValues;
 - (NSArray)suggestionAssetIdentifiers;
 - (SFActivityItemsService)service;
-- (SHSheetActivityItemsManager)initWithActivityItems:(id)a3 activityViewController:(id)a4 delegate:(id)a5 collaborationDelegate:(id)a6 service:(id)a7;
+- (SHSheetActivityItemsManager)initWithActivityItems:(id)items activityViewController:(id)controller delegate:(id)delegate collaborationDelegate:(id)collaborationDelegate service:(id)service;
 - (SHSheetActivityItemsManagerCollaborationDelegate)collaborationDelegate;
 - (SHSheetActivityItemsManagerDelegate)delegate;
 - (UIActivityViewController)activityViewController;
 - (id)_delegateLoadedURLs;
-- (id)_requestInitialSocialTextForActivityItem:(id)a3 activity:(id)a4;
-- (id)_requestItemsForActivityItem:(id)a3 activity:(id)a4;
-- (id)_requestRecipientsHandlesForActivityItem:(id)a3 activity:(id)a4;
-- (id)_requestSubjectForActivityItem:(id)a3 activity:(id)a4;
-- (id)_requestThumbnailForActivityItem:(id)a3 activity:(id)a4;
-- (id)_resolveActivityItemsForActivity:(id)a3;
+- (id)_requestInitialSocialTextForActivityItem:(id)item activity:(id)activity;
+- (id)_requestItemsForActivityItem:(id)item activity:(id)activity;
+- (id)_requestRecipientsHandlesForActivityItem:(id)item activity:(id)activity;
+- (id)_requestSubjectForActivityItem:(id)item activity:(id)activity;
+- (id)_requestThumbnailForActivityItem:(id)item activity:(id)activity;
+- (id)_resolveActivityItemsForActivity:(id)activity;
 - (id)_resolvePlaceholderActivityItems;
-- (id)activityItemURLValuesForActivity:(id)a3;
-- (id)activityItemValuesForActivity:(id)a3;
-- (id)initialSocialTextForActivity:(id)a3;
-- (id)placeholderActivityItemValuesForActivityItem:(id)a3 activityViewController:(id)a4;
+- (id)activityItemURLValuesForActivity:(id)activity;
+- (id)activityItemValuesForActivity:(id)activity;
+- (id)initialSocialTextForActivity:(id)activity;
+- (id)placeholderActivityItemValuesForActivityItem:(id)item activityViewController:(id)controller;
 - (id)placeholderActivityItemValuesForSendCopyMode;
-- (id)recipientsForActivity:(id)a3;
-- (id)recipientsHandlesForActivity:(id)a3;
-- (id)securityScopedURLsForActivity:(id)a3;
-- (id)subjectForActivity:(id)a3;
-- (id)suggestedImageDataFromActivityItem:(id)a3;
-- (int64_t)_requestAttachmentURLItemDataForActivityItem:(id)a3 activity:(id)a4;
-- (void)_didLoadGroupActivityMetadata:(id)a3;
+- (id)recipientsForActivity:(id)activity;
+- (id)recipientsHandlesForActivity:(id)activity;
+- (id)securityScopedURLsForActivity:(id)activity;
+- (id)subjectForActivity:(id)activity;
+- (id)suggestedImageDataFromActivityItem:(id)item;
+- (int64_t)_requestAttachmentURLItemDataForActivityItem:(id)item activity:(id)activity;
+- (void)_didLoadGroupActivityMetadata:(id)metadata;
 - (void)_loadGroupActivityMetadataIfNeeded;
-- (void)_updateCacheResultForActivity:(id)a3;
+- (void)_updateCacheResultForActivity:(id)activity;
 - (void)_updateIsContentManagedForURLs;
 - (void)_updateLinkMetadataValues;
 - (void)_updateURLRequests;
-- (void)enumerateBackgroundOperationsForActivity:(id)a3 enumerator:(id)a4;
+- (void)enumerateBackgroundOperationsForActivity:(id)activity enumerator:(id)enumerator;
 - (void)invalidateCache;
-- (void)loadItemProvidersForRequest:(id)a3 activity:(id)a4 completion:(id)a5;
-- (void)setIsContentManaged:(BOOL)a3;
+- (void)loadItemProvidersForRequest:(id)request activity:(id)activity completion:(id)completion;
+- (void)setIsContentManaged:(BOOL)managed;
 @end
 
 @implementation SHSheetActivityItemsManager
@@ -45,24 +45,24 @@
 - (void)_updateURLRequests
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __49__SHSheetActivityItemsManager__updateURLRequests__block_invoke;
   v52[3] = &unk_1E71FB740;
   v52[4] = self;
-  v37 = v3;
+  v37 = array;
   v53 = v37;
-  v36 = v4;
+  v36 = array2;
   v54 = v36;
   v5 = MEMORY[0x18CFF58E0](v52);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [(SHSheetActivityItemsManager *)self activityItems];
-  v7 = [v6 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  activityItems = [(SHSheetActivityItemsManager *)self activityItems];
+  v7 = [activityItems countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v7)
   {
     v8 = v7;
@@ -70,8 +70,8 @@
     v34 = *MEMORY[0x1E69DB670];
     v35 = v42;
     v40 = *v49;
-    v38 = v6;
-    v39 = self;
+    v38 = activityItems;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -79,7 +79,7 @@
       {
         if (*v49 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activityItems);
         }
 
         v11 = *(*(&v48 + 1) + 8 * v10);
@@ -102,8 +102,8 @@
 
         else if (objc_opt_respondsToSelector())
         {
-          v13 = [(SHSheetActivityItemsManager *)self activityViewController];
-          v14 = [v11 activityViewControllerPlaceholderItems:v13];
+          activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+          v14 = [v11 activityViewControllerPlaceholderItems:activityViewController];
 
           v46 = 0u;
           v47 = 0u;
@@ -138,21 +138,21 @@
             while (v17);
           }
 
-          v6 = v38;
-          self = v39;
+          activityItems = v38;
+          self = selfCopy;
           v9 = v40;
         }
 
         else if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
         {
-          v21 = [(SHSheetActivityItemsManager *)self activityViewController];
-          v22 = [v11 activityViewControllerPlaceholderItem:v21];
+          activityViewController2 = [(SHSheetActivityItemsManager *)self activityViewController];
+          v22 = [v11 activityViewControllerPlaceholderItem:activityViewController2];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [(SHSheetActivityItemsManager *)self activityViewController];
-            v24 = [v11 activityViewController:v23 itemForActivityType:@"com.apple.UIKit.activity.CopyToPasteboard"];
+            activityViewController3 = [(SHSheetActivityItemsManager *)self activityViewController];
+            v24 = [v11 activityViewController:activityViewController3 itemForActivityType:@"com.apple.UIKit.activity.CopyToPasteboard"];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -172,8 +172,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v26 = [(SHSheetActivityItemsManager *)self activityViewController];
-            v24 = [v11 activityViewController:v26 itemForActivityType:@"com.apple.UIKit.activity.CopyToPasteboard"];
+            activityViewController4 = [(SHSheetActivityItemsManager *)self activityViewController];
+            v24 = [v11 activityViewController:activityViewController4 itemForActivityType:@"com.apple.UIKit.activity.CopyToPasteboard"];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -221,15 +221,15 @@ LABEL_36:
       }
 
       while (v10 != v8);
-      v29 = [v6 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v29 = [activityItems countByEnumeratingWithState:&v48 objects:v56 count:16];
       v8 = v29;
     }
 
     while (v29);
   }
 
-  v30 = [(SHSheetActivityItemsManager *)self delegate];
-  v31 = [v30 urlRequestsForActivityItemsManager:self];
+  delegate = [(SHSheetActivityItemsManager *)self delegate];
+  v31 = [delegate urlRequestsForActivityItemsManager:self];
 
   if (![v37 count] && objc_msgSend(v31, "count"))
   {
@@ -289,23 +289,23 @@ void __49__SHSheetActivityItemsManager__updateURLRequests__block_invoke(id *a1, 
   v21 = 0x2020000000;
   v22 = 0;
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(SHSheetActivityItemsManager *)self activityItems];
+  array = [MEMORY[0x1E695DF70] array];
+  activityItems = [(SHSheetActivityItemsManager *)self activityItems];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke;
   v14 = &unk_1E71FB790;
-  v15 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = array;
   v16 = v6;
   v7 = v3;
   v17 = v7;
   v18 = &v19;
-  [v5 enumerateObjectsUsingBlock:&v11];
+  [activityItems enumerateObjectsUsingBlock:&v11];
 
-  if ((v20[3] & 1) != 0 || (-[SHSheetActivityItemsManager urlRequests](self, "urlRequests", v11, v12, v13, v14, v15, v16), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v9))
+  if ((v20[3] & 1) != 0 || (-[SHSheetActivityItemsManager urlRequests](self, "urlRequests", v11, v12, v13, v14, selfCopy, v16), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v9))
   {
-    [v6 removeObjectsAtIndexes:{v7, v11, v12, v13, v14, v15}];
+    [v6 removeObjectsAtIndexes:{v7, v11, v12, v13, v14, selfCopy}];
   }
 
   v10 = [v6 copy];
@@ -358,30 +358,30 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
 - (id)_resolvePlaceholderActivityItems
 {
   v68 = *MEMORY[0x1E69E9840];
-  v53 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
-  v44 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
-  v5 = [v4 collaborationPlaceholderActivityItemsForActivityItemsManager:self];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  collaborationDelegate = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+  v5 = [collaborationDelegate collaborationPlaceholderActivityItemsForActivityItemsManager:self];
 
   v43 = v5;
   if ([v5 count])
   {
-    v6 = v5;
+    activityItems = v5;
   }
 
   else
   {
-    v6 = [(SHSheetActivityItemsManager *)self activityItems];
+    activityItems = [(SHSheetActivityItemsManager *)self activityItems];
   }
 
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v6;
-  v7 = v52;
+  obj = activityItems;
+  v7 = array3;
   v47 = [obj countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (!v47)
   {
@@ -403,8 +403,8 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
       }
 
       v10 = *(*(&v58 + 1) + 8 * i);
-      v11 = [(SHSheetActivityItemsManager *)self activityViewController];
-      v12 = [(SHSheetActivityItemsManager *)self placeholderActivityItemValuesForActivityItem:v10 activityViewController:v11];
+      activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+      v12 = [(SHSheetActivityItemsManager *)self placeholderActivityItemValuesForActivityItem:v10 activityViewController:activityViewController];
 
       if ([v12 count])
       {
@@ -436,22 +436,22 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
                 v19 = [[_UIActivityPlaceholderItemProxy alloc] initWithPlaceholderItem:v18];
                 if (v19)
                 {
-                  if ([(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v10 activityItemValue:v19 outURLs:v3 outScopedURLs:v7 activity:0])
+                  if ([(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v10 activityItemValue:v19 outURLs:array2 outScopedURLs:v7 activity:0])
                   {
-                    [v53 addObject:v19];
-                    v20 = [(SHSheetActivityItemsManager *)self activityViewController];
-                    v7 = v52;
-                    [_UIActivityItemMapping _addActivityItem:v19 activityViewController:v20 originalActivityItem:v10];
+                    [array addObject:v19];
+                    activityViewController2 = [(SHSheetActivityItemsManager *)self activityViewController];
+                    v7 = array3;
+                    [_UIActivityItemMapping _addActivityItem:v19 activityViewController:activityViewController2 originalActivityItem:v10];
                   }
 
                   else
                   {
-                    v20 = share_sheet_log();
-                    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+                    activityViewController2 = share_sheet_log();
+                    if (os_log_type_enabled(activityViewController2, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138477827;
                       v63 = v10;
-                      _os_log_error_impl(&dword_18B359000, v20, OS_LOG_TYPE_ERROR, "skipping activityItem:%{private}@", buf, 0xCu);
+                      _os_log_error_impl(&dword_18B359000, activityViewController2, OS_LOG_TYPE_ERROR, "skipping activityItem:%{private}@", buf, 0xCu);
                     }
                   }
                 }
@@ -471,7 +471,7 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
 
       else if (v10)
       {
-        if (![(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v10 activityItemValue:v10 outURLs:v3 outScopedURLs:v7 activity:0])
+        if (![(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v10 activityItemValue:v10 outURLs:array2 outScopedURLs:v7 activity:0])
         {
           v28 = v12;
           v30 = share_sheet_log();
@@ -486,13 +486,13 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
           goto LABEL_50;
         }
 
-        [v53 addObject:v10];
+        [array addObject:v10];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v21 = [(SHSheetActivityItemsManager *)self activityViewController];
-        v22 = [v10 activityViewControllerSuggestionFaceRecognitionData:v21];
+        activityViewController3 = [(SHSheetActivityItemsManager *)self activityViewController];
+        v22 = [v10 activityViewControllerSuggestionFaceRecognitionData:activityViewController3];
 
         v23 = share_sheet_log();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -511,12 +511,12 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
 
       if (objc_opt_respondsToSelector())
       {
-        v25 = [(SHSheetActivityItemsManager *)self activityViewController];
-        v26 = [v10 activityViewControllerSuggestionAssetLocalIdentifier:v25];
+        activityViewController4 = [(SHSheetActivityItemsManager *)self activityViewController];
+        v26 = [v10 activityViewControllerSuggestionAssetLocalIdentifier:activityViewController4];
 
         if (v26)
         {
-          [v44 addObject:v26];
+          [array4 addObject:v26];
           v27 = share_sheet_log();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
@@ -534,8 +534,8 @@ void __56__SHSheetActivityItemsManager__updateLinkMetadataValues__block_invoke(u
       }
 
       v28 = v12;
-      v29 = [(SHSheetActivityItemsManager *)self activityViewController];
-      v30 = [v10 activityViewControllerShareRecipients:v29];
+      activityViewController5 = [(SHSheetActivityItemsManager *)self activityViewController];
+      v30 = [v10 activityViewControllerShareRecipients:activityViewController5];
 
       if ([v30 count])
       {
@@ -572,9 +572,9 @@ LABEL_55:
   {
     if (v34)
     {
-      v35 = [(SHSheetActivityItemsManager *)self activityItems];
+      activityItems2 = [(SHSheetActivityItemsManager *)self activityItems];
       SFFilterStringsAndWebURLsFromList();
-      v37 = v36 = v3;
+      v37 = v36 = array2;
       v38 = SFFilterStringsAndWebURLsFromList();
       *buf = 138478083;
       v63 = v37;
@@ -587,9 +587,9 @@ LABEL_55:
 
   else if (v34)
   {
-    v35 = [(SHSheetActivityItemsManager *)self activityItems];
+    activityItems2 = [(SHSheetActivityItemsManager *)self activityItems];
     SFGenerateTypeList();
-    v37 = v36 = v3;
+    v37 = v36 = array2;
     v38 = SFGenerateTypeList();
     *buf = 138543618;
     v63 = v37;
@@ -599,14 +599,14 @@ LABEL_55:
 LABEL_60:
     _os_log_impl(&dword_18B359000, v33, OS_LOG_TYPE_DEFAULT, v39, buf, 0x16u);
 
-    v3 = v36;
-    v7 = v52;
+    array2 = v36;
+    v7 = array3;
   }
 
-  v40 = [[SHSheetActivityItemsResult alloc] initWithActivity:0 activityItemValues:v53];
-  if ([v3 count])
+  v40 = [[SHSheetActivityItemsResult alloc] initWithActivity:0 activityItemValues:array];
+  if ([array2 count])
   {
-    [(SHSheetActivityItemsResult *)v40 setActivityItemURLValues:v3];
+    [(SHSheetActivityItemsResult *)v40 setActivityItemURLValues:array2];
   }
 
   if ([v7 count])
@@ -615,9 +615,9 @@ LABEL_60:
     [(SHSheetActivityItemsResult *)v40 setSecurityScopedURLs:v41];
   }
 
-  if ([v44 count])
+  if ([array4 count])
   {
-    [(SHSheetActivityItemsResult *)v40 setSuggestionAssetIdentifiers:v44];
+    [(SHSheetActivityItemsResult *)v40 setSuggestionAssetIdentifiers:array4];
   }
 
   [(SHSheetActivityItemsResult *)v40 setSuggestedImageData:v8];
@@ -677,26 +677,26 @@ LABEL_60:
   }
 }
 
-- (SHSheetActivityItemsManager)initWithActivityItems:(id)a3 activityViewController:(id)a4 delegate:(id)a5 collaborationDelegate:(id)a6 service:(id)a7
+- (SHSheetActivityItemsManager)initWithActivityItems:(id)items activityViewController:(id)controller delegate:(id)delegate collaborationDelegate:(id)collaborationDelegate service:(id)service
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemsCopy = items;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  collaborationDelegateCopy = collaborationDelegate;
+  serviceCopy = service;
   v21.receiver = self;
   v21.super_class = SHSheetActivityItemsManager;
   v17 = [(SHSheetActivityItemsManager *)&v21 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [itemsCopy copy];
     activityItems = v17->_activityItems;
     v17->_activityItems = v18;
 
-    objc_storeWeak(&v17->_activityViewController, v13);
-    objc_storeWeak(&v17->_delegate, v14);
-    objc_storeWeak(&v17->_collaborationDelegate, v15);
-    objc_storeWeak(&v17->_service, v16);
+    objc_storeWeak(&v17->_activityViewController, controllerCopy);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeWeak(&v17->_collaborationDelegate, collaborationDelegateCopy);
+    objc_storeWeak(&v17->_service, serviceCopy);
     [(SHSheetActivityItemsManager *)v17 _updateURLRequests];
     [(SHSheetActivityItemsManager *)v17 _updateLinkMetadataValues];
     [(SHSheetActivityItemsManager *)v17 _loadGroupActivityMetadataIfNeeded];
@@ -705,11 +705,11 @@ LABEL_60:
   return v17;
 }
 
-- (void)setIsContentManaged:(BOOL)a3
+- (void)setIsContentManaged:(BOOL)managed
 {
-  if (self->_isContentManaged != a3)
+  if (self->_isContentManaged != managed)
   {
-    self->_isContentManaged = a3;
+    self->_isContentManaged = managed;
     [(SHSheetActivityItemsManager *)self _updateIsContentManagedForURLs];
   }
 }
@@ -729,8 +729,8 @@ LABEL_60:
 - (void)_updateIsContentManagedForURLs
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v4 = [v3 activityItemURLValues];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  activityItemURLValues = [cacheResult activityItemURLValues];
 
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -738,7 +738,7 @@ LABEL_60:
     [(SHSheetActivityItemsManager *)self isContentManaged];
     v6 = NSStringFromBOOL();
     *buf = 138412546;
-    v18 = v4;
+    v18 = activityItemURLValues;
     v19 = 2112;
     v20 = v6;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Update URLs:%@ with contentManaged:%@", buf, 0x16u);
@@ -748,7 +748,7 @@ LABEL_60:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = activityItemURLValues;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -775,22 +775,22 @@ LABEL_60:
   }
 }
 
-- (id)activityItemValuesForActivity:(id)a3
+- (id)activityItemValuesForActivity:(id)activity
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:v4];
-  v5 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v6 = [v5 activityItemValues];
+  activityCopy = activity;
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activityCopy];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  activityItemValues = [cacheResult activityItemValues];
 
-  if (v4)
+  if (activityCopy)
   {
-    v7 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+    collaborationDelegate = [(SHSheetActivityItemsManager *)self collaborationDelegate];
 
-    if (v7)
+    if (collaborationDelegate)
     {
-      v8 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
-      v9 = [v8 activityItemsManager:self collaborationActivityItemValuesForActivityItemValue:v6 activity:v4];
+      collaborationDelegate2 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+      v9 = [collaborationDelegate2 activityItemsManager:self collaborationActivityItemValuesForActivityItemValue:activityItemValues activity:activityCopy];
 
       if (v9)
       {
@@ -803,146 +803,146 @@ LABEL_60:
         }
 
         v11 = v9;
-        v6 = v11;
+        activityItemValues = v11;
       }
     }
   }
 
-  return v6;
+  return activityItemValues;
 }
 
 - (NSArray)suggestionAssetIdentifiers
 {
   [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:0];
-  v3 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v4 = [v3 suggestionAssetIdentifiers];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  suggestionAssetIdentifiers = [cacheResult suggestionAssetIdentifiers];
 
-  return v4;
+  return suggestionAssetIdentifiers;
 }
 
-- (id)activityItemURLValuesForActivity:(id)a3
+- (id)activityItemURLValuesForActivity:(id)activity
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 activityItemURLValues];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activity];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  activityItemURLValues = [cacheResult activityItemURLValues];
 
-  return v5;
+  return activityItemURLValues;
 }
 
-- (id)suggestedImageDataFromActivityItem:(id)a3
+- (id)suggestedImageDataFromActivityItem:(id)item
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 suggestedImageData];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:item];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  suggestedImageData = [cacheResult suggestedImageData];
 
-  return v5;
+  return suggestedImageData;
 }
 
-- (id)securityScopedURLsForActivity:(id)a3
+- (id)securityScopedURLsForActivity:(id)activity
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 securityScopedURLs];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activity];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  securityScopedURLs = [cacheResult securityScopedURLs];
 
-  return v5;
+  return securityScopedURLs;
 }
 
-- (id)initialSocialTextForActivity:(id)a3
+- (id)initialSocialTextForActivity:(id)activity
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 initialSocialText];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activity];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  initialSocialText = [cacheResult initialSocialText];
 
-  return v5;
+  return initialSocialText;
 }
 
-- (id)subjectForActivity:(id)a3
+- (id)subjectForActivity:(id)activity
 {
-  v4 = a3;
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:v4];
-  v5 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
-  v6 = [v5 activityItemsManager:self subjectForActivity:v4];
+  activityCopy = activity;
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activityCopy];
+  collaborationDelegate = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+  v6 = [collaborationDelegate activityItemsManager:self subjectForActivity:activityCopy];
 
   if (v6)
   {
-    v7 = v6;
+    subject = v6;
   }
 
   else
   {
-    v8 = [(SHSheetActivityItemsManager *)self cacheResult];
-    v7 = [v8 subject];
+    cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+    subject = [cacheResult subject];
   }
 
-  return v7;
+  return subject;
 }
 
-- (id)recipientsHandlesForActivity:(id)a3
+- (id)recipientsHandlesForActivity:(id)activity
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 recipientsHandles];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activity];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  recipientsHandles = [cacheResult recipientsHandles];
 
-  return v5;
+  return recipientsHandles;
 }
 
-- (id)recipientsForActivity:(id)a3
+- (id)recipientsForActivity:(id)activity
 {
-  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:a3];
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  v5 = [v4 recipients];
+  [(SHSheetActivityItemsManager *)self _updateCacheResultForActivity:activity];
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  recipients = [cacheResult recipients];
 
-  return v5;
+  return recipients;
 }
 
-- (void)_updateCacheResultForActivity:(id)a3
+- (void)_updateCacheResultForActivity:(id)activity
 {
-  v8 = a3;
-  v4 = [(SHSheetActivityItemsManager *)self cacheResult];
-  if (v8)
+  activityCopy = activity;
+  cacheResult = [(SHSheetActivityItemsManager *)self cacheResult];
+  if (activityCopy)
   {
-    v5 = [v4 activity];
+    activity = [cacheResult activity];
 
-    if (v5 == v8)
+    if (activity == activityCopy)
     {
       goto LABEL_7;
     }
 
-    v6 = [(SHSheetActivityItemsManager *)self _resolveActivityItemsForActivity:?];
+    _resolvePlaceholderActivityItems = [(SHSheetActivityItemsManager *)self _resolveActivityItemsForActivity:?];
   }
 
   else
   {
-    if ([v4 isPlaceholder])
+    if ([cacheResult isPlaceholder])
     {
       goto LABEL_7;
     }
 
-    v6 = [(SHSheetActivityItemsManager *)self _resolvePlaceholderActivityItems];
+    _resolvePlaceholderActivityItems = [(SHSheetActivityItemsManager *)self _resolvePlaceholderActivityItems];
   }
 
-  v7 = v6;
+  v7 = _resolvePlaceholderActivityItems;
 
-  v4 = v7;
+  cacheResult = v7;
 LABEL_7:
-  [(SHSheetActivityItemsManager *)self setCacheResult:v4];
+  [(SHSheetActivityItemsManager *)self setCacheResult:cacheResult];
 }
 
-- (BOOL)_configureContentManagedForActivityItem:(id)a3 activityItemValue:(id)a4 outURLs:(id)a5 outScopedURLs:(id)a6 activity:(id)a7
+- (BOOL)_configureContentManagedForActivityItem:(id)item activityItemValue:(id)value outURLs:(id)ls outScopedURLs:(id)rLs activity:(id)activity
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(SHSheetActivityItemsManager *)self isContentManaged];
+  itemCopy = item;
+  valueCopy = value;
+  lsCopy = ls;
+  rLsCopy = rLs;
+  activityCopy = activity;
+  isContentManaged = [(SHSheetActivityItemsManager *)self isContentManaged];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (objc_opt_respondsToSelector())
   {
-    v19 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v20 = [v12 activityViewControllerSuggestionFileURL:v19];
+    activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+    v20 = [itemCopy activityViewControllerSuggestionFileURL:activityViewController];
 
     v21 = share_sheet_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -965,7 +965,7 @@ LABEL_7:
 
   if (isKindOfClass)
   {
-    v22 = v13;
+    v22 = valueCopy;
   }
 
   else
@@ -977,18 +977,18 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || ![v23 isFileURL] || (-[SHSheetActivityItemsManager service](self, "service"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "canShareFileURL:", v23), v24, (v25))
   {
-    [v23 ui_setIsContentManaged:v17];
-    [v14 addObject:v23];
+    [v23 ui_setIsContentManaged:isContentManaged];
+    [lsCopy addObject:v23];
     v26 = [UISUISecurityScopedResource scopedResourceWithURL:v23 allowedAccess:1];
     if (!v26)
     {
       v26 = [UISUISecurityScopedResource scopedResourceWithURL:v23 allowedAccess:0];
     }
 
-    [v15 addObject:v26];
+    [rLsCopy addObject:v26];
 
 LABEL_16:
-    if (v17)
+    if (isContentManaged)
     {
       v27 = MEMORY[0x1E695E118];
     }
@@ -999,7 +999,7 @@ LABEL_16:
     }
 
     v28 = 1;
-    objc_setAssociatedObject(v13, &__UIIsContentManagedReferenceKey, v27, 1);
+    objc_setAssociatedObject(valueCopy, &__UIIsContentManagedReferenceKey, v27, 1);
     goto LABEL_20;
   }
 
@@ -1015,16 +1015,16 @@ LABEL_20:
   return v28;
 }
 
-+ (id)_placeholderActivityItemValuesForActivityItem:(id)a3 activityViewController:(id)a4 shouldUpdateMappings:(BOOL)a5
++ (id)_placeholderActivityItemValuesForActivityItem:(id)item activityViewController:(id)controller shouldUpdateMappings:(BOOL)mappings
 {
-  v5 = a5;
+  mappingsCopy = mappings;
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v7 activityViewControllerPlaceholderItems:v8];
-    if (v5)
+    v9 = [itemCopy activityViewControllerPlaceholderItems:controllerCopy];
+    if (mappingsCopy)
     {
       goto LABEL_11;
     }
@@ -1036,7 +1036,7 @@ LABEL_8:
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v7 activityViewControllerPlaceholderItem:v8];
+    v10 = [itemCopy activityViewControllerPlaceholderItem:controllerCopy];
     v11 = v10;
     if (v10)
     {
@@ -1049,7 +1049,7 @@ LABEL_8:
       v9 = MEMORY[0x1E695E0F0];
     }
 
-    if (v5)
+    if (mappingsCopy)
     {
       goto LABEL_11;
     }
@@ -1058,7 +1058,7 @@ LABEL_8:
   }
 
   v9 = MEMORY[0x1E695E0F0];
-  if (!v5)
+  if (!mappingsCopy)
   {
     goto LABEL_8;
   }
@@ -1092,7 +1092,7 @@ LABEL_11:
           if (v20)
           {
             [v13 addObject:v20];
-            [_UIActivityItemMapping _addActivityItem:v20 activityViewController:v8 originalActivityItem:v7];
+            [_UIActivityItemMapping _addActivityItem:v20 activityViewController:controllerCopy originalActivityItem:itemCopy];
           }
         }
       }
@@ -1110,21 +1110,21 @@ LABEL_23:
   return v12;
 }
 
-- (id)placeholderActivityItemValuesForActivityItem:(id)a3 activityViewController:(id)a4
+- (id)placeholderActivityItemValuesForActivityItem:(id)item activityViewController:(id)controller
 {
-  v5 = [SHSheetActivityItemsManager _placeholderActivityItemValuesForActivityItem:a3 activityViewController:a4 shouldUpdateMappings:0];
-  v6 = [v5 firstObject];
+  v5 = [SHSheetActivityItemsManager _placeholderActivityItemValuesForActivityItem:item activityViewController:controller shouldUpdateMappings:0];
+  firstObject = [v5 firstObject];
   if ([v5 count] == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 canLoadObjectOfClass:objc_opt_class()])
+      if ([firstObject canLoadObjectOfClass:objc_opt_class()])
       {
-        v7 = [(SHSheetActivityItemsManager *)self _delegateLoadedURLs];
-        if ([v7 count])
+        _delegateLoadedURLs = [(SHSheetActivityItemsManager *)self _delegateLoadedURLs];
+        if ([_delegateLoadedURLs count])
         {
-          v8 = v7;
+          v8 = _delegateLoadedURLs;
 
           v5 = v8;
         }
@@ -1138,8 +1138,8 @@ LABEL_23:
 - (id)_delegateLoadedURLs
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetActivityItemsManager *)self delegate];
-  v4 = [v3 urlRequestsForActivityItemsManager:self];
+  delegate = [(SHSheetActivityItemsManager *)self delegate];
+  v4 = [delegate urlRequestsForActivityItemsManager:self];
 
   if ([v4 count])
   {
@@ -1184,13 +1184,13 @@ LABEL_23:
   return v12;
 }
 
-- (id)_resolveActivityItemsForActivity:(id)a3
+- (id)_resolveActivityItemsForActivity:(id)activity
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v60 = [MEMORY[0x1E695DF70] array];
-  v63 = [MEMORY[0x1E695DF70] array];
-  v62 = [MEMORY[0x1E695DF70] array];
+  activityCopy = activity;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v5 = WebPrivacyLibraryCore();
   v68 = 0u;
   v69 = 0u;
@@ -1223,15 +1223,15 @@ LABEL_23:
 
         v55 = v10;
         v14 = *(*(&v68 + 1) + 8 * v10);
-        *(&v59 + 1) = [(SHSheetActivityItemsManager *)self _requestThumbnailForActivityItem:v14 activity:v4, v50];
-        *&v59 = [(SHSheetActivityItemsManager *)self _requestAttachmentURLItemDataForActivityItem:v14 activity:v4];
-        v15 = [(SHSheetActivityItemsManager *)self _requestInitialSocialTextForActivityItem:v14 activity:v4];
+        *(&v59 + 1) = [(SHSheetActivityItemsManager *)self _requestThumbnailForActivityItem:v14 activity:activityCopy, v50];
+        *&v59 = [(SHSheetActivityItemsManager *)self _requestAttachmentURLItemDataForActivityItem:v14 activity:activityCopy];
+        v15 = [(SHSheetActivityItemsManager *)self _requestInitialSocialTextForActivityItem:v14 activity:activityCopy];
 
-        v56 = [(SHSheetActivityItemsManager *)self _requestSubjectForActivityItem:v14 activity:v4];
+        v56 = [(SHSheetActivityItemsManager *)self _requestSubjectForActivityItem:v14 activity:activityCopy];
 
         if (![v7 count])
         {
-          v16 = [(SHSheetActivityItemsManager *)self _requestRecipientsHandlesForActivityItem:v14 activity:v4];
+          v16 = [(SHSheetActivityItemsManager *)self _requestRecipientsHandlesForActivityItem:v14 activity:activityCopy];
 
           v7 = v16;
         }
@@ -1240,8 +1240,8 @@ LABEL_23:
         v58 = v7;
         if (![v54 count] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v17 = [(SHSheetActivityItemsManager *)self activityViewController];
-          v18 = [v14 activityViewControllerShareRecipients:v17];
+          activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+          v18 = [v14 activityViewControllerShareRecipients:activityViewController];
 
           if ([v18 count])
           {
@@ -1259,8 +1259,8 @@ LABEL_23:
           }
         }
 
-        v21 = v4;
-        v22 = [(SHSheetActivityItemsManager *)self _requestItemsForActivityItem:v14 activity:v4];
+        v21 = activityCopy;
+        v22 = [(SHSheetActivityItemsManager *)self _requestItemsForActivityItem:v14 activity:activityCopy];
         v64 = 0u;
         v65 = 0u;
         v66 = 0u;
@@ -1289,9 +1289,9 @@ LABEL_23:
               {
                 if (v5)
                 {
-                  v31 = [v29 _wp_urlByRemovingTrackingInformation];
+                  _wp_urlByRemovingTrackingInformation = [v29 _wp_urlByRemovingTrackingInformation];
 
-                  v30 = v31;
+                  v30 = _wp_urlByRemovingTrackingInformation;
                 }
 
                 if (v59 == 0)
@@ -1319,12 +1319,12 @@ LABEL_23:
                 }
               }
 
-              v33 = [(SHSheetActivityItemsManager *)self activityViewController];
-              [_UIActivityItemMapping _addActivityItem:v30 activityViewController:v33 originalActivityItem:v14];
+              activityViewController2 = [(SHSheetActivityItemsManager *)self activityViewController];
+              [_UIActivityItemMapping _addActivityItem:v30 activityViewController:activityViewController2 originalActivityItem:v14];
 
-              if ([(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v14 activityItemValue:v30 outURLs:v63 outScopedURLs:v62 activity:v21])
+              if ([(SHSheetActivityItemsManager *)self _configureContentManagedForActivityItem:v14 activityItemValue:v30 outURLs:array2 outScopedURLs:array3 activity:v21])
               {
-                [v60 addObject:v30];
+                [array addObject:v30];
               }
 
               else
@@ -1351,7 +1351,7 @@ LABEL_23:
         v9 = v57;
         v7 = v58;
         v12 = v57;
-        v4 = v21;
+        activityCopy = v21;
       }
 
       while (v55 + 1 != v53);
@@ -1374,14 +1374,14 @@ LABEL_23:
   v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
   if (v35)
   {
-    v39 = v62;
-    v38 = v63;
+    v39 = array3;
+    v38 = array2;
     if (!v37)
     {
       goto LABEL_47;
     }
 
-    v40 = [(SHSheetActivityItemsManager *)self activityItems];
+    activityItems = [(SHSheetActivityItemsManager *)self activityItems];
     SFFilterStringsAndWebURLsFromList();
     v41 = v8;
     v43 = v42 = v7;
@@ -1396,14 +1396,14 @@ LABEL_23:
 
   else
   {
-    v39 = v62;
-    v38 = v63;
+    v39 = array3;
+    v38 = array2;
     if (!v37)
     {
       goto LABEL_47;
     }
 
-    v40 = [(SHSheetActivityItemsManager *)self activityItems];
+    activityItems = [(SHSheetActivityItemsManager *)self activityItems];
     SFGenerateTypeList();
     v41 = v8;
     v43 = v42 = v7;
@@ -1423,7 +1423,7 @@ LABEL_23:
   v8 = v41;
 LABEL_47:
 
-  v47 = [[SHSheetActivityItemsResult alloc] initWithActivity:v4 activityItemValues:v60];
+  v47 = [[SHSheetActivityItemsResult alloc] initWithActivity:activityCopy activityItemValues:array];
   if ([v38 count])
   {
     [(SHSheetActivityItemsResult *)v47 setActivityItemURLValues:v38];
@@ -1494,47 +1494,47 @@ void __65__SHSheetActivityItemsManager__loadGroupActivityMetadataIfNeeded__block
   [WeakRetained _didLoadGroupActivityMetadata:*(a1 + 32)];
 }
 
-- (void)_didLoadGroupActivityMetadata:(id)a3
+- (void)_didLoadGroupActivityMetadata:(id)metadata
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = metadataCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Successfully loaded group activity metadata: %@", &v8, 0xCu);
   }
 
   linkMetadataValues = self->_linkMetadataValues;
-  self->_linkMetadataValues = v4;
+  self->_linkMetadataValues = metadataCopy;
 
-  v7 = [(SHSheetActivityItemsManager *)self delegate];
-  [v7 activityItemsManagerLinkMetadataValuesDidChange:self];
+  delegate = [(SHSheetActivityItemsManager *)self delegate];
+  [delegate activityItemsManagerLinkMetadataValuesDidChange:self];
 }
 
-- (void)loadItemProvidersForRequest:(id)a3 activity:(id)a4 completion:(id)a5
+- (void)loadItemProvidersForRequest:(id)request activity:(id)activity completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 maxPreviews];
+  requestCopy = request;
+  activityCopy = activity;
+  completionCopy = completion;
+  maxPreviews = [requestCopy maxPreviews];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v20[3] = 0;
-  v12 = [(SHSheetActivityItemsManager *)self activityItemValuesForActivity:v9];
+  v12 = [(SHSheetActivityItemsManager *)self activityItemValuesForActivity:activityCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__SHSheetActivityItemsManager_loadItemProvidersForRequest_activity_completion___block_invoke;
   v15[3] = &unk_1E71FB808;
-  v13 = v8;
+  v13 = requestCopy;
   v18 = v20;
-  v19 = v11;
+  v19 = maxPreviews;
   v16 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v17 = v14;
-  [v9 _loadItemProvidersFromActivityItems:v12 completion:v15];
+  [activityCopy _loadItemProvidersFromActivityItems:v12 completion:v15];
 
   _Block_object_dispose(v20, 8);
 }
@@ -1717,15 +1717,15 @@ LABEL_35:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_requestThumbnailForActivityItem:(id)a3 activity:(id)a4
+- (id)_requestThumbnailForActivityItem:(id)item activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _wantsThumbnailItemData] && (objc_opt_respondsToSelector() & 1) != 0)
+  itemCopy = item;
+  activityCopy = activity;
+  if ([activityCopy _wantsThumbnailItemData] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v9 = [v7 activityType];
-    v10 = [v6 activityViewController:v8 thumbnailForActivityType:v9];
+    activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+    activityType = [activityCopy activityType];
+    v10 = [itemCopy activityViewController:activityViewController thumbnailForActivityType:activityType];
   }
 
   else
@@ -1736,15 +1736,15 @@ LABEL_35:
   return v10;
 }
 
-- (int64_t)_requestAttachmentURLItemDataForActivityItem:(id)a3 activity:(id)a4
+- (int64_t)_requestAttachmentURLItemDataForActivityItem:(id)item activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _wantsAttachmentURLItemData] && (objc_opt_respondsToSelector() & 1) != 0)
+  itemCopy = item;
+  activityCopy = activity;
+  if ([activityCopy _wantsAttachmentURLItemData] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v9 = [v7 activityType];
-    v10 = [v6 activityViewController:v8 attachmentULRTypeForActivityType:v9];
+    activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+    activityType = [activityCopy activityType];
+    v10 = [itemCopy activityViewController:activityViewController attachmentULRTypeForActivityType:activityType];
   }
 
   else
@@ -1755,15 +1755,15 @@ LABEL_35:
   return v10;
 }
 
-- (id)_requestInitialSocialTextForActivityItem:(id)a3 activity:(id)a4
+- (id)_requestInitialSocialTextForActivityItem:(id)item activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _wantsInitialSocialText] && (objc_opt_respondsToSelector() & 1) != 0)
+  itemCopy = item;
+  activityCopy = activity;
+  if ([activityCopy _wantsInitialSocialText] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v9 = [v7 activityType];
-    v10 = [v6 activityViewController:v8 initialSocialTextForActivityType:v9];
+    activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+    activityType = [activityCopy activityType];
+    v10 = [itemCopy activityViewController:activityViewController initialSocialTextForActivityType:activityType];
   }
 
   else
@@ -1774,11 +1774,11 @@ LABEL_35:
   return v10;
 }
 
-- (id)_requestSubjectForActivityItem:(id)a3 activity:(id)a4
+- (id)_requestSubjectForActivityItem:(id)item activity:(id)activity
 {
-  v6 = a3;
-  v7 = [a4 activityType];
-  if (![v7 isEqualToString:@"com.apple.UIKit.activity.Mail"])
+  itemCopy = item;
+  activityType = [activity activityType];
+  if (![activityType isEqualToString:@"com.apple.UIKit.activity.Mail"])
   {
     v9 = 0;
     goto LABEL_5;
@@ -1788,8 +1788,8 @@ LABEL_35:
 
   if (v8)
   {
-    v7 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v9 = [v6 activityViewControllerSubject:v7];
+    activityType = [(SHSheetActivityItemsManager *)self activityViewController];
+    v9 = [itemCopy activityViewControllerSubject:activityType];
 LABEL_5:
 
     goto LABEL_7;
@@ -1801,12 +1801,12 @@ LABEL_7:
   return v9;
 }
 
-- (id)_requestRecipientsHandlesForActivityItem:(id)a3 activity:(id)a4
+- (id)_requestRecipientsHandlesForActivityItem:(id)item activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 activityType];
-  if ([v8 isEqualToString:@"com.apple.UIKit.activity.Message"])
+  itemCopy = item;
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  if ([activityType isEqualToString:@"com.apple.UIKit.activity.Message"])
   {
     v9 = objc_opt_respondsToSelector();
 
@@ -1820,8 +1820,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v11 = [v7 activityType];
-  if (([v11 isEqualToString:@"com.apple.UIKit.activity.Mail"] & 1) == 0)
+  activityType2 = [activityCopy activityType];
+  if (([activityType2 isEqualToString:@"com.apple.UIKit.activity.Mail"] & 1) == 0)
   {
 
     v10 = 0;
@@ -1836,8 +1836,8 @@ LABEL_6:
   }
 
 LABEL_3:
-  v8 = [(SHSheetActivityItemsManager *)self activityViewController];
-  v10 = [v6 activityViewControllerRecipients:v8];
+  activityType = [(SHSheetActivityItemsManager *)self activityViewController];
+  v10 = [itemCopy activityViewControllerRecipients:activityType];
 LABEL_8:
 
 LABEL_9:
@@ -1845,53 +1845,53 @@ LABEL_9:
   return v10;
 }
 
-- (id)_requestItemsForActivityItem:(id)a3 activity:(id)a4
+- (id)_requestItemsForActivityItem:(id)item activity:(id)activity
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  itemCopy = item;
+  activityCopy = activity;
+  array = [MEMORY[0x1E695DF70] array];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(SHSheetActivityItemsManager *)self _supportsWebpagesForActivity:v7];
-    v10 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v11 = [v7 activityType];
-    v12 = [v6 activityViewController:v10 itemsForActivityType:v11 supportsWebpages:v9];
+    v9 = [(SHSheetActivityItemsManager *)self _supportsWebpagesForActivity:activityCopy];
+    activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+    activityType = [activityCopy activityType];
+    v12 = [itemCopy activityViewController:activityViewController itemsForActivityType:activityType supportsWebpages:v9];
 
-    v8 = v12;
+    array = v12;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v13 = [(SHSheetActivityItemsManager *)self activityViewController];
-    v14 = [v7 activityType];
-    v15 = [v6 activityViewController:v13 itemsForActivityType:v14];
+    activityViewController2 = [(SHSheetActivityItemsManager *)self activityViewController];
+    activityType2 = [activityCopy activityType];
+    v15 = [itemCopy activityViewController:activityViewController2 itemsForActivityType:activityType2];
 
-    v8 = v15;
+    array = v15;
   }
 
   else
   {
-    v16 = v6;
+    v16 = itemCopy;
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(SHSheetActivityItemsManager *)self activityViewController];
-      v18 = [v7 activityType];
-      v19 = [v16 activityViewController:v17 itemForActivityType:v18];
+      activityViewController3 = [(SHSheetActivityItemsManager *)self activityViewController];
+      activityType3 = [activityCopy activityType];
+      v19 = [v16 activityViewController:activityViewController3 itemForActivityType:activityType3];
 
       if (v19)
       {
-        v20 = [(SHSheetActivityItemsManager *)self activityViewController];
-        [_UIActivityItemMapping _addActivityItem:v19 activityViewController:v20 originalActivityItem:v16];
+        activityViewController4 = [(SHSheetActivityItemsManager *)self activityViewController];
+        [_UIActivityItemMapping _addActivityItem:v19 activityViewController:activityViewController4 originalActivityItem:v16];
       }
 
-      v21 = v16;
+      activityViewController5 = v16;
     }
 
     else
     {
-      v21 = [(SHSheetActivityItemsManager *)self activityViewController];
-      [_UIActivityItemMapping _addActivityItem:v16 activityViewController:v21 originalActivityItem:0];
+      activityViewController5 = [(SHSheetActivityItemsManager *)self activityViewController];
+      [_UIActivityItemMapping _addActivityItem:v16 activityViewController:activityViewController5 originalActivityItem:0];
       v19 = v16;
     }
 
@@ -1900,17 +1900,17 @@ LABEL_9:
       v24[0] = v19;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
 
-      v8 = v22;
+      array = v22;
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (BOOL)_supportsWebpagesForActivity:(id)a3
+- (BOOL)_supportsWebpagesForActivity:(id)activity
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activityCopy = activity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1923,17 +1923,17 @@ LABEL_9:
     [v5 setAttachments:v6];
 
     v17 = @"extensionItems";
-    v7 = v3;
-    v8 = [v5 _matchingDictionaryRepresentation];
-    v16 = v8;
+    v7 = activityCopy;
+    _matchingDictionaryRepresentation = [v5 _matchingDictionaryRepresentation];
+    v16 = _matchingDictionaryRepresentation;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     v18 = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-    v11 = [v7 applicationExtension];
+    applicationExtension = [v7 applicationExtension];
 
-    v12 = [v11 attributes];
-    v13 = [v12 objectForKeyedSubscript:@"NSExtensionActivationRule"];
+    attributes = [applicationExtension attributes];
+    v13 = [attributes objectForKeyedSubscript:@"NSExtensionActivationRule"];
 
     v14 = [MEMORY[0x1E696ABD0] evaluateActivationRule:v13 withExtensionItemsRepresentation:v10];
   }
@@ -1964,25 +1964,25 @@ void __60__SHSheetActivityItemsManager__supportsWebpagesForActivity___block_invo
   (a2)[2](v4, v5, 0);
 }
 
-- (void)enumerateBackgroundOperationsForActivity:(id)a3 enumerator:(id)a4
+- (void)enumerateBackgroundOperationsForActivity:(id)activity enumerator:(id)enumerator
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
-  v9 = [v8 activityItemsManagerIsCollaborative:self];
+  activityCopy = activity;
+  enumeratorCopy = enumerator;
+  collaborationDelegate = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+  v9 = [collaborationDelegate activityItemsManagerIsCollaborative:self];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [(SHSheetActivityItemsManager *)self activityItems];
-  v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  activityItems = [(SHSheetActivityItemsManager *)self activityItems];
+  v11 = [activityItems countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v33;
-    v29 = v10;
+    v29 = activityItems;
     v28 = *v33;
     do
     {
@@ -1992,7 +1992,7 @@ void __60__SHSheetActivityItemsManager__supportsWebpagesForActivity___block_invo
       {
         if (*v33 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activityItems);
         }
 
         v15 = *(*(&v32 + 1) + 8 * v14);
@@ -2018,8 +2018,8 @@ LABEL_17:
                 goto LABEL_26;
               }
 
-              v18 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
-              v19 = [v18 activityItemsManager:self collaborationSupportsPromiseURLsForActivity:v6];
+              collaborationDelegate2 = [(SHSheetActivityItemsManager *)self collaborationDelegate];
+              v19 = [collaborationDelegate2 activityItemsManager:self collaborationSupportsPromiseURLsForActivity:activityCopy];
 
               if (v19)
               {
@@ -2030,7 +2030,7 @@ LABEL_17:
             else
             {
 LABEL_21:
-              if (([v6 _activitySupportsPromiseURLs] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+              if (([activityCopy _activitySupportsPromiseURLs] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
 LABEL_26:
                 v16 = 0;
@@ -2046,24 +2046,24 @@ LABEL_20:
               }
             }
 
-            v20 = [(SHSheetActivityItemsManager *)self activityViewController];
-            v21 = [v20 viewIfLoaded];
-            [v21 window];
+            activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+            viewIfLoaded = [activityViewController viewIfLoaded];
+            [viewIfLoaded window];
             v22 = v9;
-            v23 = self;
-            v24 = v7;
-            v26 = v25 = v6;
-            v27 = [v26 windowScene];
+            selfCopy = self;
+            v24 = enumeratorCopy;
+            v26 = v25 = activityCopy;
+            windowScene = [v26 windowScene];
 
-            v6 = v25;
-            v7 = v24;
-            self = v23;
+            activityCopy = v25;
+            enumeratorCopy = v24;
+            self = selfCopy;
             v9 = v22;
             v13 = v28;
 
-            v16 = [v15 ui_downloadOperationForActivity:v6 inScene:v27];
+            v16 = [v15 ui_downloadOperationForActivity:activityCopy inScene:windowScene];
 
-            v10 = v29;
+            activityItems = v29;
             v12 = v30;
             if (!v16)
             {
@@ -2073,8 +2073,8 @@ LABEL_20:
             goto LABEL_14;
           }
 
-          v17 = [(SHSheetActivityItemsManager *)self activityViewController];
-          v16 = [v15 activityViewControllerOperation:v17];
+          activityViewController2 = [(SHSheetActivityItemsManager *)self activityViewController];
+          v16 = [v15 activityViewControllerOperation:activityViewController2];
 
           v12 = v30;
           if (v9)
@@ -2096,7 +2096,7 @@ LABEL_9:
 
 LABEL_14:
         v31 = 0;
-        v7[2](v7, v15, v16, &v31);
+        enumeratorCopy[2](enumeratorCopy, v15, v16, &v31);
         if (v31)
         {
 
@@ -2109,7 +2109,7 @@ LABEL_27:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v12 = [activityItems countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v12);
@@ -2121,7 +2121,7 @@ LABEL_29:
 - (id)placeholderActivityItemValuesForSendCopyMode
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(SHSheetActivityItemsManager *)self activityItems];
   v23 = 0u;
   v24 = 0u;
@@ -2141,8 +2141,8 @@ LABEL_29:
         }
 
         v5 = *(*(&v23 + 1) + 8 * i);
-        v6 = [(SHSheetActivityItemsManager *)self activityViewController];
-        v7 = [(SHSheetActivityItemsManager *)self placeholderActivityItemValuesForActivityItem:v5 activityViewController:v6];
+        activityViewController = [(SHSheetActivityItemsManager *)self activityViewController];
+        v7 = [(SHSheetActivityItemsManager *)self placeholderActivityItemValuesForActivityItem:v5 activityViewController:activityViewController];
 
         if ([v7 count])
         {
@@ -2171,7 +2171,7 @@ LABEL_29:
                   v14 = [[_UIActivityPlaceholderItemProxy alloc] initWithPlaceholderItem:v13];
                   if (v14)
                   {
-                    [v3 addObject:v14];
+                    [array addObject:v14];
                   }
                 }
               }
@@ -2185,7 +2185,7 @@ LABEL_29:
 
         else if (v5)
         {
-          [v3 addObject:v5];
+          [array addObject:v5];
         }
       }
 
@@ -2195,7 +2195,7 @@ LABEL_29:
     while (v18);
   }
 
-  return v3;
+  return array;
 }
 
 - (SFActivityItemsService)service

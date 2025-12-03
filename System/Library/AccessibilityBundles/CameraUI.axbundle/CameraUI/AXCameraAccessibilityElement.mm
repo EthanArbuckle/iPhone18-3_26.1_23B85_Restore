@@ -13,16 +13,16 @@
   if (v3)
   {
     v4 = MEMORY[0x29EDBA0F8];
-    v5 = [(AXCameraAccessibilityElement *)self _subjectDescription];
-    v6 = [v4 localizedStringWithFormat:v3, v5];
+    _subjectDescription = [(AXCameraAccessibilityElement *)self _subjectDescription];
+    _subjectDescription2 = [v4 localizedStringWithFormat:v3, _subjectDescription];
   }
 
   else
   {
-    v6 = [(AXCameraAccessibilityElement *)self _subjectDescription];
+    _subjectDescription2 = [(AXCameraAccessibilityElement *)self _subjectDescription];
   }
 
-  return v6;
+  return _subjectDescription2;
 }
 
 - (id)description
@@ -30,24 +30,24 @@
   v8.receiver = self;
   v8.super_class = AXCameraAccessibilityElement;
   v3 = [(AXCameraAccessibilityElement *)&v8 description];
-  v4 = [(AXCameraAccessibilityElement *)self accessibilityLabel];
+  accessibilityLabel = [(AXCameraAccessibilityElement *)self accessibilityLabel];
   [(AXCameraAccessibilityElement *)self normalizedFrame];
   v5 = AXMStringFromNormalizedCGRect();
-  v6 = [v3 stringByAppendingFormat:@" %@ (%@)", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@" %@ (%@)", accessibilityLabel, v5];
 
   return v6;
 }
 
 - (NSString)_subjectDescription
 {
-  v3 = [(AXCameraAccessibilityElement *)self faceName];
-  v4 = [v3 length];
+  faceName = [(AXCameraAccessibilityElement *)self faceName];
+  v4 = [faceName length];
 
   if (v4)
   {
-    v5 = [(AXCameraAccessibilityElement *)self faceName];
+    faceName2 = [(AXCameraAccessibilityElement *)self faceName];
 LABEL_6:
-    v7 = v5;
+    v7 = faceName2;
     goto LABEL_7;
   }
 
@@ -55,7 +55,7 @@ LABEL_6:
   {
     v6 = @"unknown.face";
 LABEL_5:
-    v5 = accessibilityCameraUILocalizedString(v6);
+    faceName2 = accessibilityCameraUILocalizedString(v6);
     goto LABEL_6;
   }
 
@@ -63,7 +63,7 @@ LABEL_5:
   {
     if ([(AXCameraAccessibilityElement *)self isObjectClassification])
     {
-      v5 = [(AXCameraAccessibilityElement *)self classificationLocalizedValue];
+      faceName2 = [(AXCameraAccessibilityElement *)self classificationLocalizedValue];
       goto LABEL_6;
     }
 

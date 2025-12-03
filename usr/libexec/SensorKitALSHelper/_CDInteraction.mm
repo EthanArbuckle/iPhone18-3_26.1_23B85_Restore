@@ -1,24 +1,24 @@
 @interface _CDInteraction
-- (id)sr_dateIntervalsInBucketsOf:(double)a3 duringQueryInterval:(id)a4;
-- (id)sr_startDateWithQueryInterval:(id)a3;
+- (id)sr_dateIntervalsInBucketsOf:(double)of duringQueryInterval:(id)interval;
+- (id)sr_startDateWithQueryInterval:(id)interval;
 @end
 
 @implementation _CDInteraction
 
-- (id)sr_startDateWithQueryInterval:(id)a3
+- (id)sr_startDateWithQueryInterval:(id)interval
 {
-  v4 = [(_CDInteraction *)self startDate];
-  v5 = [a3 startDate];
+  startDate = [(_CDInteraction *)self startDate];
+  startDate2 = [interval startDate];
 
-  return [v4 laterDate:v5];
+  return [startDate laterDate:startDate2];
 }
 
-- (id)sr_dateIntervalsInBucketsOf:(double)a3 duringQueryInterval:(id)a4
+- (id)sr_dateIntervalsInBucketsOf:(double)of duringQueryInterval:(id)interval
 {
-  v7 = [(_CDInteraction *)self startDate];
-  v8 = [(_CDInteraction *)self endDate];
+  startDate = [(_CDInteraction *)self startDate];
+  endDate = [(_CDInteraction *)self endDate];
 
-  return sub_10000CAD8(v7, v8, a4, a3);
+  return sub_10000CAD8(startDate, endDate, interval, of);
 }
 
 @end

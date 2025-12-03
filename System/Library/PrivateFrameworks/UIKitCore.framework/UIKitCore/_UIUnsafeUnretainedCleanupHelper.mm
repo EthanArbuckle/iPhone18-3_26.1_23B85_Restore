@@ -1,22 +1,22 @@
 @interface _UIUnsafeUnretainedCleanupHelper
 - (void)dealloc;
-- (void)initWithParent:(void *)a3 deallocationHandler:;
+- (void)initWithParent:(void *)parent deallocationHandler:;
 @end
 
 @implementation _UIUnsafeUnretainedCleanupHelper
 
-- (void)initWithParent:(void *)a3 deallocationHandler:
+- (void)initWithParent:(void *)parent deallocationHandler:
 {
-  v5 = a3;
-  v6 = v5;
-  if (!a1)
+  parentCopy = parent;
+  v6 = parentCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
 
   if (a2)
   {
-    if (v5)
+    if (parentCopy)
     {
       goto LABEL_4;
     }
@@ -24,8 +24,8 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel_initWithParent_deallocationHandler_ object:a1 file:@"_UIWeakHelper.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"parent != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithParent_deallocationHandler_ object:self file:@"_UIWeakHelper.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"parent != nil"}];
 
     if (v6)
     {
@@ -33,28 +33,28 @@
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:sel_initWithParent_deallocationHandler_ object:a1 file:@"_UIWeakHelper.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"deallocationHandler != NULL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel_initWithParent_deallocationHandler_ object:self file:@"_UIWeakHelper.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"deallocationHandler != NULL"}];
 
 LABEL_4:
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = _UIUnsafeUnretainedCleanupHelper;
-  a1 = objc_msgSendSuper2(&v14, sel_init);
-  if (a1)
+  self = objc_msgSendSuper2(&v14, sel_init);
+  if (self)
   {
     v7 = _Block_copy(v6);
-    v8 = a1[1];
-    a1[1] = v7;
+    v8 = self[1];
+    self[1] = v7;
 
-    a1[2] = a2;
+    self[2] = a2;
     v9 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:1];
-    v10 = a1[3];
-    a1[3] = v9;
+    v10 = self[3];
+    self[3] = v9;
   }
 
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc

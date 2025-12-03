@@ -1,10 +1,10 @@
 @interface ImsNetworkPath
-- (ImsNetworkPath)initWithInterface:()basic_string<char delegate:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (ImsNetworkPath)initWithInterface:()basic_string<char delegate:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (basic_string<char,)ifaceName;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)evaluateInterface;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation ImsNetworkPath
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (ImsNetworkPath)initWithInterface:()basic_string<char delegate:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (ImsNetworkPath)initWithInterface:()basic_string<char delegate:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
   v13.receiver = self;
@@ -36,7 +36,7 @@
     pathEvaluator = v6->_pathEvaluator;
     v6->_pathEvaluator = 0;
 
-    std::string::operator=(&v7->_ifaceName, a3);
+    std::string::operator=(&v7->_ifaceName, std);
     v10 = *v4;
     v9 = v4[1];
     if (v9)
@@ -98,10 +98,10 @@
     operator delete(v21[0]);
   }
 
-  v11 = [(NWPathEvaluator *)self->_pathEvaluator path];
-  v12 = [v11 status];
+  path = [(NWPathEvaluator *)self->_pathEvaluator path];
+  status = [path status];
 
-  if (v12 == 1)
+  if (status == 1)
   {
     cntrl = self->_delegate.__cntrl_;
     if (cntrl)
@@ -145,11 +145,11 @@
   [(ImsNetworkPath *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   cntrl = self->_delegate.__cntrl_;
   if (cntrl)
   {
@@ -163,10 +163,10 @@
         ptr = self->_delegate.__ptr_;
         if (ptr)
         {
-          v16 = [(NWPathEvaluator *)pathEvaluator path];
-          v17 = [v16 status];
+          path = [(NWPathEvaluator *)pathEvaluator path];
+          status = [path status];
 
-          if (v17 == 1)
+          if (status == 1)
           {
             (**ptr)(ptr);
           }

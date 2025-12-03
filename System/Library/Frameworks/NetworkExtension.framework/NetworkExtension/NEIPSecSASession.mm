@@ -1,10 +1,10 @@
 @interface NEIPSecSASession
-- (BOOL)addLarvalSA:(id)a3;
-- (BOOL)addSA:(id)a3;
-- (BOOL)migrateSA:(id)a3;
-- (BOOL)removeSA:(id)a3;
-- (BOOL)updateSA:(id)a3;
-- (NEIPSecSASession)initWithName:(id)a3 delegate:(id)a4;
+- (BOOL)addLarvalSA:(id)a;
+- (BOOL)addSA:(id)a;
+- (BOOL)migrateSA:(id)a;
+- (BOOL)removeSA:(id)a;
+- (BOOL)updateSA:(id)a;
+- (NEIPSecSASession)initWithName:(id)name delegate:(id)delegate;
 - (NEIPSecSASessionDelegate)delegate;
 - (NSArray)securityAssociations;
 - (OS_dispatch_queue)delegateQueue;
@@ -12,7 +12,7 @@
 - (id)description;
 - (void)dealloc;
 - (void)removeAllSAs;
-- (void)setDelegateQueue:(id)a3;
+- (void)setDelegateQueue:(id)queue;
 @end
 
 @implementation NEIPSecSASession
@@ -24,14 +24,14 @@
   return WeakRetained;
 }
 
-- (BOOL)migrateSA:(id)a3
+- (BOOL)migrateSA:(id)a
 {
-  v5 = a3;
+  aCopy = a;
   if (!self)
   {
-    if ([0 containsObject:v5])
+    if ([0 containsObject:aCopy])
     {
-      [0 removeObject:v5];
+      [0 removeObject:aCopy];
       Property = 0;
       goto LABEL_4;
     }
@@ -49,16 +49,16 @@ LABEL_7:
   [objc_getProperty(self v6];
   Property = objc_getProperty(self, v7, 24, 1);
 LABEL_4:
-  [Property addObject:v5];
+  [Property addObject:aCopy];
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)removeSA:(id)a3
+- (BOOL)removeSA:(id)a
 {
-  v5 = a3;
+  aCopy = a;
   if (self)
   {
     if ([objc_getProperty(self v4])
@@ -76,16 +76,16 @@ LABEL_8:
     {
       Property = objc_getProperty(self, v8, 32, 1);
 LABEL_7:
-      [Property removeObject:v5];
+      [Property removeObject:aCopy];
       v7 = 1;
     }
   }
 
   else
   {
-    if ([0 containsObject:v5])
+    if ([0 containsObject:aCopy])
     {
-      [0 removeObject:v5];
+      [0 removeObject:aCopy];
       v7 = 1;
     }
 
@@ -94,7 +94,7 @@ LABEL_7:
       v7 = 0;
     }
 
-    v11 = [0 containsObject:v5];
+    v11 = [0 containsObject:aCopy];
     Property = 0;
     if (v11)
     {
@@ -102,15 +102,15 @@ LABEL_7:
     }
   }
 
-  [v5 invalidate];
+  [aCopy invalidate];
 
   return v7;
 }
 
-- (BOOL)addSA:(id)a3
+- (BOOL)addSA:(id)a
 {
-  v5 = a3;
-  if (v5)
+  aCopy = a;
+  if (aCopy)
   {
     if (self)
     {
@@ -122,20 +122,20 @@ LABEL_7:
       Property = 0;
     }
 
-    [Property addObject:v5];
+    [Property addObject:aCopy];
   }
 
-  return v5 != 0;
+  return aCopy != 0;
 }
 
-- (BOOL)updateSA:(id)a3
+- (BOOL)updateSA:(id)a
 {
-  v5 = a3;
+  aCopy = a;
   if (!self)
   {
-    if ([0 containsObject:v5])
+    if ([0 containsObject:aCopy])
     {
-      [0 addObject:v5];
+      [0 addObject:aCopy];
       Property = 0;
       goto LABEL_4;
     }
@@ -153,14 +153,14 @@ LABEL_7:
   [objc_getProperty(self v6];
   Property = objc_getProperty(self, v7, 32, 1);
 LABEL_4:
-  [Property removeObject:v5];
+  [Property removeObject:aCopy];
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)addLarvalSA:(id)a3
+- (BOOL)addLarvalSA:(id)a
 {
   v4.receiver = self;
   v4.super_class = NEIPSecSASession;
@@ -175,7 +175,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@ Removing all SAs", buf, 0xCu);
   }
 
@@ -290,11 +290,11 @@ LABEL_8:
   return self;
 }
 
-- (void)setDelegateQueue:(id)a3
+- (void)setDelegateQueue:(id)queue
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 48);
+    objc_setProperty_atomic(self, a2, queue, 48);
   }
 }
 
@@ -309,9 +309,9 @@ LABEL_8:
 - (id)copyEmptySASession
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(NEIPSecSASession *)self name];
-  v5 = [(NEIPSecSASession *)self delegate];
-  v6 = [v3 initWithName:v4 delegate:v5];
+  name = [(NEIPSecSASession *)self name];
+  delegate = [(NEIPSecSASession *)self delegate];
+  v6 = [v3 initWithName:name delegate:delegate];
 
   return v6;
 }
@@ -340,16 +340,16 @@ LABEL_8:
     uniqueIndex = 0;
   }
 
-  v5 = [(NEIPSecSASession *)self name];
-  v6 = [v3 initWithFormat:@"SASession[%llu, %@]", uniqueIndex, v5];
+  name = [(NEIPSecSASession *)self name];
+  v6 = [v3 initWithFormat:@"SASession[%llu, %@]", uniqueIndex, name];
 
   return v6;
 }
 
-- (NEIPSecSASession)initWithName:(id)a3 delegate:(id)a4
+- (NEIPSecSASession)initWithName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = NEIPSecSASession;
   v8 = [(NEIPSecSASession *)&v19 init];
@@ -357,8 +357,8 @@ LABEL_8:
   if (v8)
   {
     v8->_uniqueIndex = atomic_fetch_add_explicit(&sNEIPSecSASessionIndex, 1uLL, memory_order_relaxed);
-    objc_setProperty_atomic(v8, v9, v6, 8);
-    [(NEIPSecSASession *)v10 setDelegate:v7];
+    objc_setProperty_atomic(v8, v9, nameCopy, 8);
+    [(NEIPSecSASession *)v10 setDelegate:delegateCopy];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     objc_setProperty_atomic(v10, v12, v11, 24);
 

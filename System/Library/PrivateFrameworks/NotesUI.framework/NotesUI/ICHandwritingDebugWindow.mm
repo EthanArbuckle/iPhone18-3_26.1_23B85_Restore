@@ -1,86 +1,86 @@
 @interface ICHandwritingDebugWindow
 + (CGRect)preferredFrame;
-+ (void)savePreferredFrame:(CGRect)a3;
++ (void)savePreferredFrame:(CGRect)frame;
 - (CGPoint)initialTouchLocation;
 - (ICHandwritingDebugDelegate)delegate;
-- (ICHandwritingDebugWindow)initWithDelegate:(id)a3;
+- (ICHandwritingDebugWindow)initWithDelegate:(id)delegate;
 - (void)layoutSubviews;
 - (void)refresh;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateResizeTriangleFrame;
 @end
 
 @implementation ICHandwritingDebugWindow
 
-- (ICHandwritingDebugWindow)initWithDelegate:(id)a3
+- (ICHandwritingDebugWindow)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [objc_opt_class() preferredFrame];
   v37.receiver = self;
   v37.super_class = ICHandwritingDebugWindow;
   v5 = [(ICHandwritingDebugWindow *)&v37 initWithFrame:?];
   if (v5)
   {
-    v6 = [[ICHandwritingDebugViewController alloc] initWithDelegate:v4];
+    v6 = [[ICHandwritingDebugViewController alloc] initWithDelegate:delegateCopy];
     handwritingDebugViewController = v5->_handwritingDebugViewController;
     v5->_handwritingDebugViewController = v6;
 
-    v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v9 = [(ICHandwritingDebugViewController *)v5->_handwritingDebugViewController view];
-    [v9 setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(ICHandwritingDebugViewController *)v5->_handwritingDebugViewController view];
+    [view setBackgroundColor:systemBackgroundColor];
 
     v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5->_handwritingDebugViewController];
     [(ICHandwritingDebugWindow *)v5 setRootViewController:v10];
-    v11 = [(ICHandwritingDebugWindow *)v5 rootViewController];
-    v12 = [v11 view];
-    v13 = [v12 layer];
-    [v13 setCornerRadius:8.0];
+    rootViewController = [(ICHandwritingDebugWindow *)v5 rootViewController];
+    view2 = [rootViewController view];
+    layer = [view2 layer];
+    [layer setCornerRadius:8.0];
 
-    v14 = [(ICHandwritingDebugWindow *)v5 rootViewController];
-    v15 = [v14 view];
-    v16 = [v15 layer];
-    [v16 setMasksToBounds:1];
+    rootViewController2 = [(ICHandwritingDebugWindow *)v5 rootViewController];
+    view3 = [rootViewController2 view];
+    layer2 = [view3 layer];
+    [layer2 setMasksToBounds:1];
 
     v17 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 48.0, 48.0}];
     [(ICHandwritingDebugWindow *)v5 setResizeTriangle:v17];
 
     CGAffineTransformMakeRotation(&v36, 0.785398163);
-    v18 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
+    resizeTriangle = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
     v35 = v36;
-    [v18 setTransform:&v35];
+    [resizeTriangle setTransform:&v35];
 
-    v19 = [MEMORY[0x1E69DC888] tintColor];
-    v20 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
-    [v20 setBackgroundColor:v19];
+    tintColor = [MEMORY[0x1E69DC888] tintColor];
+    resizeTriangle2 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
+    [resizeTriangle2 setBackgroundColor:tintColor];
 
-    v21 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
-    v22 = [v21 layer];
-    [v22 setZPosition:1000.0];
+    resizeTriangle3 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
+    layer3 = [resizeTriangle3 layer];
+    [layer3 setZPosition:1000.0];
 
-    v23 = [(ICHandwritingDebugWindow *)v5 rootViewController];
-    v24 = [v23 view];
-    v25 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
-    [v24 addSubview:v25];
+    rootViewController3 = [(ICHandwritingDebugWindow *)v5 rootViewController];
+    view4 = [rootViewController3 view];
+    resizeTriangle4 = [(ICHandwritingDebugWindow *)v5 resizeTriangle];
+    [view4 addSubview:resizeTriangle4];
 
-    v26 = [(ICHandwritingDebugWindow *)v5 layer];
-    [v26 setCornerRadius:8.0];
+    layer4 = [(ICHandwritingDebugWindow *)v5 layer];
+    [layer4 setCornerRadius:8.0];
 
-    v27 = [(ICHandwritingDebugWindow *)v5 layer];
+    layer5 = [(ICHandwritingDebugWindow *)v5 layer];
     LODWORD(v28) = 1050253722;
-    [v27 setShadowOpacity:v28];
+    [layer5 setShadowOpacity:v28];
 
-    v29 = [(ICHandwritingDebugWindow *)v5 layer];
-    [v29 setShadowRadius:16.0];
+    layer6 = [(ICHandwritingDebugWindow *)v5 layer];
+    [layer6 setShadowRadius:16.0];
 
-    v30 = [(ICHandwritingDebugWindow *)v5 layer];
-    [v30 setShadowOffset:{0.0, 4.0}];
+    layer7 = [(ICHandwritingDebugWindow *)v5 layer];
+    [layer7 setShadowOffset:{0.0, 4.0}];
 
-    v31 = [MEMORY[0x1E69DC888] blackColor];
-    v32 = [v31 CGColor];
-    v33 = [(ICHandwritingDebugWindow *)v5 layer];
-    [v33 setShadowColor:v32];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer8 = [(ICHandwritingDebugWindow *)v5 layer];
+    [layer8 setShadowColor:cGColor];
   }
 
   return v5;
@@ -96,38 +96,38 @@
 
 - (void)updateResizeTriangleFrame
 {
-  v11 = [(ICHandwritingDebugWindow *)self rootViewController];
-  v3 = [v11 view];
-  [v3 frame];
+  rootViewController = [(ICHandwritingDebugWindow *)self rootViewController];
+  view = [rootViewController view];
+  [view frame];
   v5 = v4;
-  v6 = [(ICHandwritingDebugWindow *)self rootViewController];
-  v7 = [v6 view];
-  [v7 frame];
+  rootViewController2 = [(ICHandwritingDebugWindow *)self rootViewController];
+  view2 = [rootViewController2 view];
+  [view2 frame];
   v9 = v8;
-  v10 = [(ICHandwritingDebugWindow *)self resizeTriangle];
-  [v10 setCenter:{v5, v9}];
+  resizeTriangle = [(ICHandwritingDebugWindow *)self resizeTriangle];
+  [resizeTriangle setCenter:{v5, v9}];
 }
 
 - (ICHandwritingDebugDelegate)delegate
 {
-  v2 = [(ICHandwritingDebugWindow *)self handwritingDebugViewController];
-  v3 = [v2 delegate];
+  handwritingDebugViewController = [(ICHandwritingDebugWindow *)self handwritingDebugViewController];
+  delegate = [handwritingDebugViewController delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v17.receiver = self;
   v17.super_class = ICHandwritingDebugWindow;
-  v6 = a3;
-  [(ICHandwritingDebugWindow *)&v17 touchesBegan:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  beganCopy = began;
+  [(ICHandwritingDebugWindow *)&v17 touchesBegan:beganCopy withEvent:event];
+  anyObject = [beganCopy anyObject];
 
-  v8 = [v7 view];
-  v9 = [(ICHandwritingDebugWindow *)self navigationController];
-  v10 = [v9 navigationBar];
-  v11 = [v8 isDescendantOfView:v10];
+  view = [anyObject view];
+  navigationController = [(ICHandwritingDebugWindow *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  v11 = [view isDescendantOfView:navigationBar];
 
   if (v11)
   {
@@ -136,9 +136,9 @@
 
   else
   {
-    v12 = [v7 view];
-    v13 = [(ICHandwritingDebugWindow *)self resizeTriangle];
-    v14 = [v12 isDescendantOfView:v13];
+    view2 = [anyObject view];
+    resizeTriangle = [(ICHandwritingDebugWindow *)self resizeTriangle];
+    v14 = [view2 isDescendantOfView:resizeTriangle];
 
     if (v14)
     {
@@ -146,24 +146,24 @@
     }
   }
 
-  v15 = [(ICHandwritingDebugWindow *)self navigationController];
-  v16 = [v15 navigationBar];
-  [v7 locationInView:v16];
+  navigationController2 = [(ICHandwritingDebugWindow *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [anyObject locationInView:navigationBar2];
   [(ICHandwritingDebugWindow *)self setInitialTouchLocation:?];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v28.receiver = self;
   v28.super_class = ICHandwritingDebugWindow;
-  v6 = a3;
-  [(ICHandwritingDebugWindow *)&v28 touchesMoved:v6 withEvent:a4];
+  movedCopy = moved;
+  [(ICHandwritingDebugWindow *)&v28 touchesMoved:movedCopy withEvent:event];
   v7 = [(ICHandwritingDebugWindow *)self navigationController:v28.receiver];
-  v8 = [v7 navigationBar];
+  navigationBar = [v7 navigationBar];
 
-  v9 = [v6 anyObject];
+  anyObject = [movedCopy anyObject];
 
-  [v9 locationInView:v8];
+  [anyObject locationInView:navigationBar];
   v11 = v10;
   v13 = v12;
 
@@ -189,11 +189,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = ICHandwritingDebugWindow;
-  [(ICHandwritingDebugWindow *)&v6 touchesEnded:a3 withEvent:a4];
+  [(ICHandwritingDebugWindow *)&v6 touchesEnded:ended withEvent:event];
   [(ICHandwritingDebugWindow *)self setDraggingWindow:0];
   [(ICHandwritingDebugWindow *)self setResizingWindow:0];
   v5 = objc_opt_class();
@@ -203,14 +203,14 @@
 
 - (void)refresh
 {
-  v2 = [(ICHandwritingDebugWindow *)self handwritingDebugViewController];
-  [v2 refresh];
+  handwritingDebugViewController = [(ICHandwritingDebugWindow *)self handwritingDebugViewController];
+  [handwritingDebugViewController refresh];
 }
 
 + (CGRect)preferredFrame
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"HandwritingWindowWidth"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"HandwritingWindowWidth"];
   v4 = v3;
   v5 = &unk_1F4FC3F18;
   if (v3)
@@ -220,8 +220,8 @@
 
   v6 = v5;
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 objectForKey:@"HandwritingWindowHeight"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults2 objectForKey:@"HandwritingWindowHeight"];
   v9 = v8;
   v10 = &unk_1F4FC3F30;
   if (v8)
@@ -231,27 +231,27 @@
 
   v11 = v10;
 
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v12 objectForKey:@"HandwritingWindowX"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults3 objectForKey:@"HandwritingWindowX"];
 
   if (!v13)
   {
     v14 = MEMORY[0x1E696AD98];
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v17 = v16;
     [v6 doubleValue];
     v13 = [v14 numberWithDouble:v17 - v18 + -24.0];
   }
 
-  v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v20 = [v19 objectForKey:@"HandwritingWindowY"];
+  standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v20 = [standardUserDefaults4 objectForKey:@"HandwritingWindowY"];
 
   if (!v20)
   {
     v21 = MEMORY[0x1E696AD98];
-    v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v22 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v24 = v23;
     [v11 doubleValue];
     v20 = [v21 numberWithDouble:v24 - v25 + -44.0];
@@ -277,23 +277,23 @@
   return result;
 }
 
-+ (void)savePreferredFrame:(CGRect)a3
++ (void)savePreferredFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v7 setDouble:@"HandwritingWindowX" forKey:x];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"HandwritingWindowX" forKey:x];
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setDouble:@"HandwritingWindowY" forKey:y];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setDouble:@"HandwritingWindowY" forKey:y];
 
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v9 setDouble:@"HandwritingWindowWidth" forKey:width];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults3 setDouble:@"HandwritingWindowWidth" forKey:width];
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v10 setDouble:@"HandwritingWindowHeight" forKey:height];
+  standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults4 setDouble:@"HandwritingWindowHeight" forKey:height];
 }
 
 - (CGPoint)initialTouchLocation

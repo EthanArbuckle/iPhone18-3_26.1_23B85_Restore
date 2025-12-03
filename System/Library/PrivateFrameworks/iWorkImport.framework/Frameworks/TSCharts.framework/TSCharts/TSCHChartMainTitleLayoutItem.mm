@@ -1,7 +1,7 @@
 @interface TSCHChartMainTitleLayoutItem
 - (BOOL)isTitleOn;
 - (BOOL)shouldPlaceTitleAtCenter;
-- (id)titleTextForModel:(id)a3;
+- (id)titleTextForModel:(id)model;
 - (unint64_t)titleParagraphStyleIndex;
 @end
 
@@ -32,9 +32,9 @@
   return v26;
 }
 
-- (id)titleTextForModel:(id)a3
+- (id)titleTextForModel:(id)model
 {
-  v6 = objc_msgSend_chartInfo(self, a2, v3, v4, v5, a3);
+  v6 = objc_msgSend_chartInfo(self, a2, v3, v4, v5, model);
   v11 = objc_msgSend_objectValueForProperty_(v6, v7, v8, v9, v10, 1124);
 
   return v11;

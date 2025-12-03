@@ -1,19 +1,19 @@
 @interface LACSecureData
-+ (id)secureDataWithBytes:(const void *)a3 length:(unint64_t)a4;
-+ (id)secureDataWithData:(id)a3;
-+ (id)secureDataWithString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)secureDataWithBytes:(const void *)bytes length:(unint64_t)length;
++ (id)secureDataWithData:(id)data;
++ (id)secureDataWithString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeLastCharacter;
 - (LACSecureData)init;
-- (LACSecureData)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (LACSecureData)initWithData:(id)a3;
-- (LACSecureData)initWithString:(id)a3;
+- (LACSecureData)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (LACSecureData)initWithData:(id)data;
+- (LACSecureData)initWithString:(id)string;
 - (id)nullTerminatedCopy;
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)appendData:(id)a3;
-- (void)appendString:(id)a3;
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length;
+- (void)appendData:(id)data;
+- (void)appendString:(id)string;
 - (void)dealloc;
-- (void)prepareBuffer:(unint64_t)a3;
+- (void)prepareBuffer:(unint64_t)buffer;
 - (void)reset;
 @end
 
@@ -27,17 +27,17 @@
   [(LACSecureData *)&v3 dealloc];
 }
 
-- (void)prepareBuffer:(unint64_t)a3
+- (void)prepareBuffer:(unint64_t)buffer
 {
   allocatedLength = self->_allocatedLength;
-  if (allocatedLength >= a3)
+  if (allocatedLength >= buffer)
   {
-    [LACSecureData resetBytes:self->_bytes + a3 length:allocatedLength - a3];
+    [LACSecureData resetBytes:self->_bytes + buffer length:allocatedLength - buffer];
   }
 
   else
   {
-    v6 = malloc_type_malloc(a3, 0x3F171307uLL);
+    v6 = malloc_type_malloc(buffer, 0x3F171307uLL);
     if (!v6)
     {
       v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:@"malloc failed" userInfo:0];
@@ -45,7 +45,7 @@
     }
 
     v7 = v6;
-    [LACSecureData resetBytes:v6 length:a3];
+    [LACSecureData resetBytes:v6 length:buffer];
     bytes = self->_bytes;
     if (bytes)
     {
@@ -57,11 +57,11 @@
       }
     }
 
-    self->_allocatedLength = a3;
+    self->_allocatedLength = buffer;
     self->_bytes = v7;
   }
 
-  self->_bytesLength = a3;
+  self->_bytesLength = buffer;
 }
 
 - (LACSecureData)init
@@ -70,24 +70,24 @@
   objc_exception_throw(v2);
 }
 
-- (LACSecureData)initWithString:(id)a3
+- (LACSecureData)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = LACSecureData;
   v5 = [(LACSecureData *)&v8 init];
   if (v5)
   {
     v7 = 0;
-    [v4 getBytes:0 maxLength:0 usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v4, "length"), 0}];
+    [stringCopy getBytes:0 maxLength:0 usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(stringCopy, "length"), 0}];
     [(LACSecureData *)v5 prepareBuffer:v7];
-    [v4 getBytes:v5->_bytes maxLength:v5->_bytesLength usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v4, "length"), 0}];
+    [stringCopy getBytes:v5->_bytes maxLength:v5->_bytesLength usedLength:&v7 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(stringCopy, "length"), 0}];
   }
 
   return v5;
 }
 
-- (LACSecureData)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (LACSecureData)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v9.receiver = self;
   v9.super_class = LACSecureData;
@@ -95,42 +95,42 @@
   v7 = v6;
   if (v6)
   {
-    [(LACSecureData *)v6 prepareBuffer:a4];
-    memcpy(v7->_bytes, a3, a4);
+    [(LACSecureData *)v6 prepareBuffer:length];
+    memcpy(v7->_bytes, bytes, length);
   }
 
   return v7;
 }
 
-- (LACSecureData)initWithData:(id)a3
+- (LACSecureData)initWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  return [(LACSecureData *)self initWithBytes:v7 length:v8];
+  return [(LACSecureData *)self initWithBytes:bytes length:v8];
 }
 
-+ (id)secureDataWithBytes:(const void *)a3 length:(unint64_t)a4
++ (id)secureDataWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  v4 = [[LACSecureData alloc] initWithBytes:a3 length:a4];
+  v4 = [[LACSecureData alloc] initWithBytes:bytes length:length];
 
   return v4;
 }
 
-+ (id)secureDataWithString:(id)a3
++ (id)secureDataWithString:(id)string
 {
-  v3 = a3;
-  v4 = [[LACSecureData alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[LACSecureData alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-+ (id)secureDataWithData:(id)a3
++ (id)secureDataWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[LACSecureData alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[LACSecureData alloc] initWithData:dataCopy];
 
   return v4;
 }
@@ -157,27 +157,27 @@
   }
 }
 
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length
 {
   bytesLength = self->_bytesLength;
-  [(LACSecureData *)self prepareBuffer:bytesLength + a4];
+  [(LACSecureData *)self prepareBuffer:bytesLength + length];
   v8 = self->_bytes + bytesLength;
 
-  memcpy(v8, a3, a4);
+  memcpy(v8, bytes, length);
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
 
-  [(LACSecureData *)self appendBytes:v5 length:v6];
+  [(LACSecureData *)self appendBytes:bytes length:v6];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = [LACSecureData secureDataWithString:a3];
+  v4 = [LACSecureData secureDataWithString:string];
   [(LACSecureData *)self appendData:v4];
 }
 
@@ -233,11 +233,11 @@ LABEL_12:
   return bytes;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [(LACSecureData *)self length];
-  v6 = v5 == [v4 length] && timingsafe_bcmp(-[LACSecureData bytes](self, "bytes"), objc_msgSend(v4, "bytes"), -[LACSecureData length](self, "length")) == 0;
+  v6 = v5 == [equalCopy length] && timingsafe_bcmp(-[LACSecureData bytes](self, "bytes"), objc_msgSend(equalCopy, "bytes"), -[LACSecureData length](self, "length")) == 0;
 
   return v6;
 }

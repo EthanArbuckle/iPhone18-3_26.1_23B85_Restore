@@ -1,43 +1,43 @@
 @interface _CDInteractionCache
-- (BOOL)containsUniqueCacheCandidate:(id)a3;
+- (BOOL)containsUniqueCacheCandidate:(id)candidate;
 - (NSArray)interactions;
-- (_CDInteractionCache)initWithInteractionStore:(id)a3 size:(unint64_t)a4 queryPredicate:(id)a5 filterBlock:(id)a6;
+- (_CDInteractionCache)initWithInteractionStore:(id)store size:(unint64_t)size queryPredicate:(id)predicate filterBlock:(id)block;
 - (id)_init;
-- (id)initForTestingWithSize:(unint64_t)a3;
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3;
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3 direction:(int64_t)a4;
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3 direction:(int64_t)a4 mechanism:(int64_t)a5;
+- (id)initForTestingWithSize:(unint64_t)size;
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier;
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier direction:(int64_t)direction;
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier direction:(int64_t)direction mechanism:(int64_t)mechanism;
 - (id)uniqueConversationCandidates;
-- (void)_cacheInteractions:(id)a3;
-- (void)_countConversationIDsForInteraction:(id)a3 deleted:(BOOL)a4;
-- (void)_deleteInteractions:(id)a3;
+- (void)_cacheInteractions:(id)interactions;
+- (void)_countConversationIDsForInteraction:(id)interaction deleted:(BOOL)deleted;
+- (void)_deleteInteractions:(id)interactions;
 - (void)_forceRefetch;
-- (void)_handleInteractionRemoval:(id)a3;
+- (void)_handleInteractionRemoval:(id)removal;
 - (void)_invalidate;
 - (void)_rebuildMostRecentInteractions;
 - (void)_refetch;
-- (void)_updateMostRecentInteractionsWithInteraction:(id)a3 deleted:(BOOL)a4;
+- (void)_updateMostRecentInteractionsWithInteraction:(id)interaction deleted:(BOOL)deleted;
 - (void)debounceRefetch;
-- (void)interactionsDeleted:(id)a3;
-- (void)interactionsRecorded:(id)a3;
+- (void)interactionsDeleted:(id)deleted;
+- (void)interactionsRecorded:(id)recorded;
 @end
 
 @implementation _CDInteractionCache
 
-- (_CDInteractionCache)initWithInteractionStore:(id)a3 size:(unint64_t)a4 queryPredicate:(id)a5 filterBlock:(id)a6
+- (_CDInteractionCache)initWithInteractionStore:(id)store size:(unint64_t)size queryPredicate:(id)predicate filterBlock:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_CDInteractionCache *)self _init];
-  v15 = v14;
-  if (v14)
+  storeCopy = store;
+  predicateCopy = predicate;
+  blockCopy = block;
+  _init = [(_CDInteractionCache *)self _init];
+  v15 = _init;
+  if (_init)
   {
-    objc_storeStrong(v14 + 8, a3);
-    v15[9] = a4;
-    v15[4] = vcvtas_u32_f32(a4 * 0.65);
-    objc_storeStrong(v15 + 10, a5);
-    v16 = MEMORY[0x193B00C50](v13);
+    objc_storeStrong(_init + 8, store);
+    v15[9] = size;
+    v15[4] = vcvtas_u32_f32(size * 0.65);
+    objc_storeStrong(v15 + 10, predicate);
+    v16 = MEMORY[0x193B00C50](blockCopy);
     v17 = v15[11];
     v15[11] = v16;
 
@@ -61,11 +61,11 @@
     objc_copyWeak(&v31, &location);
     dispatch_source_set_event_handler(v23, &v27);
     dispatch_activate(v15[2]);
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    v25 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v24 addObserver:v15 selector:sel_interactionsRecorded_ name:@"_CDInteractionStoreRecordedInteractionsNotification" object:0];
-    [v24 addObserver:v15 selector:sel_interactionsDeleted_ name:@"_CDInteractionStoreDeletedInteractionsNotification" object:0];
-    [v25 addObserver:v15 selector:sel_debounceRefetch name:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_interactionsRecorded_ name:@"_CDInteractionStoreRecordedInteractionsNotification" object:0];
+    [defaultCenter addObserver:v15 selector:sel_interactionsDeleted_ name:@"_CDInteractionStoreDeletedInteractionsNotification" object:0];
+    [defaultCenter2 addObserver:v15 selector:sel_debounceRefetch name:@"_CDInteractionStoreDeleteAllInteractionsNotification" object:0];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -74,14 +74,14 @@
   return v15;
 }
 
-- (id)initForTestingWithSize:(unint64_t)a3
+- (id)initForTestingWithSize:(unint64_t)size
 {
-  v4 = [(_CDInteractionCache *)self _init];
-  v5 = v4;
-  if (v4)
+  _init = [(_CDInteractionCache *)self _init];
+  v5 = _init;
+  if (_init)
   {
-    v4[9] = a3;
-    v4[4] = 0;
+    _init[9] = size;
+    _init[4] = 0;
     v6 = objc_opt_new();
     v7 = v5[3];
     v5[3] = v6;
@@ -123,12 +123,12 @@
   return v3;
 }
 
-- (BOOL)containsUniqueCacheCandidate:(id)a3
+- (BOOL)containsUniqueCacheCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   os_unfair_lock_lock(&self->_lock);
   [(_CDInteractionCache *)self _refetch];
-  v5 = [(NSCountedSet *)self->_conversationCandidates containsObject:v4];
+  v5 = [(NSCountedSet *)self->_conversationCandidates containsObject:candidateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
@@ -256,33 +256,33 @@
   [(_CDInteractionCache *)self _refetch];
 }
 
-- (void)_countConversationIDsForInteraction:(id)a3 deleted:(BOOL)a4
+- (void)_countConversationIDsForInteraction:(id)interaction deleted:(BOOL)deleted
 {
-  v6 = a3;
-  v7 = [v6 domainIdentifier];
-  v8 = [v6 derivedIntentIdentifier];
-  v9 = [v6 targetBundleId];
-  v10 = v9;
-  if (v9)
+  interactionCopy = interaction;
+  domainIdentifier = [interactionCopy domainIdentifier];
+  derivedIntentIdentifier = [interactionCopy derivedIntentIdentifier];
+  targetBundleId = [interactionCopy targetBundleId];
+  v10 = targetBundleId;
+  if (targetBundleId)
   {
-    v11 = v9;
+    bundleId = targetBundleId;
   }
 
   else
   {
-    v11 = [v6 bundleId];
+    bundleId = [interactionCopy bundleId];
   }
 
-  v12 = v11;
+  v12 = bundleId;
 
-  v13 = [v6 recipients];
-  v14 = [_CDInteraction generateConversationIdFromInteractionRecipients:v13];
+  recipients = [interactionCopy recipients];
+  v14 = [_CDInteraction generateConversationIdFromInteractionRecipients:recipients];
 
   if (v12)
   {
-    v15 = [[_CDCacheCandidate alloc] initWithDomainId:v7 derivedIntentId:v8 bundleId:v12 recipientsId:v14];
+    v15 = [[_CDCacheCandidate alloc] initWithDomainId:domainIdentifier derivedIntentId:derivedIntentIdentifier bundleId:v12 recipientsId:v14];
     conversationCandidates = self->_conversationCandidates;
-    if (a4)
+    if (deleted)
     {
       [(NSCountedSet *)conversationCandidates removeObject:v15];
     }
@@ -303,17 +303,17 @@
   }
 }
 
-- (void)_updateMostRecentInteractionsWithInteraction:(id)a3 deleted:(BOOL)a4
+- (void)_updateMostRecentInteractionsWithInteraction:(id)interaction deleted:(BOOL)deleted
 {
-  v6 = a3;
-  v7 = [_CDCandidateInteractionTaxonomy taxonomyOfInteraction:v6];
+  interactionCopy = interaction;
+  v7 = [_CDCandidateInteractionTaxonomy taxonomyOfInteraction:interactionCopy];
   v8 = [(NSMutableDictionary *)self->_mostRecentInteractionsByTaxonomyAndIdentifier objectForKeyedSubscript:v7];
   if (v8)
   {
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!deleted)
   {
     v8 = objc_opt_new();
     [(NSMutableDictionary *)self->_mostRecentInteractionsByTaxonomyAndIdentifier setObject:v8 forKeyedSubscript:v7];
@@ -323,51 +323,51 @@ LABEL_4:
     v14[2] = __76___CDInteractionCache__updateMostRecentInteractionsWithInteraction_deleted___block_invoke;
     v14[3] = &unk_1E7367270;
     v15 = v8;
-    v17 = a4;
-    v9 = v6;
+    deletedCopy = deleted;
+    v9 = interactionCopy;
     v16 = v9;
     v10 = v8;
     v11 = MEMORY[0x193B00C50](v14);
-    v12 = [v9 domainIdentifier];
-    (v11)[2](v11, v12);
+    domainIdentifier = [v9 domainIdentifier];
+    (v11)[2](v11, domainIdentifier);
 
-    v13 = [v9 derivedIntentIdentifier];
-    (v11)[2](v11, v13);
+    derivedIntentIdentifier = [v9 derivedIntentIdentifier];
+    (v11)[2](v11, derivedIntentIdentifier);
   }
 }
 
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3 direction:(int64_t)a4 mechanism:(int64_t)a5
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier direction:(int64_t)direction mechanism:(int64_t)mechanism
 {
-  v8 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   [(_CDInteractionCache *)self _refetch];
-  v9 = [_CDCandidateInteractionTaxonomy taxonomyWithDirection:a4 mechanism:a5];
+  v9 = [_CDCandidateInteractionTaxonomy taxonomyWithDirection:direction mechanism:mechanism];
   v10 = [(NSMutableDictionary *)self->_mostRecentInteractionsByTaxonomyAndIdentifier objectForKeyedSubscript:v9];
-  v11 = [v10 objectForKeyedSubscript:v8];
-  v12 = [v11 isUncachedSentinel];
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
+  isUncachedSentinel = [v11 isUncachedSentinel];
 
-  if (v12)
+  if (isUncachedSentinel)
   {
     [(_CDInteractionCache *)self _rebuildMostRecentInteractions];
   }
 
   v13 = [(NSMutableDictionary *)self->_mostRecentInteractionsByTaxonomyAndIdentifier objectForKeyedSubscript:v9];
-  v14 = [v13 objectForKeyedSubscript:v8];
-  v15 = [v14 interactionIfCached];
+  v14 = [v13 objectForKeyedSubscript:identifierCopy];
+  interactionIfCached = [v14 interactionIfCached];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v15;
+  return interactionIfCached;
 }
 
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = 0;
   for (i = 0; i != 4; ++i)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(_CDInteractionCache *)self mostRecentInteractionForCandidateIdentifier:v4 direction:i];
+    v8 = [(_CDInteractionCache *)self mostRecentInteractionForCandidateIdentifier:identifierCopy direction:i];
     v9 = v8;
     if (v5)
     {
@@ -390,14 +390,14 @@ LABEL_4:
   return v5;
 }
 
-- (id)mostRecentInteractionForCandidateIdentifier:(id)a3 direction:(int64_t)a4
+- (id)mostRecentInteractionForCandidateIdentifier:(id)identifier direction:(int64_t)direction
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = 0;
   for (i = 0; i != 21; ++i)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(_CDInteractionCache *)self mostRecentInteractionForCandidateIdentifier:v6 direction:a4 mechanism:i];
+    v10 = [(_CDInteractionCache *)self mostRecentInteractionForCandidateIdentifier:identifierCopy direction:direction mechanism:i];
     v11 = v10;
     if (v7)
     {
@@ -461,9 +461,9 @@ LABEL_4:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)interactionsRecorded:(id)a3
+- (void)interactionsRecorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -474,8 +474,8 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   if (!self->_needsRefetch)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"_CDInteractionsKey"];
+    userInfo = [recordedCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"_CDInteractionsKey"];
 
     if ([v7 count])
     {
@@ -486,9 +486,9 @@ LABEL_4:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)interactionsDeleted:(id)a3
+- (void)interactionsDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   v5 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -499,8 +499,8 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   if (!self->_needsRefetch)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"_CDInteractionsKey"];
+    userInfo = [deletedCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"_CDInteractionsKey"];
 
     if ([v7 count])
     {
@@ -511,16 +511,16 @@ LABEL_4:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_cacheInteractions:(id)a3
+- (void)_cacheInteractions:(id)interactions
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionsCopy = interactions;
   oslog = +[_CDLogging interactionChannel];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = interactionsCopy;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v5)
   {
@@ -540,8 +540,8 @@ LABEL_4:
 
         v10 = *(*(&v32 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [(_CDInteractionCache *)self filterBlock];
-        if (!v12 || (v13 = v12, [(_CDInteractionCache *)self filterBlock], v14 = objc_claimAutoreleasedReturnValue(), v15 = (v14)[2](v14, v10), v14, v13, v15))
+        filterBlock = [(_CDInteractionCache *)self filterBlock];
+        if (!filterBlock || (v13 = filterBlock, [(_CDInteractionCache *)self filterBlock], v14 = objc_claimAutoreleasedReturnValue(), v15 = (v14)[2](v14, v10), v14, v13, v15))
         {
           v16 = [(NSMutableArray *)self->_mutableInteractions indexOfObject:v10 inSortedRange:0 options:[(NSMutableArray *)self->_mutableInteractions count] usingComparator:1024, &__block_literal_global];
           if (v16 == -[NSMutableArray count](self->_mutableInteractions, "count") || (-[NSMutableArray objectAtIndexedSubscript:](self->_mutableInteractions, "objectAtIndexedSubscript:", v16), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqual:v10], v17, (v18 & 1) == 0))
@@ -613,17 +613,17 @@ LABEL_4:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteInteractions:(id)a3
+- (void)_deleteInteractions:(id)interactions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionsCopy = interactions;
   oslog = +[_CDLogging interactionChannel];
   v21 = [(NSMutableArray *)self->_mutableInteractions count];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v4;
+  v5 = interactionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v6)
   {
@@ -642,8 +642,8 @@ LABEL_4:
 
         v11 = *(*(&v23 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [(_CDInteractionCache *)self filterBlock];
-        if (!v13 || (v14 = v13, [(_CDInteractionCache *)self filterBlock], v15 = objc_claimAutoreleasedReturnValue(), v16 = v15[2](v15, v11), v15, v14, v16))
+        filterBlock = [(_CDInteractionCache *)self filterBlock];
+        if (!filterBlock || (v14 = filterBlock, [(_CDInteractionCache *)self filterBlock], v15 = objc_claimAutoreleasedReturnValue(), v16 = v15[2](v15, v11), v15, v14, v16))
         {
           v17 = [(NSMutableArray *)self->_mutableInteractions indexOfObject:v11 inSortedRange:0 options:[(NSMutableArray *)self->_mutableInteractions count] usingComparator:256, &__block_literal_global];
           if (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -687,11 +687,11 @@ LABEL_17:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleInteractionRemoval:(id)a3
+- (void)_handleInteractionRemoval:(id)removal
 {
-  v4 = a3;
-  [(_CDInteractionCache *)self _countConversationIDsForInteraction:v4 deleted:1];
-  [(_CDInteractionCache *)self _updateMostRecentInteractionsWithInteraction:v4 deleted:1];
+  removalCopy = removal;
+  [(_CDInteractionCache *)self _countConversationIDsForInteraction:removalCopy deleted:1];
+  [(_CDInteractionCache *)self _updateMostRecentInteractionsWithInteraction:removalCopy deleted:1];
 }
 
 - (NSArray)interactions

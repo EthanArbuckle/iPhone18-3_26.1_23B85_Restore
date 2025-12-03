@@ -1,13 +1,13 @@
 @interface IDSGroupContextNotifyingObserver
 - (IDSGroupContextNotifyingObserver)init;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)didCacheGroup:(id)a3 completion:(id)a4;
-- (void)didCreateGroup:(id)a3 completion:(id)a4;
-- (void)didReceiveDecryptionFailureForGroup:(id)a3 completion:(id)a4;
-- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)a3;
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4 completion:(id)a5;
-- (void)removeDelegate:(id)a3;
+- (void)didCacheGroup:(id)group completion:(id)completion;
+- (void)didCreateGroup:(id)group completion:(id)completion;
+- (void)didReceiveDecryptionFailureForGroup:(id)group completion:(id)completion;
+- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)completion;
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation IDSGroupContextNotifyingObserver
@@ -16,13 +16,13 @@
 {
   if (_IDSRunningInDaemon())
   {
-    v3 = [MEMORY[0x1E699BB90] groupContext];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    groupContext = [MEMORY[0x1E699BB90] groupContext];
+    if (os_log_type_enabled(groupContext, OS_LOG_TYPE_ERROR))
     {
-      sub_195B268D8(self, v3);
+      sub_195B268D8(self, groupContext);
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -38,23 +38,23 @@
     }
 
     self = v5;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(NSMutableSet *)self->_delegates addObject:?];
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     [(NSMutableSet *)self->_delegates removeObject:?];
   }
@@ -70,12 +70,12 @@
   [(IDSGroupContextNotifyingObserver *)&v4 dealloc];
 }
 
-- (void)didCreateGroup:(id)a3 completion:(id)a4
+- (void)didCreateGroup:(id)group completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  groupCopy = group;
+  completionCopy = completion;
+  if (groupCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -100,7 +100,7 @@
           v13 = *(*(&v15 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            [v13 didCreateGroup:v6 completion:{v7, v15}];
+            [v13 didCreateGroup:groupCopy completion:{completionCopy, v15}];
           }
 
           ++v12;
@@ -117,12 +117,12 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCacheGroup:(id)a3 completion:(id)a4
+- (void)didCacheGroup:(id)group completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  groupCopy = group;
+  completionCopy = completion;
+  if (groupCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -147,7 +147,7 @@
           v13 = *(*(&v15 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            [v13 didCacheGroup:v6 completion:{v7, v15}];
+            [v13 didCacheGroup:groupCopy completion:{completionCopy, v15}];
           }
 
           ++v12;
@@ -164,13 +164,13 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4 completion:(id)a5
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  groupCopy = group;
+  newGroupCopy = newGroup;
+  completionCopy = completion;
+  if (groupCopy && newGroupCopy)
   {
     v20 = 0u;
     v21 = 0u;
@@ -195,7 +195,7 @@
           v16 = *(*(&v18 + 1) + 8 * v15);
           if (objc_opt_respondsToSelector())
           {
-            [v16 didUpdateGroup:v8 withNewGroup:v9 completion:{v10, v18}];
+            [v16 didUpdateGroup:groupCopy withNewGroup:newGroupCopy completion:{completionCopy, v18}];
           }
 
           ++v15;
@@ -212,12 +212,12 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveDecryptionFailureForGroup:(id)a3 completion:(id)a4
+- (void)didReceiveDecryptionFailureForGroup:(id)group completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  groupCopy = group;
+  completionCopy = completion;
+  if (groupCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -242,7 +242,7 @@
           v13 = *(*(&v15 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            [v13 didReceiveDecryptionFailureForGroup:v6 completion:{v7, v15}];
+            [v13 didReceiveDecryptionFailureForGroup:groupCopy completion:{completionCopy, v15}];
           }
 
           ++v12;
@@ -259,17 +259,17 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)a3
+- (void)didReceiveRegistrationIdentityUpdateWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E699BB90] groupContext];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  completionCopy = completion;
+  groupContext = [MEMORY[0x1E699BB90] groupContext];
+  if (os_log_type_enabled(groupContext, OS_LOG_TYPE_INFO))
   {
     delegates = self->_delegates;
     *buf = 138543362;
     v20 = delegates;
-    _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_INFO, "Did receive registration identity update {delegates: %{public}@}", buf, 0xCu);
+    _os_log_impl(&dword_1959FF000, groupContext, OS_LOG_TYPE_INFO, "Did receive registration identity update {delegates: %{public}@}", buf, 0xCu);
   }
 
   v16 = 0u;
@@ -295,7 +295,7 @@
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 didReceiveRegistrationIdentityUpdateWithCompletion:{v4, v14}];
+          [v12 didReceiveRegistrationIdentityUpdateWithCompletion:{completionCopy, v14}];
         }
 
         ++v11;

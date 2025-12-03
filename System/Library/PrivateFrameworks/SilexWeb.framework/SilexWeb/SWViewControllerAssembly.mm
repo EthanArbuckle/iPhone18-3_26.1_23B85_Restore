@@ -1,21 +1,21 @@
 @interface SWViewControllerAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SWViewControllerAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerClass:objc_opt_class() factory:&__block_literal_global_2];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_2];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_13];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_13];
 
-  v9 = [v3 publicContainer];
+  publicContainer3 = [registryCopy publicContainer];
 
-  v8 = [v9 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_81_0];
+  v8 = [publicContainer3 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_81_0];
 }
 
 SWContainerViewController *__43__SWViewControllerAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

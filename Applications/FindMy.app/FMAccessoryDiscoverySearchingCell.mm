@@ -1,14 +1,14 @@
 @interface FMAccessoryDiscoverySearchingCell
-- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithCoder:(id)a3;
-- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithCoder:(id)coder;
+- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation FMAccessoryDiscoverySearchingCell
 
-- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -33,12 +33,12 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for FMAccessoryDiscoverySearchingCell();
-  v10 = [(FMAccessoryDiscoverySearchingCell *)&v12 initWithStyle:a3 reuseIdentifier:v9];
+  v10 = [(FMAccessoryDiscoverySearchingCell *)&v12 initWithStyle:style reuseIdentifier:v9];
 
   return v10;
 }
 
-- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithCoder:(id)a3
+- (_TtC6FindMy33FMAccessoryDiscoverySearchingCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC6FindMy33FMAccessoryDiscoverySearchingCell_activityIndicator;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(UIActivityIndicatorView) init];
@@ -47,17 +47,17 @@
   return result;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
   v10 = type metadata accessor for FMAccessoryDiscoverySearchingCell();
-  v11.receiver = v8;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
   [(FMAccessoryDiscoverySearchingCell *)&v11 _bridgedUpdateConfigurationUsingState:isa];
 

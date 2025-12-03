@@ -1,20 +1,20 @@
 @interface DKDiagnosticServiceRequest
-- (DKDiagnosticServiceRequest)initWithHostServicesDelegate:(id)a3;
+- (DKDiagnosticServiceRequest)initWithHostServicesDelegate:(id)delegate;
 - (id)hostServicesDelegate;
-- (void)_completeWithDiagnosticResult:(id)a3 error:(id)a4;
+- (void)_completeWithDiagnosticResult:(id)result error:(id)error;
 - (void)cancelExtensionRequest;
-- (void)completeWithPayload:(id)a3 completion:(id)a4;
+- (void)completeWithPayload:(id)payload completion:(id)completion;
 - (void)didFailStart;
 - (void)didInterrupt;
 - (void)didInvalidate;
-- (void)dismissViewControllerWithCompletion:(id)a3;
+- (void)dismissViewControllerWithCompletion:(id)completion;
 @end
 
 @implementation DKDiagnosticServiceRequest
 
-- (DKDiagnosticServiceRequest)initWithHostServicesDelegate:(id)a3
+- (DKDiagnosticServiceRequest)initWithHostServicesDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DKDiagnosticServiceRequest;
   v5 = [(DKDiagnosticServiceRequest *)&v8 init];
@@ -22,7 +22,7 @@
   if (v5)
   {
     v5->_completed = 0;
-    objc_storeWeak(&v5->_hostServicesDelegate, v4);
+    objc_storeWeak(&v5->_hostServicesDelegate, delegateCopy);
   }
 
   return v6;
@@ -70,23 +70,23 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeWithPayload:(id)a3 completion:(id)a4
+- (void)completeWithPayload:(id)payload completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[DKDiagnosticServiceRequest completeWithPayload:completion:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = payloadCopy;
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "%s: %@", &v10, 0x16u);
   }
 
-  v7[2](v7);
-  [(DKDiagnosticServiceRequest *)self _completeWithDiagnosticResult:v6 error:0];
+  completionCopy[2](completionCopy);
+  [(DKDiagnosticServiceRequest *)self _completeWithDiagnosticResult:payloadCopy error:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -106,10 +106,10 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissViewControllerWithCompletion:(id)a3
+- (void)dismissViewControllerWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,27 +118,27 @@
     _os_log_impl(&dword_248B9D000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v3[2](v3);
+  completionCopy[2](completionCopy);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeWithDiagnosticResult:(id)a3 error:(id)a4
+- (void)_completeWithDiagnosticResult:(id)result error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  resultCopy = result;
+  errorCopy = error;
   if (![(DKDiagnosticServiceRequest *)self completed])
   {
     [(DKDiagnosticServiceRequest *)self setCompleted:1];
-    v7 = [(DKDiagnosticServiceRequest *)self completion];
+    completion = [(DKDiagnosticServiceRequest *)self completion];
 
-    if (v7)
+    if (completion)
     {
-      v8 = [(DKDiagnosticServiceRequest *)self completion];
-      (v8)[2](v8, v10, v6);
+      completion2 = [(DKDiagnosticServiceRequest *)self completion];
+      (completion2)[2](completion2, resultCopy, errorCopy);
     }
 
-    v9 = [(DKDiagnosticServiceRequest *)self connection];
-    [v9 invalidate];
+    connection = [(DKDiagnosticServiceRequest *)self connection];
+    [connection invalidate];
   }
 }
 

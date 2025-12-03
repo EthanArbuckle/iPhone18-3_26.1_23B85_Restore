@@ -7,21 +7,21 @@
 
 - (uint64_t)ts_setAppearanceTransitionsAreDisabled:()TeaBridge
 {
-  v5 = [a1 appearanceTransitionsAreDisabled];
-  [a1 setAppearanceTransitionsAreDisabled:a3];
-  return v5;
+  appearanceTransitionsAreDisabled = [self appearanceTransitionsAreDisabled];
+  [self setAppearanceTransitionsAreDisabled:a3];
+  return appearanceTransitionsAreDisabled;
 }
 
 - (uint64_t)ts_isVideoPlayerPresentedFullScreen
 {
-  v2 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (!v2)
+  if (!presentedViewController)
   {
     return 0;
   }
 
-  v3 = [a1 presentedViewController];
+  presentedViewController2 = [self presentedViewController];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
 

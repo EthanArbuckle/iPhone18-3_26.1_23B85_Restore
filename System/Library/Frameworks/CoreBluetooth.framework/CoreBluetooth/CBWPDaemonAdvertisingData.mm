@@ -1,12 +1,12 @@
 @interface CBWPDaemonAdvertisingData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation CBWPDaemonAdvertisingData
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   advInstanceType = self->_advInstanceType;
   v5 = CUPrintFlags32();
@@ -126,16 +126,16 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_13;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v21 = 1;
     goto LABEL_17;
@@ -145,60 +145,60 @@ LABEL_13:
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(CBWPDaemonAdvertisingData *)self advInstanceType];
-    if (v7 != [(CBWPDaemonAdvertisingData *)v6 advInstanceType])
+    advInstanceType = [(CBWPDaemonAdvertisingData *)self advInstanceType];
+    if (advInstanceType != [(CBWPDaemonAdvertisingData *)v6 advInstanceType])
     {
       goto LABEL_15;
     }
 
-    v8 = [(CBWPDaemonAdvertisingData *)self advInterval];
-    if (v8 != [(CBWPDaemonAdvertisingData *)v6 advInterval])
+    advInterval = [(CBWPDaemonAdvertisingData *)self advInterval];
+    if (advInterval != [(CBWPDaemonAdvertisingData *)v6 advInterval])
     {
       goto LABEL_15;
     }
 
-    v9 = [(CBWPDaemonAdvertisingData *)self advDataPerType];
-    v10 = [(CBWPDaemonAdvertisingData *)v6 advDataPerType];
-    v11 = [v9 isEqualToDictionary:v10];
+    advDataPerType = [(CBWPDaemonAdvertisingData *)self advDataPerType];
+    advDataPerType2 = [(CBWPDaemonAdvertisingData *)v6 advDataPerType];
+    v11 = [advDataPerType isEqualToDictionary:advDataPerType2];
 
     if (!v11)
     {
       goto LABEL_15;
     }
 
-    v12 = [(CBWPDaemonAdvertisingData *)self enableObjectLocatorResponseOnAdvertisingInstance];
-    if (v12 != [(CBWPDaemonAdvertisingData *)v6 enableObjectLocatorResponseOnAdvertisingInstance])
+    enableObjectLocatorResponseOnAdvertisingInstance = [(CBWPDaemonAdvertisingData *)self enableObjectLocatorResponseOnAdvertisingInstance];
+    if (enableObjectLocatorResponseOnAdvertisingInstance != [(CBWPDaemonAdvertisingData *)v6 enableObjectLocatorResponseOnAdvertisingInstance])
     {
       goto LABEL_15;
     }
 
-    v13 = [(CBWPDaemonAdvertisingData *)self stopOnAdvertisingAddressChange];
-    if (v13 != [(CBWPDaemonAdvertisingData *)v6 stopOnAdvertisingAddressChange])
+    stopOnAdvertisingAddressChange = [(CBWPDaemonAdvertisingData *)self stopOnAdvertisingAddressChange];
+    if (stopOnAdvertisingAddressChange != [(CBWPDaemonAdvertisingData *)v6 stopOnAdvertisingAddressChange])
     {
       goto LABEL_15;
     }
 
-    v14 = [(CBWPDaemonAdvertisingData *)self enableAdvertisingWithPowerAssertion];
-    if (v14 != [(CBWPDaemonAdvertisingData *)v6 enableAdvertisingWithPowerAssertion])
+    enableAdvertisingWithPowerAssertion = [(CBWPDaemonAdvertisingData *)self enableAdvertisingWithPowerAssertion];
+    if (enableAdvertisingWithPowerAssertion != [(CBWPDaemonAdvertisingData *)v6 enableAdvertisingWithPowerAssertion])
     {
       goto LABEL_15;
     }
 
-    v15 = [(CBWPDaemonAdvertisingData *)self enableEPAForAdvertisement];
-    if (v15 != [(CBWPDaemonAdvertisingData *)v6 enableEPAForAdvertisement])
+    enableEPAForAdvertisement = [(CBWPDaemonAdvertisingData *)self enableEPAForAdvertisement];
+    if (enableEPAForAdvertisement != [(CBWPDaemonAdvertisingData *)v6 enableEPAForAdvertisement])
     {
       goto LABEL_15;
     }
 
-    v16 = [(CBWPDaemonAdvertisingData *)self listOfClients];
-    v17 = [(CBWPDaemonAdvertisingData *)v6 listOfClients];
-    v18 = [v16 isEqualToArray:v17];
+    listOfClients = [(CBWPDaemonAdvertisingData *)self listOfClients];
+    listOfClients2 = [(CBWPDaemonAdvertisingData *)v6 listOfClients];
+    v18 = [listOfClients isEqualToArray:listOfClients2];
 
     if (v18)
     {
-      v19 = [(CBWPDaemonAdvertisingData *)self mfgData];
-      v20 = [(CBWPDaemonAdvertisingData *)v6 mfgData];
-      v21 = [v19 isEqualToData:v20];
+      mfgData = [(CBWPDaemonAdvertisingData *)self mfgData];
+      mfgData2 = [(CBWPDaemonAdvertisingData *)v6 mfgData];
+      v21 = [mfgData isEqualToData:mfgData2];
     }
 
     else
@@ -219,31 +219,31 @@ LABEL_17:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     [v5 setAdvInstanceType:{-[CBWPDaemonAdvertisingData advInstanceType](self, "advInstanceType")}];
     [v5 setAdvInterval:{-[CBWPDaemonAdvertisingData advInterval](self, "advInterval")}];
-    v6 = [(CBWPDaemonAdvertisingData *)self advDataPerType];
-    v7 = [v6 copyWithZone:a3];
+    advDataPerType = [(CBWPDaemonAdvertisingData *)self advDataPerType];
+    v7 = [advDataPerType copyWithZone:zone];
     [v5 setAdvDataPerType:v7];
 
     [v5 setEnableObjectLocatorResponseOnAdvertisingInstance:{-[CBWPDaemonAdvertisingData enableObjectLocatorResponseOnAdvertisingInstance](self, "enableObjectLocatorResponseOnAdvertisingInstance")}];
     [v5 setStopOnAdvertisingAddressChange:{-[CBWPDaemonAdvertisingData stopOnAdvertisingAddressChange](self, "stopOnAdvertisingAddressChange")}];
     [v5 setEnableAdvertisingWithPowerAssertion:{-[CBWPDaemonAdvertisingData enableAdvertisingWithPowerAssertion](self, "enableAdvertisingWithPowerAssertion")}];
     [v5 setEnableEPAForAdvertisement:{-[CBWPDaemonAdvertisingData enableEPAForAdvertisement](self, "enableEPAForAdvertisement")}];
-    v8 = [(CBWPDaemonAdvertisingData *)self wiProxUpdateTimestamp];
-    v9 = [v8 copyWithZone:a3];
+    wiProxUpdateTimestamp = [(CBWPDaemonAdvertisingData *)self wiProxUpdateTimestamp];
+    v9 = [wiProxUpdateTimestamp copyWithZone:zone];
     [v5 setWiProxUpdateTimestamp:v9];
 
-    v10 = [(CBWPDaemonAdvertisingData *)self mfgData];
-    v11 = [v10 copyWithZone:a3];
+    mfgData = [(CBWPDaemonAdvertisingData *)self mfgData];
+    v11 = [mfgData copyWithZone:zone];
     [v5 setMfgData:v11];
 
-    v12 = [(CBWPDaemonAdvertisingData *)self listOfClients];
-    v13 = [v12 copyWithZone:a3];
+    listOfClients = [(CBWPDaemonAdvertisingData *)self listOfClients];
+    v13 = [listOfClients copyWithZone:zone];
     [v5 setListOfClients:v13];
   }
 

@@ -1,6 +1,6 @@
 @interface XRFrameCommutator
 + (id)sharedCommutator;
-- (XRFrameCommutator)initWithMinorFrameCount:(unsigned __int8)a3;
+- (XRFrameCommutator)initWithMinorFrameCount:(unsigned __int8)count;
 - (id)newRing;
 - (void)dealloc;
 - (void)stop;
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (XRFrameCommutator)initWithMinorFrameCount:(unsigned __int8)a3
+- (XRFrameCommutator)initWithMinorFrameCount:(unsigned __int8)count
 {
   v4.receiver = self;
   v4.super_class = XRFrameCommutator;

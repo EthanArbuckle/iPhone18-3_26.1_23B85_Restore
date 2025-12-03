@@ -1,44 +1,44 @@
 @interface HKDocumentPickerViewController
-- (HKDocumentPickerViewController)initWithCoder:(id)a3;
-- (HKDocumentPickerViewController)initWithDocumentAuthorizations:(id)a3;
-- (HKDocumentPickerViewController)initWithDocuments:(id)a3 presentationStyle:(int64_t)a4;
+- (HKDocumentPickerViewController)initWithCoder:(id)coder;
+- (HKDocumentPickerViewController)initWithDocumentAuthorizations:(id)authorizations;
+- (HKDocumentPickerViewController)initWithDocuments:(id)documents presentationStyle:(int64_t)style;
 - (HKHealthPrivacyServicePickerControllerDelegate)delegate;
 - (id)_tableHeaderView;
-- (id)dataMetadataViewControllerForSample:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)dataMetadataViewControllerForSample:(id)sample;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addCancelAndDoneButtons;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
-- (void)_enableDocumentSample:(id)a3 enabled:(BOOL)a4;
-- (void)_finishWithError:(id)a3;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
+- (void)_enableDocumentSample:(id)sample enabled:(BOOL)enabled;
+- (void)_finishWithError:(id)error;
 - (void)_updateForCurrentSizeCategory;
 - (void)adjustHeaderViewFrame;
-- (void)cdaDocumentTableViewCellDidChangeValue:(id)a3;
-- (void)configureHeaderView:(id)a3;
-- (void)pushDetailForDocumentSample:(id)a3;
-- (void)setSource:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)cdaDocumentTableViewCellDidChangeValue:(id)value;
+- (void)configureHeaderView:(id)view;
+- (void)pushDetailForDocumentSample:(id)sample;
+- (void)setSource:(id)source;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKDocumentPickerViewController
 
-- (HKDocumentPickerViewController)initWithDocuments:(id)a3 presentationStyle:(int64_t)a4
+- (HKDocumentPickerViewController)initWithDocuments:(id)documents presentationStyle:(int64_t)style
 {
-  v6 = a3;
+  documentsCopy = documents;
   v18.receiver = self;
   v18.super_class = HKDocumentPickerViewController;
   v7 = [(HKTableViewController *)&v18 initWithUsingInsetStyling:1];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [documentsCopy mutableCopy];
     samplesList = v7->_samplesList;
     v7->_samplesList = v8;
 
-    v10 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v10 = [MEMORY[0x1E695DFD8] setWithArray:documentsCopy];
     allSamples = v7->_allSamples;
     v7->_allSamples = v10;
 
@@ -46,12 +46,12 @@
     enabledSamples = v7->_enabledSamples;
     v7->_enabledSamples = v12;
 
-    v7->_presentationStyle = a4;
+    v7->_presentationStyle = style;
     v14 = objc_alloc_init(MEMORY[0x1E696C1C0]);
     healthStore = v7->_healthStore;
     v7->_healthStore = v14;
 
-    if (a4)
+    if (style)
     {
       v16 = [(NSMutableArray *)v7->_samplesList count]> 1;
     }
@@ -67,20 +67,20 @@
   return v7;
 }
 
-- (HKDocumentPickerViewController)initWithDocumentAuthorizations:(id)a3
+- (HKDocumentPickerViewController)initWithDocumentAuthorizations:(id)authorizations
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [(HKDocumentPickerViewController *)self initWithDocuments:v5 presentationStyle:0];
+  authorizationsCopy = authorizations;
+  allKeys = [authorizationsCopy allKeys];
+  v6 = [(HKDocumentPickerViewController *)self initWithDocuments:allKeys presentationStyle:0];
   if (v6)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v16 = v5;
-    v7 = v5;
+    v16 = allKeys;
+    v7 = allKeys;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -96,10 +96,10 @@
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v4 objectForKeyedSubscript:v12];
-          v14 = [v13 BOOLValue];
+          v13 = [authorizationsCopy objectForKeyedSubscript:v12];
+          bOOLValue = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue)
           {
             [(NSMutableSet *)v6->_enabledSamples addObject:v12];
           }
@@ -111,17 +111,17 @@
       while (v9);
     }
 
-    v5 = v16;
+    allKeys = v16;
   }
 
   return v6;
 }
 
-- (HKDocumentPickerViewController)initWithCoder:(id)a3
+- (HKDocumentPickerViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKDocumentPickerViewController;
-  return [(HKDocumentPickerViewController *)&v4 initWithCoder:a3];
+  return [(HKDocumentPickerViewController *)&v4 initWithCoder:coder];
 }
 
 - (void)viewDidLoad
@@ -140,11 +140,11 @@
     [(HKDocumentPickerViewController *)self _enableDocumentSample:v3 enabled:1];
   }
 
-  v4 = [(HKDocumentPickerViewController *)self tableView];
-  [v4 setEstimatedRowHeight:114.0];
+  tableView = [(HKDocumentPickerViewController *)self tableView];
+  [tableView setEstimatedRowHeight:114.0];
 
-  v5 = [(HKDocumentPickerViewController *)self tableView];
-  [v5 _setSectionCornerRadius:26.0];
+  tableView2 = [(HKDocumentPickerViewController *)self tableView];
+  [tableView2 _setSectionCornerRadius:26.0];
 
   [(HKDocumentPickerViewController *)self _updateForCurrentSizeCategory];
 }
@@ -159,7 +159,7 @@
 
 - (void)_updateForCurrentSizeCategory
 {
-  v3 = [(HKDocumentPickerViewController *)self tableView];
+  tableView = [(HKDocumentPickerViewController *)self tableView];
   IsLargerThanSizeCategory = HKUIApplicationContentSizeCategoryIsLargerThanSizeCategory(*MEMORY[0x1E69DDC70]);
   v5 = *MEMORY[0x1E69DE3D0];
   if (!IsLargerThanSizeCategory)
@@ -167,7 +167,7 @@
     v5 = 114.0;
   }
 
-  [v3 setRowHeight:v5];
+  [tableView setRowHeight:v5];
 
   if (self->_tableHeaderView)
   {
@@ -176,20 +176,20 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = HKDocumentPickerViewController;
-  [(HKDocumentPickerViewController *)&v7 viewWillDisappear:a3];
+  [(HKDocumentPickerViewController *)&v7 viewWillDisappear:disappear];
   if (![(HKDocumentPickerViewController *)self _isPrompting])
   {
-    v4 = [(HKDocumentPickerViewController *)self delegate];
+    delegate = [(HKDocumentPickerViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(HKDocumentPickerViewController *)self delegate];
-      [v6 pickerControllerDidFinish:self error:0];
+      delegate2 = [(HKDocumentPickerViewController *)self delegate];
+      [delegate2 pickerControllerDidFinish:self error:0];
     }
   }
 }
@@ -207,15 +207,15 @@
   v9 = [v6 initWithTitle:v8 style:2 target:self action:sel__done_];
 
   [v9 setEnabled:0];
-  v10 = [(HKDocumentPickerViewController *)self navigationItem];
-  [v10 setLeftBarButtonItem:v13];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(HKDocumentPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v13];
+  [navigationItem setRightBarButtonItem:v9];
   v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = [v11 localizedStringForKey:@"HEALTH_ACCESS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v10 setTitle:v12];
+  [navigationItem setTitle:v12];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -242,7 +242,7 @@
   }
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -260,9 +260,9 @@
   [(HKDocumentPickerViewController *)self _finishWithError:0];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -276,36 +276,36 @@
     }
   }
 
-  v15 = [(HKDocumentPickerViewController *)self delegate];
+  delegate = [(HKDocumentPickerViewController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(HKDocumentPickerViewController *)self delegate];
-    [v17 pickerControllerDidFinish:self error:v4];
+    delegate2 = [(HKDocumentPickerViewController *)self delegate];
+    [delegate2 pickerControllerDidFinish:self error:errorCopy];
   }
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_source != v5)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self->_source != sourceCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_source, a3);
-    v7 = [(HKDocumentPickerViewController *)self tableView];
-    [v7 reloadData];
+    v11 = sourceCopy;
+    objc_storeStrong(&self->_source, source);
+    tableView = [(HKDocumentPickerViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = [(HKDocumentPickerViewController *)self _isPrompting];
+    sourceCopy = [(HKDocumentPickerViewController *)self _isPrompting];
     v6 = v11;
-    if (v5)
+    if (sourceCopy)
     {
-      v8 = [(HKDocumentPickerViewController *)self _tableHeaderView];
-      [(HKDocumentPickerViewController *)self configureHeaderView:v8];
+      _tableHeaderView = [(HKDocumentPickerViewController *)self _tableHeaderView];
+      [(HKDocumentPickerViewController *)self configureHeaderView:_tableHeaderView];
       if (v11)
       {
-        v9 = v8;
+        v9 = _tableHeaderView;
       }
 
       else
@@ -313,14 +313,14 @@
         v9 = 0;
       }
 
-      v10 = [(HKDocumentPickerViewController *)self tableView];
-      [v10 setTableHeaderView:v9];
+      tableView2 = [(HKDocumentPickerViewController *)self tableView];
+      [tableView2 setTableHeaderView:v9];
 
       v6 = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](sourceCopy, v6);
 }
 
 - (id)_tableHeaderView
@@ -338,9 +338,9 @@
   return tableHeaderView;
 }
 
-- (void)configureHeaderView:(id)a3
+- (void)configureHeaderView:(id)view
 {
-  v16 = a3;
+  viewCopy = view;
   if ([(HKDocumentPickerViewController *)self _needsSampleRequestDescription])
   {
     v4 = [(NSMutableArray *)self->_samplesList count];
@@ -364,23 +364,23 @@
     }
 
     v10 = [v6 localizedStringForKey:v9 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v11 = [(HKSource *)self->_source name];
-    v12 = [v5 stringWithFormat:v10, v11];
+    name = [(HKSource *)self->_source name];
+    v12 = [v5 stringWithFormat:v10, name];
 
-    [v16 setSubtitle:v12];
+    [viewCopy setSubtitle:v12];
   }
 
   else
   {
-    [v16 setSubtitle:0];
+    [viewCopy setSubtitle:0];
   }
 
   v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v14 = [v13 localizedStringForKey:@"HEALTH" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  [v16 setTitle:v14];
+  [viewCopy setTitle:v14];
 
-  v15 = [(HKDocumentPickerViewController *)self tableView];
-  [v16 setLayoutMarginsWithTableView:v15];
+  tableView = [(HKDocumentPickerViewController *)self tableView];
+  [viewCopy setLayoutMarginsWithTableView:tableView];
 }
 
 - (void)adjustHeaderViewFrame
@@ -389,8 +389,8 @@
   v4 = v3;
   v6 = v5;
   tableHeaderView = self->_tableHeaderView;
-  v8 = [(HKDocumentPickerViewController *)self tableView];
-  [v8 bounds];
+  tableView = [(HKDocumentPickerViewController *)self tableView];
+  [tableView bounds];
   [(HKTitledIconHeaderView *)tableHeaderView sizeThatFits:v9, v10];
   v12 = v11;
   v14 = v13;
@@ -400,37 +400,37 @@
   [(HKTitledIconHeaderView *)v15 setFrame:v4, v6, v12, v14 + 16.0];
 }
 
-- (void)_enableDocumentSample:(id)a3 enabled:(BOOL)a4
+- (void)_enableDocumentSample:(id)sample enabled:(BOOL)enabled
 {
   enabledSamples = self->_enabledSamples;
-  if (a4)
+  if (enabled)
   {
-    [(NSMutableSet *)enabledSamples addObject:a3];
+    [(NSMutableSet *)enabledSamples addObject:sample];
   }
 
   else
   {
-    [(NSMutableSet *)enabledSamples removeObject:a3];
+    [(NSMutableSet *)enabledSamples removeObject:sample];
   }
 
   v6 = [(NSMutableSet *)self->_enabledSamples count]!= 0;
-  v8 = [(HKDocumentPickerViewController *)self navigationItem];
-  v7 = [v8 rightBarButtonItem];
-  [v7 setEnabled:v6];
+  navigationItem = [(HKDocumentPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKDocumentPickerViewController;
-  [(HKDocumentPickerViewController *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKDocumentPickerViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKDocumentPickerViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKDocumentPickerViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -439,11 +439,11 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   samplesList = self->_samplesList;
-  v7 = a3;
-  v8 = -[NSMutableArray objectAtIndex:](samplesList, "objectAtIndex:", [a4 row]);
+  viewCopy = view;
+  v8 = -[NSMutableArray objectAtIndex:](samplesList, "objectAtIndex:", [path row]);
   if (self->_showCheckboxes)
   {
     v9 = @"DocumentMultipleSelectionTableViewCellIdentifier";
@@ -454,7 +454,7 @@
     v9 = @"DocumentSingleSelectionTableViewCellIdentifier";
   }
 
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
@@ -485,40 +485,40 @@
   return v10;
 }
 
-- (void)pushDetailForDocumentSample:(id)a3
+- (void)pushDetailForDocumentSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v5 = [HKCDADocumentDetailViewController alloc];
-  v6 = [v4 document];
+  document = [sampleCopy document];
 
-  v7 = [v6 documentData];
-  v9 = [(HKCDADocumentDetailViewController *)v5 initWithReportData:v7];
+  documentData = [document documentData];
+  v9 = [(HKCDADocumentDetailViewController *)v5 initWithReportData:documentData];
 
-  v8 = [(HKDocumentPickerViewController *)self navigationController];
-  [v8 pushViewController:v9 animated:1];
+  navigationController = [(HKDocumentPickerViewController *)self navigationController];
+  [navigationController pushViewController:v9 animated:1];
 }
 
-- (id)dataMetadataViewControllerForSample:(id)a3
+- (id)dataMetadataViewControllerForSample:(id)sample
 {
-  v4 = a3;
-  v5 = [[HKDataMetadataViewController alloc] initWithSample:v4 usingInsetStyling:1 profileName:0 delegate:self];
+  sampleCopy = sample;
+  v5 = [[HKDataMetadataViewController alloc] initWithSample:sampleCopy usingInsetStyling:1 profileName:0 delegate:self];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[NSMutableArray objectAtIndex:](self->_samplesList, "objectAtIndex:", [v6 row]);
-  v8 = [v7 document];
-  v9 = [v8 documentData];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[NSMutableArray objectAtIndex:](self->_samplesList, "objectAtIndex:", [pathCopy row]);
+  document = [v7 document];
+  documentData = [document documentData];
 
-  if (v9)
+  if (documentData)
   {
     v10 = [(HKDocumentPickerViewController *)self dataMetadataViewControllerForSample:v7];
-    v11 = [(HKDocumentPickerViewController *)self navigationController];
-    [v11 pushViewController:v10 animated:1];
+    navigationController = [(HKDocumentPickerViewController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 
   else if (!self->_hasPendingDocumentFetch)
@@ -527,14 +527,14 @@
     v12 = objc_alloc(MEMORY[0x1E696C110]);
     v13 = [MEMORY[0x1E696C2E0] documentTypeForIdentifier:*MEMORY[0x1E696B7C0]];
     v14 = MEMORY[0x1E696C378];
-    v15 = [v7 UUID];
-    v16 = [v14 predicateForObjectWithUUID:v15];
+    uUID = [v7 UUID];
+    v16 = [v14 predicateForObjectWithUUID:uUID];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __68__HKDocumentPickerViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v18[3] = &unk_1E81BA8C0;
     v18[4] = self;
-    v19 = v6;
+    v19 = pathCopy;
     v20 = v7;
     v17 = [v12 initWithDocumentType:v13 predicate:v16 limit:1 sortDescriptors:0 includeDocumentData:1 resultsHandler:v18];
 
@@ -572,16 +572,16 @@ void __68__HKDocumentPickerViewController_tableView_didSelectRowAtIndexPath___bl
   }
 }
 
-- (void)cdaDocumentTableViewCellDidChangeValue:(id)a3
+- (void)cdaDocumentTableViewCellDidChangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HKDocumentPickerViewController *)self tableView];
-  v8 = [v5 indexPathForCell:v4];
+  valueCopy = value;
+  tableView = [(HKDocumentPickerViewController *)self tableView];
+  v8 = [tableView indexPathForCell:valueCopy];
 
   v6 = -[NSMutableArray objectAtIndex:](self->_samplesList, "objectAtIndex:", [v8 row]);
-  v7 = [v4 isChecked];
+  isChecked = [valueCopy isChecked];
 
-  [(HKDocumentPickerViewController *)self _enableDocumentSample:v6 enabled:v7];
+  [(HKDocumentPickerViewController *)self _enableDocumentSample:v6 enabled:isChecked];
 }
 
 - (HKHealthPrivacyServicePickerControllerDelegate)delegate

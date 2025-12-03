@@ -1,16 +1,16 @@
 @interface SiriAnalyticsLogicalClocksXPCHandler
-- (void)allWithCompletionHandler:(id)a3;
+- (void)allWithCompletionHandler:(id)handler;
 @end
 
 @implementation SiriAnalyticsLogicalClocksXPCHandler
 
-- (void)allWithCompletionHandler:(id)a3
+- (void)allWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1D9905654(&unk_1D9932740, v5);
 }

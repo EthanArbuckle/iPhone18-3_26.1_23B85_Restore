@@ -1,23 +1,23 @@
 @interface _UITextSimpleLinkInteraction
 - (BOOL)_allowItemInteractions;
-- (BOOL)_beginInteractionSessionForLinkAtPoint:(CGPoint)a3 asTap:(BOOL)a4 precision:(unint64_t)a5;
-- (BOOL)_canBeginInteractionSessionForLinkAtPoint:(CGPoint)a3 asTap:(BOOL)a4 precision:(unint64_t)a5;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)interaction_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)interaction_gestureRecognizerShouldBegin:(id)a3;
-- (_UITextSimpleLinkInteraction)initWithShouldProxyContextMenuDelegate:(BOOL)a3;
+- (BOOL)_beginInteractionSessionForLinkAtPoint:(CGPoint)point asTap:(BOOL)tap precision:(unint64_t)precision;
+- (BOOL)_canBeginInteractionSessionForLinkAtPoint:(CGPoint)point asTap:(BOOL)tap precision:(unint64_t)precision;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)interaction_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)interaction_gestureRecognizerShouldBegin:(id)begin;
+- (_UITextSimpleLinkInteraction)initWithShouldProxyContextMenuDelegate:(BOOL)delegate;
 - (id)gesturesForFailureRequirements;
 - (id)itemInteractableView;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_removeInteractableItemFromCache:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)highlight:(id)a3;
-- (void)linkTapped:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_removeInteractableItemFromCache:(id)cache;
+- (void)didMoveToView:(id)view;
+- (void)highlight:(id)highlight;
+- (void)linkTapped:(id)tapped;
 @end
 
 @implementation _UITextSimpleLinkInteraction
 
-- (_UITextSimpleLinkInteraction)initWithShouldProxyContextMenuDelegate:(BOOL)a3
+- (_UITextSimpleLinkInteraction)initWithShouldProxyContextMenuDelegate:(BOOL)delegate
 {
   v8.receiver = self;
   v8.super_class = _UITextSimpleLinkInteraction;
@@ -33,7 +33,7 @@
     [(UITapGestureRecognizer *)v4->_linkTap setAllowableMovement:10.0];
     [(UIGestureRecognizer *)v4->_linkTap setDelaysTouchesEnded:0];
     [(UITextInteraction *)v4 addGestureRecognizer:v4->_linkTap withName:0x1EFBA76F0];
-    v4->_shouldProxyContextMenuDelegate = a3;
+    v4->_shouldProxyContextMenuDelegate = delegate;
   }
 
   return v4;
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UITextSimpleLinkInteraction;
-  [(UITextInteraction *)&v4 didMoveToView:a3];
+  [(UITextInteraction *)&v4 didMoveToView:view];
   self->_didCheckViewProtocolConformance = 0;
   self->_viewConformsToTextItemInteracting = 0;
 }
@@ -61,10 +61,10 @@
 {
   if (!self->_didCheckViewProtocolConformance)
   {
-    v3 = [(UITextInteraction *)self view];
+    view = [(UITextInteraction *)self view];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 conformsToProtocol:&unk_1EFE8B5E0];
+      v4 = [view conformsToProtocol:&unk_1EFE8B5E0];
     }
 
     else
@@ -78,44 +78,44 @@
 
   if (self->_viewConformsToTextItemInteracting)
   {
-    v5 = [(UITextInteraction *)self view];
+    view2 = [(UITextInteraction *)self view];
   }
 
   else
   {
-    v5 = 0;
+    view2 = 0;
   }
 
-  return v5;
+  return view2;
 }
 
-- (void)_removeInteractableItemFromCache:(id)a3
+- (void)_removeInteractableItemFromCache:(id)cache
 {
-  v4 = a3;
-  v6 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-  v5 = [v6 _textInteractableItemCache];
-  [v5 removeItem:v4];
+  cacheCopy = cache;
+  itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+  _textInteractableItemCache = [itemInteractableView _textInteractableItemCache];
+  [_textInteractableItemCache removeItem:cacheCopy];
 }
 
-- (void)linkTapped:(id)a3
+- (void)linkTapped:(id)tapped
 {
-  v11 = a3;
+  tappedCopy = tapped;
   if ([(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
   {
-    v4 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-    if (!v4)
+    itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+    if (!itemInteractableView)
     {
-      v6 = [(UITextInteraction *)self linkInteractionSession];
-      [v6 tapOnLinkWithGesture:v11];
+      linkInteractionSession = [(UITextInteraction *)self linkInteractionSession];
+      [linkInteractionSession tapOnLinkWithGesture:tappedCopy];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    [v11 locationInView:v4];
-    if (v11)
+    [tappedCopy locationInView:itemInteractableView];
+    if (tappedCopy)
     {
-      v5 = v11[24];
+      v5 = tappedCopy[24];
     }
 
     else
@@ -123,40 +123,40 @@ LABEL_15:
       v5 = 0;
     }
 
-    v6 = [v4 _textInteractableItemAtPoint:v5 precision:?];
-    v7 = [(UITextLinkInteraction *)self contextMenuInteraction];
-    if (v7)
+    linkInteractionSession = [itemInteractableView _textInteractableItemAtPoint:v5 precision:?];
+    contextMenuInteraction = [(UITextLinkInteraction *)self contextMenuInteraction];
+    if (contextMenuInteraction)
     {
-      v8 = v7;
+      contextMenuInteraction2 = contextMenuInteraction;
     }
 
     else
     {
-      v9 = [(UITextInteraction *)self assistantDelegate];
-      v8 = [v9 contextMenuInteraction];
+      assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+      contextMenuInteraction2 = [assistantDelegate contextMenuInteraction];
 
-      if (!v8)
+      if (!contextMenuInteraction2)
       {
 LABEL_10:
-        v10 = [(_UITextSimpleLinkInteraction *)self editMenuInteraction];
-        if (v10)
+        editMenuInteraction = [(_UITextSimpleLinkInteraction *)self editMenuInteraction];
+        if (editMenuInteraction)
         {
-          [v6 setEditMenuInteraction:v10];
+          [linkInteractionSession setEditMenuInteraction:editMenuInteraction];
         }
 
         self->_presentingFromSimpleTap = 1;
-        [v6 invokeDefaultAction];
+        [linkInteractionSession invokeDefaultAction];
         self->_presentingFromSimpleTap = 0;
-        if (([v6 defaultActionPresentsMenu] & 1) == 0)
+        if (([linkInteractionSession defaultActionPresentsMenu] & 1) == 0)
         {
-          [(_UITextSimpleLinkInteraction *)self _removeInteractableItemFromCache:v6];
+          [(_UITextSimpleLinkInteraction *)self _removeInteractableItemFromCache:linkInteractionSession];
         }
 
         goto LABEL_15;
       }
     }
 
-    [v6 setContextMenuInteraction:v8];
+    [linkInteractionSession setContextMenuInteraction:contextMenuInteraction2];
 
     goto LABEL_10;
   }
@@ -164,18 +164,18 @@ LABEL_10:
 LABEL_16:
 }
 
-- (void)highlight:(id)a3
+- (void)highlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   if ([(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
   {
-    v5 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-    [v4 locationInView:v5];
-    if (v5)
+    itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+    [highlightCopy locationInView:itemInteractableView];
+    if (itemInteractableView)
     {
-      if (v4)
+      if (highlightCopy)
       {
-        v6 = v4[24];
+        v6 = highlightCopy[24];
       }
 
       else
@@ -183,14 +183,14 @@ LABEL_16:
         v6 = 0;
       }
 
-      v7 = [v5 _textInteractableItemAtPoint:v6 precision:?];
+      v7 = [itemInteractableView _textInteractableItemAtPoint:v6 precision:?];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __42___UITextSimpleLinkInteraction_highlight___block_invoke;
       aBlock[3] = &unk_1E70F35B8;
       v8 = v7;
       v27 = v8;
-      v28 = self;
+      selfCopy = self;
       v9 = _Block_copy(aBlock);
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
@@ -205,7 +205,7 @@ LABEL_16:
       v20 = __42___UITextSimpleLinkInteraction_highlight___block_invoke_3;
       v21 = &unk_1E70F35B8;
       v22 = v10;
-      v23 = self;
+      selfCopy2 = self;
       v12 = v10;
       v13 = _Block_copy(&v18);
       v14 = _Block_copy(v13);
@@ -213,8 +213,8 @@ LABEL_16:
 
     else
     {
-      v15 = [(UITextInteraction *)self linkInteractionSession];
-      if (v15)
+      linkInteractionSession = [(UITextInteraction *)self linkInteractionSession];
+      if (linkInteractionSession)
       {
         v13 = &__block_literal_global_355_3;
       }
@@ -224,7 +224,7 @@ LABEL_16:
         v13 = 0;
       }
 
-      if (v15)
+      if (linkInteractionSession)
       {
         v14 = &__block_literal_global_357_1;
       }
@@ -234,7 +234,7 @@ LABEL_16:
         v14 = 0;
       }
 
-      if (v15)
+      if (linkInteractionSession)
       {
         v11 = &__block_literal_global_353_2;
       }
@@ -244,7 +244,7 @@ LABEL_16:
         v11 = 0;
       }
 
-      if (v15)
+      if (linkInteractionSession)
       {
         v9 = &__block_literal_global_600;
       }
@@ -255,10 +255,10 @@ LABEL_16:
       }
     }
 
-    v16 = [v4 state];
-    if (v16 <= 2)
+    state = [highlightCopy state];
+    if (state <= 2)
     {
-      if (v16 == 1)
+      if (state == 1)
       {
         v17 = v9;
         if (!v9)
@@ -271,7 +271,7 @@ LABEL_32:
 
       else
       {
-        if (v16 != 2)
+        if (state != 2)
         {
           goto LABEL_32;
         }
@@ -284,9 +284,9 @@ LABEL_32:
       }
     }
 
-    else if ((v16 - 3) >= 2)
+    else if ((state - 3) >= 2)
     {
-      if (v16 != 5)
+      if (state != 5)
       {
         goto LABEL_32;
       }
@@ -314,21 +314,21 @@ LABEL_32:
 LABEL_33:
 }
 
-- (BOOL)interaction_gestureRecognizerShouldBegin:(id)a3
+- (BOOL)interaction_gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v13.receiver = self;
   v13.super_class = _UITextSimpleLinkInteraction;
-  if ([(UITextInteraction *)&v13 interaction_gestureRecognizerShouldBegin:v4]&& [(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
+  if ([(UITextInteraction *)&v13 interaction_gestureRecognizerShouldBegin:beginCopy]&& [(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
   {
-    v5 = [(UIGestureRecognizer *)v4 view];
-    [(UITapGestureRecognizer *)v4 locationInView:v5];
+    view = [(UIGestureRecognizer *)beginCopy view];
+    [(UITapGestureRecognizer *)beginCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    if (v4)
+    if (beginCopy)
     {
-      inputPrecision = v4->super._inputPrecision;
+      inputPrecision = beginCopy->super._inputPrecision;
     }
 
     else
@@ -336,7 +336,7 @@ LABEL_33:
       inputPrecision = 0;
     }
 
-    v11 = [(_UITextSimpleLinkInteraction *)self _beginInteractionSessionForLinkAtPoint:self->_linkTap == v4 asTap:inputPrecision precision:v7, v9];
+    v11 = [(_UITextSimpleLinkInteraction *)self _beginInteractionSessionForLinkAtPoint:self->_linkTap == beginCopy asTap:inputPrecision precision:v7, v9];
   }
 
   else
@@ -347,22 +347,22 @@ LABEL_33:
   return v11;
 }
 
-- (BOOL)interaction_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)interaction_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v16.receiver = self;
   v16.super_class = _UITextSimpleLinkInteraction;
-  if ([(UITextInteraction *)&v16 interaction_gestureRecognizer:v6 shouldReceiveTouch:v7]&& [(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
+  if ([(UITextInteraction *)&v16 interaction_gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy]&& [(_UITextSimpleLinkInteraction *)self _allowItemInteractions])
   {
-    v8 = [(UIGestureRecognizer *)v6 view];
-    [v7 locationInView:v8];
+    view = [(UIGestureRecognizer *)recognizerCopy view];
+    [touchCopy locationInView:view];
     v10 = v9;
     v12 = v11;
 
-    if (v7)
+    if (touchCopy)
     {
-      v13 = v7[6];
+      v13 = touchCopy[6];
     }
 
     else
@@ -370,7 +370,7 @@ LABEL_33:
       v13 = 0;
     }
 
-    v14 = [(_UITextSimpleLinkInteraction *)self _canBeginInteractionSessionForLinkAtPoint:self->_linkTap == v6 asTap:v13 precision:v10, v12];
+    v14 = [(_UITextSimpleLinkInteraction *)self _canBeginInteractionSessionForLinkAtPoint:self->_linkTap == recognizerCopy asTap:v13 precision:v10, v12];
   }
 
   else
@@ -381,22 +381,22 @@ LABEL_33:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_linkTap == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = gestureRecognizerCopy;
+  if (self->_linkTap == recognizer)
   {
-    v9 = [v6 name];
-    if ([v9 isEqualToString:0x1EFBA76B0])
+    name = [gestureRecognizerCopy name];
+    if ([name isEqualToString:0x1EFBA76B0])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [v7 name];
-      v8 = [v10 isEqualToString:0x1EFBA76D0];
+      name2 = [v7 name];
+      v8 = [name2 isEqualToString:0x1EFBA76D0];
     }
   }
 
@@ -408,16 +408,16 @@ LABEL_33:
   return v8;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v8 = a3;
-  v4 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-  if (self->_linkTap == v8 && v4 != 0)
+  failedCopy = failed;
+  itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+  if (self->_linkTap == failedCopy && itemInteractableView != 0)
   {
-    [(UITapGestureRecognizer *)v8 locationInView:v4];
-    if (v8)
+    [(UITapGestureRecognizer *)failedCopy locationInView:itemInteractableView];
+    if (failedCopy)
     {
-      inputPrecision = v8->super._inputPrecision;
+      inputPrecision = failedCopy->super._inputPrecision;
     }
 
     else
@@ -425,29 +425,29 @@ LABEL_33:
       inputPrecision = 0;
     }
 
-    v7 = [v4 _textInteractableItemAtPoint:inputPrecision precision:?];
+    v7 = [itemInteractableView _textInteractableItemAtPoint:inputPrecision precision:?];
     [(_UITextSimpleLinkInteraction *)self _removeInteractableItemFromCache:v7];
   }
 }
 
-- (BOOL)_canBeginInteractionSessionForLinkAtPoint:(CGPoint)a3 asTap:(BOOL)a4 precision:(unint64_t)a5
+- (BOOL)_canBeginInteractionSessionForLinkAtPoint:(CGPoint)point asTap:(BOOL)tap precision:(unint64_t)precision
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
-  v10 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-  v11 = v10;
-  if (v10)
+  tapCopy = tap;
+  y = point.y;
+  x = point.x;
+  itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+  v11 = itemInteractableView;
+  if (itemInteractableView)
   {
-    v12 = [v10 _textInteractableItemAtPoint:a5 precision:{x, y}];
+    v12 = [itemInteractableView _textInteractableItemAtPoint:precision precision:{x, y}];
     v13 = v12;
-    v14 = v12 != 0;
-    if (v12 && v6)
+    canInvokeDefaultAction = v12 != 0;
+    if (v12 && tapCopy)
     {
-      v14 = [v12 canInvokeDefaultAction];
+      canInvokeDefaultAction = [v12 canInvokeDefaultAction];
     }
 
-    if (v13 && (v14 & 1) == 0)
+    if (v13 && (canInvokeDefaultAction & 1) == 0)
     {
       [(_UITextSimpleLinkInteraction *)self _removeInteractableItemFromCache:v13];
     }
@@ -455,34 +455,34 @@ LABEL_33:
 
   else
   {
-    v14 = 0;
+    canInvokeDefaultAction = 0;
   }
 
-  v15 = [(UITextInteraction *)self view];
+  view = [(UITextInteraction *)self view];
   if (objc_opt_respondsToSelector())
   {
-    v14 |= [v15 willInteractWithLinkAtPoint:{x, y}];
+    canInvokeDefaultAction |= [view willInteractWithLinkAtPoint:{x, y}];
   }
 
-  return v14;
+  return canInvokeDefaultAction;
 }
 
-- (BOOL)_beginInteractionSessionForLinkAtPoint:(CGPoint)a3 asTap:(BOOL)a4 precision:(unint64_t)a5
+- (BOOL)_beginInteractionSessionForLinkAtPoint:(CGPoint)point asTap:(BOOL)tap precision:(unint64_t)precision
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  tapCopy = tap;
+  y = point.y;
+  x = point.x;
   v10 = [[_UITextLinkInteractionSession alloc] initWithTextItemInteraction:self];
-  v11 = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
-  v12 = v11;
-  if (v11)
+  itemInteractableView = [(_UITextSimpleLinkInteraction *)self itemInteractableView];
+  v12 = itemInteractableView;
+  if (itemInteractableView)
   {
-    v13 = [v11 _textInteractableItemAtPoint:a5 precision:{x, y}];
-    v14 = v13;
-    v15 = v13 != 0;
-    if (v13 && v6)
+    v13 = [itemInteractableView _textInteractableItemAtPoint:precision precision:{x, y}];
+    root = v13;
+    canInvokeDefaultAction = v13 != 0;
+    if (v13 && tapCopy)
     {
-      v15 = [v13 canInvokeDefaultAction];
+      canInvokeDefaultAction = [v13 canInvokeDefaultAction];
     }
   }
 
@@ -490,42 +490,42 @@ LABEL_33:
   {
     if (!v10 || ![(_UITextLinkInteractionSession *)v10 canInteractWithLinkAtPoint:x, y])
     {
-      v15 = 0;
+      canInvokeDefaultAction = 0;
       goto LABEL_10;
     }
 
     [(UITextInteraction *)self cancelLinkInteractionSession];
-    v14 = [(UITextInteraction *)self root];
-    [v14 _setLinkInteractionSession:v10];
-    v15 = 1;
+    root = [(UITextInteraction *)self root];
+    [root _setLinkInteractionSession:v10];
+    canInvokeDefaultAction = 1;
   }
 
 LABEL_10:
-  return v15;
+  return canInvokeDefaultAction;
 }
 
 - (BOOL)_allowItemInteractions
 {
-  v3 = [(UITextInteraction *)self view];
-  v4 = [UITextItemInteractionInteraction mightResponderHaveTextItemInteractions:v3];
+  view = [(UITextInteraction *)self view];
+  v4 = [UITextItemInteractionInteraction mightResponderHaveTextItemInteractions:view];
 
   if (!v4)
   {
-    v6 = [(UITextInteraction *)self assistantDelegate];
-    v7 = [v6 activeSelection];
+    assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+    activeSelection = [assistantDelegate activeSelection];
 
-    v8 = [v7 selectedRange];
-    if (v8)
+    selectedRange = [activeSelection selectedRange];
+    if (selectedRange)
     {
-      v9 = v8;
-      v10 = [v7 selectedRange];
-      if ([v10 _isCaret])
+      v9 = selectedRange;
+      selectedRange2 = [activeSelection selectedRange];
+      if ([selectedRange2 _isCaret])
       {
-        v11 = [(UITextInteraction *)self assistantDelegate];
-        v12 = [v11 _editMenuAssistant];
-        v13 = [v12 _editMenuIsVisible];
+        assistantDelegate2 = [(UITextInteraction *)self assistantDelegate];
+        _editMenuAssistant = [assistantDelegate2 _editMenuAssistant];
+        _editMenuIsVisible = [_editMenuAssistant _editMenuIsVisible];
 
-        if (!v13)
+        if (!_editMenuIsVisible)
         {
           goto LABEL_6;
         }
@@ -537,15 +537,15 @@ LABEL_10:
 
       v15.receiver = self;
       v15.super_class = _UITextSimpleLinkInteraction;
-      v5 = [(UITextItemInteractionInteraction *)&v15 _allowItemInteractions];
+      _allowItemInteractions = [(UITextItemInteractionInteraction *)&v15 _allowItemInteractions];
       goto LABEL_9;
     }
 
 LABEL_6:
-    v5 = 1;
+    _allowItemInteractions = 1;
 LABEL_9:
 
-    return v5;
+    return _allowItemInteractions;
   }
 
   return 1;

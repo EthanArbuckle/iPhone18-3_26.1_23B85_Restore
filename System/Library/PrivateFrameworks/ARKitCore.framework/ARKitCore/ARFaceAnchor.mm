@@ -2,30 +2,30 @@
 + (id)blendShapeMapping;
 + (id)blendShapeToMirroredBlendShapeMapping;
 + (id)mirroredBlendShapeMapping;
-- (ARFaceAnchor)initWithAnchor:(id)a3;
-- (ARFaceAnchor)initWithCoder:(id)a3;
-- (ARFaceAnchor)initWithExistingFaceAnchor:(id)a3 tracked:(BOOL)a4 trackingError:(id)a5;
-- (ARFaceAnchor)initWithIdentifier:(id)a3 faceTrackingData:(id)a4;
-- (BOOL)isEqualToFaceAnchor:(id)a3;
-- (id)copyWithTrackedState:(BOOL)a3;
+- (ARFaceAnchor)initWithAnchor:(id)anchor;
+- (ARFaceAnchor)initWithCoder:(id)coder;
+- (ARFaceAnchor)initWithExistingFaceAnchor:(id)anchor tracked:(BOOL)tracked trackingError:(id)error;
+- (ARFaceAnchor)initWithIdentifier:(id)identifier faceTrackingData:(id)data;
+- (BOOL)isEqualToFaceAnchor:(id)anchor;
+- (id)copyWithTrackedState:(BOOL)state;
 - (simd_float4x4)leftEyeTransform;
 - (simd_float4x4)rightEyeTransform;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARFaceAnchor
 
-- (ARFaceAnchor)initWithIdentifier:(id)a3 faceTrackingData:(id)a4
+- (ARFaceAnchor)initWithIdentifier:(id)identifier faceTrackingData:(id)data
 {
   v38 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v32 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   if (ARFaceAnchorInitializeMaps(void)::onceToken != -1)
   {
     [ARFaceAnchor initWithIdentifier:faceTrackingData:];
   }
 
-  if (!+[ARFaceTrackingTechnique isSupported](ARFaceTrackingTechnique, "isSupported", v30) && !+[ARFaceTrackingInternalTechnique isSupported])
+  if (!+[ARFaceTrackingTechnique isSupported](ARFaceTrackingTechnique, "isSupported", identifierCopy) && !+[ARFaceTrackingInternalTechnique isSupported])
   {
     if (_ARLogGeneral(void)::onceToken != -1)
     {
@@ -40,21 +40,21 @@
       *buf = 138543618;
       v35 = v21;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v19, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Face tracking is not available.", buf, 0x16u);
     }
 
     goto LABEL_17;
   }
 
-  if (![v32 isValid])
+  if (![dataCopy isValid])
   {
 LABEL_17:
-    v22 = 0;
+    selfCopy2 = 0;
     goto LABEL_23;
   }
 
-  [v32 transform];
+  [dataCopy transform];
   v33.receiver = self;
   v33.super_class = ARFaceAnchor;
   v6 = [(ARAnchor *)&v33 initWithIdentifier:v31 transform:?];
@@ -63,13 +63,13 @@ LABEL_17:
   if (v6)
   {
     [(ARFaceAnchor *)v6 setIsTracked:1];
-    objc_storeStrong(&v7->_trackingData, a4);
+    objc_storeStrong(&v7->_trackingData, data);
     v9 = [[ARFaceGeometry alloc] initWithFaceTrackingDataProtocol:v7->_trackingData];
     geometry = v8->_geometry;
     v8->_geometry = v9;
 
     v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[ARFaceTrackingDataProtocol blendShapeCoefficientsCount](v7->_trackingData, "blendShapeCoefficientsCount")}];
-    v12 = [(ARFaceTrackingDataProtocol *)v7->_trackingData blendShapeCoefficients];
+    blendShapeCoefficients = [(ARFaceTrackingDataProtocol *)v7->_trackingData blendShapeCoefficients];
     for (i = 0; [(ARFaceTrackingDataProtocol *)v7->_trackingData blendShapeCoefficientsCount]> i; ++i)
     {
       v14 = _indexToBlendShapeLocationMap;
@@ -78,7 +78,7 @@ LABEL_17:
 
       if (v16)
       {
-        LODWORD(v17) = *(v12 + 4 * i);
+        LODWORD(v17) = *(blendShapeCoefficients + 4 * i);
         v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
         [(NSDictionary *)v11 setObject:v18 forKey:v16];
       }
@@ -87,13 +87,13 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v32;
+      v23 = dataCopy;
       v24 = MEMORY[0x1E696AD98];
       [(NSError *)v23 tongueOut];
       v25 = [v24 numberWithFloat:?];
-      v26 = [(NSError *)v23 trackingError];
+      trackingError = [(NSError *)v23 trackingError];
       trackingError = v8->_trackingError;
-      v8->_trackingError = v26;
+      v8->_trackingError = trackingError;
     }
 
     else
@@ -109,36 +109,36 @@ LABEL_17:
   }
 
   self = v8;
-  v22 = self;
+  selfCopy2 = self;
 LABEL_23:
 
-  return v22;
+  return selfCopy2;
 }
 
-- (ARFaceAnchor)initWithExistingFaceAnchor:(id)a3 tracked:(BOOL)a4 trackingError:(id)a5
+- (ARFaceAnchor)initWithExistingFaceAnchor:(id)anchor tracked:(BOOL)tracked trackingError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ARFaceAnchor *)self initWithAnchor:v8];
+  trackedCopy = tracked;
+  anchorCopy = anchor;
+  errorCopy = error;
+  v10 = [(ARFaceAnchor *)self initWithAnchor:anchorCopy];
   v11 = v10;
   if (v10)
   {
-    [(ARFaceAnchor *)v10 setIsTracked:v6];
-    objc_storeStrong(&v11->_trackingError, a5);
+    [(ARFaceAnchor *)v10 setIsTracked:trackedCopy];
+    objc_storeStrong(&v11->_trackingError, error);
   }
 
   return v11;
 }
 
-- (id)copyWithTrackedState:(BOOL)a3
+- (id)copyWithTrackedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [(ARFaceAnchor *)self copy];
   v5 = v4;
-  if (v4 && [v4 isTracked] != v3)
+  if (v4 && [v4 isTracked] != stateCopy)
   {
-    [v5 setIsTracked:v3];
+    [v5 setIsTracked:stateCopy];
   }
 
   return v5;
@@ -394,43 +394,43 @@ void __53__ARFaceAnchor_blendShapeToMirroredBlendShapeMapping__block_invoke_2(ui
   return result;
 }
 
-- (ARFaceAnchor)initWithAnchor:(id)a3
+- (ARFaceAnchor)initWithAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v8.receiver = self;
   v8.super_class = ARFaceAnchor;
-  v5 = [(ARAnchor *)&v8 initWithAnchor:v4];
+  v5 = [(ARAnchor *)&v8 initWithAnchor:anchorCopy];
   v6 = v5;
   if (v5)
   {
-    v5->_isTracked = *(v4 + 184);
-    objc_storeStrong(&v5->_trackingData, *(v4 + 25));
-    objc_storeStrong(&v6->_geometry, *(v4 + 24));
-    objc_storeStrong(&v6->_blendShapeCoefficientsDictionary, *(v4 + 22));
-    objc_storeStrong(&v6->_trackingError, *(v4 + 26));
+    v5->_isTracked = *(anchorCopy + 184);
+    objc_storeStrong(&v5->_trackingData, *(anchorCopy + 25));
+    objc_storeStrong(&v6->_geometry, *(anchorCopy + 24));
+    objc_storeStrong(&v6->_blendShapeCoefficientsDictionary, *(anchorCopy + 22));
+    objc_storeStrong(&v6->_trackingError, *(anchorCopy + 26));
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = ARFaceAnchor;
-  [(ARAnchor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_blendShapeCoefficientsDictionary forKey:@"blendShapeCoefficientsDictionary"];
-  [v4 encodeObject:self->_trackingData forKey:@"trackingData"];
-  [v4 encodeBool:self->_isTracked forKey:@"isTracked"];
-  [v4 encodeObject:self->_trackingError forKey:@"trackingError"];
+  [(ARAnchor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_blendShapeCoefficientsDictionary forKey:@"blendShapeCoefficientsDictionary"];
+  [coderCopy encodeObject:self->_trackingData forKey:@"trackingData"];
+  [coderCopy encodeBool:self->_isTracked forKey:@"isTracked"];
+  [coderCopy encodeObject:self->_trackingError forKey:@"trackingError"];
 }
 
-- (ARFaceAnchor)initWithCoder:(id)a3
+- (ARFaceAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = ARFaceAnchor;
-  v5 = [(ARAnchor *)&v22 initWithCoder:v4];
+  v5 = [(ARAnchor *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -438,16 +438,16 @@ void __53__ARFaceAnchor_blendShapeToMirroredBlendShapeMapping__block_invoke_2(ui
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"blendShapeCoefficientsDictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"blendShapeCoefficientsDictionary"];
     blendShapeCoefficientsDictionary = v5->_blendShapeCoefficientsDictionary;
     v5->_blendShapeCoefficientsDictionary = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingData"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingData"];
     trackingData = v5->_trackingData;
     v5->_trackingData = v13;
 
-    v5->_isTracked = [v4 decodeBoolForKey:@"isTracked"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
+    v5->_isTracked = [coderCopy decodeBoolForKey:@"isTracked"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geometry"];
     geometry = v5->_geometry;
     v5->_geometry = v15;
 
@@ -458,7 +458,7 @@ void __53__ARFaceAnchor_blendShapeToMirroredBlendShapeMapping__block_invoke_2(ui
       v5->_geometry = v17;
     }
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingError"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingError"];
     trackingError = v5->_trackingError;
     v5->_trackingError = v19;
   }
@@ -466,13 +466,13 @@ void __53__ARFaceAnchor_blendShapeToMirroredBlendShapeMapping__block_invoke_2(ui
   return v5;
 }
 
-- (BOOL)isEqualToFaceAnchor:(id)a3
+- (BOOL)isEqualToFaceAnchor:(id)anchor
 {
-  v4 = a3;
-  if ([v4[22] isEqualToDictionary:self->_blendShapeCoefficientsDictionary] && objc_msgSend(v4[25], "isEqual:", self->_trackingData) && objc_msgSend(v4[24], "isEqual:", self->_geometry))
+  anchorCopy = anchor;
+  if ([anchorCopy[22] isEqualToDictionary:self->_blendShapeCoefficientsDictionary] && objc_msgSend(anchorCopy[25], "isEqual:", self->_trackingData) && objc_msgSend(anchorCopy[24], "isEqual:", self->_geometry))
   {
-    v5 = [v4 isTracked];
-    v6 = v5 ^ [(ARFaceAnchor *)self isTracked]^ 1;
+    isTracked = [anchorCopy isTracked];
+    v6 = isTracked ^ [(ARFaceAnchor *)self isTracked]^ 1;
   }
 
   else

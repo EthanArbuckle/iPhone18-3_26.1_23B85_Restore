@@ -1,16 +1,16 @@
 @interface OBTableView
 - (CGSize)intrinsicContentSize;
-- (_TtC6FindMy11OBTableView)initWithCoder:(id)a3;
-- (_TtC6FindMy11OBTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (_TtC6FindMy11OBTableView)initWithCoder:(id)coder;
+- (_TtC6FindMy11OBTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 @end
 
 @implementation OBTableView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(OBTableView *)v2 layoutIfNeeded];
-  [(OBTableView *)v2 contentSize];
+  selfCopy = self;
+  [(OBTableView *)selfCopy layoutIfNeeded];
+  [(OBTableView *)selfCopy contentSize];
   v4 = v3;
 
   v5 = ceil(v4) + 1.0;
@@ -20,23 +20,23 @@
   return result;
 }
 
-- (_TtC6FindMy11OBTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC6FindMy11OBTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for OBTableView();
-  return [(OBTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(OBTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC6FindMy11OBTableView)initWithCoder:(id)a3
+- (_TtC6FindMy11OBTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for OBTableView();
-  v4 = a3;
-  v5 = [(OBTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(OBTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

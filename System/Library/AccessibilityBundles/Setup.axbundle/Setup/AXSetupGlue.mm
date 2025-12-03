@@ -8,27 +8,27 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_359 postValidationHandler:&__block_literal_global_368 safeCategoryInstallationHandler:&__block_literal_global_371];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_359 postValidationHandler:&__block_literal_global_368 safeCategoryInstallationHandler:&__block_literal_global_371];
 
     v3 = [objc_allocWithZone(AXSetupGlue) init];
     v4 = _Failover;
     _Failover = v3;
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_460 forFramework:@"WiFiKitUI"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_460 forFramework:@"WiFiKitUI"];
 
-    v6 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v6 addHandler:&__block_literal_global_472 forFramework:@"VoiceTriggerUI"];
+    mEMORY[0x29EDBD690]2 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]2 addHandler:&__block_literal_global_472 forFramework:@"VoiceTriggerUI"];
 
-    v7 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v7 addHandler:&__block_literal_global_482 forFramework:@"BiometricKitUI"];
+    mEMORY[0x29EDBD690]3 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]3 addHandler:&__block_literal_global_482 forFramework:@"BiometricKitUI"];
 
-    v8 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v8 addHandler:&__block_literal_global_492 forFramework:@"PassKit"];
+    mEMORY[0x29EDBD690]4 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]4 addHandler:&__block_literal_global_492 forFramework:@"PassKit"];
 
-    v9 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v9 addHandler:&__block_literal_global_502 forFramework:@"PassKitUI"];
+    mEMORY[0x29EDBD690]5 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]5 addHandler:&__block_literal_global_502 forFramework:@"PassKitUI"];
 
     UIAccessibilityIsVoiceOverRunning();
   }

@@ -1,7 +1,7 @@
 @interface RBSRequest
 - (RBSRequest)init;
 - (id)_init;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSRequest
@@ -15,13 +15,13 @@
 
 - (RBSRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSRequest.m" lineNumber:23 description:@"-init is not allowed on RBSRequest"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSRequest.m" lineNumber:23 description:@"-init is not allowed on RBSRequest"];
 
   return 0;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5 = objc_opt_class();
 

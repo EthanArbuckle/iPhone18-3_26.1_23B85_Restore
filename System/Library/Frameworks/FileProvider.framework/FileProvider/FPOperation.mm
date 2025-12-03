@@ -3,16 +3,16 @@
 - (BOOL)finishIfCancelled;
 - (FPOperation)init;
 - (id)description;
-- (void)_setExecuting:(BOOL)a3;
-- (void)_setFinished:(BOOL)a3;
-- (void)_setRemoteCancellationHandler:(id)a3;
+- (void)_setExecuting:(BOOL)executing;
+- (void)_setFinished:(BOOL)finished;
+- (void)_setRemoteCancellationHandler:(id)handler;
 - (void)cancel;
-- (void)completedWithResult:(id)a3 error:(id)a4;
+- (void)completedWithResult:(id)result error:(id)error;
 - (void)dealloc;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)resetRemoteOperation;
-- (void)setCallbackQueue:(id)a3;
-- (void)setCancellationHandler:(id)a3;
+- (void)setCallbackQueue:(id)queue;
+- (void)setCancellationHandler:(id)handler;
 - (void)start;
 @end
 
@@ -42,12 +42,12 @@
     v6 = [v5 objectAtIndexedSubscript:0];
     [(FPOperation *)v2 setName:v6];
 
-    v7 = [(FPOperation *)v2 name];
-    v8 = [v7 UTF8String];
+    name = [(FPOperation *)v2 name];
+    uTF8String = [name UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UNSPECIFIED, 0);
     v11 = dispatch_queue_attr_make_initially_inactive(v10);
-    v12 = dispatch_queue_create(v8, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     queue = v2->_queue;
     v2->_queue = v12;
   }
@@ -95,39 +95,39 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
 {
   if (self->_finished)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isCancelled) = 1;
   }
 
   else if (self->_executionTransaction)
   {
-    v2 = [(FPOperation *)self isCancelled];
-    if (v2)
+    isCancelled = [(FPOperation *)self isCancelled];
+    if (isCancelled)
     {
       v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
       [(FPOperation *)self finishWithResult:0 error:v4];
 
-      LOBYTE(v2) = 1;
+      LOBYTE(isCancelled) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(isCancelled) = 0;
   }
 
-  return v2;
+  return isCancelled;
 }
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"FPOperation.m" lineNumber:84 description:&stru_1F1F94B20];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"FPOperation.m" lineNumber:84 description:&stru_1F1F94B20];
 }
 
 - (BOOL)finishIfCancelled
 {
-  v3 = [(FPOperation *)self isCancelled];
-  if (v3)
+  isCancelled = [(FPOperation *)self isCancelled];
+  if (isCancelled)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -138,17 +138,17 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
     dispatch_async(queue, block);
   }
 
-  return v3;
+  return isCancelled;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPOperation *)self name];
-  v6 = [(FPOperation *)self operationDescription];
-  v7 = [(FPOperation *)self operationDescription];
-  v8 = [v7 hasSuffix:@" "];
+  name = [(FPOperation *)self name];
+  operationDescription = [(FPOperation *)self operationDescription];
+  operationDescription2 = [(FPOperation *)self operationDescription];
+  v8 = [operationDescription2 hasSuffix:@" "];
   if ([(FPOperation *)self isExecuting])
   {
     v9 = @"executing";
@@ -156,9 +156,9 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [(FPOperation *)self isFinished];
+    isFinished = [(FPOperation *)self isFinished];
     v9 = @"idle";
-    if (v10)
+    if (isFinished)
     {
       v9 = @"finished";
     }
@@ -175,19 +175,19 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
     v12 = @" ";
   }
 
-  if (v5)
+  if (name)
   {
-    v11 = v5;
+    v11 = name;
   }
 
-  v13 = [v3 stringWithFormat:@"<%@: %p, %@ %@%@%@>", v4, self, v11, v6, v12, v9];
+  v13 = [v3 stringWithFormat:@"<%@: %p, %@ %@%@%@>", v4, self, v11, operationDescription, v12, v9];
 
   return v13;
 }
 
-- (void)setCallbackQueue:(id)a3
+- (void)setCallbackQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queue = self->_queue;
   if (queue)
   {
@@ -195,27 +195,27 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
   }
 
   v6 = self->_queue;
-  self->_queue = v4;
+  self->_queue = queueCopy;
 }
 
-- (void)_setFinished:(BOOL)a3
+- (void)_setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
     [(FPOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = a3;
+    self->_finished = finished;
 
     [(FPOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)_setExecuting:(BOOL)a3
+- (void)_setExecuting:(BOOL)executing
 {
-  if ((((self->_executionTransaction == 0) ^ a3) & 1) == 0)
+  if ((((self->_executionTransaction == 0) ^ executing) & 1) == 0)
   {
-    v3 = a3;
+    executingCopy = executing;
     [(FPOperation *)self willChangeValueForKey:@"isExecuting"];
-    if (v3)
+    if (executingCopy)
     {
       v5 = os_transaction_create();
     }
@@ -236,7 +236,7 @@ uint64_t __20__FPOperation_start__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1AAAE1000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] cancelling %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -249,20 +249,20 @@ uint64_t __21__FPOperation_cancel__block_invoke(uint64_t a1)
   return [v2 _finishIfCancelled];
 }
 
-- (void)completedWithResult:(id)a3 error:(id)a4
+- (void)completedWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__FPOperation_completedWithResult_error___block_invoke;
   block[3] = &unk_1E7939090;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = resultCopy;
   dispatch_async(queue, block);
 }
 
@@ -288,15 +288,15 @@ uint64_t __41__FPOperation_completedWithResult_error___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FPOperation *)self finishedBlock];
-  v8 = v7;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  finishedBlock = [(FPOperation *)self finishedBlock];
+  v8 = finishedBlock;
+  if (finishedBlock)
   {
-    (*(v7 + 16))(v7, v9, v6);
+    (*(finishedBlock + 16))(finishedBlock, resultCopy, errorCopy);
     [(FPOperation *)self setFinishedBlock:0];
   }
 
@@ -312,11 +312,11 @@ uint64_t __41__FPOperation_completedWithResult_error___block_invoke(uint64_t a1)
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setRemoteCancellationHandler:(id)a3
+- (void)_setRemoteCancellationHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   remoteOperation = self->_remoteOperation;
-  if (v5 && remoteOperation)
+  if (handlerCopy && remoteOperation)
   {
     [(FPOperation *)a2 _setRemoteCancellationHandler:&self->_remoteOperation, &v11];
     remoteOperation = v11;
@@ -325,7 +325,7 @@ uint64_t __41__FPOperation_completedWithResult_error___block_invoke(uint64_t a1)
   [(FPCancellable *)remoteOperation cancel];
   if (self->_finished)
   {
-    if (!v5)
+    if (!handlerCopy)
     {
       goto LABEL_10;
     }
@@ -333,13 +333,13 @@ uint64_t __41__FPOperation_completedWithResult_error___block_invoke(uint64_t a1)
     goto LABEL_9;
   }
 
-  v7 = [(FPOperation *)self isCancelled];
-  if (v5 && (v7 & 1) != 0)
+  isCancelled = [(FPOperation *)self isCancelled];
+  if (handlerCopy && (isCancelled & 1) != 0)
   {
 LABEL_9:
-    [v5 cancel];
+    [handlerCopy cancel];
 
-    v5 = 0;
+    handlerCopy = 0;
   }
 
 LABEL_10:
@@ -348,22 +348,22 @@ LABEL_10:
   v10[2] = __45__FPOperation__setRemoteCancellationHandler___block_invoke;
   v10[3] = &unk_1E7939C00;
   v10[4] = self;
-  v8 = [v5 remoteObjectProxyWithErrorHandler:v10];
+  v8 = [handlerCopy remoteObjectProxyWithErrorHandler:v10];
   v9 = self->_remoteOperation;
   self->_remoteOperation = v8;
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__FPOperation_setCancellationHandler___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

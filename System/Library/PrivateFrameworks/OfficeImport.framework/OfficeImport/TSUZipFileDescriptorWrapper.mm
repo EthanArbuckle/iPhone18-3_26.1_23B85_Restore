@@ -1,6 +1,6 @@
 @interface TSUZipFileDescriptorWrapper
 - (TSUZipFileDescriptorWrapper)init;
-- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3 queue:(id)a4;
+- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor queue:(id)queue;
 - (void)dealloc;
 @end
 
@@ -22,10 +22,10 @@
   objc_exception_throw(v7);
 }
 
-- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3 queue:(id)a4
+- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor queue:(id)queue
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&descriptor;
+  queueCopy = queue;
   if ((v4 & 0x80000000) == 0)
   {
     v17.receiver = self;
@@ -45,7 +45,7 @@
     v15[2] = __60__TSUZipFileDescriptorWrapper_initWithFileDescriptor_queue___block_invoke;
     v15[3] = &__block_descriptor_36_e8_v12__0i8l;
     v16 = v4;
-    v9 = [(TSUFileIOChannel *)v8 initForReadingDescriptor:v4 queue:v6 cleanupHandler:v15];
+    v9 = [(TSUFileIOChannel *)v8 initForReadingDescriptor:v4 queue:queueCopy cleanupHandler:v15];
     readChannel = self->_readChannel;
     self->_readChannel = v9;
 
@@ -57,15 +57,15 @@
 
 LABEL_7:
       self = self;
-      v13 = self;
+      selfCopy = self;
       goto LABEL_8;
     }
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc

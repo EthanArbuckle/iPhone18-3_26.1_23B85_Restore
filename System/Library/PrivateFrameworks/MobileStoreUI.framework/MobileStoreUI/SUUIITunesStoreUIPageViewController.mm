@@ -1,12 +1,12 @@
 @interface SUUIITunesStoreUIPageViewController
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4;
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible;
 - (SUProductPageViewController)productPageViewController;
 - (id)_cancelButtonItem;
-- (void)_addCancelButtonToNavigationItem:(id)a3;
-- (void)_storeSheetCancelButtonAction:(id)a3;
+- (void)_addCancelButtonToNavigationItem:(id)item;
+- (void)_storeSheetCancelButtonAction:(id)action;
 - (void)dealloc;
-- (void)handleFailureWithError:(id)a3;
-- (void)resetNavigationItem:(id)a3;
+- (void)handleFailureWithError:(id)error;
+- (void)resetNavigationItem:(id)item;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -14,9 +14,9 @@
 
 - (void)dealloc
 {
-  v3 = [(SUBarButtonItem *)self->_cancelButtonItem target];
+  target = [(SUBarButtonItem *)self->_cancelButtonItem target];
 
-  if (v3 == self)
+  if (target == self)
   {
     [(SUBarButtonItem *)self->_cancelButtonItem setTarget:0];
   }
@@ -26,25 +26,25 @@
   [(SUStorePageViewController *)&v4 dealloc];
 }
 
-- (void)handleFailureWithError:(id)a3
+- (void)handleFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(SUViewController *)self isVisible])
   {
     v5.receiver = self;
     v5.super_class = SUUIITunesStoreUIPageViewController;
-    [(SUStorePageViewController *)&v5 handleFailureWithError:v4];
+    [(SUStorePageViewController *)&v5 handleFailureWithError:errorCopy];
   }
 }
 
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SUUIITunesStoreUIPageViewController *)self productPageViewController];
-  v8 = [v7 productPageStyle];
+  visibleCopy = visible;
+  errorCopy = error;
+  productPageViewController = [(SUUIITunesStoreUIPageViewController *)self productPageViewController];
+  productPageStyle = [productPageViewController productPageStyle];
 
-  if (v8 == 1)
+  if (productPageStyle == 1)
   {
     v9 = 0;
   }
@@ -53,21 +53,21 @@
   {
     v11.receiver = self;
     v11.super_class = SUUIITunesStoreUIPageViewController;
-    v9 = [(SUViewController *)&v11 presentDialogForError:v6 pendUntilVisible:v4];
+    v9 = [(SUViewController *)&v11 presentDialogForError:errorCopy pendUntilVisible:visibleCopy];
   }
 
   return v9;
 }
 
-- (void)resetNavigationItem:(id)a3
+- (void)resetNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5.receiver = self;
   v5.super_class = SUUIITunesStoreUIPageViewController;
-  [(SUStorePageViewController *)&v5 resetNavigationItem:v4];
+  [(SUStorePageViewController *)&v5 resetNavigationItem:itemCopy];
   if ([(SUUIITunesStoreUIPageViewController *)self showsCancelButton])
   {
-    [(SUUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:v4];
+    [(SUUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:itemCopy];
   }
 }
 
@@ -75,8 +75,8 @@
 {
   if ([(SUUIITunesStoreUIPageViewController *)self showsCancelButton])
   {
-    v3 = [(SUStorePageViewController *)self navigationItemForScriptInterface];
-    [(SUUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:v3];
+    navigationItemForScriptInterface = [(SUStorePageViewController *)self navigationItemForScriptInterface];
+    [(SUUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:navigationItemForScriptInterface];
   }
 
   v4.receiver = self;
@@ -84,15 +84,15 @@
   [(SUUIITunesStoreUIPageViewController *)&v4 viewWillLayoutSubviews];
 }
 
-- (void)_addCancelButtonToNavigationItem:(id)a3
+- (void)_addCancelButtonToNavigationItem:(id)item
 {
-  v4 = a3;
-  v7 = [(SUUIITunesStoreUIPageViewController *)self _cancelButtonItem];
-  v5 = [(SUViewController *)self clientInterface];
-  v6 = [v5 appearance];
-  [v6 styleBarButtonItem:v7];
+  itemCopy = item;
+  _cancelButtonItem = [(SUUIITunesStoreUIPageViewController *)self _cancelButtonItem];
+  clientInterface = [(SUViewController *)self clientInterface];
+  appearance = [clientInterface appearance];
+  [appearance styleBarButtonItem:_cancelButtonItem];
 
-  [v4 setLeftBarButtonItem:v7 animated:0];
+  [itemCopy setLeftBarButtonItem:_cancelButtonItem animated:0];
 }
 
 - (id)_cancelButtonItem
@@ -125,10 +125,10 @@
   return v8;
 }
 
-- (void)_storeSheetCancelButtonAction:(id)a3
+- (void)_storeSheetCancelButtonAction:(id)action
 {
-  v3 = [(SUUIITunesStoreUIPageViewController *)self productPageViewController];
-  [v3 _sendDidFinishWithResult:0];
+  productPageViewController = [(SUUIITunesStoreUIPageViewController *)self productPageViewController];
+  [productPageViewController _sendDidFinishWithResult:0];
 }
 
 - (SUProductPageViewController)productPageViewController

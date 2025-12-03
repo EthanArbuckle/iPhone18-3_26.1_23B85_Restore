@@ -1,17 +1,17 @@
 @interface SBPIPAnalyticsSourceSummaryAssistant
-- (SBPIPAnalyticsSourceSummaryAssistant)initWithBundleIdentifier:(id)a3 contentType:(int64_t)a4 isAutoPIPEnabled:(BOOL)a5 invalidationBlock:(id)a6;
+- (SBPIPAnalyticsSourceSummaryAssistant)initWithBundleIdentifier:(id)identifier contentType:(int64_t)type isAutoPIPEnabled:(BOOL)enabled invalidationBlock:(id)block;
 - (id)_generateMutableAnalyticsPayload;
 - (void)invalidate;
-- (void)noteBecameActiveAtTime:(double)a3;
+- (void)noteBecameActiveAtTime:(double)time;
 @end
 
 @implementation SBPIPAnalyticsSourceSummaryAssistant
 
-- (SBPIPAnalyticsSourceSummaryAssistant)initWithBundleIdentifier:(id)a3 contentType:(int64_t)a4 isAutoPIPEnabled:(BOOL)a5 invalidationBlock:(id)a6
+- (SBPIPAnalyticsSourceSummaryAssistant)initWithBundleIdentifier:(id)identifier contentType:(int64_t)type isAutoPIPEnabled:(BOOL)enabled invalidationBlock:(id)block
 {
   v7.receiver = self;
   v7.super_class = SBPIPAnalyticsSourceSummaryAssistant;
-  result = [(SBPIPAnalyticsAssistant *)&v7 initWithBundleIdentifier:a3 contentType:a4 isAutoPIPEnabled:a5 invalidationBlock:a6];
+  result = [(SBPIPAnalyticsAssistant *)&v7 initWithBundleIdentifier:identifier contentType:type isAutoPIPEnabled:enabled invalidationBlock:block];
   if (result)
   {
     result->_possibleTimestamp = NAN;
@@ -20,26 +20,26 @@
   return result;
 }
 
-- (void)noteBecameActiveAtTime:(double)a3
+- (void)noteBecameActiveAtTime:(double)time
 {
   self->_PIPBecameActive = 1;
   v3.receiver = self;
   v3.super_class = SBPIPAnalyticsSourceSummaryAssistant;
-  [(SBPIPAnalyticsAssistant *)&v3 noteBecameActiveAtTime:a3];
+  [(SBPIPAnalyticsAssistant *)&v3 noteBecameActiveAtTime:time];
 }
 
 - (id)_generateMutableAnalyticsPayload
 {
   v7.receiver = self;
   v7.super_class = SBPIPAnalyticsSourceSummaryAssistant;
-  v3 = [(SBPIPAnalyticsAssistant *)&v7 _generateMutableAnalyticsPayload];
+  _generateMutableAnalyticsPayload = [(SBPIPAnalyticsAssistant *)&v7 _generateMutableAnalyticsPayload];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_PIPBecameActive];
-  [v3 setObject:v4 forKeyedSubscript:@"PIPBecameActive"];
+  [_generateMutableAnalyticsPayload setObject:v4 forKeyedSubscript:@"PIPBecameActive"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_possibleDuration];
-  [v3 setObject:v5 forKeyedSubscript:@"PossibleOrActiveDuration"];
+  [_generateMutableAnalyticsPayload setObject:v5 forKeyedSubscript:@"PossibleOrActiveDuration"];
 
-  return v3;
+  return _generateMutableAnalyticsPayload;
 }
 
 - (void)invalidate

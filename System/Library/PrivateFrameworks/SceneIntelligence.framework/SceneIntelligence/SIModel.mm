@@ -1,20 +1,20 @@
 @interface SIModel
 - (CGSize)getInputResolution;
 - (CGSize)getOutputResolution;
-- (SIModel)initWithNetworkConfiguration:(id)a3;
+- (SIModel)initWithNetworkConfiguration:(id)configuration;
 - (id)colletSubloggerTable;
 - (id)subLoggers;
-- (int64_t)evaluateWithInput:(id)a3 outputs:(id)a4;
-- (int64_t)switchNetworkConfiguration:(int64_t)a3;
+- (int64_t)evaluateWithInput:(id)input outputs:(id)outputs;
+- (int64_t)switchNetworkConfiguration:(int64_t)configuration;
 - (int64_t)unwirePrewiringBuffers;
 @end
 
 @implementation SIModel
 
-- (SIModel)initWithNetworkConfiguration:(id)a3
+- (SIModel)initWithNetworkConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = SIModel;
   v6 = [(SIModel *)&v20 init];
@@ -24,7 +24,7 @@
     goto LABEL_16;
   }
 
-  if ((SISupportANE() & 1) == 0 && [v5 engineType] == 1)
+  if ((SISupportANE() & 1) == 0 && [configurationCopy engineType] == 1)
   {
     v8 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -36,30 +36,30 @@
       _os_log_impl(&dword_21DE0D000, v8, OS_LOG_TYPE_INFO, " %{private}s:%{private}d *** ANE is not available on this device. Initializing by MPS instead ***", buf, 0x12u);
     }
 
-    [v5 setEngineType:0];
-    [v5 setRunByE5RT:0];
+    [configurationCopy setEngineType:0];
+    [configurationCopy setRunByE5RT:0];
   }
 
-  v9 = ([v5 engineType] == 1 && (objc_msgSend(v5, "runByE5RT") & 1) != 0 ? off_27833B9E8 : off_27833B9F0);
-  v10 = [objc_alloc(*v9) initWithNetworkConfiguration:v5];
+  v9 = ([configurationCopy engineType] == 1 && (objc_msgSend(configurationCopy, "runByE5RT") & 1) != 0 ? off_27833B9E8 : off_27833B9F0);
+  v10 = [objc_alloc(*v9) initWithNetworkConfiguration:configurationCopy];
   network = v6->_network;
   v6->_network = v10;
 
   [(SIModel *)v6 setPolarisHandle:0];
-  v12 = [v5 networkName];
+  networkName = [configurationCopy networkName];
   *buf = 0;
-  v13 = [v12 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v12, "length"), 0}] ? *buf : 0;
+  v13 = [networkName getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(networkName, "length"), 0}] ? *buf : 0;
 
   v6->_algorithmNameHash = v13;
   if ([(SINetworkProtocol *)v6->_network prepare])
   {
-    objc_storeStrong(&v6->_config, a3);
-    v14 = [(SIModel *)v6 colletSubloggerTable];
+    objc_storeStrong(&v6->_config, configuration);
+    colletSubloggerTable = [(SIModel *)v6 colletSubloggerTable];
     subLoggerTable = v6->_subLoggerTable;
-    v6->_subLoggerTable = v14;
+    v6->_subLoggerTable = colletSubloggerTable;
 
-    v16 = [(SIModel *)v6 subLoggers];
-    SIVLRegisterSubloggers(v16);
+    subLoggers = [(SIModel *)v6 subLoggers];
+    SIVLRegisterSubloggers(subLoggers);
 
     v17 = v7;
   }
@@ -116,33 +116,33 @@ LABEL_16:
   return result;
 }
 
-- (int64_t)switchNetworkConfiguration:(int64_t)a3
+- (int64_t)switchNetworkConfiguration:(int64_t)configuration
 {
-  v11 = a3;
+  configurationCopy = configuration;
   v4 = NSSelectorFromString(&cfstr_Setnetworkmode.isa);
   v5 = [(SINetworkConfiguration *)self->_config methodSignatureForSelector:v4];
   v6 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v5];
   [v6 setSelector:v4];
   [v6 invokeWithTarget:self->_config];
-  [v6 setArgument:&v11 atIndex:2];
+  [v6 setArgument:&configurationCopy atIndex:2];
   [v6 invoke];
   network = self->_network;
-  v8 = [(SINetworkConfiguration *)self->_config networkMode];
-  v9 = [(SINetworkProtocol *)network switchConfiguration:v8];
+  networkMode = [(SINetworkConfiguration *)self->_config networkMode];
+  v9 = [(SINetworkProtocol *)network switchConfiguration:networkMode];
 
   return v9;
 }
 
-- (int64_t)evaluateWithInput:(id)a3 outputs:(id)a4
+- (int64_t)evaluateWithInput:(id)input outputs:(id)outputs
 {
   v119 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v86 = a4;
+  inputCopy = input;
+  outputsCopy = outputs;
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  obj = v6;
+  obj = inputCopy;
   v7 = [obj countByEnumeratingWithState:&v100 objects:v118 count:16];
   if (v7)
   {
@@ -160,18 +160,18 @@ LABEL_16:
 
         v10 = *(*(&v100 + 1) + 8 * i);
         v11 = [obj objectForKeyedSubscript:v10];
-        v12 = [v11 surface];
+        surface = [v11 surface];
 
-        if (v12)
+        if (surface)
         {
-          v13 = [v12 width];
-          v14 = [v12 height];
+          width = [surface width];
+          height = [surface height];
           v15 = [(SINetworkProtocol *)self->_network getInputWidth:v10];
           v16 = [(SINetworkProtocol *)self->_network getInputHeight:v10];
-          if ([v12 pixelFormat] == 1278226488 && v14 == 1)
+          if ([surface pixelFormat] == 1278226488 && height == 1)
           {
             v22 = [(SINetworkProtocol *)self->_network getInputSizeInBytes:v10];
-            if (v13 < v22)
+            if (width < v22)
             {
               v81 = __SceneIntelligenceLogSharedInstance();
               if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_16:
                 v108 = 1025;
                 v109 = 153;
                 v110 = 2048;
-                v111 = v13;
+                v111 = width;
                 v112 = 2049;
                 v113 = v22;
                 v77 = " %{private}s:%{private}d *** Unexpected image input size (%zu bytes). (Expected at least: %{private}zu bytes) ***";
@@ -196,9 +196,9 @@ LABEL_80:
             }
           }
 
-          else if ([v12 planes] == 1)
+          else if ([surface planes] == 1)
           {
-            v87 = v12;
+            v87 = surface;
             v18 = v8;
             v19 = v7;
             v20 = [(SINetworkProtocol *)self->_network getInputChannels:v10];
@@ -207,8 +207,8 @@ LABEL_80:
               v21 = v16 * v15 * v20;
               v7 = v19;
               v8 = v18;
-              v12 = v87;
-              if (v14 * v13 != v21)
+              surface = v87;
+              if (height * width != v21)
               {
                 v81 = __SceneIntelligenceLogSharedInstance();
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
@@ -218,9 +218,9 @@ LABEL_80:
                   v108 = 1025;
                   v109 = 160;
                   v110 = 2048;
-                  v111 = v13;
+                  v111 = width;
                   v112 = 2048;
-                  v113 = v14;
+                  v113 = height;
                   v114 = 2049;
                   v115 = v15;
                   v116 = 2049;
@@ -235,11 +235,11 @@ LABEL_80:
 
             else
             {
-              v41 = v14 == 1 && v13 == v16 * v15 * v20;
-              v42 = v14 == v16 && v13 == v15;
+              v41 = height == 1 && width == v16 * v15 * v20;
+              v42 = height == v16 && width == v15;
               v7 = v19;
               v8 = v18;
-              v12 = v87;
+              surface = v87;
               if (!v42 && !v41)
               {
                 v81 = __SceneIntelligenceLogSharedInstance();
@@ -250,9 +250,9 @@ LABEL_80:
                   v108 = 1025;
                   v109 = 167;
                   v110 = 2048;
-                  v111 = v13;
+                  v111 = width;
                   v112 = 2048;
-                  v113 = v14;
+                  v113 = height;
                   v114 = 2049;
                   v115 = v15;
                   v116 = 2049;
@@ -271,24 +271,24 @@ LABEL_79:
           }
 
           v23 = v89;
-          v24 = v14 * v13 > v8 * v89;
-          if (v14 * v13 > v8 * v89)
+          v24 = height * width > v8 * v89;
+          if (height * width > v8 * v89)
           {
-            v23 = v14;
+            v23 = height;
           }
 
           v89 = v23;
           if (v24)
           {
-            v8 = v13;
+            v8 = width;
           }
 
-          if ([(SINetworkProtocol *)self->_network setInput:v10 fromSurface:v12])
+          if ([(SINetworkProtocol *)self->_network setInput:v10 fromSurface:surface])
           {
             v81 = __SceneIntelligenceLogSharedInstance();
             if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
             {
-              v75 = [v12 identifier];
+              identifier = [surface identifier];
               *buf = 136381443;
               v107 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIModel.mm";
               v108 = 1025;
@@ -296,7 +296,7 @@ LABEL_79:
               v110 = 2113;
               v111 = v10;
               v112 = 2048;
-              v113 = v75;
+              v113 = identifier;
               _os_log_impl(&dword_21DE0D000, v81, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to set the input for blob= %{private}@ buffer_id= %lld. Inference interrupted. ***", buf, 0x26u);
             }
 
@@ -318,11 +318,11 @@ LABEL_82:
             mappingId = self->_mappingId;
             kdebug_trace();
             v29 = [obj objectForKeyedSubscript:v10];
-            v30 = [v29 pixelBuffer];
+            pixelBuffer = [v29 pixelBuffer];
 
-            if (CVPixelBufferGetPixelFormatType(v30) == 875836518)
+            if (CVPixelBufferGetPixelFormatType(pixelBuffer) == 875836518)
             {
-              v31 = SICreatePixelBufferWithNewFormatFromExistingBuffer(v30, 0x42475241u);
+              v31 = SICreatePixelBufferWithNewFormatFromExistingBuffer(pixelBuffer, 0x42475241u);
               v32 = SICreateRGBFromBGRAPixelBuffer(v31);
               [(SIModel *)self frameTimestamp];
               v34 = v33;
@@ -333,9 +333,9 @@ LABEL_82:
               CVPixelBufferRelease(v32);
             }
 
-            else if (CVPixelBufferGetPixelFormatType(v30) == 1111970369)
+            else if (CVPixelBufferGetPixelFormatType(pixelBuffer) == 1111970369)
             {
-              v36 = SICreateRGBFromBGRAPixelBuffer(v30);
+              v36 = SICreateRGBFromBGRAPixelBuffer(pixelBuffer);
               [(SIModel *)self frameTimestamp];
               v38 = v37;
               v39 = [(NSDictionary *)self->_subLoggerTable objectForKeyedSubscript:v10];
@@ -349,7 +349,7 @@ LABEL_82:
               [(SIModel *)self frameTimestamp];
               v44 = v43;
               v45 = [(NSDictionary *)self->_subLoggerTable objectForKeyedSubscript:v10];
-              SIVLLogPixelBuffer(v30, v45, @"input", v44);
+              SIVLLogPixelBuffer(pixelBuffer, v45, @"input", v44);
             }
 
             v46 = self->_algorithmNameHash;
@@ -375,7 +375,7 @@ LABEL_82:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v48 = v86;
+    v48 = outputsCopy;
     v49 = [v48 countByEnumeratingWithState:&v96 objects:v105 count:16];
     if (v49)
     {
@@ -391,14 +391,14 @@ LABEL_82:
 
           v52 = *(*(&v96 + 1) + 8 * j);
           v53 = [v48 objectForKeyedSubscript:v52];
-          v12 = [v53 surface];
+          surface = [v53 surface];
 
-          if (v12 && [(SINetworkProtocol *)self->_network setOutputBlob:v52 forOutputSurface:v12])
+          if (surface && [(SINetworkProtocol *)self->_network setOutputBlob:v52 forOutputSurface:surface])
           {
             v81 = __SceneIntelligenceLogSharedInstance();
             if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
             {
-              v80 = [v12 identifier];
+              identifier2 = [surface identifier];
               *buf = 136381443;
               v107 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIModel.mm";
               v108 = 1025;
@@ -406,7 +406,7 @@ LABEL_82:
               v110 = 2113;
               v111 = v52;
               v112 = 2048;
-              v113 = v80;
+              v113 = identifier2;
               _os_log_impl(&dword_21DE0D000, v81, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to set the output for blob= %{private}@ buffer_id= %lld. Inference interrupted. ***", buf, 0x26u);
             }
 
@@ -438,7 +438,7 @@ LABEL_82:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v48 = v86;
+  v48 = outputsCopy;
   v58 = [v48 countByEnumeratingWithState:&v92 objects:v104 count:16];
   if (v58)
   {
@@ -462,17 +462,17 @@ LABEL_82:
           v65 = self->_mappingId;
           kdebug_trace();
           v66 = [v48 objectForKeyedSubscript:v61];
-          v67 = [v66 pixelBuffer];
+          pixelBuffer2 = [v66 pixelBuffer];
 
-          if (v67)
+          if (pixelBuffer2)
           {
-            v68 = [[SIIOSurface alloc] initFromPixelBuffer:v67];
+            v68 = [[SIIOSurface alloc] initFromPixelBuffer:pixelBuffer2];
           }
 
           else
           {
-            v69 = [(SIModel *)self network];
-            v68 = [v69 getOutputSurface:v61];
+            network = [(SIModel *)self network];
+            v68 = [network getOutputSurface:v61];
           }
 
           [(SIModel *)self frameTimestamp];
@@ -500,10 +500,10 @@ LABEL_83:
 
 - (int64_t)unwirePrewiringBuffers
 {
-  v2 = [(SIModel *)self network];
-  v3 = [v2 unwirePrewiringBuffers];
+  network = [(SIModel *)self network];
+  unwirePrewiringBuffers = [network unwirePrewiringBuffers];
 
-  return v3;
+  return unwirePrewiringBuffers;
 }
 
 - (id)colletSubloggerTable
@@ -514,11 +514,11 @@ LABEL_83:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(SIModel *)self network];
-  v5 = [v4 networkInputNames];
+  network = [(SIModel *)self network];
+  networkInputNames = [network networkInputNames];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  obj = networkInputNames;
+  v6 = [networkInputNames countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
     v7 = *v32;
@@ -534,8 +534,8 @@ LABEL_83:
         v9 = *(*(&v31 + 1) + 8 * i);
         v10 = objc_alloc(MEMORY[0x277CCACA8]);
         v11 = SIVLFrameworkPrefix();
-        v12 = [(SINetworkConfiguration *)self->_config defaultVisualLoggerName];
-        v13 = [v10 initWithFormat:@"%@.%@.ML.input_%@", v11, v12, v9];
+        defaultVisualLoggerName = [(SINetworkConfiguration *)self->_config defaultVisualLoggerName];
+        v13 = [v10 initWithFormat:@"%@.%@.ML.input_%@", v11, defaultVisualLoggerName, v9];
 
         [v3 setObject:v13 forKey:v9];
       }
@@ -550,8 +550,8 @@ LABEL_83:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = [(SIModel *)self network];
-  obja = [v14 networkOutputNames];
+  network2 = [(SIModel *)self network];
+  obja = [network2 networkOutputNames];
 
   v15 = [obja countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v15)
@@ -569,8 +569,8 @@ LABEL_83:
         v18 = *(*(&v27 + 1) + 8 * j);
         v19 = objc_alloc(MEMORY[0x277CCACA8]);
         v20 = SIVLFrameworkPrefix();
-        v21 = [(SINetworkConfiguration *)self->_config defaultVisualLoggerName];
-        v22 = [v19 initWithFormat:@"%@.%@.ML.output_%@", v20, v21, v18];
+        defaultVisualLoggerName2 = [(SINetworkConfiguration *)self->_config defaultVisualLoggerName];
+        v22 = [v19 initWithFormat:@"%@.%@.ML.output_%@", v20, defaultVisualLoggerName2, v18];
 
         [v3 setObject:v22 forKey:v18];
       }

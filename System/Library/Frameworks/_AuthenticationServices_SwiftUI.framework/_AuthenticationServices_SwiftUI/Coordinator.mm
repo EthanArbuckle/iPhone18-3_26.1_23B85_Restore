@@ -1,6 +1,6 @@
 @interface Coordinator
 - (_TtC31_AuthenticationServices_SwiftUIP33_A3D59D81812617403D8A44C04D5B775311Coordinator)init;
-- (id)presentationAnchorForAuthorizationController:(id)a3;
+- (id)presentationAnchorForAuthorizationController:(id)controller;
 - (void)buttonPressed;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)buttonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_23B6A4A9C();
 }
 
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (id)presentationAnchorForAuthorizationController:(id)a3
+- (id)presentationAnchorForAuthorizationController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_23B6A5224();
 
   return v6;

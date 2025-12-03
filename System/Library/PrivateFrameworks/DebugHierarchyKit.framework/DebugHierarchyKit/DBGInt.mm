@@ -1,6 +1,6 @@
 @interface DBGInt
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-- (DBGInt)initWithInt:(int)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
+- (DBGInt)initWithInt:(int)int;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -9,14 +9,14 @@
 
 @implementation DBGInt
 
-- (DBGInt)initWithInt:(int)a3
+- (DBGInt)initWithInt:(int)int
 {
   v5.receiver = self;
   v5.super_class = DBGInt;
   result = [(DBGInt *)&v5 init];
   if (result)
   {
-    result->_intValue = a3;
+    result->_intValue = int;
   }
 
   return result;
@@ -24,15 +24,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGInt *)self intValue];
+  intValue = [(DBGInt *)self intValue];
 
-  return [NSNumber numberWithInt:v2];
+  return [NSNumber numberWithInt:intValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGInt *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGInt *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -47,37 +47,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"i"])
+  valueCopy = value;
+  if ([format isEqualToString:@"i"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 intValue];
+      intValue = [valueCopy intValue];
 LABEL_6:
-      v10 = v9;
+      v10 = intValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgIntValue];
+      intValue = [valueCopy dbgIntValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

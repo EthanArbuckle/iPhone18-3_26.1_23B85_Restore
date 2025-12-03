@@ -1,20 +1,20 @@
 @interface _MFFlagChangeEntry
-- (_MFFlagChangeEntry)initWithPath:(id)a3 UID:(unsigned int)a4 changes:(id)a5;
+- (_MFFlagChangeEntry)initWithPath:(id)path UID:(unsigned int)d changes:(id)changes;
 - (void)dealloc;
 @end
 
 @implementation _MFFlagChangeEntry
 
-- (_MFFlagChangeEntry)initWithPath:(id)a3 UID:(unsigned int)a4 changes:(id)a5
+- (_MFFlagChangeEntry)initWithPath:(id)path UID:(unsigned int)d changes:(id)changes
 {
   v10.receiver = self;
   v10.super_class = _MFFlagChangeEntry;
   v8 = [(_MFFlagChangeEntry *)&v10 init];
   if (v8)
   {
-    v8->path = a3;
-    v8->uid = a4;
-    v8->changes = a5;
+    v8->path = path;
+    v8->uid = d;
+    v8->changes = changes;
     v8->commitTime = 0.0;
     v8->connectionTag = -1;
   }

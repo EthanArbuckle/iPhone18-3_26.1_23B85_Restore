@@ -1,12 +1,12 @@
 @interface STKStickerAttributionInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)bundleIdentifier;
 - (NSString)description;
 - (NSString)name;
 - (STKStickerAttributionInfo)init;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleIdentifier:(id)identifier;
 @end
 
 @implementation STKStickerAttributionInfo
@@ -30,9 +30,9 @@
   return v4;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1B8A23F24();
     v6 = v5;
@@ -69,11 +69,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B8A244A4();
     swift_unknownObjectRelease();
@@ -82,7 +82,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1B8A1C0D8(v8);
@@ -93,22 +93,22 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B8A1C37C();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B8A1C9F4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B8A1C9F4(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B8A1CEDC();
 
   v3 = sub_1B8A23EF4();

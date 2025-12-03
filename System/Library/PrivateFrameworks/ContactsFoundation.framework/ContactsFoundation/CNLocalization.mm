@@ -1,37 +1,37 @@
 @interface CNLocalization
-+ (id)localizedStringForInteger:(int64_t)a3;
-+ (id)localizedStringForString:(id)a3 bundle:(id)a4 table:(id)a5 lookupBlock:(id)a6 returningNilIfNotFound:(BOOL)a7;
++ (id)localizedStringForInteger:(int64_t)integer;
++ (id)localizedStringForString:(id)string bundle:(id)bundle table:(id)table lookupBlock:(id)block returningNilIfNotFound:(BOOL)found;
 @end
 
 @implementation CNLocalization
 
-+ (id)localizedStringForString:(id)a3 bundle:(id)a4 table:(id)a5 lookupBlock:(id)a6 returningNilIfNotFound:(BOOL)a7
++ (id)localizedStringForString:(id)string bundle:(id)bundle table:(id)table lookupBlock:(id)block returningNilIfNotFound:(BOOL)found
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v14)
+  stringCopy = string;
+  bundleCopy = bundle;
+  tableCopy = table;
+  blockCopy = block;
+  v15 = blockCopy;
+  if (blockCopy)
   {
-    (*(v14 + 2))(v14, v12, v11, v13);
+    (*(blockCopy + 2))(blockCopy, bundleCopy, stringCopy, tableCopy);
   }
 
   else
   {
-    [v12 localizedStringForKey:v11 value:@"__ABUnlocalizedString" table:v13];
+    [bundleCopy localizedStringForKey:stringCopy value:@"__ABUnlocalizedString" table:tableCopy];
   }
   v16 = ;
   if ([v16 isEqualToString:@"__ABUnlocalizedString"])
   {
-    if (a7)
+    if (found)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v11;
+      v17 = stringCopy;
     }
 
     v16 = v17;
@@ -40,10 +40,10 @@
   return v16;
 }
 
-+ (id)localizedStringForInteger:(int64_t)a3
++ (id)localizedStringForInteger:(int64_t)integer
 {
   v3 = MEMORY[0x1E696ADA0];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
   v5 = [v3 localizedStringFromNumber:v4 numberStyle:1];
 
   return v5;

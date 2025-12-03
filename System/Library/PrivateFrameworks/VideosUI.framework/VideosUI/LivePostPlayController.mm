@@ -1,12 +1,12 @@
 @interface LivePostPlayController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (NSString)description;
 - (TVPPlayer)prefetchedPlayer;
 - (void)cleanup;
-- (void)didTapWithGesture:(id)a3;
-- (void)playerControlsVisibilityChanged:(BOOL)a3;
-- (void)playerViewControllerWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)setPrefetchedPlayer:(id)a3;
+- (void)didTapWithGesture:(id)gesture;
+- (void)playerControlsVisibilityChanged:(BOOL)changed;
+- (void)playerViewControllerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)setPrefetchedPlayer:(id)player;
 @end
 
 @implementation LivePostPlayController
@@ -18,16 +18,16 @@
   return v2;
 }
 
-- (void)setPrefetchedPlayer:(id)a3
+- (void)setPrefetchedPlayer:(id)player
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E389D200(a3);
+  playerCopy = player;
+  selfCopy = self;
+  sub_1E389D200(player);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E389D308();
 
   OUTLINED_FUNCTION_27_0();
@@ -36,41 +36,41 @@
   return v3;
 }
 
-- (void)didTapWithGesture:(id)a3
+- (void)didTapWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   sub_1E38A4F08();
 }
 
 - (void)cleanup
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E38A5934();
 }
 
-- (void)playerControlsVisibilityChanged:(BOOL)a3
+- (void)playerControlsVisibilityChanged:(BOOL)changed
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E38A5C24();
 }
 
-- (void)playerViewControllerWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)playerViewControllerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1E38A6014(a4, width, height);
+  selfCopy = self;
+  sub_1E38A6014(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1E38A6224(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_1E38A6224(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }

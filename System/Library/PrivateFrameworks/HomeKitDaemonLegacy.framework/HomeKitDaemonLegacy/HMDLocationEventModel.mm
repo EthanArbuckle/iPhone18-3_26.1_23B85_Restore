@@ -1,21 +1,21 @@
 @interface HMDLocationEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message;
 + (id)properties;
 @end
 
 @implementation HMDLocationEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 hm_regionFromDataForKey:*MEMORY[0x277CD2400]];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
+  v13 = [dictionaryCopy hm_regionFromDataForKey:*MEMORY[0x277CD2400]];
   if (HMIsValidRegion())
   {
-    v14 = [HMDEventModel eventModelWithDictionary:v9 home:v10 eventTriggerUUID:v11 className:objc_opt_class() message:v12];
+    v14 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
     v15 = encodeRootObject();
     [v14 setRegion:v15];
   }
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __35__HMDLocationEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_12730 != -1)
   {
     dispatch_once(&properties_onceToken_12730, block);

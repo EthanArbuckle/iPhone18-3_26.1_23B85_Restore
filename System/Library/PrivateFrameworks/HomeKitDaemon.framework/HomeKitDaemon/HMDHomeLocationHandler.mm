@@ -5,54 +5,54 @@
 - (BOOL)_needToExtractLocations;
 - (BOOL)_shouldRegisterForSignificantRegion;
 - (BOOL)_shouldUpdateHomeLocation;
-- (BOOL)isDate:(id)a3 laterThanDate:(id)a4;
-- (BOOL)isLocation:(id)a3 closeToLocation:(id)a4;
-- (BOOL)isNewHomeLocationTooCloseToPreviousLocation:(id)a3 newLocation:(id)a4;
-- (BOOL)shouldAllowHomeLocationUpdateWithSource:(int64_t)a3 newLocation:(id)a4;
-- (BOOL)shouldUpdateLocationFromLocationData:(id)a3;
+- (BOOL)isDate:(id)date laterThanDate:(id)thanDate;
+- (BOOL)isLocation:(id)location closeToLocation:(id)toLocation;
+- (BOOL)isNewHomeLocationTooCloseToPreviousLocation:(id)location newLocation:(id)newLocation;
+- (BOOL)shouldAllowHomeLocationUpdateWithSource:(int64_t)source newLocation:(id)location;
+- (BOOL)shouldUpdateLocationFromLocationData:(id)data;
 - (HMDHome)home;
 - (HMDHomeLocationData)locationData;
 - (HMDHomeLocationHandler)init;
-- (HMDHomeLocationHandler)initWithCoder:(id)a3;
+- (HMDHomeLocationHandler)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSUUID)messageTargetUUID;
-- (id)__initForUnitTesting:(double)a3 home:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 location:(id)a7;
-- (id)_handleHomeLocationData:(id)a3 message:(id)a4;
-- (id)_handleHomeLocationDataForHH2:(id)a3 fromMessage:(id)a4;
+- (id)__initForUnitTesting:(double)testing home:(id)home queue:(id)queue messageDispatcher:(id)dispatcher location:(id)location;
+- (id)_handleHomeLocationData:(id)data message:(id)message;
+- (id)_handleHomeLocationDataForHH2:(id)h2 fromMessage:(id)message;
 - (id)logIdentifier;
 - (id)messageDestination;
-- (void)__simulateAtHomeRegionState:(int64_t)a3;
-- (void)__simulateNearByHomeRegionState:(int64_t)a3;
-- (void)_evaluateHomeRegionStateForCurrentDeviceLocation:(id)a3;
-- (void)_handleLocationAuthorization:(int64_t)a3;
-- (void)_handleLocationAuthorizationChangedNotification:(id)a3;
-- (void)_handlePrimaryResidentResidentGenerationIDNotification:(id)a3;
-- (void)_handleRetrieveLocation:(id)a3;
+- (void)__simulateAtHomeRegionState:(int64_t)state;
+- (void)__simulateNearByHomeRegionState:(int64_t)state;
+- (void)_evaluateHomeRegionStateForCurrentDeviceLocation:(id)location;
+- (void)_handleLocationAuthorization:(int64_t)authorization;
+- (void)_handleLocationAuthorizationChangedNotification:(id)notification;
+- (void)_handlePrimaryResidentResidentGenerationIDNotification:(id)notification;
+- (void)_handleRetrieveLocation:(id)location;
 - (void)_processPendingRegionStateUpdates;
 - (void)_registerForMessages;
 - (void)_registerForPrimaryResidentGenerationIDNotification;
 - (void)_registerForRegionUpdate;
-- (void)_resendHomeLocationOnce:(id)a3 newSource:(int64_t)a4;
+- (void)_resendHomeLocationOnce:(id)once newSource:(int64_t)source;
 - (void)_sendLocationUpdateToClients;
 - (void)_unregisterForPrimaryResidentGenerationIDNotification;
-- (void)_updateTimeZone:(id)a3;
+- (void)_updateTimeZone:(id)zone;
 - (void)accessoriesBecomeReachable;
 - (void)accessoriesBecomeUnreachable;
-- (void)accessoryReachabilityChanged:(int)a3 previousReachableAccessoriesCount:(int)a4 reachableAppleMediaAccessoriesCount:(int)a5 previousReachableAppleMediaAccessoriesCount:(int)a6;
+- (void)accessoryReachabilityChanged:(int)changed previousReachableAccessoriesCount:(int)count reachableAppleMediaAccessoriesCount:(int)accessoriesCount previousReachableAppleMediaAccessoriesCount:(int)mediaAccessoriesCount;
 - (void)checkFalsePresence;
-- (void)coalesceRegionUpdateState:(int64_t)a3 forRegion:(id)a4;
-- (void)configure:(id)a3 queue:(id)a4 messageDispatcher:(id)a5;
+- (void)coalesceRegionUpdateState:(int64_t)state forRegion:(id)region;
+- (void)configure:(id)configure queue:(id)queue messageDispatcher:(id)dispatcher;
 - (void)dealloc;
-- (void)didDetermineLocation:(id)a3;
-- (void)didDetermineState:(int64_t)a3 forRegion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)getReachableIPAccessory:(unint64_t *)a3 btleAccessory:(unint64_t *)a4 mediaAccessory:(unint64_t *)a5;
-- (void)handleHomeLocationForHH2:(id)a3 updatedTime:(id)a4 source:(int64_t)a5;
-- (void)logHomeLocationEventWithLocation:(id)a3;
+- (void)didDetermineLocation:(id)location;
+- (void)didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)encodeWithCoder:(id)coder;
+- (void)getReachableIPAccessory:(unint64_t *)accessory btleAccessory:(unint64_t *)btleAccessory mediaAccessory:(unint64_t *)mediaAccessory;
+- (void)handleHomeLocationForHH2:(id)h2 updatedTime:(id)time source:(int64_t)source;
+- (void)logHomeLocationEventWithLocation:(id)location;
 - (void)matterAccessoryBecameReachable;
-- (void)runTransactionWithLocation:(id)a3 updatedTime:(id)a4 source:(int64_t)a5;
-- (void)sendHomeLocationUpdateToResident:(id)a3 source:(int64_t)a4;
-- (void)timerDidFire:(id)a3;
+- (void)runTransactionWithLocation:(id)location updatedTime:(id)time source:(int64_t)source;
+- (void)sendHomeLocationUpdateToResident:(id)resident source:(int64_t)source;
+- (void)timerDidFire:(id)fire;
 - (void)updateHomeLocation;
 - (void)updateHomeLocationForPairing;
 - (void)updateHomeLocationFromCoreRoutine;
@@ -68,12 +68,12 @@
   return WeakRetained;
 }
 
-- (void)__simulateNearByHomeRegionState:(int64_t)a3
+- (void)__simulateNearByHomeRegionState:(int64_t)state
 {
-  if (a3)
+  if (state)
   {
-    v5 = [(HMDHomeLocationHandler *)self regionNearbyHome];
-    [(HMDHomeLocationHandler *)self didDetermineState:a3 forRegion:v5];
+    regionNearbyHome = [(HMDHomeLocationHandler *)self regionNearbyHome];
+    [(HMDHomeLocationHandler *)self didDetermineState:state forRegion:regionNearbyHome];
   }
 
   else
@@ -85,12 +85,12 @@
   }
 }
 
-- (void)__simulateAtHomeRegionState:(int64_t)a3
+- (void)__simulateAtHomeRegionState:(int64_t)state
 {
-  if (a3)
+  if (state)
   {
-    v5 = [(HMDHomeLocationHandler *)self regionAtHome];
-    [(HMDHomeLocationHandler *)self didDetermineState:a3 forRegion:v5];
+    regionAtHome = [(HMDHomeLocationHandler *)self regionAtHome];
+    [(HMDHomeLocationHandler *)self didDetermineState:state forRegion:regionAtHome];
   }
 
   else
@@ -102,20 +102,20 @@
   }
 }
 
-- (id)__initForUnitTesting:(double)a3 home:(id)a4 queue:(id)a5 messageDispatcher:(id)a6 location:(id)a7
+- (id)__initForUnitTesting:(double)testing home:(id)home queue:(id)queue messageDispatcher:(id)dispatcher location:(id)location
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  locationCopy = location;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  homeCopy = home;
   v16 = [(HMDHomeLocationHandler *)self init];
-  [(HMDHomeLocationHandler *)v16 setLocation:v12];
+  [(HMDHomeLocationHandler *)v16 setLocation:locationCopy];
 
-  [(HMDHomeLocationHandler *)v16 setCoalesceRegionUpdateIntervalInSeconds:a3];
-  [(HMDHomeLocationHandler *)v16 setHome:v15];
+  [(HMDHomeLocationHandler *)v16 setCoalesceRegionUpdateIntervalInSeconds:testing];
+  [(HMDHomeLocationHandler *)v16 setHome:homeCopy];
 
-  [(HMDHomeLocationHandler *)v16 setWorkQueue:v14];
-  [(HMDHomeLocationHandler *)v16 setMsgDispatcher:v13];
+  [(HMDHomeLocationHandler *)v16 setWorkQueue:queueCopy];
+  [(HMDHomeLocationHandler *)v16 setMsgDispatcher:dispatcherCopy];
 
   [(HMDHomeLocationHandler *)v16 _registerForRegionUpdate];
   return v16;
@@ -123,58 +123,58 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeLocationHandler *)self home];
+  home = [(HMDHomeLocationHandler *)self home];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 name];
-  v5 = [v2 uuid];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  name = [home name];
+  uuid = [home uuid];
+  v6 = [v3 stringWithFormat:@"%@/%@", name, uuid];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDHomeLocationHandler *)self location];
-  [v4 encodeObject:v5 forKey:@"homeLocation"];
+  coderCopy = coder;
+  location = [(HMDHomeLocationHandler *)self location];
+  [coderCopy encodeObject:location forKey:@"homeLocation"];
 
-  v6 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
-  [v4 encodeObject:v6 forKey:@"homeLocationNextUpdate"];
+  locationUpdateTimestamp = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+  [coderCopy encodeObject:locationUpdateTimestamp forKey:@"homeLocationNextUpdate"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDHomeLocationHandler locationSource](self, "locationSource")}];
-  [v4 encodeObject:v9 forKey:@"homeLocationSource"];
-  v7 = [(HMDHomeLocationHandler *)self timeZone];
-  [v4 encodeObject:v7 forKey:@"HMD.homeLocTZ"];
+  [coderCopy encodeObject:v9 forKey:@"homeLocationSource"];
+  timeZone = [(HMDHomeLocationHandler *)self timeZone];
+  [coderCopy encodeObject:timeZone forKey:@"HMD.homeLocTZ"];
 
-  v8 = [(HMDHomeLocationHandler *)self isoCountryCode];
-  [v4 encodeObject:v8 forKey:@"HMD.homeLocCC"];
+  isoCountryCode = [(HMDHomeLocationHandler *)self isoCountryCode];
+  [coderCopy encodeObject:isoCountryCode forKey:@"HMD.homeLocCC"];
 }
 
-- (HMDHomeLocationHandler)initWithCoder:(id)a3
+- (HMDHomeLocationHandler)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDHomeLocationHandler *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocation"];
     location = v5->_location;
     v5->_location = v6;
 
     if (v5->_location)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationNextUpdate"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationNextUpdate"];
       locationUpdateTimestamp = v5->_locationUpdateTimestamp;
       v5->_locationUpdateTimestamp = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationSource"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationSource"];
       v5->_locationSource = [v10 unsignedIntValue];
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.homeLocTZ"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.homeLocTZ"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.homeLocCC"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.homeLocCC"];
     isoCountryCode = v5->_isoCountryCode;
     v5->_isoCountryCode = v13;
   }
@@ -185,18 +185,18 @@
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDHomeLocationHandler *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDHomeLocationHandler *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDHomeLocationHandler *)self home];
-  v3 = [v2 uuid];
+  home = [(HMDHomeLocationHandler *)self home];
+  uuid = [home uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (void)checkFalsePresence
@@ -205,48 +205,48 @@
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
   if ([(HMDHomeLocationHandler *)self regionStateAtHome]== 2)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(HMDHomeLocationHandler *)self lastArrival];
-    [v4 timeIntervalSinceDate:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastArrival = [(HMDHomeLocationHandler *)self lastArrival];
+    [date timeIntervalSinceDate:lastArrival];
     v7 = v6;
 
-    v8 = [(HMDHomeLocationHandler *)self lastArrival];
-    v9 = [v8 isEqualToDate:v3];
+    lastArrival2 = [(HMDHomeLocationHandler *)self lastArrival];
+    v9 = [lastArrival2 isEqualToDate:v3];
 
     if (v7 >= 30.0)
     {
       v10 = [HMDEntryExitLogEvent exitLogEvent:0 isFalse:v9 isInitial:v7];
-      v30 = [(HMDHomeLocationHandler *)self logEventSubmitter];
-      [v30 submitLogEvent:v10];
+      logEventSubmitter = [(HMDHomeLocationHandler *)self logEventSubmitter];
+      [logEventSubmitter submitLogEvent:v10];
     }
 
     else
     {
       v10 = [HMDEntryExitLogEvent exitLogEvent:1 isFalse:v9 isInitial:v7];
-      v11 = [(HMDHomeLocationHandler *)self logEventSubmitter];
-      [v11 submitLogEvent:v10];
+      logEventSubmitter2 = [(HMDHomeLocationHandler *)self logEventSubmitter];
+      [logEventSubmitter2 submitLogEvent:v10];
 
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [(HMDHomeLocationHandler *)v13 lastArrival];
+        lastArrival3 = [(HMDHomeLocationHandler *)selfCopy lastArrival];
         v39 = 138543874;
         v40 = v15;
         v41 = 2048;
         v42 = v7;
         v43 = 2112;
-        v44 = v16;
+        v44 = lastArrival3;
         _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@False exit. Seconds since last entry: %f with last entry: %@", &v39, 0x20u);
       }
 
       objc_autoreleasePoolPop(v12);
     }
 
-    v31 = [MEMORY[0x277CBEAA8] date];
-    [(HMDHomeLocationHandler *)self setLastExit:v31];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(HMDHomeLocationHandler *)self setLastExit:date2];
 
     if ((v9 & 1) == 0)
     {
@@ -255,7 +255,7 @@
 
 LABEL_16:
     v34 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy2 = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
@@ -271,48 +271,48 @@ LABEL_16:
 
   if ([(HMDHomeLocationHandler *)self regionStateAtHome]== 1)
   {
-    v17 = [MEMORY[0x277CBEAA8] date];
-    v18 = [(HMDHomeLocationHandler *)self lastExit];
-    [v17 timeIntervalSinceDate:v18];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    lastExit = [(HMDHomeLocationHandler *)self lastExit];
+    [date3 timeIntervalSinceDate:lastExit];
     v20 = v19;
 
-    v21 = [(HMDHomeLocationHandler *)self lastExit];
-    v22 = [v21 isEqualToDate:v3];
+    lastExit2 = [(HMDHomeLocationHandler *)self lastExit];
+    v22 = [lastExit2 isEqualToDate:v3];
 
     if (v20 >= 30.0)
     {
       v23 = [HMDEntryExitLogEvent entryLogEvent:0 isFalse:v22 isInitial:v20];
-      v32 = [(HMDHomeLocationHandler *)self logEventSubmitter];
-      [v32 submitLogEvent:v23];
+      logEventSubmitter3 = [(HMDHomeLocationHandler *)self logEventSubmitter];
+      [logEventSubmitter3 submitLogEvent:v23];
     }
 
     else
     {
       v23 = [HMDEntryExitLogEvent entryLogEvent:1 isFalse:v22 isInitial:v20];
-      v24 = [(HMDHomeLocationHandler *)self logEventSubmitter];
-      [v24 submitLogEvent:v23];
+      logEventSubmitter4 = [(HMDHomeLocationHandler *)self logEventSubmitter];
+      [logEventSubmitter4 submitLogEvent:v23];
 
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy3 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [(HMDHomeLocationHandler *)v26 lastExit];
+        lastExit3 = [(HMDHomeLocationHandler *)selfCopy3 lastExit];
         v39 = 138543874;
         v40 = v28;
         v41 = 2048;
         v42 = v20;
         v43 = 2112;
-        v44 = v29;
+        v44 = lastExit3;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_DEBUG, "%{public}@False entry. Seconds since last exit: %f with last exit: %@", &v39, 0x20u);
       }
 
       objc_autoreleasePoolPop(v25);
     }
 
-    v33 = [MEMORY[0x277CBEAA8] date];
-    [(HMDHomeLocationHandler *)self setLastArrival:v33];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    [(HMDHomeLocationHandler *)self setLastArrival:date4];
 
     if (v22)
     {
@@ -325,23 +325,23 @@ LABEL_19:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logHomeLocationEventWithLocation:(id)a3
+- (void)logHomeLocationEventWithLocation:(id)location
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLocationHandler *)self location];
+  locationCopy = location;
+  location = [(HMDHomeLocationHandler *)self location];
 
-  if (v4 && v5)
+  if (locationCopy && location)
   {
-    v6 = [(HMDHomeLocationHandler *)self location];
-    [v6 distanceFromLocation:v4];
+    location2 = [(HMDHomeLocationHandler *)self location];
+    [location2 distanceFromLocation:locationCopy];
     v8 = v7;
 
     if (v8 >= 10.0 && fabs(v8 + -10.0) >= 2.22044605e-16)
     {
       v9 = isInternalBuild();
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
       if (v9)
@@ -352,7 +352,7 @@ LABEL_19:
           v23 = 138543874;
           v24 = v14;
           v25 = 2112;
-          v26 = v4;
+          v26 = locationCopy;
           v27 = 2048;
           v28 = v8;
           v15 = "%{public}@Submitting event updated home location [%@] & distance %f";
@@ -367,7 +367,7 @@ LABEL_14:
         v23 = 138543875;
         v24 = v14;
         v25 = 2117;
-        v26 = v4;
+        v26 = locationCopy;
         v27 = 2048;
         v28 = v8;
         v15 = "%{public}@Submitting event updated home location [%{sensitive}@] & distance %f";
@@ -376,15 +376,15 @@ LABEL_14:
 
       objc_autoreleasePoolPop(v10);
       v21 = [HMDHomeLocationLogEvent updateWithHomeDistance:v8];
-      v22 = [(HMDHomeLocationHandler *)v11 logEventSubmitter];
-      [v22 submitLogEvent:v21];
+      logEventSubmitter = [(HMDHomeLocationHandler *)selfCopy logEventSubmitter];
+      [logEventSubmitter submitLogEvent:v21];
     }
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -404,11 +404,11 @@ LABEL_14:
 {
   v79[2] = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(HMDHomeLocationHandler *)self regionStateAtHome];
+  regionStateAtHome = [(HMDHomeLocationHandler *)self regionStateAtHome];
   pendingAtHomeRegionUpdate = self->_pendingAtHomeRegionUpdate;
   pendingNearbyHomeRegionUpdate = self->_pendingNearbyHomeRegionUpdate;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   if (!pendingAtHomeRegionUpdate)
   {
     if (!pendingNearbyHomeRegionUpdate)
@@ -443,7 +443,7 @@ LABEL_14:
       if ([(_HMDPendingRegionUpdate *)self->_pendingNearbyHomeRegionUpdate state]!= 2)
       {
         v6 = objc_autoreleasePoolPush();
-        v29 = v7;
+        v29 = selfCopy;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
@@ -461,15 +461,15 @@ LABEL_14:
 
 LABEL_25:
       v22 = 2;
-      [(HMDHomeLocationHandler *)v7 setRegionStateAtHome:2];
+      [(HMDHomeLocationHandler *)selfCopy setRegionStateAtHome:2];
       goto LABEL_26;
     }
 
-    [(HMDHomeLocationHandler *)v7 setRegionStateNearbyHome:1];
-    if ([(HMDHomeLocationHandler *)v7 regionStateAtHome]== 1)
+    [(HMDHomeLocationHandler *)selfCopy setRegionStateNearbyHome:1];
+    if ([(HMDHomeLocationHandler *)selfCopy regionStateAtHome]== 1)
     {
       v6 = objc_autoreleasePoolPush();
-      v16 = v7;
+      v16 = selfCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -482,9 +482,9 @@ LABEL_25:
 
     else
     {
-      v35 = [(HMDHomeLocationHandler *)v7 regionStateAtHome]== 0;
+      v35 = [(HMDHomeLocationHandler *)selfCopy regionStateAtHome]== 0;
       v6 = objc_autoreleasePoolPush();
-      v36 = v7;
+      v36 = selfCopy;
       if (!v35)
       {
         v37 = HMFGetOSLogHandle();
@@ -535,12 +535,12 @@ LABEL_25:
 
     if ([(_HMDPendingRegionUpdate *)self->_pendingAtHomeRegionUpdate state]== 2)
     {
-      [(HMDHomeLocationHandler *)v7 setRegionStateAtHome:2];
+      [(HMDHomeLocationHandler *)selfCopy setRegionStateAtHome:2];
       goto LABEL_27;
     }
 
     v6 = objc_autoreleasePoolPush();
-    v32 = v7;
+    v32 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -591,7 +591,7 @@ LABEL_20:
   if ([(_HMDPendingRegionUpdate *)self->_pendingAtHomeRegionUpdate state]!= 2 || [(_HMDPendingRegionUpdate *)self->_pendingNearbyHomeRegionUpdate state]!= 1)
   {
     v6 = objc_autoreleasePoolPush();
-    v25 = v7;
+    v25 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -612,26 +612,26 @@ LABEL_20:
 
   v12 = 2;
 LABEL_21:
-  [(HMDHomeLocationHandler *)v7 setRegionStateAtHome:v12];
+  [(HMDHomeLocationHandler *)selfCopy setRegionStateAtHome:v12];
   v22 = 1;
 LABEL_26:
-  [(HMDHomeLocationHandler *)v7 setRegionStateNearbyHome:v22];
+  [(HMDHomeLocationHandler *)selfCopy setRegionStateNearbyHome:v22];
 LABEL_27:
   v24 = 1;
 LABEL_43:
-  if (v3 == 2 && [(HMDHomeLocationHandler *)v7 regionStateAtHome]== 1)
+  if (regionStateAtHome == 2 && [(HMDHomeLocationHandler *)selfCopy regionStateAtHome]== 1)
   {
-    v40 = [MEMORY[0x277CBEAA8] date];
-    [(HMDHomeLocationHandler *)v7 setDateCrossedIntoAtHomeRegion:v40];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HMDHomeLocationHandler *)selfCopy setDateCrossedIntoAtHomeRegion:date];
 
     v41 = 1;
   }
 
   else
   {
-    if ([(HMDHomeLocationHandler *)v7 regionStateAtHome]!= 1)
+    if ([(HMDHomeLocationHandler *)selfCopy regionStateAtHome]!= 1)
     {
-      [(HMDHomeLocationHandler *)v7 setDateCrossedIntoAtHomeRegion:0];
+      [(HMDHomeLocationHandler *)selfCopy setDateCrossedIntoAtHomeRegion:0];
     }
 
     v41 = 0;
@@ -643,17 +643,17 @@ LABEL_43:
   v43 = self->_pendingNearbyHomeRegionUpdate;
   self->_pendingNearbyHomeRegionUpdate = 0;
 
-  homeRegionUpdateTimer = v7->_homeRegionUpdateTimer;
-  v7->_homeRegionUpdateTimer = 0;
+  homeRegionUpdateTimer = selfCopy->_homeRegionUpdateTimer;
+  selfCopy->_homeRegionUpdateTimer = 0;
 
   os_unfair_recursive_lock_unlock();
   v45 = +[HMDLocation sharedManager];
-  v46 = [v45 isCurrentLocationSimulated];
+  isCurrentLocationSimulated = [v45 isCurrentLocationSimulated];
 
-  if (v46)
+  if (isCurrentLocationSimulated)
   {
     v47 = objc_autoreleasePoolPush();
-    v48 = v7;
+    v48 = selfCopy;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
@@ -669,12 +669,12 @@ LABEL_43:
     [(HMDHomeLocationHandler *)v48 setRegionStateNearbyHome:2];
   }
 
-  v51 = [(HMDHomeLocationHandler *)v7 home];
-  v52 = [v51 currentUser];
-  v53 = [v52 uuid];
+  home = [(HMDHomeLocationHandler *)selfCopy home];
+  currentUser = [home currentUser];
+  uuid = [currentUser uuid];
 
-  v54 = [v51 uuid];
-  if (v54)
+  uuid2 = [home uuid];
+  if (uuid2)
   {
     v55 = v41;
   }
@@ -686,37 +686,37 @@ LABEL_43:
 
   if (v55 == 1)
   {
-    if (v53)
+    if (uuid)
     {
       v56 = +[HMDLocation sharedManager];
-      v57 = [v56 isCurrentLocationSimulated];
+      isCurrentLocationSimulated2 = [v56 isCurrentLocationSimulated];
 
-      if ((v57 & 1) == 0)
+      if ((isCurrentLocationSimulated2 & 1) == 0)
       {
         v78[0] = @"HMDLocationCurrentUserUUIDKey";
         v78[1] = @"HMDLocationHomeUUIDKey";
-        v79[0] = v53;
-        v79[1] = v54;
+        v79[0] = uuid;
+        v79[1] = uuid2;
         v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:2];
-        logAndPostNotification(@"HMDLocationDidCrossIntoHomeRegion", v7, v58);
+        logAndPostNotification(@"HMDLocationDidCrossIntoHomeRegion", selfCopy, v58);
       }
     }
   }
 
-  v59 = [HMDRegionStateCorrectnessLogEvent updateWithRegion:[(HMDHomeLocationHandler *)v7 regionStateAtHome] nearbyHome:[(HMDHomeLocationHandler *)v7 regionStateNearbyHome] accessoryReachable:[(HMDHomeLocationHandler *)v7 firstAccessoryReachable]];
-  v60 = [(HMDHomeLocationHandler *)v7 logEventSubmitter];
-  [v60 submitLogEvent:v59];
+  v59 = [HMDRegionStateCorrectnessLogEvent updateWithRegion:[(HMDHomeLocationHandler *)selfCopy regionStateAtHome] nearbyHome:[(HMDHomeLocationHandler *)selfCopy regionStateNearbyHome] accessoryReachable:[(HMDHomeLocationHandler *)selfCopy firstAccessoryReachable]];
+  logEventSubmitter = [(HMDHomeLocationHandler *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v59];
 
   if (v24)
   {
     context = objc_autoreleasePoolPush();
-    v61 = v7;
+    v61 = selfCopy;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       v68 = HMFGetLogIdentifier();
-      v63 = [v51 uuid];
-      v64 = [v63 UUIDString];
+      uuid3 = [home uuid];
+      uUIDString = [uuid3 UUIDString];
       [(HMDHomeLocationHandler *)v61 regionStateAtHome];
       v65 = HMRegionStateString();
       [(HMDHomeLocationHandler *)v61 regionStateNearbyHome];
@@ -724,7 +724,7 @@ LABEL_43:
       *buf = 138544130;
       v71 = v68;
       v72 = 2112;
-      v73 = v64;
+      v73 = uUIDString;
       v74 = 2112;
       v75 = v65;
       v76 = 2112;
@@ -733,21 +733,21 @@ LABEL_43:
     }
 
     objc_autoreleasePoolPop(context);
-    [v51 regionStateUpdated];
+    [home regionStateUpdated];
     [(HMDHomeLocationHandler *)v61 checkFalsePresence];
   }
 
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_homeRegionUpdateTimer == v4)
+  fireCopy = fire;
+  if (self->_homeRegionUpdateTimer == fireCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -758,27 +758,27 @@ LABEL_43:
     }
 
     objc_autoreleasePoolPop(v5);
-    [(HMDHomeLocationHandler *)v6 _processPendingRegionStateUpdates];
+    [(HMDHomeLocationHandler *)selfCopy _processPendingRegionStateUpdates];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coalesceRegionUpdateState:(int64_t)a3 forRegion:(id)a4
+- (void)coalesceRegionUpdateState:(int64_t)state forRegion:(id)region
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  regionCopy = region;
   os_unfair_recursive_lock_lock_with_options();
   v7 = objc_alloc_init(_HMDPendingRegionUpdate);
-  [(_HMDPendingRegionUpdate *)v7 setState:a3];
-  v8 = [(CLRegion *)self->_regionAtHome identifier];
-  v9 = [v6 identifier];
-  v10 = [v8 isEqualToString:v9];
+  [(_HMDPendingRegionUpdate *)v7 setState:state];
+  identifier = [(CLRegion *)self->_regionAtHome identifier];
+  identifier2 = [regionCopy identifier];
+  v10 = [identifier isEqualToString:identifier2];
 
   if (v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -817,12 +817,12 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v17 = [(CLRegion *)self->_regionNearbyHome identifier];
-  v18 = [v6 identifier];
-  v19 = [v17 isEqualToString:v18];
+  identifier3 = [(CLRegion *)self->_regionNearbyHome identifier];
+  identifier4 = [regionCopy identifier];
+  v19 = [identifier3 isEqualToString:identifier4];
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy2 = self;
   if (v19)
   {
     v22 = HMFGetOSLogHandle();
@@ -850,7 +850,7 @@ LABEL_9:
     v33 = 138543874;
     v34 = v30;
     v35 = 2112;
-    v36 = v6;
+    v36 = regionCopy;
     v37 = 2112;
     v38 = v31;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Unknown region update found for region : %@ [new state: %@]", &v33, 0x20u);
@@ -863,25 +863,25 @@ LABEL_15:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getReachableIPAccessory:(unint64_t *)a3 btleAccessory:(unint64_t *)a4 mediaAccessory:(unint64_t *)a5
+- (void)getReachableIPAccessory:(unint64_t *)accessory btleAccessory:(unint64_t *)btleAccessory mediaAccessory:(unint64_t *)mediaAccessory
 {
-  v8 = [(HMDHomeLocationHandler *)self home];
-  [v8 getReachableIPAccessories:a3 btleAccessories:a4 mediaAccessories:a5];
+  home = [(HMDHomeLocationHandler *)self home];
+  [home getReachableIPAccessories:accessory btleAccessories:btleAccessory mediaAccessories:mediaAccessory];
 }
 
-- (void)didDetermineState:(int64_t)a3 forRegion:(id)a4
+- (void)didDetermineState:(int64_t)state forRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(HMDHomeLocationHandler *)self workQueue];
+  regionCopy = region;
+  workQueue = [(HMDHomeLocationHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMDHomeLocationHandler_didDetermineState_forRegion___block_invoke;
   block[3] = &unk_278685DF8;
-  v10 = v6;
-  v11 = a3;
+  v10 = regionCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = regionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __54__HMDHomeLocationHandler_didDetermineState_forRegion___block_invoke(uint64_t a1)
@@ -944,25 +944,25 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDetermineLocation:(id)a3
+- (void)didDetermineLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(HMDHomeLocationHandler *)self workQueue];
+  locationCopy = location;
+  workQueue = [(HMDHomeLocationHandler *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HMDHomeLocationHandler_didDetermineLocation___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationCopy;
+  v6 = locationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)updateHomeLocationFromSingleOrCoreRoutine
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -973,7 +973,7 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHomeLocationHandler *)v4 updateHomeLocationFromCoreRoutine];
+  [(HMDHomeLocationHandler *)selfCopy updateHomeLocationFromCoreRoutine];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -1088,39 +1088,39 @@ LABEL_20:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isDate:(id)a3 laterThanDate:(id)a4
+- (BOOL)isDate:(id)date laterThanDate:(id)thanDate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  thanDateCopy = thanDate;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    [v6 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v13 = v12;
-    [v7 timeIntervalSince1970];
+    [thanDateCopy timeIntervalSince1970];
     v18 = 138544386;
     v19 = v11;
     v20 = 2112;
-    v21 = v6;
+    v21 = dateCopy;
     v22 = 2048;
     v23 = v13;
     v24 = 2112;
-    v25 = v7;
+    v25 = thanDateCopy;
     v26 = 2048;
     v27 = v14;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Going to check if date1 %@ (%lf) is later than date2 %@ (%lf)", &v18, 0x34u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v6)
+  if (dateCopy)
   {
-    if (v7)
+    if (thanDateCopy)
     {
-      v15 = [v6 compare:v7] == 1;
+      v15 = [dateCopy compare:thanDateCopy] == 1;
     }
 
     else
@@ -1138,13 +1138,13 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)isLocation:(id)a3 closeToLocation:(id)a4
+- (BOOL)isLocation:(id)location closeToLocation:(id)toLocation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  toLocationCopy = toLocation;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1152,21 +1152,21 @@ LABEL_20:
     v28 = 138543874;
     v29 = v11;
     v30 = 2112;
-    v31 = v6;
+    v31 = locationCopy;
     v32 = 2112;
-    v33 = v7;
+    v33 = toLocationCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Going to check if location1 %@ is close to location2 %@", &v28, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = 1;
-  if (v6 && v7)
+  if (locationCopy && toLocationCopy)
   {
-    [v6 distanceFromLocation:v7];
+    [locationCopy distanceFromLocation:toLocationCopy];
     v14 = v13;
     v15 = isInternalBuild();
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
     if (v15)
@@ -1177,9 +1177,9 @@ LABEL_20:
         v28 = 138544130;
         v29 = v20;
         v30 = 2112;
-        v31 = v6;
+        v31 = locationCopy;
         v32 = 2112;
-        v33 = v7;
+        v33 = toLocationCopy;
         v34 = 2048;
         v35 = v14;
         v21 = "%{public}@Distance between location1 %@ and location2 %@: %lf";
@@ -1194,9 +1194,9 @@ LABEL_10:
       v28 = 138544131;
       v29 = v20;
       v30 = 2117;
-      v31 = v6;
+      v31 = locationCopy;
       v32 = 2117;
-      v33 = v7;
+      v33 = toLocationCopy;
       v34 = 2048;
       v35 = v14;
       v21 = "%{public}@Distance between location1 %{sensitive}@ and location2 %{sensitive}@: %lf";
@@ -1232,10 +1232,10 @@ LABEL_10:
 - (HMDHomeLocationData)locationData
 {
   v3 = [HMDHomeLocationData alloc];
-  v4 = [(HMDHomeLocationHandler *)self location];
-  v5 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+  location = [(HMDHomeLocationHandler *)self location];
+  locationUpdateTimestamp = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDHomeLocationHandler locationSource](self, "locationSource")}];
-  v7 = [(HMDHomeLocationData *)v3 initWithLocation:v4 locationUpdateTimestamp:v5 locationSource:v6];
+  v7 = [(HMDHomeLocationData *)v3 initWithLocation:location locationUpdateTimestamp:locationUpdateTimestamp locationSource:v6];
 
   return v7;
 }
@@ -1243,14 +1243,14 @@ LABEL_10:
 - (void)_sendLocationUpdateToClients
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self location];
+  location = [(HMDHomeLocationHandler *)self location];
 
-  if (v3)
+  if (location)
   {
     v13 = @"kHomeLocationKey";
     v4 = MEMORY[0x277CCAAB0];
-    v5 = [(HMDHomeLocationHandler *)self location];
-    v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    location2 = [(HMDHomeLocationHandler *)self location];
+    v6 = [v4 archivedDataWithRootObject:location2 requiringSecureCoding:1 error:0];
     v14[0] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
@@ -1263,26 +1263,26 @@ LABEL_10:
   }
 
   logAndPostNotification(@"HMDLocationForHomeChanged", self, 0);
-  v9 = [(HMDHomeLocationHandler *)self home];
-  if (v9)
+  home = [(HMDHomeLocationHandler *)self home];
+  if (home)
   {
-    v10 = [(HMDHomeLocationHandler *)self msgDispatcher];
-    v11 = [v9 uuid];
-    [v10 sendMessage:v8 target:v11];
+    msgDispatcher = [(HMDHomeLocationHandler *)self msgDispatcher];
+    uuid = [home uuid];
+    [msgDispatcher sendMessage:v8 target:uuid];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isNewHomeLocationTooCloseToPreviousLocation:(id)a3 newLocation:(id)a4
+- (BOOL)isNewHomeLocationTooCloseToPreviousLocation:(id)location newLocation:(id)newLocation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 distanceFromLocation:v7];
+  locationCopy = location;
+  newLocationCopy = newLocation;
+  [locationCopy distanceFromLocation:newLocationCopy];
   v9 = v8;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1302,14 +1302,14 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)shouldAllowHomeLocationUpdateWithSource:(int64_t)a3 newLocation:(id)a4
+- (BOOL)shouldAllowHomeLocationUpdateWithSource:(int64_t)source newLocation:(id)location
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -1328,10 +1328,10 @@ LABEL_10:
   }
 
   v8 = 0;
-  if (a3 != 2 && a3 != 5)
+  if (source != 2 && source != 5)
   {
-    v4 = [(HMDHomeLocationHandler *)self location];
-    if (v4)
+    location = [(HMDHomeLocationHandler *)self location];
+    if (location)
     {
       v8 = ![(HMDHomeLocationHandler *)self pairingHomeLocationOverride];
     }
@@ -1342,7 +1342,7 @@ LABEL_10:
     }
   }
 
-  if (a3 == 2 || a3 == 5)
+  if (source == 2 || source == 5)
   {
     if (v8)
     {
@@ -1353,7 +1353,7 @@ LABEL_17:
     [(HMDHomeLocationHandler *)self setPairingHomeLocationOverride:0];
     v17 = isInternalBuild();
     v9 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     v19 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
     if (v17)
@@ -1361,11 +1361,11 @@ LABEL_17:
       if (v19)
       {
         v20 = HMFGetLogIdentifier();
-        v21 = HMDHomeLocationSourceToString(a3);
+        v21 = HMDHomeLocationSourceToString(source);
         v25 = 138543874;
         v26 = v20;
         v27 = 2112;
-        v28 = v7;
+        v28 = locationCopy;
         v29 = 2112;
         v30 = v21;
         v22 = "%{public}@Updating home location to %@ and source %@";
@@ -1377,11 +1377,11 @@ LABEL_22:
     else if (v19)
     {
       v20 = HMFGetLogIdentifier();
-      v21 = HMDHomeLocationSourceToString(a3);
+      v21 = HMDHomeLocationSourceToString(source);
       v25 = 138543875;
       v26 = v20;
       v27 = 2117;
-      v28 = v7;
+      v28 = locationCopy;
       v29 = 2112;
       v30 = v21;
       v22 = "%{public}@Updating home location to %{sensitive}@ and source %@";
@@ -1399,12 +1399,12 @@ LABEL_22:
 
 LABEL_13:
   v9 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = HMDHomeLocationSourceToString(a3);
+    v15 = HMDHomeLocationSourceToString(source);
     v25 = 138543618;
     v26 = v14;
     v27 = 2112;
@@ -1421,21 +1421,21 @@ LABEL_24:
   return v16;
 }
 
-- (void)_resendHomeLocationOnce:(id)a3 newSource:(int64_t)a4
+- (void)_resendHomeLocationOnce:(id)once newSource:(int64_t)source
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  onceCopy = once;
   if (![(HMDHomeLocationHandler *)self resendOnce])
   {
-    v7 = [(HMDHomeLocationHandler *)self location];
+    location = [(HMDHomeLocationHandler *)self location];
 
-    if (!v7)
+    if (!location)
     {
       [(HMDHomeLocationHandler *)self setResendOnce:1];
-      [(HMDHomeLocationHandler *)self setCachedLocation:v6];
-      [(HMDHomeLocationHandler *)self setCachedSource:a4];
+      [(HMDHomeLocationHandler *)self setCachedLocation:onceCopy];
+      [(HMDHomeLocationHandler *)self setCachedSource:source];
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -1446,26 +1446,26 @@ LABEL_24:
       }
 
       objc_autoreleasePoolPop(v8);
-      [(HMDHomeLocationHandler *)v9 _registerForPrimaryResidentGenerationIDNotification];
+      [(HMDHomeLocationHandler *)selfCopy _registerForPrimaryResidentGenerationIDNotification];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendHomeLocationUpdateToResident:(id)a3 source:(int64_t)a4
+- (void)sendHomeLocationUpdateToResident:(id)resident source:(int64_t)source
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDHomeLocationHandler *)self home];
-  if (([v7 isAdminUser] & 1) == 0)
+  residentCopy = resident;
+  home = [(HMDHomeLocationHandler *)self home];
+  if (([home isAdminUser] & 1) == 0)
   {
     _HMFPreconditionFailure();
   }
 
   v8 = isInternalBuild();
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
   if (v8)
@@ -1476,11 +1476,11 @@ LABEL_24:
     }
 
     v13 = HMFGetLogIdentifier();
-    v14 = HMDHomeLocationSourceToString(a4);
+    v14 = HMDHomeLocationSourceToString(source);
     *buf = 138543874;
     v38 = v13;
     v39 = 2112;
-    v40 = v6;
+    v40 = residentCopy;
     v41 = 2112;
     v42 = v14;
     v15 = "%{public}@Sending home location updated message to the primary resident: %@, source: %@";
@@ -1494,11 +1494,11 @@ LABEL_24:
     }
 
     v13 = HMFGetLogIdentifier();
-    v14 = HMDHomeLocationSourceToString(a4);
+    v14 = HMDHomeLocationSourceToString(source);
     *buf = 138543875;
     v38 = v13;
     v39 = 2117;
-    v40 = v6;
+    v40 = residentCopy;
     v41 = 2112;
     v42 = v14;
     v15 = "%{public}@Sending home location updated message to the primary resident: %{sensitive}@, source: %@";
@@ -1509,16 +1509,16 @@ LABEL_24:
 LABEL_8:
   objc_autoreleasePoolPop(v9);
   v16 = [HMDRemoteHomeMessageDestination alloc];
-  v17 = [(HMDHomeLocationHandler *)v10 messageTargetUUID];
-  v18 = [v7 uuid];
-  v19 = [(HMDRemoteHomeMessageDestination *)v16 initWithTarget:v17 homeUUID:v18];
+  messageTargetUUID = [(HMDHomeLocationHandler *)selfCopy messageTargetUUID];
+  uuid = [home uuid];
+  v19 = [(HMDRemoteHomeMessageDestination *)v16 initWithTarget:messageTargetUUID homeUUID:uuid];
 
   v20 = MEMORY[0x277D0F848];
   v35[0] = @"kHomeLocationDataKey";
-  v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
+  v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:residentCopy requiringSecureCoding:1 error:0];
   v35[1] = @"HMD.LOC.SRC";
   v36[0] = v21;
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   v36[1] = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
   v24 = [v20 messageWithName:@"kHomeLocationUpdatedNotificationKey" destination:v19 payload:v23];
@@ -1526,7 +1526,7 @@ LABEL_8:
   if (_os_feature_enabled_impl())
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v10;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
@@ -1544,13 +1544,13 @@ LABEL_8:
   v32[1] = 3221225472;
   v32[2] = __66__HMDHomeLocationHandler_sendHomeLocationUpdateToResident_source___block_invoke;
   v32[3] = &unk_278685690;
-  v32[4] = v10;
-  v33 = v6;
-  v34 = a4;
-  v29 = v6;
+  v32[4] = selfCopy;
+  v33 = residentCopy;
+  sourceCopy = source;
+  v29 = residentCopy;
   [v24 setResponseHandler:v32];
-  v30 = [v7 msgDispatcher];
-  [v30 sendMessage:v24 completionHandler:0];
+  msgDispatcher = [home msgDispatcher];
+  [msgDispatcher sendMessage:v24 completionHandler:0];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -1599,17 +1599,17 @@ void __66__HMDHomeLocationHandler_sendHomeLocationUpdateToResident_source___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeLocationForHH2:(id)a3 updatedTime:(id)a4 source:(int64_t)a5
+- (void)handleHomeLocationForHH2:(id)h2 updatedTime:(id)time source:(int64_t)source
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDHomeLocationHandler *)self home];
-  if (([v10 isAdminUser] & 1) == 0)
+  h2Copy = h2;
+  timeCopy = time;
+  home = [(HMDHomeLocationHandler *)self home];
+  if (([home isAdminUser] & 1) == 0)
   {
     v21 = isInternalBuild();
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
     if (v21)
@@ -1620,7 +1620,7 @@ void __66__HMDHomeLocationHandler_sendHomeLocationUpdateToResident_source___bloc
         *buf = 138543618;
         v44 = v26;
         v45 = 2112;
-        v46 = v8;
+        v46 = h2Copy;
         v27 = "%{public}@Not going to save the home location as this is not an admin user : %@";
 LABEL_13:
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, v27, buf, 0x16u);
@@ -1633,7 +1633,7 @@ LABEL_13:
       *buf = 138543619;
       v44 = v26;
       v45 = 2117;
-      v46 = v8;
+      v46 = h2Copy;
       v27 = "%{public}@Not going to save the home location as this is not an admin user : %{sensitive}@";
       goto LABEL_13;
     }
@@ -1642,11 +1642,11 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (![v10 hasAnyResident] || (objc_msgSend(v10, "isCurrentDeviceConfirmedPrimaryResident") & 1) != 0)
+  if (![home hasAnyResident] || (objc_msgSend(home, "isCurrentDeviceConfirmedPrimaryResident") & 1) != 0)
   {
-    v11 = [(HMDHomeLocationHandler *)self shouldAllowHomeLocationUpdateWithSource:a5 newLocation:v8];
+    v11 = [(HMDHomeLocationHandler *)self shouldAllowHomeLocationUpdateWithSource:source newLocation:h2Copy];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
     if (v11)
@@ -1657,28 +1657,28 @@ LABEL_13:
         *buf = 138543874;
         v44 = v16;
         v45 = 2112;
-        v46 = v10;
+        v46 = home;
         v47 = 2112;
-        v48 = v8;
+        v48 = h2Copy;
         _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@We are allowed to run the cloud operation : %@. Updating home location: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v12);
-      [(HMDHomeLocationHandler *)v13 logHomeLocationEventWithLocation:v8];
+      [(HMDHomeLocationHandler *)selfCopy2 logHomeLocationEventWithLocation:h2Copy];
       v17 = +[HMDCoreData sharedInstance];
-      v18 = [v10 uuid];
-      v19 = [v17 contextWithHomeUUID:v18];
+      uuid = [home uuid];
+      v19 = [v17 contextWithHomeUUID:uuid];
 
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __70__HMDHomeLocationHandler_handleHomeLocationForHH2_updatedTime_source___block_invoke;
       v36[3] = &unk_2786864F0;
-      v37 = v10;
-      v38 = v13;
-      v39 = v8;
+      v37 = home;
+      v38 = selfCopy2;
+      v39 = h2Copy;
       v41 = v19;
-      v42 = a5;
-      v40 = v9;
+      sourceCopy = source;
+      v40 = timeCopy;
       v20 = v19;
       [v20 performBlock:v36];
 
@@ -1700,23 +1700,23 @@ LABEL_18:
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy3 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
     v34 = HMFGetLogIdentifier();
-    v35 = HMDHomeLocationSourceToString(a5);
+    v35 = HMDHomeLocationSourceToString(source);
     *buf = 138543874;
     v44 = v34;
     v45 = 2112;
-    v46 = v8;
+    v46 = h2Copy;
     v47 = 2112;
     v48 = v35;
     _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@We are not allowed to run any cloud operation on this device. Asking primary to update the home location: %@ from source: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v31);
-  [(HMDHomeLocationHandler *)v32 sendHomeLocationUpdateToResident:v8 source:a5];
+  [(HMDHomeLocationHandler *)selfCopy3 sendHomeLocationUpdateToResident:h2Copy source:source];
 LABEL_19:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -1860,47 +1860,47 @@ LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runTransactionWithLocation:(id)a3 updatedTime:(id)a4 source:(int64_t)a5
+- (void)runTransactionWithLocation:(id)location updatedTime:(id)time source:(int64_t)source
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  timeCopy = time;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = HMDHomeLocationSourceToString(a5);
+    v14 = HMDHomeLocationSourceToString(source);
     v16 = 138543874;
     v17 = v13;
     v18 = 2112;
-    v19 = v8;
+    v19 = locationCopy;
     v20 = 2112;
     v21 = v14;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Determined Location: %@, Source : %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  [(HMDHomeLocationHandler *)v11 handleHomeLocationForHH2:v8 updatedTime:v9 source:a5];
+  [(HMDHomeLocationHandler *)selfCopy handleHomeLocationForHH2:locationCopy updatedTime:timeCopy source:source];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldUpdateLocationFromLocationData:(id)a3
+- (BOOL)shouldUpdateLocationFromLocationData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 location];
+  dataCopy = data;
+  location = [dataCopy location];
 
-  if (v5)
+  if (location)
   {
-    v6 = [v4 location];
-    if ([HMDLocation isAccurateLocation:v6])
+    location2 = [dataCopy location];
+    if ([HMDLocation isAccurateLocation:location2])
     {
-      v7 = [v4 locationUpdateTimestamp];
-      v8 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
-      v9 = [(HMDHomeLocationHandler *)self isDate:v7 laterThanDate:v8];
+      locationUpdateTimestamp = [dataCopy locationUpdateTimestamp];
+      locationUpdateTimestamp2 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+      v9 = [(HMDHomeLocationHandler *)self isDate:locationUpdateTimestamp laterThanDate:locationUpdateTimestamp2];
     }
 
     else
@@ -1912,7 +1912,7 @@ LABEL_21:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1930,31 +1930,31 @@ LABEL_21:
   return v9;
 }
 
-- (id)_handleHomeLocationDataForHH2:(id)a3 fromMessage:(id)a4
+- (id)_handleHomeLocationDataForHH2:(id)h2 fromMessage:(id)message
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v63 = a4;
-  v7 = [(HMDHomeLocationHandler *)self home];
-  v8 = [v6 location];
+  h2Copy = h2;
+  messageCopy = message;
+  home = [(HMDHomeLocationHandler *)self home];
+  location = [h2Copy location];
 
-  if (v8)
+  if (location)
   {
-    v9 = [(HMDHomeLocationHandler *)self location];
-    v10 = [v6 locationSource];
-    v11 = [v10 intValue];
+    location2 = [(HMDHomeLocationHandler *)self location];
+    locationSource = [h2Copy locationSource];
+    intValue = [locationSource intValue];
 
-    if (v9)
+    if (location2)
     {
-      v12 = [v6 location];
-      if (-[HMDHomeLocationHandler isNewHomeLocationTooCloseToPreviousLocation:newLocation:](self, "isNewHomeLocationTooCloseToPreviousLocation:newLocation:", v9, v12) && (-[HMDHomeLocationHandler locationUpdateTimestamp](self, "locationUpdateTimestamp"), v13 = objc_claimAutoreleasedReturnValue(), [v6 locationUpdateTimestamp], v14 = objc_claimAutoreleasedReturnValue(), v15 = HMFEqualObjects(), v14, v13, (v15 & 1) != 0))
+      location3 = [h2Copy location];
+      if (-[HMDHomeLocationHandler isNewHomeLocationTooCloseToPreviousLocation:newLocation:](self, "isNewHomeLocationTooCloseToPreviousLocation:newLocation:", location2, location3) && (-[HMDHomeLocationHandler locationUpdateTimestamp](self, "locationUpdateTimestamp"), v13 = objc_claimAutoreleasedReturnValue(), [h2Copy locationUpdateTimestamp], v14 = objc_claimAutoreleasedReturnValue(), v15 = HMFEqualObjects(), v14, v13, (v15 & 1) != 0))
       {
-        v16 = [(HMDHomeLocationHandler *)self locationSource];
+        locationSource2 = [(HMDHomeLocationHandler *)self locationSource];
 
-        if (v16 == v11)
+        if (locationSource2 == intValue)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy3 = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
@@ -1977,14 +1977,14 @@ LABEL_18:
       }
     }
 
-    v26 = [v6 location];
-    v27 = [(HMDHomeLocationHandler *)self shouldAllowHomeLocationUpdateWithSource:v11 newLocation:v26];
+    location4 = [h2Copy location];
+    v27 = [(HMDHomeLocationHandler *)self shouldAllowHomeLocationUpdateWithSource:intValue newLocation:location4];
 
     if (v27)
     {
       v28 = isInternalBuild();
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
       if (v28)
@@ -1992,23 +1992,23 @@ LABEL_18:
         if (v32)
         {
           v33 = HMFGetLogIdentifier();
-          v34 = [(HMDHomeLocationHandler *)v30 location];
-          [v6 location];
-          v35 = v59 = v9;
-          v36 = [v63 name];
+          location5 = [(HMDHomeLocationHandler *)selfCopy2 location];
+          [h2Copy location];
+          v35 = v59 = location2;
+          name = [messageCopy name];
           *buf = 138544386;
           v65 = v33;
           v66 = 2112;
-          v67 = v7;
+          v67 = home;
           v68 = 2112;
-          v69 = v34;
+          v69 = location5;
           v70 = 2112;
           v71 = v35;
           v72 = 2112;
-          v73 = v36;
+          v73 = name;
           _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@Updating location for home %@ from: %@ to %@, message: %@", buf, 0x34u);
 
-          v9 = v59;
+          location2 = v59;
         }
       }
 
@@ -2016,85 +2016,85 @@ LABEL_18:
       {
         HMFGetLogIdentifier();
         v37 = v60 = v29;
-        v38 = [(HMDHomeLocationHandler *)v30 location];
-        v39 = [v6 location];
-        v40 = [v63 name];
+        location6 = [(HMDHomeLocationHandler *)selfCopy2 location];
+        location7 = [h2Copy location];
+        name2 = [messageCopy name];
         *buf = 138544387;
         v65 = v37;
         v66 = 2112;
-        v67 = v7;
+        v67 = home;
         v68 = 2117;
-        v69 = v38;
+        v69 = location6;
         v70 = 2117;
-        v71 = v39;
+        v71 = location7;
         v72 = 2112;
-        v73 = v40;
+        v73 = name2;
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@Updating location for home %@ from: %{sensitive}@ to %{sensitive}@, message: %@", buf, 0x34u);
 
         v29 = v60;
       }
 
-      v61 = v7;
+      v61 = home;
 
       objc_autoreleasePoolPop(v29);
-      v41 = [v6 location];
-      [(HMDHomeLocationHandler *)v30 setLocation:v41];
+      location8 = [h2Copy location];
+      [(HMDHomeLocationHandler *)selfCopy2 setLocation:location8];
 
-      v42 = [v6 locationUpdateTimestamp];
-      [(HMDHomeLocationHandler *)v30 setLocationUpdateTimestamp:v42];
+      locationUpdateTimestamp = [h2Copy locationUpdateTimestamp];
+      [(HMDHomeLocationHandler *)selfCopy2 setLocationUpdateTimestamp:locationUpdateTimestamp];
 
-      [(HMDHomeLocationHandler *)v30 setLocationSource:v11];
-      v43 = [(HMDHomeLocationHandler *)v30 location];
-      [(HMDHomeLocationHandler *)v30 _updateTimeZone:v43];
+      [(HMDHomeLocationHandler *)selfCopy2 setLocationSource:intValue];
+      location9 = [(HMDHomeLocationHandler *)selfCopy2 location];
+      [(HMDHomeLocationHandler *)selfCopy2 _updateTimeZone:location9];
 
-      v44 = [(HMDHomeLocationHandler *)v30 regionAtHome];
-      if (!v44)
+      regionAtHome = [(HMDHomeLocationHandler *)selfCopy2 regionAtHome];
+      if (!regionAtHome)
       {
         goto LABEL_26;
       }
 
-      v45 = v44;
-      v46 = [(HMDHomeLocationHandler *)v30 regionNearbyHome];
+      v45 = regionAtHome;
+      regionNearbyHome = [(HMDHomeLocationHandler *)selfCopy2 regionNearbyHome];
 
-      if (!v46 || v9 && ([v6 location], v47 = objc_claimAutoreleasedReturnValue(), v48 = -[HMDHomeLocationHandler isNewHomeLocationTooCloseToPreviousLocation:newLocation:](v30, "isNewHomeLocationTooCloseToPreviousLocation:newLocation:", v9, v47), v47, !v48))
+      if (!regionNearbyHome || location2 && ([h2Copy location], v47 = objc_claimAutoreleasedReturnValue(), v48 = -[HMDHomeLocationHandler isNewHomeLocationTooCloseToPreviousLocation:newLocation:](selfCopy2, "isNewHomeLocationTooCloseToPreviousLocation:newLocation:", location2, v47), v47, !v48))
       {
 LABEL_26:
-        [(HMDHomeLocationHandler *)v30 _registerForRegionUpdate];
+        [(HMDHomeLocationHandler *)selfCopy2 _registerForRegionUpdate];
       }
 
-      [(HMDHomeLocationHandler *)v30 _sendLocationUpdateToClients];
+      [(HMDHomeLocationHandler *)selfCopy2 _sendLocationUpdateToClients];
       v49 = objc_autoreleasePoolPush();
-      v50 = v30;
+      v50 = selfCopy2;
       v51 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
         v52 = HMFGetLogIdentifier();
-        v53 = [(HMDHomeLocationHandler *)v50 locationUpdateTimestamp];
-        v54 = [v6 locationUpdateTimestamp];
+        locationUpdateTimestamp2 = [(HMDHomeLocationHandler *)v50 locationUpdateTimestamp];
+        locationUpdateTimestamp3 = [h2Copy locationUpdateTimestamp];
         v55 = HMDHomeLocationSourceToString([(HMDHomeLocationHandler *)v50 locationSource]);
         *buf = 138544386;
         v65 = v52;
         v66 = 2112;
         v67 = v62;
         v68 = 2112;
-        v69 = v53;
+        v69 = locationUpdateTimestamp2;
         v70 = 2112;
-        v71 = v54;
+        v71 = locationUpdateTimestamp3;
         v72 = 2112;
         v73 = v55;
         _os_log_impl(&dword_229538000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@Updating last home location update for home %@ from: %@ to %@ with source %@", buf, 0x34u);
       }
 
       objc_autoreleasePoolPop(v49);
-      v56 = [v63 transactionResult];
-      [v56 markChanged];
+      transactionResult = [messageCopy transactionResult];
+      [transactionResult markChanged];
 
-      v7 = v62;
+      home = v62;
       goto LABEL_30;
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -2114,7 +2114,7 @@ LABEL_30:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy4 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -2131,24 +2131,24 @@ LABEL_31:
   return 0;
 }
 
-- (id)_handleHomeLocationData:(id)a3 message:(id)a4
+- (id)_handleHomeLocationData:(id)data message:(id)message
 {
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a4;
-  v8 = a3;
+  messageCopy = message;
+  dataCopy = data;
   v9 = [v6 alloc];
-  v10 = [v8 homeLocationData];
+  homeLocationData = [dataCopy homeLocationData];
 
-  v11 = [v9 initForReadingFromData:v10 error:0];
+  v11 = [v9 initForReadingFromData:homeLocationData error:0];
   v12 = [v11 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
-  v13 = [(HMDHomeLocationHandler *)self _handleHomeLocationDataForHH2:v12 fromMessage:v7];
+  v13 = [(HMDHomeLocationHandler *)self _handleHomeLocationDataForHH2:v12 fromMessage:messageCopy];
 
   return v13;
 }
 
-- (void)_updateTimeZone:(id)a3
+- (void)_updateTimeZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x3042000000;
@@ -2161,7 +2161,7 @@ LABEL_31:
   v5[3] = &unk_278685668;
   v5[4] = self;
   v5[5] = v6;
-  [HMDLocation timeZoneISOCountryCodeForCLLocationAsync:v4 withCompletion:v5];
+  [HMDLocation timeZoneISOCountryCodeForCLLocationAsync:zoneCopy withCompletion:v5];
   _Block_object_dispose(v6, 8);
   objc_destroyWeak(&v7);
 }
@@ -2200,17 +2200,17 @@ void __42__HMDHomeLocationHandler__updateTimeZone___block_invoke(uint64_t a1, vo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_evaluateHomeRegionStateForCurrentDeviceLocation:(id)a3
+- (void)_evaluateHomeRegionStateForCurrentDeviceLocation:(id)location
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLocationHandler *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  locationCopy = location;
+  workQueue = [(HMDHomeLocationHandler *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDHomeLocationHandler *)self home];
+  home = [(HMDHomeLocationHandler *)self home];
   v7 = isInternalBuild();
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
   if (v7)
@@ -2218,17 +2218,17 @@ void __42__HMDHomeLocationHandler__updateTimeZone___block_invoke(uint64_t a1, vo
     if (v11)
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v6 uuid];
-      v14 = [v13 UUIDString];
-      v15 = [(HMDHomeLocationHandler *)v9 location];
+      uuid = [home uuid];
+      uUIDString = [uuid UUIDString];
+      location = [(HMDHomeLocationHandler *)selfCopy location];
       *buf = 138544130;
       v26 = v12;
       v27 = 2112;
-      v28 = v14;
+      v28 = uUIDString;
       v29 = 2112;
-      v30 = v15;
+      v30 = location;
       v31 = 2112;
-      v32 = v4;
+      v32 = locationCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Evaluating current device region state for home %@ using home location %@ and device location %@", buf, 0x2Au);
     }
   }
@@ -2236,33 +2236,33 @@ void __42__HMDHomeLocationHandler__updateTimeZone___block_invoke(uint64_t a1, vo
   else if (v11)
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v6 uuid];
-    v18 = [v17 UUIDString];
-    v19 = [(HMDHomeLocationHandler *)v9 location];
+    uuid2 = [home uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    location2 = [(HMDHomeLocationHandler *)selfCopy location];
     *buf = 138544131;
     v26 = v16;
     v27 = 2112;
-    v28 = v18;
+    v28 = uUIDString2;
     v29 = 2117;
-    v30 = v19;
+    v30 = location2;
     v31 = 2117;
-    v32 = v4;
+    v32 = locationCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Evaluating current device region state for home %@ using home location %{sensitive}@ and device location %{sensitive}@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  v20 = [(HMDHomeLocationHandler *)v9 location];
-  v21 = v20 == 0;
+  location3 = [(HMDHomeLocationHandler *)selfCopy location];
+  v21 = location3 == 0;
 
-  if (v4 != 0 && v21)
+  if (locationCopy != 0 && v21)
   {
-    objc_initWeak(buf, v9);
+    objc_initWeak(buf, selfCopy);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __75__HMDHomeLocationHandler__evaluateHomeRegionStateForCurrentDeviceLocation___block_invoke;
     v23[3] = &unk_278685640;
     objc_copyWeak(&v24, buf);
-    [HMDLocation timeZoneISOCountryCodeForCLLocationAsync:v4 withCompletion:v23];
+    [HMDLocation timeZoneISOCountryCodeForCLLocationAsync:locationCopy withCompletion:v23];
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
   }
@@ -2302,45 +2302,45 @@ void __75__HMDHomeLocationHandler__evaluateHomeRegionStateForCurrentDeviceLocati
 
 - (BOOL)_shouldUpdateHomeLocation
 {
-  v3 = [(HMDHomeLocationHandler *)self _canExtractLocation];
-  if (v3)
+  _canExtractLocation = [(HMDHomeLocationHandler *)self _canExtractLocation];
+  if (_canExtractLocation)
   {
 
-    LOBYTE(v3) = [(HMDHomeLocationHandler *)self _needToExtractLocations];
+    LOBYTE(_canExtractLocation) = [(HMDHomeLocationHandler *)self _needToExtractLocations];
   }
 
-  return v3;
+  return _canExtractLocation;
 }
 
 - (BOOL)_needToExtractLocations
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self location];
+  location = [(HMDHomeLocationHandler *)self location];
 
-  if (v3)
+  if (location)
   {
-    v4 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+    locationUpdateTimestamp = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
 
-    if (v4)
+    if (locationUpdateTimestamp)
     {
-      v5 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
-      [v5 timeIntervalSinceNow];
+      locationUpdateTimestamp2 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+      [locationUpdateTimestamp2 timeIntervalSinceNow];
       v7 = fabs(v6);
 
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [(HMDHomeLocationHandler *)v9 home];
+        home = [(HMDHomeLocationHandler *)selfCopy home];
         v13 = HMFTimeIntervalDescription();
         getLocationUpdateTimeInterval();
         v14 = HMFTimeIntervalDescription();
         v43 = 138544130;
         v44 = v11;
         v45 = 2112;
-        v46 = v12;
+        v46 = home;
         v47 = 2112;
         v48 = v13;
         v49 = 2112;
@@ -2352,7 +2352,7 @@ void __75__HMDHomeLocationHandler__evaluateHomeRegionStateForCurrentDeviceLocati
       if (v7 < getLocationUpdateTimeInterval())
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = v9;
+        v16 = selfCopy;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
@@ -2370,41 +2370,41 @@ LABEL_22:
       }
     }
 
-    v20 = [(HMDHomeLocationHandler *)self lastAttemptedLocationUpdate];
+    lastAttemptedLocationUpdate = [(HMDHomeLocationHandler *)self lastAttemptedLocationUpdate];
 
-    if (v20)
+    if (lastAttemptedLocationUpdate)
     {
       LocationUpdateTimeInterval = getLocationUpdateTimeInterval();
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = [(HMDHomeLocationHandler *)v23 home];
-        v27 = [(HMDHomeLocationHandler *)v23 lastAttemptedLocationUpdate];
+        home2 = [(HMDHomeLocationHandler *)selfCopy2 home];
+        lastAttemptedLocationUpdate2 = [(HMDHomeLocationHandler *)selfCopy2 lastAttemptedLocationUpdate];
         v28 = HMFTimeIntervalDescription();
         v43 = 138544130;
         v44 = v25;
         v45 = 2112;
-        v46 = v26;
+        v46 = home2;
         v47 = 2112;
-        v48 = v27;
+        v48 = lastAttemptedLocationUpdate2;
         v49 = 2112;
         v50 = v28;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Last location attempt for home %@ is %@. Update interval is %@", &v43, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v22);
-      v29 = [(HMDHomeLocationHandler *)v23 lastAttemptedLocationUpdate];
-      v30 = [MEMORY[0x277CBEAA8] date];
-      [v29 timeIntervalSinceDate:v30];
+      lastAttemptedLocationUpdate3 = [(HMDHomeLocationHandler *)selfCopy2 lastAttemptedLocationUpdate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [lastAttemptedLocationUpdate3 timeIntervalSinceDate:date];
       v32 = fabs(v31);
 
       if (v32 < LocationUpdateTimeInterval || vabdd_f64(v32, LocationUpdateTimeInterval) < 2.22044605e-16)
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = v23;
+        v39 = selfCopy2;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
         {
@@ -2418,8 +2418,8 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      v33 = [MEMORY[0x277CBEAA8] date];
-      [(HMDHomeLocationHandler *)v23 setLastAttemptedLocationUpdate:v33];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [(HMDHomeLocationHandler *)selfCopy2 setLastAttemptedLocationUpdate:date2];
     }
   }
 
@@ -2447,13 +2447,13 @@ LABEL_23:
 - (BOOL)_canExtractLocation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self home];
-  v4 = v3;
-  if (!v3)
+  home = [(HMDHomeLocationHandler *)self home];
+  v4 = home;
+  if (!home)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = HMFGetOSLogHandle();
-    if (!os_log_type_enabled(&v7->super.super, OS_LOG_TYPE_ERROR))
+    selfCopy2 = HMFGetOSLogHandle();
+    if (!os_log_type_enabled(&selfCopy2->super.super, OS_LOG_TYPE_ERROR))
     {
 LABEL_13:
 
@@ -2465,14 +2465,14 @@ LABEL_13:
     v8 = HMFGetLogIdentifier();
     v15 = 138543362;
     v16 = v8;
-    _os_log_impl(&dword_229538000, &v7->super.super, OS_LOG_TYPE_ERROR, "%{public}@No home reference?", &v15, 0xCu);
+    _os_log_impl(&dword_229538000, &selfCopy2->super.super, OS_LOG_TYPE_ERROR, "%{public}@No home reference?", &v15, 0xCu);
     goto LABEL_12;
   }
 
-  if (([v3 isAdminUser] & 1) == 0)
+  if (([home isAdminUser] & 1) == 0)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -2494,7 +2494,7 @@ LABEL_12:
   if ([(HMDHomeLocationHandler *)self locationAuthorization]!= 1)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -2520,13 +2520,13 @@ LABEL_14:
 - (BOOL)_hasReachableAccessoriesExcludingMatter
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self home];
-  v4 = v3;
-  if (!v3)
+  home = [(HMDHomeLocationHandler *)self home];
+  v4 = home;
+  if (!home)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = HMFGetOSLogHandle();
-    if (!os_log_type_enabled(&v9->super.super, OS_LOG_TYPE_ERROR))
+    selfCopy = HMFGetOSLogHandle();
+    if (!os_log_type_enabled(&selfCopy->super.super, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
@@ -2538,18 +2538,18 @@ LABEL_9:
     v10 = HMFGetLogIdentifier();
     v14 = 138543362;
     v15 = v10;
-    _os_log_impl(&dword_229538000, &v9->super.super, OS_LOG_TYPE_ERROR, "%{public}@No home reference?", &v14, 0xCu);
+    _os_log_impl(&dword_229538000, &selfCopy->super.super, OS_LOG_TYPE_ERROR, "%{public}@No home reference?", &v14, 0xCu);
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v5 = [v3 reachableAccessoriesCountExcludingMatter];
-  v6 = [v4 reachableAppleMediaAccessoriesCount];
-  if ((v6 + v5 < 0) ^ __OFADD__(v6, v5) | (v6 + v5 == 0))
+  reachableAccessoriesCountExcludingMatter = [home reachableAccessoriesCountExcludingMatter];
+  reachableAppleMediaAccessoriesCount = [v4 reachableAppleMediaAccessoriesCount];
+  if ((reachableAppleMediaAccessoriesCount + reachableAccessoriesCountExcludingMatter < 0) ^ __OFADD__(reachableAppleMediaAccessoriesCount, reachableAccessoriesCountExcludingMatter) | (reachableAppleMediaAccessoriesCount + reachableAccessoriesCountExcludingMatter == 0))
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -2575,7 +2575,7 @@ LABEL_10:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2586,7 +2586,7 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHomeLocationHandler *)v4 setFirstAccessoryReachable:0];
+  [(HMDHomeLocationHandler *)selfCopy setFirstAccessoryReachable:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -2594,7 +2594,7 @@ LABEL_10:
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2605,29 +2605,29 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDHomeLocationHandler *)v4 setFirstAccessoryReachable:1];
-  if ([(HMDHomeLocationHandler *)v4 _hasReachableAccessoriesExcludingMatter])
+  [(HMDHomeLocationHandler *)selfCopy setFirstAccessoryReachable:1];
+  if ([(HMDHomeLocationHandler *)selfCopy _hasReachableAccessoriesExcludingMatter])
   {
-    if ([(HMDHomeLocationHandler *)v4 _shouldUpdateHomeLocation])
+    if ([(HMDHomeLocationHandler *)selfCopy _shouldUpdateHomeLocation])
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = v4;
+      v8 = selfCopy;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [(HMDHomeLocationHandler *)v8 home];
+        home = [(HMDHomeLocationHandler *)v8 home];
         v19 = 138543618;
         v20 = v10;
         v21 = 2112;
-        v22 = v11;
+        v22 = home;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Accessories are reachable, extracting location for home %@", &v19, 0x16u);
       }
 
       objc_autoreleasePoolPop(v7);
       v12 = [HMDRegionStateCorrectnessLogEvent updateWithFirstAccessory:[(HMDHomeLocationHandler *)v8 regionStateAtHome] nearbyHome:[(HMDHomeLocationHandler *)v8 regionStateNearbyHome]];
-      v13 = [(HMDHomeLocationHandler *)v8 logEventSubmitter];
-      [v13 submitLogEvent:v12];
+      logEventSubmitter = [(HMDHomeLocationHandler *)v8 logEventSubmitter];
+      [logEventSubmitter submitLogEvent:v12];
 
       [(HMDHomeLocationHandler *)v8 updateHomeLocationFromSingleOrCoreRoutine];
     }
@@ -2636,7 +2636,7 @@ LABEL_10:
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v4;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -2658,7 +2658,7 @@ LABEL_10:
   if ([(HMDHomeLocationHandler *)self _hasReachableAccessoriesExcludingMatter])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -2674,7 +2674,7 @@ LABEL_10:
   else if ([(HMDHomeLocationHandler *)self _shouldUpdateHomeLocation])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -2685,7 +2685,7 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDHomeLocationHandler *)v8 updateHomeLocationFromSingleOrCoreRoutine];
+    [(HMDHomeLocationHandler *)selfCopy2 updateHomeLocationFromSingleOrCoreRoutine];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2694,12 +2694,12 @@ LABEL_10:
 - (void)updateHomeLocationForPairing
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self _canExtractLocation];
+  _canExtractLocation = [(HMDHomeLocationHandler *)self _canExtractLocation];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_canExtractLocation)
   {
     if (v7)
     {
@@ -2710,8 +2710,8 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMDHomeLocationHandler *)v5 setPairingHomeLocationOverride:1];
-    [(HMDHomeLocationHandler *)v5 updateHomeLocationFromCoreRoutine];
+    [(HMDHomeLocationHandler *)selfCopy setPairingHomeLocationOverride:1];
+    [(HMDHomeLocationHandler *)selfCopy updateHomeLocationFromCoreRoutine];
   }
 
   else
@@ -2730,21 +2730,21 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryReachabilityChanged:(int)a3 previousReachableAccessoriesCount:(int)a4 reachableAppleMediaAccessoriesCount:(int)a5 previousReachableAppleMediaAccessoriesCount:(int)a6
+- (void)accessoryReachabilityChanged:(int)changed previousReachableAccessoriesCount:(int)count reachableAppleMediaAccessoriesCount:(int)accessoriesCount previousReachableAppleMediaAccessoriesCount:(int)mediaAccessoriesCount
 {
-  v10 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x277D85DE8];
-  v11 = [(HMDHomeLocationHandler *)self home];
-  v13 = a5 > 0 && a6 == 0;
-  v14 = a6 + a4;
-  v15 = a6 + a4 > 0 && a5 + a3 < 1;
-  if (a5 + a3 >= 1 && v14 <= 0)
+  home = [(HMDHomeLocationHandler *)self home];
+  v13 = accessoriesCount > 0 && mediaAccessoriesCount == 0;
+  v14 = mediaAccessoriesCount + count;
+  v15 = mediaAccessoriesCount + count > 0 && accessoriesCount + changed < 1;
+  if (accessoriesCount + changed >= 1 && v14 <= 0)
   {
-    v16 = [(HMDHomeLocationHandler *)v10 location];
-    if (!v16 || (v17 = v16, v18 = [v11 hasAnyResident], v17, (v18 & 1) == 0))
+    location = [(HMDHomeLocationHandler *)selfCopy location];
+    if (!location || (v17 = location, v18 = [home hasAnyResident], v17, (v18 & 1) == 0))
     {
 LABEL_18:
-      [(HMDHomeLocationHandler *)v10 accessoriesBecomeReachable];
+      [(HMDHomeLocationHandler *)selfCopy accessoriesBecomeReachable];
       goto LABEL_19;
     }
   }
@@ -2752,7 +2752,7 @@ LABEL_18:
   if (v13)
   {
     v19 = objc_autoreleasePoolPush();
-    v10 = v10;
+    selfCopy = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -2768,7 +2768,7 @@ LABEL_18:
 
   if (v15)
   {
-    [(HMDHomeLocationHandler *)v10 accessoriesBecomeUnreachable];
+    [(HMDHomeLocationHandler *)selfCopy accessoriesBecomeUnreachable];
   }
 
 LABEL_19:
@@ -2781,13 +2781,13 @@ LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
   if ([(HMDHomeLocationHandler *)self locationAuthorization]== 1)
   {
-    v3 = [(HMDHomeLocationHandler *)self home];
-    v4 = [v3 isAdminUser];
+    home = [(HMDHomeLocationHandler *)self home];
+    isAdminUser = [home isAdminUser];
 
-    if (v4)
+    if (isAdminUser)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -2799,42 +2799,42 @@ LABEL_19:
 
       objc_autoreleasePoolPop(v5);
       v9 = +[HMDLocation sharedManager];
-      [v9 startExtractingSingleLocationForDelegate:v6];
+      [v9 startExtractingSingleLocationForDelegate:selfCopy];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRetrieveLocation:(id)a3
+- (void)_handleRetrieveLocation:(id)location
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAuthorizedForLocationAccess])
+  locationCopy = location;
+  if ([locationCopy isAuthorizedForLocationAccess])
   {
-    v5 = [v4 proxyConnection];
-    v6 = [v5 processInfo];
-    v7 = [v6 locationAuthorization];
-    [v7 mark];
+    proxyConnection = [locationCopy proxyConnection];
+    processInfo = [proxyConnection processInfo];
+    locationAuthorization = [processInfo locationAuthorization];
+    [locationAuthorization mark];
 
-    LODWORD(v7) = isInternalBuild();
+    LODWORD(locationAuthorization) = isInternalBuild();
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (v7)
+    if (locationAuthorization)
     {
       if (v11)
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMDHomeLocationHandler *)v9 location];
-        v14 = [(HMDHomeLocationHandler *)v9 home];
+        location = [(HMDHomeLocationHandler *)selfCopy location];
+        home = [(HMDHomeLocationHandler *)selfCopy home];
         *buf = 138543874;
         v26 = v12;
         v27 = 2112;
-        v28 = v13;
+        v28 = location;
         v29 = 2112;
-        v30 = v14;
+        v30 = home;
         v15 = "%{public}@Sending location %@ for home %@";
 LABEL_10:
         _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, v15, buf, 0x20u);
@@ -2844,24 +2844,24 @@ LABEL_10:
     else if (v11)
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDHomeLocationHandler *)v9 location];
-      v14 = [(HMDHomeLocationHandler *)v9 home];
+      location = [(HMDHomeLocationHandler *)selfCopy location];
+      home = [(HMDHomeLocationHandler *)selfCopy home];
       *buf = 138543875;
       v26 = v12;
       v27 = 2117;
-      v28 = v13;
+      v28 = location;
       v29 = 2112;
-      v30 = v14;
+      v30 = home;
       v15 = "%{public}@Sending location %{sensitive}@ for home %@";
       goto LABEL_10;
     }
 
     objc_autoreleasePoolPop(v8);
-    v19 = [(HMDHomeLocationHandler *)v9 location];
+    location2 = [(HMDHomeLocationHandler *)selfCopy location];
     v20 = encodeRootObject();
     v24 = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [v4 respondWithPayload:v21];
+    [locationCopy respondWithPayload:v21];
 
     goto LABEL_12;
   }
@@ -2877,29 +2877,29 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v16);
-  [v4 respondWithPayload:0];
+  [locationCopy respondWithPayload:0];
 LABEL_12:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLocationAuthorization:(int64_t)a3
+- (void)_handleLocationAuthorization:(int64_t)authorization
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ([(HMDHomeLocationHandler *)self locationAuthorization]== a3)
+  if ([(HMDHomeLocationHandler *)self locationAuthorization]== authorization)
   {
 LABEL_7:
     v9 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  [(HMDHomeLocationHandler *)self setLocationAuthorization:a3];
-  if (a3 != 1)
+  [(HMDHomeLocationHandler *)self setLocationAuthorization:authorization];
+  if (authorization != 1)
   {
-    if (a3 == 2)
+    if (authorization == 2)
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -2921,40 +2921,40 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePrimaryResidentResidentGenerationIDNotification:(id)a3
+- (void)_handlePrimaryResidentResidentGenerationIDNotification:(id)notification
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   [(HMDHomeLocationHandler *)self _unregisterForPrimaryResidentGenerationIDNotification];
-  v5 = [(HMDHomeLocationHandler *)self cachedLocation];
-  if (v5 && (v6 = v5, v7 = [(HMDHomeLocationHandler *)self cachedSource], v6, v7))
+  cachedLocation = [(HMDHomeLocationHandler *)self cachedLocation];
+  if (cachedLocation && (v6 = cachedLocation, v7 = [(HMDHomeLocationHandler *)self cachedSource], v6, v7))
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDHomeLocationHandler *)v9 cachedLocation];
-      v13 = HMDHomeLocationSourceToString([(HMDHomeLocationHandler *)v9 cachedSource]);
+      cachedLocation2 = [(HMDHomeLocationHandler *)selfCopy cachedLocation];
+      v13 = HMDHomeLocationSourceToString([(HMDHomeLocationHandler *)selfCopy cachedSource]);
       v20 = 138543874;
       v21 = v11;
       v22 = 2112;
-      v23 = v12;
+      v23 = cachedLocation2;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@We are not allowed to run any cloud operation on this device. Asking primary to update the home location: %@ from source: %@", &v20, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v14 = [(HMDHomeLocationHandler *)v9 cachedLocation];
-    [(HMDHomeLocationHandler *)v9 sendHomeLocationUpdateToResident:v14 source:[(HMDHomeLocationHandler *)v9 cachedSource]];
+    cachedLocation3 = [(HMDHomeLocationHandler *)selfCopy cachedLocation];
+    [(HMDHomeLocationHandler *)selfCopy sendHomeLocationUpdateToResident:cachedLocation3 source:[(HMDHomeLocationHandler *)selfCopy cachedSource]];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -2970,12 +2970,12 @@ LABEL_7:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLocationAuthorizationChangedNotification:(id)a3
+- (void)_handleLocationAuthorizationChangedNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_numberForKey:@"HMLocationAuthorizationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo hmf_numberForKey:@"HMLocationAuthorizationKey"];
 
   if (v6)
   {
@@ -3012,13 +3012,13 @@ LABEL_7:
 
 - (void)_unregisterForPrimaryResidentGenerationIDNotification
 {
-  v3 = [(HMDHomeLocationHandler *)self workQueue];
+  workQueue = [(HMDHomeLocationHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDHomeLocationHandler__unregisterForPrimaryResidentGenerationIDNotification__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __79__HMDHomeLocationHandler__unregisterForPrimaryResidentGenerationIDNotification__block_invoke(uint64_t a1)
@@ -3044,13 +3044,13 @@ void __79__HMDHomeLocationHandler__unregisterForPrimaryResidentGenerationIDNotif
 
 - (void)_registerForPrimaryResidentGenerationIDNotification
 {
-  v3 = [(HMDHomeLocationHandler *)self workQueue];
+  workQueue = [(HMDHomeLocationHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotification__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotification__block_invoke(uint64_t a1)
@@ -3077,16 +3077,16 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
 - (void)_registerForRegionUpdate
 {
   v78 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self home];
-  if (v3)
+  home = [(HMDHomeLocationHandler *)self home];
+  if (home)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-    v5 = [(HMDHomeLocationHandler *)self regionAtHome];
+    regionAtHome = [(HMDHomeLocationHandler *)self regionAtHome];
 
-    if (v5)
+    if (regionAtHome)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -3097,16 +3097,16 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
       }
 
       objc_autoreleasePoolPop(v6);
-      v10 = [(HMDHomeLocationHandler *)v7 regionAtHome];
-      [v4 addObject:v10];
+      regionAtHome2 = [(HMDHomeLocationHandler *)selfCopy regionAtHome];
+      [v4 addObject:regionAtHome2];
     }
 
-    v11 = [(HMDHomeLocationHandler *)self regionNearbyHome];
+    regionNearbyHome = [(HMDHomeLocationHandler *)self regionNearbyHome];
 
-    if (v11)
+    if (regionNearbyHome)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -3117,8 +3117,8 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [(HMDHomeLocationHandler *)v13 regionNearbyHome];
-      [v4 addObject:v16];
+      regionNearbyHome2 = [(HMDHomeLocationHandler *)selfCopy2 regionNearbyHome];
+      [v4 addObject:regionNearbyHome2];
     }
 
     if ([v4 count])
@@ -3136,12 +3136,12 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
       [(HMDHomeLocationHandler *)self setRegionNearbyHome:0];
     }
 
-    v19 = [(HMDHomeLocationHandler *)self location];
+    location = [(HMDHomeLocationHandler *)self location];
 
-    if (v19)
+    if (location)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -3152,12 +3152,12 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
       }
 
       objc_autoreleasePoolPop(v20);
-      v24 = [(HMDHomeLocationHandler *)v21 _shouldRegisterForSignificantRegion];
+      _shouldRegisterForSignificantRegion = [(HMDHomeLocationHandler *)selfCopy3 _shouldRegisterForSignificantRegion];
       v25 = objc_autoreleasePoolPush();
-      v26 = v21;
+      v26 = selfCopy3;
       v27 = HMFGetOSLogHandle();
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
-      if (v24)
+      if (_shouldRegisterForSignificantRegion)
       {
         if (v28)
         {
@@ -3169,13 +3169,13 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
 
         objc_autoreleasePoolPop(v25);
         v30 = objc_alloc(MEMORY[0x277CBFCD8]);
-        v31 = [(HMDHomeLocationHandler *)v26 location];
-        [v31 coordinate];
+        location2 = [(HMDHomeLocationHandler *)v26 location];
+        [location2 coordinate];
         v33 = v32;
         v35 = v34;
-        v36 = [MEMORY[0x277CCAD78] UUID];
-        v37 = [v36 UUIDString];
-        v38 = [v30 initWithCenter:v37 radius:v33 identifier:{v35, 100.0}];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v38 = [v30 initWithCenter:uUIDString radius:v33 identifier:{v35, 100.0}];
       }
 
       else
@@ -3190,53 +3190,53 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
 
         objc_autoreleasePoolPop(v25);
         v44 = objc_alloc(MEMORY[0x277CBFBC8]);
-        v31 = [(HMDHomeLocationHandler *)v26 location];
-        [v31 coordinate];
+        location2 = [(HMDHomeLocationHandler *)v26 location];
+        [location2 coordinate];
         v46 = v45;
         v48 = v47;
-        v36 = [MEMORY[0x277CCAD78] UUID];
-        v37 = [v36 UUIDString];
-        v38 = [v44 initWithCenter:v37 radius:1 identifier:v46 nearbyAllowed:{v48, 100.0}];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v38 = [v44 initWithCenter:uUIDString radius:1 identifier:v46 nearbyAllowed:{v48, 100.0}];
       }
 
       v49 = v38;
       [(HMDHomeLocationHandler *)v26 setRegionAtHome:v38];
 
-      v50 = [(HMDHomeLocationHandler *)v26 regionAtHome];
-      [v50 setNotifyOnExit:1];
+      regionAtHome3 = [(HMDHomeLocationHandler *)v26 regionAtHome];
+      [regionAtHome3 setNotifyOnExit:1];
 
-      v51 = [(HMDHomeLocationHandler *)v26 regionAtHome];
-      [v51 setNotifyOnEntry:1];
+      regionAtHome4 = [(HMDHomeLocationHandler *)v26 regionAtHome];
+      [regionAtHome4 setNotifyOnEntry:1];
 
-      v52 = [MEMORY[0x277D0F8D0] sharedPreferences];
-      v53 = [v52 preferenceForKey:@"homeNearbyRegionRadius"];
-      v54 = [v53 numberValue];
+      mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+      v53 = [mEMORY[0x277D0F8D0] preferenceForKey:@"homeNearbyRegionRadius"];
+      numberValue = [v53 numberValue];
 
-      [v54 doubleValue];
+      [numberValue doubleValue];
       v56 = v55;
 
       v57 = objc_alloc(MEMORY[0x277CBFBC8]);
-      v58 = [(HMDHomeLocationHandler *)v26 location];
-      [v58 coordinate];
+      location3 = [(HMDHomeLocationHandler *)v26 location];
+      [location3 coordinate];
       v60 = v59;
       v62 = v61;
-      v63 = [MEMORY[0x277CCAD78] UUID];
-      v64 = [v63 UUIDString];
-      v65 = [v57 initWithCenter:v64 radius:1 identifier:v60 nearbyAllowed:{v62, v56}];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      uUIDString2 = [uUID2 UUIDString];
+      v65 = [v57 initWithCenter:uUIDString2 radius:1 identifier:v60 nearbyAllowed:{v62, v56}];
       [(HMDHomeLocationHandler *)v26 setRegionNearbyHome:v65];
 
-      v66 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
-      [v66 setNotifyOnExit:1];
+      regionNearbyHome3 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
+      [regionNearbyHome3 setNotifyOnExit:1];
 
-      v67 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
-      [v67 setNotifyOnEntry:1];
+      regionNearbyHome4 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
+      [regionNearbyHome4 setNotifyOnEntry:1];
 
       logAndPostNotification(@"HMDLocationHomeGeofencesRegistered", v26, 0);
       v68 = +[HMDLocation sharedManager];
-      v69 = [(HMDHomeLocationHandler *)v26 regionAtHome];
-      v75[0] = v69;
-      v70 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
-      v75[1] = v70;
+      regionAtHome5 = [(HMDHomeLocationHandler *)v26 regionAtHome];
+      v75[0] = regionAtHome5;
+      regionNearbyHome5 = [(HMDHomeLocationHandler *)v26 regionNearbyHome];
+      v75[1] = regionNearbyHome5;
       v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:2];
       v73[0] = MEMORY[0x277D85DD0];
       v73[1] = 3221225472;
@@ -3250,7 +3250,7 @@ void __77__HMDHomeLocationHandler__registerForPrimaryResidentGenerationIDNotific
   else
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy4 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -3311,31 +3311,31 @@ void __50__HMDHomeLocationHandler__registerForRegionUpdate__block_invoke_63(uint
 - (void)_registerForMessages
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLocationHandler *)self msgDispatcher];
+  msgDispatcher = [(HMDHomeLocationHandler *)self msgDispatcher];
   v4 = *MEMORY[0x277CD2568];
   v5 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v3 registerForMessage:v4 receiver:self policies:v6 selector:sel__handleRetrieveLocation_];
+  [msgDispatcher registerForMessage:v4 receiver:self policies:v6 selector:sel__handleRetrieveLocation_];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__handleLocationAuthorizationChangedNotification_ name:@"HMLocationAuthorizationChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleLocationAuthorizationChangedNotification_ name:@"HMLocationAuthorizationChangedNotification" object:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configure:(id)a3 queue:(id)a4 messageDispatcher:(id)a5
+- (void)configure:(id)configure queue:(id)queue messageDispatcher:(id)dispatcher
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(HMDHomeLocationHandler *)self setHome:v8];
-  [(HMDHomeLocationHandler *)self setWorkQueue:v9];
-  [(HMDHomeLocationHandler *)self setMsgDispatcher:v10];
+  configureCopy = configure;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  [(HMDHomeLocationHandler *)self setHome:configureCopy];
+  [(HMDHomeLocationHandler *)self setWorkQueue:queueCopy];
+  [(HMDHomeLocationHandler *)self setMsgDispatcher:dispatcherCopy];
   v11 = isInternalBuild();
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
   if (v11)
@@ -3343,17 +3343,17 @@ void __50__HMDHomeLocationHandler__registerForRegionUpdate__block_invoke_63(uint
     if (v15)
     {
       v16 = HMFGetLogIdentifier();
-      location = v13->_location;
-      v18 = [(NSDate *)v13->_locationUpdateTimestamp hmf_localTimeDescription];
-      v19 = HMDHomeLocationSourceToString(v13->_locationSource);
+      location = selfCopy->_location;
+      hmf_localTimeDescription = [(NSDate *)selfCopy->_locationUpdateTimestamp hmf_localTimeDescription];
+      v19 = HMDHomeLocationSourceToString(selfCopy->_locationSource);
       v24 = 138544386;
       v25 = v16;
       v26 = 2112;
-      v27 = v8;
+      v27 = configureCopy;
       v28 = 2112;
       v29 = location;
       v30 = 2112;
-      v31 = v18;
+      v31 = hmf_localTimeDescription;
       v32 = 2112;
       v33 = v19;
       v20 = "%{public}@Configured location handler for home %@, with: %@, and timestamp with: %@, and source: %@";
@@ -3365,17 +3365,17 @@ LABEL_6:
   else if (v15)
   {
     v16 = HMFGetLogIdentifier();
-    v21 = v13->_location;
-    v18 = [(NSDate *)v13->_locationUpdateTimestamp hmf_localTimeDescription];
-    v19 = HMDHomeLocationSourceToString(v13->_locationSource);
+    v21 = selfCopy->_location;
+    hmf_localTimeDescription = [(NSDate *)selfCopy->_locationUpdateTimestamp hmf_localTimeDescription];
+    v19 = HMDHomeLocationSourceToString(selfCopy->_locationSource);
     v24 = 138544387;
     v25 = v16;
     v26 = 2112;
-    v27 = v8;
+    v27 = configureCopy;
     v28 = 2117;
     v29 = v21;
     v30 = 2112;
-    v31 = v18;
+    v31 = hmf_localTimeDescription;
     v32 = 2112;
     v33 = v19;
     v20 = "%{public}@Configured location handler for home %@, with: %{sensitive}@, and timestamp with: %@, and source: %@";
@@ -3383,18 +3383,18 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v12);
-  [(HMDHomeLocationHandler *)v13 _updateTimeZone:v13->_location];
-  [(HMDHomeLocationHandler *)v13 _registerForMessages];
+  [(HMDHomeLocationHandler *)selfCopy _updateTimeZone:selfCopy->_location];
+  [(HMDHomeLocationHandler *)selfCopy _registerForMessages];
   v22 = +[HMDLocation sharedManager];
-  -[HMDHomeLocationHandler _handleLocationAuthorization:](v13, "_handleLocationAuthorization:", [v22 locationAuthorized]);
+  -[HMDHomeLocationHandler _handleLocationAuthorization:](selfCopy, "_handleLocationAuthorization:", [v22 locationAuthorized]);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDHomeLocationHandler *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDHomeLocationHandler *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
   v4.receiver = self;
   v4.super_class = HMDHomeLocationHandler;
@@ -3445,12 +3445,12 @@ LABEL_6:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(HMDHomeLocationHandler *)self location];
-  v5 = locationAsString(v4);
-  v6 = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
-  v7 = [v6 hmf_localTimeDescription];
+  location = [(HMDHomeLocationHandler *)self location];
+  v5 = locationAsString(location);
+  locationUpdateTimestamp = [(HMDHomeLocationHandler *)self locationUpdateTimestamp];
+  hmf_localTimeDescription = [locationUpdateTimestamp hmf_localTimeDescription];
   v8 = HMDHomeLocationSourceToString([(HMDHomeLocationHandler *)self locationSource]);
-  v9 = [v3 initWithFormat:@"Loc: %@, Timestamp: %@, Source: %@", v5, v7, v8];
+  v9 = [v3 initWithFormat:@"Loc: %@, Timestamp: %@, Source: %@", v5, hmf_localTimeDescription, v8];
 
   return v9;
 }

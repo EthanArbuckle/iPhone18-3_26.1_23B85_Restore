@@ -1,7 +1,7 @@
 @interface ASKRebootstrapCoordinator
 + (ASKRebootstrapCoordinator)sharedCoordinator;
 - (ASKRebootstrapCoordinator)init;
-- (id)registerCleanupHandler:(id)a3;
+- (id)registerCleanupHandler:(id)handler;
 - (void)beginDelayingNotifications;
 - (void)endDelayingNotifications;
 - (void)notify;
@@ -47,9 +47,9 @@ void __46__ASKRebootstrapCoordinator_sharedCoordinator__block_invoke()
     changeObserver = v2->_changeObserver;
     v2->_changeObserver = v4;
 
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     handlerTokens = v2->_handlerTokens;
-    v2->_handlerTokens = v6;
+    v2->_handlerTokens = weakObjectsHashTable;
 
     v2->_handlerTokensLock._os_unfair_lock_opaque = 0;
     objc_destroyWeak(&v13);
@@ -85,17 +85,17 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_notify object:0];
   if ([(ASKRebootstrapCoordinator *)self delayCount])
   {
-    v3 = [MEMORY[0x1E698C968] ask_generalLogConfig];
-    if (!v3)
+    ask_generalLogConfig = [MEMORY[0x1E698C968] ask_generalLogConfig];
+    if (!ask_generalLogConfig)
     {
-      v3 = [MEMORY[0x1E698C968] sharedConfig];
+      ask_generalLogConfig = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [ask_generalLogConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       *v6 = 0;
-      _os_log_impl(&dword_1E12FC000, v4, OS_LOG_TYPE_DEBUG, "Deferring storefront change notification", v6, 2u);
+      _os_log_impl(&dword_1E12FC000, oSLogObject, OS_LOG_TYPE_DEBUG, "Deferring storefront change notification", v6, 2u);
     }
 
     [(ASKRebootstrapCoordinator *)self setHasPendingNotification:1];
@@ -113,9 +113,9 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_handlerTokensLock);
-  v3 = [(ASKRebootstrapCoordinator *)self handlerTokens];
-  v4 = [v3 allObjects];
-  v5 = [v4 copy];
+  handlerTokens = [(ASKRebootstrapCoordinator *)self handlerTokens];
+  allObjects = [handlerTokens allObjects];
+  v5 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_handlerTokensLock);
   v16 = 0u;
@@ -138,8 +138,8 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) handler];
-        v11[2]();
+        handler = [*(*(&v14 + 1) + 8 * v10) handler];
+        handler[2]();
 
         ++v10;
       }
@@ -151,12 +151,12 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
     while (v8);
   }
 
-  v12 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
+  appBootstrapHandler = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
 
-  if (v12)
+  if (appBootstrapHandler)
   {
-    v13 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
-    v13[2]();
+    appBootstrapHandler2 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
+    appBootstrapHandler2[2]();
   }
 }
 
@@ -176,17 +176,17 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
     {
       if ([(ASKRebootstrapCoordinator *)self hasPendingNotification])
       {
-        v3 = [MEMORY[0x1E698C968] ask_generalLogConfig];
-        if (!v3)
+        ask_generalLogConfig = [MEMORY[0x1E698C968] ask_generalLogConfig];
+        if (!ask_generalLogConfig)
         {
-          v3 = [MEMORY[0x1E698C968] sharedConfig];
+          ask_generalLogConfig = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v4 = [v3 OSLogObject];
-        if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+        oSLogObject = [ask_generalLogConfig OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
         {
           *v5 = 0;
-          _os_log_impl(&dword_1E12FC000, v4, OS_LOG_TYPE_DEBUG, "Flushing deferred storefront change notification", v5, 2u);
+          _os_log_impl(&dword_1E12FC000, oSLogObject, OS_LOG_TYPE_DEBUG, "Flushing deferred storefront change notification", v5, 2u);
         }
 
         [(ASKRebootstrapCoordinator *)self performSelector:sel_notify withObject:0 afterDelay:0.0];
@@ -196,14 +196,14 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)registerCleanupHandler:(id)a3
+- (id)registerCleanupHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[ASKStorefrontChangeHandlerToken alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[ASKStorefrontChangeHandlerToken alloc] initWithHandler:handlerCopy];
 
   os_unfair_lock_lock(&self->_handlerTokensLock);
-  v6 = [(ASKRebootstrapCoordinator *)self handlerTokens];
-  [v6 addObject:v5];
+  handlerTokens = [(ASKRebootstrapCoordinator *)self handlerTokens];
+  [handlerTokens addObject:v5];
 
   os_unfair_lock_unlock(&self->_handlerTokensLock);
 

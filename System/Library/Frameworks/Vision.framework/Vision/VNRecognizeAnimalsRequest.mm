@@ -1,17 +1,17 @@
 @interface VNRecognizeAnimalsRequest
 + (NSArray)knownAnimalIdentifiersForRevision:(NSUInteger)requestRevision error:(NSError *)error;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (NSArray)supportedIdentifiersAndReturnError:(NSError *)error;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNRecognizeAnimalsRequest
 
 + (NSArray)knownAnimalIdentifiersForRevision:(NSUInteger)requestRevision error:(NSError *)error
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if ([v6 setRevision:requestRevision error:error])
   {
     v7 = [v6 supportedIdentifiersAndReturnError:error];
@@ -25,18 +25,18 @@
   return v7;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:a3 error:0];
+    v7 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:revision error:0];
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
     v9 = objc_opt_class();
-    v10 = VNRequestRevisionString(v9, a3);
+    v10 = VNRequestRevisionString(v9, revision);
     v11 = NSStringFromClass(v7);
     v12 = [v8 initWithFormat:@"%@ is handled by %@", v10, v11];
 
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
   }
 
   return 0;
@@ -44,38 +44,38 @@
 
 - (NSArray)supportedIdentifiersAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:[(VNRequest *)self resolvedRevision] error:error];
-  if (v5)
+  knownAnimalIdentifiers = [(VNRequest *)self applicableDetectorClassAndOptions:0 forRevision:[(VNRequest *)self resolvedRevision] error:error];
+  if (knownAnimalIdentifiers)
   {
-    v6 = v5;
+    v6 = knownAnimalIdentifiers;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(objc_class *)v6 knownAnimalIdentifiers];
+      knownAnimalIdentifiers = [(objc_class *)v6 knownAnimalIdentifiers];
     }
 
     else
     {
       if (error)
       {
-        v7 = [(VNRequest *)self specifier];
-        *error = [VNError errorForUnsupportedRequestSpecifier:v7];
+        specifier = [(VNRequest *)self specifier];
+        *error = [VNError errorForUnsupportedRequestSpecifier:specifier];
       }
 
-      v5 = 0;
+      knownAnimalIdentifiers = 0;
     }
   }
 
-  return v5;
+  return knownAnimalIdentifiers;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 - 3737841664u >= 3 && a3 - 1 > 1)
+  if (revision - 3737841664u >= 3 && revision - 1 > 1)
   {
-    if (a4)
+    if (error)
     {
       [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-      *a4 = v4 = 0;
+      *error = v4 = 0;
     }
 
     else
@@ -93,20 +93,20 @@
   return v4;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 3)
+  if (revision - 3737841664u >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNRecognizeAnimalsRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = *(&off_1E77B40F0 + a3 - 3737841664u);
+    v5 = *(&off_1E77B40F0 + revision - 3737841664u);
   }
 
   return v5;

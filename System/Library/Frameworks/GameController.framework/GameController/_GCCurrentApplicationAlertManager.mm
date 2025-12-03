@@ -1,11 +1,11 @@
 @interface _GCCurrentApplicationAlertManager
 + (id)sharedInstance;
 - (_GCCurrentApplicationAlertManager)init;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current;
 - (void)applicationDidDismissAlert;
 - (void)applicationDidPresentAlert;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _GCCurrentApplicationAlertManager
@@ -35,16 +35,16 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  currentCopy = current;
+  observerCopy = observer;
+  if (currentCopy)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      [(_GCCurrentApplicationAlertManager *)self addObserver:v6];
-      [v6 alertVisibilityDidChange:{-[_GCCurrentApplicationAlertManager isAlertPresented](self, "isAlertPresented")}];
+      [(_GCCurrentApplicationAlertManager *)self addObserver:observerCopy];
+      [observerCopy alertVisibilityDidChange:{-[_GCCurrentApplicationAlertManager isAlertPresented](self, "isAlertPresented")}];
     }
 
     else
@@ -54,33 +54,33 @@
       v7[2] = __63___GCCurrentApplicationAlertManager_addObserver_notifyCurrent___block_invoke;
       v7[3] = &unk_1E8418C50;
       v7[4] = self;
-      v8 = v6;
+      v8 = observerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v7);
     }
   }
 
   else
   {
-    [(_GCCurrentApplicationAlertManager *)self addObserver:v6];
+    [(_GCCurrentApplicationAlertManager *)self addObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)applicationDidPresentAlert
@@ -91,14 +91,14 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v3, &state);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableSet *)v4->_observers copy];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableSet *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
-  [(_GCCurrentApplicationAlertManager *)v4 willChangeValueForKey:@"alertPresented"];
-  add = atomic_fetch_add(&v4->_alertPresentationCount, 1uLL);
-  [(_GCCurrentApplicationAlertManager *)v4 didChangeValueForKey:@"alertPresented"];
+  [(_GCCurrentApplicationAlertManager *)selfCopy willChangeValueForKey:@"alertPresented"];
+  add = atomic_fetch_add(&selfCopy->_alertPresentationCount, 1uLL);
+  [(_GCCurrentApplicationAlertManager *)selfCopy didChangeValueForKey:@"alertPresented"];
   if (!add)
   {
     v14 = 0u;
@@ -143,14 +143,14 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v3, &state);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableSet *)v4->_observers copy];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableSet *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
-  [(_GCCurrentApplicationAlertManager *)v4 willChangeValueForKey:@"alertPresented"];
-  add = atomic_fetch_add(&v4->_alertPresentationCount, 0xFFFFFFFFFFFFFFFFLL);
-  [(_GCCurrentApplicationAlertManager *)v4 didChangeValueForKey:@"alertPresented"];
+  [(_GCCurrentApplicationAlertManager *)selfCopy willChangeValueForKey:@"alertPresented"];
+  add = atomic_fetch_add(&selfCopy->_alertPresentationCount, 0xFFFFFFFFFFFFFFFFLL);
+  [(_GCCurrentApplicationAlertManager *)selfCopy didChangeValueForKey:@"alertPresented"];
   if (add == 1)
   {
     v14 = 0u;

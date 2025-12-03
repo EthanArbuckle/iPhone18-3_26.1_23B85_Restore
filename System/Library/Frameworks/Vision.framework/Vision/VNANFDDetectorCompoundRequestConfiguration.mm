@@ -1,19 +1,19 @@
 @interface VNANFDDetectorCompoundRequestConfiguration
-- (VNANFDDetectorCompoundRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDetectorConfigurationOptions:(id)a3;
+- (VNANFDDetectorCompoundRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDetectorConfigurationOptions:(id)options;
 @end
 
 @implementation VNANFDDetectorCompoundRequestConfiguration
 
-- (void)setDetectorConfigurationOptions:(id)a3
+- (void)setDetectorConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  optionsCopy = options;
+  v5 = [optionsCopy mutableCopy];
   detectorConfigurationOptions = self->_detectorConfigurationOptions;
   self->_detectorConfigurationOptions = v5;
 
-  v7 = [v4 objectForKey:@"VNDetectorOption_OriginatingRequestSpecifier"];
+  v7 = [optionsCopy objectForKey:@"VNDetectorOption_OriginatingRequestSpecifier"];
   if (v7 && [v7 specifiesRequestClass:{-[VNRequestConfiguration requestClass](self, "requestClass")}])
   {
     v8.receiver = self;
@@ -22,11 +22,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = VNANFDDetectorCompoundRequestConfiguration;
-  v4 = [(VNRequestConfiguration *)&v13 copyWithZone:a3];
+  v4 = [(VNRequestConfiguration *)&v13 copyWithZone:zone];
   if (v4)
   {
     v5 = [(NSDictionary *)self->_detectorConfigurationOptions mutableCopy];
@@ -47,11 +47,11 @@
   return v4;
 }
 
-- (VNANFDDetectorCompoundRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNANFDDetectorCompoundRequestConfiguration)initWithRequestClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = VNANFDDetectorCompoundRequestConfiguration;
-  v3 = [(VNRequestConfiguration *)&v10 initWithRequestClass:a3];
+  v3 = [(VNRequestConfiguration *)&v10 initWithRequestClass:class];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);

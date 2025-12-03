@@ -1,13 +1,13 @@
 @interface PFAssertionPolicyDebuggerFatal
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation PFAssertionPolicyDebuggerFatal
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v3 = a3;
-  if (+[PFAssertionHandler runningUnderDebugger](PFAssertionHandler, "runningUnderDebugger") && [v3 isFatal])
+  assertionCopy = assertion;
+  if (+[PFAssertionHandler runningUnderDebugger](PFAssertionHandler, "runningUnderDebugger") && [assertionCopy isFatal])
   {
     __debugbreak();
   }

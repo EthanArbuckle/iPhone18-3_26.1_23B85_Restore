@@ -1,13 +1,13 @@
 @interface _CPResultRankingFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPResultRankingFeedback)init;
-- (_CPResultRankingFeedback)initWithFacade:(id)a3;
+- (_CPResultRankingFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)addDuplicateResults:(id)a3;
-- (void)addHiddenResults:(id)a3;
-- (void)setDuplicateResults:(id)a3;
-- (void)setHiddenResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDuplicateResults:(id)results;
+- (void)addHiddenResults:(id)results;
+- (void)setDuplicateResults:(id)results;
+- (void)setHiddenResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPResultRankingFeedback
@@ -31,34 +31,34 @@
   return v5 ^ v6 ^ (2654435761 * self->_localResultPosition) ^ v3 ^ ((*vbslq_s8(vnegq_f64(v10), v8, v7).i64 * 2654435760.0) + vcvtd_n_u64_f64(personalizationScore - *v7.i64, 0x40uLL));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_CPResultRankingFeedback *)self result];
-  v7 = [v4 result];
-  if ((v6 != 0) == (v7 == 0))
+  result = [(_CPResultRankingFeedback *)self result];
+  result2 = [equalCopy result];
+  if ((result != 0) == (result2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(_CPResultRankingFeedback *)self result];
-  if (v8)
+  result3 = [(_CPResultRankingFeedback *)self result];
+  if (result3)
   {
-    v9 = v8;
-    v10 = [(_CPResultRankingFeedback *)self result];
-    v11 = [v4 result];
-    v12 = [v10 isEqual:v11];
+    v9 = result3;
+    result4 = [(_CPResultRankingFeedback *)self result];
+    result5 = [equalCopy result];
+    v12 = [result4 isEqual:result5];
 
     if (!v12)
     {
@@ -70,20 +70,20 @@
   {
   }
 
-  v6 = [(_CPResultRankingFeedback *)self hiddenResults];
-  v7 = [v4 hiddenResults];
-  if ((v6 != 0) == (v7 == 0))
+  result = [(_CPResultRankingFeedback *)self hiddenResults];
+  result2 = [equalCopy hiddenResults];
+  if ((result != 0) == (result2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_CPResultRankingFeedback *)self hiddenResults];
-  if (v13)
+  hiddenResults = [(_CPResultRankingFeedback *)self hiddenResults];
+  if (hiddenResults)
   {
-    v14 = v13;
-    v15 = [(_CPResultRankingFeedback *)self hiddenResults];
-    v16 = [v4 hiddenResults];
-    v17 = [v15 isEqual:v16];
+    v14 = hiddenResults;
+    hiddenResults2 = [(_CPResultRankingFeedback *)self hiddenResults];
+    hiddenResults3 = [equalCopy hiddenResults];
+    v17 = [hiddenResults2 isEqual:hiddenResults3];
 
     if (!v17)
     {
@@ -95,22 +95,22 @@
   {
   }
 
-  v6 = [(_CPResultRankingFeedback *)self duplicateResults];
-  v7 = [v4 duplicateResults];
-  if ((v6 != 0) == (v7 == 0))
+  result = [(_CPResultRankingFeedback *)self duplicateResults];
+  result2 = [equalCopy duplicateResults];
+  if ((result != 0) == (result2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v18 = [(_CPResultRankingFeedback *)self duplicateResults];
-  if (v18)
+  duplicateResults = [(_CPResultRankingFeedback *)self duplicateResults];
+  if (duplicateResults)
   {
-    v19 = v18;
-    v20 = [(_CPResultRankingFeedback *)self duplicateResults];
-    v21 = [v4 duplicateResults];
-    v22 = [v20 isEqual:v21];
+    v19 = duplicateResults;
+    duplicateResults2 = [(_CPResultRankingFeedback *)self duplicateResults];
+    duplicateResults3 = [equalCopy duplicateResults];
+    v22 = [duplicateResults2 isEqual:duplicateResults3];
 
     if (!v22)
     {
@@ -123,10 +123,10 @@ LABEL_17:
   }
 
   localResultPosition = self->_localResultPosition;
-  if (localResultPosition == [v4 localResultPosition])
+  if (localResultPosition == [equalCopy localResultPosition])
   {
     personalizationScore = self->_personalizationScore;
-    [v4 personalizationScore];
+    [equalCopy personalizationScore];
     v23 = personalizationScore == v27;
     goto LABEL_19;
   }
@@ -138,21 +138,21 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPResultRankingFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(_CPResultRankingFeedback *)self result];
+  result = [(_CPResultRankingFeedback *)self result];
 
-  if (v6)
+  if (result)
   {
-    v7 = [(_CPResultRankingFeedback *)self result];
+    result2 = [(_CPResultRankingFeedback *)self result];
     PBDataWriterWriteSubmessage();
   }
 
@@ -236,54 +236,54 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDuplicateResults:(id)a3
+- (void)addDuplicateResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   duplicateResults = self->_duplicateResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!duplicateResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_duplicateResults;
-    self->_duplicateResults = v6;
+    self->_duplicateResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     duplicateResults = self->_duplicateResults;
   }
 
-  [(NSArray *)duplicateResults addObject:v4];
+  [(NSArray *)duplicateResults addObject:resultsCopy];
 }
 
-- (void)setDuplicateResults:(id)a3
+- (void)setDuplicateResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   duplicateResults = self->_duplicateResults;
   self->_duplicateResults = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addHiddenResults:(id)a3
+- (void)addHiddenResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   hiddenResults = self->_hiddenResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!hiddenResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_hiddenResults;
-    self->_hiddenResults = v6;
+    self->_hiddenResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     hiddenResults = self->_hiddenResults;
   }
 
-  [(NSArray *)hiddenResults addObject:v4];
+  [(NSArray *)hiddenResults addObject:resultsCopy];
 }
 
-- (void)setHiddenResults:(id)a3
+- (void)setHiddenResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   hiddenResults = self->_hiddenResults;
   self->_hiddenResults = v4;
 
@@ -304,27 +304,27 @@ LABEL_19:
   return v2;
 }
 
-- (_CPResultRankingFeedback)initWithFacade:(id)a3
+- (_CPResultRankingFeedback)initWithFacade:(id)facade
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v37.receiver = self;
   v37.super_class = _CPResultRankingFeedback;
   v5 = [(_CPResultRankingFeedback *)&v37 init];
   if (v5)
   {
-    v6 = [v4 result];
+    result = [facadeCopy result];
 
-    if (v6)
+    if (result)
     {
       v7 = [_CPSearchResultForFeedback alloc];
-      v8 = [v4 result];
-      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:v8];
+      result2 = [facadeCopy result];
+      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:result2];
       [(_CPResultRankingFeedback *)v5 setResult:v9];
     }
 
-    v10 = [v4 hiddenResults];
-    if (v10)
+    hiddenResults = [facadeCopy hiddenResults];
+    if (hiddenResults)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -338,8 +338,8 @@ LABEL_19:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = [v4 hiddenResults];
-    v13 = [v12 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    hiddenResults2 = [facadeCopy hiddenResults];
+    v13 = [hiddenResults2 countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v13)
     {
       v14 = v13;
@@ -350,22 +350,22 @@ LABEL_19:
         {
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(hiddenResults2);
           }
 
           v17 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v33 + 1) + 8 * i)];
           [v11 addObject:v17];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v14 = [hiddenResults2 countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v14);
     }
 
     [(_CPResultRankingFeedback *)v5 setHiddenResults:v11];
-    v18 = [v4 duplicateResults];
-    if (v18)
+    duplicateResults = [facadeCopy duplicateResults];
+    if (duplicateResults)
     {
       v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -379,8 +379,8 @@ LABEL_19:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = [v4 duplicateResults];
-    v21 = [v20 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    duplicateResults2 = [facadeCopy duplicateResults];
+    v21 = [duplicateResults2 countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v21)
     {
       v22 = v21;
@@ -391,22 +391,22 @@ LABEL_19:
         {
           if (*v30 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(duplicateResults2);
           }
 
           v25 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v29 + 1) + 8 * j)];
           [v19 addObject:v25];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v22 = [duplicateResults2 countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v22);
     }
 
     [(_CPResultRankingFeedback *)v5 setDuplicateResults:v19];
-    -[_CPResultRankingFeedback setLocalResultPosition:](v5, "setLocalResultPosition:", [v4 localResultPosition]);
-    [v4 personalizationScore];
+    -[_CPResultRankingFeedback setLocalResultPosition:](v5, "setLocalResultPosition:", [facadeCopy localResultPosition]);
+    [facadeCopy personalizationScore];
     [(_CPResultRankingFeedback *)v5 setPersonalizationScore:?];
     v26 = v5;
   }

@@ -1,17 +1,17 @@
 @interface SUUIZoomingShelfCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)progress;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setFocusedItemHorizontalCenterOffset:(double)a3;
-- (void)setInterItemSpacing:(double)a3;
-- (void)setItemWidth:(double)a3;
-- (void)setLayoutData:(id)a3;
-- (void)setMenuBarFocusedItemIndexPath:(id)a3 withTransitionProgress:(double)a4;
-- (void)setScaledItemWidth:(double)a3;
+- (void)setFocusedItemHorizontalCenterOffset:(double)offset;
+- (void)setInterItemSpacing:(double)spacing;
+- (void)setItemWidth:(double)width;
+- (void)setLayoutData:(id)data;
+- (void)setMenuBarFocusedItemIndexPath:(id)path withTransitionProgress:(double)progress;
+- (void)setScaledItemWidth:(double)width;
 @end
 
 @implementation SUUIZoomingShelfCollectionViewLayout
@@ -21,15 +21,15 @@
   v63.receiver = self;
   v63.super_class = SUUIZoomingShelfCollectionViewLayout;
   [(SUUIZoomingShelfCollectionViewLayout *)&v63 prepareLayout];
-  v3 = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
-  v50 = [v3 backgroundColor];
-  [v3 bounds];
+  collectionView = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
+  backgroundColor = [collectionView backgroundColor];
+  [collectionView bounds];
   v61 = v5;
   v62 = v4;
   v59 = v7;
   v60 = v6;
-  v49 = v3;
-  [v3 contentOffset];
+  v49 = collectionView;
+  [collectionView contentOffset];
   v9 = v8;
   focusedItemHorizontalCenterOffset = self->_focusedItemHorizontalCenterOffset;
   interItemSpacing = self->_interItemSpacing;
@@ -53,8 +53,8 @@
   v17 = itemWidth * 0.5;
   v57 = interItemSpacing + itemWidth;
   v58 = focusedItemHorizontalCenterOffset - v14;
-  v48 = [v3 numberOfSections];
-  if (v48 <= 0)
+  numberOfSections = [collectionView numberOfSections];
+  if (numberOfSections <= 0)
   {
     v44 = scaledItemWidth - itemWidth;
     v43 = -1.0;
@@ -87,7 +87,7 @@
           if ((v55 & 1) != 0 || ([(NSMutableDictionary *)self->_cachedLayoutAttributes objectForKey:v27], (v28 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v28 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
-            [v28 setBackgroundColor:v50];
+            [v28 setBackgroundColor:backgroundColor];
           }
 
           [(SUUIShelfLayoutData *)self->_layoutData sizeForItemAtIndex:v18 + i];
@@ -129,7 +129,7 @@
       ++v19;
     }
 
-    while (v19 != v48);
+    while (v19 != numberOfSections);
     v43 = (v18 - 1);
     v14 = v46;
     focusedItemHorizontalCenterOffset = v47;
@@ -155,12 +155,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   cachedLayoutAttributes = self->_cachedLayoutAttributes;
   v12[0] = MEMORY[0x277D85DD0];
@@ -188,15 +188,15 @@ void __74__SUUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   }
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = change.size.height;
+  width = change.size.width;
   v14.receiver = self;
   v14.super_class = SUUIZoomingShelfCollectionViewLayout;
-  v6 = [(SUUIZoomingShelfCollectionViewLayout *)&v14 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y];
-  v7 = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
-  [v7 bounds];
+  v6 = [(SUUIZoomingShelfCollectionViewLayout *)&v14 invalidationContextForBoundsChange:change.origin.x, change.origin.y];
+  collectionView = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
 
@@ -208,22 +208,22 @@ void __74__SUUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   return v6;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  self->_invalidateGeometryOnlyOfExistingLayoutAttributes = [v4 invalidateGeometryOnlyOfExistingLayoutAttributes];
+  contextCopy = context;
+  self->_invalidateGeometryOnlyOfExistingLayoutAttributes = [contextCopy invalidateGeometryOnlyOfExistingLayoutAttributes];
   v5.receiver = self;
   v5.super_class = SUUIZoomingShelfCollectionViewLayout;
-  [(SUUIZoomingShelfCollectionViewLayout *)&v5 invalidateLayoutWithContext:v4];
+  [(SUUIZoomingShelfCollectionViewLayout *)&v5 invalidateLayoutWithContext:contextCopy];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
+  collectionView = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
   focusedItemHorizontalCenterOffset = self->_focusedItemHorizontalCenterOffset;
   interItemSpacing = self->_interItemSpacing;
   itemWidth = self->_itemWidth;
@@ -254,9 +254,9 @@ void __74__SUUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
   v18 = v30[5];
   if (v18)
   {
-    v19 = [v18 section];
-    v20 = [v30[5] item];
-    if (v19 < 1)
+    section = [v18 section];
+    item = [v30[5] item];
+    if (section < 1)
     {
       v22 = 0;
     }
@@ -267,13 +267,13 @@ void __74__SUUIZoomingShelfCollectionViewLayout_layoutAttributesForElementsInRec
       v22 = 0;
       do
       {
-        v22 += [v9 numberOfItemsInSection:v21++];
+        v22 += [collectionView numberOfItemsInSection:v21++];
       }
 
-      while (v19 != v21);
+      while (section != v21);
     }
 
-    v23 = itemWidth * 0.5 + focusedItemHorizontalCenterOffset - scaledItemWidth * 0.5 + (v22 + v20) * (interItemSpacing + itemWidth) + (scaledItemWidth - itemWidth) * 0.5 - focusedItemHorizontalCenterOffset;
+    v23 = itemWidth * 0.5 + focusedItemHorizontalCenterOffset - scaledItemWidth * 0.5 + (v22 + item) * (interItemSpacing + itemWidth) + (scaledItemWidth - itemWidth) * 0.5 - focusedItemHorizontalCenterOffset;
   }
 
   else
@@ -304,16 +304,16 @@ void __106__SUUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
   }
 }
 
-- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)a3
+- (id)menuBarFocusedItemIndexPathWithTransitionProgress:(double *)progress
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
-  [v5 layoutIfNeeded];
-  v6 = [v5 indexPathsForVisibleItems];
-  v26 = a3;
-  if (![v6 count])
+  collectionView = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
+  [collectionView layoutIfNeeded];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  progressCopy = progress;
+  if (![indexPathsForVisibleItems count])
   {
-    [v5 contentOffset];
+    [collectionView contentOffset];
     if (v7 <= 0.0)
     {
       v10 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
@@ -323,8 +323,8 @@ void __106__SUUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
 
     else
     {
-      v8 = [v5 numberOfSections] - 1;
-      v9 = [v5 numberOfItemsInSection:v8];
+      v8 = [collectionView numberOfSections] - 1;
+      v9 = [collectionView numberOfItemsInSection:v8];
       v10 = [MEMORY[0x277CCAA70] indexPathForItem:v9 - 1 inSection:v8];
       v32 = v10;
       v11 = &v32;
@@ -332,14 +332,14 @@ void __106__SUUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
 
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
-    v6 = v12;
+    indexPathsForVisibleItems = v12;
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v6;
+  v13 = indexPathsForVisibleItems;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -381,90 +381,90 @@ void __106__SUUIZoomingShelfCollectionViewLayout_targetContentOffsetForProposedC
     v18 = 1.79769313e308;
   }
 
-  if (v26)
+  if (progressCopy)
   {
-    *v26 = v18 * 2.0 + -1.0;
+    *progressCopy = v18 * 2.0 + -1.0;
   }
 
   return v16;
 }
 
-- (void)setMenuBarFocusedItemIndexPath:(id)a3 withTransitionProgress:(double)a4
+- (void)setMenuBarFocusedItemIndexPath:(id)path withTransitionProgress:(double)progress
 {
-  v16 = a3;
-  v6 = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
+  pathCopy = path;
+  collectionView = [(SUUIZoomingShelfCollectionViewLayout *)self collectionView];
   interItemSpacing = self->_interItemSpacing;
   itemWidth = self->_itemWidth;
   scaledItemWidth = self->_scaledItemWidth;
-  v10 = [v16 section];
-  if (v10 < 1)
+  section = [pathCopy section];
+  if (section < 1)
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = v10;
+    v11 = section;
     v12 = 0;
     v13 = 0;
     do
     {
-      v13 += [v6 numberOfItemsInSection:v12++];
+      v13 += [collectionView numberOfItemsInSection:v12++];
     }
 
     while (v11 != v12);
   }
 
   v14 = itemWidth * 0.5 + interItemSpacing + scaledItemWidth * 0.5 + itemWidth * 0.5 + interItemSpacing + scaledItemWidth * 0.5;
-  v15 = [v16 item] + v13;
-  [v6 contentOffset];
-  [v6 setContentOffset:v14 * 0.5 + itemWidth * 0.5 + scaledItemWidth * -0.5 + v15 * (interItemSpacing + itemWidth) + (a4 + 1.0) * -0.5 * (v14 - (scaledItemWidth - itemWidth))];
+  v15 = [pathCopy item] + v13;
+  [collectionView contentOffset];
+  [collectionView setContentOffset:v14 * 0.5 + itemWidth * 0.5 + scaledItemWidth * -0.5 + v15 * (interItemSpacing + itemWidth) + (progress + 1.0) * -0.5 * (v14 - (scaledItemWidth - itemWidth))];
 }
 
-- (void)setFocusedItemHorizontalCenterOffset:(double)a3
+- (void)setFocusedItemHorizontalCenterOffset:(double)offset
 {
-  if (self->_focusedItemHorizontalCenterOffset != a3)
+  if (self->_focusedItemHorizontalCenterOffset != offset)
   {
-    self->_focusedItemHorizontalCenterOffset = a3;
+    self->_focusedItemHorizontalCenterOffset = offset;
     [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setLayoutData:(id)a3
+- (void)setLayoutData:(id)data
 {
-  v5 = a3;
-  if (self->_layoutData != v5)
+  dataCopy = data;
+  if (self->_layoutData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layoutData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_layoutData, data);
     [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
-- (void)setInterItemSpacing:(double)a3
+- (void)setInterItemSpacing:(double)spacing
 {
-  if (self->_interItemSpacing != a3)
+  if (self->_interItemSpacing != spacing)
   {
-    self->_interItemSpacing = a3;
-    [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
-  }
-}
-
-- (void)setItemWidth:(double)a3
-{
-  if (self->_itemWidth != a3)
-  {
-    self->_itemWidth = a3;
+    self->_interItemSpacing = spacing;
     [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }
 
-- (void)setScaledItemWidth:(double)a3
+- (void)setItemWidth:(double)width
 {
-  if (self->_scaledItemWidth != a3)
+  if (self->_itemWidth != width)
   {
-    self->_scaledItemWidth = a3;
+    self->_itemWidth = width;
+    [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
+  }
+}
+
+- (void)setScaledItemWidth:(double)width
+{
+  if (self->_scaledItemWidth != width)
+  {
+    self->_scaledItemWidth = width;
     [(SUUIZoomingShelfCollectionViewLayout *)self invalidateLayout];
   }
 }

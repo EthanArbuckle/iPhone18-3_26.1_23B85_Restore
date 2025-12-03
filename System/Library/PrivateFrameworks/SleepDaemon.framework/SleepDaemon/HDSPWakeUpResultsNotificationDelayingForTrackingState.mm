@@ -7,13 +7,13 @@
 
 - (id)expirationDate
 {
-  v3 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v4 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v5 = [v4 currentDate];
-  v6 = [v3 notificationAttemptWindowForWakeUpBeforeDate:v5];
-  v7 = [v6 startDate];
+  infoProvider = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  infoProvider2 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  currentDate = [infoProvider2 currentDate];
+  v6 = [infoProvider notificationAttemptWindowForWakeUpBeforeDate:currentDate];
+  startDate = [v6 startDate];
 
-  return v7;
+  return startDate;
 }
 
 - (void)stateDidExpire
@@ -28,10 +28,10 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] expired", &v9, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  v7 = [v6 queryingState];
-  [v5 enterState:v7];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  queryingState = [stateMachine2 queryingState];
+  [stateMachine enterState:queryingState];
 
   v8 = *MEMORY[0x277D85DE8];
 }

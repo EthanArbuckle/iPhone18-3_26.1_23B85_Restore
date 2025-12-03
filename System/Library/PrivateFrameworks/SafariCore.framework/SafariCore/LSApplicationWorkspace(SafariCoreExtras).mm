@@ -34,7 +34,7 @@
     v17 = v8;
     v18 = v9;
     v19 = v10;
-    [a1 setDefaultURLHandlerForScheme:v17 to:v12 completion:v16];
+    [self setDefaultURLHandlerForScheme:v17 to:v12 completion:v16];
   }
 
   else
@@ -59,10 +59,10 @@
   v10[2] = __168__LSApplicationWorkspace_SafariCoreExtras__safari_setDefaultOTPAuthURLHandlerToApplicationWithBundleIdentifier_shouldFallBackToSystemHandlerIfNeeded_completionHandler___block_invoke;
   v10[3] = &unk_1E7CF23C8;
   v12 = a4;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v8;
   v9 = v8;
-  [a1 safari_setDefaultURLHandlerForScheme:@"otpauth" toApplicationWithBundleIdentifier:a3 completionHandler:v10];
+  [self safari_setDefaultURLHandlerForScheme:@"otpauth" toApplicationWithBundleIdentifier:a3 completionHandler:v10];
 }
 
 - (void)safari_setDefaultOTPAuthMigrationURLHandlerToApplicationWithBundleIdentifier:()SafariCoreExtras shouldFallBackToSystemHandlerIfNeeded:completionHandler:
@@ -73,10 +73,10 @@
   v10[2] = __177__LSApplicationWorkspace_SafariCoreExtras__safari_setDefaultOTPAuthMigrationURLHandlerToApplicationWithBundleIdentifier_shouldFallBackToSystemHandlerIfNeeded_completionHandler___block_invoke;
   v10[3] = &unk_1E7CF23C8;
   v12 = a4;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v8;
   v9 = v8;
-  [a1 safari_setDefaultURLHandlerForScheme:@"otpauth-migration" toApplicationWithBundleIdentifier:a3 completionHandler:v10];
+  [self safari_setDefaultURLHandlerForScheme:@"otpauth-migration" toApplicationWithBundleIdentifier:a3 completionHandler:v10];
 }
 
 - (void)safari_setDefaultURLHandlerForScheme:()SafariCoreExtras toApplicationWithBundleIdentifier:completionHandler:.cold.1(uint64_t a1, void *a2, void *a3)

@@ -1,16 +1,16 @@
 @interface MedicationLogDetailsHeader
-- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MedicationLogDetailsHeader
 
-- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationLogDetailsHeader____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationLogDetailsHeader____lazy_storage___formStrengthLabel) = 0;
   v8 = self + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationLogDetailsHeader_item;
@@ -20,13 +20,13 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(MedicationLogDetailsHeader *)&v12 initWithFrame:x, y, width, height];
+  height = [(MedicationLogDetailsHeader *)&v12 initWithFrame:x, y, width, height];
   sub_2282BCAA0();
 
-  return v10;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI26MedicationLogDetailsHeader)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationLogDetailsHeader____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI26MedicationLogDetailsHeader____lazy_storage___formStrengthLabel) = 0;

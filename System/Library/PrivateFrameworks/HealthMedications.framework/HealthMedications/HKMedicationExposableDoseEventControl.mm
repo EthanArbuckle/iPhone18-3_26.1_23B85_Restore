@@ -1,11 +1,11 @@
 @interface HKMedicationExposableDoseEventControl
 + (id)serverInterface;
 - (HKMedicationExposableDoseEventControl)init;
-- (HKMedicationExposableDoseEventControl)initWithHealthStore:(id)a3;
-- (void)deleteDoseEventWithPersistentUUID:(id)a3 completion:(id)a4;
-- (void)doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 completion:(id)a5;
-- (void)unitTest_noOpWithCompletion:(id)a3;
-- (void)writeDoseEvents:(id)a3 completion:(id)a4;
+- (HKMedicationExposableDoseEventControl)initWithHealthStore:(id)store;
+- (void)deleteDoseEventWithPersistentUUID:(id)d completion:(id)completion;
+- (void)doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier completion:(id)completion;
+- (void)unitTest_noOpWithCompletion:(id)completion;
+- (void)writeDoseEvents:(id)events completion:(id)completion;
 @end
 
 @implementation HKMedicationExposableDoseEventControl
@@ -20,20 +20,20 @@
   return 0;
 }
 
-- (HKMedicationExposableDoseEventControl)initWithHealthStore:(id)a3
+- (HKMedicationExposableDoseEventControl)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HKMedicationExposableDoseEventControl;
   v6 = [(HKMedicationExposableDoseEventControl *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
     healthStore = v7->_healthStore;
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 initWithHealthStore:healthStore taskIdentifier:@"HKMedicationExposableDoseEventControlServerIdentifier" exportedObject:v7 taskUUID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 initWithHealthStore:healthStore taskIdentifier:@"HKMedicationExposableDoseEventControlServerIdentifier" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v11;
 
@@ -43,25 +43,25 @@
   return v7;
 }
 
-- (void)doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 completion:(id)a5
+- (void)doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  intervalCopy = interval;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!intervalCopy)
   {
     [HKMedicationExposableDoseEventControl doseEventsForDateInterval:a2 medicationIdentifier:self completion:?];
   }
 
-  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v11];
+  v12 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __99__HKMedicationExposableDoseEventControl_doseEventsForDateInterval_medicationIdentifier_completion___block_invoke;
   v19[3] = &unk_2796CA490;
-  v20 = v9;
-  v21 = v10;
+  v20 = intervalCopy;
+  v21 = identifierCopy;
   v22 = v12;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -69,28 +69,28 @@
   v17[3] = &unk_2796CA298;
   v18 = v22;
   v14 = v22;
-  v15 = v10;
-  v16 = v9;
+  v15 = identifierCopy;
+  v16 = intervalCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v17];
 }
 
-- (void)writeDoseEvents:(id)a3 completion:(id)a4
+- (void)writeDoseEvents:(id)events completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  eventsCopy = events;
+  completionCopy = completion;
+  if (!eventsCopy)
   {
     [HKMedicationExposableDoseEventControl writeDoseEvents:a2 completion:self];
   }
 
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__HKMedicationExposableDoseEventControl_writeDoseEvents_completion___block_invoke;
   v15[3] = &unk_2796CA4B8;
-  v16 = v7;
+  v16 = eventsCopy;
   v17 = v9;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -98,27 +98,27 @@
   v13[3] = &unk_2796CA298;
   v14 = v17;
   v11 = v17;
-  v12 = v7;
+  v12 = eventsCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
-- (void)deleteDoseEventWithPersistentUUID:(id)a3 completion:(id)a4
+- (void)deleteDoseEventWithPersistentUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (!dCopy)
   {
     [HKMedicationExposableDoseEventControl deleteDoseEventWithPersistentUUID:a2 completion:self];
   }
 
-  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v8];
+  v9 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __86__HKMedicationExposableDoseEventControl_deleteDoseEventWithPersistentUUID_completion___block_invoke;
   v15[3] = &unk_2796CA4B8;
-  v16 = v7;
+  v16 = dCopy;
   v17 = v9;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -126,7 +126,7 @@
   v13[3] = &unk_2796CA298;
   v14 = v17;
   v11 = v17;
-  v12 = v7;
+  v12 = dCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
@@ -139,23 +139,23 @@
   return v2;
 }
 
-- (void)unitTest_noOpWithCompletion:(id)a3
+- (void)unitTest_noOpWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__HKMedicationExposableDoseEventControl_unitTest_noOpWithCompletion___block_invoke;
   v11[3] = &unk_2796CA4E0;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__HKMedicationExposableDoseEventControl_unitTest_noOpWithCompletion___block_invoke_2;
   v9[3] = &unk_2796CA298;
   v10 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 

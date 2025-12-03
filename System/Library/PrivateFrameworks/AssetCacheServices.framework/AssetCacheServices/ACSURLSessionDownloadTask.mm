@@ -1,44 +1,44 @@
 @interface ACSURLSessionDownloadTask
-- (ACSURLSessionDownloadTask)initWithNSURLDownloadTaskCreator:(id)a3 initialRequest:(id)a4 forSession:(id)a5;
+- (ACSURLSessionDownloadTask)initWithNSURLDownloadTaskCreator:(id)creator initialRequest:(id)request forSession:(id)session;
 - (NSURLRequest)originalRequest;
-- (void)cancelByProducingResumeData:(id)a3;
+- (void)cancelByProducingResumeData:(id)data;
 @end
 
 @implementation ACSURLSessionDownloadTask
 
 - (NSURLRequest)originalRequest
 {
-  v3 = [(ACSURLSessionDownloadTask *)self _resumedOriginalRequest];
-  v4 = v3;
-  if (v3)
+  _resumedOriginalRequest = [(ACSURLSessionDownloadTask *)self _resumedOriginalRequest];
+  v4 = _resumedOriginalRequest;
+  if (_resumedOriginalRequest)
   {
-    v5 = v3;
+    originalRequest = _resumedOriginalRequest;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ACSURLSessionDownloadTask;
-    v5 = [(ACSURLSessionTask *)&v8 originalRequest];
+    originalRequest = [(ACSURLSessionTask *)&v8 originalRequest];
   }
 
-  v6 = v5;
+  v6 = originalRequest;
 
   return v6;
 }
 
-- (void)cancelByProducingResumeData:(id)a3
+- (void)cancelByProducingResumeData:(id)data
 {
-  v4 = a3;
-  v5 = [(ACSURLSessionTask *)self _weakSession];
-  [v5 _cancelDownloadTask:self byProducingResumeData:v4];
+  dataCopy = data;
+  _weakSession = [(ACSURLSessionTask *)self _weakSession];
+  [_weakSession _cancelDownloadTask:self byProducingResumeData:dataCopy];
 }
 
-- (ACSURLSessionDownloadTask)initWithNSURLDownloadTaskCreator:(id)a3 initialRequest:(id)a4 forSession:(id)a5
+- (ACSURLSessionDownloadTask)initWithNSURLDownloadTaskCreator:(id)creator initialRequest:(id)request forSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = ACSURLSessionDownloadTask;
-  return [(ACSURLSessionTask *)&v6 initWithNSURLTaskCreator:a3 initialRequest:a4 forSession:a5];
+  return [(ACSURLSessionTask *)&v6 initWithNSURLTaskCreator:creator initialRequest:request forSession:session];
 }
 
 @end

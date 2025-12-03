@@ -1,28 +1,28 @@
 @interface _EMKTextLayoutFragmentView
-- (_EMKTextLayoutFragmentView)initWithFrame:(CGRect)a3 layoutFragment:(id)a4;
-- (void)___drawAnimatingEmojiGlyph:(unsigned __int16)a3 textPosition:(CGPoint)a4 glyphPosition:(CGPoint)a5 font:(__CTFont *)a6 attributes:(id)a7;
-- (void)__drawAnimatingEmojiRun:(__CTRun *)a3 textPosition:(CGPoint)a4 animatingGlyphCountBefore:(int64_t)a5 drawnRunGlyphCount:(int64_t *)a6;
-- (void)_drawTextLineFragment:(id)a3 animatingGlyphCountBefore:(int64_t)a4 drawnGlyphCount:(int64_t *)a5;
-- (void)drawRect:(CGRect)a3;
-- (void)startAnimationWithRippler:(id)a3 animatingGlyphCount:(unint64_t)a4 animatingGlyphCountBefore:(unint64_t)a5;
+- (_EMKTextLayoutFragmentView)initWithFrame:(CGRect)frame layoutFragment:(id)fragment;
+- (void)___drawAnimatingEmojiGlyph:(unsigned __int16)glyph textPosition:(CGPoint)position glyphPosition:(CGPoint)glyphPosition font:(__CTFont *)font attributes:(id)attributes;
+- (void)__drawAnimatingEmojiRun:(__CTRun *)run textPosition:(CGPoint)position animatingGlyphCountBefore:(int64_t)before drawnRunGlyphCount:(int64_t *)count;
+- (void)_drawTextLineFragment:(id)fragment animatingGlyphCountBefore:(int64_t)before drawnGlyphCount:(int64_t *)count;
+- (void)drawRect:(CGRect)rect;
+- (void)startAnimationWithRippler:(id)rippler animatingGlyphCount:(unint64_t)count animatingGlyphCountBefore:(unint64_t)before;
 @end
 
 @implementation _EMKTextLayoutFragmentView
 
-- (_EMKTextLayoutFragmentView)initWithFrame:(CGRect)a3 layoutFragment:(id)a4
+- (_EMKTextLayoutFragmentView)initWithFrame:(CGRect)frame layoutFragment:(id)fragment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fragmentCopy = fragment;
   v16.receiver = self;
   v16.super_class = _EMKTextLayoutFragmentView;
-  v11 = [(_EMKTextLayoutFragmentView *)&v16 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(_EMKTextLayoutFragmentView *)&v16 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_layoutFragment, a4);
+    objc_storeStrong(&height->_layoutFragment, fragment);
     rippler = v12->_rippler;
     v12->_rippler = 0;
 
@@ -31,44 +31,44 @@
     v12->_animatingGlyphCountBeforeFragment = 0;
     [(_EMKTextLayoutFragmentView *)v12 setContentMode:3];
     [(_EMKTextLayoutFragmentView *)v12 setClipsToBounds:1];
-    v14 = [(_EMKTextLayoutFragmentView *)v12 layer];
-    [v14 setMasksToBounds:1];
+    layer = [(_EMKTextLayoutFragmentView *)v12 layer];
+    [layer setMasksToBounds:1];
   }
 
   return v12;
 }
 
-- (void)startAnimationWithRippler:(id)a3 animatingGlyphCount:(unint64_t)a4 animatingGlyphCountBefore:(unint64_t)a5
+- (void)startAnimationWithRippler:(id)rippler animatingGlyphCount:(unint64_t)count animatingGlyphCountBefore:(unint64_t)before
 {
   self->_timeIndex = 0;
-  self->_animatingGlyphCountBeforeFragment = a5;
-  v7 = a3;
-  [(_EMKTextLayoutFragmentView *)self setAnimatingGlyphCount:a4];
-  [(_EMKTextLayoutFragmentView *)self setRippler:v7];
+  self->_animatingGlyphCountBeforeFragment = before;
+  ripplerCopy = rippler;
+  [(_EMKTextLayoutFragmentView *)self setAnimatingGlyphCount:count];
+  [(_EMKTextLayoutFragmentView *)self setRippler:ripplerCopy];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = _EMKTextLayoutFragmentView;
-  [(_EMKTextLayoutFragmentView *)&v20 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_EMKTextLayoutFragmentView *)&v20 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   layoutFragment = self->_layoutFragment;
   if (layoutFragment)
   {
-    v5 = [(NSTextLayoutFragment *)layoutFragment textLayoutManager];
-    v6 = v5;
-    if (v5 && self->_rippler)
+    textLayoutManager = [(NSTextLayoutFragment *)layoutFragment textLayoutManager];
+    v6 = textLayoutManager;
+    if (textLayoutManager && self->_rippler)
     {
-      v7 = [v5 documentRange];
-      [v6 ensureLayoutForRange:v7];
+      documentRange = [textLayoutManager documentRange];
+      [v6 ensureLayoutForRange:documentRange];
       animatingGlyphCountBeforeFragment = self->_animatingGlyphCountBeforeFragment;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v9 = [(NSTextLayoutFragment *)self->_layoutFragment textLineFragments];
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      textLineFragments = [(NSTextLayoutFragment *)self->_layoutFragment textLineFragments];
+      v10 = [textLineFragments countByEnumeratingWithState:&v16 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -80,7 +80,7 @@
           {
             if (*v17 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(textLineFragments);
             }
 
             v14 = *(*(&v16 + 1) + 8 * v13);
@@ -91,7 +91,7 @@
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+          v11 = [textLineFragments countByEnumeratingWithState:&v16 objects:v21 count:16];
         }
 
         while (v11);
@@ -100,15 +100,15 @@
   }
 }
 
-- (void)_drawTextLineFragment:(id)a3 animatingGlyphCountBefore:(int64_t)a4 drawnGlyphCount:(int64_t *)a5
+- (void)_drawTextLineFragment:(id)fragment animatingGlyphCountBefore:(int64_t)before drawnGlyphCount:(int64_t *)count
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = CTLineGetGlyphRuns([v8 lineRef]);
-  [v8 glyphOrigin];
+  fragmentCopy = fragment;
+  v9 = CTLineGetGlyphRuns([fragmentCopy lineRef]);
+  [fragmentCopy glyphOrigin];
   v11 = v10;
   v13 = v12;
-  [v8 typographicBounds];
+  [fragmentCopy typographicBounds];
   x = v36.origin.x;
   y = v36.origin.y;
   width = v36.size.width;
@@ -143,7 +143,7 @@
 
         v28 = *(*(&v30 + 1) + 8 * i);
         v29 = 0;
-        [(_EMKTextLayoutFragmentView *)self __drawAnimatingEmojiRun:v28 textPosition:v23 + a4 animatingGlyphCountBefore:&v29 drawnRunGlyphCount:v24, v25];
+        [(_EMKTextLayoutFragmentView *)self __drawAnimatingEmojiRun:v28 textPosition:v23 + before animatingGlyphCountBefore:&v29 drawnRunGlyphCount:v24, v25];
         v23 += v29;
       }
 
@@ -158,29 +158,29 @@
     v23 = 0;
   }
 
-  *a5 = v23;
+  *count = v23;
 }
 
-- (void)__drawAnimatingEmojiRun:(__CTRun *)a3 textPosition:(CGPoint)a4 animatingGlyphCountBefore:(int64_t)a5 drawnRunGlyphCount:(int64_t *)a6
+- (void)__drawAnimatingEmojiRun:(__CTRun *)run textPosition:(CGPoint)position animatingGlyphCountBefore:(int64_t)before drawnRunGlyphCount:(int64_t *)count
 {
-  y = a4.y;
-  x = a4.x;
-  if (_EMKShouldDrawCTRun(a3))
+  y = position.y;
+  x = position.x;
+  if (_EMKShouldDrawCTRun(run))
   {
-    Attributes = CTRunGetAttributes(a3);
+    Attributes = CTRunGetAttributes(run);
     Value = CFDictionaryGetValue(Attributes, *MEMORY[0x277CC4838]);
-    GlyphCount = CTRunGetGlyphCount(a3);
+    GlyphCount = CTRunGetGlyphCount(run);
     v15 = malloc_type_calloc(GlyphCount, 0x10uLL, 0x1000040451B5BE8uLL);
     v16 = malloc_type_calloc(GlyphCount, 2uLL, 0x1000040BDFB0063uLL);
     v26.location = 0;
     v26.length = 0;
     v23 = v16;
-    CTRunGetGlyphs(a3, v26, v16);
+    CTRunGetGlyphs(run, v26, v16);
     v27.location = 0;
     v27.length = 0;
     v24 = v15;
-    CTRunGetPositions(a3, v27, v15);
-    *a6 = GlyphCount;
+    CTRunGetPositions(run, v27, v15);
+    *count = GlyphCount;
     if (GlyphCount >= 1)
     {
       v17 = v23;
@@ -190,10 +190,10 @@
         v19 = *v17++;
         v20 = *(p_y - 1);
         v21 = *p_y;
-        v22 = [[_EMKGlyphRenderingAttributes alloc] initWithValuesFromRippler:self->_rippler timeIndex:self->_timeIndex glyphIndex:a5 numberOfGlyphs:self->_animatingGlyphCount];
+        v22 = [[_EMKGlyphRenderingAttributes alloc] initWithValuesFromRippler:self->_rippler timeIndex:self->_timeIndex glyphIndex:before numberOfGlyphs:self->_animatingGlyphCount];
         [(_EMKTextLayoutFragmentView *)self ___drawAnimatingEmojiGlyph:v19 textPosition:Value glyphPosition:v22 font:x attributes:y, v20, v21];
 
-        ++a5;
+        ++before;
         p_y += 2;
         --GlyphCount;
       }
@@ -208,31 +208,31 @@
 
   else
   {
-    *a6 = 0;
+    *count = 0;
   }
 }
 
-- (void)___drawAnimatingEmojiGlyph:(unsigned __int16)a3 textPosition:(CGPoint)a4 glyphPosition:(CGPoint)a5 font:(__CTFont *)a6 attributes:(id)a7
+- (void)___drawAnimatingEmojiGlyph:(unsigned __int16)glyph textPosition:(CGPoint)position glyphPosition:(CGPoint)glyphPosition font:(__CTFont *)font attributes:(id)attributes
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  glyphs = a3;
-  v13 = a7;
+  y = glyphPosition.y;
+  x = glyphPosition.x;
+  v10 = position.y;
+  v11 = position.x;
+  glyphs = glyph;
+  attributesCopy = attributes;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  Size = CTFontGetSize(a6);
-  [v13 scale];
+  Size = CTFontGetSize(font);
+  [attributesCopy scale];
   v17 = Size * v16;
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a6, v17, 0, 0);
-  v19 = [v13 color];
-  ColorSpace = CGColorGetColorSpace([v19 CGColor]);
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(font, v17, 0, 0);
+  color = [attributesCopy color];
+  ColorSpace = CGColorGetColorSpace([color CGColor]);
   CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
   CGContextSetFillColorSpace(CurrentContext, ColorSpace);
-  CGContextSetStrokeColorWithColor(CurrentContext, [v19 CGColor]);
-  CGContextSetFillColorWithColor(CurrentContext, [v19 CGColor]);
-  v21 = [v13 shadowIfNeededForFontPointSize:v17];
+  CGContextSetStrokeColorWithColor(CurrentContext, [color CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [color CGColor]);
+  v21 = [attributesCopy shadowIfNeededForFontPointSize:v17];
 
   [v21 applyToGraphicsContext_emk:CurrentContext];
   memset(&v25, 0, sizeof(v25));

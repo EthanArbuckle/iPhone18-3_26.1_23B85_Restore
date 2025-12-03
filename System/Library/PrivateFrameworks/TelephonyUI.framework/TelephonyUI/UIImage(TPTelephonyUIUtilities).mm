@@ -41,9 +41,9 @@ LABEL_6:
   v6 = MEMORY[0x1E69DCEB0];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 mainScreen];
-  v10 = [v9 traitCollection];
-  v11 = [v5 _tpImageNamed:v8 inBundle:v7 compatibleWithTraitCollection:v10];
+  mainScreen = [v6 mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v11 = [v5 _tpImageNamed:v8 inBundle:v7 compatibleWithTraitCollection:traitCollection];
 
   return v11;
 }

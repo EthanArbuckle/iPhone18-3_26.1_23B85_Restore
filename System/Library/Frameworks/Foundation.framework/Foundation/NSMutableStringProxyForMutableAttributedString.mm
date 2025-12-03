@@ -1,18 +1,18 @@
 @interface NSMutableStringProxyForMutableAttributedString
-- (NSMutableStringProxyForMutableAttributedString)initWithMutableAttributedString:(id)a3;
+- (NSMutableStringProxyForMutableAttributedString)initWithMutableAttributedString:(id)string;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation NSMutableStringProxyForMutableAttributedString
 
 - (unint64_t)length
 {
-  v2 = [(NSAttributedString *)self->mutableAttributedString string];
+  string = [(NSAttributedString *)self->mutableAttributedString string];
 
-  return [(NSString *)v2 length];
+  return [(NSString *)string length];
 }
 
 - (void)dealloc
@@ -24,7 +24,7 @@
   [(NSMutableStringProxyForMutableAttributedString *)&v3 dealloc];
 }
 
-- (NSMutableStringProxyForMutableAttributedString)initWithMutableAttributedString:(id)a3
+- (NSMutableStringProxyForMutableAttributedString)initWithMutableAttributedString:(id)string
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -32,26 +32,26 @@
   v4 = [(NSString *)&v6 init];
   if (v4)
   {
-    v4->mutableAttributedString = a3;
+    v4->mutableAttributedString = string;
   }
 
   return v4;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v4 = [(NSAttributedString *)self->mutableAttributedString string];
+  string = [(NSAttributedString *)self->mutableAttributedString string];
 
-  return [(NSString *)v4 characterAtIndex:a3];
+  return [(NSString *)string characterAtIndex:index];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(NSAttributedString *)self->mutableAttributedString string];
+  length = range.length;
+  location = range.location;
+  string = [(NSAttributedString *)self->mutableAttributedString string];
 
-  [(NSString *)v7 getCharacters:a3 range:location, length];
+  [(NSString *)string getCharacters:characters range:location, length];
 }
 
 @end

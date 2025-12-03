@@ -1,9 +1,9 @@
 @interface BFFFinishSetupAssistantOptInController
 + (id)finishSetupAssistantOptInController;
 - (BFFFinishSetupAssistantOptInController)init;
-- (id)viewControllerWithCompletion:(id)a3;
+- (id)viewControllerWithCompletion:(id)completion;
 - (void)continueSetup;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)showLearnMore;
 - (void)skipSetup;
 @end
@@ -24,17 +24,17 @@
   return [(BFFFinishSetupAssistantOptInController *)&v3 init];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __86__BFFFinishSetupAssistantOptInController_performExtendedInitializationWithCompletion___block_invoke;
   v7[3] = &unk_279BB4B88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -52,10 +52,10 @@ uint64_t __86__BFFFinishSetupAssistantOptInController_performExtendedInitializat
   return result;
 }
 
-- (id)viewControllerWithCompletion:(id)a3
+- (id)viewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(BFFFinishSetupAssistantOptInController *)self setCompletion:v4];
+  completionCopy = completion;
+  [(BFFFinishSetupAssistantOptInController *)self setCompletion:completionCopy];
   if (!self->_enrollmentController)
   {
     v13 = 0;
@@ -100,9 +100,9 @@ uint64_t __86__BFFFinishSetupAssistantOptInController_performExtendedInitializat
     _os_log_impl(&dword_265AC5000, v3, OS_LOG_TYPE_DEFAULT, "Siri setup success", v15, 2u);
   }
 
-  v4 = [(BFFFinishSetupAssistantOptInController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupAssistantOptInController *)self flowSkipController];
   v5 = *MEMORY[0x277D4D9C0];
-  [v4 didCompleteFlow:*MEMORY[0x277D4D9C0]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9C0]];
 
   v6 = *MEMORY[0x277CBED28];
   v7 = *MEMORY[0x277D4D9E0];
@@ -114,8 +114,8 @@ uint64_t __86__BFFFinishSetupAssistantOptInController_performExtendedInitializat
     CFPreferencesSetValue(*MEMORY[0x277D4D990], v6, v7, v8, v9);
   }
 
-  v10 = [(BFFFinishSetupAssistantOptInController *)self paneFeatureAnalyticsManager];
-  [v10 recordActionWithValue:MEMORY[0x277CBEC38] forFeature:7];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupAssistantOptInController *)self paneFeatureAnalyticsManager];
+  [paneFeatureAnalyticsManager recordActionWithValue:MEMORY[0x277CBEC38] forFeature:7];
 
   completion = self->_completion;
   if (completion)
@@ -142,9 +142,9 @@ uint64_t __86__BFFFinishSetupAssistantOptInController_performExtendedInitializat
     _os_log_impl(&dword_265AC5000, v3, OS_LOG_TYPE_DEFAULT, "User chose to skip Siri setup", v15, 2u);
   }
 
-  v4 = [(BFFFinishSetupAssistantOptInController *)self flowSkipController];
+  flowSkipController = [(BFFFinishSetupAssistantOptInController *)self flowSkipController];
   v5 = *MEMORY[0x277D4D9C0];
-  [v4 didCompleteFlow:*MEMORY[0x277D4D9C0]];
+  [flowSkipController didCompleteFlow:*MEMORY[0x277D4D9C0]];
 
   v6 = *MEMORY[0x277CBED28];
   v7 = *MEMORY[0x277D4D9E0];
@@ -152,8 +152,8 @@ uint64_t __86__BFFFinishSetupAssistantOptInController_performExtendedInitializat
   v9 = *MEMORY[0x277CBF030];
   CFPreferencesSetValue(*MEMORY[0x277D4D998], *MEMORY[0x277CBED28], *MEMORY[0x277D4D9E0], *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
   CFPreferencesSetValue(*MEMORY[0x277D4D990], v6, v7, v8, v9);
-  v10 = [(BFFFinishSetupAssistantOptInController *)self paneFeatureAnalyticsManager];
-  [v10 recordActionWithValue:MEMORY[0x277CBEC28] forFeature:7];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupAssistantOptInController *)self paneFeatureAnalyticsManager];
+  [paneFeatureAnalyticsManager recordActionWithValue:MEMORY[0x277CBEC28] forFeature:7];
 
   completion = self->_completion;
   if (completion)

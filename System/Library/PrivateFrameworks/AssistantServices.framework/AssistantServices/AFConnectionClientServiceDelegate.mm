@@ -1,61 +1,61 @@
 @interface AFConnectionClientServiceDelegate
-- (AFConnectionClientServiceDelegate)initWithConnection:(id)a3 targetQueue:(id)a4;
+- (AFConnectionClientServiceDelegate)initWithConnection:(id)connection targetQueue:(id)queue;
 - (id)_connectionDelegate;
-- (void)aceConnectionWillRetryOnError:(id)a3;
-- (void)acousticIDRequestDidFinishWithSuccess:(BOOL)a3;
+- (void)aceConnectionWillRetryOnError:(id)error;
+- (void)acousticIDRequestDidFinishWithSuccess:(BOOL)success;
 - (void)acousticIDRequestWillStart;
-- (void)appLaunchFailedWithBundleIdentifier:(id)a3;
-- (void)audioPlaybackRequestDidStart:(id)a3;
-- (void)audioPlaybackRequestDidStop:(id)a3 error:(id)a4;
-- (void)audioPlaybackRequestWillStart:(id)a3;
-- (void)audioSessionDidBecomeActive:(BOOL)a3;
-- (void)audioSessionDidBeginInterruptionWithUserInfo:(id)a3;
-- (void)audioSessionDidEndInterruption:(BOOL)a3 userInfo:(id)a4;
-- (void)audioSessionIDChanged:(unsigned int)a3;
-- (void)audioSessionWillBecomeActive:(BOOL)a3;
-- (void)cacheImage:(id)a3;
+- (void)appLaunchFailedWithBundleIdentifier:(id)identifier;
+- (void)audioPlaybackRequestDidStart:(id)start;
+- (void)audioPlaybackRequestDidStop:(id)stop error:(id)error;
+- (void)audioPlaybackRequestWillStart:(id)start;
+- (void)audioSessionDidBecomeActive:(BOOL)active;
+- (void)audioSessionDidBeginInterruptionWithUserInfo:(id)info;
+- (void)audioSessionDidEndInterruption:(BOOL)interruption userInfo:(id)info;
+- (void)audioSessionIDChanged:(unsigned int)changed;
+- (void)audioSessionWillBecomeActive:(BOOL)active;
+- (void)cacheImage:(id)image;
 - (void)endWaitingForEmergency;
-- (void)extensionRequestFinishedForApplication:(id)a3 error:(id)a4;
-- (void)extensionRequestWillStartForApplication:(id)a3;
-- (void)getBulletinContext:(id)a3;
+- (void)extensionRequestFinishedForApplication:(id)application error:(id)error;
+- (void)extensionRequestWillStartForApplication:(id)application;
+- (void)getBulletinContext:(id)context;
 - (void)invalidateCurrentUserActivity;
 - (void)musicWasDetected;
 - (void)networkDidBecomeActive;
-- (void)quickStopWasHandledWithActions:(unint64_t)a3;
-- (void)requestDidAskForTimeoutExtension:(double)a3;
-- (void)requestDidReceiveCommand:(id)a3 reply:(id)a4;
-- (void)requestDidUpdateResponseMode:(id)a3;
-- (void)requestHandleCommand:(id)a3 reply:(id)a4;
-- (void)requestReplayAllRecordedViews:(unint64_t)a3 with:(id)a4;
-- (void)requestReplayRecordedViewAt:(unint64_t)a3 with:(id)a4;
+- (void)quickStopWasHandledWithActions:(unint64_t)actions;
+- (void)requestDidAskForTimeoutExtension:(double)extension;
+- (void)requestDidReceiveCommand:(id)command reply:(id)reply;
+- (void)requestDidUpdateResponseMode:(id)mode;
+- (void)requestHandleCommand:(id)command reply:(id)reply;
+- (void)requestReplayAllRecordedViews:(unint64_t)views with:(id)with;
+- (void)requestReplayRecordedViewAt:(unint64_t)at with:(id)with;
 - (void)requestRequestedDismissAssistant;
-- (void)requestRequestedDismissAssistantWithReason:(int64_t)a3;
-- (void)requestRequestedOpenApplicationWithBundleID:(id)a3 URL:(id)a4 reply:(id)a5;
-- (void)requestRequestedOpenURL:(id)a3 reply:(id)a4;
-- (void)requestSetReplayEnabled:(BOOL)a3;
-- (void)requestSetReplayOverridePath:(id)a3;
-- (void)setUserActivityInfo:(id)a3 webpageURL:(id)a4;
-- (void)shouldSpeakChanged:(BOOL)a3;
-- (void)speechRecognitionDidFail:(id)a3;
-- (void)speechRecognized:(id)a3;
-- (void)speechRecognizedAdditionalInterpretation:(id)a3 refId:(id)a4;
-- (void)speechRecognizedPartialResult:(id)a3;
-- (void)speechRecordingDidBeginOnAVRecordRoute:(id)a3 audioSessionID:(unsigned int)a4 reply:(id)a5;
-- (void)speechRecordingDidCancelWithReply:(id)a3;
-- (void)speechRecordingDidChangeAVRecordRoute:(id)a3 isDucking:(BOOL)a4 isTwoShot:(BOOL)a5 speechEndHostTime:(unint64_t)a6 reply:(id)a7;
-- (void)speechRecordingDidEndWithReply:(id)a3;
-- (void)speechRecordingDidFail:(id)a3 reply:(id)a4;
-- (void)speechRecordingDidUpdateRecognitionPhrases:(id)a3 utterances:(id)a4 refId:(id)a5;
-- (void)speechRecordingPerformTwoShotPromptWithType:(int64_t)a3 reply:(id)a4;
-- (void)speechRecordingStartpointDetectedWithReply:(id)a3;
-- (void)speechRecordingWillBeginRecognitionUpdateForTask:(id)a3;
-- (void)speechRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)a3 reply:(id)a4;
-- (void)startPlaybackDidFail:(int64_t)a3;
-- (void)startUIRequestWithInfo:(id)a3 completion:(id)a4;
-- (void)startUIRequestWithText:(id)a3 completion:(id)a4;
-- (void)willProcessAppLaunchWithBundleIdentifier:(id)a3;
-- (void)willProcessStartPlayback:(int64_t)a3 intent:(id)a4 completion:(id)a5;
-- (void)willStopRecordingWithSignpostID:(unint64_t)a3;
+- (void)requestRequestedDismissAssistantWithReason:(int64_t)reason;
+- (void)requestRequestedOpenApplicationWithBundleID:(id)d URL:(id)l reply:(id)reply;
+- (void)requestRequestedOpenURL:(id)l reply:(id)reply;
+- (void)requestSetReplayEnabled:(BOOL)enabled;
+- (void)requestSetReplayOverridePath:(id)path;
+- (void)setUserActivityInfo:(id)info webpageURL:(id)l;
+- (void)shouldSpeakChanged:(BOOL)changed;
+- (void)speechRecognitionDidFail:(id)fail;
+- (void)speechRecognized:(id)recognized;
+- (void)speechRecognizedAdditionalInterpretation:(id)interpretation refId:(id)id;
+- (void)speechRecognizedPartialResult:(id)result;
+- (void)speechRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d reply:(id)reply;
+- (void)speechRecordingDidCancelWithReply:(id)reply;
+- (void)speechRecordingDidChangeAVRecordRoute:(id)route isDucking:(BOOL)ducking isTwoShot:(BOOL)shot speechEndHostTime:(unint64_t)time reply:(id)reply;
+- (void)speechRecordingDidEndWithReply:(id)reply;
+- (void)speechRecordingDidFail:(id)fail reply:(id)reply;
+- (void)speechRecordingDidUpdateRecognitionPhrases:(id)phrases utterances:(id)utterances refId:(id)id;
+- (void)speechRecordingPerformTwoShotPromptWithType:(int64_t)type reply:(id)reply;
+- (void)speechRecordingStartpointDetectedWithReply:(id)reply;
+- (void)speechRecordingWillBeginRecognitionUpdateForTask:(id)task;
+- (void)speechRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)wrapper reply:(id)reply;
+- (void)startPlaybackDidFail:(int64_t)fail;
+- (void)startUIRequestWithInfo:(id)info completion:(id)completion;
+- (void)startUIRequestWithText:(id)text completion:(id)completion;
+- (void)willProcessAppLaunchWithBundleIdentifier:(id)identifier;
+- (void)willProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion;
+- (void)willStopRecordingWithSignpostID:(unint64_t)d;
 @end
 
 @implementation AFConnectionClientServiceDelegate
@@ -94,9 +94,9 @@ void __66__AFConnectionClientServiceDelegate_invalidateCurrentUserActivity__bloc
 - (id)_connectionDelegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
 
-  return v3;
+  return delegate;
 }
 
 void __59__AFConnectionClientServiceDelegate_networkDidBecomeActive__block_invoke(uint64_t a1)
@@ -107,13 +107,13 @@ void __59__AFConnectionClientServiceDelegate_networkDidBecomeActive__block_invok
 
 - (void)endWaitingForEmergency
 {
-  v2 = [MEMORY[0x1E69CE398] currentCoordinator];
-  [v2 endWaitingForEmergency];
+  currentCoordinator = [MEMORY[0x1E69CE398] currentCoordinator];
+  [currentCoordinator endWaitingForEmergency];
 }
 
-- (void)appLaunchFailedWithBundleIdentifier:(id)a3
+- (void)appLaunchFailedWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_copyWeak(&to, &self->_connection);
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -121,8 +121,8 @@ void __59__AFConnectionClientServiceDelegate_networkDidBecomeActive__block_invok
   block[2] = __73__AFConnectionClientServiceDelegate_appLaunchFailedWithBundleIdentifier___block_invoke;
   block[3] = &unk_1E73470E0;
   objc_copyWeak(&v9, &to);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(targetQueue, block);
 
   objc_destroyWeak(&v9);
@@ -135,9 +135,9 @@ void __73__AFConnectionClientServiceDelegate_appLaunchFailedWithBundleIdentifier
   [WeakRetained _tellDelegateFailedToLaunchAppWithBundleIdentifier:*(a1 + 32)];
 }
 
-- (void)willProcessAppLaunchWithBundleIdentifier:(id)a3
+- (void)willProcessAppLaunchWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_copyWeak(&to, &self->_connection);
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -145,8 +145,8 @@ void __73__AFConnectionClientServiceDelegate_appLaunchFailedWithBundleIdentifier
   block[2] = __78__AFConnectionClientServiceDelegate_willProcessAppLaunchWithBundleIdentifier___block_invoke;
   block[3] = &unk_1E73470E0;
   objc_copyWeak(&v9, &to);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(targetQueue, block);
 
   objc_destroyWeak(&v9);
@@ -159,7 +159,7 @@ void __78__AFConnectionClientServiceDelegate_willProcessAppLaunchWithBundleIdent
   [WeakRetained _tellDelegateWillProcessAppLaunchWithBundleIdentifier:*(a1 + 32)];
 }
 
-- (void)audioSessionDidBecomeActive:(BOOL)a3
+- (void)audioSessionDidBecomeActive:(BOOL)active
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -167,7 +167,7 @@ void __78__AFConnectionClientServiceDelegate_willProcessAppLaunchWithBundleIdent
   v4[2] = __65__AFConnectionClientServiceDelegate_audioSessionDidBecomeActive___block_invoke;
   v4[3] = &unk_1E7347F98;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(targetQueue, v4);
 }
 
@@ -177,7 +177,7 @@ void __65__AFConnectionClientServiceDelegate_audioSessionDidBecomeActive___block
   [WeakRetained _tellDelegateAudioSessionDidBecomeActive:*(a1 + 40)];
 }
 
-- (void)audioSessionWillBecomeActive:(BOOL)a3
+- (void)audioSessionWillBecomeActive:(BOOL)active
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -185,7 +185,7 @@ void __65__AFConnectionClientServiceDelegate_audioSessionDidBecomeActive___block
   v4[2] = __66__AFConnectionClientServiceDelegate_audioSessionWillBecomeActive___block_invoke;
   v4[3] = &unk_1E7347F98;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(targetQueue, v4);
 }
 
@@ -195,7 +195,7 @@ void __66__AFConnectionClientServiceDelegate_audioSessionWillBecomeActive___bloc
   [WeakRetained _tellDelegateAudioSessionWillBecomeActive:*(a1 + 40)];
 }
 
-- (void)startPlaybackDidFail:(int64_t)a3
+- (void)startPlaybackDidFail:(int64_t)fail
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -203,7 +203,7 @@ void __66__AFConnectionClientServiceDelegate_audioSessionWillBecomeActive___bloc
   v4[2] = __58__AFConnectionClientServiceDelegate_startPlaybackDidFail___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = fail;
   dispatch_async(targetQueue, v4);
 }
 
@@ -213,21 +213,21 @@ void __58__AFConnectionClientServiceDelegate_startPlaybackDidFail___block_invoke
   [WeakRetained _tellDelegateStartPlaybackDidFail:*(a1 + 40)];
 }
 
-- (void)willProcessStartPlayback:(int64_t)a3 intent:(id)a4 completion:(id)a5
+- (void)willProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  intentCopy = intent;
+  completionCopy = completion;
   targetQueue = self->_targetQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__AFConnectionClientServiceDelegate_willProcessStartPlayback_intent_completion___block_invoke;
   v13[3] = &unk_1E7343940;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = intentCopy;
+  v15 = completionCopy;
+  playbackCopy = playback;
+  v11 = completionCopy;
+  v12 = intentCopy;
   dispatch_async(targetQueue, v13);
 }
 
@@ -237,20 +237,20 @@ void __80__AFConnectionClientServiceDelegate_willProcessStartPlayback_intent_com
   [WeakRetained _tellDelegateWillProcessStartPlayback:a1[7] intent:a1[5] completion:a1[6]];
 }
 
-- (void)audioPlaybackRequestDidStop:(id)a3 error:(id)a4
+- (void)audioPlaybackRequestDidStop:(id)stop error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  stopCopy = stop;
+  errorCopy = error;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__AFConnectionClientServiceDelegate_audioPlaybackRequestDidStop_error___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stopCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = stopCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -260,17 +260,17 @@ void __71__AFConnectionClientServiceDelegate_audioPlaybackRequestDidStop_error__
   [WeakRetained _tellDelegateAudioPlaybackRequestDidStop:a1[5] error:a1[6]];
 }
 
-- (void)audioPlaybackRequestDidStart:(id)a3
+- (void)audioPlaybackRequestDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AFConnectionClientServiceDelegate_audioPlaybackRequestDidStart___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startCopy;
+  v6 = startCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -280,17 +280,17 @@ void __66__AFConnectionClientServiceDelegate_audioPlaybackRequestDidStart___bloc
   [WeakRetained _tellDelegateAudioPlaybackRequestDidStart:*(a1 + 40)];
 }
 
-- (void)audioPlaybackRequestWillStart:(id)a3
+- (void)audioPlaybackRequestWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__AFConnectionClientServiceDelegate_audioPlaybackRequestWillStart___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startCopy;
+  v6 = startCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -300,18 +300,18 @@ void __67__AFConnectionClientServiceDelegate_audioPlaybackRequestWillStart___blo
   [WeakRetained _tellDelegateAudioPlaybackRequestWillStart:*(a1 + 40)];
 }
 
-- (void)audioSessionDidEndInterruption:(BOOL)a3 userInfo:(id)a4
+- (void)audioSessionDidEndInterruption:(BOOL)interruption userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__AFConnectionClientServiceDelegate_audioSessionDidEndInterruption_userInfo___block_invoke;
   block[3] = &unk_1E7344368;
-  v11 = a3;
+  interruptionCopy = interruption;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = infoCopy;
+  v8 = infoCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -321,17 +321,17 @@ void __77__AFConnectionClientServiceDelegate_audioSessionDidEndInterruption_user
   [WeakRetained _tellDelegateAudioSessionDidEndInterruption:*(a1 + 48) userInfo:*(a1 + 40)];
 }
 
-- (void)audioSessionDidBeginInterruptionWithUserInfo:(id)a3
+- (void)audioSessionDidBeginInterruptionWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__AFConnectionClientServiceDelegate_audioSessionDidBeginInterruptionWithUserInfo___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -341,18 +341,18 @@ void __82__AFConnectionClientServiceDelegate_audioSessionDidBeginInterruptionWit
   [WeakRetained _tellDelegateAudioSessionDidBeginInterruptionWithUserInfo:*(a1 + 40)];
 }
 
-- (void)speechRecognitionDidFail:(id)a3
+- (void)speechRecognitionDidFail:(id)fail
 {
-  v5 = a3;
+  failCopy = fail;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__AFConnectionClientServiceDelegate_speechRecognitionDidFail___block_invoke;
   block[3] = &unk_1E73484C0;
-  v9 = v5;
+  v9 = failCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = failCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -366,18 +366,18 @@ void __62__AFConnectionClientServiceDelegate_speechRecognitionDidFail___block_in
   [v4 _tellSpeechDelegateRecognitionDidFail:*(a1 + 40)];
 }
 
-- (void)speechRecognizedPartialResult:(id)a3
+- (void)speechRecognizedPartialResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__AFConnectionClientServiceDelegate_speechRecognizedPartialResult___block_invoke;
   block[3] = &unk_1E73484C0;
-  v9 = v5;
+  v9 = resultCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = resultCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -391,17 +391,17 @@ void __67__AFConnectionClientServiceDelegate_speechRecognizedPartialResult___blo
   [v4 _tellSpeechDelegateSpeechRecognizedPartialResult:*(a1 + 40)];
 }
 
-- (void)speechRecordingWillBeginRecognitionUpdateForTask:(id)a3
+- (void)speechRecordingWillBeginRecognitionUpdateForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__AFConnectionClientServiceDelegate_speechRecordingWillBeginRecognitionUpdateForTask___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -411,23 +411,23 @@ void __86__AFConnectionClientServiceDelegate_speechRecordingWillBeginRecognition
   [WeakRetained _tellSpeechDelegateRecognitionUpdateWillBeginForTask:*(a1 + 40)];
 }
 
-- (void)speechRecordingDidUpdateRecognitionPhrases:(id)a3 utterances:(id)a4 refId:(id)a5
+- (void)speechRecordingDidUpdateRecognitionPhrases:(id)phrases utterances:(id)utterances refId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
+  idCopy = id;
   targetQueue = self->_targetQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__AFConnectionClientServiceDelegate_speechRecordingDidUpdateRecognitionPhrases_utterances_refId___block_invoke;
   v15[3] = &unk_1E7349398;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = phrasesCopy;
+  v17 = utterancesCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = utterancesCopy;
+  v14 = phrasesCopy;
   dispatch_async(targetQueue, v15);
 }
 
@@ -437,20 +437,20 @@ void __97__AFConnectionClientServiceDelegate_speechRecordingDidUpdateRecognition
   [WeakRetained _tellSpeechDelegateRecordingDidUpdateRecognitionPhrases:a1[5] utterances:a1[6] refId:a1[7]];
 }
 
-- (void)speechRecognizedAdditionalInterpretation:(id)a3 refId:(id)a4
+- (void)speechRecognizedAdditionalInterpretation:(id)interpretation refId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  interpretationCopy = interpretation;
+  idCopy = id;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__AFConnectionClientServiceDelegate_speechRecognizedAdditionalInterpretation_refId___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = interpretationCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = interpretationCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -460,18 +460,18 @@ void __84__AFConnectionClientServiceDelegate_speechRecognizedAdditionalInterpret
   [WeakRetained _tellSpeechDelegateRecognizedAdditionalSpeechInterpretation:a1[5] refId:a1[6]];
 }
 
-- (void)speechRecognized:(id)a3
+- (void)speechRecognized:(id)recognized
 {
-  v5 = a3;
+  recognizedCopy = recognized;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AFConnectionClientServiceDelegate_speechRecognized___block_invoke;
   block[3] = &unk_1E73484C0;
-  v9 = v5;
+  v9 = recognizedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = recognizedCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -485,7 +485,7 @@ void __54__AFConnectionClientServiceDelegate_speechRecognized___block_invoke(uin
   [WeakRetained _beginInterstitialsForReason:v2];
 }
 
-- (void)willStopRecordingWithSignpostID:(unint64_t)a3
+- (void)willStopRecordingWithSignpostID:(unint64_t)d
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -493,7 +493,7 @@ void __54__AFConnectionClientServiceDelegate_speechRecognized___block_invoke(uin
   v4[2] = __69__AFConnectionClientServiceDelegate_willStopRecordingWithSignpostID___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_async(targetQueue, v4);
 }
 
@@ -503,20 +503,20 @@ void __69__AFConnectionClientServiceDelegate_willStopRecordingWithSignpostID___b
   [WeakRetained _willStopRecordingWithSignpostID:*(a1 + 40)];
 }
 
-- (void)speechRecordingDidFail:(id)a3 reply:(id)a4
+- (void)speechRecordingDidFail:(id)fail reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  failCopy = fail;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__AFConnectionClientServiceDelegate_speechRecordingDidFail_reply___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = failCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = failCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -536,17 +536,17 @@ uint64_t __66__AFConnectionClientServiceDelegate_speechRecordingDidFail_reply___
   return result;
 }
 
-- (void)speechRecordingDidCancelWithReply:(id)a3
+- (void)speechRecordingDidCancelWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__AFConnectionClientServiceDelegate_speechRecordingDidCancelWithReply___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -563,18 +563,18 @@ void __71__AFConnectionClientServiceDelegate_speechRecordingDidCancelWithReply__
   }
 }
 
-- (void)speechRecordingDidEndWithReply:(id)a3
+- (void)speechRecordingDidEndWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__AFConnectionClientServiceDelegate_speechRecordingDidEndWithReply___block_invoke;
   block[3] = &unk_1E73484E8;
-  v9 = v5;
+  v9 = replyCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = replyCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -593,18 +593,18 @@ void __68__AFConnectionClientServiceDelegate_speechRecordingDidEndWithReply___bl
   }
 }
 
-- (void)speechRecordingPerformTwoShotPromptWithType:(int64_t)a3 reply:(id)a4
+- (void)speechRecordingPerformTwoShotPromptWithType:(int64_t)type reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__AFConnectionClientServiceDelegate_speechRecordingPerformTwoShotPromptWithType_reply___block_invoke;
   block[3] = &unk_1E73484E8;
-  v10 = v6;
-  v11 = a3;
+  v10 = replyCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = replyCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -614,17 +614,17 @@ void __87__AFConnectionClientServiceDelegate_speechRecordingPerformTwoShotPrompt
   [WeakRetained _tellSpeechDelegateToPerformTwoShotPromptWithType:a1[6] reply:a1[5]];
 }
 
-- (void)speechRecordingStartpointDetectedWithReply:(id)a3
+- (void)speechRecordingStartpointDetectedWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__AFConnectionClientServiceDelegate_speechRecordingStartpointDetectedWithReply___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -644,23 +644,23 @@ uint64_t __80__AFConnectionClientServiceDelegate_speechRecordingStartpointDetect
   return result;
 }
 
-- (void)speechRecordingDidChangeAVRecordRoute:(id)a3 isDucking:(BOOL)a4 isTwoShot:(BOOL)a5 speechEndHostTime:(unint64_t)a6 reply:(id)a7
+- (void)speechRecordingDidChangeAVRecordRoute:(id)route isDucking:(BOOL)ducking isTwoShot:(BOOL)shot speechEndHostTime:(unint64_t)time reply:(id)reply
 {
-  v12 = a3;
-  v13 = a7;
+  routeCopy = route;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __119__AFConnectionClientServiceDelegate_speechRecordingDidChangeAVRecordRoute_isDucking_isTwoShot_speechEndHostTime_reply___block_invoke;
   block[3] = &unk_1E7341AB8;
   block[4] = self;
-  v18 = v12;
-  v21 = a4;
-  v22 = a5;
-  v19 = v13;
-  v20 = a6;
-  v15 = v13;
-  v16 = v12;
+  v18 = routeCopy;
+  duckingCopy = ducking;
+  shotCopy = shot;
+  v19 = replyCopy;
+  timeCopy = time;
+  v15 = replyCopy;
+  v16 = routeCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -693,22 +693,22 @@ void __119__AFConnectionClientServiceDelegate_speechRecordingDidChangeAVRecordRo
   }
 }
 
-- (void)speechRecordingDidBeginOnAVRecordRoute:(id)a3 audioSessionID:(unsigned int)a4 reply:(id)a5
+- (void)speechRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  routeCopy = route;
+  replyCopy = reply;
   kdebug_trace();
   targetQueue = self->_targetQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__AFConnectionClientServiceDelegate_speechRecordingDidBeginOnAVRecordRoute_audioSessionID_reply___block_invoke;
   v13[3] = &unk_1E7344390;
-  v16 = a4;
+  dCopy = d;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = routeCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = routeCopy;
   dispatch_async(targetQueue, v13);
 }
 
@@ -726,20 +726,20 @@ void __97__AFConnectionClientServiceDelegate_speechRecordingDidBeginOnAVRecordRo
   }
 }
 
-- (void)speechRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)a3 reply:(id)a4
+- (void)speechRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)wrapper reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  wrapperCopy = wrapper;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__AFConnectionClientServiceDelegate_speechRecordingWillBeginWithInputAudioPowerXPCWrapper_reply___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = wrapperCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = wrapperCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -773,17 +773,17 @@ uint64_t __97__AFConnectionClientServiceDelegate_speechRecordingWillBeginWithInp
   return result;
 }
 
-- (void)aceConnectionWillRetryOnError:(id)a3
+- (void)aceConnectionWillRetryOnError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__AFConnectionClientServiceDelegate_aceConnectionWillRetryOnError___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -793,7 +793,7 @@ void __67__AFConnectionClientServiceDelegate_aceConnectionWillRetryOnError___blo
   [WeakRetained _aceConnectionWillRetryOnError:*(a1 + 40)];
 }
 
-- (void)audioSessionIDChanged:(unsigned int)a3
+- (void)audioSessionIDChanged:(unsigned int)changed
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -801,7 +801,7 @@ void __67__AFConnectionClientServiceDelegate_aceConnectionWillRetryOnError___blo
   v4[2] = __59__AFConnectionClientServiceDelegate_audioSessionIDChanged___block_invoke;
   v4[3] = &unk_1E7346BE8;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(targetQueue, v4);
 }
 
@@ -811,7 +811,7 @@ void __59__AFConnectionClientServiceDelegate_audioSessionIDChanged___block_invok
   [WeakRetained _setAudioSessionID:*(a1 + 40)];
 }
 
-- (void)shouldSpeakChanged:(BOOL)a3
+- (void)shouldSpeakChanged:(BOOL)changed
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -819,7 +819,7 @@ void __59__AFConnectionClientServiceDelegate_audioSessionIDChanged___block_invok
   v4[2] = __56__AFConnectionClientServiceDelegate_shouldSpeakChanged___block_invoke;
   v4[3] = &unk_1E7347F98;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(targetQueue, v4);
 }
 
@@ -829,20 +829,20 @@ void __56__AFConnectionClientServiceDelegate_shouldSpeakChanged___block_invoke(u
   [WeakRetained _setShouldSpeak:*(a1 + 40)];
 }
 
-- (void)extensionRequestFinishedForApplication:(id)a3 error:(id)a4
+- (void)extensionRequestFinishedForApplication:(id)application error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  errorCopy = error;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__AFConnectionClientServiceDelegate_extensionRequestFinishedForApplication_error___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = applicationCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = applicationCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -852,17 +852,17 @@ void __82__AFConnectionClientServiceDelegate_extensionRequestFinishedForApplicat
   [WeakRetained _tellDelegateExtensionRequestFinishedForApplication:a1[5] error:a1[6]];
 }
 
-- (void)extensionRequestWillStartForApplication:(id)a3
+- (void)extensionRequestWillStartForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__AFConnectionClientServiceDelegate_extensionRequestWillStartForApplication___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = applicationCopy;
+  v6 = applicationCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -872,17 +872,17 @@ void __77__AFConnectionClientServiceDelegate_extensionRequestWillStartForApplica
   [WeakRetained _tellDelegateExtensionRequestWillStartForApplication:*(a1 + 40)];
 }
 
-- (void)cacheImage:(id)a3
+- (void)cacheImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AFConnectionClientServiceDelegate_cacheImage___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = imageCopy;
+  v6 = imageCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -892,20 +892,20 @@ void __48__AFConnectionClientServiceDelegate_cacheImage___block_invoke(uint64_t 
   [WeakRetained _tellDelegateCacheImage:*(a1 + 40)];
 }
 
-- (void)setUserActivityInfo:(id)a3 webpageURL:(id)a4
+- (void)setUserActivityInfo:(id)info webpageURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  lCopy = l;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__AFConnectionClientServiceDelegate_setUserActivityInfo_webpageURL___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = lCopy;
+  v9 = lCopy;
+  v10 = infoCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -915,7 +915,7 @@ void __68__AFConnectionClientServiceDelegate_setUserActivityInfo_webpageURL___bl
   [WeakRetained _tellDelegateSetUserActivityInfo:a1[5] webpageURL:a1[6]];
 }
 
-- (void)acousticIDRequestDidFinishWithSuccess:(BOOL)a3
+- (void)acousticIDRequestDidFinishWithSuccess:(BOOL)success
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -923,7 +923,7 @@ void __68__AFConnectionClientServiceDelegate_setUserActivityInfo_webpageURL___bl
   v4[2] = __75__AFConnectionClientServiceDelegate_acousticIDRequestDidFinishWithSuccess___block_invoke;
   v4[3] = &unk_1E7347F98;
   v4[4] = self;
-  v5 = a3;
+  successCopy = success;
   dispatch_async(targetQueue, v4);
 }
 
@@ -967,17 +967,17 @@ void __63__AFConnectionClientServiceDelegate_acousticIDRequestWillStart__block_i
   [WeakRetained _tellDelegateWillStartAcousticIDRequest];
 }
 
-- (void)getBulletinContext:(id)a3
+- (void)getBulletinContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AFConnectionClientServiceDelegate_getBulletinContext___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -992,7 +992,7 @@ void __56__AFConnectionClientServiceDelegate_getBulletinContext___block_invoke(u
   }
 }
 
-- (void)quickStopWasHandledWithActions:(unint64_t)a3
+- (void)quickStopWasHandledWithActions:(unint64_t)actions
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1000,7 +1000,7 @@ void __56__AFConnectionClientServiceDelegate_getBulletinContext___block_invoke(u
   v4[2] = __68__AFConnectionClientServiceDelegate_quickStopWasHandledWithActions___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = actions;
   dispatch_async(targetQueue, v4);
 }
 
@@ -1031,7 +1031,7 @@ void __68__AFConnectionClientServiceDelegate_quickStopWasHandledWithActions___bl
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDidAskForTimeoutExtension:(double)a3
+- (void)requestDidAskForTimeoutExtension:(double)extension
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1039,7 +1039,7 @@ void __68__AFConnectionClientServiceDelegate_quickStopWasHandledWithActions___bl
   v4[2] = __70__AFConnectionClientServiceDelegate_requestDidAskForTimeoutExtension___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = extension;
   dispatch_async(targetQueue, v4);
 }
 
@@ -1049,17 +1049,17 @@ void __70__AFConnectionClientServiceDelegate_requestDidAskForTimeoutExtension___
   [WeakRetained requestDidAskForTimeoutExtension:*(a1 + 40)];
 }
 
-- (void)requestDidUpdateResponseMode:(id)a3
+- (void)requestDidUpdateResponseMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AFConnectionClientServiceDelegate_requestDidUpdateResponseMode___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modeCopy;
+  v6 = modeCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -1093,7 +1093,7 @@ void __66__AFConnectionClientServiceDelegate_requestDidUpdateResponseMode___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestRequestedDismissAssistantWithReason:(int64_t)a3
+- (void)requestRequestedDismissAssistantWithReason:(int64_t)reason
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1101,7 +1101,7 @@ void __66__AFConnectionClientServiceDelegate_requestDidUpdateResponseMode___bloc
   v4[2] = __80__AFConnectionClientServiceDelegate_requestRequestedDismissAssistantWithReason___block_invoke;
   v4[3] = &unk_1E7348498;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(targetQueue, v4);
 }
 
@@ -1179,20 +1179,20 @@ void __69__AFConnectionClientServiceDelegate_requestRequestedDismissAssistant__b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestRequestedOpenURL:(id)a3 reply:(id)a4
+- (void)requestRequestedOpenURL:(id)l reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__AFConnectionClientServiceDelegate_requestRequestedOpenURL_reply___block_invoke;
   block[3] = &unk_1E73496E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = lCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1231,23 +1231,23 @@ void __67__AFConnectionClientServiceDelegate_requestRequestedOpenURL_reply___blo
   }
 }
 
-- (void)requestRequestedOpenApplicationWithBundleID:(id)a3 URL:(id)a4 reply:(id)a5
+- (void)requestRequestedOpenApplicationWithBundleID:(id)d URL:(id)l reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  lCopy = l;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__AFConnectionClientServiceDelegate_requestRequestedOpenApplicationWithBundleID_URL_reply___block_invoke;
   v15[3] = &unk_1E73479F0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = lCopy;
+  v19 = replyCopy;
+  v12 = replyCopy;
+  v13 = lCopy;
+  v14 = dCopy;
   dispatch_async(targetQueue, v15);
 }
 
@@ -1286,20 +1286,20 @@ void __91__AFConnectionClientServiceDelegate_requestRequestedOpenApplicationWith
   }
 }
 
-- (void)requestHandleCommand:(id)a3 reply:(id)a4
+- (void)requestHandleCommand:(id)command reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__AFConnectionClientServiceDelegate_requestHandleCommand_reply___block_invoke;
   block[3] = &unk_1E73496E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = commandCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = commandCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1406,20 +1406,20 @@ void __64__AFConnectionClientServiceDelegate_requestHandleCommand_reply___block_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDidReceiveCommand:(id)a3 reply:(id)a4
+- (void)requestDidReceiveCommand:(id)command reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  replyCopy = reply;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__AFConnectionClientServiceDelegate_requestDidReceiveCommand_reply___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = commandCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = commandCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1446,17 +1446,17 @@ uint64_t __68__AFConnectionClientServiceDelegate_requestDidReceiveCommand_reply_
   return result;
 }
 
-- (void)requestSetReplayOverridePath:(id)a3
+- (void)requestSetReplayOverridePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   targetQueue = self->_targetQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AFConnectionClientServiceDelegate_requestSetReplayOverridePath___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathCopy;
+  v6 = pathCopy;
   dispatch_async(targetQueue, v7);
 }
 
@@ -1470,7 +1470,7 @@ void __66__AFConnectionClientServiceDelegate_requestSetReplayOverridePath___bloc
   }
 }
 
-- (void)requestSetReplayEnabled:(BOOL)a3
+- (void)requestSetReplayEnabled:(BOOL)enabled
 {
   targetQueue = self->_targetQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1478,7 +1478,7 @@ void __66__AFConnectionClientServiceDelegate_requestSetReplayOverridePath___bloc
   v4[2] = __61__AFConnectionClientServiceDelegate_requestSetReplayEnabled___block_invoke;
   v4[3] = &unk_1E7347F98;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(targetQueue, v4);
 }
 
@@ -1492,18 +1492,18 @@ void __61__AFConnectionClientServiceDelegate_requestSetReplayEnabled___block_inv
   }
 }
 
-- (void)requestReplayRecordedViewAt:(unint64_t)a3 with:(id)a4
+- (void)requestReplayRecordedViewAt:(unint64_t)at with:(id)with
 {
-  v6 = a4;
+  withCopy = with;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__AFConnectionClientServiceDelegate_requestReplayRecordedViewAt_with___block_invoke;
   block[3] = &unk_1E73484C0;
-  v10 = v6;
-  v11 = a3;
+  v10 = withCopy;
+  atCopy = at;
   block[4] = self;
-  v8 = v6;
+  v8 = withCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1536,18 +1536,18 @@ void __70__AFConnectionClientServiceDelegate_requestReplayRecordedViewAt_with___
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestReplayAllRecordedViews:(unint64_t)a3 with:(id)a4
+- (void)requestReplayAllRecordedViews:(unint64_t)views with:(id)with
 {
-  v6 = a4;
+  withCopy = with;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__AFConnectionClientServiceDelegate_requestReplayAllRecordedViews_with___block_invoke;
   block[3] = &unk_1E73484C0;
-  v10 = v6;
-  v11 = a3;
+  v10 = withCopy;
+  viewsCopy = views;
   block[4] = self;
-  v8 = v6;
+  v8 = withCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1580,20 +1580,20 @@ void __72__AFConnectionClientServiceDelegate_requestReplayAllRecordedViews_with_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startUIRequestWithInfo:(id)a3 completion:(id)a4
+- (void)startUIRequestWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__AFConnectionClientServiceDelegate_startUIRequestWithInfo_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1603,20 +1603,20 @@ void __71__AFConnectionClientServiceDelegate_startUIRequestWithInfo_completion__
   [WeakRetained _startUIRequestWithInfo:a1[5] completion:a1[6]];
 }
 
-- (void)startUIRequestWithText:(id)a3 completion:(id)a4
+- (void)startUIRequestWithText:(id)text completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  completionCopy = completion;
   targetQueue = self->_targetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__AFConnectionClientServiceDelegate_startUIRequestWithText_completion___block_invoke;
   block[3] = &unk_1E73496E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = textCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = textCopy;
   dispatch_async(targetQueue, block);
 }
 
@@ -1626,20 +1626,20 @@ void __71__AFConnectionClientServiceDelegate_startUIRequestWithText_completion__
   [WeakRetained _startUIRequestWithText:a1[5] completion:a1[6]];
 }
 
-- (AFConnectionClientServiceDelegate)initWithConnection:(id)a3 targetQueue:(id)a4
+- (AFConnectionClientServiceDelegate)initWithConnection:(id)connection targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = AFConnectionClientServiceDelegate;
   v8 = [(AFConnectionClientServiceDelegate *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_connection, v6);
-    if (v7)
+    objc_storeWeak(&v8->_connection, connectionCopy);
+    if (queueCopy)
     {
-      v10 = v7;
+      v10 = queueCopy;
       targetQueue = v9->_targetQueue;
       v9->_targetQueue = v10;
     }

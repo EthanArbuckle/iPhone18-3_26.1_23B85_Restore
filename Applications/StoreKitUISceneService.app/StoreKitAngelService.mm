@@ -1,14 +1,14 @@
 @interface StoreKitAngelService
-- (void)displayOfferWithOfferData:(id)a3 reply:(id)a4;
+- (void)displayOfferWithOfferData:(id)data reply:(id)reply;
 @end
 
 @implementation StoreKitAngelService
 
-- (void)displayOfferWithOfferData:(id)a3 reply:(id)a4
+- (void)displayOfferWithOfferData:(id)data reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(reply);
+  dataCopy = data;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 

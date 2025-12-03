@@ -74,22 +74,22 @@
 
 - (uint64_t)uiipc_useTelephonyUI
 {
-  v1 = [a1 uiipc_imagePickerOptions];
-  v2 = [v1 objectForKey:*MEMORY[0x277D77490]];
+  uiipc_imagePickerOptions = [self uiipc_imagePickerOptions];
+  v2 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D77490]];
 
   return [v2 BOOLValue];
 }
 
 - (uint64_t)uiipc_imagePickerOptions
 {
-  v1 = [a1 uiipc_imagePickerController];
+  uiipc_imagePickerController = [self uiipc_imagePickerController];
 
-  return [v1 _properties];
+  return [uiipc_imagePickerController _properties];
 }
 
 - (void)uiipc_imagePickerController
 {
-  for (i = [a1 parentViewController]; i; i = objc_msgSend(i, "parentViewController"))
+  for (i = [self parentViewController]; i; i = objc_msgSend(i, "parentViewController"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())

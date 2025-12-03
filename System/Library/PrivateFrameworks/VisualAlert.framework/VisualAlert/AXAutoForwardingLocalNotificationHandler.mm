@@ -1,30 +1,30 @@
 @interface AXAutoForwardingLocalNotificationHandler
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 possibleHandlers:(SEL)a6;
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 startObserving:(BOOL)a6;
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 handler:(SEL)a5;
-- (BOOL)_handleForwardDistributedNotificationWithName:(id)a3 object:(const void *)a4 userInfo:(id)a5;
-- (id)_forwardDistributedNotificationNameForHandler:(SEL)a3;
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher possibleHandlers:(SEL)handlers;
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher startObserving:(BOOL)observing;
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target handler:(SEL)handler;
+- (BOOL)_handleForwardDistributedNotificationWithName:(id)name object:(const void *)object userInfo:(id)info;
+- (id)_forwardDistributedNotificationNameForHandler:(SEL)handler;
 - (id)_notificationTypeDescription;
 - (id)_prefixForForwardDistributedNotificationName;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)processHandler:(SEL)a3;
+- (void)processHandler:(SEL)handler;
 @end
 
 @implementation AXAutoForwardingLocalNotificationHandler
 
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 handler:(SEL)a5
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target handler:(SEL)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __84__AXAutoForwardingLocalNotificationHandler_initWithNotificationName_target_handler___block_invoke;
   v6[3] = &__block_descriptor_40_e40__32__0__NSString_8r_v16__NSDictionary_24l;
-  v6[4] = a5;
-  return [(AXAutoForwardingLocalNotificationHandler *)self initWithNotificationName:a3 target:a4 dispatcher:v6 possibleHandlers:a5, 0];
+  v6[4] = handler;
+  return [(AXAutoForwardingLocalNotificationHandler *)self initWithNotificationName:name target:target dispatcher:v6 possibleHandlers:handler, 0];
 }
 
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 startObserving:(BOOL)a6
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher startObserving:(BOOL)observing
 {
   v7 = MEMORY[0x277CBEAD8];
   v8 = *MEMORY[0x277CBE648];
@@ -37,16 +37,16 @@
   return 0;
 }
 
-- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 possibleHandlers:(SEL)a6
+- (AXAutoForwardingLocalNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher possibleHandlers:(SEL)handlers
 {
   v32 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = AXAutoForwardingLocalNotificationHandler;
-  v7 = [(VISAXNotificationHandler *)&v29 initWithNotificationName:a3 target:a4 dispatcher:a5 startObserving:0];
+  v7 = [(VISAXNotificationHandler *)&v29 initWithNotificationName:name target:target dispatcher:dispatcher startObserving:0];
   if (v7)
   {
     v28 = 0;
-    if (a6)
+    if (handlers)
     {
       v8 = 0;
       v9 = 0;
@@ -65,7 +65,7 @@
         v7->_possibleHandlers = v11;
         if (v11)
         {
-          *v11 = a6;
+          *v11 = handlers;
           v28 = &v33;
           if (v9 != 1)
           {
@@ -86,21 +86,21 @@
       }
     }
 
-    v15 = [MEMORY[0x277CE6998] sharedInstance];
-    v16 = [v15 ignoreLogging];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v16 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v17 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v18 = AXLoggerForFacility();
 
       v19 = AXOSLogLevelFromAXLogLevel();
       if (os_log_type_enabled(v18, v19))
       {
         v20 = AXColorizeFormatLog();
-        v21 = [(AXAutoForwardingLocalNotificationHandler *)v7 _notificationTypeDescription];
+        _notificationTypeDescription = [(AXAutoForwardingLocalNotificationHandler *)v7 _notificationTypeDescription];
         [(VISAXNotificationHandler *)v7 _notificationName];
-        v27 = v26 = v21;
+        v27 = v26 = _notificationTypeDescription;
         v25 = v7;
         v22 = _AXStringForArgs();
 
@@ -135,7 +135,7 @@
   [(VISAXNotificationHandler *)&v4 dealloc];
 }
 
-- (void)processHandler:(SEL)a3
+- (void)processHandler:(SEL)handler
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -143,13 +143,13 @@
   [(VISAXNotificationHandler *)&v15 processHandler:?];
   if (AXProcessIsSpringBoard())
   {
-    v5 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:a3];
-    v6 = [MEMORY[0x277CE6998] sharedInstance];
-    v7 = [v6 ignoreLogging];
+    v5 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:handler];
+    mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+    ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-    if ((v7 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v8 = [MEMORY[0x277CE6998] identifier];
+      identifier = [MEMORY[0x277CE6998] identifier];
       v9 = AXLoggerForFacility();
 
       v10 = AXOSLogLevelFromAXLogLevel();
@@ -178,35 +178,35 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VISAXNotificationHandler *)self _notificationName];
-  v7 = [(VISAXNotificationHandler *)self _target];
+  _notificationName = [(VISAXNotificationHandler *)self _notificationName];
+  _target = [(VISAXNotificationHandler *)self _target];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v3 stringWithFormat:@"%@__%@__%@__", v5, v6, v9];
+  v10 = [v3 stringWithFormat:@"%@__%@__%@__", v5, _notificationName, v9];
 
   return v10;
 }
 
-- (id)_forwardDistributedNotificationNameForHandler:(SEL)a3
+- (id)_forwardDistributedNotificationNameForHandler:(SEL)handler
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(AXAutoForwardingLocalNotificationHandler *)self _prefixForForwardDistributedNotificationName];
-  v6 = NSStringFromSelector(a3);
-  v7 = [v4 stringWithFormat:@"%@%@", v5, v6];
+  _prefixForForwardDistributedNotificationName = [(AXAutoForwardingLocalNotificationHandler *)self _prefixForForwardDistributedNotificationName];
+  v6 = NSStringFromSelector(handler);
+  v7 = [v4 stringWithFormat:@"%@%@", _prefixForForwardDistributedNotificationName, v6];
 
   return v7;
 }
 
-- (BOOL)_handleForwardDistributedNotificationWithName:(id)a3 object:(const void *)a4 userInfo:(id)a5
+- (BOOL)_handleForwardDistributedNotificationWithName:(id)name object:(const void *)object userInfo:(id)info
 {
-  v6 = a3;
-  v7 = [(AXAutoForwardingLocalNotificationHandler *)self _prefixForForwardDistributedNotificationName];
-  if (![v6 hasPrefix:v7])
+  nameCopy = name;
+  _prefixForForwardDistributedNotificationName = [(AXAutoForwardingLocalNotificationHandler *)self _prefixForForwardDistributedNotificationName];
+  if (![nameCopy hasPrefix:_prefixForForwardDistributedNotificationName])
   {
     goto LABEL_5;
   }
 
-  v8 = [v6 substringFromIndex:{objc_msgSend(v7, "length")}];
+  v8 = [nameCopy substringFromIndex:{objc_msgSend(_prefixForForwardDistributedNotificationName, "length")}];
   v9 = NSSelectorFromString(v8);
   if (!v9)
   {
@@ -240,20 +240,20 @@ LABEL_6:
     v3 = 0;
     do
     {
-      v4 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:self->_possibleHandlers[v3], v14, v15];
-      v5 = [MEMORY[0x277CE6998] sharedInstance];
-      v6 = [v5 ignoreLogging];
+      v4 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:self->_possibleHandlers[v3], selfCopy, v15];
+      mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-      if ((v6 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v7 = [MEMORY[0x277CE6998] identifier];
+        identifier = [MEMORY[0x277CE6998] identifier];
         v8 = AXLoggerForFacility();
 
         v9 = AXOSLogLevelFromAXLogLevel();
         if (os_log_type_enabled(v8, v9))
         {
           v10 = AXColorizeFormatLog();
-          v14 = self;
+          selfCopy = self;
           v15 = v4;
           v11 = _AXStringForArgs();
           if (os_log_type_enabled(v8, v9))
@@ -292,20 +292,20 @@ LABEL_6:
     v3 = 0;
     do
     {
-      v4 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:self->_possibleHandlers[v3], v14, v15];
-      v5 = [MEMORY[0x277CE6998] sharedInstance];
-      v6 = [v5 ignoreLogging];
+      v4 = [(AXAutoForwardingLocalNotificationHandler *)self _forwardDistributedNotificationNameForHandler:self->_possibleHandlers[v3], selfCopy, v15];
+      mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-      if ((v6 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v7 = [MEMORY[0x277CE6998] identifier];
+        identifier = [MEMORY[0x277CE6998] identifier];
         v8 = AXLoggerForFacility();
 
         v9 = AXOSLogLevelFromAXLogLevel();
         if (os_log_type_enabled(v8, v9))
         {
           v10 = AXColorizeFormatLog();
-          v14 = self;
+          selfCopy = self;
           v15 = v4;
           v11 = _AXStringForArgs();
           if (os_log_type_enabled(v8, v9))
@@ -334,8 +334,8 @@ LABEL_6:
   v2 = MEMORY[0x277CCACA8];
   v6.receiver = self;
   v6.super_class = AXAutoForwardingLocalNotificationHandler;
-  v3 = [(AXLocalNotificationHandler *)&v6 _notificationTypeDescription];
-  v4 = [v2 stringWithFormat:@"auto-forwarding %@", v3];
+  _notificationTypeDescription = [(AXLocalNotificationHandler *)&v6 _notificationTypeDescription];
+  v4 = [v2 stringWithFormat:@"auto-forwarding %@", _notificationTypeDescription];
 
   return v4;
 }

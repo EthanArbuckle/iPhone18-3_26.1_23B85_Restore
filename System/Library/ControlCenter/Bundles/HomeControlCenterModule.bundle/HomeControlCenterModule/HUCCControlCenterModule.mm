@@ -1,26 +1,26 @@
 @interface HUCCControlCenterModule
-- (BOOL)isDeviceUnlockedForControlCenterModuleViewController:(id)a3;
-- (BOOL)isDeviceUnlockedForSmartGridContentViewController:(id)a3;
+- (BOOL)isDeviceUnlockedForControlCenterModuleViewController:(id)controller;
+- (BOOL)isDeviceUnlockedForSmartGridContentViewController:(id)controller;
 - (HUCCControlCenterModule)init;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 - (id)homeKitActiveAssertionReason;
 - (void)addStateSubscriptionReasonToDataModel;
-- (void)cancelRegistration:(id)a3;
+- (void)cancelRegistration:(id)registration;
 - (void)cancelScheduledCharacteristicDeregistration;
-- (void)controlCenterModuleViewController:(id)a3 didChangeDisplayedItems:(id)a4;
-- (void)controlCenterModuleViewController:(id)a3 didStartDisplayingHome:(id)a4;
-- (void)controlCenterModuleViewController:(id)a3 moduleDidDisappear:(BOOL)a4;
-- (void)controlCenterModuleViewController:(id)a3 moduleWillAppear:(BOOL)a4;
+- (void)controlCenterModuleViewController:(id)controller didChangeDisplayedItems:(id)items;
+- (void)controlCenterModuleViewController:(id)controller didStartDisplayingHome:(id)home;
+- (void)controlCenterModuleViewController:(id)controller moduleDidDisappear:(BOOL)disappear;
+- (void)controlCenterModuleViewController:(id)controller moduleWillAppear:(BOOL)appear;
 - (void)dealloc;
 - (void)endHomeKitActiveAssertion;
-- (void)launchHomeAppForControlCenterModuleViewController:(id)a3;
-- (void)launchHomeAppForSmartGridContentViewController:(id)a3;
+- (void)launchHomeAppForControlCenterModuleViewController:(id)controller;
+- (void)launchHomeAppForSmartGridContentViewController:(id)controller;
 - (void)registerForAnalytics;
-- (void)registerForItems:(NSSet *)a3 inHome:(HMHome *)a4 currentRegistration:(id)a5 completionBlock:(id)a6;
+- (void)registerForItems:(NSSet *)items inHome:(HMHome *)home currentRegistration:(id)registration completionBlock:(id)block;
 - (void)removeStateSubscriptionReasonFromDataModel;
 - (void)resetFetchedMediaItems;
 - (void)scheduleCharacteristicDeregistration;
-- (void)setContentModuleContext:(id)a3;
+- (void)setContentModuleContext:(id)context;
 - (void)setupHomeKitActiveAssertionIfNeeded;
 @end
 
@@ -76,10 +76,10 @@
   [(HUCCControlCenterModule *)&v11 dealloc];
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v19[3] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_viewController(self, v5, v6);
 
   if (!v7)
@@ -111,10 +111,10 @@
   return v15;
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  objc_storeStrong(&self->_contentModuleContext, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_contentModuleContext, context);
+  contextCopy = context;
   objc_opt_class();
   v8 = objc_msgSend_viewController(self, v6, v7);
   if (objc_opt_isKindOfClass())
@@ -130,27 +130,27 @@
   v14 = v9;
 
   v10 = [HUCCOpenURLHandler alloc];
-  v12 = objc_msgSend_initWithCCModuleContext_(v10, v11, v5);
+  v12 = objc_msgSend_initWithCCModuleContext_(v10, v11, contextCopy);
 
   objc_msgSend_setURLHandler_(v14, v13, v12);
 }
 
-- (void)launchHomeAppForSmartGridContentViewController:(id)a3
+- (void)launchHomeAppForSmartGridContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v7 = objc_msgSend_contentModuleContext(self, v5, v6);
-  launchHomeAppForModuleViewController(v4, v7);
+  launchHomeAppForModuleViewController(controllerCopy, v7);
 }
 
-- (BOOL)isDeviceUnlockedForSmartGridContentViewController:(id)a3
+- (BOOL)isDeviceUnlockedForSmartGridContentViewController:(id)controller
 {
-  v3 = objc_msgSend_lockStateHandler(self, a2, a3);
+  v3 = objc_msgSend_lockStateHandler(self, a2, controller);
   isDeviceUnlocked = objc_msgSend_isDeviceUnlocked(v3, v4, v5);
 
   return isDeviceUnlocked;
 }
 
-- (void)controlCenterModuleViewController:(id)a3 moduleWillAppear:(BOOL)a4
+- (void)controlCenterModuleViewController:(id)controller moduleWillAppear:(BOOL)appear
 {
   v26 = *MEMORY[0x29EDCA608];
   v6 = HFLogForCategory();
@@ -175,7 +175,7 @@
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)controlCenterModuleViewController:(id)a3 moduleDidDisappear:(BOOL)a4
+- (void)controlCenterModuleViewController:(id)controller moduleDidDisappear:(BOOL)disappear
 {
   v26 = *MEMORY[0x29EDCA608];
   v6 = HFLogForCategory();
@@ -200,24 +200,24 @@
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)controlCenterModuleViewController:(id)a3 didChangeDisplayedItems:(id)a4
+- (void)controlCenterModuleViewController:(id)controller didChangeDisplayedItems:(id)items
 {
   v45 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a4;
-  if (!objc_msgSend_allowsCharacteristicNotifications(v7, v9, v10))
+  controllerCopy = controller;
+  itemsCopy = items;
+  if (!objc_msgSend_allowsCharacteristicNotifications(controllerCopy, v9, v10))
   {
     goto LABEL_4;
   }
 
-  v13 = objc_msgSend_itemManager(v7, v11, v12);
+  v13 = objc_msgSend_itemManager(controllerCopy, v11, v12);
   v16 = objc_msgSend_home(v13, v14, v15);
   v19 = objc_msgSend_uuid(v16, v17, v18);
 
   if (v19)
   {
     objc_initWeak(location, self);
-    v22 = objc_msgSend_itemManager(v7, v20, v21);
+    v22 = objc_msgSend_itemManager(controllerCopy, v20, v21);
     v25 = objc_msgSend_home(v22, v23, v24);
     v28 = objc_msgSend_characteristicRegistrationObject(self, v26, v27);
     v40[0] = MEMORY[0x29EDCA5F8];
@@ -225,7 +225,7 @@
     v40[2] = sub_29C99684C;
     v40[3] = &unk_29F33A8D0;
     objc_copyWeak(&v41, location);
-    objc_msgSend_registerForItems_inHome_currentRegistration_completionBlock_(self, v29, v8, v25, v28, v40);
+    objc_msgSend_registerForItems_inHome_currentRegistration_completionBlock_(self, v29, itemsCopy, v25, v28, v40);
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(location);
@@ -256,27 +256,27 @@ LABEL_4:
   v39 = *MEMORY[0x29EDCA608];
 }
 
-- (void)controlCenterModuleViewController:(id)a3 didStartDisplayingHome:(id)a4
+- (void)controlCenterModuleViewController:(id)controller didStartDisplayingHome:(id)home
 {
   v34 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  homeCopy = home;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = objc_msgSend_uuid(v7, v9, v10);
+    v11 = objc_msgSend_uuid(homeCopy, v9, v10);
     v26 = 138413058;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v6;
+    v29 = controllerCopy;
     v30 = 2112;
     v31 = v11;
     v32 = 1024;
-    v33 = objc_msgSend_allowsCharacteristicNotifications(v6, v12, v13);
+    v33 = objc_msgSend_allowsCharacteristicNotifications(controllerCopy, v12, v13);
     _os_log_impl(&dword_29C992000, v8, OS_LOG_TYPE_DEFAULT, "%@:controlCenterModuleViewController %@ didStartDisplayingHome %@ allowsCharacteristicNotifications:%{BOOL}d", &v26, 0x26u);
   }
 
-  if (!objc_msgSend_allowsCharacteristicNotifications(v6, v14, v15) || (objc_msgSend_uuid(v7, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v18, v19 = v7, !v18))
+  if (!objc_msgSend_allowsCharacteristicNotifications(controllerCopy, v14, v15) || (objc_msgSend_uuid(homeCopy, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v18, v19 = homeCopy, !v18))
   {
     v19 = 0;
   }
@@ -299,7 +299,7 @@ LABEL_4:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_29C992000, v7, OS_LOG_TYPE_DEFAULT, "%@:CharacteristicRegistration canceling scheduled characteristic deregistration", &v13, 0xCu);
     }
   }
@@ -321,7 +321,7 @@ LABEL_4:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C992000, v7, OS_LOG_TYPE_DEFAULT, "%@:CharacteristicRegistration scheduling characteristic deregistration", buf, 0xCu);
   }
 
@@ -340,10 +340,10 @@ LABEL_4:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)launchHomeAppForControlCenterModuleViewController:(id)a3
+- (void)launchHomeAppForControlCenterModuleViewController:(id)controller
 {
   v18 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -358,12 +358,12 @@ LABEL_4:
   }
 
   v12 = objc_msgSend_contentModuleContext(self, v10, v11);
-  launchHomeAppForModuleViewController(v5, v12);
+  launchHomeAppForModuleViewController(controllerCopy, v12);
 
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)isDeviceUnlockedForControlCenterModuleViewController:(id)a3
+- (BOOL)isDeviceUnlockedForControlCenterModuleViewController:(id)controller
 {
   v21 = *MEMORY[0x29EDCA608];
   v5 = HFLogForCategory();
@@ -445,21 +445,21 @@ LABEL_4:
 
 - (void)removeStateSubscriptionReasonFromDataModel
 {
-  v2 = self;
+  selfCopy = self;
   HUCCControlCenterModule.removeStateSubscriptionReasonFromDataModel()();
 }
 
-- (void)registerForItems:(NSSet *)a3 inHome:(HMHome *)a4 currentRegistration:(id)a5 completionBlock:(id)a6
+- (void)registerForItems:(NSSet *)items inHome:(HMHome *)home currentRegistration:(id)registration completionBlock:(id)block
 {
   v11 = sub_29C9A4A3C(&qword_2A179ADA0, &qword_29C9AE930);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x2A1C7C4A8](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(block);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = items;
+  v16[3] = home;
+  v16[4] = registration;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_29C9AC3C8();
@@ -474,14 +474,14 @@ LABEL_4:
   v19[3] = 0;
   v19[4] = &unk_29C9AE8F8;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
+  itemsCopy = items;
+  homeCopy = home;
   swift_unknownObjectRetain();
-  v22 = self;
+  selfCopy = self;
   sub_29C9AA764(0, 0, v14, &unk_29C9AE900, v19);
 }
 
-- (void)cancelRegistration:(id)a3
+- (void)cancelRegistration:(id)registration
 {
   v3 = sub_29C9A4A3C(&qword_2A179ADA0, &qword_29C9AE930);
   v4 = *(*(v3 - 8) + 64);
@@ -536,7 +536,7 @@ LABEL_4:
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_29C9A6AC4(0, 0, v6, &unk_29C9AEA10, v8);
 }
 

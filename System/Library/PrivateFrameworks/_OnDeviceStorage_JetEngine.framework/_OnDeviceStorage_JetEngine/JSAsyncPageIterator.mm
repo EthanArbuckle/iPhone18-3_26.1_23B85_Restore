@@ -7,7 +7,7 @@
 
 - (id)next
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29EC366DC();
 
   return v3;

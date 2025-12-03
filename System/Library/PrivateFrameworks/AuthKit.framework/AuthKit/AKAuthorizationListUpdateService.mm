@@ -2,8 +2,8 @@
 + (id)sharedService;
 - (AKAuthorizationListUpdateService)init;
 - (void)_clearStaleCachedDevices;
-- (void)performAuthorizationCheckInWithCompletion:(id)a3;
-- (void)performGlobalConfigUpdateWithCompletion:(id)a3;
+- (void)performAuthorizationCheckInWithCompletion:(id)completion;
+- (void)performGlobalConfigUpdateWithCompletion:(id)completion;
 - (void)start;
 @end
 
@@ -48,7 +48,7 @@
 
 - (void)start
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -65,23 +65,23 @@
   v5 = 0;
   v6 = sub_1001737B0;
   v7 = &unk_100320E78;
-  v8 = _objc_retain(v11);
+  v8 = _objc_retain(selfCopy);
   xpc_activity_register(identifier, XPC_ACTIVITY_CHECK_IN, &v3);
   objc_storeStrong(&v8, 0);
 }
 
-- (void)performAuthorizationCheckInWithCompletion:(id)a3
+- (void)performAuthorizationCheckInWithCompletion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v36 = dispatch_group_create();
-  v35 = [(AKAccountManager *)v38->_accountManager primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)selfCopy->_accountManager primaryAuthKitAccount];
   dispatch_group_enter(v36);
-  if (v35)
+  if (primaryAuthKitAccount)
   {
-    v31 = [(AKAccountManager *)v38->_accountManager altDSIDForAccount:v35];
+    v31 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:primaryAuthKitAccount];
     v30 = +[AKUserInfoController sharedController];
     v9 = v30;
     v8 = v31;
@@ -116,9 +116,9 @@
   }
 
   v6 = +[AKFeatureManager sharedManager];
-  v7 = [v6 isDeviceListCacheEnableDryMode];
+  isDeviceListCacheEnableDryMode = [v6 isDeviceListCacheEnableDryMode];
   _objc_release(v6);
-  if (v7)
+  if (isDeviceListCacheEnableDryMode)
   {
     queue = dispatch_get_global_queue(9, 0);
     v18 = _NSConcreteStackBlock;
@@ -126,7 +126,7 @@
     v20 = 0;
     v21 = sub_1001742BC;
     v22 = &unk_10031F8B0;
-    v23[0] = _objc_retain(v38);
+    v23[0] = _objc_retain(selfCopy);
     dispatch_async(queue, &v18);
     _objc_release(queue);
     objc_storeStrong(v23, 0);
@@ -143,19 +143,19 @@
   dispatch_group_notify(group, v4, &v12);
   _objc_release(v4);
   objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v35, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)performGlobalConfigUpdateWithCompletion:(id)a3
+- (void)performGlobalConfigUpdateWithCompletion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = [(AKAccountManager *)v19->_accountManager primaryAuthKitAccount];
-  if (v17)
+  objc_storeStrong(location, completion);
+  primaryAuthKitAccount = [(AKAccountManager *)selfCopy->_accountManager primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
     v4 = +[AKGlobalConfigService sharedInstance];
     v3 = AKRequestContextScheduledActivity;
@@ -192,7 +192,7 @@
     v13 = 1;
   }
 
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(location, 0);
 }
 

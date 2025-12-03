@@ -1,27 +1,27 @@
 @interface CRLURLBoardItemProvider
-+ (BOOL)canInitWithURL:(id)a3;
-- (CRLURLBoardItemProvider)initWithURL:(id)a3 fallbackBoardItemProvider:(id)a4 isDetectedURL:(BOOL)a5 suggestedName:(id)a6;
++ (BOOL)canInitWithURL:(id)l;
+- (CRLURLBoardItemProvider)initWithURL:(id)l fallbackBoardItemProvider:(id)provider isDetectedURL:(BOOL)rL suggestedName:(id)name;
 - (NSError)error;
 - (_TtC8Freeform12CRLBoardItem)boardItem;
-- (id)newBoardItemWithFactory:(id)a3 bakedSize:(BOOL)a4;
+- (id)newBoardItemWithFactory:(id)factory bakedSize:(BOOL)size;
 - (unint64_t)embeddedDataLength;
 - (unint64_t)uploadDataLength;
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6;
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3;
-- (void)p_provideBoardItemWithFinalURL:(id)a3 factory:(id)a4 completionHandler:(id)a5;
-- (void)p_provideBoardItemWithURL:(id)a3 factory:(id)a4 completionHandler:(id)a5;
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4;
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block;
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement;
+- (void)p_provideBoardItemWithFinalURL:(id)l factory:(id)factory completionHandler:(id)handler;
+- (void)p_provideBoardItemWithURL:(id)l factory:(id)factory completionHandler:(id)handler;
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler;
 @end
 
 @implementation CRLURLBoardItemProvider
 
-+ (BOOL)canInitWithURL:(id)a3
++ (BOOL)canInitWithURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 crl_fileTypeIdentifierHandlingFileCoordinationPromises];
-    if (v4)
+    crl_fileTypeIdentifierHandlingFileCoordinationPromises = [lCopy crl_fileTypeIdentifierHandlingFileCoordinationPromises];
+    if (crl_fileTypeIdentifierHandlingFileCoordinationPromises)
     {
       +[CRLBoardItemImporter supportedFileUTTypes];
       v15 = 0u;
@@ -42,15 +42,15 @@
               objc_enumerationMutation(v5);
             }
 
-            if ([v4 conformsToType:{*(*(&v15 + 1) + 8 * i), v15}])
+            if ([crl_fileTypeIdentifierHandlingFileCoordinationPromises conformsToType:{*(*(&v15 + 1) + 8 * i), v15}])
             {
               v10 = +[CRLInfoImporterBoardItemProvider disallowedTypes];
-              v11 = [v4 crl_conformsToAnyUTType:v10];
+              v11 = [crl_fileTypeIdentifierHandlingFileCoordinationPromises crl_conformsToAnyUTType:v10];
 
               if (!v11)
               {
                 v13 = 1;
-                v12 = v5;
+                identifier = v5;
                 goto LABEL_16;
               }
             }
@@ -66,8 +66,8 @@
         }
       }
 
-      v12 = [v4 identifier];
-      v13 = [_TtC8Freeform19CRLFileItemImporter protected_canImportFileAtURL:v3 type:v12];
+      identifier = [crl_fileTypeIdentifierHandlingFileCoordinationPromises identifier];
+      v13 = [_TtC8Freeform19CRLFileItemImporter protected_canImportFileAtURL:lCopy type:identifier];
 LABEL_16:
     }
 
@@ -79,33 +79,33 @@ LABEL_16:
 
   else
   {
-    v13 = [CRLBoardItemImporter canImportRemoteURL:v3];
+    v13 = [CRLBoardItemImporter canImportRemoteURL:lCopy];
   }
 
   return v13;
 }
 
-- (CRLURLBoardItemProvider)initWithURL:(id)a3 fallbackBoardItemProvider:(id)a4 isDetectedURL:(BOOL)a5 suggestedName:(id)a6
+- (CRLURLBoardItemProvider)initWithURL:(id)l fallbackBoardItemProvider:(id)provider isDetectedURL:(BOOL)rL suggestedName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  lCopy = l;
+  providerCopy = provider;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = CRLURLBoardItemProvider;
   v14 = [(CRLURLBoardItemProvider *)&v29 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_initialURL, a3);
-    objc_storeStrong(&v15->_suggestedName, a6);
-    if ([v11 isFileURL])
+    objc_storeStrong(&v14->_initialURL, l);
+    objc_storeStrong(&v15->_suggestedName, name);
+    if ([lCopy isFileURL])
     {
-      v16 = [[CRLSandboxedURL alloc] initWithURL:v11];
+      v16 = [[CRLSandboxedURL alloc] initWithURL:lCopy];
       sandboxedURL = v15->_sandboxedURL;
       v15->_sandboxedURL = v16;
     }
 
-    objc_storeStrong(&v15->_fallbackBoardItemProvider, a4);
+    objc_storeStrong(&v15->_fallbackBoardItemProvider, provider);
     v18 = objc_alloc_init(CRLScaledProgress);
     importerProgress = v15->_importerProgress;
     v15->_importerProgress = v18;
@@ -127,16 +127,16 @@ LABEL_16:
     progress = v15->_progress;
     v15->_progress = v26;
 
-    v15->_isDetectedURL = a5;
+    v15->_isDetectedURL = rL;
   }
 
   return v15;
 }
 
-- (void)provideBoardItemWithFactory:(id)a3 completionHandler:(id)a4
+- (void)provideBoardItemWithFactory:(id)factory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  handlerCopy = handler;
   [(CRLFakeProgress *)self->_fileCoordinationProgress start];
   if ([(NSURL *)self->_initialURL isFileURL])
   {
@@ -146,26 +146,26 @@ LABEL_16:
     v9[2] = sub_10023FD80;
     v9[3] = &unk_10184B838;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = factoryCopy;
+    v11 = handlerCopy;
     [CSCloudSharing existingShareForFileOrFolderURL:initialURL completionHandler:v9];
   }
 
   else
   {
-    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithURL:self->_initialURL factory:v6 completionHandler:v7];
+    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithURL:self->_initialURL factory:factoryCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)p_provideBoardItemWithURL:(id)a3 factory:(id)a4 completionHandler:(id)a5
+- (void)p_provideBoardItemWithURL:(id)l factory:(id)factory completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v10 isFileURL])
+  factoryCopy = factory;
+  handlerCopy = handler;
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v11 = objc_alloc_init(NSFileCoordinator);
-    v12 = [NSFileAccessIntent readingIntentWithURL:v10 options:0];
+    v12 = [NSFileAccessIntent readingIntentWithURL:lCopy options:0];
 
     v18 = v12;
     v13 = [NSArray arrayWithObjects:&v18 count:1];
@@ -176,37 +176,37 @@ LABEL_16:
     v15[3] = &unk_101847198;
     v15[4] = self;
     v15[5] = v12;
-    v16 = v8;
-    v17 = v9;
+    v16 = factoryCopy;
+    v17 = handlerCopy;
     [v11 coordinateAccessWithIntents:v13 queue:v14 byAccessor:v15];
 
-    v10 = v11;
+    lCopy = v11;
   }
 
   else
   {
     [(CRLFakeProgress *)self->_fileCoordinationProgress advanceToStage:1];
-    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithFinalURL:v10 factory:v8 completionHandler:v9];
+    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithFinalURL:lCopy factory:factoryCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)p_provideBoardItemWithFinalURL:(id)a3 factory:(id)a4 completionHandler:(id)a5
+- (void)p_provideBoardItemWithFinalURL:(id)l factory:(id)factory completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CRLBoardItemImporter alloc] initWithURL:v10 boardItemFactory:v9];
+  handlerCopy = handler;
+  factoryCopy = factory;
+  lCopy = l;
+  v11 = [[CRLBoardItemImporter alloc] initWithURL:lCopy boardItemFactory:factoryCopy];
 
   itemImporter = self->_itemImporter;
   self->_itemImporter = v11;
 
   if (self->_itemImporter)
   {
-    v13 = [(CRLURLBoardItemProvider *)self suggestedName];
-    [(CRLBoardItemImporter *)self->_itemImporter setSuggestedName:v13];
+    suggestedName = [(CRLURLBoardItemProvider *)self suggestedName];
+    [(CRLBoardItemImporter *)self->_itemImporter setSuggestedName:suggestedName];
 
-    v14 = [(CRLBoardItemImporter *)self->_itemImporter progress];
-    [(CRLScaledProgress *)self->_importerProgress setProgress:v14];
+    progress = [(CRLBoardItemImporter *)self->_itemImporter progress];
+    [(CRLScaledProgress *)self->_importerProgress setProgress:progress];
     [(CRLBoardItemImporter *)self->_itemImporter setDelegate:self];
     v15 = self->_itemImporter;
     v16[0] = _NSConcreteStackBlock;
@@ -214,21 +214,21 @@ LABEL_16:
     v16[2] = sub_100240280;
     v16[3] = &unk_10183FC10;
     v16[4] = self;
-    v17 = v8;
+    v17 = handlerCopy;
     [(CRLBoardItemImporter *)v15 importBoardItemWithCompletionHandler:v16];
   }
 
   else
   {
-    v14 = [(CRLURLBoardItemProvider *)self delegate];
-    if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+    progress = [(CRLURLBoardItemProvider *)self delegate];
+    if (progress && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v14 importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
+      [progress importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -238,30 +238,30 @@ LABEL_16:
   fallbackBoardItem = self->_fallbackBoardItem;
   if (fallbackBoardItem)
   {
-    v3 = fallbackBoardItem;
+    boardItem = fallbackBoardItem;
   }
 
   else
   {
-    v3 = [(CRLBoardItemImporter *)self->_itemImporter boardItem];
+    boardItem = [(CRLBoardItemImporter *)self->_itemImporter boardItem];
   }
 
-  return v3;
+  return boardItem;
 }
 
 - (NSError)error
 {
   if (self->_fallbackBoardItem)
   {
-    v4 = 0;
+    error = 0;
   }
 
   else
   {
-    v4 = [(CRLBoardItemImporter *)self->_itemImporter error];
+    error = [(CRLBoardItemImporter *)self->_itemImporter error];
   }
 
-  return v4;
+  return error;
 }
 
 - (unint64_t)uploadDataLength
@@ -290,28 +290,28 @@ LABEL_16:
   }
 }
 
-- (void)boardItemImporter:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6
+- (void)boardItemImporter:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block
 {
-  v9 = a6;
-  v10 = [(CRLURLBoardItemProvider *)self delegate];
-  v11 = v10;
-  if (v10)
+  blockCopy = block;
+  delegate = [(CRLURLBoardItemProvider *)self delegate];
+  v11 = delegate;
+  if (delegate)
   {
-    [v10 importableBoardItemProvider:self needsMediaCompatibilityFeedbackWithReasons:a4 forMediaType:a5 usingBlock:v9];
+    [delegate importableBoardItemProvider:self needsMediaCompatibilityFeedbackWithReasons:reasons forMediaType:type usingBlock:blockCopy];
   }
 
   else
   {
-    v9[2](v9, 0, 1);
+    blockCopy[2](blockCopy, 0, 1);
   }
 }
 
-- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)a3
+- (void)boardItemImporterWillIgnoreMediaCompatibilityOnAllDevicesRequirement:(id)requirement
 {
-  v4 = [(CRLURLBoardItemProvider *)self delegate];
-  if (v4)
+  delegate = [(CRLURLBoardItemProvider *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 importableBoardItemProviderWillIgnoreMediaCompatibilityOnAllDevicesRequirement:self];
@@ -321,11 +321,11 @@ LABEL_16:
   _objc_release_x2();
 }
 
-- (id)newBoardItemWithFactory:(id)a3 bakedSize:(BOOL)a4
+- (id)newBoardItemWithFactory:(id)factory bakedSize:(BOOL)size
 {
-  v5 = a3;
-  v6 = [(CRLURLBoardItemProvider *)self boardItem];
-  if (!v6)
+  factoryCopy = factory;
+  boardItem = [(CRLURLBoardItemProvider *)self boardItem];
+  if (!boardItem)
   {
     v7 = dispatch_semaphore_create(0);
     initialURL = self->_initialURL;
@@ -335,13 +335,13 @@ LABEL_16:
     v12[3] = &unk_10183AB38;
     v9 = v7;
     v13 = v9;
-    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithURL:initialURL factory:v5 completionHandler:v12];
+    [(CRLURLBoardItemProvider *)self p_provideBoardItemWithURL:initialURL factory:factoryCopy completionHandler:v12];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v10 = [(CRLURLBoardItemProvider *)self boardItem];
+  boardItem2 = [(CRLURLBoardItemProvider *)self boardItem];
 
-  return v10;
+  return boardItem2;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface PSGQuickResponsesEngagementMetrics
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQuickResponsesEngagementMetrics:(id)a3;
-- (PSGQuickResponsesEngagementMetrics)initWithCoder:(id)a3;
-- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)a3 rolloutId:(id)a4 factorPackId:(id)a5 experimentId:(id)a6 treatmentId:(id)a7;
-- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)a3 rolloutId:(id)a4 factorPackId:(id)a5 experimentId:(id)a6 treatmentId:(id)a7 engagementDeltas:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQuickResponsesEngagementMetrics:(id)metrics;
+- (PSGQuickResponsesEngagementMetrics)initWithCoder:(id)coder;
+- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)lang rolloutId:(id)id factorPackId:(id)packId experimentId:(id)experimentId treatmentId:(id)treatmentId;
+- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)lang rolloutId:(id)id factorPackId:(id)packId experimentId:(id)experimentId treatmentId:(id)treatmentId engagementDeltas:(id)deltas;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGQuickResponsesEngagementMetrics
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGQuickResponsesEngagementMetrics *)self isEqualToQuickResponsesEngagementMetrics:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGQuickResponsesEngagementMetrics *)self isEqualToQuickResponsesEngagementMetrics:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToQuickResponsesEngagementMetrics:(id)a3
+- (BOOL)isEqualToQuickResponsesEngagementMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = self->_lang;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == metricsCopy[1])
   {
   }
 
@@ -47,7 +47,7 @@
 
   v8 = self->_rolloutId;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == metricsCopy[2])
   {
   }
 
@@ -63,7 +63,7 @@
 
   v11 = self->_factorPackId;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == metricsCopy[3])
   {
   }
 
@@ -79,7 +79,7 @@
 
   v14 = self->_experimentId;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == metricsCopy[4])
   {
   }
 
@@ -95,7 +95,7 @@
 
   v17 = self->_treatmentId;
   v18 = v17;
-  if (v17 == v4[5])
+  if (v17 == metricsCopy[5])
   {
   }
 
@@ -113,7 +113,7 @@ LABEL_19:
 
   v22 = self->_engagementDeltas;
   v23 = v22;
-  if (v22 == v4[6])
+  if (v22 == metricsCopy[6])
   {
     v20 = 1;
   }
@@ -127,10 +127,10 @@ LABEL_20:
   return v20;
 }
 
-- (PSGQuickResponsesEngagementMetrics)initWithCoder:(id)a3
+- (PSGQuickResponsesEngagementMetrics)initWithCoder:(id)coder
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   v51.receiver = self;
   v51.super_class = PSGQuickResponsesEngagementMetrics;
   v6 = [(PSGQuickResponsesEngagementMetrics *)&v51 init];
@@ -141,29 +141,29 @@ LABEL_20:
     v9 = objc_opt_class();
     v10 = *MEMORY[0x277D41EE0];
     v11 = psg_default_log_handle();
-    v12 = [v8 robustDecodeObjectOfClass:v9 forKey:@"lang" withCoder:v5 expectNonNull:1 errorDomain:v10 errorCode:3 logHandle:v11];
+    v12 = [v8 robustDecodeObjectOfClass:v9 forKey:@"lang" withCoder:coderCopy expectNonNull:1 errorDomain:v10 errorCode:3 logHandle:v11];
 
     if (!v12)
     {
-      v45 = [MEMORY[0x277CCA890] currentHandler];
-      [v45 handleFailureInMethod:a2 object:v7 file:@"PSGDPDeviceMetricsCollector.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"lang"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PSGDPDeviceMetricsCollector.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"lang"}];
     }
 
     v13 = MEMORY[0x277D42620];
     v14 = objc_opt_class();
     v15 = psg_default_log_handle();
-    v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"rolloutId" withCoder:v5 expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v15];
+    v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"rolloutId" withCoder:coderCopy expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v15];
 
-    v17 = [v5 error];
+    error = [coderCopy error];
 
-    if (v17)
+    if (error)
     {
       v18 = psg_default_log_handle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v5 error];
+        error2 = [coderCopy error];
         *buf = 138412290;
-        v53 = v34;
+        v53 = error2;
         _os_log_error_impl(&dword_260D36000, v18, OS_LOG_TYPE_ERROR, "Secure coding failure: %@", buf, 0xCu);
       }
 
@@ -176,18 +176,18 @@ LABEL_20:
       v20 = MEMORY[0x277D42620];
       v21 = objc_opt_class();
       v22 = psg_default_log_handle();
-      v18 = [v20 robustDecodeObjectOfClass:v21 forKey:@"factorPackId" withCoder:v5 expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v22];
+      v18 = [v20 robustDecodeObjectOfClass:v21 forKey:@"factorPackId" withCoder:coderCopy expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v22];
 
-      v23 = [v5 error];
+      error3 = [coderCopy error];
 
-      if (v23)
+      if (error3)
       {
         v24 = psg_default_log_handle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v42 = [v5 error];
+          error4 = [coderCopy error];
           *buf = 138412290;
-          v53 = v42;
+          v53 = error4;
           _os_log_error_impl(&dword_260D36000, v24, OS_LOG_TYPE_ERROR, "Secure coding failure: %@", buf, 0xCu);
         }
 
@@ -200,18 +200,18 @@ LABEL_20:
         v25 = MEMORY[0x277D42620];
         v26 = objc_opt_class();
         v27 = psg_default_log_handle();
-        v24 = [v25 robustDecodeObjectOfClass:v26 forKey:@"experimentId" withCoder:v5 expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v27];
+        v24 = [v25 robustDecodeObjectOfClass:v26 forKey:@"experimentId" withCoder:coderCopy expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v27];
 
-        v28 = [v5 error];
+        error5 = [coderCopy error];
 
-        if (v28)
+        if (error5)
         {
           v29 = psg_default_log_handle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v43 = [v5 error];
+            error6 = [coderCopy error];
             *buf = 138412290;
-            v53 = v43;
+            v53 = error6;
             _os_log_error_impl(&dword_260D36000, v29, OS_LOG_TYPE_ERROR, "Secure coding failure: %@", buf, 0xCu);
           }
 
@@ -223,18 +223,18 @@ LABEL_20:
           v47 = MEMORY[0x277D42620];
           v30 = objc_opt_class();
           v31 = psg_default_log_handle();
-          v29 = [v47 robustDecodeObjectOfClass:v30 forKey:@"treatmentId" withCoder:v5 expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v31];
+          v29 = [v47 robustDecodeObjectOfClass:v30 forKey:@"treatmentId" withCoder:coderCopy expectNonNull:0 errorDomain:v10 errorCode:3 logHandle:v31];
 
-          v32 = [v5 error];
+          error7 = [coderCopy error];
 
-          if (v32)
+          if (error7)
           {
             v33 = psg_default_log_handle();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
-              v44 = [v5 error];
+              error8 = [coderCopy error];
               *buf = 138412290;
-              v53 = v44;
+              v53 = error8;
               _os_log_error_impl(&dword_260D36000, v33, OS_LOG_TYPE_ERROR, "Secure coding failure: %@", buf, 0xCu);
             }
 
@@ -250,12 +250,12 @@ LABEL_20:
             v38 = [v36 initWithObjects:{v37, objc_opt_class(), 0}];
             objc_autoreleasePoolPop(v35);
             v39 = psg_default_log_handle();
-            v33 = [v48 robustDecodeObjectOfClasses:v38 forKey:@"engagementDeltas" withCoder:v5 expectNonNull:1 errorDomain:v10 errorCode:3 logHandle:v39];
+            v33 = [v48 robustDecodeObjectOfClasses:v38 forKey:@"engagementDeltas" withCoder:coderCopy expectNonNull:1 errorDomain:v10 errorCode:3 logHandle:v39];
 
             if (!v33)
             {
-              v46 = [MEMORY[0x277CCA890] currentHandler];
-              [v46 handleFailureInMethod:v50 object:v49 file:@"PSGDPDeviceMetricsCollector.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"deltas"}];
+              currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler2 handleFailureInMethod:v50 object:v49 file:@"PSGDPDeviceMetricsCollector.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"deltas"}];
             }
 
             v19 = [(PSGQuickResponsesEngagementMetrics *)v49 initWithLang:v12 rolloutId:v16 factorPackId:v18 experimentId:v24 treatmentId:v29 engagementDeltas:v33];
@@ -277,30 +277,30 @@ LABEL_20:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lang = self->_lang;
-  v5 = a3;
-  [v5 encodeObject:lang forKey:@"lang"];
-  [v5 encodeObject:self->_rolloutId forKey:@"rolloutId"];
-  [v5 encodeObject:self->_factorPackId forKey:@"factorPackId"];
-  [v5 encodeObject:self->_experimentId forKey:@"experimentId"];
-  [v5 encodeObject:self->_treatmentId forKey:@"treatmentId"];
-  [v5 encodeObject:self->_engagementDeltas forKey:@"engagementDeltas"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lang forKey:@"lang"];
+  [coderCopy encodeObject:self->_rolloutId forKey:@"rolloutId"];
+  [coderCopy encodeObject:self->_factorPackId forKey:@"factorPackId"];
+  [coderCopy encodeObject:self->_experimentId forKey:@"experimentId"];
+  [coderCopy encodeObject:self->_treatmentId forKey:@"treatmentId"];
+  [coderCopy encodeObject:self->_engagementDeltas forKey:@"engagementDeltas"];
 }
 
-- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)a3 rolloutId:(id)a4 factorPackId:(id)a5 experimentId:(id)a6 treatmentId:(id)a7 engagementDeltas:(id)a8
+- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)lang rolloutId:(id)id factorPackId:(id)packId experimentId:(id)experimentId treatmentId:(id)treatmentId engagementDeltas:(id)deltas
 {
-  v15 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = v17;
-  if (v15)
+  langCopy = lang;
+  idCopy = id;
+  packIdCopy = packId;
+  experimentIdCopy = experimentId;
+  treatmentIdCopy = treatmentId;
+  deltasCopy = deltas;
+  v18 = deltasCopy;
+  if (langCopy)
   {
-    if (v17)
+    if (deltasCopy)
     {
       goto LABEL_3;
     }
@@ -308,8 +308,8 @@ LABEL_20:
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PSGDPDeviceMetricsCollector.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"lang"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSGDPDeviceMetricsCollector.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"lang"}];
 
     if (v18)
     {
@@ -317,8 +317,8 @@ LABEL_20:
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PSGDPDeviceMetricsCollector.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"engagementDeltas"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PSGDPDeviceMetricsCollector.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"engagementDeltas"}];
 
 LABEL_3:
   v28.receiver = self;
@@ -327,26 +327,26 @@ LABEL_3:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_lang, a3);
-    objc_storeStrong(&v20->_rolloutId, a4);
-    objc_storeStrong(&v20->_factorPackId, a5);
-    objc_storeStrong(&v20->_experimentId, a6);
-    objc_storeStrong(&v20->_treatmentId, a7);
-    objc_storeStrong(&v20->_engagementDeltas, a8);
+    objc_storeStrong(&v19->_lang, lang);
+    objc_storeStrong(&v20->_rolloutId, id);
+    objc_storeStrong(&v20->_factorPackId, packId);
+    objc_storeStrong(&v20->_experimentId, experimentId);
+    objc_storeStrong(&v20->_treatmentId, treatmentId);
+    objc_storeStrong(&v20->_engagementDeltas, deltas);
   }
 
   return v20;
 }
 
-- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)a3 rolloutId:(id)a4 factorPackId:(id)a5 experimentId:(id)a6 treatmentId:(id)a7
+- (PSGQuickResponsesEngagementMetrics)initWithLang:(id)lang rolloutId:(id)id factorPackId:(id)packId experimentId:(id)experimentId treatmentId:(id)treatmentId
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  treatmentIdCopy = treatmentId;
+  experimentIdCopy = experimentId;
+  packIdCopy = packId;
+  idCopy = id;
+  langCopy = lang;
   v17 = objc_opt_new();
-  v18 = [(PSGQuickResponsesEngagementMetrics *)self initWithLang:v16 rolloutId:v15 factorPackId:v14 experimentId:v13 treatmentId:v12 engagementDeltas:v17];
+  v18 = [(PSGQuickResponsesEngagementMetrics *)self initWithLang:langCopy rolloutId:idCopy factorPackId:packIdCopy experimentId:experimentIdCopy treatmentId:treatmentIdCopy engagementDeltas:v17];
 
   return v18;
 }

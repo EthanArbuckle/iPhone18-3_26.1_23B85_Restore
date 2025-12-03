@@ -1,7 +1,7 @@
 @interface PFCSSearchableIndexProvider
-- (id)createPrivateSearchableIndexWithName:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5;
-- (id)createPrivateSearchableIndexWithPath:(id)a3;
-- (id)createSearchableIndexWithName:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5;
+- (id)createPrivateSearchableIndexWithName:(id)name protectionClass:(id)class bundleIdentifier:(id)identifier;
+- (id)createPrivateSearchableIndexWithPath:(id)path;
+- (id)createSearchableIndexWithName:(id)name protectionClass:(id)class bundleIdentifier:(id)identifier;
 - (id)defaultPrivateSearchableIndex;
 - (id)defaultSearchableIndex;
 @end
@@ -22,34 +22,34 @@
   return [(objc_class *)CoreSpotlightCSPrivateSearchableIndexClass defaultSearchableIndex];
 }
 
-- (id)createSearchableIndexWithName:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5
+- (id)createSearchableIndexWithName:(id)name protectionClass:(id)class bundleIdentifier:(id)identifier
 {
   v8 = objc_alloc(getCoreSpotlightCSSearchableIndexClass());
 
-  return [v8 initWithName:a3 protectionClass:a4 bundleIdentifier:a5];
+  return [v8 initWithName:name protectionClass:class bundleIdentifier:identifier];
 }
 
-- (id)createPrivateSearchableIndexWithPath:(id)a3
+- (id)createPrivateSearchableIndexWithPath:(id)path
 {
   v4 = objc_alloc(getCoreSpotlightCSPrivateSearchableIndexClass());
 
-  return [v4 initWithPath:a3];
+  return [v4 initWithPath:path];
 }
 
-- (id)createPrivateSearchableIndexWithName:(id)a3 protectionClass:(id)a4 bundleIdentifier:(id)a5
+- (id)createPrivateSearchableIndexWithName:(id)name protectionClass:(id)class bundleIdentifier:(id)identifier
 {
   v8 = objc_alloc(getCoreSpotlightCSPrivateSearchableIndexClass());
-  if (a3)
+  if (name)
   {
-    v9 = a3;
+    nameCopy = name;
   }
 
   else
   {
-    v9 = &stru_1EF3F1768;
+    nameCopy = &stru_1EF3F1768;
   }
 
-  return [v8 initWithName:v9 protectionClass:a4 bundleIdentifier:a5];
+  return [v8 initWithName:nameCopy protectionClass:class bundleIdentifier:identifier];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface EQKitMathMLTokenContent
-- (EQKitMathMLTokenContent)initWithChildren:(id)a3;
+- (EQKitMathMLTokenContent)initWithChildren:(id)children;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLTokenContent
 
-- (EQKitMathMLTokenContent)initWithChildren:(id)a3
+- (EQKitMathMLTokenContent)initWithChildren:(id)children
 {
   v9.receiver = self;
   v9.super_class = EQKitMathMLTokenContent;
   v7 = [(EQKitMathMLTokenContent *)&v9 init];
   if (v7)
   {
-    v7->mChildren = objc_msgSend_copy(a3, v4, v5, v6);
+    v7->mChildren = objc_msgSend_copy(children, v4, v5, v6);
   }
 
   return v7;

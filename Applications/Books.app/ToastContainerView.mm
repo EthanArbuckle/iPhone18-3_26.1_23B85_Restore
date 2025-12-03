@@ -1,6 +1,6 @@
 @interface ToastContainerView
 - (NSArray)interactions;
-- (_TtC5Books18ToastContainerView)initWithFrame:(CGRect)a3;
+- (_TtC5Books18ToastContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ToastContainerView
@@ -8,7 +8,7 @@
 - (NSArray)interactions
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books18ToastContainerView_containerView);
-  v3 = self;
+  selfCopy = self;
   isa = [v2 interactions];
   if (!isa)
   {
@@ -20,7 +20,7 @@
   return isa;
 }
 
-- (_TtC5Books18ToastContainerView)initWithFrame:(CGRect)a3
+- (_TtC5Books18ToastContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,41 +1,41 @@
 @interface _CachedFileDescriptors
-- (int)_cachedFDForDomain:(id)a3 withSnapshotPath:(id)a4 error:(id *)a5;
-- (int)_cachedFDForPath:(id)a3 WithError:(id *)a4;
-- (int)cachedFDForDomain:(id)a3 withSnapshotPath:(id)a4 error:(id *)a5;
+- (int)_cachedFDForDomain:(id)domain withSnapshotPath:(id)path error:(id *)error;
+- (int)_cachedFDForPath:(id)path WithError:(id *)error;
+- (int)cachedFDForDomain:(id)domain withSnapshotPath:(id)path error:(id *)error;
 @end
 
 @implementation _CachedFileDescriptors
 
-- (int)cachedFDForDomain:(id)a3 withSnapshotPath:(id)a4 error:(id *)a5
+- (int)cachedFDForDomain:(id)domain withSnapshotPath:(id)path error:(id *)error
 {
-  if (a4)
+  if (path)
   {
 
-    return [_CachedFileDescriptors _cachedFDForDomain:"_cachedFDForDomain:withSnapshotPath:error:" withSnapshotPath:a3 error:?];
+    return [_CachedFileDescriptors _cachedFDForDomain:"_cachedFDForDomain:withSnapshotPath:error:" withSnapshotPath:domain error:?];
   }
 
   else
   {
-    v7 = [a3 rootPath];
-    v8 = [(_CachedFileDescriptors *)self _cachedFDForPath:v7 WithError:a5];
+    rootPath = [domain rootPath];
+    v8 = [(_CachedFileDescriptors *)self _cachedFDForPath:rootPath WithError:error];
 
     return v8;
   }
 }
 
-- (int)_cachedFDForDomain:(id)a3 withSnapshotPath:(id)a4 error:(id *)a5
+- (int)_cachedFDForDomain:(id)domain withSnapshotPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  domainCopy = domain;
+  pathCopy = path;
+  if (!pathCopy)
   {
     sub_1000A0714();
   }
 
-  v10 = v9;
-  v11 = [v8 rootPath];
-  v12 = [v8 volumeMountPoint];
-  v13 = sub_100077FF4(v11, v10, v12);
+  v10 = pathCopy;
+  rootPath = [domainCopy rootPath];
+  volumeMountPoint = [domainCopy volumeMountPoint];
+  v13 = sub_100077FF4(rootPath, v10, volumeMountPoint);
 
   if (!v13)
   {
@@ -52,8 +52,8 @@
     }
 
 LABEL_8:
-    v18 = [(NSFileHandle *)v15 fileDescriptor];
-    if (v18 == -1)
+    fileDescriptor = [(NSFileHandle *)v15 fileDescriptor];
+    if (fileDescriptor == -1)
     {
       sub_1000A0690();
     }
@@ -78,9 +78,9 @@ LABEL_8:
   }
 
   v20 = *__error();
-  if (a5)
+  if (error)
   {
-    *a5 = [MBError posixErrorWithPath:v13 format:@"open failed"];
+    *error = [MBError posixErrorWithPath:v13 format:@"open failed"];
   }
 
   v21 = MBGetDefaultLog();
@@ -95,21 +95,21 @@ LABEL_8:
   }
 
   v15 = 0;
-  v18 = -1;
+  fileDescriptor = -1;
 LABEL_9:
 
-  return v18;
+  return fileDescriptor;
 }
 
-- (int)_cachedFDForPath:(id)a3 WithError:(id *)a4
+- (int)_cachedFDForPath:(id)path WithError:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  pathCopy = path;
+  if (!pathCopy)
   {
     sub_1000A07C4();
   }
 
-  v8 = v7;
+  v8 = pathCopy;
   v9 = self->_fileHandle;
   if (v9)
   {
@@ -120,8 +120,8 @@ LABEL_9:
     }
 
 LABEL_7:
-    v13 = [(NSFileHandle *)v10 fileDescriptor];
-    if (v13 == -1)
+    fileDescriptor = [(NSFileHandle *)v10 fileDescriptor];
+    if (fileDescriptor == -1)
     {
       sub_1000A076C();
     }
@@ -136,7 +136,7 @@ LABEL_7:
     fileHandle = self->_fileHandle;
     self->_fileHandle = v10;
 
-    objc_storeStrong(&self->_fileHandlePath, a3);
+    objc_storeStrong(&self->_fileHandlePath, path);
     if (!v10)
     {
       sub_1000A0798();
@@ -146,9 +146,9 @@ LABEL_7:
   }
 
   v15 = *__error();
-  if (a4)
+  if (error)
   {
-    *a4 = [MBError posixErrorWithPath:v8 format:@"open failed"];
+    *error = [MBError posixErrorWithPath:v8 format:@"open failed"];
   }
 
   v16 = MBGetDefaultLog();
@@ -163,10 +163,10 @@ LABEL_7:
   }
 
   v10 = 0;
-  v13 = -1;
+  fileDescriptor = -1;
 LABEL_8:
 
-  return v13;
+  return fileDescriptor;
 }
 
 @end

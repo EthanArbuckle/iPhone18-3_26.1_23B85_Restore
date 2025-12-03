@@ -1,9 +1,9 @@
 @interface CoreTextView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_TtC18HealthExperienceUI12CoreTextView)init;
-- (_TtC18HealthExperienceUI12CoreTextView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)onLinkTap:(id)a3;
+- (_TtC18HealthExperienceUI12CoreTextView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)onLinkTap:(id)tap;
 @end
 
 @implementation CoreTextView
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BA22ADEC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1BA229254(width, height);
   v7 = v6;
   v9 = v8;
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)onLinkTap:(id)a3
+- (void)onLinkTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA229490(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_1BA229490(tapCopy);
 }
 
-- (_TtC18HealthExperienceUI12CoreTextView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI12CoreTextView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

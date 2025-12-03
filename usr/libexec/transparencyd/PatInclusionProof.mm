@@ -1,15 +1,15 @@
 @interface PatInclusionProof
 + (id)descriptor;
-- (id)patSigningKeyWithError:(id *)a3;
-- (id)vrfPublicKeyWithError:(id *)a3;
-- (int)earliestCurrentTreeVersionWithError:(id *)a3;
-- (int)earliestNextTreeVersionWithError:(id *)a3;
+- (id)patSigningKeyWithError:(id *)error;
+- (id)vrfPublicKeyWithError:(id *)error;
+- (int)earliestCurrentTreeVersionWithError:(id *)error;
+- (int)earliestNextTreeVersionWithError:(id *)error;
 - (unint64_t)patLogBeginningMs;
-- (unint64_t)shutdownTimeStamp:(id *)a3;
+- (unint64_t)shutdownTimeStamp:(id *)stamp;
 - (unint64_t)tltLogBeginningMs;
-- (unint64_t)verifyConfigProof:(id *)a3;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
+- (unint64_t)verifyConfigProof:(id *)proof;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setMetadataValue:(id)value key:(id)key;
 @end
 
 @implementation PatInclusionProof
@@ -28,63 +28,63 @@
   return v2;
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(PatInclusionProof *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(PatInclusionProof *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(PatInclusionProof *)self setMetadata:v8];
   }
 }
 
-- (id)patSigningKeyWithError:(id *)a3
+- (id)patSigningKeyWithError:(id *)error
 {
-  v5 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v6 = [v5 nodeBytes];
-  if (v6)
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  nodeBytes = [perApplicationTreeEntry nodeBytes];
+  if (nodeBytes)
   {
-    v7 = v6;
-    v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v9 = [v8 nodeBytes];
-    v10 = [v9 length];
+    v7 = nodeBytes;
+    perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodeBytes2 = [perApplicationTreeEntry2 nodeBytes];
+    v10 = [nodeBytes2 length];
 
     if (v10)
     {
-      v11 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v12 = [v11 nodeBytes];
-      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:v12 error:a3];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      nodeBytes3 = [perApplicationTreeEntry3 nodeBytes];
+      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:nodeBytes3 error:error];
 
       if (v13)
       {
-        v14 = [v13 publicKeyBytes];
-        if (v14)
+        publicKeyBytes = [v13 publicKeyBytes];
+        if (publicKeyBytes)
         {
-          v15 = v14;
-          v16 = [v13 publicKeyBytes];
-          v17 = [v16 length];
+          v15 = publicKeyBytes;
+          publicKeyBytes2 = [v13 publicKeyBytes];
+          v17 = [publicKeyBytes2 length];
 
           if (v17)
           {
-            v18 = [v13 publicKeyBytes];
+            publicKeyBytes3 = [v13 publicKeyBytes];
 LABEL_32:
 
             goto LABEL_33;
           }
         }
 
-        if (a3)
+        if (error)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-216 description:@"Signing Public key missing from per-app tree config node"];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-216 description:@"Signing Public key missing from per-app tree config node"];
         }
 
         if (qword_10039CAD8 != -1)
@@ -96,7 +96,7 @@ LABEL_32:
         if (!os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
         {
 LABEL_31:
-          v18 = 0;
+          publicKeyBytes3 = 0;
           goto LABEL_32;
         }
 
@@ -108,9 +108,9 @@ LABEL_31:
 
       else
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*a3 description:?];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*error description:?];
         }
 
         if (qword_10039CAD8 != -1)
@@ -124,9 +124,9 @@ LABEL_31:
           goto LABEL_31;
         }
 
-        if (a3)
+        if (error)
         {
-          v25 = *a3;
+          v25 = *error;
         }
 
         else
@@ -150,9 +150,9 @@ LABEL_31:
   {
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing signing key"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing signing key"];
   }
 
   if (qword_10039CAD8 != -1)
@@ -167,57 +167,57 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "KT PAT Config proof missing signing key", buf, 2u);
   }
 
-  v18 = 0;
+  publicKeyBytes3 = 0;
 LABEL_33:
 
-  return v18;
+  return publicKeyBytes3;
 }
 
-- (id)vrfPublicKeyWithError:(id *)a3
+- (id)vrfPublicKeyWithError:(id *)error
 {
-  v5 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v6 = [v5 nodeBytes];
-  if (v6)
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  nodeBytes = [perApplicationTreeEntry nodeBytes];
+  if (nodeBytes)
   {
-    v7 = v6;
-    v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v9 = [v8 nodeBytes];
-    v10 = [v9 length];
+    v7 = nodeBytes;
+    perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodeBytes2 = [perApplicationTreeEntry2 nodeBytes];
+    v10 = [nodeBytes2 length];
 
     if (v10)
     {
-      v11 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v12 = [v11 nodeBytes];
-      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:v12 error:a3];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      nodeBytes3 = [perApplicationTreeEntry3 nodeBytes];
+      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:nodeBytes3 error:error];
 
       if (v13)
       {
         if ([v13 hasVrfPublicKey])
         {
-          v14 = [v13 vrfPublicKey];
+          vrfPublicKey = [v13 vrfPublicKey];
 
-          if (v14)
+          if (vrfPublicKey)
           {
-            v15 = [v13 vrfPublicKey];
+            vrfPublicKey2 = [v13 vrfPublicKey];
 LABEL_27:
 
             goto LABEL_28;
           }
         }
 
-        if (a3)
+        if (error)
         {
           [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-166 description:@"VRF Public key missing from per-app tree config node"];
-          *a3 = v15 = 0;
+          *error = vrfPublicKey2 = 0;
           goto LABEL_27;
         }
       }
 
       else
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*a3 description:?];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*error description:?];
         }
 
         if (qword_10039CAD8 != -1)
@@ -228,9 +228,9 @@ LABEL_27:
         v17 = qword_10039CAE0;
         if (os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
         {
-          if (a3)
+          if (error)
           {
-            v18 = *a3;
+            v18 = *error;
           }
 
           else
@@ -244,7 +244,7 @@ LABEL_27:
         }
       }
 
-      v15 = 0;
+      vrfPublicKey2 = 0;
       goto LABEL_27;
     }
   }
@@ -253,9 +253,9 @@ LABEL_27:
   {
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing VRFPublicKey"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing VRFPublicKey"];
   }
 
   if (qword_10039CAD8 != -1)
@@ -270,28 +270,28 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "KT PAT Config proof missing VRFPublicKey", buf, 2u);
   }
 
-  v15 = 0;
+  vrfPublicKey2 = 0;
 LABEL_28:
 
-  return v15;
+  return vrfPublicKey2;
 }
 
-- (int)earliestNextTreeVersionWithError:(id *)a3
+- (int)earliestNextTreeVersionWithError:(id *)error
 {
-  v5 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v6 = [v5 nodeBytes];
-  if (v6)
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  nodeBytes = [perApplicationTreeEntry nodeBytes];
+  if (nodeBytes)
   {
-    v7 = v6;
-    v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v9 = [v8 nodeBytes];
-    v10 = [v9 length];
+    v7 = nodeBytes;
+    perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodeBytes2 = [perApplicationTreeEntry2 nodeBytes];
+    v10 = [nodeBytes2 length];
 
     if (v10)
     {
-      v11 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v12 = [v11 nodeBytes];
-      v13 = [(TransparencyGPBMessage *)LogClosedNode parseFromData:v12 error:a3];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      nodeBytes3 = [perApplicationTreeEntry3 nodeBytes];
+      v13 = [(TransparencyGPBMessage *)LogClosedNode parseFromData:nodeBytes3 error:error];
 
       if (v13)
       {
@@ -300,9 +300,9 @@ LABEL_28:
 
       else
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-233 underlyingError:*a3 description:?];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-233 underlyingError:*error description:?];
         }
 
         if (qword_10039CAD8 != -1)
@@ -313,9 +313,9 @@ LABEL_28:
         v16 = qword_10039CAE0;
         if (os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
         {
-          if (a3)
+          if (error)
           {
-            v17 = *a3;
+            v17 = *error;
           }
 
           else
@@ -339,9 +339,9 @@ LABEL_28:
   {
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-232 description:@"KT PAT closed proof missing node bytes"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-232 description:@"KT PAT closed proof missing node bytes"];
   }
 
   if (qword_10039CAD8 != -1)
@@ -359,33 +359,33 @@ LABEL_28:
   return 0;
 }
 
-- (unint64_t)shutdownTimeStamp:(id *)a3
+- (unint64_t)shutdownTimeStamp:(id *)stamp
 {
-  v5 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v6 = [v5 nodeBytes];
-  if (v6)
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  nodeBytes = [perApplicationTreeEntry nodeBytes];
+  if (nodeBytes)
   {
-    v7 = v6;
-    v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v9 = [v8 nodeBytes];
-    v10 = [v9 length];
+    v7 = nodeBytes;
+    perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodeBytes2 = [perApplicationTreeEntry2 nodeBytes];
+    v10 = [nodeBytes2 length];
 
     if (v10)
     {
-      v11 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v12 = [v11 nodeBytes];
-      v13 = [(TransparencyGPBMessage *)LogClosedNode parseFromData:v12 error:a3];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      nodeBytes3 = [perApplicationTreeEntry3 nodeBytes];
+      v13 = [(TransparencyGPBMessage *)LogClosedNode parseFromData:nodeBytes3 error:stamp];
 
       if (v13)
       {
-        v14 = [v13 timestampMs];
+        timestampMs = [v13 timestampMs];
       }
 
       else
       {
-        if (a3)
+        if (stamp)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-233 underlyingError:*a3 description:?];
+          *stamp = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-233 underlyingError:*stamp description:?];
         }
 
         if (qword_10039CAD8 != -1)
@@ -396,9 +396,9 @@ LABEL_28:
         v16 = qword_10039CAE0;
         if (os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
         {
-          if (a3)
+          if (stamp)
           {
-            v17 = *a3;
+            v17 = *stamp;
           }
 
           else
@@ -411,10 +411,10 @@ LABEL_28:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "failed to decode PAT closed node: %@", buf, 0xCu);
         }
 
-        v14 = 0;
+        timestampMs = 0;
       }
 
-      return v14;
+      return timestampMs;
     }
   }
 
@@ -422,9 +422,9 @@ LABEL_28:
   {
   }
 
-  if (a3)
+  if (stamp)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-232 description:@"KT PAT closed proof missing node bytes"];
+    *stamp = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-232 description:@"KT PAT closed proof missing node bytes"];
   }
 
   if (qword_10039CAD8 != -1)
@@ -442,22 +442,22 @@ LABEL_28:
   return 0;
 }
 
-- (int)earliestCurrentTreeVersionWithError:(id *)a3
+- (int)earliestCurrentTreeVersionWithError:(id *)error
 {
-  v5 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v6 = [v5 nodeBytes];
-  if (v6)
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  nodeBytes = [perApplicationTreeEntry nodeBytes];
+  if (nodeBytes)
   {
-    v7 = v6;
-    v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v9 = [v8 nodeBytes];
-    v10 = [v9 length];
+    v7 = nodeBytes;
+    perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodeBytes2 = [perApplicationTreeEntry2 nodeBytes];
+    v10 = [nodeBytes2 length];
 
     if (v10)
     {
-      v11 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v12 = [v11 nodeBytes];
-      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:v12 error:a3];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      nodeBytes3 = [perApplicationTreeEntry3 nodeBytes];
+      v13 = [(TransparencyGPBMessage *)PerApplicationTreeConfigNode parseFromData:nodeBytes3 error:error];
 
       if (v13)
       {
@@ -475,9 +475,9 @@ LABEL_28:
 
       else
       {
-        if (a3)
+        if (error)
         {
-          *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*a3 description:?];
+          *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-165 underlyingError:*error description:?];
         }
 
         if (qword_10039CAD8 != -1)
@@ -489,9 +489,9 @@ LABEL_28:
         v17 = qword_10039CAE0;
         if (os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
         {
-          if (a3)
+          if (error)
           {
-            v18 = *a3;
+            v18 = *error;
           }
 
           else
@@ -513,9 +513,9 @@ LABEL_28:
   {
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing node bytes"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-164 description:@"KT PAT Config proof missing node bytes"];
   }
 
   if (qword_10039CAD8 != -1)
@@ -536,96 +536,96 @@ LABEL_28:
 
 - (unint64_t)patLogBeginningMs
 {
-  v2 = [(PatInclusionProof *)self perApplicationTreeEntry];
-  v3 = [v2 slh];
+  perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+  v3 = [perApplicationTreeEntry slh];
   v4 = [SignedLogHead signedTypeWithObject:v3];
 
-  v5 = [v4 parsedLogHead];
-  v6 = [v5 logBeginningMs];
+  parsedLogHead = [v4 parsedLogHead];
+  logBeginningMs = [parsedLogHead logBeginningMs];
 
-  return v6;
+  return logBeginningMs;
 }
 
 - (unint64_t)tltLogBeginningMs
 {
-  v2 = [(PatInclusionProof *)self topLevelTreeEntry];
-  v3 = [v2 slh];
+  topLevelTreeEntry = [(PatInclusionProof *)self topLevelTreeEntry];
+  v3 = [topLevelTreeEntry slh];
   v4 = [SignedLogHead signedTypeWithObject:v3];
 
-  v5 = [v4 parsedLogHead];
-  v6 = [v5 logBeginningMs];
+  parsedLogHead = [v4 parsedLogHead];
+  logBeginningMs = [parsedLogHead logBeginningMs];
 
-  return v6;
+  return logBeginningMs;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   if (![(PatInclusionProof *)self hasPerApplicationTreeEntry]|| ([(PatInclusionProof *)self perApplicationTreeEntry], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v34 = -33;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v34 description:@"PAT inclusion proof missing required field"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v34 description:@"PAT inclusion proof missing required field"];
     goto LABEL_8;
   }
 
   if ([(PatInclusionProof *)self hasTopLevelTreeEntry])
   {
-    v6 = [(PatInclusionProof *)self topLevelTreeEntry];
+    topLevelTreeEntry = [(PatInclusionProof *)self topLevelTreeEntry];
 
-    if (v6)
+    if (topLevelTreeEntry)
     {
       v7 = [TransparencyLogEntryVerifier alloc];
-      v8 = [(PatInclusionProof *)self verifier];
-      v9 = [v8 keyBag];
-      v10 = [v9 appSthKeyStore];
-      v11 = [(TransparencyLogEntryVerifier *)v7 initWithTrustedKeyStore:v10];
+      verifier = [(PatInclusionProof *)self verifier];
+      keyBag = [verifier keyBag];
+      appSthKeyStore = [keyBag appSthKeyStore];
+      v11 = [(TransparencyLogEntryVerifier *)v7 initWithTrustedKeyStore:appSthKeyStore];
 
       v12 = [TransparencyLogEntryVerifier alloc];
-      v13 = [(PatInclusionProof *)self verifier];
-      v14 = [v13 keyBag];
-      v15 = [v14 tltKeyStore];
-      v16 = [(TransparencyLogEntryVerifier *)v12 initWithTrustedKeyStore:v15];
+      verifier2 = [(PatInclusionProof *)self verifier];
+      keyBag2 = [verifier2 keyBag];
+      tltKeyStore = [keyBag2 tltKeyStore];
+      v16 = [(TransparencyLogEntryVerifier *)v12 initWithTrustedKeyStore:tltKeyStore];
 
-      v17 = [(PatInclusionProof *)self dataStore];
-      v18 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      [v18 setVerifier:v11];
+      dataStore = [(PatInclusionProof *)self dataStore];
+      perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+      [perApplicationTreeEntry setVerifier:v11];
 
-      v19 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      [v19 setDataStore:v17];
+      perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      [perApplicationTreeEntry2 setDataStore:dataStore];
 
-      v20 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v21 = [(PatInclusionProof *)self metadata];
+      perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      metadata = [(PatInclusionProof *)self metadata];
       v22 = kTransparencyResponseMetadataKeyServerHint;
-      v23 = [v21 objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
-      [v20 setMetadataValue:v23 key:v22];
+      v23 = [metadata objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
+      [perApplicationTreeEntry3 setMetadataValue:v23 key:v22];
 
-      v24 = [(PatInclusionProof *)self topLevelTreeEntry];
-      [v24 setVerifier:v16];
+      topLevelTreeEntry2 = [(PatInclusionProof *)self topLevelTreeEntry];
+      [topLevelTreeEntry2 setVerifier:v16];
 
-      v25 = [(PatInclusionProof *)self topLevelTreeEntry];
-      [v25 setDataStore:v17];
+      topLevelTreeEntry3 = [(PatInclusionProof *)self topLevelTreeEntry];
+      [topLevelTreeEntry3 setDataStore:dataStore];
 
-      v26 = [(PatInclusionProof *)self topLevelTreeEntry];
-      v27 = [(PatInclusionProof *)self metadata];
-      v28 = [v27 objectForKeyedSubscript:v22];
-      [v26 setMetadataValue:v28 key:v22];
+      topLevelTreeEntry4 = [(PatInclusionProof *)self topLevelTreeEntry];
+      metadata2 = [(PatInclusionProof *)self metadata];
+      v28 = [metadata2 objectForKeyedSubscript:v22];
+      [topLevelTreeEntry4 setMetadataValue:v28 key:v22];
 
-      v29 = [(PatInclusionProof *)self verifier];
-      v30 = [(PatInclusionProof *)self perApplicationTreeEntry];
-      v31 = [(PatInclusionProof *)self topLevelTreeEntry];
-      v32 = [v29 verifyPatInclusionProofWithPerAppLogEntry:v30 topLevelTreeEntry:v31 error:a3];
+      verifier3 = [(PatInclusionProof *)self verifier];
+      perApplicationTreeEntry4 = [(PatInclusionProof *)self perApplicationTreeEntry];
+      topLevelTreeEntry5 = [(PatInclusionProof *)self topLevelTreeEntry];
+      v32 = [verifier3 verifyPatInclusionProofWithPerAppLogEntry:perApplicationTreeEntry4 topLevelTreeEntry:topLevelTreeEntry5 error:error];
 
       return v32;
     }
   }
 
   v34 = -34;
-  if (a3)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -646,41 +646,41 @@ LABEL_8:
   return 0;
 }
 
-- (unint64_t)verifyConfigProof:(id *)a3
+- (unint64_t)verifyConfigProof:(id *)proof
 {
   result = [(PatInclusionProof *)self verifyWithError:?];
   if (result == 1)
   {
-    v6 = [(PatInclusionProof *)self perApplicationTreeEntry];
-    v7 = [v6 nodePosition];
+    perApplicationTreeEntry = [(PatInclusionProof *)self perApplicationTreeEntry];
+    nodePosition = [perApplicationTreeEntry nodePosition];
 
-    if (v7)
+    if (nodePosition)
     {
-      if (a3)
+      if (proof)
       {
-        v8 = [(PatInclusionProof *)self perApplicationTreeEntry];
-        *a3 = +[TransparencyError errorWithDomain:code:description:](TransparencyError, "errorWithDomain:code:description:", @"TransparencyErrorVerify", -163, @"per-app tree (config) inclusion proof not position 0 instead position %llu", [v8 nodePosition]);;
+        perApplicationTreeEntry2 = [(PatInclusionProof *)self perApplicationTreeEntry];
+        *proof = +[TransparencyError errorWithDomain:code:description:](TransparencyError, "errorWithDomain:code:description:", @"TransparencyErrorVerify", -163, @"per-app tree (config) inclusion proof not position 0 instead position %llu", [perApplicationTreeEntry2 nodePosition]);;
 
         v9 = +[NSMutableDictionary dictionary];
         if (+[TransparencyAnalytics hasInternalDiagnostics])
         {
-          v10 = [(PatInclusionProof *)self metadata];
+          metadata = [(PatInclusionProof *)self metadata];
           v11 = kTransparencyResponseMetadataKeyServerHint;
-          v12 = [v10 objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
+          v12 = [metadata objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
 
           if (v12)
           {
-            v13 = [(PatInclusionProof *)self metadata];
-            v14 = [v13 objectForKeyedSubscript:v11];
+            metadata2 = [(PatInclusionProof *)self metadata];
+            v14 = [metadata2 objectForKeyedSubscript:v11];
             [v9 setObject:v14 forKeyedSubscript:v11];
           }
         }
 
         v15 = +[TransparencyAnalytics logger];
-        v16 = [(PatInclusionProof *)self verifier];
-        v17 = [v16 application];
-        v18 = [TransparencyAnalytics formatEventName:@"VerifyPATInclusionProofEvent" application:v17];
-        [v15 logResultForEvent:v18 hardFailure:1 result:*a3 withAttributes:v9];
+        verifier = [(PatInclusionProof *)self verifier];
+        application = [verifier application];
+        v18 = [TransparencyAnalytics formatEventName:@"VerifyPATInclusionProofEvent" application:application];
+        [v15 logResultForEvent:v18 hardFailure:1 result:*proof withAttributes:v9];
       }
 
       if (qword_10039CAD8 != -1)
@@ -692,9 +692,9 @@ LABEL_8:
       if (os_log_type_enabled(qword_10039CAE0, OS_LOG_TYPE_ERROR))
       {
         v20 = v19;
-        v21 = [(PatInclusionProof *)self perApplicationTreeEntry];
+        perApplicationTreeEntry3 = [(PatInclusionProof *)self perApplicationTreeEntry];
         *buf = 134217984;
-        v23 = [v21 nodePosition];
+        nodePosition2 = [perApplicationTreeEntry3 nodePosition];
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "per-app tree (config) inclusion proof not position 0; instead position %llu", buf, 0xCu);
       }
 

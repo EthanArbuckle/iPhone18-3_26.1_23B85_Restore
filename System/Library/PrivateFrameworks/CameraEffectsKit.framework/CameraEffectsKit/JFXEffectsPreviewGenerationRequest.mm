@@ -1,29 +1,29 @@
 @interface JFXEffectsPreviewGenerationRequest
-+ (CGRect)JT_centerRect:(CGRect)result aspectRatio:(double)a4;
-+ (PVTransformAnimationInfo)centerAnimationInfoForOutputSize:(SEL)a3 imageRect:(CGSize)a4;
-- (CGAffineTransform)JFX_scaleToFitSize:(SEL)a3 withTransform:(CGSize)a4;
-- (CGAffineTransform)_scaleAndTransformToFitSize:(SEL)a3;
++ (CGRect)JT_centerRect:(CGRect)result aspectRatio:(double)ratio;
++ (PVTransformAnimationInfo)centerAnimationInfoForOutputSize:(SEL)size imageRect:(CGSize)rect;
+- (CGAffineTransform)JFX_scaleToFitSize:(SEL)size withTransform:(CGSize)transform;
+- (CGAffineTransform)_scaleAndTransformToFitSize:(SEL)size;
 - (CGAffineTransform)sourceTransform;
 - (CGAffineTransform)userSourceTransform;
 - (CGSize)frameSize;
 - (CGSize)outputSize;
-- (JFXEffectsPreviewGenerationRequest)initWithInput:(id)a3 effectStack:(id)a4 outputSize:(CGSize)a5 frameSize:(CGSize)a6 renderTime:(id *)a7;
-- (JFXEffectsPreviewGenerationRequest)initWithInputGenerator:(id)a3 effectStack:(id)a4 outputSize:(CGSize)a5 frameSize:(CGSize)a6 renderTime:(id *)a7;
+- (JFXEffectsPreviewGenerationRequest)initWithInput:(id)input effectStack:(id)stack outputSize:(CGSize)size frameSize:(CGSize)frameSize renderTime:(id *)time;
+- (JFXEffectsPreviewGenerationRequest)initWithInputGenerator:(id)generator effectStack:(id)stack outputSize:(CGSize)size frameSize:(CGSize)frameSize renderTime:(id *)time;
 - (PVTransformAnimationInfo)animationTransformInfo;
-- (id)generatorJobWithGraphBuilder:(id)a3;
+- (id)generatorJobWithGraphBuilder:(id)builder;
 - (id)placeholderGeneratorBackground;
-- (id)sourceIGNodeUsingGraphBuilder:(id)a3 includeAnimoji:(BOOL)a4;
+- (id)sourceIGNodeUsingGraphBuilder:(id)builder includeAnimoji:(BOOL)animoji;
 - (void)centerAnimationInfo;
-- (void)setAnimationTransformInfo:(PVTransformAnimationInfo *)a3;
-- (void)setTransformAnimationInfo:(PVTransformAnimationInfo *)a3 scaleToOutput:(BOOL)a4;
-- (void)setUserSourceTransform:(CGAffineTransform *)a3;
+- (void)setAnimationTransformInfo:(PVTransformAnimationInfo *)info;
+- (void)setTransformAnimationInfo:(PVTransformAnimationInfo *)info scaleToOutput:(BOOL)output;
+- (void)setUserSourceTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation JFXEffectsPreviewGenerationRequest
 
-+ (PVTransformAnimationInfo)centerAnimationInfoForOutputSize:(SEL)a3 imageRect:(CGSize)a4
++ (PVTransformAnimationInfo)centerAnimationInfoForOutputSize:(SEL)size imageRect:(CGSize)rect
 {
-  [objc_opt_class() JT_centerRect:a5.origin.x aspectRatio:{a5.origin.y, a5.size.width, a5.size.height, a4.width / a4.height}];
+  [objc_opt_class() JT_centerRect:a5.origin.x aspectRatio:{a5.origin.y, a5.size.width, a5.size.height, rect.width / rect.height}];
   v7 = v6;
   v9 = v8;
   *&retstr->time.value = 0u;
@@ -38,8 +38,8 @@
 
 - (void)centerAnimationInfo
 {
-  v3 = [(JFXEffectsPreviewGenerationRequest *)self image];
-  [v3 size];
+  image = [(JFXEffectsPreviewGenerationRequest *)self image];
+  [image size];
   v5 = v4;
   v7 = v6;
   [(JFXEffectsPreviewGenerationRequest *)self userSourceTransform];
@@ -71,13 +71,13 @@
   [(JFXEffectsPreviewGenerationRequest *)self setAnimationTransformInfo:v9];
 }
 
-+ (CGRect)JT_centerRect:(CGRect)result aspectRatio:(double)a4
++ (CGRect)JT_centerRect:(CGRect)result aspectRatio:(double)ratio
 {
   height = result.size.height;
-  if (result.size.width / result.size.height >= a4)
+  if (result.size.width / result.size.height >= ratio)
   {
     v6 = *(MEMORY[0x277CBF3A0] + 8);
-    v7 = result.size.height * a4;
+    v7 = result.size.height * ratio;
     v5 = (result.size.width - v7) * 0.5;
     result.size.width = v7;
   }
@@ -85,8 +85,8 @@
   else
   {
     v5 = *MEMORY[0x277CBF3A0];
-    result.size.height = result.size.width / a4;
-    v6 = (height - result.size.width / a4) * 0.5;
+    result.size.height = result.size.width / ratio;
+    v6 = (height - result.size.width / ratio) * 0.5;
   }
 
   result.origin.y = v6;
@@ -94,21 +94,21 @@
   return result;
 }
 
-- (JFXEffectsPreviewGenerationRequest)initWithInput:(id)a3 effectStack:(id)a4 outputSize:(CGSize)a5 frameSize:(CGSize)a6 renderTime:(id *)a7
+- (JFXEffectsPreviewGenerationRequest)initWithInput:(id)input effectStack:(id)stack outputSize:(CGSize)size frameSize:(CGSize)frameSize renderTime:(id *)time
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  v15 = a3;
-  v16 = a4;
+  height = frameSize.height;
+  width = frameSize.width;
+  v10 = size.height;
+  v11 = size.width;
+  inputCopy = input;
+  stackCopy = stack;
   v30.receiver = self;
   v30.super_class = JFXEffectsPreviewGenerationRequest;
   v17 = [(JFXEffectsPreviewGenerationRequest *)&v30 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_image, a3);
+    objc_storeStrong(&v17->_image, input);
     generatorEffect = v18->_generatorEffect;
     v18->_generatorEffect = 0;
 
@@ -116,12 +116,12 @@
     v18->_outputSize.height = v10;
     v18->_frameSize.width = width;
     v18->_frameSize.height = height;
-    objc_storeStrong(&v18->_effectStack, a4);
+    objc_storeStrong(&v18->_effectStack, stack);
     pickerPreviewEffectList = v18->_pickerPreviewEffectList;
     v18->_pickerPreviewEffectList = 0;
 
-    v21 = *&a7->var0;
-    v18->_renderTime.epoch = a7->var3;
+    v21 = *&time->var0;
+    v18->_renderTime.epoch = time->var3;
     *&v18->_renderTime.value = v21;
     PVTransformAnimationInfoIdentity();
     *&v18->_animationTransformInfo.time.value = v26;
@@ -144,14 +144,14 @@
   return v18;
 }
 
-- (JFXEffectsPreviewGenerationRequest)initWithInputGenerator:(id)a3 effectStack:(id)a4 outputSize:(CGSize)a5 frameSize:(CGSize)a6 renderTime:(id *)a7
+- (JFXEffectsPreviewGenerationRequest)initWithInputGenerator:(id)generator effectStack:(id)stack outputSize:(CGSize)size frameSize:(CGSize)frameSize renderTime:(id *)time
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5.height;
-  v11 = a5.width;
-  v15 = a3;
-  v16 = a4;
+  height = frameSize.height;
+  width = frameSize.width;
+  v10 = size.height;
+  v11 = size.width;
+  generatorCopy = generator;
+  stackCopy = stack;
   v30.receiver = self;
   v30.super_class = JFXEffectsPreviewGenerationRequest;
   v17 = [(JFXEffectsPreviewGenerationRequest *)&v30 init];
@@ -161,17 +161,17 @@
     image = v17->_image;
     v17->_image = 0;
 
-    objc_storeStrong(&v18->_generatorEffect, a3);
+    objc_storeStrong(&v18->_generatorEffect, generator);
     v18->_outputSize.width = v11;
     v18->_outputSize.height = v10;
     v18->_frameSize.width = width;
     v18->_frameSize.height = height;
-    objc_storeStrong(&v18->_effectStack, a4);
+    objc_storeStrong(&v18->_effectStack, stack);
     pickerPreviewEffectList = v18->_pickerPreviewEffectList;
     v18->_pickerPreviewEffectList = 0;
 
-    v21 = *&a7->var0;
-    v18->_renderTime.epoch = a7->var3;
+    v21 = *&time->var0;
+    v18->_renderTime.epoch = time->var3;
     *&v18->_renderTime.value = v21;
     PVTransformAnimationInfoIdentity();
     *&v18->_animationTransformInfo.time.value = v26;
@@ -234,19 +234,19 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v6;
   *&retstr->tx = *(v5 + 32);
-  v7 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+  generatorEffect = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
 
-  if (v7)
+  if (generatorEffect)
   {
-    v8 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
-    v9 = [v8 renderEffect];
-    v10 = [v9 effectType];
-    v11 = [v10 isEqual:*MEMORY[0x277D419E0]];
+    generatorEffect2 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+    renderEffect = [generatorEffect2 renderEffect];
+    effectType = [renderEffect effectType];
+    v11 = [effectType isEqual:*MEMORY[0x277D419E0]];
 
     if ((v11 & 1) == 0)
     {
-      v13 = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
-      [v13 size];
+      placeholderGeneratorBackground = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
+      [placeholderGeneratorBackground size];
       v15 = v14;
       v17 = v16;
       [(JFXEffectsPreviewGenerationRequest *)self userSourceTransform];
@@ -256,12 +256,12 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
 
   else
   {
-    v18 = [(JFXEffectsPreviewGenerationRequest *)self image];
+    image = [(JFXEffectsPreviewGenerationRequest *)self image];
 
-    if (v18)
+    if (image)
     {
-      v19 = [(JFXEffectsPreviewGenerationRequest *)self image];
-      [v19 size];
+      image2 = [(JFXEffectsPreviewGenerationRequest *)self image];
+      [image2 size];
       v21 = v20;
       v23 = v22;
 
@@ -273,27 +273,27 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
   return result;
 }
 
-- (id)sourceIGNodeUsingGraphBuilder:(id)a3 includeAnimoji:(BOOL)a4
+- (id)sourceIGNodeUsingGraphBuilder:(id)builder includeAnimoji:(BOOL)animoji
 {
-  v4 = a4;
+  animojiCopy = animoji;
   v67[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+  builderCopy = builder;
+  generatorEffect = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
 
-  if (v7)
+  if (generatorEffect)
   {
-    v8 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
-    v9 = [v8 renderEffect];
-    v10 = [v9 effectType];
-    v11 = [v10 isEqual:*MEMORY[0x277D419E0]];
+    generatorEffect2 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+    renderEffect = [generatorEffect2 renderEffect];
+    effectType = [renderEffect effectType];
+    v11 = [effectType isEqual:*MEMORY[0x277D419E0]];
 
     if (v11)
     {
-      v12 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+      generatorEffect3 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
       v62 = *kDefaultEffectPreviewAnimationRange;
       v63 = *&kDefaultEffectPreviewAnimationRange[16];
       v64 = *&kDefaultEffectPreviewAnimationRange[32];
-      v13 = [v6 sourceNodeForGeneratorEffect:v12 effectRange:&v62];
+      v13 = [builderCopy sourceNodeForGeneratorEffect:generatorEffect3 effectRange:&v62];
     }
 
     else
@@ -302,43 +302,43 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
       v64 = 0u;
       v62 = 0u;
       [(JFXEffectsPreviewGenerationRequest *)self sourceTransform];
-      v45 = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
+      placeholderGeneratorBackground = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
       v59 = v62;
       v60 = v63;
       v61 = v64;
-      v46 = [v6 sourceNodeForImageBuffer:v45 sourceTransform:&v59];
+      v46 = [builderCopy sourceNodeForImageBuffer:placeholderGeneratorBackground sourceTransform:&v59];
 
-      v47 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
-      v67[0] = v47;
+      generatorEffect4 = [(JFXEffectsPreviewGenerationRequest *)self generatorEffect];
+      v67[0] = generatorEffect4;
       v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:1];
       v59 = *kDefaultEffectPreviewAnimationRange;
       v60 = *&kDefaultEffectPreviewAnimationRange[16];
       v61 = *&kDefaultEffectPreviewAnimationRange[32];
-      v13 = [v6 applyEffectStack:v48 presentationRange:&v59 toInput:v46];
+      v13 = [builderCopy applyEffectStack:v48 presentationRange:&v59 toInput:v46];
     }
   }
 
   else
   {
-    v14 = [(JFXEffectsPreviewGenerationRequest *)self image];
+    image = [(JFXEffectsPreviewGenerationRequest *)self image];
 
-    if (v14)
+    if (image)
     {
       v63 = 0uLL;
       v64 = 0uLL;
       v62 = 0uLL;
       [(JFXEffectsPreviewGenerationRequest *)self sourceTransform];
       v15 = objc_alloc(MEMORY[0x277D41630]);
-      v16 = [(JFXEffectsPreviewGenerationRequest *)self image];
+      image2 = [(JFXEffectsPreviewGenerationRequest *)self image];
       v59 = v62;
       v60 = v63;
       v61 = v64;
-      v17 = [v15 initWithPVImageBuffer:v16 transform:&v59];
+      v17 = [v15 initWithPVImageBuffer:image2 transform:&v59];
 
-      v18 = [(JFXEffectsPreviewGenerationRequest *)self customRenderingProperties];
-      v19 = [v18 objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
+      customRenderingProperties = [(JFXEffectsPreviewGenerationRequest *)self customRenderingProperties];
+      v19 = [customRenderingProperties objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
 
-      if (!v4 || ([v19 metadata], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
+      if (!animojiCopy || ([v19 metadata], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
       {
         v13 = v17;
       }
@@ -351,18 +351,18 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
         *(&v60 + 1) = __Block_byref_object_copy__25;
         *&v61 = __Block_byref_object_dispose__25;
         *(&v61 + 1) = 0;
-        v22 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
+        effectStack = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
         v58[0] = MEMORY[0x277D85DD0];
         v58[1] = 3221225472;
         v58[2] = __83__JFXEffectsPreviewGenerationRequest_sourceIGNodeUsingGraphBuilder_includeAnimoji___block_invoke;
         v58[3] = &unk_278D7D140;
         v58[4] = &v59;
-        [v22 enumerateObjectsUsingBlock:v58];
+        [effectStack enumerateObjectsUsingBlock:v58];
 
         if (*(*(&v59 + 1) + 40))
         {
-          v23 = [v19 metadata];
-          v24 = [v23 mutableCopy];
+          metadata = [v19 metadata];
+          v24 = [metadata mutableCopy];
 
           [v24 setObject:*(*(&v59 + 1) + 40) forKeyedSubscript:@"JFXAnimojiRendererMetadata_Effect"];
           v51 = [v24 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_RenderSize"];
@@ -371,18 +371,18 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
           v28 = v25;
           if (v26 == *MEMORY[0x277CBF3A8] && v25 == *(MEMORY[0x277CBF3A8] + 8))
           {
-            v29 = [(JFXEffectsPreviewGenerationRequest *)self image];
-            [v29 size];
+            image3 = [(JFXEffectsPreviewGenerationRequest *)self image];
+            [image3 size];
             v27 = v30;
             v28 = v31;
           }
 
           v32 = MEMORY[0x277D41648];
-          v33 = [v19 renderingDelegate];
-          v34 = [v32 newSourceCompositeNodeWithDelegate:v33 inputs:0 userContext:v24 outputSize:1111970369 outputFormat:v27, v28];
+          renderingDelegate = [v19 renderingDelegate];
+          v34 = [v32 newSourceCompositeNodeWithDelegate:renderingDelegate inputs:0 userContext:v24 outputSize:1111970369 outputFormat:v27, v28];
 
-          v35 = [MEMORY[0x277D415E0] sRGBColorSpace];
-          [v34 setColorSpace:v35];
+          sRGBColorSpace = [MEMORY[0x277D415E0] sRGBColorSpace];
+          [v34 setColorSpace:sRGBColorSpace];
 
           v36 = *(MEMORY[0x277CBF2C0] + 16);
           v52 = *MEMORY[0x277CBF2C0];
@@ -427,11 +427,11 @@ void __68__JFXEffectsPreviewGenerationRequest_placeholderGeneratorBackground__bl
       v64 = 0uLL;
       v62 = 0uLL;
       [(JFXEffectsPreviewGenerationRequest *)self sourceTransform];
-      v49 = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
+      placeholderGeneratorBackground2 = [(JFXEffectsPreviewGenerationRequest *)self placeholderGeneratorBackground];
       v59 = v62;
       v60 = v63;
       v61 = v64;
-      v13 = [v6 sourceNodeForImageBuffer:v49 sourceTransform:&v59];
+      v13 = [builderCopy sourceNodeForImageBuffer:placeholderGeneratorBackground2 sourceTransform:&v59];
     }
   }
 
@@ -448,26 +448,26 @@ void __83__JFXEffectsPreviewGenerationRequest_sourceIGNodeUsingGraphBuilder_incl
   }
 }
 
-- (id)generatorJobWithGraphBuilder:(id)a3
+- (id)generatorJobWithGraphBuilder:(id)builder
 {
   v44 = *MEMORY[0x277D85DE8];
-  v30 = a3;
+  builderCopy = builder;
   v27 = [JFXEffectsPreviewGenerationRequest sourceIGNodeUsingGraphBuilder:"sourceIGNodeUsingGraphBuilder:includeAnimoji:" includeAnimoji:?];
-  v3 = [(JFXEffectsPreviewGenerationRequest *)self customRenderingProperties];
-  v25 = [v3 objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
+  customRenderingProperties = [(JFXEffectsPreviewGenerationRequest *)self customRenderingProperties];
+  v25 = [customRenderingProperties objectForKeyedSubscript:@"JFXCustomRenderingPropertiesKey_Animoji"];
 
-  v29 = [v30 applyEffectStack:self->_effectStack toInput:v27];
+  v29 = [builderCopy applyEffectStack:self->_effectStack toInput:v27];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(JFXEffectsPreviewGenerationRequest *)self pickerPreviewEffectList];
-  if (v6 && (-[JFXEffectsPreviewGenerationRequest pickerPreviewEffectList](self, "pickerPreviewEffectList"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, v8))
+  pickerPreviewEffectList = [(JFXEffectsPreviewGenerationRequest *)self pickerPreviewEffectList];
+  if (pickerPreviewEffectList && (-[JFXEffectsPreviewGenerationRequest pickerPreviewEffectList](self, "pickerPreviewEffectList"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, pickerPreviewEffectList, v8))
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v9 = [(JFXEffectsPreviewGenerationRequest *)self pickerPreviewEffectList];
-    v10 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    pickerPreviewEffectList2 = [(JFXEffectsPreviewGenerationRequest *)self pickerPreviewEffectList];
+    v10 = [pickerPreviewEffectList2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v10)
     {
       v11 = *v39;
@@ -477,19 +477,19 @@ void __83__JFXEffectsPreviewGenerationRequest_sourceIGNodeUsingGraphBuilder_incl
         {
           if (*v39 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(pickerPreviewEffectList2);
           }
 
           v42 = *(*(&v38 + 1) + 8 * i);
           v13 = v42;
           v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:{1, v25}];
-          v15 = [v30 applyEffectStack:v14 toInput:v29];
+          v15 = [builderCopy applyEffectStack:v14 toInput:v29];
 
           [v4 addObject:v15];
           [v5 addObject:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v10 = [pickerPreviewEffectList2 countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v10);
@@ -498,20 +498,20 @@ void __83__JFXEffectsPreviewGenerationRequest_sourceIGNodeUsingGraphBuilder_incl
 
   else if (v29)
   {
-    v16 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
-    if (v16 && (-[JFXEffectsPreviewGenerationRequest effectStack](self, "effectStack"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, v16, v18))
+    effectStack = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
+    if (effectStack && (-[JFXEffectsPreviewGenerationRequest effectStack](self, "effectStack"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 count], v17, effectStack, v18))
     {
-      v19 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
-      v20 = [v19 lastObject];
+      effectStack2 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
+      lastObject = [effectStack2 lastObject];
     }
 
     else
     {
-      v19 = +[JFXEffectFactory sharedInstance];
-      v20 = [v19 createEffectForType:1 fromID:*MEMORY[0x277D419C8] withProperties:0];
+      effectStack2 = +[JFXEffectFactory sharedInstance];
+      lastObject = [effectStack2 createEffectForType:1 fromID:*MEMORY[0x277D419C8] withProperties:0];
     }
 
-    v21 = v20;
+    v21 = lastObject;
 
     [v4 addObject:v29];
     [v5 addObject:v21];
@@ -525,13 +525,13 @@ void __83__JFXEffectsPreviewGenerationRequest_sourceIGNodeUsingGraphBuilder_incl
     v35 = __Block_byref_object_copy__25;
     v36 = __Block_byref_object_dispose__25;
     v37 = 0;
-    v22 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
+    effectStack3 = [(JFXEffectsPreviewGenerationRequest *)self effectStack];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___block_invoke;
     v31[3] = &unk_278D7D140;
     v31[4] = &v32;
-    [v22 enumerateObjectsUsingBlock:v31];
+    [effectStack3 enumerateObjectsUsingBlock:v31];
 
     if (v33[5])
     {
@@ -557,19 +557,19 @@ void __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___blo
   }
 }
 
-- (void)setTransformAnimationInfo:(PVTransformAnimationInfo *)a3 scaleToOutput:(BOOL)a4
+- (void)setTransformAnimationInfo:(PVTransformAnimationInfo *)info scaleToOutput:(BOOL)output
 {
-  v4 = a4;
-  v6 = *&a3->time.epoch;
-  v7[0] = *&a3->time.value;
+  outputCopy = output;
+  v6 = *&info->time.epoch;
+  v7[0] = *&info->time.value;
   v7[1] = v6;
-  v7[2] = *&a3->translation.y;
-  rotation = a3->rotation;
+  v7[2] = *&info->translation.y;
+  rotation = info->rotation;
   [(JFXEffectsPreviewGenerationRequest *)self setAnimationTransformInfo:v7];
-  [(JFXEffectsPreviewGenerationRequest *)self setScaleAnimationTransformInfoToOutputSize:v4];
+  [(JFXEffectsPreviewGenerationRequest *)self setScaleAnimationTransformInfoToOutputSize:outputCopy];
 }
 
-- (CGAffineTransform)_scaleAndTransformToFitSize:(SEL)a3
+- (CGAffineTransform)_scaleAndTransformToFitSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
@@ -580,7 +580,7 @@ void __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___blo
   return [(JFXEffectsPreviewGenerationRequest *)self JFX_scaleToFitSize:&v8 withTransform:width, height];
 }
 
-- (CGAffineTransform)JFX_scaleToFitSize:(SEL)a3 withTransform:(CGSize)a4
+- (CGAffineTransform)JFX_scaleToFitSize:(SEL)size withTransform:(CGSize)transform
 {
   v8 = MEMORY[0x277CBF2C0];
   v23 = *(MEMORY[0x277CBF2C0] + 16);
@@ -589,8 +589,8 @@ void __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___blo
   *&retstr->c = v23;
   v22 = *(v8 + 32);
   *&retstr->tx = v22;
-  v9 = a4.height * a5->c + a5->a * a4.width;
-  v10 = a4.height * a5->d + a5->b * a4.width;
+  v9 = transform.height * a5->c + a5->a * transform.width;
+  v10 = transform.height * a5->d + a5->b * transform.width;
   [(JFXEffectsPreviewGenerationRequest *)self outputSize];
   v12 = v11 / fabs(v10);
   [(JFXEffectsPreviewGenerationRequest *)self outputSize];
@@ -667,11 +667,11 @@ void __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___blo
   return self;
 }
 
-- (void)setUserSourceTransform:(CGAffineTransform *)a3
+- (void)setUserSourceTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_userSourceTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_userSourceTransform.tx = *&transform->tx;
   *&self->_userSourceTransform.c = v4;
   *&self->_userSourceTransform.a = v3;
 }
@@ -686,12 +686,12 @@ void __67__JFXEffectsPreviewGenerationRequest_generatorJobWithGraphBuilder___blo
   return self;
 }
 
-- (void)setAnimationTransformInfo:(PVTransformAnimationInfo *)a3
+- (void)setAnimationTransformInfo:(PVTransformAnimationInfo *)info
 {
-  v3 = *&a3->time.value;
-  v4 = *&a3->time.epoch;
-  v5 = *&a3->translation.y;
-  self->_animationTransformInfo.rotation = a3->rotation;
+  v3 = *&info->time.value;
+  v4 = *&info->time.epoch;
+  v5 = *&info->translation.y;
+  self->_animationTransformInfo.rotation = info->rotation;
   *&self->_animationTransformInfo.translation.y = v5;
   *&self->_animationTransformInfo.time.epoch = v4;
   *&self->_animationTransformInfo.time.value = v3;

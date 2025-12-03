@@ -1,31 +1,31 @@
 @interface HMDAppleMediaAccessoriesStateManagerMetricsDispatcher
 + (id)logCategory;
-- (HMDAppleMediaAccessoriesStateManagerMetricsDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4;
+- (HMDAppleMediaAccessoriesStateManagerMetricsDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter;
 - (id)logIdentifier;
-- (void)submitMatchingIdentifierEventWithMatchingCount:(int64_t)a3;
-- (void)submitMatchingIdentifierRemovalEventWithRemovalCount:(int64_t)a3;
+- (void)submitMatchingIdentifierEventWithMatchingCount:(int64_t)count;
+- (void)submitMatchingIdentifierRemovalEventWithRemovalCount:(int64_t)count;
 @end
 
 @implementation HMDAppleMediaAccessoriesStateManagerMetricsDispatcher
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)submitMatchingIdentifierRemovalEventWithRemovalCount:(int64_t)a3
+- (void)submitMatchingIdentifierRemovalEventWithRemovalCount:(int64_t)count
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:count];
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
@@ -34,23 +34,23 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [[HMDAppleMediaAccessoryMatchingIdentifierRemovalEvent alloc] initWithRemovalCount:a3];
-  v11 = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)v6 logEventSubmitter];
-  [v11 submitLogEvent:v10];
+  v10 = [[HMDAppleMediaAccessoryMatchingIdentifierRemovalEvent alloc] initWithRemovalCount:count];
+  logEventSubmitter = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitMatchingIdentifierEventWithMatchingCount:(int64_t)a3
+- (void)submitMatchingIdentifierEventWithMatchingCount:(int64_t)count
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:count];
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
@@ -59,25 +59,25 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [[HMDAppleMediaAccessoryMatchingIdentifierEvent alloc] initWithMatchingIdentifiersCount:a3];
-  v11 = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)v6 logEventSubmitter];
-  [v11 submitLogEvent:v10];
+  v10 = [[HMDAppleMediaAccessoryMatchingIdentifierEvent alloc] initWithMatchingIdentifiersCount:count];
+  logEventSubmitter = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessoriesStateManagerMetricsDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4
+- (HMDAppleMediaAccessoriesStateManagerMetricsDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  submitterCopy = submitter;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = submitterCopy;
+  if (!submitterCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -89,11 +89,11 @@ LABEL_7:
   v9 = [(HMDAppleMediaAccessoriesStateManagerMetricsDispatcher *)&v15 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_logEventSubmitter, a4);
+    objc_storeStrong(&v9->_logEventSubmitter, submitter);
   }
 
   return v9;

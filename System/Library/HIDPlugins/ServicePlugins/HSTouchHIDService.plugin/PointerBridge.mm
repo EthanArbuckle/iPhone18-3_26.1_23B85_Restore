@@ -1,39 +1,39 @@
 @interface PointerBridge
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
 - (NSDictionary)debug;
-- (PointerBridge)initWithService:(unsigned int)a3 settings:(id)a4;
-- (void)_handleGetDebugEvent:(id)a3;
-- (void)_handleHSTNotificationEvent:(id)a3;
-- (void)_handleResetEvent:(id)a3;
+- (PointerBridge)initWithService:(unsigned int)service settings:(id)settings;
+- (void)_handleGetDebugEvent:(id)event;
+- (void)_handleHSTNotificationEvent:(id)event;
+- (void)_handleResetEvent:(id)event;
 - (void)dealloc;
-- (void)dispatch:(id)a3;
-- (void)dispatchSettingsEventWithFlush:(BOOL)a3;
-- (void)encodeToMap:(void *)a3;
-- (void)handleActivateEvent:(id)a3;
-- (void)handleConsume:(id)a3;
-- (void)handleGetPropertyEvent:(id)a3;
-- (void)handleHSTEvent:(id)a3;
-- (void)handleSetPropertyEvent:(id)a3;
-- (void)setQueue:(id)a3;
-- (void)updatePreference:(id)a3 to:(id)a4;
+- (void)dispatch:(id)dispatch;
+- (void)dispatchSettingsEventWithFlush:(BOOL)flush;
+- (void)encodeToMap:(void *)map;
+- (void)handleActivateEvent:(id)event;
+- (void)handleConsume:(id)consume;
+- (void)handleGetPropertyEvent:(id)event;
+- (void)handleHSTEvent:(id)event;
+- (void)handleSetPropertyEvent:(id)event;
+- (void)setQueue:(id)queue;
+- (void)updatePreference:(id)preference to:(id)to;
 @end
 
 @implementation PointerBridge
 
-- (PointerBridge)initWithService:(unsigned int)a3 settings:(id)a4
+- (PointerBridge)initWithService:(unsigned int)service settings:(id)settings
 {
-  v7 = a4;
+  settingsCopy = settings;
   v14.receiver = self;
   v14.super_class = PointerBridge;
   v8 = [(HSStage *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_service = a3;
+    v8->_service = service;
     v8->_activated = 0;
-    objc_storeStrong(&v8->_settings, a4);
+    objc_storeStrong(&v8->_settings, settings);
     v10 = objc_opt_new();
     coreAccessoryManager = v9->_coreAccessoryManager;
     v9->_coreAccessoryManager = v10;
@@ -58,38 +58,38 @@
   [(HSStage *)&v5 dealloc];
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   [(PointerBridge *)self setSignpostBeginTime:mach_continuous_time()];
-  [(PointerBridge *)self handleHSTEvent:v4];
+  [(PointerBridge *)self handleHSTEvent:consumeCopy];
 }
 
-- (void)handleHSTEvent:(id)a3
+- (void)handleHSTEvent:(id)event
 {
-  v15 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v15;
-    v5 = v15;
+    v4 = eventCopy;
+    v5 = eventCopy;
     v6 = v4;
   }
 
   else
   {
     v6 = 0;
-    v5 = v15;
+    v5 = eventCopy;
   }
 
   if (v6)
   {
-    [(PointerBridge *)self handleSetPropertyEvent:v15];
+    [(PointerBridge *)self handleSetPropertyEvent:eventCopy];
   }
 
   else
   {
-    v7 = v15;
+    v7 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,21 +173,21 @@
   }
 }
 
-- (void)handleSetPropertyEvent:(id)a3
+- (void)handleSetPropertyEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   v4 = [NSString stringWithUTF8String:?];
-  v5 = v8[5];
+  v5 = eventCopy[5];
   if ([v4 isEqualToString:@"MTEventSource"])
   {
-    v6 = v8[5];
-    v8[5] = &__kCFBooleanTrue;
+    v6 = eventCopy[5];
+    eventCopy[5] = &__kCFBooleanTrue;
   }
 
   if ([v4 isEqualToString:@"SerialNumber"])
   {
-    v7 = [(PointerBridge *)self coreAccessoryManager];
-    [v7 setSerialNumber:v5];
+    coreAccessoryManager = [(PointerBridge *)self coreAccessoryManager];
+    [coreAccessoryManager setSerialNumber:v5];
   }
 
   else
@@ -197,79 +197,79 @@
       goto LABEL_8;
     }
 
-    v7 = [(PointerBridge *)self coreAccessoryManager];
-    [v7 setDriverFirmwareVersion:v5];
+    coreAccessoryManager = [(PointerBridge *)self coreAccessoryManager];
+    [coreAccessoryManager setDriverFirmwareVersion:v5];
   }
 
 LABEL_8:
-  [(PointerBridge *)self updatePreference:v4 to:v8[5]];
-  [(PointerBridge *)self dispatch:v8];
+  [(PointerBridge *)self updatePreference:v4 to:eventCopy[5]];
+  [(PointerBridge *)self dispatch:eventCopy];
 }
 
-- (void)handleGetPropertyEvent:(id)a3
+- (void)handleGetPropertyEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   v4 = [NSString stringWithUTF8String:?];
-  v5 = [(PointerBridge *)self settings];
-  v6 = [v5 preferences];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  settings = [(PointerBridge *)self settings];
+  preferences = [settings preferences];
+  v7 = [preferences objectForKeyedSubscript:v4];
 
   if (v7)
   {
-    objc_storeStrong(v8 + 5, v7);
+    objc_storeStrong(eventCopy + 5, v7);
   }
 
   else
   {
-    [(PointerBridge *)self dispatch:v8];
+    [(PointerBridge *)self dispatch:eventCopy];
   }
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PointerBridge *)self setActivated:0];
-  [(PointerBridge *)self dispatch:v4];
+  [(PointerBridge *)self dispatch:eventCopy];
 }
 
-- (void)handleActivateEvent:(id)a3
+- (void)handleActivateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PointerBridge *)self setActivated:1];
   [(PointerBridge *)self dispatchSettingsEventWithFlush:1];
-  [(PointerBridge *)self dispatch:v4];
+  [(PointerBridge *)self dispatch:eventCopy];
 }
 
-- (void)_handleGetDebugEvent:(id)a3
+- (void)_handleGetDebugEvent:(id)event
 {
-  v4 = a3;
-  v4[16] = 1;
-  v7 = v4;
-  v5 = *(v4 + 3);
-  v6 = [(PointerBridge *)self debug];
-  [v5 addObject:v6];
+  eventCopy = event;
+  eventCopy[16] = 1;
+  v7 = eventCopy;
+  v5 = *(eventCopy + 3);
+  debug = [(PointerBridge *)self debug];
+  [v5 addObject:debug];
 
   [(PointerBridge *)self dispatch:v7];
 }
 
-- (void)_handleHSTNotificationEvent:(id)a3
+- (void)_handleHSTNotificationEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 notification] == 12)
+  eventCopy = event;
+  if ([eventCopy notification] == 12)
   {
     CFProperty = IORegistryEntryCreateCFProperty([(PointerBridge *)self service], @"ParserDisabled", kCFAllocatorDefault, 0);
     v6 = CFProperty;
     if (CFProperty)
     {
-      v7 = [CFProperty BOOLValue];
+      bOOLValue = [CFProperty BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
 
-    v8 = [(PointerBridge *)self settings];
+    settings = [(PointerBridge *)self settings];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -280,7 +280,7 @@ LABEL_8:
 
     else
     {
-      v11 = [(PointerBridge *)self settings];
+      settings2 = [(PointerBridge *)self settings];
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
 
@@ -294,7 +294,7 @@ LABEL_14:
       v10 = @"MouseExternallyDisabled";
     }
 
-    v13 = [NSNumber numberWithBool:v7];
+    v13 = [NSNumber numberWithBool:bOOLValue];
     [(PointerBridge *)self updatePreference:v10 to:v13];
 
     v14 = MTLoggingPlugin();
@@ -303,7 +303,7 @@ LABEL_14:
       v15 = "enabled";
       *v16 = 136315906;
       *&v16[4] = "";
-      if (v7)
+      if (bOOLValue)
       {
         v15 = "disabled";
       }
@@ -321,54 +321,54 @@ LABEL_14:
   }
 
 LABEL_15:
-  [(PointerBridge *)self dispatch:v4, *v16];
+  [(PointerBridge *)self dispatch:eventCopy, *v16];
 }
 
-- (void)dispatch:(id)a3
+- (void)dispatch:(id)dispatch
 {
-  v4 = a3;
+  dispatchCopy = dispatch;
   v5 = MTLoggingPlugin();
   if (os_signpost_enabled(v5))
   {
     *buf = 134349314;
-    v8 = [(PointerBridge *)self signpostBeginTime];
+    signpostBeginTime = [(PointerBridge *)self signpostBeginTime];
     v9 = 2080;
-    ClassName = object_getClassName(v4);
+    ClassName = object_getClassName(dispatchCopy);
     _os_signpost_emit_with_name_impl(&dword_0, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TrackpadBridge", "%{public, signpost.description:begin_time}llu event=%s", buf, 0x16u);
   }
 
   v6.receiver = self;
   v6.super_class = PointerBridge;
-  [(HSStage *)&v6 handleConsume:v4];
+  [(HSStage *)&v6 handleConsume:dispatchCopy];
   [(PointerBridge *)self setSignpostBeginTime:mach_continuous_time()];
 }
 
-- (void)updatePreference:(id)a3 to:(id)a4
+- (void)updatePreference:(id)preference to:(id)to
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PointerBridge *)self settings];
-  v8 = [v7 updatePreferenceKey:v9 to:v6];
+  preferenceCopy = preference;
+  toCopy = to;
+  settings = [(PointerBridge *)self settings];
+  v8 = [settings updatePreferenceKey:preferenceCopy to:toCopy];
 
   if (v8)
   {
     [(PointerBridge *)self setSettings:v8];
-    -[PointerBridge dispatchSettingsEventWithFlush:](self, "dispatchSettingsEventWithFlush:", [v9 isEqualToString:@"NotificationCenterActive"] ^ 1);
+    -[PointerBridge dispatchSettingsEventWithFlush:](self, "dispatchSettingsEventWithFlush:", [preferenceCopy isEqualToString:@"NotificationCenterActive"] ^ 1);
   }
 }
 
-- (void)dispatchSettingsEventWithFlush:(BOOL)a3
+- (void)dispatchSettingsEventWithFlush:(BOOL)flush
 {
   if ([(PointerBridge *)self activated])
   {
-    v5 = [(PointerBridge *)self settings];
+    settings = [(PointerBridge *)self settings];
 
-    if (v5)
+    if (settings)
     {
       v6 = MTLoggingPlugin();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(PointerBridge *)self settings];
+        settings2 = [(PointerBridge *)self settings];
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
         v13 = 136315906;
@@ -383,22 +383,22 @@ LABEL_15:
       }
 
       v10 = objc_opt_new();
-      v11 = [(PointerBridge *)self settings];
+      settings3 = [(PointerBridge *)self settings];
       v12 = *(v10 + 8);
-      *(v10 + 8) = v11;
+      *(v10 + 8) = settings3;
 
-      *(v10 + 16) = a3;
+      *(v10 + 16) = flush;
       [(PointerBridge *)self dispatch:v10];
     }
   }
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v6 = a3;
-  objc_storeStrong(&self->_queue, a3);
-  v5 = [(PointerBridge *)self coreAccessoryManager];
-  [v5 setQueue:v6];
+  queueCopy = queue;
+  objc_storeStrong(&self->_queue, queue);
+  coreAccessoryManager = [(PointerBridge *)self coreAccessoryManager];
+  [coreAccessoryManager setQueue:queueCopy];
 }
 
 - (NSDictionary)debug
@@ -408,21 +408,21 @@ LABEL_15:
   v5 = NSStringFromClass(v4);
   [v3 setObject:v5 forKeyedSubscript:@"Stage"];
 
-  v6 = [(PointerBridge *)self settings];
-  v7 = [v6 preferences];
-  [v3 setObject:v7 forKeyedSubscript:@"UserPreferences"];
+  settings = [(PointerBridge *)self settings];
+  preferences = [settings preferences];
+  [v3 setObject:preferences forKeyedSubscript:@"UserPreferences"];
 
-  v8 = [(PointerBridge *)self settings];
-  v9 = [v8 debug];
-  [v3 setObject:v9 forKeyedSubscript:@"Settings"];
+  settings2 = [(PointerBridge *)self settings];
+  debug = [settings2 debug];
+  [v3 setObject:debug forKeyedSubscript:@"Settings"];
 
-  v10 = [(PointerBridge *)self coreAccessoryManager];
+  coreAccessoryManager = [(PointerBridge *)self coreAccessoryManager];
 
-  if (v10)
+  if (coreAccessoryManager)
   {
-    v11 = [(PointerBridge *)self coreAccessoryManager];
-    v12 = [v11 debug];
-    [v3 setObject:v12 forKeyedSubscript:@"CoreAccessoryManager"];
+    coreAccessoryManager2 = [(PointerBridge *)self coreAccessoryManager];
+    debug2 = [coreAccessoryManager2 debug];
+    [v3 setObject:debug2 forKeyedSubscript:@"CoreAccessoryManager"];
   }
 
   v13 = [v3 copy];
@@ -430,42 +430,42 @@ LABEL_15:
   return v13;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v4 = HSUtil::CoderKey::Literal<(char)115,(char)101,(char)116,(char)116,(char)105,(char)110,(char)103,(char)115>::Key;
-  v5 = [(PointerBridge *)self settings];
-  HSUtil::Encoder::encodeHSCodable(a3, v4, v5);
+  settings = [(PointerBridge *)self settings];
+  HSUtil::Encoder::encodeHSCodable(map, v4, settings);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v4 = HSUtil::CoderKey::Literal<(char)115,(char)101,(char)116,(char)116,(char)105,(char)110,(char)103,(char)115>::Key;
-  v5 = [(PointerBridge *)self settings];
-  HSUtil::Decoder::decodeHSCodable(a3, v4, v5);
+  settings = [(PointerBridge *)self settings];
+  HSUtil::Decoder::decodeHSCodable(map, v4, settings);
 
   return 1;
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  [(PointerBridge *)self encodeToMap:a3];
-  if (!*a3)
+  [(PointerBridge *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -474,8 +474,8 @@ LABEL_15:
   v11 = v5;
   v12 = v5;
   v10 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v10);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v10);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     v6 = basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/Bridges/PointerBridge.mm", __b);

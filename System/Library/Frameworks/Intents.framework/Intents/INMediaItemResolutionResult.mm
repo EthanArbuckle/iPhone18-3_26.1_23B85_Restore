@@ -1,7 +1,7 @@
 @interface INMediaItemResolutionResult
 + (NSArray)successesWithResolvedMediaItems:(NSArray *)resolvedMediaItems;
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4;
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4;
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description;
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description;
 @end
 
 @implementation INMediaItemResolutionResult
@@ -30,7 +30,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 resolutionResultSuccessWithResolvedValue:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self resolutionResultSuccessWithResolvedValue:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -45,19 +45,19 @@
   return v5;
 }
 
-- (id)_vocabularyValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_vocabularyValueForObject:(id)object slotDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 description];
-  v8 = [MEMORY[0x1E695DF58] systemLocale];
-  v9 = [v8 groupingSeparator];
-  if ([v6 valueType] == 153)
+  objectCopy = object;
+  descriptionCopy = description;
+  v7 = [objectCopy description];
+  systemLocale = [MEMORY[0x1E695DF58] systemLocale];
+  groupingSeparator = [systemLocale groupingSeparator];
+  if ([descriptionCopy valueType] == 153)
   {
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) != 0))
     {
-      v12 = [v5 valueForKey:@"spokenPhrase"];
-      v13 = [v12 if_escapedComponentsJoinedByString:v9 forLocale:v8];
+      v12 = [objectCopy valueForKey:@"spokenPhrase"];
+      spokenPhrase = [v12 if_escapedComponentsJoinedByString:groupingSeparator forLocale:systemLocale];
 
       v7 = v12;
     }
@@ -70,10 +70,10 @@
         goto LABEL_9;
       }
 
-      v13 = [v5 spokenPhrase];
+      spokenPhrase = [objectCopy spokenPhrase];
     }
 
-    v7 = v13;
+    v7 = spokenPhrase;
   }
 
 LABEL_9:
@@ -81,18 +81,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)_intentSlotValueForObject:(id)a3 slotDescription:(id)a4
+- (id)_intentSlotValueForObject:(id)object slotDescription:(id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  descriptionCopy = description;
   v7 = objc_alloc_init(_INPBIntentSlotValue);
-  if ([v6 valueType] == 153)
+  if ([descriptionCopy valueType] == 153)
   {
     [(_INPBIntentSlotValue *)v7 setType:1000];
-    if ([v6 valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v5, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+    if ([descriptionCopy valueStyle] == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(objectCopy, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
     {
-      v10 = v5;
+      v10 = objectCopy;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -130,7 +130,7 @@ LABEL_9:
         goto LABEL_17;
       }
 
-      v10 = INIntentSlotValueTransformToMediaItemValue(v5);
+      v10 = INIntentSlotValueTransformToMediaItemValue(objectCopy);
       if (v10)
       {
         [(_INPBIntentSlotValue *)v7 addPayloadMediaItemValue:v10];

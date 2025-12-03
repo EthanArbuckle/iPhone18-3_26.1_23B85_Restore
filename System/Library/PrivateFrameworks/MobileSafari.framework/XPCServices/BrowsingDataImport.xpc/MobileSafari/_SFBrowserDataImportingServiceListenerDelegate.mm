@@ -1,27 +1,27 @@
 @interface _SFBrowserDataImportingServiceListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation _SFBrowserDataImportingServiceListenerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:canImportBrowsingDataToSafariEntitlement];
-  v6 = [v5 BOOLValue];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:canImportBrowsingDataToSafariEntitlement];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = WBSBrowsingDataImportServiceInterface();
-    [v4 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
     v8 = objc_alloc_init(WBSBrowsingDataImportService);
-    [v4 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
 
-    [v4 resume];
+    [connectionCopy resume];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

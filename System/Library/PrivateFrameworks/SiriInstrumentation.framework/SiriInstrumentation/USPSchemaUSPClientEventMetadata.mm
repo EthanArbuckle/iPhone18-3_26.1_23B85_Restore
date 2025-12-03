@@ -1,26 +1,26 @@
 @interface USPSchemaUSPClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USPSchemaUSPClientEventMetadata)initWithDictionary:(id)a3;
-- (USPSchemaUSPClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USPSchemaUSPClientEventMetadata)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPClientEventMetadata
 
-- (USPSchemaUSPClientEventMetadata)initWithDictionary:(id)a3
+- (USPSchemaUSPClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = USPSchemaUSPClientEventMetadata;
   v5 = [(USPSchemaUSPClientEventMetadata *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uspId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uspId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(USPSchemaUSPClientEventMetadata *)v5 setUspId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"context"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"context"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(USPSchemaUSPClientEventMetadata *)v5 setContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"sutFingerprint"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sutFingerprint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (USPSchemaUSPClientEventMetadata)initWithJSON:(id)a3
+- (USPSchemaUSPClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_context)
   {
-    v4 = [(USPSchemaUSPClientEventMetadata *)self context];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    context = [(USPSchemaUSPClientEventMetadata *)self context];
+    dictionaryRepresentation = [context dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"context"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"context"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"context"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"context"];
     }
   }
 
   if (self->_sutFingerprint)
   {
-    v7 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    sutFingerprint = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+    dictionaryRepresentation2 = [sutFingerprint dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"sutFingerprint"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"sutFingerprint"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"sutFingerprint"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"sutFingerprint"];
     }
   }
 
   if (self->_uspId)
   {
-    v10 = [(USPSchemaUSPClientEventMetadata *)self uspId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    uspId = [(USPSchemaUSPClientEventMetadata *)self uspId];
+    dictionaryRepresentation3 = [uspId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"uspId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"uspId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"uspId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"uspId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(SISchemaUUID *)self->_sutFingerprint hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(USPSchemaUSPClientEventMetadata *)self uspId];
-  v6 = [v4 uspId];
-  if ((v5 != 0) == (v6 == 0))
+  uspId = [(USPSchemaUSPClientEventMetadata *)self uspId];
+  uspId2 = [equalCopy uspId];
+  if ((uspId != 0) == (uspId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(USPSchemaUSPClientEventMetadata *)self uspId];
-  if (v7)
+  uspId3 = [(USPSchemaUSPClientEventMetadata *)self uspId];
+  if (uspId3)
   {
-    v8 = v7;
-    v9 = [(USPSchemaUSPClientEventMetadata *)self uspId];
-    v10 = [v4 uspId];
-    v11 = [v9 isEqual:v10];
+    v8 = uspId3;
+    uspId4 = [(USPSchemaUSPClientEventMetadata *)self uspId];
+    uspId5 = [equalCopy uspId];
+    v11 = [uspId4 isEqual:uspId5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(USPSchemaUSPClientEventMetadata *)self context];
-  v6 = [v4 context];
-  if ((v5 != 0) == (v6 == 0))
+  uspId = [(USPSchemaUSPClientEventMetadata *)self context];
+  uspId2 = [equalCopy context];
+  if ((uspId != 0) == (uspId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(USPSchemaUSPClientEventMetadata *)self context];
-  if (v12)
+  context = [(USPSchemaUSPClientEventMetadata *)self context];
+  if (context)
   {
-    v13 = v12;
-    v14 = [(USPSchemaUSPClientEventMetadata *)self context];
-    v15 = [v4 context];
-    v16 = [v14 isEqual:v15];
+    v13 = context;
+    context2 = [(USPSchemaUSPClientEventMetadata *)self context];
+    context3 = [equalCopy context];
+    v16 = [context2 isEqual:context3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
-  v6 = [v4 sutFingerprint];
-  if ((v5 != 0) != (v6 == 0))
+  uspId = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+  uspId2 = [equalCopy sutFingerprint];
+  if ((uspId != 0) != (uspId2 == 0))
   {
-    v17 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
-    if (!v17)
+    sutFingerprint = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+    if (!sutFingerprint)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
-    v20 = [v4 sutFingerprint];
-    v21 = [v19 isEqual:v20];
+    v18 = sutFingerprint;
+    sutFingerprint2 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+    sutFingerprint3 = [equalCopy sutFingerprint];
+    v21 = [sutFingerprint2 isEqual:sutFingerprint3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(USPSchemaUSPClientEventMetadata *)self uspId];
+  toCopy = to;
+  uspId = [(USPSchemaUSPClientEventMetadata *)self uspId];
 
-  if (v4)
+  if (uspId)
   {
-    v5 = [(USPSchemaUSPClientEventMetadata *)self uspId];
+    uspId2 = [(USPSchemaUSPClientEventMetadata *)self uspId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(USPSchemaUSPClientEventMetadata *)self context];
+  context = [(USPSchemaUSPClientEventMetadata *)self context];
 
-  if (v6)
+  if (context)
   {
-    v7 = [(USPSchemaUSPClientEventMetadata *)self context];
+    context2 = [(USPSchemaUSPClientEventMetadata *)self context];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+  sutFingerprint = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (sutFingerprint)
   {
-    v10 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+    sutFingerprint2 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = USPSchemaUSPClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(USPSchemaUSPClientEventMetadata *)self uspId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  uspId = [(USPSchemaUSPClientEventMetadata *)self uspId];
+  v7 = [uspId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(USPSchemaUSPClientEventMetadata *)self deleteUspId];
   }
 
-  v9 = [(USPSchemaUSPClientEventMetadata *)self context];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  context = [(USPSchemaUSPClientEventMetadata *)self context];
+  v10 = [context applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(USPSchemaUSPClientEventMetadata *)self deleteContext];
   }
 
-  v12 = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  sutFingerprint = [(USPSchemaUSPClientEventMetadata *)self sutFingerprint];
+  v13 = [sutFingerprint applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(USPSchemaUSPClientEventMetadata *)self deleteSutFingerprint];
   }

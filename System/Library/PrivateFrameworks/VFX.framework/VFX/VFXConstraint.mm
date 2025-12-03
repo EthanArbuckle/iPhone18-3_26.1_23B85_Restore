@@ -1,51 +1,51 @@
 @interface VFXConstraint
-+ (id)presentationConstraintWithConstraintRef:(__CFXConstraint *)a3;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
++ (id)presentationConstraintWithConstraintRef:(__CFXConstraint *)ref;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
 - (BOOL)isEnabled;
 - (BOOL)isIncremental;
 - (NSArray)animationKeys;
 - (VFXConstraint)init;
-- (VFXConstraint)initWithCoder:(id)a3;
+- (VFXConstraint)initWithCoder:(id)coder;
 - (VFXWorld)world;
 - (__CFXAnimationManager)animationManager;
 - (__CFXWorld)worldRef;
 - (float)influenceFactor;
-- (id)_vfxAnimationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initPresentationConstraintWithConstraintRef:(__CFXConstraint *)a3;
+- (id)_vfxAnimationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initPresentationConstraintWithConstraintRef:(__CFXConstraint *)ref;
 - (id)presentationConstraint;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_copyBindingsFrom:(id)a3;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
-- (void)_setSourceObject:(id)a3 forBinding:(id)a4;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_copyBindingsFrom:(id)from;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
+- (void)_setSourceObject:(id)object forBinding:(id)binding;
 - (void)_syncObjCAnimations;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
-- (void)addWorldReference:(id)a3;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
+- (void)addWorldReference:(id)reference;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)commonInit;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
 - (void)didInitConstraintRef;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAnimationReferencesUsingBlock:(id)a3;
-- (void)finalizeDecodeConstraint:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAnimationReferencesUsingBlock:(id)block;
+- (void)finalizeDecodeConstraint:(id)constraint;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(float)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(float)duration;
 - (void)removeAllBindings;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(float)a4;
-- (void)removeWorldReference:(id)a3;
-- (void)setConstraintRef:(__CFXConstraint *)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIncremental:(BOOL)a3;
-- (void)setInfluenceFactor:(float)a3;
-- (void)setName:(id)a3;
-- (void)setWorld:(id)a3;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(float)duration;
+- (void)removeWorldReference:(id)reference;
+- (void)setConstraintRef:(__CFXConstraint *)ref;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIncremental:(BOOL)incremental;
+- (void)setInfluenceFactor:(float)factor;
+- (void)setName:(id)name;
+- (void)setWorld:(id)world;
+- (void)unbindAnimatablePath:(id)path;
 @end
 
 @implementation VFXConstraint
@@ -103,7 +103,7 @@
   [(VFXConstraint *)&v5 dealloc];
 }
 
-- (id)initPresentationConstraintWithConstraintRef:(__CFXConstraint *)a3
+- (id)initPresentationConstraintWithConstraintRef:(__CFXConstraint *)ref
 {
   v7.receiver = self;
   v7.super_class = VFXConstraint;
@@ -112,7 +112,7 @@
   if (v4)
   {
     *(v4 + 40) |= 1u;
-    v4->_constraintRef = CFRetain(a3);
+    v4->_constraintRef = CFRetain(ref);
     v5->_animationsLock._os_unfair_lock_opaque = 0;
   }
 
@@ -148,29 +148,29 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  isEnabled = objc_msgSend_isEnabled(self, a2, a3, v3);
-  objc_msgSend_setEnabled_(a3, v7, isEnabled, v8);
+  isEnabled = objc_msgSend_isEnabled(self, a2, to, v3);
+  objc_msgSend_setEnabled_(to, v7, isEnabled, v8);
   objc_msgSend_influenceFactor(self, v9, v10, v11);
-  objc_msgSend_setInfluenceFactor_(a3, v12, v13, v14);
+  objc_msgSend_setInfluenceFactor_(to, v12, v13, v14);
   isIncremental = objc_msgSend_isIncremental(self, v15, v16, v17);
 
-  objc_msgSend_setIncremental_(a3, v18, isIncremental, v20);
+  objc_msgSend_setIncremental_(to, v18, isIncremental, v20);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   constraintRef = self->_constraintRef;
-  v5 = objc_msgSend_copy(a3, a2, a3, v3);
+  v5 = objc_msgSend_copy(name, a2, name, v3);
 
   sub_1AF14F2BC(constraintRef, v5);
 }
 
-- (void)setConstraintRef:(__CFXConstraint *)a3
+- (void)setConstraintRef:(__CFXConstraint *)ref
 {
   constraintRef = self->_constraintRef;
-  if (constraintRef != a3)
+  if (constraintRef != ref)
   {
     if (constraintRef)
     {
@@ -178,9 +178,9 @@
       self->_constraintRef = 0;
     }
 
-    if (a3)
+    if (ref)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(ref);
     }
 
     else
@@ -217,15 +217,15 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2B7950;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
@@ -254,15 +254,15 @@
   }
 }
 
-- (void)setIncremental:(BOOL)a3
+- (void)setIncremental:(BOOL)incremental
 {
-  self->_incremental = a3;
+  self->_incremental = incremental;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2B7A64;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  incrementalCopy = incremental;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
@@ -291,43 +291,43 @@
   }
 }
 
-- (void)setInfluenceFactor:(float)a3
+- (void)setInfluenceFactor:(float)factor
 {
-  if (self->_influenceFactor != a3)
+  if (self->_influenceFactor != factor)
   {
     v7 = v3;
     v8 = v4;
-    self->_influenceFactor = a3;
+    self->_influenceFactor = factor;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B7B98;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    factorCopy = factor;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"influenceFactor", v5);
   }
 }
 
-- (void)finalizeDecodeConstraint:(id)a3
+- (void)finalizeDecodeConstraint:(id)constraint
 {
-  v6 = objc_msgSend_decodeBoolForKey_(a3, a2, @"enabled", v3);
+  v6 = objc_msgSend_decodeBoolForKey_(constraint, a2, @"enabled", v3);
   objc_msgSend_setEnabled_(self, v7, v6, v8);
-  objc_msgSend_decodeDoubleForKey_(a3, v9, @"influenceFactor", v10);
+  objc_msgSend_decodeDoubleForKey_(constraint, v9, @"influenceFactor", v10);
   *&v11 = v11;
   objc_msgSend_setInfluenceFactor_(self, v12, v13, v14, v11);
-  if (objc_msgSend_containsValueForKey_(a3, v15, @"incremental", v16))
+  if (objc_msgSend_containsValueForKey_(constraint, v15, @"incremental", v16))
   {
-    v19 = objc_msgSend_decodeBoolForKey_(a3, v17, @"incremental", v18);
+    v19 = objc_msgSend_decodeBoolForKey_(constraint, v17, @"incremental", v18);
     objc_msgSend_setIncremental_(self, v20, v19, v21);
   }
 
   self->_animationsLock._os_unfair_lock_opaque = 0;
-  sub_1AF372B94(a3, self);
+  sub_1AF372B94(constraint, self);
 
   objc_msgSend_didInitConstraintRef(self, v22, v23, v24);
 }
 
-- (VFXConstraint)initWithCoder:(id)a3
+- (VFXConstraint)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = VFXConstraint;
@@ -341,22 +341,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeBool_forKey_(a3, a2, self->_enabled, @"enabled");
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"influenceFactor", v6, self->_influenceFactor);
-  objc_msgSend_encodeBool_forKey_(a3, v7, self->_incremental, @"incremental");
+  objc_msgSend_encodeBool_forKey_(coder, a2, self->_enabled, @"enabled");
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"influenceFactor", v6, self->_influenceFactor);
+  objc_msgSend_encodeBool_forKey_(coder, v7, self->_incremental, @"incremental");
 
-  sub_1AF3728B4(a3, self, v8, v9);
+  sub_1AF3728B4(coder, self, v8, v9);
 }
 
 - (id)presentationConstraint
 {
-  v2 = self;
+  selfCopy = self;
   if ((*(self + 40) & 1) == 0)
   {
     v3 = objc_opt_class();
-    v6 = v2[1];
+    v6 = selfCopy[1];
 
     return objc_msgSend_presentationConstraintWithConstraintRef_(v3, v4, v6, v5);
   }
@@ -364,18 +364,18 @@
   return self;
 }
 
-+ (id)presentationConstraintWithConstraintRef:(__CFXConstraint *)a3
++ (id)presentationConstraintWithConstraintRef:(__CFXConstraint *)ref
 {
   v4 = objc_alloc(objc_opt_class());
-  inited = objc_msgSend_initPresentationConstraintWithConstraintRef_(v4, v5, a3, v6);
+  inited = objc_msgSend_initPresentationConstraintWithConstraintRef_(v4, v5, ref, v6);
 
   return inited;
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -387,17 +387,17 @@
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -422,10 +422,10 @@
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -439,8 +439,8 @@
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -488,20 +488,20 @@
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v9 = objc_msgSend_objectForKey_(self->_animations, v7, a4, v8);
-  v15 = objc_msgSend_animation(v9, v10, v11, v12) == a3;
+  v9 = objc_msgSend_objectForKey_(self->_animations, v7, key, v8);
+  v15 = objc_msgSend_animation(v9, v10, v11, v12) == animation;
   if (v15)
   {
     objc_msgSend_removeWorldReference_(v9, v13, self->_world, v14);
-    objc_msgSend_removeObjectForKey_(self->_animations, v16, a4, v17);
+    objc_msgSend_removeObjectForKey_(self->_animations, v16, key, v17);
     v21 = objc_msgSend___CFObject(self, v18, v19, v20);
     if ((sub_1AF16D234(v21) & 1) == 0)
     {
@@ -512,28 +512,28 @@
       }
     }
 
-    sub_1AF16D870(v21, a4, 1);
+    sub_1AF16D870(v21, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v15;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, a3, 0);
-      v5 = objc_msgSend_UUIDString(v7, v8, v9, v10);
+      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, player, 0);
+      keyCopy = objc_msgSend_UUIDString(v7, v8, v9, v10);
     }
 
     if ((*(self + 40) & 1) == 0)
     {
       os_unfair_lock_lock(&self->_animationsLock);
-      objc_msgSend_addWorldReference_(a3, v11, self->_world, v12);
+      objc_msgSend_addWorldReference_(player, v11, self->_world, v12);
       animations = self->_animations;
       if (!animations)
       {
@@ -541,18 +541,18 @@
         self->_animations = animations;
       }
 
-      objc_msgSend_setObject_forKey_(animations, v13, a3, v5);
+      objc_msgSend_setObject_forKey_(animations, v13, player, keyCopy);
       os_unfair_lock_unlock(&self->_animationsLock);
     }
 
-    v15 = objc_msgSend_timingFunction(VFXTransaction, a2, a3, a4);
+    v15 = objc_msgSend_timingFunction(VFXTransaction, a2, player, key);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_1AF2B8334;
     v18[3] = &unk_1E7A7E2C0;
-    v18[4] = a3;
+    v18[4] = player;
     v18[5] = self;
-    v18[6] = v5;
+    v18[6] = keyCopy;
     v18[7] = v15;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v16, self, v18);
   }
@@ -567,26 +567,26 @@
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, a3, 0);
-      v5 = objc_msgSend_UUIDString(v7, v8, v9, v10);
+      v7 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], a2, animation, 0);
+      keyCopy = objc_msgSend_UUIDString(v7, v8, v9, v10);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = objc_msgSend_animationWithCAAnimation_(VFXAnimation, v11, v6, v12);
+      animationCopy = objc_msgSend_animationWithCAAnimation_(VFXAnimation, v11, animationCopy, v12);
     }
 
-    v13 = objc_msgSend_animationPlayerWithVFXAnimation_(VFXAnimationPlayer, v11, v6, v12);
-    objc_msgSend_addAnimationPlayer_forKey_(self, v14, v13, v5);
+    v13 = objc_msgSend_animationPlayerWithVFXAnimation_(VFXAnimationPlayer, v11, animationCopy, v12);
+    objc_msgSend_addAnimationPlayer_forKey_(self, v14, v13, keyCopy);
 
     objc_msgSend_play(v13, v15, v16, v17);
   }
@@ -650,17 +650,17 @@
   }
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v8 = objc_msgSend_objectForKey_(animations, v5, a3, v6);
+      v8 = objc_msgSend_objectForKey_(animations, v5, key, v6);
       objc_msgSend_removeWorldReference_(v8, v9, self->_world, v10);
-      objc_msgSend_removeObjectForKey_(self->_animations, v11, a3, v12);
+      objc_msgSend_removeObjectForKey_(self->_animations, v11, key, v12);
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
@@ -672,7 +672,7 @@
     v22[3] = &unk_1E7A7E310;
     v22[7] = v20;
     v22[4] = self;
-    v22[5] = a3;
+    v22[5] = key;
     v22[6] = v16;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v21, self, v22);
   }
@@ -741,38 +741,38 @@
   }
 }
 
-- (id)_vfxAnimationForKey:(id)a3
+- (id)_vfxAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v8 = objc_msgSend_objectForKey_(animations, v5, v3, v6);
-      v3 = objc_msgSend_animation(v8, v9, v10, v11);
+      v8 = objc_msgSend_objectForKey_(animations, v5, keyCopy, v6);
+      keyCopy = objc_msgSend_animation(v8, v9, v10, v11);
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = objc_msgSend_animationKeys(a3, a2, a3, v3, 0);
+  v6 = objc_msgSend_animationKeys(from, a2, from, v3, 0);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
   if (v8)
   {
@@ -788,7 +788,7 @@
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = objc_msgSend_animationPlayerForKey_(a3, v9, v14, v10);
+        v15 = objc_msgSend_animationPlayerForKey_(from, v9, v14, v10);
         v19 = objc_msgSend_copy(v15, v16, v17, v18);
         objc_msgSend_addAnimationPlayer_forKey_(self, v20, v19, v14);
       }
@@ -800,34 +800,34 @@
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = objc_msgSend_objectForKey_(animations, v5, v3, v6);
+      keyCopy = objc_msgSend_objectForKey_(animations, v5, keyCopy, v6);
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = objc_msgSend___CFObject(self, a2, a3, a4);
+  nodeCopy = node;
+  animationCopy = animation;
+  v9 = objc_msgSend___CFObject(self, a2, animation, key);
   if (v9)
   {
     v13 = v9;
@@ -837,22 +837,22 @@
       v15 = v14;
       v16 = CACurrentMediaTime();
 
-      sub_1AF118EBC(v15, v13, a4, v7, v5, v16);
+      sub_1AF118EBC(v15, v13, key, animationCopy, nodeCopy, v16);
     }
   }
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v25[15] = v6;
     v25[16] = v7;
     v13 = objc_alloc_init(CFXBinding);
-    objc_msgSend_setSourceObject_(v13, v14, a4, v15);
-    objc_msgSend_setKeyPathDst_(v13, v16, a3, v17);
-    objc_msgSend_setKeyPathSrc_(v13, v18, a5, v19);
-    objc_msgSend_setOptions_(v13, v20, a6, v21);
+    objc_msgSend_setSourceObject_(v13, v14, object, v15);
+    objc_msgSend_setKeyPathDst_(v13, v16, path, v17);
+    objc_msgSend_setKeyPathSrc_(v13, v18, keyPath, v19);
+    objc_msgSend_setOptions_(v13, v20, options, v21);
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -860,24 +860,24 @@
       self->_bindings = bindings;
     }
 
-    objc_msgSend_setValue_forKey_(bindings, v22, v13, a3);
+    objc_msgSend_setValue_forKey_(bindings, v22, v13, path);
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = sub_1AF2B8D64;
     v25[3] = &unk_1E7A7E360;
     v25[4] = self;
-    v25[5] = a4;
-    v25[6] = a3;
-    v25[7] = a5;
-    v25[8] = a6;
+    v25[5] = object;
+    v25[6] = path;
+    v25[7] = keyPath;
+    v25[8] = options;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v24, self, v25);
   }
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
-  objc_msgSend_removeObjectForKey_(self->_bindings, a2, a3, v3);
+  objc_msgSend_removeObjectForKey_(self->_bindings, a2, path, v3);
   if (!objc_msgSend_count(self->_bindings, v6, v7, v8))
   {
 
@@ -889,7 +889,7 @@
   v10[2] = sub_1AF2B8EA8;
   v10[3] = &unk_1E7A7E220;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = path;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, self, v10);
 }
 
@@ -904,9 +904,9 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v3, self, v4);
 }
 
-- (void)_copyBindingsFrom:(id)a3
+- (void)_copyBindingsFrom:(id)from
 {
-  v5 = objc_msgSend__vfxBindings(a3, a2, a3, v3);
+  v5 = objc_msgSend__vfxBindings(from, a2, from, v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF2B9020;
@@ -915,23 +915,23 @@
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v5, v6, v8, v7);
 }
 
-- (void)_setSourceObject:(id)a3 forBinding:(id)a4
+- (void)_setSourceObject:(id)object forBinding:(id)binding
 {
-  if (objc_msgSend_sourceObject(a4, a2, a3, a4) != a3)
+  if (objc_msgSend_sourceObject(binding, a2, object, binding) != object)
   {
-    objc_msgSend_setSourceObject_(a4, v7, a3, v8);
+    objc_msgSend_setSourceObject_(binding, v7, object, v8);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF2B9158;
     v10[3] = &unk_1E7A7E3B0;
     v10[4] = self;
-    v10[5] = a4;
-    v10[6] = a3;
+    v10[5] = binding;
+    v10[6] = object;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, self, v10);
   }
 }
 
-- (void)enumerateAnimationReferencesUsingBlock:(id)a3
+- (void)enumerateAnimationReferencesUsingBlock:(id)block
 {
   bindings = self->_bindings;
   v5[0] = MEMORY[0x1E69E9820];
@@ -939,29 +939,29 @@
   v5[2] = sub_1AF2B9294;
   v5[3] = &unk_1E7A7E400;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = block;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(bindings, a2, v5, v3);
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(float)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(float)duration
 {
   objc_msgSend_begin(VFXTransaction, a2, v3, v4);
-  objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, a3);
+  objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, duration);
   objc_msgSend_removeAllAnimations(self, v10, v11, v12);
 
   objc_msgSend_commit(VFXTransaction, v13, v14, v15);
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(float)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(float)duration
 {
-  objc_msgSend_begin(VFXTransaction, a2, a3, v4);
-  objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10, a4);
-  objc_msgSend_removeAnimationForKey_(self, v11, a3, v12);
+  objc_msgSend_begin(VFXTransaction, a2, key, v4);
+  objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10, duration);
+  objc_msgSend_removeAnimationForKey_(self, v11, key, v12);
 
   objc_msgSend_commit(VFXTransaction, v13, v14, v15);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = sub_1AF0D5194();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

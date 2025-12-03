@@ -1,95 +1,95 @@
 @interface _UIUserNotificationRestrictedAlertViewProxy
-+ (id)restrictedProxyForAlertView:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setDelegate:(id)a3;
++ (id)restrictedProxyForAlertView:(id)view;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIUserNotificationRestrictedAlertViewProxy
 
-+ (id)restrictedProxyForAlertView:(id)a3
++ (id)restrictedProxyForAlertView:(id)view
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____UIUserNotificationRestrictedAlertViewProxy;
-  v3 = objc_msgSendSuper2(&v5, sel_proxyWithTarget_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_proxyWithTarget_, view);
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_UITargetedProxy *)self _target];
-  [v5 setDelegate:0];
+  delegateCopy = delegate;
+  _target = [(_UITargetedProxy *)self _target];
+  [_target setDelegate:0];
 
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 
-  v7 = [(_UITargetedProxy *)self _target];
-  [v7 setDelegate:self];
+  _target2 = [(_UITargetedProxy *)self _target];
+  [_target2 setDelegate:self];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  if (isAlertViewDelegateMethod(a3))
+  if (isAlertViewDelegateMethod(selector))
   {
-    v5 = [self->_delegate methodSignatureForSelector:a3];
+    v5 = [self->_delegate methodSignatureForSelector:selector];
   }
 
   else
   {
-    v6 = [(_UITargetedProxy *)self _target];
-    v5 = [v6 methodSignatureForSelector:a3];
+    _target = [(_UITargetedProxy *)self _target];
+    v5 = [_target methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (isAlertViewDelegateMethod(a3))
+  if (isAlertViewDelegateMethod(selector))
   {
     v4 = objc_opt_respondsToSelector();
   }
 
   else
   {
-    v5 = [(_UITargetedProxy *)self _target];
+    _target = [(_UITargetedProxy *)self _target];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (isAlertViewDelegateMethod([v4 selector]))
+  invocationCopy = invocation;
+  if (isAlertViewDelegateMethod([invocationCopy selector]))
   {
-    v5 = self;
-    v12 = v5;
-    [v4 setArgument:&v12 atIndex:2];
-    [v4 invokeWithTarget:v5->_delegate];
+    selfCopy = self;
+    v12 = selfCopy;
+    [invocationCopy setArgument:&v12 atIndex:2];
+    [invocationCopy invokeWithTarget:selfCopy->_delegate];
   }
 
   else
   {
-    v6 = [v4 selector];
-    if (!+[UIView instancesRespondToSelector:](UIView, "instancesRespondToSelector:", v6) || ([MEMORY[0x1E69E58C0] instancesRespondToSelector:v6] & 1) != 0 || v6 == sel_resignFirstResponder)
+    selector = [invocationCopy selector];
+    if (!+[UIView instancesRespondToSelector:](UIView, "instancesRespondToSelector:", selector) || ([MEMORY[0x1E69E58C0] instancesRespondToSelector:selector] & 1) != 0 || selector == sel_resignFirstResponder)
     {
       v11.receiver = self;
       v11.super_class = _UIUserNotificationRestrictedAlertViewProxy;
-      [(_UITargetedProxy *)&v11 forwardInvocation:v4];
+      [(_UITargetedProxy *)&v11 forwardInvocation:invocationCopy];
     }
 
     else
     {
       v7 = MEMORY[0x1E695DF30];
       v8 = *MEMORY[0x1E695D920];
-      v9 = NSStringFromSelector([v4 selector]);
-      v10 = [(_UITargetedProxy *)self _target];
-      [v7 raise:v8 format:{@"UIView API (%@) is not supported for UIAlertViews presented from view services: %@", v9, v10}];
+      v9 = NSStringFromSelector([invocationCopy selector]);
+      _target = [(_UITargetedProxy *)self _target];
+      [v7 raise:v8 format:{@"UIView API (%@) is not supported for UIAlertViews presented from view services: %@", v9, _target}];
     }
   }
 }

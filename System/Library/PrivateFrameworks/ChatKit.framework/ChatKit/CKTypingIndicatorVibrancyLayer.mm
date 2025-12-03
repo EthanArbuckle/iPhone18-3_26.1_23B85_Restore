@@ -1,10 +1,10 @@
 @interface CKTypingIndicatorVibrancyLayer
-- (_TtC7ChatKit30CKTypingIndicatorVibrancyLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit30CKTypingIndicatorVibrancyLayer)initWithCoder:(id)coder;
 @end
 
 @implementation CKTypingIndicatorVibrancyLayer
 
-- (_TtC7ChatKit30CKTypingIndicatorVibrancyLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit30CKTypingIndicatorVibrancyLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7ChatKit30CKTypingIndicatorVibrancyLayer_isVibrancyActive) = 1;
   *(&self->super.super.isa + OBJC_IVAR____TtC7ChatKit30CKTypingIndicatorVibrancyLayer_userInterfaceStyle) = 2;

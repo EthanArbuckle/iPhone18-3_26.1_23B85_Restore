@@ -1,18 +1,18 @@
 @interface VideoMessagingFileTransferer
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 pendingResourceWithMetadata:(id)a5 fromID:(id)a6 acknowledgementBlock:(id)a7 context:(id)a8;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account pendingResourceWithMetadata:(id)metadata fromID:(id)d acknowledgementBlock:(id)block context:(id)context;
 @end
 
 @implementation VideoMessagingFileTransferer
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCF5A20, &qword_1BC901BF0);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x1EEE9AC00](v15 - 8);
   v18 = &v25 - v17;
-  if (a5)
+  if (l)
   {
     sub_1BC8F6FB4();
     v19 = sub_1BC8F7014();
@@ -26,34 +26,34 @@
   }
 
   __swift_storeEnumTagSinglePayload(v18, v20, 1, v19);
-  if (a6)
+  if (metadata)
   {
     sub_1BC8F7AA4();
   }
 
-  if (a7)
+  if (d)
   {
     sub_1BC8F7C24();
   }
 
-  v21 = a3;
-  v22 = a4;
-  v23 = a8;
-  v24 = self;
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
   sub_1BC846AD4();
 
   sub_1BC7C1744(v18, &qword_1EBCF5A20, &qword_1BC901BF0);
 }
 
-- (void)service:(id)a3 account:(id)a4 pendingResourceWithMetadata:(id)a5 fromID:(id)a6 acknowledgementBlock:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account pendingResourceWithMetadata:(id)metadata fromID:(id)d acknowledgementBlock:(id)block context:(id)context
 {
-  v14 = _Block_copy(a7);
-  if (a5)
+  v14 = _Block_copy(block);
+  if (metadata)
   {
     sub_1BC8F7AA4();
   }
 
-  if (a6)
+  if (d)
   {
     sub_1BC8F7C24();
     if (!v14)
@@ -72,26 +72,26 @@ LABEL_5:
   }
 
 LABEL_7:
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  v18 = self;
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
   sub_1BC84809C();
   sub_1BC7BE108(v14);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  if (a5)
+  if (identifier)
   {
     sub_1BC8F7C24();
   }
 
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = self;
+  serviceCopy = service;
+  accountCopy = account;
+  errorCopy = error;
+  contextCopy = context;
+  selfCopy = self;
   sub_1BC848B1C();
 }
 

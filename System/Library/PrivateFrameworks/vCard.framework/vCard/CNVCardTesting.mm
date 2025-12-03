@@ -1,77 +1,77 @@
 @interface CNVCardTesting
-+ (BOOL)version21DataUsingAdapter:(id)a3 containsData:(id)a4;
-+ (BOOL)version30CardForPerson:(id)a3 containsLine:(id)a4;
-+ (BOOL)version30CardForPerson:(id)a3 containsString:(id)a4;
-+ (BOOL)version30DataUsingAdapter:(id)a3 containsData:(id)a4;
-+ (id)activityAlertResultWithTypes:(id)a3 sounds:(id)a4 vibrations:(id)a5;
-+ (id)cardDataWithBodyLines:(id)a3 version:(id)a4 encoding:(unint64_t)a5;
-+ (id)chineseDateWithEra:(int64_t)a3 year:(int64_t)a4 month:(int64_t)a5 day:(int64_t)a6;
-+ (id)gregorianDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5;
-+ (id)instantMessagingItemWithUsername:(id)a3 service:(id)a4 label:(id)a5;
-+ (id)linesUsingAdapter:(id)a3 options:(id)a4;
-+ (id)parseCardWithBodyLine:(id)a3;
-+ (id)parseCardWithBodyLines:(id)a3 version:(id)a4 encoding:(unint64_t)a5;
-+ (id)parseCardWithData:(id)a3;
-+ (id)parseCardWithData:(id)a3 options:(id)a4;
-+ (id)unknownPropertyWithName:(id)a3 line:(id)a4;
-+ (id)version21DataUsingAdapter:(id)a3;
-+ (id)version30DataUsingAdapter:(id)a3;
++ (BOOL)version21DataUsingAdapter:(id)adapter containsData:(id)data;
++ (BOOL)version30CardForPerson:(id)person containsLine:(id)line;
++ (BOOL)version30CardForPerson:(id)person containsString:(id)string;
++ (BOOL)version30DataUsingAdapter:(id)adapter containsData:(id)data;
++ (id)activityAlertResultWithTypes:(id)types sounds:(id)sounds vibrations:(id)vibrations;
++ (id)cardDataWithBodyLines:(id)lines version:(id)version encoding:(unint64_t)encoding;
++ (id)chineseDateWithEra:(int64_t)era year:(int64_t)year month:(int64_t)month day:(int64_t)day;
++ (id)gregorianDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day;
++ (id)instantMessagingItemWithUsername:(id)username service:(id)service label:(id)label;
++ (id)linesUsingAdapter:(id)adapter options:(id)options;
++ (id)parseCardWithBodyLine:(id)line;
++ (id)parseCardWithBodyLines:(id)lines version:(id)version encoding:(unint64_t)encoding;
++ (id)parseCardWithData:(id)data;
++ (id)parseCardWithData:(id)data options:(id)options;
++ (id)unknownPropertyWithName:(id)name line:(id)line;
++ (id)version21DataUsingAdapter:(id)adapter;
++ (id)version30DataUsingAdapter:(id)adapter;
 @end
 
 @implementation CNVCardTesting
 
-+ (id)parseCardWithBodyLine:(id)a3
++ (id)parseCardWithBodyLine:(id)line
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  lineCopy = line;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  lineCopy2 = line;
+  v6 = [v4 arrayWithObjects:&lineCopy count:1];
 
-  v7 = [a1 parseCardWithBodyLines:{v6, v10, v11}];
+  v7 = [self parseCardWithBodyLines:{v6, lineCopy, v11}];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)parseCardWithBodyLines:(id)a3 version:(id)a4 encoding:(unint64_t)a5
++ (id)parseCardWithBodyLines:(id)lines version:(id)version encoding:(unint64_t)encoding
 {
-  v6 = [a1 cardDataWithBodyLines:a3 version:a4 encoding:a5];
-  v7 = [a1 parseCardWithData:v6];
+  v6 = [self cardDataWithBodyLines:lines version:version encoding:encoding];
+  v7 = [self parseCardWithData:v6];
 
   return v7;
 }
 
-+ (id)parseCardWithData:(id)a3
++ (id)parseCardWithData:(id)data
 {
-  v3 = [CNVCardDictionarySerialization dictionariesWithData:a3 error:0];
-  v4 = [v3 firstObject];
+  v3 = [CNVCardDictionarySerialization dictionariesWithData:data error:0];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)parseCardWithData:(id)a3 options:(id)a4
++ (id)parseCardWithData:(id)data options:(id)options
 {
-  v4 = [CNVCardDictionarySerialization dictionariesWithData:a3 options:a4 error:0];
-  v5 = [v4 firstObject];
+  v4 = [CNVCardDictionarySerialization dictionariesWithData:data options:options error:0];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)cardDataWithBodyLines:(id)a3 version:(id)a4 encoding:(unint64_t)a5
++ (id)cardDataWithBodyLines:(id)lines version:(id)version encoding:(unint64_t)encoding
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAB68] string];
-  [v9 appendString:@"BEGIN:VCARD\r\n"];
-  [v9 appendFormat:@"VERSION:%@\r\n", v8];
+  linesCopy = lines;
+  versionCopy = version;
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"BEGIN:VCARD\r\n"];
+  [string appendFormat:@"VERSION:%@\r\n", versionCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v7;
+  v10 = linesCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -86,7 +86,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [v9 appendFormat:@"%@\r\n", *(*(&v18 + 1) + 8 * i)];
+        [string appendFormat:@"%@\r\n", *(*(&v18 + 1) + 8 * i)];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -95,35 +95,35 @@
     while (v12);
   }
 
-  [v9 appendString:@"END:VCARD\r\n"];
-  v15 = [v9 dataUsingEncoding:a5];
+  [string appendString:@"END:VCARD\r\n"];
+  v15 = [string dataUsingEncoding:encoding];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)unknownPropertyWithName:(id)a3 line:(id)a4
++ (id)unknownPropertyWithName:(id)name line:(id)line
 {
-  v5 = a4;
-  v6 = a3;
+  lineCopy = line;
+  nameCopy = name;
   v7 = objc_alloc_init(CNVCardUnknownPropertyDescription);
-  [(CNVCardUnknownPropertyDescription *)v7 setPropertyName:v6];
+  [(CNVCardUnknownPropertyDescription *)v7 setPropertyName:nameCopy];
 
-  [(CNVCardUnknownPropertyDescription *)v7 setOriginalLine:v5];
+  [(CNVCardUnknownPropertyDescription *)v7 setOriginalLine:lineCopy];
 
   return v7;
 }
 
-+ (id)linesUsingAdapter:(id)a3 options:(id)a4
++ (id)linesUsingAdapter:(id)adapter options:(id)options
 {
   v14 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  adapterCopy = adapter;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v13 count:1];
-  v9 = [CNVCardWriting stringWithPeople:v8 options:v6 error:0, v13, v14];
+  optionsCopy = options;
+  adapterCopy2 = adapter;
+  v8 = [v5 arrayWithObjects:&adapterCopy count:1];
+  v9 = [CNVCardWriting stringWithPeople:v8 options:optionsCopy error:0, adapterCopy, v14];
 
   v10 = [v9 componentsSeparatedByString:@"\r\n"];
 
@@ -132,27 +132,27 @@
   return v10;
 }
 
-+ (id)version30DataUsingAdapter:(id)a3
++ (id)version30DataUsingAdapter:(id)adapter
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  adapterCopy = adapter;
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [CNVCardWriting dataWithPeople:v5 options:0 error:0, v9, v10];
+  adapterCopy2 = adapter;
+  v5 = [v3 arrayWithObjects:&adapterCopy count:1];
+  v6 = [CNVCardWriting dataWithPeople:v5 options:0 error:0, adapterCopy, v10];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (id)version21DataUsingAdapter:(id)a3
++ (id)version21DataUsingAdapter:(id)adapter
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  adapterCopy = adapter;
   v4 = objc_alloc_init(CNVCardWritingOptions);
   [(CNVCardWritingOptions *)v4 setOutputVersion:1];
-  v9[0] = v3;
+  v9[0] = adapterCopy;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [CNVCardWriting dataWithPeople:v5 options:v4 error:0];
 
@@ -161,136 +161,136 @@
   return v6;
 }
 
-+ (BOOL)version30CardForPerson:(id)a3 containsLine:(id)a4
++ (BOOL)version30CardForPerson:(id)person containsLine:(id)line
 {
-  v6 = a4;
-  v7 = [a1 linesUsingAdapter:a3];
-  LOBYTE(a1) = [v7 containsObject:v6];
+  lineCopy = line;
+  v7 = [self linesUsingAdapter:person];
+  LOBYTE(self) = [v7 containsObject:lineCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)version30CardForPerson:(id)a3 containsString:(id)a4
++ (BOOL)version30CardForPerson:(id)person containsString:(id)string
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  personCopy = person;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v12 count:1];
-  v9 = [CNVCardWriting stringWithPeople:v8 options:0 error:0, v12, v13];
+  stringCopy = string;
+  personCopy2 = person;
+  v8 = [v5 arrayWithObjects:&personCopy count:1];
+  v9 = [CNVCardWriting stringWithPeople:v8 options:0 error:0, personCopy, v13];
 
-  LOBYTE(v7) = [v9 containsString:v6];
+  LOBYTE(personCopy2) = [v9 containsString:stringCopy];
   v10 = *MEMORY[0x277D85DE8];
-  return v7;
+  return personCopy2;
 }
 
-+ (BOOL)version30DataUsingAdapter:(id)a3 containsData:(id)a4
++ (BOOL)version30DataUsingAdapter:(id)adapter containsData:(id)data
 {
-  v6 = a4;
-  v7 = [a1 version30DataUsingAdapter:a3];
-  LOBYTE(a1) = [v7 _cn_containsData:v6];
+  dataCopy = data;
+  v7 = [self version30DataUsingAdapter:adapter];
+  LOBYTE(self) = [v7 _cn_containsData:dataCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)version21DataUsingAdapter:(id)a3 containsData:(id)a4
++ (BOOL)version21DataUsingAdapter:(id)adapter containsData:(id)data
 {
-  v6 = a4;
-  v7 = [a1 version21DataUsingAdapter:a3];
-  LOBYTE(a1) = [v7 _cn_containsData:v6];
+  dataCopy = data;
+  v7 = [self version21DataUsingAdapter:adapter];
+  LOBYTE(self) = [v7 _cn_containsData:dataCopy];
 
-  return a1;
+  return self;
 }
 
-+ (id)instantMessagingItemWithUsername:(id)a3 service:(id)a4 label:(id)a5
++ (id)instantMessagingItemWithUsername:(id)username service:(id)service label:(id)label
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v16[0] = @"username";
   v16[1] = @"service";
-  v17[0] = a3;
-  v17[1] = a4;
+  v17[0] = username;
+  v17[1] = service;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  labelCopy = label;
+  serviceCopy = service;
+  usernameCopy = username;
   v12 = [v8 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v13 = [a1 itemWithValue:v12 label:v9];
+  v13 = [self itemWithValue:v12 label:labelCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-+ (id)gregorianDateWithYear:(int64_t)a3 month:(int64_t)a4 day:(int64_t)a5
++ (id)gregorianDateWithYear:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
   v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v8 setYear:a3];
-  [v8 setMonth:a4];
-  [v8 setDay:a5];
+  [v8 setYear:year];
+  [v8 setMonth:month];
+  [v8 setDay:day];
   v9 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   [v8 setCalendar:v9];
 
   return v8;
 }
 
-+ (id)chineseDateWithEra:(int64_t)a3 year:(int64_t)a4 month:(int64_t)a5 day:(int64_t)a6
++ (id)chineseDateWithEra:(int64_t)era year:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
   v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v10 setEra:a3];
-  [v10 setYear:a4];
-  [v10 setMonth:a5];
-  [v10 setDay:a6];
+  [v10 setEra:era];
+  [v10 setYear:year];
+  [v10 setMonth:month];
+  [v10 setDay:day];
   v11 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE590]];
   [v10 setCalendar:v11];
 
   return v10;
 }
 
-+ (id)activityAlertResultWithTypes:(id)a3 sounds:(id)a4 vibrations:(id)a5
++ (id)activityAlertResultWithTypes:(id)types sounds:(id)sounds vibrations:(id)vibrations
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v7 count])
+  typesCopy = types;
+  soundsCopy = sounds;
+  vibrationsCopy = vibrations;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([typesCopy count])
   {
     v11 = 0;
     v12 = *MEMORY[0x277CFBD18];
     do
     {
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      v14 = [v8 objectAtIndexedSubscript:v11];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v14 = [soundsCopy objectAtIndexedSubscript:v11];
       v15 = (*(v12 + 16))(v12, v14);
 
       if (v15)
       {
-        v16 = [v8 objectAtIndexedSubscript:v11];
-        [v13 setObject:v16 forKeyedSubscript:@"sound"];
+        v16 = [soundsCopy objectAtIndexedSubscript:v11];
+        [dictionary2 setObject:v16 forKeyedSubscript:@"sound"];
       }
 
-      v17 = [v9 objectAtIndexedSubscript:v11];
+      v17 = [vibrationsCopy objectAtIndexedSubscript:v11];
       v18 = (*(v12 + 16))(v12, v17);
 
       if (v18)
       {
-        v19 = [v9 objectAtIndexedSubscript:v11];
-        [v13 setObject:v19 forKeyedSubscript:@"vibration"];
+        v19 = [vibrationsCopy objectAtIndexedSubscript:v11];
+        [dictionary2 setObject:v19 forKeyedSubscript:@"vibration"];
       }
 
-      v20 = [v7 objectAtIndexedSubscript:v11];
-      [v10 setObject:v13 forKeyedSubscript:v20];
+      v20 = [typesCopy objectAtIndexedSubscript:v11];
+      [dictionary setObject:dictionary2 forKeyedSubscript:v20];
 
       ++v11;
     }
 
-    while (v11 < [v7 count]);
+    while (v11 < [typesCopy count]);
   }
 
   v24 = @"ActivityAlert";
-  v25[0] = v10;
+  v25[0] = dictionary;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
   v22 = *MEMORY[0x277D85DE8];

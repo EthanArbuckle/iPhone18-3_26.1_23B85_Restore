@@ -1,31 +1,31 @@
 @interface MNTrafficIncidentTriggerPoint
-- (BOOL)shouldActivateForLocation:(id)a3;
-- (MNTrafficIncidentTriggerPoint)initWithCoder:(id)a3;
-- (MNTrafficIncidentTriggerPoint)initWithReferenceCoordinate:(id)a3 allowsShifting:(BOOL)a4;
+- (BOOL)shouldActivateForLocation:(id)location;
+- (MNTrafficIncidentTriggerPoint)initWithCoder:(id)coder;
+- (MNTrafficIncidentTriggerPoint)initWithReferenceCoordinate:(id)coordinate allowsShifting:(BOOL)shifting;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setReferenceCoordinate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setReferenceCoordinate:(id)coordinate;
 @end
 
 @implementation MNTrafficIncidentTriggerPoint
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBytes:&self->_referenceCoordinate length:8 forKey:@"_referenceCoordinate"];
-  [v4 encodeBool:self->_allowsShifting forKey:@"_allowsShifting"];
+  coderCopy = coder;
+  [coderCopy encodeBytes:&self->_referenceCoordinate length:8 forKey:@"_referenceCoordinate"];
+  [coderCopy encodeBool:self->_allowsShifting forKey:@"_allowsShifting"];
 }
 
-- (MNTrafficIncidentTriggerPoint)initWithCoder:(id)a3
+- (MNTrafficIncidentTriggerPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MNTrafficIncidentTriggerPoint;
   v5 = [(MNTrafficIncidentTriggerPoint *)&v11 init];
   if (v5)
   {
     v10 = 0;
-    v6 = [v4 decodeBytesForKey:@"_referenceCoordinate" returnedLength:&v10];
+    v6 = [coderCopy decodeBytesForKey:@"_referenceCoordinate" returnedLength:&v10];
     if (v10 && v6)
     {
       if (v10 >= 8)
@@ -41,7 +41,7 @@
       memcpy(&v5->_referenceCoordinate, v6, v7);
     }
 
-    v5->_allowsShifting = [v4 decodeBoolForKey:@"_allowsShifting"];
+    v5->_allowsShifting = [coderCopy decodeBoolForKey:@"_allowsShifting"];
     v8 = v5;
   }
 
@@ -69,17 +69,17 @@
   return v8;
 }
 
-- (BOOL)shouldActivateForLocation:(id)a3
+- (BOOL)shouldActivateForLocation:(id)location
 {
-  v4 = [a3 routeMatch];
-  [v4 routeCoordinate];
+  routeMatch = [location routeMatch];
+  [routeMatch routeCoordinate];
 
   [(MNTrafficIncidentTriggerPoint *)self referenceCoordinate];
 
   return GEOPolylineCoordinateIsABeforeOrEqualToB();
 }
 
-- (void)setReferenceCoordinate:(id)a3
+- (void)setReferenceCoordinate:(id)coordinate
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->_allowsShifting)
@@ -107,13 +107,13 @@
   if (self->_allowsShifting)
   {
 LABEL_2:
-    self->_referenceCoordinate = a3;
+    self->_referenceCoordinate = coordinate;
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (MNTrafficIncidentTriggerPoint)initWithReferenceCoordinate:(id)a3 allowsShifting:(BOOL)a4
+- (MNTrafficIncidentTriggerPoint)initWithReferenceCoordinate:(id)coordinate allowsShifting:(BOOL)shifting
 {
   v10.receiver = self;
   v10.super_class = MNTrafficIncidentTriggerPoint;
@@ -121,8 +121,8 @@ LABEL_2:
   v7 = v6;
   if (v6)
   {
-    *(v6 + 12) = a3;
-    v6[8] = a4;
+    *(v6 + 12) = coordinate;
+    v6[8] = shifting;
     v8 = v6;
   }
 

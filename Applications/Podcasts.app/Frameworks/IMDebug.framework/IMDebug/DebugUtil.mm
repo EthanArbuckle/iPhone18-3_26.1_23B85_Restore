@@ -12,12 +12,12 @@
 
 + (BOOL)isDebugEnabled
 {
-  if ([a1 _isInternalInstall])
+  if ([self _isInternalInstall])
   {
     return 1;
   }
 
-  return [a1 is17Net];
+  return [self is17Net];
 }
 
 + (BOOL)_isInternalInstall
@@ -38,10 +38,10 @@ void __31__DebugUtil__isInternalInstall__block_invoke(id a1)
 
 + (BOOL)is17Net
 {
-  v2 = [a1 getIPAddress];
-  if ([v2 hasPrefix:@"17."])
+  getIPAddress = [self getIPAddress];
+  if ([getIPAddress hasPrefix:@"17."])
   {
-    v3 = [v2 componentsSeparatedByString:@"."];
+    v3 = [getIPAddress componentsSeparatedByString:@"."];
     v4 = [v3 count] == &dword_4;
   }
 
@@ -94,33 +94,33 @@ void __31__DebugUtil__isInternalInstall__block_invoke(id a1)
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 + (id)allViewControllers
 {
-  v2 = [a1 sharedApplicationIfPossible];
-  if (v2)
+  sharedApplicationIfPossible = [self sharedApplicationIfPossible];
+  if (sharedApplicationIfPossible)
   {
     v3 = objc_alloc_init(NSMutableArray);
-    v4 = [v2 delegate];
-    v5 = [v4 window];
+    delegate = [sharedApplicationIfPossible delegate];
+    window = [delegate window];
 
-    v6 = [v5 rootViewController];
-    if (v6)
+    rootViewController = [window rootViewController];
+    if (rootViewController)
     {
-      v7 = v6;
+      v7 = rootViewController;
       do
       {
         [v3 addObject:v7];
-        v8 = [v7 presentedViewController];
+        presentedViewController = [v7 presentedViewController];
 
-        v7 = v8;
+        v7 = presentedViewController;
       }
 
-      while (v8);
+      while (presentedViewController);
     }
   }
 
@@ -134,11 +134,11 @@ void __31__DebugUtil__isInternalInstall__block_invoke(id a1)
 
 + (id)sharedApplicationIfPossible
 {
-  v2 = [NSClassFromString(@"UIApplication") sharedApplication];
-  v3 = v2;
-  if (v2)
+  nSClassFromString(@"UIApplication") = [NSClassFromString(@"UIApplication") sharedApplication];
+  v3 = nSClassFromString(@"UIApplication");
+  if (nSClassFromString(@"UIApplication"))
   {
-    v4 = v2;
+    v4 = nSClassFromString(@"UIApplication");
   }
 
   return v3;

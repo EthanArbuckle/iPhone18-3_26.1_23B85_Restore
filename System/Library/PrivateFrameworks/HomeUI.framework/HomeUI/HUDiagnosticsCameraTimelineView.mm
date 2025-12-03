@@ -1,16 +1,16 @@
 @interface HUDiagnosticsCameraTimelineView
-- (HUDiagnosticsCameraTimelineView)initWithFrame:(CGRect)a3;
-- (void)updateWithPlaybackEngine:(id)a3;
+- (HUDiagnosticsCameraTimelineView)initWithFrame:(CGRect)frame;
+- (void)updateWithPlaybackEngine:(id)engine;
 @end
 
 @implementation HUDiagnosticsCameraTimelineView
 
-- (HUDiagnosticsCameraTimelineView)initWithFrame:(CGRect)a3
+- (HUDiagnosticsCameraTimelineView)initWithFrame:(CGRect)frame
 {
   v22[5] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = HUDiagnosticsCameraTimelineView;
-  v3 = [(HUDiagnosticsCameraTimelineView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUDiagnosticsCameraTimelineView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -31,11 +31,11 @@
 
     v12 = [MEMORY[0x277D75220] buttonWithType:1];
     [(UIButton *)v12 setTitle:@"Event Details" forState:0];
-    v13 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIButton *)v12 setTitleColor:v13 forState:0];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIButton *)v12 setTitleColor:systemWhiteColor forState:0];
 
-    v14 = [MEMORY[0x277D75348] systemDarkGrayColor];
-    [(UIButton *)v12 setBackgroundColor:v14];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+    [(UIButton *)v12 setBackgroundColor:systemDarkGrayColor];
 
     moreButton = v3->_moreButton;
     v3->_moreButton = v12;
@@ -61,40 +61,40 @@
   return v3;
 }
 
-- (void)updateWithPlaybackEngine:(id)a3
+- (void)updateWithPlaybackEngine:(id)engine
 {
-  v26 = a3;
-  v4 = [v26 timeControlStatusDescription];
-  v5 = [(HUDiagnosticsCameraTimelineView *)self cameraStatusLabel];
-  [v5 setText:v4];
+  engineCopy = engine;
+  timeControlStatusDescription = [engineCopy timeControlStatusDescription];
+  cameraStatusLabel = [(HUDiagnosticsCameraTimelineView *)self cameraStatusLabel];
+  [cameraStatusLabel setText:timeControlStatusDescription];
 
-  v6 = [v26 timelineStateDescription];
-  v7 = [(HUDiagnosticsCameraTimelineView *)self currentTimelineStateLabel];
-  [v7 setText:v6];
+  timelineStateDescription = [engineCopy timelineStateDescription];
+  currentTimelineStateLabel = [(HUDiagnosticsCameraTimelineView *)self currentTimelineStateLabel];
+  [currentTimelineStateLabel setText:timelineStateDescription];
 
-  v8 = [v26 playbackPosition];
-  v9 = [v8 clipPlaybackDate];
-  v10 = [v9 description];
-  v11 = [(HUDiagnosticsCameraTimelineView *)self currentPositionLabel];
-  [v11 setText:v10];
+  playbackPosition = [engineCopy playbackPosition];
+  clipPlaybackDate = [playbackPosition clipPlaybackDate];
+  v10 = [clipPlaybackDate description];
+  currentPositionLabel = [(HUDiagnosticsCameraTimelineView *)self currentPositionLabel];
+  [currentPositionLabel setText:v10];
 
-  v12 = [v26 currentClip];
-  v13 = [v12 uniqueIdentifier];
-  v14 = [v13 description];
-  v15 = [(HUDiagnosticsCameraTimelineView *)self currentEventLabel];
-  [v15 setText:v14];
+  currentClip = [engineCopy currentClip];
+  uniqueIdentifier = [currentClip uniqueIdentifier];
+  v14 = [uniqueIdentifier description];
+  currentEventLabel = [(HUDiagnosticsCameraTimelineView *)self currentEventLabel];
+  [currentEventLabel setText:v14];
 
-  -[HUDiagnosticsCameraTimelineView setHidden:](self, "setHidden:", [v26 engineMode] == 0);
-  if ([v26 timelineState] == 2)
+  -[HUDiagnosticsCameraTimelineView setHidden:](self, "setHidden:", [engineCopy engineMode] == 0);
+  if ([engineCopy timelineState] == 2)
   {
     objc_opt_class();
-    v16 = [v26 clipPlayer];
-    v17 = [v16 player];
-    v18 = [v17 currentItem];
-    v19 = [v18 asset];
+    clipPlayer = [engineCopy clipPlayer];
+    player = [clipPlayer player];
+    currentItem = [player currentItem];
+    asset = [currentItem asset];
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = asset;
     }
 
     else
@@ -104,11 +104,11 @@
 
     v21 = v20;
 
-    v22 = [v21 resourceLoader];
+    resourceLoader = [v21 resourceLoader];
 
-    v23 = [v22 delegate];
+    delegate = [resourceLoader delegate];
 
-    if (v23)
+    if (delegate)
     {
       [MEMORY[0x277D75348] systemOrangeColor];
     }
@@ -117,16 +117,16 @@
     {
       [MEMORY[0x277D75348] systemGreenColor];
     }
-    v24 = ;
+    systemDarkGrayColor = ;
   }
 
   else
   {
-    v24 = [MEMORY[0x277D75348] systemDarkGrayColor];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
   }
 
-  v25 = v24;
-  [(UIButton *)self->_moreButton setBackgroundColor:v24];
+  v25 = systemDarkGrayColor;
+  [(UIButton *)self->_moreButton setBackgroundColor:systemDarkGrayColor];
 }
 
 @end

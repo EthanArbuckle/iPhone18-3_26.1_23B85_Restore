@@ -1,24 +1,24 @@
 @interface ICASEditorCallOutData
-- (ICASEditorCallOutData)initWithCollabActivityContextPath:(id)a3 startState:(id)a4 endState:(id)a5;
+- (ICASEditorCallOutData)initWithCollabActivityContextPath:(id)path startState:(id)state endState:(id)endState;
 - (id)toDict;
 @end
 
 @implementation ICASEditorCallOutData
 
-- (ICASEditorCallOutData)initWithCollabActivityContextPath:(id)a3 startState:(id)a4 endState:(id)a5
+- (ICASEditorCallOutData)initWithCollabActivityContextPath:(id)path startState:(id)state endState:(id)endState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  stateCopy = state;
+  endStateCopy = endState;
   v15.receiver = self;
   v15.super_class = ICASEditorCallOutData;
   v12 = [(ICASEditorCallOutData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_collabActivityContextPath, a3);
-    objc_storeStrong(&v13->_startState, a4);
-    objc_storeStrong(&v13->_endState, a5);
+    objc_storeStrong(&v12->_collabActivityContextPath, path);
+    objc_storeStrong(&v13->_startState, state);
+    objc_storeStrong(&v13->_endState, endState);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"collabActivityContextPath";
-  v3 = [(ICASEditorCallOutData *)self collabActivityContextPath];
-  if (v3)
+  collabActivityContextPath = [(ICASEditorCallOutData *)self collabActivityContextPath];
+  if (collabActivityContextPath)
   {
-    v4 = [(ICASEditorCallOutData *)self collabActivityContextPath];
+    collabActivityContextPath2 = [(ICASEditorCallOutData *)self collabActivityContextPath];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    collabActivityContextPath2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = collabActivityContextPath2;
+  v16[0] = collabActivityContextPath2;
   v15[1] = @"startState";
-  v6 = [(ICASEditorCallOutData *)self startState];
-  if (v6)
+  startState = [(ICASEditorCallOutData *)self startState];
+  if (startState)
   {
-    v7 = [(ICASEditorCallOutData *)self startState];
+    startState2 = [(ICASEditorCallOutData *)self startState];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    startState2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = startState2;
+  v16[1] = startState2;
   v15[2] = @"endState";
-  v9 = [(ICASEditorCallOutData *)self endState];
-  if (v9)
+  endState = [(ICASEditorCallOutData *)self endState];
+  if (endState)
   {
-    v10 = [(ICASEditorCallOutData *)self endState];
+    endState2 = [(ICASEditorCallOutData *)self endState];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    endState2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = endState2;
+  v16[2] = endState2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

@@ -1,22 +1,22 @@
 @interface AirDropAlertUIProgressAlertView
-- (AirDropAlertUIProgressAlertView)initWithFrame:(CGRect)a3;
+- (AirDropAlertUIProgressAlertView)initWithFrame:(CGRect)frame;
 - (AirDropAlertUIProgressAlertViewDelegate)delegate;
 - (void)dealloc;
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setProgress:(id)a3;
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setProgress:(id)progress;
 - (void)transferFinished;
 - (void)transferFinishedAnimated;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation AirDropAlertUIProgressAlertView
 
-- (AirDropAlertUIProgressAlertView)initWithFrame:(CGRect)a3
+- (AirDropAlertUIProgressAlertView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = AirDropAlertUIProgressAlertView;
-  v3 = [(AirDropAlertUIProgressAlertView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, 65.0, 65.0];
+  v3 = [(AirDropAlertUIProgressAlertView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, 65.0, 65.0];
   if (v3)
   {
     v4 = [SFCircleProgressView alloc];
@@ -29,11 +29,11 @@
     [(SFCircleProgressView *)v3->_progressView setProgressLineWidth:3.0];
     [(AirDropAlertUIProgressAlertView *)v3 addSubview:v3->_progressView];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleURL];
+    bundleURL = [v7 bundleURL];
 
-    v9 = [NSURL fileURLWithFileSystemRepresentation:"Glyph-Checkmark.png" isDirectory:0 relativeToURL:v8];
-    v10 = [v9 path];
-    v11 = [UIImage imageWithContentsOfFile:v10];
+    v9 = [NSURL fileURLWithFileSystemRepresentation:"Glyph-Checkmark.png" isDirectory:0 relativeToURL:bundleURL];
+    path = [v9 path];
+    v11 = [UIImage imageWithContentsOfFile:path];
 
     v12 = [[UIView alloc] initWithFrame:{0.0, 0.0, 15.0, 15.0}];
     checkmarkImageView = v3->_checkmarkImageView;
@@ -41,8 +41,8 @@
 
     [(UIView *)v3->_checkmarkImageView setAlpha:0.0];
     v14 = v3->_checkmarkImageView;
-    v15 = [(SFCircleProgressView *)v3->_progressView progressColor];
-    [(UIView *)v14 setBackgroundColor:v15];
+    progressColor = [(SFCircleProgressView *)v3->_progressView progressColor];
+    [(UIView *)v14 setBackgroundColor:progressColor];
 
     [(UIView *)v3->_checkmarkImageView _setBackdropMaskViewFlags:7];
     v16 = v3->_checkmarkImageView;
@@ -53,8 +53,8 @@
     [(UIView *)v3->_checkmarkImageView bounds];
     [v17 setFrame:?];
     [v17 setContents:{objc_msgSend(v11, "CGImage")}];
-    v18 = [(UIView *)v3->_checkmarkImageView layer];
-    [v18 setMask:v17];
+    layer = [(UIView *)v3->_checkmarkImageView layer];
+    [layer setMask:v17];
 
     v19 = objc_alloc_init(UINotificationFeedbackGenerator);
     notificationHapticGenerator = v3->_notificationHapticGenerator;
@@ -78,12 +78,12 @@
   [(AirDropAlertUIProgressAlertView *)&v4 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = AirDropAlertUIProgressAlertView;
   [(AirDropAlertUIProgressAlertView *)&v5 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     if (self->_finished)
     {
@@ -97,15 +97,15 @@
   }
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if (([(NSProgress *)self->_progress isEqual:?]& 1) == 0)
   {
     [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"fractionCompleted"];
     [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"finished"];
     self->_restoringProgress = 1;
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"finished" options:4 context:off_10000CA28];
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"fractionCompleted" options:4 context:off_10000CA28];
     self->_restoringProgress = 0;
@@ -153,20 +153,20 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (off_10000CA28 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  v12 = objectCopy;
+  if (off_10000CA28 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002714;
     block[3] = &unk_1000081F0;
-    v14 = v11;
-    v15 = self;
-    v16 = v10;
+    v14 = objectCopy;
+    selfCopy = self;
+    v16 = pathCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
@@ -174,27 +174,27 @@
   {
     v17.receiver = self;
     v17.super_class = AirDropAlertUIProgressAlertView;
-    [(AirDropAlertUIProgressAlertView *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    [(AirDropAlertUIProgressAlertView *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
   }
 }
 
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"finished"])
+  progressCopy = progress;
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"finished"])
   {
-    if ([v8 isFinished])
+    if ([progressCopy isFinished])
     {
       [(AirDropAlertUIProgressAlertView *)self transferFinishedAnimated];
     }
   }
 
-  else if ([v6 isEqualToString:@"fractionCompleted"])
+  else if ([pathCopy isEqualToString:@"fractionCompleted"])
   {
     [(UINotificationFeedbackGenerator *)self->_notificationHapticGenerator prepare];
     progressView = self->_progressView;
-    [v8 fractionCompleted];
+    [progressCopy fractionCompleted];
     [(SFCircleProgressView *)progressView setProgress:!self->_restoringProgress animated:0 completion:?];
   }
 }

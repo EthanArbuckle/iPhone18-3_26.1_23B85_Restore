@@ -1,16 +1,16 @@
 @interface TSDArchivedPathSelection
 - (NSString)description;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSDArchivedPathSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -28,21 +28,21 @@
 
   objc_msgSend_willModify(self, v4, v5);
   pathSelection = self->_pathSelection;
-  self->_pathSelection = v6;
+  self->_pathSelection = selectionCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   v4 = objc_alloc_init(TSDPathSelection);
   pathSelection = self->_pathSelection;
   self->_pathSelection = &v4->super;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithNewFunction_descriptor_(v4, v3, sub_27669CEA0, off_2812F5188[114]);
+  objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, sub_27669CEA0, off_2812F5188[114]);
 }
 
 - (NSString)description

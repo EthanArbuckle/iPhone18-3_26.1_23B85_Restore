@@ -1,27 +1,27 @@
 @interface ATXWidgetModeEntity
-- (ATXWidgetModeEntity)initWithCoder:(id)a3;
-- (ATXWidgetModeEntity)initWithWidget:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXWidgetModeEntity)initWithCoder:(id)coder;
+- (ATXWidgetModeEntity)initWithWidget:(id)widget;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)identifier;
 - (id)jsonDict;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXWidgetModeEntity
 
-- (ATXWidgetModeEntity)initWithWidget:(id)a3
+- (ATXWidgetModeEntity)initWithWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v9.receiver = self;
   v9.super_class = ATXWidgetModeEntity;
   v5 = [(ATXWidgetModeEntity *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [widgetCopy copy];
     widget = v5->_widget;
     v5->_widget = v6;
   }
@@ -32,14 +32,14 @@
 - (id)identifier
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CHSWidget *)self->_widget extensionIdentity];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [(CHSWidget *)self->_widget extensionIdentity];
-  v7 = [v6 containerBundleIdentifier];
-  v8 = [(CHSWidget *)self->_widget kind];
+  extensionIdentity = [(CHSWidget *)self->_widget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  extensionIdentity2 = [(CHSWidget *)self->_widget extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity2 containerBundleIdentifier];
+  kind = [(CHSWidget *)self->_widget kind];
   [(CHSWidget *)self->_widget family];
   v9 = NSStringFromWidgetFamily();
-  v10 = [v3 initWithFormat:@"%@:%@:%@:%@", v5, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"%@:%@:%@:%@", extensionBundleIdentifier, containerBundleIdentifier, kind, v9];
 
   return v10;
 }
@@ -48,30 +48,30 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"entityIdentifier";
-  v3 = [(ATXWidgetModeEntity *)self identifier];
-  v4 = v3;
-  if (!v3)
+  identifier = [(ATXWidgetModeEntity *)self identifier];
+  null = identifier;
+  if (!identifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"scoreMetadata";
-  v11[0] = v4;
-  v5 = [(ATXWidgetModeEntity *)self scoreMetadata];
-  v6 = [v5 jsonDict];
-  v7 = v6;
-  if (!v6)
+  v11[0] = null;
+  scoreMetadata = [(ATXWidgetModeEntity *)self scoreMetadata];
+  jsonDict = [scoreMetadata jsonDict];
+  null2 = jsonDict;
+  if (!jsonDict)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v7;
+  v11[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v6)
+  if (!jsonDict)
   {
   }
 
-  if (!v3)
+  if (!identifier)
   {
   }
 
@@ -80,8 +80,8 @@
 
 - (NSString)debugDescription
 {
-  v2 = [(ATXWidgetModeEntity *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXWidgetModeEntity *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -89,18 +89,18 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(ATXWidgetModeEntity *)self identifier];
-  v5 = [(ATXWidgetModeEntity *)self scoreMetadata];
-  [v5 score];
-  v7 = [v3 initWithFormat:@"entityIdentifier: %@, score: %.3f", v4, v6];
+  identifier = [(ATXWidgetModeEntity *)self identifier];
+  scoreMetadata = [(ATXWidgetModeEntity *)self scoreMetadata];
+  [scoreMetadata score];
+  v7 = [v3 initWithFormat:@"entityIdentifier: %@, score: %.3f", identifier, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -110,11 +110,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXWidgetModeEntity *)self identifier];
-      v7 = [(ATXWidgetModeEntity *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(ATXWidgetModeEntity *)self identifier];
+      identifier2 = [(ATXWidgetModeEntity *)v5 identifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -128,35 +128,35 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ATXWidgetModeEntity *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(ATXWidgetModeEntity *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXWidgetModeEntity *)self widget];
-  [v4 encodeObject:v5 forKey:@"codingKeyForWidget"];
+  coderCopy = coder;
+  widget = [(ATXWidgetModeEntity *)self widget];
+  [coderCopy encodeObject:widget forKey:@"codingKeyForWidget"];
 
-  v6 = [(ATXWidgetModeEntity *)self scoreMetadata];
-  [v4 encodeObject:v6 forKey:@"codingKeyForScoreMetadata"];
+  scoreMetadata = [(ATXWidgetModeEntity *)self scoreMetadata];
+  [coderCopy encodeObject:scoreMetadata forKey:@"codingKeyForScoreMetadata"];
 }
 
-- (ATXWidgetModeEntity)initWithCoder:(id)a3
+- (ATXWidgetModeEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_modes();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForWidget" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.widgetModeEntity" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForWidget" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.widgetModeEntity" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (v9)
+  if (error)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -164,31 +164,31 @@
     v11 = MEMORY[0x1E69C5D78];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_modes();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForScoreMetadata" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.widgetModeEntity" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForScoreMetadata" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.widgetModeEntity" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v15)
+    if (error2)
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       self = [(ATXWidgetModeEntity *)self initWithWidget:v8];
       [(ATXWidgetModeEntity *)self setScoreMetadata:v14];
-      v10 = self;
+      selfCopy = self;
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXWidgetModeEntity allocWithZone:a3];
-  v5 = [(ATXWidgetModeEntity *)self widget];
-  v6 = [(ATXWidgetModeEntity *)v4 initWithWidget:v5];
+  v4 = [ATXWidgetModeEntity allocWithZone:zone];
+  widget = [(ATXWidgetModeEntity *)self widget];
+  v6 = [(ATXWidgetModeEntity *)v4 initWithWidget:widget];
 
   return v6;
 }

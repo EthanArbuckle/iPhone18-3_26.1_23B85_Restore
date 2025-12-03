@@ -1,26 +1,26 @@
 @interface SXEmbedVideoComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXEmbedVideoComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_36];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_36];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_6];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_6];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_4];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_4];
 
-  v11 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v10 = [v11 registerClass:objc_opt_class() factory:&__block_literal_global_128_1];
+  v10 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_128_1];
 }
 
 void __48__SXEmbedVideoComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

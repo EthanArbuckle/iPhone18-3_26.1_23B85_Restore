@@ -1,32 +1,32 @@
 @interface CNFRegSigninLearnMoreView
-- (CNFRegSigninLearnMoreView)initWithSpecifier:(id)a3;
+- (CNFRegSigninLearnMoreView)initWithSpecifier:(id)specifier;
 - (UIButton)learnMoreButton;
 - (UIImageView)splashImageView;
 - (UILabel)titleLabel;
 - (UILabel)verbiageLabel;
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (id)_serviceTitle;
 - (id)_splashImage;
 - (id)signingInLabel;
 - (id)signingInSpinner;
-- (void)_learnMorePressed:(id)a3;
+- (void)_learnMorePressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setAuthKitSignInView:(id)a3;
-- (void)setServiceType:(int64_t)a3;
+- (void)setAuthKitSignInView:(id)view;
+- (void)setServiceType:(int64_t)type;
 @end
 
 @implementation CNFRegSigninLearnMoreView
 
-- (CNFRegSigninLearnMoreView)initWithSpecifier:(id)a3
+- (CNFRegSigninLearnMoreView)initWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = CNFRegSigninLearnMoreView;
   v6 = [(CNFRegSigninLearnMoreView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specifier, a3);
+    objc_storeStrong(&v6->_specifier, specifier);
     v7->_serviceType = 0;
   }
 
@@ -35,15 +35,15 @@
 
 - (id)_serviceTitle
 {
-  v2 = [(CNFRegSigninLearnMoreView *)self serviceType];
-  if (v2 > 2)
+  serviceType = [(CNFRegSigninLearnMoreView *)self serviceType];
+  if (serviceType > 2)
   {
     v6 = &stru_2856D3978;
   }
 
   else
   {
-    v3 = off_278DE8CB0[v2];
+    v3 = off_278DE8CB0[serviceType];
     v4 = CommunicationsSetupUIBundle();
     v5 = CNFRegStringTableName();
     v6 = [v4 localizedStringForKey:v3 value:&stru_2856D3978 table:v5];
@@ -52,10 +52,10 @@
   return v6;
 }
 
-- (void)setAuthKitSignInView:(id)a3
+- (void)setAuthKitSignInView:(id)view
 {
-  objc_storeStrong(&self->_authKitSignInView, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_authKitSignInView, view);
+  viewCopy = view;
   v5 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
   [(UIView *)self->_authKitSignInView setBackgroundColor:v5];
 
@@ -76,8 +76,8 @@
   }
 
   v4 = MEMORY[0x277D755B8];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = [v4 _applicationIconImageForBundleIdentifier:v3 format:2 scale:?];
 
   return v6;
@@ -92,14 +92,14 @@
     v5 = CNFRegStringTableName();
     v6 = [v4 localizedStringForKey:@"FACETIME_SPLASH_LEARN_MORE" value:&stru_2856D3978 table:v5];
     v7 = CNFRegGlobalAppearanceController();
-    v8 = [v7 userInteractionColor];
-    v9 = [CNFRegLearnMoreButton roundedButtonWithText:v6 color:v8];
+    userInteractionColor = [v7 userInteractionColor];
+    v9 = [CNFRegLearnMoreButton roundedButtonWithText:v6 color:userInteractionColor];
     v10 = self->_learnMoreButton;
     self->_learnMoreButton = v9;
 
-    v11 = [(UIButton *)self->_learnMoreButton titleLabel];
+    titleLabel = [(UIButton *)self->_learnMoreButton titleLabel];
     v12 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
     [(UIButton *)self->_learnMoreButton setAutoresizingMask:5];
     [(UIButton *)self->_learnMoreButton addTarget:self action:sel__learnMorePressed_ forControlEvents:64];
@@ -116,13 +116,13 @@
   if (!self->_splashImageView)
   {
     v3 = CNFRegGlobalAppearanceController();
-    v4 = [v3 splashScreenShowsIcon];
+    splashScreenShowsIcon = [v3 splashScreenShowsIcon];
 
-    if (v4)
+    if (splashScreenShowsIcon)
     {
       v5 = objc_alloc(MEMORY[0x277D755E8]);
-      v6 = [(CNFRegSigninLearnMoreView *)self _splashImage];
-      v7 = [v5 initWithImage:v6];
+      _splashImage = [(CNFRegSigninLearnMoreView *)self _splashImage];
+      v7 = [v5 initWithImage:_splashImage];
       splashImageView = self->_splashImageView;
       self->_splashImageView = v7;
 
@@ -147,19 +147,19 @@
     v6 = self->_titleLabel;
     self->_titleLabel = v5;
 
-    v7 = [(CNFRegSigninLearnMoreView *)self _serviceTitle];
-    [(UILabel *)self->_titleLabel setText:v7];
+    _serviceTitle = [(CNFRegSigninLearnMoreView *)self _serviceTitle];
+    [(UILabel *)self->_titleLabel setText:_serviceTitle];
 
     v8 = [MEMORY[0x277D74300] _thinSystemFontOfSize:35.0];
     [(UILabel *)self->_titleLabel setFont:v8];
 
     v9 = CNFRegGlobalAppearanceController();
-    v10 = [v9 splashTitleLabelTextColor];
-    [(UILabel *)self->_titleLabel setTextColor:v10];
+    splashTitleLabelTextColor = [v9 splashTitleLabelTextColor];
+    [(UILabel *)self->_titleLabel setTextColor:splashTitleLabelTextColor];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_titleLabel sizeToFit];
     [(CNFRegSigninLearnMoreView *)self addSubview:self->_titleLabel];
@@ -181,8 +181,8 @@
     v7 = self->_verbiageLabel;
     self->_verbiageLabel = v6;
 
-    v8 = [MEMORY[0x277D07DB0] sharedInstance];
-    v9 = [v8 supportsWLAN];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    supportsWLAN = [mEMORY[0x277D07DB0] supportsWLAN];
     v10 = _os_feature_enabled_impl();
     v11 = CNFRegStringTableName();
     v12 = CommunicationsSetupUIBundle();
@@ -198,7 +198,7 @@
       v14 = @"FACETIME_SPLASH_SYNOPSIS_WIFI";
     }
 
-    if (v9)
+    if (supportsWLAN)
     {
       v15 = v13;
     }
@@ -211,20 +211,20 @@
     v16 = CNFLocalizedStringFromTableInBundleWithFallback(v15, v11, v12);
     [(UILabel *)self->_verbiageLabel setText:v16];
 
-    v17 = [v4 tableFooterFont];
-    [(UILabel *)self->_verbiageLabel setFont:v17];
+    tableFooterFont = [v4 tableFooterFont];
+    [(UILabel *)self->_verbiageLabel setFont:tableFooterFont];
 
-    v18 = [v4 tableHeaderTextColor];
-    [(UILabel *)self->_verbiageLabel setTextColor:v18];
+    tableHeaderTextColor = [v4 tableHeaderTextColor];
+    [(UILabel *)self->_verbiageLabel setTextColor:tableHeaderTextColor];
 
     [(UILabel *)self->_verbiageLabel setNumberOfLines:0];
     [(UILabel *)self->_verbiageLabel setLineBreakMode:0];
     [(UILabel *)self->_verbiageLabel setTextAlignment:1];
-    v19 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_verbiageLabel setBackgroundColor:v19];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_verbiageLabel setBackgroundColor:clearColor];
 
-    v20 = [v4 tableHeaderTextShadowColor];
-    [(UILabel *)self->_verbiageLabel setShadowColor:v20];
+    tableHeaderTextShadowColor = [v4 tableHeaderTextShadowColor];
+    [(UILabel *)self->_verbiageLabel setShadowColor:tableHeaderTextShadowColor];
 
     [v4 tableHeaderTextShadowOffset];
     [(UILabel *)self->_verbiageLabel setShadowOffset:?];
@@ -254,20 +254,20 @@
     v10 = [v8 localizedStringForKey:@"SIGNING_IN" value:&stru_2856D3978 table:v9];
     [(UILabel *)self->_signingInLabel setText:v10];
 
-    v11 = [v4 tableFooterFont];
-    [(UILabel *)self->_signingInLabel setFont:v11];
+    tableFooterFont = [v4 tableFooterFont];
+    [(UILabel *)self->_signingInLabel setFont:tableFooterFont];
 
-    v12 = [v4 tableHeaderTextColor];
-    [(UILabel *)self->_signingInLabel setTextColor:v12];
+    tableHeaderTextColor = [v4 tableHeaderTextColor];
+    [(UILabel *)self->_signingInLabel setTextColor:tableHeaderTextColor];
 
     [(UILabel *)self->_signingInLabel setNumberOfLines:0];
     [(UILabel *)self->_signingInLabel setLineBreakMode:0];
     [(UILabel *)self->_signingInLabel setTextAlignment:1];
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_signingInLabel setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_signingInLabel setBackgroundColor:clearColor];
 
-    v14 = [v4 tableHeaderTextShadowColor];
-    [(UILabel *)self->_signingInLabel setShadowColor:v14];
+    tableHeaderTextShadowColor = [v4 tableHeaderTextShadowColor];
+    [(UILabel *)self->_signingInLabel setShadowColor:tableHeaderTextShadowColor];
 
     [v4 tableHeaderTextShadowOffset];
     [(UILabel *)self->_signingInLabel setShadowOffset:?];
@@ -293,8 +293,8 @@
     v7 = self->_signingInSpinner;
     self->_signingInSpinner = v6;
 
-    v8 = [v4 tableHeaderTextColor];
-    [(UIActivityIndicatorView *)self->_signingInSpinner setColor:v8];
+    tableHeaderTextColor = [v4 tableHeaderTextColor];
+    [(UIActivityIndicatorView *)self->_signingInSpinner setColor:tableHeaderTextColor];
 
     [(UIActivityIndicatorView *)self->_signingInSpinner setHidden:1];
     [(CNFRegSigninLearnMoreView *)self addSubview:self->_signingInSpinner];
@@ -306,17 +306,17 @@
   return signingInSpinner;
 }
 
-- (void)setServiceType:(int64_t)a3
+- (void)setServiceType:(int64_t)type
 {
-  if (self->_serviceType != a3)
+  if (self->_serviceType != type)
   {
-    self->_serviceType = a3;
-    v5 = [(CNFRegSigninLearnMoreView *)self splashImageView];
-    v6 = [(CNFRegSigninLearnMoreView *)self _splashImage];
-    [v5 setImage:v6];
+    self->_serviceType = type;
+    splashImageView = [(CNFRegSigninLearnMoreView *)self splashImageView];
+    _splashImage = [(CNFRegSigninLearnMoreView *)self _splashImage];
+    [splashImageView setImage:_splashImage];
 
-    v7 = [(CNFRegSigninLearnMoreView *)self _serviceTitle];
-    [(UILabel *)self->_titleLabel setText:v7];
+    _serviceTitle = [(CNFRegSigninLearnMoreView *)self _serviceTitle];
+    [(UILabel *)self->_titleLabel setText:_serviceTitle];
 
     [(CNFRegSigninLearnMoreView *)self setNeedsLayout];
   }
@@ -330,8 +330,8 @@
   v8 = v7;
   v10 = v9;
   v91 = v9;
-  v92 = [(CNFRegSigninLearnMoreView *)self splashImageView];
-  [v92 bounds];
+  splashImageView = [(CNFRegSigninLearnMoreView *)self splashImageView];
+  [splashImageView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -346,14 +346,14 @@
   v95.size.width = v16;
   v95.size.height = v18;
   v20 = floor(MidX - CGRectGetWidth(v95) * 0.5);
-  [v92 setFrame:{v20, 48.0, v16, v18}];
+  [splashImageView setFrame:{v20, 48.0, v16, v18}];
   v96.origin.x = v20;
   v96.origin.y = 48.0;
   v96.size.width = v16;
   v96.size.height = v18;
   v21 = CGRectGetMaxY(v96) + 44.0;
-  v22 = [(CNFRegSigninLearnMoreView *)self titleLabel];
-  [v22 frame];
+  titleLabel = [(CNFRegSigninLearnMoreView *)self titleLabel];
+  [titleLabel frame];
   v24 = v23;
   v26 = v25;
   v97.origin.x = v4;
@@ -361,26 +361,26 @@
   v97.size.width = v8;
   v97.size.height = v91;
   v27 = floor(CGRectGetMidX(v97) - v24 * 0.5);
-  v28 = [v22 font];
-  [v28 ascender];
+  font = [titleLabel font];
+  [font ascender];
   v30 = floor(v21 - v29);
 
-  [v22 setFrame:{v27, v30, v24, v26}];
+  [titleLabel setFrame:{v27, v30, v24, v26}];
   v98.origin.x = v27;
   v98.origin.y = v30;
   v98.size.width = v24;
   v98.size.height = v26;
   MaxY = CGRectGetMaxY(v98);
-  v32 = [v22 font];
-  [v32 descender];
+  font2 = [titleLabel font];
+  [font2 descender];
   v34 = MaxY + v33 + 43.0;
 
-  v35 = [(CNFRegSigninLearnMoreView *)self verbiageLabel];
+  verbiageLabel = [(CNFRegSigninLearnMoreView *)self verbiageLabel];
   v99.origin.x = v4;
   v99.origin.y = v6;
   v99.size.width = v8;
   v99.size.height = v91;
-  [v35 sizeThatFits:{CGRectGetWidth(v99) + -20.0, 1.79769313e308}];
+  [verbiageLabel sizeThatFits:{CGRectGetWidth(v99) + -20.0, 1.79769313e308}];
   v37 = v36;
   v39 = v38;
   v100.origin.x = v4;
@@ -388,31 +388,31 @@
   v100.size.width = v8;
   v100.size.height = v91;
   v40 = floor(CGRectGetMidX(v100) - v37 * 0.5);
-  [v35 numberOfLines];
-  v41 = [v35 font];
-  [v41 ascender];
-  v42 = [v35 font];
-  [v42 descender];
-  v43 = [v35 font];
-  [v43 leading];
+  [verbiageLabel numberOfLines];
+  font3 = [verbiageLabel font];
+  [font3 ascender];
+  font4 = [verbiageLabel font];
+  [font4 descender];
+  font5 = [verbiageLabel font];
+  [font5 leading];
 
-  v44 = [v35 font];
-  [v44 ascender];
+  font6 = [verbiageLabel font];
+  [font6 ascender];
   v46 = floor(v34 - v45);
 
-  [v35 setFrame:{v40, v46, v37, v39}];
+  [verbiageLabel setFrame:{v40, v46, v37, v39}];
   v101.origin.x = v40;
   v101.origin.y = v46;
   v101.size.width = v37;
   v101.size.height = v39;
   v47 = CGRectGetMaxY(v101);
-  v48 = [v35 font];
-  [v48 descender];
+  font7 = [verbiageLabel font];
+  [font7 descender];
   v50 = v49;
 
-  v51 = [(CNFRegSigninLearnMoreView *)self learnMoreButton];
-  [v51 sizeToFit];
-  [v51 bounds];
+  learnMoreButton = [(CNFRegSigninLearnMoreView *)self learnMoreButton];
+  [learnMoreButton sizeToFit];
+  [learnMoreButton bounds];
   v54 = v53;
   v56 = v55;
   v58 = v57;
@@ -434,20 +434,20 @@
   v103.size.width = v8;
   v103.size.height = v58;
   v62 = floor(v61 - CGRectGetWidth(v103) * 0.5);
-  v63 = [v51 titleLabel];
-  v64 = [v63 font];
-  [v64 ascender];
+  titleLabel2 = [learnMoreButton titleLabel];
+  font8 = [titleLabel2 font];
+  [font8 ascender];
   v66 = floor(v60 - v65);
 
-  [v51 setFrame:{v62, v66, v8, v58}];
+  [learnMoreButton setFrame:{v62, v66, v8, v58}];
   v104.origin.x = v62;
   v104.origin.y = v66;
   v104.size.width = v8;
   v104.size.height = v58;
   v67 = CGRectGetMaxY(v104);
-  v68 = [v51 titleLabel];
-  v69 = [v68 font];
-  [v69 descender];
+  titleLabel3 = [learnMoreButton titleLabel];
+  font9 = [titleLabel3 font];
+  [font9 descender];
   v71 = ceil(v67 + v70 + 40.0);
 
   [(UIView *)self->_authKitSignInView sizeToFit];
@@ -459,42 +459,42 @@
   v105.size.height = v91;
   [(UIView *)self->_authKitSignInView setFrame:0.0, v71, v73, CGRectGetHeight(v105) - v71];
   [(UIView *)self->_authKitSignInView setTranslatesAutoresizingMaskIntoConstraints:1];
-  v74 = [(CNFRegSigninLearnMoreView *)self signingInLabel];
-  [v74 sizeToFit];
+  signingInLabel = [(CNFRegSigninLearnMoreView *)self signingInLabel];
+  [signingInLabel sizeToFit];
 
-  v75 = [(CNFRegSigninLearnMoreView *)self signingInLabel];
-  [v75 frame];
+  signingInLabel2 = [(CNFRegSigninLearnMoreView *)self signingInLabel];
+  [signingInLabel2 frame];
   v77 = v76;
   v79 = v78;
 
   [(CNFRegSigninLearnMoreView *)self frame];
   v81 = v80 * 0.5 - v77 * 0.5;
-  v82 = [(CNFRegSigninLearnMoreView *)self signingInLabel];
-  [v82 setFrame:{v81, v71, v77, v79}];
+  signingInLabel3 = [(CNFRegSigninLearnMoreView *)self signingInLabel];
+  [signingInLabel3 setFrame:{v81, v71, v77, v79}];
 
-  v83 = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
-  [v83 sizeToFit];
+  signingInSpinner = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
+  [signingInSpinner sizeToFit];
 
-  v84 = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
-  [v84 frame];
+  signingInSpinner2 = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
+  [signingInSpinner2 frame];
   v86 = v85;
   v88 = v87;
 
-  v89 = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
-  [v89 setFrame:{v81 - v86 + -6.0, v71, v86, v88}];
+  signingInSpinner3 = [(CNFRegSigninLearnMoreView *)self signingInSpinner];
+  [signingInSpinner3 setFrame:{v81 - v86 + -6.0, v71, v86, v88}];
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  if (a3 == 0.0)
+  if (width == 0.0)
   {
-    a3 = 320.0;
+    width = 320.0;
   }
 
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3 >= 20.0)
+  if (width >= 20.0)
   {
-    v5 = a3 + -20.0;
+    v5 = width + -20.0;
   }
 
   else
@@ -502,41 +502,41 @@
     v5 = 0.0;
   }
 
-  v6 = [(CNFRegSigninLearnMoreView *)self splashImageView];
-  [v6 size];
+  splashImageView = [(CNFRegSigninLearnMoreView *)self splashImageView];
+  [splashImageView size];
   v8 = v4 + v7 + 92.0;
-  v9 = [(CNFRegSigninLearnMoreView *)self titleLabel];
-  v10 = [v9 text];
-  if (v10)
+  titleLabel = [(CNFRegSigninLearnMoreView *)self titleLabel];
+  text = [titleLabel text];
+  if (text)
   {
-    v11 = v10;
-    v12 = [v9 text];
-    v13 = [v12 length];
+    v11 = text;
+    text2 = [titleLabel text];
+    v13 = [text2 length];
 
     if (v13)
     {
-      [v9 sizeThatFits:{v5, 1.79769313e308}];
+      [titleLabel sizeThatFits:{v5, 1.79769313e308}];
       v8 = v8 + v14 + 43.0;
     }
   }
 
-  v15 = [(CNFRegSigninLearnMoreView *)self verbiageLabel];
-  v16 = [v15 text];
-  if (v16)
+  verbiageLabel = [(CNFRegSigninLearnMoreView *)self verbiageLabel];
+  text3 = [verbiageLabel text];
+  if (text3)
   {
-    v17 = v16;
-    v18 = [v15 text];
-    v19 = [v18 length];
+    v17 = text3;
+    text4 = [verbiageLabel text];
+    v19 = [text4 length];
 
     if (v19)
     {
-      [v15 sizeThatFits:{v5, 1.79769313e308}];
+      [verbiageLabel sizeThatFits:{v5, 1.79769313e308}];
       v8 = v8 + v20 + 24.0;
     }
   }
 
-  v21 = [(CNFRegSigninLearnMoreView *)self learnMoreButton];
-  [v21 frame];
+  learnMoreButton = [(CNFRegSigninLearnMoreView *)self learnMoreButton];
+  [learnMoreButton frame];
   v23 = v8 + v22 + 40.0;
 
   [(UIView *)self->_authKitSignInView frame];
@@ -545,7 +545,7 @@
   return v25;
 }
 
-- (void)_learnMorePressed:(id)a3
+- (void)_learnMorePressed:(id)pressed
 {
   v3 = *MEMORY[0x277D76620];
   v4 = CNFRegLocalizedSplashScreenURL();

@@ -1,17 +1,17 @@
 @interface CKAtomBatchMutableProxy
 - (id)atoms;
-- (void)copyFromReadProxy:(id)a3;
+- (void)copyFromReadProxy:(id)proxy;
 @end
 
 @implementation CKAtomBatchMutableProxy
 
-- (void)copyFromReadProxy:(id)a3
+- (void)copyFromReadProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v12 = objc_msgSend_backingStore(self, v6, v7, v8, v9, v10, v11);
   if (v12)
   {
-    v19 = v5;
+    v19 = proxyCopy;
     if (v19)
     {
       v20 = objc_msgSend_binding(v12, v13, v14, v15, v16, v17, v18);

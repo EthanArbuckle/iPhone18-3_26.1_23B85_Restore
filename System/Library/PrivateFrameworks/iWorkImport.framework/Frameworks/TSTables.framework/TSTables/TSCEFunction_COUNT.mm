@@ -1,24 +1,24 @@
 @interface TSCEFunction_COUNT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)getResultWithVector:(id)a3 context:(id)a4 functionSpec:(id)a5 index:(int)a6 countBehavior:(int64_t)a7;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)getResultWithVector:(id)vector context:(id)context functionSpec:(id)spec index:(int)index countBehavior:(int64_t)behavior;
 @end
 
 @implementation TSCEFunction_COUNT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v20 = 0;
-  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, a3, a4, 0, 0, &v20);
+  v8 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, a2, context, spec, 0, 0, &v20);
   v12 = v20;
   if (v12)
   {
-    v13 = objc_msgSend_raiseErrorOrConvert_(a3, v9, v12, v10, v11);
+    v13 = objc_msgSend_raiseErrorOrConvert_(context, v9, v12, v10, v11);
   }
 
   else
   {
-    v13 = objc_msgSend_getResultWithVector_context_functionSpec_index_countBehavior_(TSCEFunction_COUNT, v9, v8, a3, a4, 0, 0);
+    v13 = objc_msgSend_getResultWithVector_context_functionSpec_index_countBehavior_(TSCEFunction_COUNT, v9, v8, context, spec, 0, 0);
     TSCEFormat::TSCEFormat(&v18, 256);
     TSCEFormat::TSCEFormat(&v19, &v18);
     objc_msgSend_setFormat_(v13, v14, &v19, v15, v16);
@@ -27,41 +27,41 @@
   return v13;
 }
 
-+ (id)getResultWithVector:(id)a3 context:(id)a4 functionSpec:(id)a5 index:(int)a6 countBehavior:(int64_t)a7
++ (id)getResultWithVector:(id)vector context:(id)context functionSpec:(id)spec index:(int)index countBehavior:(int64_t)behavior
 {
-  v11 = a3;
-  v108 = a4;
-  v16 = objc_msgSend_count(v11, v12, v13, v14, v15);
-  v17 = v108;
+  vectorCopy = vector;
+  contextCopy = context;
+  v16 = objc_msgSend_count(vectorCopy, v12, v13, v14, v15);
+  v17 = contextCopy;
   v22 = v17;
   v127 = 0;
   v128 = 0;
   v130 = 0;
   v131 = 0;
-  if (a7 == 1)
+  if (behavior == 1)
   {
-    v23 = 0;
+    specCopy = 0;
   }
 
   else
   {
-    v23 = a5;
+    specCopy = spec;
   }
 
-  if (a7 == 1)
+  if (behavior == 1)
   {
-    v24 = -1;
+    indexCopy = -1;
   }
 
   else
   {
-    v24 = a6;
+    indexCopy = index;
   }
 
   v123[0] = v17;
-  v123[1] = v23;
+  v123[1] = specCopy;
   v124 = 0;
-  v125 = v24;
+  v125 = indexCopy;
   v126 = 0;
   v129 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v27 = objc_msgSend_hidingActionMask(v17, v18, v19, v20, v21);
@@ -79,22 +79,22 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  v109 = a6;
+  indexCopy2 = index;
   v111 = 0;
   v28 = 0;
-  v110 = a5;
+  specCopy2 = spec;
   while (1)
   {
-    v29 = objc_msgSend_valueAtIndex_accessContext_(v11, v25, v28, v123, v26);
+    v29 = objc_msgSend_valueAtIndex_accessContext_(vectorCopy, v25, v28, v123, v26);
     isError = objc_msgSend_isError(v29, v30, v31, v32, v33);
     v39 = isError;
     if (isError)
     {
       v40 = objc_msgSend_errorWithContext_(v29, v35, v22, v37, v38);
       v45 = v40;
-      if ((a7 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+      if ((behavior & 0xFFFFFFFFFFFFFFFDLL) != 0)
       {
-        if (a7 == 1 && (objc_msgSend_isInvalidMergeReference(v40, v41, v42, v43, v44) & 1) != 0)
+        if (behavior == 1 && (objc_msgSend_isInvalidMergeReference(v40, v41, v42, v43, v44) & 1) != 0)
         {
 LABEL_67:
           v106 = objc_msgSend_raiseErrorOrConvert_(v22, v46, v45, v47, v48);
@@ -109,7 +109,7 @@ LABEL_67:
       }
     }
 
-    if (a7 == 1 && objc_msgSend_valueIsEmptyWithContext_(v29, v35, v22, v37, v38))
+    if (behavior == 1 && objc_msgSend_valueIsEmptyWithContext_(v29, v35, v22, v37, v38))
     {
       v49 = objc_msgSend_nilValue(TSCENilValue, v35, v36, v37, v38);
 
@@ -140,9 +140,9 @@ LABEL_67:
     }
 
 LABEL_41:
-    if (a7 != 2)
+    if (behavior != 2)
     {
-      if (a7 == 1)
+      if (behavior == 1)
       {
         if ((v39 & 1) != 0 || (objc_msgSend_isNil(v29, v35, v36, v37, v38) & 1) == 0)
         {
@@ -150,7 +150,7 @@ LABEL_41:
         }
       }
 
-      else if (!a7 && (v39 & 1) == 0)
+      else if (!behavior && (v39 & 1) == 0)
       {
         v111 += objc_msgSend_isNil(v29, v35, v36, v37, v38) ^ 1;
       }
@@ -171,7 +171,7 @@ LABEL_41:
       }
 
       v112 = 0;
-      v94 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v29, v93, v22, v110, 0, &v112);
+      v94 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v29, v93, v22, specCopy2, 0, &v112);
       v95 = v112;
       v100 = objc_msgSend_length(v94, v96, v97, v98, v99);
 
@@ -198,7 +198,7 @@ LABEL_59:
   }
 
   v120 = 0;
-  v55 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v29, v35, v22, v110, v109, &v120);
+  v55 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v29, v35, v22, specCopy2, indexCopy2, &v120);
   v56 = v120;
   if (!v56)
   {

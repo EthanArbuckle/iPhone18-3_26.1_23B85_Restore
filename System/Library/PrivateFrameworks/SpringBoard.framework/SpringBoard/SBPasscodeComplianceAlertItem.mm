@@ -1,34 +1,34 @@
 @interface SBPasscodeComplianceAlertItem
-- (SBPasscodeComplianceAlertItem)initWithTitle:(id)a3 message:(id)a4 continueButtonTitle:(id)a5 cancelButtonTitle:(id)a6;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBPasscodeComplianceAlertItem)initWithTitle:(id)title message:(id)message continueButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBPasscodeComplianceAlertItem
 
-- (SBPasscodeComplianceAlertItem)initWithTitle:(id)a3 message:(id)a4 continueButtonTitle:(id)a5 cancelButtonTitle:(id)a6
+- (SBPasscodeComplianceAlertItem)initWithTitle:(id)title message:(id)message continueButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  cancelButtonTitleCopy = cancelButtonTitle;
   v18.receiver = self;
   v18.super_class = SBPasscodeComplianceAlertItem;
   v15 = [(SBAlertItem *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    objc_storeStrong(&v16->_message, a4);
-    objc_storeStrong(&v16->_continueButtonTitle, a5);
-    objc_storeStrong(&v16->_cancelButtonTitle, a6);
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v16->_message, message);
+    objc_storeStrong(&v16->_continueButtonTitle, buttonTitle);
+    objc_storeStrong(&v16->_cancelButtonTitle, cancelButtonTitle);
   }
 
   return v16;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   [v5 setTitle:self->_title];
   [v5 setMessage:self->_message];
   cancelButtonTitle = self->_cancelButtonTitle;

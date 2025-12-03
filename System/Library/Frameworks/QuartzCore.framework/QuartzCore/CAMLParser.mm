@@ -1,28 +1,28 @@
 @interface CAMLParser
-+ (id)parseContentsOfURL:(id)a3;
++ (id)parseContentsOfURL:(id)l;
 + (id)parser;
-- (BOOL)parseBytes:(const char *)a3 length:(unint64_t)a4;
-- (BOOL)parseContentsOfURL:(id)a3;
-- (BOOL)parseData:(id)a3;
-- (BOOL)parseString:(id)a3;
+- (BOOL)parseBytes:(const char *)bytes length:(unint64_t)length;
+- (BOOL)parseContentsOfURL:(id)l;
+- (BOOL)parseData:(id)data;
+- (BOOL)parseString:(id)string;
 - (CAMLParser)init;
-- (id)attributeForKey:(id)a3 remove:(BOOL)a4;
-- (id)didFailToLoadResourceFromURL:(id)a3;
+- (id)attributeForKey:(id)key remove:(BOOL)remove;
+- (id)didFailToLoadResourceFromURL:(id)l;
 - (id)elementValue;
-- (id)objectById:(id)a3;
-- (id)willLoadResourceFromURL:(id)a3;
+- (id)objectById:(id)id;
+- (id)willLoadResourceFromURL:(id)l;
 - (void)dealloc;
-- (void)parserError:(id)a3;
-- (void)parserWarning:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setElementValue:(id)a3;
+- (void)parserError:(id)error;
+- (void)parserWarning:(id)warning;
+- (void)setDelegate:(id)delegate;
+- (void)setElementValue:(id)value;
 @end
 
 @implementation CAMLParser
 
 + (id)parser
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -104,21 +104,21 @@
   [(CAMLParser *)&v4 dealloc];
 }
 
-- (void)parserWarning:(id)a3
+- (void)parserWarning:(id)warning
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:warning arguments:&v5];
   CAML::Context::warning(self->_data, "%s", [v4 UTF8String]);
 }
 
-- (void)parserError:(id)a3
+- (void)parserError:(id)error
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:error arguments:&v5];
   CAML::Context::error(self->_data, "%s", [v4 UTF8String]);
 }
 
-- (id)didFailToLoadResourceFromURL:(id)a3
+- (id)didFailToLoadResourceFromURL:(id)l
 {
-  result = (*(*self->_data + 88))(self->_data, a3);
+  result = (*(*self->_data + 88))(self->_data, l);
   if (result)
   {
 
@@ -128,9 +128,9 @@
   return result;
 }
 
-- (id)willLoadResourceFromURL:(id)a3
+- (id)willLoadResourceFromURL:(id)l
 {
-  result = (*(*self->_data + 72))(self->_data, a3);
+  result = (*(*self->_data + 72))(self->_data, l);
   if (result)
   {
     v4 = result;
@@ -141,7 +141,7 @@
   return result;
 }
 
-- (id)attributeForKey:(id)a3 remove:(BOOL)a4
+- (id)attributeForKey:(id)key remove:(BOOL)remove
 {
   v4 = *(*(self->_data + 6) + 216);
   if (!v4)
@@ -149,7 +149,7 @@
     return 0;
   }
 
-  v5 = CAML::memq_(v4, [a3 UTF8String], a4);
+  v5 = CAML::memq_(v4, [key UTF8String], remove);
   if (!v5)
   {
     return 0;
@@ -161,21 +161,21 @@
   return [v7 stringWithUTF8String:v6];
 }
 
-- (void)setElementValue:(id)a3
+- (void)setElementValue:(id)value
 {
   v3 = *(self->_data + 11);
   if (v3)
   {
-    CAML::State::set_value(v3, a3);
+    CAML::State::set_value(v3, value);
   }
 }
 
-- (id)objectById:(id)a3
+- (id)objectById:(id)id
 {
   result = *(self->_data + 8);
   if (result)
   {
-    result = CFDictionaryGetValue(result, a3);
+    result = CFDictionaryGetValue(result, id);
     if (result)
     {
       return *(result + 1);
@@ -185,13 +185,13 @@
   return result;
 }
 
-- (BOOL)parseContentsOfURL:(id)a3
+- (BOOL)parseContentsOfURL:(id)l
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v17 = 0;
   data = self->_data;
-  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:a3 options:0 error:&v17];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load CAPackage from URL: %@", a3];
+  v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:l options:0 error:&v17];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load CAPackage from URL: %@", l];
   if (v17)
   {
     v8 = *MEMORY[0x1E696AA08];
@@ -215,7 +215,7 @@
   v10 = *(data + 2);
   if (!v10)
   {
-    PathComponent = CFURLCreateCopyDeletingLastPathComponent(0, a3);
+    PathComponent = CFURLCreateCopyDeletingLastPathComponent(0, l);
     if (PathComponent)
     {
       v12 = PathComponent;
@@ -225,7 +225,7 @@
   }
 
   v13 = *(data + 3);
-  CAML::Context::set_current_url(data, a3);
+  CAML::Context::set_current_url(data, l);
   v14 = [(CAMLParser *)self parseData:v6];
   CAML::Context::set_current_url(data, v13);
   if (!v10)
@@ -241,31 +241,31 @@
   return v14;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
-  v5 = [a3 bytes];
-  v6 = [a3 length];
+  bytes = [data bytes];
+  v6 = [data length];
 
-  return [(CAMLParser *)self parseBytes:v5 length:v6];
+  return [(CAMLParser *)self parseBytes:bytes length:v6];
 }
 
-- (BOOL)parseString:(id)a3
+- (BOOL)parseString:(id)string
 {
-  v4 = [a3 UTF8String];
-  v5 = strlen(v4);
+  uTF8String = [string UTF8String];
+  v5 = strlen(uTF8String);
 
-  return [(CAMLParser *)self parseBytes:v4 length:v5];
+  return [(CAMLParser *)self parseBytes:uTF8String length:v5];
 }
 
-- (BOOL)parseBytes:(const char *)a3 length:(unint64_t)a4
+- (BOOL)parseBytes:(const char *)bytes length:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v7 = objc_autoreleasePoolPush();
   pthread_mutex_lock(&parser_mutex);
   while (parser_wip)
   {
     v8 = parser_wip;
-    while (*v8 != a3)
+    while (*v8 != bytes)
     {
       v8 = *(v8 + 8);
       if (!v8)
@@ -278,7 +278,7 @@
   }
 
 LABEL_8:
-  parser_wip = x_list_prepend(parser_wip, a3);
+  parser_wip = x_list_prepend(parser_wip, bytes);
   pthread_mutex_unlock(&parser_mutex);
   data = self->_data;
   v10 = *(data + 4);
@@ -309,12 +309,12 @@ LABEL_8:
     v11 = *(data + 1);
   }
 
-  xmlParseChunk(v11, a3, v4, 0);
+  xmlParseChunk(v11, bytes, lengthCopy, 0);
   v13 = *(data + 4) == 0;
 LABEL_16:
   pthread_mutex_lock(&parser_mutex);
   v14 = parser_wip;
-  x_list_remove(parser_wip, a3);
+  x_list_remove(parser_wip, bytes);
   parser_wip = v14;
   pthread_cond_broadcast(&parser_cond);
   pthread_mutex_unlock(&parser_mutex);
@@ -322,12 +322,12 @@ LABEL_16:
   return v13;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   data = self->_data;
-  if (*(data + 12) != a3)
+  if (*(data + 12) != delegate)
   {
-    *(data + 12) = a3;
+    *(data + 12) = delegate;
     *(data + 112) = *(data + 112) & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -409,15 +409,15 @@ LABEL_16:
   }
 }
 
-+ (id)parseContentsOfURL:(id)a3
++ (id)parseContentsOfURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = objc_alloc_init(a1);
-  [v4 parseContentsOfURL:a3];
-  v5 = [v4 error];
-  if (v5)
+  v4 = objc_alloc_init(self);
+  [v4 parseContentsOfURL:l];
+  error = [v4 error];
+  if (error)
   {
-    v6 = v5;
+    v6 = error;
     if (x_log_get_api::once[0] != -1)
     {
       dispatch_once(x_log_get_api::once, &__block_literal_global_2145);
@@ -427,21 +427,21 @@ LABEL_16:
     if (os_log_type_enabled(x_log_get_api::log, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412546;
-      v11 = a3;
+      lCopy = l;
       v12 = 2112;
       v13 = v6;
       _os_log_error_impl(&dword_183AA6000, v7, OS_LOG_TYPE_ERROR, "Error while parsing CoreAnimation XML document %@: %@", &v10, 0x16u);
     }
 
-    v8 = 0;
+    result = 0;
   }
 
   else
   {
-    v8 = [v4 result];
+    result = [v4 result];
   }
 
-  return v8;
+  return result;
 }
 
 @end

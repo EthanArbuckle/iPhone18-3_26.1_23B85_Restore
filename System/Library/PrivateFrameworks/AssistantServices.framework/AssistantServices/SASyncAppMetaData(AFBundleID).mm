@@ -6,16 +6,16 @@
 
 - (id)_af_preferredBundleID
 {
-  v2 = [a1 appIdentifyingInfo];
-  v3 = [v2 bundleId];
+  appIdentifyingInfo = [self appIdentifyingInfo];
+  bundleId = [appIdentifyingInfo bundleId];
 
-  if (!v3)
+  if (!bundleId)
   {
-    v4 = [a1 appIdentifyingInfo];
-    v3 = [v4 clientIdentifier];
+    appIdentifyingInfo2 = [self appIdentifyingInfo];
+    bundleId = [appIdentifyingInfo2 clientIdentifier];
   }
 
-  return v3;
+  return bundleId;
 }
 
 @end

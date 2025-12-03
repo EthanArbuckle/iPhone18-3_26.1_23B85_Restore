@@ -1,52 +1,52 @@
 @interface HMIVideoAnalyzerMutableReportComparison
-- (HMIVideoAnalyzerMutableReportComparison)initWithTruePositiveKeys:(id)a3 falseNegativeKeys:(id)a4 falsePositiveKeys:(id)a5 groupByKey:(BOOL)a6;
+- (HMIVideoAnalyzerMutableReportComparison)initWithTruePositiveKeys:(id)keys falseNegativeKeys:(id)negativeKeys falsePositiveKeys:(id)positiveKeys groupByKey:(BOOL)key;
 - (id)attributeDescriptions;
 @end
 
 @implementation HMIVideoAnalyzerMutableReportComparison
 
-- (HMIVideoAnalyzerMutableReportComparison)initWithTruePositiveKeys:(id)a3 falseNegativeKeys:(id)a4 falsePositiveKeys:(id)a5 groupByKey:(BOOL)a6
+- (HMIVideoAnalyzerMutableReportComparison)initWithTruePositiveKeys:(id)keys falseNegativeKeys:(id)negativeKeys falsePositiveKeys:(id)positiveKeys groupByKey:(BOOL)key
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  keyCopy = key;
+  keysCopy = keys;
+  negativeKeysCopy = negativeKeys;
+  positiveKeysCopy = positiveKeys;
   v34.receiver = self;
   v34.super_class = HMIVideoAnalyzerMutableReportComparison;
   v14 = [(HMIVideoAnalyzerMutableReportComparison *)&v34 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_truePositiveKeys, a3);
-    objc_storeStrong(&v15->_falseNegativeKeys, a4);
-    objc_storeStrong(&v15->_falsePositiveKeys, a5);
-    if (v6)
+    objc_storeStrong(&v14->_truePositiveKeys, keys);
+    objc_storeStrong(&v15->_falseNegativeKeys, negativeKeys);
+    objc_storeStrong(&v15->_falsePositiveKeys, positiveKeys);
+    if (keyCopy)
     {
       v16 = MEMORY[0x277CBEB98];
-      v17 = [v11 na_map:&__block_literal_global_14];
+      v17 = [keysCopy na_map:&__block_literal_global_14];
       v18 = [v16 setWithArray:v17];
       v15->_truePositive = [v18 count];
 
       v19 = MEMORY[0x277CBEB98];
-      v20 = [v12 na_map:&__block_literal_global_53];
+      v20 = [negativeKeysCopy na_map:&__block_literal_global_53];
       v21 = [v19 setWithArray:v20];
       v15->_falseNegative = [v21 count];
 
       v22 = MEMORY[0x277CBEB98];
-      v23 = [v13 na_map:&__block_literal_global_55];
+      v23 = [positiveKeysCopy na_map:&__block_literal_global_55];
       v24 = [v22 setWithArray:v23];
       v15->_falsePositive = [v24 count];
     }
 
     else
     {
-      v25 = [v11 valueForKeyPath:@"@sum.count"];
+      v25 = [keysCopy valueForKeyPath:@"@sum.count"];
       v15->_truePositive = [v25 intValue];
 
-      v26 = [v12 valueForKeyPath:@"@sum.count"];
+      v26 = [negativeKeysCopy valueForKeyPath:@"@sum.count"];
       v15->_falseNegative = [v26 intValue];
 
-      v23 = [v13 valueForKeyPath:@"@sum.count"];
+      v23 = [positiveKeysCopy valueForKeyPath:@"@sum.count"];
       v15->_falsePositive = [v23 intValue];
     }
 

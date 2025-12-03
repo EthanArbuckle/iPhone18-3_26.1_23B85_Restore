@@ -1,37 +1,37 @@
 @interface _SFPBExecuteToolCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBExecuteToolCommand)initWithDictionary:(id)a3;
-- (_SFPBExecuteToolCommand)initWithFacade:(id)a3;
-- (_SFPBExecuteToolCommand)initWithJSON:(id)a3;
+- (_SFPBExecuteToolCommand)initWithDictionary:(id)dictionary;
+- (_SFPBExecuteToolCommand)initWithFacade:(id)facade;
+- (_SFPBExecuteToolCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setToolIdentifier:(id)a3;
-- (void)setToolInvocationData:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setToolIdentifier:(id)identifier;
+- (void)setToolInvocationData:(id)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBExecuteToolCommand
 
-- (_SFPBExecuteToolCommand)initWithFacade:(id)a3
+- (_SFPBExecuteToolCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBExecuteToolCommand *)self init];
   if (v5)
   {
-    v6 = [v4 toolIdentifier];
+    toolIdentifier = [facadeCopy toolIdentifier];
 
-    if (v6)
+    if (toolIdentifier)
     {
-      v7 = [v4 toolIdentifier];
-      [(_SFPBExecuteToolCommand *)v5 setToolIdentifier:v7];
+      toolIdentifier2 = [facadeCopy toolIdentifier];
+      [(_SFPBExecuteToolCommand *)v5 setToolIdentifier:toolIdentifier2];
     }
 
-    v8 = [v4 toolInvocationData];
+    toolInvocationData = [facadeCopy toolInvocationData];
 
-    if (v8)
+    if (toolInvocationData)
     {
-      v9 = [v4 toolInvocationData];
-      [(_SFPBExecuteToolCommand *)v5 setToolInvocationData:v9];
+      toolInvocationData2 = [facadeCopy toolInvocationData];
+      [(_SFPBExecuteToolCommand *)v5 setToolInvocationData:toolInvocationData2];
     }
 
     v10 = v5;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (_SFPBExecuteToolCommand)initWithDictionary:(id)a3
+- (_SFPBExecuteToolCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBExecuteToolCommand;
   v5 = [(_SFPBExecuteToolCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"toolIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"toolIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(_SFPBExecuteToolCommand *)v5 setToolIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toolInvocationData"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toolInvocationData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (_SFPBExecuteToolCommand)initWithJSON:(id)a3
+- (_SFPBExecuteToolCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBExecuteToolCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBExecuteToolCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBExecuteToolCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,55 +106,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_toolIdentifier)
   {
-    v4 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"toolIdentifier"];
+    toolIdentifier = [(_SFPBExecuteToolCommand *)self toolIdentifier];
+    v5 = [toolIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"toolIdentifier"];
   }
 
   if (self->_toolInvocationData)
   {
-    v6 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    toolInvocationData = [(_SFPBExecuteToolCommand *)self toolInvocationData];
+    v7 = [toolInvocationData base64EncodedStringWithOptions:0];
     if (v7)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"toolInvocationData"];
+      [dictionary setObject:v7 forKeyedSubscript:@"toolInvocationData"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"toolInvocationData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"toolInvocationData"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
-  v6 = [v4 toolIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  toolIdentifier = [(_SFPBExecuteToolCommand *)self toolIdentifier];
+  toolIdentifier2 = [equalCopy toolIdentifier];
+  if ((toolIdentifier != 0) == (toolIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
-  if (v7)
+  toolIdentifier3 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
+  if (toolIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
-    v10 = [v4 toolIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = toolIdentifier3;
+    toolIdentifier4 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
+    toolIdentifier5 = [equalCopy toolIdentifier];
+    v11 = [toolIdentifier4 isEqual:toolIdentifier5];
 
     if (!v11)
     {
@@ -166,12 +166,12 @@
   {
   }
 
-  v5 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
-  v6 = [v4 toolInvocationData];
-  if ((v5 != 0) != (v6 == 0))
+  toolIdentifier = [(_SFPBExecuteToolCommand *)self toolInvocationData];
+  toolIdentifier2 = [equalCopy toolInvocationData];
+  if ((toolIdentifier != 0) != (toolIdentifier2 == 0))
   {
-    v12 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
-    if (!v12)
+    toolInvocationData = [(_SFPBExecuteToolCommand *)self toolInvocationData];
+    if (!toolInvocationData)
     {
 
 LABEL_15:
@@ -179,10 +179,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
-    v15 = [v4 toolInvocationData];
-    v16 = [v14 isEqual:v15];
+    v13 = toolInvocationData;
+    toolInvocationData2 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
+    toolInvocationData3 = [equalCopy toolInvocationData];
+    v16 = [toolInvocationData2 isEqual:toolInvocationData3];
 
     if (v16)
     {
@@ -202,34 +202,34 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBExecuteToolCommand *)self toolIdentifier];
-  if (v4)
+  toCopy = to;
+  toolIdentifier = [(_SFPBExecuteToolCommand *)self toolIdentifier];
+  if (toolIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBExecuteToolCommand *)self toolInvocationData];
-  if (v5)
+  toolInvocationData = [(_SFPBExecuteToolCommand *)self toolInvocationData];
+  if (toolInvocationData)
   {
     PBDataWriterWriteDataField();
   }
 }
 
-- (void)setToolInvocationData:(id)a3
+- (void)setToolInvocationData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   toolInvocationData = self->_toolInvocationData;
   self->_toolInvocationData = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setToolIdentifier:(id)a3
+- (void)setToolIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   toolIdentifier = self->_toolIdentifier;
   self->_toolIdentifier = v4;
 

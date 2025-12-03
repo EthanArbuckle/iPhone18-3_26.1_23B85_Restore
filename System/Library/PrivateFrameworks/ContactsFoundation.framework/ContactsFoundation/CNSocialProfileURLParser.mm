@@ -1,28 +1,28 @@
 @interface CNSocialProfileURLParser
-+ (id)parseSocialProfileURL:(id)a3;
-+ (id)parseURLStringByInference:(id)a3;
-+ (id)parseURLStringWithRegularExpressions:(id)a3;
++ (id)parseSocialProfileURL:(id)l;
++ (id)parseURLStringByInference:(id)inference;
++ (id)parseURLStringWithRegularExpressions:(id)expressions;
 + (id)servicesDictionary;
-+ (void)enumerateMatchesWithRegexPattern:(id)a3 inString:(id)a4 withBlock:(id)a5;
-+ (void)enumerateServiceMatchesForURLString:(id)a3 withBlock:(id)a4;
++ (void)enumerateMatchesWithRegexPattern:(id)pattern inString:(id)string withBlock:(id)block;
++ (void)enumerateServiceMatchesForURLString:(id)string withBlock:(id)block;
 @end
 
 @implementation CNSocialProfileURLParser
 
-+ (id)parseSocialProfileURL:(id)a3
++ (id)parseSocialProfileURL:(id)l
 {
-  v4 = a3;
-  if (off_1EF440708(&__block_literal_global_120, v4))
+  lCopy = l;
+  if (off_1EF440708(&__block_literal_global_120, lCopy))
   {
     v5 = +[CNFoundationSocialProfile emptySocialProfile];
   }
 
   else
   {
-    v5 = [a1 parseURLStringWithRegularExpressions:v4];
+    v5 = [self parseURLStringWithRegularExpressions:lCopy];
     if ([v5 isEmpty])
     {
-      v6 = [a1 parseURLStringByInference:v4];
+      v6 = [self parseURLStringByInference:lCopy];
 
       v5 = v6;
     }
@@ -31,9 +31,9 @@
   return v5;
 }
 
-+ (id)parseURLStringWithRegularExpressions:(id)a3
++ (id)parseURLStringWithRegularExpressions:(id)expressions
 {
-  v4 = a3;
+  expressionsCopy = expressions;
   v5 = MEMORY[0x1E695DF70];
   v6 = +[CNFoundationSocialProfile emptySocialProfile];
   v7 = [v5 arrayWithObject:v6];
@@ -42,11 +42,11 @@
   v13 = 3221225472;
   v14 = __65__CNSocialProfileURLParser_parseURLStringWithRegularExpressions___block_invoke;
   v15 = &unk_1E6ED5D88;
-  v16 = v4;
+  v16 = expressionsCopy;
   v17 = v7;
   v8 = v7;
-  v9 = v4;
-  [a1 enumerateServiceMatchesForURLString:v9 withBlock:&v12];
+  v9 = expressionsCopy;
+  [self enumerateServiceMatchesForURLString:v9 withBlock:&v12];
   v10 = [v8 objectAtIndexedSubscript:{0, v12, v13, v14, v15}];
 
   return v10;
@@ -74,21 +74,21 @@ void __65__CNSocialProfileURLParser_parseURLStringWithRegularExpressions___block
   [*(a1 + 40) setObject:v11 atIndexedSubscript:0];
 }
 
-+ (void)enumerateServiceMatchesForURLString:(id)a3 withBlock:(id)a4
++ (void)enumerateServiceMatchesForURLString:(id)string withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 servicesDictionary];
+  stringCopy = string;
+  blockCopy = block;
+  servicesDictionary = [self servicesDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__CNSocialProfileURLParser_enumerateServiceMatchesForURLString_withBlock___block_invoke;
   v11[3] = &unk_1E6ED5DD8;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = stringCopy;
+  v9 = blockCopy;
+  v10 = stringCopy;
+  [servicesDictionary enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __74__CNSocialProfileURLParser_enumerateServiceMatchesForURLString_withBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -107,38 +107,38 @@ void __74__CNSocialProfileURLParser_enumerateServiceMatchesForURLString_withBloc
   [v7 enumerateMatchesWithRegexPattern:a2 inString:v6 withBlock:v10];
 }
 
-+ (void)enumerateMatchesWithRegexPattern:(id)a3 inString:(id)a4 withBlock:(id)a5
++ (void)enumerateMatchesWithRegexPattern:(id)pattern inString:(id)string withBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 length];
+  blockCopy = block;
+  stringCopy = string;
+  patternCopy = pattern;
+  v10 = [stringCopy length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__CNSocialProfileURLParser_enumerateMatchesWithRegexPattern_inString_withBlock___block_invoke;
   v12[3] = &unk_1E6ED5E00;
-  v13 = v7;
-  v11 = v7;
-  [v9 enumerateMatchesInString:v8 options:0 range:0 usingBlock:{v10, v12}];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [patternCopy enumerateMatchesInString:stringCopy options:0 range:0 usingBlock:{v10, v12}];
 }
 
-+ (id)parseURLStringByInference:(id)a3
++ (id)parseURLStringByInference:(id)inference
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
-  v5 = [v4 scheme];
-  v6 = v3;
-  if ([v5 isEqualToString:@"x-apple"])
+  inferenceCopy = inference;
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:inferenceCopy];
+  scheme = [v4 scheme];
+  v6 = inferenceCopy;
+  if ([scheme isEqualToString:@"x-apple"])
   {
-    v7 = [v4 resourceSpecifier];
-    v8 = [v7 stringByRemovingPercentEncoding];
+    resourceSpecifier = [v4 resourceSpecifier];
+    stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
     v9 = 0;
   }
 
   else
   {
-    v10 = [v5 length];
+    v10 = [scheme length];
     if (v10)
     {
       v9 = v6;
@@ -151,18 +151,18 @@ void __74__CNSocialProfileURLParser_enumerateServiceMatchesForURLString_withBloc
 
     if (v10)
     {
-      v8 = 0;
+      stringByRemovingPercentEncoding = 0;
     }
 
     else
     {
-      v8 = v6;
+      stringByRemovingPercentEncoding = v6;
     }
   }
 
-  v11 = [v4 host];
-  v12 = v11;
-  if (v11 && ![v11 rangeOfString:@"www."])
+  host = [v4 host];
+  v12 = host;
+  if (host && ![host rangeOfString:@"www."])
   {
     v13 = [v12 substringFromIndex:4];
 
@@ -181,7 +181,7 @@ void __74__CNSocialProfileURLParser_enumerateServiceMatchesForURLString_withBloc
 
   v15 = v14;
 
-  v16 = [[CNFoundationSocialProfile alloc] initWithUrlString:v9 username:v8 userIdentifier:0 service:v15 displayName:0];
+  v16 = [[CNFoundationSocialProfile alloc] initWithUrlString:v9 username:stringByRemovingPercentEncoding userIdentifier:0 service:v15 displayName:0];
 
   return v16;
 }

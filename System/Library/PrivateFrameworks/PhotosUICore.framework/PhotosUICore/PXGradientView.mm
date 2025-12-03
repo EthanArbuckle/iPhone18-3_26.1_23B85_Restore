@@ -3,43 +3,43 @@
 - (CGPoint)startPoint;
 - (NSArray)locations;
 - (void)_updateGradientLayerColors;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXGradientView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXGradientView;
-  v4 = a3;
-  [(PXGradientView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXGradientView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PXGradientView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXGradientView *)self _updateGradientLayerColors];
   }
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXGradientView *)self gradientLayer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer setEndPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(PXGradientView *)self gradientLayer];
-  [v2 endPoint];
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -50,18 +50,18 @@
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXGradientView *)self gradientLayer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer setStartPoint:{x, y}];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(PXGradientView *)self gradientLayer];
-  [v2 startPoint];
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -72,34 +72,34 @@
   return result;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(PXGradientView *)self gradientLayer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer setLocations:locationsCopy];
 }
 
 - (NSArray)locations
 {
-  v2 = [(PXGradientView *)self gradientLayer];
-  v3 = [v2 locations];
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  locations = [gradientLayer locations];
 
-  return v3;
+  return locations;
 }
 
 - (void)_updateGradientLayerColors
 {
-  v3 = [(PXGradientView *)self colors];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  colors = [(PXGradientView *)self colors];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(colors, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PXGradientView__updateGradientLayerColors__block_invoke;
   v7[3] = &unk_1E7745708;
   v8 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:v7];
-  v6 = [(PXGradientView *)self gradientLayer];
-  [v6 setColors:v5];
+  [colors enumerateObjectsUsingBlock:v7];
+  gradientLayer = [(PXGradientView *)self gradientLayer];
+  [gradientLayer setColors:v5];
 }
 
 uint64_t __44__PXGradientView__updateGradientLayerColors__block_invoke(uint64_t a1, id a2)
@@ -111,9 +111,9 @@ uint64_t __44__PXGradientView__updateGradientLayerColors__block_invoke(uint64_t 
   return [v6 addObject:v5];
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = [a3 copy];
+  v4 = [colors copy];
   colors = self->_colors;
   self->_colors = v4;
 

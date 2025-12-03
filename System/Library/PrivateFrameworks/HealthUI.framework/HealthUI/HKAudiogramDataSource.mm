@@ -1,15 +1,15 @@
 @interface HKAudiogramDataSource
-- (HKAudiogramDataSource)initWithSensitivityData:(id)a3 forLeftEar:(BOOL)a4;
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
+- (HKAudiogramDataSource)initWithSensitivityData:(id)data forLeftEar:(BOOL)ear;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
 @end
 
 @implementation HKAudiogramDataSource
 
-- (HKAudiogramDataSource)initWithSensitivityData:(id)a3 forLeftEar:(BOOL)a4
+- (HKAudiogramDataSource)initWithSensitivityData:(id)data forLeftEar:(BOOL)ear
 {
-  v4 = a4;
-  v6 = a3;
+  earCopy = ear;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = HKAudiogramDataSource;
   v7 = [(HKGraphSeriesDataSource *)&v12 init];
@@ -19,23 +19,23 @@
     dataBlock = v7->_dataBlock;
     v7->_dataBlock = v8;
 
-    v10 = [HKAudiogramChartPoint chartPointsFromSensitivityPoints:v6 isLeftEar:v4];
+    v10 = [HKAudiogramChartPoint chartPointsFromSensitivityPoints:dataCopy isLeftEar:earCopy];
     [(HKGraphSeriesDataBlock *)v7->_dataBlock setChartPoints:v10];
   }
 
   return v7;
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
   *&retstr->index = xmmword_1C3D5D360;
   retstr->resolution = 0;
   return self;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  if (a3->index)
+  if (path->index)
   {
     v4 = +[HKGraphSeriesDataBlock emptyDataBlock];
   }

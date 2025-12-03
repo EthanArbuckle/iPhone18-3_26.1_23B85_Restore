@@ -1,16 +1,16 @@
 @interface ASVBadgeDescription
-+ (id)descriptionForSize:(CGSize)a3;
-- (ASVBadgeDescription)initWithSizeClass:(unint64_t)a3;
++ (id)descriptionForSize:(CGSize)size;
+- (ASVBadgeDescription)initWithSizeClass:(unint64_t)class;
 - (CGPoint)badgeOffset;
 - (CGSize)badgeSize;
 @end
 
 @implementation ASVBadgeDescription
 
-+ (id)descriptionForSize:(CGSize)a3
++ (id)descriptionForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [ASVBadgeDescription alloc];
   if (width >= height)
   {
@@ -27,7 +27,7 @@
   return v7;
 }
 
-- (ASVBadgeDescription)initWithSizeClass:(unint64_t)a3
+- (ASVBadgeDescription)initWithSizeClass:(unint64_t)class
 {
   v16.receiver = self;
   v16.super_class = ASVBadgeDescription;
@@ -35,10 +35,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_badgeSizeClass = a3;
-    if (a3)
+    v4->_badgeSizeClass = class;
+    if (class)
     {
-      if (a3 != 1)
+      if (class != 1)
       {
 LABEL_7:
         v14 = v5;

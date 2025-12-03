@@ -1,27 +1,27 @@
 @interface PKPaymentTapToProvisionConfigurationResponse
-- (PKPaymentTapToProvisionConfigurationResponse)initWithData:(id)a3;
+- (PKPaymentTapToProvisionConfigurationResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentTapToProvisionConfigurationResponse
 
-- (PKPaymentTapToProvisionConfigurationResponse)initWithData:(id)a3
+- (PKPaymentTapToProvisionConfigurationResponse)initWithData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PKPaymentTapToProvisionConfigurationResponse;
-  v3 = [(PKWebServiceResponse *)&v21 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v21 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [(PKPaymentTapToProvisionConfigurationResponse *)v6 PKStringForKey:@"nonce"];
-      v8 = [v7 pk_decodeHexadecimal];
+      pk_decodeHexadecimal = [v7 pk_decodeHexadecimal];
       nonce = v4->_nonce;
-      v4->_nonce = v8;
+      v4->_nonce = pk_decodeHexadecimal;
 
       v10 = [(PKPaymentTapToProvisionConfigurationResponse *)v6 PKNumberForKey:@"countryCode"];
       v4->_countryCode = [v10 integerValue];

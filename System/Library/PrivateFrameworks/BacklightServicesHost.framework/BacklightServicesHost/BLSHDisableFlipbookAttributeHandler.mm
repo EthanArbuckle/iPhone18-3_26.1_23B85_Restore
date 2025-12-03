@@ -1,16 +1,16 @@
 @interface BLSHDisableFlipbookAttributeHandler
 + (id)attributeClasses;
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4;
-- (id)initForService:(void *)a3 provider:;
++ (id)registerHandlerForService:(id)service provider:(id)provider;
+- (id)initForService:(void *)service provider:;
 @end
 
 @implementation BLSHDisableFlipbookAttributeHandler
 
-+ (id)registerHandlerForService:(id)a3 provider:(id)a4
++ (id)registerHandlerForService:(id)service provider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BLSHDisableFlipbookAttributeHandler alloc] initForService:v6 provider:v5];
+  providerCopy = provider;
+  serviceCopy = service;
+  v7 = [[BLSHDisableFlipbookAttributeHandler alloc] initForService:serviceCopy provider:providerCopy];
 
   [v7 setupService];
 
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (id)initForService:(void *)a3 provider:
+- (id)initForService:(void *)service provider:
 {
-  v6 = a3;
-  if (a1)
+  serviceCopy = service;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = BLSHDisableFlipbookAttributeHandler;
     v7 = objc_msgSendSuper2(&v10, sel_initForService_, a2);
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(v7 + 6, a3);
+      objc_storeStrong(v7 + 6, service);
     }
   }
 

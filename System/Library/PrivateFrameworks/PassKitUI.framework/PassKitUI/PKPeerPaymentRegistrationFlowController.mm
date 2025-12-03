@@ -1,39 +1,39 @@
 @interface PKPeerPaymentRegistrationFlowController
 - (PKPaymentSetupDelegate)setupDelegate;
-- (PKPeerPaymentRegistrationFlowController)initWithAccount:(id)a3 currencyAmount:(id)a4 state:(unint64_t)a5 senderAddress:(id)a6 setupDelegate:(id)a7;
-- (PKPeerPaymentRegistrationFlowController)initWithUserInfo:(id)a3 setupDelegate:(id)a4;
-- (void)preflightWithCompletion:(id)a3;
+- (PKPeerPaymentRegistrationFlowController)initWithAccount:(id)account currencyAmount:(id)amount state:(unint64_t)state senderAddress:(id)address setupDelegate:(id)delegate;
+- (PKPeerPaymentRegistrationFlowController)initWithUserInfo:(id)info setupDelegate:(id)delegate;
+- (void)preflightWithCompletion:(id)completion;
 @end
 
 @implementation PKPeerPaymentRegistrationFlowController
 
-- (PKPeerPaymentRegistrationFlowController)initWithAccount:(id)a3 currencyAmount:(id)a4 state:(unint64_t)a5 senderAddress:(id)a6 setupDelegate:(id)a7
+- (PKPeerPaymentRegistrationFlowController)initWithAccount:(id)account currencyAmount:(id)amount state:(unint64_t)state senderAddress:(id)address setupDelegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  amountCopy = amount;
+  addressCopy = address;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentRegistrationFlowController;
   v17 = [(PKPeerPaymentRegistrationFlowController *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_account, a3);
-    objc_storeStrong(&v18->_currencyAmount, a4);
-    v18->_state = a5;
-    objc_storeStrong(&v18->_senderAddress, a6);
-    objc_storeWeak(&v18->_setupDelegate, v16);
+    objc_storeStrong(&v17->_account, account);
+    objc_storeStrong(&v18->_currencyAmount, amount);
+    v18->_state = state;
+    objc_storeStrong(&v18->_senderAddress, address);
+    objc_storeWeak(&v18->_setupDelegate, delegateCopy);
   }
 
   return v18;
 }
 
-- (PKPeerPaymentRegistrationFlowController)initWithUserInfo:(id)a3 setupDelegate:(id)a4
+- (PKPeerPaymentRegistrationFlowController)initWithUserInfo:(id)info setupDelegate:(id)delegate
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = PKPeerPaymentRegistrationFlowController;
   v8 = [(PKPeerPaymentRegistrationFlowController *)&v26 init];
@@ -42,7 +42,7 @@
     goto LABEL_14;
   }
 
-  v9 = [v6 objectForKey:@"account"];
+  v9 = [infoCopy objectForKey:@"account"];
   v10 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v9 error:0];
   if (v10)
   {
@@ -83,8 +83,8 @@ LABEL_10:
   account = v8->_account;
   v8->_account = v13;
 
-  v18 = [v6 PKDecimalNumberForKey:@"amount"];
-  v19 = [v6 PKStringForKey:@"currency"];
+  v18 = [infoCopy PKDecimalNumberForKey:@"amount"];
+  v19 = [infoCopy PKStringForKey:@"currency"];
   if ([(NSString *)v19 length]&& v18)
   {
     v20 = PKCurrencyAmountCreate(v18, v19);
@@ -92,30 +92,30 @@ LABEL_10:
     v8->_currencyAmount = v20;
   }
 
-  v22 = [v6 objectForKey:@"senderAddress"];
+  v22 = [infoCopy objectForKey:@"senderAddress"];
   senderAddress = v8->_senderAddress;
   v8->_senderAddress = v22;
 
-  v24 = [v6 objectForKey:@"state"];
+  v24 = [infoCopy objectForKey:@"state"];
   v8->_state = [v24 unsignedIntegerValue];
 
-  objc_storeWeak(&v8->_setupDelegate, v7);
+  objc_storeWeak(&v8->_setupDelegate, delegateCopy);
 LABEL_14:
 
   return v8;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (self->_account)
     {
       v5 = objc_alloc(MEMORY[0x1E69B8D48]);
-      v6 = [MEMORY[0x1E69B8EF8] sharedService];
-      v7 = [v5 initWithWebService:v6];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v7 = [v5 initWithWebService:mEMORY[0x1E69B8EF8]];
 
       v8 = [objc_alloc(MEMORY[0x1E69B8F38]) initWithPeerPaymentAccount:self->_account];
       [v8 setAmount:self->_currencyAmount];
@@ -130,8 +130,8 @@ LABEL_14:
         v12[2] = __67__PKPeerPaymentRegistrationFlowController_preflightWithCompletion___block_invoke;
         v12[3] = &unk_1E8017470;
         v13 = v7;
-        v14 = self;
-        v15 = v4;
+        selfCopy = self;
+        v15 = completionCopy;
         [v13 associateCredentials:v9 withCompletionHandler:v12];
 
         v10 = v13;
@@ -148,7 +148,7 @@ LABEL_14:
 
         v10 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:0];
         [v10 setModalInPresentation:1];
-        (*(v4 + 2))(v4, v10);
+        (*(completionCopy + 2))(completionCopy, v10);
       }
     }
 
@@ -156,7 +156,7 @@ LABEL_14:
     {
       v7 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:0];
       [v7 setModalInPresentation:1];
-      (*(v4 + 2))(v4, v7);
+      (*(completionCopy + 2))(completionCopy, v7);
     }
   }
 }

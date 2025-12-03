@@ -1,10 +1,10 @@
 @interface UniGaussianBlur
 - (UniGaussianBlur)init;
-- (UniGaussianBlur)initWithDevice:(id)a3;
+- (UniGaussianBlur)initWithDevice:(id)device;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputNameArray;
-- (id)run:(id)a3;
+- (id)run:(id)run;
 @end
 
 @implementation UniGaussianBlur
@@ -16,24 +16,24 @@
   return [(UniKernel *)&v3 init];
 }
 
-- (UniGaussianBlur)initWithDevice:(id)a3
+- (UniGaussianBlur)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = UniGaussianBlur;
   v5 = [(UniKernel *)&v9 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
   }
 
   return v7;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v73[0] = @"name";
   v73[1] = @"inputRadius";
   v74[0] = @"MPSImageGaussianBlur";
@@ -43,7 +43,7 @@
   v74[1] = v10;
   v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v11, v74, v73, 2);
 
-  v15 = objc_msgSend_device(v4, v13, v14);
+  v15 = objc_msgSend_device(runCopy, v13, v14);
   v17 = objc_msgSend_findKernel_device_(UniDeviceCache, v16, v12, v15);
 
   v18 = MEMORY[0x29EDBA0F8];
@@ -57,9 +57,9 @@
     sub_2956CD89C();
   }
 
-  if (v4)
+  if (runCopy)
   {
-    v31 = v4;
+    v31 = runCopy;
   }
 
   else
@@ -121,9 +121,9 @@
   return v69;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_inputs(v7, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, *MEMORY[0x29EDB9238]);

@@ -1,12 +1,12 @@
 @interface LAACMBiometricAttemptNotifier
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4;
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification;
 @end
 
 @implementation LAACMBiometricAttemptNotifier
 
-- (void)notificationCenter:(id)a3 didReceiveNotification:(__CFString *)a4
+- (void)notificationCenter:(id)center didReceiveNotification:(__CFString *)notification
 {
-  if ([(__CFString *)a4 isEqualToString:@"com.apple.BiometricKit.matchOperationStartAttempted"])
+  if ([(__CFString *)notification isEqualToString:@"com.apple.BiometricKit.matchOperationStartAttempted"])
   {
     v4 = MEMORY[0x1E69AD208];
 

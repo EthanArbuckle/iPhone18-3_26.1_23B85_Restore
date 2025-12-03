@@ -1,26 +1,26 @@
 @interface UIPDFViewTouchHandler
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)delegateGesture:(id)a3 kind:(int)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)delegateGesture:(id)gesture kind:(int)kind;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)resignFirstResponder;
-- (UIPDFViewTouchHandler)initWithView:(id)a3;
-- (void)briefPressRecognized:(id)a3;
-- (void)copy:(id)a3;
+- (UIPDFViewTouchHandler)initWithView:(id)view;
+- (void)briefPressRecognized:(id)recognized;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)disableRecognizers;
-- (void)doubleTapRecognized:(id)a3;
+- (void)doubleTapRecognized:(id)recognized;
 - (void)enableRecognizers;
-- (void)longPressRecognized:(id)a3;
-- (void)selectAll:(id)a3;
+- (void)longPressRecognized:(id)recognized;
+- (void)selectAll:(id)all;
 - (void)showMenu;
-- (void)singleTapRecognized:(id)a3;
-- (void)twoFingerTapRecognized:(id)a3;
+- (void)singleTapRecognized:(id)recognized;
+- (void)twoFingerTapRecognized:(id)recognized;
 @end
 
 @implementation UIPDFViewTouchHandler
 
-- (UIPDFViewTouchHandler)initWithView:(id)a3
+- (UIPDFViewTouchHandler)initWithView:(id)view
 {
   v14.receiver = self;
   v14.super_class = UIPDFViewTouchHandler;
@@ -28,10 +28,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pdfPageView = a3;
+    v4->_pdfPageView = view;
     v6 = objc_alloc_init(UIPDFSelectionController);
     v5->_selectionController = v6;
-    [(UIPDFSelectionController *)v6 setPageView:a3];
+    [(UIPDFSelectionController *)v6 setPageView:view];
     [(UIPDFPageView *)v5->_pdfPageView setSelectionController:v5->_selectionController];
     v7 = [[UITapGestureRecognizer alloc] initWithTarget:v5 action:sel_doubleTapRecognized_];
     v5->_doubleTapRecognizer = v7;
@@ -59,7 +59,7 @@
     v5->_menuController = +[UIMenuController sharedMenuController];
     v12 = objc_alloc_init(UIPDFMagnifierController);
     v5->_magnifyController = v12;
-    [(UIPDFMagnifierController *)v12 setPageView:a3];
+    [(UIPDFMagnifierController *)v12 setPageView:view];
     v5->_showMagnifier = 0;
     v5->_showLoupe = 1;
     [(UIPDFViewTouchHandler *)v5 setFirstTouch];
@@ -120,50 +120,50 @@
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(UIResponder *)self canResignFirstResponder];
-  if (v3)
+  canResignFirstResponder = [(UIResponder *)self canResignFirstResponder];
+  if (canResignFirstResponder)
   {
     [(UIPDFSelectionController *)self->_selectionController clearSelection];
     v5.receiver = self;
     v5.super_class = UIPDFViewTouchHandler;
-    LOBYTE(v3) = [(UIResponder *)&v5 resignFirstResponder];
+    LOBYTE(canResignFirstResponder) = [(UIResponder *)&v5 resignFirstResponder];
   }
 
-  return v3;
+  return canResignFirstResponder;
 }
 
-- (BOOL)delegateGesture:(id)a3 kind:(int)a4
+- (BOOL)delegateGesture:(id)gesture kind:(int)kind
 {
   if (self->_useDelegateForLinks)
   {
-    v7 = [(UIPDFPageView *)self->_pdfPageView annotationController];
-    [a3 locationInView:self->_pdfPageView];
-    v8 = [(UIPDFAnnotationController *)v7 isLinkAnnotationAt:?];
+    annotationController = [(UIPDFPageView *)self->_pdfPageView annotationController];
+    [gesture locationInView:self->_pdfPageView];
+    v8 = [(UIPDFAnnotationController *)annotationController isLinkAnnotationAt:?];
     if (v8)
     {
-      if (a4)
+      if (kind)
       {
-        if (a4 == 2)
+        if (kind == 2)
         {
-          v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationLongPressRecognized:a3];
+          v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationLongPressRecognized:gesture];
         }
 
         else
         {
-          if (a4 != 1)
+          if (kind != 1)
           {
 LABEL_11:
             LOBYTE(v8) = 1;
             return v8;
           }
 
-          v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationBriefPressRecognized:a3];
+          v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationBriefPressRecognized:gesture];
         }
       }
 
       else
       {
-        v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationSingleTapRecognized:a3];
+        v9 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController] annotationSingleTapRecognized:gesture];
       }
 
       self->_useDelegateForLinks = v9;
@@ -179,23 +179,23 @@ LABEL_11:
   return v8;
 }
 
-- (void)briefPressRecognized:(id)a3
+- (void)briefPressRecognized:(id)recognized
 {
-  if ([(UIPDFViewTouchHandler *)self delegateGesture:a3 kind:1])
+  if ([(UIPDFViewTouchHandler *)self delegateGesture:recognized kind:1])
   {
     return;
   }
 
   [+[UIPDFViewManager sharedViewManager](UIPDFViewManager "sharedViewManager")];
-  [a3 locationInView:self->_pdfPageView];
+  [recognized locationInView:self->_pdfPageView];
   v6 = v5;
   v8 = v7;
-  v9 = [a3 state];
-  if (v9 > 2)
+  state = [recognized state];
+  if (state > 2)
   {
-    if (v9 != 3)
+    if (state != 3)
     {
-      if (v9 != 4 || !self->_showMagnifier)
+      if (state != 4 || !self->_showMagnifier)
       {
         return;
       }
@@ -219,9 +219,9 @@ LABEL_14:
 
   else
   {
-    if (v9 != 1)
+    if (state != 1)
     {
-      if (v9 != 2)
+      if (state != 2)
       {
         return;
       }
@@ -258,22 +258,22 @@ LABEL_14:
   }
 }
 
-- (void)longPressRecognized:(id)a3
+- (void)longPressRecognized:(id)recognized
 {
-  if ([(UIPDFMagnifierController *)self->_magnifyController visible]|| ![(UIPDFViewTouchHandler *)self delegateGesture:a3 kind:2])
+  if ([(UIPDFMagnifierController *)self->_magnifyController visible]|| ![(UIPDFViewTouchHandler *)self delegateGesture:recognized kind:2])
   {
     [+[UIPDFViewManager sharedViewManager](UIPDFViewManager "sharedViewManager")];
-    [a3 locationInView:self->_pdfPageView];
+    [recognized locationInView:self->_pdfPageView];
     v6 = v5;
     v8 = v7;
     v11 = 0;
     [(UIPDFMagnifierController *)self->_magnifyController setPosition:v5 viewPoint:v7, v5, v7];
-    v9 = [a3 state];
-    if (v9 > 2)
+    state = [recognized state];
+    if (state > 2)
     {
-      if (v9 != 3)
+      if (state != 3)
       {
-        if (v9 != 4)
+        if (state != 4)
         {
           return;
         }
@@ -289,9 +289,9 @@ LABEL_14:
 
     else
     {
-      if (v9 != 1)
+      if (state != 1)
       {
-        if (v9 != 2)
+        if (state != 2)
         {
           return;
         }
@@ -320,41 +320,41 @@ LABEL_11:
   }
 }
 
-- (void)doubleTapRecognized:(id)a3
+- (void)doubleTapRecognized:(id)recognized
 {
-  if ([a3 state] == 3)
+  if ([recognized state] == 3)
   {
     [+[UIPDFViewManager sharedViewManager](UIPDFViewManager "sharedViewManager")];
-    [a3 locationInView:self->_pdfPageView];
+    [recognized locationInView:self->_pdfPageView];
     pdfPageView = self->_pdfPageView;
 
     [(UIPDFPageView *)pdfPageView doubleTapAt:?];
   }
 }
 
-- (void)singleTapRecognized:(id)a3
+- (void)singleTapRecognized:(id)recognized
 {
-  if (!-[UIPDFViewTouchHandler delegateGesture:kind:](self, "delegateGesture:kind:", a3, 0) && [a3 state] == 3)
+  if (!-[UIPDFViewTouchHandler delegateGesture:kind:](self, "delegateGesture:kind:", recognized, 0) && [recognized state] == 3)
   {
     [+[UIPDFViewManager sharedViewManager](UIPDFViewManager "sharedViewManager")];
-    [a3 locationInView:self->_pdfPageView];
+    [recognized locationInView:self->_pdfPageView];
     pdfPageView = self->_pdfPageView;
 
     [(UIPDFPageView *)pdfPageView singleTapAt:?];
   }
 }
 
-- (void)twoFingerTapRecognized:(id)a3
+- (void)twoFingerTapRecognized:(id)recognized
 {
-  if ([a3 state] == 3)
+  if ([recognized state] == 3)
   {
     [+[UIPDFViewManager sharedViewManager](UIPDFViewManager "sharedViewManager")];
     [(UIPDFPageView *)self->_pdfPageView clearSearchHighlights];
     [(UIPDFSelectionController *)self->_selectionController clearSelection];
-    [a3 locationOfTouch:0 inView:self->_pdfPageView];
+    [recognized locationOfTouch:0 inView:self->_pdfPageView];
     v6 = v5;
     v8 = v7;
-    [a3 locationOfTouch:1 inView:self->_pdfPageView];
+    [recognized locationOfTouch:1 inView:self->_pdfPageView];
     [(UIPDFSelectionController *)self->_selectionController startTracking:v6 andPoint:v8, v9, v10];
     selectionController = self->_selectionController;
 
@@ -362,11 +362,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (self->_firstTouch)
   {
-    [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController:a3] addLinkAnnotationViews];
+    [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pdfPageView annotationController:recognizer] addLinkAnnotationViews];
     self->_firstTouch = 0;
     self->_useDelegateForLinks = 1;
   }
@@ -374,21 +374,21 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  [a3 locationInView:self->_pdfPageView];
+  [begin locationInView:self->_pdfPageView];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIPDFPageView *)self->_pdfPageView annotationController];
-  if ([(UIPDFAnnotationController *)v9 willHandleTouchGestureAtPoint:v6, v8])
+  annotationController = [(UIPDFPageView *)self->_pdfPageView annotationController];
+  if ([(UIPDFAnnotationController *)annotationController willHandleTouchGestureAtPoint:v6, v8])
   {
     if (self->_useDelegateForLinks)
     {
-      v10 = [(UIPDFAnnotationController *)v9 isLinkAnnotationAt:v6, v8];
+      v10 = [(UIPDFAnnotationController *)annotationController isLinkAnnotationAt:v6, v8];
       if (v10)
       {
 
-        LOBYTE(v10) = [(UIPDFAnnotationController *)v9 linkAnnotationShouldBegin:a3];
+        LOBYTE(v10) = [(UIPDFAnnotationController *)annotationController linkAnnotationShouldBegin:begin];
       }
 
       return v10;
@@ -399,29 +399,29 @@ LABEL_14:
     return v10;
   }
 
-  if (![(UIPDFPageView *)self->_pdfPageView allowSelection]&& (self->_briefPressRecognizer == a3 || self->_longPressRecognizer == a3))
+  if (![(UIPDFPageView *)self->_pdfPageView allowSelection]&& (self->_briefPressRecognizer == begin || self->_longPressRecognizer == begin))
   {
     goto LABEL_14;
   }
 
-  if (self->_twoFingerTapRecognizer == a3)
+  if (self->_twoFingerTapRecognizer == begin)
   {
     pdfPageView = self->_pdfPageView;
 
     LOBYTE(v10) = [(UIPDFPageView *)pdfPageView allowTwoFingerSelection];
   }
 
-  else if (self->_briefPressRecognizer == a3)
+  else if (self->_briefPressRecognizer == begin)
   {
-    [a3 locationInView:self->_pdfPageView];
+    [begin locationInView:self->_pdfPageView];
     selectionController = self->_selectionController;
 
     LOBYTE(v10) = [(UIPDFSelectionController *)selectionController shouldTrackAt:?];
   }
 
-  else if (self->_singleTapRecognizer == a3)
+  else if (self->_singleTapRecognizer == begin)
   {
-    [a3 locationInView:self->_pdfPageView];
+    [begin locationInView:self->_pdfPageView];
     v13 = self->_pdfPageView;
 
     LOBYTE(v10) = [(UIPDFPageView *)v13 willDoSomethingWithTap:?];
@@ -435,14 +435,14 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   if (!self->_allowMenu)
   {
     return 0;
   }
 
-  if (sel_copy_ == a3 && (v8 = [(UIPDFPageView *)self->_pdfPageView page], [(UIPDFPage *)v8 selection]))
+  if (sel_copy_ == action && (v8 = [(UIPDFPageView *)self->_pdfPageView page], [(UIPDFPage *)v8 selection]))
   {
     Document = CGPDFPageGetDocument([(UIPDFPage *)v8 CGPage]);
 
@@ -453,18 +453,18 @@ LABEL_14:
   {
     v10.receiver = self;
     v10.super_class = UIPDFViewTouchHandler;
-    return [(UIResponder *)&v10 canPerformAction:a3 withSender:a4];
+    return [(UIResponder *)&v10 canPerformAction:action withSender:sender];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [[(UIPDFPageView *)self->_pdfPageView page] selection];
+  selection = [[(UIPDFPageView *)self->_pdfPageView page] selection];
 
-  [(UIPDFSelection *)v3 copyToPasteboard];
+  [(UIPDFSelection *)selection copyToPasteboard];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   [(UIPDFSelectionController *)self->_selectionController extendSelectionToParagraph];
   [(UIPDFPageView *)self->_pdfPageView setNeedsDisplay];
@@ -477,10 +477,10 @@ LABEL_14:
 - (void)showMenu
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [[(UIPDFPageView *)self->_pdfPageView page] selection];
-  if (v3)
+  selection = [[(UIPDFPageView *)self->_pdfPageView page] selection];
+  if (selection)
   {
-    v4 = v3;
+    v4 = selection;
     [(UIResponder *)self becomeFirstResponder];
     [(UIPDFSelection *)v4 bounds];
     v6 = v5;
@@ -504,19 +504,19 @@ LABEL_14:
     [(UIPDFPageView *)self->_pdfPageView delegate];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(UIPDFPageView *)self->_pdfPageView delegate];
-      [(UIMenuController *)self->_menuController setMenuItems:[v17 menuItems:MEMORY[0x1E695E0F0] forPage:self->_pdfPageView]];
+      delegate = [(UIPDFPageView *)self->_pdfPageView delegate];
+      [(UIMenuController *)self->_menuController setMenuItems:[delegate menuItems:MEMORY[0x1E695E0F0] forPage:self->_pdfPageView]];
     }
 
     if (![-[UIPDFSelection string](v4 "string")] || (v18 = -[UIPDFSelection string](v4, "string"), !objc_msgSend(objc_msgSend(v18, "stringByTrimmingCharactersInSet:", objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")), "length")))
     {
-      v19 = [(UIMenuController *)self->_menuController menuItems];
+      menuItems = [(UIMenuController *)self->_menuController menuItems];
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v21 = [(NSArray *)v19 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v21 = [(NSArray *)menuItems countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v21)
       {
         v22 = v21;
@@ -527,7 +527,7 @@ LABEL_14:
           {
             if (*v27 != v23)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(menuItems);
             }
 
             v25 = *(*(&v26 + 1) + 8 * i);
@@ -537,7 +537,7 @@ LABEL_14:
             }
           }
 
-          v22 = [(NSArray *)v19 countByEnumeratingWithState:&v26 objects:v32 count:16];
+          v22 = [(NSArray *)menuItems countByEnumeratingWithState:&v26 objects:v32 count:16];
         }
 
         while (v22);

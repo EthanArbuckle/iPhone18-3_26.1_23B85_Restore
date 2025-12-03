@@ -1,52 +1,52 @@
 @interface HMDHAPAccessoryRemoteReadTask
-- (BOOL)_appendServiceListWithRequest:(id)a3 serviceList:(id)a4;
-- (HMDHAPAccessoryRemoteReadTask)initWithContext:(id)a3 requests:(id)a4 delegateDevice:(id)a5 completion:(id)a6;
+- (BOOL)_appendServiceListWithRequest:(id)request serviceList:(id)list;
+- (HMDHAPAccessoryRemoteReadTask)initWithContext:(id)context requests:(id)requests delegateDevice:(id)device completion:(id)completion;
 @end
 
 @implementation HMDHAPAccessoryRemoteReadTask
 
-- (BOOL)_appendServiceListWithRequest:(id)a3 serviceList:(id)a4
+- (BOOL)_appendServiceListWithRequest:(id)request serviceList:(id)list
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 service];
-  v8 = [v7 instanceID];
+  listCopy = list;
+  requestCopy = request;
+  service = [requestCopy service];
+  instanceID = [service instanceID];
 
-  v9 = [v6 characteristic];
+  characteristic = [requestCopy characteristic];
 
-  v10 = [v9 instanceID];
+  instanceID2 = [characteristic instanceID];
 
-  v11 = [v8 stringValue];
-  v12 = [v5 hmf_mutableArrayForKey:v11];
+  stringValue = [instanceID stringValue];
+  array = [listCopy hmf_mutableArrayForKey:stringValue];
 
-  if (!v12)
+  if (!array)
   {
-    v12 = [MEMORY[0x277CBEB18] array];
-    v13 = [v8 stringValue];
-    [v5 setObject:v12 forKey:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    stringValue2 = [instanceID stringValue];
+    [listCopy setObject:array forKey:stringValue2];
   }
 
-  [v12 addObject:v10];
+  [array addObject:instanceID2];
 
   return 0;
 }
 
-- (HMDHAPAccessoryRemoteReadTask)initWithContext:(id)a3 requests:(id)a4 delegateDevice:(id)a5 completion:(id)a6
+- (HMDHAPAccessoryRemoteReadTask)initWithContext:(id)context requests:(id)requests delegateDevice:(id)device completion:(id)completion
 {
   v10 = MEMORY[0x277D0F8D0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 sharedPreferences];
-  v16 = [v15 preferenceForKey:@"AccessoryReaderWriterMessageDefaultTimeout"];
-  v17 = [v16 numberValue];
-  [v17 doubleValue];
+  completionCopy = completion;
+  deviceCopy = device;
+  requestsCopy = requests;
+  contextCopy = context;
+  sharedPreferences = [v10 sharedPreferences];
+  v16 = [sharedPreferences preferenceForKey:@"AccessoryReaderWriterMessageDefaultTimeout"];
+  numberValue = [v16 numberValue];
+  [numberValue doubleValue];
   v19 = v18;
 
   v22.receiver = self;
   v22.super_class = HMDHAPAccessoryRemoteReadTask;
-  v20 = [(HMDHAPAccessoryRemoteOperationTask *)&v22 initWithContext:v14 remoteMessageName:@"kMultipleCharacteristicReadRequestKey" requests:v13 delegateDevice:v12 timeout:v11 completion:v19];
+  v20 = [(HMDHAPAccessoryRemoteOperationTask *)&v22 initWithContext:contextCopy remoteMessageName:@"kMultipleCharacteristicReadRequestKey" requests:requestsCopy delegateDevice:deviceCopy timeout:completionCopy completion:v19];
 
   return v20;
 }

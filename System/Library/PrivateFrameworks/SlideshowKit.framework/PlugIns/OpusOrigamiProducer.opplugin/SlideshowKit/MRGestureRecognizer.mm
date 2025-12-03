@@ -1,36 +1,36 @@
 @interface MRGestureRecognizer
-- (CGPoint)_localPointFromTouchPoint:(CGPoint)a3;
+- (CGPoint)_localPointFromTouchPoint:(CGPoint)point;
 - (CGSize)referenceSize;
-- (MRGestureRecognizer)initWithRenderer:(id)a3 startAction:(id)a4 andSender:(id)a5;
+- (MRGestureRecognizer)initWithRenderer:(id)renderer startAction:(id)action andSender:(id)sender;
 - (id)description;
-- (void)_sendAction:(id)a3;
+- (void)_sendAction:(id)action;
 - (void)_sendCancelActions;
 - (void)_sendEndActions;
 - (void)_sendStartActions;
 - (void)_sendUpdateActions;
 - (void)abort;
 - (void)cleanup;
-- (void)setCancelAction:(id)a3;
-- (void)setEndAction:(id)a3;
-- (void)setStartAction:(id)a3;
-- (void)setUpdateAction:(id)a3;
-- (void)touchBegan:(id)a3;
-- (void)touchEnded:(id)a3;
-- (void)touchMoved:(id)a3;
+- (void)setCancelAction:(id)action;
+- (void)setEndAction:(id)action;
+- (void)setStartAction:(id)action;
+- (void)setUpdateAction:(id)action;
+- (void)touchBegan:(id)began;
+- (void)touchEnded:(id)ended;
+- (void)touchMoved:(id)moved;
 @end
 
 @implementation MRGestureRecognizer
 
-- (MRGestureRecognizer)initWithRenderer:(id)a3 startAction:(id)a4 andSender:(id)a5
+- (MRGestureRecognizer)initWithRenderer:(id)renderer startAction:(id)action andSender:(id)sender
 {
   v13.receiver = self;
   v13.super_class = MRGestureRecognizer;
   v8 = [(MRGestureRecognizer *)&v13 init];
   if (v8)
   {
-    v8->_renderer = a3;
-    v8->_sender = a5;
-    [(MRGestureRecognizer *)v8 setStartAction:a4];
+    v8->_renderer = renderer;
+    v8->_sender = sender;
+    [(MRGestureRecognizer *)v8 setStartAction:action];
     [(MRRenderer *)v8->_renderer size];
     v10 = v9 <= 1500.0;
     v11 = 1.0;
@@ -67,11 +67,11 @@
   self->_touchSet = 0;
 }
 
-- (void)setStartAction:(id)a3
+- (void)setStartAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [[MRAction alloc] initWithAction:a3 inRenderer:self->_renderer];
+    v4 = [[MRAction alloc] initWithAction:action inRenderer:self->_renderer];
     self->_startAction = v4;
     sender = self->_sender;
 
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)setUpdateAction:(id)a3
+- (void)setUpdateAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [[MRAction alloc] initWithAction:a3 inRenderer:self->_renderer];
+    v4 = [[MRAction alloc] initWithAction:action inRenderer:self->_renderer];
     self->_updateAction = v4;
     sender = self->_sender;
 
@@ -91,11 +91,11 @@
   }
 }
 
-- (void)setEndAction:(id)a3
+- (void)setEndAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [[MRAction alloc] initWithAction:a3 inRenderer:self->_renderer];
+    v4 = [[MRAction alloc] initWithAction:action inRenderer:self->_renderer];
     self->_endAction = v4;
     sender = self->_sender;
 
@@ -103,11 +103,11 @@
   }
 }
 
-- (void)setCancelAction:(id)a3
+- (void)setCancelAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [[MRAction alloc] initWithAction:a3 inRenderer:self->_renderer];
+    v4 = [[MRAction alloc] initWithAction:action inRenderer:self->_renderer];
     self->_cancelAction = v4;
     sender = self->_sender;
 
@@ -115,15 +115,15 @@
   }
 }
 
-- (void)touchBegan:(id)a3
+- (void)touchBegan:(id)began
 {
   if ((self->_state & 0x24) == 0)
   {
-    [a3 addGestureRecognizer:self];
+    [began addGestureRecognizer:self];
     touchSet = self->_touchSet;
     if (touchSet)
     {
-      [(MRTouchSet *)touchSet addTouch:a3];
+      [(MRTouchSet *)touchSet addTouch:began];
       if (self->_requiredTouchCount && [(MRTouchSet *)self->_touchSet countOfActiveTouches]> self->_requiredTouchCount)
       {
 
@@ -147,8 +147,8 @@
 
     else
     {
-      self->_touchSet = [[MRTouchSet alloc] initWithTouch:a3];
-      [a3 timestamp];
+      self->_touchSet = [[MRTouchSet alloc] initWithTouch:began];
+      [began timestamp];
       self->_hitTime = v12;
       self->_previousHitTime = v12;
       self->_startTime = v12;
@@ -167,14 +167,14 @@
   }
 }
 
-- (void)touchMoved:(id)a3
+- (void)touchMoved:(id)moved
 {
-  [a3 timestamp];
+  [moved timestamp];
   hitTime = self->_hitTime;
   if (v6 != hitTime)
   {
     self->_previousHitTime = hitTime;
-    [a3 timestamp];
+    [moved timestamp];
     self->_hitTime = v7;
     self->_previousCentroidLocation = self->_centroidLocation;
     [(MRTouchSet *)self->_touchSet centroid];
@@ -205,10 +205,10 @@
   }
 }
 
-- (void)touchEnded:(id)a3
+- (void)touchEnded:(id)ended
 {
-  [a3 removeGestureRecognizer:self];
-  [(MRTouchSet *)self->_touchSet removeTouch:a3];
+  [ended removeGestureRecognizer:self];
+  [(MRTouchSet *)self->_touchSet removeTouch:ended];
   if ([(NSSet *)[(MRTouchSet *)self->_touchSet touches] count])
   {
     [(MRTouchSet *)self->_touchSet centroid];
@@ -230,8 +230,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(MRTouchSet *)self->_touchSet touches];
-  v4 = [(NSSet *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  touches = [(MRTouchSet *)self->_touchSet touches];
+  v4 = [(NSSet *)touches countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -243,7 +243,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(touches);
         }
 
         [*(*(&v8 + 1) + 8 * v7) removeGestureRecognizer:self];
@@ -251,7 +251,7 @@
       }
 
       while (v5 != v7);
-      v5 = [(NSSet *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSSet *)touches countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -394,37 +394,37 @@ LABEL_11:
   }
 }
 
-- (void)_sendAction:(id)a3
+- (void)_sendAction:(id)action
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [self->_sender persistentState];
-    if (v5)
+    persistentState = [self->_sender persistentState];
+    if (persistentState)
     {
-      v5 = [NSMutableDictionary dictionaryWithDictionary:v5];
+      persistentState = [NSMutableDictionary dictionaryWithDictionary:persistentState];
     }
   }
 
   else
   {
-    v5 = 0;
+    persistentState = 0;
   }
 
-  [a3 setStates:v5];
+  [action setStates:persistentState];
   [(MRRenderer *)self->_renderer time];
-  [a3 setTime:?];
-  [(MRGestureRecognizer *)self _addSpecificObjectToAction:a3];
-  [(MRRenderer *)self->_renderer doAction:a3];
+  [action setTime:?];
+  [(MRGestureRecognizer *)self _addSpecificObjectToAction:action];
+  [(MRRenderer *)self->_renderer doAction:action];
   renderer = self->_renderer;
 
   [(MRRenderer *)renderer requestRendering:0];
 }
 
-- (CGPoint)_localPointFromTouchPoint:(CGPoint)a3
+- (CGPoint)_localPointFromTouchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(MRRenderer *)self->_renderer size];
   v7 = -(v6 - x * 2.0);
   [(MRRenderer *)self->_renderer size];

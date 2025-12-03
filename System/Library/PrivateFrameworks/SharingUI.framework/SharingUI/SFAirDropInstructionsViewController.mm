@@ -1,11 +1,11 @@
 @interface SFAirDropInstructionsViewController
 - (CGSize)_cachedPreferredItemSize;
 - (double)_titleLabelHeight;
-- (id)_fontWithStyle:(id)a3 maxSizeCategory:(id)a4 traits:(unsigned int)a5;
-- (id)attributedStringWithTitle:(id)a3 content:(id)a4;
+- (id)_fontWithStyle:(id)style maxSizeCategory:(id)category traits:(unsigned int)traits;
+- (id)attributedStringWithTitle:(id)title content:(id)content;
 - (void)_layoutiOSSubviews;
 - (void)_updateFontSizes;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePreferredContentSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -18,14 +18,14 @@
   v23.receiver = self;
   v23.super_class = SFAirDropInstructionsViewController;
   [(SFAirDropInstructionsViewController *)&v23 viewDidLoad];
-  v3 = [(SFAirDropInstructionsViewController *)self _airDropText];
-  [(SFAirDropInstructionsViewController *)self setTitle:v3];
+  _airDropText = [(SFAirDropInstructionsViewController *)self _airDropText];
+  [(SFAirDropInstructionsViewController *)self setTitle:_airDropText];
 
-  v4 = [(SFAirDropInstructionsViewController *)self view];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v5];
+  view = [(SFAirDropInstructionsViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [v4 setOpaque:0];
+  [view setOpaque:0];
   v6 = objc_alloc_init(SFCollectionViewLayout);
   collectionViewLayout = self->_collectionViewLayout;
   self->_collectionViewLayout = v6;
@@ -41,35 +41,35 @@
   self->_airDropActiveIconView = v13;
 
   [(SFAirDropActiveIconView *)self->_airDropActiveIconView setAlpha:1.0];
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  [(SFAirDropActiveIconView *)self->_airDropActiveIconView setBackgroundColor:v15];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(SFAirDropActiveIconView *)self->_airDropActiveIconView setBackgroundColor:clearColor2];
 
   v16 = [objc_alloc(MEMORY[0x1E69DD168]) initReadonlyAndUnselectableWithFrame:0 textContainer:{v9, v10, v11, v12}];
   instructionsTextView = self->_instructionsTextView;
   self->_instructionsTextView = v16;
 
   [(UITextView *)self->_instructionsTextView setScrollingEnabled:0];
-  v18 = [(UITextView *)self->_instructionsTextView textContainer];
-  [v18 setLineFragmentPadding:0.0];
+  textContainer = [(UITextView *)self->_instructionsTextView textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [(UITextView *)self->_instructionsTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-  v19 = [(UITextView *)self->_instructionsTextView textContainer];
-  [v19 setMaximumNumberOfLines:0];
+  textContainer2 = [(UITextView *)self->_instructionsTextView textContainer];
+  [textContainer2 setMaximumNumberOfLines:0];
 
-  v20 = [(UITextView *)self->_instructionsTextView textContainer];
-  [v20 setLineBreakMode:4];
+  textContainer3 = [(UITextView *)self->_instructionsTextView textContainer];
+  [textContainer3 setLineBreakMode:4];
 
   [(UITextView *)self->_instructionsTextView setTextAlignment:4];
   v21 = [MEMORY[0x1E69DC888] colorWithWhite:0.05 alpha:1.0];
   [(UITextView *)self->_instructionsTextView setTextColor:v21];
 
-  v22 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITextView *)self->_instructionsTextView setBackgroundColor:v22];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [(UITextView *)self->_instructionsTextView setBackgroundColor:clearColor3];
 
   [(UITextView *)self->_instructionsTextView setAlpha:1.0];
   [(UITextView *)self->_instructionsTextView setTextAlignment:4];
-  [v4 addSubview:self->_airDropActiveIconView];
-  [v4 addSubview:self->_instructionsTextView];
+  [view addSubview:self->_airDropActiveIconView];
+  [view addSubview:self->_instructionsTextView];
   [(SFAirDropInstructionsViewController *)self _updateFontSizes];
 }
 
@@ -84,24 +84,24 @@
 
 - (double)_titleLabelHeight
 {
-  v3 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
 
 LABEL_5:
     v12 = *MEMORY[0x1E69DDD10];
-    v10 = [(SFAirDropInstructionsViewController *)self _screen];
-    v13 = _SFPersonCollectionViewMaximumSizeCategory(v10);
+    _screen = [(SFAirDropInstructionsViewController *)self _screen];
+    v13 = _SFPersonCollectionViewMaximumSizeCategory(_screen);
     v11 = [(SFAirDropInstructionsViewController *)self _fontWithStyle:v12 maxSizeCategory:v13 traits:0];
 
     goto LABEL_6;
   }
 
   v5 = *MEMORY[0x1E69DDC58];
-  v6 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = UIContentSizeCategoryCompareToCategory(v5, v7);
+  traitCollection2 = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v8 = UIContentSizeCategoryCompareToCategory(v5, preferredContentSizeCategory2);
 
   if (v8 == NSOrderedAscending)
   {
@@ -109,13 +109,13 @@ LABEL_5:
   }
 
   v9 = MEMORY[0x1E69DB878];
-  v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v10 _scaledValueForValue:11.0];
+  _screen = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
+  [_screen _scaledValueForValue:11.0];
   v11 = [v9 systemFontOfSize:?];
 LABEL_6:
 
   [v11 lineHeight];
-  v14 = [(SFAirDropInstructionsViewController *)self view];
+  view = [(SFAirDropInstructionsViewController *)self view];
   UICeilToViewScale();
   v16 = v15;
 
@@ -124,11 +124,11 @@ LABEL_6:
 
 - (void)_layoutiOSSubviews
 {
-  v3 = [(SFAirDropInstructionsViewController *)self view];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  view = [(SFAirDropInstructionsViewController *)self view];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 76.0;
   }
@@ -138,25 +138,25 @@ LABEL_6:
     v6 = 60.0;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  v9 = dbl_1B9EDEAA0[(v8 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v9 = dbl_1B9EDEAA0[(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1];
   self->_minimumPreferredContentSize.width = 0.0;
   self->_minimumPreferredContentSize.height = v9;
   UIRoundToViewScale();
-  v10 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
-  v13 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v11);
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  v13 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], preferredContentSizeCategory);
   v14 = v13 == NSOrderedAscending || IsAccessibilityCategory;
   if (v14 == 1)
   {
     if (v13 == NSOrderedAscending && !IsAccessibilityCategory)
     {
       collectionViewLayout = self->_collectionViewLayout;
-      [v3 bounds];
+      [view bounds];
       [(SFCollectionViewLayout *)collectionViewLayout firstItemCenterForContainerWidth:CGRectGetWidth(v43)];
     }
   }
@@ -164,14 +164,14 @@ LABEL_6:
   else
   {
     v16 = self->_collectionViewLayout;
-    [v3 bounds];
+    [view bounds];
     [(SFCollectionViewLayout *)v16 firstItemCenterForContainerWidth:CGRectGetWidth(v44)];
   }
 
   [(SFAirDropInstructionsViewController *)self _titleLabelHeight];
-  [v3 safeAreaInsets];
-  v17 = v3;
-  v18 = [v17 _shouldReverseLayoutDirection];
+  [view safeAreaInsets];
+  v17 = view;
+  _shouldReverseLayoutDirection = [v17 _shouldReverseLayoutDirection];
   if (v14)
   {
     v19 = [MEMORY[0x1E69DB878] systemFontOfSize:11.0];
@@ -183,7 +183,7 @@ LABEL_6:
 
   UIRoundToViewScale();
   v21 = v20;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     [v17 bounds];
     CGRectGetMaxX(v45);
@@ -267,8 +267,8 @@ LABEL_6:
   p_minimumPreferredContentSize = &self->_minimumPreferredContentSize;
   width = self->_minimumPreferredContentSize.width;
   height = self->_minimumPreferredContentSize.height;
-  v6 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  lhs = [v6 preferredContentSizeCategory];
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  lhs = [traitCollection preferredContentSizeCategory];
 
   if (UIContentSizeCategoryCompareToCategory(lhs, *MEMORY[0x1E69DDC60]) != NSOrderedAscending)
   {
@@ -292,55 +292,55 @@ LABEL_6:
   [(SFAirDropInstructionsViewController *)self setPreferredContentSize:width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SFAirDropInstructionsViewController;
-  v4 = a3;
-  [(SFAirDropInstructionsViewController *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SFAirDropInstructionsViewController *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(SFAirDropInstructionsViewController *)self traitCollection:v10.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(SFAirDropInstructionsViewController *)self _updateFontSizes];
-    v8 = [(SFAirDropInstructionsViewController *)self view];
-    [v8 setNeedsUpdateConstraints];
+    view = [(SFAirDropInstructionsViewController *)self view];
+    [view setNeedsUpdateConstraints];
 
-    v9 = [(SFAirDropInstructionsViewController *)self view];
-    [v9 setNeedsLayout];
+    view2 = [(SFAirDropInstructionsViewController *)self view];
+    [view2 setNeedsLayout];
   }
 }
 
 - (void)_updateFontSizes
 {
-  v5 = [(SFAirDropInstructionsViewController *)self title];
-  v3 = [(SFAirDropInstructionsViewController *)self _instructionsText];
-  v4 = [(SFAirDropInstructionsViewController *)self attributedStringWithTitle:v5 content:v3];
+  title = [(SFAirDropInstructionsViewController *)self title];
+  _instructionsText = [(SFAirDropInstructionsViewController *)self _instructionsText];
+  v4 = [(SFAirDropInstructionsViewController *)self attributedStringWithTitle:title content:_instructionsText];
   [(UITextView *)self->_instructionsTextView setAttributedText:v4];
 }
 
-- (id)_fontWithStyle:(id)a3 maxSizeCategory:(id)a4 traits:(unsigned int)a5
+- (id)_fontWithStyle:(id)style maxSizeCategory:(id)category traits:(unsigned int)traits
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
+  v5 = *&traits;
+  styleCopy = style;
+  categoryCopy = category;
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v11, v9) != NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy) != NSOrderedAscending)
   {
-    v12 = v9;
+    v12 = categoryCopy;
 
-    v11 = v12;
+    preferredContentSizeCategory = v12;
   }
 
-  v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v11];
+  v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
   if (v5)
   {
-    v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v8 compatibleWithTraitCollection:v13];
+    v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v13];
     v15 = [v14 fontDescriptorWithSymbolicTraits:v5];
 
     v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:0.0];
@@ -348,33 +348,33 @@ LABEL_6:
 
   else
   {
-    v16 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v8 compatibleWithTraitCollection:v13];
+    v16 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:styleCopy compatibleWithTraitCollection:v13];
   }
 
   return v16;
 }
 
-- (id)attributedStringWithTitle:(id)a3 content:(id)a4
+- (id)attributedStringWithTitle:(id)title content:(id)content
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  titleCopy = title;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a4;
-  v9 = [(SFAirDropInstructionsViewController *)self _instructionsBaseFormatString];
-  v10 = [v7 stringWithFormat:v9, v6, v8];
+  contentCopy = content;
+  _instructionsBaseFormatString = [(SFAirDropInstructionsViewController *)self _instructionsBaseFormatString];
+  contentCopy = [v7 stringWithFormat:_instructionsBaseFormatString, titleCopy, contentCopy];
 
-  v11 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v12))
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
   }
 
   else
   {
     v13 = *MEMORY[0x1E69DDC58];
-    v14 = [(SFAirDropInstructionsViewController *)self traitCollection];
-    v15 = [v14 preferredContentSizeCategory];
-    v16 = UIContentSizeCategoryCompareToCategory(v13, v15);
+    traitCollection2 = [(SFAirDropInstructionsViewController *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+    v16 = UIContentSizeCategoryCompareToCategory(v13, preferredContentSizeCategory2);
 
     if (v16 != NSOrderedAscending)
     {
@@ -385,24 +385,24 @@ LABEL_6:
       v20 = [v17 boldSystemFontOfSize:?];
 
       v21 = MEMORY[0x1E69DB878];
-      v22 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v18];
-      [v22 _scaledValueForValue:11.0];
+      _screen2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v18];
+      [_screen2 _scaledValueForValue:11.0];
       v23 = [v21 systemFontOfSize:?];
       goto LABEL_6;
     }
   }
 
   v24 = *MEMORY[0x1E69DDD10];
-  v25 = [(SFAirDropInstructionsViewController *)self _screen];
-  v26 = _SFPersonCollectionViewMaximumSizeCategory(v25);
+  _screen = [(SFAirDropInstructionsViewController *)self _screen];
+  v26 = _SFPersonCollectionViewMaximumSizeCategory(_screen);
   v20 = [(SFAirDropInstructionsViewController *)self _fontWithStyle:v24 maxSizeCategory:v26 traits:2];
 
-  v22 = [(SFAirDropInstructionsViewController *)self _screen];
-  v27 = _SFPersonCollectionViewMaximumSizeCategory(v22);
+  _screen2 = [(SFAirDropInstructionsViewController *)self _screen];
+  v27 = _SFPersonCollectionViewMaximumSizeCategory(_screen2);
   v23 = [(SFAirDropInstructionsViewController *)self _fontWithStyle:v24 maxSizeCategory:v27 traits:0];
 
 LABEL_6:
-  v28 = [v10 rangeOfString:v6];
+  v28 = [contentCopy rangeOfString:titleCopy];
   v30 = v29;
   v38 = *MEMORY[0x1E69DB648];
   v31 = v38;
@@ -411,7 +411,7 @@ LABEL_6:
   v36 = v31;
   v37 = v23;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-  v34 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10 attributes:v33];
+  v34 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:contentCopy attributes:v33];
   [v34 setAttributes:v32 range:{v28, v30}];
 
   return v34;
@@ -419,12 +419,12 @@ LABEL_6:
 
 - (CGSize)_cachedPreferredItemSize
 {
-  v3 = [(SFAirDropInstructionsViewController *)self view];
-  [v3 bounds];
+  view = [(SFAirDropInstructionsViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v14);
-  v5 = [(SFAirDropInstructionsViewController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  [SFPersonCollectionViewCell _cachedPreferredItemSizeForViewWidth:v6 sizeCategory:Width];
+  traitCollection = [(SFAirDropInstructionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [SFPersonCollectionViewCell _cachedPreferredItemSizeForViewWidth:preferredContentSizeCategory sizeCategory:Width];
   v8 = v7;
   v10 = v9;
 

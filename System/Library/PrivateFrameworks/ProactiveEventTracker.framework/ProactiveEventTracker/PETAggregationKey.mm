@@ -1,30 +1,30 @@
 @interface PETAggregationKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDatestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDatestamp:(BOOL)datestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETAggregationKey
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if ((v6 & 4) != 0)
   {
-    self->_type = *(v4 + 8);
+    self->_type = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -37,17 +37,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_datestamp = *(v4 + 4);
+  self->_datestamp = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
 LABEL_4:
-    self->_bucket = *(v4 + 1);
+    self->_bucket = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -134,24 +134,24 @@ LABEL_4:
   return v9 ^ v8 ^ v13 ^ [(PETRawMessage *)self->_rawMessage hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -160,32 +160,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_datestamp != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_datestamp != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_bucket != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_bucket != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
   rawMessage = self->_rawMessage;
-  if (rawMessage | *(v4 + 3))
+  if (rawMessage | *(equalCopy + 3))
   {
     v7 = [(PETRawMessage *)rawMessage isEqual:?];
   }
@@ -200,9 +200,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -240,21 +240,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(PETRawMessage *)self->_rawMessage copyWithZone:a3];
+  v8 = [(PETRawMessage *)self->_rawMessage copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[8] = self->_type;
-    *(v4 + 36) |= 4u;
+    toCopy[8] = self->_type;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -273,34 +273,34 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_datestamp;
-  *(v4 + 36) |= 2u;
+  toCopy[4] = self->_datestamp;
+  *(toCopy + 36) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = *&self->_bucket;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = *&self->_bucket;
+    *(toCopy + 36) |= 1u;
   }
 
 LABEL_5:
   if (self->_rawMessage)
   {
-    v6 = v4;
-    [v4 setRawMessage:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setRawMessage:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -321,26 +321,26 @@ LABEL_3:
 
   datestamp = self->_datestamp;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     bucket = self->_bucket;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_rawMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -355,7 +355,7 @@ LABEL_5:
       v6 = off_1E86C2840[type];
     }
 
-    [v3 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
 
     has = self->_has;
   }
@@ -363,7 +363,7 @@ LABEL_5:
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_datestamp];
-    [v3 setObject:v7 forKey:@"datestamp"];
+    [dictionary setObject:v7 forKey:@"datestamp"];
 
     has = self->_has;
   }
@@ -371,17 +371,17 @@ LABEL_5:
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_bucket];
-    [v3 setObject:v8 forKey:@"bucket"];
+    [dictionary setObject:v8 forKey:@"bucket"];
   }
 
   rawMessage = self->_rawMessage;
   if (rawMessage)
   {
-    v10 = [(PETRawMessage *)rawMessage dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"raw_message"];
+    dictionaryRepresentation = [(PETRawMessage *)rawMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"raw_message"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -390,15 +390,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = PETAggregationKey;
   v4 = [(PETAggregationKey *)&v8 description];
-  v5 = [(PETAggregationKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PETAggregationKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasDatestamp:(BOOL)a3
+- (void)setHasDatestamp:(BOOL)datestamp
 {
-  if (a3)
+  if (datestamp)
   {
     v3 = 2;
   }
@@ -411,25 +411,25 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SCALAR"])
+  else if ([typeCopy isEqualToString:@"SCALAR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DISTRIBUTION"])
+  else if ([typeCopy isEqualToString:@"DISTRIBUTION"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HISTOGRAM"])
+  else if ([typeCopy isEqualToString:@"HISTOGRAM"])
   {
     v4 = 3;
   }
@@ -442,9 +442,9 @@ LABEL_5:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }

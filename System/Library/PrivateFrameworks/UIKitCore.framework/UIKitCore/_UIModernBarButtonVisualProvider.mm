@@ -1,6 +1,6 @@
 @interface _UIModernBarButtonVisualProvider
-- (id)_newImageViewWithFrame:(CGRect)a3;
-- (id)_newLabelWithFrame:(CGRect)a3;
+- (id)_newImageViewWithFrame:(CGRect)frame;
+- (id)_newLabelWithFrame:(CGRect)frame;
 - (void)_updateImageView;
 - (void)_updateTitleView;
 @end
@@ -16,28 +16,28 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIButton *)v3 _imageView];
-    if (v5)
+    _imageView = [(UIButton *)v3 _imageView];
+    if (_imageView)
     {
-      v6 = [(UIView *)v4 traitCollection];
-      v7 = [v6 _monochromaticTreatment];
+      traitCollection = [(UIView *)v4 traitCollection];
+      _monochromaticTreatment = [traitCollection _monochromaticTreatment];
 
-      if (v7 == -1)
+      if (_monochromaticTreatment == -1)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = v7;
+        v8 = _monochromaticTreatment;
       }
 
-      [v5 _setMonochromaticTreatment:v8];
-      [v5 _setEnableMonochromaticTreatment:{-[UIButton enableMonochromaticTreatmentOnImageAndTitle](v4, "enableMonochromaticTreatmentOnImageAndTitle")}];
+      [_imageView _setMonochromaticTreatment:v8];
+      [_imageView _setEnableMonochromaticTreatment:{-[UIButton enableMonochromaticTreatmentOnImageAndTitle](v4, "enableMonochromaticTreatmentOnImageAndTitle")}];
       if (![(UIControl *)v4 isEnabled])
       {
-        v9 = [(UIView *)v4 tintColor];
-        [(UIButton *)v4 _setImageColor:v9 forState:2];
+        tintColor = [(UIView *)v4 tintColor];
+        [(UIButton *)v4 _setImageColor:tintColor forState:2];
       }
     }
   }
@@ -52,42 +52,42 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIButton *)v3 _titleView];
-    if (v5)
+    _titleView = [(UIButton *)v3 _titleView];
+    if (_titleView)
     {
-      v6 = [(UIView *)v4 traitCollection];
-      v7 = [v6 _monochromaticTreatment];
+      traitCollection = [(UIView *)v4 traitCollection];
+      _monochromaticTreatment = [traitCollection _monochromaticTreatment];
 
-      if (v7 == -1)
+      if (_monochromaticTreatment == -1)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = v7;
+        v8 = _monochromaticTreatment;
       }
 
-      [v5 _setMonochromaticTreatment:v8];
-      [v5 _setEnableMonochromaticTreatment:{-[UIButton enableMonochromaticTreatmentOnImageAndTitle](v4, "enableMonochromaticTreatmentOnImageAndTitle")}];
+      [_titleView _setMonochromaticTreatment:v8];
+      [_titleView _setEnableMonochromaticTreatment:{-[UIButton enableMonochromaticTreatmentOnImageAndTitle](v4, "enableMonochromaticTreatmentOnImageAndTitle")}];
     }
   }
 }
 
-- (id)_newLabelWithFrame:(CGRect)a3
+- (id)_newLabelWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIModernBarButtonVisualProvider;
-  v3 = [(UIButtonLegacyVisualProvider *)&v5 _newLabelWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIButtonLegacyVisualProvider *)&v5 _newLabelWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [v3 setAdjustsFontForContentSizeCategory:_UIBarsUseDynamicType()];
   return v3;
 }
 
-- (id)_newImageViewWithFrame:(CGRect)a3
+- (id)_newImageViewWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIModernBarButtonVisualProvider;
-  v4 = [(UIButtonLegacyVisualProvider *)&v6 _newImageViewWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIButtonLegacyVisualProvider *)&v6 _newImageViewWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

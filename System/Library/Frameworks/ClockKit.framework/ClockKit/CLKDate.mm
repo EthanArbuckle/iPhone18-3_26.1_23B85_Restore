@@ -1,12 +1,12 @@
 @interface CLKDate
-+ (id)complicationDateWithTimeIntervalSinceNow:(double)a3;
++ (id)complicationDateWithTimeIntervalSinceNow:(double)now;
 + (id)date;
-+ (id)dateWithTimeIntervalSinceNow:(double)a3;
-+ (id)unmodifiedDateWithTimeIntervalSinceNow:(double)a3;
++ (id)dateWithTimeIntervalSinceNow:(double)now;
++ (id)unmodifiedDateWithTimeIntervalSinceNow:(double)now;
 - (CLKDate)init;
-- (CLKDate)initWithCoder:(id)a3;
-- (CLKDate)initWithTimeIntervalSinceNow:(double)a3;
-- (CLKDate)initWithTimeIntervalSinceReferenceDate:(double)a3;
+- (CLKDate)initWithCoder:(id)coder;
+- (CLKDate)initWithTimeIntervalSinceNow:(double)now;
+- (CLKDate)initWithTimeIntervalSinceReferenceDate:(double)date;
 @end
 
 @implementation CLKDate
@@ -20,53 +20,53 @@
 
 + (id)date
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (CLKDate)initWithTimeIntervalSinceReferenceDate:(double)a3
+- (CLKDate)initWithTimeIntervalSinceReferenceDate:(double)date
 {
   v4.receiver = self;
   v4.super_class = CLKDate;
-  return [(CLKDate *)&v4 initWithTimeIntervalSinceReferenceDate:a3];
+  return [(CLKDate *)&v4 initWithTimeIntervalSinceReferenceDate:date];
 }
 
-- (CLKDate)initWithCoder:(id)a3
+- (CLKDate)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CLKDate;
-  return [(CLKDate *)&v4 initWithCoder:a3];
+  return [(CLKDate *)&v4 initWithCoder:coder];
 }
 
-- (CLKDate)initWithTimeIntervalSinceNow:(double)a3
+- (CLKDate)initWithTimeIntervalSinceNow:(double)now
 {
   v4.receiver = self;
   v4.super_class = CLKDate;
-  return [(CLKDate *)&v4 initWithTimeIntervalSinceNow:a3];
+  return [(CLKDate *)&v4 initWithTimeIntervalSinceNow:now];
 }
 
-+ (id)dateWithTimeIntervalSinceNow:(double)a3
++ (id)dateWithTimeIntervalSinceNow:(double)now
 {
-  v3 = [[a1 alloc] initWithTimeIntervalSinceNow:a3];
+  v3 = [[self alloc] initWithTimeIntervalSinceNow:now];
 
   return v3;
 }
 
-+ (id)complicationDateWithTimeIntervalSinceNow:(double)a3
++ (id)complicationDateWithTimeIntervalSinceNow:(double)now
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = [a1 complicationDate];
-  v6 = [v4 dateWithTimeInterval:v5 sinceDate:a3];
+  complicationDate = [self complicationDate];
+  v6 = [v4 dateWithTimeInterval:complicationDate sinceDate:now];
 
   return v6;
 }
 
-+ (id)unmodifiedDateWithTimeIntervalSinceNow:(double)a3
++ (id)unmodifiedDateWithTimeIntervalSinceNow:(double)now
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = [a1 unmodifiedDate];
-  v6 = [v4 dateWithTimeInterval:v5 sinceDate:a3];
+  unmodifiedDate = [self unmodifiedDate];
+  v6 = [v4 dateWithTimeInterval:unmodifiedDate sinceDate:now];
 
   return v6;
 }

@@ -6,10 +6,10 @@
 
 - (id)contextStorePredicate
 {
-  v2 = [a1 contextStoreKeyPathForCurrentState];
+  contextStoreKeyPathForCurrentState = [self contextStoreKeyPathForCurrentState];
   v3 = MEMORY[0x277CFE360];
-  v4 = [a1 tagIdentifier];
-  v5 = [v3 predicateForKeyPath:v2 withFormat:@"%@ IN SELF.%@.value", v4, v2];
+  tagIdentifier = [self tagIdentifier];
+  v5 = [v3 predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"%@ IN SELF.%@.value", tagIdentifier, contextStoreKeyPathForCurrentState];
 
   [v5 setEvaluateOnEveryKeyPathUpdate:1];
 

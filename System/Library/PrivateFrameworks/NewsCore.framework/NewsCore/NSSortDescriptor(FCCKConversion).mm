@@ -7,7 +7,7 @@
 - (id)fcck_querySort
 {
   v2 = objc_opt_new();
-  if ([a1 ascending])
+  if ([self ascending])
   {
     v3 = 1;
   }
@@ -18,7 +18,7 @@
   }
 
   [v2 setOrder:v3];
-  v4 = [a1 key];
+  v4 = [self key];
   v5 = NTPBCKRecordFieldIdentifierForUserFieldName(v4);
   [v2 setFieldName:v5];
 

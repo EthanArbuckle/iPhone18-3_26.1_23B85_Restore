@@ -8,25 +8,25 @@
 - (uint64_t)_variantWeight
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _cachedVariantWeight];
+  _cachedVariantWeight = [self _cachedVariantWeight];
 
-  if (v2)
+  if (_cachedVariantWeight)
   {
-    v3 = [a1 _cachedVariantWeight];
-    v4 = [v3 unsignedIntegerValue];
+    _cachedVariantWeight2 = [self _cachedVariantWeight];
+    unsignedIntegerValue = [_cachedVariantWeight2 unsignedIntegerValue];
 
-    return v4;
+    return unsignedIntegerValue;
   }
 
   else
   {
-    v6 = CTFontCopyVariation(a1);
+    v6 = CTFontCopyVariation(self);
     v7 = v6;
     if (v6 && ([(__CFDictionary *)v6 objectForKeyedSubscript:&unk_1EFE30328], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      [a1 _setCachedVariantWeight:v8];
-      v10 = [v9 unsignedIntegerValue];
+      [self _setCachedVariantWeight:v8];
+      unsignedIntegerValue2 = [v9 unsignedIntegerValue];
     }
 
     else
@@ -36,7 +36,7 @@
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = CTFontCopyVariationAxes(a1);
+      v11 = CTFontCopyVariationAxes(self);
       v12 = [(__CFArray *)v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v12)
       {
@@ -64,8 +64,8 @@
                 if (v21)
                 {
                   v22 = v21;
-                  [a1 _setCachedVariantWeight:v21];
-                  v10 = [v22 unsignedIntegerValue];
+                  [self _setCachedVariantWeight:v21];
+                  unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
                   goto LABEL_18;
                 }
@@ -83,14 +83,14 @@
         }
       }
 
-      [a1 _setCachedVariantWeight:&unk_1EFE30340];
-      v10 = 0x7FFFFFFFFFFFFFFFLL;
+      [self _setCachedVariantWeight:&unk_1EFE30340];
+      unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_18:
 
       v7 = v23;
     }
 
-    return v10;
+    return unsignedIntegerValue2;
   }
 }
 
@@ -105,10 +105,10 @@ LABEL_18:
   v12[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v4];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v4];
 
-  [a1 pointSize];
+  [self pointSize];
   v7 = [off_1E70ECC18 fontWithDescriptor:v6 size:?];
 
   return v7;

@@ -1,15 +1,15 @@
 @interface ASDatabseCompetitionEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 @end
 
 @implementation ASDatabseCompetitionEncoder
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = objc_alloc_init(MEMORY[0x277CE9070]);
-  if ([(ASDatabseCompetitionEncoder *)self applyPropertiesToObject:v9 persistentID:a3 row:a4 error:a5])
+  if ([(ASDatabseCompetitionEncoder *)self applyPropertiesToObject:v9 persistentID:d row:row error:error])
   {
     v10 = v9;
   }
@@ -22,10 +22,10 @@
   return v10;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = objc_alloc_init(MEMORY[0x277CE9070]);
-  if ([(ASDatabseCompetitionEncoder *)self applyPropertiesToObject:v9 persistentID:a3 row:a4 error:a5])
+  if ([(ASDatabseCompetitionEncoder *)self applyPropertiesToObject:v9 persistentID:d row:row error:error])
   {
     v10 = v9;
   }
@@ -38,18 +38,18 @@
   return v10;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = HDSQLiteColumnWithNameAsUUID();
-  v8 = [v7 hk_dataForUUIDBytes];
-  [v6 setFriendUUID:v8];
+  hk_dataForUUIDBytes = [v7 hk_dataForUUIDBytes];
+  [objectCopy setFriendUUID:hk_dataForUUIDBytes];
 
-  [v6 setType:HDSQLiteColumnWithNameAsInt64()];
+  [objectCopy setType:HDSQLiteColumnWithNameAsInt64()];
   v9 = objc_alloc_init(MEMORY[0x277CE9050]);
   v10 = HDSQLiteColumnWithNameAsUUID();
-  v11 = [v10 hk_dataForUUIDBytes];
-  [v9 setUuid:v11];
+  hk_dataForUUIDBytes2 = [v10 hk_dataForUUIDBytes];
+  [v9 setUuid:hk_dataForUUIDBytes2];
 
   [v9 setCurrentCacheIndex:HDSQLiteColumnWithNameAsInt64()];
   v12 = objc_alloc(MEMORY[0x277CE9088]);
@@ -78,7 +78,7 @@
 
   [v9 setPreferredVictoryBadgeStyles:objc_msgSend(v26 count:{"styles"), objc_msgSend(v26, "stylesCount")}];
   [v9 setMaximumNumberOfPointsPerDay:HDSQLiteColumnWithNameAsInt64()];
-  [v6 setCompetition:v9];
+  [objectCopy setCompetition:v9];
 
   return 1;
 }

@@ -1,12 +1,12 @@
 @interface _DDAskToAirDropManager
-- (void)didChangeRadioState:(BOOL)a3;
+- (void)didChangeRadioState:(BOOL)state;
 @end
 
 @implementation _DDAskToAirDropManager
 
-- (void)didChangeRadioState:(BOOL)a3
+- (void)didChangeRadioState:(BOOL)state
 {
-  v3 = self;
+  selfCopy = self;
   sub_23810784C();
 }
 

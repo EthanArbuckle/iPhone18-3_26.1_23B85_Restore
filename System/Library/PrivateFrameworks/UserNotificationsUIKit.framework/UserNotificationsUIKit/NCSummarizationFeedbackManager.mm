@@ -2,17 +2,17 @@
 - (BOOL)isPriorityFeedbackEnabled;
 - (BOOL)showInternalFeedbackMenu;
 - (NCSummarizationFeedbackManager)init;
-- (NCSummarizationFeedbackManager)initWithRequest:(id)a3 isShowingStackSummary:(BOOL)a4;
+- (NCSummarizationFeedbackManager)initWithRequest:(id)request isShowingStackSummary:(BOOL)summary;
 - (id)sectionTitle;
-- (void)recordInternalPriorityFeedbackEvent:(unint64_t)a3;
+- (void)recordInternalPriorityFeedbackEvent:(unint64_t)event;
 @end
 
 @implementation NCSummarizationFeedbackManager
 
-- (NCSummarizationFeedbackManager)initWithRequest:(id)a3 isShowingStackSummary:(BOOL)a4
+- (NCSummarizationFeedbackManager)initWithRequest:(id)request isShowingStackSummary:(BOOL)summary
 {
-  v5 = a3;
-  v6 = sub_21E8B8B54(v5);
+  requestCopy = request;
+  v6 = sub_21E8B8B54(requestCopy);
   if (v6)
   {
     v8 = self + OBJC_IVAR___NCSummarizationFeedbackManager_summarizationFeedbackManagerSwift;
@@ -37,7 +37,7 @@
 
 - (BOOL)showInternalFeedbackMenu
 {
-  v2 = self;
+  selfCopy = self;
   if ((os_variant_has_internal_content() & 1) != 0 || _NCDeviceIsRunningSeedBuild())
   {
     if (qword_27CED6AB0 != -1)
@@ -77,9 +77,9 @@
   return v2 & 1;
 }
 
-- (void)recordInternalPriorityFeedbackEvent:(unint64_t)a3
+- (void)recordInternalPriorityFeedbackEvent:(unint64_t)event
 {
-  v15[1] = a3;
+  v15[1] = event;
   v4 = sub_21E929888();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
@@ -89,8 +89,8 @@
   MEMORY[0x28223BE20](v8);
   v11 = v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v12 = *(&self->super.isa + OBJC_IVAR___NCSummarizationFeedbackManager_summarizationFeedbackManagerSwift);
-  v13 = self;
-  v14 = [v12 sectionIdentifier];
+  selfCopy = self;
+  sectionIdentifier = [v12 sectionIdentifier];
   sub_21E92A458();
 
   (*(v5 + 104))(v7, *MEMORY[0x277D77D98], v4);

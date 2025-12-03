@@ -1,34 +1,34 @@
 @interface _MPCPlaybackEnginePlayerIDInitializationParameters
-- (_MPCPlaybackEnginePlayerIDInitializationParameters)initWithPlayerID:(id)a3 eventStreamConsumers:(id)a4;
+- (_MPCPlaybackEnginePlayerIDInitializationParameters)initWithPlayerID:(id)d eventStreamConsumers:(id)consumers;
 @end
 
 @implementation _MPCPlaybackEnginePlayerIDInitializationParameters
 
-- (_MPCPlaybackEnginePlayerIDInitializationParameters)initWithPlayerID:(id)a3 eventStreamConsumers:(id)a4
+- (_MPCPlaybackEnginePlayerIDInitializationParameters)initWithPlayerID:(id)d eventStreamConsumers:(id)consumers
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  consumersCopy = consumers;
   v17.receiver = self;
   v17.super_class = _MPCPlaybackEnginePlayerIDInitializationParameters;
   v8 = [(_MPCPlaybackEnginePlayerIDInitializationParameters *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     playerID = v8->_playerID;
     v8->_playerID = v9;
 
-    v11 = [objc_alloc(MEMORY[0x1E69708D8]) initWithPlayerID:v6];
+    v11 = [objc_alloc(MEMORY[0x1E69708D8]) initWithPlayerID:dCopy];
     remoteCommandCenter = v8->_remoteCommandCenter;
     v8->_remoteCommandCenter = v11;
 
-    v13 = [objc_alloc(MEMORY[0x1E6970850]) initWithPlayerID:v6];
+    v13 = [objc_alloc(MEMORY[0x1E6970850]) initWithPlayerID:dCopy];
     nowPlayingInfoCenter = v8->_nowPlayingInfoCenter;
     v8->_nowPlayingInfoCenter = v13;
 
     audioSession = v8->_audioSession;
     v8->_audioSession = 0;
 
-    objc_storeStrong(&v8->_eventStreamConsumers, a4);
+    objc_storeStrong(&v8->_eventStreamConsumers, consumers);
   }
 
   return v8;

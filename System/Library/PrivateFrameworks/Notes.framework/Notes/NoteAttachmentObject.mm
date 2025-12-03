@@ -1,20 +1,20 @@
 @interface NoteAttachmentObject
-+ (BOOL)applyFileAttributesForAttachment:(id)a3 error:(id *)a4;
-+ (BOOL)migrateAttachmentRelatedFilesInContext:(id)a3 error:(id *)a4;
-+ (BOOL)migrateFileForAttachment:(id)a3 toCurrentAttachmentPathWithError:(id *)a4;
-+ (id)attachmentDirectoryPathForAttachmentObjectID:(id)a3 error:(id *)a4;
-+ (id)attachmentDirectoryURLForAttachmentObjectID:(id)a3 error:(id *)a4;
-- (BOOL)persistAttachmentData:(id)a3 error:(id *)a4;
-- (id)attachmentDataFileURLWithError:(id *)a3;
-- (id)attachmentDataWithError:(id *)a3;
++ (BOOL)applyFileAttributesForAttachment:(id)attachment error:(id *)error;
++ (BOOL)migrateAttachmentRelatedFilesInContext:(id)context error:(id *)error;
++ (BOOL)migrateFileForAttachment:(id)attachment toCurrentAttachmentPathWithError:(id *)error;
++ (id)attachmentDirectoryPathForAttachmentObjectID:(id)d error:(id *)error;
++ (id)attachmentDirectoryURLForAttachmentObjectID:(id)d error:(id *)error;
+- (BOOL)persistAttachmentData:(id)data error:(id *)error;
+- (id)attachmentDataFileURLWithError:(id *)error;
+- (id)attachmentDataWithError:(id *)error;
 - (void)prepareForDeletion;
 @end
 
 @implementation NoteAttachmentObject
 
-+ (id)attachmentDirectoryURLForAttachmentObjectID:(id)a3 error:(id *)a4
++ (id)attachmentDirectoryURLForAttachmentObjectID:(id)d error:(id *)error
 {
-  v4 = [a1 attachmentDirectoryPathForAttachmentObjectID:a3 error:a4];
+  v4 = [self attachmentDirectoryPathForAttachmentObjectID:d error:error];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
@@ -28,36 +28,36 @@
   return v5;
 }
 
-+ (id)attachmentDirectoryPathForAttachmentObjectID:(id)a3 error:(id *)a4
++ (id)attachmentDirectoryPathForAttachmentObjectID:(id)d error:(id *)error
 {
-  v4 = a3;
+  dCopy = d;
   v5 = NoteContextRootDirectoryPath();
   v6 = [v5 stringByAppendingPathComponent:@"attachments"];
 
-  v7 = [v4 URIRepresentation];
+  uRIRepresentation = [dCopy URIRepresentation];
 
-  v8 = [v7 absoluteString];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  v9 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x277CBECE8], v8, 0, @"/", 0x8000100u);
+  v9 = CFURLCreateStringByAddingPercentEscapes(*MEMORY[0x277CBECE8], absoluteString, 0, @"/", 0x8000100u);
   v10 = [v6 stringByAppendingPathComponent:v9];
 
   return v10;
 }
 
-- (BOOL)persistAttachmentData:(id)a3 error:(id *)a4
+- (BOOL)persistAttachmentData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v8 = NoteAttachmentObjectDataBasePath(self, a4);
-  if (v8 && (([v7 fileExistsAtPath:v8] & 1) != 0 || objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 1, 0, a4)))
+  v8 = NoteAttachmentObjectDataBasePath(self, error);
+  if (v8 && (([v7 fileExistsAtPath:v8] & 1) != 0 || objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 1, 0, error)))
   {
-    v9 = NoteAttachmentObjectDataPath(self, a4);
-    if (v9 && (![v7 fileExistsAtPath:v9] || objc_msgSend(v7, "removeItemAtPath:error:", v9, a4)))
+    v9 = NoteAttachmentObjectDataPath(self, error);
+    if (v9 && (![v7 fileExistsAtPath:v9] || objc_msgSend(v7, "removeItemAtPath:error:", v9, error)))
     {
       v10 = +[NoteContext fileProtectionOption];
       v11 = DataWritingOptionForFileProtectionOption(v10);
-      v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:objc_msgSend(v6 length:{"bytes"), objc_msgSend(v6, "length")}];
-      v13 = [v12 writeToFile:v9 options:v11 error:a4];
+      v12 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:objc_msgSend(dataCopy length:{"bytes"), objc_msgSend(dataCopy, "length")}];
+      v13 = [v12 writeToFile:v9 options:v11 error:error];
     }
 
     else
@@ -74,9 +74,9 @@
   return v13;
 }
 
-- (id)attachmentDataFileURLWithError:(id *)a3
+- (id)attachmentDataFileURLWithError:(id *)error
 {
-  v3 = NoteAttachmentObjectDataPath(self, a3);
+  v3 = NoteAttachmentObjectDataPath(self, error);
   if (v3)
   {
     v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
@@ -90,12 +90,12 @@
   return v4;
 }
 
-- (id)attachmentDataWithError:(id *)a3
+- (id)attachmentDataWithError:(id *)error
 {
   v4 = [(NoteAttachmentObject *)self attachmentDataFileURLWithError:?];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:0 error:a3];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:0 error:error];
   }
 
   else
@@ -166,12 +166,12 @@ LABEL_10:
   [(NoteAttachmentObject *)&v12 prepareForDeletion];
 }
 
-+ (BOOL)migrateAttachmentRelatedFilesInContext:(id)a3 error:(id *)a4
++ (BOOL)migrateAttachmentRelatedFilesInContext:(id)context error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"NoteAttachment"];
-  v8 = [v6 executeFetchRequest:v7 error:a4];
+  v8 = [contextCopy executeFetchRequest:v7 error:error];
   v9 = v8;
   if (v8)
   {
@@ -195,7 +195,7 @@ LABEL_10:
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          if (![a1 migrateFileForAttachment:v15 toCurrentAttachmentPathWithError:{a4, v19}] || !objc_msgSend(a1, "applyFileAttributesForAttachment:error:", v15, a4))
+          if (![self migrateFileForAttachment:v15 toCurrentAttachmentPathWithError:{error, v19}] || !objc_msgSend(self, "applyFileAttributesForAttachment:error:", v15, error))
           {
             v16 = 0;
             goto LABEL_15;
@@ -230,10 +230,10 @@ LABEL_15:
   return v16;
 }
 
-+ (BOOL)migrateFileForAttachment:(id)a3 toCurrentAttachmentPathWithError:(id *)a4
++ (BOOL)migrateFileForAttachment:(id)attachment toCurrentAttachmentPathWithError:(id *)error
 {
-  v5 = a3;
-  v6 = NoteAttachmentObjectDataPathBetween12A173And12A189(v5, a4);
+  attachmentCopy = attachment;
+  v6 = NoteAttachmentObjectDataPathBetween12A173And12A189(attachmentCopy, error);
   if (v6)
   {
     v16 = 0;
@@ -247,22 +247,22 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v11 = [v6 stringByDeletingLastPathComponent];
-    v12 = [v11 stringByAppendingPathComponent:v10];
+    stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
+    v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:uUIDString];
 
-    if ([v7 moveItemAtPath:v6 toPath:v12 error:a4])
+    if ([v7 moveItemAtPath:v6 toPath:v12 error:error])
     {
-      v13 = NoteAttachmentObjectDataBasePath(v5, a4);
-      if (v13 && [v7 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:a4])
+      v13 = NoteAttachmentObjectDataBasePath(attachmentCopy, error);
+      if (v13 && [v7 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:error])
       {
-        v14 = NoteAttachmentObjectDataPath(v5, a4);
+        v14 = NoteAttachmentObjectDataPath(attachmentCopy, error);
 
         if (v14)
         {
-          v8 = [v7 moveItemAtPath:v12 toPath:v14 error:a4];
+          v8 = [v7 moveItemAtPath:v12 toPath:v14 error:error];
 
           if (!v8)
           {
@@ -286,15 +286,15 @@ LABEL_16:
   return v8;
 }
 
-+ (BOOL)applyFileAttributesForAttachment:(id)a3 error:(id *)a4
++ (BOOL)applyFileAttributesForAttachment:(id)attachment error:(id *)error
 {
   v22 = 0;
-  v5 = NoteAttachmentObjectDataPath(a3, &v22);
+  v5 = NoteAttachmentObjectDataPath(attachment, &v22);
   v6 = v22;
   if (!v5)
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -312,11 +312,11 @@ LABEL_16:
 
   if (v9)
   {
-    v12 = +[NoteContext fileURLProtectionOption];
-    if (v12 && ([v10 isEqualToString:v12] & 1) == 0)
+    path2 = +[NoteContext fileURLProtectionOption];
+    if (path2 && ([v10 isEqualToString:path2] & 1) == 0)
     {
       v19 = v11;
-      v14 = [v7 setResourceValue:v12 forKey:v8 error:&v19];
+      v14 = [v7 setResourceValue:path2 forKey:v8 error:&v19];
       v15 = v19;
 
       if (v14)
@@ -326,8 +326,8 @@ LABEL_16:
 
       else
       {
-        v16 = [v7 path];
-        NSLog(&cfstr_CanTSetDataPro.isa, v16, v15);
+        path = [v7 path];
+        NSLog(&cfstr_CanTSetDataPro.isa, path, v15);
 
         v13 = 0;
       }
@@ -343,17 +343,17 @@ LABEL_16:
 
   else
   {
-    v12 = [v7 path];
-    NSLog(&cfstr_CanTGetDataPro.isa, v12, v11);
+    path2 = [v7 path];
+    NSLog(&cfstr_CanTGetDataPro.isa, path2, v11);
     v13 = 0;
   }
 
   v6 = v11;
-  if (a4)
+  if (error)
   {
 LABEL_14:
     v17 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_15:

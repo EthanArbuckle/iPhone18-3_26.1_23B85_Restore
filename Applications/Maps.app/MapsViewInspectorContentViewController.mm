@@ -1,25 +1,25 @@
 @interface MapsViewInspectorContentViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (MapsViewInspectorContentViewController)initWithLayer:(id)a3;
-- (MapsViewInspectorContentViewController)initWithView:(id)a3;
-- (id)debugSuperLayerAtIndex:(int64_t)a3;
-- (id)debugSuperViewAtIndex:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (MapsViewInspectorContentViewController)initWithLayer:(id)layer;
+- (MapsViewInspectorContentViewController)initWithView:(id)view;
+- (id)debugSuperLayerAtIndex:(int64_t)index;
+- (id)debugSuperViewAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)title;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation MapsViewInspectorContentViewController
 
-- (id)debugSuperLayerAtIndex:(int64_t)a3
+- (id)debugSuperLayerAtIndex:(int64_t)index
 {
   v4 = self->_debugLayer;
   if (v4)
   {
-    v5 = a3 + 1;
+    v5 = index + 1;
     do
     {
       if (!--v5)
@@ -27,23 +27,23 @@
         break;
       }
 
-      v6 = [(CALayer *)v4 superlayer];
+      superlayer = [(CALayer *)v4 superlayer];
 
-      v4 = v6;
+      v4 = superlayer;
     }
 
-    while (v6);
+    while (superlayer);
   }
 
   return v4;
 }
 
-- (id)debugSuperViewAtIndex:(int64_t)a3
+- (id)debugSuperViewAtIndex:(int64_t)index
 {
   v4 = self->_debugView;
   if (v4)
   {
-    v5 = a3 + 1;
+    v5 = index + 1;
     do
     {
       if (!--v5)
@@ -51,32 +51,32 @@
         break;
       }
 
-      v6 = [(UIView *)v4 superview];
+      superview = [(UIView *)v4 superview];
 
-      v4 = v6;
+      v4 = superview;
     }
 
-    while (v6);
+    while (superview);
   }
 
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   debugView = self->_debugView;
-  v6 = [a4 row];
+  v6 = [path row];
   if (debugView)
   {
     v7 = [(MapsViewInspectorContentViewController *)self debugSuperViewAtIndex:v6];
-    v8 = [v7 layer];
-    isKindOfClass = v8 != 0;
+    layer = [v7 layer];
+    isKindOfClass = layer != 0;
   }
 
   else
   {
     v7 = [(MapsViewInspectorContentViewController *)self debugSuperLayerAtIndex:v6];
-    v8 = [v7 delegate];
+    layer = [v7 delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -84,46 +84,46 @@
   return isKindOfClass & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   debugView = self->_debugView;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   if (debugView)
   {
     v9 = [(MapsViewInspectorContentViewController *)self debugSuperViewAtIndex:v8];
     v10 = [MapsViewInspectorContentViewController alloc];
-    v11 = [v9 layer];
-    v12 = [(MapsViewInspectorContentViewController *)v10 initWithLayer:v11];
+    layer = [v9 layer];
+    v12 = [(MapsViewInspectorContentViewController *)v10 initWithLayer:layer];
   }
 
   else
   {
     v9 = [(MapsViewInspectorContentViewController *)self debugSuperLayerAtIndex:v8];
     v13 = [MapsViewInspectorContentViewController alloc];
-    v11 = [v9 delegate];
-    v12 = [(MapsViewInspectorContentViewController *)v13 initWithView:v11];
+    layer = [v9 delegate];
+    v12 = [(MapsViewInspectorContentViewController *)v13 initWithView:layer];
   }
 
   v15 = v12;
 
-  v14 = [(MapsViewInspectorContentViewController *)self navigationController];
-  [v14 pushViewController:v15 animated:1];
+  navigationController = [(MapsViewInspectorContentViewController *)self navigationController];
+  [navigationController pushViewController:v15 animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   v11 = +[UIListContentConfiguration subtitleCellConfiguration];
   debugView = self->_debugView;
-  v13 = [v6 row];
+  v13 = [pathCopy row];
 
   if (debugView)
   {
@@ -133,18 +133,18 @@
       v15 = v14;
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v15 _viewDelegate];
+        _viewDelegate = [v15 _viewDelegate];
       }
 
       else
       {
-        v16 = 0;
+        _viewDelegate = 0;
       }
 
       v20 = [MapsSwiftDemangler demangledStringForClass:objc_opt_class()];
       [v11 setText:v20];
 
-      if (!v16)
+      if (!_viewDelegate)
       {
         goto LABEL_12;
       }
@@ -167,11 +167,11 @@ LABEL_8:
   v18 = [MapsSwiftDemangler demangledStringForClass:objc_opt_class()];
   [v11 setText:v18];
 
-  v19 = [v15 delegate];
+  delegate = [v15 delegate];
 
-  if (v19)
+  if (delegate)
   {
-    v16 = [v15 delegate];
+    _viewDelegate = [v15 delegate];
 LABEL_11:
     v21 = [MapsSwiftDemangler demangledStringForClass:objc_opt_class()];
     [v11 setSecondaryText:v21];
@@ -185,9 +185,9 @@ LABEL_14:
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = a3;
+  viewCopy = view;
   debugView = self->_debugView;
   if (debugView)
   {
@@ -196,12 +196,12 @@ LABEL_14:
     do
     {
       ++v8;
-      v9 = [(UIView *)v7 superview];
+      superview = [(UIView *)v7 superview];
 
-      v7 = v9;
+      v7 = superview;
     }
 
-    while (v9);
+    while (superview);
   }
 
   else
@@ -214,12 +214,12 @@ LABEL_14:
       do
       {
         ++v8;
-        v12 = [v11 superlayer];
+        superlayer = [v11 superlayer];
 
-        v11 = v12;
+        v11 = superlayer;
       }
 
-      while (v12);
+      while (superlayer);
     }
 
     else
@@ -254,58 +254,58 @@ LABEL_14:
 
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setDelegate:self];
-  v9 = [(MapsViewInspectorContentViewController *)self view];
-  [v9 addSubview:self->_tableView];
+  view = [(MapsViewInspectorContentViewController *)self view];
+  [view addSubview:self->_tableView];
 
-  v25 = [(UITableView *)self->_tableView leadingAnchor];
-  v26 = [(MapsViewInspectorContentViewController *)self view];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  view2 = [(MapsViewInspectorContentViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[0] = v23;
-  v21 = [(UITableView *)self->_tableView trailingAnchor];
-  v22 = [(MapsViewInspectorContentViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v10 = [v21 constraintEqualToAnchor:v20];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  view3 = [(MapsViewInspectorContentViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[1] = v10;
-  v11 = [(UITableView *)self->_tableView topAnchor];
-  v12 = [(MapsViewInspectorContentViewController *)self view];
-  v13 = [v12 topAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  view4 = [(MapsViewInspectorContentViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[2] = v14;
-  v15 = [(UITableView *)self->_tableView bottomAnchor];
-  v16 = [(MapsViewInspectorContentViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  view5 = [(MapsViewInspectorContentViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v18;
   v19 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (MapsViewInspectorContentViewController)initWithLayer:(id)a3
+- (MapsViewInspectorContentViewController)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = MapsViewInspectorContentViewController;
   v6 = [(MapsViewInspectorContentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_debugLayer, a3);
+    objc_storeStrong(&v6->_debugLayer, layer);
   }
 
   return v7;
 }
 
-- (MapsViewInspectorContentViewController)initWithView:(id)a3
+- (MapsViewInspectorContentViewController)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = MapsViewInspectorContentViewController;
   v6 = [(MapsViewInspectorContentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_debugView, a3);
+    objc_storeStrong(&v6->_debugView, view);
   }
 
   return v7;

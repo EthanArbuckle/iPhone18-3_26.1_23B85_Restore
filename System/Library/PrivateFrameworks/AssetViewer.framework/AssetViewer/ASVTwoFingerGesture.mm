@@ -1,5 +1,5 @@
 @interface ASVTwoFingerGesture
-- (ASVTwoFingerGesture)initWithFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5 delegate:(id)a6;
+- (ASVTwoFingerGesture)initWithFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source delegate:(id)delegate;
 - (ASVTwoFingerGestureDelegate)delegate;
 - (void)finishGesture;
 - (void)updateGesture;
@@ -10,18 +10,18 @@
 
 @implementation ASVTwoFingerGesture
 
-- (ASVTwoFingerGesture)initWithFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5 delegate:(id)a6
+- (ASVTwoFingerGesture)initWithFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  touchCopy = touch;
+  secondTouchCopy = secondTouch;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = ASVTwoFingerGesture;
-  v14 = [(ASVGesture *)&v30 initWithDataSource:a5];
+  v14 = [(ASVGesture *)&v30 initWithDataSource:source];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v13);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v15->_panThresholdPassed = 0;
     v15->_rotationThresholdPassed = 0;
     v15->_scaleThresholdPassed = 0;
@@ -32,16 +32,16 @@
     snapScalesSet = v15->_snapScalesSet;
     v15->_snapScalesSet = v16;
 
-    objc_storeStrong(&v15->_firstTouch, a3);
-    objc_storeStrong(&v15->_secondTouch, a4);
+    objc_storeStrong(&v15->_firstTouch, touch);
+    objc_storeStrong(&v15->_secondTouch, secondTouch);
     [(ASVTouch *)v15->_firstTouch location];
     *v15->_initialFirstTouchLocation = v18;
     [(ASVTouch *)v15->_secondTouch location];
     *v15->_initialSecondTouchLocation = v19;
     *v15->_initialMidPoint = vmul_f32(vadd_f32(v19, *v15->_initialFirstTouchLocation), 0x3F0000003F000000);
-    v20 = [(ASVGesture *)v15 dataSource];
-    -[ASVGesture setFirstTouchWasOnAsset:](v15, "setFirstTouchWasOnAsset:", [v20 screenPointIsOnAsset:*v15->_initialFirstTouchLocation] | objc_msgSend(v20, "screenPointIsOnAsset:", *v15->_initialMidPoint) | objc_msgSend(v20, "screenPointIsOnAsset:", *v15->_initialSecondTouchLocation));
-    [v20 assetScale];
+    dataSource = [(ASVGesture *)v15 dataSource];
+    -[ASVGesture setFirstTouchWasOnAsset:](v15, "setFirstTouchWasOnAsset:", [dataSource screenPointIsOnAsset:*v15->_initialFirstTouchLocation] | objc_msgSend(dataSource, "screenPointIsOnAsset:", *v15->_initialMidPoint) | objc_msgSend(dataSource, "screenPointIsOnAsset:", *v15->_initialSecondTouchLocation));
+    [dataSource assetScale];
     v15->_assetBaseScale = v21;
     v15->_lastAssetScale = v21;
     v22 = vsub_f32(*v15->_initialFirstTouchLocation, *v15->_initialSecondTouchLocation);
@@ -50,9 +50,9 @@
     v24 = atan2f(v23.f32[0], v23.f32[1]);
     v15->_initialFingerAngle = v24;
     v15->_lastFingerAngle = v24;
-    [v13 minimumObjectScale];
+    [delegateCopy minimumObjectScale];
     v15->_minScale = v25;
-    [v13 maximumObjectScale];
+    [delegateCopy maximumObjectScale];
     v15->_maxScale = v26;
     [ASVSettings floatForKey:@"ASVSettingScaleOvershoot"];
     v15->_scaleOvershoot = v27;
@@ -85,44 +85,44 @@
 
 - (void)updateGesture
 {
-  v15 = [(ASVTwoFingerGesture *)self firstTouch];
-  if ([v15 phase] == 3)
+  firstTouch = [(ASVTwoFingerGesture *)self firstTouch];
+  if ([firstTouch phase] == 3)
   {
 LABEL_6:
 
     return;
   }
 
-  v3 = [(ASVTwoFingerGesture *)self firstTouch];
-  if ([v3 phase] == 4)
+  firstTouch2 = [(ASVTwoFingerGesture *)self firstTouch];
+  if ([firstTouch2 phase] == 4)
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v4 = [(ASVTwoFingerGesture *)self secondTouch];
-  if ([v4 phase] == 3)
+  secondTouch = [(ASVTwoFingerGesture *)self secondTouch];
+  if ([secondTouch phase] == 3)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [(ASVTwoFingerGesture *)self secondTouch];
-  v6 = [v5 phase];
+  secondTouch2 = [(ASVTwoFingerGesture *)self secondTouch];
+  phase = [secondTouch2 phase];
 
-  if (v6 != 4)
+  if (phase != 4)
   {
-    v7 = [(ASVGesture *)self dataSource];
-    [v7 assetScreenPosition];
+    dataSource = [(ASVGesture *)self dataSource];
+    [dataSource assetScreenPosition];
     [(ASVGesture *)self setLatestAssetLocationOnScreen:?];
 
-    v8 = [(ASVTwoFingerGesture *)self firstTouch];
-    [v8 location];
+    firstTouch3 = [(ASVTwoFingerGesture *)self firstTouch];
+    [firstTouch3 location];
     v10 = v9;
 
-    v11 = [(ASVTwoFingerGesture *)self secondTouch];
-    [v11 location];
+    secondTouch3 = [(ASVTwoFingerGesture *)self secondTouch];
+    [secondTouch3 location];
     v13 = v12;
 
     [(ASVTwoFingerGesture *)self updatePanWithFirstTouchLocation:v10 secondTouchLocation:v13 midPoint:COERCE_DOUBLE(vmul_f32(vadd_f32(*&v10, *&v13), 0x3F0000003F000000))];
@@ -168,8 +168,8 @@ LABEL_5:
 
       normalizeRotation(v13 + v14);
       [(ASVTwoFingerGesture *)self setLastFingerAngle:?];
-      v15 = [(ASVTwoFingerGesture *)self delegate];
-      [v15 gestureBeganRotation:self];
+      delegate = [(ASVTwoFingerGesture *)self delegate];
+      [delegate gestureBeganRotation:self];
     }
   }
 
@@ -178,9 +178,9 @@ LABEL_5:
     [(ASVTwoFingerGesture *)self lastFingerAngle];
     normalizeRotation(v5 - v16);
     v18 = v17;
-    v19 = [(ASVTwoFingerGesture *)self delegate];
+    delegate2 = [(ASVTwoFingerGesture *)self delegate];
     LODWORD(v20) = v18;
-    [v19 gesture:self rotatedAssetByDeltaYaw:v20];
+    [delegate2 gesture:self rotatedAssetByDeltaYaw:v20];
 
     *&v21 = v5;
 
@@ -219,8 +219,8 @@ LABEL_5:
       [(ASVTwoFingerGesture *)self setScaleThresholdPassed:1];
       *&v11 = v4;
       [(ASVTwoFingerGesture *)self setBaseDistanceBetweenFingers:v11];
-      v12 = [(ASVTwoFingerGesture *)self delegate];
-      [v12 gestureBeganScaling:self];
+      delegate = [(ASVTwoFingerGesture *)self delegate];
+      [delegate gestureBeganScaling:self];
     }
   }
 
@@ -233,14 +233,14 @@ LABEL_5:
       v15 = v4 / v14;
       [(ASVTwoFingerGesture *)self assetBaseScale];
       v17 = v16 * v15;
-      v18 = [(ASVTwoFingerGesture *)self snapScalesSet];
-      v19 = [v18 allObjects];
+      snapScalesSet = [(ASVTwoFingerGesture *)self snapScalesSet];
+      allObjects = [snapScalesSet allObjects];
 
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v20 = v19;
+      v20 = allObjects;
       v21 = [v20 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v21)
       {
@@ -288,24 +288,24 @@ LABEL_5:
         v24 = 0;
       }
 
-      v33 = [(ASVTwoFingerGesture *)self rubberBand];
+      rubberBand = [(ASVTwoFingerGesture *)self rubberBand];
       *&v34 = v17;
-      [v33 rubberBandOffsetForOffset:v34];
+      [rubberBand rubberBandOffsetForOffset:v34];
       v36 = v35;
 
-      v37 = [(ASVTwoFingerGesture *)self delegate];
-      [v37 gestureStopScaleAnimation];
+      delegate2 = [(ASVTwoFingerGesture *)self delegate];
+      [delegate2 gestureStopScaleAnimation];
 
-      v38 = [(ASVTwoFingerGesture *)self delegate];
+      delegate3 = [(ASVTwoFingerGesture *)self delegate];
       LODWORD(v39) = v36;
-      [v38 gesture:self scaledAssetToScale:v39];
+      [delegate3 gesture:self scaledAssetToScale:v39];
 
       LODWORD(v40) = v36;
       [(ASVTwoFingerGesture *)self setLastAssetScale:v40];
       if (v24)
       {
-        v41 = [(ASVTwoFingerGesture *)self delegate];
-        [v41 gestureDidSnapToScale:self];
+        delegate4 = [(ASVTwoFingerGesture *)self delegate];
+        [delegate4 gestureDidSnapToScale:self];
       }
 
       else
@@ -317,8 +317,8 @@ LABEL_30:
           return;
         }
 
-        v41 = [(ASVTwoFingerGesture *)self delegate];
-        [v41 gestureDidSnapAwayFromScale:self];
+        delegate4 = [(ASVTwoFingerGesture *)self delegate];
+        [delegate4 gestureDidSnapAwayFromScale:self];
       }
 
       goto LABEL_30;
@@ -328,29 +328,29 @@ LABEL_30:
 
 - (void)finishGesture
 {
-  v3 = [(ASVTwoFingerGesture *)self delegate];
-  [v3 gestureStopScaleAnimation];
+  delegate = [(ASVTwoFingerGesture *)self delegate];
+  [delegate gestureStopScaleAnimation];
 
   if ([(ASVTwoFingerGesture *)self scaleThresholdPassed])
   {
-    v4 = [(ASVTwoFingerGesture *)self delegate];
-    [v4 gestureEndedScaling:self];
+    delegate2 = [(ASVTwoFingerGesture *)self delegate];
+    [delegate2 gestureEndedScaling:self];
 
     lastAssetScale = self->_lastAssetScale;
     p_maxScale = &self->_maxScale;
     if (lastAssetScale > self->_maxScale || (p_maxScale = &self->_minScale, lastAssetScale < self->_minScale))
     {
-      v7 = [(ASVTwoFingerGesture *)self delegate];
+      delegate3 = [(ASVTwoFingerGesture *)self delegate];
       *&v8 = self->_lastAssetScale;
       *&v9 = *p_maxScale;
-      [v7 gestureStartScaleAnimationFrom:v8 to:v9];
+      [delegate3 gestureStartScaleAnimationFrom:v8 to:v9];
     }
   }
 
   if ([(ASVTwoFingerGesture *)self rotationThresholdPassed])
   {
-    v10 = [(ASVTwoFingerGesture *)self delegate];
-    [v10 gestureEndedRotation:self];
+    delegate4 = [(ASVTwoFingerGesture *)self delegate];
+    [delegate4 gestureEndedRotation:self];
   }
 }
 

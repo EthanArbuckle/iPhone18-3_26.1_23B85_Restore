@@ -24,8 +24,8 @@
     v10 = *MEMORY[0x277D47048];
     v24[0] = v9;
     v24[1] = v10;
-    v11 = [a1 description];
-    v25[1] = v11;
+    originatorEntitlements = [self description];
+    v25[1] = originatorEntitlements;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
     [v7 errorWithDomain:v8 code:2 userInfo:v12];
     *a4 = v13 = 0;
@@ -33,8 +33,8 @@
 
   else
   {
-    v11 = [v6 originatorEntitlements];
-    v14 = [v11 rb_hasEntitlementDomain:16];
+    originatorEntitlements = [v6 originatorEntitlements];
+    v14 = [originatorEntitlements rb_hasEntitlementDomain:16];
     v13 = v14;
     if (!a4 || (v14 & 1) != 0)
     {
@@ -48,7 +48,7 @@
     v18 = *MEMORY[0x277D47048];
     v22[0] = v17;
     v22[1] = v18;
-    v12 = [a1 description];
+    v12 = [self description];
     v23[1] = v12;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
     *a4 = [v15 errorWithDomain:v16 code:2 userInfo:v19];
@@ -67,13 +67,13 @@ LABEL_9:
   v9 = a5;
   v10 = a3;
   v11 = [v8 alloc];
-  v12 = [a1 endowmentNamespace];
-  v13 = [v9 target];
-  v14 = [v13 environment];
-  v15 = [a1 encodedEndowment];
-  v16 = [v9 assertionID];
+  endowmentNamespace = [self endowmentNamespace];
+  target = [v9 target];
+  environment = [target environment];
+  encodedEndowment = [self encodedEndowment];
+  assertionID = [v9 assertionID];
 
-  v17 = [v11 _initWithNamespace:v12 environment:v14 encodedEndowment:v15 originatingIdentifier:v16 attributePath:a4];
+  v17 = [v11 _initWithNamespace:endowmentNamespace environment:environment encodedEndowment:encodedEndowment originatingIdentifier:assertionID attributePath:a4];
   [v10 addInheritance:v17];
 }
 

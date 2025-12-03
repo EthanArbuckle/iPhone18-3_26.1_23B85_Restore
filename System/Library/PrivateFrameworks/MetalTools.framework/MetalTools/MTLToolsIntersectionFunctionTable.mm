@@ -1,102 +1,102 @@
 @interface MTLToolsIntersectionFunctionTable
 - (MTLResourceID)gpuResourceID;
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3;
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index;
 - (unint64_t)globalBufferOffset;
 - (unint64_t)gpuHandle;
 - (unint64_t)resourceIndex;
 - (unint64_t)uniqueIdentifier;
 - (void)dealloc;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setGlobalBuffer:(id)a3;
-- (void)setGlobalBufferOffset:(unint64_t)a3;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFunction:(id)function atIndex:(unint64_t)index;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setGlobalBuffer:(id)buffer;
+- (void)setGlobalBufferOffset:(unint64_t)offset;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation MTLToolsIntersectionFunctionTable
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
-- (void)setGlobalBuffer:(id)a3
+- (void)setGlobalBuffer:(id)buffer
 {
-  self->_globalBuffer = a3;
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  self->_globalBuffer = buffer;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v5 setGlobalBuffer:v6];
+  [baseObject setGlobalBuffer:baseObject2];
 }
 
 - (unint64_t)globalBufferOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalBufferOffset];
+  return [baseObject globalBufferOffset];
 }
 
-- (void)setGlobalBufferOffset:(unint64_t)a3
+- (void)setGlobalBufferOffset:(unint64_t)offset
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setGlobalBufferOffset:a3];
+  [baseObject setGlobalBufferOffset:offset];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 setBuffer:v9 offset:a4 atIndex:a5];
+  [baseObject setBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  std::vector<objc_object  {objcproto9MTLBuffer}*>::vector[abi:ne200100](__p, a5.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto9MTLBuffer}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v11 = [a3[i] baseObject];
-      *(__p[0] + i) = v11;
+      baseObject = [buffers[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v12 = [(MTLToolsObject *)self baseObject];
-  [v12 setBuffers:__p[0] offsets:a4 withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setBuffers:__p[0] offsets:offsets withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -104,30 +104,30 @@
   }
 }
 
-- (void)setFunction:(id)a3 atIndex:(unint64_t)a4
+- (void)setFunction:(id)function atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [function baseObject];
 
-  [v6 setFunction:v7 atIndex:a4];
+  [baseObject setFunction:baseObject2 atIndex:index];
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto17MTLFunctionHandle}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto17MTLFunctionHandle}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [functions[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setFunctions:__p[0] withRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setFunctions:__p[0] withRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -135,36 +135,36 @@
   }
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setOpaqueTriangleIntersectionFunctionWithSignature:a3 atIndex:a4];
+  [baseObject setOpaqueTriangleIntersectionFunctionWithSignature:signature atIndex:index];
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 setOpaqueTriangleIntersectionFunctionWithSignature:a3 withRange:{location, length}];
+  [baseObject setOpaqueTriangleIntersectionFunctionWithSignature:signature withRange:{location, length}];
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setOpaqueCurveIntersectionFunctionWithSignature:a3 atIndex:a4];
+  [baseObject setOpaqueCurveIntersectionFunctionWithSignature:signature atIndex:index];
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 setOpaqueCurveIntersectionFunctionWithSignature:a3 withRange:{location, length}];
+  [baseObject setOpaqueCurveIntersectionFunctionWithSignature:signature withRange:{location, length}];
 }
 
 - (void)dealloc
@@ -174,30 +174,30 @@
   [(MTLToolsResource *)&v3 dealloc];
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v6 setVisibleFunctionTable:v7 atBufferIndex:a4];
+  [baseObject setVisibleFunctionTable:baseObject2 atBufferIndex:index];
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  std::vector<objc_object  {objcproto23MTLVisibleFunctionTable}*>::vector[abi:ne200100](__p, a4.length);
+  length = range.length;
+  location = range.location;
+  std::vector<objc_object  {objcproto23MTLVisibleFunctionTable}*>::vector[abi:ne200100](__p, range.length);
   if (length)
   {
     for (i = 0; i != length; ++i)
     {
-      v9 = [a3[i] baseObject];
-      *(__p[0] + i) = v9;
+      baseObject = [tables[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 setVisibleFunctionTables:__p[0] withBufferRange:{location, length}];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 setVisibleFunctionTables:__p[0] withBufferRange:{location, length}];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -205,11 +205,11 @@
   }
 }
 
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 bufferAddressAtIndex:a3];
+  return [baseObject bufferAddressAtIndex:index];
 }
 
 @end

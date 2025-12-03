@@ -1,7 +1,7 @@
 @interface BankConnectPushNotificationHandler
 + (id)makeHandler;
 - (_TtC10FinanceKit34BankConnectPushNotificationHandler)init;
-- (void)handlePushNotificationWithPayload:(id)a3;
+- (void)handlePushNotificationWithPayload:(id)payload;
 @end
 
 @implementation BankConnectPushNotificationHandler
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (void)handlePushNotificationWithPayload:(id)a3
+- (void)handlePushNotificationWithPayload:(id)payload
 {
   v4 = sub_1B7800728();
-  v5 = self;
+  selfCopy = self;
   sub_1B72C6814(v4);
 }
 

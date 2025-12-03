@@ -1,11 +1,11 @@
 @interface WFKeyboard
 + (id)sharedKeyboard;
 - (CGRect)keyboardFrame;
-- (CGRect)keyboardFrameInView:(id)a3;
+- (CGRect)keyboardFrameInView:(id)view;
 - (WFKeyboard)init;
 - (void)dealloc;
-- (void)keyboardWillChangeFrame:(id)a3;
-- (void)keyboardWillChangeVisible:(id)a3;
+- (void)keyboardWillChangeFrame:(id)frame;
+- (void)keyboardWillChangeVisible:(id)visible;
 @end
 
 @implementation WFKeyboard
@@ -36,11 +36,11 @@ void __28__WFKeyboard_sharedKeyboard__block_invoke()
   v2 = [(WFKeyboard *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_keyboardWillChangeVisible_ name:*MEMORY[0x277D76C60] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardWillChangeVisible_ name:*MEMORY[0x277D76C50] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
-    [v3 addObserver:v2 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x277D76BA8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillChangeVisible_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillChangeVisible_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x277D76BA8] object:0];
   }
 
   return v2;
@@ -59,29 +59,29 @@ void __28__WFKeyboard_sharedKeyboard__block_invoke()
   return result;
 }
 
-- (CGRect)keyboardFrameInView:(id)a3
+- (CGRect)keyboardFrameInView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  viewCopy = view;
+  window = [viewCopy window];
+  windowScene = [window windowScene];
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  v8 = [v7 coordinateSpace];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  coordinateSpace = [mainScreen coordinateSpace];
+  [viewCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v4 coordinateSpace];
-  [v8 convertRect:v17 fromCoordinateSpace:{v10, v12, v14, v16}];
+  coordinateSpace2 = [viewCopy coordinateSpace];
+  [coordinateSpace convertRect:coordinateSpace2 fromCoordinateSpace:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [v7 coordinateSpace];
-  v27 = [v6 coordinateSpace];
-  [v26 convertRect:v27 fromCoordinateSpace:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+  coordinateSpace3 = [mainScreen coordinateSpace];
+  coordinateSpace4 = [windowScene coordinateSpace];
+  [coordinateSpace3 convertRect:coordinateSpace4 fromCoordinateSpace:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -100,10 +100,10 @@ void __28__WFKeyboard_sharedKeyboard__block_invoke()
   y = v55.origin.y;
   width = v55.size.width;
   height = v55.size.height;
-  v40 = [v4 coordinateSpace];
+  coordinateSpace5 = [viewCopy coordinateSpace];
 
-  v41 = [v7 coordinateSpace];
-  [v40 convertRect:v41 toCoordinateSpace:{x, y, width, height}];
+  coordinateSpace6 = [mainScreen coordinateSpace];
+  [coordinateSpace5 convertRect:coordinateSpace6 toCoordinateSpace:{x, y, width, height}];
   v43 = v42;
   v45 = v44;
   v47 = v46;
@@ -132,55 +132,55 @@ void __28__WFKeyboard_sharedKeyboard__block_invoke()
   return result;
 }
 
-- (void)keyboardWillChangeFrame:(id)a3
+- (void)keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [frame userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   self->_keyboardFrame.origin.x = v6;
   self->_keyboardFrame.origin.y = v7;
   self->_keyboardFrame.size.width = v8;
   self->_keyboardFrame.size.height = v9;
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"WFKeyboardWillChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WFKeyboardWillChangeNotification" object:self];
 }
 
-- (void)keyboardWillChangeVisible:(id)a3
+- (void)keyboardWillChangeVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [v4 name];
-  self->_visible = [v5 isEqualToString:*MEMORY[0x277D76C60]];
+  visibleCopy = visible;
+  name = [visibleCopy name];
+  self->_visible = [name isEqualToString:*MEMORY[0x277D76C60]];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [visibleCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v7 CGRectValue];
   self->_keyboardFrame.origin.x = v8;
   self->_keyboardFrame.origin.y = v9;
   self->_keyboardFrame.size.width = v10;
   self->_keyboardFrame.size.height = v11;
 
-  v12 = [v4 userInfo];
-  v13 = [v12 objectForKey:*MEMORY[0x277D76B70]];
+  userInfo2 = [visibleCopy userInfo];
+  v13 = [userInfo2 objectForKey:*MEMORY[0x277D76B70]];
   self->_animationCurve = [v13 unsignedIntegerValue];
 
-  v14 = [v4 userInfo];
+  userInfo3 = [visibleCopy userInfo];
 
-  v15 = [v14 objectForKey:*MEMORY[0x277D76B78]];
+  v15 = [userInfo3 objectForKey:*MEMORY[0x277D76B78]];
   [v15 doubleValue];
   self->_animationDuration = v16;
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 postNotificationName:@"WFKeyboardWillChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WFKeyboardWillChangeNotification" object:self];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
 
   v4.receiver = self;
   v4.super_class = WFKeyboard;

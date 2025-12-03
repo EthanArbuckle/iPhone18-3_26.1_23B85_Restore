@@ -1,35 +1,35 @@
 @interface NURenderPipelineVideoSampleSlice
-- (BOOL)containsMetadataSampleForKey:(id)a3;
-- (BOOL)containsVideoFrameForKey:(id)a3;
-- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)a3;
-- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)a3 videoFrames:(id)a4 metadataSamples:(id)a5;
+- (BOOL)containsMetadataSampleForKey:(id)key;
+- (BOOL)containsVideoFrameForKey:(id)key;
+- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)time;
+- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)time videoFrames:(id)frames metadataSamples:(id)samples;
 - (id)description;
 @end
 
 @implementation NURenderPipelineVideoSampleSlice
 
-- (BOOL)containsMetadataSampleForKey:(id)a3
+- (BOOL)containsMetadataSampleForKey:(id)key
 {
-  v3 = [(NURenderPipelineVideoSampleSlice *)self metadataSampleFromKey:a3];
+  v3 = [(NURenderPipelineVideoSampleSlice *)self metadataSampleFromKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)containsVideoFrameForKey:(id)a3
+- (BOOL)containsVideoFrameForKey:(id)key
 {
-  v3 = [(NURenderPipelineVideoSampleSlice *)self videoFrameFromKey:a3];
+  v3 = [(NURenderPipelineVideoSampleSlice *)self videoFrameFromKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)a3 videoFrames:(id)a4 metadataSamples:(id)a5
+- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)time videoFrames:(id)frames metadataSamples:(id)samples
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ((a3->var2 & 1) == 0)
+  framesCopy = frames;
+  samplesCopy = samples;
+  if ((time->var2 & 1) == 0)
   {
     v18 = NUAssertLogger_1288();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v39;
         v69 = 2114;
@@ -62,8 +62,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -72,7 +72,7 @@
     _NUAssertFailHandler("[NURenderPipelineVideoSampleSlice initWithFrameTime:videoFrames:metadataSamples:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 322, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "CMTIME_IS_VALID(frameTime)");
   }
 
-  if (!v8)
+  if (!framesCopy)
   {
     v25 = NUAssertLogger_1288();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -93,8 +93,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v48;
         v69 = 2114;
@@ -105,8 +105,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -115,8 +115,8 @@
     _NUAssertFailHandler("[NURenderPipelineVideoSampleSlice initWithFrameTime:videoFrames:metadataSamples:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 323, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "videoFrames != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = samplesCopy;
+  if (!samplesCopy)
   {
     v32 = NUAssertLogger_1288();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -137,8 +137,8 @@
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v58 callStackSymbols];
+        v61 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v57;
         v69 = 2114;
@@ -149,8 +149,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -162,7 +162,7 @@
   v66.receiver = self;
   v66.super_class = NURenderPipelineVideoSampleSlice;
   v11 = [(NURenderPipelineVideoSampleSlice *)&v66 init];
-  v12 = [v8 copy];
+  v12 = [framesCopy copy];
   v13 = *(v11 + 1);
   *(v11 + 1) = v12;
 
@@ -170,17 +170,17 @@
   v15 = *(v11 + 2);
   *(v11 + 2) = v14;
 
-  v16 = *&a3->var0;
-  *(v11 + 5) = a3->var3;
+  v16 = *&time->var0;
+  *(v11 + 5) = time->var3;
   *(v11 + 24) = v16;
 
   return v11;
 }
 
-- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)a3
+- (NURenderPipelineVideoSampleSlice)initWithFrameTime:(id *)time
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     v4 = NUAssertLogger_1288();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -201,8 +201,8 @@
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.var0) = 138543618;
         *(&buf.var0 + 4) = v11;
         LOWORD(buf.var2) = 2114;
@@ -213,8 +213,8 @@
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.var0) = 138543362;
       *(&buf.var0 + 4) = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -223,15 +223,15 @@
     _NUAssertFailHandler("[NURenderPipelineVideoSampleSlice initWithFrameTime:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderPipelineState.m", 316, @"Invalid parameter not satisfying: %s", v16, v17, v18, v19, "CMTIME_IS_VALID(frameTime)");
   }
 
-  buf = *a3;
+  buf = *time;
   return [(NURenderPipelineVideoSampleSlice *)self initWithFrameTime:&buf videoFrames:MEMORY[0x1E695E0F8] metadataSamples:MEMORY[0x1E695E0F8]];
 }
 
 - (id)description
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(NSDictionary *)self->_videoFrames allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [(NSDictionary *)self->_videoFrames allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   time = self->_frameTime;
@@ -295,7 +295,7 @@
   v22[2] = __47__NURenderPipelineVideoSampleSlice_description__block_invoke_2;
   v22[3] = &unk_1E8109498;
   v18 = v5;
-  v24 = self;
+  selfCopy = self;
   v25 = &__block_literal_global_1392;
   v23 = v18;
   [(NSDictionary *)metadataSamples enumerateKeysAndObjectsUsingBlock:v22];

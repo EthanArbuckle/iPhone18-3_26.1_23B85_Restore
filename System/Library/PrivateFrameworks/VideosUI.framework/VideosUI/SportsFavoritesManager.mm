@@ -1,10 +1,10 @@
 @interface SportsFavoritesManager
-- (void)handleFavoriteRequestDidFinish:(id)a3;
+- (void)handleFavoriteRequestDidFinish:(id)finish;
 @end
 
 @implementation SportsFavoritesManager
 
-- (void)handleFavoriteRequestDidFinish:(id)a3
+- (void)handleFavoriteRequestDidFinish:(id)finish
 {
   v3 = sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();

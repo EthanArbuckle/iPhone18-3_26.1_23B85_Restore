@@ -1,17 +1,17 @@
 @interface VUIMetricsRenderEventListViewController
-- (VUIMetricsRenderEventListViewController)initWithEvents:(id)a3;
-- (VUIMetricsRenderEventListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (VUIMetricsRenderEventListViewController)initWithEvents:(id)events;
+- (VUIMetricsRenderEventListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation VUIMetricsRenderEventListViewController
 
-- (VUIMetricsRenderEventListViewController)initWithEvents:(id)a3
+- (VUIMetricsRenderEventListViewController)initWithEvents:(id)events
 {
   type metadata accessor for MetricsRenderEvent();
   v3 = sub_1E42062B4();
@@ -20,34 +20,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MetricsRenderEventListViewController.viewDidLoad()();
 }
 
-- (VUIMetricsRenderEventListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VUIMetricsRenderEventListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MetricsRenderEventListViewController.init(nibName:bundle:)();
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  MetricsRenderEventListViewController.tableView(_:willDisplayHeaderView:forSection:)(v10, v9, a5);
+  viewCopy = view;
+  headerViewCopy = headerView;
+  selfCopy = self;
+  MetricsRenderEventListViewController.tableView(_:willDisplayHeaderView:forSection:)(selfCopy, headerViewCopy, section);
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  object = MetricsRenderEventListViewController.tableView(_:titleForHeaderInSection:)(v7, a4).value._object;
+  viewCopy = view;
+  selfCopy = self;
+  object = MetricsRenderEventListViewController.tableView(_:titleForHeaderInSection:)(selfCopy, section).value._object;
 
   if (object)
   {
@@ -62,7 +62,7 @@
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();
@@ -77,7 +77,7 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();
@@ -93,7 +93,7 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();

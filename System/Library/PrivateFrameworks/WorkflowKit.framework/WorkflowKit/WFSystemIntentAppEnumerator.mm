@@ -1,15 +1,15 @@
 @interface WFSystemIntentAppEnumerator
 - (WFSystemIntentAppEnumerator)init;
-- (id)supportedIdentifiersForIntentClassName:(id)a3 includingUserActivityBasedApps:(BOOL)a4;
+- (id)supportedIdentifiersForIntentClassName:(id)name includingUserActivityBasedApps:(BOOL)apps;
 - (void)dealloc;
 - (void)enumerate;
 @end
 
 @implementation WFSystemIntentAppEnumerator
 
-- (id)supportedIdentifiersForIntentClassName:(id)a3 includingUserActivityBasedApps:(BOOL)a4
+- (id)supportedIdentifiersForIntentClassName:(id)name includingUserActivityBasedApps:(BOOL)apps
 {
-  v6 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -21,11 +21,11 @@
   v11[1] = 3221225472;
   v11[2] = __101__WFSystemIntentAppEnumerator_supportedIdentifiersForIntentClassName_includingUserActivityBasedApps___block_invoke;
   v11[3] = &unk_1E8375530;
-  v14 = a4;
-  v12 = v6;
+  appsCopy = apps;
+  v12 = nameCopy;
   v13 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = nameCopy;
   dispatch_sync(queue, v11);
   v9 = v16[5];
 
@@ -106,8 +106,8 @@ void __101__WFSystemIntentAppEnumerator_supportedIdentifiersForIntentClassName_i
 
               v8 = *(*(&v82 + 1) + 8 * i);
               v9 = objc_autoreleasePoolPush();
-              v10 = [v8 if_extensionAttributesDictionary];
-              v11 = [v10 objectForKeyedSubscript:v56];
+              if_extensionAttributesDictionary = [v8 if_extensionAttributesDictionary];
+              v11 = [if_extensionAttributesDictionary objectForKeyedSubscript:v56];
 
               if (v11)
               {
@@ -132,10 +132,10 @@ void __101__WFSystemIntentAppEnumerator_supportedIdentifiersForIntentClassName_i
 
               if ([v13 count])
               {
-                v14 = [v8 containingBundleRecord];
-                if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+                containingBundleRecord = [v8 containingBundleRecord];
+                if (containingBundleRecord && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
-                  if (![v14 wf_isAvailableInContext:0])
+                  if (![containingBundleRecord wf_isAvailableInContext:0])
                   {
 LABEL_33:
 
@@ -146,23 +146,23 @@ LABEL_33:
                 else
                 {
 
-                  v14 = 0;
+                  containingBundleRecord = 0;
                 }
 
-                v15 = [v14 bundleIdentifier];
-                v16 = v15;
+                bundleIdentifier = [containingBundleRecord bundleIdentifier];
+                v16 = bundleIdentifier;
                 v64 = v9;
-                if (v15)
+                if (bundleIdentifier)
                 {
-                  v17 = v15;
+                  bundleIdentifier2 = bundleIdentifier;
                 }
 
                 else
                 {
-                  v17 = [v8 bundleIdentifier];
+                  bundleIdentifier2 = [v8 bundleIdentifier];
                 }
 
-                v18 = v17;
+                v18 = bundleIdentifier2;
 
                 v80 = 0u;
                 v81 = 0u;
@@ -245,18 +245,18 @@ LABEL_34:
 
         v29 = *(*(&v74 + 1) + 8 * v28);
         v30 = objc_autoreleasePoolPush();
-        v31 = [v29 supportedIntents];
-        v32 = [v29 if_userActivityTypes];
-        if (([v31 count] || objc_msgSend(v32, "count")) && objc_msgSend(v29, "wf_isAvailableInContext:", 0))
+        supportedIntents = [v29 supportedIntents];
+        if_userActivityTypes = [v29 if_userActivityTypes];
+        if (([supportedIntents count] || objc_msgSend(if_userActivityTypes, "count")) && objc_msgSend(v29, "wf_isAvailableInContext:", 0))
         {
-          v63 = v32;
+          v63 = if_userActivityTypes;
           v65 = v30;
-          v33 = [v29 bundleIdentifier];
+          bundleIdentifier3 = [v29 bundleIdentifier];
           v70 = 0u;
           v71 = 0u;
           v72 = 0u;
           v73 = 0u;
-          v34 = v31;
+          v34 = supportedIntents;
           v35 = [v34 countByEnumeratingWithState:&v70 objects:v91 count:16];
           if (v35)
           {
@@ -272,8 +272,8 @@ LABEL_34:
                 }
 
                 v39 = *(*(&v70 + 1) + 8 * k);
-                WFInsertIdentifierForKey(v2, v39, v33);
-                WFInsertIdentifierForKey(v3, v39, v33);
+                WFInsertIdentifierForKey(v2, v39, bundleIdentifier3);
+                WFInsertIdentifierForKey(v3, v39, bundleIdentifier3);
               }
 
               v36 = [v34 countByEnumeratingWithState:&v70 objects:v91 count:16];
@@ -286,7 +286,7 @@ LABEL_34:
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v32 = v63;
+          if_userActivityTypes = v63;
           v40 = v63;
           v41 = [v40 countByEnumeratingWithState:&v66 objects:v90 count:16];
           if (v41)
@@ -302,7 +302,7 @@ LABEL_34:
                   objc_enumerationMutation(v40);
                 }
 
-                WFInsertIdentifierForKey(v3, *(*(&v66 + 1) + 8 * m), v33);
+                WFInsertIdentifierForKey(v3, *(*(&v66 + 1) + 8 * m), bundleIdentifier3);
               }
 
               v42 = [v40 countByEnumeratingWithState:&v66 objects:v90 count:16];
@@ -357,14 +357,14 @@ LABEL_34:
     v2->_queue = v3;
 
     objc_initWeak(&location, v2);
-    v5 = [*MEMORY[0x1E6963548] UTF8String];
+    uTF8String = [*MEMORY[0x1E6963548] UTF8String];
     v6 = v2->_queue;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __35__WFSystemIntentAppEnumerator_init__block_invoke;
     v9[3] = &unk_1E837C5F8;
     objc_copyWeak(&v10, &location);
-    notify_register_dispatch(v5, &v2->_token, v6, v9);
+    notify_register_dispatch(uTF8String, &v2->_token, v6, v9);
     v7 = v2;
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);

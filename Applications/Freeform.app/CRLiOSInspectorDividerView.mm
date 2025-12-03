@@ -1,24 +1,24 @@
 @interface CRLiOSInspectorDividerView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)result withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CRLiOSInspectorDividerView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)result withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CRLiOSInspectorDividerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CRLiOSInspectorDividerView
 
-- (CRLiOSInspectorDividerView)initWithFrame:(CGRect)a3
+- (CRLiOSInspectorDividerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CRLiOSInspectorDividerView;
-  v3 = [(CRLiOSInspectorDividerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSInspectorDividerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     divider = v3->_divider;
     v3->_divider = v4;
 
-    v6 = [objc_opt_class() defaultDividerColor];
-    [(UIView *)v3->_divider setBackgroundColor:v6];
+    defaultDividerColor = [objc_opt_class() defaultDividerColor];
+    [(UIView *)v3->_divider setBackgroundColor:defaultDividerColor];
 
     [(CRLiOSInspectorDividerView *)v3 addSubview:v3->_divider];
   }
@@ -37,8 +37,8 @@
   v8 = v7;
   v10 = v9;
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  preferredContentSizeCategory = [v11 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -81,7 +81,7 @@
   [(UIView *)self->_divider setFrame:16.0, v16, v15, v14];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)result withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)result withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   v5 = 16.0;
   result.height = v5;

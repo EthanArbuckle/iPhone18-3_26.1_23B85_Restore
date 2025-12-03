@@ -1,27 +1,27 @@
 @interface SUUIProductPageInAppPurchaseTableCell
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setIndexString:(id)a3;
-- (void)setPriceString:(id)a3;
-- (void)setProductName:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setIndexString:(id)string;
+- (void)setPriceString:(id)string;
+- (void)setProductName:(id)name;
 @end
 
 @implementation SUUIProductPageInAppPurchaseTableCell
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v15 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v15 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     indexLabel = self->_indexLabel;
-    v7 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)indexLabel setTextColor:v7];
+      [(UILabel *)indexLabel setTextColor:secondaryTextColor];
     }
 
     else
@@ -31,10 +31,10 @@
     }
 
     priceLabel = self->_priceLabel;
-    v10 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v10)
+    secondaryTextColor2 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)priceLabel setTextColor:v10];
+      [(UILabel *)priceLabel setTextColor:secondaryTextColor2];
     }
 
     else
@@ -44,29 +44,29 @@
     }
 
     nameLabel = self->_nameLabel;
-    v13 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v13)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UILabel *)nameLabel setTextColor:v13];
+      [(UILabel *)nameLabel setTextColor:primaryTextColor];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)nameLabel setTextColor:v14];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)nameLabel setTextColor:blackColor];
     }
 
-    v5 = v15;
+    schemeCopy = v15;
   }
 }
 
-- (void)setIndexString:(id)a3
+- (void)setIndexString:(id)string
 {
-  v18 = a3;
-  v4 = [(SUUIProductPageInAppPurchaseTableCell *)self indexString];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  stringCopy = string;
+  indexString = [(SUUIProductPageInAppPurchaseTableCell *)self indexString];
+  if (indexString != stringCopy && ([indexString isEqualToString:stringCopy] & 1) == 0)
   {
-    v5 = [v18 length];
+    v5 = [stringCopy length];
     indexLabel = self->_indexLabel;
     if (v5)
     {
@@ -77,8 +77,8 @@
         self->_indexLabel = v7;
 
         v9 = self->_indexLabel;
-        v10 = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_indexLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -86,10 +86,10 @@
 
         [(UILabel *)self->_indexLabel setTextAlignment:1];
         v13 = self->_indexLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
@@ -98,13 +98,13 @@
           [(UILabel *)v13 setTextColor:v16];
         }
 
-        v17 = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v17 addSubview:self->_indexLabel];
+        contentView = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_indexLabel];
 
         indexLabel = self->_indexLabel;
       }
 
-      [(UILabel *)indexLabel setText:v18];
+      [(UILabel *)indexLabel setText:stringCopy];
     }
 
     else
@@ -118,13 +118,13 @@
   }
 }
 
-- (void)setPriceString:(id)a3
+- (void)setPriceString:(id)string
 {
-  v18 = a3;
-  v4 = [(SUUIProductPageInAppPurchaseTableCell *)self priceString];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  stringCopy = string;
+  priceString = [(SUUIProductPageInAppPurchaseTableCell *)self priceString];
+  if (priceString != stringCopy && ([priceString isEqualToString:stringCopy] & 1) == 0)
   {
-    v5 = [v18 length];
+    v5 = [stringCopy length];
     priceLabel = self->_priceLabel;
     if (v5)
     {
@@ -135,18 +135,18 @@
         self->_priceLabel = v7;
 
         v9 = self->_priceLabel;
-        v10 = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_priceLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_priceLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
@@ -155,13 +155,13 @@
           [(UILabel *)v13 setTextColor:v16];
         }
 
-        v17 = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v17 addSubview:self->_priceLabel];
+        contentView = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_priceLabel];
 
         priceLabel = self->_priceLabel;
       }
 
-      [(UILabel *)priceLabel setText:v18];
+      [(UILabel *)priceLabel setText:stringCopy];
       [(UILabel *)self->_priceLabel sizeToFit];
     }
 
@@ -176,13 +176,13 @@
   }
 }
 
-- (void)setProductName:(id)a3
+- (void)setProductName:(id)name
 {
-  v18 = a3;
-  v4 = [(SUUIProductPageInAppPurchaseTableCell *)self productName];
-  if (v4 != v18 && ([v4 isEqualToString:v18] & 1) == 0)
+  nameCopy = name;
+  productName = [(SUUIProductPageInAppPurchaseTableCell *)self productName];
+  if (productName != nameCopy && ([productName isEqualToString:nameCopy] & 1) == 0)
   {
-    v5 = [v18 length];
+    v5 = [nameCopy length];
     nameLabel = self->_nameLabel;
     if (v5)
     {
@@ -193,33 +193,33 @@
         self->_nameLabel = v7;
 
         v9 = self->_nameLabel;
-        v10 = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_nameLabel;
         v12 = [MEMORY[0x277D74300] boldSystemFontOfSize:14.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_nameLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v14)
+        primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:primaryTextColor];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v16];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:blackColor];
         }
 
-        v17 = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v17 addSubview:self->_nameLabel];
+        contentView = [(SUUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_nameLabel];
 
         nameLabel = self->_nameLabel;
       }
 
-      [(UILabel *)nameLabel setText:v18];
+      [(UILabel *)nameLabel setText:nameCopy];
     }
 
     else
@@ -287,16 +287,16 @@
   [(SUUITableViewCell *)&v24 layoutSubviews];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   indexLabel = self->_indexLabel;
-  v5 = a3;
-  [(UILabel *)indexLabel setBackgroundColor:v5];
-  [(UILabel *)self->_nameLabel setBackgroundColor:v5];
-  [(UILabel *)self->_priceLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)indexLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_nameLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_priceLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIProductPageInAppPurchaseTableCell;
-  [(SUUIProductPageInAppPurchaseTableCell *)&v6 setBackgroundColor:v5];
+  [(SUUIProductPageInAppPurchaseTableCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (UIEdgeInsets)contentInsets

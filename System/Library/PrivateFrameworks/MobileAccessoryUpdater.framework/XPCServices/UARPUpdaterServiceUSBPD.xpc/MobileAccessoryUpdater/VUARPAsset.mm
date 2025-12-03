@@ -1,21 +1,21 @@
 @interface VUARPAsset
-- (BOOL)assetAllHeadersAndMetaDataComplete:(id)a3 error:(id *)a4;
-- (BOOL)assetMetaDataComplete:(id)a3 error:(id *)a4;
-- (BOOL)assetMetaDataTLV:(id)a3 type:(unsigned int)a4 length:(unsigned int)a5 value:(char *)a6 error:(id *)a7;
-- (BOOL)assetReady:(id)a3 error:(id *)a4;
-- (BOOL)getBytesAtOffset:(unsigned int)a3 accessory:(id)a4 buffer:(void *)a5 length:(unsigned __int16)a6 bytesCopied:(unsigned __int16 *)a7;
-- (BOOL)isAcceptablePayloadVersion:(id)a3 error:(id *)a4;
-- (BOOL)payloadDataComplete:(id)a3 error:(id *)a4;
-- (BOOL)payloadMatchesAtIndex:(id)a3 index:(unint64_t)a4;
-- (BOOL)payloadMetaDataTLV:(id)a3 type:(unsigned int)a4 length:(unsigned int)a5 value:(char *)a6 error:(id *)a7;
-- (BOOL)payloadReady:(id)a3 error:(id *)a4;
-- (BOOL)selectMatchingPayloadIndex:(id)a3 error:(id *)a4;
-- (BOOL)setBytesAtOffset:(unsigned int)a3 accessory:(id)a4 buffer:(void *)a5 length:(unsigned __int16)a6;
+- (BOOL)assetAllHeadersAndMetaDataComplete:(id)complete error:(id *)error;
+- (BOOL)assetMetaDataComplete:(id)complete error:(id *)error;
+- (BOOL)assetMetaDataTLV:(id)v type:(unsigned int)type length:(unsigned int)length value:(char *)value error:(id *)error;
+- (BOOL)assetReady:(id)ready error:(id *)error;
+- (BOOL)getBytesAtOffset:(unsigned int)offset accessory:(id)accessory buffer:(void *)buffer length:(unsigned __int16)length bytesCopied:(unsigned __int16 *)copied;
+- (BOOL)isAcceptablePayloadVersion:(id)version error:(id *)error;
+- (BOOL)payloadDataComplete:(id)complete error:(id *)error;
+- (BOOL)payloadMatchesAtIndex:(id)index index:(unint64_t)a4;
+- (BOOL)payloadMetaDataTLV:(id)v type:(unsigned int)type length:(unsigned int)length value:(char *)value error:(id *)error;
+- (BOOL)payloadReady:(id)ready error:(id *)error;
+- (BOOL)selectMatchingPayloadIndex:(id)index error:(id *)error;
+- (BOOL)setBytesAtOffset:(unsigned int)offset accessory:(id)accessory buffer:(void *)buffer length:(unsigned __int16)length;
 - (UARPAssetVersion)assetVersion;
 - (VUARPAsset)init;
-- (VUARPAsset)initWithLayer2Asset:(uarpPlatformAsset *)a3 controller:(id)a4;
-- (id)initSolicitedDynamicAsset:(id)a3 controller:(id)a4;
-- (void)abandonAsset:(id)a3 reason:(unsigned __int16)a4;
+- (VUARPAsset)initWithLayer2Asset:(uarpPlatformAsset *)asset controller:(id)controller;
+- (id)initSolicitedDynamicAsset:(id)asset controller:(id)controller;
+- (void)abandonAsset:(id)asset reason:(unsigned __int16)reason;
 - (void)setCallbacks;
 @end
 
@@ -28,9 +28,9 @@
   return 0;
 }
 
-- (VUARPAsset)initWithLayer2Asset:(uarpPlatformAsset *)a3 controller:(id)a4
+- (VUARPAsset)initWithLayer2Asset:(uarpPlatformAsset *)asset controller:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = VUARPAsset;
   v8 = [(VUARPAsset *)&v12 init];
@@ -40,22 +40,22 @@
     log = v8->_log;
     v8->_log = v9;
 
-    v8->_uarpAssetInternal = a3;
+    v8->_uarpAssetInternal = asset;
     [(VUARPAsset *)v8 setCallbacks];
-    objc_storeStrong(&v8->_uarpController, a4);
+    objc_storeStrong(&v8->_uarpController, controller);
   }
 
   return v8;
 }
 
-- (id)initSolicitedDynamicAsset:(id)a3 controller:(id)a4
+- (id)initSolicitedDynamicAsset:(id)asset controller:(id)controller
 {
-  v7 = a3;
-  v8 = [(VUARPAsset *)self initWithLayer2Asset:0 controller:a4];
+  assetCopy = asset;
+  v8 = [(VUARPAsset *)self initWithLayer2Asset:0 controller:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetTag, a3);
+    objc_storeStrong(&v8->_assetTag, asset);
     assetTag = v9->_assetTag;
     v11 = uarpDynamicAssetURL();
     url = v9->_url;
@@ -95,9 +95,9 @@
   return v2;
 }
 
-- (BOOL)assetReady:(id)a3 error:(id *)a4
+- (BOOL)assetReady:(id)ready error:(id *)error
 {
-  v5 = uarpPlatformEndpointPayloadRequestAllHeadersAndMetaData([a3 uarpEndpoint], self->_uarpAssetInternal);
+  v5 = uarpPlatformEndpointPayloadRequestAllHeadersAndMetaData([ready uarpEndpoint], self->_uarpAssetInternal);
   if (v5 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     sub_10002547C();
@@ -106,22 +106,22 @@
   return v5 == 0;
 }
 
-- (BOOL)assetMetaDataTLV:(id)a3 type:(unsigned int)a4 length:(unsigned int)a5 value:(char *)a6 error:(id *)a7
+- (BOOL)assetMetaDataTLV:(id)v type:(unsigned int)type length:(unsigned int)length value:(char *)value error:(id *)error
 {
-  v11 = a3;
+  vCopy = v;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v14[0] = 67109632;
-    v14[1] = a4;
+    v14[1] = type;
     v15 = 1024;
-    v16 = a5;
+    lengthCopy = length;
     v17 = 2048;
-    v18 = a6;
+    valueCopy = value;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Asset TLV T = 0x%08x, L = %d, V = %p", v14, 0x18u);
   }
 
-  if (a4 == -858619645 && a5 == 4 && *a6)
+  if (type == -858619645 && length == 4 && *value)
   {
     self->_ignoreVersion = 1;
   }
@@ -129,21 +129,21 @@
   return 1;
 }
 
-- (BOOL)assetMetaDataComplete:(id)a3 error:(id *)a4
+- (BOOL)assetMetaDataComplete:(id)complete error:(id *)error
 {
-  v5 = a3;
+  completeCopy = complete;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[VUARPAsset assetMetaDataComplete:error:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Checking version of asset %@", &v10, 0x16u);
   }
 
   self->_payloadIndex = 0;
-  v7 = uarpPlatformEndpointAssetSetPayloadIndex([v5 uarpEndpoint], self->_uarpAssetInternal, self->_payloadIndex);
+  v7 = uarpPlatformEndpointAssetSetPayloadIndex([completeCopy uarpEndpoint], self->_uarpAssetInternal, self->_payloadIndex);
   if (v7)
   {
     v8 = self->_log;
@@ -156,14 +156,14 @@
   return v7 == 0;
 }
 
-- (BOOL)payloadReady:(id)a3 error:(id *)a4
+- (BOOL)payloadReady:(id)ready error:(id *)error
 {
-  v6 = a3;
-  if ([v6 payloadReady:self error:a4])
+  readyCopy = ready;
+  if ([readyCopy payloadReady:self error:error])
   {
-    if (uarpPlatformEndpointPayloadRequestMetaData([v6 uarpEndpoint], self->_uarpAssetInternal) == 40)
+    if (uarpPlatformEndpointPayloadRequestMetaData([readyCopy uarpEndpoint], self->_uarpAssetInternal) == 40)
     {
-      v7 = [(VUARPAsset *)self payloadMetaDataComplete:v6 error:a4];
+      v7 = [(VUARPAsset *)self payloadMetaDataComplete:readyCopy error:error];
     }
 
     else
@@ -180,28 +180,28 @@
   return v7;
 }
 
-- (BOOL)payloadMetaDataTLV:(id)a3 type:(unsigned int)a4 length:(unsigned int)a5 value:(char *)a6 error:(id *)a7
+- (BOOL)payloadMetaDataTLV:(id)v type:(unsigned int)type length:(unsigned int)length value:(char *)value error:(id *)error
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v11[0] = 67109632;
-    v11[1] = a4;
+    v11[1] = type;
     v12 = 1024;
-    v13 = a5;
+    lengthCopy = length;
     v14 = 2048;
-    v15 = a6;
+    valueCopy = value;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Payload TLV T = 0x%08x, L = %d, V = %p", v11, 0x18u);
   }
 
   return 1;
 }
 
-- (BOOL)payloadDataComplete:(id)a3 error:(id *)a4
+- (BOOL)payloadDataComplete:(id)complete error:(id *)error
 {
-  v6 = a3;
-  if ([v6 payloadDataComplete:self error:a4])
+  completeCopy = complete;
+  if ([completeCopy payloadDataComplete:self error:error])
   {
-    v7 = [v6 fullyStaged:self error:a4];
+    v7 = [completeCopy fullyStaged:self error:error];
   }
 
   else
@@ -212,9 +212,9 @@
   return v7;
 }
 
-- (void)abandonAsset:(id)a3 reason:(unsigned __int16)a4
+- (void)abandonAsset:(id)asset reason:(unsigned __int16)reason
 {
-  if (uarpPlatformEndpointAssetAbandon([a3 uarpEndpoint], -[VUARPController uarpRemoteEndpoint](self->_uarpController, "uarpRemoteEndpoint"), self->_uarpAssetInternal, a4))
+  if (uarpPlatformEndpointAssetAbandon([asset uarpEndpoint], -[VUARPController uarpRemoteEndpoint](self->_uarpController, "uarpRemoteEndpoint"), self->_uarpAssetInternal, reason))
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -224,24 +224,24 @@
   }
 }
 
-- (BOOL)getBytesAtOffset:(unsigned int)a3 accessory:(id)a4 buffer:(void *)a5 length:(unsigned __int16)a6 bytesCopied:(unsigned __int16 *)a7
+- (BOOL)getBytesAtOffset:(unsigned int)offset accessory:(id)accessory buffer:(void *)buffer length:(unsigned __int16)length bytesCopied:(unsigned __int16 *)copied
 {
-  v8 = a6;
+  lengthCopy = length;
   v12 = [NSFileHandle fileHandleForReadingFromURL:self->_url error:0];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 uarpSeekToOffset:a3 error:0];
+    v14 = [v12 uarpSeekToOffset:offset error:0];
     if ((v14 & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_100025624();
     }
 
-    v15 = [v13 uarpReadDataUpToLength:v8 error:0];
-    memmove(a5, [v15 bytes], objc_msgSend(v15, "length"));
-    if (a7)
+    v15 = [v13 uarpReadDataUpToLength:lengthCopy error:0];
+    memmove(buffer, [v15 bytes], objc_msgSend(v15, "length"));
+    if (copied)
     {
-      *a7 = [v15 length];
+      *copied = [v15 length];
     }
 
     [v13 uarpCloseAndReturnError:0];
@@ -255,19 +255,19 @@
   return v14;
 }
 
-- (BOOL)setBytesAtOffset:(unsigned int)a3 accessory:(id)a4 buffer:(void *)a5 length:(unsigned __int16)a6
+- (BOOL)setBytesAtOffset:(unsigned int)offset accessory:(id)accessory buffer:(void *)buffer length:(unsigned __int16)length
 {
-  v6 = a6;
+  lengthCopy = length;
   v10 = [NSFileHandle fileHandleForUpdatingURL:self->_url error:0];
   v11 = v10;
   if (v10)
   {
-    if (([v10 uarpSeekToOffset:a3 error:0] & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
+    if (([v10 uarpSeekToOffset:offset error:0] & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       sub_1000256A0();
     }
 
-    v12 = [NSData dataWithBytes:a5 length:v6];
+    v12 = [NSData dataWithBytes:buffer length:lengthCopy];
     v13 = [v11 uarpWriteData:v12 error:0];
 
     if ((v13 & 1) == 0 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -286,10 +286,10 @@
   return v13;
 }
 
-- (BOOL)payloadMatchesAtIndex:(id)a3 index:(unint64_t)a4
+- (BOOL)payloadMatchesAtIndex:(id)index index:(unint64_t)a4
 {
-  v6 = a3;
-  PayloadInfo = uarpAssetQueryPayloadInfo([v6 uarpEndpoint], self->_uarpAssetInternal, a4, &self->_currentPayloadInfo);
+  indexCopy = index;
+  PayloadInfo = uarpAssetQueryPayloadInfo([indexCopy uarpEndpoint], self->_uarpAssetInternal, a4, &self->_currentPayloadInfo);
   log = self->_log;
   if (PayloadInfo)
   {
@@ -353,8 +353,8 @@
     }
 
     v20 = [UARPAssetTag alloc];
-    v21 = [v6 expectedTag];
-    v22 = [v20 initWithString:v21];
+    expectedTag = [indexCopy expectedTag];
+    v22 = [v20 initWithString:expectedTag];
 
     v23 = [NSString stringWithFormat:@"%c%c%c%c", self->_currentPayloadInfo.payloadTag.char1, self->_currentPayloadInfo.payloadTag.char2, self->_currentPayloadInfo.payloadTag.char3, self->_currentPayloadInfo.payloadTag.char4];
     v24 = [[UARPAssetTag alloc] initWithString:v23];
@@ -364,12 +364,12 @@
   return v9;
 }
 
-- (BOOL)selectMatchingPayloadIndex:(id)a3 error:(id *)a4
+- (BOOL)selectMatchingPayloadIndex:(id)index error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 expectedTag];
+  indexCopy = index;
+  expectedTag = [indexCopy expectedTag];
 
-  if (!v6)
+  if (!expectedTag)
   {
     self->_payloadIndex = 0;
 LABEL_11:
@@ -380,7 +380,7 @@ LABEL_11:
   if (self->_numPayloads)
   {
     v7 = 0;
-    while (![(VUARPAsset *)self payloadMatchesAtIndex:v5 index:v7])
+    while (![(VUARPAsset *)self payloadMatchesAtIndex:indexCopy index:v7])
     {
       if (++v7 >= self->_numPayloads)
       {
@@ -399,30 +399,30 @@ LABEL_6:
     sub_10002583C(log);
   }
 
-  [(VUARPAsset *)self abandonAsset:v5 reason:4];
+  [(VUARPAsset *)self abandonAsset:indexCopy reason:4];
   v9 = 0;
 LABEL_12:
 
   return v9;
 }
 
-- (BOOL)isAcceptablePayloadVersion:(id)a3 error:(id *)a4
+- (BOOL)isAcceptablePayloadVersion:(id)version error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 expectedTag];
+  versionCopy = version;
+  expectedTag = [versionCopy expectedTag];
 
-  if (v6)
+  if (expectedTag)
   {
-    v7 = [v5 fwActiveVersion];
+    fwActiveVersion = [versionCopy fwActiveVersion];
     v8 = [[UARPAssetVersion alloc] initWithMajorVersion:self->_currentPayloadInfo.payloadVersion.major minorVersion:self->_currentPayloadInfo.payloadVersion.minor releaseVersion:self->_currentPayloadInfo.payloadVersion.release buildVersion:self->_currentPayloadInfo.payloadVersion.build];
-    v9 = [v8 compare:v7];
+    v9 = [v8 compare:fwActiveVersion];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v16 = 136315394;
       v17 = "[VUARPAsset isAcceptablePayloadVersion:error:]";
       v18 = 2112;
-      v19 = v7;
+      v19 = fwActiveVersion;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: activeFwVersion <%@>", &v16, 0x16u);
     }
 
@@ -459,7 +459,7 @@ LABEL_15:
 
       v13 = 1536;
 LABEL_14:
-      [(VUARPAsset *)self abandonAsset:v5 reason:v13];
+      [(VUARPAsset *)self abandonAsset:versionCopy reason:v13];
       v14 = 0;
       goto LABEL_15;
     }
@@ -474,11 +474,11 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)assetAllHeadersAndMetaDataComplete:(id)a3 error:(id *)a4
+- (BOOL)assetAllHeadersAndMetaDataComplete:(id)complete error:(id *)error
 {
-  v5 = a3;
+  completeCopy = complete;
   v15 = 0;
-  if (uarpPlatformEndpointAssetQueryNumberOfPayloads([v5 uarpEndpoint], self->_uarpAssetInternal, &v15))
+  if (uarpPlatformEndpointAssetQueryNumberOfPayloads([completeCopy uarpEndpoint], self->_uarpAssetInternal, &v15))
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -499,13 +499,13 @@ LABEL_16:
         sub_100025B90(v14);
       }
 
-      v7 = self;
-      v8 = v5;
+      selfCopy2 = self;
+      v8 = completeCopy;
       v9 = 4;
       goto LABEL_5;
     }
 
-    if (![(VUARPAsset *)self selectMatchingPayloadIndex:v5 error:0])
+    if (![(VUARPAsset *)self selectMatchingPayloadIndex:completeCopy error:0])
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
@@ -515,7 +515,7 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    if (![(VUARPAsset *)self isAcceptablePayloadVersion:v5 error:0])
+    if (![(VUARPAsset *)self isAcceptablePayloadVersion:completeCopy error:0])
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
@@ -525,7 +525,7 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    if (!uarpPlatformEndpointAssetSetPayloadIndex([v5 uarpEndpoint], self->_uarpAssetInternal, self->_payloadIndex))
+    if (!uarpPlatformEndpointAssetSetPayloadIndex([completeCopy uarpEndpoint], self->_uarpAssetInternal, self->_payloadIndex))
     {
       v10 = 1;
       goto LABEL_7;
@@ -538,11 +538,11 @@ LABEL_16:
     }
   }
 
-  v7 = self;
-  v8 = v5;
+  selfCopy2 = self;
+  v8 = completeCopy;
   v9 = 2304;
 LABEL_5:
-  [(VUARPAsset *)v7 abandonAsset:v8 reason:v9];
+  [(VUARPAsset *)selfCopy2 abandonAsset:v8 reason:v9];
 LABEL_6:
   v10 = 0;
 LABEL_7:

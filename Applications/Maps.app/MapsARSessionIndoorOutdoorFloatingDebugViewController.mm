@@ -6,9 +6,9 @@
 - (void)attach;
 - (void)dealloc;
 - (void)detach;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4;
-- (void)setSession:(id)a3;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership;
+- (void)setSession:(id)session;
 - (void)updateDebugText;
 - (void)updateViewForCurrentState;
 - (void)viewDidLoad;
@@ -16,44 +16,44 @@
 
 @implementation MapsARSessionIndoorOutdoorFloatingDebugViewController
 
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership
 {
-  v5 = a4;
-  if ([v5 state] != 1)
+  ownershipCopy = ownership;
+  if ([ownershipCopy state] != 1)
   {
     v4 = objc_opt_new();
-    [v5 runWithConfiguration:v4];
+    [ownershipCopy runWithConfiguration:v4];
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = +[NSDate date];
   v10 = +[NSUserDefaults standardUserDefaults];
   [v10 doubleForKey:@"PedestrianARIndoorOutdoorDetectionInterval"];
   v12 = v11;
 
-  v13 = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v8 lastUIUpdate];
-  if (!v13 || (-[MapsARSessionIndoorOutdoorFloatingDebugViewController lastUIUpdate](v8, "lastUIUpdate"), v14 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceDate:v14], v16 = v15, v14, v13, v16 >= v12))
+  lastUIUpdate = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)selfCopy lastUIUpdate];
+  if (!lastUIUpdate || (-[MapsARSessionIndoorOutdoorFloatingDebugViewController lastUIUpdate](selfCopy, "lastUIUpdate"), v14 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceDate:v14], v16 = v15, v14, lastUIUpdate, v16 >= v12))
   {
-    v17 = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v8 confidenceRingBuffer];
+    confidenceRingBuffer = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)selfCopy confidenceRingBuffer];
     v24[0] = @"indoor";
-    [v7 indoorConfidence];
+    [frameCopy indoorConfidence];
     v18 = [NSNumber numberWithFloat:?];
     v24[1] = @"outdoor";
     v25[0] = v18;
-    [v7 outdoorConfidence];
+    [frameCopy outdoorConfidence];
     v19 = [NSNumber numberWithFloat:?];
     v25[1] = v19;
     v20 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
-    [v17 push:v20];
+    [confidenceRingBuffer push:v20];
 
-    [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v8 setLastUIUpdate:v9];
-    objc_initWeak(&location, v8);
+    [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)selfCopy setLastUIUpdate:v9];
+    objc_initWeak(&location, selfCopy);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100C6CEA8;
@@ -64,7 +64,7 @@
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)updateDebugText
@@ -89,15 +89,15 @@
   v9 = [v7 initWithString:v8 attributes:v26];
   [v5 appendAttributedString:v9];
 
-  v10 = self;
-  objc_sync_enter(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v10;
-  v11 = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v10 confidenceRingBuffer];
-  v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = selfCopy;
+  confidenceRingBuffer = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)selfCopy confidenceRingBuffer];
+  v12 = [confidenceRingBuffer countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
     v13 = *v28;
@@ -107,7 +107,7 @@
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(confidenceRingBuffer);
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
@@ -122,32 +122,32 @@
         [v5 appendAttributedString:v23];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v12 = [confidenceRingBuffer countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v12);
   }
 
   objc_sync_exit(obj);
-  v24 = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)obj debugLabel];
-  [v24 setAttributedText:v5];
+  debugLabel = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)obj debugLabel];
+  [debugLabel setAttributedText:v5];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   session = self->_session;
-  if (session != v5)
+  if (session != sessionCopy)
   {
-    v8 = v5;
+    v8 = sessionCopy;
     [(ARSession *)session _removeObserver:self];
-    objc_storeStrong(&self->_session, a3);
-    v7 = [(MapsFloatingDebugViewController *)self isAttached];
-    v5 = v8;
-    if (v7)
+    objc_storeStrong(&self->_session, session);
+    isAttached = [(MapsFloatingDebugViewController *)self isAttached];
+    sessionCopy = v8;
+    if (isAttached)
     {
       [(ARSession *)self->_session _addObserver:self];
-      v5 = v8;
+      sessionCopy = v8;
     }
   }
 }
@@ -157,10 +157,10 @@
   v5.receiver = self;
   v5.super_class = MapsARSessionIndoorOutdoorFloatingDebugViewController;
   [(MapsFloatingDebugViewController *)&v5 updateViewForCurrentState];
-  v3 = [(MapsFloatingDebugViewController *)self viewState];
-  if (v3)
+  viewState = [(MapsFloatingDebugViewController *)self viewState];
+  if (viewState)
   {
-    if (v3 != 1)
+    if (viewState != 1)
     {
       return;
     }
@@ -201,13 +201,13 @@
 
 - (id)tintColor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v2 confidenceRingBuffer];
-  v4 = [v3 lastObject];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  confidenceRingBuffer = [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)selfCopy confidenceRingBuffer];
+  lastObject = [confidenceRingBuffer lastObject];
 
-  v5 = [v4 objectForKey:@"indoor"];
-  v6 = [v4 objectForKey:@"outdoor"];
+  v5 = [lastObject objectForKey:@"indoor"];
+  v6 = [lastObject objectForKey:@"outdoor"];
   [v5 floatValue];
   if (v7 >= 0.9)
   {
@@ -233,7 +233,7 @@
 
   v11 = v10;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -246,8 +246,8 @@
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v4 = [UIImage systemImageNamed:@"camera.metering.unknown" withConfiguration:v3];
   v5 = [v4 imageWithRenderingMode:2];
-  v6 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v6 setImage:v5];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v5];
 
   v28 = +[NSMutableArray array];
   v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -259,28 +259,28 @@
   debugLabel = self->_debugLabel;
   self->_debugLabel = v7;
 
-  v10 = [(MapsFloatingDebugViewController *)self contentView];
-  [v10 addSubview:self->_debugLabel];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView addSubview:self->_debugLabel];
 
-  v26 = [(UILabel *)self->_debugLabel topAnchor];
-  v27 = [(MapsFloatingDebugViewController *)self contentView];
-  v25 = [v27 topAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:5.0];
+  topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v30[0] = v24;
-  v22 = [(UILabel *)self->_debugLabel bottomAnchor];
-  v23 = [(MapsFloatingDebugViewController *)self contentView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:-5.0];
+  bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v30[1] = v20;
-  v11 = [(UILabel *)self->_debugLabel leadingAnchor];
-  v12 = [(MapsFloatingDebugViewController *)self contentView];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:5.0];
+  leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v30[2] = v14;
-  v15 = [(UILabel *)self->_debugLabel trailingAnchor];
-  v16 = [(MapsFloatingDebugViewController *)self contentView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:-5.0];
+  trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v30[3] = v18;
   v19 = [NSArray arrayWithObjects:v30 count:4];
   [v28 addObjectsFromArray:v19];
@@ -311,8 +311,8 @@
     v2->_lastUIUpdate = 0;
 
     v6 = +[MapsARSessionManager sharedManager];
-    v7 = [v6 session];
-    [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v2 setSession:v7];
+    session = [v6 session];
+    [(MapsARSessionIndoorOutdoorFloatingDebugViewController *)v2 setSession:session];
   }
 
   return v2;

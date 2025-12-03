@@ -1,25 +1,25 @@
 @interface PXStoryMediaAnalysisMovieHighlight
-+ (float)fractionOfResults:(id)a3 inRange:(id *)a4;
-+ (id)defaultHighlightFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4;
-+ (id)fullMovieFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4;
-+ (id)livePhotoFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4;
-+ (id)movieHighlightsFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4;
-+ (id)movieSummaryFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForMinDuration:(SEL)a3 maxDuration:(double)a4;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForRange:(SEL)a3 targetDuration:(id *)a4;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForTargetDuration:(SEL)a3 tolerance:(double)a4;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForPreferredDuration:(SEL)a3 min:(double)a4 max:(double)a5;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)a3;
++ (float)fractionOfResults:(id)results inRange:(id *)range;
++ (id)defaultHighlightFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache;
++ (id)fullMovieFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache;
++ (id)livePhotoFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache;
++ (id)movieHighlightsFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache;
++ (id)movieSummaryFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForMinDuration:(SEL)duration maxDuration:(double)maxDuration;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForRange:(SEL)range targetDuration:(id *)duration;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForTargetDuration:(SEL)duration tolerance:(double)tolerance;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForPreferredDuration:(SEL)duration min:(double)min max:(double)max;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)duration;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- (BOOL)hasFaceInRange:(id *)a3;
-- (BOOL)hasMusicInRange:(id *)a3;
-- (BOOL)hasVoiceInRange:(id *)a3;
+- (BOOL)hasFaceInRange:(id *)range;
+- (BOOL)hasMusicInRange:(id *)range;
+- (BOOL)hasVoiceInRange:(id *)range;
 - (CGRect)bestPlaybackRect;
 - (NSData)normalizationData;
 - (PXStoryMediaAnalysisMovieHighlight)init;
-- (PXStoryMediaAnalysisMovieHighlight)initWithMediaAnalysis:(id)a3 movieHighlightIndex:(int64_t)a4 timeRangeCache:(id)a5;
-- (float)audioLoudnessForTimeRange:(id *)a3;
-- (float)audioPeakForTimeRange:(id *)a3;
+- (PXStoryMediaAnalysisMovieHighlight)initWithMediaAnalysis:(id)analysis movieHighlightIndex:(int64_t)index timeRangeCache:(id)cache;
+- (float)audioLoudnessForTimeRange:(id *)range;
+- (float)audioPeakForTimeRange:(id *)range;
 - (float)audioQualityScore;
 - (float)loudness;
 - (float)peakVolume;
@@ -54,8 +54,8 @@ LABEL_8:
     if (highlightIndex != -1)
     {
 LABEL_9:
-      v13 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
-      v14 = [v13 objectAtIndexedSubscript:self->_highlightIndex];
+      movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+      v14 = [movieHighlightResults objectAtIndexedSubscript:self->_highlightIndex];
       BestPlaybackRect = PXStoryMediaAnalysisResultGetBestPlaybackRect(v14);
       v8 = v15;
       v10 = v16;
@@ -75,9 +75,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v4 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
-  v5 = [v4 firstObject];
-  BestPlaybackRect = PXStoryMediaAnalysisResultGetBestPlaybackRect(v5);
+  movieSummaryResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+  firstObject = [movieSummaryResults firstObject];
+  BestPlaybackRect = PXStoryMediaAnalysisResultGetBestPlaybackRect(firstObject);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -105,26 +105,26 @@ LABEL_10:
 
   if (highlightIndex == -4)
   {
-    v5 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+    movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
   }
 
   else
   {
     if (highlightIndex != -1)
     {
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
-      v7 = [v6 objectAtIndexedSubscript:self->_highlightIndex];
+      movieHighlightResults2 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+      firstObject = [movieHighlightResults2 objectAtIndexedSubscript:self->_highlightIndex];
       goto LABEL_8;
     }
 
-    v5 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+    movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
   }
 
-  v6 = v5;
-  v7 = [v5 firstObject];
+  movieHighlightResults2 = movieHighlightResults;
+  firstObject = [movieHighlightResults firstObject];
 LABEL_8:
-  v8 = v7;
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1D0]];
+  v8 = firstObject;
+  v9 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E69AE1D0]];
   v10 = [v9 objectForKeyedSubscript:@"audioQuality"];
 
   if (v10)
@@ -143,15 +143,15 @@ LABEL_8:
   return result;
 }
 
-- (float)audioLoudnessForTimeRange:(id *)a3
+- (float)audioLoudnessForTimeRange:(id *)range
 {
   v40 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(PXStoryMediaAnalysisMovieHighlight *)self loudnessResults];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  loudnessResults = [(PXStoryMediaAnalysisMovieHighlight *)self loudnessResults];
+  v5 = [loudnessResults countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v5)
   {
     v6 = v5;
@@ -165,7 +165,7 @@ LABEL_8:
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loudnessResults);
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
@@ -176,10 +176,10 @@ LABEL_8:
         v31[0] = v32;
         v31[1] = v33;
         v31[2] = v34;
-        v13 = *&a3->var0.var3;
-        v30[0] = *&a3->var0.var0;
+        v13 = *&range->var0.var3;
+        v30[0] = *&range->var0.var0;
         v30[1] = v13;
-        v30[2] = *&a3->var1.var1;
+        v30[2] = *&range->var1.var1;
         if (PXStoryTimeRangeIntersectsTimeRange(v31, v30))
         {
           v14 = [v12 objectForKeyedSubscript:v9];
@@ -193,11 +193,11 @@ LABEL_8:
               v21 = v7;
               v22 = v10;
               v23 = v9;
-              v24 = v4;
+              v24 = loudnessResults;
               v25 = v20;
 
               v26 = v25;
-              v4 = v24;
+              loudnessResults = v24;
               v9 = v23;
               v10 = v22;
               v7 = v26;
@@ -206,7 +206,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v6 = [loudnessResults countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v6);
@@ -230,15 +230,15 @@ LABEL_8:
   return result;
 }
 
-- (float)audioPeakForTimeRange:(id *)a3
+- (float)audioPeakForTimeRange:(id *)range
 {
   v40 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(PXStoryMediaAnalysisMovieHighlight *)self loudnessResults];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  loudnessResults = [(PXStoryMediaAnalysisMovieHighlight *)self loudnessResults];
+  v5 = [loudnessResults countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v5)
   {
     v6 = v5;
@@ -252,7 +252,7 @@ LABEL_8:
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loudnessResults);
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
@@ -263,10 +263,10 @@ LABEL_8:
         v31[0] = v32;
         v31[1] = v33;
         v31[2] = v34;
-        v13 = *&a3->var0.var3;
-        v30[0] = *&a3->var0.var0;
+        v13 = *&range->var0.var3;
+        v30[0] = *&range->var0.var0;
         v30[1] = v13;
-        v30[2] = *&a3->var1.var1;
+        v30[2] = *&range->var1.var1;
         if (PXStoryTimeRangeIntersectsTimeRange(v31, v30))
         {
           v14 = [v12 objectForKeyedSubscript:v9];
@@ -280,11 +280,11 @@ LABEL_8:
               v21 = v7;
               v22 = v10;
               v23 = v9;
-              v24 = v4;
+              v24 = loudnessResults;
               v25 = v20;
 
               v26 = v25;
-              v4 = v24;
+              loudnessResults = v24;
               v9 = v23;
               v10 = v22;
               v7 = v26;
@@ -293,7 +293,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v6 = [loudnessResults countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v6);
@@ -318,15 +318,15 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)hasMusicInRange:(id *)a3
+- (BOOL)hasMusicInRange:(id *)range
 {
   v5 = objc_opt_class();
-  v6 = [(PXStoryMediaAnalysisMovieHighlight *)self musicResults];
-  v7 = *&a3->var0.var3;
-  v11[0] = *&a3->var0.var0;
+  musicResults = [(PXStoryMediaAnalysisMovieHighlight *)self musicResults];
+  v7 = *&range->var0.var3;
+  v11[0] = *&range->var0.var0;
   v11[1] = v7;
-  v11[2] = *&a3->var1.var1;
-  [v5 fractionOfResults:v6 inRange:v11];
+  v11[2] = *&range->var1.var1;
+  [v5 fractionOfResults:musicResults inRange:v11];
   v9 = v8;
 
   return v9 > 0.5;
@@ -340,15 +340,15 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)hasFaceInRange:(id *)a3
+- (BOOL)hasFaceInRange:(id *)range
 {
   v5 = objc_opt_class();
-  v6 = [(PXStoryMediaAnalysisMovieHighlight *)self faceResults];
-  v7 = *&a3->var0.var3;
-  v11[0] = *&a3->var0.var0;
+  faceResults = [(PXStoryMediaAnalysisMovieHighlight *)self faceResults];
+  v7 = *&range->var0.var3;
+  v11[0] = *&range->var0.var0;
   v11[1] = v7;
-  v11[2] = *&a3->var1.var1;
-  [v5 fractionOfResults:v6 inRange:v11];
+  v11[2] = *&range->var1.var1;
+  [v5 fractionOfResults:faceResults inRange:v11];
   v9 = v8;
 
   return v9 > 0.5;
@@ -362,15 +362,15 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)hasVoiceInRange:(id *)a3
+- (BOOL)hasVoiceInRange:(id *)range
 {
   v5 = objc_opt_class();
-  v6 = [(PXStoryMediaAnalysisMovieHighlight *)self voiceResults];
-  v7 = *&a3->var0.var3;
-  v11[0] = *&a3->var0.var0;
+  voiceResults = [(PXStoryMediaAnalysisMovieHighlight *)self voiceResults];
+  v7 = *&range->var0.var3;
+  v11[0] = *&range->var0.var0;
   v11[1] = v7;
-  v11[2] = *&a3->var1.var1;
-  [v5 fractionOfResults:v6 inRange:v11];
+  v11[2] = *&range->var1.var1;
+  [v5 fractionOfResults:voiceResults inRange:v11];
   v9 = v8;
 
   return v9 > 0.5;
@@ -454,8 +454,8 @@ LABEL_8:
 {
   if (self->_highlightIndex <= 0xFFFFFFFFFFFFFFFBLL)
   {
-    v4 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
-    v5 = [v4 objectAtIndexedSubscript:self->_highlightIndex];
+    movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+    v5 = [movieHighlightResults objectAtIndexedSubscript:self->_highlightIndex];
     v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE1D0]];
     v2 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69AE1E0]];
   }
@@ -475,7 +475,7 @@ LABEL_8:
   {
     if (highlightIndex == -2)
     {
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self irisRecommendedResults];
+      irisRecommendedResults = [(PXStoryMediaAnalysisMovieHighlight *)self irisRecommendedResults];
     }
 
     else
@@ -485,30 +485,30 @@ LABEL_8:
         goto LABEL_10;
       }
 
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+      irisRecommendedResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
     }
 
-    v12 = v6;
-    v13 = [v6 firstObject];
-    Quality = PXStoryMediaAnalysisResultGetQuality(v13);
+    v12 = irisRecommendedResults;
+    firstObject = [irisRecommendedResults firstObject];
+    Quality = PXStoryMediaAnalysisResultGetQuality(firstObject);
 
     return Quality;
   }
 
   if (highlightIndex == -4)
   {
-    v9 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
-    v7 = v9;
-    if (!v9)
+    movieSummaryResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+    movieHighlightResults = movieSummaryResults;
+    if (!movieSummaryResults)
     {
       Quality = PXStoryMediaAnalysisResultGetQuality(self->_analysis);
       goto LABEL_14;
     }
 
-    v8 = [v9 firstObject];
+    firstObject2 = [movieSummaryResults firstObject];
 LABEL_13:
-    v10 = v8;
-    Quality = PXStoryMediaAnalysisResultGetQuality(v8);
+    v10 = firstObject2;
+    Quality = PXStoryMediaAnalysisResultGetQuality(firstObject2);
 
 LABEL_14:
     return Quality;
@@ -517,8 +517,8 @@ LABEL_14:
   if (highlightIndex != -3)
   {
 LABEL_10:
-    v7 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
-    v8 = [v7 objectAtIndexedSubscript:self->_highlightIndex];
+    movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+    firstObject2 = [movieHighlightResults objectAtIndexedSubscript:self->_highlightIndex];
     goto LABEL_13;
   }
 
@@ -527,50 +527,50 @@ LABEL_10:
   return PXStoryMediaAnalysisResultGetQuality(analysis);
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForPreferredDuration:(SEL)a3 min:(double)a4 max:(double)a5
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForPreferredDuration:(SEL)duration min:(double)min max:(double)max
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a4 < a5)
+  if (min < max)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a3 object:self file:@"PXStoryMovieHighlight.m" lineNumber:687 description:{@"Invalid parameter not satisfying: %@", @"targetDuration >= minDuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:duration object:self file:@"PXStoryMovieHighlight.m" lineNumber:687 description:{@"Invalid parameter not satisfying: %@", @"targetDuration >= minDuration"}];
   }
 
-  if (a4 > a6)
+  if (min > a6)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a3 object:self file:@"PXStoryMovieHighlight.m" lineNumber:688 description:{@"Invalid parameter not satisfying: %@", @"targetDuration <= maxDuration"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:duration object:self file:@"PXStoryMovieHighlight.m" lineNumber:688 description:{@"Invalid parameter not satisfying: %@", @"targetDuration <= maxDuration"}];
   }
 
-  v12 = fmax(a5, a4 + -1.0);
+  v12 = fmax(max, min + -1.0);
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
-  v13 = fmin(a4 + 1.0, a6);
+  v13 = fmin(min + 1.0, a6);
   *&retstr->var0.var0 = 0u;
   [(PXStoryMediaAnalysisMovieHighlight *)self _bestTimeRangeForMinDuration:v12 maxDuration:v13];
   *time = *&retstr->var1.var0;
   *&time[16] = retstr->var1.var3;
   Seconds = CMTimeGetSeconds(time);
-  if (v12 > a5 && Seconds < a4 + -0.75)
+  if (v12 > max && Seconds < min + -0.75)
   {
-    v17 = self;
-    v18 = a5;
-    v19 = a4;
+    selfCopy2 = self;
+    minCopy2 = max;
+    minCopy = min;
   }
 
   else
   {
-    if (v13 >= a6 || Seconds <= a4 + 0.75)
+    if (v13 >= a6 || Seconds <= min + 0.75)
     {
       goto LABEL_16;
     }
 
-    v17 = self;
-    v18 = a4;
-    v19 = a6;
+    selfCopy2 = self;
+    minCopy2 = min;
+    minCopy = a6;
   }
 
-  [(PXStoryMediaAnalysisMovieHighlight *)v17 _bestTimeRangeForMinDuration:v18 maxDuration:v19];
+  [(PXStoryMediaAnalysisMovieHighlight *)selfCopy2 _bestTimeRangeForMinDuration:minCopy2 maxDuration:minCopy];
   v20 = *&time[16];
   *&retstr->var0.var0 = *time;
   *&retstr->var0.var3 = v20;
@@ -585,9 +585,9 @@ LABEL_16:
     v28 = *&retstr->var1.var1;
     v23 = PXStoryTimeRangeDescription(time);
     *time = 134218754;
-    *&time[4] = a4;
+    *&time[4] = min;
     *&time[12] = 2048;
-    *&time[14] = a5;
+    *&time[14] = max;
     *&time[22] = 2048;
     *&time[24] = a6;
     LOWORD(v28) = 2112;
@@ -598,14 +598,14 @@ LABEL_16:
   return result;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForMinDuration:(SEL)a3 maxDuration:(double)a4
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForMinDuration:(SEL)duration maxDuration:(double)maxDuration
 {
   v19 = *MEMORY[0x1E69E9840];
   [(PXStoryMediaAnalysisMovieHighlight *)self timeRange];
   *time = v15;
   *&time[16] = v16;
   v9 = fmin(a5, CMTimeGetSeconds(time));
-  v10 = fmin(a4, v9);
+  v10 = fmin(maxDuration, v9);
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
   *&retstr->var0.var0 = 0u;
@@ -630,7 +630,7 @@ LABEL_16:
   return result;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForTargetDuration:(SEL)a3 tolerance:(double)a4
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForTargetDuration:(SEL)duration tolerance:(double)tolerance
 {
   v31[3] = *MEMORY[0x1E69E9840];
   *&retstr->var0.var3 = 0u;
@@ -638,12 +638,12 @@ LABEL_16:
   *&retstr->var0.var0 = 0u;
   [(PXStoryMediaAnalysisMovieHighlight *)self timeRange];
   *time = retstr->var1;
-  if (CMTimeGetSeconds(time) > a4)
+  if (CMTimeGetSeconds(time) > tolerance)
   {
-    v10 = [MEMORY[0x1E69AE238] sharedMediaAnalyzer];
+    mEMORY[0x1E69AE238] = [MEMORY[0x1E69AE238] sharedMediaAnalyzer];
     if (self->_highlightIndex < 0)
     {
-      CMTimeMakeWithSeconds(&v24, a4, 600);
+      CMTimeMakeWithSeconds(&v24, tolerance, 600);
       v21 = *&retstr->var0.var3;
       v23[0] = *&retstr->var0.var0;
       v23[1] = v21;
@@ -658,7 +658,7 @@ LABEL_16:
     else
     {
       v11 = [off_1E7721928 alloc];
-      v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+      v12 = [MEMORY[0x1E696AD98] numberWithDouble:tolerance];
       v31[0] = v12;
       v13 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
       v31[1] = v13;
@@ -672,10 +672,10 @@ LABEL_16:
       v27[1] = 3221225472;
       v27[2] = __80__PXStoryMediaAnalysisMovieHighlight__bestTimeRangeForTargetDuration_tolerance___block_invoke;
       v27[3] = &unk_1E773F6F0;
-      v29 = a4;
+      toleranceCopy = tolerance;
       v30 = a5;
       v27[4] = self;
-      v28 = v10;
+      v28 = mEMORY[0x1E69AE238];
       v18 = [(NSCache *)movieHighlightTimeRangeCache px_objectForKey:v16 usingPromise:v27];
       v19 = v18;
       v26 = 0u;
@@ -726,7 +726,7 @@ id __80__PXStoryMediaAnalysisMovieHighlight__bestTimeRangeForTargetDuration_tole
   return v7;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)bestTimeRangeForTargetDuration:(SEL)duration
 {
   v12 = *MEMORY[0x1E69E9840];
   *&retstr->var0.var3 = 0u;
@@ -751,21 +751,21 @@ id __80__PXStoryMediaAnalysisMovieHighlight__bestTimeRangeForTargetDuration_tole
   return result;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForRange:(SEL)a3 targetDuration:(id *)a4
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)_bestTimeRangeForRange:(SEL)range targetDuration:(id *)duration
 {
   memset(&v15, 0, sizeof(v15));
-  v8 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
-  if ([v8 count])
+  movieHighlightScoreResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
+  if ([movieHighlightScoreResults count])
   {
-    PXStoryMediaAnalysisResultsGetTimeRange(&v15, v8);
+    PXStoryMediaAnalysisResultsGetTimeRange(&v15, movieHighlightScoreResults);
   }
 
   else
   {
-    v9 = *&a4->var0.var3;
-    *&v15.start.value = *&a4->var0.var0;
+    v9 = *&duration->var0.var3;
+    *&v15.start.value = *&duration->var0.var0;
     *&v15.start.epoch = v9;
-    *&v15.duration.timescale = *&a4->var1.var1;
+    *&v15.duration.timescale = *&duration->var1.var1;
   }
 
   *&retstr->var0.var3 = 0u;
@@ -774,14 +774,14 @@ id __80__PXStoryMediaAnalysisMovieHighlight__bestTimeRangeForTargetDuration_tole
   time1.start = v15.duration;
   time2 = *a5;
   CMTimeMinimum(&retstr->var1, &time1.start, &time2);
-  *&time1.start.value = *&a4->var1.var0;
-  time1.start.epoch = a4->var1.var3;
+  *&time1.start.value = *&duration->var1.var0;
+  time1.start.epoch = duration->var1.var3;
   time2 = retstr->var1;
   CMTimeSubtract(&v14, &time1.start, &time2);
   time1.start = v14;
   CMTimeMultiplyByRatio(&v13, &time1.start, 1, 2);
-  *&time1.start.value = *&a4->var0.var0;
-  time1.start.epoch = a4->var0.var3;
+  *&time1.start.value = *&duration->var0.var0;
+  time1.start.epoch = duration->var0.var3;
   time2 = v13;
   CMTimeAdd(&v14, &time1.start, &time2);
   retstr->var0 = v14;
@@ -835,13 +835,13 @@ LABEL_8:
   {
     if (highlightIndex == -2)
     {
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self irisRecommendedResults];
+      irisRecommendedResults = [(PXStoryMediaAnalysisMovieHighlight *)self irisRecommendedResults];
       goto LABEL_12;
     }
 
     if (highlightIndex == -1)
     {
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+      irisRecommendedResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
       goto LABEL_12;
     }
 
@@ -852,29 +852,29 @@ LABEL_8:
   {
     if (highlightIndex == -3)
     {
-      v6 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
+      irisRecommendedResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
 LABEL_12:
-      v7 = v6;
-      PXStoryMediaAnalysisResultsGetTimeRange(retstr, v6);
+      movieHighlightResults = irisRecommendedResults;
+      PXStoryMediaAnalysisResultsGetTimeRange(retstr, irisRecommendedResults);
       goto LABEL_13;
     }
 
 LABEL_8:
-    v7 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
-    v8 = [v7 objectAtIndexedSubscript:self->_highlightIndex];
+    movieHighlightResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightResults];
+    v8 = [movieHighlightResults objectAtIndexedSubscript:self->_highlightIndex];
     PXStoryMediaAnalysisResultGetTimeRange(retstr, v8);
 
     goto LABEL_13;
   }
 
-  v9 = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
-  if (v9)
+  movieSummaryResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieSummaryResults];
+  if (movieSummaryResults)
   {
-    v7 = v9;
+    movieHighlightResults = movieSummaryResults;
     v20 = 0u;
     v21 = 0u;
     v19 = 0u;
-    PXStoryMediaAnalysisResultsGetTimeRange(&v19, v9);
+    PXStoryMediaAnalysisResultsGetTimeRange(&v19, movieSummaryResults);
     v17 = 0uLL;
     v18 = 0;
     +[PXStoryFallbackMovieHighlightCuration maxHighlightDuration];
@@ -888,17 +888,17 @@ LABEL_8:
 
   else
   {
-    v11 = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
+    movieHighlightScoreResults = [(PXStoryMediaAnalysisMovieHighlight *)self movieHighlightScoreResults];
     v20 = 0u;
     v21 = 0u;
     v19 = 0u;
-    PXStoryMediaAnalysisResultsGetTimeRange(&v19, v11);
+    PXStoryMediaAnalysisResultsGetTimeRange(&v19, movieHighlightScoreResults);
     v14 = v19;
     v15 = v20;
     v16 = v21;
     [PXStoryFallbackMovieHighlightCuration defaultHighlightRangeForPlaybackRange:&v14];
 
-    v7 = 0;
+    movieHighlightResults = 0;
   }
 
 LABEL_13:
@@ -908,51 +908,51 @@ LABEL_13:
 
 - (id)movieHighlightScoreResults
 {
-  v2 = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69AE1B8]];
+  analysisResults = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
+  v3 = [analysisResults objectForKeyedSubscript:*MEMORY[0x1E69AE1B8]];
 
   return v3;
 }
 
 - (id)irisRecommendedResults
 {
-  v2 = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69AE198]];
+  analysisResults = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
+  v3 = [analysisResults objectForKeyedSubscript:*MEMORY[0x1E69AE198]];
 
   return v3;
 }
 
 - (id)movieSummaryResults
 {
-  v2 = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69AE1C0]];
+  analysisResults = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
+  v3 = [analysisResults objectForKeyedSubscript:*MEMORY[0x1E69AE1C0]];
 
   return v3;
 }
 
 - (id)movieHighlightResults
 {
-  v2 = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69AE1B0]];
+  analysisResults = [(PXStoryMediaAnalysisMovieHighlight *)self analysisResults];
+  v3 = [analysisResults objectForKeyedSubscript:*MEMORY[0x1E69AE1B0]];
 
   return v3;
 }
 
-- (PXStoryMediaAnalysisMovieHighlight)initWithMediaAnalysis:(id)a3 movieHighlightIndex:(int64_t)a4 timeRangeCache:(id)a5
+- (PXStoryMediaAnalysisMovieHighlight)initWithMediaAnalysis:(id)analysis movieHighlightIndex:(int64_t)index timeRangeCache:(id)cache
 {
-  v8 = a3;
-  v9 = a5;
+  analysisCopy = analysis;
+  cacheCopy = cache;
   v14.receiver = self;
   v14.super_class = PXStoryMediaAnalysisMovieHighlight;
   v10 = [(PXStoryMediaAnalysisMovieHighlight *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [analysisCopy copy];
     analysis = v10->_analysis;
     v10->_analysis = v11;
 
-    v10->_highlightIndex = a4;
-    objc_storeStrong(&v10->_movieHighlightTimeRangeCache, a5);
+    v10->_highlightIndex = index;
+    objc_storeStrong(&v10->_movieHighlightTimeRangeCache, cache);
   }
 
   return v10;
@@ -960,26 +960,26 @@ LABEL_13:
 
 - (PXStoryMediaAnalysisMovieHighlight)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:544 description:{@"%s is not available as initializer", "-[PXStoryMediaAnalysisMovieHighlight init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMovieHighlight.m" lineNumber:544 description:{@"%s is not available as initializer", "-[PXStoryMediaAnalysisMovieHighlight init]"}];
 
   abort();
 }
 
-+ (float)fractionOfResults:(id)a3 inRange:(id *)a4
++ (float)fractionOfResults:(id)results inRange:(id *)range
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___block_invoke;
   v30[3] = &__block_descriptor_80_e29_B32__0__NSDictionary_8Q16_B24l;
-  v6 = *&a4->var0.var3;
-  v31 = *&a4->var0.var0;
+  v6 = *&range->var0.var3;
+  v31 = *&range->var0.var0;
   v32 = v6;
-  v33 = *&a4->var1.var1;
-  v7 = [v5 indexesOfObjectsPassingTest:v30];
-  v8 = [v5 objectsAtIndexes:v7];
+  v33 = *&range->var1.var1;
+  v7 = [resultsCopy indexesOfObjectsPassingTest:v30];
+  v8 = [resultsCopy objectsAtIndexes:v7];
 
   v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_419_170243];
   *&v29.value = PXStoryTimeZero;
@@ -1005,15 +1005,15 @@ LABEL_13:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        memset(&v23, 0, sizeof(v23));
-        PXStoryMediaAnalysisResultGetTimeRange(&v23, v14);
-        time2 = v23;
-        v15 = *&a4->var0.var3;
-        *v20 = *&a4->var0.var0;
+        memset(&rangeCopy, 0, sizeof(rangeCopy));
+        PXStoryMediaAnalysisResultGetTimeRange(&rangeCopy, v14);
+        time2 = rangeCopy;
+        v15 = *&range->var0.var3;
+        *v20 = *&range->var0.var0;
         *&v20[16] = v15;
-        v21 = *&a4->var1.var1;
+        v21 = *&range->var1.var1;
         PXStoryTimeRangeIntersection(&time2, v20, &range);
-        v23 = range;
+        rangeCopy = range;
         *v20 = PXStoryTimeZero;
         *&v20[16] = 0;
         CMTimeRangeGetEnd(&v19, &range);
@@ -1022,23 +1022,23 @@ LABEL_13:
         if (CMTimeCompare(&range.start, &time2.start) >= 1)
         {
           range.start = v28;
-          *&time2.start.value = *&v23.start.value;
-          time2.start.epoch = v23.start.epoch;
+          *&time2.start.value = *&rangeCopy.start.value;
+          time2.start.epoch = rangeCopy.start.epoch;
           if (CMTimeCompare(&range.start, &time2.start) <= 0)
           {
-            *v20 = v23.duration;
+            *v20 = rangeCopy.duration;
           }
 
           else
           {
-            range = v23;
+            range = rangeCopy;
             CMTimeRangeGetEnd(&v19, &range);
             time2.start = v28;
             range.start = v19;
             CMTimeSubtract(v20, &range.start, &time2.start);
           }
 
-          range = v23;
+          range = rangeCopy;
           CMTimeRangeGetEnd(&v28, &range);
           range.start = v29;
           *&time2.start.value = *v20;
@@ -1055,8 +1055,8 @@ LABEL_13:
 
   range.start = v29;
   Seconds = CMTimeGetSeconds(&range.start);
-  *&range.start.value = *&a4->var1.var0;
-  range.start.epoch = a4->var1.var3;
+  *&range.start.value = *&range->var1.var0;
+  range.start.epoch = range->var1.var3;
   v17 = CMTimeGetSeconds(&range.start);
 
   return Seconds / v17;
@@ -1097,16 +1097,16 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
   return CMTimeCompare(&time1, &time2);
 }
 
-+ (id)defaultHighlightFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4
++ (id)defaultHighlightFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
+  analysisCopy = analysis;
+  cacheCopy = cache;
+  v7 = [analysisCopy objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1C0]];
   v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1B8]];
   if ([v8 count] || objc_msgSend(v9, "count"))
   {
-    v10 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:v5 movieHighlightIndex:-4 timeRangeCache:v6];
+    v10 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:analysisCopy movieHighlightIndex:-4 timeRangeCache:cacheCopy];
   }
 
   else
@@ -1117,15 +1117,15 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
   return v10;
 }
 
-+ (id)fullMovieFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4
++ (id)fullMovieFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
+  analysisCopy = analysis;
+  cacheCopy = cache;
+  v7 = [analysisCopy objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1B8]];
   if ([v8 count])
   {
-    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:v5 movieHighlightIndex:-3 timeRangeCache:v6];
+    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:analysisCopy movieHighlightIndex:-3 timeRangeCache:cacheCopy];
   }
 
   else
@@ -1136,15 +1136,15 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
   return v9;
 }
 
-+ (id)livePhotoFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4
++ (id)livePhotoFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
+  analysisCopy = analysis;
+  cacheCopy = cache;
+  v7 = [analysisCopy objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE198]];
   if ([v8 count])
   {
-    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:v5 movieHighlightIndex:-2 timeRangeCache:v6];
+    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:analysisCopy movieHighlightIndex:-2 timeRangeCache:cacheCopy];
   }
 
   else
@@ -1155,15 +1155,15 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
   return v9;
 }
 
-+ (id)movieSummaryFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4
++ (id)movieSummaryFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
+  analysisCopy = analysis;
+  cacheCopy = cache;
+  v7 = [analysisCopy objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1C0]];
   if ([v8 count])
   {
-    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:v5 movieHighlightIndex:-1 timeRangeCache:v6];
+    v9 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:analysisCopy movieHighlightIndex:-1 timeRangeCache:cacheCopy];
   }
 
   else
@@ -1174,11 +1174,11 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
   return v9;
 }
 
-+ (id)movieHighlightsFromMediaAnalysis:(id)a3 timeRangeCache:(id)a4
++ (id)movieHighlightsFromMediaAnalysis:(id)analysis timeRangeCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
+  analysisCopy = analysis;
+  cacheCopy = cache;
+  v7 = [analysisCopy objectForKeyedSubscript:*MEMORY[0x1E69AE210]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69AE1B0]];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
   if ([v8 count])
@@ -1186,7 +1186,7 @@ uint64_t __64__PXStoryMediaAnalysisMovieHighlight_fractionOfResults_inRange___bl
     v10 = 0;
     do
     {
-      v11 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:v5 movieHighlightIndex:v10 timeRangeCache:v6];
+      v11 = [[PXStoryMediaAnalysisMovieHighlight alloc] initWithMediaAnalysis:analysisCopy movieHighlightIndex:v10 timeRangeCache:cacheCopy];
       [v9 addObject:v11];
 
       ++v10;

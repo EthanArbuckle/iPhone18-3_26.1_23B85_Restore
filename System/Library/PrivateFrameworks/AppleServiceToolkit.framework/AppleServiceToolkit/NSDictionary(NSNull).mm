@@ -7,13 +7,13 @@
 - (id)dictionaryDroppingNSNullValues
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [a1 mutableCopy];
-  v3 = [v2 allKeys];
+  v2 = [self mutableCopy];
+  allKeys = [v2 allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,11 +24,11 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [a1 objectForKeyedSubscript:v8];
+        v9 = [self objectForKeyedSubscript:v8];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -39,7 +39,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 arrayDroppingNSNullValues];
+          arrayDroppingNSNullValues = [v9 arrayDroppingNSNullValues];
         }
 
         else
@@ -47,7 +47,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 setDroppingNSNullValues];
+            arrayDroppingNSNullValues = [v9 setDroppingNSNullValues];
           }
 
           else
@@ -58,17 +58,17 @@
               goto LABEL_15;
             }
 
-            v10 = [v9 dictionaryDroppingNSNullValues];
+            arrayDroppingNSNullValues = [v9 dictionaryDroppingNSNullValues];
           }
         }
 
-        v11 = v10;
-        [v2 setObject:v10 forKeyedSubscript:v8];
+        v11 = arrayDroppingNSNullValues;
+        [v2 setObject:arrayDroppingNSNullValues forKeyedSubscript:v8];
 
 LABEL_15:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);

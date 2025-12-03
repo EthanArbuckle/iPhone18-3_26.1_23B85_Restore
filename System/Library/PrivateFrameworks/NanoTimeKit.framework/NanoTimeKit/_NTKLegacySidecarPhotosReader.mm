@@ -1,25 +1,25 @@
 @interface _NTKLegacySidecarPhotosReader
-- (_NTKLegacySidecarPhotosReader)initWithResourceDirectory:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (_NTKLegacySidecarPhotosReader)initWithResourceDirectory:(id)directory;
+- (id)objectAtIndex:(unint64_t)index;
 @end
 
 @implementation _NTKLegacySidecarPhotosReader
 
-- (_NTKLegacySidecarPhotosReader)initWithResourceDirectory:(id)a3
+- (_NTKLegacySidecarPhotosReader)initWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v10.receiver = self;
   v10.super_class = _NTKLegacySidecarPhotosReader;
-  v5 = [(NTKPhotosReader *)&v10 initWithResourceDirectory:v4];
+  v5 = [(NTKPhotosReader *)&v10 initWithResourceDirectory:directoryCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     photos = v5->_photos;
     v5->_photos = v6;
 
-    if (v4)
+    if (directoryCopy)
     {
-      v8 = [[NTKPhoto alloc] initWithLegacySidecar:v4];
+      v8 = [[NTKPhoto alloc] initWithLegacySidecar:directoryCopy];
       if (v8)
       {
         [(NSMutableArray *)v5->_photos addObject:v8];
@@ -30,16 +30,16 @@
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_photos count]<= a3)
+  if ([(NSMutableArray *)self->_photos count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
   }
 
   return v5;

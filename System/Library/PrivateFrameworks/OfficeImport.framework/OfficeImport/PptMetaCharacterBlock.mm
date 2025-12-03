@@ -1,25 +1,25 @@
 @interface PptMetaCharacterBlock
-- (PptMetaCharacterBlock)initWithType:(int)a3 position:(int)a4 extraData:(int)a5;
+- (PptMetaCharacterBlock)initWithType:(int)type position:(int)position extraData:(int)data;
 @end
 
 @implementation PptMetaCharacterBlock
 
-- (PptMetaCharacterBlock)initWithType:(int)a3 position:(int)a4 extraData:(int)a5
+- (PptMetaCharacterBlock)initWithType:(int)type position:(int)position extraData:(int)data
 {
   v11.receiver = self;
   v11.super_class = PptMetaCharacterBlock;
   result = [(PptMetaCharacterBlock *)&v11 init];
   if (result)
   {
-    if (a3 <= 4087)
+    if (type <= 4087)
     {
-      if (a3 == 4056)
+      if (type == 4056)
       {
         v9 = 4;
         goto LABEL_13;
       }
 
-      if (a3 == 4087)
+      if (type == 4087)
       {
         v9 = 2;
         goto LABEL_13;
@@ -28,7 +28,7 @@
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 4090:
           v9 = 0;
@@ -40,8 +40,8 @@
           v9 = 1;
 LABEL_13:
           result->mType = v9;
-          result->mPosition = a4;
-          result->mExtraData = a5;
+          result->mPosition = position;
+          result->mExtraData = data;
           return result;
       }
     }

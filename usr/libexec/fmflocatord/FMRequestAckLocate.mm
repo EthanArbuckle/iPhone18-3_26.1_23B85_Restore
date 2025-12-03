@@ -1,6 +1,6 @@
 @interface FMRequestAckLocate
-- (BOOL)canReplace:(id)a3;
-- (FMRequestAckLocate)initWithProvider:(id)a3 locateCommand:(id)a4 ackURL:(id)a5 cmdStatusCode:(int64_t)a6 cmdStatusMessage:(id)a7;
+- (BOOL)canReplace:(id)replace;
+- (FMRequestAckLocate)initWithProvider:(id)provider locateCommand:(id)command ackURL:(id)l cmdStatusCode:(int64_t)code cmdStatusMessage:(id)message;
 - (id)requestBody;
 - (void)deinitializeRequest;
 @end
@@ -17,21 +17,21 @@
   [(FMRequestAckLocate *)self setCmdStatusMsg:0];
 }
 
-- (FMRequestAckLocate)initWithProvider:(id)a3 locateCommand:(id)a4 ackURL:(id)a5 cmdStatusCode:(int64_t)a6 cmdStatusMessage:(id)a7
+- (FMRequestAckLocate)initWithProvider:(id)provider locateCommand:(id)command ackURL:(id)l cmdStatusCode:(int64_t)code cmdStatusMessage:(id)message
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  commandCopy = command;
+  lCopy = l;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = FMRequestAckLocate;
-  v15 = [(FMRequest *)&v18 initWithProvider:a3];
+  v15 = [(FMRequest *)&v18 initWithProvider:provider];
   v16 = v15;
   if (v15)
   {
-    [(FMRequestAckLocate *)v15 setLocateCommand:v12];
-    [(FMRequestAckLocate *)v16 setAckURL:v13];
-    [(FMRequestAckLocate *)v16 setCmdStatusCode:a6];
-    [(FMRequestAckLocate *)v16 setCmdStatusMsg:v14];
+    [(FMRequestAckLocate *)v15 setLocateCommand:commandCopy];
+    [(FMRequestAckLocate *)v16 setAckURL:lCopy];
+    [(FMRequestAckLocate *)v16 setCmdStatusCode:code];
+    [(FMRequestAckLocate *)v16 setCmdStatusMsg:messageCopy];
   }
 
   return v16;
@@ -41,78 +41,78 @@
 {
   v25.receiver = self;
   v25.super_class = FMRequestAckLocate;
-  v3 = [(FMRequest *)&v25 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 standardDeviceContext];
+  requestBody = [(FMRequest *)&v25 requestBody];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
 
-  v6 = [(FMRequestAckLocate *)self locateCommand];
-  v7 = [v6 objectForKeyedSubscript:@"id"];
-  [v5 fm_safelyMapKey:@"cmdId" toObject:v7];
+  locateCommand = [(FMRequestAckLocate *)self locateCommand];
+  v7 = [locateCommand objectForKeyedSubscript:@"id"];
+  [standardDeviceContext fm_safelyMapKey:@"cmdId" toObject:v7];
 
-  if (v5)
+  if (standardDeviceContext)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
+    [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
   }
 
-  v8 = [(FMRequest *)self provider];
-  v9 = [v8 locationDeviceInfo];
-  [v3 setObject:v9 forKeyedSubscript:@"deviceInfo"];
+  provider2 = [(FMRequest *)self provider];
+  locationDeviceInfo = [provider2 locationDeviceInfo];
+  [requestBody setObject:locationDeviceInfo forKeyedSubscript:@"deviceInfo"];
 
   v10 = [NSNumber numberWithInteger:[(FMRequestAckLocate *)self cmdStatusCode]];
-  [v3 setObject:v10 forKeyedSubscript:@"statusCode"];
+  [requestBody setObject:v10 forKeyedSubscript:@"statusCode"];
 
-  v11 = [(FMRequestAckLocate *)self cmdStatusMsg];
+  cmdStatusMsg = [(FMRequestAckLocate *)self cmdStatusMsg];
 
-  if (v11)
+  if (cmdStatusMsg)
   {
-    v12 = [(FMRequestAckLocate *)self cmdStatusMsg];
-    [v3 setObject:v12 forKeyedSubscript:@"statusMessage"];
+    cmdStatusMsg2 = [(FMRequestAckLocate *)self cmdStatusMsg];
+    [requestBody setObject:cmdStatusMsg2 forKeyedSubscript:@"statusMessage"];
   }
 
   v13 = +[NSMutableDictionary dictionary];
-  v14 = [(FMRequestAckLocate *)self locateCommand];
-  v15 = [v14 objectForKeyedSubscript:@"id"];
+  locateCommand2 = [(FMRequestAckLocate *)self locateCommand];
+  v15 = [locateCommand2 objectForKeyedSubscript:@"id"];
   [v13 fm_safelyMapKey:@"id" toObject:v15];
 
-  v16 = [(FMRequestAckLocate *)self locateCommand];
-  v17 = [v16 objectForKeyedSubscript:@"enqueueTimestamp"];
+  locateCommand3 = [(FMRequestAckLocate *)self locateCommand];
+  v17 = [locateCommand3 objectForKeyedSubscript:@"enqueueTimestamp"];
   [v13 fm_safelyMapKey:@"enqueueTimestamp" toObject:v17];
 
-  v18 = [(FMRequestAckLocate *)self locateCommand];
-  v19 = [v18 objectForKeyedSubscript:@"responseTimeStamp"];
+  locateCommand4 = [(FMRequestAckLocate *)self locateCommand];
+  v19 = [locateCommand4 objectForKeyedSubscript:@"responseTimeStamp"];
   [v13 fm_safelyMapKey:@"responseTimeStamp" toObject:v19];
 
-  v20 = [(FMRequestAckLocate *)self locateCommand];
-  v21 = [v20 objectForKeyedSubscript:@"cmd"];
+  locateCommand5 = [(FMRequestAckLocate *)self locateCommand];
+  v21 = [locateCommand5 objectForKeyedSubscript:@"cmd"];
   [v13 fm_safelyMapKey:@"cmd" toObject:v21];
 
-  v22 = [(FMRequestAckLocate *)self locateCommand];
-  v23 = [v22 objectForKeyedSubscript:@"desiredAccuracy"];
+  locateCommand6 = [(FMRequestAckLocate *)self locateCommand];
+  v23 = [locateCommand6 objectForKeyedSubscript:@"desiredAccuracy"];
   [v13 fm_safelyMapKey:@"desiredAccuracy" toObject:v23];
 
-  [v3 setObject:v13 forKeyedSubscript:@"cmdContext"];
+  [requestBody setObject:v13 forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMRequest *)self delegate];
-      v7 = [v5 delegate];
-      if (v6 == v7)
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [v5 delegate];
+      if (delegate == delegate2)
       {
-        v9 = [(FMRequestAckLocate *)self locateCommand];
-        v10 = [v9 objectForKeyedSubscript:@"id"];
-        v11 = [v5 locateCommand];
-        v12 = [v11 objectForKeyedSubscript:@"id"];
+        locateCommand = [(FMRequestAckLocate *)self locateCommand];
+        v10 = [locateCommand objectForKeyedSubscript:@"id"];
+        locateCommand2 = [v5 locateCommand];
+        v12 = [locateCommand2 objectForKeyedSubscript:@"id"];
         v8 = [v10 isEqualToString:v12];
       }
 

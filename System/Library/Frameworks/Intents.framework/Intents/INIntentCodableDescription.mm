@@ -1,25 +1,25 @@
 @interface INIntentCodableDescription
-+ (id)_intentClassNameWithDictionary:(id)a3;
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
++ (id)_intentClassNameWithDictionary:(id)dictionary;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
 - (INCodableAttribute)inputAttribute;
 - (INCodableAttribute)keyAttribute;
-- (INIntentCodableDescription)initWithCoder:(id)a3;
+- (INIntentCodableDescription)initWithCoder:(id)coder;
 - (NSString)localizedDescriptiveText;
 - (NSString)localizedTitle;
 - (id)_attributeKey;
 - (id)_attributesKey;
 - (id)attributes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedDescriptiveTextWithLocalizer:(id)a3;
-- (id)localizedTitleWithLocalizer:(id)a3;
-- (id)resolvableParameterCombinationsWithParameterCombinations:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)_establishReferencedCodableDescriptionsUsingTypes:(id)a3 intentResponseCodableDescription:(id)a4;
-- (void)_reestablishReferencedCodableDescriptionsUsingTypes:(id)a3 intentResponseCodableDescription:(id)a4;
-- (void)_updateWithIntentCodableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedDescriptiveTextWithLocalizer:(id)localizer;
+- (id)localizedTitleWithLocalizer:(id)localizer;
+- (id)resolvableParameterCombinationsWithParameterCombinations:(id)combinations;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)_establishReferencedCodableDescriptionsUsingTypes:(id)types intentResponseCodableDescription:(id)description;
+- (void)_reestablishReferencedCodableDescriptionsUsingTypes:(id)types intentResponseCodableDescription:(id)description;
+- (void)_updateWithIntentCodableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INIntentCodableDescription
@@ -28,12 +28,12 @@
 {
   v11.receiver = self;
   v11.super_class = INIntentCodableDescription;
-  v3 = [(INCodableDescription *)&v11 attributes];
-  v4 = [v3 objectForKeyedSubscript:&unk_1F02D7F90];
+  attributes = [(INCodableDescription *)&v11 attributes];
+  v4 = [attributes objectForKeyedSubscript:&unk_1F02D7F90];
 
   if (!v4)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [attributes mutableCopy];
     v6 = objc_alloc_init(INCodableObjectAttribute);
     [(INCodableAttribute *)v6 setModifier:1];
     [(INCodableAttribute *)v6 setPropertyName:@"_metadata"];
@@ -47,10 +47,10 @@
     v9 = [v5 copy];
     [(INCodableDescription *)self setAttributes:v9];
 
-    v3 = v9;
+    attributes = v9;
   }
 
-  return v3;
+  return attributes;
 }
 
 - (id)_attributesKey
@@ -67,52 +67,52 @@
   return [v2 __ParameterKey];
 }
 
-- (INIntentCodableDescription)initWithCoder:(id)a3
+- (INIntentCodableDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = INIntentCodableDescription;
-  v5 = [(INRootCodableDescription *)&v25 initWithCoder:v4];
+  v5 = [(INRootCodableDescription *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"title"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"title"];
     [(INIntentCodableDescription *)v5 setTitle:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleLocID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleLocID"];
     [(INIntentCodableDescription *)v5 setTitleLocID:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"descriptiveText"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"descriptiveText"];
     [(INIntentCodableDescription *)v5 setDescriptiveText:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptiveTextLocID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptiveTextLocID"];
     [(INIntentCodableDescription *)v5 setDescriptiveTextLocID:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verb"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verb"];
     [(INIntentCodableDescription *)v5 setVerb:v16];
 
-    -[INIntentCodableDescription setIntentCategory:](v5, "setIntentCategory:", [v4 decodeIntegerForKey:@"intentCategory"]);
-    -[INIntentCodableDescription setUserConfirmationRequired:](v5, "setUserConfirmationRequired:", [v4 decodeBoolForKey:@"userConfirmationRequired"]);
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultImageName"];
+    -[INIntentCodableDescription setIntentCategory:](v5, "setIntentCategory:", [coderCopy decodeIntegerForKey:@"intentCategory"]);
+    -[INIntentCodableDescription setUserConfirmationRequired:](v5, "setUserConfirmationRequired:", [coderCopy decodeBoolForKey:@"userConfirmationRequired"]);
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultImageName"];
     [(INIntentCodableDescription *)v5 setDefaultImageName:v17];
 
-    -[INIntentCodableDescription setConfigurable:](v5, "setConfigurable:", [v4 decodeBoolForKey:@"configurable"]);
-    -[INIntentCodableDescription setForeground:](v5, "setForeground:", [v4 decodeBoolForKey:@"foreground"]);
-    -[INIntentCodableDescription setDeprecated:](v5, "setDeprecated:", [v4 decodeBoolForKey:@"deprecated"]);
-    -[INIntentCodableDescription setEligibleForSuggestions:](v5, "setEligibleForSuggestions:", [v4 decodeBoolForKey:@"eligibleForSuggestions"]);
-    -[INIntentCodableDescription setEligibleForWidgets:](v5, "setEligibleForWidgets:", [v4 decodeBoolForKey:@"eligibleForWidgets"]);
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_inputAttributeName"];
+    -[INIntentCodableDescription setConfigurable:](v5, "setConfigurable:", [coderCopy decodeBoolForKey:@"configurable"]);
+    -[INIntentCodableDescription setForeground:](v5, "setForeground:", [coderCopy decodeBoolForKey:@"foreground"]);
+    -[INIntentCodableDescription setDeprecated:](v5, "setDeprecated:", [coderCopy decodeBoolForKey:@"deprecated"]);
+    -[INIntentCodableDescription setEligibleForSuggestions:](v5, "setEligibleForSuggestions:", [coderCopy decodeBoolForKey:@"eligibleForSuggestions"]);
+    -[INIntentCodableDescription setEligibleForWidgets:](v5, "setEligibleForWidgets:", [coderCopy decodeBoolForKey:@"eligibleForWidgets"]);
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_inputAttributeName"];
     [(INIntentCodableDescription *)v5 _setInputAttributeName:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_keyAttributeName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_keyAttributeName"];
     [(INIntentCodableDescription *)v5 _setKeyAttributeName:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityVerbs"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityVerbs"];
     v21 = v20;
     if (v20)
     {
@@ -126,54 +126,54 @@
 
     [(INIntentCodableDescription *)v5 setEntityVerbs:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"versioningHash"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"versioningHash"];
     [(INIntentCodableDescription *)v5 setVersioningHash:v23];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INIntentCodableDescription;
-  v4 = a3;
-  [(INRootCodableDescription *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_titleLocID forKey:@"titleLocID"];
-  [v4 encodeObject:self->_descriptiveText forKey:@"descriptiveText"];
-  [v4 encodeObject:self->_descriptiveTextLocID forKey:@"descriptiveTextLocID"];
-  [v4 encodeObject:self->_verb forKey:@"verb"];
-  [v4 encodeInteger:self->_intentCategory forKey:@"intentCategory"];
-  [v4 encodeBool:self->_userConfirmationRequired forKey:@"userConfirmationRequired"];
-  [v4 encodeObject:self->_defaultImageName forKey:@"defaultImageName"];
-  [v4 encodeBool:self->_configurable forKey:@"configurable"];
-  [v4 encodeBool:self->_foreground forKey:@"foreground"];
-  [v4 encodeBool:self->_deprecated forKey:@"deprecated"];
-  [v4 encodeBool:self->_eligibleForSuggestions forKey:@"eligibleForSuggestions"];
-  [v4 encodeBool:self->_eligibleForWidgets forKey:@"eligibleForWidgets"];
-  [v4 encodeObject:self->_inputAttributeName forKey:@"_inputAttributeName"];
-  [v4 encodeObject:self->_keyAttributeName forKey:@"_keyAttributeName"];
-  [v4 encodeObject:self->_entityVerbs forKey:@"entityVerbs"];
-  [v4 encodeObject:self->_versioningHash forKey:@"versioningHash"];
+  coderCopy = coder;
+  [(INRootCodableDescription *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_title forKey:{@"title", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_titleLocID forKey:@"titleLocID"];
+  [coderCopy encodeObject:self->_descriptiveText forKey:@"descriptiveText"];
+  [coderCopy encodeObject:self->_descriptiveTextLocID forKey:@"descriptiveTextLocID"];
+  [coderCopy encodeObject:self->_verb forKey:@"verb"];
+  [coderCopy encodeInteger:self->_intentCategory forKey:@"intentCategory"];
+  [coderCopy encodeBool:self->_userConfirmationRequired forKey:@"userConfirmationRequired"];
+  [coderCopy encodeObject:self->_defaultImageName forKey:@"defaultImageName"];
+  [coderCopy encodeBool:self->_configurable forKey:@"configurable"];
+  [coderCopy encodeBool:self->_foreground forKey:@"foreground"];
+  [coderCopy encodeBool:self->_deprecated forKey:@"deprecated"];
+  [coderCopy encodeBool:self->_eligibleForSuggestions forKey:@"eligibleForSuggestions"];
+  [coderCopy encodeBool:self->_eligibleForWidgets forKey:@"eligibleForWidgets"];
+  [coderCopy encodeObject:self->_inputAttributeName forKey:@"_inputAttributeName"];
+  [coderCopy encodeObject:self->_keyAttributeName forKey:@"_keyAttributeName"];
+  [coderCopy encodeObject:self->_entityVerbs forKey:@"entityVerbs"];
+  [coderCopy encodeObject:self->_versioningHash forKey:@"versioningHash"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = INIntentCodableDescription;
   v16 = 0;
-  v7 = [(INRootCodableDescription *)&v15 widgetPlistableRepresentationWithParameters:v6 error:&v16];
+  v7 = [(INRootCodableDescription *)&v15 widgetPlistableRepresentationWithParameters:parametersCopy error:&v16];
   v8 = v16;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -184,11 +184,11 @@
 
   else
   {
-    v12 = [(NSString *)self->_title intents_encodeForPlistRepresentationWithParameters:v6];
+    v12 = [(NSString *)self->_title intents_encodeForPlistRepresentationWithParameters:parametersCopy];
     [v7 intents_setPlistSafeObject:v12 forKey:@"title"];
 
     [v7 intents_setPlistSafeObject:self->_titleLocID forKey:@"titleLocID"];
-    v13 = [(NSString *)self->_descriptiveText intents_encodeForPlistRepresentationWithParameters:v6];
+    v13 = [(NSString *)self->_descriptiveText intents_encodeForPlistRepresentationWithParameters:parametersCopy];
     [v7 intents_setPlistSafeObject:v13 forKey:@"descriptiveText"];
 
     [v7 intents_setPlistSafeObject:self->_descriptiveTextLocID forKey:@"descriptiveTextLocID"];
@@ -211,7 +211,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v4 = [MEMORY[0x1E696ACD0] _in_safeUnarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -219,80 +219,80 @@
   return v4;
 }
 
-- (void)_reestablishReferencedCodableDescriptionsUsingTypes:(id)a3 intentResponseCodableDescription:(id)a4
+- (void)_reestablishReferencedCodableDescriptionsUsingTypes:(id)types intentResponseCodableDescription:(id)description
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  typesCopy = types;
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = MEMORY[0x1E695DFA0];
-  v9 = [(INRootCodableDescription *)v7 referencedCodableDescriptions];
-  v10 = [v8 orderedSetWithArray:v9];
+  referencedCodableDescriptions = [(INRootCodableDescription *)selfCopy referencedCodableDescriptions];
+  v10 = [v8 orderedSetWithArray:referencedCodableDescriptions];
 
-  v11 = [(INIntentCodableDescription *)v7 attributes];
-  v12 = [v11 allValues];
-  v13 = [v6 attributes];
-  v14 = [v13 allValues];
-  v15 = [v12 arrayByAddingObjectsFromArray:v14];
+  attributes = [(INIntentCodableDescription *)selfCopy attributes];
+  allValues = [attributes allValues];
+  attributes2 = [descriptionCopy attributes];
+  allValues2 = [attributes2 allValues];
+  v15 = [allValues arrayByAddingObjectsFromArray:allValues2];
 
-  v16 = [objc_opt_class() _calculateReferencedCodableDescriptionsFromAttributes:v15 usingTypes:v18];
+  v16 = [objc_opt_class() _calculateReferencedCodableDescriptionsFromAttributes:v15 usingTypes:typesCopy];
   [v10 addObjectsFromArray:v16];
 
-  v17 = [v10 array];
-  [(INRootCodableDescription *)v7 _setReferencedCodableDescriptions:v17];
+  array = [v10 array];
+  [(INRootCodableDescription *)selfCopy _setReferencedCodableDescriptions:array];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_establishReferencedCodableDescriptionsUsingTypes:(id)a3 intentResponseCodableDescription:(id)a4
+- (void)_establishReferencedCodableDescriptionsUsingTypes:(id)types intentResponseCodableDescription:(id)description
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(INIntentCodableDescription *)v7 attributes];
-  v9 = [v8 allValues];
-  v10 = [v6 attributes];
-  v11 = [v10 allValues];
-  v12 = [v9 arrayByAddingObjectsFromArray:v11];
+  typesCopy = types;
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attributes = [(INIntentCodableDescription *)selfCopy attributes];
+  allValues = [attributes allValues];
+  attributes2 = [descriptionCopy attributes];
+  allValues2 = [attributes2 allValues];
+  v12 = [allValues arrayByAddingObjectsFromArray:allValues2];
 
-  v13 = [objc_opt_class() _calculateReferencedCodableDescriptionsFromAttributes:v12 usingTypes:v14];
-  [(INRootCodableDescription *)v7 _setReferencedCodableDescriptions:v13];
+  v13 = [objc_opt_class() _calculateReferencedCodableDescriptionsFromAttributes:v12 usingTypes:typesCopy];
+  [(INRootCodableDescription *)selfCopy _setReferencedCodableDescriptions:v13];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_updateWithIntentCodableDescription:(id)a3
+- (void)_updateWithIntentCodableDescription:(id)description
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _localizationTable];
-  [(INCodableDescription *)self _setCustomLocalizationTable:v5];
+  descriptionCopy = description;
+  _localizationTable = [descriptionCopy _localizationTable];
+  [(INCodableDescription *)self _setCustomLocalizationTable:_localizationTable];
 
-  v6 = [v4 title];
-  [(INIntentCodableDescription *)self setTitle:v6];
+  title = [descriptionCopy title];
+  [(INIntentCodableDescription *)self setTitle:title];
 
-  v7 = [v4 titleLocID];
-  [(INIntentCodableDescription *)self setTitleLocID:v7];
+  titleLocID = [descriptionCopy titleLocID];
+  [(INIntentCodableDescription *)self setTitleLocID:titleLocID];
 
-  v8 = [v4 descriptiveText];
-  [(INIntentCodableDescription *)self setDescriptiveText:v8];
+  descriptiveText = [descriptionCopy descriptiveText];
+  [(INIntentCodableDescription *)self setDescriptiveText:descriptiveText];
 
-  v9 = [v4 descriptiveTextLocID];
-  [(INIntentCodableDescription *)self setDescriptiveTextLocID:v9];
+  descriptiveTextLocID = [descriptionCopy descriptiveTextLocID];
+  [(INIntentCodableDescription *)self setDescriptiveTextLocID:descriptiveTextLocID];
 
-  v10 = [v4 defaultImageName];
-  [(INIntentCodableDescription *)self setDefaultImageName:v10];
+  defaultImageName = [descriptionCopy defaultImageName];
+  [(INIntentCodableDescription *)self setDefaultImageName:defaultImageName];
 
-  if ([v4 isConfigurable])
+  if ([descriptionCopy isConfigurable])
   {
-    v11 = [v4 inputAttribute];
-    v12 = [v11 propertyName];
-    [(INIntentCodableDescription *)self _setInputAttributeName:v12];
+    inputAttribute = [descriptionCopy inputAttribute];
+    propertyName = [inputAttribute propertyName];
+    [(INIntentCodableDescription *)self _setInputAttributeName:propertyName];
 
-    v13 = [v4 keyAttribute];
-    v14 = [v13 propertyName];
-    [(INIntentCodableDescription *)self _setKeyAttributeName:v14];
+    keyAttribute = [descriptionCopy keyAttribute];
+    propertyName2 = [keyAttribute propertyName];
+    [(INIntentCodableDescription *)self _setKeyAttributeName:propertyName2];
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E695DFA0]);
@@ -300,10 +300,10 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(INIntentCodableDescription *)self attributes];
-  v17 = [v16 allValues];
+  attributes = [(INIntentCodableDescription *)self attributes];
+  allValues = [attributes allValues];
 
-  v18 = [v17 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v18 = [allValues countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v18)
   {
     v19 = v18;
@@ -314,18 +314,18 @@
       {
         if (*v35 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allValues);
         }
 
         v22 = *(*(&v34 + 1) + 8 * i);
-        v23 = [v22 propertyName];
-        v24 = [v4 attributeByName:v23];
+        propertyName3 = [v22 propertyName];
+        v24 = [descriptionCopy attributeByName:propertyName3];
 
-        v25 = [v24 displayName];
-        [v22 setDisplayName:v25];
+        displayName = [v24 displayName];
+        [v22 setDisplayName:displayName];
 
-        v26 = [v24 displayNameID];
-        [v22 setDisplayNameID:v26];
+        displayNameID = [v24 displayNameID];
+        [v22 setDisplayNameID:displayNameID];
 
         if ([v22 supportsResolution])
         {
@@ -333,24 +333,24 @@
         }
 
         [v22 setSupportsDynamicEnumeration:{objc_msgSend(v24, "supportsDynamicEnumeration")}];
-        v27 = [v24 metadata];
-        [v22 setMetadata:v27];
+        metadata = [v24 metadata];
+        [v22 setMetadata:metadata];
 
-        v28 = [v24 relationship];
-        [v22 setRelationship:v28];
+        relationship = [v24 relationship];
+        [v22 setRelationship:relationship];
 
-        v29 = [v24 displayPriorityRank];
-        [v22 setDisplayPriorityRank:v29];
+        displayPriorityRank = [v24 displayPriorityRank];
+        [v22 setDisplayPriorityRank:displayPriorityRank];
 
-        v30 = [v22 displayPriorityRank];
+        displayPriorityRank2 = [v22 displayPriorityRank];
 
-        if (v30)
+        if (displayPriorityRank2)
         {
           [v15 addObject:v22];
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v19 = [allValues countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v19);
@@ -358,11 +358,11 @@
 
   [v15 sortUsingComparator:&__block_literal_global_37491];
   [(INCodableDescription *)self setDisplayOrderedAttributes:v15];
-  v31 = [v4 entityVerbs];
-  [(INIntentCodableDescription *)self setEntityVerbs:v31];
+  entityVerbs = [descriptionCopy entityVerbs];
+  [(INIntentCodableDescription *)self setEntityVerbs:entityVerbs];
 
-  v32 = [v4 semanticRoot];
-  [(INCodableDescription *)self setSemanticRoot:v32];
+  semanticRoot = [descriptionCopy semanticRoot];
+  [(INCodableDescription *)self setSemanticRoot:semanticRoot];
 
   v33 = *MEMORY[0x1E69E9840];
 }
@@ -377,182 +377,182 @@ uint64_t __66__INIntentCodableDescription__updateWithIntentCodableDescription___
   return v7;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v98[18] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localizerCopy = localizer;
   v95.receiver = self;
   v95.super_class = INIntentCodableDescription;
-  v78 = [(INCodableDescription *)&v95 dictionaryRepresentationWithLocalizer:v4];
-  v89 = [objc_opt_class() __ClassNameKey];
-  v97[0] = v89;
-  v5 = [(INCodableDescription *)self className];
-  v6 = v5;
-  if (!v5)
+  v78 = [(INCodableDescription *)&v95 dictionaryRepresentationWithLocalizer:localizerCopy];
+  __ClassNameKey = [objc_opt_class() __ClassNameKey];
+  v97[0] = __ClassNameKey;
+  className = [(INCodableDescription *)self className];
+  v6 = className;
+  if (!className)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    className = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v5;
-  v98[0] = v5;
-  v87 = [objc_opt_class() __TitleKey];
-  v97[1] = v87;
-  v7 = [(INIntentCodableDescription *)self localizedTitleWithLocalizer:v4];
-  v8 = v7;
-  if (!v7)
+  v57 = className;
+  v98[0] = className;
+  __TitleKey = [objc_opt_class() __TitleKey];
+  v97[1] = __TitleKey;
+  null = [(INIntentCodableDescription *)self localizedTitleWithLocalizer:localizerCopy];
+  v8 = null;
+  if (!null)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v7;
-  v98[1] = v7;
-  v85 = [objc_opt_class() __TitleIDKey];
-  v97[2] = v85;
-  v9 = [(INIntentCodableDescription *)self titleLocID];
-  v10 = v9;
-  if (!v9)
+  v56 = null;
+  v98[1] = null;
+  __TitleIDKey = [objc_opt_class() __TitleIDKey];
+  v97[2] = __TitleIDKey;
+  titleLocID = [(INIntentCodableDescription *)self titleLocID];
+  v10 = titleLocID;
+  if (!titleLocID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    titleLocID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55 = v9;
-  v98[2] = v9;
-  v83 = [objc_opt_class() __DescriptionKey];
-  v97[3] = v83;
-  v11 = [(INIntentCodableDescription *)self localizedDescriptiveTextWithLocalizer:v4];
-  v12 = v11;
-  if (!v11)
+  v55 = titleLocID;
+  v98[2] = titleLocID;
+  __DescriptionKey = [objc_opt_class() __DescriptionKey];
+  v97[3] = __DescriptionKey;
+  null2 = [(INIntentCodableDescription *)self localizedDescriptiveTextWithLocalizer:localizerCopy];
+  v12 = null2;
+  if (!null2)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v11;
-  v98[3] = v11;
-  v81 = [objc_opt_class() __DescriptionIDKey];
-  v97[4] = v81;
-  v13 = [(INIntentCodableDescription *)self descriptiveTextLocID];
-  v14 = v13;
-  if (!v13)
+  v54 = null2;
+  v98[3] = null2;
+  __DescriptionIDKey = [objc_opt_class() __DescriptionIDKey];
+  v97[4] = __DescriptionIDKey;
+  descriptiveTextLocID = [(INIntentCodableDescription *)self descriptiveTextLocID];
+  v14 = descriptiveTextLocID;
+  if (!descriptiveTextLocID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    descriptiveTextLocID = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v13;
-  v98[4] = v13;
-  v79 = [objc_opt_class() __VerbKey];
-  v97[5] = v79;
-  v15 = [(INIntentCodableDescription *)self verb];
-  v16 = v15;
-  if (!v15)
+  v53 = descriptiveTextLocID;
+  v98[4] = descriptiveTextLocID;
+  __VerbKey = [objc_opt_class() __VerbKey];
+  v97[5] = __VerbKey;
+  verb = [(INIntentCodableDescription *)self verb];
+  v16 = verb;
+  if (!verb)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    verb = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52 = v15;
-  v98[5] = v15;
-  v77 = [objc_opt_class() __CategoryKey];
-  v97[6] = v77;
-  v17 = [(INIntentCodableDescription *)self intentCategory];
-  if ((v17 - 1) > 0x13)
+  v52 = verb;
+  v98[5] = verb;
+  __CategoryKey = [objc_opt_class() __CategoryKey];
+  v97[6] = __CategoryKey;
+  intentCategory = [(INIntentCodableDescription *)self intentCategory];
+  if ((intentCategory - 1) > 0x13)
   {
     v18 = @"unknown";
   }
 
   else
   {
-    v18 = off_1E7286400[v17 - 1];
+    v18 = off_1E7286400[intentCategory - 1];
   }
 
   v86 = v8;
   v88 = v6;
   v76 = v18;
   v98[6] = v76;
-  v75 = [objc_opt_class() __DefaultImageNameKey];
-  v97[7] = v75;
-  v19 = [(INIntentCodableDescription *)self defaultImageName];
-  v20 = v19;
-  if (!v19)
+  __DefaultImageNameKey = [objc_opt_class() __DefaultImageNameKey];
+  v97[7] = __DefaultImageNameKey;
+  defaultImageName = [(INIntentCodableDescription *)self defaultImageName];
+  v20 = defaultImageName;
+  if (!defaultImageName)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    defaultImageName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v51 = v19;
-  v98[7] = v19;
-  v73 = [objc_opt_class() __UserConfirmationRequiredKey];
-  v97[8] = v73;
-  v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntentCodableDescription userConfirmationRequired](self, "userConfirmationRequired")}];
-  v72 = v21;
-  if (!v21)
+  v51 = defaultImageName;
+  v98[7] = defaultImageName;
+  __UserConfirmationRequiredKey = [objc_opt_class() __UserConfirmationRequiredKey];
+  v97[8] = __UserConfirmationRequiredKey;
+  null3 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntentCodableDescription userConfirmationRequired](self, "userConfirmationRequired")}];
+  v72 = null3;
+  if (!null3)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50 = v21;
-  v98[8] = v21;
-  v71 = [objc_opt_class() __InputKey];
-  v97[9] = v71;
-  v22 = [(INIntentCodableDescription *)self _inputAttributeName];
-  v70 = v22;
-  if (!v22)
+  v50 = null3;
+  v98[8] = null3;
+  __InputKey = [objc_opt_class() __InputKey];
+  v97[9] = __InputKey;
+  _inputAttributeName = [(INIntentCodableDescription *)self _inputAttributeName];
+  v70 = _inputAttributeName;
+  if (!_inputAttributeName)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    _inputAttributeName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v22;
-  v98[9] = v22;
-  v69 = [objc_opt_class() __KeyParameterKey];
-  v97[10] = v69;
-  v23 = [(INIntentCodableDescription *)self _keyAttributeName];
-  v90 = v23;
-  if (!v23)
+  v49 = _inputAttributeName;
+  v98[9] = _inputAttributeName;
+  __KeyParameterKey = [objc_opt_class() __KeyParameterKey];
+  v97[10] = __KeyParameterKey;
+  _keyAttributeName = [(INIntentCodableDescription *)self _keyAttributeName];
+  v90 = _keyAttributeName;
+  if (!_keyAttributeName)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    _keyAttributeName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v23;
-  v98[10] = v23;
-  v68 = [objc_opt_class() __ConfigurableKey];
-  v97[11] = v68;
+  v48 = _keyAttributeName;
+  v98[10] = _keyAttributeName;
+  __ConfigurableKey = [objc_opt_class() __ConfigurableKey];
+  v97[11] = __ConfigurableKey;
   v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntentCodableDescription isConfigurable](self, "isConfigurable")}];
   v98[11] = v67;
-  v66 = [objc_opt_class() __ForegroundKey];
-  v97[12] = v66;
+  __ForegroundKey = [objc_opt_class() __ForegroundKey];
+  v97[12] = __ForegroundKey;
   v65 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntentCodableDescription isForeground](self, "isForeground")}];
   v98[12] = v65;
-  v64 = [objc_opt_class() __DeprecatedKey];
-  v97[13] = v64;
+  __DeprecatedKey = [objc_opt_class() __DeprecatedKey];
+  v97[13] = __DeprecatedKey;
   v63 = [MEMORY[0x1E696AD98] numberWithBool:{-[INIntentCodableDescription isDeprecated](self, "isDeprecated")}];
   v98[13] = v63;
-  v62 = [objc_opt_class() __EntityKey];
-  v97[14] = v62;
-  v24 = [(INCodableDescription *)self semanticRoot];
-  v25 = v24;
-  if (!v24)
+  __EntityKey = [objc_opt_class() __EntityKey];
+  v97[14] = __EntityKey;
+  semanticRoot = [(INCodableDescription *)self semanticRoot];
+  v25 = semanticRoot;
+  if (!semanticRoot)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    semanticRoot = [MEMORY[0x1E695DFB0] null];
   }
 
   v74 = v20;
   v80 = v14;
   v82 = v12;
   v84 = v10;
-  v47 = v24;
-  v98[14] = v24;
-  v61 = [objc_opt_class() __VerbAssociationsKey];
-  v97[15] = v61;
-  v26 = [(INIntentCodableDescription *)self entityVerbs];
-  v60 = v26;
-  if (!v26)
+  v47 = semanticRoot;
+  v98[14] = semanticRoot;
+  __VerbAssociationsKey = [objc_opt_class() __VerbAssociationsKey];
+  v97[15] = __VerbAssociationsKey;
+  entityVerbs = [(INIntentCodableDescription *)self entityVerbs];
+  v60 = entityVerbs;
+  if (!entityVerbs)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    entityVerbs = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v26;
-  v98[15] = v26;
-  v58 = [objc_opt_class() __PhrasesKey];
-  v97[16] = v58;
-  v27 = [(INIntentCodableDescription *)self phrases];
-  v28 = [v27 count];
+  v46 = entityVerbs;
+  v98[15] = entityVerbs;
+  __PhrasesKey = [objc_opt_class() __PhrasesKey];
+  v97[16] = __PhrasesKey;
+  phrases = [(INIntentCodableDescription *)self phrases];
+  v28 = [phrases count];
 
   if (!v28)
   {
@@ -579,7 +579,7 @@ uint64_t __66__INIntentCodableDescription__updateWithIntentCodableDescription___
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v91 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:v4];
+        v35 = [*(*(&v91 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:localizerCopy];
         [v29 if_addObjectIfNonNil:v35];
       }
 
@@ -592,32 +592,32 @@ uint64_t __66__INIntentCodableDescription__updateWithIntentCodableDescription___
   if (v29)
   {
     v36 = 0;
-    v37 = v29;
+    null4 = v29;
   }
 
   else
   {
 LABEL_38:
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
     v29 = 0;
     v36 = 1;
   }
 
-  v98[16] = v37;
-  v38 = [objc_opt_class() __HashKey];
-  v97[17] = v38;
-  v39 = [(INIntentCodableDescription *)self versioningHash];
-  v40 = v39;
-  if (!v39)
+  v98[16] = null4;
+  __HashKey = [objc_opt_class() __HashKey];
+  v97[17] = __HashKey;
+  versioningHash = [(INIntentCodableDescription *)self versioningHash];
+  null5 = versioningHash;
+  if (!versioningHash)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v98[17] = v40;
+  v98[17] = null5;
   v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v98 forKeys:v97 count:18];
   v59 = [v78 if_dictionaryByAddingEntriesFromDictionary:v41];
 
-  if (!v39)
+  if (!versioningHash)
   {
   }
 
@@ -676,28 +676,28 @@ LABEL_38:
   {
   }
 
-  v43 = [v59 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v59 if_dictionaryWithNonEmptyValues];
 
   v44 = *MEMORY[0x1E69E9840];
 
-  return v43;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v66.receiver = self;
   v66.super_class = INIntentCodableDescription;
-  [(INCodableDescription *)&v66 updateWithDictionary:v4];
-  v5 = [objc_opt_class() _intentClassNameWithDictionary:v4];
+  [(INCodableDescription *)&v66 updateWithDictionary:dictionaryCopy];
+  v5 = [objc_opt_class() _intentClassNameWithDictionary:dictionaryCopy];
   [(INCodableDescription *)self setClassName:v5];
 
-  v6 = [objc_opt_class() __TitleKey];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  __TitleKey = [objc_opt_class() __TitleKey];
+  v7 = [dictionaryCopy objectForKeyedSubscript:__TitleKey];
 
-  v8 = [objc_opt_class() __DescriptionKey];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  __DescriptionKey = [objc_opt_class() __DescriptionKey];
+  v9 = [dictionaryCopy objectForKeyedSubscript:__DescriptionKey];
 
   if (v7)
   {
@@ -707,66 +707,66 @@ LABEL_38:
 
   else
   {
-    v11 = [objc_opt_class() __SummaryKey];
-    v10 = [v4 objectForKeyedSubscript:v11];
+    __SummaryKey = [objc_opt_class() __SummaryKey];
+    v10 = [dictionaryCopy objectForKeyedSubscript:__SummaryKey];
   }
 
   [(INIntentCodableDescription *)self setTitle:v9];
-  v12 = [objc_opt_class() __TitleIDKey];
-  v13 = [v4 objectForKeyedSubscript:v12];
+  __TitleIDKey = [objc_opt_class() __TitleIDKey];
+  v13 = [dictionaryCopy objectForKeyedSubscript:__TitleIDKey];
   [(INIntentCodableDescription *)self setTitleLocID:v13];
 
   [(INIntentCodableDescription *)self setDescriptiveText:v10];
-  v14 = [objc_opt_class() __DescriptionIDKey];
-  v15 = [v4 objectForKeyedSubscript:v14];
+  __DescriptionIDKey = [objc_opt_class() __DescriptionIDKey];
+  v15 = [dictionaryCopy objectForKeyedSubscript:__DescriptionIDKey];
   [(INIntentCodableDescription *)self setDescriptiveTextLocID:v15];
 
-  v16 = [objc_opt_class() __VerbKey];
-  v17 = [v4 objectForKeyedSubscript:v16];
+  __VerbKey = [objc_opt_class() __VerbKey];
+  v17 = [dictionaryCopy objectForKeyedSubscript:__VerbKey];
   [(INIntentCodableDescription *)self setVerb:v17];
 
-  v18 = [objc_opt_class() __CategoryKey];
-  v19 = [v4 objectForKeyedSubscript:v18];
+  __CategoryKey = [objc_opt_class() __CategoryKey];
+  v19 = [dictionaryCopy objectForKeyedSubscript:__CategoryKey];
   [(INIntentCodableDescription *)self setIntentCategory:INIntentCategoryWithString(v19)];
 
-  v20 = [objc_opt_class() __DefaultImageNameKey];
-  v21 = [v4 objectForKeyedSubscript:v20];
+  __DefaultImageNameKey = [objc_opt_class() __DefaultImageNameKey];
+  v21 = [dictionaryCopy objectForKeyedSubscript:__DefaultImageNameKey];
   [(INIntentCodableDescription *)self setDefaultImageName:v21];
 
-  v22 = [objc_opt_class() __UserConfirmationRequiredKey];
-  v23 = [v4 objectForKeyedSubscript:v22];
+  __UserConfirmationRequiredKey = [objc_opt_class() __UserConfirmationRequiredKey];
+  v23 = [dictionaryCopy objectForKeyedSubscript:__UserConfirmationRequiredKey];
   -[INIntentCodableDescription setUserConfirmationRequired:](self, "setUserConfirmationRequired:", [v23 BOOLValue]);
 
-  v24 = [objc_opt_class() __ConfigurableKey];
-  v25 = [v4 objectForKeyedSubscript:v24];
+  __ConfigurableKey = [objc_opt_class() __ConfigurableKey];
+  v25 = [dictionaryCopy objectForKeyedSubscript:__ConfigurableKey];
   -[INIntentCodableDescription setConfigurable:](self, "setConfigurable:", [v25 BOOLValue]);
 
-  v26 = [objc_opt_class() __DeprecatedKey];
-  v27 = [v4 objectForKeyedSubscript:v26];
+  __DeprecatedKey = [objc_opt_class() __DeprecatedKey];
+  v27 = [dictionaryCopy objectForKeyedSubscript:__DeprecatedKey];
   -[INIntentCodableDescription setDeprecated:](self, "setDeprecated:", [v27 BOOLValue]);
 
-  v28 = [objc_opt_class() __ForegroundKey];
-  v29 = [v4 objectForKeyedSubscript:v28];
+  __ForegroundKey = [objc_opt_class() __ForegroundKey];
+  v29 = [dictionaryCopy objectForKeyedSubscript:__ForegroundKey];
   -[INIntentCodableDescription setForeground:](self, "setForeground:", [v29 BOOLValue]);
 
-  v30 = [objc_opt_class() __IneligibleForSuggestionsKey];
-  v31 = [v4 objectForKeyedSubscript:v30];
+  __IneligibleForSuggestionsKey = [objc_opt_class() __IneligibleForSuggestionsKey];
+  v31 = [dictionaryCopy objectForKeyedSubscript:__IneligibleForSuggestionsKey];
   -[INIntentCodableDescription setEligibleForSuggestions:](self, "setEligibleForSuggestions:", [v31 BOOLValue] ^ 1);
 
-  v32 = [objc_opt_class() __EligibleForWidgetsKey];
-  v33 = [v4 objectForKeyedSubscript:v32];
+  __EligibleForWidgetsKey = [objc_opt_class() __EligibleForWidgetsKey];
+  v33 = [dictionaryCopy objectForKeyedSubscript:__EligibleForWidgetsKey];
   -[INIntentCodableDescription setEligibleForWidgets:](self, "setEligibleForWidgets:", [v33 BOOLValue]);
 
-  v34 = [objc_opt_class() __InputKey];
-  v35 = [v4 objectForKeyedSubscript:v34];
+  __InputKey = [objc_opt_class() __InputKey];
+  v35 = [dictionaryCopy objectForKeyedSubscript:__InputKey];
   [(INIntentCodableDescription *)self _setInputAttributeName:v35];
 
-  v36 = [objc_opt_class() __KeyParameterKey];
-  v37 = [v4 objectForKeyedSubscript:v36];
+  __KeyParameterKey = [objc_opt_class() __KeyParameterKey];
+  v37 = [dictionaryCopy objectForKeyedSubscript:__KeyParameterKey];
   [(INIntentCodableDescription *)self _setKeyAttributeName:v37];
 
-  v38 = [objc_opt_class() __VerbAssociationsKey];
-  v39 = [v4 objectForKeyedSubscript:v38];
+  __VerbAssociationsKey = [objc_opt_class() __VerbAssociationsKey];
+  v39 = [dictionaryCopy objectForKeyedSubscript:__VerbAssociationsKey];
   v40 = v39;
   if (v39)
   {
@@ -780,16 +780,16 @@ LABEL_38:
 
   [(INIntentCodableDescription *)self setEntityVerbs:v41];
 
-  v42 = [objc_opt_class() __EntityKey];
-  v43 = [v4 objectForKeyedSubscript:v42];
+  __EntityKey = [objc_opt_class() __EntityKey];
+  v43 = [dictionaryCopy objectForKeyedSubscript:__EntityKey];
   [(INCodableDescription *)self setSemanticRoot:v43];
 
-  v44 = [objc_opt_class() __HashKey];
-  v45 = [v4 objectForKeyedSubscript:v44];
+  __HashKey = [objc_opt_class() __HashKey];
+  v45 = [dictionaryCopy objectForKeyedSubscript:__HashKey];
   [(INIntentCodableDescription *)self setVersioningHash:v45];
 
-  v46 = [objc_opt_class() __PhrasesKey];
-  v47 = [v4 objectForKey:v46];
+  __PhrasesKey = [objc_opt_class() __PhrasesKey];
+  v47 = [dictionaryCopy objectForKey:__PhrasesKey];
 
   if (v47)
   {
@@ -815,7 +815,7 @@ LABEL_38:
   if ([v49 count])
   {
     v60 = v10;
-    v61 = v4;
+    v61 = dictionaryCopy;
     v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v62 = 0u;
     v63 = 0u;
@@ -856,28 +856,28 @@ LABEL_38:
     phrases = self->_phrases;
     self->_phrases = v50;
 
-    v4 = v61;
+    dictionaryCopy = v61;
     v10 = v60;
   }
 
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localizedDescriptiveTextWithLocalizer:(id)a3
+- (id)localizedDescriptiveTextWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INIntentCodableDescription *)self descriptiveTextLocID];
-  v6 = [(INIntentCodableDescription *)self descriptiveText];
-  v7 = [(INCodableDescription *)self _customLocalizationTable];
-  if (v7)
+  localizerCopy = localizer;
+  descriptiveTextLocID = [(INIntentCodableDescription *)self descriptiveTextLocID];
+  descriptiveText = [(INIntentCodableDescription *)self descriptiveText];
+  _customLocalizationTable = [(INCodableDescription *)self _customLocalizationTable];
+  if (_customLocalizationTable)
   {
-    v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+    v8 = INLocalizedStringFromCodable(descriptiveTextLocID, descriptiveText, _customLocalizationTable, localizerCopy, 0);
   }
 
   else
   {
-    v9 = [(INCodableDescription *)self _localizationTable];
-    v8 = INLocalizedStringFromCodable(v5, v6, v9, v4, 0);
+    _localizationTable = [(INCodableDescription *)self _localizationTable];
+    v8 = INLocalizedStringFromCodable(descriptiveTextLocID, descriptiveText, _localizationTable, localizerCopy, 0);
   }
 
   return v8;
@@ -891,21 +891,21 @@ LABEL_38:
   return v4;
 }
 
-- (id)localizedTitleWithLocalizer:(id)a3
+- (id)localizedTitleWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INIntentCodableDescription *)self titleLocID];
-  v6 = [(INIntentCodableDescription *)self title];
-  v7 = [(INCodableDescription *)self _customLocalizationTable];
-  if (v7)
+  localizerCopy = localizer;
+  titleLocID = [(INIntentCodableDescription *)self titleLocID];
+  title = [(INIntentCodableDescription *)self title];
+  _customLocalizationTable = [(INCodableDescription *)self _customLocalizationTable];
+  if (_customLocalizationTable)
   {
-    v8 = INLocalizedStringFromCodable(v5, v6, v7, v4, 0);
+    v8 = INLocalizedStringFromCodable(titleLocID, title, _customLocalizationTable, localizerCopy, 0);
   }
 
   else
   {
-    v9 = [(INCodableDescription *)self _localizationTable];
-    v8 = INLocalizedStringFromCodable(v5, v6, v9, v4, 0);
+    _localizationTable = [(INCodableDescription *)self _localizationTable];
+    v8 = INLocalizedStringFromCodable(titleLocID, title, _localizationTable, localizerCopy, 0);
   }
 
   return v8;
@@ -921,12 +921,12 @@ LABEL_38:
 
 - (INCodableAttribute)keyAttribute
 {
-  v3 = [(INIntentCodableDescription *)self _keyAttributeName];
+  _keyAttributeName = [(INIntentCodableDescription *)self _keyAttributeName];
 
-  if (v3)
+  if (_keyAttributeName)
   {
-    v4 = [(INIntentCodableDescription *)self _keyAttributeName];
-    v5 = [(INCodableDescription *)self attributeByName:v4];
+    _keyAttributeName2 = [(INIntentCodableDescription *)self _keyAttributeName];
+    v5 = [(INCodableDescription *)self attributeByName:_keyAttributeName2];
   }
 
   else
@@ -939,12 +939,12 @@ LABEL_38:
 
 - (INCodableAttribute)inputAttribute
 {
-  v3 = [(INIntentCodableDescription *)self _inputAttributeName];
+  _inputAttributeName = [(INIntentCodableDescription *)self _inputAttributeName];
 
-  if (v3)
+  if (_inputAttributeName)
   {
-    v4 = [(INIntentCodableDescription *)self _inputAttributeName];
-    v5 = [(INCodableDescription *)self attributeByName:v4];
+    _inputAttributeName2 = [(INIntentCodableDescription *)self _inputAttributeName];
+    v5 = [(INCodableDescription *)self attributeByName:_inputAttributeName2];
   }
 
   else
@@ -955,17 +955,17 @@ LABEL_38:
   return v5;
 }
 
-- (id)resolvableParameterCombinationsWithParameterCombinations:(id)a3
+- (id)resolvableParameterCombinationsWithParameterCombinations:(id)combinations
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  combinationsCopy = combinations;
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v24 = v4;
+  v24 = combinationsCopy;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v4 allKeys];
+  obj = [combinationsCopy allKeys];
   v5 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
@@ -1001,9 +1001,9 @@ LABEL_38:
               }
 
               v15 = [(INCodableDescription *)self attributeByName:*(*(&v26 + 1) + 8 * j)];
-              v16 = [v15 supportsResolution];
+              supportsResolution = [v15 supportsResolution];
 
-              if (!v16)
+              if (!supportsResolution)
               {
                 v17 = 1;
                 goto LABEL_16;
@@ -1043,22 +1043,22 @@ LABEL_16:
   return v20;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v25.receiver = a1;
+  representationCopy = representation;
+  v25.receiver = self;
   v25.super_class = &OBJC_METACLASS___INIntentCodableDescription;
   v26 = 0;
-  v7 = objc_msgSendSuper2(&v25, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v26);
+  v7 = objc_msgSendSuper2(&v25, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v26);
   v8 = v26;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1069,38 +1069,38 @@ LABEL_16:
 
   else
   {
-    v12 = [v6 intents_stringForKey:@"title"];
+    v12 = [representationCopy intents_stringForKey:@"title"];
     [v7 setTitle:v12];
 
-    v13 = [v6 intents_stringForKey:@"titleLocID"];
+    v13 = [representationCopy intents_stringForKey:@"titleLocID"];
     [v7 setTitleLocID:v13];
 
-    v14 = [v6 intents_stringForKey:@"descriptiveText"];
+    v14 = [representationCopy intents_stringForKey:@"descriptiveText"];
     [v7 setDescriptiveText:v14];
 
-    v15 = [v6 intents_stringForKey:@"descriptiveTextLocID"];
+    v15 = [representationCopy intents_stringForKey:@"descriptiveTextLocID"];
     [v7 setDescriptiveTextLocID:v15];
 
-    v16 = [v6 intents_stringForKey:@"verb"];
+    v16 = [representationCopy intents_stringForKey:@"verb"];
     [v7 setVerb:v16];
 
-    [v7 setIntentCategory:{objc_msgSend(v6, "intents_intForKey:", @"intentCategory"}];
-    [v7 setUserConfirmationRequired:{objc_msgSend(v6, "intents_BOOLForKey:", @"userConfirmationRequired"}];
-    v17 = [v6 intents_stringForKey:@"defaultImageName"];
+    [v7 setIntentCategory:{objc_msgSend(representationCopy, "intents_intForKey:", @"intentCategory"}];
+    [v7 setUserConfirmationRequired:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"userConfirmationRequired"}];
+    v17 = [representationCopy intents_stringForKey:@"defaultImageName"];
     [v7 setDefaultImageName:v17];
 
-    [v7 setConfigurable:{objc_msgSend(v6, "intents_BOOLForKey:", @"configurable"}];
-    [v7 setForeground:{objc_msgSend(v6, "intents_BOOLForKey:", @"foreground"}];
-    [v7 setDeprecated:{objc_msgSend(v6, "intents_BOOLForKey:", @"deprecated"}];
-    [v7 setEligibleForSuggestions:{objc_msgSend(v6, "intents_BOOLForKey:", @"eligibleForSuggestions"}];
-    [v7 setEligibleForWidgets:{objc_msgSend(v6, "intents_BOOLForKey:", @"eligibleForWidgets"}];
-    v18 = [v6 intents_stringForKey:@"_inputAttributeName"];
+    [v7 setConfigurable:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"configurable"}];
+    [v7 setForeground:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"foreground"}];
+    [v7 setDeprecated:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"deprecated"}];
+    [v7 setEligibleForSuggestions:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"eligibleForSuggestions"}];
+    [v7 setEligibleForWidgets:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"eligibleForWidgets"}];
+    v18 = [representationCopy intents_stringForKey:@"_inputAttributeName"];
     [v7 _setInputAttributeName:v18];
 
-    v19 = [v6 intents_stringForKey:@"_keyAttributeName"];
+    v19 = [representationCopy intents_stringForKey:@"_keyAttributeName"];
     [v7 _setKeyAttributeName:v19];
 
-    v20 = [v6 intents_safeObjectForKey:@"entityVerbs" ofType:objc_opt_class()];
+    v20 = [representationCopy intents_safeObjectForKey:@"entityVerbs" ofType:objc_opt_class()];
     v21 = v20;
     if (v20)
     {
@@ -1114,7 +1114,7 @@ LABEL_16:
 
     [v7 setEntityVerbs:v22];
 
-    v23 = [v6 intents_numberForKey:@"versioningHash"];
+    v23 = [representationCopy intents_numberForKey:@"versioningHash"];
     [v7 setVersioningHash:v23];
 
     v11 = v7;
@@ -1123,11 +1123,11 @@ LABEL_16:
   return v11;
 }
 
-+ (id)_intentClassNameWithDictionary:(id)a3
++ (id)_intentClassNameWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_opt_class() __ClassNameKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  dictionaryCopy = dictionary;
+  __ClassNameKey = [objc_opt_class() __ClassNameKey];
+  v5 = [dictionaryCopy objectForKeyedSubscript:__ClassNameKey];
 
   if ([v5 length])
   {
@@ -1137,8 +1137,8 @@ LABEL_16:
   else
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [objc_opt_class() __ClassPrefixKey];
-    v9 = [v3 objectForKeyedSubscript:v8];
+    __ClassPrefixKey = [objc_opt_class() __ClassPrefixKey];
+    v9 = [dictionaryCopy objectForKeyedSubscript:__ClassPrefixKey];
     v10 = v9;
     if (v9)
     {
@@ -1150,8 +1150,8 @@ LABEL_16:
       v11 = &stru_1F01E0850;
     }
 
-    v12 = [objc_opt_class() __NameKey];
-    v13 = [v3 objectForKey:v12];
+    __NameKey = [objc_opt_class() __NameKey];
+    v13 = [dictionaryCopy objectForKey:__NameKey];
     v6 = [v7 stringWithFormat:@"%@%@Intent", v11, v13];
   }
 

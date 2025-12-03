@@ -1,21 +1,21 @@
 @interface ICAttachmentPreviewGeneratorOperationQueue
-- (void)cancelOperationsForAttachment:(id)a3;
+- (void)cancelOperationsForAttachment:(id)attachment;
 - (void)resume;
 - (void)suspend;
 @end
 
 @implementation ICAttachmentPreviewGeneratorOperationQueue
 
-- (void)cancelOperationsForAttachment:(id)a3
+- (void)cancelOperationsForAttachment:(id)attachment
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attachmentCopy = attachment;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ICAttachmentPreviewGeneratorOperationQueue *)self operations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  operations = [(ICAttachmentPreviewGeneratorOperationQueue *)self operations];
+  v6 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,13 +26,13 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(operations);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 attachmentID];
-        v12 = [v4 objectID];
-        v13 = [v11 isEqual:v12];
+        attachmentID = [v10 attachmentID];
+        objectID = [attachmentCopy objectID];
+        v13 = [attachmentID isEqual:objectID];
 
         if (v13)
         {
@@ -40,7 +40,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [operations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

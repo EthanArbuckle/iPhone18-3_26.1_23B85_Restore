@@ -5,9 +5,9 @@
 - (MapsSuggestionsRouteGeniusEntry)currentSuggestion;
 - (void)becomeCurrent;
 - (void)resignCurrent;
-- (void)setCurrentETA:(id)a3;
-- (void)setCurrentSuggestion:(id)a3;
-- (void)setRouteIsNavigable:(BOOL)a3;
+- (void)setCurrentETA:(id)a;
+- (void)setCurrentSuggestion:(id)suggestion;
+- (void)setRouteIsNavigable:(BOOL)navigable;
 - (void)viewDidLoad;
 @end
 
@@ -17,8 +17,8 @@
 {
   if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & 1) == 0)
   {
-    v3 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-    [v3 stopHideSelectLabelTimer];
+    suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+    [suggestionsView stopHideSelectLabelTimer];
   }
 }
 
@@ -26,83 +26,83 @@
 {
   if (MapsFeature_IsEnabled_LocationIntelligenceMaps())
   {
-    v3 = [(CarRouteGeniusSuggestionsCardViewController *)self currentSuggestion];
-    v6 = [v3 route];
+    currentSuggestion = [(CarRouteGeniusSuggestionsCardViewController *)self currentSuggestion];
+    route = [currentSuggestion route];
 
-    v4 = v6;
-    if (!v6)
+    v4 = route;
+    if (!route)
     {
       goto LABEL_7;
     }
 
-    if ([v6 isFamiliarRoute])
+    if ([route isFamiliarRoute])
     {
-      v5 = [(CarRouteGeniusSuggestionsCardViewController *)self chromeViewController];
-      [v5 captureUserAction:502 onTarget:146 eventValue:0];
+      chromeViewController = [(CarRouteGeniusSuggestionsCardViewController *)self chromeViewController];
+      [chromeViewController captureUserAction:502 onTarget:146 eventValue:0];
     }
   }
 
   else
   {
-    v6 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-    [v6 startHideSelectLabelTimer];
+    route = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+    [route startHideSelectLabelTimer];
   }
 
-  v4 = v6;
+  v4 = route;
 LABEL_7:
 }
 
 - (CarChromeViewController)chromeViewController
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
+  chromeViewController = [v2 chromeViewController];
 
-  return v3;
+  return chromeViewController;
 }
 
 - (GuidanceETA)currentETA
 {
-  v2 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v3 = [v2 currentETA];
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  currentETA = [suggestionsView currentETA];
 
-  return v3;
+  return currentETA;
 }
 
-- (void)setCurrentETA:(id)a3
+- (void)setCurrentETA:(id)a
 {
-  v4 = a3;
-  v5 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  [v5 setCurrentETA:v4];
+  aCopy = a;
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  [suggestionsView setCurrentETA:aCopy];
 }
 
 - (MapsSuggestionsRouteGeniusEntry)currentSuggestion
 {
-  v3 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  objc_sync_enter(v3);
-  v4 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v5 = [v4 currentSuggestion];
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  objc_sync_enter(suggestionsView);
+  suggestionsView2 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  currentSuggestion = [suggestionsView2 currentSuggestion];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(suggestionsView);
 
-  return v5;
+  return currentSuggestion;
 }
 
-- (void)setCurrentSuggestion:(id)a3
+- (void)setCurrentSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v4 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  objc_sync_enter(v4);
-  v5 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  [v5 setCurrentSuggestion:v6];
+  suggestionCopy = suggestion;
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  objc_sync_enter(suggestionsView);
+  suggestionsView2 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  [suggestionsView2 setCurrentSuggestion:suggestionCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(suggestionsView);
 }
 
-- (void)setRouteIsNavigable:(BOOL)a3
+- (void)setRouteIsNavigable:(BOOL)navigable
 {
-  v3 = a3;
-  v4 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  [v4 setRouteIsNavigable:v3];
+  navigableCopy = navigable;
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  [suggestionsView setRouteIsNavigable:navigableCopy];
 }
 
 - (void)viewDidLoad
@@ -110,47 +110,47 @@ LABEL_7:
   v31.receiver = self;
   v31.super_class = CarRouteGeniusSuggestionsCardViewController;
   [(CarRouteGeniusSuggestionsCardViewController *)&v31 viewDidLoad];
-  v3 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  suggestionsView = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  [suggestionsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
-  v5 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  [v4 addSubview:v5];
+  view = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  suggestionsView2 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  [view addSubview:suggestionsView2];
 
-  v30 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v28 = [v30 topAnchor];
-  v29 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
-  v27 = [v29 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  suggestionsView3 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  topAnchor = [suggestionsView3 topAnchor];
+  view2 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v26;
-  v25 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v23 = [v25 leadingAnchor];
-  v24 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
-  v22 = [v24 leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  suggestionsView4 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  leadingAnchor = [suggestionsView4 leadingAnchor];
+  view3 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[1] = v21;
-  v20 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
-  v6 = [v20 bottomAnchor];
-  v7 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v8 = [v7 bottomAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  view4 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  bottomAnchor = [view4 bottomAnchor];
+  suggestionsView5 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  bottomAnchor2 = [suggestionsView5 bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[2] = v9;
-  v10 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
-  v11 = [v10 trailingAnchor];
-  v12 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view5 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  trailingAnchor = [view5 trailingAnchor];
+  suggestionsView6 = [(CarRouteGeniusSuggestionsCardViewController *)self suggestionsView];
+  trailingAnchor2 = [suggestionsView6 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[3] = v14;
   v19 = [NSArray arrayWithObjects:v32 count:4];
 
   [NSLayoutConstraint activateConstraints:v19];
-  v15 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  view6 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
   LODWORD(v16) = 1148846080;
-  [v15 setContentCompressionResistancePriority:1 forAxis:v16];
+  [view6 setContentCompressionResistancePriority:1 forAxis:v16];
 
-  v17 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
+  view7 = [(CarRouteGeniusSuggestionsCardViewController *)self view];
   LODWORD(v18) = 1148846080;
-  [v17 setContentHuggingPriority:1 forAxis:v18];
+  [view7 setContentHuggingPriority:1 forAxis:v18];
 }
 
 - (CarRouteGeniusSuggestionsCardViewController)init

@@ -22,7 +22,7 @@
   v3[1] = 3221225472;
   v3[2] = __85__CNSocialProfilesDescription_ABSExtentions__CNLabeledValueFromABSMultiValueTranform__block_invoke;
   v3[3] = &unk_278A04A98;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = MEMORY[0x2383B6390](v3);
 
   return v1;
@@ -41,7 +41,7 @@
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:4];
   v6 = objc_opt_class();
   v7 = +[ABSConstantsMapping CNToABPersonSocialProfileConstantsMapping];
-  v8 = [a1 dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v5 destinationClass:v6 valueMapping:v7];
+  v8 = [self dictionaryBasedMultiValueTransformWithLabelMapping:v2 inputKeys:v5 destinationClass:v6 valueMapping:v7];
 
   return v8;
 }

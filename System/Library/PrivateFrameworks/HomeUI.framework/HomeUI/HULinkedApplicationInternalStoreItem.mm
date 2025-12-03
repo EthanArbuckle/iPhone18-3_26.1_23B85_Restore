@@ -1,59 +1,59 @@
 @interface HULinkedApplicationInternalStoreItem
-- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)a3;
-- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)a3 associatedAccessories:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)identifier;
+- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)identifier associatedAccessories:(id)accessories;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HULinkedApplicationInternalStoreItem
 
-- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)a3
+- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HULinkedApplicationInternalStoreItem;
   v6 = [(HULinkedApplicationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)a3 associatedAccessories:(id)a4
+- (HULinkedApplicationInternalStoreItem)initWithBundleIdentifier:(id)identifier associatedAccessories:(id)accessories
 {
-  v6 = a4;
-  v7 = [(HULinkedApplicationInternalStoreItem *)self initWithBundleIdentifier:a3];
+  accessoriesCopy = accessories;
+  v7 = [(HULinkedApplicationInternalStoreItem *)self initWithBundleIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:v6];
+    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:accessoriesCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HULinkedApplicationInternalStoreItem *)self bundleIdentifier];
-  v6 = [v5 copy];
-  v7 = [(HULinkedApplicationItem *)self associatedAccessories];
-  v8 = [v4 initWithBundleIdentifier:v6 associatedAccessories:v7];
+  bundleIdentifier = [(HULinkedApplicationInternalStoreItem *)self bundleIdentifier];
+  v6 = [bundleIdentifier copy];
+  associatedAccessories = [(HULinkedApplicationItem *)self associatedAccessories];
+  v8 = [v4 initWithBundleIdentifier:v6 associatedAccessories:associatedAccessories];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HULinkedApplicationInternalStoreItem;
-  v5 = [(HULinkedApplicationItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HULinkedApplicationItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__HULinkedApplicationInternalStoreItem__subclass_updateWithOptions___block_invoke;

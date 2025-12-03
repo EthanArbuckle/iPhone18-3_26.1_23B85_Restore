@@ -1,23 +1,23 @@
 @interface AXMTHIDBasedLookAtPointTracker
-- (AXMTHIDBasedLookAtPointTracker)initWithInput:(id)a3 trackingType:(unint64_t)a4;
+- (AXMTHIDBasedLookAtPointTracker)initWithInput:(id)input trackingType:(unint64_t)type;
 - (AXMTLookAtPointTrackerDelegate)delegate;
 - (CGPoint)_lastValidPoint;
 - (UIView)debugOverlayRootView;
 - (void)_cleanUpPowerAssertionAndTimer;
 - (void)_cleanUpPowerAssertionIfNecessary;
-- (void)_deviceNotification:(id)a3 added:(BOOL)a4;
-- (void)_didReceivePointOnBackgroundThread:(CGPoint)a3;
-- (void)_elementUpdated:(id)a3 forDevice:(id)a4;
-- (void)_failedToTrackFaceWithErrorOnBackgroundThread:(id)a3;
-- (void)_initializationTimerFired:(id)a3;
+- (void)_deviceNotification:(id)notification added:(BOOL)added;
+- (void)_didReceivePointOnBackgroundThread:(CGPoint)thread;
+- (void)_elementUpdated:(id)updated forDevice:(id)device;
+- (void)_failedToTrackFaceWithErrorOnBackgroundThread:(id)thread;
+- (void)_initializationTimerFired:(id)fired;
 - (void)_inputSourceWasInterruptedOnMainThread;
-- (void)_positionalHIDElementUpdated:(id)a3 forDevice:(id)a4;
+- (void)_positionalHIDElementUpdated:(id)updated forDevice:(id)device;
 - (void)_powerAssertionTimerFired;
-- (void)_setCurrentFrequency:(id)a3;
-- (void)_setCurrentStatus:(unint64_t)a3;
+- (void)_setCurrentFrequency:(id)frequency;
+- (void)_setCurrentStatus:(unint64_t)status;
 - (void)_setUpPowerAssertionIfNecessary;
-- (void)_statusHIDElementUpdated:(id)a3 forDevice:(id)a4;
-- (void)_updateFrequencyUsingDevice:(id)a3;
+- (void)_statusHIDElementUpdated:(id)updated forDevice:(id)device;
+- (void)_updateFrequencyUsingDevice:(id)device;
 - (void)dealloc;
 - (void)startTracking;
 - (void)stopTracking;
@@ -25,32 +25,32 @@
 
 @implementation AXMTHIDBasedLookAtPointTracker
 
-- (AXMTHIDBasedLookAtPointTracker)initWithInput:(id)a3 trackingType:(unint64_t)a4
+- (AXMTHIDBasedLookAtPointTracker)initWithInput:(id)input trackingType:(unint64_t)type
 {
-  v5 = a3;
+  inputCopy = input;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = AXSSLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_100019FD8(v5, v12);
+      sub_100019FD8(inputCopy, v12);
     }
 
     goto LABEL_10;
   }
 
-  if (([v5 mfiAuthenticated] & 1) == 0)
+  if (([inputCopy mfiAuthenticated] & 1) == 0)
   {
     v12 = AXSSLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_10001A050(v5, v12);
+      sub_10001A050(inputCopy, v12);
     }
 
 LABEL_10:
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -59,7 +59,7 @@ LABEL_10:
   v6 = [(AXMTHIDBasedLookAtPointTracker *)&v14 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [inputCopy copy];
     input = v6->_input;
     v6->_input = v7;
 
@@ -71,10 +71,10 @@ LABEL_10:
   }
 
   self = v6;
-  v11 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -107,14 +107,14 @@ LABEL_11:
     v5 = [[HIDManager alloc] initWithOptions:0];
     [(AXMTHIDBasedLookAtPointTracker *)self set_hidManager:v5];
 
-    v6 = [(AXMTHIDBasedLookAtPointTracker *)self input];
-    v7 = [v6 hidMatchingDictionary];
-    v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
+    input = [(AXMTHIDBasedLookAtPointTracker *)self input];
+    hidMatchingDictionary = [input hidMatchingDictionary];
+    v8 = [NSMutableDictionary dictionaryWithDictionary:hidMatchingDictionary];
 
-    v9 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
-    [v9 setDeviceMatching:v8];
+    _hidManager = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    [_hidManager setDeviceMatching:v8];
 
-    v10 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    _hidManager2 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
     v11 = +[AXSSMotionTrackingUtilities axss_xPositionElementMatchingDict];
     v30[0] = v11;
     v12 = +[AXSSMotionTrackingUtilities axss_yPositionElementMatchingDict];
@@ -124,34 +124,34 @@ LABEL_11:
     v14 = +[AXSSMotionTrackingUtilities axss_frequencyElementMatchingDict];
     v30[3] = v14;
     v15 = [NSArray arrayWithObjects:v30 count:4];
-    [v10 setInputElementMatching:v15];
+    [_hidManager2 setInputElementMatching:v15];
 
-    v16 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
-    v17 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManagerDispatchQueue];
-    [v16 setDispatchQueue:v17];
+    _hidManager3 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    _hidManagerDispatchQueue = [(AXMTHIDBasedLookAtPointTracker *)self _hidManagerDispatchQueue];
+    [_hidManager3 setDispatchQueue:_hidManagerDispatchQueue];
 
     objc_initWeak(&buf, self);
-    v18 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    _hidManager4 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100018954;
     v27[3] = &unk_100048F50;
     objc_copyWeak(&v28, &buf);
-    [v18 setDeviceNotificationHandler:v27];
+    [_hidManager4 setDeviceNotificationHandler:v27];
 
-    v19 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    _hidManager5 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_1000189C0;
     v25 = &unk_100048F78;
     objc_copyWeak(&v26, &buf);
-    [v19 setInputElementHandler:&v22];
+    [_hidManager5 setInputElementHandler:&v22];
 
     v20 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager:v22];
     [v20 open];
 
-    v21 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
-    [v21 activate];
+    _hidManager6 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    [_hidManager6 activate];
 
     [(AXMTHIDBasedLookAtPointTracker *)self set_isStarted:1];
     objc_destroyWeak(&v26);
@@ -174,11 +174,11 @@ LABEL_11:
     v4 = +[AXMTUtilities sharedInstance];
     [v4 unregisterListener:self];
 
-    v5 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
-    [v5 cancel];
+    _hidManager = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    [_hidManager cancel];
 
-    v6 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
-    [v6 close];
+    _hidManager2 = [(AXMTHIDBasedLookAtPointTracker *)self _hidManager];
+    [_hidManager2 close];
 
     [(AXMTHIDBasedLookAtPointTracker *)self set_hidManager:0];
     [(AXMTHIDBasedLookAtPointTracker *)self set_isStarted:0];
@@ -186,21 +186,21 @@ LABEL_11:
   }
 }
 
-- (void)_setCurrentStatus:(unint64_t)a3
+- (void)_setCurrentStatus:(unint64_t)status
 {
-  if (self->__currentStatus != a3)
+  if (self->__currentStatus != status)
   {
-    self->__currentStatus = a3;
+    self->__currentStatus = status;
   }
 }
 
-- (void)_setCurrentFrequency:(id)a3
+- (void)_setCurrentFrequency:(id)frequency
 {
-  v4 = a3;
-  v5 = v4;
+  frequencyCopy = frequency;
+  v5 = frequencyCopy;
   currentFrequency = self->__currentFrequency;
-  v10 = v4;
-  if (!v4)
+  v10 = frequencyCopy;
+  if (!frequencyCopy)
   {
     if (!currentFrequency)
     {
@@ -210,7 +210,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!currentFrequency || (v7 = [v4 isEqualToNumber:?], v5 = v10, (v7 & 1) == 0))
+  if (!currentFrequency || (v7 = [frequencyCopy isEqualToNumber:?], v5 = v10, (v7 & 1) == 0))
   {
 LABEL_6:
     v8 = [v5 copy];
@@ -223,41 +223,41 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (void)_elementUpdated:(id)a3 forDevice:(id)a4
+- (void)_elementUpdated:(id)updated forDevice:(id)device
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 usage];
-  if ((v7 - 33) >= 2)
+  updatedCopy = updated;
+  deviceCopy = device;
+  usage = [updatedCopy usage];
+  if ((usage - 33) >= 2)
   {
-    if (v7 == 769)
+    if (usage == 769)
     {
-      [(AXMTHIDBasedLookAtPointTracker *)self _statusHIDElementUpdated:v8 forDevice:v6];
+      [(AXMTHIDBasedLookAtPointTracker *)self _statusHIDElementUpdated:updatedCopy forDevice:deviceCopy];
     }
   }
 
   else
   {
-    [(AXMTHIDBasedLookAtPointTracker *)self _positionalHIDElementUpdated:v8 forDevice:v6];
+    [(AXMTHIDBasedLookAtPointTracker *)self _positionalHIDElementUpdated:updatedCopy forDevice:deviceCopy];
   }
 
-  [(AXMTHIDBasedLookAtPointTracker *)self _updateFrequencyUsingDevice:v6];
+  [(AXMTHIDBasedLookAtPointTracker *)self _updateFrequencyUsingDevice:deviceCopy];
 }
 
-- (void)_updateFrequencyUsingDevice:(id)a3
+- (void)_updateFrequencyUsingDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[AXSSMotionTrackingUtilities axss_frequencyElementMatchingDict];
-  v6 = [v4 elementsMatching:v5];
+  v6 = [deviceCopy elementsMatching:v5];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
-    v9[3] = [v7 integerValue];
+    v9[3] = [firstObject integerValue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100018D80;
@@ -269,19 +269,19 @@ LABEL_7:
   }
 }
 
-- (void)_statusHIDElementUpdated:(id)a3 forDevice:(id)a4
+- (void)_statusHIDElementUpdated:(id)updated forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = +[AXSSMotionTrackingUtilities axss_statusElementMatchingDict];
-  v7 = [v5 elementsMatching:v6];
+  v7 = [deviceCopy elementsMatching:v6];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
-  v10[3] = [v8 integerValue];
-  if (v8)
+  v10[3] = [firstObject integerValue];
+  if (firstObject)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -295,36 +295,36 @@ LABEL_7:
   _Block_object_dispose(v10, 8);
 }
 
-- (void)_positionalHIDElementUpdated:(id)a3 forDevice:(id)a4
+- (void)_positionalHIDElementUpdated:(id)updated forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 usage];
-  if (v8 == 34)
+  updatedCopy = updated;
+  deviceCopy = device;
+  usage = [updatedCopy usage];
+  if (usage == 34)
   {
     [(AXMTHIDBasedLookAtPointTracker *)self set_YPositionElementUpdated:1];
   }
 
-  else if (v8 == 33)
+  else if (usage == 33)
   {
     [(AXMTHIDBasedLookAtPointTracker *)self set_XPositionElementUpdated:1];
   }
 
   v9 = +[AXSSMotionTrackingUtilities axss_xPositionElementMatchingDict];
-  v10 = [v7 elementsMatching:v9];
-  v11 = [v10 firstObject];
+  v10 = [deviceCopy elementsMatching:v9];
+  firstObject = [v10 firstObject];
 
   v12 = +[AXSSMotionTrackingUtilities axss_yPositionElementMatchingDict];
-  v13 = [v7 elementsMatching:v12];
-  v14 = [v13 firstObject];
+  v13 = [deviceCopy elementsMatching:v12];
+  firstObject2 = [v13 firstObject];
 
-  if (v11 && v14)
+  if (firstObject && firstObject2)
   {
-    v15 = [v11 integerValue];
-    v16 = [v14 integerValue];
-    [v11 scaleValue:2];
+    integerValue = [firstObject integerValue];
+    integerValue2 = [firstObject2 integerValue];
+    [firstObject scaleValue:2];
     v18 = v17;
-    [v14 scaleValue:2];
+    [firstObject2 scaleValue:2];
     v20 = v19;
     v21 = +[AXMTUtilities sharedInstance];
     [v21 screenBoundsAccountingForPhysicalDeviceOrientation];
@@ -334,7 +334,7 @@ LABEL_7:
 
     [(AXMTHIDBasedLookAtPointTracker *)self _lastValidPoint];
     v46 = 0;
-    v30 = AXMTScreenPointForHIDPoint(v15, v16, &v46, v18, v20, v28, v29, v23, v25, v27);
+    v30 = AXMTScreenPointForHIDPoint(integerValue, integerValue2, &v46, v18, v20, v28, v29, v23, v25, v27);
     v32 = v31;
     v33 = v46;
     v34 = +[AXMTUtilities sharedInstance];
@@ -377,25 +377,25 @@ LABEL_7:
     v33 = AXSSLogForCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      sub_10001A0C8(v6, v7, v33);
+      sub_10001A0C8(updatedCopy, deviceCopy, v33);
     }
   }
 }
 
-- (void)_deviceNotification:(id)a3 added:(BOOL)a4
+- (void)_deviceNotification:(id)notification added:(BOOL)added
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000194B4;
   block[3] = &unk_100048FC8;
-  v9 = a4;
-  v7 = a3;
-  v8 = self;
-  v5 = v7;
+  addedCopy = added;
+  notificationCopy = notification;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_initializationTimerFired:(id)a3
+- (void)_initializationTimerFired:(id)fired
 {
   if ([(AXMTHIDBasedLookAtPointTracker *)self _currentStatus]!= 1)
   {
@@ -404,8 +404,8 @@ LABEL_7:
     [(AXMTHIDBasedLookAtPointTracker *)self _failedToTrackFaceWithErrorOnBackgroundThread:v5];
   }
 
-  v6 = [(AXMTHIDBasedLookAtPointTracker *)self _initializationTimer];
-  [v6 invalidate];
+  _initializationTimer = [(AXMTHIDBasedLookAtPointTracker *)self _initializationTimer];
+  [_initializationTimer invalidate];
 
   [(AXMTHIDBasedLookAtPointTracker *)self set_initializationTimer:0];
 }
@@ -434,8 +434,8 @@ LABEL_7:
         sub_10001A1DC(v5, v6, v7, v8, v9, v10, v11, v12);
       }
 
-      v13 = [(AXMTHIDBasedLookAtPointTracker *)self _powerAssertionTimer];
-      [v13 invalidate];
+      _powerAssertionTimer = [(AXMTHIDBasedLookAtPointTracker *)self _powerAssertionTimer];
+      [_powerAssertionTimer invalidate];
 
       v14 = [NSTimer scheduledTimerWithTimeInterval:self target:"_powerAssertionTimerFired" selector:0 userInfo:1 repeats:30.0];
       [(AXMTHIDBasedLookAtPointTracker *)self set_powerAssertionTimer:v14];
@@ -446,7 +446,7 @@ LABEL_7:
 - (void)_powerAssertionTimerFired
 {
   v3 = mach_absolute_time();
-  v4 = [(AXMTHIDBasedLookAtPointTracker *)self _lastTimePointReceived];
+  _lastTimePointReceived = [(AXMTHIDBasedLookAtPointTracker *)self _lastTimePointReceived];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -471,7 +471,7 @@ LABEL_7:
     _Unwind_Resume(v6);
   }
 
-  if (v5(v3 - v4) / 1000000000.0 <= 30.0)
+  if (v5(v3 - _lastTimePointReceived) / 1000000000.0 <= 30.0)
   {
     [(AXMTHIDBasedLookAtPointTracker *)self _setUpPowerAssertionIfNecessary];
   }
@@ -500,19 +500,19 @@ LABEL_7:
 - (void)_cleanUpPowerAssertionAndTimer
 {
   [(AXMTHIDBasedLookAtPointTracker *)self _cleanUpPowerAssertionIfNecessary];
-  v3 = [(AXMTHIDBasedLookAtPointTracker *)self _powerAssertionTimer];
-  [v3 invalidate];
+  _powerAssertionTimer = [(AXMTHIDBasedLookAtPointTracker *)self _powerAssertionTimer];
+  [_powerAssertionTimer invalidate];
 
   [(AXMTHIDBasedLookAtPointTracker *)self set_powerAssertionTimer:0];
 }
 
-- (void)_didReceivePointOnBackgroundThread:(CGPoint)a3
+- (void)_didReceivePointOnBackgroundThread:(CGPoint)thread
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000199E8;
   block[3] = &unk_1000489E8;
-  v4 = a3;
+  threadCopy = thread;
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
@@ -525,19 +525,19 @@ LABEL_7:
     sub_10001A2CC(v3);
   }
 
-  v4 = [(AXMTHIDBasedLookAtPointTracker *)self delegate];
-  [v4 lookAtPointTrackerWasInterrupted:self];
+  delegate = [(AXMTHIDBasedLookAtPointTracker *)self delegate];
+  [delegate lookAtPointTrackerWasInterrupted:self];
 }
 
-- (void)_failedToTrackFaceWithErrorOnBackgroundThread:(id)a3
+- (void)_failedToTrackFaceWithErrorOnBackgroundThread:(id)thread
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100019B98;
   v5[3] = &unk_100048948;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  threadCopy = thread;
+  selfCopy = self;
+  v4 = threadCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

@@ -1,48 +1,48 @@
 @interface SKUIStackDocumentViewController
 - (BOOL)_shouldShowIndexBar;
-- (BOOL)_tryToScrollToSectionAtIndexPath:(id)a3;
-- (BOOL)performTestWithName:(id)a3 options:(id)a4;
-- (SKUIStackDocumentViewController)initWithTemplateElement:(id)a3 layoutStyle:(int64_t)a4;
+- (BOOL)_tryToScrollToSectionAtIndexPath:(id)path;
+- (BOOL)performTestWithName:(id)name options:(id)options;
+- (SKUIStackDocumentViewController)initWithTemplateElement:(id)element layoutStyle:(int64_t)style;
 - (id)_colorScheme;
 - (id)_indexBarControlController;
-- (id)_indexPathFromGlobalIndex:(int64_t)a3;
-- (id)_pageComponentsWithViewElements:(id)a3;
+- (id)_indexPathFromGlobalIndex:(int64_t)index;
+- (id)_pageComponentsWithViewElements:(id)elements;
 - (id)_pageSplitsDescription;
 - (id)_resourceLoader;
-- (id)indexBarControlController:(id)a3 entryDescriptorAtIndexPath:(id)a4;
-- (int64_t)_globalIndexFromIndexPath:(id)a3;
+- (id)indexBarControlController:(id)controller entryDescriptorAtIndexPath:(id)path;
+- (int64_t)_globalIndexFromIndexPath:(id)path;
 - (int64_t)_maxGlobalIndex;
 - (int64_t)_pinningTransitionStyle;
-- (int64_t)indexBarControlController:(id)a3 numberOfEntryDescriptorsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInIndexBarControlController:(id)a3;
-- (void)_configureIndexBarControl:(id)a3;
-- (void)_resetStateForDocumentNotification:(id)a3;
-- (void)_updateEntryListControllersWithReload:(BOOL)a3;
+- (int64_t)indexBarControlController:(id)controller numberOfEntryDescriptorsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInIndexBarControlController:(id)controller;
+- (void)_configureIndexBarControl:(id)control;
+- (void)_resetStateForDocumentNotification:(id)notification;
+- (void)_updateEntryListControllersWithReload:(BOOL)reload;
 - (void)_updateIndexBarVisibility;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentDidUpdate:(id)a3 withTemplate:(id)a4;
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)indexBarControlController:(id)a3 didSelectEntryDescriptorAtIndexPath:(id)a4;
-- (void)indexBarControlControllerDidSelectBeyondBottom:(id)a3;
-- (void)indexBarControlControllerDidSelectBeyondTop:(id)a3;
-- (void)indexBarEntryListControllerDidInvalidate:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)documentDidUpdate:(id)update withTemplate:(id)template;
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block;
+- (void)indexBarControlController:(id)controller didSelectEntryDescriptorAtIndexPath:(id)path;
+- (void)indexBarControlControllerDidSelectBeyondBottom:(id)bottom;
+- (void)indexBarControlControllerDidSelectBeyondTop:(id)top;
+- (void)indexBarEntryListControllerDidInvalidate:(id)invalidate;
 - (void)loadView;
-- (void)refresh:(id)a3 refreshControl:(id)a4;
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4;
-- (void)resourceLoaderDidBeginLoading:(id)a3;
-- (void)sectionsViewController:(id)a3 willScrollToOffset:(CGPoint)a4 visibleRange:(SKUIIndexPathRange *)a5;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)skui_viewWillAppear:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)refresh:(id)refresh refreshControl:(id)control;
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason;
+- (void)resourceLoaderDidBeginLoading:(id)loading;
+- (void)sectionsViewController:(id)controller willScrollToOffset:(CGPoint)offset visibleRange:(SKUIIndexPathRange *)range;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)skui_viewWillAppear:(BOOL)appear;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIStackDocumentViewController
 
-- (SKUIStackDocumentViewController)initWithTemplateElement:(id)a3 layoutStyle:(int64_t)a4
+- (SKUIStackDocumentViewController)initWithTemplateElement:(id)element layoutStyle:(int64_t)style
 {
-  v7 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStackDocumentViewController initWithTemplateElement:layoutStyle:];
@@ -54,11 +54,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_layoutStyle = a4;
-    objc_storeStrong(&v8->_templateElement, a3);
+    v8->_layoutStyle = style;
+    objc_storeStrong(&v8->_templateElement, element);
     [(SKUIStackDocumentViewController *)v9 _updateEntryListControllersWithReload:0];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v9 selector:sel__resetStateForDocumentNotification_ name:@"SKUIStoreDialogControllerPurchaseRequestDidSucceedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__resetStateForDocumentNotification_ name:@"SKUIStoreDialogControllerPurchaseRequestDidSucceedNotification" object:0];
   }
 
   return v9;
@@ -73,8 +73,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMapTable *)self->_viewElementToEntryListController objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_viewElementToEntryListController objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -86,53 +86,53 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) setDelegate:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self name:@"SKUIStoreDialogControllerPurchaseRequestDidSucceedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SKUIStoreDialogControllerPurchaseRequestDidSucceedNotification" object:0];
 
   v9.receiver = self;
   v9.super_class = SKUIStackDocumentViewController;
   [(SKUIViewController *)&v9 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SKUIStackDocumentViewController;
-  [(SKUIStackDocumentViewController *)&v4 viewDidAppear:a3];
+  [(SKUIStackDocumentViewController *)&v4 viewDidAppear:appear];
   [(SKUIResourceLoader *)self->_resourceLoader enterForeground];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKUIStackDocumentViewController;
-  [(SKUIStackDocumentViewController *)&v4 viewDidDisappear:a3];
+  [(SKUIStackDocumentViewController *)&v4 viewDidDisappear:disappear];
   [(SKUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
-- (void)documentDidUpdate:(id)a3 withTemplate:(id)a4
+- (void)documentDidUpdate:(id)update withTemplate:(id)template
 {
-  v49 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_document, a3);
+  updateCopy = update;
+  templateCopy = template;
+  objc_storeStrong(&self->_document, update);
   templateElement = self->_templateElement;
-  v9 = [(SKUIStackTemplateElement *)v7 needsStateReset];
-  if (templateElement == v7)
+  needsStateReset = [(SKUIStackTemplateElement *)templateCopy needsStateReset];
+  if (templateElement == templateCopy)
   {
-    if (v9)
+    if (needsStateReset)
     {
       if (!self->_hasResetState)
       {
@@ -148,7 +148,7 @@
 
   else
   {
-    if (v9)
+    if (needsStateReset)
     {
 LABEL_3:
       [(SKUIStackDocumentViewController *)self _resetState];
@@ -160,59 +160,59 @@ LABEL_3:
   }
 
 LABEL_9:
-  objc_storeStrong(&self->_templateElement, a4);
-  v10 = [(SKUIStackDocumentViewController *)self view];
-  v11 = [(SKUIStackDocumentViewController *)self _colorScheme];
-  v12 = [v11 backgroundColor];
-  if (v12)
+  objc_storeStrong(&self->_templateElement, template);
+  view = [(SKUIStackDocumentViewController *)self view];
+  _colorScheme = [(SKUIStackDocumentViewController *)self _colorScheme];
+  backgroundColor = [_colorScheme backgroundColor];
+  if (backgroundColor)
   {
-    [v10 setBackgroundColor:v12];
+    [view setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v10 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
   }
 
-  v14 = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
+  _indexBarViewElement = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
 
-  if (v14)
+  if (_indexBarViewElement)
   {
     v16 = *MEMORY[0x277CBF3A8];
     v15 = *(MEMORY[0x277CBF3A8] + 8);
-    v17 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    [v17 bounds];
+    collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    [collectionView bounds];
     v47 = v19;
     v48 = v18;
-    v20 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    [v20 contentInset];
+    collectionView2 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    [collectionView2 contentInset];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+    indexBarControl = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
 
     v30 = v15;
     v31 = v16;
-    if (v29)
+    if (indexBarControl)
     {
-      v32 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
-      [v32 frame];
+      indexBarControl2 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+      [indexBarControl2 frame];
       v31 = v33;
       v30 = v34;
     }
 
-    v35 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
-    [(SKUIStackDocumentViewController *)self _configureIndexBarControl:v35];
+    indexBarControl3 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+    [(SKUIStackDocumentViewController *)self _configureIndexBarControl:indexBarControl3];
 
-    v36 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+    indexBarControl4 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
 
-    if (v36)
+    if (indexBarControl4)
     {
-      v37 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
-      [v37 sizeThatFits:{v48 - (v24 + v28), v47 - (v22 + v26)}];
+      indexBarControl5 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+      [indexBarControl5 sizeThatFits:{v48 - (v24 + v28), v47 - (v22 + v26)}];
       v16 = v38;
       v15 = v39;
     }
@@ -227,23 +227,23 @@ LABEL_9:
 
   [(SKUIStackDocumentViewController *)self _updateEntryListControllersWithReload:1];
   [(SKUIStackDocumentViewController *)self _updateIndexBarVisibility];
-  [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setColorScheme:v11];
+  [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setColorScheme:_colorScheme];
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setPinningTransitionStyle:[(SKUIStackDocumentViewController *)self _pinningTransitionStyle]];
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController _setRendersWithPerspective:[(SKUIViewElement *)self->_templateElement rendersWithPerspective]];
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController _setRendersWithParallax:[(SKUIViewElement *)self->_templateElement rendersWithParallax]];
   sectionsViewController = self->_sectionsViewController;
-  v42 = [(SKUIStackDocumentViewController *)self _pageSplitsDescription];
-  [(SKUIStorePageSectionsViewController *)sectionsViewController setSectionsWithSplitsDescription:v42];
+  _pageSplitsDescription = [(SKUIStackDocumentViewController *)self _pageSplitsDescription];
+  [(SKUIStorePageSectionsViewController *)sectionsViewController setSectionsWithSplitsDescription:_pageSplitsDescription];
 
   if (v40)
   {
-    v43 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    v44 = [v43 collectionViewLayout];
-    [v44 invalidateLayout];
+    collectionView3 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    collectionViewLayout = [collectionView3 collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 
-  v45 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
-  v46 = [v45 count];
+  sections = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
+  v46 = [sections count];
 
   if (self->_lastNeedsMoreCount >= v46)
   {
@@ -251,29 +251,29 @@ LABEL_9:
   }
 }
 
-- (void)skui_viewWillAppear:(BOOL)a3
+- (void)skui_viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController skui_viewWillAppear:?];
   v5.receiver = self;
   v5.super_class = SKUIStackDocumentViewController;
-  [(SKUIViewController *)&v5 skui_viewWillAppear:v3];
+  [(SKUIViewController *)&v5 skui_viewWillAppear:appearCopy];
 }
 
 - (void)loadView
 {
   v23 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SKUIStackDocumentViewController *)self _colorScheme];
-  v4 = [v3 backgroundColor];
-  if (v4)
+  _colorScheme = [(SKUIStackDocumentViewController *)self _colorScheme];
+  backgroundColor = [_colorScheme backgroundColor];
+  if (backgroundColor)
   {
-    [v23 setBackgroundColor:v4];
+    [v23 setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v23 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v23 setBackgroundColor:systemBackgroundColor];
   }
 
   if (!self->_sectionsViewController)
@@ -283,17 +283,17 @@ LABEL_9:
     self->_sectionsViewController = v6;
 
     v8 = self->_sectionsViewController;
-    v9 = [(SKUIViewController *)self clientContext];
-    [(SKUIViewController *)v8 setClientContext:v9];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIViewController *)v8 setClientContext:clientContext];
 
     v10 = self->_sectionsViewController;
-    v11 = [(SKUIStackDocumentViewController *)self _resourceLoader];
-    [(SKUIStorePageSectionsViewController *)v10 setResourceLoader:v11];
+    _resourceLoader = [(SKUIStackDocumentViewController *)self _resourceLoader];
+    [(SKUIStorePageSectionsViewController *)v10 setResourceLoader:_resourceLoader];
 
-    [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setColorScheme:v3];
+    [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setColorScheme:_colorScheme];
     v12 = self->_sectionsViewController;
-    v13 = [(SKUIViewController *)self operationQueue];
-    [(SKUIViewController *)v12 setOperationQueue:v13];
+    operationQueue = [(SKUIViewController *)self operationQueue];
+    [(SKUIViewController *)v12 setOperationQueue:operationQueue];
 
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setPinningTransitionStyle:[(SKUIStackDocumentViewController *)self _pinningTransitionStyle]];
     v14 = self->_sectionsViewController;
@@ -302,8 +302,8 @@ LABEL_9:
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController _setRendersWithPerspective:[(SKUIViewElement *)self->_templateElement rendersWithPerspective]];
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController _setRendersWithParallax:[(SKUIViewElement *)self->_templateElement rendersWithParallax]];
     v15 = self->_sectionsViewController;
-    v16 = [(SKUIStackDocumentViewController *)self _pageSplitsDescription];
-    [(SKUIStorePageSectionsViewController *)v15 setSectionsWithSplitsDescription:v16];
+    _pageSplitsDescription = [(SKUIStackDocumentViewController *)self _pageSplitsDescription];
+    [(SKUIStorePageSectionsViewController *)v15 setSectionsWithSplitsDescription:_pageSplitsDescription];
 
     v17 = self->_sectionsViewController;
     v18 = objc_alloc_init(SKUIMetricsImpressionSession);
@@ -313,46 +313,46 @@ LABEL_9:
     [(SKUIStackDocumentViewController *)self addChildViewController:self->_sectionsViewController];
   }
 
-  v19 = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
+  _indexBarViewElement = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
 
-  if (v19)
+  if (_indexBarViewElement)
   {
     [(SKUIStackDocumentViewController *)self _updateEntryListControllersWithReload:1];
     [(SKUIStackDocumentViewController *)self _updateIndexBarVisibility];
-    v20 = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
-    [(SKUIStackDocumentViewController *)self _configureIndexBarControl:v20];
+    indexBarControl = [(SKUIIndexBarControlController *)self->_indexBarControlController indexBarControl];
+    [(SKUIStackDocumentViewController *)self _configureIndexBarControl:indexBarControl];
   }
 
-  v21 = [(SKUIStackDocumentViewController *)self _pullToRefreshElement];
-  if (v21)
+  _pullToRefreshElement = [(SKUIStackDocumentViewController *)self _pullToRefreshElement];
+  if (_pullToRefreshElement)
   {
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setUsePullToRefresh:1];
     [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setPullToRefreshDelegate:self];
   }
 
-  v22 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController view];
-  [v22 setAutoresizingMask:18];
+  view = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController view];
+  [view setAutoresizingMask:18];
   [v23 bounds];
-  [v22 setFrame:?];
-  [v23 addSubview:v22];
+  [view setFrame:?];
+  [v23 addSubview:view];
   [(SKUIStackDocumentViewController *)self setView:v23];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = SKUIStackDocumentViewController;
   [(SKUIStackDocumentViewController *)&v6 setPreferredContentSize:?];
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController setPreferredContentSize:width, height];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 templateElement];
-  [(SKUIStackDocumentViewController *)self documentDidUpdate:v4 withTemplate:?];
+  updateCopy = update;
+  templateElement = [updateCopy templateElement];
+  [(SKUIStackDocumentViewController *)self documentDidUpdate:updateCopy withTemplate:?];
 
   if ([(SKUIResourceLoader *)self->_resourceLoader isIdleForReason:1])
   {
@@ -360,16 +360,16 @@ LABEL_9:
   }
 }
 
-- (id)indexBarControlController:(id)a3 entryDescriptorAtIndexPath:(id)a4
+- (id)indexBarControlController:(id)controller entryDescriptorAtIndexPath:(id)path
 {
-  if (self->_indexBarControlController == a3)
+  if (self->_indexBarControlController == controller)
   {
     entryListControllers = self->_entryListControllers;
-    v6 = a4;
-    v7 = -[NSArray objectAtIndex:](entryListControllers, "objectAtIndex:", [v6 section]);
-    v8 = [v6 item];
+    pathCopy = path;
+    v7 = -[NSArray objectAtIndex:](entryListControllers, "objectAtIndex:", [pathCopy section]);
+    item = [pathCopy item];
 
-    v4 = [v7 entryDescriptorAtIndex:v8];
+    v4 = [v7 entryDescriptorAtIndex:item];
   }
 
   else
@@ -380,22 +380,22 @@ LABEL_9:
   return v4;
 }
 
-- (int64_t)indexBarControlController:(id)a3 numberOfEntryDescriptorsInSection:(int64_t)a4
+- (int64_t)indexBarControlController:(id)controller numberOfEntryDescriptorsInSection:(int64_t)section
 {
-  if (self->_indexBarControlController != a3)
+  if (self->_indexBarControlController != controller)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)self->_entryListControllers objectAtIndex:a4];
-  v6 = [v5 numberOfEntryDescriptors];
+  v5 = [(NSArray *)self->_entryListControllers objectAtIndex:section];
+  numberOfEntryDescriptors = [v5 numberOfEntryDescriptors];
 
-  return v6;
+  return numberOfEntryDescriptors;
 }
 
-- (int64_t)numberOfSectionsInIndexBarControlController:(id)a3
+- (int64_t)numberOfSectionsInIndexBarControlController:(id)controller
 {
-  if (self->_indexBarControlController == a3)
+  if (self->_indexBarControlController == controller)
   {
     return [(NSArray *)self->_entryListControllers count];
   }
@@ -406,17 +406,17 @@ LABEL_9:
   }
 }
 
-- (void)indexBarControlController:(id)a3 didSelectEntryDescriptorAtIndexPath:(id)a4
+- (void)indexBarControlController:(id)controller didSelectEntryDescriptorAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  if (![(SKUIStackDocumentViewController *)self _tryToScrollToSectionAtIndexPath:v6])
+  controllerCopy = controller;
+  pathCopy = path;
+  if (![(SKUIStackDocumentViewController *)self _tryToScrollToSectionAtIndexPath:pathCopy])
   {
-    v7 = [(SKUIStackDocumentViewController *)self _globalIndexFromIndexPath:v6];
-    v8 = [(SKUIStackDocumentViewController *)self _maxGlobalIndex];
-    if ((v8 & 0x8000000000000000) == 0)
+    v7 = [(SKUIStackDocumentViewController *)self _globalIndexFromIndexPath:pathCopy];
+    _maxGlobalIndex = [(SKUIStackDocumentViewController *)self _maxGlobalIndex];
+    if ((_maxGlobalIndex & 0x8000000000000000) == 0)
     {
-      v9 = v8;
+      v9 = _maxGlobalIndex;
       v10 = 0;
       for (i = -1; ; --i)
       {
@@ -453,34 +453,34 @@ LABEL_9:
   }
 }
 
-- (void)indexBarControlControllerDidSelectBeyondBottom:(id)a3
+- (void)indexBarControlControllerDidSelectBeyondBottom:(id)bottom
 {
-  v4 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
-  v5 = [v4 count];
+  sections = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
+  v5 = [sections count];
 
   if (v5)
   {
-    v7 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    [v7 contentSize];
-    [v7 scrollRectToVisible:0 animated:{0.0, v6 + -1.0, 0.0, 0.0}];
+    collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    [collectionView contentSize];
+    [collectionView scrollRectToVisible:0 animated:{0.0, v6 + -1.0, 0.0, 0.0}];
   }
 }
 
-- (void)indexBarControlControllerDidSelectBeyondTop:(id)a3
+- (void)indexBarControlControllerDidSelectBeyondTop:(id)top
 {
-  v4 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
-  v5 = [v4 count];
+  sections = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
+  v5 = [sections count];
 
   if (v5)
   {
-    v6 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-    [v6 scrollRectToVisible:0 animated:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+    [collectionView scrollRectToVisible:0 animated:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   }
 }
 
-- (void)indexBarEntryListControllerDidInvalidate:(id)a3
+- (void)indexBarEntryListControllerDidInvalidate:(id)invalidate
 {
-  if (a3)
+  if (invalidate)
   {
     entryListControllers = self->_entryListControllers;
     if (entryListControllers)
@@ -496,18 +496,18 @@ LABEL_9:
   }
 }
 
-- (void)refresh:(id)a3 refreshControl:(id)a4
+- (void)refresh:(id)refresh refreshControl:(id)control
 {
-  v5 = a4;
-  v6 = [(SKUIStackDocumentViewController *)self _pullToRefreshElement];
-  if (v6)
+  controlCopy = control;
+  _pullToRefreshElement = [(SKUIStackDocumentViewController *)self _pullToRefreshElement];
+  if (_pullToRefreshElement)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__SKUIStackDocumentViewController_refresh_refreshControl___block_invoke;
     v7[3] = &unk_2781FAF50;
-    v8 = v5;
-    [v6 dispatchEventOfType:15 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:v7];
+    v8 = controlCopy;
+    [_pullToRefreshElement dispatchEventOfType:15 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:v7];
   }
 }
 
@@ -522,11 +522,11 @@ void __58__SKUIStackDocumentViewController_refresh_refreshControl___block_invoke
   dispatch_after(v2, MEMORY[0x277D85CD0], block);
 }
 
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
   v19 = 0u;
   v20 = 0u;
@@ -547,10 +547,10 @@ LABEL_3:
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
-      v14 = [v13 pageComponent];
-      v15 = [v14 viewElement];
+      pageComponent = [v13 pageComponent];
+      viewElement = [pageComponent viewElement];
 
-      v16 = [v15 elementWithIdentifier:v6];
+      v16 = [viewElement elementWithIdentifier:identifierCopy];
       if (v16)
       {
         break;
@@ -576,7 +576,7 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    [v18 getModalSourceViewForViewElement:v17 completionBlock:v7];
+    [v18 getModalSourceViewForViewElement:v17 completionBlock:blockCopy];
   }
 
   else
@@ -585,17 +585,17 @@ LABEL_9:
 
     v17 = 0;
 LABEL_12:
-    v7[2](v7, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (BOOL)performTestWithName:(id)a3 options:(id)a4
+- (BOOL)performTestWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   if ([(SKUIStorePageSectionsViewController *)self->_sectionsViewController conformsToProtocol:&unk_28291AB68])
   {
-    v8 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController performTestWithName:v6 options:v7];
+    v8 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController performTestWithName:nameCopy options:optionsCopy];
   }
 
   else
@@ -606,68 +606,68 @@ LABEL_12:
   return v8;
 }
 
-- (void)sectionsViewController:(id)a3 willScrollToOffset:(CGPoint)a4 visibleRange:(SKUIIndexPathRange *)a5
+- (void)sectionsViewController:(id)controller willScrollToOffset:(CGPoint)offset visibleRange:(SKUIIndexPathRange *)range
 {
-  v7 = a3;
-  v8 = [v7 sections];
-  v9 = [v8 count];
+  controllerCopy = controller;
+  sections = [controllerCopy sections];
+  v9 = [sections count];
 
-  v10 = [v7 sections];
+  sections2 = [controllerCopy sections];
 
-  v14 = [v10 lastObject];
+  lastObject = [sections2 lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v14 pageComponent];
-    v12 = [v11 viewElement];
-    v13 = [v12 elementType];
+    pageComponent = [lastObject pageComponent];
+    viewElement = [pageComponent viewElement];
+    elementType = [viewElement elementType];
 
-    v9 -= v13 == 4;
+    v9 -= elementType == 4;
   }
 
-  if (self->_lastNeedsMoreCount < v9 && a5->var2 + 2 >= v9)
+  if (self->_lastNeedsMoreCount < v9 && range->var2 + 2 >= v9)
   {
     self->_lastNeedsMoreCount = v9;
     [(SKUIStackTemplateElement *)self->_templateElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)resourceLoaderDidBeginLoading:(id)a3
+- (void)resourceLoaderDidBeginLoading:(id)loading
 {
-  v5 = a3;
-  v4 = [(SKUIStackDocumentViewController *)self parentViewController];
-  if ([v4 conformsToProtocol:&unk_28291FC00] && (objc_opt_respondsToSelector() & 1) != 0)
+  loadingCopy = loading;
+  parentViewController = [(SKUIStackDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_28291FC00] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 resourceLoaderDidBeginLoading:v5];
+    [parentViewController resourceLoaderDidBeginLoading:loadingCopy];
   }
 }
 
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason
 {
-  v7 = a3;
-  if (a4 == 1)
+  loaderCopy = loader;
+  if (reason == 1)
   {
     [(SKUIStackTemplateElement *)self->_templateElement dispatchEvent:@"visibleimagesloaded" eventAttribute:@"onvisibleimagesloaded" canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
-  v6 = [(SKUIStackDocumentViewController *)self parentViewController];
-  if ([v6 conformsToProtocol:&unk_28291FC00] && (objc_opt_respondsToSelector() & 1) != 0)
+  parentViewController = [(SKUIStackDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_28291FC00] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 resourceLoader:v7 didLoadAllForReason:a4];
+    [parentViewController resourceLoader:loaderCopy didLoadAllForReason:reason];
   }
 }
 
 - (id)_colorScheme
 {
-  v2 = [(SKUIStackTemplateElement *)self->_templateElement style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(SKUIStackTemplateElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v4)
+  if (color)
   {
     v5 = objc_alloc_init(SKUIColorScheme);
-    [(SKUIColorScheme *)v5 setBackgroundColor:v4];
+    [(SKUIColorScheme *)v5 setBackgroundColor:color];
   }
 
   else
@@ -678,26 +678,26 @@ LABEL_12:
   return v5;
 }
 
-- (void)_configureIndexBarControl:(id)a3
+- (void)_configureIndexBarControl:(id)control
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
-  v6 = [v5 style];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  if (v6)
+  controlCopy = control;
+  _indexBarViewElement = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
+  style = [_indexBarViewElement style];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  if (style)
   {
-    v8 = [v6 ikBackgroundColor];
-    v9 = SKUIViewElementPlainColorWithIKColor(v8, 0);
+    ikBackgroundColor = [style ikBackgroundColor];
+    v9 = SKUIViewElementPlainColorWithIKColor(ikBackgroundColor, 0);
 
     if (v9)
     {
       v10 = v9;
 
-      v7 = v10;
+      whiteColor = v10;
     }
 
-    v11 = SKUIViewElementPlainColorWithStyle(v6, 0);
+    v11 = SKUIViewElementPlainColorWithStyle(style, 0);
     v12 = v11;
     if (v11)
     {
@@ -710,9 +710,9 @@ LABEL_12:
     v12 = 0;
   }
 
-  [v4 setBackgroundColor:v7];
-  [v4 setTintColor:v12];
-  v14 = SKUIViewElementFontWithStyle(v6);
+  [controlCopy setBackgroundColor:whiteColor];
+  [controlCopy setTintColor:v12];
+  v14 = SKUIViewElementFontWithStyle(style);
   v15 = v14;
   if (v14)
   {
@@ -726,12 +726,12 @@ LABEL_12:
     v16 = 0;
   }
 
-  [v4 setDefaultTextAttributes:v16];
+  [controlCopy setDefaultTextAttributes:v16];
 }
 
-- (int64_t)_globalIndexFromIndexPath:(id)a3
+- (int64_t)_globalIndexFromIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(NSArray *)self->_entryListControllers count])
   {
     v5 = 0;
@@ -739,13 +739,13 @@ LABEL_12:
     while (1)
     {
       v7 = [(NSArray *)self->_entryListControllers objectAtIndex:v6];
-      v8 = [v7 numberOfEntryDescriptors];
-      if (v6 == [v4 section])
+      numberOfEntryDescriptors = [v7 numberOfEntryDescriptors];
+      if (v6 == [pathCopy section])
       {
         break;
       }
 
-      v5 += v8;
+      v5 += numberOfEntryDescriptors;
 
       if (++v6 >= [(NSArray *)self->_entryListControllers count])
       {
@@ -753,7 +753,7 @@ LABEL_12:
       }
     }
 
-    v9 = [v4 item] + v5;
+    v9 = [pathCopy item] + v5;
   }
 
   else
@@ -782,8 +782,8 @@ LABEL_5:
     [(SKUIIndexBarControlController *)self->_indexBarControlController setDataSource:self];
     [(SKUIIndexBarControlController *)self->_indexBarControlController setDelegate:self];
     v8 = self->_indexBarControlController;
-    v9 = [(SKUIStackDocumentViewController *)self _resourceLoader];
-    [(SKUIIndexBarControlController *)v8 setResourceLoader:v9];
+    _resourceLoader = [(SKUIStackDocumentViewController *)self _resourceLoader];
+    [(SKUIIndexBarControlController *)v8 setResourceLoader:_resourceLoader];
 
     indexBarControlController = self->_indexBarControlController;
   }
@@ -791,7 +791,7 @@ LABEL_5:
   return indexBarControlController;
 }
 
-- (id)_indexPathFromGlobalIndex:(int64_t)a3
+- (id)_indexPathFromGlobalIndex:(int64_t)index
 {
   if ([(NSArray *)self->_entryListControllers count])
   {
@@ -799,21 +799,21 @@ LABEL_5:
     while (1)
     {
       v6 = [(NSArray *)self->_entryListControllers objectAtIndex:v5];
-      v7 = a3 - [v6 numberOfEntryDescriptors];
+      v7 = index - [v6 numberOfEntryDescriptors];
       if (v7 < 0)
       {
         break;
       }
 
       ++v5;
-      a3 = v7;
+      index = v7;
       if (v5 >= [(NSArray *)self->_entryListControllers count])
       {
         goto LABEL_5;
       }
     }
 
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:v5];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:v5];
   }
 
   else
@@ -846,16 +846,16 @@ LABEL_5:
   return v3 - 1;
 }
 
-- (id)_pageComponentsWithViewElements:(id)a3
+- (id)_pageComponentsWithViewElements:(id)elements
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  elementsCopy = elements;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -877,7 +877,7 @@ LABEL_5:
           v12 = [[v11 alloc] initWithViewElement:v10];
           if (v12)
           {
-            [v4 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -888,7 +888,7 @@ LABEL_5:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 - (id)_pageSplitsDescription
@@ -968,17 +968,17 @@ LABEL_5:
   else
   {
     v14 = objc_alloc_init(SKUIStorePageSplit);
-    v15 = [MEMORY[0x277CBEB18] array];
-    v16 = [(SKUIStackTemplateElement *)self->_templateElement collectionHeaderViewElement];
-    if (v16)
+    array = [MEMORY[0x277CBEB18] array];
+    collectionHeaderViewElement = [(SKUIStackTemplateElement *)self->_templateElement collectionHeaderViewElement];
+    if (collectionHeaderViewElement)
     {
-      [v15 addObject:v16];
+      [array addObject:collectionHeaderViewElement];
     }
 
-    v17 = [(SKUIStackTemplateElement *)self->_templateElement collectionElements];
-    [v15 addObjectsFromArray:v17];
+    collectionElements = [(SKUIStackTemplateElement *)self->_templateElement collectionElements];
+    [array addObjectsFromArray:collectionElements];
 
-    v18 = [(SKUIStackDocumentViewController *)self _pageComponentsWithViewElements:v15];
+    v18 = [(SKUIStackDocumentViewController *)self _pageComponentsWithViewElements:array];
     [(SKUIStorePageSplit *)v14 setPageComponents:v18];
 
     [(SKUIStorePageSplitsDescription *)v3 setTopSplit:v14];
@@ -1073,10 +1073,10 @@ LABEL_15:
 
 - (int64_t)_pinningTransitionStyle
 {
-  v2 = [(SKUIStackTemplateElement *)self->_templateElement navigationBarElement];
-  v3 = [v2 hidesShadow];
+  navigationBarElement = [(SKUIStackTemplateElement *)self->_templateElement navigationBarElement];
+  hidesShadow = [navigationBarElement hidesShadow];
 
-  if (v3)
+  if (hidesShadow)
   {
     return 2;
   }
@@ -1087,12 +1087,12 @@ LABEL_15:
   }
 }
 
-- (void)_resetStateForDocumentNotification:(id)a3
+- (void)_resetStateForDocumentNotification:(id)notification
 {
   document = self->_document;
-  v5 = [a3 object];
+  object = [notification object];
 
-  if (document == v5)
+  if (document == object)
   {
 
     [(SKUIStackDocumentViewController *)self _resetState];
@@ -1105,8 +1105,8 @@ LABEL_15:
   if (!resourceLoader)
   {
     v4 = [SKUIResourceLoader alloc];
-    v5 = [(SKUIViewController *)self clientContext];
-    v6 = [(SKUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SKUIViewController *)self clientContext];
+    v6 = [(SKUIResourceLoader *)v4 initWithClientContext:clientContext];
     v7 = self->_resourceLoader;
     self->_resourceLoader = v6;
 
@@ -1143,10 +1143,10 @@ LABEL_15:
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 numberOfEntryDescriptors];
-        v8 = [v6 hidesIndexBar];
-        v9 = v8;
-        if (v7 >= 1 && (v8 & 1) != 0)
+        numberOfEntryDescriptors = [v6 numberOfEntryDescriptors];
+        hidesIndexBar = [v6 hidesIndexBar];
+        v9 = hidesIndexBar;
+        if (numberOfEntryDescriptors >= 1 && (hidesIndexBar & 1) != 0)
         {
           LOBYTE(v3) = 0;
           goto LABEL_12;
@@ -1162,7 +1162,7 @@ LABEL_15:
       break;
     }
 
-    LOBYTE(v3) = (v7 > 0) & (v9 ^ 1);
+    LOBYTE(v3) = (numberOfEntryDescriptors > 0) & (v9 ^ 1);
   }
 
 LABEL_12:
@@ -1170,13 +1170,13 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)_tryToScrollToSectionAtIndexPath:(id)a3
+- (BOOL)_tryToScrollToSectionAtIndexPath:(id)path
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v72 = 0;
-  v5 = -[NSArray objectAtIndex:](self->_entryListControllers, "objectAtIndex:", [v4 section]);
-  v6 = [v5 targetIndexBarEntryIDForEntryDescriptorAtIndex:objc_msgSend(v4 returningRelativeSectionIndex:{"item"), &v72}];
+  v5 = -[NSArray objectAtIndex:](self->_entryListControllers, "objectAtIndex:", [pathCopy section]);
+  v6 = [v5 targetIndexBarEntryIDForEntryDescriptorAtIndex:objc_msgSend(pathCopy returningRelativeSectionIndex:{"item"), &v72}];
   if (v72 == 0x7FFFFFFFFFFFFFFFLL)
   {
     LOBYTE(v7) = 0;
@@ -1188,8 +1188,8 @@ LABEL_12:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v8 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
-    v7 = [v8 countByEnumeratingWithState:&v68 objects:v74 count:16];
+    sections = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController sections];
+    v7 = [sections countByEnumeratingWithState:&v68 objects:v74 count:16];
     if (v7)
     {
       v9 = *v69;
@@ -1199,30 +1199,30 @@ LABEL_12:
         {
           if (*v69 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sections);
           }
 
           v11 = *(*(&v68 + 1) + 8 * i);
           if ([v11 containsElementWithIndexBarEntryID:v6])
           {
             v62 = v5;
-            v63 = v4;
+            v63 = pathCopy;
             v7 = [v11 targetScrollingIndexPathForElementWithIndexBarEntryID:v6 relativeSectionIndex:v72];
-            v12 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
-            v13 = [v12 collectionViewLayout];
-            v14 = [v13 layoutAttributesForUnpinnedItemAtIndexPath:v7];
+            collectionView = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController collectionView];
+            collectionViewLayout = [collectionView collectionViewLayout];
+            v14 = [collectionViewLayout layoutAttributesForUnpinnedItemAtIndexPath:v7];
             [v14 frame];
             v16 = v15;
             v18 = v17;
             v20 = v19;
             v22 = v21;
 
-            [v12 bounds];
+            [collectionView bounds];
             v24 = v23;
             v26 = v25;
             v28 = v27;
             v30 = v29;
-            [v12 contentSize];
+            [collectionView contentSize];
             v57 = v31;
             v76.origin.x = v16;
             v76.origin.y = v18;
@@ -1249,8 +1249,8 @@ LABEL_12:
             v79.size.width = v28;
             v79.size.height = v30;
             Height = CGRectGetHeight(v79);
-            v36 = [v12 collectionViewLayout];
-            v37 = [v36 pinnedLayoutAttributesForItemsInRect:{MinX, MinY, Width, Height}];
+            collectionViewLayout2 = [collectionView collectionViewLayout];
+            v37 = [collectionViewLayout2 pinnedLayoutAttributesForItemsInRect:{MinX, MinY, Width, Height}];
 
             v38 = [v37 sortedArrayUsingComparator:&__block_literal_global_9];
 
@@ -1275,8 +1275,8 @@ LABEL_12:
                   }
 
                   v45 = *(*(&v64 + 1) + 8 * j);
-                  v46 = [v45 indexPath];
-                  if ([v46 compare:v7] != -1)
+                  indexPath = [v45 indexPath];
+                  if ([indexPath compare:v7] != -1)
                   {
 
                     goto LABEL_23;
@@ -1303,9 +1303,9 @@ LABEL_12:
 
 LABEL_23:
 
-            [v12 contentOffset];
+            [collectionView contentOffset];
             v48 = v47;
-            [v12 contentInset];
+            [collectionView contentInset];
             v50 = v49;
             v52 = v51;
             v81.origin.y = v60;
@@ -1323,16 +1323,16 @@ LABEL_23:
               v54 = v53;
             }
 
-            [v12 setContentOffset:0 animated:{v48, v54 - v50, *&MinX}];
+            [collectionView setContentOffset:0 animated:{v48, v54 - v50, *&MinX}];
 
             LOBYTE(v7) = 1;
             v5 = v62;
-            v4 = v63;
+            pathCopy = v63;
             goto LABEL_26;
           }
         }
 
-        v7 = [v8 countByEnumeratingWithState:&v68 objects:v74 count:16];
+        v7 = [sections countByEnumeratingWithState:&v68 objects:v74 count:16];
         if (v7)
         {
           continue;
@@ -1358,30 +1358,30 @@ uint64_t __68__SKUIStackDocumentViewController__tryToScrollToSectionAtIndexPath_
   return v7;
 }
 
-- (void)_updateEntryListControllersWithReload:(BOOL)a3
+- (void)_updateEntryListControllersWithReload:(BOOL)reload
 {
-  v22 = a3;
+  reloadCopy = reload;
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMapTable *)self->_viewElementToEntryListController keyEnumerator];
-  v5 = [v4 allObjects];
-  v6 = [v5 mutableCopy];
+  keyEnumerator = [(NSMapTable *)self->_viewElementToEntryListController keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v6 = [allObjects mutableCopy];
 
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0];
-  v9 = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
+  _indexBarViewElement = [(SKUIStackDocumentViewController *)self _indexBarViewElement];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __73__SKUIStackDocumentViewController__updateEntryListControllersWithReload___block_invoke;
   v28[3] = &unk_2781FAFC0;
   v10 = v6;
   v29 = v10;
-  v30 = self;
+  selfCopy = self;
   v11 = v7;
   v31 = v11;
   v12 = v8;
   v32 = v12;
-  v23 = v9;
-  [v9 enumerateChildrenUsingBlock:v28];
+  v23 = _indexBarViewElement;
+  [_indexBarViewElement enumerateChildrenUsingBlock:v28];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -1427,7 +1427,7 @@ uint64_t __68__SKUIStackDocumentViewController__tryToScrollToSectionAtIndexPath_
   entryListControllers = self->_entryListControllers;
   if (entryListControllers == v12 || [(NSArray *)entryListControllers isEqualToArray:v12])
   {
-    if ([v11 count] && v22)
+    if ([v11 count] && reloadCopy)
     {
       [(SKUIIndexBarControlController *)self->_indexBarControlController reloadSections:v11];
     }
@@ -1436,7 +1436,7 @@ uint64_t __68__SKUIStackDocumentViewController__tryToScrollToSectionAtIndexPath_
   else
   {
     objc_storeStrong(&self->_entryListControllers, v12);
-    if (v22)
+    if (reloadCopy)
     {
       [(SKUIIndexBarControlController *)self->_indexBarControlController reloadData];
     }
@@ -1507,21 +1507,21 @@ LABEL_8:
 
 - (void)_updateIndexBarVisibility
 {
-  v3 = [(SKUIStackDocumentViewController *)self _shouldShowIndexBar];
-  v4 = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController indexBarControl];
+  _shouldShowIndexBar = [(SKUIStackDocumentViewController *)self _shouldShowIndexBar];
+  indexBarControl = [(SKUIStorePageSectionsViewController *)self->_sectionsViewController indexBarControl];
 
-  if (v3)
+  if (_shouldShowIndexBar)
   {
-    if (!v4)
+    if (!indexBarControl)
     {
       sectionsViewController = self->_sectionsViewController;
-      v8 = [(SKUIStackDocumentViewController *)self _indexBarControlController];
-      v6 = [v8 indexBarControl];
-      [(SKUIStorePageSectionsViewController *)sectionsViewController setIndexBarControl:v6];
+      _indexBarControlController = [(SKUIStackDocumentViewController *)self _indexBarControlController];
+      indexBarControl2 = [_indexBarControlController indexBarControl];
+      [(SKUIStorePageSectionsViewController *)sectionsViewController setIndexBarControl:indexBarControl2];
     }
   }
 
-  else if (v4)
+  else if (indexBarControl)
   {
     v7 = self->_sectionsViewController;
 

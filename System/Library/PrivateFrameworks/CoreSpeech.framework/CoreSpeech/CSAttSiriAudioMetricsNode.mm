@@ -1,14 +1,14 @@
 @interface CSAttSiriAudioMetricsNode
 - (AudioStreamBasicDescription)_defaultASBD;
 - (CSAttSiriAudioMetricsNode)init;
-- (CSAttSiriAudioMetricsNode)initWithAttSiriController:(id)a3;
+- (CSAttSiriAudioMetricsNode)initWithAttSiriController:(id)controller;
 - (CSAttSiriController)attSiriController;
 - (void)_handleDidStop;
 - (void)_setupAdamMetricsManagerIfNeeded;
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)setupWithStreamProviding:(id)a3;
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)setupWithStreamProviding:(id)providing;
 @end
 
 @implementation CSAttSiriAudioMetricsNode
@@ -112,21 +112,21 @@
   }
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100073AA0;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -137,7 +137,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -148,28 +148,28 @@
   dispatch_async(queue, block);
 }
 
-- (void)setupWithStreamProviding:(id)a3
+- (void)setupWithStreamProviding:(id)providing
 {
-  v4 = a3;
+  providingCopy = providing;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100073E08;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = providingCopy;
+  selfCopy = self;
+  v6 = providingCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriAudioMetricsNode)initWithAttSiriController:(id)a3
+- (CSAttSiriAudioMetricsNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriAudioMetricsNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;

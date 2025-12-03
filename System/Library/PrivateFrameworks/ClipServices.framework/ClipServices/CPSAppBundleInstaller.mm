@@ -1,35 +1,35 @@
 @interface CPSAppBundleInstaller
 - (BOOL)stopStallingCurrentInstallation;
-- (CPSAppBundleInstaller)initWithBundleIdentifier:(id)a3 extractedBundleURL:(id)a4;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4;
-- (void)installWithCompletionHandler:(id)a3;
+- (CPSAppBundleInstaller)initWithBundleIdentifier:(id)identifier extractedBundleURL:(id)l;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record;
+- (void)installWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPSAppBundleInstaller
 
-- (CPSAppBundleInstaller)initWithBundleIdentifier:(id)a3 extractedBundleURL:(id)a4
+- (CPSAppBundleInstaller)initWithBundleIdentifier:(id)identifier extractedBundleURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = CPSAppBundleInstaller;
   v9 = [(CPSAppBundleInstaller *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdentifier, a3);
-    objc_storeStrong(&v10->_extractedBundleURL, a4);
+    objc_storeStrong(&v9->_bundleIdentifier, identifier);
+    objc_storeStrong(&v10->_extractedBundleURL, l);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)installWithCompletionHandler:(id)a3
+- (void)installWithCompletionHandler:(id)handler
 {
-  v4 = MEMORY[0x245D3D5F0](a3, a2);
+  v4 = MEMORY[0x245D3D5F0](handler, a2);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
@@ -51,9 +51,9 @@
   }
 
   v11 = MEMORY[0x277D1C170];
-  v12 = [(IXPlaceholder *)self->_placeholder bundleID];
-  bundleIdentifier = v12;
-  if (!v12)
+  bundleID = [(IXPlaceholder *)self->_placeholder bundleID];
+  bundleIdentifier = bundleID;
+  if (!bundleID)
   {
     bundleIdentifier = self->_bundleIdentifier;
   }
@@ -107,15 +107,15 @@
   }
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  placeholderCopy = placeholder;
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v28 = v5;
+    v28 = placeholderCopy;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_INFO, "Coordinator %{private}@ successfully installed placeholder", buf, 0xCu);
   }
 
@@ -127,11 +127,11 @@
     self->_completionHandler = 0;
   }
 
-  v9 = v5;
+  v9 = placeholderCopy;
   v10 = objc_alloc(MEMORY[0x277D1C1A8]);
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(IXPlaceholder *)self->_placeholder bundleID];
-  v13 = [v11 stringWithFormat:@"App Asset: %@", v12];
+  bundleID = [(IXPlaceholder *)self->_placeholder bundleID];
+  v13 = [v11 stringWithFormat:@"App Asset: %@", bundleID];
   v14 = [v10 initWithName:v13 client:18 transferPath:self->_extractedBundleURL diskSpaceNeeded:0];
   appAssetPromise = self->_appAssetPromise;
   self->_appAssetPromise = v14;
@@ -186,15 +186,15 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  successfullyCopy = successfully;
   v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138477827;
-    v9 = v5;
+    v9 = successfullyCopy;
     _os_log_impl(&dword_2436ED000, v6, OS_LOG_TYPE_INFO, "Coordinator %{private}@ completed successfully", &v8, 0xCu);
   }
 
@@ -203,20 +203,20 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v6 = a4;
+  reasonCopy = reason;
   v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [CPSAppBundleInstaller coordinator:v6 canceledWithReason:v7 client:?];
+    [CPSAppBundleInstaller coordinator:reasonCopy canceledWithReason:v7 client:?];
   }
 
   self->_inactive = 1;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, v6);
+    completionHandler[2](completionHandler, reasonCopy);
   }
 }
 

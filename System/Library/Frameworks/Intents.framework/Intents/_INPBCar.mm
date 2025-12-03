@@ -1,20 +1,20 @@
 @interface _INPBCar
-- (BOOL)isEqual:(id)a3;
-- (_INPBCar)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCar)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPowerPerConnector:(id)a3;
-- (void)addSupportedChargingConnectors:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCarIdentifier:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setMake:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setPowerPerConnectors:(id)a3;
-- (void)setSupportedChargingConnectors:(id)a3;
-- (void)setYear:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPowerPerConnector:(id)connector;
+- (void)addSupportedChargingConnectors:(id)connectors;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCarIdentifier:(id)identifier;
+- (void)setDisplayName:(id)name;
+- (void)setMake:(id)make;
+- (void)setModel:(id)model;
+- (void)setPowerPerConnectors:(id)connectors;
+- (void)setSupportedChargingConnectors:(id)connectors;
+- (void)setYear:(id)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCar
@@ -22,46 +22,46 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_carIdentifier)
   {
-    v4 = [(_INPBCar *)self carIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"carIdentifier"];
+    carIdentifier = [(_INPBCar *)self carIdentifier];
+    v5 = [carIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"carIdentifier"];
   }
 
-  v6 = [(_INPBCar *)self color];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"color"];
+  color = [(_INPBCar *)self color];
+  dictionaryRepresentation = [color dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"color"];
 
   if (self->_displayName)
   {
-    v8 = [(_INPBCar *)self displayName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"displayName"];
+    displayName = [(_INPBCar *)self displayName];
+    v9 = [displayName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"displayName"];
   }
 
-  v10 = [(_INPBCar *)self headUnit];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"headUnit"];
+  headUnit = [(_INPBCar *)self headUnit];
+  dictionaryRepresentation2 = [headUnit dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"headUnit"];
 
   if (self->_make)
   {
-    v12 = [(_INPBCar *)self make];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"make"];
+    make = [(_INPBCar *)self make];
+    v13 = [make copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"make"];
   }
 
   if (self->_model)
   {
-    v14 = [(_INPBCar *)self model];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"model"];
+    model = [(_INPBCar *)self model];
+    v15 = [model copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"model"];
   }
 
   if ([(NSArray *)self->_powerPerConnectors count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation3 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v19 = [(NSArray *)v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -91,26 +91,26 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"powerPerConnector"];
+    [dictionary setObject:array forKeyedSubscript:@"powerPerConnector"];
   }
 
   if (self->_supportedChargingConnectors)
   {
-    v23 = [(_INPBCar *)self supportedChargingConnectors];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"supportedChargingConnectors"];
+    supportedChargingConnectors = [(_INPBCar *)self supportedChargingConnectors];
+    v24 = [supportedChargingConnectors copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"supportedChargingConnectors"];
   }
 
   if (self->_year)
   {
-    v25 = [(_INPBCar *)self year];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"year"];
+    year = [(_INPBCar *)self year];
+    v26 = [year copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"year"];
   }
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,28 +126,28 @@
   return v9 ^ v10 ^ [(NSString *)self->_year hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = [(_INPBCar *)self carIdentifier];
-  v6 = [v4 carIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self carIdentifier];
+  carIdentifier2 = [equalCopy carIdentifier];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v7 = [(_INPBCar *)self carIdentifier];
-  if (v7)
+  carIdentifier3 = [(_INPBCar *)self carIdentifier];
+  if (carIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBCar *)self carIdentifier];
-    v10 = [v4 carIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = carIdentifier3;
+    carIdentifier4 = [(_INPBCar *)self carIdentifier];
+    carIdentifier5 = [equalCopy carIdentifier];
+    v11 = [carIdentifier4 isEqual:carIdentifier5];
 
     if (!v11)
     {
@@ -159,20 +159,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self color];
-  v6 = [v4 color];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self color];
+  carIdentifier2 = [equalCopy color];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v12 = [(_INPBCar *)self color];
-  if (v12)
+  color = [(_INPBCar *)self color];
+  if (color)
   {
-    v13 = v12;
-    v14 = [(_INPBCar *)self color];
-    v15 = [v4 color];
-    v16 = [v14 isEqual:v15];
+    v13 = color;
+    color2 = [(_INPBCar *)self color];
+    color3 = [equalCopy color];
+    v16 = [color2 isEqual:color3];
 
     if (!v16)
     {
@@ -184,20 +184,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self displayName];
-  v6 = [v4 displayName];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self displayName];
+  carIdentifier2 = [equalCopy displayName];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v17 = [(_INPBCar *)self displayName];
-  if (v17)
+  displayName = [(_INPBCar *)self displayName];
+  if (displayName)
   {
-    v18 = v17;
-    v19 = [(_INPBCar *)self displayName];
-    v20 = [v4 displayName];
-    v21 = [v19 isEqual:v20];
+    v18 = displayName;
+    displayName2 = [(_INPBCar *)self displayName];
+    displayName3 = [equalCopy displayName];
+    v21 = [displayName2 isEqual:displayName3];
 
     if (!v21)
     {
@@ -209,20 +209,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self headUnit];
-  v6 = [v4 headUnit];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self headUnit];
+  carIdentifier2 = [equalCopy headUnit];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v22 = [(_INPBCar *)self headUnit];
-  if (v22)
+  headUnit = [(_INPBCar *)self headUnit];
+  if (headUnit)
   {
-    v23 = v22;
-    v24 = [(_INPBCar *)self headUnit];
-    v25 = [v4 headUnit];
-    v26 = [v24 isEqual:v25];
+    v23 = headUnit;
+    headUnit2 = [(_INPBCar *)self headUnit];
+    headUnit3 = [equalCopy headUnit];
+    v26 = [headUnit2 isEqual:headUnit3];
 
     if (!v26)
     {
@@ -234,20 +234,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self make];
-  v6 = [v4 make];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self make];
+  carIdentifier2 = [equalCopy make];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v27 = [(_INPBCar *)self make];
-  if (v27)
+  make = [(_INPBCar *)self make];
+  if (make)
   {
-    v28 = v27;
-    v29 = [(_INPBCar *)self make];
-    v30 = [v4 make];
-    v31 = [v29 isEqual:v30];
+    v28 = make;
+    make2 = [(_INPBCar *)self make];
+    make3 = [equalCopy make];
+    v31 = [make2 isEqual:make3];
 
     if (!v31)
     {
@@ -259,20 +259,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self model];
-  v6 = [v4 model];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self model];
+  carIdentifier2 = [equalCopy model];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v32 = [(_INPBCar *)self model];
-  if (v32)
+  model = [(_INPBCar *)self model];
+  if (model)
   {
-    v33 = v32;
-    v34 = [(_INPBCar *)self model];
-    v35 = [v4 model];
-    v36 = [v34 isEqual:v35];
+    v33 = model;
+    model2 = [(_INPBCar *)self model];
+    model3 = [equalCopy model];
+    v36 = [model2 isEqual:model3];
 
     if (!v36)
     {
@@ -284,20 +284,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self powerPerConnectors];
-  v6 = [v4 powerPerConnectors];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self powerPerConnectors];
+  carIdentifier2 = [equalCopy powerPerConnectors];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v37 = [(_INPBCar *)self powerPerConnectors];
-  if (v37)
+  powerPerConnectors = [(_INPBCar *)self powerPerConnectors];
+  if (powerPerConnectors)
   {
-    v38 = v37;
-    v39 = [(_INPBCar *)self powerPerConnectors];
-    v40 = [v4 powerPerConnectors];
-    v41 = [v39 isEqual:v40];
+    v38 = powerPerConnectors;
+    powerPerConnectors2 = [(_INPBCar *)self powerPerConnectors];
+    powerPerConnectors3 = [equalCopy powerPerConnectors];
+    v41 = [powerPerConnectors2 isEqual:powerPerConnectors3];
 
     if (!v41)
     {
@@ -309,20 +309,20 @@
   {
   }
 
-  v5 = [(_INPBCar *)self supportedChargingConnectors];
-  v6 = [v4 supportedChargingConnectors];
-  if ((v5 != 0) == (v6 == 0))
+  carIdentifier = [(_INPBCar *)self supportedChargingConnectors];
+  carIdentifier2 = [equalCopy supportedChargingConnectors];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_46;
   }
 
-  v42 = [(_INPBCar *)self supportedChargingConnectors];
-  if (v42)
+  supportedChargingConnectors = [(_INPBCar *)self supportedChargingConnectors];
+  if (supportedChargingConnectors)
   {
-    v43 = v42;
-    v44 = [(_INPBCar *)self supportedChargingConnectors];
-    v45 = [v4 supportedChargingConnectors];
-    v46 = [v44 isEqual:v45];
+    v43 = supportedChargingConnectors;
+    supportedChargingConnectors2 = [(_INPBCar *)self supportedChargingConnectors];
+    supportedChargingConnectors3 = [equalCopy supportedChargingConnectors];
+    v46 = [supportedChargingConnectors2 isEqual:supportedChargingConnectors3];
 
     if (!v46)
     {
@@ -334,12 +334,12 @@
   {
   }
 
-  v5 = [(_INPBCar *)self year];
-  v6 = [v4 year];
-  if ((v5 != 0) != (v6 == 0))
+  carIdentifier = [(_INPBCar *)self year];
+  carIdentifier2 = [equalCopy year];
+  if ((carIdentifier != 0) != (carIdentifier2 == 0))
   {
-    v47 = [(_INPBCar *)self year];
-    if (!v47)
+    year = [(_INPBCar *)self year];
+    if (!year)
     {
 
 LABEL_50:
@@ -347,10 +347,10 @@ LABEL_50:
       goto LABEL_48;
     }
 
-    v48 = v47;
-    v49 = [(_INPBCar *)self year];
-    v50 = [v4 year];
-    v51 = [v49 isEqual:v50];
+    v48 = year;
+    year2 = [(_INPBCar *)self year];
+    year3 = [equalCopy year];
+    v51 = [year2 isEqual:year3];
 
     if (v51)
     {
@@ -370,110 +370,110 @@ LABEL_48:
   return v52;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCar allocWithZone:](_INPBCar init];
-  v6 = [(NSString *)self->_carIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_carIdentifier copyWithZone:zone];
   [(_INPBCar *)v5 setCarIdentifier:v6];
 
-  v7 = [(_INPBColor *)self->_color copyWithZone:a3];
+  v7 = [(_INPBColor *)self->_color copyWithZone:zone];
   [(_INPBCar *)v5 setColor:v7];
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   [(_INPBCar *)v5 setDisplayName:v8];
 
-  v9 = [(_INPBCarHeadUnit *)self->_headUnit copyWithZone:a3];
+  v9 = [(_INPBCarHeadUnit *)self->_headUnit copyWithZone:zone];
   [(_INPBCar *)v5 setHeadUnit:v9];
 
-  v10 = [(NSString *)self->_make copyWithZone:a3];
+  v10 = [(NSString *)self->_make copyWithZone:zone];
   [(_INPBCar *)v5 setMake:v10];
 
-  v11 = [(NSString *)self->_model copyWithZone:a3];
+  v11 = [(NSString *)self->_model copyWithZone:zone];
   [(_INPBCar *)v5 setModel:v11];
 
-  v12 = [(NSArray *)self->_powerPerConnectors copyWithZone:a3];
+  v12 = [(NSArray *)self->_powerPerConnectors copyWithZone:zone];
   [(_INPBCar *)v5 setPowerPerConnectors:v12];
 
-  v13 = [(NSArray *)self->_supportedChargingConnectors copyWithZone:a3];
+  v13 = [(NSArray *)self->_supportedChargingConnectors copyWithZone:zone];
   [(_INPBCar *)v5 setSupportedChargingConnectors:v13];
 
-  v14 = [(NSString *)self->_year copyWithZone:a3];
+  v14 = [(NSString *)self->_year copyWithZone:zone];
   [(_INPBCar *)v5 setYear:v14];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCar *)self data];
+  coderCopy = coder;
+  data = [(_INPBCar *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCar)initWithCoder:(id)a3
+- (_INPBCar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCar *)self initWithData:v6];
+    self = [(_INPBCar *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBCar *)self carIdentifier];
+  toCopy = to;
+  carIdentifier = [(_INPBCar *)self carIdentifier];
 
-  if (v5)
+  if (carIdentifier)
   {
     carIdentifier = self->_carIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBCar *)self color];
+  color = [(_INPBCar *)self color];
 
-  if (v7)
+  if (color)
   {
-    v8 = [(_INPBCar *)self color];
+    color2 = [(_INPBCar *)self color];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBCar *)self displayName];
+  displayName = [(_INPBCar *)self displayName];
 
-  if (v9)
+  if (displayName)
   {
     displayName = self->_displayName;
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_INPBCar *)self headUnit];
+  headUnit = [(_INPBCar *)self headUnit];
 
-  if (v11)
+  if (headUnit)
   {
-    v12 = [(_INPBCar *)self headUnit];
+    headUnit2 = [(_INPBCar *)self headUnit];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBCar *)self make];
+  make = [(_INPBCar *)self make];
 
-  if (v13)
+  if (make)
   {
     make = self->_make;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBCar *)self model];
+  model = [(_INPBCar *)self model];
 
-  if (v15)
+  if (model)
   {
     model = self->_model;
     PBDataWriterWriteStringField();
@@ -543,9 +543,9 @@ LABEL_48:
     while (v25);
   }
 
-  v29 = [(_INPBCar *)self year];
+  year = [(_INPBCar *)self year];
 
-  if (v29)
+  if (year)
   {
     year = self->_year;
     PBDataWriterWriteStringField();
@@ -554,99 +554,99 @@ LABEL_48:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setYear:(id)a3
+- (void)setYear:(id)year
 {
-  v4 = [a3 copy];
+  v4 = [year copy];
   year = self->_year;
   self->_year = v4;
 
   MEMORY[0x1EEE66BB8](v4, year);
 }
 
-- (void)addSupportedChargingConnectors:(id)a3
+- (void)addSupportedChargingConnectors:(id)connectors
 {
-  v4 = a3;
+  connectorsCopy = connectors;
   supportedChargingConnectors = self->_supportedChargingConnectors;
-  v8 = v4;
+  v8 = connectorsCopy;
   if (!supportedChargingConnectors)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_supportedChargingConnectors;
-    self->_supportedChargingConnectors = v6;
+    self->_supportedChargingConnectors = array;
 
-    v4 = v8;
+    connectorsCopy = v8;
     supportedChargingConnectors = self->_supportedChargingConnectors;
   }
 
-  [(NSArray *)supportedChargingConnectors addObject:v4];
+  [(NSArray *)supportedChargingConnectors addObject:connectorsCopy];
 }
 
-- (void)setSupportedChargingConnectors:(id)a3
+- (void)setSupportedChargingConnectors:(id)connectors
 {
-  v4 = [a3 mutableCopy];
+  v4 = [connectors mutableCopy];
   supportedChargingConnectors = self->_supportedChargingConnectors;
   self->_supportedChargingConnectors = v4;
 
   MEMORY[0x1EEE66BB8](v4, supportedChargingConnectors);
 }
 
-- (void)addPowerPerConnector:(id)a3
+- (void)addPowerPerConnector:(id)connector
 {
-  v4 = a3;
+  connectorCopy = connector;
   powerPerConnectors = self->_powerPerConnectors;
-  v8 = v4;
+  v8 = connectorCopy;
   if (!powerPerConnectors)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_powerPerConnectors;
-    self->_powerPerConnectors = v6;
+    self->_powerPerConnectors = array;
 
-    v4 = v8;
+    connectorCopy = v8;
     powerPerConnectors = self->_powerPerConnectors;
   }
 
-  [(NSArray *)powerPerConnectors addObject:v4];
+  [(NSArray *)powerPerConnectors addObject:connectorCopy];
 }
 
-- (void)setPowerPerConnectors:(id)a3
+- (void)setPowerPerConnectors:(id)connectors
 {
-  v4 = [a3 mutableCopy];
+  v4 = [connectors mutableCopy];
   powerPerConnectors = self->_powerPerConnectors;
   self->_powerPerConnectors = v4;
 
   MEMORY[0x1EEE66BB8](v4, powerPerConnectors);
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v4 = [a3 copy];
+  v4 = [model copy];
   model = self->_model;
   self->_model = v4;
 
   MEMORY[0x1EEE66BB8](v4, model);
 }
 
-- (void)setMake:(id)a3
+- (void)setMake:(id)make
 {
-  v4 = [a3 copy];
+  v4 = [make copy];
   make = self->_make;
   self->_make = v4;
 
   MEMORY[0x1EEE66BB8](v4, make);
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8](v4, displayName);
 }
 
-- (void)setCarIdentifier:(id)a3
+- (void)setCarIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   carIdentifier = self->_carIdentifier;
   self->_carIdentifier = v4;
 

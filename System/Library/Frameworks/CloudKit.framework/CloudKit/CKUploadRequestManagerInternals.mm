@@ -1,8 +1,8 @@
 @interface CKUploadRequestManagerInternals
-- (BOOL)canPerformFunction:(int64_t)a3;
-- (BOOL)isRepairRecordActionable:(id)a3;
-- (CKUploadRequestManagerInternals)initWithContainer:(id)a3 repairContainerOverrides:(id)a4;
-- (CKUploadRequestManagerInternals)initWithContainer:(id)a3 repairContainerOverrides:(id)a4 ignoringSystemConditions:(BOOL)a5;
+- (BOOL)canPerformFunction:(int64_t)function;
+- (BOOL)isRepairRecordActionable:(id)actionable;
+- (CKUploadRequestManagerInternals)initWithContainer:(id)container repairContainerOverrides:(id)overrides;
+- (CKUploadRequestManagerInternals)initWithContainer:(id)container repairContainerOverrides:(id)overrides ignoringSystemConditions:(BOOL)conditions;
 - (CKUploadRequestManagerStateMachine)stateMachine;
 - (NSString)activityIdentifierForSchedulingRepairs;
 - (NSString)machServiceName;
@@ -14,50 +14,50 @@
 - (double)tryAgainLaterRetryTime;
 - (id)createDatabase;
 - (id)createStateMachine;
-- (id)nextRepairDateForDate:(id)a3;
+- (id)nextRepairDateForDate:(id)date;
 - (id)repairZoneID;
-- (id)repairableAssetsForDate:(id)a3;
-- (void)assetRepairScheduler:(id)a3 completedRepairWithMetadata:(id)a4 error:(id)a5;
-- (void)assetRepairScheduler:(id)a3 completedRequestWithMetadata:(id)a4 result:(int64_t)a5;
-- (void)assetRepairSchedulerAllRequestsComplete:(id)a3;
+- (id)repairableAssetsForDate:(id)date;
+- (void)assetRepairScheduler:(id)scheduler completedRepairWithMetadata:(id)metadata error:(id)error;
+- (void)assetRepairScheduler:(id)scheduler completedRequestWithMetadata:(id)metadata result:(int64_t)result;
+- (void)assetRepairSchedulerAllRequestsComplete:(id)complete;
 - (void)cancelScheduledEvent;
 - (void)checkAccountID;
 - (void)checkAccountStatus;
 - (void)checkNetworkReachability;
 - (void)closeSyncEngine;
-- (void)commonInitWithContainer:(id)a3 repairContainerOverrides:(id)a4;
+- (void)commonInitWithContainer:(id)container repairContainerOverrides:(id)overrides;
 - (void)dealloc;
-- (void)dispatchAsyncOnStateQueue:(id)a3;
-- (void)dispatchEvent:(int64_t)a3;
-- (void)dispatchEvent:(int64_t)a3 synchronously:(BOOL)a4;
+- (void)dispatchAsyncOnStateQueue:(id)queue;
+- (void)dispatchEvent:(int64_t)event;
+- (void)dispatchEvent:(int64_t)event synchronously:(BOOL)synchronously;
 - (void)fetchRepairContainerMetadata;
-- (void)fetchServerChanges:(id)a3;
-- (void)invokeCallbackForOverridePoint:(int64_t)a3 withError:(id)a4 onCallbackQueue:(BOOL)a5;
+- (void)fetchServerChanges:(id)changes;
+- (void)invokeCallbackForOverridePoint:(int64_t)point withError:(id)error onCallbackQueue:(BOOL)queue;
 - (void)manuallyTriggerUploadRequests;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)openSyncEngine;
 - (void)performRepairs;
 - (void)registerForAccountNotifications;
 - (void)registerForFetchAllNotifications;
 - (void)registerForNetworkReachability;
 - (void)registerForRepairScheduler;
-- (void)respondToStateMachineChangeState:(int64_t)a3 enter:(BOOL)a4;
+- (void)respondToStateMachineChangeState:(int64_t)state enter:(BOOL)enter;
 - (void)scheduleNextSync;
 - (void)scheduleOrInvokeRepairsNow;
-- (void)scheduleRecordRepair:(id)a3 withDelay:(double)a4 increasingCount:(BOOL)a5;
+- (void)scheduleRecordRepair:(id)repair withDelay:(double)delay increasingCount:(BOOL)count;
 - (void)scheduleRecurringFetch;
-- (void)scheduleRepairsWithDelay:(double)a3;
-- (void)setCallback:(id)a3 forOverridePoint:(int64_t)a4;
-- (void)setMachServiceName:(id)a3;
-- (void)setReachability:(__SCNetworkReachability *)a3;
-- (void)setRepairActivityHandler:(id)a3;
-- (void)setStateMachine:(id)a3;
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4;
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4;
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5;
-- (void)syncEngine:(id)a3 zoneWithIDChanged:(id)a4;
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4;
-- (void)syncEngine:(id)a3 zoneWithIDWasPurged:(id)a4;
+- (void)scheduleRepairsWithDelay:(double)delay;
+- (void)setCallback:(id)callback forOverridePoint:(int64_t)point;
+- (void)setMachServiceName:(id)name;
+- (void)setReachability:(__SCNetworkReachability *)reachability;
+- (void)setRepairActivityHandler:(id)handler;
+- (void)setStateMachine:(id)machine;
+- (void)syncEngine:(id)engine didFetchRecord:(id)record;
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata;
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type;
+- (void)syncEngine:(id)engine zoneWithIDChanged:(id)changed;
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted;
+- (void)syncEngine:(id)engine zoneWithIDWasPurged:(id)purged;
 - (void)unregisterFromAccountNotifications;
 - (void)unregisterFromFetchAllNotifications;
 - (void)unregisterFromNetworkReachability;
@@ -131,42 +131,42 @@
   return result;
 }
 
-- (CKUploadRequestManagerInternals)initWithContainer:(id)a3 repairContainerOverrides:(id)a4
+- (CKUploadRequestManagerInternals)initWithContainer:(id)container repairContainerOverrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  overridesCopy = overrides;
   v12.receiver = self;
   v12.super_class = CKUploadRequestManagerInternals;
   v8 = [(CKUploadRequestManagerInternals *)&v12 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_commonInitWithContainer_repairContainerOverrides_(v8, v9, v6, v7);
+    objc_msgSend_commonInitWithContainer_repairContainerOverrides_(v8, v9, containerCopy, overridesCopy);
   }
 
   return v10;
 }
 
-- (CKUploadRequestManagerInternals)initWithContainer:(id)a3 repairContainerOverrides:(id)a4 ignoringSystemConditions:(BOOL)a5
+- (CKUploadRequestManagerInternals)initWithContainer:(id)container repairContainerOverrides:(id)overrides ignoringSystemConditions:(BOOL)conditions
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  overridesCopy = overrides;
   v14.receiver = self;
   v14.super_class = CKUploadRequestManagerInternals;
   v10 = [(CKUploadRequestManagerInternals *)&v14 init];
   v12 = v10;
   if (v10)
   {
-    v10->_ignoringSystemConditions = a5;
-    objc_msgSend_commonInitWithContainer_repairContainerOverrides_(v10, v11, v8, v9);
+    v10->_ignoringSystemConditions = conditions;
+    objc_msgSend_commonInitWithContainer_repairContainerOverrides_(v10, v11, containerCopy, overridesCopy);
   }
 
   return v12;
 }
 
-- (void)commonInitWithContainer:(id)a3 repairContainerOverrides:(id)a4
+- (void)commonInitWithContainer:(id)container repairContainerOverrides:(id)overrides
 {
-  v99 = a3;
+  containerCopy = container;
   __asm { FMOV            V0.2D, #-1.0 }
 
   *&self->_recurringFetchPeriod = _Q0;
@@ -177,21 +177,21 @@
   self->_assetRepairSchedulerRepairRetryCount = -1;
   if (__sTestOverridesAvailable[0] == 1)
   {
-    v11 = a4;
+    overridesCopy = overrides;
     v12 = objc_alloc(sub_1885188C0());
-    v15 = objc_msgSend_containerID(v99, v13, v14);
-    v18 = objc_msgSend_options(v99, v16, v17);
-    v21 = objc_msgSend_options(v99, v19, v20);
+    v15 = objc_msgSend_containerID(containerCopy, v13, v14);
+    v18 = objc_msgSend_options(containerCopy, v16, v17);
+    v21 = objc_msgSend_options(containerCopy, v19, v20);
     v24 = objc_msgSend_testDeviceReferenceProtocol(v21, v22, v23);
     v26 = objc_msgSend_initWithContainerID_options_testDeviceReferenceProtocol_(v12, v25, v15, v18, v24);
   }
 
   else
   {
-    v27 = a4;
+    overridesCopy2 = overrides;
     v28 = [CKContainer alloc];
-    v15 = objc_msgSend_containerID(v99, v29, v30);
-    v18 = objc_msgSend_options(v99, v31, v32);
+    v15 = objc_msgSend_containerID(containerCopy, v29, v30);
+    v18 = objc_msgSend_options(containerCopy, v31, v32);
     v26 = objc_msgSend_initWithContainerID_options_(v28, v33, v15, v18);
   }
 
@@ -199,16 +199,16 @@
   self->_container = v26;
   v35 = v26;
 
-  v37 = objc_msgSend_createRepairContainerFromContainer_withOverrides_(CKAssetRepairOperationUtilities, v36, v99, a4);
+  v37 = objc_msgSend_createRepairContainerFromContainer_withOverrides_(CKAssetRepairOperationUtilities, v36, containerCopy, overrides);
   repairContainer = self->_repairContainer;
   self->_repairContainer = v37;
 
-  v41 = objc_msgSend_copy(a4, v39, v40);
+  v41 = objc_msgSend_copy(overrides, v39, v40);
   repairContainerOverrides = self->_repairContainerOverrides;
   self->_repairContainerOverrides = v41;
 
   v43 = MEMORY[0x1E696AEC0];
-  v46 = objc_msgSend_containerID(v99, v44, v45);
+  v46 = objc_msgSend_containerID(containerCopy, v44, v45);
   v49 = objc_msgSend_containerIdentifier(v46, v47, v48);
   v51 = objc_msgSend_stringWithFormat_(v43, v50, @"%@.%@", @"com.apple.cloudkit.uploadrequest.statemachine", v49);
   v52 = v51;
@@ -220,7 +220,7 @@
   self->_stateMachineQueue = v57;
 
   v60 = MEMORY[0x1E696AEC0];
-  v63 = objc_msgSend_containerID(v99, v61, v62);
+  v63 = objc_msgSend_containerID(containerCopy, v61, v62);
   v66 = objc_msgSend_containerIdentifier(v63, v64, v65);
   v68 = objc_msgSend_stringWithFormat_(v60, v67, @"%@.%@", @"com.apple.cloudkit.uploadrequest.state", v66);
   v69 = v68;
@@ -232,7 +232,7 @@
   self->_stateQueue = v74;
 
   v77 = MEMORY[0x1E696AEC0];
-  v80 = objc_msgSend_containerID(v99, v78, v79);
+  v80 = objc_msgSend_containerID(containerCopy, v78, v79);
   v83 = objc_msgSend_containerIdentifier(v80, v81, v82);
   v85 = objc_msgSend_stringWithFormat_(v77, v84, @"%@.%@", @"com.apple.cloudkit.uploadrequest.callback", v83);
   v86 = v85;
@@ -285,44 +285,44 @@
 
 - (NSString)machServiceName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_machServiceName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_machServiceName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setMachServiceName:(id)a3
+- (void)setMachServiceName:(id)name
 {
-  v23 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ((objc_msgSend_isEqualToString_(v4->_machServiceName, v5, v23) & 1) == 0)
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((objc_msgSend_isEqualToString_(selfCopy->_machServiceName, v5, nameCopy) & 1) == 0)
   {
-    v10 = objc_msgSend_assignedMachServiceName(v4, v6, v7);
+    v10 = objc_msgSend_assignedMachServiceName(selfCopy, v6, v7);
     if (v10)
     {
-      v11 = objc_msgSend_assignedMachServiceName(v4, v8, v9);
-      isEqualToString = objc_msgSend_isEqualToString_(v23, v12, v11);
+      v11 = objc_msgSend_assignedMachServiceName(selfCopy, v8, v9);
+      isEqualToString = objc_msgSend_isEqualToString_(nameCopy, v12, v11);
 
       if ((isEqualToString & 1) == 0)
       {
         v16 = [CKException alloc];
-        v19 = objc_msgSend_assignedMachServiceName(v4, v17, v18);
-        v21 = objc_msgSend_initWithCode_format_(v16, v20, 12, @"Cannot assign new machServiceName %@ when previous port %@ is still being used", v23, v19);
+        v19 = objc_msgSend_assignedMachServiceName(selfCopy, v17, v18);
+        v21 = objc_msgSend_initWithCode_format_(v16, v20, 12, @"Cannot assign new machServiceName %@ when previous port %@ is still being used", nameCopy, v19);
         v22 = v21;
 
         objc_exception_throw(v21);
       }
     }
 
-    v14 = objc_msgSend_copy(v23, v8, v9);
-    machServiceName = v4->_machServiceName;
-    v4->_machServiceName = v14;
+    v14 = objc_msgSend_copy(nameCopy, v8, v9);
+    machServiceName = selfCopy->_machServiceName;
+    selfCopy->_machServiceName = v14;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)repairZoneID
@@ -346,19 +346,19 @@
   return v11;
 }
 
-- (void)setRepairActivityHandler:(id)a3
+- (void)setRepairActivityHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_stateQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
-  if (self->_repairActivityHandler != v4)
+  if (self->_repairActivityHandler != handlerCopy)
   {
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(handlerCopy);
     repairActivityHandler = self->_repairActivityHandler;
     self->_repairActivityHandler = v8;
 
-    if (v4)
+    if (handlerCopy)
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -414,17 +414,17 @@ LABEL_12:
   return stateMachine;
 }
 
-- (void)setStateMachine:(id)a3
+- (void)setStateMachine:(id)machine
 {
-  v10 = a3;
+  machineCopy = machine;
   v7 = objc_msgSend_stateMachineQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
   stateMachine = self->_stateMachine;
   p_stateMachine = &self->_stateMachine;
-  if (stateMachine != v10)
+  if (stateMachine != machineCopy)
   {
-    objc_storeStrong(p_stateMachine, a3);
+    objc_storeStrong(p_stateMachine, machine);
   }
 }
 
@@ -447,18 +447,18 @@ LABEL_12:
   return v24;
 }
 
-- (void)setReachability:(__SCNetworkReachability *)a3
+- (void)setReachability:(__SCNetworkReachability *)reachability
 {
   reachability = self->_reachability;
-  if (reachability != a3)
+  if (reachability != reachability)
   {
-    if (a3)
+    if (reachability)
     {
-      CFRetain(a3);
+      CFRetain(reachability);
       reachability = self->_reachability;
     }
 
-    self->_reachability = a3;
+    self->_reachability = reachability;
     if (reachability)
     {
 
@@ -467,17 +467,17 @@ LABEL_12:
   }
 }
 
-- (void)fetchServerChanges:(id)a3
+- (void)fetchServerChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v7 = objc_msgSend_stateQueue(self, v5, v6);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_18862FF94;
   v9[3] = &unk_1E70BC940;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = changesCopy;
+  v8 = changesCopy;
   ck_call_or_dispatch_sync_if_not_key(v7, &self->_stateQueue, v9);
 }
 
@@ -491,10 +491,10 @@ LABEL_12:
   objc_msgSend_fetchServerChanges_(self, a2, v2);
 }
 
-- (void)dispatchEvent:(int64_t)a3 synchronously:(BOOL)a4
+- (void)dispatchEvent:(int64_t)event synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  if (a4)
+  synchronouslyCopy = synchronously;
+  if (synchronously)
   {
     v7 = MEMORY[0x1E69E97D0];
   }
@@ -504,48 +504,48 @@ LABEL_12:
     v7 = MEMORY[0x1E69E9750];
   }
 
-  v8 = objc_msgSend_stateQueue(self, a2, a3);
+  v8 = objc_msgSend_stateQueue(self, a2, event);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_188630388;
   v12[3] = &unk_1E70BF2B8;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = event;
   v7(v8, v12);
 
-  if (v4)
+  if (synchronouslyCopy)
   {
     v11 = objc_msgSend_stateQueue(self, v9, v10);
     dispatch_sync(v11, &unk_1EFA2F648);
   }
 }
 
-- (void)dispatchAsyncOnStateQueue:(id)a3
+- (void)dispatchAsyncOnStateQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v7 = objc_msgSend_stateQueue(self, v5, v6);
-  dispatch_async(v7, v4);
+  dispatch_async(v7, queueCopy);
 }
 
-- (void)setCallback:(id)a3 forOverridePoint:(int64_t)a4
+- (void)setCallback:(id)callback forOverridePoint:(int64_t)point
 {
-  v6 = a3;
+  callbackCopy = callback;
   v9 = objc_msgSend_stateQueue(self, v7, v8);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1886304B8;
   v11[3] = &unk_1E70BF410;
-  v12 = v6;
-  v13 = a4;
+  v12 = callbackCopy;
+  pointCopy = point;
   v11[4] = self;
-  v10 = v6;
+  v10 = callbackCopy;
   ck_call_or_dispatch_sync_if_not_key(v9, &self->_stateQueue, v11);
 }
 
-- (void)invokeCallbackForOverridePoint:(int64_t)a3 withError:(id)a4 onCallbackQueue:(BOOL)a5
+- (void)invokeCallbackForOverridePoint:(int64_t)point withError:(id)error onCallbackQueue:(BOOL)queue
 {
-  v5 = a5;
-  v8 = a4;
+  queueCopy = queue;
+  errorCopy = error;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -559,13 +559,13 @@ LABEL_12:
   v19[3] = &unk_1E70BF438;
   v19[4] = self;
   v19[5] = &v20;
-  v19[6] = a3;
+  v19[6] = point;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v19);
 
   v14 = v21[5];
   if (v14)
   {
-    if (v5)
+    if (queueCopy)
     {
       v15 = objc_msgSend_callbackQueue(self, v12, v13);
       block[0] = MEMORY[0x1E69E9820];
@@ -573,24 +573,24 @@ LABEL_12:
       block[2] = sub_1886307C8;
       block[3] = &unk_1E70BE500;
       v18 = &v20;
-      v17 = v8;
+      v17 = errorCopy;
       dispatch_async(v15, block);
     }
 
     else
     {
-      (*(v14 + 16))(v14, v8);
+      (*(v14 + 16))(v14, errorCopy);
     }
   }
 
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)assetRepairScheduler:(id)a3 completedRequestWithMetadata:(id)a4 result:(int64_t)a5
+- (void)assetRepairScheduler:(id)scheduler completedRequestWithMetadata:(id)metadata result:(int64_t)result
 {
-  if (a5 == 2)
+  if (result == 2)
   {
-    v7 = objc_msgSend_repairZoneRecordID(a4, a2, a3);
+    v7 = objc_msgSend_repairZoneRecordID(metadata, a2, scheduler);
     objc_msgSend_tryAgainLaterRetryTime(self, v8, v9);
     objc_msgSend_scheduleRecordRepair_withDelay_increasingCount_(self, v10, v7, 0);
 
@@ -600,26 +600,26 @@ LABEL_12:
   }
 }
 
-- (void)assetRepairScheduler:(id)a3 completedRepairWithMetadata:(id)a4 error:(id)a5
+- (void)assetRepairScheduler:(id)scheduler completedRepairWithMetadata:(id)metadata error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  metadataCopy = metadata;
+  errorCopy = error;
   v11 = objc_msgSend_stateQueue(self, v9, v10);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_188630C70;
   v14[3] = &unk_1E70BC360;
   v14[4] = self;
-  v15 = v8;
-  v16 = v7;
-  v12 = v7;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = metadataCopy;
+  v12 = metadataCopy;
+  v13 = errorCopy;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v14);
 }
 
-- (void)assetRepairSchedulerAllRequestsComplete:(id)a3
+- (void)assetRepairSchedulerAllRequestsComplete:(id)complete
 {
-  v4 = objc_msgSend_stateQueue(self, a2, a3);
+  v4 = objc_msgSend_stateQueue(self, a2, complete);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1886312EC;
@@ -628,10 +628,10 @@ LABEL_12:
   ck_call_or_dispatch_sync_if_not_key(v4, &self->_stateQueue, v5);
 }
 
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4
+- (void)syncEngine:(id)engine didFetchRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  recordCopy = record;
   v8 = _os_activity_create(&dword_1883EA000, "client/data-repair-record-was-changed", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -643,18 +643,18 @@ LABEL_12:
   v14[2] = sub_188631430;
   v14[3] = &unk_1E70BEEC0;
   v14[4] = self;
-  v13 = v7;
+  v13 = recordCopy;
   v15 = v13;
   ck_call_or_dispatch_sync_if_not_key(v12, &self->_stateQueue, v14);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  deletedCopy = deleted;
+  typeCopy = type;
   v11 = _os_activity_create(&dword_1883EA000, "client/data-repair-record-was-deleted", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -665,31 +665,31 @@ LABEL_12:
   v16[2] = sub_18863185C;
   v16[3] = &unk_1E70BEEC0;
   v16[4] = self;
-  v15 = v9;
+  v15 = deletedCopy;
   v17 = v15;
   ck_call_or_dispatch_sync_if_not_key(v14, &self->_stateQueue, v16);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)syncEngine:(id)a3 didUpdateMetadata:(id)a4
+- (void)syncEngine:(id)engine didUpdateMetadata:(id)metadata
 {
-  v5 = a4;
+  metadataCopy = metadata;
   v8 = objc_msgSend_stateQueue(self, v6, v7);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_188631AD0;
   v10[3] = &unk_1E70BEEC0;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = metadataCopy;
+  v9 = metadataCopy;
   ck_call_or_dispatch_sync_if_not_key(v8, &self->_stateQueue, v10);
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDChanged:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  changedCopy = changed;
   v8 = _os_activity_create(&dword_1883EA000, "client/data-repair-zone-was-changed", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -699,18 +699,18 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = sub_188631D58;
   v13[3] = &unk_1E70BEEC0;
-  v12 = v7;
+  v12 = changedCopy;
   v14 = v12;
-  v15 = self;
+  selfCopy = self;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v13);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDWasDeleted:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDWasDeleted:(id)deleted
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  deletedCopy = deleted;
   v8 = _os_activity_create(&dword_1883EA000, "client/data-repair-zone-was-deleted", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -721,17 +721,17 @@ LABEL_12:
   v13[2] = sub_188631F70;
   v13[3] = &unk_1E70BEEC0;
   v13[4] = self;
-  v12 = v7;
+  v12 = deletedCopy;
   v14 = v12;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v13);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)syncEngine:(id)a3 zoneWithIDWasPurged:(id)a4
+- (void)syncEngine:(id)engine zoneWithIDWasPurged:(id)purged
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  purgedCopy = purged;
   v8 = _os_activity_create(&dword_1883EA000, "client/data-repair-zone-was-purged", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -742,16 +742,16 @@ LABEL_12:
   v13[2] = sub_188632294;
   v13[3] = &unk_1E70BEEC0;
   v13[4] = self;
-  v12 = v7;
+  v12 = purgedCopy;
   v14 = v12;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v13);
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)isRepairRecordActionable:(id)a3
+- (BOOL)isRepairRecordActionable:(id)actionable
 {
-  v4 = a3;
+  actionableCopy = actionable;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -761,8 +761,8 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_1886325B0;
   v10[3] = &unk_1E70BF460;
-  v8 = v4;
-  v12 = self;
+  v8 = actionableCopy;
+  selfCopy = self;
   v13 = &v14;
   v11 = v8;
   ck_call_or_dispatch_sync_if_not_key(v7, &self->_stateQueue, v10);
@@ -773,7 +773,7 @@ LABEL_12:
   return self;
 }
 
-- (void)scheduleRepairsWithDelay:(double)a3
+- (void)scheduleRepairsWithDelay:(double)delay
 {
   v5 = _os_activity_create(&dword_1883EA000, "client/data-repair-schedule-repairs", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -785,7 +785,7 @@ LABEL_12:
   v9[2] = sub_188632B5C;
   v9[3] = &unk_1E70BF2B8;
   v9[4] = self;
-  *&v9[5] = a3;
+  *&v9[5] = delay;
   ck_call_or_dispatch_sync_if_not_key(v8, &self->_stateQueue, v9);
 
   os_activity_scope_leave(&state);
@@ -802,25 +802,25 @@ LABEL_12:
   ck_call_or_dispatch_sync_if_not_key(v4, &self->_stateQueue, v5);
 }
 
-- (void)scheduleRecordRepair:(id)a3 withDelay:(double)a4 increasingCount:(BOOL)a5
+- (void)scheduleRecordRepair:(id)repair withDelay:(double)delay increasingCount:(BOOL)count
 {
-  v8 = a3;
+  repairCopy = repair;
   v11 = objc_msgSend_stateQueue(self, v9, v10);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_188633048;
   v13[3] = &unk_1E70BF488;
   v13[4] = self;
-  v14 = v8;
-  v15 = a4;
-  v16 = a5;
-  v12 = v8;
+  v14 = repairCopy;
+  delayCopy = delay;
+  countCopy = count;
+  v12 = repairCopy;
   ck_call_or_dispatch_sync_if_not_key(v11, &self->_stateQueue, v13);
 }
 
-- (id)repairableAssetsForDate:(id)a3
+- (id)repairableAssetsForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
   v8 = objc_msgSend_stateQueue(self, v6, v7);
   v14[0] = MEMORY[0x1E69E9820];
@@ -828,10 +828,10 @@ LABEL_12:
   v14[2] = sub_188633390;
   v14[3] = &unk_1E70BC360;
   v14[4] = self;
-  v15 = v4;
+  v15 = dateCopy;
   v9 = v5;
   v16 = v9;
-  v10 = v4;
+  v10 = dateCopy;
   ck_call_or_dispatch_sync_if_not_key(v8, &self->_stateQueue, v14);
 
   v11 = v16;
@@ -840,9 +840,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)nextRepairDateForDate:(id)a3
+- (id)nextRepairDateForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -855,7 +855,7 @@ LABEL_12:
   v11[2] = sub_1886337B4;
   v11[3] = &unk_1E70BF4B0;
   v11[4] = self;
-  v8 = v4;
+  v8 = dateCopy;
   v12 = v8;
   v13 = &v14;
   ck_call_or_dispatch_sync_if_not_key(v7, &self->_stateQueue, v11);
@@ -913,9 +913,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)respondToStateMachineChangeState:(int64_t)a3 enter:(BOOL)a4
+- (void)respondToStateMachineChangeState:(int64_t)state enter:(BOOL)enter
 {
-  v7 = objc_msgSend_stateMachineQueue(self, a2, a3);
+  v7 = objc_msgSend_stateMachineQueue(self, a2, state);
   dispatch_assert_queue_V2(v7);
 
   v10 = objc_msgSend_stateQueue(self, v8, v9);
@@ -923,15 +923,15 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_188634BD0;
   block[3] = &unk_1E70BF578;
-  v12 = a4;
+  enterCopy = enter;
   block[4] = self;
-  block[5] = a3;
+  block[5] = state;
   dispatch_async(v10, block);
 }
 
-- (void)dispatchEvent:(int64_t)a3
+- (void)dispatchEvent:(int64_t)event
 {
-  v5 = objc_msgSend_stateQueue(self, a2, a3);
+  v5 = objc_msgSend_stateQueue(self, a2, event);
   dispatch_assert_queue_V2(v5);
 
   v8 = objc_msgSend_stateMachineQueue(self, v6, v7);
@@ -940,14 +940,14 @@ LABEL_12:
   v9[2] = sub_188634CA4;
   v9[3] = &unk_1E70BF2B8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = event;
   dispatch_sync(v8, v9);
 }
 
-- (BOOL)canPerformFunction:(int64_t)a3
+- (BOOL)canPerformFunction:(int64_t)function
 {
-  v3 = a3;
-  v5 = objc_msgSend_stateQueue(self, a2, a3);
+  functionCopy = function;
+  v5 = objc_msgSend_stateQueue(self, a2, function);
   dispatch_assert_queue_V2(v5);
 
   v11 = 0;
@@ -961,12 +961,12 @@ LABEL_12:
   block[3] = &unk_1E70BF438;
   block[4] = self;
   block[5] = &v11;
-  block[6] = v3;
+  block[6] = functionCopy;
   dispatch_sync(v8, block);
 
-  LOBYTE(v3) = *(v12 + 24);
+  LOBYTE(functionCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v3;
+  return functionCopy;
 }
 
 - (void)registerForRepairScheduler
@@ -998,13 +998,13 @@ LABEL_12:
   os_activity_scope_leave(&state);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  v11 = v8;
-  if (qword_1EA9108E0 == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (qword_1EA9108E0 == context)
   {
-    shouldDefer = objc_msgSend_shouldDefer(v8, v9, v10);
+    shouldDefer = objc_msgSend_shouldDefer(objectCopy, v9, v10);
     v15 = objc_msgSend_stateQueue(self, v13, v14);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;

@@ -1,15 +1,15 @@
 @interface DeviceMediaState.FrameworkAdapter.MediaPlaybackCore
 - (_TtCOO13HomeKitDaemon16DeviceMediaState16FrameworkAdapter17MediaPlaybackCore)init;
-- (void)didFinishLoadingRequestForController:(id)a3;
+- (void)didFinishLoadingRequestForController:(id)controller;
 @end
 
 @implementation DeviceMediaState.FrameworkAdapter.MediaPlaybackCore
 
-- (void)didFinishLoadingRequestForController:(id)a3
+- (void)didFinishLoadingRequestForController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_2296A9FEC(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2296A9FEC(controllerCopy);
 }
 
 - (_TtCOO13HomeKitDaemon16DeviceMediaState16FrameworkAdapter17MediaPlaybackCore)init

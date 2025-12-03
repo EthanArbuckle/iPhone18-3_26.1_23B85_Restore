@@ -1,21 +1,21 @@
 @interface CNUIIDSRequest
-+ (BOOL)isDestinationAvailable:(id)a3 givenStatusesByDestination:(id)a4;
-+ (BOOL)isStatusOfAnyDestinationUnknown:(id)a3;
++ (BOOL)isDestinationAvailable:(id)available givenStatusesByDestination:(id)destination;
++ (BOOL)isStatusOfAnyDestinationUnknown:(id)unknown;
 + (id)IDSResponseQueue;
-+ (id)IDSServiceForService:(int64_t)a3;
-+ (id)errorRefreshingHandles:(id)a3 forService:(id)a4;
-+ (id)refreshStatusOfDestinations:(id)a3 forService:(id)a4 queryControllerWrapper:(id)a5;
-+ (id)refreshStatusOfDestinations:(id)a3 forService:(id)a4 queryControllerWrapper:(id)a5 delay:(double)a6 scheduler:(id)a7;
-+ (id)resultsForIDSControllerResult:(id)a3 handlesByDestination:(id)a4;
-+ (id)validHandlesFromHandles:(id)a3;
-+ (id)validateHandles:(id)a3 forService:(int64_t)a4 scheduler:(id)a5 queryControllerWrapper:(id)a6;
++ (id)IDSServiceForService:(int64_t)service;
++ (id)errorRefreshingHandles:(id)handles forService:(id)service;
++ (id)refreshStatusOfDestinations:(id)destinations forService:(id)service queryControllerWrapper:(id)wrapper;
++ (id)refreshStatusOfDestinations:(id)destinations forService:(id)service queryControllerWrapper:(id)wrapper delay:(double)delay scheduler:(id)scheduler;
++ (id)resultsForIDSControllerResult:(id)result handlesByDestination:(id)destination;
++ (id)validHandlesFromHandles:(id)handles;
++ (id)validateHandles:(id)handles forService:(int64_t)service scheduler:(id)scheduler queryControllerWrapper:(id)wrapper;
 @end
 
 @implementation CNUIIDSRequest
 
-+ (BOOL)isStatusOfAnyDestinationUnknown:(id)a3
++ (BOOL)isStatusOfAnyDestinationUnknown:(id)unknown
 {
-  v3 = a3;
+  unknownCopy = unknown;
   if ((*(*MEMORY[0x1E6996548] + 16))())
   {
     v4 = 0;
@@ -23,28 +23,28 @@
 
   else
   {
-    v5 = [v3 allValues];
-    v4 = [v5 _cn_any:&__block_literal_global_7];
+    allValues = [unknownCopy allValues];
+    v4 = [allValues _cn_any:&__block_literal_global_7];
   }
 
   return v4;
 }
 
-+ (id)resultsForIDSControllerResult:(id)a3 handlesByDestination:(id)a4
++ (id)resultsForIDSControllerResult:(id)result handlesByDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 allKeys];
+  resultCopy = result;
+  destinationCopy = destination;
+  allKeys = [destinationCopy allKeys];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__CNUIIDSRequest_resultsForIDSControllerResult_handlesByDestination___block_invoke;
   v13[3] = &unk_1E76E78D0;
-  v15 = v6;
-  v16 = a1;
-  v14 = v7;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 _cn_map:v13];
+  v15 = resultCopy;
+  selfCopy = self;
+  v14 = destinationCopy;
+  v9 = resultCopy;
+  v10 = destinationCopy;
+  v11 = [allKeys _cn_map:v13];
 
   return v11;
 }
@@ -61,9 +61,9 @@ _CNUIIDSHandleAvailability *__69__CNUIIDSRequest_resultsForIDSControllerResult_h
   return v7;
 }
 
-+ (BOOL)isDestinationAvailable:(id)a3 givenStatusesByDestination:(id)a4
++ (BOOL)isDestinationAvailable:(id)available givenStatusesByDestination:(id)destination
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [destination objectForKeyedSubscript:available];
   v5 = v4;
   if (v4)
   {
@@ -78,9 +78,9 @@ _CNUIIDSHandleAvailability *__69__CNUIIDSRequest_resultsForIDSControllerResult_h
   return v6;
 }
 
-+ (id)IDSServiceForService:(int64_t)a3
++ (id)IDSServiceForService:(int64_t)service
 {
-  if (a3 == 2)
+  if (service == 2)
   {
 LABEL_12:
     v9 = 0;
@@ -107,7 +107,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (service == 1)
   {
 LABEL_8:
     v9 = 0;
@@ -133,7 +133,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (a3)
+  if (service)
   {
     goto LABEL_16;
   }
@@ -159,10 +159,10 @@ LABEL_8:
   }
 
 LABEL_15:
-  a1 = *v3;
+  self = *v3;
 LABEL_16:
 
-  return a1;
+  return self;
 }
 
 + (id)IDSResponseQueue
@@ -184,31 +184,31 @@ uint64_t __34__CNUIIDSRequest_IDSResponseQueue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)validateHandles:(id)a3 forService:(int64_t)a4 scheduler:(id)a5 queryControllerWrapper:(id)a6
++ (id)validateHandles:(id)handles forService:(int64_t)service scheduler:(id)scheduler queryControllerWrapper:(id)wrapper
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [a1 IDSServiceForService:a4];
+  schedulerCopy = scheduler;
+  wrapperCopy = wrapper;
+  handlesCopy = handles;
+  v13 = [self IDSServiceForService:service];
   v14 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v15 = [a1 validHandlesFromHandles:v12];
+  v15 = [self validHandlesFromHandles:handlesCopy];
 
   v16 = [v15 _cn_indexBy:&__block_literal_global_0];
 
-  v17 = [a1 errorRefreshingHandles:v16 forService:v13];
+  v17 = [self errorRefreshingHandles:v16 forService:v13];
   if (v16)
   {
-    v25 = [a1 refreshStatusOfDestinations:v16 forService:v13 queryControllerWrapper:v11];
+    v25 = [self refreshStatusOfDestinations:v16 forService:v13 queryControllerWrapper:wrapperCopy];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __78__CNUIIDSRequest_validateHandles_forService_scheduler_queryControllerWrapper___block_invoke;
     v34[3] = &unk_1E76E78F8;
-    v39 = a1;
+    selfCopy = self;
     v18 = v16;
     v35 = v18;
     v36 = v13;
-    v37 = v11;
-    v19 = v10;
+    v37 = wrapperCopy;
+    v19 = schedulerCopy;
     v38 = v19;
     v20 = [v25 flatMap:v34];
     v28[0] = MEMORY[0x1E69E9820];
@@ -216,7 +216,7 @@ uint64_t __34__CNUIIDSRequest_IDSResponseQueue__block_invoke()
     v28[2] = __78__CNUIIDSRequest_validateHandles_forService_scheduler_queryControllerWrapper___block_invoke_2;
     v28[3] = &unk_1E76E7948;
     v29 = v19;
-    v33 = a1;
+    selfCopy2 = self;
     v30 = v18;
     v21 = v14;
     v31 = v21;
@@ -229,16 +229,16 @@ uint64_t __34__CNUIIDSRequest_IDSResponseQueue__block_invoke()
     v22 = v21;
     v27 = v22;
     [v20 addFailureBlock:v26];
-    v23 = [v22 future];
+    future = [v22 future];
   }
 
   else
   {
     [v14 finishWithError:v17];
-    v23 = [v14 future];
+    future = [v14 future];
   }
 
-  return v23;
+  return future;
 }
 
 id __78__CNUIIDSRequest_validateHandles_forService_scheduler_queryControllerWrapper___block_invoke(uint64_t a1, void *a2)
@@ -296,53 +296,53 @@ void __78__CNUIIDSRequest_validateHandles_forService_scheduler_queryControllerWr
   }
 }
 
-+ (id)refreshStatusOfDestinations:(id)a3 forService:(id)a4 queryControllerWrapper:(id)a5
++ (id)refreshStatusOfDestinations:(id)destinations forService:(id)service queryControllerWrapper:(id)wrapper
 {
   v8 = MEMORY[0x1E6996818];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 immediateScheduler];
-  v13 = [a1 refreshStatusOfDestinations:v11 forService:v10 queryControllerWrapper:v9 delay:v12 scheduler:0.0];
+  wrapperCopy = wrapper;
+  serviceCopy = service;
+  destinationsCopy = destinations;
+  immediateScheduler = [v8 immediateScheduler];
+  v13 = [self refreshStatusOfDestinations:destinationsCopy forService:serviceCopy queryControllerWrapper:wrapperCopy delay:immediateScheduler scheduler:0.0];
 
   return v13;
 }
 
-+ (id)refreshStatusOfDestinations:(id)a3 forService:(id)a4 queryControllerWrapper:(id)a5 delay:(double)a6 scheduler:(id)a7
++ (id)refreshStatusOfDestinations:(id)destinations forService:(id)service queryControllerWrapper:(id)wrapper delay:(double)delay scheduler:(id)scheduler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  wrapperCopy = wrapper;
+  schedulerCopy = scheduler;
   v16 = objc_alloc_init(MEMORY[0x1E69967D0]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__CNUIIDSRequest_refreshStatusOfDestinations_forService_queryControllerWrapper_delay_scheduler___block_invoke;
   aBlock[3] = &unk_1E76E7920;
-  v27 = v14;
-  v28 = v12;
+  v27 = wrapperCopy;
+  v28 = destinationsCopy;
   v30 = v16;
-  v31 = a1;
-  v29 = v13;
+  selfCopy = self;
+  v29 = serviceCopy;
   v17 = v16;
-  v18 = v13;
-  v19 = v12;
-  v20 = v14;
+  v18 = serviceCopy;
+  v19 = destinationsCopy;
+  v20 = wrapperCopy;
   v21 = _Block_copy(aBlock);
   v22 = v21;
-  if (a6 <= 0.0)
+  if (delay <= 0.0)
   {
     (*(v21 + 2))(v21);
   }
 
   else
   {
-    v23 = [v15 afterDelay:v21 performBlock:a6];
+    v23 = [schedulerCopy afterDelay:v21 performBlock:delay];
   }
 
-  v24 = [v17 future];
+  future = [v17 future];
 
-  return v24;
+  return future;
 }
 
 void __96__CNUIIDSRequest_refreshStatusOfDestinations_forService_queryControllerWrapper_delay_scheduler___block_invoke(uint64_t a1)
@@ -391,14 +391,14 @@ void __96__CNUIIDSRequest_refreshStatusOfDestinations_forService_queryController
   }
 }
 
-+ (id)errorRefreshingHandles:(id)a3 forService:(id)a4
++ (id)errorRefreshingHandles:(id)handles forService:(id)service
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (a3)
+  serviceCopy = service;
+  if (handles)
   {
-    v6 = [a3 allValues];
-    v7 = [v6 _cn_map:&__block_literal_global_0];
+    allValues = [handles allValues];
+    v7 = [allValues _cn_map:&__block_literal_global_0];
   }
 
   else
@@ -409,21 +409,21 @@ void __96__CNUIIDSRequest_refreshStatusOfDestinations_forService_queryController
   v11[0] = @"handles";
   v11[1] = @"service";
   v12[0] = v7;
-  v12[1] = v5;
+  v12[1] = serviceCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [CNContactsUIError errorWithCode:205 userInfo:v8];
 
   return v9;
 }
 
-+ (id)validHandlesFromHandles:(id)a3
++ (id)validHandlesFromHandles:(id)handles
 {
-  v3 = a3;
-  v4 = [v3 _cn_filter:&__block_literal_global_4];
-  v5 = [v3 count];
+  handlesCopy = handles;
+  v4 = [handlesCopy _cn_filter:&__block_literal_global_4];
+  v5 = [handlesCopy count];
   if (v5 != [v4 count])
   {
-    [v3 _cn_each:&__block_literal_global_35];
+    [handlesCopy _cn_each:&__block_literal_global_35];
   }
 
   return v4;

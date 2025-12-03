@@ -1,5 +1,5 @@
 @interface WKWebViewAccessibility_QSExtras
-- (BOOL)_accessibilityQScanPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_accessibilityQScanPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)_accessibilityShouldShowSpeakBubble;
 - (BOOL)_accessibilityShouldShowSpeakLanguageBubble;
 - (BOOL)_accessibilityShouldShowSpeakSpellOut;
@@ -12,65 +12,65 @@
 
 - (id)_accessibilityQuickSpeakContent
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilityQuickSpeakContent];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilityQuickSpeakContent = [_axContentView _accessibilityQuickSpeakContent];
 
-  return v3;
+  return _accessibilityQuickSpeakContent;
 }
 
 - (BOOL)_accessibilitySystemShouldShowSpeakBubble
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilitySystemShouldShowSpeakBubble];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilitySystemShouldShowSpeakBubble = [_axContentView _accessibilitySystemShouldShowSpeakBubble];
 
-  return v3;
+  return _accessibilitySystemShouldShowSpeakBubble;
 }
 
 - (BOOL)_accessibilityShouldShowSpeakBubble
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilityShouldShowSpeakBubble];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilityShouldShowSpeakBubble = [_axContentView _accessibilityShouldShowSpeakBubble];
 
-  return v3;
+  return _accessibilityShouldShowSpeakBubble;
 }
 
 - (BOOL)_accessibilityShouldShowSpeakSpellOut
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilityShouldShowSpeakSpellOut];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilityShouldShowSpeakSpellOut = [_axContentView _accessibilityShouldShowSpeakSpellOut];
 
-  return v3;
+  return _accessibilityShouldShowSpeakSpellOut;
 }
 
 - (BOOL)_accessibilityShouldShowSpeakLanguageBubble
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilityShouldShowSpeakLanguageBubble];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilityShouldShowSpeakLanguageBubble = [_axContentView _accessibilityShouldShowSpeakLanguageBubble];
 
-  return v3;
+  return _accessibilityShouldShowSpeakLanguageBubble;
 }
 
 - (BOOL)_accessibilityShouldUpdateQuickSpeakContent
 {
-  v2 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
-  v3 = [v2 _accessibilityShouldUpdateQuickSpeakContent];
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  _accessibilityShouldUpdateQuickSpeakContent = [_axContentView _accessibilityShouldUpdateQuickSpeakContent];
 
-  return v3;
+  return _accessibilityShouldUpdateQuickSpeakContent;
 }
 
-- (BOOL)_accessibilityQScanPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)_accessibilityQScanPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
+  senderCopy = sender;
+  _axContentView = [(WKWebViewAccessibility_QSExtras *)self _axContentView];
   NSClassFromString(&cfstr_Wkcontentview.isa);
   if (objc_opt_isKindOfClass())
   {
-    [v7 _axWaitForSpeakSelectionContentResults];
+    [_axContentView _axWaitForSpeakSelectionContentResults];
   }
 
   v10.receiver = self;
   v10.super_class = WKWebViewAccessibility_QSExtras;
-  v8 = [(WKWebViewAccessibility_QSExtras *)&v10 _accessibilityQScanPerformAction:a3 withSender:v6];
+  v8 = [(WKWebViewAccessibility_QSExtras *)&v10 _accessibilityQScanPerformAction:action withSender:senderCopy];
 
   return v8;
 }

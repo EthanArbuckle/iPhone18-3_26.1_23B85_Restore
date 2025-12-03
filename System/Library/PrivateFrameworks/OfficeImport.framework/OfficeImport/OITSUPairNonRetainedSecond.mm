@@ -1,14 +1,14 @@
 @interface OITSUPairNonRetainedSecond
-- (void)p_SetSecond:(id)a3;
+- (void)p_SetSecond:(id)second;
 @end
 
 @implementation OITSUPairNonRetainedSecond
 
-- (void)p_SetSecond:(id)a3
+- (void)p_SetSecond:(id)second
 {
-  if (self->super.mSecond != a3)
+  if (self->super.mSecond != second)
   {
-    self->super.mSecond = a3;
+    self->super.mSecond = second;
   }
 }
 

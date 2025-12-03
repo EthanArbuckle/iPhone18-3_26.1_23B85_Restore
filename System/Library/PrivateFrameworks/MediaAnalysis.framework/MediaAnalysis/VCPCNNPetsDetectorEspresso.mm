@@ -1,21 +1,21 @@
 @interface VCPCNNPetsDetectorEspresso
-+ (id)sharedModel:(id)a3;
-- (VCPCNNPetsDetectorEspresso)initWithMaxNumRegions:(int)a3;
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
-- (int)createModel:(int)a3 srcWidth:(int)a4;
-- (int)generatePetsBoxes:(id)a3 faceBoxes:(id)a4 cancel:(id)a5;
++ (id)sharedModel:(id)model;
+- (VCPCNNPetsDetectorEspresso)initWithMaxNumRegions:(int)regions;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
+- (int)createModel:(int)model srcWidth:(int)width;
+- (int)generatePetsBoxes:(id)boxes faceBoxes:(id)faceBoxes cancel:(id)cancel;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNPetsDetectorEspresso
 
-- (VCPCNNPetsDetectorEspresso)initWithMaxNumRegions:(int)a3
+- (VCPCNNPetsDetectorEspresso)initWithMaxNumRegions:(int)regions
 {
-  v5 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v6 = [v5 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pets.espresso.net" relativeToURL:v6];
-  self->_maxNumRegions = a3;
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pets.espresso.net" relativeToURL:resourceURL];
+  self->_maxNumRegions = regions;
   resConfig = self->_resConfig;
   self->_resConfig = &stru_1F496CB30;
 
@@ -58,15 +58,15 @@
   return v13;
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__VCPCNNPetsDetectorEspresso_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPPetsEspresso" andCreationBlock:v8];
 
@@ -80,14 +80,14 @@ VCPCNNModelEspresso *__42__VCPCNNPetsDetectorEspresso_sharedModel___block_invoke
   return v1;
 }
 
-- (int)createModel:(int)a3 srcWidth:(int)a4
+- (int)createModel:(int)model srcWidth:(int)width
 {
-  if (self->_srcWidth == a4 && self->_srcHeight == a3)
+  if (self->_srcWidth == width && self->_srcHeight == model)
   {
     return 0;
   }
 
-  if (a3 == a4)
+  if (model == width)
   {
     resConfig = self->_resConfig;
     v9 = @"res_0";
@@ -96,7 +96,7 @@ VCPCNNModelEspresso *__42__VCPCNNPetsDetectorEspresso_sharedModel___block_invoke
   else
   {
     resConfig = self->_resConfig;
-    if (a3 >= a4)
+    if (model >= width)
     {
       v9 = @"res_2";
     }
@@ -150,8 +150,8 @@ LABEL_18:
         }
 
         result = 0;
-        self->_srcWidth = a4;
-        self->_srcHeight = a3;
+        self->_srcWidth = width;
+        self->_srcHeight = model;
         return result;
       }
     }
@@ -168,12 +168,12 @@ LABEL_18:
   return result;
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
   modelEspresso = self->_modelEspresso;
   if (modelEspresso)
   {
-    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&a3];
+    [(VCPCNNModelEspresso *)modelEspresso inputBlob:*&buffer];
     v10 = v15;
   }
 
@@ -182,7 +182,7 @@ LABEL_18:
     v10 = 0;
   }
 
-  *a5 = v10;
+  *height = v10;
   v11 = self->_modelEspresso;
   if (v11)
   {
@@ -195,17 +195,17 @@ LABEL_18:
     v12 = 0;
   }
 
-  *a6 = v12;
+  *inputWidth = v12;
   return self->_inputData;
 }
 
-- (int)generatePetsBoxes:(id)a3 faceBoxes:(id)a4 cancel:(id)a5
+- (int)generatePetsBoxes:(id)boxes faceBoxes:(id)faceBoxes cancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10 || ((*(v10 + 2))(v10) & 1) == 0)
+  boxesCopy = boxes;
+  faceBoxesCopy = faceBoxes;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
+  if (!cancelCopy || ((*(cancelCopy + 2))(cancelCopy) & 1) == 0)
   {
     v12 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
     if (v12)
@@ -229,7 +229,7 @@ LABEL_18:
           [(VCPCNNModelEspresso *)v17 outputBlob];
           v18 = v20;
 LABEL_12:
-          v12 = [(VCPCNNPetsDetector *)self generatePetsRegions:v18 outHeight:v15 outWidth:v16 boxes:v8 faceBoxes:v9 maxNumRegions:self->_maxNumRegions, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30];
+          v12 = [(VCPCNNPetsDetector *)self generatePetsRegions:v18 outHeight:v15 outWidth:v16 boxes:boxesCopy faceBoxes:faceBoxesCopy maxNumRegions:self->_maxNumRegions, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30];
           goto LABEL_13;
         }
 

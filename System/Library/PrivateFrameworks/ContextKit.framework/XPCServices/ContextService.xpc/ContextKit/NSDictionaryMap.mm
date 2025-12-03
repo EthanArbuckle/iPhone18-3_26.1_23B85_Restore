@@ -1,18 +1,18 @@
 @interface NSDictionaryMap
 + (id)map;
-+ (id)mapWithDictionary:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)mapWithDictionary:(id)dictionary;
+- (BOOL)containsValueWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionaryMap)init;
-- (NSDictionaryMap)initWithDictionary:(id)a3;
+- (NSDictionaryMap)initWithDictionary:(id)dictionary;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (void)dealloc;
-- (void)putAllWithJavaUtilMap:(id)a3;
+- (void)putAllWithJavaUtilMap:(id)map;
 @end
 
 @implementation NSDictionaryMap
@@ -44,16 +44,16 @@
   [(NSDictionaryMap *)&v3 dealloc];
 }
 
-- (NSDictionaryMap)initWithDictionary:(id)a3
+- (NSDictionaryMap)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = NSDictionaryMap;
   v4 = [(NSDictionaryMap *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (dictionary)
     {
-      v5 = [a3 mutableCopy];
+      v5 = [dictionary mutableCopy];
     }
 
     else
@@ -67,18 +67,18 @@
   return v4;
 }
 
-+ (id)mapWithDictionary:(id)a3
++ (id)mapWithDictionary:(id)dictionary
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithDictionary:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithDictionary:dictionary];
 
   return v3;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
-  v4 = [(NSMutableDictionary *)self->dictionary_ allValues];
+  allValues = [(NSMutableDictionary *)self->dictionary_ allValues];
 
-  return [v4 containsObject:a3];
+  return [allValues containsObject:id];
 }
 
 - (id)entrySet
@@ -115,9 +115,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3 || ![a3 conformsToProtocol:&OBJC_PROTOCOL___JavaUtilMap])
+  if (!equal || ![equal conformsToProtocol:&OBJC_PROTOCOL___JavaUtilMap])
   {
     return 0;
   }
@@ -126,23 +126,23 @@
   if (objc_opt_isKindOfClass())
   {
     dictionary = self->dictionary_;
-    v6 = *(a3 + 1);
+    v6 = *(equal + 1);
 
     return [(NSMutableDictionary *)dictionary isEqualToDictionary:v6];
   }
 
   else
   {
-    v7 = [(NSDictionaryMap *)self entrySet];
-    v8 = [a3 entrySet];
+    entrySet = [(NSDictionaryMap *)self entrySet];
+    entrySet2 = [equal entrySet];
 
-    return [v7 isEqual:v8];
+    return [entrySet isEqual:entrySet2];
   }
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -189,26 +189,26 @@
   return v3;
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
   v7 = [(NSMutableDictionary *)self->dictionary_ objectForKey:?];
-  [(NSMutableDictionary *)self->dictionary_ setObject:a4 forKey:a3];
+  [(NSMutableDictionary *)self->dictionary_ setObject:withId forKey:id];
   return v7;
 }
 
-- (void)putAllWithJavaUtilMap:(id)a3
+- (void)putAllWithJavaUtilMap:(id)map
 {
-  if (!a3)
+  if (!map)
   {
     goto LABEL_7;
   }
 
-  v5 = [objc_msgSend(a3 "keySet")];
+  v5 = [objc_msgSend(map "keySet")];
   if (!v5)
   {
     goto LABEL_7;
@@ -219,13 +219,13 @@
   {
     while (1)
     {
-      v7 = [v6 next];
-      if (!v7)
+      next = [v6 next];
+      if (!next)
       {
         break;
       }
 
-      -[NSMutableDictionary setObject:forKey:](self->dictionary_, "setObject:forKey:", [a3 getWithId:v7], v7);
+      -[NSMutableDictionary setObject:forKey:](self->dictionary_, "setObject:forKey:", [map getWithId:next], next);
       if (([v6 hasNext] & 1) == 0)
       {
         return;
@@ -237,15 +237,15 @@ LABEL_7:
   }
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
   v5 = [(NSMutableDictionary *)self->dictionary_ objectForKey:?];
-  [(NSMutableDictionary *)self->dictionary_ removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->dictionary_ removeObjectForKey:id];
   return v5;
 }
 

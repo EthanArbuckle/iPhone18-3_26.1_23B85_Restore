@@ -4,10 +4,10 @@
 - (id)menu;
 - (id)menuItems;
 - (id)operatingSystemVersionString;
-- (void)_didTapCancelButton:(id)a3;
-- (void)_didTapContinueButton:(id)a3;
-- (void)_didTapDisableButton:(id)a3;
-- (void)_didTapLanguageButton:(id)a3;
+- (void)_didTapCancelButton:(id)button;
+- (void)_didTapContinueButton:(id)button;
+- (void)_didTapDisableButton:(id)button;
+- (void)_didTapLanguageButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -35,27 +35,27 @@
     v12 = +[OBBoldTrayButton boldButton];
     [v12 setTitle:v8 forState:0];
     [v12 addTarget:v11 action:"_didTapContinueButton:" forControlEvents:0x2000];
-    v13 = [(WelcomeViewController *)v11 buttonTray];
-    [v13 addButton:v12];
+    buttonTray = [(WelcomeViewController *)v11 buttonTray];
+    [buttonTray addButton:v12];
 
     v14 = +[OBLinkTrayButton linkButton];
     [v14 setTitle:v10 forState:0];
     [v14 addTarget:v11 action:"_didTapCancelButton:" forControlEvents:0x2000];
-    v15 = [(WelcomeViewController *)v11 buttonTray];
-    [v15 addButton:v14];
+    buttonTray2 = [(WelcomeViewController *)v11 buttonTray];
+    [buttonTray2 addButton:v14];
 
     if (os_variant_has_internal_content())
     {
       v16 = +[OBLinkTrayButton linkButton];
       [v16 setTitle:@"*INTERNAL* Disable Recovery Auto-Boot" forState:0];
       [v16 addTarget:v11 action:"_didTapDisableButton:" forControlEvents:0x2000];
-      v17 = [(WelcomeViewController *)v11 buttonTray];
-      [v17 addButton:v16];
+      buttonTray3 = [(WelcomeViewController *)v11 buttonTray];
+      [buttonTray3 addButton:v16];
     }
 
-    v18 = [(WelcomeViewController *)v11 buttonTray];
-    v19 = [(WelcomeViewController *)v11 operatingSystemVersionString];
-    [v18 setCaptionText:v19];
+    buttonTray4 = [(WelcomeViewController *)v11 buttonTray];
+    operatingSystemVersionString = [(WelcomeViewController *)v11 operatingSystemVersionString];
+    [buttonTray4 setCaptionText:operatingSystemVersionString];
   }
 
   return v11;
@@ -156,11 +156,11 @@ LABEL_17:
 LABEL_19:
   v11 = [UIBarButtonItem alloc];
   v12 = [UIImage systemImageNamed:@"ellipsis.circle"];
-  v13 = [(WelcomeViewController *)self menu];
-  v14 = [v11 initWithTitle:0 image:v12 target:0 action:0 menu:v13];
+  menu = [(WelcomeViewController *)self menu];
+  v14 = [v11 initWithTitle:0 image:v12 target:0 action:0 menu:menu];
 
-  v15 = [(WelcomeViewController *)self navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  navigationItem = [(WelcomeViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v14];
 
   v16 = [UIButton buttonWithType:1];
   v17 = [UIImage systemImageNamed:@"globe"];
@@ -172,8 +172,8 @@ LABEL_19:
   [v16 setAccessibilityLabel:v19];
 
   v20 = [[UIBarButtonItem alloc] initWithCustomView:v16];
-  v21 = [(WelcomeViewController *)self navigationItem];
-  [v21 setLeftBarButtonItem:v20];
+  navigationItem2 = [(WelcomeViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v20];
 }
 
 - (id)menuItems
@@ -214,8 +214,8 @@ LABEL_19:
 
 - (id)menu
 {
-  v2 = [(WelcomeViewController *)self menuItems];
-  v3 = [UIMenu menuWithTitle:&stru_100028E90 image:0 identifier:0 options:0 children:v2];
+  menuItems = [(WelcomeViewController *)self menuItems];
+  v3 = [UIMenu menuWithTitle:&stru_100028E90 image:0 identifier:0 options:0 children:menuItems];
 
   return v3;
 }
@@ -226,17 +226,17 @@ LABEL_19:
   v3 = [v2 localizedStringForKey:@"OS_VERSION_FORMAT_STRING" value:&stru_100028E90 table:0];
 
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 operatingSystemVersionString];
-  v6 = [NSString stringWithFormat:v3, v5];
+  operatingSystemVersionString = [v4 operatingSystemVersionString];
+  v6 = [NSString stringWithFormat:v3, operatingSystemVersionString];
 
   return v6;
 }
 
-- (void)_didTapContinueButton:(id)a3
+- (void)_didTapContinueButton:(id)button
 {
-  v4 = [(WelcomeViewController *)self delegate];
+  delegate = [(WelcomeViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -246,16 +246,16 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling delegate for continue from welcome.", &v7, 0xCu);
     }
 
-    v6 = [(WelcomeViewController *)self delegate];
-    [v6 welcomeViewControllerDidContinue:self];
+    delegate2 = [(WelcomeViewController *)self delegate];
+    [delegate2 welcomeViewControllerDidContinue:self];
   }
 }
 
-- (void)_didTapCancelButton:(id)a3
+- (void)_didTapCancelButton:(id)button
 {
-  v4 = [(WelcomeViewController *)self delegate];
+  delegate = [(WelcomeViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -265,16 +265,16 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling delegate for cancel from welcome.", &v7, 0xCu);
     }
 
-    v6 = [(WelcomeViewController *)self delegate];
-    [v6 welcomeViewControllerDidCancel:self];
+    delegate2 = [(WelcomeViewController *)self delegate];
+    [delegate2 welcomeViewControllerDidCancel:self];
   }
 }
 
-- (void)_didTapLanguageButton:(id)a3
+- (void)_didTapLanguageButton:(id)button
 {
-  v4 = [(WelcomeViewController *)self delegate];
+  delegate = [(WelcomeViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -284,16 +284,16 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling delegate for language button from welcome.", &v7, 0xCu);
     }
 
-    v6 = [(WelcomeViewController *)self delegate];
-    [v6 welcomeViewControllerDidChooseLanguage:self];
+    delegate2 = [(WelcomeViewController *)self delegate];
+    [delegate2 welcomeViewControllerDidChooseLanguage:self];
   }
 }
 
-- (void)_didTapDisableButton:(id)a3
+- (void)_didTapDisableButton:(id)button
 {
-  v4 = [(WelcomeViewController *)self delegate];
+  delegate = [(WelcomeViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -303,8 +303,8 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling delegate for disable recovery auto-boot button", &v7, 0xCu);
     }
 
-    v6 = [(WelcomeViewController *)self delegate];
-    [v6 welcomeViewControllerDidChooseDisable:self];
+    delegate2 = [(WelcomeViewController *)self delegate];
+    [delegate2 welcomeViewControllerDidChooseDisable:self];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface TSUURLTrackerLogContext
 - (TSUURLTrackerLogContext)init;
-- (TSUURLTrackerLogContext)initWithURLTracker:(id)a3;
+- (TSUURLTrackerLogContext)initWithURLTracker:(id)tracker;
 @end
 
 @implementation TSUURLTrackerLogContext
@@ -21,16 +21,16 @@
   objc_exception_throw(v7);
 }
 
-- (TSUURLTrackerLogContext)initWithURLTracker:(id)a3
+- (TSUURLTrackerLogContext)initWithURLTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v12.receiver = self;
   v12.super_class = TSUURLTrackerLogContext;
   v5 = [(TSUURLTrackerLogContext *)&v12 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    if (v4)
+    if (trackerCopy)
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
@@ -41,11 +41,11 @@
       v8 = @"Nil";
     }
 
-    v9 = [v6 initWithFormat:@"<%@:%p>", v8, v4];
+    trackerCopy = [v6 initWithFormat:@"<%@:%p>", v8, trackerCopy];
     publicString = v5->_publicString;
-    v5->_publicString = v9;
+    v5->_publicString = trackerCopy;
 
-    if (v4)
+    if (trackerCopy)
     {
     }
   }

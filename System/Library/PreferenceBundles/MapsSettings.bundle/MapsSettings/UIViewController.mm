@@ -1,21 +1,21 @@
 @interface UIViewController
 - (MapsTheme)theme;
 - (UIViewController)topMostPresentedViewController;
-- (void)_maps_presentSimpleAlertWithTitle:(id)a3 message:(id)a4 dismissalActionTitle:(id)a5 dismissalHandler:(id)a6;
-- (void)_maps_topMostPresentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_maps_presentSimpleAlertWithTitle:(id)title message:(id)message dismissalActionTitle:(id)actionTitle dismissalHandler:(id)handler;
+- (void)_maps_topMostPresentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation UIViewController
 
 - (MapsTheme)theme
 {
-  v3 = [(UIViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(UIViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4)
+  if (userInterfaceStyle)
   {
-    v5 = [(UIViewController *)self traitCollection];
-    v6 = [v5 userInterfaceStyle] != &dword_0 + 1;
+    traitCollection2 = [(UIViewController *)self traitCollection];
+    v6 = [traitCollection2 userInterfaceStyle] != &dword_0 + 1;
 
     v7 = +[MapsTheme sharedTheme];
     [v7 setMapsThemeStyle:v6];
@@ -26,53 +26,53 @@
 
 - (UIViewController)topMostPresentedViewController
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [(UIViewController *)selfCopy presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     do
     {
-      v4 = [(UIViewController *)v2 presentedViewController];
+      presentedViewController2 = [(UIViewController *)selfCopy presentedViewController];
 
-      v5 = [(UIViewController *)v4 presentedViewController];
+      v4PresentedViewController = [(UIViewController *)presentedViewController2 presentedViewController];
 
-      v2 = v4;
+      selfCopy = presentedViewController2;
     }
 
-    while (v5);
+    while (v4PresentedViewController);
   }
 
   else
   {
-    v4 = v2;
+    presentedViewController2 = selfCopy;
   }
 
-  return v4;
+  return presentedViewController2;
 }
 
-- (void)_maps_presentSimpleAlertWithTitle:(id)a3 message:(id)a4 dismissalActionTitle:(id)a5 dismissalHandler:(id)a6
+- (void)_maps_presentSimpleAlertWithTitle:(id)title message:(id)message dismissalActionTitle:(id)actionTitle dismissalHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
-  v12 = [v14 view];
-  [v12 setAccessibilityIdentifier:@"SimpleAlert"];
+  handlerCopy = handler;
+  actionTitleCopy = actionTitle;
+  v14 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
+  view = [v14 view];
+  [view setAccessibilityIdentifier:@"SimpleAlert"];
 
-  v13 = [UIAlertAction actionWithTitle:v11 style:0 handler:v10];
+  v13 = [UIAlertAction actionWithTitle:actionTitleCopy style:0 handler:handlerCopy];
 
   [v13 setAccessibilityIdentifier:@"AlertAction"];
   [v14 addAction:v13];
   [(UIViewController *)self _maps_topMostPresentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_maps_topMostPresentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_maps_topMostPresentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(UIViewController *)self topMostPresentedViewController];
-  [v10 presentViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  topMostPresentedViewController = [(UIViewController *)self topMostPresentedViewController];
+  [topMostPresentedViewController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 @end

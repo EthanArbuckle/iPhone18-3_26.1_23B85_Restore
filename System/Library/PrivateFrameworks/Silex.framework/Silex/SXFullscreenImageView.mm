@@ -2,31 +2,31 @@
 - (BOOL)allowsDismissal;
 - (CGPoint)currentTranslation;
 - (CGRect)contentViewFrame;
-- (SXFullscreenImageView)initWithContentView:(id)a3 viewIndex:(unint64_t)a4;
+- (SXFullscreenImageView)initWithContentView:(id)view viewIndex:(unint64_t)index;
 - (SXFullscreenImageViewDelegate)delegate;
-- (void)handleDoubleTap:(id)a3;
+- (void)handleDoubleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)setContentViewFrame:(CGRect)a3;
-- (void)setIsZooming:(BOOL)a3;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)setContentViewFrame:(CGRect)frame;
+- (void)setIsZooming:(BOOL)zooming;
 - (void)setup;
 - (void)setupGestures;
-- (void)showLoadingIndicator:(BOOL)a3;
+- (void)showLoadingIndicator:(BOOL)indicator;
 @end
 
 @implementation SXFullscreenImageView
 
-- (SXFullscreenImageView)initWithContentView:(id)a3 viewIndex:(unint64_t)a4
+- (SXFullscreenImageView)initWithContentView:(id)view viewIndex:(unint64_t)index
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = SXFullscreenImageView;
   v8 = [(SXFullscreenImageView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contentView, a3);
-    v9->_viewIndex = a4;
+    objc_storeStrong(&v8->_contentView, view);
+    v9->_viewIndex = index;
     [(SXFullscreenImageView *)v9 setup];
   }
 
@@ -40,45 +40,45 @@
   v4 = [v3 initWithFrame:?];
   [(SXFullscreenImageView *)self setScrollView:v4];
 
-  v5 = [(SXFullscreenImageView *)self scrollView];
-  [v5 setScrollsToTop:0];
+  scrollView = [(SXFullscreenImageView *)self scrollView];
+  [scrollView setScrollsToTop:0];
 
-  v6 = [(SXFullscreenImageView *)self scrollView];
-  [v6 setScrollEnabled:0];
+  scrollView2 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView2 setScrollEnabled:0];
 
-  v7 = [(SXFullscreenImageView *)self scrollView];
-  [v7 setBounces:1];
+  scrollView3 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView3 setBounces:1];
 
-  v8 = [(SXFullscreenImageView *)self scrollView];
-  [v8 setAlwaysBounceHorizontal:1];
+  scrollView4 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView4 setAlwaysBounceHorizontal:1];
 
-  v9 = [(SXFullscreenImageView *)self scrollView];
-  [v9 setAlwaysBounceVertical:1];
+  scrollView5 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView5 setAlwaysBounceVertical:1];
 
-  v10 = [(SXFullscreenImageView *)self scrollView];
-  [v10 setMinimumZoomScale:1.0];
+  scrollView6 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView6 setMinimumZoomScale:1.0];
 
-  v11 = [(SXFullscreenImageView *)self scrollView];
-  [v11 setMaximumZoomScale:2.0];
+  scrollView7 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView7 setMaximumZoomScale:2.0];
 
-  v12 = [(SXFullscreenImageView *)self scrollView];
-  [v12 setZoomScale:1.0];
+  scrollView8 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView8 setZoomScale:1.0];
 
-  v13 = [(SXFullscreenImageView *)self scrollView];
-  [v13 setDelegate:self];
+  scrollView9 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView9 setDelegate:self];
 
-  v14 = [(SXFullscreenImageView *)self scrollView];
-  [v14 setShowsHorizontalScrollIndicator:0];
+  scrollView10 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView10 setShowsHorizontalScrollIndicator:0];
 
-  v15 = [(SXFullscreenImageView *)self scrollView];
-  [v15 setShowsVerticalScrollIndicator:0];
+  scrollView11 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView11 setShowsVerticalScrollIndicator:0];
 
-  v16 = [(SXFullscreenImageView *)self scrollView];
-  v17 = [(SXFullscreenImageView *)self contentView];
-  [v16 addSubview:v17];
+  scrollView12 = [(SXFullscreenImageView *)self scrollView];
+  contentView = [(SXFullscreenImageView *)self contentView];
+  [scrollView12 addSubview:contentView];
 
-  v18 = [(SXFullscreenImageView *)self scrollView];
-  [(SXFullscreenImageView *)self addSubview:v18];
+  scrollView13 = [(SXFullscreenImageView *)self scrollView];
+  [(SXFullscreenImageView *)self addSubview:scrollView13];
 
   [(SXFullscreenImageView *)self setupGestures];
 }
@@ -88,14 +88,14 @@
   v3 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleDoubleTap_];
   [(SXFullscreenImageView *)self setDoubleTapGestureRecognizer:v3];
 
-  v4 = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
-  [v4 setDelegate:self];
+  doubleTapGestureRecognizer = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
+  [doubleTapGestureRecognizer setDelegate:self];
 
-  v5 = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
-  [v5 setNumberOfTapsRequired:2];
+  doubleTapGestureRecognizer2 = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
+  [doubleTapGestureRecognizer2 setNumberOfTapsRequired:2];
 
-  v6 = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
-  [(SXFullscreenImageView *)self addGestureRecognizer:v6];
+  doubleTapGestureRecognizer3 = [(SXFullscreenImageView *)self doubleTapGestureRecognizer];
+  [(SXFullscreenImageView *)self addGestureRecognizer:doubleTapGestureRecognizer3];
 }
 
 - (void)layoutSubviews
@@ -103,37 +103,37 @@
   v4.receiver = self;
   v4.super_class = SXFullscreenImageView;
   [(SXFullscreenImageView *)&v4 layoutSubviews];
-  v3 = [(SXFullscreenImageView *)self scrollView];
+  scrollView = [(SXFullscreenImageView *)self scrollView];
   [(SXFullscreenImageView *)self bounds];
-  [v3 setFrame:?];
+  [scrollView setFrame:?];
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v22 = a3;
+  tapCopy = tap;
   if ([(SXFullscreenImageView *)self isZooming])
   {
-    v4 = [(SXFullscreenImageView *)self scrollView];
-    v5 = v4;
+    scrollView = [(SXFullscreenImageView *)self scrollView];
+    v5 = scrollView;
     v6 = 1.0;
     v7 = 1;
   }
 
   else
   {
-    v8 = [v22 view];
-    [v22 locationInView:v8];
+    view = [tapCopy view];
+    [tapCopy locationInView:view];
     v10 = v9;
     v12 = v11;
 
     v14 = *MEMORY[0x1E695F058];
     v13 = *(MEMORY[0x1E695F058] + 8);
-    v15 = [(SXFullscreenImageView *)self scrollView];
-    [v15 bounds];
+    scrollView2 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView2 bounds];
     v16 = CGRectGetWidth(v24) * 0.5;
 
-    v17 = [(SXFullscreenImageView *)self scrollView];
-    [v17 bounds];
+    scrollView3 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView3 bounds];
     v18 = CGRectGetHeight(v25) * 0.5;
 
     v26.origin.x = v14;
@@ -146,65 +146,65 @@
     v27.size.width = v16;
     v27.size.height = v18;
     v20 = v12 - CGRectGetMidY(v27);
-    v21 = [(SXFullscreenImageView *)self scrollView];
-    [v21 zoomToRect:1 animated:{v19, v20, v16, v18}];
+    scrollView4 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView4 zoomToRect:1 animated:{v19, v20, v16, v18}];
 
-    v4 = [(SXFullscreenImageView *)self scrollView];
-    v5 = v4;
+    scrollView = [(SXFullscreenImageView *)self scrollView];
+    v5 = scrollView;
     v6 = 2.0;
     v7 = 0;
   }
 
-  [v4 setZoomScale:v7 animated:v6];
+  [scrollView setZoomScale:v7 animated:v6];
 }
 
-- (void)setIsZooming:(BOOL)a3
+- (void)setIsZooming:(BOOL)zooming
 {
-  v3 = a3;
-  if ([(SXFullscreenImageView *)self isZooming]!= a3)
+  zoomingCopy = zooming;
+  if ([(SXFullscreenImageView *)self isZooming]!= zooming)
   {
-    v5 = [(SXFullscreenImageView *)self scrollView];
-    v6 = v5;
-    if (v3)
+    scrollView = [(SXFullscreenImageView *)self scrollView];
+    v6 = scrollView;
+    if (zoomingCopy)
     {
-      [v5 setScrollEnabled:1];
+      [scrollView setScrollEnabled:1];
 
-      v7 = [(SXFullscreenImageView *)self delegate];
+      delegate = [(SXFullscreenImageView *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(SXFullscreenImageView *)self delegate];
-        [v9 fullScreenImageViewDidStartZooming:self];
+        delegate2 = [(SXFullscreenImageView *)self delegate];
+        [delegate2 fullScreenImageViewDidStartZooming:self];
 LABEL_7:
       }
     }
 
     else
     {
-      [v5 setScrollEnabled:0];
+      [scrollView setScrollEnabled:0];
 
-      v10 = [(SXFullscreenImageView *)self delegate];
+      delegate3 = [(SXFullscreenImageView *)self delegate];
       v11 = objc_opt_respondsToSelector();
 
       if (v11)
       {
-        v9 = [(SXFullscreenImageView *)self delegate];
-        [v9 fullScreenImageViewDidStopZooming:self];
+        delegate2 = [(SXFullscreenImageView *)self delegate];
+        [delegate2 fullScreenImageViewDidStopZooming:self];
         goto LABEL_7;
       }
     }
 
-    self->_isZooming = v3;
+    self->_isZooming = zoomingCopy;
   }
 }
 
-- (void)showLoadingIndicator:(BOOL)a3
+- (void)showLoadingIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v5 = [(SXFullscreenImageView *)self activityIndicator];
-  v6 = v5;
-  if (v3)
+  indicatorCopy = indicator;
+  activityIndicator = [(SXFullscreenImageView *)self activityIndicator];
+  v6 = activityIndicator;
+  if (indicatorCopy)
   {
 
     if (!v6)
@@ -212,26 +212,26 @@ LABEL_7:
       v8 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:1];
       [(SXFullscreenImageView *)self setActivityIndicator:v8];
 
-      v9 = [(SXFullscreenImageView *)self activityIndicator];
+      activityIndicator2 = [(SXFullscreenImageView *)self activityIndicator];
       [(SXFullscreenImageView *)self frame];
       v10 = CGRectGetWidth(v14) * 0.5;
       [(SXFullscreenImageView *)self frame];
-      [v9 setCenter:{v10, CGRectGetHeight(v15) * 0.5}];
+      [activityIndicator2 setCenter:{v10, CGRectGetHeight(v15) * 0.5}];
 
-      v11 = [(SXFullscreenImageView *)self activityIndicator];
-      [(SXFullscreenImageView *)self addSubview:v11];
+      activityIndicator3 = [(SXFullscreenImageView *)self activityIndicator];
+      [(SXFullscreenImageView *)self addSubview:activityIndicator3];
 
-      v12 = [(SXFullscreenImageView *)self activityIndicator];
-      [v12 startAnimating];
+      activityIndicator4 = [(SXFullscreenImageView *)self activityIndicator];
+      [activityIndicator4 startAnimating];
     }
   }
 
   else
   {
-    [v5 stopAnimating];
+    [activityIndicator stopAnimating];
 
-    v7 = [(SXFullscreenImageView *)self activityIndicator];
-    [v7 removeFromSuperview];
+    activityIndicator5 = [(SXFullscreenImageView *)self activityIndicator];
+    [activityIndicator5 removeFromSuperview];
 
     [(SXFullscreenImageView *)self setActivityIndicator:0];
   }
@@ -239,16 +239,16 @@ LABEL_7:
 
 - (BOOL)allowsDismissal
 {
-  v3 = [(SXFullscreenImageView *)self scrollView];
-  if ([v3 isZooming])
+  scrollView = [(SXFullscreenImageView *)self scrollView];
+  if ([scrollView isZooming])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(SXFullscreenImageView *)self scrollView];
-    [v5 zoomScale];
+    scrollView2 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView2 zoomScale];
     if (v6 <= 1.0)
     {
       v4 = ![(SXFullscreenImageView *)self isZooming];
@@ -263,53 +263,53 @@ LABEL_7:
   return v4;
 }
 
-- (void)setContentViewFrame:(CGRect)a3
+- (void)setContentViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SXFullscreenImageView *)self scrollView];
-  [v8 zoomScale];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  scrollView = [(SXFullscreenImageView *)self scrollView];
+  [scrollView zoomScale];
   v10 = v9;
 
   if (v10 != 1.0)
   {
-    v11 = [(SXFullscreenImageView *)self scrollView];
-    [v11 setZoomScale:0 animated:1.0];
+    scrollView2 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView2 setZoomScale:0 animated:1.0];
   }
 
   self->_contentViewFrame.origin.x = x;
   self->_contentViewFrame.origin.y = y;
   self->_contentViewFrame.size.width = width;
   self->_contentViewFrame.size.height = height;
-  v12 = [(SXFullscreenImageView *)self contentView];
+  contentView = [(SXFullscreenImageView *)self contentView];
   [(SXFullscreenImageView *)self contentViewFrame];
-  [v12 setFrame:?];
+  [contentView setFrame:?];
 
-  v16 = [(SXFullscreenImageView *)self scrollView];
-  v13 = [(SXFullscreenImageView *)self scrollView];
-  [v13 bounds];
-  [v16 setContentSize:{v14, v15}];
+  scrollView3 = [(SXFullscreenImageView *)self scrollView];
+  scrollView4 = [(SXFullscreenImageView *)self scrollView];
+  [scrollView4 bounds];
+  [scrollView3 setContentSize:{v14, v15}];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  [a3 zoomScale];
+  [zoom zoomScale];
   [(SXFullscreenImageView *)self setIsZooming:v4 > 1.0];
-  v5 = [(SXFullscreenImageView *)self contentView];
-  [v5 frame];
+  contentView = [(SXFullscreenImageView *)self contentView];
+  [contentView frame];
   v7 = v6;
-  v8 = [(SXFullscreenImageView *)self contentView];
-  [v8 frame];
+  contentView2 = [(SXFullscreenImageView *)self contentView];
+  [contentView2 frame];
   v10 = v9;
 
-  LOBYTE(v5) = [(SXFullscreenImageView *)self isZooming];
+  LOBYTE(contentView) = [(SXFullscreenImageView *)self isZooming];
   [(SXFullscreenImageView *)self contentViewFrame];
   v12 = v11;
   v14 = v13;
   [(SXFullscreenImageView *)self contentViewFrame];
-  if ((v5 & 1) == 0)
+  if ((contentView & 1) == 0)
   {
     v18 = v12 + v15 * 0.5;
     [(SXFullscreenImageView *)self contentViewFrame];
@@ -332,11 +332,11 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v23 = [(SXFullscreenImageView *)self scrollView];
-    [v23 bounds];
+    scrollView = [(SXFullscreenImageView *)self scrollView];
+    [scrollView bounds];
     v32 = v31;
-    v26 = [(SXFullscreenImageView *)self scrollView];
-    [v26 contentSize];
+    scrollView2 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView2 contentSize];
     v18 = v18 + (v32 - v33) * 0.5;
   }
 
@@ -347,17 +347,17 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v23 = [(SXFullscreenImageView *)self scrollView];
-    [v23 bounds];
+    scrollView = [(SXFullscreenImageView *)self scrollView];
+    [scrollView bounds];
     v25 = v24;
-    v26 = [(SXFullscreenImageView *)self scrollView];
-    [v26 contentSize];
+    scrollView2 = [(SXFullscreenImageView *)self scrollView];
+    [scrollView2 contentSize];
     v19 = v19 + (v25 - v27) * 0.5;
   }
 
 LABEL_9:
-  v34 = [(SXFullscreenImageView *)self contentView];
-  [v34 setCenter:{v18, v19}];
+  contentView3 = [(SXFullscreenImageView *)self contentView];
+  [contentView3 setCenter:{v18, v19}];
 }
 
 - (SXFullscreenImageViewDelegate)delegate

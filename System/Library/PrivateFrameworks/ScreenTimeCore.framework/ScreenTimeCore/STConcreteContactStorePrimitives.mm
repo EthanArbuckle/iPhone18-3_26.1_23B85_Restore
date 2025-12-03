@@ -1,19 +1,19 @@
 @interface STConcreteContactStorePrimitives
-- (id)numberOfContactsForOpaqueFamilyMember:(id)a3;
+- (id)numberOfContactsForOpaqueFamilyMember:(id)member;
 @end
 
 @implementation STConcreteContactStorePrimitives
 
-- (id)numberOfContactsForOpaqueFamilyMember:(id)a3
+- (id)numberOfContactsForOpaqueFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_1001123E8();
   }
 
-  v4 = v3;
+  v4 = memberCopy;
   v5 = +[STLog contactStorePrimitives];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

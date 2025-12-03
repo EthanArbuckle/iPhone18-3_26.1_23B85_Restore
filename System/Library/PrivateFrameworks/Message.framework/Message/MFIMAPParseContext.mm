@@ -1,10 +1,10 @@
 @interface MFIMAPParseContext
-- (BOOL)getNumber:(unint64_t *)a3;
-- (BOOL)literalWithResponseConsumer:(id)a3 section:(id)a4;
-- (BOOL)match:(const char *)a3;
-- (BOOL)match:(const char *)a3 upToSpecial:(const char *)a4;
+- (BOOL)getNumber:(unint64_t *)number;
+- (BOOL)literalWithResponseConsumer:(id)consumer section:(id)section;
+- (BOOL)match:(const char *)match;
+- (BOOL)match:(const char *)match upToSpecial:(const char *)special;
 - (BOOL)parseSpace;
-- (MFIMAPParseContext)initWithConnection:(id)a3 response:(id)a4 start:(const char *)a5 end:(const char *)a6;
+- (MFIMAPParseContext)initWithConnection:(id)connection response:(id)response start:(const char *)start end:(const char *)end;
 - (const)nextSeparator;
 - (id)copyAString;
 - (id)copyAtom;
@@ -15,31 +15,31 @@
 - (id)copyNilOrString;
 - (id)copyNumber;
 - (id)copyQuotedString;
-- (id)copyStringFrom:(const char *)a3 to:(const char *)a4 withCaseOption:(int64_t)a5;
+- (id)copyStringFrom:(const char *)from to:(const char *)to withCaseOption:(int64_t)option;
 - (unsigned)lookAhead;
 - (void)dealloc;
-- (void)emitError:(id)a3;
-- (void)emitWarning:(id)a3;
+- (void)emitError:(id)error;
+- (void)emitWarning:(id)warning;
 - (void)logReadChars;
-- (void)setEnd:(const char *)a3;
-- (void)setStart:(const char *)a3;
+- (void)setEnd:(const char *)end;
+- (void)setStart:(const char *)start;
 @end
 
 @implementation MFIMAPParseContext
 
-- (MFIMAPParseContext)initWithConnection:(id)a3 response:(id)a4 start:(const char *)a5 end:(const char *)a6
+- (MFIMAPParseContext)initWithConnection:(id)connection response:(id)response start:(const char *)start end:(const char *)end
 {
   v12.receiver = self;
   v12.super_class = MFIMAPParseContext;
   v10 = [(MFIMAPParseContext *)&v12 init];
   if (v10)
   {
-    v10->_connection = a3;
-    v10->_response = a4;
-    v10->_start = a5;
-    v10->_originalStart = a5;
-    v10->_originalEnd = a6;
-    v10->_end = a6;
+    v10->_connection = connection;
+    v10->_response = response;
+    v10->_start = start;
+    v10->_originalStart = start;
+    v10->_originalEnd = end;
+    v10->_end = end;
   }
 
   return v10;
@@ -52,27 +52,27 @@
   [(MFIMAPParseContext *)&v3 dealloc];
 }
 
-- (void)setStart:(const char *)a3
+- (void)setStart:(const char *)start
 {
-  if (self->_originalStart > a3)
+  if (self->_originalStart > start)
   {
     [MFIMAPParseContext setStart:];
   }
 
-  self->_start = a3;
+  self->_start = start;
 }
 
-- (void)setEnd:(const char *)a3
+- (void)setEnd:(const char *)end
 {
-  if (self->_originalEnd < a3)
+  if (self->_originalEnd < end)
   {
     [MFIMAPParseContext setEnd:];
   }
 
-  self->_end = a3;
+  self->_end = end;
 }
 
-- (void)emitWarning:(id)a3
+- (void)emitWarning:(id)warning
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = MFLogGeneral();
@@ -83,7 +83,7 @@
     v9 = 138412802;
     v10 = response;
     v11 = 2112;
-    v12 = a3;
+    warningCopy = warning;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_INFO, "*** Warning while parsing %@: %@\nRemaining text: <%@>", &v9, 0x20u);
@@ -93,13 +93,13 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)emitError:(id)a3
+- (void)emitError:(id)error
 {
   if (![+[MFActivityMonitor error] currentMonitor]
   {
     v5 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1033 localizedDescription:&stru_1F273A5E0];
     [+[MFActivityMonitor currentMonitor](MFActivityMonitor setError:"setError:", v5];
-    -[MFError setMoreInfo:](v5, "setMoreInfo:", [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while parsing IMAP response %@: %@\nRemaining text: <%@>", self->_response, a3, -[MFIMAPParseContext copyStringFrom:to:withCaseOption:](self, "copyStringFrom:to:withCaseOption:", self->_start, self->_end, 0)]);
+    -[MFError setMoreInfo:](v5, "setMoreInfo:", [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while parsing IMAP response %@: %@\nRemaining text: <%@>", self->_response, error, -[MFIMAPParseContext copyStringFrom:to:withCaseOption:](self, "copyStringFrom:to:withCaseOption:", self->_start, self->_end, 0)]);
   }
 
   self->_invalid = 1;
@@ -146,24 +146,24 @@
   return result;
 }
 
-- (BOOL)getNumber:(unint64_t *)a3
+- (BOOL)getNumber:(unint64_t *)number
 {
-  v5 = [(MFIMAPParseContext *)self lookAhead];
-  v6 = v5 - 48;
-  if (v5 - 48 <= 9)
+  lookAhead = [(MFIMAPParseContext *)self lookAhead];
+  v6 = lookAhead - 48;
+  if (lookAhead - 48 <= 9)
   {
     v7 = 0;
-    v8 = v5;
+    v8 = lookAhead;
     do
     {
       v7 = v8 + 10 * v7 - 48;
       ++self->_start;
-      v9 = [(MFIMAPParseContext *)self lookAhead];
-      v8 = v9;
+      lookAhead2 = [(MFIMAPParseContext *)self lookAhead];
+      v8 = lookAhead2;
     }
 
-    while (v9 - 48 < 0xA);
-    *a3 = v7;
+    while (lookAhead2 - 48 < 0xA);
+    *number = v7;
   }
 
   return v6 < 0xA;
@@ -181,12 +181,12 @@
   return [v2 initWithUnsignedLongLong:v4];
 }
 
-- (BOOL)match:(const char *)a3
+- (BOOL)match:(const char *)match
 {
-  v5 = strlen(a3);
+  v5 = strlen(match);
   start = self->_start;
   v7 = (self->_end - start);
-  v9 = !strncasecmp(start, a3, v5) && v7 >= v5;
+  v9 = !strncasecmp(start, match, v5) && v7 >= v5;
   if (v9)
   {
     self->_start = &start[v5];
@@ -195,14 +195,14 @@
   return v9;
 }
 
-- (BOOL)match:(const char *)a3 upToSpecial:(const char *)a4
+- (BOOL)match:(const char *)match upToSpecial:(const char *)special
 {
-  if (!a4 || &self->_start[strlen(a3)] != a4)
+  if (!special || &self->_start[strlen(match)] != special)
   {
     return 0;
   }
 
-  return [(MFIMAPParseContext *)self match:a3];
+  return [(MFIMAPParseContext *)self match:match];
 }
 
 - (id)copyLiteral
@@ -211,25 +211,25 @@
   v4 = objc_alloc_init(MFIMAPResponseConsumer);
   [(MFIMAPResponseConsumer *)v4 addConsumer:v3 forSection:0];
   v5 = [(MFIMAPParseContext *)self literalWithResponseConsumer:v4 section:0];
-  v6 = 0;
+  data = 0;
   if (v5)
   {
     [(MFIMAPResponseConsumer *)v4 done];
-    v6 = [v3 data];
+    data = [v3 data];
   }
 
-  return v6;
+  return data;
 }
 
-- (BOOL)literalWithResponseConsumer:(id)a3 section:(id)a4
+- (BOOL)literalWithResponseConsumer:(id)consumer section:(id)section
 {
   LODWORD(v7) = [(MFIMAPParseContext *)self match:"{"];
   if (v7)
   {
     v8 = +[MFActivityMonitor currentMonitor];
     v26 = 0;
-    v9 = [(MFActivityMonitor *)v8 expectedLength];
-    v10 = [(MFIMAPConnection *)self->_connection literalChunkSize];
+    expectedLength = [(MFActivityMonitor *)v8 expectedLength];
+    literalChunkSize = [(MFIMAPConnection *)self->_connection literalChunkSize];
     if ([(MFIMAPParseContext *)self getNumber:&v26])
     {
       if ([(MFIMAPParseContext *)self match:"}"])
@@ -259,7 +259,7 @@ LABEL_9:
     v12 = v26;
     if (v26)
     {
-      if (v9)
+      if (expectedLength)
       {
         v13 = v26;
       }
@@ -273,7 +273,7 @@ LABEL_9:
       v15 = v26;
       while (1)
       {
-        v16 = v15 >= v10 ? v10 : v15;
+        v16 = v15 >= literalChunkSize ? literalChunkSize : v15;
         v17 = [(MFIMAPConnection *)self->_connection _readDataOfLength:v16];
         if (!v17)
         {
@@ -295,8 +295,8 @@ LABEL_9:
           v15 = 0;
         }
 
-        [a3 appendData:v18 forSection:a4];
-        if (v9)
+        [consumer appendData:v18 forSection:section];
+        if (expectedLength)
         {
           [(MFActivityMonitor *)v8 setPercentDone:((v12 - v15) / v14)];
         }
@@ -308,7 +308,7 @@ LABEL_9:
       }
 
       [(MFIMAPParseContext *)self emitError:@"Read failure"];
-      [a3 done];
+      [consumer done];
     }
 
 LABEL_27:
@@ -318,12 +318,12 @@ LABEL_27:
       if (v22)
       {
         v23 = v22;
-        v24 = [v22 bytes];
-        self->_originalStart = v24;
-        self->_start = v24;
+        bytes = [v22 bytes];
+        self->_originalStart = bytes;
+        self->_start = bytes;
         v7 = [v23 length];
-        self->_originalEnd = &v24[v7];
-        self->_end = &v24[v7];
+        self->_originalEnd = &bytes[v7];
+        self->_end = &bytes[v7];
         LOBYTE(v7) = 1;
         return v7;
       }
@@ -445,26 +445,26 @@ LABEL_25:
 
 - (id)copyNilOrString
 {
-  v3 = [(MFIMAPParseContext *)self copyQuotedString];
-  if (v3)
+  copyQuotedString = [(MFIMAPParseContext *)self copyQuotedString];
+  if (copyQuotedString)
   {
-    return v3;
+    return copyQuotedString;
   }
 
-  v3 = [(MFIMAPParseContext *)self copyLiteralString];
-  if (v3)
+  copyQuotedString = [(MFIMAPParseContext *)self copyLiteralString];
+  if (copyQuotedString)
   {
-    return v3;
+    return copyQuotedString;
   }
 
-  v4 = [(MFIMAPParseContext *)self copyAtom];
-  if (![v4 caseInsensitiveCompare:@"NIL"])
+  copyAtom = [(MFIMAPParseContext *)self copyAtom];
+  if (![copyAtom caseInsensitiveCompare:@"NIL"])
   {
 
     return 0;
   }
 
-  return v4;
+  return copyAtom;
 }
 
 - (id)copyAString
@@ -494,8 +494,8 @@ LABEL_25:
     if (!copyDateTime___dateFormatter)
     {
       copyDateTime___dateFormatter = objc_alloc_init(MEMORY[0x1E696AB78]);
-      v5 = [MEMORY[0x1E695DF58] ef_posixLocale];
-      [copyDateTime___dateFormatter setLocale:v5];
+      ef_posixLocale = [MEMORY[0x1E695DF58] ef_posixLocale];
+      [copyDateTime___dateFormatter setLocale:ef_posixLocale];
       [copyDateTime___dateFormatter setDateFormat:@"d-MMM-yyyy H:mm:ss ZZZ"];
       v4 = copyDateTime___dateFormatter;
     }
@@ -511,14 +511,14 @@ LABEL_25:
 
 - (id)copyMessageSet
 {
-  v3 = [(MFIMAPParseContext *)self start];
+  start = [(MFIMAPParseContext *)self start];
   v6 = 0xAAAAAAAAAAAAAAAALL;
   if ([(MFIMAPParseContext *)self getNumber:&v6])
   {
     do
     {
-      v4 = [(MFIMAPParseContext *)self lookAhead];
-      if (v4 != 58 && v4 != 44)
+      lookAhead = [(MFIMAPParseContext *)self lookAhead];
+      if (lookAhead != 58 && lookAhead != 44)
       {
         break;
       }
@@ -529,27 +529,27 @@ LABEL_25:
     while ([(MFIMAPParseContext *)self getNumber:&v6]);
   }
 
-  if ([(MFIMAPParseContext *)self start]<= v3)
+  if ([(MFIMAPParseContext *)self start]<= start)
   {
     return 0;
   }
 
   else
   {
-    return [(MFIMAPParseContext *)self copyStringFrom:v3 to:[(MFIMAPParseContext *)self start] withCaseOption:0];
+    return [(MFIMAPParseContext *)self copyStringFrom:start to:[(MFIMAPParseContext *)self start] withCaseOption:0];
   }
 }
 
-- (id)copyStringFrom:(const char *)a3 to:(const char *)a4 withCaseOption:(int64_t)a5
+- (id)copyStringFrom:(const char *)from to:(const char *)to withCaseOption:(int64_t)option
 {
-  v7 = a3;
-  v8 = CFStringCreateWithBytes(0, a3, a4 - a3, 0x600u, 0);
-  if (a5 == 1 && v7 < a4)
+  fromCopy = from;
+  v8 = CFStringCreateWithBytes(0, from, to - from, 0x600u, 0);
+  if (option == 1 && fromCopy < to)
   {
     v9 = MEMORY[0x1E69E9830];
     do
     {
-      v10 = *v7;
+      v10 = *fromCopy;
       if ((v10 & 0x80000000) != 0)
       {
         if (__maskrune(v10, 0x1000uLL))
@@ -568,10 +568,10 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      ++v7;
+      ++fromCopy;
     }
 
-    while (v7 != a4);
+    while (fromCopy != to);
   }
 
   return v8;
@@ -579,12 +579,12 @@ LABEL_10:
 
 - (BOOL)parseSpace
 {
-  v3 = [(MFIMAPParseContext *)self lookAhead];
-  v4 = v3;
-  while (v3 == 32)
+  lookAhead = [(MFIMAPParseContext *)self lookAhead];
+  v4 = lookAhead;
+  while (lookAhead == 32)
   {
     ++self->_start;
-    v3 = [(MFIMAPParseContext *)self lookAhead];
+    lookAhead = [(MFIMAPParseContext *)self lookAhead];
   }
 
   return v4 == 32;

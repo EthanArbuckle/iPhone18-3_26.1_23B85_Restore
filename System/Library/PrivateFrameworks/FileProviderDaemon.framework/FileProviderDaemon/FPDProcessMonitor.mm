@@ -1,21 +1,21 @@
 @interface FPDProcessMonitor
-- (BOOL)_isProcessForeground:(id)a3;
+- (BOOL)_isProcessForeground:(id)foreground;
 - (BOOL)isForeground;
-- (FPDProcessMonitor)initWithExcludedBundleIDs:(id)a3;
+- (FPDProcessMonitor)initWithExcludedBundleIDs:(id)ds;
 - (FPDProcessMonitorDelegate)delegate;
 - (id)description;
 - (id)prettyDescription;
-- (void)_configureAppMonitor:(id)a3;
+- (void)_configureAppMonitor:(id)monitor;
 - (void)_createMonitor;
-- (void)_handleProcessStateUpdate:(id)a3;
+- (void)_handleProcessStateUpdate:(id)update;
 - (void)_invalidate;
 - (void)_updateMonitoredBundleIDs;
-- (void)addPIDToObserve:(int)a3;
-- (void)addPIDToObserveSync:(int)a3;
+- (void)addPIDToObserve:(int)observe;
+- (void)addPIDToObserveSync:(int)sync;
 - (void)invalidate;
-- (void)process:(int)a3 didBecomeForeground:(BOOL)a4;
-- (void)removePIDToObserve:(int)a3;
-- (void)setDelegate:(id)a3;
+- (void)process:(int)process didBecomeForeground:(BOOL)foreground;
+- (void)removePIDToObserve:(int)observe;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FPDProcessMonitor
@@ -35,20 +35,20 @@
 
 - (BOOL)isForeground
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_foregroundBundleIDs count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_foregroundBundleIDs count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (FPDProcessMonitorDelegate)delegate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
@@ -65,9 +65,9 @@
   [(RBSProcessMonitor *)monitor updateConfiguration:v4];
 }
 
-- (FPDProcessMonitor)initWithExcludedBundleIDs:(id)a3
+- (FPDProcessMonitor)initWithExcludedBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v24.receiver = self;
   v24.super_class = FPDProcessMonitor;
   v5 = [(FPDProcessMonitor *)&v24 init];
@@ -102,7 +102,7 @@
     v18 = v5;
     v23 = v18;
     dispatch_async(v17, block);
-    v19 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+    v19 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
     excludedBundleIDs = v18->_excludedBundleIDs;
     v18->_excludedBundleIDs = v19;
   }
@@ -114,21 +114,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPDProcessMonitor *)self prettyDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  prettyDescription = [(FPDProcessMonitor *)self prettyDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, prettyDescription];
 
   return v6;
 }
 
 - (id)prettyDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableSet *)v2->_foregroundBundleIDs count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableSet *)selfCopy->_foregroundBundleIDs count])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(NSMutableSet *)v2->_foregroundBundleIDs allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)selfCopy->_foregroundBundleIDs allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
     v6 = [v3 stringWithFormat:@"foreground:{%@}", v5];
 LABEL_5:
     v8 = v6;
@@ -136,30 +136,30 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([(NSCountedSet *)v2->_bundleIDs count])
+  if ([(NSCountedSet *)selfCopy->_bundleIDs count])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v4 = [(NSCountedSet *)v2->_bundleIDs allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [(NSCountedSet *)selfCopy->_bundleIDs allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
     v6 = [v7 stringWithFormat:@"observing:{%@}", v5];
     goto LABEL_5;
   }
 
   v8 = @"no process observed";
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)_isProcessForeground:(id)a3
+- (BOOL)_isProcessForeground:(id)foreground
 {
-  v3 = a3;
-  [v3 taskState];
+  foregroundCopy = foreground;
+  [foregroundCopy taskState];
   if (RBSTaskStateIsRunning())
   {
-    v4 = [v3 endowmentNamespaces];
-    v5 = [v4 containsObject:@"com.apple.frontboard.visibility"];
+    endowmentNamespaces = [foregroundCopy endowmentNamespaces];
+    v5 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
   }
 
   else
@@ -170,45 +170,45 @@ LABEL_6:
   return v5;
 }
 
-- (void)_handleProcessStateUpdate:(id)a3
+- (void)_handleProcessStateUpdate:(id)update
 {
   notificationQueue = self->_notificationQueue;
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(notificationQueue);
-  v8 = [v5 process];
-  v6 = [v8 pid];
-  v7 = [v5 state];
+  process = [updateCopy process];
+  v6 = [process pid];
+  state = [updateCopy state];
 
-  [(FPDProcessMonitor *)self process:v6 didBecomeForeground:[(FPDProcessMonitor *)self _isProcessForeground:v7]];
+  [(FPDProcessMonitor *)self process:v6 didBecomeForeground:[(FPDProcessMonitor *)self _isProcessForeground:state]];
 }
 
-- (void)_configureAppMonitor:(id)a3
+- (void)_configureAppMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   objc_initWeak(&location, self);
-  v5 = [(NSCountedSet *)self->_bundleIDs allObjects];
-  v6 = [v5 fp_map:&__block_literal_global_3];
+  allObjects = [(NSCountedSet *)self->_bundleIDs allObjects];
+  v6 = [allObjects fp_map:&__block_literal_global_3];
 
-  [v4 setPredicates:v6];
-  v7 = [MEMORY[0x1E69C7630] descriptor];
+  [monitorCopy setPredicates:v6];
+  descriptor = [MEMORY[0x1E69C7630] descriptor];
   if ([v6 count])
   {
-    [v7 setValues:1];
-    [v7 setEndowmentNamespaces:&unk_1F4C628C8];
+    [descriptor setValues:1];
+    [descriptor setEndowmentNamespaces:&unk_1F4C628C8];
   }
 
   else
   {
-    [v7 setValues:0];
+    [descriptor setValues:0];
   }
 
-  [v4 setStateDescriptor:v7];
+  [monitorCopy setStateDescriptor:descriptor];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2;
   v8[3] = &unk_1E83BECA0;
   objc_copyWeak(&v9, &location);
-  [v4 setUpdateHandler:v8];
+  [monitorCopy setUpdateHandler:v8];
   objc_destroyWeak(&v9);
 
   objc_destroyWeak(&location);
@@ -239,9 +239,9 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
   self->_monitor = 0;
 }
 
-- (void)process:(int)a3 didBecomeForeground:(BOOL)a4
+- (void)process:(int)process didBecomeForeground:(BOOL)foreground
 {
-  v4 = a4;
+  foregroundCopy = foreground;
   v27 = *MEMORY[0x1E69E9840];
   bundleIDForPID = self->_bundleIDForPID;
   v8 = [MEMORY[0x1E696AD98] numberWithInt:?];
@@ -257,24 +257,24 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
       *buf = 134218754;
       v20 = section;
       v21 = 2112;
-      if (v4)
+      if (foregroundCopy)
       {
         v18 = @"foreground";
       }
 
-      v22 = self;
+      selfCopy = self;
       v23 = 1024;
-      v24 = a3;
+      processCopy = process;
       v25 = 2112;
       v26 = v18;
       _os_log_debug_impl(&dword_1CEFC7000, v11, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx received a notif for %@ that [%d] became %@", buf, 0x26u);
     }
 
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = [(FPDProcessMonitor *)v12 isForeground];
-    foregroundBundleIDs = v12->_foregroundBundleIDs;
-    if (v4)
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    isForeground = [(FPDProcessMonitor *)selfCopy2 isForeground];
+    foregroundBundleIDs = selfCopy2->_foregroundBundleIDs;
+    if (foregroundCopy)
     {
       [(NSMutableSet *)foregroundBundleIDs addObject:v9];
     }
@@ -284,13 +284,13 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
       [(NSMutableSet *)foregroundBundleIDs removeObject:v9];
     }
 
-    v15 = [(FPDProcessMonitor *)v12 isForeground];
-    objc_sync_exit(v12);
+    isForeground2 = [(FPDProcessMonitor *)selfCopy2 isForeground];
+    objc_sync_exit(selfCopy2);
 
-    if (v13 != v15)
+    if (isForeground != isForeground2)
     {
-      v16 = [(FPDProcessMonitor *)v12 delegate];
-      [v16 processMonitor:v12 didBecomeForeground:v15];
+      delegate = [(FPDProcessMonitor *)selfCopy2 delegate];
+      [delegate processMonitor:selfCopy2 didBecomeForeground:isForeground2];
     }
 
     __fp_leave_section_Debug();
@@ -299,9 +299,9 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPIDToObserve:(int)a3
+- (void)addPIDToObserve:(int)observe
 {
-  if (a3 >= 1)
+  if (observe >= 1)
   {
     v8 = v3;
     v9 = v4;
@@ -311,14 +311,14 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
     v6[2] = __37__FPDProcessMonitor_addPIDToObserve___block_invoke;
     v6[3] = &unk_1E83BECF0;
     v6[4] = self;
-    v7 = a3;
+    observeCopy = observe;
     dispatch_async(notificationQueue, v6);
   }
 }
 
-- (void)addPIDToObserveSync:(int)a3
+- (void)addPIDToObserveSync:(int)sync
 {
-  if (a3 >= 1)
+  if (sync >= 1)
   {
     v8 = v3;
     v9 = v4;
@@ -328,14 +328,14 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
     v6[2] = __41__FPDProcessMonitor_addPIDToObserveSync___block_invoke;
     v6[3] = &unk_1E83BECF0;
     v6[4] = self;
-    v7 = a3;
+    syncCopy = sync;
     dispatch_sync(notificationQueue, v6);
   }
 }
 
-- (void)removePIDToObserve:(int)a3
+- (void)removePIDToObserve:(int)observe
 {
-  if (a3 >= 1)
+  if (observe >= 1)
   {
     v8 = v3;
     v9 = v4;
@@ -345,41 +345,41 @@ void __42__FPDProcessMonitor__configureAppMonitor___block_invoke_2(uint64_t a1, 
     v6[2] = __40__FPDProcessMonitor_removePIDToObserve___block_invoke;
     v6[3] = &unk_1E83BECF0;
     v6[4] = self;
-    v7 = a3;
+    observeCopy = observe;
     dispatch_sync(notificationQueue, v6);
   }
 }
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  objc_storeWeak(&v2->_delegate, 0);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeWeak(&selfCopy->_delegate, 0);
+  objc_sync_exit(selfCopy);
 
-  notificationQueue = v2->_notificationQueue;
+  notificationQueue = selfCopy->_notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__FPDProcessMonitor_invalidate__block_invoke;
   block[3] = &unk_1E83BE068;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_sync(notificationQueue, block);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  objc_storeWeak(&v4->_delegate, v5);
+  selfCopy = self;
+  delegateCopy = delegate;
+  objc_sync_enter(selfCopy);
+  objc_storeWeak(&selfCopy->_delegate, delegateCopy);
 
-  objc_sync_exit(v4);
-  notificationQueue = v4->_notificationQueue;
+  objc_sync_exit(selfCopy);
+  notificationQueue = selfCopy->_notificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__FPDProcessMonitor_setDelegate___block_invoke;
   block[3] = &unk_1E83BE068;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(notificationQueue, block);
 }
 

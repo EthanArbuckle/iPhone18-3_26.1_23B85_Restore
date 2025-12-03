@@ -1,6 +1,6 @@
 @interface CSGestureDropEvent
-- (CSGestureDropEvent)initWithDroppingPrediction:(double)a3 droppedPrediction:(double)a4 timestamp:(double)a5;
-- (CSGestureDropEvent)initWithXPCObject:(id)a3;
+- (CSGestureDropEvent)initWithDroppingPrediction:(double)prediction droppedPrediction:(double)droppedPrediction timestamp:(double)timestamp;
+- (CSGestureDropEvent)initWithXPCObject:(id)object;
 - (OS_xpc_object)xpcObject;
 @end
 
@@ -22,32 +22,32 @@
   return v3;
 }
 
-- (CSGestureDropEvent)initWithXPCObject:(id)a3
+- (CSGestureDropEvent)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = CSGestureDropEvent;
   v5 = [(CSGestureDropEvent *)&v7 init];
   if (v5)
   {
-    v5->_droppingPrediction = xpc_dictionary_get_double(v4, "droppingPrediction");
-    v5->_droppedPrediction = xpc_dictionary_get_double(v4, "droppedPrediction");
-    v5->_timestamp = xpc_dictionary_get_double(v4, "timestamp");
+    v5->_droppingPrediction = xpc_dictionary_get_double(objectCopy, "droppingPrediction");
+    v5->_droppedPrediction = xpc_dictionary_get_double(objectCopy, "droppedPrediction");
+    v5->_timestamp = xpc_dictionary_get_double(objectCopy, "timestamp");
   }
 
   return v5;
 }
 
-- (CSGestureDropEvent)initWithDroppingPrediction:(double)a3 droppedPrediction:(double)a4 timestamp:(double)a5
+- (CSGestureDropEvent)initWithDroppingPrediction:(double)prediction droppedPrediction:(double)droppedPrediction timestamp:(double)timestamp
 {
   v9.receiver = self;
   v9.super_class = CSGestureDropEvent;
   result = [(CSGestureDropEvent *)&v9 init];
   if (result)
   {
-    result->_droppingPrediction = a3;
-    result->_droppedPrediction = a4;
-    result->_timestamp = a5;
+    result->_droppingPrediction = prediction;
+    result->_droppedPrediction = droppedPrediction;
+    result->_timestamp = timestamp;
   }
 
   return result;

@@ -1,15 +1,15 @@
 @interface HashDigest
-+ (id)_stringRepresentationForDigest:(char *)a3 length:(unsigned int)a4;
-- (HashDigest)initWithDigestType:(int64_t)a3;
++ (id)_stringRepresentationForDigest:(char *)digest length:(unsigned int)length;
+- (HashDigest)initWithDigestType:(int64_t)type;
 - (id)finalAndCompute;
 - (void)dealloc;
-- (void)updateWithBuffer:(const char *)a3 length:(unint64_t)a4;
-- (void)updateWithData:(id)a3;
+- (void)updateWithBuffer:(const char *)buffer length:(unint64_t)length;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation HashDigest
 
-- (HashDigest)initWithDigestType:(int64_t)a3
+- (HashDigest)initWithDigestType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = HashDigest;
@@ -17,8 +17,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_digestType = a3;
-    switch(a3)
+    v4->_digestType = type;
+    switch(type)
     {
       case 2:
         v8 = malloc_type_calloc(1uLL, 0x68uLL, 0x1000040ED882C02uLL);
@@ -86,49 +86,49 @@ LABEL_8:
   return a2;
 }
 
-- (void)updateWithBuffer:(const char *)a3 length:(unint64_t)a4
+- (void)updateWithBuffer:(const char *)buffer length:(unint64_t)length
 {
   digestType = self->_digestType;
   switch(digestType)
   {
     case 2:
-      CC_SHA256_Update(self->_context, a3, a4);
+      CC_SHA256_Update(self->_context, buffer, length);
       break;
     case 1:
-      CC_SHA1_Update(self->_context, a3, a4);
+      CC_SHA1_Update(self->_context, buffer, length);
       break;
     case 0:
-      CC_MD5_Update(self->_context, a3, a4);
+      CC_MD5_Update(self->_context, buffer, length);
       break;
   }
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10007D2B0;
   v4[3] = &unk_100383270;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dataCopy = data;
+  v3 = dataCopy;
   [v3 lib_enumerateSubdataWithOffset:0 length:0xFFFFFFFFLL usingBlock:v4];
 }
 
-+ (id)_stringRepresentationForDigest:(char *)a3 length:(unsigned int)a4
++ (id)_stringRepresentationForDigest:(char *)digest length:(unsigned int)length
 {
-  v6 = [[NSMutableString alloc] initWithCapacity:2 * a4];
-  if (a4)
+  v6 = [[NSMutableString alloc] initWithCapacity:2 * length];
+  if (length)
   {
-    v7 = a4;
+    lengthCopy = length;
     do
     {
-      v8 = *a3++;
+      v8 = *digest++;
       [v6 appendFormat:@"%02x", v8];
-      --v7;
+      --lengthCopy;
     }
 
-    while (v7);
+    while (lengthCopy);
   }
 
   v9 = [v6 copy];

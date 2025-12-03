@@ -1,10 +1,10 @@
 @interface VNImageScoreObservation
-- (BOOL)isEqual:(id)a3;
-- (VNImageScoreObservation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNImageScoreObservation)initWithCoder:(id)coder;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNImageScoreObservation
@@ -14,20 +14,20 @@
   v11.receiver = self;
   v11.super_class = VNImageScoreObservation;
   v3 = [(VNObservation *)&v11 description];
-  v4 = [(VNImageScoreObservation *)self blurScore];
-  v5 = v4;
-  if (v4)
+  blurScore = [(VNImageScoreObservation *)self blurScore];
+  v5 = blurScore;
+  if (blurScore)
   {
-    v6 = [v3 stringByAppendingFormat:@" blurScore=%@", v4];
+    v6 = [v3 stringByAppendingFormat:@" blurScore=%@", blurScore];
 
     v3 = v6;
   }
 
-  v7 = [(VNImageScoreObservation *)self exposureScore];
-  v8 = v7;
-  if (v7)
+  exposureScore = [(VNImageScoreObservation *)self exposureScore];
+  v8 = exposureScore;
+  if (exposureScore)
   {
-    v9 = [v3 stringByAppendingFormat:@" exposureScore=%@", v7];
+    v9 = [v3 stringByAppendingFormat:@" exposureScore=%@", exposureScore];
 
     v3 = v9;
   }
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -47,17 +47,17 @@
   {
     v13.receiver = self;
     v13.super_class = VNImageScoreObservation;
-    if ([(VNObservation *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNObservation *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(VNImageScoreObservation *)self blurScore];
-      v7 = [(VNImageScoreObservation *)v5 blurScore];
+      v5 = equalCopy;
+      blurScore = [(VNImageScoreObservation *)self blurScore];
+      blurScore2 = [(VNImageScoreObservation *)v5 blurScore];
       v8 = VisionCoreEqualOrNilObjects();
 
       if (v8)
       {
-        v9 = [(VNImageScoreObservation *)self exposureScore];
-        v10 = [(VNImageScoreObservation *)v5 exposureScore];
+        exposureScore = [(VNImageScoreObservation *)self exposureScore];
+        exposureScore2 = [(VNImageScoreObservation *)v5 exposureScore];
         v11 = VisionCoreEqualOrNilObjects();
       }
 
@@ -81,11 +81,11 @@
   v9.receiver = self;
   v9.super_class = VNImageScoreObservation;
   v3 = [(VNObservation *)&v9 hash];
-  v4 = [(VNImageScoreObservation *)self blurScore];
-  v5 = [v4 hash];
+  blurScore = [(VNImageScoreObservation *)self blurScore];
+  v5 = [blurScore hash];
 
-  v6 = [(VNImageScoreObservation *)self exposureScore];
-  v7 = [v6 hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
+  exposureScore = [(VNImageScoreObservation *)self exposureScore];
+  v7 = [exposureScore hash] ^ __ROR8__(v5 ^ __ROR8__(v3, 51), 51);
 
   return v7;
 }
@@ -94,40 +94,40 @@
 {
   v6.receiver = self;
   v6.super_class = VNImageScoreObservation;
-  v3 = [(VNObservation *)&v6 vn_cloneObject];
-  v4 = v3;
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v6 vn_cloneObject];
+  v4 = vn_cloneObject;
+  if (vn_cloneObject)
   {
-    [v3 setBlurScore:self->_blurScore];
+    [vn_cloneObject setBlurScore:self->_blurScore];
     [v4 setExposureScore:self->_exposureScore];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNImageScoreObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_blurScore forKey:@"blur"];
-  [v4 encodeObject:self->_exposureScore forKey:@"exposure"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_blurScore forKey:@"blur"];
+  [coderCopy encodeObject:self->_exposureScore forKey:@"exposure"];
 }
 
-- (VNImageScoreObservation)initWithCoder:(id)a3
+- (VNImageScoreObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VNImageScoreObservation;
-  v5 = [(VNObservation *)&v12 initWithCoder:v4];
+  v5 = [(VNObservation *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blur"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blur"];
     blurScore = v5->_blurScore;
     v5->_blurScore = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exposure"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exposure"];
     exposureScore = v5->_exposureScore;
     v5->_exposureScore = v8;
 

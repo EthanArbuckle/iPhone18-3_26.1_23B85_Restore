@@ -1,32 +1,32 @@
 @interface IOSPrimitiveClass
-- (BOOL)__convertRawValue:(id *)a3 toType:(id)a4;
-- (BOOL)__unboxValue:(id)a3 toRawValue:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)__convertRawValue:(id *)value toType:(id)type;
+- (BOOL)__unboxValue:(id)value toRawValue:(id *)rawValue;
+- (BOOL)isEqual:(id)equal;
 - (Class)objcArrayClass;
-- (IOSPrimitiveClass)initWithName:(id)a3 type:(id)a4;
-- (id)__boxValue:(id *)a3;
-- (id)getConstructorWithClasses:(id)a3;
-- (id)getDeclaredMethod:(id)a3;
+- (IOSPrimitiveClass)initWithName:(id)name type:(id)type;
+- (id)__boxValue:(id *)value;
+- (id)getConstructorWithClasses:(id)classes;
+- (id)getDeclaredMethod:(id)method;
 - (id)getDeclaredMethods;
-- (id)getMethod:(id)a3;
+- (id)getMethod:(id)method;
 - (id)wrapperClass;
 - (unint64_t)getSizeof;
-- (void)__readRawValue:(id *)a3 fromAddress:(const void *)a4;
-- (void)__writeRawValue:(id *)a3 toAddress:(const void *)a4;
+- (void)__readRawValue:(id *)value fromAddress:(const void *)address;
+- (void)__writeRawValue:(id *)value toAddress:(const void *)address;
 - (void)dealloc;
 @end
 
 @implementation IOSPrimitiveClass
 
-- (IOSPrimitiveClass)initWithName:(id)a3 type:(id)a4
+- (IOSPrimitiveClass)initWithName:(id)name type:(id)type
 {
   v8.receiver = self;
   v8.super_class = IOSPrimitiveClass;
   v6 = [(IOSPrimitiveClass *)&v8 init];
   if (v6)
   {
-    v6->name_ = a3;
-    v6->type_ = a4;
+    v6->name_ = name;
+    v6->type_ = type;
   }
 
   return v6;
@@ -39,28 +39,28 @@
   return [IOSObjectArray arrayWithLength:0 type:v2];
 }
 
-- (id)getMethod:(id)a3
+- (id)getMethod:(id)method
 {
   v3 = objc_alloc_init(JavaLangNoSuchMethodException);
   v4 = v3;
   objc_exception_throw(v3);
 }
 
-- (id)getDeclaredMethod:(id)a3
+- (id)getDeclaredMethod:(id)method
 {
   v3 = objc_alloc_init(JavaLangNoSuchMethodException);
   v4 = v3;
   objc_exception_throw(v3);
 }
 
-- (id)getConstructorWithClasses:(id)a3
+- (id)getConstructorWithClasses:(id)classes
 {
   v3 = objc_alloc_init(JavaLangNoSuchMethodException);
   v4 = v3;
   objc_exception_throw(v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -69,7 +69,7 @@
   }
 
   name = self->name_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(NSString *)name isEqual:v6];
 }
@@ -209,7 +209,7 @@ LABEL_20:
   return 2;
 }
 
-- (id)__boxValue:(id *)a3
+- (id)__boxValue:(id *)value
 {
   v4 = [(NSString *)self->type_ characterAtIndex:0];
   if (v4 > 72)
@@ -218,7 +218,7 @@ LABEL_20:
     {
       if (v4 == 83)
       {
-        var3 = a3->var3;
+        var3 = value->var3;
 
         return JavaLangShort_valueOfWithShort_(var3);
       }
@@ -230,7 +230,7 @@ LABEL_20:
           return 0;
         }
 
-        var1 = a3->var1;
+        var1 = value->var1;
 
         return JavaLangBoolean_valueOfWithBoolean_(var1);
       }
@@ -238,7 +238,7 @@ LABEL_20:
 
     else if (v4 == 73)
     {
-      var4 = a3->var4;
+      var4 = value->var4;
 
       return JavaLangInteger_valueOfWithInt_(var4);
     }
@@ -250,7 +250,7 @@ LABEL_20:
         return 0;
       }
 
-      var5 = a3->var5;
+      var5 = value->var5;
 
       return JavaLangLong_valueOfWithLong_(var5);
     }
@@ -260,7 +260,7 @@ LABEL_20:
   {
     if (v4 == 68)
     {
-      v12 = a3->var5;
+      v12 = value->var5;
 
       return JavaLangDouble_valueOfWithDouble_(*&v12);
     }
@@ -272,7 +272,7 @@ LABEL_20:
         return 0;
       }
 
-      v8 = a3->var4;
+      v8 = value->var4;
 
       return JavaLangFloat_valueOfWithFloat_(*&v8);
     }
@@ -284,7 +284,7 @@ LABEL_20:
     {
       if (v4 == 67)
       {
-        var2 = a3->var2;
+        var2 = value->var2;
 
         return JavaLangCharacter_valueOfWithChar_(var2);
       }
@@ -292,7 +292,7 @@ LABEL_20:
       return 0;
     }
 
-    v10 = a3->var1;
+    v10 = value->var1;
 
     return JavaLangByte_valueOfWithByte_(v10);
   }
@@ -375,12 +375,12 @@ LABEL_20:
   }
 }
 
-- (BOOL)__unboxValue:(id)a3 toRawValue:(id *)a4
+- (BOOL)__unboxValue:(id)value toRawValue:(id *)rawValue
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4->var1 = [a3 charValue];
+    rawValue->var1 = [value charValue];
     v7 = +[IOSClass byteClass];
   }
 
@@ -389,7 +389,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a4->var2 = [a3 charValue];
+      rawValue->var2 = [value charValue];
       v7 = +[IOSClass charClass];
     }
 
@@ -398,8 +398,8 @@ LABEL_20:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a3 doubleValue];
-        a4->var5 = v8;
+        [value doubleValue];
+        rawValue->var5 = v8;
         v7 = +[IOSClass doubleClass];
       }
 
@@ -408,8 +408,8 @@ LABEL_20:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a3 floatValue];
-          a4->var4 = v9;
+          [value floatValue];
+          rawValue->var4 = v9;
           v7 = +[IOSClass floatClass];
         }
 
@@ -418,7 +418,7 @@ LABEL_20:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            a4->var4 = [a3 intValue];
+            rawValue->var4 = [value intValue];
             v7 = +[IOSClass intClass];
           }
 
@@ -427,7 +427,7 @@ LABEL_20:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              a4->var5 = [a3 longValue];
+              rawValue->var5 = [value longValue];
               v7 = +[IOSClass longClass];
             }
 
@@ -436,7 +436,7 @@ LABEL_20:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                a4->var2 = [a3 shortValue];
+                rawValue->var2 = [value shortValue];
                 v7 = +[IOSClass shortClass];
               }
 
@@ -448,7 +448,7 @@ LABEL_20:
                   return 0;
                 }
 
-                a4->var1 = [a3 BOOLeanValue];
+                rawValue->var1 = [value BOOLeanValue];
                 v7 = +[IOSClass BOOLeanClass];
               }
             }
@@ -463,10 +463,10 @@ LABEL_20:
     return 0;
   }
 
-  return [v7 __convertRawValue:a4 toType:self];
+  return [v7 __convertRawValue:rawValue toType:self];
 }
 
-- (void)__readRawValue:(id *)a3 fromAddress:(const void *)a4
+- (void)__readRawValue:(id *)value fromAddress:(const void *)address
 {
   v6 = [(NSString *)self->type_ characterAtIndex:0];
   if (v6 > 72)
@@ -488,12 +488,12 @@ LABEL_20:
 
     if (v6 == 73)
     {
-      a3->var4 = *a4;
+      value->var4 = *address;
     }
 
     else if (v6 == 74)
     {
-      a3->var0 = *a4;
+      value->var0 = *address;
     }
   }
 
@@ -509,28 +509,28 @@ LABEL_20:
         }
 
 LABEL_16:
-        a3->var2 = *a4;
+        value->var2 = *address;
         return;
       }
 
 LABEL_15:
-      a3->var1 = *a4;
+      value->var1 = *address;
       return;
     }
 
     if (v6 == 68)
     {
-      a3->var0 = *a4;
+      value->var0 = *address;
     }
 
     else if (v6 == 70)
     {
-      a3->var4 = *a4;
+      value->var4 = *address;
     }
   }
 }
 
-- (void)__writeRawValue:(id *)a3 toAddress:(const void *)a4
+- (void)__writeRawValue:(id *)value toAddress:(const void *)address
 {
   v6 = [(NSString *)self->type_ characterAtIndex:0];
   if (v6 > 72)
@@ -552,12 +552,12 @@ LABEL_15:
 
     if (v6 == 73)
     {
-      *a4 = a3->var4;
+      *address = value->var4;
     }
 
     else if (v6 == 74)
     {
-      *a4 = a3->var0;
+      *address = value->var0;
     }
   }
 
@@ -573,38 +573,38 @@ LABEL_15:
         }
 
 LABEL_16:
-        *a4 = a3->var2;
+        *address = value->var2;
         return;
       }
 
 LABEL_15:
-      *a4 = a3->var1;
+      *address = value->var1;
       return;
     }
 
     if (v6 == 68)
     {
-      *a4 = a3->var0;
+      *address = value->var0;
     }
 
     else if (v6 == 70)
     {
-      *a4 = a3->var4;
+      *address = value->var4;
     }
   }
 }
 
-- (BOOL)__convertRawValue:(id *)a3 toType:(id)a4
+- (BOOL)__convertRawValue:(id *)value toType:(id)type
 {
-  v7 = [a4 isPrimitive];
-  if (!v7)
+  isPrimitive = [type isPrimitive];
+  if (!isPrimitive)
   {
-    return v7;
+    return isPrimitive;
   }
 
-  v8 = [*(a4 + 2) characterAtIndex:0];
+  v8 = [*(type + 2) characterAtIndex:0];
   v9 = [(NSString *)self->type_ characterAtIndex:0];
-  LOBYTE(v7) = 0;
+  LOBYTE(isPrimitive) = 0;
   if (v9 > 72)
   {
     if (v9 <= 82)
@@ -617,7 +617,7 @@ LABEL_15:
           {
             if (v8 == 74)
             {
-              var4 = a3->var4;
+              var4 = value->var4;
               goto LABEL_73;
             }
 
@@ -634,19 +634,19 @@ LABEL_15:
             goto LABEL_58;
           }
 
-          *&v10 = a3->var4;
+          *&v10 = value->var4;
 LABEL_65:
-          a3->var4 = v10;
+          value->var4 = v10;
           goto LABEL_74;
         }
 
-        var1 = a3->var4;
+        var1 = value->var4;
         goto LABEL_70;
       }
 
       if (v9 != 74)
       {
-        return v7;
+        return isPrimitive;
       }
 
       if (v8 == 74)
@@ -656,7 +656,7 @@ LABEL_65:
 
       if (v8 == 70)
       {
-        *&v10 = a3->var5;
+        *&v10 = value->var5;
         goto LABEL_65;
       }
 
@@ -665,9 +665,9 @@ LABEL_65:
         goto LABEL_58;
       }
 
-      v12.var7 = a3->var5;
+      v12.var7 = value->var5;
 LABEL_71:
-      a3->var0 = v12.var0;
+      value->var0 = v12.var0;
       goto LABEL_74;
     }
 
@@ -682,13 +682,13 @@ LABEL_71:
             goto LABEL_58;
           }
 
-          var3 = a3->var3;
+          var3 = value->var3;
 LABEL_54:
           *&v10 = var3;
           goto LABEL_65;
         }
 
-        var1 = a3->var3;
+        var1 = value->var3;
 LABEL_70:
         v12.var7 = var1;
         goto LABEL_71;
@@ -698,7 +698,7 @@ LABEL_70:
       {
         if (v8 == 74)
         {
-          var4 = a3->var3;
+          var4 = value->var3;
           goto LABEL_73;
         }
 
@@ -710,21 +710,21 @@ LABEL_70:
         goto LABEL_74;
       }
 
-      var2 = a3->var3;
+      var2 = value->var3;
 LABEL_68:
-      a3->var4 = var2;
+      value->var4 = var2;
       goto LABEL_74;
     }
 
     if (v9 != 90)
     {
-      return v7;
+      return isPrimitive;
     }
 
     v13 = v8 == 90;
 LABEL_36:
-    LOBYTE(v7) = v13;
-    return v7;
+    LOBYTE(isPrimitive) = v13;
+    return isPrimitive;
   }
 
   if (v9 > 67)
@@ -733,7 +733,7 @@ LABEL_36:
     {
       if (v9 != 70)
       {
-        return v7;
+        return isPrimitive;
       }
 
       if (v8 == 70)
@@ -746,7 +746,7 @@ LABEL_36:
         goto LABEL_58;
       }
 
-      v12.var7 = a3->var6;
+      v12.var7 = value->var6;
       goto LABEL_71;
     }
 
@@ -770,11 +770,11 @@ LABEL_36:
           goto LABEL_58;
         }
 
-        var3 = a3->var1;
+        var3 = value->var1;
         goto LABEL_54;
       }
 
-      var1 = a3->var1;
+      var1 = value->var1;
       goto LABEL_70;
     }
 
@@ -782,7 +782,7 @@ LABEL_36:
     {
       if (v8 == 74)
       {
-        var4 = a3->var1;
+        var4 = value->var1;
         goto LABEL_73;
       }
 
@@ -791,11 +791,11 @@ LABEL_36:
         goto LABEL_58;
       }
 
-      a3->var2 = a3->var1;
+      value->var2 = value->var1;
       goto LABEL_74;
     }
 
-    var2 = a3->var1;
+    var2 = value->var1;
     goto LABEL_68;
   }
 
@@ -809,20 +809,20 @@ LABEL_36:
         {
           if (v8 == 74)
           {
-            var4 = a3->var2;
+            var4 = value->var2;
 LABEL_73:
-            a3->var5 = var4;
+            value->var5 = var4;
             goto LABEL_74;
           }
 
           goto LABEL_58;
         }
 
-        var2 = a3->var2;
+        var2 = value->var2;
         goto LABEL_68;
       }
 
-      LOWORD(v10) = a3->var2;
+      LOWORD(v10) = value->var2;
       *&v10 = v10;
       goto LABEL_65;
     }
@@ -831,21 +831,21 @@ LABEL_73:
     {
       if (v8 == 68)
       {
-        LOWORD(v10) = a3->var2;
+        LOWORD(v10) = value->var2;
         v12.var7 = v10;
         goto LABEL_71;
       }
 
 LABEL_58:
-      LOBYTE(v7) = 0;
-      return v7;
+      LOBYTE(isPrimitive) = 0;
+      return isPrimitive;
     }
 
 LABEL_74:
-    LOBYTE(v7) = 1;
+    LOBYTE(isPrimitive) = 1;
   }
 
-  return v7;
+  return isPrimitive;
 }
 
 - (void)dealloc

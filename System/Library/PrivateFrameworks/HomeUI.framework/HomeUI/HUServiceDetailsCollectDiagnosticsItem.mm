@@ -1,17 +1,17 @@
 @interface HUServiceDetailsCollectDiagnosticsItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsCollectDiagnosticsItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v89 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v4 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceServiceItem;
   }
 
   else
@@ -21,41 +21,41 @@
 
   v6 = v5;
 
-  v7 = [v6 accessory];
+  accessory = [v6 accessory];
 
-  if (!v7)
+  if (!accessory)
   {
     objc_opt_class();
-    v8 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-    v9 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
+    sourceServiceItem2 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+    v9 = (objc_opt_isKindOfClass() & 1) != 0 ? sourceServiceItem2 : 0;
     v10 = v9;
 
-    v11 = [v10 service];
+    service = [v10 service];
 
-    v7 = [v11 accessory];
+    accessory = [service accessory];
 
-    if (!v7)
+    if (!accessory)
     {
-      v12 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
-      v13 = [v12 accessories];
+      sourceServiceItem3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+      accessories = [sourceServiceItem3 accessories];
 
-      v7 = [v13 anyObject];
+      accessory = [accessories anyObject];
     }
   }
 
-  v69 = self;
-  v14 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v15 = [v14 home];
-  v16 = [v15 hf_currentUserIsAdministrator];
+  selfCopy = self;
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  v17 = [v7 supportedDiagnostics];
-  v18 = [v17 supportedTypes];
+  supportedDiagnostics = [accessory supportedDiagnostics];
+  supportedTypes = [supportedDiagnostics supportedTypes];
 
   v19 = HFPreferencesBooleanValueForKey();
   v70 = v19;
   if (([MEMORY[0x277D14CE8] isInternalInstall] & 1) != 0 || v19 == 2)
   {
-    v20 = (v18 >> 1) & 1;
+    v20 = (supportedTypes >> 1) & 1;
   }
 
   else
@@ -63,33 +63,33 @@
     LODWORD(v20) = 0;
   }
 
-  v21 = v18 & 1;
-  v22 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v23 = [v22 homeManager];
-  v24 = [v23 hasOptedToHH2];
+  v21 = supportedTypes & 1;
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8]2 homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
   v25 = 0;
-  if ([v7 supportsCHIP] && v24)
+  if ([accessory supportsCHIP] && hasOptedToHH2)
   {
-    v26 = [v7 home];
-    v27 = [v26 hdm_sharedMatterController];
-    if (!v27)
+    home2 = [accessory home];
+    hdm_sharedMatterController = [home2 hdm_sharedMatterController];
+    if (!hdm_sharedMatterController)
     {
       v28 = HFLogForCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v68 = [v26 matterControllerID];
+        matterControllerID = [home2 matterControllerID];
         *buf = 138412546;
-        *v78 = v26;
+        *v78 = home2;
         *&v78[8] = 2112;
-        v79 = v68;
+        v79 = matterControllerID;
         _os_log_error_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_ERROR, "No MTRDeviceController found for home: %@, matterControllerID: %@", buf, 0x16u);
       }
     }
 
     v29 = MEMORY[0x277CD5310];
-    v30 = [v7 matterNodeID];
-    v31 = [v29 deviceWithNodeID:v30 controller:v27];
+    matterNodeID = [accessory matterNodeID];
+    v31 = [v29 deviceWithNodeID:matterNodeID controller:hdm_sharedMatterController];
 
     if (!v31)
     {
@@ -97,9 +97,9 @@
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *v78 = v7;
+        *v78 = accessory;
         *&v78[8] = 2112;
-        v79 = v27;
+        v79 = hdm_sharedMatterController;
         _os_log_error_impl(&dword_20CEB6000, v32, OS_LOG_TYPE_ERROR, "No MTRDevice found for sourceAccessory: %@, MTRDeviceController: %@", buf, 0x16u);
       }
     }
@@ -116,13 +116,13 @@
       }
     }
 
-    v35 = [v33 allValues];
-    v25 = [v35 containsObject:&unk_282491160];
+    allValues = [v33 allValues];
+    v25 = [allValues containsObject:&unk_282491160];
   }
 
-  if (v7)
+  if (accessory)
   {
-    v36 = v16;
+    v36 = hf_currentUserIsAdministrator;
   }
 
   else
@@ -143,13 +143,13 @@
   v38 = HFLogForCategory();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
-    v39 = [MEMORY[0x277D14CE8] isInternalInstall];
+    isInternalInstall = [MEMORY[0x277D14CE8] isInternalInstall];
     *buf = 67110912;
     *v78 = v37 & 1;
     *&v78[4] = 1024;
-    *&v78[6] = v16;
+    *&v78[6] = hf_currentUserIsAdministrator;
     LOWORD(v79) = 1024;
-    *(&v79 + 2) = v7 != 0;
+    *(&v79 + 2) = accessory != 0;
     HIWORD(v79) = 1024;
     v80 = v21;
     v81 = 1024;
@@ -159,7 +159,7 @@
     v85 = 1024;
     v86 = v70 == 2;
     v87 = 1024;
-    v88 = v39;
+    v88 = isInternalInstall;
     _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_INFO, "Showing Logs button: %{BOOL}d. isAdmin= %{BOOL}d, sourceAccessory= %{BOOL}d, manufacturerSnapshot= %{BOOL}d, adkSnapshot= %{BOOL}d, matterSnapshot= %{BOOL}d, supportProfileInstalled= %{BOOL}d, isInternalInstall= %{BOOL}d", buf, 0x32u);
   }
 
@@ -173,7 +173,7 @@
   v44 = [MEMORY[0x277CCABB0] numberWithInt:(v37 ^ 1) & 1];
   v76[1] = v44;
   v75[2] = *MEMORY[0x277D13DA8];
-  v45 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v7];
+  v45 = [MEMORY[0x277CBEB98] na_setWithSafeObject:accessory];
   v76[2] = v45;
   v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:3];
   v47 = [v40 outcomeWithResults:v46];
@@ -186,10 +186,10 @@
   else
   {
     objc_opt_class();
-    v48 = [(HUServiceDetailsAbstractItem *)v69 sourceServiceItem];
+    sourceServiceItem4 = [(HUServiceDetailsAbstractItem *)selfCopy sourceServiceItem];
     if (objc_opt_isKindOfClass())
     {
-      v49 = v48;
+      v49 = sourceServiceItem4;
     }
 
     else
@@ -201,33 +201,33 @@
 
     if (v50)
     {
-      v51 = [v50 accessories];
-      if ([v51 count] != 1)
+      accessories2 = [v50 accessories];
+      if ([accessories2 count] != 1)
       {
-        NSLog(&cfstr_ExpectedOneAcc.isa, v51);
+        NSLog(&cfstr_ExpectedOneAcc.isa, accessories2);
       }
 
-      v52 = [v51 anyObject];
-      v53 = [v52 services];
-      v54 = [v53 na_firstObjectPassingTest:&__block_literal_global_71];
+      anyObject = [accessories2 anyObject];
+      services = [anyObject services];
+      v54 = [services na_firstObjectPassingTest:&__block_literal_global_71];
 
-      v55 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v54];
-      v56 = [v50 valueSource];
+      services2 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v54];
+      valueSource = [v50 valueSource];
     }
 
     else
     {
-      v58 = [(HUServiceDetailsAbstractItem *)v69 sourceServiceItem];
-      v56 = [v58 valueSource];
+      sourceServiceItem5 = [(HUServiceDetailsAbstractItem *)selfCopy sourceServiceItem];
+      valueSource = [sourceServiceItem5 valueSource];
 
-      v51 = [(HUServiceDetailsAbstractItem *)v69 sourceServiceItem];
-      v55 = [v51 services];
+      accessories2 = [(HUServiceDetailsAbstractItem *)selfCopy sourceServiceItem];
+      services2 = [accessories2 services];
     }
 
     v59 = objc_alloc(MEMORY[0x277D14AF8]);
-    v60 = [v55 anyObject];
-    v61 = [v60 hf_serviceDescriptor];
-    v62 = [v59 initWithValueSource:v56 services:v55 primaryServiceDescriptor:v61];
+    anyObject2 = [services2 anyObject];
+    hf_serviceDescriptor = [anyObject2 hf_serviceDescriptor];
+    v62 = [v59 initWithValueSource:valueSource services:services2 primaryServiceDescriptor:hf_serviceDescriptor];
 
     v63 = objc_alloc(MEMORY[0x277D142C0]);
     v73 = v42;

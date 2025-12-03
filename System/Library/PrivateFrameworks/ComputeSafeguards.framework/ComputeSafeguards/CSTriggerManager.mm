@@ -1,15 +1,15 @@
 @interface CSTriggerManager
 + (id)sharedInstance;
 + (void)run;
-- (BOOL)checkCpuPercentageAndInvokeIssueDetection:(id)a3 windowStartDate:(id)a4;
-- (BOOL)checkDrainAndInvokeIssueDetection:(id)a3;
-- (BOOL)cpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 score:(double *)a5;
+- (BOOL)checkCpuPercentageAndInvokeIssueDetection:(id)detection windowStartDate:(id)date;
+- (BOOL)checkDrainAndInvokeIssueDetection:(id)detection;
+- (BOOL)cpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate score:(double *)score;
 - (id)_init;
 - (id)getTriggerInterval;
 - (int)getDetectionLookbackDuration;
-- (int)getDrainPercentage:(id)a3;
+- (int)getDrainPercentage:(id)percentage;
 - (void)_start;
-- (void)modifyTriggerInterval:(id)a3;
+- (void)modifyTriggerInterval:(id)interval;
 - (void)processTimerFiredAction;
 @end
 
@@ -157,11 +157,11 @@ uint64_t __38__CSTriggerManager_getTriggerInterval__block_invoke(uint64_t a1, do
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)modifyTriggerInterval:(id)a3
+- (void)modifyTriggerInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   triggerInterval = self->_triggerInterval;
-  [v4 floatValue];
+  [intervalCopy floatValue];
   if (triggerInterval != v6)
   {
     v7 = getMainQueue();
@@ -170,7 +170,7 @@ uint64_t __38__CSTriggerManager_getTriggerInterval__block_invoke(uint64_t a1, do
     v8[2] = __42__CSTriggerManager_modifyTriggerInterval___block_invoke;
     v8[3] = &unk_278DF51D0;
     v8[4] = self;
-    v9 = v4;
+    v9 = intervalCopy;
     dispatch_sync(v7, v8);
   }
 }
@@ -211,13 +211,13 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
     return 10800;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = [MEMORY[0x277CBEAA8] now];
-  [v3 timeIntervalSinceDate:v2->_lastTriggerTimerDate];
-  LODWORD(v2) = v4;
+  [v3 timeIntervalSinceDate:selfCopy->_lastTriggerTimerDate];
+  LODWORD(selfCopy) = v4;
 
-  v5 = (v2 + 3600);
-  if (v2 > 18000)
+  v5 = (selfCopy + 3600);
+  if (selfCopy > 18000)
   {
     v5 = 21600.0;
   }
@@ -230,10 +230,10 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)checkDrainAndInvokeIssueDetection:(id)a3
+- (BOOL)checkDrainAndInvokeIssueDetection:(id)detection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(CSTriggerManager *)self getDrainPercentage:a3];
+  v4 = [(CSTriggerManager *)self getDrainPercentage:detection];
   if (v4 < 2)
   {
     v11 = +[CSLogger signpostCategory];
@@ -244,7 +244,7 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
       _os_signpost_emit_with_name_impl(&dword_243DC3000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Trigger NonDetection", "Drain Percentage: %{public, name=drainPercentage}d\n", &v14, 8u);
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
     v9 = 0;
     v10 = 0xFFFFFFFFLL;
@@ -252,8 +252,8 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(CSTriggerManager *)self getDetectionLookbackDuration];
-    [(CSIssueDetector *)self->_issueDetector detectWithLookbackDuration:v5];
+    getDetectionLookbackDuration = [(CSTriggerManager *)self getDetectionLookbackDuration];
+    [(CSIssueDetector *)self->_issueDetector detectWithLookbackDuration:getDetectionLookbackDuration];
     v6 = +[CSLogger signpostCategory];
     if (os_signpost_enabled(v6))
     {
@@ -262,22 +262,22 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
       _os_signpost_emit_with_name_impl(&dword_243DC3000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Trigger Detection", "Drain Percentage: %{public, name=drainPercentage}d\n", &v14, 8u);
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
     v9 = 1;
-    v10 = v5;
+    v10 = getDetectionLookbackDuration;
   }
 
-  [(CSTriggerManager *)v7 logTriggerToPPS:v8 cpuPercentage:0xFFFFFFFFLL triggeredDetection:v9 triggeredType:1 detectionLookbackDuration:v10];
+  [(CSTriggerManager *)selfCopy2 logTriggerToPPS:v8 cpuPercentage:0xFFFFFFFFLL triggeredDetection:v9 triggeredType:1 detectionLookbackDuration:v10];
   result = v4 > 1;
   v13 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)getDrainPercentage:(id)a3
+- (int)getDrainPercentage:(id)percentage
 {
-  v4 = a3;
-  if (![v4 count])
+  percentageCopy = percentage;
+  if (![percentageCopy count])
   {
     goto LABEL_10;
   }
@@ -289,23 +289,23 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
     _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEFAULT, "Trigger DB query returned non empty results. Processing", v14, 2u);
   }
 
-  if ([v4 count])
+  if ([percentageCopy count])
   {
     v6 = 0;
-    v7 = 0;
+    intValue = 0;
     do
     {
-      v8 = [v4 objectAtIndexedSubscript:v6];
+      v8 = [percentageCopy objectAtIndexedSubscript:v6];
       v9 = [v8 objectForKeyedSubscript:@"BatteryDrain"];
-      v10 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v9 != v10)
+      if (v9 != null)
       {
-        v11 = [v4 objectAtIndexedSubscript:v6];
+        v11 = [percentageCopy objectAtIndexedSubscript:v6];
         v12 = [v11 objectForKeyedSubscript:@"BatteryDrain"];
-        v7 = [v12 intValue];
+        intValue = [v12 intValue];
 
-        if (v7 > 1)
+        if (intValue > 1)
         {
           break;
         }
@@ -314,23 +314,23 @@ void __42__CSTriggerManager_modifyTriggerInterval___block_invoke(uint64_t a1)
       ++v6;
     }
 
-    while ([v4 count] > v6);
+    while ([percentageCopy count] > v6);
   }
 
   else
   {
 LABEL_10:
-    v7 = 0;
+    intValue = 0;
   }
 
-  return v7;
+  return intValue;
 }
 
-- (BOOL)checkCpuPercentageAndInvokeIssueDetection:(id)a3 windowStartDate:(id)a4
+- (BOOL)checkCpuPercentageAndInvokeIssueDetection:(id)detection windowStartDate:(id)date
 {
   v14 = *MEMORY[0x277D85DE8];
   v11 = 0.0;
-  v5 = [(CSTriggerManager *)self cpuPercentageTriggerForWindowEndDate:a3 windowStartDate:a4 score:&v11];
+  v5 = [(CSTriggerManager *)self cpuPercentageTriggerForWindowEndDate:detection windowStartDate:date score:&v11];
   v6 = +[CSLogger signpostCategory];
   v7 = os_signpost_enabled(v6);
   if (v5)
@@ -342,9 +342,9 @@ LABEL_10:
       _os_signpost_emit_with_name_impl(&dword_243DC3000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Trigger Detection", "CPU Percentage: %{public, name=percentage}d\n", buf, 8u);
     }
 
-    v8 = [(CSTriggerManager *)self getDetectionLookbackDuration];
-    [(CSTriggerManager *)self logTriggerToPPS:0xFFFFFFFFLL cpuPercentage:v11 triggeredDetection:1 triggeredType:2 detectionLookbackDuration:v8];
-    [(CSIssueDetector *)self->_issueDetector detectWithLookbackDuration:v8];
+    getDetectionLookbackDuration = [(CSTriggerManager *)self getDetectionLookbackDuration];
+    [(CSTriggerManager *)self logTriggerToPPS:0xFFFFFFFFLL cpuPercentage:v11 triggeredDetection:1 triggeredType:2 detectionLookbackDuration:getDetectionLookbackDuration];
+    [(CSIssueDetector *)self->_issueDetector detectWithLookbackDuration:getDetectionLookbackDuration];
   }
 
   else
@@ -363,17 +363,17 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)cpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 score:(double *)a5
+- (BOOL)cpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate score:(double *)score
 {
   v26 = *MEMORY[0x277D85DE8];
   powerlogDBReader = self->_powerlogDBReader;
-  v9 = a4;
-  v10 = a3;
+  startDateCopy = startDate;
+  dateCopy = date;
   [(CSPowerlogDBReader *)powerlogDBReader openConnection];
-  [(CSPowerlogDBReader *)self->_powerlogDBReader getTotalCPUTimeWithStartDate:v9 andEndDate:v10];
+  [(CSPowerlogDBReader *)self->_powerlogDBReader getTotalCPUTimeWithStartDate:startDateCopy andEndDate:dateCopy];
   v12 = v11;
-  v13 = [(CSTriggerManager *)self powerlogDBReader];
-  v14 = [v13 getAPWakeIntervalListWithStartDate:v9 andEndDate:v10];
+  powerlogDBReader = [(CSTriggerManager *)self powerlogDBReader];
+  v14 = [powerlogDBReader getAPWakeIntervalListWithStartDate:startDateCopy andEndDate:dateCopy];
 
   [(CSPowerlogDBReader *)self->_powerlogDBReader closeConnection];
   [v14 durationInSeconds];
@@ -404,9 +404,9 @@ LABEL_10:
     v18 = v12 * 100.0 / v16;
   }
 
-  if (a5)
+  if (score)
   {
-    *a5 = v18;
+    *score = v18;
   }
 
   v20 = *MEMORY[0x277D85DE8];

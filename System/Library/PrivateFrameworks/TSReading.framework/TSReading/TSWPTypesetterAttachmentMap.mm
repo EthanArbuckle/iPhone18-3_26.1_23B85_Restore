@@ -1,51 +1,51 @@
 @interface TSWPTypesetterAttachmentMap
-+ (id)mapWithAttachment:(id)a3 layout:(id)a4 pageNumber:(unint64_t)a5 pageCount:(unint64_t)a6 footnoteMarkProvider:(id)a7 styleProvider:(id)a8 colorOverride:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)mapWithAttachment:(id)attachment layout:(id)layout pageNumber:(unint64_t)number pageCount:(unint64_t)count footnoteMarkProvider:(id)provider styleProvider:(id)styleProvider colorOverride:(id)override;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation TSWPTypesetterAttachmentMap
 
-+ (id)mapWithAttachment:(id)a3 layout:(id)a4 pageNumber:(unint64_t)a5 pageCount:(unint64_t)a6 footnoteMarkProvider:(id)a7 styleProvider:(id)a8 colorOverride:(id)a9
++ (id)mapWithAttachment:(id)attachment layout:(id)layout pageNumber:(unint64_t)number pageCount:(unint64_t)count footnoteMarkProvider:(id)provider styleProvider:(id)styleProvider colorOverride:(id)override
 {
-  v15 = objc_alloc_init(a1);
+  v15 = objc_alloc_init(self);
   v16 = v15;
   if (v15)
   {
-    v15[1] = a3;
-    v15[2] = a4;
-    if (([a3 elementKind] & 0x1E0) != 0)
+    v15[1] = attachment;
+    v15[2] = layout;
+    if (([attachment elementKind] & 0x1E0) != 0)
     {
       objc_opt_class();
       v17 = TSUDynamicCast();
-      v18 = [v17 parentStorage];
-      v19 = [v17 findCharIndex];
-      if (a7)
+      parentStorage = [v17 parentStorage];
+      findCharIndex = [v17 findCharIndex];
+      if (provider)
       {
         objc_opt_class();
         v20 = TSUDynamicCast();
         if (v20)
         {
-          v21 = [v20 containedStorage];
-          v22 = a7;
+          containedStorage = [v20 containedStorage];
+          providerCopy2 = provider;
 LABEL_10:
-          v25 = [v22 markStringForFootnoteReferenceStorage:v21];
+          v25 = [providerCopy2 markStringForFootnoteReferenceStorage:containedStorage];
 LABEL_12:
           v26 = v25;
           if (v25)
           {
-            v27 = [v18 characterStyleAtCharIndex:v19 left:0 effectiveRange:0];
-            v28 = [a8 paragraphStyleAtParIndex:objc_msgSend(v18 effectiveRange:{"paragraphIndexAtCharIndex:", v19), 0}];
-            v29 = [v18 isWritingDirectionRightToLeftForParagraphAtCharIndex:v19];
+            v27 = [parentStorage characterStyleAtCharIndex:findCharIndex left:0 effectiveRange:0];
+            v28 = [styleProvider paragraphStyleAtParIndex:objc_msgSend(parentStorage effectiveRange:{"paragraphIndexAtCharIndex:", findCharIndex), 0}];
+            v29 = [parentStorage isWritingDirectionRightToLeftForParagraphAtCharIndex:findCharIndex];
             v30 = *MEMORY[0x277CBECE8];
             MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x277CBECE8], 0, [v28 getTypesetterAttributes:v27 scalePercent:100 isRightToLeft:v29]);
             if (MutableCopy)
             {
               v32 = MutableCopy;
               CFDictionaryRemoveValue(MutableCopy, @"TSWPSuperscript");
-              if (a9)
+              if (override)
               {
-                CFDictionarySetValue(v32, *MEMORY[0x277CC49C0], [a9 CGColor]);
+                CFDictionarySetValue(v32, *MEMORY[0x277CC49C0], [override CGColor]);
               }
 
               v33 = CFAttributedStringCreate(v30, v26, v32);
@@ -70,28 +70,28 @@ LABEL_12:
 
           v16[3] = 0;
 LABEL_21:
-          v36 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPTypesetterAttachmentMap mapWithAttachment:layout:pageNumber:pageCount:footnoteMarkProvider:styleProvider:colorOverride:]"];
-          [v36 handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCoreTextTypesetter.mm"), 161, @"invalid nil value for '%s'", "result->_lineRef"}];
+          [currentHandler handleFailureInFunction:v37 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCoreTextTypesetter.mm"), 161, @"invalid nil value for '%s'", "result->_lineRef"}];
           goto LABEL_22;
         }
 
         if ([v17 elementKind] == 128)
         {
-          if ([v18 wpKind] != 2)
+          if ([parentStorage wpKind] != 2)
           {
-            v23 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CTLineRef createLineRefForAttachment(TSWPTextualAttachment *, NSUInteger, NSUInteger, id<TSWPFootnoteMarkProvider>, id<TSWPStyleProvider>, TSUColor *)"}];
-            [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCoreTextTypesetter.mm"), 4657, @"Footnote mark in non-footnote storage"}];
+            [currentHandler2 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPCoreTextTypesetter.mm"), 4657, @"Footnote mark in non-footnote storage"}];
           }
 
-          v22 = a7;
-          v21 = v18;
+          providerCopy2 = provider;
+          containedStorage = parentStorage;
           goto LABEL_10;
         }
       }
 
-      v25 = [v17 stringWithPageNumber:a5 pageCount:a6 charIndex:v19];
+      v25 = [v17 stringWithPageNumber:number pageCount:count charIndex:findCharIndex];
       goto LABEL_12;
     }
   }
@@ -114,7 +114,7 @@ LABEL_22:
   [(TSWPTypesetterAttachmentMap *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSWPTypesetterAttachmentMap);
   v5 = v4;

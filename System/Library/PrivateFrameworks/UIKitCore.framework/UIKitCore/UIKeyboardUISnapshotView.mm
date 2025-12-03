@@ -1,6 +1,6 @@
 @interface UIKeyboardUISnapshotView
 - (CGSize)intrinsicContentSize;
-- (void)setSnapshot:(id)a3;
+- (void)setSnapshot:(id)snapshot;
 @end
 
 @implementation UIKeyboardUISnapshotView
@@ -13,27 +13,27 @@
   return result;
 }
 
-- (void)setSnapshot:(id)a3
+- (void)setSnapshot:(id)snapshot
 {
-  v4 = a3;
-  if (self->_snapshot != v4)
+  snapshotCopy = snapshot;
+  if (self->_snapshot != snapshotCopy)
   {
-    self->_snapshot = v4;
-    v7 = v4;
-    if ([(UIKeyboardUISnapshot *)v4 slotID])
+    self->_snapshot = snapshotCopy;
+    v7 = snapshotCopy;
+    if ([(UIKeyboardUISnapshot *)snapshotCopy slotID])
     {
-      v5 = [MEMORY[0x1E6979320] objectForSlot:{-[UIKeyboardUISnapshot slotID](self->_snapshot, "slotID")}];
-      v6 = [(UIView *)self layer];
-      [v6 setContents:v5];
+      layer2 = [MEMORY[0x1E6979320] objectForSlot:{-[UIKeyboardUISnapshot slotID](self->_snapshot, "slotID")}];
+      layer = [(UIView *)self layer];
+      [layer setContents:layer2];
     }
 
     else
     {
-      v5 = [(UIView *)self layer];
-      [v5 setContents:0];
+      layer2 = [(UIView *)self layer];
+      [layer2 setContents:0];
     }
 
-    v4 = v7;
+    snapshotCopy = v7;
   }
 }
 

@@ -1,33 +1,33 @@
 @interface CNVCardData
-+ (BOOL)isJPEGData:(id)a3;
-+ (id)stringFromUTF7Data:(id)a3;
++ (BOOL)isJPEGData:(id)data;
++ (id)stringFromUTF7Data:(id)data;
 @end
 
 @implementation CNVCardData
 
-+ (BOOL)isJPEGData:(id)a3
++ (BOOL)isJPEGData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
 
-  return v5 >= 4 && *v4 == 255 && v4[1] == 216 && v4[2] == 255 && v4[3] < 0;
+  return v5 >= 4 && *bytes == 255 && bytes[1] == 216 && bytes[2] == 255 && bytes[3] < 0;
 }
 
-+ (id)stringFromUTF7Data:(id)a3
++ (id)stringFromUTF7Data:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v16 = 0;
-  v4 = [v3 length];
+  v4 = [dataCopy length];
   if (v4)
   {
-    v5 = [v3 bytes];
+    bytes = [dataCopy bytes];
     v6 = [MEMORY[0x277CBEB28] dataWithCapacity:v4];
     v7 = 0;
-    v8 = 0;
+    data = 0;
     while (1)
     {
-      v10 = *v5++;
+      v10 = *bytes++;
       v9 = v10;
       v15 = v10;
       if ((v7 & 1) == 0)
@@ -38,14 +38,14 @@
       v12 = (v9 - 48) >= 0xA && (v9 - 64) >= 0x1Bu && (v9 - 97) >= 0x1Au;
       if (v12 && ((v9 - 43) & 0xFB) != 0)
       {
-        v13 = [v8 _cn_decodeBase64];
-        if (v13)
+        _cn_decodeBase64 = [data _cn_decodeBase64];
+        if (_cn_decodeBase64)
         {
-          [v6 appendData:v13];
-          if (v8)
+          [v6 appendData:_cn_decodeBase64];
+          if (data)
           {
 
-            v8 = 0;
+            data = 0;
           }
         }
 
@@ -58,13 +58,13 @@
         goto LABEL_26;
       }
 
-      if (!v8)
+      if (!data)
       {
         goto LABEL_24;
       }
 
       v7 = 1;
-      [v8 appendBytes:&v15 length:1];
+      [data appendBytes:&v15 length:1];
 LABEL_27:
       if (!--v4)
       {
@@ -83,9 +83,9 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (!v8)
+    if (!data)
     {
-      v8 = [MEMORY[0x277CBEB28] data];
+      data = [MEMORY[0x277CBEB28] data];
     }
 
 LABEL_24:

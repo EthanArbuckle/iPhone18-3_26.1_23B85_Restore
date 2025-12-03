@@ -1,32 +1,32 @@
 @interface CKAbstractReviewViewController
-- (BOOL)isLoadingIndicatorRowIndex:(int64_t)a3;
-- (CKAbstractReviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_applicationDidBecomeActive:(id)a3;
+- (BOOL)isLoadingIndicatorRowIndex:(int64_t)index;
+- (CKAbstractReviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_applicationDidBecomeActive:(id)active;
 - (void)_handleDelete;
 - (void)_updateNavigationItemState;
 - (void)dealloc;
 - (void)loadView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CKAbstractReviewViewController
 
-- (CKAbstractReviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKAbstractReviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = CKAbstractReviewViewController;
-  v4 = [(CKAbstractReviewViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(CKAbstractReviewViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
   }
 
   return v4;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UITableView *)self->_tableView setDataSource:0];
   [(UITableView *)self->_tableView setDelegate:0];
@@ -56,68 +56,68 @@
 
   [-[CKAbstractReviewViewController tableViewCellClass](self "tableViewCellClass")];
   v10 = v9;
-  v11 = [(CKAbstractReviewViewController *)self tableView];
-  [v11 setRowHeight:v10];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  [tableView setRowHeight:v10];
 
-  v12 = [(CKAbstractReviewViewController *)self tableView];
-  [v12 setSeparatorInset:{0.0, 66.0, 0.0, 0.0}];
+  tableView2 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView2 setSeparatorInset:{0.0, 66.0, 0.0, 0.0}];
 
-  v13 = [(CKAbstractReviewViewController *)self tableView];
-  [v13 setAllowsSelection:1];
+  tableView3 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView3 setAllowsSelection:1];
 
-  v14 = [(CKAbstractReviewViewController *)self tableView];
-  [v14 setAllowsMultipleSelection:0];
+  tableView4 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v15 = [(CKAbstractReviewViewController *)self tableView];
-  [v15 setAllowsMultipleSelectionDuringEditing:1];
+  tableView5 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView5 setAllowsMultipleSelectionDuringEditing:1];
 
-  v16 = [(CKAbstractReviewViewController *)self tableView];
-  v17 = [(CKAbstractReviewViewController *)self tableViewCellClass];
-  v18 = [(CKAbstractReviewViewController *)self tableViewCellReuseIdentifier];
-  [v16 registerClass:v17 forCellReuseIdentifier:v18];
+  tableView6 = [(CKAbstractReviewViewController *)self tableView];
+  tableViewCellClass = [(CKAbstractReviewViewController *)self tableViewCellClass];
+  tableViewCellReuseIdentifier = [(CKAbstractReviewViewController *)self tableViewCellReuseIdentifier];
+  [tableView6 registerClass:tableViewCellClass forCellReuseIdentifier:tableViewCellReuseIdentifier];
 
-  v19 = [(CKAbstractReviewViewController *)self tableView];
+  tableView7 = [(CKAbstractReviewViewController *)self tableView];
   v20 = objc_opt_class();
   v21 = +[CKStorageLoadingCell reuseIdentifier];
-  [v19 registerClass:v20 forCellReuseIdentifier:v21];
+  [tableView7 registerClass:v20 forCellReuseIdentifier:v21];
 
-  v22 = [(CKAbstractReviewViewController *)self tableView];
-  [v22 setContentInset:{35.0, 0.0, 0.0, 0.0}];
+  tableView8 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView8 setContentInset:{35.0, 0.0, 0.0, 0.0}];
 
-  v23 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v24 = [(CKAbstractReviewViewController *)self tableView];
-  [v24 setBackgroundColor:v23];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  tableView9 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView9 setBackgroundColor:systemBackgroundColor];
 
-  v25 = [(CKAbstractReviewViewController *)self tableView];
-  [v25 setDataSource:self];
+  tableView10 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView10 setDataSource:self];
 
-  v26 = [(CKAbstractReviewViewController *)self tableView];
-  [v26 setDelegate:self];
+  tableView11 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView11 setDelegate:self];
 
   v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v5, v6, v7}];
   [(CKAbstractReviewViewController *)self setTopLineView:v27];
 
-  v28 = [(CKAbstractReviewViewController *)self tableView];
-  v29 = [v28 separatorColor];
-  v30 = [(CKAbstractReviewViewController *)self topLineView];
-  [v30 setBackgroundColor:v29];
+  tableView12 = [(CKAbstractReviewViewController *)self tableView];
+  separatorColor = [tableView12 separatorColor];
+  topLineView = [(CKAbstractReviewViewController *)self topLineView];
+  [topLineView setBackgroundColor:separatorColor];
 
-  v31 = [(CKAbstractReviewViewController *)self tableView];
-  v32 = [(CKAbstractReviewViewController *)self topLineView];
-  [v31 addSubview:v32];
+  tableView13 = [(CKAbstractReviewViewController *)self tableView];
+  topLineView2 = [(CKAbstractReviewViewController *)self topLineView];
+  [tableView13 addSubview:topLineView2];
 
-  v33 = [(CKAbstractReviewViewController *)self navigationBarTitle];
-  [(CKAbstractReviewViewController *)self setTitle:v33];
+  navigationBarTitle = [(CKAbstractReviewViewController *)self navigationBarTitle];
+  [(CKAbstractReviewViewController *)self setTitle:navigationBarTitle];
 
-  v34 = [(CKAbstractReviewViewController *)self tableView];
-  [(CKAbstractReviewViewController *)self setView:v34];
+  tableView14 = [(CKAbstractReviewViewController *)self tableView];
+  [(CKAbstractReviewViewController *)self setView:tableView14];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CKAbstractReviewViewController;
-  [(CKAbstractReviewViewController *)&v4 viewWillAppear:a3];
+  [(CKAbstractReviewViewController *)&v4 viewWillAppear:appear];
   [(CKAbstractReviewViewController *)self _updateNavigationItemState];
 }
 
@@ -126,8 +126,8 @@
   v8.receiver = self;
   v8.super_class = CKAbstractReviewViewController;
   [(CKAbstractReviewViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(CKAbstractReviewViewController *)self tableView];
-  [v3 frame];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  [tableView frame];
   v5 = v4;
   if (CKPixelWidth_once != -1)
   {
@@ -135,67 +135,67 @@
   }
 
   v6 = *&CKPixelWidth_sPixel;
-  v7 = [(CKAbstractReviewViewController *)self topLineView];
-  [v7 setFrame:{0.0, 0.0, v5, v6}];
+  topLineView = [(CKAbstractReviewViewController *)self topLineView];
+  [topLineView setFrame:{0.0, 0.0, v5, v6}];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = CKAbstractReviewViewController;
   [CKAbstractReviewViewController setEditing:sel_setEditing_animated_ animated:?];
-  v7 = [(CKAbstractReviewViewController *)self tableView];
-  [v7 setEditing:v5 animated:v4];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  [tableView setEditing:editingCopy animated:animatedCopy];
 
   [(CKAbstractReviewViewController *)self _updateNavigationItemState];
 }
 
-- (BOOL)isLoadingIndicatorRowIndex:(int64_t)a3
+- (BOOL)isLoadingIndicatorRowIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
-  v5 = [(CKAbstractReviewViewController *)self tableView];
-  v6 = [v5 numberOfRowsInSection:0];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  v6 = [tableView numberOfRowsInSection:0];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(CKAbstractReviewViewController *)self modelObjectAtIndex:a3];
+  v7 = [(CKAbstractReviewViewController *)self modelObjectAtIndex:index];
   v8 = +[CKStorageLoadingCell reuseIdentifier];
   v9 = [v7 isEqual:v8];
 
   return v9;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [v5 row]))
+  pathCopy = path;
+  if (-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [pathCopy row]))
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CKAbstractReviewViewController *)self tableView];
+  viewCopy = view;
+  tableView = [(CKAbstractReviewViewController *)self tableView];
 
-  if (a4 || v7 != v6)
+  if (section || tableView != viewCopy)
   {
     return 0;
   }
@@ -203,19 +203,19 @@
   return [(CKAbstractReviewViewController *)self numberOfModelObjects];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[CKAbstractReviewViewController modelObjectAtIndex:](self, "modelObjectAtIndex:", [v7 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[CKAbstractReviewViewController modelObjectAtIndex:](self, "modelObjectAtIndex:", [pathCopy row]);
   v9 = +[CKStorageLoadingCell reuseIdentifier];
   v10 = [v8 isEqual:v9];
 
-  v11 = [(CKAbstractReviewViewController *)self tableView];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
   if (v10)
   {
     v12 = +[CKStorageLoadingCell reuseIdentifier];
-    v13 = [v11 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
+    v13 = [tableView dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
     if (IMOSLoggingEnabled())
     {
@@ -232,8 +232,8 @@
 
   else
   {
-    v15 = [(CKAbstractReviewViewController *)self tableViewCellReuseIdentifier];
-    v13 = [v11 dequeueReusableCellWithIdentifier:v15 forIndexPath:v7];
+    tableViewCellReuseIdentifier = [(CKAbstractReviewViewController *)self tableViewCellReuseIdentifier];
+    v13 = [tableView dequeueReusableCellWithIdentifier:tableViewCellReuseIdentifier forIndexPath:pathCopy];
 
     [v13 setModelObject:v8];
   }
@@ -241,28 +241,28 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [v9 row]))
+  viewCopy = view;
+  pathCopy = path;
+  if (!-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [pathCopy row]))
   {
-    v10 = [(CKAbstractReviewViewController *)self tableView];
-    v11 = v10;
-    if (v9 && a4 == 1 && v10 == v8 && ![v9 section])
+    tableView = [(CKAbstractReviewViewController *)self tableView];
+    v11 = tableView;
+    if (pathCopy && style == 1 && tableView == viewCopy && ![pathCopy section])
     {
-      v12 = [v9 row];
-      v13 = [(CKAbstractReviewViewController *)self numberOfModelObjects];
+      v12 = [pathCopy row];
+      numberOfModelObjects = [(CKAbstractReviewViewController *)self numberOfModelObjects];
 
-      if (v12 < v13)
+      if (v12 < numberOfModelObjects)
       {
-        v14 = -[CKAbstractReviewViewController modelObjectAtIndex:](self, "modelObjectAtIndex:", [v9 row]);
+        v14 = -[CKAbstractReviewViewController modelObjectAtIndex:](self, "modelObjectAtIndex:", [pathCopy row]);
         [(CKAbstractReviewViewController *)self deleteModelObjectAndUnderlyingData:v14];
-        v15 = [(CKAbstractReviewViewController *)self tableView];
-        v17[0] = v9;
+        tableView2 = [(CKAbstractReviewViewController *)self tableView];
+        v17[0] = pathCopy;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-        [v15 deleteRowsAtIndexPaths:v16 withRowAnimation:100];
+        [tableView2 deleteRowsAtIndexPaths:v16 withRowAnimation:100];
       }
     }
 
@@ -272,51 +272,51 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (!-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [v5 row]) && (-[CKAbstractReviewViewController isEditing](self, "isEditing") & 1) == 0 && !objc_msgSend(v5, "section"))
+  pathCopy = path;
+  if (!-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [pathCopy row]) && (-[CKAbstractReviewViewController isEditing](self, "isEditing") & 1) == 0 && !objc_msgSend(pathCopy, "section"))
   {
-    -[CKAbstractReviewViewController didSelectModelObjectAtIndex:](self, "didSelectModelObjectAtIndex:", [v5 row]);
+    -[CKAbstractReviewViewController didSelectModelObjectAtIndex:](self, "didSelectModelObjectAtIndex:", [pathCopy row]);
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v4 = [(CKAbstractReviewViewController *)self tableView];
-  v5 = [(CKAbstractReviewViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
-  [v4 deselectRowAtIndexPath:v6 animated:0];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  tableView2 = [(CKAbstractReviewViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
   [(CKAbstractReviewViewController *)self reloadModelData];
-  v7 = [(CKAbstractReviewViewController *)self tableView];
-  [v7 reloadData];
+  tableView3 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView3 reloadData];
 }
 
 - (void)_handleDelete
 {
-  v3 = [(CKAbstractReviewViewController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
-  if ([v4 count])
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  if ([indexPathsForSelectedRows count])
   {
-    v5 = [(CKAbstractReviewViewController *)self isEditing];
+    isEditing = [(CKAbstractReviewViewController *)self isEditing];
 
-    if (v5)
+    if (isEditing)
     {
       v18 = 0;
       v19 = &v18;
       v20 = 0x3032000000;
       v21 = __Block_byref_object_copy__0;
       v22 = __Block_byref_object_dispose__0;
-      v23 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v12 = 0;
       v13 = &v12;
       v14 = 0x3032000000;
       v15 = __Block_byref_object_copy__0;
       v16 = __Block_byref_object_dispose__0;
-      v17 = [MEMORY[0x1E695DF70] array];
-      v6 = [(CKAbstractReviewViewController *)self tableView];
-      v7 = [v6 indexPathsForSelectedRows];
+      array2 = [MEMORY[0x1E695DF70] array];
+      tableView2 = [(CKAbstractReviewViewController *)self tableView];
+      indexPathsForSelectedRows2 = [tableView2 indexPathsForSelectedRows];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __47__CKAbstractReviewViewController__handleDelete__block_invoke;
@@ -324,7 +324,7 @@
       v11[4] = self;
       v11[5] = &v18;
       v11[6] = &v12;
-      [v7 enumerateObjectsUsingBlock:v11];
+      [indexPathsForSelectedRows2 enumerateObjectsUsingBlock:v11];
 
       v8 = v19[5];
       v10[0] = MEMORY[0x1E69E9820];
@@ -333,8 +333,8 @@
       v10[3] = &unk_1E72EBB28;
       v10[4] = self;
       [v8 enumerateObjectsUsingBlock:v10];
-      v9 = [(CKAbstractReviewViewController *)self tableView];
-      [v9 deleteRowsAtIndexPaths:v13[5] withRowAnimation:100];
+      tableView3 = [(CKAbstractReviewViewController *)self tableView];
+      [tableView3 deleteRowsAtIndexPaths:v13[5] withRowAnimation:100];
 
       _Block_object_dispose(&v12, 8);
       _Block_object_dispose(&v18, 8);
@@ -361,56 +361,56 @@ void __47__CKAbstractReviewViewController__handleDelete__block_invoke(uint64_t a
 
 - (void)_updateNavigationItemState
 {
-  v3 = [(CKAbstractReviewViewController *)self parentViewController];
+  parentViewController = [(CKAbstractReviewViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [(CKAbstractReviewViewController *)self navigationItem];
+    navigationItem = [(CKAbstractReviewViewController *)self navigationItem];
   }
 
   else
   {
-    v5 = [(CKAbstractReviewViewController *)self parentViewController];
-    v14 = [v5 navigationItem];
+    parentViewController2 = [(CKAbstractReviewViewController *)self parentViewController];
+    navigationItem = [parentViewController2 navigationItem];
   }
 
-  v6 = [(CKAbstractReviewViewController *)self isEditing];
-  if (v6)
+  isEditing = [(CKAbstractReviewViewController *)self isEditing];
+  if (isEditing)
   {
-    v7 = [(CKAbstractReviewViewController *)self cancelEditingBarButtonItem];
+    cancelEditingBarButtonItem = [(CKAbstractReviewViewController *)self cancelEditingBarButtonItem];
 
-    if (!v7)
+    if (!cancelEditingBarButtonItem)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__handleCancel];
       [(CKAbstractReviewViewController *)self setCancelEditingBarButtonItem:v8];
     }
 
-    v9 = [(CKAbstractReviewViewController *)self deleteBarButtonItem];
+    deleteBarButtonItem = [(CKAbstractReviewViewController *)self deleteBarButtonItem];
 
-    if (!v9)
+    if (!deleteBarButtonItem)
     {
       v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:16 target:self action:sel__handleDelete];
       [(CKAbstractReviewViewController *)self setDeleteBarButtonItem:v10];
     }
 
-    v11 = [(CKAbstractReviewViewController *)self cancelEditingBarButtonItem];
-    [v14 setLeftBarButtonItem:v11];
+    cancelEditingBarButtonItem2 = [(CKAbstractReviewViewController *)self cancelEditingBarButtonItem];
+    [navigationItem setLeftBarButtonItem:cancelEditingBarButtonItem2];
 
-    v12 = [(CKAbstractReviewViewController *)self deleteBarButtonItem];
+    deleteBarButtonItem2 = [(CKAbstractReviewViewController *)self deleteBarButtonItem];
   }
 
   else
   {
-    [v14 setLeftBarButtonItem:0];
-    v12 = [(CKAbstractReviewViewController *)self editButtonItem];
+    [navigationItem setLeftBarButtonItem:0];
+    deleteBarButtonItem2 = [(CKAbstractReviewViewController *)self editButtonItem];
   }
 
-  v13 = v12;
-  [v14 setRightBarButtonItem:v12];
+  v13 = deleteBarButtonItem2;
+  [navigationItem setRightBarButtonItem:deleteBarButtonItem2];
 
-  [v14 setHidesBackButton:v6 animated:1];
+  [navigationItem setHidesBackButton:isEditing animated:1];
 }
 
 @end

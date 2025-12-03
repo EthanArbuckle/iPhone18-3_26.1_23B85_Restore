@@ -1,5 +1,5 @@
 @interface HFAccessoryTypeGroup
-+ (HFAccessoryTypeGroup)accessoryTypeGroupWithIdentifier:(id)a3;
++ (HFAccessoryTypeGroup)accessoryTypeGroupWithIdentifier:(id)identifier;
 + (id)climateAccessoryTypeGroup;
 + (id)energyAccessoryTypeGroup;
 + (id)hiddenFromScenesAndAutomationsAccessoryTypeGroup;
@@ -11,75 +11,75 @@
 + (id)securityAccessoryTypeGroup;
 + (id)sensorAccessoryTypeGroup;
 + (id)switchAccessoryTypeGroup;
-+ (id)unionGroups:(id)a3;
++ (id)unionGroups:(id)groups;
 + (id)waterAccessoryTypeGroup;
 + (void)warmUp;
-- (BOOL)containsType:(id)a3;
-- (BOOL)intersectsGroup:(id)a3;
-- (HFAccessoryTypeGroup)initWithName:(id)a3 accessoryTypes:(id)a4;
+- (BOOL)containsType:(id)type;
+- (BOOL)intersectsGroup:(id)group;
+- (HFAccessoryTypeGroup)initWithName:(id)name accessoryTypes:(id)types;
 - (NSString)debugDescription;
 - (NSString)fullName;
-- (id)_initWithIdentifier:(id)a3 name:(id)a4 set:(id)a5;
-- (id)_initWithIdentifierString:(id)a3 name:(id)a4 accessoryTypes:(id)a5;
-- (id)_initWithName:(id)a3 set:(id)a4;
-- (id)filterAccessoryRepresentableObjects:(id)a3;
-- (id)groupByIntersectingGroup:(id)a3;
-- (id)groupBySubtractingGroup:(id)a3;
-- (id)groupByUnioningGroup:(id)a3;
+- (id)_initWithIdentifier:(id)identifier name:(id)name set:(id)set;
+- (id)_initWithIdentifierString:(id)string name:(id)name accessoryTypes:(id)types;
+- (id)_initWithName:(id)name set:(id)set;
+- (id)filterAccessoryRepresentableObjects:(id)objects;
+- (id)groupByIntersectingGroup:(id)group;
+- (id)groupBySubtractingGroup:(id)group;
+- (id)groupByUnioningGroup:(id)group;
 @end
 
 @implementation HFAccessoryTypeGroup
 
-- (id)_initWithIdentifier:(id)a3 name:(id)a4 set:(id)a5
+- (id)_initWithIdentifier:(id)identifier name:(id)name set:(id)set
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  setCopy = set;
   v15.receiver = self;
   v15.super_class = HFAccessoryTypeGroup;
   v12 = [(HFAccessoryTypeGroup *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_uniqueIdentifier, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_uniqueIdentifier, identifier);
+    objc_storeStrong(p_isa + 2, name);
+    objc_storeStrong(p_isa + 3, set);
   }
 
   return p_isa;
 }
 
-- (id)_initWithName:(id)a3 set:(id)a4
+- (id)_initWithName:(id)name set:(id)set
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(HFAccessoryTypeGroup *)self _initWithIdentifier:v9 name:v8 set:v7];
+  setCopy = set;
+  nameCopy = name;
+  uUID = [v6 UUID];
+  v10 = [(HFAccessoryTypeGroup *)self _initWithIdentifier:uUID name:nameCopy set:setCopy];
 
   return v10;
 }
 
-- (id)_initWithIdentifierString:(id)a3 name:(id)a4 accessoryTypes:(id)a5
+- (id)_initWithIdentifierString:(id)string name:(id)name accessoryTypes:(id)types
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithUUIDString:v11];
+  typesCopy = types;
+  nameCopy = name;
+  stringCopy = string;
+  v12 = [[v8 alloc] initWithUUIDString:stringCopy];
 
-  v13 = [MEMORY[0x277CBEB98] setWithArray:v9];
+  v13 = [MEMORY[0x277CBEB98] setWithArray:typesCopy];
 
-  v14 = [(HFAccessoryTypeGroup *)self _initWithIdentifier:v12 name:v10 set:v13];
+  v14 = [(HFAccessoryTypeGroup *)self _initWithIdentifier:v12 name:nameCopy set:v13];
   return v14;
 }
 
-- (HFAccessoryTypeGroup)initWithName:(id)a3 accessoryTypes:(id)a4
+- (HFAccessoryTypeGroup)initWithName:(id)name accessoryTypes:(id)types
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a3;
-  v8 = [v6 setWithArray:a4];
-  v9 = [(HFAccessoryTypeGroup *)self _initWithName:v7 set:v8];
+  nameCopy = name;
+  v8 = [v6 setWithArray:types];
+  v9 = [(HFAccessoryTypeGroup *)self _initWithName:nameCopy set:v8];
 
   return v9;
 }
@@ -605,15 +605,15 @@ void __72__HFAccessoryTypeGroup_hiddenFromScenesAndAutomationsAccessoryTypeGroup
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HFAccessoryTypeGroup *)self fullName];
-  v6 = [v3 stringWithFormat:@"<%@:%p> %@", v4, self, v5];
+  fullName = [(HFAccessoryTypeGroup *)self fullName];
+  v6 = [v3 stringWithFormat:@"<%@:%p> %@", v4, self, fullName];
 
   return v6;
 }
 
-+ (id)unionGroups:(id)a3
++ (id)unionGroups:(id)groups
 {
-  v3 = a3;
+  groupsCopy = groups;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -626,7 +626,7 @@ void __72__HFAccessoryTypeGroup_hiddenFromScenesAndAutomationsAccessoryTypeGroup
   v7[2] = __36__HFAccessoryTypeGroup_unionGroups___block_invoke;
   v7[3] = &unk_277DF4CC0;
   v7[4] = &v8;
-  [v3 na_each:v7];
+  [groupsCopy na_each:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -641,31 +641,31 @@ void __36__HFAccessoryTypeGroup_unionGroups___block_invoke(uint64_t a1, uint64_t
   *(v4 + 40) = v3;
 }
 
-+ (HFAccessoryTypeGroup)accessoryTypeGroupWithIdentifier:(id)a3
++ (HFAccessoryTypeGroup)accessoryTypeGroupWithIdentifier:(id)identifier
 {
   v24[10] = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x277CBEB98];
-  v20 = [a1 climateAccessoryTypeGroup];
-  v24[0] = v20;
-  v19 = [a1 energyAccessoryTypeGroup];
-  v24[1] = v19;
-  v5 = [a1 lightAccessoryTypeGroup];
-  v24[2] = v5;
-  v6 = [a1 mediaAccessoryTypeGroup];
-  v24[3] = v6;
-  v7 = [a1 securityAccessoryTypeGroup];
-  v24[4] = v7;
-  v8 = [a1 outletAccessoryTypeGroup];
-  v24[5] = v8;
-  v9 = [a1 sensorAccessoryTypeGroup];
-  v24[6] = v9;
-  v10 = [a1 switchAccessoryTypeGroup];
-  v24[7] = v10;
-  v11 = [a1 waterAccessoryTypeGroup];
-  v24[8] = v11;
-  v12 = [a1 otherAccessoryTypeGroup];
-  v24[9] = v12;
+  climateAccessoryTypeGroup = [self climateAccessoryTypeGroup];
+  v24[0] = climateAccessoryTypeGroup;
+  energyAccessoryTypeGroup = [self energyAccessoryTypeGroup];
+  v24[1] = energyAccessoryTypeGroup;
+  lightAccessoryTypeGroup = [self lightAccessoryTypeGroup];
+  v24[2] = lightAccessoryTypeGroup;
+  mediaAccessoryTypeGroup = [self mediaAccessoryTypeGroup];
+  v24[3] = mediaAccessoryTypeGroup;
+  securityAccessoryTypeGroup = [self securityAccessoryTypeGroup];
+  v24[4] = securityAccessoryTypeGroup;
+  outletAccessoryTypeGroup = [self outletAccessoryTypeGroup];
+  v24[5] = outletAccessoryTypeGroup;
+  sensorAccessoryTypeGroup = [self sensorAccessoryTypeGroup];
+  v24[6] = sensorAccessoryTypeGroup;
+  switchAccessoryTypeGroup = [self switchAccessoryTypeGroup];
+  v24[7] = switchAccessoryTypeGroup;
+  waterAccessoryTypeGroup = [self waterAccessoryTypeGroup];
+  v24[8] = waterAccessoryTypeGroup;
+  otherAccessoryTypeGroup = [self otherAccessoryTypeGroup];
+  v24[9] = otherAccessoryTypeGroup;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:10];
   v14 = [v4 setWithArray:v13];
 
@@ -673,8 +673,8 @@ void __36__HFAccessoryTypeGroup_unionGroups___block_invoke(uint64_t a1, uint64_t
   v22[1] = 3221225472;
   v22[2] = __57__HFAccessoryTypeGroup_accessoryTypeGroupWithIdentifier___block_invoke;
   v22[3] = &unk_277DF4CE8;
-  v23 = v21;
-  v15 = v21;
+  v23 = identifierCopy;
+  v15 = identifierCopy;
   v16 = [v14 na_firstObjectPassingTest:v22];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -690,25 +690,25 @@ uint64_t __57__HFAccessoryTypeGroup_accessoryTypeGroupWithIdentifier___block_inv
   return v4;
 }
 
-- (BOOL)intersectsGroup:(id)a3
+- (BOOL)intersectsGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(HFAccessoryTypeGroup *)self types];
-  v6 = [v4 types];
+  groupCopy = group;
+  types = [(HFAccessoryTypeGroup *)self types];
+  types2 = [groupCopy types];
 
-  LOBYTE(v4) = [v5 intersectsSet:v6];
-  return v4;
+  LOBYTE(groupCopy) = [types intersectsSet:types2];
+  return groupCopy;
 }
 
-- (id)groupByIntersectingGroup:(id)a3
+- (id)groupByIntersectingGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     v5 = [HFAccessoryTypeGroup alloc];
-    v6 = [(HFAccessoryTypeGroup *)self types];
-    v7 = [v4 types];
-    v8 = [v6 na_setByIntersectingWithSet:v7];
+    types = [(HFAccessoryTypeGroup *)self types];
+    types2 = [groupCopy types];
+    v8 = [types na_setByIntersectingWithSet:types2];
     v9 = [(HFAccessoryTypeGroup *)v5 _initWithName:0 set:v8];
   }
 
@@ -732,97 +732,97 @@ void __49__HFAccessoryTypeGroup_groupByIntersectingGroup___block_invoke_2()
   qword_280E02568 = v0;
 }
 
-- (id)groupByUnioningGroup:(id)a3
+- (id)groupByUnioningGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v4 = a3;
+    groupCopy = group;
     v5 = [HFAccessoryTypeGroup alloc];
-    v6 = [(HFAccessoryTypeGroup *)self types];
-    v7 = [v4 types];
+    types = [(HFAccessoryTypeGroup *)self types];
+    types2 = [groupCopy types];
 
-    v8 = [v6 setByAddingObjectsFromSet:v7];
-    v9 = [(HFAccessoryTypeGroup *)v5 _initWithName:0 set:v8];
+    v8 = [types setByAddingObjectsFromSet:types2];
+    selfCopy = [(HFAccessoryTypeGroup *)v5 _initWithName:0 set:v8];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)groupBySubtractingGroup:(id)a3
+- (id)groupBySubtractingGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v4 = a3;
+    groupCopy = group;
     v5 = [HFAccessoryTypeGroup alloc];
-    v6 = [(HFAccessoryTypeGroup *)self types];
-    v7 = [v4 types];
+    types = [(HFAccessoryTypeGroup *)self types];
+    types2 = [groupCopy types];
 
-    v8 = [v6 na_setByRemovingObjectsFromSet:v7];
-    v9 = [(HFAccessoryTypeGroup *)v5 _initWithName:0 set:v8];
+    v8 = [types na_setByRemovingObjectsFromSet:types2];
+    selfCopy = [(HFAccessoryTypeGroup *)v5 _initWithName:0 set:v8];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)containsType:(id)a3
+- (BOOL)containsType:(id)type
 {
-  v4 = a3;
-  v5 = [(HFAccessoryTypeGroup *)self types];
-  v6 = [v5 na_safeContainsObject:v4];
+  typeCopy = type;
+  types = [(HFAccessoryTypeGroup *)self types];
+  v6 = [types na_safeContainsObject:typeCopy];
 
   return v6;
 }
 
 - (NSString)fullName
 {
-  v3 = [(HFAccessoryTypeGroup *)self _fullName];
-  v4 = v3;
-  if (v3)
+  _fullName = [(HFAccessoryTypeGroup *)self _fullName];
+  v4 = _fullName;
+  if (_fullName)
   {
-    v5 = v3;
+    name = _fullName;
   }
 
   else
   {
-    v5 = [(HFAccessoryTypeGroup *)self name];
+    name = [(HFAccessoryTypeGroup *)self name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
 + (void)warmUp
 {
-  v3 = [a1 climateAccessoryTypeGroup];
-  v4 = [a1 energyAccessoryTypeGroup];
-  v5 = [a1 lightAccessoryTypeGroup];
-  v6 = [a1 mediaAccessoryTypeGroup];
-  v7 = [a1 securityAccessoryTypeGroup];
-  v8 = [a1 waterAccessoryTypeGroup];
-  v9 = [a1 hiddenFromScenesAndAutomationsAccessoryTypeGroup];
-  v10 = [a1 sensorAccessoryTypeGroup];
-  v11 = [a1 otherAccessoryTypeGroup];
+  climateAccessoryTypeGroup = [self climateAccessoryTypeGroup];
+  energyAccessoryTypeGroup = [self energyAccessoryTypeGroup];
+  lightAccessoryTypeGroup = [self lightAccessoryTypeGroup];
+  mediaAccessoryTypeGroup = [self mediaAccessoryTypeGroup];
+  securityAccessoryTypeGroup = [self securityAccessoryTypeGroup];
+  waterAccessoryTypeGroup = [self waterAccessoryTypeGroup];
+  hiddenFromScenesAndAutomationsAccessoryTypeGroup = [self hiddenFromScenesAndAutomationsAccessoryTypeGroup];
+  sensorAccessoryTypeGroup = [self sensorAccessoryTypeGroup];
+  otherAccessoryTypeGroup = [self otherAccessoryTypeGroup];
 }
 
-- (id)filterAccessoryRepresentableObjects:(id)a3
+- (id)filterAccessoryRepresentableObjects:(id)objects
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __71__HFAccessoryTypeGroup_Filtering__filterAccessoryRepresentableObjects___block_invoke;
   v5[3] = &unk_277DF5C10;
   v5[4] = self;
-  v3 = [a3 na_filter:v5];
+  v3 = [objects na_filter:v5];
 
   return v3;
 }

@@ -1,26 +1,26 @@
 @interface CRLanguageResourcesStack
-- (BOOL)hasSubscriber:(id)a3;
-- (CRLanguageResourcesStack)initWithLocaleIdentifier:(id)a3 resourceType:(int64_t)a4;
-- (id)popResourceForSubscriber:(id)a3;
+- (BOOL)hasSubscriber:(id)subscriber;
+- (CRLanguageResourcesStack)initWithLocaleIdentifier:(id)identifier resourceType:(int64_t)type;
+- (id)popResourceForSubscriber:(id)subscriber;
 - (int64_t)subscriberCount;
-- (void)addSubscriber:(id)a3;
-- (void)deactivateSubscriber:(id)a3;
-- (void)pushResource:(id)a3;
-- (void)removeSubscriber:(id)a3;
+- (void)addSubscriber:(id)subscriber;
+- (void)deactivateSubscriber:(id)subscriber;
+- (void)pushResource:(id)resource;
+- (void)removeSubscriber:(id)subscriber;
 @end
 
 @implementation CRLanguageResourcesStack
 
-- (CRLanguageResourcesStack)initWithLocaleIdentifier:(id)a3 resourceType:(int64_t)a4
+- (CRLanguageResourcesStack)initWithLocaleIdentifier:(id)identifier resourceType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CRLanguageResourcesStack;
   v7 = [(CRLanguageResourcesStack *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    [(CRLanguageResourcesStack *)v7 setLocaleIdentifier:v6];
+    [(CRLanguageResourcesStack *)v7 setLocaleIdentifier:identifierCopy];
     v9 = objc_opt_new();
     [(CRLanguageResourcesStack *)v8 setAvailableResources:v9];
 
@@ -31,7 +31,7 @@
     v11 = objc_opt_new();
     [(CRLanguageResourcesStack *)v8 setSubscribers:v11];
 
-    [(CRLanguageResourcesStack *)v8 setResourceType:a4];
+    [(CRLanguageResourcesStack *)v8 setResourceType:type];
     v12 = objc_opt_new();
     [(CRLanguageResourcesStack *)v8 setActiveSubscribers:v12];
   }
@@ -39,168 +39,168 @@
   return v8;
 }
 
-- (id)popResourceForSubscriber:(id)a3
+- (id)popResourceForSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  objc_sync_enter(v5);
-  v6 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v4];
-  [v6 addObject:v7];
+  subscriberCopy = subscriber;
+  activeSubscribers = [(CRLanguageResourcesStack *)self activeSubscribers];
+  objc_sync_enter(activeSubscribers);
+  activeSubscribers2 = [(CRLanguageResourcesStack *)self activeSubscribers];
+  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [activeSubscribers2 addObject:v7];
 
-  objc_sync_exit(v5);
-  v8 = [(CRLanguageResourcesStack *)self availableResources];
-  objc_sync_enter(v8);
-  v9 = [(CRLanguageResourcesStack *)self availableResources];
-  if ([v9 count])
+  objc_sync_exit(activeSubscribers);
+  availableResources = [(CRLanguageResourcesStack *)self availableResources];
+  objc_sync_enter(availableResources);
+  availableResources2 = [(CRLanguageResourcesStack *)self availableResources];
+  if ([availableResources2 count])
   {
   }
 
   else
   {
-    v10 = [(CRLanguageResourcesStack *)self totalResources];
+    totalResources = [(CRLanguageResourcesStack *)self totalResources];
 
-    if (v10 <= 3)
+    if (totalResources <= 3)
     {
       v11 = [CRLanguageResources alloc];
-      v12 = [(CRLanguageResourcesStack *)self localeIdentifier];
-      v13 = [(CRLanguageResources *)v11 initWithLanguageIdentifier:v12 type:[(CRLanguageResourcesStack *)self resourceType]];
+      localeIdentifier = [(CRLanguageResourcesStack *)self localeIdentifier];
+      lastObject = [(CRLanguageResources *)v11 initWithLanguageIdentifier:localeIdentifier type:[(CRLanguageResourcesStack *)self resourceType]];
 
       [(CRLanguageResourcesStack *)self setTotalResources:[(CRLanguageResourcesStack *)self totalResources]+ 1];
       goto LABEL_6;
     }
   }
 
-  v13 = 0;
+  lastObject = 0;
 LABEL_6:
-  objc_sync_exit(v8);
+  objc_sync_exit(availableResources);
 
-  if (!v13)
+  if (!lastObject)
   {
-    v14 = [(CRLanguageResourcesStack *)self resourceCountSemaphore];
-    dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
+    resourceCountSemaphore = [(CRLanguageResourcesStack *)self resourceCountSemaphore];
+    dispatch_semaphore_wait(resourceCountSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-    v15 = [(CRLanguageResourcesStack *)self availableResources];
-    objc_sync_enter(v15);
-    v16 = [(CRLanguageResourcesStack *)self availableResources];
-    v13 = [v16 lastObject];
+    availableResources3 = [(CRLanguageResourcesStack *)self availableResources];
+    objc_sync_enter(availableResources3);
+    availableResources4 = [(CRLanguageResourcesStack *)self availableResources];
+    lastObject = [availableResources4 lastObject];
 
-    v17 = [(CRLanguageResourcesStack *)self availableResources];
-    [v17 removeLastObject];
+    availableResources5 = [(CRLanguageResourcesStack *)self availableResources];
+    [availableResources5 removeLastObject];
 
-    objc_sync_exit(v15);
+    objc_sync_exit(availableResources3);
   }
 
-  v18 = v13;
+  v18 = lastObject;
 
   return v18;
 }
 
-- (void)pushResource:(id)a3
+- (void)pushResource:(id)resource
 {
-  v7 = a3;
-  v4 = [(CRLanguageResourcesStack *)self availableResources];
-  objc_sync_enter(v4);
-  v5 = [(CRLanguageResourcesStack *)self availableResources];
-  [v5 addObject:v7];
+  resourceCopy = resource;
+  availableResources = [(CRLanguageResourcesStack *)self availableResources];
+  objc_sync_enter(availableResources);
+  availableResources2 = [(CRLanguageResourcesStack *)self availableResources];
+  [availableResources2 addObject:resourceCopy];
 
-  v6 = [(CRLanguageResourcesStack *)self resourceCountSemaphore];
-  dispatch_semaphore_signal(v6);
+  resourceCountSemaphore = [(CRLanguageResourcesStack *)self resourceCountSemaphore];
+  dispatch_semaphore_signal(resourceCountSemaphore);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(availableResources);
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v10 = a3;
-  v4 = [(CRLanguageResourcesStack *)self subscribers];
-  objc_sync_enter(v4);
-  v5 = [(CRLanguageResourcesStack *)self subscribers];
-  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v10];
-  [v5 addObject:v6];
+  subscriberCopy = subscriber;
+  subscribers = [(CRLanguageResourcesStack *)self subscribers];
+  objc_sync_enter(subscribers);
+  subscribers2 = [(CRLanguageResourcesStack *)self subscribers];
+  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [subscribers2 addObject:v6];
 
-  objc_sync_exit(v4);
-  v7 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  objc_sync_enter(v7);
-  v8 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v10];
-  [v8 addObject:v9];
+  objc_sync_exit(subscribers);
+  activeSubscribers = [(CRLanguageResourcesStack *)self activeSubscribers];
+  objc_sync_enter(activeSubscribers);
+  activeSubscribers2 = [(CRLanguageResourcesStack *)self activeSubscribers];
+  v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [activeSubscribers2 addObject:v9];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(activeSubscribers);
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v10 = a3;
-  v4 = [(CRLanguageResourcesStack *)self subscribers];
-  objc_sync_enter(v4);
-  v5 = [(CRLanguageResourcesStack *)self subscribers];
-  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v10];
-  [v5 removeObject:v6];
+  subscriberCopy = subscriber;
+  subscribers = [(CRLanguageResourcesStack *)self subscribers];
+  objc_sync_enter(subscribers);
+  subscribers2 = [(CRLanguageResourcesStack *)self subscribers];
+  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [subscribers2 removeObject:v6];
 
-  objc_sync_exit(v4);
-  v7 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  objc_sync_enter(v7);
-  v8 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v10];
-  [v8 removeObject:v9];
+  objc_sync_exit(subscribers);
+  activeSubscribers = [(CRLanguageResourcesStack *)self activeSubscribers];
+  objc_sync_enter(activeSubscribers);
+  activeSubscribers2 = [(CRLanguageResourcesStack *)self activeSubscribers];
+  v9 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [activeSubscribers2 removeObject:v9];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(activeSubscribers);
 }
 
-- (void)deactivateSubscriber:(id)a3
+- (void)deactivateSubscriber:(id)subscriber
 {
-  v15 = a3;
-  v4 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  objc_sync_enter(v4);
-  v5 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v15];
-  [v5 removeObject:v6];
+  subscriberCopy = subscriber;
+  activeSubscribers = [(CRLanguageResourcesStack *)self activeSubscribers];
+  objc_sync_enter(activeSubscribers);
+  activeSubscribers2 = [(CRLanguageResourcesStack *)self activeSubscribers];
+  v6 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  [activeSubscribers2 removeObject:v6];
 
-  v7 = [(CRLanguageResourcesStack *)self activeSubscribers];
-  v8 = [v7 count];
+  activeSubscribers3 = [(CRLanguageResourcesStack *)self activeSubscribers];
+  v8 = [activeSubscribers3 count];
 
   if (!v8)
   {
-    v9 = [(CRLanguageResourcesStack *)self availableResources];
-    objc_sync_enter(v9);
-    v10 = [(CRLanguageResourcesStack *)self availableResources];
-    v11 = [v10 count];
+    availableResources = [(CRLanguageResourcesStack *)self availableResources];
+    objc_sync_enter(availableResources);
+    availableResources2 = [(CRLanguageResourcesStack *)self availableResources];
+    v11 = [availableResources2 count];
 
     if (v11 >= 2)
     {
-      v12 = [(CRLanguageResourcesStack *)self availableResources];
-      v13 = [(CRLanguageResourcesStack *)self availableResources];
-      [v12 removeObjectsInRange:{1, objc_msgSend(v13, "count") - 1}];
+      availableResources3 = [(CRLanguageResourcesStack *)self availableResources];
+      availableResources4 = [(CRLanguageResourcesStack *)self availableResources];
+      [availableResources3 removeObjectsInRange:{1, objc_msgSend(availableResources4, "count") - 1}];
 
       [(CRLanguageResourcesStack *)self setTotalResources:1];
       v14 = dispatch_semaphore_create(1);
       [(CRLanguageResourcesStack *)self setResourceCountSemaphore:v14];
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(availableResources);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(activeSubscribers);
 }
 
-- (BOOL)hasSubscriber:(id)a3
+- (BOOL)hasSubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [(CRLanguageResourcesStack *)self subscribers];
-  objc_sync_enter(v5);
-  v6 = [(CRLanguageResourcesStack *)self subscribers];
-  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v4];
-  v8 = [v6 containsObject:v7];
+  subscriberCopy = subscriber;
+  subscribers = [(CRLanguageResourcesStack *)self subscribers];
+  objc_sync_enter(subscribers);
+  subscribers2 = [(CRLanguageResourcesStack *)self subscribers];
+  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:subscriberCopy];
+  v8 = [subscribers2 containsObject:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(subscribers);
   return v8;
 }
 
 - (int64_t)subscriberCount
 {
-  v2 = [(CRLanguageResourcesStack *)self subscribers];
-  v3 = [v2 count];
+  subscribers = [(CRLanguageResourcesStack *)self subscribers];
+  v3 = [subscribers count];
 
   return v3;
 }

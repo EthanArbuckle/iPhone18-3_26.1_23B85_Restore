@@ -1,14 +1,14 @@
 @interface RemoteAlertRootViewController
-- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithCoder:(id)a3;
-- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithCoder:(id)coder;
+- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation RemoteAlertRootViewController
 
-- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithCoder:(id)a3
+- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC21AppleIDSetupUIService29RemoteAlertRootViewController_dismissHandler);
@@ -21,7 +21,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100006EE4();
 }
 
@@ -32,13 +32,13 @@
   [(RemoteAlertRootViewController *)&v2 viewDidLoad];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21AppleIDSetupUIService29RemoteAlertRootViewController_dismissHandler);
   if (v3)
   {
     v4 = *&self->scene[OBJC_IVAR____TtC21AppleIDSetupUIService29RemoteAlertRootViewController_dismissHandler];
-    v5 = self;
+    selfCopy = self;
     v6 = sub_100007868(v3);
     v3(v6);
 
@@ -46,7 +46,7 @@
   }
 }
 
-- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21AppleIDSetupUIService29RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

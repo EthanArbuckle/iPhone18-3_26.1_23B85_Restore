@@ -1,19 +1,19 @@
 @interface PLSpotlightDaemonClientHandler
-- (BOOL)_isValidProtectionClass:(id)a3;
-- (BOOL)_isValidReindexingRequestWithBundleID:(id)a3;
+- (BOOL)_isValidProtectionClass:(id)class;
+- (BOOL)_isValidReindexingRequestWithBundleID:(id)d;
 - (id)pathManager;
-- (id)systemPhotoLibraryWithName:(const char *)a3;
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 reason:(id)a5 acknowledgementHandler:(id)a6;
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6;
+- (id)systemPhotoLibraryWithName:(const char *)name;
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler;
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class reason:(id)reason acknowledgementHandler:(id)handler;
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler;
 @end
 
 @implementation PLSpotlightDaemonClientHandler
 
-- (void)provideFileURLForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideFileURLForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = PLSearchBackendDonationsGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -21,12 +21,12 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SpotlightDaemonClient: Received request from Spotlight to provideFileURLForBundleID - no action is implemented by Photos in response to this request", v10, 2u);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)provideDataForBundleID:(id)a3 protectionClass:(id)a4 itemIdentifier:(id)a5 typeIdentifier:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)provideDataForBundleID:(id)d protectionClass:(id)class itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier options:(int64_t)options completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = PLSearchBackendDonationsGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,21 +34,21 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SpotlightDaemonClient: Received request from Spotlight to provideDataForBundleID - no action is implemented by Photos in response to this request", v10, 2u);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)reindexItemsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 acknowledgementHandler:(id)a6
+- (void)reindexItemsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class acknowledgementHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(PLSpotlightDaemonClientHandler *)self _isValidProtectionClass:v12])
+  identifiersCopy = identifiers;
+  dCopy = d;
+  classCopy = class;
+  handlerCopy = handler;
+  if ([(PLSpotlightDaemonClientHandler *)self _isValidProtectionClass:classCopy])
   {
-    v14 = [(PLSpotlightDaemonClientHandler *)self pathManager];
-    if (v14)
+    pathManager = [(PLSpotlightDaemonClientHandler *)self pathManager];
+    if (pathManager)
     {
-      v15 = [(PLSpotlightDaemonClientHandler *)self _isValidReindexingRequestWithBundleID:v11];
+      v15 = [(PLSpotlightDaemonClientHandler *)self _isValidReindexingRequestWithBundleID:dCopy];
       v16 = PLSearchBackendDonationsGetLog();
       v17 = v16;
       if (v15)
@@ -56,31 +56,31 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138412802;
-          v23 = v10;
+          v23 = identifiersCopy;
           v24 = 2112;
-          v25 = v11;
+          v25 = dCopy;
           v26 = 2114;
-          v27 = v12;
+          v27 = classCopy;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SpotlightDaemonClient: Received request to reindex searchable items for Core Spotlight: %@ for bundleID: %@, protection class: %{public}@", &v22, 0x20u);
         }
 
-        [PLAutoBugCapture captureSpotlightClientHandlerReindexItemsWithIdentifiers:v10 reason:0 completion:&stru_10002D0B8];
-        v18 = [PLSpotlightReindexing recordReindexIdentifiersWithIdentifiers:v10 bundleID:v11];
+        [PLAutoBugCapture captureSpotlightClientHandlerReindexItemsWithIdentifiers:identifiersCopy reason:0 completion:&stru_10002D0B8];
+        v18 = [PLSpotlightReindexing recordReindexIdentifiersWithIdentifiers:identifiersCopy bundleID:dCopy];
         if ([v18 isFailure])
         {
           v19 = PLSearchBackendDonationsGetLog();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v20 = [v18 error];
+            error = [v18 error];
             v22 = 138412546;
-            v23 = v10;
+            v23 = identifiersCopy;
             v24 = 2112;
-            v25 = v20;
+            v25 = error;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "SpotlightDaemonClient: Failed to record reindex searchable items: %@ with error: %@", &v22, 0x16u);
           }
         }
 
-        v13[2](v13);
+        handlerCopy[2](handlerCopy);
 
         goto LABEL_18;
       }
@@ -88,12 +88,12 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v22 = 138543362;
-        v23 = v10;
+        v23 = identifiersCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "SpotlightDaemonClient: Aborting unexpected request to reindex searchable items with identifiers: %{public}@", &v22, 0xCu);
       }
     }
 
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
 LABEL_18:
 
     goto LABEL_19;
@@ -103,41 +103,41 @@ LABEL_18:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     v22 = 138543618;
-    v23 = v12;
+    v23 = classCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "SpotlightDaemonClient: Aborting unexpected request to reindex searchable items with identifiers for unsupported protectionClass: %{public}@, identifiers: %@", &v22, 0x16u);
   }
 
-  v13[2](v13);
+  handlerCopy[2](handlerCopy);
 LABEL_19:
 }
 
-- (void)reindexAllItemsForBundleID:(id)a3 protectionClass:(id)a4 reason:(id)a5 acknowledgementHandler:(id)a6
+- (void)reindexAllItemsForBundleID:(id)d protectionClass:(id)class reason:(id)reason acknowledgementHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(PLSpotlightDaemonClientHandler *)self _isValidProtectionClass:v11])
+  dCopy = d;
+  classCopy = class;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if ([(PLSpotlightDaemonClientHandler *)self _isValidProtectionClass:classCopy])
   {
-    v14 = [(PLSpotlightDaemonClientHandler *)self pathManager];
-    if (v14)
+    pathManager = [(PLSpotlightDaemonClientHandler *)self pathManager];
+    if (pathManager)
     {
-      if ([(PLSpotlightDaemonClientHandler *)self _isValidReindexingRequestWithBundleID:v10])
+      if ([(PLSpotlightDaemonClientHandler *)self _isValidReindexingRequestWithBundleID:dCopy])
       {
         v15 = PLSearchBackendDonationsGetLog();
         v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-        if (v12)
+        if (reasonCopy)
         {
           if (v16)
           {
             *buf = 138543874;
-            v43 = v10;
+            v43 = dCopy;
             v44 = 2114;
-            v45 = v12;
+            v45 = reasonCopy;
             v46 = 2114;
-            v47 = v11;
+            v47 = classCopy;
             v17 = "SpotlightDaemonClient: Received request to reindex all searchable items for Core Spotlight for bundleID: %{public}@, reason: %{public}@, protection class: %{public}@";
             v18 = v15;
             v19 = 32;
@@ -149,25 +149,25 @@ LABEL_18:
         else if (v16)
         {
           *buf = 138543618;
-          v43 = v10;
+          v43 = dCopy;
           v44 = 2114;
-          v45 = v11;
+          v45 = classCopy;
           v17 = "SpotlightDaemonClient: Received request to reindex all searchable items for Core Spotlight for bundleID: %{public}@, protection class: %{public}@";
           v18 = v15;
           v19 = 22;
           goto LABEL_18;
         }
 
-        [PLAutoBugCapture captureSpotlightClientHandlerReindexAllItemsWithReason:v12 completion:&stru_10002D098];
-        v25 = [PLSpotlightReindexing recordReindexAllItemsForBundleID:v10 reindexReason:v12];
+        [PLAutoBugCapture captureSpotlightClientHandlerReindexAllItemsWithReason:reasonCopy completion:&stru_10002D098];
+        v25 = [PLSpotlightReindexing recordReindexAllItemsForBundleID:dCopy reindexReason:reasonCopy];
         if ([v25 isFailure])
         {
           v26 = PLSearchBackendDonationsGetLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v25 error];
+            error = [v25 error];
             *buf = 138412290;
-            v43 = v27;
+            v43 = error;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "SpotlightDaemonClient: Failed to record reindex all searchable items with error: %@", buf, 0xCu);
           }
         }
@@ -184,12 +184,12 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "SpotlightDaemonClient: in reindexAllItemsForBundleID, dropping search index in availability computer", buf, 2u);
           }
 
-          v40 = v14;
+          v40 = pathManager;
 
-          v31 = [v28 libraryServicesManager];
-          v32 = [v31 availabilityComputer];
+          libraryServicesManager = [v28 libraryServicesManager];
+          availabilityComputer = [libraryServicesManager availabilityComputer];
           v41 = 0;
-          v33 = [v32 didDropSearchIndexForPhotoLibrary:v28 error:&v41];
+          v33 = [availabilityComputer didDropSearchIndexForPhotoLibrary:v28 error:&v41];
           v30 = v41;
 
           if ((v33 & 1) == 0)
@@ -203,14 +203,14 @@ LABEL_18:
             }
           }
 
-          v35 = [v28 libraryServicesManager];
-          v36 = [v35 backgroundJobService];
-          v37 = [v28 libraryBundle];
+          libraryServicesManager2 = [v28 libraryServicesManager];
+          backgroundJobService = [libraryServicesManager2 backgroundJobService];
+          libraryBundle = [v28 libraryBundle];
           v38 = +[PLBackgroundJobWorkerTypes maskForSpotlightReindexing];
-          [v36 signalBackgroundProcessingNeededOnBundle:v37 workerTypes:v38];
+          [backgroundJobService signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:v38];
 
           v25 = v39;
-          v14 = v40;
+          pathManager = v40;
         }
 
         else if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -219,7 +219,7 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "PLSpotlightDaemonClientHandler failed to open system photo library", buf, 2u);
         }
 
-        v13[2](v13);
+        handlerCopy[2](handlerCopy);
         goto LABEL_34;
       }
 
@@ -227,7 +227,7 @@ LABEL_18:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v43 = v10;
+        v43 = dCopy;
         v22 = "SpotlightDaemonClient: Aborting unexpected request to reindex all searchable items with invalid bundleID: %{public}@";
         v23 = v21;
         v24 = 12;
@@ -249,7 +249,7 @@ LABEL_14:
       }
     }
 
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
 LABEL_34:
 
     goto LABEL_35;
@@ -259,28 +259,28 @@ LABEL_34:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v43 = v11;
+    v43 = classCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "SpotlightDaemonClient: Aborting unexpected request to reindex all searchable items for unsupported protectionClass: %{public}@", buf, 0xCu);
   }
 
-  v13[2](v13);
+  handlerCopy[2](handlerCopy);
 LABEL_35:
 }
 
-- (BOOL)_isValidProtectionClass:(id)a3
+- (BOOL)_isValidProtectionClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = PLSearchFileProtectionTypes();
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:classCopy];
 
   return v5;
 }
 
-- (BOOL)_isValidReindexingRequestWithBundleID:(id)a3
+- (BOOL)_isValidReindexingRequestWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[PLSpotlightDonationUtilities photosBundleIdentifier];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [dCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -308,7 +308,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v3;
+      v13 = dCopy;
       v7 = "SpotlightDaemonClient: Unexpected request to reindex searchable items for bundleID: %@";
       v8 = v6;
       v9 = 12;
@@ -322,27 +322,27 @@ LABEL_10:
   return v10;
 }
 
-- (id)systemPhotoLibraryWithName:(const char *)a3
+- (id)systemPhotoLibraryWithName:(const char *)name
 {
   v9 = 0;
   v4 = [PLLibraryServicesManager runningLibraryServicesManagerForWellKnownPhotoLibraryIdentifier:1 error:&v9];
   v5 = v9;
   if (v4)
   {
-    v6 = [v4 databaseContext];
-    v7 = [v6 newShortLivedLibraryWithName:a3];
+    databaseContext = [v4 databaseContext];
+    v7 = [databaseContext newShortLivedLibraryWithName:name];
   }
 
   else
   {
-    v6 = PLSearchBackendDonationsGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    databaseContext = PLSearchBackendDonationsGetLog();
+    if (os_log_type_enabled(databaseContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v11 = "[PLSpotlightDaemonClientHandler systemPhotoLibraryWithName:]";
       v12 = 2112;
       v13 = v5;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s unable to get running LSM: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, databaseContext, OS_LOG_TYPE_ERROR, "%s unable to get running LSM: %@", buf, 0x16u);
     }
 
     v7 = 0;
@@ -369,9 +369,9 @@ LABEL_10:
     }
   }
 
-  v5 = [v2 pathManager];
+  pathManager = [v2 pathManager];
 
-  return v5;
+  return pathManager;
 }
 
 @end

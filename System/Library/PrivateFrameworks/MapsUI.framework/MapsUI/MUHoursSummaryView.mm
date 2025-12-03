@@ -1,11 +1,11 @@
 @interface MUHoursSummaryView
-- (MUHoursSummaryView)initWithViewModel:(id)a3;
+- (MUHoursSummaryView)initWithViewModel:(id)model;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateExpandButton;
-- (void)expandButtonTapped:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
+- (void)expandButtonTapped:(BOOL)tapped;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation MUHoursSummaryView
@@ -13,15 +13,15 @@
 - (void)_updateAppearance
 {
   [(UIImageView *)self->_expansionIndicator setHidden:[(MUHoursSummaryViewModel *)self->_viewModel hideChevron]];
-  v3 = [(MUHoursSummaryViewModel *)self->_viewModel showHoursAndOpenState];
+  showHoursAndOpenState = [(MUHoursSummaryViewModel *)self->_viewModel showHoursAndOpenState];
   viewModel = self->_viewModel;
-  if (v3)
+  if (showHoursAndOpenState)
   {
-    v5 = [(MUHoursSummaryViewModel *)viewModel openStateColor];
-    [(MULabelViewProtocol *)self->_openStateLabel setTextColor:v5];
+    openStateColor = [(MUHoursSummaryViewModel *)viewModel openStateColor];
+    [(MULabelViewProtocol *)self->_openStateLabel setTextColor:openStateColor];
 
-    v6 = [(MUHoursSummaryViewModel *)self->_viewModel openStateText];
-    [(MULabelViewProtocol *)self->_openStateLabel setText:v6];
+    openStateText = [(MUHoursSummaryViewModel *)self->_viewModel openStateText];
+    [(MULabelViewProtocol *)self->_openStateLabel setText:openStateText];
 
     if ([(MUHoursSummaryViewModel *)self->_viewModel showHoursInSummary])
     {
@@ -31,14 +31,14 @@
       return;
     }
 
-    v8 = [(MUHoursSummaryViewModel *)self->_viewModel buildDefaultPlacecardHoursString];
-    [(MULabelViewProtocol *)self->_hoursLabel setAttributedText:v8];
+    buildDefaultPlacecardHoursString = [(MUHoursSummaryViewModel *)self->_viewModel buildDefaultPlacecardHoursString];
+    [(MULabelViewProtocol *)self->_hoursLabel setAttributedText:buildDefaultPlacecardHoursString];
   }
 
   else
   {
-    v8 = [(MUHoursSummaryViewModel *)viewModel titleText];
-    [(MULabelViewProtocol *)self->_titleLabel setText:v8];
+    buildDefaultPlacecardHoursString = [(MUHoursSummaryViewModel *)viewModel titleText];
+    [(MULabelViewProtocol *)self->_titleLabel setText:buildDefaultPlacecardHoursString];
   }
 }
 
@@ -67,168 +67,168 @@
   [(UIImageView *)expansionIndicator setImage:v10];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(MUHoursSummaryView *)self _updateExpandButton];
   }
 }
 
-- (void)expandButtonTapped:(BOOL)a3
+- (void)expandButtonTapped:(BOOL)tapped
 {
-  v3 = a3;
+  tappedCopy = tapped;
   self->_expanded ^= 1u;
   [(MUHoursSummaryView *)self _updateExpandButton];
-  v5 = [(MUHoursSummaryView *)self actionHandler];
+  actionHandler = [(MUHoursSummaryView *)self actionHandler];
 
-  if (v5 && v3)
+  if (actionHandler && tappedCopy)
   {
-    v6 = [(MUHoursSummaryView *)self actionHandler];
-    v6[2]();
+    actionHandler2 = [(MUHoursSummaryView *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 
 - (void)_setupConstraints
 {
   v71[11] = *MEMORY[0x1E69E9840];
-  v3 = [(MUHoursSummaryViewModel *)self->_viewModel showHoursAndOpenState];
+  showHoursAndOpenState = [(MUHoursSummaryViewModel *)self->_viewModel showHoursAndOpenState];
   v58 = MEMORY[0x1E696ACD8];
-  v4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
-  v5 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  topAnchor = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
+  layoutMarginsGuide = [(MUHoursSummaryView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v8 = v7;
-  if (v3)
+  if (showHoursAndOpenState)
   {
     v71[0] = v7;
-    v9 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
-    v69 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    v68 = [v69 bottomAnchor];
-    v67 = [v9 constraintEqualToAnchor:?];
+    bottomAnchor = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
+    layoutMarginsGuide2 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v67 = [bottomAnchor constraintEqualToAnchor:?];
     v71[1] = v67;
-    v10 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
-    v65 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    [v65 leadingAnchor];
-    v64 = v66 = v10;
-    v63 = [v10 constraintEqualToAnchor:?];
+    leadingAnchor = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
+    layoutMarginsGuide3 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    [layoutMarginsGuide3 leadingAnchor];
+    v64 = v66 = leadingAnchor;
+    v63 = [leadingAnchor constraintEqualToAnchor:?];
     v71[2] = v63;
-    v11 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
-    v61 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    [v61 trailingAnchor];
-    v60 = v62 = v11;
-    v59 = [v11 constraintEqualToAnchor:?];
+    trailingAnchor = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
+    layoutMarginsGuide4 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    [layoutMarginsGuide4 trailingAnchor];
+    v60 = v62 = trailingAnchor;
+    v59 = [trailingAnchor constraintEqualToAnchor:?];
     v71[3] = v59;
-    v12 = [(MULabelViewProtocol *)self->_openStateLabel leadingAnchor];
-    v56 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
-    v57 = v12;
-    v55 = [v12 constraintEqualToAnchor:?];
+    leadingAnchor2 = [(MULabelViewProtocol *)self->_openStateLabel leadingAnchor];
+    leadingAnchor3 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
+    v57 = leadingAnchor2;
+    v55 = [leadingAnchor2 constraintEqualToAnchor:?];
     v71[4] = v55;
-    v13 = [(MULabelViewProtocol *)self->_openStateLabel topAnchor];
-    v53 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
-    v54 = v13;
-    v52 = [v13 constraintEqualToAnchor:?];
+    topAnchor3 = [(MULabelViewProtocol *)self->_openStateLabel topAnchor];
+    topAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
+    v54 = topAnchor3;
+    v52 = [topAnchor3 constraintEqualToAnchor:?];
     v71[5] = v52;
-    v14 = [(MULabelViewProtocol *)self->_openStateLabel bottomAnchor];
-    v50 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
-    v51 = v14;
-    v49 = [v14 constraintEqualToAnchor:?];
+    bottomAnchor3 = [(MULabelViewProtocol *)self->_openStateLabel bottomAnchor];
+    bottomAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
+    v51 = bottomAnchor3;
+    v49 = [bottomAnchor3 constraintEqualToAnchor:?];
     v71[6] = v49;
-    v15 = [(MULabelViewProtocol *)self->_openStateLabel trailingAnchor];
-    v47 = [(MULabelViewProtocol *)self->_hoursLabel leadingAnchor];
-    v48 = v15;
-    v46 = [v15 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor2 = [(MULabelViewProtocol *)self->_openStateLabel trailingAnchor];
+    leadingAnchor4 = [(MULabelViewProtocol *)self->_hoursLabel leadingAnchor];
+    v48 = trailingAnchor2;
+    v46 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:?];
     v71[7] = v46;
-    v16 = [(MULabelViewProtocol *)self->_hoursLabel topAnchor];
-    v44 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
-    v45 = v16;
-    v43 = [v16 constraintEqualToAnchor:?];
+    topAnchor5 = [(MULabelViewProtocol *)self->_hoursLabel topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
+    v45 = topAnchor5;
+    v43 = [topAnchor5 constraintEqualToAnchor:?];
     v71[8] = v43;
-    v17 = [(MULabelViewProtocol *)self->_hoursLabel trailingAnchor];
-    v41 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
-    v42 = v17;
-    v40 = [v17 constraintEqualToAnchor:?];
-    v71[9] = v40;
-    v18 = [(MULabelViewProtocol *)self->_hoursLabel bottomAnchor];
-    v19 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
-    v71[10] = v20;
-    v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:11];
-    [v58 activateConstraints:v21];
+    trailingAnchor3 = [(MULabelViewProtocol *)self->_hoursLabel trailingAnchor];
+    trailingAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
+    v42 = trailingAnchor3;
+    layoutMarginsGuide5 = [trailingAnchor3 constraintEqualToAnchor:?];
+    v71[9] = layoutMarginsGuide5;
+    bottomAnchor5 = [(MULabelViewProtocol *)self->_hoursLabel bottomAnchor];
+    bottomAnchor6 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
+    trailingAnchor7 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
+    v71[10] = trailingAnchor7;
+    layoutMarginsGuide6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:11];
+    [v58 activateConstraints:layoutMarginsGuide6];
   }
 
   else
   {
     v70[0] = v7;
-    v39 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
-    v69 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    v68 = [v69 bottomAnchor];
-    v67 = [v39 constraintEqualToAnchor:?];
+    bottomAnchor7 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
+    layoutMarginsGuide2 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v67 = [bottomAnchor7 constraintEqualToAnchor:?];
     v70[1] = v67;
-    v22 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
-    v65 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    [v65 leadingAnchor];
-    v64 = v66 = v22;
-    v63 = [v22 constraintEqualToAnchor:?];
+    leadingAnchor5 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
+    layoutMarginsGuide3 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    [layoutMarginsGuide3 leadingAnchor];
+    v64 = v66 = leadingAnchor5;
+    v63 = [leadingAnchor5 constraintEqualToAnchor:?];
     v70[2] = v63;
-    v23 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
-    v61 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    [v61 trailingAnchor];
-    v60 = v62 = v23;
-    v59 = [v23 constraintEqualToAnchor:?];
+    trailingAnchor5 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
+    layoutMarginsGuide4 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    [layoutMarginsGuide4 trailingAnchor];
+    v60 = v62 = trailingAnchor5;
+    v59 = [trailingAnchor5 constraintEqualToAnchor:?];
     v70[3] = v59;
-    v24 = [(MULabelViewProtocol *)self->_titleLabel topAnchor];
-    v56 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
-    v57 = v24;
-    v55 = [v24 constraintEqualToAnchor:?];
+    topAnchor7 = [(MULabelViewProtocol *)self->_titleLabel topAnchor];
+    leadingAnchor3 = [(UILayoutGuide *)self->_summaryStackLayoutGuide topAnchor];
+    v57 = topAnchor7;
+    v55 = [topAnchor7 constraintEqualToAnchor:?];
     v70[4] = v55;
-    v25 = [(MULabelViewProtocol *)self->_titleLabel leadingAnchor];
-    v53 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
-    v54 = v25;
-    v52 = [v25 constraintEqualToAnchor:?];
+    leadingAnchor6 = [(MULabelViewProtocol *)self->_titleLabel leadingAnchor];
+    topAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide leadingAnchor];
+    v54 = leadingAnchor6;
+    v52 = [leadingAnchor6 constraintEqualToAnchor:?];
     v70[5] = v52;
-    v26 = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
-    v50 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
-    v51 = v26;
-    v49 = [v26 constraintEqualToAnchor:?];
+    trailingAnchor6 = [(MULabelViewProtocol *)self->_titleLabel trailingAnchor];
+    bottomAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide trailingAnchor];
+    v51 = trailingAnchor6;
+    v49 = [trailingAnchor6 constraintEqualToAnchor:?];
     v70[6] = v49;
-    v27 = [(MULabelViewProtocol *)self->_titleLabel bottomAnchor];
-    v47 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
-    v48 = v27;
-    v46 = [v27 constraintEqualToAnchor:?];
+    bottomAnchor8 = [(MULabelViewProtocol *)self->_titleLabel bottomAnchor];
+    leadingAnchor4 = [(UILayoutGuide *)self->_summaryStackLayoutGuide bottomAnchor];
+    v48 = bottomAnchor8;
+    v46 = [bottomAnchor8 constraintEqualToAnchor:?];
     v70[7] = v46;
-    v28 = [(UIImageView *)self->_expansionIndicator topAnchor];
-    v44 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    [v44 topAnchor];
-    v43 = v45 = v28;
-    v42 = [v28 constraintEqualToAnchor:?];
+    topAnchor8 = [(UIImageView *)self->_expansionIndicator topAnchor];
+    topAnchor6 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    [topAnchor6 topAnchor];
+    v43 = v45 = topAnchor8;
+    v42 = [topAnchor8 constraintEqualToAnchor:?];
     v70[8] = v42;
-    v29 = [(UIImageView *)self->_expansionIndicator bottomAnchor];
-    v40 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    v38 = [v40 bottomAnchor];
-    v41 = v29;
-    v19 = [v29 constraintLessThanOrEqualToAnchor:v38];
-    v70[9] = v19;
-    v20 = [(UIImageView *)self->_expansionIndicator trailingAnchor];
-    v21 = [(MUHoursSummaryView *)self layoutMarginsGuide];
-    v30 = [v21 trailingAnchor];
-    v31 = [v20 constraintEqualToAnchor:v30];
+    bottomAnchor9 = [(UIImageView *)self->_expansionIndicator bottomAnchor];
+    layoutMarginsGuide5 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    bottomAnchor10 = [layoutMarginsGuide5 bottomAnchor];
+    trailingAnchor4 = bottomAnchor9;
+    bottomAnchor6 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10];
+    v70[9] = bottomAnchor6;
+    trailingAnchor7 = [(UIImageView *)self->_expansionIndicator trailingAnchor];
+    layoutMarginsGuide6 = [(MUHoursSummaryView *)self layoutMarginsGuide];
+    trailingAnchor8 = [layoutMarginsGuide6 trailingAnchor];
+    v31 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v70[10] = v31;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:11];
     v32 = v8;
-    v33 = v6;
-    v34 = v5;
-    v36 = v35 = v4;
+    v33 = topAnchor2;
+    v34 = layoutMarginsGuide;
+    v36 = v35 = topAnchor;
     [v58 activateConstraints:v36];
 
-    v4 = v35;
-    v5 = v34;
-    v6 = v33;
+    topAnchor = v35;
+    layoutMarginsGuide = v34;
+    topAnchor2 = v33;
     v8 = v32;
-    v9 = v39;
+    bottomAnchor = bottomAnchor7;
 
-    v18 = v38;
+    bottomAnchor5 = bottomAnchor10;
   }
 
   v37 = *MEMORY[0x1E69E9840];
@@ -254,8 +254,8 @@
   v9 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] weight:*MEMORY[0x1E69DB970]];
   [(MULabelViewProtocol *)self->_titleLabel setFont:v9];
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(MULabelViewProtocol *)self->_titleLabel setTextColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(MULabelViewProtocol *)self->_titleLabel setTextColor:secondaryLabelColor];
 
   [(MULabelViewProtocol *)self->_titleLabel setAdjustsFontForContentSizeCategory:1];
   [(MULabelViewProtocol *)self->_titleLabel setAccessibilityIdentifier:@"HoursSummaryTitle"];
@@ -267,10 +267,10 @@
   [(MULabelViewProtocol *)self->_hoursLabel setNumberOfLines:0];
   [(MULabelViewProtocol *)self->_hoursLabel setAdjustsFontForContentSizeCategory:1];
   [(MULabelViewProtocol *)self->_hoursLabel setAccessibilityIdentifier:@"HoursSummaryHours"];
-  v13 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   p_openStateLabel = &self->_openStateLabel;
   openStateLabel = self->_openStateLabel;
-  self->_openStateLabel = v13;
+  self->_openStateLabel = _mapsui_defaultLabel;
 
   [(MULabelViewProtocol *)self->_openStateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MULabelViewProtocol *)self->_openStateLabel setAdjustsFontForContentSizeCategory:1];
@@ -290,8 +290,8 @@
   [(UIImageView *)self->_expansionIndicator setPreferredSymbolConfiguration:v22];
 
   v23 = self->_expansionIndicator;
-  v24 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v23 setTintColor:v24];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v23 setTintColor:tertiaryLabelColor];
 
   LODWORD(v25) = 1148846080;
   [(UIImageView *)self->_expansionIndicator setContentHuggingPriority:0 forAxis:v25];
@@ -331,9 +331,9 @@
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (MUHoursSummaryView)initWithViewModel:(id)a3
+- (MUHoursSummaryView)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = MUHoursSummaryView;
   v6 = [(MUHoursSummaryView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -341,7 +341,7 @@
   if (v6)
   {
     v6->_expanded = 0;
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(MUHoursSummaryView *)v7 setAccessibilityIdentifier:@"HoursSummary"];
     [(MUHoursSummaryView *)v7 _setupSubviews];
     [(MUHoursSummaryView *)v7 _setupConstraints];

@@ -1,13 +1,13 @@
 @interface NRMiniUUIDSet
-- (BOOL)hasCapability:(unsigned int)a3;
-- (BOOL)hasUUID:(id)a3;
-- (NRMiniUUIDSet)initWithCoder:(id)a3;
-- (NRMiniUUIDSet)initWithData:(id)a3;
-- (NRMiniUUIDSet)initWithUUIDSet:(id)a3;
+- (BOOL)hasCapability:(unsigned int)capability;
+- (BOOL)hasUUID:(id)d;
+- (NRMiniUUIDSet)initWithCoder:(id)coder;
+- (NRMiniUUIDSet)initWithData:(id)data;
+- (NRMiniUUIDSet)initWithUUIDSet:(id)set;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRMiniUUIDSet
@@ -37,16 +37,16 @@
   return v3;
 }
 
-- (NRMiniUUIDSet)initWithUUIDSet:(id)a3
+- (NRMiniUUIDSet)initWithUUIDSet:(id)set
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v44.receiver = self;
   v44.super_class = NRMiniUUIDSet;
   v5 = [(NRMiniUUIDSet *)&v44 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [setCopy count];
     if (v6)
     {
       std::vector<unsigned int>::reserve((v5 + 8), v6);
@@ -54,7 +54,7 @@
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      obj = v4;
+      obj = setCopy;
       v7 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
       if (v7)
       {
@@ -226,24 +226,24 @@
   return v5;
 }
 
-- (NRMiniUUIDSet)initWithCoder:(id)a3
+- (NRMiniUUIDSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   v6 = [(NRMiniUUIDSet *)self initWithData:v5];
 
   return v6;
 }
 
-- (NRMiniUUIDSet)initWithData:(id)a3
+- (NRMiniUUIDSet)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = NRMiniUUIDSet;
   v5 = [(NRMiniUUIDSet *)&v17 init];
-  if (v5 && [v4 length] >= 4)
+  if (v5 && [dataCopy length] >= 4)
   {
-    v6 = [v4 length] >> 2;
+    v6 = [dataCopy length] >> 2;
     std::vector<unsigned int>::reserve((v5 + 8), v6);
     v7 = *(v5 + 1);
     v8 = *(v5 + 2);
@@ -253,7 +253,7 @@
       if (v6 >= v9)
       {
 LABEL_15:
-        memcpy(v7, [v4 bytes], *(v5 + 3) - *(v5 + 1));
+        memcpy(v7, [dataCopy bytes], *(v5 + 3) - *(v5 + 1));
         goto LABEL_16;
       }
 
@@ -299,21 +299,21 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   begin = self->_miniUUIDs.__begin_;
   if (self->_miniUUIDs.__end_ != begin)
   {
-    v7 = v4;
-    v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:begin length:self->_miniUUIDs.__cap_ - begin];
-    [v7 encodeObject:v6 forKey:@"data"];
+    v7 = coderCopy;
+    begin = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:begin length:self->_miniUUIDs.__cap_ - begin];
+    [v7 encodeObject:begin forKey:@"data"];
 
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NRMiniUUIDSet);
   v5 = v4;
@@ -400,13 +400,13 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)hasUUID:(id)a3
+- (BOOL)hasUUID:(id)d
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v15[0] = 0;
   v15[1] = 0;
-  [v4 getUUIDBytes:v15];
+  [dCopy getUUIDBytes:v15];
   begin = self->_miniUUIDs.__begin_;
   end = self->_miniUUIDs.__end_;
   if (end == begin)
@@ -449,7 +449,7 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)hasCapability:(unsigned int)a3
+- (BOOL)hasCapability:(unsigned int)capability
 {
   begin = self->_miniUUIDs.__begin_;
   end = self->_miniUUIDs.__end_;
@@ -466,7 +466,7 @@ LABEL_9:
     v9 = *v7;
     v8 = v7 + 1;
     v5 += ~(v5 >> 1);
-    if (v9 < a3)
+    if (v9 < capability)
     {
       begin = v8;
     }
@@ -478,7 +478,7 @@ LABEL_9:
   }
 
   while (v5);
-  return begin != end && *begin <= a3;
+  return begin != end && *begin <= capability;
 }
 
 - (id).cxx_construct

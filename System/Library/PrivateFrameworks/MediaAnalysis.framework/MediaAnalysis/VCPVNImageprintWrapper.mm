@@ -1,17 +1,17 @@
 @interface VCPVNImageprintWrapper
-+ (VCPVNImageprintWrapper)wrapperWithImageprintType:(unint64_t)a3 version:(int)a4 andData:(id)a5;
-+ (id)generateVNImageprintWithType:(unint64_t)a3 archiveData:(id)a4 andError:(id *)a5;
-- (BOOL)calculateDistance:(float *)a3 toWrapper:(id)a4 andError:(id *)a5;
-- (VCPVNImageprintWrapper)initWithImageprintType:(unint64_t)a3 version:(int)a4 andData:(id)a5;
++ (VCPVNImageprintWrapper)wrapperWithImageprintType:(unint64_t)type version:(int)version andData:(id)data;
++ (id)generateVNImageprintWithType:(unint64_t)type archiveData:(id)data andError:(id *)error;
+- (BOOL)calculateDistance:(float *)distance toWrapper:(id)wrapper andError:(id *)error;
+- (VCPVNImageprintWrapper)initWithImageprintType:(unint64_t)type version:(int)version andData:(id)data;
 - (id)description;
 @end
 
 @implementation VCPVNImageprintWrapper
 
-- (VCPVNImageprintWrapper)initWithImageprintType:(unint64_t)a3 version:(int)a4 andData:(id)a5
+- (VCPVNImageprintWrapper)initWithImageprintType:(unint64_t)type version:(int)version andData:(id)data
 {
-  v9 = a5;
-  if (v9)
+  dataCopy = data;
+  if (dataCopy)
   {
     v14.receiver = self;
     v14.super_class = VCPVNImageprintWrapper;
@@ -19,73 +19,73 @@
     v11 = v10;
     if (v10)
     {
-      v10->_type = a3;
-      v10->_version = a4;
-      objc_storeStrong(&v10->_data, a5);
+      v10->_type = type;
+      v10->_version = version;
+      objc_storeStrong(&v10->_data, data);
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (VCPVNImageprintWrapper)wrapperWithImageprintType:(unint64_t)a3 version:(int)a4 andData:(id)a5
++ (VCPVNImageprintWrapper)wrapperWithImageprintType:(unint64_t)type version:(int)version andData:(id)data
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = [[a1 alloc] initWithImageprintType:a3 version:v5 andData:v8];
+  v5 = *&version;
+  dataCopy = data;
+  v9 = [[self alloc] initWithImageprintType:type version:v5 andData:dataCopy];
 
   return v9;
 }
 
-+ (id)generateVNImageprintWithType:(unint64_t)a3 archiveData:(id)a4 andError:(id *)a5
++ (id)generateVNImageprintWithType:(unint64_t)type archiveData:(id)data andError:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  dataCopy = data;
+  if (!type)
   {
     v8 = 0x1E6984520;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v8 = 0x1E6984408;
 LABEL_5:
-    a5 = [objc_alloc(*v8) initWithState:v7 error:a5];
+    error = [objc_alloc(*v8) initWithState:dataCopy error:error];
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
     v9 = MEMORY[0x1E696ABC0];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPVNImageprintWrapper] Invalid imageprint type %lu", a3, *MEMORY[0x1E696A578]];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPVNImageprintWrapper] Invalid imageprint type %lu", type, *MEMORY[0x1E696A578]];
     v14[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a5 = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v11];
+    *error = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v11];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_8:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)calculateDistance:(float *)a3 toWrapper:(id)a4 andError:(id *)a5
+- (BOOL)calculateDistance:(float *)distance toWrapper:(id)wrapper andError:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  wrapperCopy = wrapper;
+  if (!wrapperCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -98,35 +98,35 @@ LABEL_8:
     v24 = [v23 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
 LABEL_17:
     v27 = 0;
-    *a5 = v24;
+    *error = v24;
     goto LABEL_18;
   }
 
-  v9 = [(VCPVNImageprintWrapper *)self type];
-  if (v9 != [v8 type])
+  type = [(VCPVNImageprintWrapper *)self type];
+  if (type != [wrapperCopy type])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_19;
     }
 
     v25 = MEMORY[0x1E696ABC0];
     v57 = *MEMORY[0x1E696A578];
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot calculate distance - mismatched imageprint type (%lu vs %lu)", -[VCPVNImageprintWrapper type](self, "type"), objc_msgSend(v8, "type")];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot calculate distance - mismatched imageprint type (%lu vs %lu)", -[VCPVNImageprintWrapper type](self, "type"), objc_msgSend(wrapperCopy, "type")];
     v58 = v15;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
     v24 = [v25 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
     goto LABEL_17;
   }
 
-  v10 = [(VCPVNImageprintWrapper *)self version];
-  if (v10 != [v8 version])
+  version = [(VCPVNImageprintWrapper *)self version];
+  if (version != [wrapperCopy version])
   {
-    if (a5)
+    if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
       v55 = *MEMORY[0x1E696A578];
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot calculate distance - mismatched versions (%d vs %d)", -[VCPVNImageprintWrapper version](self, "version"), objc_msgSend(v8, "version")];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot calculate distance - mismatched versions (%d vs %d)", -[VCPVNImageprintWrapper version](self, "version"), objc_msgSend(wrapperCopy, "version")];
       v56 = v15;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
       v24 = [v26 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v14];
@@ -139,19 +139,19 @@ LABEL_19:
   }
 
   v11 = objc_opt_class();
-  v12 = [(VCPVNImageprintWrapper *)self type];
-  v13 = [(VCPVNImageprintWrapper *)self data];
+  type2 = [(VCPVNImageprintWrapper *)self type];
+  data = [(VCPVNImageprintWrapper *)self data];
   v44 = 0;
-  v14 = [v11 generateVNImageprintWithType:v12 archiveData:v13 andError:&v44];
+  v14 = [v11 generateVNImageprintWithType:type2 archiveData:data andError:&v44];
   v15 = v44;
 
   if (v14 && !v15)
   {
     v16 = objc_opt_class();
-    v17 = [v8 type];
-    v18 = [v8 data];
+    type3 = [wrapperCopy type];
+    data2 = [wrapperCopy data];
     v43 = 0;
-    v19 = [v16 generateVNImageprintWithType:v17 archiveData:v18 andError:&v43];
+    v19 = [v16 generateVNImageprintWithType:type3 archiveData:data2 andError:&v43];
     v15 = v43;
 
     if (v19 && !v15)
@@ -175,12 +175,12 @@ LABEL_19:
 
       if ([v20 isValidFaceprint])
       {
-        v32 = [v20 isValidTorsoprint];
+        isValidTorsoprint = [v20 isValidTorsoprint];
       }
 
       else
       {
-        v32 = 1;
+        isValidTorsoprint = 1;
       }
 
       if ([v21 isValidTorsoprint])
@@ -195,13 +195,13 @@ LABEL_19:
 
       if ([v21 isValidFaceprint])
       {
-        if ([v21 isValidTorsoprint] & 1 | ((v22 & 1) == 0) && ((v33 ^ 1 | v32) & 1) != 0)
+        if ([v21 isValidTorsoprint] & 1 | ((v22 & 1) == 0) && ((v33 ^ 1 | isValidTorsoprint) & 1) != 0)
         {
           goto LABEL_37;
         }
       }
 
-      else if (v32 & 1 | ((v33 & 1) == 0))
+      else if (isValidTorsoprint & 1 | ((v33 & 1) == 0))
       {
 LABEL_37:
 
@@ -223,21 +223,21 @@ LABEL_38:
         v27 = v35;
         if (v35)
         {
-          if (a3)
+          if (distance)
           {
             [v20 floatValue];
-            *a3 = v36;
+            *distance = v36;
           }
         }
 
-        else if (a5)
+        else if (error)
         {
           v37 = MEMORY[0x1E696ABC0];
           v45 = *MEMORY[0x1E696A578];
           v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot get distance between faceprints. Distance function returns nil"];
           v46 = v38;
           v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-          *a5 = [v37 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v39];
+          *error = [v37 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v39];
         }
 
         goto LABEL_62;
@@ -268,9 +268,9 @@ LABEL_38:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Incomparable images: this - %@ vs that - %@", buf, 0x16u);
       }
 
-      if (a3)
+      if (distance)
       {
-        *a3 = 1.0;
+        *distance = 1.0;
       }
 
       v15 = 0;
@@ -279,7 +279,7 @@ LABEL_38:
       goto LABEL_62;
     }
 
-    if (!a5)
+    if (!error)
     {
       v27 = 0;
 LABEL_63:
@@ -292,7 +292,7 @@ LABEL_63:
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot calculate distance - unarchive theOtherImageprint.data - %@", v15];
     v52 = v20;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-    *a5 = [v30 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v31];
+    *error = [v30 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v31];
 
     v27 = 0;
 LABEL_62:
@@ -300,7 +300,7 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  if (a5)
+  if (error)
   {
     v29 = MEMORY[0x1E696ABC0];
     v53 = *MEMORY[0x1E696A578];
@@ -308,7 +308,7 @@ LABEL_62:
     v54 = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     [v29 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v20];
-    *a5 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_62;
   }
 
@@ -327,12 +327,12 @@ LABEL_20:
   v4 = [(VCPVNImageprintWrapper *)&v12 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(VCPVNImageprintWrapper *)self type];
-  v7 = [(VCPVNImageprintWrapper *)self version];
-  v8 = [(VCPVNImageprintWrapper *)self data];
-  v9 = [v8 length];
-  v10 = [(VCPVNImageprintWrapper *)self data];
-  [v5 appendFormat:@"type: %lu, version: %d, and data[length:%lu]: <%p>", v6, v7, v9, v10];
+  type = [(VCPVNImageprintWrapper *)self type];
+  version = [(VCPVNImageprintWrapper *)self version];
+  data = [(VCPVNImageprintWrapper *)self data];
+  v9 = [data length];
+  data2 = [(VCPVNImageprintWrapper *)self data];
+  [v5 appendFormat:@"type: %lu, version: %d, and data[length:%lu]: <%p>", type, version, v9, data2];
 
   return v5;
 }

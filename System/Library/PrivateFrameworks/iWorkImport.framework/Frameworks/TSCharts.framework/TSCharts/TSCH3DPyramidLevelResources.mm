@@ -1,22 +1,22 @@
 @interface TSCH3DPyramidLevelResources
-+ (id)resourcesWithFBOSize:(tvec2<int>)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DPyramidLevelResources)initWithFBOSize:(tvec2<int>)a3;
++ (id)resourcesWithFBOSize:(tvec2<int>)size;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DPyramidLevelResources)initWithFBOSize:(tvec2<int>)size;
 - (tvec2<int>)size;
 @end
 
 @implementation TSCH3DPyramidLevelResources
 
-+ (id)resourcesWithFBOSize:(tvec2<int>)a3
++ (id)resourcesWithFBOSize:(tvec2<int>)size
 {
-  v4 = [a1 alloc];
-  v10 = **&a3;
+  v4 = [self alloc];
+  v10 = **&size;
   v8 = objc_msgSend_initWithFBOSize_(v4, v5, v10, v6, v7, &v10);
 
   return v8;
 }
 
-- (TSCH3DPyramidLevelResources)initWithFBOSize:(tvec2<int>)a3
+- (TSCH3DPyramidLevelResources)initWithFBOSize:(tvec2<int>)size
 {
   v22.receiver = self;
   v22.super_class = TSCH3DPyramidLevelResources;
@@ -24,9 +24,9 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D812A8]);
-    v21 = **&a3;
+    v21 = **&size;
     v9 = objc_msgSend_pyramidResourceWithFBOSize_(TSCH3DPyramidBlurFBOResource, v6, v21, v7, v8, &v21);
-    v21 = **&a3;
+    v21 = **&size;
     v13 = objc_msgSend_pyramidResourceWithFBOSize_(TSCH3DPyramidBlurFBOResource, v10, v21, v11, v12, &v21);
     second = objc_msgSend_initWithFirst_second_(v5, v14, v15, v16, v17, v9, v13);
     resourcePair = v4->_resourcePair;
@@ -36,10 +36,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }

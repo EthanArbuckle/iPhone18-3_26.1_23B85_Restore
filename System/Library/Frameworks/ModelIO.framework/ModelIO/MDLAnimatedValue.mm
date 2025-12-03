@@ -6,9 +6,9 @@
 - (NSUInteger)getTimes:(NSTimeInterval *)timesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)clear;
-- (void)resetWithAnimatedValue:(id)a3;
+- (void)resetWithAnimatedValue:(id)value;
 @end
 
 @implementation MDLAnimatedValue
@@ -28,17 +28,17 @@
   return v2;
 }
 
-- (void)resetWithAnimatedValue:(id)a3
+- (void)resetWithAnimatedValue:(id)value
 {
-  v4 = a3;
-  sub_239F22B70(&self->_timeSampledData, v4 + 1);
-  self->_interpolation = *(v4 + 4);
+  valueCopy = value;
+  sub_239F22B70(&self->_timeSampledData, valueCopy + 1);
+  self->_interpolation = *(valueCopy + 4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   *(v10 + 32) = self->_interpolation;
   sub_239F22B70((v10 + 8), &self->_timeSampledData);

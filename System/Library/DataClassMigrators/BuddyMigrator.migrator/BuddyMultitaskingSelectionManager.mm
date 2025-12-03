@@ -2,50 +2,50 @@
 - (BOOL)isFeatureApplicableToSetup;
 - (BOOL)shouldShowFlow;
 - (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)init;
-- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)a3 preferences:(id)a4;
-- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)a3 preferences:(id)a4 modeProvider:(id)a5;
-- (void)resetSettingsUsing:(id)a3;
-- (void)setCurrentMode:(int64_t)a3;
-- (void)stashSettingUsing:(id)a3;
-- (void)updatePanePresented:(BOOL)a3;
+- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)provider preferences:(id)preferences;
+- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)provider preferences:(id)preferences modeProvider:(id)modeProvider;
+- (void)resetSettingsUsing:(id)using;
+- (void)setCurrentMode:(int64_t)mode;
+- (void)stashSettingUsing:(id)using;
+- (void)updatePanePresented:(BOOL)presented;
 @end
 
 @implementation BuddyMultitaskingSelectionManager
 
-- (void)setCurrentMode:(int64_t)a3
+- (void)setCurrentMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider);
-  v7 = self;
-  if ([v6 currentMultitaskingOption] != a3)
+  selfCopy = self;
+  if ([v6 currentMultitaskingOption] != mode)
   {
-    [*(&self->super.isa + v5) setCurrentMultitaskingOption:a3];
+    [*(&self->super.isa + v5) setCurrentMultitaskingOption:mode];
   }
 }
 
-- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)a3 preferences:(id)a4
+- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)provider preferences:(id)preferences
 {
   v7 = objc_allocWithZone(SBSBuddyMultitaskingFlow);
   swift_unknownObjectRetain();
-  v8 = a4;
+  preferencesCopy = preferences;
   v9 = [v7 init];
-  v10 = [(BuddyMultitaskingSelectionManager *)self initWithDeviceProvider:a3 preferences:v8 modeProvider:v9];
+  v10 = [(BuddyMultitaskingSelectionManager *)self initWithDeviceProvider:provider preferences:preferencesCopy modeProvider:v9];
 
   swift_unknownObjectRelease();
   return v10;
 }
 
-- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)a3 preferences:(id)a4 modeProvider:(id)a5
+- (_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager)initWithDeviceProvider:(id)provider preferences:(id)preferences modeProvider:(id)modeProvider
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_deviceProvider) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_preferences) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider) = a5;
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_deviceProvider) = provider;
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_preferences) = preferences;
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider) = modeProvider;
   swift_unknownObjectRetain_n();
-  v8 = a4;
+  preferencesCopy = preferences;
   swift_unknownObjectRetain_n();
-  v9 = v8;
-  v10 = [a5 currentMultitaskingOption];
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_initialValue) = v10;
+  v9 = preferencesCopy;
+  currentMultitaskingOption = [modeProvider currentMultitaskingOption];
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_initialValue) = currentMultitaskingOption;
   v13.receiver = self;
   v13.super_class = type metadata accessor for BuddyMultitaskingSelectionManager();
   v11 = [(BuddyMultitaskingSelectionManager *)&v13 init];
@@ -57,7 +57,7 @@
 
 - (BOOL)isFeatureApplicableToSetup
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_16038();
 
   return v3 & 1;
@@ -65,47 +65,47 @@
 
 - (BOOL)shouldShowFlow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_16234();
 
   return v3 & 1;
 }
 
-- (void)updatePanePresented:(BOOL)a3
+- (void)updatePanePresented:(BOOL)presented
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_preferences);
-  v4 = self;
+  selfCopy = self;
   isa = sub_193A0().super.super.isa;
   v6 = sub_19360();
   [v3 setObject:isa forKey:v6];
 }
 
-- (void)stashSettingUsing:(id)a3
+- (void)stashSettingUsing:(id)using
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider);
-  v5 = a3;
-  v7 = self;
+  usingCopy = using;
+  selfCopy = self;
   v6 = [objc_allocWithZone(NSNumber) initWithInteger:{objc_msgSend(v4, "currentMultitaskingOption")}];
-  [v5 setIPadMultitaskingMode:v6];
+  [usingCopy setIPadMultitaskingMode:v6];
 }
 
-- (void)resetSettingsUsing:(id)a3
+- (void)resetSettingsUsing:(id)using
 {
-  v8 = a3;
-  v4 = self;
-  [(BuddyMultitaskingSelectionManager *)v8 setIPadMultitaskingMode:0];
-  v5 = *(&v4->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_initialValue);
+  usingCopy = using;
+  selfCopy = self;
+  [(BuddyMultitaskingSelectionManager *)usingCopy setIPadMultitaskingMode:0];
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_initialValue);
   v6 = OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider;
-  if ([*(&v4->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider) currentMultitaskingOption] == v5)
+  if ([*(&selfCopy->super.isa + OBJC_IVAR____TtC13BuddyMigrator33BuddyMultitaskingSelectionManager_modeProvider) currentMultitaskingOption] == v5)
   {
-    v7 = v8;
-    v8 = v4;
+    v7 = usingCopy;
+    usingCopy = selfCopy;
   }
 
   else
   {
-    [*(&v4->super.isa + v6) setCurrentMultitaskingOption:v5];
-    v7 = v4;
+    [*(&selfCopy->super.isa + v6) setCurrentMultitaskingOption:v5];
+    v7 = selfCopy;
   }
 }
 

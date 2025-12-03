@@ -1,30 +1,30 @@
 @interface SiriSharedUICompactServerUtteranceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriSharedUICompactServerUtteranceView)initWithContentInsets:(UIEdgeInsets)a3 delegate:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriSharedUICompactServerUtteranceView)initWithContentInsets:(UIEdgeInsets)insets delegate:(id)delegate;
 - (SiriSharedUICompactServerUtteranceViewDelegate)delegate;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)contentInsets;
 - (double)_scaledSpacingBetweenLabels;
-- (id)_createEmojiLabelForString:(id)a3 containingEmojisAtRanges:(id)a4;
+- (id)_createEmojiLabelForString:(id)string containingEmojisAtRanges:(id)ranges;
 - (id)_createLabel;
-- (id)_createLabelForUtterance:(id)a3;
+- (id)_createLabelForUtterance:(id)utterance;
 - (id)_fontForUtteranceLabel;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setUtterances:(id)a3;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setUtterances:(id)utterances;
 @end
 
 @implementation SiriSharedUICompactServerUtteranceView
 
-- (SiriSharedUICompactServerUtteranceView)initWithContentInsets:(UIEdgeInsets)a3 delegate:(id)a4
+- (SiriSharedUICompactServerUtteranceView)initWithContentInsets:(UIEdgeInsets)insets delegate:(id)delegate
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = SiriSharedUICompactServerUtteranceView;
   v10 = *MEMORY[0x277CBF3A0];
@@ -39,7 +39,7 @@
     v14->_contentInsets.left = left;
     v14->_contentInsets.bottom = bottom;
     v14->_contentInsets.right = right;
-    objc_storeWeak(&v14->_delegate, v9);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v16 = [[SiriSharedUIStandardView alloc] initWithFrame:v10, v11, v12, v13];
     labelsContainerView = v15->_labelsContainerView;
     v15->_labelsContainerView = &v16->super;
@@ -68,12 +68,12 @@
   return result;
 }
 
-- (void)setUtterances:(id)a3
+- (void)setUtterances:(id)utterances
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UIView *)self->_labelsContainerView subviews];
-  v6 = [v5 copy];
+  utterancesCopy = utterances;
+  subviews = [(UIView *)self->_labelsContainerView subviews];
+  v6 = [subviews copy];
 
   v50 = 0u;
   v51 = 0u;
@@ -100,8 +100,8 @@
         if (objc_opt_isKindOfClass())
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          v14 = [v12 assistantUtteranceView];
-          [WeakRetained serverUtteranceView:self utteranceViewDidDisappear:v14];
+          assistantUtteranceView = [v12 assistantUtteranceView];
+          [WeakRetained serverUtteranceView:self utteranceViewDidDisappear:assistantUtteranceView];
         }
       }
 
@@ -115,8 +115,8 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v15 = [(NSMapTable *)self->_emojiLabels objectEnumerator];
-  v16 = [v15 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  objectEnumerator = [(NSMapTable *)self->_emojiLabels objectEnumerator];
+  v16 = [objectEnumerator countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v16)
   {
     v17 = v16;
@@ -127,13 +127,13 @@
       {
         if (*v45 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v44 + 1) + 8 * j) removeFromSuperview];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v17 = [objectEnumerator countByEnumeratingWithState:&v44 objects:v53 count:16];
     }
 
     while (v17);
@@ -142,15 +142,15 @@
   v39 = v7;
 
   [(NSMapTable *)self->_emojiLabels removeAllObjects];
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   serverLabels = self->_serverLabels;
-  self->_serverLabels = v20;
+  self->_serverLabels = array;
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v22 = v4;
+  v22 = utterancesCopy;
   v23 = [v22 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v23)
   {
@@ -166,12 +166,12 @@
         }
 
         v27 = *(*(&v40 + 1) + 8 * k);
-        v28 = [v27 text];
-        if (v28)
+        text = [v27 text];
+        if (text)
         {
-          v29 = v28;
-          v30 = [v27 text];
-          v31 = [v30 isEqualToString:&stru_282F84AA8];
+          v29 = text;
+          text2 = [v27 text];
+          v31 = [text2 isEqualToString:&stru_282F84AA8];
 
           if ((v31 & 1) == 0)
           {
@@ -187,9 +187,9 @@
             {
               if (!self->_emojiLabels)
               {
-                v36 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+                weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
                 emojiLabels = self->_emojiLabels;
-                self->_emojiLabels = v36;
+                self->_emojiLabels = weakToStrongObjectsMapTable;
               }
 
               v38 = [(SiriSharedUICompactServerUtteranceView *)self _createEmojiLabelForString:v34 containingEmojisAtRanges:v35];
@@ -210,12 +210,12 @@
   [(SiriSharedUICompactServerUtteranceView *)self setNeedsLayout];
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    self->_isInAmbient = a3;
+    self->_isInAmbient = ambient;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -237,8 +237,8 @@
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
-          v10 = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
-          [v9 setFont:v10];
+          _fontForUtteranceLabel = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
+          [v9 setFont:_fontForUtteranceLabel];
 
           ++v8;
         }
@@ -252,10 +252,10 @@
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
   v16 = *MEMORY[0x277D85DE8];
-  self->_isInAmbientInteractivity = a3;
+  self->_isInAmbientInteractivity = interactivity;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -277,8 +277,8 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
-        [v9 setFont:v10];
+        _fontForUtteranceLabel = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
+        [v9 setFont:_fontForUtteranceLabel];
 
         ++v8;
       }
@@ -291,12 +291,12 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self->_labelsContainerView subviews];
-  v7 = [v6 count];
+  height = fits.height;
+  width = fits.width;
+  subviews = [(UIView *)self->_labelsContainerView subviews];
+  v7 = [subviews count];
 
   if (v7)
   {
@@ -323,8 +323,8 @@
     v20[4] = self;
     [(NSMutableArray *)serverLabels enumerateObjectsUsingBlock:v20];
     v12 = v22[3];
-    v13 = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
-    [(SiriSharedUICompactServerUtteranceView *)self _lineHeightForFont:v13];
+    _fontForUtteranceLabel = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
+    [(SiriSharedUICompactServerUtteranceView *)self _lineHeightForFont:_fontForUtteranceLabel];
     v15 = vabdd_f64(v12, v14);
 
     if (v15 <= 1.0)
@@ -471,8 +471,8 @@ double __55__SiriSharedUICompactServerUtteranceView_sizeThatFits___block_invoke(
         v25 = [(NSMapTable *)self->_emojiLabels objectForKey:v20];
         if (v25)
         {
-          v26 = [(UIView *)self->_labelsContainerView superview];
-          [v26 convertRect:self->_labelsContainerView fromView:{v16, v17, v12, v22}];
+          superview = [(UIView *)self->_labelsContainerView superview];
+          [superview convertRect:self->_labelsContainerView fromView:{v16, v17, v12, v22}];
           v27 = v16;
           v29 = v28;
           v31 = v30;
@@ -495,16 +495,16 @@ double __55__SiriSharedUICompactServerUtteranceView_sizeThatFits___block_invoke(
   }
 
   [(SiriSharedUIDeviceMotionEffectView *)self->_deviceMotionEffectView setFrame:v42, v41, v12, v46];
-  v37 = [(UIView *)self->_labelsContainerView subviews];
-  if (![v37 count])
+  subviews = [(UIView *)self->_labelsContainerView subviews];
+  if (![subviews count])
   {
 
     goto LABEL_17;
   }
 
-  v38 = [MEMORY[0x277CEF4D0] saeAvailable];
+  saeAvailable = [MEMORY[0x277CEF4D0] saeAvailable];
 
-  if (v38)
+  if (saeAvailable)
   {
 LABEL_17:
     deviceMotionEffectView = self->_deviceMotionEffectView;
@@ -518,49 +518,49 @@ LABEL_18:
   [(SiriSharedUIDeviceMotionEffectView *)deviceMotionEffectView updateMaskingForView:labelsContainerView];
 }
 
-- (id)_createLabelForUtterance:(id)a3
+- (id)_createLabelForUtterance:(id)utterance
 {
-  v4 = a3;
-  v5 = [(SiriSharedUICompactServerUtteranceView *)self _createLabel];
-  v6 = [(SiriSharedUICompactServerUtteranceView *)self delegate];
-  v7 = [v6 parserSpeakableObjectProviderForServerUtterance:self];
+  utteranceCopy = utterance;
+  _createLabel = [(SiriSharedUICompactServerUtteranceView *)self _createLabel];
+  delegate = [(SiriSharedUICompactServerUtteranceView *)self delegate];
+  v7 = [delegate parserSpeakableObjectProviderForServerUtterance:self];
 
   v8 = MEMORY[0x277D61B38];
-  v9 = [v4 text];
-  v10 = [v4 context];
-  v11 = [v8 parsedUtteranceFromText:v9 context:v10 spekableObjectProviding:v7];
+  text = [utteranceCopy text];
+  context = [utteranceCopy context];
+  v11 = [v8 parsedUtteranceFromText:text context:context spekableObjectProviding:v7];
 
-  [(SiriSharedUICompactServerUtteranceView *)self _setTextForLabel:v5 text:v11];
-  v12 = [v4 dialogIdentifier];
-  [v5 setAccessibilityIdentifier:v12];
+  [(SiriSharedUICompactServerUtteranceView *)self _setTextForLabel:_createLabel text:v11];
+  dialogIdentifier = [utteranceCopy dialogIdentifier];
+  [_createLabel setAccessibilityIdentifier:dialogIdentifier];
 
-  [v5 setAssistantUtteranceView:v4];
+  [_createLabel setAssistantUtteranceView:utteranceCopy];
 
-  return v5;
+  return _createLabel;
 }
 
-- (id)_createEmojiLabelForString:(id)a3 containingEmojisAtRanges:(id)a4
+- (id)_createEmojiLabelForString:(id)string containingEmojisAtRanges:(id)ranges
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SiriSharedUICompactServerUtteranceView *)self _createLabel];
+  stringCopy = string;
+  rangesCopy = ranges;
+  _createLabel = [(SiriSharedUICompactServerUtteranceView *)self _createLabel];
   v9 = *MEMORY[0x277D740C0];
   v30[0] = *MEMORY[0x277D740C0];
-  v10 = [MEMORY[0x277D75348] clearColor];
-  v31[0] = v10;
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v31[0] = clearColor;
   v30[1] = *MEMORY[0x277D740A8];
-  v11 = [v8 font];
-  v31[1] = v11;
+  font = [_createLabel font];
+  v31[1] = font;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-  v24 = v6;
-  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6 attributes:v12];
+  v24 = stringCopy;
+  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy attributes:v12];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = v7;
+  v14 = rangesCopy;
   v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
@@ -576,9 +576,9 @@ LABEL_18:
         }
 
         v19 = *(*(&v25 + 1) + 8 * i);
-        v20 = [v8 textColor];
-        v21 = [v19 rangeValue];
-        [v13 addAttribute:v9 value:v20 range:{v21, v22}];
+        textColor = [_createLabel textColor];
+        rangeValue = [v19 rangeValue];
+        [v13 addAttribute:v9 value:textColor range:{rangeValue, v22}];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -587,19 +587,19 @@ LABEL_18:
     while (v16);
   }
 
-  [v8 setAttributedText:v13];
+  [_createLabel setAttributedText:v13];
 
-  return v8;
+  return _createLabel;
 }
 
 - (id)_createLabel
 {
   v3 = objc_alloc_init(SiriSharedUICompactServerUtteranceLabel);
-  v4 = [MEMORY[0x277D75348] labelColor];
-  [(SiriSharedUICompactServerUtteranceLabel *)v3 setTextColor:v4];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(SiriSharedUICompactServerUtteranceLabel *)v3 setTextColor:labelColor];
 
-  v5 = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
-  [(SiriSharedUICompactServerUtteranceLabel *)v3 setFont:v5];
+  _fontForUtteranceLabel = [(SiriSharedUICompactServerUtteranceView *)self _fontForUtteranceLabel];
+  [(SiriSharedUICompactServerUtteranceLabel *)v3 setFont:_fontForUtteranceLabel];
 
   [(SiriSharedUICompactServerUtteranceLabel *)v3 setNumberOfLines:0];
   SiriSharedUIRecursiveSetSemanticContentAttribute(v3, [(SiriSharedUICompactServerUtteranceView *)self semanticContentAttribute]);
@@ -609,8 +609,8 @@ LABEL_18:
 
 - (double)_scaledSpacingBetweenLabels
 {
-  v3 = [MEMORY[0x277D74300] sirisharedui_serverUtteranceFont];
-  [(SiriSharedUICompactServerUtteranceView *)self _lineHeightForFont:v3];
+  sirisharedui_serverUtteranceFont = [MEMORY[0x277D74300] sirisharedui_serverUtteranceFont];
+  [(SiriSharedUICompactServerUtteranceView *)self _lineHeightForFont:sirisharedui_serverUtteranceFont];
   v5 = v4;
 
   return v5;

@@ -1,16 +1,16 @@
 @interface SUCoreConnectServer
-- (BOOL)isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
-- (SUCoreConnectServer)initWithServerPolicy:(id)a3;
-- (id)_clientIDForConnection:(id)a3;
-- (id)_connectionsForClientID:(id)a3;
+- (SUCoreConnectServer)initWithServerPolicy:(id)policy;
+- (id)_clientIDForConnection:(id)connection;
+- (id)_connectionsForClientID:(id)d;
 - (id)_getAllObserverConnections;
-- (void)_informObserversOfCompletionReplyWithMessage:(id)a3 error:(id)a4;
-- (void)_removeConnection:(id)a3;
-- (void)_setConnection:(id)a3 forClientID:(id)a4;
-- (void)connectProtocolFromClientSendServerMessage:(id)a3 proxyObject:(id)a4 withReply:(id)a5;
-- (void)connectServerSendClientMessage:(id)a3;
+- (void)_informObserversOfCompletionReplyWithMessage:(id)message error:(id)error;
+- (void)_removeConnection:(id)connection;
+- (void)_setConnection:(id)connection forClientID:(id)d;
+- (void)connectProtocolFromClientSendServerMessage:(id)message proxyObject:(id)object withReply:(id)reply;
+- (void)connectServerSendClientMessage:(id)message;
 - (void)setupListenerAndResumeConnection;
 - (void)suspendListenerAndInvalidate;
 @end
@@ -19,33 +19,33 @@
 
 - (id)_getAllObserverConnections
 {
-  v3 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_V2(connectionsAccessQueue);
 
   return [(SUCoreConnectServer *)self observerConnections];
 }
 
-- (SUCoreConnectServer)initWithServerPolicy:(id)a3
+- (SUCoreConnectServer)initWithServerPolicy:(id)policy
 {
-  v5 = a3;
+  policyCopy = policy;
   v27.receiver = self;
   v27.super_class = SUCoreConnectServer;
   v6 = [(SUCoreConnectServer *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionPolicy, a3);
+    objc_storeStrong(&v6->_connectionPolicy, policy);
     v8 = objc_alloc(MEMORY[0x277D64460]);
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v5 serviceName];
-    v11 = [v9 stringWithFormat:@"SERVER-%@", v10];
+    serviceName = [policyCopy serviceName];
+    v11 = [v9 stringWithFormat:@"SERVER-%@", serviceName];
     v12 = [v8 initWithCategory:v11];
     logger = v7->_logger;
     v7->_logger = v12;
 
-    v14 = [@"com.apple.SUCoreConnect.ConnectionsAccessQueue" UTF8String];
+    uTF8String = [@"com.apple.SUCoreConnect.ConnectionsAccessQueue" UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     connectionsAccessQueue = v7->_connectionsAccessQueue;
     v7->_connectionsAccessQueue = v16;
 
@@ -57,9 +57,9 @@
     observerConnections = v7->_observerConnections;
     v7->_observerConnections = v20;
 
-    v22 = [@"com.apple.SUCoreConnect.ConnectionSendMessageQueue" UTF8String];
+    uTF8String2 = [@"com.apple.SUCoreConnect.ConnectionSendMessageQueue" UTF8String];
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v24 = dispatch_queue_create(v22, v23);
+    v24 = dispatch_queue_create(uTF8String2, v23);
     connectionSendMessageQueue = v7->_connectionSendMessageQueue;
     v7->_connectionSendMessageQueue = v24;
   }
@@ -67,18 +67,18 @@
   return v7;
 }
 
-- (BOOL)isConnectionEntitled:(id)a3
+- (BOOL)isConnectionEntitled:(id)entitled
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreConnectServer *)self connectionPolicy];
+  entitledCopy = entitled;
+  connectionPolicy = [(SUCoreConnectServer *)self connectionPolicy];
 
-  if (!v5)
+  if (!connectionPolicy)
   {
-    v24 = [(SUCoreConnectServer *)self logger];
-    v13 = [v24 oslog];
+    logger = [(SUCoreConnectServer *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer isConnectionEntitled:];
     }
@@ -86,16 +86,16 @@
     goto LABEL_30;
   }
 
-  v6 = [(SUCoreConnectServer *)self connectionPolicy];
-  v7 = [v6 entitlements];
-  if (!v7)
+  connectionPolicy2 = [(SUCoreConnectServer *)self connectionPolicy];
+  entitlements = [connectionPolicy2 entitlements];
+  if (!entitlements)
   {
 
 LABEL_20:
-    v25 = [(SUCoreConnectServer *)self logger];
-    v13 = [v25 oslog];
+    logger2 = [(SUCoreConnectServer *)self logger];
+    oslog = [logger2 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer isConnectionEntitled:];
     }
@@ -105,10 +105,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v8 = v7;
-  v9 = [(SUCoreConnectServer *)self connectionPolicy];
-  v10 = [v9 entitlements];
-  v11 = [v10 count];
+  v8 = entitlements;
+  connectionPolicy3 = [(SUCoreConnectServer *)self connectionPolicy];
+  entitlements2 = [connectionPolicy3 entitlements];
+  v11 = [entitlements2 count];
 
   if (!v11)
   {
@@ -119,10 +119,10 @@ LABEL_30:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = [(SUCoreConnectServer *)self connectionPolicy];
-  v13 = [v12 entitlements];
+  connectionPolicy4 = [(SUCoreConnectServer *)self connectionPolicy];
+  oslog = [connectionPolicy4 entitlements];
 
-  v14 = [v13 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  v14 = [oslog countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (!v14)
   {
     v23 = 1;
@@ -139,29 +139,29 @@ LABEL_30:
     {
       if (*v34 != v17)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(oslog);
       }
 
       v19 = *(*(&v33 + 1) + 8 * i);
-      v20 = [(SUCoreConnectServer *)self logger];
-      v21 = [v20 oslog];
+      logger3 = [(SUCoreConnectServer *)self logger];
+      oslog2 = [logger3 oslog];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v32;
-        v38 = v4;
+        v38 = entitledCopy;
         v39 = 2112;
         v40 = v19;
-        _os_log_impl(&dword_22E2D6000, v21, OS_LOG_TYPE_DEFAULT, "[EntitlementValidation](%{public}@)(%@) Checking for entitlement", buf, 0x16u);
+        _os_log_impl(&dword_22E2D6000, oslog2, OS_LOG_TYPE_DEFAULT, "[EntitlementValidation](%{public}@)(%@) Checking for entitlement", buf, 0x16u);
       }
 
-      v22 = [v4 valueForEntitlement:v19];
+      v22 = [entitledCopy valueForEntitlement:v19];
       if (!v22)
       {
-        v26 = [(SUCoreConnectServer *)self logger];
-        v27 = [v26 oslog];
+        logger4 = [(SUCoreConnectServer *)self logger];
+        oslog3 = [logger4 oslog];
 
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
         {
           [SUCoreConnectServer isConnectionEntitled:];
         }
@@ -172,10 +172,10 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v28 = [(SUCoreConnectServer *)self logger];
-        v27 = [v28 oslog];
+        logger5 = [(SUCoreConnectServer *)self logger];
+        oslog3 = [logger5 oslog];
 
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
         {
           [SUCoreConnectServer isConnectionEntitled:];
         }
@@ -185,10 +185,10 @@ LABEL_30:
 
       if (([v22 BOOLValue] & 1) == 0)
       {
-        v29 = [(SUCoreConnectServer *)self logger];
-        v27 = [v29 oslog];
+        logger6 = [(SUCoreConnectServer *)self logger];
+        oslog3 = [logger6 oslog];
 
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
         {
           [SUCoreConnectServer isConnectionEntitled:];
         }
@@ -199,7 +199,7 @@ LABEL_29:
       }
     }
 
-    v16 = [v13 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    v16 = [oslog countByEnumeratingWithState:&v33 objects:v41 count:16];
     v23 = 1;
     if (v16)
     {
@@ -215,44 +215,44 @@ LABEL_31:
   return v23;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreConnectServer *)self connectionPolicy];
-  v9 = [v8 serverDelegate];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  connectionPolicy = [(SUCoreConnectServer *)self connectionPolicy];
+  serverDelegate = [connectionPolicy serverDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SUCoreConnectServer *)self connectionPolicy];
-    v12 = [v11 serverDelegate];
-    v13 = [v12 isConnectionAuthorized:v7];
+    connectionPolicy2 = [(SUCoreConnectServer *)self connectionPolicy];
+    serverDelegate2 = [connectionPolicy2 serverDelegate];
+    v13 = [serverDelegate2 isConnectionAuthorized:connectionCopy];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [(SUCoreConnectServer *)self logger];
-      v15 = [v14 oslog];
+      logger = [(SUCoreConnectServer *)self logger];
+      oslog = [logger oslog];
 
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         [SUCoreConnectServer listener:shouldAcceptNewConnection:];
       }
 
 LABEL_9:
 
-      [v7 invalidate];
+      [connectionCopy invalidate];
       v28 = 0;
       goto LABEL_10;
     }
   }
 
-  else if (![(SUCoreConnectServer *)self isConnectionEntitled:v7])
+  else if (![(SUCoreConnectServer *)self isConnectionEntitled:connectionCopy])
   {
-    v29 = [(SUCoreConnectServer *)self logger];
-    v15 = [v29 oslog];
+    logger2 = [(SUCoreConnectServer *)self logger];
+    oslog = [logger2 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer listener:shouldAcceptNewConnection:];
     }
@@ -260,9 +260,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v16 = [(SUCoreConnectServer *)self connectionPolicy];
-  v17 = [v16 connectionQueue];
-  [v7 _setQueue:v17];
+  connectionPolicy3 = [(SUCoreConnectServer *)self connectionPolicy];
+  connectionQueue = [connectionPolicy3 connectionQueue];
+  [connectionCopy _setQueue:connectionQueue];
 
   v40[0] = 0;
   v40[1] = v40;
@@ -275,7 +275,7 @@ LABEL_9:
   v38[2] = 0x3042000000;
   v38[3] = __Block_byref_object_copy__0;
   v38[4] = __Block_byref_object_dispose__0;
-  objc_initWeak(&v39, v7);
+  objc_initWeak(&v39, connectionCopy);
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __58__SUCoreConnectServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -283,7 +283,7 @@ LABEL_9:
   v37[4] = v40;
   v37[5] = v38;
   v18 = MEMORY[0x2318E52D0](v37);
-  [v7 setInterruptionHandler:v18];
+  [connectionCopy setInterruptionHandler:v18];
   v32 = v18;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -292,8 +292,8 @@ LABEL_9:
   v36[4] = v40;
   v36[5] = v38;
   v19 = MEMORY[0x2318E52D0](v36);
-  [v7 setInvalidationHandler:v19];
-  v31 = v6;
+  [connectionCopy setInvalidationHandler:v19];
+  v31 = listenerCopy;
   v20 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284217B08];
   v21 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284218160];
   v22 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
@@ -309,26 +309,26 @@ LABEL_9:
   [v20 setClasses:v25 forSelector:sel_connectProtocolFromClientSendServerMessage_proxyObject_withReply_ argumentIndex:1 ofReply:1];
 
   [v20 setInterface:v21 forSelector:sel_connectProtocolFromClientSendServerMessage_proxyObject_withReply_ argumentIndex:1 ofReply:0];
-  [v7 setExportedInterface:v20];
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedInterface:v20];
+  [connectionCopy setExportedObject:self];
   v26 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284218650];
-  [v7 setRemoteObjectInterface:v26];
-  [v7 resume];
-  v27 = [(SUCoreConnectServer *)self connectionSendMessageQueue];
+  [connectionCopy setRemoteObjectInterface:v26];
+  [connectionCopy resume];
+  connectionSendMessageQueue = [(SUCoreConnectServer *)self connectionSendMessageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SUCoreConnectServer_listener_shouldAcceptNewConnection___block_invoke_2_85;
   block[3] = &unk_2787BC990;
-  v34 = v7;
-  v35 = self;
-  dispatch_async(v27, block);
+  v34 = connectionCopy;
+  selfCopy = self;
+  dispatch_async(connectionSendMessageQueue, block);
 
   _Block_object_dispose(v38, 8);
   objc_destroyWeak(&v39);
   _Block_object_dispose(v40, 8);
   objc_destroyWeak(v41);
   v28 = 1;
-  v6 = v31;
+  listenerCopy = v31;
 LABEL_10:
 
   return v28;
@@ -501,8 +501,8 @@ void __58__SUCoreConnectServer_listener_shouldAcceptNewConnection___block_invoke
 
 - (void)setupListenerAndResumeConnection
 {
-  v3 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_not_V2(v3);
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_not_V2(connectionsAccessQueue);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -567,8 +567,8 @@ void __55__SUCoreConnectServer_setupListenerAndResumeConnection__block_invoke_90
 
 - (void)suspendListenerAndInvalidate
 {
-  v3 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_not_V2(v3);
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_not_V2(connectionsAccessQueue);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -611,19 +611,19 @@ void __51__SUCoreConnectServer_suspendListenerAndInvalidate__block_invoke_2(uint
   }
 }
 
-- (void)connectProtocolFromClientSendServerMessage:(id)a3 proxyObject:(id)a4 withReply:(id)a5
+- (void)connectProtocolFromClientSendServerMessage:(id)message proxyObject:(id)object withReply:(id)reply
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUCoreConnectServer *)self logger];
-  v12 = [v11 oslog];
+  messageCopy = message;
+  objectCopy = object;
+  replyCopy = reply;
+  logger = [(SUCoreConnectServer *)self logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"YES";
-    if (v9)
+    if (objectCopy)
     {
       v14 = @"YES";
     }
@@ -634,35 +634,35 @@ void __51__SUCoreConnectServer_suspendListenerAndInvalidate__block_invoke_2(uint
     }
 
     *buf = 138543874;
-    *&buf[4] = v8;
+    *&buf[4] = messageCopy;
     *&buf[14] = v14;
     *&buf[12] = 2114;
-    if (!v10)
+    if (!replyCopy)
     {
       v13 = @"NO";
     }
 
     *&buf[22] = 2114;
     *&buf[24] = v13;
-    _os_log_impl(&dword_22E2D6000, v12, OS_LOG_TYPE_DEFAULT, "[SendServerMessage] Received message: %{public}@ (proxyObject:%{public}@, reply:%{public}@)", buf, 0x20u);
+    _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[SendServerMessage] Received message: %{public}@ (proxyObject:%{public}@, reply:%{public}@)", buf, 0x20u);
   }
 
-  v15 = [MEMORY[0x277CCAE80] currentConnection];
-  v16 = [v8 clientID];
-  v17 = [v16 isEqualToString:@"*"];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  clientID = [messageCopy clientID];
+  v17 = [clientID isEqualToString:@"*"];
 
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) Observer clients cannot send messages to server", v15];
-    v19 = [MEMORY[0x277D643F8] sharedCore];
-    v20 = [v19 buildError:8906 underlying:0 description:v18];
+    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) Observer clients cannot send messages to server", currentConnection];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v20 = [mEMORY[0x277D643F8] buildError:8906 underlying:0 description:v18];
 
-    [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:v8 error:v20];
-    v21 = [(SUCoreConnectServer *)self logger];
-    v22 = [v21 oslog];
+    [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:messageCopy error:v20];
+    logger2 = [(SUCoreConnectServer *)self logger];
+    oslog2 = [logger2 oslog];
 
-    v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-    if (v10)
+    v23 = os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR);
+    if (replyCopy)
     {
       if (v23)
       {
@@ -671,7 +671,7 @@ void __51__SUCoreConnectServer_suspendListenerAndInvalidate__block_invoke_2(uint
 
 LABEL_18:
 
-      v10[2](v10, 0, v20);
+      replyCopy[2](replyCopy, 0, v20);
 LABEL_31:
 
       goto LABEL_37;
@@ -685,22 +685,22 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  v24 = [(SUCoreConnectServer *)self connectionPolicy];
-  v25 = [v24 serverDelegate];
+  connectionPolicy = [(SUCoreConnectServer *)self connectionPolicy];
+  serverDelegate = [connectionPolicy serverDelegate];
   v26 = objc_opt_respondsToSelector();
 
   if ((v26 & 1) == 0)
   {
-    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) handleMessage selector is not implemented by server delegate", v15];
-    v27 = [MEMORY[0x277D643F8] sharedCore];
-    v20 = [v27 buildError:8113 underlying:0 description:v18];
+    v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) handleMessage selector is not implemented by server delegate", currentConnection];
+    mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+    v20 = [mEMORY[0x277D643F8]2 buildError:8113 underlying:0 description:v18];
 
-    [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:v8 error:v20];
-    v28 = [(SUCoreConnectServer *)self logger];
-    v22 = [v28 oslog];
+    [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:messageCopy error:v20];
+    logger3 = [(SUCoreConnectServer *)self logger];
+    oslog2 = [logger3 oslog];
 
-    v29 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-    if (v10)
+    v29 = os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR);
+    if (replyCopy)
     {
       if (v29)
       {
@@ -720,9 +720,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (v15)
+  if (currentConnection)
   {
-    [v15 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -733,36 +733,36 @@ LABEL_30:
 
   *buf = v49;
   *&buf[16] = v50;
-  [v8 setClientConnectionAuditToken:buf];
-  v30 = [(SUCoreConnectServer *)self connectionPolicy];
-  v31 = [v30 serverDelegate];
+  [messageCopy setClientConnectionAuditToken:buf];
+  connectionPolicy2 = [(SUCoreConnectServer *)self connectionPolicy];
+  serverDelegate2 = [connectionPolicy2 serverDelegate];
   v32 = objc_opt_respondsToSelector();
 
   if (v32)
   {
-    v33 = [(SUCoreConnectServer *)self connectionPolicy];
-    v34 = [v33 serverDelegate];
-    v35 = [v34 isConnection:v15 authorizedForMessage:v8];
+    connectionPolicy3 = [(SUCoreConnectServer *)self connectionPolicy];
+    serverDelegate3 = [connectionPolicy3 serverDelegate];
+    v35 = [serverDelegate3 isConnection:currentConnection authorizedForMessage:messageCopy];
 
     if ((v35 & 1) == 0)
     {
-      v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) client is not entitled for specific message request", v15];
-      v37 = [MEMORY[0x277D643F8] sharedCore];
-      v38 = [v37 buildError:8113 underlying:0 description:v36];
+      v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"[SendServerMessage](%@) client is not entitled for specific message request", currentConnection];
+      mEMORY[0x277D643F8]3 = [MEMORY[0x277D643F8] sharedCore];
+      v38 = [mEMORY[0x277D643F8]3 buildError:8113 underlying:0 description:v36];
 
-      [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:v8 error:v38];
-      v39 = [(SUCoreConnectServer *)self logger];
-      v40 = [v39 oslog];
+      [(SUCoreConnectServer *)self _informObserversOfCompletionReplyWithMessage:messageCopy error:v38];
+      logger4 = [(SUCoreConnectServer *)self logger];
+      oslog3 = [logger4 oslog];
 
-      v41 = os_log_type_enabled(v40, OS_LOG_TYPE_ERROR);
-      if (v10)
+      v41 = os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR);
+      if (replyCopy)
       {
         if (v41)
         {
           [SUCoreConnectServer connectProtocolFromClientSendServerMessage:proxyObject:withReply:];
         }
 
-        v10[2](v10, 0, v38);
+        replyCopy[2](replyCopy, 0, v38);
       }
 
       else
@@ -775,18 +775,18 @@ LABEL_30:
     }
   }
 
-  [v8 setBoostable:1];
-  v42 = [(SUCoreConnectServer *)self connectionPolicy];
-  v43 = [v42 serverDelegate];
+  [messageCopy setBoostable:1];
+  connectionPolicy4 = [(SUCoreConnectServer *)self connectionPolicy];
+  serverDelegate4 = [connectionPolicy4 serverDelegate];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __88__SUCoreConnectServer_connectProtocolFromClientSendServerMessage_proxyObject_withReply___block_invoke;
   v45[3] = &unk_2787BCA80;
   v45[4] = self;
-  v46 = v8;
-  v48 = v10;
-  v47 = v15;
-  [v43 handleMessage:v46 proxyObject:v9 reply:v45];
+  v46 = messageCopy;
+  v48 = replyCopy;
+  v47 = currentConnection;
+  [serverDelegate4 handleMessage:v46 proxyObject:objectCopy reply:v45];
 
 LABEL_37:
   v44 = *MEMORY[0x277D85DE8];
@@ -841,21 +841,21 @@ void __88__SUCoreConnectServer_connectProtocolFromClientSendServerMessage_proxyO
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_informObserversOfCompletionReplyWithMessage:(id)a3 error:(id)a4
+- (void)_informObserversOfCompletionReplyWithMessage:(id)message error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  messageCopy = message;
+  errorCopy = error;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SUCoreConnectServer__informObserversOfCompletionReplyWithMessage_error___block_invoke;
   block[3] = &unk_2787BCA08;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  v13 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  v10 = messageCopy;
+  dispatch_async(connectionsAccessQueue, block);
 }
 
 void __74__SUCoreConnectServer__informObserversOfCompletionReplyWithMessage_error___block_invoke(uint64_t a1)
@@ -966,18 +966,18 @@ void __74__SUCoreConnectServer__informObserversOfCompletionReplyWithMessage_erro
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectServerSendClientMessage:(id)a3
+- (void)connectServerSendClientMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  messageCopy = message;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke;
   v7[3] = &unk_2787BC990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(connectionsAccessQueue, v7);
 }
 
 void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke(uint64_t a1)
@@ -1185,52 +1185,52 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
   [*(a1 + 40) invalidate];
 }
 
-- (void)_setConnection:(id)a3 forClientID:(id)a4
+- (void)_setConnection:(id)connection forClientID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_V2(v8);
+  connectionCopy = connection;
+  dCopy = d;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_V2(connectionsAccessQueue);
 
-  if (v6)
+  if (connectionCopy)
   {
-    if ([v7 isEqualToString:@"*"])
+    if ([dCopy isEqualToString:@"*"])
     {
-      objc_initWeak(&v25, v6);
-      v9 = [(SUCoreConnectServer *)self observerConnections];
+      objc_initWeak(&v25, connectionCopy);
+      observerConnections = [(SUCoreConnectServer *)self observerConnections];
       WeakRetained = objc_loadWeakRetained(&v25);
-      [v9 addObject:WeakRetained];
+      [observerConnections addObject:WeakRetained];
 
       objc_destroyWeak(&v25);
     }
 
     else
     {
-      v13 = [(SUCoreConnectServer *)self connections];
-      v14 = [v13 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      connections = [(SUCoreConnectServer *)self connections];
+      v14 = [connections safeObjectForKey:dCopy ofClass:objc_opt_class()];
 
       if (v14)
       {
-        v15 = [(SUCoreConnectServer *)self logger];
-        v16 = [v15 oslog];
+        logger = [(SUCoreConnectServer *)self logger];
+        oslog = [logger oslog];
 
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           v25 = 134218242;
           v26 = [v14 count];
           v27 = 2114;
-          v28 = v7;
-          _os_log_impl(&dword_22E2D6000, v16, OS_LOG_TYPE_DEFAULT, "[SetConnection] Found %lu existing connections for clientID: %{public}@", &v25, 0x16u);
+          v28 = dCopy;
+          _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[SetConnection] Found %lu existing connections for clientID: %{public}@", &v25, 0x16u);
         }
 
-        if (([v14 containsObject:v6] & 1) == 0)
+        if (([v14 containsObject:connectionCopy] & 1) == 0)
         {
-          objc_initWeak(&v25, v6);
-          v17 = [(SUCoreConnectServer *)self connections];
+          objc_initWeak(&v25, connectionCopy);
+          connections2 = [(SUCoreConnectServer *)self connections];
           v18 = objc_loadWeakRetained(&v25);
           v19 = [v14 setByAddingObject:v18];
-          [v17 setSafeObject:v19 forKey:v7];
+          [connections2 setSafeObject:v19 forKey:dCopy];
 
           objc_destroyWeak(&v25);
         }
@@ -1238,12 +1238,12 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
 
       else
       {
-        objc_initWeak(&v25, v6);
-        v20 = [(SUCoreConnectServer *)self connections];
+        objc_initWeak(&v25, connectionCopy);
+        connections3 = [(SUCoreConnectServer *)self connections];
         v21 = MEMORY[0x277CBEB98];
         v22 = objc_loadWeakRetained(&v25);
         v23 = [v21 setWithObject:v22];
-        [v20 setSafeObject:v23 forKey:v7];
+        [connections3 setSafeObject:v23 forKey:dCopy];
 
         objc_destroyWeak(&v25);
       }
@@ -1252,10 +1252,10 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
 
   else
   {
-    v11 = [(SUCoreConnectServer *)self logger];
-    v12 = [v11 oslog];
+    logger2 = [(SUCoreConnectServer *)self logger];
+    oslog2 = [logger2 oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer _setConnection:forClientID:];
     }
@@ -1264,21 +1264,21 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_V2(connectionsAccessQueue);
 
-  if (v4)
+  if (connectionCopy)
   {
-    v6 = [(SUCoreConnectServer *)self observerConnections];
-    v7 = [v6 containsObject:v4];
+    observerConnections = [(SUCoreConnectServer *)self observerConnections];
+    v7 = [observerConnections containsObject:connectionCopy];
 
     if (v7)
     {
-      v8 = [(SUCoreConnectServer *)self observerConnections];
-      [v8 removeObject:v4];
+      observerConnections2 = [(SUCoreConnectServer *)self observerConnections];
+      [observerConnections2 removeObject:connectionCopy];
 
       LOBYTE(v7) = 1;
     }
@@ -1289,29 +1289,29 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
     LOBYTE(v7) = 0;
   }
 
-  v9 = [(SUCoreConnectServer *)self _clientIDForConnection:v4];
+  v9 = [(SUCoreConnectServer *)self _clientIDForConnection:connectionCopy];
   if (v9)
   {
-    v10 = [(SUCoreConnectServer *)self connections];
-    v11 = [v10 safeObjectForKey:v9 ofClass:objc_opt_class()];
-    v12 = [v11 mutableCopy];
+    connections = [(SUCoreConnectServer *)self connections];
+    v11 = [connections safeObjectForKey:v9 ofClass:objc_opt_class()];
+    oslog = [v11 mutableCopy];
 
-    if (v4 && [v12 containsObject:v4])
+    if (connectionCopy && [oslog containsObject:connectionCopy])
     {
-      [v12 removeObject:v4];
+      [oslog removeObject:connectionCopy];
     }
 
-    v13 = [v12 count];
-    v14 = [(SUCoreConnectServer *)self connections];
-    v15 = v14;
+    v13 = [oslog count];
+    connections2 = [(SUCoreConnectServer *)self connections];
+    v15 = connections2;
     if (v13)
     {
-      [v14 setSafeObject:v12 forKey:v9];
+      [connections2 setSafeObject:oslog forKey:v9];
     }
 
     else
     {
-      [v14 removeObjectForKey:v9];
+      [connections2 removeObjectForKey:v9];
     }
   }
 
@@ -1322,30 +1322,30 @@ void __54__SUCoreConnectServer_connectServerSendClientMessage___block_invoke_2_1
       goto LABEL_17;
     }
 
-    v16 = [(SUCoreConnectServer *)self logger];
-    v12 = [v16 oslog];
+    logger = [(SUCoreConnectServer *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer _removeConnection:];
     }
   }
 
 LABEL_17:
-  v17 = [(SUCoreConnectServer *)self connectionPolicy];
-  v18 = [v17 serverDelegate];
+  connectionPolicy = [(SUCoreConnectServer *)self connectionPolicy];
+  serverDelegate = [connectionPolicy serverDelegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(SUCoreConnectServer *)self connectionSendMessageQueue];
+    connectionSendMessageQueue = [(SUCoreConnectServer *)self connectionSendMessageQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __41__SUCoreConnectServer__removeConnection___block_invoke;
     v21[3] = &unk_2787BC990;
     v21[4] = self;
     v22 = v9;
-    dispatch_async(v20, v21);
+    dispatch_async(connectionSendMessageQueue, v21);
   }
 }
 
@@ -1356,21 +1356,21 @@ void __41__SUCoreConnectServer__removeConnection___block_invoke(uint64_t a1)
   [v2 connectionClosedForClientID:*(a1 + 40)];
 }
 
-- (id)_connectionsForClientID:(id)a3
+- (id)_connectionsForClientID:(id)d
 {
-  v4 = a3;
-  v5 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_V2(connectionsAccessQueue);
 
-  v6 = [(SUCoreConnectServer *)self connections];
-  v7 = [v6 safeObjectForKey:v4 ofClass:objc_opt_class()];
+  connections = [(SUCoreConnectServer *)self connections];
+  v7 = [connections safeObjectForKey:dCopy ofClass:objc_opt_class()];
 
   if (!v7)
   {
-    v8 = [(SUCoreConnectServer *)self logger];
-    v9 = [v8 oslog];
+    logger = [(SUCoreConnectServer *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectServer _connectionsForClientID:?];
     }
@@ -1379,18 +1379,18 @@ void __41__SUCoreConnectServer__removeConnection___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_clientIDForConnection:(id)a3
+- (id)_clientIDForConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreConnectServer *)self connectionsAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  connectionsAccessQueue = [(SUCoreConnectServer *)self connectionsAccessQueue];
+  dispatch_assert_queue_V2(connectionsAccessQueue);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(SUCoreConnectServer *)self connections];
   v6 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
@@ -1408,8 +1408,8 @@ void __41__SUCoreConnectServer__removeConnection___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [(SUCoreConnectServer *)v23 connections];
-        v13 = [v12 safeObjectForKey:v11 ofClass:objc_opt_class()];
+        connections = [(SUCoreConnectServer *)selfCopy connections];
+        v13 = [connections safeObjectForKey:v11 ofClass:objc_opt_class()];
 
         v26 = 0u;
         v27 = 0u;
@@ -1430,7 +1430,7 @@ void __41__SUCoreConnectServer__removeConnection___block_invoke(uint64_t a1)
                 objc_enumerationMutation(v14);
               }
 
-              if ([v4 isEqual:*(*(&v24 + 1) + 8 * j)])
+              if ([connectionCopy isEqual:*(*(&v24 + 1) + 8 * j)])
               {
                 v19 = v11;
 
@@ -1471,8 +1471,8 @@ LABEL_16:
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SUCoreConnectServer *)self connectionPolicy];
-  v4 = [v2 stringWithFormat:@"SUCoreConnectServer(connectionPolicy:%@)", v3];
+  connectionPolicy = [(SUCoreConnectServer *)self connectionPolicy];
+  v4 = [v2 stringWithFormat:@"SUCoreConnectServer(connectionPolicy:%@)", connectionPolicy];
 
   return v4;
 }

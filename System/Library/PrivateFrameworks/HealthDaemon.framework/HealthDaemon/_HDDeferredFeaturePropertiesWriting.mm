@@ -1,20 +1,20 @@
 @interface _HDDeferredFeaturePropertiesWriting
-- (_HDDeferredFeaturePropertiesWriting)initWithLocalDomain:(id)a3 pairedDeviceRegistry:(id)a4;
+- (_HDDeferredFeaturePropertiesWriting)initWithLocalDomain:(id)domain pairedDeviceRegistry:(id)registry;
 - (void)synchronize;
 @end
 
 @implementation _HDDeferredFeaturePropertiesWriting
 
-- (_HDDeferredFeaturePropertiesWriting)initWithLocalDomain:(id)a3 pairedDeviceRegistry:(id)a4
+- (_HDDeferredFeaturePropertiesWriting)initWithLocalDomain:(id)domain pairedDeviceRegistry:(id)registry
 {
-  v7 = a4;
+  registryCopy = registry;
   v11.receiver = self;
   v11.super_class = _HDDeferredFeaturePropertiesWriting;
-  v8 = [(_HDFeaturePropertiesWriting *)&v11 initWithLocalDomain:a3];
+  v8 = [(_HDFeaturePropertiesWriting *)&v11 initWithLocalDomain:domain];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pairedDeviceRegistry, a4);
+    objc_storeStrong(&v8->_pairedDeviceRegistry, registry);
   }
 
   return v9;

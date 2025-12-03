@@ -1,28 +1,28 @@
 @interface KTBAAKey
 - (BOOL)validBAAKey;
-- (KTBAAKey)initWithKey:(__SecKey *)a3 certificates:(id)a4 failure:(id)a5;
+- (KTBAAKey)initWithKey:(__SecKey *)key certificates:(id)certificates failure:(id)failure;
 - (void)dealloc;
 @end
 
 @implementation KTBAAKey
 
-- (KTBAAKey)initWithKey:(__SecKey *)a3 certificates:(id)a4 failure:(id)a5
+- (KTBAAKey)initWithKey:(__SecKey *)key certificates:(id)certificates failure:(id)failure
 {
-  v8 = a4;
-  v9 = a5;
+  certificatesCopy = certificates;
+  failureCopy = failure;
   v13.receiver = self;
   v13.super_class = KTBAAKey;
   v10 = [(KTBAAKey *)&v13 init];
   if (v10)
   {
-    if (a3)
+    if (key)
     {
-      CFRetain(a3);
+      CFRetain(key);
     }
 
-    [(KTBAAKey *)v10 setReferenceKey:a3];
-    [(KTBAAKey *)v10 setCertificates:v8];
-    [(KTBAAKey *)v10 setError:v9];
+    [(KTBAAKey *)v10 setReferenceKey:key];
+    [(KTBAAKey *)v10 setCertificates:certificatesCopy];
+    [(KTBAAKey *)v10 setError:failureCopy];
     v11 = v10;
   }
 
@@ -41,11 +41,11 @@
     return 0;
   }
 
-  v4 = [(KTBAAKey *)self certificates];
-  if (v4)
+  certificates = [(KTBAAKey *)self certificates];
+  if (certificates)
   {
-    v5 = [(KTBAAKey *)self error];
-    v3 = v5 == 0;
+    error = [(KTBAAKey *)self error];
+    v3 = error == 0;
   }
 
   else
@@ -58,10 +58,10 @@
 
 - (void)dealloc
 {
-  v3 = [(KTBAAKey *)self referenceKey];
-  if (v3)
+  referenceKey = [(KTBAAKey *)self referenceKey];
+  if (referenceKey)
   {
-    CFRelease(v3);
+    CFRelease(referenceKey);
   }
 
   [(KTBAAKey *)self setReferenceKey:0];

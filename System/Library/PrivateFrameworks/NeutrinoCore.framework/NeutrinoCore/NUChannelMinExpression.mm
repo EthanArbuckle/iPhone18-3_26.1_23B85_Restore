@@ -7,7 +7,7 @@
 
 - (id)description
 {
-  v2 = [(NUChannelExpression *)self arguments];
+  arguments = [(NUChannelExpression *)self arguments];
   v3 = PFMap();
 
   v4 = MEMORY[0x1E696AEC0];
@@ -19,7 +19,7 @@
 
 - (id)compactDescription
 {
-  v2 = [(NUChannelExpression *)self arguments];
+  arguments = [(NUChannelExpression *)self arguments];
   v3 = PFMap();
 
   v4 = MEMORY[0x1E696AEC0];

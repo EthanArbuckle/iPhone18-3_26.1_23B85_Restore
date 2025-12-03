@@ -1,11 +1,11 @@
 @interface RSDRemoteNetworkPeerDevice
 - (RSDRemoteNetworkPeerDevice)initWithGeneratedName;
-- (id)initClientWithRemoteAddress:(const in6_addr *)a3;
-- (id)initServerWithPeerSocket:(int)a3;
+- (id)initClientWithRemoteAddress:(const in6_addr *)address;
+- (id)initServerWithPeerSocket:(int)socket;
 - (void)attach;
 - (void)disconnect;
 - (void)needsConnect;
-- (void)serverReplacePeerSocket:(int)a3;
+- (void)serverReplacePeerSocket:(int)socket;
 @end
 
 @implementation RSDRemoteNetworkPeerDevice
@@ -30,43 +30,43 @@
   return result;
 }
 
-- (id)initClientWithRemoteAddress:(const in6_addr *)a3
+- (id)initClientWithRemoteAddress:(const in6_addr *)address
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = address;
+  if (address)
   {
-    if ((a3->__u6_addr32[0] || a3->__u6_addr32[1] || a3->__u6_addr32[2] || a3->__u6_addr32[3]) && (self = [(RSDRemoteNetworkPeerDevice *)self initWithGeneratedName]) != 0)
+    if ((address->__u6_addr32[0] || address->__u6_addr32[1] || address->__u6_addr32[2] || address->__u6_addr32[3]) && (self = [(RSDRemoteNetworkPeerDevice *)self initWithGeneratedName]) != 0)
     {
-      self->remote_address_storage = *v3;
+      self->remote_address_storage = *selfCopy;
       self->server_mode = 0;
       self = self;
-      v3 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)initServerWithPeerSocket:(int)a3
+- (id)initServerWithPeerSocket:(int)socket
 {
-  v3 = self;
-  if ((a3 & 0x80000000) == 0)
+  selfCopy = self;
+  if ((socket & 0x80000000) == 0)
   {
-    v5 = [(RSDRemoteNetworkPeerDevice *)self initWithGeneratedName];
-    v3 = v5;
-    if (v5)
+    initWithGeneratedName = [(RSDRemoteNetworkPeerDevice *)self initWithGeneratedName];
+    selfCopy = initWithGeneratedName;
+    if (initWithGeneratedName)
     {
-      v5->peerfd = a3;
-      v5->server_mode = 1;
-      if (!sub_1000247A0(a3, v5->remote_address_storage.__u6_addr8))
+      initWithGeneratedName->peerfd = socket;
+      initWithGeneratedName->server_mode = 1;
+      if (!sub_1000247A0(socket, initWithGeneratedName->remote_address_storage.__u6_addr8))
       {
-        v3 = v3;
-        v6 = v3;
+        selfCopy = selfCopy;
+        v6 = selfCopy;
         goto LABEL_7;
       }
 
@@ -83,9 +83,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)serverReplacePeerSocket:(int)a3
+- (void)serverReplacePeerSocket:(int)socket
 {
-  if (a3 < 0)
+  if (socket < 0)
   {
     if (os_log_type_enabled(qword_100064498, OS_LOG_TYPE_ERROR))
     {
@@ -93,7 +93,7 @@ LABEL_7:
     }
   }
 
-  else if (sub_1000247A0(a3, self->remote_address_storage.__u6_addr8))
+  else if (sub_1000247A0(socket, self->remote_address_storage.__u6_addr8))
   {
     if (os_log_type_enabled(qword_100064498, OS_LOG_TYPE_ERROR))
     {
@@ -103,12 +103,12 @@ LABEL_7:
 
   else
   {
-    self->peerfd = a3;
-    v5 = [(RSDRemoteDevice *)self connection];
+    self->peerfd = socket;
+    connection = [(RSDRemoteDevice *)self connection];
 
-    if (v5)
+    if (connection)
     {
-      v6 = [(RSDRemoteDevice *)self connection];
+      connection2 = [(RSDRemoteDevice *)self connection];
       xpc_remote_connection_cancel();
 
       [(RSDRemoteDevice *)self setConnection:0];
@@ -144,7 +144,7 @@ LABEL_7:
   if (os_log_type_enabled(qword_100064498, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", buf, 0xCu);
   }
 
@@ -156,7 +156,7 @@ LABEL_7:
       if (os_log_type_enabled(qword_100064498, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@> wait for the other side to connect", buf, 0xCu);
       }
     }
@@ -173,8 +173,8 @@ LABEL_7:
   else
   {
     HIDWORD(v10) = -1;
-    v5 = [(RSDRemoteNetworkPeerDevice *)self remote_address];
-    v6 = sub_100023C1C(&v10 + 1, v5, 0xE5F9u, [qword_1000644B0 index], &xmmword_100049E58);
+    remote_address = [(RSDRemoteNetworkPeerDevice *)self remote_address];
+    v6 = sub_100023C1C(&v10 + 1, remote_address, 0xE5F9u, [qword_1000644B0 index], &xmmword_100049E58);
     v7 = qword_100064498;
     if (v6)
     {
@@ -192,7 +192,7 @@ LABEL_7:
       if (os_log_type_enabled(qword_100064498, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@> network_connect_in6() completed successfully", buf, 0xCu);
       }
 

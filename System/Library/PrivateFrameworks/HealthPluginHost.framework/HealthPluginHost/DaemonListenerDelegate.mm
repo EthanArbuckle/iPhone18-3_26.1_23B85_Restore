@@ -1,26 +1,26 @@
 @interface DaemonListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
 - (_TtC10healthappd22DaemonListenerDelegate)init;
 - (void)dealloc;
-- (void)debuggingInfoRequestedWithNote:(id)a3;
+- (void)debuggingInfoRequestedWithNote:(id)note;
 @end
 
 @implementation DaemonListenerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10002EB28(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10002EB28(connectionCopy);
 
   return v9 & 1;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002DC60();
 
   v3 = String._bridgeToObjectiveC()();
@@ -31,9 +31,9 @@
 - (void)dealloc
 {
   v3 = type metadata accessor for DaemonListenerDelegate();
-  v4 = self;
+  selfCopy = self;
   DebuggingResponder.deregisterForDebuggingRequests()();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = v3;
   [(DaemonListenerDelegate *)&v5 dealloc];
 }
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (void)debuggingInfoRequestedWithNote:(id)a3
+- (void)debuggingInfoRequestedWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -53,7 +53,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10002DFC0();
 
   (*(v5 + 8))(v8, v4);

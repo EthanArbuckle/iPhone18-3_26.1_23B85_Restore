@@ -1,29 +1,29 @@
 @interface CKDFetchMergeableDeltaMetadataURLRequest
-- (CKDFetchMergeableDeltaMetadataURLRequest)initWithOperation:(id)a3 mergeableValueIDs:(id)a4 continuationTokens:(id)a5;
+- (CKDFetchMergeableDeltaMetadataURLRequest)initWithOperation:(id)operation mergeableValueIDs:(id)ds continuationTokens:(id)tokens;
 - (id)anonymousUserIDForHTTPHeader;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchMergeableDeltaMetadataURLRequest
 
-- (CKDFetchMergeableDeltaMetadataURLRequest)initWithOperation:(id)a3 mergeableValueIDs:(id)a4 continuationTokens:(id)a5
+- (CKDFetchMergeableDeltaMetadataURLRequest)initWithOperation:(id)operation mergeableValueIDs:(id)ds continuationTokens:(id)tokens
 {
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  tokensCopy = tokens;
   v18.receiver = self;
   v18.super_class = CKDFetchMergeableDeltaMetadataURLRequest;
-  v11 = [(CKDURLRequest *)&v18 initWithOperation:a3];
+  v11 = [(CKDURLRequest *)&v18 initWithOperation:operation];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mergeableValueIDs, a4);
-    objc_storeStrong(&v12->_continuationTokens, a5);
+    objc_storeStrong(&v11->_mergeableValueIDs, ds);
+    objc_storeStrong(&v12->_continuationTokens, tokens);
     v15 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v13, v14);
     mergeableValueIDByRequestID = v12->_mergeableValueIDByRequestID;
     v12->_mergeableValueIDByRequestID = v15;
@@ -32,29 +32,29 @@
   return v12;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDFetchMergeableDeltaMetadataURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_mergeableValueIDs(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"mvIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"mvIDs");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_mergeableValueIDs(self, v5, v6);
-  objc_msgSend_setFetchMergeableValueIDs_(v4, v8, v7);
+  objc_msgSend_setFetchMergeableValueIDs_(propertiesCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDFetchMergeableDeltaMetadataURLRequest;
-  [(CKDURLRequest *)&v9 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v9 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -150,7 +150,7 @@
           v42 = objc_msgSend_CKDPIdentifier_User(v39, v40, v41);
           objc_msgSend_request(v16, v43, v44);
           v45 = v16;
-          v46 = self;
+          selfCopy = self;
           v47 = p_superclass;
           v48 = v10;
           v50 = v49 = v4;
@@ -159,7 +159,7 @@
           v4 = v49;
           v10 = v48;
           p_superclass = v47;
-          self = v46;
+          self = selfCopy;
           v16 = v45;
         }
 
@@ -198,24 +198,24 @@ LABEL_17:
   return v66;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v121 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   v8 = objc_msgSend_mergeableValueIDByRequestID(self, v6, v7);
-  v11 = objc_msgSend_response(v5, v9, v10);
+  v11 = objc_msgSend_response(objectCopy, v9, v10);
   v14 = objc_msgSend_operationUUID(v11, v12, v13);
   v16 = objc_msgSend_objectForKeyedSubscript_(v8, v15, v14);
 
   if (!v16)
   {
     v103 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v103, v104, a2, self, @"CKDFetchMergeableDeltaMetadataURLRequest.m", 131, @"Expected non-nil value ID for response %@", v5);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v103, v104, a2, self, @"CKDFetchMergeableDeltaMetadataURLRequest.m", 131, @"Expected non-nil value ID for response %@", objectCopy);
   }
 
-  if (objc_msgSend_hasMergeableDeltaMetadataRetrieveResponse(v5, v17, v18))
+  if (objc_msgSend_hasMergeableDeltaMetadataRetrieveResponse(objectCopy, v17, v18))
   {
-    v21 = objc_msgSend_mergeableDeltaMetadataRetrieveResponse(v5, v19, v20);
+    v21 = objc_msgSend_mergeableDeltaMetadataRetrieveResponse(objectCopy, v19, v20);
     if (*MEMORY[0x277CBC880] != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -253,7 +253,7 @@ LABEL_17:
     {
       v36 = v33;
       v105 = v21;
-      v106 = v5;
+      v106 = objectCopy;
       v37 = *v109;
       while (2)
       {
@@ -288,7 +288,7 @@ LABEL_17:
             }
 
             v21 = v105;
-            v5 = v106;
+            objectCopy = v106;
             v47 = *MEMORY[0x277CBC830];
             if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
             {
@@ -314,7 +314,7 @@ LABEL_17:
 
       v43 = 0;
       v21 = v105;
-      v5 = v106;
+      objectCopy = v106;
     }
 
     else
@@ -324,7 +324,7 @@ LABEL_17:
 
 LABEL_32:
 
-    v52 = objc_msgSend_result(v5, v48, v49);
+    v52 = objc_msgSend_result(objectCopy, v48, v49);
     if (v43)
     {
       v53 = objc_opt_new();
@@ -385,10 +385,10 @@ LABEL_32:
   return v43;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   v5 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -403,11 +403,11 @@ LABEL_32:
     v39 = 138543618;
     v40 = v38;
     v41 = 2112;
-    v42 = v4;
+    v42 = failureCopy;
     _os_log_error_impl(&dword_22506F000, v35, OS_LOG_TYPE_ERROR, "req: %{public}@, Node failure in list metadatas request: %@", &v39, 0x16u);
   }
 
-  v9 = objc_msgSend_response(v4, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
 
   if (!v12)
@@ -416,7 +416,7 @@ LABEL_32:
   }
 
   v15 = objc_msgSend_mergeableValueIDByRequestID(self, v13, v14);
-  v18 = objc_msgSend_response(v4, v16, v17);
+  v18 = objc_msgSend_response(failureCopy, v16, v17);
   v21 = objc_msgSend_operationUUID(v18, v19, v20);
   v23 = objc_msgSend_objectForKeyedSubscript_(v15, v22, v21);
 
@@ -427,7 +427,7 @@ LABEL_32:
     if (v26)
     {
       v29 = objc_msgSend_metadataFetchedBlock(self, v27, v28);
-      v32 = objc_msgSend_result(v4, v30, v31);
+      v32 = objc_msgSend_result(failureCopy, v30, v31);
       (v29)[2](v29, v23, 0, 0, v32);
     }
   }

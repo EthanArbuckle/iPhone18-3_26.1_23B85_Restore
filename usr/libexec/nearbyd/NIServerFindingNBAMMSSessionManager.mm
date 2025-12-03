@@ -1,21 +1,21 @@
 @interface NIServerFindingNBAMMSSessionManager
 + (id)sharedInstance;
-- (BOOL)_isReciprocalFindingPossibleRoleIsFinder:(BOOL)a3 rangingSession:(id)a4;
+- (BOOL)_isReciprocalFindingPossibleRoleIsFinder:(BOOL)finder rangingSession:(id)session;
 - (BOOL)shouldAttemptMerging;
-- (BOOL)shouldInformMutualAuthFailure:(id)a3;
+- (BOOL)shouldInformMutualAuthFailure:(id)failure;
 - (NIServerFindingNBAMMSSessionManager)init;
 - (id).cxx_construct;
 - (id)printableState;
-- (id)registerNBAMMSSessionWithToken:(id)a3 isFinder:(BOOL)a4 client:(id)a5 serviceRequest:(const void *)a6 startRangingOptions:(const void *)a7 sharedProtocol:(int)a8;
+- (id)registerNBAMMSSessionWithToken:(id)token isFinder:(BOOL)finder client:(id)client serviceRequest:(const void *)request startRangingOptions:(const void *)options sharedProtocol:(int)protocol;
 - (pair<int,)_getAuthenticatedFinderFindeeClients;
-- (void)_updateAnalyticsWithFailedRangingRequestToken:(id)a3 isFinder:(BOOL)a4;
+- (void)_updateAnalyticsWithFailedRangingRequestToken:(id)token isFinder:(BOOL)finder;
 - (void)_updateAnalyticsWithSuccessfulRangingRequest;
-- (void)logUnservableRangingRequestWithToken:(id)a3 isFinder:(BOOL)a4;
-- (void)refreshRangingForToken:(id)a3 withNewStartOptions:(const void *)a4;
-- (void)session:(id)a3 updateState:(int)a4;
-- (void)unregisterNBAMMSSessionForToken:(id)a3;
-- (void)updateAlgorithmAidingData:(const void *)a3 token:(id)a4;
-- (void)updateSignallingData:(const void *)a3 token:(id)a4;
+- (void)logUnservableRangingRequestWithToken:(id)token isFinder:(BOOL)finder;
+- (void)refreshRangingForToken:(id)token withNewStartOptions:(const void *)options;
+- (void)session:(id)session updateState:(int)state;
+- (void)unregisterNBAMMSSessionForToken:(id)token;
+- (void)updateAlgorithmAidingData:(const void *)data token:(id)token;
+- (void)updateSignallingData:(const void *)data token:(id)token;
 @end
 
 @implementation NIServerFindingNBAMMSSessionManager
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = sub_10028D96C;
   block[3] = &unk_10098AD98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1009F2B68 != -1)
   {
     dispatch_once(&qword_1009F2B68, block);
@@ -103,14 +103,14 @@
   return v2;
 }
 
-- (id)registerNBAMMSSessionWithToken:(id)a3 isFinder:(BOOL)a4 client:(id)a5 serviceRequest:(const void *)a6 startRangingOptions:(const void *)a7 sharedProtocol:(int)a8
+- (id)registerNBAMMSSessionWithToken:(id)token isFinder:(BOOL)finder client:(id)client serviceRequest:(const void *)request startRangingOptions:(const void *)options sharedProtocol:(int)protocol
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = v15;
-  if (v14)
+  tokenCopy = token;
+  clientCopy = client;
+  v16 = clientCopy;
+  if (tokenCopy)
   {
-    if (v15)
+    if (clientCopy)
     {
       v29 = 0;
       v30 = &v29;
@@ -125,12 +125,12 @@
       block[3] = &unk_1009A1AB8;
       block[4] = self;
       v24 = &v29;
-      v22 = v14;
-      v28 = a4;
+      v22 = tokenCopy;
+      finderCopy = finder;
       v23 = v16;
-      v25 = a6;
-      v26 = a7;
-      v27 = a8;
+      requestCopy = request;
+      optionsCopy = options;
+      protocolCopy = protocol;
       dispatch_sync(internalQueue, block);
       v18 = v30[5];
 
@@ -164,77 +164,77 @@
   return v18;
 }
 
-- (void)unregisterNBAMMSSessionForToken:(id)a3
+- (void)unregisterNBAMMSSessionForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10028E324;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (void)refreshRangingForToken:(id)a3 withNewStartOptions:(const void *)a4
+- (void)refreshRangingForToken:(id)token withNewStartOptions:(const void *)options
 {
-  v6 = a3;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10028E614;
   block[3] = &unk_1009A1358;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = tokenCopy;
+  optionsCopy = options;
+  v8 = tokenCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)updateAlgorithmAidingData:(const void *)a3 token:(id)a4
+- (void)updateAlgorithmAidingData:(const void *)data token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10028E708;
   block[3] = &unk_1009A1358;
-  v10 = v6;
-  v11 = a3;
+  v10 = tokenCopy;
+  dataCopy = data;
   block[4] = self;
-  v8 = v6;
+  v8 = tokenCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)updateSignallingData:(const void *)a3 token:(id)a4
+- (void)updateSignallingData:(const void *)data token:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10028E7FC;
   block[3] = &unk_1009A1358;
-  v10 = v6;
-  v11 = a3;
+  v10 = tokenCopy;
+  dataCopy = data;
   block[4] = self;
-  v8 = v6;
+  v8 = tokenCopy;
   dispatch_sync(internalQueue, block);
 }
 
-- (void)logUnservableRangingRequestWithToken:(id)a3 isFinder:(BOOL)a4
+- (void)logUnservableRangingRequestWithToken:(id)token isFinder:(BOOL)finder
 {
-  v6 = a3;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10028E8F0;
   block[3] = &unk_10099BAD8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = tokenCopy;
+  finderCopy = finder;
+  v8 = tokenCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -269,22 +269,22 @@
   return v4;
 }
 
-- (void)session:(id)a3 updateState:(int)a4
+- (void)session:(id)session updateState:(int)state
 {
-  v6 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_internalQueue);
-  if (self->_nmiSession1 == v6)
+  if (self->_nmiSession1 == sessionCopy)
   {
     v8 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v9 = "IDLE";
-      if (a4 == 1)
+      if (state == 1)
       {
         v9 = "ACQ";
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v9 = "RNG";
       }
@@ -301,7 +301,7 @@
   else
   {
     v7 = qword_1009F9820;
-    if (self->_nmiSession2 != v6)
+    if (self->_nmiSession2 != sessionCopy)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -314,12 +314,12 @@
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v12 = "IDLE";
-      if (a4 == 1)
+      if (state == 1)
       {
         v12 = "ACQ";
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v12 = "RNG";
       }
@@ -333,12 +333,12 @@
     sessionState1 = self->_sessionState2;
   }
 
-  if (sessionState1 == a4)
+  if (sessionState1 == state)
   {
     goto LABEL_37;
   }
 
-  *p_sessionState1 = a4;
+  *p_sessionState1 = state;
   if (![(NIServerFindingNBAMMSSessionManager *)self shouldAttemptMerging])
   {
     goto LABEL_37;
@@ -351,17 +351,17 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#find-range,Merging started", buf, 2u);
   }
 
-  v14 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionState];
+  sessionState = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionState];
   v15 = 16;
-  if (v14 == 1)
+  if (sessionState == 1)
   {
     v15 = 8;
   }
 
   v16 = *(&self->super.isa + v15);
-  v17 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionState];
+  sessionState2 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionState];
   p_nmiSession2 = &self->_nmiSession2;
-  if (v17 == 2)
+  if (sessionState2 == 2)
   {
     p_nmiSession2 = &self->_nmiSession1;
   }
@@ -514,17 +514,17 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)shouldInformMutualAuthFailure:(id)a3
+- (BOOL)shouldInformMutualAuthFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v5 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionTokenForFinder:1];
-  v6 = [v5 isEqual:v4];
+  v6 = [v5 isEqual:failureCopy];
   v7 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionTokenForFinder:0];
-  v8 = [v7 isEqual:v4];
+  v8 = [v7 isEqual:failureCopy];
   v9 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionTokenForFinder:1];
-  v10 = [v9 isEqual:v4];
+  v10 = [v9 isEqual:failureCopy];
   v11 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionTokenForFinder:0];
-  v12 = [v11 isEqual:v4];
+  v12 = [v11 isEqual:failureCopy];
   if (v6)
   {
     v13 = 2;
@@ -547,16 +547,16 @@ LABEL_20:
 
 - (pair<int,)_getAuthenticatedFinderFindeeClients
 {
-  v3 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionClientsStatus];
+  sessionClientsStatus = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionClientsStatus];
   v5 = v4;
-  v6 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionClientsStatus];
-  return ((((HIDWORD(v6) == 0) & v6) + ((HIDWORD(v3) == 0) & v3)) | ((((HIDWORD(v7) == 0) & v7) + ((HIDWORD(v5) == 0) & v5)) << 32));
+  sessionClientsStatus2 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionClientsStatus];
+  return ((((HIDWORD(sessionClientsStatus2) == 0) & sessionClientsStatus2) + ((HIDWORD(sessionClientsStatus) == 0) & sessionClientsStatus)) | ((((HIDWORD(v7) == 0) & v7) + ((HIDWORD(v5) == 0) & v5)) << 32));
 }
 
-- (BOOL)_isReciprocalFindingPossibleRoleIsFinder:(BOOL)a3 rangingSession:(id)a4
+- (BOOL)_isReciprocalFindingPossibleRoleIsFinder:(BOOL)finder rangingSession:(id)session
 {
-  v5 = a4;
-  [v5 attachedRoles];
+  sessionCopy = session;
+  [sessionCopy attachedRoles];
   if (v10 - v9 == 8)
   {
     v6 = 0;
@@ -569,7 +569,7 @@ LABEL_20:
 
   else
   {
-    v6 = (*v9 == 0) ^ a3;
+    v6 = (*v9 == 0) ^ finder;
   }
 
   operator delete(v9);
@@ -581,12 +581,12 @@ LABEL_6:
 
 - (void)_updateAnalyticsWithSuccessfulRangingRequest
 {
-  v3 = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionClientsStatus];
+  sessionClientsStatus = [(NIServerNBAMMSSession *)self->_nmiSession1 sessionClientsStatus];
   v5 = v4;
-  v6 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionClientsStatus];
-  v8 = v6;
+  sessionClientsStatus2 = [(NIServerNBAMMSSession *)self->_nmiSession2 sessionClientsStatus];
+  v8 = sessionClientsStatus2;
   v9 = v7;
-  if (HIDWORD(v3) == 2 && (v3 & 1) != 0 || ((HIDWORD(v5) == 2) & v5) != 0 || ((HIDWORD(v6) == 2) & v6) != 0 || HIDWORD(v7) == 2 && (v7 & 1) != 0)
+  if (HIDWORD(sessionClientsStatus) == 2 && (sessionClientsStatus & 1) != 0 || ((HIDWORD(v5) == 2) & v5) != 0 || ((HIDWORD(sessionClientsStatus2) == 2) & sessionClientsStatus2) != 0 || HIDWORD(v7) == 2 && (v7 & 1) != 0)
   {
     v10 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -598,14 +598,14 @@ LABEL_6:
 
   else
   {
-    v11 = [(NIServerFindingNBAMMSSessionManager *)self _getAuthenticatedFinderFindeeClients];
-    v12 = HIDWORD(*&v11);
-    if (v11.var0 || v12 != 2)
+    _getAuthenticatedFinderFindeeClients = [(NIServerFindingNBAMMSSessionManager *)self _getAuthenticatedFinderFindeeClients];
+    v12 = HIDWORD(*&_getAuthenticatedFinderFindeeClients);
+    if (_getAuthenticatedFinderFindeeClients.var0 || v12 != 2)
     {
-      if (v11.var0 == 1 && v12 == 1)
+      if (_getAuthenticatedFinderFindeeClients.var0 == 1 && v12 == 1)
       {
         analytics = self->_analytics;
-        if (v3 == v5 || v8 == v9)
+        if (sessionClientsStatus == v5 || v8 == v9)
         {
 
           [(GroupFindingAnalytics *)analytics updateToReciprocalFinding];
@@ -618,7 +618,7 @@ LABEL_6:
         }
       }
 
-      else if (v11.var0 == 1 && v12 == 2)
+      else if (_getAuthenticatedFinderFindeeClients.var0 == 1 && v12 == 2)
       {
         v15 = self->_analytics;
 
@@ -635,36 +635,36 @@ LABEL_6:
   }
 }
 
-- (void)_updateAnalyticsWithFailedRangingRequestToken:(id)a3 isFinder:(BOOL)a4
+- (void)_updateAnalyticsWithFailedRangingRequestToken:(id)token isFinder:(BOOL)finder
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [(NIServerFindingNBAMMSSessionManager *)self _getAuthenticatedFinderFindeeClients];
-  v7 = HIDWORD(*&v6);
-  if (v6.var0 || v7 != 2)
+  finderCopy = finder;
+  tokenCopy = token;
+  _getAuthenticatedFinderFindeeClients = [(NIServerFindingNBAMMSSessionManager *)self _getAuthenticatedFinderFindeeClients];
+  v7 = HIDWORD(*&_getAuthenticatedFinderFindeeClients);
+  if (_getAuthenticatedFinderFindeeClients.var0 || v7 != 2)
   {
-    if (v6.var0 == 1 && v7 == 1 && !v4)
+    if (_getAuthenticatedFinderFindeeClients.var0 == 1 && v7 == 1 && !finderCopy)
     {
-      [(GroupFindingAnalytics *)self->_analytics updateWithFindeeRequestAt1Finder1Findee:v9];
+      [(GroupFindingAnalytics *)self->_analytics updateWithFindeeRequestAt1Finder1Findee:tokenCopy];
     }
 
-    else if (v6.var0 == 1 && v7 == 2 && !v4)
+    else if (_getAuthenticatedFinderFindeeClients.var0 == 1 && v7 == 2 && !finderCopy)
     {
-      [(GroupFindingAnalytics *)self->_analytics updateWithFindeeRequestAt1Finder2Findee:v9];
+      [(GroupFindingAnalytics *)self->_analytics updateWithFindeeRequestAt1Finder2Findee:tokenCopy];
     }
   }
 
   else
   {
     analytics = self->_analytics;
-    if (v4)
+    if (finderCopy)
     {
-      [(GroupFindingAnalytics *)analytics updateWithFinderRequestAt0Finder2Findee:v9];
+      [(GroupFindingAnalytics *)analytics updateWithFinderRequestAt0Finder2Findee:tokenCopy];
     }
 
     else
     {
-      [(GroupFindingAnalytics *)analytics updateWithFindeeRequestAt0Finder2Findee:v9];
+      [(GroupFindingAnalytics *)analytics updateWithFindeeRequestAt0Finder2Findee:tokenCopy];
     }
   }
 }

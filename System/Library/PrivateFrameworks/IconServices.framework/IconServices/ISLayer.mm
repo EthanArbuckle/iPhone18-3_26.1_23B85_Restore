@@ -6,10 +6,10 @@
 - (ISLayer)internalSuperlayer;
 - (NSArray)sublayers;
 - (id)debugDescription;
-- (void)addSublayer:(id)a3;
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4;
+- (void)addSublayer:(id)sublayer;
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index;
 - (void)removeFromSuperlayer;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ISLayer
@@ -21,9 +21,9 @@
   v2 = [(ISLayer *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = *(v2 + 6);
-    *(v2 + 6) = v3;
+    *(v2 + 6) = array;
 
     v5 = *(MEMORY[0x1E695F058] + 16);
     *(v2 + 72) = *MEMORY[0x1E695F058];
@@ -35,27 +35,27 @@
   return v2;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v25 = *MEMORY[0x1E69E9840];
   v8 = self->_frame.size.width;
   v9 = self->_frame.size.height;
   self->_frame.origin.x = x;
   self->_frame.origin.y = y;
-  self->_frame.size.width = a3.size.width;
-  self->_frame.size.height = a3.size.height;
+  self->_frame.size.width = frame.size.width;
+  self->_frame.size.height = frame.size.height;
   memset(&v23, 0, sizeof(v23));
-  CGAffineTransformMakeScale(&v23, a3.size.width / v8, a3.size.height / v9);
+  CGAffineTransformMakeScale(&v23, frame.size.width / v8, frame.size.height / v9);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(ISLayer *)self sublayers];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  sublayers = [(ISLayer *)self sublayers];
+  v11 = [sublayers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -66,7 +66,7 @@
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(sublayers);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
@@ -76,14 +76,14 @@
         [v15 setFrame:{v27.origin.x, v27.origin.y, v27.size.width, v27.size.height}];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v12 = [sublayers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [(ISLayer *)self mask];
-  [v16 setFrame:{x, y, width, height}];
+  mask = [(ISLayer *)self mask];
+  [mask setFrame:{x, y, width, height}];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -94,12 +94,12 @@
   switch(coordinateSystem)
   {
     case 3uLL:
-      v17 = [(ISLayer *)self superlayer];
-      [v17 bounds];
+      superlayer = [(ISLayer *)self superlayer];
+      [superlayer bounds];
       p_size = &self->_frame.size;
       v18 = CGRectGetMaxX(v27) - self->_frame.size.width;
-      v19 = [(ISLayer *)self superlayer];
-      [v19 bounds];
+      superlayer2 = [(ISLayer *)self superlayer];
+      [superlayer2 bounds];
       MaxY = CGRectGetMaxY(v28);
       height = self->_frame.size.height;
       p_height = &self->_frame.size.height;
@@ -109,8 +109,8 @@
       y = v22 - *(p_height - 2);
       break;
     case 2uLL:
-      v12 = [(ISLayer *)self superlayer];
-      [v12 bounds];
+      superlayer3 = [(ISLayer *)self superlayer];
+      [superlayer3 bounds];
       MaxX = CGRectGetMaxX(v26);
       width = self->_frame.size.width;
       v14 = &self->_frame.size;
@@ -122,8 +122,8 @@
       p_height = &v14->height;
       break;
     case 1uLL:
-      v4 = [(ISLayer *)self superlayer];
-      [v4 bounds];
+      superlayer4 = [(ISLayer *)self superlayer];
+      [superlayer4 bounds];
       v5 = CGRectGetMaxY(v25);
       v7 = self->_frame.size.height;
       p_height = &self->_frame.size.height;
@@ -178,33 +178,33 @@
 
 - (void)removeFromSuperlayer
 {
-  v4 = [(ISLayer *)self internalSuperlayer];
-  v3 = [v4 internalSublayers];
-  [v3 removeObject:self];
+  internalSuperlayer = [(ISLayer *)self internalSuperlayer];
+  internalSublayers = [internalSuperlayer internalSublayers];
+  [internalSublayers removeObject:self];
 
   [(ISLayer *)self setInternalSuperlayer:0];
 }
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
-  v4 = a3;
-  [v4 setInternalSuperlayer:self];
-  v5 = [(ISLayer *)self internalSublayers];
-  [v5 addObject:v4];
+  sublayerCopy = sublayer;
+  [sublayerCopy setInternalSuperlayer:self];
+  internalSublayers = [(ISLayer *)self internalSublayers];
+  [internalSublayers addObject:sublayerCopy];
 }
 
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index
 {
-  v6 = a3;
-  [v6 setInternalSuperlayer:self];
-  v7 = [(ISLayer *)self internalSublayers];
-  [v7 insertObject:v6 atIndex:a4];
+  sublayerCopy = sublayer;
+  [sublayerCopy setInternalSuperlayer:self];
+  internalSublayers = [(ISLayer *)self internalSublayers];
+  [internalSublayers insertObject:sublayerCopy atIndex:index];
 }
 
 - (NSArray)sublayers
 {
-  v2 = [(ISLayer *)self internalSublayers];
-  v3 = [v2 copy];
+  internalSublayers = [(ISLayer *)self internalSublayers];
+  v3 = [internalSublayers copy];
 
   return v3;
 }

@@ -1,27 +1,27 @@
 @interface CVNLPCLIPModel
-- (CVNLPCLIPModel)initWithOptions:(id)a3 error:(id *)a4;
+- (CVNLPCLIPModel)initWithOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (id)encodeImage:(__CVBuffer *)a3 error:(id *)a4;
-- (id)encodeText:(id)a3 error:(id *)a4;
-- (id)encodeTextAverage:(id)a3 error:(id *)a4;
+- (id)encodeImage:(__CVBuffer *)image error:(id *)error;
+- (id)encodeText:(id)text error:(id *)error;
+- (id)encodeTextAverage:(id)average error:(id *)error;
 - (shared_ptr<cvnlp::clip::CLIPModel>)model;
 @end
 
 @implementation CVNLPCLIPModel
 
-- (CVNLPCLIPModel)initWithOptions:(id)a3 error:(id *)a4
+- (CVNLPCLIPModel)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   memset(&v63, 0, sizeof(v63));
   v62 = &unk_1F554E258;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v6, v7, CVNLPCLIPModelURL, v8);
+  v9 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v7, CVNLPCLIPModelURL, v8);
 
   if (v9)
   {
     modelName = self->_modelName;
     self->_modelName = 0;
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v6, v13, CVNLPCLIPModelURL, v14);
+    v15 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v13, CVNLPCLIPModelURL, v14);
     v16 = v15;
     if (v15)
     {
@@ -93,11 +93,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v19 = objc_msgSend_objectForKeyedSubscript_(v6, v10, CVNLPCLIPModelName, v11);
+  v19 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v10, CVNLPCLIPModelName, v11);
 
   if (v19)
   {
-    v22 = objc_msgSend_objectForKeyedSubscript_(v6, v20, CVNLPCLIPModelName, v21);
+    v22 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v20, CVNLPCLIPModelName, v21);
     v23 = self->_modelName;
     self->_modelName = v22;
 
@@ -300,11 +300,11 @@ LABEL_59:
         __cxa_throw(v44, &unk_1F554F2D0, sub_1D9D87920);
       }
 
-      v39 = objc_msgSend_objectForKeyedSubscript_(v6, v37, CVNLPCLIPModelEspressoEngine, v38);
+      v39 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v37, CVNLPCLIPModelEspressoEngine, v38);
 
       if (v39)
       {
-        v42 = objc_msgSend_objectForKeyedSubscript_(v6, v40, CVNLPCLIPModelEspressoEngine, v41);
+        v42 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v40, CVNLPCLIPModelEspressoEngine, v41);
         sub_1D9D87968(v42, buf);
 
         sub_1D9D87A5C(buf);
@@ -347,7 +347,7 @@ LABEL_59:
       }
 
 LABEL_76:
-      objc_storeStrong(&self->_options, a3);
+      objc_storeStrong(&self->_options, options);
       operator new();
     }
 
@@ -367,10 +367,10 @@ LABEL_53:
   goto LABEL_54;
 }
 
-- (id)encodeImage:(__CVBuffer *)a3 error:(id *)a4
+- (id)encodeImage:(__CVBuffer *)image error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_options(self, a2, a3, a4);
+  v7 = objc_msgSend_options(self, a2, image, error);
   v10 = objc_msgSend_objectForKeyedSubscript_(v7, v8, CVNLPCLIPModelURL, v9);
 
   if (v10)
@@ -438,7 +438,7 @@ LABEL_53:
   v16 = v15;
   _Block_object_dispose(&v64, 8);
   v17 = objc_alloc_init(v15);
-  if (objc_msgSend_setRevision_error_(v17, v18, 3737841671, a4))
+  if (objc_msgSend_setRevision_error_(v17, v18, 3737841671, error))
   {
     v64 = 0;
     v65 = &v64;
@@ -451,10 +451,10 @@ LABEL_24:
       v21 = v19;
       _Block_object_dispose(&v64, 8);
       v22 = [v19 alloc];
-      v24 = objc_msgSend_initWithCVPixelBuffer_options_(v22, v23, a3, MEMORY[0x1E695E0F8]);
+      v24 = objc_msgSend_initWithCVPixelBuffer_options_(v22, v23, image, MEMORY[0x1E695E0F8]);
       v69 = v17;
       v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v25, &v69, 1);
-      v28 = objc_msgSend_performRequests_error_(v24, v27, v26, a4);
+      v28 = objc_msgSend_performRequests_error_(v24, v27, v26, error);
 
       if (v28)
       {
@@ -525,12 +525,12 @@ LABEL_28:
   return v20;
 }
 
-- (id)encodeText:(id)a3 error:(id *)a4
+- (id)encodeText:(id)text error:(id *)error
 {
-  v5 = a3;
+  textCopy = text;
   objc_msgSend_model(self, v6, v7, v8);
   v9 = v20;
-  v10 = v5;
+  v10 = textCopy;
   v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
   v15 = strlen(v14);
   if (v15 < 0x7FFFFFFFFFFFFFF8)
@@ -554,15 +554,15 @@ LABEL_28:
   sub_1D9D12168();
 }
 
-- (id)encodeTextAverage:(id)a3 error:(id *)a4
+- (id)encodeTextAverage:(id)average error:(id *)error
 {
   v37[16] = *MEMORY[0x1E69E9840];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v33, v37, 16, a4);
+  obj = average;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v33, v37, 16, error);
   if (v5)
   {
     v6 = 0;

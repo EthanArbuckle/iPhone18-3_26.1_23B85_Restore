@@ -1,69 +1,69 @@
 @interface GKNetworkRequestManager
-+ (BOOL)useJSONForBagKey:(id)a3;
-+ (Class)networkRequestClass:(id)a3;
++ (BOOL)useJSONForBagKey:(id)key;
++ (Class)networkRequestClass:(id)class;
 + (id)commonNetworkRequestManager;
-+ (id)dictionaryFromTaskDescription:(id)a3;
-+ (id)getGameDescriptorForRequest:(id)a3;
-+ (id)getPostDataForRequest:(id)a3 bagKey:(id)a4;
++ (id)dictionaryFromTaskDescription:(id)description;
++ (id)getGameDescriptorForRequest:(id)request;
++ (id)getPostDataForRequest:(id)request bagKey:(id)key;
 + (id)headersAsRequestEntries;
-+ (id)makeEntityCacheProviderInMemory:(BOOL)a3;
-+ (id)makeEntityIDWithRequest:(id)a3 bagKey:(id)a4;
-+ (id)networkRequestFromNsurlTask:(id)a3;
-+ (id)taskWithRequest:(id)a3 description:(id)a4 session:(id)a5;
-+ (id)uuidFromTask:(id)a3;
++ (id)makeEntityCacheProviderInMemory:(BOOL)memory;
++ (id)makeEntityIDWithRequest:(id)request bagKey:(id)key;
++ (id)networkRequestFromNsurlTask:(id)task;
++ (id)taskWithRequest:(id)request description:(id)description session:(id)session;
++ (id)uuidFromTask:(id)task;
 - (BOOL)beforeFirstUnlock;
-- (BOOL)doesCallbackListExistFor:(id)a3 parameters:(id)a4 callback:(id)a5;
+- (BOOL)doesCallbackListExistFor:(id)for parameters:(id)parameters callback:(id)callback;
 - (BOOL)managerReady;
-- (GKNetworkRequestManager)initWithInMemoryEntityCache:(BOOL)a3;
-- (id)canSafelyIssueRequest:(id)a3;
-- (id)contentsOfPendingStore:(id)a3;
-- (id)dictionaryForBagAndPlayer:(id)a3 createIfNotPresent:(BOOL)a4 description:(id)a5;
-- (id)existingWaitListDate:(id)a3;
-- (id)filePathToTempFile:(id)a3 fileName:(id)a4;
-- (id)pathToTempFile:(id)a3 fileName:(id)a4;
+- (GKNetworkRequestManager)initWithInMemoryEntityCache:(BOOL)cache;
+- (id)canSafelyIssueRequest:(id)request;
+- (id)contentsOfPendingStore:(id)store;
+- (id)dictionaryForBagAndPlayer:(id)player createIfNotPresent:(BOOL)present description:(id)description;
+- (id)existingWaitListDate:(id)date;
+- (id)filePathToTempFile:(id)file fileName:(id)name;
+- (id)pathToTempFile:(id)file fileName:(id)name;
 - (id)pendingLocation;
-- (id)playerCredentialsForClientProxy:(id)a3;
+- (id)playerCredentialsForClientProxy:(id)proxy;
 - (id)resultsLocation;
-- (id)retrieveAndClearCallbacks:(id)a3 parameters:(id)a4;
-- (id)taskFromIdentifier:(id)a3;
+- (id)retrieveAndClearCallbacks:(id)callbacks parameters:(id)parameters;
+- (id)taskFromIdentifier:(id)identifier;
 - (id)waitListLocation;
-- (int64_t)relatedTasksExistForBagKey:(id)a3;
-- (void)_issueRequestForPlayer:(id)a3 preconnect:(BOOL)a4 bagKey:(id)a5 clientProxy:(id)a6 locale:(id)a7 playerCredential:(id)a8 handler:(id)a9;
-- (void)addNetworkRequest:(id)a3 description:(id)a4 clientProxy:(id)a5;
-- (void)assembleRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 sapSession:(id)a6 handler:(id)a7;
-- (void)assembleRequestForPlayer:(id)a3 bagKey:(id)a4 preconnect:(BOOL)a5 clientProxy:(id)a6 sapSession:(id)a7 playerCredential:(id)a8 handler:(id)a9;
+- (int64_t)relatedTasksExistForBagKey:(id)key;
+- (void)_issueRequestForPlayer:(id)player preconnect:(BOOL)preconnect bagKey:(id)key clientProxy:(id)proxy locale:(id)locale playerCredential:(id)credential handler:(id)handler;
+- (void)addNetworkRequest:(id)request description:(id)description clientProxy:(id)proxy;
+- (void)assembleRequest:(id)request bagKey:(id)key clientProxy:(id)proxy sapSession:(id)session handler:(id)handler;
+- (void)assembleRequestForPlayer:(id)player bagKey:(id)key preconnect:(BOOL)preconnect clientProxy:(id)proxy sapSession:(id)session playerCredential:(id)credential handler:(id)handler;
 - (void)cancelCurrentTasks;
-- (void)cleanUpPendingStore:(id)a3;
-- (void)createEntityWithRequest:(NSDictionary *)a3 bagKey:(NSString *)a4 clientProxy:(GKClientProxy *)a5 entityMaker:(id)a6 completionHandler:;
-- (void)createEntityWithRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 completionHandler:(id)a6 entityMaker:(id)a7;
-- (void)deleteEntitiesWithBagKey:(NSString *)a3 clientProxy:(GKClientProxy *)a4 completionHandler:(id)a5;
-- (void)getFairPlaySession:(id)a3;
-- (void)handleRetryAfter:(id)a3;
-- (void)handleTaskFinished:(id)a3;
+- (void)cleanUpPendingStore:(id)store;
+- (void)createEntityWithRequest:(NSDictionary *)request bagKey:(NSString *)key clientProxy:(GKClientProxy *)proxy entityMaker:(id)maker completionHandler:;
+- (void)createEntityWithRequest:(id)request bagKey:(id)key clientProxy:(id)proxy completionHandler:(id)handler entityMaker:(id)maker;
+- (void)deleteEntitiesWithBagKey:(NSString *)key clientProxy:(GKClientProxy *)proxy completionHandler:(id)handler;
+- (void)getFairPlaySession:(id)session;
+- (void)handleRetryAfter:(id)after;
+- (void)handleTaskFinished:(id)finished;
 - (void)issuePending;
-- (void)issuePreconnectRequestForBagKey:(id)a3 clientProxy:(id)a4 handler:(id)a5;
-- (void)issueRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 locale:(id)a6 handler:(id)a7;
-- (void)issueRequestForPlayer:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 locale:(id)a6 playerCredential:(id)a7 handler:(id)a8;
-- (void)readEntityWithRequest:(NSDictionary *)a3 bagKey:(NSString *)a4 includeStaleCacheData:(BOOL)a5 clientProxy:(GKClientProxy *)a6 entityMaker:(id)a7 completionHandler:;
-- (void)readEntityWithRequest:(id)a3 bagKey:(id)a4 includeStaleCacheData:(BOOL)a5 clientProxy:(id)a6 completionHandler:(id)a7 entityMaker:(id)a8;
-- (void)setWaitPeriod:(id)a3 waitPeriod:(double)a4;
+- (void)issuePreconnectRequestForBagKey:(id)key clientProxy:(id)proxy handler:(id)handler;
+- (void)issueRequest:(id)request bagKey:(id)key clientProxy:(id)proxy locale:(id)locale handler:(id)handler;
+- (void)issueRequestForPlayer:(id)player bagKey:(id)key clientProxy:(id)proxy locale:(id)locale playerCredential:(id)credential handler:(id)handler;
+- (void)readEntityWithRequest:(NSDictionary *)request bagKey:(NSString *)key includeStaleCacheData:(BOOL)data clientProxy:(GKClientProxy *)proxy entityMaker:(id)maker completionHandler:;
+- (void)readEntityWithRequest:(id)request bagKey:(id)key includeStaleCacheData:(BOOL)data clientProxy:(id)proxy completionHandler:(id)handler entityMaker:(id)maker;
+- (void)setWaitPeriod:(id)period waitPeriod:(double)waitPeriod;
 - (void)setupSessionsAsync;
-- (void)writeToNetwork:(id)a3 clientProxy:(id)a4 handler:(id)a5;
-- (void)writeToPendingStore:(id)a3 fileName:(id)a4;
+- (void)writeToNetwork:(id)network clientProxy:(id)proxy handler:(id)handler;
+- (void)writeToPendingStore:(id)store fileName:(id)name;
 @end
 
 @implementation GKNetworkRequestManager
 
-- (BOOL)doesCallbackListExistFor:(id)a3 parameters:(id)a4 callback:(id)a5
+- (BOOL)doesCallbackListExistFor:(id)for parameters:(id)parameters callback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  forCopy = for;
+  callbackCopy = callback;
+  v10 = callbackCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (forCopy && callbackCopy)
   {
-    v12 = v8;
-    v13 = [a4 sortedArrayUsingSelector:"compare:"];
+    v12 = forCopy;
+    v13 = [parameters sortedArrayUsingSelector:"compare:"];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -98,19 +98,19 @@
     }
 
     os_unfair_lock_lock(&self->_pendingCallbacksLock);
-    v19 = [(GKNetworkRequestManager *)self pendingCallbacks];
-    v20 = [v19 objectForKeyedSubscript:v12];
+    pendingCallbacks = [(GKNetworkRequestManager *)self pendingCallbacks];
+    v20 = [pendingCallbacks objectForKeyedSubscript:v12];
 
     v11 = v20 != 0;
     if (!v20)
     {
       v21 = objc_opt_new();
-      v22 = [(GKNetworkRequestManager *)self pendingCallbacks];
-      [v22 setObject:v21 forKeyedSubscript:v12];
+      pendingCallbacks2 = [(GKNetworkRequestManager *)self pendingCallbacks];
+      [pendingCallbacks2 setObject:v21 forKeyedSubscript:v12];
     }
 
-    v23 = [(GKNetworkRequestManager *)self pendingCallbacks];
-    v24 = [v23 objectForKeyedSubscript:v12];
+    pendingCallbacks3 = [(GKNetworkRequestManager *)self pendingCallbacks];
+    v24 = [pendingCallbacks3 objectForKeyedSubscript:v12];
     v25 = [v10 copy];
     [v24 addObject:v25];
 
@@ -120,14 +120,14 @@
   return v11;
 }
 
-- (id)retrieveAndClearCallbacks:(id)a3 parameters:(id)a4
+- (id)retrieveAndClearCallbacks:(id)callbacks parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  callbacksCopy = callbacks;
+  v7 = callbacksCopy;
+  if (callbacksCopy)
   {
-    v8 = v6;
-    v9 = [a4 sortedArrayUsingSelector:"compare:"];
+    v8 = callbacksCopy;
+    v9 = [parameters sortedArrayUsingSelector:"compare:"];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -162,16 +162,16 @@
     }
 
     os_unfair_lock_lock(&self->_pendingCallbacksLock);
-    v15 = [(GKNetworkRequestManager *)self pendingCallbacks];
-    v16 = [v15 objectForKeyedSubscript:v8];
+    pendingCallbacks = [(GKNetworkRequestManager *)self pendingCallbacks];
+    v16 = [pendingCallbacks objectForKeyedSubscript:v8];
 
     if (v16)
     {
-      v17 = [(GKNetworkRequestManager *)self pendingCallbacks];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      pendingCallbacks2 = [(GKNetworkRequestManager *)self pendingCallbacks];
+      v18 = [pendingCallbacks2 objectForKeyedSubscript:v8];
 
-      v19 = [(GKNetworkRequestManager *)self pendingCallbacks];
-      [v19 setObject:0 forKeyedSubscript:v8];
+      pendingCallbacks3 = [(GKNetworkRequestManager *)self pendingCallbacks];
+      [pendingCallbacks3 setObject:0 forKeyedSubscript:v8];
     }
 
     else
@@ -190,9 +190,9 @@
   return v18;
 }
 
-+ (id)getGameDescriptorForRequest:(id)a3
++ (id)getGameDescriptorForRequest:(id)request
 {
-  v3 = [a3 objectForKeyedSubscript:@"game"];
+  v3 = [request objectForKeyedSubscript:@"game"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -207,24 +207,24 @@
   return v4;
 }
 
-+ (id)getPostDataForRequest:(id)a3 bagKey:(id)a4
++ (id)getPostDataForRequest:(id)request bagKey:(id)key
 {
-  v6 = a3;
-  if (v6)
+  requestCopy = request;
+  if (requestCopy)
   {
-    if ([a1 useJSONForBagKey:a4])
+    if ([self useJSONForBagKey:key])
     {
-      [NSJSONSerialization dataWithJSONObject:v6 options:0 error:0];
+      [NSJSONSerialization dataWithJSONObject:requestCopy options:0 error:0];
     }
 
     else
     {
-      [NSPropertyListSerialization dataWithPropertyList:v6 format:100 options:0 error:0];
+      [NSPropertyListSerialization dataWithPropertyList:requestCopy format:100 options:0 error:0];
     }
     v8 = ;
-    v9 = [a1 headersAsRequestEntries];
-    v10 = [v9 allObjects];
-    v11 = [v6 _gkSubDictionaryWithKeys:v10];
+    headersAsRequestEntries = [self headersAsRequestEntries];
+    allObjects = [headersAsRequestEntries allObjects];
+    v11 = [requestCopy _gkSubDictionaryWithKeys:allObjects];
 
     if ([v11 count])
     {
@@ -247,12 +247,12 @@
   return v7;
 }
 
-+ (id)dictionaryFromTaskDescription:(id)a3
++ (id)dictionaryFromTaskDescription:(id)description
 {
-  v3 = [a3 taskDescription];
-  if (v3)
+  taskDescription = [description taskDescription];
+  if (taskDescription)
   {
-    v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+    v4 = [[NSData alloc] initWithBase64EncodedString:taskDescription options:0];
     if (v4)
     {
       v11 = 0;
@@ -291,52 +291,52 @@
   return v9;
 }
 
-- (void)getFairPlaySession:(id)a3
+- (void)getFairPlaySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
-  v5 = [(GKNetworkRequestManager *)self fairPlaySessionProvider];
+  fairPlaySessionProvider = [(GKNetworkRequestManager *)self fairPlaySessionProvider];
   v6 = +[GKDataRequestManager sharedManager];
-  v7 = [v6 storeBag];
+  storeBag = [v6 storeBag];
   v8 = +[GKReporter reporter];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000FDB28;
   v10[3] = &unk_100366B00;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = sessionCopy;
   v11 = v9;
-  [v5 fairPlaySessionWithStoreBag:v7 reporter:v8 completionHandler:v10];
+  [fairPlaySessionProvider fairPlaySessionWithStoreBag:storeBag reporter:v8 completionHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (id)filePathToTempFile:(id)a3 fileName:(id)a4
+- (id)filePathToTempFile:(id)file fileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  fileCopy = file;
   v7 = [NSURL alloc];
-  v8 = [v6 stringByAppendingPathComponent:v5];
+  v8 = [fileCopy stringByAppendingPathComponent:nameCopy];
 
   v9 = [v7 initFileURLWithPath:v8];
 
   return v9;
 }
 
-- (id)pathToTempFile:(id)a3 fileName:(id)a4
+- (id)pathToTempFile:(id)file fileName:(id)name
 {
-  v4 = [a3 stringByAppendingPathComponent:a4];
+  v4 = [file stringByAppendingPathComponent:name];
   v5 = [NSURL URLWithString:v4];
 
   return v5;
 }
 
-- (void)cleanUpPendingStore:(id)a3
+- (void)cleanUpPendingStore:(id)store
 {
-  v4 = a3;
-  v5 = [(GKNetworkRequestManager *)self pendingLocation];
-  v6 = [(GKNetworkRequestManager *)self filePathToTempFile:v5 fileName:v4];
+  storeCopy = store;
+  pendingLocation = [(GKNetworkRequestManager *)self pendingLocation];
+  v6 = [(GKNetworkRequestManager *)self filePathToTempFile:pendingLocation fileName:storeCopy];
 
   if (!os_log_GKGeneral)
   {
@@ -352,23 +352,23 @@
   }
 
   v9 = +[NSFileManager defaultManager];
-  v10 = [v6 path];
-  [v9 removeItemAtPath:v10 error:0];
+  path = [v6 path];
+  [v9 removeItemAtPath:path error:0];
 }
 
-- (id)contentsOfPendingStore:(id)a3
+- (id)contentsOfPendingStore:(id)store
 {
-  v4 = a3;
-  v5 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v5);
+  storeCopy = store;
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
-  v6 = [(GKNetworkRequestManager *)self pendingLocation];
-  v7 = [(GKNetworkRequestManager *)self pathToTempFile:v6 fileName:v4];
+  pendingLocation = [(GKNetworkRequestManager *)self pendingLocation];
+  v7 = [(GKNetworkRequestManager *)self pathToTempFile:pendingLocation fileName:storeCopy];
 
   if (v7)
   {
-    v8 = [v7 path];
-    v9 = [NSDictionary dictionaryWithContentsOfFile:v8];
+    path = [v7 path];
+    v9 = [NSDictionary dictionaryWithContentsOfFile:path];
   }
 
   else
@@ -379,24 +379,24 @@
   return v9;
 }
 
-- (void)writeToPendingStore:(id)a3 fileName:(id)a4
+- (void)writeToPendingStore:(id)store fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v8);
+  storeCopy = store;
+  nameCopy = name;
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
-  v9 = [(GKNetworkRequestManager *)self pendingLocation];
-  v10 = [(GKNetworkRequestManager *)self pathToTempFile:v9 fileName:v7];
+  pendingLocation = [(GKNetworkRequestManager *)self pendingLocation];
+  v10 = [(GKNetworkRequestManager *)self pathToTempFile:pendingLocation fileName:nameCopy];
 
-  v11 = [v10 path];
+  path = [v10 path];
   v12 = +[NSFileManager defaultManager];
-  if (![v12 fileExistsAtPath:v11])
+  if (![v12 fileExistsAtPath:path])
   {
     goto LABEL_7;
   }
 
-  if ([v12 removeItemAtPath:v11 error:0])
+  if ([v12 removeItemAtPath:path error:0])
   {
     if (!os_log_GKGeneral)
     {
@@ -411,7 +411,7 @@
     }
 
 LABEL_7:
-    if ([v6 writeToFile:v11 atomically:1])
+    if ([storeCopy writeToFile:path atomically:1])
     {
       if (!os_log_GKGeneral)
       {
@@ -422,7 +422,7 @@ LABEL_7:
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v7;
+        v24 = nameCopy;
         v17 = "writeDictionaryToFile succeeded for: %@";
 LABEL_20:
         v20 = v16;
@@ -463,7 +463,7 @@ LABEL_21:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v11;
+    v24 = path;
     v17 = "Could not remove file: %@";
     goto LABEL_20;
   }
@@ -473,8 +473,8 @@ LABEL_22:
 
 - (BOOL)beforeFirstUnlock
 {
-  v3 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v3);
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
   if ([(GKNetworkRequestManager *)self firstUnlockedState])
   {
@@ -506,9 +506,9 @@ LABEL_22:
   return v3;
 }
 
-- (GKNetworkRequestManager)initWithInMemoryEntityCache:(BOOL)a3
+- (GKNetworkRequestManager)initWithInMemoryEntityCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v34.receiver = self;
   v34.super_class = GKNetworkRequestManager;
   v4 = [(GKNetworkRequestManager *)&v34 init];
@@ -554,9 +554,9 @@ LABEL_22:
     v5->_inProcessTasksSessionDelegate = v20;
 
     v22 = v5->_inProcessConfig;
-    v23 = [(GKNetworkRequestManager *)v5 inProcessTasksSessionDelegate];
-    v24 = [(GKNetworkRequestManager *)v5 operationQueue];
-    v25 = [NSURLSession sessionWithConfiguration:v22 delegate:v23 delegateQueue:v24];
+    inProcessTasksSessionDelegate = [(GKNetworkRequestManager *)v5 inProcessTasksSessionDelegate];
+    operationQueue = [(GKNetworkRequestManager *)v5 operationQueue];
+    v25 = [NSURLSession sessionWithConfiguration:v22 delegate:inProcessTasksSessionDelegate delegateQueue:operationQueue];
     inProcessSession = v5->_inProcessSession;
     v5->_inProcessSession = v25;
 
@@ -568,7 +568,7 @@ LABEL_22:
     appMetadataFetcher = v5->_appMetadataFetcher;
     v5->_appMetadataFetcher = v29;
 
-    v31 = [GKNetworkRequestManager makeEntityCacheProviderInMemory:v3];
+    v31 = [GKNetworkRequestManager makeEntityCacheProviderInMemory:cacheCopy];
     entityCacheProvider = v5->_entityCacheProvider;
     v5->_entityCacheProvider = v31;
   }
@@ -590,28 +590,28 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKNetworkRequestManager cancelling all existing tasks:", buf, 2u);
   }
 
-  v5 = [(GKNetworkRequestManager *)self backgroundSession];
+  backgroundSession = [(GKNetworkRequestManager *)self backgroundSession];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000FE5D0;
   v6[3] = &unk_100366B48;
   v6[4] = self;
-  [v5 getAllTasksWithCompletionHandler:v6];
+  [backgroundSession getAllTasksWithCompletionHandler:v6];
 }
 
-- (int64_t)relatedTasksExistForBagKey:(id)a3
+- (int64_t)relatedTasksExistForBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 2;
-  v5 = [(GKNetworkRequestManager *)self serviceDependancyMappings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  serviceDependancyMappings = [(GKNetworkRequestManager *)self serviceDependancyMappings];
+  v6 = [serviceDependancyMappings objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
-    v7 = [(GKNetworkRequestManager *)self stateQueue];
+    stateQueue = [(GKNetworkRequestManager *)self stateQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000FEA34;
@@ -619,7 +619,7 @@ LABEL_22:
     block[4] = self;
     v14 = v6;
     v15 = &v16;
-    dispatch_sync(v7, block);
+    dispatch_sync(stateQueue, block);
 
     if (!os_log_GKGeneral)
     {
@@ -631,7 +631,7 @@ LABEL_22:
     {
       v10 = [NSNumber numberWithInteger:v17[3]];
       *buf = 138412546;
-      v21 = v4;
+      v21 = keyCopy;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKNetworkRequestManager the outcome of relatedTasksExistForBagKey %@ is: %@", buf, 0x16u);
@@ -649,13 +649,13 @@ LABEL_22:
   return v11;
 }
 
-+ (Class)networkRequestClass:(id)a3
++ (Class)networkRequestClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[GKRemoveFriendNetworkRequest bagKey];
-  v5 = [v4 isEqualToString:v3];
+  v5 = [v4 isEqualToString:classCopy];
 
-  if (v5 & 1) != 0 || (+[GKRemoveAllFriendsNetworkRequest bagKey](GKRemoveAllFriendsNetworkRequest, "bagKey"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:v3], v6, (v7) || (+[GKChallengeNetworkRequest bagKey](GKChallengeNetworkRequest, "bagKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", v3), v8, (v9) || (+[GKAbortChallengeNetworkRequest bagKey](GKAbortChallengeNetworkRequest, "bagKey"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", v3), v10, (v11) || (+[GKAchievementNetworkRequest bagKey](GKAchievementNetworkRequest, "bagKey"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", v3), v12, (v13) || (+[GKScoreNetworkRequest bagKey](GKScoreNetworkRequest, "bagKey"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v3), v14, (v15) || (+[GKInstanceScoreNetworkRequest bagKey](GKInstanceScoreNetworkRequest, "bagKey"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", v3), v16, (v17) || (+[GKPlayerGameSettingsNetworkRequest bagKey](GKPlayerGameSettingsNetworkRequest, "bagKey"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", v3), v18, (v19) || (+[GKMultiplayerGroupRequest bagKey](GKMultiplayerGroupRequest, "bagKey"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", v3), v20, v21))
+  if (v5 & 1) != 0 || (+[GKRemoveAllFriendsNetworkRequest bagKey](GKRemoveAllFriendsNetworkRequest, "bagKey"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:classCopy], v6, (v7) || (+[GKChallengeNetworkRequest bagKey](GKChallengeNetworkRequest, "bagKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", classCopy), v8, (v9) || (+[GKAbortChallengeNetworkRequest bagKey](GKAbortChallengeNetworkRequest, "bagKey"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", classCopy), v10, (v11) || (+[GKAchievementNetworkRequest bagKey](GKAchievementNetworkRequest, "bagKey"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", classCopy), v12, (v13) || (+[GKScoreNetworkRequest bagKey](GKScoreNetworkRequest, "bagKey"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", classCopy), v14, (v15) || (+[GKInstanceScoreNetworkRequest bagKey](GKInstanceScoreNetworkRequest, "bagKey"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", classCopy), v16, (v17) || (+[GKPlayerGameSettingsNetworkRequest bagKey](GKPlayerGameSettingsNetworkRequest, "bagKey"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", classCopy), v18, (v19) || (+[GKMultiplayerGroupRequest bagKey](GKMultiplayerGroupRequest, "bagKey"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToString:", classCopy), v20, v21))
   {
     v22 = objc_opt_class();
   }
@@ -670,17 +670,17 @@ LABEL_22:
   return v22;
 }
 
-+ (id)networkRequestFromNsurlTask:(id)a3
++ (id)networkRequestFromNsurlTask:(id)task
 {
-  v3 = a3;
-  v4 = [GKNetworkRequestManager dictionaryFromTaskDescription:v3];
+  taskCopy = task;
+  v4 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
   v5 = [v4 objectForKeyedSubscript:@"BagKeyKey"];
   v6 = [GKNetworkRequestManager networkRequestClass:v5];
   if (v6)
   {
-    v7 = [[v6 alloc] initWithTask:v3];
-    v8 = [v3 originalRequest];
-    v9 = [v8 mutableCopy];
+    v7 = [[v6 alloc] initWithTask:taskCopy];
+    originalRequest = [taskCopy originalRequest];
+    v9 = [originalRequest mutableCopy];
     [v7 setNsurlRequest:v9];
   }
 
@@ -705,48 +705,48 @@ LABEL_22:
   return v7;
 }
 
-- (id)dictionaryForBagAndPlayer:(id)a3 createIfNotPresent:(BOOL)a4 description:(id)a5
+- (id)dictionaryForBagAndPlayer:(id)player createIfNotPresent:(BOOL)present description:(id)description
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v10);
+  presentCopy = present;
+  playerCopy = player;
+  descriptionCopy = description;
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
-  if (v9)
+  if (descriptionCopy)
   {
-    v11 = v9;
+    v11 = descriptionCopy;
   }
 
   else
   {
-    v12 = [v8 nsurlTask];
-    v11 = [GKNetworkRequestManager dictionaryFromTaskDescription:v12];
+    nsurlTask = [playerCopy nsurlTask];
+    v11 = [GKNetworkRequestManager dictionaryFromTaskDescription:nsurlTask];
   }
 
-  v13 = [objc_opt_class() bagKey];
+  bagKey = [objc_opt_class() bagKey];
   v14 = [v11 objectForKeyedSubscript:@"PlayerIDKey"];
   if (v14)
   {
-    v15 = [(GKNetworkRequestManager *)self existingTasks];
-    v16 = [v15 objectForKeyedSubscript:v13];
+    existingTasks = [(GKNetworkRequestManager *)self existingTasks];
+    v16 = [existingTasks objectForKeyedSubscript:bagKey];
 
     if (v16)
     {
       goto LABEL_8;
     }
 
-    if (v6)
+    if (presentCopy)
     {
       v16 = objc_alloc_init(NSMutableDictionary);
-      v17 = [(GKNetworkRequestManager *)self existingTasks];
-      [v17 setObject:v16 forKeyedSubscript:v13];
+      existingTasks2 = [(GKNetworkRequestManager *)self existingTasks];
+      [existingTasks2 setObject:v16 forKeyedSubscript:bagKey];
 
 LABEL_8:
       v18 = [v16 objectForKeyedSubscript:v14];
       if (!v18)
       {
-        if (!v6)
+        if (!presentCopy)
         {
           v19 = 0;
           goto LABEL_12;
@@ -786,15 +786,15 @@ LABEL_18:
 
 - (BOOL)managerReady
 {
-  v3 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v3);
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
   v4 = +[GKPreferences shared];
-  v5 = [v4 networkManagerStateOverride];
+  networkManagerStateOverride = [v4 networkManagerStateOverride];
 
-  if (v5 != -1)
+  if (networkManagerStateOverride != -1)
   {
-    return v5 != 0;
+    return networkManagerStateOverride != 0;
   }
 
   if ([(GKNetworkRequestManager *)self currentState]< 2)
@@ -805,13 +805,13 @@ LABEL_18:
   return [(GKNetworkRequestManager *)self fairPlaySessionReady];
 }
 
-- (void)addNetworkRequest:(id)a3 description:(id)a4 clientProxy:(id)a5
+- (void)addNetworkRequest:(id)request description:(id)description clientProxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(GKNetworkRequestManager *)self stateQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  proxyCopy = proxy;
+  descriptionCopy = description;
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
+  dispatch_assert_queue_V2(stateQueue);
 
   if (!os_log_GKGeneral)
   {
@@ -823,20 +823,20 @@ LABEL_18:
   {
     v14 = v13;
     v15 = [NSNumber numberWithInteger:[(GKNetworkRequestManager *)self currentState]];
-    v16 = [(GKNetworkRequestManager *)self existingTasks];
+    existingTasks = [(GKNetworkRequestManager *)self existingTasks];
     v25 = 138412546;
     v26 = v15;
     v27 = 2112;
-    v28 = v16;
+    v28 = existingTasks;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "GKNetworkRequestManager addNetworkRequest managerState: %@ memory state before update: %@", &v25, 0x16u);
   }
 
-  v17 = [(GKNetworkRequestManager *)self dictionaryForBagAndPlayer:v8 createIfNotPresent:1 description:v10];
+  v17 = [(GKNetworkRequestManager *)self dictionaryForBagAndPlayer:requestCopy createIfNotPresent:1 description:descriptionCopy];
 
   if (v17)
   {
-    v18 = [(GKNetworkRequestManager *)self backgroundSession];
-    [v8 handleNetworkRequest:v17 session:v18 clientProxy:v9];
+    backgroundSession = [(GKNetworkRequestManager *)self backgroundSession];
+    [requestCopy handleNetworkRequest:v17 session:backgroundSession clientProxy:proxyCopy];
 
     if (!os_log_GKGeneral)
     {
@@ -847,9 +847,9 @@ LABEL_18:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v21 = v20;
-      v22 = [(GKNetworkRequestManager *)self existingTasks];
+      existingTasks2 = [(GKNetworkRequestManager *)self existingTasks];
       v25 = 138412290;
-      v26 = v22;
+      v26 = existingTasks2;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "GKNetworkRequestManager addNetworkRequest state after update: %@", &v25, 0xCu);
     }
   }
@@ -865,16 +865,16 @@ LABEL_18:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v25 = 138412290;
-      v26 = v8;
+      v26 = requestCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "GKNetworkRequestManager error when trying to add to store: %@", &v25, 0xCu);
     }
   }
 }
 
-- (void)handleTaskFinished:(id)a3
+- (void)handleTaskFinished:(id)finished
 {
-  v4 = a3;
-  if (v4)
+  finishedCopy = finished;
+  if (finishedCopy)
   {
     if (!os_log_GKGeneral)
     {
@@ -885,14 +885,14 @@ LABEL_18:
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
-      v8 = [(GKNetworkRequestManager *)self existingTasks];
+      existingTasks = [(GKNetworkRequestManager *)self existingTasks];
       *buf = 138412290;
-      v17 = v8;
+      v17 = existingTasks;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "GKNetworkRequestManager handleTaskFinished state before update: %@", buf, 0xCu);
     }
 
-    v9 = [GKNetworkRequestManager networkRequestFromNsurlTask:v4];
-    v10 = [(GKNetworkRequestManager *)self stateQueue];
+    v9 = [GKNetworkRequestManager networkRequestFromNsurlTask:finishedCopy];
+    stateQueue = [(GKNetworkRequestManager *)self stateQueue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000FF6E8;
@@ -900,7 +900,7 @@ LABEL_18:
     v14[4] = self;
     v15 = v9;
     v11 = v9;
-    dispatch_async(v10, v14);
+    dispatch_async(stateQueue, v14);
   }
 
   else
@@ -921,13 +921,13 @@ LABEL_18:
 
 - (void)setupSessionsAsync
 {
-  v3 = [(GKNetworkRequestManager *)self stateQueue];
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FF95C;
   block[3] = &unk_100361770;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateQueue, block);
 }
 
 + (id)headersAsRequestEntries
@@ -942,99 +942,99 @@ LABEL_18:
   return v3;
 }
 
-+ (BOOL)useJSONForBagKey:(id)a3
++ (BOOL)useJSONForBagKey:(id)key
 {
   v3 = qword_1003B91E8;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     sub_10028DD68();
   }
 
-  v5 = [qword_1003B91E0 containsObject:v4];
+  v5 = [qword_1003B91E0 containsObject:keyCopy];
 
   return v5;
 }
 
-- (id)playerCredentialsForClientProxy:(id)a3
+- (id)playerCredentialsForClientProxy:(id)proxy
 {
-  v3 = a3;
+  proxyCopy = proxy;
   v4 = +[GKPlayerCredentialController sharedController];
-  v5 = [v3 environment];
+  environment = [proxyCopy environment];
 
-  v6 = [v4 pushCredentialForEnvironment:v5];
+  v6 = [v4 pushCredentialForEnvironment:environment];
 
   return v6;
 }
 
-- (void)assembleRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 sapSession:(id)a6 handler:(id)a7
+- (void)assembleRequest:(id)request bagKey:(id)key clientProxy:(id)proxy sapSession:(id)session handler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(GKNetworkRequestManager *)self playerCredentialsForClientProxy:v14];
-  [(GKNetworkRequestManager *)self assembleRequestForPlayer:v16 bagKey:v15 preconnect:0 clientProxy:v14 sapSession:v13 playerCredential:v17 handler:v12];
+  handlerCopy = handler;
+  sessionCopy = session;
+  proxyCopy = proxy;
+  keyCopy = key;
+  requestCopy = request;
+  v17 = [(GKNetworkRequestManager *)self playerCredentialsForClientProxy:proxyCopy];
+  [(GKNetworkRequestManager *)self assembleRequestForPlayer:requestCopy bagKey:keyCopy preconnect:0 clientProxy:proxyCopy sapSession:sessionCopy playerCredential:v17 handler:handlerCopy];
 }
 
-- (void)assembleRequestForPlayer:(id)a3 bagKey:(id)a4 preconnect:(BOOL)a5 clientProxy:(id)a6 sapSession:(id)a7 playerCredential:(id)a8 handler:(id)a9
+- (void)assembleRequestForPlayer:(id)player bagKey:(id)key preconnect:(BOOL)preconnect clientProxy:(id)proxy sapSession:(id)session playerCredential:(id)credential handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [(GKNetworkRequestManager *)self handlerQueue];
+  playerCopy = player;
+  keyCopy = key;
+  proxyCopy = proxy;
+  sessionCopy = session;
+  credentialCopy = credential;
+  handlerCopy = handler;
+  handlerQueue = [(GKNetworkRequestManager *)self handlerQueue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10010077C;
   v28[3] = &unk_1003666A0;
-  v29 = v15;
-  v30 = v16;
-  v31 = v19;
-  v32 = self;
-  v36 = a5;
-  v33 = v17;
-  v34 = v18;
-  v35 = v20;
-  v22 = v20;
-  v23 = v18;
-  v24 = v17;
-  v25 = v19;
-  v26 = v16;
-  v27 = v15;
-  dispatch_async(v21, v28);
+  v29 = playerCopy;
+  v30 = keyCopy;
+  v31 = credentialCopy;
+  selfCopy = self;
+  preconnectCopy = preconnect;
+  v33 = proxyCopy;
+  v34 = sessionCopy;
+  v35 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = sessionCopy;
+  v24 = proxyCopy;
+  v25 = credentialCopy;
+  v26 = keyCopy;
+  v27 = playerCopy;
+  dispatch_async(handlerQueue, v28);
 }
 
-- (void)writeToNetwork:(id)a3 clientProxy:(id)a4 handler:(id)a5
+- (void)writeToNetwork:(id)network clientProxy:(id)proxy handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
+  networkCopy = network;
+  proxyCopy = proxy;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100100D28;
   v22[3] = &unk_1003637B0;
-  v10 = a5;
+  handlerCopy = handler;
   v22[4] = self;
-  v23 = v10;
+  v23 = handlerCopy;
   v11 = objc_retainBlock(v22);
-  v12 = [(GKNetworkRequestManager *)self stateQueue];
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100100E08;
   block[3] = &unk_100366C28;
   block[4] = self;
-  v18 = v8;
-  v20 = v10;
+  v18 = networkCopy;
+  v20 = handlerCopy;
   v21 = v11;
-  v19 = v9;
-  v13 = v9;
+  v19 = proxyCopy;
+  v13 = proxyCopy;
   v14 = v11;
-  v15 = v10;
-  v16 = v8;
-  dispatch_async(v12, block);
+  v15 = handlerCopy;
+  v16 = networkCopy;
+  dispatch_async(stateQueue, block);
 }
 
 - (id)waitListLocation
@@ -1048,9 +1048,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)setWaitPeriod:(id)a3 waitPeriod:(double)a4
+- (void)setWaitPeriod:(id)period waitPeriod:(double)waitPeriod
 {
-  v6 = a3;
+  periodCopy = period;
   os_unfair_lock_lock(&self->_waitListCallbacksLock);
   if (!os_log_GKGeneral)
   {
@@ -1061,42 +1061,42 @@ LABEL_18:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [NSNumber numberWithDouble:a4];
+    v10 = [NSNumber numberWithDouble:waitPeriod];
     v14 = 138412546;
-    v15 = v6;
+    v15 = periodCopy;
     v16 = 2112;
     v17 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Attempting to update wait period: %@, %@", &v14, 0x16u);
   }
 
-  if (v6)
+  if (periodCopy)
   {
-    v11 = [(GKNetworkRequestManager *)self waitListLocation];
-    v12 = [NSMutableDictionary dictionaryWithContentsOfFile:v11];
+    waitListLocation = [(GKNetworkRequestManager *)self waitListLocation];
+    v12 = [NSMutableDictionary dictionaryWithContentsOfFile:waitListLocation];
     if (!v12)
     {
       v12 = objc_alloc_init(NSMutableDictionary);
     }
 
-    if (a4 == 0.0)
+    if (waitPeriod == 0.0)
     {
-      [v12 setObject:0 forKeyedSubscript:v6];
+      [v12 setObject:0 forKeyedSubscript:periodCopy];
     }
 
     else
     {
-      v13 = [NSDate dateWithTimeIntervalSinceNow:a4];
-      [v12 setObject:v13 forKeyedSubscript:v6];
+      v13 = [NSDate dateWithTimeIntervalSinceNow:waitPeriod];
+      [v12 setObject:v13 forKeyedSubscript:periodCopy];
     }
 
-    [v12 writeToFile:v11 atomically:1];
+    [v12 writeToFile:waitListLocation atomically:1];
     os_unfair_lock_unlock(&self->_waitListCallbacksLock);
   }
 }
 
-- (void)handleRetryAfter:(id)a3
+- (void)handleRetryAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1106,52 +1106,52 @@ LABEL_18:
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [GKNetworkRequestManager dictionaryFromTaskDescription:v4];
+    v8 = [GKNetworkRequestManager dictionaryFromTaskDescription:afterCopy];
     *buf = 138412290;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "GKNetworkRequestManager attempting to retry after for task: %@", buf, 0xCu);
   }
 
-  v9 = [v4 response];
-  v10 = [GKNetworkRequestManager networkRequestFromNsurlTask:v4];
-  v11 = [(GKNetworkRequestManager *)self stateQueue];
+  response = [afterCopy response];
+  v10 = [GKNetworkRequestManager networkRequestFromNsurlTask:afterCopy];
+  stateQueue = [(GKNetworkRequestManager *)self stateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100101830;
   block[3] = &unk_100361F68;
-  v15 = v9;
-  v16 = self;
+  v15 = response;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v13 = response;
+  dispatch_async(stateQueue, block);
 }
 
-- (id)existingWaitListDate:(id)a3
+- (id)existingWaitListDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_waitListCallbacksLock);
-  v5 = [(GKNetworkRequestManager *)self waitListLocation];
-  v6 = [NSDictionary dictionaryWithContentsOfFile:v5];
+  waitListLocation = [(GKNetworkRequestManager *)self waitListLocation];
+  v6 = [NSDictionary dictionaryWithContentsOfFile:waitListLocation];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:dateCopy];
 
   os_unfair_lock_unlock(&self->_waitListCallbacksLock);
 
   return v7;
 }
 
-- (id)canSafelyIssueRequest:(id)a3
+- (id)canSafelyIssueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(GKNetworkRequestManager *)self existingWaitListDate:v4];
+  requestCopy = request;
+  v5 = [(GKNetworkRequestManager *)self existingWaitListDate:requestCopy];
   v6 = v5;
   if (v5)
   {
     [v5 timeIntervalSinceNow];
     if (v7 > 0.0)
     {
-      v8 = [NSString stringWithFormat:@"A wait period is active not allowing network requests for this bag key: %@, %@", v4, v6];
+      v8 = [NSString stringWithFormat:@"A wait period is active not allowing network requests for this bag key: %@, %@", requestCopy, v6];
       v12 = NSLocalizedFailureReasonErrorKey;
       v13 = v8;
       v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
@@ -1160,7 +1160,7 @@ LABEL_18:
       goto LABEL_6;
     }
 
-    [(GKNetworkRequestManager *)self setWaitPeriod:v4 waitPeriod:0.0];
+    [(GKNetworkRequestManager *)self setWaitPeriod:requestCopy waitPeriod:0.0];
   }
 
   v10 = 0;
@@ -1169,112 +1169,112 @@ LABEL_6:
   return v10;
 }
 
-- (void)issueRequestForPlayer:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 locale:(id)a6 playerCredential:(id)a7 handler:(id)a8
+- (void)issueRequestForPlayer:(id)player bagKey:(id)key clientProxy:(id)proxy locale:(id)locale playerCredential:(id)credential handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  playerCopy = player;
+  keyCopy = key;
+  proxyCopy = proxy;
+  localeCopy = locale;
+  credentialCopy = credential;
+  handlerCopy = handler;
   v20 = +[GKDataRequestManager sharedManager];
-  v21 = [v20 storeBag];
+  storeBag = [v20 storeBag];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100101CA0;
   v28[3] = &unk_100366C00;
-  v33 = v18;
-  v34 = v19;
+  v33 = credentialCopy;
+  v34 = handlerCopy;
   v28[4] = self;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
-  v27 = v19;
-  [v21 verifyEligibilityForBagKey:v25 replyQueue:0 client:v24 completion:v28];
+  v29 = playerCopy;
+  v30 = keyCopy;
+  v31 = proxyCopy;
+  v32 = localeCopy;
+  v22 = credentialCopy;
+  v23 = localeCopy;
+  v24 = proxyCopy;
+  v25 = keyCopy;
+  v26 = playerCopy;
+  v27 = handlerCopy;
+  [storeBag verifyEligibilityForBagKey:v25 replyQueue:0 client:v24 completion:v28];
 }
 
-- (void)issuePreconnectRequestForBagKey:(id)a3 clientProxy:(id)a4 handler:(id)a5
+- (void)issuePreconnectRequestForBagKey:(id)key clientProxy:(id)proxy handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v11 = +[GKDataRequestManager sharedManager];
-  v12 = [v11 storeBag];
+  storeBag = [v11 storeBag];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100101E2C;
   v16[3] = &unk_100366C50;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
-  [v12 verifyEligibilityForBagKey:v14 preconnect:1 replyQueue:0 client:v13 completion:v16];
+  v17 = keyCopy;
+  v18 = proxyCopy;
+  v19 = handlerCopy;
+  v13 = proxyCopy;
+  v14 = keyCopy;
+  v15 = handlerCopy;
+  [storeBag verifyEligibilityForBagKey:v14 preconnect:1 replyQueue:0 client:v13 completion:v16];
 }
 
-- (void)_issueRequestForPlayer:(id)a3 preconnect:(BOOL)a4 bagKey:(id)a5 clientProxy:(id)a6 locale:(id)a7 playerCredential:(id)a8 handler:(id)a9
+- (void)_issueRequestForPlayer:(id)player preconnect:(BOOL)preconnect bagKey:(id)key clientProxy:(id)proxy locale:(id)locale playerCredential:(id)credential handler:(id)handler
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  playerCopy = player;
+  keyCopy = key;
+  proxyCopy = proxy;
+  localeCopy = locale;
+  credentialCopy = credential;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10010205C;
   v26[3] = &unk_100366D08;
   v26[4] = self;
-  v27 = v16;
-  v31 = v18;
-  v32 = a9;
-  v33 = a4;
-  v28 = v15;
-  v29 = v17;
-  v30 = v19;
-  v20 = v18;
-  v21 = v19;
-  v22 = v17;
-  v23 = v15;
-  v24 = v32;
-  v25 = v16;
+  v27 = keyCopy;
+  v31 = localeCopy;
+  handlerCopy = handler;
+  preconnectCopy = preconnect;
+  v28 = playerCopy;
+  v29 = proxyCopy;
+  v30 = credentialCopy;
+  v20 = localeCopy;
+  v21 = credentialCopy;
+  v22 = proxyCopy;
+  v23 = playerCopy;
+  v24 = handlerCopy;
+  v25 = keyCopy;
   [(GKNetworkRequestManager *)self getFairPlaySession:v26];
 }
 
-- (void)issueRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 locale:(id)a6 handler:(id)a7
+- (void)issueRequest:(id)request bagKey:(id)key clientProxy:(id)proxy locale:(id)locale handler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(GKNetworkRequestManager *)self playerCredentialsForClientProxy:v14];
-  [(GKNetworkRequestManager *)self issueRequestForPlayer:v16 bagKey:v15 clientProxy:v14 locale:v13 playerCredential:v17 handler:v12];
+  handlerCopy = handler;
+  localeCopy = locale;
+  proxyCopy = proxy;
+  keyCopy = key;
+  requestCopy = request;
+  v17 = [(GKNetworkRequestManager *)self playerCredentialsForClientProxy:proxyCopy];
+  [(GKNetworkRequestManager *)self issueRequestForPlayer:requestCopy bagKey:keyCopy clientProxy:proxyCopy locale:localeCopy playerCredential:v17 handler:handlerCopy];
 }
 
-+ (id)uuidFromTask:(id)a3
++ (id)uuidFromTask:(id)task
 {
-  v3 = [GKNetworkRequestManager dictionaryFromTaskDescription:a3];
+  v3 = [GKNetworkRequestManager dictionaryFromTaskDescription:task];
   v4 = [v3 objectForKeyedSubscript:@"UUIDKey"];
 
   return v4;
 }
 
-+ (id)taskWithRequest:(id)a3 description:(id)a4 session:(id)a5
++ (id)taskWithRequest:(id)request description:(id)description session:(id)session
 {
-  if (a3)
+  if (request)
   {
-    v7 = a4;
-    v8 = [a5 downloadTaskWithRequest:a3];
+    descriptionCopy = description;
+    v8 = [session downloadTaskWithRequest:request];
     v16 = 0;
-    v9 = [NSJSONSerialization dataWithJSONObject:v7 options:1 error:&v16];
+    v9 = [NSJSONSerialization dataWithJSONObject:descriptionCopy options:1 error:&v16];
 
     v10 = v16;
     if (v10)
@@ -1337,9 +1337,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)taskFromIdentifier:(id)a3
+- (id)taskFromIdentifier:(id)identifier
 {
-  v3 = [(GKNetworkRequestManager *)self contentsOfPendingStore:a3];
+  v3 = [(GKNetworkRequestManager *)self contentsOfPendingStore:identifier];
   v4 = [v3 objectForKeyedSubscript:@"BagKeyKey"];
   v5 = objc_alloc_init([GKNetworkRequestManager networkRequestClass:v4]);
   [v5 updateWithTaskInfo:v3];
@@ -1375,17 +1375,17 @@ LABEL_6:
   }
 }
 
-+ (id)makeEntityCacheProviderInMemory:(BOOL)a3
++ (id)makeEntityCacheProviderInMemory:(BOOL)memory
 {
-  v3 = sub_1002052A0(a3);
+  v3 = sub_1002052A0(memory);
 
   return v3;
 }
 
-- (void)createEntityWithRequest:(id)a3 bagKey:(id)a4 clientProxy:(id)a5 completionHandler:(id)a6 entityMaker:(id)a7
+- (void)createEntityWithRequest:(id)request bagKey:(id)key clientProxy:(id)proxy completionHandler:(id)handler entityMaker:(id)maker
 {
-  v10 = _Block_copy(a6);
-  v11 = _Block_copy(a7);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(maker);
   v12 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
@@ -1393,38 +1393,38 @@ LABEL_6:
   *(v16 + 16) = v10;
   v17 = swift_allocObject();
   *(v17 + 16) = v11;
-  v18 = a5;
-  v19 = self;
-  sub_10020531C(v12, v13, v15, v18, sub_10020D2AC, v16, sub_10020D2D0, v17);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_10020531C(v12, v13, v15, proxyCopy, sub_10020D2AC, v16, sub_10020D2D0, v17);
 }
 
-- (void)createEntityWithRequest:(NSDictionary *)a3 bagKey:(NSString *)a4 clientProxy:(GKClientProxy *)a5 entityMaker:(id)a6 completionHandler:
+- (void)createEntityWithRequest:(NSDictionary *)request bagKey:(NSString *)key clientProxy:(GKClientProxy *)proxy entityMaker:(id)maker completionHandler:
 {
   v7 = v6;
-  v12 = _Block_copy(a6);
+  v12 = _Block_copy(maker);
   v13 = _Block_copy(v7);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
-  v14[4] = a5;
+  v14[2] = request;
+  v14[3] = key;
+  v14[4] = proxy;
   v14[5] = v12;
   v14[6] = v13;
   v14[7] = self;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = self;
+  requestCopy = request;
+  keyCopy = key;
+  proxyCopy = proxy;
+  selfCopy = self;
 
   sub_10028022C(&unk_1002C57A8, v14);
 }
 
-- (void)readEntityWithRequest:(id)a3 bagKey:(id)a4 includeStaleCacheData:(BOOL)a5 clientProxy:(id)a6 completionHandler:(id)a7 entityMaker:(id)a8
+- (void)readEntityWithRequest:(id)request bagKey:(id)key includeStaleCacheData:(BOOL)data clientProxy:(id)proxy completionHandler:(id)handler entityMaker:(id)maker
 {
-  v13 = _Block_copy(a7);
-  v14 = _Block_copy(a8);
-  if (a3)
+  v13 = _Block_copy(handler);
+  v14 = _Block_copy(maker);
+  if (request)
   {
-    a3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    request = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -1433,50 +1433,50 @@ LABEL_6:
   *(v18 + 16) = v13;
   v19 = swift_allocObject();
   *(v19 + 16) = v14;
-  v20 = a6;
-  v21 = self;
-  sub_100206E58(a3, v15, v17, a5, v20, sub_10020C054, v18, sub_10020D2D0, v19);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_100206E58(request, v15, v17, data, proxyCopy, sub_10020C054, v18, sub_10020D2D0, v19);
 }
 
-- (void)readEntityWithRequest:(NSDictionary *)a3 bagKey:(NSString *)a4 includeStaleCacheData:(BOOL)a5 clientProxy:(GKClientProxy *)a6 entityMaker:(id)a7 completionHandler:
+- (void)readEntityWithRequest:(NSDictionary *)request bagKey:(NSString *)key includeStaleCacheData:(BOOL)data clientProxy:(GKClientProxy *)proxy entityMaker:(id)maker completionHandler:
 {
   v8 = v7;
-  v14 = _Block_copy(a7);
+  v14 = _Block_copy(maker);
   v15 = _Block_copy(v8);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
-  *(v16 + 40) = a6;
+  *(v16 + 16) = request;
+  *(v16 + 24) = key;
+  *(v16 + 32) = data;
+  *(v16 + 40) = proxy;
   *(v16 + 48) = v14;
   *(v16 + 56) = v15;
   *(v16 + 64) = self;
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = self;
+  requestCopy = request;
+  keyCopy = key;
+  proxyCopy = proxy;
+  selfCopy = self;
 
   sub_10028022C(&unk_1002C5738, v16);
 }
 
-- (void)deleteEntitiesWithBagKey:(NSString *)a3 clientProxy:(GKClientProxy *)a4 completionHandler:(id)a5
+- (void)deleteEntitiesWithBagKey:(NSString *)key clientProxy:(GKClientProxy *)proxy completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = key;
+  v9[3] = proxy;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  keyCopy = key;
+  proxyCopy = proxy;
+  selfCopy = self;
 
   sub_10028022C(&unk_1002C5710, v9);
 }
 
-+ (id)makeEntityIDWithRequest:(id)a3 bagKey:(id)a4
++ (id)makeEntityIDWithRequest:(id)request bagKey:(id)key
 {
-  if (a3)
+  if (request)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

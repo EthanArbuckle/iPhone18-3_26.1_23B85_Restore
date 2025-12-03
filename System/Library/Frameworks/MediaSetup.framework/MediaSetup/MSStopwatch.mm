@@ -1,10 +1,10 @@
 @interface MSStopwatch
 - (MSStopwatch)init;
-- (void)lapWithName:(id)a3;
+- (void)lapWithName:(id)name;
 - (void)reset;
 - (void)start;
 - (void)stop;
-- (void)toggleLock:(BOOL)a3;
+- (void)toggleLock:(BOOL)lock;
 @end
 
 @implementation MSStopwatch
@@ -60,32 +60,32 @@
   }
 }
 
-- (void)lapWithName:(id)a3
+- (void)lapWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (self->_status != 1 && !self->_isLocked)
   {
-    v10 = v4;
+    v10 = nameCopy;
     v5 = mach_absolute_time() - self->_startTime;
     if (v10)
     {
-      v6 = v10;
+      uUIDString = v10;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CCAD78] UUID];
-      v6 = [v7 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
     laps = self->_laps;
-    v9 = [[MSStopwatchLap alloc] initWithLapTime:v5 andName:v6];
+    v9 = [[MSStopwatchLap alloc] initWithLapTime:v5 andName:uUIDString];
     [(NSMutableArray *)laps addObject:v9];
 
     self->_startTime = 0;
     self->_lastLapTime = v5;
 
-    v4 = v10;
+    nameCopy = v10;
   }
 }
 
@@ -104,11 +104,11 @@
   }
 }
 
-- (void)toggleLock:(BOOL)a3
+- (void)toggleLock:(BOOL)lock
 {
-  if (self->_isLocked != a3)
+  if (self->_isLocked != lock)
   {
-    self->_isLocked = a3;
+    self->_isLocked = lock;
   }
 }
 

@@ -2,7 +2,7 @@
 - (BOOL)hasLoadedContentData;
 - (NSString)snappableWidgetIdentifier;
 - (_TtC12PhotosUICore23PhotosDetailsEXIFWidget)init;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (int64_t)contentLayoutStyle;
 - (void)loadContentData;
 @end
@@ -19,7 +19,7 @@
 - (BOOL)hasLoadedContentData
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0xD8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -34,8 +34,8 @@
     else
     {
       v6 = 0;
-      v7 = v3;
-      v3 = v5;
+      v7 = selfCopy;
+      selfCopy = v5;
     }
   }
 
@@ -50,7 +50,7 @@
 - (int64_t)contentLayoutStyle
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x168);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   if (v2)
@@ -64,7 +64,7 @@
   }
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
   v4 = sub_1A52486A4();
   v5 = *(v4 - 8);
@@ -72,11 +72,11 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = type metadata accessor for PhotosDetailsEXIFWidgetView();
   v9 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x108);
-  v10 = self;
+  selfCopy = self;
   v11 = v9();
-  v12 = [v11 contentSizeCategory];
+  contentSizeCategory = [v11 contentSizeCategory];
 
-  sub_1A412028C(v12, v7);
+  sub_1A412028C(contentSizeCategory, v7);
   v13 = sub_1A4394B64(v7, v8, &off_1EE6D6550);
 
   (*(v5 + 8))(v7, v4);
@@ -85,7 +85,7 @@
 
 - (void)loadContentData
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3D8E030();
 }
 

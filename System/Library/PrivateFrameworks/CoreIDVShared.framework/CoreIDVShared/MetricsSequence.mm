@@ -1,6 +1,6 @@
 @interface MetricsSequence
 - (_TtC13CoreIDVShared15MetricsSequence)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MetricsSequence
@@ -19,11 +19,11 @@
   return [(MetricsSequence *)&v7 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15MetricsSequence__sequence);
-  v5 = a3;
-  v6 = self;
+  coderCopy = coder;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 6);
 
   os_unfair_lock_unlock(v4 + 6);
@@ -31,7 +31,7 @@
   v7 = sub_225CCE7F4();
 
   v8 = sub_225CCE444();
-  [v5 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface APSDatePrinter
-+ (id)dateStringFromDate:(id)a3;
-+ (id)dateStringFromInterval:(double)a3;
++ (id)dateStringFromDate:(id)date;
++ (id)dateStringFromInterval:(double)interval;
 @end
 
 @implementation APSDatePrinter
 
-+ (id)dateStringFromDate:(id)a3
++ (id)dateStringFromDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = sub_10003206C();
-    v5 = [v4 stringFromDate:v3];
+    v5 = [v4 stringFromDate:dateCopy];
     +[NSDate timeIntervalSinceReferenceDate];
     v7 = v6;
-    [v3 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v9 = v8;
 
     v10 = [NSString stringWithFormat:@"%@ (%.2f seconds ago)", v5, v7 - v9];
@@ -28,11 +28,11 @@
   return v10;
 }
 
-+ (id)dateStringFromInterval:(double)a3
++ (id)dateStringFromInterval:(double)interval
 {
-  if (a3 == 0.0)
+  if (interval == 0.0)
   {
-    v3 = @"never";
+    interval = @"never";
   }
 
   else
@@ -41,10 +41,10 @@
     v6 = sub_10003206C();
     v7 = [v6 stringFromDate:v5];
     +[NSDate timeIntervalSinceReferenceDate];
-    v3 = [NSString stringWithFormat:@"%@ (%.2f seconds ago)", v7, v8 - a3];
+    interval = [NSString stringWithFormat:@"%@ (%.2f seconds ago)", v7, v8 - interval];
   }
 
-  return v3;
+  return interval;
 }
 
 @end

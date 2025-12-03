@@ -1,16 +1,16 @@
 @interface BMMailCategorization
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMailCategorization)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMailCategorization)initWithMessageId:(id)a3 eventType:(id)a4 trialExperimentId:(id)a5 trialExperimentDeploymentId:(id)a6 trialExperimentTreatmentId:(id)a7 trialRolloutId:(id)a8 trialRolloutDeploymentId:(id)a9 trialRolloutFactorPackId:(id)a10 predictedCategory:(int)a11 blackPearlModelVersion:(id)a12 blackPearlSenderModelVersion:(id)a13 blackPearlFinalRuleVersion:(id)a14 blackPearlBreakthroughVersion:(id)a15 reasonCodes:(id)a16 currCategoryView:(int)a17 prevCategoryView:(int)a18 isBreakthrough:(id)a19 isBlackPearlEnabled:(id)a20 elapsedTimeSinceEmailReceived:(id)a21 recategorizationBy:(int)a22 isThread:(id)a23 senderId:(id)a24 receivingAccountDomain:(int)a25 hasIcloudAccountEnabled:(id)a26;
-- (BMMailCategorization)initWithMessageId:(id)a3 eventType:(id)a4 trialExperimentId:(id)a5 trialExperimentDeploymentId:(id)a6 trialExperimentTreatmentId:(id)a7 trialRolloutId:(id)a8 trialRolloutDeploymentId:(id)a9 trialRolloutFactorPackId:(id)a10 predictedCategory:(int)a11 blackPearlModelVersion:(id)a12 blackPearlSenderModelVersion:(id)a13 blackPearlFinalRuleVersion:(id)a14 blackPearlBreakthroughVersion:(id)a15 reasonCodes:(id)a16 currMailbox:(int)a17 prevMailbox:(int)a18 isBreakthrough:(id)a19 isBlackPearlEnabled:(id)a20 elapsedTimeSinceEmailReceived:(id)a21 recategorizationBy:(int)a22 isThread:(id)a23;
-- (BOOL)isEqual:(id)a3;
+- (BMMailCategorization)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMailCategorization)initWithMessageId:(id)id eventType:(id)type trialExperimentId:(id)experimentId trialExperimentDeploymentId:(id)deploymentId trialExperimentTreatmentId:(id)treatmentId trialRolloutId:(id)rolloutId trialRolloutDeploymentId:(id)rolloutDeploymentId trialRolloutFactorPackId:(id)self0 predictedCategory:(int)self1 blackPearlModelVersion:(id)self2 blackPearlSenderModelVersion:(id)self3 blackPearlFinalRuleVersion:(id)self4 blackPearlBreakthroughVersion:(id)self5 reasonCodes:(id)self6 currCategoryView:(int)self7 prevCategoryView:(int)self8 isBreakthrough:(id)self9 isBlackPearlEnabled:(id)enabled elapsedTimeSinceEmailReceived:(id)received recategorizationBy:(int)by isThread:(id)thread senderId:(id)senderId receivingAccountDomain:(int)domain hasIcloudAccountEnabled:(id)accountEnabled;
+- (BMMailCategorization)initWithMessageId:(id)id eventType:(id)type trialExperimentId:(id)experimentId trialExperimentDeploymentId:(id)deploymentId trialExperimentTreatmentId:(id)treatmentId trialRolloutId:(id)rolloutId trialRolloutDeploymentId:(id)rolloutDeploymentId trialRolloutFactorPackId:(id)self0 predictedCategory:(int)self1 blackPearlModelVersion:(id)self2 blackPearlSenderModelVersion:(id)self3 blackPearlFinalRuleVersion:(id)self4 blackPearlBreakthroughVersion:(id)self5 reasonCodes:(id)self6 currMailbox:(int)self7 prevMailbox:(int)self8 isBreakthrough:(id)self9 isBlackPearlEnabled:(id)enabled elapsedTimeSinceEmailReceived:(id)received recategorizationBy:(int)by isThread:(id)thread;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMailCategorization
@@ -135,33 +135,33 @@
   return v11;
 }
 
-- (BMMailCategorization)initWithMessageId:(id)a3 eventType:(id)a4 trialExperimentId:(id)a5 trialExperimentDeploymentId:(id)a6 trialExperimentTreatmentId:(id)a7 trialRolloutId:(id)a8 trialRolloutDeploymentId:(id)a9 trialRolloutFactorPackId:(id)a10 predictedCategory:(int)a11 blackPearlModelVersion:(id)a12 blackPearlSenderModelVersion:(id)a13 blackPearlFinalRuleVersion:(id)a14 blackPearlBreakthroughVersion:(id)a15 reasonCodes:(id)a16 currMailbox:(int)a17 prevMailbox:(int)a18 isBreakthrough:(id)a19 isBlackPearlEnabled:(id)a20 elapsedTimeSinceEmailReceived:(id)a21 recategorizationBy:(int)a22 isThread:(id)a23
+- (BMMailCategorization)initWithMessageId:(id)id eventType:(id)type trialExperimentId:(id)experimentId trialExperimentDeploymentId:(id)deploymentId trialExperimentTreatmentId:(id)treatmentId trialRolloutId:(id)rolloutId trialRolloutDeploymentId:(id)rolloutDeploymentId trialRolloutFactorPackId:(id)self0 predictedCategory:(int)self1 blackPearlModelVersion:(id)self2 blackPearlSenderModelVersion:(id)self3 blackPearlFinalRuleVersion:(id)self4 blackPearlBreakthroughVersion:(id)self5 reasonCodes:(id)self6 currMailbox:(int)self7 prevMailbox:(int)self8 isBreakthrough:(id)self9 isBlackPearlEnabled:(id)enabled elapsedTimeSinceEmailReceived:(id)received recategorizationBy:(int)by isThread:(id)thread
 {
   LODWORD(v26) = 0;
-  LODWORD(v25) = a22;
-  LODWORD(v24) = a11;
-  return [(BMMailCategorization *)self initWithMessageId:a3 eventType:a4 trialExperimentId:a5 trialExperimentDeploymentId:a6 trialExperimentTreatmentId:a7 trialRolloutId:a8 trialRolloutDeploymentId:a9 trialRolloutFactorPackId:a10 predictedCategory:v24 blackPearlModelVersion:a12 blackPearlSenderModelVersion:a13 blackPearlFinalRuleVersion:a14 blackPearlBreakthroughVersion:a15 reasonCodes:a16 currCategoryView:__PAIR64__(a18 prevCategoryView:a17) isBreakthrough:a19 isBlackPearlEnabled:a20 elapsedTimeSinceEmailReceived:a21 recategorizationBy:v25 isThread:a23 senderId:0 receivingAccountDomain:v26 hasIcloudAccountEnabled:0];
+  LODWORD(v25) = by;
+  LODWORD(v24) = category;
+  return [(BMMailCategorization *)self initWithMessageId:id eventType:type trialExperimentId:experimentId trialExperimentDeploymentId:deploymentId trialExperimentTreatmentId:treatmentId trialRolloutId:rolloutId trialRolloutDeploymentId:rolloutDeploymentId trialRolloutFactorPackId:packId predictedCategory:v24 blackPearlModelVersion:version blackPearlSenderModelVersion:modelVersion blackPearlFinalRuleVersion:ruleVersion blackPearlBreakthroughVersion:breakthroughVersion reasonCodes:codes currCategoryView:__PAIR64__(prevMailbox prevCategoryView:mailbox) isBreakthrough:breakthrough isBlackPearlEnabled:enabled elapsedTimeSinceEmailReceived:received recategorizationBy:v25 isThread:thread senderId:0 receivingAccountDomain:v26 hasIcloudAccountEnabled:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMailCategorization *)self messageId];
-    v7 = [v5 messageId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    messageId = [(BMMailCategorization *)self messageId];
+    messageId2 = [v5 messageId];
+    v8 = messageId2;
+    if (messageId == messageId2)
     {
     }
 
     else
     {
-      v9 = [(BMMailCategorization *)self messageId];
-      v10 = [v5 messageId];
-      v11 = [v9 isEqual:v10];
+      messageId3 = [(BMMailCategorization *)self messageId];
+      messageId4 = [v5 messageId];
+      v11 = [messageId3 isEqual:messageId4];
 
       if (!v11)
       {
@@ -169,18 +169,18 @@
       }
     }
 
-    v13 = [(BMMailCategorization *)self eventType];
-    v14 = [v5 eventType];
-    v15 = v14;
-    if (v13 == v14)
+    eventType = [(BMMailCategorization *)self eventType];
+    eventType2 = [v5 eventType];
+    v15 = eventType2;
+    if (eventType == eventType2)
     {
     }
 
     else
     {
-      v16 = [(BMMailCategorization *)self eventType];
-      v17 = [v5 eventType];
-      v18 = [v16 isEqual:v17];
+      eventType3 = [(BMMailCategorization *)self eventType];
+      eventType4 = [v5 eventType];
+      v18 = [eventType3 isEqual:eventType4];
 
       if (!v18)
       {
@@ -188,18 +188,18 @@
       }
     }
 
-    v19 = [(BMMailCategorization *)self trialExperimentId];
-    v20 = [v5 trialExperimentId];
-    v21 = v20;
-    if (v19 == v20)
+    trialExperimentId = [(BMMailCategorization *)self trialExperimentId];
+    trialExperimentId2 = [v5 trialExperimentId];
+    v21 = trialExperimentId2;
+    if (trialExperimentId == trialExperimentId2)
     {
     }
 
     else
     {
-      v22 = [(BMMailCategorization *)self trialExperimentId];
-      v23 = [v5 trialExperimentId];
-      v24 = [v22 isEqual:v23];
+      trialExperimentId3 = [(BMMailCategorization *)self trialExperimentId];
+      trialExperimentId4 = [v5 trialExperimentId];
+      v24 = [trialExperimentId3 isEqual:trialExperimentId4];
 
       if (!v24)
       {
@@ -207,18 +207,18 @@
       }
     }
 
-    v25 = [(BMMailCategorization *)self trialExperimentDeploymentId];
-    v26 = [v5 trialExperimentDeploymentId];
-    v27 = v26;
-    if (v25 == v26)
+    trialExperimentDeploymentId = [(BMMailCategorization *)self trialExperimentDeploymentId];
+    trialExperimentDeploymentId2 = [v5 trialExperimentDeploymentId];
+    v27 = trialExperimentDeploymentId2;
+    if (trialExperimentDeploymentId == trialExperimentDeploymentId2)
     {
     }
 
     else
     {
-      v28 = [(BMMailCategorization *)self trialExperimentDeploymentId];
-      v29 = [v5 trialExperimentDeploymentId];
-      v30 = [v28 isEqual:v29];
+      trialExperimentDeploymentId3 = [(BMMailCategorization *)self trialExperimentDeploymentId];
+      trialExperimentDeploymentId4 = [v5 trialExperimentDeploymentId];
+      v30 = [trialExperimentDeploymentId3 isEqual:trialExperimentDeploymentId4];
 
       if (!v30)
       {
@@ -226,18 +226,18 @@
       }
     }
 
-    v31 = [(BMMailCategorization *)self trialExperimentTreatmentId];
-    v32 = [v5 trialExperimentTreatmentId];
-    v33 = v32;
-    if (v31 == v32)
+    trialExperimentTreatmentId = [(BMMailCategorization *)self trialExperimentTreatmentId];
+    trialExperimentTreatmentId2 = [v5 trialExperimentTreatmentId];
+    v33 = trialExperimentTreatmentId2;
+    if (trialExperimentTreatmentId == trialExperimentTreatmentId2)
     {
     }
 
     else
     {
-      v34 = [(BMMailCategorization *)self trialExperimentTreatmentId];
-      v35 = [v5 trialExperimentTreatmentId];
-      v36 = [v34 isEqual:v35];
+      trialExperimentTreatmentId3 = [(BMMailCategorization *)self trialExperimentTreatmentId];
+      trialExperimentTreatmentId4 = [v5 trialExperimentTreatmentId];
+      v36 = [trialExperimentTreatmentId3 isEqual:trialExperimentTreatmentId4];
 
       if (!v36)
       {
@@ -245,18 +245,18 @@
       }
     }
 
-    v37 = [(BMMailCategorization *)self trialRolloutId];
-    v38 = [v5 trialRolloutId];
-    v39 = v38;
-    if (v37 == v38)
+    trialRolloutId = [(BMMailCategorization *)self trialRolloutId];
+    trialRolloutId2 = [v5 trialRolloutId];
+    v39 = trialRolloutId2;
+    if (trialRolloutId == trialRolloutId2)
     {
     }
 
     else
     {
-      v40 = [(BMMailCategorization *)self trialRolloutId];
-      v41 = [v5 trialRolloutId];
-      v42 = [v40 isEqual:v41];
+      trialRolloutId3 = [(BMMailCategorization *)self trialRolloutId];
+      trialRolloutId4 = [v5 trialRolloutId];
+      v42 = [trialRolloutId3 isEqual:trialRolloutId4];
 
       if (!v42)
       {
@@ -264,18 +264,18 @@
       }
     }
 
-    v43 = [(BMMailCategorization *)self trialRolloutDeploymentId];
-    v44 = [v5 trialRolloutDeploymentId];
-    v45 = v44;
-    if (v43 == v44)
+    trialRolloutDeploymentId = [(BMMailCategorization *)self trialRolloutDeploymentId];
+    trialRolloutDeploymentId2 = [v5 trialRolloutDeploymentId];
+    v45 = trialRolloutDeploymentId2;
+    if (trialRolloutDeploymentId == trialRolloutDeploymentId2)
     {
     }
 
     else
     {
-      v46 = [(BMMailCategorization *)self trialRolloutDeploymentId];
-      v47 = [v5 trialRolloutDeploymentId];
-      v48 = [v46 isEqual:v47];
+      trialRolloutDeploymentId3 = [(BMMailCategorization *)self trialRolloutDeploymentId];
+      trialRolloutDeploymentId4 = [v5 trialRolloutDeploymentId];
+      v48 = [trialRolloutDeploymentId3 isEqual:trialRolloutDeploymentId4];
 
       if (!v48)
       {
@@ -283,18 +283,18 @@
       }
     }
 
-    v49 = [(BMMailCategorization *)self trialRolloutFactorPackId];
-    v50 = [v5 trialRolloutFactorPackId];
-    v51 = v50;
-    if (v49 == v50)
+    trialRolloutFactorPackId = [(BMMailCategorization *)self trialRolloutFactorPackId];
+    trialRolloutFactorPackId2 = [v5 trialRolloutFactorPackId];
+    v51 = trialRolloutFactorPackId2;
+    if (trialRolloutFactorPackId == trialRolloutFactorPackId2)
     {
     }
 
     else
     {
-      v52 = [(BMMailCategorization *)self trialRolloutFactorPackId];
-      v53 = [v5 trialRolloutFactorPackId];
-      v54 = [v52 isEqual:v53];
+      trialRolloutFactorPackId3 = [(BMMailCategorization *)self trialRolloutFactorPackId];
+      trialRolloutFactorPackId4 = [v5 trialRolloutFactorPackId];
+      v54 = [trialRolloutFactorPackId3 isEqual:trialRolloutFactorPackId4];
 
       if (!v54)
       {
@@ -302,21 +302,21 @@
       }
     }
 
-    v55 = [(BMMailCategorization *)self predictedCategory];
-    if (v55 == [v5 predictedCategory])
+    predictedCategory = [(BMMailCategorization *)self predictedCategory];
+    if (predictedCategory == [v5 predictedCategory])
     {
-      v56 = [(BMMailCategorization *)self blackPearlModelVersion];
-      v57 = [v5 blackPearlModelVersion];
-      v58 = v57;
-      if (v56 == v57)
+      blackPearlModelVersion = [(BMMailCategorization *)self blackPearlModelVersion];
+      blackPearlModelVersion2 = [v5 blackPearlModelVersion];
+      v58 = blackPearlModelVersion2;
+      if (blackPearlModelVersion == blackPearlModelVersion2)
       {
       }
 
       else
       {
-        v59 = [(BMMailCategorization *)self blackPearlModelVersion];
-        v60 = [v5 blackPearlModelVersion];
-        v61 = [v59 isEqual:v60];
+        blackPearlModelVersion3 = [(BMMailCategorization *)self blackPearlModelVersion];
+        blackPearlModelVersion4 = [v5 blackPearlModelVersion];
+        v61 = [blackPearlModelVersion3 isEqual:blackPearlModelVersion4];
 
         if (!v61)
         {
@@ -324,18 +324,18 @@
         }
       }
 
-      v62 = [(BMMailCategorization *)self blackPearlSenderModelVersion];
-      v63 = [v5 blackPearlSenderModelVersion];
-      v64 = v63;
-      if (v62 == v63)
+      blackPearlSenderModelVersion = [(BMMailCategorization *)self blackPearlSenderModelVersion];
+      blackPearlSenderModelVersion2 = [v5 blackPearlSenderModelVersion];
+      v64 = blackPearlSenderModelVersion2;
+      if (blackPearlSenderModelVersion == blackPearlSenderModelVersion2)
       {
       }
 
       else
       {
-        v65 = [(BMMailCategorization *)self blackPearlSenderModelVersion];
-        v66 = [v5 blackPearlSenderModelVersion];
-        v67 = [v65 isEqual:v66];
+        blackPearlSenderModelVersion3 = [(BMMailCategorization *)self blackPearlSenderModelVersion];
+        blackPearlSenderModelVersion4 = [v5 blackPearlSenderModelVersion];
+        v67 = [blackPearlSenderModelVersion3 isEqual:blackPearlSenderModelVersion4];
 
         if (!v67)
         {
@@ -343,18 +343,18 @@
         }
       }
 
-      v68 = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
-      v69 = [v5 blackPearlFinalRuleVersion];
-      v70 = v69;
-      if (v68 == v69)
+      blackPearlFinalRuleVersion = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
+      blackPearlFinalRuleVersion2 = [v5 blackPearlFinalRuleVersion];
+      v70 = blackPearlFinalRuleVersion2;
+      if (blackPearlFinalRuleVersion == blackPearlFinalRuleVersion2)
       {
       }
 
       else
       {
-        v71 = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
-        v72 = [v5 blackPearlFinalRuleVersion];
-        v73 = [v71 isEqual:v72];
+        blackPearlFinalRuleVersion3 = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
+        blackPearlFinalRuleVersion4 = [v5 blackPearlFinalRuleVersion];
+        v73 = [blackPearlFinalRuleVersion3 isEqual:blackPearlFinalRuleVersion4];
 
         if (!v73)
         {
@@ -362,18 +362,18 @@
         }
       }
 
-      v74 = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
-      v75 = [v5 blackPearlBreakthroughVersion];
-      v76 = v75;
-      if (v74 == v75)
+      blackPearlBreakthroughVersion = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
+      blackPearlBreakthroughVersion2 = [v5 blackPearlBreakthroughVersion];
+      v76 = blackPearlBreakthroughVersion2;
+      if (blackPearlBreakthroughVersion == blackPearlBreakthroughVersion2)
       {
       }
 
       else
       {
-        v77 = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
-        v78 = [v5 blackPearlBreakthroughVersion];
-        v79 = [v77 isEqual:v78];
+        blackPearlBreakthroughVersion3 = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
+        blackPearlBreakthroughVersion4 = [v5 blackPearlBreakthroughVersion];
+        v79 = [blackPearlBreakthroughVersion3 isEqual:blackPearlBreakthroughVersion4];
 
         if (!v79)
         {
@@ -381,18 +381,18 @@
         }
       }
 
-      v80 = [(BMMailCategorization *)self reasonCodes];
-      v81 = [v5 reasonCodes];
-      v82 = v81;
-      if (v80 == v81)
+      reasonCodes = [(BMMailCategorization *)self reasonCodes];
+      reasonCodes2 = [v5 reasonCodes];
+      v82 = reasonCodes2;
+      if (reasonCodes == reasonCodes2)
       {
       }
 
       else
       {
-        v83 = [(BMMailCategorization *)self reasonCodes];
-        v84 = [v5 reasonCodes];
-        v85 = [v83 isEqual:v84];
+        reasonCodes3 = [(BMMailCategorization *)self reasonCodes];
+        reasonCodes4 = [v5 reasonCodes];
+        v85 = [reasonCodes3 isEqual:reasonCodes4];
 
         if (!v85)
         {
@@ -400,14 +400,14 @@
         }
       }
 
-      v86 = [(BMMailCategorization *)self currCategoryView];
-      if (v86 != [v5 currCategoryView])
+      currCategoryView = [(BMMailCategorization *)self currCategoryView];
+      if (currCategoryView != [v5 currCategoryView])
       {
         goto LABEL_88;
       }
 
-      v87 = [(BMMailCategorization *)self prevCategoryView];
-      if (v87 != [v5 prevCategoryView])
+      prevCategoryView = [(BMMailCategorization *)self prevCategoryView];
+      if (prevCategoryView != [v5 prevCategoryView])
       {
         goto LABEL_88;
       }
@@ -424,8 +424,8 @@
           goto LABEL_88;
         }
 
-        v88 = [(BMMailCategorization *)self isBreakthrough];
-        if (v88 != [v5 isBreakthrough])
+        isBreakthrough = [(BMMailCategorization *)self isBreakthrough];
+        if (isBreakthrough != [v5 isBreakthrough])
         {
           goto LABEL_88;
         }
@@ -443,25 +443,25 @@
           goto LABEL_88;
         }
 
-        v89 = [(BMMailCategorization *)self isBlackPearlEnabled];
-        if (v89 != [v5 isBlackPearlEnabled])
+        isBlackPearlEnabled = [(BMMailCategorization *)self isBlackPearlEnabled];
+        if (isBlackPearlEnabled != [v5 isBlackPearlEnabled])
         {
           goto LABEL_88;
         }
       }
 
-      v90 = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
-      v91 = [v5 elapsedTimeSinceEmailReceived];
-      v92 = v91;
-      if (v90 == v91)
+      elapsedTimeSinceEmailReceived = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
+      elapsedTimeSinceEmailReceived2 = [v5 elapsedTimeSinceEmailReceived];
+      v92 = elapsedTimeSinceEmailReceived2;
+      if (elapsedTimeSinceEmailReceived == elapsedTimeSinceEmailReceived2)
       {
       }
 
       else
       {
-        v93 = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
-        v94 = [v5 elapsedTimeSinceEmailReceived];
-        v95 = [v93 isEqual:v94];
+        elapsedTimeSinceEmailReceived3 = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
+        elapsedTimeSinceEmailReceived4 = [v5 elapsedTimeSinceEmailReceived];
+        v95 = [elapsedTimeSinceEmailReceived3 isEqual:elapsedTimeSinceEmailReceived4];
 
         if (!v95)
         {
@@ -469,8 +469,8 @@
         }
       }
 
-      v96 = [(BMMailCategorization *)self recategorizationBy];
-      if (v96 != [v5 recategorizationBy])
+      recategorizationBy = [(BMMailCategorization *)self recategorizationBy];
+      if (recategorizationBy != [v5 recategorizationBy])
       {
         goto LABEL_88;
       }
@@ -487,25 +487,25 @@
           goto LABEL_88;
         }
 
-        v97 = [(BMMailCategorization *)self isThread];
-        if (v97 != [v5 isThread])
+        isThread = [(BMMailCategorization *)self isThread];
+        if (isThread != [v5 isThread])
         {
           goto LABEL_88;
         }
       }
 
-      v98 = [(BMMailCategorization *)self senderId];
-      v99 = [v5 senderId];
-      v100 = v99;
-      if (v98 == v99)
+      senderId = [(BMMailCategorization *)self senderId];
+      senderId2 = [v5 senderId];
+      v100 = senderId2;
+      if (senderId == senderId2)
       {
       }
 
       else
       {
-        v101 = [(BMMailCategorization *)self senderId];
-        v102 = [v5 senderId];
-        v103 = [v101 isEqual:v102];
+        senderId3 = [(BMMailCategorization *)self senderId];
+        senderId4 = [v5 senderId];
+        v103 = [senderId3 isEqual:senderId4];
 
         if (!v103)
         {
@@ -513,8 +513,8 @@
         }
       }
 
-      v104 = [(BMMailCategorization *)self receivingAccountDomain];
-      if (v104 == [v5 receivingAccountDomain])
+      receivingAccountDomain = [(BMMailCategorization *)self receivingAccountDomain];
+      if (receivingAccountDomain == [v5 receivingAccountDomain])
       {
         if (!-[BMMailCategorization hasHasIcloudAccountEnabled](self, "hasHasIcloudAccountEnabled") && ![v5 hasHasIcloudAccountEnabled])
         {
@@ -524,8 +524,8 @@
 
         if (-[BMMailCategorization hasHasIcloudAccountEnabled](self, "hasHasIcloudAccountEnabled") && [v5 hasHasIcloudAccountEnabled])
         {
-          v105 = [(BMMailCategorization *)self hasIcloudAccountEnabled];
-          v12 = v105 ^ [v5 hasIcloudAccountEnabled] ^ 1;
+          hasIcloudAccountEnabled = [(BMMailCategorization *)self hasIcloudAccountEnabled];
+          v12 = hasIcloudAccountEnabled ^ [v5 hasIcloudAccountEnabled] ^ 1;
 LABEL_89:
 
           goto LABEL_90;
@@ -547,20 +547,20 @@ LABEL_90:
 - (id)jsonDictionary
 {
   v104 = *MEMORY[0x1E69E9840];
-  v3 = [(BMMailCategorization *)self messageId];
-  v4 = [(BMMailCategorization *)self eventType];
-  v5 = [(BMMailCategorization *)self trialExperimentId];
-  v6 = [(BMMailCategorization *)self trialExperimentDeploymentId];
-  v7 = [(BMMailCategorization *)self trialExperimentTreatmentId];
-  v8 = [(BMMailCategorization *)self trialRolloutId];
-  v78 = [(BMMailCategorization *)self trialRolloutDeploymentId];
-  v77 = [(BMMailCategorization *)self trialRolloutFactorPackId];
+  messageId = [(BMMailCategorization *)self messageId];
+  eventType = [(BMMailCategorization *)self eventType];
+  trialExperimentId = [(BMMailCategorization *)self trialExperimentId];
+  trialExperimentDeploymentId = [(BMMailCategorization *)self trialExperimentDeploymentId];
+  trialExperimentTreatmentId = [(BMMailCategorization *)self trialExperimentTreatmentId];
+  trialRolloutId = [(BMMailCategorization *)self trialRolloutId];
+  trialRolloutDeploymentId = [(BMMailCategorization *)self trialRolloutDeploymentId];
+  trialRolloutFactorPackId = [(BMMailCategorization *)self trialRolloutFactorPackId];
   v76 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorization predictedCategory](self, "predictedCategory")}];
-  v75 = [(BMMailCategorization *)self blackPearlModelVersion];
-  v74 = [(BMMailCategorization *)self blackPearlSenderModelVersion];
-  v73 = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
-  v72 = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
-  v71 = [(BMMailCategorization *)self reasonCodes];
+  blackPearlModelVersion = [(BMMailCategorization *)self blackPearlModelVersion];
+  blackPearlSenderModelVersion = [(BMMailCategorization *)self blackPearlSenderModelVersion];
+  blackPearlFinalRuleVersion = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
+  blackPearlBreakthroughVersion = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
+  reasonCodes = [(BMMailCategorization *)self reasonCodes];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorization currCategoryView](self, "currCategoryView")}];
   v63 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorization prevCategoryView](self, "prevCategoryView")}];
   if ([(BMMailCategorization *)self hasIsBreakthrough])
@@ -583,7 +583,7 @@ LABEL_90:
     v69 = 0;
   }
 
-  v68 = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
+  elapsedTimeSinceEmailReceived = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
   v67 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorization recategorizationBy](self, "recategorizationBy")}];
   if ([(BMMailCategorization *)self hasIsThread])
   {
@@ -595,7 +595,7 @@ LABEL_90:
     v66 = 0;
   }
 
-  v65 = [(BMMailCategorization *)self senderId];
+  senderId = [(BMMailCategorization *)self senderId];
   v64 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorization receivingAccountDomain](self, "receivingAccountDomain")}];
   if ([(BMMailCategorization *)self hasHasIcloudAccountEnabled])
   {
@@ -608,238 +608,238 @@ LABEL_90:
   }
 
   v79[0] = @"messageId";
-  v11 = v3;
-  if (!v3)
+  null = messageId;
+  if (!messageId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v11;
-  v91[0] = v11;
+  v54 = null;
+  v91[0] = null;
   v79[1] = @"eventType";
-  v12 = v4;
-  if (!v4)
+  null2 = eventType;
+  if (!eventType)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v12;
-  v91[1] = v12;
+  v53 = null2;
+  v91[1] = null2;
   v79[2] = @"trialExperimentId";
-  v13 = v5;
-  if (!v5)
+  null3 = trialExperimentId;
+  if (!trialExperimentId)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52 = v13;
-  v91[2] = v13;
+  v52 = null3;
+  v91[2] = null3;
   v79[3] = @"trialExperimentDeploymentId";
-  v14 = v6;
-  if (!v6)
+  null4 = trialExperimentDeploymentId;
+  if (!trialExperimentDeploymentId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v51 = v14;
-  v91[3] = v14;
+  v51 = null4;
+  v91[3] = null4;
   v79[4] = @"trialExperimentTreatmentId";
-  v15 = v7;
-  if (!v7)
+  null5 = trialExperimentTreatmentId;
+  if (!trialExperimentTreatmentId)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50 = v15;
-  v91[4] = v15;
+  v50 = null5;
+  v91[4] = null5;
   v79[5] = @"trialRolloutId";
-  v16 = v8;
-  if (!v8)
+  null6 = trialRolloutId;
+  if (!trialRolloutId)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v16;
-  v91[5] = v16;
+  v49 = null6;
+  v91[5] = null6;
   v79[6] = @"trialRolloutDeploymentId";
-  v17 = v78;
-  if (!v78)
+  null7 = trialRolloutDeploymentId;
+  if (!trialRolloutDeploymentId)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91[6] = v17;
+  v91[6] = null7;
   v79[7] = @"trialRolloutFactorPackId";
-  v18 = v77;
-  if (!v77)
+  null8 = trialRolloutFactorPackId;
+  if (!trialRolloutFactorPackId)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91[7] = v18;
+  v91[7] = null8;
   v79[8] = @"predictedCategory";
-  v19 = v76;
+  null9 = v76;
   if (!v76)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v58 = v19;
-  v91[8] = v19;
+  v58 = null9;
+  v91[8] = null9;
   v79[9] = @"blackPearlModelVersion";
-  v20 = v75;
-  if (!v75)
+  null10 = blackPearlModelVersion;
+  if (!blackPearlModelVersion)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v57 = v20;
-  v91[9] = v20;
+  v57 = null10;
+  v91[9] = null10;
   v79[10] = @"blackPearlSenderModelVersion";
-  v21 = v74;
-  if (!v74)
+  null11 = blackPearlSenderModelVersion;
+  if (!blackPearlSenderModelVersion)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v21;
-  v91[10] = v21;
+  v56 = null11;
+  v91[10] = null11;
   v79[11] = @"blackPearlFinalRuleVersion";
-  v22 = v73;
-  if (!v73)
+  null12 = blackPearlFinalRuleVersion;
+  if (!blackPearlFinalRuleVersion)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46 = v22;
-  v91[11] = v22;
+  v46 = null12;
+  v91[11] = null12;
   v79[12] = @"blackPearlBreakthroughVersion";
-  v23 = v72;
-  if (!v72)
+  null13 = blackPearlBreakthroughVersion;
+  if (!blackPearlBreakthroughVersion)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v45 = v23;
+  v45 = null13;
   v62 = v10;
-  v91[12] = v23;
+  v91[12] = null13;
   v79[13] = @"reasonCodes";
-  v24 = v71;
-  if (!v71)
+  null14 = reasonCodes;
+  if (!reasonCodes)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v24;
-  v91[13] = v24;
+  v44 = null14;
+  v91[13] = null14;
   v79[14] = @"currCategoryView";
-  v47 = v18;
+  v47 = null8;
   if (v9)
   {
     v92 = v9;
     v80 = @"currMailbox";
-    v25 = v9;
+    null16 = v9;
   }
 
   else
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
-    v92 = v39;
+    null15 = [MEMORY[0x1E695DFB0] null];
+    v92 = null15;
     v80 = @"currMailbox";
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v43 = v25;
-  v93 = v25;
+  v43 = null16;
+  v93 = null16;
   v81 = @"prevCategoryView";
   if (v63)
   {
     v94 = v63;
     v82 = @"prevMailbox";
-    v26 = v63;
+    null18 = v63;
   }
 
   else
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
-    v94 = v38;
+    null17 = [MEMORY[0x1E695DFB0] null];
+    v94 = null17;
     v82 = @"prevMailbox";
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v61 = v3;
-  v42 = v26;
-  v95 = v26;
+  v61 = messageId;
+  v42 = null18;
+  v95 = null18;
   v83 = @"isBreakthrough";
-  v27 = v70;
+  null19 = v70;
   if (!v70)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v4;
-  v96 = v27;
+  v60 = eventType;
+  v96 = null19;
   v84 = @"isBlackPearlEnabled";
-  v28 = v69;
+  null20 = v69;
   if (!v69)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v5;
-  v97 = v28;
+  v59 = trialExperimentId;
+  v97 = null20;
   v85 = @"elapsedTimeSinceEmailReceived";
-  v29 = v68;
-  if (!v68)
+  null21 = elapsedTimeSinceEmailReceived;
+  if (!elapsedTimeSinceEmailReceived)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v27;
-  v98 = v29;
+  v41 = null19;
+  v98 = null21;
   v86 = @"recategorizationBy";
-  v30 = v67;
+  null22 = v67;
   if (!v67)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v8;
-  v99 = v30;
+  v31 = trialRolloutId;
+  v99 = null22;
   v87 = @"isThread";
-  v32 = v66;
+  null23 = v66;
   if (!v66)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v17;
-  v100 = v32;
+  v48 = null7;
+  v100 = null23;
   v88 = @"senderId";
-  v33 = v65;
-  if (!v65)
+  null24 = senderId;
+  if (!senderId)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v28;
-  v101 = v33;
+  v40 = null20;
+  v101 = null24;
   v89 = @"receivingAccountDomain";
-  v34 = v64;
+  null25 = v64;
   if (!v64)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v102 = v34;
+  v102 = null25;
   v90 = @"hasIcloudAccountEnabled";
-  v35 = v62;
+  null26 = v62;
   if (!v62)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v103 = v35;
+  v103 = null26;
   v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:v79 count:26];
   if (!v62)
   {
@@ -849,7 +849,7 @@ LABEL_90:
   {
   }
 
-  if (!v65)
+  if (!senderId)
   {
   }
 
@@ -861,7 +861,7 @@ LABEL_90:
   {
   }
 
-  if (!v68)
+  if (!elapsedTimeSinceEmailReceived)
   {
   }
 
@@ -881,23 +881,23 @@ LABEL_90:
   {
   }
 
-  if (!v71)
+  if (!reasonCodes)
   {
   }
 
-  if (!v72)
+  if (!blackPearlBreakthroughVersion)
   {
   }
 
-  if (!v73)
+  if (!blackPearlFinalRuleVersion)
   {
   }
 
-  if (!v74)
+  if (!blackPearlSenderModelVersion)
   {
   }
 
-  if (!v75)
+  if (!blackPearlModelVersion)
   {
   }
 
@@ -905,11 +905,11 @@ LABEL_90:
   {
   }
 
-  if (!v77)
+  if (!trialRolloutFactorPackId)
   {
   }
 
-  if (v78)
+  if (trialRolloutDeploymentId)
   {
     if (v31)
     {
@@ -923,7 +923,7 @@ LABEL_90:
     if (v31)
     {
 LABEL_99:
-      if (v7)
+      if (trialExperimentTreatmentId)
       {
         goto LABEL_100;
       }
@@ -932,10 +932,10 @@ LABEL_99:
     }
   }
 
-  if (v7)
+  if (trialExperimentTreatmentId)
   {
 LABEL_100:
-    if (v6)
+    if (trialExperimentDeploymentId)
     {
       goto LABEL_101;
     }
@@ -945,7 +945,7 @@ LABEL_100:
 
 LABEL_109:
 
-  if (v6)
+  if (trialExperimentDeploymentId)
   {
 LABEL_101:
     if (v59)
@@ -997,11 +997,11 @@ LABEL_104:
   return v55;
 }
 
-- (BMMailCategorization)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMailCategorization)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v261[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"messageId"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"messageId"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -1013,7 +1013,7 @@ LABEL_104:
   {
     v7 = v6;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"eventType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 0;
@@ -1025,7 +1025,7 @@ LABEL_4:
     {
       v9 = v8;
 LABEL_7:
-      v10 = [v5 objectForKeyedSubscript:@"trialExperimentId"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"trialExperimentId"];
       if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v210 = 0;
@@ -1037,7 +1037,7 @@ LABEL_7:
       {
         v210 = v10;
 LABEL_10:
-        v213 = [v5 objectForKeyedSubscript:@"trialExperimentDeploymentId"];
+        v213 = [dictionaryCopy objectForKeyedSubscript:@"trialExperimentDeploymentId"];
         v205 = v6;
         if (!v213 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -1050,9 +1050,9 @@ LABEL_10:
         {
           v208 = v213;
 LABEL_13:
-          v11 = [v5 objectForKeyedSubscript:@"trialExperimentTreatmentId"];
+          v11 = [dictionaryCopy objectForKeyedSubscript:@"trialExperimentTreatmentId"];
           v209 = v11;
-          v202 = a4;
+          errorCopy = error;
           if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v206 = 0;
@@ -1064,7 +1064,7 @@ LABEL_13:
           {
             v206 = v11;
 LABEL_16:
-            v12 = [v5 objectForKeyedSubscript:@"trialRolloutId"];
+            v12 = [dictionaryCopy objectForKeyedSubscript:@"trialRolloutId"];
             v204 = v12;
             if (!v12 || (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -1077,7 +1077,7 @@ LABEL_16:
             {
               v201 = v13;
 LABEL_19:
-              v14 = [v5 objectForKeyedSubscript:@"trialRolloutDeploymentId"];
+              v14 = [dictionaryCopy objectForKeyedSubscript:@"trialRolloutDeploymentId"];
               v198 = v7;
               v199 = v10;
               if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1091,7 +1091,7 @@ LABEL_19:
               {
                 v200 = v14;
 LABEL_22:
-                v15 = [v5 objectForKeyedSubscript:@"trialRolloutFactorPackId"];
+                v15 = [dictionaryCopy objectForKeyedSubscript:@"trialRolloutFactorPackId"];
                 v191 = v15;
                 if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1104,7 +1104,7 @@ LABEL_22:
                 {
                   v195 = v16;
 LABEL_25:
-                  v17 = [v5 objectForKeyedSubscript:@"predictedCategory"];
+                  v17 = [dictionaryCopy objectForKeyedSubscript:@"predictedCategory"];
                   v192 = v9;
                   v189 = v17;
                   if (!v17 || (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1121,7 +1121,7 @@ LABEL_25:
 LABEL_67:
 
 LABEL_68:
-                    v58 = [v5 objectForKeyedSubscript:@"blackPearlModelVersion"];
+                    v58 = [dictionaryCopy objectForKeyedSubscript:@"blackPearlModelVersion"];
                     if (!v58 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
                       v188 = 0;
@@ -1133,7 +1133,7 @@ LABEL_68:
                     {
                       v188 = v58;
 LABEL_71:
-                      v194 = [v5 objectForKeyedSubscript:@"blackPearlSenderModelVersion"];
+                      v194 = [dictionaryCopy objectForKeyedSubscript:@"blackPearlSenderModelVersion"];
                       if (!v194 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
                         v187 = 0;
@@ -1145,7 +1145,7 @@ LABEL_71:
                       {
                         v187 = v194;
 LABEL_74:
-                        v59 = [v5 objectForKeyedSubscript:@"blackPearlFinalRuleVersion"];
+                        v59 = [dictionaryCopy objectForKeyedSubscript:@"blackPearlFinalRuleVersion"];
                         if (!v59 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
                           v183 = 0;
@@ -1157,7 +1157,7 @@ LABEL_74:
                         {
                           v183 = v59;
 LABEL_77:
-                          v60 = [v5 objectForKeyedSubscript:@"blackPearlBreakthroughVersion"];
+                          v60 = [dictionaryCopy objectForKeyedSubscript:@"blackPearlBreakthroughVersion"];
                           v181 = v58;
                           v184 = v60;
                           if (!v60 || (v61 = v60, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1171,7 +1171,7 @@ LABEL_77:
                           {
                             v186 = v61;
 LABEL_80:
-                            v62 = [v5 objectForKeyedSubscript:@"reasonCodes"];
+                            v62 = [dictionaryCopy objectForKeyedSubscript:@"reasonCodes"];
                             if (!v62 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
                               v182 = 0;
@@ -1184,7 +1184,7 @@ LABEL_80:
                               v182 = v62;
 LABEL_83:
                               v174 = v62;
-                              v63 = [v5 objectForKeyedSubscript:@"currCategoryView"];
+                              v63 = [dictionaryCopy objectForKeyedSubscript:@"currCategoryView"];
                               if (v63)
                               {
                                 v64 = v63;
@@ -1192,7 +1192,7 @@ LABEL_83:
 
                               else
                               {
-                                v64 = [v5 objectForKeyedSubscript:@"currMailbox"];
+                                v64 = [dictionaryCopy objectForKeyedSubscript:@"currMailbox"];
 
                                 if (!v64)
                                 {
@@ -1216,7 +1216,7 @@ LABEL_83:
                                   objc_opt_class();
                                   if ((objc_opt_isKindOfClass() & 1) == 0)
                                   {
-                                    if (!v202)
+                                    if (!errorCopy)
                                     {
                                       v180 = 0;
                                       v22 = 0;
@@ -1234,7 +1234,7 @@ LABEL_83:
                                     v100 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v233 forKeys:&v232 count:1];
                                     v180 = 0;
                                     v22 = 0;
-                                    *v202 = [v98 initWithDomain:v99 code:2 userInfo:v100];
+                                    *errorCopy = [v98 initWithDomain:v99 code:2 userInfo:v100];
                                     v54 = v191;
                                     v69 = v183;
                                     v84 = v100;
@@ -1246,7 +1246,7 @@ LABEL_83:
                                 }
 
 LABEL_121:
-                                v83 = [v5 objectForKeyedSubscript:@"prevCategoryView"];
+                                v83 = [dictionaryCopy objectForKeyedSubscript:@"prevCategoryView"];
                                 if (v83)
                                 {
                                   v84 = v83;
@@ -1254,7 +1254,7 @@ LABEL_121:
 
                                 else
                                 {
-                                  v84 = [v5 objectForKeyedSubscript:@"prevMailbox"];
+                                  v84 = [dictionaryCopy objectForKeyedSubscript:@"prevMailbox"];
 
                                   if (!v84)
                                   {
@@ -1280,14 +1280,14 @@ LABEL_130:
                                   v177 = v84;
 
 LABEL_135:
-                                  v86 = [v5 objectForKeyedSubscript:@"isBreakthrough"];
+                                  v86 = [dictionaryCopy objectForKeyedSubscript:@"isBreakthrough"];
                                   v171 = v86;
                                   if (v86 && (v87 = v86, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                   {
                                     objc_opt_class();
                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                     {
-                                      if (!v202)
+                                      if (!errorCopy)
                                       {
                                         v173 = 0;
                                         v22 = 0;
@@ -1310,7 +1310,7 @@ LABEL_135:
                                       v170 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v229 forKeys:&v228 count:1];
                                       v173 = 0;
                                       v22 = 0;
-                                      *v202 = [v94 initWithDomain:v95 code:2 userInfo:?];
+                                      *errorCopy = [v94 initWithDomain:v95 code:2 userInfo:?];
                                       v54 = v191;
                                       goto LABEL_235;
                                     }
@@ -1323,7 +1323,7 @@ LABEL_135:
                                     v173 = 0;
                                   }
 
-                                  v88 = [v5 objectForKeyedSubscript:@"isBlackPearlEnabled"];
+                                  v88 = [dictionaryCopy objectForKeyedSubscript:@"isBlackPearlEnabled"];
                                   v170 = v88;
                                   if (!v88 || (v89 = v88, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                   {
@@ -1336,13 +1336,13 @@ LABEL_135:
                                   {
                                     v172 = v89;
 LABEL_141:
-                                    v90 = [v5 objectForKeyedSubscript:@"elapsedTimeSinceEmailReceived"];
+                                    v90 = [dictionaryCopy objectForKeyedSubscript:@"elapsedTimeSinceEmailReceived"];
                                     v168 = v90;
                                     if (!v90 || (v91 = v90, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
                                       v169 = 0;
 LABEL_144:
-                                      v92 = [v5 objectForKeyedSubscript:@"recategorizationBy"];
+                                      v92 = [dictionaryCopy objectForKeyedSubscript:@"recategorizationBy"];
                                       v179 = v59;
                                       v163 = v92;
                                       if (v92 && (v93 = v92, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1358,7 +1358,7 @@ LABEL_144:
                                           objc_opt_class();
                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                           {
-                                            if (!v202)
+                                            if (!errorCopy)
                                             {
                                               v167 = 0;
                                               v22 = 0;
@@ -1376,7 +1376,7 @@ LABEL_144:
                                             v148 = [v146 initWithDomain:v147 code:2 userInfo:v115];
                                             v167 = 0;
                                             v22 = 0;
-                                            *v202 = v148;
+                                            *errorCopy = v148;
                                             v54 = v191;
                                             v114 = v177;
                                             goto LABEL_205;
@@ -1393,13 +1393,13 @@ LABEL_144:
                                       }
 
                                       v114 = v177;
-                                      v115 = [v5 objectForKeyedSubscript:@"isThread"];
+                                      v115 = [dictionaryCopy objectForKeyedSubscript:@"isThread"];
                                       if (v115 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                       {
                                         objc_opt_class();
                                         if ((objc_opt_isKindOfClass() & 1) == 0)
                                         {
-                                          if (!v202)
+                                          if (!errorCopy)
                                           {
                                             v165 = 0;
                                             v22 = 0;
@@ -1421,7 +1421,7 @@ LABEL_144:
                                           v124 = [v166 initWithDomain:v121 code:2 userInfo:?];
                                           v165 = 0;
                                           v22 = 0;
-                                          *v202 = v124;
+                                          *errorCopy = v124;
                                           v54 = v191;
                                           v114 = v177;
 LABEL_204:
@@ -1441,14 +1441,14 @@ LABEL_205:
                                         v165 = 0;
                                       }
 
-                                      v116 = [v5 objectForKeyedSubscript:@"senderId"];
+                                      v116 = [dictionaryCopy objectForKeyedSubscript:@"senderId"];
                                       v161 = v116;
                                       if (v116 && (v117 = v116, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                       {
                                         objc_opt_class();
                                         if ((objc_opt_isKindOfClass() & 1) == 0)
                                         {
-                                          if (!v202)
+                                          if (!errorCopy)
                                           {
                                             v164 = 0;
                                             v22 = 0;
@@ -1466,7 +1466,7 @@ LABEL_205:
                                           v159 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v219 forKeys:&v218 count:1];
                                           v164 = 0;
                                           v22 = 0;
-                                          *v202 = [v125 initWithDomain:v126 code:2 userInfo:?];
+                                          *errorCopy = [v125 initWithDomain:v126 code:2 userInfo:?];
                                           v54 = v191;
                                           v114 = v177;
                                           goto LABEL_203;
@@ -1480,7 +1480,7 @@ LABEL_205:
                                         v164 = 0;
                                       }
 
-                                      v118 = [v5 objectForKeyedSubscript:@"receivingAccountDomain"];
+                                      v118 = [dictionaryCopy objectForKeyedSubscript:@"receivingAccountDomain"];
                                       v159 = v118;
                                       if (v118 && (v119 = v118, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                       {
@@ -1496,7 +1496,7 @@ LABEL_205:
                                           objc_opt_class();
                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                           {
-                                            if (!v202)
+                                            if (!errorCopy)
                                             {
                                               v162 = 0;
                                               v22 = 0;
@@ -1512,7 +1512,7 @@ LABEL_205:
                                             v151 = [v149 initWithDomain:v178 code:2 userInfo:v150];
                                             v162 = 0;
                                             v22 = 0;
-                                            *v202 = v151;
+                                            *errorCopy = v151;
                                             v128 = v150;
                                             v14 = v120;
                                             goto LABEL_201;
@@ -1528,14 +1528,14 @@ LABEL_205:
                                         v162 = 0;
                                       }
 
-                                      v128 = [v5 objectForKeyedSubscript:@"hasIcloudAccountEnabled"];
+                                      v128 = [dictionaryCopy objectForKeyedSubscript:@"hasIcloudAccountEnabled"];
                                       v197 = v8;
                                       if (v128 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                       {
                                         objc_opt_class();
                                         if ((objc_opt_isKindOfClass() & 1) == 0)
                                         {
-                                          if (v202)
+                                          if (errorCopy)
                                           {
                                             v140 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v141 = v128;
@@ -1547,7 +1547,7 @@ LABEL_205:
                                             v145 = v142;
                                             v128 = v141;
                                             v8 = v197;
-                                            *v202 = [v140 initWithDomain:v145 code:2 userInfo:v144];
+                                            *errorCopy = [v140 initWithDomain:v145 code:2 userInfo:v144];
 
                                             v11 = v209;
                                           }
@@ -1560,7 +1560,7 @@ LABEL_205:
                                         v129 = v200;
                                         v203 = v14;
                                         v130 = v192;
-                                        v131 = self;
+                                        selfCopy2 = self;
                                         v158 = v128;
                                         v132 = v128;
                                       }
@@ -1571,20 +1571,20 @@ LABEL_205:
                                         v129 = v200;
                                         v203 = v14;
                                         v130 = v192;
-                                        v131 = self;
+                                        selfCopy2 = self;
                                         v132 = 0;
                                       }
 
-                                      v133 = [v190 intValue];
-                                      v134 = [v180 intValue];
-                                      v135 = [v175 intValue];
-                                      v136 = [v167 intValue];
+                                      intValue = [v190 intValue];
+                                      intValue2 = [v180 intValue];
+                                      intValue3 = [v175 intValue];
+                                      intValue4 = [v167 intValue];
                                       v137 = v132;
                                       LODWORD(v157) = [v162 intValue];
-                                      LODWORD(v156) = v136;
-                                      LODWORD(v155) = v133;
+                                      LODWORD(v156) = intValue4;
+                                      LODWORD(v155) = intValue;
                                       v200 = v129;
-                                      v22 = [(BMMailCategorization *)v131 initWithMessageId:v198 eventType:v130 trialExperimentId:v210 trialExperimentDeploymentId:v208 trialExperimentTreatmentId:v206 trialRolloutId:v201 trialRolloutDeploymentId:v129 trialRolloutFactorPackId:v195 predictedCategory:v155 blackPearlModelVersion:v188 blackPearlSenderModelVersion:v187 blackPearlFinalRuleVersion:v183 blackPearlBreakthroughVersion:v186 reasonCodes:v182 currCategoryView:__PAIR64__(v135 prevCategoryView:v134) isBreakthrough:v173 isBlackPearlEnabled:v172 elapsedTimeSinceEmailReceived:v169 recategorizationBy:v156 isThread:v165 senderId:v164 receivingAccountDomain:v157 hasIcloudAccountEnabled:v132];
+                                      v22 = [(BMMailCategorization *)selfCopy2 initWithMessageId:v198 eventType:v130 trialExperimentId:v210 trialExperimentDeploymentId:v208 trialExperimentTreatmentId:v206 trialRolloutId:v201 trialRolloutDeploymentId:v129 trialRolloutFactorPackId:v195 predictedCategory:v155 blackPearlModelVersion:v188 blackPearlSenderModelVersion:v187 blackPearlFinalRuleVersion:v183 blackPearlBreakthroughVersion:v186 reasonCodes:v182 currCategoryView:__PAIR64__(intValue3 prevCategoryView:intValue2) isBreakthrough:v173 isBlackPearlEnabled:v172 elapsedTimeSinceEmailReceived:v169 recategorizationBy:v156 isThread:v165 senderId:v164 receivingAccountDomain:v157 hasIcloudAccountEnabled:v132];
                                       self = v22;
                                       v8 = v197;
                                       v11 = v209;
@@ -1610,7 +1610,7 @@ LABEL_203:
                                     }
 
                                     v101 = v59;
-                                    if (v202)
+                                    if (errorCopy)
                                     {
                                       v111 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v112 = *MEMORY[0x1E698F240];
@@ -1620,7 +1620,7 @@ LABEL_203:
                                       v163 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v225 forKeys:&v224 count:1];
                                       v169 = 0;
                                       v22 = 0;
-                                      *v202 = [v111 initWithDomain:v112 code:2 userInfo:?];
+                                      *errorCopy = [v111 initWithDomain:v112 code:2 userInfo:?];
                                       v54 = v191;
                                       v84 = v177;
 LABEL_206:
@@ -1647,7 +1647,7 @@ LABEL_241:
                                   }
 
                                   v101 = v59;
-                                  if (v202)
+                                  if (errorCopy)
                                   {
                                     v102 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v103 = *MEMORY[0x1E698F240];
@@ -1661,7 +1661,7 @@ LABEL_241:
                                     v168 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v227 forKeys:&v226 count:1];
                                     v172 = 0;
                                     v22 = 0;
-                                    *v202 = [v102 initWithDomain:v103 code:2 userInfo:?];
+                                    *errorCopy = [v102 initWithDomain:v103 code:2 userInfo:?];
                                     goto LABEL_241;
                                   }
 
@@ -1684,7 +1684,7 @@ LABEL_235:
                                   goto LABEL_130;
                                 }
 
-                                if (v202)
+                                if (errorCopy)
                                 {
                                   v106 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v107 = *MEMORY[0x1E698F240];
@@ -1696,7 +1696,7 @@ LABEL_235:
                                   v110 = v108;
                                   v175 = 0;
                                   v22 = 0;
-                                  *v202 = v109;
+                                  *errorCopy = v109;
                                   v54 = v191;
                                   v69 = v183;
                                   v76 = v174;
@@ -1720,7 +1720,7 @@ LABEL_120:
                               goto LABEL_121;
                             }
 
-                            if (v202)
+                            if (errorCopy)
                             {
                               v81 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v82 = *MEMORY[0x1E698F240];
@@ -1731,7 +1731,7 @@ LABEL_120:
                               v176 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v235 forKeys:&v234 count:1];
                               v182 = 0;
                               v22 = 0;
-                              *v202 = [v81 initWithDomain:v82 code:2 userInfo:?];
+                              *errorCopy = [v81 initWithDomain:v82 code:2 userInfo:?];
                               v54 = v191;
                               v69 = v183;
 LABEL_212:
@@ -1750,7 +1750,7 @@ LABEL_213:
                             goto LABEL_214;
                           }
 
-                          if (v202)
+                          if (errorCopy)
                           {
                             v74 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v75 = *MEMORY[0x1E698F240];
@@ -1760,7 +1760,7 @@ LABEL_213:
                             v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v237 forKeys:&v236 count:1];
                             v186 = 0;
                             v22 = 0;
-                            *v202 = [v74 initWithDomain:v75 code:2 userInfo:v76];
+                            *errorCopy = [v74 initWithDomain:v75 code:2 userInfo:v76];
                             v54 = v191;
                             v69 = v183;
                             goto LABEL_213;
@@ -1775,8 +1775,8 @@ LABEL_214:
                           goto LABEL_215;
                         }
 
-                        v69 = v202;
-                        if (v202)
+                        v69 = errorCopy;
+                        if (errorCopy)
                         {
                           v185 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v71 = *MEMORY[0x1E698F240];
@@ -1787,7 +1787,7 @@ LABEL_214:
                           v73 = v185;
                           v184 = v72;
                           v22 = 0;
-                          *v202 = [v73 initWithDomain:v71 code:2 userInfo:?];
+                          *errorCopy = [v73 initWithDomain:v71 code:2 userInfo:?];
                           v69 = 0;
                           v54 = v191;
                           goto LABEL_214;
@@ -1802,7 +1802,7 @@ LABEL_215:
                         goto LABEL_216;
                       }
 
-                      if (v202)
+                      if (errorCopy)
                       {
                         v67 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v68 = *MEMORY[0x1E698F240];
@@ -1812,7 +1812,7 @@ LABEL_215:
                         v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v241 forKeys:&v240 count:1];
                         v187 = 0;
                         v22 = 0;
-                        *v202 = [v67 initWithDomain:v68 code:2 userInfo:v70];
+                        *errorCopy = [v67 initWithDomain:v68 code:2 userInfo:v70];
                         v59 = v70;
                         goto LABEL_164;
                       }
@@ -1827,7 +1827,7 @@ LABEL_216:
                       goto LABEL_217;
                     }
 
-                    if (v202)
+                    if (errorCopy)
                     {
                       v65 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v66 = *MEMORY[0x1E698F240];
@@ -1837,7 +1837,7 @@ LABEL_216:
                       v194 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v243 forKeys:&v242 count:1];
                       v188 = 0;
                       v22 = 0;
-                      *v202 = [v65 initWithDomain:v66 code:2 userInfo:?];
+                      *errorCopy = [v65 initWithDomain:v66 code:2 userInfo:?];
                       goto LABEL_158;
                     }
 
@@ -1860,7 +1860,7 @@ LABEL_217:
                     goto LABEL_67;
                   }
 
-                  if (v202)
+                  if (errorCopy)
                   {
                     v78 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v79 = *MEMORY[0x1E698F240];
@@ -1870,7 +1870,7 @@ LABEL_217:
                     v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v245 forKeys:&v244 count:1];
                     v190 = 0;
                     v22 = 0;
-                    *v202 = [v78 initWithDomain:v79 code:2 userInfo:v80];
+                    *errorCopy = [v78 initWithDomain:v79 code:2 userInfo:v80];
                     v58 = v80;
                     v14 = v38;
                     goto LABEL_132;
@@ -1884,7 +1884,7 @@ LABEL_218:
                   goto LABEL_219;
                 }
 
-                if (v202)
+                if (errorCopy)
                 {
                   v196 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v55 = *MEMORY[0x1E698F240];
@@ -1896,7 +1896,7 @@ LABEL_218:
                   v56 = [v196 initWithDomain:v55 code:2 userInfo:?];
                   v195 = 0;
                   v22 = 0;
-                  *v202 = v56;
+                  *errorCopy = v56;
                   goto LABEL_218;
                 }
 
@@ -1909,7 +1909,7 @@ LABEL_219:
                 goto LABEL_220;
               }
 
-              if (v202)
+              if (errorCopy)
               {
                 v51 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v52 = *MEMORY[0x1E698F240];
@@ -1919,7 +1919,7 @@ LABEL_219:
                 v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v249 forKeys:&v248 count:1];
                 v200 = 0;
                 v22 = 0;
-                *v202 = [v51 initWithDomain:v52 code:2 userInfo:v53];
+                *errorCopy = [v51 initWithDomain:v52 code:2 userInfo:v53];
                 v54 = v53;
                 v11 = v209;
                 goto LABEL_219;
@@ -1933,7 +1933,7 @@ LABEL_220:
               goto LABEL_221;
             }
 
-            if (v202)
+            if (errorCopy)
             {
               v44 = objc_alloc(MEMORY[0x1E696ABC0]);
               v45 = v7;
@@ -1949,7 +1949,7 @@ LABEL_220:
               v14 = v49;
               v201 = 0;
               v22 = 0;
-              *v202 = [v50 initWithDomain:v48 code:2 userInfo:v49];
+              *errorCopy = [v50 initWithDomain:v48 code:2 userInfo:v49];
               goto LABEL_220;
             }
 
@@ -1960,7 +1960,7 @@ LABEL_221:
             goto LABEL_222;
           }
 
-          if (a4)
+          if (error)
           {
             v207 = objc_alloc(MEMORY[0x1E696ABC0]);
             v193 = v9;
@@ -1977,7 +1977,7 @@ LABEL_221:
             v43 = [v207 initWithDomain:v42 code:2 userInfo:?];
             v206 = 0;
             v22 = 0;
-            *a4 = v43;
+            *error = v43;
             goto LABEL_221;
           }
 
@@ -1988,7 +1988,7 @@ LABEL_222:
           goto LABEL_223;
         }
 
-        if (a4)
+        if (error)
         {
           v32 = objc_alloc(MEMORY[0x1E696ABC0]);
           v33 = v7;
@@ -2004,7 +2004,7 @@ LABEL_222:
           v6 = v205;
           v208 = 0;
           v22 = 0;
-          *a4 = [v37 initWithDomain:v36 code:2 userInfo:v11];
+          *error = [v37 initWithDomain:v36 code:2 userInfo:v11];
           goto LABEL_222;
         }
 
@@ -2015,7 +2015,7 @@ LABEL_223:
         goto LABEL_224;
       }
 
-      if (a4)
+      if (error)
       {
         v211 = objc_alloc(MEMORY[0x1E696ABC0]);
         v30 = *MEMORY[0x1E698F240];
@@ -2026,7 +2026,7 @@ LABEL_223:
         v31 = [v211 initWithDomain:v30 code:2 userInfo:v213];
         v210 = 0;
         v22 = 0;
-        *a4 = v31;
+        *error = v31;
         goto LABEL_223;
       }
 
@@ -2037,7 +2037,7 @@ LABEL_224:
       goto LABEL_225;
     }
 
-    if (a4)
+    if (error)
     {
       v23 = objc_alloc(MEMORY[0x1E696ABC0]);
       v24 = v7;
@@ -2054,7 +2054,7 @@ LABEL_224:
       v6 = v26;
       v9 = 0;
       v22 = 0;
-      *a4 = [v29 initWithDomain:v28 code:2 userInfo:v10];
+      *error = [v29 initWithDomain:v28 code:2 userInfo:v10];
       goto LABEL_224;
     }
 
@@ -2065,7 +2065,7 @@ LABEL_225:
     goto LABEL_226;
   }
 
-  if (a4)
+  if (error)
   {
     v19 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = *MEMORY[0x1E698F240];
@@ -2076,7 +2076,7 @@ LABEL_225:
     v21 = [v19 initWithDomain:v20 code:2 userInfo:v8];
     v7 = 0;
     v22 = 0;
-    *a4 = v21;
+    *error = v21;
     goto LABEL_225;
   }
 
@@ -2092,14 +2092,14 @@ LABEL_226:
 {
   v3 = objc_opt_new();
   [(BMMailCategorization *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_messageId)
   {
     PBDataWriterWriteStringField();
@@ -2210,9 +2210,9 @@ LABEL_226:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v75.receiver = self;
   v75.super_class = BMMailCategorization;
   v5 = [(BMEventBase *)&v75 init];
@@ -2221,12 +2221,12 @@ LABEL_226:
     goto LABEL_151;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -2237,18 +2237,18 @@ LABEL_226:
       while (1)
       {
         v76 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v76 & 0x7F) << v7;
@@ -2266,9 +2266,9 @@ LABEL_226:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -2314,18 +2314,18 @@ LABEL_16:
           while (1)
           {
             v76 = 0;
-            v51 = [v4 position] + 1;
-            if (v51 >= [v4 position] && (v52 = objc_msgSend(v4, "position") + 1, v52 <= objc_msgSend(v4, "length")))
+            v51 = [fromCopy position] + 1;
+            if (v51 >= [fromCopy position] && (v52 = objc_msgSend(fromCopy, "position") + 1, v52 <= objc_msgSend(fromCopy, "length")))
             {
-              v53 = [v4 data];
-              [v53 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v76 & 0x7F) << v49;
@@ -2342,7 +2342,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 6)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 6)
           {
 LABEL_134:
             LODWORD(v26) = 0;
@@ -2377,18 +2377,18 @@ LABEL_134:
           while (1)
           {
             v76 = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v76 & 0x7F) << v24;
@@ -2405,7 +2405,7 @@ LABEL_134:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 7)
           {
 LABEL_122:
             LODWORD(v26) = 0;
@@ -2420,18 +2420,18 @@ LABEL_122:
           while (1)
           {
             v76 = 0;
-            v33 = [v4 position] + 1;
-            if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+            v33 = [fromCopy position] + 1;
+            if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v76 & 0x7F) << v31;
@@ -2448,7 +2448,7 @@ LABEL_122:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 7)
           {
 LABEL_126:
             LODWORD(v26) = 0;
@@ -2464,18 +2464,18 @@ LABEL_126:
           while (1)
           {
             v76 = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v76 & 0x7F) << v17;
@@ -2493,7 +2493,7 @@ LABEL_126:
             }
           }
 
-          v23 = (v19 != 0) & ~[v4 hasError];
+          v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_119:
           v70 = 16;
           goto LABEL_147;
@@ -2505,18 +2505,18 @@ LABEL_119:
           while (1)
           {
             v76 = 0;
-            v39 = [v4 position] + 1;
-            if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+            v39 = [fromCopy position] + 1;
+            if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
             {
-              v41 = [v4 data];
-              [v41 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v38 |= (v76 & 0x7F) << v36;
@@ -2534,7 +2534,7 @@ LABEL_119:
             }
           }
 
-          v23 = (v38 != 0) & ~[v4 hasError];
+          v23 = (v38 != 0) & ~[fromCopy hasError];
 LABEL_129:
           v70 = 18;
           goto LABEL_147;
@@ -2549,18 +2549,18 @@ LABEL_129:
           while (1)
           {
             v76 = 0;
-            v61 = [v4 position] + 1;
-            if (v61 >= [v4 position] && (v62 = objc_msgSend(v4, "position") + 1, v62 <= objc_msgSend(v4, "length")))
+            v61 = [fromCopy position] + 1;
+            if (v61 >= [fromCopy position] && (v62 = objc_msgSend(fromCopy, "position") + 1, v62 <= objc_msgSend(fromCopy, "length")))
             {
-              v63 = [v4 data];
-              [v63 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v76 & 0x7F) << v59;
@@ -2577,7 +2577,7 @@ LABEL_129:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 6)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 6)
           {
 LABEL_142:
             LODWORD(v26) = 0;
@@ -2593,18 +2593,18 @@ LABEL_142:
           while (1)
           {
             v76 = 0;
-            v45 = [v4 position] + 1;
-            if (v45 >= [v4 position] && (v46 = objc_msgSend(v4, "position") + 1, v46 <= objc_msgSend(v4, "length")))
+            v45 = [fromCopy position] + 1;
+            if (v45 >= [fromCopy position] && (v46 = objc_msgSend(fromCopy, "position") + 1, v46 <= objc_msgSend(fromCopy, "length")))
             {
-              v47 = [v4 data];
-              [v47 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v44 |= (v76 & 0x7F) << v42;
@@ -2622,7 +2622,7 @@ LABEL_142:
             }
           }
 
-          v23 = (v44 != 0) & ~[v4 hasError];
+          v23 = (v44 != 0) & ~[fromCopy hasError];
 LABEL_131:
           v70 = 20;
           goto LABEL_147;
@@ -2641,18 +2641,18 @@ LABEL_79:
           while (1)
           {
             v76 = 0;
-            v56 = [v4 position] + 1;
-            if (v56 >= [v4 position] && (v57 = objc_msgSend(v4, "position") + 1, v57 <= objc_msgSend(v4, "length")))
+            v56 = [fromCopy position] + 1;
+            if (v56 >= [fromCopy position] && (v57 = objc_msgSend(fromCopy, "position") + 1, v57 <= objc_msgSend(fromCopy, "length")))
             {
-              v58 = [v4 data];
-              [v58 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v76 & 0x7F) << v54;
@@ -2669,7 +2669,7 @@ LABEL_79:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 8)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 8)
           {
 LABEL_138:
             LODWORD(v26) = 0;
@@ -2697,18 +2697,18 @@ LABEL_144:
       while (1)
       {
         v76 = 0;
-        v67 = [v4 position] + 1;
-        if (v67 >= [v4 position] && (v68 = objc_msgSend(v4, "position") + 1, v68 <= objc_msgSend(v4, "length")))
+        v67 = [fromCopy position] + 1;
+        if (v67 >= [fromCopy position] && (v68 = objc_msgSend(fromCopy, "position") + 1, v68 <= objc_msgSend(fromCopy, "length")))
         {
-          v69 = [v4 data];
-          [v69 getBytes:&v76 range:{objc_msgSend(v4, "position"), 1}];
+          data10 = [fromCopy data];
+          [data10 getBytes:&v76 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v66 |= (v76 & 0x7F) << v64;
@@ -2726,19 +2726,19 @@ LABEL_144:
         }
       }
 
-      v23 = (v66 != 0) & ~[v4 hasError];
+      v23 = (v66 != 0) & ~[fromCopy hasError];
 LABEL_146:
       v70 = 22;
 LABEL_147:
       *(&v5->super.super.isa + v70) = v23;
 LABEL_148:
-      v72 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v72 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_150:
     v73 = 0;
@@ -2756,85 +2756,85 @@ LABEL_151:
 - (NSString)description
 {
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v29 = [(BMMailCategorization *)self messageId];
-  v26 = [(BMMailCategorization *)self eventType];
-  v28 = [(BMMailCategorization *)self trialExperimentId];
-  v25 = [(BMMailCategorization *)self trialExperimentDeploymentId];
-  v27 = [(BMMailCategorization *)self trialExperimentTreatmentId];
-  v23 = [(BMMailCategorization *)self trialRolloutId];
-  v24 = [(BMMailCategorization *)self trialRolloutDeploymentId];
-  v17 = [(BMMailCategorization *)self trialRolloutFactorPackId];
+  messageId = [(BMMailCategorization *)self messageId];
+  eventType = [(BMMailCategorization *)self eventType];
+  trialExperimentId = [(BMMailCategorization *)self trialExperimentId];
+  trialExperimentDeploymentId = [(BMMailCategorization *)self trialExperimentDeploymentId];
+  trialExperimentTreatmentId = [(BMMailCategorization *)self trialExperimentTreatmentId];
+  trialRolloutId = [(BMMailCategorization *)self trialRolloutId];
+  trialRolloutDeploymentId = [(BMMailCategorization *)self trialRolloutDeploymentId];
+  trialRolloutFactorPackId = [(BMMailCategorization *)self trialRolloutFactorPackId];
   v22 = BMMailCategorizationCategoryAsString([(BMMailCategorization *)self predictedCategory]);
-  v16 = [(BMMailCategorization *)self blackPearlModelVersion];
-  v21 = [(BMMailCategorization *)self blackPearlSenderModelVersion];
-  v15 = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
-  v20 = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
-  v14 = [(BMMailCategorization *)self reasonCodes];
+  blackPearlModelVersion = [(BMMailCategorization *)self blackPearlModelVersion];
+  blackPearlSenderModelVersion = [(BMMailCategorization *)self blackPearlSenderModelVersion];
+  blackPearlFinalRuleVersion = [(BMMailCategorization *)self blackPearlFinalRuleVersion];
+  blackPearlBreakthroughVersion = [(BMMailCategorization *)self blackPearlBreakthroughVersion];
+  reasonCodes = [(BMMailCategorization *)self reasonCodes];
   v12 = BMMailCategorizationMailboxTypeAsString([(BMMailCategorization *)self currCategoryView]);
   v13 = BMMailCategorizationMailboxTypeAsString([(BMMailCategorization *)self prevCategoryView]);
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMailCategorization isBreakthrough](self, "isBreakthrough")}];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMailCategorization isBlackPearlEnabled](self, "isBlackPearlEnabled")}];
-  v3 = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
+  elapsedTimeSinceEmailReceived = [(BMMailCategorization *)self elapsedTimeSinceEmailReceived];
   v9 = BMMailCategorizationByTypeAsString([(BMMailCategorization *)self recategorizationBy]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMailCategorization isThread](self, "isThread")}];
-  v5 = [(BMMailCategorization *)self senderId];
+  senderId = [(BMMailCategorization *)self senderId];
   v6 = BMMailCategorizationDomainAsString([(BMMailCategorization *)self receivingAccountDomain]);
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMailCategorization hasIcloudAccountEnabled](self, "hasIcloudAccountEnabled")}];
-  v19 = [v18 initWithFormat:@"BMMailCategorization with messageId: %@, eventType: %@, trialExperimentId: %@, trialExperimentDeploymentId: %@, trialExperimentTreatmentId: %@, trialRolloutId: %@, trialRolloutDeploymentId: %@, trialRolloutFactorPackId: %@, predictedCategory: %@, blackPearlModelVersion: %@, blackPearlSenderModelVersion: %@, blackPearlFinalRuleVersion: %@, blackPearlBreakthroughVersion: %@, reasonCodes: %@, currCategoryView: %@, prevCategoryView: %@, isBreakthrough: %@, isBlackPearlEnabled: %@, elapsedTimeSinceEmailReceived: %@, recategorizationBy: %@, isThread: %@, senderId: %@, receivingAccountDomain: %@, hasIcloudAccountEnabled: %@", v29, v26, v28, v25, v27, v23, v24, v17, v22, v16, v21, v15, v20, v14, v12, v13, v11, v10, v3, v9, v4, v5, v6, v7];
+  v19 = [v18 initWithFormat:@"BMMailCategorization with messageId: %@, eventType: %@, trialExperimentId: %@, trialExperimentDeploymentId: %@, trialExperimentTreatmentId: %@, trialRolloutId: %@, trialRolloutDeploymentId: %@, trialRolloutFactorPackId: %@, predictedCategory: %@, blackPearlModelVersion: %@, blackPearlSenderModelVersion: %@, blackPearlFinalRuleVersion: %@, blackPearlBreakthroughVersion: %@, reasonCodes: %@, currCategoryView: %@, prevCategoryView: %@, isBreakthrough: %@, isBlackPearlEnabled: %@, elapsedTimeSinceEmailReceived: %@, recategorizationBy: %@, isThread: %@, senderId: %@, receivingAccountDomain: %@, hasIcloudAccountEnabled: %@", messageId, eventType, trialExperimentId, trialExperimentDeploymentId, trialExperimentTreatmentId, trialRolloutId, trialRolloutDeploymentId, trialRolloutFactorPackId, v22, blackPearlModelVersion, blackPearlSenderModelVersion, blackPearlFinalRuleVersion, blackPearlBreakthroughVersion, reasonCodes, v12, v13, v11, v10, elapsedTimeSinceEmailReceived, v9, v4, senderId, v6, v7];
 
   return v19;
 }
 
-- (BMMailCategorization)initWithMessageId:(id)a3 eventType:(id)a4 trialExperimentId:(id)a5 trialExperimentDeploymentId:(id)a6 trialExperimentTreatmentId:(id)a7 trialRolloutId:(id)a8 trialRolloutDeploymentId:(id)a9 trialRolloutFactorPackId:(id)a10 predictedCategory:(int)a11 blackPearlModelVersion:(id)a12 blackPearlSenderModelVersion:(id)a13 blackPearlFinalRuleVersion:(id)a14 blackPearlBreakthroughVersion:(id)a15 reasonCodes:(id)a16 currCategoryView:(int)a17 prevCategoryView:(int)a18 isBreakthrough:(id)a19 isBlackPearlEnabled:(id)a20 elapsedTimeSinceEmailReceived:(id)a21 recategorizationBy:(int)a22 isThread:(id)a23 senderId:(id)a24 receivingAccountDomain:(int)a25 hasIcloudAccountEnabled:(id)a26
+- (BMMailCategorization)initWithMessageId:(id)id eventType:(id)type trialExperimentId:(id)experimentId trialExperimentDeploymentId:(id)deploymentId trialExperimentTreatmentId:(id)treatmentId trialRolloutId:(id)rolloutId trialRolloutDeploymentId:(id)rolloutDeploymentId trialRolloutFactorPackId:(id)self0 predictedCategory:(int)self1 blackPearlModelVersion:(id)self2 blackPearlSenderModelVersion:(id)self3 blackPearlFinalRuleVersion:(id)self4 blackPearlBreakthroughVersion:(id)self5 reasonCodes:(id)self6 currCategoryView:(int)self7 prevCategoryView:(int)self8 isBreakthrough:(id)self9 isBlackPearlEnabled:(id)enabled elapsedTimeSinceEmailReceived:(id)received recategorizationBy:(int)by isThread:(id)thread senderId:(id)senderId receivingAccountDomain:(int)domain hasIcloudAccountEnabled:(id)accountEnabled
 {
-  v56 = a3;
-  v55 = a4;
-  v54 = a5;
-  v38 = a6;
-  v53 = a6;
-  v39 = a7;
-  v52 = a7;
-  v40 = a8;
-  v51 = a8;
-  v50 = a9;
-  v49 = a10;
-  v48 = a12;
-  v47 = a13;
-  v46 = a14;
-  v45 = a15;
-  v44 = a16;
-  v31 = a19;
-  v32 = a20;
-  v43 = a21;
-  v33 = a23;
-  v42 = a24;
-  v34 = a26;
+  idCopy = id;
+  typeCopy = type;
+  experimentIdCopy = experimentId;
+  deploymentIdCopy = deploymentId;
+  deploymentIdCopy2 = deploymentId;
+  treatmentIdCopy = treatmentId;
+  treatmentIdCopy2 = treatmentId;
+  rolloutIdCopy = rolloutId;
+  rolloutIdCopy2 = rolloutId;
+  rolloutDeploymentIdCopy = rolloutDeploymentId;
+  packIdCopy = packId;
+  versionCopy = version;
+  modelVersionCopy = modelVersion;
+  ruleVersionCopy = ruleVersion;
+  breakthroughVersionCopy = breakthroughVersion;
+  codesCopy = codes;
+  breakthroughCopy = breakthrough;
+  enabledCopy = enabled;
+  receivedCopy = received;
+  threadCopy = thread;
+  senderIdCopy = senderId;
+  accountEnabledCopy = accountEnabled;
   v57.receiver = self;
   v57.super_class = BMMailCategorization;
   v35 = [(BMEventBase *)&v57 init];
   if (v35)
   {
     v35->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v35->_messageId, a3);
-    objc_storeStrong(&v35->_eventType, a4);
-    objc_storeStrong(&v35->_trialExperimentId, a5);
-    objc_storeStrong(&v35->_trialExperimentDeploymentId, v38);
-    objc_storeStrong(&v35->_trialExperimentTreatmentId, v39);
-    objc_storeStrong(&v35->_trialRolloutId, v40);
-    objc_storeStrong(&v35->_trialRolloutDeploymentId, a9);
-    objc_storeStrong(&v35->_trialRolloutFactorPackId, a10);
-    v35->_predictedCategory = a11;
-    objc_storeStrong(&v35->_blackPearlModelVersion, a12);
-    objc_storeStrong(&v35->_blackPearlSenderModelVersion, a13);
-    objc_storeStrong(&v35->_blackPearlFinalRuleVersion, a14);
-    objc_storeStrong(&v35->_blackPearlBreakthroughVersion, a15);
-    objc_storeStrong(&v35->_reasonCodes, a16);
-    v35->_currCategoryView = a17;
-    v35->_prevCategoryView = a18;
-    if (v31)
+    objc_storeStrong(&v35->_messageId, id);
+    objc_storeStrong(&v35->_eventType, type);
+    objc_storeStrong(&v35->_trialExperimentId, experimentId);
+    objc_storeStrong(&v35->_trialExperimentDeploymentId, deploymentIdCopy);
+    objc_storeStrong(&v35->_trialExperimentTreatmentId, treatmentIdCopy);
+    objc_storeStrong(&v35->_trialRolloutId, rolloutIdCopy);
+    objc_storeStrong(&v35->_trialRolloutDeploymentId, rolloutDeploymentId);
+    objc_storeStrong(&v35->_trialRolloutFactorPackId, packId);
+    v35->_predictedCategory = category;
+    objc_storeStrong(&v35->_blackPearlModelVersion, version);
+    objc_storeStrong(&v35->_blackPearlSenderModelVersion, modelVersion);
+    objc_storeStrong(&v35->_blackPearlFinalRuleVersion, ruleVersion);
+    objc_storeStrong(&v35->_blackPearlBreakthroughVersion, breakthroughVersion);
+    objc_storeStrong(&v35->_reasonCodes, codes);
+    v35->_currCategoryView = view;
+    v35->_prevCategoryView = categoryView;
+    if (breakthroughCopy)
     {
       v35->_hasIsBreakthrough = 1;
-      v35->_isBreakthrough = [v31 BOOLValue];
+      v35->_isBreakthrough = [breakthroughCopy BOOLValue];
     }
 
     else
@@ -2843,10 +2843,10 @@ LABEL_151:
       v35->_isBreakthrough = 0;
     }
 
-    if (v32)
+    if (enabledCopy)
     {
       v35->_hasIsBlackPearlEnabled = 1;
-      v35->_isBlackPearlEnabled = [v32 BOOLValue];
+      v35->_isBlackPearlEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -2855,12 +2855,12 @@ LABEL_151:
       v35->_isBlackPearlEnabled = 0;
     }
 
-    objc_storeStrong(&v35->_elapsedTimeSinceEmailReceived, a21);
-    v35->_recategorizationBy = a22;
-    if (v33)
+    objc_storeStrong(&v35->_elapsedTimeSinceEmailReceived, received);
+    v35->_recategorizationBy = by;
+    if (threadCopy)
     {
       v35->_hasIsThread = 1;
-      v35->_isThread = [v33 BOOLValue];
+      v35->_isThread = [threadCopy BOOLValue];
     }
 
     else
@@ -2869,12 +2869,12 @@ LABEL_151:
       v35->_isThread = 0;
     }
 
-    objc_storeStrong(&v35->_senderId, a24);
-    v35->_receivingAccountDomain = a25;
-    if (v34)
+    objc_storeStrong(&v35->_senderId, senderId);
+    v35->_receivingAccountDomain = domain;
+    if (accountEnabledCopy)
     {
       v35->_hasHasIcloudAccountEnabled = 1;
-      v35->_hasIcloudAccountEnabled = [v34 BOOLValue];
+      v35->_hasIcloudAccountEnabled = [accountEnabledCopy BOOLValue];
     }
 
     else
@@ -2887,9 +2887,9 @@ LABEL_151:
   return v35;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2897,8 +2897,8 @@ LABEL_151:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMailCategorization alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,25 +1,25 @@
 @interface SignInActionImplementation.SignInDelegate
 - (_TtCV22SubscribePageExtension26SignInActionImplementationP33_D8185033AC5595CAD906ECAE44EAC10314SignInDelegate)init;
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation SignInActionImplementation.SignInDelegate
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
   sub_100016C60(0, &qword_1009402D0);
   v6 = sub_100752F44();
-  v7 = a3;
-  v8 = self;
-  sub_1005C8D78(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1005C8D78(controllerCopy, v6);
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005C90B8(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_1005C90B8(cancelCopy);
 }
 
 - (_TtCV22SubscribePageExtension26SignInActionImplementationP33_D8185033AC5595CAD906ECAE44EAC10314SignInDelegate)init

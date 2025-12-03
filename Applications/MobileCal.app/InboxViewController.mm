@@ -1,36 +1,36 @@
 @interface InboxViewController
 - (CGSize)preferredContentSize;
-- (InboxViewController)initWithModel:(id)a3 destination:(unint64_t)a4;
+- (InboxViewController)initWithModel:(id)model destination:(unint64_t)destination;
 - (InboxViewControllerDelegate)delegate;
 - (id)displayedDetailViewControllers;
-- (id)inboxSwitcherViewControllerLeftBarButtonItem:(id)a3;
+- (id)inboxSwitcherViewControllerLeftBarButtonItem:(id)item;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_dismissMessagesViewControllerWithCompletion:(id)a3;
-- (void)_inspectEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 proposedTimeAttendee:(id)a6;
-- (void)_pushDetailViewControllerForEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 proposedTimeAttendee:(id)a6;
+- (void)_dismissMessagesViewControllerWithCompletion:(id)completion;
+- (void)_inspectEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments proposedTimeAttendee:(id)attendee;
+- (void)_pushDetailViewControllerForEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments proposedTimeAttendee:(id)attendee;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation InboxViewController
 
-- (InboxViewController)initWithModel:(id)a3 destination:(unint64_t)a4
+- (InboxViewController)initWithModel:(id)model destination:(unint64_t)destination
 {
-  v8 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = InboxViewController;
   v9 = [(InboxViewController *)&v11 initWithNibName:0 bundle:0];
   if (v9)
   {
-    if (!v8)
+    if (!modelCopy)
     {
       sub_10016F9FC(a2, v9);
     }
 
-    objc_storeStrong(&v9->_model, a3);
-    v9->_destination = a4;
+    objc_storeStrong(&v9->_model, model);
+    v9->_destination = destination;
   }
 
   return v9;
@@ -38,7 +38,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(InboxViewController *)self view];
+  view = [(InboxViewController *)self view];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
@@ -67,8 +67,8 @@
   [(InboxViewController *)self addChildViewController:self->_embeddedNavigationController];
   [(UINavigationController *)self->_embeddedNavigationController didMoveToParentViewController:self];
   v8 = objc_alloc_init(InboxView);
-  v7 = [(UINavigationController *)self->_embeddedNavigationController view];
-  [(InboxView *)v8 addSubview:v7];
+  view = [(UINavigationController *)self->_embeddedNavigationController view];
+  [(InboxView *)v8 addSubview:view];
 
   [(InboxViewController *)self setView:v8];
 }
@@ -81,11 +81,11 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = InboxViewController;
-  [(InboxViewController *)&v9 viewDidAppear:a3];
+  [(InboxViewController *)&v9 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -104,11 +104,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = InboxViewController;
-  [(InboxViewController *)&v7 viewDidDisappear:a3];
+  [(InboxViewController *)&v7 viewDidDisappear:disappear];
   if (self->_wantsDisplayReviewPrompt)
   {
     self->_wantsDisplayReviewPrompt = 0;
@@ -125,24 +125,24 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v12 = [(InboxViewController *)self view];
-  [v12 frame];
+  view = [(InboxViewController *)self view];
+  [view frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UINavigationController *)self->_embeddedNavigationController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view2 = [(UINavigationController *)self->_embeddedNavigationController view];
+  [view2 setFrame:{v4, v6, v8, v10}];
 }
 
 - (id)displayedDetailViewControllers
 {
-  v2 = [(UINavigationController *)self->_embeddedNavigationController viewControllers];
+  viewControllers = [(UINavigationController *)self->_embeddedNavigationController viewControllers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -154,7 +154,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(viewControllers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -172,7 +172,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -186,34 +186,34 @@
   return v5;
 }
 
-- (void)_inspectEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 proposedTimeAttendee:(id)a6
+- (void)_inspectEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments proposedTimeAttendee:(id)attendee
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(InboxViewController *)self view];
+  commentsCopy = comments;
+  animatedCopy = animated;
+  eventCopy = event;
+  attendeeCopy = attendee;
+  view = [(InboxViewController *)self view];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy())
   {
   }
 
   else
   {
-    v13 = [(InboxViewController *)self view];
+    view2 = [(InboxViewController *)self view];
     IsCompact = EKUICurrentHeightSizeClassIsCompact();
 
     if (!IsCompact)
     {
-      if ([v10 participationStatus] != 3 || (-[CUIKCalendarModel eventStore](self->_model, "eventStore"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "showDeclinedEvents"), v15, (v16 & 1) != 0))
+      if ([eventCopy participationStatus] != 3 || (-[CUIKCalendarModel eventStore](self->_model, "eventStore"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "showDeclinedEvents"), v15, (v16 & 1) != 0))
       {
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_1000453A0;
         v17[3] = &unk_10020F5A8;
         v17[4] = self;
-        v18 = v10;
-        v19 = v8;
-        v20 = v7;
+        v18 = eventCopy;
+        v19 = animatedCopy;
+        v20 = commentsCopy;
         [(InboxViewController *)self _dismissMessagesViewControllerWithCompletion:v17];
 
         goto LABEL_5;
@@ -223,11 +223,11 @@
     }
   }
 
-  [(InboxViewController *)self _pushDetailViewControllerForEvent:v10 animated:v8 showComments:v7 proposedTimeAttendee:v11];
+  [(InboxViewController *)self _pushDetailViewControllerForEvent:eventCopy animated:animatedCopy showComments:commentsCopy proposedTimeAttendee:attendeeCopy];
 LABEL_5:
 }
 
-- (id)inboxSwitcherViewControllerLeftBarButtonItem:(id)a3
+- (id)inboxSwitcherViewControllerLeftBarButtonItem:(id)item
 {
   if (self->_destination)
   {
@@ -243,31 +243,31 @@ LABEL_5:
   return v3;
 }
 
-- (void)_pushDetailViewControllerForEvent:(id)a3 animated:(BOOL)a4 showComments:(BOOL)a5 proposedTimeAttendee:(id)a6
+- (void)_pushDetailViewControllerForEvent:(id)event animated:(BOOL)animated showComments:(BOOL)comments proposedTimeAttendee:(id)attendee
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 calendar];
-  v13 = [v12 type];
+  commentsCopy = comments;
+  animatedCopy = animated;
+  eventCopy = event;
+  attendeeCopy = attendee;
+  calendar = [eventCopy calendar];
+  type = [calendar type];
 
-  if (v13 != 4 || (+[CalContactsProvider defaultProvider](CalContactsProvider, "defaultProvider"), v14 = objc_claimAutoreleasedReturnValue(), [v10 birthdayContactIdentifier], v15 = objc_claimAutoreleasedReturnValue(), +[CNContactViewController descriptorForRequiredKeys](CNContactViewController, "descriptorForRequiredKeys"), v16 = objc_claimAutoreleasedReturnValue(), v22 = v16, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v22, 1), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "unifiedContactWithIdentifier:keysToFetch:", v15, v17), v18 = objc_claimAutoreleasedReturnValue(), v17, v16, v15, v14, +[CNContactViewController viewControllerForContact:](CNContactViewController, "viewControllerForContact:", v18), v19 = objc_claimAutoreleasedReturnValue(), +[CalContactsProvider defaultProvider](CalContactsProvider, "defaultProvider"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "contactStore"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "setContactStore:", v21), v21, v20, objc_msgSend(v19, "setShouldShowLinkedContacts:", 1), objc_msgSend(v19, "setDisplayMode:", 1), objc_msgSend(v19, "setActions:", objc_msgSend(v19, "actions") | 0x400), objc_msgSend(v19, "setAllowsEditing:", 0), v18, !v19))
+  if (type != 4 || (+[CalContactsProvider defaultProvider](CalContactsProvider, "defaultProvider"), v14 = objc_claimAutoreleasedReturnValue(), [eventCopy birthdayContactIdentifier], v15 = objc_claimAutoreleasedReturnValue(), +[CNContactViewController descriptorForRequiredKeys](CNContactViewController, "descriptorForRequiredKeys"), v16 = objc_claimAutoreleasedReturnValue(), v22 = v16, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v22, 1), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "unifiedContactWithIdentifier:keysToFetch:", v15, v17), v18 = objc_claimAutoreleasedReturnValue(), v17, v16, v15, v14, +[CNContactViewController viewControllerForContact:](CNContactViewController, "viewControllerForContact:", v18), v19 = objc_claimAutoreleasedReturnValue(), +[CalContactsProvider defaultProvider](CalContactsProvider, "defaultProvider"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "contactStore"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "setContactStore:", v21), v21, v20, objc_msgSend(v19, "setShouldShowLinkedContacts:", 1), objc_msgSend(v19, "setDisplayMode:", 1), objc_msgSend(v19, "setActions:", objc_msgSend(v19, "actions") | 0x400), objc_msgSend(v19, "setAllowsEditing:", 0), v18, !v19))
   {
-    if (v11)
+    if (attendeeCopy)
     {
-      v19 = [[EKUIProposedTimeEventViewController alloc] initWithProposedTimeAttendee:v11];
-      [v19 setEvent:v10];
+      v19 = [[EKUIProposedTimeEventViewController alloc] initWithProposedTimeAttendee:attendeeCopy];
+      [v19 setEvent:eventCopy];
       [v19 setDelegate:self];
-      v8 = 1;
+      animatedCopy = 1;
     }
 
     else
     {
       v19 = objc_opt_new();
-      v8 = 1;
+      animatedCopy = 1;
       [v19 setCalendarPreviewIsInlineDayView:1];
-      [v19 setEvent:v10];
+      [v19 setEvent:eventCopy];
       [v19 setAllowsEditing:1];
       [v19 setDelegate:self];
       [v19 setAllowsCalendarPreview:1];
@@ -275,8 +275,8 @@ LABEL_5:
     }
   }
 
-  [(UINavigationController *)self->_embeddedNavigationController pushViewController:v19 animated:v8];
-  if (v7)
+  [(UINavigationController *)self->_embeddedNavigationController pushViewController:v19 animated:animatedCopy];
+  if (commentsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -286,35 +286,35 @@ LABEL_5:
   }
 }
 
-- (void)_dismissMessagesViewControllerWithCompletion:(id)a3
+- (void)_dismissMessagesViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(InboxViewController *)self view];
-  [v5 endEditing:1];
+  completionCopy = completion;
+  view = [(InboxViewController *)self view];
+  [view endEditing:1];
 
   [(InboxSwitcherViewController *)self->_switcherViewController inboxWillDismiss];
   v6 = [(UINavigationController *)self->_embeddedNavigationController popViewControllerAnimated:0];
-  if (v4)
+  if (completionCopy)
   {
     self->_wantsDisplayReviewPrompt = 0;
-    v7 = [(InboxViewController *)self presentingViewController];
+    presentingViewController = [(InboxViewController *)self presentingViewController];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100045944;
     v10[3] = &unk_10020F5D0;
     v10[4] = self;
-    v11 = v4;
-    [v7 dismissViewControllerAnimated:0 completion:v10];
+    v11 = completionCopy;
+    [presentingViewController dismissViewControllerAnimated:0 completion:v10];
   }
 
   else
   {
-    v8 = [(InboxViewController *)self doneBlock];
+    doneBlock = [(InboxViewController *)self doneBlock];
 
-    if (v8)
+    if (doneBlock)
     {
-      v9 = [(InboxViewController *)self doneBlock];
-      (v9)[2](v9, self, 0);
+      doneBlock2 = [(InboxViewController *)self doneBlock];
+      (doneBlock2)[2](doneBlock2, self, 0);
     }
   }
 }

@@ -7,16 +7,16 @@
 
 - (BOOL)isFetched
 {
-  v1 = [a1 fileURL];
-  v2 = v1 != 0;
+  fileURL = [self fileURL];
+  v2 = fileURL != 0;
 
   return v2;
 }
 
 - (BOOL)isUnfetched
 {
-  v1 = [a1 fileURL];
-  v2 = v1 == 0;
+  fileURL = [self fileURL];
+  v2 = fileURL == 0;
 
   return v2;
 }

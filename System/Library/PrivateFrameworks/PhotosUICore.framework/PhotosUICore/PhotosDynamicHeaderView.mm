@@ -2,18 +2,18 @@
 - (BOOL)canUnloadWhenInvisible;
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (_TtC12PhotosUICore23PhotosDynamicHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore23PhotosDynamicHeaderView)initWithFrame:(CGRect)frame;
 - (void)becomeReusable;
 - (void)layoutSubviews;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PhotosDynamicHeaderView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A419C4B8();
 }
 
@@ -25,13 +25,13 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v5 = OBJC_IVAR____TtC12PhotosUICore23PhotosDynamicHeaderView_userData;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_1A419C968();
   swift_unknownObjectRelease();
@@ -52,12 +52,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR____TtC12PhotosUICore23PhotosDynamicHeaderView_clippingRect);
   swift_beginAccess();
   *v7 = x;
@@ -71,7 +71,7 @@
   v3 = OBJC_IVAR____TtC12PhotosUICore23PhotosDynamicHeaderView_userData;
   swift_beginAccess();
   *(&self->super.super.super.isa + v3) = 0;
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_1A419C968();
 }
@@ -82,7 +82,7 @@
   if (v2)
   {
     v3 = *(**&v2[OBJC_IVAR____TtC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView_model] + 416);
-    v4 = self;
+    selfCopy = self;
     v5 = v2;
     v6 = v3();
 
@@ -97,12 +97,12 @@
   return v7 & 1;
 }
 
-- (_TtC12PhotosUICore23PhotosDynamicHeaderView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore23PhotosDynamicHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (self + OBJC_IVAR____TtC12PhotosUICore23PhotosDynamicHeaderView_configuration);
   *v9 = 0u;

@@ -1,8 +1,8 @@
 @interface HUPersonalPINCodeViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (HUPersonalPINCodeItemManager)personalPINCodeItemManager;
-- (HUPersonalPINCodeViewController)initWithItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5;
-- (HUPersonalPINCodeViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
+- (HUPersonalPINCodeViewController)initWithItem:(id)item pinCodeManager:(id)manager home:(id)home;
+- (HUPersonalPINCodeViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
 - (HUPersonalPINCodeViewControllerDelegate)delegate;
 - (HUPresentationDelegate)presentationDelegate;
 - (id)currentPinCodeValue;
@@ -10,33 +10,33 @@
 - (void)_presentPinCodeErrorDialog;
 - (void)_shareCode;
 - (void)_showSpinner;
-- (void)copy:(id)a3;
-- (void)doneButtonPressed:(id)a3;
+- (void)copy:(id)copy;
+- (void)doneButtonPressed:(id)pressed;
 - (void)openPINCodeEditor;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUPersonalPINCodeViewController
 
-- (HUPersonalPINCodeViewController)initWithItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5
+- (HUPersonalPINCodeViewController)initWithItem:(id)item pinCodeManager:(id)manager home:(id)home
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  managerCopy = manager;
+  homeCopy = home;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      NSLog(&cfstr_SuppliedItemIs.isa, v8);
+      NSLog(&cfstr_SuppliedItemIs.isa, itemCopy);
     }
   }
 
-  v11 = [v8 copy];
-  v12 = [[HUPersonalPINCodeItemManager alloc] initWithDelegate:self item:v11 pinCodeManager:v9 home:v10];
+  v11 = [itemCopy copy];
+  v12 = [[HUPersonalPINCodeItemManager alloc] initWithDelegate:self item:v11 pinCodeManager:managerCopy home:homeCopy];
 
   v16.receiver = self;
   v16.super_class = HUPersonalPINCodeViewController;
@@ -44,18 +44,18 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_pinCodeManager, a4);
+    objc_storeStrong(&v13->_pinCodeManager, manager);
     objc_storeWeak(&v14->_personalPINCodeItemManager, v12);
   }
 
   return v14;
 }
 
-- (HUPersonalPINCodeViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUPersonalPINCodeViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithItem_pinCodeManager_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPersonalPINCodeViewController.m" lineNumber:68 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalPINCodeViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalPINCodeViewController.m" lineNumber:68 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalPINCodeViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
@@ -68,12 +68,12 @@
   if ([(HUPersonalPINCodeViewController *)self showDoneButtonInNavBar])
   {
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-    v4 = [(HUPersonalPINCodeViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:v3];
+    navigationItem = [(HUPersonalPINCodeViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v3];
   }
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -84,102 +84,102 @@
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%s) User tapped 'done' button", &v6, 0xCu);
   }
 
-  v5 = [(HUPersonalPINCodeViewController *)self presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(HUPersonalPINCodeViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v34.receiver = self;
   v34.super_class = HUPersonalPINCodeViewController;
-  [(HUItemTableViewController *)&v34 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v13 = [v12 pinCodeValueItem];
-  v14 = [v11 isEqual:v13];
+  [(HUItemTableViewController *)&v34 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  pinCodeValueItem = [personalPINCodeItemManager pinCodeValueItem];
+  v14 = [itemCopy isEqual:pinCodeValueItem];
 
   if (!v14)
   {
-    v18 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-    v19 = [v18 pinCodeChangeItem];
-    if ([v11 isEqual:v19])
+    personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+    pinCodeChangeItem = [personalPINCodeItemManager2 pinCodeChangeItem];
+    if ([itemCopy isEqual:pinCodeChangeItem])
     {
     }
 
     else
     {
-      v20 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-      v21 = [v20 shareButtonItem];
-      v22 = [v11 isEqual:v21];
+      personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+      shareButtonItem = [personalPINCodeItemManager3 shareButtonItem];
+      v22 = [itemCopy isEqual:shareButtonItem];
 
       if (!v22)
       {
-        v23 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-        v24 = [v23 createUserPINButtonItem];
-        v25 = [v11 isEqual:v24];
+        personalPINCodeItemManager4 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+        createUserPINButtonItem = [personalPINCodeItemManager4 createUserPINButtonItem];
+        v25 = [itemCopy isEqual:createUserPINButtonItem];
 
         if (!v25)
         {
-          v28 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-          v29 = [v28 removeUserPINButtonItem];
-          v30 = [v11 isEqual:v29];
+          personalPINCodeItemManager5 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+          removeUserPINButtonItem = [personalPINCodeItemManager5 removeUserPINButtonItem];
+          v30 = [itemCopy isEqual:removeUserPINButtonItem];
 
           if (!v30)
           {
             goto LABEL_10;
           }
 
-          v16 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:v11 isDestructive:1];
-          v31 = [v11 latestResults];
-          v17 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+          v16 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:itemCopy isDestructive:1];
+          latestResults = [itemCopy latestResults];
+          layer = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
-          if ([v17 BOOLValue])
+          if ([layer BOOLValue])
           {
-            v32 = [MEMORY[0x277D75348] systemGrayColor];
-            v33 = [v16 textProperties];
-            [v33 setColor:v32];
+            systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+            textProperties = [v16 textProperties];
+            [textProperties setColor:systemGrayColor];
           }
 
-          [v10 setContentConfiguration:v16];
+          [cellCopy setContentConfiguration:v16];
           goto LABEL_3;
         }
       }
     }
 
-    v16 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:v11 isDestructive:0];
-    [v10 setContentConfiguration:v16];
+    v16 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:itemCopy isDestructive:0];
+    [cellCopy setContentConfiguration:v16];
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v16 = [HUListContentConfigurationUtilities labelConfiguration:v15 forItem:v11];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  v16 = [HUListContentConfigurationUtilities labelConfiguration:valueCellConfiguration forItem:itemCopy];
 
-  [v10 setContentConfiguration:v16];
-  v17 = [v10 layer];
-  [v17 setDisableUpdateMask:16];
+  [cellCopy setContentConfiguration:v16];
+  layer = [cellCopy layer];
+  [layer setDisableUpdateMask:16];
 LABEL_3:
 
 LABEL_9:
 LABEL_10:
-  v26 = [v11 latestResults];
-  v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-  [v10 setAccessibilityIdentifier:v27];
+  latestResults2 = [itemCopy latestResults];
+  v27 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  [cellCopy setAccessibilityIdentifier:v27];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedItemAtIndexPath:v5];
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
-  v8 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v9 = [v8 sourceItem];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  sourceItem = [personalPINCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = sourceItem;
   }
 
   else
@@ -189,14 +189,14 @@ LABEL_10:
 
   v11 = v10;
 
-  v12 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v13 = [v12 pinCodeValueItem];
-  v14 = v13;
-  if (v13 == v7)
+  personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  pinCodeValueItem = [personalPINCodeItemManager2 pinCodeValueItem];
+  v14 = pinCodeValueItem;
+  if (pinCodeValueItem == v7)
   {
-    v19 = [v11 user];
+    user = [v11 user];
 
-    if (v19)
+    if (user)
     {
       v18 = 0;
       goto LABEL_11;
@@ -207,16 +207,16 @@ LABEL_10:
   {
   }
 
-  v15 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v16 = [v15 removeUserPINButtonItem];
-  v17 = v16;
-  if (v16 == v7)
+  personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  removeUserPINButtonItem = [personalPINCodeItemManager3 removeUserPINButtonItem];
+  v17 = removeUserPINButtonItem;
+  if (removeUserPINButtonItem == v7)
   {
-    v20 = [v7 latestResults];
-    v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v22 = [v21 BOOLValue];
+    latestResults = [v7 latestResults];
+    v21 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v21 BOOLValue];
 
-    v18 = v22 ^ 1;
+    v18 = bOOLValue ^ 1;
   }
 
   else
@@ -230,23 +230,23 @@ LABEL_11:
   return v18 & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v65.receiver = self;
   v65.super_class = HUPersonalPINCodeViewController;
-  [(HUItemTableViewController *)&v65 tableView:v6 didSelectRowAtIndexPath:v7];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v65 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v67 = self;
+    selfCopy = self;
     v68 = 2080;
     v69 = "[HUPersonalPINCodeViewController tableView:didSelectRowAtIndexPath:]";
     v70 = 2112;
@@ -255,11 +255,11 @@ LABEL_11:
   }
 
   objc_opt_class();
-  v11 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v12 = [v11 sourceItem];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  sourceItem = [personalPINCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = sourceItem;
   }
 
   else
@@ -269,9 +269,9 @@ LABEL_11:
 
   v14 = v13;
 
-  v15 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v16 = [v15 pinCodeValueItem];
-  v17 = [v9 isEqual:v16];
+  personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  pinCodeValueItem = [personalPINCodeItemManager2 pinCodeValueItem];
+  v17 = [v9 isEqual:pinCodeValueItem];
   if (v14)
   {
     v18 = v17;
@@ -284,17 +284,17 @@ LABEL_11:
 
   if (v18)
   {
-    v19 = [v14 user];
-    v20 = v19 == 0;
+    user = [v14 user];
+    v20 = user == 0;
 
     if (v20)
     {
-      v21 = [MEMORY[0x277D75718] sharedMenuController];
-      v22 = [v6 cellForRowAtIndexPath:v7];
+      mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+      v22 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [(HUPersonalPINCodeViewController *)self becomeFirstResponder];
-      v23 = [(HUPersonalPINCodeViewController *)self view];
+      view = [(HUPersonalPINCodeViewController *)self view];
       [v22 frame];
-      [v21 showMenuFromView:v23 rect:?];
+      [mEMORY[0x277D75718] showMenuFromView:view rect:?];
 
       goto LABEL_24;
     }
@@ -304,18 +304,18 @@ LABEL_11:
   {
   }
 
-  v24 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v25 = [v24 pinCodeChangeItem];
-  v26 = [v9 isEqual:v25];
+  personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  pinCodeChangeItem = [personalPINCodeItemManager3 pinCodeChangeItem];
+  v26 = [v9 isEqual:pinCodeChangeItem];
 
   if (v26)
   {
     goto LABEL_14;
   }
 
-  v27 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v28 = [v27 shareButtonItem];
-  v29 = [v9 isEqual:v28];
+  personalPINCodeItemManager4 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  shareButtonItem = [personalPINCodeItemManager4 shareButtonItem];
+  v29 = [v9 isEqual:shareButtonItem];
 
   if (v29)
   {
@@ -323,9 +323,9 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  v30 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v31 = [v30 createUserPINButtonItem];
-  v32 = [v9 isEqual:v31];
+  personalPINCodeItemManager5 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  createUserPINButtonItem = [personalPINCodeItemManager5 createUserPINButtonItem];
+  v32 = [v9 isEqual:createUserPINButtonItem];
 
   if (v32)
   {
@@ -335,31 +335,31 @@ LABEL_14:
 
   else
   {
-    v33 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-    v34 = [v33 removeUserPINButtonItem];
-    v35 = [v9 isEqual:v34];
+    personalPINCodeItemManager6 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+    removeUserPINButtonItem = [personalPINCodeItemManager6 removeUserPINButtonItem];
+    v35 = [v9 isEqual:removeUserPINButtonItem];
 
     if (v35)
     {
-      v36 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-      v37 = [v36 operationInProgress];
+      personalPINCodeItemManager7 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+      operationInProgress = [personalPINCodeItemManager7 operationInProgress];
 
-      if ((v37 & 1) == 0)
+      if ((operationInProgress & 1) == 0)
       {
-        v38 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-        v39 = [v38 home];
-        v61 = [v39 currentUser];
+        personalPINCodeItemManager8 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+        home = [personalPINCodeItemManager8 home];
+        currentUser = [home currentUser];
 
-        v40 = [v61 uniqueIdentifier];
-        v41 = [v14 user];
-        v42 = [v41 uniqueIdentifier];
-        LODWORD(v38) = [v40 isEqual:v42];
+        uniqueIdentifier = [currentUser uniqueIdentifier];
+        user2 = [v14 user];
+        uniqueIdentifier2 = [user2 uniqueIdentifier];
+        LODWORD(personalPINCodeItemManager8) = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         v59 = _HULocalizedStringWithDefaultValue(@"HUPinCodeDeleteAlertTitle", @"HUPinCodeDeleteAlertTitle", 1);
-        v43 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-        v60 = [v43 home];
+        personalPINCodeItemManager9 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+        home2 = [personalPINCodeItemManager9 home];
 
-        if (v38)
+        if (personalPINCodeItemManager8)
         {
           v44 = @"HUPinCodeDeleteCurrentUserPINCodeAlertMessage";
         }
@@ -369,8 +369,8 @@ LABEL_14:
           v44 = @"HUPinCodeDeleteOtherUserPINCodeAlertMessage";
         }
 
-        v45 = [v60 name];
-        v58 = HULocalizedStringWithFormat(v44, @"%@", v46, v47, v48, v49, v50, v51, v45);
+        name = [home2 name];
+        v58 = HULocalizedStringWithFormat(v44, @"%@", v46, v47, v48, v49, v50, v51, name);
 
         v57 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
         v52 = _HULocalizedStringWithDefaultValue(@"HUAlertCancel", @"HUAlertCancel", 1);
@@ -486,11 +486,11 @@ void __69__HUPersonalPINCodeViewController_tableView_didSelectRowAtIndexPath___b
 - (id)currentPinCodeValue
 {
   objc_opt_class();
-  v3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v4 = [v3 sourceItem];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  sourceItem = [personalPINCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceItem;
   }
 
   else
@@ -500,22 +500,22 @@ void __69__HUPersonalPINCodeViewController_tableView_didSelectRowAtIndexPath___b
 
   v6 = v5;
 
-  v7 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v8 = [v7 home];
+  personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  home = [personalPINCodeItemManager2 home];
 
-  v9 = [v8 currentUser];
-  v10 = [v9 uniqueIdentifier];
-  v11 = [v6 user];
-  v12 = [v11 uniqueIdentifier];
-  v13 = [v10 isEqual:v12];
+  currentUser = [home currentUser];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  user = [v6 user];
+  uniqueIdentifier2 = [user uniqueIdentifier];
+  v13 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
-  LOBYTE(v9) = [v6 isGuest];
-  if ((v9 & 1) != 0 || (v14 = 0, v13))
+  LOBYTE(currentUser) = [v6 isGuest];
+  if ((currentUser & 1) != 0 || (v14 = 0, v13))
   {
-    v15 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-    v16 = [v15 pinCodeValueItem];
-    v17 = [v16 latestResults];
-    v14 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+    pinCodeValueItem = [personalPINCodeItemManager3 pinCodeValueItem];
+    latestResults = [pinCodeValueItem latestResults];
+    v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   }
 
   return v14;
@@ -528,14 +528,14 @@ void __69__HUPersonalPINCodeViewController_tableView_didSelectRowAtIndexPath___b
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = "[HUPersonalPINCodeViewController openPINCodeEditor]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%@:%s) Opening PINCode Editor", buf, 0x16u);
   }
 
-  v5 = [(HUPersonalPINCodeViewController *)self pinCodeManager];
-  v6 = [v5 hasValidConstraints];
+  pinCodeManager = [(HUPersonalPINCodeViewController *)self pinCodeManager];
+  hasValidConstraints = [pinCodeManager hasValidConstraints];
 
   objc_initWeak(buf, self);
   v16[0] = MEMORY[0x277D85DD0];
@@ -544,21 +544,21 @@ void __69__HUPersonalPINCodeViewController_tableView_didSelectRowAtIndexPath___b
   v16[3] = &unk_277DC0D70;
   objc_copyWeak(v17, buf);
   v17[1] = a2;
-  v7 = [v6 addSuccessBlock:v16];
+  v7 = [hasValidConstraints addSuccessBlock:v16];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_61;
   v14[3] = &unk_277DB94D0;
   objc_copyWeak(&v15, buf);
-  v8 = [v6 addFailureBlock:v14];
-  v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v8 = [hasValidConstraints addFailureBlock:v14];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_64;
   v12[3] = &unk_277DB8488;
-  v10 = v6;
+  v10 = hasValidConstraints;
   v13 = v10;
-  v11 = [v9 afterDelay:v12 performBlock:1.0];
+  v11 = [mainThreadScheduler afterDelay:v12 performBlock:1.0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(v17);
@@ -725,28 +725,28 @@ void __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_64(ui
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(HUPersonalPINCodeViewController *)self currentPinCodeValue];
-  if (v3)
+  currentPinCodeValue = [(HUPersonalPINCodeViewController *)self currentPinCodeValue];
+  if (currentPinCodeValue)
   {
-    v6 = v3;
-    v4 = [MEMORY[0x277D75810] generalPasteboard];
-    v5 = [*MEMORY[0x277CE1E20] identifier];
-    [v4 setValue:v6 forPasteboardType:v5];
+    v6 = currentPinCodeValue;
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    identifier = [*MEMORY[0x277CE1E20] identifier];
+    [generalPasteboard setValue:v6 forPasteboardType:identifier];
 
-    v3 = v6;
+    currentPinCodeValue = v6;
   }
 }
 
 - (void)_shareCode
 {
   objc_opt_class();
-  v3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v4 = [v3 sourceItem];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  sourceItem = [personalPINCodeItemManager sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = sourceItem;
   }
 
   else
@@ -756,24 +756,24 @@ void __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_64(ui
 
   v17 = v5;
 
-  v6 = [v17 pinCodeValue];
+  pinCodeValue = [v17 pinCodeValue];
 
-  if (v6)
+  if (pinCodeValue)
   {
-    v7 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-    v8 = [v7 home];
-    v9 = [HUPinCodeUtilities createSharingViewControllerForPinCodeItem:v17 inHome:v8];
+    personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+    home = [personalPINCodeItemManager2 home];
+    v9 = [HUPinCodeUtilities createSharingViewControllerForPinCodeItem:v17 inHome:home];
 
     if ([v9 modalPresentationStyle] == 7)
     {
-      v10 = [v9 popoverPresentationController];
-      v11 = [(HUPersonalPINCodeViewController *)self tableView];
-      v12 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-      v13 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-      v14 = [v13 shareButtonItem];
-      v15 = [v12 indexPathForItem:v14];
-      v16 = [v11 cellForRowAtIndexPath:v15];
-      [v10 setSourceView:v16];
+      popoverPresentationController = [v9 popoverPresentationController];
+      tableView = [(HUPersonalPINCodeViewController *)self tableView];
+      personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+      personalPINCodeItemManager4 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+      shareButtonItem = [personalPINCodeItemManager4 shareButtonItem];
+      v15 = [personalPINCodeItemManager3 indexPathForItem:shareButtonItem];
+      v16 = [tableView cellForRowAtIndexPath:v15];
+      [popoverPresentationController setSourceView:v16];
     }
 
     [(HUPersonalPINCodeViewController *)self presentViewController:v9 animated:1 completion:0];
@@ -784,30 +784,30 @@ void __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_64(ui
 {
   v13 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v13];
-  v5 = [(HUPersonalPINCodeViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(HUPersonalPINCodeViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   [v13 startAnimating];
-  v6 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  [v6 setOperationInProgress:1];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  [personalPINCodeItemManager setOperationInProgress:1];
 
-  v7 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v10 = [v9 removeUserPINButtonItem];
-  v11 = [v8 setWithObject:v10];
-  v12 = [v7 updateResultsForItems:v11 senderSelector:a2];
+  personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  removeUserPINButtonItem = [personalPINCodeItemManager3 removeUserPINButtonItem];
+  v11 = [v8 setWithObject:removeUserPINButtonItem];
+  v12 = [personalPINCodeItemManager2 updateResultsForItems:v11 senderSelector:a2];
 }
 
 - (void)_hideSpinner
 {
   objc_opt_class();
-  v4 = [(HUPersonalPINCodeViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  v6 = [v5 customView];
+  navigationItem = [(HUPersonalPINCodeViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  customView = [rightBarButtonItem customView];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = customView;
   }
 
   else
@@ -817,19 +817,19 @@ void __52__HUPersonalPINCodeViewController_openPINCodeEditor__block_invoke_64(ui
 
   v8 = v7;
 
-  v9 = [(HUPersonalPINCodeViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:0];
+  navigationItem2 = [(HUPersonalPINCodeViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
   [v8 stopAnimating];
-  v10 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  [v10 setOperationInProgress:0];
+  personalPINCodeItemManager = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  [personalPINCodeItemManager setOperationInProgress:0];
 
-  v16 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  personalPINCodeItemManager2 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
   v11 = MEMORY[0x277CBEB98];
-  v12 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
-  v13 = [v12 removeUserPINButtonItem];
-  v14 = [v11 setWithObject:v13];
-  v15 = [v16 updateResultsForItems:v14 senderSelector:a2];
+  personalPINCodeItemManager3 = [(HUPersonalPINCodeViewController *)self personalPINCodeItemManager];
+  removeUserPINButtonItem = [personalPINCodeItemManager3 removeUserPINButtonItem];
+  v14 = [v11 setWithObject:removeUserPINButtonItem];
+  v15 = [personalPINCodeItemManager2 updateResultsForItems:v14 senderSelector:a2];
 }
 
 - (void)_presentPinCodeErrorDialog

@@ -1,25 +1,25 @@
 @interface PKBillPaymentSuggestedAmountView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKBillPaymentSuggestedAmountView)initWithSuggestedAmount:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKBillPaymentSuggestedAmountView)initWithSuggestedAmount:(id)amount;
 - (void)layoutSubviews;
 @end
 
 @implementation PKBillPaymentSuggestedAmountView
 
-- (PKBillPaymentSuggestedAmountView)initWithSuggestedAmount:(id)a3
+- (PKBillPaymentSuggestedAmountView)initWithSuggestedAmount:(id)amount
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  amountCopy = amount;
   v19.receiver = self;
   v19.super_class = PKBillPaymentSuggestedAmountView;
   v6 = [(PKBillPaymentSuggestedAmountView *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestedAmount, a3);
-    v8 = [(PKBillPaymentSuggestedAmountView *)v7 layer];
-    [v8 setAllowsGroupOpacity:0];
-    [v8 setAllowsGroupBlending:0];
+    objc_storeStrong(&v6->_suggestedAmount, amount);
+    layer = [(PKBillPaymentSuggestedAmountView *)v7 layer];
+    [layer setAllowsGroupOpacity:0];
+    [layer setAllowsGroupBlending:0];
     v9 = objc_alloc_init(MEMORY[0x1E6979310]);
     background = v7->_background;
     v7->_background = v9;
@@ -31,7 +31,7 @@
 
     [(CABackdropLayer *)v7->_background setAllowsGroupOpacity:0];
     [(CABackdropLayer *)v7->_background setMasksToBounds:1];
-    [v8 addSublayer:v7->_background];
+    [layer addSublayer:v7->_background];
     v13 = [MEMORY[0x1E69DC888] colorWithWhite:0.6 alpha:1.0];
     v14 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
     v15 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D90]];
@@ -74,7 +74,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 16.0;
   v4 = 16.0;

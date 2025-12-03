@@ -1,14 +1,14 @@
 @interface HeaderView
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithCoder:(id)a3;
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithReuseIdentifier:(id)a3;
-- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithCoder:(id)a3;
-- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithCoder:(id)coder;
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithReuseIdentifier:(id)identifier;
+- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithCoder:(id)coder;
+- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HeaderView
 
-- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithCoder:(id)a3
+- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView_mediaView;
   type metadata accessor for StoryCardMediaView();
@@ -23,20 +23,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10060FBFC();
 }
 
-- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithFrame:(CGRect)a3
+- (_TtC8AppStoreP33_50FB26AE35933B3A04EC44A4A275C3B010HeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v4 = String._bridgeToObjectiveC()();
@@ -54,12 +54,12 @@
   return v5;
 }
 
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithCoder:(id)a3
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B110HeaderView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _s8AppStore10HeaderViewCMa_0();
-  v4 = a3;
-  v5 = [(HeaderView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HeaderView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

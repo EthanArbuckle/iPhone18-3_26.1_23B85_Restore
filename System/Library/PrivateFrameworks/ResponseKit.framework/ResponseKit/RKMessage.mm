@@ -1,35 +1,35 @@
 @interface RKMessage
-- (RKMessage)initWithString:(id)a3 title:(id)a4 languageIdentifier:(id)a5 senderUUID:(id)a6 dateSent:(id)a7 position:(unint64_t)a8;
-- (void)annotateRange:(_NSRange)a3 type:(unint64_t)a4 field:(unint64_t)a5;
+- (RKMessage)initWithString:(id)string title:(id)title languageIdentifier:(id)identifier senderUUID:(id)d dateSent:(id)sent position:(unint64_t)position;
+- (void)annotateRange:(_NSRange)range type:(unint64_t)type field:(unint64_t)field;
 @end
 
 @implementation RKMessage
 
-- (RKMessage)initWithString:(id)a3 title:(id)a4 languageIdentifier:(id)a5 senderUUID:(id)a6 dateSent:(id)a7 position:(unint64_t)a8
+- (RKMessage)initWithString:(id)string title:(id)title languageIdentifier:(id)identifier senderUUID:(id)d dateSent:(id)sent position:(unint64_t)position
 {
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  titleCopy = title;
+  dCopy = d;
+  sentCopy = sent;
   v21.receiver = self;
   v21.super_class = RKMessage;
-  v18 = [(RKText *)&v21 initWithString:a3 andLanguageIdentifier:a5];
+  v18 = [(RKText *)&v21 initWithString:string andLanguageIdentifier:identifier];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_title, a4);
-    objc_storeStrong(&v19->_senderUUID, a6);
-    objc_storeStrong(&v19->_dateSent, a7);
-    v19->_position = a8;
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v19->_senderUUID, d);
+    objc_storeStrong(&v19->_dateSent, sent);
+    v19->_position = position;
   }
 
   return v19;
 }
 
-- (void)annotateRange:(_NSRange)a3 type:(unint64_t)a4 field:(unint64_t)a5
+- (void)annotateRange:(_NSRange)range type:(unint64_t)type field:(unint64_t)field
 {
-  length = a3.length;
-  location = a3.location;
-  if (a5 == 1)
+  length = range.length;
+  location = range.location;
+  if (field == 1)
   {
     [(RKMessage *)self title];
   }
@@ -93,7 +93,7 @@ LABEL_12:
 
   v20.receiver = self;
   v20.super_class = RKMessage;
-  [(RKText *)&v20 annotateRange:location type:length, a4];
+  [(RKText *)&v20 annotateRange:location type:length, type];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface DAABLegacyAccount
-- (DAABLegacyAccount)initWithABAccout:(void *)a3;
+- (DAABLegacyAccount)initWithABAccout:(void *)accout;
 - (id)externalIdentifier;
 - (id)identifier;
 - (int)legacyIdentifier;
 - (void)dealloc;
 - (void)markForDeletion;
-- (void)updateSaveRequest:(id)a3;
+- (void)updateSaveRequest:(id)request;
 @end
 
 @implementation DAABLegacyAccount
 
-- (DAABLegacyAccount)initWithABAccout:(void *)a3
+- (DAABLegacyAccount)initWithABAccout:(void *)accout
 {
   v6.receiver = self;
   v6.super_class = DAABLegacyAccount;
   v4 = [(DAABLegacyAccount *)&v6 init];
   if (v4)
   {
-    v4->_account = CFRetain(a3);
+    v4->_account = CFRetain(accout);
   }
 
   return v4;
@@ -33,9 +33,9 @@
 
 - (int)legacyIdentifier
 {
-  v2 = [(DAABLegacyAccount *)self account];
+  account = [(DAABLegacyAccount *)self account];
 
-  return ABRecordGetRecordID(v2);
+  return ABRecordGetRecordID(account);
 }
 
 - (id)identifier
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)updateSaveRequest:(id)a3
+- (void)updateSaveRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"DAABLegacyAccount cannot update CNSaveRequest" userInfo:0];
   objc_exception_throw(v4);
 }
@@ -65,9 +65,9 @@
 {
   [(DAABLegacyAccount *)self account];
   AddressBook = ABRecordGetAddressBook();
-  v4 = [(DAABLegacyAccount *)self account];
+  account = [(DAABLegacyAccount *)self account];
 
-  ABAddressBookRemoveRecord(AddressBook, v4, 0);
+  ABAddressBookRemoveRecord(AddressBook, account, 0);
 }
 
 @end

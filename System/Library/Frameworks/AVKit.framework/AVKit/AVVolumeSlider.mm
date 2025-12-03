@@ -1,16 +1,16 @@
 @interface AVVolumeSlider
-- (AVVolumeSlider)initWithFrame:(CGRect)a3;
-- (AVVolumeSlider)initWithFrame:(CGRect)a3 thumbSize:(double)a4;
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3;
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (AVVolumeSlider)initWithFrame:(CGRect)frame;
+- (AVVolumeSlider)initWithFrame:(CGRect)frame thumbSize:(double)size;
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point;
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isCollapsedOrExcluded;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)extrinsicContentSize;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
@@ -18,15 +18,15 @@
 - (void)_commonInit;
 - (void)_endTracking;
 - (void)_updateLayoutItem;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
 - (void)layoutAttributesDidChange;
 - (void)layoutSubviews;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setIncluded:(BOOL)included;
+- (void)setRemoved:(BOOL)removed;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation AVVolumeSlider
@@ -42,11 +42,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVVolumeSlider *)self layoutAttributes];
+  layoutAttributes = [(AVVolumeSlider *)self layoutAttributes];
   [(AVVolumeSlider *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVVolumeSlider *)self layoutAttributes];
+  layoutAttributes2 = [(AVVolumeSlider *)self layoutAttributes];
   if ([(AVVolumeSlider *)self isIncluded])
   {
     v5 = [(AVVolumeSlider *)self isRemoved]^ 1;
@@ -57,29 +57,29 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVVolumeSlider *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVVolumeSlider isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVVolumeSlider *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVVolumeSlider isCollapsed](self, "isCollapsed")}];
 }
 
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVVolumeSlider *)self scrubsWhenTappedAnywhere])
   {
     return 1;
   }
 
-  v7 = [(AVVolumeSlider *)self thumbView];
-  [v7 bounds];
+  thumbView = [(AVVolumeSlider *)self thumbView];
+  [thumbView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(AVVolumeSlider *)self thumbView];
-  [(AVVolumeSlider *)self convertRect:v16 fromView:v9, v11, v13, v15];
+  thumbView2 = [(AVVolumeSlider *)self thumbView];
+  [(AVVolumeSlider *)self convertRect:thumbView2 fromView:v9, v11, v13, v15];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -98,11 +98,11 @@
 
 - (void)_endTracking
 {
-  v3 = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
-  [v3 userInteractionEnded];
+  _edgeFeedbackGenerator = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
+  [_edgeFeedbackGenerator userInteractionEnded];
 
-  v4 = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
-  [v4 deactivate];
+  _modulationFeedbackGenerator = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
+  [_modulationFeedbackGenerator deactivate];
 
   [(AVVolumeSlider *)self setTracking:0];
 
@@ -111,13 +111,13 @@
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVVolumeSlider *)self layoutAttributes];
-  -[AVVolumeSlider setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVVolumeSlider *)self layoutAttributes];
+  -[AVVolumeSlider setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     [(AVVolumeSlider *)self setAnimatingVolumeChange:1];
     objc_initWeak(&location, self);
@@ -128,7 +128,7 @@
     v10[2] = __36__AVVolumeSlider_setValue_animated___block_invoke;
     v10[3] = &unk_1E7207C28;
     objc_copyWeak(&v11, &location);
-    v12 = a3;
+    valueCopy = value;
     [v7 addAnimations:v10];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -146,7 +146,7 @@
   {
     v8.receiver = self;
     v8.super_class = AVVolumeSlider;
-    [(AVVolumeSlider *)&v8 setValue:*&a3 animated:?];
+    [(AVVolumeSlider *)&v8 setValue:*&value animated:?];
   }
 }
 
@@ -160,13 +160,13 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   [v4 layoutIfNeeded];
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGRectGetHeight(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGRectGetHeight(bounds);
   UIRoundToViewScale();
   v8 = v7;
   v9 = x;
@@ -177,16 +177,16 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return CGRectInset(*&v9, 0.0, v8);
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v20 = a3.size.width;
-  rect = a3.size.height;
-  v19 = a3.origin.y;
-  v9 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v20 = bounds.size.width;
+  rect = bounds.size.height;
+  v19 = bounds.origin.y;
+  v9 = bounds.origin.x;
   if ([(AVVolumeSlider *)self isEnabled])
   {
     [(AVVolumeSlider *)self thumbSize];
@@ -251,42 +251,42 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
 {
   v7.receiver = self;
   v7.super_class = AVVolumeSlider;
-  v3 = [(AVVolumeSlider *)&v7 createThumbView];
-  [(AVVolumeSlider *)self setThumbView:v3];
+  createThumbView = [(AVVolumeSlider *)&v7 createThumbView];
+  [(AVVolumeSlider *)self setThumbView:createThumbView];
 
-  v4 = [(AVVolumeSlider *)self thumbView];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setBackgroundColor:v5];
+  thumbView = [(AVVolumeSlider *)self thumbView];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [thumbView setBackgroundColor:whiteColor];
 
   [(AVVolumeSlider *)self thumbView];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AVVolumeSlider;
-  [(AVVolumeSlider *)&v4 cancelTrackingWithEvent:a3];
+  [(AVVolumeSlider *)&v4 cancelTrackingWithEvent:event];
   [(AVVolumeSlider *)self _endTracking];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVVolumeSlider *)self bounds];
   [(AVVolumeSlider *)self trackRectForBounds:?];
   Width = CGRectGetWidth(v29);
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v8 = v7;
-  [v5 previousLocationInView:self];
+  [touchCopy previousLocationInView:self];
   v10 = v8 - v9;
   if ([(AVVolumeSlider *)self hasChangedLocationAtLeastOnce])
   {
-    v11 = [(AVVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(AVVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
     v12 = Width > 0.0;
     if (Width > 0.0 && v10 != 0.0)
     {
-      if (v11 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v13 = -(v10 / Width);
       }
@@ -296,13 +296,13 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
         v13 = v10 / Width;
       }
 
-      [v5 locationInView:self];
+      [touchCopy locationInView:self];
       v15 = v14;
       [(AVVolumeSlider *)self bounds];
       [(AVVolumeSlider *)self trackRectForBounds:?];
       if (v15 >= CGRectGetMinX(v30) || (v16 = 0.0, v13 <= 0.0))
       {
-        [v5 locationInView:self];
+        [touchCopy locationInView:self];
         v18 = v17;
         [(AVVolumeSlider *)self bounds];
         [(AVVolumeSlider *)self trackRectForBounds:?];
@@ -320,13 +320,13 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
 
       [(AVVolumeSlider *)self value];
       v22 = fmin(fmax(v21 + v13 * v16, 0.0), 1.0);
-      v23 = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
-      v24 = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
-      [v24 distance];
-      [v23 positionUpdated:v25 * v22];
+      _edgeFeedbackGenerator = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
+      _edgeFeedbackGenerator2 = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
+      [_edgeFeedbackGenerator2 distance];
+      [_edgeFeedbackGenerator positionUpdated:v25 * v22];
 
-      v26 = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
-      [v26 valueUpdated:v22];
+      _modulationFeedbackGenerator = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
+      [_modulationFeedbackGenerator valueUpdated:v22];
 
       *&v27 = v22;
       [(AVVolumeSlider *)self setValue:0 animated:v27];
@@ -345,17 +345,17 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return v12;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVVolumeSlider *)self setHasChangedLocationAtLeastOnce:0];
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v7 = v6;
   v9 = v8;
-  if ([v5 _isPointerTouch])
+  if ([touchCopy _isPointerTouch])
   {
-    v10 = [(AVVolumeSlider *)self thumbView];
-    [v10 frame];
+    thumbView = [(AVVolumeSlider *)self thumbView];
+    [thumbView frame];
     v16.x = v7;
     v16.y = v9;
     [(AVVolumeSlider *)self setScrubsWhenTappedAnywhere:!CGRectContainsPoint(v17, v16)];
@@ -366,15 +366,15 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
     [(AVVolumeSlider *)self setScrubsWhenTappedAnywhere:0];
   }
 
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v11 = [(AVVolumeSlider *)self _shouldTrackTouchAtPoint:?];
   if (v11)
   {
-    v12 = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
-    [v12 userInteractionStarted];
+    _edgeFeedbackGenerator = [(AVVolumeSlider *)self _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator userInteractionStarted];
 
-    v13 = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
-    [v13 activateWithCompletionBlock:0];
+    _modulationFeedbackGenerator = [(AVVolumeSlider *)self _modulationFeedbackGenerator];
+    [_modulationFeedbackGenerator activateWithCompletionBlock:0];
 
     if ([(AVVolumeSlider *)self scrubsWhenTappedAnywhere])
     {
@@ -390,10 +390,10 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVVolumeSlider *)self hitRect];
   v10 = x;
   v11 = y;
@@ -422,10 +422,10 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -435,62 +435,62 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   v47.receiver = self;
   v47.super_class = AVVolumeSlider;
   [(AVVolumeSlider *)&v47 layoutSubviews];
-  v3 = [(AVVolumeSlider *)self _minTrackView];
-  v4 = [v3 layer];
-  [v4 cornerRadius];
+  _minTrackView = [(AVVolumeSlider *)self _minTrackView];
+  layer = [_minTrackView layer];
+  [layer cornerRadius];
   if (v5 == 0.0)
   {
   }
 
   else
   {
-    v6 = [(AVVolumeSlider *)self thumbView];
-    v7 = [v6 layer];
-    [v7 cornerRadius];
+    thumbView = [(AVVolumeSlider *)self thumbView];
+    layer2 = [thumbView layer];
+    [layer2 cornerRadius];
     v9 = v8;
 
     if (v9 != 0.0)
     {
       v10 = *MEMORY[0x1E69796E0];
-      v11 = [(AVVolumeSlider *)self thumbView];
-      v12 = [v11 layer];
-      [v12 setCornerCurve:v10];
+      thumbView2 = [(AVVolumeSlider *)self thumbView];
+      layer3 = [thumbView2 layer];
+      [layer3 setCornerCurve:v10];
 
-      v13 = [(AVVolumeSlider *)self thumbView];
-      [v13 bounds];
+      thumbView3 = [(AVVolumeSlider *)self thumbView];
+      [thumbView3 bounds];
       CGRectGetHeight(v48);
       UIFloorToViewScale();
       v15 = v14;
-      v16 = [(AVVolumeSlider *)self thumbView];
-      v17 = [v16 layer];
-      [v17 setCornerRadius:v15];
+      thumbView4 = [(AVVolumeSlider *)self thumbView];
+      layer4 = [thumbView4 layer];
+      [layer4 setCornerRadius:v15];
 
       goto LABEL_12;
     }
   }
 
-  v18 = [(AVVolumeSlider *)self _minTrackView];
-  v19 = [v18 layer];
+  _minTrackView2 = [(AVVolumeSlider *)self _minTrackView];
+  layer5 = [_minTrackView2 layer];
   v20 = *MEMORY[0x1E69796E0];
-  [v19 setCornerCurve:*MEMORY[0x1E69796E0]];
+  [layer5 setCornerCurve:*MEMORY[0x1E69796E0]];
 
-  v21 = [(AVVolumeSlider *)self _minTrackView];
-  v22 = [v21 layer];
-  [v22 setCornerRadius:2.5];
+  _minTrackView3 = [(AVVolumeSlider *)self _minTrackView];
+  layer6 = [_minTrackView3 layer];
+  [layer6 setCornerRadius:2.5];
 
-  v23 = [(AVVolumeSlider *)self _maxTrackView];
-  v24 = [v23 layer];
-  [v24 setCornerCurve:v20];
+  _maxTrackView = [(AVVolumeSlider *)self _maxTrackView];
+  layer7 = [_maxTrackView layer];
+  [layer7 setCornerCurve:v20];
 
-  v25 = [(AVVolumeSlider *)self _maxTrackView];
-  v26 = [v25 layer];
-  [v26 setCornerRadius:2.5];
+  _maxTrackView2 = [(AVVolumeSlider *)self _maxTrackView];
+  layer8 = [_maxTrackView2 layer];
+  [layer8 setCornerRadius:2.5];
 
-  v27 = [(AVVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
-  v28 = [(AVVolumeSlider *)self _minTrackView];
-  v29 = [v28 layer];
-  v30 = v29;
-  if (v27)
+  effectiveUserInterfaceLayoutDirection = [(AVVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
+  _minTrackView4 = [(AVVolumeSlider *)self _minTrackView];
+  layer9 = [_minTrackView4 layer];
+  v30 = layer9;
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v31 = 10;
   }
@@ -500,7 +500,7 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
     v31 = 5;
   }
 
-  if (v27)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v32 = 5;
   }
@@ -510,27 +510,27 @@ void __36__AVVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
     v32 = 10;
   }
 
-  [v29 setMaskedCorners:v31];
+  [layer9 setMaskedCorners:v31];
 
-  v33 = [(AVVolumeSlider *)self _maxTrackView];
-  v34 = [v33 layer];
-  [v34 setMaskedCorners:v32];
+  _maxTrackView3 = [(AVVolumeSlider *)self _maxTrackView];
+  layer10 = [_maxTrackView3 layer];
+  [layer10 setMaskedCorners:v32];
 
-  v35 = [(AVVolumeSlider *)self thumbView];
-  v36 = [v35 layer];
-  [v36 setCornerCurve:v20];
+  thumbView5 = [(AVVolumeSlider *)self thumbView];
+  layer11 = [thumbView5 layer];
+  [layer11 setCornerCurve:v20];
 
-  v37 = [(AVVolumeSlider *)self thumbView];
-  [v37 bounds];
+  thumbView6 = [(AVVolumeSlider *)self thumbView];
+  [thumbView6 bounds];
   CGRectGetHeight(v49);
   UIFloorToViewScale();
   v39 = v38;
-  v40 = [(AVVolumeSlider *)self thumbView];
-  v41 = [v40 layer];
-  [v41 setCornerRadius:v39];
+  thumbView7 = [(AVVolumeSlider *)self thumbView];
+  layer12 = [thumbView7 layer];
+  [layer12 setCornerRadius:v39];
 
-  v42 = [(AVVolumeSlider *)self thumbView];
-  [AVBackdropView configureSlider:self thumbView:v42 loadedTrackView:0];
+  thumbView8 = [(AVVolumeSlider *)self thumbView];
+  [AVBackdropView configureSlider:self thumbView:thumbView8 loadedTrackView:0];
 
   [(UIView *)self avkit_makeSubtreeDisallowGroupBlending];
 LABEL_12:
@@ -555,7 +555,7 @@ LABEL_12:
   }
 
   [(AVVolumeSlider *)self setAlpha:v44];
-  v45 = [(AVVolumeSlider *)self thumbView];
+  thumbView9 = [(AVVolumeSlider *)self thumbView];
   if ([(AVVolumeSlider *)self isEnabled])
   {
     v46 = 1.0;
@@ -566,7 +566,7 @@ LABEL_12:
     v46 = 0.0;
   }
 
-  [v45 setAlpha:v46];
+  [thumbView9 setAlpha:v46];
 }
 
 - (void)didMoveToWindow
@@ -592,9 +592,9 @@ LABEL_12:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(AVVolumeSlider *)self isIncluded];
+  isIncluded = [(AVVolumeSlider *)self isIncluded];
   [(AVVolumeSlider *)self extrinsicContentSize];
-  if (!v3)
+  if (!isIncluded)
   {
     v4 = 0.0;
   }
@@ -604,10 +604,10 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (([(AVVolumeSlider *)self isTracking]& 1) != 0)
   {
     return 1;
@@ -616,44 +616,44 @@ LABEL_12:
   return [(AVVolumeSlider *)self _shouldTrackTouchAtPoint:x, y];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVVolumeSlider *)self invalidateIntrinsicContentSize];
 
     [(AVVolumeSlider *)self _updateLayoutItem];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVVolumeSlider *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(AVVolumeSlider *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVVolumeSlider *)self _updateLayoutItem];
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
@@ -686,41 +686,41 @@ LABEL_12:
   [(AVLayoutItemAttributes *)self->_layoutAttributes setIncluded:[(AVVolumeSlider *)self isIncluded]];
   [(AVLayoutItemAttributes *)self->_layoutAttributes setHasFlexibleContentSize:0];
   v6 = self->_layoutAttributes;
-  v7 = [(AVVolumeSlider *)self accessibilityIdentifier];
-  [(AVLayoutItemAttributes *)v6 setAccessibilityIdentifier:v7];
+  accessibilityIdentifier = [(AVVolumeSlider *)self accessibilityIdentifier];
+  [(AVLayoutItemAttributes *)v6 setAccessibilityIdentifier:accessibilityIdentifier];
 
-  v9 = [MEMORY[0x1E69DCAB8] avkit_flatWhiteResizableTemplateImage];
+  avkit_flatWhiteResizableTemplateImage = [MEMORY[0x1E69DCAB8] avkit_flatWhiteResizableTemplateImage];
   v8 = [(AVVolumeSlider *)self minimumTrackImageForState:0];
 
-  if (v8 != v9)
+  if (v8 != avkit_flatWhiteResizableTemplateImage)
   {
-    [(AVVolumeSlider *)self setMinimumTrackImage:v9 forState:0];
-    [(AVVolumeSlider *)self setMaximumTrackImage:v9 forState:0];
-    [(AVVolumeSlider *)self setThumbImage:v9 forState:0];
+    [(AVVolumeSlider *)self setMinimumTrackImage:avkit_flatWhiteResizableTemplateImage forState:0];
+    [(AVVolumeSlider *)self setMaximumTrackImage:avkit_flatWhiteResizableTemplateImage forState:0];
+    [(AVVolumeSlider *)self setThumbImage:avkit_flatWhiteResizableTemplateImage forState:0];
     [(AVVolumeSlider *)self setSemanticContentAttribute:0];
   }
 }
 
-- (AVVolumeSlider)initWithFrame:(CGRect)a3 thumbSize:(double)a4
+- (AVVolumeSlider)initWithFrame:(CGRect)frame thumbSize:(double)size
 {
   v8.receiver = self;
   v8.super_class = AVVolumeSlider;
-  v5 = [(AVVolumeSlider *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AVVolumeSlider *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_thumbSize = a4;
+    v5->_thumbSize = size;
     [(AVVolumeSlider *)v5 _commonInit];
   }
 
   return v6;
 }
 
-- (AVVolumeSlider)initWithFrame:(CGRect)a3
+- (AVVolumeSlider)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVVolumeSlider;
-  v3 = [(AVVolumeSlider *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVVolumeSlider *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

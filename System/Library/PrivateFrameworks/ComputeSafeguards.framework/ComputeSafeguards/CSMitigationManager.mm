@@ -1,28 +1,28 @@
 @interface CSMitigationManager
 + (CSMitigationManager)sharedInstance;
-- (BOOL)checkKnownViolationByProcess:(id)a3 withStartTime:(double)a4 withEndTime:(double)a5;
+- (BOOL)checkKnownViolationByProcess:(id)process withStartTime:(double)time withEndTime:(double)endTime;
 - (BOOL)policyMitigationsEnabled;
 - (id)_init;
-- (id)getProcessPathForPID:(int)a3;
-- (int)putIntoPenaltyBoxForCSProcess:(id)a3 coalitionID:(unint64_t)a4 withMitigationDecisionType:(unsigned __int8 *)a5 withMitigationDecisionReason:(unsigned __int8 *)a6 withError:(id *)a7;
-- (int)removeProcessFromPenaltyBox:(id)a3 forReason:(unsigned __int8)a4;
-- (int64_t)penaltyBoxDurationMinsForProcess:(id)a3;
-- (unsigned)decideMitigation:(id)a3 withCoalitionName:(id)a4 withReason:(unsigned __int8 *)a5;
+- (id)getProcessPathForPID:(int)d;
+- (int)putIntoPenaltyBoxForCSProcess:(id)process coalitionID:(unint64_t)d withMitigationDecisionType:(unsigned __int8 *)type withMitigationDecisionReason:(unsigned __int8 *)reason withError:(id *)error;
+- (int)removeProcessFromPenaltyBox:(id)box forReason:(unsigned __int8)reason;
+- (int64_t)penaltyBoxDurationMinsForProcess:(id)process;
+- (unsigned)decideMitigation:(id)mitigation withCoalitionName:(id)name withReason:(unsigned __int8 *)reason;
 - (void)_init;
 - (void)checkForTrials;
-- (void)checkOverridesForProcess:(id)a3 penaltyBoxDuration:(int64_t *)a4 cpuThreshold:(int64_t *)a5 timeWindow:(int64_t *)a6;
+- (void)checkOverridesForProcess:(id)process penaltyBoxDuration:(int64_t *)duration cpuThreshold:(int64_t *)threshold timeWindow:(int64_t *)window;
 - (void)checkPenaltyBoxProcessesExpiration;
 - (void)clearTargetProcessState;
-- (void)dayChangedNotificationReceived:(id)a3;
-- (void)forceCPUViolationForProcess:(id)a3 withHandler:(id)a4;
-- (void)forceMitigation:(id)a3 forProcess:(id)a4 withPercentage:(id)a5 withSeconds:(id)a6 withPenaltyBoxDuration:(id)a7 withHandler:(id)a8;
-- (void)generateIPSFileForProcess:(id)a3;
-- (void)getMitigationTypeString:(char *)a3 withStringSize:(unint64_t)a4 withMitigationType:(int64_t)a5 withPenaltyBoxEndTime:(unint64_t)a6;
-- (void)handleCPUDetectionViolation:(id)a3 coalitionID:(unint64_t)a4 pid:(unint64_t)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11;
-- (void)handleDetectorViolation:(id)a3;
-- (void)logCPUViolationToPowerLog:(id)a3 pid:(unint64_t)a4 coalitionName:(id)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11 mitigationType:(int64_t)a12 mitigationReason:(int64_t)a13 withError:(id)a14;
-- (void)logCPUViolationToPowerLogWithPayload:(id)a3;
-- (void)logMitigationAsSignpost:(id)a3 withPid:(unint64_t)a4 withIssueType:(unsigned __int8)a5 withMitigationType:(unsigned __int8)a6 withReason:(unsigned __int8)a7 withPenaltyBoxEndTime:(unint64_t)a8;
+- (void)dayChangedNotificationReceived:(id)received;
+- (void)forceCPUViolationForProcess:(id)process withHandler:(id)handler;
+- (void)forceMitigation:(id)mitigation forProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withHandler:(id)handler;
+- (void)generateIPSFileForProcess:(id)process;
+- (void)getMitigationTypeString:(char *)string withStringSize:(unint64_t)size withMitigationType:(int64_t)type withPenaltyBoxEndTime:(unint64_t)time;
+- (void)handleCPUDetectionViolation:(id)violation coalitionID:(unint64_t)d pid:(unint64_t)pid endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1;
+- (void)handleDetectorViolation:(id)violation;
+- (void)logCPUViolationToPowerLog:(id)log pid:(unint64_t)pid coalitionName:(id)name endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1 mitigationType:(int64_t)self2 mitigationReason:(int64_t)self3 withError:(id)self4;
+- (void)logCPUViolationToPowerLogWithPayload:(id)payload;
+- (void)logMitigationAsSignpost:(id)signpost withPid:(unint64_t)pid withIssueType:(unsigned __int8)type withMitigationType:(unsigned __int8)mitigationType withReason:(unsigned __int8)reason withPenaltyBoxEndTime:(unint64_t)time;
 - (void)logPenaltyBoxListAsSignposts;
 - (void)midnightRoutine;
 - (void)policyMitigationsEnabled;
@@ -141,9 +141,9 @@ uint64_t __37__CSMitigationManager_sharedInstance__block_invoke()
     }
 
     *(v2 + 3) = 1;
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15 = *(v2 + 3);
-    *(v2 + 3) = v14;
+    *(v2 + 3) = dictionary;
 
     v16 = *(v2 + 8);
     *(v2 + 8) = 0;
@@ -213,14 +213,14 @@ void __28__CSMitigationManager__init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)handleCPUDetectionViolation:(id)a3 coalitionID:(unint64_t)a4 pid:(unint64_t)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11
+- (void)handleCPUDetectionViolation:(id)violation coalitionID:(unint64_t)d pid:(unint64_t)pid endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1
 {
-  v17 = a3;
-  v18 = v17;
-  if (v17)
+  violationCopy = violation;
+  v18 = violationCopy;
+  if (violationCopy)
   {
-    v19 = [v17 trackedPIDs];
-    v20 = [v19 count];
+    trackedPIDs = [violationCopy trackedPIDs];
+    v20 = [trackedPIDs count];
 
     if (!v20)
     {
@@ -235,11 +235,11 @@ void __28__CSMitigationManager__init__block_invoke_2(uint64_t a1)
     }
 
     v24 = 0;
-    [(CSMitigationManager *)self handleDetectionViolation:0 forCSProcess:v18 coalitionID:a4 coalitionName:0 pid:a5 startTime:255 endTime:a6.tv_sec + a6.tv_nsec * 0.000000001 - (a8 / 0x3B9ACA00uLL) forcedMitigation:a6.tv_sec + a6.tv_nsec * 0.000000001 withMitigationDecisionType:&v26 withMitigationDecisionReason:&v25 withError:&v24];
+    [(CSMitigationManager *)self handleDetectionViolation:0 forCSProcess:v18 coalitionID:d coalitionName:0 pid:pid startTime:255 endTime:time.tv_sec + time.tv_nsec * 0.000000001 - (window / 0x3B9ACA00uLL) forcedMitigation:time.tv_sec + time.tv_nsec * 0.000000001 withMitigationDecisionType:&v26 withMitigationDecisionReason:&v25 withError:&v24];
     v21 = v24;
-    LOBYTE(v23) = a11;
-    [(CSMitigationManager *)self logCPUViolationToPowerLog:v18 pid:a5 coalitionName:0 endTime:a6 observedValue:a7 observationWindow:a8 limitValue:a9 limitWindow:a10 fatal:v23 mitigationType:v26 mitigationReason:v25 withError:v21];
-    if (a7 == 3000000000 && a8 == 4000000000 && a9 == 3000000000 && a10 == 4000000000)
+    LOBYTE(v23) = fatal;
+    [(CSMitigationManager *)self logCPUViolationToPowerLog:v18 pid:pid coalitionName:0 endTime:time observedValue:value observationWindow:window limitValue:limitValue limitWindow:limitWindow fatal:v23 mitigationType:v26 mitigationReason:v25 withError:v21];
+    if (value == 3000000000 && window == 4000000000 && limitValue == 3000000000 && limitWindow == 4000000000)
     {
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
       {
@@ -250,8 +250,8 @@ void __28__CSMitigationManager__init__block_invoke_2(uint64_t a1)
     else
     {
       [v18 setResetNonFatalCPUMonitor:1];
-      v22 = [(CSMitigationManager *)self processManager];
-      [v22 modifyPollingInterval:0];
+      processManager = [(CSMitigationManager *)self processManager];
+      [processManager modifyPollingInterval:0];
     }
   }
 
@@ -261,12 +261,12 @@ void __28__CSMitigationManager__init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)getProcessPathForPID:(int)a3
+- (id)getProcessPathForPID:(int)d
 {
   v12 = *MEMORY[0x277D85DE8];
   bzero(buffer, 0x1000uLL);
   *__error() = 0;
-  v5 = proc_pidpath(a3, buffer, 0x1000u);
+  v5 = proc_pidpath(d, buffer, 0x1000u);
   if (v5 < 1)
   {
     logger = self->_logger;
@@ -275,44 +275,44 @@ void __28__CSMitigationManager__init__block_invoke_2(uint64_t a1)
       [CSMitigationManager getProcessPathForPID:?];
     }
 
-    v7 = 0;
+    stringByStandardizingPath = 0;
   }
 
   else
   {
     v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:v5 encoding:4];
-    v7 = [v6 stringByStandardizingPath];
+    stringByStandardizingPath = [v6 stringByStandardizingPath];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return stringByStandardizingPath;
 }
 
-- (void)handleDetectorViolation:(id)a3
+- (void)handleDetectorViolation:(id)violation
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  violationCopy = violation;
   v90 = -1;
   v89 = -1;
   v5 = getMainQueue();
   dispatch_assert_queue_V2(v5);
 
-  v6 = [v4 lastPUUID];
-  if (!v6)
+  lastPUUID = [violationCopy lastPUUID];
+  if (!lastPUUID)
   {
     goto LABEL_30;
   }
 
-  v7 = v6;
-  v8 = [v4 lastPUUID];
+  v7 = lastPUUID;
+  lastPUUID2 = [violationCopy lastPUUID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_29;
   }
 
-  v9 = [v4 lastPUUID];
+  lastPUUID3 = [violationCopy lastPUUID];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -321,21 +321,21 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v10 = [v4 lastPUUID];
-  v11 = [v10 length];
+  lastPUUID4 = [violationCopy lastPUUID];
+  v11 = [lastPUUID4 length];
 
   if (v11)
   {
     v12 = objc_alloc(MEMORY[0x277CCAD78]);
-    v13 = [v4 lastPUUID];
-    v14 = [v12 initWithUUIDString:v13];
+    lastPUUID5 = [violationCopy lastPUUID];
+    v14 = [v12 initWithUUIDString:lastPUUID5];
 
     v15 = [(CSProcessManager *)self->_processManager getProcessForUUID:v14];
     v16 = v15 == 0;
     v17 = v15;
     if (v15 || ([(CSProcessManager *)self->_processManager pollPIDs], [(CSProcessManager *)self->_processManager getProcessForUUID:v14], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v18 = [v17 getPidsForCoalitionID:{objc_msgSend(v4, "coalitionID")}];
+      v18 = [v17 getPidsForCoalitionID:{objc_msgSend(violationCopy, "coalitionID")}];
       v19 = v18;
       if (v15 && !v18)
       {
@@ -343,9 +343,9 @@ LABEL_29:
         v16 = 1;
       }
 
-      v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "lastPID")}];
-      v21 = [v17 trackedPIDs];
-      v22 = [v21 objectForKey:v20];
+      v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(violationCopy, "lastPID")}];
+      trackedPIDs = [v17 trackedPIDs];
+      v22 = [trackedPIDs objectForKey:v20];
 
       if (!v16 && !v22)
       {
@@ -353,12 +353,12 @@ LABEL_29:
         v16 = 1;
       }
 
-      v23 = [v17 trackedPIDs];
-      v24 = [v23 objectForKey:v20];
+      trackedPIDs2 = [v17 trackedPIDs];
+      v24 = [trackedPIDs2 objectForKey:v20];
 
       if (!v24)
       {
-        v25 = [v17 lastPid];
+        lastPid = [v17 lastPid];
         v26 = -[CSMitigationManager getProcessPathForPID:](self, "getProcessPathForPID:", [v17 lastPid]);
         if (v26)
         {
@@ -373,7 +373,7 @@ LABEL_29:
         if ((v27 & 1) == 0)
         {
           [(CSProcessManager *)self->_processManager pollPIDs];
-          v25 = [v17 lastPid];
+          lastPid = [v17 lastPid];
         }
 
         logger = self->_logger;
@@ -381,14 +381,14 @@ LABEL_29:
         {
           loga = logger;
           v29 = v19;
-          v30 = [v4 lastPID];
-          [v4 processName];
+          lastPID = [violationCopy lastPID];
+          [violationCopy processName];
           v31 = v83 = v20;
           *buf = 67109634;
-          *v92 = v30;
+          *v92 = lastPID;
           v19 = v29;
           *&v92[4] = 1024;
-          *&v92[6] = v25;
+          *&v92[6] = lastPid;
           *v93 = 2112;
           *&v93[2] = v31;
           _os_log_impl(&dword_243DC3000, loga, OS_LOG_TYPE_DEFAULT, "handleDetectorViolation: Updating issue.lastPID from %d to %d for process:%@", buf, 0x18u);
@@ -396,23 +396,23 @@ LABEL_29:
           v20 = v83;
         }
 
-        [v4 setLastPID:v25];
+        [violationCopy setLastPID:lastPid];
       }
 
-      v32 = [v17 trackedPIDs];
-      v33 = [v32 count];
+      trackedPIDs3 = [v17 trackedPIDs];
+      v33 = [trackedPIDs3 count];
 
       if (v33)
       {
-        v33 = -[CSMitigationManager getProcessPathForPID:](self, "getProcessPathForPID:", [v4 lastPID]);
+        v33 = -[CSMitigationManager getProcessPathForPID:](self, "getProcessPathForPID:", [violationCopy lastPID]);
       }
 
-      v34 = [v4 endTime];
-      [v34 timeIntervalSince1970];
+      endTime = [violationCopy endTime];
+      [endTime timeIntervalSince1970];
       v36 = v35;
 
-      v37 = [v4 startTime];
-      [v37 timeIntervalSince1970];
+      startTime = [violationCopy startTime];
+      [startTime timeIntervalSince1970];
       v39 = v38;
 
       if (v36 >= v39)
@@ -420,32 +420,32 @@ LABEL_29:
         log = v33;
         v84 = v20;
         v46 = (v36 - v39);
-        v47 = [v4 value];
-        [v47 doubleValue];
+        value = [violationCopy value];
+        [value doubleValue];
         v49 = v48 * v46;
 
-        v50 = [v4 rule];
-        if (v50)
+        rule = [violationCopy rule];
+        if (rule)
         {
-          v51 = [v4 rule];
-          [v51 mainThresholdValue];
+          rule2 = [violationCopy rule];
+          [rule2 mainThresholdValue];
           v53 = v52;
         }
 
         else
         {
-          v51 = [v4 value];
-          [v51 doubleValue];
+          rule2 = [violationCopy value];
+          [rule2 doubleValue];
           v53 = v54;
         }
 
         v82 = v19;
         v55 = v49 * 1000000000.0;
-        v56 = [v4 rule];
-        if (v56)
+        rule3 = [violationCopy rule];
+        if (rule3)
         {
-          v57 = [v4 rule];
-          [v57 windowSize];
+          rule4 = [violationCopy rule];
+          [rule4 windowSize];
           v59 = v58;
         }
 
@@ -457,11 +457,11 @@ LABEL_29:
         v85 = 1000000000 * v46;
         v60 = v53 * v59 * 1000000000.0;
 
-        v61 = [v4 rule];
-        if (v61)
+        rule5 = [violationCopy rule];
+        if (rule5)
         {
-          v62 = [v4 rule];
-          [v62 windowSize];
+          rule6 = [violationCopy rule];
+          [rule6 windowSize];
           v64 = v63;
         }
 
@@ -477,40 +477,40 @@ LABEL_29:
         [v17 setViolationObservationWindow:v85];
         [v17 setViolationLimitValue:v60];
         [v17 setViolationLimitWindow:(v64 * 1000000000.0)];
-        [v17 setViolationPid:{objc_msgSend(v4, "lastPID")}];
+        [v17 setViolationPid:{objc_msgSend(violationCopy, "lastPID")}];
         [v17 setEstimatedEnergyDiff:0];
-        v66 = [v4 detectorString];
-        [v17 setViolationDetectorString:v66];
+        detectorString = [violationCopy detectorString];
+        [v17 setViolationDetectorString:detectorString];
 
-        v67 = [v4 issueType];
-        v68 = [v4 coalitionID];
-        v69 = [v4 launchdName];
-        v70 = [v4 lastPID];
-        if ([v4 forceMitigationSuggestion])
+        issueType = [violationCopy issueType];
+        coalitionID = [violationCopy coalitionID];
+        launchdName = [violationCopy launchdName];
+        lastPID2 = [violationCopy lastPID];
+        if ([violationCopy forceMitigationSuggestion])
         {
-          v71 = [v4 mitigationSuggestion];
+          mitigationSuggestion = [violationCopy mitigationSuggestion];
         }
 
         else
         {
-          v71 = 255;
+          mitigationSuggestion = 255;
         }
 
         v88 = 0;
-        [(CSMitigationManager *)self handleDetectionViolation:v67 forCSProcess:v17 coalitionID:v68 coalitionName:v69 pid:v70 startTime:v71 endTime:v39 forcedMitigation:v36 withMitigationDecisionType:&v90 withMitigationDecisionReason:&v89 withError:&v88];
+        [(CSMitigationManager *)self handleDetectionViolation:issueType forCSProcess:v17 coalitionID:coalitionID coalitionName:launchdName pid:lastPID2 startTime:mitigationSuggestion endTime:v39 forcedMitigation:v36 withMitigationDecisionType:&v90 withMitigationDecisionReason:&v89 withError:&v88];
         v72 = v88;
 
-        [v4 setMitigationDecisionType:v90];
-        [v4 setMitigationDecisionReason:v89];
+        [violationCopy setMitigationDecisionType:v90];
+        [violationCopy setMitigationDecisionReason:v89];
         if (v72)
         {
-          [v4 setErrorString:v72];
+          [violationCopy setErrorString:v72];
         }
 
-        v73 = [v4 lastPID];
-        v74 = [v4 launchdName];
+        lastPID3 = [violationCopy lastPID];
+        launchdName2 = [violationCopy launchdName];
         LOBYTE(v81) = 0;
-        [(CSMitigationManager *)self logCPUViolationToPowerLog:v17 pid:v73 coalitionName:v74 endTime:v65 observedValue:v55 observationWindow:v85 limitValue:v60 limitWindow:(v64 * 1000000000.0) fatal:v81 mitigationType:v90 mitigationReason:v89 withError:v72];
+        [(CSMitigationManager *)self logCPUViolationToPowerLog:v17 pid:lastPID3 coalitionName:launchdName2 endTime:v65 observedValue:v55 observationWindow:v85 limitValue:v60 limitWindow:(v64 * 1000000000.0) fatal:v81 mitigationType:v90 mitigationReason:v89 withError:v72];
 
         v19 = v82;
         v20 = v84;
@@ -523,23 +523,23 @@ LABEL_29:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           v79 = v40;
-          v80 = [v4 processName];
+          processName = [violationCopy processName];
           *buf = 134218498;
           *v92 = v36;
           *&v92[8] = 2048;
           *v93 = v39;
           *&v93[8] = 2112;
-          v94 = v80;
+          v94 = processName;
           _os_log_error_impl(&dword_243DC3000, v79, OS_LOG_TYPE_ERROR, "handleDetectorViolation: Invalid time stamps (endTime:%f < startTime:%f) for process:%@", buf, 0x20u);
         }
 
         v41 = MEMORY[0x277CCACA8];
-        v42 = [v4 processName];
-        v43 = [v41 stringWithFormat:@"handleDetectorViolation: Invalid time stamps (endTime:%f < startTime:%f) for process:%@", *&v36, *&v39, v42];
-        [v4 setErrorString:v43];
+        processName2 = [violationCopy processName];
+        v43 = [v41 stringWithFormat:@"handleDetectorViolation: Invalid time stamps (endTime:%f < startTime:%f) for process:%@", *&v36, *&v39, processName2];
+        [violationCopy setErrorString:v43];
 
-        [v4 setMitigationDecisionType:5];
-        [v4 setMitigationDecisionReason:13];
+        [violationCopy setMitigationDecisionType:5];
+        [violationCopy setMitigationDecisionReason:13];
       }
     }
 
@@ -552,12 +552,12 @@ LABEL_29:
       }
 
       v76 = MEMORY[0x277CCACA8];
-      v77 = [v4 processName];
-      v78 = [v76 stringWithFormat:@"handleDetectorViolation: Could not find CSProcess for process:%@", v77];
-      [v4 setErrorString:v78];
+      processName3 = [violationCopy processName];
+      v78 = [v76 stringWithFormat:@"handleDetectorViolation: Could not find CSProcess for process:%@", processName3];
+      [violationCopy setErrorString:v78];
 
-      [v4 setMitigationDecisionType:5];
-      [v4 setMitigationDecisionReason:10];
+      [violationCopy setMitigationDecisionType:5];
+      [violationCopy setMitigationDecisionReason:10];
     }
 
     goto LABEL_33;
@@ -570,22 +570,22 @@ LABEL_30:
   }
 
   v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"handleDetectorViolation: issue.lastPUUID is Null or empty string?"];
-  [v4 setErrorString:v44];
+  [violationCopy setErrorString:v44];
 
-  [v4 setMitigationDecisionType:5];
-  [v4 setMitigationDecisionReason:8];
+  [violationCopy setMitigationDecisionType:5];
+  [violationCopy setMitigationDecisionReason:8];
 LABEL_33:
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkKnownViolationByProcess:(id)a3 withStartTime:(double)a4 withEndTime:(double)a5
+- (BOOL)checkKnownViolationByProcess:(id)process withStartTime:(double)time withEndTime:(double)endTime
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  processCopy = process;
+  v9 = processCopy;
+  if (processCopy)
   {
-    v10 = [v8 checkKnownViolationStartTime:a4 endTime:a5];
+    v10 = [processCopy checkKnownViolationStartTime:time endTime:endTime];
   }
 
   else
@@ -669,18 +669,18 @@ LABEL_15:
   return v4;
 }
 
-- (unsigned)decideMitigation:(id)a3 withCoalitionName:(id)a4 withReason:(unsigned __int8 *)a5
+- (unsigned)decideMitigation:(id)mitigation withCoalitionName:(id)name withReason:(unsigned __int8 *)reason
 {
   *&v67[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  mitigationCopy = mitigation;
+  nameCopy = name;
+  if (mitigationCopy)
   {
-    [v8 setMitigationType:255];
-    [v8 setMitigationReason:255];
-    if ([v8 xpcService])
+    [mitigationCopy setMitigationType:255];
+    [mitigationCopy setMitigationReason:255];
+    if ([mitigationCopy xpcService])
     {
-      if (![v8 issueType])
+      if (![mitigationCopy issueType])
       {
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
@@ -692,7 +692,7 @@ LABEL_15:
         goto LABEL_63;
       }
 
-      if (v9 && [v9 length] && -[CSProcessManager isXPCServiceExempt:withIssueType:](self->_processManager, "isXPCServiceExempt:withIssueType:", v9, objc_msgSend(v8, "issueType")))
+      if (nameCopy && [nameCopy length] && -[CSProcessManager isXPCServiceExempt:withIssueType:](self->_processManager, "isXPCServiceExempt:withIssueType:", nameCopy, objc_msgSend(mitigationCopy, "issueType")))
       {
         if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
         {
@@ -704,12 +704,12 @@ LABEL_15:
       }
     }
 
-    if ([v8 policyBitMask])
+    if ([mitigationCopy policyBitMask])
     {
-      v11 = [v8 issueType];
-      if (v11 == 1)
+      issueType = [mitigationCopy issueType];
+      if (issueType == 1)
       {
-        if (([v8 policyBitMask] & 2) != 0)
+        if (([mitigationCopy policyBitMask] & 2) != 0)
         {
           goto LABEL_48;
         }
@@ -717,24 +717,24 @@ LABEL_15:
 
       else
       {
-        if (v11)
+        if (issueType)
         {
           v33 = self->_logger;
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
-            [CSMitigationManager decideMitigation:v33 withCoalitionName:v8 withReason:?];
+            [CSMitigationManager decideMitigation:v33 withCoalitionName:mitigationCopy withReason:?];
           }
 
           goto LABEL_48;
         }
 
-        if ([v8 policyBitMask])
+        if ([mitigationCopy policyBitMask])
         {
 LABEL_48:
-          v34 = [v8 rootDaemon];
+          rootDaemon = [mitigationCopy rootDaemon];
           v35 = self->_logger;
           v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG);
-          if (v34)
+          if (rootDaemon)
           {
             if (v36)
             {
@@ -758,15 +758,15 @@ LABEL_48:
         }
       }
 
-      if (([v8 policyBitMask] & 4) != 0)
+      if (([mitigationCopy policyBitMask] & 4) != 0)
       {
-        [v8 setCpuFatalCnt:gMaxNumberOfKills];
+        [mitigationCopy setCpuFatalCnt:gMaxNumberOfKills];
       }
     }
 
     v14 = [CSRestrictionManager sharedInstanceWithDataProvider:0];
-    v15 = [v8 identifier];
-    v16 = [v14 determineScenarioForProcess:v15];
+    identifier = [mitigationCopy identifier];
+    v16 = [v14 determineScenarioForProcess:identifier];
 
     if (!v16)
     {
@@ -778,16 +778,16 @@ LABEL_48:
       v16 = @"Unknown";
     }
 
-    log = a5;
+    log = reason;
     v17 = self->_logger;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       [CSMitigationManager decideMitigation:v17 withCoalitionName:? withReason:?];
     }
 
-    v18 = [v8 cpuFatalCnt];
+    cpuFatalCnt = [mitigationCopy cpuFatalCnt];
     v19 = gMaxNumberOfKills;
-    if (gMaxNumberOfKills > v18)
+    if (gMaxNumberOfKills > cpuFatalCnt)
     {
       goto LABEL_37;
     }
@@ -795,7 +795,7 @@ LABEL_48:
     v20 = self->_logger;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [CSMitigationManager decideMitigation:v20 withCoalitionName:v8 withReason:?];
+      [CSMitigationManager decideMitigation:v20 withCoalitionName:mitigationCopy withReason:?];
     }
 
     if (gEnablePenaltyBox)
@@ -803,7 +803,7 @@ LABEL_48:
       v21 = self->_logger;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [CSMitigationManager decideMitigation:v21 withCoalitionName:v8 withReason:?];
+        [CSMitigationManager decideMitigation:v21 withCoalitionName:mitigationCopy withReason:?];
       }
 
       v22 = 1;
@@ -820,47 +820,47 @@ LABEL_37:
     {
       v53 = v23;
       v24 = v22;
-      v25 = [v8 cpuFatalCnt];
-      v55 = v18;
+      cpuFatalCnt2 = [mitigationCopy cpuFatalCnt];
+      v55 = cpuFatalCnt;
       v26 = gMaxNumberOfKills;
-      v27 = [v8 cpuNonFatalCnt];
+      cpuNonFatalCnt = [mitigationCopy cpuNonFatalCnt];
       v54 = v19;
       v28 = v16;
       v29 = gMaxNumberOfNonfatal;
       v52 = gEnablePenaltyBox;
-      v30 = [v8 policyBitMask];
-      [v8 processName];
-      v31 = v56 = v9;
+      policyBitMask = [mitigationCopy policyBitMask];
+      [mitigationCopy processName];
+      v31 = v56 = nameCopy;
       *buf = 67110658;
-      *v61 = v25;
+      *v61 = cpuFatalCnt2;
       v22 = v24;
       *&v61[4] = 2048;
       *&v61[6] = v26;
       *&v61[14] = 1024;
-      *&v61[16] = v27;
+      *&v61[16] = cpuNonFatalCnt;
       *v62 = 2048;
       *&v62[2] = v29;
       v16 = v28;
       v19 = v54;
-      v18 = v55;
+      cpuFatalCnt = v55;
       *v63 = 2048;
       *&v63[2] = v52;
       v64 = 1024;
-      v65 = v30;
+      v65 = policyBitMask;
       v66 = 2112;
       *v67 = v31;
       _os_log_impl(&dword_243DC3000, v53, OS_LOG_TYPE_DEFAULT, "decideMitigation: Fatal counts %u maxKills %ld nonFatalCount %d maxNonFatal %ld enablePenaltyBox %ld policyBitMask 0x%x for process:%@", buf, 0x3Cu);
 
-      v9 = v56;
+      nameCopy = v56;
     }
 
-    if (v19 <= v18)
+    if (v19 <= cpuFatalCnt)
     {
-      a5 = log;
+      reason = log;
       if (v22)
       {
-        [v8 setMitigationType:2];
-        if (([v8 policyBitMask] & 4) != 0)
+        [mitigationCopy setMitigationType:2];
+        if (([mitigationCopy policyBitMask] & 4) != 0)
         {
           v32 = 27;
         }
@@ -873,10 +873,10 @@ LABEL_37:
 
       else
       {
-        v37 = [v8 cpuNonFatalCnt];
+        cpuNonFatalCnt2 = [mitigationCopy cpuNonFatalCnt];
         v38 = gMaxNumberOfNonfatal;
-        [v8 setMitigationType:0];
-        if (v38 <= v37)
+        [mitigationCopy setMitigationType:0];
+        if (v38 <= cpuNonFatalCnt2)
         {
           v32 = 4;
         }
@@ -890,15 +890,15 @@ LABEL_37:
 
     else
     {
-      [v8 setMitigationType:1];
+      [mitigationCopy setMitigationType:1];
       v32 = 2;
-      a5 = log;
+      reason = log;
     }
 
-    [v8 setMitigationReason:v32];
+    [mitigationCopy setMitigationReason:v32];
 
-    [v8 setPenaltyBoxDurationMins:{-[CSMitigationManager penaltyBoxDurationMinsForProcess:](self, "penaltyBoxDurationMinsForProcess:", v8)}];
-    if (![v8 mitigationType] || -[CSMitigationManager policyMitigationsEnabled](self, "policyMitigationsEnabled"))
+    [mitigationCopy setPenaltyBoxDurationMins:{-[CSMitigationManager penaltyBoxDurationMinsForProcess:](self, "penaltyBoxDurationMinsForProcess:", mitigationCopy)}];
+    if (![mitigationCopy mitigationType] || -[CSMitigationManager policyMitigationsEnabled](self, "policyMitigationsEnabled"))
     {
       goto LABEL_64;
     }
@@ -911,23 +911,23 @@ LABEL_37:
 
     v10 = 0;
 LABEL_63:
-    [v8 setMitigationType:0];
-    [v8 setMitigationReason:v10];
+    [mitigationCopy setMitigationType:0];
+    [mitigationCopy setMitigationReason:v10];
 LABEL_64:
     v40 = self->_logger;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       loga = v40;
-      v57 = PEIssueTypeString([v8 issueType]);
-      v41 = PEMitigationTypeString([v8 mitigationType]);
-      v42 = PEReasonString([v8 mitigationReason]);
-      v43 = [v8 cpuFatalCnt];
-      v44 = [v8 cpuNonFatalCnt];
-      v45 = v9;
-      v46 = [v8 exitsCnt];
-      v47 = a5;
-      v48 = [v8 penaltyBoxCnt];
-      v49 = [v8 processName];
+      v57 = PEIssueTypeString([mitigationCopy issueType]);
+      v41 = PEMitigationTypeString([mitigationCopy mitigationType]);
+      v42 = PEReasonString([mitigationCopy mitigationReason]);
+      cpuFatalCnt3 = [mitigationCopy cpuFatalCnt];
+      cpuNonFatalCnt3 = [mitigationCopy cpuNonFatalCnt];
+      v45 = nameCopy;
+      exitsCnt = [mitigationCopy exitsCnt];
+      reasonCopy = reason;
+      penaltyBoxCnt = [mitigationCopy penaltyBoxCnt];
+      processName = [mitigationCopy processName];
       *buf = 136316930;
       *v61 = v57;
       *&v61[8] = 2080;
@@ -935,22 +935,22 @@ LABEL_64:
       *&v61[18] = 2080;
       *v62 = v42;
       *&v62[8] = 1024;
-      *v63 = v43;
+      *v63 = cpuFatalCnt3;
       *&v63[4] = 1024;
-      *&v63[6] = v44;
+      *&v63[6] = cpuNonFatalCnt3;
       v64 = 1024;
-      v65 = v46;
-      v9 = v45;
+      v65 = exitsCnt;
+      nameCopy = v45;
       v66 = 1024;
-      v67[0] = v48;
-      a5 = v47;
+      v67[0] = penaltyBoxCnt;
+      reason = reasonCopy;
       LOWORD(v67[1]) = 2112;
-      *(&v67[1] + 2) = v49;
+      *(&v67[1] + 2) = processName;
       _os_log_impl(&dword_243DC3000, loga, OS_LOG_TYPE_DEFAULT, "decideMitigation: IssueType:%s MitigationType:%s MitigationReason:%s cpuFatalCnt:%u cpu_non_fatal_cnt:%u exitsCnt:%u penaltyBoxCnt:%u for process %@", buf, 0x42u);
     }
 
-    *a5 = [v8 mitigationReason];
-    v12 = [v8 mitigationType];
+    *reason = [mitigationCopy mitigationReason];
+    mitigationType = [mitigationCopy mitigationType];
     goto LABEL_67;
   }
 
@@ -959,19 +959,19 @@ LABEL_64:
     [CSMitigationManager decideMitigation:withCoalitionName:withReason:];
   }
 
-  *a5 = 10;
-  v12 = -1;
+  *reason = 10;
+  mitigationType = -1;
 LABEL_67:
 
   v50 = *MEMORY[0x277D85DE8];
-  return v12;
+  return mitigationType;
 }
 
-- (void)checkOverridesForProcess:(id)a3 penaltyBoxDuration:(int64_t *)a4 cpuThreshold:(int64_t *)a5 timeWindow:(int64_t *)a6
+- (void)checkOverridesForProcess:(id)process penaltyBoxDuration:(int64_t *)duration cpuThreshold:(int64_t *)threshold timeWindow:(int64_t *)window
 {
-  v10 = a3;
-  v11 = v10;
-  if (gTargetProcess && [v10 isEqualToString:?])
+  processCopy = process;
+  v11 = processCopy;
+  if (gTargetProcess && [processCopy isEqualToString:?])
   {
     if (gTargetPenaltyBoxDurationMins)
     {
@@ -980,7 +980,7 @@ LABEL_67:
         [CSMitigationManager checkOverridesForProcess:penaltyBoxDuration:cpuThreshold:timeWindow:];
       }
 
-      *a4 = gTargetPenaltyBoxDurationMins;
+      *duration = gTargetPenaltyBoxDurationMins;
     }
 
     if (gTargetCPUPercentage)
@@ -990,7 +990,7 @@ LABEL_67:
         [CSMitigationManager checkOverridesForProcess:penaltyBoxDuration:cpuThreshold:timeWindow:];
       }
 
-      *a5 = gTargetCPUPercentage;
+      *threshold = gTargetCPUPercentage;
     }
 
     if (gTargetCPUTimeWindow)
@@ -1002,7 +1002,7 @@ LABEL_67:
 
       v12 = &gTargetCPUTimeWindow;
 LABEL_27:
-      *a6 = *v12;
+      *window = *v12;
     }
   }
 
@@ -1015,7 +1015,7 @@ LABEL_27:
         [CSMitigationManager checkOverridesForProcess:penaltyBoxDuration:cpuThreshold:timeWindow:];
       }
 
-      *a4 = gGlobalOverridePenaltyBoxDurationMins;
+      *duration = gGlobalOverridePenaltyBoxDurationMins;
     }
 
     if (gGlobalOverrideCPUPercentage)
@@ -1025,7 +1025,7 @@ LABEL_27:
         [CSMitigationManager checkOverridesForProcess:penaltyBoxDuration:cpuThreshold:timeWindow:];
       }
 
-      *a5 = gGlobalOverrideCPUPercentage;
+      *threshold = gGlobalOverrideCPUPercentage;
     }
 
     if (gGlobalOverrideCPUTimeWindow)
@@ -1041,12 +1041,12 @@ LABEL_27:
   }
 }
 
-- (int)putIntoPenaltyBoxForCSProcess:(id)a3 coalitionID:(unint64_t)a4 withMitigationDecisionType:(unsigned __int8 *)a5 withMitigationDecisionReason:(unsigned __int8 *)a6 withError:(id *)a7
+- (int)putIntoPenaltyBoxForCSProcess:(id)process coalitionID:(unint64_t)d withMitigationDecisionType:(unsigned __int8 *)type withMitigationDecisionReason:(unsigned __int8 *)reason withError:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  processCopy = process;
+  v9 = processCopy;
+  if (!processCopy)
   {
     if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
     {
@@ -1056,17 +1056,17 @@ LABEL_27:
     [MEMORY[0x277CCACA8] stringWithFormat:@"putIntoPenaltyBoxForProcess: process is NULL?"];
     v10 = 0;
     v12 = 0;
-    *a7 = v15 = 0;
-    *a5 = 5;
+    *error = v15 = 0;
+    *type = 5;
     v17 = 10;
     goto LABEL_31;
   }
 
-  if ([v8 inPenaltyBox])
+  if ([processCopy inPenaltyBox])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
-    v11 = [v9 penaltyBoxCoalitionIDs];
-    v12 = [v11 objectForKey:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+    penaltyBoxCoalitionIDs = [v9 penaltyBoxCoalitionIDs];
+    v12 = [penaltyBoxCoalitionIDs objectForKey:v10];
 
     if (v12)
     {
@@ -1076,12 +1076,12 @@ LABEL_27:
       }
 
       v13 = MEMORY[0x277CCACA8];
-      v14 = [v9 processName];
-      *a7 = [v13 stringWithFormat:@"putIntoPenaltyBoxForProcess: Process:%@ and coalitionID %lld already in penalty box", v14, a4];
+      processName = [v9 processName];
+      *error = [v13 stringWithFormat:@"putIntoPenaltyBoxForProcess: Process:%@ and coalitionID %lld already in penalty box", processName, d];
 
       v15 = 0;
-      *a5 = 5;
-      *a6 = 15;
+      *type = 5;
+      *reason = 15;
       v16 = 37;
       goto LABEL_50;
     }
@@ -1096,19 +1096,19 @@ LABEL_27:
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v19 = logger;
-    v20 = [v9 processName];
-    v21 = PEReasonString(*a6);
+    processName2 = [v9 processName];
+    v21 = PEReasonString(*reason);
     *buf = 138412802;
-    *v72 = v20;
+    *v72 = processName2;
     *&v72[8] = 2048;
-    *&v72[10] = a4;
+    *&v72[10] = d;
     *&v72[18] = 2080;
     *&v72[20] = v21;
     _os_log_impl(&dword_243DC3000, v19, OS_LOG_TYPE_DEFAULT, "putIntoPenaltyBoxForProcess: Put process:%@ and coalitionID %lld into penalty box. Reason: %s", buf, 0x20u);
   }
 
-  [v9 addPenaltyBoxCoalitionID:a4];
-  v22 = [v9 getPidsForCoalitionID:a4];
+  [v9 addPenaltyBoxCoalitionID:d];
+  v22 = [v9 getPidsForCoalitionID:d];
   if (!v22)
   {
     v43 = self->_logger;
@@ -1118,15 +1118,15 @@ LABEL_27:
     }
 
     v44 = MEMORY[0x277CCACA8];
-    v45 = [v9 processName];
-    *a7 = [v44 stringWithFormat:@"putIntoPenaltyBoxForProcess: no pids matching coalitionID for process:%@", v45];
+    processName3 = [v9 processName];
+    *error = [v44 stringWithFormat:@"putIntoPenaltyBoxForProcess: no pids matching coalitionID for process:%@", processName3];
 
     v12 = 0;
     v15 = 0;
-    *a5 = 5;
+    *type = 5;
     v17 = 24;
 LABEL_31:
-    *a6 = v17;
+    *reason = v17;
     v16 = 2;
     goto LABEL_50;
   }
@@ -1140,7 +1140,7 @@ LABEL_31:
   if (v23)
   {
     v24 = v23;
-    v59 = self;
+    selfCopy = self;
     v57 = v10;
     v25 = 0;
     v26 = 0;
@@ -1160,9 +1160,9 @@ LABEL_31:
 
         v25 = *(*(&v67 + 1) + 8 * i);
 
-        v30 = [v25 intValue];
+        intValue = [v25 intValue];
         *__error() = 0;
-        if (setpriority(9, v30, 1))
+        if (setpriority(9, intValue, 1))
         {
           v31 = +[CSLogger defaultCategory];
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1170,15 +1170,15 @@ LABEL_31:
             v38 = *__error();
             v39 = __error();
             v40 = strerror(*v39);
-            v41 = [v9 processName];
+            processName4 = [v9 processName];
             *buf = 67109890;
             *v72 = v38;
             *&v72[4] = 2080;
             *&v72[6] = v40;
             *&v72[14] = 2112;
-            *&v72[16] = v41;
+            *&v72[16] = processName4;
             *&v72[24] = 1024;
-            *&v72[26] = v30;
+            *&v72[26] = intValue;
             _os_log_error_impl(&dword_243DC3000, v31, OS_LOG_TYPE_ERROR, "putIntoPenaltyBoxForProcess: setpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)", buf, 0x22u);
           }
 
@@ -1186,8 +1186,8 @@ LABEL_31:
           v33 = *__error();
           v34 = __error();
           v35 = strerror(*v34);
-          v36 = [v9 processName];
-          *a7 = [v32 stringWithFormat:@"putIntoPenaltyBoxForProcess: setpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)", v33, v35, v36, v30];
+          processName5 = [v9 processName];
+          *error = [v32 stringWithFormat:@"putIntoPenaltyBoxForProcess: setpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)", v33, v35, processName5, intValue];
 
           if (!HIDWORD(v65))
           {
@@ -1197,11 +1197,11 @@ LABEL_31:
 
         else
         {
-          v37 = [v9 processName];
-          -[CSMitigationManager logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:](v59, "logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:", v37, v30, [v9 issueType], *a5, *a6, 0);
+          processName6 = [v9 processName];
+          -[CSMitigationManager logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:](selfCopy, "logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:", processName6, intValue, [v9 issueType], *type, *reason, 0);
 
           v27 = obj;
-          -[CSMitigationManager logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:](v59, "logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:", v9, v30, a4, [v9 issueType], *a5, *a6);
+          -[CSMitigationManager logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:](selfCopy, "logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:", v9, intValue, d, [v9 issueType], *type, *reason);
           LODWORD(v65) = v65 + 1;
         }
       }
@@ -1213,7 +1213,7 @@ LABEL_31:
     while (v24);
 
     v10 = v57;
-    self = v59;
+    self = selfCopy;
     v42 = v65;
   }
 
@@ -1228,25 +1228,25 @@ LABEL_31:
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
     v47 = v46;
-    v48 = [v9 processName];
+    processName7 = [v9 processName];
     *buf = 67110146;
     *v72 = v42;
     *&v72[4] = 1024;
     *&v72[6] = v26;
     *&v72[10] = 2048;
-    *&v72[12] = a4;
+    *&v72[12] = d;
     *&v72[20] = 1024;
     *&v72[22] = HIDWORD(v65);
     *&v72[26] = 2112;
-    *&v72[28] = v48;
+    *&v72[28] = processName7;
     _os_log_impl(&dword_243DC3000, v47, OS_LOG_TYPE_DEFAULT, "putIntoPenaltyBoxForProcess: PenaltyBox for %d out of %d pids that matched coalitionID %llu with final ret %d for process:%@", buf, 0x28u);
   }
 
   if (v42 < 1)
   {
     v12 = 0;
-    *a5 = 5;
-    *a6 = 16;
+    *type = 5;
+    *reason = 16;
     if (HIDWORD(v65))
     {
       v16 = HIDWORD(v65);
@@ -1262,23 +1262,23 @@ LABEL_31:
   {
     if (v42 != v26)
     {
-      *a5 = 5;
-      *a6 = 23;
+      *type = 5;
+      *reason = 23;
     }
 
     [v9 setInPenaltyBox:1];
     [v9 setPenaltyBoxCnt:{(objc_msgSend(v9, "penaltyBoxCnt") + 1)}];
     [v9 setPenaltyBoxPending:0];
     CurrentTime = getCurrentTime();
-    v50 = [v9 penaltyBoxDurationMins];
+    penaltyBoxDurationMins = [v9 penaltyBoxDurationMins];
     if (![v9 penaltyBoxEndTime])
     {
-      [v9 setPenaltyBoxEndTime:CurrentTime + 60 * v50];
+      [v9 setPenaltyBoxEndTime:CurrentTime + 60 * penaltyBoxDurationMins];
     }
 
     penaltyBoxProcesses = self->_penaltyBoxProcesses;
-    v52 = [v9 uuid];
-    [(NSMutableDictionary *)penaltyBoxProcesses setObject:v9 forKey:v52];
+    uuid = [v9 uuid];
+    [(NSMutableDictionary *)penaltyBoxProcesses setObject:v9 forKey:uuid];
 
     if (self->_penaltyBoxPolicy == 2 && !self->_penaltyBoxTimerRunning)
     {
@@ -1312,23 +1312,23 @@ LABEL_50:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (int)removeProcessFromPenaltyBox:(id)a3 forReason:(unsigned __int8)a4
+- (int)removeProcessFromPenaltyBox:(id)box forReason:(unsigned __int8)reason
 {
-  v38 = a4;
+  reasonCopy = reason;
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(CSProcessManager *)self->_processManager getProcessForUUID:v5];
+  boxCopy = box;
+  v6 = [(CSProcessManager *)self->_processManager getProcessForUUID:boxCopy];
   if (v6)
   {
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v8 = logger;
-      v9 = [v6 processName];
+      processName = [v6 processName];
       *buf = 138412546;
-      *v48 = v9;
+      *v48 = processName;
       *&v48[8] = 2080;
-      *&v48[10] = PEReasonString(v38);
+      *&v48[10] = PEReasonString(reasonCopy);
       _os_log_impl(&dword_243DC3000, v8, OS_LOG_TYPE_DEFAULT, "removeProcessFromPenaltyBox: Remove process:%@ from penalty box. Reason: %s", buf, 0x16u);
     }
 
@@ -1341,10 +1341,10 @@ LABEL_50:
     if (v10)
     {
       v11 = v10;
-      v37 = v5;
+      v37 = boxCopy;
       v12 = 0;
       v13 = *v44;
-      v14 = v38;
+      v14 = reasonCopy;
       while (1)
       {
         for (i = 0; i != v11; ++i)
@@ -1357,9 +1357,9 @@ LABEL_50:
 
           v12 = *(*(&v43 + 1) + 8 * i);
 
-          v17 = [v12 intValue];
+          intValue = [v12 intValue];
           *__error() = 0;
-          v18 = getpriority(9, v17);
+          v18 = getpriority(9, intValue);
           if (*__error() || v18 != 1)
           {
             v28 = self->_logger;
@@ -1372,7 +1372,7 @@ LABEL_50:
             v39 = *__error();
             v29 = __error();
             v30 = strerror(*v29);
-            v23 = [v6 processName];
+            processName2 = [v6 processName];
             *buf = 67110146;
             *v48 = v39;
             *&v48[4] = 2080;
@@ -1380,9 +1380,9 @@ LABEL_50:
             *&v48[14] = 1024;
             *&v48[16] = v18;
             *&v48[20] = 2112;
-            *&v48[22] = v23;
+            *&v48[22] = processName2;
             v49 = 1024;
-            v50 = v17;
+            v50 = intValue;
             v24 = loga;
             v25 = loga;
             v26 = "removeProcessFromPenaltyBox: getpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) priority %d for process:%@ (%d)";
@@ -1391,7 +1391,7 @@ LABEL_50:
           }
 
           *__error() = 0;
-          if (setpriority(9, v17, 0))
+          if (setpriority(9, intValue, 0))
           {
             v19 = self->_logger;
             if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1403,15 +1403,15 @@ LABEL_50:
             v20 = *__error();
             v21 = __error();
             v22 = strerror(*v21);
-            v23 = [v6 processName];
+            processName2 = [v6 processName];
             *buf = 67109890;
             *v48 = v20;
             *&v48[4] = 2080;
             *&v48[6] = v22;
             *&v48[14] = 2112;
-            *&v48[16] = v23;
+            *&v48[16] = processName2;
             *&v48[24] = 1024;
-            *&v48[26] = v17;
+            *&v48[26] = intValue;
             v24 = log;
             v25 = log;
             v26 = "removeProcessFromPenaltyBox: setpriority(PRIO_DARWIN_RUNAWAY_MITIGATION) failed %d (%s) for process:%@ (%d)";
@@ -1419,34 +1419,34 @@ LABEL_50:
 LABEL_16:
             _os_log_error_impl(&dword_243DC3000, v25, OS_LOG_TYPE_ERROR, v26, buf, v27);
 
-            v14 = v38;
+            v14 = reasonCopy;
             continue;
           }
 
-          v31 = [v6 processName];
-          -[CSMitigationManager logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:](self, "logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:", v31, v17, [v6 issueType], 3, v14, 0);
+          processName3 = [v6 processName];
+          -[CSMitigationManager logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:](self, "logMitigationAsSignpost:withPid:withIssueType:withMitigationType:withReason:withPenaltyBoxEndTime:", processName3, intValue, [v6 issueType], 3, v14, 0);
 
-          v32 = [v6 trackedPIDs];
-          v33 = [v32 objectForKeyedSubscript:v12];
+          trackedPIDs = [v6 trackedPIDs];
+          v33 = [trackedPIDs objectForKeyedSubscript:v12];
 
-          -[CSMitigationManager logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:](self, "logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:", v6, v17, [v33 longLongValue], objc_msgSend(v6, "issueType"), 3, v14);
+          -[CSMitigationManager logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:](self, "logMitigationToPowerLogForProcess:withPid:withCoalitionID:withIssueType:withMitigationType:withReason:", v6, intValue, [v33 longLongValue], objc_msgSend(v6, "issueType"), 3, v14);
         }
 
         v11 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (!v11)
         {
 
-          v5 = v37;
+          boxCopy = v37;
           break;
         }
       }
     }
 
     [v6 setInPenaltyBox:0];
-    [(NSMutableDictionary *)self->_penaltyBoxProcesses removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_penaltyBoxProcesses removeObjectForKey:boxCopy];
     [v6 setCpuNonFatalCnt:0];
     [v6 setMitigationType:3];
-    if (v38 != 255)
+    if (reasonCopy != 255)
     {
       [v6 setMitigationReason:?];
     }
@@ -1470,9 +1470,9 @@ LABEL_16:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (int64_t)penaltyBoxDurationMinsForProcess:(id)a3
+- (int64_t)penaltyBoxDurationMinsForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v11 = 0;
   v12 = 0;
   v10 = 0;
@@ -1492,8 +1492,8 @@ LABEL_16:
     v6 = 60;
   }
 
-  v7 = [v4 processName];
-  [(CSMitigationManager *)self checkOverridesForProcess:v7 penaltyBoxDuration:&v12 cpuThreshold:&v11 timeWindow:&v10];
+  processName = [processCopy processName];
+  [(CSMitigationManager *)self checkOverridesForProcess:processName penaltyBoxDuration:&v12 cpuThreshold:&v11 timeWindow:&v10];
 
   if (v12)
   {
@@ -1511,11 +1511,11 @@ LABEL_16:
 - (void)midnightRoutine
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(CSMitigationManager *)self logger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  logger = [(CSMitigationManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_243DC3000, v3, OS_LOG_TYPE_DEFAULT, "midnightRoutine", buf, 2u);
+    _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEFAULT, "midnightRoutine", buf, 2u);
   }
 
   [(CSMitigationManager *)self checkForTrials];
@@ -1524,13 +1524,13 @@ LABEL_16:
 
   [(CSMitigationManager *)self checkPenaltyBoxProcessesExpiration];
   [(CSProcessManager *)self->_processManager clearAllCounters];
-  v5 = [(CSProcessManager *)self->_processManager getMonitoredList];
+  getMonitoredList = [(CSProcessManager *)self->_processManager getMonitoredList];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  allKeys = [getMonitoredList allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1542,7 +1542,7 @@ LABEL_16:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -1553,7 +1553,7 @@ LABEL_16:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
@@ -1564,11 +1564,11 @@ LABEL_16:
 
 - (void)registerForDayChangedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x277CBE580] object:0];
 }
 
-- (void)dayChangedNotificationReceived:(id)a3
+- (void)dayChangedNotificationReceived:(id)received
 {
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
   {
@@ -1584,63 +1584,63 @@ LABEL_16:
   dispatch_sync(v4, block);
 }
 
-- (void)getMitigationTypeString:(char *)a3 withStringSize:(unint64_t)a4 withMitigationType:(int64_t)a5 withPenaltyBoxEndTime:(unint64_t)a6
+- (void)getMitigationTypeString:(char *)string withStringSize:(unint64_t)size withMitigationType:(int64_t)type withPenaltyBoxEndTime:(unint64_t)time
 {
-  v10 = PEMitigationTypeString(a5);
-  snprintf(a3, a4, "%s", v10);
-  if (a5 == 2)
+  v10 = PEMitigationTypeString(type);
+  snprintf(string, size, "%s", v10);
+  if (type == 2)
   {
     penaltyBoxPolicy = self->_penaltyBoxPolicy;
     if (penaltyBoxPolicy == 2)
     {
       getCurrentTime();
       PEMitigationTypeString(2);
-      snprintf(a3, a4, "%s (for %lld seconds)");
+      snprintf(string, size, "%s (for %lld seconds)");
     }
 
     else if (penaltyBoxPolicy == 1)
     {
       PEMitigationTypeString(2);
-      snprintf(a3, a4, "%s (until midnight)");
+      snprintf(string, size, "%s (until midnight)");
     }
   }
 }
 
-- (void)generateIPSFileForProcess:(id)a3
+- (void)generateIPSFileForProcess:(id)process
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 issueType];
-  v6 = [v4 mitigationType];
-  v7 = [v4 mitigationReason];
+  processCopy = process;
+  issueType = [processCopy issueType];
+  mitigationType = [processCopy mitigationType];
+  mitigationReason = [processCopy mitigationReason];
   memset(v28, 0, 150);
-  v8 = [v4 violationPath];
-  if (v8 && (v9 = v8, [v4 violationPath], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
+  violationPath = [processCopy violationPath];
+  if (violationPath && (v9 = violationPath, [processCopy violationPath], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
   {
-    if (v6 == 1 || v6 == 2)
+    if (mitigationType == 1 || mitigationType == 2)
     {
-      -[CSMitigationManager getMitigationTypeString:withStringSize:withMitigationType:withPenaltyBoxEndTime:](self, "getMitigationTypeString:withStringSize:withMitigationType:withPenaltyBoxEndTime:", v28, 150, v6, [v4 penaltyBoxEndTime]);
-      v13 = [v4 violationEndTime];
-      v23 = v13;
-      v22 = v13 >> 32;
-      [v4 violationObservationWindow];
-      v14 = [v4 violationPath];
-      [v14 UTF8String];
-      PEIssueTypeString(v5);
-      PEReasonString(v7);
-      PEMitigationTypeString(v6);
-      v15 = [v4 violationDetectorString];
-      if (v15)
+      -[CSMitigationManager getMitigationTypeString:withStringSize:withMitigationType:withPenaltyBoxEndTime:](self, "getMitigationTypeString:withStringSize:withMitigationType:withPenaltyBoxEndTime:", v28, 150, mitigationType, [processCopy penaltyBoxEndTime]);
+      violationEndTime = [processCopy violationEndTime];
+      v23 = violationEndTime;
+      v22 = violationEndTime >> 32;
+      [processCopy violationObservationWindow];
+      violationPath2 = [processCopy violationPath];
+      [violationPath2 UTF8String];
+      PEIssueTypeString(issueType);
+      PEReasonString(mitigationReason);
+      PEMitigationTypeString(mitigationType);
+      violationDetectorString = [processCopy violationDetectorString];
+      if (violationDetectorString)
       {
-        v6 = [v4 violationDetectorString];
-        [v6 UTF8String];
+        mitigationType = [processCopy violationDetectorString];
+        [mitigationType UTF8String];
       }
 
-      [v4 violationObservationWindow];
+      [processCopy violationObservationWindow];
       v20 = v23;
       v21 = v22;
       SPReportPowerException();
-      if (v15)
+      if (violationDetectorString)
       {
       }
 
@@ -1648,22 +1648,22 @@ LABEL_16:
       if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
       {
         v17 = logger;
-        v18 = [v4 processName];
+        processName = [processCopy processName];
         *buf = 138412546;
-        v25 = v18;
+        v25 = processName;
         v26 = 1024;
-        v27 = [v4 violationPid];
+        violationPid = [processCopy violationPid];
         _os_log_impl(&dword_243DC3000, v17, OS_LOG_TYPE_DEFAULT, "generateIPSFileForProcess: Generating ips file for process:%@ (%d)", buf, 0x12u);
       }
 
-      [v4 setViolationPath:{0, v20, v21}];
-      [v4 setViolationEndTime:0];
-      [v4 setViolationObservedValue:0];
-      [v4 setViolationObservationWindow:0];
-      [v4 setViolationLimitValue:0];
-      [v4 setViolationLimitWindow:0];
-      [v4 setViolationPid:0];
-      [v4 setViolationDetectorString:0];
+      [processCopy setViolationPath:{0, v20, v21}];
+      [processCopy setViolationEndTime:0];
+      [processCopy setViolationObservedValue:0];
+      [processCopy setViolationObservationWindow:0];
+      [processCopy setViolationLimitValue:0];
+      [processCopy setViolationLimitWindow:0];
+      [processCopy setViolationPid:0];
+      [processCopy setViolationDetectorString:0];
     }
 
     else if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -1677,27 +1677,27 @@ LABEL_16:
     v12 = self->_logger;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(CSMitigationManager *)v12 generateIPSFileForProcess:v4];
+      [(CSMitigationManager *)v12 generateIPSFileForProcess:processCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCPUViolationToPowerLog:(id)a3 pid:(unint64_t)a4 coalitionName:(id)a5 endTime:(mach_timespec)a6 observedValue:(int64_t)a7 observationWindow:(int64_t)a8 limitValue:(int64_t)a9 limitWindow:(int64_t)a10 fatal:(BOOL)a11 mitigationType:(int64_t)a12 mitigationReason:(int64_t)a13 withError:(id)a14
+- (void)logCPUViolationToPowerLog:(id)log pid:(unint64_t)pid coalitionName:(id)name endTime:(mach_timespec)time observedValue:(int64_t)value observationWindow:(int64_t)window limitValue:(int64_t)limitValue limitWindow:(int64_t)self0 fatal:(BOOL)self1 mitigationType:(int64_t)self2 mitigationReason:(int64_t)self3 withError:(id)self4
 {
   v107 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a5;
-  v22 = a14;
-  v23 = v22;
-  if (v20)
+  logCopy = log;
+  nameCopy = name;
+  errorCopy = error;
+  v23 = errorCopy;
+  if (logCopy)
   {
-    v72 = v21;
-    v73 = v22;
+    v72 = nameCopy;
+    v73 = errorCopy;
     v24 = [CSRestrictionManager sharedInstanceWithDataProvider:0];
-    v25 = [v20 identifier];
-    v26 = [v24 determineScenarioForProcess:v25];
+    identifier = [logCopy identifier];
+    v26 = [v24 determineScenarioForProcess:identifier];
 
     v74 = v26;
     if (!v26)
@@ -1710,63 +1710,63 @@ LABEL_16:
       v74 = @"Unknown";
     }
 
-    v67 = self;
-    v27 = [v20 issueType];
+    selfCopy = self;
+    issueType = [logCopy issueType];
     v28 = +[CSLogger signpostCategory];
     v29 = v28;
-    spid = a4;
-    if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
+    spid = pid;
+    if (pid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
     {
-      v65 = v27;
-      v30 = [v20 processName];
-      if (v30)
+      v65 = issueType;
+      processName = [logCopy processName];
+      if (processName)
       {
-        v52 = [v20 processName];
-        v61 = [v52 UTF8String];
+        processName2 = [logCopy processName];
+        uTF8String = [processName2 UTF8String];
       }
 
       else
       {
-        v61 = 0;
+        uTF8String = 0;
       }
 
-      v31 = v73;
-      v63 = v30;
-      if (v21)
+      uTF8String4 = v73;
+      v63 = processName;
+      if (nameCopy)
       {
-        v59 = [v21 UTF8String];
+        uTF8String2 = [nameCopy UTF8String];
       }
 
       else
       {
-        v59 = 0;
+        uTF8String2 = 0;
       }
 
-      v57 = [(__CFString *)v74 UTF8String];
+      uTF8String3 = [(__CFString *)v74 UTF8String];
       v53 = PEIssueTypeString(v65);
-      v32 = PEMitigationTypeString(a12);
-      v33 = PEReasonString(a13);
+      v32 = PEMitigationTypeString(type);
+      v33 = PEReasonString(reason);
       if (v73)
       {
-        v31 = [v73 UTF8String];
+        uTF8String4 = [v73 UTF8String];
       }
 
       *buf = 136449794;
-      v78 = v61;
+      v78 = uTF8String;
       v79 = 2082;
-      v80 = v59;
+      v80 = uTF8String2;
       v81 = 2082;
-      v82 = v57;
+      v82 = uTF8String3;
       v83 = 2050;
-      *&v84 = a6.tv_sec + a6.tv_nsec * 0.000000001;
+      *&v84 = time.tv_sec + time.tv_nsec * 0.000000001;
       v85 = 2050;
-      v86 = a9 / 0x3B9ACA00uLL;
+      v86 = limitValue / 0x3B9ACA00uLL;
       v87 = 2050;
-      v88 = a10 / 0x3B9ACA00uLL;
+      v88 = limitWindow / 0x3B9ACA00uLL;
       v89 = 2050;
-      v90 = a7 / 1000000000.0;
+      v90 = value / 1000000000.0;
       v91 = 2050;
-      v92 = a8 / 1000000000.0;
+      v92 = window / 1000000000.0;
       v93 = 2082;
       v94 = v53;
       v95 = 2082;
@@ -1774,88 +1774,88 @@ LABEL_16:
       v97 = 2082;
       v98 = v33;
       v99 = 2082;
-      v100 = v31;
+      v100 = uTF8String4;
       v101 = 1026;
       v102 = 1;
       v103 = 1026;
-      v104 = [v20 cpuFatalCnt];
+      cpuFatalCnt = [logCopy cpuFatalCnt];
       v105 = 1026;
-      v106 = [v20 cpuNonFatalCnt];
-      a4 = spid;
+      cpuNonFatalCnt = [logCopy cpuNonFatalCnt];
+      pid = spid;
       _os_signpost_emit_with_name_impl(&dword_243DC3000, v29, OS_SIGNPOST_EVENT, spid, "CPU Violation", "Process name: %{public, name=processName}s\nSignpost ID is PID\nCoalition name: %{public, name=coalitionName}s\nScenario Identifier: %{public, name=scenarioIdentifier}s\nTime Stamp End: %{public, name=timeStampEnd}f\nCPU Threshold: %{public, name=cpuThreshold}lld\nTime Window Size: %{public, name=timeWindowSize}lld\nObserved CPU Usage: %{public, name=observedCPUUsage}f\nObserved CPU Usage Duration: %{public, name=observedCPUUsageDuration}f\nIssue Type: %{public, name=issueType}s\nMitigation Type: %{public, name=mitigationType}s\nMitigation Reason: %{public, name=mitigationReason}s\nError String: %{public, name=errorString}s\nFrom Power Exceptions: %{public, name=fromPowerExceptions}d\nFatal Count: %{public, name=fatalCount}d\nNon Fatal Count: %{public, name=nonFatalCount}d\n", buf, 0x8Cu);
       if (v63)
       {
       }
 
-      v27 = v65;
+      issueType = v65;
     }
 
     v58 = MEMORY[0x277CBEB38];
     v75[0] = @"timestamp";
     v34 = MEMORY[0x277CCABB0];
-    v66 = [MEMORY[0x277CBEAA8] date];
-    [v66 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v64 = [v34 numberWithDouble:?];
     v76[0] = v64;
     v75[1] = @"PID";
-    v62 = [MEMORY[0x277CCABB0] numberWithInt:a4];
+    v62 = [MEMORY[0x277CCABB0] numberWithInt:pid];
     v76[1] = v62;
     v76[2] = v74;
     v75[2] = @"ScenarioIdentifier";
     v75[3] = @"timestampEnd";
-    v60 = [MEMORY[0x277CCABB0] numberWithDouble:a6.tv_sec + a6.tv_nsec * 0.000000001];
+    v60 = [MEMORY[0x277CCABB0] numberWithDouble:time.tv_sec + time.tv_nsec * 0.000000001];
     v76[3] = v60;
     v75[4] = @"ThresholdCPUUsage";
-    v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a9 / 0x3B9ACA00uLL];
-    v76[4] = v56;
+    0x3B9ACA00uLL = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:limitValue / 0x3B9ACA00uLL];
+    v76[4] = 0x3B9ACA00uLL;
     v75[5] = @"TimeWindowSize";
-    v55 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a10 / 0x3B9ACA00uLL];
-    v76[5] = v55;
+    0x3B9ACA00uLL2 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:limitWindow / 0x3B9ACA00uLL];
+    v76[5] = 0x3B9ACA00uLL2;
     v75[6] = @"ObservedCPUUsage";
-    v68 = [MEMORY[0x277CCABB0] numberWithDouble:a7 / 1000000000.0];
+    v68 = [MEMORY[0x277CCABB0] numberWithDouble:value / 1000000000.0];
     v76[6] = v68;
     v75[7] = @"ObservedCPUUsageDuration";
-    v70 = [MEMORY[0x277CCABB0] numberWithDouble:a8 / 1000000000.0];
+    v70 = [MEMORY[0x277CCABB0] numberWithDouble:window / 1000000000.0];
     v76[7] = v70;
     v75[8] = @"IssueType";
-    v54 = [MEMORY[0x277CCABB0] numberWithLongLong:v27];
+    v54 = [MEMORY[0x277CCABB0] numberWithLongLong:issueType];
     v76[8] = v54;
     v75[9] = @"MitigationType";
-    v69 = [MEMORY[0x277CCABB0] numberWithLongLong:a12];
+    v69 = [MEMORY[0x277CCABB0] numberWithLongLong:type];
     v76[9] = v69;
     v75[10] = @"MitigationReason";
-    v35 = [MEMORY[0x277CCABB0] numberWithLongLong:a13];
+    v35 = [MEMORY[0x277CCABB0] numberWithLongLong:reason];
     v76[10] = v35;
     v76[11] = &unk_28570AC98;
     v75[11] = @"FromPowerExceptions";
     v75[12] = @"FatalCount";
-    v36 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v20, "cpuFatalCnt")}];
+    v36 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(logCopy, "cpuFatalCnt")}];
     v76[12] = v36;
     v75[13] = @"NonFatalCount";
-    v37 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v20, "cpuNonFatalCnt")}];
+    v37 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(logCopy, "cpuNonFatalCnt")}];
     v76[13] = v37;
     v75[14] = @"EstimatedEnergy";
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v20, "estimatedEnergyDiff")}];
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(logCopy, "estimatedEnergyDiff")}];
     v76[14] = v38;
     v75[15] = @"PUUID";
-    v39 = [v20 uuid];
-    v40 = [v39 UUIDString];
-    v76[15] = v40;
+    uuid = [logCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v76[15] = uUIDString;
     v75[16] = @"CoalitionID";
-    v41 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v20, "lastCoalitionID")}];
+    v41 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(logCopy, "lastCoalitionID")}];
     v76[16] = v41;
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:17];
     v43 = [v58 dictionaryWithDictionary:v42];
 
-    v44 = [v20 processName];
+    processName3 = [logCopy processName];
 
-    if (v44)
+    if (processName3)
     {
-      v45 = [v20 processName];
-      [v43 setObject:v45 forKeyedSubscript:@"ProcessName"];
+      processName4 = [logCopy processName];
+      [v43 setObject:processName4 forKeyedSubscript:@"ProcessName"];
     }
 
-    v21 = v72;
+    nameCopy = v72;
     v23 = v73;
     if (v72)
     {
@@ -1867,10 +1867,10 @@ LABEL_16:
       [v43 setObject:v73 forKeyedSubscript:@"ErrorString"];
     }
 
-    logger = v67->_logger;
+    logger = selfCopy->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
-      if (a11)
+      if (fatal)
       {
         v48 = "fatal";
       }
@@ -1881,24 +1881,24 @@ LABEL_16:
       }
 
       v49 = logger;
-      v50 = [v20 processName];
-      v51 = [v20 uuid];
+      processName5 = [logCopy processName];
+      uuid2 = [logCopy uuid];
       *buf = 136316162;
       v78 = v48;
       v79 = 2080;
       v80 = "Yes";
       v81 = 2112;
-      v82 = v50;
+      v82 = processName5;
       v83 = 2048;
       v84 = spid;
       v85 = 2112;
-      v86 = v51;
+      v86 = uuid2;
       _os_log_debug_impl(&dword_243DC3000, v49, OS_LOG_TYPE_DEBUG, "logCPUViolationToPowerLog: Sending %s violation fromPowerExceptions (%s) for process %@ (%llu) (%@) to Power Log", buf, 0x34u);
 
       v23 = v73;
     }
 
-    [(CSMitigationManager *)v67 logCPUViolationToPowerLogWithPayload:v43];
+    [(CSMitigationManager *)selfCopy logCPUViolationToPowerLogWithPayload:v43];
   }
 
   else if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
@@ -1909,9 +1909,9 @@ LABEL_16:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCPUViolationToPowerLogWithPayload:(id)a3
+- (void)logCPUViolationToPowerLogWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (logCPUViolationToPowerLogWithPayload__onceToken != -1)
   {
     [CSMitigationManager logCPUViolationToPowerLogWithPayload:];
@@ -1932,80 +1932,80 @@ uint64_t __60__CSMitigationManager_logCPUViolationToPowerLogWithPayload___block_
   return result;
 }
 
-- (void)logMitigationAsSignpost:(id)a3 withPid:(unint64_t)a4 withIssueType:(unsigned __int8)a5 withMitigationType:(unsigned __int8)a6 withReason:(unsigned __int8)a7 withPenaltyBoxEndTime:(unint64_t)a8
+- (void)logMitigationAsSignpost:(id)signpost withPid:(unint64_t)pid withIssueType:(unsigned __int8)type withMitigationType:(unsigned __int8)mitigationType withReason:(unsigned __int8)reason withPenaltyBoxEndTime:(unint64_t)time
 {
-  v10 = a6;
+  mitigationTypeCopy = mitigationType;
   v35 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  signpostCopy = signpost;
   memset(v34, 0, sizeof(v34));
-  CoalitionID = getCoalitionID(a4);
-  switch(v10)
+  CoalitionID = getCoalitionID(pid);
+  switch(mitigationTypeCopy)
   {
     case 3:
       v21 = +[CSLogger signpostCategory];
       v17 = v21;
-      if (a4 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v21))
+      if (pid - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v21))
       {
         goto LABEL_14;
       }
 
       v24 = 136447234;
-      v25 = [v14 UTF8String];
+      uTF8String = [signpostCopy UTF8String];
       v26 = 2050;
       v27 = CoalitionID;
       v28 = 2082;
-      v29 = PEIssueTypeString(a5);
+      v29 = PEIssueTypeString(type);
       v30 = 2082;
       v31 = PEMitigationTypeString(3);
       v32 = 2082;
-      v33 = PEReasonString(a7);
+      v33 = PEReasonString(reason);
       v18 = v17;
       v19 = OS_SIGNPOST_INTERVAL_END;
       goto LABEL_13;
     case 2:
-      [(CSMitigationManager *)self getMitigationTypeString:v34 withStringSize:150 withMitigationType:2 withPenaltyBoxEndTime:a8];
+      [(CSMitigationManager *)self getMitigationTypeString:v34 withStringSize:150 withMitigationType:2 withPenaltyBoxEndTime:time];
       v20 = +[CSLogger signpostCategory];
       v17 = v20;
-      if (a4 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v20))
+      if (pid - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v20))
       {
         goto LABEL_14;
       }
 
       v24 = 136447234;
-      v25 = [v14 UTF8String];
+      uTF8String = [signpostCopy UTF8String];
       v26 = 2050;
       v27 = CoalitionID;
       v28 = 2082;
-      v29 = PEIssueTypeString(a5);
+      v29 = PEIssueTypeString(type);
       v30 = 2082;
       v31 = v34;
       v32 = 2082;
-      v33 = PEReasonString(a7);
+      v33 = PEReasonString(reason);
       v18 = v17;
       v19 = OS_SIGNPOST_INTERVAL_BEGIN;
       goto LABEL_13;
     case 1:
       v16 = +[CSLogger signpostCategory];
       v17 = v16;
-      if (a4 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v16))
+      if (pid - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v16))
       {
         goto LABEL_14;
       }
 
       v24 = 136447234;
-      v25 = [v14 UTF8String];
+      uTF8String = [signpostCopy UTF8String];
       v26 = 2050;
       v27 = CoalitionID;
       v28 = 2082;
-      v29 = PEIssueTypeString(a5);
+      v29 = PEIssueTypeString(type);
       v30 = 2082;
       v31 = PEMitigationTypeString(1);
       v32 = 2082;
-      v33 = PEReasonString(a7);
+      v33 = PEReasonString(reason);
       v18 = v17;
       v19 = OS_SIGNPOST_EVENT;
 LABEL_13:
-      _os_signpost_emit_with_name_impl(&dword_243DC3000, v18, v19, a4, "Mitigation Applied", "Process name: %{public, name=processName}s\nSignpost ID is PID\nCoalition ID: %{public, name=coalitionID}llu\nIssue Type: %{public, name=issueType}s\nMitigation Type: %{public, name=mitigationType}s\nMitigation Reason: %{public, name=mitigationReason}s\n", &v24, 0x34u);
+      _os_signpost_emit_with_name_impl(&dword_243DC3000, v18, v19, pid, "Mitigation Applied", "Process name: %{public, name=processName}s\nSignpost ID is PID\nCoalition ID: %{public, name=coalitionID}llu\nIssue Type: %{public, name=issueType}s\nMitigation Type: %{public, name=mitigationType}s\nMitigation Reason: %{public, name=mitigationReason}s\n", &v24, 0x34u);
 LABEL_14:
 
       goto LABEL_17;
@@ -2014,7 +2014,7 @@ LABEL_14:
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
   {
-    [CSMitigationManager logMitigationAsSignpost:v14 withPid:logger withIssueType:? withMitigationType:? withReason:? withPenaltyBoxEndTime:?];
+    [CSMitigationManager logMitigationAsSignpost:signpostCopy withPid:logger withIssueType:? withMitigationType:? withReason:? withPenaltyBoxEndTime:?];
   }
 
 LABEL_17:
@@ -2022,10 +2022,10 @@ LABEL_17:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceCPUViolationForProcess:(id)a3 withHandler:(id)a4
+- (void)forceCPUViolationForProcess:(id)process withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  handlerCopy = handler;
   clock_serv = 0;
   cur_time = 0;
   v8 = MEMORY[0x245D52A80]();
@@ -2043,13 +2043,13 @@ LABEL_17:
   v11[2] = __63__CSMitigationManager_forceCPUViolationForProcess_withHandler___block_invoke;
   v11[3] = &unk_278DF5510;
   v11[4] = self;
-  v10 = v6;
+  v10 = processCopy;
   v12 = v10;
   v13 = &v15;
   v14 = cur_time;
   dispatch_sync(v9, v11);
 
-  v7[2](v7, v16[5]);
+  handlerCopy[2](handlerCopy, v16[5]);
   _Block_object_dispose(&v15, 8);
 }
 
@@ -2118,15 +2118,15 @@ LABEL_6:
 LABEL_13:
 }
 
-- (void)forceMitigation:(id)a3 forProcess:(id)a4 withPercentage:(id)a5 withSeconds:(id)a6 withPenaltyBoxDuration:(id)a7 withHandler:(id)a8
+- (void)forceMitigation:(id)mitigation forProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withHandler:(id)handler
 {
   v89 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  mitigationCopy = mitigation;
+  processCopy = process;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
+  handlerCopy = handler;
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
@@ -2143,20 +2143,20 @@ LABEL_13:
   v67[3] = __Block_byref_object_copy__1;
   v67[4] = __Block_byref_object_dispose__1;
   v68 = 0;
-  v20 = [(CSMitigationManager *)self logger];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+  logger = [(CSMitigationManager *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     *v83 = 138413314;
-    *&v83[4] = v14;
+    *&v83[4] = mitigationCopy;
     *&v83[12] = 2112;
-    *&v83[14] = v16;
+    *&v83[14] = percentageCopy;
     *&v83[22] = 2112;
-    v84 = v17;
+    v84 = secondsCopy;
     v85 = 2112;
-    v86 = v18;
+    v86 = durationCopy;
     v87 = 2112;
-    v88 = v15;
-    _os_log_debug_impl(&dword_243DC3000, v20, OS_LOG_TYPE_DEBUG, "forceMitigation: Force mitigation %@, cpuThreshold %@, cpuTimeWindow %@ penaltyBoxDuration %@ for process: %@", v83, 0x34u);
+    v88 = processCopy;
+    _os_log_debug_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEBUG, "forceMitigation: Force mitigation %@, cpuThreshold %@, cpuTimeWindow %@ penaltyBoxDuration %@ for process: %@", v83, 0x34u);
   }
 
   v21 = getMainQueue();
@@ -2166,7 +2166,7 @@ LABEL_13:
   block[3] = &unk_278DF5538;
   v65 = v67;
   block[4] = self;
-  v22 = v15;
+  v22 = processCopy;
   v64 = v22;
   v66 = &v73;
   dispatch_sync(v21, block);
@@ -2188,20 +2188,20 @@ LABEL_13:
 
     if (*(*&v83[8] + 24) == -1)
     {
-      v28 = [(CSMitigationManager *)self logger];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      logger2 = [(CSMitigationManager *)self logger];
+      if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v74[5] identifier];
-        [CSMitigationManager forceMitigation:v29 forProcess:&v83[8] withPercentage:v81 withSeconds:v28 withPenaltyBoxDuration:? withHandler:?];
+        identifier = [v74[5] identifier];
+        [CSMitigationManager forceMitigation:identifier forProcess:&v83[8] withPercentage:v81 withSeconds:logger2 withPenaltyBoxDuration:? withHandler:?];
       }
 
       v30 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:1 userInfo:0];
-      v19[2](v19, v30);
+      handlerCopy[2](handlerCopy, v30);
 
       goto LABEL_22;
     }
 
-    v24 = [v14 isEqualToString:@"Fatal"];
+    v24 = [mitigationCopy isEqualToString:@"Fatal"];
     if (v24)
     {
       v25 = 1;
@@ -2216,12 +2216,12 @@ LABEL_16:
       v50 = &unk_278DF5588;
       v56 = &v73;
       v58 = v31;
-      v51 = v18;
-      v52 = self;
+      v51 = durationCopy;
+      selfCopy = self;
       v59 = v24;
-      v53 = v16;
-      v54 = v17;
-      v33 = v19;
+      v53 = percentageCopy;
+      v54 = secondsCopy;
+      v33 = handlerCopy;
       v55 = v33;
       v57 = &v69;
       dispatch_sync(v32, &v47);
@@ -2254,13 +2254,13 @@ LABEL_16:
       goto LABEL_22;
     }
 
-    if ([v14 isEqualToString:@"NonFatal"])
+    if ([mitigationCopy isEqualToString:@"NonFatal"])
     {
       v25 = 0;
       goto LABEL_15;
     }
 
-    if ([v14 hasPrefix:@"PenaltyBoxIn"])
+    if ([mitigationCopy hasPrefix:@"PenaltyBoxIn"])
     {
       [v74[5] setMitigationType:2];
       if (gEnablePenaltyBox)
@@ -2285,25 +2285,25 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v38 = [(CSMitigationManager *)self logger];
-        if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+        logger3 = [(CSMitigationManager *)self logger];
+        if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v80 = v22;
-          _os_log_impl(&dword_243DC3000, v38, OS_LOG_TYPE_DEFAULT, "forceMitigation: process: %@ already in penalty box", buf, 0xCu);
+          _os_log_impl(&dword_243DC3000, logger3, OS_LOG_TYPE_DEFAULT, "forceMitigation: process: %@ already in penalty box", buf, 0xCu);
         }
 
-        if ([v18 longValue] != -1)
+        if ([durationCopy longValue] != -1)
         {
-          [v74[5] setPenaltyBoxDurationMins:{objc_msgSend(v18, "longValue")}];
+          [v74[5] setPenaltyBoxDurationMins:{objc_msgSend(durationCopy, "longValue")}];
         }
 
-        v19[2](v19, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_50;
       }
 
-      v43 = [(CSMitigationManager *)self logger];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      logger4 = [(CSMitigationManager *)self logger];
+      if (os_log_type_enabled(logger4, OS_LOG_TYPE_ERROR))
       {
         [CSMitigationManager forceMitigation:forProcess:withPercentage:withSeconds:withPenaltyBoxDuration:withHandler:];
       }
@@ -2311,16 +2311,16 @@ LABEL_16:
 
     else
     {
-      if (![v14 hasPrefix:@"PenaltyBoxOut"])
+      if (![mitigationCopy hasPrefix:@"PenaltyBoxOut"])
       {
-        v41 = [(CSMitigationManager *)self logger];
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+        logger5 = [(CSMitigationManager *)self logger];
+        if (os_log_type_enabled(logger5, OS_LOG_TYPE_ERROR))
         {
           [CSMitigationManager forceMitigation:forProcess:withPercentage:withSeconds:withPenaltyBoxDuration:withHandler:];
         }
 
         v42 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:2 userInfo:0];
-        v19[2](v19, v42);
+        handlerCopy[2](handlerCopy, v42);
 
         goto LABEL_22;
       }
@@ -2343,12 +2343,12 @@ LABEL_16:
 
         if (*(*v82 + 24) == 1)
         {
-          v40 = [(CSMitigationManager *)self logger];
-          if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+          logger6 = [(CSMitigationManager *)self logger];
+          if (os_log_type_enabled(logger6, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v80 = v22;
-            _os_log_impl(&dword_243DC3000, v40, OS_LOG_TYPE_DEFAULT, "forceMitigation: process: %@ already out of penalty box", buf, 0xCu);
+            _os_log_impl(&dword_243DC3000, logger6, OS_LOG_TYPE_DEFAULT, "forceMitigation: process: %@ already out of penalty box", buf, 0xCu);
           }
         }
 
@@ -2357,35 +2357,35 @@ LABEL_16:
           [v74[5] setPenaltyBoxDurationMins:1];
         }
 
-        v19[2](v19, 0);
+        handlerCopy[2](handlerCopy, 0);
 LABEL_50:
         _Block_object_dispose(v81, 8);
         goto LABEL_22;
       }
 
-      v43 = [(CSMitigationManager *)self logger];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      logger4 = [(CSMitigationManager *)self logger];
+      if (os_log_type_enabled(logger4, OS_LOG_TYPE_ERROR))
       {
         [CSMitigationManager forceMitigation:forProcess:withPercentage:withSeconds:withPenaltyBoxDuration:withHandler:];
       }
     }
 
     v44 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:4 userInfo:0];
-    v19[2](v19, v44);
+    handlerCopy[2](handlerCopy, v44);
 
 LABEL_22:
     _Block_object_dispose(v83, 8);
     goto LABEL_23;
   }
 
-  v26 = [(CSMitigationManager *)self logger];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  logger7 = [(CSMitigationManager *)self logger];
+  if (os_log_type_enabled(logger7, OS_LOG_TYPE_ERROR))
   {
     [CSMitigationManager forceMitigation:forProcess:withPercentage:withSeconds:withPenaltyBoxDuration:withHandler:];
   }
 
   v27 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:0 userInfo:0];
-  v19[2](v19, v27);
+  handlerCopy[2](handlerCopy, v27);
 
 LABEL_23:
   _Block_object_dispose(v67, 8);
@@ -2521,14 +2521,14 @@ LABEL_16:
     {
       penaltyBoxProcesses = self->_penaltyBoxProcesses;
       v9 = v4;
-      v6 = [v4 uuid];
-      v7 = [(NSMutableDictionary *)penaltyBoxProcesses objectForKeyedSubscript:v6];
+      uuid = [v4 uuid];
+      v7 = [(NSMutableDictionary *)penaltyBoxProcesses objectForKeyedSubscript:uuid];
 
       v4 = v9;
       if (v7)
       {
-        v8 = [v9 uuid];
-        [(CSMitigationManager *)self removeProcessFromPenaltyBox:v8 forReason:1];
+        uuid2 = [v9 uuid];
+        [(CSMitigationManager *)self removeProcessFromPenaltyBox:uuid2 forReason:1];
 
         v4 = v9;
       }
@@ -2539,7 +2539,7 @@ LABEL_16:
 - (void)_init
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_6();
   _os_log_error_impl(v2, v3, v4, v5, v6, 8u);
@@ -2704,7 +2704,7 @@ LABEL_16:
 - (void)policyMitigationsEnabled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_6();
   _os_log_error_impl(v2, v3, v4, v5, v6, 8u);

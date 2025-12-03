@@ -1,16 +1,16 @@
 @interface HMDWACBrowser
 + (id)logCategory;
-- (HMDWACBrowser)initWithWACScanner:(id)a3 messageDispatcher:(id)a4;
+- (HMDWACBrowser)initWithWACScanner:(id)scanner messageDispatcher:(id)dispatcher;
 - (HMDWACBrowserDelegate)delegate;
 - (void)clearBackoff;
 - (void)requestBackoff;
-- (void)scanner:(id)a3 didError:(id)a4;
-- (void)scanner:(id)a3 didRemoveDevice:(id)a4;
-- (void)scanner:(id)a3 didUpdateDevice:(id)a4;
-- (void)scannerDidStop:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)scanner:(id)scanner didError:(id)error;
+- (void)scanner:(id)scanner didRemoveDevice:(id)device;
+- (void)scanner:(id)scanner didUpdateDevice:(id)device;
+- (void)scannerDidStop:(id)stop;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)startBrowsingForAccessories;
-- (void)startBrowsingForAirPlayWACAccessoriesWithBrowser:(id)a3;
+- (void)startBrowsingForAirPlayWACAccessoriesWithBrowser:(id)browser;
 - (void)stopBrowsingForAccessories;
 @end
 
@@ -23,12 +23,12 @@
   return WeakRetained;
 }
 
-- (void)scannerDidStop:(id)a3
+- (void)scannerDidStop:(id)stop
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stopCopy = stop;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -39,10 +39,10 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([(HMDWACBrowser *)v6 scanIsActive])
+  if ([(HMDWACBrowser *)selfCopy scanIsActive])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v6;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -69,13 +69,13 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanner:(id)a3 didError:(id)a4
+- (void)scanner:(id)scanner didError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scannerCopy = scanner;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -83,7 +83,7 @@
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Error while scanning for WAC devices: %@", &v13, 0x16u);
   }
 
@@ -91,30 +91,30 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanner:(id)a3 didUpdateDevice:(id)a4
+- (void)scanner:(id)scanner didUpdateDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = v7;
-  unassociatedAccessories = v8->_unassociatedAccessories;
-  v11 = [v9 identifier];
-  v12 = [(NSMutableDictionary *)unassociatedAccessories objectForKey:v11];
+  scannerCopy = scanner;
+  deviceCopy = device;
+  selfCopy = self;
+  v9 = deviceCopy;
+  unassociatedAccessories = selfCopy->_unassociatedAccessories;
+  identifier = [v9 identifier];
+  v12 = [(NSMutableDictionary *)unassociatedAccessories objectForKey:identifier];
 
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v8;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v12 wacDevice];
+      wacDevice = [v12 wacDevice];
       *v21 = 138543874;
       *&v21[4] = v16;
       *&v21[12] = 2112;
-      *&v21[14] = v17;
+      *&v21[14] = wacDevice;
       *&v21[22] = 2112;
       v22 = v9;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Updating WAC device: %@ -> %@", v21, 0x20u);
@@ -122,39 +122,39 @@
 
     objc_autoreleasePoolPop(v13);
     [v12 setWACDevice:v9];
-    v18 = [(HMDWACBrowser *)v14 delegate];
-    if (v18)
+    delegate = [(HMDWACBrowser *)v14 delegate];
+    if (delegate)
     {
-      v19 = [(HMDWACBrowser *)v14 delegateQueue];
+      delegateQueue = [(HMDWACBrowser *)v14 delegateQueue];
       *v21 = MEMORY[0x277D85DD0];
       *&v21[8] = 3221225472;
       *&v21[16] = ____updateDevice_block_invoke;
       v22 = &unk_27868A750;
-      v23 = v18;
+      v23 = delegate;
       v24 = v12;
-      dispatch_async(v19, v21);
+      dispatch_async(delegateQueue, v21);
     }
   }
 
   else
   {
-    __addDevice(v8, v9);
+    __addDevice(selfCopy, v9);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanner:(id)a3 didRemoveDevice:(id)a4
+- (void)scanner:(id)scanner didRemoveDevice:(id)device
 {
-  v5 = [a4 identifier];
-  __removeUnassociatedAccessory(self, v5);
+  identifier = [device identifier];
+  __removeUnassociatedAccessory(self, identifier);
 }
 
 - (void)clearBackoff
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -165,12 +165,12 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  dispatchQueue = v4->_dispatchQueue;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__HMDWACBrowser_clearBackoff__block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -179,7 +179,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -190,12 +190,12 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  dispatchQueue = v4->_dispatchQueue;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__HMDWACBrowser_requestBackoff__block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -220,17 +220,17 @@ uint64_t __43__HMDWACBrowser_stopBrowsingForAccessories__block_invoke(uint64_t a
   return [v2 setScanIsActive:0];
 }
 
-- (void)startBrowsingForAirPlayWACAccessoriesWithBrowser:(id)a3
+- (void)startBrowsingForAirPlayWACAccessoriesWithBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMDWACBrowser_startBrowsingForAirPlayWACAccessoriesWithBrowser___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = browserCopy;
+  v6 = browserCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -271,20 +271,20 @@ uint64_t __44__HMDWACBrowser_startBrowsingForAccessories__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMDWACBrowser_setDelegate_queue___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -297,17 +297,17 @@ uint64_t __35__HMDWACBrowser_setDelegate_queue___block_invoke(uint64_t a1)
   return [v3 setDelegateQueue:v2];
 }
 
-- (HMDWACBrowser)initWithWACScanner:(id)a3 messageDispatcher:(id)a4
+- (HMDWACBrowser)initWithWACScanner:(id)scanner messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
+  scannerCopy = scanner;
+  dispatcherCopy = dispatcher;
   v18.receiver = self;
   v18.super_class = HMDWACBrowser;
   v9 = [(HMDWACBrowser *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageDispatcher, a4);
+    objc_storeStrong(&v9->_messageDispatcher, dispatcher);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     unassociatedAccessories = v10->_unassociatedAccessories;
     v10->_unassociatedAccessories = v11;
@@ -318,7 +318,7 @@ uint64_t __35__HMDWACBrowser_setDelegate_queue___block_invoke(uint64_t a1)
     dispatchQueue = v10->_dispatchQueue;
     v10->_dispatchQueue = v15;
 
-    objc_storeStrong(&v10->_wacScanner, a3);
+    objc_storeStrong(&v10->_wacScanner, scanner);
     [(HMDWACScanner *)v10->_wacScanner setDelegate:v10 queue:v10->_dispatchQueue];
     v10->_scanIsActive = 0;
   }

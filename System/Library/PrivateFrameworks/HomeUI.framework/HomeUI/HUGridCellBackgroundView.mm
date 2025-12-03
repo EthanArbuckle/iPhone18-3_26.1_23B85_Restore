@@ -13,14 +13,14 @@
 - (void)_updateDisplay;
 - (void)_updateHighlightView;
 - (void)dealloc;
-- (void)setBackgroundEffectViewGrouper:(id)a3;
-- (void)setBackgroundState:(unint64_t)a3;
-- (void)setBackgroundTintColor:(id)a3;
-- (void)setDisplayOptions:(id)a3;
-- (void)setOverrideBackgroundEffect:(id)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setUseDefaultCellBackgroundColor:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundEffectViewGrouper:(id)grouper;
+- (void)setBackgroundState:(unint64_t)state;
+- (void)setBackgroundTintColor:(id)color;
+- (void)setDisplayOptions:(id)options;
+- (void)setOverrideBackgroundEffect:(id)effect;
+- (void)setPressed:(BOOL)pressed;
+- (void)setUseDefaultCellBackgroundColor:(BOOL)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUGridCellBackgroundView
@@ -46,27 +46,27 @@ void __45__HUGridCellBackgroundView__sharedBlurEffect__block_invoke()
 
 - (void)_createEffectViewIfNecessary
 {
-  v3 = [(HUGridCellBackgroundView *)self effectView];
+  effectView = [(HUGridCellBackgroundView *)self effectView];
 
-  if (!v3)
+  if (!effectView)
   {
     v4 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     [(HUGridCellBackgroundView *)self setEffectView:v4];
 
-    v5 = [(HUGridCellBackgroundView *)self effectView];
-    [v5 setAutoresizingMask:18];
+    effectView2 = [(HUGridCellBackgroundView *)self effectView];
+    [effectView2 setAutoresizingMask:18];
 
     if ([MEMORY[0x277D14CE8] isAMac])
     {
-      v6 = [(HUGridCellBackgroundView *)self traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection = [(HUGridCellBackgroundView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v7 == 1)
+      if (userInterfaceStyle == 1)
       {
-        v10 = [(HUGridCellBackgroundView *)self effectView];
-        v8 = [v10 contentView];
-        v9 = [MEMORY[0x277D75348] systemMidGrayTintColor];
-        [v8 setBackgroundColor:v9];
+        effectView3 = [(HUGridCellBackgroundView *)self effectView];
+        contentView = [effectView3 contentView];
+        systemMidGrayTintColor = [MEMORY[0x277D75348] systemMidGrayTintColor];
+        [contentView setBackgroundColor:systemMidGrayTintColor];
       }
     }
   }
@@ -74,32 +74,32 @@ void __45__HUGridCellBackgroundView__sharedBlurEffect__block_invoke()
 
 - (void)_createOffCCMaterialViewIfNecessary
 {
-  v3 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+  ccOffMaterialView = [(HUGridCellBackgroundView *)self ccOffMaterialView];
 
-  if (v3)
+  if (ccOffMaterialView)
   {
     return;
   }
 
-  v4 = [(HUGridCellBackgroundView *)self displayOptions];
-  v5 = [v4 displayStyle];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
+  displayStyle = [displayOptions displayStyle];
 
-  if (v5 == 3)
+  if (displayStyle == 3)
   {
-    v6 = [MEMORY[0x277CFC960] controlCenterModuleBackgroundMaterial];
+    controlCenterModuleBackgroundMaterial = [MEMORY[0x277CFC960] controlCenterModuleBackgroundMaterial];
 LABEL_6:
-    v9 = v6;
-    [(HUGridCellBackgroundView *)self setCcOffMaterialView:v6];
+    v9 = controlCenterModuleBackgroundMaterial;
+    [(HUGridCellBackgroundView *)self setCcOffMaterialView:controlCenterModuleBackgroundMaterial];
 
     goto LABEL_7;
   }
 
-  v7 = [(HUGridCellBackgroundView *)self displayOptions];
-  v8 = [v7 displayStyle];
+  displayOptions2 = [(HUGridCellBackgroundView *)self displayOptions];
+  displayStyle2 = [displayOptions2 displayStyle];
 
-  if (v8 == 2)
+  if (displayStyle2 == 2)
   {
-    v6 = [MEMORY[0x277CFC960] controlCenterTertiaryCapturingMaterial];
+    controlCenterModuleBackgroundMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryCapturingMaterial];
     goto LABEL_6;
   }
 
@@ -109,77 +109,77 @@ LABEL_7:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  ccOffMaterialView2 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+  [ccOffMaterialView2 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-  [v19 setAutoresizingMask:18];
+  ccOffMaterialView3 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+  [ccOffMaterialView3 setAutoresizingMask:18];
 }
 
 - (void)_createOnCCMaterialViewIfNecessary
 {
-  v3 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+  ccOnMaterialView = [(HUGridCellBackgroundView *)self ccOnMaterialView];
 
-  if (!v3)
+  if (!ccOnMaterialView)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUGridCellBackgroundView *)self setCcOnMaterialView:v4];
 
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    v6 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-    [v6 setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    ccOnMaterialView2 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+    [ccOnMaterialView2 setBackgroundColor:whiteColor];
 
     [(HUGridCellBackgroundView *)self bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    ccOnMaterialView3 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+    [ccOnMaterialView3 setFrame:{v8, v10, v12, v14}];
 
-    v16 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-    [v16 setAutoresizingMask:18];
+    ccOnMaterialView4 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+    [ccOnMaterialView4 setAutoresizingMask:18];
   }
 }
 
 - (void)_createHighlightCCMateriaViewIfNecessary
 {
-  v3 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+  ccHighlightMaterialView = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
 
-  if (!v3)
+  if (!ccHighlightMaterialView)
   {
-    v4 = [MEMORY[0x277CFC960] controlCenterLightFill];
-    [(HUGridCellBackgroundView *)self setCcHighlightMaterialView:v4];
+    controlCenterLightFill = [MEMORY[0x277CFC960] controlCenterLightFill];
+    [(HUGridCellBackgroundView *)self setCcHighlightMaterialView:controlCenterLightFill];
 
-    v5 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-    [v5 setAlpha:0.0];
+    ccHighlightMaterialView2 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+    [ccHighlightMaterialView2 setAlpha:0.0];
 
     [(HUGridCellBackgroundView *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    ccHighlightMaterialView3 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+    [ccHighlightMaterialView3 setFrame:{v7, v9, v11, v13}];
 
-    v15 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-    [v15 setAutoresizingMask:18];
+    ccHighlightMaterialView4 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+    [ccHighlightMaterialView4 setAutoresizingMask:18];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-  if (v3)
+  backgroundEffectViewGrouper = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+  if (backgroundEffectViewGrouper)
   {
-    v4 = v3;
-    v5 = [(HUGridCellBackgroundView *)self effectView];
+    v4 = backgroundEffectViewGrouper;
+    effectView = [(HUGridCellBackgroundView *)self effectView];
 
-    if (v5)
+    if (effectView)
     {
-      v6 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-      v7 = [(HUGridCellBackgroundView *)self effectView];
-      [v6 backgroundEffectRemoveCaptureDependent:v7 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
+      backgroundEffectViewGrouper2 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+      effectView2 = [(HUGridCellBackgroundView *)self effectView];
+      [backgroundEffectViewGrouper2 backgroundEffectRemoveCaptureDependent:effectView2 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
     }
   }
 
@@ -188,25 +188,25 @@ LABEL_7:
   [(HUGridCellBackgroundView *)&v8 dealloc];
 }
 
-- (void)setDisplayOptions:(id)a3
+- (void)setDisplayOptions:(id)options
 {
-  objc_storeStrong(&self->_displayOptions, a3);
+  objc_storeStrong(&self->_displayOptions, options);
 
   [(HUGridCellBackgroundView *)self _updateDisplay];
 }
 
-- (void)setBackgroundTintColor:(id)a3
+- (void)setBackgroundTintColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundTintColor, a3);
+  objc_storeStrong(&self->_backgroundTintColor, color);
 
   [(HUGridCellBackgroundView *)self _updateBackgroundColor];
 }
 
-- (void)setOverrideBackgroundEffect:(id)a3
+- (void)setOverrideBackgroundEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   v6 = self->_overrideBackgroundEffect;
-  v7 = v5;
+  v7 = effectCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -225,18 +225,18 @@ LABEL_7:
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_overrideBackgroundEffect, a3);
+    objc_storeStrong(&self->_overrideBackgroundEffect, effect);
     [(HUGridCellBackgroundView *)self _updateDisplay];
   }
 
 LABEL_8:
 }
 
-- (void)setBackgroundEffectViewGrouper:(id)a3
+- (void)setBackgroundEffectViewGrouper:(id)grouper
 {
-  v4 = a3;
+  grouperCopy = grouper;
   v5 = objc_loadWeakRetained(&self->_backgroundEffectViewGrouper);
-  v6 = v4;
+  v6 = grouperCopy;
   obj = v6;
   if (v5 == v6)
   {
@@ -258,72 +258,72 @@ LABEL_8:
   {
   }
 
-  v8 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-  if (v8)
+  backgroundEffectViewGrouper = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+  if (backgroundEffectViewGrouper)
   {
-    v9 = v8;
-    v10 = [(HUGridCellBackgroundView *)self effectView];
+    v9 = backgroundEffectViewGrouper;
+    effectView = [(HUGridCellBackgroundView *)self effectView];
 
-    if (v10)
+    if (effectView)
     {
-      v11 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-      v12 = [(HUGridCellBackgroundView *)self effectView];
-      [v11 backgroundEffectRemoveCaptureDependent:v12 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
+      backgroundEffectViewGrouper2 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+      effectView2 = [(HUGridCellBackgroundView *)self effectView];
+      [backgroundEffectViewGrouper2 backgroundEffectRemoveCaptureDependent:effectView2 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
     }
   }
 
-  v13 = [(HUGridCellBackgroundView *)self effectView];
-  v14 = [v13 _captureSource];
-  v15 = [(HUGridCellBackgroundView *)self effectView];
-  [v14 _removeCaptureDependent:v15];
+  effectView3 = [(HUGridCellBackgroundView *)self effectView];
+  _captureSource = [effectView3 _captureSource];
+  effectView4 = [(HUGridCellBackgroundView *)self effectView];
+  [_captureSource _removeCaptureDependent:effectView4];
 
   objc_storeWeak(&self->_backgroundEffectViewGrouper, obj);
   [(HUGridCellBackgroundView *)self _updateDisplay];
 LABEL_11:
 }
 
-- (void)setBackgroundState:(unint64_t)a3
+- (void)setBackgroundState:(unint64_t)state
 {
-  if (self->_backgroundState != a3)
+  if (self->_backgroundState != state)
   {
-    self->_backgroundState = a3;
+    self->_backgroundState = state;
     [(HUGridCellBackgroundView *)self _updateDisplay];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(HUGridCellBackgroundView *)self _updateBackgroundColor];
 
     [(HUGridCellBackgroundView *)self _updateHighlightView];
   }
 }
 
-- (void)setUseDefaultCellBackgroundColor:(BOOL)a3
+- (void)setUseDefaultCellBackgroundColor:(BOOL)color
 {
-  if (self->_useDefaultCellBackgroundColor != a3)
+  if (self->_useDefaultCellBackgroundColor != color)
   {
-    self->_useDefaultCellBackgroundColor = a3;
+    self->_useDefaultCellBackgroundColor = color;
     [(HUGridCellBackgroundView *)self _updateBackgroundColor];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUGridCellBackgroundView;
-  [(HUGridCellBackgroundView *)&v4 traitCollectionDidChange:a3];
+  [(HUGridCellBackgroundView *)&v4 traitCollectionDidChange:change];
   [(HUGridCellBackgroundView *)self _updateDisplay];
 }
 
 - (void)_updateDisplay
 {
-  v3 = [(HUGridCellBackgroundView *)self displayOptions];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
 
-  if (!v3)
+  if (!displayOptions)
   {
     return;
   }
@@ -336,37 +336,37 @@ LABEL_11:
       if ([(HUGridCellBackgroundView *)self backgroundState]!= 1)
       {
 LABEL_17:
-        v30 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-        v31 = [v30 superview];
+        ccHighlightMaterialView = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+        superview = [ccHighlightMaterialView superview];
 
-        if (!v31)
+        if (!superview)
         {
           [(HUGridCellBackgroundView *)self _createHighlightCCMateriaViewIfNecessary];
-          v32 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-          [(HUGridCellBackgroundView *)self addSubview:v32];
+          ccHighlightMaterialView2 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+          [(HUGridCellBackgroundView *)self addSubview:ccHighlightMaterialView2];
         }
 
         [(HUGridCellBackgroundView *)self _updateHighlightView];
         goto LABEL_20;
       }
 
-      v4 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-      v5 = [v4 superview];
+      ccOffMaterialView = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+      superview2 = [ccOffMaterialView superview];
 
-      if (v5)
+      if (superview2)
       {
-        v6 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-        [v6 removeFromSuperview];
+        ccOffMaterialView2 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+        [ccOffMaterialView2 removeFromSuperview];
       }
 
-      v7 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-      v8 = [v7 superview];
+      ccOnMaterialView = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+      superview3 = [ccOnMaterialView superview];
 
-      if (!v8)
+      if (!superview3)
       {
         [(HUGridCellBackgroundView *)self _createOnCCMaterialViewIfNecessary];
-        v9 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-        [(HUGridCellBackgroundView *)self addSubview:v9];
+        ccOnMaterialView2 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+        [(HUGridCellBackgroundView *)self addSubview:ccOnMaterialView2];
       }
 
       [(HUGridCellBackgroundView *)self bounds];
@@ -374,28 +374,28 @@ LABEL_17:
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+      ccOnMaterialView3 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
     }
 
     else
     {
-      v19 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-      v20 = [v19 superview];
+      ccOnMaterialView4 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+      superview4 = [ccOnMaterialView4 superview];
 
-      if (v20)
+      if (superview4)
       {
-        v21 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-        [v21 removeFromSuperview];
+        ccOnMaterialView5 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+        [ccOnMaterialView5 removeFromSuperview];
       }
 
-      v22 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-      v23 = [v22 superview];
+      ccOffMaterialView3 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+      superview5 = [ccOffMaterialView3 superview];
 
-      if (!v23)
+      if (!superview5)
       {
         [(HUGridCellBackgroundView *)self _createOffCCMaterialViewIfNecessary];
-        v24 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-        [(HUGridCellBackgroundView *)self addSubview:v24];
+        ccOffMaterialView4 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+        [(HUGridCellBackgroundView *)self addSubview:ccOffMaterialView4];
       }
 
       [(HUGridCellBackgroundView *)self bounds];
@@ -403,11 +403,11 @@ LABEL_17:
       v13 = v26;
       v15 = v27;
       v17 = v28;
-      v18 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+      ccOnMaterialView3 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
     }
 
-    v29 = v18;
-    [v18 setFrame:{v11, v13, v15, v17}];
+    v29 = ccOnMaterialView3;
+    [ccOnMaterialView3 setFrame:{v11, v13, v15, v17}];
 
     goto LABEL_17;
   }
@@ -416,21 +416,21 @@ LABEL_20:
   if ([(HUGridCellBackgroundView *)self _shouldUseVisualEffectStyle])
   {
     [(HUGridCellBackgroundView *)self _createEffectViewIfNecessary];
-    v33 = [(HUGridCellBackgroundView *)self overrideBackgroundEffect];
+    overrideBackgroundEffect = [(HUGridCellBackgroundView *)self overrideBackgroundEffect];
 
-    v34 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-    v35 = v34;
-    if (v33)
+    backgroundEffectViewGrouper = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+    v35 = backgroundEffectViewGrouper;
+    if (overrideBackgroundEffect)
     {
-      v36 = [(HUGridCellBackgroundView *)self effectView];
-      [v35 backgroundEffectRemoveCaptureDependent:v36 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
+      effectView = [(HUGridCellBackgroundView *)self effectView];
+      [v35 backgroundEffectRemoveCaptureDependent:effectView forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
 
-      v37 = [(HUGridCellBackgroundView *)self effectView];
-      v38 = [v37 _captureSource];
-      v39 = [(HUGridCellBackgroundView *)self effectView];
-      [v38 _removeCaptureDependent:v39];
+      effectView2 = [(HUGridCellBackgroundView *)self effectView];
+      _captureSource = [effectView2 _captureSource];
+      effectView3 = [(HUGridCellBackgroundView *)self effectView];
+      [_captureSource _removeCaptureDependent:effectView3];
 
-      v40 = [(HUGridCellBackgroundView *)self overrideBackgroundEffect];
+      overrideBackgroundEffect2 = [(HUGridCellBackgroundView *)self overrideBackgroundEffect];
     }
 
     else
@@ -438,35 +438,35 @@ LABEL_20:
 
       if (v35)
       {
-        v41 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
-        v42 = [(HUGridCellBackgroundView *)self effectView];
-        [v41 backgroundEffectAddCaptureDependent:v42 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
+        backgroundEffectViewGrouper2 = [(HUGridCellBackgroundView *)self backgroundEffectViewGrouper];
+        effectView4 = [(HUGridCellBackgroundView *)self effectView];
+        [backgroundEffectViewGrouper2 backgroundEffectAddCaptureDependent:effectView4 forBackgroundEffectIdentifier:@"HUSharedVisualEffectIdentifierTileOff"];
         goto LABEL_27;
       }
 
-      v40 = [objc_opt_class() _sharedBlurEffect];
+      overrideBackgroundEffect2 = [objc_opt_class() _sharedBlurEffect];
     }
 
-    v41 = v40;
-    v42 = [(HUGridCellBackgroundView *)self effectView];
-    [v42 setEffect:v41];
+    backgroundEffectViewGrouper2 = overrideBackgroundEffect2;
+    effectView4 = [(HUGridCellBackgroundView *)self effectView];
+    [effectView4 setEffect:backgroundEffectViewGrouper2];
 LABEL_27:
 
-    v44 = [(HUGridCellBackgroundView *)self effectView];
-    [(HUGridCellBackgroundView *)self addSubview:v44];
+    effectView5 = [(HUGridCellBackgroundView *)self effectView];
+    [(HUGridCellBackgroundView *)self addSubview:effectView5];
 
     [(HUGridCellBackgroundView *)self bounds];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
-    v43 = [(HUGridCellBackgroundView *)self effectView];
-    [v43 setFrame:{v46, v48, v50, v52}];
+    effectView6 = [(HUGridCellBackgroundView *)self effectView];
+    [effectView6 setFrame:{v46, v48, v50, v52}];
     goto LABEL_28;
   }
 
-  v43 = [(HUGridCellBackgroundView *)self effectView];
-  [v43 removeFromSuperview];
+  effectView6 = [(HUGridCellBackgroundView *)self effectView];
+  [effectView6 removeFromSuperview];
 LABEL_28:
 
   [(HUGridCellBackgroundView *)self _updateCornerRadius];
@@ -474,50 +474,50 @@ LABEL_28:
 
 - (void)_updateCornerRadius
 {
-  v3 = [(HUGridCellBackgroundView *)self effectView];
-  v4 = [v3 superview];
+  effectView = [(HUGridCellBackgroundView *)self effectView];
+  superview = [effectView superview];
 
-  if (v4)
+  if (superview)
   {
     [(HUGridCellBackgroundView *)self cornerRadius];
     v6 = v5;
-    v7 = [(HUGridCellBackgroundView *)self effectView];
-    [v7 _setContinuousCornerRadius:v6];
+    effectView2 = [(HUGridCellBackgroundView *)self effectView];
+    [effectView2 _setContinuousCornerRadius:v6];
 
 LABEL_7:
     v21 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-  v9 = [v8 superview];
-  if (v9)
+  ccOffMaterialView = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+  superview2 = [ccOffMaterialView superview];
+  if (superview2)
   {
 
 LABEL_6:
     [(HUGridCellBackgroundView *)self cornerRadius];
     v13 = v12;
-    v14 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
-    [v14 _setContinuousCornerRadius:v13];
+    ccOffMaterialView2 = [(HUGridCellBackgroundView *)self ccOffMaterialView];
+    [ccOffMaterialView2 _setContinuousCornerRadius:v13];
 
     [(HUGridCellBackgroundView *)self cornerRadius];
     v16 = v15;
-    v17 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-    [v17 _setContinuousCornerRadius:v16];
+    ccOnMaterialView = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+    [ccOnMaterialView _setContinuousCornerRadius:v16];
 
     [(HUGridCellBackgroundView *)self cornerRadius];
     v19 = v18;
-    v20 = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
-    [v20 _setContinuousCornerRadius:v19];
+    ccHighlightMaterialView = [(HUGridCellBackgroundView *)self ccHighlightMaterialView];
+    [ccHighlightMaterialView _setContinuousCornerRadius:v19];
 
     [(HUGridCellBackgroundView *)self _setContinuousCornerRadius:0.0];
     goto LABEL_7;
   }
 
-  v10 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
-  v11 = [v10 superview];
+  ccOnMaterialView2 = [(HUGridCellBackgroundView *)self ccOnMaterialView];
+  superview3 = [ccOnMaterialView2 superview];
 
-  if (v11)
+  if (superview3)
   {
     goto LABEL_6;
   }
@@ -526,8 +526,8 @@ LABEL_6:
   [(HUGridCellBackgroundView *)self _setContinuousCornerRadius:?];
   v21 = 1;
 LABEL_8:
-  v22 = [(HUGridCellBackgroundView *)self layer];
-  [v22 setMasksToBounds:v21];
+  layer = [(HUGridCellBackgroundView *)self layer];
+  [layer setMasksToBounds:v21];
 }
 
 - (void)_updateBackgroundColor
@@ -541,8 +541,8 @@ LABEL_8:
 
   if ([(HUGridCellBackgroundView *)self useDefaultCellBackgroundColor])
   {
-    v12 = [(HUGridCellBackgroundView *)self traitCollection];
-    if ([v12 userInterfaceStyle] == 2)
+    traitCollection = [(HUGridCellBackgroundView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] systemGray5Color];
     }
@@ -551,14 +551,14 @@ LABEL_8:
     {
       [MEMORY[0x277D75348] systemWhiteColor];
     }
-    v3 = ;
+    _normalBackgroundColor = ;
     goto LABEL_22;
   }
 
-  v4 = [(HUGridCellBackgroundView *)self displayOptions];
-  v5 = [v4 displayStyle];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
+  displayStyle = [displayOptions displayStyle];
 
-  if (v5 == 4)
+  if (displayStyle == 4)
   {
     if ([(HUGridCellBackgroundView *)self backgroundState]== 1)
     {
@@ -570,41 +570,41 @@ LABEL_8:
       [MEMORY[0x277D75348] systemGray5Color];
     }
     v9 = ;
-    v12 = v9;
-    v10 = self;
+    traitCollection = v9;
+    selfCopy2 = self;
   }
 
   else
   {
-    v6 = [(HUGridCellBackgroundView *)self backgroundTintColor];
-    v7 = v6;
-    if (v6)
+    backgroundTintColor = [(HUGridCellBackgroundView *)self backgroundTintColor];
+    v7 = backgroundTintColor;
+    if (backgroundTintColor)
     {
-      v8 = v6;
+      systemWhiteColor = backgroundTintColor;
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
     }
 
-    v12 = v8;
+    traitCollection = systemWhiteColor;
 
     if ([(HUGridCellBackgroundView *)self backgroundState]!= 1)
     {
-      v3 = [(HUGridCellBackgroundView *)self _normalBackgroundColor];
+      _normalBackgroundColor = [(HUGridCellBackgroundView *)self _normalBackgroundColor];
 LABEL_22:
-      v11 = v3;
-      [(HUGridCellBackgroundView *)self setBackgroundColor:v3];
+      v11 = _normalBackgroundColor;
+      [(HUGridCellBackgroundView *)self setBackgroundColor:_normalBackgroundColor];
 
       goto LABEL_23;
     }
 
-    v10 = self;
-    v9 = v12;
+    selfCopy2 = self;
+    v9 = traitCollection;
   }
 
-  [(HUGridCellBackgroundView *)v10 setBackgroundColor:v9];
+  [(HUGridCellBackgroundView *)selfCopy2 setBackgroundColor:v9];
 LABEL_23:
 }
 
@@ -639,18 +639,18 @@ void __48__HUGridCellBackgroundView__updateHighlightView__block_invoke(uint64_t 
 
 - (BOOL)_shouldUseCCMaterialView
 {
-  v2 = [(HUGridCellBackgroundView *)self displayOptions];
-  v3 = [v2 displayStyle];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
+  displayStyle = [displayOptions displayStyle];
 
-  return (v3 < 5) & (0xCu >> v3);
+  return (displayStyle < 5) & (0xCu >> displayStyle);
 }
 
 - (BOOL)_shouldUseVisualEffectStyle
 {
-  v3 = [(HUGridCellBackgroundView *)self displayOptions];
-  v4 = [v3 displayStyle];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
+  displayStyle = [displayOptions displayStyle];
 
-  return v4 <= 1 && ![(HUGridCellBackgroundView *)self backgroundState]&& !UIAccessibilityIsReduceTransparencyEnabled();
+  return displayStyle <= 1 && ![(HUGridCellBackgroundView *)self backgroundState]&& !UIAccessibilityIsReduceTransparencyEnabled();
 }
 
 - (id)_normalBackgroundColor
@@ -660,27 +660,27 @@ void __48__HUGridCellBackgroundView__updateHighlightView__block_invoke(uint64_t 
     goto LABEL_6;
   }
 
-  v3 = [(HUGridCellBackgroundView *)self displayOptions];
-  v4 = [v3 contentColorStyle];
+  displayOptions = [(HUGridCellBackgroundView *)self displayOptions];
+  contentColorStyle = [displayOptions contentColorStyle];
 
-  if (v4 == 1)
+  if (contentColorStyle == 1)
   {
-    v5 = [(HUGridCellBackgroundView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle] == 2;
+    traitCollection = [(HUGridCellBackgroundView *)self traitCollection];
+    v6 = [traitCollection userInterfaceStyle] == 2;
     v7 = MEMORY[0x277D75348];
     v8 = &unk_20D5CAAB0;
     goto LABEL_11;
   }
 
-  if (v4)
+  if (contentColorStyle)
   {
 LABEL_6:
     v9 = 0;
     goto LABEL_7;
   }
 
-  v5 = [(HUGridCellBackgroundView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle] == 2;
+  traitCollection = [(HUGridCellBackgroundView *)self traitCollection];
+  v6 = [traitCollection userInterfaceStyle] == 2;
   v7 = MEMORY[0x277D75348];
   v8 = &unk_20D5CAAC0;
 LABEL_11:

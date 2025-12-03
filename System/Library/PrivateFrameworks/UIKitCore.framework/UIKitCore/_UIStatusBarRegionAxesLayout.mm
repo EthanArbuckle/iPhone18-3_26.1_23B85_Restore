@@ -1,20 +1,20 @@
 @interface _UIStatusBarRegionAxesLayout
 - (BOOL)canOverflowItems;
 - (BOOL)fitsAllItems;
-- (BOOL)mayFitDisplayItems:(id)a3 inContainerItem:(id)a4;
+- (BOOL)mayFitDisplayItems:(id)items inContainerItem:(id)item;
 - (_UIStatusBarRegion)region;
 - (void)_updateConstraints;
-- (void)setDisplayItems:(id)a3;
-- (void)setHorizontalLayout:(id)a3;
-- (void)setRegion:(id)a3;
-- (void)setVerticalLayout:(id)a3;
+- (void)setDisplayItems:(id)items;
+- (void)setHorizontalLayout:(id)layout;
+- (void)setRegion:(id)region;
+- (void)setVerticalLayout:(id)layout;
 @end
 
 @implementation _UIStatusBarRegionAxesLayout
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  obj = a3;
+  obj = region;
   WeakRetained = objc_loadWeakRetained(&self->_region);
 
   v5 = obj;
@@ -26,39 +26,39 @@
   }
 }
 
-- (void)setDisplayItems:(id)a3
+- (void)setDisplayItems:(id)items
 {
-  v5 = a3;
-  if (self->_displayItems != v5)
+  itemsCopy = items;
+  if (self->_displayItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_displayItems, a3);
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_displayItems, items);
     [(_UIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v6;
+    itemsCopy = v6;
   }
 }
 
-- (void)setHorizontalLayout:(id)a3
+- (void)setHorizontalLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_horizontalLayout != v5)
+  layoutCopy = layout;
+  if (self->_horizontalLayout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_horizontalLayout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_horizontalLayout, layout);
     [(_UIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
-- (void)setVerticalLayout:(id)a3
+- (void)setVerticalLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_verticalLayout != v5)
+  layoutCopy = layout;
+  if (self->_verticalLayout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_verticalLayout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_verticalLayout, layout);
     [(_UIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
@@ -105,45 +105,45 @@
     while (v6);
   }
 
-  v9 = [(_UIStatusBarRegionAxesLayout *)self region];
-  v10 = [v9 containerItem];
+  region = [(_UIStatusBarRegionAxesLayout *)self region];
+  containerItem = [region containerItem];
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  if (v10 && [(NSArray *)self->_displayItems count])
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  if (containerItem && [(NSArray *)self->_displayItems count])
   {
     displayItems = self->_displayItems;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __50___UIStatusBarRegionAxesLayout__updateConstraints__block_invoke;
     v34[3] = &unk_1E711FD88;
-    v15 = v10;
+    v15 = containerItem;
     v35 = v15;
     [(NSArray *)displayItems enumerateObjectsUsingBlock:v34];
     if (!self->_horizontalLayout)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegionAxesLayout.m" lineNumber:94 description:{@"%@ has no horizontal layout", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegionAxesLayout.m" lineNumber:94 description:{@"%@ has no horizontal layout", self}];
     }
 
     if (!self->_verticalLayout)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegionAxesLayout.m" lineNumber:95 description:{@"%@ has no vertical layout", self}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegionAxesLayout.m" lineNumber:95 description:{@"%@ has no vertical layout", self}];
     }
 
-    v16 = [(_UIStatusBarRegionAxisLayout *)self->_horizontalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:v11 inContainerItem:v15 axis:0];
-    [(NSArray *)v12 addObjectsFromArray:v16];
+    v16 = [(_UIStatusBarRegionAxisLayout *)self->_horizontalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:array inContainerItem:v15 axis:0];
+    [(NSArray *)array2 addObjectsFromArray:v16];
 
-    v17 = [(_UIStatusBarRegionAxisLayout *)self->_verticalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:v11 inContainerItem:v15 axis:1];
-    [(NSArray *)v13 addObjectsFromArray:v17];
+    v17 = [(_UIStatusBarRegionAxisLayout *)self->_verticalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:array inContainerItem:v15 axis:1];
+    [(NSArray *)array3 addObjectsFromArray:v17];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v11;
+    v18 = array;
     v19 = [(NSArray *)v18 countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v19)
     {
@@ -169,44 +169,44 @@
       while (v20);
     }
 
-    [MEMORY[0x1E69977A0] activateConstraints:v12];
-    [MEMORY[0x1E69977A0] activateConstraints:v13];
+    [MEMORY[0x1E69977A0] activateConstraints:array2];
+    [MEMORY[0x1E69977A0] activateConstraints:array3];
   }
 
   horizontalConstraints = self->_horizontalConstraints;
-  self->_horizontalConstraints = v12;
-  v24 = v12;
+  self->_horizontalConstraints = array2;
+  v24 = array2;
 
   verticalConstraints = self->_verticalConstraints;
-  self->_verticalConstraints = v13;
-  v26 = v13;
+  self->_verticalConstraints = array3;
+  v26 = array3;
 
   layoutGuides = self->_layoutGuides;
-  self->_layoutGuides = v11;
+  self->_layoutGuides = array;
 }
 
-- (BOOL)mayFitDisplayItems:(id)a3 inContainerItem:(id)a4
+- (BOOL)mayFitDisplayItems:(id)items inContainerItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = ((objc_opt_respondsToSelector() & 1) == 0 || [(_UIStatusBarRegionAxisLayout *)self->_horizontalLayout mayFitDisplayItems:v6 inContainerItem:v7 axis:0]) && ((objc_opt_respondsToSelector() & 1) == 0 || [(_UIStatusBarRegionAxisLayout *)self->_verticalLayout mayFitDisplayItems:v6 inContainerItem:v7 axis:1]);
+  itemsCopy = items;
+  itemCopy = item;
+  v8 = ((objc_opt_respondsToSelector() & 1) == 0 || [(_UIStatusBarRegionAxisLayout *)self->_horizontalLayout mayFitDisplayItems:itemsCopy inContainerItem:itemCopy axis:0]) && ((objc_opt_respondsToSelector() & 1) == 0 || [(_UIStatusBarRegionAxisLayout *)self->_verticalLayout mayFitDisplayItems:itemsCopy inContainerItem:itemCopy axis:1]);
 
   return v8;
 }
 
 - (BOOL)fitsAllItems
 {
-  v3 = [(_UIStatusBarRegionAxesLayout *)self displayItems];
-  v4 = [v3 count];
+  displayItems = [(_UIStatusBarRegionAxesLayout *)self displayItems];
+  v4 = [displayItems count];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [(_UIStatusBarRegionAxesLayout *)self region];
-  v6 = [v5 containerItem];
-  [v6 _ui_bounds];
+  region = [(_UIStatusBarRegionAxesLayout *)self region];
+  containerItem = [region containerItem];
+  [containerItem _ui_bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -241,10 +241,10 @@
   y = v38.origin.y;
   width = v38.size.width;
   height = v38.size.height;
-  v21 = [(_UIStatusBarRegionAxesLayout *)self displayItems];
-  v22 = [v21 firstObject];
-  v23 = [v22 layoutItem];
-  [v23 _ui_frame];
+  displayItems2 = [(_UIStatusBarRegionAxesLayout *)self displayItems];
+  firstObject = [displayItems2 firstObject];
+  layoutItem = [firstObject layoutItem];
+  [layoutItem _ui_frame];
   v41.origin.x = v24;
   v41.origin.y = v25;
   v41.size.width = v26;
@@ -255,10 +255,10 @@
   v39.size.height = height;
   if (CGRectContainsRect(v39, v41))
   {
-    v28 = [(_UIStatusBarRegionAxesLayout *)self displayItems];
-    v29 = [v28 lastObject];
-    v30 = [v29 layoutItem];
-    [v30 _ui_frame];
+    displayItems3 = [(_UIStatusBarRegionAxesLayout *)self displayItems];
+    lastObject = [displayItems3 lastObject];
+    layoutItem2 = [lastObject layoutItem];
+    [layoutItem2 _ui_frame];
     v42.origin.x = v31;
     v42.origin.y = v32;
     v42.size.width = v33;

@@ -1,5 +1,5 @@
 @interface PLAdjustmentVirtualResource
-- (PLAdjustmentVirtualResource)initWithAdjustmentFilePath:(id)a3 forAsset:(id)a4;
+- (PLAdjustmentVirtualResource)initWithAdjustmentFilePath:(id)path forAsset:(id)asset;
 - (id)adjustmentDictionary;
 - (int64_t)dataLength;
 - (int64_t)estimatedDataLength;
@@ -10,10 +10,10 @@
 - (id)adjustmentDictionary
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(PLVirtualResource *)self fileURL];
-  if (v2)
+  fileURL = [(PLVirtualResource *)self fileURL];
+  if (fileURL)
   {
-    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2 options:2 error:0];
+    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL options:2 error:0];
     if (v3)
     {
       v8 = 0;
@@ -37,7 +37,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v10 = v2;
+        v10 = fileURL;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "adjustmentFileData is nil for file URL: %@", buf, 0xCu);
       }
 
@@ -70,14 +70,14 @@
     return [MEMORY[0x1E6994B60] maxInlineDataSize] / 2;
   }
 
-  v4 = [(NSNumber *)cachedDataLength unsignedLongLongValue];
+  unsignedLongLongValue = [(NSNumber *)cachedDataLength unsignedLongLongValue];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v4)
+  if (!unsignedLongLongValue)
   {
     return [MEMORY[0x1E6994B60] maxInlineDataSize] / 2;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (int64_t)dataLength
@@ -86,13 +86,13 @@
   cachedDataLength = self->_cachedDataLength;
   if (!cachedDataLength)
   {
-    v4 = [(PLVirtualResource *)self dataStoreKey];
-    v5 = [(PLVirtualResource *)self assetID];
-    v6 = [v4 fileURLForAssetID:v5];
-    v7 = [v6 path];
+    dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
+    assetID = [(PLVirtualResource *)self assetID];
+    v6 = [dataStoreKey fileURLForAssetID:assetID];
+    path = [v6 path];
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 attributesOfItemAtPath:v7 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager attributesOfItemAtPath:path error:0];
 
     v10 = [v9 objectForKey:*MEMORY[0x1E696A3B8]];
     if (v10)
@@ -103,24 +103,24 @@
     cachedDataLength = self->_cachedDataLength;
   }
 
-  v11 = [(NSNumber *)cachedDataLength unsignedLongLongValue];
+  unsignedLongLongValue = [(NSNumber *)cachedDataLength unsignedLongLongValue];
   os_unfair_lock_unlock(&self->_lock);
-  return v11;
+  return unsignedLongLongValue;
 }
 
-- (PLAdjustmentVirtualResource)initWithAdjustmentFilePath:(id)a3 forAsset:(id)a4
+- (PLAdjustmentVirtualResource)initWithAdjustmentFilePath:(id)path forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  assetCopy = asset;
   v16.receiver = self;
   v16.super_class = PLAdjustmentVirtualResource;
-  v9 = [(PLVirtualResource *)&v16 initWithAsset:v8 resourceType:8 version:2 recipeID:0];
+  v9 = [(PLVirtualResource *)&v16 initWithAsset:assetCopy resourceType:8 version:2 recipeID:0];
   if (v9)
   {
-    if (!v7)
+    if (!pathCopy)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v9 file:@"PLAdjustmentVirtualResource.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"pathForAdjustmentFile"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PLAdjustmentVirtualResource.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"pathForAdjustmentFile"}];
     }
 
     v9->_lock._os_unfair_lock_opaque = 0;
@@ -131,10 +131,10 @@
     [(PLValidatedExternalResource *)v11 setResourceType:[(PLVirtualResource *)v9 resourceType]];
     [(PLValidatedExternalResource *)v11 setVersion:[(PLVirtualResource *)v9 version]];
     [(PLValidatedExternalResource *)v11 setRecipeID:[(PLVirtualResource *)v9 recipeID]];
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v7 isDirectory:0];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     [(PLValidatedExternalResource *)v11 setFileURL:v12];
 
-    v13 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v11 asset:v8];
+    v13 = [[PLPrimaryResourceDataStoreKey alloc] initFromExistingLocationOfExternalResource:v11 asset:assetCopy];
     [(PLVirtualResource *)v9 setDataStoreKey:v13];
   }
 

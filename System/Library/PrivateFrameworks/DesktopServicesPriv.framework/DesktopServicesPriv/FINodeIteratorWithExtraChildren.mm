@@ -8,46 +8,46 @@
 
 - (id)first
 {
-  v3 = [(FINodeIterator *)self->_baseIterator first];
-  if (!v3)
+  first = [(FINodeIterator *)self->_baseIterator first];
+  if (!first)
   {
-    v3 = [(FINodeIterator *)self->_extraIterator first];
+    first = [(FINodeIterator *)self->_extraIterator first];
   }
 
-  return v3;
+  return first;
 }
 
 - (id)next
 {
   if (self->_baseIteratorDone)
   {
-    v3 = [(FINodeIterator *)self->_extraIterator next];
+    next = [(FINodeIterator *)self->_extraIterator next];
   }
 
   else
   {
-    v3 = [(FINodeIterator *)self->_baseIterator next];
-    if (!v3)
+    next = [(FINodeIterator *)self->_baseIterator next];
+    if (!next)
     {
       self->_baseIteratorDone = 1;
-      v3 = [(FINodeIterator *)self->_extraIterator first];
+      next = [(FINodeIterator *)self->_extraIterator first];
     }
   }
 
-  return v3;
+  return next;
 }
 
 - (BOOL)fullyPopulated
 {
-  v3 = [(FINodeIterator *)self->_baseIterator fullyPopulated];
-  if (v3)
+  fullyPopulated = [(FINodeIterator *)self->_baseIterator fullyPopulated];
+  if (fullyPopulated)
   {
     extraIterator = self->_extraIterator;
 
-    LOBYTE(v3) = [(FINodeIterator *)extraIterator fullyPopulated];
+    LOBYTE(fullyPopulated) = [(FINodeIterator *)extraIterator fullyPopulated];
   }
 
-  return v3;
+  return fullyPopulated;
 }
 
 @end

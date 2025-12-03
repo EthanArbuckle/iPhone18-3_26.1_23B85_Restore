@@ -1,8 +1,8 @@
 @interface TDProperty
 - (NSString)name;
-- (void)addToDictionary:(id)a3;
+- (void)addToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation TDProperty
@@ -22,20 +22,20 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TDProperty *)self willChangeValueForKey:@"name"];
 
-  self->_name = [a3 copy];
+  self->_name = [name copy];
 
   [(TDProperty *)self didChangeValueForKey:@"name"];
 }
 
-- (void)addToDictionary:(id)a3
+- (void)addToDictionary:(id)dictionary
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
-  [v5 handleFailureInMethod:a2 object:self file:@"TDProperty.m" lineNumber:33 description:@"Abstract TDProperty instances can't be put in a dictionary since they have no value."];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TDProperty.m" lineNumber:33 description:@"Abstract TDProperty instances can't be put in a dictionary since they have no value."];
 }
 
 @end

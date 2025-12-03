@@ -1,36 +1,36 @@
 @interface SIRINLUINTERNALComponentOverride
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOverrideNamespace:(id)a3;
+- (int)StringAsOverrideNamespace:(id)namespace;
 - (int)overrideNamespace;
 - (unint64_t)hash;
-- (void)addNluRequestRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)setHasOverrideNamespace:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNluRequestRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)setHasOverrideNamespace:(BOOL)namespace;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALComponentOverride
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALComponentOverride *)self setIdA:?];
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) != 0)
   {
-    self->_overrideNamespace = *(v4 + 8);
+    self->_overrideNamespace = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -43,23 +43,23 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 60) & 4) == 0)
+  else if ((*(fromCopy + 60) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_enabled = *(v4 + 56);
+  self->_enabled = *(fromCopy + 56);
   *&self->_has |= 4u;
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
 LABEL_6:
-    self->_creationTimestampMsSinceUnixEpoch = *(v4 + 1);
+    self->_creationTimestampMsSinceUnixEpoch = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
   value = self->_value;
-  v7 = *(v4 + 6);
+  v7 = *(fromCopy + 6);
   if (value)
   {
     if (v7)
@@ -77,7 +77,7 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -101,7 +101,7 @@ LABEL_7:
     while (v10);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUINTERNALComponentOverride *)self setSerializedValue:?];
   }
@@ -153,16 +153,16 @@ LABEL_8:
   return v7 ^ v8 ^ [(NSData *)self->_serializedValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   idA = self->_idA;
-  if (idA | *(v4 + 2))
+  if (idA | *(equalCopy + 2))
   {
     if (![(NSString *)idA isEqual:?])
     {
@@ -170,23 +170,23 @@ LABEL_8:
     }
   }
 
-  v6 = *(v4 + 60);
+  v6 = *(equalCopy + 60);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_overrideNamespace != *(v4 + 8))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_overrideNamespace != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_11;
     }
@@ -196,21 +196,21 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((*(v4 + 60) & 4) == 0)
+  if ((*(equalCopy + 60) & 4) == 0)
   {
     goto LABEL_27;
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if (self->_enabled)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_27;
   }
@@ -218,25 +218,25 @@ LABEL_27:
 LABEL_11:
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_27;
   }
 
   value = self->_value;
-  if (value | *(v4 + 6) && ![(SIRINLUINTERNALOverrideValue *)value isEqual:?])
+  if (value | *(equalCopy + 6) && ![(SIRINLUINTERNALOverrideValue *)value isEqual:?])
   {
     goto LABEL_27;
   }
 
   nluRequestRules = self->_nluRequestRules;
-  if (nluRequestRules | *(v4 + 3))
+  if (nluRequestRules | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)nluRequestRules isEqual:?])
     {
@@ -245,7 +245,7 @@ LABEL_11:
   }
 
   serializedValue = self->_serializedValue;
-  if (serializedValue | *(v4 + 5))
+  if (serializedValue | *(equalCopy + 5))
   {
     v11 = [(NSData *)serializedValue isEqual:?];
   }
@@ -260,11 +260,11 @@ LABEL_28:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idA copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -301,7 +301,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(SIRINLUINTERNALOverrideValue *)self->_value copyWithZone:a3];
+  v9 = [(SIRINLUINTERNALOverrideValue *)self->_value copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
@@ -324,7 +324,7 @@ LABEL_5:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v16 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addNluRequestRules:v16];
       }
 
@@ -334,7 +334,7 @@ LABEL_5:
     while (v13);
   }
 
-  v17 = [(NSData *)self->_serializedValue copyWithZone:a3];
+  v17 = [(NSData *)self->_serializedValue copyWithZone:zone];
   v18 = *(v5 + 40);
   *(v5 + 40) = v17;
 
@@ -342,21 +342,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_idA)
   {
-    [v4 setIdA:?];
-    v4 = v10;
+    [toCopy setIdA:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_overrideNamespace;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 8) = self->_overrideNamespace;
+    *(toCopy + 60) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -375,13 +375,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 56) = self->_enabled;
-  *(v4 + 60) |= 4u;
+  *(toCopy + 56) = self->_enabled;
+  *(toCopy + 60) |= 4u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = self->_creationTimestampMsSinceUnixEpoch;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = self->_creationTimestampMsSinceUnixEpoch;
+    *(toCopy + 60) |= 1u;
   }
 
 LABEL_7:
@@ -393,10 +393,10 @@ LABEL_7:
   if ([(SIRINLUINTERNALComponentOverride *)self nluRequestRulesCount])
   {
     [v10 clearNluRequestRules];
-    v6 = [(SIRINLUINTERNALComponentOverride *)self nluRequestRulesCount];
-    if (v6)
+    nluRequestRulesCount = [(SIRINLUINTERNALComponentOverride *)self nluRequestRulesCount];
+    if (nluRequestRulesCount)
     {
-      v7 = v6;
+      v7 = nluRequestRulesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUINTERNALComponentOverride *)self nluRequestRulesAtIndex:i];
@@ -411,10 +411,10 @@ LABEL_7:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idA)
   {
     PBDataWriterWriteStringField();
@@ -498,12 +498,12 @@ LABEL_7:
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idA = self->_idA;
   if (idA)
   {
-    [v3 setObject:idA forKey:@"id_a"];
+    [dictionary setObject:idA forKey:@"id_a"];
   }
 
   has = self->_has;
@@ -542,8 +542,8 @@ LABEL_7:
   value = self->_value;
   if (value)
   {
-    v12 = [(SIRINLUINTERNALOverrideValue *)value dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"value"];
+    dictionaryRepresentation = [(SIRINLUINTERNALOverrideValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   if ([(NSMutableArray *)self->_nluRequestRules count])
@@ -568,8 +568,8 @@ LABEL_7:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -598,33 +598,33 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALComponentOverride;
   v4 = [(SIRINLUINTERNALComponentOverride *)&v8 description];
-  v5 = [(SIRINLUINTERNALComponentOverride *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALComponentOverride *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNluRequestRules:(id)a3
+- (void)addNluRequestRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   nluRequestRules = self->_nluRequestRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!nluRequestRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nluRequestRules;
     self->_nluRequestRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     nluRequestRules = self->_nluRequestRules;
   }
 
-  [(NSMutableArray *)nluRequestRules addObject:v4];
+  [(NSMutableArray *)nluRequestRules addObject:rulesCopy];
 }
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -637,40 +637,40 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsOverrideNamespace:(id)a3
+- (int)StringAsOverrideNamespace:(id)namespace
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_UNSPECIFIED"])
+  namespaceCopy = namespace;
+  if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_UNSPECIFIED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_NLX"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_NLX"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_CCQR"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_CCQR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_MDS_UAAP"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_MDS_UAAP"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_LVC"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_LVC"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_NLv4"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_NLv4"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"OVERRIDE_NAMESPACE_PLANNER"])
+  else if ([namespaceCopy isEqualToString:@"OVERRIDE_NAMESPACE_PLANNER"])
   {
     v4 = 6;
   }
@@ -683,9 +683,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)setHasOverrideNamespace:(BOOL)a3
+- (void)setHasOverrideNamespace:(BOOL)namespace
 {
-  if (a3)
+  if (namespace)
   {
     v3 = 2;
   }

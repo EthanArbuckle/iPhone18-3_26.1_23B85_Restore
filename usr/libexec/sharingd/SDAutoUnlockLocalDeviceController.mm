@@ -1,8 +1,8 @@
 @interface SDAutoUnlockLocalDeviceController
 - (BOOL)faceIDEnabled;
 - (BOOL)supportsPeriocular;
-- (SDAutoUnlockLocalDeviceController)initWithQueue:(id)a3;
-- (void)handleBioLockoutStateChanged:(unint64_t)a3;
+- (SDAutoUnlockLocalDeviceController)initWithQueue:(id)queue;
+- (void)handleBioLockoutStateChanged:(unint64_t)changed;
 - (void)lockDevice;
 - (void)lockWithBioLockOut;
 @end
@@ -60,13 +60,13 @@
   return v5;
 }
 
-- (SDAutoUnlockLocalDeviceController)initWithQueue:(id)a3
+- (SDAutoUnlockLocalDeviceController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v33.receiver = self;
   v33.super_class = SDAutoUnlockLocalDeviceController;
   v6 = [(SDAutoUnlockLocalDeviceController *)&v33 init];
-  objc_storeStrong(&v6->_queue, a3);
+  objc_storeStrong(&v6->_queue, queue);
   if (SFDeviceSupportsAutoUnlock())
   {
     +[BKDeviceManager availableDevices];
@@ -153,9 +153,9 @@ LABEL_12:
     }
   }
 
-  v12 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v12;
+  return bOOLValue;
 }
 
 - (void)lockWithBioLockOut
@@ -167,9 +167,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Locking current device and forcing bio lockout", buf, 2u);
   }
 
-  v4 = [(SDAutoUnlockLocalDeviceController *)self pearlDevice];
+  pearlDevice = [(SDAutoUnlockLocalDeviceController *)self pearlDevice];
   v7 = 0;
-  [v4 forceBioLockoutForUser:getuid() error:&v7];
+  [pearlDevice forceBioLockoutForUser:getuid() error:&v7];
   v5 = v7;
 
   if (v5)
@@ -196,16 +196,16 @@ LABEL_12:
   sub_1001EA8AC();
 }
 
-- (void)handleBioLockoutStateChanged:(unint64_t)a3
+- (void)handleBioLockoutStateChanged:(unint64_t)changed
 {
-  if (a3 == 3)
+  if (changed == 3)
   {
-    v4 = [(SDAutoUnlockLocalDeviceController *)self deviceEnteredBioLockoutHandler];
+    deviceEnteredBioLockoutHandler = [(SDAutoUnlockLocalDeviceController *)self deviceEnteredBioLockoutHandler];
 
-    if (v4)
+    if (deviceEnteredBioLockoutHandler)
     {
-      v5 = [(SDAutoUnlockLocalDeviceController *)self deviceEnteredBioLockoutHandler];
-      v5[2]();
+      deviceEnteredBioLockoutHandler2 = [(SDAutoUnlockLocalDeviceController *)self deviceEnteredBioLockoutHandler];
+      deviceEnteredBioLockoutHandler2[2]();
     }
   }
 }

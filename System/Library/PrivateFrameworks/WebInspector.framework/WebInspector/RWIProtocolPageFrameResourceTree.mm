@@ -2,30 +2,30 @@
 - (NSArray)childFrames;
 - (NSArray)resources;
 - (RWIProtocolPageFrame)frame;
-- (RWIProtocolPageFrameResourceTree)initWithFrame:(id)a3 resources:(id)a4;
-- (void)setChildFrames:(id)a3;
-- (void)setFrame:(id)a3;
-- (void)setResources:(id)a3;
+- (RWIProtocolPageFrameResourceTree)initWithFrame:(id)frame resources:(id)resources;
+- (void)setChildFrames:(id)frames;
+- (void)setFrame:(id)frame;
+- (void)setResources:(id)resources;
 @end
 
 @implementation RWIProtocolPageFrameResourceTree
 
-- (RWIProtocolPageFrameResourceTree)initWithFrame:(id)a3 resources:(id)a4
+- (RWIProtocolPageFrameResourceTree)initWithFrame:(id)frame resources:(id)resources
 {
   v28 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
+  frameCopy = frame;
+  resourcesCopy = resources;
   v26.receiver = self;
   v26.super_class = RWIProtocolPageFrameResourceTree;
   v6 = [(RWIProtocolJSONObject *)&v26 init];
   if (v6)
   {
-    if (!v20)
+    if (!frameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"frame"}];
     }
 
-    if (!v21)
+    if (!resourcesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"resources"}];
     }
@@ -35,7 +35,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v21;
+    v7 = resourcesCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
@@ -72,7 +72,7 @@
     }
 
     v6 = v19;
-    [(RWIProtocolPageFrameResourceTree *)v19 setFrame:v20];
+    [(RWIProtocolPageFrameResourceTree *)v19 setFrame:frameCopy];
     [(RWIProtocolPageFrameResourceTree *)v19 setResources:v7];
     v16 = v19;
   }
@@ -81,11 +81,11 @@
   return v6;
 }
 
-- (void)setFrame:(id)a3
+- (void)setFrame:(id)frame
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrameResourceTree;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"frame"];
+  [(RWIProtocolJSONObject *)&v3 setObject:frame forKey:@"frame"];
 }
 
 - (RWIProtocolPageFrame)frame
@@ -143,14 +143,14 @@
   return v7;
 }
 
-- (void)setChildFrames:(id)a3
+- (void)setChildFrames:(id)frames
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = frames;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -214,14 +214,14 @@
   return v2;
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = resources;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

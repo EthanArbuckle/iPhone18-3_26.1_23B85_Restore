@@ -1,60 +1,60 @@
 @interface MBDeviceLockInfo
-- (MBDeviceLockInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MBDeviceLockInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MBDeviceLockInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MBDeviceLockInfo *)self deviceUUID];
-  [v11 encodeObject:v5 forKey:@"deviceUUID"];
+  deviceUUID = [(MBDeviceLockInfo *)self deviceUUID];
+  [coderCopy encodeObject:deviceUUID forKey:@"deviceUUID"];
 
-  v6 = [(MBDeviceLockInfo *)self deviceName];
-  [v11 encodeObject:v6 forKey:@"deviceName"];
+  deviceName = [(MBDeviceLockInfo *)self deviceName];
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
 
-  v7 = [(MBDeviceLockInfo *)self ownerDeviceUUID];
-  [v11 encodeObject:v7 forKey:@"ownerDeviceUUID"];
+  ownerDeviceUUID = [(MBDeviceLockInfo *)self ownerDeviceUUID];
+  [coderCopy encodeObject:ownerDeviceUUID forKey:@"ownerDeviceUUID"];
 
-  v8 = [(MBDeviceLockInfo *)self ownerDeviceName];
-  [v11 encodeObject:v8 forKey:@"ownerDeviceName"];
+  ownerDeviceName = [(MBDeviceLockInfo *)self ownerDeviceName];
+  [coderCopy encodeObject:ownerDeviceName forKey:@"ownerDeviceName"];
 
-  v9 = [(MBDeviceLockInfo *)self creationDate];
-  [v11 encodeObject:v9 forKey:@"creationDate"];
+  creationDate = [(MBDeviceLockInfo *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v10 = [(MBDeviceLockInfo *)self expirationDate];
-  [v11 encodeObject:v10 forKey:@"expirationDate"];
+  expirationDate = [(MBDeviceLockInfo *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (MBDeviceLockInfo)initWithCoder:(id)a3
+- (MBDeviceLockInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v15.receiver = self;
   v15.super_class = MBDeviceLockInfo;
   v6 = [(MBDeviceLockInfo *)&v15 init];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUUID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUUID"];
     [(MBDeviceLockInfo *)v6 setDeviceUUID:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     [(MBDeviceLockInfo *)v6 setDeviceName:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerDeviceUUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerDeviceUUID"];
     [(MBDeviceLockInfo *)v6 setOwnerDeviceUUID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerDeviceName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerDeviceName"];
     [(MBDeviceLockInfo *)v6 setOwnerDeviceName:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     [(MBDeviceLockInfo *)v6 setCreationDate:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     [(MBDeviceLockInfo *)v6 setExpirationDate:v12];
   }
 

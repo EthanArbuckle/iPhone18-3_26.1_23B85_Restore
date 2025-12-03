@@ -1,6 +1,6 @@
 @interface PuzzleEmbedShowSettingsMessageHandler
 - (_TtC7NewsUI237PuzzleEmbedShowSettingsMessageHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleEmbedShowSettingsMessageHandler
@@ -14,12 +14,12 @@
   return [(PuzzleEmbedShowSettingsMessageHandler *)&v4 init];
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_218AA1128(a3);
+  selfCopy = self;
+  sub_218AA1128(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

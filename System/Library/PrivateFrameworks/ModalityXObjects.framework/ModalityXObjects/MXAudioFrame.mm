@@ -1,33 +1,33 @@
 @interface MXAudioFrame
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAudio:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAudio:(id)audio;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXAudioFrame
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   audios = self->_audios;
-  v8 = v4;
+  v8 = audioCopy;
   if (!audios)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_audios;
     self->_audios = v6;
 
-    v4 = v8;
+    audioCopy = v8;
     audios = self->_audios;
   }
 
-  [(NSMutableArray *)audios addObject:v4];
+  [(NSMutableArray *)audios addObject:audioCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = MXAudioFrame;
   v4 = [(MXAudioFrame *)&v8 description];
-  v5 = [(MXAudioFrame *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXAudioFrame *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestId = self->_requestId;
   if (requestId)
   {
-    [v3 setObject:requestId forKey:@"request_id"];
+    [dictionary setObject:requestId forKey:@"request_id"];
   }
 
   audios = self->_audios;
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteStringField();
@@ -117,41 +117,41 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v8 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if ([(MXAudioFrame *)self audiosCount])
   {
-    [v8 clearAudios];
-    v4 = [(MXAudioFrame *)self audiosCount];
-    if (v4)
+    [toCopy clearAudios];
+    audiosCount = [(MXAudioFrame *)self audiosCount];
+    if (audiosCount)
     {
-      v5 = v4;
+      v5 = audiosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MXAudioFrame *)self audioAtIndex:i];
-        [v8 addAudio:v7];
+        [toCopy addAudio:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v8[24] = self->_lastFrame;
-    v8[28] |= 1u;
+    toCopy[24] = self->_lastFrame;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -175,7 +175,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addAudio:v13];
 
         ++v12;
@@ -198,16 +198,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 2))
+  if (requestId | *(equalCopy + 2))
   {
     if (![(NSString *)requestId isEqual:?])
     {
@@ -216,7 +216,7 @@
   }
 
   audios = self->_audios;
-  if (audios | *(v4 + 1))
+  if (audios | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)audios isEqual:?])
     {
@@ -224,10 +224,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -236,13 +236,13 @@ LABEL_8:
 
     if (self->_lastFrame)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -272,11 +272,11 @@ LABEL_9:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(MXAudioFrame *)self setRequestId:?];
   }
@@ -285,7 +285,7 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -309,9 +309,9 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_lastFrame = *(v4 + 24);
+    self->_lastFrame = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 

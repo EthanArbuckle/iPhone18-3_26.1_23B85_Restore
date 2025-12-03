@@ -3,8 +3,8 @@
 - (CGRect)sectionRect;
 - (PXCuratedLibraryAssetsSectionGeneratedLayout)init;
 - (PXCuratedLibrarySectionGeometryDescriptor)presentedGeometryDescriptor;
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)getSpriteZPosition:(float *)a3 clippingRect:(CGRect *)a4 forSpriteKind:(int64_t)a5;
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block;
+- (void)getSpriteZPosition:(float *)position clippingRect:(CGRect *)rect forSpriteKind:(int64_t)kind;
 - (void)spritesDidUpdate;
 @end
 
@@ -23,45 +23,45 @@
   return result;
 }
 
-- (void)enumerateHeroSpritesInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateHeroSpritesInRect:(CGRect)rect usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryAssetsSectionGeneratedLayout enumerateHeroSpritesInRect:usingBlock:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryAssetsSectionGeneratedLayout enumerateHeroSpritesInRect:usingBlock:]", v9}];
 
   abort();
 }
 
 - (CGRect)sectionRect
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:85 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryAssetsSectionGeneratedLayout sectionRect]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:85 description:{@"Method %s is a responsibility of subclass %@", "-[PXCuratedLibraryAssetsSectionGeneratedLayout sectionRect]", v6}];
 
   abort();
 }
 
-- (void)getSpriteZPosition:(float *)a3 clippingRect:(CGRect *)a4 forSpriteKind:(int64_t)a5
+- (void)getSpriteZPosition:(float *)position clippingRect:(CGRect *)rect forSpriteKind:(int64_t)kind
 {
-  if (!a5)
+  if (!kind)
   {
     v5 = 0;
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (kind == 1)
   {
     v5 = -1093874483;
 LABEL_5:
-    *a3 = v5;
+    *position = v5;
   }
 
   v6 = *(MEMORY[0x1E695F050] + 16);
-  a4->origin = *MEMORY[0x1E695F050];
-  a4->size = v6;
+  rect->origin = *MEMORY[0x1E695F050];
+  rect->size = v6;
 }
 
 - (PXCuratedLibrarySectionGeometryDescriptor)presentedGeometryDescriptor
@@ -76,12 +76,12 @@ LABEL_5:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(PXCuratedLibraryAssetsSectionGeneratedLayout *)self presentedKeyAsset];
+  presentedKeyAsset = [(PXCuratedLibraryAssetsSectionGeneratedLayout *)self presentedKeyAsset];
   v20 = [PXCuratedLibrarySectionGeometryDescriptor alloc];
   HIDWORD(v23) = *(off_1E7721FF0 + 3);
   *(&v23 + 4) = *(off_1E7721FF0 + 4);
   LODWORD(v23) = *off_1E7721FF0;
-  v21 = [(PXCuratedLibrarySectionGeometryDescriptor *)v20 initWithSectionRect:v19 headerRect:v4 keyAssetRect:v6 headerCornerRadius:v8 headerAsset:v10, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v12, v14, v16, v18, v23];
+  v21 = [(PXCuratedLibrarySectionGeometryDescriptor *)v20 initWithSectionRect:presentedKeyAsset headerRect:v4 keyAssetRect:v6 headerCornerRadius:v8 headerAsset:v10, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v12, v14, v16, v18, v23];
 
   return v21;
 }
@@ -96,16 +96,16 @@ LABEL_5:
   v5 = *(MEMORY[0x1E695F050] + 8);
   v6 = *(MEMORY[0x1E695F050] + 16);
   v7 = *(MEMORY[0x1E695F050] + 24);
-  v8 = [(PXGGeneratedLayout *)self generator];
-  v9 = [v8 keyItemIndex];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  generator = [(PXGGeneratedLayout *)self generator];
+  keyItemIndex = [generator keyItemIndex];
+  if (keyItemIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(PXGItemsLayout *)self spriteIndexForItem:v9];
+    v11 = [(PXGItemsLayout *)self spriteIndexForItem:keyItemIndex];
     if (v11 != -1)
     {
       v32 = *off_1E7722008;
@@ -135,40 +135,40 @@ LABEL_5:
       PXRectWithCenterAndSize();
     }
 
-    v19 = [(PXCuratedLibraryAssetsSectionGeneratedLayout *)self contentSource];
-    if (v19)
+    contentSource = [(PXCuratedLibraryAssetsSectionGeneratedLayout *)self contentSource];
+    if (contentSource)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        v27 = [v19 px_descriptionForAssertionMessage];
-        [v24 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.contentSource", v26, v27}];
+        px_descriptionForAssertionMessage = [contentSource px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.contentSource", v26, px_descriptionForAssertionMessage}];
       }
 
       v34 = 0u;
       v35 = 0u;
-      [v19 sectionIndexPath];
+      [contentSource sectionIndexPath];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      [v21 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.contentSource", v23}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsSectionGeneratedLayout.m" lineNumber:55 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.contentSource", v23}];
 
       v34 = 0u;
       v35 = 0u;
     }
 
-    *&v35 = [v8 keyItemIndex];
-    v20 = [v19 dataSource];
+    *&v35 = [generator keyItemIndex];
+    dataSource = [contentSource dataSource];
     v28 = v34;
     v29 = v35;
-    v10 = [v20 assetAtItemIndexPath:&v28];
+    v10 = [dataSource assetAtItemIndexPath:&v28];
   }
 
   [(PXCuratedLibraryAssetsSectionGeneratedLayout *)self setPresentedKeyAsset:v10];

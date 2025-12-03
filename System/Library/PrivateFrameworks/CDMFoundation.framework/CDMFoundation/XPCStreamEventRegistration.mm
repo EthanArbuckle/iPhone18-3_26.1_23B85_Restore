@@ -1,48 +1,48 @@
 @interface XPCStreamEventRegistration
-+ (id)registrationWithStream:(id)a3 eventName:(id)a4 dagServiceClass:(Class)a5;
-- (id)_initWithStream:(id)a3 eventName:(id)a4 dagServiceClass:(Class)a5;
-- (void)invoke:(id)a3 fromStream:(id)a4 withAssets:(id)a5 withSelfMetadata:(id)a6;
++ (id)registrationWithStream:(id)stream eventName:(id)name dagServiceClass:(Class)class;
+- (id)_initWithStream:(id)stream eventName:(id)name dagServiceClass:(Class)class;
+- (void)invoke:(id)invoke fromStream:(id)stream withAssets:(id)assets withSelfMetadata:(id)metadata;
 @end
 
 @implementation XPCStreamEventRegistration
 
-- (id)_initWithStream:(id)a3 eventName:(id)a4 dagServiceClass:(Class)a5
+- (id)_initWithStream:(id)stream eventName:(id)name dagServiceClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
+  streamCopy = stream;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = XPCStreamEventRegistration;
   v10 = [(XPCStreamEventRegistration *)&v16 init];
   streamName = v10->_streamName;
-  v10->_streamName = v8;
-  v12 = v8;
+  v10->_streamName = streamCopy;
+  v12 = streamCopy;
 
   eventName = v10->_eventName;
-  v10->_eventName = v9;
-  v14 = v9;
+  v10->_eventName = nameCopy;
+  v14 = nameCopy;
 
-  objc_storeStrong(&v10->_dagServiceClass, a5);
+  objc_storeStrong(&v10->_dagServiceClass, class);
   return v10;
 }
 
-- (void)invoke:(id)a3 fromStream:(id)a4 withAssets:(id)a5 withSelfMetadata:(id)a6
+- (void)invoke:(id)invoke fromStream:(id)stream withAssets:(id)assets withSelfMetadata:(id)metadata
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  invokeCopy = invoke;
+  streamCopy = stream;
+  assetsCopy = assets;
+  metadataCopy = metadata;
   dagServiceClass = self->_dagServiceClass;
   if (objc_opt_respondsToSelector())
   {
-    [(objc_class *)self->_dagServiceClass handleXPCEvent:v14 fromStream:v10 withAssets:v11 withSelfMetadata:v12];
+    [(objc_class *)self->_dagServiceClass handleXPCEvent:invokeCopy fromStream:streamCopy withAssets:assetsCopy withSelfMetadata:metadataCopy];
   }
 }
 
-+ (id)registrationWithStream:(id)a3 eventName:(id)a4 dagServiceClass:(Class)a5
++ (id)registrationWithStream:(id)stream eventName:(id)name dagServiceClass:(Class)class
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[XPCStreamEventRegistration alloc] _initWithStream:v8 eventName:v7 dagServiceClass:a5];
+  nameCopy = name;
+  streamCopy = stream;
+  v9 = [[XPCStreamEventRegistration alloc] _initWithStream:streamCopy eventName:nameCopy dagServiceClass:class];
 
   return v9;
 }

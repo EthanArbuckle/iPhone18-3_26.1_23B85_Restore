@@ -7,15 +7,15 @@
 
 - (double)sb_debugFrame
 {
-  v2 = *[a1 _minimumPoint];
-  [a1 sb_debugSize];
+  v2 = *[self _minimumPoint];
+  [self sb_debugSize];
   return v2;
 }
 
 - (double)sb_debugSize
 {
-  v2 = [a1 _minimumPoint];
-  v3 = *[a1 _maximumPoint] - *v2;
+  _minimumPoint = [self _minimumPoint];
+  v3 = *[self _maximumPoint] - *_minimumPoint;
   if (BSFloatIsZero())
   {
     v3 = 20.0;

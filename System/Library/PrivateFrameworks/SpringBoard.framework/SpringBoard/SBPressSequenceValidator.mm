@@ -1,27 +1,27 @@
 @interface SBPressSequenceValidator
-- (BOOL)pressEventIsValidInSequence:(id)a3 endingDownEvent:(BOOL)a4 duration:(double)a5;
+- (BOOL)pressEventIsValidInSequence:(id)sequence endingDownEvent:(BOOL)event duration:(double)duration;
 - (SBPressSequenceValidator)init;
-- (SBPressSequenceValidator)initWithSettings:(id)a3;
-- (_SBPressSequenceValidatorBounds)_pressDownBoundsForDesiredIndex:(unint64_t)a3 sequence:(id)a4;
-- (_SBPressSequenceValidatorBounds)_pressUpBoundsForDesiredIndex:(unint64_t)a3 sequence:(id)a4;
-- (double)timeUntilNextPressEventIsInValidInSequence:(id)a3 lastPressEventInSequenceIsDown:(BOOL)a4;
-- (int64_t)_modeForDesiredIndex:(unint64_t)a3 isDownEvent:(BOOL)a4;
+- (SBPressSequenceValidator)initWithSettings:(id)settings;
+- (_SBPressSequenceValidatorBounds)_pressDownBoundsForDesiredIndex:(unint64_t)index sequence:(id)sequence;
+- (_SBPressSequenceValidatorBounds)_pressUpBoundsForDesiredIndex:(unint64_t)index sequence:(id)sequence;
+- (double)timeUntilNextPressEventIsInValidInSequence:(id)sequence lastPressEventInSequenceIsDown:(BOOL)down;
+- (int64_t)_modeForDesiredIndex:(unint64_t)index isDownEvent:(BOOL)event;
 @end
 
 @implementation SBPressSequenceValidator
 
 - (SBPressSequenceValidator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBPressSequenceValidator.m" lineNumber:53 description:@"Use initWithSettings:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBPressSequenceValidator.m" lineNumber:53 description:@"Use initWithSettings:"];
 
   return [(SBPressSequenceValidator *)self initWithSettings:0];
 }
 
-- (SBPressSequenceValidator)initWithSettings:(id)a3
+- (SBPressSequenceValidator)initWithSettings:(id)settings
 {
-  v6 = a3;
-  if (!v6)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     [(SBPressSequenceValidator *)a2 initWithSettings:?];
   }
@@ -32,23 +32,23 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_settings, a3);
+    objc_storeStrong(&v7->_settings, settings);
   }
 
   return v8;
 }
 
-- (BOOL)pressEventIsValidInSequence:(id)a3 endingDownEvent:(BOOL)a4 duration:(double)a5
+- (BOOL)pressEventIsValidInSequence:(id)sequence endingDownEvent:(BOOL)event duration:(double)duration
 {
-  v6 = a4;
+  eventCopy = event;
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 count];
+  sequenceCopy = sequence;
+  v10 = [sequenceCopy count];
   v11 = v10;
-  if (v6)
+  if (eventCopy)
   {
-    [(SBPressSequenceValidator *)self _pressDownBoundsForDesiredIndex:v10 sequence:v9];
-    if (v12 <= a5 && v13 >= a5)
+    [(SBPressSequenceValidator *)self _pressDownBoundsForDesiredIndex:v10 sequence:sequenceCopy];
+    if (v12 <= duration && v13 >= duration)
     {
 LABEL_18:
       v24 = 1;
@@ -61,7 +61,7 @@ LABEL_18:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v26 = 134218496;
-      v27 = a5;
+      durationCopy2 = duration;
       v28 = 2048;
       v29 = v15;
       v30 = 2048;
@@ -79,8 +79,8 @@ LABEL_21:
       [SBPressSequenceValidator pressEventIsValidInSequence:a2 endingDownEvent:self duration:?];
     }
 
-    -[SBPressSequenceValidator _pressUpBoundsForDesiredIndex:sequence:](self, "_pressUpBoundsForDesiredIndex:sequence:", [v9 count] - 1, v9);
-    if (v19 <= a5 && v20 >= a5)
+    -[SBPressSequenceValidator _pressUpBoundsForDesiredIndex:sequence:](self, "_pressUpBoundsForDesiredIndex:sequence:", [sequenceCopy count] - 1, sequenceCopy);
+    if (v19 <= duration && v20 >= duration)
     {
       goto LABEL_18;
     }
@@ -91,7 +91,7 @@ LABEL_21:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v26 = 134218496;
-      v27 = a5;
+      durationCopy2 = duration;
       v28 = 2048;
       v29 = v22;
       v30 = 2048;
@@ -107,19 +107,19 @@ LABEL_19:
   return v24;
 }
 
-- (double)timeUntilNextPressEventIsInValidInSequence:(id)a3 lastPressEventInSequenceIsDown:(BOOL)a4
+- (double)timeUntilNextPressEventIsInValidInSequence:(id)sequence lastPressEventInSequenceIsDown:(BOOL)down
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 count];
-  if (v4)
+  downCopy = down;
+  sequenceCopy = sequence;
+  v7 = [sequenceCopy count];
+  if (downCopy)
   {
-    [(SBPressSequenceValidator *)self _pressUpBoundsForDesiredIndex:v7 - 1 sequence:v6];
+    [(SBPressSequenceValidator *)self _pressUpBoundsForDesiredIndex:v7 - 1 sequence:sequenceCopy];
   }
 
   else
   {
-    [(SBPressSequenceValidator *)self _pressDownBoundsForDesiredIndex:v7 sequence:v6];
+    [(SBPressSequenceValidator *)self _pressDownBoundsForDesiredIndex:v7 sequence:sequenceCopy];
   }
 
   v9 = v8;
@@ -127,19 +127,19 @@ LABEL_19:
   return v9;
 }
 
-- (_SBPressSequenceValidatorBounds)_pressDownBoundsForDesiredIndex:(unint64_t)a3 sequence:(id)a4
+- (_SBPressSequenceValidatorBounds)_pressDownBoundsForDesiredIndex:(unint64_t)index sequence:(id)sequence
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SBPressSequenceValidator *)self _modeForDesiredIndex:a3 isDownEvent:1];
-  if ([(SBPressSequenceSettings *)self->_settings indexOfPressDownToUseForVarianceAndGrowth]>= a3)
+  sequenceCopy = sequence;
+  v7 = [(SBPressSequenceValidator *)self _modeForDesiredIndex:index isDownEvent:1];
+  if ([(SBPressSequenceSettings *)self->_settings indexOfPressDownToUseForVarianceAndGrowth]>= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndex:{-[SBPressSequenceSettings indexOfPressDownToUseForVarianceAndGrowth](self->_settings, "indexOfPressDownToUseForVarianceAndGrowth")}];
+    v8 = [sequenceCopy objectAtIndex:{-[SBPressSequenceSettings indexOfPressDownToUseForVarianceAndGrowth](self->_settings, "indexOfPressDownToUseForVarianceAndGrowth")}];
   }
 
   if (v7 == 2)
@@ -150,7 +150,7 @@ LABEL_19:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v18 = v6;
+    v18 = sequenceCopy;
     v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v19)
     {
@@ -229,19 +229,19 @@ LABEL_25:
   return result;
 }
 
-- (_SBPressSequenceValidatorBounds)_pressUpBoundsForDesiredIndex:(unint64_t)a3 sequence:(id)a4
+- (_SBPressSequenceValidatorBounds)_pressUpBoundsForDesiredIndex:(unint64_t)index sequence:(id)sequence
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SBPressSequenceValidator *)self _modeForDesiredIndex:a3 isDownEvent:0];
-  if ([(SBPressSequenceSettings *)self->_settings indexOfPressUpToUseForVarianceAndGrowth]>= a3)
+  sequenceCopy = sequence;
+  v7 = [(SBPressSequenceValidator *)self _modeForDesiredIndex:index isDownEvent:0];
+  if ([(SBPressSequenceSettings *)self->_settings indexOfPressUpToUseForVarianceAndGrowth]>= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndex:{-[SBPressSequenceSettings indexOfPressUpToUseForVarianceAndGrowth](self->_settings, "indexOfPressUpToUseForVarianceAndGrowth")}];
+    v8 = [sequenceCopy objectAtIndex:{-[SBPressSequenceSettings indexOfPressUpToUseForVarianceAndGrowth](self->_settings, "indexOfPressUpToUseForVarianceAndGrowth")}];
   }
 
   if (v7 == 2)
@@ -252,7 +252,7 @@ LABEL_25:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v23 = v6;
+    v23 = sequenceCopy;
     v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v24)
     {
@@ -269,9 +269,9 @@ LABEL_25:
           }
 
           v29 = *(*(&v36 + 1) + 8 * i);
-          v30 = [v23 lastObject];
+          lastObject = [v23 lastObject];
 
-          if (v29 != v30)
+          if (v29 != lastObject)
           {
             [v29 durationUp];
             if (v27 >= v31)
@@ -330,9 +330,9 @@ LABEL_30:
     if ((BSFloatEqualToFloat() & 1) == 0)
     {
       v12 = 0.0;
-      if ([v6 count] > a3)
+      if ([sequenceCopy count] > index)
       {
-        v13 = [v6 objectAtIndex:a3];
+        v13 = [sequenceCopy objectAtIndex:index];
         [v13 durationDown];
         v12 = v14;
       }
@@ -355,38 +355,38 @@ LABEL_31:
   return result;
 }
 
-- (int64_t)_modeForDesiredIndex:(unint64_t)a3 isDownEvent:(BOOL)a4
+- (int64_t)_modeForDesiredIndex:(unint64_t)index isDownEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   settings = self->_settings;
-  if (a4)
+  if (event)
   {
-    v9 = [(SBPressSequenceSettings *)settings indexOfPressDownToUseForVarianceAndGrowth];
-    v10 = [(SBPressSequenceSettings *)self->_settings numberOfPressDownGrowthTerms];
+    indexOfPressDownToUseForVarianceAndGrowth = [(SBPressSequenceSettings *)settings indexOfPressDownToUseForVarianceAndGrowth];
+    numberOfPressDownGrowthTerms = [(SBPressSequenceSettings *)self->_settings numberOfPressDownGrowthTerms];
   }
 
   else
   {
-    v9 = [(SBPressSequenceSettings *)settings indexOfPressUpToUseForVarianceAndGrowth];
-    v10 = [(SBPressSequenceSettings *)self->_settings numberOfPressUpGrowthTerms];
+    indexOfPressDownToUseForVarianceAndGrowth = [(SBPressSequenceSettings *)settings indexOfPressUpToUseForVarianceAndGrowth];
+    numberOfPressDownGrowthTerms = [(SBPressSequenceSettings *)self->_settings numberOfPressUpGrowthTerms];
   }
 
-  v11 = v4 - 1;
-  if (v9 < a3)
+  v11 = eventCopy - 1;
+  if (indexOfPressDownToUseForVarianceAndGrowth < index)
   {
-    v13 = v11 - v10;
-    v12 = v11 - v10 + [(SBPressSequenceSettings *)self->_settings numberOfPresses]> a3;
+    v13 = v11 - numberOfPressDownGrowthTerms;
+    v12 = v11 - numberOfPressDownGrowthTerms + [(SBPressSequenceSettings *)self->_settings numberOfPresses]> index;
     v14 = 1;
   }
 
   else
   {
     v12 = 0;
-    v13 = v11 - v10;
+    v13 = v11 - numberOfPressDownGrowthTerms;
     v14 = 2;
   }
 
-  v15 = v9 >= a3;
+  v15 = indexOfPressDownToUseForVarianceAndGrowth >= index;
   v16 = v13 + [(SBPressSequenceSettings *)self->_settings numberOfPresses];
   if (v12)
   {
@@ -398,12 +398,12 @@ LABEL_31:
     v17 = v15;
   }
 
-  if (!(v17 | (v16 <= a3)))
+  if (!(v17 | (v16 <= index)))
   {
     [SBPressSequenceValidator _modeForDesiredIndex:a2 isDownEvent:self];
   }
 
-  if (v16 > a3)
+  if (v16 > index)
   {
     return v12;
   }

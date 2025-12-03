@@ -1,18 +1,18 @@
 @interface PXTitleLegibilityDimmingViewConfiguration
-- (PXTitleLegibilityDimmingViewConfiguration)initWithGradientImageConfiguration:(id)a3;
+- (PXTitleLegibilityDimmingViewConfiguration)initWithGradientImageConfiguration:(id)configuration;
 @end
 
 @implementation PXTitleLegibilityDimmingViewConfiguration
 
-- (PXTitleLegibilityDimmingViewConfiguration)initWithGradientImageConfiguration:(id)a3
+- (PXTitleLegibilityDimmingViewConfiguration)initWithGradientImageConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXTitleLegibilityDimmingViewConfiguration;
   v5 = [(PXTitleLegibilityDimmingViewConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     gradientImageConfiguration = v5->_gradientImageConfiguration;
     v5->_gradientImageConfiguration = v6;
   }

@@ -1,6 +1,6 @@
 @interface PDSRegistrarService
 + (PDSRegistrarService)sharedInstance;
-- (void)registerToPDS:(char)a3 usePDS:(BOOL)a4;
+- (void)registerToPDS:(char)s usePDS:(BOOL)dS;
 - (void)removeRegistrationFromPDS;
 @end
 
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)registerToPDS:(char)a3 usePDS:(BOOL)a4
+- (void)registerToPDS:(char)s usePDS:(BOOL)dS
 {
-  v6 = self;
-  PDSRegistrarService.registerToPDS(_:usePDS:)(a3, a4);
+  selfCopy = self;
+  PDSRegistrarService.registerToPDS(_:usePDS:)(s, dS);
 }
 
 - (void)removeRegistrationFromPDS
 {
-  v2 = self;
+  selfCopy = self;
   PDSRegistrarService.removeRegistrationFromPDS()();
 }
 

@@ -30,7 +30,7 @@
 - (NSString)uniqueIDOverride;
 - (NSUUID)nsuuid;
 - (NSUUID)stableBluetoothIdentifier;
-- (_IDSDevice)initWithDictionary:(id)a3;
+- (_IDSDevice)initWithDictionary:(id)dictionary;
 - (id)compactDescription;
 - (id)fullDescription;
 - (int64_t)deviceType;
@@ -39,17 +39,17 @@
 - (unint64_t)minCompatibilityVersion;
 - (unint64_t)pairingProtocolVersion;
 - (unint64_t)serviceMinCompatibilityVersion;
-- (void)_addIdentity:(id)a3;
+- (void)_addIdentity:(id)identity;
 - (void)_cloudConnectedStateChanged;
 - (void)_connectedStateChanged;
 - (void)_nearbyStateChanged;
-- (void)_setAccount:(id)a3;
-- (void)_setService:(id)a3;
+- (void)_setAccount:(id)account;
+- (void)_setService:(id)service;
 - (void)_stateChanged;
 - (void)cancel;
 - (void)dealloc;
-- (void)setNSUUID:(id)a3;
-- (void)stateDidChange:(unint64_t)a3;
+- (void)setNSUUID:(id)d;
+- (void)stateDidChange:(unint64_t)change;
 @end
 
 @implementation _IDSDevice
@@ -57,12 +57,12 @@
 - (NSString)modelIdentifier
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DB4C();
     }
@@ -76,12 +76,12 @@
 - (NSString)uniqueIDOverride
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3D8CC();
     }
@@ -95,12 +95,12 @@
 - (NSUUID)nsuuid
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E72C();
     }
@@ -124,12 +124,12 @@
 - (BOOL)supportsHandoff
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E9AC();
     }
@@ -137,20 +137,20 @@
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FB8]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (NSString)name
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DBEC();
     }
@@ -164,12 +164,12 @@
 - (NSString)productVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DAAC();
     }
@@ -184,12 +184,12 @@
 - (BOOL)supportsApplePay
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EA4C();
     }
@@ -197,40 +197,40 @@
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FB0]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isLocallyPaired
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E18C();
     }
   }
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4BD0]];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSString)uniqueID
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3D82C();
     }
@@ -245,32 +245,32 @@
 - (BOOL)isActive
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E22C();
     }
   }
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C00]];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (int64_t)relationship
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E2CC();
     }
@@ -293,12 +293,12 @@
 - (NSString)productName
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DA0C();
     }
@@ -313,12 +313,12 @@
 - (BOOL)isDefaultPairedDevice
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E0EC();
     }
@@ -330,12 +330,12 @@
 - (BOOL)isNearby
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DE6C();
     }
@@ -347,12 +347,12 @@
 - (BOOL)supportsTethering
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E90C();
     }
@@ -360,20 +360,20 @@
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FD8]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)supportsiCloudPairing
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E86C();
     }
@@ -414,12 +414,12 @@
 - (NSData)pushToken
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EF4C();
     }
@@ -433,12 +433,12 @@
 - (NSArray)identities
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EFEC();
     }
@@ -452,42 +452,42 @@
 - (NSString)description
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DDCC();
     }
   }
 
-  v6 = [(_IDSDevice *)self isLocallyPaired];
+  isLocallyPaired = [(_IDSDevice *)self isLocallyPaired];
   v24 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v26 = [(_IDSDevice *)self name];
+  name = [(_IDSDevice *)self name];
   [(_IDSDevice *)self modelIdentifier];
   v9 = @"NO";
-  v27 = v6;
+  v27 = isLocallyPaired;
   v25 = v28 = v8;
-  if (v6)
+  if (isLocallyPaired)
   {
-    v23 = @"all 0s";
+    uniqueID = @"all 0s";
     v22 = @"YES";
   }
 
   else
   {
-    v23 = [(_IDSDevice *)self uniqueID];
+    uniqueID = [(_IDSDevice *)self uniqueID];
     v22 = @"NO";
   }
 
-  v21 = [(_IDSDevice *)self uniqueIDOverride];
-  v20 = [(_IDSDevice *)self pushToken];
-  v10 = [(_IDSDevice *)self nsuuid];
-  v11 = [v10 UUIDString];
+  uniqueIDOverride = [(_IDSDevice *)self uniqueIDOverride];
+  pushToken = [(_IDSDevice *)self pushToken];
+  nsuuid = [(_IDSDevice *)self nsuuid];
+  uUIDString = [nsuuid UUIDString];
   if ([(_IDSDevice *)self locallyPresent])
   {
     v12 = @"YES";
@@ -543,8 +543,8 @@
     v9 = @"YES";
   }
 
-  v17 = [(_IDSDevice *)self productBuildVersion];
-  v18 = [v24 stringWithFormat:@"[%@ %p:   Name: %@    Model: %@   UniqueID: %@   UniqueID Override: %@   Push Token: %@ nsuuid: %@ local: %@  defaultPairedDevice: %@   isNearby: %@  isConnected: %@  isActive: %@  isLocallyPaired: %@  isHSATrusted: %@  build: %@]", v28, self, v26, v25, v23, v21, v20, v11, v12, v13, v14, v15, v16, v22, v9, v17];
+  productBuildVersion = [(_IDSDevice *)self productBuildVersion];
+  v18 = [v24 stringWithFormat:@"[%@ %p:   Name: %@    Model: %@   UniqueID: %@   UniqueID Override: %@   Push Token: %@ nsuuid: %@ local: %@  defaultPairedDevice: %@   isNearby: %@  isConnected: %@  isActive: %@  isLocallyPaired: %@  isHSATrusted: %@  build: %@]", v28, self, name, v25, uniqueID, uniqueIDOverride, pushToken, uUIDString, v12, v13, v14, v15, v16, v22, v9, productBuildVersion];
 
   if (!v27)
   {
@@ -556,12 +556,12 @@
 - (BOOL)locallyPresent
 {
   v2 = +[IDSInternalQueueController sharedInstance];
-  v3 = [v2 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v2 assertQueueIsCurrent];
 
-  if (v3)
+  if (assertQueueIsCurrent)
   {
-    v4 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E04C();
     }
@@ -573,12 +573,12 @@
 - (BOOL)isConnected
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DF0C();
     }
@@ -590,32 +590,32 @@
 - (BOOL)isHSATrusted
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EEAC();
     }
   }
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C08]];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (NSString)productBuildVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3D96C();
     }
@@ -630,12 +630,12 @@
 - (NSString)service
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DC8C();
     }
@@ -649,12 +649,12 @@
 - (int64_t)deviceType
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3ECCC();
     }
@@ -662,32 +662,32 @@
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4F88]];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  if (v8)
+  if (unsignedIntValue)
   {
-    v9 = v8;
+    v9 = unsignedIntValue;
   }
 
   else
   {
-    v10 = [(_IDSDevice *)self productName];
+    productName = [(_IDSDevice *)self productName];
     v9 = IDSDeviceTypeFromProductName();
   }
 
   return v9;
 }
 
-- (_IDSDevice)initWithDictionary:(id)a3
+- (_IDSDevice)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3D6EC();
     }
@@ -701,7 +701,7 @@
       sub_195B26A7C();
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -712,37 +712,37 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_info, a3);
-      v13 = [(_IDSDevice *)v12 uniqueIDOverride];
-      if (![v13 length])
+      objc_storeStrong(&v11->_info, dictionary);
+      uniqueIDOverride = [(_IDSDevice *)v12 uniqueIDOverride];
+      if (![uniqueIDOverride length])
       {
-        v14 = [(_IDSDevice *)v12 uniqueID];
+        uniqueID = [(_IDSDevice *)v12 uniqueID];
 
-        v13 = v14;
+        uniqueIDOverride = uniqueID;
       }
 
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", *MEMORY[0x1E69A4C70], v13];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", *MEMORY[0x1E69A4C70], uniqueIDOverride];
       v16 = [IDSDeviceStateMonitoring sharedInstanceForNotificationName:v15];
       monitor = v12->_monitor;
       v12->_monitor = v16;
 
       v18 = v12->_monitor;
       v19 = +[IDSInternalQueueController sharedInstance];
-      v20 = [v19 queue];
-      [(IDSDeviceStateMonitoring *)v18 registerForStateUpdates:v12 queue:v20];
+      queue = [v19 queue];
+      [(IDSDeviceStateMonitoring *)v18 registerForStateUpdates:v12 queue:queue];
 
-      v21 = [(IDSDeviceStateMonitoring *)v12->_monitor currentState];
-      v12->_nearby = (*MEMORY[0x1E69A5458] & v21) != 0;
-      v12->_connected = (*MEMORY[0x1E69A5450] & v21) != 0;
-      v22 = (*MEMORY[0x1E69A5448] & v21) != 0;
+      currentState = [(IDSDeviceStateMonitoring *)v12->_monitor currentState];
+      v12->_nearby = (*MEMORY[0x1E69A5458] & currentState) != 0;
+      v12->_connected = (*MEMORY[0x1E69A5450] & currentState) != 0;
+      v22 = (*MEMORY[0x1E69A5448] & currentState) != 0;
       v12->_immutableCloudConnected = v22;
       v12->_cloudConnected = v22;
       v23 = *MEMORY[0x1E69A4BC8];
       v24 = [(NSDictionary *)v12->_info objectForKey:*MEMORY[0x1E69A4BC8]];
       objc_opt_class();
-      LOBYTE(v20) = objc_opt_isKindOfClass();
+      LOBYTE(queue) = objc_opt_isKindOfClass();
       v25 = objc_alloc(MEMORY[0x1E69A5250]);
-      if (v20)
+      if (queue)
       {
         v26 = v24;
       }
@@ -764,22 +764,22 @@
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)stateDidChange:(unint64_t)a3
+- (void)stateDidChange:(unint64_t)change
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3D78C();
     }
@@ -788,11 +788,11 @@
   nearby = self->_nearby;
   connected = self->_connected;
   cloudConnected = self->_cloudConnected;
-  v11 = (*MEMORY[0x1E69A5458] & a3) != 0;
+  v11 = (*MEMORY[0x1E69A5458] & change) != 0;
   self->_nearby = v11;
-  v12 = (*MEMORY[0x1E69A5450] & a3) != 0;
+  v12 = (*MEMORY[0x1E69A5450] & change) != 0;
   self->_connected = v12;
-  v13 = (*MEMORY[0x1E69A5448] & a3) != 0;
+  v13 = (*MEMORY[0x1E69A5448] & change) != 0;
   self->_cloudConnected = v13;
   v14 = nearby == v11 && connected == v12;
   v15 = !v14;
@@ -852,12 +852,12 @@ LABEL_20:
 - (id)fullDescription
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DD2C();
     }
@@ -866,17 +866,17 @@ LABEL_20:
   v35 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v34 = NSStringFromClass(v6);
-  v39 = [(_IDSDevice *)self name];
-  v38 = [(_IDSDevice *)self modelIdentifier];
-  v33 = [(_IDSDevice *)self uniqueID];
-  v31 = [(_IDSDevice *)self uniqueIDOverride];
-  v30 = [(_IDSDevice *)self pushToken];
-  v29 = [(_IDSDevice *)self service];
-  v28 = [(_IDSDevice *)self identities];
-  v37 = [(_IDSDevice *)self linkedUserURIs];
-  v32 = [(_IDSDevice *)self nsuuid];
-  v27 = [v32 UUIDString];
-  v26 = [(_IDSDevice *)self relationship];
+  name = [(_IDSDevice *)self name];
+  modelIdentifier = [(_IDSDevice *)self modelIdentifier];
+  uniqueID = [(_IDSDevice *)self uniqueID];
+  uniqueIDOverride = [(_IDSDevice *)self uniqueIDOverride];
+  pushToken = [(_IDSDevice *)self pushToken];
+  service = [(_IDSDevice *)self service];
+  identities = [(_IDSDevice *)self identities];
+  linkedUserURIs = [(_IDSDevice *)self linkedUserURIs];
+  nsuuid = [(_IDSDevice *)self nsuuid];
+  uUIDString = [nsuuid UUIDString];
+  relationship = [(_IDSDevice *)self relationship];
   if ([(_IDSDevice *)self supportsSMSRelay])
   {
     v7 = @"YES";
@@ -910,8 +910,8 @@ LABEL_20:
   }
 
   v23 = v9;
-  v22 = [(_IDSDevice *)self deviceColor];
-  v10 = [(_IDSDevice *)self enclosureColor];
+  deviceColor = [(_IDSDevice *)self deviceColor];
+  enclosureColor = [(_IDSDevice *)self enclosureColor];
   if ([(_IDSDevice *)self locallyPresent])
   {
     v11 = @"YES";
@@ -984,8 +984,8 @@ LABEL_20:
     v17 = @"NO";
   }
 
-  v18 = [(_IDSDevice *)self productBuildVersion];
-  v36 = [v35 stringWithFormat:@"[%@ %p:   Name: %@   Model: %@   UniqueID: %@   UniqueID Override: %@   Push Token: %@   Service: %@   Handles: %@   linkedUserURIs: %@   nsuuid: %@   relationship: %lu   supportsSMSRelay: %@   supportsMMSRelay: %@   supportsPhoneCalls: %@   deviceColor: %@   enclosureColor: %@  local: %@   defaultPairedDevice: %@   isNearby: %@  isConnected: %@  isCloudConnected: %@  isActive: %@  isLocallyPaired: %@  build: %@   pairing protocol: %lu   min compatibility version: %lu   max compatibility version: %lu]", v34, self, v39, v38, v33, v31, v30, v29, v28, v37, v27, v26, v25, v24, v23, v22, v10, v21, v20, v13, v14, v15, v16, v17, v18, -[_IDSDevice pairingProtocolVersion](self, "pairingProtocolVersion"), -[_IDSDevice minCompatibilityVersion](self, "minCompatibilityVersion"), -[_IDSDevice maxCompatibilityVersion](self, "maxCompatibilityVersion")];
+  productBuildVersion = [(_IDSDevice *)self productBuildVersion];
+  v36 = [v35 stringWithFormat:@"[%@ %p:   Name: %@   Model: %@   UniqueID: %@   UniqueID Override: %@   Push Token: %@   Service: %@   Handles: %@   linkedUserURIs: %@   nsuuid: %@   relationship: %lu   supportsSMSRelay: %@   supportsMMSRelay: %@   supportsPhoneCalls: %@   deviceColor: %@   enclosureColor: %@  local: %@   defaultPairedDevice: %@   isNearby: %@  isConnected: %@  isCloudConnected: %@  isActive: %@  isLocallyPaired: %@  build: %@   pairing protocol: %lu   min compatibility version: %lu   max compatibility version: %lu]", v34, self, name, modelIdentifier, uniqueID, uniqueIDOverride, pushToken, service, identities, linkedUserURIs, uUIDString, relationship, v25, v24, v23, deviceColor, enclosureColor, v21, v20, v13, v14, v15, v16, v17, productBuildVersion, -[_IDSDevice pairingProtocolVersion](self, "pairingProtocolVersion"), -[_IDSDevice minCompatibilityVersion](self, "minCompatibilityVersion"), -[_IDSDevice maxCompatibilityVersion](self, "maxCompatibilityVersion")];
 
   return v36;
 }
@@ -993,8 +993,8 @@ LABEL_20:
 - (id)compactDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_IDSDevice *)self uniqueIDOverride];
-  v5 = [(_IDSDevice *)self pushToken];
+  uniqueIDOverride = [(_IDSDevice *)self uniqueIDOverride];
+  pushToken = [(_IDSDevice *)self pushToken];
   v6 = @"NO";
   if ([(_IDSDevice *)self isNearby])
   {
@@ -1021,7 +1021,7 @@ LABEL_20:
     v6 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"[%p uid: %@, tok: %@, near: %@, conn: %@, active: %@, rel: %lu]", self, v4, v5, v7, v8, v6, -[_IDSDevice relationship](self, "relationship")];
+  v9 = [v3 stringWithFormat:@"[%p uid: %@, tok: %@, near: %@, conn: %@, active: %@, rel: %lu]", self, uniqueIDOverride, pushToken, v7, v8, v6, -[_IDSDevice relationship](self, "relationship")];
 
   return v9;
 }
@@ -1029,12 +1029,12 @@ LABEL_20:
 - (BOOL)isCloudConnected
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3DFAC();
     }
@@ -1046,12 +1046,12 @@ LABEL_20:
 - (unint64_t)pairingProtocolVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E36C();
     }
@@ -1061,26 +1061,26 @@ LABEL_20:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)minCompatibilityVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E40C();
     }
@@ -1090,26 +1090,26 @@ LABEL_20:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maxCompatibilityVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E4AC();
     }
@@ -1119,26 +1119,26 @@ LABEL_20:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)serviceMinCompatibilityVersion
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E54C();
     }
@@ -1148,26 +1148,26 @@ LABEL_20:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (NSArray)linkedUserURIs
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E5EC();
     }
@@ -1178,17 +1178,17 @@ LABEL_20:
   return v6;
 }
 
-- (void)setNSUUID:(id)a3
+- (void)setNSUUID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E68C();
     }
@@ -1198,19 +1198,19 @@ LABEL_20:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v4;
+    v15 = dCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Client request to set uuid %@ on device %@", &v14, 0x16u);
   }
 
   if ([(_IDSDevice *)self supportsiCloudPairing])
   {
     v9 = +[IDSDaemonController sharedInstance];
-    v10 = [v4 UUIDString];
-    v11 = [(_IDSDevice *)self uniqueID];
-    v12 = [(_IDSDevice *)self service];
-    [v9 setNSUUID:v10 onDeviceWithUniqueID:v11 forService:v12];
+    uUIDString = [dCopy UUIDString];
+    uniqueID = [(_IDSDevice *)self uniqueID];
+    service = [(_IDSDevice *)self service];
+    [v9 setNSUUID:uUIDString onDeviceWithUniqueID:uniqueID forService:service];
   }
 
   else
@@ -1229,12 +1229,12 @@ LABEL_20:
 - (NSUUID)stableBluetoothIdentifier
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3E7CC();
     }
@@ -1261,12 +1261,12 @@ LABEL_20:
 - (BOOL)supportsSMSRelay
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EAEC();
     }
@@ -1274,20 +1274,20 @@ LABEL_20:
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FD0]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMMSRelay
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EB8C();
     }
@@ -1295,20 +1295,20 @@ LABEL_20:
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FC0]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)supportsPhoneCalls
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EC2C();
     }
@@ -1316,20 +1316,20 @@ LABEL_20:
 
   v6 = [(NSDictionary *)self->_info objectForKey:*MEMORY[0x1E69A4C48]];
   v7 = [v6 objectForKey:*MEMORY[0x1E69A4FC8]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (NSString)deviceColor
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3ED6C();
     }
@@ -1344,12 +1344,12 @@ LABEL_20:
 - (NSString)enclosureColor
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3EE0C();
     }
@@ -1361,31 +1361,31 @@ LABEL_20:
   return v7;
 }
 
-- (void)_addIdentity:(id)a3
+- (void)_addIdentity:(id)identity
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3F08C();
     }
   }
 
-  if (v4)
+  if (identityCopy)
   {
-    v8 = [v4 objectForKey:@"uri"];
+    v8 = [identityCopy objectForKey:@"uri"];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [(_IDSDevice *)self identities];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    identities = [(_IDSDevice *)self identities];
+    v10 = [identities countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1396,7 +1396,7 @@ LABEL_8:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(identities);
         }
 
         v14 = [*(*(&v23 + 1) + 8 * v13) objectForKey:@"uri"];
@@ -1409,7 +1409,7 @@ LABEL_8:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v11 = [identities countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v11)
           {
             goto LABEL_8;
@@ -1424,16 +1424,16 @@ LABEL_8:
     {
 LABEL_14:
 
-      v16 = [(_IDSDevice *)self identities];
-      v9 = [v16 mutableCopy];
+      identities2 = [(_IDSDevice *)self identities];
+      identities = [identities2 mutableCopy];
 
-      if (v9)
+      if (identities)
       {
-        [v9 addObject:v4];
+        [identities addObject:identityCopy];
         info = self->_info;
         p_info = &self->_info;
         v19 = [(NSDictionary *)info mutableCopy];
-        [(NSDictionary *)v19 setObject:v9 forKey:*MEMORY[0x1E69A4BF0]];
+        [(NSDictionary *)v19 setObject:identities forKey:*MEMORY[0x1E69A4BF0]];
       }
 
       else
@@ -1456,15 +1456,15 @@ LABEL_14:
 {
   if (![(_IDSDevice *)self isTinker])
   {
-    v3 = [(CUTWeakReference *)self->_account object];
+    object = [(CUTWeakReference *)self->_account object];
     v4 = +[IDSLogging IDSDevice];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_195B3F12C(v3, self);
+      sub_195B3F12C(object, self);
     }
 
-    v5 = [v3 _internal];
-    [v5 _callNearbyDevicesChanged];
+    _internal = [object _internal];
+    [_internal _callNearbyDevicesChanged];
   }
 }
 
@@ -1472,15 +1472,15 @@ LABEL_14:
 {
   if (![(_IDSDevice *)self isTinker])
   {
-    v3 = [(CUTWeakReference *)self->_account object];
+    object = [(CUTWeakReference *)self->_account object];
     v4 = +[IDSLogging IDSDevice];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_195B3F1D4(v3, self);
+      sub_195B3F1D4(object, self);
     }
 
-    v5 = [v3 _internal];
-    [v5 _callConnectedDevicesChanged];
+    _internal = [object _internal];
+    [_internal _callConnectedDevicesChanged];
   }
 }
 
@@ -1488,15 +1488,15 @@ LABEL_14:
 {
   if (![(_IDSDevice *)self isTinker])
   {
-    v3 = [(CUTWeakReference *)self->_account object];
+    object = [(CUTWeakReference *)self->_account object];
     v4 = +[IDSLogging IDSDevice];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_195B3F27C(v3, self);
+      sub_195B3F27C(object, self);
     }
 
-    v5 = [v3 _internal];
-    [v5 _callCloudConnectedDevicesChanged];
+    _internal = [object _internal];
+    [_internal _callCloudConnectedDevicesChanged];
   }
 }
 
@@ -1504,59 +1504,59 @@ LABEL_14:
 {
   if ([(_IDSDevice *)self isTinker])
   {
-    v3 = [(CUTWeakReference *)self->_serviceReference object];
+    object = [(CUTWeakReference *)self->_serviceReference object];
     v4 = +[IDSLogging IDSDevice];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      sub_195B3F324(v3, self);
+      sub_195B3F324(object, self);
     }
 
-    v5 = [v3 _internal];
-    [v5 _callLinkedDevicesChanged];
+    _internal = [object _internal];
+    [_internal _callLinkedDevicesChanged];
   }
 }
 
-- (void)_setAccount:(id)a3
+- (void)_setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3F3F4();
     }
   }
 
-  if (v4)
+  if (accountCopy)
   {
-    v8 = [MEMORY[0x1E6995700] weakRefWithObject:v4];
+    v8 = [MEMORY[0x1E6995700] weakRefWithObject:accountCopy];
     account = self->_account;
     self->_account = v8;
   }
 }
 
-- (void)_setService:(id)a3
+- (void)_setService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3F494();
     }
   }
 
-  if (v4)
+  if (serviceCopy)
   {
-    v8 = [MEMORY[0x1E6995700] weakRefWithObject:v4];
+    v8 = [MEMORY[0x1E6995700] weakRefWithObject:serviceCopy];
     serviceReference = self->_serviceReference;
     self->_serviceReference = v8;
   }

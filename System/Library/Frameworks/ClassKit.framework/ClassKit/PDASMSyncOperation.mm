@@ -1,10 +1,10 @@
 @interface PDASMSyncOperation
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
-- (BOOL)processResponseZone:(id)a3;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
+- (BOOL)processResponseZone:(id)zone;
 - (BOOL)wantsToExecute;
-- (PDASMSyncOperation)initWithDatabase:(id)a3;
+- (PDASMSyncOperation)initWithDatabase:(id)database;
 - (id)requestData;
-- (void)abortWithError:(id)a3;
+- (void)abortWithError:(id)error;
 - (void)execute;
 - (void)prepare;
 - (void)rescheduleOperation;
@@ -12,11 +12,11 @@
 
 @implementation PDASMSyncOperation
 
-- (PDASMSyncOperation)initWithDatabase:(id)a3
+- (PDASMSyncOperation)initWithDatabase:(id)database
 {
   v4.receiver = self;
   v4.super_class = PDASMSyncOperation;
-  result = [(PDASMPayloadOperation *)&v4 initWithDatabase:a3];
+  result = [(PDASMPayloadOperation *)&v4 initWithDatabase:database];
   if (result)
   {
     BYTE2(result->_initialSyncZoneNames) = 1;
@@ -32,7 +32,7 @@
   [(PDAsyncOperation *)&v20 prepare];
   if (!-[PDOperation isFinished](self, "isFinished") && ![*(&self->super._unresolvedMissingEntityIDs + 2) count])
   {
-    v3 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v4 = objc_opt_new();
     v5 = objc_opt_new();
     v6 = objc_opt_class();
@@ -44,28 +44,28 @@
     v18 = v7;
     v8 = v5;
     v19 = v8;
-    [v3 selectAll:v6 block:&v14];
+    [database selectAll:v6 block:&v14];
     objc_storeStrong((&self->super._unresolvedMissingEntityIDs + 2), v4);
     objc_storeStrong((&self->_zoneNames + 2), v5);
     if ([*(&self->_zoneNames + 2) count])
     {
-      sub_100169F38(v3, 1, @"initialASMSyncRequired");
+      sub_100169F38(database, 1, @"initialASMSyncRequired");
       CLSInitLog();
-      v9 = [(PDASMSyncOperation *)self logSubsystem];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      logSubsystem = [(PDASMSyncOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
       {
         v10 = objc_opt_class();
         v11 = v10;
-        v12 = [(PDURLRequestOperation *)self operationID];
+        operationID = [(PDURLRequestOperation *)self operationID];
         *buf = 138543618;
         v22 = v10;
         v23 = 2114;
-        v24 = v12;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Initial ASM sync required.", buf, 0x16u);
+        v24 = operationID;
+        _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Initial ASM sync required.", buf, 0x16u);
       }
 
       v13 = +[NSDate now];
-      sub_10016A5AC(v3, v13, @"initialASMSyncStartDate");
+      sub_10016A5AC(database, v13, @"initialASMSyncStartDate");
     }
   }
 }
@@ -86,8 +86,8 @@
 - (BOOL)wantsToExecute
 {
   v3 = (BYTE2(self->_initialSyncZoneNames) & 1) != 0 || [*(&self->super._unresolvedMissingEntityIDs + 2) count] != 0;
-  v4 = [(PDOperation *)self database];
-  v5 = sub_1000BA854(v4);
+  database = [(PDOperation *)self database];
+  v5 = sub_1000BA854(database);
   v6 = v5;
   if (!v5)
   {
@@ -107,7 +107,7 @@ LABEL_14:
   }
 
 LABEL_6:
-  if (!sub_100169FD0(v4, @"initialASMSyncRequired") || (sub_1000507D8(v4) & 1) != 0 || (sub_100050844(v4) & 1) != 0)
+  if (!sub_100169FD0(database, @"initialASMSyncRequired") || (sub_1000507D8(database) & 1) != 0 || (sub_100050844(database) & 1) != 0)
   {
     v7 = 1;
   }
@@ -115,20 +115,20 @@ LABEL_6:
   else
   {
     CLSInitLog();
-    v8 = [(PDASMSyncOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDASMSyncOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v12 = BYTE2(self->_initialSyncZoneNames);
       v14 = 138543874;
       v15 = v9;
       v16 = 2114;
-      v17 = v11;
+      v17 = operationID;
       v18 = 1024;
       v19 = v12;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Initial ASM sync in progress but deferring. firstRun: %d", &v14, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Initial ASM sync in progress but deferring. firstRun: %d", &v14, 0x1Cu);
     }
 
     v7 = BYTE2(self->_initialSyncZoneNames);
@@ -141,17 +141,17 @@ LABEL_15:
 
 - (id)requestData
 {
-  v2 = self;
+  selfCopy = self;
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    data = 0;
     goto LABEL_25;
   }
 
-  v4 = [(PDEndpointRequestOperation *)v2 endpointInfo];
-  if (v4)
+  endpointInfo = [(PDEndpointRequestOperation *)selfCopy endpointInfo];
+  if (endpointInfo)
   {
-    v5 = v4[8];
+    v5 = endpointInfo[8];
 
     if (v5 < 1)
     {
@@ -159,10 +159,10 @@ LABEL_15:
       goto LABEL_9;
     }
 
-    v4 = [(PDEndpointRequestOperation *)v2 endpointInfo];
-    if (v4)
+    endpointInfo = [(PDEndpointRequestOperation *)selfCopy endpointInfo];
+    if (endpointInfo)
     {
-      v6 = *(v4 + 16);
+      v6 = *(endpointInfo + 16);
     }
 
     else
@@ -178,13 +178,13 @@ LABEL_15:
 
 LABEL_9:
   v7 = objc_alloc_init(PDDPEESyncRequest);
-  v8 = [(PDOperation *)v2 database];
+  database = [(PDOperation *)selfCopy database];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = *(&v2->super._unresolvedMissingEntityIDs + 2);
-  v38 = v8;
+  v9 = *(&selfCopy->super._unresolvedMissingEntityIDs + 2);
+  v38 = database;
   v41 = [v9 countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v41)
   {
@@ -202,35 +202,35 @@ LABEL_9:
           objc_enumerationMutation(v9);
         }
 
-        v12 = [v8 select:objc_opt_class() identity:*(*(&v42 + 1) + 8 * i)];
+        v12 = [database select:objc_opt_class() identity:*(*(&v42 + 1) + 8 * i)];
         v13 = sub_100084548(v12);
         [v13 setLimit:v6];
         [(PDDPEESyncRequest *)v7 addRequestZones:v13];
         if ([v13 hasCursor])
         {
           CLSInitLog();
-          v14 = [(PDASMSyncOperation *)v2 logSubsystem];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          logSubsystem = [(PDASMSyncOperation *)selfCopy logSubsystem];
+          if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
           {
             v15 = objc_opt_class();
             v39 = v15;
-            v16 = [(PDURLRequestOperation *)v2 operationID];
-            v17 = [v13 zoneName];
+            operationID = [(PDURLRequestOperation *)selfCopy operationID];
+            zoneName = [v13 zoneName];
             [v13 cursor];
-            v19 = v18 = v2;
+            v19 = v18 = selfCopy;
             v20 = [v19 base64EncodedStringWithOptions:0];
             *buf = 138544130;
             v47 = v15;
-            v8 = v38;
+            database = v38;
             v48 = 2114;
-            v49 = v16;
+            v49 = operationID;
             v50 = 2112;
-            *v51 = v17;
+            *v51 = zoneName;
             *&v51[8] = 2112;
             v52 = v20;
-            _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ zoneName: %@ cursor: %@", buf, 0x2Au);
+            _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ zoneName: %@ cursor: %@", buf, 0x2Au);
 
-            v2 = v18;
+            selfCopy = v18;
             v7 = v37;
 
             v9 = v35;
@@ -247,69 +247,69 @@ LABEL_9:
     while (v41);
   }
 
-  [*(&v2->super._unresolvedMissingEntityIDs + 2) removeAllObjects];
+  [*(&selfCopy->super._unresolvedMissingEntityIDs + 2) removeAllObjects];
   CLSInitLog();
-  v21 = [(PDASMSyncOperation *)v2 logSubsystem];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+  logSubsystem2 = [(PDASMSyncOperation *)selfCopy logSubsystem];
+  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
   {
     v24 = objc_opt_class();
     v25 = v24;
-    v26 = [(PDURLRequestOperation *)v2 operationID];
-    v27 = sub_100169FD0(v8, @"initialASMSyncRequired");
-    v28 = v2;
+    operationID2 = [(PDURLRequestOperation *)selfCopy operationID];
+    v27 = sub_100169FD0(database, @"initialASMSyncRequired");
+    v28 = selfCopy;
     v29 = sub_100169FD0(v38, @"initialASMSyncComplete");
     v30 = sub_100169FD0(v38, @"initialOrionSyncComplete");
     *buf = 138544386;
     v47 = v24;
     v48 = 2114;
-    v49 = v26;
+    v49 = operationID2;
     v50 = 1024;
     *v51 = v27;
-    v8 = v38;
+    database = v38;
     *&v51[4] = 1024;
     *&v51[6] = v29;
-    v2 = v28;
+    selfCopy = v28;
     LOWORD(v52) = 1024;
     *(&v52 + 2) = v30;
-    _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync request: initialASMSyncRequired:%d initialASMSyncComplete:%d initialOrionSyncComplete:%d", buf, 0x28u);
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync request: initialASMSyncRequired:%d initialASMSyncComplete:%d initialOrionSyncComplete:%d", buf, 0x28u);
   }
 
   CLSInitLog();
-  v22 = [(PDASMSyncOperation *)v2 logSubsystem];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+  logSubsystem3 = [(PDASMSyncOperation *)selfCopy logSubsystem];
+  if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
   {
     v31 = objc_opt_class();
     v32 = v31;
-    v33 = [(PDURLRequestOperation *)v2 operationID];
-    v34 = [(PDDPEESyncRequest *)v7 dictionaryRepresentation];
+    operationID3 = [(PDURLRequestOperation *)selfCopy operationID];
+    dictionaryRepresentation = [(PDDPEESyncRequest *)v7 dictionaryRepresentation];
     *buf = 138543874;
     v47 = v31;
     v48 = 2114;
-    v49 = v33;
+    v49 = operationID3;
     v50 = 2114;
-    *v51 = v34;
-    _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync request: %{public}@", buf, 0x20u);
+    *v51 = dictionaryRepresentation;
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync request: %{public}@", buf, 0x20u);
 
-    v8 = v38;
+    database = v38;
   }
 
-  v3 = [(PDDPEESyncRequest *)v7 data];
+  data = [(PDDPEESyncRequest *)v7 data];
 
 LABEL_25:
 
-  return v3;
+  return data;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
   v28.receiver = self;
   v28.super_class = PDASMSyncOperation;
-  v5 = [(PDASMPayloadOperation *)&v28 processResponseObject:a3 error:a4];
-  v6 = [(PDOperation *)self database];
-  v7 = v6;
+  v5 = [(PDASMPayloadOperation *)&v28 processResponseObject:object error:error];
+  database = [(PDOperation *)self database];
+  v7 = database;
   if (v5)
   {
-    if (!sub_1000507D8(v6))
+    if (!sub_1000507D8(database))
     {
       v8 = sub_10016A160(v7, @"initialASMSyncRoundTripCount");
       sub_10016A0C8(v7, v8 + 1, @"initialASMSyncRoundTripCount");
@@ -324,17 +324,17 @@ LABEL_25:
         [v10 postNotificationName:CLSInitialServerSyncCompleteNotificationName object:0 userInfo:0];
 
         CLSInitLog();
-        v11 = [(PDASMSyncOperation *)self logSubsystem];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        logSubsystem = [(PDASMSyncOperation *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
         {
           v12 = objc_opt_class();
           v13 = v12;
-          v14 = [(PDURLRequestOperation *)self operationID];
+          operationID = [(PDURLRequestOperation *)self operationID];
           *buf = 138543618;
           v30 = v12;
           v31 = 2114;
-          v32 = v14;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Sync Initial ASM sync complete", buf, 0x16u);
+          v32 = operationID;
+          _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Sync Initial ASM sync complete", buf, 0x16u);
         }
 
         v15 = sub_1000B51E4();
@@ -353,88 +353,88 @@ LABEL_25:
   }
 
   CLSInitLog();
-  v20 = [(PDASMSyncOperation *)self logSubsystem];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+  logSubsystem2 = [(PDASMSyncOperation *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
   {
     v22 = objc_opt_class();
     v23 = v22;
-    v24 = [(PDURLRequestOperation *)self operationID];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
     v25 = sub_100169FD0(v7, @"initialASMSyncRequired");
     v26 = sub_100169FD0(v7, @"initialASMSyncComplete");
     v27 = sub_100169FD0(v7, @"initialOrionSyncComplete");
     *buf = 138544386;
     v30 = v22;
     v31 = 2114;
-    v32 = v24;
+    v32 = operationID2;
     v33 = 1024;
     v34 = v25;
     v35 = 1024;
     v36 = v26;
     v37 = 1024;
     v38 = v27;
-    _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync response: initialASMSyncRequired:%d initialASMSyncComplete:%d initialOrionSyncComplete:%d", buf, 0x28u);
+    _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Sync response: initialASMSyncRequired:%d initialASMSyncComplete:%d initialOrionSyncComplete:%d", buf, 0x28u);
   }
 
   return v5;
 }
 
-- (BOOL)processResponseZone:(id)a3
+- (BOOL)processResponseZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
-  v6 = sub_100084618(v4);
-  v7 = [v4 status];
-  v8 = [v7 code];
+  zoneCopy = zone;
+  database = [(PDOperation *)self database];
+  v6 = sub_100084618(zoneCopy);
+  status = [zoneCopy status];
+  code = [status code];
 
-  v9 = [v4 status];
-  v10 = [v9 code];
+  status2 = [zoneCopy status];
+  code2 = [status2 code];
 
-  if ([v4 hasCursor])
+  if ([zoneCopy hasCursor])
   {
     CLSInitLog();
-    v11 = [(PDASMSyncOperation *)self logSubsystem];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    logSubsystem = [(PDASMSyncOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v40 = v12;
       [(PDURLRequestOperation *)self operationID];
       v13 = v41 = v6;
-      v14 = [v4 zoneName];
-      [v4 cursor];
-      v15 = v42 = v5;
+      zoneName = [zoneCopy zoneName];
+      [zoneCopy cursor];
+      v15 = v42 = database;
       v16 = [v15 base64EncodedStringWithOptions:0];
       *buf = 138544130;
       v45 = v12;
       v46 = 2114;
       v47 = v13;
       v48 = 2112;
-      v49 = v14;
+      v49 = zoneName;
       v50 = 2112;
       v51 = v16;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ zoneName: %@ cursor: %@", buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ zoneName: %@ cursor: %@", buf, 0x2Au);
 
-      v5 = v42;
+      database = v42;
       v6 = v41;
     }
   }
 
-  if (v10 == 111)
+  if (code2 == 111)
   {
     CLSInitLog();
-    v17 = [(PDASMSyncOperation *)self logSubsystem];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    logSubsystem2 = [(PDASMSyncOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
     {
       v32 = objc_opt_class();
       v33 = v32;
-      v34 = [(PDURLRequestOperation *)self operationID];
-      v35 = [v4 zoneName];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      zoneName2 = [zoneCopy zoneName];
       *buf = 138543874;
       v45 = v32;
       v46 = 2114;
-      v47 = v34;
+      v47 = operationID;
       v48 = 2112;
-      v49 = v35;
-      _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ zone access denied: %@", buf, 0x20u);
+      v49 = zoneName2;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ zone access denied: %@", buf, 0x20u);
     }
 
     if (v6)
@@ -455,12 +455,12 @@ LABEL_25:
     if (v20)
     {
       v21 = *(&self->super._unresolvedMissingEntityIDs + 2);
-      v22 = [v4 zoneName];
-      [v21 removeObject:v22];
+      zoneName3 = [zoneCopy zoneName];
+      [v21 removeObject:zoneName3];
 
       v23 = *(&self->_zoneNames + 2);
-      v24 = [v4 zoneName];
-      [v23 removeObject:v24];
+      zoneName4 = [zoneCopy zoneName];
+      [v23 removeObject:zoneName4];
 
       v25 = 1;
     }
@@ -473,23 +473,23 @@ LABEL_25:
 
   else
   {
-    if (v8 == 4)
+    if (code == 4)
     {
       CLSInitLog();
-      v26 = [(PDASMSyncOperation *)self logSubsystem];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+      logSubsystem3 = [(PDASMSyncOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_DEBUG))
       {
         v36 = objc_opt_class();
         v37 = v36;
-        v38 = [(PDURLRequestOperation *)self operationID];
-        v39 = [v4 zoneName];
+        operationID2 = [(PDURLRequestOperation *)self operationID];
+        zoneName5 = [zoneCopy zoneName];
         *buf = 138543874;
         v45 = v36;
         v46 = 2114;
-        v47 = v38;
+        v47 = operationID2;
         v48 = 2112;
-        v49 = v39;
-        _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ zone: %@ has more data", buf, 0x20u);
+        v49 = zoneName5;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ zone: %@ has more data", buf, 0x20u);
       }
 
       v27 = *(&self->super._unresolvedMissingEntityIDs + 2);
@@ -503,18 +503,18 @@ LABEL_25:
         v28 = 0;
       }
 
-      v29 = v28;
-      [v27 addObject:v29];
+      zoneName6 = v28;
+      [v27 addObject:zoneName6];
     }
 
     else
     {
       v30 = *(&self->_zoneNames + 2);
-      v29 = [v4 zoneName];
-      [v30 removeObject:v29];
+      zoneName6 = [zoneCopy zoneName];
+      [v30 removeObject:zoneName6];
     }
 
-    v25 = [v5 insertOrUpdateObject:v6];
+    v25 = [database insertOrUpdateObject:v6];
   }
 
   return v25;
@@ -522,24 +522,24 @@ LABEL_25:
 
 - (void)rescheduleOperation
 {
-  v3 = [(PDOperation *)self manager];
-  sub_10012175C(v3, 0);
+  manager = [(PDOperation *)self manager];
+  sub_10012175C(manager, 0);
 
   v4.receiver = self;
   v4.super_class = PDASMSyncOperation;
   [(PDURLRequestOperation *)&v4 rescheduleOperation];
 }
 
-- (void)abortWithError:(id)a3
+- (void)abortWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(PDOperation *)self database];
+  errorCopy = error;
+  database = [(PDOperation *)self database];
   v6 = +[NSDate date];
-  sub_10016A5AC(v5, v6, CLSSyncLatestRosterSyncFailureDateKey);
+  sub_10016A5AC(database, v6, CLSSyncLatestRosterSyncFailureDateKey);
 
   v7.receiver = self;
   v7.super_class = PDASMSyncOperation;
-  [(PDURLRequestOperation *)&v7 abortWithError:v4];
+  [(PDURLRequestOperation *)&v7 abortWithError:errorCopy];
 }
 
 @end

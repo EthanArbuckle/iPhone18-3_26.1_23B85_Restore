@@ -1,48 +1,48 @@
 @interface SVXUserFeedbackScene
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXUserFeedbackScene)initWithCoder:(id)a3;
-- (SVXUserFeedbackScene)initWithIdentifier:(id)a3 duration:(double)a4 nodes:(id)a5;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXUserFeedbackScene)initWithCoder:(id)coder;
+- (SVXUserFeedbackScene)initWithIdentifier:(id)identifier duration:(double)duration nodes:(id)nodes;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXUserFeedbackScene
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"SVXUserFeedbackScene::identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"SVXUserFeedbackScene::identifier"];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-  [v6 encodeObject:v5 forKey:@"SVXUserFeedbackScene::duration"];
+  [coderCopy encodeObject:v5 forKey:@"SVXUserFeedbackScene::duration"];
 
-  [v6 encodeObject:self->_nodes forKey:@"SVXUserFeedbackScene::nodes"];
+  [coderCopy encodeObject:self->_nodes forKey:@"SVXUserFeedbackScene::nodes"];
 }
 
-- (SVXUserFeedbackScene)initWithCoder:(id)a3
+- (SVXUserFeedbackScene)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackScene::identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackScene::duration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackScene::identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackScene::duration"];
   [v6 doubleValue];
   v8 = v7;
 
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"SVXUserFeedbackScene::nodes"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"SVXUserFeedbackScene::nodes"];
 
   v13 = [(SVXUserFeedbackScene *)self initWithIdentifier:v5 duration:v12 nodes:v8];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -52,18 +52,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       duration = self->_duration;
       [(SVXUserFeedbackScene *)v5 duration];
       if (duration == v7)
       {
-        v9 = [(SVXUserFeedbackScene *)v5 identifier];
+        identifier = [(SVXUserFeedbackScene *)v5 identifier];
         identifier = self->_identifier;
-        if (identifier == v9 || [(NSString *)identifier isEqual:v9])
+        if (identifier == identifier || [(NSString *)identifier isEqual:identifier])
         {
-          v11 = [(SVXUserFeedbackScene *)v5 nodes];
+          nodes = [(SVXUserFeedbackScene *)v5 nodes];
           nodes = self->_nodes;
-          v8 = nodes == v11 || [(NSSet *)nodes isEqual:v11];
+          v8 = nodes == nodes || [(NSSet *)nodes isEqual:nodes];
         }
 
         else
@@ -97,7 +97,7 @@
   return v5 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -108,21 +108,21 @@
   return v6;
 }
 
-- (SVXUserFeedbackScene)initWithIdentifier:(id)a3 duration:(double)a4 nodes:(id)a5
+- (SVXUserFeedbackScene)initWithIdentifier:(id)identifier duration:(double)duration nodes:(id)nodes
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  nodesCopy = nodes;
   v16.receiver = self;
   v16.super_class = SVXUserFeedbackScene;
   v10 = [(SVXUserFeedbackScene *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v10->_duration = a4;
-    v13 = [v9 copy];
+    v10->_duration = duration;
+    v13 = [nodesCopy copy];
     nodes = v10->_nodes;
     v10->_nodes = v13;
   }
@@ -130,36 +130,36 @@
   return v10;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXUserFeedbackSceneMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXUserFeedbackSceneMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXUserFeedbackSceneMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackScene *)self copy];
+    generate = [(SVXUserFeedbackScene *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXUserFeedbackSceneMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXUserFeedbackSceneMutation *)v4 generate];
+  generate = [(_SVXUserFeedbackSceneMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

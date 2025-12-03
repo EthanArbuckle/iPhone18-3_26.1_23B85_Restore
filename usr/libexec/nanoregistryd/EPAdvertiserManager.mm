@@ -1,43 +1,43 @@
 @interface EPAdvertiserManager
 - (EPAdvertiserManager)init;
-- (id)newAdvertiserWithDelegate:(id)a3;
-- (void)collection:(id)a3 deviceDidAppear:(id)a4;
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4;
-- (void)collection:(id)a3 deviceInfoDidDealloc:(id)a4;
+- (id)newAdvertiserWithDelegate:(id)delegate;
+- (void)collection:(id)collection deviceDidAppear:(id)appear;
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear;
+- (void)collection:(id)collection deviceInfoDidDealloc:(id)dealloc;
 - (void)createResource;
 - (void)destroyResource;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)removeCharacteristic:(id)a3;
-- (void)setAdvertisingRate:(unint64_t)a3;
-- (void)setDontAdvertiseWithServiceUUID:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setNotAvailableToPair:(BOOL)a3;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)removeCharacteristic:(id)characteristic;
+- (void)setAdvertisingRate:(unint64_t)rate;
+- (void)setDontAdvertiseWithServiceUUID:(BOOL)d;
+- (void)setName:(id)name;
+- (void)setNotAvailableToPair:(BOOL)pair;
 - (void)update;
 @end
 
 @implementation EPAdvertiserManager
 
-- (void)removeCharacteristic:(id)a3
+- (void)removeCharacteristic:(id)characteristic
 {
   characteristics = self->_characteristics;
-  v5 = a3;
-  v8 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:v5];
-  [(NSMutableDictionary *)self->_characteristics removeObjectForKey:v5];
+  characteristicCopy = characteristic;
+  v8 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:characteristicCopy];
+  [(NSMutableDictionary *)self->_characteristics removeObjectForKey:characteristicCopy];
 
-  v6 = [(EPResourceManager *)self referenceCounter];
+  referenceCounter = [(EPResourceManager *)self referenceCounter];
   v7 = v8;
-  if (v6 && v8)
+  if (referenceCounter && v8)
   {
     self->_shouldUpdateCharacteristics = 1;
-    v6 = [(EPAdvertiserManager *)self update];
+    referenceCounter = [(EPAdvertiserManager *)self update];
     v7 = v8;
   }
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(referenceCounter, v7);
 }
 
 - (EPAdvertiserManager)init
@@ -89,8 +89,8 @@
   }
 
   v6 = +[EPFactory sharedFactory];
-  v7 = [v6 agentManager];
-  v8 = [v7 newPeripheralManagerWithDelegate:self];
+  agentManager = [v6 agentManager];
+  v8 = [agentManager newPeripheralManagerWithDelegate:self];
   peripheral = self->_peripheral;
   self->_peripheral = v8;
 
@@ -122,8 +122,8 @@
       }
     }
 
-    v6 = [(EPPeripheralManager *)self->_peripheral manager];
-    [v6 stopAdvertising];
+    manager = [(EPPeripheralManager *)self->_peripheral manager];
+    [manager stopAdvertising];
   }
 
   v7 = sub_1000A98C0();
@@ -154,9 +154,9 @@
   [(EPAdvertiserManager *)self update];
 }
 
-- (id)newAdvertiserWithDelegate:(id)a3
+- (id)newAdvertiserWithDelegate:(id)delegate
 {
-  v4 = [(EPResourceManager *)self newResourceWithDelegate:a3];
+  v4 = [(EPResourceManager *)self newResourceWithDelegate:delegate];
   v5 = +[EPFactory queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -173,38 +173,38 @@
   return v8;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   name = self->_name;
-  if (name != v5)
+  if (name != nameCopy)
   {
-    v7 = v5;
-    name = [(NSString *)name isEqualToString:v5];
-    v5 = v7;
+    v7 = nameCopy;
+    name = [(NSString *)name isEqualToString:nameCopy];
+    nameCopy = v7;
     if ((name & 1) == 0)
     {
-      objc_storeStrong(&self->_name, a3);
+      objc_storeStrong(&self->_name, name);
       name = [(EPAdvertiserManager *)self update];
-      v5 = v7;
+      nameCopy = v7;
     }
   }
 
-  _objc_release_x1(name, v5);
+  _objc_release_x1(name, nameCopy);
 }
 
-- (void)setAdvertisingRate:(unint64_t)a3
+- (void)setAdvertisingRate:(unint64_t)rate
 {
-  if (self->_advertisingRate != a3)
+  if (self->_advertisingRate != rate)
   {
-    self->_advertisingRate = a3;
+    self->_advertisingRate = rate;
     [(EPAdvertiserManager *)self update];
   }
 }
 
-- (void)setNotAvailableToPair:(BOOL)a3
+- (void)setNotAvailableToPair:(BOOL)pair
 {
-  v3 = a3;
+  pairCopy = pair;
   v5 = sub_1000A98C0();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -214,12 +214,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v11 = v3;
+      v11 = pairCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Set not available to pair to: %{BOOL}d", buf, 8u);
     }
   }
 
-  self->_notAvailableToPair = v3;
+  self->_notAvailableToPair = pairCopy;
   v8 = +[EPFactory queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -229,9 +229,9 @@
   dispatch_async(v8, block);
 }
 
-- (void)setDontAdvertiseWithServiceUUID:(BOOL)a3
+- (void)setDontAdvertiseWithServiceUUID:(BOOL)d
 {
-  self->_dontAdvertiseWithServiceUUID = a3;
+  self->_dontAdvertiseWithServiceUUID = d;
   v4 = +[EPFactory queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -262,8 +262,8 @@
       }
     }
 
-    v6 = [(EPPeripheralManager *)self->_peripheral manager];
-    [v6 removeAllServices];
+    manager = [(EPPeripheralManager *)self->_peripheral manager];
+    [manager removeAllServices];
   }
 
   activeAdvertisingName = self->_activeAdvertisingName;
@@ -313,8 +313,8 @@ LABEL_13:
       }
 
       [(EPResourceManager *)self setAvailability:0 withError:0];
-      v12 = [(EPPeripheralManager *)self->_peripheral manager];
-      [v12 stopAdvertising];
+      manager2 = [(EPPeripheralManager *)self->_peripheral manager];
+      [manager2 stopAdvertising];
     }
   }
 
@@ -347,8 +347,8 @@ LABEL_20:
   if (!self->_agent)
   {
     v20 = +[EPFactory sharedFactory];
-    v21 = [v20 agentManager];
-    v22 = [v21 newAgentWithDelegate:self fromCentral:0];
+    agentManager = [v20 agentManager];
+    v22 = [agentManager newAgentWithDelegate:self fromCentral:0];
     agent = self->_agent;
     self->_agent = v22;
 
@@ -378,8 +378,8 @@ LABEL_31:
   }
 
   v15 = +[EPFactory sharedFactory];
-  v24 = [v15 keyGeneratorManager];
-  v25 = [v24 newGeneratorWithDelegate:self];
+  keyGeneratorManager = [v15 keyGeneratorManager];
+  v25 = [keyGeneratorManager newGeneratorWithDelegate:self];
   key = self->_key;
   self->_key = v25;
 
@@ -410,8 +410,8 @@ LABEL_34:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v35 = [(NSMutableDictionary *)self->_characteristics allValues];
-      v36 = [v35 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      allValues = [(NSMutableDictionary *)self->_characteristics allValues];
+      v36 = [allValues countByEnumeratingWithState:&v61 objects:v66 count:16];
       if (v36)
       {
         v37 = v36;
@@ -422,17 +422,17 @@ LABEL_34:
           {
             if (*v62 != v38)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(allValues);
             }
 
-            v40 = [*(*(&v61 + 1) + 8 * i) characteristic];
-            if (v40)
+            characteristic = [*(*(&v61 + 1) + 8 * i) characteristic];
+            if (characteristic)
             {
-              [v34 addObject:v40];
+              [v34 addObject:characteristic];
             }
           }
 
-          v37 = [v35 countByEnumeratingWithState:&v61 objects:v66 count:16];
+          v37 = [allValues countByEnumeratingWithState:&v61 objects:v66 count:16];
         }
 
         while (v37);
@@ -466,8 +466,8 @@ LABEL_34:
         }
       }
 
-      v50 = [(EPPeripheralManager *)self->_peripheral manager];
-      [v50 addService:v46];
+      manager3 = [(EPPeripheralManager *)self->_peripheral manager];
+      [manager3 addService:v46];
 
       if (self->_serviceAdded)
       {
@@ -475,12 +475,12 @@ LABEL_38:
         if (!self->_isAdvertising && !self->_waitingForAdvertisingToStart)
         {
           self->_waitingForAdvertisingToStart = 1;
-          v27 = [(EPAdvertiserManager *)self name];
+          name = [(EPAdvertiserManager *)self name];
           v28 = +[NSMutableDictionary dictionary];
           v29 = v28;
-          if (v27)
+          if (name)
           {
-            [v28 setObject:v27 forKeyedSubscript:CBAdvertisementDataLocalNameKey];
+            [v28 setObject:name forKeyedSubscript:CBAdvertisementDataLocalNameKey];
           }
 
           if (!self->_notAvailableToPair && !self->_dontAdvertiseWithServiceUUID)
@@ -515,8 +515,8 @@ LABEL_72:
                 }
               }
 
-              v54 = [(EPPeripheralManager *)self->_peripheral manager];
-              [v54 stopAdvertising];
+              manager4 = [(EPPeripheralManager *)self->_peripheral manager];
+              [manager4 stopAdvertising];
 
               v55 = sub_1000A98C0();
               v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
@@ -532,8 +532,8 @@ LABEL_72:
                 }
               }
 
-              v58 = [(EPPeripheralManager *)self->_peripheral manager];
-              [v58 startAdvertising:v29];
+              manager5 = [(EPPeripheralManager *)self->_peripheral manager];
+              [manager5 startAdvertising:v29];
 
               goto LABEL_81;
             }
@@ -559,15 +559,15 @@ LABEL_81:
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v38 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  requestsCopy = requests;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  v7 = [requestsCopy countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v7)
   {
     v9 = v7;
@@ -576,21 +576,21 @@ LABEL_81:
     *&v8 = 138543618;
     v34 = v8;
     v36 = *v45;
-    v37 = v6;
+    v37 = requestsCopy;
     do
     {
       for (i = 0; i != v9; i = i + 1)
       {
         if (*v45 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v12 = *(*(&v44 + 1) + 8 * i);
-        v13 = [v12 characteristic];
-        v14 = [v13 UUID];
+        characteristic = [v12 characteristic];
+        uUID = [characteristic UUID];
         v15 = [CBUUID UUIDWithString:@"5F6C6A23-8AC8-400E-810B-017134943460"];
-        v16 = [v14 isEqual:v15];
+        v16 = [uUID isEqual:v15];
 
         if (v16)
         {
@@ -614,21 +614,21 @@ LABEL_81:
             }
           }
 
-          [v38 respondToRequest:v12 withResult:0];
+          [managerCopy respondToRequest:v12 withResult:0];
         }
 
         else
         {
           characteristics = self->_characteristics;
-          v21 = [v12 characteristic];
-          v22 = [v21 UUID];
-          v23 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:v22];
+          characteristic2 = [v12 characteristic];
+          uUID2 = [characteristic2 UUID];
+          v23 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:uUID2];
 
           if (v23)
           {
-            v24 = [v23 writeHandler];
+            writeHandler = [v23 writeHandler];
 
-            if (v24)
+            if (writeHandler)
             {
               v25 = sub_1000A98C0();
               v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
@@ -638,58 +638,58 @@ LABEL_81:
                 v27 = sub_1000A98C0();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                 {
-                  v28 = [v23 characteristicUUID];
-                  v29 = [v28 UUIDString];
-                  v30 = [v12 value];
-                  v31 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v30 length]);
+                  characteristicUUID = [v23 characteristicUUID];
+                  uUIDString = [characteristicUUID UUIDString];
+                  value = [v12 value];
+                  v31 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [value length]);
                   *buf = v34;
-                  v49 = v29;
+                  v49 = uUIDString;
                   v50 = 2114;
                   v51 = v31;
                   _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Calling writeHandler block for characteristic %{public}@ data.length=%{public}@", buf, 0x16u);
                 }
               }
 
-              v32 = [v23 writeHandler];
-              v33 = [v12 value];
+              writeHandler2 = [v23 writeHandler];
+              value2 = [v12 value];
               v39[0] = _NSConcreteStackBlock;
               v39[1] = 3221225472;
               v40[0] = sub_100087FE4;
               v40[1] = &unk_100177410;
-              v41 = v38;
+              v41 = managerCopy;
               v42 = v12;
-              (v32)[2](v32, v33, v39);
+              (writeHandler2)[2](writeHandler2, value2, v39);
 
               v10 = v36;
-              v6 = v37;
+              requestsCopy = v37;
             }
           }
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v44 objects:v52 count:16];
+      v9 = [requestsCopy countByEnumeratingWithState:&v44 objects:v52 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 characteristic];
-  v9 = [v8 UUID];
+  managerCopy = manager;
+  requestCopy = request;
+  characteristic = [requestCopy characteristic];
+  uUID = [characteristic UUID];
   v10 = [CBUUID UUIDWithString:@"5F6C6A23-8AC8-400E-810B-017134943460"];
-  v11 = [v9 isEqual:v10];
+  v11 = [uUID isEqual:v10];
 
   if (v11)
   {
     v12 = self->_switchModeData;
     if (v12)
     {
-      v13 = -[NSData subdataWithRange:](v12, "subdataWithRange:", [v7 offset], -[NSData length](v12, "length") - objc_msgSend(v7, "offset"));
-      [v7 setValue:v13];
+      v13 = -[NSData subdataWithRange:](v12, "subdataWithRange:", [requestCopy offset], -[NSData length](v12, "length") - objc_msgSend(requestCopy, "offset"));
+      [requestCopy setValue:v13];
 
       v14 = 0;
     }
@@ -699,21 +699,21 @@ LABEL_81:
       v14 = 6;
     }
 
-    [v6 respondToRequest:v7 withResult:v14];
+    [managerCopy respondToRequest:requestCopy withResult:v14];
   }
 
   else
   {
     characteristics = self->_characteristics;
-    v16 = [v7 characteristic];
-    v17 = [v16 UUID];
-    v12 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:v17];
+    characteristic2 = [requestCopy characteristic];
+    uUID2 = [characteristic2 UUID];
+    v12 = [(NSMutableDictionary *)characteristics objectForKeyedSubscript:uUID2];
 
     if (v12)
     {
-      v18 = [(NSData *)v12 readHandler];
+      readHandler = [(NSData *)v12 readHandler];
 
-      if (v18)
+      if (readHandler)
       {
         v19 = sub_1000A98C0();
         v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
@@ -723,30 +723,30 @@ LABEL_81:
           v21 = sub_1000A98C0();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [(NSData *)v12 characteristicUUID];
-            v23 = [v22 UUIDString];
+            characteristicUUID = [(NSData *)v12 characteristicUUID];
+            uUIDString = [characteristicUUID UUIDString];
             *buf = 138543362;
-            v29 = v23;
+            v29 = uUIDString;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Calling readHandler block for characteristic %{public}@", buf, 0xCu);
           }
         }
 
-        v24 = [(NSData *)v12 readHandler];
+        readHandler2 = [(NSData *)v12 readHandler];
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_1000883C0;
         v25[3] = &unk_100178598;
-        v26 = v7;
-        v27 = v6;
-        (v24)[2](v24, v25);
+        v26 = requestCopy;
+        v27 = managerCopy;
+        (readHandler2)[2](readHandler2, v25);
       }
     }
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000A98C0();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -760,51 +760,51 @@ LABEL_81:
     }
   }
 
-  if (!v5)
+  if (!errorCopy)
   {
     goto LABEL_8;
   }
 
-  v9 = [v5 domain];
-  if (([v9 isEqualToString:CBErrorDomain] & 1) == 0)
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:CBErrorDomain] & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v10 = [v5 code];
+  code = [errorCopy code];
 
-  if (v10 != 9)
+  if (code != 9)
   {
 LABEL_10:
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2;
-    v13 = v5;
+    v13 = errorCopy;
     goto LABEL_11;
   }
 
 LABEL_8:
   self->_isAdvertising = 1;
   self->_waitingForAdvertisingToStart = 0;
-  v11 = self;
+  selfCopy2 = self;
   v12 = 1;
   v13 = 0;
 LABEL_11:
-  [(EPResourceManager *)v11 setAvailability:v12 withError:v13];
+  [(EPResourceManager *)selfCopy2 setAvailability:v12 withError:v13];
   [(EPAdvertiserManager *)self update];
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 UUID];
+  serviceCopy = service;
+  errorCopy = error;
+  uUID = [serviceCopy UUID];
   v10 = [CBUUID UUIDWithString:@"9AA4730F-B25C-4CC3-B821-C931559FC196"];
-  v11 = [v9 isEqual:v10];
+  v11 = [uUID isEqual:v10];
 
   if (v11)
   {
-    if (v8)
+    if (errorCopy)
     {
       v12 = sub_1000A98C0();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -814,7 +814,7 @@ LABEL_11:
         v14 = sub_1000A98C0();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_1001015E4(v7, v8, v14);
+          sub_1001015E4(serviceCopy, errorCopy, v14);
         }
       }
     }
@@ -828,57 +828,57 @@ LABEL_11:
   }
 }
 
-- (void)collection:(id)a3 deviceDidAppear:(id)a4
+- (void)collection:(id)collection deviceDidAppear:(id)appear
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008881C;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  collectionCopy = collection;
+  appearCopy = appear;
+  v6 = appearCopy;
+  v7 = collectionCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000888E4;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  collectionCopy = collection;
+  disappearCopy = disappear;
+  v6 = disappearCopy;
+  v7 = collectionCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)collection:(id)a3 deviceInfoDidDealloc:(id)a4
+- (void)collection:(id)collection deviceInfoDidDealloc:(id)dealloc
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000889AC;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  collectionCopy = collection;
+  deallocCopy = dealloc;
+  v6 = deallocCopy;
+  v7 = collectionCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 identifier];
-  v14 = [(EPAdvertiserManager *)self devicesDictionary];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  identifier = [pairingCopy identifier];
+  devicesDictionary = [(EPAdvertiserManager *)self devicesDictionary];
+  v15 = [devicesDictionary objectForKeyedSubscript:identifier];
 
   if (!v15)
   {
-    v15 = [(EPDeviceCollection *)self->_deviceCollection newDeviceWithPeer:v11];
+    v15 = [(EPDeviceCollection *)self->_deviceCollection newDeviceWithPeer:pairingCopy];
     v16 = sub_1000A98C0();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -889,7 +889,7 @@ LABEL_11:
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = [EPDevice stringFromCBPairingType:a5];
+        v21 = [EPDevice stringFromCBPairingType:type];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         v23 = @"CBCentral";
@@ -903,11 +903,11 @@ LABEL_11:
 
         v31 = v15;
         v32 = 2112;
-        v33 = v11;
+        v33 = pairingCopy;
         v34 = 2112;
         v35 = v21;
         v36 = 2112;
-        v37 = v12;
+        v37 = passkeyCopy;
         v38 = 2112;
         v39 = v23;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "EPAdvertiserManager Calling pairingAgent:peerDidRequestPairing:type:passkey: on %@[%p] with peer %@ type=%@ passkey=%@ peer=%@ on newly created device", buf, 0x3Eu);
@@ -915,7 +915,7 @@ LABEL_11:
     }
   }
 
-  [v15 pairingAgent:v10 peerDidRequestPairing:v11 type:a5 passkey:v12];
+  [v15 pairingAgent:agentCopy peerDidRequestPairing:pairingCopy type:type passkey:passkeyCopy];
   v24 = +[EPFactory queue];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;

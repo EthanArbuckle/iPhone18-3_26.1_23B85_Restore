@@ -1,30 +1,30 @@
 @interface PUIWallpaperLegibilityTreatment
-- (BOOL)commitToRenderingTree:(id)a3 options:(id)a4 error:(id *)a5;
-- (PUIWallpaperLegibilityTreatment)initWithCoder:(id)a3;
-- (id)colorByDimmingColor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)commitToRenderingTree:(id)tree options:(id)options error:(id *)error;
+- (PUIWallpaperLegibilityTreatment)initWithCoder:(id)coder;
+- (id)colorByDimmingColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)luminanceTreatmentFilters;
 - (id)makeDimmingLayer;
 - (id)makeGradientLayer;
 - (id)makeLuminanceBackdropLayer;
-- (void)encodeWithCoder:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation PUIWallpaperLegibilityTreatment
 
-- (BOOL)commitToRenderingTree:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)commitToRenderingTree:(id)tree options:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  treeCopy = tree;
+  v7 = treeCopy;
   if (self->_needsLuminanceTreatment || self->_needsDimmingTreatment)
   {
-    [v6 setAllowsGroupBlending:0];
+    [treeCopy setAllowsGroupBlending:0];
     if (self->_needsDimmingTreatment)
     {
-      v8 = [(PUIWallpaperLegibilityTreatment *)self makeDimmingLayer];
+      makeDimmingLayer = [(PUIWallpaperLegibilityTreatment *)self makeDimmingLayer];
       dimmingLayer = self->_dimmingLayer;
-      self->_dimmingLayer = v8;
+      self->_dimmingLayer = makeDimmingLayer;
 
       [(CALayer *)self->_dimmingLayer setDelegate:self];
       [v7 addSublayer:self->_dimmingLayer];
@@ -32,9 +32,9 @@
 
     if (self->_needsLuminanceTreatment)
     {
-      v10 = [(PUIWallpaperLegibilityTreatment *)self makeLuminanceBackdropLayer];
+      makeLuminanceBackdropLayer = [(PUIWallpaperLegibilityTreatment *)self makeLuminanceBackdropLayer];
       luminanceBackdropLayer = self->_luminanceBackdropLayer;
-      self->_luminanceBackdropLayer = v10;
+      self->_luminanceBackdropLayer = makeLuminanceBackdropLayer;
 
       [(CABackdropLayer *)self->_luminanceBackdropLayer setDelegate:self];
       v12 = self->_luminanceBackdropLayer;
@@ -48,18 +48,18 @@
       averageColor = self->_averageColor;
       if (averageColor)
       {
-        v14 = averageColor;
+        grayColor = averageColor;
       }
 
       else
       {
-        v14 = [MEMORY[0x1E69DC888] grayColor];
+        grayColor = [MEMORY[0x1E69DC888] grayColor];
       }
 
-      v15 = v14;
-      v16 = [MEMORY[0x1E6979398] layer];
+      v15 = grayColor;
+      layer = [MEMORY[0x1E6979398] layer];
       dimmedColorLayer = self->_dimmedColorLayer;
-      self->_dimmedColorLayer = v16;
+      self->_dimmedColorLayer = layer;
 
       v18 = [(PUIWallpaperLegibilityTreatment *)self colorByDimmingColor:v15];
       -[CALayer setBackgroundColor:](self->_dimmedColorLayer, "setBackgroundColor:", [v18 CGColor]);
@@ -73,9 +73,9 @@
 
     if (self->_needsLuminanceTreatment)
     {
-      v20 = [(PUIWallpaperLegibilityTreatment *)self makeGradientLayer];
+      makeGradientLayer = [(PUIWallpaperLegibilityTreatment *)self makeGradientLayer];
       gradientLayer = self->_gradientLayer;
-      self->_gradientLayer = v20;
+      self->_gradientLayer = makeGradientLayer;
 
       [(CAGradientLayer *)self->_gradientLayer setDelegate:self];
       v22 = self->_gradientLayer;
@@ -90,15 +90,15 @@
   return 1;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v5 = a3;
-  v3 = [v5 superlayer];
-  v4 = v3;
-  if (v3)
+  layerCopy = layer;
+  superlayer = [layerCopy superlayer];
+  v4 = superlayer;
+  if (superlayer)
   {
-    [v3 bounds];
-    [v5 setFrame:?];
+    [superlayer bounds];
+    [layerCopy setFrame:?];
   }
 }
 
@@ -166,20 +166,20 @@ LABEL_12:
 
 - (id)makeLuminanceBackdropLayer
 {
-  v3 = [MEMORY[0x1E6979310] layer];
-  v4 = [(PUIWallpaperLegibilityTreatment *)self luminanceTreatmentFilters];
-  [v3 setFilters:v4];
+  layer = [MEMORY[0x1E6979310] layer];
+  luminanceTreatmentFilters = [(PUIWallpaperLegibilityTreatment *)self luminanceTreatmentFilters];
+  [layer setFilters:luminanceTreatmentFilters];
 
-  return v3;
+  return layer;
 }
 
-- (id)colorByDimmingColor:(id)a3
+- (id)colorByDimmingColor:(id)color
 {
   v8 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  [a3 getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
+  [color getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
   v3 = [MEMORY[0x1E69DC888] colorWithRed:v7 * -0.589999974 + v8 * -0.300000012 + v6 * -0.109999999 + v5 * 0.0 + 1.0 green:v7 * -0.589999974 + v8 * -0.300000012 + v6 * -0.109999999 + v5 * 0.0 + 1.0 blue:v7 * -0.589999974 + v8 * -0.300000012 + v6 * -0.109999999 + v5 * 0.0 + 1.0 alpha:v7 * 0.0 + v8 * 0.0 + v6 * 0.0 + v5 * 0.5 + 0.0];
 
   return v3;
@@ -188,7 +188,7 @@ LABEL_12:
 - (id)makeGradientLayer
 {
   components[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6979380] layer];
+  layer = [MEMORY[0x1E6979380] layer];
   v3 = [&unk_1F1C92CF8 count];
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], v3, MEMORY[0x1E695E9C0]);
   v5 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F128]);
@@ -214,19 +214,19 @@ LABEL_12:
     while (v3);
   }
 
-  [v2 setColors:Mutable];
+  [layer setColors:Mutable];
   CFRelease(Mutable);
   CGColorSpaceRelease(v5);
-  [v2 setLocations:&unk_1F1C92CF8];
-  [v2 setStartPoint:{0.5, 0.0}];
-  [v2 setEndPoint:{0.5, 1.0}];
+  [layer setLocations:&unk_1F1C92CF8];
+  [layer setStartPoint:{0.5, 0.0}];
+  [layer setEndPoint:{0.5, 1.0}];
   v9 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798C8]];
-  [v2 setCompositingFilter:v9];
+  [layer setCompositingFilter:v9];
 
-  return v2;
+  return layer;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setNeedsDimmingTreatment:self->_needsDimmingTreatment];
@@ -246,15 +246,15 @@ LABEL_12:
   return v4;
 }
 
-- (PUIWallpaperLegibilityTreatment)initWithCoder:(id)a3
+- (PUIWallpaperLegibilityTreatment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PUIWallpaperLegibilityTreatment *)self init];
   if (v5)
   {
-    v5->_needsDimmingTreatment = [v4 decodeBoolForKey:@"NeedsDimmingTreatment"];
-    v5->_needsLuminanceTreatment = [v4 decodeBoolForKey:@"NeedsLuminanceTreatment"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AverageColor"];
+    v5->_needsDimmingTreatment = [coderCopy decodeBoolForKey:@"NeedsDimmingTreatment"];
+    v5->_needsLuminanceTreatment = [coderCopy decodeBoolForKey:@"NeedsLuminanceTreatment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AverageColor"];
     averageColor = v5->_averageColor;
     v5->_averageColor = v6;
   }
@@ -262,13 +262,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   needsDimmingTreatment = self->_needsDimmingTreatment;
-  v5 = a3;
-  [v5 encodeBool:needsDimmingTreatment forKey:@"NeedsDimmingTreatment"];
-  [v5 encodeBool:self->_needsLuminanceTreatment forKey:@"NeedsLuminanceTreatment"];
-  [v5 encodeObject:self->_averageColor forKey:@"AverageColor"];
+  coderCopy = coder;
+  [coderCopy encodeBool:needsDimmingTreatment forKey:@"NeedsDimmingTreatment"];
+  [coderCopy encodeBool:self->_needsLuminanceTreatment forKey:@"NeedsLuminanceTreatment"];
+  [coderCopy encodeObject:self->_averageColor forKey:@"AverageColor"];
 }
 
 @end

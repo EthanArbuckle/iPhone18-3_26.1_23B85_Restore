@@ -1,26 +1,26 @@
 @interface NSObject
 + (BOOL)conformsToProtocol:(Protocol *)protocol;
-+ (BOOL)isAncestorOfObject:(id)a3;
-+ (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isAncestorOfObject:(id)object;
++ (BOOL)isKindOfClass:(Class)class;
 + (BOOL)isSubclassOfClass:(Class)aClass;
 + (Class)superclass;
 + (IMP)instanceMethodForSelector:(SEL)aSelector;
 + (NSObject)new;
-+ (id)performSelector:(SEL)a3;
-+ (id)performSelector:(SEL)a3 withObject:(id)a4;
-+ (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-+ (void)doesNotRecognizeSelector:(SEL)a3;
-+ (void)forwardInvocation:(id)a3;
-+ (void)methodForSelector:(SEL)a3;
++ (id)performSelector:(SEL)selector;
++ (id)performSelector:(SEL)selector withObject:(id)object;
++ (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
++ (void)doesNotRecognizeSelector:(SEL)selector;
++ (void)forwardInvocation:(id)invocation;
++ (void)methodForSelector:(SEL)selector;
 - (BOOL)_isDeallocating;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (Class)superclass;
 - (IMP)methodForSelector:(SEL)aSelector;
-- (id)performSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3 withObject:(id)a4;
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
+- (id)performSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector withObject:(id)object;
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
 - (void)doesNotRecognizeSelector:(SEL)aSelector;
 - (void)forwardInvocation:(NSInvocation *)anInvocation;
 @end
@@ -44,9 +44,9 @@
 
 + (Class)superclass
 {
-  if (*(a1 + 1))
+  if (*(self + 1))
   {
-    return *(a1 + 1);
+    return *(self + 1);
   }
 
   else
@@ -57,14 +57,14 @@
 
 + (NSObject)new
 {
-  if ((*((*a1 & 0xFFFFFFFF8) + 0x1E) & 0x4000) != 0)
+  if ((*((*self & 0xFFFFFFFF8) + 0x1E) & 0x4000) != 0)
   {
-    v2 = _objc_rootAllocWithZone(a1);
+    v2 = _objc_rootAllocWithZone(self);
   }
 
   else
   {
-    v2 = [a1 alloc];
+    v2 = [self alloc];
   }
 
   return [v2 init];
@@ -84,74 +84,74 @@
   }
 }
 
-+ (void)forwardInvocation:(id)a3
++ (void)forwardInvocation:(id)invocation
 {
-  if (a3)
+  if (invocation)
   {
-    a3 = [a3 selector];
+    invocation = [invocation selector];
   }
 
-  [a1 doesNotRecognizeSelector:a3];
+  [self doesNotRecognizeSelector:invocation];
 }
 
-+ (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
++ (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
-  if (!a3)
+  if (!selector)
   {
-    [a1 doesNotRecognizeSelector:?];
+    [self doesNotRecognizeSelector:?];
   }
 
-  return [a1 a3];
+  return [self selector];
 }
 
-+ (id)performSelector:(SEL)a3 withObject:(id)a4
++ (id)performSelector:(SEL)selector withObject:(id)object
 {
-  if (!a3)
+  if (!selector)
   {
-    [a1 doesNotRecognizeSelector:?];
+    [self doesNotRecognizeSelector:?];
   }
 
-  return [a1 a3];
+  return [self selector];
 }
 
-+ (id)performSelector:(SEL)a3
++ (id)performSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
-    [a1 doesNotRecognizeSelector:?];
+    [self doesNotRecognizeSelector:?];
   }
 
-  return [a1 a3];
+  return [self selector];
 }
 
-+ (void)doesNotRecognizeSelector:(SEL)a3
++ (void)doesNotRecognizeSelector:(SEL)selector
 {
-  Name = class_getName(a1);
-  v9 = "<null selector>";
-  if (a3)
+  Name = class_getName(self);
+  selectorCopy = "<null selector>";
+  if (selector)
   {
-    v9 = a3;
+    selectorCopy = selector;
   }
 
-  _objc_fatal("+[%s %s]: unrecognized selector sent to instance %p", v6, v7, v8, Name, v9, a1);
+  _objc_fatal("+[%s %s]: unrecognized selector sent to instance %p", v6, v7, v8, Name, selectorCopy, self);
 }
 
-+ (void)methodForSelector:(SEL)a3
++ (void)methodForSelector:(SEL)selector
 {
-  v3 = a1;
-  if (a3)
+  selfCopy = self;
+  if (selector)
   {
-    v4 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    [a1 doesNotRecognizeSelector:?];
-    a1 = v3;
-    v4 = 0;
+    [self doesNotRecognizeSelector:?];
+    self = selfCopy;
+    selectorCopy = 0;
   }
 
-  return object_getMethodImplementation(a1, v4);
+  return object_getMethodImplementation(self, selectorCopy);
 }
 
 + (IMP)instanceMethodForSelector:(SEL)aSelector
@@ -159,12 +159,12 @@
   if (aSelector)
   {
 
-    return class_getMethodImplementation(a1, aSelector);
+    return class_getMethodImplementation(self, aSelector);
   }
 
   else
   {
-    [a1 doesNotRecognizeSelector:{v3, v4}];
+    [self doesNotRecognizeSelector:{v3, v4}];
     return 0;
   }
 }
@@ -172,28 +172,28 @@
 + (BOOL)conformsToProtocol:(Protocol *)protocol
 {
   result = 0;
-  if (protocol && a1)
+  if (protocol && self)
   {
     while (1)
     {
-      result = class_conformsToProtocol(a1, protocol);
-      if (result || !*(a1 + 1))
+      result = class_conformsToProtocol(self, protocol);
+      if (result || !*(self + 1))
       {
         break;
       }
 
-      a1 = *(a1 + 1);
+      self = *(self + 1);
     }
   }
 
   return result;
 }
 
-+ (BOOL)isAncestorOfObject:(id)a3
++ (BOOL)isAncestorOfObject:(id)object
 {
-  v4 = [a3 class];
+  v4 = [object class];
   result = v4 != 0;
-  if (v4 != a1 && v4 != 0)
+  if (v4 != self && v4 != 0)
   {
     while (1)
     {
@@ -205,7 +205,7 @@
 
       v4 = v4[1];
       result = v7 != 0;
-      if (v7 == a1 || v7 == 0)
+      if (v7 == self || v7 == 0)
       {
         return result;
       }
@@ -219,19 +219,19 @@
 
 + (BOOL)isSubclassOfClass:(Class)aClass
 {
-  v3 = a1;
-  result = a1 != 0;
-  if (v3 != aClass && v3)
+  selfCopy = self;
+  result = self != 0;
+  if (selfCopy != aClass && selfCopy)
   {
     while (1)
     {
-      v5 = v3[1];
+      v5 = selfCopy[1];
       if (!v5)
       {
         break;
       }
 
-      v3 = v3[1];
+      selfCopy = selfCopy[1];
       result = v5 != 0;
       if (v5 == aClass || v5 == 0)
       {
@@ -245,11 +245,11 @@
   return result;
 }
 
-+ (BOOL)isKindOfClass:(Class)a3
++ (BOOL)isKindOfClass:(Class)class
 {
-  v3 = (*a1 & 0xFFFFFFFF8);
+  v3 = (*self & 0xFFFFFFFF8);
   result = v3 != 0;
-  if (v3 != a3 && v3 != 0)
+  if (v3 != class && v3 != 0)
   {
     while (1)
     {
@@ -261,7 +261,7 @@
 
       v3 = v3[1];
       result = v6 != 0;
-      if (v6 == a3 || v6 == 0)
+      if (v6 == class || v6 == 0)
       {
         return result;
       }
@@ -283,34 +283,34 @@
   [self doesNotRecognizeSelector:anInvocation];
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
-  if (!a3)
+  if (!selector)
   {
     [self doesNotRecognizeSelector:?];
   }
 
-  return [self a3];
+  return [self selector];
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4
+- (id)performSelector:(SEL)selector withObject:(id)object
 {
-  if (!a3)
+  if (!selector)
   {
     [self doesNotRecognizeSelector:?];
   }
 
-  return [self a3];
+  return [self selector];
 }
 
-- (id)performSelector:(SEL)a3
+- (id)performSelector:(SEL)selector
 {
-  if (!a3)
+  if (!selector)
   {
     [self doesNotRecognizeSelector:?];
   }
 
-  return [self a3];
+  return [self selector];
 }
 
 - (void)doesNotRecognizeSelector:(SEL)aSelector
@@ -327,7 +327,7 @@
 
 - (IMP)methodForSelector:(SEL)aSelector
 {
-  v3 = self;
+  selfCopy = self;
   if (aSelector)
   {
     v4 = aSelector;
@@ -336,23 +336,23 @@
   else
   {
     [self doesNotRecognizeSelector:?];
-    self = v3;
+    self = selfCopy;
     v4 = 0;
   }
 
   return object_getMethodImplementation(self, v4);
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (a3)
+  if (protocol)
   {
     v4 = [self class];
     if (v4)
     {
       for (i = v4; ; i = *(i + 1))
       {
-        LOBYTE(v4) = class_conformsToProtocol(i, a3);
+        LOBYTE(v4) = class_conformsToProtocol(i, protocol);
         if ((v4 & 1) != 0 || !*(i + 1))
         {
           break;
@@ -369,18 +369,18 @@
   return v4;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5 = [self class];
 
-  return class_respondsToSelector_inst(self, a3, v5);
+  return class_respondsToSelector_inst(self, selector, v5);
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v4 = [self class];
   result = v4 != 0;
-  if (v4 != a3 && v4 != 0)
+  if (v4 != class && v4 != 0)
   {
     while (1)
     {
@@ -392,7 +392,7 @@
 
       v4 = *(v4 + 1);
       result = v7 != 0;
-      if (v7 == a3 || v7 == 0)
+      if (v7 == class || v7 == 0)
       {
         return result;
       }

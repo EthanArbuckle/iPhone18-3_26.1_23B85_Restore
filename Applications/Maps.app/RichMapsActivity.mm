@@ -1,6 +1,6 @@
 @interface RichMapsActivity
 - (BOOL)needsUIReset;
-- (RichMapsActivity)initWithMapsActivity:(id)a3 mapsAction:(id)a4;
+- (RichMapsActivity)initWithMapsActivity:(id)activity mapsAction:(id)action;
 - (id)description;
 - (id)shortDescription;
 @end
@@ -11,19 +11,19 @@
 {
   if (self->_coldLaunch)
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(shouldResetUI) = 0;
   }
 
   else
   {
-    v2 = [(RichMapsActivity *)self shouldResetUI];
-    if (v2)
+    shouldResetUI = [(RichMapsActivity *)self shouldResetUI];
+    if (shouldResetUI)
     {
-      LOBYTE(v2) = ![(RichMapsActivity *)self isCompatibleWithNavigation];
+      LOBYTE(shouldResetUI) = ![(RichMapsActivity *)self isCompatibleWithNavigation];
     }
   }
 
-  return v2;
+  return shouldResetUI;
 }
 
 - (id)shortDescription
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (RichMapsActivity)initWithMapsActivity:(id)a3 mapsAction:(id)a4
+- (RichMapsActivity)initWithMapsActivity:(id)activity mapsAction:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = RichMapsActivity;
   v9 = [(RichMapsActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapsActivity, a3);
-    objc_storeStrong(&v10->_action, a4);
+    objc_storeStrong(&v9->_mapsActivity, activity);
+    objc_storeStrong(&v10->_action, action);
   }
 
   return v10;

@@ -1,12 +1,12 @@
 @interface TSTTableRepProcessChangesActions
 - (TSUCellRect)dirtyStrokeRange;
 - (id).cxx_construct;
-- (void)setDirtyCellRange:(TSUCellRect)a3;
+- (void)setDirtyCellRange:(TSUCellRect)range;
 @end
 
 @implementation TSTTableRepProcessChangesActions
 
-- (void)setDirtyCellRange:(TSUCellRect)a3
+- (void)setDirtyCellRange:(TSUCellRect)range
 {
   end = self->_dirtyCellRanges.__end_;
   cap = self->_dirtyCellRanges.__cap_;
@@ -41,7 +41,7 @@
       sub_221086F74(&self->_dirtyCellRanges, v11);
     }
 
-    *(16 * v8) = a3;
+    *(16 * v8) = range;
     v6 = (16 * v8 + 16);
     v12 = self->_dirtyCellRanges.__begin_;
     v13 = (self->_dirtyCellRanges.__end_ - v12);
@@ -59,7 +59,7 @@
 
   else
   {
-    *end = a3;
+    *end = range;
     v6 = end + 1;
   }
 

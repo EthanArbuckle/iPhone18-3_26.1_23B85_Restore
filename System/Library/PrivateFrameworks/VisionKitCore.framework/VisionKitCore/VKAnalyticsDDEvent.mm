@@ -1,22 +1,22 @@
 @interface VKAnalyticsDDEvent
-- (VKAnalyticsDDEvent)initWithElement:(id)a3 eventType:(int64_t)a4 customIdentifier:(id)a5;
+- (VKAnalyticsDDEvent)initWithElement:(id)element eventType:(int64_t)type customIdentifier:(id)identifier;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 @end
 
 @implementation VKAnalyticsDDEvent
 
-- (VKAnalyticsDDEvent)initWithElement:(id)a3 eventType:(int64_t)a4 customIdentifier:(id)a5
+- (VKAnalyticsDDEvent)initWithElement:(id)element eventType:(int64_t)type customIdentifier:(id)identifier
 {
-  v8 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = VKAnalyticsDDEvent;
-  v9 = [(VKAnalyticsEvent *)&v12 initWithCustomIdentifier:a5];
+  v9 = [(VKAnalyticsEvent *)&v12 initWithCustomIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v9->_eventType = a4;
-    v9->_dataDetectorTypes = [v8 dataDetectorTypes];
+    v9->_eventType = type;
+    v9->_dataDetectorTypes = [elementCopy dataDetectorTypes];
   }
 
   return v10;
@@ -35,8 +35,8 @@
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v10[2] = v5;
   v9[3] = @"bundleIdentifier";
-  v6 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v10[3] = v6;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v10[3] = bundleIdentifier;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:4];
 
   return v7;
@@ -51,8 +51,8 @@
   v5 = VKMUIStringForVKAnalyticsDDEventType([(VKAnalyticsDDEvent *)self eventType]);
   v6 = VKMUIStringForDDTypes([(VKAnalyticsDDEvent *)self dataDetectorTypes]);
   v7 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v8 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v9 = [v3 stringWithFormat:@"%@ \n ddEventType: %@ \n ddTypes: %@ \n automatedTest: %@ \n bundleIdentifier %@ ", v4, v5, v6, v7, v8];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v9 = [v3 stringWithFormat:@"%@ \n ddEventType: %@ \n ddTypes: %@ \n automatedTest: %@ \n bundleIdentifier %@ ", v4, v5, v6, v7, bundleIdentifier];
 
   return v9;
 }

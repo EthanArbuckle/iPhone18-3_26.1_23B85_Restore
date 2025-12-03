@@ -1,42 +1,42 @@
 @interface TSDImmutableBrushStrokeStorage
-+ (unint64_t)p_totalSectionCountWithPaths:(id)a3;
-- (TSDImmutableBrushStrokeStorage)initWithImage:(id)a3 paths:(id)a4 bounds:(id)a5 textureIndices:(id)a6 options:(id)a7 lineEnds:(id)a8;
++ (unint64_t)p_totalSectionCountWithPaths:(id)paths;
+- (TSDImmutableBrushStrokeStorage)initWithImage:(id)image paths:(id)paths bounds:(id)bounds textureIndices:(id)indices options:(id)options lineEnds:(id)ends;
 - (id)deepCopy;
 @end
 
 @implementation TSDImmutableBrushStrokeStorage
 
-- (TSDImmutableBrushStrokeStorage)initWithImage:(id)a3 paths:(id)a4 bounds:(id)a5 textureIndices:(id)a6 options:(id)a7 lineEnds:(id)a8
+- (TSDImmutableBrushStrokeStorage)initWithImage:(id)image paths:(id)paths bounds:(id)bounds textureIndices:(id)indices options:(id)options lineEnds:(id)ends
 {
-  v24 = a3;
-  v15 = a4;
-  v23 = a5;
-  v22 = a6;
-  v16 = a7;
-  v17 = a8;
+  imageCopy = image;
+  pathsCopy = paths;
+  boundsCopy = bounds;
+  indicesCopy = indices;
+  optionsCopy = options;
+  endsCopy = ends;
   v25.receiver = self;
   v25.super_class = TSDImmutableBrushStrokeStorage;
   v18 = [(TSDImmutableBrushStrokeStorage *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_image, a3);
-    objc_storeStrong(&v19->_paths, a4);
-    objc_storeStrong(&v19->_bounds, a5);
-    objc_storeStrong(&v19->_textureIndices, a6);
-    objc_storeStrong(&v19->_options, a7);
-    objc_storeStrong(&v19->_lineEnds, a8);
-    v19->_totalSectionCount = objc_msgSend_p_totalSectionCountWithPaths_(TSDImmutableBrushStrokeStorage, v20, v15);
+    objc_storeStrong(&v18->_image, image);
+    objc_storeStrong(&v19->_paths, paths);
+    objc_storeStrong(&v19->_bounds, bounds);
+    objc_storeStrong(&v19->_textureIndices, indices);
+    objc_storeStrong(&v19->_options, options);
+    objc_storeStrong(&v19->_lineEnds, ends);
+    v19->_totalSectionCount = objc_msgSend_p_totalSectionCountWithPaths_(TSDImmutableBrushStrokeStorage, v20, pathsCopy);
   }
 
   return v19;
 }
 
-+ (unint64_t)p_totalSectionCountWithPaths:(id)a3
++ (unint64_t)p_totalSectionCountWithPaths:(id)paths
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_allKeys(v3, v4, v5);
+  pathsCopy = paths;
+  v6 = objc_msgSend_allKeys(pathsCopy, v4, v5);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -56,7 +56,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v14 = objc_msgSend_objectForKeyedSubscript_(v3, v9, *(*(&v18 + 1) + 8 * i));
+        v14 = objc_msgSend_objectForKeyedSubscript_(pathsCopy, v9, *(*(&v18 + 1) + 8 * i));
         v11 += objc_msgSend_count(v14, v15, v16);
       }
 
@@ -85,7 +85,7 @@
   v235 = 0u;
   v236 = 0u;
   v237 = 0u;
-  v205 = self;
+  selfCopy = self;
   v11 = objc_msgSend_paths(self, v9, v10);
   v14 = objc_msgSend_allKeys(v11, v12, v13);
 
@@ -111,7 +111,7 @@
         v231 = 0u;
         v232 = 0u;
         v233 = 0u;
-        v23 = objc_msgSend_paths(v205, v21, v22);
+        v23 = objc_msgSend_paths(selfCopy, v21, v22);
         v199 = v19;
         v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, v19);
 
@@ -161,7 +161,7 @@
   v227 = 0u;
   v228 = 0u;
   v229 = 0u;
-  v54 = objc_msgSend_bounds(v205, v52, v53);
+  v54 = objc_msgSend_bounds(selfCopy, v52, v53);
   v57 = objc_msgSend_allKeys(v54, v55, v56);
 
   v202 = v57;
@@ -185,7 +185,7 @@
         v223 = 0u;
         v224 = 0u;
         v225 = 0u;
-        v69 = objc_msgSend_bounds(v205, v67, v68);
+        v69 = objc_msgSend_bounds(selfCopy, v67, v68);
         v71 = objc_msgSend_objectForKeyedSubscript_(v69, v70, v65);
 
         v73 = objc_msgSend_countByEnumeratingWithState_objects_count_(v71, v72, &v222, v242, 16);
@@ -226,7 +226,7 @@
   v219 = 0u;
   v220 = 0u;
   v221 = 0u;
-  v86 = objc_msgSend_textureIndices(v205, v84, v85);
+  v86 = objc_msgSend_textureIndices(selfCopy, v84, v85);
   v89 = objc_msgSend_allKeys(v86, v87, v88);
 
   v203 = v89;
@@ -250,7 +250,7 @@
         v215 = 0u;
         v216 = 0u;
         v217 = 0u;
-        v101 = objc_msgSend_textureIndices(v205, v99, v100);
+        v101 = objc_msgSend_textureIndices(selfCopy, v99, v100);
         v103 = objc_msgSend_objectForKeyedSubscript_(v101, v102, v97);
 
         v105 = objc_msgSend_countByEnumeratingWithState_objects_count_(v103, v104, &v214, v240, 16);
@@ -291,7 +291,7 @@
   v211 = 0u;
   v212 = 0u;
   v213 = 0u;
-  v119 = objc_msgSend_options(v205, v117, v118);
+  v119 = objc_msgSend_options(selfCopy, v117, v118);
   v122 = objc_msgSend_allKeys(v119, v120, v121);
 
   v124 = objc_msgSend_countByEnumeratingWithState_objects_count_(v122, v123, &v210, v239, 16);
@@ -309,7 +309,7 @@
         }
 
         v130 = *(*(&v210 + 1) + 8 * ii);
-        v131 = objc_msgSend_options(v205, v125, v126);
+        v131 = objc_msgSend_options(selfCopy, v125, v126);
         v133 = objc_msgSend_objectForKeyedSubscript_(v131, v132, v130);
 
         v136 = objc_msgSend_copy(v133, v134, v135);
@@ -329,7 +329,7 @@
   v207 = 0u;
   v208 = 0u;
   v209 = 0u;
-  v142 = objc_msgSend_lineEnds(v205, v140, v141);
+  v142 = objc_msgSend_lineEnds(selfCopy, v140, v141);
   v145 = objc_msgSend_allKeys(v142, v143, v144);
 
   v191 = v145;
@@ -347,7 +347,7 @@
         }
 
         v150 = *(*(&v206 + 1) + 8 * jj);
-        v151 = objc_msgSend_lineEnds(v205, v147, v148, v189);
+        v151 = objc_msgSend_lineEnds(selfCopy, v147, v148, v189);
         v153 = objc_msgSend_objectForKeyedSubscript_(v151, v152, v150);
 
         v154 = [TSDLineEnd alloc];

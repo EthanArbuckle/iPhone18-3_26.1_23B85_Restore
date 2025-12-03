@@ -1,16 +1,16 @@
 @interface PLSyndicationResourcePrefetchEngine
-- (PLSyndicationResourcePrefetchEngine)initWithDelegate:(id)a3;
+- (PLSyndicationResourcePrefetchEngine)initWithDelegate:(id)delegate;
 - (PLSyndicationResourcePrefetchEngineDelegate)delegate;
-- (id)_fetchDownloadThrottlingDateAndClearIfNeededWithManagedObjectContext:(id)a3;
-- (id)_resourcesForPrefetchWithManagedObjectContext:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5;
-- (id)_sortDescriptorsForResourcePrefetchImmediately:(BOOL)a3;
-- (id)dateOfNextResourceToPrefetchWithManagedObjectContext:(id)a3;
-- (id)highPriorityResourcesForPrefetchWithManagedObjectContext:(id)a3;
-- (id)lowPriorityResourcesForPrefetchWithManagedObjectContext:(id)a3;
-- (void)_handleDownloadFinishedWithSuccess:(BOOL)a3 error:(id)a4 resource:(id)a5 downloadThrottlingDate:(id)a6 networkAccessAllowed:(BOOL)a7 managedObjectContext:(id)a8;
-- (void)_prepareResourceForPrefetch:(id)a3;
-- (void)prefetchResourceWithObjectID:(id)a3 completion:(id)a4;
-- (void)prefetchResourceWithObjectIDs:(id)a3 completion:(id)a4;
+- (id)_fetchDownloadThrottlingDateAndClearIfNeededWithManagedObjectContext:(id)context;
+- (id)_resourcesForPrefetchWithManagedObjectContext:(id)context predicate:(id)predicate sortDescriptors:(id)descriptors;
+- (id)_sortDescriptorsForResourcePrefetchImmediately:(BOOL)immediately;
+- (id)dateOfNextResourceToPrefetchWithManagedObjectContext:(id)context;
+- (id)highPriorityResourcesForPrefetchWithManagedObjectContext:(id)context;
+- (id)lowPriorityResourcesForPrefetchWithManagedObjectContext:(id)context;
+- (void)_handleDownloadFinishedWithSuccess:(BOOL)success error:(id)error resource:(id)resource downloadThrottlingDate:(id)date networkAccessAllowed:(BOOL)allowed managedObjectContext:(id)context;
+- (void)_prepareResourceForPrefetch:(id)prefetch;
+- (void)prefetchResourceWithObjectID:(id)d completion:(id)completion;
+- (void)prefetchResourceWithObjectIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation PLSyndicationResourcePrefetchEngine
@@ -22,10 +22,10 @@
   return WeakRetained;
 }
 
-- (void)prefetchResourceWithObjectIDs:(id)a3 completion:(id)a4
+- (void)prefetchResourceWithObjectIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   v9 = qos_class_self();
   v10 = dispatch_queue_attr_make_with_qos_class(0, v9, 0);
@@ -39,17 +39,17 @@
   v55 = 0;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v31 = v7;
+  v31 = completionCopy;
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v16 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+  delegate = [(PLSyndicationResourcePrefetchEngine *)self delegate];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __80__PLSyndicationResourcePrefetchEngine_prefetchResourceWithObjectIDs_completion___block_invoke;
   v46[3] = &unk_1E7574098;
   v53 = v54;
   v46[4] = self;
-  v17 = v6;
+  v17 = dsCopy;
   v47 = v17;
   v30 = v15;
   v48 = v30;
@@ -61,7 +61,7 @@
   v51 = v32;
   v20 = v14;
   v52 = v20;
-  [v16 performTransactionForPrefetchManager:self synchronous:1 block:v46];
+  [delegate performTransactionForPrefetchManager:self synchronous:1 block:v46];
 
   v21 = objc_alloc_init(PLResourceLocalAvailabilityRequestOptions);
   [(PLResourceLocalAvailabilityRequestOptions *)v21 setNetworkAccessAllowed:1];
@@ -73,7 +73,7 @@
   v45[2] = 0x2020000000;
   v45[3] = 0;
   v23 = [v19 count];
-  v24 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+  delegate2 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __80__PLSyndicationResourcePrefetchEngine_prefetchResourceWithObjectIDs_completion___block_invoke_55;
@@ -92,12 +92,12 @@
   v34 = v26;
   v27 = v11;
   v35 = v27;
-  v36 = self;
+  selfCopy = self;
   v38 = v45;
   v39 = v23;
   v28 = v31;
   v37 = v28;
-  [v24 batchRequestResourcesForPrefetchManager:self itemIdentifiersWithBundleIDs:v19 destURLs:v32 options:v21 resultHandler:v40 completionHandler:v33];
+  [delegate2 batchRequestResourcesForPrefetchManager:self itemIdentifiersWithBundleIDs:v19 destURLs:v32 options:v21 resultHandler:v40 completionHandler:v33];
 
   _Block_object_dispose(v45, 8);
   _Block_object_dispose(v54, 8);
@@ -902,39 +902,39 @@ void __80__PLSyndicationResourcePrefetchEngine_prefetchResourceWithObjectIDs_com
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)prefetchResourceWithObjectID:(id)a3 completion:(id)a4
+- (void)prefetchResourceWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy__92136;
   v21[4] = __Block_byref_object_dispose__92137;
   v22 = 0;
-  v8 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+  delegate = [(PLSyndicationResourcePrefetchEngine *)self delegate];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__PLSyndicationResourcePrefetchEngine_prefetchResourceWithObjectID_completion___block_invoke;
   v18[3] = &unk_1E7573FA8;
   v20 = v21;
   v18[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v19 = v9;
-  [v8 performTransactionForPrefetchManager:self synchronous:1 block:v18];
+  [delegate performTransactionForPrefetchManager:self synchronous:1 block:v18];
 
-  v10 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+  delegate2 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__PLSyndicationResourcePrefetchEngine_prefetchResourceWithObjectID_completion___block_invoke_2;
   v13[3] = &unk_1E7574020;
   v11 = v9;
   v14 = v11;
-  v15 = self;
+  selfCopy = self;
   v17 = v21;
-  v12 = v7;
+  v12 = completionCopy;
   v16 = v12;
-  [v10 performTransactionForPrefetchManager:self synchronous:0 block:v13];
+  [delegate2 performTransactionForPrefetchManager:self synchronous:0 block:v13];
 
   _Block_object_dispose(v21, 8);
 }
@@ -1100,9 +1100,9 @@ LABEL_9:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v23, v25, v26, v27);
 }
 
-- (id)dateOfNextResourceToPrefetchWithManagedObjectContext:(id)a3
+- (id)dateOfNextResourceToPrefetchWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1114,7 +1114,7 @@ LABEL_9:
   v8[2] = __92__PLSyndicationResourcePrefetchEngine_dateOfNextResourceToPrefetchWithManagedObjectContext___block_invoke;
   v8[3] = &unk_1E7578820;
   v8[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   v10 = &v11;
   [v5 performBlockAndWait:v8];
@@ -1190,111 +1190,111 @@ LABEL_7:
   }
 }
 
-- (id)lowPriorityResourcesForPrefetchWithManagedObjectContext:(id)a3
+- (id)lowPriorityResourcesForPrefetchWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [PLInternalResource predicateForSyndicationResourcesRequiringBackgroundDownloadImmediately:1];
   v6 = [(PLSyndicationResourcePrefetchEngine *)self _sortDescriptorsForResourcePrefetchImmediately:1];
-  v7 = [(PLSyndicationResourcePrefetchEngine *)self _resourcesForPrefetchWithManagedObjectContext:v4 predicate:v5 sortDescriptors:v6];
+  v7 = [(PLSyndicationResourcePrefetchEngine *)self _resourcesForPrefetchWithManagedObjectContext:contextCopy predicate:v5 sortDescriptors:v6];
 
   return v7;
 }
 
-- (id)highPriorityResourcesForPrefetchWithManagedObjectContext:(id)a3
+- (id)highPriorityResourcesForPrefetchWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[PLInternalResource predicateForSyndicationResourcesRequiringSanitization];
   v6 = [(PLSyndicationResourcePrefetchEngine *)self _sortDescriptorsForResourcePrefetchImmediately:1];
-  v7 = [(PLSyndicationResourcePrefetchEngine *)self _resourcesForPrefetchWithManagedObjectContext:v4 predicate:v5 sortDescriptors:v6];
+  v7 = [(PLSyndicationResourcePrefetchEngine *)self _resourcesForPrefetchWithManagedObjectContext:contextCopy predicate:v5 sortDescriptors:v6];
 
   return v7;
 }
 
-- (void)_handleDownloadFinishedWithSuccess:(BOOL)a3 error:(id)a4 resource:(id)a5 downloadThrottlingDate:(id)a6 networkAccessAllowed:(BOOL)a7 managedObjectContext:(id)a8
+- (void)_handleDownloadFinishedWithSuccess:(BOOL)success error:(id)error resource:(id)resource downloadThrottlingDate:(id)date networkAccessAllowed:(BOOL)allowed managedObjectContext:(id)context
 {
-  v12 = a3;
+  successCopy = success;
   v35 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  if (v12)
+  errorCopy = error;
+  resourceCopy = resource;
+  dateCopy = date;
+  contextCopy = context;
+  if (successCopy)
   {
-    v18 = [MEMORY[0x1E695DF00] date];
-    [v15 setCloudLastPrefetchDate:v18];
+    date = [MEMORY[0x1E695DF00] date];
+    [resourceCopy setCloudLastPrefetchDate:date];
 
-    [v15 setCloudPrefetchCount:0];
+    [resourceCopy setCloudPrefetchCount:0];
   }
 
   else
   {
     if (PLErrorOrUnderlyingErrorHasDomainAndCode())
     {
-      [v15 setSyndicationLocalAvailabilityWithAvailable:0 additionalFlags:4];
+      [resourceCopy setSyndicationLocalAvailabilityWithAvailable:0 additionalFlags:4];
     }
 
-    if (PLUnderlyingErrorIsSyndicationMessagesNeedsDownload(v14) && !a7)
+    if (PLUnderlyingErrorIsSyndicationMessagesNeedsDownload(errorCopy) && !allowed)
     {
-      if (v16)
+      if (dateCopy)
       {
-        [v15 setCloudLastPrefetchDate:v16];
+        [resourceCopy setCloudLastPrefetchDate:dateCopy];
       }
 
       else
       {
-        v19 = [MEMORY[0x1E695DF00] date];
-        [v15 setCloudLastPrefetchDate:v19];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [resourceCopy setCloudLastPrefetchDate:date2];
       }
 
-      [v15 setCloudPrefetchCount:0];
+      [resourceCopy setCloudPrefetchCount:0];
       v20 = PLSyndicationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-        v22 = [v21 name];
+        delegate = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+        name = [delegate name];
         *buf = 138543362;
-        v32 = v22;
+        v32 = name;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEBUG, "[resource.sync] %{public}@ downloads not permitted, will try again when network access allowed", buf, 0xCu);
       }
     }
 
     v30 = 0;
-    PLUnderlyingErrorIsSyndicationMessagesRetry(v14, &v30);
+    PLUnderlyingErrorIsSyndicationMessagesRetry(errorCopy, &v30);
     v24 = v23;
     v25 = v30;
     if (v24)
     {
-      v26 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-      [v26 prefetchManager:self receivedNewDownloadThrottlingDate:v25 managedObjectContext:v17];
+      delegate2 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+      [delegate2 prefetchManager:self receivedNewDownloadThrottlingDate:v25 managedObjectContext:contextCopy];
 
       v27 = PLSyndicationGetLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-        v29 = [v28 name];
+        delegate3 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+        name2 = [delegate3 name];
         *buf = 138543618;
-        v32 = v29;
+        v32 = name2;
         v33 = 2114;
         v34 = v25;
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "[resource.sync.throttle] %{public}@ server has indicated that network prefetch should be disabled until: %{public}@", buf, 0x16u);
       }
 
-      [v15 setCloudLastPrefetchDate:v25];
-      [v15 setCloudPrefetchCount:0];
+      [resourceCopy setCloudLastPrefetchDate:v25];
+      [resourceCopy setCloudPrefetchCount:0];
     }
   }
 }
 
-- (void)_prepareResourceForPrefetch:(id)a3
+- (void)_prepareResourceForPrefetch:(id)prefetch
 {
-  v8 = a3;
-  [v8 clearRequiresSanitizationFlag];
-  v3 = [v8 cloudPrefetchCount];
-  v4 = v3;
+  prefetchCopy = prefetch;
+  [prefetchCopy clearRequiresSanitizationFlag];
+  cloudPrefetchCount = [prefetchCopy cloudPrefetchCount];
+  v4 = cloudPrefetchCount;
   v5 = 86400.0;
-  if (v3)
+  if (cloudPrefetchCount)
   {
-    v6 = v3;
+    v6 = cloudPrefetchCount;
     do
     {
       v5 = v5 + v5;
@@ -1305,16 +1305,16 @@ LABEL_7:
   }
 
   v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v5];
-  [v8 setCloudLastPrefetchDate:v7];
-  [v8 setCloudPrefetchCount:(v4 + 1)];
+  [prefetchCopy setCloudLastPrefetchDate:v7];
+  [prefetchCopy setCloudPrefetchCount:(v4 + 1)];
 }
 
-- (id)_fetchDownloadThrottlingDateAndClearIfNeededWithManagedObjectContext:(id)a3
+- (id)_fetchDownloadThrottlingDateAndClearIfNeededWithManagedObjectContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-  v6 = [v5 downloadThrottlingDateForPrefetchManager:self];
+  contextCopy = context;
+  delegate = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+  v6 = [delegate downloadThrottlingDateForPrefetchManager:self];
 
   if (v6)
   {
@@ -1324,17 +1324,17 @@ LABEL_7:
       v8 = PLSyndicationGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-        v10 = [v9 name];
+        delegate2 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+        name = [delegate2 name];
         v13 = 138543618;
-        v14 = v10;
+        v14 = name;
         v15 = 2114;
         v16 = v6;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "[resource.sync.throttle] %{public}@ server time limit for disabling network prefetch has expired (%{public}@), allowing network prefetch", &v13, 0x16u);
       }
 
-      v11 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
-      [v11 prefetchManager:self receivedNewDownloadThrottlingDate:0 managedObjectContext:v4];
+      delegate3 = [(PLSyndicationResourcePrefetchEngine *)self delegate];
+      [delegate3 prefetchManager:self receivedNewDownloadThrottlingDate:0 managedObjectContext:contextCopy];
 
       v6 = 0;
     }
@@ -1343,11 +1343,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)_resourcesForPrefetchWithManagedObjectContext:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (id)_resourcesForPrefetchWithManagedObjectContext:(id)context predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1358,14 +1358,14 @@ LABEL_7:
   v16[1] = 3221225472;
   v16[2] = __111__PLSyndicationResourcePrefetchEngine__resourcesForPrefetchWithManagedObjectContext_predicate_sortDescriptors___block_invoke;
   v16[3] = &unk_1E75780D8;
-  v11 = v9;
+  v11 = predicateCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = descriptorsCopy;
   v18 = v12;
   v21 = &v22;
-  v13 = v8;
+  v13 = contextCopy;
   v19 = v13;
-  v20 = self;
+  selfCopy = self;
   [v13 performBlockAndWait:v16];
   v14 = v23[5];
 
@@ -1409,10 +1409,10 @@ void __111__PLSyndicationResourcePrefetchEngine__resourcesForPrefetchWithManaged
   }
 }
 
-- (id)_sortDescriptorsForResourcePrefetchImmediately:(BOOL)a3
+- (id)_sortDescriptorsForResourcePrefetchImmediately:(BOOL)immediately
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (immediately)
   {
     v3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"asset.addedDate" ascending:0];
     v8[0] = v3;
@@ -1431,16 +1431,16 @@ void __111__PLSyndicationResourcePrefetchEngine__resourcesForPrefetchWithManaged
   return v5;
 }
 
-- (PLSyndicationResourcePrefetchEngine)initWithDelegate:(id)a3
+- (PLSyndicationResourcePrefetchEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PLSyndicationResourcePrefetchEngine;
   v5 = [(PLSyndicationResourcePrefetchEngine *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

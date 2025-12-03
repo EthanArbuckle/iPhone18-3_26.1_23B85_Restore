@@ -1,34 +1,34 @@
 @interface _UIDICActivityViewController
-- (_UIDICActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 options:(unint64_t)a5;
+- (_UIDICActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities options:(unint64_t)options;
 - (_UIDICActivityViewControllerDelegate)documentInteractionActivityDelegate;
-- (void)_handleDidFinishPerformingActivityType:(id)a3 completed:(BOOL)a4 resultItems:(id)a5 activityError:(id)a6;
-- (void)_performActivity:(id)a3;
-- (void)_prepareActivity:(id)a3;
-- (void)_willPerformInServiceActivityType:(id)a3 activitySpecificMetadata:(id)a4;
-- (void)setDocumentInteractionActivityDelegate:(id)a3;
+- (void)_handleDidFinishPerformingActivityType:(id)type completed:(BOOL)completed resultItems:(id)items activityError:(id)error;
+- (void)_performActivity:(id)activity;
+- (void)_prepareActivity:(id)activity;
+- (void)_willPerformInServiceActivityType:(id)type activitySpecificMetadata:(id)metadata;
+- (void)setDocumentInteractionActivityDelegate:(id)delegate;
 @end
 
 @implementation _UIDICActivityViewController
 
-- (_UIDICActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 options:(unint64_t)a5
+- (_UIDICActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities options:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = _UIDICActivityViewController;
-  v6 = [(UIActivityViewController *)&v9 initWithActivityItems:a3 applicationActivities:a4];
+  v6 = [(UIActivityViewController *)&v9 initWithActivityItems:items applicationActivities:activities];
   v7 = v6;
   if (v6)
   {
-    v6->_options = a5;
-    [(UIActivityViewController *)v6 setIsContentManaged:a5 & 1];
+    v6->_options = options;
+    [(UIActivityViewController *)v6 setIsContentManaged:options & 1];
   }
 
   return v7;
 }
 
-- (void)setDocumentInteractionActivityDelegate:(id)a3
+- (void)setDocumentInteractionActivityDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_documentInteractionActivityDelegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_documentInteractionActivityDelegate, delegateCopy);
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -40,80 +40,80 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
-  v11 = a3;
-  v4 = [v11 activityType];
-  v5 = [v4 isEqualToString:@"com.apple.UIKit.activity.Mail"];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = [activityType isEqualToString:@"com.apple.UIKit.activity.Mail"];
 
-  v6 = v11;
+  v6 = activityCopy;
   if (v5)
   {
-    v7 = v11;
-    v8 = [v7 subject];
+    v7 = activityCopy;
+    subject = [v7 subject];
 
-    if (!v8)
+    if (!subject)
     {
-      v9 = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
-      v10 = [v9 name];
-      [v7 setSubject:v10];
+      documentInteractionActivityDelegate = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
+      name = [documentInteractionActivityDelegate name];
+      [v7 setSubject:name];
     }
 
-    v6 = v11;
+    v6 = activityCopy;
   }
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = _UIDICActivityViewController;
-  [(UIActivityViewController *)&v5 _performActivity:a3];
+  [(UIActivityViewController *)&v5 _performActivity:activity];
   WeakRetained = objc_loadWeakRetained(&self->_documentInteractionActivityDelegate);
   [(_UIDICActivityViewController *)self setDocumentInteractionActivityDelegateRetained:WeakRetained];
 
   [(_UIDICActivityViewController *)self setIsPerformingActivity:1];
 }
 
-- (void)_willPerformInServiceActivityType:(id)a3 activitySpecificMetadata:(id)a4
+- (void)_willPerformInServiceActivityType:(id)type activitySpecificMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  if (_UIActivityOpenInApplicationTypeForActivityType(v6))
+  typeCopy = type;
+  metadataCopy = metadata;
+  if (_UIActivityOpenInApplicationTypeForActivityType(typeCopy))
   {
-    v8 = [v7 objectForKeyedSubscript:@"applicationIdentifier"];
+    v8 = [metadataCopy objectForKeyedSubscript:@"applicationIdentifier"];
     openActivityTargetApplicationIdentifier = self->_openActivityTargetApplicationIdentifier;
     self->_openActivityTargetApplicationIdentifier = v8;
   }
 
   if ([(NSString *)self->_openActivityTargetApplicationIdentifier length])
   {
-    v10 = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
-    [v10 activityViewController:self openActivityWillBeginSendingToApplication:self->_openActivityTargetApplicationIdentifier];
+    documentInteractionActivityDelegate = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
+    [documentInteractionActivityDelegate activityViewController:self openActivityWillBeginSendingToApplication:self->_openActivityTargetApplicationIdentifier];
   }
 
   v11.receiver = self;
   v11.super_class = _UIDICActivityViewController;
-  [(UIActivityViewController *)&v11 _willPerformInServiceActivityType:v6 activitySpecificMetadata:v7];
+  [(UIActivityViewController *)&v11 _willPerformInServiceActivityType:typeCopy activitySpecificMetadata:metadataCopy];
 }
 
-- (void)_handleDidFinishPerformingActivityType:(id)a3 completed:(BOOL)a4 resultItems:(id)a5 activityError:(id)a6
+- (void)_handleDidFinishPerformingActivityType:(id)type completed:(BOOL)completed resultItems:(id)items activityError:(id)error
 {
-  v8 = a4;
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
-  [v12 activityViewController:self didFinishPresentingActivityType:v14];
+  completedCopy = completed;
+  typeCopy = type;
+  itemsCopy = items;
+  errorCopy = error;
+  documentInteractionActivityDelegate = [(_UIDICActivityViewController *)self documentInteractionActivityDelegate];
+  [documentInteractionActivityDelegate activityViewController:self didFinishPresentingActivityType:typeCopy];
   if ([(_UIDICActivityViewController *)self isPerformingActivity])
   {
     [(_UIDICActivityViewController *)self setIsPerformingActivity:0];
     [(_UIDICActivityViewController *)self setDocumentInteractionActivityDelegateRetained:0];
   }
 
-  [v12 activityViewController:self didFinishPerformingActivityType:v14 completed:v8 items:v10 error:v11];
+  [documentInteractionActivityDelegate activityViewController:self didFinishPerformingActivityType:typeCopy completed:completedCopy items:itemsCopy error:errorCopy];
   if (self->_openActivityTargetApplicationIdentifier)
   {
-    [v12 activityViewController:self openActivityDidEndSendingToApplication:?];
+    [documentInteractionActivityDelegate activityViewController:self openActivityDidEndSendingToApplication:?];
     openActivityTargetApplicationIdentifier = self->_openActivityTargetApplicationIdentifier;
     self->_openActivityTargetApplicationIdentifier = 0;
   }

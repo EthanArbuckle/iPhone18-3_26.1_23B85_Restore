@@ -9,11 +9,11 @@
 {
   v6.receiver = self;
   v6.super_class = UIStatusBarOrientationAnimationParameters;
-  v2 = [(UIStatusBarAnimationParameters *)&v6 initWithDefaultParameters];
-  v3 = v2;
-  if (v2)
+  initWithDefaultParameters = [(UIStatusBarAnimationParameters *)&v6 initWithDefaultParameters];
+  v3 = initWithDefaultParameters;
+  if (initWithDefaultParameters)
   {
-    v2->_orientationAnimation = 2;
+    initWithDefaultParameters->_orientationAnimation = 2;
     [UIApp statusBarOrientationAnimationDuration];
     v3->super._duration = v4;
   }

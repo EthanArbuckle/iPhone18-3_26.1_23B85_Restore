@@ -1,11 +1,11 @@
 @interface RGSiriSchemaRGClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (RGSiriSchemaRGCacheManagerCallContext)RGCacheManagerCallContext;
 - (RGSiriSchemaRGCatalogContext)catalogContext;
-- (RGSiriSchemaRGClientEvent)initWithDictionary:(id)a3;
-- (RGSiriSchemaRGClientEvent)initWithJSON:(id)a3;
+- (RGSiriSchemaRGClientEvent)initWithDictionary:(id)dictionary;
+- (RGSiriSchemaRGClientEvent)initWithJSON:(id)n;
 - (RGSiriSchemaRGGMSCallContext)RGGMSCallContext;
 - (RGSiriSchemaRGHallucinationDetectionContext)hallucinationDetectionContext;
 - (RGSiriSchemaRGInferenceContext)inferenceContext;
@@ -14,7 +14,7 @@
 - (RGSiriSchemaRGRequestEndedTier1)requestEndedTier1;
 - (RGSiriSchemaRGValidationContext)validationContext;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -30,29 +30,29 @@
 - (void)deleteRequestContext;
 - (void)deleteRequestEndedTier1;
 - (void)deleteValidationContext;
-- (void)setCatalogContext:(id)a3;
-- (void)setHallucinationDetectionContext:(id)a3;
-- (void)setInferenceContext:(id)a3;
-- (void)setOverrideContext:(id)a3;
-- (void)setRGCacheManagerCallContext:(id)a3;
-- (void)setRGGMSCallContext:(id)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setRequestEndedTier1:(id)a3;
-- (void)setValidationContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCatalogContext:(id)context;
+- (void)setHallucinationDetectionContext:(id)context;
+- (void)setInferenceContext:(id)context;
+- (void)setOverrideContext:(id)context;
+- (void)setRGCacheManagerCallContext:(id)context;
+- (void)setRGGMSCallContext:(id)context;
+- (void)setRequestContext:(id)context;
+- (void)setRequestEndedTier1:(id)tier1;
+- (void)setValidationContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RGSiriSchemaRGClientEvent
 
-- (RGSiriSchemaRGClientEvent)initWithDictionary:(id)a3
+- (RGSiriSchemaRGClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = RGSiriSchemaRGClientEvent;
   v5 = [(RGSiriSchemaRGClientEvent *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(RGSiriSchemaRGClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(RGSiriSchemaRGClientEvent *)v5 setRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestEndedTier1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestEndedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
     }
 
     v30 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"overrideContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"overrideContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v29 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"validationContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"validationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(RGSiriSchemaRGClientEvent *)v5 setValidationContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"catalogContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"catalogContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
     }
 
     v31 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"inferenceContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"inferenceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
     }
 
     v20 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"hallucinationDetectionContext"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"hallucinationDetectionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(RGSiriSchemaRGClientEvent *)v5 setHallucinationDetectionContext:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"RGGMSCallContext"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"RGGMSCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       [(RGSiriSchemaRGClientEvent *)v5 setRGGMSCallContext:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"RGCacheManagerCallContext"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"RGCacheManagerCallContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,30 +142,30 @@
   return v5;
 }
 
-- (RGSiriSchemaRGClientEvent)initWithJSON:(id)a3
+- (RGSiriSchemaRGClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RGSiriSchemaRGClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RGSiriSchemaRGClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RGSiriSchemaRGClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -178,170 +178,170 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_RGCacheManagerCallContext)
   {
-    v4 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    rGCacheManagerCallContext = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+    dictionaryRepresentation = [rGCacheManagerCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"RGCacheManagerCallContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"RGCacheManagerCallContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"RGCacheManagerCallContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"RGCacheManagerCallContext"];
     }
   }
 
   if (self->_RGGMSCallContext)
   {
-    v7 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    rGGMSCallContext = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+    dictionaryRepresentation2 = [rGGMSCallContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"RGGMSCallContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"RGGMSCallContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"RGGMSCallContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"RGGMSCallContext"];
     }
   }
 
   if (self->_catalogContext)
   {
-    v10 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    catalogContext = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+    dictionaryRepresentation3 = [catalogContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"catalogContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"catalogContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"catalogContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"catalogContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_hallucinationDetectionContext)
   {
-    v16 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    hallucinationDetectionContext = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+    dictionaryRepresentation5 = [hallucinationDetectionContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"hallucinationDetectionContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"hallucinationDetectionContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"hallucinationDetectionContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"hallucinationDetectionContext"];
     }
   }
 
   if (self->_inferenceContext)
   {
-    v19 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    inferenceContext = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+    dictionaryRepresentation6 = [inferenceContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"inferenceContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"inferenceContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"inferenceContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"inferenceContext"];
     }
   }
 
   if (self->_overrideContext)
   {
-    v22 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    overrideContext = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+    dictionaryRepresentation7 = [overrideContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"overrideContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"overrideContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"overrideContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"overrideContext"];
     }
   }
 
   if (self->_requestContext)
   {
-    v25 = [(RGSiriSchemaRGClientEvent *)self requestContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    requestContext = [(RGSiriSchemaRGClientEvent *)self requestContext];
+    dictionaryRepresentation8 = [requestContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"requestContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"requestContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"requestContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"requestContext"];
     }
   }
 
   if (self->_requestEndedTier1)
   {
-    v28 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    requestEndedTier1 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+    dictionaryRepresentation9 = [requestEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"requestEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"requestEndedTier1"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"requestEndedTier1"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"requestEndedTier1"];
     }
   }
 
   if (self->_validationContext)
   {
-    v31 = [(RGSiriSchemaRGClientEvent *)self validationContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    validationContext = [(RGSiriSchemaRGClientEvent *)self validationContext];
+    dictionaryRepresentation10 = [validationContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"validationContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"validationContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"validationContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"validationContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -358,34 +358,34 @@
   return v9 ^ v11 ^ [(RGSiriSchemaRGCacheManagerCallContext *)self->_RGCacheManagerCallContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_53;
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v8 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -397,20 +397,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self requestContext];
-  v7 = [v4 requestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self requestContext];
+  eventMetadata2 = [equalCopy requestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v13 = [(RGSiriSchemaRGClientEvent *)self requestContext];
-  if (v13)
+  requestContext = [(RGSiriSchemaRGClientEvent *)self requestContext];
+  if (requestContext)
   {
-    v14 = v13;
-    v15 = [(RGSiriSchemaRGClientEvent *)self requestContext];
-    v16 = [v4 requestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = requestContext;
+    requestContext2 = [(RGSiriSchemaRGClientEvent *)self requestContext];
+    requestContext3 = [equalCopy requestContext];
+    v17 = [requestContext2 isEqual:requestContext3];
 
     if (!v17)
     {
@@ -422,20 +422,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
-  v7 = [v4 requestEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+  eventMetadata2 = [equalCopy requestEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v18 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
-  if (v18)
+  requestEndedTier1 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+  if (requestEndedTier1)
   {
-    v19 = v18;
-    v20 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
-    v21 = [v4 requestEndedTier1];
-    v22 = [v20 isEqual:v21];
+    v19 = requestEndedTier1;
+    requestEndedTier12 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+    requestEndedTier13 = [equalCopy requestEndedTier1];
+    v22 = [requestEndedTier12 isEqual:requestEndedTier13];
 
     if (!v22)
     {
@@ -447,20 +447,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
-  v7 = [v4 overrideContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+  eventMetadata2 = [equalCopy overrideContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v23 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
-  if (v23)
+  overrideContext = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+  if (overrideContext)
   {
-    v24 = v23;
-    v25 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
-    v26 = [v4 overrideContext];
-    v27 = [v25 isEqual:v26];
+    v24 = overrideContext;
+    overrideContext2 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+    overrideContext3 = [equalCopy overrideContext];
+    v27 = [overrideContext2 isEqual:overrideContext3];
 
     if (!v27)
     {
@@ -472,20 +472,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self validationContext];
-  v7 = [v4 validationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self validationContext];
+  eventMetadata2 = [equalCopy validationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(RGSiriSchemaRGClientEvent *)self validationContext];
-  if (v28)
+  validationContext = [(RGSiriSchemaRGClientEvent *)self validationContext];
+  if (validationContext)
   {
-    v29 = v28;
-    v30 = [(RGSiriSchemaRGClientEvent *)self validationContext];
-    v31 = [v4 validationContext];
-    v32 = [v30 isEqual:v31];
+    v29 = validationContext;
+    validationContext2 = [(RGSiriSchemaRGClientEvent *)self validationContext];
+    validationContext3 = [equalCopy validationContext];
+    v32 = [validationContext2 isEqual:validationContext3];
 
     if (!v32)
     {
@@ -497,20 +497,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
-  v7 = [v4 catalogContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+  eventMetadata2 = [equalCopy catalogContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v33 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
-  if (v33)
+  catalogContext = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+  if (catalogContext)
   {
-    v34 = v33;
-    v35 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
-    v36 = [v4 catalogContext];
-    v37 = [v35 isEqual:v36];
+    v34 = catalogContext;
+    catalogContext2 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+    catalogContext3 = [equalCopy catalogContext];
+    v37 = [catalogContext2 isEqual:catalogContext3];
 
     if (!v37)
     {
@@ -522,20 +522,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
-  v7 = [v4 inferenceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+  eventMetadata2 = [equalCopy inferenceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v38 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
-  if (v38)
+  inferenceContext = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+  if (inferenceContext)
   {
-    v39 = v38;
-    v40 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
-    v41 = [v4 inferenceContext];
-    v42 = [v40 isEqual:v41];
+    v39 = inferenceContext;
+    inferenceContext2 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+    inferenceContext3 = [equalCopy inferenceContext];
+    v42 = [inferenceContext2 isEqual:inferenceContext3];
 
     if (!v42)
     {
@@ -547,20 +547,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
-  v7 = [v4 hallucinationDetectionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+  eventMetadata2 = [equalCopy hallucinationDetectionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v43 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
-  if (v43)
+  hallucinationDetectionContext = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+  if (hallucinationDetectionContext)
   {
-    v44 = v43;
-    v45 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
-    v46 = [v4 hallucinationDetectionContext];
-    v47 = [v45 isEqual:v46];
+    v44 = hallucinationDetectionContext;
+    hallucinationDetectionContext2 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+    hallucinationDetectionContext3 = [equalCopy hallucinationDetectionContext];
+    v47 = [hallucinationDetectionContext2 isEqual:hallucinationDetectionContext3];
 
     if (!v47)
     {
@@ -572,20 +572,20 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
-  v7 = [v4 RGGMSCallContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+  eventMetadata2 = [equalCopy RGGMSCallContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v48 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
-  if (v48)
+  rGGMSCallContext = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+  if (rGGMSCallContext)
   {
-    v49 = v48;
-    v50 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
-    v51 = [v4 RGGMSCallContext];
-    v52 = [v50 isEqual:v51];
+    v49 = rGGMSCallContext;
+    rGGMSCallContext2 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+    rGGMSCallContext3 = [equalCopy RGGMSCallContext];
+    v52 = [rGGMSCallContext2 isEqual:rGGMSCallContext3];
 
     if (!v52)
     {
@@ -597,12 +597,12 @@
   {
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
-  v7 = [v4 RGCacheManagerCallContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+  eventMetadata2 = [equalCopy RGCacheManagerCallContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v53 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
-    if (!v53)
+    rGCacheManagerCallContext = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+    if (!rGCacheManagerCallContext)
     {
 
 LABEL_56:
@@ -610,10 +610,10 @@ LABEL_56:
       goto LABEL_54;
     }
 
-    v54 = v53;
-    v55 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
-    v56 = [v4 RGCacheManagerCallContext];
-    v57 = [v55 isEqual:v56];
+    v54 = rGCacheManagerCallContext;
+    rGCacheManagerCallContext2 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+    rGCacheManagerCallContext3 = [equalCopy RGCacheManagerCallContext];
+    v57 = [rGCacheManagerCallContext2 isEqual:rGCacheManagerCallContext3];
 
     if (v57)
     {
@@ -633,90 +633,90 @@ LABEL_54:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+    eventMetadata2 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RGSiriSchemaRGClientEvent *)self requestContext];
+  requestContext = [(RGSiriSchemaRGClientEvent *)self requestContext];
 
-  if (v6)
+  if (requestContext)
   {
-    v7 = [(RGSiriSchemaRGClientEvent *)self requestContext];
+    requestContext2 = [(RGSiriSchemaRGClientEvent *)self requestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+  requestEndedTier1 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
 
-  if (v8)
+  if (requestEndedTier1)
   {
-    v9 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+    requestEndedTier12 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+  overrideContext = [(RGSiriSchemaRGClientEvent *)self overrideContext];
 
-  if (v10)
+  if (overrideContext)
   {
-    v11 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+    overrideContext2 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(RGSiriSchemaRGClientEvent *)self validationContext];
+  validationContext = [(RGSiriSchemaRGClientEvent *)self validationContext];
 
-  if (v12)
+  if (validationContext)
   {
-    v13 = [(RGSiriSchemaRGClientEvent *)self validationContext];
+    validationContext2 = [(RGSiriSchemaRGClientEvent *)self validationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+  catalogContext = [(RGSiriSchemaRGClientEvent *)self catalogContext];
 
-  if (v14)
+  if (catalogContext)
   {
-    v15 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+    catalogContext2 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+  inferenceContext = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
 
-  if (v16)
+  if (inferenceContext)
   {
-    v17 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+    inferenceContext2 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+  hallucinationDetectionContext = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
 
-  if (v18)
+  if (hallucinationDetectionContext)
   {
-    v19 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+    hallucinationDetectionContext2 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+  rGGMSCallContext = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
 
-  if (v20)
+  if (rGGMSCallContext)
   {
-    v21 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+    rGGMSCallContext2 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+  rGCacheManagerCallContext = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (rGCacheManagerCallContext)
   {
-    v24 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+    rGCacheManagerCallContext2 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
@@ -745,9 +745,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setRGCacheManagerCallContext:(id)a3
+- (void)setRGCacheManagerCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -773,14 +773,14 @@ LABEL_54:
   self->_RGGMSCallContext = 0;
 
   v13 = 18;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   RGCacheManagerCallContext = self->_RGCacheManagerCallContext;
-  self->_RGCacheManagerCallContext = v4;
+  self->_RGCacheManagerCallContext = contextCopy;
 }
 
 - (void)deleteRGGMSCallContext
@@ -808,9 +808,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setRGGMSCallContext:(id)a3
+- (void)setRGGMSCallContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -836,14 +836,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 17;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   RGGMSCallContext = self->_RGGMSCallContext;
-  self->_RGGMSCallContext = v4;
+  self->_RGGMSCallContext = contextCopy;
 }
 
 - (void)deleteHallucinationDetectionContext
@@ -871,9 +871,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setHallucinationDetectionContext:(id)a3
+- (void)setHallucinationDetectionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -898,9 +898,9 @@ LABEL_54:
   RGCacheManagerCallContext = self->_RGCacheManagerCallContext;
   self->_RGCacheManagerCallContext = 0;
 
-  self->_whichEvent_Type = 16 * (v4 != 0);
+  self->_whichEvent_Type = 16 * (contextCopy != 0);
   hallucinationDetectionContext = self->_hallucinationDetectionContext;
-  self->_hallucinationDetectionContext = v4;
+  self->_hallucinationDetectionContext = contextCopy;
 }
 
 - (void)deleteInferenceContext
@@ -928,9 +928,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setInferenceContext:(id)a3
+- (void)setInferenceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -956,14 +956,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 15;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   inferenceContext = self->_inferenceContext;
-  self->_inferenceContext = v4;
+  self->_inferenceContext = contextCopy;
 }
 
 - (void)deleteCatalogContext
@@ -991,9 +991,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setCatalogContext:(id)a3
+- (void)setCatalogContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1019,14 +1019,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 14;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   catalogContext = self->_catalogContext;
-  self->_catalogContext = v4;
+  self->_catalogContext = contextCopy;
 }
 
 - (void)deleteValidationContext
@@ -1054,9 +1054,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setValidationContext:(id)a3
+- (void)setValidationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1082,14 +1082,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 13;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   validationContext = self->_validationContext;
-  self->_validationContext = v4;
+  self->_validationContext = contextCopy;
 }
 
 - (void)deleteOverrideContext
@@ -1117,9 +1117,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setOverrideContext:(id)a3
+- (void)setOverrideContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1145,14 +1145,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 12;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   overrideContext = self->_overrideContext;
-  self->_overrideContext = v4;
+  self->_overrideContext = contextCopy;
 }
 
 - (void)deleteRequestEndedTier1
@@ -1180,9 +1180,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setRequestEndedTier1:(id)a3
+- (void)setRequestEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   requestContext = self->_requestContext;
   self->_requestContext = 0;
 
@@ -1208,14 +1208,14 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 11;
-  if (!v4)
+  if (!tier1Copy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   requestEndedTier1 = self->_requestEndedTier1;
-  self->_requestEndedTier1 = v4;
+  self->_requestEndedTier1 = tier1Copy;
 }
 
 - (void)deleteRequestContext
@@ -1243,9 +1243,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   requestEndedTier1 = self->_requestEndedTier1;
   self->_requestEndedTier1 = 0;
 
@@ -1271,122 +1271,122 @@ LABEL_54:
   self->_RGCacheManagerCallContext = 0;
 
   v13 = 10;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   requestContext = self->_requestContext;
-  self->_requestContext = v4;
+  self->_requestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(RGSiriSchemaRGClientEvent *)self whichEvent_Type];
-  if (v2 - 10 > 8)
+  whichEvent_Type = [(RGSiriSchemaRGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 10 > 8)
   {
     return @"com.apple.aiml.siri.rg.RGClientEvent";
   }
 
   else
   {
-    return off_1E78E1F48[v2 - 10];
+    return off_1E78E1F48[whichEvent_Type - 10];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = RGSiriSchemaRGClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  v6 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(RGSiriSchemaRGClientEvent *)self requestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestContext = [(RGSiriSchemaRGClientEvent *)self requestContext];
+  v10 = [requestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteRequestContext];
   }
 
-  v12 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  requestEndedTier1 = [(RGSiriSchemaRGClientEvent *)self requestEndedTier1];
+  v13 = [requestEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteRequestEndedTier1];
   }
 
-  v15 = [(RGSiriSchemaRGClientEvent *)self overrideContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  overrideContext = [(RGSiriSchemaRGClientEvent *)self overrideContext];
+  v16 = [overrideContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteOverrideContext];
   }
 
-  v18 = [(RGSiriSchemaRGClientEvent *)self validationContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  validationContext = [(RGSiriSchemaRGClientEvent *)self validationContext];
+  v19 = [validationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteValidationContext];
   }
 
-  v21 = [(RGSiriSchemaRGClientEvent *)self catalogContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  catalogContext = [(RGSiriSchemaRGClientEvent *)self catalogContext];
+  v22 = [catalogContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteCatalogContext];
   }
 
-  v24 = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  inferenceContext = [(RGSiriSchemaRGClientEvent *)self inferenceContext];
+  v25 = [inferenceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteInferenceContext];
   }
 
-  v27 = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  hallucinationDetectionContext = [(RGSiriSchemaRGClientEvent *)self hallucinationDetectionContext];
+  v28 = [hallucinationDetectionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteHallucinationDetectionContext];
   }
 
-  v30 = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  rGGMSCallContext = [(RGSiriSchemaRGClientEvent *)self RGGMSCallContext];
+  v31 = [rGGMSCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteRGGMSCallContext];
   }
 
-  v33 = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  rGCacheManagerCallContext = [(RGSiriSchemaRGClientEvent *)self RGCacheManagerCallContext];
+  v34 = [rGCacheManagerCallContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(RGSiriSchemaRGClientEvent *)self deleteRGCacheManagerCallContext];
   }
@@ -1404,27 +1404,27 @@ LABEL_54:
 
 - (int)componentName
 {
-  v3 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (ifRequestId && ([ifRequestId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(ifRequestId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 45;
   }
 
   else
   {
-    v10 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-    v11 = [v10 rgId];
+    eventMetadata2 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+    rgId = [eventMetadata2 rgId];
 
-    if (v11)
+    if (rgId)
     {
-      v12 = [v11 value];
-      if (v12)
+      value = [rgId value];
+      if (value)
       {
-        v13 = v12;
-        v14 = [v11 value];
-        v15 = [v14 length];
+        v13 = value;
+        value2 = [rgId value];
+        v15 = [value2 length];
 
         if (v15)
         {
@@ -1442,13 +1442,13 @@ LABEL_54:
         v9 = 0;
       }
 
-      v4 = v11;
+      ifRequestId = rgId;
     }
 
     else
     {
       v9 = 0;
-      v4 = 0;
+      ifRequestId = 0;
     }
   }
 
@@ -1457,17 +1457,17 @@ LABEL_54:
 
 - (id)getComponentId
 {
-  v3 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  v4 = [v3 ifRequestId];
+  eventMetadata = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  ifRequestId = [eventMetadata ifRequestId];
 
-  if (v4)
+  if (ifRequestId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [ifRequestId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [ifRequestId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -1476,62 +1476,62 @@ LABEL_54:
     }
   }
 
-  v9 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
-  v10 = [v9 rgId];
+  eventMetadata2 = [(RGSiriSchemaRGClientEvent *)self eventMetadata];
+  rgId = [eventMetadata2 rgId];
 
-  if (v10)
+  if (rgId)
   {
-    v11 = [v10 value];
-    if (!v11)
+    value3 = [rgId value];
+    if (!value3)
     {
       goto LABEL_10;
     }
 
-    v12 = [v10 value];
-    v13 = [v12 length];
+    value4 = [rgId value];
+    v13 = [value4 length];
 
     if (v13)
     {
-      v4 = v10;
+      ifRequestId = rgId;
 LABEL_8:
-      v11 = v4;
-      v10 = v11;
+      value3 = ifRequestId;
+      rgId = value3;
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  value3 = 0;
 LABEL_10:
 
-  return v11;
+  return value3;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(RGSiriSchemaRGClientEvent *)self whichEvent_Type];
-  if (v3 - 10 > 8)
+  whichEvent_Type = [(RGSiriSchemaRGClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 10 > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EAEB8[v3 - 10]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EAEB8[whichEvent_Type - 10]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 10 > 8)
+  if (tag - 10 > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAF00[a3 - 10];
+    return off_1E78EAF00[tag - 10];
   }
 }
 

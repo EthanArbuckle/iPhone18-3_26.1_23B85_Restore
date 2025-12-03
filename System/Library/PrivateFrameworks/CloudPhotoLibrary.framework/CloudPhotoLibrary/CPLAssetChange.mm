@@ -1,57 +1,57 @@
 @interface CPLAssetChange
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3;
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3;
-+ (BOOL)requiresStableHashForResourceType:(unint64_t)a3;
-+ (id)copyPropertyBlockForDirection:(unint64_t)a3;
-+ (id)equalityBlockForDirection:(unint64_t)a3;
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding;
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality;
++ (BOOL)requiresStableHashForResourceType:(unint64_t)type;
++ (id)copyPropertyBlockForDirection:(unint64_t)direction;
++ (id)equalityBlockForDirection:(unint64_t)direction;
 - (BOOL)canLowerQuota;
 - (BOOL)isEPPRecord;
-- (BOOL)validateChangeWithError:(id *)a3;
+- (BOOL)validateChangeWithError:(id *)error;
 - (BOOL)validateFullRecord;
-- (BOOL)validateRecordForTracker:(id)a3;
+- (BOOL)validateRecordForTracker:(id)tracker;
 - (CPLAssetChange)init;
-- (CPLAssetChange)initWithCoder:(id)a3;
+- (CPLAssetChange)initWithCoder:(id)coder;
 - (CPLFaceAnalysisReference)faces;
 - (id)allRelatedScopedIdentifiers;
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3;
-- (id)compactedChangeWithRelatedChanges:(id)a3 isOnlyChange:(BOOL)a4 fullRecord:(id)a5 usingStorageView:(id)a6;
-- (id)fingerprintSchemeWithContext:(id)a3;
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector;
+- (id)compactedChangeWithRelatedChanges:(id)changes isOnlyChange:(BOOL)change fullRecord:(id)record usingStorageView:(id)view;
+- (id)fingerprintSchemeWithContext:(id)context;
 - (id)masterScopedIdentifier;
 - (id)propertiesDescription;
-- (id)propertiesForChangeType:(unint64_t)a3;
-- (id)resourceForType:(unint64_t)a3;
+- (id)propertiesForChangeType:(unint64_t)type;
+- (id)resourceForType:(unint64_t)type;
 - (id)scopeIdentifiersForQuarantine;
 - (id)scopedIdentifiersForMapping;
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4;
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4;
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error;
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error;
 - (int64_t)dequeueOrder;
 - (unint64_t)fullChangeTypeForFullRecord;
 - (unint64_t)supportedChangeTypes;
-- (void)copyDerivativesFromRecordIfPossible:(id)a3;
-- (void)setFaces:(id)a3;
-- (void)setFacesData:(id)a3;
-- (void)setKeywords:(id)a3;
-- (void)setMasterScopedIdentifier:(id)a3;
-- (void)setPeople:(id)a3;
-- (void)setResources:(id)a3;
+- (void)copyDerivativesFromRecordIfPossible:(id)possible;
+- (void)setFaces:(id)faces;
+- (void)setFacesData:(id)data;
+- (void)setKeywords:(id)keywords;
+- (void)setMasterScopedIdentifier:(id)identifier;
+- (void)setPeople:(id)people;
+- (void)setResources:(id)resources;
 @end
 
 @implementation CPLAssetChange
 
-- (CPLAssetChange)initWithCoder:(id)a3
+- (CPLAssetChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPLAssetChange;
-  v5 = [(CPLRecordChange *)&v10 initWithCoder:v4];
+  v5 = [(CPLRecordChange *)&v10 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLAssetChange *)v5 facesData];
+    facesData = [(CPLAssetChange *)v5 facesData];
 
-    if (!v7)
+    if (!facesData)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faces"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faces"];
       if (v8)
       {
         if (initWithCoder__onceToken_74 != -1)
@@ -80,56 +80,56 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
   }
 }
 
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality
 {
-  v4 = a3;
-  if ([v4 isEqual:@"faces"])
+  equalityCopy = equality;
+  if ([equalityCopy isEqual:@"faces"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLAssetChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, equalityCopy);
   }
 
   return v5;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding
 {
-  v4 = a3;
-  if ([v4 isEqual:@"faces"])
+  codingCopy = coding;
+  if ([codingCopy isEqual:@"faces"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLAssetChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, codingCopy);
   }
 
   return v5;
 }
 
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v15.receiver = self;
   v15.super_class = CPLAssetChange;
-  v7 = [(CPLRecordChange *)&v15 translateToClientChangeUsingIDMapping:v6 error:a4];
+  v7 = [(CPLRecordChange *)&v15 translateToClientChangeUsingIDMapping:mappingCopy error:error];
   if (v7)
   {
     v14 = 0;
-    v8 = [(CPLAssetChange *)self masterScopedIdentifier];
-    if (v8)
+    masterScopedIdentifier = [(CPLAssetChange *)self masterScopedIdentifier];
+    if (masterScopedIdentifier)
     {
-      v9 = [v6 localScopedIdentifierForCloudScopedIdentifier:v8 isFinal:&v14];
+      v9 = [mappingCopy localScopedIdentifierForCloudScopedIdentifier:masterScopedIdentifier isFinal:&v14];
       if (v9)
       {
         [v7 setMasterScopedIdentifier:v9];
@@ -138,9 +138,9 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
       else
       {
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Can't map cloud masterScopedIdentifier in %@", objc_opt_class()];
-        if (a4)
+        if (error)
         {
-          *a4 = [CPLErrors invalidClientCacheErrorWithReason:v10];
+          *error = [CPLErrors invalidClientCacheErrorWithReason:v10];
         }
 
         if ((_CPLSilentLogging & 1) == 0)
@@ -149,9 +149,9 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v17 = v8;
+            v17 = masterScopedIdentifier;
             v18 = 2112;
-            v19 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Can't map cloud masterScopedIdentifier (%@) of %@", buf, 0x16u);
           }
         }
@@ -166,20 +166,20 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
   return v7;
 }
 
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v15.receiver = self;
   v15.super_class = CPLAssetChange;
-  v7 = [(CPLRecordChange *)&v15 translateToCloudChangeUsingIDMapping:v6 error:a4];
+  v7 = [(CPLRecordChange *)&v15 translateToCloudChangeUsingIDMapping:mappingCopy error:error];
   if (v7)
   {
     v14 = 0;
-    v8 = [(CPLAssetChange *)self masterScopedIdentifier];
-    if (v8)
+    masterScopedIdentifier = [(CPLAssetChange *)self masterScopedIdentifier];
+    if (masterScopedIdentifier)
     {
-      v9 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v8 isFinal:&v14];
+      v9 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:masterScopedIdentifier isFinal:&v14];
       if (v9)
       {
         [v7 setMasterScopedIdentifier:v9];
@@ -188,9 +188,9 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
       else
       {
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Can't map local masterScopedIdentifier in %@", objc_opt_class()];
-        if (a4)
+        if (error)
         {
-          *a4 = [CPLErrors invalidClientCacheErrorWithReason:v10];
+          *error = [CPLErrors invalidClientCacheErrorWithReason:v10];
         }
 
         if ((_CPLSilentLogging & 1) == 0)
@@ -199,9 +199,9 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v17 = v8;
+            v17 = masterScopedIdentifier;
             v18 = 2112;
-            v19 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Can't map local masterScopedIdentifier (%@) of %@", buf, 0x16u);
           }
         }
@@ -221,40 +221,40 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v8.receiver = self;
   v8.super_class = CPLAssetChange;
-  v4 = [(CPLRecordChange *)&v8 scopedIdentifiersForMapping];
-  v5 = [v3 initWithArray:v4];
+  scopedIdentifiersForMapping = [(CPLRecordChange *)&v8 scopedIdentifiersForMapping];
+  v5 = [v3 initWithArray:scopedIdentifiersForMapping];
 
-  v6 = [(CPLAssetChange *)self masterScopedIdentifier];
-  if (v6)
+  masterScopedIdentifier = [(CPLAssetChange *)self masterScopedIdentifier];
+  if (masterScopedIdentifier)
   {
-    [v5 addObject:v6];
+    [v5 addObject:masterScopedIdentifier];
   }
 
   return v5;
 }
 
-- (id)compactedChangeWithRelatedChanges:(id)a3 isOnlyChange:(BOOL)a4 fullRecord:(id)a5 usingStorageView:(id)a6
+- (id)compactedChangeWithRelatedChanges:(id)changes isOnlyChange:(BOOL)change fullRecord:(id)record usingStorageView:(id)view
 {
-  v53 = a4;
+  changeCopy = change;
   v83 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v58 = a5;
-  v57 = a6;
+  changesCopy = changes;
+  recordCopy = record;
+  viewCopy = view;
   if ([(CPLRecordChange *)self changeType]== 1024)
   {
-    v9 = self;
+    selfCopy = self;
     goto LABEL_53;
   }
 
-  v55 = self;
+  selfCopy2 = self;
   v76 = 0;
   v77 = &v76;
   v78 = 0x2020000000;
   v79 = 0;
   v60 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [v56 mutableCopy];
-  v11 = [(CPLRecordChange *)self scopedIdentifier];
-  v12 = [v57 recordViewsWithRelatedScopedIdentifier:v11 class:objc_opt_class()];
+  v10 = [changesCopy mutableCopy];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  v12 = [viewCopy recordViewsWithRelatedScopedIdentifier:scopedIdentifier class:objc_opt_class()];
 
   v70 = 0;
   v71 = &v70;
@@ -281,27 +281,27 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
         }
 
         v16 = *(*(&v66 + 1) + 8 * i);
-        v17 = [v16 scopedIdentifier];
-        v18 = [v10 objectForKey:v17];
+        scopedIdentifier2 = [v16 scopedIdentifier];
+        v18 = [v10 objectForKey:scopedIdentifier2];
         if (v18)
         {
-          [v10 removeObjectForKey:v17];
+          [v10 removeObjectForKey:scopedIdentifier2];
           if ([v18 changeType] == 1024)
           {
             *(v77 + 24) = 1;
             goto LABEL_22;
           }
 
-          v22 = [v18 relation];
+          relation = [v18 relation];
           if (v71[5])
           {
-            v23 = [v18 recordModificationDate];
+            recordModificationDate = [v18 recordModificationDate];
 
-            if (v23)
+            if (recordModificationDate)
             {
               v24 = v71[5];
-              v25 = [v18 recordModificationDate];
-              v26 = [v24 laterDate:v25];
+              recordModificationDate2 = [v18 recordModificationDate];
+              v26 = [v24 laterDate:recordModificationDate2];
               v27 = v71[5];
               v71[5] = v26;
 
@@ -311,13 +311,13 @@ void __45__CPLAssetChange_CPLNSCoding__initWithCoder___block_invoke()
 
           else
           {
-            v28 = [v18 recordModificationDate];
-            v25 = v71[5];
-            v71[5] = v28;
+            recordModificationDate3 = [v18 recordModificationDate];
+            recordModificationDate2 = v71[5];
+            v71[5] = recordModificationDate3;
 LABEL_17:
           }
 
-          if (!v22)
+          if (!relation)
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -330,28 +330,28 @@ LABEL_17:
               }
             }
 
-            v51 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLClientCacheView_Extensions.m"];
-            [v51 handleFailureInMethod:a2 object:v55 file:v52 lineNumber:513 description:{@"%@ has no relation", v18}];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:v52 lineNumber:513 description:{@"%@ has no relation", v18}];
 
             goto LABEL_66;
           }
 
-          v29 = [v16 relation];
-          v30 = [v22 isEqual:v29];
+          relation2 = [v16 relation];
+          v30 = [relation isEqual:relation2];
 
           if ((v30 & 1) == 0)
           {
             *(v77 + 24) = 1;
           }
 
-          [v60 addObject:v22];
+          [v60 addObject:relation];
 
           goto LABEL_22;
         }
 
-        v19 = [v16 relation];
-        v20 = v19 == 0;
+        relation3 = [v16 relation];
+        v20 = relation3 == 0;
 
         if (v20)
         {
@@ -366,16 +366,16 @@ LABEL_17:
             }
           }
 
-          v48 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLClientCacheView_Extensions.m"];
-          [v48 handleFailureInMethod:a2 object:v55 file:v49 lineNumber:496 description:{@"%@ in client cache has no relation", v16}];
+          [currentHandler2 handleFailureInMethod:a2 object:selfCopy2 file:v49 lineNumber:496 description:{@"%@ in client cache has no relation", v16}];
 
 LABEL_66:
           abort();
         }
 
-        v21 = [v16 relation];
-        [v60 addObject:v21];
+        relation4 = [v16 relation];
+        [v60 addObject:relation4];
 
 LABEL_22:
       }
@@ -393,38 +393,38 @@ LABEL_22:
   v63 = &v76;
   v64 = &v70;
   v65 = a2;
-  v61[4] = v55;
+  v61[4] = selfCopy2;
   v31 = v60;
   v62 = v31;
   [v10 enumerateKeysAndObjectsUsingBlock:v61];
-  if (v58)
+  if (recordCopy)
   {
-    [v58 setContainerRelations:v31];
+    [recordCopy setContainerRelations:v31];
     if (v71[5])
     {
-      v32 = [v58 recordModificationDate];
-      v33 = v32;
+      recordModificationDate4 = [recordCopy recordModificationDate];
+      v33 = recordModificationDate4;
       v34 = v71[5];
-      if (v32)
+      if (recordModificationDate4)
       {
-        v35 = [v32 laterDate:v34];
-        [v58 setRecordModificationDate:v35];
+        v35 = [recordModificationDate4 laterDate:v34];
+        [recordCopy setRecordModificationDate:v35];
       }
 
       else
       {
-        [v58 setRecordModificationDate:v34];
+        [recordCopy setRecordModificationDate:v34];
       }
     }
   }
 
-  if (v53)
+  if (changeCopy)
   {
     if (*(v77 + 24) == 1)
     {
       v36 = objc_opt_class();
-      v37 = [(CPLRecordChange *)v55 scopedIdentifier];
-      v38 = [v36 newChangeWithScopedIdentifier:v37 changeType:16];
+      scopedIdentifier3 = [(CPLRecordChange *)selfCopy2 scopedIdentifier];
+      v38 = [v36 newChangeWithScopedIdentifier:scopedIdentifier3 changeType:16];
 
       if ([v31 count])
       {
@@ -439,26 +439,26 @@ LABEL_22:
 
   else
   {
-    if ([(CPLRecordChange *)v55 isFullRecord])
+    if ([(CPLRecordChange *)selfCopy2 isFullRecord])
     {
       if ([v31 count])
       {
-        [(CPLItemChange *)v55 setContainerRelations:v31];
+        [(CPLItemChange *)selfCopy2 setContainerRelations:v31];
       }
     }
 
     else if (*(v77 + 24) == 1)
     {
-      v38 = [(CPLAssetChange *)v55 copy];
+      v38 = [(CPLAssetChange *)selfCopy2 copy];
       if ([v31 count])
       {
         [(CPLItemChange *)v38 setContainerRelations:v31];
       }
 
-      v39 = [(CPLRecordChange *)v38 changeType];
-      if (v39)
+      changeType = [(CPLRecordChange *)v38 changeType];
+      if (changeType)
       {
-        v40 = v39 | 0x10;
+        v40 = changeType | 0x10;
       }
 
       else
@@ -476,12 +476,12 @@ LABEL_45:
 LABEL_48:
       if (v71[5])
       {
-        v41 = [(CPLRecordChange *)v38 recordModificationDate];
+        recordModificationDate5 = [(CPLRecordChange *)v38 recordModificationDate];
 
-        if (v41)
+        if (recordModificationDate5)
         {
-          v42 = [(CPLRecordChange *)v38 recordModificationDate];
-          v43 = [v42 laterDate:v71[5]];
+          recordModificationDate6 = [(CPLRecordChange *)v38 recordModificationDate];
+          v43 = [recordModificationDate6 laterDate:v71[5]];
           [(CPLRecordChange *)v38 setRecordModificationDate:v43];
         }
 
@@ -494,7 +494,7 @@ LABEL_48:
       goto LABEL_52;
     }
 
-    v38 = v55;
+    v38 = selfCopy2;
     if (v38)
     {
       goto LABEL_48;
@@ -503,7 +503,7 @@ LABEL_48:
 
 LABEL_52:
   v44 = v62;
-  v9 = v38;
+  selfCopy = v38;
 
   _Block_object_dispose(&v70, 8);
   _Block_object_dispose(&v76, 8);
@@ -511,7 +511,7 @@ LABEL_53:
 
   v45 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return selfCopy;
 }
 
 void __113__CPLAssetChange_CPLClientCacheView__compactedChangeWithRelatedChanges_isOnlyChange_fullRecord_usingStorageView___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -594,23 +594,23 @@ LABEL_14:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)validateRecordForTracker:(id)a3
+- (BOOL)validateRecordForTracker:(id)tracker
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  trackerCopy = tracker;
   v34.receiver = self;
   v34.super_class = CPLAssetChange;
-  if (![(CPLRecordChange *)&v34 validateRecordForTracker:v4])
+  if (![(CPLRecordChange *)&v34 validateRecordForTracker:trackerCopy])
   {
     goto LABEL_40;
   }
 
   if ([(CPLRecordChange *)self isFullRecord])
   {
-    v5 = [(CPLAssetChange *)self masterScopedIdentifier];
-    if (v5)
+    masterScopedIdentifier = [(CPLAssetChange *)self masterScopedIdentifier];
+    if (masterScopedIdentifier)
     {
-      if ([v4 knowsClientRecordWithScopedIdentifier:v5])
+      if ([trackerCopy knowsClientRecordWithScopedIdentifier:masterScopedIdentifier])
       {
 
         goto LABEL_6;
@@ -622,7 +622,7 @@ LABEL_14:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v36 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEFAULT, "Client pushed an asset but we need the master too: %@", buf, 0xCu);
         }
 
@@ -643,7 +643,7 @@ LABEL_37:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v36 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_ERROR, "Client pushed an asset with no master identifier: %@", buf, 0xCu);
         }
 
@@ -655,12 +655,12 @@ LABEL_37:
     }
 
 LABEL_38:
-    v20 = [v4 pushChangeTasks];
-    v21 = [(CPLRecordChange *)self scopedIdentifier];
-    v22 = v20;
+    pushChangeTasks = [trackerCopy pushChangeTasks];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v22 = pushChangeTasks;
     v23 = v25;
 LABEL_39:
-    [v22 addTask:v23 forRecordWithScopedIdentifier:v21];
+    [v22 addTask:v23 forRecordWithScopedIdentifier:scopedIdentifier];
 
     goto LABEL_40;
   }
@@ -677,8 +677,8 @@ LABEL_42:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(CPLItemChange *)self containerRelations];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  masterScopedIdentifier = [(CPLItemChange *)self containerRelations];
+  v6 = [masterScopedIdentifier countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (!v6)
   {
 
@@ -696,11 +696,11 @@ LABEL_42:
     {
       if (*v31 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(masterScopedIdentifier);
       }
 
-      v12 = [*(*(&v30 + 1) + 8 * i) containerIdentifier];
-      if (!v12 || (v13 = v12, v14 = [CPLScopedIdentifier alloc], [(CPLRecordChange *)self scopedIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(CPLScopedIdentifier *)v14 initRelativeToScopedIdentifier:v15 identifier:v13], v15, v13, !v16))
+      containerIdentifier = [*(*(&v30 + 1) + 8 * i) containerIdentifier];
+      if (!containerIdentifier || (v13 = containerIdentifier, v14 = [CPLScopedIdentifier alloc], [(CPLRecordChange *)self scopedIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v16 = [(CPLScopedIdentifier *)v14 initRelativeToScopedIdentifier:v15 identifier:v13], v15, v13, !v16))
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -708,19 +708,19 @@ LABEL_42:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v36 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_ERROR, "Client pushed a relation with no album in an asset: %@", buf, 0xCu);
           }
         }
 
-        v20 = [v4 pushChangeTasks];
-        v21 = [(CPLRecordChange *)self scopedIdentifier];
-        v22 = v20;
+        pushChangeTasks = [trackerCopy pushChangeTasks];
+        scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+        v22 = pushChangeTasks;
         v23 = 0;
         goto LABEL_39;
       }
 
-      if (([v4 knowsClientRecordWithScopedIdentifier:v16] & 1) == 0)
+      if (([trackerCopy knowsClientRecordWithScopedIdentifier:v16] & 1) == 0)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -728,21 +728,21 @@ LABEL_42:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v29;
-            v36 = v16;
+            selfCopy3 = v16;
             v37 = 2112;
-            v38 = self;
+            selfCopy4 = self;
             _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_DEFAULT, "Client pushed an asset belonging in an unknown album %@: %@", buf, 0x16u);
           }
         }
 
-        v18 = [v4 pushChangeTasks];
-        [v18 addTask:5 forRecordWithScopedIdentifier:v16];
+        pushChangeTasks2 = [trackerCopy pushChangeTasks];
+        [pushChangeTasks2 addTask:5 forRecordWithScopedIdentifier:v16];
 
         v10 = 0;
       }
     }
 
-    v8 = [v5 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v8 = [masterScopedIdentifier countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v8)
     {
       continue;
@@ -767,18 +767,18 @@ LABEL_43:
 - (id)scopeIdentifiersForQuarantine
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CPLRecordChange *)self scopedIdentifier];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
   if ([(CPLRecordChange *)self isFullRecord])
   {
-    v9[0] = v3;
-    v4 = [(CPLAssetChange *)self masterScopedIdentifier];
-    v9[1] = v4;
+    v9[0] = scopedIdentifier;
+    masterScopedIdentifier = [(CPLAssetChange *)self masterScopedIdentifier];
+    v9[1] = masterScopedIdentifier;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   }
 
   else
   {
-    v8 = v3;
+    v8 = scopedIdentifier;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
   }
 
@@ -821,13 +821,13 @@ LABEL_43:
   return v3;
 }
 
-- (void)setFacesData:(id)a3
+- (void)setFacesData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if (v4)
   {
-    v4 = [v6 copy];
+    v4 = [dataCopy copy];
   }
 
   facesData = self->_facesData;
@@ -849,16 +849,16 @@ LABEL_43:
   return v2;
 }
 
-- (void)setFaces:(id)a3
+- (void)setFaces:(id)faces
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  facesCopy = faces;
+  v9 = facesCopy;
+  if (facesCopy)
   {
-    v5 = [v4 data];
+    data = [facesCopy data];
     p_facesData = &self->_facesData;
     v7 = *p_facesData;
-    *p_facesData = v5;
+    *p_facesData = data;
 
     if ([*p_facesData length])
     {
@@ -877,7 +877,7 @@ LABEL_43:
 LABEL_6:
 }
 
-- (BOOL)validateChangeWithError:(id *)a3
+- (BOOL)validateChangeWithError:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CPLAssetChange;
@@ -888,12 +888,12 @@ LABEL_6:
     {
       masterIdentifier = self->_masterIdentifier;
       LOBYTE(v5) = masterIdentifier != 0;
-      if (a3 && !masterIdentifier)
+      if (error && !masterIdentifier)
       {
         v7 = [CPLErrors cplErrorWithCode:18 description:@"%@ has no master identifier", self];
         v5 = v7;
         LOBYTE(v5) = 0;
-        *a3 = v7;
+        *error = v7;
       }
     }
 
@@ -910,30 +910,30 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = CPLAssetChange;
-  v3 = [(CPLRecordChange *)&v5 validateFullRecord];
-  if (v3)
+  validateFullRecord = [(CPLRecordChange *)&v5 validateFullRecord];
+  if (validateFullRecord)
   {
-    LOBYTE(v3) = self->_masterIdentifier != 0;
+    LOBYTE(validateFullRecord) = self->_masterIdentifier != 0;
   }
 
-  return v3;
+  return validateFullRecord;
 }
 
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector
 {
-  if (sel_assetHDRType == a3)
+  if (sel_assetHDRType == selector)
   {
     v7 = &__block_literal_global_105_19040;
     goto LABEL_34;
   }
 
-  if (sel_originalChoice == a3)
+  if (sel_originalChoice == selector)
   {
     v7 = &__block_literal_global_109;
     goto LABEL_34;
   }
 
-  if (sel_assetDate == a3 || sel_facesData == a3 || sel_timeZoneOffset == a3 || sel_mediaGroupIdentifier == a3)
+  if (sel_assetDate == selector || sel_facesData == selector || sel_timeZoneOffset == selector || sel_mediaGroupIdentifier == selector)
   {
     v6 = _CPLDefaultValueObjectNil;
 LABEL_33:
@@ -941,23 +941,23 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (sel_people == a3 || sel_videoComplementDurationValue == a3 || sel_videoComplementDurationTimescale == a3 || sel_videoComplementImageDisplayValue == a3 || sel_videoComplementImageDisplayTimescale == a3 || sel_videoComplementVisibilityState == a3 || sel_playCount == a3 || sel_shareCount == a3 || sel_viewCount == a3 || sel_customRenderedValue == a3 || sel_viewPresentation == a3)
+  if (sel_people == selector || sel_videoComplementDurationValue == selector || sel_videoComplementDurationTimescale == selector || sel_videoComplementImageDisplayValue == selector || sel_videoComplementImageDisplayTimescale == selector || sel_videoComplementVisibilityState == selector || sel_playCount == selector || sel_shareCount == selector || sel_viewCount == selector || sel_customRenderedValue == selector || sel_viewPresentation == selector)
   {
     v6 = _CPLDefaultValueNSINTEGER0;
     goto LABEL_33;
   }
 
-  if (sel_assetSubtype == a3)
+  if (sel_assetSubtype == selector)
   {
     v7 = &__block_literal_global_141;
   }
 
-  else if (sel_keywords == a3)
+  else if (sel_keywords == selector)
   {
     v7 = &__block_literal_global_145;
   }
 
-  else if (sel_trashedReason == a3)
+  else if (sel_trashedReason == selector)
   {
     v7 = &__block_literal_global_149;
   }
@@ -987,19 +987,19 @@ BOOL __64__CPLAssetChange_checkDefaultValueBlockForPropertyWithSelector___block_
   v40 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = CPLAssetChange;
-  v3 = [(CPLRecordChange *)&v37 allRelatedScopedIdentifiers];
-  v4 = [(CPLAssetChange *)self faces];
-  v5 = [v4 faces];
-  if ([v5 count] || -[NSArray count](self->_people, "count"))
+  allRelatedScopedIdentifiers = [(CPLRecordChange *)&v37 allRelatedScopedIdentifiers];
+  faces = [(CPLAssetChange *)self faces];
+  v4Faces = [faces faces];
+  if ([v4Faces count] || -[NSArray count](self->_people, "count"))
   {
-    v28 = v3;
-    v3 = [v3 mutableCopy];
+    v28 = allRelatedScopedIdentifiers;
+    allRelatedScopedIdentifiers = [allRelatedScopedIdentifiers mutableCopy];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v27 = v5;
-    v6 = v5;
+    v27 = v4Faces;
+    v6 = v4Faces;
     v7 = [v6 countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v7)
     {
@@ -1014,17 +1014,17 @@ BOOL __64__CPLAssetChange_checkDefaultValueBlockForPropertyWithSelector___block_
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v33 + 1) + 8 * i) personIdentifier];
-          if (v11)
+          personIdentifier = [*(*(&v33 + 1) + 8 * i) personIdentifier];
+          if (personIdentifier)
           {
-            v12 = v11;
+            v12 = personIdentifier;
             v13 = [CPLScopedIdentifier alloc];
-            v14 = [(CPLRecordChange *)self scopedIdentifier];
-            v15 = [(CPLScopedIdentifier *)v13 initRelativeToScopedIdentifier:v14 identifier:v12];
+            scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+            v15 = [(CPLScopedIdentifier *)v13 initRelativeToScopedIdentifier:scopedIdentifier identifier:v12];
 
             if (v15)
             {
-              [v3 addObject:v15];
+              [allRelatedScopedIdentifiers addObject:v15];
             }
           }
         }
@@ -1054,14 +1054,14 @@ BOOL __64__CPLAssetChange_checkDefaultValueBlockForPropertyWithSelector___block_
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v29 + 1) + 8 * j) personIdentifier];
-          if (v21)
+          personIdentifier2 = [*(*(&v29 + 1) + 8 * j) personIdentifier];
+          if (personIdentifier2)
           {
             v22 = [CPLScopedIdentifier alloc];
-            v23 = [(CPLRecordChange *)self scopedIdentifier];
-            v24 = [(CPLScopedIdentifier *)v22 initRelativeToScopedIdentifier:v23 identifier:v21];
+            scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+            v24 = [(CPLScopedIdentifier *)v22 initRelativeToScopedIdentifier:scopedIdentifier2 identifier:personIdentifier2];
 
-            [v3 addObject:v24];
+            [allRelatedScopedIdentifiers addObject:v24];
           }
         }
 
@@ -1073,21 +1073,21 @@ BOOL __64__CPLAssetChange_checkDefaultValueBlockForPropertyWithSelector___block_
 
     if (v28)
     {
-      [v3 unionSet:v28];
+      [allRelatedScopedIdentifiers unionSet:v28];
     }
 
-    v5 = v27;
+    v4Faces = v27;
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return allRelatedScopedIdentifiers;
 }
 
 - (int64_t)dequeueOrder
 {
-  v3 = [(CPLAssetChange *)self assetDate];
-  if (v3)
+  assetDate = [(CPLAssetChange *)self assetDate];
+  if (assetDate)
   {
     [(CPLAssetChange *)self assetDate];
   }
@@ -1107,20 +1107,20 @@ BOOL __64__CPLAssetChange_checkDefaultValueBlockForPropertyWithSelector___block_
   {
     v8.receiver = self;
     v8.super_class = CPLAssetChange;
-    v5 = [(CPLRecordChange *)&v8 dequeueOrder];
+    dequeueOrder = [(CPLRecordChange *)&v8 dequeueOrder];
   }
 
-  v6 = v5;
+  v6 = dequeueOrder;
 
   return v6;
 }
 
-- (void)setPeople:(id)a3
+- (void)setPeople:(id)people
 {
-  v6 = a3;
-  if ([v6 count])
+  peopleCopy = people;
+  if ([peopleCopy count])
   {
-    v4 = [v6 sortedArrayUsingComparator:&__block_literal_global_93_19045];
+    v4 = [peopleCopy sortedArrayUsingComparator:&__block_literal_global_93_19045];
   }
 
   else
@@ -1189,27 +1189,27 @@ uint64_t __28__CPLAssetChange_setPeople___block_invoke(uint64_t a1, void *a2, vo
   return v9;
 }
 
-- (void)setKeywords:(id)a3
+- (void)setKeywords:(id)keywords
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  keywordsCopy = keywords;
+  if ([keywordsCopy count])
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v5];
+    v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:keywordsCopy];
     v7 = [v6 count];
-    if (v7 != [v5 count] && (_CPLSilentLogging & 1) == 0)
+    if (v7 != [keywordsCopy count] && (_CPLSilentLogging & 1) == 0)
     {
       v8 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v9 = objc_opt_class();
         v10 = v9;
-        v11 = [(CPLRecordChange *)self scopedIdentifier];
+        scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
         v12 = NSStringFromSelector(a2);
         v17 = 138412802;
         v18 = v9;
         v19 = 2112;
-        v20 = v11;
+        v20 = scopedIdentifier;
         v21 = 2112;
         v22 = v12;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_ERROR, "<%@ %@> %@ got duplicate keywords", &v17, 0x20u);
@@ -1230,29 +1230,29 @@ uint64_t __28__CPLAssetChange_setPeople___block_invoke(uint64_t a1, void *a2, vo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyDerivativesFromRecordIfPossible:(id)a3
+- (void)copyDerivativesFromRecordIfPossible:(id)possible
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isAssetChange])
+  possibleCopy = possible;
+  if ([possibleCopy isAssetChange])
   {
-    v5 = [(CPLAssetChange *)self adjustments];
-    if (!v5)
+    adjustments = [(CPLAssetChange *)self adjustments];
+    if (!adjustments)
     {
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v6 = [v4 adjustments];
-    if (v6)
+    adjustments2 = [possibleCopy adjustments];
+    if (adjustments2)
     {
-      v7 = [v5 otherAdjustmentsFingerprint];
-      v8 = [v6 otherAdjustmentsFingerprint];
-      v9 = v8;
-      if (v7 && v8)
+      otherAdjustmentsFingerprint = [adjustments otherAdjustmentsFingerprint];
+      otherAdjustmentsFingerprint2 = [adjustments2 otherAdjustmentsFingerprint];
+      v9 = otherAdjustmentsFingerprint2;
+      if (otherAdjustmentsFingerprint && otherAdjustmentsFingerprint2)
       {
-        v10 = [v7 isEqual:v8];
+        v10 = [otherAdjustmentsFingerprint isEqual:otherAdjustmentsFingerprint2];
 
         if ((v10 & 1) == 0)
         {
@@ -1261,22 +1261,22 @@ LABEL_29:
 
 LABEL_9:
         v11 = [(NSDictionary *)self->_resourcePerResourceType objectForKeyedSubscript:&unk_1F57EF6F8];
-        v12 = [v11 identity];
-        v13 = [v12 fingerPrint];
+        identity = [v11 identity];
+        fingerPrint = [identity fingerPrint];
 
-        v14 = [v4 resourceForType:13];
-        v15 = [v14 identity];
-        v16 = [v15 fingerPrint];
+        v14 = [possibleCopy resourceForType:13];
+        identity2 = [v14 identity];
+        fingerPrint2 = [identity2 fingerPrint];
 
-        if (v13 && v16)
+        if (fingerPrint && fingerPrint2)
         {
-          if (([v13 isEqual:v16] & 1) == 0)
+          if (([fingerPrint isEqual:fingerPrint2] & 1) == 0)
           {
             goto LABEL_27;
           }
         }
 
-        else if (v13 | v16)
+        else if (fingerPrint | fingerPrint2)
         {
 LABEL_27:
 
@@ -1290,7 +1290,7 @@ LABEL_27:
         }
 
         v18 = [v17 count];
-        [(CPLRecordChange *)self copyDerivatives:&copyDerivativesFromRecordIfPossible__originalDerivativesImageAndVideo_19064 count:9 avoidResourceType:0 fromRecord:v4 inResourcePerType:v17];
+        [(CPLRecordChange *)self copyDerivatives:&copyDerivativesFromRecordIfPossible__originalDerivativesImageAndVideo_19064 count:9 avoidResourceType:0 fromRecord:possibleCopy inResourcePerType:v17];
         if (v18 >= [v17 count])
         {
           if (_CPLSilentLogging)
@@ -1300,24 +1300,24 @@ LABEL_26:
             goto LABEL_27;
           }
 
-          v23 = __CPLGenericOSLogDomain();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+          allValues = __CPLGenericOSLogDomain();
+          if (os_log_type_enabled(allValues, OS_LOG_TYPE_DEFAULT))
           {
             v30 = objc_opt_class();
             v34 = v30;
-            v24 = [v4 scopedIdentifier];
+            scopedIdentifier = [possibleCopy scopedIdentifier];
             v25 = objc_opt_class();
             v32 = v25;
-            v26 = [(CPLRecordChange *)self scopedIdentifier];
+            scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
             *buf = 138413058;
             v36 = v30;
             v37 = 2112;
-            v38 = v24;
+            v38 = scopedIdentifier;
             v39 = 2112;
             v40 = v25;
             v41 = 2112;
-            v42 = v26;
-            _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_DEFAULT, "Found no derivatives to copy from <%@ %@> to <%@ %@>", buf, 0x2Au);
+            v42 = scopedIdentifier2;
+            _os_log_impl(&dword_1DC05A000, allValues, OS_LOG_TYPE_DEFAULT, "Found no derivatives to copy from <%@ %@> to <%@ %@>", buf, 0x2Au);
           }
         }
 
@@ -1331,7 +1331,7 @@ LABEL_26:
               v29 = [v17 count] - v18;
               v28 = objc_opt_class();
               v33 = v28;
-              v20 = [v4 scopedIdentifier];
+              scopedIdentifier3 = [possibleCopy scopedIdentifier];
               v21 = objc_opt_class();
               v31 = v21;
               [(CPLRecordChange *)self scopedIdentifier];
@@ -1340,7 +1340,7 @@ LABEL_26:
               v37 = 2112;
               v38 = v28;
               v39 = 2112;
-              v40 = v20;
+              v40 = scopedIdentifier3;
               v41 = 2112;
               v42 = v21;
               v44 = v43 = 2112;
@@ -1349,14 +1349,14 @@ LABEL_26:
             }
           }
 
-          v23 = [v17 allValues];
-          [(CPLAssetChange *)self setResources:v23];
+          allValues = [v17 allValues];
+          [(CPLAssetChange *)self setResources:allValues];
         }
 
         goto LABEL_26;
       }
 
-      if (!(v7 | v9))
+      if (!(otherAdjustmentsFingerprint | v9))
       {
         goto LABEL_9;
       }
@@ -1372,12 +1372,12 @@ LABEL_30:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)resourceForType:(unint64_t)a3
+- (id)resourceForType:(unint64_t)type
 {
   resourcePerResourceType = self->_resourcePerResourceType;
   if (resourcePerResourceType)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v5 = [(NSDictionary *)resourcePerResourceType objectForKeyedSubscript:v4];
   }
 
@@ -1385,21 +1385,21 @@ LABEL_30:
   {
     v7.receiver = self;
     v7.super_class = CPLAssetChange;
-    v5 = [(CPLRecordChange *)&v7 resourceForType:a3];
+    v5 = [(CPLRecordChange *)&v7 resourceForType:type];
   }
 
   return v5;
 }
 
-- (void)setResources:(id)a3
+- (void)setResources:(id)resources
 {
   v27 = *MEMORY[0x1E69E9840];
   v20 = 0;
-  v5 = a3;
-  v6 = [CPLResource normalizedResourcesFromResources:v5 resourcePerResourceType:&v20];
+  resourcesCopy = resources;
+  v6 = [CPLResource normalizedResourcesFromResources:resourcesCopy resourcePerResourceType:&v20];
   v7 = v20;
   v8 = [(NSArray *)v6 count];
-  v9 = [v5 count];
+  v9 = [resourcesCopy count];
 
   if (v8 != v9 && (_CPLSilentLogging & 1) == 0)
   {
@@ -1408,12 +1408,12 @@ LABEL_30:
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(CPLRecordChange *)self scopedIdentifier];
+      scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
       v14 = NSStringFromSelector(a2);
       *buf = 138412802;
       v22 = v11;
       v23 = 2112;
-      v24 = v13;
+      v24 = scopedIdentifier;
       v25 = 2114;
       v26 = v14;
       _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "<%@ %@> %{public}@ got duplicate or incorrect resource types", buf, 0x20u);
@@ -1431,17 +1431,17 @@ LABEL_30:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMasterScopedIdentifier:(id)a3
+- (void)setMasterScopedIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v5 = [v22 scopeIdentifier];
-  v6 = [(CPLRecordChange *)self scopedIdentifier];
-  v7 = [v6 scopeIdentifier];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+  scopeIdentifier2 = [scopedIdentifier scopeIdentifier];
 
-  if (v5 && v7)
+  if (scopeIdentifier && scopeIdentifier2)
   {
-    v8 = [v5 isEqual:v7];
+    v8 = [scopeIdentifier isEqual:scopeIdentifier2];
 
     if ((v8 & 1) == 0)
     {
@@ -1452,7 +1452,7 @@ LABEL_30:
   else
   {
 
-    if (v5 | v7)
+    if (scopeIdentifier | scopeIdentifier2)
     {
 LABEL_4:
       if ((_CPLSilentLogging & 1) == 0)
@@ -1461,45 +1461,45 @@ LABEL_4:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = NSStringFromSelector(a2);
-          v11 = [(CPLRecordChange *)self scopedIdentifier];
-          v12 = [v11 scopeIdentifier];
-          v13 = [v22 scopeIdentifier];
+          scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+          scopeIdentifier3 = [scopedIdentifier2 scopeIdentifier];
+          scopeIdentifier4 = [identifierCopy scopeIdentifier];
           *buf = 138412802;
           v24 = v10;
           v25 = 2112;
-          v26 = v12;
+          v26 = scopeIdentifier3;
           v27 = 2112;
-          v28 = v13;
+          v28 = scopeIdentifier4;
           _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Invalid call to %@ with mismatched scope: %@ vs. %@", buf, 0x20u);
         }
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLAssetChange.m"];
       v16 = NSStringFromSelector(a2);
-      v17 = [(CPLRecordChange *)self scopedIdentifier];
-      v18 = [v17 scopeIdentifier];
-      v19 = [v22 scopeIdentifier];
-      [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:229 description:{@"Invalid call to %@ with mismatched scope: %@ vs. %@", v16, v18, v19}];
+      scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+      scopeIdentifier5 = [scopedIdentifier3 scopeIdentifier];
+      scopeIdentifier6 = [identifierCopy scopeIdentifier];
+      [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:229 description:{@"Invalid call to %@ with mismatched scope: %@ vs. %@", v16, scopeIdentifier5, scopeIdentifier6}];
 
       abort();
     }
   }
 
-  v20 = [v22 identifier];
-  [(CPLAssetChange *)self setMasterIdentifier:v20];
+  identifier = [identifierCopy identifier];
+  [(CPLAssetChange *)self setMasterIdentifier:identifier];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
 - (id)masterScopedIdentifier
 {
-  v3 = [(CPLAssetChange *)self masterIdentifier];
-  if (v3)
+  masterIdentifier = [(CPLAssetChange *)self masterIdentifier];
+  if (masterIdentifier)
   {
     v4 = [CPLScopedIdentifier alloc];
-    v5 = [(CPLRecordChange *)self scopedIdentifier];
-    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:v5 identifier:v3];
+    scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+    v6 = [(CPLScopedIdentifier *)v4 initRelativeToScopedIdentifier:scopedIdentifier identifier:masterIdentifier];
   }
 
   else
@@ -1510,20 +1510,20 @@ LABEL_4:
   return v6;
 }
 
-- (id)propertiesForChangeType:(unint64_t)a3
+- (id)propertiesForChangeType:(unint64_t)type
 {
   if (propertiesForChangeType__onceToken_19078 != -1)
   {
     dispatch_once(&propertiesForChangeType__onceToken_19078, &__block_literal_global_43);
   }
 
-  if (a3 == 32)
+  if (type == 32)
   {
     v5 = propertiesForChangeType__facesProperties;
     goto LABEL_7;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v5 = propertiesForChangeType__resourceProperties;
 LABEL_7:
@@ -1533,7 +1533,7 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = CPLAssetChange;
-  v6 = [(CPLItemChange *)&v8 propertiesForChangeType:a3];
+  v6 = [(CPLItemChange *)&v8 propertiesForChangeType:type];
 LABEL_9:
 
   return v6;
@@ -1554,19 +1554,19 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
 
 - (id)propertiesDescription
 {
-  v2 = self;
+  selfCopy = self;
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [(CPLRecordChange *)self changeType];
-  v4 = [(CPLItemChange *)v2 containerDescription];
-  v5 = [(CPLRecordChange *)v2 resourcesDescription];
-  v6 = v5;
-  if (!v3 || (v3 & 8) != 0)
+  changeType = [(CPLRecordChange *)self changeType];
+  containerDescription = [(CPLItemChange *)selfCopy containerDescription];
+  resourcesDescription = [(CPLRecordChange *)selfCopy resourcesDescription];
+  v6 = resourcesDescription;
+  if (!changeType || (changeType & 8) != 0)
   {
     v9 = " / ";
-    v8 = [(CPLAssetChange *)v2 adjustments];
+    adjustments = [(CPLAssetChange *)selfCopy adjustments];
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
     v11 = "";
-    if (![v4 length])
+    if (![containerDescription length])
     {
       v9 = "";
     }
@@ -1576,12 +1576,12 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
       v11 = " ";
     }
 
-    if (v8)
+    if (adjustments)
     {
-      v12 = [v8 adjustmentSimpleDescription];
-      v7 = [v10 initWithFormat:@"%s%@%s%@", v9, v6, v11, v12];
+      adjustmentSimpleDescription = [adjustments adjustmentSimpleDescription];
+      v7 = [v10 initWithFormat:@"%s%@%s%@", v9, v6, v11, adjustmentSimpleDescription];
 
-      v6 = v12;
+      v6 = adjustmentSimpleDescription;
     }
 
     else
@@ -1593,33 +1593,33 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
   else
   {
     v7 = &stru_1F57BD298;
-    v8 = v5;
+    adjustments = resourcesDescription;
   }
 
-  if (!v3 || (v3 & 0x20) != 0)
+  if (!changeType || (changeType & 0x20) != 0)
   {
     v14 = " / ";
-    if (![v4 length] && !-[__CFString length](v7, "length"))
+    if (![containerDescription length] && !-[__CFString length](v7, "length"))
     {
       v14 = "";
     }
 
-    v15 = [(CPLAssetChange *)v2 faces];
-    v16 = [v15 faces];
-    if ([v16 count] | v3)
+    faces = [(CPLAssetChange *)selfCopy faces];
+    v15Faces = [faces faces];
+    if ([v15Faces count] | changeType)
     {
-      v34 = v16;
+      v34 = v15Faces;
       v35 = v14;
-      v37 = v3;
+      v37 = changeType;
       v38 = v7;
-      v39 = v2;
-      v40 = v4;
+      v39 = selfCopy;
+      v40 = containerDescription;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v36 = v15;
-      obj = [v15 faces];
+      v36 = faces;
+      obj = [faces faces];
       v17 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v17)
       {
@@ -1639,7 +1639,7 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
             }
 
             v25 = *(*(&v42 + 1) + 8 * i);
-            v26 = [v25 isKeyFace];
+            isKeyFace = [v25 isKeyFace];
             if ([v25 isManual])
             {
               ++v20;
@@ -1647,17 +1647,17 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
 
             else
             {
-              v27 = [v25 personIdentifier];
+              personIdentifier = [v25 personIdentifier];
 
-              if (v27)
+              if (personIdentifier)
               {
                 ++v22;
               }
             }
 
-            v19 += v26;
-            v28 = [v25 rejectedPersonIdentifiers];
-            v21 += [v28 count];
+            v19 += isKeyFace;
+            rejectedPersonIdentifiers = [v25 rejectedPersonIdentifiers];
+            v21 += [rejectedPersonIdentifiers count];
           }
 
           v18 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -1675,12 +1675,12 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
       }
 
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%sfaces: %lu conf., %lu rej., %lu man., %lu key", v35, v22, v21, v20, v19];
-      v2 = v39;
-      v4 = v40;
-      v3 = v37;
+      selfCopy = v39;
+      containerDescription = v40;
+      changeType = v37;
       v7 = v38;
-      v15 = v36;
-      v16 = v34;
+      faces = v36;
+      v15Faces = v34;
     }
 
     else
@@ -1688,7 +1688,7 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
       v13 = &stru_1F57BD298;
     }
 
-    if (!v3)
+    if (!changeType)
     {
       goto LABEL_37;
     }
@@ -1699,14 +1699,14 @@ uint64_t __42__CPLAssetChange_propertiesForChangeType___block_invoke()
     v13 = &stru_1F57BD298;
   }
 
-  if ((v3 & 2) == 0)
+  if ((changeType & 2) == 0)
   {
     v29 = &stru_1F57BD298;
     goto LABEL_43;
   }
 
 LABEL_37:
-  if ([v4 length])
+  if ([containerDescription length])
   {
     v30 = ", ";
   }
@@ -1720,9 +1720,9 @@ LABEL_37:
     }
   }
 
-  v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"master: %@%s", v2->_masterIdentifier, v30];
+  v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"master: %@%s", selfCopy->_masterIdentifier, v30];
 LABEL_43:
-  v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@%@%@", v29, v4, v7, v13];
+  v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@%@%@", v29, containerDescription, v7, v13];
 
   v32 = *MEMORY[0x1E69E9840];
 
@@ -1731,10 +1731,10 @@ LABEL_43:
 
 - (BOOL)isEPPRecord
 {
-  v2 = [(CPLAssetChange *)self masterIdentifier];
-  if (v2)
+  masterIdentifier = [(CPLAssetChange *)self masterIdentifier];
+  if (masterIdentifier)
   {
-    v3 = [CPLFingerprintScheme isMMCSv2Fingerprint:v2];
+    v3 = [CPLFingerprintScheme isMMCSv2Fingerprint:masterIdentifier];
   }
 
   else
@@ -1745,11 +1745,11 @@ LABEL_43:
   return v3;
 }
 
-- (id)fingerprintSchemeWithContext:(id)a3
+- (id)fingerprintSchemeWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   fingerprintScheme = self->_fingerprintScheme;
   if (!fingerprintScheme)
   {
@@ -1764,20 +1764,20 @@ LABEL_43:
           *buf = 138412546;
           v19 = v14;
           v20 = 2112;
-          v21 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "%@ called on %@ with master identifier not set", buf, 0x16u);
         }
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLAssetChange.m"];
       v17 = NSStringFromSelector(a2);
-      [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:121 description:{@"%@ called on %@ with master identifier not set", v17, self}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:121 description:{@"%@ called on %@ with master identifier not set", v17, self}];
 
       abort();
     }
 
-    v8 = [v5 fingerprintSchemeForMasterIdentifier:?];
+    v8 = [contextCopy fingerprintSchemeForMasterIdentifier:?];
     v9 = self->_fingerprintScheme;
     self->_fingerprintScheme = v8;
 
@@ -1812,14 +1812,14 @@ LABEL_43:
   return v3;
 }
 
-+ (BOOL)requiresStableHashForResourceType:(unint64_t)a3
++ (BOOL)requiresStableHashForResourceType:(unint64_t)type
 {
   result = 1;
-  if (a3 != 2 && a3 != 16)
+  if (type != 2 && type != 16)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLAssetChange;
     return objc_msgSendSuper2(&v7, sel_requiresStableHashForResourceType_);
   }
@@ -1827,9 +1827,9 @@ LABEL_43:
   return result;
 }
 
-+ (id)copyPropertyBlockForDirection:(unint64_t)a3
++ (id)copyPropertyBlockForDirection:(unint64_t)direction
 {
-  if (a3 == 1)
+  if (direction == 1)
   {
     return &__block_literal_global_11;
   }
@@ -1882,15 +1882,15 @@ LABEL_12:
   return v11;
 }
 
-+ (id)equalityBlockForDirection:(unint64_t)a3
++ (id)equalityBlockForDirection:(unint64_t)direction
 {
   v3 = &__block_literal_global_8;
-  if (a3 != 2)
+  if (direction != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (direction == 1)
   {
     return &__block_literal_global_19154;
   }

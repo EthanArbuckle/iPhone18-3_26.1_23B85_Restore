@@ -1,12 +1,12 @@
 @interface LAPasscodeHelper
 + (id)sharedInstance;
-- (BOOL)accountBlockedForUserID:(id)a3;
-- (BOOL)isPasscodeSetWithError:(id *)a3;
-- (double)backoffTimeIntervalForUserID:(id)a3;
+- (BOOL)accountBlockedForUserID:(id)d;
+- (BOOL)isPasscodeSetWithError:(id *)error;
+- (double)backoffTimeIntervalForUserID:(id)d;
 - (id)dumpStatus;
-- (int64_t)failedAttemptsForUserID:(id)a3;
-- (int64_t)maxUnlockAttemptsForUserID:(id)a3;
-- (int64_t)passcodeScreenStyleWithPolicy:(int64_t)a3 options:(id)a4 darkInterface:(BOOL)a5;
+- (int64_t)failedAttemptsForUserID:(id)d;
+- (int64_t)maxUnlockAttemptsForUserID:(id)d;
+- (int64_t)passcodeScreenStyleWithPolicy:(int64_t)policy options:(id)options darkInterface:(BOOL)interface;
 - (int64_t)passcodeType;
 @end
 
@@ -31,79 +31,79 @@ uint64_t __34__LAPasscodeHelper_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isPasscodeSetWithError:(id *)a3
+- (BOOL)isPasscodeSetWithError:(id *)error
 {
   v5 = geteuid();
 
-  return [(LAPasscodeHelper *)self isPasscodeSetForUser:v5 error:a3];
+  return [(LAPasscodeHelper *)self isPasscodeSetForUser:v5 error:error];
 }
 
-- (BOOL)accountBlockedForUserID:(id)a3
+- (BOOL)accountBlockedForUserID:(id)d
 {
   v3 = MEMORY[0x1E69AD2A0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 accountBlockedForUserID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance accountBlockedForUserID:dCopy];
 
   return v6;
 }
 
-- (double)backoffTimeIntervalForUserID:(id)a3
+- (double)backoffTimeIntervalForUserID:(id)d
 {
   v3 = MEMORY[0x1E69AD2A0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 backoffTimeIntervalForUserID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance backoffTimeIntervalForUserID:dCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)failedAttemptsForUserID:(id)a3
+- (int64_t)failedAttemptsForUserID:(id)d
 {
   v3 = MEMORY[0x1E69AD2A0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 failedAttemptsForUserID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance failedAttemptsForUserID:dCopy];
 
   return v6;
 }
 
-- (int64_t)maxUnlockAttemptsForUserID:(id)a3
+- (int64_t)maxUnlockAttemptsForUserID:(id)d
 {
   v3 = MEMORY[0x1E69AD2A0];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 maxUnlockAttemptsForUserID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance maxUnlockAttemptsForUserID:dCopy];
 
   return v6;
 }
 
-- (int64_t)passcodeScreenStyleWithPolicy:(int64_t)a3 options:(id)a4 darkInterface:(BOOL)a5
+- (int64_t)passcodeScreenStyleWithPolicy:(int64_t)policy options:(id)options darkInterface:(BOOL)interface
 {
-  v5 = a5;
-  v6 = a3 == 1004;
-  v7 = [a4 objectForKeyedSubscript:&unk_1F5A79350];
+  interfaceCopy = interface;
+  v6 = policy == 1004;
+  v7 = [options objectForKeyedSubscript:&unk_1F5A79350];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v9 = v6 ^ v5;
+    integerValue = v6 ^ interfaceCopy;
   }
 
-  return v9;
+  return integerValue;
 }
 
 - (int64_t)passcodeType
 {
   v2 = +[LAPasscodeHelperPasscodeStateRepository currentState];
-  v3 = [v2 passcodeType];
+  passcodeType = [v2 passcodeType];
 
-  return v3;
+  return passcodeType;
 }
 
 - (id)dumpStatus

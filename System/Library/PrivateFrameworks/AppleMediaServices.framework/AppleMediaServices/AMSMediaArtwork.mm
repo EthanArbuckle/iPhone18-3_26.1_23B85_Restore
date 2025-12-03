@@ -4,17 +4,17 @@
 + (NSString)heightPlaceholder;
 + (NSString)qualityPlaceholder;
 + (NSString)widthPlaceholder;
-+ (id)urlWithURLTemplate:(id)a3 size:(CGSize)a4 cropStyle:(id)a5 format:(id)a6 quality:(id)a7;
-- (AMSMediaArtwork)initWithDictionary:(id)a3;
-- (CGColor)colorWithKind:(id)a3;
++ (id)urlWithURLTemplate:(id)template size:(CGSize)size cropStyle:(id)style format:(id)format quality:(id)quality;
+- (AMSMediaArtwork)initWithDictionary:(id)dictionary;
+- (CGColor)colorWithKind:(id)kind;
 - (CGSize)artworkSize;
 - (double)height;
 - (double)width;
 - (id)URLString;
-- (id)URLWithSize:(CGSize)a3;
-- (id)URLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5;
-- (id)URLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5 quality:(unint64_t)a6;
-- (unint64_t)_qualityForFormat:(id)a3;
+- (id)URLWithSize:(CGSize)size;
+- (id)URLWithSize:(CGSize)size cropStyle:(id)style format:(id)format;
+- (id)URLWithSize:(CGSize)size cropStyle:(id)style format:(id)format quality:(unint64_t)quality;
+- (unint64_t)_qualityForFormat:(id)format;
 @end
 
 @implementation AMSMediaArtwork
@@ -54,25 +54,25 @@
   return v2;
 }
 
-+ (id)urlWithURLTemplate:(id)a3 size:(CGSize)a4 cropStyle:(id)a5 format:(id)a6 quality:(id)a7
++ (id)urlWithURLTemplate:(id)template size:(CGSize)size cropStyle:(id)style format:(id)format quality:(id)quality
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAE144B0);
   MEMORY[0x1EEE9AC00](v13 - 8, v14);
   v16 = &v31 - v15;
-  if (a3)
+  if (template)
   {
     v17 = sub_192F967CC();
-    a3 = v18;
-    if (a5)
+    template = v18;
+    if (style)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v19 = 0;
-    if (a6)
+    if (format)
     {
       goto LABEL_4;
     }
@@ -81,29 +81,29 @@ LABEL_6:
   }
 
   v17 = 0;
-  if (!a5)
+  if (!style)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v19 = sub_192F967CC();
-  a5 = v20;
-  if (a6)
+  style = v20;
+  if (format)
   {
 LABEL_4:
     v21 = sub_192F967CC();
-    a6 = v22;
+    format = v22;
     goto LABEL_8;
   }
 
 LABEL_7:
   v21 = 0;
 LABEL_8:
-  v23 = a7;
-  if (v23)
+  qualityCopy = quality;
+  if (qualityCopy)
   {
-    v24 = v23;
+    v24 = qualityCopy;
     v25 = sub_192F967CC();
     v27 = v26;
   }
@@ -114,7 +114,7 @@ LABEL_8:
     v27 = 0;
   }
 
-  static AMSMediaArtwork.url(URLTemplate:size:cropStyle:format:quality:)(v17, a3, v19, a5, v21, a6, v25, v27, v16, width, height);
+  static AMSMediaArtwork.url(URLTemplate:size:cropStyle:format:quality:)(v17, template, v19, style, v21, format, v25, v27, v16, width, height);
 
   v28 = sub_192F95A8C();
   v29 = 0;
@@ -127,16 +127,16 @@ LABEL_8:
   return v29;
 }
 
-- (AMSMediaArtwork)initWithDictionary:(id)a3
+- (AMSMediaArtwork)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSMediaArtwork;
   v6 = [(AMSMediaArtwork *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_artworkDictionary, a3);
+    objc_storeStrong(&v6->_artworkDictionary, dictionary);
   }
 
   return v7;
@@ -156,8 +156,8 @@ LABEL_8:
 
 - (double)height
 {
-  v2 = [(AMSMediaArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"height"];
+  artworkDictionary = [(AMSMediaArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"height"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -178,8 +178,8 @@ LABEL_8:
 
 - (id)URLString
 {
-  v2 = [(AMSMediaArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"url"];
+  artworkDictionary = [(AMSMediaArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"url"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -197,8 +197,8 @@ LABEL_8:
 
 - (double)width
 {
-  v2 = [(AMSMediaArtwork *)self artworkDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"width"];
+  artworkDictionary = [(AMSMediaArtwork *)self artworkDictionary];
+  v3 = [artworkDictionary objectForKeyedSubscript:@"width"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -217,12 +217,12 @@ LABEL_8:
   return v6;
 }
 
-- (CGColor)colorWithKind:(id)a3
+- (CGColor)colorWithKind:(id)kind
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSMediaArtwork *)self artworkDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  kindCopy = kind;
+  artworkDictionary = [(AMSMediaArtwork *)self artworkDictionary];
+  v6 = [artworkDictionary objectForKeyedSubscript:kindCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -257,34 +257,34 @@ LABEL_7:
   return v10;
 }
 
-- (id)URLWithSize:(CGSize)a3
+- (id)URLWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [(AMSMediaArtwork *)self _qualityForFormat:@"jpg"];
 
   return [(AMSMediaArtwork *)self URLWithSize:@"bb" cropStyle:@"jpg" format:v6 quality:width, height];
 }
 
-- (id)URLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5
+- (id)URLWithSize:(CGSize)size cropStyle:(id)style format:(id)format
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(AMSMediaArtwork *)self URLWithSize:v10 cropStyle:v9 format:[(AMSMediaArtwork *)self _qualityForFormat:v9] quality:width, height];
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
+  styleCopy = style;
+  height = [(AMSMediaArtwork *)self URLWithSize:styleCopy cropStyle:formatCopy format:[(AMSMediaArtwork *)self _qualityForFormat:formatCopy] quality:width, height];
 
-  return v11;
+  return height;
 }
 
-- (id)URLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5 quality:(unint64_t)a6
+- (id)URLWithSize:(CGSize)size cropStyle:(id)style format:(id)format quality:(unint64_t)quality
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(AMSMediaArtwork *)self URLString];
-  v14 = [v13 mutableCopy];
+  height = size.height;
+  width = size.width;
+  styleCopy = style;
+  formatCopy = format;
+  uRLString = [(AMSMediaArtwork *)self URLString];
+  v14 = [uRLString mutableCopy];
 
   if (v14)
   {
@@ -302,14 +302,14 @@ LABEL_7:
     }
 
     v18 = fmax(v17, 0.0);
-    v19 = 100;
-    if (a6 < 0x64)
+    qualityCopy = 100;
+    if (quality < 0x64)
     {
-      v19 = a6;
+      qualityCopy = quality;
     }
 
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v19];
-    v21 = [objc_opt_class() urlWithURLTemplate:v14 size:v11 cropStyle:v12 format:v20 quality:{v18, v16}];
+    qualityCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", qualityCopy];
+    v21 = [objc_opt_class() urlWithURLTemplate:v14 size:styleCopy cropStyle:formatCopy format:qualityCopy quality:{v18, v16}];
   }
 
   else
@@ -320,12 +320,12 @@ LABEL_7:
   return v21;
 }
 
-- (unint64_t)_qualityForFormat:(id)a3
+- (unint64_t)_qualityForFormat:(id)format
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"heic"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"jpg") & 1) == 0)
+  formatCopy = format;
+  if (([formatCopy isEqualToString:@"heic"] & 1) == 0 && (objc_msgSend(formatCopy, "isEqualToString:", @"jpg") & 1) == 0)
   {
-    [v3 isEqualToString:@"png"];
+    [formatCopy isEqualToString:@"png"];
   }
 
   return 70;

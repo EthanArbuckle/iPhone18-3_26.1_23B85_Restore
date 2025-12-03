@@ -1,12 +1,12 @@
 @interface StoredCertificate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation StoredCertificate
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = StoredCertificate;
   v3 = [(StoredCertificate *)&v7 description];
-  v4 = [(StoredCertificate *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(StoredCertificate *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,109 +59,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_iCloudEnvironment)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowBaseURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dsid)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowCertificate)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_duplicateEscrowCertificate)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_iCloudEnvironment)
   {
-    [v4 setICloudEnvironment:?];
-    v4 = v5;
+    [toCopy setICloudEnvironment:?];
+    toCopy = v5;
   }
 
   if (self->_escrowBaseURL)
   {
     [v5 setEscrowBaseURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dsid)
   {
     [v5 setDsid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowCertificate)
   {
     [v5 setEscrowCertificate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_duplicateEscrowCertificate)
   {
     [v5 setDuplicateEscrowCertificate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_iCloudEnvironment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_iCloudEnvironment copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_escrowBaseURL copyWithZone:a3];
+  v8 = [(NSString *)self->_escrowBaseURL copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_dsid copyWithZone:a3];
+  v10 = [(NSString *)self->_dsid copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSData *)self->_escrowCertificate copyWithZone:a3];
+  v12 = [(NSData *)self->_escrowCertificate copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSData *)self->_duplicateEscrowCertificate copyWithZone:a3];
+  v14 = [(NSData *)self->_duplicateEscrowCertificate copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((iCloudEnvironment = self->_iCloudEnvironment, !(iCloudEnvironment | v4[5])) || -[NSString isEqual:](iCloudEnvironment, "isEqual:")) && ((escrowBaseURL = self->_escrowBaseURL, !(escrowBaseURL | v4[3])) || -[NSString isEqual:](escrowBaseURL, "isEqual:")) && ((dsid = self->_dsid, !(dsid | v4[1])) || -[NSString isEqual:](dsid, "isEqual:")) && ((escrowCertificate = self->_escrowCertificate, !(escrowCertificate | v4[4])) || -[NSData isEqual:](escrowCertificate, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((iCloudEnvironment = self->_iCloudEnvironment, !(iCloudEnvironment | equalCopy[5])) || -[NSString isEqual:](iCloudEnvironment, "isEqual:")) && ((escrowBaseURL = self->_escrowBaseURL, !(escrowBaseURL | equalCopy[3])) || -[NSString isEqual:](escrowBaseURL, "isEqual:")) && ((dsid = self->_dsid, !(dsid | equalCopy[1])) || -[NSString isEqual:](dsid, "isEqual:")) && ((escrowCertificate = self->_escrowCertificate, !(escrowCertificate | equalCopy[4])) || -[NSData isEqual:](escrowCertificate, "isEqual:")))
   {
     duplicateEscrowCertificate = self->_duplicateEscrowCertificate;
-    if (duplicateEscrowCertificate | v4[2])
+    if (duplicateEscrowCertificate | equalCopy[2])
     {
       v10 = [(NSData *)duplicateEscrowCertificate isEqual:?];
     }
@@ -189,30 +189,30 @@
   return v6 ^ [(NSData *)self->_duplicateEscrowCertificate hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
     [(StoredCertificate *)self setICloudEnvironment:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(StoredCertificate *)self setEscrowBaseURL:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(StoredCertificate *)self setDsid:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(StoredCertificate *)self setEscrowCertificate:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(StoredCertificate *)self setDuplicateEscrowCertificate:?];
   }

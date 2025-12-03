@@ -1,33 +1,33 @@
 @interface SFIconGenerator
-+ (id)appIconForBundleIdentifier:(id)a3 imageSize:(CGSize)a4;
-+ (void)getAppIconForBundleIdentifier:(id)a3 imageDescriptor:(id)a4 resultHandler:(id)a5;
++ (id)appIconForBundleIdentifier:(id)identifier imageSize:(CGSize)size;
++ (void)getAppIconForBundleIdentifier:(id)identifier imageDescriptor:(id)descriptor resultHandler:(id)handler;
 @end
 
 @implementation SFIconGenerator
 
-+ (void)getAppIconForBundleIdentifier:(id)a3 imageDescriptor:(id)a4 resultHandler:(id)a5
++ (void)getAppIconForBundleIdentifier:(id)identifier imageDescriptor:(id)descriptor resultHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E69A8A00];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithBundleIdentifier:v10];
+  identifierCopy = identifier;
+  v11 = [[v9 alloc] initWithBundleIdentifier:identifierCopy];
 
-  v12 = [v11 imageForDescriptor:v7];
+  v12 = [v11 imageForDescriptor:descriptorCopy];
   if ([v12 placeholder])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __79__SFIconGenerator_getAppIconForBundleIdentifier_imageDescriptor_resultHandler___block_invoke;
     v14[3] = &unk_1E721C310;
-    v15 = v8;
-    [v11 getImageForImageDescriptor:v7 completion:v14];
+    v15 = handlerCopy;
+    [v11 getImageForImageDescriptor:descriptorCopy completion:v14];
   }
 
   else
   {
     v13 = uiImageFromISImage(v12);
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 
@@ -42,13 +42,13 @@ void __79__SFIconGenerator_getAppIconForBundleIdentifier_imageDescriptor_resultH
   }
 }
 
-+ (id)appIconForBundleIdentifier:(id)a3 imageSize:(CGSize)a4
++ (id)appIconForBundleIdentifier:(id)identifier imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x1E69A8A00];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithBundleIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithBundleIdentifier:identifierCopy];
 
   v9 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:width scale:{height, _SFScreenScale()}];
   v10 = [v8 prepareImageForDescriptor:v9];

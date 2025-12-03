@@ -1,111 +1,111 @@
 @interface _NBPhoneNumberUtil
 + (_NBPhoneNumberUtil)sharedInstance;
 + (void)initialize;
-- (BOOL)canBeInternationallyDialled:(id)a3;
-- (BOOL)canBeInternationallyDialled:(id)a3 error:(id *)a4;
-- (BOOL)checkRegionForParsing:(id)a3 defaultRegion:(id)a4;
-- (BOOL)descHasPossibleNumberData:(id)a3;
-- (BOOL)formattingRuleHasFirstGroupOnly:(id)a3;
-- (BOOL)hasFormattingPatternForNumber:(id)a3;
-- (BOOL)hasUnexpectedItalianLeadingZero:(id)a3;
-- (BOOL)hasValidCountryCallingCode:(id)a3;
-- (BOOL)isAllDigits:(id)a3;
-- (BOOL)isAlphaNumber:(id)a3;
-- (BOOL)isLeadingZeroPossible:(id)a3;
-- (BOOL)isNANPACountry:(id)a3;
-- (BOOL)isNationalNumberSuffixOfTheOther:(id)a3 second:(id)a4;
-- (BOOL)isNumberGeographical:(id)a3;
-- (BOOL)isNumberMatchingDesc:(id)a3 numberDesc:(id)a4;
-- (BOOL)isPossibleNumber:(id)a3 error:(id *)a4;
-- (BOOL)isPossibleNumberString:(id)a3 regionDialingFrom:(id)a4 error:(id *)a5;
-- (BOOL)isStartingStringByRegex:(id)a3 regex:(id)a4;
-- (BOOL)isValidNumber:(id)a3;
-- (BOOL)isValidNumberForRegion:(id)a3 regionCode:(id)a4;
-- (BOOL)isValidRegionCode:(id)a3;
-- (BOOL)isViablePhoneNumber:(id)a3;
-- (BOOL)matchesEntirely:(id)a3 string:(id)a4;
-- (BOOL)maybeStripNationalPrefixAndCarrierCode:(id *)a3 metadata:(id)a4 carrierCode:(id *)a5;
-- (BOOL)parsePrefixAsIdd:(id)a3 sourceString:(id *)a4;
-- (BOOL)rawInputContainsNationalPrefix:(id)a3 nationalPrefix:(id)a4 regionCode:(id)a5;
-- (BOOL)truncateTooLongNumber:(id)a3;
+- (BOOL)canBeInternationallyDialled:(id)dialled;
+- (BOOL)canBeInternationallyDialled:(id)dialled error:(id *)error;
+- (BOOL)checkRegionForParsing:(id)parsing defaultRegion:(id)region;
+- (BOOL)descHasPossibleNumberData:(id)data;
+- (BOOL)formattingRuleHasFirstGroupOnly:(id)only;
+- (BOOL)hasFormattingPatternForNumber:(id)number;
+- (BOOL)hasUnexpectedItalianLeadingZero:(id)zero;
+- (BOOL)hasValidCountryCallingCode:(id)code;
+- (BOOL)isAllDigits:(id)digits;
+- (BOOL)isAlphaNumber:(id)number;
+- (BOOL)isLeadingZeroPossible:(id)possible;
+- (BOOL)isNANPACountry:(id)country;
+- (BOOL)isNationalNumberSuffixOfTheOther:(id)other second:(id)second;
+- (BOOL)isNumberGeographical:(id)geographical;
+- (BOOL)isNumberMatchingDesc:(id)desc numberDesc:(id)numberDesc;
+- (BOOL)isPossibleNumber:(id)number error:(id *)error;
+- (BOOL)isPossibleNumberString:(id)string regionDialingFrom:(id)from error:(id *)error;
+- (BOOL)isStartingStringByRegex:(id)regex regex:(id)a4;
+- (BOOL)isValidNumber:(id)number;
+- (BOOL)isValidNumberForRegion:(id)region regionCode:(id)code;
+- (BOOL)isValidRegionCode:(id)code;
+- (BOOL)isViablePhoneNumber:(id)number;
+- (BOOL)matchesEntirely:(id)entirely string:(id)string;
+- (BOOL)maybeStripNationalPrefixAndCarrierCode:(id *)code metadata:(id)metadata carrierCode:(id *)carrierCode;
+- (BOOL)parsePrefixAsIdd:(id)idd sourceString:(id *)string;
+- (BOOL)rawInputContainsNationalPrefix:(id)prefix nationalPrefix:(id)nationalPrefix regionCode:(id)code;
+- (BOOL)truncateTooLongNumber:(id)number;
 - (CTTelephonyNetworkInfo)telephonyNetworkInfo;
 - (NSDictionary)DIGIT_MAPPINGS;
 - (_NBPhoneNumberUtil)init;
-- (id)chooseFormattingPatternForNumber:(id)a3 nationalNumber:(id)a4;
-- (id)componentsSeparatedByRegex:(id)a3 regex:(id)a4;
-- (id)convertAlphaCharactersInNumber:(id)a3;
+- (id)chooseFormattingPatternForNumber:(id)number nationalNumber:(id)nationalNumber;
+- (id)componentsSeparatedByRegex:(id)regex regex:(id)a4;
+- (id)convertAlphaCharactersInNumber:(id)number;
 - (id)countryCodeByCarrier;
-- (id)entireRegularExpressionWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)errorWithObject:(id)a3 withDomain:(id)a4;
-- (id)extractCountryCode:(id)a3 nationalNumber:(id *)a4;
-- (id)extractPossibleNumber:(id)a3;
-- (id)format:(id)a3 numberFormat:(int64_t)a4;
-- (id)format:(id)a3 numberFormat:(int64_t)a4 error:(id *)a5;
-- (id)formatByPattern:(id)a3 numberFormat:(int64_t)a4 userDefinedFormats:(id)a5;
-- (id)formatByPattern:(id)a3 numberFormat:(int64_t)a4 userDefinedFormats:(id)a5 error:(id *)a6;
-- (id)formatInOriginalFormat:(id)a3 regionCallingFrom:(id)a4;
-- (id)formatInOriginalFormat:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5;
-- (id)formatNationalNumberWithCarrierCode:(id)a3 carrierCode:(id)a4;
-- (id)formatNationalNumberWithCarrierCode:(id)a3 carrierCode:(id)a4 error:(id *)a5;
-- (id)formatNationalNumberWithPreferredCarrierCode:(id)a3 fallbackCarrierCode:(id)a4;
-- (id)formatNationalNumberWithPreferredCarrierCode:(id)a3 fallbackCarrierCode:(id)a4 error:(id *)a5;
-- (id)formatNsn:(id)a3 metadata:(id)a4 phoneNumberFormat:(int64_t)a5 carrierCode:(id)a6;
-- (id)formatNsnUsingPattern:(id)a3 formattingPattern:(id)a4 numberFormat:(int64_t)a5 carrierCode:(id)a6;
-- (id)formatNumberForMobileDialing:(id)a3 regionCallingFrom:(id)a4 withFormatting:(BOOL)a5;
-- (id)formatOutOfCountryCallingNumber:(id)a3 regionCallingFrom:(id)a4;
-- (id)formatOutOfCountryCallingNumber:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5;
-- (id)formatOutOfCountryKeepingAlphaChars:(id)a3 regionCallingFrom:(id)a4;
-- (id)formatOutOfCountryKeepingAlphaChars:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5;
-- (id)getCountryCodeForRegion:(id)a3;
-- (id)getCountryCodeForValidRegion:(id)a3 error:(id *)a4;
-- (id)getCountryMobileTokenFromCountryCode:(int64_t)a3;
-- (id)getExampleNumberForNonGeoEntity:(id)a3 error:(id *)a4;
-- (id)getExampleNumberForType:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (id)getMetadataForRegionOrCallingCode:(id)a3 regionCode:(id)a4;
-- (id)getNationalSignificantNumber:(id)a3;
-- (id)getNddPrefixForRegion:(id)a3 stripNonDigits:(BOOL)a4;
-- (id)getNumberDescByType:(id)a3 type:(int64_t)a4;
-- (id)getRegionCodeForCountryCode:(id)a3;
-- (id)getRegionCodeForNumber:(id)a3;
-- (id)getRegionCodeForNumberFromRegionList:(id)a3 regionCodes:(id)a4;
+- (id)entireRegularExpressionWithPattern:(id)pattern options:(unint64_t)options error:(id *)error;
+- (id)errorWithObject:(id)object withDomain:(id)domain;
+- (id)extractCountryCode:(id)code nationalNumber:(id *)number;
+- (id)extractPossibleNumber:(id)number;
+- (id)format:(id)format numberFormat:(int64_t)numberFormat;
+- (id)format:(id)format numberFormat:(int64_t)numberFormat error:(id *)error;
+- (id)formatByPattern:(id)pattern numberFormat:(int64_t)format userDefinedFormats:(id)formats;
+- (id)formatByPattern:(id)pattern numberFormat:(int64_t)format userDefinedFormats:(id)formats error:(id *)error;
+- (id)formatInOriginalFormat:(id)format regionCallingFrom:(id)from;
+- (id)formatInOriginalFormat:(id)format regionCallingFrom:(id)from error:(id *)error;
+- (id)formatNationalNumberWithCarrierCode:(id)code carrierCode:(id)carrierCode;
+- (id)formatNationalNumberWithCarrierCode:(id)code carrierCode:(id)carrierCode error:(id *)error;
+- (id)formatNationalNumberWithPreferredCarrierCode:(id)code fallbackCarrierCode:(id)carrierCode;
+- (id)formatNationalNumberWithPreferredCarrierCode:(id)code fallbackCarrierCode:(id)carrierCode error:(id *)error;
+- (id)formatNsn:(id)nsn metadata:(id)metadata phoneNumberFormat:(int64_t)format carrierCode:(id)code;
+- (id)formatNsnUsingPattern:(id)pattern formattingPattern:(id)formattingPattern numberFormat:(int64_t)format carrierCode:(id)code;
+- (id)formatNumberForMobileDialing:(id)dialing regionCallingFrom:(id)from withFormatting:(BOOL)formatting;
+- (id)formatOutOfCountryCallingNumber:(id)number regionCallingFrom:(id)from;
+- (id)formatOutOfCountryCallingNumber:(id)number regionCallingFrom:(id)from error:(id *)error;
+- (id)formatOutOfCountryKeepingAlphaChars:(id)chars regionCallingFrom:(id)from;
+- (id)formatOutOfCountryKeepingAlphaChars:(id)chars regionCallingFrom:(id)from error:(id *)error;
+- (id)getCountryCodeForRegion:(id)region;
+- (id)getCountryCodeForValidRegion:(id)region error:(id *)error;
+- (id)getCountryMobileTokenFromCountryCode:(int64_t)code;
+- (id)getExampleNumberForNonGeoEntity:(id)entity error:(id *)error;
+- (id)getExampleNumberForType:(id)type type:(int64_t)a4 error:(id *)error;
+- (id)getMetadataForRegionOrCallingCode:(id)code regionCode:(id)regionCode;
+- (id)getNationalSignificantNumber:(id)number;
+- (id)getNddPrefixForRegion:(id)region stripNonDigits:(BOOL)digits;
+- (id)getNumberDescByType:(id)type type:(int64_t)a4;
+- (id)getRegionCodeForCountryCode:(id)code;
+- (id)getRegionCodeForNumber:(id)number;
+- (id)getRegionCodeForNumberFromRegionList:(id)list regionCodes:(id)codes;
 - (id)getSupportedRegions;
-- (id)matchFirstByRegex:(id)a3 regex:(id)a4;
-- (id)matchedStringByRegex:(id)a3 regex:(id)a4;
-- (id)matchesByRegex:(id)a3 regex:(id)a4;
-- (id)maybeExtractCountryCode:(id)a3 metadata:(id)a4 nationalNumber:(id *)a5 keepRawInput:(BOOL)a6 phoneNumber:(id *)a7 error:(id *)a8;
-- (id)maybeGetFormattedExtension:(id)a3 metadata:(id)a4 numberFormat:(int64_t)a5;
-- (id)maybeStripExtension:(id *)a3;
-- (id)normalize:(id)a3;
-- (id)normalizeDiallableCharsOnly:(id)a3;
-- (id)normalizeDigitsOnly:(id)a3;
-- (id)normalizeHelper:(id)a3 normalizationReplacements:(id)a4 removeNonMatches:(BOOL)a5;
-- (id)parse:(id)a3 defaultRegion:(id)a4 error:(id *)a5;
-- (id)parseAndKeepRawInput:(id)a3 defaultRegion:(id)a4 error:(id *)a5;
-- (id)parseWithPhoneCarrierRegion:(id)a3 error:(id *)a4;
-- (id)prefixNumberWithCountryCallingCode:(id)a3 phoneNumberFormat:(int64_t)a4 formattedNationalNumber:(id)a5 formattedExtension:(id)a6;
-- (id)regularExpressionWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)replaceFirstStringByRegex:(id)a3 regex:(id)a4 withTemplate:(id)a5;
-- (id)replaceStringByRegex:(id)a3 regex:(id)a4 withTemplate:(id)a5;
-- (id)stringByReplacingOccurrencesString:(id)a3 withMap:(id)a4 removeNonMatches:(BOOL)a5;
-- (int)getLengthOfGeographicalAreaCode:(id)a3;
-- (int)getLengthOfGeographicalAreaCode:(id)a3 error:(id *)a4;
-- (int)getLengthOfNationalDestinationCode:(id)a3;
-- (int)getLengthOfNationalDestinationCode:(id)a3 error:(id *)a4;
-- (int)stringPositionByRegex:(id)a3 regex:(id)a4;
-- (int64_t)getNumberType:(id)a3;
-- (int64_t)getNumberTypeHelper:(id)a3 metadata:(id)a4;
-- (int64_t)isNumberMatch:(id)a3 second:(id)a4;
-- (int64_t)isNumberMatch:(id)a3 second:(id)a4 error:(id *)a5;
-- (int64_t)isPossibleNumberWithReason:(id)a3;
-- (int64_t)isPossibleNumberWithReason:(id)a3 error:(id *)a4;
-- (int64_t)maybeStripInternationalPrefixAndNormalize:(id *)a3 possibleIddPrefix:(id)a4;
-- (int64_t)testNumberLength:(id)a3 desc:(id)a4;
-- (int64_t)validateNumberLength:(id)a3 metadata:(id)a4 type:(int64_t)a5;
-- (void)buildNationalNumberForParsing:(id)a3 nationalNumber:(id *)a4;
+- (id)matchFirstByRegex:(id)regex regex:(id)a4;
+- (id)matchedStringByRegex:(id)regex regex:(id)a4;
+- (id)matchesByRegex:(id)regex regex:(id)a4;
+- (id)maybeExtractCountryCode:(id)code metadata:(id)metadata nationalNumber:(id *)number keepRawInput:(BOOL)input phoneNumber:(id *)phoneNumber error:(id *)error;
+- (id)maybeGetFormattedExtension:(id)extension metadata:(id)metadata numberFormat:(int64_t)format;
+- (id)maybeStripExtension:(id *)extension;
+- (id)normalize:(id)normalize;
+- (id)normalizeDiallableCharsOnly:(id)only;
+- (id)normalizeDigitsOnly:(id)only;
+- (id)normalizeHelper:(id)helper normalizationReplacements:(id)replacements removeNonMatches:(BOOL)matches;
+- (id)parse:(id)parse defaultRegion:(id)region error:(id *)error;
+- (id)parseAndKeepRawInput:(id)input defaultRegion:(id)region error:(id *)error;
+- (id)parseWithPhoneCarrierRegion:(id)region error:(id *)error;
+- (id)prefixNumberWithCountryCallingCode:(id)code phoneNumberFormat:(int64_t)format formattedNationalNumber:(id)number formattedExtension:(id)extension;
+- (id)regularExpressionWithPattern:(id)pattern options:(unint64_t)options error:(id *)error;
+- (id)replaceFirstStringByRegex:(id)regex regex:(id)a4 withTemplate:(id)template;
+- (id)replaceStringByRegex:(id)regex regex:(id)a4 withTemplate:(id)template;
+- (id)stringByReplacingOccurrencesString:(id)string withMap:(id)map removeNonMatches:(BOOL)matches;
+- (int)getLengthOfGeographicalAreaCode:(id)code;
+- (int)getLengthOfGeographicalAreaCode:(id)code error:(id *)error;
+- (int)getLengthOfNationalDestinationCode:(id)code;
+- (int)getLengthOfNationalDestinationCode:(id)code error:(id *)error;
+- (int)stringPositionByRegex:(id)regex regex:(id)a4;
+- (int64_t)getNumberType:(id)type;
+- (int64_t)getNumberTypeHelper:(id)helper metadata:(id)metadata;
+- (int64_t)isNumberMatch:(id)match second:(id)second;
+- (int64_t)isNumberMatch:(id)match second:(id)second error:(id *)error;
+- (int64_t)isPossibleNumberWithReason:(id)reason;
+- (int64_t)isPossibleNumberWithReason:(id)reason error:(id *)error;
+- (int64_t)maybeStripInternationalPrefixAndNormalize:(id *)normalize possibleIddPrefix:(id)prefix;
+- (int64_t)testNumberLength:(id)length desc:(id)desc;
+- (int64_t)validateNumberLength:(id)length metadata:(id)metadata type:(int64_t)type;
+- (void)buildNationalNumberForParsing:(id)parsing nationalNumber:(id *)number;
 - (void)initNormalizationMappings;
 - (void)initRegularExpressionSet;
-- (void)normalizeSB:(id *)a3;
-- (void)setItalianLeadingZerosForPhoneNumber:(id)a3 phoneNumber:(id)a4;
+- (void)normalizeSB:(id *)b;
+- (void)setItalianLeadingZerosForPhoneNumber:(id)number phoneNumber:(id)phoneNumber;
 @end
 
 @implementation _NBPhoneNumberUtil
@@ -116,7 +116,7 @@
   block[1] = 3221225472;
   block[2] = __36___NBPhoneNumberUtil_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_281346970 != -1)
   {
     dispatch_once(&qword_281346970, block);
@@ -127,20 +127,20 @@
   return v2;
 }
 
-- (id)errorWithObject:(id)a3 withDomain:(id)a4
+- (id)errorWithObject:(id)object withDomain:(id)domain
 {
   v5 = MEMORY[0x277CBEAC0];
   v6 = *MEMORY[0x277CCA450];
-  v7 = a4;
-  v8 = [v5 dictionaryWithObject:a3 forKey:v6];
-  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:v7 code:0 userInfo:v8];
+  domainCopy = domain;
+  v8 = [v5 dictionaryWithObject:object forKey:v6];
+  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:domainCopy code:0 userInfo:v8];
 
   return v9;
 }
 
-- (id)entireRegularExpressionWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)entireRegularExpressionWithPattern:(id)pattern options:(unint64_t)options error:(id *)error
 {
-  v7 = a3;
+  patternCopy = pattern;
   [(NSLock *)self->_entireStringCacheLock lock];
   entireStringRegexCache = self->_entireStringRegexCache;
   if (!entireStringRegexCache)
@@ -152,17 +152,17 @@
     entireStringRegexCache = self->_entireStringRegexCache;
   }
 
-  v11 = [(NSMutableDictionary *)entireStringRegexCache objectForKey:v7];
+  v11 = [(NSMutableDictionary *)entireStringRegexCache objectForKey:patternCopy];
   if (!v11)
   {
-    v12 = v7;
+    v12 = patternCopy;
     v13 = v12;
     if ([v12 rangeOfString:@"^"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"^(?:%@)$", v12];
     }
 
-    v11 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v13 options:0 error:a5];
+    v11 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v13 options:0 error:error];
     [(NSMutableDictionary *)self->_entireStringRegexCache setObject:v11 forKey:v12];
   }
 
@@ -171,9 +171,9 @@
   return v11;
 }
 
-- (id)regularExpressionWithPattern:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)regularExpressionWithPattern:(id)pattern options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  patternCopy = pattern;
   [(NSLock *)self->_lockPatternCache lock];
   regexPatternCache = self->_regexPatternCache;
   if (!regexPatternCache)
@@ -185,11 +185,11 @@
     regexPatternCache = self->_regexPatternCache;
   }
 
-  v12 = [(NSMutableDictionary *)regexPatternCache objectForKey:v8];
+  v12 = [(NSMutableDictionary *)regexPatternCache objectForKey:patternCopy];
   if (!v12)
   {
-    v12 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v8 options:a4 error:a5];
-    [(NSMutableDictionary *)self->_regexPatternCache setObject:v12 forKey:v8];
+    v12 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:patternCopy options:options error:error];
+    [(NSMutableDictionary *)self->_regexPatternCache setObject:v12 forKey:patternCopy];
   }
 
   [(NSLock *)self->_lockPatternCache unlock];
@@ -197,9 +197,9 @@
   return v12;
 }
 
-- (id)componentsSeparatedByRegex:(id)a3 regex:(id)a4
+- (id)componentsSeparatedByRegex:(id)regex regex:(id)a4
 {
-  v4 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:a3 regex:a4 withTemplate:@"<SEP>"];
+  v4 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:regex regex:a4 withTemplate:@"<SEP>"];
   v5 = [v4 componentsSeparatedByString:@"<SEP>"];
   v6 = [v5 mutableCopy];
 
@@ -208,17 +208,17 @@
   return v6;
 }
 
-- (int)stringPositionByRegex:(id)a3 regex:(id)a4
+- (int)stringPositionByRegex:(id)regex regex:(id)a4
 {
-  v6 = a3;
+  regexCopy = regex;
   v7 = a4;
-  if (!v6)
+  if (!regexCopy)
   {
     goto LABEL_7;
   }
 
-  v8 = [v6 length];
-  v9 = -1;
+  v8 = [regexCopy length];
+  range = -1;
   if (!v7 || !v8)
   {
     goto LABEL_10;
@@ -227,44 +227,44 @@
   if (![v7 length])
   {
 LABEL_7:
-    v9 = -1;
+    range = -1;
     goto LABEL_10;
   }
 
   v14 = 0;
   v10 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v7 options:0 error:&v14];
-  v11 = [v10 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v11 = [v10 matchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
   if ([v11 count])
   {
     v12 = [v11 objectAtIndex:0];
-    v9 = [v12 range];
+    range = [v12 range];
   }
 
   else
   {
-    v9 = -1;
+    range = -1;
   }
 
 LABEL_10:
-  return v9;
+  return range;
 }
 
-- (id)replaceFirstStringByRegex:(id)a3 regex:(id)a4 withTemplate:(id)a5
+- (id)replaceFirstStringByRegex:(id)regex regex:(id)a4 withTemplate:(id)template
 {
-  v8 = a3;
-  v9 = a5;
+  regexCopy = regex;
+  templateCopy = template;
   v10 = a4;
-  v11 = [v8 copy];
+  v11 = [regexCopy copy];
   v20 = 0;
   v12 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v10 options:0 error:&v20];
 
-  v13 = [v12 rangeOfFirstMatchInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+  v13 = [v12 rangeOfFirstMatchInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = v13;
     v16 = v14;
-    v17 = [v8 mutableCopy];
-    v18 = [v12 stringByReplacingMatchesInString:v17 options:0 range:v15 withTemplate:{v16, v9}];
+    v17 = [regexCopy mutableCopy];
+    v18 = [v12 stringByReplacingMatchesInString:v17 options:0 range:v15 withTemplate:{v16, templateCopy}];
 
     v11 = v18;
   }
@@ -272,22 +272,22 @@ LABEL_10:
   return v11;
 }
 
-- (id)replaceStringByRegex:(id)a3 regex:(id)a4 withTemplate:(id)a5
+- (id)replaceStringByRegex:(id)regex regex:(id)a4 withTemplate:(id)template
 {
-  v8 = a3;
-  v9 = a5;
+  regexCopy = regex;
+  templateCopy = template;
   v20 = 0;
   v10 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:a4 options:0 error:&v20];
-  v11 = [v10 matchesInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+  v11 = [v10 matchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
   if ([v11 count] == 1)
   {
-    v12 = [v10 rangeOfFirstMatchInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+    v12 = [v10 rangeOfFirstMatchInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = v12;
       v15 = v13;
-      v16 = [v8 mutableCopy];
-      v17 = [v10 stringByReplacingMatchesInString:v16 options:0 range:v14 withTemplate:{v15, v9}];
+      v16 = [regexCopy mutableCopy];
+      v17 = [v10 stringByReplacingMatchesInString:v16 options:0 range:v14 withTemplate:{v15, templateCopy}];
 
       goto LABEL_8;
     }
@@ -298,11 +298,11 @@ LABEL_10:
   if ([v11 count] < 2)
   {
 LABEL_6:
-    v18 = [v8 copy];
+    v18 = [regexCopy copy];
     goto LABEL_7;
   }
 
-  v18 = [v10 stringByReplacingMatchesInString:v8 options:0 range:0 withTemplate:{objc_msgSend(v8, "length"), v9}];
+  v18 = [v10 stringByReplacingMatchesInString:regexCopy options:0 range:0 withTemplate:{objc_msgSend(regexCopy, "length"), templateCopy}];
 LABEL_7:
   v17 = v18;
 LABEL_8:
@@ -310,12 +310,12 @@ LABEL_8:
   return v17;
 }
 
-- (id)matchFirstByRegex:(id)a3 regex:(id)a4
+- (id)matchFirstByRegex:(id)regex regex:(id)a4
 {
   v11 = 0;
-  v6 = a3;
+  regexCopy = regex;
   v7 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:a4 options:0 error:&v11];
-  v8 = [v7 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v8 = [v7 matchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
 
   if ([v8 count])
   {
@@ -330,21 +330,21 @@ LABEL_8:
   return v9;
 }
 
-- (id)matchesByRegex:(id)a3 regex:(id)a4
+- (id)matchesByRegex:(id)regex regex:(id)a4
 {
   v10 = 0;
-  v6 = a3;
+  regexCopy = regex;
   v7 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:a4 options:0 error:&v10];
-  v8 = [v7 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v8 = [v7 matchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
 
   return v8;
 }
 
-- (id)matchedStringByRegex:(id)a3 regex:(id)a4
+- (id)matchedStringByRegex:(id)regex regex:(id)a4
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_NBPhoneNumberUtil *)self matchesByRegex:v6 regex:a4];
+  regexCopy = regex;
+  v7 = [(_NBPhoneNumberUtil *)self matchesByRegex:regexCopy regex:a4];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
@@ -365,8 +365,8 @@ LABEL_8:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) range];
-        v16 = [v6 substringWithRange:{v14, v15}];
+        range = [*(*(&v19 + 1) + 8 * i) range];
+        v16 = [regexCopy substringWithRange:{range, v15}];
         [v8 addObject:v16];
       }
 
@@ -381,14 +381,14 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)isStartingStringByRegex:(id)a3 regex:(id)a4
+- (BOOL)isStartingStringByRegex:(id)regex regex:(id)a4
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  regexCopy = regex;
   v19 = 0;
   v7 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:a4 options:0 error:&v19];
   v8 = v19;
-  [v7 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  [v7 matchesInString:regexCopy options:0 range:{0, objc_msgSend(regexCopy, "length")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -429,27 +429,27 @@ LABEL_11:
   return v10;
 }
 
-- (id)stringByReplacingOccurrencesString:(id)a3 withMap:(id)a4 removeNonMatches:(BOOL)a5
+- (id)stringByReplacingOccurrencesString:(id)string withMap:(id)map removeNonMatches:(BOOL)matches
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  mapCopy = map;
   v9 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v10 = [v7 length];
+  v10 = [stringCopy length];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
     while (1)
     {
-      v18 = [v7 characterAtIndex:v12];
+      v18 = [stringCopy characterAtIndex:v12];
       v13 = [MEMORY[0x277CCACA8] stringWithCharacters:&v18 length:1];
-      v14 = [v8 objectForKey:v13];
+      v14 = [mapCopy objectForKey:v13];
       if (v14)
       {
         break;
       }
 
-      if (!a5)
+      if (!matches)
       {
         v15 = v9;
         v16 = v13;
@@ -476,54 +476,54 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isAllDigits:(id)a3
+- (BOOL)isAllDigits:(id)digits
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 decimalDigitCharacterSet];
-  v6 = [v5 invertedSet];
+  digitsCopy = digits;
+  decimalDigitCharacterSet = [v3 decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  v7 = [digitsCopy rangeOfCharacterFromSet:invertedSet];
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)getNationalSignificantNumber:(id)a3
+- (id)getNationalSignificantNumber:(id)number
 {
-  v3 = a3;
-  v4 = [v3 nationalNumber];
-  v5 = [v4 stringValue];
+  numberCopy = number;
+  nationalNumber = [numberCopy nationalNumber];
+  stringValue = [nationalNumber stringValue];
 
-  if ([v3 italianLeadingZero])
+  if ([numberCopy italianLeadingZero])
   {
-    v6 = [v3 numberOfLeadingZeros];
-    if ([v6 integerValue] < 0)
+    numberOfLeadingZeros = [numberCopy numberOfLeadingZeros];
+    if ([numberOfLeadingZeros integerValue] < 0)
     {
-      v8 = [&stru_285461708 stringByPaddingToLength:0 withString:@"0" startingAtIndex:0];
+      nationalNumber2 = [&stru_285461708 stringByPaddingToLength:0 withString:@"0" startingAtIndex:0];
     }
 
     else
     {
-      v7 = [v3 numberOfLeadingZeros];
-      v8 = [&stru_285461708 stringByPaddingToLength:objc_msgSend(v7 withString:"integerValue") startingAtIndex:{@"0", 0}];
+      numberOfLeadingZeros2 = [numberCopy numberOfLeadingZeros];
+      nationalNumber2 = [&stru_285461708 stringByPaddingToLength:objc_msgSend(numberOfLeadingZeros2 withString:"integerValue") startingAtIndex:{@"0", 0}];
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v8, v5];
+    stringValue2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", nationalNumber2, stringValue];
   }
 
   else
   {
-    v8 = [v3 nationalNumber];
-    v9 = [v8 stringValue];
+    nationalNumber2 = [numberCopy nationalNumber];
+    stringValue2 = [nationalNumber2 stringValue];
   }
 
-  v10 = v9;
+  v10 = stringValue2;
 
   return v10;
 }
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS____NBPhoneNumberUtil;
   objc_msgSendSuper2(&v3, sel_initialize);
   v2 = GEO_MOBILE_COUNTRIES;
@@ -569,9 +569,9 @@ LABEL_9:
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"([%@])", 0x285461688];
+    0x285461688 = [MEMORY[0x277CCACA8] stringWithFormat:@"([%@])", 0x285461688];
     v11 = 0;
-    v5 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v4 options:0 error:&v11];
+    v5 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:0x285461688 options:0 error:&v11];
     v3 = v11;
     CAPTURING_DIGIT_PATTERN = self->_CAPTURING_DIGIT_PATTERN;
     self->_CAPTURING_DIGIT_PATTERN = v5;
@@ -615,9 +615,9 @@ LABEL_9:
   }
 }
 
-- (id)extractPossibleNumber:(id)a3
+- (id)extractPossibleNumber:(id)number
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v4 = [number stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
   v5 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v4 regex:qword_281346980];
   if ((v5 & 0x80000000) != 0)
   {
@@ -641,131 +641,131 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isViablePhoneNumber:(id)a3
+- (BOOL)isViablePhoneNumber:(id)number
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v4 = [number stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
   v5 = [v4 length] >= 2 && -[_NBPhoneNumberUtil matchesEntirely:string:](self, "matchesEntirely:string:", qword_2813469A8, v4);
 
   return v5;
 }
 
-- (id)normalize:(id)a3
+- (id)normalize:(id)normalize
 {
-  v4 = a3;
-  if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"(?:.*?[A-Za-z]){3}.*" string:v4])
+  normalizeCopy = normalize;
+  if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"(?:.*?[A-Za-z]){3}.*" string:normalizeCopy])
   {
-    [(_NBPhoneNumberUtil *)self normalizeHelper:v4 normalizationReplacements:qword_2813469C8 removeNonMatches:1];
+    [(_NBPhoneNumberUtil *)self normalizeHelper:normalizeCopy normalizationReplacements:qword_2813469C8 removeNonMatches:1];
   }
 
   else
   {
-    [(_NBPhoneNumberUtil *)self normalizeDigitsOnly:v4];
+    [(_NBPhoneNumberUtil *)self normalizeDigitsOnly:normalizeCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)normalizeSB:(id *)a3
+- (void)normalizeSB:(id *)b
 {
-  if (a3)
+  if (b)
   {
-    *a3 = [(_NBPhoneNumberUtil *)self normalize:*a3];
+    *b = [(_NBPhoneNumberUtil *)self normalize:*b];
   }
 }
 
-- (id)normalizeDigitsOnly:(id)a3
+- (id)normalizeDigitsOnly:(id)only
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
-  v5 = [(_NBPhoneNumberUtil *)self DIGIT_MAPPINGS];
-  v6 = [(_NBPhoneNumberUtil *)self stringByReplacingOccurrencesString:v4 withMap:v5 removeNonMatches:1];
+  v4 = [only stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  dIGIT_MAPPINGS = [(_NBPhoneNumberUtil *)self DIGIT_MAPPINGS];
+  v6 = [(_NBPhoneNumberUtil *)self stringByReplacingOccurrencesString:v4 withMap:dIGIT_MAPPINGS removeNonMatches:1];
 
   return v6;
 }
 
-- (id)normalizeDiallableCharsOnly:(id)a3
+- (id)normalizeDiallableCharsOnly:(id)only
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v4 = [only stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
   v5 = [(_NBPhoneNumberUtil *)self stringByReplacingOccurrencesString:v4 withMap:qword_2813469C0 removeNonMatches:1];
 
   return v5;
 }
 
-- (id)convertAlphaCharactersInNumber:(id)a3
+- (id)convertAlphaCharactersInNumber:(id)number
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v4 = [number stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
   v5 = [(_NBPhoneNumberUtil *)self stringByReplacingOccurrencesString:v4 withMap:qword_2813469C8 removeNonMatches:0];
 
   return v5;
 }
 
-- (int)getLengthOfGeographicalAreaCode:(id)a3 error:(id *)a4
+- (int)getLengthOfGeographicalAreaCode:(id)code error:(id *)error
 {
-  v5 = a3;
-  LODWORD(self) = [(_NBPhoneNumberUtil *)self getLengthOfGeographicalAreaCode:v5];
+  codeCopy = code;
+  LODWORD(self) = [(_NBPhoneNumberUtil *)self getLengthOfGeographicalAreaCode:codeCopy];
 
   return self;
 }
 
-- (int)getLengthOfGeographicalAreaCode:(id)a3
+- (int)getLengthOfGeographicalAreaCode:(id)code
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:v4];
-  v6 = [(_NBPhoneNumberUtil *)self helper];
-  v7 = [v6 getMetadataForRegion:v5];
+  codeCopy = code;
+  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:codeCopy];
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  v7 = [helper getMetadataForRegion:v5];
 
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = [v7 nationalPrefix];
-  if (v8)
+  nationalPrefix = [v7 nationalPrefix];
+  if (nationalPrefix)
   {
   }
 
-  else if (([v4 italianLeadingZero] & 1) == 0)
+  else if (([codeCopy italianLeadingZero] & 1) == 0)
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  if (![(_NBPhoneNumberUtil *)self isNumberGeographical:v4])
+  if (![(_NBPhoneNumberUtil *)self isNumberGeographical:codeCopy])
   {
     goto LABEL_7;
   }
 
-  v9 = [(_NBPhoneNumberUtil *)self getLengthOfNationalDestinationCode:v4];
+  v9 = [(_NBPhoneNumberUtil *)self getLengthOfNationalDestinationCode:codeCopy];
 LABEL_8:
 
   return v9;
 }
 
-- (int)getLengthOfNationalDestinationCode:(id)a3 error:(id *)a4
+- (int)getLengthOfNationalDestinationCode:(id)code error:(id *)error
 {
-  v5 = a3;
-  LODWORD(self) = [(_NBPhoneNumberUtil *)self getLengthOfNationalDestinationCode:v5];
+  codeCopy = code;
+  LODWORD(self) = [(_NBPhoneNumberUtil *)self getLengthOfNationalDestinationCode:codeCopy];
 
   return self;
 }
 
-- (int)getLengthOfNationalDestinationCode:(id)a3
+- (int)getLengthOfNationalDestinationCode:(id)code
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 extension];
-  v6 = [_NBMetadataHelper hasValue:v5];
+  codeCopy = code;
+  extension = [codeCopy extension];
+  v6 = [_NBMetadataHelper hasValue:extension];
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [codeCopy copy];
     [v7 setExtension:0];
   }
 
   else
   {
-    v7 = v4;
+    v7 = codeCopy;
   }
 
   v8 = [(_NBPhoneNumberUtil *)self format:v7 numberFormat:1];
@@ -785,8 +785,8 @@ LABEL_8:
 
   if ([v10 count] >= 3)
   {
-    v14 = [v4 countryCode];
-    v15 = [_NBMetadataHelper regionCodeFromCountryCode:v14];
+    countryCode = [codeCopy countryCode];
+    v15 = [_NBMetadataHelper regionCodeFromCountryCode:countryCode];
 
     v26 = 0u;
     v27 = 0u;
@@ -824,7 +824,7 @@ LABEL_11:
         }
       }
 
-      if ([(_NBPhoneNumberUtil *)self getNumberType:v4]!= 1)
+      if ([(_NBPhoneNumberUtil *)self getNumberType:codeCopy]!= 1)
       {
         goto LABEL_20;
       }
@@ -852,10 +852,10 @@ LABEL_20:
   return v13;
 }
 
-- (id)getCountryMobileTokenFromCountryCode:(int64_t)a3
+- (id)getCountryMobileTokenFromCountryCode:(int64_t)code
 {
   v3 = qword_2813469D8;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   v5 = [v3 objectForKeyedSubscript:v4];
 
   if (v5)
@@ -871,27 +871,27 @@ LABEL_20:
   return v6;
 }
 
-- (id)normalizeHelper:(id)a3 normalizationReplacements:(id)a4 removeNonMatches:(BOOL)a5
+- (id)normalizeHelper:(id)helper normalizationReplacements:(id)replacements removeNonMatches:(BOOL)matches
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 length];
+  helperCopy = helper;
+  replacementsCopy = replacements;
+  v9 = [helperCopy length];
   v10 = objc_alloc_init(MEMORY[0x277CCAB68]);
   if (v9)
   {
     v11 = 0;
     while (1)
     {
-      v12 = [v7 substringWithRange:{v11, 1}];
-      v13 = [v12 uppercaseString];
-      v14 = [v8 objectForKey:v13];
+      v12 = [helperCopy substringWithRange:{v11, 1}];
+      uppercaseString = [v12 uppercaseString];
+      v14 = [replacementsCopy objectForKey:uppercaseString];
 
       if (v14)
       {
         break;
       }
 
-      if (!a5)
+      if (!matches)
       {
         v15 = v10;
         v16 = v12;
@@ -918,11 +918,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)formattingRuleHasFirstGroupOnly:(id)a3
+- (BOOL)formattingRuleHasFirstGroupOnly:(id)only
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v4 regex:@"^\\(?\\$1\\)?"];
-  v6 = [v4 length];
+  onlyCopy = only;
+  v5 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:onlyCopy regex:@"^\\(?\\$1\\)?"];
+  v6 = [onlyCopy length];
 
   if (v6)
   {
@@ -937,14 +937,14 @@ LABEL_9:
   return !v7;
 }
 
-- (BOOL)isNumberGeographical:(id)a3
+- (BOOL)isNumberGeographical:(id)geographical
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getNumberType:v4];
+  geographicalCopy = geographical;
+  v5 = [(_NBPhoneNumberUtil *)self getNumberType:geographicalCopy];
   v6 = GEO_MOBILE_COUNTRIES;
-  v7 = [v4 countryCode];
+  countryCode = [geographicalCopy countryCode];
 
-  v8 = [v6 containsObject:v7];
+  v8 = [v6 containsObject:countryCode];
   if (v5 == 1)
   {
     v9 = v8;
@@ -958,14 +958,14 @@ LABEL_9:
   return (v5 | 2) == 2 || v9;
 }
 
-- (BOOL)isValidRegionCode:(id)a3
+- (BOOL)isValidRegionCode:(id)code
 {
-  v4 = a3;
-  if ([_NBMetadataHelper hasValue:v4]&& isNan(v4))
+  codeCopy = code;
+  if ([_NBMetadataHelper hasValue:codeCopy]&& isNan(codeCopy))
   {
-    v5 = [(_NBPhoneNumberUtil *)self helper];
-    v6 = [v4 uppercaseString];
-    v7 = [v5 getMetadataForRegion:v6];
+    helper = [(_NBPhoneNumberUtil *)self helper];
+    uppercaseString = [codeCopy uppercaseString];
+    v7 = [helper getMetadataForRegion:uppercaseString];
     v8 = v7 != 0;
   }
 
@@ -977,91 +977,91 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)hasValidCountryCallingCode:(id)a3
+- (BOOL)hasValidCountryCallingCode:(id)code
 {
-  v3 = [_NBMetadataHelper regionCodeFromCountryCode:a3];
+  v3 = [_NBMetadataHelper regionCodeFromCountryCode:code];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)format:(id)a3 numberFormat:(int64_t)a4 error:(id *)a5
+- (id)format:(id)format numberFormat:(int64_t)numberFormat error:(id *)error
 {
-  v7 = a3;
-  v8 = [(_NBPhoneNumberUtil *)self format:v7 numberFormat:a4];
+  formatCopy = format;
+  v8 = [(_NBPhoneNumberUtil *)self format:formatCopy numberFormat:numberFormat];
 
   return v8;
 }
 
-- (id)format:(id)a3 numberFormat:(int64_t)a4
+- (id)format:(id)format numberFormat:(int64_t)numberFormat
 {
-  v6 = a3;
-  v7 = [v6 nationalNumber];
-  if ([v7 isEqualToNumber:&unk_285464B00])
+  formatCopy = format;
+  nationalNumber = [formatCopy nationalNumber];
+  if ([nationalNumber isEqualToNumber:&unk_285464B00])
   {
-    v8 = [v6 rawInput];
-    v9 = [_NBMetadataHelper hasValue:v8];
+    rawInput = [formatCopy rawInput];
+    v9 = [_NBMetadataHelper hasValue:rawInput];
 
     if (!v9)
     {
       goto LABEL_5;
     }
 
-    v7 = [v6 rawInput];
-    if ([_NBMetadataHelper hasValue:v7])
+    nationalNumber = [formatCopy rawInput];
+    if ([_NBMetadataHelper hasValue:nationalNumber])
     {
       goto LABEL_12;
     }
   }
 
 LABEL_5:
-  v10 = [v6 countryCode];
-  v11 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
-  if (!a4)
+  countryCode = [formatCopy countryCode];
+  v11 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:formatCopy];
+  if (!numberFormat)
   {
-    v16 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v10 phoneNumberFormat:0 formattedNationalNumber:v11 formattedExtension:&stru_285461708];
+    v16 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:countryCode phoneNumberFormat:0 formattedNationalNumber:v11 formattedExtension:&stru_285461708];
 LABEL_10:
-    v7 = v16;
+    nationalNumber = v16;
     goto LABEL_11;
   }
 
-  if (![(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v10])
+  if (![(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
     v16 = v11;
     goto LABEL_10;
   }
 
-  v18 = [_NBMetadataHelper regionCodeFromCountryCode:v10];
+  v18 = [_NBMetadataHelper regionCodeFromCountryCode:countryCode];
   v12 = [v18 objectAtIndex:0];
-  v13 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v10 regionCode:v12];
-  v14 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:v6 metadata:v13 numberFormat:a4];
-  v15 = [(_NBPhoneNumberUtil *)self formatNsn:v11 metadata:v13 phoneNumberFormat:a4 carrierCode:0];
-  v7 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v10 phoneNumberFormat:a4 formattedNationalNumber:v15 formattedExtension:v14];
+  v13 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v12];
+  v14 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:formatCopy metadata:v13 numberFormat:numberFormat];
+  v15 = [(_NBPhoneNumberUtil *)self formatNsn:v11 metadata:v13 phoneNumberFormat:numberFormat carrierCode:0];
+  nationalNumber = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:countryCode phoneNumberFormat:numberFormat formattedNationalNumber:v15 formattedExtension:v14];
 
 LABEL_11:
 LABEL_12:
 
-  return v7;
+  return nationalNumber;
 }
 
-- (id)formatByPattern:(id)a3 numberFormat:(int64_t)a4 userDefinedFormats:(id)a5 error:(id *)a6
+- (id)formatByPattern:(id)pattern numberFormat:(int64_t)format userDefinedFormats:(id)formats error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(_NBPhoneNumberUtil *)self formatByPattern:v9 numberFormat:a4 userDefinedFormats:v10];
+  patternCopy = pattern;
+  formatsCopy = formats;
+  v11 = [(_NBPhoneNumberUtil *)self formatByPattern:patternCopy numberFormat:format userDefinedFormats:formatsCopy];
 
   return v11;
 }
 
-- (id)formatByPattern:(id)a3 numberFormat:(int64_t)a4 userDefinedFormats:(id)a5
+- (id)formatByPattern:(id)pattern numberFormat:(int64_t)format userDefinedFormats:(id)formats
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 countryCode];
-  v10 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v7];
-  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v9])
+  patternCopy = pattern;
+  formatsCopy = formats;
+  countryCode = [patternCopy countryCode];
+  v10 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:patternCopy];
+  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
-    v11 = [_NBMetadataHelper regionCodeFromCountryCode:v9];
+    v11 = [_NBMetadataHelper regionCodeFromCountryCode:countryCode];
     v12 = v11;
     if (v11 && [v11 count])
     {
@@ -1074,27 +1074,27 @@ LABEL_12:
     }
 
     v30 = v13;
-    v15 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v9 regionCode:v13];
-    v16 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:v8 nationalNumber:v10];
+    v15 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v13];
+    v16 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:formatsCopy nationalNumber:v10];
     v17 = v16;
     v31 = v12;
     if (v16)
     {
-      v29 = v8;
+      v29 = formatsCopy;
       v18 = [v16 copy];
-      v19 = [v17 nationalPrefixFormattingRule];
-      if ([(__CFString *)v19 length])
+      nationalPrefixFormattingRule = [v17 nationalPrefixFormattingRule];
+      if ([(__CFString *)nationalPrefixFormattingRule length])
       {
         v20 = v15;
-        v21 = [v15 nationalPrefix];
-        if ([v21 length])
+        nationalPrefix = [v15 nationalPrefix];
+        if ([nationalPrefix length])
         {
-          v22 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v19 regex:@"\\$NP" withTemplate:v21];
+          v22 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:nationalPrefixFormattingRule regex:@"\\$NP" withTemplate:nationalPrefix];
 
-          v19 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v22 regex:@"\\$FG" withTemplate:@"\\$1"];
+          nationalPrefixFormattingRule = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v22 regex:@"\\$FG" withTemplate:@"\\$1"];
 
           v23 = v18;
-          v24 = v19;
+          v24 = nationalPrefixFormattingRule;
         }
 
         else
@@ -1111,21 +1111,21 @@ LABEL_12:
         v20 = v15;
       }
 
-      v26 = a4;
-      v25 = [(_NBPhoneNumberUtil *)self formatNsnUsingPattern:v10 formattingPattern:v18 numberFormat:a4 carrierCode:0];
+      formatCopy2 = format;
+      v25 = [(_NBPhoneNumberUtil *)self formatNsnUsingPattern:v10 formattingPattern:v18 numberFormat:format carrierCode:0];
 
-      v8 = v29;
+      formatsCopy = v29;
     }
 
     else
     {
       v20 = v15;
       v25 = v10;
-      v26 = a4;
+      formatCopy2 = format;
     }
 
-    v27 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:v7 metadata:v20 numberFormat:v26];
-    v14 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v9 phoneNumberFormat:v26 formattedNationalNumber:v25 formattedExtension:v27];
+    v27 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:patternCopy metadata:v20 numberFormat:formatCopy2];
+    v14 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:countryCode phoneNumberFormat:formatCopy2 formattedNationalNumber:v25 formattedExtension:v27];
   }
 
   else
@@ -1136,28 +1136,28 @@ LABEL_12:
   return v14;
 }
 
-- (id)formatNationalNumberWithCarrierCode:(id)a3 carrierCode:(id)a4 error:(id *)a5
+- (id)formatNationalNumberWithCarrierCode:(id)code carrierCode:(id)carrierCode error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:v7 carrierCode:v8];
+  codeCopy = code;
+  carrierCodeCopy = carrierCode;
+  v9 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:codeCopy carrierCode:carrierCodeCopy];
 
   return v9;
 }
 
-- (id)formatNationalNumberWithCarrierCode:(id)a3 carrierCode:(id)a4
+- (id)formatNationalNumberWithCarrierCode:(id)code carrierCode:(id)carrierCode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 countryCode];
-  v9 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
-  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v8])
+  codeCopy = code;
+  carrierCodeCopy = carrierCode;
+  countryCode = [codeCopy countryCode];
+  v9 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:codeCopy];
+  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
-    v10 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v8];
-    v11 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v8 regionCode:v10];
-    v12 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:v6 metadata:v11 numberFormat:2];
-    v13 = [(_NBPhoneNumberUtil *)self formatNsn:v9 metadata:v11 phoneNumberFormat:2 carrierCode:v7];
-    v14 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v8 phoneNumberFormat:2 formattedNationalNumber:v13 formattedExtension:v12];
+    v10 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
+    v11 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v10];
+    v12 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:codeCopy metadata:v11 numberFormat:2];
+    v13 = [(_NBPhoneNumberUtil *)self formatNsn:v9 metadata:v11 phoneNumberFormat:2 carrierCode:carrierCodeCopy];
+    v14 = [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:countryCode phoneNumberFormat:2 formattedNationalNumber:v13 formattedExtension:v12];
   }
 
   else
@@ -1168,80 +1168,80 @@ LABEL_12:
   return v14;
 }
 
-- (id)getMetadataForRegionOrCallingCode:(id)a3 regionCode:(id)a4
+- (id)getMetadataForRegionOrCallingCode:(id)code regionCode:(id)regionCode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_NBPhoneNumberUtil *)self helper];
-  if ([v7 isEqualToString:0x2854616A8])
+  codeCopy = code;
+  regionCodeCopy = regionCode;
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  if ([regionCodeCopy isEqualToString:0x2854616A8])
   {
-    [v8 getMetadataForNonGeographicalRegion:v6];
+    [helper getMetadataForNonGeographicalRegion:codeCopy];
   }
 
   else
   {
-    [v8 getMetadataForRegion:v7];
+    [helper getMetadataForRegion:regionCodeCopy];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)formatNationalNumberWithPreferredCarrierCode:(id)a3 fallbackCarrierCode:(id)a4 error:(id *)a5
+- (id)formatNationalNumberWithPreferredCarrierCode:(id)code fallbackCarrierCode:(id)carrierCode error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:v7 carrierCode:v8];
+  codeCopy = code;
+  carrierCodeCopy = carrierCode;
+  v9 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:codeCopy carrierCode:carrierCodeCopy];
 
   return v9;
 }
 
-- (id)formatNationalNumberWithPreferredCarrierCode:(id)a3 fallbackCarrierCode:(id)a4
+- (id)formatNationalNumberWithPreferredCarrierCode:(id)code fallbackCarrierCode:(id)carrierCode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 preferredDomesticCarrierCode];
-  if (v8)
+  codeCopy = code;
+  carrierCodeCopy = carrierCode;
+  preferredDomesticCarrierCode = [codeCopy preferredDomesticCarrierCode];
+  if (preferredDomesticCarrierCode)
   {
-    v9 = [v6 preferredDomesticCarrierCode];
+    preferredDomesticCarrierCode2 = [codeCopy preferredDomesticCarrierCode];
   }
 
   else
   {
-    v9 = v7;
+    preferredDomesticCarrierCode2 = carrierCodeCopy;
   }
 
-  v10 = v9;
+  v10 = preferredDomesticCarrierCode2;
 
-  v11 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:v6 carrierCode:v10];
+  v11 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:codeCopy carrierCode:v10];
 
   return v11;
 }
 
-- (id)formatNumberForMobileDialing:(id)a3 regionCallingFrom:(id)a4 withFormatting:(BOOL)a5
+- (id)formatNumberForMobileDialing:(id)dialing regionCallingFrom:(id)from withFormatting:(BOOL)formatting
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 countryCode];
-  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v10])
+  formattingCopy = formatting;
+  dialingCopy = dialing;
+  fromCopy = from;
+  countryCode = [dialingCopy countryCode];
+  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
-    v11 = [v8 copy];
+    v11 = [dialingCopy copy];
     [v11 setExtension:&stru_285461708];
-    v12 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v10];
-    if (![v9 isEqualToString:v12])
+    v12 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
+    if (![fromCopy isEqualToString:v12])
     {
       if ([(_NBPhoneNumberUtil *)self canBeInternationallyDialled:v11])
       {
-        v16 = [(_NBPhoneNumberUtil *)self format:v11 numberFormat:v5];
-        v15 = &stru_285461708;
+        rawInput2 = [(_NBPhoneNumberUtil *)self format:v11 numberFormat:formattingCopy];
+        rawInput = &stru_285461708;
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v15 = &stru_285461708;
-      if (v5)
+      rawInput = &stru_285461708;
+      if (formattingCopy)
       {
         goto LABEL_26;
       }
@@ -1254,18 +1254,18 @@ LABEL_28:
     {
       if ([v12 isEqualToString:@"BR"] && v13 <= 2)
       {
-        v17 = [v11 preferredDomesticCarrierCode];
-        if ([_NBMetadataHelper hasValue:v17])
+        preferredDomesticCarrierCode = [v11 preferredDomesticCarrierCode];
+        if ([_NBMetadataHelper hasValue:preferredDomesticCarrierCode])
         {
-          v15 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithPreferredCarrierCode:v11 fallbackCarrierCode:&stru_285461708];
+          rawInput = [(_NBPhoneNumberUtil *)self formatNationalNumberWithPreferredCarrierCode:v11 fallbackCarrierCode:&stru_285461708];
         }
 
         else
         {
-          v15 = &stru_285461708;
+          rawInput = &stru_285461708;
         }
 
-        if (v5)
+        if (formattingCopy)
         {
           goto LABEL_26;
         }
@@ -1273,21 +1273,21 @@ LABEL_28:
         goto LABEL_16;
       }
 
-      if (([v10 unsignedIntegerValue] == 1 || (objc_msgSend(v12, "isEqualToString:", 0x2854616A8) & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"MX") && v13 <= 2) && -[_NBPhoneNumberUtil canBeInternationallyDialled:](self, "canBeInternationallyDialled:", v11))
+      if (([countryCode unsignedIntegerValue] == 1 || (objc_msgSend(v12, "isEqualToString:", 0x2854616A8) & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"MX") && v13 <= 2) && -[_NBPhoneNumberUtil canBeInternationallyDialled:](self, "canBeInternationallyDialled:", v11))
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v11;
         v21 = 1;
       }
 
       else
       {
-        v19 = self;
+        selfCopy2 = self;
         v20 = v11;
         v21 = 2;
       }
 
-      v14 = [(_NBPhoneNumberUtil *)v19 format:v20 numberFormat:v21];
+      v14 = [(_NBPhoneNumberUtil *)selfCopy2 format:v20 numberFormat:v21];
     }
 
     else
@@ -1295,61 +1295,61 @@ LABEL_28:
       v14 = [(_NBPhoneNumberUtil *)self formatNationalNumberWithCarrierCode:v11 carrierCode:@"3"];
     }
 
-    v15 = v14;
-    if (v5)
+    rawInput = v14;
+    if (formattingCopy)
     {
 LABEL_26:
-      v18 = v15;
-      v15 = v18;
+      v18 = rawInput;
+      rawInput = v18;
       goto LABEL_27;
     }
 
 LABEL_16:
-    v18 = [(_NBPhoneNumberUtil *)self normalizeHelper:v15 normalizationReplacements:qword_2813469C0 removeNonMatches:1];
+    v18 = [(_NBPhoneNumberUtil *)self normalizeHelper:rawInput normalizationReplacements:qword_2813469C0 removeNonMatches:1];
 LABEL_27:
-    v16 = v18;
+    rawInput2 = v18;
     goto LABEL_28;
   }
 
-  v15 = [v8 rawInput];
-  if ([_NBMetadataHelper hasValue:v15])
+  rawInput = [dialingCopy rawInput];
+  if ([_NBMetadataHelper hasValue:rawInput])
   {
-    v16 = [v8 rawInput];
+    rawInput2 = [dialingCopy rawInput];
   }
 
   else
   {
-    v16 = &stru_285461708;
+    rawInput2 = &stru_285461708;
   }
 
 LABEL_29:
 
-  return v16;
+  return rawInput2;
 }
 
-- (id)formatOutOfCountryCallingNumber:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5
+- (id)formatOutOfCountryCallingNumber:(id)number regionCallingFrom:(id)from error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:v7 regionCallingFrom:v8];
+  numberCopy = number;
+  fromCopy = from;
+  v9 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:numberCopy regionCallingFrom:fromCopy];
 
   return v9;
 }
 
-- (id)formatOutOfCountryCallingNumber:(id)a3 regionCallingFrom:(id)a4
+- (id)formatOutOfCountryCallingNumber:(id)number regionCallingFrom:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(_NBPhoneNumberUtil *)self isValidRegionCode:v7])
+  numberCopy = number;
+  fromCopy = from;
+  if (![(_NBPhoneNumberUtil *)self isValidRegionCode:fromCopy])
   {
-    v13 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:1];
+    v13 = [(_NBPhoneNumberUtil *)self format:numberCopy numberFormat:1];
     goto LABEL_22;
   }
 
-  v8 = [v6 countryCode];
-  v9 = [v8 copy];
+  countryCode = [numberCopy countryCode];
+  v9 = [countryCode copy];
 
-  v10 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
+  v10 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:numberCopy];
   if (![(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v9])
   {
     v14 = v10;
@@ -1358,27 +1358,27 @@ LABEL_29:
 
   if ([v9 unsignedIntegerValue] != 1)
   {
-    v15 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:v7 error:0];
+    v15 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:fromCopy error:0];
     v16 = [v9 isEqualToNumber:v15];
 
     if (!v16)
     {
 LABEL_11:
-      v17 = [(_NBPhoneNumberUtil *)self helper];
-      v18 = [v17 getMetadataForRegion:v7];
+      helper = [(_NBPhoneNumberUtil *)self helper];
+      v18 = [helper getMetadataForRegion:fromCopy];
 
-      v19 = [v18 internationalPrefix];
+      internationalPrefix = [v18 internationalPrefix];
       v35 = v18;
-      v33 = v19;
-      if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"[\\d]+(?:[~\\u2053\\u223C\\uFF5E][\\d]+)?" string:v19])
+      v33 = internationalPrefix;
+      if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"[\\d]+(?:[~\\u2053\\u223C\\uFF5E][\\d]+)?" string:internationalPrefix])
       {
-        v20 = v19;
+        preferredInternationalPrefix2 = internationalPrefix;
       }
 
       else
       {
-        v21 = [v18 preferredInternationalPrefix];
-        v22 = [_NBMetadataHelper hasValue:v21];
+        preferredInternationalPrefix = [v18 preferredInternationalPrefix];
+        v22 = [_NBMetadataHelper hasValue:preferredInternationalPrefix];
 
         if (!v22)
         {
@@ -1386,15 +1386,15 @@ LABEL_11:
           goto LABEL_17;
         }
 
-        v20 = [v18 preferredInternationalPrefix];
+        preferredInternationalPrefix2 = [v18 preferredInternationalPrefix];
       }
 
-      v23 = v20;
+      v23 = preferredInternationalPrefix2;
 LABEL_17:
       v32 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v9];
       v24 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v9 regionCode:v32];
       v25 = [(_NBPhoneNumberUtil *)self formatNsn:v10 metadata:v24 phoneNumberFormat:1 carrierCode:0];
-      v26 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:v6 metadata:v24 numberFormat:1];
+      v26 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:numberCopy metadata:v24 numberFormat:1];
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@%@", v23, v9, v25, v26];
       [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v9 phoneNumberFormat:1 formattedNationalNumber:v25 formattedExtension:v26];
       v34 = v10;
@@ -1415,19 +1415,19 @@ LABEL_17:
       goto LABEL_21;
     }
 
-    v14 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:2];
+    v14 = [(_NBPhoneNumberUtil *)self format:numberCopy numberFormat:2];
 LABEL_8:
     v13 = v14;
     goto LABEL_21;
   }
 
-  if (![(_NBPhoneNumberUtil *)self isNANPACountry:v7])
+  if (![(_NBPhoneNumberUtil *)self isNANPACountry:fromCopy])
   {
     goto LABEL_11;
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:2];
+  v12 = [(_NBPhoneNumberUtil *)self format:numberCopy numberFormat:2];
   v13 = [v11 stringWithFormat:@"%@ %@", v9, v12];
 
 LABEL_21:
@@ -1436,59 +1436,59 @@ LABEL_22:
   return v13;
 }
 
-- (id)prefixNumberWithCountryCallingCode:(id)a3 phoneNumberFormat:(int64_t)a4 formattedNationalNumber:(id)a5 formattedExtension:(id)a6
+- (id)prefixNumberWithCountryCallingCode:(id)code phoneNumberFormat:(int64_t)format formattedNationalNumber:(id)number formattedExtension:(id)extension
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 3)
+  codeCopy = code;
+  numberCopy = number;
+  extensionCopy = extension;
+  if (format == 3)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@-%@%@", @"tel:", v9, v10, v11];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@-%@%@", @"tel:", codeCopy, numberCopy, extensionCopy];
   }
 
-  else if (a4 == 1)
+  else if (format == 1)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"+%@ %@%@", v9, v10, v11, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"+%@ %@%@", codeCopy, numberCopy, extensionCopy, v15];
   }
 
-  else if (a4)
+  else if (format)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v10, v11, v14, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", numberCopy, extensionCopy, v14, v15];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@%@", v9, v10, v11, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@%@", codeCopy, numberCopy, extensionCopy, v15];
   }
   v12 = ;
 
   return v12;
 }
 
-- (id)formatInOriginalFormat:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5
+- (id)formatInOriginalFormat:(id)format regionCallingFrom:(id)from error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self formatInOriginalFormat:v7 regionCallingFrom:v8];
+  formatCopy = format;
+  fromCopy = from;
+  v9 = [(_NBPhoneNumberUtil *)self formatInOriginalFormat:formatCopy regionCallingFrom:fromCopy];
 
   return v9;
 }
 
-- (id)formatInOriginalFormat:(id)a3 regionCallingFrom:(id)a4
+- (id)formatInOriginalFormat:(id)format regionCallingFrom:(id)from
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rawInput];
-  if ([_NBMetadataHelper hasValue:v8])
+  formatCopy = format;
+  fromCopy = from;
+  rawInput = [formatCopy rawInput];
+  if ([_NBMetadataHelper hasValue:rawInput])
   {
-    v9 = [(_NBPhoneNumberUtil *)self hasFormattingPatternForNumber:v6];
+    v9 = [(_NBPhoneNumberUtil *)self hasFormattingPatternForNumber:formatCopy];
 
     if (!v9)
     {
-      v10 = [v6 rawInput];
+      rawInput2 = [formatCopy rawInput];
 LABEL_11:
-      v15 = v10;
+      v15 = rawInput2;
       goto LABEL_27;
     }
   }
@@ -1497,58 +1497,58 @@ LABEL_11:
   {
   }
 
-  v11 = [v6 countryCodeSource];
+  countryCodeSource = [formatCopy countryCodeSource];
 
-  if (!v11)
+  if (!countryCodeSource)
   {
-    v10 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:2];
+    rawInput2 = [(_NBPhoneNumberUtil *)self format:formatCopy numberFormat:2];
     goto LABEL_11;
   }
 
-  v12 = [v6 countryCodeSource];
-  v13 = [v12 integerValue];
+  countryCodeSource2 = [formatCopy countryCodeSource];
+  integerValue = [countryCodeSource2 integerValue];
 
-  switch(v13)
+  switch(integerValue)
   {
     case 10:
-      v16 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:1];
+      v16 = [(_NBPhoneNumberUtil *)self format:formatCopy numberFormat:1];
       v15 = [v16 substringFromIndex:1];
       break;
     case 5:
-      v14 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:v6 regionCallingFrom:v7];
+      v14 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:formatCopy regionCallingFrom:fromCopy];
       goto LABEL_13;
     case 1:
-      v14 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:1];
+      v14 = [(_NBPhoneNumberUtil *)self format:formatCopy numberFormat:1];
 LABEL_13:
       v15 = v14;
       goto LABEL_21;
     default:
-      v17 = [v6 countryCode];
-      v16 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v17];
+      countryCode = [formatCopy countryCode];
+      v16 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
 
       v18 = [(_NBPhoneNumberUtil *)self getNddPrefixForRegion:v16 stripNonDigits:1];
-      v19 = [(_NBPhoneNumberUtil *)self format:v6 numberFormat:2];
-      if (v18 && [v18 length] && (objc_msgSend(v6, "rawInput"), v20 = objc_claimAutoreleasedReturnValue(), v21 = -[_NBPhoneNumberUtil rawInputContainsNationalPrefix:nationalPrefix:regionCode:](self, "rawInputContainsNationalPrefix:nationalPrefix:regionCode:", v20, v18, v16), v20, !v21))
+      v19 = [(_NBPhoneNumberUtil *)self format:formatCopy numberFormat:2];
+      if (v18 && [v18 length] && (objc_msgSend(formatCopy, "rawInput"), v20 = objc_claimAutoreleasedReturnValue(), v21 = -[_NBPhoneNumberUtil rawInputContainsNationalPrefix:nationalPrefix:regionCode:](self, "rawInputContainsNationalPrefix:nationalPrefix:regionCode:", v20, v18, v16), v20, !v21))
       {
-        v29 = [(_NBPhoneNumberUtil *)self helper];
-        v30 = [v29 getMetadataForRegion:v16];
+        helper = [(_NBPhoneNumberUtil *)self helper];
+        v30 = [helper getMetadataForRegion:v16];
 
-        v31 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
-        v32 = [v30 numberFormats];
-        v33 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:v32 nationalNumber:v31];
+        v31 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:formatCopy];
+        numberFormats = [v30 numberFormats];
+        v33 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:numberFormats nationalNumber:v31];
 
         if (v33)
         {
           v39 = v30;
-          v34 = [v33 nationalPrefixFormattingRule];
-          v35 = [v34 rangeOfString:@"$1"];
-          if (v35 && v35 != 0x7FFFFFFFFFFFFFFFLL && ([v34 substringWithRange:{0, v35}], v36 = objc_claimAutoreleasedReturnValue(), v34, -[_NBPhoneNumberUtil normalizeDigitsOnly:](self, "normalizeDigitsOnly:", v36), v34 = objc_claimAutoreleasedReturnValue(), v36, objc_msgSend(v34, "length")))
+          nationalPrefixFormattingRule = [v33 nationalPrefixFormattingRule];
+          v35 = [nationalPrefixFormattingRule rangeOfString:@"$1"];
+          if (v35 && v35 != 0x7FFFFFFFFFFFFFFFLL && ([nationalPrefixFormattingRule substringWithRange:{0, v35}], v36 = objc_claimAutoreleasedReturnValue(), nationalPrefixFormattingRule, -[_NBPhoneNumberUtil normalizeDigitsOnly:](self, "normalizeDigitsOnly:", v36), nationalPrefixFormattingRule = objc_claimAutoreleasedReturnValue(), v36, objc_msgSend(nationalPrefixFormattingRule, "length")))
           {
             v38 = [v33 copy];
             [v38 setNationalPrefixFormattingRule:0];
             v40[0] = v38;
             v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-            v15 = [(_NBPhoneNumberUtil *)self formatByPattern:v6 numberFormat:2 userDefinedFormats:v37];
+            v15 = [(_NBPhoneNumberUtil *)self formatByPattern:formatCopy numberFormat:2 userDefinedFormats:v37];
           }
 
           else
@@ -1574,9 +1574,9 @@ LABEL_13:
   }
 
 LABEL_21:
-  v22 = [v6 rawInput];
-  v23 = v22;
-  if (v15 && [v22 length])
+  rawInput3 = [formatCopy rawInput];
+  v23 = rawInput3;
+  if (v15 && [rawInput3 length])
   {
     v24 = [(_NBPhoneNumberUtil *)self normalizeHelper:v15 normalizationReplacements:qword_2813469C0 removeNonMatches:1];
     v25 = [(_NBPhoneNumberUtil *)self normalizeHelper:v23 normalizationReplacements:qword_2813469C0 removeNonMatches:1];
@@ -1594,19 +1594,19 @@ LABEL_27:
   return v15;
 }
 
-- (BOOL)rawInputContainsNationalPrefix:(id)a3 nationalPrefix:(id)a4 regionCode:(id)a5
+- (BOOL)rawInputContainsNationalPrefix:(id)prefix nationalPrefix:(id)nationalPrefix regionCode:(id)code
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_NBPhoneNumberUtil *)self normalizeDigitsOnly:a3];
-  if (![(_NBPhoneNumberUtil *)self isStartingStringByRegex:v10 regex:v8])
+  nationalPrefixCopy = nationalPrefix;
+  codeCopy = code;
+  v10 = [(_NBPhoneNumberUtil *)self normalizeDigitsOnly:prefix];
+  if (![(_NBPhoneNumberUtil *)self isStartingStringByRegex:v10 regex:nationalPrefixCopy])
   {
     goto LABEL_3;
   }
 
-  v11 = [v10 substringFromIndex:{objc_msgSend(v8, "length")}];
+  v11 = [v10 substringFromIndex:{objc_msgSend(nationalPrefixCopy, "length")}];
   v16 = 0;
-  v12 = [(_NBPhoneNumberUtil *)self parse:v11 defaultRegion:v9 error:&v16];
+  v12 = [(_NBPhoneNumberUtil *)self parse:v11 defaultRegion:codeCopy error:&v16];
   v13 = v16;
   v14 = [(_NBPhoneNumberUtil *)self isValidNumber:v12];
 
@@ -1619,13 +1619,13 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)hasUnexpectedItalianLeadingZero:(id)a3
+- (BOOL)hasUnexpectedItalianLeadingZero:(id)zero
 {
-  v4 = a3;
-  if ([v4 italianLeadingZero])
+  zeroCopy = zero;
+  if ([zeroCopy italianLeadingZero])
   {
-    v5 = [v4 countryCode];
-    v6 = ![(_NBPhoneNumberUtil *)self isLeadingZeroPossible:v5];
+    countryCode = [zeroCopy countryCode];
+    v6 = ![(_NBPhoneNumberUtil *)self isLeadingZeroPossible:countryCode];
   }
 
   else
@@ -1636,17 +1636,17 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)hasFormattingPatternForNumber:(id)a3
+- (BOOL)hasFormattingPatternForNumber:(id)number
 {
-  v4 = a3;
-  v5 = [v4 countryCode];
-  v6 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v5];
-  v7 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v5 regionCode:v6];
+  numberCopy = number;
+  countryCode = [numberCopy countryCode];
+  v6 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
+  v7 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v6];
   if (v7)
   {
-    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v4];
-    v9 = [v7 numberFormats];
-    v10 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:v9 nationalNumber:v8];
+    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:numberCopy];
+    numberFormats = [v7 numberFormats];
+    v10 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:numberFormats nationalNumber:v8];
 
     v11 = v10 != 0;
   }
@@ -1659,33 +1659,33 @@ LABEL_3:
   return v11;
 }
 
-- (id)formatOutOfCountryKeepingAlphaChars:(id)a3 regionCallingFrom:(id)a4 error:(id *)a5
+- (id)formatOutOfCountryKeepingAlphaChars:(id)chars regionCallingFrom:(id)from error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self formatOutOfCountryKeepingAlphaChars:v7 regionCallingFrom:v8];
+  charsCopy = chars;
+  fromCopy = from;
+  v9 = [(_NBPhoneNumberUtil *)self formatOutOfCountryKeepingAlphaChars:charsCopy regionCallingFrom:fromCopy];
 
   return v9;
 }
 
-- (id)formatOutOfCountryKeepingAlphaChars:(id)a3 regionCallingFrom:(id)a4
+- (id)formatOutOfCountryKeepingAlphaChars:(id)chars regionCallingFrom:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rawInput];
-  v9 = v8;
-  if (!v8 || ![v8 length])
+  charsCopy = chars;
+  fromCopy = from;
+  rawInput = [charsCopy rawInput];
+  v9 = rawInput;
+  if (!rawInput || ![rawInput length])
   {
-    v18 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:v6 regionCallingFrom:v7];
+    v18 = [(_NBPhoneNumberUtil *)self formatOutOfCountryCallingNumber:charsCopy regionCallingFrom:fromCopy];
     goto LABEL_30;
   }
 
-  v10 = [v6 countryCode];
-  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v10])
+  countryCode = [charsCopy countryCode];
+  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
     v11 = [(_NBPhoneNumberUtil *)self normalizeHelper:v9 normalizationReplacements:qword_2813469D0 removeNonMatches:0];
 
-    v12 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
+    v12 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:charsCopy];
     if ([v12 length] >= 4)
     {
       v13 = [v12 substringWithRange:{0, 3}];
@@ -1699,14 +1699,14 @@ LABEL_3:
       }
     }
 
-    v16 = [(_NBPhoneNumberUtil *)self helper];
-    v17 = [v16 getMetadataForRegion:v7];
+    helper = [(_NBPhoneNumberUtil *)self helper];
+    v17 = [helper getMetadataForRegion:fromCopy];
 
-    if ([v10 unsignedIntegerValue] == 1)
+    if ([countryCode unsignedIntegerValue] == 1)
     {
-      if ([(_NBPhoneNumberUtil *)self isNANPACountry:v7])
+      if ([(_NBPhoneNumberUtil *)self isNANPACountry:fromCopy])
       {
-        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v10, v11];
+        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", countryCode, v11];
 LABEL_28:
 
         goto LABEL_29;
@@ -1720,13 +1720,13 @@ LABEL_28:
 
     else if (v17)
     {
-      v19 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:v7 error:0];
-      v20 = [v10 isEqualToNumber:v19];
+      v19 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:fromCopy error:0];
+      v20 = [countryCode isEqualToNumber:v19];
 
       if (v20)
       {
-        v21 = [v17 numberFormats];
-        v22 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:v21 nationalNumber:v12];
+        numberFormats = [v17 numberFormats];
+        v22 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:numberFormats nationalNumber:v12];
 
         if (v22)
         {
@@ -1745,18 +1745,18 @@ LABEL_28:
       }
 
 LABEL_17:
-      v24 = [v17 internationalPrefix];
-      if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"[\\d]+(?:[~\\u2053\\u223C\\uFF5E][\\d]+)?" string:v24])
+      internationalPrefix = [v17 internationalPrefix];
+      if ([(_NBPhoneNumberUtil *)self matchesEntirely:@"[\\d]+(?:[~\\u2053\\u223C\\uFF5E][\\d]+)?" string:internationalPrefix])
       {
-        v25 = v24;
+        preferredInternationalPrefix = internationalPrefix;
       }
 
       else
       {
-        v25 = [v17 preferredInternationalPrefix];
+        preferredInternationalPrefix = [v17 preferredInternationalPrefix];
       }
 
-      v26 = v25;
+      v26 = preferredInternationalPrefix;
       v31 = v12;
 
       goto LABEL_22;
@@ -1765,17 +1765,17 @@ LABEL_17:
     v31 = v12;
     v26 = &stru_285461708;
 LABEL_22:
-    v27 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v10];
-    v28 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v10 regionCode:v27];
-    v29 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:v6 metadata:v28 numberFormat:1];
+    v27 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
+    v28 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v27];
+    v29 = [(_NBPhoneNumberUtil *)self maybeGetFormattedExtension:charsCopy metadata:v28 numberFormat:1];
     if ([(__CFString *)v26 length])
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@%@", v26, v10, v11, v29];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@ %@%@", v26, countryCode, v11, v29];
     }
 
     else
     {
-      [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:v10 phoneNumberFormat:1 formattedNationalNumber:v11 formattedExtension:v29];
+      [(_NBPhoneNumberUtil *)self prefixNumberWithCountryCallingCode:countryCode phoneNumberFormat:1 formattedNationalNumber:v11 formattedExtension:v29];
     }
     v18 = ;
 
@@ -1793,33 +1793,33 @@ LABEL_30:
   return v18;
 }
 
-- (id)formatNsn:(id)a3 metadata:(id)a4 phoneNumberFormat:(int64_t)a5 carrierCode:(id)a6
+- (id)formatNsn:(id)nsn metadata:(id)metadata phoneNumberFormat:(int64_t)format carrierCode:(id)code
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 intlNumberFormats];
-  v14 = [v13 count];
-  if (a5 == 2 || !v14)
+  nsnCopy = nsn;
+  metadataCopy = metadata;
+  codeCopy = code;
+  intlNumberFormats = [metadataCopy intlNumberFormats];
+  v14 = [intlNumberFormats count];
+  if (format == 2 || !v14)
   {
-    v15 = [v11 numberFormats];
+    numberFormats = [metadataCopy numberFormats];
   }
 
   else
   {
-    v15 = v13;
+    numberFormats = intlNumberFormats;
   }
 
-  v16 = v15;
-  v17 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:v15 nationalNumber:v10];
+  v16 = numberFormats;
+  v17 = [(_NBPhoneNumberUtil *)self chooseFormattingPatternForNumber:numberFormats nationalNumber:nsnCopy];
   if (v17)
   {
-    v18 = [(_NBPhoneNumberUtil *)self formatNsnUsingPattern:v10 formattingPattern:v17 numberFormat:a5 carrierCode:v12];
+    v18 = [(_NBPhoneNumberUtil *)self formatNsnUsingPattern:nsnCopy formattingPattern:v17 numberFormat:format carrierCode:codeCopy];
   }
 
   else
   {
-    v18 = v10;
+    v18 = nsnCopy;
   }
 
   v19 = v18;
@@ -1827,16 +1827,16 @@ LABEL_30:
   return v19;
 }
 
-- (id)chooseFormattingPatternForNumber:(id)a3 nationalNumber:(id)a4
+- (id)chooseFormattingPatternForNumber:(id)number nationalNumber:(id)nationalNumber
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  nationalNumberCopy = nationalNumber;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v6;
+  v8 = numberCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -1852,14 +1852,14 @@ LABEL_30:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 leadingDigitsPatterns];
-        v15 = [v14 count];
+        leadingDigitsPatterns = [v13 leadingDigitsPatterns];
+        v15 = [leadingDigitsPatterns count];
 
         if (v15)
         {
-          v16 = [v13 leadingDigitsPatterns];
-          v17 = [v16 lastObject];
-          v18 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v7 regex:v17];
+          leadingDigitsPatterns2 = [v13 leadingDigitsPatterns];
+          lastObject = [leadingDigitsPatterns2 lastObject];
+          v18 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:nationalNumberCopy regex:lastObject];
 
           if (v18)
           {
@@ -1867,8 +1867,8 @@ LABEL_30:
           }
         }
 
-        v19 = [v13 pattern];
-        v20 = [(_NBPhoneNumberUtil *)self matchesEntirely:v19 string:v7];
+        pattern = [v13 pattern];
+        v20 = [(_NBPhoneNumberUtil *)self matchesEntirely:pattern string:nationalNumberCopy];
 
         if (v20)
         {
@@ -1895,33 +1895,33 @@ LABEL_13:
   return v21;
 }
 
-- (id)formatNsnUsingPattern:(id)a3 formattingPattern:(id)a4 numberFormat:(int64_t)a5 carrierCode:(id)a6
+- (id)formatNsnUsingPattern:(id)pattern formattingPattern:(id)formattingPattern numberFormat:(int64_t)format carrierCode:(id)code
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 format];
-  v14 = [v11 domesticCarrierCodeFormattingRule];
-  if (a5 == 2)
+  patternCopy = pattern;
+  formattingPatternCopy = formattingPattern;
+  codeCopy = code;
+  format = [formattingPatternCopy format];
+  domesticCarrierCodeFormattingRule = [formattingPatternCopy domesticCarrierCodeFormattingRule];
+  if (format == 2)
   {
-    if (+[_NBMetadataHelper hasValue:](_NBMetadataHelper, "hasValue:", v12) && [v14 length])
+    if (+[_NBMetadataHelper hasValue:](_NBMetadataHelper, "hasValue:", codeCopy) && [domesticCarrierCodeFormattingRule length])
     {
-      v15 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v14 regex:@"\\$CC" withTemplate:v12];
-      v16 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:v13 regex:@"(\\$\\d)" withTemplate:v15];
+      nationalPrefixFormattingRule = [(_NBPhoneNumberUtil *)self replaceStringByRegex:domesticCarrierCodeFormattingRule regex:@"\\$CC" withTemplate:codeCopy];
+      v16 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:format regex:@"(\\$\\d)" withTemplate:nationalPrefixFormattingRule];
 
-      v17 = [v11 pattern];
-      v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v10 regex:v17 withTemplate:v16];
+      pattern = [formattingPatternCopy pattern];
+      v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:patternCopy regex:pattern withTemplate:v16];
 
-      v13 = v16;
+      format = v16;
       goto LABEL_10;
     }
 
-    v15 = [v11 nationalPrefixFormattingRule];
-    if ([_NBMetadataHelper hasValue:v15])
+    nationalPrefixFormattingRule = [formattingPatternCopy nationalPrefixFormattingRule];
+    if ([_NBMetadataHelper hasValue:nationalPrefixFormattingRule])
     {
-      v19 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:v13 regex:@"(\\$\\d)" withTemplate:v15];
-      v20 = [v11 pattern];
-      v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v10 regex:v20 withTemplate:v19];
+      v19 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:format regex:@"(\\$\\d)" withTemplate:nationalPrefixFormattingRule];
+      pattern2 = [formattingPatternCopy pattern];
+      v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:patternCopy regex:pattern2 withTemplate:v19];
 
       goto LABEL_10;
     }
@@ -1929,21 +1929,21 @@ LABEL_13:
 
   else
   {
-    v15 = [v11 nationalPrefixFormattingRule];
+    nationalPrefixFormattingRule = [formattingPatternCopy nationalPrefixFormattingRule];
   }
 
-  v21 = [v11 pattern];
-  v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v10 regex:v21 withTemplate:v13];
+  pattern3 = [formattingPatternCopy pattern];
+  v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:patternCopy regex:pattern3 withTemplate:format];
 
-  if (a5 != 3)
+  if (format != 3)
   {
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"^%@", qword_2813469A0];
-  v15 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v18 regex:v22 withTemplate:&stru_285461708];
+  qword_2813469A0 = [MEMORY[0x277CCACA8] stringWithFormat:@"^%@", qword_2813469A0];
+  nationalPrefixFormattingRule = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v18 regex:qword_2813469A0 withTemplate:&stru_285461708];
 
-  v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:v15 regex:qword_2813469A0 withTemplate:@"-"];
+  v18 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:nationalPrefixFormattingRule regex:qword_2813469A0 withTemplate:@"-"];
 LABEL_10:
 
 LABEL_11:
@@ -1951,22 +1951,22 @@ LABEL_11:
   return v18;
 }
 
-- (id)getExampleNumberForType:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (id)getExampleNumberForType:(id)type type:(int64_t)a4 error:(id *)error
 {
-  v8 = a3;
-  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:v8])
+  typeCopy = type;
+  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:typeCopy])
   {
-    v9 = [(_NBPhoneNumberUtil *)self helper];
-    v10 = [v9 getMetadataForRegion:v8];
+    helper = [(_NBPhoneNumberUtil *)self helper];
+    v10 = [helper getMetadataForRegion:typeCopy];
     v11 = [(_NBPhoneNumberUtil *)self getNumberDescByType:v10 type:a4];
 
-    v12 = [v11 exampleNumber];
-    LODWORD(v9) = [_NBMetadataHelper hasValue:v12];
+    exampleNumber = [v11 exampleNumber];
+    LODWORD(helper) = [_NBMetadataHelper hasValue:exampleNumber];
 
-    if (v9)
+    if (helper)
     {
-      v13 = [v11 exampleNumber];
-      v14 = [(_NBPhoneNumberUtil *)self parse:v13 defaultRegion:v8 error:a5];
+      exampleNumber2 = [v11 exampleNumber];
+      v14 = [(_NBPhoneNumberUtil *)self parse:exampleNumber2 defaultRegion:typeCopy error:error];
     }
 
     else
@@ -1983,93 +1983,93 @@ LABEL_11:
   return v14;
 }
 
-- (id)getExampleNumberForNonGeoEntity:(id)a3 error:(id *)a4
+- (id)getExampleNumberForNonGeoEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_NBPhoneNumberUtil *)self helper];
-  v8 = [v7 getMetadataForNonGeographicalRegion:v6];
+  entityCopy = entity;
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  v8 = [helper getMetadataForNonGeographicalRegion:entityCopy];
 
   if (!v8)
   {
     goto LABEL_18;
   }
 
-  v9 = [v8 mobile];
-  v10 = [v9 exampleNumber];
-  v11 = [_NBMetadataHelper hasValue:v10];
+  mobile = [v8 mobile];
+  exampleNumber = [mobile exampleNumber];
+  v11 = [_NBMetadataHelper hasValue:exampleNumber];
 
   if (v11)
   {
-    v12 = [v8 mobile];
+    mobile2 = [v8 mobile];
   }
 
   else
   {
-    v13 = [v8 tollFree];
-    v14 = [v13 exampleNumber];
-    v15 = [_NBMetadataHelper hasValue:v14];
+    tollFree = [v8 tollFree];
+    exampleNumber2 = [tollFree exampleNumber];
+    v15 = [_NBMetadataHelper hasValue:exampleNumber2];
 
     if (v15)
     {
-      v12 = [v8 tollFree];
+      mobile2 = [v8 tollFree];
     }
 
     else
     {
-      v16 = [v8 sharedCost];
-      v17 = [v16 exampleNumber];
-      v18 = [_NBMetadataHelper hasValue:v17];
+      sharedCost = [v8 sharedCost];
+      exampleNumber3 = [sharedCost exampleNumber];
+      v18 = [_NBMetadataHelper hasValue:exampleNumber3];
 
       if (v18)
       {
-        v12 = [v8 sharedCost];
+        mobile2 = [v8 sharedCost];
       }
 
       else
       {
-        v19 = [v8 voip];
-        v20 = [v19 exampleNumber];
-        v21 = [_NBMetadataHelper hasValue:v20];
+        voip = [v8 voip];
+        exampleNumber4 = [voip exampleNumber];
+        v21 = [_NBMetadataHelper hasValue:exampleNumber4];
 
         if (v21)
         {
-          v12 = [v8 voip];
+          mobile2 = [v8 voip];
         }
 
         else
         {
-          v22 = [v8 voicemail];
-          v23 = [v22 exampleNumber];
-          v24 = [_NBMetadataHelper hasValue:v23];
+          voicemail = [v8 voicemail];
+          exampleNumber5 = [voicemail exampleNumber];
+          v24 = [_NBMetadataHelper hasValue:exampleNumber5];
 
           if (v24)
           {
-            v12 = [v8 voicemail];
+            mobile2 = [v8 voicemail];
           }
 
           else
           {
             v25 = [v8 uan];
-            v26 = [v25 exampleNumber];
-            v27 = [_NBMetadataHelper hasValue:v26];
+            exampleNumber6 = [v25 exampleNumber];
+            v27 = [_NBMetadataHelper hasValue:exampleNumber6];
 
             if (v27)
             {
-              v12 = [v8 uan];
+              mobile2 = [v8 uan];
             }
 
             else
             {
-              v28 = [v8 premiumRate];
-              v29 = [v28 exampleNumber];
-              v30 = [_NBMetadataHelper hasValue:v29];
+              premiumRate = [v8 premiumRate];
+              exampleNumber7 = [premiumRate exampleNumber];
+              v30 = [_NBMetadataHelper hasValue:exampleNumber7];
 
               if (!v30)
               {
                 goto LABEL_18;
               }
 
-              v12 = [v8 premiumRate];
+              mobile2 = [v8 premiumRate];
             }
           }
         }
@@ -2077,13 +2077,13 @@ LABEL_11:
     }
   }
 
-  v31 = v12;
-  v32 = [v12 exampleNumber];
+  v31 = mobile2;
+  exampleNumber8 = [mobile2 exampleNumber];
 
-  if (v32)
+  if (exampleNumber8)
   {
-    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@", v6, v32];
-    v34 = [(_NBPhoneNumberUtil *)self parse:v33 defaultRegion:0x285461628 error:a4];
+    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"+%@%@", entityCopy, exampleNumber8];
+    v34 = [(_NBPhoneNumberUtil *)self parse:v33 defaultRegion:0x285461628 error:error];
 
     goto LABEL_19;
   }
@@ -2095,12 +2095,12 @@ LABEL_19:
   return v34;
 }
 
-- (id)maybeGetFormattedExtension:(id)a3 metadata:(id)a4 numberFormat:(int64_t)a5
+- (id)maybeGetFormattedExtension:(id)extension metadata:(id)metadata numberFormat:(int64_t)format
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 extension];
-  v10 = [_NBMetadataHelper hasValue:v9];
+  extensionCopy = extension;
+  metadataCopy = metadata;
+  extension = [extensionCopy extension];
+  v10 = [_NBMetadataHelper hasValue:extension];
 
   if (!v10)
   {
@@ -2108,32 +2108,32 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  if (a5 == 3)
+  if (format == 3)
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v7 extension];
-    v13 = v12;
+    extension2 = [extensionCopy extension];
+    preferredExtnPrefix2 = extension2;
     v14 = @";ext=";
 LABEL_8:
-    v15 = [v11 stringWithFormat:@"%@%@", v14, v12];
+    v15 = [v11 stringWithFormat:@"%@%@", v14, extension2];
     goto LABEL_9;
   }
 
-  v16 = [v8 preferredExtnPrefix];
-  v17 = [_NBMetadataHelper hasValue:v16];
+  preferredExtnPrefix = [metadataCopy preferredExtnPrefix];
+  v17 = [_NBMetadataHelper hasValue:preferredExtnPrefix];
 
   v11 = MEMORY[0x277CCACA8];
   if (!v17)
   {
-    v12 = [v7 extension];
-    v13 = v12;
+    extension2 = [extensionCopy extension];
+    preferredExtnPrefix2 = extension2;
     v14 = @" ext. ";
     goto LABEL_8;
   }
 
-  v13 = [v8 preferredExtnPrefix];
-  v18 = [v7 extension];
-  v15 = [v11 stringWithFormat:@"%@%@", v13, v18];
+  preferredExtnPrefix2 = [metadataCopy preferredExtnPrefix];
+  extension3 = [extensionCopy extension];
+  v15 = [v11 stringWithFormat:@"%@%@", preferredExtnPrefix2, extension3];
 
 LABEL_9:
 LABEL_10:
@@ -2141,10 +2141,10 @@ LABEL_10:
   return v15;
 }
 
-- (id)getNumberDescByType:(id)a3 type:(int64_t)a4
+- (id)getNumberDescByType:(id)type type:(int64_t)a4
 {
-  v5 = a3;
-  v6 = v5;
+  typeCopy = type;
+  v6 = typeCopy;
   if (a4 <= 4)
   {
     if (a4 <= 1)
@@ -2153,11 +2153,11 @@ LABEL_10:
       {
         if (a4 == 1)
         {
-          v8 = [v5 mobile];
+          mobile = [typeCopy mobile];
 
-          if (v8)
+          if (mobile)
           {
-            v7 = [v6 mobile];
+            mobile2 = [v6 mobile];
             goto LABEL_27;
           }
         }
@@ -2170,22 +2170,22 @@ LABEL_10:
     {
       if (a4 == 3)
       {
-        [v5 tollFree];
+        [typeCopy tollFree];
       }
 
       else
       {
-        [v5 premiumRate];
+        [typeCopy premiumRate];
       }
 
       goto LABEL_6;
     }
 
-    v9 = [v5 fixedLine];
+    fixedLine = [typeCopy fixedLine];
 
-    if (v9)
+    if (fixedLine)
     {
-      v7 = [v6 fixedLine];
+      mobile2 = [v6 fixedLine];
       goto LABEL_27;
     }
 
@@ -2197,18 +2197,18 @@ LABEL_10:
     switch(a4)
     {
       case 8:
-        v7 = [v5 pager];
+        mobile2 = [typeCopy pager];
         goto LABEL_27;
       case 9:
-        v7 = [v5 uan];
+        mobile2 = [typeCopy uan];
         goto LABEL_27;
       case 10:
-        v7 = [v5 voicemail];
+        mobile2 = [typeCopy voicemail];
         goto LABEL_27;
     }
 
 LABEL_21:
-    v7 = [v6 generalDesc];
+    mobile2 = [v6 generalDesc];
     goto LABEL_27;
   }
 
@@ -2216,35 +2216,35 @@ LABEL_21:
   {
     if (a4 == 6)
     {
-      [v5 voip];
+      [typeCopy voip];
     }
 
     else
     {
-      [v5 personalNumber];
+      [typeCopy personalNumber];
     }
 
-    v7 = LABEL_6:;
+    mobile2 = LABEL_6:;
     goto LABEL_27;
   }
 
-  v7 = [v5 sharedCost];
+  mobile2 = [typeCopy sharedCost];
 LABEL_27:
-  v10 = v7;
+  v10 = mobile2;
 
   return v10;
 }
 
-- (int64_t)getNumberType:(id)a3
+- (int64_t)getNumberType:(id)type
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:v4];
-  v6 = [v4 countryCode];
-  v7 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v6 regionCode:v5];
+  typeCopy = type;
+  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:typeCopy];
+  countryCode = [typeCopy countryCode];
+  v7 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v5];
 
   if (v7)
   {
-    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v4];
+    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:typeCopy];
     v9 = [(_NBPhoneNumberUtil *)self getNumberTypeHelper:v8 metadata:v7];
   }
 
@@ -2256,18 +2256,18 @@ LABEL_27:
   return v9;
 }
 
-- (int64_t)getNumberTypeHelper:(id)a3 metadata:(id)a4
+- (int64_t)getNumberTypeHelper:(id)helper metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 generalDesc];
-  if (![(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v8])
+  helperCopy = helper;
+  metadataCopy = metadata;
+  generalDesc = [metadataCopy generalDesc];
+  if (![(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:generalDesc])
   {
     goto LABEL_22;
   }
 
-  v9 = [v7 premiumRate];
-  v10 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v9];
+  premiumRate = [metadataCopy premiumRate];
+  v10 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:premiumRate];
 
   if (v10)
   {
@@ -2275,8 +2275,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v12 = [v7 tollFree];
-  v13 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v12];
+  tollFree = [metadataCopy tollFree];
+  v13 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:tollFree];
 
   if (v13)
   {
@@ -2284,8 +2284,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v14 = [v7 sharedCost];
-  v15 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v14];
+  sharedCost = [metadataCopy sharedCost];
+  v15 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:sharedCost];
 
   if (v15)
   {
@@ -2293,8 +2293,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v16 = [v7 voip];
-  v17 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v16];
+  voip = [metadataCopy voip];
+  v17 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:voip];
 
   if (v17)
   {
@@ -2302,8 +2302,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v18 = [v7 personalNumber];
-  v19 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v18];
+  personalNumber = [metadataCopy personalNumber];
+  v19 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:personalNumber];
 
   if (v19)
   {
@@ -2311,8 +2311,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v20 = [v7 pager];
-  v21 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v20];
+  pager = [metadataCopy pager];
+  v21 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:pager];
 
   if (v21)
   {
@@ -2320,8 +2320,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v22 = [v7 uan];
-  v23 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v22];
+  v22 = [metadataCopy uan];
+  v23 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:v22];
 
   if (v23)
   {
@@ -2329,8 +2329,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v24 = [v7 voicemail];
-  v25 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v24];
+  voicemail = [metadataCopy voicemail];
+  v25 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:voicemail];
 
   if (v25)
   {
@@ -2338,21 +2338,21 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v26 = [v7 fixedLine];
-  v27 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v26];
+  fixedLine = [metadataCopy fixedLine];
+  v27 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:fixedLine];
 
-  v28 = [v7 sameMobileAndFixedLinePattern];
+  sameMobileAndFixedLinePattern = [metadataCopy sameMobileAndFixedLinePattern];
   if (v27)
   {
-    if (v28)
+    if (sameMobileAndFixedLinePattern)
     {
       v11 = 2;
     }
 
     else
     {
-      v30 = [v7 mobile];
-      v31 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v30];
+      mobile = [metadataCopy mobile];
+      v31 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:mobile];
 
       if (v31)
       {
@@ -2368,15 +2368,15 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  if (v28)
+  if (sameMobileAndFixedLinePattern)
   {
 LABEL_22:
     v11 = -1;
     goto LABEL_23;
   }
 
-  v32 = [v7 mobile];
-  v33 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v6 numberDesc:v32];
+  mobile2 = [metadataCopy mobile];
+  v33 = [(_NBPhoneNumberUtil *)self isNumberMatchingDesc:helperCopy numberDesc:mobile2];
 
   if (v33)
   {
@@ -2393,26 +2393,26 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)isNumberMatchingDesc:(id)a3 numberDesc:(id)a4
+- (BOOL)isNumberMatchingDesc:(id)desc numberDesc:(id)numberDesc
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
-  v9 = [v7 possibleLength];
-  if (![v9 count])
+  descCopy = desc;
+  numberDescCopy = numberDesc;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(descCopy, "length")}];
+  possibleLength = [numberDescCopy possibleLength];
+  if (![possibleLength count])
   {
 
     goto LABEL_5;
   }
 
-  v10 = [v7 possibleLength];
-  v11 = [v10 indexOfObject:v8];
+  possibleLength2 = [numberDescCopy possibleLength];
+  v11 = [possibleLength2 indexOfObject:v8];
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
-    v13 = [v7 nationalNumberPattern];
-    v12 = [(_NBPhoneNumberUtil *)self matchesEntirely:v13 string:v6];
+    nationalNumberPattern = [numberDescCopy nationalNumberPattern];
+    v12 = [(_NBPhoneNumberUtil *)self matchesEntirely:nationalNumberPattern string:descCopy];
 
     goto LABEL_6;
   }
@@ -2423,29 +2423,29 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)isValidNumber:(id)a3
+- (BOOL)isValidNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:v4];
-  LOBYTE(self) = [(_NBPhoneNumberUtil *)self isValidNumberForRegion:v4 regionCode:v5];
+  numberCopy = number;
+  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:numberCopy];
+  LOBYTE(self) = [(_NBPhoneNumberUtil *)self isValidNumberForRegion:numberCopy regionCode:v5];
 
   return self;
 }
 
-- (BOOL)isValidNumberForRegion:(id)a3 regionCode:(id)a4
+- (BOOL)isValidNumberForRegion:(id)region regionCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 countryCode];
-  v9 = [v8 copy];
+  regionCopy = region;
+  codeCopy = code;
+  countryCode = [regionCopy countryCode];
+  v9 = [countryCode copy];
 
-  v10 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v9 regionCode:v7];
-  if (v10 && (([@"001" isEqualToString:v7] & 1) != 0 || (-[_NBPhoneNumberUtil getCountryCodeForValidRegion:error:](self, "getCountryCodeForValidRegion:error:", v7, 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v9, "isEqualToNumber:", v11), v11, v12)))
+  v10 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v9 regionCode:codeCopy];
+  if (v10 && (([@"001" isEqualToString:codeCopy] & 1) != 0 || (-[_NBPhoneNumberUtil getCountryCodeForValidRegion:error:](self, "getCountryCodeForValidRegion:error:", codeCopy, 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v9, "isEqualToNumber:", v11), v11, v12)))
   {
-    v13 = [v10 generalDesc];
-    v14 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v6];
-    v15 = [v13 nationalNumberPattern];
-    v16 = [_NBMetadataHelper hasValue:v15];
+    generalDesc = [v10 generalDesc];
+    v14 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:regionCopy];
+    nationalNumberPattern = [generalDesc nationalNumberPattern];
+    v16 = [_NBMetadataHelper hasValue:nationalNumberPattern];
 
     if (v16)
     {
@@ -2466,14 +2466,14 @@ LABEL_6:
   return v17;
 }
 
-- (id)getRegionCodeForNumber:(id)a3
+- (id)getRegionCodeForNumber:(id)number
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  numberCopy = number;
+  v5 = numberCopy;
+  if (numberCopy)
   {
-    v6 = [v4 countryCode];
-    v7 = [_NBMetadataHelper regionCodeFromCountryCode:v6];
+    countryCode = [numberCopy countryCode];
+    v7 = [_NBMetadataHelper regionCodeFromCountryCode:countryCode];
 
     if (v7 && [v7 count])
     {
@@ -2503,12 +2503,12 @@ LABEL_6:
   return v8;
 }
 
-- (id)getRegionCodeForNumberFromRegionList:(id)a3 regionCodes:(id)a4
+- (id)getRegionCodeForNumberFromRegionList:(id)list regionCodes:(id)codes
 {
-  v6 = a4;
-  v7 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:a3];
-  v8 = [v6 count];
-  v9 = [(_NBPhoneNumberUtil *)self helper];
+  codesCopy = codes;
+  v7 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:list];
+  v8 = [codesCopy count];
+  helper = [(_NBPhoneNumberUtil *)self helper];
   if (!v8)
   {
 LABEL_8:
@@ -2519,18 +2519,18 @@ LABEL_8:
   v10 = 0;
   while (1)
   {
-    v11 = [v6 objectAtIndex:v10];
-    v12 = [v9 getMetadataForRegion:v11];
-    v13 = [v12 leadingDigits];
-    v14 = [_NBMetadataHelper hasValue:v13];
+    v11 = [codesCopy objectAtIndex:v10];
+    v12 = [helper getMetadataForRegion:v11];
+    leadingDigits = [v12 leadingDigits];
+    v14 = [_NBMetadataHelper hasValue:leadingDigits];
 
     if (!v14)
     {
       break;
     }
 
-    v15 = [v12 leadingDigits];
-    v16 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v7 regex:v15];
+    leadingDigits2 = [v12 leadingDigits];
+    v16 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v7 regex:leadingDigits2];
 
     if (!v16)
     {
@@ -2558,9 +2558,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)getRegionCodeForCountryCode:(id)a3
+- (id)getRegionCodeForCountryCode:(id)code
 {
-  v3 = [_NBMetadataHelper regionCodeFromCountryCode:a3];
+  v3 = [_NBMetadataHelper regionCodeFromCountryCode:code];
   v4 = v3;
   if (v3)
   {
@@ -2577,13 +2577,13 @@ LABEL_10:
   return v6;
 }
 
-- (id)getCountryCodeForRegion:(id)a3
+- (id)getCountryCodeForRegion:(id)region
 {
-  v4 = a3;
-  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:v4])
+  regionCopy = region;
+  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:regionCopy])
   {
     v9 = 0;
-    v5 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:v4 error:&v9];
+    v5 = [(_NBPhoneNumberUtil *)self getCountryCodeForValidRegion:regionCopy error:&v9];
     v6 = v5;
     if (v9)
     {
@@ -2604,55 +2604,55 @@ LABEL_10:
   return v7;
 }
 
-- (id)getCountryCodeForValidRegion:(id)a3 error:(id *)a4
+- (id)getCountryCodeForValidRegion:(id)region error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_NBPhoneNumberUtil *)self helper];
-  v8 = [v7 getMetadataForRegion:v6];
+  regionCopy = region;
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  v8 = [helper getMetadataForRegion:regionCopy];
 
   if (v8)
   {
-    v9 = [v8 countryCode];
+    countryCode = [v8 countryCode];
   }
 
   else
   {
     v10 = MEMORY[0x277CBEAC0];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid region code:%@", v6];
-    v12 = [v10 dictionaryWithObject:v11 forKey:*MEMORY[0x277CCA450]];
+    regionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid region code:%@", regionCopy];
+    v12 = [v10 dictionaryWithObject:regionCopy forKey:*MEMORY[0x277CCA450]];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_REGION_CODE" code:0 userInfo:v12];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_REGION_CODE" code:0 userInfo:v12];
     }
 
-    v9 = &unk_285464B18;
+    countryCode = &unk_285464B18;
   }
 
-  return v9;
+  return countryCode;
 }
 
-- (id)getNddPrefixForRegion:(id)a3 stripNonDigits:(BOOL)a4
+- (id)getNddPrefixForRegion:(id)region stripNonDigits:(BOOL)digits
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(_NBPhoneNumberUtil *)self helper];
-  v8 = [v7 getMetadataForRegion:v6];
+  digitsCopy = digits;
+  regionCopy = region;
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  v8 = [helper getMetadataForRegion:regionCopy];
 
   if (v8)
   {
-    v9 = [v8 nationalPrefix];
-    if ([v9 length])
+    nationalPrefix = [v8 nationalPrefix];
+    if ([nationalPrefix length])
     {
-      if (v4)
+      if (digitsCopy)
       {
-        v10 = [v9 stringByReplacingOccurrencesOfString:@"~" withString:&stru_285461708];
+        v10 = [nationalPrefix stringByReplacingOccurrencesOfString:@"~" withString:&stru_285461708];
 
-        v9 = v10;
+        nationalPrefix = v10;
       }
 
-      v11 = v9;
-      v9 = v11;
+      v11 = nationalPrefix;
+      nationalPrefix = v11;
     }
 
     else
@@ -2669,10 +2669,10 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)isNANPACountry:(id)a3
+- (BOOL)isNANPACountry:(id)country
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  countryCopy = country;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
   v5 = [_NBMetadataHelper regionCodeFromCountryCode:v4];
 
@@ -2697,8 +2697,8 @@ LABEL_10:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v3 uppercaseString];
-        LOBYTE(v12) = [v12 isEqualToString:v13];
+        uppercaseString = [countryCopy uppercaseString];
+        LOBYTE(v12) = [v12 isEqualToString:uppercaseString];
 
         v9 |= v12;
       }
@@ -2715,34 +2715,34 @@ LABEL_10:
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return (v3 != 0) & v9;
+  return (countryCopy != 0) & v9;
 }
 
-- (BOOL)isLeadingZeroPossible:(id)a3
+- (BOOL)isLeadingZeroPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v4];
-  v6 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v4 regionCode:v5];
+  possibleCopy = possible;
+  v5 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:possibleCopy];
+  v6 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:possibleCopy regionCode:v5];
 
   if (v6)
   {
-    v7 = [v6 leadingZeroPossible];
+    leadingZeroPossible = [v6 leadingZeroPossible];
   }
 
   else
   {
-    v7 = 0;
+    leadingZeroPossible = 0;
   }
 
-  return v7;
+  return leadingZeroPossible;
 }
 
-- (BOOL)isAlphaNumber:(id)a3
+- (BOOL)isAlphaNumber:(id)number
 {
-  v4 = a3;
-  if ([(_NBPhoneNumberUtil *)self isViablePhoneNumber:v4])
+  numberCopy = number;
+  if ([(_NBPhoneNumberUtil *)self isViablePhoneNumber:numberCopy])
   {
-    v5 = [v4 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+    v5 = [numberCopy stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
 
     v6 = [v5 copy];
     v11 = v6;
@@ -2750,7 +2750,7 @@ LABEL_10:
     v8 = v11;
 
     v9 = [(_NBPhoneNumberUtil *)self matchesEntirely:@"(?:.*?[A-Za-z]){3}.*" string:v8];
-    v4 = v5;
+    numberCopy = v5;
   }
 
   else
@@ -2761,80 +2761,80 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)isPossibleNumber:(id)a3 error:(id *)a4
+- (BOOL)isPossibleNumber:(id)number error:(id *)error
 {
-  v5 = a3;
-  LOBYTE(self) = [(_NBPhoneNumberUtil *)self isPossibleNumber:v5];
+  numberCopy = number;
+  LOBYTE(self) = [(_NBPhoneNumberUtil *)self isPossibleNumber:numberCopy];
 
   return self;
 }
 
-- (int64_t)validateNumberLength:(id)a3 metadata:(id)a4 type:(int64_t)a5
+- (int64_t)validateNumberLength:(id)length metadata:(id)metadata type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_NBPhoneNumberUtil *)self getNumberDescByType:v9 type:a5];
-  v11 = [v10 possibleLength];
-  if ([v11 count])
+  lengthCopy = length;
+  metadataCopy = metadata;
+  v10 = [(_NBPhoneNumberUtil *)self getNumberDescByType:metadataCopy type:type];
+  possibleLength = [v10 possibleLength];
+  if ([possibleLength count])
   {
-    v12 = [v10 possibleLength];
+    possibleLength2 = [v10 possibleLength];
   }
 
   else
   {
-    v13 = [v9 generalDesc];
-    v12 = [v13 possibleLength];
+    generalDesc = [metadataCopy generalDesc];
+    possibleLength2 = [generalDesc possibleLength];
   }
 
-  v14 = [v10 possibleLengthLocalOnly];
-  if (a5 == 2)
+  possibleLengthLocalOnly = [v10 possibleLengthLocalOnly];
+  if (type == 2)
   {
-    v15 = [(_NBPhoneNumberUtil *)self getNumberDescByType:v9 type:0];
+    v15 = [(_NBPhoneNumberUtil *)self getNumberDescByType:metadataCopy type:0];
     v16 = [(_NBPhoneNumberUtil *)self descHasPossibleNumberData:v15];
 
     if (v16)
     {
-      v17 = [(_NBPhoneNumberUtil *)self validateNumberLength:v8 metadata:v9 type:1];
+      v17 = [(_NBPhoneNumberUtil *)self validateNumberLength:lengthCopy metadata:metadataCopy type:1];
       goto LABEL_30;
     }
 
-    v18 = [(_NBPhoneNumberUtil *)self getNumberDescByType:v9 type:1];
+    v18 = [(_NBPhoneNumberUtil *)self getNumberDescByType:metadataCopy type:1];
     if ([(_NBPhoneNumberUtil *)self descHasPossibleNumberData:v18])
     {
-      v19 = [v18 possibleLength];
-      if ([v19 count])
+      possibleLength3 = [v18 possibleLength];
+      if ([possibleLength3 count])
       {
-        v20 = [v18 possibleLength];
-        v21 = [v12 arrayByAddingObjectsFromArray:v20];
+        possibleLength4 = [v18 possibleLength];
+        v21 = [possibleLength2 arrayByAddingObjectsFromArray:possibleLength4];
       }
 
       else
       {
-        v20 = [v9 generalDesc];
-        v22 = [v20 possibleLength];
-        v21 = [v12 arrayByAddingObjectsFromArray:v22];
+        possibleLength4 = [metadataCopy generalDesc];
+        v20PossibleLength = [possibleLength4 possibleLength];
+        v21 = [possibleLength2 arrayByAddingObjectsFromArray:v20PossibleLength];
       }
 
       v23 = [v21 sortedArrayUsingSelector:sel_compare_];
 
-      v24 = [v14 count];
-      v25 = [v18 possibleLengthLocalOnly];
+      v24 = [possibleLengthLocalOnly count];
+      possibleLengthLocalOnly2 = [v18 possibleLengthLocalOnly];
       if (v24)
       {
-        v26 = [v14 arrayByAddingObjectsFromArray:v25];
+        v26 = [possibleLengthLocalOnly arrayByAddingObjectsFromArray:possibleLengthLocalOnly2];
 
-        v25 = [v26 sortedArrayUsingSelector:sel_compare_];
+        possibleLengthLocalOnly2 = [v26 sortedArrayUsingSelector:sel_compare_];
 
-        v14 = v26;
+        possibleLengthLocalOnly = v26;
       }
 
-      v14 = v25;
-      v12 = v23;
+      possibleLengthLocalOnly = possibleLengthLocalOnly2;
+      possibleLength2 = v23;
     }
   }
 
-  v27 = [v12 firstObject];
-  v28 = [v27 isEqualToNumber:&unk_285464B18];
+  firstObject = [possibleLength2 firstObject];
+  v28 = [firstObject isEqualToNumber:&unk_285464B18];
 
   if (v28)
   {
@@ -2843,16 +2843,16 @@ LABEL_10:
 
   else
   {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
-    if ([v14 containsObject:v29])
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(lengthCopy, "length")}];
+    if ([possibleLengthLocalOnly containsObject:v29])
     {
       v17 = 5;
     }
 
     else
     {
-      v30 = [v12 firstObject];
-      v31 = [v30 compare:v29];
+      firstObject2 = [possibleLength2 firstObject];
+      v31 = [firstObject2 compare:v29];
       if (v31)
       {
         if (v31 == 1)
@@ -2862,8 +2862,8 @@ LABEL_10:
 
         else
         {
-          v32 = [v12 lastObject];
-          v33 = [v32 compare:v29];
+          lastObject = [possibleLength2 lastObject];
+          v33 = [lastObject compare:v29];
 
           if (v33 == -1)
           {
@@ -2873,7 +2873,7 @@ LABEL_10:
           else
           {
             v17 = 1;
-            v34 = [v12 subarrayWithRange:{1, objc_msgSend(v12, "count") - 1}];
+            v34 = [possibleLength2 subarrayWithRange:{1, objc_msgSend(possibleLength2, "count") - 1}];
             if (![v34 containsObject:v29])
             {
               v17 = -1;
@@ -2894,25 +2894,25 @@ LABEL_30:
   return v17;
 }
 
-- (int64_t)testNumberLength:(id)a3 desc:(id)a4
+- (int64_t)testNumberLength:(id)length desc:(id)desc
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 possibleLength];
-  v8 = [v5 possibleLengthLocalOnly];
+  descCopy = desc;
+  lengthCopy = length;
+  possibleLength = [descCopy possibleLength];
+  possibleLengthLocalOnly = [descCopy possibleLengthLocalOnly];
 
-  v9 = [v6 length];
+  v9 = [lengthCopy length];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
-  LOBYTE(v6) = [v8 containsObject:v10];
+  LOBYTE(lengthCopy) = [possibleLengthLocalOnly containsObject:v10];
 
-  if (v6)
+  if (lengthCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v7 objectAtIndexedSubscript:0];
+    v12 = [possibleLength objectAtIndexedSubscript:0];
     if ([v12 unsignedIntegerValue] == v9)
     {
       v11 = 1;
@@ -2920,11 +2920,11 @@ LABEL_30:
 
     else if ([v12 unsignedIntegerValue] <= v9)
     {
-      v13 = [v7 count] - 1;
-      if (v13 >= [v7 count] || (objc_msgSend(v7, "objectAtIndexedSubscript:", objc_msgSend(v7, "count") - 1), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "integerValue"), v14, v15 >= v9))
+      v13 = [possibleLength count] - 1;
+      if (v13 >= [possibleLength count] || (objc_msgSend(possibleLength, "objectAtIndexedSubscript:", objc_msgSend(possibleLength, "count") - 1), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "integerValue"), v14, v15 >= v9))
       {
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
-        if ([v7 containsObject:v16])
+        if ([possibleLength containsObject:v16])
         {
           v11 = 1;
         }
@@ -2950,26 +2950,26 @@ LABEL_30:
   return v11;
 }
 
-- (int64_t)isPossibleNumberWithReason:(id)a3 error:(id *)a4
+- (int64_t)isPossibleNumberWithReason:(id)reason error:(id *)error
 {
-  v5 = a3;
-  v6 = [(_NBPhoneNumberUtil *)self isPossibleNumberWithReason:v5];
+  reasonCopy = reason;
+  v6 = [(_NBPhoneNumberUtil *)self isPossibleNumberWithReason:reasonCopy];
 
   return v6;
 }
 
-- (int64_t)isPossibleNumberWithReason:(id)a3
+- (int64_t)isPossibleNumberWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v4];
-  v6 = [v4 countryCode];
+  reasonCopy = reason;
+  v5 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:reasonCopy];
+  countryCode = [reasonCopy countryCode];
 
-  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:v6])
+  if ([(_NBPhoneNumberUtil *)self hasValidCountryCallingCode:countryCode])
   {
-    v7 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v6];
-    v8 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:v6 regionCode:v7];
-    v9 = [v8 generalDesc];
-    v10 = [(_NBPhoneNumberUtil *)self testNumberLength:v5 desc:v9];
+    v7 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
+    v8 = [(_NBPhoneNumberUtil *)self getMetadataForRegionOrCallingCode:countryCode regionCode:v7];
+    generalDesc = [v8 generalDesc];
+    v10 = [(_NBPhoneNumberUtil *)self testNumberLength:v5 desc:generalDesc];
   }
 
   else
@@ -2980,44 +2980,44 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)isPossibleNumberString:(id)a3 regionDialingFrom:(id)a4 error:(id *)a5
+- (BOOL)isPossibleNumberString:(id)string regionDialingFrom:(id)from error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
-  v10 = [(_NBPhoneNumberUtil *)self parse:v9 defaultRegion:v8 error:a5];
+  fromCopy = from;
+  v9 = [string stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v10 = [(_NBPhoneNumberUtil *)self parse:v9 defaultRegion:fromCopy error:error];
 
   LOBYTE(self) = [(_NBPhoneNumberUtil *)self isPossibleNumber:v10];
   return self;
 }
 
-- (BOOL)truncateTooLongNumber:(id)a3
+- (BOOL)truncateTooLongNumber:(id)number
 {
-  v4 = a3;
-  if ([(_NBPhoneNumberUtil *)self isValidNumber:v4])
+  numberCopy = number;
+  if ([(_NBPhoneNumberUtil *)self isValidNumber:numberCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 copy];
-    v7 = [v4 nationalNumber];
+    v6 = [numberCopy copy];
+    nationalNumber = [numberCopy nationalNumber];
     while (1)
     {
-      v8 = v7;
-      v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{(objc_msgSend(v7, "unsignedLongLongValue") / 0xAuLL)}];
+      v8 = nationalNumber;
+      nationalNumber = [MEMORY[0x277CCABB0] numberWithLongLong:{(objc_msgSend(nationalNumber, "unsignedLongLongValue") / 0xAuLL)}];
 
-      v9 = [v7 copy];
+      v9 = [nationalNumber copy];
       [v6 setNationalNumber:v9];
 
-      if (([v7 isEqualToNumber:&unk_285464B00] & 1) != 0 || -[_NBPhoneNumberUtil isPossibleNumberWithReason:](self, "isPossibleNumberWithReason:", v6) == 3)
+      if (([nationalNumber isEqualToNumber:&unk_285464B00] & 1) != 0 || -[_NBPhoneNumberUtil isPossibleNumberWithReason:](self, "isPossibleNumberWithReason:", v6) == 3)
       {
         break;
       }
 
       if ([(_NBPhoneNumberUtil *)self isValidNumber:v6])
       {
-        [v4 setNationalNumber:v7];
+        [numberCopy setNationalNumber:nationalNumber];
         v5 = 1;
         goto LABEL_9;
       }
@@ -3030,9 +3030,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)extractCountryCode:(id)a3 nationalNumber:(id *)a4
+- (id)extractCountryCode:(id)code nationalNumber:(id *)number
 {
-  v5 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  v5 = [code stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
   if ([v5 length] && (objc_msgSend(v5, "substringToIndex:", 1), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"0"), v6, (v7 & 1) == 0) && (v8 = objc_msgSend(v5, "length"), v9 = objc_msgSend(v5, "hasPrefix:", @"+"), v8))
   {
     v10 = 3;
@@ -3070,9 +3070,9 @@ LABEL_9:
       }
     }
 
-    if (a4)
+    if (number)
     {
-      v18 = *a4;
+      v18 = *number;
       v19 = MEMORY[0x277CCACA8];
       v20 = [v5 substringFromIndex:v12];
       v21 = v20;
@@ -3085,7 +3085,7 @@ LABEL_9:
       {
         [v19 stringWithFormat:@"%@", v20, v22];
       }
-      *a4 = ;
+      *number = ;
     }
   }
 
@@ -3102,29 +3102,29 @@ LABEL_14:
 - (id)getSupportedRegions
 {
   v2 = +[_NBMetadataHelper CCode2CNMap];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_569];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [allKeys filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)maybeExtractCountryCode:(id)a3 metadata:(id)a4 nationalNumber:(id *)a5 keepRawInput:(BOOL)a6 phoneNumber:(id *)a7 error:(id *)a8
+- (id)maybeExtractCountryCode:(id)code metadata:(id)metadata nationalNumber:(id *)number keepRawInput:(BOOL)input phoneNumber:(id *)phoneNumber error:(id *)error
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = &unk_285464B00;
-  if (a5 && a7 && [v14 length])
+  inputCopy = input;
+  codeCopy = code;
+  metadataCopy = metadata;
+  countryCode = &unk_285464B00;
+  if (number && phoneNumber && [codeCopy length])
   {
-    v17 = [v14 copy];
-    if (v15)
+    v17 = [codeCopy copy];
+    if (metadataCopy)
     {
-      v18 = [v15 internationalPrefix];
-      if (v18)
+      internationalPrefix = [metadataCopy internationalPrefix];
+      if (internationalPrefix)
       {
-        v19 = v18;
+        v19 = internationalPrefix;
       }
 
       else
@@ -3143,35 +3143,35 @@ LABEL_14:
     v20 = [(_NBPhoneNumberUtil *)self maybeStripInternationalPrefixAndNormalize:&v47 possibleIddPrefix:?];
     v21 = v47;
 
-    if (v10)
+    if (inputCopy)
     {
       v22 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
-      [*a7 setCountryCodeSource:v22];
+      [*phoneNumber setCountryCodeSource:v22];
     }
 
     if (v20 != 20)
     {
       if ([v21 length] > 2)
       {
-        v35 = [(_NBPhoneNumberUtil *)self extractCountryCode:v21 nationalNumber:a5];
+        v35 = [(_NBPhoneNumberUtil *)self extractCountryCode:v21 nationalNumber:number];
         if ([v35 isEqualToNumber:&unk_285464B00])
         {
           v36 = MEMORY[0x277CBEAC0];
           v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"INVALID_COUNTRY_CODE:%@", v35];
           v38 = [v36 dictionaryWithObject:v37 forKey:*MEMORY[0x277CCA450]];
 
-          if (a8)
+          if (error)
           {
-            *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_COUNTRY_CODE" code:0 userInfo:v38];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_COUNTRY_CODE" code:0 userInfo:v38];
           }
 
-          v16 = &unk_285464B00;
+          countryCode = &unk_285464B00;
         }
 
         else
         {
-          [*a7 setCountryCode:v35];
-          v16 = v35;
+          [*phoneNumber setCountryCode:v35];
+          countryCode = v35;
         }
       }
 
@@ -3181,31 +3181,31 @@ LABEL_14:
         v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"TOO_SHORT_AFTER_IDD:%@", v21];
         v34 = [v32 dictionaryWithObject:v33 forKey:*MEMORY[0x277CCA450]];
 
-        if (a8)
+        if (error)
         {
-          *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TOO_SHORT_AFTER_IDD" code:0 userInfo:v34];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"TOO_SHORT_AFTER_IDD" code:0 userInfo:v34];
         }
 
-        v16 = &unk_285464B00;
+        countryCode = &unk_285464B00;
       }
 
       goto LABEL_33;
     }
 
-    if (v15)
+    if (metadataCopy)
     {
-      v16 = [v15 countryCode];
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v16];
+      countryCode = [metadataCopy countryCode];
+      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", countryCode];
       v24 = [v21 copy];
       if ([v24 hasPrefix:v23])
       {
         v42 = v23;
         v41 = v24;
         v25 = [v24 substringFromIndex:{objc_msgSend(v23, "length")}];
-        v43 = [v15 generalDesc];
-        v44 = [v43 nationalNumberPattern];
+        generalDesc = [metadataCopy generalDesc];
+        nationalNumberPattern = [generalDesc nationalNumberPattern];
         v46 = v25;
-        [(_NBPhoneNumberUtil *)self maybeStripNationalPrefixAndCarrierCode:&v46 metadata:v15 carrierCode:0];
+        [(_NBPhoneNumberUtil *)self maybeStripNationalPrefixAndCarrierCode:&v46 metadata:metadataCopy carrierCode:0];
         v26 = v21;
         v27 = v46;
 
@@ -3213,19 +3213,19 @@ LABEL_14:
         v28 = v27;
         v21 = v26;
         v29 = [v28 copy];
-        if (![(_NBPhoneNumberUtil *)self matchesEntirely:v44 string:v21]&& [(_NBPhoneNumberUtil *)self matchesEntirely:v44 string:v29]|| [(_NBPhoneNumberUtil *)self testNumberLength:v21 desc:v43]== 4)
+        if (![(_NBPhoneNumberUtil *)self matchesEntirely:nationalNumberPattern string:v21]&& [(_NBPhoneNumberUtil *)self matchesEntirely:nationalNumberPattern string:v29]|| [(_NBPhoneNumberUtil *)self testNumberLength:v21 desc:generalDesc]== 4)
         {
-          *a5 = [*a5 stringByAppendingString:v29];
-          if (v10)
+          *number = [*number stringByAppendingString:v29];
+          if (inputCopy)
           {
             [MEMORY[0x277CCABB0] numberWithInteger:10];
             v31 = v30 = v29;
-            [*a7 setCountryCodeSource:v31];
+            [*phoneNumber setCountryCodeSource:v31];
 
             v29 = v30;
           }
 
-          [*a7 setCountryCode:v16];
+          [*phoneNumber setCountryCode:countryCode];
 
           goto LABEL_33;
         }
@@ -3235,23 +3235,23 @@ LABEL_14:
       }
     }
 
-    v16 = &unk_285464B00;
-    [*a7 setCountryCode:&unk_285464B00];
+    countryCode = &unk_285464B00;
+    [*phoneNumber setCountryCode:&unk_285464B00];
 LABEL_33:
   }
 
-  return v16;
+  return countryCode;
 }
 
-- (BOOL)descHasPossibleNumberData:(id)a3
+- (BOOL)descHasPossibleNumberData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 possibleLength];
-  if ([v4 count] == 1)
+  dataCopy = data;
+  possibleLength = [dataCopy possibleLength];
+  if ([possibleLength count] == 1)
   {
-    v5 = [v3 possibleLength];
-    v6 = [v5 firstObject];
-    v7 = [v6 isEqualToNumber:&unk_285464B18] ^ 1;
+    possibleLength2 = [dataCopy possibleLength];
+    firstObject = [possibleLength2 firstObject];
+    v7 = [firstObject isEqualToNumber:&unk_285464B18] ^ 1;
   }
 
   else
@@ -3262,25 +3262,25 @@ LABEL_33:
   return v7;
 }
 
-- (BOOL)parsePrefixAsIdd:(id)a3 sourceString:(id *)a4
+- (BOOL)parsePrefixAsIdd:(id)idd sourceString:(id *)string
 {
-  v6 = a3;
-  if (a4)
+  iddCopy = idd;
+  if (string)
   {
-    v7 = [*a4 copy];
-    if ([(_NBPhoneNumberUtil *)self stringPositionByRegex:v7 regex:v6])
+    v7 = [*string copy];
+    if ([(_NBPhoneNumberUtil *)self stringPositionByRegex:v7 regex:iddCopy])
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(string) = 0;
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v8 = [(_NBPhoneNumberUtil *)self matchesByRegex:v7 regex:v6];
+    v8 = [(_NBPhoneNumberUtil *)self matchesByRegex:v7 regex:iddCopy];
     v9 = [v8 objectAtIndex:0];
 
-    v10 = [v9 range];
-    v12 = [v7 substringWithRange:{v10, v11}];
+    range = [v9 range];
+    v12 = [v7 substringWithRange:{range, v11}];
     v13 = [v7 substringFromIndex:{objc_msgSend(v12, "length")}];
     v14 = -[NSRegularExpression matchesInString:options:range:](self->_CAPTURING_DIGIT_PATTERN, "matchesInString:options:range:", v13, 0, 0, [v13 length]);
     v15 = v14;
@@ -3293,8 +3293,8 @@ LABEL_13:
         if (v16)
         {
           v17 = [v15 objectAtIndex:0];
-          v18 = [v17 range];
-          v20 = [v13 substringWithRange:{v18, v19}];
+          range2 = [v17 range];
+          v20 = [v13 substringWithRange:{range2, v19}];
 
           if ([v20 length])
           {
@@ -3304,7 +3304,7 @@ LABEL_13:
             if (v22)
             {
 
-              LOBYTE(a4) = 0;
+              LOBYTE(string) = 0;
 LABEL_12:
 
               goto LABEL_13;
@@ -3314,34 +3314,34 @@ LABEL_12:
       }
     }
 
-    *a4 = [v13 copy];
-    LOBYTE(a4) = 1;
+    *string = [v13 copy];
+    LOBYTE(string) = 1;
     goto LABEL_12;
   }
 
 LABEL_14:
 
-  return a4;
+  return string;
 }
 
-- (int64_t)maybeStripInternationalPrefixAndNormalize:(id *)a3 possibleIddPrefix:(id)a4
+- (int64_t)maybeStripInternationalPrefixAndNormalize:(id *)normalize possibleIddPrefix:(id)prefix
 {
-  v6 = a4;
-  if (a3 && [*a3 length])
+  prefixCopy = prefix;
+  if (normalize && [*normalize length])
   {
-    if ([(_NBPhoneNumberUtil *)self isStartingStringByRegex:*a3 regex:qword_281346978])
+    if ([(_NBPhoneNumberUtil *)self isStartingStringByRegex:*normalize regex:qword_281346978])
     {
-      v7 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:*a3 regex:qword_281346978 withTemplate:&stru_285461708];
-      *a3 = v7;
-      *a3 = [(_NBPhoneNumberUtil *)self normalize:v7];
+      v7 = [(_NBPhoneNumberUtil *)self replaceStringByRegex:*normalize regex:qword_281346978 withTemplate:&stru_285461708];
+      *normalize = v7;
+      *normalize = [(_NBPhoneNumberUtil *)self normalize:v7];
       v8 = 1;
     }
 
     else
     {
-      v9 = [v6 copy];
-      [(_NBPhoneNumberUtil *)self normalizeSB:a3];
-      if ([(_NBPhoneNumberUtil *)self parsePrefixAsIdd:v9 sourceString:a3])
+      v9 = [prefixCopy copy];
+      [(_NBPhoneNumberUtil *)self normalizeSB:normalize];
+      if ([(_NBPhoneNumberUtil *)self parsePrefixAsIdd:v9 sourceString:normalize])
       {
         v8 = 5;
       }
@@ -3361,23 +3361,23 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)maybeStripNationalPrefixAndCarrierCode:(id *)a3 metadata:(id)a4 carrierCode:(id *)a5
+- (BOOL)maybeStripNationalPrefixAndCarrierCode:(id *)code metadata:(id)metadata carrierCode:(id *)carrierCode
 {
-  v8 = a4;
-  if (a3)
+  metadataCopy = metadata;
+  if (code)
   {
-    v9 = [*a3 copy];
+    v9 = [*code copy];
     v10 = [v9 length];
-    v11 = [v8 nationalPrefixForParsing];
-    if (!v10 || ![_NBMetadataHelper hasValue:v11])
+    nationalPrefixForParsing = [metadataCopy nationalPrefixForParsing];
+    if (!v10 || ![_NBMetadataHelper hasValue:nationalPrefixForParsing])
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(code) = 0;
 LABEL_42:
 
       goto LABEL_43;
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"^(?:%@)", v11];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"^(?:%@)", nationalPrefixForParsing];
     v45 = 0;
     v13 = [(_NBPhoneNumberUtil *)self regularExpressionWithPattern:v12 options:0 error:&v45];
     v44 = v45;
@@ -3385,7 +3385,7 @@ LABEL_42:
     v15 = v14;
     if (!v14 || ![v14 count])
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(code) = 0;
 LABEL_41:
 
       goto LABEL_42;
@@ -3393,14 +3393,14 @@ LABEL_41:
 
     v38 = v13;
     v41 = v12;
-    v16 = [v8 generalDesc];
-    v40 = [v16 nationalNumberPattern];
+    generalDesc = [metadataCopy generalDesc];
+    nationalNumberPattern = [generalDesc nationalNumberPattern];
 
     v17 = [v15 objectAtIndex:0];
-    v18 = [v17 range];
-    v42 = [v9 substringWithRange:{v18, v19}];
+    range = [v17 range];
+    v42 = [v9 substringWithRange:{range, v19}];
     v20 = [v17 numberOfRanges] - 1;
-    v43 = [v8 nationalPrefixTransformRule];
+    nationalPrefixTransformRule = [metadataCopy nationalPrefixTransformRule];
     v36 = v20;
     v37 = v17;
     v21 = [v17 rangeAtIndex:v20];
@@ -3414,9 +3414,9 @@ LABEL_41:
       v39 = [v9 substringWithRange:{v23, v24}];
     }
 
-    if (v43 && [v43 length] && +[_NBMetadataHelper hasValue:](_NBMetadataHelper, "hasValue:", v39))
+    if (nationalPrefixTransformRule && [nationalPrefixTransformRule length] && +[_NBMetadataHelper hasValue:](_NBMetadataHelper, "hasValue:", v39))
     {
-      v25 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:v9 regex:v41 withTemplate:v43];
+      v25 = [(_NBPhoneNumberUtil *)self replaceFirstStringByRegex:v9 regex:v41 withTemplate:nationalPrefixTransformRule];
       v26 = 0;
     }
 
@@ -3426,10 +3426,10 @@ LABEL_41:
       v26 = 1;
     }
 
-    v27 = v40;
-    if ([_NBMetadataHelper hasValue:v40]&& [(_NBPhoneNumberUtil *)self matchesEntirely:v40 string:v9]&& ![(_NBPhoneNumberUtil *)self matchesEntirely:v40 string:v25])
+    v27 = nationalNumberPattern;
+    if ([_NBMetadataHelper hasValue:nationalNumberPattern]&& [(_NBPhoneNumberUtil *)self matchesEntirely:nationalNumberPattern string:v9]&& ![(_NBPhoneNumberUtil *)self matchesEntirely:nationalNumberPattern string:v25])
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(code) = 0;
       v12 = v41;
       v29 = v39;
       goto LABEL_40;
@@ -3451,9 +3451,9 @@ LABEL_41:
       if (![_NBMetadataHelper hasValue:v39])
       {
         v33 = [_NBMetadataHelper hasValue:v42];
-        v27 = v40;
+        v27 = nationalNumberPattern;
         v12 = v41;
-        if (!a5)
+        if (!carrierCode)
         {
           goto LABEL_39;
         }
@@ -3463,8 +3463,8 @@ LABEL_41:
           goto LABEL_39;
         }
 
-        v31 = *a5;
-        if (!*a5)
+        v31 = *carrierCode;
+        if (!*carrierCode)
         {
           goto LABEL_39;
         }
@@ -3473,9 +3473,9 @@ LABEL_41:
         goto LABEL_38;
       }
 
-      v27 = v40;
+      v27 = nationalNumberPattern;
       v12 = v41;
-      if (!a5)
+      if (!carrierCode)
       {
         goto LABEL_39;
       }
@@ -3493,22 +3493,22 @@ LABEL_41:
         v30 = v26;
       }
 
-      v27 = v40;
+      v27 = nationalNumberPattern;
       v12 = v41;
       v29 = v39;
-      if (!a5 || (v30 & 1) != 0)
+      if (!carrierCode || (v30 & 1) != 0)
       {
         goto LABEL_39;
       }
     }
 
-    v31 = *a5;
-    if (!*a5)
+    v31 = *carrierCode;
+    if (!*carrierCode)
     {
 LABEL_39:
       v34 = v25;
-      *a3 = v25;
-      LOBYTE(a3) = 1;
+      *code = v25;
+      LOBYTE(code) = 1;
 LABEL_40:
 
       v13 = v38;
@@ -3517,20 +3517,20 @@ LABEL_40:
 
     v32 = v29;
 LABEL_38:
-    *a5 = [v31 stringByAppendingString:v32];
+    *carrierCode = [v31 stringByAppendingString:v32];
     goto LABEL_39;
   }
 
 LABEL_43:
 
-  return a3;
+  return code;
 }
 
-- (id)maybeStripExtension:(id *)a3
+- (id)maybeStripExtension:(id *)extension
 {
-  if (a3)
+  if (extension)
   {
-    v5 = [*a3 copy];
+    v5 = [*extension copy];
     v6 = [(_NBPhoneNumberUtil *)self stringPositionByRegex:v5 regex:qword_281346998];
     if ((v6 & 0x80000000) != 0 || (v7 = v6, [v5 substringWithRange:{0, v6}], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[_NBPhoneNumberUtil isViablePhoneNumber:](self, "isViablePhoneNumber:", v8), v8, !v9))
     {
@@ -3540,15 +3540,15 @@ LABEL_43:
     else
     {
       v10 = [(_NBPhoneNumberUtil *)self matchFirstByRegex:v5 regex:qword_281346998];
-      v11 = [v10 numberOfRanges];
-      if (v11 < 2)
+      numberOfRanges = [v10 numberOfRanges];
+      if (numberOfRanges < 2)
       {
         v18 = &stru_285461708;
       }
 
       else
       {
-        v12 = v11;
+        v12 = numberOfRanges;
         v13 = 1;
         while (1)
         {
@@ -3570,10 +3570,10 @@ LABEL_43:
           }
         }
 
-        v18 = [*a3 substringWithRange:{v16, v17}];
+        v18 = [*extension substringWithRange:{v16, v17}];
         v19 = [v5 substringWithRange:{0, v7}];
-        *a3 = &stru_285461708;
-        *a3 = [&stru_285461708 stringByAppendingString:v19];
+        *extension = &stru_285461708;
+        *extension = [&stru_285461708 stringByAppendingString:v19];
       }
 
 LABEL_14:
@@ -3588,51 +3588,51 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)checkRegionForParsing:(id)a3 defaultRegion:(id)a4
+- (BOOL)checkRegionForParsing:(id)parsing defaultRegion:(id)region
 {
-  v6 = a3;
-  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:a4])
+  parsingCopy = parsing;
+  if ([(_NBPhoneNumberUtil *)self isValidRegionCode:region])
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v6 && [v6 length] && -[_NBPhoneNumberUtil isStartingStringByRegex:regex:](self, "isStartingStringByRegex:regex:", v6, qword_281346978);
+    v7 = parsingCopy && [parsingCopy length] && -[_NBPhoneNumberUtil isStartingStringByRegex:regex:](self, "isStartingStringByRegex:regex:", parsingCopy, qword_281346978);
   }
 
   return v7;
 }
 
-- (id)parse:(id)a3 defaultRegion:(id)a4 error:(id *)a5
+- (id)parse:(id)parse defaultRegion:(id)region error:(id *)error
 {
   v13 = 0;
-  v7 = [(_NBPhoneNumberUtil *)self parseHelper:a3 defaultRegion:a4 keepRawInput:0 checkRegion:1 error:&v13];
+  v7 = [(_NBPhoneNumberUtil *)self parseHelper:parse defaultRegion:region keepRawInput:0 checkRegion:1 error:&v13];
   v8 = v13;
   v9 = v8;
-  if (a5 && v8)
+  if (error && v8)
   {
     v10 = [v8 description];
-    v11 = [v9 domain];
-    *a5 = [(_NBPhoneNumberUtil *)self errorWithObject:v10 withDomain:v11];
+    domain = [v9 domain];
+    *error = [(_NBPhoneNumberUtil *)self errorWithObject:v10 withDomain:domain];
   }
 
   return v7;
 }
 
-- (id)parseWithPhoneCarrierRegion:(id)a3 error:(id *)a4
+- (id)parseWithPhoneCarrierRegion:(id)region error:(id *)error
 {
-  v6 = [a3 stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
-  v7 = [(_NBPhoneNumberUtil *)self countryCodeByCarrier];
-  if ([@"ZZ" isEqualToString:v7])
+  v6 = [region stringByReplacingOccurrencesOfString:0x285461648 withString:@" "];
+  countryCodeByCarrier = [(_NBPhoneNumberUtil *)self countryCodeByCarrier];
+  if ([@"ZZ" isEqualToString:countryCodeByCarrier])
   {
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
-    v9 = [v8 objectForKey:*MEMORY[0x277CBE690]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v9 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
-    v7 = v9;
+    countryCodeByCarrier = v9;
   }
 
-  v10 = [(_NBPhoneNumberUtil *)self parse:v6 defaultRegion:v7 error:a4];
+  v10 = [(_NBPhoneNumberUtil *)self parse:v6 defaultRegion:countryCodeByCarrier error:error];
 
   return v10;
 }
@@ -3651,56 +3651,56 @@ LABEL_14:
 
 - (id)countryCodeByCarrier
 {
-  v2 = [(_NBPhoneNumberUtil *)self telephonyNetworkInfo];
-  v3 = [v2 subscriberCellularProvider];
-  v4 = [v3 isoCountryCode];
+  telephonyNetworkInfo = [(_NBPhoneNumberUtil *)self telephonyNetworkInfo];
+  subscriberCellularProvider = [telephonyNetworkInfo subscriberCellularProvider];
+  isoCountryCode = [subscriberCellularProvider isoCountryCode];
 
-  if (![v4 length])
+  if (![isoCountryCode length])
   {
     v5 = @"ZZ";
 
-    v4 = v5;
+    isoCountryCode = v5;
   }
 
-  return v4;
+  return isoCountryCode;
 }
 
-- (id)parseAndKeepRawInput:(id)a3 defaultRegion:(id)a4 error:(id *)a5
+- (id)parseAndKeepRawInput:(id)input defaultRegion:(id)region error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!-[_NBPhoneNumberUtil isValidRegionCode:](self, "isValidRegionCode:", v9) && [v8 length] && (objc_msgSend(v8, "hasPrefix:", @"+") & 1) == 0)
+  inputCopy = input;
+  regionCopy = region;
+  if (!-[_NBPhoneNumberUtil isValidRegionCode:](self, "isValidRegionCode:", regionCopy) && [inputCopy length] && (objc_msgSend(inputCopy, "hasPrefix:", @"+") & 1) == 0)
   {
     v10 = MEMORY[0x277CBEAC0];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid country code:%@", v8];
-    v12 = [v10 dictionaryWithObject:v11 forKey:*MEMORY[0x277CCA450]];
+    inputCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid country code:%@", inputCopy];
+    v12 = [v10 dictionaryWithObject:inputCopy forKey:*MEMORY[0x277CCA450]];
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_COUNTRY_CODE" code:0 userInfo:v12];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"INVALID_COUNTRY_CODE" code:0 userInfo:v12];
     }
   }
 
-  v13 = [(_NBPhoneNumberUtil *)self parseHelper:v8 defaultRegion:v9 keepRawInput:1 checkRegion:1 error:a5];
+  v13 = [(_NBPhoneNumberUtil *)self parseHelper:inputCopy defaultRegion:regionCopy keepRawInput:1 checkRegion:1 error:error];
 
   return v13;
 }
 
-- (void)setItalianLeadingZerosForPhoneNumber:(id)a3 phoneNumber:(id)a4
+- (void)setItalianLeadingZerosForPhoneNumber:(id)number phoneNumber:(id)phoneNumber
 {
-  v10 = a3;
-  v5 = a4;
-  if ([v10 length] >= 2)
+  numberCopy = number;
+  phoneNumberCopy = phoneNumber;
+  if ([numberCopy length] >= 2)
   {
-    if ([v10 hasPrefix:@"0"])
+    if ([numberCopy hasPrefix:@"0"])
     {
-      [v5 setItalianLeadingZero:1];
-      if (([v10 length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+      [phoneNumberCopy setItalianLeadingZero:1];
+      if (([numberCopy length] - 3) <= 0xFFFFFFFFFFFFFFFDLL)
       {
         v6 = 1;
         while (1)
         {
-          v7 = [v10 substringWithRange:{v6, 1}];
+          v7 = [numberCopy substringWithRange:{v6, 1}];
           v8 = [v7 isEqualToString:@"0"];
 
           if (!v8)
@@ -3708,7 +3708,7 @@ LABEL_14:
             break;
           }
 
-          if (++v6 >= ([v10 length] - 1))
+          if (++v6 >= ([numberCopy length] - 1))
           {
             goto LABEL_9;
           }
@@ -3721,7 +3721,7 @@ LABEL_14:
 
 LABEL_9:
         v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-        [v5 setNumberOfLeadingZeros:v9];
+        [phoneNumberCopy setNumberOfLeadingZeros:v9];
       }
     }
   }
@@ -3729,15 +3729,15 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)buildNationalNumberForParsing:(id)a3 nationalNumber:(id *)a4
+- (void)buildNationalNumberForParsing:(id)parsing nationalNumber:(id *)number
 {
-  v6 = a3;
-  if (!a4)
+  parsingCopy = parsing;
+  if (!number)
   {
     goto LABEL_15;
   }
 
-  v23 = v6;
+  v23 = parsingCopy;
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v8 = [(_NBPhoneNumberUtil *)self indexOfStringByString:v23 target:@";phone-context="];
   if (v8 < 1)
@@ -3791,36 +3791,36 @@ LABEL_12:
     v7 = v22;
   }
 
-  *a4 = [v7 copy];
+  *number = [v7 copy];
 
-  v6 = v23;
+  parsingCopy = v23;
 LABEL_15:
 }
 
-- (int64_t)isNumberMatch:(id)a3 second:(id)a4 error:(id *)a5
+- (int64_t)isNumberMatch:(id)match second:(id)second error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NBPhoneNumberUtil *)self isNumberMatch:v7 second:v8];
+  matchCopy = match;
+  secondCopy = second;
+  v9 = [(_NBPhoneNumberUtil *)self isNumberMatch:matchCopy second:secondCopy];
 
   return v9;
 }
 
-- (int64_t)isNumberMatch:(id)a3 second:(id)a4
+- (int64_t)isNumberMatch:(id)match second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  secondCopy = second;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v45 = 0;
-    v8 = [(_NBPhoneNumberUtil *)self parse:v6 defaultRegion:0x285461628 error:&v45];
+    v8 = [(_NBPhoneNumberUtil *)self parse:matchCopy defaultRegion:0x285461628 error:&v45];
     v9 = v45;
-    v10 = v9;
+    countryCode2 = v9;
     if (v9)
     {
-      v11 = [v9 domain];
-      v12 = [v11 isEqualToString:@"INVALID_COUNTRY_CODE"];
+      domain = [v9 domain];
+      v12 = [domain isEqualToString:@"INVALID_COUNTRY_CODE"];
 
       if (!v12)
       {
@@ -3833,19 +3833,19 @@ LABEL_15:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v13 = [v7 countryCode];
-        v14 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:v13];
+        countryCode = [secondCopy countryCode];
+        v14 = [(_NBPhoneNumberUtil *)self getRegionCodeForCountryCode:countryCode];
 
         if (v14 != @"ZZ")
         {
           v44 = 0;
-          v15 = [(_NBPhoneNumberUtil *)self parse:v6 defaultRegion:v14 error:&v44];
+          v15 = [(_NBPhoneNumberUtil *)self parse:matchCopy defaultRegion:v14 error:&v44];
           v16 = v44;
 
           v17 = 0;
           if (!v16)
           {
-            v18 = [(_NBPhoneNumberUtil *)self isNumberMatch:v15 second:v7];
+            v18 = [(_NBPhoneNumberUtil *)self isNumberMatch:v15 second:secondCopy];
             if (v18 == 4)
             {
               v17 = 3;
@@ -3863,7 +3863,7 @@ LABEL_15:
       }
 
       v43 = 0;
-      v15 = [(_NBPhoneNumberUtil *)self parseHelper:v6 defaultRegion:0 keepRawInput:0 checkRegion:0 error:&v43];
+      v15 = [(_NBPhoneNumberUtil *)self parseHelper:matchCopy defaultRegion:0 keepRawInput:0 checkRegion:0 error:&v43];
       v40 = v43;
 
       if (v40)
@@ -3881,20 +3881,20 @@ LABEL_15:
 
   else
   {
-    v15 = [v6 copy];
+    v15 = [matchCopy copy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v42 = 0;
-    v19 = [(_NBPhoneNumberUtil *)self parse:v7 defaultRegion:0x285461628 error:&v42];
+    v19 = [(_NBPhoneNumberUtil *)self parse:secondCopy defaultRegion:0x285461628 error:&v42];
     v20 = v42;
-    v10 = v20;
+    countryCode2 = v20;
     if (v20)
     {
-      v21 = [v20 domain];
-      v22 = [v21 isEqualToString:@"INVALID_COUNTRY_CODE"];
+      domain2 = [v20 domain];
+      v22 = [domain2 isEqualToString:@"INVALID_COUNTRY_CODE"];
 
       if (!v22)
       {
@@ -3903,37 +3903,37 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v23 = self;
-      v24 = v7;
+      selfCopy2 = self;
+      v24 = secondCopy;
       v25 = v15;
     }
 
     else
     {
-      v23 = self;
-      v24 = v6;
+      selfCopy2 = self;
+      v24 = matchCopy;
       v25 = v19;
     }
 
-    v17 = [(_NBPhoneNumberUtil *)v23 isNumberMatch:v24 second:v25];
+    v17 = [(_NBPhoneNumberUtil *)selfCopy2 isNumberMatch:v24 second:v25];
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v19 = [v7 copy];
+  v19 = [secondCopy copy];
   [v15 setRawInput:&stru_285461708];
   [v15 clearCountryCodeSource];
   [v15 setPreferredDomesticCarrierCode:&stru_285461708];
   [v19 setRawInput:&stru_285461708];
   [v19 clearCountryCodeSource];
   [v19 setPreferredDomesticCarrierCode:&stru_285461708];
-  v26 = [v15 extension];
-  if (v26)
+  extension = [v15 extension];
+  if (extension)
   {
-    v27 = v26;
-    v28 = [v15 extension];
-    v29 = [v28 length];
+    v27 = extension;
+    extension2 = [v15 extension];
+    v29 = [extension2 length];
 
     if (!v29)
     {
@@ -3941,12 +3941,12 @@ LABEL_51:
     }
   }
 
-  v30 = [v19 extension];
-  if (v30)
+  extension3 = [v19 extension];
+  if (extension3)
   {
-    v31 = v30;
-    v32 = [v19 extension];
-    v33 = [v32 length];
+    v31 = extension3;
+    extension4 = [v19 extension];
+    v33 = [extension4 length];
 
     if (!v33)
     {
@@ -3954,21 +3954,21 @@ LABEL_51:
     }
   }
 
-  v34 = [v15 extension];
-  if (![_NBMetadataHelper hasValue:v34])
+  extension5 = [v15 extension];
+  if (![_NBMetadataHelper hasValue:extension5])
   {
     goto LABEL_32;
   }
 
-  v35 = [v19 extension];
-  if (![_NBMetadataHelper hasValue:v35])
+  extension6 = [v19 extension];
+  if (![_NBMetadataHelper hasValue:extension6])
   {
 
 LABEL_32:
 LABEL_33:
-    v10 = [v15 countryCode];
-    v39 = [v19 countryCode];
-    if ([v10 isEqualToNumber:&unk_285464B00] & 1) != 0 || (objc_msgSend(v39, "isEqualToNumber:", &unk_285464B00))
+    countryCode2 = [v15 countryCode];
+    countryCode3 = [v19 countryCode];
+    if ([countryCode2 isEqualToNumber:&unk_285464B00] & 1) != 0 || (objc_msgSend(countryCode3, "isEqualToNumber:", &unk_285464B00))
     {
       [v15 setCountryCode:&unk_285464B00];
       [v19 setCountryCode:&unk_285464B00];
@@ -3993,7 +3993,7 @@ LABEL_33:
       v17 = 4;
     }
 
-    else if ([v10 isEqualToNumber:v39] && -[_NBPhoneNumberUtil isNationalNumberSuffixOfTheOther:second:](self, "isNationalNumberSuffixOfTheOther:second:", v15, v19))
+    else if ([countryCode2 isEqualToNumber:countryCode3] && -[_NBPhoneNumberUtil isNationalNumberSuffixOfTheOther:second:](self, "isNationalNumberSuffixOfTheOther:second:", v15, v19))
     {
       v17 = 2;
     }
@@ -4006,9 +4006,9 @@ LABEL_33:
     goto LABEL_51;
   }
 
-  v36 = [v15 extension];
-  v37 = [v19 extension];
-  v38 = [v36 isEqualToString:v37];
+  extension7 = [v15 extension];
+  extension8 = [v19 extension];
+  v38 = [extension7 isEqualToString:extension8];
 
   if (v38)
   {
@@ -4021,17 +4021,17 @@ LABEL_52:
   return v17;
 }
 
-- (BOOL)isNationalNumberSuffixOfTheOther:(id)a3 second:(id)a4
+- (BOOL)isNationalNumberSuffixOfTheOther:(id)other second:(id)second
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [a3 nationalNumber];
-  v8 = [v5 stringWithFormat:@"%@", v7];
+  secondCopy = second;
+  nationalNumber = [other nationalNumber];
+  v8 = [v5 stringWithFormat:@"%@", nationalNumber];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v6 nationalNumber];
+  nationalNumber2 = [secondCopy nationalNumber];
 
-  v11 = [v9 stringWithFormat:@"%@", v10];
+  v11 = [v9 stringWithFormat:@"%@", nationalNumber2];
 
   if ([v8 hasSuffix:v11])
   {
@@ -4046,26 +4046,26 @@ LABEL_52:
   return v12;
 }
 
-- (BOOL)canBeInternationallyDialled:(id)a3 error:(id *)a4
+- (BOOL)canBeInternationallyDialled:(id)dialled error:(id *)error
 {
-  v5 = a3;
-  LOBYTE(self) = [(_NBPhoneNumberUtil *)self canBeInternationallyDialled:v5];
+  dialledCopy = dialled;
+  LOBYTE(self) = [(_NBPhoneNumberUtil *)self canBeInternationallyDialled:dialledCopy];
 
   return self;
 }
 
-- (BOOL)canBeInternationallyDialled:(id)a3
+- (BOOL)canBeInternationallyDialled:(id)dialled
 {
-  v4 = a3;
-  v5 = [(_NBPhoneNumberUtil *)self helper];
-  v6 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:v4];
-  v7 = [v5 getMetadataForRegion:v6];
+  dialledCopy = dialled;
+  helper = [(_NBPhoneNumberUtil *)self helper];
+  v6 = [(_NBPhoneNumberUtil *)self getRegionCodeForNumber:dialledCopy];
+  v7 = [helper getMetadataForRegion:v6];
 
   if (v7)
   {
-    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:v4];
-    v9 = [v7 noInternationalDialling];
-    v10 = ![(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v8 numberDesc:v9];
+    v8 = [(_NBPhoneNumberUtil *)self getNationalSignificantNumber:dialledCopy];
+    noInternationalDialling = [v7 noInternationalDialling];
+    v10 = ![(_NBPhoneNumberUtil *)self isNumberMatchingDesc:v8 numberDesc:noInternationalDialling];
   }
 
   else
@@ -4076,11 +4076,11 @@ LABEL_52:
   return v10;
 }
 
-- (BOOL)matchesEntirely:(id)a3 string:(id)a4
+- (BOOL)matchesEntirely:(id)entirely string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"NA"])
+  entirelyCopy = entirely;
+  stringCopy = string;
+  if ([entirelyCopy isEqualToString:@"NA"])
   {
     v8 = 0;
   }
@@ -4088,9 +4088,9 @@ LABEL_52:
   else
   {
     v15 = 0;
-    v9 = [(_NBPhoneNumberUtil *)self entireRegularExpressionWithPattern:v6 options:0 error:&v15];
-    v10 = [v7 length];
-    v11 = [v9 firstMatchInString:v7 options:4 range:{0, v10}];
+    v9 = [(_NBPhoneNumberUtil *)self entireRegularExpressionWithPattern:entirelyCopy options:0 error:&v15];
+    v10 = [stringCopy length];
+    v11 = [v9 firstMatchInString:stringCopy options:4 range:{0, v10}];
     v12 = v11;
     v8 = v11 && ![v11 range] && v13 == v10;
   }

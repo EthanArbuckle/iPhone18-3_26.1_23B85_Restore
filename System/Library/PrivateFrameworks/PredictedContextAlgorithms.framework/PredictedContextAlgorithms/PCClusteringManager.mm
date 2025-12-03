@@ -1,12 +1,12 @@
 @interface PCClusteringManager
 - (PCClusteringManager)init;
-- (id)_convertContextvalueToString:(id)a3 forKey:(id)a4;
-- (id)_dominantSourceBundleIdentifierFromEvents:(id)a3;
-- (id)_getClusterFrom:(id)a3 withEmbeddings:(id)a4 andCreationDate:(id)a5;
-- (id)generateClusters:(id)a3 withEmbeddings:(id)a4 error:(id *)a5;
-- (id)getEmbeddingsFromBundles:(id)a3 forEmbeddingType:(unint64_t)a4;
-- (id)phenotypeDescription:(id)a3;
-- (void)runHDBSCANClusteringOn:(id)a3;
+- (id)_convertContextvalueToString:(id)string forKey:(id)key;
+- (id)_dominantSourceBundleIdentifierFromEvents:(id)events;
+- (id)_getClusterFrom:(id)from withEmbeddings:(id)embeddings andCreationDate:(id)date;
+- (id)generateClusters:(id)clusters withEmbeddings:(id)embeddings error:(id *)error;
+- (id)getEmbeddingsFromBundles:(id)bundles forEmbeddingType:(unint64_t)type;
+- (id)phenotypeDescription:(id)description;
+- (void)runHDBSCANClusteringOn:(id)on;
 @end
 
 @implementation PCClusteringManager
@@ -30,16 +30,16 @@
   return v2;
 }
 
-- (id)getEmbeddingsFromBundles:(id)a3 forEmbeddingType:(unint64_t)a4
+- (id)getEmbeddingsFromBundles:(id)bundles forEmbeddingType:(unint64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  bundlesCopy = bundles;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(bundlesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = bundlesCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
@@ -55,15 +55,15 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [[PCEmbedding alloc] initWithEventBundle:v11 forEmbeddingType:a4];
+        v12 = [[PCEmbedding alloc] initWithEventBundle:v11 forEmbeddingType:type];
         v13 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [(PCEmbedding *)v12 locationContextEmbedding];
+          locationContextEmbedding = [(PCEmbedding *)v12 locationContextEmbedding];
           *buf = 138412547;
           v25 = v12;
           v26 = 2117;
-          v27 = v14;
+          v27 = locationContextEmbedding;
           _os_log_impl(&dword_1CEE74000, v13, OS_LOG_TYPE_INFO, "Clustering: Extracted embedding=%@, locationEmbedding=%{sensitive}@", buf, 0x16u);
         }
 
@@ -96,45 +96,45 @@
   return v6;
 }
 
-- (void)runHDBSCANClusteringOn:(id)a3
+- (void)runHDBSCANClusteringOn:(id)on
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  onCopy = on;
+  v5 = [onCopy count];
   if (v5 <= [(PCDistanceWeightingConfig *)self->_config minClusterSize])
   {
     v6 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 count];
-      v8 = [(PCDistanceWeightingConfig *)self->_config minClusterSize];
+      v7 = [onCopy count];
+      minClusterSize = [(PCDistanceWeightingConfig *)self->_config minClusterSize];
       v10 = 134218240;
       v11 = v7;
       v12 = 2048;
-      v13 = v8;
+      v13 = minClusterSize;
       _os_log_impl(&dword_1CEE74000, v6, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Clustering, Embedding count (%lu) is equal to or less than min cluster size (%lu). Skip clustering", &v10, 0x16u);
     }
   }
 
   else
   {
-    [(PCHDBSCANClustering *)self->_hdbscanClustering runHDBSCANClusteringOn:v4];
+    [(PCHDBSCANClustering *)self->_hdbscanClustering runHDBSCANClusteringOn:onCopy];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)generateClusters:(id)a3 withEmbeddings:(id)a4 error:(id *)a5
+- (id)generateClusters:(id)clusters withEmbeddings:(id)embeddings error:(id *)error
 {
   v99[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v71 = self;
-  v10 = [(PCHDBSCANClustering *)self->_hdbscanClustering getClusterLabels];
-  if ([v10 count])
+  clustersCopy = clusters;
+  embeddingsCopy = embeddings;
+  selfCopy = self;
+  getClusterLabels = [(PCHDBSCANClustering *)self->_hdbscanClustering getClusterLabels];
+  if ([getClusterLabels count])
   {
-    v11 = [v10 count];
-    if (v11 != [v9 count])
+    v11 = [getClusterLabels count];
+    if (v11 != [embeddingsCopy count])
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
       v96 = *MEMORY[0x1E696A578];
@@ -144,12 +144,12 @@
 
       if (v14)
       {
-        if (a5)
+        if (error)
         {
           v15 = v14;
           v16 = 0;
           v17 = 0;
-          *a5 = v14;
+          *error = v14;
           goto LABEL_45;
         }
 
@@ -171,12 +171,12 @@ LABEL_44:
 
     if (v16)
     {
-      if (a5)
+      if (error)
       {
         v20 = v16;
         v14 = 0;
         v17 = 0;
-        *a5 = v16;
+        *error = v16;
         goto LABEL_45;
       }
 
@@ -185,10 +185,10 @@ LABEL_44:
     }
   }
 
-  v57 = a5;
-  v21 = [MEMORY[0x1E696AB50] setWithArray:v10];
+  errorCopy = error;
+  v21 = [MEMORY[0x1E696AB50] setWithArray:getClusterLabels];
   v64 = objc_opt_new();
-  v68 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
@@ -199,9 +199,9 @@ LABEL_44:
   {
     v23 = v22;
     v24 = *v79;
-    v58 = v8;
-    v66 = v10;
-    v67 = v9;
+    v58 = clustersCopy;
+    v66 = getClusterLabels;
+    v67 = embeddingsCopy;
     v65 = *v79;
     do
     {
@@ -222,8 +222,8 @@ LABEL_44:
           v77[2] = __61__PCClusteringManager_generateClusters_withEmbeddings_error___block_invoke;
           v77[3] = &unk_1E83B81D8;
           v77[4] = v26;
-          v72 = [v10 indexesOfObjectsPassingTest:v77];
-          v27 = [v9 objectsAtIndexes:?];
+          v72 = [getClusterLabels indexesOfObjectsPassingTest:v77];
+          v27 = [embeddingsCopy objectsAtIndexes:?];
           v28 = objc_opt_new();
           v73 = 0u;
           v74 = 0u;
@@ -245,12 +245,12 @@ LABEL_44:
                 }
 
                 v34 = *(*(&v73 + 1) + 8 * i);
-                v35 = [v34 bundleIdentifier];
+                bundleIdentifier = [v34 bundleIdentifier];
 
-                if (v35)
+                if (bundleIdentifier)
                 {
-                  v36 = [v34 bundleIdentifier];
-                  [v28 addObject:v36];
+                  bundleIdentifier2 = [v34 bundleIdentifier];
+                  [v28 addObject:bundleIdentifier2];
                 }
               }
 
@@ -261,39 +261,39 @@ LABEL_44:
           }
 
           v37 = MEMORY[0x1E696AE18];
-          v38 = [v28 allObjects];
-          v39 = [v37 predicateWithFormat:@"bundleIdentifier in %@", v38];
+          allObjects = [v28 allObjects];
+          v39 = [v37 predicateWithFormat:@"bundleIdentifier in %@", allObjects];
 
-          v40 = [v8 filteredArrayUsingPredicate:v39];
-          v41 = [(PCClusteringManager *)v71 _getClusterFrom:v40 withEmbeddings:v29 andCreationDate:v68];
+          v40 = [clustersCopy filteredArrayUsingPredicate:v39];
+          v41 = [(PCClusteringManager *)selfCopy _getClusterFrom:v40 withEmbeddings:v29 andCreationDate:date];
           v42 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
           v43 = v42;
           if (v41)
           {
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
             {
-              v44 = [v41 identifier];
-              v63 = [v41 subBundleIDs];
-              v59 = [v63 count];
-              v61 = [v41 clusterMetadata];
-              v60 = [v61 phenotype];
-              [(PCClusteringManager *)v71 phenotypeDescription:v60];
+              identifier = [v41 identifier];
+              subBundleIDs = [v41 subBundleIDs];
+              v59 = [subBundleIDs count];
+              clusterMetadata = [v41 clusterMetadata];
+              phenotype = [clusterMetadata phenotype];
+              [(PCClusteringManager *)selfCopy phenotypeDescription:phenotype];
               v45 = v62 = v39;
-              v46 = [v41 startDate];
-              v47 = [v41 endDate];
+              startDate = [v41 startDate];
+              endDate = [v41 endDate];
               *buf = 138544386;
-              v85 = v44;
+              v85 = identifier;
               v86 = 2050;
               v87 = v59;
               v88 = 2114;
               v89 = v45;
               v90 = 2114;
-              v91 = v46;
+              v91 = startDate;
               v92 = 2114;
-              v93 = v47;
+              v93 = endDate;
               _os_log_impl(&dword_1CEE74000, v43, OS_LOG_TYPE_DEFAULT, "WorkoutPrediction: Created a cluster ID=%{public}@, bundleCount=%{public}lu, phenotype=%{public}@, dateRange=%{public}@-%{public}@", buf, 0x34u);
 
-              v8 = v58;
+              clustersCopy = v58;
               v39 = v62;
             }
 
@@ -310,10 +310,10 @@ LABEL_44:
             }
           }
 
-          v9 = v67;
+          embeddingsCopy = v67;
 
           v24 = v65;
-          v10 = v66;
+          getClusterLabels = v66;
           v23 = v69;
         }
 
@@ -328,8 +328,8 @@ LABEL_44:
   }
 
   v48 = [v64 copy];
-  cachedClusters = v71->_cachedClusters;
-  v71->_cachedClusters = v48;
+  cachedClusters = selfCopy->_cachedClusters;
+  selfCopy->_cachedClusters = v48;
 
   if ([v64 count])
   {
@@ -351,10 +351,10 @@ LABEL_44:
     v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     v53 = [v51 initWithDomain:@"PCErrorDomain" code:0 userInfo:v52];
 
-    if (v57)
+    if (errorCopy)
     {
       v54 = v53;
-      *v57 = v53;
+      *errorCopy = v53;
     }
 
     v17 = 0;
@@ -369,19 +369,19 @@ LABEL_45:
   return v17;
 }
 
-- (id)phenotypeDescription:(id)a3
+- (id)phenotypeDescription:(id)description
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = a3;
-  v5 = [v3 string];
-  [v5 appendFormat:@"\n"];
+  descriptionCopy = description;
+  string = [v3 string];
+  [string appendFormat:@"\n"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__PCClusteringManager_phenotypeDescription___block_invoke;
   v8[3] = &unk_1E83B8200;
-  v6 = v5;
+  v6 = string;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [descriptionCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -421,23 +421,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_getClusterFrom:(id)a3 withEmbeddings:(id)a4 andCreationDate:(id)a5
+- (id)_getClusterFrom:(id)from withEmbeddings:(id)embeddings andCreationDate:(id)date
 {
   v360 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fromCopy = from;
+  embeddingsCopy = embeddings;
+  dateCopy = date;
   v10 = [PCCluster alloc];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v261 = v9;
-  v12 = [(PCCluster *)v10 initWithIdentifier:v11 creationDate:v9];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v261 = dateCopy;
+  v12 = [(PCCluster *)v10 initWithIdentifier:uUID creationDate:dateCopy];
 
   v279 = objc_opt_new();
   v331 = 0u;
   v332 = 0u;
   v333 = 0u;
   v334 = 0u;
-  obj = v8;
+  obj = embeddingsCopy;
   v13 = [obj countByEnumeratingWithState:&v331 objects:v359 count:16];
   if (v13)
   {
@@ -452,8 +452,8 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v331 + 1) + 8 * i) summaryDictionary];
-        [v279 addObject:v17];
+        summaryDictionary = [*(*(&v331 + 1) + 8 * i) summaryDictionary];
+        [v279 addObject:summaryDictionary];
       }
 
       v14 = [obj countByEnumeratingWithState:&v331 objects:v359 count:16];
@@ -469,8 +469,8 @@ LABEL_9:
   v358[4] = @"isWeekend";
   v358[5] = @"combinedPlaceType";
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v358 count:6];
-  v268 = v7;
-  v19 = [v7 count];
+  v268 = fromCopy;
+  v19 = [fromCopy count];
   v278 = objc_opt_new();
   v266 = objc_opt_new();
   v265 = objc_opt_new();
@@ -487,7 +487,7 @@ LABEL_9:
     v280 = *v328;
     v273 = v19;
     v21 = v19;
-    v22 = self;
+    selfCopy4 = self;
     do
     {
       v23 = 0;
@@ -524,7 +524,7 @@ LABEL_9:
 
               v31 = *(*(&v323 + 1) + 8 * j);
               v32 = [v31 objectForKeyedSubscript:v25];
-              v33 = [(PCClusteringManager *)v22 _convertContextvalueToString:v32 forKey:v25];
+              v33 = [(PCClusteringManager *)selfCopy4 _convertContextvalueToString:v32 forKey:v25];
 
               v34 = [v31 objectForKeyedSubscript:@"bundleID"];
               v35 = v34;
@@ -561,7 +561,7 @@ LABEL_9:
                 [v38 setObject:v41 forKeyedSubscript:v33];
 
                 v20 = v38;
-                v22 = self;
+                selfCopy4 = self;
               }
             }
 
@@ -572,16 +572,16 @@ LABEL_9:
         }
 
         v42 = [v20 keysSortedByValueUsingComparator:&__block_literal_global_1];
-        v43 = [v42 firstObject];
-        v44 = [v20 objectForKeyedSubscript:v43];
+        firstObject = [v42 firstObject];
+        v44 = [v20 objectForKeyedSubscript:firstObject];
         v45 = COERCE_DOUBLE([v44 count]);
 
         v46 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         v12 = v285;
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
-          v47 = [(PCCluster *)v285 identifier];
-          [v47 UUIDString];
+          identifier = [(PCCluster *)v285 identifier];
+          [identifier UUIDString];
           v49 = v48 = v20;
           *buf = 138413571;
           v344 = v49;
@@ -592,63 +592,63 @@ LABEL_9:
           v349 = 2117;
           v350 = *&v42;
           v351 = 2117;
-          v352 = v43;
+          v352 = firstObject;
           v353 = 2048;
           v354 = v45;
           _os_log_impl(&dword_1CEE74000, v46, OS_LOG_TYPE_INFO, "Clustering: id=%@, featureKey=%@, subBundleIDsGroupedByFeatureValues=%{sensitive}@, sortedFeatureValuesByFrequency=%{sensitive}@, mostFrequentFeatureValue=%{sensitive}@, mostFrequentFeatureValueCount=%lu", buf, 0x3Eu);
 
           v20 = v48;
-          v22 = self;
+          selfCopy4 = self;
         }
 
-        v50 = [MEMORY[0x1E695DFB0] null];
-        if ([v43 isEqual:v50] & 1) != 0 || (objc_msgSend(v43, "isEqualToString:", @"unavailable"))
+        null = [MEMORY[0x1E695DFB0] null];
+        if ([firstObject isEqual:null] & 1) != 0 || (objc_msgSend(firstObject, "isEqualToString:", @"unavailable"))
         {
           goto LABEL_32;
         }
 
-        v54 = [(PCDistanceWeightingConfig *)v22->_config clusterPhenotypeMinimumCountThreshold];
+        clusterPhenotypeMinimumCountThreshold = [(PCDistanceWeightingConfig *)selfCopy4->_config clusterPhenotypeMinimumCountThreshold];
 
-        if (*&v45 >= v54)
+        if (*&v45 >= clusterPhenotypeMinimumCountThreshold)
         {
-          if ([v25 isEqualToString:@"combinedPlaceType"] && objc_msgSend(v43, "isEqualToString:", @"Unknown"))
+          if ([v25 isEqualToString:@"combinedPlaceType"] && objc_msgSend(firstObject, "isEqualToString:", @"Unknown"))
           {
-            v50 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-            if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+            null = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+            if (os_log_type_enabled(null, OS_LOG_TYPE_INFO))
             {
               *buf = 0;
-              _os_log_impl(&dword_1CEE74000, v50, OS_LOG_TYPE_INFO, "Clustering: Skipping unknown place type", buf, 2u);
+              _os_log_impl(&dword_1CEE74000, null, OS_LOG_TYPE_INFO, "Clustering: Skipping unknown place type", buf, 2u);
             }
           }
 
           else
           {
-            [v266 setObject:v43 forKeyedSubscript:v25];
-            v55 = [v20 objectForKeyedSubscript:v43];
+            [v266 setObject:firstObject forKeyedSubscript:v25];
+            v55 = [v20 objectForKeyedSubscript:firstObject];
             [v265 setObject:v55 forKeyedSubscript:v25];
 
-            v50 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
-            if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
+            null = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
+            if (os_log_type_enabled(null, OS_LOG_TYPE_INFO))
             {
-              v56 = [(PCCluster *)v285 identifier];
-              [v56 UUIDString];
+              identifier2 = [(PCCluster *)v285 identifier];
+              [identifier2 UUIDString];
               v58 = v57 = v20;
               *buf = 138413570;
               v344 = v58;
               v345 = 2112;
               v346 = v25;
               v347 = 2112;
-              v348 = v43;
+              v348 = firstObject;
               v349 = 2048;
               v350 = v45;
               v351 = 2048;
               v352 = v273;
               v353 = 2048;
               v354 = *&v45 / v21 * 100.0;
-              _os_log_impl(&dword_1CEE74000, v50, OS_LOG_TYPE_INFO, "Clustering: id=%@, featureKey=%@ Phenotype was found: %@. Count=%lu/%lu (%.1f%%)", buf, 0x3Eu);
+              _os_log_impl(&dword_1CEE74000, null, OS_LOG_TYPE_INFO, "Clustering: id=%@, featureKey=%@ Phenotype was found: %@. Count=%lu/%lu (%.1f%%)", buf, 0x3Eu);
 
               v20 = v57;
-              v22 = self;
+              selfCopy4 = self;
             }
           }
 
@@ -659,10 +659,10 @@ LABEL_32:
         v51 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
-          v52 = [(PCCluster *)v285 identifier];
-          v53 = [v52 UUIDString];
+          identifier3 = [(PCCluster *)v285 identifier];
+          uUIDString = [identifier3 UUIDString];
           *buf = 138412803;
-          v344 = v53;
+          v344 = uUIDString;
           v345 = 2112;
           v346 = v25;
           v347 = 2117;
@@ -685,16 +685,16 @@ LABEL_32:
   v60 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
   if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
   {
-    v61 = [(PCCluster *)v12 identifier];
-    v62 = [v61 UUIDString];
+    identifier4 = [(PCCluster *)v12 identifier];
+    uUIDString2 = [identifier4 UUIDString];
     v63 = [(PCClusteringManager *)self phenotypeDescription:v266];
-    v64 = [v278 allKeys];
+    allKeys = [v278 allKeys];
     *buf = 138412802;
-    v344 = v62;
+    v344 = uUIDString2;
     v345 = 2112;
     v346 = v63;
     v347 = 2112;
-    v348 = v64;
+    v348 = allKeys;
     _os_log_impl(&dword_1CEE74000, v60, OS_LOG_TYPE_INFO, "Clustering: id=%@, Pruning bundles with different values from phenotype=%@, allKeys=%@", buf, 0x20u);
   }
 
@@ -704,8 +704,8 @@ LABEL_32:
   v320 = 0u;
   v321 = 0u;
   v322 = 0u;
-  v282 = [v265 allKeys];
-  v66 = [v282 countByEnumeratingWithState:&v319 objects:v342 count:16];
+  allKeys2 = [v265 allKeys];
+  v66 = [allKeys2 countByEnumeratingWithState:&v319 objects:v342 count:16];
   v276 = v20;
   if (v66)
   {
@@ -718,7 +718,7 @@ LABEL_32:
       {
         if (*v320 != v289)
         {
-          objc_enumerationMutation(v282);
+          objc_enumerationMutation(allKeys2);
         }
 
         v70 = *(*(&v319 + 1) + 8 * k);
@@ -739,20 +739,20 @@ LABEL_32:
           v74 = [MEMORY[0x1E695DFD8] setWithArray:v71];
           [v73 intersectSet:v74];
 
-          v75 = [(PCDistanceWeightingConfig *)self->_config clusterPhenotypeMinimumCountThreshold];
+          clusterPhenotypeMinimumCountThreshold2 = [(PCDistanceWeightingConfig *)self->_config clusterPhenotypeMinimumCountThreshold];
           v76 = [v73 count];
-          if (v68 <= v75)
+          if (v68 <= clusterPhenotypeMinimumCountThreshold2)
           {
             if (v76 < [(PCDistanceWeightingConfig *)self->_config clusterPhenotypeMinimumCountThreshold])
             {
               v77 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
               if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
               {
-                v78 = [(PCDistanceWeightingConfig *)self->_config clusterPhenotypeMinimumCountThreshold];
+                clusterPhenotypeMinimumCountThreshold3 = [(PCDistanceWeightingConfig *)self->_config clusterPhenotypeMinimumCountThreshold];
                 *buf = 138412546;
                 v344 = v70;
                 v345 = 2048;
-                v346 = v78;
+                v346 = clusterPhenotypeMinimumCountThreshold3;
                 _os_log_impl(&dword_1CEE74000, v77, OS_LOG_TYPE_INFO, "WorkoutPrediction: Clustering, The intersection between selected subbundles and subbundles with the current phenotype value %@ is less than threshold %lu. Dropping the current phenotype", buf, 0x16u);
               }
 
@@ -786,7 +786,7 @@ LABEL_65:
         v20 = v276;
       }
 
-      v67 = [v282 countByEnumeratingWithState:&v319 objects:v342 count:16];
+      v67 = [allKeys2 countByEnumeratingWithState:&v319 objects:v342 count:16];
     }
 
     while (v67);
@@ -796,11 +796,11 @@ LABEL_65:
   v80 = v285;
   if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
   {
-    v81 = [(PCCluster *)v285 identifier];
-    v82 = [v81 UUIDString];
+    identifier5 = [(PCCluster *)v285 identifier];
+    uUIDString3 = [identifier5 UUIDString];
     v83 = [(PCClusteringManager *)self phenotypeDescription:v266];
     *buf = 138412546;
-    v344 = v82;
+    v344 = uUIDString3;
     v345 = 2112;
     v346 = v83;
     _os_log_impl(&dword_1CEE74000, v79, OS_LOG_TYPE_INFO, "Clustering: id=%@, Remaining phenotype after pruning=%@", buf, 0x16u);
@@ -862,22 +862,22 @@ LABEL_65:
         }
 
         v99 = *(*(&v315 + 1) + 8 * m);
-        v100 = [v99 bundleIdentifier];
+        bundleIdentifier = [v99 bundleIdentifier];
 
-        if (v100)
+        if (bundleIdentifier)
         {
-          v101 = [v99 bundleIdentifier];
-          v102 = [v101 UUIDString];
-          [v264 addObject:v102];
+          bundleIdentifier2 = [v99 bundleIdentifier];
+          uUIDString4 = [bundleIdentifier2 UUIDString];
+          [v264 addObject:uUIDString4];
         }
 
-        v103 = [v99 suggestionID];
+        suggestionID = [v99 suggestionID];
 
-        if (v103)
+        if (suggestionID)
         {
-          v104 = [v99 suggestionID];
-          v105 = [v104 UUIDString];
-          [v263 addObject:v105];
+          suggestionID2 = [v99 suggestionID];
+          uUIDString5 = [suggestionID2 UUIDString];
+          [v263 addObject:uUIDString5];
         }
       }
 
@@ -913,8 +913,8 @@ LABEL_65:
           objc_enumerationMutation(v109);
         }
 
-        v114 = [*(*(&v311 + 1) + 8 * n) events];
-        [v108 addObjectsFromArray:v114];
+        events = [*(*(&v311 + 1) + 8 * n) events];
+        [v108 addObjectsFromArray:events];
       }
 
       v111 = [v109 countByEnumeratingWithState:&v311 objects:v340 count:16];
@@ -926,8 +926,8 @@ LABEL_65:
   v258 = v109;
 
   v259 = v108;
-  v115 = [v108 allObjects];
-  v116 = [v115 copy];
+  allObjects = [v108 allObjects];
+  v116 = [allObjects copy];
   [(PCCluster *)v285 setEvents:v116];
 
   v269 = objc_opt_new();
@@ -935,8 +935,8 @@ LABEL_65:
   v308 = 0u;
   v309 = 0u;
   v310 = 0u;
-  v117 = [(PCCluster *)v285 events];
-  v118 = [v117 countByEnumeratingWithState:&v307 objects:v339 count:16];
+  events2 = [(PCCluster *)v285 events];
+  v118 = [events2 countByEnumeratingWithState:&v307 objects:v339 count:16];
   if (v118)
   {
     v119 = v118;
@@ -947,23 +947,23 @@ LABEL_65:
       {
         if (*v308 != v120)
         {
-          objc_enumerationMutation(v117);
+          objc_enumerationMutation(events2);
         }
 
-        v122 = [*(*(&v307 + 1) + 8 * ii) workoutEvent];
-        v123 = [v122 hkObjectIdentifier];
-        [v269 addObject:v123];
+        workoutEvent = [*(*(&v307 + 1) + 8 * ii) workoutEvent];
+        hkObjectIdentifier = [workoutEvent hkObjectIdentifier];
+        [v269 addObject:hkObjectIdentifier];
       }
 
-      v119 = [v117 countByEnumeratingWithState:&v307 objects:v339 count:16];
+      v119 = [events2 countByEnumeratingWithState:&v307 objects:v339 count:16];
     }
 
     while (v119);
   }
 
   [(PCCluster *)v285 setSubHKObjectIDs:v269];
-  v124 = [(PCCluster *)v285 events];
-  v125 = [(PCClusteringManager *)self _dominantSourceBundleIdentifierFromEvents:v124];
+  events3 = [(PCCluster *)v285 events];
+  v125 = [(PCClusteringManager *)self _dominantSourceBundleIdentifierFromEvents:events3];
   [(PCCluster *)v285 setSourceBundleIdentifier:v125];
 
   v262 = objc_opt_new();
@@ -1026,10 +1026,10 @@ LABEL_65:
                 {
                   if (v142)
                   {
-                    v143 = [(PCCluster *)v80 identifier];
-                    v144 = [v143 UUIDString];
+                    identifier6 = [(PCCluster *)v80 identifier];
+                    uUIDString6 = [identifier6 UUIDString];
                     *buf = 138413059;
-                    v344 = v144;
+                    v344 = uUIDString6;
                     v345 = 2112;
                     v346 = v127;
                     v347 = 2117;
@@ -1044,10 +1044,10 @@ LABEL_65:
 
                 else if (v142)
                 {
-                  v143 = [(PCCluster *)v80 identifier];
-                  v144 = [v143 UUIDString];
+                  identifier6 = [(PCCluster *)v80 identifier];
+                  uUIDString6 = [identifier6 UUIDString];
                   *buf = 138413058;
-                  v344 = v144;
+                  v344 = uUIDString6;
                   v345 = 2112;
                   v346 = v127;
                   v347 = 2112;
@@ -1066,10 +1066,10 @@ LABEL_116:
                 v147 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
                 if (os_log_type_enabled(v147, OS_LOG_TYPE_INFO))
                 {
-                  v148 = [(PCCluster *)v80 identifier];
-                  v149 = [v148 UUIDString];
+                  identifier7 = [(PCCluster *)v80 identifier];
+                  uUIDString7 = [identifier7 UUIDString];
                   *buf = 138412802;
-                  v344 = v149;
+                  v344 = uUIDString7;
                   v345 = 2112;
                   v346 = v127;
                   v347 = 2112;
@@ -1098,10 +1098,10 @@ LABEL_116:
         v151 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
         if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
         {
-          v152 = [(PCCluster *)v80 identifier];
-          v153 = [v152 UUIDString];
+          identifier8 = [(PCCluster *)v80 identifier];
+          uUIDString8 = [identifier8 UUIDString];
           *buf = 138412803;
-          v344 = v153;
+          v344 = uUIDString8;
           v345 = 2112;
           v346 = v127;
           v347 = 2117;
@@ -1151,7 +1151,7 @@ LABEL_116:
       v159 = [v158 objectForKeyedSubscript:@"weekOfYear"];
       if (v159)
       {
-        v160 = v159;
+        stringValue = v159;
         v161 = [v158 objectForKeyedSubscript:@"suggestionID"];
         if (v161)
         {
@@ -1165,12 +1165,12 @@ LABEL_116:
           }
 
           v165 = [v158 objectForKeyedSubscript:@"weekOfYear"];
-          v160 = [v165 stringValue];
+          stringValue = [v165 stringValue];
 
           v166 = MEMORY[0x1E696AD98];
-          v167 = [v284 objectForKeyedSubscript:v160];
+          v167 = [v284 objectForKeyedSubscript:stringValue];
           v168 = [v166 numberWithInt:{objc_msgSend(v167, "intValue") + 1}];
-          [v284 setObject:v168 forKeyedSubscript:v160];
+          [v284 setObject:v168 forKeyedSubscript:stringValue];
         }
       }
     }
@@ -1203,12 +1203,12 @@ LABEL_142:
   {
 LABEL_147:
     v173 = [v266 objectForKeyedSubscript:@"timeTag"];
-    v174 = [v173 intValue];
+    intValue = [v173 intValue];
 
-    if (v174)
+    if (intValue)
     {
       v175 = [v266 objectForKeyedSubscript:@"timeTag"];
-      v176 = [v175 unsignedLongValue];
+      unsignedLongValue = [v175 unsignedLongValue];
     }
 
     else
@@ -1222,7 +1222,7 @@ LABEL_147:
 
         if (v195)
         {
-          v176 = 102;
+          unsignedLongValue = 102;
         }
 
         else
@@ -1232,7 +1232,7 @@ LABEL_147:
 
           if (v205)
           {
-            v176 = 103;
+            unsignedLongValue = 103;
           }
 
           else
@@ -1242,7 +1242,7 @@ LABEL_147:
 
             if (v248)
             {
-              v176 = 104;
+              unsignedLongValue = 104;
             }
 
             else
@@ -1252,7 +1252,7 @@ LABEL_147:
 
               if (v251)
               {
-                v176 = 105;
+                unsignedLongValue = 105;
               }
 
               else
@@ -1262,7 +1262,7 @@ LABEL_147:
 
                 if (v253)
                 {
-                  v176 = 106;
+                  unsignedLongValue = 106;
                 }
 
                 else
@@ -1272,7 +1272,7 @@ LABEL_147:
 
                   if (v255)
                   {
-                    v176 = 107;
+                    unsignedLongValue = 107;
                   }
 
                   else
@@ -1282,12 +1282,12 @@ LABEL_147:
 
                     if (v257)
                     {
-                      v176 = 108;
+                      unsignedLongValue = 108;
                     }
 
                     else
                     {
-                      v176 = 0;
+                      unsignedLongValue = 0;
                     }
                   }
                 }
@@ -1299,38 +1299,38 @@ LABEL_147:
 
       else
       {
-        v176 = [v266 objectForKeyedSubscript:@"isWeekend"];
+        unsignedLongValue = [v266 objectForKeyedSubscript:@"isWeekend"];
 
-        if (v176)
+        if (unsignedLongValue)
         {
           v202 = [v266 objectForKeyedSubscript:@"isWeekend"];
-          v203 = [v202 BOOLValue];
+          bOOLValue = [v202 BOOLValue];
 
-          if (v203)
+          if (bOOLValue)
           {
-            v176 = 10001;
+            unsignedLongValue = 10001;
           }
 
           else
           {
-            v176 = 10000;
+            unsignedLongValue = 10000;
           }
         }
       }
     }
 
-    v177 = [PCTime timeStringFromTimeTag:v176];
+    v177 = [PCTime timeStringFromTimeTag:unsignedLongValue];
     if (v177)
     {
       [v266 setObject:v177 forKeyedSubscript:@"timeString"];
-      v178 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
       v179 = [PCTime alloc];
-      v180 = [MEMORY[0x1E695DF00] date];
-      [v180 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceReferenceDate];
       v182 = v181;
-      v183 = [v178 timeZone];
-      v184 = [v183 name];
-      v185 = [(PCTime *)v179 initWithTimestamp:v177 timeString:v184 timeZone:v176 timeTag:v182];
+      timeZone = [currentCalendar timeZone];
+      name = [timeZone name];
+      v185 = [(PCTime *)v179 initWithTimestamp:v177 timeString:name timeZone:unsignedLongValue timeTag:v182];
 
       [(PCCluster *)v285 setTime:v185];
       v169 = v266;
@@ -1425,8 +1425,8 @@ LABEL_178:
 
   [(PCCluster *)v285 setLocation:v208];
   v211 = [PCClusterMetadata alloc];
-  v212 = [MEMORY[0x1E696AFB0] UUID];
-  v213 = [(PCClusterMetadata *)v211 initWithIdentifier:v212 phenoType:v169];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  v213 = [(PCClusterMetadata *)v211 initWithIdentifier:uUID2 phenoType:v169];
 
   v214 = objc_opt_new();
   v291 = 0u;
@@ -1449,13 +1449,13 @@ LABEL_178:
         }
 
         v220 = *(*(&v291 + 1) + 8 * mm);
-        v221 = [v220 suggestionID];
+        suggestionID3 = [v220 suggestionID];
 
-        if (v221)
+        if (suggestionID3)
         {
-          v222 = [v220 suggestionID];
-          v223 = [v222 UUIDString];
-          [v214 addObject:v223];
+          suggestionID4 = [v220 suggestionID];
+          uUIDString9 = [suggestionID4 UUIDString];
+          [v214 addObject:uUIDString9];
         }
       }
 
@@ -1535,12 +1535,12 @@ LABEL_178:
     v240 = _plc_log_get_normal_handle(PCLogCategoryWorkoutPredictor);
     if (os_log_type_enabled(v240, OS_LOG_TYPE_INFO))
     {
-      v241 = [(PCCluster *)v285 identifier];
+      identifier9 = [(PCCluster *)v285 identifier];
       [(PCCluster *)v285 timeOfDayCircularStd];
       v243 = v242;
       [(PCCluster *)v285 latLongCircularStd];
       *buf = 138412802;
-      v344 = v241;
+      v344 = identifier9;
       v345 = 2048;
       v346 = v243;
       v347 = 2048;
@@ -1589,66 +1589,66 @@ uint64_t __70__PCClusteringManager__getClusterFrom_withEmbeddings_andCreationDat
   return v7;
 }
 
-- (id)_convertContextvalueToString:(id)a3 forKey:(id)a4
+- (id)_convertContextvalueToString:(id)string forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  stringCopy = string;
+  keyCopy = key;
+  if (!stringCopy)
   {
     goto LABEL_3;
   }
 
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v5 isEqual:v7];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [stringCopy isEqual:null];
 
   if (v8)
   {
     goto LABEL_3;
   }
 
-  if (@"timeTag" != v6)
+  if (@"timeTag" != keyCopy)
   {
-    if (([(__CFString *)v6 isEqualToString:@"activityType"]& 1) == 0)
+    if (([(__CFString *)keyCopy isEqualToString:@"activityType"]& 1) == 0)
     {
-      [(__CFString *)v6 isEqualToString:@"combinedPlaceType"];
+      [(__CFString *)keyCopy isEqualToString:@"combinedPlaceType"];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v5;
+      stringValue = stringCopy;
     }
 
     else
     {
-      v9 = [v5 stringValue];
+      stringValue = [stringCopy stringValue];
     }
 
     goto LABEL_4;
   }
 
-  v10 = +[PCTime timeStringFromTimeTag:](PCTime, "timeStringFromTimeTag:", [v5 unsignedLongValue]);
+  v10 = +[PCTime timeStringFromTimeTag:](PCTime, "timeStringFromTimeTag:", [stringCopy unsignedLongValue]);
   if (!v10)
   {
 LABEL_3:
-    v9 = @"unavailable";
+    stringValue = @"unavailable";
 LABEL_4:
-    v10 = v9;
+    v10 = stringValue;
   }
 
   return v10;
 }
 
-- (id)_dominantSourceBundleIdentifierFromEvents:(id)a3
+- (id)_dominantSourceBundleIdentifierFromEvents:(id)events
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  eventsCopy = events;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
@@ -1663,14 +1663,14 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v31 + 1) + 8 * i) workoutEvent];
-        v11 = [v10 sourceBundleIdentifier];
+        workoutEvent = [*(*(&v31 + 1) + 8 * i) workoutEvent];
+        sourceBundleIdentifier = [workoutEvent sourceBundleIdentifier];
 
-        if (v11)
+        if (sourceBundleIdentifier)
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [dictionary objectForKeyedSubscript:sourceBundleIdentifier];
           v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "intValue") + 1}];
-          [v4 setObject:v13 forKeyedSubscript:v11];
+          [dictionary setObject:v13 forKeyedSubscript:sourceBundleIdentifier];
         }
       }
 
@@ -1684,7 +1684,7 @@ LABEL_4:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = v4;
+  v14 = dictionary;
   v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v15)
   {
@@ -1703,13 +1703,13 @@ LABEL_4:
 
         v21 = *(*(&v27 + 1) + 8 * j);
         v22 = [v14 objectForKeyedSubscript:{v21, v27}];
-        v23 = [v22 intValue];
+        intValue = [v22 intValue];
 
-        if (v23 > v17)
+        if (intValue > v17)
         {
           v24 = v21;
 
-          v17 = v23;
+          v17 = intValue;
           v18 = v24;
         }
       }

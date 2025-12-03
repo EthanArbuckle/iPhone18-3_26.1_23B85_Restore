@@ -1,52 +1,52 @@
 @interface HMAccessoryDiagnosticsOptions
-- (HMAccessoryDiagnosticsOptions)initWithCoder:(id)a3;
-- (HMAccessoryDiagnosticsOptions)initWithLogSizeBytes:(id)a3 delaySeconds:(id)a4 snapshotType:(int64_t)a5 recordAudio:(BOOL)a6 enableAudioClips:(BOOL)a7 cloudkitMetadataRequired:(BOOL)a8;
+- (HMAccessoryDiagnosticsOptions)initWithCoder:(id)coder;
+- (HMAccessoryDiagnosticsOptions)initWithLogSizeBytes:(id)bytes delaySeconds:(id)seconds snapshotType:(int64_t)type recordAudio:(BOOL)audio enableAudioClips:(BOOL)clips cloudkitMetadataRequired:(BOOL)required;
 - (id)payloadMetadata;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryDiagnosticsOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   logSize = self->_logSize;
-  v9 = a3;
-  [v9 encodeObject:logSize forKey:@"HMA.diagnostics.ck.ls"];
-  [v9 encodeObject:self->_delay forKey:@"HMA.diagnostics.ck.d"];
+  coderCopy = coder;
+  [coderCopy encodeObject:logSize forKey:@"HMA.diagnostics.ck.ls"];
+  [coderCopy encodeObject:self->_delay forKey:@"HMA.diagnostics.ck.d"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_snapshotType];
-  [v9 encodeObject:v5 forKey:@"HMA.diagnostics.ck.st"];
+  [coderCopy encodeObject:v5 forKey:@"HMA.diagnostics.ck.st"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_recordAudio];
-  [v9 encodeObject:v6 forKey:@"HMA.diagnostics.ck.ra"];
+  [coderCopy encodeObject:v6 forKey:@"HMA.diagnostics.ck.ra"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_enableAudioClips];
-  [v9 encodeObject:v7 forKey:@"HMA.diagnostics.ck.ec"];
+  [coderCopy encodeObject:v7 forKey:@"HMA.diagnostics.ck.ec"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_metadataRequired];
-  [v9 encodeObject:v8 forKey:@"HMA.diagnostics.ck.mr"];
+  [coderCopy encodeObject:v8 forKey:@"HMA.diagnostics.ck.mr"];
 
-  [v9 encodeObject:self->_matterLogType forKey:@"LogType"];
+  [coderCopy encodeObject:self->_matterLogType forKey:@"LogType"];
 }
 
-- (HMAccessoryDiagnosticsOptions)initWithCoder:(id)a3
+- (HMAccessoryDiagnosticsOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ls"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.d"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.st"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ra"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ec"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.mr"];
+  coderCopy = coder;
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ls"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.d"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.st"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ra"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ec"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.mr"];
   if ([v5 integerValue] > 2 || objc_msgSend(v5, "integerValue") <= 0)
   {
 
     v5 = &unk_1F0EFCF50;
   }
 
-  v9 = [v5 integerValue];
+  integerValue = [v5 integerValue];
   v10 = v6;
-  v11 = -[HMAccessoryDiagnosticsOptions initWithLogSizeBytes:delaySeconds:snapshotType:recordAudio:enableAudioClips:cloudkitMetadataRequired:](self, "initWithLogSizeBytes:delaySeconds:snapshotType:recordAudio:enableAudioClips:cloudkitMetadataRequired:", v17, v16, v9, [v6 BOOLValue], objc_msgSend(v7, "BOOLValue"), objc_msgSend(v8, "BOOLValue"));
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LogType"];
+  v11 = -[HMAccessoryDiagnosticsOptions initWithLogSizeBytes:delaySeconds:snapshotType:recordAudio:enableAudioClips:cloudkitMetadataRequired:](self, "initWithLogSizeBytes:delaySeconds:snapshotType:recordAudio:enableAudioClips:cloudkitMetadataRequired:", v17, v16, integerValue, [v6 BOOLValue], objc_msgSend(v7, "BOOLValue"), objc_msgSend(v8, "BOOLValue"));
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LogType"];
   matterLogType = v11->_matterLogType;
   v11->_matterLogType = v12;
 
@@ -56,20 +56,20 @@
 - (id)payloadMetadata
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(HMAccessoryDiagnosticsOptions *)self logSize];
+  logSize = [(HMAccessoryDiagnosticsOptions *)self logSize];
 
-  if (v4)
+  if (logSize)
   {
-    v5 = [(HMAccessoryDiagnosticsOptions *)self logSize];
-    [v3 setObject:v5 forKeyedSubscript:@"maxLogSize"];
+    logSize2 = [(HMAccessoryDiagnosticsOptions *)self logSize];
+    [v3 setObject:logSize2 forKeyedSubscript:@"maxLogSize"];
   }
 
-  v6 = [(HMAccessoryDiagnosticsOptions *)self delay];
+  delay = [(HMAccessoryDiagnosticsOptions *)self delay];
 
-  if (v6)
+  if (delay)
   {
-    v7 = [(HMAccessoryDiagnosticsOptions *)self delay];
-    [v3 setObject:v7 forKeyedSubscript:@"delay"];
+    delay2 = [(HMAccessoryDiagnosticsOptions *)self delay];
+    [v3 setObject:delay2 forKeyedSubscript:@"delay"];
   }
 
   if ([(HMAccessoryDiagnosticsOptions *)self recordAudio])
@@ -90,18 +90,18 @@
     [v3 setObject:v10 forKeyedSubscript:@"snapshotType"];
   }
 
-  v11 = [(HMAccessoryDiagnosticsOptions *)self matterLogType];
-  [v3 setObject:v11 forKeyedSubscript:@"LogType"];
+  matterLogType = [(HMAccessoryDiagnosticsOptions *)self matterLogType];
+  [v3 setObject:matterLogType forKeyedSubscript:@"LogType"];
 
   return v3;
 }
 
-- (HMAccessoryDiagnosticsOptions)initWithLogSizeBytes:(id)a3 delaySeconds:(id)a4 snapshotType:(int64_t)a5 recordAudio:(BOOL)a6 enableAudioClips:(BOOL)a7 cloudkitMetadataRequired:(BOOL)a8
+- (HMAccessoryDiagnosticsOptions)initWithLogSizeBytes:(id)bytes delaySeconds:(id)seconds snapshotType:(int64_t)type recordAudio:(BOOL)audio enableAudioClips:(BOOL)clips cloudkitMetadataRequired:(BOOL)required
 {
-  v9 = a7;
-  v10 = a6;
-  v15 = a3;
-  v16 = a4;
+  clipsCopy = clips;
+  audioCopy = audio;
+  bytesCopy = bytes;
+  secondsCopy = seconds;
   v20.receiver = self;
   v20.super_class = HMAccessoryDiagnosticsOptions;
   v17 = [(HMAccessoryDiagnosticsOptions *)&v20 init];
@@ -110,14 +110,14 @@
     goto LABEL_11;
   }
 
-  if ((!v15 || [v15 integerValue] <= 0x40000000 && objc_msgSend(v15, "integerValue") >= 5242880) && (objc_msgSend(v16, "integerValue") & 0x8000000000000000) == 0 && objc_msgSend(v16, "integerValue") <= 3600 && (a5 != 1 || !v10 && !v9))
+  if ((!bytesCopy || [bytesCopy integerValue] <= 0x40000000 && objc_msgSend(bytesCopy, "integerValue") >= 5242880) && (objc_msgSend(secondsCopy, "integerValue") & 0x8000000000000000) == 0 && objc_msgSend(secondsCopy, "integerValue") <= 3600 && (type != 1 || !audioCopy && !clipsCopy))
   {
-    objc_storeStrong(&v17->_logSize, a3);
-    objc_storeStrong(&v17->_delay, a4);
-    v17->_snapshotType = a5;
-    v17->_recordAudio = v10;
-    v17->_enableAudioClips = v9;
-    v17->_metadataRequired = a8;
+    objc_storeStrong(&v17->_logSize, bytes);
+    objc_storeStrong(&v17->_delay, seconds);
+    v17->_snapshotType = type;
+    v17->_recordAudio = audioCopy;
+    v17->_enableAudioClips = clipsCopy;
+    v17->_metadataRequired = required;
 LABEL_11:
     v18 = v17;
     goto LABEL_12;

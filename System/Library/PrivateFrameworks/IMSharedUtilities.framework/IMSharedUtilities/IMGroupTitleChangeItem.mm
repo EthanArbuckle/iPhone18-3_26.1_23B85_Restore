@@ -1,13 +1,13 @@
 @interface IMGroupTitleChangeItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)unattributed;
-- (IMGroupTitleChangeItem)initWithCoder:(id)a3;
-- (IMGroupTitleChangeItem)initWithDictionary:(id)a3;
+- (IMGroupTitleChangeItem)initWithCoder:(id)coder;
+- (IMGroupTitleChangeItem)initWithDictionary:(id)dictionary;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUnattributed:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUnattributed:(BOOL)unattributed;
 @end
 
 @implementation IMGroupTitleChangeItem
@@ -19,7 +19,7 @@
   [(IMGroupTitleChangeItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IMGroupTitleChangeItem;
@@ -29,52 +29,52 @@
   [v5 setOtherCountryCode:{-[IMGroupTitleChangeItem otherCountryCode](self, "otherCountryCode")}];
   [v5 setTitle:{-[IMGroupTitleChangeItem title](self, "title")}];
   [v5 setErrorCode:{-[IMGroupTitleChangeItem errorCode](self, "errorCode")}];
-  v6 = [(NSDictionary *)[(IMGroupTitleChangeItem *)self messageSummaryInfo] copyWithZone:a3];
+  v6 = [(NSDictionary *)[(IMGroupTitleChangeItem *)self messageSummaryInfo] copyWithZone:zone];
   [v5 setMessageSummaryInfo:v6];
 
   return v5;
 }
 
-- (IMGroupTitleChangeItem)initWithCoder:(id)a3
+- (IMGroupTitleChangeItem)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = IMGroupTitleChangeItem;
   v4 = [(IMItem *)&v12 initWithCoder:?];
   if (v4)
   {
-    -[IMGroupTitleChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"]);
-    -[IMGroupTitleChangeItem setOtherHandle:](v4, "setOtherHandle:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"]);
-    -[IMGroupTitleChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"]);
-    -[IMGroupTitleChangeItem setTitle:](v4, "setTitle:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"title"]);
-    -[IMGroupTitleChangeItem setErrorCode:](v4, "setErrorCode:", [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"errorCode", "intValue"}]);
+    -[IMGroupTitleChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"]);
+    -[IMGroupTitleChangeItem setOtherHandle:](v4, "setOtherHandle:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"]);
+    -[IMGroupTitleChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"]);
+    -[IMGroupTitleChangeItem setTitle:](v4, "setTitle:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"title"]);
+    -[IMGroupTitleChangeItem setErrorCode:](v4, "setErrorCode:", [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"errorCode", "intValue"}]);
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
-    -[IMGroupTitleChangeItem setMessageSummaryInfo:](v4, "setMessageSummaryInfo:", [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"messageSummaryInfo"}]);
+    -[IMGroupTitleChangeItem setMessageSummaryInfo:](v4, "setMessageSummaryInfo:", [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"messageSummaryInfo"}]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IMGroupTitleChangeItem;
   [(IMItem *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:-[IMGroupTitleChangeItem otherCountryCode](self forKey:{"otherCountryCode"), @"otherCountryCode"}];
-  [a3 encodeObject:-[IMGroupTitleChangeItem otherHandle](self forKey:{"otherHandle"), @"otherHandle"}];
-  [a3 encodeObject:-[IMGroupTitleChangeItem otherUnformattedID](self forKey:{"otherUnformattedID"), @"otherUnformattedID"}];
-  [a3 encodeObject:-[IMGroupTitleChangeItem title](self forKey:{"title"), @"title"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", -[IMGroupTitleChangeItem errorCode](self, "errorCode")), @"errorCode"}];
-  [a3 encodeObject:self->_messageSummaryInfo forKey:@"messageSummaryInfo"];
+  [coder encodeObject:-[IMGroupTitleChangeItem otherCountryCode](self forKey:{"otherCountryCode"), @"otherCountryCode"}];
+  [coder encodeObject:-[IMGroupTitleChangeItem otherHandle](self forKey:{"otherHandle"), @"otherHandle"}];
+  [coder encodeObject:-[IMGroupTitleChangeItem otherUnformattedID](self forKey:{"otherUnformattedID"), @"otherUnformattedID"}];
+  [coder encodeObject:-[IMGroupTitleChangeItem title](self forKey:{"title"), @"title"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", -[IMGroupTitleChangeItem errorCode](self, "errorCode")), @"errorCode"}];
+  [coder encodeObject:self->_messageSummaryInfo forKey:@"messageSummaryInfo"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -88,26 +88,26 @@
     {
       v16.receiver = self;
       v16.super_class = IMGroupTitleChangeItem;
-      v7 = [(IMItem *)&v16 isEqual:a3];
+      v7 = [(IMItem *)&v16 isEqual:equal];
       if (v7)
       {
         title = self->_title;
-        if (title == [a3 title] || (v7 = -[NSString isEqualToString:](self->_title, "isEqualToString:", objc_msgSend(a3, "title"))))
+        if (title == [equal title] || (v7 = -[NSString isEqualToString:](self->_title, "isEqualToString:", objc_msgSend(equal, "title"))))
         {
           otherCountryCode = self->_otherCountryCode;
-          if (otherCountryCode == [a3 otherCountryCode] || (v7 = -[NSString isEqualToString:](self->_otherCountryCode, "isEqualToString:", objc_msgSend(a3, "otherCountryCode"))))
+          if (otherCountryCode == [equal otherCountryCode] || (v7 = -[NSString isEqualToString:](self->_otherCountryCode, "isEqualToString:", objc_msgSend(equal, "otherCountryCode"))))
           {
             otherHandle = self->_otherHandle;
-            if (otherHandle == [a3 otherHandle] || (v7 = -[NSString isEqualToString:](self->_otherHandle, "isEqualToString:", objc_msgSend(a3, "otherHandle"))))
+            if (otherHandle == [equal otherHandle] || (v7 = -[NSString isEqualToString:](self->_otherHandle, "isEqualToString:", objc_msgSend(equal, "otherHandle"))))
             {
               otherUnformattedID = self->_otherUnformattedID;
-              if (otherUnformattedID == [a3 otherUnformattedID] || (v7 = -[NSString isEqualToString:](self->_otherUnformattedID, "isEqualToString:", objc_msgSend(a3, "otherUnformattedID"))))
+              if (otherUnformattedID == [equal otherUnformattedID] || (v7 = -[NSString isEqualToString:](self->_otherUnformattedID, "isEqualToString:", objc_msgSend(equal, "otherUnformattedID"))))
               {
                 errorCode = self->_errorCode;
-                if (errorCode == [a3 errorCode])
+                if (errorCode == [equal errorCode])
                 {
                   messageSummaryInfo = self->_messageSummaryInfo;
-                  LOBYTE(v7) = messageSummaryInfo == [a3 messageSummaryInfo] || -[NSDictionary isEqualToDictionary:](self->_messageSummaryInfo, "isEqualToDictionary:", objc_msgSend(a3, "messageSummaryInfo"));
+                  LOBYTE(v7) = messageSummaryInfo == [equal messageSummaryInfo] || -[NSDictionary isEqualToDictionary:](self->_messageSummaryInfo, "isEqualToDictionary:", objc_msgSend(equal, "messageSummaryInfo"));
                 }
 
                 else
@@ -125,26 +125,26 @@
     {
       v15.receiver = self;
       v15.super_class = IMGroupTitleChangeItem;
-      LOBYTE(v7) = [(IMItem *)&v15 isEqual:a3];
+      LOBYTE(v7) = [(IMItem *)&v15 isEqual:equal];
     }
   }
 
   return v7;
 }
 
-- (IMGroupTitleChangeItem)initWithDictionary:(id)a3
+- (IMGroupTitleChangeItem)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = IMGroupTitleChangeItem;
   v4 = [(IMItem *)&v6 initWithDictionary:?];
   if (v4)
   {
-    -[IMGroupTitleChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [a3 objectForKey:@"otherCountryCode"]);
-    -[IMGroupTitleChangeItem setOtherHandle:](v4, "setOtherHandle:", [a3 objectForKey:@"otherHandle"]);
-    -[IMGroupTitleChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [a3 objectForKey:@"otherUnformattedID"]);
-    -[IMGroupTitleChangeItem setTitle:](v4, "setTitle:", [a3 objectForKey:@"title"]);
-    -[IMGroupTitleChangeItem setErrorCode:](v4, "setErrorCode:", [objc_msgSend(a3 _numberForKey:{@"errorCode", "intValue"}]);
-    -[IMGroupTitleChangeItem setMessageSummaryInfo:](v4, "setMessageSummaryInfo:", [a3 objectForKeyedSubscript:@"messageSummaryInfo"]);
+    -[IMGroupTitleChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [dictionary objectForKey:@"otherCountryCode"]);
+    -[IMGroupTitleChangeItem setOtherHandle:](v4, "setOtherHandle:", [dictionary objectForKey:@"otherHandle"]);
+    -[IMGroupTitleChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [dictionary objectForKey:@"otherUnformattedID"]);
+    -[IMGroupTitleChangeItem setTitle:](v4, "setTitle:", [dictionary objectForKey:@"title"]);
+    -[IMGroupTitleChangeItem setErrorCode:](v4, "setErrorCode:", [objc_msgSend(dictionary _numberForKey:{@"errorCode", "intValue"}]);
+    -[IMGroupTitleChangeItem setMessageSummaryInfo:](v4, "setMessageSummaryInfo:", [dictionary objectForKeyedSubscript:@"messageSummaryInfo"]);
   }
 
   return v4;
@@ -154,46 +154,46 @@
 {
   v12.receiver = self;
   v12.super_class = IMGroupTitleChangeItem;
-  v3 = [(IMItem *)&v12 copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)&v12 copyDictionaryRepresentation];
   v4 = objc_autoreleasePoolPush();
   otherCountryCode = self->_otherCountryCode;
   if (otherCountryCode)
   {
-    CFDictionarySetValue(v3, @"otherCountryCode", otherCountryCode);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherCountryCode", otherCountryCode);
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    CFDictionarySetValue(v3, @"otherHandle", otherHandle);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherHandle", otherHandle);
   }
 
   otherUnformattedID = self->_otherUnformattedID;
   if (otherUnformattedID)
   {
-    CFDictionarySetValue(v3, @"otherUnformattedID", otherUnformattedID);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherUnformattedID", otherUnformattedID);
   }
 
   title = self->_title;
   if (title)
   {
-    CFDictionarySetValue(v3, @"title", title);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"title", title);
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_errorCode];
   if (v9)
   {
-    CFDictionarySetValue(v3, @"errorCode", v9);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"errorCode", v9);
   }
 
   messageSummaryInfo = self->_messageSummaryInfo;
   if (messageSummaryInfo)
   {
-    CFDictionarySetValue(v3, @"messageSummaryInfo", messageSummaryInfo);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"messageSummaryInfo", messageSummaryInfo);
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return copyDictionaryRepresentation;
 }
 
 - (BOOL)unattributed
@@ -203,7 +203,7 @@
   return [v2 BOOLValue];
 }
 
-- (void)setUnattributed:(BOOL)a3
+- (void)setUnattributed:(BOOL)unattributed
 {
   v5 = [(NSDictionary *)self->_messageSummaryInfo mutableCopy];
   if (!v5)
@@ -212,7 +212,7 @@
   }
 
   v6 = v5;
-  if (a3)
+  if (unattributed)
   {
     [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", 1), @"uat"}];
   }

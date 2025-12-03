@@ -1,30 +1,30 @@
 @interface SBDashBoardPearlUnlockBehavior
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate;
-- (SBDashBoardPearlUnlockBehavior)initWithPearlSettings:(id)a3 andUnlockTrigger:(id)a4;
-- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)a3;
-- (id)_feedbackForFailureSettings:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBDashBoardPearlUnlockBehavior)initWithPearlSettings:(id)settings andUnlockTrigger:(id)trigger;
+- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)spontaneous;
+- (id)_feedbackForFailureSettings:(id)settings;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_handlePearlFailure;
-- (void)handleBiometricEvent:(unint64_t)a3;
-- (void)mesaUnlockTriggerFired:(id)a3;
+- (void)handleBiometricEvent:(unint64_t)event;
+- (void)mesaUnlockTriggerFired:(id)fired;
 @end
 
 @implementation SBDashBoardPearlUnlockBehavior
 
-- (SBDashBoardPearlUnlockBehavior)initWithPearlSettings:(id)a3 andUnlockTrigger:(id)a4
+- (SBDashBoardPearlUnlockBehavior)initWithPearlSettings:(id)settings andUnlockTrigger:(id)trigger
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  triggerCopy = trigger;
   v12.receiver = self;
   v12.super_class = SBDashBoardPearlUnlockBehavior;
   v9 = [(SBDashBoardPearlUnlockBehavior *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pearlSettings, a3);
-    objc_storeStrong(&v10->_trigger, a4);
+    objc_storeStrong(&v9->_pearlSettings, settings);
+    objc_storeStrong(&v10->_trigger, trigger);
     [(SBMesaUnlockTrigger *)v10->_trigger setDelegate:v10];
   }
 
@@ -33,37 +33,37 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBDashBoardPearlUnlockBehavior *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDashBoardPearlUnlockBehavior *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDashBoardPearlUnlockBehavior *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDashBoardPearlUnlockBehavior *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBDashBoardPearlUnlockBehavior *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_trigger withName:@"trigger"];
+  succinctDescriptionBuilder = [(SBDashBoardPearlUnlockBehavior *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_trigger withName:@"trigger"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D67C98] sharedInstance];
-  v6 = [v5 hasEnrolledIdentities];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  hasEnrolledIdentities = [mEMORY[0x277D67C98] hasEnrolledIdentities];
 
   WeakRetained = SBLogLockScreenMesaUnlockBehaviors();
   v8 = os_log_type_enabled(WeakRetained, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (hasEnrolledIdentities)
   {
     if (v8)
     {
@@ -74,26 +74,26 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_biometricUnlockBehaviorDelegate);
-    if (a3 <= 0x21 && ((1 << a3) & 0x2070009E0) != 0 || a3 - 9 <= 1)
+    if (event <= 0x21 && ((1 << event) & 0x2070009E0) != 0 || event - 9 <= 1)
     {
       [(SBDashBoardPearlUnlockBehavior *)self _handlePearlFailure];
     }
 
-    else if (a3 == 4)
+    else if (event == 4)
     {
-      v11 = [(SBDashBoardPearlUnlockBehavior *)self _trigger];
-      v12 = [v11 bioUnlock];
+      _trigger = [(SBDashBoardPearlUnlockBehavior *)self _trigger];
+      bioUnlock = [_trigger bioUnlock];
 
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __55__SBDashBoardPearlUnlockBehavior_handleBiometricEvent___block_invoke;
       v14[3] = &unk_2783B1948;
       v14[4] = self;
-      v16 = v12;
+      v16 = bioUnlock;
       WeakRetained = WeakRetained;
       v15 = WeakRetained;
       v13 = MEMORY[0x223D6F7F0](v14);
-      v13[2](v13, v12);
+      v13[2](v13, bioUnlock);
     }
   }
 
@@ -140,7 +140,7 @@ void __55__SBDashBoardPearlUnlockBehavior_handleBiometricEvent___block_invoke(ui
   [*(a1 + 40) biometricUnlockBehavior:*(a1 + 32) requestsUnlock:v2 withFeedback:v6];
 }
 
-- (void)mesaUnlockTriggerFired:(id)a3
+- (void)mesaUnlockTriggerFired:(id)fired
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(SBLockScreenUnlockRequest);
@@ -161,43 +161,43 @@ void __55__SBDashBoardPearlUnlockBehavior_handleBiometricEvent___block_invoke(ui
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "trigger fired - requesting unlock with intent: %d and feedback: %@", v10, 0x12u);
   }
 
-  v9 = [(SBDashBoardPearlUnlockBehavior *)self biometricUnlockBehaviorDelegate];
-  [v9 biometricUnlockBehavior:self requestsUnlock:v4 withFeedback:v7];
+  biometricUnlockBehaviorDelegate = [(SBDashBoardPearlUnlockBehavior *)self biometricUnlockBehaviorDelegate];
+  [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsUnlock:v4 withFeedback:v7];
 }
 
-- (id)_feedbackForFailureSettings:(id)a3
+- (id)_feedbackForFailureSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [[SBAuthenticationFeedback alloc] initForFailureWithFailureSettings:v3];
+  settingsCopy = settings;
+  v4 = [[SBAuthenticationFeedback alloc] initForFailureWithFailureSettings:settingsCopy];
 
   return v4;
 }
 
-- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)a3
+- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)spontaneous
 {
-  if (a3)
+  if (spontaneous)
   {
-    v5 = 0;
+    initForSuccess = 0;
   }
 
   else
   {
-    v5 = [[SBAuthenticationFeedback alloc] initForSuccess];
+    initForSuccess = [[SBAuthenticationFeedback alloc] initForSuccess];
   }
 
-  return v5;
+  return initForSuccess;
 }
 
 - (void)_handlePearlFailure
 {
-  v3 = [(CSLockScreenPearlSettings *)self->_pearlSettings failureSettings];
-  v4 = [(SBDashBoardPearlUnlockBehavior *)self _feedbackForFailureSettings:v3];
+  failureSettings = [(CSLockScreenPearlSettings *)self->_pearlSettings failureSettings];
+  v4 = [(SBDashBoardPearlUnlockBehavior *)self _feedbackForFailureSettings:failureSettings];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__SBDashBoardPearlUnlockBehavior__handlePearlFailure__block_invoke;
   v10[3] = &unk_2783A92D8;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   v5 = v4;
   v6 = MEMORY[0x223D6F7F0](v10);
   v6[2](v6, v7, v8, v9);

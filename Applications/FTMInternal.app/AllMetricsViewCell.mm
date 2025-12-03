@@ -1,14 +1,14 @@
 @interface AllMetricsViewCell
 - (void)didTapActivityIndicator;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AllMetricsViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CE920();
 }
 
@@ -18,10 +18,10 @@
   [v2 impactOccurred];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1001D2B8C(a3, type metadata accessor for AllMetricsViewCell, &unk_10031E340, sub_1001D3028, &unk_10031E358);
+  selfCopy = self;
+  sub_1001D2B8C(highlighted, type metadata accessor for AllMetricsViewCell, &unk_10031E340, sub_1001D3028, &unk_10031E358);
 }
 
 @end

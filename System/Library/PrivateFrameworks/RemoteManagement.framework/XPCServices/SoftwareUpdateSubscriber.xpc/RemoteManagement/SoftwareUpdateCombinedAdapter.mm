@@ -1,14 +1,14 @@
 @interface SoftwareUpdateCombinedAdapter
-- (BOOL)applyCombinedConfiguration:(id)a3 declarationKeys:(id)a4 scope:(int64_t)a5 returningReasons:(id *)a6 error:(id *)a7;
-- (BOOL)removeCombinedConfigurationForScope:(int64_t)a3 error:(id *)a4;
+- (BOOL)applyCombinedConfiguration:(id)configuration declarationKeys:(id)keys scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error;
+- (BOOL)removeCombinedConfigurationForScope:(int64_t)scope error:(id *)error;
 - (SoftwareUpdateCombinedAdapter)init;
-- (id)_localizedStringForRMModelSettingsState:(id)a3;
-- (id)_recommendationCadenceLocalizedStringForString:(id)a3;
-- (id)_recommendationCadenceValueForString:(id)a3;
-- (id)_valueForEnum:(id)a3;
-- (id)declarationKeyForConfiguration:(id)a3;
-- (void)allDeclarationKeysForScope:(int64_t)a3 completionHandler:(id)a4;
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+- (id)_localizedStringForRMModelSettingsState:(id)state;
+- (id)_recommendationCadenceLocalizedStringForString:(id)string;
+- (id)_recommendationCadenceValueForString:(id)string;
+- (id)_valueForEnum:(id)enum;
+- (id)declarationKeyForConfiguration:(id)configuration;
+- (void)allDeclarationKeysForScope:(int64_t)scope completionHandler:(id)handler;
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation SoftwareUpdateCombinedAdapter
@@ -28,71 +28,71 @@
   return v2;
 }
 
-- (void)allDeclarationKeysForScope:(int64_t)a3 completionHandler:(id)a4
+- (void)allDeclarationKeysForScope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[SUCoreDDMUtilities sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v37 = "[SoftwareUpdateCombinedAdapter allDeclarationKeysForScope:completionHandler:]";
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Getting all declarations for scope", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%s: Getting all declarations for scope", buf, 0xCu);
   }
 
-  if (a3 == 1)
+  if (scope == 1)
   {
-    v9 = [(SoftwareUpdateCombinedAdapter *)self controller];
+    controller = [(SoftwareUpdateCombinedAdapter *)self controller];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(SoftwareUpdateCombinedAdapter *)self controller];
+      controller2 = [(SoftwareUpdateCombinedAdapter *)self controller];
       v34 = 0;
-      v12 = [v11 globalSettingsDeclarationWithError:&v34];
+      v12 = [controller2 globalSettingsDeclarationWithError:&v34];
       v13 = v34;
     }
 
     else
     {
       v17 = +[SUCoreDDMUtilities sharedLogger];
-      v18 = [v17 oslog];
+      oslog2 = [v17 oslog];
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v37 = "[SoftwareUpdateCombinedAdapter allDeclarationKeysForScope:completionHandler:]";
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to get global settings declaration keys", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to get global settings declaration keys", buf, 0xCu);
       }
 
-      v11 = +[SUCore sharedCore];
-      v13 = [v11 buildError:9101 underlying:0 description:@"No controller found to get global settings declaration keys"];
+      controller2 = +[SUCore sharedCore];
+      v13 = [controller2 buildError:9101 underlying:0 description:@"No controller found to get global settings declaration keys"];
       v12 = 0;
     }
 
     v19 = +[SUCoreDDMUtilities sharedLogger];
-    v20 = [v19 oslog];
+    oslog3 = [v19 oslog];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v12 serializedKeys];
+      serializedKeys = [v12 serializedKeys];
       *buf = 136315394;
       v37 = "[SoftwareUpdateCombinedAdapter allDeclarationKeysForScope:completionHandler:]";
       v38 = 2114;
-      v39 = v21;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Found serializedKeys: %{public}@", buf, 0x16u);
+      scopeCopy = serializedKeys;
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "%s: Found serializedKeys: %{public}@", buf, 0x16u);
     }
 
-    v22 = [v12 serializedKeys];
-    v23 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v22 count]);
+    serializedKeys2 = [v12 serializedKeys];
+    v23 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [serializedKeys2 count]);
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = [v12 serializedKeys];
-    v25 = [v24 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    serializedKeys3 = [v12 serializedKeys];
+    v25 = [serializedKeys3 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v25)
     {
       v26 = v25;
@@ -104,7 +104,7 @@
         {
           if (*v31 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(serializedKeys3);
           }
 
           v29 = [RMStoreDeclarationKey newDeclarationKey:*(*(&v30 + 1) + 8 * v28)];
@@ -114,55 +114,55 @@
         }
 
         while (v26 != v28);
-        v26 = [v24 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v26 = [serializedKeys3 countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v26);
     }
 
-    v6[2](v6, v23, v13);
+    handlerCopy[2](handlerCopy, v23, v13);
   }
 
   else
   {
     v14 = +[SUCoreDDMUtilities sharedLogger];
-    v15 = [v14 oslog];
+    oslog4 = [v14 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v37 = "[SoftwareUpdateCombinedAdapter allDeclarationKeysForScope:completionHandler:]";
       v38 = 2048;
-      v39 = a3;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+      scopeCopy = scope;
+      _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
     }
 
     v16 = +[SUCore sharedCore];
     v13 = [v16 buildError:9100 underlying:0 description:@"Not in system scope"];
 
-    v6[2](v6, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 }
 
-- (BOOL)applyCombinedConfiguration:(id)a3 declarationKeys:(id)a4 scope:(int64_t)a5 returningReasons:(id *)a6 error:(id *)a7
+- (BOOL)applyCombinedConfiguration:(id)configuration declarationKeys:(id)keys scope:(int64_t)scope returningReasons:(id *)reasons error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  if (a5 == 1)
+  configurationCopy = configuration;
+  keysCopy = keys;
+  if (scope == 1)
   {
-    v119 = self;
-    v13 = v11;
+    selfCopy = self;
+    v13 = configurationCopy;
     v14 = +[NSMutableArray array];
     v15 = +[RMManagedDevice currentManagedDevice];
-    v16 = [v15 isSupervised];
+    isSupervised = [v15 isSupervised];
 
     v17 = +[SUCoreDDMUtilities sharedLogger];
-    v18 = [v17 oslog];
+    oslog = [v17 oslog];
 
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v19 = @"NO";
-      if (v16)
+      if (isSupervised)
       {
         v19 = @"YES";
       }
@@ -171,47 +171,47 @@
       v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
       v129 = 2114;
       *v130 = v19;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: Supervised: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%s: Supervised: %{public}@", buf, 0x16u);
     }
 
-    if (v16)
+    if (isSupervised)
     {
       goto LABEL_26;
     }
 
-    v20 = [v13 payloadDeferrals];
+    payloadDeferrals = [v13 payloadDeferrals];
 
-    if (v20)
+    if (payloadDeferrals)
     {
       [v14 addObject:@"deferrals"];
     }
 
-    v21 = [v13 payloadAutomaticActions];
+    payloadAutomaticActions = [v13 payloadAutomaticActions];
 
-    if (v21)
+    if (payloadAutomaticActions)
     {
       [v14 addObject:@"automatic actions"];
     }
 
-    v22 = [v13 payloadRapidSecurityResponse];
+    payloadRapidSecurityResponse = [v13 payloadRapidSecurityResponse];
 
-    if (v22)
+    if (payloadRapidSecurityResponse)
     {
       [v14 addObject:@"rapid security response"];
     }
 
-    v23 = [v13 payloadBeta];
-    v24 = [v23 payloadRequireProgram];
+    payloadBeta = [v13 payloadBeta];
+    payloadRequireProgram = [payloadBeta payloadRequireProgram];
 
-    if (v24)
+    if (payloadRequireProgram)
     {
       [v14 addObject:@"beta require program"];
     }
 
-    v25 = [v13 payloadBeta];
-    v26 = [v25 payloadProgramEnrollment];
+    payloadBeta2 = [v13 payloadBeta];
+    payloadProgramEnrollment = [payloadBeta2 payloadProgramEnrollment];
 
-    if (v26)
+    if (payloadProgramEnrollment)
     {
       [v14 addObject:@"beta program enrollment"];
     }
@@ -219,82 +219,82 @@
     if (![v14 count])
     {
 LABEL_26:
-      v115 = a7;
+      errorCopy = error;
       v116 = v14;
-      v34 = v11;
-      v35 = v12;
+      v34 = configurationCopy;
+      v35 = keysCopy;
       v36 = +[NSMutableDictionary dictionary];
-      v37 = [v13 payloadNotifications];
-      [v36 setSafeObject:v37 forKey:SUCorePolicyDDMGlobalSettingEnableGlobalNotificationsKey];
+      payloadNotifications = [v13 payloadNotifications];
+      [v36 setSafeObject:payloadNotifications forKey:SUCorePolicyDDMGlobalSettingEnableGlobalNotificationsKey];
 
-      v38 = [v13 payloadAutomaticActions];
-      v39 = v38;
-      if (v38)
+      payloadAutomaticActions2 = [v13 payloadAutomaticActions];
+      v39 = payloadAutomaticActions2;
+      if (payloadAutomaticActions2)
       {
-        v40 = [v38 payloadDownload];
-        v41 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:v40];
+        payloadDownload = [payloadAutomaticActions2 payloadDownload];
+        v41 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:payloadDownload];
         [v36 setSafeObject:v41 forKey:SUCorePolicyDDMGlobalSettingAutomaticallyDownloadKey];
 
-        v42 = [v39 payloadInstallOSUpdates];
-        v43 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:v42];
+        payloadInstallOSUpdates = [v39 payloadInstallOSUpdates];
+        v43 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:payloadInstallOSUpdates];
         [v36 setSafeObject:v43 forKey:SUCorePolicyDDMGlobalSettingAutomaticallyInstallOSUpdatesKey];
 
-        v44 = [v39 payloadInstallSecurityUpdate];
-        v45 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:v44];
+        payloadInstallSecurityUpdate = [v39 payloadInstallSecurityUpdate];
+        v45 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:payloadInstallSecurityUpdate];
         [v36 setSafeObject:v45 forKey:SUCorePolicyDDMGlobalSettingAutomaticallyInstallSystemAndSecurityUpdatesKey];
       }
 
       v114 = v39;
-      v46 = [v13 payloadRapidSecurityResponse];
-      v47 = v46;
-      if (v46)
+      payloadRapidSecurityResponse2 = [v13 payloadRapidSecurityResponse];
+      v47 = payloadRapidSecurityResponse2;
+      if (payloadRapidSecurityResponse2)
       {
-        v48 = [v46 payloadEnable];
-        [v36 setSafeObject:v48 forKey:SUCorePolicyDDMGlobalSettingEnableRapidSecurityResponseKey];
+        payloadEnable = [payloadRapidSecurityResponse2 payloadEnable];
+        [v36 setSafeObject:payloadEnable forKey:SUCorePolicyDDMGlobalSettingEnableRapidSecurityResponseKey];
 
-        v49 = [v47 payloadEnableRollback];
-        [v36 setSafeObject:v49 forKey:SUCorePolicyDDMGlobalSettingEnableRapidSecurityResponseRollbackKey];
+        payloadEnableRollback = [v47 payloadEnableRollback];
+        [v36 setSafeObject:payloadEnableRollback forKey:SUCorePolicyDDMGlobalSettingEnableRapidSecurityResponseRollbackKey];
       }
 
       v113 = v47;
-      v50 = [v13 payloadRecommendedCadence];
-      v51 = [(SoftwareUpdateCombinedAdapter *)self _recommendationCadenceValueForString:v50];
+      payloadRecommendedCadence = [v13 payloadRecommendedCadence];
+      v51 = [(SoftwareUpdateCombinedAdapter *)self _recommendationCadenceValueForString:payloadRecommendedCadence];
       [v36 setSafeObject:v51 forKey:SUCorePolicyDDMGlobalSettingRecommendationCadenceKey];
 
-      v52 = [v13 payloadDeferrals];
-      v53 = v52;
-      v12 = v35;
-      if (v52)
+      payloadDeferrals2 = [v13 payloadDeferrals];
+      v53 = payloadDeferrals2;
+      keysCopy = v35;
+      if (payloadDeferrals2)
       {
-        v54 = [v52 payloadCombinedPeriodInDays];
-        [v36 setSafeObject:v54 forKey:SUCorePolicyDDMGlobalSettingCombinedUpdatesDeferralPeriodKey];
+        payloadCombinedPeriodInDays = [payloadDeferrals2 payloadCombinedPeriodInDays];
+        [v36 setSafeObject:payloadCombinedPeriodInDays forKey:SUCorePolicyDDMGlobalSettingCombinedUpdatesDeferralPeriodKey];
       }
 
       v111 = [v35 valueForKey:@"key"];
-      v55 = [v111 allObjects];
-      [v36 setSafeObject:v55 forKey:SUCorePolicyDDMGlobalSettingSerializedKeysKey];
+      allObjects = [v111 allObjects];
+      [v36 setSafeObject:allObjects forKey:SUCorePolicyDDMGlobalSettingSerializedKeysKey];
 
-      v117 = [v13 payloadBeta];
+      payloadBeta3 = [v13 payloadBeta];
       v118 = v36;
-      v11 = v34;
-      v56 = v115;
+      configurationCopy = v34;
+      v56 = errorCopy;
       v112 = v53;
-      if (v117)
+      if (payloadBeta3)
       {
         v120 = objc_alloc_init(NSMutableArray);
-        v57 = v117;
-        v58 = [v117 payloadProgramEnrollment];
+        v57 = payloadBeta3;
+        payloadProgramEnrollment2 = [payloadBeta3 payloadProgramEnrollment];
 
-        if (v58)
+        if (payloadProgramEnrollment2)
         {
-          v59 = [v117 payloadProgramEnrollment];
-          v60 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:v59];
+          payloadProgramEnrollment3 = [payloadBeta3 payloadProgramEnrollment];
+          v60 = [(SoftwareUpdateCombinedAdapter *)self _valueForEnum:payloadProgramEnrollment3];
           v61 = v36;
           v62 = v60;
           [v61 setSafeObject:v60 forKey:SUCorePolicyDDMGlobalSettingProgramEnrollment];
 
-          v63 = [v117 payloadProgramEnrollment];
-          LOBYTE(v62) = [v63 isEqualToString:RMModelSettingsState_alwaysOn];
+          payloadProgramEnrollment4 = [payloadBeta3 payloadProgramEnrollment];
+          LOBYTE(v62) = [payloadProgramEnrollment4 isEqualToString:RMModelSettingsState_alwaysOn];
 
           if (v62)
           {
@@ -303,8 +303,8 @@ LABEL_26:
 
           else
           {
-            v65 = [v117 payloadProgramEnrollment];
-            v66 = [v65 isEqualToString:RMModelSettingsState_alwaysOff];
+            payloadProgramEnrollment5 = [payloadBeta3 payloadProgramEnrollment];
+            v66 = [payloadProgramEnrollment5 isEqualToString:RMModelSettingsState_alwaysOff];
 
             v64 = 3;
             if (!v66)
@@ -320,20 +320,20 @@ LABEL_26:
         }
 
         v110 = v64;
-        v67 = [v117 payloadOfferPrograms];
+        payloadOfferPrograms = [payloadBeta3 payloadOfferPrograms];
 
-        if (v67)
+        if (payloadOfferPrograms)
         {
           v107 = v13;
-          v108 = v12;
-          v109 = v11;
+          v108 = keysCopy;
+          v109 = configurationCopy;
           v68 = objc_alloc_init(NSMutableArray);
           v123 = 0u;
           v124 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v69 = [v117 payloadOfferPrograms];
-          v70 = [v69 countByEnumeratingWithState:&v123 objects:v135 count:16];
+          payloadOfferPrograms2 = [payloadBeta3 payloadOfferPrograms];
+          v70 = [payloadOfferPrograms2 countByEnumeratingWithState:&v123 objects:v135 count:16];
           if (v70)
           {
             v71 = v70;
@@ -346,69 +346,69 @@ LABEL_26:
               {
                 if (*v124 != v72)
                 {
-                  objc_enumerationMutation(v69);
+                  objc_enumerationMutation(payloadOfferPrograms2);
                 }
 
                 v76 = *(*(&v123 + 1) + 8 * i);
-                v77 = [v76 payloadToken];
-                [v120 addObject:v77];
+                payloadToken = [v76 payloadToken];
+                [v120 addObject:payloadToken];
 
                 v133[0] = v73;
-                v78 = [v76 payloadDescription];
+                payloadDescription = [v76 payloadDescription];
                 v133[1] = v74;
-                v134[0] = v78;
-                v79 = [v76 payloadToken];
-                v134[1] = v79;
+                v134[0] = payloadDescription;
+                payloadToken2 = [v76 payloadToken];
+                v134[1] = payloadToken2;
                 v80 = [NSDictionary dictionaryWithObjects:v134 forKeys:v133 count:2];
                 [v68 addObject:v80];
               }
 
-              v71 = [v69 countByEnumeratingWithState:&v123 objects:v135 count:16];
+              v71 = [payloadOfferPrograms2 countByEnumeratingWithState:&v123 objects:v135 count:16];
             }
 
             while (v71);
           }
 
           [v118 setSafeObject:v68 forKey:SUCorePolicyDDMGlobalSettingOfferPrograms];
-          v12 = v108;
-          v11 = v109;
-          v56 = v115;
+          keysCopy = v108;
+          configurationCopy = v109;
+          v56 = errorCopy;
           v13 = v107;
-          v57 = v117;
+          v57 = payloadBeta3;
         }
 
-        v81 = [v57 payloadRequireProgram];
+        payloadRequireProgram2 = [v57 payloadRequireProgram];
 
-        if (v81)
+        if (payloadRequireProgram2)
         {
           v131[0] = seedingProgramDescription;
-          v82 = [v57 payloadRequireProgram];
-          v83 = [v82 payloadDescription];
-          v132[0] = v83;
+          payloadRequireProgram3 = [v57 payloadRequireProgram];
+          payloadDescription2 = [payloadRequireProgram3 payloadDescription];
+          v132[0] = payloadDescription2;
           v131[1] = seedingProgramToken;
-          v84 = [v57 payloadRequireProgram];
-          v85 = [v84 payloadToken];
-          v132[1] = v85;
+          payloadRequireProgram4 = [v57 payloadRequireProgram];
+          payloadToken3 = [payloadRequireProgram4 payloadToken];
+          v132[1] = payloadToken3;
           v86 = [NSDictionary dictionaryWithObjects:v132 forKeys:v131 count:2];
           [v118 setSafeObject:v86 forKey:SUCorePolicyDDMGlobalSettingRequireProgram];
 
-          v57 = v117;
+          v57 = payloadBeta3;
         }
 
         v87 = [NSSet setWithArray:v120];
-        v88 = [v57 payloadRequireProgram];
-        v89 = [v88 payloadToken];
+        payloadRequireProgram5 = [v57 payloadRequireProgram];
+        payloadToken4 = [payloadRequireProgram5 payloadToken];
         v122 = 0;
-        [SDMDMConfigurator configureWithOfferProgramTokens:v87 requireProgramToken:v89 enrollmentPolicy:v110 error:&v122];
+        [SDMDMConfigurator configureWithOfferProgramTokens:v87 requireProgramToken:payloadToken4 enrollmentPolicy:v110 error:&v122];
         v90 = v122;
 
         v14 = v116;
         if (v90)
         {
           v91 = +[SUCoreDDMUtilities sharedLogger];
-          v92 = [v91 oslog];
+          oslog2 = [v91 oslog];
 
-          if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
           {
             [SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:];
           }
@@ -424,9 +424,9 @@ LABEL_26:
       }
 
       v94 = +[SUCoreDDMUtilities sharedLogger];
-      v95 = [v94 oslog];
+      oslog3 = [v94 oslog];
 
-      if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
@@ -434,31 +434,31 @@ LABEL_26:
         *v130 = v13;
         *&v130[8] = 2114;
         *&v130[10] = v36;
-        _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration: %{public}@; declaration dictionary: %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration: %{public}@; declaration dictionary: %{public}@", buf, 0x20u);
       }
 
-      v96 = [(SoftwareUpdateCombinedAdapter *)v119 controller];
+      controller = [(SoftwareUpdateCombinedAdapter *)selfCopy controller];
       v97 = objc_opt_respondsToSelector();
 
       if (v97)
       {
         v98 = [[SUCoreDDMDeclarationGlobalSettings alloc] initWithDeclarationKeys:v36];
-        v99 = [(SoftwareUpdateCombinedAdapter *)v119 controller];
+        controller2 = [(SoftwareUpdateCombinedAdapter *)selfCopy controller];
         v121 = 0;
-        v31 = [v99 setGlobalSettings:v98 withError:&v121];
+        v31 = [controller2 setGlobalSettings:v98 withError:&v121];
         v100 = v121;
       }
 
       else
       {
         v101 = +[SUCoreDDMUtilities sharedLogger];
-        v102 = [v101 oslog];
+        oslog4 = [v101 oslog];
 
-        if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315138;
           v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
-          _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to enforce declaration", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to enforce declaration", buf, 0xCu);
         }
 
         v98 = +[SUCore sharedCore];
@@ -467,9 +467,9 @@ LABEL_26:
       }
 
       v103 = +[SUCoreDDMUtilities sharedLogger];
-      v104 = [v103 oslog];
+      oslog5 = [v103 oslog];
 
-      if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
@@ -477,7 +477,7 @@ LABEL_26:
         *v130 = v31;
         *&v130[4] = 2114;
         *&v130[6] = v100;
-        _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "%s: Applied global settings, result = %d, error = %{public}@", buf, 0x1Cu);
+        _os_log_impl(&_mh_execute_header, oslog5, OS_LOG_TYPE_DEFAULT, "%s: Applied global settings, result = %d, error = %{public}@", buf, 0x1Cu);
       }
 
       if (v56 && v100)
@@ -493,18 +493,18 @@ LABEL_26:
     else
     {
       v27 = +[SUCoreDDMUtilities sharedLogger];
-      v28 = [v27 oslog];
+      oslog6 = [v27 oslog];
 
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
         v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
         v129 = 2114;
         *v130 = v14;
-        _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s: Invalid declaration: The following settings cannot be enforced on unsupervised devices: %{public}@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oslog6, OS_LOG_TYPE_DEFAULT, "%s: Invalid declaration: The following settings cannot be enforced on unsupervised devices: %{public}@", buf, 0x16u);
       }
 
-      if (!a7)
+      if (!error)
       {
         LOBYTE(v31) = 0;
         goto LABEL_71;
@@ -513,7 +513,7 @@ LABEL_26:
       v29 = [NSString stringWithFormat:@"The following settings cannot be enforced on unsupervised devices: %@", v14];
       v30 = +[SUCore sharedCore];
       [v30 buildError:9100 underlying:0 description:v29];
-      *a7 = LOBYTE(v31) = 0;
+      *error = LOBYTE(v31) = 0;
     }
 
 LABEL_71:
@@ -521,22 +521,22 @@ LABEL_71:
   }
 
   v32 = +[SUCoreDDMUtilities sharedLogger];
-  v33 = [v32 oslog];
+  oslog7 = [v32 oslog];
 
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v128 = "[SoftwareUpdateCombinedAdapter applyCombinedConfiguration:declarationKeys:scope:returningReasons:error:]";
     v129 = 2048;
-    *v130 = a5;
-    _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+    *v130 = scope;
+    _os_log_impl(&_mh_execute_header, oslog7, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
   }
 
-  if (a7)
+  if (error)
   {
     v13 = +[SUCore sharedCore];
     [v13 buildError:8114 underlying:0 description:@"Software update declarations only support system scope"];
-    *a7 = LOBYTE(v31) = 0;
+    *error = LOBYTE(v31) = 0;
 LABEL_72:
 
     goto LABEL_73;
@@ -548,20 +548,20 @@ LABEL_73:
   return v31;
 }
 
-- (id)_valueForEnum:(id)a3
+- (id)_valueForEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RMModelSettingsState_allowed])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:RMModelSettingsState_allowed])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:RMModelSettingsState_alwaysOn])
+  else if ([enumCopy isEqualToString:RMModelSettingsState_alwaysOn])
   {
     v4 = &off_10000CA98;
   }
 
-  else if ([v3 isEqualToString:RMModelSettingsState_alwaysOff])
+  else if ([enumCopy isEqualToString:RMModelSettingsState_alwaysOff])
   {
     v4 = &off_10000CAB0;
   }
@@ -574,20 +574,20 @@ LABEL_73:
   return v4;
 }
 
-- (id)_recommendationCadenceValueForString:(id)a3
+- (id)_recommendationCadenceValueForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_all])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_all])
   {
     v4 = &off_10000CAB0;
   }
 
-  else if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_oldest])
+  else if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_oldest])
   {
     v4 = &off_10000CA98;
   }
 
-  else if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_theNewest])
+  else if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_theNewest])
   {
     v4 = &off_10000CAC8;
   }
@@ -600,10 +600,10 @@ LABEL_73:
   return v4;
 }
 
-- (id)_recommendationCadenceLocalizedStringForString:(id)a3
+- (id)_recommendationCadenceLocalizedStringForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_all])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_all])
   {
     v4 = @"SU_CONFIGURATION_RECOMMENDATION_CADENCE_ALL";
 LABEL_7:
@@ -613,13 +613,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_oldest])
+  if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_oldest])
   {
     v4 = @"SU_CONFIGURATION_RECOMMENDATION_CADENCE_SLOW";
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_theNewest])
+  if ([stringCopy isEqualToString:RMModelSoftwareUpdateSettingsDeclaration_RecommendedCadence_theNewest])
   {
     v4 = @"SU_CONFIGURATION_RECOMMENDATION_CADENCE_FAST";
     goto LABEL_7;
@@ -631,52 +631,52 @@ LABEL_8:
   return v6;
 }
 
-- (id)declarationKeyForConfiguration:(id)a3
+- (id)declarationKeyForConfiguration:(id)configuration
 {
-  v3 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"com.apple.RemoteManagement.SoftwareUpdateExtension.GlobalSettings" reference:a3];
+  v3 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"com.apple.RemoteManagement.SoftwareUpdateExtension.GlobalSettings" reference:configuration];
 
   return v3;
 }
 
-- (BOOL)removeCombinedConfigurationForScope:(int64_t)a3 error:(id *)a4
+- (BOOL)removeCombinedConfigurationForScope:(int64_t)scope error:(id *)error
 {
   v7 = +[SUCoreDDMUtilities sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v29 = "[SoftwareUpdateCombinedAdapter removeCombinedConfigurationForScope:error:]";
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Removing combined configuration", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%s: Removing combined configuration", buf, 0xCu);
   }
 
-  if (a3 == 1)
+  if (scope == 1)
   {
-    v9 = [(SoftwareUpdateCombinedAdapter *)self controller];
+    controller = [(SoftwareUpdateCombinedAdapter *)self controller];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(SoftwareUpdateCombinedAdapter *)self controller];
+      controller2 = [(SoftwareUpdateCombinedAdapter *)self controller];
       v27 = 0;
-      v12 = [v11 setGlobalSettings:0 withError:&v27];
+      v12 = [controller2 setGlobalSettings:0 withError:&v27];
       v13 = v27;
     }
 
     else
     {
       v16 = +[SUCoreDDMUtilities sharedLogger];
-      v17 = [v16 oslog];
+      oslog2 = [v16 oslog];
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v29 = "[SoftwareUpdateCombinedAdapter removeCombinedConfigurationForScope:error:]";
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to remove combined configuration", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to remove combined configuration", buf, 0xCu);
       }
 
-      v11 = +[SUCore sharedCore];
-      v13 = [v11 buildError:9101 underlying:0 description:@"No controller found to remove combined configuration"];
+      controller2 = +[SUCore sharedCore];
+      v13 = [controller2 buildError:9101 underlying:0 description:@"No controller found to remove combined configuration"];
       v12 = 0;
     }
 
@@ -686,24 +686,24 @@ LABEL_8:
     if (v18)
     {
       v19 = +[SUCoreDDMUtilities sharedLogger];
-      v20 = [v19 oslog];
+      oslog3 = [v19 oslog];
 
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
         [SoftwareUpdateCombinedAdapter removeCombinedConfigurationForScope:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v18;
-        *a4 = v18;
+        *error = v18;
       }
     }
 
     v22 = +[SUCoreDDMUtilities sharedLogger];
-    v23 = [v22 oslog];
+    oslog4 = [v22 oslog];
 
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v29 = "[SoftwareUpdateCombinedAdapter removeCombinedConfigurationForScope:error:]";
@@ -711,31 +711,31 @@ LABEL_8:
       LODWORD(v31[0]) = v12;
       WORD2(v31[0]) = 2114;
       *(v31 + 6) = v13;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s: Removed combined configuration, result = %d, error = %{public}@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "%s: Removed combined configuration, result = %d, error = %{public}@", buf, 0x1Cu);
     }
 
-    if (a4 && v13)
+    if (error && v13)
     {
       v24 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
   else
   {
     v14 = +[SUCoreDDMUtilities sharedLogger];
-    v15 = [v14 oslog];
+    oslog5 = [v14 oslog];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v29 = "[SoftwareUpdateCombinedAdapter removeCombinedConfigurationForScope:error:]";
       v30 = 2048;
-      v31[0] = a3;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+      v31[0] = scope;
+      _os_log_impl(&_mh_execute_header, oslog5, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
       LOBYTE(v12) = 0;
       return v12;
@@ -743,45 +743,45 @@ LABEL_8:
 
     v13 = +[SUCore sharedCore];
     [v13 buildError:8114 underlying:0 description:@"Software update declarations only support system scope"];
-    *a4 = LOBYTE(v12) = 0;
+    *error = LOBYTE(v12) = 0;
   }
 
   return v12;
 }
 
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler
 {
-  v6 = a3;
-  v118 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v7 = +[SUCoreDDMUtilities sharedLogger];
-  v8 = [v7 oslog];
+  oslog = [v7 oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 declaration];
-    v10 = [v9 declarationIdentifier];
+    declaration = [configurationCopy declaration];
+    declarationIdentifier = [declaration declarationIdentifier];
     *buf = 136315394;
     v140 = "[SoftwareUpdateCombinedAdapter configurationUIForConfiguration:scope:completionHandler:]";
     v141 = 2114;
-    v142 = v10;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Get configuration UI for: %{public}@", buf, 0x16u);
+    v142 = declarationIdentifier;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%s: Get configuration UI for: %{public}@", buf, 0x16u);
   }
 
-  v11 = [v6 declaration];
+  declaration2 = [configurationCopy declaration];
   v12 = +[NSMutableArray array];
-  v13 = [v11 payloadNotifications];
+  payloadNotifications = [declaration2 payloadNotifications];
 
-  v119 = v6;
-  if (v13)
+  v119 = configurationCopy;
+  if (payloadNotifications)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"SU_CONFIGURATION_NOTIFICATIONS" value:&stru_10000C4A8 table:0];
     v138[0] = v15;
-    v16 = [v11 payloadNotifications];
-    v17 = [v16 BOOLValue];
+    payloadNotifications2 = [declaration2 payloadNotifications];
+    bOOLValue = [payloadNotifications2 BOOLValue];
     v18 = [NSBundle bundleForClass:objc_opt_class()];
     v19 = v18;
-    if (v17)
+    if (bOOLValue)
     {
       v20 = @"ON";
     }
@@ -796,94 +796,94 @@ LABEL_8:
     v22 = [NSArray arrayWithObjects:v138 count:2];
     [v12 addObject:v22];
 
-    v6 = v119;
+    configurationCopy = v119;
   }
 
   v122 = v12;
-  v23 = [v11 payloadRecommendedCadence];
+  payloadRecommendedCadence = [declaration2 payloadRecommendedCadence];
 
   v24 = &NSStringFromClass_ptr;
-  if (v23)
+  if (payloadRecommendedCadence)
   {
     v25 = [NSBundle bundleForClass:objc_opt_class()];
     v26 = [v25 localizedStringForKey:@"SU_CONFIGURATION_RECOMMENDATION_CADENCE" value:&stru_10000C4A8 table:0];
     v137[0] = v26;
-    v27 = [v11 payloadRecommendedCadence];
-    v28 = [(SoftwareUpdateCombinedAdapter *)self _recommendationCadenceLocalizedStringForString:v27];
+    payloadRecommendedCadence2 = [declaration2 payloadRecommendedCadence];
+    v28 = [(SoftwareUpdateCombinedAdapter *)self _recommendationCadenceLocalizedStringForString:payloadRecommendedCadence2];
     v137[1] = v28;
     v29 = [NSArray arrayWithObjects:v137 count:2];
     [v122 addObject:v29];
 
-    v6 = v119;
+    configurationCopy = v119;
   }
 
-  v30 = [v11 payloadAutomaticActions];
-  v117 = v30;
-  if (v30)
+  payloadAutomaticActions = [declaration2 payloadAutomaticActions];
+  v117 = payloadAutomaticActions;
+  if (payloadAutomaticActions)
   {
-    v31 = v30;
-    v32 = [v30 payloadDownload];
+    v31 = payloadAutomaticActions;
+    payloadDownload = [payloadAutomaticActions payloadDownload];
 
-    if (v32)
+    if (payloadDownload)
     {
       v33 = [NSBundle bundleForClass:objc_opt_class()];
       v34 = [v33 localizedStringForKey:@"SU_CONFIGURATION_AUTOMATIC_ACTIONS_DOWNLOAD" value:&stru_10000C4A8 table:0];
       v136[0] = v34;
-      v35 = [v31 payloadDownload];
-      v36 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:v35];
+      payloadDownload2 = [v31 payloadDownload];
+      v36 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:payloadDownload2];
       v136[1] = v36;
       v37 = [NSArray arrayWithObjects:v136 count:2];
       [v122 addObject:v37];
     }
 
-    v38 = [v31 payloadInstallOSUpdates];
+    payloadInstallOSUpdates = [v31 payloadInstallOSUpdates];
 
-    if (v38)
+    if (payloadInstallOSUpdates)
     {
       v39 = [NSBundle bundleForClass:objc_opt_class()];
       v40 = [v39 localizedStringForKey:@"SU_CONFIGURATION_AUTOMATIC_ACTIONS_INSTALL_OS_UPDATES" value:&stru_10000C4A8 table:0];
       v135[0] = v40;
-      v41 = [v31 payloadInstallOSUpdates];
-      v42 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:v41];
+      payloadInstallOSUpdates2 = [v31 payloadInstallOSUpdates];
+      v42 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:payloadInstallOSUpdates2];
       v135[1] = v42;
       v43 = [NSArray arrayWithObjects:v135 count:2];
       [v122 addObject:v43];
     }
 
-    v44 = [v31 payloadInstallSecurityUpdate];
+    payloadInstallSecurityUpdate = [v31 payloadInstallSecurityUpdate];
 
-    if (v44)
+    if (payloadInstallSecurityUpdate)
     {
       v45 = [NSBundle bundleForClass:objc_opt_class()];
       v46 = [v45 localizedStringForKey:@"SU_CONFIGURATION_AUTOMATIC_ACTIONS_INSTALL_SECURITY_UPDATES" value:&stru_10000C4A8 table:0];
       v134[0] = v46;
-      v47 = [v31 payloadInstallSecurityUpdate];
-      v48 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:v47];
+      payloadInstallSecurityUpdate2 = [v31 payloadInstallSecurityUpdate];
+      v48 = [(SoftwareUpdateCombinedAdapter *)self _localizedStringForRMModelSettingsState:payloadInstallSecurityUpdate2];
       v134[1] = v48;
       v49 = [NSArray arrayWithObjects:v134 count:2];
       [v122 addObject:v49];
     }
   }
 
-  v50 = [v11 payloadRapidSecurityResponse];
+  payloadRapidSecurityResponse = [declaration2 payloadRapidSecurityResponse];
   v51 = v122;
   v52 = &NSStringFromClass_ptr;
-  v121 = v50;
-  if (v50)
+  v121 = payloadRapidSecurityResponse;
+  if (payloadRapidSecurityResponse)
   {
-    v53 = v50;
-    v54 = [v50 payloadEnable];
+    v53 = payloadRapidSecurityResponse;
+    payloadEnable = [payloadRapidSecurityResponse payloadEnable];
 
-    if (v54)
+    if (payloadEnable)
     {
       v55 = [NSBundle bundleForClass:objc_opt_class()];
       v56 = [v55 localizedStringForKey:@"SU_CONFIGURATION_RAPID_SECURITY_RESPONSE_ENABLE" value:&stru_10000C4A8 table:0];
       v133[0] = v56;
-      v57 = [v121 payloadEnable];
-      v58 = [v57 BOOLValue];
+      payloadEnable2 = [v121 payloadEnable];
+      bOOLValue2 = [payloadEnable2 BOOLValue];
       v59 = [NSBundle bundleForClass:objc_opt_class()];
       v60 = v59;
-      if (v58)
+      if (bOOLValue2)
       {
         v61 = @"ON";
       }
@@ -904,18 +904,18 @@ LABEL_8:
       v52 = &NSStringFromClass_ptr;
     }
 
-    v64 = [v53 payloadEnableRollback];
+    payloadEnableRollback = [v53 payloadEnableRollback];
 
-    if (v64)
+    if (payloadEnableRollback)
     {
       v65 = [NSBundle bundleForClass:objc_opt_class()];
       v66 = [v65 localizedStringForKey:@"SU_CONFIGURATION_RAPID_SECURITY_RESPONSE_ENABLE_ROLLBACK" value:&stru_10000C4A8 table:0];
       v132[0] = v66;
-      v67 = [v121 payloadEnableRollback];
-      v68 = [v67 BOOLValue];
+      payloadEnableRollback2 = [v121 payloadEnableRollback];
+      bOOLValue3 = [payloadEnableRollback2 BOOLValue];
       v69 = [NSBundle bundleForClass:objc_opt_class()];
       v70 = v69;
-      if (v68)
+      if (bOOLValue3)
       {
         v71 = @"ON";
       }
@@ -935,20 +935,20 @@ LABEL_8:
     }
   }
 
-  v74 = [v11 payloadDeferrals];
-  v116 = v74;
-  if (v74)
+  payloadDeferrals = [declaration2 payloadDeferrals];
+  v116 = payloadDeferrals;
+  if (payloadDeferrals)
   {
-    v75 = v74;
-    v76 = [v74 payloadCombinedPeriodInDays];
+    v75 = payloadDeferrals;
+    payloadCombinedPeriodInDays = [payloadDeferrals payloadCombinedPeriodInDays];
 
-    if (v76)
+    if (payloadCombinedPeriodInDays)
     {
       v77 = [NSBundle bundleForClass:objc_opt_class()];
       v78 = [v77 localizedStringForKey:@"SU_CONFIGURATION_DEFERRALS_COMBINED" value:&stru_10000C4A8 table:0];
       v131[0] = v78;
-      v79 = [v75 payloadCombinedPeriodInDays];
-      v80 = [v79 description];
+      payloadCombinedPeriodInDays2 = [v75 payloadCombinedPeriodInDays];
+      v80 = [payloadCombinedPeriodInDays2 description];
       v131[1] = v80;
       v81 = [v52[97] arrayWithObjects:v131 count:2];
       [v122 addObject:v81];
@@ -957,53 +957,53 @@ LABEL_8:
     }
   }
 
-  v82 = [v11 payloadBeta];
-  v83 = v82;
-  if (v82)
+  payloadBeta = [declaration2 payloadBeta];
+  v83 = payloadBeta;
+  if (payloadBeta)
   {
-    v84 = [v82 payloadProgramEnrollment];
+    payloadProgramEnrollment = [payloadBeta payloadProgramEnrollment];
 
-    if (v84)
+    if (payloadProgramEnrollment)
     {
       v85 = [NSBundle bundleForClass:objc_opt_class()];
       v86 = [v85 localizedStringForKey:@"SU_CONFIGURATION_BETA_PROGRAM_ENROLLMENT" value:&stru_10000C4A8 table:0];
       v130[0] = v86;
-      v87 = [v83 payloadProgramEnrollment];
-      v130[1] = v87;
+      payloadProgramEnrollment2 = [v83 payloadProgramEnrollment];
+      v130[1] = payloadProgramEnrollment2;
       v88 = [v52[97] arrayWithObjects:v130 count:2];
       [v122 addObject:v88];
 
       v24 = &NSStringFromClass_ptr;
     }
 
-    v89 = [v83 payloadRequireProgram];
+    payloadRequireProgram = [v83 payloadRequireProgram];
 
-    if (v89)
+    if (payloadRequireProgram)
     {
       v90 = [NSBundle bundleForClass:objc_opt_class()];
       v91 = [v90 localizedStringForKey:@"SU_CONFIGURATION_BETA_REQUIRED_PROGRAM" value:&stru_10000C4A8 table:0];
       v129[0] = v91;
-      v92 = [v83 payloadRequireProgram];
-      v93 = [v92 payloadDescription];
-      v129[1] = v93;
+      payloadRequireProgram2 = [v83 payloadRequireProgram];
+      payloadDescription = [payloadRequireProgram2 payloadDescription];
+      v129[1] = payloadDescription;
       v94 = [v52[97] arrayWithObjects:v129 count:2];
       [v122 addObject:v94];
 
-      v6 = v119;
+      configurationCopy = v119;
       v24 = &NSStringFromClass_ptr;
     }
 
-    v95 = [v83 payloadOfferPrograms];
+    payloadOfferPrograms = [v83 payloadOfferPrograms];
 
-    if (v95)
+    if (payloadOfferPrograms)
     {
       v96 = +[NSMutableString string];
       v123 = 0u;
       v124 = 0u;
       v125 = 0u;
       v126 = 0u;
-      v97 = [v83 payloadOfferPrograms];
-      v98 = [v97 countByEnumeratingWithState:&v123 objects:v128 count:16];
+      payloadOfferPrograms2 = [v83 payloadOfferPrograms];
+      v98 = [payloadOfferPrograms2 countByEnumeratingWithState:&v123 objects:v128 count:16];
       if (v98)
       {
         v99 = v98;
@@ -1014,14 +1014,14 @@ LABEL_8:
           {
             if (*v124 != v100)
             {
-              objc_enumerationMutation(v97);
+              objc_enumerationMutation(payloadOfferPrograms2);
             }
 
-            v102 = [*(*(&v123 + 1) + 8 * i) payloadDescription];
-            [v96 appendFormat:@"%@\n", v102];
+            payloadDescription2 = [*(*(&v123 + 1) + 8 * i) payloadDescription];
+            [v96 appendFormat:@"%@\n", payloadDescription2];
           }
 
-          v99 = [v97 countByEnumeratingWithState:&v123 objects:v128 count:16];
+          v99 = [payloadOfferPrograms2 countByEnumeratingWithState:&v123 objects:v128 count:16];
         }
 
         while (v99);
@@ -1036,21 +1036,21 @@ LABEL_8:
       v51 = v122;
       [v122 addObject:v105];
 
-      v6 = v119;
+      configurationCopy = v119;
     }
   }
 
-  v106 = v6;
+  v106 = configurationCopy;
   v107 = +[SUCoreDDMUtilities sharedLogger];
-  v108 = [v107 oslog];
+  oslog2 = [v107 oslog];
 
-  if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v140 = "[SoftwareUpdateCombinedAdapter configurationUIForConfiguration:scope:completionHandler:]";
     v141 = 2114;
     v142 = v51;
-    _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration UI: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration UI: %{public}@", buf, 0x16u);
   }
 
   v109 = [v24[74] bundleForClass:objc_opt_class()];
@@ -1061,13 +1061,13 @@ LABEL_8:
   v114 = [v51 copy];
   v115 = [RMConfigurationUIDetails configurationUIWithTitle:v110 description:v112 details:v114];
 
-  v118[2](v118, 1, v115, 0);
+  handlerCopy[2](handlerCopy, 1, v115, 0);
 }
 
-- (id)_localizedStringForRMModelSettingsState:(id)a3
+- (id)_localizedStringForRMModelSettingsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RMModelSettingsState_allowed])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:RMModelSettingsState_allowed])
   {
     v4 = @"ALLOWED";
 LABEL_7:
@@ -1077,13 +1077,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:RMModelSettingsState_alwaysOn])
+  if ([stateCopy isEqualToString:RMModelSettingsState_alwaysOn])
   {
     v4 = @"ON";
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:RMModelSettingsState_alwaysOff])
+  if ([stateCopy isEqualToString:RMModelSettingsState_alwaysOff])
   {
     v4 = @"OFF";
     goto LABEL_7;

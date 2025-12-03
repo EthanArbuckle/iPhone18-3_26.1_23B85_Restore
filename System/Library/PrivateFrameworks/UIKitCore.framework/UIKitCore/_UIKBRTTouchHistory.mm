@@ -1,28 +1,28 @@
 @interface _UIKBRTTouchHistory
 - (BOOL)hasHistory;
 - (CGPoint)historyOffset;
-- (_UIKBRTTouchHistory)initWithIsLeftHand:(BOOL)a3;
+- (_UIKBRTTouchHistory)initWithIsLeftHand:(BOOL)hand;
 - (double)lastTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_decayHistoryToSize:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_decayHistoryToSize:(unint64_t)size;
 - (void)_sortHistory;
 - (void)_updateOffset;
-- (void)addInfo:(id)a3;
-- (void)adjustHistoryOffset:(CGPoint)a3;
+- (void)addInfo:(id)info;
+- (void)adjustHistoryOffset:(CGPoint)offset;
 - (void)clearHistory;
 - (void)dealloc;
-- (void)removeInfo:(id)a3;
+- (void)removeInfo:(id)info;
 @end
 
 @implementation _UIKBRTTouchHistory
 
-- (_UIKBRTTouchHistory)initWithIsLeftHand:(BOOL)a3
+- (_UIKBRTTouchHistory)initWithIsLeftHand:(BOOL)hand
 {
   v4 = [(_UIKBRTTouchHistory *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_isLeftHand = a3;
+    v4->_isLeftHand = hand;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     history = v5->_history;
     v5->_history = v6;
@@ -31,7 +31,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSMutableArray *)self->_history mutableCopy];
@@ -58,20 +58,20 @@
   [(_UIKBRTTouchHistory *)self decayHistory];
   if ([(NSMutableArray *)self->_history count])
   {
-    v3 = [(NSMutableArray *)self->_history lastObject];
-    if ([v3 isActive])
+    lastObject = [(NSMutableArray *)self->_history lastObject];
+    if ([lastObject isActive])
     {
       LOBYTE(v4) = 1;
     }
 
-    else if ([v3 ignoreTouch])
+    else if ([lastObject ignoreTouch])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v4 = [v3 ignoreForDrift] ^ 1;
+      v4 = [lastObject ignoreForDrift] ^ 1;
     }
   }
 
@@ -111,33 +111,33 @@
   return result;
 }
 
-- (void)addInfo:(id)a3
+- (void)addInfo:(id)info
 {
-  [(NSMutableArray *)self->_history addObject:a3];
+  [(NSMutableArray *)self->_history addObject:info];
 
   [(_UIKBRTTouchHistory *)self _updateOffset];
 }
 
-- (void)removeInfo:(id)a3
+- (void)removeInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(NSMutableArray *)self->_history containsObject:?])
   {
-    [(NSMutableArray *)self->_history removeObject:v4];
+    [(NSMutableArray *)self->_history removeObject:infoCopy];
     [(_UIKBRTTouchHistory *)self _updateOffset];
   }
 }
 
-- (void)adjustHistoryOffset:(CGPoint)a3
+- (void)adjustHistoryOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   history = self->_history;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43___UIKBRTTouchHistory_adjustHistoryOffset___block_invoke;
   v8[3] = &__block_descriptor_48_e40_v32__0___UIKBRTTouchHistoryInfo_8Q16_B24l;
-  v9 = a3;
+  offsetCopy = offset;
   [(NSMutableArray *)history enumerateObjectsWithOptions:2 usingBlock:v8];
   v5.f64[0] = x;
   v5.f64[1] = y;
@@ -164,14 +164,14 @@
   [(NSMutableArray *)self->_history sortUsingComparator:&__block_literal_global_378_0];
 }
 
-- (void)_decayHistoryToSize:(unint64_t)a3
+- (void)_decayHistoryToSize:(unint64_t)size
 {
   [(_UIKBRTTouchHistory *)self _sortHistory];
   v5 = CFAbsoluteTimeGetCurrent() + *&sSystemUptimeFromAbsoluteTimeDiff;
   if (v5 - self->_lastDecayTime >= 0.05)
   {
     self->_lastDecayTime = v5;
-    if ([(NSMutableArray *)self->_history count]<= a3)
+    if ([(NSMutableArray *)self->_history count]<= size)
     {
       if ([(NSMutableArray *)self->_history count])
       {
@@ -214,7 +214,7 @@
       v16[0] = 0;
       v16[1] = v16;
       v16[2] = 0x2020000000;
-      v16[3] = [(NSMutableArray *)self->_history count]- a3;
+      v16[3] = [(NSMutableArray *)self->_history count]- size;
       v7 = self->_history;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;

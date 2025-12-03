@@ -1,28 +1,28 @@
 @interface WFPlayPodcastEpisodeContextualAction
 + (WFContextualActionParameter)disambiguationParameter;
 + (WFTopHitItemContextualAction)disambiguationAction;
-+ (id)disambiguationSummaryStringForCollection:(id)a3;
-+ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)a3;
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5;
-- (WFPlayPodcastEpisodeContextualAction)initWithCoder:(id)a3;
-- (WFPlayPodcastEpisodeContextualAction)initWithIntent:(id)a3 artwork:(id)a4 namedQueryInfo:(id)a5;
++ (id)disambiguationSummaryStringForCollection:(id)collection;
++ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)defined;
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler;
+- (WFPlayPodcastEpisodeContextualAction)initWithCoder:(id)coder;
+- (WFPlayPodcastEpisodeContextualAction)initWithIntent:(id)intent artwork:(id)artwork namedQueryInfo:(id)info;
 - (id)_staticDisplayStringForDecoding;
 - (id)mediaItem;
 - (id)uniqueIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPlayPodcastEpisodeContextualAction
 
-- (WFPlayPodcastEpisodeContextualAction)initWithCoder:(id)a3
+- (WFPlayPodcastEpisodeContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFPlayPodcastEpisodeContextualAction;
-  v5 = [(WFContextualAction *)&v10 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
     intent = v5->_intent;
     v5->_intent = v6;
 
@@ -32,31 +32,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFPlayPodcastEpisodeContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFContextualAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFPlayPodcastEpisodeContextualAction *)self intent:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"intent"];
+  [coderCopy encodeObject:v5 forKey:@"intent"];
 }
 
-- (WFPlayPodcastEpisodeContextualAction)initWithIntent:(id)a3 artwork:(id)a4 namedQueryInfo:(id)a5
+- (WFPlayPodcastEpisodeContextualAction)initWithIntent:(id)intent artwork:(id)artwork namedQueryInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v37 = a5;
-  if (!v9)
+  intentCopy = intent;
+  artworkCopy = artwork;
+  infoCopy = info;
+  if (!intentCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFPlayPodcastEpisodeContextualAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPlayPodcastEpisodeContextualAction.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
   }
 
-  v33 = self;
-  if (v10)
+  selfCopy = self;
+  if (artworkCopy)
   {
-    v11 = [[WFContextualActionIcon alloc] initWithImageData:v10 scale:0 displayStyle:2.0];
+    v11 = [[WFContextualActionIcon alloc] initWithImageData:artworkCopy scale:0 displayStyle:2.0];
   }
 
   else
@@ -66,26 +66,26 @@
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = WFLocalizedString(@"Play %@");
-  v34 = [v9 mediaContainer];
-  v14 = [v34 title];
-  v15 = v14;
-  v36 = v10;
-  if (v14)
+  mediaContainer = [intentCopy mediaContainer];
+  title = [mediaContainer title];
+  v15 = title;
+  v36 = artworkCopy;
+  if (title)
   {
     v32 = 0;
-    v16 = v14;
+    v16 = title;
   }
 
   else
   {
-    v31 = [v9 mediaItems];
-    v30 = [v31 firstObject];
-    v17 = [v30 title];
-    if (v17)
+    mediaItems = [intentCopy mediaItems];
+    firstObject = [mediaItems firstObject];
+    title2 = [firstObject title];
+    if (title2)
     {
       v32 = 0;
-      v29 = v17;
-      v16 = v17;
+      v29 = title2;
+      v16 = title2;
     }
 
     else
@@ -99,21 +99,21 @@
   v35 = v13;
   v18 = [v12 localizedStringWithFormat:v13, v16];
   v19 = WFLocalizedString(@"Play Podcast");
-  v20 = [v9 mediaContainer];
-  v21 = [v20 title];
-  v22 = v21;
-  if (!v21)
+  mediaContainer2 = [intentCopy mediaContainer];
+  title3 = [mediaContainer2 title];
+  title4 = title3;
+  if (!title3)
   {
-    v28 = [v9 mediaItems];
-    v27 = [v28 firstObject];
-    v22 = [v27 title];
+    mediaItems2 = [intentCopy mediaItems];
+    firstObject2 = [mediaItems2 firstObject];
+    title4 = [firstObject2 title];
   }
 
-  v38.receiver = v33;
+  v38.receiver = selfCopy;
   v38.super_class = WFPlayPodcastEpisodeContextualAction;
   v23 = v11;
-  v24 = [(WFTopHitItemContextualAction *)&v38 initWithItem:v9 identifier:@"is.workflow.actions.playpodcast" wfActionIdentifier:@"is.workflow.actions.playpodcast" associatedAppBundleIdentifier:@"com.apple.podcasts" parameters:MEMORY[0x1E695E0F0] displayString:v18 title:v19 subtitle:v22 primaryColor:10 icon:v11 accessoryIcon:0 namedQueryInfo:v37];
-  if (!v21)
+  v24 = [(WFTopHitItemContextualAction *)&v38 initWithItem:intentCopy identifier:@"is.workflow.actions.playpodcast" wfActionIdentifier:@"is.workflow.actions.playpodcast" associatedAppBundleIdentifier:@"com.apple.podcasts" parameters:MEMORY[0x1E695E0F0] displayString:v18 title:v19 subtitle:title4 primaryColor:10 icon:v11 accessoryIcon:0 namedQueryInfo:infoCopy];
+  if (!title3)
   {
   }
 
@@ -125,7 +125,7 @@
   {
   }
 
-  [(WFPlayPodcastEpisodeContextualAction *)v24 setIntent:v9];
+  [(WFPlayPodcastEpisodeContextualAction *)v24 setIntent:intentCopy];
   return v24;
 }
 
@@ -133,25 +133,25 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Play %@");
-  v5 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
-  v6 = [v5 mediaContainer];
-  v7 = [v6 title];
-  v8 = v7;
-  if (v7)
+  intent = [(WFPlayPodcastEpisodeContextualAction *)self intent];
+  mediaContainer = [intent mediaContainer];
+  title = [mediaContainer title];
+  v8 = title;
+  if (title)
   {
-    v9 = [v3 localizedStringWithFormat:v4, v7];
+    v9 = [v3 localizedStringWithFormat:v4, title];
   }
 
   else
   {
-    v10 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
-    v11 = [v10 mediaItems];
-    v12 = [v11 firstObject];
-    v13 = [v12 title];
-    v14 = v13;
-    if (v13)
+    intent2 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
+    mediaItems = [intent2 mediaItems];
+    firstObject = [mediaItems firstObject];
+    title2 = [firstObject title];
+    v14 = title2;
+    if (title2)
     {
-      v9 = [v3 localizedStringWithFormat:v4, v13];
+      v9 = [v3 localizedStringWithFormat:v4, title2];
     }
 
     else
@@ -166,37 +166,37 @@
 
 - (id)uniqueIdentifier
 {
-  v3 = [(WFContextualAction *)self identifier];
-  v4 = [(WFPlayPodcastEpisodeContextualAction *)self mediaItem];
-  v5 = [v4 identifier];
-  v6 = [v3 stringByAppendingFormat:@":%@", v5];
+  identifier = [(WFContextualAction *)self identifier];
+  mediaItem = [(WFPlayPodcastEpisodeContextualAction *)self mediaItem];
+  identifier2 = [mediaItem identifier];
+  v6 = [identifier stringByAppendingFormat:@":%@", identifier2];
 
   return v6;
 }
 
 - (id)mediaItem
 {
-  v3 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
-  v4 = [v3 mediaItems];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  intent = [(WFPlayPodcastEpisodeContextualAction *)self intent];
+  mediaItems = [intent mediaItems];
+  firstObject = [mediaItems firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    mediaContainer = firstObject;
   }
 
   else
   {
-    v8 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
-    v7 = [v8 mediaContainer];
+    intent2 = [(WFPlayPodcastEpisodeContextualAction *)self intent];
+    mediaContainer = [intent2 mediaContainer];
   }
 
-  return v7;
+  return mediaContainer;
 }
 
-+ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)a3
++ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)defined
 {
-  if (a3)
+  if (defined)
   {
     v3 = @"Populated Play Specific Podcast (Title)";
     v4 = @"Play ${WFPodcastShow}";
@@ -213,9 +213,9 @@
   return v5;
 }
 
-+ (id)disambiguationSummaryStringForCollection:(id)a3
++ (id)disambiguationSummaryStringForCollection:(id)collection
 {
-  if ([a3 isEqualToString:@"Suggested"])
+  if ([collection isEqualToString:@"Suggested"])
   {
     v3 = WFLocalizedStringWithKey(@"Play Suggested Podcasts (Disambiguation Action Title)", @"Play Suggestions");
   }
@@ -228,12 +228,12 @@
   return v3;
 }
 
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v9 = +[VCVoiceShortcutClient standardClient];
-  v10 = v7;
+  v10 = collectionCopy;
   v11 = v10;
   if (v10 == @"Suggested" || v10 && (v12 = [(__CFString *)v10 isEqualToString:@"Suggested"], v11, (v12 & 1) != 0))
   {
@@ -241,14 +241,14 @@
     v14[1] = 3221225472;
     v14[2] = __106__WFPlayPodcastEpisodeContextualAction__unsafeDisambiguationEntriesForCollection_limit_completionHandler___block_invoke;
     v14[3] = &unk_1E7B026A8;
-    v15 = v8;
-    [v9 getUpcomingMediaForBundleIdentifier:@"com.apple.podcasts" limit:a4 completion:v14];
+    v15 = handlerCopy;
+    [v9 getUpcomingMediaForBundleIdentifier:@"com.apple.podcasts" limit:limit completion:v14];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
-    (*(v8 + 2))(v8, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -296,8 +296,8 @@ WFPlayPodcastEpisodeContextualAction *__106__WFPlayPodcastEpisodeContextualActio
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = [WFPlayPodcastEpisodeContextualAction alloc];
-  v4 = [a1 disambiguationParameter];
-  v12[0] = v4;
+  disambiguationParameter = [self disambiguationParameter];
+  v12[0] = disambiguationParameter;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v6 = WFLocalizedStringWithKey(@"Play Suggested Podcast (Display Format String)", @"Play");
   v7 = WFLocalizedStringWithKey(@"Play Suggested Podcast (Title)", @"Play Suggested Podcast");

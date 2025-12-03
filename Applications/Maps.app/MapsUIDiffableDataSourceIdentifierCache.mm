@@ -1,6 +1,6 @@
 @interface MapsUIDiffableDataSourceIdentifierCache
 - (id)_currentGeneration;
-- (id)identifierForObject:(id)a3;
+- (id)identifierForObject:(id)object;
 - (void)markGeneration;
 @end
 
@@ -13,35 +13,35 @@
   self->_currentGeneration = 0;
 }
 
-- (id)identifierForObject:(id)a3
+- (id)identifierForObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     goto LABEL_9;
   }
 
-  v5 = [(NSMapTable *)self->_currentGeneration objectForKey:v4];
-  if (v5)
+  _maps_diffableDataSourceIdentifier = [(NSMapTable *)self->_currentGeneration objectForKey:objectCopy];
+  if (_maps_diffableDataSourceIdentifier)
   {
     goto LABEL_10;
   }
 
-  v6 = [(NSMapTable *)self->_previousGeneration objectForKey:v4];
+  v6 = [(NSMapTable *)self->_previousGeneration objectForKey:objectCopy];
   if (v6)
   {
-    v5 = v6;
+    _maps_diffableDataSourceIdentifier = v6;
 LABEL_5:
-    v7 = [(MapsUIDiffableDataSourceIdentifierCache *)self _currentGeneration];
-    [v7 setObject:v5 forKey:v4];
+    _currentGeneration = [(MapsUIDiffableDataSourceIdentifierCache *)self _currentGeneration];
+    [_currentGeneration setObject:_maps_diffableDataSourceIdentifier forKey:objectCopy];
 
     goto LABEL_10;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 _maps_diffableDataSourceIdentifier];
-    if (v5)
+    _maps_diffableDataSourceIdentifier = [objectCopy _maps_diffableDataSourceIdentifier];
+    if (_maps_diffableDataSourceIdentifier)
     {
       goto LABEL_5;
     }
@@ -50,12 +50,12 @@ LABEL_5:
   else
   {
 LABEL_9:
-    v5 = 0;
+    _maps_diffableDataSourceIdentifier = 0;
   }
 
 LABEL_10:
 
-  return v5;
+  return _maps_diffableDataSourceIdentifier;
 }
 
 - (id)_currentGeneration

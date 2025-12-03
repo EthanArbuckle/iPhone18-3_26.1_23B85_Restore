@@ -1,27 +1,27 @@
 @interface HDClinicalSharingManager
-- (HDClinicalSharingManager)initWithProfileExtension:(id)a3;
+- (HDClinicalSharingManager)initWithProfileExtension:(id)extension;
 - (id)_observedDataTypes;
 - (void)_registerDataObservation;
 - (void)_unregisterDataObservation;
 - (void)dealloc;
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4;
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor;
 - (void)scheduleSharing;
 @end
 
 @implementation HDClinicalSharingManager
 
-- (HDClinicalSharingManager)initWithProfileExtension:(id)a3
+- (HDClinicalSharingManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = HDClinicalSharingManager;
   v5 = [(HDClinicalSharingManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    [v7 registerProfileReadyObserver:v6 queue:0];
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    [profile registerProfileReadyObserver:v6 queue:0];
   }
 
   return v6;
@@ -38,14 +38,14 @@
 - (void)scheduleSharing
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v4 = [WeakRetained createClinicalSharingClient];
+  createClinicalSharingClient = [WeakRetained createClinicalSharingClient];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5015C;
   v5[3] = &unk_1078C8;
   v5[4] = self;
-  [v4 scheduleSharingHealthDataWithReason:2 completion:v5];
+  [createClinicalSharingClient scheduleSharingHealthDataWithReason:2 completion:v5];
 }
 
 - (id)_observedDataTypes
@@ -74,15 +74,15 @@
 - (void)_registerDataObservation
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v4 = [WeakRetained profile];
-  v5 = [v4 dataManager];
+  profile = [WeakRetained profile];
+  dataManager = [profile dataManager];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(HDClinicalSharingManager *)self _observedDataTypes];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _observedDataTypes = [(HDClinicalSharingManager *)self _observedDataTypes];
+  v7 = [_observedDataTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -94,15 +94,15 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_observedDataTypes);
         }
 
-        [v5 addObserver:self forDataType:*(*(&v11 + 1) + 8 * v10)];
+        [dataManager addObserver:self forDataType:*(*(&v11 + 1) + 8 * v10)];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [_observedDataTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -112,15 +112,15 @@
 - (void)_unregisterDataObservation
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v4 = [WeakRetained profile];
-  v5 = [v4 dataManager];
+  profile = [WeakRetained profile];
+  dataManager = [profile dataManager];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(HDClinicalSharingManager *)self _observedDataTypes];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _observedDataTypes = [(HDClinicalSharingManager *)self _observedDataTypes];
+  v7 = [_observedDataTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -132,22 +132,22 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_observedDataTypes);
         }
 
-        [v5 removeObserver:self forDataType:*(*(&v11 + 1) + 8 * v10)];
+        [dataManager removeObserver:self forDataType:*(*(&v11 + 1) + 8 * v10)];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [_observedDataTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor
 {
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;

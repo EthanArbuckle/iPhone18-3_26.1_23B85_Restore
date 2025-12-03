@@ -6,7 +6,7 @@
 
 - (id)underlyingInteraction
 {
-  v1 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:a1 response:0];
+  v1 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:self response:0];
 
   return v1;
 }

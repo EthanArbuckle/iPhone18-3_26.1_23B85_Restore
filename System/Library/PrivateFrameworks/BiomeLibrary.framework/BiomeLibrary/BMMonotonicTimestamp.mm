@@ -1,24 +1,24 @@
 @interface BMMonotonicTimestamp
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)nowFromContinuousClock;
 + (id)nowFromSuspendingClock;
 + (id)protoFields;
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 machAbsoluteTime:(id)a4 machContinuousTime:(id)a5;
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 suspendingNanosecondsSinceBoot:(id)a4 continuousNanosecondsSinceBoot:(id)a5;
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 value:(id)a4;
-- (BMMonotonicTimestamp)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d machAbsoluteTime:(id)time machContinuousTime:(id)continuousTime;
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d suspendingNanosecondsSinceBoot:(id)boot continuousNanosecondsSinceBoot:(id)sinceBoot;
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d value:(id)value;
+- (BMMonotonicTimestamp)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (BOOL)hasContinuousNanosecondsSinceBoot;
 - (BOOL)hasSuspendingNanosecondsSinceBoot;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)bootSessionUUID;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
 - (unint64_t)continuousNanosecondsSinceBoot;
 - (unint64_t)suspendingNanosecondsSinceBoot;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMonotonicTimestamp
@@ -26,32 +26,32 @@
 - (id)jsonDictionary
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMonotonicTimestamp *)self bootSessionUUID];
-  v4 = [v3 UUIDString];
+  bootSessionUUID = [(BMMonotonicTimestamp *)self bootSessionUUID];
+  uUIDString = [bootSessionUUID UUIDString];
 
-  v5 = [(BMMonotonicTimestamp *)self value];
-  v6 = [v5 jsonDictionary];
+  value = [(BMMonotonicTimestamp *)self value];
+  jsonDictionary = [value jsonDictionary];
 
   v12[0] = @"bootSessionUUID";
-  v7 = v4;
-  if (!v4)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v12[1] = @"value";
-  v13[0] = v7;
-  v8 = v6;
-  if (!v6)
+  v13[0] = null;
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (v6)
+  if (jsonDictionary)
   {
-    if (v4)
+    if (uUIDString)
     {
       goto LABEL_7;
     }
@@ -60,7 +60,7 @@
   else
   {
 
-    if (v4)
+    if (uUIDString)
     {
       goto LABEL_7;
     }
@@ -88,22 +88,22 @@ LABEL_7:
   return v4;
 }
 
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 machAbsoluteTime:(id)a4 machContinuousTime:(id)a5
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d machAbsoluteTime:(id)time machContinuousTime:(id)continuousTime
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  dCopy = d;
+  timeCopy = time;
+  continuousTimeCopy = continuousTime;
+  v11 = continuousTimeCopy;
+  if (timeCopy)
   {
     v12 = MEMORY[0x1E696AD98];
-    v13 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [timeCopy unsignedLongLongValue];
     if (_CpuTickRate_onceToken != -1)
     {
       dispatch_once(&_CpuTickRate_onceToken, &__block_literal_global_12969);
     }
 
-    v14 = [v12 numberWithUnsignedLongLong:(*&_CpuTickRate_rate * v13)];
+    v14 = [v12 numberWithUnsignedLongLong:(*&_CpuTickRate_rate * unsignedLongLongValue)];
     if (v11)
     {
       goto LABEL_5;
@@ -115,23 +115,23 @@ LABEL_9:
   }
 
   v14 = 0;
-  if (!v10)
+  if (!continuousTimeCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
   v15 = MEMORY[0x1E696AD98];
-  v16 = [v11 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v11 unsignedLongLongValue];
   if (_CpuTickRate_onceToken != -1)
   {
     dispatch_once(&_CpuTickRate_onceToken, &__block_literal_global_12969);
   }
 
-  v17 = [v15 numberWithUnsignedLongLong:(*&_CpuTickRate_rate * v16)];
+  v17 = [v15 numberWithUnsignedLongLong:(*&_CpuTickRate_rate * unsignedLongLongValue2)];
 LABEL_10:
   v18 = [[BMMonotonicTimestampValue alloc] initWithSuspendingNanosecondsSinceBoot:v14 continuousNanosecondsSinceBoot:v17];
-  v19 = [(BMMonotonicTimestamp *)self initWithBootSessionUUID:v8 value:v18];
+  v19 = [(BMMonotonicTimestamp *)self initWithBootSessionUUID:dCopy value:v18];
 
   return v19;
 }
@@ -156,25 +156,25 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMonotonicTimestamp *)self bootSessionUUID];
-    v7 = [v5 bootSessionUUID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bootSessionUUID = [(BMMonotonicTimestamp *)self bootSessionUUID];
+    bootSessionUUID2 = [v5 bootSessionUUID];
+    v8 = bootSessionUUID2;
+    if (bootSessionUUID == bootSessionUUID2)
     {
     }
 
     else
     {
-      v9 = [(BMMonotonicTimestamp *)self bootSessionUUID];
-      v10 = [v5 bootSessionUUID];
-      v11 = [v9 isEqual:v10];
+      bootSessionUUID3 = [(BMMonotonicTimestamp *)self bootSessionUUID];
+      bootSessionUUID4 = [v5 bootSessionUUID];
+      v11 = [bootSessionUUID3 isEqual:bootSessionUUID4];
 
       if (!v11)
       {
@@ -185,18 +185,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMMonotonicTimestamp *)self value];
-    v14 = [v5 value];
-    if (v13 == v14)
+    value = [(BMMonotonicTimestamp *)self value];
+    value2 = [v5 value];
+    if (value == value2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMMonotonicTimestamp *)self value];
-      v16 = [v5 value];
-      v12 = [v15 isEqual:v16];
+      value3 = [(BMMonotonicTimestamp *)self value];
+      value4 = [v5 value];
+      v12 = [value3 isEqual:value4];
     }
 
     goto LABEL_11;
@@ -208,19 +208,19 @@ LABEL_12:
   return v12;
 }
 
-- (BMMonotonicTimestamp)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMonotonicTimestamp)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bootSessionUUID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bootSessionUUID"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_24;
       }
 
@@ -231,8 +231,8 @@ LABEL_12:
       v31 = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v18 = [v16 initWithDomain:v17 code:2 userInfo:v9];
-      v11 = 0;
-      *a4 = v18;
+      selfCopy = 0;
+      *error = v18;
       goto LABEL_22;
     }
 
@@ -240,9 +240,9 @@ LABEL_12:
     v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
     if (!v12)
     {
-      if (!a4)
+      if (!error)
       {
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_23;
       }
 
@@ -252,7 +252,7 @@ LABEL_12:
       v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"bootSessionUUID"];
       v33[0] = v9;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-      *a4 = [v23 initWithDomain:v24 code:2 userInfo:v25];
+      *error = [v23 initWithDomain:v24 code:2 userInfo:v25];
 
       goto LABEL_27;
     }
@@ -267,7 +267,7 @@ LABEL_12:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"value"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   if (v9)
   {
     objc_opt_class();
@@ -286,18 +286,18 @@ LABEL_12:
           goto LABEL_7;
         }
 
-        if (a4)
+        if (error)
         {
           v15 = v15;
-          *a4 = v15;
+          *error = v15;
         }
 
 LABEL_20:
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v19 = *MEMORY[0x1E698F240];
@@ -305,13 +305,13 @@ LABEL_20:
         v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"value"];
         v29 = v10;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-        *a4 = [v26 initWithDomain:v19 code:2 userInfo:v20];
+        *error = [v26 initWithDomain:v19 code:2 userInfo:v20];
 
         goto LABEL_20;
       }
 
 LABEL_27:
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_22;
     }
   }
@@ -319,7 +319,7 @@ LABEL_27:
   v10 = 0;
 LABEL_7:
   self = [(BMMonotonicTimestamp *)self initWithBootSessionUUID:v8 value:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_21:
 
 LABEL_22:
@@ -327,21 +327,21 @@ LABEL_23:
 
 LABEL_24:
   v21 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMonotonicTimestamp *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_raw_bootSessionUUID)
   {
     PBDataWriterWriteDataField();
@@ -350,14 +350,14 @@ LABEL_24:
   if (self->_value)
   {
     PBDataWriterPlaceMark();
-    [(BMMonotonicTimestampValue *)self->_value writeTo:v4];
+    [(BMMonotonicTimestampValue *)self->_value writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMMonotonicTimestamp;
   v5 = [(BMEventBase *)&v22 init];
@@ -366,12 +366,12 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -382,18 +382,18 @@ LABEL_24:
       while (1)
       {
         LOBYTE(v23[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23[0] & 0x7F) << v7;
@@ -410,9 +410,9 @@ LABEL_24:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -426,7 +426,7 @@ LABEL_16:
           goto LABEL_28;
         }
 
-        v17 = [[BMMonotonicTimestampValue alloc] initByReadFrom:v4];
+        v17 = [[BMMonotonicTimestampValue alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_28;
@@ -456,13 +456,13 @@ LABEL_16:
         goto LABEL_28;
       }
 
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_28:
     v20 = 0;
@@ -480,29 +480,29 @@ LABEL_29:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMonotonicTimestamp *)self bootSessionUUID];
-  v5 = [(BMMonotonicTimestamp *)self value];
-  v6 = [v3 initWithFormat:@"BMMonotonicTimestamp with bootSessionUUID: %@, value: %@", v4, v5];
+  bootSessionUUID = [(BMMonotonicTimestamp *)self bootSessionUUID];
+  value = [(BMMonotonicTimestamp *)self value];
+  v6 = [v3 initWithFormat:@"BMMonotonicTimestamp with bootSessionUUID: %@, value: %@", bootSessionUUID, value];
 
   return v6;
 }
 
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 value:(id)a4
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d value:(id)value
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = BMMonotonicTimestamp;
   v8 = [(BMEventBase *)&v13 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (dCopy)
     {
       v14[0] = 0;
       v14[1] = 0;
-      [v6 getUUIDBytes:v14];
+      [dCopy getUUIDBytes:v14];
       v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v14 length:16];
       raw_bootSessionUUID = v8->_raw_bootSessionUUID;
       v8->_raw_bootSessionUUID = v9;
@@ -514,7 +514,7 @@ LABEL_29:
       v8->_raw_bootSessionUUID = 0;
     }
 
-    objc_storeStrong(&v8->_value, a4);
+    objc_storeStrong(&v8->_value, value);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -559,9 +559,9 @@ id __31__BMMonotonicTimestamp_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -569,8 +569,8 @@ id __31__BMMonotonicTimestamp_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMonotonicTimestamp alloc] initByReadFrom:v7];
     v4 = v8;
@@ -585,44 +585,44 @@ id __31__BMMonotonicTimestamp_columns__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)hasContinuousNanosecondsSinceBoot
 {
-  v2 = [(BMMonotonicTimestamp *)self value];
-  v3 = [v2 hasContinuousNanosecondsSinceBoot];
+  value = [(BMMonotonicTimestamp *)self value];
+  hasContinuousNanosecondsSinceBoot = [value hasContinuousNanosecondsSinceBoot];
 
-  return v3;
+  return hasContinuousNanosecondsSinceBoot;
 }
 
 - (unint64_t)continuousNanosecondsSinceBoot
 {
-  v2 = [(BMMonotonicTimestamp *)self value];
-  v3 = [v2 continuousNanosecondsSinceBoot];
+  value = [(BMMonotonicTimestamp *)self value];
+  continuousNanosecondsSinceBoot = [value continuousNanosecondsSinceBoot];
 
-  return v3;
+  return continuousNanosecondsSinceBoot;
 }
 
 - (BOOL)hasSuspendingNanosecondsSinceBoot
 {
-  v2 = [(BMMonotonicTimestamp *)self value];
-  v3 = [v2 hasSuspendingNanosecondsSinceBoot];
+  value = [(BMMonotonicTimestamp *)self value];
+  hasSuspendingNanosecondsSinceBoot = [value hasSuspendingNanosecondsSinceBoot];
 
-  return v3;
+  return hasSuspendingNanosecondsSinceBoot;
 }
 
 - (unint64_t)suspendingNanosecondsSinceBoot
 {
-  v2 = [(BMMonotonicTimestamp *)self value];
-  v3 = [v2 suspendingNanosecondsSinceBoot];
+  value = [(BMMonotonicTimestamp *)self value];
+  suspendingNanosecondsSinceBoot = [value suspendingNanosecondsSinceBoot];
 
-  return v3;
+  return suspendingNanosecondsSinceBoot;
 }
 
-- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)a3 suspendingNanosecondsSinceBoot:(id)a4 continuousNanosecondsSinceBoot:(id)a5
+- (BMMonotonicTimestamp)initWithBootSessionUUID:(id)d suspendingNanosecondsSinceBoot:(id)boot continuousNanosecondsSinceBoot:(id)sinceBoot
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[BMMonotonicTimestampValue alloc] initWithSuspendingNanosecondsSinceBoot:v9 continuousNanosecondsSinceBoot:v8];
+  sinceBootCopy = sinceBoot;
+  bootCopy = boot;
+  dCopy = d;
+  v11 = [[BMMonotonicTimestampValue alloc] initWithSuspendingNanosecondsSinceBoot:bootCopy continuousNanosecondsSinceBoot:sinceBootCopy];
 
-  v12 = [(BMMonotonicTimestamp *)self initWithBootSessionUUID:v10 value:v11];
+  v12 = [(BMMonotonicTimestamp *)self initWithBootSessionUUID:dCopy value:v11];
   return v12;
 }
 

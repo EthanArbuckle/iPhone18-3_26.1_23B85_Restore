@@ -1,11 +1,11 @@
 @interface RAPTableCollapsableCheckmarkSection
-- (RAPTableCollapsableCheckmarkSection)initWithOwner:(id)a3 initialValues:(id)a4 initialSelectedValue:(id)a5 configureForValue:(id)a6 selection:(id)a7;
+- (RAPTableCollapsableCheckmarkSection)initWithOwner:(id)owner initialValues:(id)values initialSelectedValue:(id)value configureForValue:(id)forValue selection:(id)selection;
 - (void)_sharedInit;
 - (void)_showAll;
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4;
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path;
 - (void)selectedValueDidChange;
-- (void)setHeaderTitle:(id)a3;
-- (void)setValues:(id)a3;
+- (void)setHeaderTitle:(id)title;
+- (void)setValues:(id)values;
 - (void)toggleCollapse;
 @end
 
@@ -13,8 +13,8 @@
 
 - (void)toggleCollapse
 {
-  v5 = [(RAPTablePartSection *)self tableView];
-  v3 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+  tableView = [(RAPTablePartSection *)self tableView];
+  selectedValue = [(RAPTableCheckmarkRadioSection *)self selectedValue];
   if (self->_selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     selectedIndex = -1;
@@ -25,32 +25,32 @@
     selectedIndex = self->_selectedIndex;
   }
 
-  [RAPCollapsableHeaderFooterView toggleCollapseForTableView:v5 AtSection:0 withSelectedValue:v3 withSelectedIndex:selectedIndex withAllValues:self->_originalValues];
+  [RAPCollapsableHeaderFooterView toggleCollapseForTableView:tableView AtSection:0 withSelectedValue:selectedValue withSelectedIndex:selectedIndex withAllValues:self->_originalValues];
 }
 
 - (void)selectedValueDidChange
 {
   if ([(NSArray *)self->_originalValues count]== 1)
   {
-    v13 = self;
-    v3 = &v13;
+    selfCopy = self;
+    v3 = &selfCopy;
   }
 
   else
   {
-    v4 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+    selectedValue = [(RAPTableCheckmarkRadioSection *)self selectedValue];
 
-    if (v4)
+    if (selectedValue)
     {
-      v5 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
-      v14 = v5;
+      selectedValue2 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+      v14 = selectedValue2;
       v6 = [NSArray arrayWithObjects:&v14 count:1];
       values = self->super._values;
       self->super._values = v6;
 
       originalValues = self->_originalValues;
-      v9 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
-      self->_selectedIndex = [(NSArray *)originalValues indexOfObject:v9];
+      selectedValue3 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+      self->_selectedIndex = [(NSArray *)originalValues indexOfObject:selectedValue3];
     }
 
     if ([(NSArray *)self->_originalValues count]< 2)
@@ -60,35 +60,35 @@
 
     else
     {
-      v10 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
-      v11 = v10 != 0;
+      selectedValue4 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+      v11 = selectedValue4 != 0;
     }
 
     [(RAPCollapsableHeaderFooterView *)self->_collapsableHeaderView setShowAllButtonVisible:v11];
     [(RAPTableCollapsableCheckmarkSection *)self toggleCollapse];
-    v12 = self;
-    v3 = &v12;
+    selfCopy2 = self;
+    v3 = &selfCopy2;
   }
 
   v3[1] = RAPTableCollapsableCheckmarkSection;
-  objc_msgSendSuper2(v3, "selectedValueDidChange", v12);
+  objc_msgSendSuper2(v3, "selectedValueDidChange", selfCopy2);
 }
 
-- (void)didSelectCellForRowAtIndex:(int64_t)a3 tableIndexPath:(id)a4
+- (void)didSelectCellForRowAtIndex:(int64_t)index tableIndexPath:(id)path
 {
-  if (a3 || self->_selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
+  if (index || self->_selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9.receiver = self;
     v9.super_class = RAPTableCollapsableCheckmarkSection;
-    v8 = a4;
-    [(RAPTableCheckmarkRadioSection *)&v9 didSelectCellForRowAtIndex:a3 tableIndexPath:v8];
+    pathCopy = path;
+    [(RAPTableCheckmarkRadioSection *)&v9 didSelectCellForRowAtIndex:index tableIndexPath:pathCopy];
   }
 
   else
   {
-    v6 = a4;
-    v7 = [(RAPTablePartSection *)self tableView];
-    [v7 deselectRowAtIndexPath:v6 animated:1];
+    pathCopy2 = path;
+    tableView = [(RAPTablePartSection *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy2 animated:1];
 
     [(RAPTableCollapsableCheckmarkSection *)self _showAll];
   }
@@ -101,22 +101,22 @@
   self->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->super._values != v4)
+  valuesCopy = values;
+  v5 = valuesCopy;
+  if (self->super._values != valuesCopy)
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)valuesCopy copy];
     originalValues = self->_originalValues;
     self->_originalValues = v6;
 
-    v8 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
-    if (v8)
+    selectedValue = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+    if (selectedValue)
     {
       v9 = self->_originalValues;
-      v10 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
-      self->_selectedIndex = [(NSArray *)v9 indexOfObject:v10];
+      selectedValue2 = [(RAPTableCheckmarkRadioSection *)self selectedValue];
+      self->_selectedIndex = [(NSArray *)v9 indexOfObject:selectedValue2];
     }
 
     else
@@ -130,17 +130,17 @@
   [(RAPTableCheckmarkRadioSection *)&v11 setValues:v5];
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
-  if (([v4 isEqualToString:self->_headerTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_headerTitle] & 1) == 0)
   {
-    [(RAPHeaderFooterView *)self->_collapsableHeaderView setTitleLabelText:v4];
+    [(RAPHeaderFooterView *)self->_collapsableHeaderView setTitleLabelText:titleCopy];
   }
 
   v5.receiver = self;
   v5.super_class = RAPTableCollapsableCheckmarkSection;
-  [(RAPTablePartSection *)&v5 setHeaderTitle:v4];
+  [(RAPTablePartSection *)&v5 setHeaderTitle:titleCopy];
 }
 
 - (void)_sharedInit
@@ -155,18 +155,18 @@
   [(RAPTablePartSection *)self setHeaderView:v5];
 }
 
-- (RAPTableCollapsableCheckmarkSection)initWithOwner:(id)a3 initialValues:(id)a4 initialSelectedValue:(id)a5 configureForValue:(id)a6 selection:(id)a7
+- (RAPTableCollapsableCheckmarkSection)initWithOwner:(id)owner initialValues:(id)values initialSelectedValue:(id)value configureForValue:(id)forValue selection:(id)selection
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a6 copy];
-  v17 = [v12 copy];
+  selectionCopy = selection;
+  valueCopy = value;
+  valuesCopy = values;
+  ownerCopy = owner;
+  v16 = [forValue copy];
+  v17 = [selectionCopy copy];
 
   v20.receiver = self;
   v20.super_class = RAPTableCollapsableCheckmarkSection;
-  v18 = [(RAPTableCheckmarkRadioSection *)&v20 initWithOwner:v15 initialValues:v14 initialSelectedValue:v13 configureForValue:v16 selection:v17];
+  v18 = [(RAPTableCheckmarkRadioSection *)&v20 initWithOwner:ownerCopy initialValues:valuesCopy initialSelectedValue:valueCopy configureForValue:v16 selection:v17];
 
   if (v18)
   {

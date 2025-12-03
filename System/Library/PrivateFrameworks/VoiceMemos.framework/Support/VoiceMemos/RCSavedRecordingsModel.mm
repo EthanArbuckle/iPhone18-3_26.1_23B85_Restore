@@ -1,21 +1,21 @@
 @interface RCSavedRecordingsModel
-+ (id)_SHA256DataForPath:(id)a3;
-+ (id)recoveredRecordingTitleFromDate:(id)a3;
-- (BOOL)reloadDemoContent:(id *)a3;
-- (id)performOrphanRecoveryAndCleanupWithExternallyInUseComposedAVURLs:(id)a3 andFinalizingCompositions:(id)a4 restoreFileFutures:(BOOL)a5;
-- (id)repairCompositionDecomposedFragmentMetadataIfNecessary:(id)a3;
-- (id)updateRecordingForFinalizedCompositionAndMigrateIfNecessary:(id)a3;
-- (void)_logMissingAudioFutureIfNeeded:(id)a3;
-- (void)_performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:(id)a3 fileManager:(id)a4 URLsInSavedRecordingsDirectory:(id)a5;
-- (void)_performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:(id)a3 fileManager:(id)a4 URLsInSavedRecordingsDirectory:(id)a5;
++ (id)_SHA256DataForPath:(id)path;
++ (id)recoveredRecordingTitleFromDate:(id)date;
+- (BOOL)reloadDemoContent:(id *)content;
+- (id)performOrphanRecoveryAndCleanupWithExternallyInUseComposedAVURLs:(id)ls andFinalizingCompositions:(id)compositions restoreFileFutures:(BOOL)futures;
+- (id)repairCompositionDecomposedFragmentMetadataIfNecessary:(id)necessary;
+- (id)updateRecordingForFinalizedCompositionAndMigrateIfNecessary:(id)necessary;
+- (void)_logMissingAudioFutureIfNeeded:(id)needed;
+- (void)_performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:(id)ls fileManager:(id)manager URLsInSavedRecordingsDirectory:(id)directory;
+- (void)_performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:(id)ls fileManager:(id)manager URLsInSavedRecordingsDirectory:(id)directory;
 @end
 
 @implementation RCSavedRecordingsModel
 
-- (id)performOrphanRecoveryAndCleanupWithExternallyInUseComposedAVURLs:(id)a3 andFinalizingCompositions:(id)a4 restoreFileFutures:(BOOL)a5
+- (id)performOrphanRecoveryAndCleanupWithExternallyInUseComposedAVURLs:(id)ls andFinalizingCompositions:(id)compositions restoreFileFutures:(BOOL)futures
 {
-  v8 = a3;
-  v9 = a4;
+  lsCopy = ls;
+  compositionsCopy = compositions;
   v10 = OSLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,7 +24,7 @@
   }
 
   v11 = objc_opt_new();
-  v12 = [_RCURLSet setWithURLs:v8];
+  v12 = [_RCURLSet setWithURLs:lsCopy];
   v13 = +[NSFileManager defaultManager];
   v14 = +[RCSavedRecordingsModel savedRecordingsDirectory];
   v15 = [NSURL fileURLWithPath:v14];
@@ -44,10 +44,10 @@
   v33 = buf;
   v18 = v12;
   v30 = v18;
-  v34 = a5;
+  futuresCopy = futures;
   v19 = v16;
   v31 = v19;
-  v20 = v9;
+  v20 = compositionsCopy;
   v32 = v20;
   [(RCSavedRecordingsModel *)self enumerateExistingRecordingsWithBlock:v28];
   if (v36[24] == 1)
@@ -80,15 +80,15 @@
   return v25;
 }
 
-- (void)_performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:(id)a3 fileManager:(id)a4 URLsInSavedRecordingsDirectory:(id)a5
+- (void)_performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:(id)ls fileManager:(id)manager URLsInSavedRecordingsDirectory:(id)directory
 {
-  v8 = a3;
-  v24 = a4;
+  lsCopy = ls;
+  managerCopy = manager;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = a5;
+  obj = directory;
   v9 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v9)
   {
@@ -103,8 +103,8 @@
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        v13 = [v12 pathExtension];
-        v14 = [v13 isEqualToString:@"composition"];
+        pathExtension = [v12 pathExtension];
+        v14 = [pathExtension isEqualToString:@"composition"];
 
         if (v14)
         {
@@ -115,19 +115,19 @@
           v33 = sub_100001D6C;
           v34 = sub_1000048DC;
           v35 = [RCComposition compositionLoadedFromCompositionBundleURL:v15];
-          v16 = [v31[5] composedAVURL];
-          if (([v8 containsURL:v16] & 1) == 0)
+          composedAVURL = [v31[5] composedAVURL];
+          if (([lsCopy containsURL:composedAVURL] & 1) == 0)
           {
             if ([v31[5] fileSizeOfAssets])
             {
               v17 = OSLogForCategory();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
-                v18 = [v15 lastPathComponent];
+                lastPathComponent = [v15 lastPathComponent];
                 *buf = 136315394;
                 v41 = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                 v42 = 2112;
-                v43 = v18;
+                v43 = lastPathComponent;
                 _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s -- Found orphaned composition (%@) with assets, recover it by inserting it into the database.", buf, 0x16u);
               }
 
@@ -139,14 +139,14 @@
               v26[1] = 3221225472;
               v26[2] = sub_1000048E4;
               v26[3] = &unk_1000552B0;
-              v21 = v16;
-              v28 = self;
+              v21 = composedAVURL;
+              selfCopy = self;
               v29 = &v30;
               v27 = v21;
               [(RCSavedRecordingsModel *)self performWithSavingDisabled:v26];
               [v31[5] saveMetadataToDefaultLocation];
               [(RCSavedRecordingsModel *)self saveIfNecessary];
-              [v8 addURL:v21];
+              [lsCopy addURL:v21];
             }
 
             else
@@ -154,15 +154,15 @@
               v22 = OSLogForCategory();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
               {
-                v23 = [v15 lastPathComponent];
+                lastPathComponent2 = [v15 lastPathComponent];
                 *buf = 136315394;
                 v41 = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfCompositionsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                 v42 = 2112;
-                v43 = v23;
+                v43 = lastPathComponent2;
                 _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s -- Found orphaned composition (%@) with no assets, deleting it.", buf, 0x16u);
               }
 
-              [v24 removeItemAtURL:v15 error:0];
+              [managerCopy removeItemAtURL:v15 error:0];
             }
           }
 
@@ -177,26 +177,26 @@
   }
 }
 
-- (void)_performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:(id)a3 fileManager:(id)a4 URLsInSavedRecordingsDirectory:(id)a5
+- (void)_performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:(id)ls fileManager:(id)manager URLsInSavedRecordingsDirectory:(id)directory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lsCopy = ls;
+  managerCopy = manager;
+  directoryCopy = directory;
   v11 = +[NSMutableDictionary dictionary];
   v77[0] = _NSConcreteStackBlock;
   v77[1] = 3221225472;
   v77[2] = sub_10000570C;
   v77[3] = &unk_1000552D8;
   v77[4] = self;
-  v69 = v9;
+  v69 = managerCopy;
   v78 = v69;
-  v12 = v8;
+  v12 = lsCopy;
   v79 = v12;
   v58 = v11;
   v80 = v58;
   v71 = objc_retainBlock(v77);
-  v59 = v10;
-  v13 = [v10 sortedArrayUsingComparator:&stru_100055318];
+  v59 = directoryCopy;
+  v13 = [directoryCopy sortedArrayUsingComparator:&stru_100055318];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
@@ -206,7 +206,7 @@
   {
     v15 = v14;
     v16 = *v74;
-    v61 = self;
+    selfCopy = self;
     v68 = v12;
     v70 = v13;
     do
@@ -219,8 +219,8 @@
         }
 
         v18 = *(*(&v73 + 1) + 8 * i);
-        v19 = [v18 pathExtension];
-        v20 = [RCCaptureFormat supportsFileExtension:v19];
+        pathExtension = [v18 pathExtension];
+        v20 = [RCCaptureFormat supportsFileExtension:pathExtension];
 
         if (v20 && ([v12 containsURL:v18] & 1) == 0)
         {
@@ -228,11 +228,11 @@
           v22 = OSLogForCategory();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = [v21 lastPathComponent];
+            lastPathComponent = [v21 lastPathComponent];
             LODWORD(buf.value) = 136315394;
             *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
             LOWORD(buf.flags) = 2112;
-            *(&buf.flags + 2) = v23;
+            *(&buf.flags + 2) = lastPathComponent;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s -- Found orphaned composed AVURL: '%@'", &buf, 0x16u);
           }
 
@@ -243,16 +243,16 @@
           {
             if (v26)
             {
-              v27 = [v21 lastPathComponent];
+              lastPathComponent2 = [v21 lastPathComponent];
               LODWORD(buf.value) = 136315394;
               *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
               LOWORD(buf.flags) = 2112;
-              *(&buf.flags + 2) = v27;
+              *(&buf.flags + 2) = lastPathComponent2;
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s -- Orphaned composed AVURL: '%@' does not have a duplicate in the database or unsynced assets manifest.  Attempting to insert into the database...", &buf, 0x16u);
             }
 
             v28 = [AVURLAsset assetWithURL:v21];
-            v29 = v28;
+            path2 = v28;
             if (v28)
             {
               [v28 duration];
@@ -260,9 +260,9 @@
               if (Seconds > 0.0)
               {
                 v31 = Seconds;
-                v32 = [v29 rc_recordingMetadata];
-                v66 = [v32 objectForKeyedSubscript:@"uniqueID"];
-                v33 = [v32 objectForKeyedSubscript:@"date"];
+                rc_recordingMetadata = [path2 rc_recordingMetadata];
+                v66 = [rc_recordingMetadata objectForKeyedSubscript:@"uniqueID"];
+                v33 = [rc_recordingMetadata objectForKeyedSubscript:@"date"];
                 v34 = v33;
                 if (v33)
                 {
@@ -276,7 +276,7 @@
 
                 v67 = v35;
 
-                v40 = [v32 objectForKeyedSubscript:@"title"];
+                v40 = [rc_recordingMetadata objectForKeyedSubscript:@"title"];
                 v41 = v40;
                 if (v40)
                 {
@@ -293,17 +293,17 @@
                 v43 = OSLogForCategory();
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                 {
-                  v44 = [v21 lastPathComponent];
+                  lastPathComponent3 = [v21 lastPathComponent];
                   LODWORD(buf.value) = 136315394;
                   *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                   LOWORD(buf.flags) = 2112;
-                  *(&buf.flags + 2) = v44;
+                  *(&buf.flags + 2) = lastPathComponent3;
                   _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "%s -- Found orphaned AVURL (%@) without .composition, recover it by inserting it into the database.", &buf, 0x16u);
                 }
 
-                v45 = [v21 path];
+                path = [v21 path];
                 v72 = 0;
-                v46 = [(RCSavedRecordingsModel *)self insertRecordingWithAudioFile:v45 duration:v67 date:v65 customTitleBase:v66 uniqueID:&v72 error:v31];
+                v46 = [(RCSavedRecordingsModel *)self insertRecordingWithAudioFile:path duration:v67 date:v65 customTitleBase:v66 uniqueID:&v72 error:v31];
                 v63 = v72;
 
                 v64 = v46;
@@ -312,20 +312,20 @@
                   v47 = OSLogForCategory();
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
                   {
-                    v48 = [v21 lastPathComponent];
-                    v49 = [v64 title];
+                    lastPathComponent4 = [v21 lastPathComponent];
+                    title = [v64 title];
                     LODWORD(buf.value) = 136315650;
                     *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                     LOWORD(buf.flags) = 2112;
-                    *(&buf.flags + 2) = v48;
+                    *(&buf.flags + 2) = lastPathComponent4;
                     HIWORD(buf.epoch) = 2112;
-                    v82 = v49;
+                    v82 = title;
                     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "%s -- Orphaned composed AVURL: inserted '%@' into the database with title '%@'", &buf, 0x20u);
                   }
 
-                  v50 = [v32 objectForKeyedSubscript:@"musicMemoStarRating"];
-                  v51 = [v32 objectForKeyedSubscript:@"musicMemoTags"];
-                  v52 = [v32 objectForKeyedSubscript:@"musicMemoTextNote"];
+                  v50 = [rc_recordingMetadata objectForKeyedSubscript:@"musicMemoStarRating"];
+                  v51 = [rc_recordingMetadata objectForKeyedSubscript:@"musicMemoTags"];
+                  v52 = [rc_recordingMetadata objectForKeyedSubscript:@"musicMemoTextNote"];
                   v53 = v52;
                   v62 = v50;
                   if (v50 || v51 || v52)
@@ -333,21 +333,21 @@
                     v54 = OSLogForCategory();
                     if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
                     {
-                      v60 = [v21 lastPathComponent];
+                      lastPathComponent5 = [v21 lastPathComponent];
                       LODWORD(buf.value) = 136315394;
                       *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                       LOWORD(buf.flags) = 2112;
-                      *(&buf.flags + 2) = v60;
+                      *(&buf.flags + 2) = lastPathComponent5;
                       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "%s -- orphaned AVURL (%@) was a Music Memo", &buf, 0x16u);
                     }
 
                     [v64 setMusicMemo:1];
-                    [(RCSavedRecordingsModel *)v61 saveIfNecessary];
+                    [(RCSavedRecordingsModel *)selfCopy saveIfNecessary];
                   }
 
                   [v68 addURL:v21];
 
-                  self = v61;
+                  self = selfCopy;
                   goto LABEL_47;
                 }
 
@@ -365,16 +365,16 @@ LABEL_44:
                 v56 = OSLogForCategory();
                 if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
                 {
-                  v57 = [v21 lastPathComponent];
+                  lastPathComponent6 = [v21 lastPathComponent];
                   LODWORD(buf.value) = 136315394;
                   *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
                   LOWORD(buf.flags) = 2112;
-                  *(&buf.flags + 2) = v57;
+                  *(&buf.flags + 2) = lastPathComponent6;
                   _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "%s -- Orphaned composed AVURL: '%@' unable to insert orphaned asset into database.  Deleting!", &buf, 0x16u);
                 }
 
-                v32 = [v21 path];
-                [v69 removeItemAtPath:v32 error:0];
+                rc_recordingMetadata = [v21 path];
+                [v69 removeItemAtPath:rc_recordingMetadata error:0];
 LABEL_47:
 
                 v12 = v68;
@@ -384,35 +384,35 @@ LABEL_48:
                 continue;
               }
 
-              v32 = OSLogForCategory();
-              if (!os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+              rc_recordingMetadata = OSLogForCategory();
+              if (!os_log_type_enabled(rc_recordingMetadata, OS_LOG_TYPE_INFO))
               {
                 goto LABEL_44;
               }
 
-              v37 = [v21 lastPathComponent];
+              lastPathComponent7 = [v21 lastPathComponent];
               LODWORD(buf.value) = 136315394;
               *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
               LOWORD(buf.flags) = 2112;
-              *(&buf.flags + 2) = v37;
-              v38 = v32;
+              *(&buf.flags + 2) = lastPathComponent7;
+              v38 = rc_recordingMetadata;
               v39 = "%s -- Orphaned composed AVURL: unable to insert '%@' into the database because it's duration is 0";
             }
 
             else
             {
-              v32 = OSLogForCategory();
-              if (!os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+              rc_recordingMetadata = OSLogForCategory();
+              if (!os_log_type_enabled(rc_recordingMetadata, OS_LOG_TYPE_INFO))
               {
                 goto LABEL_44;
               }
 
-              v37 = [v21 lastPathComponent];
+              lastPathComponent7 = [v21 lastPathComponent];
               LODWORD(buf.value) = 136315394;
               *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
               LOWORD(buf.flags) = 2112;
-              *(&buf.flags + 2) = v37;
-              v38 = v32;
+              *(&buf.flags + 2) = lastPathComponent7;
+              v38 = rc_recordingMetadata;
               v39 = "%s -- Orphaned composed AVURL: '%@' unable to load AVURLAsset";
             }
 
@@ -423,16 +423,16 @@ LABEL_48:
 
           if (v26)
           {
-            v36 = [v21 lastPathComponent];
+            lastPathComponent8 = [v21 lastPathComponent];
             LODWORD(buf.value) = 136315394;
             *(&buf.value + 4) = "[RCSavedRecordingsModel(RCSOrphanHandling) _performOrphanRecoveryAndCleanupOfBareAssetsWithInUseComposedAVURLs:fileManager:URLsInSavedRecordingsDirectory:]";
             LOWORD(buf.flags) = 2112;
-            *(&buf.flags + 2) = v36;
+            *(&buf.flags + 2) = lastPathComponent8;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s -- Orphaned composed AVURL: '%@' already has a duplicate in database or unsynced assets manifest.  Deleting!", &buf, 0x16u);
           }
 
-          v29 = [v21 path];
-          [v69 removeItemAtPath:v29 error:0];
+          path2 = [v21 path];
+          [v69 removeItemAtPath:path2 error:0];
           goto LABEL_48;
         }
       }
@@ -444,11 +444,11 @@ LABEL_48:
   }
 }
 
-- (id)updateRecordingForFinalizedCompositionAndMigrateIfNecessary:(id)a3
+- (id)updateRecordingForFinalizedCompositionAndMigrateIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [v4 savedRecordingUUID];
-  if (v5)
+  necessaryCopy = necessary;
+  savedRecordingUUID = [necessaryCopy savedRecordingUUID];
+  if (savedRecordingUUID)
   {
     v14 = 0;
     v15 = &v14;
@@ -460,9 +460,9 @@ LABEL_48:
     v9[1] = 3221225472;
     v9[2] = sub_100005CE4;
     v9[3] = &unk_100055340;
-    v10 = v4;
-    v11 = self;
-    v12 = v5;
+    v10 = necessaryCopy;
+    selfCopy = self;
+    v12 = savedRecordingUUID;
     v13 = &v14;
     [(RCSavedRecordingsModel *)self performBlockAndWait:v9];
     v6 = v15[5];
@@ -484,9 +484,9 @@ LABEL_48:
   return v6;
 }
 
-- (id)repairCompositionDecomposedFragmentMetadataIfNecessary:(id)a3
+- (id)repairCompositionDecomposedFragmentMetadataIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -499,18 +499,18 @@ LABEL_48:
   v7[3] = &unk_100055368;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 rcs_repairDecomposedFragmentMetadataIfNecessary:v7];
+  [necessaryCopy rcs_repairDecomposedFragmentMetadataIfNecessary:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-+ (id)_SHA256DataForPath:(id)a3
++ (id)_SHA256DataForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_autoreleasePoolPush();
-  v5 = [NSURL fileURLWithPath:v3];
+  v5 = [NSURL fileURLWithPath:pathCopy];
   v8 = 0;
   if ([v5 getResourceValue:&v8 forKey:NSURLFileSizeKey error:0] && objc_msgSend(v8, "longLongValue") >= 1)
   {
@@ -527,31 +527,31 @@ LABEL_48:
   return v6;
 }
 
-- (void)_logMissingAudioFutureIfNeeded:(id)a3
+- (void)_logMissingAudioFutureIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = [v3 syncedAudioFuture];
+  neededCopy = needed;
+  syncedAudioFuture = [neededCopy syncedAudioFuture];
 
-  if (!v4)
+  if (!syncedAudioFuture)
   {
-    v5 = [v3 url];
+    v5 = [neededCopy url];
     v6 = [v5 checkResourceIsReachableAndReturnError:0];
 
     v7 = OSLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = [NSNumber numberWithBool:v6];
-      v9 = [v3 uuid];
+      uuid = [neededCopy uuid];
       v10 = 138412546;
       v11 = v8;
       v12 = 2112;
-      v13 = v9;
+      v13 = uuid;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Recording audio file exists = %@, uuid = %@", &v10, 0x16u);
     }
   }
 }
 
-+ (id)recoveredRecordingTitleFromDate:(id)a3
++ (id)recoveredRecordingTitleFromDate:(id)date
 {
   v3 = RCLocalizedRecordingDateWithOptions();
   v4 = OSLogForCategory();
@@ -567,7 +567,7 @@ LABEL_48:
   return v3;
 }
 
-- (BOOL)reloadDemoContent:(id *)a3
+- (BOOL)reloadDemoContent:(id *)content
 {
   v6 = 0;
   v7 = &v6;
@@ -582,9 +582,9 @@ LABEL_48:
   v5[4] = self;
   v5[5] = &v6;
   [(RCSavedRecordingsModel *)self performBlockAndWait:v5];
-  if (a3)
+  if (content)
   {
-    *a3 = v7[5];
+    *content = v7[5];
   }
 
   _Block_object_dispose(&v6, 8);

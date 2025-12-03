@@ -1,10 +1,10 @@
 @interface MediaFirstPartyLandscapeCollectionViewCell
-- (_TtC9MomentsUI42MediaFirstPartyLandscapeCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI42MediaFirstPartyLandscapeCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation MediaFirstPartyLandscapeCollectionViewCell
 
-- (_TtC9MomentsUI42MediaFirstPartyLandscapeCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI42MediaFirstPartyLandscapeCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI42MediaFirstPartyLandscapeCollectionViewCell_mediaFirstPartyView;
   if (one-time initialization token for empty != -1)

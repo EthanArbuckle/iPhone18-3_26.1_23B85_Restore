@@ -1,31 +1,31 @@
 @interface PGRankedZeroKeyword
-- (BOOL)isEqual:(id)a3;
-- (PGRankedZeroKeyword)initWithKeyword:(id)a3 score:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (PGRankedZeroKeyword)initWithKeyword:(id)keyword score:(double)score;
 @end
 
 @implementation PGRankedZeroKeyword
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PGRankedZeroKeyword *)self zeroKeyword];
-  v6 = [v4 zeroKeyword];
+  equalCopy = equal;
+  zeroKeyword = [(PGRankedZeroKeyword *)self zeroKeyword];
+  zeroKeyword2 = [equalCopy zeroKeyword];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(equalCopy) = [zeroKeyword isEqual:zeroKeyword2];
+  return equalCopy;
 }
 
-- (PGRankedZeroKeyword)initWithKeyword:(id)a3 score:(double)a4
+- (PGRankedZeroKeyword)initWithKeyword:(id)keyword score:(double)score
 {
-  v7 = a3;
+  keywordCopy = keyword;
   v11.receiver = self;
   v11.super_class = PGRankedZeroKeyword;
   v8 = [(PGRankedZeroKeyword *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_zeroKeyword, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_zeroKeyword, keyword);
+    v9->_score = score;
   }
 
   return v9;

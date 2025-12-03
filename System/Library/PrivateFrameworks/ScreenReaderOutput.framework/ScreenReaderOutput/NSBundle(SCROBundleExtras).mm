@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __50__NSBundle_SCROBundleExtras__brailleDriverBundles__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (brailleDriverBundles_onceToken != -1)
   {
     dispatch_once(&brailleDriverBundles_onceToken, block);
@@ -46,7 +46,7 @@ LABEL_3:
 
   else
   {
-    v7 = [a1 brailleDriverBundles];
+    brailleDriverBundles = [self brailleDriverBundles];
     if (v5)
     {
       goto LABEL_3;
@@ -62,13 +62,13 @@ LABEL_6:
 + (id)brailleDriverDeviceDetectionInfo
 {
   v20 = *MEMORY[0x277D85DE8];
-  v1 = [a1 brailleDriverBundles];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  brailleDriverBundles = [self brailleDriverBundles];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = v1;
+  v2 = brailleDriverBundles;
   v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
@@ -84,8 +84,8 @@ LABEL_6:
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 bundleIdentifier];
-        if (v8)
+        bundleIdentifier = [v7 bundleIdentifier];
+        if (bundleIdentifier)
         {
           v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v10 = [v7 objectForInfoDictionaryKey:kSCROBrailleDriverAutoDetectDictionaries[0]];
@@ -102,7 +102,7 @@ LABEL_6:
 
           if ([v9 count])
           {
-            [v14 setObject:v9 forKey:v8];
+            [dictionary setObject:v9 forKey:bundleIdentifier];
           }
         }
       }
@@ -115,7 +115,7 @@ LABEL_6:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return dictionary;
 }
 
 + (id)_brailleTableBundles
@@ -124,7 +124,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __50__NSBundle_SCROBundleExtras___brailleTableBundles__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_brailleTableBundles_onceToken != -1)
   {
     dispatch_once(&_brailleTableBundles_onceToken, block);
@@ -143,8 +143,8 @@ LABEL_6:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 _brailleTableBundles];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _brailleTableBundles = [self _brailleTableBundles];
+  v6 = [_brailleTableBundles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -154,12 +154,12 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_brailleTableBundles);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 bundleIdentifier];
-        if (v10 && ([v4 hasPrefix:v10] & 1) != 0)
+        bundleIdentifier = [v9 bundleIdentifier];
+        if (bundleIdentifier && ([v4 hasPrefix:bundleIdentifier] & 1) != 0)
         {
           v6 = v9;
 
@@ -167,7 +167,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_brailleTableBundles countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -187,12 +187,12 @@ LABEL_12:
 + (id)_brailleTableDictionaryForBrailleTableIdentifier:()SCROBundleExtras
 {
   v4 = a3;
-  v5 = [a1 brailleTableBundleWithTableIdentifier:v4];
-  v6 = [v5 bundleIdentifier];
-  v7 = v6;
-  if (v6)
+  v5 = [self brailleTableBundleWithTableIdentifier:v4];
+  bundleIdentifier = [v5 bundleIdentifier];
+  v7 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v8 = [v4 substringFromIndex:{objc_msgSend(v6, "length") + 1}];
+    v8 = [v4 substringFromIndex:{objc_msgSend(bundleIdentifier, "length") + 1}];
   }
 
   else
@@ -231,47 +231,47 @@ LABEL_12:
 
 + (uint64_t)doesBrailleTableSupportContractions:()SCROBundleExtras
 {
-  v1 = [a1 _brailleTableDictionaryForBrailleTableIdentifier:?];
+  v1 = [self _brailleTableDictionaryForBrailleTableIdentifier:?];
   v2 = [v1 objectForKey:@"supportsContraction"];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (uint64_t)doesBrailleTableSupportEightDot:()SCROBundleExtras
 {
-  v1 = [a1 _brailleTableDictionaryForBrailleTableIdentifier:?];
+  v1 = [self _brailleTableDictionaryForBrailleTableIdentifier:?];
   v2 = [v1 objectForKey:@"supports8dot"];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (id)languageIdentifiersForBrailleTableIdentifier:()SCROBundleExtras
 {
-  v1 = [a1 _brailleTableDictionaryForBrailleTableIdentifier:?];
+  v1 = [self _brailleTableDictionaryForBrailleTableIdentifier:?];
   v2 = [v1 objectForKey:@"languages"];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -294,8 +294,8 @@ LABEL_12:
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 bundleIdentifier];
-    v6 = [v5 stringByAppendingPathExtension:v4];
+    bundleIdentifier = [self bundleIdentifier];
+    v6 = [bundleIdentifier stringByAppendingPathExtension:v4];
   }
 
   else

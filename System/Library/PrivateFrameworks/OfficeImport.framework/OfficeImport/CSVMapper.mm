@@ -1,48 +1,48 @@
 @interface CSVMapper
 - (CGSize)pageSize;
-- (CSVMapper)initWithRows:(id)a3 fileName:(id)a4 columnCount:(unint64_t)a5 archiver:(id)a6;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (CSVMapper)initWithRows:(id)rows fileName:(id)name columnCount:(unint64_t)count archiver:(id)archiver;
+- (void)mapAt:(id)at withState:(id)state;
 @end
 
 @implementation CSVMapper
 
-- (CSVMapper)initWithRows:(id)a3 fileName:(id)a4 columnCount:(unint64_t)a5 archiver:(id)a6
+- (CSVMapper)initWithRows:(id)rows fileName:(id)name columnCount:(unint64_t)count archiver:(id)archiver
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  rowsCopy = rows;
+  nameCopy = name;
+  archiverCopy = archiver;
   v17.receiver = self;
   v17.super_class = CSVMapper;
   v14 = [(CMMapper *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->mRows, a3);
-    objc_storeStrong(&v15->super.mArchiver, a6);
-    objc_storeStrong(&v15->mFileName, a4);
-    v15->mColumnCount = a5;
-    objc_storeStrong(&v15->mFileName, a4);
+    objc_storeStrong(&v14->mRows, rows);
+    objc_storeStrong(&v15->super.mArchiver, archiver);
+    objc_storeStrong(&v15->mFileName, name);
+    v15->mColumnCount = count;
+    objc_storeStrong(&v15->mFileName, name);
   }
 
   return v15;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v20 = a3;
-  v18 = a4;
-  v6 = [(NSString *)self->mFileName lastPathComponent];
-  v7 = [v6 stringByDeletingPathExtension];
-  v8 = [CMXmlUtils copyHeadElementWithTitle:v7];
+  atCopy = at;
+  stateCopy = state;
+  lastPathComponent = [(NSString *)self->mFileName lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v8 = [CMXmlUtils copyHeadElementWithTitle:stringByDeletingPathExtension];
 
-  [v20 addChild:v8];
+  [atCopy addChild:v8];
   v9 = [OIXMLElement elementWithType:17 stringValue:@"body\n{\nfont: 10px Verdana\n}\ntable\n{\nborder-collapse: collapse;\n}\ntd\n{\nfont-family:Verdana, Arial;\nfont-size:10;\nborder: solid 1px;\npadding: 5px;\nwhite-space:nowrap;\nborder-color: #DDDDDD;\n}\n"];;
   v10 = [OIXMLAttribute attributeWithName:0x286F007F0 stringValue:0x286F07970];
   [v9 addAttribute:v10];
 
-  [v20 addChild:v9];
+  [atCopy addChild:v9];
   v19 = [OIXMLElement elementWithType:1];
-  [v20 addChild:v19];
+  [atCopy addChild:v19];
   v11 = [OIXMLElement elementWithType:18];
   v21 = v9;
   v22 = v8;

@@ -1,5 +1,5 @@
 @interface EKWeakReference
-- (EKWeakReference)initWithValue:(id)a3;
+- (EKWeakReference)initWithValue:(id)value;
 - (id)value;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (EKWeakReference)initWithValue:(id)a3
+- (EKWeakReference)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8.receiver = self;
   v8.super_class = EKWeakReference;
   v5 = [(EKWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_value, v4);
+    objc_storeWeak(&v5->_value, valueCopy);
   }
 
   return v6;

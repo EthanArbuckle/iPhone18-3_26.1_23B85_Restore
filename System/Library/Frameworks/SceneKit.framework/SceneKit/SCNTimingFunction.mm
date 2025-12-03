@@ -1,24 +1,24 @@
 @interface SCNTimingFunction
 + (SCNTimingFunction)functionWithCAMediaTimingFunction:(CAMediaTimingFunction *)caTimingFunction;
 + (SCNTimingFunction)functionWithTimingMode:(SCNActionTimingMode)timingMode;
-- (SCNTimingFunction)initWithCoder:(id)a3;
-- (SCNTimingFunction)initWithTimingFunctionRef:(__C3DTimingFunction *)a3;
+- (SCNTimingFunction)initWithCoder:(id)coder;
+- (SCNTimingFunction)initWithTimingFunctionRef:(__C3DTimingFunction *)ref;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNTimingFunction
 
-- (SCNTimingFunction)initWithTimingFunctionRef:(__C3DTimingFunction *)a3
+- (SCNTimingFunction)initWithTimingFunctionRef:(__C3DTimingFunction *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNTimingFunction;
   v4 = [(SCNTimingFunction *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (ref)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(ref);
     }
 
     else
@@ -82,20 +82,20 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = C3DCopyPropertyList(self->_timingFunction, 0, 0, 0);
-  [a3 encodeObject:v4 forKey:@"c3dTimingFunction"];
+  [coder encodeObject:v4 forKey:@"c3dTimingFunction"];
 }
 
-- (SCNTimingFunction)initWithCoder:(id)a3
+- (SCNTimingFunction)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNTimingFunction;
   v4 = [(SCNTimingFunction *)&v7 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dTimingFunction"];
+    v5 = [coder decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dTimingFunction"];
     v4->_timingFunction = C3DTimingFunctionCreateWithPropertyList(v5);
   }
 

@@ -9,21 +9,21 @@
 
 - (uint64_t)_ui_resolvedTextAlignment
 {
-  v2 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
 
-  return [a1 _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:v2];
+  return [self _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:userInterfaceLayoutDirection];
 }
 
 - (uint64_t)_ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:()UIKitAdditions
 {
-  result = [a1 alignment];
+  result = [self alignment];
   if ((result - 3) <= 1)
   {
-    v6 = [a1 baseWritingDirection];
+    baseWritingDirection = [self baseWritingDirection];
     v7 = a3 != 0;
-    if (v6 != -1)
+    if (baseWritingDirection != -1)
     {
-      v7 = v6 == 1;
+      v7 = baseWritingDirection == 1;
     }
 
     if (v7)
@@ -42,14 +42,14 @@
 
 - (uint64_t)_ui_resolvedWritingDirection
 {
-  v2 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
 
-  return [a1 _ui_resolvedWritingDirectionForUserInterfaceLayoutDirection:v2];
+  return [self _ui_resolvedWritingDirectionForUserInterfaceLayoutDirection:userInterfaceLayoutDirection];
 }
 
 - (uint64_t)_ui_resolvedWritingDirectionForUserInterfaceLayoutDirection:()UIKitAdditions
 {
-  result = [a1 baseWritingDirection];
+  result = [self baseWritingDirection];
   if (result == -1)
   {
     return a3 != 0;

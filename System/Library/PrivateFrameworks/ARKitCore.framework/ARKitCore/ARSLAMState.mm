@@ -1,17 +1,17 @@
 @interface ARSLAMState
 - (ARPointCloud)pointCloud;
-- (ARSLAMState)initWithCoder:(id)a3;
-- (ARSLAMState)initWithSLAMState:(CV3DSLAMStateContext *)a3;
-- (BOOL)setSLAMState:(CV3DSLAMStateContext *)a3;
+- (ARSLAMState)initWithCoder:(id)coder;
+- (ARSLAMState)initWithSLAMState:(CV3DSLAMStateContext *)state;
+- (BOOL)setSLAMState:(CV3DSLAMStateContext *)state;
 - (NSDictionary)tracingEntry;
 - (NSString)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARSLAMState
 
-- (ARSLAMState)initWithSLAMState:(CV3DSLAMStateContext *)a3
+- (ARSLAMState)initWithSLAMState:(CV3DSLAMStateContext *)state
 {
   v7.receiver = self;
   v7.super_class = ARSLAMState;
@@ -27,7 +27,7 @@
   }
 
   *&v4->_minVergenceAngleCosine = ARMinVergenceAngleCosineDefault_sMinVergenceAngleCosine;
-  if (![(ARSLAMState *)v4 setSLAMState:a3])
+  if (![(ARSLAMState *)v4 setSLAMState:state])
   {
     v5 = 0;
   }
@@ -41,7 +41,7 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)setSLAMState:(CV3DSLAMStateContext *)a3
+- (BOOL)setSLAMState:(CV3DSLAMStateContext *)state
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self->_slamState)
@@ -73,7 +73,7 @@ LABEL_5:
         *buf = 138543874;
         v19 = v11;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2114;
         v23 = v12;
         v13 = "%{public}@ <%p>: Failed to get timestamp for SLAM state: %{public}@";
@@ -92,7 +92,7 @@ LABEL_12:
       *buf = 138543874;
       v19 = v11;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v12;
       v13 = "Error: %{public}@ <%p>: Failed to get timestamp for SLAM state: %{public}@";
@@ -104,7 +104,7 @@ LABEL_12:
     return Timestamp == v6;
   }
 
-  self->_slamState = a3;
+  self->_slamState = state;
   self->_timestamp = 0.0;
   CV3DSLAMStateRetain();
   return Timestamp == v6;
@@ -121,12 +121,12 @@ LABEL_12:
 - (ARPointCloud)pointCloud
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(ARSLAMState *)self trackingState];
-  if (v3)
+  trackingState = [(ARSLAMState *)self trackingState];
+  if (trackingState)
   {
-    v4 = v3;
-    v5 = _ARLogGeneral_19();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    v4 = trackingState;
+    data = _ARLogGeneral_19();
+    if (os_log_type_enabled(data, OS_LOG_TYPE_DEBUG))
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
@@ -134,20 +134,20 @@ LABEL_12:
       v23 = 138543874;
       v24 = v7;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = v8;
-      _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Point cloud rejected because tracking state is %{public}@", &v23, 0x20u);
+      _os_log_impl(&dword_1C241C000, data, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Point cloud rejected because tracking state is %{public}@", &v23, 0x20u);
     }
 
     goto LABEL_15;
   }
 
-  v5 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   PointCloud = CV3DSLAMStateGetPointCloud();
   if (PointCloud == *MEMORY[0x1E698BD80])
   {
-    v10 = [[ARPointCloud alloc] initWithCV3DPointData:v5 minVergenceAngleCosine:self->_minVergenceAngleCosine];
+    v10 = [[ARPointCloud alloc] initWithCV3DPointData:data minVergenceAngleCosine:self->_minVergenceAngleCosine];
     goto LABEL_16;
   }
 
@@ -170,7 +170,7 @@ LABEL_12:
       v23 = 138543874;
       v24 = v16;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = v17;
       v18 = "%{public}@ <%p>: Unable to retrieve point cloud from SLAM state: %{public}@";
@@ -189,7 +189,7 @@ LABEL_13:
     v23 = 138543874;
     v24 = v16;
     v25 = 2048;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2114;
     v28 = v17;
     v18 = "Error: %{public}@ <%p>: Unable to retrieve point cloud from SLAM state: %{public}@";
@@ -393,10 +393,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   [(ARSLAMState *)self slamState];
   v5 = CV3DSLAMStateSerializeToData();
   if (!v5 || (v6 = v5, !CFDataGetLength(v5)))
@@ -421,7 +421,7 @@ LABEL_16:
       v15 = 138543618;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v11 = "%{public}@ <%p>: Failed to serialize SLAM state";
       v12 = v6;
       v13 = OS_LOG_TYPE_ERROR;
@@ -439,7 +439,7 @@ LABEL_16:
       v15 = 138543618;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v11 = "Error: %{public}@ <%p>: Failed to serialize SLAM state";
       v12 = v6;
       v13 = OS_LOG_TYPE_INFO;
@@ -450,15 +450,15 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  [v4 encodeObject:v6 forKey:@"slamState"];
+  [coderCopy encodeObject:v6 forKey:@"slamState"];
 LABEL_12:
 }
 
-- (ARSLAMState)initWithCoder:(id)a3
+- (ARSLAMState)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"slamState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"slamState"];
   if (!v5)
   {
     if (ARShouldUseLogTypeError_onceToken_29 != -1)
@@ -478,7 +478,7 @@ LABEL_12:
         *buf = 138543618;
         v24 = v12;
         v25 = 2048;
-        v26 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to deserialize SLAM state", buf, 0x16u);
       }
     }
@@ -490,7 +490,7 @@ LABEL_12:
       *buf = 138543618;
       v24 = v18;
       v25 = 2048;
-      v26 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to deserialize SLAM state", buf, 0x16u);
     }
 
@@ -517,7 +517,7 @@ LABEL_12:
         *buf = 138543618;
         v24 = v16;
         v25 = 2048;
-        v26 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to create SLAM state from data", buf, 0x16u);
       }
     }
@@ -529,13 +529,13 @@ LABEL_12:
       *buf = 138543618;
       v24 = v20;
       v25 = 2048;
-      v26 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to create SLAM state from data", buf, 0x16u);
     }
 
 LABEL_21:
 
-    v7 = 0;
+    selfCopy5 = 0;
     goto LABEL_22;
   }
 
@@ -546,10 +546,10 @@ LABEL_21:
   v22[4] = v6;
   self = [(ARSLAMState *)self initWithSLAMState:v6];
   (__29__ARSLAMState_initWithCoder___block_invoke)(v22);
-  v7 = self;
+  selfCopy5 = self;
 LABEL_22:
 
-  return v7;
+  return selfCopy5;
 }
 
 @end

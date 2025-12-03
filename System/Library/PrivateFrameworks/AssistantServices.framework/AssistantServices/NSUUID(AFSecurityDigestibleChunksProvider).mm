@@ -22,7 +22,7 @@
 
     v10[0] = 0;
     v10[1] = 0;
-    [a1 getUUIDBytes:v10];
+    [self getUUIDBytes:v10];
     (*(v7 + 2))(v7, v10, 16);
     if ((a3 & 1) == 0)
     {

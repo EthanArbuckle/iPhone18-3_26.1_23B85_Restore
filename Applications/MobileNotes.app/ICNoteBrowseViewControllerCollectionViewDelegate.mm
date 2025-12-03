@@ -1,53 +1,53 @@
 @interface ICNoteBrowseViewControllerCollectionViewDelegate
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (ICNoteBrowseViewController)noteBrowseViewController;
-- (ICNoteBrowseViewControllerCollectionViewDelegate)initWithNoteBrowseViewController:(id)a3;
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3;
-- (id)collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (ICNoteBrowseViewControllerCollectionViewDelegate)initWithNoteBrowseViewController:(id)controller;
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view;
+- (id)collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation ICNoteBrowseViewControllerCollectionViewDelegate
 
-- (ICNoteBrowseViewControllerCollectionViewDelegate)initWithNoteBrowseViewController:(id)a3
+- (ICNoteBrowseViewControllerCollectionViewDelegate)initWithNoteBrowseViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = ICNoteBrowseViewControllerCollectionViewDelegate;
-  return [(ICNoteResultsViewControllerCollectionViewDelegate *)&v4 initWithNoteResultsViewController:a3];
+  return [(ICNoteResultsViewControllerCollectionViewDelegate *)&v4 initWithNoteResultsViewController:controller];
 }
 
 - (ICNoteBrowseViewController)noteBrowseViewController
 {
   objc_opt_class();
-  v3 = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
+  noteResultsViewController = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
   v4 = ICDynamicCast();
 
   return v4;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v9 = [v8 noteDataSource];
-  v10 = [v9 collectionViewDiffableDataSource];
-  v11 = [v10 itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  noteDataSource = [noteBrowseViewController noteDataSource];
+  collectionViewDiffableDataSource = [noteDataSource collectionViewDiffableDataSource];
+  v11 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   v12 = ICDynamicCast();
   if (v12)
   {
-    if ([v6 allowsMultipleSelection])
+    if ([viewCopy allowsMultipleSelection])
     {
-      v13 = [v6 indexPathsForSelectedItems];
-      v14 = [v13 count] != 0;
+      indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+      v14 = [indexPathsForSelectedItems count] != 0;
     }
 
     else
@@ -57,27 +57,27 @@
 
     if ([v12 ic_isNoteType])
     {
-      v19 = 1;
+      ic_isInvitationType = 1;
     }
 
     else
     {
-      v19 = [v12 ic_isInvitationType];
+      ic_isInvitationType = [v12 ic_isInvitationType];
     }
 
-    v15 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v18 = ([v15 isEditing] | v14) ^ 1 | v19;
+    noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    v18 = ([noteBrowseViewController2 isEditing] | v14) ^ 1 | ic_isInvitationType;
   }
 
   else
   {
     objc_opt_class();
-    v15 = ICDynamicCast();
-    if (v15)
+    noteBrowseViewController2 = ICDynamicCast();
+    if (noteBrowseViewController2)
     {
-      v16 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v17 = [v16 tagSelection];
-      v18 = [v17 mode] != 1;
+      noteBrowseViewController3 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      tagSelection = [noteBrowseViewController3 tagSelection];
+      v18 = [tagSelection mode] != 1;
     }
 
     else
@@ -89,37 +89,37 @@
   return v18 & 1;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v7 = [v6 collectionView];
-  v8 = [v7 canFocusItemAtIndexPath:v5];
+  pathCopy = path;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  collectionView = [noteBrowseViewController collectionView];
+  v8 = [collectionView canFocusItemAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v7 = [v6 noteDataSource];
-  v8 = [v7 collectionViewDiffableDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  noteDataSource = [noteBrowseViewController noteDataSource];
+  collectionViewDiffableDataSource = [noteDataSource collectionViewDiffableDataSource];
+  v9 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   v12 = v9;
   if ([v12 ic_isNoteType])
   {
-    v10 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v11 = [v10 viewControllerManager];
-    [v11 ensureNoteEditorPresentedAnimated:1 startEditing:0];
+    noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    viewControllerManager = [noteBrowseViewController2 viewControllerManager];
+    [viewControllerManager ensureNoteEditorPresentedAnimated:1 startEditing:0];
   }
 
   else if ([v12 ic_isContainerType])
   {
-    v10 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v11 = [v10 viewControllerManager];
-    [v11 selectContainerWithIdentifier:v12 usingRootViewController:0 deferUntilDataLoaded:1 animated:1];
+    noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    viewControllerManager = [noteBrowseViewController2 viewControllerManager];
+    [viewControllerManager selectContainerWithIdentifier:v12 usingRootViewController:0 deferUntilDataLoaded:1 animated:1];
   }
 
   else
@@ -129,47 +129,47 @@
       goto LABEL_8;
     }
 
-    v10 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v11 = [v10 viewControllerManager];
-    [v11 selectInvitationWithObjectID:v12 animated:1];
+    noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    viewControllerManager = [noteBrowseViewController2 viewControllerManager];
+    [viewControllerManager selectInvitationWithObjectID:v12 animated:1];
   }
 
 LABEL_8:
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v8 = [v7 isEditing];
+  viewCopy = view;
+  pathCopy = path;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  isEditing = [noteBrowseViewController isEditing];
 
-  if (!v8)
+  if (!isEditing)
   {
-    v10 = [v19 indexPathsForSelectedItems];
-    v11 = [v10 count];
+    indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+    v11 = [indexPathsForSelectedItems count];
 
     if (v11 != 1)
     {
       goto LABEL_15;
     }
 
-    v12 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v13 = [v12 noteDataSource];
-    v14 = [v13 collectionViewDiffableDataSource];
-    v9 = [v14 itemIdentifierForIndexPath:v6];
+    noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    noteDataSource = [noteBrowseViewController2 noteDataSource];
+    collectionViewDiffableDataSource = [noteDataSource collectionViewDiffableDataSource];
+    noteBrowseViewController5 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
     objc_opt_class();
     v15 = ICDynamicCast();
-    if ([ICTagCoreDataIndexer isTagItemIdentifier:v9])
+    if ([ICTagCoreDataIndexer isTagItemIdentifier:noteBrowseViewController5])
     {
-      v16 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v17 = [v16 tagSelection];
+      noteBrowseViewController3 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      tagSelection = [noteBrowseViewController3 tagSelection];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v17 setMode:1];
+        [tagSelection setMode:1];
       }
 
       else
@@ -177,13 +177,13 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v17 setMode:0];
-          [v17 addObjectID:v9 toExcluded:0];
+          [tagSelection setMode:0];
+          [tagSelection addObjectID:noteBrowseViewController5 toExcluded:0];
         }
       }
 
-      v18 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      [v18 setTagSelection:v17];
+      noteBrowseViewController4 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      [noteBrowseViewController4 setTagSelection:tagSelection];
     }
 
     else
@@ -195,76 +195,76 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v17 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v18 = [v17 viewControllerManager];
-      [v18 selectNoteWithObjectID:v15 scrollState:0 startEditing:0 animated:1 ensurePresented:1];
+      tagSelection = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      noteBrowseViewController4 = [tagSelection viewControllerManager];
+      [noteBrowseViewController4 selectNoteWithObjectID:v15 scrollState:0 startEditing:0 animated:1 ensurePresented:1];
     }
 
     goto LABEL_13;
   }
 
-  v9 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  [v9 updateBarButtonItemsAnimated:0];
+  noteBrowseViewController5 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  [noteBrowseViewController5 updateBarButtonItemsAnimated:0];
 LABEL_14:
 
 LABEL_15:
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v15 = a4;
-  v5 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v6 = [v5 isEditing];
+  pathCopy = path;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  isEditing = [noteBrowseViewController isEditing];
 
-  v7 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v8 = v7;
-  if (v6)
+  noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  v8 = noteBrowseViewController2;
+  if (isEditing)
   {
-    [v7 updateBarButtonItemsAnimated:0];
+    [noteBrowseViewController2 updateBarButtonItemsAnimated:0];
     v9 = v8;
   }
 
   else
   {
-    v10 = [v7 noteDataSource];
-    v11 = [v10 collectionViewDiffableDataSource];
-    v9 = [v11 itemIdentifierForIndexPath:v15];
+    noteDataSource = [noteBrowseViewController2 noteDataSource];
+    collectionViewDiffableDataSource = [noteDataSource collectionViewDiffableDataSource];
+    v9 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
     if ([ICTagCoreDataIndexer isTagItemIdentifier:v9])
     {
-      v12 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v13 = [v12 tagSelection];
+      noteBrowseViewController3 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      tagSelection = [noteBrowseViewController3 tagSelection];
 
-      [v13 removeObjectID:v9 fromExcluded:0];
-      if ([v13 isEmpty])
+      [tagSelection removeObjectID:v9 fromExcluded:0];
+      if ([tagSelection isEmpty])
       {
-        [v13 setMode:1];
+        [tagSelection setMode:1];
       }
 
-      v14 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      [v14 setTagSelection:v13];
+      noteBrowseViewController4 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      [noteBrowseViewController4 setTagSelection:tagSelection];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
-  v5 = a3;
-  v7 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-  v6 = [v5 isEditing];
+  viewCopy = view;
+  noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+  isEditing = [viewCopy isEditing];
 
-  [v7 setEditing:v6 animated:1];
+  [noteBrowseViewController setEditing:isEditing animated:1];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v7 = [v6 viewControllerManager];
-    [v10 setShowOperatorMenuButton:{objc_msgSend(v7, "hasCompactWidth")}];
+    noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    viewControllerManager = [noteBrowseViewController viewControllerManager];
+    [cellCopy setShowOperatorMenuButton:{objc_msgSend(viewControllerManager, "hasCompactWidth")}];
   }
 
   else
@@ -276,46 +276,46 @@ LABEL_15:
     }
 
     objc_opt_class();
-    v6 = ICDynamicCast();
-    v7 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v8 = [v7 viewControllerManager];
-    v9 = [v8 tagSelection];
-    [v6 selectTagsWithTagSelection:v9 animated:0];
+    noteBrowseViewController = ICDynamicCast();
+    viewControllerManager = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    v7ViewControllerManager = [viewControllerManager viewControllerManager];
+    tagSelection = [v7ViewControllerManager tagSelection];
+    [noteBrowseViewController selectTagsWithTagSelection:tagSelection animated:0];
   }
 
 LABEL_6:
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v10 = a4;
-  if ([a5 isEqualToString:UICollectionElementKindSectionFooter])
+  supplementaryViewCopy = supplementaryView;
+  if ([kind isEqualToString:UICollectionElementKindSectionFooter])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      [v8 setPrimarySummaryView:v10];
+      noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      [noteBrowseViewController setPrimarySummaryView:supplementaryViewCopy];
 
-      v9 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      [v9 updateSummaryView];
+      noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      [noteBrowseViewController2 updateSummaryView];
     }
   }
 }
 
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view
 {
-  v3 = a3;
-  if ([v3 numberOfSections] && objc_msgSend(v3, "numberOfItemsInSection:", 0))
+  viewCopy = view;
+  if ([viewCopy numberOfSections] && objc_msgSend(viewCopy, "numberOfItemsInSection:", 0))
   {
     v4 = [NSIndexPath indexPathForRow:0 inSection:0];
-    v5 = [v3 layoutAttributesForItemAtIndexPath:v4];
+    v5 = [viewCopy layoutAttributesForItemAtIndexPath:v4];
     [v5 frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v3 visibleBounds];
+    [viewCopy visibleBounds];
     v19.origin.x = v7;
     v19.origin.y = v9;
     v19.size.width = v11;
@@ -341,16 +341,16 @@ LABEL_6:
   return v15;
 }
 
-- (id)collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 isEditing] & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  if (([viewCopy isEditing] & 1) == 0)
   {
-    v10 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-    v11 = [v10 noteDataSource];
-    v12 = [v11 collectionViewDiffableDataSource];
-    v13 = [v12 itemIdentifierForIndexPath:v8];
+    noteBrowseViewController = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+    noteDataSource = [noteBrowseViewController noteDataSource];
+    collectionViewDiffableDataSource = [noteDataSource collectionViewDiffableDataSource];
+    v13 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
     objc_opt_class();
     v14 = ICDynamicCast();
@@ -362,8 +362,8 @@ LABEL_6:
     v30 = 0;
     if ([v14 ic_isModernNoteType])
     {
-      v15 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v16 = [v15 modernViewContext];
+      noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      modernViewContext = [noteBrowseViewController2 modernViewContext];
       v17 = v24;
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
@@ -372,7 +372,7 @@ LABEL_6:
       v24[4] = self;
       v24[5] = v14;
       v24[6] = &v25;
-      [v16 performBlockAndWait:v24];
+      [modernViewContext performBlockAndWait:v24];
     }
 
     else
@@ -383,14 +383,14 @@ LABEL_8:
         if (v26[5])
         {
           v18 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.notes.open.object"];
-          v19 = [v26[5] absoluteString];
-          [v18 setTargetContentIdentifier:v19];
+          absoluteString = [v26[5] absoluteString];
+          [v18 setTargetContentIdentifier:absoluteString];
 
           [v18 setUserInfo:&off_10066E448];
           v9 = [[UIWindowSceneActivationConfiguration alloc] initWithUserActivity:v18];
           objc_opt_class();
           v20 = ICDynamicCast();
-          v21 = [v20 previewForWindowSceneActivationConfiguration:v9 indexPath:v8];
+          v21 = [v20 previewForWindowSceneActivationConfiguration:v9 indexPath:pathCopy];
           [v9 setPreview:v21];
         }
 
@@ -404,8 +404,8 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      v15 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
-      v16 = [v15 legacyViewContext];
+      noteBrowseViewController2 = [(ICNoteBrowseViewControllerCollectionViewDelegate *)self noteBrowseViewController];
+      modernViewContext = [noteBrowseViewController2 legacyViewContext];
       v17 = v23;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
@@ -414,7 +414,7 @@ LABEL_8:
       v23[4] = self;
       v23[5] = v14;
       v23[6] = &v25;
-      [v16 performBlockAndWait:v23];
+      [modernViewContext performBlockAndWait:v23];
     }
 
     goto LABEL_8;

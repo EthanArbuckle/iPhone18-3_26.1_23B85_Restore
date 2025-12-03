@@ -1,15 +1,15 @@
 @interface _MFBatchedMessageConsumer
 - (BOOL)shouldCancel;
-- (_MFBatchedMessageConsumer)initWithBatchSize:(unint64_t)a3 messageStore:(id)a4 filter:(id)a5;
-- (void)newMessagesAvailable:(id)a3;
+- (_MFBatchedMessageConsumer)initWithBatchSize:(unint64_t)size messageStore:(id)store filter:(id)filter;
+- (void)newMessagesAvailable:(id)available;
 @end
 
 @implementation _MFBatchedMessageConsumer
 
-- (_MFBatchedMessageConsumer)initWithBatchSize:(unint64_t)a3 messageStore:(id)a4 filter:(id)a5
+- (_MFBatchedMessageConsumer)initWithBatchSize:(unint64_t)size messageStore:(id)store filter:(id)filter
 {
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  filterCopy = filter;
   v17.receiver = self;
   v17.super_class = _MFBatchedMessageConsumer;
   v11 = [(_MFBatchedMessageConsumer *)&v17 init];
@@ -19,24 +19,24 @@
     messagesAccumulator = v11->_messagesAccumulator;
     v11->_messagesAccumulator = v12;
 
-    v11->_batchSize = a3;
-    v14 = objc_retainBlock(v10);
+    v11->_batchSize = size;
+    v14 = objc_retainBlock(filterCopy);
     filter = v11->_filter;
     v11->_filter = v14;
 
-    objc_storeStrong(&v11->_messageStore, a4);
+    objc_storeStrong(&v11->_messageStore, store);
   }
 
   return v11;
 }
 
-- (void)newMessagesAvailable:(id)a3
+- (void)newMessagesAvailable:(id)available
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = a3;
+  obj = available;
   v4 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
@@ -52,22 +52,22 @@ LABEL_3:
 
       v7 = *(*(&v16 + 1) + 8 * v6);
       v8 = objc_autoreleasePoolPush();
-      v9 = [(_MFBatchedMessageConsumer *)self shouldCancel];
-      if ((v9 & 1) == 0)
+      shouldCancel = [(_MFBatchedMessageConsumer *)self shouldCancel];
+      if ((shouldCancel & 1) == 0)
       {
-        v10 = [(_MFBatchedMessageConsumer *)self filter];
-        if (!v10 || ([(_MFBatchedMessageConsumer *)self filter], v11 = objc_claimAutoreleasedReturnValue(), v12 = (v11)[2](v11, v7), v11, v10, v12))
+        filter = [(_MFBatchedMessageConsumer *)self filter];
+        if (!filter || ([(_MFBatchedMessageConsumer *)self filter], v11 = objc_claimAutoreleasedReturnValue(), v12 = (v11)[2](v11, v7), v11, filter, v12))
         {
-          v13 = [(_MFBatchedMessageConsumer *)self messageStore];
-          [v7 setMessageStore:v13];
+          messageStore = [(_MFBatchedMessageConsumer *)self messageStore];
+          [v7 setMessageStore:messageStore];
 
-          v14 = [(_MFBatchedMessageConsumer *)self messagesAccumulator];
-          [v14 addObject:v7];
+          messagesAccumulator = [(_MFBatchedMessageConsumer *)self messagesAccumulator];
+          [messagesAccumulator addObject:v7];
         }
       }
 
       objc_autoreleasePoolPop(v8);
-      if (v9)
+      if (shouldCancel)
       {
         break;
       }
@@ -88,12 +88,12 @@ LABEL_3:
 
 - (BOOL)shouldCancel
 {
-  v2 = self;
-  v3 = [(_MFBatchedMessageConsumer *)self messagesAccumulator];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 >= [(_MFBatchedMessageConsumer *)v2 batchSize];
+  selfCopy = self;
+  messagesAccumulator = [(_MFBatchedMessageConsumer *)self messagesAccumulator];
+  v4 = [messagesAccumulator count];
+  LOBYTE(selfCopy) = v4 >= [(_MFBatchedMessageConsumer *)selfCopy batchSize];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

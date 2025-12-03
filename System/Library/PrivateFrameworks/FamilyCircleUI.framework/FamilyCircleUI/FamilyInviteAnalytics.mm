@@ -3,10 +3,10 @@
 - (_TtC14FamilyCircleUI21FamilyInviteAnalytics)init;
 - (uint64_t)sendTapInviteOnSuggestedContactEvent;
 - (uint64_t)sendTapInviteOthersEvent;
-- (void)sendFamilyInviteInteractionEventWithAction:(id)a3 inviteState:(id)a4 isReceiver:(BOOL)a5;
-- (void)sendFamilyInviteStatusUpdateEventWithUpdateStatus:(id)a3 success:(BOOL)a4;
-- (void)sendFamilySuggestionsEventWithFamilySuggestionsProactiveCount:(int64_t)a3 familySuggestionsDisplayedCount:(int64_t)a4 hasBoostedContacts:(BOOL)a5 proactiveModelUsed:(int64_t)a6 serverRequestedModel:(id)a7;
-- (void)sendOtherContactInvitedEventWithInviteTransport:(id)a3 inviteCompletionStatus:(int64_t)a4;
+- (void)sendFamilyInviteInteractionEventWithAction:(id)action inviteState:(id)state isReceiver:(BOOL)receiver;
+- (void)sendFamilyInviteStatusUpdateEventWithUpdateStatus:(id)status success:(BOOL)success;
+- (void)sendFamilySuggestionsEventWithFamilySuggestionsProactiveCount:(int64_t)count familySuggestionsDisplayedCount:(int64_t)displayedCount hasBoostedContacts:(BOOL)contacts proactiveModelUsed:(int64_t)used serverRequestedModel:(id)model;
+- (void)sendOtherContactInvitedEventWithInviteTransport:(id)transport inviteCompletionStatus:(int64_t)status;
 @end
 
 @implementation FamilyInviteAnalytics
@@ -23,38 +23,38 @@
   return v3;
 }
 
-- (void)sendFamilySuggestionsEventWithFamilySuggestionsProactiveCount:(int64_t)a3 familySuggestionsDisplayedCount:(int64_t)a4 hasBoostedContacts:(BOOL)a5 proactiveModelUsed:(int64_t)a6 serverRequestedModel:(id)a7
+- (void)sendFamilySuggestionsEventWithFamilySuggestionsProactiveCount:(int64_t)count familySuggestionsDisplayedCount:(int64_t)displayedCount hasBoostedContacts:(BOOL)contacts proactiveModelUsed:(int64_t)used serverRequestedModel:(id)model
 {
   v12 = sub_21BE28A0C();
   v14 = v13;
-  v15 = self;
-  sub_21BC843C0(a3, a4, a5, a6, v12, v14);
+  selfCopy = self;
+  sub_21BC843C0(count, displayedCount, contacts, used, v12, v14);
 }
 
-- (void)sendOtherContactInvitedEventWithInviteTransport:(id)a3 inviteCompletionStatus:(int64_t)a4
+- (void)sendOtherContactInvitedEventWithInviteTransport:(id)transport inviteCompletionStatus:(int64_t)status
 {
   v6 = sub_21BE28A0C();
   v8 = v7;
-  v9 = self;
-  sub_21BC845C8(v6, v8, a4);
+  selfCopy = self;
+  sub_21BC845C8(v6, v8, status);
 }
 
-- (void)sendFamilyInviteInteractionEventWithAction:(id)a3 inviteState:(id)a4 isReceiver:(BOOL)a5
+- (void)sendFamilyInviteInteractionEventWithAction:(id)action inviteState:(id)state isReceiver:(BOOL)receiver
 {
   v7 = sub_21BE28A0C();
   v9 = v8;
   v10 = sub_21BE28A0C();
   v12 = v11;
-  v13 = self;
-  sub_21BC84750(v7, v9, v10, v12, a5);
+  selfCopy = self;
+  sub_21BC84750(v7, v9, v10, v12, receiver);
 }
 
-- (void)sendFamilyInviteStatusUpdateEventWithUpdateStatus:(id)a3 success:(BOOL)a4
+- (void)sendFamilyInviteStatusUpdateEventWithUpdateStatus:(id)status success:(BOOL)success
 {
   v6 = sub_21BE28A0C();
   v8 = v7;
-  v9 = self;
-  sub_21BC84918(v6, v8, a4);
+  selfCopy = self;
+  sub_21BC84918(v6, v8, success);
 }
 
 - (_TtC14FamilyCircleUI21FamilyInviteAnalytics)init

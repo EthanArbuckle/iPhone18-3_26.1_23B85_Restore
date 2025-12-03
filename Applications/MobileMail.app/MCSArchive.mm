@@ -1,26 +1,26 @@
 @interface MCSArchive
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5;
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages;
 - (BOOL)willFlag;
 - (BOOL)willMarkRead;
 - (BOOL)willMarkUnread;
 - (BOOL)willUnflag;
-- (MCSArchive)initWithStore:(id)a3;
-- (id)applyPendingChangeToObjects:(id)a3;
+- (MCSArchive)initWithStore:(id)store;
+- (id)applyPendingChangeToObjects:(id)objects;
 - (id)localizedShortOperationDescription;
 @end
 
 @implementation MCSArchive
 
-- (MCSArchive)initWithStore:(id)a3
+- (MCSArchive)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = MCSArchive;
   v5 = [(MCSArchive *)&v17 init];
   if (v5)
   {
-    v6 = [v4 archiveDestination];
-    if (v6 == -500)
+    archiveDestination = [storeCopy archiveDestination];
+    if (archiveDestination == -500)
     {
       v7 = [MCSFlagChange alloc];
       v8 = [NSSet setWithObjects:MessageIsRead, 0];
@@ -40,7 +40,7 @@
 
     else
     {
-      v14 = [[MCSTransfer alloc] initWithSpecialDestination:v6 markAsRead:1 deleteIfSame:1];
+      v14 = [[MCSTransfer alloc] initWithSpecialDestination:archiveDestination markAsRead:1 deleteIfSame:1];
       [(MCSTransfer *)v14 setIsDeletion:0];
       seenOrTransferOperation = v5->_seenOrTransferOperation;
       v5->_seenOrTransferOperation = &v14->super;
@@ -52,75 +52,75 @@
   return v5;
 }
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  v6 = [(MCSOperation *)self->_seenOrTransferOperation applyPendingChangeToObjects:v4];
+  v6 = [(MCSOperation *)self->_seenOrTransferOperation applyPendingChangeToObjects:objectsCopy];
   [v5 addEntriesFromDictionary:v6];
 
-  v7 = [(MCSOperation *)self->_deleteOperation applyPendingChangeToObjects:v4];
+  v7 = [(MCSOperation *)self->_deleteOperation applyPendingChangeToObjects:objectsCopy];
   [v5 addEntriesFromDictionary:v7];
 
   return v5;
 }
 
-- (BOOL)commitToMessages:(id)a3 failures:(id)a4 newMessages:(id)a5
+- (BOOL)commitToMessages:(id)messages failures:(id)failures newMessages:(id)newMessages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  failuresCopy = failures;
+  newMessagesCopy = newMessages;
   v11 = +[MFActivityMonitor currentMonitor];
   [v11 addReason:MonitoredActivityReasonArchiving];
 
-  LOBYTE(v11) = [(MCSMessageOperation *)self->_seenOrTransferOperation commitToMessages:v8 failures:v9 newMessages:v10];
-  LOBYTE(self) = v11 | [(MCSMessageOperation *)self->_deleteOperation commitToMessages:v8 failures:v9 newMessages:v10];
+  LOBYTE(v11) = [(MCSMessageOperation *)self->_seenOrTransferOperation commitToMessages:messagesCopy failures:failuresCopy newMessages:newMessagesCopy];
+  LOBYTE(self) = v11 | [(MCSMessageOperation *)self->_deleteOperation commitToMessages:messagesCopy failures:failuresCopy newMessages:newMessagesCopy];
 
   return self & 1;
 }
 
 - (BOOL)willMarkRead
 {
-  v3 = [(MCSMessageOperation *)self->_seenOrTransferOperation willMarkRead];
+  willMarkRead = [(MCSMessageOperation *)self->_seenOrTransferOperation willMarkRead];
   if (self->_isDeleteInPlace)
   {
-    v3 |= [(MCSMessageOperation *)self->_deleteOperation willMarkRead];
+    willMarkRead |= [(MCSMessageOperation *)self->_deleteOperation willMarkRead];
   }
 
-  return v3;
+  return willMarkRead;
 }
 
 - (BOOL)willMarkUnread
 {
-  v3 = [(MCSMessageOperation *)self->_seenOrTransferOperation willMarkUnread];
+  willMarkUnread = [(MCSMessageOperation *)self->_seenOrTransferOperation willMarkUnread];
   if (self->_isDeleteInPlace)
   {
-    v3 |= [(MCSMessageOperation *)self->_deleteOperation willMarkUnread];
+    willMarkUnread |= [(MCSMessageOperation *)self->_deleteOperation willMarkUnread];
   }
 
-  return v3;
+  return willMarkUnread;
 }
 
 - (BOOL)willUnflag
 {
-  v3 = [(MCSMessageOperation *)self->_seenOrTransferOperation willUnflag];
+  willUnflag = [(MCSMessageOperation *)self->_seenOrTransferOperation willUnflag];
   if (self->_isDeleteInPlace)
   {
-    v3 |= [(MCSMessageOperation *)self->_deleteOperation willUnflag];
+    willUnflag |= [(MCSMessageOperation *)self->_deleteOperation willUnflag];
   }
 
-  return v3;
+  return willUnflag;
 }
 
 - (BOOL)willFlag
 {
-  v3 = [(MCSMessageOperation *)self->_seenOrTransferOperation willFlag];
+  willFlag = [(MCSMessageOperation *)self->_seenOrTransferOperation willFlag];
   if (self->_isDeleteInPlace)
   {
-    v3 |= [(MCSMessageOperation *)self->_deleteOperation willFlag];
+    willFlag |= [(MCSMessageOperation *)self->_deleteOperation willFlag];
   }
 
-  return v3;
+  return willFlag;
 }
 
 - (id)localizedShortOperationDescription

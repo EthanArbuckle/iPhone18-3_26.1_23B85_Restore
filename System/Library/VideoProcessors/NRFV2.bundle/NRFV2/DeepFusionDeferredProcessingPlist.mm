@@ -1,18 +1,18 @@
 @interface DeepFusionDeferredProcessingPlist
-- (int)readBandData:(id)a3 into:(id)a4;
-- (int)readChromaBoostBandData:(id)a3 into:(id)a4 key:(id)a5;
-- (int)readDarkEdgeSuppressionBandData:(id)a3 into:(id)a4;
-- (int)readDesaturationData:(id)a3 into:(id)a4;
-- (int)readHaloSuppressionBandData:(id)a3 into:(id)a4;
-- (int)readPlist:(id)a3;
+- (int)readBandData:(id)data into:(id)into;
+- (int)readChromaBoostBandData:(id)data into:(id)into key:(id)key;
+- (int)readDarkEdgeSuppressionBandData:(id)data into:(id)into;
+- (int)readDesaturationData:(id)data into:(id)into;
+- (int)readHaloSuppressionBandData:(id)data into:(id)into;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation DeepFusionDeferredProcessingPlist
 
-- (int)readBandData:(id)a3 into:(id)a4
+- (int)readBandData:(id)data into:(id)into
 {
-  v5 = a4;
-  v8 = objc_msgSend_valueForKey_(a3, v6, @"Bands", v7);
+  intoCopy = into;
+  v8 = objc_msgSend_valueForKey_(data, v6, @"Bands", v7);
   v9 = v8;
   if (!v8)
   {
@@ -101,7 +101,7 @@
       v88 = v16[9];
       v16[9] = v87;
 
-      if (!objc_msgSend_count(v5, v89, v90, v91))
+      if (!objc_msgSend_count(intoCopy, v89, v90, v91))
       {
         v95 = [GainValueArray alloc];
         v98 = objc_msgSend_objectForKeyedSubscript_(v15, v96, @"TextureClippingThresholdLow", v97);
@@ -179,7 +179,7 @@ LABEL_38:
         goto LABEL_38;
       }
 
-      if (objc_msgSend_count(v5, v143, v144, v145))
+      if (objc_msgSend_count(intoCopy, v143, v144, v145))
       {
         goto LABEL_22;
       }
@@ -203,7 +203,7 @@ LABEL_38:
       }
 
 LABEL_22:
-      objc_msgSend_addObject_(v5, v146, v16, v148);
+      objc_msgSend_addObject_(intoCopy, v146, v16, v148);
     }
 
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v155, &v161, v160, 16);
@@ -224,10 +224,10 @@ LABEL_41:
   return v156;
 }
 
-- (int)readChromaBoostBandData:(id)a3 into:(id)a4 key:(id)a5
+- (int)readChromaBoostBandData:(id)data into:(id)into key:(id)key
 {
-  v7 = a4;
-  v10 = objc_msgSend_objectForKeyedSubscript_(a3, v8, a5, v9);
+  intoCopy = into;
+  v10 = objc_msgSend_objectForKeyedSubscript_(data, v8, key, v9);
   v13 = v10;
   if (!v10)
   {
@@ -321,7 +321,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      objc_msgSend_addObject_(v7, v66, v21, v67);
+      objc_msgSend_addObject_(intoCopy, v66, v21, v67);
     }
 
     v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v68, &v74, v73, 16);
@@ -342,10 +342,10 @@ LABEL_23:
   return v69;
 }
 
-- (int)readHaloSuppressionBandData:(id)a3 into:(id)a4
+- (int)readHaloSuppressionBandData:(id)data into:(id)into
 {
-  v5 = a4;
-  v8 = objc_msgSend_valueForKey_(a3, v6, @"Bands", v7);
+  intoCopy = into;
+  v8 = objc_msgSend_valueForKey_(data, v6, @"Bands", v7);
   v9 = v8;
   if (v8)
   {
@@ -383,7 +383,7 @@ LABEL_23:
             goto LABEL_13;
           }
 
-          objc_msgSend_addObject_(v5, v25, v16, v26);
+          objc_msgSend_addObject_(intoCopy, v25, v16, v26);
         }
 
         v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v27, &v32, v31, 16);
@@ -415,10 +415,10 @@ LABEL_13:
   return v28;
 }
 
-- (int)readDarkEdgeSuppressionBandData:(id)a3 into:(id)a4
+- (int)readDarkEdgeSuppressionBandData:(id)data into:(id)into
 {
-  v5 = a4;
-  v8 = objc_msgSend_valueForKey_(a3, v6, @"Bands", v7);
+  intoCopy = into;
+  v8 = objc_msgSend_valueForKey_(data, v6, @"Bands", v7);
   v9 = v8;
   if (!v8)
   {
@@ -492,7 +492,7 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      objc_msgSend_addObject_(v5, v41, v16, v42);
+      objc_msgSend_addObject_(intoCopy, v41, v16, v42);
     }
 
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v43, &v49, v48, 16);
@@ -513,11 +513,11 @@ LABEL_20:
   return v44;
 }
 
-- (int)readDesaturationData:(id)a3 into:(id)a4
+- (int)readDesaturationData:(id)data into:(id)into
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dataCopy = data;
+  intoCopy = into;
+  if (!dataCopy)
   {
     sub_2958ABEAC(&v42);
     v40 = v42;
@@ -525,24 +525,24 @@ LABEL_20:
   }
 
   v7 = [GainValueArray alloc];
-  v10 = objc_msgSend_objectForKeyedSubscript_(v5, v8, @"YThresh", v9);
+  v10 = objc_msgSend_objectForKeyedSubscript_(dataCopy, v8, @"YThresh", v9);
   v13 = objc_msgSend_initWithArray_(v7, v11, v10, v12);
-  v14 = v6[1];
-  v6[1] = v13;
+  v14 = intoCopy[1];
+  intoCopy[1] = v13;
 
   v15 = [GainValueArray alloc];
-  v18 = objc_msgSend_objectForKeyedSubscript_(v5, v16, @"Sigma", v17);
+  v18 = objc_msgSend_objectForKeyedSubscript_(dataCopy, v16, @"Sigma", v17);
   v21 = objc_msgSend_initWithArray_(v15, v19, v18, v20);
-  v22 = v6[2];
-  v6[2] = v21;
+  v22 = intoCopy[2];
+  intoCopy[2] = v21;
 
   v23 = [GainValueArray alloc];
-  v26 = objc_msgSend_objectForKeyedSubscript_(v5, v24, @"Strength", v25);
+  v26 = objc_msgSend_objectForKeyedSubscript_(dataCopy, v24, @"Strength", v25);
   v29 = objc_msgSend_initWithArray_(v23, v27, v26, v28);
-  v30 = v6[3];
-  v6[3] = v29;
+  v30 = intoCopy[3];
+  intoCopy[3] = v29;
 
-  if ((objc_msgSend_isValid(v6[1], v31, v32, v33) & 1) == 0)
+  if ((objc_msgSend_isValid(intoCopy[1], v31, v32, v33) & 1) == 0)
   {
     sub_2958ABDA4();
 LABEL_11:
@@ -550,13 +550,13 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if ((objc_msgSend_isValid(v6[2], v34, v35, v36) & 1) == 0)
+  if ((objc_msgSend_isValid(intoCopy[2], v34, v35, v36) & 1) == 0)
   {
     sub_2958ABDFC();
     goto LABEL_11;
   }
 
-  if ((objc_msgSend_isValid(v6[3], v37, v38, v39) & 1) == 0)
+  if ((objc_msgSend_isValid(intoCopy[3], v37, v38, v39) & 1) == 0)
   {
     sub_2958ABE54();
     goto LABEL_11;
@@ -568,9 +568,9 @@ LABEL_6:
   return v40;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v174[0] = @"ModelLowEIT";
   v174[1] = @"ModelHighEIT";
   v6 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v5, v174, 2);
@@ -583,8 +583,8 @@ LABEL_6:
   v154 = objc_opt_new();
   v153 = objc_opt_new();
   v152 = objc_opt_new();
-  v159 = v4;
-  if (!v4)
+  v159 = plistCopy;
+  if (!plistCopy)
   {
     sub_2958AC86C(v175);
 LABEL_53:

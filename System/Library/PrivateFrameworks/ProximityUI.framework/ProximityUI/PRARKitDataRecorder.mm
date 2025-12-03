@@ -1,21 +1,21 @@
 @interface PRARKitDataRecorder
-- (PRARKitDataRecorder)initWithARSession:(id)a3;
+- (PRARKitDataRecorder)initWithARSession:(id)session;
 - (id)stopAndSave;
 - (void)start;
 @end
 
 @implementation PRARKitDataRecorder
 
-- (PRARKitDataRecorder)initWithARSession:(id)a3
+- (PRARKitDataRecorder)initWithARSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = PRARKitDataRecorder;
   v5 = [(PRDataRecorder *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PRARKitDataRecorder *)v5 setSession:v4];
+    [(PRARKitDataRecorder *)v5 setSession:sessionCopy];
   }
 
   return v6;
@@ -34,16 +34,16 @@
 - (id)stopAndSave
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PRARKitDataRecorder *)self filename];
-  v5 = [v3 stringWithFormat:@"%@.json", v4];
+  filename = [(PRARKitDataRecorder *)self filename];
+  v5 = [v3 stringWithFormat:@"%@.json", filename];
 
-  v6 = [(PRARKitDataRecorder *)self fileURL];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  fileURL = [(PRARKitDataRecorder *)self fileURL];
+  v7 = [fileURL URLByAppendingPathComponent:v5];
 
   [(PRDataRecorder *)self writeSensorDataToURL:v7];
-  v8 = [(PRARKitDataRecorder *)self fileURL];
-  v9 = [(PRARKitDataRecorder *)self filename];
-  v10 = [v8 URLByAppendingPathComponent:v9];
+  fileURL2 = [(PRARKitDataRecorder *)self fileURL];
+  filename2 = [(PRARKitDataRecorder *)self filename];
+  v10 = [fileURL2 URLByAppendingPathComponent:filename2];
 
   return v10;
 }

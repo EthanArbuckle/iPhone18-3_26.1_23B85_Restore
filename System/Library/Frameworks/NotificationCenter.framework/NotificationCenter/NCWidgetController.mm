@@ -1,37 +1,37 @@
 @interface NCWidgetController
 + (NCWidgetController)widgetController;
-+ (id)widgetContentUnavailableViewWithButtonTitle:(id)a3 buttonAction:(id)a4;
-+ (id)widgetContentUnavailableViewWithTitle:(id)a3;
++ (id)widgetContentUnavailableViewWithButtonTitle:(id)title buttonAction:(id)action;
++ (id)widgetContentUnavailableViewWithTitle:(id)title;
 - (id)_connectionForRequest;
 - (void)__didReceiveHasContentRequest;
 - (void)_invalidateConnection;
 - (void)dealloc;
-- (void)requestRefreshAfterDate:(id)a3 forWidgetWithBundleIdentifier:(id)a4;
+- (void)requestRefreshAfterDate:(id)date forWidgetWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation NCWidgetController
 
 + (NCWidgetController)widgetController
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)widgetContentUnavailableViewWithTitle:(id)a3
++ (id)widgetContentUnavailableViewWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [_NCContentUnavailableView alloc];
-  v5 = [(_UIContentUnavailableView *)v4 initWithFrame:v3 title:0 style:0 includeBackdrop:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v5 = [(_UIContentUnavailableView *)v4 initWithFrame:titleCopy title:0 style:0 includeBackdrop:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
   return v5;
 }
 
-+ (id)widgetContentUnavailableViewWithButtonTitle:(id)a3 buttonAction:(id)a4
++ (id)widgetContentUnavailableViewWithButtonTitle:(id)title buttonAction:(id)action
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_NCContentUnavailableViewWithButton alloc] initWithTitle:v6 buttonAction:v5];
+  actionCopy = action;
+  titleCopy = title;
+  v7 = [[_NCContentUnavailableViewWithButton alloc] initWithTitle:titleCopy buttonAction:actionCopy];
 
   return v7;
 }
@@ -58,9 +58,9 @@
 - (id)_connectionForRequest
 {
   v3 = +[_NCWidgetControllerRequestLimiter sharedInstance];
-  v4 = [v3 isRequestPermitted];
+  isRequestPermitted = [v3 isRequestPermitted];
 
-  if (v4)
+  if (isRequestPermitted)
   {
     connection = self->_connection;
     if (!connection)
@@ -172,21 +172,21 @@ void __66__NCWidgetController_setHasContent_forWidgetWithBundleIdentifier___bloc
   [WeakRetained _invalidateConnection];
 }
 
-- (void)requestRefreshAfterDate:(id)a3 forWidgetWithBundleIdentifier:(id)a4
+- (void)requestRefreshAfterDate:(id)date forWidgetWithBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v8 = [(NCWidgetController *)self _connectionForRequest];
+  _connectionForRequest = [(NCWidgetController *)self _connectionForRequest];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__NCWidgetController_requestRefreshAfterDate_forWidgetWithBundleIdentifier___block_invoke;
   v11[3] = &unk_278750CA0;
-  v9 = v7;
+  v9 = identifierCopy;
   v12 = v9;
   objc_copyWeak(&v13, &location);
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v11];
-  [v10 __requestRefreshAfterDate:v6 forWidgetWithBundleIdentifier:v9];
+  v10 = [_connectionForRequest remoteObjectProxyWithErrorHandler:v11];
+  [v10 __requestRefreshAfterDate:dateCopy forWidgetWithBundleIdentifier:v9];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -219,14 +219,14 @@ void __76__NCWidgetController_requestRefreshAfterDate_forWidgetWithBundleIdentif
 - (void)__didReceiveHasContentRequest
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__NCWidgetController___didReceiveHasContentRequest__block_invoke;
   block[3] = &unk_278750CC8;
   objc_copyWeak(&v6, &location);
-  v5 = v2;
-  v3 = v2;
+  v5 = currentConnection;
+  v3 = currentConnection;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v6);

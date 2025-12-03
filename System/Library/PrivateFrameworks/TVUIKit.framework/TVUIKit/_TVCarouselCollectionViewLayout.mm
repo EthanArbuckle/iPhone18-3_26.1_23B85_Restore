@@ -1,7 +1,7 @@
 @interface _TVCarouselCollectionViewLayout
 - (CGSize)collectionViewContentSize;
 - (CGSize)itemSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (int64_t)_expectedNumberOfCells;
 - (void)prepareLayout;
 @end
@@ -10,20 +10,20 @@
 
 - (void)prepareLayout
 {
-  v24 = [(_TVCarouselCollectionViewLayout *)self collectionView];
-  v3 = [v24 numberOfItemsInSection:0];
+  collectionView = [(_TVCarouselCollectionViewLayout *)self collectionView];
+  v3 = [collectionView numberOfItemsInSection:0];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v3];
   [(_TVCarouselCollectionViewLayout *)self itemSize];
   v6 = v5;
   v8 = v7;
   [(_TVCarouselCollectionViewLayout *)self minimumInteritemSpacing];
   v10 = v9;
-  [v24 center];
+  [collectionView center];
   v12 = v11;
-  [v24 contentOffset];
+  [collectionView contentOffset];
   v14 = v13;
-  [v24 center];
-  [v24 contentOffset];
+  [collectionView center];
+  [collectionView contentOffset];
   [(_TVCarouselCollectionViewLayout *)self itemSize];
   if (v3 >= 1)
   {
@@ -53,8 +53,8 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(_TVCarouselCollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(_TVCarouselCollectionViewLayout *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   [(_TVCarouselCollectionViewLayout *)self itemSize];
   v6 = v5;
@@ -83,12 +83,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   v25.origin.x = x;
@@ -147,12 +147,12 @@
 {
   [(_TVCarouselCollectionViewLayout *)self itemSize];
   v4 = v3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v16);
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   Height = CGRectGetHeight(v17);
 
   if (Width < Height)

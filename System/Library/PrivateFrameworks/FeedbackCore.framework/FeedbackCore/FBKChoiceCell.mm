@@ -1,35 +1,35 @@
 @interface FBKChoiceCell
 - (FBKQuestionChoice)choice;
-- (id)appIconForChoice:(id)a3;
-- (void)evaluateSelectionWithValue:(id)a3;
-- (void)evaluateSelectionWithValues:(id)a3;
-- (void)updateWithChoice:(id)a3;
+- (id)appIconForChoice:(id)choice;
+- (void)evaluateSelectionWithValue:(id)value;
+- (void)evaluateSelectionWithValues:(id)values;
+- (void)updateWithChoice:(id)choice;
 @end
 
 @implementation FBKChoiceCell
 
-- (void)updateWithChoice:(id)a3
+- (void)updateWithChoice:(id)choice
 {
-  v16 = a3;
-  [(FBKChoiceCell *)self setChoice:v16];
-  v4 = [(FBKChoiceCell *)self textLabel];
-  [v4 setNumberOfLines:0];
+  choiceCopy = choice;
+  [(FBKChoiceCell *)self setChoice:choiceCopy];
+  textLabel = [(FBKChoiceCell *)self textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v5 = [v16 title];
-  v6 = [(FBKChoiceCell *)self textLabel];
-  [v6 setText:v5];
+  title = [choiceCopy title];
+  textLabel2 = [(FBKChoiceCell *)self textLabel];
+  [textLabel2 setText:title];
 
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [(FBKChoiceCell *)self textLabel];
-  [v8 setTextColor:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  textLabel3 = [(FBKChoiceCell *)self textLabel];
+  [textLabel3 setTextColor:labelColor];
 
-  v9 = [(FBKChoiceCell *)self textLabel];
-  [v9 setTextAlignment:4];
+  textLabel4 = [(FBKChoiceCell *)self textLabel];
+  [textLabel4 setTextAlignment:4];
 
-  v10 = [(FBKChoiceCell *)self choice];
-  LODWORD(v8) = [v10 canSelect];
+  choice = [(FBKChoiceCell *)self choice];
+  LODWORD(textLabel3) = [choice canSelect];
 
-  if (v8)
+  if (textLabel3)
   {
     [(FBKChoiceCell *)self setUserInteractionEnabled:1];
     [MEMORY[0x1E69DC888] labelColor];
@@ -41,27 +41,27 @@
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
   v11 = ;
-  v12 = [(FBKChoiceCell *)self textLabel];
-  [v12 setTextColor:v11];
+  textLabel5 = [(FBKChoiceCell *)self textLabel];
+  [textLabel5 setTextColor:v11];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [(FBKChoiceCell *)self appIconForChoice:v16];
-    v14 = [(FBKChoiceCell *)self imageView];
-    [v14 setImage:v13];
+    v13 = [(FBKChoiceCell *)self appIconForChoice:choiceCopy];
+    imageView = [(FBKChoiceCell *)self imageView];
+    [imageView setImage:v13];
   }
 
-  v15 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [(FBKChoiceCell *)self setBackgroundColor:v15];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [(FBKChoiceCell *)self setBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
-- (void)evaluateSelectionWithValue:(id)a3
+- (void)evaluateSelectionWithValue:(id)value
 {
-  v4 = a3;
-  v8 = [(FBKChoiceCell *)self choice];
-  v5 = [v8 value];
-  v6 = [v5 isEqualToString:v4];
+  valueCopy = value;
+  choice = [(FBKChoiceCell *)self choice];
+  value = [choice value];
+  v6 = [value isEqualToString:valueCopy];
 
   if (v6)
   {
@@ -76,12 +76,12 @@
   [(FBKChoiceCell *)self setAccessoryType:v7];
 }
 
-- (void)evaluateSelectionWithValues:(id)a3
+- (void)evaluateSelectionWithValues:(id)values
 {
-  v4 = a3;
-  v8 = [(FBKChoiceCell *)self choice];
-  v5 = [v8 value];
-  v6 = [v4 containsObject:v5];
+  valuesCopy = values;
+  choice = [(FBKChoiceCell *)self choice];
+  value = [choice value];
+  v6 = [valuesCopy containsObject:value];
 
   if (v6)
   {
@@ -96,30 +96,30 @@
   [(FBKChoiceCell *)self setAccessoryType:v7];
 }
 
-- (id)appIconForChoice:(id)a3
+- (id)appIconForChoice:(id)choice
 {
-  v4 = a3;
-  v5 = [v4 app];
+  choiceCopy = choice;
+  v5 = [choiceCopy app];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v8 = v7;
 
     v9 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v10 = [v4 app];
-    v11 = [v10 identifier];
-    v12 = [v9 initWithBundleIdentifier:v11];
+    v10 = [choiceCopy app];
+    identifier = [v10 identifier];
+    v12 = [v9 initWithBundleIdentifier:identifier];
 
-    v13 = [(FBKChoiceCell *)self textLabel];
-    [v13 frame];
+    textLabel = [(FBKChoiceCell *)self textLabel];
+    [textLabel frame];
     v15 = v14 * 0.6;
 
     v16 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v15 scale:{v15, v8}];
     v17 = [v12 imageForImageDescriptor:v16];
-    v18 = [v17 CGImage];
-    v19 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v18 scale:0 orientation:v8];
+    cGImage = [v17 CGImage];
+    v19 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImage scale:0 orientation:v8];
   }
 
   else

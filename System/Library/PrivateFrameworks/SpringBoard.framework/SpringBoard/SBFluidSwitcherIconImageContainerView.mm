@@ -1,11 +1,11 @@
 @interface SBFluidSwitcherIconImageContainerView
-- (SBFluidSwitcherIconImageContainerView)initWithFrame:(CGRect)a3;
-- (void)_configureIconImageView:(id)a3;
-- (void)_crossfadeToCustomImageView:(id)a3;
-- (void)_crossfadeToImage:(id)a3;
+- (SBFluidSwitcherIconImageContainerView)initWithFrame:(CGRect)frame;
+- (void)_configureIconImageView:(id)view;
+- (void)_crossfadeToCustomImageView:(id)view;
+- (void)_crossfadeToImage:(id)image;
 - (void)layoutSubviews;
-- (void)setCustomImageView:(id)a3 animated:(BOOL)a4;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
+- (void)setCustomImageView:(id)view animated:(BOOL)animated;
+- (void)setImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation SBFluidSwitcherIconImageContainerView
@@ -20,18 +20,18 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIImageView *)self->_imageView superview];
+  superview = [(UIImageView *)self->_imageView superview];
 
-  if (v11 == self)
+  if (superview == self)
   {
     [(UIImageView *)self->_imageView setFrame:v4, v6, v8, v10];
   }
 
-  v12 = [(SBFluidSwitcherIconImageContainerView *)self customImageView];
-  v13 = v12;
-  if (v12)
+  customImageView = [(SBFluidSwitcherIconImageContainerView *)self customImageView];
+  v13 = customImageView;
+  if (customImageView)
   {
-    [v12 bounds];
+    [customImageView bounds];
     v15 = v14;
     v25 = v16;
     rect.origin.x = v14;
@@ -64,11 +64,11 @@
   }
 }
 
-- (SBFluidSwitcherIconImageContainerView)initWithFrame:(CGRect)a3
+- (SBFluidSwitcherIconImageContainerView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherIconImageContainerView;
-  v3 = [(SBFluidSwitcherIconImageContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFluidSwitcherIconImageContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -84,15 +84,15 @@
   return v3;
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_image != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_image, a3);
-    if (v4)
+    v8 = imageCopy;
+    objc_storeStrong(&self->_image, image);
+    if (animatedCopy)
     {
       [(SBFluidSwitcherIconImageContainerView *)self _crossfadeToImage:v8];
     }
@@ -102,21 +102,21 @@
       [(UIImageView *)self->_imageView setImage:v8];
     }
 
-    v7 = v8;
+    imageCopy = v8;
   }
 }
 
-- (void)setCustomImageView:(id)a3 animated:(BOOL)a4
+- (void)setCustomImageView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   customImageView = self->_customImageView;
-  if (customImageView != v7)
+  if (customImageView != viewCopy)
   {
-    v9 = v7;
-    if (v4)
+    v9 = viewCopy;
+    if (animatedCopy)
     {
-      [(SBFluidSwitcherIconImageContainerView *)self _crossfadeToCustomImageView:v7];
+      [(SBFluidSwitcherIconImageContainerView *)self _crossfadeToCustomImageView:viewCopy];
     }
 
     else
@@ -127,27 +127,27 @@
         [(SBFluidSwitcherIconImageContainerView *)self addSubview:v9];
       }
 
-      objc_storeStrong(&self->_customImageView, a3);
+      objc_storeStrong(&self->_customImageView, view);
     }
 
-    v7 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)_configureIconImageView:(id)a3
+- (void)_configureIconImageView:(id)view
 {
-  v3 = a3;
-  [v3 setContentMode:1];
-  v4 = [v3 layer];
+  viewCopy = view;
+  [viewCopy setContentMode:1];
+  layer = [viewCopy layer];
 
-  [v4 setAllowsEdgeAntialiasing:1];
+  [layer setAllowsEdgeAntialiasing:1];
 }
 
-- (void)_crossfadeToImage:(id)a3
+- (void)_crossfadeToImage:(id)image
 {
   v4 = MEMORY[0x277D755E8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithImage:v5];
+  imageCopy = image;
+  v6 = [[v4 alloc] initWithImage:imageCopy];
 
   [(SBFluidSwitcherIconImageContainerView *)self _configureIconImageView:v6];
   v7 = [MEMORY[0x277D67940] crossfadeViewWithStartView:self->_imageView endView:v6 translucent:0];
@@ -184,12 +184,12 @@ uint64_t __59__SBFluidSwitcherIconImageContainerView__crossfadeToImage___block_i
   return [v4 setNeedsLayout];
 }
 
-- (void)_crossfadeToCustomImageView:(id)a3
+- (void)_crossfadeToCustomImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = self->_customImageView;
-  v7 = [MEMORY[0x277D67940] crossfadeViewWithStartView:self->_customImageView endView:v5 translucent:0];
-  objc_storeStrong(&self->_customImageView, a3);
+  v7 = [MEMORY[0x277D67940] crossfadeViewWithStartView:self->_customImageView endView:viewCopy translucent:0];
+  objc_storeStrong(&self->_customImageView, view);
   v8 = [MEMORY[0x277CF0D38] factoryWithDuration:0.1];
   [v7 setAnimationFactory:v8];
 

@@ -1,35 +1,35 @@
 @interface FLSpring
-+ (FLSpring)springWithValue:(double)a3;
++ (FLSpring)springWithValue:(double)value;
 - (BOOL)isStable;
-- (FLSpring)initWithValue:(double)a3;
+- (FLSpring)initWithValue:(double)value;
 - (FLSpringParameters)_effectiveParameters;
 - (FLSpringParameters)offsetParameters;
 - (FLSpringParameters)parameters;
 - (FLSpringParameters)trackingParameters;
-- (double)_projectedTargetForVelocity:(double)a3;
+- (double)_projectedTargetForVelocity:(double)velocity;
 - (double)projectedTarget;
 - (void)_updateForEffectiveParameters;
-- (void)offsetTo:(double)a3;
-- (void)resetImmediatelyToValue:(double)a3;
-- (void)setParameters:(FLSpringParameters)a3;
-- (void)setStableValueThreshold:(double)a3;
-- (void)setStableVelocityThreshold:(double)a3;
-- (void)setTarget:(double)a3;
-- (void)setTracking:(BOOL)a3;
-- (void)setTrackingParameters:(FLSpringParameters)a3;
-- (void)step:(double)a3;
+- (void)offsetTo:(double)to;
+- (void)resetImmediatelyToValue:(double)value;
+- (void)setParameters:(FLSpringParameters)parameters;
+- (void)setStableValueThreshold:(double)threshold;
+- (void)setStableVelocityThreshold:(double)threshold;
+- (void)setTarget:(double)target;
+- (void)setTracking:(BOOL)tracking;
+- (void)setTrackingParameters:(FLSpringParameters)parameters;
+- (void)step:(double)step;
 @end
 
 @implementation FLSpring
 
-+ (FLSpring)springWithValue:(double)a3
++ (FLSpring)springWithValue:(double)value
 {
-  v3 = [[a1 alloc] initWithValue:a3];
+  v3 = [[self alloc] initWithValue:value];
 
   return v3;
 }
 
-- (FLSpring)initWithValue:(double)a3
+- (FLSpring)initWithValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = FLSpring;
@@ -50,16 +50,16 @@
     *(v4 + 74) = 0x3FEFD70A3D70A3D7;
     *(v4 + 68) = 0;
     *(v4 + 32) = vdupq_n_s64(0x3F50624DD2F1A9FCuLL);
-    [v4 resetImmediatelyToValue:a3];
+    [v4 resetImmediatelyToValue:value];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setTarget:(double)a3
+- (void)setTarget:(double)target
 {
-  v4 = a3 - self->_o.anchor;
+  v4 = target - self->_o.anchor;
   rubberbandRange = self->_rubberbandRange;
   if (rubberbandRange != 1.79769313e308)
   {
@@ -90,10 +90,10 @@
   }
 }
 
-- (void)offsetTo:(double)a3
+- (void)offsetTo:(double)to
 {
   [(FLSpring *)self target];
-  v6 = a3 - v5;
+  v6 = to - v5;
 
   [(FLSpring *)self offsetBy:v6];
 }
@@ -120,18 +120,18 @@
   return v3;
 }
 
-- (void)setStableValueThreshold:(double)a3
+- (void)setStableValueThreshold:(double)threshold
 {
-  self->_stableValueThreshold = a3;
-  self->_s.stablePositionThreshold = a3;
-  self->_o.stablePositionThreshold = a3;
+  self->_stableValueThreshold = threshold;
+  self->_s.stablePositionThreshold = threshold;
+  self->_o.stablePositionThreshold = threshold;
 }
 
-- (void)setStableVelocityThreshold:(double)a3
+- (void)setStableVelocityThreshold:(double)threshold
 {
-  self->_stableVelocityThreshold = a3;
-  self->_s.stableVelocityThreshold = a3;
-  self->_o.stableVelocityThreshold = a3;
+  self->_stableVelocityThreshold = threshold;
+  self->_s.stableVelocityThreshold = threshold;
+  self->_o.stableVelocityThreshold = threshold;
 }
 
 - (double)projectedTarget
@@ -154,19 +154,19 @@
   return result;
 }
 
-- (double)_projectedTargetForVelocity:(double)a3
+- (double)_projectedTargetForVelocity:(double)velocity
 {
   [(FLSpring *)self value];
   projectionDeceleration = self->_projectionDeceleration;
 
-  return sub_1000034C4(v5, a3, projectionDeceleration);
+  return sub_1000034C4(v5, velocity, projectionDeceleration);
 }
 
-- (void)resetImmediatelyToValue:(double)a3
+- (void)resetImmediatelyToValue:(double)value
 {
   p_stablePositionThreshold = &self->_s.stablePositionThreshold;
   [(FLSpring *)self _effectiveParameters];
-  sub_1000024A8(v11, a3, 0.0, v6, v7);
+  sub_1000024A8(v11, value, 0.0, v6, v7);
   memcpy(&self->_s, v11, 0x160uLL);
   *p_stablePositionThreshold = *&self->_stableValueThreshold;
   sub_100002130(v11, 0.0, 0.0, 0.0, self->_offsetParameters.dampingRatio, self->_offsetParameters.response);
@@ -181,19 +181,19 @@
   *&self->_o.damping = v11[2];
   *&self->_o.stablePositionThreshold = v10;
   *(p_stablePositionThreshold + 4) = *&self->_stableValueThreshold;
-  self->_previousTarget = a3;
+  self->_previousTarget = value;
   self->_targetVelocity = 0.0;
 }
 
-- (void)setParameters:(FLSpringParameters)a3
+- (void)setParameters:(FLSpringParameters)parameters
 {
-  v3.f64[0] = a3.dampingRatio;
-  v3.f64[1] = a3.dampingRatioSmoothing;
-  v4.f64[0] = a3.response;
-  v4.f64[1] = a3.responseSmoothing;
+  v3.f64[0] = parameters.dampingRatio;
+  v3.f64[1] = parameters.dampingRatioSmoothing;
+  v4.f64[0] = parameters.response;
+  v4.f64[1] = parameters.responseSmoothing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_parameters.dampingRatio, v3), vceqq_f64(*&self->_parameters.response, v4)))) & 1) == 0)
   {
-    self->_parameters = a3;
+    self->_parameters = parameters;
     if (!self->_tracking)
     {
       [(FLSpring *)self _updateForEffectiveParameters];
@@ -201,15 +201,15 @@
   }
 }
 
-- (void)setTrackingParameters:(FLSpringParameters)a3
+- (void)setTrackingParameters:(FLSpringParameters)parameters
 {
-  v3.f64[0] = a3.dampingRatio;
-  v3.f64[1] = a3.dampingRatioSmoothing;
-  v4.f64[0] = a3.response;
-  v4.f64[1] = a3.responseSmoothing;
+  v3.f64[0] = parameters.dampingRatio;
+  v3.f64[1] = parameters.dampingRatioSmoothing;
+  v4.f64[0] = parameters.response;
+  v4.f64[1] = parameters.responseSmoothing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_trackingParameters.dampingRatio, v3), vceqq_f64(*&self->_trackingParameters.response, v4)))) & 1) == 0)
   {
-    self->_trackingParameters = a3;
+    self->_trackingParameters = parameters;
     if (self->_tracking)
     {
       [(FLSpring *)self _updateForEffectiveParameters];
@@ -217,14 +217,14 @@
   }
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
   tracking = self->_tracking;
-  if (tracking != a3)
+  if (tracking != tracking)
   {
-    self->_transitioningFromTracking = tracking & ~a3;
-    self->_tracking = a3;
-    if (!a3)
+    self->_transitioningFromTracking = tracking & ~tracking;
+    self->_tracking = tracking;
+    if (!tracking)
     {
       v6 = self->_retargetResponseFraction * self->_parameters.response;
       [(FLSpring *)self _projectedTargetForVelocity:self->_targetVelocity];
@@ -235,11 +235,11 @@
   }
 }
 
-- (void)step:(double)a3
+- (void)step:(double)step
 {
   anchor = self->_s.anchor.anchor;
   v6 = anchor - self->_previousTarget;
-  v7 = v6 / a3 * 0.25 + self->_targetVelocity * 0.75;
+  v7 = v6 / step * 0.25 + self->_targetVelocity * 0.75;
   self->_transitioningFromTracking = 0;
   self->_targetVelocity = v7;
   self->_previousTarget = anchor;
@@ -251,11 +251,11 @@
     self->_s.state.velocity = self->_s.state.velocity + v6 * *__src * self->_retargetImpulse;
   }
 
-  v10 = self->_timeFactor * a3;
+  v10 = self->_timeFactor * step;
   memcpy(v18, &self->_s, sizeof(v18));
   sub_100002788(v18, __src, v10);
   memcpy(&self->_s, __src, sizeof(self->_s));
-  v11 = self->_timeFactor * a3;
+  v11 = self->_timeFactor * step;
   v12 = *&self->_o._beta;
   v18[4] = *&self->_o._previousStiffness;
   v18[5] = v12;

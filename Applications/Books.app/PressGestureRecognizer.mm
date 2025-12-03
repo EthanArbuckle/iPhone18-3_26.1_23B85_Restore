@@ -1,12 +1,12 @@
 @interface PressGestureRecognizer
-- (_TtC5Books22PressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC5Books22PressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PressGestureRecognizer
 
-- (_TtC5Books22PressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC5Books22PressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_1007A3504();

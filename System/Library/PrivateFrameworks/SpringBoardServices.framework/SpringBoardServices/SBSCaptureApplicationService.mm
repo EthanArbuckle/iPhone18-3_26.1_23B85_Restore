@@ -39,9 +39,9 @@ uint64_t __46__SBSCaptureApplicationService_sharedInstance__block_invoke()
   {
     v2->_lock._os_unfair_lock_opaque = 0;
     v4 = MEMORY[0x1E698F498];
-    v5 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v6 = +[SBSCaptureApplicationServiceSpecification identifier];
-    v7 = [v4 endpointForMachName:v5 service:v6 instance:0];
+    v7 = [v4 endpointForMachName:defaultShellMachName service:v6 instance:0];
 
     if (v7)
     {
@@ -118,7 +118,7 @@ void __36__SBSCaptureApplicationService_init__block_invoke_8(uint64_t a1)
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SBSCaptureApplicationService must be invalidated before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -161,8 +161,8 @@ void __36__SBSCaptureApplicationService_init__block_invoke_8(uint64_t a1)
     _os_log_impl(&dword_19169D000, v3, OS_LOG_TYPE_DEFAULT, "SBSCaptureApplicationService: Sending applicationDidCompleteTransition signal", v5, 2u);
   }
 
-  v4 = [(BSServiceConnection *)self->_lock_connection remoteTarget];
-  [v4 applicationDidCompleteTransition];
+  remoteTarget = [(BSServiceConnection *)self->_lock_connection remoteTarget];
+  [remoteTarget applicationDidCompleteTransition];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -177,8 +177,8 @@ void __36__SBSCaptureApplicationService_init__block_invoke_8(uint64_t a1)
     _os_log_impl(&dword_19169D000, v3, OS_LOG_TYPE_DEFAULT, "SBSCaptureApplicationService: Sending beginDelayingAppearance signal", v5, 2u);
   }
 
-  v4 = [(BSServiceConnection *)self->_lock_connection remoteTarget];
-  [v4 beginDelayingAppearance];
+  remoteTarget = [(BSServiceConnection *)self->_lock_connection remoteTarget];
+  [remoteTarget beginDelayingAppearance];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -193,8 +193,8 @@ void __36__SBSCaptureApplicationService_init__block_invoke_8(uint64_t a1)
     _os_log_impl(&dword_19169D000, v3, OS_LOG_TYPE_DEFAULT, "SBSCaptureApplicationService: Sending endDelayingAppearance signal", v5, 2u);
   }
 
-  v4 = [(BSServiceConnection *)self->_lock_connection remoteTarget];
-  [v4 endDelayingAppearance];
+  remoteTarget = [(BSServiceConnection *)self->_lock_connection remoteTarget];
+  [remoteTarget endDelayingAppearance];
 
   os_unfair_lock_unlock(&self->_lock);
 }

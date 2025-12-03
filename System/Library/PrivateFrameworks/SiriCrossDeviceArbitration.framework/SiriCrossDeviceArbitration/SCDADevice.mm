@@ -1,23 +1,23 @@
 @interface SCDADevice
-+ (int)cdaDeviceClassForSCDADeviceClass:(unsigned __int8)a3 andProducType:(unsigned __int8)a4;
-- (SCDADevice)initWithDeviceClass:(unsigned __int8)a3 deviceClassName:(id)a4 productType:(unsigned __int8)a5 productTypeName:(id)a6;
-- (SCDADevice)initWithSelfID:(id)a3;
++ (int)cdaDeviceClassForSCDADeviceClass:(unsigned __int8)class andProducType:(unsigned __int8)type;
+- (SCDADevice)initWithDeviceClass:(unsigned __int8)class deviceClassName:(id)name productType:(unsigned __int8)type productTypeName:(id)typeName;
+- (SCDADevice)initWithSelfID:(id)d;
 - (char)_getDeviceAdjust_DEPRECATED;
 - (double)_getTrumpDelay;
 - (int)cdaDeviceClass;
 - (unsigned)_getDeviceClass;
 - (unsigned)_getProductType;
-- (void)overrideLocalConfiguration:(unsigned __int8)a3 deviceAdjust:(char)a4 trumpDelay:(double)a5;
+- (void)overrideLocalConfiguration:(unsigned __int8)configuration deviceAdjust:(char)adjust trumpDelay:(double)delay;
 @end
 
 @implementation SCDADevice
 
-- (void)overrideLocalConfiguration:(unsigned __int8)a3 deviceAdjust:(char)a4 trumpDelay:(double)a5
+- (void)overrideLocalConfiguration:(unsigned __int8)configuration deviceAdjust:(char)adjust trumpDelay:(double)delay
 {
-  self->_trumpDelay = a5;
-  if (self->_deviceClass != a3)
+  self->_trumpDelay = delay;
+  if (self->_deviceClass != configuration)
   {
-    self->_deviceClass = a3;
+    self->_deviceClass = configuration;
     deviceClassName = self->_deviceClassName;
     self->_deviceClassName = @"Overridden Device";
 
@@ -28,19 +28,19 @@
 
 - (int)cdaDeviceClass
 {
-  v3 = [(SCDADevice *)self deviceClass];
-  v4 = [(SCDADevice *)self productType];
+  deviceClass = [(SCDADevice *)self deviceClass];
+  productType = [(SCDADevice *)self productType];
 
-  return [SCDADevice cdaDeviceClassForSCDADeviceClass:v3 andProducType:v4];
+  return [SCDADevice cdaDeviceClassForSCDADeviceClass:deviceClass andProducType:productType];
 }
 
 - (double)_getTrumpDelay
 {
-  v2 = [(SCDADevice *)self deviceClass];
+  deviceClass = [(SCDADevice *)self deviceClass];
   result = 0.75;
-  if (v2 <= 9)
+  if (deviceClass <= 9)
   {
-    return dbl_1DA78D320[v2];
+    return dbl_1DA78D320[deviceClass];
   }
 
   return result;
@@ -48,12 +48,12 @@
 
 - (char)_getDeviceAdjust_DEPRECATED
 {
-  v3 = [(SCDADevice *)self deviceClass];
-  if (v3 <= 6)
+  deviceClass = [(SCDADevice *)self deviceClass];
+  if (deviceClass <= 6)
   {
-    if ((v3 - 4) >= 3 && (v3 - 1) >= 2)
+    if ((deviceClass - 4) >= 3 && (deviceClass - 1) >= 2)
     {
-      if (v3)
+      if (deviceClass)
       {
         return -4;
       }
@@ -67,9 +67,9 @@
     return 0;
   }
 
-  if (v3 > 8)
+  if (deviceClass > 8)
   {
-    if (v3 == 10)
+    if (deviceClass == 10)
     {
       v4 = 10;
     }
@@ -79,7 +79,7 @@
       v4 = -4;
     }
 
-    if (v3 == 9)
+    if (deviceClass == 9)
     {
       return -10;
     }
@@ -87,13 +87,13 @@
 
   else
   {
-    if (v3 != 7)
+    if (deviceClass != 7)
     {
       return 0;
     }
 
-    v5 = [(SCDADevice *)self productType];
-    if (v5 == 3)
+    productType = [(SCDADevice *)self productType];
+    if (productType == 3)
     {
       v4 = -2;
     }
@@ -103,7 +103,7 @@
       v4 = 0;
     }
 
-    if (v5 == 5)
+    if (productType == 5)
     {
       return -1;
     }
@@ -205,20 +205,20 @@ LABEL_19:
   }
 }
 
-- (SCDADevice)initWithDeviceClass:(unsigned __int8)a3 deviceClassName:(id)a4 productType:(unsigned __int8)a5 productTypeName:(id)a6
+- (SCDADevice)initWithDeviceClass:(unsigned __int8)class deviceClassName:(id)name productType:(unsigned __int8)type productTypeName:(id)typeName
 {
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  typeNameCopy = typeName;
   v19.receiver = self;
   v19.super_class = SCDADevice;
   v13 = [(SCDADevice *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_deviceClassName, a4);
-    v14->_deviceClass = a3;
-    objc_storeStrong(&v14->_productTypeName, a6);
-    v14->_productType = a5;
+    objc_storeStrong(&v13->_deviceClassName, name);
+    v14->_deviceClass = class;
+    objc_storeStrong(&v14->_productTypeName, typeName);
+    v14->_productType = type;
     v14->_deviceAdjust_DEPRECATED = [(SCDADevice *)v14 _getDeviceAdjust_DEPRECATED];
     [(SCDADevice *)v14 _getInEarDelay];
     v14->_inEarDelay = v15;
@@ -231,9 +231,9 @@ LABEL_19:
   return v14;
 }
 
-- (SCDADevice)initWithSelfID:(id)a3
+- (SCDADevice)initWithSelfID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = SCDADevice;
   v6 = [(SCDADevice *)&v15 init];
@@ -256,15 +256,15 @@ LABEL_19:
     v6->_inEarInterval = v12;
     [(SCDADevice *)v6 _getTrumpDelay];
     v6->_trumpDelay = v13;
-    objc_storeStrong(&v6->_designatedSelfID, a3);
+    objc_storeStrong(&v6->_designatedSelfID, d);
   }
 
   return v6;
 }
 
-+ (int)cdaDeviceClassForSCDADeviceClass:(unsigned __int8)a3 andProducType:(unsigned __int8)a4
++ (int)cdaDeviceClassForSCDADeviceClass:(unsigned __int8)class andProducType:(unsigned __int8)type
 {
-  if (a3 == 10)
+  if (class == 10)
   {
     v4 = 10;
   }
@@ -274,7 +274,7 @@ LABEL_19:
     v4 = 2;
   }
 
-  if (a3 == 9)
+  if (class == 9)
   {
     v5 = 9;
   }
@@ -284,7 +284,7 @@ LABEL_19:
     v5 = v4;
   }
 
-  if (a3 == 8)
+  if (class == 8)
   {
     v6 = 8;
   }
@@ -294,7 +294,7 @@ LABEL_19:
     v6 = v5;
   }
 
-  if (a4)
+  if (type)
   {
     v7 = 11;
   }
@@ -304,7 +304,7 @@ LABEL_19:
     v7 = 6;
   }
 
-  if (a3 == 7)
+  if (class == 7)
   {
     v8 = 7;
   }
@@ -314,17 +314,17 @@ LABEL_19:
     v8 = 2;
   }
 
-  if (a3 != 6)
+  if (class != 6)
   {
     v7 = v8;
   }
 
-  if (a3 <= 7)
+  if (class <= 7)
   {
     v6 = v7;
   }
 
-  if (a3 == 5)
+  if (class == 5)
   {
     v9 = 5;
   }
@@ -334,7 +334,7 @@ LABEL_19:
     v9 = 2;
   }
 
-  if (a3 == 4)
+  if (class == 4)
   {
     v10 = 4;
   }
@@ -344,7 +344,7 @@ LABEL_19:
     v10 = v9;
   }
 
-  if (a3 == 3)
+  if (class == 3)
   {
     v11 = 3;
   }
@@ -354,7 +354,7 @@ LABEL_19:
     v11 = v10;
   }
 
-  if (a4)
+  if (type)
   {
     v12 = 12;
   }
@@ -364,7 +364,7 @@ LABEL_19:
     v12 = 1;
   }
 
-  if (a3 == 1)
+  if (class == 1)
   {
     v13 = v12;
   }
@@ -374,17 +374,17 @@ LABEL_19:
     v13 = 2;
   }
 
-  if (!a3)
+  if (!class)
   {
     v13 = 0;
   }
 
-  if (a3 > 2)
+  if (class > 2)
   {
     v13 = v11;
   }
 
-  if (a3 <= 5)
+  if (class <= 5)
   {
     return v13;
   }

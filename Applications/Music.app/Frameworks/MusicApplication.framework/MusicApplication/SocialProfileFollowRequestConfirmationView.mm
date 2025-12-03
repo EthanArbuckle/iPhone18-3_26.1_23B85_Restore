@@ -1,22 +1,22 @@
 @interface SocialProfileFollowRequestConfirmationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication42SocialProfileFollowRequestConfirmationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication42SocialProfileFollowRequestConfirmationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SocialProfileFollowRequestConfirmationView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_320B8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_32474(width);
   v6 = v5;
   v8 = v7;
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_32698(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_32698(change);
 }
 
-- (_TtC16MusicApplication42SocialProfileFollowRequestConfirmationView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication42SocialProfileFollowRequestConfirmationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

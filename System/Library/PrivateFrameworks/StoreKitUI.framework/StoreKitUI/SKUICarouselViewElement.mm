@@ -1,17 +1,17 @@
 @interface SKUICarouselViewElement
-- (SKUICarouselViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUICarouselViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIProgressIndicatorViewElement)progressIndicatorElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUICarouselViewElement
 
-- (SKUICarouselViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUICarouselViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICarouselViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,10 +19,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUICarouselViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"displayInterval"];
+    v12 = [elementCopy getAttribute:@"displayInterval"];
     if ([v12 length])
     {
       [v12 doubleValue];
@@ -39,33 +39,33 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SKUICarouselViewElement;
-  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SKUICarouselViewElement *)v4 displayInterval];
+    [(SKUICarouselViewElement *)elementCopy displayInterval];
     self->_displayInterval = v7;
   }
 
   return v6;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SKUICarouselViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2781FA298;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SKUICarouselViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SKUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 
@@ -88,13 +88,13 @@ void __55__SKUICarouselViewElement_enumerateChildrenUsingBlock___block_invoke(ui
   v9 = __Block_byref_object_copy__10;
   v10 = __Block_byref_object_dispose__10;
   v11 = 0;
-  v2 = [(SKUICarouselViewElement *)self children];
+  children = [(SKUICarouselViewElement *)self children];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__SKUICarouselViewElement_progressIndicatorElement__block_invoke;
   v5[3] = &unk_2781FA548;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);

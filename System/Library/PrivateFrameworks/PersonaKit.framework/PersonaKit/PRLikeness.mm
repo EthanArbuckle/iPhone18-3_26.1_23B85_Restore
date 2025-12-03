@@ -1,64 +1,64 @@
 @interface PRLikeness
-+ (CGRect)_flippedRectForRect:(CGRect)a3 relativeToImage:(CGImage *)a4;
++ (CGRect)_flippedRectForRect:(CGRect)rect relativeToImage:(CGImage *)image;
 + (id)_dateFormatter;
-+ (id)_photoWithScope:(unint64_t)a3 image:(CGImage *)a4 cropRectForTopLeftOrigin:(CGRect)a5;
-+ (id)descriptionForScope:(unint64_t)a3;
++ (id)_photoWithScope:(unint64_t)scope image:(CGImage *)image cropRectForTopLeftOrigin:(CGRect)origin;
++ (id)descriptionForScope:(unint64_t)scope;
 + (id)diddlySquatLikeness;
-+ (id)likenessWithPropagatedData:(id)a3;
-+ (id)monogramWithScope:(unint64_t)a3 recipe:(id)a4 staticRepresentation:(CGImage *)a5;
-+ (id)photoWithImage:(CGImage *)a3 cropRectForBottomLeftOrigin:(CGRect)a4;
-+ (unint64_t)scopeFromDescription:(id)a3;
++ (id)likenessWithPropagatedData:(id)data;
++ (id)monogramWithScope:(unint64_t)scope recipe:(id)recipe staticRepresentation:(CGImage *)representation;
++ (id)photoWithImage:(CGImage *)image cropRectForBottomLeftOrigin:(CGRect)origin;
++ (unint64_t)scopeFromDescription:(id)description;
 - (CGImage)staticRepresentation;
 - (CGRect)cropRectForBottomLeftOrigin;
 - (CGRect)cropRectForTopLeftOrigin;
 - (NSData)staticRepresentationData;
 - (NSString)typeDescription;
 - (PRLikeness)init;
-- (PRLikeness)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3;
+- (PRLikeness)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier;
 - (id)dataForPropagation;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCropRectForTopLeftOrigin:(CGRect)a3;
-- (void)setCurrent:(BOOL)a3;
-- (void)setExternalIdentifier:(id)a3;
-- (void)setRecipe:(id)a3;
-- (void)setStaticRepresentation:(CGImage *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCropRectForTopLeftOrigin:(CGRect)origin;
+- (void)setCurrent:(BOOL)current;
+- (void)setExternalIdentifier:(id)identifier;
+- (void)setRecipe:(id)recipe;
+- (void)setStaticRepresentation:(CGImage *)representation;
 @end
 
 @implementation PRLikeness
 
-+ (id)monogramWithScope:(unint64_t)a3 recipe:(id)a4 staticRepresentation:(CGImage *)a5
++ (id)monogramWithScope:(unint64_t)scope recipe:(id)recipe staticRepresentation:(CGImage *)representation
 {
-  v7 = a4;
+  recipeCopy = recipe;
   v8 = objc_alloc_init(PRLikeness);
   [(PRLikeness *)v8 setType:1];
-  [(PRLikeness *)v8 setScope:a3];
-  [(PRLikeness *)v8 setRecipe:v7];
+  [(PRLikeness *)v8 setScope:scope];
+  [(PRLikeness *)v8 setRecipe:recipeCopy];
 
-  [(PRLikeness *)v8 setStaticRepresentation:a5];
+  [(PRLikeness *)v8 setStaticRepresentation:representation];
 
   return v8;
 }
 
-+ (id)photoWithImage:(CGImage *)a3 cropRectForBottomLeftOrigin:(CGRect)a4
++ (id)photoWithImage:(CGImage *)image cropRectForBottomLeftOrigin:(CGRect)origin
 {
-  [a1 _flippedRectForRect:a4.origin.x relativeToImage:{a4.origin.y, a4.size.width, a4.size.height}];
+  [self _flippedRectForRect:origin.origin.x relativeToImage:{origin.origin.y, origin.size.width, origin.size.height}];
 
-  return [a1 photoWithImage:a3 cropRectForTopLeftOrigin:?];
+  return [self photoWithImage:image cropRectForTopLeftOrigin:?];
 }
 
-+ (CGRect)_flippedRectForRect:(CGRect)a3 relativeToImage:(CGImage *)a4
++ (CGRect)_flippedRectForRect:(CGRect)rect relativeToImage:(CGImage *)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsNull = CGRectIsNull(a3);
-  if (a4 && !IsNull)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  IsNull = CGRectIsNull(rect);
+  if (image && !IsNull)
   {
-    y = CGImageGetHeight(a4) - y - height;
+    y = CGImageGetHeight(image) - y - height;
   }
 
   v10 = x;
@@ -72,16 +72,16 @@
   return result;
 }
 
-+ (id)_photoWithScope:(unint64_t)a3 image:(CGImage *)a4 cropRectForTopLeftOrigin:(CGRect)a5
++ (id)_photoWithScope:(unint64_t)scope image:(CGImage *)image cropRectForTopLeftOrigin:(CGRect)origin
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = origin.size.height;
+  width = origin.size.width;
+  y = origin.origin.y;
+  x = origin.origin.x;
   v11 = objc_alloc_init(PRLikeness);
   [(PRLikeness *)v11 setType:2];
-  [(PRLikeness *)v11 setScope:a3];
-  [(PRLikeness *)v11 setStaticRepresentation:a4];
+  [(PRLikeness *)v11 setScope:scope];
+  [(PRLikeness *)v11 setStaticRepresentation:image];
   [(PRLikeness *)v11 setCropRectForTopLeftOrigin:x, y, width, height];
 
   return v11;
@@ -98,23 +98,23 @@
 
 - (PRLikeness)init
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(PRLikeness *)self _initWithIdentifier:v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(PRLikeness *)self _initWithIdentifier:uUIDString];
 
   return v5;
 }
 
-- (id)_initWithIdentifier:(id)a3
+- (id)_initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = PRLikeness;
   v6 = [(PRLikeness *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uniqueIdentifier, a3);
+    objc_storeStrong(&v6->_uniqueIdentifier, identifier);
     v8 = *(MEMORY[0x277CBF398] + 16);
     v7->_cropRectForTopLeftOrigin.origin = *MEMORY[0x277CBF398];
     v7->_cropRectForTopLeftOrigin.size = v8;
@@ -126,56 +126,56 @@
   return v7;
 }
 
-- (PRLikeness)initWithCoder:(id)a3
+- (PRLikeness)initWithCoder:(id)coder
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PRLikeness;
   v5 = [(PRLikeness *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalIdentifier"];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
     v5->_type = [v10 unsignedIntegerValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scope"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scope"];
     v5->_scope = [v11 unsignedIntegerValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
     v5->_version = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_isCurrent"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_isCurrent"];
     v5->_isCurrent = [v13 BOOLValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_softExpirationDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_softExpirationDate"];
     softExpirationDate = v5->_softExpirationDate;
     v5->_softExpirationDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recipe"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recipe"];
     recipe = v5->_recipe;
     v5->_recipe = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_staticRepresentationData"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_staticRepresentationData"];
     staticRepresentationData = v5->_staticRepresentationData;
     v5->_staticRepresentationData = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_insertionDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_insertionDate"];
     insertionDate = v5->_insertionDate;
     v5->_insertionDate = v24;
 
@@ -183,7 +183,7 @@
     v27 = objc_opt_class();
     v28 = objc_opt_class();
     v29 = [v26 setWithObjects:{v27, v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"_dirtyProperties"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"_dirtyProperties"];
     dirtyProperties = v5->_dirtyProperties;
     v5->_dirtyProperties = v30;
 
@@ -191,7 +191,7 @@
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v32 setWithObjects:{v33, v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"_cropRectForTopLeftOrigin"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"_cropRectForTopLeftOrigin"];
 
     v37 = CGRectMakeWithDictionaryRepresentation(v36, &v5->_cropRectForTopLeftOrigin);
     if (v36 && !v37)
@@ -214,58 +214,58 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueIdentifier forKey:@"_uniqueIdentifier"];
-  [v5 encodeObject:self->_externalIdentifier forKey:@"_externalIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"_uniqueIdentifier"];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:@"_externalIdentifier"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"_type"];
+  [coderCopy encodeObject:v6 forKey:@"_type"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_scope];
-  [v5 encodeObject:v7 forKey:@"_scope"];
+  [coderCopy encodeObject:v7 forKey:@"_scope"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isCurrent];
-  [v5 encodeObject:v8 forKey:@"_isCurrent"];
+  [coderCopy encodeObject:v8 forKey:@"_isCurrent"];
 
-  [v5 encodeObject:self->_expirationDate forKey:@"_expirationDate"];
-  [v5 encodeObject:self->_softExpirationDate forKey:@"_softExpirationDate"];
-  [v5 encodeObject:self->_recipe forKey:@"_recipe"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"_expirationDate"];
+  [coderCopy encodeObject:self->_softExpirationDate forKey:@"_softExpirationDate"];
+  [coderCopy encodeObject:self->_recipe forKey:@"_recipe"];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_version];
-  [v5 encodeObject:v9 forKey:@"_version"];
+  [coderCopy encodeObject:v9 forKey:@"_version"];
 
-  v10 = [(PRLikeness *)self staticRepresentationData];
-  [v5 encodeObject:v10 forKey:@"_staticRepresentationData"];
+  staticRepresentationData = [(PRLikeness *)self staticRepresentationData];
+  [coderCopy encodeObject:staticRepresentationData forKey:@"_staticRepresentationData"];
 
-  [v5 encodeObject:self->_creationDate forKey:@"_creationDate"];
-  [v5 encodeObject:self->_insertionDate forKey:@"_insertionDate"];
-  [v5 encodeObject:self->_dirtyProperties forKey:@"_dirtyProperties"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"_creationDate"];
+  [coderCopy encodeObject:self->_insertionDate forKey:@"_insertionDate"];
+  [coderCopy encodeObject:self->_dirtyProperties forKey:@"_dirtyProperties"];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(self->_cropRectForTopLeftOrigin);
-  [v5 encodeObject:DictionaryRepresentation forKey:@"_cropRectForTopLeftOrigin"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"_cropRectForTopLeftOrigin"];
 }
 
-+ (id)likenessWithPropagatedData:(id)a3
++ (id)likenessWithPropagatedData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!data)
   {
     v8 = 0;
     goto LABEL_13;
   }
 
-  v3 = a3;
-  v4 = [v3 subdataWithRange:{0, objc_msgSend(v3, "length") - 1}];
-  v5 = [v3 subdataWithRange:{objc_msgSend(v3, "length") - 1, 1}];
+  dataCopy = data;
+  v4 = [dataCopy subdataWithRange:{0, objc_msgSend(dataCopy, "length") - 1}];
+  v5 = [dataCopy subdataWithRange:{objc_msgSend(dataCopy, "length") - 1, 1}];
 
-  v6 = [v5 bytes];
-  if (!v6)
+  bytes = [v5 bytes];
+  if (!bytes)
   {
     v7 = 4;
     goto LABEL_8;
   }
 
-  v7 = *v6;
+  v7 = *bytes;
   if (v7 == 3)
   {
 LABEL_11:
@@ -334,21 +334,21 @@ LABEL_13:
   [(PRLikeness *)&v4 dealloc];
 }
 
-- (void)setCurrent:(BOOL)a3
+- (void)setCurrent:(BOOL)current
 {
-  if (self->_isCurrent != a3)
+  if (self->_isCurrent != current)
   {
-    self->_isCurrent = a3;
+    self->_isCurrent = current;
     [(NSMutableSet *)self->_dirtyProperties addObject:@"current"];
   }
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v6 = a3;
+  recipeCopy = recipe;
   if (([(NSData *)self->_recipe isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [recipeCopy copy];
     recipe = self->_recipe;
     self->_recipe = v4;
 
@@ -356,12 +356,12 @@ LABEL_13:
   }
 }
 
-- (void)setExternalIdentifier:(id)a3
+- (void)setExternalIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (([(NSString *)self->_externalIdentifier isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     externalIdentifier = self->_externalIdentifier;
     self->_externalIdentifier = v4;
 
@@ -369,13 +369,13 @@ LABEL_13:
   }
 }
 
-- (void)setCropRectForTopLeftOrigin:(CGRect)a3
+- (void)setCropRectForTopLeftOrigin:(CGRect)origin
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_cropRectForTopLeftOrigin, a3))
+  height = origin.size.height;
+  width = origin.size.width;
+  y = origin.origin.y;
+  x = origin.origin.x;
+  if (!CGRectEqualToRect(self->_cropRectForTopLeftOrigin, origin))
   {
     [(PRLikeness *)self willChangeValueForKey:@"cropRectForTopLeftOrigin"];
     [(PRLikeness *)self willChangeValueForKey:@"cropRectForBottomLeftOrigin"];
@@ -461,11 +461,11 @@ LABEL_2:
   return staticRepresentation;
 }
 
-- (void)setStaticRepresentation:(CGImage *)a3
+- (void)setStaticRepresentation:(CGImage *)representation
 {
-  if (a3)
+  if (representation)
   {
-    self->_staticRepresentation = CGImageRetain(a3);
+    self->_staticRepresentation = CGImageRetain(representation);
   }
 
   else
@@ -557,15 +557,15 @@ LABEL_2:
   return v11;
 }
 
-+ (id)descriptionForScope:(unint64_t)a3
++ (id)descriptionForScope:(unint64_t)scope
 {
   v3 = @"(unknown)";
-  if (a3 == 1)
+  if (scope == 1)
   {
     v3 = @"private";
   }
 
-  if (a3 == 2)
+  if (scope == 2)
   {
     return @"public";
   }
@@ -576,15 +576,15 @@ LABEL_2:
   }
 }
 
-+ (unint64_t)scopeFromDescription:(id)a3
++ (unint64_t)scopeFromDescription:(id)description
 {
-  v3 = a3;
-  if ([v3 isEqual:@"private"])
+  descriptionCopy = description;
+  if ([descriptionCopy isEqual:@"private"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"public"])
+  else if ([descriptionCopy isEqual:@"public"])
   {
     v4 = 2;
   }
@@ -651,8 +651,8 @@ LABEL_2:
 
   if ([(NSMutableSet *)self->_dirtyProperties count])
   {
-    v10 = [(NSMutableSet *)self->_dirtyProperties allObjects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_dirtyProperties allObjects];
+    v11 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -661,12 +661,12 @@ LABEL_2:
   }
 
   v23 = v11;
-  v12 = [objc_opt_class() _dateFormatter];
-  v13 = [v12 stringFromDate:self->_softExpirationDate];
-  v14 = [v12 stringFromDate:self->_expirationDate];
-  v15 = [v12 stringFromDate:self->_creationDate];
+  _dateFormatter = [objc_opt_class() _dateFormatter];
+  v13 = [_dateFormatter stringFromDate:self->_softExpirationDate];
+  v14 = [_dateFormatter stringFromDate:self->_expirationDate];
+  v15 = [_dateFormatter stringFromDate:self->_creationDate];
   v24 = MEMORY[0x277CCACA8];
-  v16 = [(PRLikeness *)self typeDescription];
+  typeDescription = [(PRLikeness *)self typeDescription];
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_version];
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSData length](self->_staticRepresentationData, "length")}];
   v19 = v18;
@@ -680,7 +680,7 @@ LABEL_2:
     v20 = @"NO";
   }
 
-  v21 = [v24 stringWithFormat:@"PRLikeness { type: %@, version: %@, recipe: %@, expires: (h: %@ - s: %@), created: %@, static rep: (%@%@ data bytes), crop: %@, dirty: %@, current: %@ }", v16, v17, v26, v14, v13, v15, v25, v18, v9, v11, v20];
+  v21 = [v24 stringWithFormat:@"PRLikeness { type: %@, version: %@, recipe: %@, expires: (h: %@ - s: %@), created: %@, static rep: (%@%@ data bytes), crop: %@, dirty: %@, current: %@ }", typeDescription, v17, v26, v14, v13, v15, v25, v18, v9, v11, v20];
 
   return v21;
 }

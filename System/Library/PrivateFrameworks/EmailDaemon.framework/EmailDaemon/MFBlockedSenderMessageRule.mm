@@ -1,7 +1,7 @@
 @interface MFBlockedSenderMessageRule
 + (id)log;
-- (BOOL)canExecuteRuleOnMessage:(id)a3;
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4;
+- (BOOL)canExecuteRuleOnMessage:(id)message;
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager;
 @end
 
 @implementation MFBlockedSenderMessageRule
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100051420;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001857B0 != -1)
   {
     dispatch_once(&qword_1001857B0, block);
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (BOOL)canExecuteRuleOnMessage:(id)a3
+- (BOOL)canExecuteRuleOnMessage:(id)message
 {
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000516F0;
   v20[3] = &unk_100157EC0;
-  v3 = a3;
-  v21 = v3;
+  messageCopy = message;
+  v21 = messageCopy;
   v4 = objc_retainBlock(v20);
   v5 = sub_100027C70();
-  v6 = [v5 blockedSenderManager];
-  v7 = [v6 isMoveToTrashEnabled];
+  blockedSenderManager = [v5 blockedSenderManager];
+  isMoveToTrashEnabled = [blockedSenderManager isMoveToTrashEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((isMoveToTrashEnabled & 1) == 0)
   {
     v18 = @"Move to trash setting is not enabled";
 LABEL_9:
@@ -45,9 +45,9 @@ LABEL_9:
   }
 
   v8 = sub_100027C70();
-  v9 = [v8 blockedSenderManager];
-  v10 = [v3 firstSender];
-  v11 = [v9 isEmailAddressBlocked:v10];
+  blockedSenderManager2 = [v8 blockedSenderManager];
+  firstSender = [messageCopy firstSender];
+  v11 = [blockedSenderManager2 isEmailAddressBlocked:firstSender];
 
   if ((v11 & 1) == 0)
   {
@@ -55,8 +55,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v12 = [v3 mailbox];
-  v13 = +[EMBlockedSenderManager shouldMoveToTrashForMailboxType:gmailLabels:](EMBlockedSenderManager, "shouldMoveToTrashForMailboxType:gmailLabels:", [v12 type], 0);
+  mailbox = [messageCopy mailbox];
+  v13 = +[EMBlockedSenderManager shouldMoveToTrashForMailboxType:gmailLabels:](EMBlockedSenderManager, "shouldMoveToTrashForMailboxType:gmailLabels:", [mailbox type], 0);
 
   if ((v13 & 1) == 0)
   {
@@ -65,8 +65,8 @@ LABEL_9:
   }
 
   v14 = [NSDate ef_dateHoursAgo:168];
-  v15 = [v3 dateReceived];
-  v16 = [v15 ef_isLaterThanDate:v14];
+  dateReceived = [messageCopy dateReceived];
+  v16 = [dateReceived ef_isLaterThanDate:v14];
 
   if (v16)
   {
@@ -82,19 +82,19 @@ LABEL_10:
   return v17;
 }
 
-- (void)performOperationOnMessages:(id)a3 withMessageChangeManager:(id)a4
+- (void)performOperationOnMessages:(id)messages withMessageChangeManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  messagesCopy = messages;
+  managerCopy = manager;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 ef_groupBy:&stru_100157EE0];
+  v8 = [messagesCopy ef_groupBy:&stru_100157EE0];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100051AEC;
   v18 = &unk_100157E98;
   v9 = v7;
   v19 = v9;
-  v10 = v6;
+  v10 = managerCopy;
   v20 = v10;
   [v8 enumerateKeysAndObjectsUsingBlock:&v15];
   if ([v9 count])

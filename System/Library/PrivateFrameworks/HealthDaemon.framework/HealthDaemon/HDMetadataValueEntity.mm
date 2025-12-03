@@ -1,9 +1,9 @@
 @interface HDMetadataValueEntity
-+ (BOOL)_insertMetadataValueWithKeyID:(int64_t)a3 objectID:(int64_t)a4 value:(id)a5 database:(id)a6 error:(id *)a7;
-+ (BOOL)_updateMetadataValueForKeyID:(int64_t)a3 objectID:(int64_t)a4 value:(id)a5 database:(id)a6 error:(id *)a7;
-+ (id)deleteStatementForObjectMetadataWithTransaction:(id)a3;
++ (BOOL)_insertMetadataValueWithKeyID:(int64_t)d objectID:(int64_t)iD value:(id)value database:(id)database error:(id *)error;
++ (BOOL)_updateMetadataValueForKeyID:(int64_t)d objectID:(int64_t)iD value:(id)value database:(id)database error:(id *)error;
++ (id)deleteStatementForObjectMetadataWithTransaction:(id)transaction;
 + (id)indices;
-+ (uint64_t)_determineMetadataTypeForValue:(__CFString *)a3 stringValue:(__CFString *)a4 numberValue:(__CFString *)a5 dateValue:(__CFString *)a6 dataValue:(uint64_t *)a7 type:(uint64_t)a8 error:;
++ (uint64_t)_determineMetadataTypeForValue:(__CFString *)value stringValue:(__CFString *)stringValue numberValue:(__CFString *)numberValue dateValue:(__CFString *)dateValue dataValue:(uint64_t *)dataValue type:(uint64_t)type error:;
 @end
 
 @implementation HDMetadataValueEntity
@@ -24,15 +24,15 @@
   return v6;
 }
 
-+ (id)deleteStatementForObjectMetadataWithTransaction:(id)a3
++ (id)deleteStatementForObjectMetadataWithTransaction:(id)transaction
 {
-  v4 = [a3 databaseForEntityClass:a1];
-  v5 = [a1 deleteStatementWithProperty:@"object_id" database:v4];
+  v4 = [transaction databaseForEntityClass:self];
+  v5 = [self deleteStatementWithProperty:@"object_id" database:v4];
 
   return v5;
 }
 
-+ (uint64_t)_determineMetadataTypeForValue:(__CFString *)a3 stringValue:(__CFString *)a4 numberValue:(__CFString *)a5 dateValue:(__CFString *)a6 dataValue:(uint64_t *)a7 type:(uint64_t)a8 error:
++ (uint64_t)_determineMetadataTypeForValue:(__CFString *)value stringValue:(__CFString *)stringValue numberValue:(__CFString *)numberValue dateValue:(__CFString *)dateValue dataValue:(uint64_t *)dataValue type:(uint64_t)type error:
 {
   v40 = *MEMORY[0x277D85DE8];
   v13 = a2;
@@ -40,12 +40,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    unitString = v13;
     v15 = 0;
     v16 = 0;
     v17 = 0;
     v18 = 0;
-    if (!a3)
+    if (!value)
     {
       goto LABEL_13;
     }
@@ -59,9 +59,9 @@
     v18 = v13;
     v15 = 0;
     v17 = 0;
-    v14 = 0;
+    unitString = 0;
     v16 = 1;
-    if (!a3)
+    if (!value)
     {
       goto LABEL_13;
     }
@@ -75,9 +75,9 @@
     v17 = v13;
     v15 = 0;
     v18 = 0;
-    v14 = 0;
+    unitString = 0;
     v16 = 2;
-    if (!a3)
+    if (!value)
     {
       goto LABEL_13;
     }
@@ -90,41 +90,41 @@
   {
     v19 = MEMORY[0x277CCABB0];
     v20 = v13;
-    v21 = [(__CFString *)v20 _unit];
-    [(__CFString *)v20 doubleValueForUnit:v21];
+    _unit = [(__CFString *)v20 _unit];
+    [(__CFString *)v20 doubleValueForUnit:_unit];
     v18 = [v19 numberWithDouble:?];
 
-    v22 = [(__CFString *)v20 _unit];
+    _unit2 = [(__CFString *)v20 _unit];
 
-    v14 = [v22 unitString];
+    unitString = [_unit2 unitString];
 
     v15 = 0;
     v17 = 0;
     v16 = 3;
-    if (!a3)
+    if (!value)
     {
 LABEL_13:
-      if (a4)
+      if (stringValue)
       {
         v24 = v18;
-        *a4 = v18;
+        *stringValue = v18;
       }
 
-      if (a5)
+      if (numberValue)
       {
         v25 = v17;
-        *a5 = v17;
+        *numberValue = v17;
       }
 
-      if (a6)
+      if (dateValue)
       {
         v26 = v15;
-        *a6 = v15;
+        *dateValue = v15;
       }
 
-      if (a7)
+      if (dataValue)
       {
-        *a7 = v16;
+        *dataValue = v16;
       }
 
       v27 = 1;
@@ -132,8 +132,8 @@ LABEL_13:
     }
 
 LABEL_12:
-    v23 = v14;
-    *a3 = v14;
+    v23 = unitString;
+    *value = unitString;
     goto LABEL_13;
   }
 
@@ -143,9 +143,9 @@ LABEL_12:
     v15 = v13;
     v17 = 0;
     v18 = 0;
-    v14 = 0;
+    unitString = 0;
     v16 = 4;
-    if (!a3)
+    if (!value)
     {
       goto LABEL_13;
     }
@@ -153,7 +153,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a8 code:3 format:{@"Received invalid metadata value type %@ (%@)", v13, objc_opt_class()}];
+  [MEMORY[0x277CCA9B8] hk_assignError:type code:3 format:{@"Received invalid metadata value type %@ (%@)", v13, objc_opt_class()}];
   _HKInitializeLogging();
   v30 = *MEMORY[0x277CCC2A0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_12:
   v15 = 0;
   v17 = 0;
   v18 = 0;
-  v14 = 0;
+  unitString = 0;
   v27 = 0;
 LABEL_22:
 
@@ -189,15 +189,15 @@ LABEL_22:
   return v27;
 }
 
-+ (BOOL)_insertMetadataValueWithKeyID:(int64_t)a3 objectID:(int64_t)a4 value:(id)a5 database:(id)a6 error:(id *)a7
++ (BOOL)_insertMetadataValueWithKeyID:(int64_t)d objectID:(int64_t)iD value:(id)value database:(id)database error:(id *)error
 {
-  v12 = a6;
+  databaseCopy = database;
   v32 = 0;
   v33 = 0;
   v30 = 0;
   v31 = 0;
   v29 = 0;
-  v13 = [(HDMetadataValueEntity *)a1 _determineMetadataTypeForValue:a5 stringValue:&v32 numberValue:&v31 dateValue:&v30 dataValue:&v29 type:&v33 error:a7];
+  v13 = [(HDMetadataValueEntity *)self _determineMetadataTypeForValue:value stringValue:&v32 numberValue:&v31 dateValue:&v30 dataValue:&v29 type:&v33 error:error];
   v14 = v32;
   v15 = v31;
   v16 = v30;
@@ -208,19 +208,19 @@ LABEL_22:
     v28[1] = 3221225472;
     v28[2] = __85__HDMetadataValueEntity__insertMetadataValueWithKeyID_objectID_value_database_error___block_invoke;
     v28[3] = &__block_descriptor_40_e15___NSString_8__0l;
-    v28[4] = a1;
+    v28[4] = self;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __85__HDMetadataValueEntity__insertMetadataValueWithKeyID_objectID_value_database_error___block_invoke_2;
     v20[3] = &unk_27861FCD8;
-    v25 = a3;
-    v26 = a4;
+    dCopy = d;
+    iDCopy = iD;
     v21 = v14;
     v22 = v15;
     v23 = v16;
     v24 = v17;
     v27 = v33;
-    v18 = [v12 executeCachedStatementForKey:&_insertMetadataValueWithKeyID_objectID_value_database_error__insertKey error:a7 SQLGenerator:v28 bindingHandler:v20 enumerationHandler:0];
+    v18 = [databaseCopy executeCachedStatementForKey:&_insertMetadataValueWithKeyID_objectID_value_database_error__insertKey error:error SQLGenerator:v28 bindingHandler:v20 enumerationHandler:0];
   }
 
   else
@@ -267,25 +267,25 @@ uint64_t __85__HDMetadataValueEntity__insertMetadataValueWithKeyID_objectID_valu
   return sqlite3_bind_int64(a2, 7, v8);
 }
 
-+ (BOOL)_updateMetadataValueForKeyID:(int64_t)a3 objectID:(int64_t)a4 value:(id)a5 database:(id)a6 error:(id *)a7
++ (BOOL)_updateMetadataValueForKeyID:(int64_t)d objectID:(int64_t)iD value:(id)value database:(id)database error:(id *)error
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v12 = a6;
+  databaseCopy = database;
   v53 = 0;
   v54 = 0;
   v52 = 0;
   v50 = 0;
   v51 = 0;
-  v13 = [(HDMetadataValueEntity *)a1 _determineMetadataTypeForValue:a5 stringValue:&v53 numberValue:&v52 dateValue:&v51 dataValue:&v50 type:&v54 error:a7];
+  v13 = [(HDMetadataValueEntity *)self _determineMetadataTypeForValue:value stringValue:&v53 numberValue:&v52 dateValue:&v51 dataValue:&v50 type:&v54 error:error];
   v14 = v53;
   v15 = v52;
   v16 = v51;
   v17 = v50;
   if (v13)
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-    [MEMORY[0x277CCABB0] numberWithLongLong:a4];
-    v19 = v38 = v12;
+    v18 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
+    [MEMORY[0x277CCABB0] numberWithLongLong:iD];
+    v19 = v38 = databaseCopy;
     v20 = v18;
     objc_opt_self();
     v21 = MEMORY[0x277D10B20];
@@ -311,8 +311,8 @@ uint64_t __85__HDMetadataValueEntity__insertMetadataValueWithKeyID_objectID_valu
     v16 = v23;
     v17 = v37;
 
-    v12 = v38;
-    v48 = a1;
+    databaseCopy = v38;
+    selfCopy = self;
     v49 = 0;
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;

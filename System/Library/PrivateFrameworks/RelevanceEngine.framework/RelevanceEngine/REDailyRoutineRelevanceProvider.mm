@@ -1,8 +1,8 @@
 @interface REDailyRoutineRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REDailyRoutineRelevanceProvider)initWithDailyRoutineType:(unint64_t)a3;
-- (REDailyRoutineRelevanceProvider)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REDailyRoutineRelevanceProvider)initWithDailyRoutineType:(unint64_t)type;
+- (REDailyRoutineRelevanceProvider)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -10,22 +10,22 @@
 
 @implementation REDailyRoutineRelevanceProvider
 
-- (REDailyRoutineRelevanceProvider)initWithDailyRoutineType:(unint64_t)a3
+- (REDailyRoutineRelevanceProvider)initWithDailyRoutineType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = REDailyRoutineRelevanceProvider;
   result = [(RERelevanceProvider *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (REDailyRoutineRelevanceProvider)initWithDictionary:(id)a3
+- (REDailyRoutineRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"routine_type"];
+  v4 = [dictionary objectForKeyedSubscript:@"routine_type"];
   if ([v4 compare:@"morning" options:1])
   {
     if ([v4 compare:@"evening" options:1])
@@ -71,19 +71,19 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = REDailyRoutineRelevanceProvider;
-  result = [(RERelevanceProvider *)&v5 copyWithZone:a3];
+  result = [(RERelevanceProvider *)&v5 copyWithZone:zone];
   *(result + 4) = self->_type;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -92,7 +92,7 @@
   {
     v7.receiver = self;
     v7.super_class = REDailyRoutineRelevanceProvider;
-    v5 = [(RERelevanceProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_type == v4->_type;
+    v5 = [(RERelevanceProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_type == equalCopy->_type;
   }
 
   return v5;

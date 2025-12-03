@@ -1,29 +1,29 @@
 @interface MPCNMeCardSharingSettingsViewControllerObserver
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4;
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience;
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state;
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result;
 @end
 
 @implementation MPCNMeCardSharingSettingsViewControllerObserver
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v5 = +[IMMeCardSharingStateController sharedInstance];
-  [v5 setSharingEnabled:v4];
+  [v5 setSharingEnabled:stateCopy];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience
 {
   v5 = +[IMMeCardSharingStateController sharedInstance];
-  [v5 setSharingAudience:a4];
+  [v5 setSharingAudience:audience];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result
 {
-  v4 = a4;
+  resultCopy = result;
   v5 = +[IMNicknameController sharedInstance];
-  [v5 updatePersonalNicknameIfNecessaryWithMeCardSharingResult:v4];
+  [v5 updatePersonalNicknameIfNecessaryWithMeCardSharingResult:resultCopy];
 }
 
 @end

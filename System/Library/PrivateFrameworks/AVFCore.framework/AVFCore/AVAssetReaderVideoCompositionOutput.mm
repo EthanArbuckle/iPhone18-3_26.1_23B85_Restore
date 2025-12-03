@@ -1,18 +1,18 @@
 @interface AVAssetReaderVideoCompositionOutput
 + (AVAssetReaderVideoCompositionOutput)assetReaderVideoCompositionOutputWithVideoTracks:(NSArray *)videoTracks videoSettings:(NSDictionary *)videoSettings;
 - (AVAssetReaderVideoCompositionOutput)initWithVideoTracks:(NSArray *)videoTracks videoSettings:(NSDictionary *)videoSettings;
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3;
-- (BOOL)_prepareForReadingReturningError:(id *)a3;
+- (BOOL)_enableTrackExtractionReturningError:(id *)error;
+- (BOOL)_prepareForReadingReturningError:(id *)error;
 - (BOOL)alwaysCopiesSampleData;
 - (id)_asset;
-- (id)_errorForOSStatus:(int)a3;
+- (id)_errorForOSStatus:(int)status;
 - (id)_formatDescriptions;
 - (id)_videoCompositionProcessorColorProperties;
 - (id)description;
-- (id)makeLookupableSpatialVideoConfigurations:(id)a3;
+- (id)makeLookupableSpatialVideoConfigurations:(id)configurations;
 - (id)mediaType;
-- (void)_setVideoComposition:(id)a3;
-- (void)_setVideoComposition:(id)a3 customVideoCompositorSession:(id)a4;
+- (void)_setVideoComposition:(id)composition;
+- (void)_setVideoComposition:(id)composition customVideoCompositorSession:(id)session;
 - (void)dealloc;
 - (void)setVideoComposition:(AVVideoComposition *)videoComposition;
 @end
@@ -80,8 +80,8 @@ LABEL_31:
       }
 
       v14 = *(*(&v52 + 1) + 8 * i);
-      v15 = [v14 mediaType];
-      if (([v15 isEqualToString:@"vide"] & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", @"auxv") & 1) == 0)
+      mediaType = [v14 mediaType];
+      if (([mediaType isEqualToString:@"vide"] & 1) == 0 && (objc_msgSend(mediaType, "isEqualToString:", @"auxv") & 1) == 0)
       {
         v32 = v8;
         v29 = MEMORY[0x1E695DF30];
@@ -90,10 +90,10 @@ LABEL_31:
         goto LABEL_31;
       }
 
-      v16 = [v14 asset];
+      asset = [v14 asset];
       if (v11)
       {
-        if (v16 != v11)
+        if (asset != v11)
         {
           v23 = v8;
           v29 = MEMORY[0x1E695DF30];
@@ -105,7 +105,7 @@ LABEL_31:
 
       else
       {
-        v11 = v16;
+        v11 = asset;
       }
     }
 
@@ -236,15 +236,15 @@ LABEL_16:
   return [v3 stringWithFormat:@"<%@: %p, videoTracks = %@>", NSStringFromClass(v4), self, -[AVAssetReaderVideoCompositionOutput videoTracks](self, "videoTracks")];
 }
 
-- (id)makeLookupableSpatialVideoConfigurations:(id)a3
+- (id)makeLookupableSpatialVideoConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [configurations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -257,34 +257,34 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configurations);
         }
 
         v10 = [[AVLookupableSpatialVideoConfiguration alloc] initWithSpatialVideoConfiguration:*(*(&v12 + 1) + 8 * v9)];
         -[AVLookupableSpatialVideoConfiguration setLookupID:](v10, "setLookupID:", [MEMORY[0x1E696AD98] numberWithInt:v8]);
-        [v4 addObject:v10];
+        [array addObject:v10];
         v8 = (v8 + 1);
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [configurations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
-- (void)_setVideoComposition:(id)a3
+- (void)_setVideoComposition:(id)composition
 {
-  if (a3)
+  if (composition)
   {
     v18 = 0;
-    if ([a3 _isValidReturningExceptionReason:&v18])
+    if ([composition _isValidReturningExceptionReason:&v18])
     {
-      [a3 renderScale];
+      [composition renderScale];
       if (v11 == 1.0)
       {
         goto LABEL_4;
@@ -307,7 +307,7 @@ LABEL_16:
   }
 
 LABEL_4:
-  v12 = [a3 copy];
+  v12 = [composition copy];
 
   self->_videoCompositionOutputInternal->videoComposition = v12;
   [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition setLookupableSpatialVideoConfigurations:[(AVAssetReaderVideoCompositionOutput *)self makeLookupableSpatialVideoConfigurations:[(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition spatialVideoConfigurations]]];
@@ -315,7 +315,7 @@ LABEL_4:
   self->_videoCompositionOutputInternal->sampleDataTrackIDs = [(AVVideoComposition *)v12 sourceSampleDataTrackIDs];
 }
 
-- (void)_setVideoComposition:(id)a3 customVideoCompositorSession:(id)a4
+- (void)_setVideoComposition:(id)composition customVideoCompositorSession:(id)session
 {
   if ([(AVAssetReaderOutput *)self _status]>= 1)
   {
@@ -324,19 +324,19 @@ LABEL_4:
   }
 
   videoCompositionOutputInternal = self->_videoCompositionOutputInternal;
-  if (videoCompositionOutputInternal->videoComposition != a3 || videoCompositionOutputInternal->customVideoCompositorSession != a4)
+  if (videoCompositionOutputInternal->videoComposition != composition || videoCompositionOutputInternal->customVideoCompositorSession != session)
   {
-    [(AVAssetReaderVideoCompositionOutput *)self _setVideoComposition:a3];
-    v14 = a4;
+    [(AVAssetReaderVideoCompositionOutput *)self _setVideoComposition:composition];
+    sessionCopy = session;
 
-    self->_videoCompositionOutputInternal->customVideoCompositorSession = a4;
+    self->_videoCompositionOutputInternal->customVideoCompositorSession = session;
     figVideoCompositor = self->_videoCompositionOutputInternal->figVideoCompositor;
     if (figVideoCompositor)
     {
       CFRelease(figVideoCompositor);
     }
 
-    self->_videoCompositionOutputInternal->figVideoCompositor = [a4 _copyFigVideoCompositor];
+    self->_videoCompositionOutputInternal->figVideoCompositor = [session _copyFigVideoCompositor];
   }
 }
 
@@ -382,9 +382,9 @@ LABEL_4:
   return [v2 asset];
 }
 
-- (id)_errorForOSStatus:(int)a3
+- (id)_errorForOSStatus:(int)status
 {
-  if (a3 == -16180 && (customVideoCompositorSession = self->_videoCompositionOutputInternal->customVideoCompositorSession) != 0)
+  if (status == -16180 && (customVideoCompositorSession = self->_videoCompositionOutputInternal->customVideoCompositorSession) != 0)
   {
     return [(AVCustomVideoCompositorSession *)customVideoCompositorSession getAndClearClientError];
   }
@@ -395,22 +395,22 @@ LABEL_4:
   }
 }
 
-- (BOOL)_prepareForReadingReturningError:(id *)a3
+- (BOOL)_prepareForReadingReturningError:(id *)error
 {
-  v5 = [(AVAssetReaderVideoCompositionOutput *)self videoComposition];
-  if (!v5)
+  videoComposition = [(AVAssetReaderVideoCompositionOutput *)self videoComposition];
+  if (!videoComposition)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"*** AVAssetReaderVideoCompositionOutput.videoComposition needs to be set" userInfo:0]);
   }
 
-  v6 = v5;
+  v6 = videoComposition;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
-  v7 = [(AVWeakReference *)[(AVAssetReaderOutput *)self _weakReferenceToAssetReader] referencedObject];
-  if (v7)
+  referencedObject = [(AVWeakReference *)[(AVAssetReaderOutput *)self _weakReferenceToAssetReader] referencedObject];
+  if (referencedObject)
   {
-    [v7 timeRange];
+    [referencedObject timeRange];
   }
 
   else
@@ -420,25 +420,25 @@ LABEL_4:
     v14 = 0u;
   }
 
-  v8 = [(AVAssetReaderVideoCompositionOutput *)self _asset];
+  _asset = [(AVAssetReaderVideoCompositionOutput *)self _asset];
   v13[0] = v14;
   v13[1] = v15;
   v13[2] = v16;
-  if ([(AVVideoComposition *)v6 isValidForAsset:v8 timeRange:v13 validationDelegate:0])
+  if ([(AVVideoComposition *)v6 isValidForAsset:_asset timeRange:v13 validationDelegate:0])
   {
     v12.receiver = self;
     v12.super_class = AVAssetReaderVideoCompositionOutput;
-    return [(AVAssetReaderOutput *)&v12 _prepareForReadingReturningError:a3];
+    return [(AVAssetReaderOutput *)&v12 _prepareForReadingReturningError:error];
   }
 
   else
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVFoundationErrorDomain" code:-11841 userInfo:0];
-    if (a3)
+    if (error)
     {
       v11 = v10;
       result = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -453,13 +453,13 @@ LABEL_4:
 - (id)_formatDescriptions
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVAssetReaderVideoCompositionOutput *)self videoTracks];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  videoTracks = [(AVAssetReaderVideoCompositionOutput *)self videoTracks];
+  v5 = [(NSArray *)videoTracks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -471,25 +471,25 @@ LABEL_4:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(videoTracks);
         }
 
-        [v3 addObjectsFromArray:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "formatDescriptions")}];
+        [array addObjectsFromArray:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "formatDescriptions")}];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)videoTracks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_videoCompositionProcessorColorProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = 0;
   v10 = 0;
   v7 = 0;
@@ -497,17 +497,17 @@ LABEL_4:
   [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition videoCompositionOutputColorPropertiesWithCustomCompositor:self->_videoCompositionOutputInternal->customVideoCompositorSession formatDescriptions:[(AVAssetReaderVideoCompositionOutput *)self _formatDescriptions] colorPrimaries:&v10 transferFunction:&v9 yCbCrMatrix:&v8 perFrameHDRDisplayMetadataPolicy:&v7];
   if (v10)
   {
-    [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x1E6973B58]];
+    [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E6973B58]];
   }
 
   if (v9)
   {
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6973B60]];
+    [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E6973B60]];
   }
 
   if (v8)
   {
-    [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6973B68]];
+    [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E6973B68]];
   }
 
   v4 = [v7 isEqual:@"PerFrameHDRDisplayMetadataPolicy_Generate"];
@@ -517,23 +517,23 @@ LABEL_4:
     v5 = MEMORY[0x1E6973B48];
   }
 
-  [v3 setObject:*v5 forKeyedSubscript:*MEMORY[0x1E6973B70]];
-  return v3;
+  [dictionary setObject:*v5 forKeyedSubscript:*MEMORY[0x1E6973B70]];
+  return dictionary;
 }
 
-- (BOOL)_enableTrackExtractionReturningError:(id *)a3
+- (BOOL)_enableTrackExtractionReturningError:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
   v69 = 0;
   v68 = -1;
-  v4 = [(AVAssetReaderVideoCompositionOutput *)self videoTracks];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](v4, "count")}];
-  v6 = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
+  videoTracks = [(AVAssetReaderVideoCompositionOutput *)self videoTracks];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](videoTracks, "count")}];
+  _figAssetReaderExtractionOptions = [(AVAssetReaderOutput *)self _figAssetReaderExtractionOptions];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v7 = [(NSArray *)v4 countByEnumeratingWithState:&v64 objects:v72 count:16];
+  v7 = [(NSArray *)videoTracks countByEnumeratingWithState:&v64 objects:v72 count:16];
   if (v7)
   {
     v8 = v7;
@@ -544,13 +544,13 @@ LABEL_4:
       {
         if (*v65 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(videoTracks);
         }
 
         [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(*(*(&v64 + 1) + 8 * i), "trackID"))}];
       }
 
-      v8 = [(NSArray *)v4 countByEnumeratingWithState:&v64 objects:v72 count:16];
+      v8 = [(NSArray *)videoTracks countByEnumeratingWithState:&v64 objects:v72 count:16];
     }
 
     while (v8);
@@ -563,27 +563,27 @@ LABEL_4:
   if (v14)
   {
     v15 = v14;
-    v6 = [(NSDictionary *)v6 mutableCopy];
-    [(NSDictionary *)v6 setValue:v15 forKey:v13];
+    _figAssetReaderExtractionOptions = [(NSDictionary *)_figAssetReaderExtractionOptions mutableCopy];
+    [(NSDictionary *)_figAssetReaderExtractionOptions setValue:v15 forKey:v13];
   }
 
   v16 = [AVAssetReaderOutput _figAssetReaderVideoScalingPropertiesFromVideoSettings:videoOutputSettings withFormatDescription:[(AVAssetReaderVideoCompositionOutput *)self _formatDescriptions]];
   if ([(AVOutputSettings *)videoOutputSettings willYieldCompressedSamples])
   {
     LODWORD(v17) = [(AVVideoOutputSettings *)videoOutputSettings videoCodecType];
-    v58 = [(AVVideoOutputSettings *)videoOutputSettings videoEncoderSpecification];
-    v18 = [(AVVideoOutputSettings *)videoOutputSettings pixelTransferProperties];
-    v19 = [(AVVideoOutputSettings *)videoOutputSettings videoCompressionProperties];
-    if (v18)
+    videoEncoderSpecification = [(AVVideoOutputSettings *)videoOutputSettings videoEncoderSpecification];
+    pixelTransferProperties = [(AVVideoOutputSettings *)videoOutputSettings pixelTransferProperties];
+    videoCompressionProperties = [(AVVideoOutputSettings *)videoOutputSettings videoCompressionProperties];
+    if (pixelTransferProperties)
     {
-      v19 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v19];
-      [v19 setObject:v18 forKey:*MEMORY[0x1E6983798]];
+      videoCompressionProperties = [MEMORY[0x1E695DF90] dictionaryWithDictionary:videoCompressionProperties];
+      [videoCompressionProperties setObject:pixelTransferProperties forKey:*MEMORY[0x1E6983798]];
     }
 
-    v20 = [(AVVideoOutputSettings *)videoOutputSettings width];
-    v59 = [(AVVideoOutputSettings *)videoOutputSettings height];
-    v21 = 0;
-    v22 = 0;
+    width = [(AVVideoOutputSettings *)videoOutputSettings width];
+    height = [(AVVideoOutputSettings *)videoOutputSettings height];
+    _videoCompositionProcessorColorProperties = 0;
+    pixelBufferAttributes = 0;
 LABEL_18:
     if (!self->_videoCompositionOutputInternal->figVideoCompositor)
     {
@@ -593,19 +593,19 @@ LABEL_18:
       goto LABEL_39;
     }
 
-    v60 = [(AVAssetReaderOutput *)self _figAssetReader];
-    v56 = [(AVAssetReaderVideoCompositionOutput *)self sampleDataTrackIDs];
+    _figAssetReader = [(AVAssetReaderOutput *)self _figAssetReader];
+    sampleDataTrackIDs = [(AVAssetReaderVideoCompositionOutput *)self sampleDataTrackIDs];
     v55 = AVVideoCompositionSerializeSourceTrackWindows([(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition sourceVideoTrackWindowsForTrackIDs]);
     v28 = AVVideoCompositionSerializeSourceTrackWindows([(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition sourceSampleDataTrackWindowsForTrackIDs]);
     videoCompositionOutputInternal = self->_videoCompositionOutputInternal;
     figVideoCompositor = videoCompositionOutputInternal->figVideoCompositor;
     v54 = v28;
-    v52 = [(AVVideoComposition *)videoCompositionOutputInternal->videoComposition _serializableInstructions];
-    v30 = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _hasLayerAsAuxiliaryTrack];
+    _serializableInstructions = [(AVVideoComposition *)videoCompositionOutputInternal->videoComposition _serializableInstructions];
+    _hasLayerAsAuxiliaryTrack = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _hasLayerAsAuxiliaryTrack];
     videoComposition = self->_videoCompositionOutputInternal->videoComposition;
-    if (v30)
+    if (_hasLayerAsAuxiliaryTrack)
     {
-      v32 = [(AVVideoComposition *)videoComposition _auxiliaryTrackLayer];
+      _auxiliaryTrackLayer = [(AVVideoComposition *)videoComposition _auxiliaryTrackLayer];
     }
 
     else
@@ -616,36 +616,36 @@ LABEL_18:
         goto LABEL_26;
       }
 
-      v32 = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _postProcessingRootLayer];
+      _auxiliaryTrackLayer = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _postProcessingRootLayer];
     }
 
-    v51 = v32;
+    v51 = _auxiliaryTrackLayer;
 LABEL_26:
     if ([(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _hasLayerAsAuxiliaryTrack])
     {
-      v50 = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _auxiliaryTrackID];
+      _auxiliaryTrackID = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _auxiliaryTrackID];
     }
 
     else
     {
-      v50 = 0;
+      _auxiliaryTrackID = 0;
     }
 
     v57 = v16;
-    v34 = v6;
+    v34 = _figAssetReaderExtractionOptions;
     if ([(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _hasPostProcessingLayers])
     {
-      v49 = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _postProcessingVideoLayers];
+      _postProcessingVideoLayers = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition _postProcessingVideoLayers];
     }
 
     else
     {
-      v49 = 0;
+      _postProcessingVideoLayers = 0;
     }
 
-    v35 = v22;
+    v35 = pixelBufferAttributes;
     v36 = self->_videoCompositionOutputInternal->videoComposition;
-    v37 = v20;
+    v37 = width;
     if (v36)
     {
       [(AVVideoComposition *)v36 frameDuration];
@@ -658,7 +658,7 @@ LABEL_26:
       v63 = 0;
     }
 
-    v38 = [(AVVideoComposition *)v36 sourceTrackIDForFrameTiming];
+    sourceTrackIDForFrameTiming = [(AVVideoComposition *)v36 sourceTrackIDForFrameTiming];
     [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition renderSize];
     v40 = v39;
     [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition renderSize];
@@ -671,8 +671,8 @@ LABEL_26:
       HIDWORD(v48) = v37;
       HIDWORD(v47) = v40;
       LODWORD(v48) = v42;
-      LODWORD(v47) = v38;
-      v17 = v43(v60, v5, v56, v55, v54, figVideoCompositor, v52, v51, v50, v49, 0, 0, &v70, v47, v48, v59, v35, v57, v17, v58, v19, 0, v21, v34, &v68);
+      LODWORD(v47) = sourceTrackIDForFrameTiming;
+      v17 = v43(_figAssetReader, v5, sampleDataTrackIDs, v55, v54, figVideoCompositor, _serializableInstructions, v51, _auxiliaryTrackID, _postProcessingVideoLayers, 0, 0, &v70, v47, v48, height, v35, v57, v17, videoEncoderSpecification, videoCompressionProperties, 0, _videoCompositionProcessorColorProperties, v34, &v68);
     }
 
     else
@@ -683,21 +683,21 @@ LABEL_26:
     goto LABEL_38;
   }
 
-  v22 = [(AVVideoOutputSettings *)videoOutputSettings pixelBufferAttributes];
+  pixelBufferAttributes = [(AVVideoOutputSettings *)videoOutputSettings pixelBufferAttributes];
   [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition renderSize];
-  v20 = v23;
+  width = v23;
   [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition renderSize];
   v25 = v24;
-  v21 = [(AVAssetReaderVideoCompositionOutput *)self _videoCompositionProcessorColorProperties];
-  v26 = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition outputBufferDescription];
-  [v21 setValue:v26 forKey:*MEMORY[0x1E6973B78]];
-  [v21 setValue:AVLookupableSpatialVideoConfigurationMakeSerializableArray(-[AVVideoComposition lookupableSpatialVideoConfigurations](self->_videoCompositionOutputInternal->videoComposition forKey:{"lookupableSpatialVideoConfigurations")), *MEMORY[0x1E6973B80]}];
+  _videoCompositionProcessorColorProperties = [(AVAssetReaderVideoCompositionOutput *)self _videoCompositionProcessorColorProperties];
+  outputBufferDescription = [(AVVideoComposition *)self->_videoCompositionOutputInternal->videoComposition outputBufferDescription];
+  [_videoCompositionProcessorColorProperties setValue:outputBufferDescription forKey:*MEMORY[0x1E6973B78]];
+  [_videoCompositionProcessorColorProperties setValue:AVLookupableSpatialVideoConfigurationMakeSerializableArray(-[AVVideoComposition lookupableSpatialVideoConfigurations](self->_videoCompositionOutputInternal->videoComposition forKey:{"lookupableSpatialVideoConfigurations")), *MEMORY[0x1E6973B80]}];
   customVideoCompositorSession = self->_videoCompositionOutputInternal->customVideoCompositorSession;
   if (!customVideoCompositorSession)
   {
-    v59 = v25;
-    v19 = 0;
-    v58 = 0;
+    height = v25;
+    videoCompressionProperties = 0;
+    videoEncoderSpecification = 0;
     LODWORD(v17) = 0;
     goto LABEL_18;
   }
@@ -705,9 +705,9 @@ LABEL_26:
   v17 = 0;
   if ([(AVCustomVideoCompositorSession *)customVideoCompositorSession commitCustomVideoCompositorPropertiesAndReturnError:&v69])
   {
-    v59 = v25;
-    v19 = 0;
-    v58 = 0;
+    height = v25;
+    videoCompressionProperties = 0;
+    videoEncoderSpecification = 0;
     goto LABEL_18;
   }
 
@@ -730,14 +730,14 @@ LABEL_39:
     [(AVAssetReaderOutput *)self _setExtractionID:v68];
   }
 
-  else if (a3)
+  else if (error)
   {
     if (!v33)
     {
       v33 = [AVAssetReader _errorForOSStatus:v17];
     }
 
-    *a3 = v33;
+    *error = v33;
   }
 
   return v45;

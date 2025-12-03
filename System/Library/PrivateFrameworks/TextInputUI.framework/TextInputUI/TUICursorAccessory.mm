@@ -1,19 +1,19 @@
 @interface TUICursorAccessory
-- (BOOL)isEqual:(id)a3;
-- (TUICursorAccessory)initWithCoder:(id)a3;
-- (TUICursorAccessory)initWithIdentifier:(id)a3 actionHandler:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TUICursorAccessory)initWithCoder:(id)coder;
+- (TUICursorAccessory)initWithIdentifier:(id)identifier actionHandler:(id)handler;
 - (id)additionalComponents;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUICursorAccessory
 
 - (unint64_t)hash
 {
-  v2 = [(TUICursorAccessory *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(TUICursorAccessory *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -23,10 +23,10 @@
   v8.receiver = self;
   v8.super_class = TUICursorAccessory;
   v3 = [(TUICursorAccessory *)&v8 description];
-  v4 = [(TUICursorAccessory *)self additionalComponents];
-  if ([v4 count])
+  additionalComponents = [(TUICursorAccessory *)self additionalComponents];
+  if ([additionalComponents count])
   {
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    v5 = [additionalComponents componentsJoinedByString:{@", "}];
     v6 = [v3 stringByAppendingFormat:@" %@", v5];
 
     v3 = v6;
@@ -37,33 +37,33 @@
 
 - (id)additionalComponents
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(TUICursorAccessory *)self identifier];
-  v6 = [v4 stringWithFormat:@"identifier = %@", v5];
-  [v3 addObject:v6];
+  identifier = [(TUICursorAccessory *)self identifier];
+  v6 = [v4 stringWithFormat:@"identifier = %@", identifier];
+  [array addObject:v6];
 
-  v7 = [(TUICursorAccessory *)self actionHandler];
+  actionHandler = [(TUICursorAccessory *)self actionHandler];
 
-  if (v7)
+  if (actionHandler)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(TUICursorAccessory *)self actionHandler];
-    v10 = _Block_copy(v9);
+    actionHandler2 = [(TUICursorAccessory *)self actionHandler];
+    v10 = _Block_copy(actionHandler2);
     v11 = [v8 stringWithFormat:@"actionHandler = %@", v10];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = self == v4 || [(NSString *)self->_identifier isEqualToString:v4->_identifier];
+    v6 = self == equalCopy || [(NSString *)self->_identifier isEqualToString:equalCopy->_identifier];
   }
 
   else
@@ -74,22 +74,22 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUICursorAccessory *)self identifier];
-  [v4 encodeObject:v5 forKey:@"TUIndentifierCodingKey"];
+  coderCopy = coder;
+  identifier = [(TUICursorAccessory *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"TUIndentifierCodingKey"];
 }
 
-- (TUICursorAccessory)initWithCoder:(id)a3
+- (TUICursorAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TUICursorAccessory;
   v5 = [(TUICursorAccessory *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TUIndentifierCodingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TUIndentifierCodingKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -97,18 +97,18 @@
   return v5;
 }
 
-- (TUICursorAccessory)initWithIdentifier:(id)a3 actionHandler:(id)a4
+- (TUICursorAccessory)initWithIdentifier:(id)identifier actionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = TUICursorAccessory;
   v8 = [(TUICursorAccessory *)&v15 init];
   if (v8)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      v9 = [v6 copy];
+      v9 = [identifierCopy copy];
       identifier = v8->_identifier;
       v8->_identifier = v9;
     }
@@ -117,12 +117,12 @@
     {
       v11 = MEMORY[0x1E696AEC0];
       identifier = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 stringWithFormat:@"com.apple.action.cursoraccessory.%@", identifier];
+      identifier = [v11 stringWithFormat:@"com.apple.action.cursoraccessory.%@", identifier];
       v13 = v8->_identifier;
-      v8->_identifier = v12;
+      v8->_identifier = identifier;
     }
 
-    [(TUICursorAccessory *)v8 setActionHandler:v7];
+    [(TUICursorAccessory *)v8 setActionHandler:handlerCopy];
   }
 
   return v8;

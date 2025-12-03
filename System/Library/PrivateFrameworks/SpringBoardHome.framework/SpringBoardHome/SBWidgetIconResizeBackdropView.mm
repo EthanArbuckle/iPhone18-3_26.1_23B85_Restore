@@ -1,12 +1,12 @@
 @interface SBWidgetIconResizeBackdropView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (SBWidgetIconResizeBackdropView)initWithBlurRadius:(double)a3;
-- (void)setBlurRadius:(double)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (SBWidgetIconResizeBackdropView)initWithBlurRadius:(double)radius;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation SBWidgetIconResizeBackdropView
 
-- (SBWidgetIconResizeBackdropView)initWithBlurRadius:(double)a3
+- (SBWidgetIconResizeBackdropView)initWithBlurRadius:(double)radius
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -15,46 +15,46 @@
   v5 = v4;
   if (v4)
   {
-    v4->_blurRadius = a3;
+    v4->_blurRadius = radius;
     v6 = objc_alloc(MEMORY[0x1E6979378]);
     v7 = [v6 initWithType:*MEMORY[0x1E6979928]];
     v8 = MEMORY[0x1E695E118];
     [v7 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6979B48]];
     [v7 setValue:v8 forKey:*MEMORY[0x1E6979B78]];
-    v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
     [v7 setValue:v9 forKey:*MEMORY[0x1E6979BA8]];
 
     [v7 setValue:@"medium" forKey:*MEMORY[0x1E6979BA0]];
-    v10 = [(SBWidgetIconResizeBackdropView *)v5 layer];
+    layer = [(SBWidgetIconResizeBackdropView *)v5 layer];
     v15[0] = v7;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    [v10 setFilters:v11];
+    [layer setFilters:v11];
 
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [v10 setBackgroundColor:{objc_msgSend(v12, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [layer setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    [v10 setScale:100.0];
-    [v10 setAllowsEdgeAntialiasing:1];
+    [layer setScale:100.0];
+    [layer setAllowsEdgeAntialiasing:1];
   }
 
   return v5;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
-    self->_blurRadius = a3;
-    v5 = [(SBWidgetIconResizeBackdropView *)self layer];
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    self->_blurRadius = radius;
+    layer = [(SBWidgetIconResizeBackdropView *)self layer];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+    [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -63,7 +63,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBWidgetIconResizeBackdropView;
-    v5 = [(SBWidgetIconResizeBackdropView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBWidgetIconResizeBackdropView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

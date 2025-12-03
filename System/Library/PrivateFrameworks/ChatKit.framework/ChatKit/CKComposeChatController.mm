@@ -4,9 +4,9 @@
 - (BOOL)_isNewBusinessConversation;
 - (BOOL)_shouldRestoreDraftState;
 - (BOOL)_shouldSetToFieldAsFirstResponder;
-- (BOOL)_shouldValidatePayloadBeforeSendingPayload:(id)a3;
+- (BOOL)_shouldValidatePayloadBeforeSendingPayload:(id)payload;
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canShowBusinessOnboarding;
 - (BOOL)hasFailedRecipients;
 - (BOOL)hasUnreachableEmergencyRecipient;
@@ -14,14 +14,14 @@
 - (BOOL)isReadOnly;
 - (BOOL)isSafeToMarkAsRead;
 - (BOOL)prefersBottomDividerHidden;
-- (BOOL)recipientSelectionControllerShouldDisableTopFieldInsets:(id)a3;
-- (BOOL)recipientSelectionIsGroup:(id)a3;
+- (BOOL)recipientSelectionControllerShouldDisableTopFieldInsets:(id)insets;
+- (BOOL)recipientSelectionIsGroup:(id)group;
 - (BOOL)reloadEntryViewForStagedPluginMessage;
-- (BOOL)shouldForceToSMSForConversation:(id)a3 forRecipient:(id)a4;
+- (BOOL)shouldForceToSMSForConversation:(id)conversation forRecipient:(id)recipient;
 - (BOOL)shouldShowAvatarViewInTranscriptNavigationBar;
 - (BOOL)shouldShowEntryView;
 - (BOOL)shouldShowNavigationBar;
-- (CKComposeChatController)initWithRecipientAddresses:(id)a3 composition:(id)a4 chatIdentifier:(id)a5 bizIntent:(id)a6 simID:(id)a7;
+- (CKComposeChatController)initWithRecipientAddresses:(id)addresses composition:(id)composition chatIdentifier:(id)identifier bizIntent:(id)intent simID:(id)d;
 - (NSArray)proposedRecipients;
 - (NSString)unatomizedRecipientText;
 - (UIBarButtonItem)composeCancelItem;
@@ -31,28 +31,28 @@
 - (double)_entryViewTopInsetPadding;
 - (double)_maxEntryViewHeight;
 - (double)topInsetPadding;
-- (double)visibleInputAndEntryViewHeightToAvoidForRecipientSelectionController:(id)a3;
+- (double)visibleInputAndEntryViewHeightToAvoidForRecipientSelectionController:(id)controller;
 - (id)_anisetteData;
 - (id)_updateSendingIdentity;
-- (id)associatedScrollViewForRecipientSelectionController:(id)a3;
-- (id)chatForIMHandle:(id)a3;
-- (id)handleForRecipientNormalizedAddress:(id)a3;
+- (id)associatedScrollViewForRecipientSelectionController:(id)controller;
+- (id)chatForIMHandle:(id)handle;
+- (id)handleForRecipientNormalizedAddress:(id)address;
 - (id)inputAccessoryView;
 - (id)inputAccessoryViewController;
 - (id)outgoingComposeViewForSendAnimation;
 - (id)preferredFocusEnvironments;
 - (id)preferredNavigationBarTitleText;
-- (id)selectedRecipientsForSuggestionsController:(id)a3;
+- (id)selectedRecipientsForSuggestionsController:(id)controller;
 - (id)textViewOnscreenWithEntryView;
 - (id)virtualView;
 - (int64_t)currentTranscriptNavigationBarMode;
 - (int64_t)currentTranscriptNavigationBarTitleDisplayMode;
 - (int64_t)preferredStatusBarStyle;
 - (uint64_t)_updateBlackholeAlertView;
-- (void)_determineSpamFilterHandshakeStateForAccount:(id)a3;
+- (void)_determineSpamFilterHandshakeStateForAccount:(id)account;
 - (void)_invalidateBlackholeAlertView;
-- (void)_passKitUIDismissed:(id)a3;
-- (void)_prepareForSendFromCardIfNecessaryAndSend:(id)a3;
+- (void)_passKitUIDismissed:(id)dismissed;
+- (void)_prepareForSendFromCardIfNecessaryAndSend:(id)send;
 - (void)_processBizIntentIfNeeded;
 - (void)_reloadMentionsData;
 - (void)_saveDraftState;
@@ -63,58 +63,58 @@
 - (void)_updateNavigationButtons;
 - (void)_updateNavigationUI;
 - (void)_updateSendLaterCompositionIfNecessary;
-- (void)_updateTitleAnimated:(BOOL)a3;
+- (void)_updateTitleAnimated:(BOOL)animated;
 - (void)_viewDidInitialLayoutSubviews;
-- (void)addBizIntentToConversation:(id)a3;
-- (void)businessInfoView:(id)a3 infoButtonTapped:(id)a4;
+- (void)addBizIntentToConversation:(id)conversation;
+- (void)businessInfoView:(id)view infoButtonTapped:(id)tapped;
 - (void)cancelCompose;
-- (void)configureWithToolbarController:(id)a3;
+- (void)configureWithToolbarController:(id)controller;
 - (void)conversationLeft;
 - (void)dealloc;
 - (void)didFinishShowingBusinessOnboarding;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleAddressBookChange:(id)a3;
-- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleAddressBookChange:(id)change;
+- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)needed;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutBusinessInfoViewIfNecessary;
-- (void)messageEntryViewDidChange:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5 isTranslationChange:(BOOL)a6;
-- (void)messageEntryViewSendButtonHit:(id)a3;
-- (void)messageEntryViewSendButtonHitWhileDisabled:(id)a3;
-- (void)navbarManagerIsAnimatingNavbarTransition:(id)a3;
-- (void)parentControllerDidResume:(BOOL)a3 animating:(BOOL)a4;
+- (void)messageEntryViewDidChange:(id)change isTextChange:(BOOL)textChange isShelfChange:(BOOL)shelfChange isTranslationChange:(BOOL)translationChange;
+- (void)messageEntryViewSendButtonHit:(id)hit;
+- (void)messageEntryViewSendButtonHitWhileDisabled:(id)disabled;
+- (void)navbarManagerIsAnimatingNavbarTransition:(id)transition;
+- (void)parentControllerDidResume:(BOOL)resume animating:(BOOL)animating;
 - (void)prepareForSuspend;
 - (void)prepareToDismissForSecondInstance;
-- (void)providerWillBeRemovedFromToolbarController:(id)a3;
-- (void)recipientSelectionController:(id)a3 didFinishAvailaiblityLookupForRecipient:(id)a4;
-- (void)recipientSelectionController:(id)a3 didSelectConversation:(id)a4 isiMessagable:(BOOL)a5;
-- (void)recipientSelectionController:(id)a3 textDidChange:(id)a4;
-- (void)recipientSelectionControllerReturnPressed:(id)a3;
-- (void)recipientSelectionControllerSearchListDidShowOrHide:(id)a3;
-- (void)recipientSelectionControllerShouldResignFirstResponder:(id)a3;
-- (void)recipientSelectionControllerTabPressed:(id)a3;
+- (void)providerWillBeRemovedFromToolbarController:(id)controller;
+- (void)recipientSelectionController:(id)controller didFinishAvailaiblityLookupForRecipient:(id)recipient;
+- (void)recipientSelectionController:(id)controller didSelectConversation:(id)conversation isiMessagable:(BOOL)messagable;
+- (void)recipientSelectionController:(id)controller textDidChange:(id)change;
+- (void)recipientSelectionControllerReturnPressed:(id)pressed;
+- (void)recipientSelectionControllerSearchListDidShowOrHide:(id)hide;
+- (void)recipientSelectionControllerShouldResignFirstResponder:(id)responder;
+- (void)recipientSelectionControllerTabPressed:(id)pressed;
 - (void)reloadEntryViewIfNeeded;
 - (void)restoreInputAfterSearchPresentation;
-- (void)sendAnimationManagerWillStartAnimation:(id)a3 context:(id)a4;
-- (void)sendComposition:(id)a3;
-- (void)setBlackholeAlertStatusQueue:(uint64_t)a1;
+- (void)sendAnimationManagerWillStartAnimation:(id)animation context:(id)context;
+- (void)sendComposition:(id)composition;
+- (void)setBlackholeAlertStatusQueue:(uint64_t)queue;
 - (void)setBusinessInfoViewInfoIfNecessary;
-- (void)setPrepopulatedComposition:(id)a3;
-- (void)setPrepopulatedRecipients:(id)a3;
-- (void)setServiceId:(id)a3;
-- (void)setSuggestedRepliesData:(id)a3;
-- (void)showConversation:(id)a3 animate:(BOOL)a4;
+- (void)setPrepopulatedComposition:(id)composition;
+- (void)setPrepopulatedRecipients:(id)recipients;
+- (void)setServiceId:(id)id;
+- (void)setSuggestedRepliesData:(id)data;
+- (void)showConversation:(id)conversation animate:(BOOL)animate;
 - (void)stageSuggestedReplies;
-- (void)suggestionsController:(id)a3 didDeselectRecipient:(id)a4;
-- (void)suggestionsController:(id)a3 didSelectRecipient:(id)a4;
-- (void)transcriptNavigationBar:(id)a3 didTapToPerformAction:(int64_t)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)suggestionsController:(id)controller didDeselectRecipient:(id)recipient;
+- (void)suggestionsController:(id)controller didSelectRecipient:(id)recipient;
+- (void)transcriptNavigationBar:(id)bar didTapToPerformAction:(int64_t)action;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -123,35 +123,35 @@
 - (void)dealloc
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 shouldSuppressRotationInNewCompose];
+  shouldSuppressRotationInNewCompose = [v3 shouldSuppressRotationInNewCompose];
 
-  if (v4)
+  if (shouldSuppressRotationInNewCompose)
   {
     [(CKChatController *)self endHoldingAutorotationForKey:@"CKAutorotationHoldNewCompose"];
   }
 
-  v5 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v5 stopCheckingRecipientAvailabilityAndRemoveAllTimers];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController stopCheckingRecipientAvailabilityAndRemoveAllTimers];
 
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v6 invalidateOutstandingIDStatusRequests];
+  composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController2 invalidateOutstandingIDStatusRequests];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v8.receiver = self;
   v8.super_class = CKComposeChatController;
   [(CKChatController *)&v8 dealloc];
 }
 
-- (CKComposeChatController)initWithRecipientAddresses:(id)a3 composition:(id)a4 chatIdentifier:(id)a5 bizIntent:(id)a6 simID:(id)a7
+- (CKComposeChatController)initWithRecipientAddresses:(id)addresses composition:(id)composition chatIdentifier:(id)identifier bizIntent:(id)intent simID:(id)d
 {
   v77 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  addressesCopy = addresses;
+  compositionCopy = composition;
+  identifierCopy = identifier;
+  intentCopy = intent;
+  dCopy = d;
   v17 = +[CKConversation newPendingConversation];
   v73.receiver = self;
   v73.super_class = CKComposeChatController;
@@ -159,25 +159,25 @@
 
   if (v18)
   {
-    if (v12 && [v12 count])
+    if (addressesCopy && [addressesCopy count])
     {
-      v58 = v16;
-      v59 = v15;
-      v61 = v14;
+      v58 = dCopy;
+      v59 = intentCopy;
+      v61 = identifierCopy;
       v62 = v18;
-      v60 = v13;
-      v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
+      v60 = compositionCopy;
+      v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(addressesCopy, "count")}];
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v20 = v12;
+      v20 = addressesCopy;
       v21 = [v20 countByEnumeratingWithState:&v69 objects:v76 count:16];
       v63 = v19;
       if (v21)
       {
         v22 = v21;
-        v64 = 0;
+        handle2 = 0;
         v23 = *v70;
         do
         {
@@ -196,23 +196,23 @@
 
               if (v27)
               {
-                if (!v64)
+                if (!handle2)
                 {
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
                     v28 = v27;
-                    v29 = [v28 handle];
-                    v30 = [v29 isBusiness];
+                    handle = [v28 handle];
+                    isBusiness = [handle isBusiness];
 
-                    if (v30)
+                    if (isBusiness)
                     {
-                      v64 = [v28 handle];
+                      handle2 = [v28 handle];
                     }
 
                     else
                     {
-                      v64 = 0;
+                      handle2 = 0;
                     }
 
                     v19 = v63;
@@ -220,7 +220,7 @@
 
                   else
                   {
-                    v64 = 0;
+                    handle2 = 0;
                   }
                 }
 
@@ -237,18 +237,18 @@
 
       else
       {
-        v64 = 0;
+        handle2 = 0;
       }
 
       [(CKComposeChatController *)v62 setRecipientsListChanged:0];
-      v31 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-      v14 = v61;
-      v32 = [v31 existingChatWithChatIdentifier:v61];
+      mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+      identifierCopy = v61;
+      v32 = [mEMORY[0x1E69A5AF8] existingChatWithChatIdentifier:v61];
 
       if (v32 && [v32 isGroupChat])
       {
         v56 = v32;
-        v57 = v12;
+        v57 = addressesCopy;
         v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v65 = 0u;
         v66 = 0u;
@@ -271,8 +271,8 @@
 
               v39 = *(*(&v65 + 1) + 8 * j);
               v40 = objc_alloc(MEMORY[0x1E69A5B90]);
-              v41 = [MEMORY[0x1E69A5A80] sharedInstance];
-              v42 = [v41 __ck_bestAccountForAddresses:v34];
+              mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+              v42 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddresses:v34];
               v43 = [v40 initWithAccount:v42 ID:v39 alreadyCanonical:1];
 
               [v33 addObject:v43];
@@ -285,9 +285,9 @@
         }
 
         v44 = [CKIMGroupComposeRecipient alloc];
-        v45 = [v56 guid];
-        v46 = [v56 displayName];
-        v47 = [(CKIMGroupComposeRecipient *)v44 initWithGUID:v45 displayString:v46 detailsString:0 handles:v33 lastMessageDate:0 searchTerm:0 matchingRecipient:0];
+        guid = [v56 guid];
+        displayName = [v56 displayName];
+        v47 = [(CKIMGroupComposeRecipient *)v44 initWithGUID:guid displayString:displayName detailsString:0 handles:v33 lastMessageDate:0 searchTerm:0 matchingRecipient:0];
 
         v48 = MEMORY[0x1E695DF70];
         v74 = v47;
@@ -295,17 +295,17 @@
         v19 = [v48 arrayWithArray:v49];
 
         v32 = v56;
-        v12 = v57;
-        v14 = v61;
+        addressesCopy = v57;
+        identifierCopy = v61;
       }
 
       v18 = v62;
-      [(CKComposeChatController *)v62 setBusinessHandle:v64];
+      [(CKComposeChatController *)v62 setBusinessHandle:handle2];
       v50 = v19;
       [(CKComposeChatController *)v62 setPrepopulatedRecipients:v19];
-      v15 = v59;
-      v13 = v60;
-      v16 = v58;
+      intentCopy = v59;
+      compositionCopy = v60;
+      dCopy = v58;
       if (v58)
       {
         v51 = [v58 copy];
@@ -314,12 +314,12 @@
       }
     }
 
-    [(CKComposeChatController *)v18 setPrepopulatedComposition:v13];
-    [(CKComposeChatController *)v18 setBizIntent:v15];
+    [(CKComposeChatController *)v18 setPrepopulatedComposition:compositionCopy];
+    [(CKComposeChatController *)v18 setBizIntent:intentCopy];
     v53 = +[CKUIBehavior sharedBehaviors];
-    v54 = [v53 shouldSuppressRotationInNewCompose];
+    shouldSuppressRotationInNewCompose = [v53 shouldSuppressRotationInNewCompose];
 
-    if (v54)
+    if (shouldSuppressRotationInNewCompose)
     {
       [(CKChatController *)v18 beginHoldingAutorotationForKey:@"CKAutorotationHoldNewCompose"];
     }
@@ -333,38 +333,38 @@
   v4.receiver = self;
   v4.super_class = CKComposeChatController;
   [(CKChatController *)&v4 prepareForSuspend];
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v3 invalidateOutstandingIDStatusRequests];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController invalidateOutstandingIDStatusRequests];
 }
 
-- (void)parentControllerDidResume:(BOOL)a3 animating:(BOOL)a4
+- (void)parentControllerDidResume:(BOOL)resume animating:(BOOL)animating
 {
-  v4 = a4;
-  v5 = a3;
+  animatingCopy = animating;
+  resumeCopy = resume;
   v8.receiver = self;
   v8.super_class = CKComposeChatController;
   [CKCoreChatController parentControllerDidResume:sel_parentControllerDidResume_animating_ animating:?];
-  v7 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v7 parentControllerDidResume:v5 animating:v4];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController parentControllerDidResume:resumeCopy animating:animatingCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CKComposeChatController;
-  [(CKChatController *)&v8 viewWillAppear:a3];
+  [(CKChatController *)&v8 viewWillAppear:appear];
   [(CKChatController *)self setFrozenEntryViewHeightDuringDismissAnimation:0];
   [(CKComposeChatController *)self _updateBusinessInfoIfNecessary];
   [(CKComposeChatController *)self _updateNavigationUI];
   if (CKIsRunningInMacCatalyst())
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 useMacToolbar];
+    useMacToolbar = [v4 useMacToolbar];
 
-    if ((v5 & 1) == 0)
+    if ((useMacToolbar & 1) == 0)
     {
-      v6 = [(CKComposeChatController *)self catalystComposeNavigationController];
-      [v6 setNavigationBarHidden:1 animated:0];
+      catalystComposeNavigationController = [(CKComposeChatController *)self catalystComposeNavigationController];
+      [catalystComposeNavigationController setNavigationBarHidden:1 animated:0];
     }
   }
 
@@ -372,20 +372,20 @@
   [v7 invalidatePhotosViewController];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v16.receiver = self;
   v16.super_class = CKComposeChatController;
-  [(CKChatController *)&v16 viewWillDisappear:a3];
+  [(CKChatController *)&v16 viewWillDisappear:disappear];
   if (CKIsRunningInMacCatalyst())
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 useMacToolbar];
+    useMacToolbar = [v4 useMacToolbar];
 
-    if ((v5 & 1) == 0)
+    if ((useMacToolbar & 1) == 0)
     {
-      v6 = [(CKComposeChatController *)self catalystComposeNavigationController];
-      [v6 setNavigationBarHidden:0 animated:0];
+      catalystComposeNavigationController = [(CKComposeChatController *)self catalystComposeNavigationController];
+      [catalystComposeNavigationController setNavigationBarHidden:0 animated:0];
     }
   }
 
@@ -395,13 +395,13 @@
   [(CKChatController *)self setFrozenEntryViewHeightDuringDismissAnimation:v8];
 
   objc_initWeak(&location, self);
-  v9 = [(CKComposeChatController *)self transitionCoordinator];
+  transitionCoordinator = [(CKComposeChatController *)self transitionCoordinator];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __45__CKComposeChatController_viewWillDisappear___block_invoke;
   v13 = &unk_1E72F3630;
   objc_copyWeak(&v14, &location);
-  [v9 notifyWhenInteractionChangesUsingBlock:&v10];
+  [transitionCoordinator notifyWhenInteractionChangesUsingBlock:&v10];
 
   [(CKComposeChatController *)self resignFirstResponder:v10];
   objc_destroyWeak(&v14);
@@ -418,14 +418,14 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CKComposeChatController;
-  [(CKChatController *)&v6 viewDidDisappear:a3];
-  v4 = [(CKComposeChatController *)self navbarManager];
-  v5 = [v4 customStatusBackgroundView];
-  [v5 removeFromSuperview];
+  [(CKChatController *)&v6 viewDidDisappear:disappear];
+  navbarManager = [(CKComposeChatController *)self navbarManager];
+  customStatusBackgroundView = [navbarManager customStatusBackgroundView];
+  [customStatusBackgroundView removeFromSuperview];
 }
 
 - (void)viewDidLoad
@@ -434,41 +434,41 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
   v24.receiver = self;
   v24.super_class = CKComposeChatController;
   [(CKChatController *)&v24 viewDidLoad];
-  v3 = [(CKComposeChatController *)self navbarManager];
-  v4 = [v3 cancelButton];
-  [v4 addTarget:self action:sel_cancelButtonTapped forEvents:64];
+  navbarManager = [(CKComposeChatController *)self navbarManager];
+  cancelButton = [navbarManager cancelButton];
+  [cancelButton addTarget:self action:sel_cancelButtonTapped forEvents:64];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
 
   if (CKIsRunningInMacCatalyst())
   {
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 useMacToolbar];
+    useMacToolbar = [v6 useMacToolbar];
 
-    v8 = [(CKComposeChatController *)self navigationController];
-    v9 = v8;
-    if (v7)
+    navigationController = [(CKComposeChatController *)self navigationController];
+    catalystComposeNavigationController2 = navigationController;
+    if (useMacToolbar)
     {
-      [v8 setNavigationBarHidden:1];
+      [navigationController setNavigationBarHidden:1];
     }
 
     else
     {
-      [(CKComposeChatController *)self setCatalystComposeNavigationController:v8];
+      [(CKComposeChatController *)self setCatalystComposeNavigationController:navigationController];
 
-      v10 = [(CKComposeChatController *)self catalystComposeNavigationController];
-      v11 = [v10 navigationBar];
-      [v11 frame];
+      catalystComposeNavigationController = [(CKComposeChatController *)self catalystComposeNavigationController];
+      navigationBar = [catalystComposeNavigationController navigationBar];
+      [navigationBar frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
 
-      v9 = [(CKComposeChatController *)self catalystComposeNavigationController];
-      v18 = [v9 navigationBar];
+      catalystComposeNavigationController2 = [(CKComposeChatController *)self catalystComposeNavigationController];
+      navigationBar2 = [catalystComposeNavigationController2 navigationBar];
       v19 = +[CKUIBehavior sharedBehaviors];
       [v19 marzNavigationBarHeight];
-      [v18 setFrame:{v13, v15, v17, v20}];
+      [navigationBar2 setFrame:{v13, v15, v17, v20}];
     }
   }
 
@@ -478,8 +478,8 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
 
   if (CKIsRunningInMessagesViewService())
   {
-    v23 = [MEMORY[0x1E69A7F68] sharedInstance];
-    [v23 resetCacheSubscriptionInfo];
+    mEMORY[0x1E69A7F68] = [MEMORY[0x1E69A7F68] sharedInstance];
+    [mEMORY[0x1E69A7F68] resetCacheSubscriptionInfo];
   }
 }
 
@@ -500,60 +500,60 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(CKCoreChatController *)self initialLayoutComplete];
+  initialLayoutComplete = [(CKCoreChatController *)self initialLayoutComplete];
   v38.receiver = self;
   v38.super_class = CKComposeChatController;
   [(CKChatController *)&v38 viewDidLayoutSubviews];
   [(CKComposeChatController *)self _updateBusinessInfoIfNecessary];
   [(CKComposeChatController *)self layoutBusinessInfoViewIfNecessary];
-  v4 = [(CKComposeChatController *)self view];
-  [v4 bounds];
+  view = [(CKComposeChatController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CKComposeChatController *)self view];
-  [v9 safeAreaInsets];
+  view2 = [(CKComposeChatController *)self view];
+  [view2 safeAreaInsets];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v15 = [v14 view];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  view3 = [composeRecipientSelectionController view];
 
-  [v15 setFrame:{v11, 0.0, v6 - (v11 + v13), v8}];
-  v16 = [(CKComposeChatController *)self blackholeAlertView];
+  [view3 setFrame:{v11, 0.0, v6 - (v11 + v13), v8}];
+  blackholeAlertView = [(CKComposeChatController *)self blackholeAlertView];
 
-  if (v16)
+  if (blackholeAlertView)
   {
-    v17 = [(CKComposeChatController *)self view];
-    [v17 bounds];
+    view4 = [(CKComposeChatController *)self view];
+    [view4 bounds];
     Width = CGRectGetWidth(v39);
 
-    v19 = [(CKComposeChatController *)self blackholeAlertView];
-    v20 = [v19 label];
-    v21 = [v20 attributedText];
-    [CKBlackholeChatItem sizeThatFits:v21 text:Width, 1.79769313e308];
+    blackholeAlertView2 = [(CKComposeChatController *)self blackholeAlertView];
+    label = [blackholeAlertView2 label];
+    attributedText = [label attributedText];
+    [CKBlackholeChatItem sizeThatFits:attributedText text:Width, 1.79769313e308];
     v23 = v22;
 
     v24 = *MEMORY[0x1E695F058];
     [(CKScrollViewController *)self navigationBarInsets];
     v26 = v25;
-    v27 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [v27 collapsedHeight];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    [composeRecipientSelectionController2 collapsedHeight];
     v29 = v26 + v28;
 
-    v30 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [v30 fromFieldHeight];
+    composeRecipientSelectionController3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    [composeRecipientSelectionController3 fromFieldHeight];
     v32 = v29 + v31;
 
     v33 = +[CKUIBehavior sharedBehaviors];
     [v33 topTranscriptSpace];
     v35 = v32 + v34;
 
-    v36 = [(CKComposeChatController *)self blackholeAlertView];
-    [v36 setFrame:{v24, v35, Width, v23}];
+    blackholeAlertView3 = [(CKComposeChatController *)self blackholeAlertView];
+    [blackholeAlertView3 setFrame:{v24, v35, Width, v23}];
   }
 
-  if (!v3)
+  if (!initialLayoutComplete)
   {
     if ([(CKComposeChatController *)self _shouldSetToFieldAsFirstResponder])
     {
@@ -577,10 +577,10 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
   v6.super_class = CKComposeChatController;
   [(CKCoreChatController *)&v6 _viewDidInitialLayoutSubviews];
   [(CKComposeChatController *)self reloadEntryViewIfNeeded];
-  v3 = [(CKComposeChatController *)self view];
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v5 = [v4 view];
-  [v3 bringSubviewToFront:v5];
+  view = [(CKComposeChatController *)self view];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  view2 = [composeRecipientSelectionController view];
+  [view bringSubviewToFront:view2];
 }
 
 - (void)viewLayoutMarginsDidChange
@@ -593,9 +593,9 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
   v6.f64[1] = v5;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *MEMORY[0x1E69DC5C0]), vceqq_f64(v6, *(MEMORY[0x1E69DC5C0] + 16))))) & 1) == 0)
   {
-    v7 = [(CKComposeChatController *)self navbarManager];
-    v8 = [v7 contentView];
-    [v8 setNeedsLayout];
+    navbarManager = [(CKComposeChatController *)self navbarManager];
+    contentView = [navbarManager contentView];
+    [contentView setNeedsLayout];
   }
 }
 
@@ -609,45 +609,45 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v5 = [v4 toField];
-  v6 = [v5 textView];
+  array = [MEMORY[0x1E695DF70] array];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  textView = [toField textView];
 
-  if (v6)
+  if (textView)
   {
-    v7 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v8 = [v7 toField];
-    v9 = [v8 textView];
-    [v3 addObject:v9];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    toField2 = [composeRecipientSelectionController2 toField];
+    textView2 = [toField2 textView];
+    [array addObject:textView2];
   }
 
-  v10 = [(CKChatController *)self entryView];
-  v11 = [v10 contentView];
-  v12 = [v11 textView];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  textView3 = [contentView textView];
 
-  if (v12)
+  if (textView3)
   {
-    v13 = [(CKChatController *)self entryView];
-    v14 = [v13 contentView];
-    v15 = [v14 textView];
-    [v3 addObject:v15];
+    entryView2 = [(CKChatController *)self entryView];
+    contentView2 = [entryView2 contentView];
+    textView4 = [contentView2 textView];
+    [array addObject:textView4];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setPrepopulatedComposition:(id)a3
+- (void)setPrepopulatedComposition:(id)composition
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"YES";
-      if (!v4)
+      if (!compositionCopy)
       {
         v6 = @"NO";
       }
@@ -658,29 +658,29 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
     }
   }
 
-  if (!v4 || ([(CKChatController *)self entryView], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, v8))
+  if (!compositionCopy || ([(CKChatController *)self entryView], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, v8))
   {
-    v10 = v4;
+    v10 = compositionCopy;
     prepopulatedComposition = self->_prepopulatedComposition;
     self->_prepopulatedComposition = v10;
   }
 
   else
   {
-    [(CKChatController *)self setComposition:v4];
+    [(CKChatController *)self setComposition:compositionCopy];
     prepopulatedComposition = self->_prepopulatedComposition;
     self->_prepopulatedComposition = 0;
   }
 }
 
-- (void)setPrepopulatedRecipients:(id)a3
+- (void)setPrepopulatedRecipients:(id)recipients
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  recipientsCopy = recipients;
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
 
   v6 = IMOSLoggingEnabled();
-  if (v5)
+  if (composeRecipientSelectionController)
   {
     if (v6)
     {
@@ -688,13 +688,13 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = recipientsCopy;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Call made to pre-populate recipients (adding): %@", &v11, 0xCu);
       }
     }
 
     prepopulatedRecipients = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [prepopulatedRecipients addRecipients:v4];
+    [prepopulatedRecipients addRecipients:recipientsCopy];
     goto LABEL_13;
   }
 
@@ -704,32 +704,32 @@ void __45__CKComposeChatController_viewWillDisappear___block_invoke(uint64_t a1,
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = recipientsCopy;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Call made to pre-populate recipients (not yet ready): %@", &v11, 0xCu);
     }
   }
 
-  if (self->_prepopulatedRecipients != v4)
+  if (self->_prepopulatedRecipients != recipientsCopy)
   {
-    v10 = v4;
+    v10 = recipientsCopy;
     prepopulatedRecipients = self->_prepopulatedRecipients;
     self->_prepopulatedRecipients = v10;
 LABEL_13:
   }
 }
 
-- (void)setSuggestedRepliesData:(id)a3
+- (void)setSuggestedRepliesData:(id)data
 {
-  objc_storeStrong(&self->_suggestedRepliesData, a3);
-  v4 = [(CKCoreChatController *)self conversation];
-  [v4 setChatBot:MEMORY[0x1E695E118]];
+  objc_storeStrong(&self->_suggestedRepliesData, data);
+  conversation = [(CKCoreChatController *)self conversation];
+  [conversation setChatBot:MEMORY[0x1E695E118]];
 }
 
-- (void)setServiceId:(id)a3
+- (void)setServiceId:(id)id
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceId, a3);
-  if (v5)
+  idCopy = id;
+  objc_storeStrong(&self->_serviceId, id);
+  if (idCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -741,36 +741,36 @@ LABEL_13:
       }
     }
 
-    v7 = [(CKCoreChatController *)self conversation];
-    [v7 setChatBot:MEMORY[0x1E695E118]];
+    conversation = [(CKCoreChatController *)self conversation];
+    [conversation setChatBot:MEMORY[0x1E695E118]];
   }
 }
 
 - (NSArray)proposedRecipients
 {
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
 
-  if (v3)
+  if (composeRecipientSelectionController)
   {
-    v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v5 = [v4 expandedRecipients];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    expandedRecipients = [composeRecipientSelectionController2 expandedRecipients];
   }
 
   else
   {
-    v5 = self->_prepopulatedRecipients;
+    expandedRecipients = self->_prepopulatedRecipients;
   }
 
-  return v5;
+  return expandedRecipients;
 }
 
 - (NSString)unatomizedRecipientText
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v3 = [v2 toField];
-  v4 = [v3 text];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  text = [toField text];
 
-  return v4;
+  return text;
 }
 
 - (void)conversationLeft
@@ -785,15 +785,15 @@ LABEL_13:
     }
   }
 
-  v4 = [(CKChatController *)self composition];
+  composition = [(CKChatController *)self composition];
   v5 = +[CKConversationList sharedConversationList];
-  v6 = [v5 pendingConversationCreatingIfNecessary];
-  [(CKChatController *)self setConversation:v6];
+  pendingConversationCreatingIfNecessary = [v5 pendingConversationCreatingIfNecessary];
+  [(CKChatController *)self setConversation:pendingConversationCreatingIfNecessary];
 
   if (![(CKCoreChatController *)self isSendingMessage])
   {
-    v7 = [(CKChatController *)self entryView];
-    [v7 setComposition:v4];
+    entryView = [(CKChatController *)self entryView];
+    [entryView setComposition:composition];
   }
 }
 
@@ -802,18 +802,18 @@ LABEL_13:
   v39.receiver = self;
   v39.super_class = CKComposeChatController;
   [(CKChatController *)&v39 _setConversationDeferredSetup];
-  v3 = [(CKCoreChatController *)self conversation];
-  v4 = [v3 chat];
+  conversation = [(CKCoreChatController *)self conversation];
+  chat = [conversation chat];
 
-  if (v4)
+  if (chat)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    [CKPowerLog sendTranscriptVisibilityChangedEvent:v5 event:0 metadata:0];
+    date = [MEMORY[0x1E695DF00] date];
+    [CKPowerLog sendTranscriptVisibilityChangedEvent:date event:0 metadata:0];
   }
 
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
 
-  if (!v6)
+  if (!composeRecipientSelectionController)
   {
     if (IMOSLoggingEnabled())
     {
@@ -826,24 +826,24 @@ LABEL_13:
     }
 
     v8 = [CKComposeRecipientSelectionController alloc];
-    v9 = [(CKCoreChatController *)self conversation];
-    v10 = [(CKRecipientSelectionController *)v8 initWithConversation:v9];
+    conversation2 = [(CKCoreChatController *)self conversation];
+    v10 = [(CKRecipientSelectionController *)v8 initWithConversation:conversation2];
 
     [(CKRecipientSelectionController *)v10 setDelegate:self];
     [(CKComposeChatController *)self setComposeRecipientSelectionController:v10];
-    v11 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v12 = [v11 view];
-    v13 = [(CKComposeChatController *)self view];
-    [v13 bounds];
-    [v12 setFrame:?];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    view = [composeRecipientSelectionController2 view];
+    view2 = [(CKComposeChatController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
 
     v14 = +[CKUIBehavior sharedBehaviors];
-    LOBYTE(v12) = [v14 useMacToolbar];
+    LOBYTE(view) = [v14 useMacToolbar];
 
-    if (v12)
+    if (view)
     {
-      v15 = [(CKCoreChatController *)self macToolbarController];
-      [v15 updateVirtualViewForProvider:self];
+      macToolbarController = [(CKCoreChatController *)self macToolbarController];
+      [macToolbarController updateVirtualViewForProvider:self];
     }
 
     else
@@ -854,30 +854,30 @@ LABEL_13:
       }
 
       [(CKComposeChatController *)self addChildViewController:v10];
-      v16 = [(CKComposeChatController *)self view];
-      v17 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      v18 = [v17 view];
-      [v16 addSubview:v18];
+      view3 = [(CKComposeChatController *)self view];
+      composeRecipientSelectionController3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      view4 = [composeRecipientSelectionController3 view];
+      [view3 addSubview:view4];
 
-      v15 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      [v15 didMoveToParentViewController:self];
+      macToolbarController = [(CKComposeChatController *)self composeRecipientSelectionController];
+      [macToolbarController didMoveToParentViewController:self];
     }
 
 LABEL_13:
-    v19 = [(CKCoreChatController *)self delegate];
+    delegate = [(CKCoreChatController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v21 = [(CKCoreChatController *)self delegate];
-      v22 = [v21 composeChatControllerCanEditRecipients];
+      delegate2 = [(CKCoreChatController *)self delegate];
+      composeChatControllerCanEditRecipients = [delegate2 composeChatControllerCanEditRecipients];
 
-      v23 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      [v23 setEditable:v22];
+      composeRecipientSelectionController4 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      [composeRecipientSelectionController4 setEditable:composeChatControllerCanEditRecipients];
 
       if (CKIsRunningInMessagesViewService())
       {
-        if (v22)
+        if (composeChatControllerCanEditRecipients)
         {
           if (CKIsScreenLocked())
           {
@@ -892,28 +892,28 @@ LABEL_13:
       }
     }
 
-    v24 = [(CKComposeChatController *)self prepopulatedRecipients];
+    prepopulatedRecipients = [(CKComposeChatController *)self prepopulatedRecipients];
 
-    if (v24)
+    if (prepopulatedRecipients)
     {
-      v25 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      v26 = [(CKComposeChatController *)self prepopulatedRecipients];
-      [v25 addRecipients:v26];
+      composeRecipientSelectionController5 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      prepopulatedRecipients2 = [(CKComposeChatController *)self prepopulatedRecipients];
+      [composeRecipientSelectionController5 addRecipients:prepopulatedRecipients2];
 
-      v27 = [(CKComposeChatController *)self prepopulatedSIMID];
-      v28 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      [v28 setSimID:v27];
+      prepopulatedSIMID = [(CKComposeChatController *)self prepopulatedSIMID];
+      composeRecipientSelectionController6 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      [composeRecipientSelectionController6 setSimID:prepopulatedSIMID];
     }
 
-    v29 = [(CKComposeChatController *)self prepopulatedComposition];
+    prepopulatedComposition = [(CKComposeChatController *)self prepopulatedComposition];
 
-    if (v29)
+    if (prepopulatedComposition)
     {
-      v30 = [(CKChatController *)self entryView];
-      v31 = [v30 composition];
-      if ([v31 hasContent])
+      entryView = [(CKChatController *)self entryView];
+      composition = [entryView composition];
+      if ([composition hasContent])
       {
-        [v31 compositionByAppendingComposition:self->_prepopulatedComposition];
+        [composition compositionByAppendingComposition:self->_prepopulatedComposition];
       }
 
       else
@@ -929,14 +929,14 @@ LABEL_13:
   }
 
   v33 = +[CKUIBehavior sharedBehaviors];
-  v34 = [v33 useMacToolbar];
+  useMacToolbar = [v33 useMacToolbar];
 
-  if ((v34 & 1) == 0)
+  if ((useMacToolbar & 1) == 0)
   {
-    v35 = [(CKComposeChatController *)self view];
-    v36 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v37 = [v36 view];
-    [v35 bringSubviewToFront:v37];
+    view5 = [(CKComposeChatController *)self view];
+    composeRecipientSelectionController7 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    view6 = [composeRecipientSelectionController7 view];
+    [view5 bringSubviewToFront:view6];
   }
 
   [(CKComposeChatController *)self _updateBusinessInfoIfNecessary];
@@ -957,11 +957,11 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
 
 - (BOOL)_shouldSetToFieldAsFirstResponder
 {
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  if ([v3 isEditable])
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  if ([composeRecipientSelectionController isEditable])
   {
-    v4 = [(CKComposeChatController *)self proposedRecipients];
-    v5 = [v4 count] == 0;
+    proposedRecipients = [(CKComposeChatController *)self proposedRecipients];
+    v5 = [proposedRecipients count] == 0;
   }
 
   else
@@ -975,25 +975,25 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
 - (id)_updateSendingIdentity
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(CKCoreChatController *)self conversation];
-  v4 = [v3 sendingService];
+  conversation = [(CKCoreChatController *)self conversation];
+  sendingService = [conversation sendingService];
 
-  v5 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v6 = [v5 __ck_defaultAccountForService:v4];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  v6 = [mEMORY[0x1E69A5A80] __ck_defaultAccountForService:sendingService];
 
-  v7 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v8 = [v7 selectedLastAddressedOrDefaultHandle];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  selectedLastAddressedOrDefaultHandle = [composeRecipientSelectionController selectedLastAddressedOrDefaultHandle];
 
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 name];
+      name = [sendingService name];
       v30 = 138412802;
-      v31 = v8;
+      v31 = selectedLastAddressedOrDefaultHandle;
       v32 = 2112;
-      v33 = v10;
+      v33 = name;
       v34 = 2112;
       v35 = v6;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "_updateSendingIdentity selectedLastAddressedHandle: %@, perferredService: %@, account: %@", &v30, 0x20u);
@@ -1002,9 +1002,9 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
 
   if ([(CKComposeChatController *)self _deviceHasMultipleActiveSubscriptions])
   {
-    v11 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v12 = [v11 selectedSubscriptionContext];
-    v13 = [v12 labelID];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    selectedSubscriptionContext = [composeRecipientSelectionController2 selectedSubscriptionContext];
+    labelID = [selectedSubscriptionContext labelID];
 
     if (IMOSLoggingEnabled())
     {
@@ -1012,38 +1012,38 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v30 = 138412290;
-        v31 = v13;
+        v31 = labelID;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Sending composition with simID: %@", &v30, 0xCu);
       }
     }
 
-    [(CKComposeChatController *)self setLastAddressedSIMID:v13];
-    if (v8 && (IMStringIsEmail() & 1) != 0 || ([v6 serviceName], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", *MEMORY[0x1E69A7AF0]), v15, (v16 & 1) != 0))
+    [(CKComposeChatController *)self setLastAddressedSIMID:labelID];
+    if (selectedLastAddressedOrDefaultHandle && (IMStringIsEmail() & 1) != 0 || ([v6 serviceName], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", *MEMORY[0x1E69A7AF0]), v15, (v16 & 1) != 0))
     {
-      v17 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      v18 = [v17 hasiMessageableContext];
+      composeRecipientSelectionController3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      hasiMessageableContext = [composeRecipientSelectionController3 hasiMessageableContext];
 
-      if (v18)
+      if (hasiMessageableContext)
       {
-        [(CKComposeChatController *)self setLastAddressedHandle:v8];
-        v19 = [MEMORY[0x1E69A5A80] sharedInstance];
-        v20 = [(CKComposeChatController *)self lastAddressedHandle];
-        v21 = [(CKComposeChatController *)self lastAddressedSIMID];
-        v22 = [v19 iMessageAccountForLastAddressedHandle:v20 simID:v21];
+        [(CKComposeChatController *)self setLastAddressedHandle:selectedLastAddressedOrDefaultHandle];
+        mEMORY[0x1E69A5A80]2 = [MEMORY[0x1E69A5A80] sharedInstance];
+        lastAddressedHandle = [(CKComposeChatController *)self lastAddressedHandle];
+        lastAddressedSIMID = [(CKComposeChatController *)self lastAddressedSIMID];
+        v22 = [mEMORY[0x1E69A5A80]2 iMessageAccountForLastAddressedHandle:lastAddressedHandle simID:lastAddressedSIMID];
 
         if (IMOSLoggingEnabled())
         {
           v23 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
-            v24 = [(CKComposeChatController *)self lastAddressedHandle];
-            v25 = [(CKComposeChatController *)self lastAddressedSIMID];
+            lastAddressedHandle2 = [(CKComposeChatController *)self lastAddressedHandle];
+            lastAddressedSIMID2 = [(CKComposeChatController *)self lastAddressedSIMID];
             v30 = 138412802;
-            v31 = v8;
+            v31 = selectedLastAddressedOrDefaultHandle;
             v32 = 2112;
-            v33 = v24;
+            v33 = lastAddressedHandle2;
             v34 = 2112;
-            v35 = v25;
+            v35 = lastAddressedSIMID2;
             _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "Selected last addressed handle is iMessage capable %@ and at least one context is iMessage-capable, so pick the account corresponding to last addressed handle %@ and simID %@", &v30, 0x20u);
           }
         }
@@ -1065,15 +1065,15 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
 
     else
     {
-      [(CKComposeChatController *)self setLastAddressedHandle:v8];
+      [(CKComposeChatController *)self setLastAddressedHandle:selectedLastAddressedOrDefaultHandle];
       if (IMOSLoggingEnabled())
       {
         v27 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
-          v28 = [(CKComposeChatController *)self lastAddressedHandle];
+          lastAddressedHandle3 = [(CKComposeChatController *)self lastAddressedHandle];
           v30 = 138412290;
-          v31 = v28;
+          v31 = lastAddressedHandle3;
           _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "Sending SMS composition with last addressed handle %@", &v30, 0xCu);
         }
       }
@@ -1083,10 +1083,10 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
   return v6;
 }
 
-- (void)sendComposition:(id)a3
+- (void)sendComposition:(id)composition
 {
   v96 = *MEMORY[0x1E69E9840];
-  v72 = a3;
+  compositionCopy = composition;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -1097,20 +1097,20 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
     }
   }
 
-  v73 = self;
-  v5 = [(CKCoreChatController *)self conversation];
-  v6 = [v5 recipientCount] == 0;
+  selfCopy = self;
+  conversation = [(CKCoreChatController *)self conversation];
+  v6 = [conversation recipientCount] == 0;
 
   if (!v6)
   {
-    v7 = [(CKComposeChatController *)v73 composeRecipientSelectionController];
-    [v7 stopCheckingRecipientAvailabilityAndRemoveAllTimers];
+    composeRecipientSelectionController = [(CKComposeChatController *)selfCopy composeRecipientSelectionController];
+    [composeRecipientSelectionController stopCheckingRecipientAvailabilityAndRemoveAllTimers];
 
-    v8 = [(CKComposeChatController *)v73 composeRecipientSelectionController];
-    [v8 setSearchResultsHidden:1];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)selfCopy composeRecipientSelectionController];
+    [composeRecipientSelectionController2 setSearchResultsHidden:1];
 
-    v9 = [(CKComposeChatController *)v73 _updateSendingIdentity];
-    if (!v9)
+    _updateSendingIdentity = [(CKComposeChatController *)selfCopy _updateSendingIdentity];
+    if (!_updateSendingIdentity)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1125,61 +1125,61 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
       goto LABEL_65;
     }
 
-    v10 = [(CKComposeChatController *)v73 composeRecipientSelectionController];
-    v71 = [v10 selectedSubscriptionContext];
+    composeRecipientSelectionController3 = [(CKComposeChatController *)selfCopy composeRecipientSelectionController];
+    selectedSubscriptionContext = [composeRecipientSelectionController3 selectedSubscriptionContext];
 
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(CKComposeChatController *)v73 lastAddressedHandle];
-        v13 = [(CKComposeChatController *)v73 lastAddressedSIMID];
-        v14 = [(CKCoreChatController *)v73 conversation];
+        lastAddressedHandle = [(CKComposeChatController *)selfCopy lastAddressedHandle];
+        lastAddressedSIMID = [(CKComposeChatController *)selfCopy lastAddressedSIMID];
+        conversation2 = [(CKCoreChatController *)selfCopy conversation];
         *buf = 138413314;
-        v87 = v9;
+        v87 = _updateSendingIdentity;
         v88 = 2112;
-        v89 = v12;
+        v89 = lastAddressedHandle;
         v90 = 2112;
-        v91 = v13;
+        v91 = lastAddressedSIMID;
         v92 = 2112;
-        v93 = v71;
+        v93 = selectedSubscriptionContext;
         v94 = 2112;
-        v95 = v14;
+        v95 = conversation2;
         _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Sending composition with account: %@ lastAddressedHandle: %@ lastAddressedSIMID: %@ subscription: %@ conversation: %@", buf, 0x34u);
       }
     }
 
-    v15 = [(CKComposeChatController *)v73 ignoreEmailsWhenSending];
-    v16 = [(CKCoreChatController *)v73 conversation];
+    ignoreEmailsWhenSending = [(CKComposeChatController *)selfCopy ignoreEmailsWhenSending];
+    conversation3 = [(CKCoreChatController *)selfCopy conversation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v18 = [(CKCoreChatController *)v73 conversation];
-      v19 = [v18 pendingChat];
+      conversation4 = [(CKCoreChatController *)selfCopy conversation];
+      pendingChat = [conversation4 pendingChat];
     }
 
     else
     {
-      v19 = 0;
+      pendingChat = 0;
     }
 
-    v23 = [(CKComposeChatController *)v73 composeRecipientSelectionController];
-    v24 = [v23 gameCenterPickerBlock];
+    composeRecipientSelectionController4 = [(CKComposeChatController *)selfCopy composeRecipientSelectionController];
+    gameCenterPickerBlock = [composeRecipientSelectionController4 gameCenterPickerBlock];
 
-    if ((v24 != 0) | (v15 | v19) & 1 || (-[CKCoreChatController conversation](v73, "conversation"), v25 = objc_claimAutoreleasedReturnValue(), [v25 chat], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v25, v27))
+    if ((gameCenterPickerBlock != 0) | (ignoreEmailsWhenSending | pendingChat) & 1 || (-[CKCoreChatController conversation](selfCopy, "conversation"), v25 = objc_claimAutoreleasedReturnValue(), [v25 chat], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v25, v27))
     {
-      v28 = [(CKComposeChatController *)v73 composeRecipientSelectionController];
-      v29 = [v28 expandedRecipients];
+      composeRecipientSelectionController5 = [(CKComposeChatController *)selfCopy composeRecipientSelectionController];
+      expandedRecipients = [composeRecipientSelectionController5 expandedRecipients];
 
-      v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v29, "count")}];
+      v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(expandedRecipients, "count")}];
       v83 = 0u;
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v31 = v29;
+      v31 = expandedRecipients;
       v32 = [v31 countByEnumeratingWithState:&v81 objects:v85 count:16];
       if (v32)
       {
@@ -1194,14 +1194,14 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
             }
 
             v35 = *(*(&v81 + 1) + 8 * i);
-            if ([v35 kind] != 5 || v24 == 0)
+            if ([v35 kind] != 5 || gameCenterPickerBlock == 0)
             {
-              v37 = [v35 rawAddress];
+              rawAddress = [v35 rawAddress];
               v38 = IMStripFormattingFromAddress();
 
-              if (v38 && (!v15 || (IMStringIsEmail() & 1) == 0))
+              if (v38 && (!ignoreEmailsWhenSending || (IMStringIsEmail() & 1) == 0))
               {
-                v39 = [v9 imHandleWithID:v38 alreadyCanonical:0];
+                v39 = [_updateSendingIdentity imHandleWithID:v38 alreadyCanonical:0];
                 if (v39)
                 {
                   [v30 addObject:v39];
@@ -1217,33 +1217,33 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
       }
 
       HIDWORD(v69) = [v30 count] != 0;
-      v40 = [(CKCoreChatController *)v73 conversation];
+      conversation5 = [(CKCoreChatController *)selfCopy conversation];
       objc_opt_class();
       v41 = objc_opt_isKindOfClass();
 
       if (v41)
       {
-        v42 = [(CKCoreChatController *)v73 conversation];
-        v43 = [v42 isSendingServiceEncrypted];
+        conversation6 = [(CKCoreChatController *)selfCopy conversation];
+        isSendingServiceEncrypted = [conversation6 isSendingServiceEncrypted];
       }
 
       else
       {
-        v43 = 0;
+        isSendingServiceEncrypted = 0;
       }
 
       v44 = +[CKConversationList sharedConversationList];
-      v45 = [(CKComposeChatController *)v73 lastAddressedHandle];
-      v46 = [(CKComposeChatController *)v73 lastAddressedSIMID];
+      lastAddressedHandle2 = [(CKComposeChatController *)selfCopy lastAddressedHandle];
+      lastAddressedSIMID2 = [(CKComposeChatController *)selfCopy lastAddressedSIMID];
       LOBYTE(v69) = 1;
-      v47 = [v44 conversationForHandles:v30 displayName:0 lastAddressedHandle:v45 lastAddressedSIMID:v46 joinedChatsOnly:1 findMatchingNamedGroups:0 create:v69];
+      v47 = [v44 conversationForHandles:v30 displayName:0 lastAddressedHandle:lastAddressedHandle2 lastAddressedSIMID:lastAddressedSIMID2 joinedChatsOnly:1 findMatchingNamedGroups:0 create:v69];
 
-      [(CKChatController *)v73 setConversation:v47];
-      v48 = [v47 chat];
-      [v48 setSupportsEncryption:v43];
+      [(CKChatController *)selfCopy setConversation:v47];
+      chat = [v47 chat];
+      [chat setSupportsEncryption:isSendingServiceEncrypted];
 
-      v49 = [(CKCoreChatController *)v73 delegate];
-      [v49 composeChatController:v73 didSelectNewConversation:v47];
+      delegate = [(CKCoreChatController *)selfCopy delegate];
+      [delegate composeChatController:selfCopy didSelectNewConversation:v47];
     }
 
     else
@@ -1251,38 +1251,38 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
       v70 = 1;
     }
 
-    v50 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v51 = [v50 isIntroductionsEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isIntroductionsEnabled = [mEMORY[0x1E69A8070] isIntroductionsEnabled];
 
-    if (v51)
+    if (isIntroductionsEnabled)
     {
-      v52 = [(CKCoreChatController *)v73 conversation];
-      v53 = [v52 chat];
+      conversation7 = [(CKCoreChatController *)selfCopy conversation];
+      chat2 = [conversation7 chat];
 
-      if (v53)
+      if (chat2)
       {
         if ([MEMORY[0x1E69A82A0] isFilterUnknownSendersEnabled])
         {
-          v54 = [(CKCoreChatController *)v73 conversation];
-          v55 = [v54 chat];
-          v56 = [v55 isFiltered] == 0;
+          conversation8 = [(CKCoreChatController *)selfCopy conversation];
+          chat3 = [conversation8 chat];
+          v56 = [chat3 isFiltered] == 0;
 
           if (!v56)
           {
-            v57 = [(CKCoreChatController *)v73 conversation];
-            v58 = [v57 chat];
-            [v58 markAsKnownAndSaveInContacts:0 completion:0];
+            conversation9 = [(CKCoreChatController *)selfCopy conversation];
+            chat4 = [conversation9 chat];
+            [chat4 markAsKnownAndSaveInContacts:0 completion:0];
           }
         }
       }
     }
 
-    if (!v24 || ([(CKCoreChatController *)v73 conversation], v59 = objc_claimAutoreleasedReturnValue(), v60 = v59 == 0, v59, !v60))
+    if (!gameCenterPickerBlock || ([(CKCoreChatController *)selfCopy conversation], v59 = objc_claimAutoreleasedReturnValue(), v60 = v59 == 0, v59, !v60))
     {
-      v61 = [(CKCoreChatController *)v73 inputController];
-      [v61 requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:0];
+      inputController = [(CKCoreChatController *)selfCopy inputController];
+      [inputController requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:0];
 
-      if ([(CKChatController *)v73 showSendAlertIfNecessaryForComposition:v72])
+      if ([(CKChatController *)selfCopy showSendAlertIfNecessaryForComposition:compositionCopy])
       {
         if (IMOSLoggingEnabled())
         {
@@ -1301,23 +1301,23 @@ void __56__CKComposeChatController__setConversationDeferredSetup__block_invoke(u
       aBlock[1] = 3221225472;
       aBlock[2] = __43__CKComposeChatController_sendComposition___block_invoke;
       aBlock[3] = &unk_1E72F2680;
-      v77 = v72;
-      v78 = v73;
+      v77 = compositionCopy;
+      v78 = selfCopy;
       v80 = v70;
-      v79 = v9;
+      v79 = _updateSendingIdentity;
       v63 = _Block_copy(aBlock);
       v64 = v63;
-      if (v15)
+      if (ignoreEmailsWhenSending)
       {
-        v65 = [(CKCoreChatController *)v73 conversation];
-        [v65 refreshServiceForSending];
+        conversation10 = [(CKCoreChatController *)selfCopy conversation];
+        [conversation10 refreshServiceForSending];
 
         v66 = dispatch_time(0, 100000000);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __43__CKComposeChatController_sendComposition___block_invoke_334;
         block[3] = &unk_1E72ED1C8;
-        block[4] = v73;
+        block[4] = selfCopy;
         v75 = v64;
         dispatch_after(v66, MEMORY[0x1E69E96A0], block);
       }
@@ -1345,9 +1345,9 @@ LABEL_65:
     v20 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [(CKCoreChatController *)v73 conversation];
+      conversation11 = [(CKCoreChatController *)selfCopy conversation];
       *buf = 138412290;
-      v87 = v21;
+      v87 = conversation11;
       _os_log_impl(&dword_19020E000, v20, OS_LOG_TYPE_INFO, "Cannot send composition to conversation with no recipients: %@", buf, 0xCu);
     }
   }
@@ -1494,42 +1494,42 @@ void __43__CKComposeChatController_sendComposition___block_invoke_334(uint64_t a
   }
 }
 
-- (void)_determineSpamFilterHandshakeStateForAccount:(id)a3
+- (void)_determineSpamFilterHandshakeStateForAccount:(id)account
 {
-  v18 = a3;
+  accountCopy = account;
   if ([MEMORY[0x1E69A82A0] isInternationalSpamFilteringEnabled])
   {
-    v4 = [(CKCoreChatController *)self conversation];
-    v5 = [v4 chat];
-    v6 = [v5 repliedToChat];
+    conversation = [(CKCoreChatController *)self conversation];
+    chat = [conversation chat];
+    repliedToChat = [chat repliedToChat];
 
-    v7 = [(CKCoreChatController *)self conversation];
-    v8 = [v7 chat];
-    v9 = [v8 receivedResponseForChat];
+    conversation2 = [(CKCoreChatController *)self conversation];
+    chat2 = [conversation2 chat];
+    receivedResponseForChat = [chat2 receivedResponseForChat];
 
-    if ((v6 & 1) == 0 && (v9 & 1) == 0)
+    if ((repliedToChat & 1) == 0 && (receivedResponseForChat & 1) == 0)
     {
-      v10 = [v18 serviceName];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69A7AE0]];
+      serviceName = [accountCopy serviceName];
+      v11 = [serviceName isEqualToString:*MEMORY[0x1E69A7AE0]];
 
       if (v11)
       {
-        v12 = [(CKCoreChatController *)self conversation];
-        v13 = [v12 chat];
-        v14 = [v13 participants];
-        v15 = [v14 __imArrayByApplyingBlock:&__block_literal_global_339_0];
+        conversation3 = [(CKCoreChatController *)self conversation];
+        chat3 = [conversation3 chat];
+        participants = [chat3 participants];
+        conversation4 = [participants __imArrayByApplyingBlock:&__block_literal_global_339_0];
 
-        [MEMORY[0x1E69A82A0] participantsAreiMessagable:v15 completionBlock:&__block_literal_global_342];
+        [MEMORY[0x1E69A82A0] participantsAreiMessagable:conversation4 completionBlock:&__block_literal_global_342];
       }
 
       else
       {
-        v16 = [MEMORY[0x1E69A8168] sharedInstance];
-        [v16 trackSpamEvent:1];
+        mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+        [mEMORY[0x1E69A8168] trackSpamEvent:1];
 
-        v15 = [(CKCoreChatController *)self conversation];
-        v17 = [v15 chat];
-        [v17 setValue:&unk_1F04E7EC0 forChatProperty:*MEMORY[0x1E69A5D38]];
+        conversation4 = [(CKCoreChatController *)self conversation];
+        chat4 = [conversation4 chat];
+        [chat4 setValue:&unk_1F04E7EC0 forChatProperty:*MEMORY[0x1E69A5D38]];
       }
     }
   }
@@ -1552,12 +1552,12 @@ void __72__CKComposeChatController__determineSpamFilterHandshakeStateForAccount_
   }
 }
 
-- (void)_prepareForSendFromCardIfNecessaryAndSend:(id)a3
+- (void)_prepareForSendFromCardIfNecessaryAndSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   [(CKChatController *)self dismissEffectPickerAnimated:1];
   [(CKComposeChatController *)self setHasStartedSendAnimation:1];
-  v5 = [(CKChatController *)self _currentPresentationController];
+  _currentPresentationController = [(CKChatController *)self _currentPresentationController];
   if ([(CKCoreChatController *)self shouldDismissAfterSend]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (IMOSLoggingEnabled())
@@ -1570,9 +1570,9 @@ void __72__CKComposeChatController__determineSpamFilterHandshakeStateForAccount_
       }
     }
 
-    if (v4)
+    if (sendCopy)
     {
-      v4[2](v4);
+      sendCopy[2](sendCopy);
     }
   }
 
@@ -1588,52 +1588,52 @@ void __72__CKComposeChatController__determineSpamFilterHandshakeStateForAccount_
       }
     }
 
-    v7 = [(CKCoreChatController *)self collectionViewController];
-    [v7 setTransitioningFromComposing:1];
+    collectionViewController = [(CKCoreChatController *)self collectionViewController];
+    [collectionViewController setTransitioningFromComposing:1];
 
     [(CKComposeChatController *)self setSendingViaCardUI:1];
-    v8 = [(CKChatController *)self transcriptNavigationBarController];
+    transcriptNavigationBarController = [(CKChatController *)self transcriptNavigationBarController];
     v9 = +[_TtC7ChatKit29TranscriptNavigationBarChange barButtonsChange];
-    [v8 applyChange:v9];
+    [transcriptNavigationBarController applyChange:v9];
 
-    v10 = [(CKChatController *)self transcriptNavigationBarController];
+    transcriptNavigationBarController2 = [(CKChatController *)self transcriptNavigationBarController];
     v11 = +[_TtC7ChatKit29TranscriptNavigationBarChange titleDisplayModeChange];
-    [v10 applyChange:v11];
+    [transcriptNavigationBarController2 applyChange:v11];
 
-    v12 = v5;
+    v12 = _currentPresentationController;
     v13 = +[CKUIBehavior sharedBehaviors];
     [v13 sendAnimationDuration];
     v15 = v14;
 
-    v16 = [v12 containerView];
+    containerView = [v12 containerView];
     _UISheetMinimumTopInset();
     v18 = v17;
 
-    v19 = [(CKChatController *)self collectionView];
-    [v19 beginDisablingTranscriptDynamicsForReason:7];
-    v20 = [(CKChatController *)self collectionView];
-    [v20 contentOffset];
+    collectionView = [(CKChatController *)self collectionView];
+    [collectionView beginDisablingTranscriptDynamicsForReason:7];
+    collectionView2 = [(CKChatController *)self collectionView];
+    [collectionView2 contentOffset];
     v22 = v21;
     v24 = v23;
 
-    v25 = [v12 containerView];
-    [v25 bounds];
+    containerView2 = [v12 containerView];
+    [containerView2 bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
 
-    v34 = [(CKChatController *)self collectionView];
-    [v34 setAutoresizingMask:0];
+    collectionView3 = [(CKChatController *)self collectionView];
+    [collectionView3 setAutoresizingMask:0];
 
-    v35 = [(CKChatController *)self collectionView];
-    [v35 setFrame:{v27, v29 - v18, v31, v33}];
+    collectionView4 = [(CKChatController *)self collectionView];
+    [collectionView4 setFrame:{v27, v29 - v18, v31, v33}];
 
-    v36 = [(CKChatController *)self collectionView];
-    [v36 setContentOffset:{v22, v24 - v18}];
+    collectionView5 = [(CKChatController *)self collectionView];
+    [collectionView5 setContentOffset:{v22, v24 - v18}];
 
-    v37 = [(CKChatController *)self collectionView];
-    [v37 layoutIfNeeded];
+    collectionView6 = [(CKChatController *)self collectionView];
+    [collectionView6 layoutIfNeeded];
 
     v38 = MEMORY[0x1E69DD250];
     v49[0] = MEMORY[0x1E69E9820];
@@ -1642,12 +1642,12 @@ void __72__CKComposeChatController__determineSpamFilterHandshakeStateForAccount_
     v49[3] = &unk_1E72EB8D0;
     v39 = v12;
     v50 = v39;
-    v51 = self;
+    selfCopy = self;
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___block_invoke_2;
     v47[3] = &unk_1E72EB9C8;
-    v40 = v19;
+    v40 = collectionView;
     v48 = v40;
     [v38 animateWithDuration:v49 animations:v47 completion:v15];
     v46[0] = MEMORY[0x1E69E9820];
@@ -1656,16 +1656,16 @@ void __72__CKComposeChatController__determineSpamFilterHandshakeStateForAccount_
     v46[3] = &unk_1E72EBA18;
     v46[4] = self;
     [MEMORY[0x1E69DD250] animateWithDuration:v46 animations:v15 * 0.5];
-    v41 = [(CKCoreChatController *)self delegate];
-    v42 = [v41 composeChatControllerShouldShowBackButtonViewDuringSendAnimation:self];
+    delegate = [(CKCoreChatController *)self delegate];
+    v42 = [delegate composeChatControllerShouldShowBackButtonViewDuringSendAnimation:self];
 
-    v43 = [(CKComposeChatController *)self navbarManager];
-    v44 = [(CKCoreChatController *)self conversation];
-    [v43 commitTransitionAnimationWithConversation:v44 shouldShowBackButtonView:v42];
+    navbarManager = [(CKComposeChatController *)self navbarManager];
+    conversation = [(CKCoreChatController *)self conversation];
+    [navbarManager commitTransitionAnimationWithConversation:conversation shouldShowBackButtonView:v42];
 
-    if (v4)
+    if (sendCopy)
     {
-      v4[2](v4);
+      sendCopy[2](sendCopy);
     }
   }
 }
@@ -1695,40 +1695,40 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
   [v2 setAlpha:0.0];
 }
 
-- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)a3
+- (void)invalidateChatItemLayoutForTraitCollectionChangeIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CKComposeChatController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  neededCopy = needed;
+  traitCollection = [(CKComposeChatController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [neededCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v20 = [(CKCoreChatController *)self collectionViewController];
-    [v20 balloonMaxWidth];
+    collectionViewController = [(CKCoreChatController *)self collectionViewController];
+    [collectionViewController balloonMaxWidth];
     v9 = v8;
-    [v20 marginInsets];
+    [collectionViewController marginInsets];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CKComposeChatController *)self traitCollection];
-    [v20 transcriptBackgroundLuminance];
-    [v20 invalidateChatItemLayoutWithNewBalloonMaxWidth:v18 marginInsets:v9 traitCollection:v11 transcriptBackgroundLuminance:{v13, v15, v17, v19}];
+    traitCollection2 = [(CKComposeChatController *)self traitCollection];
+    [collectionViewController transcriptBackgroundLuminance];
+    [collectionViewController invalidateChatItemLayoutWithNewBalloonMaxWidth:traitCollection2 marginInsets:v9 traitCollection:v11 transcriptBackgroundLuminance:{v13, v15, v17, v19}];
   }
 }
 
-- (void)addBizIntentToConversation:(id)a3
+- (void)addBizIntentToConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CKComposeChatController *)self bizIntent];
+  conversationCopy = conversation;
+  bizIntent = [(CKComposeChatController *)self bizIntent];
 
-  if (v5)
+  if (bizIntent)
   {
     [(CKComposeChatController *)self _processBizIntentIfNeeded];
-    v6 = [(CKComposeChatController *)self bizIntent];
-    v7 = [v4 chat];
-    [v7 setBizIntent:v6];
+    bizIntent2 = [(CKComposeChatController *)self bizIntent];
+    chat = [conversationCopy chat];
+    [chat setBizIntent:bizIntent2];
 
     [(CKComposeChatController *)self setBizIntent:0];
   }
@@ -1737,15 +1737,15 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
 - (void)_processBizIntentIfNeeded
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [(CKComposeChatController *)self bizIntent];
-  if (v3)
+  bizIntent = [(CKComposeChatController *)self bizIntent];
+  if (bizIntent)
   {
-    v4 = [(CKComposeChatController *)self _isAllowlistedBusinessRecipient];
+    _isAllowlistedBusinessRecipient = [(CKComposeChatController *)self _isAllowlistedBusinessRecipient];
 
-    if (v4)
+    if (_isAllowlistedBusinessRecipient)
     {
-      v5 = [(CKComposeChatController *)self bizIntent];
-      v6 = [v5 objectForKeyedSubscript:@"biz-intent-id"];
+      bizIntent2 = [(CKComposeChatController *)self bizIntent];
+      v6 = [bizIntent2 objectForKeyedSubscript:@"biz-intent-id"];
       v7 = [v6 dataUsingEncoding:4];
 
       if (v7)
@@ -1762,9 +1762,9 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
             v11 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
             {
-              v12 = [(CKComposeChatController *)self bizIntent];
+              bizIntent3 = [(CKComposeChatController *)self bizIntent];
               *buf = 138412546;
-              v48 = v12;
+              v48 = bizIntent3;
               v49 = 2112;
               v50 = v9;
               _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Fail to decode JSON bizIntent biz-intent-id [%@] due to error [%@]", buf, 0x16u);
@@ -1791,8 +1791,8 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
                 v19 = OSLogHandleForIMFoundationCategory();
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
                 {
-                  v20 = [(CKComposeChatController *)self bizIntent];
-                  v21 = [v20 objectForKeyedSubscript:@"authBag"];
+                  bizIntent4 = [(CKComposeChatController *)self bizIntent];
+                  v21 = [bizIntent4 objectForKeyedSubscript:@"authBag"];
                   *buf = 138412546;
                   v48 = v21;
                   v49 = 2112;
@@ -1804,12 +1804,12 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
 
             else
             {
-              v23 = [(CKComposeChatController *)self _anisetteData];
-              v24 = v23;
-              if (v23)
+              _anisetteData = [(CKComposeChatController *)self _anisetteData];
+              v24 = _anisetteData;
+              if (_anisetteData)
               {
-                v25 = [v23 oneTimePassword];
-                [v18 setObject:v25 forKeyedSubscript:@"X-Apple-I-MD"];
+                oneTimePassword = [_anisetteData oneTimePassword];
+                [v18 setObject:oneTimePassword forKeyedSubscript:@"X-Apple-I-MD"];
               }
 
               v42 = 0;
@@ -1859,21 +1859,21 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
                 {
                   v37 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v38 encoding:4];
                   v45[0] = @"biz-group-id";
-                  v29 = [(CKComposeChatController *)self bizIntent];
-                  v30 = [v29 objectForKeyedSubscript:@"biz-group-id"];
+                  bizIntent5 = [(CKComposeChatController *)self bizIntent];
+                  v30 = [bizIntent5 objectForKeyedSubscript:@"biz-group-id"];
                   v45[1] = @"biz-intent-id";
                   v46[0] = v30;
                   v46[1] = v37;
                   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
-                  v31 = [(CKComposeChatController *)self bizIntent];
-                  v32 = [v31 objectForKeyedSubscript:@"biz-greeting-txt"];
+                  bizIntent6 = [(CKComposeChatController *)self bizIntent];
+                  v32 = [bizIntent6 objectForKeyedSubscript:@"biz-greeting-txt"];
 
                   if (v32)
                   {
                     v33 = [v36 mutableCopy];
-                    v34 = [(CKComposeChatController *)self bizIntent];
-                    v35 = [v34 objectForKeyedSubscript:@"biz-greeting-txt"];
+                    bizIntent7 = [(CKComposeChatController *)self bizIntent];
+                    v35 = [bizIntent7 objectForKeyedSubscript:@"biz-greeting-txt"];
                     [v33 setObject:v35 forKeyedSubscript:@"biz-greeting-txt"];
                   }
 
@@ -1911,9 +1911,9 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
         v13 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [(CKComposeChatController *)self bizIntent];
+          bizIntent8 = [(CKComposeChatController *)self bizIntent];
           *buf = 138412290;
-          v48 = v14;
+          v48 = bizIntent8;
           _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Fail to decode biz-intent-id from [%@]", buf, 0xCu);
         }
       }
@@ -1924,8 +1924,8 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
 - (BOOL)_isAllowlistedBusinessRecipient
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CKComposeChatController *)self prepopulatedRecipients];
-  v4 = [v3 count];
+  prepopulatedRecipients = [(CKComposeChatController *)self prepopulatedRecipients];
+  v4 = [prepopulatedRecipients count];
 
   if (v4 == 1)
   {
@@ -1933,8 +1933,8 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(CKComposeChatController *)self prepopulatedRecipients];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    prepopulatedRecipients2 = [(CKComposeChatController *)self prepopulatedRecipients];
+    v6 = [prepopulatedRecipients2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = *v17;
@@ -1944,18 +1944,18 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(prepopulatedRecipients2);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 address];
-          v11 = [v9 handle];
-          v12 = [v11 isBusiness];
+          address = [v9 address];
+          handle = [v9 handle];
+          isBusiness = [handle isBusiness];
 
-          if (v12)
+          if (isBusiness)
           {
             v13 = IMSharedHelperBusinessAllowlist();
-            v14 = [v13 containsObject:v10];
+            v14 = [v13 containsObject:address];
 
             if (v14)
             {
@@ -1966,7 +1966,7 @@ void __69__CKComposeChatController__prepareForSendFromCardIfNecessaryAndSend___b
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [prepopulatedRecipients2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           continue;
@@ -2029,130 +2029,130 @@ LABEL_14:
 
 - (void)stageSuggestedReplies
 {
-  v3 = [(CKComposeChatController *)self suggestedRepliesData];
+  suggestedRepliesData = [(CKComposeChatController *)self suggestedRepliesData];
 
-  if (!v3)
+  if (!suggestedRepliesData)
   {
     return;
   }
 
-  v4 = [(CKCoreChatController *)self conversation];
-  v5 = [v4 chat];
+  conversation = [(CKCoreChatController *)self conversation];
+  chat = [conversation chat];
 
-  if (!v5)
+  if (!chat)
   {
-    v17 = [(CKComposeChatController *)self _updateSendingIdentity];
-    v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v7 = [v6 expandedRecipients];
+    _updateSendingIdentity = [(CKComposeChatController *)self _updateSendingIdentity];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    expandedRecipients = [composeRecipientSelectionController expandedRecipients];
 
-    if ([v7 count] != 1)
+    if ([expandedRecipients count] != 1)
     {
 
       goto LABEL_11;
     }
 
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 rawAddress];
+    v8 = [expandedRecipients objectAtIndexedSubscript:0];
+    rawAddress = [v8 rawAddress];
     v10 = IMStripFormattingFromAddress();
 
     if (v10)
     {
-      v11 = [v17 imHandleWithID:v10 alreadyCanonical:0];
+      v11 = [_updateSendingIdentity imHandleWithID:v10 alreadyCanonical:0];
       v12 = [CKPendingConversation pendingConversationForHandle:v11];
       [(CKChatController *)self setConversation:v12];
-      v13 = [(CKCoreChatController *)self delegate];
-      [v13 composeChatController:self didSelectNewConversation:v12];
+      delegate = [(CKCoreChatController *)self delegate];
+      [delegate composeChatController:self didSelectNewConversation:v12];
     }
   }
 
-  v14 = [(CKCoreChatController *)self conversation];
-  v17 = [v14 chat];
+  conversation2 = [(CKCoreChatController *)self conversation];
+  _updateSendingIdentity = [conversation2 chat];
 
-  v15 = v17;
-  if (v17)
+  v15 = _updateSendingIdentity;
+  if (_updateSendingIdentity)
   {
-    v16 = [(CKComposeChatController *)self suggestedRepliesData];
-    [v17 setSuggestedRepliesData:v16];
+    suggestedRepliesData2 = [(CKComposeChatController *)self suggestedRepliesData];
+    [_updateSendingIdentity setSuggestedRepliesData:suggestedRepliesData2];
 
-    [v17 reloadChatItemsForSuggestedRepliesChange];
+    [_updateSendingIdentity reloadChatItemsForSuggestedRepliesChange];
     [(CKComposeChatController *)self setSuggestedRepliesData:0];
 LABEL_11:
-    v15 = v17;
+    v15 = _updateSendingIdentity;
   }
 }
 
 - (id)outgoingComposeViewForSendAnimation
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v3 = [v2 fieldStackContainerView];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  fieldStackContainerView = [composeRecipientSelectionController fieldStackContainerView];
 
-  return v3;
+  return fieldStackContainerView;
 }
 
 - (BOOL)isSafeToMarkAsRead
 {
   v7.receiver = self;
   v7.super_class = CKComposeChatController;
-  v3 = [(CKChatController *)&v7 isSafeToMarkAsRead];
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v5 = [v4 isSearchResultsHidden];
+  isSafeToMarkAsRead = [(CKChatController *)&v7 isSafeToMarkAsRead];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  isSearchResultsHidden = [composeRecipientSelectionController isSearchResultsHidden];
 
-  return v3 & v5;
+  return isSafeToMarkAsRead & isSearchResultsHidden;
 }
 
 - (double)topInsetPadding
 {
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
 
   v4 = 0.0;
-  if (![(CKChatController *)self isAnimatingMessageSend]&& v3 && !CKIsRunningInMacCatalyst())
+  if (![(CKChatController *)self isAnimatingMessageSend]&& composeRecipientSelectionController && !CKIsRunningInMacCatalyst())
   {
-    v5 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [v5 collapsedHeight];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    [composeRecipientSelectionController2 collapsedHeight];
     v7 = v6;
 
-    v8 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [v8 fromFieldHeight];
+    composeRecipientSelectionController3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    [composeRecipientSelectionController3 fromFieldHeight];
     v4 = v7 + v9;
   }
 
   return v4;
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   if (![(CKComposeChatController *)self ignoreKeyboardNotifications])
   {
     v5.receiver = self;
     v5.super_class = CKComposeChatController;
-    [(CKChatController *)&v5 keyboardWillHide:v4];
+    [(CKChatController *)&v5 keyboardWillHide:hideCopy];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   if (![(CKComposeChatController *)self ignoreKeyboardNotifications])
   {
     v6.receiver = self;
     v6.super_class = CKComposeChatController;
-    [(CKChatController *)&v6 keyboardWillShow:v4];
-    v5 = [(CKChatController *)self entryView];
-    [v5 setNeedsLayout];
+    [(CKChatController *)&v6 keyboardWillShow:showCopy];
+    entryView = [(CKChatController *)self entryView];
+    [entryView setNeedsLayout];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CKCoreChatController *)self inputController];
-  [v7 setPreventResignFirstResponder:1];
+  animatedCopy = animated;
+  completionCopy = completion;
+  inputController = [(CKCoreChatController *)self inputController];
+  [inputController setPreventResignFirstResponder:1];
 
   v8.receiver = self;
   v8.super_class = CKComposeChatController;
-  [(CKChatController *)&v8 dismissViewControllerAnimated:v4 completion:v6];
+  [(CKChatController *)&v8 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
 - (UIEdgeInsets)macToolbarInsets
@@ -2162,9 +2162,9 @@ LABEL_11:
   v5 = *(MEMORY[0x1E69DDCE0] + 16);
   v6 = *(MEMORY[0x1E69DDCE0] + 24);
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 useMacToolbar];
+  useMacToolbar = [v7 useMacToolbar];
 
-  if (v8)
+  if (useMacToolbar)
   {
     [(CKChatController *)self preferredMacToolbarHeight];
     v10 = v9;
@@ -2210,17 +2210,17 @@ LABEL_11:
 
   else
   {
-    v5 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v6 = [v5 expandedRecipients];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    expandedRecipients = [composeRecipientSelectionController expandedRecipients];
 
-    v7 = [(CKChatController *)self entryView];
-    v8 = [v7 composition];
+    entryView = [(CKChatController *)self entryView];
+    composition = [entryView composition];
 
-    v9 = [v8 mediaObjects];
-    v10 = [v8 subject];
-    v11 = [v10 string];
+    mediaObjects = [composition mediaObjects];
+    subject = [composition subject];
+    string = [subject string];
 
-    if (![v6 count] || (-[CKCoreChatController conversation](self, "conversation"), v12 = objc_claimAutoreleasedReturnValue(), -[CKCoreChatController conversation](self, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "sendingService"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "_headerTitleForPendingMediaObjects:subject:onService:", v9, v11, v14), v3 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v3))
+    if (![expandedRecipients count] || (-[CKCoreChatController conversation](self, "conversation"), v12 = objc_claimAutoreleasedReturnValue(), -[CKCoreChatController conversation](self, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "sendingService"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "_headerTitleForPendingMediaObjects:subject:onService:", mediaObjects, string, v14), v3 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v3))
     {
       v15 = CKFrameworkBundle();
       v3 = [v15 localizedStringForKey:@"NEW_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -2230,48 +2230,48 @@ LABEL_11:
   return v3;
 }
 
-- (void)_updateTitleAnimated:(BOOL)a3
+- (void)_updateTitleAnimated:(BOOL)animated
 {
   v3.receiver = self;
   v3.super_class = CKComposeChatController;
-  [(CKChatController *)&v3 _updateTitleAnimated:a3];
+  [(CKChatController *)&v3 _updateTitleAnimated:animated];
 }
 
-- (void)navbarManagerIsAnimatingNavbarTransition:(id)a3
+- (void)navbarManagerIsAnimatingNavbarTransition:(id)transition
 {
-  v4 = [(CKComposeChatController *)self navigationItem];
-  v5 = [v4 titleView];
+  navigationItem = [(CKComposeChatController *)self navigationItem];
+  titleView = [navigationItem titleView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(CKComposeChatController *)self navigationItem];
-    v16 = [v6 titleView];
+    navigationItem2 = [(CKComposeChatController *)self navigationItem];
+    titleView2 = [navigationItem2 titleView];
   }
 
   else
   {
-    v16 = 0;
+    titleView2 = 0;
   }
 
-  v7 = [(CKComposeChatController *)self navbarManager];
-  v8 = [v7 contentView];
+  navbarManager = [(CKComposeChatController *)self navbarManager];
+  contentView = [navbarManager contentView];
 
-  [v8 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-  [v16 setHeight:v9];
-  v10 = [(CKComposeChatController *)self navigationController];
-  v11 = [v10 navigationBar];
-  v12 = [v11 superview];
-  [v12 setNeedsLayout];
+  [contentView sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [titleView2 setHeight:v9];
+  navigationController = [(CKComposeChatController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  superview = [navigationBar superview];
+  [superview setNeedsLayout];
 
-  v13 = [(CKComposeChatController *)self navigationController];
-  v14 = [v13 navigationBar];
-  v15 = [v14 superview];
-  [v15 layoutIfNeeded];
+  navigationController2 = [(CKComposeChatController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  superview2 = [navigationBar2 superview];
+  [superview2 layoutIfNeeded];
 }
 
-- (void)transcriptNavigationBar:(id)a3 didTapToPerformAction:(int64_t)a4
+- (void)transcriptNavigationBar:(id)bar didTapToPerformAction:(int64_t)action
 {
-  if (a4 == 6)
+  if (action == 6)
   {
     [(CKComposeChatController *)self cancelButtonTapped];
   }
@@ -2279,9 +2279,9 @@ LABEL_11:
 
 - (void)_updateNavigationButtons
 {
-  v3 = [(CKChatController *)self transcriptNavigationBarController];
+  transcriptNavigationBarController = [(CKChatController *)self transcriptNavigationBarController];
   v2 = +[_TtC7ChatKit29TranscriptNavigationBarChange barButtonsChange];
-  [v3 applyChange:v2];
+  [transcriptNavigationBarController applyChange:v2];
 }
 
 - (int64_t)currentTranscriptNavigationBarMode
@@ -2332,33 +2332,33 @@ LABEL_11:
 - (void)cancelCompose
 {
   [(CKComposeChatController *)self setNewComposeCancelled:1];
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v3 stopCheckingRecipientAvailabilityAndRemoveAllTimers];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController stopCheckingRecipientAvailabilityAndRemoveAllTimers];
 
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v4 setSearchResultsHidden:1];
+  composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController2 setSearchResultsHidden:1];
 
   [(CKChatController *)self setTargetFirstResponder:0];
-  v5 = [(CKChatController *)self splitViewController];
-  if (!v5 || (v6 = v5, -[CKChatController splitViewController](self, "splitViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isCollapsed], v7, v6, v8))
+  splitViewController = [(CKChatController *)self splitViewController];
+  if (!splitViewController || (v6 = splitViewController, -[CKChatController splitViewController](self, "splitViewController"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isCollapsed], v7, v6, v8))
   {
     [(CKChatController *)self dismissKeyboard];
     [(CKComposeChatController *)self reloadInputViews];
   }
 
-  v9 = [(CKCoreChatController *)self inputController];
-  [v9 requestPhotoBrowserToUnstageAllImages];
+  inputController = [(CKCoreChatController *)self inputController];
+  [inputController requestPhotoBrowserToUnstageAllImages];
 
-  v10 = [(CKCoreChatController *)self delegate];
-  [v10 composeChatControllerDidCancelComposition:self];
+  delegate = [(CKCoreChatController *)self delegate];
+  [delegate composeChatControllerDidCancelComposition:self];
 }
 
 - (BOOL)isReadOnly
 {
-  v2 = [(CKCoreChatController *)self chat];
-  v3 = [v2 isReadOnly];
+  chat = [(CKCoreChatController *)self chat];
+  isReadOnly = [chat isReadOnly];
 
-  return v3;
+  return isReadOnly;
 }
 
 - (BOOL)shouldShowEntryView
@@ -2369,10 +2369,10 @@ LABEL_11:
   {
     if (![(CKComposeChatController *)self newComposeCancelled])
     {
-      v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      v7 = [v6 isSearchResultsHidden];
+      composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+      isSearchResultsHidden = [composeRecipientSelectionController isSearchResultsHidden];
 
-      if (v7)
+      if (isSearchResultsHidden)
       {
         LOBYTE(v3) = 1;
         return v3;
@@ -2440,54 +2440,54 @@ LABEL_10:
   {
     v5.receiver = self;
     v5.super_class = CKComposeChatController;
-    v3 = [(CKChatController *)&v5 inputAccessoryViewController];
+    inputAccessoryViewController = [(CKChatController *)&v5 inputAccessoryViewController];
   }
 
   else
   {
-    v3 = 0;
+    inputAccessoryViewController = 0;
   }
 
-  return v3;
+  return inputAccessoryViewController;
 }
 
 - (id)inputAccessoryView
 {
   if (CKInputAccessoryViewControllerEnabled() || ![(CKComposeChatController *)self shouldShowEntryView])
   {
-    v3 = 0;
+    inputAccessoryView = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CKComposeChatController;
-    v3 = [(CKChatController *)&v5 inputAccessoryView];
+    inputAccessoryView = [(CKChatController *)&v5 inputAccessoryView];
   }
 
-  return v3;
+  return inputAccessoryView;
 }
 
 - (double)_entryViewTopInsetPadding
 {
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v3 collapsedHeight];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController collapsedHeight];
   v5 = v4;
 
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v6 glassPlatterLayoutMargins];
+  composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController2 glassPlatterLayoutMargins];
   v8 = v7;
   v10 = v9;
 
   v11 = v5 + v8 + v10;
-  v12 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v13 = [v12 shouldHideFromField];
+  composeRecipientSelectionController3 = [(CKComposeChatController *)self composeRecipientSelectionController];
+  shouldHideFromField = [composeRecipientSelectionController3 shouldHideFromField];
 
-  if ((v13 & 1) == 0)
+  if ((shouldHideFromField & 1) == 0)
   {
-    v14 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v15 = [v14 fromFieldContainerView];
-    [v15 frame];
+    composeRecipientSelectionController4 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    fromFieldContainerView = [composeRecipientSelectionController4 fromFieldContainerView];
+    [fromFieldContainerView frame];
     v17 = v16;
 
     return v11 + v17;
@@ -2514,46 +2514,46 @@ LABEL_10:
   v11.super_class = CKComposeChatController;
   [(CKChatController *)&v11 reloadEntryViewIfNeeded];
   v4 = [CKMentionsController alloc];
-  v5 = [(CKChatController *)self entryView];
-  v6 = [v5 contentView];
-  v7 = [v6 textView];
-  v8 = [(CKCoreChatController *)self conversation];
-  v9 = [(CKMentionsController *)v4 initWithEntryTextView:v7 conversation:v8];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  textView = [contentView textView];
+  conversation = [(CKCoreChatController *)self conversation];
+  v9 = [(CKMentionsController *)v4 initWithEntryTextView:textView conversation:conversation];
   [(CKChatController *)self setMentionsController:v9];
 
   [(CKComposeChatController *)self _reloadMentionsData];
-  v10 = [(CKChatController *)self entryView];
-  if (v10)
+  entryView2 = [(CKChatController *)self entryView];
+  if (entryView2)
   {
-    [v10 setComposingRecipient:{-[CKComposeChatController isComposingRecipient](self, "isComposingRecipient")}];
-    [v10 setFailedRecipients:{-[CKComposeChatController hasFailedRecipients](self, "hasFailedRecipients")}];
-    [v10 setUnreachableEmergencyRecipient:{-[CKComposeChatController hasUnreachableEmergencyRecipient](self, "hasUnreachableEmergencyRecipient")}];
+    [entryView2 setComposingRecipient:{-[CKComposeChatController isComposingRecipient](self, "isComposingRecipient")}];
+    [entryView2 setFailedRecipients:{-[CKComposeChatController hasFailedRecipients](self, "hasFailedRecipients")}];
+    [entryView2 setUnreachableEmergencyRecipient:{-[CKComposeChatController hasUnreachableEmergencyRecipient](self, "hasUnreachableEmergencyRecipient")}];
   }
 }
 
 - (BOOL)reloadEntryViewForStagedPluginMessage
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatController *)self entryView];
-  v4 = [v3 composition];
-  v5 = [v4 shelfPluginPayload];
-  v6 = [v5 pluginBundleID];
+  entryView = [(CKChatController *)self entryView];
+  composition = [entryView composition];
+  shelfPluginPayload = [composition shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
 
-  if (![v6 length])
+  if (![pluginBundleID length])
   {
     goto LABEL_12;
   }
 
   v7 = IMBalloonExtensionIDWithSuffix();
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  if (([pluginBundleID isEqualToString:v7] & 1) == 0)
   {
 
     goto LABEL_12;
   }
 
-  v8 = [(CKComposeChatController *)self recipientsListChanged];
+  recipientsListChanged = [(CKComposeChatController *)self recipientsListChanged];
 
-  if (!v8)
+  if (!recipientsListChanged)
   {
 LABEL_12:
     v12 = 0;
@@ -2565,9 +2565,9 @@ LABEL_12:
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(CKComposeChatController *)self recipientsListChanged];
+      recipientsListChanged2 = [(CKComposeChatController *)self recipientsListChanged];
       v11 = "NO";
-      if (v10)
+      if (recipientsListChanged2)
       {
         v11 = "YES";
       }
@@ -2585,43 +2585,43 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)_shouldValidatePayloadBeforeSendingPayload:(id)a3
+- (BOOL)_shouldValidatePayloadBeforeSendingPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 requiresValidation];
+    requiresValidation = [payloadCopy requiresValidation];
   }
 
   else
   {
-    v4 = 0;
+    requiresValidation = 0;
   }
 
-  return v4;
+  return requiresValidation;
 }
 
-- (void)messageEntryViewDidChange:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5 isTranslationChange:(BOOL)a6
+- (void)messageEntryViewDidChange:(id)change isTextChange:(BOOL)textChange isShelfChange:(BOOL)shelfChange isTranslationChange:(BOOL)translationChange
 {
   v10.receiver = self;
   v10.super_class = CKComposeChatController;
-  [(CKChatController *)&v10 messageEntryViewDidChange:a3 isTextChange:a4 isShelfChange:a5 isTranslationChange:a6];
+  [(CKChatController *)&v10 messageEntryViewDidChange:change isTextChange:textChange isShelfChange:shelfChange isTranslationChange:translationChange];
   [(CKComposeChatController *)self _updateTitleAnimated:1];
-  v7 = [(CKChatController *)self _currentPresentationController];
+  _currentPresentationController = [(CKChatController *)self _currentPresentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(CKChatController *)self composition];
-    -[CKComposeChatController setModalInPresentation:](self, "setModalInPresentation:", [v9 hasContent]);
+    composition = [(CKChatController *)self composition];
+    -[CKComposeChatController setModalInPresentation:](self, "setModalInPresentation:", [composition hasContent]);
   }
 }
 
-- (void)messageEntryViewSendButtonHit:(id)a3
+- (void)messageEntryViewSendButtonHit:(id)hit
 {
-  v4 = a3;
+  hitCopy = hit;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -2632,9 +2632,9 @@ LABEL_13:
     }
   }
 
-  v6 = [(CKChatController *)self effectPickerWindow];
+  effectPickerWindow = [(CKChatController *)self effectPickerWindow];
 
-  if (v6)
+  if (effectPickerWindow)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2670,23 +2670,23 @@ LABEL_14:
 
   else
   {
-    v9 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v10 = [v9 allowedByScreenTime];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    allowedByScreenTime = [composeRecipientSelectionController allowedByScreenTime];
 
-    if (v10)
+    if (allowedByScreenTime)
     {
       v11 = +[CKAdaptivePresentationController sharedInstance];
       [v11 dismissViewControllerAnimated:1 completion:0];
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:self selector:sel__passKitUIDismissed_ name:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__passKitUIDismissed_ name:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
 
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __57__CKComposeChatController_messageEntryViewSendButtonHit___block_invoke;
       v14[3] = &unk_1E72ED6D8;
       v14[4] = self;
-      [v4 compositionWithAcceptedAutocorrection:v14];
+      [hitCopy compositionWithAcceptedAutocorrection:v14];
     }
 
     else
@@ -3062,19 +3062,19 @@ uint64_t __57__CKComposeChatController_messageEntryViewSendButtonHit___block_inv
   return [*(a1 + 32) sendCompositionIfAllowed:*(a1 + 40)];
 }
 
-- (void)_passKitUIDismissed:(id)a3
+- (void)_passKitUIDismissed:(id)dismissed
 {
-  v4 = [(CKComposeChatController *)self deferredSendAnimationBlock];
-  if (v4)
+  deferredSendAnimationBlock = [(CKComposeChatController *)self deferredSendAnimationBlock];
+  if (deferredSendAnimationBlock)
   {
-    v5 = v4;
+    v5 = deferredSendAnimationBlock;
     v6 = +[CKPluginExtensionStateObserver sharedInstance];
-    v7 = [v6 passKitUIPresented];
+    passKitUIPresented = [v6 passKitUIPresented];
 
-    if ((v7 & 1) == 0)
+    if ((passKitUIPresented & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 removeObserver:self name:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"CKPluginExtensionStateObserverPassKitUIDismissed" object:0];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -3097,9 +3097,9 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
   return [v4 setDeferredSendAnimationBlock:0];
 }
 
-- (void)messageEntryViewSendButtonHitWhileDisabled:(id)a3
+- (void)messageEntryViewSendButtonHitWhileDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -3112,35 +3112,35 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
 
   v10.receiver = self;
   v10.super_class = CKComposeChatController;
-  [(CKChatController *)&v10 messageEntryViewSendButtonHitWhileDisabled:v4];
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v7 = [v6 toFieldIsFirstResponder];
+  [(CKChatController *)&v10 messageEntryViewSendButtonHitWhileDisabled:disabledCopy];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toFieldIsFirstResponder = [composeRecipientSelectionController toFieldIsFirstResponder];
 
-  if (v7)
+  if (toFieldIsFirstResponder)
   {
-    v8 = [(CKChatController *)self entryView];
-    v9 = [v8 contentView];
-    [v9 makeActive];
+    entryView = [(CKChatController *)self entryView];
+    contentView = [entryView contentView];
+    [contentView makeActive];
   }
 }
 
 - (id)textViewOnscreenWithEntryView
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v3 = [v2 toField];
-  v4 = [v3 textView];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  textView = [toField textView];
 
-  return v4;
+  return textView;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CKChatController *)self funCameraViewController];
-  if (v3)
+  funCameraViewController = [(CKChatController *)self funCameraViewController];
+  if (funCameraViewController)
   {
-    v4 = [(CKChatController *)self funCameraViewController];
-    v5 = [v4 isDismissing] ^ 1;
+    funCameraViewController2 = [(CKChatController *)self funCameraViewController];
+    v5 = [funCameraViewController2 isDismissing] ^ 1;
   }
 
   else
@@ -3150,9 +3150,9 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
 
   if ([(CKChatController *)self targetFirstResponder]== 2)
   {
-    v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v7 = [v6 toField];
-    v8 = [v7 becomeFirstResponder];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    toField = [composeRecipientSelectionController toField];
+    becomeFirstResponder = [toField becomeFirstResponder];
 
     if (IMOSLoggingEnabled())
     {
@@ -3160,7 +3160,7 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = @"NO";
-        if (v8)
+        if (becomeFirstResponder)
         {
           v10 = @"YES";
         }
@@ -3171,7 +3171,7 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
       }
     }
 
-    if (v8)
+    if (becomeFirstResponder)
     {
       return 1;
     }
@@ -3182,16 +3182,16 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
 
   else
   {
-    v12 = [(CKComposeChatController *)self presentedViewController];
-    v13 = (v12 != 0) & v5;
+    presentedViewController = [(CKComposeChatController *)self presentedViewController];
+    v13 = (presentedViewController != 0) & v5;
 
     if (v13)
     {
       return 0;
     }
 
-    v15 = self;
-    v14 = &v15;
+    selfCopy = self;
+    v14 = &selfCopy;
   }
 
   v14->super_class = CKComposeChatController;
@@ -3207,12 +3207,12 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
 
   else
   {
-    v4 = [(CKChatController *)self targetFirstResponder];
+    targetFirstResponder = [(CKChatController *)self targetFirstResponder];
 
-    if (!v4)
+    if (!targetFirstResponder)
     {
-      v5 = [(CKComposeChatController *)self proposedRecipients];
-      v6 = [v5 count];
+      proposedRecipients = [(CKComposeChatController *)self proposedRecipients];
+      v6 = [proposedRecipients count];
 
       if (v6)
       {
@@ -3231,32 +3231,32 @@ uint64_t __47__CKComposeChatController__passKitUIDismissed___block_invoke(uint64
   [(CKComposeChatController *)self becomeFirstResponder];
 }
 
-- (void)sendAnimationManagerWillStartAnimation:(id)a3 context:(id)a4
+- (void)sendAnimationManagerWillStartAnimation:(id)animation context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = CKComposeChatController;
-  [(CKChatController *)&v17 sendAnimationManagerWillStartAnimation:a3 context:v6];
+  [(CKChatController *)&v17 sendAnimationManagerWillStartAnimation:animation context:contextCopy];
   if (![(CKComposeChatController *)self sendingViaCardUI]&& !CKIsRunningInMacCatalyst())
   {
-    v7 = [v6 impactIdentifier];
+    impactIdentifier = [contextCopy impactIdentifier];
 
-    if (!v7)
+    if (!impactIdentifier)
     {
-      v8 = [(CKCoreChatController *)self delegate];
-      v9 = [v8 composeChatControllerShouldShowBackButtonViewDuringSendAnimation:self];
+      delegate = [(CKCoreChatController *)self delegate];
+      v9 = [delegate composeChatControllerShouldShowBackButtonViewDuringSendAnimation:self];
 
-      v10 = [(CKComposeChatController *)self navbarManager];
-      v11 = [(CKCoreChatController *)self conversation];
-      [v10 commitTransitionAnimationWithConversation:v11 shouldShowBackButtonView:v9];
+      navbarManager = [(CKComposeChatController *)self navbarManager];
+      conversation = [(CKCoreChatController *)self conversation];
+      [navbarManager commitTransitionAnimationWithConversation:conversation shouldShowBackButtonView:v9];
 
-      v12 = [(CKChatController *)self transcriptNavigationBarController];
+      transcriptNavigationBarController = [(CKChatController *)self transcriptNavigationBarController];
       v13 = +[_TtC7ChatKit29TranscriptNavigationBarChange barButtonsChange];
-      [v12 applyChange:v13];
+      [transcriptNavigationBarController applyChange:v13];
 
-      v14 = [(CKChatController *)self transcriptNavigationBarController];
+      transcriptNavigationBarController2 = [(CKChatController *)self transcriptNavigationBarController];
       v15 = +[_TtC7ChatKit29TranscriptNavigationBarChange titleDisplayModeChange];
-      [v14 applyChange:v15];
+      [transcriptNavigationBarController2 applyChange:v15];
 
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -3277,19 +3277,19 @@ void __74__CKComposeChatController_sendAnimationManagerWillStartAnimation_contex
   [v2 setFrame:{v4.origin.x, -CGRectGetHeight(v4), v4.size.width, v4.size.height}];
 }
 
-- (void)recipientSelectionController:(id)a3 didSelectConversation:(id)a4 isiMessagable:(BOOL)a5
+- (void)recipientSelectionController:(id)controller didSelectConversation:(id)conversation isiMessagable:(BOOL)messagable
 {
-  v60 = a5;
+  messagableCopy = messagable;
   v76 = *MEMORY[0x1E69E9840];
-  v64 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v75 = v7;
+      v75 = conversationCopy;
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "recipientSelectionController didSelectConversation: %@", buf, 0xCu);
     }
   }
@@ -3303,57 +3303,57 @@ void __74__CKComposeChatController_sendAnimationManagerWillStartAnimation_contex
     v10 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKBackfillTimingKey"];
     [v10 startTimingForKey:@"composeDelegateWork"];
 
-    v63 = [(CKCoreChatController *)self delegate];
-    v62 = [(CKCoreChatController *)self collectionViewController];
-    if (v62)
+    delegate = [(CKCoreChatController *)self delegate];
+    collectionViewController = [(CKCoreChatController *)self collectionViewController];
+    if (collectionViewController)
     {
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __92__CKComposeChatController_recipientSelectionController_didSelectConversation_isiMessagable___block_invoke;
       v69[3] = &unk_1E72EB880;
-      v70 = v63;
-      v71 = self;
-      v72 = v7;
-      [v62 updateTranscript:v69 animated:0 completion:0];
+      v70 = delegate;
+      selfCopy = self;
+      v72 = conversationCopy;
+      [collectionViewController updateTranscript:v69 animated:0 completion:0];
     }
 
     else
     {
-      [v63 composeChatController:self didSelectNewConversation:v7];
+      [delegate composeChatController:self didSelectNewConversation:conversationCopy];
     }
 
-    v11 = [(CKComposeChatController *)self navbarManager];
-    [v11 updateContentsForConversation:v7];
+    navbarManager = [(CKComposeChatController *)self navbarManager];
+    [navbarManager updateContentsForConversation:conversationCopy];
 
     v12 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKBackfillTimingKey"];
     [v12 stopTimingForKey:@"composeDelegateWork"];
 
-    v13 = [(CKCoreChatController *)self conversation];
-    v14 = [v13 chat];
-    v15 = v14 == 0;
+    conversation = [(CKCoreChatController *)self conversation];
+    chat = [conversation chat];
+    v15 = chat == 0;
 
     if (!v15)
     {
-      v16 = [MEMORY[0x1E695DF00] date];
-      [CKPowerLog sendTranscriptVisibilityChangedEvent:v16 event:1 metadata:0];
+      date = [MEMORY[0x1E695DF00] date];
+      [CKPowerLog sendTranscriptVisibilityChangedEvent:date event:1 metadata:0];
     }
 
-    [(CKChatController *)self setConversation:v7 forceReload:1];
-    v17 = [(CKCoreChatController *)self collectionViewController];
-    [v17 sizeFullTranscriptIfNecessary];
+    [(CKChatController *)self setConversation:conversationCopy forceReload:1];
+    collectionViewController2 = [(CKCoreChatController *)self collectionViewController];
+    [collectionViewController2 sizeFullTranscriptIfNecessary];
 
-    v18 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    [v18 updateScrollPocketInteractionsIfNeeded];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    [composeRecipientSelectionController updateScrollPocketInteractionsIfNeeded];
 
-    v19 = [v64 expandedRecipients];
-    v61 = [(CKComposeChatController *)self hasUnreachableEmergencyRecipient];
-    if (v61)
+    expandedRecipients = [controllerCopy expandedRecipients];
+    hasUnreachableEmergencyRecipient = [(CKComposeChatController *)self hasUnreachableEmergencyRecipient];
+    if (hasUnreachableEmergencyRecipient)
     {
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v20 = v19;
+      v20 = expandedRecipients;
       v21 = [v20 countByEnumeratingWithState:&v65 objects:v73 count:16];
       if (v21)
       {
@@ -3368,7 +3368,7 @@ void __74__CKComposeChatController_sendAnimationManagerWillStartAnimation_contex
             }
 
             v24 = *(*(&v65 + 1) + 8 * i);
-            v25 = [v24 rawAddress];
+            rawAddress = [v24 rawAddress];
             IsEmergencyPhoneNumber = IMStringIsEmergencyPhoneNumber();
 
             if (IsEmergencyPhoneNumber)
@@ -3376,9 +3376,9 @@ void __74__CKComposeChatController_sendAnimationManagerWillStartAnimation_contex
               v27 = CKFrameworkBundle();
               v28 = [v27 localizedStringForKey:@"CANNOT_SEND_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
 
-              v29 = [v24 rawAddress];
+              rawAddress2 = [v24 rawAddress];
               v30 = IMNormalizedPhoneNumberForPhoneNumber();
-              v31 = [v29 isEqualToIgnoringCase:v30];
+              v31 = [rawAddress2 isEqualToIgnoringCase:v30];
 
               v32 = CKFrameworkBundle();
               v33 = v32;
@@ -3419,51 +3419,51 @@ void __74__CKComposeChatController_sendAnimationManagerWillStartAnimation_contex
 LABEL_25:
     }
 
-    v40 = [(CKCoreChatController *)self conversation];
-    v41 = [v40 chat];
-    v42 = [v41 chatStyle] == 45;
+    conversation2 = [(CKCoreChatController *)self conversation];
+    chat2 = [conversation2 chat];
+    v42 = [chat2 chatStyle] == 45;
 
-    if (v42 && [v19 count] == 1)
+    if (v42 && [expandedRecipients count] == 1)
     {
-      v43 = [v19 objectAtIndex:0];
-      v58 = [v43 rawAddress];
+      v43 = [expandedRecipients objectAtIndex:0];
+      rawAddress3 = [v43 rawAddress];
 
-      v44 = [MEMORY[0x1E69A5A80] sharedInstance];
-      v45 = [v44 activeIMessageAccount];
+      mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+      activeIMessageAccount = [mEMORY[0x1E69A5A80] activeIMessageAccount];
 
-      v46 = [(CKCoreChatController *)self conversation];
-      v59 = [v19 objectAtIndex:0];
-      v47 = [(CKComposeChatController *)self shouldForceToSMSForConversation:v46 forRecipient:v59];
-      if (v47 && !v60)
+      conversation3 = [(CKCoreChatController *)self conversation];
+      v59 = [expandedRecipients objectAtIndex:0];
+      v47 = [(CKComposeChatController *)self shouldForceToSMSForConversation:conversation3 forRecipient:v59];
+      if (v47 && !messagableCopy)
       {
-        v48 = [MEMORY[0x1E69A5A80] sharedInstance];
-        v49 = [MEMORY[0x1E69A5C90] smsService];
-        v50 = [v48 accountsForService:v49];
-        v51 = [v50 firstObject];
+        mEMORY[0x1E69A5A80]2 = [MEMORY[0x1E69A5A80] sharedInstance];
+        smsService = [MEMORY[0x1E69A5C90] smsService];
+        v50 = [mEMORY[0x1E69A5A80]2 accountsForService:smsService];
+        firstObject = [v50 firstObject];
 
-        v45 = v51;
+        activeIMessageAccount = firstObject;
       }
 
-      if (v47 || v60)
+      if (v47 || messagableCopy)
       {
-        v52 = [v45 imHandleWithID:v58];
-        v53 = [(CKCoreChatController *)self conversation];
+        v52 = [activeIMessageAccount imHandleWithID:rawAddress3];
+        conversation4 = [(CKCoreChatController *)self conversation];
 
-        v54 = [v53 chat];
-        [v54 setRecipient:v52];
+        chat3 = [conversation4 chat];
+        [chat3 setRecipient:v52];
       }
 
       else
       {
-        v53 = v46;
+        conversation4 = conversation3;
       }
     }
 
-    v55 = [(CKChatController *)self entryView];
-    [v55 setFailedRecipients:{-[CKComposeChatController hasFailedRecipients](self, "hasFailedRecipients")}];
+    entryView = [(CKChatController *)self entryView];
+    [entryView setFailedRecipients:{-[CKComposeChatController hasFailedRecipients](self, "hasFailedRecipients")}];
 
-    v56 = [(CKChatController *)self entryView];
-    [v56 setUnreachableEmergencyRecipient:v61];
+    entryView2 = [(CKChatController *)self entryView];
+    [entryView2 setUnreachableEmergencyRecipient:hasUnreachableEmergencyRecipient];
 
     v57 = [MEMORY[0x1E69A6170] globalTimingCollectionForKey:@"CKBackfillTimingKey"];
     [v57 stopTimingForKey:@"didSelectConversation"];
@@ -3474,38 +3474,38 @@ LABEL_25:
   [(CKComposeChatController *)self stageSuggestedReplies];
 }
 
-- (void)recipientSelectionControllerShouldResignFirstResponder:(id)a3
+- (void)recipientSelectionControllerShouldResignFirstResponder:(id)responder
 {
-  v4 = [(CKChatController *)self entryView];
-  v3 = [v4 contentView];
-  [v3 makeActive];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  [contentView makeActive];
 }
 
-- (BOOL)shouldForceToSMSForConversation:(id)a3 forRecipient:(id)a4
+- (BOOL)shouldForceToSMSForConversation:(id)conversation forRecipient:(id)recipient
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKComposeChatController *)self handleForRecipientNormalizedAddress:v7];
+  conversationCopy = conversation;
+  recipientCopy = recipient;
+  v8 = [(CKComposeChatController *)self handleForRecipientNormalizedAddress:recipientCopy];
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [v6 chat];
+  chat = [conversationCopy chat];
 
-  if (v9)
+  if (chat)
   {
-    v10 = [v6 chat];
-    v9 = [v10 lastFinishedMessageItem];
+    chat2 = [conversationCopy chat];
+    chat = [chat2 lastFinishedMessageItem];
 
-    v11 = [v9 handle];
+    handle = [chat handle];
     v12 = [v8 ID];
-    if (!v9 || !v11 || ([v11 isEqualToString:v12] & 1) != 0)
+    if (!chat || !handle || ([handle isEqualToString:v12] & 1) != 0)
     {
 
 LABEL_7:
-      LOBYTE(v9) = 0;
+      LOBYTE(chat) = 0;
       goto LABEL_8;
     }
 
@@ -3515,28 +3515,28 @@ LABEL_7:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = 138412546;
-        v16 = v11;
+        v16 = handle;
         v17 = 2112;
         v18 = v12;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Should force conversation to SMS because lastHandleID:%@ != newHandleID:%@", &v15, 0x16u);
       }
     }
 
-    LOBYTE(v9) = 1;
+    LOBYTE(chat) = 1;
   }
 
 LABEL_8:
 
-  return v9;
+  return chat;
 }
 
-- (id)handleForRecipientNormalizedAddress:(id)a3
+- (id)handleForRecipientNormalizedAddress:(id)address
 {
   v3 = MEMORY[0x1E69A5A80];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 __ck_bestAccountForAddresses:0];
-  v7 = [v4 normalizedAddress];
+  addressCopy = address;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance __ck_bestAccountForAddresses:0];
+  normalizedAddress = [addressCopy normalizedAddress];
 
   v8 = IMStripFormattingFromAddress();
   v9 = [v6 imHandleWithID:v8 alreadyCanonical:0];
@@ -3544,53 +3544,53 @@ LABEL_8:
   return v9;
 }
 
-- (id)chatForIMHandle:(id)a3
+- (id)chatForIMHandle:(id)handle
 {
   v3 = MEMORY[0x1E69A5AF8];
-  v4 = a3;
-  v5 = [v3 sharedRegistry];
-  v6 = [v5 existingChatForIMHandle:v4 allowRetargeting:0 fixChatHandle:0];
+  handleCopy = handle;
+  sharedRegistry = [v3 sharedRegistry];
+  v6 = [sharedRegistry existingChatForIMHandle:handleCopy allowRetargeting:0 fixChatHandle:0];
 
   return v6;
 }
 
-- (id)associatedScrollViewForRecipientSelectionController:(id)a3
+- (id)associatedScrollViewForRecipientSelectionController:(id)controller
 {
-  v3 = [(CKCoreChatController *)self collectionViewController];
-  v4 = [v3 collectionView];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  return v4;
+  return collectionView;
 }
 
-- (BOOL)recipientSelectionIsGroup:(id)a3
+- (BOOL)recipientSelectionIsGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CKComposeChatController *)self prepopulatedRecipients];
-  if ([v5 count] > 1)
+  groupCopy = group;
+  prepopulatedRecipients = [(CKComposeChatController *)self prepopulatedRecipients];
+  if ([prepopulatedRecipients count] > 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [v4 recipients];
-    v7 = [v6 count] > 1;
+    recipients = [groupCopy recipients];
+    v7 = [recipients count] > 1;
   }
 
   return v7;
 }
 
-- (double)visibleInputAndEntryViewHeightToAvoidForRecipientSelectionController:(id)a3
+- (double)visibleInputAndEntryViewHeightToAvoidForRecipientSelectionController:(id)controller
 {
   [(CKChatController *)self visibleInputViewHeight];
   v5 = v4;
-  v6 = [(CKChatController *)self entryView];
-  v7 = [v6 window];
-  if (v7)
+  entryView = [(CKChatController *)self entryView];
+  window = [entryView window];
+  if (window)
   {
-    v8 = [(CKChatController *)self entryView];
-    v9 = [v8 heightConstraint];
-    [v9 constant];
+    entryView2 = [(CKChatController *)self entryView];
+    heightConstraint = [entryView2 heightConstraint];
+    [heightConstraint constant];
     v11 = v10;
   }
 
@@ -3602,47 +3602,47 @@ LABEL_8:
   return v5 + v11;
 }
 
-- (void)recipientSelectionControllerReturnPressed:(id)a3
+- (void)recipientSelectionControllerReturnPressed:(id)pressed
 {
-  v4 = [(CKChatController *)self entryView];
-  v3 = [v4 contentView];
-  [v3 makeActive];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  [contentView makeActive];
 }
 
-- (void)recipientSelectionControllerTabPressed:(id)a3
+- (void)recipientSelectionControllerTabPressed:(id)pressed
 {
   [(CKChatController *)self setTargetFirstResponder:1];
 
   [(CKComposeChatController *)self becomeFirstResponder];
 }
 
-- (void)recipientSelectionControllerSearchListDidShowOrHide:(id)a3
+- (void)recipientSelectionControllerSearchListDidShowOrHide:(id)hide
 {
-  v11 = a3;
-  v4 = [(CKCoreChatController *)self collectionViewController];
-  v5 = [v4 collectionView];
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v5 setScrollsToTop:{objc_msgSend(v6, "isSearchResultsHidden")}];
+  hideCopy = hide;
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [collectionView setScrollsToTop:{objc_msgSend(composeRecipientSelectionController, "isSearchResultsHidden")}];
 
   if (__CurrentTestName)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"PPTSearchListDidShowOrHideNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PPTSearchListDidShowOrHideNotification" object:self userInfo:0];
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 isEntryViewInputAccessory];
+  isEntryViewInputAccessory = [v8 isEntryViewInputAccessory];
 
-  if ((v9 & 1) == 0)
+  if ((isEntryViewInputAccessory & 1) == 0)
   {
-    v10 = [(CKChatController *)self entryView];
-    [v10 setHidden:{objc_msgSend(v11, "isSearchResultsHidden") ^ 1}];
+    entryView = [(CKChatController *)self entryView];
+    [entryView setHidden:{objc_msgSend(hideCopy, "isSearchResultsHidden") ^ 1}];
   }
 }
 
-- (void)recipientSelectionController:(id)a3 textDidChange:(id)a4
+- (void)recipientSelectionController:(id)controller textDidChange:(id)change
 {
-  v5 = [(CKChatController *)self entryView:a3];
+  v5 = [(CKChatController *)self entryView:controller];
   [v5 setComposingRecipient:{-[CKComposeChatController isComposingRecipient](self, "isComposingRecipient")}];
 }
 
@@ -3659,12 +3659,12 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)recipientSelectionControllerShouldDisableTopFieldInsets:(id)a3
+- (BOOL)recipientSelectionControllerShouldDisableTopFieldInsets:(id)insets
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 useMacToolbar];
+  useMacToolbar = [v4 useMacToolbar];
 
-  if (v5)
+  if (useMacToolbar)
   {
     return 0;
   }
@@ -3675,16 +3675,16 @@ LABEL_8:
   }
 }
 
-- (void)recipientSelectionController:(id)a3 didFinishAvailaiblityLookupForRecipient:(id)a4
+- (void)recipientSelectionController:(id)controller didFinishAvailaiblityLookupForRecipient:(id)recipient
 {
-  v5 = [(CKChatController *)self entryView:a3];
+  v5 = [(CKChatController *)self entryView:controller];
   [v5 setFailedRecipients:{-[CKComposeChatController hasFailedRecipients](self, "hasFailedRecipients")}];
 }
 
 - (BOOL)isComposingRecipient
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  if (!v2)
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  if (!composeRecipientSelectionController)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3704,14 +3704,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled] && !objc_msgSend(v2, "allowedByScreenTime"))
+  if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled] && !objc_msgSend(composeRecipientSelectionController, "allowedByScreenTime"))
   {
 LABEL_11:
     LOBYTE(v3) = 0;
     goto LABEL_12;
   }
 
-  v3 = [v2 finishedComposingRecipients] ^ 1;
+  v3 = [composeRecipientSelectionController finishedComposingRecipients] ^ 1;
 LABEL_12:
 
   return v3;
@@ -3719,44 +3719,44 @@ LABEL_12:
 
 - (BOOL)hasUnreachableEmergencyRecipient
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v3 = v2;
-  if (v2)
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  v3 = composeRecipientSelectionController;
+  if (composeRecipientSelectionController)
   {
-    v4 = [v2 hasUnreachableEmergencyRecipient];
+    hasUnreachableEmergencyRecipient = [composeRecipientSelectionController hasUnreachableEmergencyRecipient];
   }
 
   else
   {
-    v4 = 0;
+    hasUnreachableEmergencyRecipient = 0;
   }
 
-  return v4;
+  return hasUnreachableEmergencyRecipient;
 }
 
 - (BOOL)hasFailedRecipients
 {
-  v2 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v3 = v2;
-  if (v2)
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  v3 = composeRecipientSelectionController;
+  if (composeRecipientSelectionController)
   {
-    v4 = [v2 hasFailediMessageRecipients];
+    hasFailediMessageRecipients = [composeRecipientSelectionController hasFailediMessageRecipients];
   }
 
   else
   {
-    v4 = 0;
+    hasFailediMessageRecipients = 0;
   }
 
-  return v4;
+  return hasFailediMessageRecipients;
 }
 
-- (void)showConversation:(id)a3 animate:(BOOL)a4
+- (void)showConversation:(id)conversation animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKCoreChatController *)self delegate];
-  [v7 showConversation:v6 animate:v4];
+  animateCopy = animate;
+  conversationCopy = conversation;
+  delegate = [(CKCoreChatController *)self delegate];
+  [delegate showConversation:conversationCopy animate:animateCopy];
 }
 
 - (void)_saveDraftState
@@ -3769,16 +3769,16 @@ LABEL_12:
 
   else
   {
-    v3 = [(CKCoreChatController *)self inputController];
-    [v3 requestPhotoBrowserToPrepareForDraft];
+    inputController = [(CKCoreChatController *)self inputController];
+    [inputController requestPhotoBrowserToPrepareForDraft];
 
-    v4 = [(CKCoreChatController *)self inputController];
+    inputController2 = [(CKCoreChatController *)self inputController];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__CKComposeChatController__saveDraftState__block_invoke;
     v6[3] = &unk_1E72ED6D8;
     v6[4] = self;
-    [v4 requestPollPluginToPrepareForDraftWithCompletion:v6];
+    [inputController2 requestPollPluginToPrepareForDraftWithCompletion:v6];
   }
 }
 
@@ -3798,16 +3798,16 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
 
 - (BOOL)_shouldRestoreDraftState
 {
-  v3 = [(CKChatController *)self composition];
-  if ([v3 hasContent])
+  composition = [(CKChatController *)self composition];
+  if ([composition hasContent])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(CKComposeChatController *)self prepopulatedComposition];
-    v4 = [v5 hasContent] ^ 1;
+    prepopulatedComposition = [(CKComposeChatController *)self prepopulatedComposition];
+    v4 = [prepopulatedComposition hasContent] ^ 1;
   }
 
   return v4;
@@ -3815,9 +3815,9 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
 
 - (void)prepareToDismissForSecondInstance
 {
-  v3 = [(CKChatController *)self effectPickerViewController];
+  effectPickerViewController = [(CKChatController *)self effectPickerViewController];
 
-  if (v3)
+  if (effectPickerViewController)
   {
     [(CKChatController *)self requestDismissKeyboardSnapshotForEffectPickerIfNeeded];
   }
@@ -3827,25 +3827,25 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
   [(CKChatController *)&v4 prepareToDismissForSecondInstance];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v8 = [v7 toField];
-  v9 = [v8 isFirstResponder];
+  senderCopy = sender;
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  isFirstResponder = [toField isFirstResponder];
 
-  if (v9)
+  if (isFirstResponder)
   {
-    v10 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v11 = [v10 toField];
-    v12 = [v11 canPerformAction:a3 withSender:v6];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    toField2 = [composeRecipientSelectionController2 toField];
+    v12 = [toField2 canPerformAction:action withSender:senderCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = CKComposeChatController;
-    v12 = [(CKChatController *)&v14 canPerformAction:a3 withSender:v6];
+    v12 = [(CKChatController *)&v14 canPerformAction:action withSender:senderCopy];
   }
 
   return v12;
@@ -3856,9 +3856,9 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
   if ([(CKComposeChatController *)self _isBusinessConversation])
   {
     v3 = +[CKUIBehavior sharedBehaviors];
-    v4 = [v3 theme];
-    v5 = [(CKComposeChatController *)self businessHandle];
-    v6 = [v4 statusBarStyleForBusinessHandle:v5];
+    theme = [v3 theme];
+    businessHandle = [(CKComposeChatController *)self businessHandle];
+    v6 = [theme statusBarStyleForBusinessHandle:businessHandle];
 
     return v6;
   }
@@ -3877,8 +3877,8 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
   v5.super_class = CKComposeChatController;
   [(CKChatController *)&v5 _updateNavigationUI];
   v3 = [(CKComposeChatController *)self shouldShowNavigationBar]^ 1;
-  v4 = [(CKComposeChatController *)self navigationItem];
-  [v4 _setPreferredNavigationBarVisibility:v3];
+  navigationItem = [(CKComposeChatController *)self navigationItem];
+  [navigationItem _setPreferredNavigationBarVisibility:v3];
 }
 
 - (BOOL)shouldShowNavigationBar
@@ -3888,10 +3888,10 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
     return 1;
   }
 
-  v4 = [(CKComposeChatController *)self traitCollection];
-  v5 = [v4 splitViewControllerLayoutEnvironment];
+  traitCollection = [(CKComposeChatController *)self traitCollection];
+  splitViewControllerLayoutEnvironment = [traitCollection splitViewControllerLayoutEnvironment];
 
-  return v5 != 1;
+  return splitViewControllerLayoutEnvironment != 1;
 }
 
 - (BOOL)shouldShowAvatarViewInTranscriptNavigationBar
@@ -3906,35 +3906,35 @@ void __42__CKComposeChatController__saveDraftState__block_invoke(uint64_t a1, vo
 
 - (void)_reloadMentionsData
 {
-  v4 = [(CKChatController *)self entryView];
-  v2 = [v4 contentView];
-  v3 = [v2 textView];
-  [v3 reloadMentionsData];
+  entryView = [(CKChatController *)self entryView];
+  contentView = [entryView contentView];
+  textView = [contentView textView];
+  [textView reloadMentionsData];
 }
 
 - (void)_triggerRecipientFinalization
 {
-  v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v2 = [v4 toField];
-  v3 = [v2 textView];
-  [v3 resignFirstResponder];
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  toField = [composeRecipientSelectionController toField];
+  textView = [toField textView];
+  [textView resignFirstResponder];
 }
 
 - (void)_updateBlackholeAlertView
 {
-  v6 = [a1 conversation];
-  v7 = [v6 senderIdentifier];
+  conversation = [self conversation];
+  senderIdentifier = [conversation senderIdentifier];
 
-  v8 = [a1 conversation];
-  v9 = [v8 recipient];
-  v10 = [v9 IDSCanonicalAddress];
+  conversation2 = [self conversation];
+  recipient = [conversation2 recipient];
+  iDSCanonicalAddress = [recipient IDSCanonicalAddress];
 
-  objc_initWeak(&location, a1);
-  if ((a2 & 1) != 0 || !a1[339])
+  objc_initWeak(&location, self);
+  if ((a2 & 1) != 0 || !self[339])
   {
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("CKComposeChatController Blackhole Status", v15);
-    [(CKComposeChatController *)a1 setBlackholeAlertStatusQueue:v16];
+    [(CKComposeChatController *)self setBlackholeAlertStatusQueue:v16];
 
     if ((a2 & 1) == 0)
     {
@@ -3952,16 +3952,16 @@ LABEL_7:
   }
 
 LABEL_4:
-  v11 = a1[339];
+  v11 = self[339];
 LABEL_5:
   *a3 = MEMORY[0x1E69E9820];
   a3[1] = 3221225472;
   a3[2] = __52__CKComposeChatController__updateBlackholeAlertView__block_invoke;
   a3[3] = &unk_1E72EC128;
-  a3[4] = v7;
-  a3[5] = v10;
-  v12 = v10;
-  v13 = v7;
+  a3[4] = senderIdentifier;
+  a3[5] = iDSCanonicalAddress;
+  v12 = iDSCanonicalAddress;
+  v13 = senderIdentifier;
   v14 = v11;
   objc_copyWeak(a3 + 6, &location);
   dispatch_async(v14, a3);
@@ -3985,16 +3985,16 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
 
 - (void)_updateSendLaterCompositionIfNecessary
 {
-  v3 = [(CKCoreChatController *)self conversation];
-  v4 = [v3 chat];
-  v5 = [v4 supportsCapabilities:0x80000];
+  conversation = [(CKCoreChatController *)self conversation];
+  chat = [conversation chat];
+  v5 = [chat supportsCapabilities:0x80000];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CKChatController *)self composition];
-    v7 = [v6 sendLaterPluginInfo];
+    composition = [(CKChatController *)self composition];
+    sendLaterPluginInfo = [composition sendLaterPluginInfo];
 
-    if (v7)
+    if (sendLaterPluginInfo)
     {
       if (IMOSLoggingEnabled())
       {
@@ -4006,27 +4006,27 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
         }
       }
 
-      v9 = [(CKChatController *)self entryView];
-      [v9 setSendLaterPluginInfo:0 animated:0];
+      entryView = [(CKChatController *)self entryView];
+      [entryView setSendLaterPluginInfo:0 animated:0];
     }
   }
 }
 
 - (BOOL)_isBusinessConversation
 {
-  v3 = [(CKComposeChatController *)self businessHandle];
-  if (v3)
+  businessHandle = [(CKComposeChatController *)self businessHandle];
+  if (businessHandle)
   {
-    v4 = 1;
+    isBusinessConversation = 1;
   }
 
   else
   {
-    v5 = [(CKCoreChatController *)self conversation];
-    v4 = [v5 isBusinessConversation];
+    conversation = [(CKCoreChatController *)self conversation];
+    isBusinessConversation = [conversation isBusinessConversation];
   }
 
-  return v4;
+  return isBusinessConversation;
 }
 
 - (BOOL)_isNewBusinessConversation
@@ -4036,13 +4036,13 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
     return 0;
   }
 
-  v4 = [(CKCoreChatController *)self conversation];
-  v5 = [v4 chat];
-  if (v5)
+  conversation = [(CKCoreChatController *)self conversation];
+  chat = [conversation chat];
+  if (chat)
   {
-    v6 = [(CKCoreChatController *)self conversation];
-    v7 = [v6 chat];
-    v3 = [v7 messageCount] == 0;
+    conversation2 = [(CKCoreChatController *)self conversation];
+    chat2 = [conversation2 chat];
+    v3 = [chat2 messageCount] == 0;
   }
 
   else
@@ -4055,15 +4055,15 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
 
 - (void)_updateBizNavbarIfNecessary
 {
-  v3 = [(CKComposeChatController *)self _isBusinessConversation];
-  v4 = [(CKComposeChatController *)self navigationController];
-  v5 = [v4 navigationBar];
-  v6 = [(CKComposeChatController *)self businessHandle];
-  [v5 enableBranding:v3 forBusinessHandle:v6];
+  _isBusinessConversation = [(CKComposeChatController *)self _isBusinessConversation];
+  navigationController = [(CKComposeChatController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  businessHandle = [(CKComposeChatController *)self businessHandle];
+  [navigationBar enableBranding:_isBusinessConversation forBusinessHandle:businessHandle];
 
-  v7 = [(CKComposeChatController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 setAccessibilityIgnoresInvertColors:v3];
+  navigationController2 = [(CKComposeChatController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setAccessibilityIgnoresInvertColors:_isBusinessConversation];
 
   [(CKComposeChatController *)self setNeedsStatusBarAppearanceUpdate];
 }
@@ -4075,18 +4075,18 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
     return;
   }
 
-  v3 = [(CKCoreChatController *)self conversation];
-  v4 = [v3 isChatBot];
+  conversation = [(CKCoreChatController *)self conversation];
+  isChatBot = [conversation isChatBot];
 
-  if (v4)
+  if (isChatBot)
   {
     return;
   }
 
-  v5 = [(CKComposeChatController *)self _isNewBusinessConversation];
-  v6 = [(CKComposeChatController *)self businessInfoView];
-  v7 = v6;
-  if (v5)
+  _isNewBusinessConversation = [(CKComposeChatController *)self _isNewBusinessConversation];
+  businessInfoView = [(CKComposeChatController *)self businessInfoView];
+  v7 = businessInfoView;
+  if (_isNewBusinessConversation)
   {
 
     if (!v7)
@@ -4094,102 +4094,102 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke(uint6
       v8 = [[CKBusinessInfoView alloc] initWithLayoutType:0];
       [(CKComposeChatController *)self setBusinessInfoView:v8];
 
-      v9 = [(CKComposeChatController *)self businessInfoView];
-      [v9 setDelegate:self];
+      businessInfoView2 = [(CKComposeChatController *)self businessInfoView];
+      [businessInfoView2 setDelegate:self];
     }
 
-    v10 = [(CKChatController *)self entryView];
+    entryView = [(CKChatController *)self entryView];
 
-    if (v10)
+    if (entryView)
     {
-      v11 = [(CKChatController *)self entryViewContainerView];
-      v12 = [(CKComposeChatController *)self view];
-      v13 = [(CKComposeChatController *)self businessInfoView];
-      [v12 insertSubview:v13 belowSubview:v11];
+      entryViewContainerView = [(CKChatController *)self entryViewContainerView];
+      view = [(CKComposeChatController *)self view];
+      businessInfoView3 = [(CKComposeChatController *)self businessInfoView];
+      [view insertSubview:businessInfoView3 belowSubview:entryViewContainerView];
     }
 
     else
     {
-      v14 = [(CKComposeChatController *)self businessInfoView];
-      v15 = [v14 superview];
+      businessInfoView4 = [(CKComposeChatController *)self businessInfoView];
+      superview = [businessInfoView4 superview];
 
-      if (v15)
+      if (superview)
       {
 LABEL_14:
-        v16 = [(CKCoreChatController *)self conversation];
-        v17 = [v16 recipients];
-        v18 = [v17 count];
+        conversation2 = [(CKCoreChatController *)self conversation];
+        recipients = [conversation2 recipients];
+        v18 = [recipients count];
 
         if (!v18)
         {
           return;
         }
 
-        v19 = [(CKCoreChatController *)self conversation];
-        v20 = [v19 recipients];
-        v21 = [v20 objectAtIndexedSubscript:0];
-        v76 = [v21 defaultIMHandle];
+        conversation3 = [(CKCoreChatController *)self conversation];
+        recipients2 = [conversation3 recipients];
+        v21 = [recipients2 objectAtIndexedSubscript:0];
+        defaultIMHandle = [v21 defaultIMHandle];
 
-        v22 = [v76 brand];
+        brand = [defaultIMHandle brand];
 
-        if (!v22)
+        if (!brand)
         {
           goto LABEL_35;
         }
 
-        v23 = [MEMORY[0x1E69A60F0] sharedInstance];
-        if ([v23 isInternalInstall])
+        mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+        if ([mEMORY[0x1E69A60F0] isInternalInstall])
         {
-          v24 = [(CKComposeChatController *)self bizIntent];
-          v25 = [v24 objectForKeyedSubscript:@"biz-greeting-txt"];
+          bizIntent = [(CKComposeChatController *)self bizIntent];
+          v25 = [bizIntent objectForKeyedSubscript:@"biz-greeting-txt"];
 
           if (v25)
           {
-            v26 = [(CKComposeChatController *)self businessInfoView];
-            v27 = [v26 greetingText];
-            v28 = [(CKComposeChatController *)self bizIntent];
-            v29 = [v28 objectForKeyedSubscript:@"biz-greeting-txt"];
-            v30 = [v27 isEqualToString:v29];
+            businessInfoView5 = [(CKComposeChatController *)self businessInfoView];
+            greetingText = [businessInfoView5 greetingText];
+            bizIntent2 = [(CKComposeChatController *)self bizIntent];
+            v29 = [bizIntent2 objectForKeyedSubscript:@"biz-greeting-txt"];
+            v30 = [greetingText isEqualToString:v29];
 
             if (v30)
             {
 LABEL_32:
-              v58 = [(CKComposeChatController *)self businessInfoView];
-              v59 = [v58 descriptionText];
-              v60 = [v76 brand];
-              v61 = [v60 localizedResponseTime];
-              v62 = [v59 isEqualToString:v61];
+              businessInfoView6 = [(CKComposeChatController *)self businessInfoView];
+              descriptionText = [businessInfoView6 descriptionText];
+              brand2 = [defaultIMHandle brand];
+              localizedResponseTime = [brand2 localizedResponseTime];
+              v62 = [descriptionText isEqualToString:localizedResponseTime];
 
               if ((v62 & 1) == 0)
               {
-                v63 = [v76 brand];
-                v64 = [v63 localizedResponseTime];
-                v65 = [(CKComposeChatController *)self businessInfoView];
-                [v65 setDescriptionText:v64];
+                brand3 = [defaultIMHandle brand];
+                localizedResponseTime2 = [brand3 localizedResponseTime];
+                businessInfoView7 = [(CKComposeChatController *)self businessInfoView];
+                [businessInfoView7 setDescriptionText:localizedResponseTime2];
               }
 
               [(CKComposeChatController *)self layoutBusinessInfoViewIfNecessary];
 LABEL_35:
-              v66 = [v76 brand];
-              v67 = [v66 name];
-              if (v67)
+              brand4 = [defaultIMHandle brand];
+              name = [brand4 name];
+              if (name)
               {
               }
 
               else
               {
-                v68 = [(CKComposeChatController *)self businessInfoView];
-                v69 = [v68 greetingText];
+                businessInfoView8 = [(CKComposeChatController *)self businessInfoView];
+                greetingText2 = [businessInfoView8 greetingText];
                 v70 = CKFrameworkBundle();
                 v71 = [v70 localizedStringForKey:@"BUSINESS_GREETING_DEFAULT_NO_BRAND" value:&stru_1F04268F8 table:@"ChatKit"];
-                v72 = [v69 isEqualToString:v71];
+                v72 = [greetingText2 isEqualToString:v71];
 
                 if ((v72 & 1) == 0)
                 {
                   v73 = CKFrameworkBundle();
                   v74 = [v73 localizedStringForKey:@"BUSINESS_GREETING_DEFAULT_NO_BRAND" value:&stru_1F04268F8 table:@"ChatKit"];
-                  v75 = [(CKComposeChatController *)self businessInfoView];
-                  [v75 setGreetingText:v74];
+                  businessInfoView9 = [(CKComposeChatController *)self businessInfoView];
+                  [businessInfoView9 setGreetingText:v74];
 
                   [(CKComposeChatController *)self layoutBusinessInfoViewIfNecessary];
                 }
@@ -4198,10 +4198,10 @@ LABEL_35:
               return;
             }
 
-            v31 = [(CKComposeChatController *)self bizIntent];
-            v32 = [v31 objectForKeyedSubscript:@"biz-greeting-txt"];
-            v33 = [(CKComposeChatController *)self businessInfoView];
-            [v33 setGreetingText:v32];
+            bizIntent3 = [(CKComposeChatController *)self bizIntent];
+            businessInfoView12 = [bizIntent3 objectForKeyedSubscript:@"biz-greeting-txt"];
+            businessInfoView10 = [(CKComposeChatController *)self businessInfoView];
+            [businessInfoView10 setGreetingText:businessInfoView12];
 
             goto LABEL_30;
           }
@@ -4211,29 +4211,29 @@ LABEL_35:
         {
         }
 
-        v31 = [v76 brand];
-        v34 = [v31 name];
-        if (!v34)
+        bizIntent3 = [defaultIMHandle brand];
+        name2 = [bizIntent3 name];
+        if (!name2)
         {
 LABEL_31:
 
           goto LABEL_32;
         }
 
-        v35 = v34;
-        v36 = [(CKComposeChatController *)self businessInfoView];
-        v37 = [v36 greetingText];
+        v35 = name2;
+        businessInfoView11 = [(CKComposeChatController *)self businessInfoView];
+        greetingText3 = [businessInfoView11 greetingText];
         v38 = MEMORY[0x1E696AEC0];
         v39 = CKFrameworkBundle();
         v40 = [v39 localizedStringForKey:@"BUSINESS_GREETING_DEFAULT_BRAND" value:&stru_1F04268F8 table:@"ChatKit"];
-        v41 = [v76 brand];
-        v42 = [v41 name];
-        v43 = [v38 stringWithFormat:v40, v42];
+        brand5 = [defaultIMHandle brand];
+        name3 = [brand5 name];
+        v43 = [v38 stringWithFormat:v40, name3];
 
-        v44 = [MEMORY[0x1E69DC668] sharedApplication];
-        v45 = [v44 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-        if (v45 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v46 = @"\u200F";
         }
@@ -4245,7 +4245,7 @@ LABEL_31:
 
         v47 = [(__CFString *)v46 stringByAppendingString:v43];
 
-        v48 = [v37 isEqualToString:v47];
+        v48 = [greetingText3 isEqualToString:v47];
         if (v48)
         {
           goto LABEL_32;
@@ -4254,14 +4254,14 @@ LABEL_31:
         v49 = MEMORY[0x1E696AEC0];
         v50 = CKFrameworkBundle();
         v51 = [v50 localizedStringForKey:@"BUSINESS_GREETING_DEFAULT_BRAND" value:&stru_1F04268F8 table:@"ChatKit"];
-        v52 = [v76 brand];
-        v53 = [v52 name];
-        v54 = [v49 stringWithFormat:v51, v53];
+        brand6 = [defaultIMHandle brand];
+        name4 = [brand6 name];
+        v54 = [v49 stringWithFormat:v51, name4];
 
-        v55 = [MEMORY[0x1E69DC668] sharedApplication];
-        v56 = [v55 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-        if (v56 == 1)
+        if (userInterfaceLayoutDirection2 == 1)
         {
           v57 = @"\u200F";
         }
@@ -4271,56 +4271,56 @@ LABEL_31:
           v57 = @"\u200E";
         }
 
-        v31 = [(__CFString *)v57 stringByAppendingString:v54];
+        bizIntent3 = [(__CFString *)v57 stringByAppendingString:v54];
 
-        v32 = [(CKComposeChatController *)self businessInfoView];
-        [v32 setGreetingText:v31];
+        businessInfoView12 = [(CKComposeChatController *)self businessInfoView];
+        [businessInfoView12 setGreetingText:bizIntent3];
 LABEL_30:
 
         goto LABEL_31;
       }
 
-      v11 = [(CKComposeChatController *)self view];
-      v12 = [(CKComposeChatController *)self businessInfoView];
-      [v11 addSubview:v12];
+      entryViewContainerView = [(CKComposeChatController *)self view];
+      view = [(CKComposeChatController *)self businessInfoView];
+      [entryViewContainerView addSubview:view];
     }
 
     goto LABEL_14;
   }
 
-  [v6 removeFromSuperview];
+  [businessInfoView removeFromSuperview];
 
   [(CKComposeChatController *)self setBusinessInfoView:0];
 }
 
 - (void)layoutBusinessInfoViewIfNecessary
 {
-  v3 = [(CKComposeChatController *)self businessInfoView];
+  businessInfoView = [(CKComposeChatController *)self businessInfoView];
 
-  if (v3)
+  if (businessInfoView)
   {
-    v4 = [(CKComposeChatController *)self view];
-    [v4 bounds];
+    view = [(CKComposeChatController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
 
-    v11 = [(CKComposeChatController *)self view];
-    [v11 safeAreaInsets];
+    view2 = [(CKComposeChatController *)self view];
+    [view2 safeAreaInsets];
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
     v18 = v6 + v15;
     v19 = v10 - (v15 + v17);
-    v20 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v21 = [v20 parentViewController];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+    parentViewController = [composeRecipientSelectionController parentViewController];
 
-    if (v21)
+    if (parentViewController)
     {
-      v22 = [(CKComposeChatController *)self composeRecipientSelectionController];
-      v23 = [v22 fieldStackContainerView];
-      [v23 frame];
+      composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+      fieldStackContainerView = [composeRecipientSelectionController2 fieldStackContainerView];
+      [fieldStackContainerView frame];
       v25 = v24;
       v27 = v26;
       v29 = v28;
@@ -4336,79 +4336,79 @@ LABEL_30:
     else
     {
       v33 = +[CKUIBehavior sharedBehaviors];
-      v34 = [v33 useMacToolbar];
+      useMacToolbar = [v33 useMacToolbar];
 
-      if (v34)
+      if (useMacToolbar)
       {
         MaxY = v8 + v13;
       }
 
       else
       {
-        v35 = [(CKComposeChatController *)self navigationController];
-        v36 = [v35 navigationBar];
-        [v36 frame];
+        navigationController = [(CKComposeChatController *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar frame];
         MaxY = CGRectGetMaxY(v44);
       }
     }
 
-    v37 = [(CKComposeChatController *)self businessInfoView];
-    [v37 sizeThatFits:{v19, 1.79769313e308}];
+    businessInfoView2 = [(CKComposeChatController *)self businessInfoView];
+    [businessInfoView2 sizeThatFits:{v19, 1.79769313e308}];
     v39 = v38;
 
-    v40 = [(CKComposeChatController *)self businessInfoView];
-    [v40 setFrame:{v18, MaxY, v19, v39}];
+    businessInfoView3 = [(CKComposeChatController *)self businessInfoView];
+    [businessInfoView3 setFrame:{v18, MaxY, v19, v39}];
 
-    v41 = [(CKComposeChatController *)self businessInfoView];
-    [v41 setNeedsLayout];
+    businessInfoView4 = [(CKComposeChatController *)self businessInfoView];
+    [businessInfoView4 setNeedsLayout];
   }
 }
 
-- (void)businessInfoView:(id)a3 infoButtonTapped:(id)a4
+- (void)businessInfoView:(id)view infoButtonTapped:(id)tapped
 {
-  v5 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:{@"com.apple.onboarding.businesschat", a4}];
+  v5 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:{@"com.apple.onboarding.businesschat", tapped}];
   [v5 setPresentingViewController:self];
   [v5 present];
 }
 
-- (void)handleAddressBookChange:(id)a3
+- (void)handleAddressBookChange:(id)change
 {
-  v3 = [(CKComposeChatController *)self view];
-  [v3 setNeedsLayout];
+  view = [(CKComposeChatController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)configureWithToolbarController:(id)a3
+- (void)configureWithToolbarController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CKComposeChatController;
-  [(CKChatController *)&v7 configureWithToolbarController:a3];
+  [(CKChatController *)&v7 configureWithToolbarController:controller];
   if ([(CKComposeChatController *)self _isBusinessConversation])
   {
     v4 = [CKBusinessMacToolbarViewController alloc];
-    v5 = [(CKComposeChatController *)self businessHandle];
-    v6 = [(CKBusinessMacToolbarViewController *)v4 initWithConversation:v5 showingInStandAloneWindow:[(CKCoreChatController *)self showingInStandAloneWindow]];
+    businessHandle = [(CKComposeChatController *)self businessHandle];
+    v6 = [(CKBusinessMacToolbarViewController *)v4 initWithConversation:businessHandle showingInStandAloneWindow:[(CKCoreChatController *)self showingInStandAloneWindow]];
     [(CKChatController *)self setBusinessMacToolbarController:v6];
   }
 }
 
-- (void)providerWillBeRemovedFromToolbarController:(id)a3
+- (void)providerWillBeRemovedFromToolbarController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CKComposeChatController;
-  [(CKChatController *)&v7 providerWillBeRemovedFromToolbarController:a3];
-  v4 = +[CKUIBehavior sharedBehaviors];
-  if ([v4 useMacToolbar])
+  [(CKChatController *)&v7 providerWillBeRemovedFromToolbarController:controller];
+  composeRecipientSelectionController2 = +[CKUIBehavior sharedBehaviors];
+  if ([composeRecipientSelectionController2 useMacToolbar])
   {
-    v5 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
 
-    if (!v5)
+    if (!composeRecipientSelectionController)
     {
       return;
     }
 
-    v4 = [(CKComposeChatController *)self composeRecipientSelectionController];
-    v6 = [v4 view];
-    [v6 removeFromSuperview];
+    composeRecipientSelectionController2 = [(CKComposeChatController *)self composeRecipientSelectionController];
+    view = [composeRecipientSelectionController2 view];
+    [view removeFromSuperview];
   }
 }
 
@@ -4440,36 +4440,36 @@ LABEL_30:
 {
   if ([(CKCoreChatController *)self isShowingLockoutView])
   {
-    v3 = 0;
+    virtualToolbarItem = 0;
   }
 
   else
   {
-    v3 = [(CKComposeChatController *)self virtualToolbarItem];
+    virtualToolbarItem = [(CKComposeChatController *)self virtualToolbarItem];
   }
 
-  return v3;
+  return virtualToolbarItem;
 }
 
 - (BOOL)canShowBusinessOnboarding
 {
-  v3 = [(CKComposeChatController *)self businessHandle];
-  if (v3)
+  businessHandle = [(CKComposeChatController *)self businessHandle];
+  if (businessHandle)
   {
-    v4 = v3;
-    v5 = [(CKComposeChatController *)self businessHandle];
-    v6 = [v5 isMapKitBusiness];
+    v4 = businessHandle;
+    businessHandle2 = [(CKComposeChatController *)self businessHandle];
+    isMapKitBusiness = [businessHandle2 isMapKitBusiness];
 
-    if (v6)
+    if (isMapKitBusiness)
     {
       return 1;
     }
   }
 
-  v8 = [(CKCoreChatController *)self conversation];
-  v9 = [v8 isMapKitBusinessConversation];
+  conversation = [(CKCoreChatController *)self conversation];
+  isMapKitBusinessConversation = [conversation isMapKitBusinessConversation];
 
-  return v9;
+  return isMapKitBusinessConversation;
 }
 
 - (void)didFinishShowingBusinessOnboarding
@@ -4479,31 +4479,31 @@ LABEL_30:
   [(CKComposeChatController *)self becomeFirstResponder];
 }
 
-- (void)suggestionsController:(id)a3 didSelectRecipient:(id)a4
+- (void)suggestionsController:(id)controller didSelectRecipient:(id)recipient
 {
-  v5 = a4;
-  v6 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  [v6 addRecipient:v5];
+  recipientCopy = recipient;
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  [composeRecipientSelectionController addRecipient:recipientCopy];
 }
 
-- (void)suggestionsController:(id)a3 didDeselectRecipient:(id)a4
+- (void)suggestionsController:(id)controller didDeselectRecipient:(id)recipient
 {
-  v4 = a4;
+  recipientCopy = recipient;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [CKComposeChatController suggestionsController:v4 didDeselectRecipient:v5];
+    [CKComposeChatController suggestionsController:recipientCopy didDeselectRecipient:v5];
   }
 }
 
-- (id)selectedRecipientsForSuggestionsController:(id)a3
+- (id)selectedRecipientsForSuggestionsController:(id)controller
 {
-  v3 = [(CKComposeChatController *)self composeRecipientSelectionController];
-  v4 = [v3 recipients];
-  v5 = v4;
-  if (v4)
+  composeRecipientSelectionController = [(CKComposeChatController *)self composeRecipientSelectionController];
+  recipients = [composeRecipientSelectionController recipients];
+  v5 = recipients;
+  if (recipients)
   {
-    v6 = v4;
+    v6 = recipients;
   }
 
   else
@@ -4516,11 +4516,11 @@ LABEL_30:
   return v6;
 }
 
-- (void)setBlackholeAlertStatusQueue:(uint64_t)a1
+- (void)setBlackholeAlertStatusQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 2712), a2);
+    objc_storeStrong((queue + 2712), a2);
   }
 }
 
@@ -4554,10 +4554,10 @@ void __52__CKComposeChatController__updateBlackholeAlertView__block_invoke_2(uin
 
 - (uint64_t)_updateBlackholeAlertView
 {
-  v2 = [a1 blackholeAlertView];
-  [v2 removeFromSuperview];
+  blackholeAlertView = [self blackholeAlertView];
+  [blackholeAlertView removeFromSuperview];
 
-  return [a1 setBlackholeAlertView:0];
+  return [self setBlackholeAlertView:0];
 }
 
 - (void)suggestionsController:(uint64_t)a1 didDeselectRecipient:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

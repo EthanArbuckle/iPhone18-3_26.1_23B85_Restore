@@ -1,11 +1,11 @@
 @interface SBFluidSwitcherItemContainerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHasMultipleWindows;
 - (BOOL)_accessibilityIsNewWindowContainer;
 - (BOOL)_accessibilityIsNotFirstElement;
 - (BOOL)_accessibilityIsShelfItemContainer;
 - (BOOL)_accessibilityScrollToVisible;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)canBecomeFocused;
 - (CGRect)_accessibilityVisibleFrame;
 - (double)_axScaleTransformForFocusLayerLineWidth;
@@ -27,63 +27,63 @@
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityCloseApp:(id)a3;
+- (void)_accessibilityCloseApp:(id)app;
 @end
 
 @implementation SBFluidSwitcherItemContainerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBMainSwitcherWindow"];
-  [v3 validateClass:@"SBFluidSwitcherContentView"];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"isKillable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_delegate" withType:"<SBFluidSwitcherItemContainerDelegate>"];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_scrollToAppLayout:animated:alignment:completion:" withFullSignature:{"v", "@", "B", "q", "@?", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_appLayout" withType:"SBAppLayout"];
-  [v3 validateClass:@"SBContinuityDisplayItem" hasInstanceMethod:@"appSuggestion" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBBestAppSuggestion" hasInstanceMethod:@"originatingDeviceType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBBestAppSuggestion" hasInstanceMethod:@"isLocallyGeneratedSuggestion" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"isOrContainsAppLayout:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"subtitleText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"showsMultiWindowIndicator" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_pageView" withType:"SBAppSwitcherPageView"];
-  [v3 validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"cornerRadii" withFullSignature:{"{UIRectCornerRadii=dddd}", 0}];
-  [v3 validateClass:@"SBAppLayoutAccessibility" hasInstanceMethod:@"_axLabelForInCallService" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"killContainer:forReason:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"enumerate:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"environment" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBDisplayItem" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"itemForLayoutRole:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleUnderlayAccessoryViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"layoutRoleForItem:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleOverlayAccessoryViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainerHeaderView" hasInstanceMethod:@"titleItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainerFooterView" hasInstanceVariable:@"_titleItems" withType:"NSArray"];
-  [v3 validateClass:@"SBFluidSwitcherItemContainerHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherSpaceUnderlayAccessoryView" hasInstanceMethod:@"itemContainerHeaderView:didSelectTitleItem:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherSpaceUnderlayAccessoryView" hasInstanceVariable:@"_headerView" withType:"SBFluidSwitcherItemContainerHeaderView"];
-  [v3 validateClass:@"SBFluidSwitcherSpaceOverlayAccessoryView" hasInstanceVariable:@"_footerView" withType:"SBFluidSwitcherItemContainerFooterView"];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"leafAppLayouts" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherItemContainer"];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"isChamoisWindowingUIEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"didSelectContainer:modifierFlags:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasInstanceMethod:@"windowManagementContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherWindowManagementContext" hasInstanceMethod:@"isChamoisOrFlexibleWindowing" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBMainSwitcherWindow"];
+  [validationsCopy validateClass:@"SBFluidSwitcherContentView"];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceMethod:@"isKillable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_delegate" withType:"<SBFluidSwitcherItemContainerDelegate>"];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_scrollToAppLayout:animated:alignment:completion:" withFullSignature:{"v", "@", "B", "q", "@?", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"appLayouts" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_appLayout" withType:"SBAppLayout"];
+  [validationsCopy validateClass:@"SBContinuityDisplayItem" hasInstanceMethod:@"appSuggestion" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBBestAppSuggestion" hasInstanceMethod:@"originatingDeviceType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBBestAppSuggestion" hasInstanceMethod:@"isLocallyGeneratedSuggestion" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"isOrContainsAppLayout:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"titleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"subtitleText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceTitleItem" hasInstanceMethod:@"showsMultiWindowIndicator" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer" hasInstanceVariable:@"_pageView" withType:"SBAppSwitcherPageView"];
+  [validationsCopy validateClass:@"SBAppSwitcherPageView" hasInstanceMethod:@"cornerRadii" withFullSignature:{"{UIRectCornerRadii=dddd}", 0}];
+  [validationsCopy validateClass:@"SBAppLayoutAccessibility" hasInstanceMethod:@"_axLabelForInCallService" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"killContainer:forReason:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"enumerate:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"environment" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBDisplayItem" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"itemForLayoutRole:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleUnderlayAccessoryViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"layoutRoleForItem:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleOverlayAccessoryViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainerHeaderView" hasInstanceMethod:@"titleItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainerFooterView" hasInstanceVariable:@"_titleItems" withType:"NSArray"];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainerHeaderView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceUnderlayAccessoryView" hasInstanceMethod:@"itemContainerHeaderView:didSelectTitleItem:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceUnderlayAccessoryView" hasInstanceVariable:@"_headerView" withType:"SBFluidSwitcherItemContainerHeaderView"];
+  [validationsCopy validateClass:@"SBFluidSwitcherSpaceOverlayAccessoryView" hasInstanceVariable:@"_footerView" withType:"SBFluidSwitcherItemContainerFooterView"];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"leafAppLayouts" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherItemContainer"];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"isChamoisWindowingUIEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"didSelectContainer:modifierFlags:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasInstanceMethod:@"windowManagementContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherWindowManagementContext" hasInstanceMethod:@"isChamoisOrFlexibleWindowing" withFullSignature:{"B", 0}];
 }
 
 - (id)_axBundleIdentifier
 {
-  v2 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
-  v3 = [v2 _axBundleIdentifier];
+  _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+  _axBundleIdentifier = [_axAppLayout _axBundleIdentifier];
 
-  return v3;
+  return _axBundleIdentifier;
 }
 
 - (id)accessibilityPath
@@ -121,9 +121,9 @@ uint64_t __62__SBFluidSwitcherItemContainerAccessibility_accessibilityPath__bloc
 
 - (id)accessibilityLabel
 {
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
-  v4 = [v3 _axBundleIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x29EDBD600]];
+  _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+  _axBundleIdentifier = [_axAppLayout _axBundleIdentifier];
+  v5 = [_axBundleIdentifier isEqualToString:*MEMORY[0x29EDBD600]];
 
   if (v5)
   {
@@ -133,7 +133,7 @@ uint64_t __62__SBFluidSwitcherItemContainerAccessibility_accessibilityPath__bloc
     v18 = __Block_byref_object_copy__6;
     v19 = __Block_byref_object_dispose__6;
     v20 = 0;
-    v14 = v3;
+    v14 = _axAppLayout;
     AXPerformSafeBlock();
     v6 = v16[5];
 
@@ -150,16 +150,16 @@ uint64_t __62__SBFluidSwitcherItemContainerAccessibility_accessibilityPath__bloc
     v6 = &stru_2A22F9D20;
   }
 
-  v8 = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityTitleItem];
-  v9 = [v8 safeValueForKey:@"titleText"];
-  v13 = [v8 safeValueForKey:@"subtitleText"];
+  _accessibilityTitleItem = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityTitleItem];
+  v9 = [_accessibilityTitleItem safeValueForKey:@"titleText"];
+  v13 = [_accessibilityTitleItem safeValueForKey:@"subtitleText"];
   v10 = __UIAXStringForVariables();
 
   if (![v10 length])
   {
-    v11 = [v3 _axDisplayName];
+    _axDisplayName = [_axAppLayout _axDisplayName];
 
-    v10 = v11;
+    v10 = _axDisplayName;
   }
 
   v7 = v10;
@@ -186,19 +186,19 @@ uint64_t __63__SBFluidSwitcherItemContainerAccessibility_accessibilityLabel__blo
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityCanCloseApp])
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = accessibilityLocalizedString(@"close.app.from.switcher.title");
-    v6 = [(SBFluidSwitcherItemContainerAccessibility *)self accessibilityLabel];
-    v7 = [v4 stringWithFormat:v5, v6];
+    accessibilityLabel = [(SBFluidSwitcherItemContainerAccessibility *)self accessibilityLabel];
+    v7 = [v4 stringWithFormat:v5, accessibilityLabel];
 
     v8 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v7];
     [v8 setAttribute:@"AXCloseApp" forKey:*MEMORY[0x29EDBD828]];
     v9 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v8 target:self selector:sel__accessibilityCloseApp_];
     [v9 _accessibilitySetInternalCustomActionIdentifier:@"AX_CLOSE"];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   if ([(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityHasMultipleWindows])
@@ -213,12 +213,12 @@ uint64_t __63__SBFluidSwitcherItemContainerAccessibility_accessibilityLabel__blo
     objc_copyWeak(&v15, &location);
     v12 = [v10 initWithName:v11 actionHandler:v14];
 
-    [v3 axSafelyAddObject:v12];
+    [array axSafelyAddObject:v12];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __71__SBFluidSwitcherItemContainerAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -254,8 +254,8 @@ void __71__SBFluidSwitcherItemContainerAccessibility_accessibilityCustomActions_
 {
   v3 = [(SBFluidSwitcherItemContainerAccessibility *)self safeValueForKey:@"_delegate"];
   v4 = [v3 safeArrayForKey:@"appLayouts"];
-  v5 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
-  [v4 indexOfObject:v5];
+  _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+  [v4 indexOfObject:_axAppLayout];
 
   [v4 count];
   v6 = MEMORY[0x29EDBA0F8];
@@ -271,23 +271,23 @@ void __71__SBFluidSwitcherItemContainerAccessibility_accessibilityCustomActions_
 {
   v7.receiver = self;
   v7.super_class = SBFluidSwitcherItemContainerAccessibility;
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)&v7 accessibilityTraits];
-  v4 = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityIsNewWindowContainer];
+  accessibilityTraits = [(SBFluidSwitcherItemContainerAccessibility *)&v7 accessibilityTraits];
+  _accessibilityIsNewWindowContainer = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityIsNewWindowContainer];
   v5 = *MEMORY[0x29EDC7F70];
-  if (!v4)
+  if (!_accessibilityIsNewWindowContainer)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)_accessibilityCloseApp:(id)a3
+- (void)_accessibilityCloseApp:(id)app
 {
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+  _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
   LastCustomActionAppQuitFromSwitch = CFAbsoluteTimeGetCurrent();
-  v5 = v3;
-  v4 = v3;
+  v5 = _axAppLayout;
+  v4 = _axAppLayout;
   AXPerformSafeBlock();
   AXPerformSafeBlock();
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
@@ -366,11 +366,11 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
   v4 = [v3 safeArrayForKey:@"appLayouts"];
   if ([v4 count])
   {
-    v5 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
-    if (!v5 || [v4 indexOfObject:v5] != 0x7FFFFFFFFFFFFFFFLL)
+    _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+    if (!_axAppLayout || [v4 indexOfObject:_axAppLayout] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v3;
-      v8 = v5;
+      v8 = _axAppLayout;
       AXPerformSafeBlock();
     }
   }
@@ -385,8 +385,8 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBFluidSwitcherItemContainerAccessibility *)self window];
-  [v11 bounds];
+  window = [(SBFluidSwitcherItemContainerAccessibility *)self window];
+  [window bounds];
   v27.origin.x = v12;
   v27.origin.y = v13;
   v27.size.width = v14;
@@ -412,9 +412,9 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 4)
+  if (scroll == 4)
   {
     if ([(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityCanCloseApp])
     {
@@ -458,23 +458,23 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
 
   if (AXDeviceIsPad())
   {
-    v4 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-    if (v4)
+    _axFluidSwitcher = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+    if (_axFluidSwitcher)
     {
-      v5 = v4;
-      v6 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-      v7 = [v6 _axSwitcherType];
+      v5 = _axFluidSwitcher;
+      _axFluidSwitcher2 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+      _axSwitcherType = [_axFluidSwitcher2 _axSwitcherType];
 
-      if (v7)
+      if (_axSwitcherType)
       {
-        v8 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-        v9 = [v8 _axSwitcherType];
-        v10 = v9[2]();
+        _axFluidSwitcher3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+        _axSwitcherType2 = [_axFluidSwitcher3 _axSwitcherType];
+        v10 = _axSwitcherType2[2]();
 
         if (v10 == 1)
         {
-          v11 = [(SBFluidSwitcherItemContainerAccessibility *)self _axMainSwitcher];
-          v12 = AXSwitcherController(@"activeDisplayWindowScene", v11);
+          _axMainSwitcher = [(SBFluidSwitcherItemContainerAccessibility *)self _axMainSwitcher];
+          v12 = AXSwitcherController(@"activeDisplayWindowScene", _axMainSwitcher);
 
           v13 = [v12 safeValueForKey:@"windowManagementContext"];
           v14 = [v13 safeBoolForKey:@"isChamoisOrFlexibleWindowing"];
@@ -497,8 +497,8 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
 - (id)_accessibilityPreferredScrollActions
 {
   v9[2] = *MEMORY[0x29EDCA608];
-  v2 = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityApplicationIsRTL];
-  if (v2)
+  _accessibilityApplicationIsRTL = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityApplicationIsRTL];
+  if (_accessibilityApplicationIsRTL)
   {
     v3 = 2009;
   }
@@ -508,7 +508,7 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
     v3 = 2008;
   }
 
-  if (v2)
+  if (_accessibilityApplicationIsRTL)
   {
     v4 = 2008;
   }
@@ -531,8 +531,8 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
 {
   v3 = [(SBFluidSwitcherItemContainerAccessibility *)self safeValueForKey:@"_delegate"];
   v4 = [v3 safeDictionaryForKey:@"visibleUnderlayAccessoryViews"];
-  v5 = [(SBFluidSwitcherItemContainerAccessibility *)self _axParentAppLayout];
-  v6 = [v4 objectForKey:v5];
+  _axParentAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axParentAppLayout];
+  v6 = [v4 objectForKey:_axParentAppLayout];
   v7 = [v6 safeValueForKey:@"_headerView"];
 
   return v7;
@@ -542,8 +542,8 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
 {
   v3 = [(SBFluidSwitcherItemContainerAccessibility *)self safeValueForKey:@"_delegate"];
   v4 = [v3 safeDictionaryForKey:@"visibleOverlayAccessoryViews"];
-  v5 = [(SBFluidSwitcherItemContainerAccessibility *)self _axParentAppLayout];
-  v6 = [v4 objectForKey:v5];
+  _axParentAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axParentAppLayout];
+  v6 = [v4 objectForKey:_axParentAppLayout];
   v7 = [v6 safeValueForKey:@"_footerView"];
 
   return v7;
@@ -551,17 +551,17 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
 
 - (id)_accessibilityTitleItem
 {
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-  if (v3)
+  _axFluidSwitcher = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+  if (_axFluidSwitcher)
   {
-    v4 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-    v5 = [v4 _axSwitcherType];
+    _axFluidSwitcher2 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+    _axSwitcherType = [_axFluidSwitcher2 _axSwitcherType];
 
-    if (v5)
+    if (_axSwitcherType)
     {
-      v6 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-      v7 = [v6 _axSwitcherType];
-      if (v7[2]() == 3)
+      _axFluidSwitcher3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+      _axSwitcherType2 = [_axFluidSwitcher3 _axSwitcherType];
+      if (_axSwitcherType2[2]() == 3)
       {
         [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityItemContainerFooterView];
       }
@@ -570,16 +570,16 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
       {
         [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityItemContainerHeaderView];
       }
-      v3 = ;
+      _axFluidSwitcher = ;
     }
 
     else
     {
-      v3 = 0;
+      _axFluidSwitcher = 0;
     }
   }
 
-  v8 = [v3 safeArrayForKey:@"_titleItems"];
+  v8 = [_axFluidSwitcher safeArrayForKey:@"_titleItems"];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -590,7 +590,7 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
   v17 = 3221225472;
   v18 = __68__SBFluidSwitcherItemContainerAccessibility__accessibilityTitleItem__block_invoke;
   v19 = &unk_29F2FBCB8;
-  v20 = self;
+  selfCopy = self;
   v21 = &v22;
   AXPerformSafeBlock();
   v9 = v23[5];
@@ -599,21 +599,21 @@ void __68__SBFluidSwitcherItemContainerAccessibility__accessibilityCloseApp___bl
   if (v9)
   {
     v10 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout:v16];
-    v11 = [v10 _axDisplayItems];
-    v12 = [v11 containsObject:v9];
+    _axDisplayItems = [v10 _axDisplayItems];
+    v12 = [_axDisplayItems containsObject:v9];
 
     if (v12)
     {
-      v13 = [v8 lastObject];
+      lastObject = [v8 lastObject];
 LABEL_13:
-      v14 = v13;
+      v14 = lastObject;
       goto LABEL_15;
     }
   }
 
   if ([v8 count])
   {
-    v13 = [v8 firstObject];
+    lastObject = [v8 firstObject];
     goto LABEL_13;
   }
 
@@ -696,10 +696,10 @@ void __63__SBFluidSwitcherItemContainerAccessibility__axParentAppLayout__block_i
 
 - (id)_accessibilityAddToCenterStateAction
 {
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)self _axMainSwitcher];
-  v4 = [v3 _axIsChamoisSwitcherVisible];
+  _axMainSwitcher = [(SBFluidSwitcherItemContainerAccessibility *)self _axMainSwitcher];
+  _axIsChamoisSwitcherVisible = [_axMainSwitcher _axIsChamoisSwitcherVisible];
 
-  if (v4)
+  if (_axIsChamoisSwitcherVisible)
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -743,17 +743,17 @@ void __81__SBFluidSwitcherItemContainerAccessibility__accessibilityAddToCenterSt
 
 - (BOOL)_accessibilityIsShelfItemContainer
 {
-  v2 = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
-  v3 = [v2 _axSwitcherType];
-  v4 = v3[2]() == 3;
+  _axFluidSwitcher = [(SBFluidSwitcherItemContainerAccessibility *)self _axFluidSwitcher];
+  _axSwitcherType = [_axFluidSwitcher _axSwitcherType];
+  v4 = _axSwitcherType[2]() == 3;
 
   return v4;
 }
 
 - (BOOL)_accessibilityHasMultipleWindows
 {
-  v2 = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityTitleItem];
-  v3 = [v2 safeBoolForKey:@"showsMultiWindowIndicator"];
+  _accessibilityTitleItem = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityTitleItem];
+  v3 = [_accessibilityTitleItem safeBoolForKey:@"showsMultiWindowIndicator"];
 
   return v3;
 }
@@ -836,19 +836,19 @@ void __79__SBFluidSwitcherItemContainerAccessibility__accessibilityIsNewWindowCo
 {
   v9.receiver = self;
   v9.super_class = SBFluidSwitcherItemContainerAccessibility;
-  v3 = [(SBFluidSwitcherItemContainerAccessibility *)&v9 canBecomeFocused];
+  canBecomeFocused = [(SBFluidSwitcherItemContainerAccessibility *)&v9 canBecomeFocused];
   if ([(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 window];
+    window = [v4 window];
     NSClassFromString(&cfstr_Sbmainswitcher_3.isa);
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [MEMORY[0x29EDBDFA8] server];
-      v3 = [v7 isAppSwitcherVisible];
+      server = [MEMORY[0x29EDBDFA8] server];
+      canBecomeFocused = [server isAppSwitcherVisible];
     }
 
     else
@@ -857,7 +857,7 @@ void __79__SBFluidSwitcherItemContainerAccessibility__accessibilityIsNewWindowCo
     }
   }
 
-  return v3;
+  return canBecomeFocused;
 }
 
 - (id)_accessibilityNativeFocusPreferredElement
@@ -866,8 +866,8 @@ void __79__SBFluidSwitcherItemContainerAccessibility__accessibilityIsNewWindowCo
   v3 = [(SBFluidSwitcherItemContainerAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Sbfluidswitche_12.isa)];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  v5 = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
-  v6 = [v4 _axElementForAppLayout:v5];
+  _axAppLayout = [(SBFluidSwitcherItemContainerAccessibility *)self _axAppLayout];
+  v6 = [v4 _axElementForAppLayout:_axAppLayout];
 
   return v6;
 }

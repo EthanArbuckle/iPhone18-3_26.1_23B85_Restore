@@ -1,45 +1,45 @@
 @interface BuddyButtonConsumer
-- (BuddyButtonConsumer)initWithButtonKind:(int64_t)a3 handler:(id)a4;
+- (BuddyButtonConsumer)initWithButtonKind:(int64_t)kind handler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation BuddyButtonConsumer
 
-- (BuddyButtonConsumer)initWithButtonKind:(int64_t)a3 handler:(id)a4
+- (BuddyButtonConsumer)initWithButtonKind:(int64_t)kind handler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  kindCopy = kind;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v14;
-  v14 = 0;
+  objc_storeStrong(&location, handler);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = BuddyButtonConsumer;
   v5 = [(BuddyButtonConsumer *)&v10 init];
-  v14 = v5;
-  objc_storeStrong(&v14, v5);
+  selfCopy = v5;
+  objc_storeStrong(&selfCopy, v5);
   if (v5)
   {
     v6 = +[SBSHardwareButtonService sharedInstance];
-    v7 = [(SBSHardwareButtonService *)v6 beginConsumingPressesForButtonKind:v12 eventConsumer:v14 priority:0];
-    [v14 setButtonConsumer:v7];
+    v7 = [(SBSHardwareButtonService *)v6 beginConsumingPressesForButtonKind:kindCopy eventConsumer:selfCopy priority:0];
+    [selfCopy setButtonConsumer:v7];
 
-    [v14 setMenuHandler:location];
+    [selfCopy setMenuHandler:location];
   }
 
-  v8 = v14;
+  v8 = selfCopy;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(BSInvalidatable *)self->_buttonConsumer invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = BuddyButtonConsumer;
   [(BuddyButtonConsumer *)&v2 dealloc];
 }

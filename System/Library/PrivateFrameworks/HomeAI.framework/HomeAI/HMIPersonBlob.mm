@@ -1,56 +1,56 @@
 @interface HMIPersonBlob
-- (BOOL)isExpiredAtTimeStamp:(id *)a3;
+- (BOOL)isExpiredAtTimeStamp:(id *)stamp;
 - (CGRect)boundingBox;
-- (HMIPersonBlob)initWithNewPersonEvent:(id)a3 timeStamp:(id *)a4;
-- (float)similarityToPersonBlob:(id)a3;
+- (HMIPersonBlob)initWithNewPersonEvent:(id)event timeStamp:(id *)stamp;
+- (float)similarityToPersonBlob:(id)blob;
 - (id)shortDescription;
-- (void)trackPersonBlob:(id)a3;
+- (void)trackPersonBlob:(id)blob;
 @end
 
 @implementation HMIPersonBlob
 
-- (HMIPersonBlob)initWithNewPersonEvent:(id)a3 timeStamp:(id *)a4
+- (HMIPersonBlob)initWithNewPersonEvent:(id)event timeStamp:(id *)stamp
 {
-  v6 = a3;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = HMIPersonBlob;
   v7 = [(HMIPersonBlob *)&v27 init];
   v8 = v7;
   if (v7)
   {
-    var3 = a4->var3;
-    *(v7 + 40) = *&a4->var0;
+    var3 = stamp->var3;
+    *(v7 + 40) = *&stamp->var0;
     *(v7 + 7) = var3;
-    v10 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     personIndices = v8->_personIndices;
-    v8->_personIndices = v10;
+    v8->_personIndices = indexSet;
 
-    [v6 boundingBoxForTracker];
+    [eventCopy boundingBoxForTracker];
     v8->_boundingBox.origin.x = v12;
     v8->_boundingBox.origin.y = v13;
     v8->_boundingBox.size.width = v14;
     v8->_boundingBox.size.height = v15;
-    v16 = [v6 face];
-    v17 = [v16 faceRecognition];
-    v18 = [v17 faceprint];
+    face = [eventCopy face];
+    faceRecognition = [face faceRecognition];
+    faceprint = [faceRecognition faceprint];
     faceprint = v8->_faceprint;
-    v8->_faceprint = v18;
+    v8->_faceprint = faceprint;
 
-    v20 = [v6 torso];
-    v21 = [v20 torsoRecognition];
-    v22 = [v21 torsoprint];
+    torso = [eventCopy torso];
+    torsoRecognition = [torso torsoRecognition];
+    torsoprint = [torsoRecognition torsoprint];
     torsoprint = v8->_torsoprint;
-    v8->_torsoprint = v22;
+    v8->_torsoprint = torsoprint;
 
-    v24 = [v6 sessionEntityUUID];
-    v25 = v24;
-    if (!v24)
+    sessionEntityUUID = [eventCopy sessionEntityUUID];
+    uUID = sessionEntityUUID;
+    if (!sessionEntityUUID)
     {
-      v25 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
-    objc_storeStrong(&v8->_blobID, v25);
-    if (!v24)
+    objc_storeStrong(&v8->_blobID, uUID);
+    if (!sessionEntityUUID)
     {
     }
   }
@@ -58,48 +58,48 @@
   return v8;
 }
 
-- (void)trackPersonBlob:(id)a3
+- (void)trackPersonBlob:(id)blob
 {
-  v4 = [a3 blobID];
-  [(HMIPersonBlob *)self setBlobID:v4];
+  blobID = [blob blobID];
+  [(HMIPersonBlob *)self setBlobID:blobID];
 }
 
-- (float)similarityToPersonBlob:(id)a3
+- (float)similarityToPersonBlob:(id)blob
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMIPersonBlob *)self faceprint];
+  blobCopy = blob;
+  faceprint = [(HMIPersonBlob *)self faceprint];
   v6 = 0.17;
-  if (v5)
+  if (faceprint)
   {
-    v7 = v5;
-    v8 = [v4 faceprint];
+    v7 = faceprint;
+    faceprint2 = [blobCopy faceprint];
 
-    if (v8)
+    if (faceprint2)
     {
-      v9 = [(HMIPersonBlob *)self faceprint];
-      v10 = [v9 data];
-      v11 = [v4 faceprint];
-      v12 = [v11 data];
-      [HMIGreedyClustering faceDistanceFromDescriptor:v10 toDescriptor:v12];
+      faceprint3 = [(HMIPersonBlob *)self faceprint];
+      data = [faceprint3 data];
+      faceprint4 = [blobCopy faceprint];
+      data2 = [faceprint4 data];
+      [HMIGreedyClustering faceDistanceFromDescriptor:data toDescriptor:data2];
       v6 = v13;
     }
   }
 
-  v14 = [(HMIPersonBlob *)self torsoprint];
+  torsoprint = [(HMIPersonBlob *)self torsoprint];
   v15 = 0.15;
-  if (v14)
+  if (torsoprint)
   {
-    v16 = v14;
-    v17 = [v4 torsoprint];
+    v16 = torsoprint;
+    torsoprint2 = [blobCopy torsoprint];
 
-    if (v17)
+    if (torsoprint2)
     {
-      v18 = [(HMIPersonBlob *)self torsoprint];
-      v19 = [v18 data];
-      v20 = [v4 torsoprint];
-      v21 = [v20 data];
-      [HMIGreedyClustering faceDistanceFromDescriptor:v19 toDescriptor:v21];
+      torsoprint3 = [(HMIPersonBlob *)self torsoprint];
+      data3 = [torsoprint3 data];
+      torsoprint4 = [blobCopy torsoprint];
+      data4 = [torsoprint4 data];
+      [HMIGreedyClustering faceDistanceFromDescriptor:data3 toDescriptor:data4];
       v15 = v22;
     }
   }
@@ -109,18 +109,18 @@
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  [v4 boundingBox];
+  [blobCopy boundingBox];
   v35 = HMICGRectGeneralizedIntersectionOverUnion(v24, v26, v28, v30, v31, v32, v33, v34);
   v36 = objc_autoreleasePoolPush();
-  v37 = self;
+  selfCopy = self;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
     v60 = HMFGetLogIdentifier();
     v61 = v36;
-    if (v4)
+    if (blobCopy)
     {
-      [v4 timeStamp];
+      [blobCopy timeStamp];
     }
 
     else
@@ -129,18 +129,18 @@
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    [(HMIPersonBlob *)v37 timeStamp];
+    [(HMIPersonBlob *)selfCopy timeStamp];
     v40 = CMTimeGetSeconds(&time);
-    [v4 boundingBox];
+    [blobCopy boundingBox];
     v45 = HMICGRectDescription(v41, v42, v43, v44);
-    v59 = [v4 blobID];
-    v58 = [v59 UUIDString];
-    v46 = [v58 substringToIndex:3];
-    [(HMIPersonBlob *)v37 boundingBox];
+    blobID = [blobCopy blobID];
+    uUIDString = [blobID UUIDString];
+    v46 = [uUIDString substringToIndex:3];
+    [(HMIPersonBlob *)selfCopy boundingBox];
     v51 = HMICGRectDescription(v47, v48, v49, v50);
-    v52 = [(HMIPersonBlob *)v37 blobID];
-    v53 = [v52 UUIDString];
-    v54 = [v53 substringToIndex:3];
+    blobID2 = [(HMIPersonBlob *)selfCopy blobID];
+    uUIDString2 = [blobID2 UUIDString];
+    v54 = [uUIDString2 substringToIndex:3];
     LODWORD(time.value) = 138546434;
     *(&time.value + 4) = v60;
     LOWORD(time.flags) = 2048;
@@ -200,10 +200,10 @@
   return v55;
 }
 
-- (BOOL)isExpiredAtTimeStamp:(id *)a3
+- (BOOL)isExpiredAtTimeStamp:(id *)stamp
 {
   [(HMIPersonBlob *)self timeStamp];
-  v5 = *a3;
+  v5 = *stamp;
   CMTimeSubtract(&time, &v5, &rhs);
   return CMTimeGetSeconds(&time) > 5.0;
 }
@@ -213,24 +213,24 @@
   v21 = MEMORY[0x277CCACA8];
   [(HMIPersonBlob *)self timeStamp];
   Seconds = CMTimeGetSeconds(&time);
-  v4 = [(HMIPersonBlob *)self blobID];
-  v5 = [v4 UUIDString];
-  v6 = [v5 substringToIndex:3];
+  blobID = [(HMIPersonBlob *)self blobID];
+  uUIDString = [blobID UUIDString];
+  v6 = [uUIDString substringToIndex:3];
   [(HMIPersonBlob *)self boundingBox];
   v11 = HMICGRectDescription(v7, v8, v9, v10);
-  v12 = [(HMIPersonBlob *)self faceprint];
+  faceprint = [(HMIPersonBlob *)self faceprint];
   v13 = @", ";
-  if (!v12)
+  if (!faceprint)
   {
-    v20 = [(HMIPersonBlob *)self torsoprint];
-    if (!v20)
+    torsoprint = [(HMIPersonBlob *)self torsoprint];
+    if (!torsoprint)
     {
       v13 = &stru_284057FB8;
     }
   }
 
-  v14 = [(HMIPersonBlob *)self faceprint];
-  if (v14)
+  faceprint2 = [(HMIPersonBlob *)self faceprint];
+  if (faceprint2)
   {
     v15 = @"F";
   }
@@ -240,16 +240,16 @@
     v15 = &stru_284057FB8;
   }
 
-  v16 = [(HMIPersonBlob *)self torsoprint];
+  torsoprint2 = [(HMIPersonBlob *)self torsoprint];
   v17 = @"T";
-  if (!v16)
+  if (!torsoprint2)
   {
     v17 = &stru_284057FB8;
   }
 
   v18 = [v21 stringWithFormat:@"PersonBlob(PTS:%.2f): %@ (%@%@%@%@)", *&Seconds, v6, v11, v13, v15, v17];
 
-  if (!v12)
+  if (!faceprint)
   {
   }
 

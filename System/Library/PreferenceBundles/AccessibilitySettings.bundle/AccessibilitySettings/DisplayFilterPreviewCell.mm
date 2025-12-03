@@ -1,6 +1,6 @@
 @interface DisplayFilterPreviewCell
 + (double)previewCellHeight;
-- (DisplayFilterPreviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (DisplayFilterPreviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
@@ -14,11 +14,11 @@
   return 200.0;
 }
 
-- (DisplayFilterPreviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (DisplayFilterPreviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = DisplayFilterPreviewCell;
-  v5 = [(DisplayFilterPreviewCell *)&v14 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(DisplayFilterPreviewCell *)&v14 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -56,8 +56,8 @@
   v6 = v5 + -40.0;
   v7 = (v3 - (v5 + -40.0)) * 0.5;
   v8 = (v4 - (v5 + -40.0)) * 0.5;
-  v9 = [(DisplayFilterPreviewCell *)self previewImageView];
-  [v9 setFrame:{v7, v8, v6, v6}];
+  previewImageView = [(DisplayFilterPreviewCell *)self previewImageView];
+  [previewImageView setFrame:{v7, v8, v6, v6}];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface SizeReaderUIView
 - (CGRect)frame;
-- (_TtC8SOSBuddy16SizeReaderUIView)initWithCoder:(id)a3;
-- (_TtC8SOSBuddy16SizeReaderUIView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC8SOSBuddy16SizeReaderUIView)initWithCoder:(id)coder;
+- (_TtC8SOSBuddy16SizeReaderUIView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SizeReaderUIView
 
-- (_TtC8SOSBuddy16SizeReaderUIView)initWithCoder:(id)a3
+- (_TtC8SOSBuddy16SizeReaderUIView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SizeReaderUIView();
   v7 = v8.receiver;
@@ -39,7 +39,7 @@
   sub_10014E364();
 }
 
-- (_TtC8SOSBuddy16SizeReaderUIView)initWithFrame:(CGRect)a3
+- (_TtC8SOSBuddy16SizeReaderUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

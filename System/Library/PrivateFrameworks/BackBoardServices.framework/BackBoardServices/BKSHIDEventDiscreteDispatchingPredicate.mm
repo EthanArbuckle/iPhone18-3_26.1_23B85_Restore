@@ -1,28 +1,28 @@
 @interface BKSHIDEventDiscreteDispatchingPredicate
 - (BKSHIDEventDiscreteDispatchingPredicate)init;
-- (BKSHIDEventDiscreteDispatchingPredicate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)specifiesDescriptor:(id)a3;
-- (id)_initWithSourceDescriptors:(id)a3 descriptors:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventDiscreteDispatchingPredicate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)specifiesDescriptor:(id)descriptor;
+- (id)_initWithSourceDescriptors:(id)descriptors descriptors:(id)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDiscreteDispatchingPredicate
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E690] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x1E698E690] collectionLineBreakNoneStyle];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__BKSHIDEventDiscreteDispatchingPredicate_appendDescriptionToStream___block_invoke;
   v7[3] = &unk_1E6F47C78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v6 overlayStyle:v5 block:v7];
+  v8 = streamCopy;
+  v6 = streamCopy;
+  [v6 overlayStyle:collectionLineBreakNoneStyle block:v7];
 }
 
 void __69__BKSHIDEventDiscreteDispatchingPredicate_appendDescriptionToStream___block_invoke(uint64_t a1)
@@ -54,10 +54,10 @@ LABEL_7:
   [BKSHIDEventDescriptor appendDescriptorArray:v8 toDescriptionStream:*(a1 + 40)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -65,10 +65,10 @@ LABEL_7:
   else
   {
     v5 = objc_opt_class();
-    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (senderDescriptors = self->_senderDescriptors, v8 = v4->_senderDescriptors, BSEqualObjects()))
+    if ((v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class())) && (senderDescriptors = self->_senderDescriptors, v8 = equalCopy->_senderDescriptors, BSEqualObjects()))
     {
       descriptors = self->_descriptors;
-      v10 = v4->_descriptors;
+      v10 = equalCopy->_descriptors;
       v11 = BSEqualObjects();
     }
 
@@ -81,17 +81,17 @@ LABEL_7:
   return v11;
 }
 
-- (BKSHIDEventDiscreteDispatchingPredicate)initWithCoder:(id)a3
+- (BKSHIDEventDiscreteDispatchingPredicate)initWithCoder:(id)coder
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class() || (v6 = objc_opt_class(), v6 == objc_opt_class()))
   {
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v14 forKey:@"senderDescriptors"];
+    v9 = [coderCopy decodeObjectOfClasses:v14 forKey:@"senderDescriptors"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -109,7 +109,7 @@ LABEL_7:
 LABEL_9:
         v20 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:1];
         v21 = [v15 errorWithDomain:v16 code:4866 userInfo:v20];
-        [v4 failWithError:v21];
+        [coderCopy failWithError:v21];
 
 LABEL_15:
         goto LABEL_16;
@@ -132,7 +132,7 @@ LABEL_15:
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v24 forKey:@"descriptors"];
+    v10 = [coderCopy decodeObjectOfClasses:v24 forKey:@"descriptors"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -140,7 +140,7 @@ LABEL_15:
       if (![v10 bs_containsObjectPassingTest:&__block_literal_global_33])
       {
         self = [(BKSHIDEventDiscreteDispatchingPredicate *)self _initWithSourceDescriptors:v9 descriptors:v10];
-        v32 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -168,7 +168,7 @@ LABEL_15:
 
     v30 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
     v31 = [v25 errorWithDomain:v26 code:4866 userInfo:v30];
-    [v4 failWithError:v31];
+    [coderCopy failWithError:v31];
 
     goto LABEL_15;
   }
@@ -180,14 +180,14 @@ LABEL_15:
   v36 = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v11 = [v7 errorWithDomain:v8 code:4866 userInfo:v10];
-  [v4 failWithError:v11];
+  [coderCopy failWithError:v11];
 
 LABEL_16:
-  v32 = 0;
+  selfCopy = 0;
 LABEL_17:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy;
 }
 
 BOOL __57__BKSHIDEventDiscreteDispatchingPredicate_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
@@ -208,28 +208,28 @@ BOOL __57__BKSHIDEventDiscreteDispatchingPredicate_initWithCoder___block_invoke(
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   senderDescriptors = self->_senderDescriptors;
-  v5 = a3;
-  [v5 encodeObject:senderDescriptors forKey:@"senderDescriptors"];
-  [v5 encodeObject:self->_descriptors forKey:@"descriptors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:senderDescriptors forKey:@"senderDescriptors"];
+  [coderCopy encodeObject:self->_descriptors forKey:@"descriptors"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSMutableHIDEventDiscreteDispatchingPredicate allocWithZone:a3];
+  v4 = [BKSMutableHIDEventDiscreteDispatchingPredicate allocWithZone:zone];
   senderDescriptors = self->_senderDescriptors;
   descriptors = self->_descriptors;
 
   return [(BKSHIDEventDiscreteDispatchingPredicate *)v4 _initWithSourceDescriptors:senderDescriptors descriptors:descriptors];
 }
 
-- (BOOL)specifiesDescriptor:(id)a3
+- (BOOL)specifiesDescriptor:(id)descriptor
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSSet *)self->_descriptors containsObject:v4])
+  descriptorCopy = descriptor;
+  if ([(NSSet *)self->_descriptors containsObject:descriptorCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -254,7 +254,7 @@ BOOL __57__BKSHIDEventDiscreteDispatchingPredicate_initWithCoder___block_invoke(
             objc_enumerationMutation(v6);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) describes:{v4, v11}])
+          if ([*(*(&v11 + 1) + 8 * i) describes:{descriptorCopy, v11}])
           {
             LOBYTE(v5) = 1;
             goto LABEL_13;
@@ -297,10 +297,10 @@ id __51__BKSHIDEventDiscreteDispatchingPredicate_displays__block_invoke(uint64_t
   return v5;
 }
 
-- (id)_initWithSourceDescriptors:(id)a3 descriptors:(id)a4
+- (id)_initWithSourceDescriptors:(id)descriptors descriptors:(id)a4
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  descriptorsCopy = descriptors;
   v8 = a4;
   v9 = objc_opt_class();
   if (v9 != objc_opt_class())
@@ -319,7 +319,7 @@ id __51__BKSHIDEventDiscreteDispatchingPredicate_displays__block_invoke(uint64_t
         v40 = 2114;
         v41 = v31;
         v42 = 2048;
-        v43 = self;
+        selfCopy = self;
         v44 = 2114;
         v45 = @"BKSHIDEventDiscreteDispatchingPredicate.m";
         v46 = 1024;
@@ -341,7 +341,7 @@ id __51__BKSHIDEventDiscreteDispatchingPredicate_displays__block_invoke(uint64_t
   v11 = [(BKSHIDEventDiscreteDispatchingPredicate *)&v36 init];
   if (v11)
   {
-    v12 = [v7 copy];
+    v12 = [descriptorsCopy copy];
     senderDescriptors = v11->_senderDescriptors;
     v11->_senderDescriptors = v12;
 
@@ -424,7 +424,7 @@ id __51__BKSHIDEventDiscreteDispatchingPredicate_displays__block_invoke(uint64_t
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDiscreteDispatchingPredicate.m";
     v17 = 1024;

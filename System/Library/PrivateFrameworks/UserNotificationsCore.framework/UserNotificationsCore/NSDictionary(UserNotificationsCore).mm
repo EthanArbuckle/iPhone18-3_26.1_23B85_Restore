@@ -12,7 +12,7 @@
 
 - (id)unc_safeCastObjectForKey:()UserNotificationsCore class:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = UNSafeCast();
 
   return v2;
@@ -21,7 +21,7 @@
 - (id)unc_safeCastObjectForKey:()UserNotificationsCore classes:
 {
   v6 = a4;
-  v7 = [a1 objectForKey:a3];
+  v7 = [self objectForKey:a3];
   v8 = UNSafeCastAny();
 
   return v8;
@@ -29,10 +29,10 @@
 
 - (id)unc_nonEmptyCopy
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   return v2;
@@ -40,7 +40,7 @@
 
 - (void)unc_nonNilArrayForKey:()UserNotificationsCore
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = v1;
   if (v1)
   {
@@ -59,7 +59,7 @@
 
 - (void)unc_nonNilDictionaryForKey:()UserNotificationsCore
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = v1;
   if (v1)
   {
@@ -78,7 +78,7 @@
 
 - (id)unc_nonNilSetForKey:()UserNotificationsCore
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = v1;
   if (v1)
   {
@@ -98,7 +98,7 @@
 - (__CFString)unc_safeCastNonNilStringForKey:()UserNotificationsCore
 {
   v4 = a3;
-  v5 = [a1 unc_safeCastObjectForKey:v4 class:objc_opt_class()];
+  v5 = [self unc_safeCastObjectForKey:v4 class:objc_opt_class()];
 
   if (v5)
   {

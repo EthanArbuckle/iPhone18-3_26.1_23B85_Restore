@@ -1,6 +1,6 @@
 @interface DMDValidateApplicationsOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,18 +20,18 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v4 bundleIdentifiers];
+  bundleIdentifiers = [requestCopy bundleIdentifiers];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000795F4;
   v7[3] = &unk_1000CEE68;
   v7[4] = self;
-  [v5 validateAppBundleIDs:v6 completion:v7];
+  [v5 validateAppBundleIDs:bundleIdentifiers completion:v7];
 }
 
 @end

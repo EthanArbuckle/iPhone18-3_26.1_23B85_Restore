@@ -1,12 +1,12 @@
 @interface InteropLayerPropertyValueArrayUInt32
 - (_TtC20AudioDSPManagerSwift36InteropLayerPropertyValueArrayUInt32)init;
 - (id)getValue;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 @end
 
 @implementation InteropLayerPropertyValueArrayUInt32
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC20AudioDSPManagerSwift36InteropLayerPropertyValueArrayUInt32_value) = sub_223BF468C();
   v5.receiver = self;

@@ -1,34 +1,34 @@
 @interface SBStartupTransitionToLockOut
-- (SBStartupTransitionToLockOut)initWithDestination:(unint64_t)a3 context:(id)a4;
-- (void)performTransitionWithCompletionBlock:(id)a3;
+- (SBStartupTransitionToLockOut)initWithDestination:(unint64_t)destination context:(id)context;
+- (void)performTransitionWithCompletionBlock:(id)block;
 @end
 
 @implementation SBStartupTransitionToLockOut
 
-- (SBStartupTransitionToLockOut)initWithDestination:(unint64_t)a3 context:(id)a4
+- (SBStartupTransitionToLockOut)initWithDestination:(unint64_t)destination context:(id)context
 {
   v10.receiver = self;
   v10.super_class = SBStartupTransitionToLockOut;
-  v4 = [(SBBaseStartupTransition *)&v10 initWithDestination:a3 context:a4];
+  v4 = [(SBBaseStartupTransition *)&v10 initWithDestination:destination context:context];
   if (v4)
   {
     v5 = +[SBLockScreenManager sharedInstance];
     lockScreenManager = v4->_lockScreenManager;
     v4->_lockScreenManager = v5;
 
-    v7 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     authController = v4->_authController;
-    v4->_authController = v7;
+    v4->_authController = authenticationController;
   }
 
   return v4;
 }
 
-- (void)performTransitionWithCompletionBlock:(id)a3
+- (void)performTransitionWithCompletionBlock:(id)block
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBStartupTransitionToLockOut *)a2 performTransitionWithCompletionBlock:?];
   }
@@ -41,13 +41,13 @@
   }
 
   [(SBFUserAuthenticationController *)self->_authController revokeAuthenticationImmediatelyIfNecessaryForPublicReason:@"StartupTransitionToLockOut"];
-  v7 = self;
+  selfCopy = self;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __69__SBStartupTransitionToLockOut_performTransitionWithCompletionBlock___block_invoke;
   v19[3] = &unk_2783BAA70;
-  v20 = v7;
-  v8 = v7;
+  v20 = selfCopy;
+  v8 = selfCopy;
   v9 = MEMORY[0x223D6F7F0](v19);
   lockScreenManager = v8->_lockScreenManager;
   v22[0] = @"SBUILockOptionsLockAutomaticallyKey";
@@ -67,8 +67,8 @@
   v17[1] = 3221225472;
   v17[2] = __69__SBStartupTransitionToLockOut_performTransitionWithCompletionBlock___block_invoke_2;
   v17[3] = &unk_2783A9C70;
-  v18 = v5;
-  v16 = v5;
+  v18 = blockCopy;
+  v16 = blockCopy;
   [(SBLockScreenManager *)lockScreenManager lockUIFromSource:16 withOptions:v15 completion:v17];
 }
 

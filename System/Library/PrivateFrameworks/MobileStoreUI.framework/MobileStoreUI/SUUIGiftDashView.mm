@@ -1,13 +1,13 @@
 @interface SUUIGiftDashView
 - (CGSize)dashSize;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation SUUIGiftDashView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SUUIGiftDashView *)self bounds:a3.origin.x];
+  [(SUUIGiftDashView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   p_dashSize = &self->_dashSize;

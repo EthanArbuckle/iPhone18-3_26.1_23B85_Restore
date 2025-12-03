@@ -47,16 +47,16 @@
 
 - (id)searchRecentSearchesFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"recentSearches.bplist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"recentSearches.bplist"];
 
   return v2;
 }
 
 - (id)searchIndexDatabaseFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"psi.sqlite"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"psi.sqlite"];
 
   return v2;
 }
@@ -65,8 +65,8 @@
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 libraryURL];
-  v7 = [v5 temporaryRenderContentURLForInternalRendersWithExtension:v4 appropriateForURL:v6];
+  libraryURL = [self libraryURL];
+  v7 = [v5 temporaryRenderContentURLForInternalRendersWithExtension:v4 appropriateForURL:libraryURL];
 
   return v7;
 }
@@ -83,7 +83,7 @@
   v9 = v15;
   if (v7)
   {
-    v10 = [v8 dateByAddingTimeInterval:a1];
+    v10 = [v8 dateByAddingTimeInterval:self];
     [v10 timeIntervalSinceNow];
     v12 = v11 <= 0.0;
   }
@@ -93,9 +93,9 @@
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       *buf = 138543618;
-      v18 = v13;
+      v18 = lastPathComponent;
       v19 = 2112;
       v20 = v9;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "cleanupOutboundSharingFilesWithExpiryTimeout: Cannot get the creation date on outgoing resource file %{public}@. Marking for deletion anyway, error: %@", buf, 0x16u);
@@ -115,23 +115,23 @@
   v55[1] = v4;
   v42 = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
-  v6 = [a1 privateDirectoryWithSubType:2];
-  if (![a1 isDCIM])
+  v6 = [self privateDirectoryWithSubType:2];
+  if (![self isDCIM])
   {
     goto LABEL_4;
   }
 
-  v7 = [a1 libraryURL];
-  v8 = [v7 path];
-  v9 = [v8 stringByAppendingPathComponent:@"PhotoData/OutgoingTemp"];
+  libraryURL = [self libraryURL];
+  path = [libraryURL path];
+  v9 = [path stringByAppendingPathComponent:@"PhotoData/OutgoingTemp"];
 
   if ([v6 isEqualToString:v9])
   {
 
 LABEL_4:
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:1];
-    v12 = [v10 enumeratorAtURL:v11 includingPropertiesForKeys:v5 options:12 errorHandler:&__block_literal_global_89707];
+    v12 = [defaultManager enumeratorAtURL:v11 includingPropertiesForKeys:v5 options:12 errorHandler:&__block_literal_global_89707];
 
     v48 = 0u;
     v49 = 0u;
@@ -163,11 +163,11 @@ LABEL_4:
 
         v19 = *(*(&v46 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 lastPathComponent];
-        if ([a1 _shouldRemoveOutboundResourceAtURL:v19 withExpiryInterval:a2])
+        lastPathComponent = [v19 lastPathComponent];
+        if ([self _shouldRemoveOutboundResourceAtURL:v19 withExpiryInterval:a2])
         {
           v22 = v16;
-          v23 = a1;
+          selfCopy = self;
           v24 = v17;
           v44 = 0;
           v45 = 0;
@@ -180,14 +180,14 @@ LABEL_4:
             if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v51 = v21;
+              v51 = lastPathComponent;
               v52 = 2112;
               v53 = v27;
               _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "cleanupOutboundSharingFilesWithExpiryTimeout: Cannot check if file URL is a directory, skipping: %{public}@, error: %@", buf, 0x16u);
             }
 
             v17 = v24;
-            a1 = v23;
+            self = selfCopy;
             v16 = v22;
             v15 = v43;
 LABEL_29:
@@ -199,11 +199,11 @@ LABEL_30:
           if ([v26 BOOLValue])
           {
             v17 = v24;
-            v28 = [v24 isEnumeratingDirectoryPostOrder];
-            a1 = v23;
+            isEnumeratingDirectoryPostOrder = [v24 isEnumeratingDirectoryPostOrder];
+            self = selfCopy;
             v16 = v22;
             v15 = v43;
-            if (v28 && rmdir([v19 fileSystemRepresentation]) == -1 && *__error() != 66)
+            if (isEnumeratingDirectoryPostOrder && rmdir([v19 fileSystemRepresentation]) == -1 && *__error() != 66)
             {
               v29 = PLBackendGetLog();
               if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -211,7 +211,7 @@ LABEL_30:
                 v30 = __error();
                 v31 = strerror(*v30);
                 *buf = 138543618;
-                v51 = v21;
+                v51 = lastPathComponent;
                 v52 = 2080;
                 v53 = v31;
                 _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_ERROR, "cleanupOutboundSharingFilesWithExpiryTimeout: could not remove directory: %{public}@, error: %s", buf, 0x16u);
@@ -233,7 +233,7 @@ LABEL_30:
               v38 = __error();
               v39 = strerror(*v38);
               *buf = 138543618;
-              v51 = v21;
+              v51 = lastPathComponent;
               v52 = 2080;
               v53 = v39;
               v34 = v29;
@@ -248,7 +248,7 @@ LABEL_27:
           else if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
-            v51 = v21;
+            v51 = lastPathComponent;
             v34 = v29;
             v35 = OS_LOG_TYPE_INFO;
             v36 = "cleanupOutboundSharingFilesWithExpiryTimeout: Successfully deleted expired outbound file '%{public}@'";
@@ -257,7 +257,7 @@ LABEL_27:
           }
 
           v17 = v24;
-          a1 = v23;
+          self = selfCopy;
           v16 = v22;
           v15 = v43;
           goto LABEL_29;
@@ -267,7 +267,7 @@ LABEL_27:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v51 = v21;
+          v51 = lastPathComponent;
           _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_INFO, "cleanupOutboundSharingFilesWithExpiryTimeout: Skip deleting non-expired file: %{public}@", buf, 0xCu);
         }
 
@@ -304,8 +304,8 @@ LABEL_37:
 - (id)assetCreationHoldingDirectoryForAssetUUID:()conveniences
 {
   v4 = a3;
-  v5 = [a1 assetCreationHoldingDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  assetCreationHoldingDirectory = [self assetCreationHoldingDirectory];
+  v6 = [assetCreationHoldingDirectory stringByAppendingPathComponent:v4];
 
   return v6;
 }
@@ -314,10 +314,10 @@ LABEL_37:
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v2 = [a1 validateCreationRequestWithError:&v9];
+  v2 = [self validateCreationRequestWithError:&v9];
   v3 = v9;
   v8 = v3;
-  v4 = [a1 externalDirectoryWithSubType:2 leafType:1 additionalPathComponents:0 createIfNeeded:v2 error:&v8];
+  v4 = [self externalDirectoryWithSubType:2 leafType:1 additionalPathComponents:0 createIfNeeded:v2 error:&v8];
   v5 = v8;
 
   if (v5 && ([MEMORY[0x1E69BF238] isFileExistsError:v5] & 1) == 0)
@@ -337,10 +337,10 @@ LABEL_37:
 - (uint64_t)removeComputeDirectory
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 photoDirectoryWithType:19];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  v1 = [self photoDirectoryWithType:19];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = 0;
-  v3 = [v2 removeItemAtPath:v1 error:&v7];
+  v3 = [defaultManager removeItemAtPath:v1 error:&v7];
   v4 = v7;
   if ((v3 & 1) == 0)
   {
@@ -352,12 +352,12 @@ LABEL_37:
       goto LABEL_5;
     }
 
-    v2 = PLBackendGetLog();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    defaultManager = PLBackendGetLog();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v9 = v4;
-      _os_log_impl(&dword_19BF1F000, v2, OS_LOG_TYPE_ERROR, "Failed to remove compute directory: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, defaultManager, OS_LOG_TYPE_ERROR, "Failed to remove compute directory: %@", buf, 0xCu);
     }
   }
 
@@ -369,13 +369,13 @@ LABEL_5:
 {
   v13 = *MEMORY[0x1E69E9840];
   v1 = MEMORY[0x1E695DFF8];
-  v2 = [a1 photoDirectoryWithType:20];
+  v2 = [self photoDirectoryWithType:20];
   v3 = 1;
   v4 = [v1 fileURLWithPath:v2 isDirectory:1];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v10];
+  v6 = [defaultManager removeItemAtURL:v4 error:&v10];
   v7 = v10;
   if ((v6 & 1) == 0 && (PLIsErrorFileNotFound() & 1) == 0)
   {
@@ -400,13 +400,13 @@ LABEL_5:
 {
   v4 = MEMORY[0x1E695DFF8];
   v5 = a3;
-  v6 = [a1 photoDirectoryWithType:20];
+  v6 = [self photoDirectoryWithType:20];
   v7 = [v4 fileURLWithPath:v6 isDirectory:1];
 
   v8 = [v5 substringToIndex:1];
-  v9 = [v8 uppercaseString];
+  uppercaseString = [v8 uppercaseString];
 
-  v10 = [v7 URLByAppendingPathComponent:v9];
+  v10 = [v7 URLByAppendingPathComponent:uppercaseString];
   v11 = [v10 URLByAppendingPathComponent:v5];
 
   return v11;
@@ -428,10 +428,10 @@ LABEL_5:
   v13 = a5[3];
   v14 = *(a5 + 2);
   v15 = *(a5 + 8);
-  v16 = [*MEMORY[0x1E6982EC8] preferredFilenameExtension];
-  v17 = [v11 stringWithFormat:@"%@_%lld_%d-%lld_%d.%@", v8, v12, v14, v13, v15, v16];
+  preferredFilenameExtension = [*MEMORY[0x1E6982EC8] preferredFilenameExtension];
+  v17 = [v11 stringWithFormat:@"%@_%lld_%d-%lld_%d.%@", v8, v12, v14, v13, v15, preferredFilenameExtension];
 
-  v18 = [a1 URLForPartialVideoDirectoryWithAssetUUID:v9];
+  v18 = [self URLForPartialVideoDirectoryWithAssetUUID:v9];
 
   v19 = [v18 URLByAppendingPathComponent:v17];
 
@@ -443,8 +443,8 @@ LABEL_5:
   v21 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v4 = [a1 validateCreationRequestWithError:0];
-    v5 = [a1 photoDirectoryWithType:23 additionalPathComponents:@"INFLIGHTCOMMENTS"];
+    v4 = [self validateCreationRequestWithError:0];
+    v5 = [self photoDirectoryWithType:23 additionalPathComponents:@"INFLIGHTCOMMENTS"];
     if (v4)
     {
       v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5 isDirectory:1];
@@ -453,9 +453,9 @@ LABEL_5:
       v8 = v16;
       if ((v7 & 1) == 0)
       {
-        v9 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v15 = 0;
-        v10 = [v9 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v15];
+        v10 = [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v15];
         v11 = v15;
 
         if ((v10 & 1) == 0)
@@ -463,9 +463,9 @@ LABEL_5:
           v12 = PLPhotoSharingGetLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v13 = [v6 path];
+            path = [v6 path];
             *buf = 138412546;
-            v18 = v13;
+            v18 = path;
             v19 = 2112;
             v20 = v11;
             _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "ERROR: Unable to create directory %@: %@", buf, 0x16u);
@@ -479,7 +479,7 @@ LABEL_5:
 
   else
   {
-    v5 = [a1 photoDirectoryWithType:23 additionalPathComponents:@"INFLIGHTCOMMENTS"];
+    v5 = [self photoDirectoryWithType:23 additionalPathComponents:@"INFLIGHTCOMMENTS"];
   }
 
   return v5;
@@ -487,9 +487,9 @@ LABEL_5:
 
 - (id)cloudServiceEnableLogFileURL
 {
-  v2 = [a1 validateCreationRequestWithError:0];
+  v2 = [self validateCreationRequestWithError:0];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [a1 photoDirectoryWithType:5 createIfNeeded:v2 error:0];
+  v4 = [self photoDirectoryWithType:5 createIfNeeded:v2 error:0];
   v5 = [v4 stringByAppendingPathComponent:@"cloudServiceEnableLog.plist"];
   v6 = [v3 fileURLWithPath:v5 isDirectory:0];
 
@@ -499,13 +499,13 @@ LABEL_5:
 - (uint64_t)removeCPLDataDirectory
 {
   v26 = *MEMORY[0x1E69E9840];
-  v1 = [a1 cplDataDirectoryCreateIfNeeded:0];
-  v2 = [v1 stringByDeletingPathExtension];
-  v3 = [v2 stringByAppendingString:@"-aside"];
-  v4 = [v1 pathExtension];
-  v5 = [v3 stringByAppendingPathExtension:v4];
+  v1 = [self cplDataDirectoryCreateIfNeeded:0];
+  stringByDeletingPathExtension = [v1 stringByDeletingPathExtension];
+  v3 = [stringByDeletingPathExtension stringByAppendingString:@"-aside"];
+  pathExtension = [v1 pathExtension];
+  v5 = [v3 stringByAppendingPathExtension:pathExtension];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -519,7 +519,7 @@ LABEL_5:
   }
 
   v23 = 0;
-  v9 = [v6 removeItemAtPath:v5 error:&v23];
+  v9 = [defaultManager removeItemAtPath:v5 error:&v23];
   v10 = v23;
   if (v9)
   {
@@ -565,7 +565,7 @@ LABEL_13:
 
 LABEL_15:
   v22 = v10;
-  v16 = [v6 removeItemAtPath:v1 error:&v22];
+  v16 = [defaultManager removeItemAtPath:v1 error:&v22];
   v17 = v22;
 
   if (v16)
@@ -633,16 +633,16 @@ LABEL_30:
 
 - (uint64_t)cplInitialSyncMarkerFileExists
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [a1 cplInitialSyncMarkerFilePath];
-  v4 = [v2 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cplInitialSyncMarkerFilePath = [self cplInitialSyncMarkerFilePath];
+  v4 = [defaultManager fileExistsAtPath:cplInitialSyncMarkerFilePath];
 
   return v4;
 }
 
 - (id)cplInitialSyncMarkerFilePath
 {
-  v1 = [a1 photoDirectoryWithType:14 leafType:3 createIfNeeded:0 error:0];
+  v1 = [self photoDirectoryWithType:14 leafType:3 createIfNeeded:0 error:0];
   v2 = [v1 stringByAppendingPathComponent:@"initialsync_marker"];
 
   return v2;
@@ -652,7 +652,7 @@ LABEL_30:
 {
   if (a3)
   {
-    v4 = [a1 validateCreationRequestWithError:0];
+    v4 = [self validateCreationRequestWithError:0];
   }
 
   else
@@ -660,7 +660,7 @@ LABEL_30:
     v4 = 0;
   }
 
-  v5 = [a1 photoDirectoryWithType:33 createIfNeeded:v4 error:0];
+  v5 = [self photoDirectoryWithType:33 createIfNeeded:v4 error:0];
   v6 = [v5 stringByAppendingPathComponent:@"cpl_local_mode_enabled"];
 
   return v6;
@@ -668,7 +668,7 @@ LABEL_30:
 
 - (id)cplDownloadFinishedMarkerFilePath
 {
-  v1 = [a1 photoDirectoryWithType:33 createIfNeeded:objc_msgSend(a1 error:{"validateCreationRequestWithError:", 0), 0}];
+  v1 = [self photoDirectoryWithType:33 createIfNeeded:objc_msgSend(self error:{"validateCreationRequestWithError:", 0), 0}];
   v2 = [v1 stringByAppendingPathComponent:@"cpl_download_finished_marker"];
 
   return v2;
@@ -676,7 +676,7 @@ LABEL_30:
 
 - (id)cplEnableMarkerFilePath
 {
-  v1 = [a1 photoDirectoryWithType:33 createIfNeeded:objc_msgSend(a1 error:{"validateCreationRequestWithError:", 0), 0}];
+  v1 = [self photoDirectoryWithType:33 createIfNeeded:objc_msgSend(self error:{"validateCreationRequestWithError:", 0), 0}];
   v2 = [v1 stringByAppendingPathComponent:@"cpl_enabled_marker"];
 
   return v2;
@@ -684,7 +684,7 @@ LABEL_30:
 
 - (id)wipeCPLOnOpenPath
 {
-  v1 = [a1 photoDirectoryWithType:35 createIfNeeded:objc_msgSend(a1 error:{"validateCreationRequestWithError:", 0), 0}];
+  v1 = [self photoDirectoryWithType:35 createIfNeeded:objc_msgSend(self error:{"validateCreationRequestWithError:", 0), 0}];
   v2 = [v1 stringByAppendingPathComponent:@"wipeCPLOnOpen"];
 
   return v2;
@@ -692,7 +692,7 @@ LABEL_30:
 
 - (id)forceSoftResetSyncPath
 {
-  v1 = [a1 photoDirectoryWithType:33 createIfNeeded:objc_msgSend(a1 error:{"validateCreationRequestWithError:", 0), 0}];
+  v1 = [self photoDirectoryWithType:33 createIfNeeded:objc_msgSend(self error:{"validateCreationRequestWithError:", 0), 0}];
   v2 = [v1 stringByAppendingPathComponent:@"forceSoftResetSync"];
 
   return v2;
@@ -700,7 +700,7 @@ LABEL_30:
 
 - (id)disableICloudPhotosFilePath
 {
-  v1 = [a1 photoDirectoryWithType:35 createIfNeeded:objc_msgSend(a1 error:{"validateCreationRequestWithError:", 0), 0}];
+  v1 = [self photoDirectoryWithType:35 createIfNeeded:objc_msgSend(self error:{"validateCreationRequestWithError:", 0), 0}];
   v2 = [v1 stringByAppendingPathComponent:@"disableICloudPhotos"];
 
   return v2;
@@ -708,7 +708,7 @@ LABEL_30:
 
 - (id)pauseICloudPhotosFilePath
 {
-  v1 = [a1 cplDataDirectoryCreateIfNeeded:1];
+  v1 = [self cplDataDirectoryCreateIfNeeded:1];
   v2 = [v1 stringByAppendingPathComponent:@"pauseICloudPhotos"];
 
   return v2;
@@ -716,7 +716,7 @@ LABEL_30:
 
 - (id)enableICloudPhotosFilePath
 {
-  v1 = [a1 cplDataDirectoryCreateIfNeeded:1];
+  v1 = [self cplDataDirectoryCreateIfNeeded:1];
   v2 = [v1 stringByAppendingPathComponent:@"enableICloudPhotos"];
 
   return v2;
@@ -726,7 +726,7 @@ LABEL_30:
 {
   if (a3)
   {
-    v4 = [a1 validateCreationRequestWithError:0];
+    v4 = [self validateCreationRequestWithError:0];
   }
 
   else
@@ -734,12 +734,12 @@ LABEL_30:
     v4 = 0;
   }
 
-  return [a1 photoDirectoryWithType:14 leafType:3 createIfNeeded:v4 error:0];
+  return [self photoDirectoryWithType:14 leafType:3 createIfNeeded:v4 error:0];
 }
 
 - (id)deletedMemoryUUIDsFilePath
 {
-  v1 = [a1 photoDirectoryWithType:6];
+  v1 = [self photoDirectoryWithType:6];
   v2 = [v1 stringByAppendingPathComponent:@"deleted_memory_uuids.plist"];
 
   return v2;
@@ -747,80 +747,80 @@ LABEL_30:
 
 - (id)searchInitialSearchSuggestionsFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"initialSuggestions.bplist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"initialSuggestions.bplist"];
 
   return v2;
 }
 
 - (id)searchIndexStatusFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"searchIndexStatus.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"searchIndexStatus.plist"];
 
   return v2;
 }
 
 - (id)spotlightSearchIndexPath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"Spotlight"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"Spotlight"];
 
   return v2;
 }
 
 - (id)searchIndexSpotlightProgressFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"spotlightProgress.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"spotlightProgress.plist"];
 
   return v2;
 }
 
 - (id)searchIndexSynonymsFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"synonyms.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"synonyms.plist"];
 
   return v2;
 }
 
 - (id)searchIndexGraphDataProgressFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"graphDataProgress.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"graphDataProgress.plist"];
 
   return v2;
 }
 
 - (id)searchIndexProgressFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"searchProgress.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"searchProgress.plist"];
 
   return v2;
 }
 
 - (id)searchIndexMetadataStoreFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"searchMetadata.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"searchMetadata.plist"];
 
   return v2;
 }
 
 - (id)searchIndexSystemInfoFilePath
 {
-  v1 = [a1 searchIndexDirectory];
-  v2 = [v1 stringByAppendingPathComponent:@"searchSystemInfo.plist"];
+  searchIndexDirectory = [self searchIndexDirectory];
+  v2 = [searchIndexDirectory stringByAppendingPathComponent:@"searchSystemInfo.plist"];
 
   return v2;
 }
 
 - (id)photoStreamsDataDirectory
 {
-  v1 = [a1 baseDirectory];
-  v2 = [v1 stringByAppendingPathComponent:*MEMORY[0x1E69BFF38]];
+  baseDirectory = [self baseDirectory];
+  v2 = [baseDirectory stringByAppendingPathComponent:*MEMORY[0x1E69BFF38]];
 
   return v2;
 }
@@ -832,12 +832,12 @@ LABEL_30:
   v10 = a5;
   v11 = objc_autoreleasePoolPush();
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [a1 photoDirectoryWithType:10];
+  v13 = [self photoDirectoryWithType:10];
   v14 = [v12 fileURLWithPath:v13 isDirectory:1];
 
   if (v9)
   {
-    v15 = [a1 assetAbbreviatedMetadataDirectoryForDirectory:v9 type:32 bundleScope:0];
+    v15 = [self assetAbbreviatedMetadataDirectoryForDirectory:v9 type:32 bundleScope:0];
     v16 = [v14 URLByAppendingPathComponent:v15 isDirectory:1];
 
     v14 = v16;
@@ -845,8 +845,8 @@ LABEL_30:
 
   if (v10)
   {
-    v17 = [v10 stringByDeletingPathExtension];
-    v18 = [v14 URLByAppendingPathComponent:v17 isDirectory:0];
+    stringByDeletingPathExtension = [v10 stringByDeletingPathExtension];
+    v18 = [v14 URLByAppendingPathComponent:stringByDeletingPathExtension isDirectory:0];
 
     if (v8)
     {
@@ -868,8 +868,8 @@ LABEL_30:
   v8 = a4;
   v9 = a5;
   v10 = objc_autoreleasePoolPush();
-  v11 = [a1 assetAbbreviatedMetadataDirectoryForDirectory:v8 type:32 bundleScope:0];
-  v12 = [v9 stringByDeletingPathExtension];
+  v11 = [self assetAbbreviatedMetadataDirectoryForDirectory:v8 type:32 bundleScope:0];
+  stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
   if (!v11)
   {
 LABEL_7:
@@ -878,17 +878,17 @@ LABEL_7:
   }
 
   v13 = 0;
-  if ([v11 length] && v12)
+  if ([v11 length] && stringByDeletingPathExtension)
   {
-    if ([v12 length])
+    if ([stringByDeletingPathExtension length])
     {
-      v14 = [a1 photoDirectoryWithType:a3];
+      v14 = [self photoDirectoryWithType:a3];
       if (v14)
       {
         v15 = v14;
         v16 = [v14 stringByAppendingPathComponent:v11];
 
-        v13 = [v16 stringByAppendingPathComponent:v12];
+        v13 = [v16 stringByAppendingPathComponent:stringByDeletingPathExtension];
 
         goto LABEL_8;
       }
@@ -906,32 +906,32 @@ LABEL_8:
 
 - (uint64_t)isCPLSyncablePhotoLibraryPathManager
 {
-  if ([a1 isSystemPhotoLibraryPathManager])
+  if ([self isSystemPhotoLibraryPathManager])
   {
     return 1;
   }
 
-  return [a1 isAppLibraryPathManager];
+  return [self isAppLibraryPathManager];
 }
 
 - (uint64_t)isAppLibraryPathManager
 {
-  v1 = [PLCPLSettings settingsWithPathManager:a1];
-  v2 = [v1 isAppLibrary];
+  v1 = [PLCPLSettings settingsWithPathManager:self];
+  isAppLibrary = [v1 isAppLibrary];
 
-  return v2;
+  return isAppLibrary;
 }
 
 - (uint64_t)isSystemPhotoLibraryPathManager
 {
   v15 = *MEMORY[0x1E69E9840];
   v2 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v3 = [a1 libraryURL];
-  v4 = [v2 bundleForLibraryURL:v3];
+  libraryURL = [self libraryURL];
+  v4 = [v2 bundleForLibraryURL:libraryURL];
 
   if (v4)
   {
-    v5 = [v4 isSystemPhotoLibrary];
+    isSystemPhotoLibrary = [v4 isSystemPhotoLibrary];
   }
 
   else
@@ -939,20 +939,20 @@ LABEL_8:
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [a1 libraryURL];
+      libraryURL2 = [self libraryURL];
       v11 = 138412546;
-      v12 = v7;
+      v12 = libraryURL2;
       v13 = 2114;
       v14 = objc_opt_class();
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_ERROR, "PLPhotoLibraryBundle is not available for %@. Falling back to %{public}@ isSystemPhotoLibraryURL:", &v11, 0x16u);
     }
 
     v8 = objc_opt_class();
-    v9 = [a1 libraryURL];
-    v5 = [v8 isSystemPhotoLibraryURL:v9];
+    libraryURL3 = [self libraryURL];
+    isSystemPhotoLibrary = [v8 isSystemPhotoLibraryURL:libraryURL3];
   }
 
-  return v5;
+  return isSystemPhotoLibrary;
 }
 
 + (id)temporaryRenderContentURLForInternalRendersWithExtension:()conveniences appropriateForURL:
@@ -961,8 +961,8 @@ LABEL_8:
   v5 = a3;
   v6 = a4;
   v7 = [MEMORY[0x1E69C08F0] typeWithFilenameExtension:v5];
-  v8 = [v7 identifier];
-  if ([PLManagedAsset isPrimaryImageFormatForUTI:v8])
+  identifier = [v7 identifier];
+  if ([PLManagedAsset isPrimaryImageFormatForUTI:identifier])
   {
 LABEL_2:
 
@@ -973,12 +973,12 @@ LABEL_2:
 
   if ((v9 & 1) == 0)
   {
-    v8 = PLBackendGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    identifier = PLBackendGetLog();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v19 = v5;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Unexpected non-primary filename extension %{public}@ for render content URL", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, identifier, OS_LOG_TYPE_ERROR, "Unexpected non-primary filename extension %{public}@ for render content URL", buf, 0xCu);
     }
 
     goto LABEL_2;
@@ -990,8 +990,8 @@ LABEL_4:
   {
     v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v10 isDirectory:1];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E69BF320] UUIDString];
-    v14 = [v12 stringWithFormat:@"render.%@", v13];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+    v14 = [v12 stringWithFormat:@"render.%@", uUIDString];
     v15 = [v14 stringByAppendingPathExtension:v5];
 
     v16 = [v11 URLByAppendingPathComponent:v15];

@@ -1,42 +1,42 @@
 @interface OpticalFlow
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)featureSizeForLevel:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)featureSizeForLevel:(SEL)level;
 - (BOOL)createBaseLayer;
 - (BOOL)createModules;
-- (BOOL)switchUsageTo:(int64_t)a3;
-- (OpticalFlow)initWithMode:(int64_t)a3;
-- (id)createTexturesFromCVPixelBuffer:(__CVBuffer *)a3 interleave:(unint64_t)a4 arrayLength:(unint64_t)a5 withCommandBuffer:(id)a6;
-- (void)adaptFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 inputFlow:(__CVBuffer *)a6 outputFlow:(__CVBuffer *)a7;
-- (void)allocateCorreleationBuffer:(__CVBuffer *)a3 forLevel:(unsigned int)a4 extractor:(id)a5;
-- (void)allocateFeatureBuffers:(id *)a3;
-- (void)allocateImageFeature:(id *)a3 extractor:(id)a4;
-- (void)allocateIntermediateStageStorage:(id *)a3 baseStage:(BOOL)a4;
-- (void)allocateIntermediateStorage:(id *)a3;
+- (BOOL)switchUsageTo:(int64_t)to;
+- (OpticalFlow)initWithMode:(int64_t)mode;
+- (id)createTexturesFromCVPixelBuffer:(__CVBuffer *)buffer interleave:(unint64_t)interleave arrayLength:(unint64_t)length withCommandBuffer:(id)commandBuffer;
+- (void)adaptFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage inputFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow;
+- (void)allocateCorreleationBuffer:(__CVBuffer *)buffer forLevel:(unsigned int)level extractor:(id)extractor;
+- (void)allocateFeatureBuffers:(id *)buffers;
+- (void)allocateImageFeature:(id *)feature extractor:(id)extractor;
+- (void)allocateIntermediateStageStorage:(id *)storage baseStage:(BOOL)stage;
+- (void)allocateIntermediateStorage:(id *)storage;
 - (void)allocateResources;
 - (void)dealloc;
-- (void)estimateFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 outputFlow:(__CVBuffer *)a6;
-- (void)estimateFlowLevel:(unsigned int)a3 withEstimator:(id *)a4 firstFeatures:(id *)a5 secondFeatures:(id *)a6 correlation:(__CVBuffer *)a7 upscaledFlow:(__CVBuffer *)a8 warpedImage:(__CVBuffer *)a9 prevFlow:(__CVBuffer *)a10 outputFlow:(__CVBuffer *)a11 waitForComplete:(BOOL)a12;
-- (void)estimateStageFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 baseStage:(BOOL)a6 startLevel:(int)a7 lastLevel:(int)a8 startFlow:(__CVBuffer *)a9 outputFlow:(__CVBuffer *)a10;
-- (void)estimateTwoWayFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 outputForwardFlow:(__CVBuffer *)a6 outputBackwardFlow:(__CVBuffer *)a7;
-- (void)extractFeaturesFromFirst:(__CVBuffer *)a3 second:(__CVBuffer *)a4;
-- (void)extractFeaturesFromImage:(__CVBuffer *)a3 outputFeatures:(id *)a4;
-- (void)flowAdaptationFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 inputFlow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6;
-- (void)flowAdaptationFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 inputFlowForward:(__CVBuffer *)a5 inputFlowBackward:(__CVBuffer *)a6 outputFlowForward:(__CVBuffer *)a7 outputFlowBackward:(__CVBuffer *)a8;
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flow:(__CVBuffer *)a5;
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 reUseFlow:(BOOL)a7;
-- (void)postProcessFlow:(__CVBuffer *)a3 outputFlow:(__CVBuffer *)a4;
-- (void)predictFowardFlow:(__CVBuffer *)a3 fromBackwardFlow:(__CVBuffer *)a4;
-- (void)releaseFeatureBuffers:(id *)a3;
-- (void)releaseImageFeature:(id *)a3;
-- (void)releaseIntermediateStageStorage:(id *)a3;
-- (void)releaseIntermediateStorage:(id *)a3;
+- (void)estimateFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage outputFlow:(__CVBuffer *)flow;
+- (void)estimateFlowLevel:(unsigned int)level withEstimator:(id *)estimator firstFeatures:(id *)features secondFeatures:(id *)secondFeatures correlation:(__CVBuffer *)correlation upscaledFlow:(__CVBuffer *)flow warpedImage:(__CVBuffer *)image prevFlow:(__CVBuffer *)self0 outputFlow:(__CVBuffer *)self1 waitForComplete:(BOOL)self2;
+- (void)estimateStageFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage baseStage:(BOOL)stage startLevel:(int)level lastLevel:(int)lastLevel startFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)self0;
+- (void)estimateTwoWayFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage outputForwardFlow:(__CVBuffer *)flow outputBackwardFlow:(__CVBuffer *)backwardFlow;
+- (void)extractFeaturesFromFirst:(__CVBuffer *)first second:(__CVBuffer *)second;
+- (void)extractFeaturesFromImage:(__CVBuffer *)image outputFeatures:(id *)features;
+- (void)flowAdaptationFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame inputFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow;
+- (void)flowAdaptationFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame inputFlowForward:(__CVBuffer *)forward inputFlowBackward:(__CVBuffer *)backward outputFlowForward:(__CVBuffer *)flowForward outputFlowBackward:(__CVBuffer *)flowBackward;
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flow:(__CVBuffer *)flow;
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward reUseFlow:(BOOL)flow;
+- (void)postProcessFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow;
+- (void)predictFowardFlow:(__CVBuffer *)flow fromBackwardFlow:(__CVBuffer *)backwardFlow;
+- (void)releaseFeatureBuffers:(id *)buffers;
+- (void)releaseImageFeature:(id *)feature;
+- (void)releaseIntermediateStageStorage:(id *)storage;
+- (void)releaseIntermediateStorage:(id *)storage;
 - (void)releaseResources;
-- (void)releaseUnusedFeatures:(id *)a3;
-- (void)reshuffleFlow:(__CVBuffer *)a3 previousFlow:(__CVBuffer *)a4 destination:(__CVBuffer *)a5 waitForComplete:(BOOL)a6;
+- (void)releaseUnusedFeatures:(id *)features;
+- (void)reshuffleFlow:(__CVBuffer *)flow previousFlow:(__CVBuffer *)previousFlow destination:(__CVBuffer *)destination waitForComplete:(BOOL)complete;
 - (void)setNetworkClasses;
-- (void)subsampleBuffer:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 toCommandBuffer:(id)a5;
-- (void)subsampleInput:(__CVBuffer *)a3 to:(__CVBuffer *)a4 forUsage:(int64_t)a5;
+- (void)subsampleBuffer:(__CVBuffer *)buffer destination:(__CVBuffer *)destination toCommandBuffer:(id)commandBuffer;
+- (void)subsampleInput:(__CVBuffer *)input to:(__CVBuffer *)to forUsage:(int64_t)usage;
 - (void)updateFlowSize;
-- (void)upscaleInputFlow:(__CVBuffer *)a3 outFlow:(__CVBuffer *)a4;
+- (void)upscaleInputFlow:(__CVBuffer *)flow outFlow:(__CVBuffer *)outFlow;
 @end
 
 @implementation OpticalFlow
@@ -49,7 +49,7 @@
   self->_adaptationDecoderClass = objc_opt_class();
 }
 
-- (OpticalFlow)initWithMode:(int64_t)a3
+- (OpticalFlow)initWithMode:(int64_t)mode
 {
   v19.receiver = self;
   v19.super_class = OpticalFlow;
@@ -58,7 +58,7 @@
   *(v4 + 260) = 1;
   [*(v4 + 2) setNumLevels:{objc_msgSend(*(v4 + 1), "numLevels")}];
   v4[2042] = 0;
-  *(v4 + 6) = a3;
+  *(v4 + 6) = mode;
   if ([v4 createModules])
   {
     v5 = dispatch_semaphore_create(0);
@@ -69,9 +69,9 @@
     v8 = *(v4 + 24);
     *(v4 + 24) = v7;
 
-    v9 = [*(v4 + 262) newCommandQueue];
+    newCommandQueue = [*(v4 + 262) newCommandQueue];
     v10 = *(v4 + 5);
-    *(v4 + 5) = v9;
+    *(v4 + 5) = newCommandQueue;
 
     v11 = dispatch_group_create();
     v12 = *(v4 + 25);
@@ -165,23 +165,23 @@
   return self->_backwarp != 0;
 }
 
-- (void)allocateIntermediateStorage:(id *)a3
+- (void)allocateIntermediateStorage:(id *)storage
 {
-  [(OpticalFlow *)self allocateIntermediateStageStorage:a3 baseStage:0];
+  [(OpticalFlow *)self allocateIntermediateStageStorage:storage baseStage:0];
   if (self->_twoStageFlow)
   {
 
-    [(OpticalFlow *)self allocateIntermediateStageStorage:&a3->var1 baseStage:1];
+    [(OpticalFlow *)self allocateIntermediateStageStorage:&storage->var1 baseStage:1];
   }
 }
 
-- (void)allocateIntermediateStageStorage:(id *)a3 baseStage:(BOOL)a4
+- (void)allocateIntermediateStageStorage:(id *)storage baseStage:(BOOL)stage
 {
-  v4 = a4;
-  v5 = a3;
+  stageCopy = stage;
+  storageCopy = storage;
   LODWORD(numLevels) = self->_numLevels;
-  a3->var5 = numLevels;
-  if (a4)
+  storage->var5 = numLevels;
+  if (stage)
   {
     v8 = 2;
   }
@@ -191,12 +191,12 @@
     v8 = 0;
   }
 
-  if (a4)
+  if (stage)
   {
-    *a3->var1 = 0u;
-    *a3->var2 = 0u;
-    *a3->var3 = 0u;
-    *a3->var0 = 0u;
+    *storage->var1 = 0u;
+    *storage->var2 = 0u;
+    *storage->var3 = 0u;
+    *storage->var0 = 0u;
   }
 
   else if (self->_useAdaptationLayer)
@@ -205,15 +205,15 @@
     v23 = 0;
     v24 = 0;
     [(FlowAdaptationFeatureExtractor *)self->_adaptationFeatureExtractor getOutputTensorSize:&v22 level:0];
-    v5->var4 = createPixelBuffer(v22, 8 * v23, 0x4C303068u, 0);
+    storageCopy->var4 = createPixelBuffer(v22, 8 * v23, 0x4C303068u, 0);
     LODWORD(numLevels) = self->_numLevels;
   }
 
   if (v8 < numLevels)
   {
     v9 = v8;
-    v21 = v5;
-    v10 = &v5->var0[v8];
+    v21 = storageCopy;
+    v10 = &storageCopy->var0[v8];
     do
     {
       useAdaptationLayer = self->_useAdaptationLayer;
@@ -224,7 +224,7 @@
         v13 = 168;
       }
 
-      if (v4)
+      if (stageCopy)
       {
         v13 = 112;
       }
@@ -287,12 +287,12 @@
     }
 
     while (v9 < numLevels);
-    v5 = v21;
+    storageCopy = v21;
   }
 
   if (v8 < numLevels)
   {
-    if (v4)
+    if (stageCopy)
     {
       v19 = 112;
     }
@@ -309,30 +309,30 @@
       v23 = 0;
       v24 = 0;
       [v20 getOutputTensorSize:&v22 level:{v8, v21}];
-      v5->var1[v8++] = createPixelBuffer(v22, v23, 0x32433068u, 0);
+      storageCopy->var1[v8++] = createPixelBuffer(v22, v23, 0x32433068u, 0);
     }
 
     while (v8 < self->_numLevels);
   }
 }
 
-- (void)releaseIntermediateStorage:(id *)a3
+- (void)releaseIntermediateStorage:(id *)storage
 {
   [(OpticalFlow *)self releaseIntermediateStageStorage:?];
   if (self->_twoStageFlow)
   {
 
-    [(OpticalFlow *)self releaseIntermediateStageStorage:&a3->var1];
+    [(OpticalFlow *)self releaseIntermediateStageStorage:&storage->var1];
   }
 }
 
-- (void)releaseIntermediateStageStorage:(id *)a3
+- (void)releaseIntermediateStageStorage:(id *)storage
 {
-  CVPixelBufferRelease(a3->var4);
+  CVPixelBufferRelease(storage->var4);
   if (self->_numLevels)
   {
     v5 = 0;
-    var2 = a3->var2;
+    var2 = storage->var2;
     do
     {
       CVPixelBufferRelease(*(var2 - 12));
@@ -347,13 +347,13 @@
   }
 }
 
-- (void)allocateCorreleationBuffer:(__CVBuffer *)a3 forLevel:(unsigned int)a4 extractor:(id)a5
+- (void)allocateCorreleationBuffer:(__CVBuffer *)buffer forLevel:(unsigned int)level extractor:(id)extractor
 {
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  [a5 getOutputTensorSize:&v9 level:?];
-  if (a4 <= 1 && (a4 || !self->_useAdaptationLayer))
+  [extractor getOutputTensorSize:&v9 level:?];
+  if (level <= 1 && (level || !self->_useAdaptationLayer))
   {
     v8 = v11 + 83;
   }
@@ -363,15 +363,15 @@
     v8 = 81;
   }
 
-  *a3 = createPixelBuffer(v9, v10 * v8, 0x4C303068u, 0);
+  *buffer = createPixelBuffer(v9, v10 * v8, 0x4C303068u, 0);
 }
 
-- (void)allocateFeatureBuffers:(id *)a3
+- (void)allocateFeatureBuffers:(id *)buffers
 {
   if (self->_useAdaptationLayer)
   {
-    [(FlowAdaptationFeatureExtractor *)self->_adaptationFeatureExtractor getOutputTensorSize:&a3->var0.var4 level:0];
-    a3->var0.var3 = createPixelBuffer(a3->var0.var4.var0, a3->var0.var4.var2 * a3->var0.var4.var1, 0x4C303068u, 0);
+    [(FlowAdaptationFeatureExtractor *)self->_adaptationFeatureExtractor getOutputTensorSize:&buffers->var0.var4 level:0];
+    buffers->var0.var3 = createPixelBuffer(buffers->var0.var4.var0, buffers->var0.var4.var2 * buffers->var0.var4.var1, 0x4C303068u, 0);
   }
 
   v5 = 0;
@@ -379,33 +379,33 @@
   if (self->_downsampling)
   {
     FRCGetInputFrameSizeForUsage(self->_usage, &v6, &v5);
-    a3->var2 = createPixelBuffer(v6, 3 * v5, 0x4C303068u, 0);
+    buffers->var2 = createPixelBuffer(v6, 3 * v5, 0x4C303068u, 0);
   }
 
   if (!self->_adaptationLayerOnly)
   {
-    [(OpticalFlow *)self allocateImageFeature:a3 extractor:self->_featureExtractor];
+    [(OpticalFlow *)self allocateImageFeature:buffers extractor:self->_featureExtractor];
     if (self->_twoStageFlow)
     {
-      [(OpticalFlow *)self allocateImageFeature:&a3->var1 extractor:self->_baseFeatureExtractor];
+      [(OpticalFlow *)self allocateImageFeature:&buffers->var1 extractor:self->_baseFeatureExtractor];
       FRCGetInputFrameSizeForUsage(self->_baseStageUsage, &v6, &v5);
-      a3->var3 = createPixelBuffer(v6, 3 * v5, 0x4C303068u, 0);
+      buffers->var3 = createPixelBuffer(v6, 3 * v5, 0x4C303068u, 0);
     }
   }
 }
 
-- (void)allocateImageFeature:(id *)a3 extractor:(id)a4
+- (void)allocateImageFeature:(id *)feature extractor:(id)extractor
 {
   numLevels = self->_numLevels;
-  a3->var0 = numLevels;
+  feature->var0 = numLevels;
   if (numLevels)
   {
     v7 = 0;
-    var2 = a3->var2;
-    var1 = a3->var1;
+    var2 = feature->var2;
+    var1 = feature->var1;
     do
     {
-      [a4 getOutputTensorSize:var2 level:v7];
+      [extractor getOutputTensorSize:var2 level:v7];
       var1[v7++] = createPixelBuffer(var2->var0, var2->var2 * var2->var1, 0x4C303068u, 0);
       ++var2;
     }
@@ -414,34 +414,34 @@
   }
 }
 
-- (void)releaseFeatureBuffers:(id *)a3
+- (void)releaseFeatureBuffers:(id *)buffers
 {
-  CVPixelBufferRelease(a3->var0.var3);
-  a3->var0.var3 = 0;
+  CVPixelBufferRelease(buffers->var0.var3);
+  buffers->var0.var3 = 0;
   if (self->_downsampling)
   {
-    CVPixelBufferRelease(a3->var2);
-    a3->var2 = 0;
+    CVPixelBufferRelease(buffers->var2);
+    buffers->var2 = 0;
   }
 
   if (!self->_adaptationLayerOnly)
   {
-    [(OpticalFlow *)self releaseImageFeature:a3];
+    [(OpticalFlow *)self releaseImageFeature:buffers];
     if (self->_twoStageFlow)
     {
-      [(OpticalFlow *)self releaseImageFeature:&a3->var1];
-      CVPixelBufferRelease(a3->var3);
-      a3->var3 = 0;
+      [(OpticalFlow *)self releaseImageFeature:&buffers->var1];
+      CVPixelBufferRelease(buffers->var3);
+      buffers->var3 = 0;
     }
   }
 }
 
-- (void)releaseImageFeature:(id *)a3
+- (void)releaseImageFeature:(id *)feature
 {
   if (self->_numLevels)
   {
     v4 = 0;
-    var1 = a3->var1;
+    var1 = feature->var1;
     do
     {
       CVPixelBufferRelease(var1[v4]);
@@ -452,33 +452,33 @@
   }
 }
 
-- (void)subsampleInput:(__CVBuffer *)a3 to:(__CVBuffer *)a4 forUsage:(int64_t)a5
+- (void)subsampleInput:(__CVBuffer *)input to:(__CVBuffer *)to forUsage:(int64_t)usage
 {
   v8 = objc_autoreleasePoolPush();
-  v9 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v10 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
-  v11 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:v11 source:v9 destination:v10];
-  [v11 commit];
-  [v11 waitUntilScheduled];
+  v9 = createTexturesFromCVPixelBuffer(input, self->_device, 1, 3uLL);
+  v10 = createTexturesFromCVPixelBuffer(to, self->_device, 1, 3uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:commandBuffer source:v9 destination:v10];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)subsampleBuffer:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 toCommandBuffer:(id)a5
+- (void)subsampleBuffer:(__CVBuffer *)buffer destination:(__CVBuffer *)destination toCommandBuffer:(id)commandBuffer
 {
   device = self->_device;
-  v9 = a5;
-  v11 = createTexturesFromCVPixelBuffer(a3, device, 1, 3uLL);
-  v10 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
-  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:v9 source:v11 destination:v10];
+  commandBufferCopy = commandBuffer;
+  v11 = createTexturesFromCVPixelBuffer(buffer, device, 1, 3uLL);
+  v10 = createTexturesFromCVPixelBuffer(destination, self->_device, 1, 3uLL);
+  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:commandBufferCopy source:v11 destination:v10];
 }
 
-- (void)extractFeaturesFromFirst:(__CVBuffer *)a3 second:(__CVBuffer *)a4
+- (void)extractFeaturesFromFirst:(__CVBuffer *)first second:(__CVBuffer *)second
 {
-  if (a3)
+  if (first)
   {
-    [(OpticalFlow *)self extractFeaturesFromImage:a3 outputFeatures:self->_features];
+    [(OpticalFlow *)self extractFeaturesFromImage:first outputFeatures:self->_features];
   }
 
   else
@@ -488,70 +488,70 @@
     memcpy(&self->_features[1], v6, sizeof(self->_features[1]));
   }
 
-  [(OpticalFlow *)self extractFeaturesFromImage:a4 outputFeatures:&self->_features[1]];
+  [(OpticalFlow *)self extractFeaturesFromImage:second outputFeatures:&self->_features[1]];
 }
 
-- (void)extractFeaturesFromImage:(__CVBuffer *)a3 outputFeatures:(id *)a4
+- (void)extractFeaturesFromImage:(__CVBuffer *)image outputFeatures:(id *)features
 {
-  var2 = a3;
+  var2 = image;
   if (self->_downsampling)
   {
-    var2 = a4->var2;
-    [(OpticalFlow *)self subsampleInput:a3 to:var2 forUsage:self->_usage];
+    var2 = features->var2;
+    [(OpticalFlow *)self subsampleInput:image to:var2 forUsage:self->_usage];
   }
 
   if (self->_useAdaptationLayer)
   {
-    [(FlowAdaptationFeatureExtractor *)self->_adaptationFeatureExtractor extractFeaturesFromImage:var2 toFeatures:a4 callback:0];
+    [(FlowAdaptationFeatureExtractor *)self->_adaptationFeatureExtractor extractFeaturesFromImage:var2 toFeatures:features callback:0];
   }
 
   if (!self->_adaptationLayerOnly)
   {
-    [(FeatureExtractor *)self->_featureExtractor extractFeaturesFromImage:var2 toFeatures:a4 callback:0];
+    [(FeatureExtractor *)self->_featureExtractor extractFeaturesFromImage:var2 toFeatures:features callback:0];
     if (self->_twoStageFlow)
     {
-      [(OpticalFlow *)self subsampleInput:a3 to:a4->var3 forUsage:self->_baseStageUsage];
-      [self->_baseFeatureExtractor extractFeaturesFromImage:a4->var3 toFeatures:&a4->var1 callback:0];
+      [(OpticalFlow *)self subsampleInput:image to:features->var3 forUsage:self->_baseStageUsage];
+      [self->_baseFeatureExtractor extractFeaturesFromImage:features->var3 toFeatures:&features->var1 callback:0];
     }
 
     if (!self->_resourcePreAllocated && self->_twoStageFlow)
     {
 
-      [(OpticalFlow *)self releaseUnusedFeatures:a4];
+      [(OpticalFlow *)self releaseUnusedFeatures:features];
     }
   }
 }
 
-- (id)createTexturesFromCVPixelBuffer:(__CVBuffer *)a3 interleave:(unint64_t)a4 arrayLength:(unint64_t)a5 withCommandBuffer:(id)a6
+- (id)createTexturesFromCVPixelBuffer:(__CVBuffer *)buffer interleave:(unint64_t)interleave arrayLength:(unint64_t)length withCommandBuffer:(id)commandBuffer
 {
-  v10 = a6;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVPixelBufferGetPixelFormatType(a3) == 843264104)
+  commandBufferCopy = commandBuffer;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (CVPixelBufferGetPixelFormatType(buffer) == 843264104)
   {
-    a5 = 1;
-    a4 = 2;
+    length = 1;
+    interleave = 2;
   }
 
-  v13 = Height / a5;
-  if (isBufferCopyNecessaryForCVtoTextureConversion(Width, v13, a5))
+  v13 = Height / length;
+  if (isBufferCopyNecessaryForCVtoTextureConversion(Width, v13, length))
   {
-    v14 = createTextures(self->_device, Width, v13, a4, a5);
-    [(FRCBlit *)self->_blit copyBuffer:a3 toTexture:v14 commandBuffer:v10];
+    v14 = createTextures(self->_device, Width, v13, interleave, length);
+    [(FRCBlit *)self->_blit copyBuffer:buffer toTexture:v14 commandBuffer:commandBufferCopy];
   }
 
   else
   {
-    v14 = createTexturesFromCVPixelBufferWithCommandBuffer(a3, self->_device, v10, a4, a5);
+    v14 = createTexturesFromCVPixelBufferWithCommandBuffer(buffer, self->_device, commandBufferCopy, interleave, length);
   }
 
   return v14;
 }
 
-- (void)estimateFlowLevel:(unsigned int)a3 withEstimator:(id *)a4 firstFeatures:(id *)a5 secondFeatures:(id *)a6 correlation:(__CVBuffer *)a7 upscaledFlow:(__CVBuffer *)a8 warpedImage:(__CVBuffer *)a9 prevFlow:(__CVBuffer *)a10 outputFlow:(__CVBuffer *)a11 waitForComplete:(BOOL)a12
+- (void)estimateFlowLevel:(unsigned int)level withEstimator:(id *)estimator firstFeatures:(id *)features secondFeatures:(id *)secondFeatures correlation:(__CVBuffer *)correlation upscaledFlow:(__CVBuffer *)flow warpedImage:(__CVBuffer *)image prevFlow:(__CVBuffer *)self0 outputFlow:(__CVBuffer *)self1 waitForComplete:(BOOL)self2
 {
-  var2 = a6->var2[a3].var2;
-  v36 = a3 == 0 && self->_useAdaptationLayer;
+  var2 = secondFeatures->var2[level].var2;
+  v36 = level == 0 && self->_useAdaptationLayer;
   if (v36)
   {
     v17 = 4 * var2;
@@ -559,32 +559,32 @@
 
   else
   {
-    v17 = a6->var2[a3].var2;
+    v17 = secondFeatures->var2[level].var2;
   }
 
-  if (a3 == 0 && self->_useAdaptationLayer)
+  if (level == 0 && self->_useAdaptationLayer)
   {
-    p_var3 = &a5->var3;
+    p_var3 = &features->var3;
   }
 
   else
   {
-    p_var3 = &a5->var1[a3];
+    p_var3 = &features->var1[level];
   }
 
-  if (a3 == 0 && self->_useAdaptationLayer)
+  if (level == 0 && self->_useAdaptationLayer)
   {
-    v19 = &a6->var3;
+    v19 = &secondFeatures->var3;
   }
 
   else
   {
-    v19 = &a6->var1[a3];
+    v19 = &secondFeatures->var1[level];
   }
 
-  v34 = a3 > 1 || v36;
+  v34 = level > 1 || v36;
   commandQueue = self->_commandQueue;
-  if (a3 > 1 || v36)
+  if (level > 1 || v36)
   {
     v21 = 81;
   }
@@ -594,29 +594,29 @@
     v21 = (var2 + 83);
   }
 
-  v22 = [(MTLCommandQueue *)commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
   v35 = p_var3;
   v23 = *v19;
-  v40 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:*p_var3 interleave:1 arrayLength:v17 withCommandBuffer:v22];
-  v24 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:v23 interleave:1 arrayLength:v17 withCommandBuffer:v22];
-  v38 = a8;
-  v25 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a8 interleave:2 arrayLength:2 withCommandBuffer:v22];
-  v39 = a7;
-  v26 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a7 interleave:1 arrayLength:v21 withCommandBuffer:v22];
-  if (self->_numLevels - 1 == a3)
+  v40 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:*p_var3 interleave:1 arrayLength:v17 withCommandBuffer:commandBuffer];
+  v24 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:v23 interleave:1 arrayLength:v17 withCommandBuffer:commandBuffer];
+  flowCopy = flow;
+  v25 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:flow interleave:2 arrayLength:2 withCommandBuffer:commandBuffer];
+  correlationCopy = correlation;
+  v26 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:correlation interleave:1 arrayLength:v21 withCommandBuffer:commandBuffer];
+  if (self->_numLevels - 1 == level)
   {
     v27 = v24;
 
     v25 = 0;
     v28 = 0;
-    v29 = a9;
+    imageCopy2 = image;
   }
 
   else
   {
-    v28 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a10 interleave:2 arrayLength:2 withCommandBuffer:v22];
-    v29 = a9;
-    v27 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a9 interleave:1 arrayLength:v17 withCommandBuffer:v22];
+    v28 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:prevFlow interleave:2 arrayLength:2 withCommandBuffer:commandBuffer];
+    imageCopy2 = image;
+    v27 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:image interleave:1 arrayLength:v17 withCommandBuffer:commandBuffer];
     if (v34)
     {
       v30 = v25;
@@ -627,50 +627,50 @@
       v30 = v26;
     }
 
-    [(Backwarp *)self->_backwarp encodeToCommandBuffer:v22 source:v24 flow:v28 destination:v27 upscaledFlow:v30];
+    [(Backwarp *)self->_backwarp encodeToCommandBuffer:commandBuffer source:v24 flow:v28 destination:v27 upscaledFlow:v30];
   }
 
-  [(Correlation *)self->_correlation encodeToCommandBuffer:v22 first:v40 second:v27 destination:v26];
+  [(Correlation *)self->_correlation encodeToCommandBuffer:commandBuffer first:v40 second:v27 destination:v26];
   if (isBufferCopyNecessaryForCVtoTextureConversion([v27 width], objc_msgSend(v27, "height"), objc_msgSend(v27, "arrayLength")))
   {
-    [(FRCBlit *)self->_blit copyTexture:v27 toBuffer:v29 commandBuffer:v22];
+    [(FRCBlit *)self->_blit copyTexture:v27 toBuffer:imageCopy2 commandBuffer:commandBuffer];
   }
 
   if (isBufferCopyNecessaryForCVtoTextureConversion([v26 width], objc_msgSend(v26, "height"), objc_msgSend(v26, "arrayLength")))
   {
-    [(FRCBlit *)self->_blit copyTexture:v26 toBuffer:v39 commandBuffer:v22];
+    [(FRCBlit *)self->_blit copyTexture:v26 toBuffer:correlationCopy commandBuffer:commandBuffer];
   }
 
   if (v25 && isBufferCopyNecessaryForCVtoTextureConversion([v25 width], objc_msgSend(v25, "height"), objc_msgSend(v25, "arrayLength")))
   {
-    [(FRCBlit *)self->_blit copyTexture:v25 toBuffer:v38 commandBuffer:v22];
+    [(FRCBlit *)self->_blit copyTexture:v25 toBuffer:flowCopy commandBuffer:commandBuffer];
   }
 
   kdebug_trace();
-  [v22 commit];
-  [v22 waitUntilScheduled];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
   kdebug_trace();
 
   if (v36)
   {
-    v31 = a10;
+    prevFlowCopy = prevFlow;
   }
 
   else
   {
-    v31 = v38;
+    prevFlowCopy = flowCopy;
   }
 
   v32 = *v35;
-  v33 = a4[a3];
+  v33 = estimator[level];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __149__OpticalFlow_estimateFlowLevel_withEstimator_firstFeatures_secondFeatures_correlation_upscaledFlow_warpedImage_prevFlow_outputFlow_waitForComplete___block_invoke;
   v41[3] = &unk_278FEA750;
-  v42 = a12;
+  completeCopy = complete;
   v41[4] = self;
-  [v33 estimateFlow:v32 correlation:v39 flow:v31 output:a11 callback:v41];
-  if (a12)
+  [v33 estimateFlow:v32 correlation:correlationCopy flow:prevFlowCopy output:outputFlow callback:v41];
+  if (complete)
   {
     dispatch_semaphore_wait(self->_flowEstimateSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -686,14 +686,14 @@ intptr_t __149__OpticalFlow_estimateFlowLevel_withEstimator_firstFeatures_second
   return result;
 }
 
-- (void)postProcessFlow:(__CVBuffer *)a3 outputFlow:(__CVBuffer *)a4
+- (void)postProcessFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow
 {
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   v8 = 1;
-  v9 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a3 interleave:2 arrayLength:1 withCommandBuffer:v7];
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  v9 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:flow interleave:2 arrayLength:1 withCommandBuffer:commandBuffer];
+  Width = CVPixelBufferGetWidth(outputFlow);
+  Height = CVPixelBufferGetHeight(outputFlow);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(outputFlow);
   v13 = PixelFormatType != 843264104;
   if (PixelFormatType == 843264104)
   {
@@ -705,17 +705,17 @@ intptr_t __149__OpticalFlow_estimateFlowLevel_withEstimator_firstFeatures_second
     v14 = 2;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a4) == 843264104)
+  if (CVPixelBufferGetPixelFormatType(outputFlow) == 843264104)
   {
     v8 = 2;
   }
 
   v15 = isBufferCopyNecessaryForCVtoTextureConversion(Width, Height >> v13, v14);
-  v16 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a4 interleave:v8 arrayLength:v14 withCommandBuffer:v7];
+  v16 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:outputFlow interleave:v8 arrayLength:v14 withCommandBuffer:commandBuffer];
   backwarp = self->_backwarp;
   if (!self->_upscaleFinalFlow)
   {
-    [(Backwarp *)backwarp encodePaddingTextureToCommandBuffer:v7 source:v9 destination:v16];
+    [(Backwarp *)backwarp encodePaddingTextureToCommandBuffer:commandBuffer source:v9 destination:v16];
     if (!v15)
     {
       goto LABEL_11;
@@ -724,11 +724,11 @@ intptr_t __149__OpticalFlow_estimateFlowLevel_withEstimator_firstFeatures_second
     goto LABEL_10;
   }
 
-  [(Backwarp *)backwarp encodeUpscaleFlowToCommandBuffer:v7 source:v9 destination:v16];
+  [(Backwarp *)backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v9 destination:v16];
   if (v15)
   {
 LABEL_10:
-    copyTextureToBufferWithBlit(v16, a4, self->_device, v7);
+    copyTextureToBufferWithBlit(v16, outputFlow, self->_device, commandBuffer);
   }
 
 LABEL_11:
@@ -739,21 +739,21 @@ LABEL_11:
     v18[2] = __42__OpticalFlow_postProcessFlow_outputFlow___block_invoke;
     v18[3] = &unk_278FEA810;
     v18[4] = self;
-    [v7 addCompletedHandler:v18];
+    [commandBuffer addCompletedHandler:v18];
   }
 
-  [v7 commit];
-  [v7 waitUntilScheduled];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
   if (self->_waitForCompletion)
   {
     dispatch_semaphore_wait(self->_completionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)estimateFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 outputFlow:(__CVBuffer *)a6
+- (void)estimateFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage outputFlow:(__CVBuffer *)flow
 {
   skipLastLevel = self->_skipLastLevel;
-  if (self->_upscaleFinalFlow || self->_skipLastLevel && (Height = CVPixelBufferGetHeight(a5->var0.var1[skipLastLevel]), Height != CVPixelBufferGetHeight(a6)))
+  if (self->_upscaleFinalFlow || self->_skipLastLevel && (Height = CVPixelBufferGetHeight(storage->var0.var1[skipLastLevel]), Height != CVPixelBufferGetHeight(flow)))
   {
     v12 = 1;
   }
@@ -765,15 +765,15 @@ LABEL_11:
 
   else
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a6);
-    v12 = PixelFormatType != CVPixelBufferGetPixelFormatType(a5->var0.var1[skipLastLevel]);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(flow);
+    v12 = PixelFormatType != CVPixelBufferGetPixelFormatType(storage->var0.var1[skipLastLevel]);
   }
 
   v15 = (self->_numLevels - 1);
   if (self->_twoStageFlow)
   {
-    [(OpticalFlow *)self estimateStageFlowFromFirstFeatures:&a3->var1 secondFeature:&a4->var1 storage:&a5->var1 baseStage:1 startLevel:v15 lastLevel:2 startFlow:0 outputFlow:0];
-    v16 = a5->var1.var1[2];
+    [(OpticalFlow *)self estimateStageFlowFromFirstFeatures:&features->var1 secondFeature:&feature->var1 storage:&storage->var1 baseStage:1 startLevel:v15 lastLevel:2 startFlow:0 outputFlow:0];
+    v16 = storage->var1.var1[2];
     v15 = 3;
   }
 
@@ -784,68 +784,68 @@ LABEL_11:
 
   if (v12)
   {
-    v17 = 0;
+    flowCopy = 0;
   }
 
   else
   {
-    v17 = a6;
+    flowCopy = flow;
   }
 
-  [(OpticalFlow *)self estimateStageFlowFromFirstFeatures:a3 secondFeature:a4 storage:a5 baseStage:0 startLevel:v15 lastLevel:skipLastLevel startFlow:v16 outputFlow:v17];
+  [(OpticalFlow *)self estimateStageFlowFromFirstFeatures:features secondFeature:feature storage:storage baseStage:0 startLevel:v15 lastLevel:skipLastLevel startFlow:v16 outputFlow:flowCopy];
   if (v12)
   {
-    v18 = a5->var0.var1[skipLastLevel];
+    v18 = storage->var0.var1[skipLastLevel];
 
-    [(OpticalFlow *)self postProcessFlow:v18 outputFlow:a6];
+    [(OpticalFlow *)self postProcessFlow:v18 outputFlow:flow];
   }
 }
 
-- (void)estimateStageFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 baseStage:(BOOL)a6 startLevel:(int)a7 lastLevel:(int)a8 startFlow:(__CVBuffer *)a9 outputFlow:(__CVBuffer *)a10
+- (void)estimateStageFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage baseStage:(BOOL)stage startLevel:(int)level lastLevel:(int)lastLevel startFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)self0
 {
-  v13 = a10;
+  outputFlowCopy = outputFlow;
   v14 = 64;
-  if (a6)
+  if (stage)
   {
     v14 = 120;
   }
 
   v30 = v14;
   v15 = 56;
-  if (a6)
+  if (stage)
   {
     v15 = 112;
   }
 
   v29 = *(&self->super.isa + v15);
-  if (a7 >= a8)
+  if (level >= lastLevel)
   {
     v16 = 0;
-    v17 = a7;
-    v18 = a8 - a7;
-    v19 = a7;
-    v20 = &a5->var0[a7];
+    levelCopy = level;
+    v18 = lastLevel - level;
+    levelCopy2 = level;
+    v20 = &storage->var0[level];
     do
     {
       useAdaptationLayer = self->_useAdaptationLayer;
-      v22 = v18 == v16 && a10 != 0 && self->_waitForCompletion;
+      v22 = v18 == v16 && outputFlow != 0 && self->_waitForCompletion;
       if (!self->_resourcePreAllocated)
       {
-        [(OpticalFlow *)self allocateCorreleationBuffer:v20 forLevel:(v19 + v16) extractor:v29];
+        [(OpticalFlow *)self allocateCorreleationBuffer:v20 forLevel:(levelCopy2 + v16) extractor:v29];
       }
 
-      v23 = a9;
+      flowCopy = flow;
       if (v16)
       {
-        v23 = v20[7];
+        flowCopy = v20[7];
       }
 
-      p_var4 = &a5->var4;
-      if (v17 + v16 != 0 || !useAdaptationLayer)
+      p_var4 = &storage->var4;
+      if (levelCopy + v16 != 0 || !useAdaptationLayer)
       {
-        if (a10)
+        if (outputFlow)
         {
-          v25 = a10;
+          outputFlowCopy2 = outputFlow;
           if (v18 == v16)
           {
             goto LABEL_19;
@@ -855,10 +855,10 @@ LABEL_11:
         p_var4 = v20 + 6;
       }
 
-      v25 = *p_var4;
+      outputFlowCopy2 = *p_var4;
 LABEL_19:
       LOBYTE(v26) = v22;
-      [(OpticalFlow *)self estimateFlowLevel:(v19 + v16) withEstimator:self + v30 firstFeatures:a3 secondFeatures:a4 correlation:*v20 upscaledFlow:v20[12] warpedImage:v20[18] prevFlow:v23 outputFlow:v25 waitForComplete:v26];
+      [(OpticalFlow *)self estimateFlowLevel:(levelCopy2 + v16) withEstimator:self + v30 firstFeatures:features secondFeatures:feature correlation:*v20 upscaledFlow:v20[12] warpedImage:v20[18] prevFlow:flowCopy outputFlow:outputFlowCopy2 waitForComplete:v26];
       if (!self->_resourcePreAllocated)
       {
         CVPixelBufferRelease(*v20);
@@ -869,75 +869,75 @@ LABEL_19:
       --v20;
     }
 
-    while (v17 + v16 + 1 > a8);
+    while (levelCopy + v16 + 1 > lastLevel);
   }
 
-  if (!a8 && self->_useAdaptationLayer)
+  if (!lastLevel && self->_useAdaptationLayer)
   {
-    if (!a10)
+    if (!outputFlow)
     {
-      v13 = a5->var1[0];
+      outputFlowCopy = storage->var1[0];
     }
 
-    [(OpticalFlow *)self reshuffleFlow:a5->var4 previousFlow:a5->var1[1] destination:v13 waitForComplete:0];
+    [(OpticalFlow *)self reshuffleFlow:storage->var4 previousFlow:storage->var1[1] destination:outputFlowCopy waitForComplete:0];
   }
 }
 
-- (void)adaptFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 inputFlow:(__CVBuffer *)a6 outputFlow:(__CVBuffer *)a7
+- (void)adaptFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage inputFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow
 {
-  if (self->_upscaleFinalFlow || self->_skipLastLevel && (Height = CVPixelBufferGetHeight(a5->var1[0]), Height != CVPixelBufferGetHeight(a7)))
+  if (self->_upscaleFinalFlow || self->_skipLastLevel && (Height = CVPixelBufferGetHeight(storage->var1[0]), Height != CVPixelBufferGetHeight(outputFlow)))
   {
-    v31 = a5->var1[0];
+    outputFlowCopy = storage->var1[0];
     v30 = 1;
   }
 
   else
   {
     v30 = 0;
-    v31 = a7;
+    outputFlowCopy = outputFlow;
   }
 
-  var2 = a3->var4.var2;
-  v14 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v29 = a3;
-  v15 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a3->var3 interleave:1 arrayLength:var2 withCommandBuffer:v14];
-  v16 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a4->var3 interleave:1 arrayLength:var2 withCommandBuffer:v14];
-  v17 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a5->var2[0] interleave:1 arrayLength:2 withCommandBuffer:v14];
-  v18 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a5->var3[0] interleave:1 arrayLength:var2 withCommandBuffer:v14];
-  v19 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a5->var0[0] interleave:1 arrayLength:81 withCommandBuffer:v14];
-  v20 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:a6 interleave:1 arrayLength:2 withCommandBuffer:v14];
-  [(Backwarp *)self->_backwarp encodeToCommandBuffer:v14 source:v16 flow:v20 destination:v18 upscaledFlow:v17];
-  [(Correlation *)self->_correlation encodeToCommandBuffer:v14 first:v15 second:v18 destination:v19];
+  var2 = features->var4.var2;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  featuresCopy = features;
+  v15 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:features->var3 interleave:1 arrayLength:var2 withCommandBuffer:commandBuffer];
+  v16 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:feature->var3 interleave:1 arrayLength:var2 withCommandBuffer:commandBuffer];
+  v17 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:storage->var2[0] interleave:1 arrayLength:2 withCommandBuffer:commandBuffer];
+  v18 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:storage->var3[0] interleave:1 arrayLength:var2 withCommandBuffer:commandBuffer];
+  v19 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:storage->var0[0] interleave:1 arrayLength:81 withCommandBuffer:commandBuffer];
+  v20 = [(OpticalFlow *)self createTexturesFromCVPixelBuffer:flow interleave:1 arrayLength:2 withCommandBuffer:commandBuffer];
+  [(Backwarp *)self->_backwarp encodeToCommandBuffer:commandBuffer source:v16 flow:v20 destination:v18 upscaledFlow:v17];
+  [(Correlation *)self->_correlation encodeToCommandBuffer:commandBuffer first:v15 second:v18 destination:v19];
   if (isBufferCopyNecessaryForCVtoTextureConversion([v19 width], objc_msgSend(v19, "height"), objc_msgSend(v19, "arrayLength")))
   {
-    [(FRCBlit *)self->_blit copyTexture:v19 toBuffer:a5->var0[0] commandBuffer:v14];
+    [(FRCBlit *)self->_blit copyTexture:v19 toBuffer:storage->var0[0] commandBuffer:commandBuffer];
   }
 
-  [v14 commit];
-  [v14 waitUntilScheduled];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 
   v21 = self->_flowEstimator[0];
-  var3 = v29->var3;
-  v23 = a5->var0[0];
-  var4 = a5->var4;
+  var3 = featuresCopy->var3;
+  v23 = storage->var0[0];
+  var4 = storage->var4;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __85__OpticalFlow_adaptFlowFromFirstFeatures_secondFeature_storage_inputFlow_outputFlow___block_invoke;
   v33[3] = &unk_278FEA778;
   v33[4] = self;
-  [(FlowEstimate *)v21 estimateFlow:var3 correlation:v23 flow:a6 output:var4 callback:v33];
+  [(FlowEstimate *)v21 estimateFlow:var3 correlation:v23 flow:flow output:var4 callback:v33];
   dispatch_semaphore_wait(self->_flowEstimateSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   if (!self->_resourcePreAllocated)
   {
-    CVPixelBufferRelease(a5->var0[0]);
-    a5->var0[0] = 0;
+    CVPixelBufferRelease(storage->var0[0]);
+    storage->var0[0] = 0;
   }
 
-  [(OpticalFlow *)self reshuffleFlow:a5->var4 previousFlow:a6 destination:v31 waitForComplete:v30 ^ 1u];
+  [(OpticalFlow *)self reshuffleFlow:storage->var4 previousFlow:flow destination:outputFlowCopy waitForComplete:v30 ^ 1u];
   if (((v30 ^ 1) & 1) == 0)
   {
-    v25 = createTexturesFromCVPixelBuffer(v31, self->_device, 1, 2uLL);
-    v26 = createTexturesFromCVPixelBuffer(a7, self->_device, 1, 2uLL);
+    v25 = createTexturesFromCVPixelBuffer(outputFlowCopy, self->_device, 1, 2uLL);
+    v26 = createTexturesFromCVPixelBuffer(outputFlow, self->_device, 1, 2uLL);
     backwarp = self->_backwarp;
     if (self->_upscaleFinalFlow)
     {
@@ -951,39 +951,39 @@ LABEL_19:
   }
 }
 
-- (void)reshuffleFlow:(__CVBuffer *)a3 previousFlow:(__CVBuffer *)a4 destination:(__CVBuffer *)a5 waitForComplete:(BOOL)a6
+- (void)reshuffleFlow:(__CVBuffer *)flow previousFlow:(__CVBuffer *)previousFlow destination:(__CVBuffer *)destination waitForComplete:(BOOL)complete
 {
-  v6 = a6;
-  v14 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v11 = createTexturesFromCVPixelBufferWithCommandBuffer(a3, self->_device, v14, 1, 8uLL);
-  v12 = createTexturesFromCVPixelBufferWithCommandBuffer(a4, self->_device, v14, 1, 2uLL);
-  v13 = createTexturesFromCVPixelBuffer(a5, self->_device, 1, 2uLL);
-  [(Backwarp *)self->_backwarp encodeReShuffleFlowToCommandBuffer:v14 shuffledFlow:v11 previousFlow:v12 destination:v13];
+  completeCopy = complete;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v11 = createTexturesFromCVPixelBufferWithCommandBuffer(flow, self->_device, commandBuffer, 1, 8uLL);
+  v12 = createTexturesFromCVPixelBufferWithCommandBuffer(previousFlow, self->_device, commandBuffer, 1, 2uLL);
+  v13 = createTexturesFromCVPixelBuffer(destination, self->_device, 1, 2uLL);
+  [(Backwarp *)self->_backwarp encodeReShuffleFlowToCommandBuffer:commandBuffer shuffledFlow:v11 previousFlow:v12 destination:v13];
   if (isBufferCopyNecessaryForCVtoTextureConversion([v13 width], objc_msgSend(v13, "height"), objc_msgSend(v13, "arrayLength")))
   {
-    copyTextureToBufferWithBlit(v13, a5, self->_device, v14);
+    copyTextureToBufferWithBlit(v13, destination, self->_device, commandBuffer);
   }
 
-  [v14 commit];
-  if (v6)
+  [commandBuffer commit];
+  if (completeCopy)
   {
-    [v14 waitUntilCompleted];
+    [commandBuffer waitUntilCompleted];
   }
 
   else
   {
-    [v14 waitUntilScheduled];
+    [commandBuffer waitUntilScheduled];
   }
 }
 
-- (void)predictFowardFlow:(__CVBuffer *)a3 fromBackwardFlow:(__CVBuffer *)a4
+- (void)predictFowardFlow:(__CVBuffer *)flow fromBackwardFlow:(__CVBuffer *)backwardFlow
 {
-  v6 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
-  v7 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
+  v6 = createTexturesFromCVPixelBuffer(backwardFlow, self->_device, 1, 2uLL);
+  v7 = createTexturesFromCVPixelBuffer(flow, self->_device, 1, 2uLL);
   [(Backwarp *)self->_backwarp reverseFlowWithSource:v6 destination:v7];
 }
 
-- (void)estimateTwoWayFlowFromFirstFeatures:(id *)a3 secondFeature:(id *)a4 storage:(id *)a5 outputForwardFlow:(__CVBuffer *)a6 outputBackwardFlow:(__CVBuffer *)a7
+- (void)estimateTwoWayFlowFromFirstFeatures:(id *)features secondFeature:(id *)feature storage:(id *)storage outputForwardFlow:(__CVBuffer *)flow outputBackwardFlow:(__CVBuffer *)backwardFlow
 {
   dispatchGroup = self->_dispatchGroup;
   concurrentQueue = self->_concurrentQueue;
@@ -992,10 +992,10 @@ LABEL_19:
   block[2] = __110__OpticalFlow_estimateTwoWayFlowFromFirstFeatures_secondFeature_storage_outputForwardFlow_outputBackwardFlow___block_invoke;
   block[3] = &unk_278FEA838;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = features;
+  block[6] = feature;
+  block[7] = storage;
+  block[8] = flow;
   dispatch_group_async(dispatchGroup, concurrentQueue, block);
   v14 = self->_dispatchGroup;
   v15 = self->_concurrentQueue;
@@ -1004,15 +1004,15 @@ LABEL_19:
   v16[2] = __110__OpticalFlow_estimateTwoWayFlowFromFirstFeatures_secondFeature_storage_outputForwardFlow_outputBackwardFlow___block_invoke_2;
   v16[3] = &unk_278FEA838;
   v16[4] = self;
-  v16[5] = a4;
-  v16[6] = a3;
-  v16[7] = a5;
-  v16[8] = a7;
+  v16[5] = feature;
+  v16[6] = features;
+  v16[7] = storage;
+  v16[8] = backwardFlow;
   dispatch_group_async(v14, v15, v16);
   dispatch_group_wait(self->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (BOOL)switchUsageTo:(int64_t)a3
+- (BOOL)switchUsageTo:(int64_t)to
 {
   if (self->_adaptationLayerOnly)
   {
@@ -1032,19 +1032,19 @@ LABEL_19:
     self->_upscaleFinalFlow = 1;
   }
 
-  QuarterSizeUsage = getQuarterSizeUsage(a3);
-  if ([OpticalFlow use4xDownScale:a3])
+  QuarterSizeUsage = getQuarterSizeUsage(to);
+  if ([OpticalFlow use4xDownScale:to])
   {
     QuarterSizeUsage = getQuarterSizeUsage(QuarterSizeUsage);
     self->_4xUpscale = 1;
   }
 
-  if (QuarterSizeUsage == a3)
+  if (QuarterSizeUsage == to)
   {
-    NSLog(&cfstr_NoSupportFor14.isa, a3);
+    NSLog(&cfstr_NoSupportFor14.isa, to);
     self->_upscaleFinalFlow = 0;
 LABEL_10:
-    QuarterSizeUsage = a3;
+    QuarterSizeUsage = to;
   }
 
   if (QuarterSizeUsage == self->_usage)
@@ -1235,15 +1235,15 @@ LABEL_40:
   return v7;
 }
 
-- (void)releaseUnusedFeatures:(id *)a3
+- (void)releaseUnusedFeatures:(id *)features
 {
-  CVPixelBufferRelease(a3->var1.var1[0]);
-  a3->var1.var1[0] = 0;
-  CVPixelBufferRelease(a3->var1.var1[1]);
-  a3->var1.var1[1] = 0;
+  CVPixelBufferRelease(features->var1.var1[0]);
+  features->var1.var1[0] = 0;
+  CVPixelBufferRelease(features->var1.var1[1]);
+  features->var1.var1[1] = 0;
   if (self->_numLevels >= 5u)
   {
-    v5 = &a3->var0.var1[4];
+    v5 = &features->var0.var1[4];
     v6 = 4;
     do
     {
@@ -1256,10 +1256,10 @@ LABEL_40:
   }
 }
 
-- (void)upscaleInputFlow:(__CVBuffer *)a3 outFlow:(__CVBuffer *)a4
+- (void)upscaleInputFlow:(__CVBuffer *)flow outFlow:(__CVBuffer *)outFlow
 {
-  v6 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
-  v7 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
+  v6 = createTexturesFromCVPixelBuffer(flow, self->_device, 1, 2uLL);
+  v7 = createTexturesFromCVPixelBuffer(outFlow, self->_device, 1, 2uLL);
   backwarp = self->_backwarp;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1295,38 +1295,38 @@ LABEL_40:
   }
 }
 
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flow:(__CVBuffer *)a5
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flow:(__CVBuffer *)flow
 {
   if (self->_resourcePreAllocated)
   {
-    [(OpticalFlow *)self extractFeaturesFromFirst:a3 second:a4];
+    [(OpticalFlow *)self extractFeaturesFromFirst:frame second:secondFrame];
 
-    [(OpticalFlow *)self estimateFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages outputFlow:a5];
+    [(OpticalFlow *)self estimateFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages outputFlow:flow];
   }
 
   else
   {
     [(OpticalFlow *)self allocateResources];
-    [(OpticalFlow *)self extractFeaturesFromFirst:a3 second:a4];
-    [(OpticalFlow *)self estimateFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages outputFlow:a5];
+    [(OpticalFlow *)self extractFeaturesFromFirst:frame second:secondFrame];
+    [(OpticalFlow *)self estimateFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages outputFlow:flow];
 
     [(OpticalFlow *)self releaseResources];
   }
 }
 
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 reUseFlow:(BOOL)a7
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward reUseFlow:(BOOL)flow
 {
-  v7 = a7;
+  flowCopy = flow;
   resourcePreAllocated = self->_resourcePreAllocated;
   if (!resourcePreAllocated)
   {
     [(OpticalFlow *)self allocateResources];
   }
 
-  [(OpticalFlow *)self extractFeaturesFromFirst:a3 second:a4];
-  if (v7)
+  [(OpticalFlow *)self extractFeaturesFromFirst:frame second:secondFrame];
+  if (flowCopy)
   {
-    [(OpticalFlow *)self predictFowardFlow:a5 fromBackwardFlow:a6];
+    [(OpticalFlow *)self predictFowardFlow:forward fromBackwardFlow:backward];
     goto LABEL_11;
   }
 
@@ -1335,9 +1335,9 @@ LABEL_40:
   opticalFlowStroages = self->_opticalFlowStroages;
   if (!self->_concurrentDualFlowProcessing)
   {
-    [(OpticalFlow *)self estimateFlowFromFirstFeatures:features secondFeature:v15 storage:opticalFlowStroages outputFlow:a5];
+    [(OpticalFlow *)self estimateFlowFromFirstFeatures:features secondFeature:v15 storage:opticalFlowStroages outputFlow:forward];
 LABEL_11:
-    [(OpticalFlow *)self estimateFlowFromFirstFeatures:&self->_features[1] secondFeature:self->_features storage:self->_opticalFlowStroages outputFlow:a6];
+    [(OpticalFlow *)self estimateFlowFromFirstFeatures:&self->_features[1] secondFeature:self->_features storage:self->_opticalFlowStroages outputFlow:backward];
     if (resourcePreAllocated)
     {
       return;
@@ -1346,7 +1346,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  [(OpticalFlow *)self estimateTwoWayFlowFromFirstFeatures:features secondFeature:v15 storage:opticalFlowStroages outputForwardFlow:a5 outputBackwardFlow:a6];
+  [(OpticalFlow *)self estimateTwoWayFlowFromFirstFeatures:features secondFeature:v15 storage:opticalFlowStroages outputForwardFlow:forward outputBackwardFlow:backward];
   if (resourcePreAllocated)
   {
     return;
@@ -1357,15 +1357,15 @@ LABEL_7:
   [(OpticalFlow *)self releaseResources];
 }
 
-- (void)flowAdaptationFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 inputFlowForward:(__CVBuffer *)a5 inputFlowBackward:(__CVBuffer *)a6 outputFlowForward:(__CVBuffer *)a7 outputFlowBackward:(__CVBuffer *)a8
+- (void)flowAdaptationFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame inputFlowForward:(__CVBuffer *)forward inputFlowBackward:(__CVBuffer *)backward outputFlowForward:(__CVBuffer *)flowForward outputFlowBackward:(__CVBuffer *)flowBackward
 {
   resourcePreAllocated = self->_resourcePreAllocated;
   if (resourcePreAllocated)
   {
-    if (a3)
+    if (frame)
     {
 LABEL_3:
-      [(OpticalFlow *)self extractFeaturesFromImage:a3 outputFeatures:self->_features];
+      [(OpticalFlow *)self extractFeaturesFromImage:frame outputFeatures:self->_features];
       goto LABEL_6;
     }
   }
@@ -1373,7 +1373,7 @@ LABEL_3:
   else
   {
     [(OpticalFlow *)self allocateResources];
-    if (a3)
+    if (frame)
     {
       goto LABEL_3;
     }
@@ -1383,7 +1383,7 @@ LABEL_3:
   memcpy(self->_features, &self->_features[1], 0x1E0uLL);
   memcpy(&self->_features[1], __dst, sizeof(self->_features[1]));
 LABEL_6:
-  [(OpticalFlow *)self extractFeaturesFromImage:a4 outputFeatures:&self->_features[1]];
+  [(OpticalFlow *)self extractFeaturesFromImage:secondFrame outputFeatures:&self->_features[1]];
   dispatchGroup = self->_dispatchGroup;
   concurrentQueue = self->_concurrentQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1391,8 +1391,8 @@ LABEL_6:
   block[2] = __124__OpticalFlow_flowAdaptationFirstFrame_secondFrame_inputFlowForward_inputFlowBackward_outputFlowForward_outputFlowBackward___block_invoke;
   block[3] = &unk_278FEA860;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a7;
+  block[5] = forward;
+  block[6] = flowForward;
   dispatch_group_async(dispatchGroup, concurrentQueue, block);
   v18 = self->_dispatchGroup;
   v19 = self->_concurrentQueue;
@@ -1401,8 +1401,8 @@ LABEL_6:
   v20[2] = __124__OpticalFlow_flowAdaptationFirstFrame_secondFrame_inputFlowForward_inputFlowBackward_outputFlowForward_outputFlowBackward___block_invoke_2;
   v20[3] = &unk_278FEA860;
   v20[4] = self;
-  v20[5] = a6;
-  v20[6] = a8;
+  v20[5] = backward;
+  v20[6] = flowBackward;
   dispatch_group_async(v18, v19, v20);
   dispatch_group_wait(self->_dispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
   if (!resourcePreAllocated)
@@ -1411,28 +1411,28 @@ LABEL_6:
   }
 }
 
-- (void)flowAdaptationFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 inputFlow:(__CVBuffer *)a5 outputFlow:(__CVBuffer *)a6
+- (void)flowAdaptationFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame inputFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow
 {
   if (self->_resourcePreAllocated)
   {
-    [(OpticalFlow *)self extractFeaturesFromImage:a3 outputFeatures:self->_features];
-    [(OpticalFlow *)self extractFeaturesFromImage:a4 outputFeatures:&self->_features[1]];
+    [(OpticalFlow *)self extractFeaturesFromImage:frame outputFeatures:self->_features];
+    [(OpticalFlow *)self extractFeaturesFromImage:secondFrame outputFeatures:&self->_features[1]];
 
-    [(OpticalFlow *)self adaptFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages inputFlow:a5 outputFlow:a6];
+    [(OpticalFlow *)self adaptFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages inputFlow:flow outputFlow:outputFlow];
   }
 
   else
   {
     [(OpticalFlow *)self allocateResources];
-    [(OpticalFlow *)self extractFeaturesFromImage:a3 outputFeatures:self->_features];
-    [(OpticalFlow *)self extractFeaturesFromImage:a4 outputFeatures:&self->_features[1]];
-    [(OpticalFlow *)self adaptFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages inputFlow:a5 outputFlow:a6];
+    [(OpticalFlow *)self extractFeaturesFromImage:frame outputFeatures:self->_features];
+    [(OpticalFlow *)self extractFeaturesFromImage:secondFrame outputFeatures:&self->_features[1]];
+    [(OpticalFlow *)self adaptFlowFromFirstFeatures:self->_features secondFeature:&self->_features[1] storage:self->_opticalFlowStroages inputFlow:flow outputFlow:outputFlow];
 
     [(OpticalFlow *)self releaseResources];
   }
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)featureSizeForLevel:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)featureSizeForLevel:(SEL)level
 {
   retstr->var0 = 0;
   retstr->var1 = 0;

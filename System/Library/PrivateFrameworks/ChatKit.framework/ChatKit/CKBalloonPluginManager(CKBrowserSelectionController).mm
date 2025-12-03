@@ -18,8 +18,8 @@
 
 - (void)regenerateCombinedStickersAppsIndexPaths
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CKBalloonPluginManager_SelectionController.m" lineNumber:666 description:@"Expected more plugin last"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CKBalloonPluginManager_SelectionController.m" lineNumber:666 description:@"Expected more plugin last"];
 }
 
 @end

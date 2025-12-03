@@ -1,39 +1,39 @@
 @interface AVPlayerItemIntegratedTimelinePeriodicObserver
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getNextPeriodicFireTimeFromIntegratedCurrentTime:(SEL)a3;
-- (AVPlayerItemIntegratedTimelinePeriodicObserver)initWithInterval:(id *)a3 queue:(id)a4 block:(id)a5 integratedTimeline:(id)a6;
-- (BOOL)_doesTimeResideInItemIntegratedTimelineOffsets:(id *)a3 withOffsets:(id)a4 timeMappingOut:(id *)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getNextPeriodicFireTimeFromIntegratedCurrentTime:(SEL)time;
+- (AVPlayerItemIntegratedTimelinePeriodicObserver)initWithInterval:(id *)interval queue:(id)queue block:(id)block integratedTimeline:(id)timeline;
+- (BOOL)_doesTimeResideInItemIntegratedTimelineOffsets:(id *)offsets withOffsets:(id)withOffsets timeMappingOut:(id *)out;
 - (BOOL)hasObserverBeenScheduledYet;
 - (void)dealloc;
-- (void)rescheduleObserverWithSnapshot:(id)a3 itemToSchedule:(id)a4;
+- (void)rescheduleObserverWithSnapshot:(id)snapshot itemToSchedule:(id)schedule;
 @end
 
 @implementation AVPlayerItemIntegratedTimelinePeriodicObserver
 
-- (AVPlayerItemIntegratedTimelinePeriodicObserver)initWithInterval:(id *)a3 queue:(id)a4 block:(id)a5 integratedTimeline:(id)a6
+- (AVPlayerItemIntegratedTimelinePeriodicObserver)initWithInterval:(id *)interval queue:(id)queue block:(id)block integratedTimeline:(id)timeline
 {
-  objc_initWeak(&location, a6);
+  objc_initWeak(&location, timeline);
   v16.receiver = self;
   v16.super_class = AVPlayerItemIntegratedTimelinePeriodicObserver;
   v10 = [(AVPlayerItemIntegratedTimelinePeriodicObserver *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    var3 = a3->var3;
-    *&v10->_interval.value = *&a3->var0;
-    if (a4)
+    var3 = interval->var3;
+    *&v10->_interval.value = *&interval->var0;
+    if (queue)
     {
-      v13 = a4;
+      queueCopy = queue;
     }
 
     else
     {
-      v13 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
     }
 
     v11->_interval.epoch = var3;
-    v11->_queue = v13;
-    dispatch_retain(v13);
-    v11->_block = [a5 copy];
+    v11->_queue = queueCopy;
+    dispatch_retain(queueCopy);
+    v11->_block = [block copy];
     v14 = objc_loadWeak(&location);
     objc_storeWeak(&v11->_integratedTimeline, v14);
     v11->_mutex = FigSimpleMutexCreate();
@@ -54,7 +54,7 @@
   [(AVPlayerItemIntegratedTimelinePeriodicObserver *)&v3 dealloc];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getNextPeriodicFireTimeFromIntegratedCurrentTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getNextPeriodicFireTimeFromIntegratedCurrentTime:(SEL)time
 {
   memset(&v9, 0, sizeof(v9));
   timescale = self->_interval.timescale;
@@ -63,7 +63,7 @@
   return CMTimeMake(retstr, self->_interval.value + self->_interval.value * (v9.value / self->_interval.value), self->_interval.timescale);
 }
 
-- (BOOL)_doesTimeResideInItemIntegratedTimelineOffsets:(id *)a3 withOffsets:(id)a4 timeMappingOut:(id *)a5
+- (BOOL)_doesTimeResideInItemIntegratedTimelineOffsets:(id *)offsets withOffsets:(id)withOffsets timeMappingOut:(id *)out
 {
   v8 = *(MEMORY[0x1E6960C78] + 48);
   *&v22.source.duration.timescale = *(MEMORY[0x1E6960C78] + 32);
@@ -74,9 +74,9 @@
   v10 = *(MEMORY[0x1E6960C78] + 16);
   *&v22.source.start.value = *MEMORY[0x1E6960C78];
   *&v22.source.start.epoch = v10;
-  if (![a4 count])
+  if (![withOffsets count])
   {
-    if (!a5)
+    if (!out)
     {
       return 0;
     }
@@ -87,12 +87,12 @@
   v11 = 1;
   do
   {
-    CMTimeMappingMakeFromDictionary(&v22, [a4 objectAtIndex:v11 - 1]);
+    CMTimeMappingMakeFromDictionary(&v22, [withOffsets objectAtIndex:v11 - 1]);
     range = v22.target;
-    v20 = *a3;
+    v20 = *offsets;
     v12 = CMTimeRangeContainsTime(&range, &v20);
     v13 = v12 != 0;
-    if (v11 >= [a4 count])
+    if (v11 >= [withOffsets count])
     {
       break;
     }
@@ -101,7 +101,7 @@
   }
 
   while (!v12);
-  if (a5)
+  if (out)
   {
     if (v12)
     {
@@ -109,15 +109,15 @@
       v14 = &v22;
 LABEL_10:
       v15 = *&v14->source.start.epoch;
-      *&a5->var0.var0.var0 = *&v14->source.start.value;
-      *&a5->var0.var0.var3 = v15;
+      *&out->var0.var0.var0 = *&v14->source.start.value;
+      *&out->var0.var0.var3 = v15;
       v16 = *&v14->source.duration.timescale;
       v17 = *&v14->target.start.value;
       v18 = *&v14->target.duration.timescale;
-      *&a5->var1.var0.var3 = *&v14->target.start.epoch;
-      *&a5->var1.var1.var1 = v18;
-      *&a5->var0.var1.var1 = v16;
-      *&a5->var1.var0.var0 = v17;
+      *&out->var1.var0.var3 = *&v14->target.start.epoch;
+      *&out->var1.var1.var1 = v18;
+      *&out->var0.var1.var1 = v16;
+      *&out->var1.var0.var0 = v17;
       return v13;
     }
 
@@ -130,18 +130,18 @@ LABEL_9:
   return v13;
 }
 
-- (void)rescheduleObserverWithSnapshot:(id)a3 itemToSchedule:(id)a4
+- (void)rescheduleObserverWithSnapshot:(id)snapshot itemToSchedule:(id)schedule
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = [a3 currentSegment];
+  currentSegment = [snapshot currentSegment];
   v47 = 0uLL;
   v48 = 0;
-  if (a3)
+  if (snapshot)
   {
-    [a3 currentTime];
+    [snapshot currentTime];
   }
 
-  v8 = [a4 timebase];
+  timebase = [schedule timebase];
   v46 = **&MEMORY[0x1E6960CC0];
   start = **&MEMORY[0x1E6960C70];
   v44 = start;
@@ -156,28 +156,28 @@ LABEL_9:
   *&v41.start.value = *MEMORY[0x1E6960C78];
   *&v41.start.epoch = v11;
   v40 = 0;
-  v12 = [v7 segmentType];
-  v13 = v12 == 1 && [objc_msgSend(v7 "interstitialEvent")] == 0;
-  if (a4)
+  segmentType = [currentSegment segmentType];
+  v13 = segmentType == 1 && [objc_msgSend(currentSegment "interstitialEvent")] == 0;
+  if (schedule)
   {
     FigSimpleMutexLock();
     *&range.start.value = v47;
     range.start.epoch = v48;
     [(AVPlayerItemIntegratedTimelinePeriodicObserver *)self _getNextPeriodicFireTimeFromIntegratedCurrentTime:&range];
     range.start = v44;
-    [a3 mapTime:&range toSegment:&v40 atSegmentOffset:&start];
-    v14 = [a4 _integratedTimelineOffsets];
+    [snapshot mapTime:&range toSegment:&v40 atSegmentOffset:&start];
+    _integratedTimelineOffsets = [schedule _integratedTimelineOffsets];
     range.start = v44;
-    v15 = [(AVPlayerItemIntegratedTimelinePeriodicObserver *)self _doesTimeResideInItemIntegratedTimelineOffsets:&range withOffsets:v14 timeMappingOut:&v41];
+    v15 = [(AVPlayerItemIntegratedTimelinePeriodicObserver *)self _doesTimeResideInItemIntegratedTimelineOffsets:&range withOffsets:_integratedTimelineOffsets timeMappingOut:&v41];
     v16 = v15;
     if (!v15)
     {
       goto LABEL_39;
     }
 
-    if (v7)
+    if (currentSegment)
     {
-      [v7 timeMapping];
+      [currentSegment timeMapping];
     }
 
     else
@@ -196,12 +196,12 @@ LABEL_9:
 LABEL_39:
       if ((self->_observedTimeMapping.target.start.flags & 1) == 0 || (self->_observedTimeMapping.target.duration.flags & 1) == 0 || self->_observedTimeMapping.target.duration.epoch || self->_observedTimeMapping.target.duration.value < 0 || (v29 = *&self->_observedTimeMapping.source.start.epoch, *&range.start.value = *&self->_observedTimeMapping.source.start.value, *&range.start.epoch = v29, *&range.duration.timescale = *&self->_observedTimeMapping.source.duration.timescale, time = v41, !CMTimeRangeEqual(&range, &time)) || (v30 = *&self->_observedTimeMapping.target.start.epoch, *&range.start.value = *&self->_observedTimeMapping.target.start.value, *&range.start.epoch = v30, *&range.duration.timescale = *&self->_observedTimeMapping.target.duration.timescale, time = v42, !CMTimeRangeEqual(&range, &time)))
       {
-        if (v40 != v7 || !v16 || v13)
+        if (v40 != currentSegment || !v16 || v13)
         {
           CMTimeMake(&interval, 0x7FFFFFFFFFFFFFFFLL, 1);
-          if (a3)
+          if (snapshot)
           {
-            [a3 currentTime];
+            [snapshot currentTime];
           }
 
           else
@@ -209,12 +209,12 @@ LABEL_39:
             memset(&range, 0, 24);
           }
 
-          -[AVPlayerItemIntegratedTimelinePeriodicObserver _doesTimeResideInItemIntegratedTimelineOffsets:withOffsets:timeMappingOut:](self, "_doesTimeResideInItemIntegratedTimelineOffsets:withOffsets:timeMappingOut:", &range, [a4 _integratedTimelineOffsets], &v41);
+          -[AVPlayerItemIntegratedTimelinePeriodicObserver _doesTimeResideInItemIntegratedTimelineOffsets:withOffsets:timeMappingOut:](self, "_doesTimeResideInItemIntegratedTimelineOffsets:withOffsets:timeMappingOut:", &range, [schedule _integratedTimelineOffsets], &v41);
         }
 
         else
         {
-          if (v12 == 1)
+          if (segmentType == 1)
           {
             time.start = v44;
             rhs = v42.start;
@@ -302,7 +302,7 @@ LABEL_39:
         queue = self->_queue;
         range.start = interval;
         time.start = v46;
-        self->_periodicObserver = [(AVPeriodicTimebaseObserver *)v27 initWithTimebase:v8 interval:&range offset:&time queue:queue block:v31];
+        self->_periodicObserver = [(AVPeriodicTimebaseObserver *)v27 initWithTimebase:timebase interval:&range offset:&time queue:queue block:v31];
         objc_destroyWeak(&v32);
         objc_destroyWeak(&rhs);
       }

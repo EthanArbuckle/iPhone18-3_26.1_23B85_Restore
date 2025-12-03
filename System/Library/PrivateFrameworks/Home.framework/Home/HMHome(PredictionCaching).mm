@@ -9,7 +9,7 @@
 {
   os_unfair_lock_lock(&_cacheLock);
   objc_opt_class();
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -31,7 +31,7 @@
 {
   v4 = a3;
   os_unfair_lock_lock(&_cacheLock);
-  objc_setAssociatedObject(a1, sel_cachedPredictions, v4, 1);
+  objc_setAssociatedObject(self, sel_cachedPredictions, v4, 1);
 
   os_unfair_lock_unlock(&_cacheLock);
 }

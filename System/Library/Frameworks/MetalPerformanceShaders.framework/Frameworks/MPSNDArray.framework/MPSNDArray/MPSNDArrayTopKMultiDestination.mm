@@ -1,17 +1,17 @@
 @interface MPSNDArrayTopKMultiDestination
-- (MPSNDArrayTopKMultiDestination)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayTopKMultiDestination)initWithDevice:(id)a3 K:(unint64_t)a4 computeGradient:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorsForSourceArrays:(id)a3 sourceState:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayTopKMultiDestination)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayTopKMultiDestination)initWithDevice:(id)device K:(unint64_t)k computeGradient:(BOOL)gradient;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorsForSourceArrays:(id)arrays sourceState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayTopKMultiDestination
 
-- (id)destinationArrayDescriptorsForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorsForSourceArrays:(id)arrays sourceState:(id)state
 {
   v48[16] = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v5 = [arrays objectAtIndexedSubscript:{0, state}];
   v48[0] = self->_K;
   v6 = (v5 + *MEMORY[0x277CD7410]);
   v7 = (v5 + *MEMORY[0x277CD73D8]);
@@ -119,9 +119,9 @@
   return result;
 }
 
-- (MPSNDArrayTopKMultiDestination)initWithDevice:(id)a3 K:(unint64_t)a4 computeGradient:(BOOL)a5
+- (MPSNDArrayTopKMultiDestination)initWithDevice:(id)device K:(unint64_t)k computeGradient:(BOOL)gradient
 {
-  if (a5)
+  if (gradient)
   {
     v7 = 2;
   }
@@ -131,7 +131,7 @@
     v7 = 1;
   }
 
-  if (a5)
+  if (gradient)
   {
     v8 = 1;
   }
@@ -143,25 +143,25 @@
 
   v10.receiver = self;
   v10.super_class = MPSNDArrayTopKMultiDestination;
-  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v10 initWithDevice:a3 sourceCount:v7 destinationCount:v8];
+  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v10 initWithDevice:device sourceCount:v7 destinationCount:v8];
   result->super._encode = EncodeTopKMultiDestinationBase;
   result->super.super._encodeData = result;
-  result->_K = a4;
-  result->_computeGradient = a5;
+  result->_K = k;
+  result->_computeGradient = gradient;
   return result;
 }
 
-- (MPSNDArrayTopKMultiDestination)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayTopKMultiDestination)initWithCoder:(id)coder device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayTopKMultiDestination;
-  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v8 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v8 initWithCoder:coder device:device];
   if (result)
   {
     result->super._encode = EncodeTopKMultiDestination;
     result->super.super._encodeData = result;
     v6 = result;
-    v7 = [a3 decodeInt64ForKey:@"MPSNDArrayTopK.K"];
+    v7 = [coder decodeInt64ForKey:@"MPSNDArrayTopK.K"];
     result = v6;
     v6->_K = v7;
   }
@@ -169,19 +169,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayTopKMultiDestination;
   [(MPSNDArrayMultiaryMultiDestinationBase *)&v5 encodeWithCoder:?];
-  [a3 encodeInt64:self->_K forKey:@"MPSNDArrayTopK.K"];
+  [coder encodeInt64:self->_K forKey:@"MPSNDArrayTopK.K"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayTopKMultiDestination;
-  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     self->super._encode = EncodeTopKMultiDestination;

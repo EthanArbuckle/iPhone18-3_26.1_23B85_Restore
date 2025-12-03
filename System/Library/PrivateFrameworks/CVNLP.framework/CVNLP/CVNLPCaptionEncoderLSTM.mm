@@ -1,24 +1,24 @@
 @interface CVNLPCaptionEncoderLSTM
-- (CVNLPCaptionEncoderLSTM)initWithOptions:(id)a3 runTimeParams:(id)a4;
-- (void)_run:(vImage_Buffer *)a3 meanFeatures:(id *)a4 attnFeatures:(id *)a5 projectedAttnFeatures:(id *)a6;
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4;
+- (CVNLPCaptionEncoderLSTM)initWithOptions:(id)options runTimeParams:(id)params;
+- (void)_run:(vImage_Buffer *)_run meanFeatures:(id *)features attnFeatures:(id *)attnFeatures projectedAttnFeatures:(id *)projectedAttnFeatures;
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs;
 - (void)dealloc;
 @end
 
 @implementation CVNLPCaptionEncoderLSTM
 
-- (CVNLPCaptionEncoderLSTM)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPCaptionEncoderLSTM)initWithOptions:(id)options runTimeParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  paramsCopy = params;
   v59.receiver = self;
   v59.super_class = CVNLPCaptionEncoderLSTM;
-  v8 = [(CVNLPCaptionModelBase *)&v59 initWithOptions:v6 runTimeParams:v7];
+  v8 = [(CVNLPCaptionModelBase *)&v59 initWithOptions:optionsCopy runTimeParams:paramsCopy];
   v11 = v8;
   if (v8)
   {
     v8->meanFeaturesPresent = 0;
-    v12 = objc_msgSend_objectForKeyedSubscript_(v6, v9, CVNLPCaptionModelPath, v10);
+    v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, CVNLPCaptionModelPath, v10);
     v15 = objc_msgSend_URLByAppendingPathComponent_(v12, v13, @"encoder_opt.espresso.net", v14);
     v11->encoderCtx = espresso_create_context();
     v11->encoderPlan = espresso_create_plan();
@@ -120,38 +120,38 @@
   [(CVNLPCaptionEncoderLSTM *)&v5 dealloc];
 }
 
-- (void)computeCaptionForImage:(vImage_Buffer *)a3 outputs:(id *)a4
+- (void)computeCaptionForImage:(vImage_Buffer *)image outputs:(id *)outputs
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = 0;
   v11 = 0;
-  objc_msgSend__run_meanFeatures_attnFeatures_projectedAttnFeatures_(self, a2, a3, &v13, &v12, &v11);
+  objc_msgSend__run_meanFeatures_attnFeatures_projectedAttnFeatures_(self, a2, image, &v13, &v12, &v11);
   v6 = v13;
   v7 = v12;
   v9 = v11;
-  if (a3->data)
+  if (image->data)
   {
-    MEMORY[0x1DA741250](a3->data, 0x1000C8077774924);
+    MEMORY[0x1DA741250](image->data, 0x1000C8077774924);
   }
 
   v14[0] = v6;
   v14[1] = v7;
   v14[2] = v9;
-  *a4 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v14, 3);
+  *outputs = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v14, 3);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_run:(vImage_Buffer *)a3 meanFeatures:(id *)a4 attnFeatures:(id *)a5 projectedAttnFeatures:(id *)a6
+- (void)_run:(vImage_Buffer *)_run meanFeatures:(id *)features attnFeatures:(id *)attnFeatures projectedAttnFeatures:(id *)projectedAttnFeatures
 {
   v61 = xmmword_1D9DDE660;
   v62 = 0;
   p_encoderNet = &self->encoderNet;
   plan = self->encoderNet.plan;
   v12 = *&p_encoderNet->network_index;
-  v13 = *&a3->width;
-  v47 = *&a3->data;
+  v13 = *&_run->width;
+  v47 = *&_run->data;
   v48 = v13;
   if (espresso_network_bind_input_vimagebuffer_rgba8() || (v14 = self->encoderPlan, espresso_plan_execute_sync()))
   {
@@ -185,7 +185,7 @@
     v49 = *&self->meanFeatsBlob.dim[2];
     v50 = v23;
     objc_msgSend__copy_data_from_blob_to_(self, v15, &v47, &v58);
-    *a4 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v24, v58, v59 - v58);
+    *features = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v24, v58, v59 - v58);
     if (v58)
     {
       v59 = v58;
@@ -195,7 +195,7 @@
 
   else
   {
-    *a4 = objc_msgSend_data(MEMORY[0x1E695DEF0], v15, v16, v17);
+    *features = objc_msgSend_data(MEMORY[0x1E695DEF0], v15, v16, v17);
   }
 
   v58 = 0;
@@ -219,7 +219,7 @@
   v49 = *&self->attFeatsBlob.dim[2];
   v50 = v31;
   objc_msgSend__copy_data_from_blob_to_(self, v25, &v47, &v58);
-  *a5 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v32, v58, v59 - v58);
+  *attnFeatures = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v32, v58, v59 - v58);
   __p = 0;
   v45 = 0;
   v46 = 0;
@@ -241,7 +241,7 @@
   v49 = *&self->pAttFeatsBlob.dim[2];
   v50 = v38;
   objc_msgSend__copy_data_from_blob_to_(self, v39, &v47, &__p);
-  *a6 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v40, __p, v45 - __p);
+  *projectedAttnFeatures = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v40, __p, v45 - __p);
   if (__p)
   {
     v45 = __p;

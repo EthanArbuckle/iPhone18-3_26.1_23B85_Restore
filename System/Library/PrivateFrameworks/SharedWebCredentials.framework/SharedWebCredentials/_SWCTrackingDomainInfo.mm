@@ -1,25 +1,25 @@
 @interface _SWCTrackingDomainInfo
 + (OS_dispatch_queue)_queue;
-+ (id)_trackingDomainInfoWithDomain:(id)a3 JSONObject:(id)a4;
-+ (id)_trackingDomainInfoWithDomain:(id)a3 JSONObject:(id)a4 expectedSources:(unint64_t)a5;
-+ (id)_trackingDomainInfoWithDomains:(id)a3;
-+ (id)_trackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4;
-+ (id)trackingDomainInfoWithDomains:(id)a3;
-+ (void)_getTrackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)getTrackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4 completion:(id)a5;
++ (id)_trackingDomainInfoWithDomain:(id)domain JSONObject:(id)object;
++ (id)_trackingDomainInfoWithDomain:(id)domain JSONObject:(id)object expectedSources:(unint64_t)sources;
++ (id)_trackingDomainInfoWithDomains:(id)domains;
++ (id)_trackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources;
++ (id)trackingDomainInfoWithDomains:(id)domains;
++ (void)_getTrackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources completionHandler:(id)handler;
++ (void)getTrackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources completion:(id)completion;
 - (BOOL)canBlockRequest;
-- (_SWCTrackingDomainInfo)initWithCoder:(id)a3;
-- (id)_initWithDomain:(id)a3 JSONObject:(id)a4;
+- (_SWCTrackingDomainInfo)initWithCoder:(id)coder;
+- (id)_initWithDomain:(id)domain JSONObject:(id)object;
 - (unint64_t)source;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWCTrackingDomainInfo
 
-+ (id)trackingDomainInfoWithDomains:(id)a3
++ (id)trackingDomainInfoWithDomains:(id)domains
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  domainsCopy = domains;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -47,7 +47,7 @@
   v12[2] = __56___SWCTrackingDomainInfo_trackingDomainInfoWithDomains___block_invoke_2;
   v12[3] = &unk_279BBE108;
   v12[4] = &v13;
-  [v6 getTrackingDomains:v3 sources:3 completionHandler:v12];
+  [v6 getTrackingDomains:domainsCopy sources:3 completionHandler:v12];
 
   v7 = v14[5];
   if (!v7)
@@ -64,11 +64,11 @@
   return v8;
 }
 
-+ (void)getTrackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4 completion:(id)a5
++ (void)getTrackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  domainsCopy = domains;
+  completionCopy = completion;
   if (qword_280B21958 != -1)
   {
     dispatch_once(&qword_280B21958, &__block_literal_global_93);
@@ -87,7 +87,7 @@
   v17[1] = 3221225472;
   v17[2] = __78___SWCTrackingDomainInfo_getTrackingDomainInfoWithDomains_sources_completion___block_invoke;
   v17[3] = &unk_279BBE000;
-  v11 = v8;
+  v11 = completionCopy;
   v18 = v11;
   v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -96,7 +96,7 @@
   v15[3] = &unk_279BBE130;
   v13 = v11;
   v16 = v13;
-  [v12 getTrackingDomains:v7 sources:a4 completionHandler:v15];
+  [v12 getTrackingDomains:domainsCopy sources:sources completionHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -104,35 +104,35 @@
 - (unint64_t)source
 {
   v2 = [(NSDictionary *)self->_JSONObject objectForKeyedSubscript:@"s"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)canBlockRequest
 {
   v2 = [(NSDictionary *)self->_JSONObject objectForKeyedSubscript:@"dnbr"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-+ (id)_trackingDomainInfoWithDomain:(id)a3 JSONObject:(id)a4
++ (id)_trackingDomainInfoWithDomain:(id)domain JSONObject:(id)object
 {
-  v4 = [a1 _trackingDomainInfoWithDomain:a3 JSONObject:a4 expectedSources:3];
+  v4 = [self _trackingDomainInfoWithDomain:domain JSONObject:object expectedSources:3];
 
   return v4;
 }
 
-+ (id)_trackingDomainInfoWithDomain:(id)a3 JSONObject:(id)a4 expectedSources:(unint64_t)a5
++ (id)_trackingDomainInfoWithDomain:(id)domain JSONObject:(id)object expectedSources:(unint64_t)sources
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  objectCopy = object;
   v9 = objc_autoreleasePoolPush();
   if (_NSIsNSDictionary())
   {
-    v10 = [[_SWCTrackingDomainInfo alloc] _initWithDomain:v7 JSONObject:v8];
-    if (([v10 source] & a5) != 0)
+    v10 = [[_SWCTrackingDomainInfo alloc] _initWithDomain:domainCopy JSONObject:objectCopy];
+    if (([v10 source] & sources) != 0)
     {
       v11 = v10;
       goto LABEL_6;
@@ -146,17 +146,17 @@ LABEL_6:
   return v11;
 }
 
-+ (id)_trackingDomainInfoWithDomains:(id)a3
++ (id)_trackingDomainInfoWithDomains:(id)domains
 {
-  v3 = [a1 _trackingDomainInfoWithDomains:a3 sources:3];
+  v3 = [self _trackingDomainInfoWithDomains:domains sources:3];
 
   return v3;
 }
 
-+ (id)_trackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4
++ (id)_trackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources
 {
   v42 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  domainsCopy = domains;
   v6 = _SWCGetBundle();
   v26 = v6;
   if (v6)
@@ -176,14 +176,14 @@ LABEL_6:
 
         if (v9)
         {
-          if (v27)
+          if (domainsCopy)
           {
-            v28 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v27, "count")}];
+            v28 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(domainsCopy, "count")}];
             v35 = 0u;
             v36 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v10 = v27;
+            v10 = domainsCopy;
             v11 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v11)
             {
@@ -201,7 +201,7 @@ LABEL_6:
                   v15 = [v9 objectForKeyedSubscript:v14];
                   if (v15)
                   {
-                    v16 = [a1 _trackingDomainInfoWithDomain:v14 JSONObject:v15 expectedSources:a4];
+                    v16 = [self _trackingDomainInfoWithDomain:v14 JSONObject:v15 expectedSources:sources];
                     [v28 setObject:v16 forKeyedSubscript:v14];
                   }
                 }
@@ -222,8 +222,8 @@ LABEL_6:
             v29[3] = &unk_279BBE158;
             v28 = v19;
             v30 = v28;
-            v31 = a1;
-            v32 = a4;
+            selfCopy = self;
+            sourcesCopy = sources;
             [v9 enumerateKeysAndObjectsUsingBlock:v29];
           }
         }
@@ -284,38 +284,38 @@ LABEL_6:
   return v20;
 }
 
-+ (void)_getTrackingDomainInfoWithDomains:(id)a3 sources:(unint64_t)a4 completionHandler:(id)a5
++ (void)_getTrackingDomainInfoWithDomains:(id)domains sources:(unint64_t)sources completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _queue];
+  domainsCopy = domains;
+  handlerCopy = handler;
+  _queue = [self _queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __86___SWCTrackingDomainInfo__getTrackingDomainInfoWithDomains_sources_completionHandler___block_invoke;
   v13[3] = &unk_279BBE180;
-  v16 = a1;
-  v17 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  selfCopy = self;
+  sourcesCopy = sources;
+  v14 = domainsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = domainsCopy;
+  dispatch_async(_queue, v13);
 }
 
-- (id)_initWithDomain:(id)a3 JSONObject:(id)a4
+- (id)_initWithDomain:(id)domain JSONObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = _SWCTrackingDomainInfo;
   v8 = [(_SWCTrackingDomainInfo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainCopy copy];
     domain = v8->_domain;
     v8->_domain = v9;
 
-    v11 = [v7 copy];
+    v11 = [objectCopy copy];
     JSONObject = v8->_JSONObject;
     v8->_JSONObject = v11;
   }
@@ -323,17 +323,17 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_domain forKey:@"domain"];
-  [v4 encodeObject:self->_JSONObject forKey:@"JSONObject"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
+  [coderCopy encodeObject:self->_JSONObject forKey:@"JSONObject"];
 }
 
-- (_SWCTrackingDomainInfo)initWithCoder:(id)a3
+- (_SWCTrackingDomainInfo)initWithCoder:(id)coder
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _SWCTrackingDomainInfo;
   v5 = [(_SWCTrackingDomainInfo *)&v15 init];
@@ -348,11 +348,11 @@ LABEL_6:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:5];
     v8 = [v6 initWithArray:v7];
 
-    v9 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v9 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v9;
 
-    v11 = [v4 swc_decodeObjectOfClasses:v8 forKey:@"JSONObject"];
+    v11 = [coderCopy swc_decodeObjectOfClasses:v8 forKey:@"JSONObject"];
     JSONObject = v5->_JSONObject;
     v5->_JSONObject = v11;
   }

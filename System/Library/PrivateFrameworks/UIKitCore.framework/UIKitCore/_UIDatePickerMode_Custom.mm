@@ -1,15 +1,15 @@
 @interface _UIDatePickerMode_Custom
-- (_UIDatePickerMode_Custom)initWithFormatString:(id)a3 datePickerView:(id)a4;
-- (double)widthForCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5;
-- (id)_componentForCalendarUnit:(unint64_t)a3;
+- (_UIDatePickerMode_Custom)initWithFormatString:(id)string datePickerView:(id)view;
+- (double)widthForCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width;
+- (id)_componentForCalendarUnit:(unint64_t)unit;
 - (id)components;
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4;
-- (id)dateFormatForCalendarUnit:(unint64_t)a3;
-- (int64_t)componentForCalendarUnit:(unint64_t)a3;
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit;
+- (id)dateFormatForCalendarUnit:(unint64_t)unit;
+- (int64_t)componentForCalendarUnit:(unint64_t)unit;
 - (int64_t)displayedCalendarUnits;
-- (int64_t)numberOfRowsInComponent:(int64_t)a3;
-- (int64_t)valueForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4;
-- (unint64_t)calendarUnitForComponent:(int64_t)a3;
+- (int64_t)numberOfRowsInComponent:(int64_t)component;
+- (int64_t)valueForRow:(int64_t)row inCalendarUnit:(unint64_t)unit;
+- (unint64_t)calendarUnitForComponent:(int64_t)component;
 - (unint64_t)extractableCalendarUnits;
 - (unint64_t)numberOfComponents;
 - (void)noteCalendarChanged;
@@ -18,15 +18,15 @@
 
 @implementation _UIDatePickerMode_Custom
 
-- (_UIDatePickerMode_Custom)initWithFormatString:(id)a3 datePickerView:(id)a4
+- (_UIDatePickerMode_Custom)initWithFormatString:(id)string datePickerView:(id)view
 {
-  v5 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = _UIDatePickerMode_Custom;
   v6 = [(_UIDatePickerMode *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [stringCopy copy];
     originalFormat = v6->_originalFormat;
     v6->_originalFormat = v7;
   }
@@ -51,8 +51,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_UIDatePickerMode_Custom *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v3 = [components countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -64,14 +64,14 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setWidth:0.0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [components countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -84,12 +84,12 @@
   if (!components)
   {
     originalFormat = self->_originalFormat;
-    v5 = [(_UIDatePickerMode *)self locale];
-    v6 = [_UIDatePickerComponent componentsFromDateFormatString:originalFormat locale:v5 followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle]];
+    locale = [(_UIDatePickerMode *)self locale];
+    v6 = [_UIDatePickerComponent componentsFromDateFormatString:originalFormat locale:locale followsSystemHourCycle:[(_UIDatePickerMode *)self followsSystemHourCycle]];
     v7 = self->_components;
     self->_components = v6;
 
-    v8 = [(_UIDatePickerMode *)self calendar];
+    calendar = [(_UIDatePickerMode *)self calendar];
     if ([(NSArray *)self->_components count])
     {
       v9 = 0;
@@ -98,17 +98,17 @@
       do
       {
         v11 = [(NSArray *)self->_components objectAtIndex:v10];
-        v12 = [v11 equivalentUnit];
-        if ((v12 & v9) != 0)
+        equivalentUnit = [v11 equivalentUnit];
+        if ((equivalentUnit & v9) != 0)
         {
-          v13 = [v11 formatString];
+          formatString = [v11 formatString];
           if (v10)
           {
             v14 = 0;
             while (1)
             {
               v15 = [(NSArray *)self->_components objectAtIndex:v14];
-              if (v12 == [v15 equivalentUnit])
+              if (equivalentUnit == [v15 equivalentUnit])
               {
                 break;
               }
@@ -119,20 +119,20 @@
               }
             }
 
-            v16 = [v15 formatString];
+            formatString2 = [v15 formatString];
           }
 
           else
           {
 LABEL_9:
-            v16 = 0;
+            formatString2 = 0;
           }
 
-          [MEMORY[0x1E695DF30] raise:v22 format:{@"Conflicting date formats: %@ and %@", v16, v13}];
+          [MEMORY[0x1E695DF30] raise:v22 format:{@"Conflicting date formats: %@ and %@", formatString2, formatString}];
         }
 
-        v9 |= v12;
-        v17 = [v8 maximumRangeOfUnit:{objc_msgSend(v11, "calendarUnit")}];
+        v9 |= equivalentUnit;
+        v17 = [calendar maximumRangeOfUnit:{objc_msgSend(v11, "calendarUnit")}];
         [v11 setUnitRange:{v17, v18}];
 
         ++v10;
@@ -151,29 +151,29 @@ LABEL_9:
   return components;
 }
 
-- (unint64_t)calendarUnitForComponent:(int64_t)a3
+- (unint64_t)calendarUnitForComponent:(int64_t)component
 {
-  v4 = [(_UIDatePickerMode_Custom *)self components];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 calendarUnit];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v5 = [components objectAtIndex:component];
+  calendarUnit = [v5 calendarUnit];
 
-  return v6;
+  return calendarUnit;
 }
 
-- (int64_t)componentForCalendarUnit:(unint64_t)a3
+- (int64_t)componentForCalendarUnit:(unint64_t)unit
 {
-  v4 = [(_UIDatePickerMode_Custom *)self components];
-  v5 = [v4 count];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v5 = [components count];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     while (1)
     {
-      v8 = [v4 objectAtIndex:v7];
-      v9 = [v8 calendarUnit];
+      v8 = [components objectAtIndex:v7];
+      calendarUnit = [v8 calendarUnit];
 
-      if (v9 == a3)
+      if (calendarUnit == unit)
       {
         break;
       }
@@ -194,7 +194,7 @@ LABEL_5:
   return v7;
 }
 
-- (id)_componentForCalendarUnit:(unint64_t)a3
+- (id)_componentForCalendarUnit:(unint64_t)unit
 {
   v17 = *MEMORY[0x1E69E9840];
   [(_UIDatePickerMode_Custom *)self components];
@@ -217,7 +217,7 @@ LABEL_5:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 calendarUnit] == a3)
+        if ([v9 calendarUnit] == unit)
         {
           v10 = v9;
           goto LABEL_11;
@@ -247,8 +247,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(_UIDatePickerMode_Custom *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v3 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -260,13 +260,13 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) calendarUnit];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -287,8 +287,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(_UIDatePickerMode_Custom *)self components];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v3 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -300,13 +300,13 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(components);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) calendarUnit];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [components countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -322,16 +322,16 @@ LABEL_11:
 
 - (unint64_t)numberOfComponents
 {
-  v2 = [(_UIDatePickerMode_Custom *)self components];
-  v3 = [v2 count];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v3 = [components count];
 
   return v3;
 }
 
-- (int64_t)numberOfRowsInComponent:(int64_t)a3
+- (int64_t)numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(_UIDatePickerMode_Custom *)self components];
-  v5 = [v4 objectAtIndex:a3];
+  components = [(_UIDatePickerMode_Custom *)self components];
+  v5 = [components objectAtIndex:component];
 
   if ([v5 calendarUnit] == 0x10000)
   {
@@ -346,42 +346,42 @@ LABEL_11:
   return v6;
 }
 
-- (id)dateFormatForCalendarUnit:(unint64_t)a3
+- (id)dateFormatForCalendarUnit:(unint64_t)unit
 {
-  v3 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:a3];
-  v4 = [v3 formatString];
+  v3 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:unit];
+  formatString = [v3 formatString];
 
-  return v4;
+  return formatString;
 }
 
-- (double)widthForCalendarUnit:(unint64_t)a3 font:(id)a4 maxWidth:(double)a5
+- (double)widthForCalendarUnit:(unint64_t)unit font:(id)font maxWidth:(double)width
 {
-  v6 = a3;
+  unitCopy = unit;
   v53[1] = *MEMORY[0x1E69E9840];
-  v8 = [(_UIDatePickerMode_Custom *)self components:a3];
-  v9 = [v8 lastObject];
-  [v9 width];
+  v8 = [(_UIDatePickerMode_Custom *)self components:unit];
+  lastObject = [v8 lastObject];
+  [lastObject width];
   v11 = v10;
 
   if (v11 == 0.0)
   {
-    v44 = v6;
-    v45 = [(_UIDatePickerMode_Custom *)self numberOfComponents];
-    if (v45)
+    v44 = unitCopy;
+    numberOfComponents = [(_UIDatePickerMode_Custom *)self numberOfComponents];
+    if (numberOfComponents)
     {
       v12 = 0;
       v13 = *off_1E70EC918;
       v14 = 0.0;
       do
       {
-        v15 = [(_UIDatePickerMode_Custom *)self components];
-        v16 = [v15 objectAtIndex:v12];
+        components = [(_UIDatePickerMode_Custom *)self components];
+        v16 = [components objectAtIndex:v12];
 
         v46 = v16;
-        v17 = [v16 unitRange];
+        unitRange = [v16 unitRange];
         v19 = 0;
-        v20 = v17 + v18;
-        if ((v17 + v18) >= 9000)
+        v20 = unitRange + v18;
+        if ((unitRange + v18) >= 9000)
         {
           v20 = 9000;
         }
@@ -408,8 +408,8 @@ LABEL_11:
         {
           v25 = [(_UIDatePickerMode *)self titleForRow:v19 inComponent:v12];
           v52 = v13;
-          v26 = [(_UIDatePickerMode *)self font];
-          v53[0] = v26;
+          font = [(_UIDatePickerMode *)self font];
+          v53[0] = font;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
           [v25 sizeWithAttributes:v27];
           v29 = v28;
@@ -430,7 +430,7 @@ LABEL_11:
         ++v12;
       }
 
-      while (v12 != v45);
+      while (v12 != numberOfComponents);
     }
 
     else
@@ -438,27 +438,27 @@ LABEL_11:
       v14 = 0.0;
     }
 
-    v6 = v44;
-    if (v14 > a5)
+    unitCopy = v44;
+    if (v14 > width)
     {
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v30 = [(_UIDatePickerMode_Custom *)self components];
-      v31 = [v30 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      components2 = [(_UIDatePickerMode_Custom *)self components];
+      v31 = [components2 countByEnumeratingWithState:&v47 objects:v51 count:16];
       if (v31)
       {
         v32 = v31;
         v33 = *v48;
-        v34 = a5 / v14;
+        v34 = width / v14;
         do
         {
           for (i = 0; i != v32; ++i)
           {
             if (*v48 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(components2);
             }
 
             v36 = *(*(&v47 + 1) + 8 * i);
@@ -466,7 +466,7 @@ LABEL_11:
             [v36 setWidth:floor(v34 * v37)];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v47 objects:v51 count:16];
+          v32 = [components2 countByEnumeratingWithState:&v47 objects:v51 count:16];
         }
 
         while (v32);
@@ -474,9 +474,9 @@ LABEL_11:
     }
   }
 
-  v38 = [(_UIDatePickerMode_Custom *)self componentForCalendarUnit:v6];
-  v39 = [(_UIDatePickerMode_Custom *)self components];
-  v40 = [v39 objectAtIndex:v38];
+  v38 = [(_UIDatePickerMode_Custom *)self componentForCalendarUnit:unitCopy];
+  components3 = [(_UIDatePickerMode_Custom *)self components];
+  v40 = [components3 objectAtIndex:v38];
 
   [v40 width];
   v42 = v41;
@@ -484,9 +484,9 @@ LABEL_11:
   return v42;
 }
 
-- (id)dateForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4
+- (id)dateForRow:(int64_t)row inCalendarUnit:(unint64_t)unit
 {
-  v7 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:a4];
+  v7 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:unit];
   if ([v7 equivalentUnit] == 4)
   {
     v8 = 0;
@@ -496,31 +496,31 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = _UIDatePickerMode_Custom;
-    v8 = [(_UIDatePickerMode *)&v10 dateForRow:a3 inCalendarUnit:a4];
+    v8 = [(_UIDatePickerMode *)&v10 dateForRow:row inCalendarUnit:unit];
   }
 
   return v8;
 }
 
-- (int64_t)valueForRow:(int64_t)a3 inCalendarUnit:(unint64_t)a4
+- (int64_t)valueForRow:(int64_t)row inCalendarUnit:(unint64_t)unit
 {
-  if (a4 != 0x10000)
+  if (unit != 0x10000)
   {
-    v5 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:a4];
+    v5 = [(_UIDatePickerMode_Custom *)self _componentForCalendarUnit:unit];
     v6 = v5;
     if (v5 && [v5 equivalentUnit] != 4)
     {
-      v7 = [v6 unitRange];
-      a3 = a3 % v8 + v7;
+      unitRange = [v6 unitRange];
+      row = row % v8 + unitRange;
     }
 
     else
     {
-      a3 = 0;
+      row = 0;
     }
   }
 
-  return a3;
+  return row;
 }
 
 @end

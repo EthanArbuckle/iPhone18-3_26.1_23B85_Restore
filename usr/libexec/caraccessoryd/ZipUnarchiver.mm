@@ -1,13 +1,13 @@
 @interface ZipUnarchiver
-+ (BOOL)unarchive:(id)a3 toLocation:(id)a4;
++ (BOOL)unarchive:(id)unarchive toLocation:(id)location;
 @end
 
 @implementation ZipUnarchiver
 
-+ (BOOL)unarchive:(id)a3 toLocation:(id)a4
++ (BOOL)unarchive:(id)unarchive toLocation:(id)location
 {
-  v5 = a4;
-  v6 = a3;
+  locationCopy = location;
+  unarchiveCopy = unarchive;
   BOMCopierNew();
   v7 = +[NSMutableArray array];
   BOMCopierSetUserData();
@@ -15,13 +15,13 @@
   v10 = @"extractPKZip";
   v11 = &__kCFBooleanTrue;
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v6 fileSystemRepresentation];
+  [unarchiveCopy fileSystemRepresentation];
 
-  [v5 fileSystemRepresentation];
-  LODWORD(v5) = BOMCopierCopyWithOptions();
+  [locationCopy fileSystemRepresentation];
+  LODWORD(locationCopy) = BOMCopierCopyWithOptions();
   BOMCopierFree();
 
-  return v5 == 0;
+  return locationCopy == 0;
 }
 
 @end

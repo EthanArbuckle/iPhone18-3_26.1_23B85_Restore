@@ -1,11 +1,11 @@
 @interface VUIMPMediaItem
-- (VUIMPMediaItem)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6;
-- (VUIMPMediaItem)initWithMediaLibrary:(id)a3 mediaItem:(id)a4 requestedProperties:(id)a5;
+- (VUIMPMediaItem)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind;
+- (VUIMPMediaItem)initWithMediaLibrary:(id)library mediaItem:(id)item requestedProperties:(id)properties;
 - (VUIMediaEntityAssetController)assetController;
 - (id)HLSAudioCapability;
 - (id)HLSColorCapability;
 - (id)HLSResolution;
-- (id)_valueForPropertyDescriptor:(id)a3;
+- (id)_valueForPropertyDescriptor:(id)descriptor;
 - (id)assetType;
 - (id)audioCapability;
 - (id)colorCapability;
@@ -13,7 +13,7 @@
 - (id)coverArtImageIdentifier;
 - (id)credits;
 - (id)extrasURL;
-- (id)imageLoadParamsWithImageType:(unint64_t)a3;
+- (id)imageLoadParamsWithImageType:(unint64_t)type;
 - (id)isLocal;
 - (id)isPlayable;
 - (id)playedState;
@@ -27,21 +27,21 @@
 
 @implementation VUIMPMediaItem
 
-- (VUIMPMediaItem)initWithMediaLibrary:(id)a3 mediaItem:(id)a4 requestedProperties:(id)a5
+- (VUIMPMediaItem)initWithMediaLibrary:(id)library mediaItem:(id)item requestedProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  libraryCopy = library;
+  itemCopy = item;
+  propertiesCopy = properties;
+  if (libraryCopy)
   {
-    if (v9)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaItem"}];
-    if (v10)
+    if (propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -50,13 +50,13 @@ LABEL_9:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
-  if (!v9)
+  if (!itemCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (v10)
+  if (propertiesCopy)
   {
     goto LABEL_4;
   }
@@ -64,33 +64,33 @@ LABEL_3:
 LABEL_10:
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"requestedProperties"}];
 LABEL_4:
-  v11 = [VUIMPMediaEntityIdentifier mediaItemIdentifierWithMediaItem:v9];
+  v11 = [VUIMPMediaEntityIdentifier mediaItemIdentifierWithMediaItem:itemCopy];
   if (v11)
   {
     v12 = VUIMPMediaItemKind();
     v16.receiver = self;
     v16.super_class = VUIMPMediaItem;
-    v13 = [(VUIMediaEntity *)&v16 initWithMediaLibrary:v8 identifier:v11 requestedProperties:v10 kind:v12];
+    v13 = [(VUIMediaEntity *)&v16 initWithMediaLibrary:libraryCopy identifier:v11 requestedProperties:propertiesCopy kind:v12];
 
     if (v13)
     {
-      objc_storeStrong(&v13->_mediaItem, a4);
+      objc_storeStrong(&v13->_mediaItem, item);
       [(VUIMediaEntity *)v13 setCachesPropertiesOnFirstAccess:1];
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (VUIMPMediaItem)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6
+- (VUIMPMediaItem)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind
 {
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
@@ -265,10 +265,10 @@ id __31__VUIMPMediaItem_contentRating__block_invoke(uint64_t a1)
   coverArtImageIdentifier = self->_coverArtImageIdentifier;
   if (!coverArtImageIdentifier)
   {
-    v4 = [(VUIMPMediaItem *)self mediaItem];
-    v5 = [v4 vui_coverArtImageIdentifier];
+    mediaItem = [(VUIMPMediaItem *)self mediaItem];
+    vui_coverArtImageIdentifier = [mediaItem vui_coverArtImageIdentifier];
     v6 = self->_coverArtImageIdentifier;
-    self->_coverArtImageIdentifier = v5;
+    self->_coverArtImageIdentifier = vui_coverArtImageIdentifier;
 
     coverArtImageIdentifier = self->_coverArtImageIdentifier;
   }
@@ -318,14 +318,14 @@ id __32__VUIMPMediaItem_showIdentifier__block_invoke(uint64_t a1)
 
 - (VUIMediaEntityAssetController)assetController
 {
-  v3 = [(VUIMediaEntity *)self mediaLibrary];
-  v4 = [v3 type];
+  mediaLibrary = [(VUIMediaEntity *)self mediaLibrary];
+  type = [mediaLibrary type];
 
-  if (!v4 && !self->_assetController)
+  if (!type && !self->_assetController)
   {
     v5 = [VUIUniversalAssetController alloc];
-    v6 = [(VUIMPMediaItem *)self mediaItem];
-    v7 = [(VUIUniversalAssetController *)v5 initWithMPMediaItem:v6];
+    mediaItem = [(VUIMPMediaItem *)self mediaItem];
+    v7 = [(VUIUniversalAssetController *)v5 initWithMPMediaItem:mediaItem];
     assetController = self->_assetController;
     self->_assetController = v7;
   }
@@ -335,16 +335,16 @@ id __32__VUIMPMediaItem_showIdentifier__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)_valueForPropertyDescriptor:(id)a3
+- (id)_valueForPropertyDescriptor:(id)descriptor
 {
-  v4 = [a3 sourcePropertyNames];
-  v5 = [v4 allObjects];
+  sourcePropertyNames = [descriptor sourcePropertyNames];
+  allObjects = [sourcePropertyNames allObjects];
 
-  if ([v5 count] == 1)
+  if ([allObjects count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(VUIMPMediaItem *)self mediaItem];
-    v8 = [v7 valueForProperty:v6];
+    firstObject = [allObjects firstObject];
+    mediaItem = [(VUIMPMediaItem *)self mediaItem];
+    v8 = [mediaItem valueForProperty:firstObject];
   }
 
   else
@@ -400,9 +400,9 @@ id __28__VUIMPMediaItem_isPlayable__block_invoke(uint64_t a1)
   previewFrameImageIdentifier = self->_previewFrameImageIdentifier;
   if (!previewFrameImageIdentifier)
   {
-    v4 = [(MPMediaItem *)self->_mediaItem vui_previewFrameImageIdentifier];
+    vui_previewFrameImageIdentifier = [(MPMediaItem *)self->_mediaItem vui_previewFrameImageIdentifier];
     v5 = self->_previewFrameImageIdentifier;
-    self->_previewFrameImageIdentifier = v4;
+    self->_previewFrameImageIdentifier = vui_previewFrameImageIdentifier;
 
     previewFrameImageIdentifier = self->_previewFrameImageIdentifier;
   }
@@ -510,10 +510,10 @@ id __38__VUIMPMediaItem_rentalExpirationDate__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)imageLoadParamsWithImageType:(unint64_t)a3
+- (id)imageLoadParamsWithImageType:(unint64_t)type
 {
-  v4 = [(VUIMPMediaItem *)self mediaItem];
-  v5 = [v4 vui_imageLoadParamsWithImageType:a3];
+  mediaItem = [(VUIMPMediaItem *)self mediaItem];
+  v5 = [mediaItem vui_imageLoadParamsWithImageType:type];
 
   return v5;
 }

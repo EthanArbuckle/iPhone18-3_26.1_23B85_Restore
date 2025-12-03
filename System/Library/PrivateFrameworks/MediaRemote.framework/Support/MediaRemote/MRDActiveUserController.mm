@@ -2,8 +2,8 @@
 - (MRDActiveUserController)init;
 - (id)activeUserIdentifier;
 - (void)dealloc;
-- (void)fetchActiveUserWithQueue:(id)a3 completion:(id)a4;
-- (void)setActiveUserIdentifier:(id)a3;
+- (void)fetchActiveUserWithQueue:(id)queue completion:(id)completion;
+- (void)setActiveUserIdentifier:(id)identifier;
 @end
 
 @implementation MRDActiveUserController
@@ -38,11 +38,11 @@
   return v3;
 }
 
-- (void)setActiveUserIdentifier:(id)a3
+- (void)setActiveUserIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   activeUserIdentifier = self->_activeUserIdentifier;
   self->_activeUserIdentifier = v5;
@@ -50,15 +50,15 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)fetchActiveUserWithQueue:(id)a3 completion:(id)a4
+- (void)fetchActiveUserWithQueue:(id)queue completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10019BCDC;
   v7[3] = &unk_1004C0B08;
-  v8 = a4;
-  v6 = v8;
-  [(MRDActiveUserController *)self _fetchActiveUserWithQueue:a3 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(MRDActiveUserController *)self _fetchActiveUserWithQueue:queue completion:v7];
 }
 
 @end

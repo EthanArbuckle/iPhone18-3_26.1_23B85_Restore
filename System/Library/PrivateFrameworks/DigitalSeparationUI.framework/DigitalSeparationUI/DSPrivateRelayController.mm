@@ -5,8 +5,8 @@
 - (id)enableButtonTitle;
 - (id)privateRelayDetailText;
 - (void)learnMorePressed;
-- (void)setPrivateRelayEnabledWithHandler:(id)a3;
-- (void)shouldShowWithCompletion:(id)a3;
+- (void)setPrivateRelayEnabledWithHandler:(id)handler;
+- (void)shouldShowWithCompletion:(id)completion;
 - (void)turnOnPrivateRelay;
 - (void)viewDidLoad;
 @end
@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogPrivateRelay = os_log_create("com.apple.DigitalSeparation", "DSPrivateRelayController");
 
@@ -46,17 +46,17 @@
   return v6;
 }
 
-- (void)shouldShowWithCompletion:(id)a3
+- (void)shouldShowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sharedWorkQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__DSPrivateRelayController_shouldShowWithCompletion___block_invoke;
   v7[3] = &unk_278F75718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -197,17 +197,17 @@ void __53__DSPrivateRelayController_shouldShowWithCompletion___block_invoke_318(
   v11.receiver = self;
   v11.super_class = DSPrivateRelayController;
   [(DSOBWelcomeController *)&v11 viewDidLoad];
-  v3 = [(DSPrivateRelayController *)self headerView];
-  v4 = [(DSPrivateRelayController *)self privateRelayDetailText];
-  [v3 setDetailText:v4];
+  headerView = [(DSPrivateRelayController *)self headerView];
+  privateRelayDetailText = [(DSPrivateRelayController *)self privateRelayDetailText];
+  [headerView setDetailText:privateRelayDetailText];
 
-  v5 = [(DSPrivateRelayController *)self enableButtonTitle];
-  v6 = [DSUIUtilities setUpBoldButtonForController:self title:v5 target:self selector:sel_turnOnPrivateRelay];
+  enableButtonTitle = [(DSPrivateRelayController *)self enableButtonTitle];
+  v6 = [DSUIUtilities setUpBoldButtonForController:self title:enableButtonTitle target:self selector:sel_turnOnPrivateRelay];
   [(DSPrivateRelayController *)self setEnableButton:v6];
 
   v7 = DSUILocStringForKey(@"SKIP");
-  v8 = [(DSPrivateRelayController *)self delegate];
-  v9 = [DSUIUtilities setUpLinkButtonForController:self title:v7 target:v8 selector:sel_pushNextPane];
+  delegate = [(DSPrivateRelayController *)self delegate];
+  v9 = [DSUIUtilities setUpLinkButtonForController:self title:v7 target:delegate selector:sel_pushNextPane];
   [(DSPrivateRelayController *)self setLinkButton:v9];
 
   v10 = [DSUIUtilities setUpLearnMoreButtonForController:self selector:sel_learnMorePressed];
@@ -215,8 +215,8 @@ void __53__DSPrivateRelayController_shouldShowWithCompletion___block_invoke_318(
 
 - (void)turnOnPrivateRelay
 {
-  v3 = [(DSPrivateRelayController *)self buttonTray];
-  [v3 showButtonsBusy];
+  buttonTray = [(DSPrivateRelayController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
@@ -277,16 +277,16 @@ void __46__DSPrivateRelayController_turnOnPrivateRelay__block_invoke_340(uint64_
   [v3 pushNextPane];
 }
 
-- (void)setPrivateRelayEnabledWithHandler:(id)a3
+- (void)setPrivateRelayEnabledWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = sharedWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__DSPrivateRelayController_setPrivateRelayEnabledWithHandler___block_invoke;
   block[3] = &unk_278F75490;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(v4, block);
 }
 
@@ -326,10 +326,10 @@ void __62__DSPrivateRelayController_setPrivateRelayEnabledWithHandler___block_in
 
 - (void)learnMorePressed
 {
-  v5 = [(DSPrivateRelayController *)self delegate];
+  delegate = [(DSPrivateRelayController *)self delegate];
   v3 = DSUILocStringForKey(@"PRIVATE_RELAY_LEARN_MORE_URL");
   v4 = [DSUIUtilities valueForUnfinalizedString:v3];
-  [v5 learnMorePressedForController:self withURL:v4];
+  [delegate learnMorePressedForController:self withURL:v4];
 }
 
 - (id)enableButtonTitle

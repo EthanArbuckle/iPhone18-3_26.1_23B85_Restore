@@ -1,12 +1,12 @@
 @interface SASProximityAction
-+ (id)actionFromDictionary:(id)a3;
++ (id)actionFromDictionary:(id)dictionary;
 @end
 
 @implementation SASProximityAction
 
-+ (id)actionFromDictionary:(id)a3
++ (id)actionFromDictionary:(id)dictionary
 {
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
 
   return v3;
 }

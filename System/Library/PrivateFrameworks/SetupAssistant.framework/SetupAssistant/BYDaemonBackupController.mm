@@ -1,20 +1,20 @@
 @interface BYDaemonBackupController
 - (BOOL)takeLock;
-- (BYDaemonBackupController)initWithMigrationController:(id)a3;
+- (BYDaemonBackupController)initWithMigrationController:(id)controller;
 - (BYDaemonBackupControllerDelegate)delegate;
-- (void)attemptToBeginBackup:(unint64_t)a3;
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidFinishBackup:(id)a3;
+- (void)attemptToBeginBackup:(unint64_t)backup;
+- (void)manager:(id)manager didFailBackupWithError:(id)error;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidFinishBackup:(id)backup;
 - (void)releaseLock;
 - (void)startBackup;
 @end
 
 @implementation BYDaemonBackupController
 
-- (BYDaemonBackupController)initWithMigrationController:(id)a3
+- (BYDaemonBackupController)initWithMigrationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = BYDaemonBackupController;
   v5 = [(BYDaemonBackupController *)&v10 init];
@@ -41,7 +41,7 @@
     v8 = [[v6 alloc] initWithDelegate:v5];
     [(BYDaemonBackupController *)v5 setManager:v8];
 
-    [(BYDaemonBackupController *)v5 setMigrationController:v4];
+    [(BYDaemonBackupController *)v5 setMigrationController:controllerCopy];
   }
 
   return v5;
@@ -49,12 +49,12 @@
 
 - (void)startBackup
 {
-  v3 = [(BYDaemonBackupController *)self manager];
-  v4 = [v3 isBackupEnabled];
+  manager = [(BYDaemonBackupController *)self manager];
+  isBackupEnabled = [manager isBackupEnabled];
 
   v5 = _BYLoggingFacility();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isBackupEnabled)
   {
     if (v6)
     {
@@ -62,13 +62,13 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Ensuring migration is not running before attempting to start a backup...", buf, 2u);
     }
 
-    v7 = [(BYDaemonBackupController *)self migrationController];
+    migrationController = [(BYDaemonBackupController *)self migrationController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000CFEC;
     v9[3] = &unk_100020D80;
     v9[4] = self;
-    [v7 waitForMigrationToCompleteWithTimeout:v9 completionBlock:1800.0];
+    [migrationController waitForMigrationToCompleteWithTimeout:v9 completionBlock:1800.0];
   }
 
   else
@@ -79,21 +79,21 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Backup is not enabled", buf, 2u);
     }
 
-    v7 = [NSError errorWithDomain:@"BYDaemonBackupControllerErrorDomain" code:0 userInfo:0];
-    v8 = [(BYDaemonBackupController *)self delegate];
-    [v8 backupCompletedWithError:v7 dateOfLastBackup:0];
+    migrationController = [NSError errorWithDomain:@"BYDaemonBackupControllerErrorDomain" code:0 userInfo:0];
+    delegate = [(BYDaemonBackupController *)self delegate];
+    [delegate backupCompletedWithError:migrationController dateOfLastBackup:0];
   }
 }
 
-- (void)attemptToBeginBackup:(unint64_t)a3
+- (void)attemptToBeginBackup:(unint64_t)backup
 {
   v5 = objc_alloc_init(MBStartBackupOptions);
   v6 = +[MBCellularAccess inexpensiveCellularAccess];
   [v5 setCellularAccess:v6];
 
-  v7 = [(BYDaemonBackupController *)self manager];
+  manager = [(BYDaemonBackupController *)self manager];
   v16 = 0;
-  v8 = [v7 startBackupWithOptions:v5 error:&v16];
+  v8 = [manager startBackupWithOptions:v5 error:&v16];
   v9 = v16;
 
   v10 = _BYLoggingFacility();
@@ -116,7 +116,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Backup failed to start returning error: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (backup)
     {
       v12 = _BYLoggingFacility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -132,15 +132,15 @@
       block[2] = sub_10000D48C;
       block[3] = &unk_100020DA8;
       block[4] = self;
-      block[5] = a3;
+      block[5] = backup;
       dispatch_after(v13, &_dispatch_main_q, block);
     }
 
     else
     {
       [(BYDaemonBackupController *)self releaseLock];
-      v14 = [(BYDaemonBackupController *)self delegate];
-      [v14 backupCompletedWithError:v9 dateOfLastBackup:0];
+      delegate = [(BYDaemonBackupController *)self delegate];
+      [delegate backupCompletedWithError:v9 dateOfLastBackup:0];
     }
   }
 }
@@ -227,33 +227,33 @@
   }
 }
 
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4
+- (void)manager:(id)manager didFailBackupWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   [(BYDaemonBackupController *)self releaseLock];
-  v6 = [(BYDaemonBackupController *)self delegate];
-  [v6 backupCompletedWithError:v5 dateOfLastBackup:0];
+  delegate = [(BYDaemonBackupController *)self delegate];
+  [delegate backupCompletedWithError:errorCopy dateOfLastBackup:0];
 }
 
-- (void)managerDidFinishBackup:(id)a3
+- (void)managerDidFinishBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   [(BYDaemonBackupController *)self releaseLock];
-  v6 = [(BYDaemonBackupController *)self delegate];
-  v5 = [v4 dateOfLastBackup];
+  delegate = [(BYDaemonBackupController *)self delegate];
+  dateOfLastBackup = [backupCopy dateOfLastBackup];
 
-  [v6 backupCompletedWithError:0 dateOfLastBackup:v5];
+  [delegate backupCompletedWithError:0 dateOfLastBackup:dateOfLastBackup];
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
   [(BYDaemonBackupController *)self lastPercentComplete];
-  v8 = a4;
-  if (v9 < 0.0 || ([(BYDaemonBackupController *)self lastPercentComplete], v8 - v10 >= 0.05))
+  progressCopy = progress;
+  if (v9 < 0.0 || ([(BYDaemonBackupController *)self lastPercentComplete], progressCopy - v10 >= 0.05))
   {
-    [(BYDaemonBackupController *)self setLastPercentComplete:v8];
-    v11 = [(BYDaemonBackupController *)self delegate];
-    [v11 backupUpdatedProgress:a5 estimatedTimeRemaining:v8];
+    [(BYDaemonBackupController *)self setLastPercentComplete:progressCopy];
+    delegate = [(BYDaemonBackupController *)self delegate];
+    [delegate backupUpdatedProgress:remaining estimatedTimeRemaining:progressCopy];
   }
 }
 

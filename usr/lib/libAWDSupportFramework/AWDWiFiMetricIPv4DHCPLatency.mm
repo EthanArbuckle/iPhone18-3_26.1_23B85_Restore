@@ -1,16 +1,16 @@
 @interface AWDWiFiMetricIPv4DHCPLatency
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDhcpLatencyMilliSecs:(BOOL)a3;
-- (void)setHasDhcpLeaseMins:(BOOL)a3;
-- (void)setHasSecurityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDhcpLatencyMilliSecs:(BOOL)secs;
+- (void)setHasDhcpLeaseMins:(BOOL)mins;
+- (void)setHasSecurityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricIPv4DHCPLatency
@@ -23,9 +23,9 @@
   [(AWDWiFiMetricIPv4DHCPLatency *)&v3 dealloc];
 }
 
-- (void)setHasDhcpLatencyMilliSecs:(BOOL)a3
+- (void)setHasDhcpLatencyMilliSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 2;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSecurityType:(BOOL)a3
+- (void)setHasSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDhcpLeaseMins:(BOOL)a3
+- (void)setHasDhcpLeaseMins:(BOOL)mins
 {
-  if (a3)
+  if (mins)
   {
     v3 = 4;
   }
@@ -77,11 +77,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpLatencyMilliSecs), @"dhcpLatencyMilliSecs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpLatencyMilliSecs), @"dhcpLatencyMilliSecs"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -100,7 +100,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -114,24 +114,24 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpLeaseMins), @"dhcpLeaseMins"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dhcpLeaseMins), @"dhcpLeaseMins"}];
   if (*&self->_has)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
 LABEL_6:
   privateMacType = self->_privateMacType;
   if (privateMacType)
   {
-    [v3 setObject:privateMacType forKey:@"privateMacType"];
+    [dictionary setObject:privateMacType forKey:@"privateMacType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -188,13 +188,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_dhcpLatencyMilliSecs;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_dhcpLatencyMilliSecs;
+    *(to + 36) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -213,8 +213,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 8) = self->_securityType;
-  *(a3 + 36) |= 8u;
+  *(to + 8) = self->_securityType;
+  *(to + 36) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -228,26 +228,26 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 36) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 36) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(a3 + 5) = self->_dhcpLeaseMins;
-    *(a3 + 36) |= 4u;
+    *(to + 5) = self->_dhcpLeaseMins;
+    *(to + 36) |= 4u;
   }
 
 LABEL_6:
   privateMacType = self->_privateMacType;
   if (privateMacType)
   {
-    [a3 setPrivateMacType:privateMacType];
+    [to setPrivateMacType:privateMacType];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -298,25 +298,25 @@ LABEL_5:
 
 LABEL_6:
 
-  v6[3] = [(NSString *)self->_privateMacType copyWithZone:a3];
+  v6[3] = [(NSString *)self->_privateMacType copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 36);
+    v6 = *(equal + 36);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_dhcpLatencyMilliSecs != *(a3 + 4))
+      if ((*(equal + 36) & 2) == 0 || self->_dhcpLatencyMilliSecs != *(equal + 4))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -325,45 +325,45 @@ LABEL_24:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0 || self->_securityType != *(a3 + 8))
+      if ((*(equal + 36) & 8) == 0 || self->_securityType != *(equal + 8))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_24;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
       goto LABEL_24;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_dhcpLeaseMins != *(a3 + 5))
+      if ((*(equal + 36) & 4) == 0 || self->_dhcpLeaseMins != *(equal + 5))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_24;
     }
 
     privateMacType = self->_privateMacType;
-    if (privateMacType | *(a3 + 3))
+    if (privateMacType | *(equal + 3))
     {
 
       LOBYTE(v5) = [(NSString *)privateMacType isEqual:?];
@@ -432,14 +432,14 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(NSString *)self->_privateMacType hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 2) != 0)
   {
-    self->_dhcpLatencyMilliSecs = *(a3 + 4);
+    self->_dhcpLatencyMilliSecs = *(from + 4);
     *&self->_has |= 2u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -452,14 +452,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 8) == 0)
+  else if ((*(from + 36) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_securityType = *(a3 + 8);
+  self->_securityType = *(from + 8);
   *&self->_has |= 8u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -472,17 +472,17 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_timestamp = *(a3 + 1);
+  self->_timestamp = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 36) & 4) != 0)
+  if ((*(from + 36) & 4) != 0)
   {
 LABEL_5:
-    self->_dhcpLeaseMins = *(a3 + 5);
+    self->_dhcpLeaseMins = *(from + 5);
     *&self->_has |= 4u;
   }
 
 LABEL_6:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiMetricIPv4DHCPLatency *)self setPrivateMacType:?];
   }

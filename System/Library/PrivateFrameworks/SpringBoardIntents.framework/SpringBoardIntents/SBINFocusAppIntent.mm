@@ -1,37 +1,37 @@
 @interface SBINFocusAppIntent
-- (BOOL)isEqual:(id)a3;
-- (SBINFocusAppIntent)initWithModeIdentifier:(id)a3 systemContext:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBINFocusAppIntent)initWithModeIdentifier:(id)identifier systemContext:(id)context;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBINFocusAppIntent
 
-- (SBINFocusAppIntent)initWithModeIdentifier:(id)a3 systemContext:(id)a4
+- (SBINFocusAppIntent)initWithModeIdentifier:(id)identifier systemContext:(id)context
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBINFocusAppIntent;
-  v8 = [(SBINAppIntent *)&v11 initWithIdentifier:@"Focus" systemContext:a4];
+  v8 = [(SBINAppIntent *)&v11 initWithIdentifier:@"Focus" systemContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_modeIdentifier, a3);
+    objc_storeStrong(&v8->_modeIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SBINFocusAppIntent_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_279D12120;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
@@ -44,15 +44,15 @@ uint64_t __51__SBINFocusAppIntent_appendDescriptionToFormatter___block_invoke(ui
   return [*(a1 + 32) appendString:*(*(a1 + 40) + 24) withName:@"modeIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = SBINFocusAppIntent;
-  if ([(SBINAppIntent *)&v11 isEqual:v4]&& (objc_opt_self(), v5 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
+  if ([(SBINAppIntent *)&v11 isEqual:equalCopy]&& (objc_opt_self(), v5 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
     modeIdentifier = self->_modeIdentifier;
-    v8 = v4[3];
+    v8 = equalCopy[3];
     v9 = BSEqualStrings();
   }
 

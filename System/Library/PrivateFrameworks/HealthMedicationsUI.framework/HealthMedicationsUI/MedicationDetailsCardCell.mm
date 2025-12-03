@@ -1,13 +1,13 @@
 @interface MedicationDetailsCardCell
-- (void)cellTripleTapped:(id)a3;
+- (void)cellTripleTapped:(id)tapped;
 @end
 
 @implementation MedicationDetailsCardCell
 
-- (void)cellTripleTapped:(id)a3
+- (void)cellTripleTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_2281F868C();
 }
 

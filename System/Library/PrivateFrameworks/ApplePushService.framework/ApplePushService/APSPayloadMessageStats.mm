@@ -1,9 +1,9 @@
 @interface APSPayloadMessageStats
 - (APSPayloadMessageStats)init;
-- (id)incomingCountsForTopic:(id)a3;
-- (id)outgoingCountsForTopic:(id)a3;
-- (void)payloadMessageReceived:(id)a3;
-- (void)payloadMessageSent:(id)a3;
+- (id)incomingCountsForTopic:(id)topic;
+- (id)outgoingCountsForTopic:(id)topic;
+- (void)payloadMessageReceived:(id)received;
+- (void)payloadMessageSent:(id)sent;
 - (void)prepareForDarkWake;
 - (void)prepareForFullWake;
 @end
@@ -37,47 +37,47 @@
   return v2;
 }
 
-- (void)payloadMessageReceived:(id)a3
+- (void)payloadMessageReceived:(id)received
 {
-  v7 = [a3 topic];
+  topic = [received topic];
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
-  [(APSPayloadMessageStatsCounts *)self->_incomingCounts countTopic:v7 now:?];
-  v6 = [(APSPayloadMessageStats *)self incomingCountsForTopic:v7];
-  [v6 countTopic:v7 now:v5];
+  [(APSPayloadMessageStatsCounts *)self->_incomingCounts countTopic:topic now:?];
+  v6 = [(APSPayloadMessageStats *)self incomingCountsForTopic:topic];
+  [v6 countTopic:topic now:v5];
 }
 
-- (void)payloadMessageSent:(id)a3
+- (void)payloadMessageSent:(id)sent
 {
-  v7 = [a3 topic];
+  topic = [sent topic];
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
-  [(APSPayloadMessageStatsCounts *)self->_outgoingCounts countTopic:v7 now:?];
-  v6 = [(APSPayloadMessageStats *)self outgoingCountsForTopic:v7];
-  [v6 countTopic:v7 now:v5];
+  [(APSPayloadMessageStatsCounts *)self->_outgoingCounts countTopic:topic now:?];
+  v6 = [(APSPayloadMessageStats *)self outgoingCountsForTopic:topic];
+  [v6 countTopic:topic now:v5];
 }
 
-- (id)incomingCountsForTopic:(id)a3
+- (id)incomingCountsForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_incomingCountsByTopic objectForKey:v4];
+  topicCopy = topic;
+  v5 = [(NSMutableDictionary *)self->_incomingCountsByTopic objectForKey:topicCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(APSPayloadMessageStatsCounts);
-    [(NSMutableDictionary *)self->_incomingCountsByTopic setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_incomingCountsByTopic setObject:v5 forKey:topicCopy];
   }
 
   return v5;
 }
 
-- (id)outgoingCountsForTopic:(id)a3
+- (id)outgoingCountsForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_outgoingCountsByTopic objectForKey:v4];
+  topicCopy = topic;
+  v5 = [(NSMutableDictionary *)self->_outgoingCountsByTopic objectForKey:topicCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(APSPayloadMessageStatsCounts);
-    [(NSMutableDictionary *)self->_outgoingCountsByTopic setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_outgoingCountsByTopic setObject:v5 forKey:topicCopy];
   }
 
   return v5;
@@ -90,8 +90,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)self->_incomingCountsByTopic allValues];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_incomingCountsByTopic allValues];
+  v4 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -103,7 +103,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v7) prepareForDarkWake];
@@ -111,7 +111,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v5);
@@ -122,8 +122,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(NSMutableDictionary *)self->_outgoingCountsByTopic allValues];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_outgoingCountsByTopic allValues];
+  v9 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -135,7 +135,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v13 + 1) + 8 * v12) prepareForDarkWake];
@@ -143,7 +143,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v10);
@@ -157,8 +157,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSMutableDictionary *)self->_incomingCountsByTopic allValues];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_incomingCountsByTopic allValues];
+  v4 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,7 +170,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v17 + 1) + 8 * v7) prepareForFullWake];
@@ -178,7 +178,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v5);
@@ -189,8 +189,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(NSMutableDictionary *)self->_outgoingCountsByTopic allValues];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_outgoingCountsByTopic allValues];
+  v9 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -202,7 +202,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v13 + 1) + 8 * v12) prepareForFullWake];
@@ -210,7 +210,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v10 = [allValues2 countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v10);

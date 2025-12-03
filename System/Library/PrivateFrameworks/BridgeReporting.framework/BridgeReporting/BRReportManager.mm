@@ -1,14 +1,14 @@
 @interface BRReportManager
 - (BRRTCPairingReportManager)pairingReportManager;
-- (void)reportRTCMetric:(id)a3;
+- (void)reportRTCMetric:(id)metric;
 @end
 
 @implementation BRReportManager
 
-- (void)reportRTCMetric:(id)a3
+- (void)reportRTCMetric:(id)metric
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricCopy = metric;
   v5 = br_metriccollection_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -21,10 +21,10 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v4 dictionaryRepresentation];
-  v7 = [v6 allValues];
+  dictionaryRepresentation = [metricCopy dictionaryRepresentation];
+  allValues = [dictionaryRepresentation allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -35,7 +35,7 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
@@ -61,21 +61,21 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(BRReportManager *)self configuration];
+  configuration = [(BRReportManager *)self configuration];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __35__BRReportManager_reportRTCMetric___block_invoke;
   v20[3] = &unk_278D27388;
   v20[4] = self;
-  v21 = v4;
-  v14 = v4;
-  [BRRTCSession startRTCReportingSessionWithConfiguration:v13 andComplection:v20];
+  v21 = metricCopy;
+  v14 = metricCopy;
+  [BRRTCSession startRTCReportingSessionWithConfiguration:configuration andComplection:v20];
 
   v15 = *MEMORY[0x277D85DE8];
 }

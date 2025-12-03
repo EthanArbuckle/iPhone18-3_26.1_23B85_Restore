@@ -1,7 +1,7 @@
 @interface BLSHPresentationUpdates
-- (BLSHPresentationUpdates)initWithStartDate:(id)a3 updates:(id)a4 nextUpdatesStart:(id)a5;
+- (BLSHPresentationUpdates)initWithStartDate:(id)date updates:(id)updates nextUpdatesStart:(id)start;
 - (BOOL)isCompleted;
-- (BOOL)isValidWithNowDate:(id)a3;
+- (BOOL)isValidWithNowDate:(id)date;
 - (id)dequeueAllUpdates;
 - (id)dequeueNextUpdate;
 - (id)description;
@@ -13,11 +13,11 @@
 
 @implementation BLSHPresentationUpdates
 
-- (BLSHPresentationUpdates)initWithStartDate:(id)a3 updates:(id)a4 nextUpdatesStart:(id)a5
+- (BLSHPresentationUpdates)initWithStartDate:(id)date updates:(id)updates nextUpdatesStart:(id)start
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  updatesCopy = updates;
+  startCopy = start;
   v17.receiver = self;
   v17.super_class = BLSHPresentationUpdates;
   v12 = [(BLSHPresentationUpdates *)&v17 init];
@@ -25,12 +25,12 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_startDate, a3);
-    v14 = [v10 mutableCopy];
+    objc_storeStrong(&v12->_startDate, date);
+    v14 = [updatesCopy mutableCopy];
     updates = v13->_updates;
     v13->_updates = v14;
 
-    objc_storeStrong(&v13->_nextUpdatesStart, a5);
+    objc_storeStrong(&v13->_nextUpdatesStart, start);
   }
 
   return v13;
@@ -41,7 +41,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_invalidated"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -85,13 +85,13 @@
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v3 = [(NSMutableArray *)self->_updates firstObject];
-    if (v3)
+    firstObject = [(NSMutableArray *)self->_updates firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_updates removeObjectAtIndex:0];
     }
@@ -99,7 +99,7 @@
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return firstObject;
 }
 
 - (id)dequeueAllUpdates
@@ -112,9 +112,9 @@
   return v3;
 }
 
-- (BOOL)isValidWithNowDate:(id)a3
+- (BOOL)isValidWithNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
@@ -123,7 +123,7 @@
 
   else
   {
-    v5 = [v4 bls_isOnOrAfter:self->_startDate andOnOrBefore:self->_nextUpdatesStart];
+    v5 = [dateCopy bls_isOnOrAfter:self->_startDate andOnOrBefore:self->_nextUpdatesStart];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -136,18 +136,18 @@
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableArray *)self->_updates count])
   {
-    v3 = [(NSMutableArray *)self->_updates firstObject];
-    v4 = [v3 presentationDate];
+    firstObject = [(NSMutableArray *)self->_updates firstObject];
+    presentationDate = [firstObject presentationDate];
   }
 
   else
   {
-    v4 = self->_nextUpdatesStart;
+    presentationDate = self->_nextUpdatesStart;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return presentationDate;
 }
 
 - (id)invalidate
@@ -155,37 +155,37 @@
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableArray *)self->_updates count])
   {
-    v3 = [(NSMutableArray *)self->_updates firstObject];
-    v4 = [v3 presentationDate];
+    firstObject = [(NSMutableArray *)self->_updates firstObject];
+    presentationDate = [firstObject presentationDate];
   }
 
   else
   {
-    v4 = self->_nextUpdatesStart;
+    presentationDate = self->_nextUpdatesStart;
   }
 
   self->_invalidated = 1;
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return presentationDate;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_startDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"start"];
+  bls_shortLoggingString = [(NSDate *)self->_startDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"start"];
 
-  v5 = [(NSDate *)self->_nextUpdatesStart bls_shortLoggingString];
-  [v3 appendString:v5 withName:@"nextStart"];
+  bls_shortLoggingString2 = [(NSDate *)self->_nextUpdatesStart bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString2 withName:@"nextStart"];
 
-  v6 = [(NSMutableArray *)self->_updates bls_boundedDescription];
-  [v3 appendString:v6 withName:@"updates"];
+  bls_boundedDescription = [(NSMutableArray *)self->_updates bls_boundedDescription];
+  [v3 appendString:bls_boundedDescription withName:@"updates"];
 
   v7 = [v3 appendBool:self->_invalidated withName:@"invalidated" ifEqualTo:1];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

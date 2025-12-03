@@ -1,45 +1,45 @@
 @interface HUWallpaperPickerViewController
-+ (void)presentSecurePickerFromNavigationController:(id)a3 collectionType:(int64_t)a4 withTitle:(id)a5 delegate:(id)a6;
-- (HUWallpaperPickerViewController)initWithCollectionType:(int64_t)a3 namedSectionTitle:(id)a4 delegate:(id)a5;
-- (HUWallpaperPickerViewController)initWithStyle:(int64_t)a3;
++ (void)presentSecurePickerFromNavigationController:(id)controller collectionType:(int64_t)type withTitle:(id)title delegate:(id)delegate;
+- (HUWallpaperPickerViewController)initWithCollectionType:(int64_t)type namedSectionTitle:(id)title delegate:(id)delegate;
+- (HUWallpaperPickerViewController)initWithStyle:(int64_t)style;
 - (HUWallpaperPickerViewControllerDelegate)delegate;
 - (id)currentSectionIdentifiers;
-- (id)identifierForSection:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)identifierForSection:(unint64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)contentSizeCategoryDidChange;
 - (void)loadAssetCollections;
-- (void)namedWallpaperController:(id)a3 didChooseWallpaper:(id)a4 image:(id)a5;
-- (void)photoCollectionController:(id)a3 didChooseWallpaper:(id)a4 image:(id)a5;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)namedWallpaperController:(id)controller didChooseWallpaper:(id)wallpaper image:(id)image;
+- (void)photoCollectionController:(id)controller didChooseWallpaper:(id)wallpaper image:(id)image;
+- (void)photoLibraryDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5;
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image;
 @end
 
 @implementation HUWallpaperPickerViewController
 
-+ (void)presentSecurePickerFromNavigationController:(id)a3 collectionType:(int64_t)a4 withTitle:(id)a5 delegate:(id)a6
++ (void)presentSecurePickerFromNavigationController:(id)controller collectionType:(int64_t)type withTitle:(id)title delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  controllerCopy = controller;
+  titleCopy = title;
+  delegateCopy = delegate;
   if (_os_feature_enabled_impl())
   {
-    objc_initWeak(&location, v9);
+    objc_initWeak(&location, controllerCopy);
     v12 = [MEMORY[0x277CEBE78] applicationWithBundleIdentifier:@"com.apple.mobileslideshow"];
-    v13 = [MEMORY[0x277CEBEA0] sharedGuard];
+    mEMORY[0x277CEBEA0] = [MEMORY[0x277CEBEA0] sharedGuard];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __113__HUWallpaperPickerViewController_presentSecurePickerFromNavigationController_collectionType_withTitle_delegate___block_invoke;
     v14[3] = &unk_277DBBB78;
     objc_copyWeak(v17, &location);
-    v17[1] = a4;
-    v15 = v10;
-    v16 = v11;
-    [v13 initiateAuthenticationWithShieldingForSubject:v12 completion:v14];
+    v17[1] = type;
+    v15 = titleCopy;
+    v16 = delegateCopy;
+    [mEMORY[0x277CEBEA0] initiateAuthenticationWithShieldingForSubject:v12 completion:v14];
 
     objc_destroyWeak(v17);
     objc_destroyWeak(&location);
@@ -85,33 +85,33 @@ void __113__HUWallpaperPickerViewController_presentSecurePickerFromNavigationCon
   [WeakRetained pushViewController:v2 animated:1];
 }
 
-- (HUWallpaperPickerViewController)initWithCollectionType:(int64_t)a3 namedSectionTitle:(id)a4 delegate:(id)a5
+- (HUWallpaperPickerViewController)initWithCollectionType:(int64_t)type namedSectionTitle:(id)title delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = HUWallpaperPickerViewController;
   v11 = [(HUTableViewController *)&v16 initWithStyle:1];
   v12 = v11;
   if (v11)
   {
-    v11->_collectionType = a3;
-    objc_storeStrong(&v11->_namedSectionTitle, a4);
+    v11->_collectionType = type;
+    objc_storeStrong(&v11->_namedSectionTitle, title);
     v13 = objc_alloc_init(MEMORY[0x277CD9818]);
     imageManager = v12->_imageManager;
     v12->_imageManager = v13;
 
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
   }
 
   return v12;
 }
 
-- (HUWallpaperPickerViewController)initWithStyle:(int64_t)a3
+- (HUWallpaperPickerViewController)initWithStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithCollectionType_namedSectionTitle_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUWallpaperPickerViewController.m" lineNumber:97 description:{@"%s is unavailable; use %@ instead", "-[HUWallpaperPickerViewController initWithStyle:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUWallpaperPickerViewController.m" lineNumber:97 description:{@"%s is unavailable; use %@ instead", "-[HUWallpaperPickerViewController initWithStyle:]", v6}];
 
   return 0;
 }
@@ -124,52 +124,52 @@ void __113__HUWallpaperPickerViewController_presentSecurePickerFromNavigationCon
   v3 = _HULocalizedStringWithDefaultValue(@"HUWallpaperPickerTitle", @"HUWallpaperPickerTitle", 1);
   [(HUWallpaperPickerViewController *)self setTitle:v3];
 
-  v4 = [(HUWallpaperPickerViewController *)self tableView];
-  [v4 setSeparatorStyle:0];
+  tableView = [(HUWallpaperPickerViewController *)self tableView];
+  [tableView setSeparatorStyle:0];
 
-  v5 = [(HUWallpaperPickerViewController *)self tableView];
+  tableView2 = [(HUWallpaperPickerViewController *)self tableView];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 registerClass:v6 forCellReuseIdentifier:v8];
+  [tableView2 registerClass:v6 forCellReuseIdentifier:v8];
 
-  v9 = [(HUWallpaperPickerViewController *)self tableView];
+  tableView3 = [(HUWallpaperPickerViewController *)self tableView];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  [v9 registerClass:v10 forCellReuseIdentifier:v12];
+  [tableView3 registerClass:v10 forCellReuseIdentifier:v12];
 
-  v13 = [(HUWallpaperPickerViewController *)self tableView];
+  tableView4 = [(HUWallpaperPickerViewController *)self tableView];
   v14 = objc_opt_class();
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v13 registerClass:v14 forHeaderFooterViewReuseIdentifier:v16];
+  [tableView4 registerClass:v14 forHeaderFooterViewReuseIdentifier:v16];
 
-  v17 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
-  [v17 registerChangeObserver:self];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  [mEMORY[0x277CD9948] registerChangeObserver:self];
 
   [(HUWallpaperPickerViewController *)self loadAssetCollections];
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v18 addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
 }
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = [(HUWallpaperPickerViewController *)self tableView];
-  [v2 setNeedsLayout];
+  tableView = [(HUWallpaperPickerViewController *)self tableView];
+  [tableView setNeedsLayout];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(HUWallpaperPickerViewController *)self currentSectionIdentifiers];
-  v4 = [v3 count];
+  currentSectionIdentifiers = [(HUWallpaperPickerViewController *)self currentSectionIdentifiers];
+  v4 = [currentSectionIdentifiers count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(HUWallpaperPickerViewController *)self identifierForSection:a4];
+  v5 = [(HUWallpaperPickerViewController *)self identifierForSection:section];
   if ([v5 isEqualToString:@"HUWallpaperPickerNamedSectionIdentifier"])
   {
     v6 = 1;
@@ -177,62 +177,62 @@ void __113__HUWallpaperPickerViewController_presentSecurePickerFromNavigationCon
 
   else
   {
-    v7 = [(HUWallpaperPickerViewController *)self assetCollections];
-    v6 = [v7 count];
+    assetCollections = [(HUWallpaperPickerViewController *)self assetCollections];
+    v6 = [assetCollections count];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = -[HUWallpaperPickerViewController identifierForSection:](self, "identifierForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[HUWallpaperPickerViewController identifierForSection:](self, "identifierForSection:", [pathCopy section]);
   if ([v8 isEqualToString:@"HUWallpaperPickerNamedSectionIdentifier"])
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v7 dequeueReusableCellWithIdentifier:v10 forIndexPath:v6];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
-    v12 = [(HUWallpaperPickerViewController *)self namedWallpaperController];
+    namedWallpaperController = [(HUWallpaperPickerViewController *)self namedWallpaperController];
 
-    if (!v12)
+    if (!namedWallpaperController)
     {
       v13 = [HUNamedWallpaperCollectionViewController alloc];
-      v14 = [(HUWallpaperPickerViewController *)self collectionType];
-      v15 = [(HUWallpaperPickerViewController *)self tableView];
-      [v15 separatorInset];
-      v17 = [(HUNamedWallpaperCollectionViewController *)v13 initWithCollectionType:v14 horizontalInset:self delegate:v16];
+      collectionType = [(HUWallpaperPickerViewController *)self collectionType];
+      tableView = [(HUWallpaperPickerViewController *)self tableView];
+      [tableView separatorInset];
+      v17 = [(HUNamedWallpaperCollectionViewController *)v13 initWithCollectionType:collectionType horizontalInset:self delegate:v16];
       [(HUWallpaperPickerViewController *)self setNamedWallpaperController:v17];
     }
 
-    v18 = [(HUWallpaperPickerViewController *)self namedWallpaperController];
-    [v11 setViewController:v18];
+    namedWallpaperController2 = [(HUWallpaperPickerViewController *)self namedWallpaperController];
+    [v11 setViewController:namedWallpaperController2];
   }
 
   else
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v11 = [v7 dequeueReusableCellWithIdentifier:v20 forIndexPath:v6];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v20 forIndexPath:pathCopy];
 
-    v21 = [(HUWallpaperPickerViewController *)self assetCollections];
-    v22 = [v6 row];
+    assetCollections = [(HUWallpaperPickerViewController *)self assetCollections];
+    v22 = [pathCopy row];
 
-    v23 = [v21 objectAtIndexedSubscript:v22];
+    v23 = [assetCollections objectAtIndexedSubscript:v22];
 
-    v24 = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
-    v25 = [v24 objectForKeyedSubscript:v23];
+    assetCollectionsToAssetFetchResults = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
+    v25 = [assetCollectionsToAssetFetchResults objectForKeyedSubscript:v23];
 
     if (!v25)
     {
       NSLog(&cfstr_UnableToLocate.isa, v23);
     }
 
-    v26 = [v23 localizedTitle];
-    [v11 setTitleText:v26];
+    localizedTitle = [v23 localizedTitle];
+    [v11 setTitleText:localizedTitle];
 
     [v11 setAccessoryType:1];
     [v11 setImageSize:{70.0, 70.0}];
@@ -252,23 +252,23 @@ void __113__HUWallpaperPickerViewController_presentSecurePickerFromNavigationCon
     {
       [v11 imageSize];
       v35 = v34;
-      v36 = [MEMORY[0x277D759A0] mainScreen];
-      [v36 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v38 = v35 * v37;
       [v11 imageSize];
       v40 = v39;
-      v41 = [MEMORY[0x277D759A0] mainScreen];
-      [v41 scale];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 scale];
       v43 = v40 * v42;
 
-      v44 = [(HUWallpaperPickerViewController *)self imageManager];
-      v45 = [v33 firstObject];
+      imageManager = [(HUWallpaperPickerViewController *)self imageManager];
+      firstObject = [v33 firstObject];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __67__HUWallpaperPickerViewController_tableView_cellForRowAtIndexPath___block_invoke;
       v48[3] = &unk_277DBBBA0;
       v49 = v11;
-      [v44 requestImageForAsset:v45 targetSize:1 contentMode:0 options:v48 resultHandler:{v38, v43}];
+      [imageManager requestImageForAsset:firstObject targetSize:1 contentMode:0 options:v48 resultHandler:{v38, v43}];
 
       v46 = v49;
     }
@@ -296,35 +296,35 @@ void __67__HUWallpaperPickerViewController_tableView_cellForRowAtIndexPath___blo
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([+[HUWallpaperPickerViewController superclass](HUWallpaperPickerViewController "superclass")])
   {
     v18.receiver = self;
     v18.super_class = HUWallpaperPickerViewController;
-    [(HUWallpaperPickerViewController *)&v18 tableView:v7 didSelectRowAtIndexPath:v8];
+    [(HUWallpaperPickerViewController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
-  [v7 deselectRowAtIndexPath:v8 animated:1];
-  v9 = -[HUWallpaperPickerViewController identifierForSection:](self, "identifierForSection:", [v8 section]);
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = -[HUWallpaperPickerViewController identifierForSection:](self, "identifierForSection:", [pathCopy section]);
   if ([v9 isEqualToString:@"HUWallpaperPickerPhotosSectionIdentifier"])
   {
-    v10 = [(HUWallpaperPickerViewController *)self assetCollections];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+    assetCollections = [(HUWallpaperPickerViewController *)self assetCollections];
+    v11 = [assetCollections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v12 = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    assetCollectionsToAssetFetchResults = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
+    v13 = [assetCollectionsToAssetFetchResults objectForKeyedSubscript:v11];
 
     if (v13)
     {
       v14 = [HUWallpaperPhotoCollectionViewController alloc];
-      v15 = [v11 localizedTitle];
-      v16 = -[HUWallpaperPhotoCollectionViewController initWithTitle:fetchResult:assetCollectionSubtype:delegate:](v14, "initWithTitle:fetchResult:assetCollectionSubtype:delegate:", v15, v13, [v11 assetCollectionSubtype], self);
+      localizedTitle = [v11 localizedTitle];
+      v16 = -[HUWallpaperPhotoCollectionViewController initWithTitle:fetchResult:assetCollectionSubtype:delegate:](v14, "initWithTitle:fetchResult:assetCollectionSubtype:delegate:", localizedTitle, v13, [v11 assetCollectionSubtype], self);
 
-      v17 = [(HUWallpaperPickerViewController *)self navigationController];
-      [v17 pushViewController:v16 animated:1];
+      navigationController = [(HUWallpaperPickerViewController *)self navigationController];
+      [navigationController pushViewController:v16 animated:1];
     }
 
     else
@@ -334,50 +334,50 @@ void __67__HUWallpaperPickerViewController_tableView_cellForRowAtIndexPath___blo
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v6 = MEMORY[0x277D756E0];
-  v7 = a3;
-  v8 = [v6 groupedHeaderConfiguration];
-  v9 = [(HUWallpaperPickerViewController *)self identifierForSection:a4];
+  viewCopy = view;
+  groupedHeaderConfiguration = [v6 groupedHeaderConfiguration];
+  v9 = [(HUWallpaperPickerViewController *)self identifierForSection:section];
   if ([v9 isEqualToString:@"HUWallpaperPickerNamedSectionIdentifier"])
   {
-    v10 = [(HUWallpaperPickerViewController *)self namedSectionTitle];
+    namedSectionTitle = [(HUWallpaperPickerViewController *)self namedSectionTitle];
 LABEL_5:
-    v11 = v10;
-    [v8 setText:v10];
+    v11 = namedSectionTitle;
+    [groupedHeaderConfiguration setText:namedSectionTitle];
     goto LABEL_7;
   }
 
   if ([v9 isEqualToString:@"HUWallpaperPickerPhotosSectionIdentifier"])
   {
-    v10 = _HULocalizedStringWithDefaultValue(@"HUWallpaperPickerPhotosSection", @"HUWallpaperPickerPhotosSection", 1);
+    namedSectionTitle = _HULocalizedStringWithDefaultValue(@"HUWallpaperPickerPhotosSection", @"HUWallpaperPickerPhotosSection", 1);
     goto LABEL_5;
   }
 
-  v11 = v8;
-  v8 = 0;
+  v11 = groupedHeaderConfiguration;
+  groupedHeaderConfiguration = 0;
 LABEL_7:
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v7 dequeueReusableHeaderFooterViewWithIdentifier:v13];
+  v14 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v13];
 
-  [v14 setContentConfiguration:v8];
+  [v14 setContentConfiguration:groupedHeaderConfiguration];
 
   return v14;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__HUWallpaperPickerViewController_photoLibraryDidChange___block_invoke;
   v6[3] = &unk_277DB7558;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -432,40 +432,40 @@ void __57__HUWallpaperPickerViewController_photoLibraryDidChange___block_invoke_
   }
 }
 
-- (void)namedWallpaperController:(id)a3 didChooseWallpaper:(id)a4 image:(id)a5
+- (void)namedWallpaperController:(id)controller didChooseWallpaper:(id)wallpaper image:(id)image
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:v8 image:v7 delegate:self];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  v9 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:wallpaperCopy image:imageCopy delegate:self];
 
   [(HUWallpaperEditingViewController *)v9 setModalPresentationStyle:0];
   [(HUWallpaperPickerViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)photoCollectionController:(id)a3 didChooseWallpaper:(id)a4 image:(id)a5
+- (void)photoCollectionController:(id)controller didChooseWallpaper:(id)wallpaper image:(id)image
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:v8 image:v7 delegate:self];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  v9 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:wallpaperCopy image:imageCopy delegate:self];
 
   [(HUWallpaperEditingViewController *)v9 setModalPresentationStyle:0];
   [(HUWallpaperPickerViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image
 {
-  v7 = a5;
-  v8 = a4;
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
   [(HUWallpaperPickerViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v9 = [(HUWallpaperPickerViewController *)self delegate];
-  [v9 wallpaperPickerDidFinish:self wallpaper:v8 image:v7];
+  delegate = [(HUWallpaperPickerViewController *)self delegate];
+  [delegate wallpaperPickerDidFinish:self wallpaper:wallpaperCopy image:imageCopy];
 }
 
 - (id)currentSectionIdentifiers
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithObject:@"HUWallpaperPickerNamedSectionIdentifier"];
-  v4 = [(HUWallpaperPickerViewController *)self assetCollections];
-  v5 = [v4 count];
+  assetCollections = [(HUWallpaperPickerViewController *)self assetCollections];
+  v5 = [assetCollections count];
 
   if (v5)
   {
@@ -475,22 +475,22 @@ void __57__HUWallpaperPickerViewController_photoLibraryDidChange___block_invoke_
   return v3;
 }
 
-- (id)identifierForSection:(unint64_t)a3
+- (id)identifierForSection:(unint64_t)section
 {
-  v4 = [(HUWallpaperPickerViewController *)self currentSectionIdentifiers];
-  if ([v4 count] <= a3)
+  currentSectionIdentifiers = [(HUWallpaperPickerViewController *)self currentSectionIdentifiers];
+  if ([currentSectionIdentifiers count] <= section)
   {
-    NSLog(&cfstr_ReceivedIdenti.isa, a3, [v4 count]);
+    NSLog(&cfstr_ReceivedIdenti.isa, section, [currentSectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([currentSectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [currentSectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
@@ -498,8 +498,8 @@ void __57__HUWallpaperPickerViewController_photoLibraryDidChange___block_invoke_
 
 - (void)loadAssetCollections
 {
-  v3 = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
-  if (v3)
+  assetCollectionsToAssetFetchResults = [(HUWallpaperPickerViewController *)self assetCollectionsToAssetFetchResults];
+  if (assetCollectionsToAssetFetchResults)
   {
 
 LABEL_4:
@@ -507,24 +507,24 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(HUWallpaperPickerViewController *)self assetCollections];
+  assetCollections = [(HUWallpaperPickerViewController *)self assetCollections];
 
-  if (v4)
+  if (assetCollections)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __55__HUWallpaperPickerViewController_loadAssetCollections__block_invoke;
   v22 = &unk_277DBBBF0;
-  v23 = v6;
-  v24 = v5;
-  v7 = v5;
-  v8 = v6;
+  v23 = array;
+  v24 = dictionary;
+  v7 = dictionary;
+  v8 = array;
   v9 = _Block_copy(&v19);
   v10 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:2 subtype:209 options:{0, v19, v20, v21, v22}];
   v9[2](v9, v10);

@@ -1,30 +1,30 @@
 @interface SKUIPopupMenuHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
 - (SKUIPopupMenuDelegate)delegate;
-- (SKUIPopupMenuHeaderView)initWithFrame:(CGRect)a3;
+- (SKUIPopupMenuHeaderView)initWithFrame:(CGRect)frame;
 - (id)_titleLabel;
-- (void)_menuButtonAction:(id)a3;
+- (void)_menuButtonAction:(id)action;
 - (void)_reloadMenuButton;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setMenuItemTitles:(id)a3;
-- (void)setMenuLabelTitle:(id)a3;
-- (void)setSelectedMenuItemIndex:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)setBackgroundColor:(id)color;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setMenuItemTitles:(id)titles;
+- (void)setMenuLabelTitle:(id)title;
+- (void)setSelectedMenuItemIndex:(int64_t)index;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIPopupMenuHeaderView
 
-- (SKUIPopupMenuHeaderView)initWithFrame:(CGRect)a3
+- (SKUIPopupMenuHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPopupMenuHeaderView initWithFrame:];
@@ -32,14 +32,14 @@
 
   v11.receiver = self;
   v11.super_class = SKUIPopupMenuHeaderView;
-  v8 = [(SKUIPopupMenuHeaderView *)&v11 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIPopupMenuHeaderView *)&v11 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(SKUIPopupMenuHeaderView *)v8 setBackgroundColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SKUIPopupMenuHeaderView *)height setBackgroundColor:whiteColor];
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -51,17 +51,17 @@
   [(SKUIPopupMenuHeaderView *)&v3 dealloc];
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
   menuLabel = self->_menuLabel;
-  if (a3)
+  if (scheme)
   {
-    v6 = a3;
-    v7 = [v6 secondaryTextColor];
-    [(UILabel *)menuLabel setTextColor:v7];
+    schemeCopy = scheme;
+    secondaryTextColor = [schemeCopy secondaryTextColor];
+    [(UILabel *)menuLabel setTextColor:secondaryTextColor];
 
     titleLabel = self->_titleLabel;
-    v9 = [v6 primaryTextColor];
+    primaryTextColor = [schemeCopy primaryTextColor];
     v10 = titleLabel;
   }
 
@@ -73,22 +73,22 @@
     [(UILabel *)menuLabel setTextColor:v13];
 
     v14 = self->_titleLabel;
-    v9 = [MEMORY[0x277D75348] blackColor];
+    primaryTextColor = [MEMORY[0x277D75348] blackColor];
     v10 = v14;
   }
 
-  [(UILabel *)v10 setTextColor:v9];
+  [(UILabel *)v10 setTextColor:primaryTextColor];
 
-  v15 = [a3 backgroundColor];
+  backgroundColor = [scheme backgroundColor];
 
-  [(SKUIPopupMenuHeaderView *)self setBackgroundColor:v15];
+  [(SKUIPopupMenuHeaderView *)self setBackgroundColor:backgroundColor];
 }
 
-- (void)setMenuItemTitles:(id)a3
+- (void)setMenuItemTitles:(id)titles
 {
-  if (self->_menuItemTitles != a3)
+  if (self->_menuItemTitles != titles)
   {
-    v4 = [a3 copy];
+    v4 = [titles copy];
     menuItemTitles = self->_menuItemTitles;
     self->_menuItemTitles = v4;
 
@@ -96,11 +96,11 @@
   }
 }
 
-- (void)setMenuLabelTitle:(id)a3
+- (void)setMenuLabelTitle:(id)title
 {
-  if (self->_menuLabelTitle != a3)
+  if (self->_menuLabelTitle != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     menuLabelTitle = self->_menuLabelTitle;
     self->_menuLabelTitle = v4;
 
@@ -108,20 +108,20 @@
   }
 }
 
-- (void)setSelectedMenuItemIndex:(int64_t)a3
+- (void)setSelectedMenuItemIndex:(int64_t)index
 {
-  if (self->_selectedMenuItemIndex != a3)
+  if (self->_selectedMenuItemIndex != index)
   {
-    self->_selectedMenuItemIndex = a3;
+    self->_selectedMenuItemIndex = index;
     [(SKUIPopupMenuHeaderView *)self _reloadMenuButton];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SKUIPopupMenuHeaderView *)self _titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  _titleLabel = [(SKUIPopupMenuHeaderView *)self _titleLabel];
+  [_titleLabel setText:titleCopy];
 }
 
 - (void)layoutSubviews
@@ -173,31 +173,31 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   menuButton = self->_menuButton;
-  v5 = a3;
-  [(UIButton *)menuButton setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIButton *)menuButton setBackgroundColor:colorCopy];
   menuLabel = self->_menuLabel;
-  if (v5)
+  if (colorCopy)
   {
-    [(UILabel *)self->_menuLabel setBackgroundColor:v5];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+    [(UILabel *)self->_menuLabel setBackgroundColor:colorCopy];
+    [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)menuLabel setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)menuLabel setBackgroundColor:clearColor];
 
     titleLabel = self->_titleLabel;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)titleLabel setBackgroundColor:v9];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)titleLabel setBackgroundColor:clearColor2];
   }
 
   v10.receiver = self;
   v10.super_class = SKUIPopupMenuHeaderView;
-  [(SKUIPopupMenuHeaderView *)&v10 setBackgroundColor:v5];
+  [(SKUIPopupMenuHeaderView *)&v10 setBackgroundColor:colorCopy];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -207,19 +207,19 @@
   return result;
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
-  if (self->_selectedMenuItemIndex != a4)
+  if (self->_selectedMenuItemIndex != index)
   {
-    self->_selectedMenuItemIndex = a4;
-    v19 = a3;
+    self->_selectedMenuItemIndex = index;
+    controllerCopy = controller;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 popupMenuHeader:self didSelectMenuItemAtIndex:a4];
+      [v8 popupMenuHeader:self didSelectMenuItemAtIndex:index];
     }
 
     [(SKUIPopupMenuHeaderView *)self _reloadMenuButton];
@@ -230,14 +230,14 @@
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(UIButton *)self->_menuButton superview];
-    [(UIPopoverController *)menuPopoverController presentPopoverFromRect:v18 inView:1 permittedArrowDirections:1 animated:v11, v13, v15, v17];
+    superview = [(UIButton *)self->_menuButton superview];
+    [(UIPopoverController *)menuPopoverController presentPopoverFromRect:superview inView:1 permittedArrowDirections:1 animated:v11, v13, v15, v17];
 
-    [v19 setIndexOfCheckedTitle:self->_selectedMenuItemIndex];
+    [controllerCopy setIndexOfCheckedTitle:self->_selectedMenuItemIndex];
   }
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(SKUIMenuViewController *)self->_menuViewController setDelegate:0];
   menuViewController = self->_menuViewController;
@@ -248,11 +248,11 @@
   self->_menuPopoverController = 0;
 }
 
-- (void)_menuButtonAction:(id)a3
+- (void)_menuButtonAction:(id)action
 {
   if (!self->_menuPopoverController)
   {
-    v4 = a3;
+    actionCopy = action;
     v5 = [[SKUIMenuViewController alloc] initWithMenuTitles:self->_menuItemTitles];
     menuViewController = self->_menuViewController;
     self->_menuViewController = v5;
@@ -268,14 +268,14 @@
     [(UIPopoverController *)self->_menuPopoverController setDelegate:self];
     [(UIPopoverController *)self->_menuPopoverController setPopoverContentSize:320.0, v7];
     v10 = self->_menuPopoverController;
-    [v4 frame];
+    [actionCopy frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v4 superview];
+    superview = [actionCopy superview];
 
-    [(UIPopoverController *)v10 presentPopoverFromRect:v19 inView:1 permittedArrowDirections:1 animated:v12, v14, v16, v18];
+    [(UIPopoverController *)v10 presentPopoverFromRect:superview inView:1 permittedArrowDirections:1 animated:v12, v14, v16, v18];
   }
 }
 
@@ -295,12 +295,12 @@
 
       [(UIButton *)self->_menuButton addTarget:self action:sel__menuButtonAction_ forControlEvents:0xFFFFFFFFLL];
       v9 = self->_menuButton;
-      v10 = [(SKUIPopupMenuHeaderView *)self backgroundColor];
-      [(UIButton *)v9 setBackgroundColor:v10];
+      backgroundColor = [(SKUIPopupMenuHeaderView *)self backgroundColor];
+      [(UIButton *)v9 setBackgroundColor:backgroundColor];
 
-      v11 = [(UIButton *)self->_menuButton titleLabel];
+      titleLabel = [(UIButton *)self->_menuButton titleLabel];
       v12 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-      [v11 setFont:v12];
+      [titleLabel setFont:v12];
 
       [(SKUIPopupMenuHeaderView *)self addSubview:self->_menuButton];
       v5 = v25;
@@ -320,8 +320,8 @@
         self->_menuLabel = v15;
 
         v17 = self->_menuLabel;
-        v18 = [(SKUIPopupMenuHeaderView *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor2 = [(SKUIPopupMenuHeaderView *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor2];
 
         v19 = self->_menuLabel;
         v20 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
@@ -367,16 +367,16 @@
     self->_titleLabel = v4;
 
     v6 = self->_titleLabel;
-    v7 = [(SKUIPopupMenuHeaderView *)self backgroundColor];
-    [(UILabel *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SKUIPopupMenuHeaderView *)self backgroundColor];
+    [(UILabel *)v6 setBackgroundColor:backgroundColor];
 
     v8 = self->_titleLabel;
     v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
     [(UILabel *)v8 setFont:v9];
 
     v10 = self->_titleLabel;
-    v11 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v10 setTextColor:v11];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v10 setTextColor:blackColor];
 
     [(SKUIPopupMenuHeaderView *)self addSubview:self->_titleLabel];
     titleLabel = self->_titleLabel;

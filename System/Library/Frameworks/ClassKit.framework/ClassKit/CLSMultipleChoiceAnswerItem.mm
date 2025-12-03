@@ -1,144 +1,144 @@
 @interface CLSMultipleChoiceAnswerItem
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSMultipleChoiceAnswerItem)initWithDatabaseRow:(id)a3;
-- (id)initWithCKRecord:(id)a3;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSMultipleChoiceAnswerItem)initWithDatabaseRow:(id)row;
+- (id)initWithCKRecord:(id)record;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSMultipleChoiceAnswerItem
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
-- (CLSMultipleChoiceAnswerItem)initWithDatabaseRow:(id)a3
+- (CLSMultipleChoiceAnswerItem)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerItem *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSMultipleChoiceAnswerItem *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"itemText");
+    v8 = sub_10016D778(rowCopy, @"itemText");
     [v6 setItemText:v8];
 
-    v9 = sub_10016D778(v4, @"displayOrder");
+    v9 = sub_10016D778(rowCopy, @"displayOrder");
     [v6 setDisplayOrder:{objc_msgSend(v9, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v9.receiver = self;
   v9.super_class = CLSMultipleChoiceAnswerItem;
-  v4 = a3;
-  [(CLSMultipleChoiceAnswerItem *)&v9 bindTo:v4];
+  toCopy = to;
+  [(CLSMultipleChoiceAnswerItem *)&v9 bindTo:toCopy];
   v10 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v10 count:1, v9.receiver, v9.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
-  v7 = [(CLSMultipleChoiceAnswerItem *)self itemText];
-  sub_1000982FC(v4, v7, @"itemText");
+  itemText = [(CLSMultipleChoiceAnswerItem *)self itemText];
+  sub_1000982FC(toCopy, itemText, @"itemText");
 
   v8 = [NSNumber numberWithInteger:[(CLSMultipleChoiceAnswerItem *)self displayOrder]];
-  sub_1000982FC(v4, v8, @"displayOrder");
+  sub_1000982FC(toCopy, v8, @"displayOrder");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSMultipleChoiceAnswerItem (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    itemText          text,\n    displayOrder      integer,\nforeign key (parentObjectID) references CLSMultipleChoiceAnswerFormat(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSMultipleChoiceAnswerItem_objectID on CLSMultipleChoiceAnswerItem (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSMultipleChoiceAnswerItem_parentObjectID on CLSMultipleChoiceAnswerItem (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSMultipleChoiceAnswerItem (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    itemText          text,\n    displayOrder      integer,\nforeign key (parentObjectID) references CLSMultipleChoiceAnswerFormat(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSMultipleChoiceAnswerItem_objectID on CLSMultipleChoiceAnswerItem (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSMultipleChoiceAnswerItem_parentObjectID on CLSMultipleChoiceAnswerItem (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerItem *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSMultipleChoiceAnswerItem *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
 }
 
-- (id)initWithCKRecord:(id)a3
+- (id)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"itemText"];
-  v6 = [v4 objectForKeyedSubscript:@"displayOrder"];
-  v7 = [v6 integerValue];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"itemText"];
+  v6 = [recordCopy objectForKeyedSubscript:@"displayOrder"];
+  integerValue = [v6 integerValue];
 
   v8 = [(CLSMultipleChoiceAnswerItem *)self initWithText:v5];
   v9 = v8;
   if (v8)
   {
-    [(CLSMultipleChoiceAnswerItem *)v8 _initCommonPropsWithRecord:v4];
-    [(CLSMultipleChoiceAnswerItem *)v9 setDisplayOrder:v7];
+    [(CLSMultipleChoiceAnswerItem *)v8 _initCommonPropsWithRecord:recordCopy];
+    [(CLSMultipleChoiceAnswerItem *)v9 setDisplayOrder:integerValue];
   }
 
   return v9;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v7.receiver = self;
   v7.super_class = CLSMultipleChoiceAnswerItem;
-  v4 = a3;
-  [(CLSMultipleChoiceAnswerItem *)&v7 populate:v4];
+  populateCopy = populate;
+  [(CLSMultipleChoiceAnswerItem *)&v7 populate:populateCopy];
   v5 = [(CLSMultipleChoiceAnswerItem *)self itemText:v7.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"itemText"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"itemText"];
 
   v6 = [NSNumber numberWithInteger:[(CLSMultipleChoiceAnswerItem *)self displayOrder]];
-  [v4 setObject:v6 forKeyedSubscript:@"displayOrder"];
+  [populateCopy setObject:v6 forKeyedSubscript:@"displayOrder"];
 
-  [(CLSMultipleChoiceAnswerItem *)self updateParentReferencesForRecord:v4];
+  [(CLSMultipleChoiceAnswerItem *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSMultipleChoiceAnswerItem *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else
@@ -155,20 +155,20 @@ LABEL_8:
   return v8;
 }
 
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = objc_opt_new();
   v11 = objc_autoreleasePoolPush();
   v12 = v11;
-  if (v7)
+  if (objectCopy)
   {
     v45 = v11;
     v13 = objc_alloc_init(PDDPPayload);
     [(PDDPPayload *)v13 setType:26];
-    v14 = [v8 state] - 1;
+    v14 = [itemCopy state] - 1;
     if (v14 < 3)
     {
       v15 = (v14 + 1);
@@ -180,45 +180,45 @@ LABEL_8:
     }
 
     [(PDDPPayload *)v13 setAction:v15];
-    v16 = [v7 parentObjectID];
-    v17 = sub_10012109C(v9, v16);
+    parentObjectID = [objectCopy parentObjectID];
+    v17 = sub_10012109C(databaseCopy, parentObjectID);
 
-    v18 = [v17 parentObjectID];
-    v19 = sub_100070560(v9, v18);
+    parentObjectID2 = [v17 parentObjectID];
+    v19 = sub_100070560(databaseCopy, parentObjectID2);
 
     v20 = objc_opt_class();
-    v21 = [v19 objectID];
-    v48 = v21;
+    objectID = [v19 objectID];
+    v48 = objectID;
     v22 = [NSArray arrayWithObjects:&v48 count:1];
-    v23 = [v9 select:v20 where:@"entityIdentity = ?" bindings:v22];
+    v23 = [databaseCopy select:v20 where:@"entityIdentity = ?" bindings:v22];
 
     if (!v23)
     {
-      v24 = [v17 objectID];
-      v25 = sub_100120F3C(v9, v24);
+      objectID2 = [v17 objectID];
+      v25 = sub_100120F3C(databaseCopy, objectID2);
 
       v44 = v25;
       v26 = sub_10001AD90(v19, v17, v25);
       [(PDDPPayload *)v13 setSurveyStep:v26];
 
-      v27 = [v19 objectID];
-      v28 = sub_10006FEFC(v9, v27);
+      objectID3 = [v19 objectID];
+      v28 = sub_10006FEFC(databaseCopy, objectID3);
 
       v43 = v28;
       v29 = [v28 mutableCopy];
-      v30 = [(PDDPPayload *)v13 surveyStep];
-      [v30 setClassIds:v29];
+      surveyStep = [(PDDPPayload *)v13 surveyStep];
+      [surveyStep setClassIds:v29];
 
-      v31 = [v19 parentObjectID];
-      if (v31)
+      parentObjectID3 = [v19 parentObjectID];
+      if (parentObjectID3)
       {
-        v42 = sub_1000C8BEC(v9, v31);
-        [CLSSurvey payloadForObject:v42 action:2 database:v9];
-        v32 = v41 = v8;
-        v47 = v31;
+        v42 = sub_1000C8BEC(databaseCopy, parentObjectID3);
+        [CLSSurvey payloadForObject:v42 action:2 database:databaseCopy];
+        v32 = v41 = itemCopy;
+        v47 = parentObjectID3;
         [NSArray arrayWithObjects:&v47 count:1];
         v34 = v33 = v10;
-        sub_1000C8DF8(v9, v34, 1);
+        sub_1000C8DF8(databaseCopy, v34, 1);
 
         v46[0] = v13;
         v46[1] = v32;
@@ -226,7 +226,7 @@ LABEL_8:
         [v33 addObjectsFromArray:v35];
 
         v10 = v33;
-        v8 = v41;
+        itemCopy = v41;
       }
 
       else
@@ -250,7 +250,7 @@ LABEL_8:
       *buf = 138543618;
       v50 = v38;
       v51 = 2050;
-      v52 = [v8 state];
+      state = [itemCopy state];
       _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "'%{public}@': Do not expect CLSMultipleChoiceAnswerItem object to be nil with action %{public}ld", buf, 0x16u);
     }
   }

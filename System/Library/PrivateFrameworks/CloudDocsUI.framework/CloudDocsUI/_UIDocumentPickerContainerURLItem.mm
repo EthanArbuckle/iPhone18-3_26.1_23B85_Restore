@@ -1,8 +1,8 @@
 @interface _UIDocumentPickerContainerURLItem
 + (id)defaultKeys;
-- (BOOL)attributesModified:(id)a3;
+- (BOOL)attributesModified:(id)modified;
 - (BOOL)renameable;
-- (_UIDocumentPickerContainerURLItem)initWithURL:(id)a3;
+- (_UIDocumentPickerContainerURLItem)initWithURL:(id)l;
 - (id)sortPath;
 - (id)sortPathComponents;
 - (unint64_t)indentationLevel;
@@ -13,16 +13,16 @@
 
 @implementation _UIDocumentPickerContainerURLItem
 
-- (_UIDocumentPickerContainerURLItem)initWithURL:(id)a3
+- (_UIDocumentPickerContainerURLItem)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = _UIDocumentPickerContainerURLItem;
   v6 = [(_UIDocumentPickerContainerItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v7->_cachedIndentation = 0x7FFFFFFFFFFFFFFFLL;
     [(_UIDocumentPickerContainerURLItem *)v7 cacheValues];
   }
@@ -59,13 +59,13 @@
   self->_cachedIndentation = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)attributesModified:(id)a3
+- (BOOL)attributesModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[22] isEqual:self->_generationIdentifier] ^ 1;
+    v5 = [modifiedCopy[22] isEqual:self->_generationIdentifier] ^ 1;
   }
 
   else
@@ -102,7 +102,7 @@
 - (void)cacheValues
 {
   v3 = [(_UIDocumentPickerContainerURLItem *)self url];
-  v34 = [objc_opt_class() defaultKeys];
+  defaultKeys = [objc_opt_class() defaultKeys];
   v4 = [v3 promisedItemResourceValuesForKeys:? error:?];
   v5 = [v4 objectForKey:*MEMORY[0x277CBE8D0]];
   v6 = v5;
@@ -166,7 +166,7 @@
   }
 
   v18 = [v4 valueForKey:*MEMORY[0x277CBE858]];
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
   v20 = [v4 valueForKey:*MEMORY[0x277CBE848]];
   v36[0] = MEMORY[0x277D85DD0];
@@ -182,7 +182,7 @@
   v44 = v17;
   v41 = v30;
   v42 = v9;
-  v45 = v19;
+  v45 = bOOLValue;
   v21 = v20;
   v22 = v9;
   v23 = v30;
@@ -196,9 +196,9 @@
 
 - (void)_modelChanged
 {
-  v7 = [(_UIDocumentPickerContainerItem *)self model];
-  v3 = [v7 modelObjects];
-  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [v3 count]);
+  model = [(_UIDocumentPickerContainerItem *)self model];
+  modelObjects = [model modelObjects];
+  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [modelObjects count]);
   v5 = [v4 copy];
   cachedSubtitle = self->_cachedSubtitle;
   self->_cachedSubtitle = v5;
@@ -209,8 +209,8 @@
   result = self->_cachedIndentation;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(_UIDocumentPickerContainerURLItem *)self sortPathComponents];
-    [(_UIDocumentPickerContainerURLItem *)self _cacheIndentationLevelWithSortPathComponents:v4];
+    sortPathComponents = [(_UIDocumentPickerContainerURLItem *)self sortPathComponents];
+    [(_UIDocumentPickerContainerURLItem *)self _cacheIndentationLevelWithSortPathComponents:sortPathComponents];
 
     return self->_cachedIndentation;
   }
@@ -221,13 +221,13 @@
 - (id)sortPathComponents
 {
   v3 = [(_UIDocumentPickerContainerURLItem *)self url];
-  v4 = [v3 br_containerID];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CFAD68]];
+  br_containerID = [v3 br_containerID];
+  v5 = [br_containerID isEqualToString:*MEMORY[0x277CFAD68]];
 
   v6 = [(_UIDocumentPickerContainerURLItem *)self url];
-  v7 = [v6 br_pathRelativeToMobileDocuments];
-  v8 = [v7 pathComponents];
-  v9 = [v8 mutableCopy];
+  br_pathRelativeToMobileDocuments = [v6 br_pathRelativeToMobileDocuments];
+  pathComponents = [br_pathRelativeToMobileDocuments pathComponents];
+  v9 = [pathComponents mutableCopy];
 
   [v9 removeObjectAtIndex:v5 ^ 1u];
 
@@ -240,14 +240,14 @@
   cachedSortPath = self->_cachedSortPath;
   if (!cachedSortPath)
   {
-    v5 = [(_UIDocumentPickerContainerURLItem *)self sortPathComponents];
-    v6 = [v5 componentsJoinedByString:@"/"];
+    sortPathComponents = [(_UIDocumentPickerContainerURLItem *)self sortPathComponents];
+    v6 = [sortPathComponents componentsJoinedByString:@"/"];
     v7 = self->_cachedSortPath;
     self->_cachedSortPath = v6;
 
     if (self->_cachedIndentation == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(_UIDocumentPickerContainerURLItem *)self _cacheIndentationLevelWithSortPathComponents:v5];
+      [(_UIDocumentPickerContainerURLItem *)self _cacheIndentationLevelWithSortPathComponents:sortPathComponents];
     }
 
     cachedSortPath = self->_cachedSortPath;
@@ -264,23 +264,23 @@
   v3 = [(_UIDocumentPickerContainerURLItem *)self url];
   if (![(_UIDocumentPickerContainerURLItem *)self type])
   {
-    v4 = [v3 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
 
-    v3 = v4;
+    v3 = uRLByDeletingLastPathComponent;
   }
 
   v7 = 0;
   if ([v3 getResourceValue:&v7 forKey:*MEMORY[0x277CBE8C0] error:0])
   {
-    v5 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

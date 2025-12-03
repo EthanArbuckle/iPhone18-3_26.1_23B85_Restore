@@ -1,6 +1,6 @@
 @interface TVRUIDevicePickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupDeviceTitleView;
 - (void)_toggleState;
@@ -8,17 +8,17 @@
 
 @implementation TVRUIDevicePickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"_setupDeviceTitleView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"isDevicePickerShowing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"_toggleState" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TVRUIDeviceListCell" hasInstanceMethod:@"device" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"TVRUIDevice" hasRequiredInstanceMethod:@"model"];
-  [v3 validateProtocol:@"TVRUIDevice" hasRequiredInstanceMethod:@"name"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"_setupDeviceTitleView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"isDevicePickerShowing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"titleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TVRUIDevicePickerViewController" hasInstanceMethod:@"_toggleState" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TVRUIDeviceListCell" hasInstanceMethod:@"device" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"TVRUIDevice" hasRequiredInstanceMethod:@"model"];
+  [validationsCopy validateProtocol:@"TVRUIDevice" hasRequiredInstanceMethod:@"name"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -106,14 +106,14 @@ uint64_t __90__TVRUIDevicePickerViewControllerAccessibility__accessibilityLoadAc
   [(TVRUIDevicePickerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = TVRUIDevicePickerViewControllerAccessibility;
-  v4 = [(TVRUIDevicePickerViewControllerAccessibility *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(TVRUIDevicePickerViewControllerAccessibility *)&v14 tableView:view cellForRowAtIndexPath:path];
   v5 = [v4 safeValueForKey:@"device"];
-  v6 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v6];
+  accessibilityTraits = [v4 accessibilityTraits];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   v7 = [v5 safeValueForKey:@"model"];
   v8 = [v7 containsString:@"AppleTV"];
 

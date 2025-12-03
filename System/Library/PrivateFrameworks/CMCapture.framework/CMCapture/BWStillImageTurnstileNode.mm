@@ -1,20 +1,20 @@
 @interface BWStillImageTurnstileNode
-- (BWStillImageTurnstileNode)initWithStillImageCoordinator:(id)a3;
+- (BWStillImageTurnstileNode)initWithStillImageCoordinator:(id)coordinator;
 - (void)dealloc;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageTurnstileNode
 
-- (BWStillImageTurnstileNode)initWithStillImageCoordinator:(id)a3
+- (BWStillImageTurnstileNode)initWithStillImageCoordinator:(id)coordinator
 {
   v10.receiver = self;
   v10.super_class = BWStillImageTurnstileNode;
   v4 = [(BWNode *)&v10 init];
   if (v4)
   {
-    v4->_stillImageCoordinator = a3;
+    v4->_stillImageCoordinator = coordinator;
     v5 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v4];
     v6 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWNodeInput *)v5 setFormatRequirements:v6];
@@ -42,20 +42,20 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  [(BWStillImageCoordinatorNode *)self->_stillImageCoordinator clientReceivedPayloadForSettings:CMGetAttachment(a3 status:@"StillImageSettings" clientIsMidStillImageGraph:0), 0, 1];
+  [(BWStillImageCoordinatorNode *)self->_stillImageCoordinator clientReceivedPayloadForSettings:CMGetAttachment(buffer status:@"StillImageSettings" clientIsMidStillImageGraph:0), 0, 1];
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitSampleBuffer:a3];
+  [(BWNodeOutput *)output emitSampleBuffer:buffer];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  -[BWStillImageCoordinatorNode clientReceivedPayloadForSettings:status:clientIsMidStillImageGraph:](self->_stillImageCoordinator, "clientReceivedPayloadForSettings:status:clientIsMidStillImageGraph:", [objc_msgSend(a3 "stillImageSettings")], objc_msgSend(a3, "errorCode"), 1);
+  -[BWStillImageCoordinatorNode clientReceivedPayloadForSettings:status:clientIsMidStillImageGraph:](self->_stillImageCoordinator, "clientReceivedPayloadForSettings:status:clientIsMidStillImageGraph:", [objc_msgSend(error "stillImageSettings")], objc_msgSend(error, "errorCode"), 1);
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitNodeError:a3];
+  [(BWNodeOutput *)output emitNodeError:error];
 }
 
 @end

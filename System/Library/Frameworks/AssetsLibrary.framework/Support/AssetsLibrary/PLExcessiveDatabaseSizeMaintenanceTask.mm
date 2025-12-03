@@ -1,16 +1,16 @@
 @interface PLExcessiveDatabaseSizeMaintenanceTask
-- (BOOL)isHistorySizeExcessiveWithPathManager:(id)a3;
-- (BOOL)isOrphanedSceneClassificationsCountExcessiveWithPathManager:(id)a3;
-- (BOOL)runTaskWithTransaction:(id)a3;
-- (id)isHistorySizeExcessiveWithPathManager:(id)a3 error:(id *)a4;
-- (void)_forceRebuildWithReason:(int64_t)a3 pathManager:(id)a4 transaction:(id)a5;
+- (BOOL)isHistorySizeExcessiveWithPathManager:(id)manager;
+- (BOOL)isOrphanedSceneClassificationsCountExcessiveWithPathManager:(id)manager;
+- (BOOL)runTaskWithTransaction:(id)transaction;
+- (id)isHistorySizeExcessiveWithPathManager:(id)manager error:(id *)error;
+- (void)_forceRebuildWithReason:(int64_t)reason pathManager:(id)manager transaction:(id)transaction;
 @end
 
 @implementation PLExcessiveDatabaseSizeMaintenanceTask
 
-- (BOOL)isOrphanedSceneClassificationsCountExcessiveWithPathManager:(id)a3
+- (BOOL)isOrphanedSceneClassificationsCountExcessiveWithPathManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -22,7 +22,7 @@
   v5 = v9[3] = &unk_10002D3E0;
   v10 = v5;
   v12 = &v13;
-  v6 = v4;
+  v6 = managerCopy;
   v11 = v6;
   [v5 performBlockAndWait:v9];
   v7 = *(v14 + 24);
@@ -31,9 +31,9 @@
   return v7;
 }
 
-- (id)isHistorySizeExcessiveWithPathManager:(id)a3 error:(id *)a4
+- (id)isHistorySizeExcessiveWithPathManager:(id)manager error:(id *)error
 {
-  v6 = a3;
+  managerCopy = manager;
   if (PLHasInternalDiagnostics())
   {
     v7 = +[NSUserDefaults standardUserDefaults];
@@ -46,19 +46,19 @@
     }
   }
 
-  v10 = [v6 photosDatabasePath];
-  if (!v10)
+  photosDatabasePath = [managerCopy photosDatabasePath];
+  if (!photosDatabasePath)
   {
     v56 = NSDebugDescriptionErrorKey;
     v57 = @"databasePath is nil while checking for excessive history size";
     v24 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
     v13 = [NSError errorWithDomain:PLPhotosErrorDomain code:46518 userInfo:v24];
 
-    if (a4)
+    if (error)
     {
       v25 = v13;
       v9 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -69,7 +69,7 @@
     goto LABEL_28;
   }
 
-  v11 = [NSURL fileURLWithPath:v10 isDirectory:0];
+  v11 = [NSURL fileURLWithPath:photosDatabasePath isDirectory:0];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -85,11 +85,11 @@
   {
     v26 = v45[5];
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v26 = v26;
       v9 = 0;
-      *a4 = v26;
+      *error = v26;
     }
 
     else
@@ -106,19 +106,19 @@ LABEL_17:
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = 0;
-    v14 = [(PLMaintenanceTask *)self photoLibrary];
-    v15 = [v14 managedObjectContext];
+    photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
 
-    v16 = [(PLMaintenanceTask *)self photoLibrary];
+    photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100012C90;
     v34[3] = &unk_10002D408;
-    v17 = v15;
+    v17 = managedObjectContext;
     v35 = v17;
     v36 = &v38;
     v37 = &v44;
-    [v16 performBlockAndWait:v34];
+    [photoLibrary2 performBlockAndWait:v34];
 
     v18 = v39[3];
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -134,7 +134,7 @@ LABEL_17:
     v39[3] = v18;
     v19 = (v45 + 5);
     v33 = v45[5];
-    v20 = [PLPersistentHistoryUtilities fetchApproximateChangeCountWithPathManager:v6 error:&v33];
+    v20 = [PLPersistentHistoryUtilities fetchApproximateChangeCountWithPathManager:managerCopy error:&v33];
     objc_storeStrong(v19, v33);
     if (v20 < 1)
     {
@@ -152,8 +152,8 @@ LABEL_22:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v39[3];
-          v32 = [v6 libraryURL];
-          v27 = [PLFilePathDescription descriptionWithFileURL:v32];
+          libraryURL = [managerCopy libraryURL];
+          v27 = [PLFilePathDescription descriptionWithFileURL:libraryURL];
           *buf = 134218498;
           v51 = v20;
           v52 = 2048;
@@ -170,8 +170,8 @@ LABEL_22:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v29 = v39[3];
-          v31 = [v6 libraryURL];
-          v23 = [PLFilePathDescription descriptionWithFileURL:v31];
+          libraryURL2 = [managerCopy libraryURL];
+          v23 = [PLFilePathDescription descriptionWithFileURL:libraryURL2];
           *buf = 134218498;
           v51 = v20;
           v52 = 2048;
@@ -205,15 +205,15 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)isHistorySizeExcessiveWithPathManager:(id)a3
+- (BOOL)isHistorySizeExcessiveWithPathManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v12 = 0;
-  v5 = [(PLExcessiveDatabaseSizeMaintenanceTask *)self isHistorySizeExcessiveWithPathManager:v4 error:&v12];
+  v5 = [(PLExcessiveDatabaseSizeMaintenanceTask *)self isHistorySizeExcessiveWithPathManager:managerCopy error:&v12];
   v6 = v12;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -221,8 +221,8 @@ LABEL_29:
     v8 = PLBackendGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 libraryURL];
-      v10 = [PLFilePathDescription descriptionWithFileURL:v9];
+      libraryURL = [managerCopy libraryURL];
+      v10 = [PLFilePathDescription descriptionWithFileURL:libraryURL];
       *buf = 138412546;
       v14 = v10;
       v15 = 2112;
@@ -230,40 +230,40 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Maintenance task: Failed to determine history size for library URL %@. Error: %@", buf, 0x16u);
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_forceRebuildWithReason:(int64_t)a3 pathManager:(id)a4 transaction:(id)a5
+- (void)_forceRebuildWithReason:(int64_t)reason pathManager:(id)manager transaction:(id)transaction
 {
-  v8 = a4;
-  v9 = a5;
-  if ([PLRebuildJournalManager isEnabledWithPathManager:v8 error:0])
+  managerCopy = manager;
+  transactionCopy = transaction;
+  if ([PLRebuildJournalManager isEnabledWithPathManager:managerCopy error:0])
   {
-    v10 = [(PLMaintenanceTask *)self libraryServicesManager];
-    v11 = [v10 rebuildJournalManager];
+    libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+    rebuildJournalManager = [libraryServicesManager rebuildJournalManager];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100013050;
     v15[3] = &unk_10002D3B8;
-    v16 = v8;
-    v18 = a3;
-    v17 = v9;
-    [v11 snapshotJournalsForPayloadClassIDs:0 withCompletionHandler:v15];
+    v16 = managerCopy;
+    reasonCopy = reason;
+    v17 = transactionCopy;
+    [rebuildJournalManager snapshotJournalsForPayloadClassIDs:0 withCompletionHandler:v15];
 
     v12 = v16;
   }
 
   else
   {
-    [v8 setSqliteErrorForRebuildReason:a3 allowsExit:0];
+    [managerCopy setSqliteErrorForRebuildReason:reason allowsExit:0];
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 libraryURL];
-      v14 = [PLFilePathDescription descriptionWithFileURL:v13];
+      libraryURL = [managerCopy libraryURL];
+      v14 = [PLFilePathDescription descriptionWithFileURL:libraryURL];
       *buf = 138412290;
       v20 = v14;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Maintenance task: Added rebuild flag for excessive persistent history size for library URL: %@", buf, 0xCu);
@@ -271,28 +271,28 @@ LABEL_29:
   }
 }
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(PLMaintenanceTask *)self photoLibrary];
-  v6 = [v5 pathManager];
+  transactionCopy = transaction;
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  pathManager = [photoLibrary pathManager];
 
-  if (v6)
+  if (pathManager)
   {
-    if (([v6 sqliteErrorIndicatorFileExists] & 1) == 0)
+    if (([pathManager sqliteErrorIndicatorFileExists] & 1) == 0)
     {
-      if ([(PLExcessiveDatabaseSizeMaintenanceTask *)self isHistorySizeExcessiveWithPathManager:v6])
+      if ([(PLExcessiveDatabaseSizeMaintenanceTask *)self isHistorySizeExcessiveWithPathManager:pathManager])
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 16;
 LABEL_10:
-        [(PLExcessiveDatabaseSizeMaintenanceTask *)v7 _forceRebuildWithReason:v8 pathManager:v6 transaction:v4];
+        [(PLExcessiveDatabaseSizeMaintenanceTask *)selfCopy2 _forceRebuildWithReason:v8 pathManager:pathManager transaction:transactionCopy];
         goto LABEL_11;
       }
 
-      if ([(PLExcessiveDatabaseSizeMaintenanceTask *)self isOrphanedSceneClassificationsCountExcessiveWithPathManager:v6])
+      if ([(PLExcessiveDatabaseSizeMaintenanceTask *)self isOrphanedSceneClassificationsCountExcessiveWithPathManager:pathManager])
       {
-        v7 = self;
+        selfCopy2 = self;
         v8 = 20;
         goto LABEL_10;
       }
@@ -311,7 +311,7 @@ LABEL_10:
 
 LABEL_11:
 
-  return v6 != 0;
+  return pathManager != 0;
 }
 
 @end

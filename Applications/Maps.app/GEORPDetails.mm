@@ -12,20 +12,20 @@
   if ([v4 count] >= 2)
   {
     v5 = objc_alloc_init(MKDirectionsRequest);
-    v6 = [v4 firstObject];
-    [v5 setSource:v6];
+    firstObject = [v4 firstObject];
+    [v5 setSource:firstObject];
 
-    v7 = [v4 lastObject];
-    [v5 setDestination:v7];
+    lastObject = [v4 lastObject];
+    [v5 setDestination:lastObject];
 
-    v8 = [(GEORPDetails *)self directionsType];
+    directionsType = [(GEORPDetails *)self directionsType];
     v9 = 1;
-    if (v8 == 2)
+    if (directionsType == 2)
     {
       v9 = 2;
     }
 
-    if (v8 == 1)
+    if (directionsType == 1)
     {
       v10 = 4;
     }

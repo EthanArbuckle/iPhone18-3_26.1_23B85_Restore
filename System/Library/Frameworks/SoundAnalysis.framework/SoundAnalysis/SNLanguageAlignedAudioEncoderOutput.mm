@@ -1,32 +1,32 @@
 @interface SNLanguageAlignedAudioEncoderOutput
-- (SNLanguageAlignedAudioEncoderOutput)initWithEmbedding:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (SNLanguageAlignedAudioEncoderOutput)initWithEmbedding:(id)embedding;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNLanguageAlignedAudioEncoderOutput
 
-- (SNLanguageAlignedAudioEncoderOutput)initWithEmbedding:(id)a3
+- (SNLanguageAlignedAudioEncoderOutput)initWithEmbedding:(id)embedding
 {
-  v5 = a3;
+  embeddingCopy = embedding;
   v9.receiver = self;
   v9.super_class = SNLanguageAlignedAudioEncoderOutput;
   v6 = [(SNLanguageAlignedAudioEncoderOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_embedding, a3);
+    objc_storeStrong(&v6->_embedding, embedding);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"embedding"])
+  if ([name isEqualToString:@"embedding"])
   {
     v4 = MEMORY[0x1E695FE60];
-    v5 = [(SNLanguageAlignedAudioEncoderOutput *)self embedding];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    embedding = [(SNLanguageAlignedAudioEncoderOutput *)self embedding];
+    v6 = [v4 featureValueWithMultiArray:embedding];
   }
 
   else

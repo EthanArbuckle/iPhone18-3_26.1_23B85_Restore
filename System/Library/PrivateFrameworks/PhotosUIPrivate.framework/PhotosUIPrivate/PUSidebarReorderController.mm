@@ -1,49 +1,49 @@
 @interface PUSidebarReorderController
-- (BOOL)canReorderItem:(id)a3;
-- (PUSidebarReorderController)initWithDataSource:(id)a3 outlineSectionController:(id)a4 undoManager:(id)a5;
-- (id)targetIndexPathForMoveFromItemAtIndexPath:(id)a3 toProposedIndexPath:(id)a4;
-- (void)performReorderWithTransaction:(id)a3;
+- (BOOL)canReorderItem:(id)item;
+- (PUSidebarReorderController)initWithDataSource:(id)source outlineSectionController:(id)controller undoManager:(id)manager;
+- (id)targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (void)performReorderWithTransaction:(id)transaction;
 @end
 
 @implementation PUSidebarReorderController
 
-- (void)performReorderWithTransaction:(id)a3
+- (void)performReorderWithTransaction:(id)transaction
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 sectionTransactions];
-  v5 = [v4 firstObject];
+  sectionTransactions = [transaction sectionTransactions];
+  firstObject = [sectionTransactions firstObject];
 
-  v6 = [v5 difference];
-  v7 = [v6 insertions];
-  v8 = [v7 firstObject];
+  difference = [firstObject difference];
+  insertions = [difference insertions];
+  firstObject2 = [insertions firstObject];
 
-  v9 = [v8 object];
-  v10 = [v5 difference];
-  v11 = [v10 removals];
-  v12 = [v11 firstObject];
+  object = [firstObject2 object];
+  difference2 = [firstObject difference];
+  removals = [difference2 removals];
+  firstObject3 = [removals firstObject];
 
-  v60 = v12;
-  v61 = [v12 object];
-  if (v9)
+  v60 = firstObject3;
+  object2 = [firstObject3 object];
+  if (object)
   {
-    v13 = [v5 finalSnapshot];
-    v14 = [v13 parentOfChildItem:v9];
-    v15 = [v13 childrenOfParent:v14];
-    v16 = [(PUSidebarReorderController *)self itemToReorder];
-    if (v9 != v16)
+    finalSnapshot = [firstObject finalSnapshot];
+    v14 = [finalSnapshot parentOfChildItem:object];
+    v15 = [finalSnapshot childrenOfParent:v14];
+    itemToReorder = [(PUSidebarReorderController *)self itemToReorder];
+    if (object != itemToReorder)
     {
-      v17 = [v13 parentOfChildItem:v16];
+      v17 = [finalSnapshot parentOfChildItem:itemToReorder];
 
       if (v17 == v14)
       {
-        v18 = v16;
+        v18 = itemToReorder;
 
-        v9 = v18;
-        v61 = v9;
+        object = v18;
+        object2 = object;
       }
     }
 
-    v19 = [v15 indexOfObject:v9];
+    v19 = [v15 indexOfObject:object];
   }
 
   else
@@ -52,9 +52,9 @@
     v19 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v20 = [v14 collection];
+  collection = [v14 collection];
 
-  if (!v20)
+  if (!collection)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -65,9 +65,9 @@
     goto LABEL_27;
   }
 
-  v21 = [v5 initialSnapshot];
-  v22 = [v21 parentOfChild:v61];
-  v59 = v8;
+  initialSnapshot = [firstObject initialSnapshot];
+  v22 = [initialSnapshot parentOfChild:object2];
+  v59 = firstObject2;
   v55 = [v22 isEqual:v14];
   if (!v55)
   {
@@ -75,12 +75,12 @@
   }
 
   v23 = MEMORY[0x1E69C3950];
-  v24 = [v22 collection];
-  if (![v23 canPerformOnCollection:v24])
+  collection2 = [v22 collection];
+  if (![v23 canPerformOnCollection:collection2])
   {
     v25 = MEMORY[0x1E69C3948];
-    v26 = [v22 collection];
-    LODWORD(v25) = [v25 canPerformOnCollection:v26];
+    collection3 = [v22 collection];
+    LODWORD(v25) = [v25 canPerformOnCollection:collection3];
 
     if (v25)
     {
@@ -93,10 +93,10 @@ LABEL_16:
   }
 
 LABEL_13:
-  v27 = [v5 initialSnapshot];
-  v28 = [v27 childrenOfParent:v22];
+  initialSnapshot2 = [firstObject initialSnapshot];
+  v28 = [initialSnapshot2 childrenOfParent:v22];
 
-  if (v19 > [v28 indexOfObject:v61])
+  if (v19 > [v28 indexOfObject:object2])
   {
     ++v19;
   }
@@ -104,44 +104,44 @@ LABEL_13:
   v57 = 1;
 LABEL_17:
 
-  v29 = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
-  v30 = [v29 dataController];
-  v31 = [v30 infoForItem:v14 childIndex:v19];
+  sidebarOutlineSectionController = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
+  dataController = [sidebarOutlineSectionController dataController];
+  v31 = [dataController infoForItem:v14 childIndex:v19];
 
-  v32 = [v31 collection];
-  if (v32)
+  collection4 = [v31 collection];
+  if (collection4)
   {
     objc_opt_class();
-    v8 = v59;
+    firstObject2 = v59;
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_19;
     }
 
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v51 = objc_opt_class();
     v47 = NSStringFromClass(v51);
-    v52 = [v32 px_descriptionForAssertionMessage];
-    [v45 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:149 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"childInfo.collection", v47, v52}];
+    px_descriptionForAssertionMessage = [collection4 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:149 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"childInfo.collection", v47, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v46 = objc_opt_class();
     v47 = NSStringFromClass(v46);
-    [v45 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:149 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"childInfo.collection", v47}];
-    v8 = v59;
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:149 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"childInfo.collection", v47}];
+    firstObject2 = v59;
   }
 
 LABEL_19:
-  v33 = [v9 collection];
-  if (!v33)
+  collection5 = [object collection];
+  if (!collection5)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v49 = objc_opt_class();
     v50 = NSStringFromClass(v49);
-    [v48 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:150 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"insertedItem.collection", v50}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:150 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"insertedItem.collection", v50}];
 LABEL_33:
 
     goto LABEL_21;
@@ -150,11 +150,11 @@ LABEL_33:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v53 = objc_opt_class();
     v50 = NSStringFromClass(v53);
-    v54 = [v33 px_descriptionForAssertionMessage];
-    [v48 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:150 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"insertedItem.collection", v50, v54}];
+    px_descriptionForAssertionMessage2 = [collection5 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUSidebarReorderController.m" lineNumber:150 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"insertedItem.collection", v50, px_descriptionForAssertionMessage2}];
 
     goto LABEL_33;
   }
@@ -168,16 +168,16 @@ LABEL_21:
   v34 = _Block_copy(aBlock);
   if (v57)
   {
-    if ([MEMORY[0x1E69C3948] canPerformOnCollection:v32])
+    if ([MEMORY[0x1E69C3948] canPerformOnCollection:collection4])
     {
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __60__PUSidebarReorderController_performReorderWithTransaction___block_invoke_208;
       v67[3] = &unk_1E7B7DCB0;
-      v68 = v32;
-      v69 = v33;
+      v68 = collection4;
+      v69 = collection5;
       v70 = v31;
-      v71 = self;
+      selfCopy = self;
       v72 = v34;
       dispatch_async(MEMORY[0x1E69E96A0], v67);
 
@@ -187,38 +187,38 @@ LABEL_21:
     else
     {
       v37 = objc_alloc(MEMORY[0x1E69C3950]);
-      v75[0] = v33;
+      v75[0] = collection5;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
       [v31 childObject];
       v58 = v14;
-      v39 = v5;
-      v40 = self;
+      v39 = firstObject;
+      selfCopy2 = self;
       v42 = v41 = v31;
-      v35 = [v37 initWithCollectionList:v32 movedObjects:v38 targetObject:v42];
+      v35 = [v37 initWithCollectionList:collection4 movedObjects:v38 targetObject:v42];
 
       v31 = v41;
-      v43 = v40;
-      v5 = v39;
+      v43 = selfCopy2;
+      firstObject = v39;
       v14 = v58;
-      v44 = [(PUSidebarReorderController *)v43 undoManager];
-      [v35 executeWithUndoManager:v44 completionHandler:v34];
+      undoManager = [(PUSidebarReorderController *)v43 undoManager];
+      [v35 executeWithUndoManager:undoManager completionHandler:v34];
 
-      v8 = v59;
+      firstObject2 = v59;
     }
   }
 
   else
   {
-    v36 = [v32 photoLibrary];
+    photoLibrary = [collection4 photoLibrary];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __60__PUSidebarReorderController_performReorderWithTransaction___block_invoke_2_210;
     v62[3] = &unk_1E7B7DCD8;
-    v63 = v32;
+    v63 = collection4;
     v64 = v31;
     v66 = v55;
-    v65 = v33;
-    [v36 performChanges:v62 completionHandler:v34];
+    v65 = collection5;
+    [photoLibrary performChanges:v62 completionHandler:v34];
 
     v35 = v63;
   }
@@ -291,12 +291,12 @@ void __60__PUSidebarReorderController_performReorderWithTransaction___block_invo
   }
 }
 
-- (id)targetIndexPathForMoveFromItemAtIndexPath:(id)a3 toProposedIndexPath:(id)a4
+- (id)targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUSidebarReorderController *)self itemToReorder];
-  if (!v8)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  itemToReorder = [(PUSidebarReorderController *)self itemToReorder];
+  if (!itemToReorder)
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -306,27 +306,27 @@ void __60__PUSidebarReorderController_performReorderWithTransaction___block_invo
     }
   }
 
-  v10 = [(PUSidebarReorderController *)self dataSource];
-  v11 = [v10 itemIdentifierForIndexPath:v7];
-  if (![v8 isReorderable] || (objc_msgSend(v11, "isReorderable") & 1) == 0)
+  dataSource = [(PUSidebarReorderController *)self dataSource];
+  v11 = [dataSource itemIdentifierForIndexPath:indexPathCopy];
+  if (![itemToReorder isReorderable] || (objc_msgSend(v11, "isReorderable") & 1) == 0)
   {
-    v18 = v6;
+    v18 = pathCopy;
     goto LABEL_37;
   }
 
-  v12 = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
-  v13 = [v12 sectionSnapshotContainingItem:v8];
+  sidebarOutlineSectionController = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
+  v13 = [sidebarOutlineSectionController sectionSnapshotContainingItem:itemToReorder];
 
-  v14 = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
-  v15 = [v14 sectionSnapshotContainingItem:v11];
+  sidebarOutlineSectionController2 = [(PUSidebarReorderController *)self sidebarOutlineSectionController];
+  v15 = [sidebarOutlineSectionController2 sectionSnapshotContainingItem:v11];
 
   if ([v13 isEqual:v15])
   {
-    v37 = [v13 parentOfChildItem:v8];
-    v16 = [v37 collection];
+    v37 = [v13 parentOfChildItem:itemToReorder];
+    collection = [v37 collection];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v17 = v16;
+      v17 = collection;
     }
 
     else
@@ -337,10 +337,10 @@ void __60__PUSidebarReorderController_performReorderWithTransaction___block_invo
     v36 = v17;
     v19 = [v17 canPerformEditOperation:5];
     v35 = [v13 parentOfChildItem:v11];
-    v20 = [v35 collection];
+    collection2 = [v35 collection];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v21 = v20;
+      v21 = collection2;
     }
 
     else
@@ -358,9 +358,9 @@ void __60__PUSidebarReorderController_performReorderWithTransaction___block_invo
       if (!v25)
       {
 LABEL_35:
-        v7 = v7;
+        indexPathCopy = indexPathCopy;
 
-        v18 = v7;
+        v18 = indexPathCopy;
         goto LABEL_36;
       }
 
@@ -378,7 +378,7 @@ LABEL_34:
       while (1)
       {
         v28 = v27;
-        v29 = [v27 isEqual:v8];
+        v29 = [v27 isEqual:itemToReorder];
         v27 = [v13 parentOfChildItem:v27];
 
         if ((v29 & 1) != 0 || !v27)
@@ -407,17 +407,17 @@ LABEL_32:
       v33 = v15;
       v27 = v35;
 LABEL_30:
-      v31 = v6;
+      v31 = pathCopy;
 
       v25 = v27;
-      v7 = v31;
+      indexPathCopy = v31;
     }
 
     v15 = v33;
     goto LABEL_34;
   }
 
-  v18 = v6;
+  v18 = pathCopy;
 LABEL_36:
 
 LABEL_37:
@@ -425,29 +425,29 @@ LABEL_37:
   return v18;
 }
 
-- (BOOL)canReorderItem:(id)a3
+- (BOOL)canReorderItem:(id)item
 {
-  v4 = a3;
-  [(PUSidebarReorderController *)self setItemToReorder:v4];
-  LOBYTE(self) = [v4 isReorderable];
+  itemCopy = item;
+  [(PUSidebarReorderController *)self setItemToReorder:itemCopy];
+  LOBYTE(self) = [itemCopy isReorderable];
 
   return self;
 }
 
-- (PUSidebarReorderController)initWithDataSource:(id)a3 outlineSectionController:(id)a4 undoManager:(id)a5
+- (PUSidebarReorderController)initWithDataSource:(id)source outlineSectionController:(id)controller undoManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  controllerCopy = controller;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PUSidebarReorderController;
   v12 = [(PUSidebarReorderController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeStrong(&v13->_sidebarOutlineSectionController, a4);
-    objc_storeStrong(&v13->_undoManager, a5);
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeStrong(&v13->_sidebarOutlineSectionController, controller);
+    objc_storeStrong(&v13->_undoManager, manager);
   }
 
   return v13;

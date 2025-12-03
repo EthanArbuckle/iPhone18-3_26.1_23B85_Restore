@@ -1,16 +1,16 @@
 @interface PKPeerPaymentMessagesContentBaseViewController
-- (PKPeerPaymentMessagesContentBaseViewController)initWithContentDelegate:(id)a3;
+- (PKPeerPaymentMessagesContentBaseViewController)initWithContentDelegate:(id)delegate;
 - (PKPeerPaymentMessagesContentDelegate)contentDelegate;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPeerPaymentMessagesContentBaseViewController
 
-- (PKPeerPaymentMessagesContentBaseViewController)initWithContentDelegate:(id)a3
+- (PKPeerPaymentMessagesContentBaseViewController)initWithContentDelegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentMessagesContentBaseViewController;
   v5 = [(PKPeerPaymentMessagesContentBaseViewController *)&v10 initWithNibName:0 bundle:0];
@@ -28,7 +28,7 @@
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@ %p>: Initialized.", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_contentDelegate, v4);
+    objc_storeWeak(&v5->_contentDelegate, delegateCopy);
   }
 
   return v5;
@@ -45,11 +45,11 @@
   [(PKPeerPaymentMessagesContentBaseViewController *)self setView:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesContentBaseViewController;
-  [(PKPeerPaymentMessagesContentBaseViewController *)&v4 viewWillAppear:a3];
+  [(PKPeerPaymentMessagesContentBaseViewController *)&v4 viewWillAppear:appear];
   [(PKPeerPaymentMessagesContentBaseViewController *)self reloadContent];
 }
 

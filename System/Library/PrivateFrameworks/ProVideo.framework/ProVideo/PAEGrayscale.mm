@@ -1,14 +1,14 @@
 @interface PAEGrayscale
-- (PAEGrayscale)initWithAPIManager:(id)a3;
+- (PAEGrayscale)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEGrayscale
 
-- (PAEGrayscale)initWithAPIManager:(id)a3
+- (PAEGrayscale)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGrayscale;
-  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:a3];
+  result = [(PAEPhotosFilters *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->super.whichFilter = 11;

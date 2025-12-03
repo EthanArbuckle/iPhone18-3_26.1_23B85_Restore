@@ -3,15 +3,15 @@
 - (SBPressCollector)init;
 - (SBPressCollectorDelegate)delegate;
 - (void)_end;
-- (void)_fireEndTimerWithDelay:(double)a3 isButtonDown:(BOOL)a4;
-- (void)_handlePressDownWithTimeStamp:(double)a3;
-- (void)_handlePressUpWithTimeStamp:(double)a3;
+- (void)_fireEndTimerWithDelay:(double)delay isButtonDown:(BOOL)down;
+- (void)_handlePressDownWithTimeStamp:(double)stamp;
+- (void)_handlePressUpWithTimeStamp:(double)stamp;
 - (void)_reset;
 - (void)_resetTimersIfNecessary;
 - (void)dealloc;
 - (void)endCurrentSequence;
-- (void)registerPressDownWithTimeStamp:(double)a3;
-- (void)registerPressUpWithTimeStamp:(double)a3;
+- (void)registerPressDownWithTimeStamp:(double)stamp;
+- (void)registerPressUpWithTimeStamp:(double)stamp;
 @end
 
 @implementation SBPressCollector
@@ -45,25 +45,25 @@
 
 + (double)currentTimeStamp
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  [v2 systemUptime];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)registerPressUpWithTimeStamp:(double)a3
+- (void)registerPressUpWithTimeStamp:(double)stamp
 {
   [(SBPressCollector *)self _resetTimersIfNecessary];
 
-  [(SBPressCollector *)self _handlePressUpWithTimeStamp:a3];
+  [(SBPressCollector *)self _handlePressUpWithTimeStamp:stamp];
 }
 
-- (void)registerPressDownWithTimeStamp:(double)a3
+- (void)registerPressDownWithTimeStamp:(double)stamp
 {
   [(SBPressCollector *)self _resetTimersIfNecessary];
 
-  [(SBPressCollector *)self _handlePressDownWithTimeStamp:a3];
+  [(SBPressCollector *)self _handlePressDownWithTimeStamp:stamp];
 }
 
 - (void)endCurrentSequence
@@ -80,9 +80,9 @@
   [(SBPressCollector *)self _end];
 }
 
-- (void)_handlePressDownWithTimeStamp:(double)a3
+- (void)_handlePressDownWithTimeStamp:(double)stamp
 {
-  v5 = a3 - self->_lastHandledUpEvent;
+  v5 = stamp - self->_lastHandledUpEvent;
   if (self->_currentTuple)
   {
     goto LABEL_2;
@@ -114,17 +114,17 @@ LABEL_2:
   }
 
 LABEL_9:
-  self->_lastHandledDownEvent = a3;
+  self->_lastHandledDownEvent = stamp;
   [(SBPressCollector *)self maxPressDownDuration];
 
   [(SBPressCollector *)self _fireEndTimerWithDelay:1 isButtonDown:?];
 }
 
-- (void)_handlePressUpWithTimeStamp:(double)a3
+- (void)_handlePressUpWithTimeStamp:(double)stamp
 {
   if (!self->_currentTuple)
   {
-    v5 = a3 - self->_lastHandledDownEvent;
+    v5 = stamp - self->_lastHandledDownEvent;
     [(SBPressCollector *)self maxPressDownDuration];
     if (v5 <= v6)
     {
@@ -136,7 +136,7 @@ LABEL_9:
     }
   }
 
-  self->_lastHandledUpEvent = a3;
+  self->_lastHandledUpEvent = stamp;
   [(SBPressCollector *)self maxPressUpDuration];
 
   [(SBPressCollector *)self _fireEndTimerWithDelay:0 isButtonDown:?];
@@ -153,7 +153,7 @@ LABEL_9:
   }
 }
 
-- (void)_fireEndTimerWithDelay:(double)a3 isButtonDown:(BOOL)a4
+- (void)_fireEndTimerWithDelay:(double)delay isButtonDown:(BOOL)down
 {
   v6 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:@"SBPressCollector.hardEndTimer"];
   hardEndTimer = self->_hardEndTimer;
@@ -165,7 +165,7 @@ LABEL_9:
   v9[2] = __56__SBPressCollector__fireEndTimerWithDelay_isButtonDown___block_invoke;
   v9[3] = &unk_2783ABAA8;
   v9[4] = self;
-  [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v9 queue:a3 handler:0.0];
+  [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v9 queue:delay handler:0.0];
 }
 
 - (void)_end
@@ -177,9 +177,9 @@ LABEL_9:
     [(SBPressTuple *)currentTuple setDurationUp:?];
   }
 
-  v4 = [(SBPressCollector *)self delegate];
+  delegate = [(SBPressCollector *)self delegate];
   v5 = [MEMORY[0x277CBEA60] arrayWithArray:self->_currentSequence];
-  [v4 pressCollector:self didCollectSequence:v5];
+  [delegate pressCollector:self didCollectSequence:v5];
 
   [(SBPressCollector *)self _reset];
 }

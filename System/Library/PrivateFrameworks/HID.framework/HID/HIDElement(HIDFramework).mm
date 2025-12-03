@@ -11,24 +11,24 @@
 
 - (double)scaleValue:()HIDFramework
 {
-  if (![a1 valueRef])
+  if (![self valueRef])
   {
     return 0.0;
   }
 
-  v5 = [a1 valueRef];
+  valueRef = [self valueRef];
 
-  return IOHIDValueGetScaledValue(v5, a3);
+  return IOHIDValueGetScaledValue(valueRef, a3);
 }
 
 - (CFIndex)integerValue
 {
-  result = [a1 valueRef];
+  result = [self valueRef];
   if (result)
   {
-    v3 = [a1 valueRef];
+    valueRef = [self valueRef];
 
-    return IOHIDValueGetIntegerValue(v3);
+    return IOHIDValueGetIntegerValue(valueRef);
   }
 
   return result;
@@ -48,15 +48,15 @@
 
 - (id)dataValue
 {
-  v2 = [a1 valueRef];
-  if (v2)
+  valueRef = [self valueRef];
+  if (valueRef)
   {
     v3 = MEMORY[0x277CBEA90];
-    BytePtr = IOHIDValueGetBytePtr([a1 valueRef]);
-    v2 = [v3 dataWithBytes:BytePtr length:{IOHIDValueGetLength(objc_msgSend(a1, "valueRef"))}];
+    BytePtr = IOHIDValueGetBytePtr([self valueRef]);
+    valueRef = [v3 dataWithBytes:BytePtr length:{IOHIDValueGetLength(objc_msgSend(self, "valueRef"))}];
   }
 
-  return v2;
+  return valueRef;
 }
 
 - (void)setDataValue:()HIDFramework
@@ -64,14 +64,14 @@
   v5 = *MEMORY[0x277CBECE8];
   v6 = a3;
   v7 = a3;
-  v8 = [v7 bytes];
+  bytes = [v7 bytes];
   v9 = [v7 length];
 
-  v10 = IOHIDValueCreateWithBytes(v5, a1, 0, v8, v9);
+  v10 = IOHIDValueCreateWithBytes(v5, self, 0, bytes, v9);
   if (v10)
   {
     v11 = v10;
-    [(__IOHIDElement *)a1 setValueRef:v10];
+    [(__IOHIDElement *)self setValueRef:v10];
 
     CFRelease(v11);
   }
@@ -79,12 +79,12 @@
 
 - (uint64_t)timestamp
 {
-  result = [a1 valueRef];
+  result = [self valueRef];
   if (result)
   {
-    v3 = [a1 valueRef];
+    valueRef = [self valueRef];
 
-    return IOHIDValueGetTimeStamp(v3);
+    return IOHIDValueGetTimeStamp(valueRef);
   }
 
   return result;

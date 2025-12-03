@@ -1,14 +1,14 @@
 @interface WKPlatformPackageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12WallpaperKit21WKPlatformPackageView)initWithCoder:(id)a3;
-- (_TtC12WallpaperKit21WKPlatformPackageView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12WallpaperKit21WKPlatformPackageView)initWithCoder:(id)coder;
+- (_TtC12WallpaperKit21WKPlatformPackageView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation WKPlatformPackageView
 
-- (_TtC12WallpaperKit21WKPlatformPackageView)initWithFrame:(CGRect)a3
+- (_TtC12WallpaperKit21WKPlatformPackageView)initWithFrame:(CGRect)frame
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC12WallpaperKit21WKPlatformPackageView_originalSize);
   *v3 = 0;
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC12WallpaperKit21WKPlatformPackageView)initWithCoder:(id)a3
+- (_TtC12WallpaperKit21WKPlatformPackageView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC12WallpaperKit21WKPlatformPackageView_originalSize);
   *v3 = 0;
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = vmulq_f64(*(&self->super.super + OBJC_IVAR____TtC12WallpaperKit21WKPlatformPackageView_originalSize), *(&self->super.super + OBJC_IVAR____TtC12WallpaperKit21WKPlatformPackageView_currentScaleEffect));
   v4 = v3.f64[1];
@@ -43,13 +43,13 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_1E4A7B414(x, y, width, height);
 }
 
@@ -63,10 +63,10 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v4 rootLayer];
-    if (v5)
+    rootLayer = [v4 rootLayer];
+    if (rootLayer)
     {
-      v6 = v5;
+      v6 = rootLayer;
       [v2 bounds];
       UIRectGetCenter();
       [v6 setPosition_];

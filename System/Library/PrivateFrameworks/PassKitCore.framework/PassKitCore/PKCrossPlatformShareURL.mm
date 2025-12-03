@@ -1,54 +1,54 @@
 @interface PKCrossPlatformShareURL
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCrossPlatformShareURL:(id)a3;
-- (PKCrossPlatformShareURL)initWithCoder:(id)a3;
-- (PKCrossPlatformShareURL)initWithURL:(id)a3 expectedPairedReaderIdentifier:(id)a4 expectedProvisioningCredentialHash:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCrossPlatformShareURL:(id)l;
+- (PKCrossPlatformShareURL)initWithCoder:(id)coder;
+- (PKCrossPlatformShareURL)initWithURL:(id)l expectedPairedReaderIdentifier:(id)identifier expectedProvisioningCredentialHash:(id)hash;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCrossPlatformShareURL
 
-- (PKCrossPlatformShareURL)initWithURL:(id)a3 expectedPairedReaderIdentifier:(id)a4 expectedProvisioningCredentialHash:(id)a5
+- (PKCrossPlatformShareURL)initWithURL:(id)l expectedPairedReaderIdentifier:(id)identifier expectedProvisioningCredentialHash:(id)hash
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  hashCopy = hash;
   v15.receiver = self;
   v15.super_class = PKCrossPlatformShareURL;
   v12 = [(PKCrossPlatformShareURL *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    if (!v10 || !v11)
+    objc_storeStrong(&v12->_url, l);
+    if (!identifierCopy || !hashCopy)
     {
-      objc_storeStrong(&v13->_expectedPairedReaderIdentifier, a4);
-      objc_storeStrong(&v13->_expectedProvisioningCredentialHash, a5);
+      objc_storeStrong(&v13->_expectedPairedReaderIdentifier, identifier);
+      objc_storeStrong(&v13->_expectedProvisioningCredentialHash, hash);
     }
   }
 
   return v13;
 }
 
-- (PKCrossPlatformShareURL)initWithCoder:(id)a3
+- (PKCrossPlatformShareURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCrossPlatformShareURL;
   v5 = [(PKCrossPlatformShareURL *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expectedPairedReaderIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expectedPairedReaderIdentifier"];
     expectedPairedReaderIdentifier = v5->_expectedPairedReaderIdentifier;
     v5->_expectedPairedReaderIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expectedProvisioningCredentialHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expectedProvisioningCredentialHash"];
     expectedProvisioningCredentialHash = v5->_expectedProvisioningCredentialHash;
     v5->_expectedProvisioningCredentialHash = v10;
   }
@@ -56,13 +56,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_expectedPairedReaderIdentifier forKey:@"expectedPairedReaderIdentifier"];
-  [v5 encodeObject:self->_expectedProvisioningCredentialHash forKey:@"expectedProvisioningCredentialHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_expectedPairedReaderIdentifier forKey:@"expectedPairedReaderIdentifier"];
+  [coderCopy encodeObject:self->_expectedProvisioningCredentialHash forKey:@"expectedProvisioningCredentialHash"];
 }
 
 - (id)description
@@ -83,11 +83,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_url)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_expectedPairedReaderIdentifier)
@@ -105,33 +105,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCrossPlatformShareURL *)self isEqualToCrossPlatformShareURL:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCrossPlatformShareURL *)self isEqualToCrossPlatformShareURL:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToCrossPlatformShareURL:(id)a3
+- (BOOL)isEqualToCrossPlatformShareURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     goto LABEL_17;
   }
 
   url = self->_url;
-  v6 = v4[1];
+  v6 = lCopy[1];
   if (url)
   {
     v7 = v6 == 0;
@@ -156,7 +156,7 @@
   }
 
   expectedPairedReaderIdentifier = self->_expectedPairedReaderIdentifier;
-  v9 = v4[2];
+  v9 = lCopy[2];
   if (!expectedPairedReaderIdentifier || !v9)
   {
     if (expectedPairedReaderIdentifier == v9)
@@ -176,7 +176,7 @@ LABEL_17:
 
 LABEL_13:
   expectedProvisioningCredentialHash = self->_expectedProvisioningCredentialHash;
-  v11 = v4[3];
+  v11 = lCopy[3];
   if (expectedProvisioningCredentialHash && v11)
   {
     v12 = [(NSString *)expectedProvisioningCredentialHash isEqual:?];

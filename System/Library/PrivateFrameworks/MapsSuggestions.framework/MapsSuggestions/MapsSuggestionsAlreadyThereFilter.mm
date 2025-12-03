@@ -1,18 +1,18 @@
 @interface MapsSuggestionsAlreadyThereFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsAlreadyThereFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 type];
-    if (v5 > 0x19)
+    type = [entryCopy type];
+    if (type > 0x19)
     {
       v7 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@
       goto LABEL_14;
     }
 
-    if ((1 << v5) & 0x1827FF9) == 0 && (((1 << v5) & 0x4C0006) == 0 || ([v4 isShortcut]))
+    if ((1 << type) & 0x1827FF9) == 0 && (((1 << type) & 0x4C0006) == 0 || ([v4 isShortcut]))
     {
 LABEL_14:
       LOBYTE(v6) = 1;

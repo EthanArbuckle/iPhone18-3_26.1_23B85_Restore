@@ -1,35 +1,35 @@
 @interface _TVMonogramView
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
-- (_TVMonogramView)initWithFrame:(CGRect)a3 configuration:(id)a4;
-- (void)_loadWithMonogramDescription:(id)a3 imageProxy:(id)a4;
-- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)a3;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
+- (_TVMonogramView)initWithFrame:(CGRect)frame configuration:(id)configuration;
+- (void)_loadWithMonogramDescription:(id)description imageProxy:(id)proxy;
+- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)frame;
 - (void)_updatePlaceholerView;
-- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)a3;
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4;
+- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)frame;
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setMonogramDescription:(id)a3;
-- (void)setOverlayView:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setImage:(id)image;
+- (void)setMonogramDescription:(id)description;
+- (void)setOverlayView:(id)view;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _TVMonogramView
 
-- (_TVMonogramView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (_TVMonogramView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v33.receiver = self;
   v33.super_class = _TVMonogramView;
-  v11 = [(_UIFloatingContentView *)&v33 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(_UIFloatingContentView *)&v33 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     [(_UIFloatingContentView *)v12 setContentOpaque:1];
     [(_UIFloatingContentView *)v12 setBackgroundColor:0 forState:0];
     [(_UIFloatingContentView *)v12 setBackgroundColor:0 forState:8];
@@ -54,12 +54,12 @@
     v12->_placeholderView = v16;
 
     [(UIView *)v12->_placeholderView setHidden:1];
-    v18 = [(UIView *)v12->_placeholderView layer];
+    layer = [(UIView *)v12->_placeholderView layer];
     [(_TVMonogramView *)v12 bounds];
-    [v18 setCornerRadius:CGRectGetWidth(v35) * 0.5];
+    [layer setCornerRadius:CGRectGetWidth(v35) * 0.5];
 
-    v19 = [(_UIFloatingContentView *)v12 contentView];
-    [v19 addSubview:v12->_placeholderView];
+    contentView = [(_UIFloatingContentView *)v12 contentView];
+    [contentView addSubview:v12->_placeholderView];
 
     v20 = [_TVImageView alloc];
     [(_TVMonogramView *)v12 bounds];
@@ -68,17 +68,17 @@
     v12->_imageView = v21;
 
     v23 = v12->_imageView;
-    v24 = [v10 focusedBgColor];
-    [(_TVImageView *)v23 _setFocusedColor:v24];
+    focusedBgColor = [configurationCopy focusedBgColor];
+    [(_TVImageView *)v23 _setFocusedColor:focusedBgColor];
 
     [(_TVImageView *)v12->_imageView setClipsToBounds:1];
     [(_TVImageView *)v12->_imageView setContentMode:1];
-    v25 = [(_UIFloatingContentView *)v12 contentView];
-    [v25 addSubview:v12->_imageView];
+    contentView2 = [(_UIFloatingContentView *)v12 contentView];
+    [contentView2 addSubview:v12->_imageView];
 
-    v26 = [v10 unfocusedShadowImage];
+    unfocusedShadowImage = [configurationCopy unfocusedShadowImage];
 
-    if (v26)
+    if (unfocusedShadowImage)
     {
       [(_UIFloatingContentView *)v12 setShadowEnabled:0];
       [(_UIFloatingContentView *)v12 setClipsContentToBounds:0];
@@ -87,11 +87,11 @@
       unfocusedShadowView = v12->_unfocusedShadowView;
       v12->_unfocusedShadowView = v28;
 
-      v30 = [(_UIFloatingContentView *)v12 contentView];
-      [v30 insertSubview:v12->_unfocusedShadowView atIndex:0];
+      contentView3 = [(_UIFloatingContentView *)v12 contentView];
+      [contentView3 insertSubview:v12->_unfocusedShadowView atIndex:0];
 
       v31 = v12->_unfocusedShadowView;
-      [v10 unfocusedShadowAlpha];
+      [configurationCopy unfocusedShadowAlpha];
       [(UIView *)v31 setAlpha:?];
     }
   }
@@ -99,60 +99,60 @@
   return v12;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(_TVImageView *)self->_imageView setImage:v6];
     [(_TVImageView *)self->_imageView setAlpha:1.0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_placeholderImage, image);
     [(_TVImageView *)self->_imageView setPlaceholderImage:v6];
     [(_TVMonogramView *)self _updatePlaceholerView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setMonogramDescription:(id)a3
+- (void)setMonogramDescription:(id)description
 {
-  v7 = a3;
-  if (self->_monogramDescription != v7)
+  descriptionCopy = description;
+  if (self->_monogramDescription != descriptionCopy)
   {
-    objc_storeStrong(&self->_monogramDescription, a3);
-    if ([(_TVMonogramDescription *)v7 scaleMode]== 2)
+    objc_storeStrong(&self->_monogramDescription, description);
+    if ([(_TVMonogramDescription *)descriptionCopy scaleMode]== 2)
     {
-      [(_TVMonogramDescription *)v7 backgroundColor];
+      [(_TVMonogramDescription *)descriptionCopy backgroundColor];
     }
 
     else
     {
-      [(_TVMonogramDescription *)v7 fillColor];
+      [(_TVMonogramDescription *)descriptionCopy fillColor];
     }
     v5 = ;
     [(UIView *)self->_placeholderView setBackgroundColor:v5];
     [(_TVMonogramView *)self _updatePlaceholerView];
-    v6 = [(_TVMonogramView *)self imageProxy];
-    [(_TVMonogramView *)self _loadWithMonogramDescription:v7 imageProxy:v6];
+    imageProxy = [(_TVMonogramView *)self imageProxy];
+    [(_TVMonogramView *)self _loadWithMonogramDescription:descriptionCopy imageProxy:imageProxy];
   }
 }
 
 - (void)_updatePlaceholerView
 {
-  v3 = [(_TVMonogramView *)self placeholderImage];
-  v4 = v3 == 0;
-  v5 = v3 != 0;
+  placeholderImage = [(_TVMonogramView *)self placeholderImage];
+  v4 = placeholderImage == 0;
+  v5 = placeholderImage != 0;
 
   [(UIView *)self->_placeholderView setHidden:v5];
   imageView = self->_imageView;
@@ -160,11 +160,11 @@
   [(_TVImageView *)imageView setHidden:v4];
 }
 
-- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)a3
+- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)frame
 {
-  v4 = a3.size.width / 130.0;
-  v5 = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v5 size];
+  v4 = frame.size.width / 130.0;
+  unfocusedShadowImage = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [unfocusedShadowImage size];
   v7 = v6;
   v9 = v8;
 
@@ -174,21 +174,21 @@
   v12 = floor((CGRectGetWidth(v18) - v10) * 0.5);
   [(_TVMonogramView *)self bounds];
   [(UIView *)self->_unfocusedShadowView setFrame:v12, floor((CGRectGetHeight(v19) - v11) * 0.5), v10, v11];
-  v13 = [(UIView *)self->_unfocusedShadowView layer];
-  v14 = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v13 setContents:{objc_msgSend(v14, "CGImage")}];
+  layer = [(UIView *)self->_unfocusedShadowView layer];
+  unfocusedShadowImage2 = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [layer setContents:{objc_msgSend(unfocusedShadowImage2, "CGImage")}];
 
-  v16 = [(UIView *)self->_unfocusedShadowView layer];
-  v15 = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v15 scale];
-  [v16 setContentsScale:?];
+  layer2 = [(UIView *)self->_unfocusedShadowView layer];
+  unfocusedShadowImage3 = [(TVMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [unfocusedShadowImage3 scale];
+  [layer2 setContentsScale:?];
 }
 
-- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)a3
+- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)frame
 {
-  v4 = a3.size.width / 130.0;
-  v5 = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v5 size];
+  v4 = frame.size.width / 130.0;
+  focusedShadowImage = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [focusedShadowImage size];
   v7 = v6;
   v9 = v8;
 
@@ -198,14 +198,14 @@
   v12 = floor((CGRectGetWidth(v18) - v10) * 0.5);
   [(_TVMonogramView *)self bounds];
   [(UIView *)self->_focusedShadowView setFrame:v12, floor((CGRectGetHeight(v19) - v11) * 0.5), v10, v11];
-  v13 = [(UIView *)self->_focusedShadowView layer];
-  v14 = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v13 setContents:{objc_msgSend(v14, "CGImage")}];
+  layer = [(UIView *)self->_focusedShadowView layer];
+  focusedShadowImage2 = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [layer setContents:{objc_msgSend(focusedShadowImage2, "CGImage")}];
 
-  v16 = [(UIView *)self->_focusedShadowView layer];
-  v15 = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v15 scale];
-  [v16 setContentsScale:?];
+  layer2 = [(UIView *)self->_focusedShadowView layer];
+  focusedShadowImage3 = [(TVMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [focusedShadowImage3 scale];
+  [layer2 setContentsScale:?];
 }
 
 - (void)layoutSubviews
@@ -224,9 +224,9 @@
   [(_TVMonogramView *)self _updateUnfocusedShadowFrameAndLayerWithFrame:v4, v6, v8, v10];
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   if (self->_isSelected)
   {
     v7 = 8;
@@ -237,47 +237,47 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = a5;
-  [(_UIFloatingContentView *)self setControlState:v7 | v8 animated:v5];
-  [(_TVMonogramView *)self setPressCompletionBlock:v9];
+  pressedCopy = pressed;
+  completionCopy = completion;
+  [(_UIFloatingContentView *)self setControlState:v7 | pressedCopy animated:animatedCopy];
+  [(_TVMonogramView *)self setPressCompletionBlock:completionCopy];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  v8 = v5;
-  if (overlayView != v5)
+  v8 = viewCopy;
+  if (overlayView != viewCopy)
   {
     [(UIView *)overlayView removeFromSuperview];
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     if (self->_overlayView)
     {
-      v7 = [(_UIFloatingContentView *)self contentView];
-      [v7 addSubview:self->_overlayView];
+      contentView = [(_UIFloatingContentView *)self contentView];
+      [contentView addSubview:self->_overlayView];
     }
   }
 
   [(_TVMonogramView *)self setNeedsLayout];
 }
 
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state
 {
-  v5 = [(_TVMonogramView *)self pressCompletionBlock:a3];
+  v5 = [(_TVMonogramView *)self pressCompletionBlock:view];
 
   if (v5)
   {
-    v6 = [(_TVMonogramView *)self pressCompletionBlock];
-    v6[2]();
+    pressCompletionBlock = [(_TVMonogramView *)self pressCompletionBlock];
+    pressCompletionBlock[2]();
 
     [(_TVMonogramView *)self setPressCompletionBlock:0];
   }
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
-  if (a3.width == 0.0 || (height = a3.height, a3.height == 0.0))
+  if (size.width == 0.0 || (height = size.height, size.height == 0.0))
   {
     [(_TVMonogramView *)self bounds];
     width = v6;
@@ -286,7 +286,7 @@
 
   else
   {
-    width = a3.width;
+    width = size.width;
   }
 
   [(_UIFloatingContentView *)self focusedSizeIncrease];
@@ -314,54 +314,54 @@
   return result;
 }
 
-- (void)_loadWithMonogramDescription:(id)a3 imageProxy:(id)a4
+- (void)_loadWithMonogramDescription:(id)description imageProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 preferedMonogramType] || v7 || !self->_placeholderImage)
+  descriptionCopy = description;
+  proxyCopy = proxy;
+  if ([descriptionCopy preferedMonogramType] || proxyCopy || !self->_placeholderImage)
   {
-    [v6 size];
-    v10 = -[TVImageScaleDecorator initWithScaleToSize:scaleMode:]([_TVMonogramDecorator alloc], "initWithScaleToSize:scaleMode:", [v6 scaleMode], v8, v9);
-    v11 = [v6 imageURL];
-    if (v11)
+    [descriptionCopy size];
+    defaultCenter = -[TVImageScaleDecorator initWithScaleToSize:scaleMode:]([_TVMonogramDecorator alloc], "initWithScaleToSize:scaleMode:", [descriptionCopy scaleMode], v8, v9);
+    imageURL = [descriptionCopy imageURL];
+    if (imageURL)
     {
-      v12 = v11;
-      v13 = [v6 imageURL];
-      v14 = [v13 tv_isResourceURL];
+      v12 = imageURL;
+      imageURL2 = [descriptionCopy imageURL];
+      tv_isResourceURL = [imageURL2 tv_isResourceURL];
 
-      if ((v14 & 1) == 0)
+      if ((tv_isResourceURL & 1) == 0)
       {
-        [v6 padding];
-        [(TVImageScaleDecorator *)v10 setPadding:?];
-        [v6 upscaleAdjustment];
-        [(TVImageScaleDecorator *)v10 setFocusedSizeIncrease:?];
-        v15 = [v6 backgroundColor];
-        [(TVImageScaleDecorator *)v10 setBgColor:v15];
+        [descriptionCopy padding];
+        [(TVImageScaleDecorator *)defaultCenter setPadding:?];
+        [descriptionCopy upscaleAdjustment];
+        [(TVImageScaleDecorator *)defaultCenter setFocusedSizeIncrease:?];
+        backgroundColor = [descriptionCopy backgroundColor];
+        [(TVImageScaleDecorator *)defaultCenter setBgColor:backgroundColor];
 
-        v16 = [v6 borderColor];
-        [(_TVMonogramDecorator *)v10 setBorderColor:v16];
+        borderColor = [descriptionCopy borderColor];
+        [(_TVMonogramDecorator *)defaultCenter setBorderColor:borderColor];
 
-        [v6 borderWidth];
-        [(_TVMonogramDecorator *)v10 setBorderWidth:?];
+        [descriptionCopy borderWidth];
+        [(_TVMonogramDecorator *)defaultCenter setBorderWidth:?];
       }
     }
 
-    if (v7)
+    if (proxyCopy)
     {
-      v17 = v7;
+      v17 = proxyCopy;
     }
 
     else
     {
       v18 = [TVImageProxy alloc];
       v19 = +[_TVMonogramImageLoader sharedInstance];
-      v17 = [(TVImageProxy *)v18 initWithObject:v6 imageLoader:v19 groupType:0];
+      v17 = [(TVImageProxy *)v18 initWithObject:descriptionCopy imageLoader:v19 groupType:0];
     }
 
     [(TVImageProxy *)v17 setCacheOnLoad:+[TVMLUtilities canHandleDecodingOnRenderThread]^ 1];
-    [(TVImageProxy *)v17 setDecorator:v10];
-    v20 = [v6 imageURL];
-    if (v20 && (v21 = v20, [v6 imageURL], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "tv_isResourceURL"), v22, v21, (v23 & 1) == 0))
+    [(TVImageProxy *)v17 setDecorator:defaultCenter];
+    imageURL3 = [descriptionCopy imageURL];
+    if (imageURL3 && (v21 = imageURL3, [descriptionCopy imageURL], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "tv_isResourceURL"), v22, v21, (v23 & 1) == 0))
     {
       v25 = 1.0;
       [(_TVImageView *)self->_imageView setAlpha:1.0];
@@ -381,7 +381,7 @@
     v27[2] = __59___TVMonogramView__loadWithMonogramDescription_imageProxy___block_invoke;
     v27[3] = &unk_279D6FDC0;
     objc_copyWeak(&v29, &location);
-    v28 = v6;
+    v28 = descriptionCopy;
     [(_TVImageView *)imageView setImageProxy:v17 completion:v27];
 
     objc_destroyWeak(&v29);
@@ -394,8 +394,8 @@
     [(_TVImageView *)self->_imageView setHidden:0];
     [(_TVImageView *)self->_imageView setImage:0];
     [(_TVMonogramView *)self _updateAppearanceForSelectionStateWithCoordinator:0];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [(_TVMonogramDecorator *)v10 postNotificationName:@"TVMonogramViewImageDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [(_TVMonogramDecorator *)defaultCenter postNotificationName:@"TVMonogramViewImageDidUpdateNotification" object:self];
   }
 }
 

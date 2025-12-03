@@ -1,8 +1,8 @@
 @interface CIFilterClassInfo
 + (id)cache;
-+ (id)classInfoForClass:(Class)a3;
++ (id)classInfoForClass:(Class)class;
 + (void)clearCache;
-- (CIFilterClassInfo)initWithClass:(Class)a3;
+- (CIFilterClassInfo)initWithClass:(Class)class;
 - (void)dealloc;
 @end
 
@@ -30,27 +30,27 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
+  cache = [self cache];
 
-  [v2 removeAllObjects];
+  [cache removeAllObjects];
 }
 
-+ (id)classInfoForClass:(Class)a3
++ (id)classInfoForClass:(Class)class
 {
-  v5 = [a1 cache];
+  cache = [self cache];
   v6 = objc_opt_class();
-  v7 = [(objc_class *)a3 isSubclassOfClass:v6];
-  if (v6 == a3 || v7 == 0)
+  v7 = [(objc_class *)class isSubclassOfClass:v6];
+  if (v6 == class || v7 == 0)
   {
     return 0;
   }
 
-  v10 = [v5 objectForKey:a3];
+  v10 = [cache objectForKey:class];
   v9 = v10;
   if (!v10)
   {
-    v9 = [[a1 alloc] initWithClass:a3];
-    [v5 setObject:v9 forKey:a3];
+    v9 = [[self alloc] initWithClass:class];
+    [cache setObject:v9 forKey:class];
   }
 
   return v9;
@@ -63,15 +63,15 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
   [(CIFilterClassInfo *)&v3 dealloc];
 }
 
-- (CIFilterClassInfo)initWithClass:(Class)a3
+- (CIFilterClassInfo)initWithClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
 
     return 0;
   }
 
-  v3 = a3;
+  classCopy = class;
   v58.receiver = self;
   v58.super_class = CIFilterClassInfo;
   v4 = [(CIFilterClassInfo *)&v58 init];
@@ -81,20 +81,20 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
   }
 
   v5 = objc_opt_class();
-  if (([(objc_class *)v3 isSubclassOfClass:v5]& 1) == 0)
+  if (([(objc_class *)classCopy isSubclassOfClass:v5]& 1) == 0)
   {
 
     return 0;
   }
 
   v54 = v5;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   outCount = 0;
-  v9 = class_copyIvarList(v3, &outCount);
-  v55 = v3;
-  v56 = v8;
+  v9 = class_copyIvarList(classCopy, &outCount);
+  v55 = classCopy;
+  v56 = array3;
   if (v9)
   {
     v10 = v9;
@@ -127,7 +127,7 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
           }
 
           v16 = classNameFromTypeEncoding(v15);
-          [v6 addObject:v13];
+          [array addObject:v13];
           if (v16)
           {
             v17 = v16;
@@ -138,8 +138,8 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
             v17 = &stru_1F1040378;
           }
 
-          [v7 addObject:v17];
-          v8 = v56;
+          [array2 addObject:v17];
+          array3 = v56;
         }
       }
     }
@@ -147,12 +147,12 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
     free(v10);
   }
 
-  v18 = class_copyPropertyList(v3, &outCount);
+  v18 = class_copyPropertyList(classCopy, &outCount);
   if (v18)
   {
     v19 = v18;
     v52 = v4;
-    v53 = v7;
+    v53 = array2;
     if (outCount)
     {
       for (j = 0; j < outCount; ++j)
@@ -214,10 +214,10 @@ uint64_t __26__CIFilterClassInfo_cache__block_invoke()
                 free(v25);
                 if (v31)
                 {
-                  v32 = [v6 indexOfObject:v22];
+                  v32 = [array indexOfObject:v22];
                   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
                   {
-                    [v6 addObject:v22];
+                    [array addObject:v22];
                     [v53 addObject:v31];
                   }
 
@@ -242,23 +242,23 @@ LABEL_46:
 
     free(v19);
     v4 = v52;
-    v7 = v53;
-    v3 = v55;
-    v8 = v56;
+    array2 = v53;
+    classCopy = v55;
+    array3 = v56;
   }
 
-  if ([v6 count])
+  if ([array count])
   {
     v34 = 0;
     do
     {
-      [objc_msgSend(v7 objectAtIndexedSubscript:{v34++), "length"}];
+      [objc_msgSend(array2 objectAtIndexedSubscript:{v34++), "length"}];
     }
 
-    while (v34 < [v6 count]);
+    while (v34 < [array count]);
   }
 
-  v35 = class_copyMethodList(v3, &outCount);
+  v35 = class_copyMethodList(classCopy, &outCount);
   if (v35)
   {
     v36 = v35;
@@ -280,16 +280,16 @@ LABEL_46:
 
         if ([(__CFString *)v40 length]>= 7 && [(__CFString *)v40 hasPrefix:@"output"])
         {
-          [v8 addObject:v40];
+          [array3 addObject:v40];
         }
       }
     }
 
     free(v36);
-    v3 = v55;
+    classCopy = v55;
   }
 
-  v41 = [(objc_class *)v3 superclass];
+  v41 = [(objc_class *)classCopy superclass];
   v42 = [v41 isSubclassOfClass:v54];
   if (v41 != v54 && v42)
   {
@@ -304,10 +304,10 @@ LABEL_46:
         {
           v46 = [objc_msgSend(v43 "inputKeys")];
           v47 = [objc_msgSend(v43 "inputClasses")];
-          if (([v6 containsObject:v46] & 1) == 0)
+          if (([array containsObject:v46] & 1) == 0)
           {
-            [v6 insertObject:v46 atIndex:0];
-            [v7 insertObject:v47 atIndex:0];
+            [array insertObject:v46 atIndex:0];
+            [array2 insertObject:v47 atIndex:0];
           }
 
           --v45;
@@ -326,9 +326,9 @@ LABEL_46:
         do
         {
           v50 = [objc_msgSend(v43 "outputKeys")];
-          if (([v8 containsObject:v50] & 1) == 0)
+          if (([array3 containsObject:v50] & 1) == 0)
           {
-            [v8 insertObject:v50 atIndex:0];
+            [array3 insertObject:v50 atIndex:0];
           }
 
           --v49;
@@ -339,9 +339,9 @@ LABEL_46:
     }
   }
 
-  v4->inputKeys = [v6 copy];
-  v4->inputClasses = [v7 copy];
-  v4->outputKeys = [v8 copy];
+  v4->inputKeys = [array copy];
+  v4->inputClasses = [array2 copy];
+  v4->outputKeys = [array3 copy];
   return v4;
 }
 

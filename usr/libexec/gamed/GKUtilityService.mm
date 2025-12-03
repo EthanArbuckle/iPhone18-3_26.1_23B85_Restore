@@ -1,36 +1,36 @@
 @interface GKUtilityService
-- (BOOL)shouldUseGameControllerSPI:(id)a3;
+- (BOOL)shouldUseGameControllerSPI:(id)i;
 - (GKOverlayServiceUtils)overlayServiceUtils;
-- (id)_bagValuesForKeys:(id)a3;
-- (void)cacheImageData:(id)a3 inSubdirectory:(id)a4 withFileName:(id)a5 handler:(id)a6;
+- (id)_bagValuesForKeys:(id)keys;
+- (void)cacheImageData:(id)data inSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler;
 - (void)closeOverlay;
 - (void)completeGameRecording;
-- (void)completeMatchRecording:(id)a3 matchType:(id)a4;
-- (void)deleteCachedImageDataFromSubdirectory:(id)a3 withFileName:(id)a4 handler:(id)a5;
-- (void)emitMultiplayerMessage:(id)a3;
-- (void)getBSServiceConnectionEndpointForMachName:(id)a3 service:(id)a4 instance:(id)a5 handler:(id)a6;
-- (void)getStoreBagValuesForKeys:(id)a3 handler:(id)a4;
+- (void)completeMatchRecording:(id)recording matchType:(id)type;
+- (void)deleteCachedImageDataFromSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler;
+- (void)emitMultiplayerMessage:(id)message;
+- (void)getBSServiceConnectionEndpointForMachName:(id)name service:(id)service instance:(id)instance handler:(id)handler;
+- (void)getStoreBagValuesForKeys:(id)keys handler:(id)handler;
 - (void)handleGameControllerHomeButtonPressed;
 - (void)launchApp;
-- (void)launchOverlayForGameBundleId:(id)a3;
-- (void)launchOverlaySystemSettingsForGameBundleId:(id)a3;
-- (void)loadCachedImageDataFromSubdirectory:(id)a3 withFileName:(id)a4 handler:(id)a5;
-- (void)openDashboardAsRemoteAlertForGame:(id)a3 hostPID:(int)a4 deeplink:(id)a5;
-- (void)openDashboardAsRemoteAlertForGame:(id)a3 hostPID:(int)a4 deeplink:(id)a5 launchContext:(id)a6;
-- (void)openHTTPsUniversalLink:(id)a3;
+- (void)launchOverlayForGameBundleId:(id)id;
+- (void)launchOverlaySystemSettingsForGameBundleId:(id)id;
+- (void)loadCachedImageDataFromSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler;
+- (void)openDashboardAsRemoteAlertForGame:(id)game hostPID:(int)d deeplink:(id)deeplink;
+- (void)openDashboardAsRemoteAlertForGame:(id)game hostPID:(int)d deeplink:(id)deeplink launchContext:(id)context;
+- (void)openHTTPsUniversalLink:(id)link;
 - (void)openICloudSettings;
 - (void)openSoftwareUpdateSettings;
-- (void)recordActiveDevices:(id)a3;
+- (void)recordActiveDevices:(id)devices;
 - (void)recordGameStart;
-- (void)recordMatchServer:(id)a3;
-- (void)recordMatchStart:(id)a3 minPlayers:(id)a4 maxPlayers:(id)a5;
-- (void)recordSharePlayDevices:(id)a3;
-- (void)reportLoadUrlMetricsEvent:(id)a3;
-- (void)reportMetricsEventWithTopic:(id)a3 shouldFlush:(id)a4 metricsFields:(id)a5;
-- (void)reportMultiplayerActivityMetricsEvent:(id)a3;
-- (void)reportPerformanceMetricsEvent:(id)a3;
-- (void)requestImageDataForURL:(id)a3 subdirectory:(id)a4 fileName:(id)a5 handler:(id)a6;
-- (void)viewableThresholdWithCompletion:(id)a3;
+- (void)recordMatchServer:(id)server;
+- (void)recordMatchStart:(id)start minPlayers:(id)players maxPlayers:(id)maxPlayers;
+- (void)recordSharePlayDevices:(id)devices;
+- (void)reportLoadUrlMetricsEvent:(id)event;
+- (void)reportMetricsEventWithTopic:(id)topic shouldFlush:(id)flush metricsFields:(id)fields;
+- (void)reportMultiplayerActivityMetricsEvent:(id)event;
+- (void)reportPerformanceMetricsEvent:(id)event;
+- (void)requestImageDataForURL:(id)l subdirectory:(id)subdirectory fileName:(id)name handler:(id)handler;
+- (void)viewableThresholdWithCompletion:(id)completion;
 @end
 
 @implementation GKUtilityService
@@ -50,10 +50,10 @@
   return overlayServiceUtils;
 }
 
-- (void)getStoreBagValuesForKeys:(id)a3 handler:(id)a4
+- (void)getStoreBagValuesForKeys:(id)keys handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -66,24 +66,24 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKUtilityService: getStoreBagValuesForKeys:", buf, 2u);
   }
 
-  v10 = [(GKUtilityService *)self _bagValuesForKeys:v6];
-  if (v7)
+  v10 = [(GKUtilityService *)self _bagValuesForKeys:keysCopy];
+  if (handlerCopy)
   {
-    v11 = [(GKService *)self clientProxy];
-    v12 = [v11 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100057944;
     v13[3] = &unk_100360EB0;
-    v15 = v7;
+    v15 = handlerCopy;
     v14 = v10;
-    [v14 notifyOnQueue:v12 block:v13];
+    [v14 notifyOnQueue:replyQueue block:v13];
   }
 }
 
-- (id)_bagValuesForKeys:(id)a3
+- (id)_bagValuesForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKUtilityService.m", 133, "[GKUtilityService _bagValuesForKeys:]"];
   v6 = [GKDispatchGroup dispatchGroupWithName:v5];
 
@@ -92,10 +92,10 @@
   v12[2] = sub_100057AD8;
   v12[3] = &unk_100360F00;
   v12[4] = self;
-  v13 = v4;
+  v13 = keysCopy;
   v7 = v6;
   v14 = v7;
-  v8 = v4;
+  v8 = keysCopy;
   [v7 perform:v12];
   v9 = v14;
   v10 = v7;
@@ -103,29 +103,29 @@
   return v7;
 }
 
-- (void)requestImageDataForURL:(id)a3 subdirectory:(id)a4 fileName:(id)a5 handler:(id)a6
+- (void)requestImageDataForURL:(id)l subdirectory:(id)subdirectory fileName:(id)name handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
+  handlerCopy = handler;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100057E70;
   v28[3] = &unk_100360F28;
-  v14 = v10;
+  v14 = lCopy;
   v29 = v14;
-  v15 = v11;
+  v15 = subdirectoryCopy;
   v30 = v15;
-  v16 = v12;
+  v16 = nameCopy;
   v31 = v16;
-  v32 = self;
-  v17 = v13;
+  selfCopy = self;
+  v17 = handlerCopy;
   v33 = v17;
   v18 = objc_retainBlock(v28);
-  v19 = [v14 path];
+  path = [v14 path];
   v20 = GKImageCacheRoot();
-  v21 = [v19 hasPrefix:v20];
+  v21 = [path hasPrefix:v20];
 
   if (v21)
   {
@@ -134,8 +134,8 @@
 
   else
   {
-    v22 = [(GKService *)self transport];
-    v23 = [v22 storeBag];
+    transport = [(GKService *)self transport];
+    storeBag = [transport storeBag];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100057F04;
@@ -143,107 +143,107 @@
     v25 = v14;
     v26 = v17;
     v27 = v18;
-    [v25 hasTrustedImageDomainWithStoreBag:v23 completionHandler:v24];
+    [v25 hasTrustedImageDomainWithStoreBag:storeBag completionHandler:v24];
   }
 }
 
-- (void)cacheImageData:(id)a3 inSubdirectory:(id)a4 withFileName:(id)a5 handler:(id)a6
+- (void)cacheImageData:(id)data inSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
+  handlerCopy = handler;
   v14 = [NSString stringWithFormat:@"%s:%d %s", "GKUtilityService.m", 179, "[GKUtilityService cacheImageData:inSubdirectory:withFileName:handler:]"];
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
-  if (v11 && v12)
+  if (subdirectoryCopy && nameCopy)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000581B0;
     v20[3] = &unk_100360F00;
-    v21 = v11;
-    v22 = v12;
-    v23 = v10;
+    v21 = subdirectoryCopy;
+    v22 = nameCopy;
+    v23 = dataCopy;
     [v15 perform:v20];
   }
 
-  if (v13)
+  if (handlerCopy)
   {
-    v16 = [(GKService *)self clientProxy];
-    v17 = [v16 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100058360;
     v18[3] = &unk_100360FA0;
-    v19 = v13;
-    [v15 notifyOnQueue:v17 block:v18];
+    v19 = handlerCopy;
+    [v15 notifyOnQueue:replyQueue block:v18];
   }
 }
 
-- (void)loadCachedImageDataFromSubdirectory:(id)a3 withFileName:(id)a4 handler:(id)a5
+- (void)loadCachedImageDataFromSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = [NSString stringWithFormat:@"%s:%d %s", "GKUtilityService.m", 204, "[GKUtilityService loadCachedImageDataFromSubdirectory:withFileName:handler:]"];
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
-  if (v8 && v9)
+  if (subdirectoryCopy && nameCopy)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100058550;
     v18[3] = &unk_100360F00;
-    v19 = v8;
-    v20 = v9;
+    v19 = subdirectoryCopy;
+    v20 = nameCopy;
     v21 = v12;
     [v21 perform:v18];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v13 = [(GKService *)self clientProxy];
-    v14 = [v13 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100058718;
     v15[3] = &unk_100360EB0;
-    v17 = v10;
+    v17 = handlerCopy;
     v16 = v12;
-    [v16 notifyOnQueue:v14 block:v15];
+    [v16 notifyOnQueue:replyQueue block:v15];
   }
 }
 
-- (void)deleteCachedImageDataFromSubdirectory:(id)a3 withFileName:(id)a4 handler:(id)a5
+- (void)deleteCachedImageDataFromSubdirectory:(id)subdirectory withFileName:(id)name handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = [NSString stringWithFormat:@"%s:%d %s", "GKUtilityService.m", 232, "[GKUtilityService deleteCachedImageDataFromSubdirectory:withFileName:handler:]"];
   v12 = [GKDispatchGroup dispatchGroupWithName:v11];
 
-  if (v8 && v9)
+  if (subdirectoryCopy && nameCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10005893C;
     v17[3] = &unk_100360FF0;
-    v18 = v8;
-    v19 = v9;
+    v18 = subdirectoryCopy;
+    v19 = nameCopy;
     [v12 perform:v17];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v13 = [(GKService *)self clientProxy];
-    v14 = [v13 replyQueue];
+    clientProxy = [(GKService *)self clientProxy];
+    replyQueue = [clientProxy replyQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100058B24;
     v15[3] = &unk_100360FA0;
-    v16 = v10;
-    [v12 notifyOnQueue:v14 block:v15];
+    v16 = handlerCopy;
+    [v12 notifyOnQueue:replyQueue block:v15];
   }
 }
 
@@ -259,11 +259,11 @@
   [v2 openSoftwareUpdateSettings];
 }
 
-- (void)viewableThresholdWithCompletion:(id)a3
+- (void)viewableThresholdWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 replyQueue];
+  completionCopy = completion;
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
 
   v7 = [NSString stringWithFormat:@"%s:%d %s", "GKUtilityService.m", 276, "[GKUtilityService viewableThresholdWithCompletion:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
@@ -280,67 +280,67 @@
   v13[1] = 3221225472;
   v13[2] = sub_100058E8C;
   v13[3] = &unk_100361068;
-  v15 = v6;
-  v16 = v4;
+  v15 = replyQueue;
+  v16 = completionCopy;
   v14 = v9;
-  v10 = v6;
-  v11 = v4;
+  v10 = replyQueue;
+  v11 = completionCopy;
   v12 = v9;
   [v12 notifyOnQueue:v10 block:v13];
 }
 
-- (void)reportMetricsEventWithTopic:(id)a3 shouldFlush:(id)a4 metricsFields:(id)a5
+- (void)reportMetricsEventWithTopic:(id)topic shouldFlush:(id)flush metricsFields:(id)fields
 {
-  v16 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(GKService *)self clientProxy];
-  v11 = [v10 originalBundleIdentifier];
+  fieldsCopy = fields;
+  flushCopy = flush;
+  topicCopy = topic;
+  clientProxy = [(GKService *)self clientProxy];
+  originalBundleIdentifier = [clientProxy originalBundleIdentifier];
 
-  v12 = [v16 objectForKeyedSubscript:@"hostApp"];
+  v12 = [fieldsCopy objectForKeyedSubscript:@"hostApp"];
   v13 = [v12 isMemberOfClass:objc_opt_class()];
 
   if (v13)
   {
-    v14 = [v16 objectForKeyedSubscript:@"hostApp"];
+    v14 = [fieldsCopy objectForKeyedSubscript:@"hostApp"];
 
-    v11 = v14;
+    originalBundleIdentifier = v14;
   }
 
   v15 = +[GKAMPController controller];
-  [v15 reportMetricsEventWithTopic:v9 hostAppBundleId:v11 shouldFlush:v8 metricsFields:v16];
+  [v15 reportMetricsEventWithTopic:topicCopy hostAppBundleId:originalBundleIdentifier shouldFlush:flushCopy metricsFields:fieldsCopy];
 }
 
-- (void)reportPerformanceMetricsEvent:(id)a3
+- (void)reportPerformanceMetricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7 = +[GKAMPController controller];
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 originalBundleIdentifier];
-  [v7 reportPerformanceEventWithHostAppBundleId:v6 metricsFields:v4];
+  clientProxy = [(GKService *)self clientProxy];
+  originalBundleIdentifier = [clientProxy originalBundleIdentifier];
+  [v7 reportPerformanceEventWithHostAppBundleId:originalBundleIdentifier metricsFields:eventCopy];
 }
 
-- (void)reportMultiplayerActivityMetricsEvent:(id)a3
+- (void)reportMultiplayerActivityMetricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7 = +[GKAMPController controller];
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 originalBundleIdentifier];
-  [v7 reportMultiplayerActivityEventWithHostAppBundleId:v6 metricsFields:v4];
+  clientProxy = [(GKService *)self clientProxy];
+  originalBundleIdentifier = [clientProxy originalBundleIdentifier];
+  [v7 reportMultiplayerActivityEventWithHostAppBundleId:originalBundleIdentifier metricsFields:eventCopy];
 }
 
-- (void)reportLoadUrlMetricsEvent:(id)a3
+- (void)reportLoadUrlMetricsEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[GKAMPController controller];
-  [v4 reportLoadUrlMetricsEventWithMetricsFields:v3];
+  [v4 reportLoadUrlMetricsEventWithMetricsFields:eventCopy];
 }
 
-- (void)recordMatchStart:(id)a3 minPlayers:(id)a4 maxPlayers:(id)a5
+- (void)recordMatchStart:(id)start minPlayers:(id)players maxPlayers:(id)maxPlayers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  startCopy = start;
+  playersCopy = players;
+  maxPlayersCopy = maxPlayers;
   if (!os_log_GKGeneral)
   {
     v10 = GKOSLoggers();
@@ -354,34 +354,34 @@
   }
 
   v12 = +[GKMatchReporter shared];
-  [v12 recordMatchStartWithType:v7 minPlayers:v8 maxPlayers:v9];
+  [v12 recordMatchStartWithType:startCopy minPlayers:playersCopy maxPlayers:maxPlayersCopy];
 }
 
-- (void)recordMatchServer:(id)a3
+- (void)recordMatchServer:(id)server
 {
-  v3 = a3;
+  serverCopy = server;
   v4 = +[GKMatchReporter shared];
-  [v4 recordMatchServerWithType:v3];
+  [v4 recordMatchServerWithType:serverCopy];
 }
 
-- (void)recordActiveDevices:(id)a3
+- (void)recordActiveDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v4 = +[GKMatchReporter shared];
-  [v4 recordActiveDevicesWithCount:v3];
+  [v4 recordActiveDevicesWithCount:devicesCopy];
 }
 
-- (void)recordSharePlayDevices:(id)a3
+- (void)recordSharePlayDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v4 = +[GKMatchReporter shared];
-  [v4 recordSharePlayDevicesWithCount:v3];
+  [v4 recordSharePlayDevicesWithCount:devicesCopy];
 }
 
-- (void)completeMatchRecording:(id)a3 matchType:(id)a4
+- (void)completeMatchRecording:(id)recording matchType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  recordingCopy = recording;
+  typeCopy = type;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -391,9 +391,9 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v13 = v6;
+    v13 = recordingCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = typeCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "recording completed result: %@ type: %@", buf, 0x16u);
   }
 
@@ -403,7 +403,7 @@
   v11[2] = sub_100059714;
   v11[3] = &unk_100361090;
   v11[4] = self;
-  [v10 recordMatchCompleteWithMatchType:v7 result:v6 completion:v11];
+  [v10 recordMatchCompleteWithMatchType:typeCopy result:recordingCopy completion:v11];
 }
 
 - (void)recordGameStart
@@ -423,21 +423,21 @@
   [v3 recordGameCompleteWithCompletion:v4];
 }
 
-- (void)emitMultiplayerMessage:(id)a3
+- (void)emitMultiplayerMessage:(id)message
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000599CC;
   v4[3] = &unk_1003610B8;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  messageCopy = message;
+  v3 = messageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)openHTTPsUniversalLink:(id)a3
+- (void)openHTTPsUniversalLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -447,7 +447,7 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = linkCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Opening universal link: %@", buf, 0xCu);
   }
 
@@ -456,19 +456,19 @@
   v9[1] = 3221225472;
   v9[2] = sub_100059B70;
   v9[3] = &unk_1003610B8;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = linkCopy;
+  selfCopy = self;
+  v8 = linkCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)openDashboardAsRemoteAlertForGame:(id)a3 hostPID:(int)a4 deeplink:(id)a5
+- (void)openDashboardAsRemoteAlertForGame:(id)game hostPID:(int)d deeplink:(id)deeplink
 {
-  v6 = *&a4;
-  v21 = a3;
-  v8 = a5;
-  v9 = [v21 bundleIdentifier];
-  v10 = [v9 isEqualToString:GKGameControllerDaemonIdentifier];
+  v6 = *&d;
+  gameCopy = game;
+  deeplinkCopy = deeplink;
+  bundleIdentifier = [gameCopy bundleIdentifier];
+  v10 = [bundleIdentifier isEqualToString:GKGameControllerDaemonIdentifier];
 
   if (v10)
   {
@@ -477,8 +477,8 @@
 
   else
   {
-    v12 = [v21 bundleIdentifier];
-    v13 = [NSBundle _gkBundleIdentifierIsRelatedToContactsUI:v12];
+    bundleIdentifier2 = [gameCopy bundleIdentifier];
+    v13 = [NSBundle _gkBundleIdentifierIsRelatedToContactsUI:bundleIdentifier2];
 
     if (v13)
     {
@@ -487,13 +487,13 @@
 
     else
     {
-      v14 = [v21 bundleIdentifier];
-      v15 = [v14 isEqualToString:GKAppStoreIdentifier];
+      bundleIdentifier3 = [gameCopy bundleIdentifier];
+      v15 = [bundleIdentifier3 isEqualToString:GKAppStoreIdentifier];
 
       if ((v15 & 1) == 0)
       {
-        v17 = [v21 bundleIdentifier];
-        v18 = [NSString stringWithFormat:@"Unknown bundleId attempting to open the dashboard. Use openDashboardAsRemoteAlertForGame:hostPID:deeplink:launchContext: instead: %@", v17];
+        bundleIdentifier4 = [gameCopy bundleIdentifier];
+        v18 = [NSString stringWithFormat:@"Unknown bundleId attempting to open the dashboard. Use openDashboardAsRemoteAlertForGame:hostPID:deeplink:launchContext: instead: %@", bundleIdentifier4];
         v19 = [NSException exceptionWithName:NSInvalidArgumentException reason:v18 userInfo:0];
         v20 = v19;
 
@@ -505,14 +505,14 @@
   }
 
   v16 = *v11;
-  [(GKUtilityService *)self openDashboardAsRemoteAlertForGame:v21 hostPID:v6 deeplink:v8 launchContext:v16];
+  [(GKUtilityService *)self openDashboardAsRemoteAlertForGame:gameCopy hostPID:v6 deeplink:deeplinkCopy launchContext:v16];
 }
 
-- (void)openDashboardAsRemoteAlertForGame:(id)a3 hostPID:(int)a4 deeplink:(id)a5 launchContext:(id)a6
+- (void)openDashboardAsRemoteAlertForGame:(id)game hostPID:(int)d deeplink:(id)deeplink launchContext:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  gameCopy = game;
+  deeplinkCopy = deeplink;
+  contextCopy = context;
   if (!os_log_GKGeneral)
   {
     v13 = GKOSLoggers();
@@ -522,19 +522,19 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v10 bundleIdentifier];
+    bundleIdentifier = [gameCopy bundleIdentifier];
     v19 = 138413058;
-    v20 = v16;
+    v20 = bundleIdentifier;
     v21 = 1024;
-    v22 = a4;
+    dCopy = d;
     v23 = 2112;
-    v24 = v11;
+    v24 = deeplinkCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = contextCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "RemoteAlert: openDashboardAsRemoteAlertForGame:%@\n hostPID:%d\n deeplink:%@\n launchContext:%@", &v19, 0x26u);
   }
 
-  if ([(GKUtilityService *)self shouldUseGameControllerSPI:v10])
+  if ([(GKUtilityService *)self shouldUseGameControllerSPI:gameCopy])
   {
     if (!os_log_GKGeneral)
     {
@@ -553,23 +553,23 @@
 
   else
   {
-    [GKOverlayServiceUtils showDashboardWithGame:v10 deepLink:v11 launchContext:v12];
+    [GKOverlayServiceUtils showDashboardWithGame:gameCopy deepLink:deeplinkCopy launchContext:contextCopy];
   }
 }
 
-- (BOOL)shouldUseGameControllerSPI:(id)a3
+- (BOOL)shouldUseGameControllerSPI:(id)i
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  if ([v4 isEqualToString:GKGameControllerDaemonIdentifier])
+  iCopy = i;
+  bundleIdentifier = [iCopy bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:GKGameControllerDaemonIdentifier])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 bundleIdentifier];
-    v5 = [v6 isEqualToString:GKGameCenterIdentifier];
+    bundleIdentifier2 = [iCopy bundleIdentifier];
+    v5 = [bundleIdentifier2 isEqualToString:GKGameCenterIdentifier];
   }
 
   return v5;
@@ -606,8 +606,8 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "handleGameControllerHomeButtonPressed: In-game dashboard invocation.", v13, 2u);
     }
 
-    v9 = [v5 currentGame];
-    [GKOverlayServiceUtils showDashboardWithGame:v9 deepLink:&__NSDictionary0__struct launchContext:GKDashboardLaunchContextGameController];
+    currentGame = [v5 currentGame];
+    [GKOverlayServiceUtils showDashboardWithGame:currentGame deepLink:&__NSDictionary0__struct launchContext:GKDashboardLaunchContextGameController];
   }
 
   else
@@ -624,16 +624,16 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "handleGameControllerHomeButtonPressed: OOG dashboard invocation - launching app.", v14, 2u);
     }
 
-    v9 = +[GKApplicationWorkspace defaultWorkspace];
-    v10 = [(GKUtilityService *)self appLaunchURLString];
-    v11 = [NSURL URLWithString:v10];
-    [v9 openURL:v11];
+    currentGame = +[GKApplicationWorkspace defaultWorkspace];
+    appLaunchURLString = [(GKUtilityService *)self appLaunchURLString];
+    v11 = [NSURL URLWithString:appLaunchURLString];
+    [currentGame openURL:v11];
   }
 }
 
-- (void)launchOverlayForGameBundleId:(id)a3
+- (void)launchOverlayForGameBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -644,18 +644,18 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = idCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "launchOverlayForGameBundleId: %@", &v8, 0xCu);
   }
 
-  v6 = [GKClientProxy clientForBundleID:v3];
-  v7 = [v6 currentGame];
-  [GKOverlayServiceUtils showDashboardWithGame:v7 deepLink:&__NSDictionary0__struct launchContext:@"gameController"];
+  v6 = [GKClientProxy clientForBundleID:idCopy];
+  currentGame = [v6 currentGame];
+  [GKOverlayServiceUtils showDashboardWithGame:currentGame deepLink:&__NSDictionary0__struct launchContext:@"gameController"];
 }
 
-- (void)launchOverlaySystemSettingsForGameBundleId:(id)a3
+- (void)launchOverlaySystemSettingsForGameBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -666,16 +666,16 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v3;
+    v12 = idCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "launchOverlaySystemSettingsForGameBundleId: %@", buf, 0xCu);
   }
 
-  v6 = [GKClientProxy clientForBundleID:v3];
-  v7 = [v6 currentGame];
+  v6 = [GKClientProxy clientForBundleID:idCopy];
+  currentGame = [v6 currentGame];
   v9 = GKRemoteAlertDeeplinkActionKey;
   v10 = GKRemoteAlertDeeplinkActionSystemSettingsValue;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [GKOverlayServiceUtils showDashboardWithGame:v7 deepLink:v8 launchContext:@"gameModeBanner"];
+  [GKOverlayServiceUtils showDashboardWithGame:currentGame deepLink:v8 launchContext:@"gameModeBanner"];
 }
 
 - (void)closeOverlay
@@ -712,16 +712,16 @@
   }
 
   v5 = +[GKApplicationWorkspace defaultWorkspace];
-  v6 = [(GKUtilityService *)self appLaunchURLString];
-  v7 = [NSURL URLWithString:v6];
+  appLaunchURLString = [(GKUtilityService *)self appLaunchURLString];
+  v7 = [NSURL URLWithString:appLaunchURLString];
   [v5 openURL:v7];
 }
 
-- (void)getBSServiceConnectionEndpointForMachName:(id)a3 service:(id)a4 instance:(id)a5 handler:(id)a6
+- (void)getBSServiceConnectionEndpointForMachName:(id)name service:(id)service instance:(id)instance handler:(id)handler
 {
-  v9 = a6;
-  v10 = [BSServiceConnectionEndpoint endpointForSystemMachName:a3 service:a4 instance:a5];
-  v9[2](v9, v10);
+  handlerCopy = handler;
+  v10 = [BSServiceConnectionEndpoint endpointForSystemMachName:name service:service instance:instance];
+  handlerCopy[2](handlerCopy, v10);
 }
 
 @end

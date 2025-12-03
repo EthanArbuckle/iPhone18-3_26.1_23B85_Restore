@@ -23,13 +23,13 @@
   v2 = VSDefaultLogObject();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [a1 cookies];
+    cookies = [self cookies];
     v5 = 138412290;
-    v6 = v3;
+    v6 = cookies;
     _os_log_impl(&dword_23AB8E000, v2, OS_LOG_TYPE_DEFAULT, "Will save %@ cookies.", &v5, 0xCu);
   }
 
-  [a1 _saveCookies];
+  [self _saveCookies];
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

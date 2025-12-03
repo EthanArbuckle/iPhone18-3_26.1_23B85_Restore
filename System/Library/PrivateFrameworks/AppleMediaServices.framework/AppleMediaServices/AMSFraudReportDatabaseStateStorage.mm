@@ -1,8 +1,8 @@
 @interface AMSFraudReportDatabaseStateStorage
 - (AMSFraudReportDatabaseStateStorage)init;
 - (NSArray)allKeys;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation AMSFraudReportDatabaseStateStorage
@@ -21,8 +21,8 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = v8;
@@ -31,7 +31,7 @@
       v14 = v8;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create AMSStorageDatabase, no persistence will be available for Fraud Report.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create AMSStorageDatabase, no persistence will be available for Fraud Report.", buf, 0x16u);
     }
 
     v5 = 0;
@@ -60,8 +60,8 @@
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = v7;
@@ -73,30 +73,30 @@
       v16 = v9;
       v17 = 2114;
       v18 = v10;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to read all keys from the Fraud Report persistent state database: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to read all keys from the Fraud Report persistent state database: %{public}@", buf, 0x20u);
     }
   }
 
   return v3;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   storageDatabase = self->_storageDatabase;
-  if (v6)
+  if (objectCopy)
   {
     v19 = 0;
-    v9 = [(AMSStorageDatabase *)storageDatabase setValue:v6 forKey:v7 error:&v19];
+    v9 = [(AMSStorageDatabase *)storageDatabase setValue:objectCopy forKey:subscriptCopy error:&v19];
     v10 = v19;
   }
 
   else
   {
     v18 = 0;
-    v9 = [(AMSStorageDatabase *)storageDatabase deleteForKey:v7 error:&v18];
+    v9 = [(AMSStorageDatabase *)storageDatabase deleteForKey:subscriptCopy error:&v18];
     v10 = v18;
   }
 
@@ -109,8 +109,8 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
@@ -122,19 +122,19 @@
       v23 = v16;
       v24 = 2114;
       v25 = v17;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set value to Fraud Report persistent state database: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set value to Fraud Report persistent state database: %{public}@", buf, 0x20u);
     }
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriptCopy = subscript;
   v5 = AMSSetLogKeyIfNeeded();
   storageDatabase = self->_storageDatabase;
   v20 = 0;
-  v7 = [(AMSStorageDatabase *)storageDatabase valueForKey:v4 error:&v20];
+  v7 = [(AMSStorageDatabase *)storageDatabase valueForKey:subscriptCopy error:&v20];
 
   v8 = v20;
   if (!v7)
@@ -145,8 +145,8 @@
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = v11;
@@ -157,7 +157,7 @@
       v24 = v5;
       v25 = 2114;
       v26 = v13;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to retrieve value from Fraud Report persistent state database: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to retrieve value from Fraud Report persistent state database: %{public}@", buf, 0x20u);
     }
   }
 
@@ -175,8 +175,8 @@
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       *buf = 138543618;
@@ -184,7 +184,7 @@
       v23 = 2114;
       v24 = v5;
       v18 = v17;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Value retrieved from Fraud Report persistent state database was not a dictionary, discarding.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Value retrieved from Fraud Report persistent state database was not a dictionary, discarding.", buf, 0x16u);
     }
 
     v14 = 0;

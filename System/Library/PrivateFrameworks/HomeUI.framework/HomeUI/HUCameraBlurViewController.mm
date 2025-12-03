@@ -1,7 +1,7 @@
 @interface HUCameraBlurViewController
-- (BOOL)shouldShowBlurForPlaybackEngine:(id)a3;
+- (BOOL)shouldShowBlurForPlaybackEngine:(id)engine;
 - (UIVisualEffectView)blurView;
-- (void)updateBlurWithPlaybackEngine:(id)a3 completionHandler:(id)a4;
+- (void)updateBlurWithPlaybackEngine:(id)engine completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -12,64 +12,64 @@
   v10.receiver = self;
   v10.super_class = HUCameraBlurViewController;
   [(HUCameraBlurViewController *)&v10 viewDidLoad];
-  v3 = [(HUCameraBlurViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(HUCameraBlurViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(HUCameraBlurViewController *)self view];
-  v5 = [(HUCameraBlurViewController *)self blurView];
-  [v4 addSubview:v5];
+  view2 = [(HUCameraBlurViewController *)self view];
+  blurView = [(HUCameraBlurViewController *)self blurView];
+  [view2 addSubview:blurView];
 
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(HUCameraBlurViewController *)self blurView];
-  v8 = [(HUCameraBlurViewController *)self view];
-  v9 = [v6 hu_constraintsSizingAnchorProvider:v7 toAnchorProvider:v8];
+  blurView2 = [(HUCameraBlurViewController *)self blurView];
+  view3 = [(HUCameraBlurViewController *)self view];
+  v9 = [v6 hu_constraintsSizingAnchorProvider:blurView2 toAnchorProvider:view3];
   [v6 activateConstraints:v9];
 }
 
-- (BOOL)shouldShowBlurForPlaybackEngine:(id)a3
+- (BOOL)shouldShowBlurForPlaybackEngine:(id)engine
 {
-  v3 = a3;
-  v4 = ([MEMORY[0x277D14CE8] isPressDemoModeEnabled] & 1) == 0 && objc_msgSend(v3, "timelineState") != 2 && objc_msgSend(v3, "timeControlStatus") == 0;
+  engineCopy = engine;
+  v4 = ([MEMORY[0x277D14CE8] isPressDemoModeEnabled] & 1) == 0 && objc_msgSend(engineCopy, "timelineState") != 2 && objc_msgSend(engineCopy, "timeControlStatus") == 0;
 
   return v4;
 }
 
-- (void)updateBlurWithPlaybackEngine:(id)a3 completionHandler:(id)a4
+- (void)updateBlurWithPlaybackEngine:(id)engine completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUCameraBlurViewController *)self shouldShowBlurForPlaybackEngine:v6];
+  engineCopy = engine;
+  handlerCopy = handler;
+  v8 = [(HUCameraBlurViewController *)self shouldShowBlurForPlaybackEngine:engineCopy];
   [(HUCameraBlurViewController *)self setShowingBlur:v8];
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(HUCameraBlurViewController *)self showingBlur];
-    v11 = [v6 engineModeDescription];
-    v12 = [v6 timelineStateDescription];
-    v13 = [v6 timeControlStatusDescription];
+    showingBlur = [(HUCameraBlurViewController *)self showingBlur];
+    engineModeDescription = [engineCopy engineModeDescription];
+    timelineStateDescription = [engineCopy timelineStateDescription];
+    timeControlStatusDescription = [engineCopy timeControlStatusDescription];
     v18[0] = 67110146;
-    v18[1] = v10;
+    v18[1] = showingBlur;
     v19 = 2112;
-    v20 = v6;
+    v20 = engineCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = engineModeDescription;
     v23 = 2112;
-    v24 = v12;
+    v24 = timelineStateDescription;
     v25 = 2112;
-    v26 = v13;
+    v26 = timeControlStatusDescription;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Showing blur:%{BOOL}d engine:%@ engineMode:%@ timelineState:%@ timeControlStatus:%@.", v18, 0x30u);
   }
 
-  v14 = [(HUCameraBlurViewController *)self showingBlur];
-  v15 = [(HUCameraBlurViewController *)self blurView];
-  v16 = [v15 layer];
-  *&v17 = v14;
-  [v16 setOpacity:v17];
+  showingBlur2 = [(HUCameraBlurViewController *)self showingBlur];
+  blurView = [(HUCameraBlurViewController *)self blurView];
+  layer = [blurView layer];
+  *&v17 = showingBlur2;
+  [layer setOpacity:v17];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
@@ -85,12 +85,12 @@
     [(UIVisualEffectView *)v5 bounds];
     v7 = [v6 initWithFrame:?];
     [v7 setAutoresizingMask:18];
-    v8 = [MEMORY[0x277D75348] systemBlackColor];
-    [v7 setBackgroundColor:v8];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [v7 setBackgroundColor:systemBlackColor];
 
     [v7 setAlpha:0.5];
-    v9 = [(UIVisualEffectView *)v5 contentView];
-    [v9 addSubview:v7];
+    contentView = [(UIVisualEffectView *)v5 contentView];
+    [contentView addSubview:v7];
 
     [(UIVisualEffectView *)v5 setAlpha:0.0];
     v10 = self->_blurView;

@@ -1,17 +1,17 @@
 @interface ClarityUIParentalControlsSetupController
-- (ClarityUIParentalControlsSetupController)initWithCompletion:(id)a3;
-- (void)_enablePasscodeFieldWithAttemptCount:(id)a3;
+- (ClarityUIParentalControlsSetupController)initWithCompletion:(id)completion;
+- (void)_enablePasscodeFieldWithAttemptCount:(id)count;
 - (void)_setupPasscodeErrorView;
-- (void)_updatePasscodeErrorLabelWithTimeoutDate:(id)a3 attemptCount:(id)a4;
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_updatePasscodeErrorLabelWithTimeoutDate:(id)date attemptCount:(id)count;
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ClarityUIParentalControlsSetupController
 
-- (ClarityUIParentalControlsSetupController)initWithCompletion:(id)a3
+- (ClarityUIParentalControlsSetupController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"PARENTAL_CONTROLS_PASSCODE_TITLE", @"ClarityUISettings");
   v6 = settingsLocString(@"PARENTAL_CONTROLS_PASSCODE_DESCRIPTION", @"ClarityUISettings");
   v31.receiver = self;
@@ -24,8 +24,8 @@
     managementState = v7->_managementState;
     v7->_managementState = v8;
 
-    v10 = [(ClarityUIParentalControlsSetupController *)v7 contentView];
-    v11 = objc_retainBlock(v4);
+    contentView = [(ClarityUIParentalControlsSetupController *)v7 contentView];
+    v11 = objc_retainBlock(completionCopy);
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v11;
 
@@ -37,40 +37,40 @@
     [(BFFPasscodeInputView *)v7->_passcodeInputView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(BFFPasscodeInputView *)v7->_passcodeInputView setDelegate:v7];
     [(ClarityUIParentalControlsSetupController *)v7 _setupPasscodeErrorView];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v10 addSubview:v7->_passcodeInputView];
-    v30 = v4;
-    [v10 addSubview:v7->_passcodeErrorView];
-    v29 = [(BFFPasscodeInputView *)v7->_passcodeInputView centerXAnchor];
-    v28 = [v10 centerXAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [contentView addSubview:v7->_passcodeInputView];
+    v30 = completionCopy;
+    [contentView addSubview:v7->_passcodeErrorView];
+    centerXAnchor = [(BFFPasscodeInputView *)v7->_passcodeInputView centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v32[0] = v27;
-    v26 = [(BFFPasscodeInputView *)v7->_passcodeInputView topAnchor];
-    v25 = [v10 topAnchor];
-    v16 = [v26 constraintEqualToAnchor:v25];
+    topAnchor = [(BFFPasscodeInputView *)v7->_passcodeInputView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[1] = v16;
-    v17 = [(UIView *)v7->_passcodeErrorView centerXAnchor];
-    v18 = [v10 centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor3 = [(UIView *)v7->_passcodeErrorView centerXAnchor];
+    centerXAnchor4 = [contentView centerXAnchor];
+    v19 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v32[2] = v19;
-    v20 = [(UIView *)v7->_passcodeErrorView topAnchor];
-    v21 = [(BFFPasscodeInputView *)v7->_passcodeInputView bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:32.0];
+    topAnchor3 = [(UIView *)v7->_passcodeErrorView topAnchor];
+    bottomAnchor = [(BFFPasscodeInputView *)v7->_passcodeInputView bottomAnchor];
+    v22 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:32.0];
     v32[3] = v22;
     v23 = [NSArray arrayWithObjects:v32 count:4];
     [NSLayoutConstraint activateConstraints:v23];
 
-    v4 = v30;
+    completionCopy = v30;
   }
 
   return v7;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ClarityUIParentalControlsSetupController;
-  [(ClarityUIParentalControlsSetupController *)&v4 viewDidAppear:a3];
+  [(ClarityUIParentalControlsSetupController *)&v4 viewDidAppear:appear];
   [(BFFPasscodeInputView *)self->_passcodeInputView setPasscode:&stru_25D420];
   if ([(UIView *)self->_passcodeErrorView isHidden])
   {
@@ -78,17 +78,17 @@
   }
 }
 
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode
 {
-  v5 = a4;
+  passcodeCopy = passcode;
   managementState = self->_managementState;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __74__ClarityUIParentalControlsSetupController_passcodeInput_enteredPasscode___block_invoke;
   v8[3] = &unk_256908;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = passcodeCopy;
+  selfCopy = self;
+  v7 = passcodeCopy;
   [(STManagementState *)managementState authenticateRestrictionsPasscode:v7 completionHandler:v8];
 }
 
@@ -138,11 +138,11 @@ void __74__ClarityUIParentalControlsSetupController_passcodeInput_enteredPasscod
   v5 = +[UIColor redColor];
   [(UIView *)self->_passcodeErrorView setBackgroundColor:v5];
 
-  v6 = [(UIView *)self->_passcodeErrorView layer];
-  [v6 setMasksToBounds:1];
+  layer = [(UIView *)self->_passcodeErrorView layer];
+  [layer setMasksToBounds:1];
 
-  v7 = [(UIView *)self->_passcodeErrorView layer];
-  [v7 setCornerRadius:12.0];
+  layer2 = [(UIView *)self->_passcodeErrorView layer];
+  [layer2 setCornerRadius:12.0];
 
   managementState = self->_managementState;
   v26[0] = _NSConcreteStackBlock;
@@ -166,21 +166,21 @@ void __74__ClarityUIParentalControlsSetupController_passcodeInput_enteredPasscod
   [(UILabel *)self->_passcodeErrorLabel setTextColor:v12];
 
   [(UIView *)self->_passcodeErrorView addSubview:self->_passcodeErrorLabel];
-  v25 = [(UILabel *)self->_passcodeErrorLabel trailingAnchor];
-  v24 = [(UIView *)self->_passcodeErrorView trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:-20.0];
+  trailingAnchor = [(UILabel *)self->_passcodeErrorLabel trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_passcodeErrorView trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v27[0] = v23;
-  v13 = [(UILabel *)self->_passcodeErrorLabel leadingAnchor];
-  v14 = [(UIView *)self->_passcodeErrorView leadingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:20.0];
+  leadingAnchor = [(UILabel *)self->_passcodeErrorLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_passcodeErrorView leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v27[1] = v15;
-  v16 = [(UILabel *)self->_passcodeErrorLabel topAnchor];
-  v17 = [(UIView *)self->_passcodeErrorView topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:2.0];
+  topAnchor = [(UILabel *)self->_passcodeErrorLabel topAnchor];
+  topAnchor2 = [(UIView *)self->_passcodeErrorView topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
   v27[2] = v18;
-  v19 = [(UILabel *)self->_passcodeErrorLabel bottomAnchor];
-  v20 = [(UIView *)self->_passcodeErrorView bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-2.0];
+  bottomAnchor = [(UILabel *)self->_passcodeErrorLabel bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_passcodeErrorView bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-2.0];
   v27[3] = v21;
   v22 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v22];
@@ -217,11 +217,11 @@ void __67__ClarityUIParentalControlsSetupController__setupPasscodeErrorView__blo
   }
 }
 
-- (void)_updatePasscodeErrorLabelWithTimeoutDate:(id)a3 attemptCount:(id)a4
+- (void)_updatePasscodeErrorLabelWithTimeoutDate:(id)date attemptCount:(id)count
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12 && ([v12 timeIntervalSinceNow], v8 = v7, (v9 = vcvtpd_u64_f64(v7 / 60.0)) != 0))
+  dateCopy = date;
+  countCopy = count;
+  if (dateCopy && ([dateCopy timeIntervalSinceNow], v8 = v7, (v9 = vcvtpd_u64_f64(v7 / 60.0)) != 0))
   {
     [(BFFPasscodeInputView *)self->_passcodeInputView setUserInteractionEnabled:0];
     [(UIView *)self->_passcodeErrorView setHidden:0];
@@ -229,20 +229,20 @@ void __67__ClarityUIParentalControlsSetupController__setupPasscodeErrorView__blo
     v11 = [NSString localizedStringWithFormat:v10, v9];
     [(UILabel *)self->_passcodeErrorLabel setText:v11];
 
-    [(ClarityUIParentalControlsSetupController *)self performSelector:"_enablePasscodeFieldWithAttemptCount:" withObject:v6 afterDelay:v8];
+    [(ClarityUIParentalControlsSetupController *)self performSelector:"_enablePasscodeFieldWithAttemptCount:" withObject:countCopy afterDelay:v8];
   }
 
   else
   {
-    [(ClarityUIParentalControlsSetupController *)self _enablePasscodeFieldWithAttemptCount:v6];
+    [(ClarityUIParentalControlsSetupController *)self _enablePasscodeFieldWithAttemptCount:countCopy];
   }
 }
 
-- (void)_enablePasscodeFieldWithAttemptCount:(id)a3
+- (void)_enablePasscodeFieldWithAttemptCount:(id)count
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [count longLongValue];
   passcodeErrorView = self->_passcodeErrorView;
-  if (v4 < 1)
+  if (longLongValue < 1)
   {
     [(UIView *)passcodeErrorView setHidden:1];
   }
@@ -251,7 +251,7 @@ void __67__ClarityUIParentalControlsSetupController__setupPasscodeErrorView__blo
   {
     [(UIView *)passcodeErrorView setHidden:0];
     v6 = settingsLocString(@"FailedPasscodeAttempts", @"ClarityUISettings");
-    v7 = [NSString localizedStringWithFormat:v6, v4];
+    v7 = [NSString localizedStringWithFormat:v6, longLongValue];
     [(UILabel *)self->_passcodeErrorLabel setText:v7];
   }
 

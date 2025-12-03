@@ -1,7 +1,7 @@
 @interface VCMediaNegotiatorVideoConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualFeatureStrings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualFeatureStrings:(id)strings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   [(VCMediaNegotiatorVideoConfiguration *)&v3 dealloc];
 }
 
-- (BOOL)isEqualFeatureStrings:(id)a3
+- (BOOL)isEqualFeatureStrings:(id)strings
 {
   v25 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -27,7 +27,7 @@
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       [v5 addObjectsFromArray:{-[VCVideoRuleCollections supportedPayloads](self->_videoRuleCollections, "supportedPayloads")}];
-      [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(a3, "videoRuleCollections"), "supportedPayloads")}];
+      [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(strings, "videoRuleCollections"), "supportedPayloads")}];
       v7 = [v6 count];
       if (v7 == [v5 count])
       {
@@ -64,7 +64,7 @@
               }
 
               v14 = v13;
-              v15 = [objc_msgSend(a3 "videoFeatureStrings")];
+              v15 = [objc_msgSend(strings "videoFeatureStrings")];
               if (!v15)
               {
                 [VCMediaNegotiatorVideoConfiguration isEqualFeatureStrings:];
@@ -111,7 +111,7 @@ LABEL_22:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -122,10 +122,10 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[VCVideoRuleCollections isEqual:](self->_videoRuleCollections, "isEqual:", [a3 videoRuleCollections]);
+      v5 = -[VCVideoRuleCollections isEqual:](self->_videoRuleCollections, "isEqual:", [equal videoRuleCollections]);
       if (v5)
       {
-        LOBYTE(v5) = [(VCMediaNegotiatorVideoConfiguration *)self isEqualFeatureStrings:a3];
+        LOBYTE(v5) = [(VCMediaNegotiatorVideoConfiguration *)self isEqualFeatureStrings:equal];
       }
     }
 
@@ -138,7 +138,7 @@ LABEL_22:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -146,13 +146,13 @@ LABEL_22:
   v5 = [(VCMediaNegotiatorCommonConfiguration *)&v10 copyWithZone:?];
   if (v5)
   {
-    v6 = [(VCVideoRuleCollections *)self->_videoRuleCollections copyWithZone:a3];
+    v6 = [(VCVideoRuleCollections *)self->_videoRuleCollections copyWithZone:zone];
     [v5 setVideoRuleCollections:v6];
 
-    v7 = [(NSDictionary *)self->_videoFeatureStrings mutableCopyWithZone:a3];
+    v7 = [(NSDictionary *)self->_videoFeatureStrings mutableCopyWithZone:zone];
     [v5 setVideoFeatureStrings:v7];
 
-    v8 = [(NSDictionary *)self->_videoFeatureStringsFixedPosition mutableCopyWithZone:a3];
+    v8 = [(NSDictionary *)self->_videoFeatureStringsFixedPosition mutableCopyWithZone:zone];
     [v5 setVideoFeatureStringsFixedPosition:v8];
   }
 

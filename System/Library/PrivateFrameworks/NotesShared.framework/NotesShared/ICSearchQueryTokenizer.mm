@@ -1,49 +1,49 @@
 @interface ICSearchQueryTokenizer
 + (NLTokenizer)tokenizer;
-+ (id)_expandedTokensForSearchQuerySegmentArray:(id)a3 searchString:(id)a4 language:(id)a5;
-+ (id)_queryTokensForSearchString:(id)a3 language:(id)a4;
++ (id)_expandedTokensForSearchQuerySegmentArray:(id)array searchString:(id)string language:(id)language;
++ (id)_queryTokensForSearchString:(id)string language:(id)language;
 + (id)connectorCharacterSet;
-+ (id)expandedTokensForSearchString:(id)a3 language:(id)a4;
++ (id)expandedTokensForSearchString:(id)string language:(id)language;
 + (id)nonConnectorCharacterSet;
 + (id)spellChecker;
-+ (id)spellCheckerGuessesForSearchString:(id)a3 inRange:(_NSRange)a4 language:(id)a5;
-+ (id)tokensFromString:(id)a3 language:(id)a4;
-+ (void)_combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:(id)a3 searchString:(id)a4;
-+ (void)_insertConnectorAndDividerSegmentsIntoMutableTokenArray:(id)a3 searchString:(id)a4;
++ (id)spellCheckerGuessesForSearchString:(id)string inRange:(_NSRange)range language:(id)language;
++ (id)tokensFromString:(id)string language:(id)language;
++ (void)_combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:(id)array searchString:(id)string;
++ (void)_insertConnectorAndDividerSegmentsIntoMutableTokenArray:(id)array searchString:(id)string;
 @end
 
 @implementation ICSearchQueryTokenizer
 
-+ (id)expandedTokensForSearchString:(id)a3 language:(id)a4
++ (id)expandedTokensForSearchString:(id)string language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  stringCopy = string;
+  languageCopy = language;
+  if (!languageCopy)
   {
     v8 = MEMORY[0x277CBEAF8];
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 preferredLocalizations];
-    v11 = [v10 firstObject];
-    v7 = [v8 canonicalLocaleIdentifierFromString:v11];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    preferredLocalizations = [mainBundle preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
+    languageCopy = [v8 canonicalLocaleIdentifierFromString:firstObject];
   }
 
-  v12 = [a1 _queryTokensForSearchString:v6 language:v7];
-  [a1 _sortMutableSearchQueryTokensInPlace:v12];
-  [a1 _insertConnectorAndDividerSegmentsIntoMutableTokenArray:v12 searchString:v6];
-  [a1 _combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:v12 searchString:v6];
-  v13 = [a1 _expandedTokensForSearchQuerySegmentArray:v12 searchString:v6 language:v7];
+  v12 = [self _queryTokensForSearchString:stringCopy language:languageCopy];
+  [self _sortMutableSearchQueryTokensInPlace:v12];
+  [self _insertConnectorAndDividerSegmentsIntoMutableTokenArray:v12 searchString:stringCopy];
+  [self _combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:v12 searchString:stringCopy];
+  v13 = [self _expandedTokensForSearchQuerySegmentArray:v12 searchString:stringCopy language:languageCopy];
 
   return v13;
 }
 
-+ (id)tokensFromString:(id)a3 language:(id)a4
++ (id)tokensFromString:(id)string language:(id)language
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 _queryTokensForSearchString:v6 language:a4];
-  [a1 _sortMutableSearchQueryTokensInPlace:v7];
-  [a1 _insertConnectorAndDividerSegmentsIntoMutableTokenArray:v7 searchString:v6];
-  [a1 _combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:v7 searchString:v6];
+  stringCopy = string;
+  v7 = [self _queryTokensForSearchString:stringCopy language:language];
+  [self _sortMutableSearchQueryTokensInPlace:v7];
+  [self _insertConnectorAndDividerSegmentsIntoMutableTokenArray:v7 searchString:stringCopy];
+  [self _combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:v7 searchString:stringCopy];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
@@ -64,8 +64,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) segmentString];
-        [v8 addObject:v14];
+        segmentString = [*(*(&v17 + 1) + 8 * i) segmentString];
+        [v8 addObject:segmentString];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -79,42 +79,42 @@
   return v15;
 }
 
-+ (id)_queryTokensForSearchString:(id)a3 language:(id)a4
++ (id)_queryTokensForSearchString:(id)string language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  languageCopy = language;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v7 || (v9 = MEMORY[0x277CBEAF8], [MEMORY[0x277CCA8D8] mainBundle], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "preferredLocalizations"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "canonicalLocaleIdentifierFromString:", v12), v7 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v7))
+  if (languageCopy || (v9 = MEMORY[0x277CBEAF8], [MEMORY[0x277CCA8D8] mainBundle], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "preferredLocalizations"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "firstObject"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "canonicalLocaleIdentifierFromString:", v12), languageCopy = objc_claimAutoreleasedReturnValue(), v12, v11, v10, languageCopy))
   {
-    v13 = [a1 tokenizer];
+    tokenizer = [self tokenizer];
 
-    if (v13)
+    if (tokenizer)
     {
-      v14 = [a1 tokenizer];
-      objc_sync_enter(v14);
-      v15 = [a1 tokenizer];
-      [v15 setLanguage:v7];
+      tokenizer2 = [self tokenizer];
+      objc_sync_enter(tokenizer2);
+      tokenizer3 = [self tokenizer];
+      [tokenizer3 setLanguage:languageCopy];
 
-      v16 = [a1 tokenizer];
-      [v16 setString:v6];
+      tokenizer4 = [self tokenizer];
+      [tokenizer4 setString:stringCopy];
 
-      v17 = [a1 tokenizer];
-      v18 = [v6 length];
+      tokenizer5 = [self tokenizer];
+      v18 = [stringCopy length];
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __63__ICSearchQueryTokenizer__queryTokensForSearchString_language___block_invoke;
       v24 = &unk_278197C98;
-      v25 = v6;
+      v25 = stringCopy;
       v26 = v8;
-      [v17 enumerateTokensInRange:0 usingBlock:{v18, &v21}];
+      [tokenizer5 enumerateTokensInRange:0 usingBlock:{v18, &v21}];
 
-      objc_sync_exit(v14);
+      objc_sync_exit(tokenizer2);
     }
   }
 
   if (![v8 count])
   {
-    v19 = -[ICSearchQuerySegment initWithSegmentString:range:type:isExpandable:]([ICSearchQuerySegment alloc], "initWithSegmentString:range:type:isExpandable:", v6, 0, [v6 length], 0, 0);
+    v19 = -[ICSearchQuerySegment initWithSegmentString:range:type:isExpandable:]([ICSearchQuerySegment alloc], "initWithSegmentString:range:type:isExpandable:", stringCopy, 0, [stringCopy length], 0, 0);
     [v8 addObject:v19];
   }
 
@@ -148,23 +148,23 @@ uint64_t __63__ICSearchQueryTokenizer__sortMutableSearchQueryTokensInPlace___blo
   }
 }
 
-+ (void)_insertConnectorAndDividerSegmentsIntoMutableTokenArray:(id)a3 searchString:(id)a4
++ (void)_insertConnectorAndDividerSegmentsIntoMutableTokenArray:(id)array searchString:(id)string
 {
-  v58 = a3;
-  v6 = a4;
-  if ([v58 count] && objc_msgSend(v6, "length"))
+  arrayCopy = array;
+  stringCopy = string;
+  if ([arrayCopy count] && objc_msgSend(stringCopy, "length"))
   {
-    v7 = [v58 objectAtIndexedSubscript:0];
-    v8 = [v7 segmentRange];
+    v7 = [arrayCopy objectAtIndexedSubscript:0];
+    segmentRange = [v7 segmentRange];
 
     v9 = 0;
-    if (v8 && v8 != 0x7FFFFFFFFFFFFFFFLL)
+    if (segmentRange && segmentRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [a1 nonConnectorCharacterSet];
-      v11 = [v6 rangeOfCharacterFromSet:v10 options:4 range:{0, v8}];
+      nonConnectorCharacterSet = [self nonConnectorCharacterSet];
+      v11 = [stringCopy rangeOfCharacterFromSet:nonConnectorCharacterSet options:4 range:{0, segmentRange}];
       v13 = v12;
 
-      v14 = v8 - (v11 + v13);
+      v14 = segmentRange - (v11 + v13);
       v15 = v11 == 0x7FFFFFFFFFFFFFFFLL;
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -178,17 +178,17 @@ uint64_t __63__ICSearchQueryTokenizer__sortMutableSearchQueryTokensInPlace___blo
 
       if (!v15)
       {
-        v8 = v14;
+        segmentRange = v14;
       }
 
-      if (v8)
+      if (segmentRange)
       {
         v17 = [ICSearchQuerySegment alloc];
-        v18 = [v6 substringWithRange:{v16, v8}];
+        v18 = [stringCopy substringWithRange:{v16, segmentRange}];
         v9 = 1;
-        v19 = [(ICSearchQuerySegment *)v17 initWithSegmentString:v18 range:v16 type:v8 isExpandable:1, 0];
+        v19 = [(ICSearchQuerySegment *)v17 initWithSegmentString:v18 range:v16 type:segmentRange isExpandable:1, 0];
 
-        [v58 insertObject:v19 atIndex:0];
+        [arrayCopy insertObject:v19 atIndex:0];
       }
 
       else
@@ -197,83 +197,83 @@ uint64_t __63__ICSearchQueryTokenizer__sortMutableSearchQueryTokensInPlace___blo
       }
     }
 
-    if (v9 < [v58 count])
+    if (v9 < [arrayCopy count])
     {
       v20 = 0x278192000uLL;
       do
       {
-        v21 = [v58 objectAtIndexedSubscript:v9];
+        v21 = [arrayCopy objectAtIndexedSubscript:v9];
         if ([v21 segmentRange] == 0x7FFFFFFFFFFFFFFFLL)
         {
         }
 
         else
         {
-          v22 = [v58 objectAtIndexedSubscript:v9];
-          v23 = [v22 type];
+          v22 = [arrayCopy objectAtIndexedSubscript:v9];
+          type = [v22 type];
 
-          if (!v23)
+          if (!type)
           {
-            v25 = [v58 objectAtIndexedSubscript:v9];
-            v26 = [v25 segmentRange];
-            v28 = v26 + v27;
+            v25 = [arrayCopy objectAtIndexedSubscript:v9];
+            segmentRange2 = [v25 segmentRange];
+            v28 = segmentRange2 + v27;
 
-            if (v9 < [v58 count] - 1)
+            if (v9 < [arrayCopy count] - 1)
             {
-              v29 = [v58 objectAtIndexedSubscript:v9 + 1];
-              v30 = [v29 segmentRange];
+              v29 = [arrayCopy objectAtIndexedSubscript:v9 + 1];
+              segmentRange3 = [v29 segmentRange];
 
               goto LABEL_25;
             }
 
-            if (v28 >= [v6 length])
+            if (v28 >= [stringCopy length])
             {
 LABEL_28:
               v31 = 0;
               goto LABEL_49;
             }
 
-            v30 = [v6 length];
+            segmentRange3 = [stringCopy length];
 LABEL_25:
             v31 = 0;
-            if (v30 == 0x7FFFFFFFFFFFFFFFLL)
+            if (segmentRange3 == 0x7FFFFFFFFFFFFFFFLL)
             {
 LABEL_49:
-              v24 = v58;
+              v24 = arrayCopy;
             }
 
             else
             {
-              v32 = v30 - v28;
-              v24 = v58;
-              if (v30 >= v28)
+              v32 = segmentRange3 - v28;
+              v24 = arrayCopy;
+              if (segmentRange3 >= v28)
               {
-                if (v30 > [v6 length])
+                if (segmentRange3 > [stringCopy length])
                 {
                   goto LABEL_28;
                 }
 
-                if (v30 == v28)
+                if (segmentRange3 == v28)
                 {
-                  v33 = [objc_alloc(*(v20 + 3840)) initWithSegmentString:&stru_2827172C0 range:v28 type:v30 - v28 isExpandable:{2, 0}];
-                  [v58 insertObject:v33 atIndex:v9 + 1];
+                  v33 = [objc_alloc(*(v20 + 3840)) initWithSegmentString:&stru_2827172C0 range:v28 type:segmentRange3 - v28 isExpandable:{2, 0}];
+                  [arrayCopy insertObject:v33 atIndex:v9 + 1];
                   v31 = 1;
                   goto LABEL_48;
                 }
 
-                v57 = a1;
-                v34 = [a1 nonConnectorCharacterSet];
-                v35 = [v6 rangeOfCharacterFromSet:v34 options:0 range:{v28, v30 - v28}];
+                selfCopy = self;
+                nonConnectorCharacterSet2 = [self nonConnectorCharacterSet];
+                v35 = [stringCopy rangeOfCharacterFromSet:nonConnectorCharacterSet2 options:0 range:{v28, segmentRange3 - v28}];
 
                 if (v35 == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v36 = objc_alloc(*(v20 + 3840));
-                  v37 = [v6 substringWithRange:{v28, v30 - v28}];
+                  v37 = [stringCopy substringWithRange:{v28, segmentRange3 - v28}];
                   v33 = [v36 initWithSegmentString:v37 range:v28 type:v32 isExpandable:{1, 0}];
 
-                  [v58 insertObject:v33 atIndex:v9 + 1];
+                  [arrayCopy insertObject:v33 atIndex:v9 + 1];
                   v31 = 1;
-                  a1 = v57;
+                  self = selfCopy;
                   goto LABEL_48;
                 }
 
@@ -285,25 +285,25 @@ LABEL_49:
                 else
                 {
                   v38 = objc_alloc(*(v20 + 3840));
-                  v39 = [v6 substringWithRange:{v28, v35 - v28}];
+                  v39 = [stringCopy substringWithRange:{v28, v35 - v28}];
                   v40 = [v38 initWithSegmentString:v39 range:v28 type:v35 - v28 isExpandable:{1, 0}];
 
-                  [v58 insertObject:v40 atIndex:v9 + 1];
+                  [arrayCopy insertObject:v40 atIndex:v9 + 1];
                   v31 = 1;
                 }
 
-                v41 = [v57 nonConnectorCharacterSet];
-                v42 = [v6 rangeOfCharacterFromSet:v41 options:4 range:{v28, v30 - v28}];
+                nonConnectorCharacterSet3 = [selfCopy nonConnectorCharacterSet];
+                v42 = [stringCopy rangeOfCharacterFromSet:nonConnectorCharacterSet3 options:4 range:{v28, segmentRange3 - v28}];
                 v44 = v43;
 
                 v45 = v42 + v44;
                 if (v45 != 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v46 = v30 - v45;
+                  v46 = segmentRange3 - v45;
                   if (v46)
                   {
                     v47 = [ICSearchQuerySegment alloc];
-                    v48 = [v6 substringWithRange:{v45, v46}];
+                    v48 = [stringCopy substringWithRange:{v45, v46}];
                     v49 = [(ICSearchQuerySegment *)v47 initWithSegmentString:v48 range:v45 type:v46 isExpandable:1, 0];
 
                     v50 = 1;
@@ -312,13 +312,13 @@ LABEL_49:
                       v50 = 2;
                     }
 
-                    [v58 insertObject:v49 atIndex:v50 + v9];
+                    [arrayCopy insertObject:v49 atIndex:v50 + v9];
                     ++v31;
                   }
                 }
 
-                a1 = v57;
-                v24 = v58;
+                self = selfCopy;
+                v24 = arrayCopy;
                 if (v28 != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v20 = 0x278192000uLL;
@@ -335,7 +335,7 @@ LABEL_49:
                   }
 
                   v53 = [ICSearchQuerySegment alloc];
-                  v54 = [v6 substringWithRange:{v35, v52}];
+                  v54 = [stringCopy substringWithRange:{v35, v52}];
                   v55 = v53;
                   v20 = 0x278192000;
                   v33 = [(ICSearchQuerySegment *)v55 initWithSegmentString:v54 range:v35 type:v52 isExpandable:2, 0];
@@ -346,7 +346,7 @@ LABEL_49:
                     v56 = 2;
                   }
 
-                  [v58 insertObject:v33 atIndex:v56 + v9];
+                  [arrayCopy insertObject:v33 atIndex:v56 + v9];
                   ++v31;
 LABEL_48:
 
@@ -364,7 +364,7 @@ LABEL_50:
         }
 
         ++v9;
-        v24 = v58;
+        v24 = arrayCopy;
       }
 
       while (v9 < [v24 count]);
@@ -372,65 +372,65 @@ LABEL_50:
   }
 }
 
-+ (void)_combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:(id)a3 searchString:(id)a4
++ (void)_combineConnectorAndTokensAndRemoveDividersInPlaceForMutableTokenArray:(id)array searchString:(id)string
 {
-  v23 = a3;
-  v5 = a4;
-  if ([v23 count] && objc_msgSend(v23, "count"))
+  arrayCopy = array;
+  stringCopy = string;
+  if ([arrayCopy count] && objc_msgSend(arrayCopy, "count"))
   {
     v6 = 0;
     do
     {
-      v7 = [v23 objectAtIndexedSubscript:v6];
-      v8 = [v7 type];
+      v7 = [arrayCopy objectAtIndexedSubscript:v6];
+      type = [v7 type];
 
-      if (v8 == 2)
+      if (type == 2)
       {
-        [v23 removeObjectAtIndex:v6];
-        v9 = v23;
+        [arrayCopy removeObjectAtIndex:v6];
+        v9 = arrayCopy;
       }
 
       else
       {
         v10 = v6;
-        v9 = v23;
+        v9 = arrayCopy;
         while (1)
         {
           v11 = [v9 objectAtIndexedSubscript:v10];
-          v12 = [v11 type];
+          type2 = [v11 type];
 
-          if (v12 == 2)
+          if (type2 == 2)
           {
             break;
           }
 
-          v13 = ++v10 >= [v23 count];
-          v9 = v23;
+          v13 = ++v10 >= [arrayCopy count];
+          v9 = arrayCopy;
           if (v13)
           {
             goto LABEL_14;
           }
         }
 
-        v9 = v23;
+        v9 = arrayCopy;
 LABEL_14:
         if (v10 - 1 > v6)
         {
-          v14 = [v23 objectAtIndexedSubscript:v6];
-          v15 = [v14 segmentRange];
+          v14 = [arrayCopy objectAtIndexedSubscript:v6];
+          segmentRange = [v14 segmentRange];
 
-          v16 = [v23 objectAtIndexedSubscript:v10 - 1];
-          v17 = [v16 segmentRange];
-          v19 = v18 - v15;
+          v16 = [arrayCopy objectAtIndexedSubscript:v10 - 1];
+          segmentRange2 = [v16 segmentRange];
+          v19 = v18 - segmentRange;
 
           v20 = [ICSearchQuerySegment alloc];
-          v21 = [v5 substringWithRange:{v15, v19 + v17}];
-          v22 = [(ICSearchQuerySegment *)v20 initWithSegmentString:v21 range:v15 type:v19 + v17 isExpandable:0, 0];
+          v21 = [stringCopy substringWithRange:{segmentRange, v19 + segmentRange2}];
+          v22 = [(ICSearchQuerySegment *)v20 initWithSegmentString:v21 range:segmentRange type:v19 + segmentRange2 isExpandable:0, 0];
 
-          [v23 removeObjectsInRange:{v6, v10 - v6}];
-          [v23 insertObject:v22 atIndex:v6];
+          [arrayCopy removeObjectsInRange:{v6, v10 - v6}];
+          [arrayCopy insertObject:v22 atIndex:v6];
 
-          v9 = v23;
+          v9 = arrayCopy;
         }
 
         ++v6;
@@ -441,23 +441,23 @@ LABEL_14:
   }
 }
 
-+ (id)_expandedTokensForSearchQuerySegmentArray:(id)a3 searchString:(id)a4 language:(id)a5
++ (id)_expandedTokensForSearchQuerySegmentArray:(id)array searchString:(id)string language:(id)language
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
-  if (!v8)
+  arrayCopy = array;
+  stringCopy = string;
+  languageCopy = language;
+  if (!languageCopy)
   {
     v9 = MEMORY[0x277CBEAF8];
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 preferredLocalizations];
-    v12 = [v11 firstObject];
-    v8 = [v9 canonicalLocaleIdentifierFromString:v12];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    preferredLocalizations = [mainBundle preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
+    languageCopy = [v9 canonicalLocaleIdentifierFromString:firstObject];
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = +[ICRankingQueriesDefinition maxCountOfVariantsForCountOfTokens:](ICRankingQueriesDefinition, "maxCountOfVariantsForCountOfTokens:", [v7 count]);
+  v14 = +[ICRankingQueriesDefinition maxCountOfVariantsForCountOfTokens:](ICRankingQueriesDefinition, "maxCountOfVariantsForCountOfTokens:", [arrayCopy count]);
   v37 = 0u;
   v38 = 0u;
   if (v14 <= 1)
@@ -472,7 +472,7 @@ LABEL_14:
 
   v39 = 0uLL;
   v40 = 0uLL;
-  v16 = v7;
+  v16 = arrayCopy;
   v17 = [v16 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v17)
   {
@@ -493,39 +493,39 @@ LABEL_14:
         v22 = *(*(&v37 + 1) + 8 * v21);
         if ([v22 isExpandable])
         {
-          if (v8)
+          if (languageCopy)
           {
-            v23 = [v22 segmentRange];
-            v25 = [a1 spellCheckerGuessesForSearchString:v36 inRange:v23 language:{v24, v8}];
+            segmentRange = [v22 segmentRange];
+            segmentString2 = [self spellCheckerGuessesForSearchString:stringCopy inRange:segmentRange language:{v24, languageCopy}];
           }
 
           else
           {
-            v27 = [v22 segmentString];
-            v42 = v27;
+            segmentString = [v22 segmentString];
+            v42 = segmentString;
             [*(v20 + 2656) arrayWithObjects:&v42 count:1];
             v28 = v16;
             v30 = v29 = v20;
-            v25 = [v30 mutableCopy];
+            segmentString2 = [v30 mutableCopy];
 
             v20 = v29;
             v16 = v28;
-            v8 = 0;
+            languageCopy = 0;
             v18 = v34;
           }
 
-          if ([v25 count] > v15)
+          if ([segmentString2 count] > v15)
           {
-            [v25 removeObjectsInRange:{v15, objc_msgSend(v25, "count") - v15}];
+            [segmentString2 removeObjectsInRange:{v15, objc_msgSend(segmentString2, "count") - v15}];
           }
 
-          v26 = [v25 copy];
+          v26 = [segmentString2 copy];
         }
 
         else
         {
-          v25 = [v22 segmentString];
-          v41 = v25;
+          segmentString2 = [v22 segmentString];
+          v41 = segmentString2;
           v26 = [*(v20 + 2656) arrayWithObjects:&v41 count:1];
         }
 
@@ -547,20 +547,20 @@ LABEL_14:
   return v32;
 }
 
-+ (id)spellCheckerGuessesForSearchString:(id)a3 inRange:(_NSRange)a4 language:(id)a5
++ (id)spellCheckerGuessesForSearchString:(id)string inRange:(_NSRange)range language:(id)language
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v49[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v46 = a5;
-  v44 = v9;
-  v10 = [v9 substringWithRange:{location, length}];
+  stringCopy = string;
+  languageCopy = language;
+  v44 = stringCopy;
+  v10 = [stringCopy substringWithRange:{location, length}];
   v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v10, 0}];
-  v12 = [a1 spellChecker];
-  objc_sync_enter(v12);
-  obj = v12;
-  if ([v12 spellServer:0 findMisspelledWordInString:v10 language:v46 wordCount:0 countOnly:0] == 0x7FFFFFFFFFFFFFFFLL)
+  spellChecker = [self spellChecker];
+  objc_sync_enter(spellChecker);
+  obj = spellChecker;
+  if ([spellChecker spellServer:0 findMisspelledWordInString:v10 language:languageCopy wordCount:0 countOnly:0] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = 0;
   }
@@ -572,15 +572,15 @@ LABEL_14:
     v16 = ICNotesAppBundleIdentifier();
     v49[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-    v14 = [obj spellServer:0 suggestContextualGuessDictionariesForWordRange:location inString:length language:v44 options:{v46, v17}];
+    v14 = [obj spellServer:0 suggestContextualGuessDictionariesForWordRange:location inString:length language:v44 options:{languageCopy, v17}];
   }
 
   objc_sync_exit(obj);
 
   if ([v14 count])
   {
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v47 = [v18 BOOLForKey:*MEMORY[0x277D36320]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v47 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D36320]];
 
     if ([v14 count])
     {
@@ -719,19 +719,13 @@ void __38__ICSearchQueryTokenizer_spellChecker__block_invoke(double a1)
   return v3;
 }
 
-void __47__ICSearchQueryTokenizer_connectorCharacterSet__block_invoke()
-  v0 = {;
-  v1 = connectorCharacterSet_s_connectorCharacterSet;
-  connectorCharacterSet_s_connectorCharacterSet = v0;
-}
-
 + (id)nonConnectorCharacterSet
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ICSearchQueryTokenizer_nonConnectorCharacterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (nonConnectorCharacterSet_s_onceTokenForNonConnectorCharacterSet != -1)
   {
     dispatch_once(&nonConnectorCharacterSet_s_onceTokenForNonConnectorCharacterSet, block);

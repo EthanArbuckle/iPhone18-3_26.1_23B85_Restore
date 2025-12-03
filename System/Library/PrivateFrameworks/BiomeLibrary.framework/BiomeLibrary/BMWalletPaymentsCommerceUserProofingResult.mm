@@ -1,27 +1,27 @@
 @interface BMWalletPaymentsCommerceUserProofingResult
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceUserProofingResult)initWithAge:(id)a3 gender:(id)a4 skinTone:(id)a5 ethnicity:(id)a6 deviceLanguage:(id)a7 proofingDecision:(id)a8 issuer:(id)a9 alAssessment:(id)a10 alGestureAssessment:(id)a11 axSettings:(id)a12 alFacVersion:(id)a13 alFacePoseVersion:(id)a14 alPadtoolVersion:(id)a15 alPrdVersion:(id)a16 didStepUp:(id)a17 plGestureAssessment:(id)a18 plAssessment:(id)a19 plFacVersion:(id)a20 plFacePoseVersion:(id)a21 plPadtoolVersion:(id)a22 plPrdVersion:(id)a23 shadowLabel:(id)a24 smFacVersion:(id)a25 smFacePoseVersion:(id)a26 smPrdVersion:(id)a27 smPadtoolVersion:(id)a28 smLivenessAssessment:(id)a29 smGestureAssessment:(id)a30 smLivenessType:(id)a31 fmAssessment:(id)a32 fmModelVersion:(id)a33 fmDetectorModelVersion:(id)a34 fmSMAssessment:(id)a35 fmSMModelVersion:(id)a36 fmSMDetectorModelVersion:(id)a37 identityType:(id)a38;
-- (BMWalletPaymentsCommerceUserProofingResult)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceUserProofingResult)initWithAge:(id)age gender:(id)gender skinTone:(id)tone ethnicity:(id)ethnicity deviceLanguage:(id)language proofingDecision:(id)decision issuer:(id)issuer alAssessment:(id)self0 alGestureAssessment:(id)self1 axSettings:(id)self2 alFacVersion:(id)self3 alFacePoseVersion:(id)self4 alPadtoolVersion:(id)self5 alPrdVersion:(id)self6 didStepUp:(id)self7 plGestureAssessment:(id)self8 plAssessment:(id)self9 plFacVersion:(id)facVersion plFacePoseVersion:(id)facePoseVersion plPadtoolVersion:(id)plPadtoolVersion plPrdVersion:(id)plPrdVersion shadowLabel:(id)label smFacVersion:(id)smFacVersion smFacePoseVersion:(id)smFacePoseVersion smPrdVersion:(id)smPrdVersion smPadtoolVersion:(id)smPadtoolVersion smLivenessAssessment:(id)livenessAssessment smGestureAssessment:(id)age0 smLivenessType:(id)age1 fmAssessment:(id)age2 fmModelVersion:(id)age3 fmDetectorModelVersion:(id)age4 fmSMAssessment:(id)age5 fmSMModelVersion:(id)age6 fmSMDetectorModelVersion:(id)age7 identityType:(id)age8;
+- (BMWalletPaymentsCommerceUserProofingResult)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_axSettingsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceUserProofingResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMWalletPaymentsCommerceUserProofingResult *)self age];
     v7 = [v5 age];
     v8 = v7;
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
-    v14 = [v5 gender];
-    v15 = v14;
-    if (v13 == v14)
+    gender = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
+    gender2 = [v5 gender];
+    v15 = gender2;
+    if (gender == gender2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
-      v17 = [v5 gender];
-      v18 = [v16 isEqual:v17];
+      gender3 = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
+      gender4 = [v5 gender];
+      v18 = [gender3 isEqual:gender4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
-    v20 = [v5 skinTone];
-    v21 = v20;
-    if (v19 == v20)
+    skinTone = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
+    skinTone2 = [v5 skinTone];
+    v21 = skinTone2;
+    if (skinTone == skinTone2)
     {
     }
 
     else
     {
-      v22 = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
-      v23 = [v5 skinTone];
-      v24 = [v22 isEqual:v23];
+      skinTone3 = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
+      skinTone4 = [v5 skinTone];
+      v24 = [skinTone3 isEqual:skinTone4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
-    v26 = [v5 ethnicity];
-    v27 = v26;
-    if (v25 == v26)
+    ethnicity = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
+    ethnicity2 = [v5 ethnicity];
+    v27 = ethnicity2;
+    if (ethnicity == ethnicity2)
     {
     }
 
     else
     {
-      v28 = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
-      v29 = [v5 ethnicity];
-      v30 = [v28 isEqual:v29];
+      ethnicity3 = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
+      ethnicity4 = [v5 ethnicity];
+      v30 = [ethnicity3 isEqual:ethnicity4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
-    v32 = [v5 deviceLanguage];
-    v33 = v32;
-    if (v31 == v32)
+    deviceLanguage = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
+    deviceLanguage2 = [v5 deviceLanguage];
+    v33 = deviceLanguage2;
+    if (deviceLanguage == deviceLanguage2)
     {
     }
 
     else
     {
-      v34 = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
-      v35 = [v5 deviceLanguage];
-      v36 = [v34 isEqual:v35];
+      deviceLanguage3 = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
+      deviceLanguage4 = [v5 deviceLanguage];
+      v36 = [deviceLanguage3 isEqual:deviceLanguage4];
 
       if (!v36)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v37 = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
-    v38 = [v5 proofingDecision];
-    v39 = v38;
-    if (v37 == v38)
+    proofingDecision = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
+    proofingDecision2 = [v5 proofingDecision];
+    v39 = proofingDecision2;
+    if (proofingDecision == proofingDecision2)
     {
     }
 
     else
     {
-      v40 = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
-      v41 = [v5 proofingDecision];
-      v42 = [v40 isEqual:v41];
+      proofingDecision3 = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
+      proofingDecision4 = [v5 proofingDecision];
+      v42 = [proofingDecision3 isEqual:proofingDecision4];
 
       if (!v42)
       {
@@ -136,18 +136,18 @@
       }
     }
 
-    v43 = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
-    v44 = [v5 issuer];
-    v45 = v44;
-    if (v43 == v44)
+    issuer = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
+    issuer2 = [v5 issuer];
+    v45 = issuer2;
+    if (issuer == issuer2)
     {
     }
 
     else
     {
-      v46 = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
-      v47 = [v5 issuer];
-      v48 = [v46 isEqual:v47];
+      issuer3 = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
+      issuer4 = [v5 issuer];
+      v48 = [issuer3 isEqual:issuer4];
 
       if (!v48)
       {
@@ -155,18 +155,18 @@
       }
     }
 
-    v49 = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
-    v50 = [v5 alAssessment];
-    v51 = v50;
-    if (v49 == v50)
+    alAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
+    alAssessment2 = [v5 alAssessment];
+    v51 = alAssessment2;
+    if (alAssessment == alAssessment2)
     {
     }
 
     else
     {
-      v52 = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
-      v53 = [v5 alAssessment];
-      v54 = [v52 isEqual:v53];
+      alAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
+      alAssessment4 = [v5 alAssessment];
+      v54 = [alAssessment3 isEqual:alAssessment4];
 
       if (!v54)
       {
@@ -174,18 +174,18 @@
       }
     }
 
-    v55 = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
-    v56 = [v5 alGestureAssessment];
-    v57 = v56;
-    if (v55 == v56)
+    alGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
+    alGestureAssessment2 = [v5 alGestureAssessment];
+    v57 = alGestureAssessment2;
+    if (alGestureAssessment == alGestureAssessment2)
     {
     }
 
     else
     {
-      v58 = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
-      v59 = [v5 alGestureAssessment];
-      v60 = [v58 isEqual:v59];
+      alGestureAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
+      alGestureAssessment4 = [v5 alGestureAssessment];
+      v60 = [alGestureAssessment3 isEqual:alGestureAssessment4];
 
       if (!v60)
       {
@@ -193,18 +193,18 @@
       }
     }
 
-    v61 = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
-    v62 = [v5 axSettings];
-    v63 = v62;
-    if (v61 == v62)
+    axSettings = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
+    axSettings2 = [v5 axSettings];
+    v63 = axSettings2;
+    if (axSettings == axSettings2)
     {
     }
 
     else
     {
-      v64 = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
-      v65 = [v5 axSettings];
-      v66 = [v64 isEqual:v65];
+      axSettings3 = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
+      axSettings4 = [v5 axSettings];
+      v66 = [axSettings3 isEqual:axSettings4];
 
       if (!v66)
       {
@@ -212,18 +212,18 @@
       }
     }
 
-    v67 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
-    v68 = [v5 alFacVersion];
-    v69 = v68;
-    if (v67 == v68)
+    alFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
+    alFacVersion2 = [v5 alFacVersion];
+    v69 = alFacVersion2;
+    if (alFacVersion == alFacVersion2)
     {
     }
 
     else
     {
-      v70 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
-      v71 = [v5 alFacVersion];
-      v72 = [v70 isEqual:v71];
+      alFacVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
+      alFacVersion4 = [v5 alFacVersion];
+      v72 = [alFacVersion3 isEqual:alFacVersion4];
 
       if (!v72)
       {
@@ -231,18 +231,18 @@
       }
     }
 
-    v73 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
-    v74 = [v5 alFacePoseVersion];
-    v75 = v74;
-    if (v73 == v74)
+    alFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
+    alFacePoseVersion2 = [v5 alFacePoseVersion];
+    v75 = alFacePoseVersion2;
+    if (alFacePoseVersion == alFacePoseVersion2)
     {
     }
 
     else
     {
-      v76 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
-      v77 = [v5 alFacePoseVersion];
-      v78 = [v76 isEqual:v77];
+      alFacePoseVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
+      alFacePoseVersion4 = [v5 alFacePoseVersion];
+      v78 = [alFacePoseVersion3 isEqual:alFacePoseVersion4];
 
       if (!v78)
       {
@@ -250,18 +250,18 @@
       }
     }
 
-    v79 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
-    v80 = [v5 alPadtoolVersion];
-    v81 = v80;
-    if (v79 == v80)
+    alPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
+    alPadtoolVersion2 = [v5 alPadtoolVersion];
+    v81 = alPadtoolVersion2;
+    if (alPadtoolVersion == alPadtoolVersion2)
     {
     }
 
     else
     {
-      v82 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
-      v83 = [v5 alPadtoolVersion];
-      v84 = [v82 isEqual:v83];
+      alPadtoolVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
+      alPadtoolVersion4 = [v5 alPadtoolVersion];
+      v84 = [alPadtoolVersion3 isEqual:alPadtoolVersion4];
 
       if (!v84)
       {
@@ -269,18 +269,18 @@
       }
     }
 
-    v85 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
-    v86 = [v5 alPrdVersion];
-    v87 = v86;
-    if (v85 == v86)
+    alPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
+    alPrdVersion2 = [v5 alPrdVersion];
+    v87 = alPrdVersion2;
+    if (alPrdVersion == alPrdVersion2)
     {
     }
 
     else
     {
-      v88 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
-      v89 = [v5 alPrdVersion];
-      v90 = [v88 isEqual:v89];
+      alPrdVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
+      alPrdVersion4 = [v5 alPrdVersion];
+      v90 = [alPrdVersion3 isEqual:alPrdVersion4];
 
       if (!v90)
       {
@@ -300,25 +300,25 @@
         goto LABEL_142;
       }
 
-      v91 = [(BMWalletPaymentsCommerceUserProofingResult *)self didStepUp];
-      if (v91 != [v5 didStepUp])
+      didStepUp = [(BMWalletPaymentsCommerceUserProofingResult *)self didStepUp];
+      if (didStepUp != [v5 didStepUp])
       {
         goto LABEL_142;
       }
     }
 
-    v92 = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
-    v93 = [v5 plGestureAssessment];
-    v94 = v93;
-    if (v92 == v93)
+    plGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
+    plGestureAssessment2 = [v5 plGestureAssessment];
+    v94 = plGestureAssessment2;
+    if (plGestureAssessment == plGestureAssessment2)
     {
     }
 
     else
     {
-      v95 = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
-      v96 = [v5 plGestureAssessment];
-      v97 = [v95 isEqual:v96];
+      plGestureAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
+      plGestureAssessment4 = [v5 plGestureAssessment];
+      v97 = [plGestureAssessment3 isEqual:plGestureAssessment4];
 
       if (!v97)
       {
@@ -326,18 +326,18 @@
       }
     }
 
-    v98 = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
-    v99 = [v5 plAssessment];
-    v100 = v99;
-    if (v98 == v99)
+    plAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
+    plAssessment2 = [v5 plAssessment];
+    v100 = plAssessment2;
+    if (plAssessment == plAssessment2)
     {
     }
 
     else
     {
-      v101 = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
-      v102 = [v5 plAssessment];
-      v103 = [v101 isEqual:v102];
+      plAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
+      plAssessment4 = [v5 plAssessment];
+      v103 = [plAssessment3 isEqual:plAssessment4];
 
       if (!v103)
       {
@@ -345,18 +345,18 @@
       }
     }
 
-    v104 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
-    v105 = [v5 plFacVersion];
-    v106 = v105;
-    if (v104 == v105)
+    plFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
+    plFacVersion2 = [v5 plFacVersion];
+    v106 = plFacVersion2;
+    if (plFacVersion == plFacVersion2)
     {
     }
 
     else
     {
-      v107 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
-      v108 = [v5 plFacVersion];
-      v109 = [v107 isEqual:v108];
+      plFacVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
+      plFacVersion4 = [v5 plFacVersion];
+      v109 = [plFacVersion3 isEqual:plFacVersion4];
 
       if (!v109)
       {
@@ -364,18 +364,18 @@
       }
     }
 
-    v110 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
-    v111 = [v5 plFacePoseVersion];
-    v112 = v111;
-    if (v110 == v111)
+    plFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
+    plFacePoseVersion2 = [v5 plFacePoseVersion];
+    v112 = plFacePoseVersion2;
+    if (plFacePoseVersion == plFacePoseVersion2)
     {
     }
 
     else
     {
-      v113 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
-      v114 = [v5 plFacePoseVersion];
-      v115 = [v113 isEqual:v114];
+      plFacePoseVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
+      plFacePoseVersion4 = [v5 plFacePoseVersion];
+      v115 = [plFacePoseVersion3 isEqual:plFacePoseVersion4];
 
       if (!v115)
       {
@@ -383,18 +383,18 @@
       }
     }
 
-    v116 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
-    v117 = [v5 plPadtoolVersion];
-    v118 = v117;
-    if (v116 == v117)
+    plPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
+    plPadtoolVersion2 = [v5 plPadtoolVersion];
+    v118 = plPadtoolVersion2;
+    if (plPadtoolVersion == plPadtoolVersion2)
     {
     }
 
     else
     {
-      v119 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
-      v120 = [v5 plPadtoolVersion];
-      v121 = [v119 isEqual:v120];
+      plPadtoolVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
+      plPadtoolVersion4 = [v5 plPadtoolVersion];
+      v121 = [plPadtoolVersion3 isEqual:plPadtoolVersion4];
 
       if (!v121)
       {
@@ -402,18 +402,18 @@
       }
     }
 
-    v122 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
-    v123 = [v5 plPrdVersion];
-    v124 = v123;
-    if (v122 == v123)
+    plPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
+    plPrdVersion2 = [v5 plPrdVersion];
+    v124 = plPrdVersion2;
+    if (plPrdVersion == plPrdVersion2)
     {
     }
 
     else
     {
-      v125 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
-      v126 = [v5 plPrdVersion];
-      v127 = [v125 isEqual:v126];
+      plPrdVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
+      plPrdVersion4 = [v5 plPrdVersion];
+      v127 = [plPrdVersion3 isEqual:plPrdVersion4];
 
       if (!v127)
       {
@@ -421,18 +421,18 @@
       }
     }
 
-    v128 = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
-    v129 = [v5 shadowLabel];
-    v130 = v129;
-    if (v128 == v129)
+    shadowLabel = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
+    shadowLabel2 = [v5 shadowLabel];
+    v130 = shadowLabel2;
+    if (shadowLabel == shadowLabel2)
     {
     }
 
     else
     {
-      v131 = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
-      v132 = [v5 shadowLabel];
-      v133 = [v131 isEqual:v132];
+      shadowLabel3 = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
+      shadowLabel4 = [v5 shadowLabel];
+      v133 = [shadowLabel3 isEqual:shadowLabel4];
 
       if (!v133)
       {
@@ -440,18 +440,18 @@
       }
     }
 
-    v134 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
-    v135 = [v5 smFacVersion];
-    v136 = v135;
-    if (v134 == v135)
+    smFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
+    smFacVersion2 = [v5 smFacVersion];
+    v136 = smFacVersion2;
+    if (smFacVersion == smFacVersion2)
     {
     }
 
     else
     {
-      v137 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
-      v138 = [v5 smFacVersion];
-      v139 = [v137 isEqual:v138];
+      smFacVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
+      smFacVersion4 = [v5 smFacVersion];
+      v139 = [smFacVersion3 isEqual:smFacVersion4];
 
       if (!v139)
       {
@@ -459,18 +459,18 @@
       }
     }
 
-    v140 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
-    v141 = [v5 smFacePoseVersion];
-    v142 = v141;
-    if (v140 == v141)
+    smFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
+    smFacePoseVersion2 = [v5 smFacePoseVersion];
+    v142 = smFacePoseVersion2;
+    if (smFacePoseVersion == smFacePoseVersion2)
     {
     }
 
     else
     {
-      v143 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
-      v144 = [v5 smFacePoseVersion];
-      v145 = [v143 isEqual:v144];
+      smFacePoseVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
+      smFacePoseVersion4 = [v5 smFacePoseVersion];
+      v145 = [smFacePoseVersion3 isEqual:smFacePoseVersion4];
 
       if (!v145)
       {
@@ -478,18 +478,18 @@
       }
     }
 
-    v146 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
-    v147 = [v5 smPrdVersion];
-    v148 = v147;
-    if (v146 == v147)
+    smPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
+    smPrdVersion2 = [v5 smPrdVersion];
+    v148 = smPrdVersion2;
+    if (smPrdVersion == smPrdVersion2)
     {
     }
 
     else
     {
-      v149 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
-      v150 = [v5 smPrdVersion];
-      v151 = [v149 isEqual:v150];
+      smPrdVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
+      smPrdVersion4 = [v5 smPrdVersion];
+      v151 = [smPrdVersion3 isEqual:smPrdVersion4];
 
       if (!v151)
       {
@@ -497,18 +497,18 @@
       }
     }
 
-    v152 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
-    v153 = [v5 smPadtoolVersion];
-    v154 = v153;
-    if (v152 == v153)
+    smPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
+    smPadtoolVersion2 = [v5 smPadtoolVersion];
+    v154 = smPadtoolVersion2;
+    if (smPadtoolVersion == smPadtoolVersion2)
     {
     }
 
     else
     {
-      v155 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
-      v156 = [v5 smPadtoolVersion];
-      v157 = [v155 isEqual:v156];
+      smPadtoolVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
+      smPadtoolVersion4 = [v5 smPadtoolVersion];
+      v157 = [smPadtoolVersion3 isEqual:smPadtoolVersion4];
 
       if (!v157)
       {
@@ -516,18 +516,18 @@
       }
     }
 
-    v158 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
-    v159 = [v5 smLivenessAssessment];
-    v160 = v159;
-    if (v158 == v159)
+    smLivenessAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
+    smLivenessAssessment2 = [v5 smLivenessAssessment];
+    v160 = smLivenessAssessment2;
+    if (smLivenessAssessment == smLivenessAssessment2)
     {
     }
 
     else
     {
-      v161 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
-      v162 = [v5 smLivenessAssessment];
-      v163 = [v161 isEqual:v162];
+      smLivenessAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
+      smLivenessAssessment4 = [v5 smLivenessAssessment];
+      v163 = [smLivenessAssessment3 isEqual:smLivenessAssessment4];
 
       if (!v163)
       {
@@ -535,18 +535,18 @@
       }
     }
 
-    v164 = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
-    v165 = [v5 smGestureAssessment];
-    v166 = v165;
-    if (v164 == v165)
+    smGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
+    smGestureAssessment2 = [v5 smGestureAssessment];
+    v166 = smGestureAssessment2;
+    if (smGestureAssessment == smGestureAssessment2)
     {
     }
 
     else
     {
-      v167 = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
-      v168 = [v5 smGestureAssessment];
-      v169 = [v167 isEqual:v168];
+      smGestureAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
+      smGestureAssessment4 = [v5 smGestureAssessment];
+      v169 = [smGestureAssessment3 isEqual:smGestureAssessment4];
 
       if (!v169)
       {
@@ -554,18 +554,18 @@
       }
     }
 
-    v170 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
-    v171 = [v5 smLivenessType];
-    v172 = v171;
-    if (v170 == v171)
+    smLivenessType = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
+    smLivenessType2 = [v5 smLivenessType];
+    v172 = smLivenessType2;
+    if (smLivenessType == smLivenessType2)
     {
     }
 
     else
     {
-      v173 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
-      v174 = [v5 smLivenessType];
-      v175 = [v173 isEqual:v174];
+      smLivenessType3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
+      smLivenessType4 = [v5 smLivenessType];
+      v175 = [smLivenessType3 isEqual:smLivenessType4];
 
       if (!v175)
       {
@@ -573,18 +573,18 @@
       }
     }
 
-    v176 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
-    v177 = [v5 fmAssessment];
-    v178 = v177;
-    if (v176 == v177)
+    fmAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
+    fmAssessment2 = [v5 fmAssessment];
+    v178 = fmAssessment2;
+    if (fmAssessment == fmAssessment2)
     {
     }
 
     else
     {
-      v179 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
-      v180 = [v5 fmAssessment];
-      v181 = [v179 isEqual:v180];
+      fmAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
+      fmAssessment4 = [v5 fmAssessment];
+      v181 = [fmAssessment3 isEqual:fmAssessment4];
 
       if (!v181)
       {
@@ -592,18 +592,18 @@
       }
     }
 
-    v182 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
-    v183 = [v5 fmModelVersion];
-    v184 = v183;
-    if (v182 == v183)
+    fmModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
+    fmModelVersion2 = [v5 fmModelVersion];
+    v184 = fmModelVersion2;
+    if (fmModelVersion == fmModelVersion2)
     {
     }
 
     else
     {
-      v185 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
-      v186 = [v5 fmModelVersion];
-      v187 = [v185 isEqual:v186];
+      fmModelVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
+      fmModelVersion4 = [v5 fmModelVersion];
+      v187 = [fmModelVersion3 isEqual:fmModelVersion4];
 
       if (!v187)
       {
@@ -611,18 +611,18 @@
       }
     }
 
-    v188 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
-    v189 = [v5 fmDetectorModelVersion];
-    v190 = v189;
-    if (v188 == v189)
+    fmDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
+    fmDetectorModelVersion2 = [v5 fmDetectorModelVersion];
+    v190 = fmDetectorModelVersion2;
+    if (fmDetectorModelVersion == fmDetectorModelVersion2)
     {
     }
 
     else
     {
-      v191 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
-      v192 = [v5 fmDetectorModelVersion];
-      v193 = [v191 isEqual:v192];
+      fmDetectorModelVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
+      fmDetectorModelVersion4 = [v5 fmDetectorModelVersion];
+      v193 = [fmDetectorModelVersion3 isEqual:fmDetectorModelVersion4];
 
       if (!v193)
       {
@@ -630,18 +630,18 @@
       }
     }
 
-    v194 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
-    v195 = [v5 fmSMAssessment];
-    v196 = v195;
-    if (v194 == v195)
+    fmSMAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
+    fmSMAssessment2 = [v5 fmSMAssessment];
+    v196 = fmSMAssessment2;
+    if (fmSMAssessment == fmSMAssessment2)
     {
     }
 
     else
     {
-      v197 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
-      v198 = [v5 fmSMAssessment];
-      v199 = [v197 isEqual:v198];
+      fmSMAssessment3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
+      fmSMAssessment4 = [v5 fmSMAssessment];
+      v199 = [fmSMAssessment3 isEqual:fmSMAssessment4];
 
       if (!v199)
       {
@@ -649,18 +649,18 @@
       }
     }
 
-    v200 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
-    v201 = [v5 fmSMModelVersion];
-    v202 = v201;
-    if (v200 == v201)
+    fmSMModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
+    fmSMModelVersion2 = [v5 fmSMModelVersion];
+    v202 = fmSMModelVersion2;
+    if (fmSMModelVersion == fmSMModelVersion2)
     {
     }
 
     else
     {
-      v203 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
-      v204 = [v5 fmSMModelVersion];
-      v205 = [v203 isEqual:v204];
+      fmSMModelVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
+      fmSMModelVersion4 = [v5 fmSMModelVersion];
+      v205 = [fmSMModelVersion3 isEqual:fmSMModelVersion4];
 
       if (!v205)
       {
@@ -668,18 +668,18 @@
       }
     }
 
-    v206 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
-    v207 = [v5 fmSMDetectorModelVersion];
-    v208 = v207;
-    if (v206 == v207)
+    fmSMDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
+    fmSMDetectorModelVersion2 = [v5 fmSMDetectorModelVersion];
+    v208 = fmSMDetectorModelVersion2;
+    if (fmSMDetectorModelVersion == fmSMDetectorModelVersion2)
     {
     }
 
     else
     {
-      v209 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
-      v210 = [v5 fmSMDetectorModelVersion];
-      v211 = [v209 isEqual:v210];
+      fmSMDetectorModelVersion3 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
+      fmSMDetectorModelVersion4 = [v5 fmSMDetectorModelVersion];
+      v211 = [fmSMDetectorModelVersion3 isEqual:fmSMDetectorModelVersion4];
 
       if (!v211)
       {
@@ -691,18 +691,18 @@ LABEL_143:
       }
     }
 
-    v213 = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
-    v214 = [v5 identityType];
-    if (v213 == v214)
+    identityType = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
+    identityType2 = [v5 identityType];
+    if (identityType == identityType2)
     {
       v12 = 1;
     }
 
     else
     {
-      v215 = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
-      v216 = [v5 identityType];
-      v12 = [v215 isEqual:v216];
+      identityType3 = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
+      identityType4 = [v5 identityType];
+      v12 = [identityType3 isEqual:identityType4];
     }
 
     goto LABEL_143;
@@ -717,20 +717,20 @@ LABEL_144:
 - (id)jsonDictionary
 {
   v252 = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceUserProofingResult *)self age];
-  v4 = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
-  v5 = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
-  v6 = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
-  v7 = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
-  v8 = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
-  v9 = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
-  v10 = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
-  v115 = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
-  v140 = [(BMWalletPaymentsCommerceUserProofingResult *)self _axSettingsJSONArray];
-  v114 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
-  v139 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
-  v138 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
-  v137 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
+  null60 = [(BMWalletPaymentsCommerceUserProofingResult *)self age];
+  gender = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
+  skinTone = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
+  ethnicity = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
+  deviceLanguage = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
+  proofingDecision = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
+  issuer = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
+  alAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
+  alGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
+  _axSettingsJSONArray = [(BMWalletPaymentsCommerceUserProofingResult *)self _axSettingsJSONArray];
+  alFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
+  alFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
+  alPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
+  alPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
   if ([(BMWalletPaymentsCommerceUserProofingResult *)self hasDidStepUp])
   {
     v136 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMWalletPaymentsCommerceUserProofingResult didStepUp](self, "didStepUp")}];
@@ -741,670 +741,670 @@ LABEL_144:
     v136 = 0;
   }
 
-  v135 = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
-  v134 = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
-  v133 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
-  v132 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
-  v131 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
-  v130 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
-  v129 = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
-  v128 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
-  v127 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
-  v126 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
-  v125 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
-  v124 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
-  v123 = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
-  v122 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
-  v121 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
-  v120 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
-  v119 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
-  v118 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
-  v117 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
-  v116 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
-  v11 = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
+  plGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
+  plAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
+  plFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
+  plFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
+  plPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
+  plPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
+  shadowLabel = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
+  smFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
+  smFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
+  smPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
+  smPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
+  smLivenessAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
+  smGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
+  smLivenessType = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
+  fmAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
+  fmModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
+  fmDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
+  fmSMAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
+  fmSMModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
+  fmSMDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
+  identityType = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
   v141[0] = @"age";
-  v12 = v3;
-  if (!v3)
+  null = null60;
+  if (!null60)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v107 = v12;
-  v196[0] = v12;
+  v107 = null;
+  v196[0] = null;
   v141[1] = @"gender";
-  v13 = v4;
-  if (!v4)
+  null2 = gender;
+  if (!gender)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v106 = v13;
-  v196[1] = v13;
+  v106 = null2;
+  v196[1] = null2;
   v141[2] = @"skinTone";
-  v14 = v5;
-  if (!v5)
+  null3 = skinTone;
+  if (!skinTone)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105 = v14;
-  v196[2] = v14;
+  v105 = null3;
+  v196[2] = null3;
   v141[3] = @"ethnicity";
-  v15 = v6;
-  if (!v6)
+  null4 = ethnicity;
+  if (!ethnicity)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v104 = v15;
-  v196[3] = v15;
+  v104 = null4;
+  v196[3] = null4;
   v141[4] = @"deviceLanguage";
-  v16 = v7;
-  if (!v7)
+  null5 = deviceLanguage;
+  if (!deviceLanguage)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v103 = v16;
-  v196[4] = v16;
+  v103 = null5;
+  v196[4] = null5;
   v141[5] = @"proofingDecision";
-  v17 = v8;
-  if (!v8)
+  null6 = proofingDecision;
+  if (!proofingDecision)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v113 = v11;
-  v102 = v17;
-  v196[5] = v17;
+  v113 = identityType;
+  v102 = null6;
+  v196[5] = null6;
   v141[6] = @"issuer";
-  v18 = v9;
-  if (!v9)
+  null7 = issuer;
+  if (!issuer)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v101 = v18;
-  v196[6] = v18;
+  v101 = null7;
+  v196[6] = null7;
   v141[7] = @"alAssessment";
-  if (v10)
+  if (alAssessment)
   {
-    v197 = v10;
+    v197 = alAssessment;
     v142 = @"livenessAssessment";
-    v19 = v10;
+    null9 = alAssessment;
   }
 
   else
   {
-    v76 = [MEMORY[0x1E695DFB0] null];
-    v197 = v76;
+    null8 = [MEMORY[0x1E695DFB0] null];
+    v197 = null8;
     v142 = @"livenessAssessment";
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100 = v19;
-  v198 = v19;
+  v100 = null9;
+  v198 = null9;
   v143 = @"alGestureAssessment";
-  if (v115)
+  if (alGestureAssessment)
   {
-    v199 = v115;
+    v199 = alGestureAssessment;
     v144 = @"gestureAssessment";
-    v20 = v115;
+    null11 = alGestureAssessment;
   }
 
   else
   {
-    v75 = [MEMORY[0x1E695DFB0] null];
-    v199 = v75;
+    null10 = [MEMORY[0x1E695DFB0] null];
+    v199 = null10;
     v144 = @"gestureAssessment";
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v99 = v20;
-  v200 = v20;
+  v99 = null11;
+  v200 = null11;
   v145 = @"axSettings";
-  v21 = v140;
-  if (!v140)
+  null12 = _axSettingsJSONArray;
+  if (!_axSettingsJSONArray)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v98 = v21;
-  v201 = v21;
+  v98 = null12;
+  v201 = null12;
   v146 = @"alFacVersion";
-  if (v114)
+  if (alFacVersion)
   {
-    v202 = v114;
+    v202 = alFacVersion;
     v147 = @"facVersion";
-    v22 = v114;
+    null14 = alFacVersion;
   }
 
   else
   {
-    v74 = [MEMORY[0x1E695DFB0] null];
-    v202 = v74;
+    null13 = [MEMORY[0x1E695DFB0] null];
+    v202 = null13;
     v147 = @"facVersion";
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v97 = v22;
-  v203 = v22;
+  v97 = null14;
+  v203 = null14;
   v148 = @"alFacePoseVersion";
-  if (v139)
+  if (alFacePoseVersion)
   {
-    v204 = v139;
+    v204 = alFacePoseVersion;
     v149 = @"facePoseVersion";
-    v23 = v139;
+    null16 = alFacePoseVersion;
   }
 
   else
   {
-    v73 = [MEMORY[0x1E695DFB0] null];
-    v204 = v73;
+    null15 = [MEMORY[0x1E695DFB0] null];
+    v204 = null15;
     v149 = @"facePoseVersion";
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96 = v23;
-  v205 = v23;
+  v96 = null16;
+  v205 = null16;
   v150 = @"alPadtoolVersion";
-  if (v138)
+  if (alPadtoolVersion)
   {
-    v206 = v138;
+    v206 = alPadtoolVersion;
     v151 = @"padtoolVersion";
-    v24 = v138;
+    null18 = alPadtoolVersion;
   }
 
   else
   {
-    v72 = [MEMORY[0x1E695DFB0] null];
-    v206 = v72;
+    null17 = [MEMORY[0x1E695DFB0] null];
+    v206 = null17;
     v151 = @"padtoolVersion";
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v95 = v24;
-  v207 = v24;
+  v95 = null18;
+  v207 = null18;
   v152 = @"alPrdVersion";
-  if (v137)
+  if (alPrdVersion)
   {
-    v208 = v137;
+    v208 = alPrdVersion;
     v153 = @"prdVersion";
-    v25 = v137;
+    null20 = alPrdVersion;
   }
 
   else
   {
-    v71 = [MEMORY[0x1E695DFB0] null];
-    v208 = v71;
+    null19 = [MEMORY[0x1E695DFB0] null];
+    v208 = null19;
     v153 = @"prdVersion";
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94 = v25;
-  v209 = v25;
+  v94 = null20;
+  v209 = null20;
   v154 = @"didStepUp";
-  v26 = v136;
+  null21 = v136;
   if (!v136)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v93 = v26;
-  v210 = v26;
+  v93 = null21;
+  v210 = null21;
   v155 = @"plGestureAssessment";
-  if (v135)
+  if (plGestureAssessment)
   {
-    v211 = v135;
+    v211 = plGestureAssessment;
     v156 = @"passiveGestureAssessment";
-    v27 = v135;
+    null23 = plGestureAssessment;
   }
 
   else
   {
-    v70 = [MEMORY[0x1E695DFB0] null];
-    v211 = v70;
+    null22 = [MEMORY[0x1E695DFB0] null];
+    v211 = null22;
     v156 = @"passiveGestureAssessment";
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v92 = v27;
-  v212 = v27;
+  v92 = null23;
+  v212 = null23;
   v157 = @"plAssessment";
-  if (v134)
+  if (plAssessment)
   {
-    v213 = v134;
+    v213 = plAssessment;
     v158 = @"passiveLivenessAssessment";
-    v28 = v134;
+    null25 = plAssessment;
   }
 
   else
   {
-    v69 = [MEMORY[0x1E695DFB0] null];
-    v213 = v69;
+    null24 = [MEMORY[0x1E695DFB0] null];
+    v213 = null24;
     v158 = @"passiveLivenessAssessment";
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91 = v28;
-  v214 = v28;
+  v91 = null25;
+  v214 = null25;
   v159 = @"plFacVersion";
-  if (v133)
+  if (plFacVersion)
   {
-    v215 = v133;
+    v215 = plFacVersion;
     v160 = @"passiveLivenessFacVersion";
-    v29 = v133;
+    null27 = plFacVersion;
   }
 
   else
   {
-    v68 = [MEMORY[0x1E695DFB0] null];
-    v215 = v68;
+    null26 = [MEMORY[0x1E695DFB0] null];
+    v215 = null26;
     v160 = @"passiveLivenessFacVersion";
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v90 = v29;
-  v216 = v29;
+  v90 = null27;
+  v216 = null27;
   v161 = @"plFacePoseVersion";
-  if (v132)
+  if (plFacePoseVersion)
   {
-    v217 = v132;
+    v217 = plFacePoseVersion;
     v162 = @"passiveLivenessFacePoseVersion";
-    v30 = v132;
+    null29 = plFacePoseVersion;
   }
 
   else
   {
-    v67 = [MEMORY[0x1E695DFB0] null];
-    v217 = v67;
+    null28 = [MEMORY[0x1E695DFB0] null];
+    v217 = null28;
     v162 = @"passiveLivenessFacePoseVersion";
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v89 = v30;
-  v218 = v30;
+  v89 = null29;
+  v218 = null29;
   v163 = @"plPadtoolVersion";
-  if (v131)
+  if (plPadtoolVersion)
   {
-    v219 = v131;
+    v219 = plPadtoolVersion;
     v164 = @"passiveLivenessPadtoolVersion";
-    v31 = v131;
+    null31 = plPadtoolVersion;
   }
 
   else
   {
-    v66 = [MEMORY[0x1E695DFB0] null];
-    v219 = v66;
+    null30 = [MEMORY[0x1E695DFB0] null];
+    v219 = null30;
     v164 = @"passiveLivenessPadtoolVersion";
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v88 = v31;
-  v220 = v31;
+  v88 = null31;
+  v220 = null31;
   v165 = @"plPrdVersion";
-  if (v130)
+  if (plPrdVersion)
   {
-    v221 = v130;
+    v221 = plPrdVersion;
     v166 = @"passiveLivenessPrdVersion";
-    v32 = v130;
+    null33 = plPrdVersion;
   }
 
   else
   {
-    v65 = [MEMORY[0x1E695DFB0] null];
-    v221 = v65;
+    null32 = [MEMORY[0x1E695DFB0] null];
+    v221 = null32;
     v166 = @"passiveLivenessPrdVersion";
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87 = v32;
-  v222 = v32;
+  v87 = null33;
+  v222 = null33;
   v167 = @"shadowLabel";
-  if (v129)
+  if (shadowLabel)
   {
-    v223 = v129;
+    v223 = shadowLabel;
     v168 = @"livenessShadowLabel";
-    v33 = v129;
+    null35 = shadowLabel;
   }
 
   else
   {
-    v64 = [MEMORY[0x1E695DFB0] null];
-    v223 = v64;
+    null34 = [MEMORY[0x1E695DFB0] null];
+    v223 = null34;
     v168 = @"livenessShadowLabel";
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86 = v33;
-  v224 = v33;
+  v86 = null35;
+  v224 = null35;
   v169 = @"smFacVersion";
-  if (v128)
+  if (smFacVersion)
   {
-    v225 = v128;
+    v225 = smFacVersion;
     v170 = @"livenessShadowFacVersion";
-    v34 = v128;
+    null37 = smFacVersion;
   }
 
   else
   {
-    v63 = [MEMORY[0x1E695DFB0] null];
-    v225 = v63;
+    null36 = [MEMORY[0x1E695DFB0] null];
+    v225 = null36;
     v170 = @"livenessShadowFacVersion";
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v85 = v34;
-  v226 = v34;
+  v85 = null37;
+  v226 = null37;
   v171 = @"smFacePoseVersion";
-  if (v127)
+  if (smFacePoseVersion)
   {
-    v227 = v127;
+    v227 = smFacePoseVersion;
     v172 = @"livenessShadowFacePoseVersion";
-    v35 = v127;
+    null39 = smFacePoseVersion;
   }
 
   else
   {
-    v62 = [MEMORY[0x1E695DFB0] null];
-    v227 = v62;
+    null38 = [MEMORY[0x1E695DFB0] null];
+    v227 = null38;
     v172 = @"livenessShadowFacePoseVersion";
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v84 = v35;
-  v228 = v35;
+  v84 = null39;
+  v228 = null39;
   v173 = @"smPrdVersion";
-  if (v126)
+  if (smPrdVersion)
   {
-    v229 = v126;
+    v229 = smPrdVersion;
     v174 = @"livenessShadowPrdVersion";
-    v36 = v126;
+    null41 = smPrdVersion;
   }
 
   else
   {
-    v61 = [MEMORY[0x1E695DFB0] null];
-    v229 = v61;
+    null40 = [MEMORY[0x1E695DFB0] null];
+    v229 = null40;
     v174 = @"livenessShadowPrdVersion";
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v83 = v36;
-  v230 = v36;
+  v83 = null41;
+  v230 = null41;
   v175 = @"smPadtoolVersion";
-  if (v125)
+  if (smPadtoolVersion)
   {
-    v231 = v125;
+    v231 = smPadtoolVersion;
     v176 = @"livenessShadowPadtoolVersion";
-    v37 = v125;
+    null43 = smPadtoolVersion;
   }
 
   else
   {
-    v60 = [MEMORY[0x1E695DFB0] null];
-    v231 = v60;
+    null42 = [MEMORY[0x1E695DFB0] null];
+    v231 = null42;
     v176 = @"livenessShadowPadtoolVersion";
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82 = v37;
-  v232 = v37;
+  v82 = null43;
+  v232 = null43;
   v177 = @"smLivenessAssessment";
-  if (v124)
+  if (smLivenessAssessment)
   {
-    v233 = v124;
+    v233 = smLivenessAssessment;
     v178 = @"livenessShadowLivenessAssessment";
-    v38 = v124;
+    null45 = smLivenessAssessment;
   }
 
   else
   {
-    v59 = [MEMORY[0x1E695DFB0] null];
-    v233 = v59;
+    null44 = [MEMORY[0x1E695DFB0] null];
+    v233 = null44;
     v178 = @"livenessShadowLivenessAssessment";
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null45 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v81 = v38;
-  v234 = v38;
+  v81 = null45;
+  v234 = null45;
   v179 = @"smGestureAssessment";
-  if (v123)
+  if (smGestureAssessment)
   {
-    v235 = v123;
+    v235 = smGestureAssessment;
     v180 = @"livenessShadowGestureAssessment";
-    v39 = v123;
+    null47 = smGestureAssessment;
   }
 
   else
   {
-    v58 = [MEMORY[0x1E695DFB0] null];
-    v235 = v58;
+    null46 = [MEMORY[0x1E695DFB0] null];
+    v235 = null46;
     v180 = @"livenessShadowGestureAssessment";
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null47 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v111 = v4;
-  v112 = v3;
-  v80 = v39;
-  v236 = v39;
+  v111 = gender;
+  v112 = null60;
+  v80 = null47;
+  v236 = null47;
   v181 = @"smLivenessType";
-  if (v122)
+  if (smLivenessType)
   {
-    v237 = v122;
+    v237 = smLivenessType;
     v182 = @"livenessShadowLivenessType";
-    v40 = v122;
+    null49 = smLivenessType;
   }
 
   else
   {
-    v57 = [MEMORY[0x1E695DFB0] null];
-    v237 = v57;
+    null48 = [MEMORY[0x1E695DFB0] null];
+    v237 = null48;
     v182 = @"livenessShadowLivenessType";
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null49 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v79 = v40;
-  v238 = v40;
+  v79 = null49;
+  v238 = null49;
   v183 = @"fmAssessment";
-  if (v121)
+  if (fmAssessment)
   {
-    v239 = v121;
+    v239 = fmAssessment;
     v184 = @"faceMatchingAssessment";
-    v41 = v121;
+    null51 = fmAssessment;
   }
 
   else
   {
-    v56 = [MEMORY[0x1E695DFB0] null];
-    v239 = v56;
+    null50 = [MEMORY[0x1E695DFB0] null];
+    v239 = null50;
     v184 = @"faceMatchingAssessment";
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null51 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v78 = v41;
-  v240 = v41;
+  v78 = null51;
+  v240 = null51;
   v185 = @"fmModelVersion";
-  if (v120)
+  if (fmModelVersion)
   {
-    v241 = v120;
+    v241 = fmModelVersion;
     v186 = @"faceMatchingModelVersion";
-    v42 = v120;
+    null53 = fmModelVersion;
   }
 
   else
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
-    v241 = v55;
+    null52 = [MEMORY[0x1E695DFB0] null];
+    v241 = null52;
     v186 = @"faceMatchingModelVersion";
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null53 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v109 = v10;
-  v110 = v8;
-  v77 = v42;
-  v242 = v42;
+  v109 = alAssessment;
+  v110 = proofingDecision;
+  v77 = null53;
+  v242 = null53;
   v187 = @"fmDetectorModelVersion";
-  v43 = v119;
-  if (v119)
+  null55 = fmDetectorModelVersion;
+  if (fmDetectorModelVersion)
   {
-    v243 = v119;
+    v243 = fmDetectorModelVersion;
     v188 = @"faceMatchingDetectorModelVersion";
   }
 
   else
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
-    v243 = v54;
+    null54 = [MEMORY[0x1E695DFB0] null];
+    v243 = null54;
     v188 = @"faceMatchingDetectorModelVersion";
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null55 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v44 = v9;
-  v244 = v43;
+  v44 = issuer;
+  v244 = null55;
   v189 = @"fmSMAssessment";
-  v45 = v118;
-  if (v118)
+  null57 = fmSMAssessment;
+  if (fmSMAssessment)
   {
-    v245 = v118;
+    v245 = fmSMAssessment;
     v190 = @"faceMatchingShadowAssessment";
   }
 
   else
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
-    v245 = v53;
+    null56 = [MEMORY[0x1E695DFB0] null];
+    v245 = null56;
     v190 = @"faceMatchingShadowAssessment";
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null57 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v246 = v45;
+  v246 = null57;
   v191 = @"fmSMModelVersion";
-  v46 = v5;
-  if (v117)
+  v46 = skinTone;
+  if (fmSMModelVersion)
   {
-    v247 = v117;
+    v247 = fmSMModelVersion;
     v192 = @"faceMatchingShadowModelVersion";
-    v47 = v117;
+    null59 = fmSMModelVersion;
   }
 
   else
   {
-    v3 = 0x1E695D000;
-    v52 = [MEMORY[0x1E695DFB0] null];
-    v247 = v52;
+    null60 = 0x1E695D000;
+    null58 = [MEMORY[0x1E695DFB0] null];
+    v247 = null58;
     v192 = @"faceMatchingShadowModelVersion";
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null59 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v248 = v47;
+  v248 = null59;
   v193 = @"fmSMDetectorModelVersion";
-  if (v116)
+  if (fmSMDetectorModelVersion)
   {
-    v249 = v116;
+    v249 = fmSMDetectorModelVersion;
     v194 = @"faceMatchingShadowDetectorModelVersion";
-    v48 = v116;
+    null61 = fmSMDetectorModelVersion;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
-    v249 = v3;
+    null60 = [MEMORY[0x1E695DFB0] null];
+    v249 = null60;
     v194 = @"faceMatchingShadowDetectorModelVersion";
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null61 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v250 = v48;
+  v250 = null61;
   v195 = @"identityType";
-  v49 = v113;
+  null62 = v113;
   if (!v113)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null62 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v251 = v49;
+  v251 = null62;
   v108 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v196 forKeys:v141 count:62];
   if (!v113)
   {
   }
 
-  if (!v116)
+  if (!fmSMDetectorModelVersion)
   {
   }
 
-  if (!v117)
+  if (!fmSMModelVersion)
   {
   }
 
-  if (!v118)
+  if (!fmSMAssessment)
   {
   }
 
-  if (!v119)
+  if (!fmDetectorModelVersion)
   {
   }
 
-  if (!v120)
+  if (!fmModelVersion)
   {
   }
 
-  if (!v121)
+  if (!fmAssessment)
   {
   }
 
-  if (!v122)
+  if (!smLivenessType)
   {
   }
 
-  if (!v123)
+  if (!smGestureAssessment)
   {
   }
 
-  if (!v124)
+  if (!smLivenessAssessment)
   {
   }
 
-  if (!v125)
+  if (!smPadtoolVersion)
   {
   }
 
-  if (!v126)
+  if (!smPrdVersion)
   {
   }
 
-  if (!v127)
+  if (!smFacePoseVersion)
   {
   }
 
-  if (!v128)
+  if (!smFacVersion)
   {
   }
 
-  if (!v129)
+  if (!shadowLabel)
   {
   }
 
-  if (!v130)
+  if (!plPrdVersion)
   {
   }
 
-  if (!v131)
+  if (!plPadtoolVersion)
   {
   }
 
-  if (!v132)
+  if (!plFacePoseVersion)
   {
   }
 
-  if (!v133)
+  if (!plFacVersion)
   {
   }
 
-  if (!v134)
+  if (!plAssessment)
   {
   }
 
-  if (!v135)
+  if (!plGestureAssessment)
   {
   }
 
@@ -1412,17 +1412,17 @@ LABEL_144:
   {
   }
 
-  if (!v137)
+  if (!alPrdVersion)
   {
   }
 
-  if (!v138)
+  if (!alPadtoolVersion)
   {
   }
 
-  if (v139)
+  if (alFacePoseVersion)
   {
-    if (v114)
+    if (alFacVersion)
     {
       goto LABEL_152;
     }
@@ -1431,16 +1431,16 @@ LABEL_144:
   else
   {
 
-    if (v114)
+    if (alFacVersion)
     {
       goto LABEL_152;
     }
   }
 
 LABEL_152:
-  if (v140)
+  if (_axSettingsJSONArray)
   {
-    if (v115)
+    if (alGestureAssessment)
     {
       goto LABEL_154;
     }
@@ -1449,7 +1449,7 @@ LABEL_152:
   else
   {
 
-    if (v115)
+    if (alGestureAssessment)
     {
 LABEL_154:
       if (v109)
@@ -1490,7 +1490,7 @@ LABEL_170:
   if (v110)
   {
 LABEL_157:
-    if (v7)
+    if (deviceLanguage)
     {
       goto LABEL_158;
     }
@@ -1500,10 +1500,10 @@ LABEL_157:
 
 LABEL_171:
 
-  if (v7)
+  if (deviceLanguage)
   {
 LABEL_158:
-    if (v6)
+    if (ethnicity)
     {
       goto LABEL_159;
     }
@@ -1513,7 +1513,7 @@ LABEL_158:
 
 LABEL_172:
 
-  if (v6)
+  if (ethnicity)
   {
 LABEL_159:
     if (v46)
@@ -1573,8 +1573,8 @@ LABEL_162:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  axSettings = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
+  v5 = [axSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1585,13 +1585,13 @@ LABEL_162:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(axSettings);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [axSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1602,18 +1602,18 @@ LABEL_162:
   return v3;
 }
 
-- (BMWalletPaymentsCommerceUserProofingResult)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceUserProofingResult)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v415[1] = *MEMORY[0x1E69E9840];
-  v334 = a3;
-  v6 = [v334 objectForKeyedSubscript:@"age"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"age"];
   v7 = 0x1E695D000uLL;
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -1622,13 +1622,13 @@ LABEL_162:
         v415[0] = v33;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v415 forKeys:&v414 count:1];
         v8 = 0;
-        v34 = 0;
-        *a4 = [v31 initWithDomain:v32 code:2 userInfo:v9];
+        selfCopy5 = 0;
+        *error = [v31 initWithDomain:v32 code:2 userInfo:v9];
         goto LABEL_437;
       }
 
       v8 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       goto LABEL_438;
     }
 
@@ -1640,13 +1640,13 @@ LABEL_162:
     v8 = 0;
   }
 
-  v9 = [v334 objectForKeyedSubscript:@"gender"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"gender"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v36 = objc_alloc(MEMORY[0x1E696ABC0]);
         v37 = *MEMORY[0x1E698F240];
@@ -1659,13 +1659,13 @@ LABEL_162:
         v333 = v39;
         v41 = [v40 initWithDomain:v37 code:2 userInfo:v39];
         v33 = 0;
-        v34 = 0;
-        *a4 = v41;
+        selfCopy5 = 0;
+        *error = v41;
         goto LABEL_436;
       }
 
       v33 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       goto LABEL_437;
     }
 
@@ -1678,7 +1678,7 @@ LABEL_162:
     v332 = 0;
   }
 
-  v10 = [v334 objectForKeyedSubscript:@"skinTone"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"skinTone"];
   v331 = v9;
   v333 = v10;
   if (v10 && (v11 = v10, v12 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -1686,27 +1686,27 @@ LABEL_162:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v13 = 0;
-        v34 = 0;
+        selfCopy5 = 0;
         v33 = v332;
         goto LABEL_436;
       }
 
-      v319 = a4;
+      errorCopy = error;
       v42 = objc_alloc(MEMORY[0x1E696ABC0]);
       v43 = *MEMORY[0x1E698F240];
       v410 = *MEMORY[0x1E696A578];
-      a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"skinTone"];
-      v411 = a4;
-      v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v411 forKeys:&v410 count:1];
+      error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"skinTone"];
+      errorCopy2 = error;
+      v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v410 count:1];
       v45 = v42;
       v15 = v44;
       v46 = [v45 initWithDomain:v43 code:2 userInfo:v44];
       v13 = 0;
-      v34 = 0;
-      *v319 = v46;
+      selfCopy5 = 0;
+      *errorCopy = v46;
       goto LABEL_74;
     }
 
@@ -1719,7 +1719,7 @@ LABEL_162:
     v13 = 0;
   }
 
-  v14 = [v334 objectForKeyedSubscript:@"ethnicity"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"ethnicity"];
   v330 = v14;
   if (v14)
   {
@@ -1736,9 +1736,9 @@ LABEL_162:
         goto LABEL_13;
       }
 
-      if (a4)
+      if (error)
       {
-        v320 = a4;
+        errorCopy3 = error;
         v47 = v13;
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
         v49 = *MEMORY[0x1E698F240];
@@ -1749,14 +1749,14 @@ LABEL_162:
         v51 = v48;
         v13 = v47;
         v52 = [v51 initWithDomain:v49 code:2 userInfo:v17];
-        a4 = 0;
-        v34 = 0;
-        *v320 = v52;
+        error = 0;
+        selfCopy5 = 0;
+        *errorCopy3 = v52;
         v33 = v332;
         goto LABEL_434;
       }
 
-      v34 = 0;
+      selfCopy5 = 0;
 LABEL_74:
       v33 = v332;
       goto LABEL_435;
@@ -1765,38 +1765,38 @@ LABEL_74:
 
   v329 = 0;
 LABEL_13:
-  v17 = [v334 objectForKeyedSubscript:@"deviceLanguage"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"deviceLanguage"];
   if (v17 && (v18 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v310 = v13;
         v53 = objc_alloc(MEMORY[0x1E696ABC0]);
         v54 = *MEMORY[0x1E698F240];
         v406 = *MEMORY[0x1E696A578];
-        v321 = a4;
+        errorCopy4 = error;
         v325 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"deviceLanguage"];
         v407 = v325;
         v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v407 forKeys:&v406 count:1];
         v56 = v53;
         v13 = v310;
-        a4 = v329;
+        error = v329;
         v326 = v55;
         v57 = [v56 initWithDomain:v54 code:2 userInfo:?];
         v50 = 0;
-        v34 = 0;
-        *v321 = v57;
+        selfCopy5 = 0;
+        *errorCopy4 = v57;
         v33 = v332;
         goto LABEL_433;
       }
 
       v50 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       v33 = v332;
-      a4 = v329;
+      error = v329;
       goto LABEL_434;
     }
 
@@ -1809,47 +1809,47 @@ LABEL_13:
     v317 = 0;
   }
 
-  v19 = [v334 objectForKeyedSubscript:@"proofingDecision"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"proofingDecision"];
   v326 = v19;
   if (v19 && (v20 = v19, v21 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v311 = v13;
         v58 = objc_alloc(MEMORY[0x1E696ABC0]);
         v59 = *MEMORY[0x1E698F240];
         v404 = *MEMORY[0x1E696A578];
-        v322 = a4;
+        errorCopy5 = error;
         v316 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"proofingDecision"];
         v405 = v316;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v405 forKeys:&v404 count:1];
         v60 = v58;
         v13 = v311;
-        a4 = v329;
+        error = v329;
         v61 = [v60 initWithDomain:v59 code:2 userInfo:v27];
         v325 = 0;
-        v34 = 0;
-        *v322 = v61;
+        selfCopy5 = 0;
+        *errorCopy5 = v61;
         v33 = v332;
         v50 = v317;
         goto LABEL_432;
       }
 
       v325 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       v33 = v332;
       v50 = v317;
-      a4 = v329;
+      error = v329;
       goto LABEL_433;
     }
 
     v35 = v13;
     v23 = v17;
     v24 = v8;
-    v25 = self;
+    selfCopy2 = self;
     v26 = v35;
     v327 = v6;
     v325 = v20;
@@ -1860,37 +1860,37 @@ LABEL_13:
     v22 = v13;
     v23 = v17;
     v24 = v8;
-    v25 = self;
+    selfCopy2 = self;
     v26 = v22;
     v327 = v6;
     v325 = 0;
   }
 
   v324 = v24;
-  v27 = [v334 objectForKeyedSubscript:@"issuer"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"issuer"];
   v318 = v27;
   if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v313 = v26;
         v67 = objc_alloc(MEMORY[0x1E696ABC0]);
         v68 = *MEMORY[0x1E698F240];
         v402 = *MEMORY[0x1E696A578];
-        v69 = a4;
-        a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"issuer"];
-        v403 = a4;
-        v315 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v403 forKeys:&v402 count:1];
+        errorCopy6 = error;
+        error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"issuer"];
+        errorCopy7 = error;
+        v315 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy7 forKeys:&v402 count:1];
         v70 = [v67 initWithDomain:v68 code:2 userInfo:?];
         v316 = 0;
-        v34 = 0;
-        *v69 = v70;
+        selfCopy5 = 0;
+        *errorCopy6 = v70;
         v33 = v332;
         v50 = v317;
-        v71 = v25;
+        v71 = selfCopy2;
         v8 = v324;
         v17 = v23;
         v6 = v327;
@@ -1900,15 +1900,15 @@ LABEL_13:
       }
 
       v316 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       v33 = v332;
       v50 = v317;
-      v106 = v25;
+      v106 = selfCopy2;
       v8 = v324;
       v6 = v327;
       v107 = v26;
       self = v106;
-      a4 = v329;
+      error = v329;
       v17 = v23;
       v13 = v107;
       goto LABEL_432;
@@ -1922,7 +1922,7 @@ LABEL_13:
     v28 = 0;
   }
 
-  v29 = [v334 objectForKeyedSubscript:@"alAssessment"];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"alAssessment"];
   v316 = v28;
   v308 = v23;
   if (v29)
@@ -1932,7 +1932,7 @@ LABEL_13:
 
   else
   {
-    v30 = [v334 objectForKeyedSubscript:@"livenessAssessment"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"livenessAssessment"];
 
     if (!v30)
     {
@@ -1954,10 +1954,10 @@ LABEL_62:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v315 = v30;
-    if (a4)
+    if (error)
     {
       v312 = v26;
-      v62 = a4;
+      errorCopy8 = error;
       v63 = objc_alloc(MEMORY[0x1E696ABC0]);
       v64 = *MEMORY[0x1E698F240];
       v400 = *MEMORY[0x1E696A578];
@@ -1966,22 +1966,22 @@ LABEL_62:
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v401 forKeys:&v400 count:1];
       v309 = v13 = v312;
       v65 = [v63 initWithDomain:v64 code:2 userInfo:v309];
-      a4 = 0;
-      v34 = 0;
-      *v62 = v65;
+      error = 0;
+      selfCopy5 = 0;
+      *errorCopy8 = v65;
       v33 = v332;
       v50 = v317;
-      v66 = v25;
+      v66 = selfCopy2;
       v8 = v324;
       v6 = v327;
       self = v66;
       goto LABEL_430;
     }
 
-    v34 = 0;
+    selfCopy5 = 0;
     v33 = v332;
     v50 = v317;
-    v103 = v25;
+    v103 = selfCopy2;
     v8 = v324;
     v6 = v327;
     v104 = v26;
@@ -1994,7 +1994,7 @@ LABEL_62:
   v315 = v30;
   v305 = v315;
 LABEL_63:
-  v72 = [v334 objectForKeyedSubscript:@"alGestureAssessment"];
+  v72 = [dictionaryCopy objectForKeyedSubscript:@"alGestureAssessment"];
   if (v72)
   {
     v73 = v72;
@@ -2002,11 +2002,11 @@ LABEL_63:
 
   else
   {
-    v73 = [v334 objectForKeyedSubscript:@"gestureAssessment"];
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"gestureAssessment"];
 
     if (!v73)
     {
-      v323 = a4;
+      errorCopy11 = error;
       v309 = 0;
       goto LABEL_76;
     }
@@ -2019,7 +2019,7 @@ LABEL_63:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v309 = v73;
-      if (a4)
+      if (error)
       {
         v74 = objc_alloc(MEMORY[0x1E696ABC0]);
         v75 = *MEMORY[0x1E698F240];
@@ -2029,51 +2029,51 @@ LABEL_63:
         v303 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v399 forKeys:&v398 count:1];
         v76 = [v74 initWithDomain:v75 code:2 userInfo:?];
         v307 = 0;
-        v34 = 0;
-        *a4 = v76;
+        selfCopy5 = 0;
+        *error = v76;
         v33 = v332;
         v50 = v317;
-        a4 = v305;
+        error = v305;
         v6 = v327;
         v13 = v26;
-        self = v25;
+        self = selfCopy2;
         v8 = v324;
 
         goto LABEL_429;
       }
 
       v307 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       v33 = v332;
       v50 = v317;
-      a4 = v305;
+      error = v305;
       v6 = v327;
       v13 = v26;
-      self = v25;
+      self = selfCopy2;
       v8 = v324;
       goto LABEL_430;
     }
 
-    v323 = a4;
+    errorCopy11 = error;
     v309 = v73;
     v307 = v309;
     goto LABEL_77;
   }
 
   v309 = v73;
-  v323 = a4;
+  errorCopy11 = error;
 LABEL_76:
   v307 = 0;
 LABEL_77:
-  v77 = [v334 objectForKeyedSubscript:@"axSettings"];
-  v78 = [MEMORY[0x1E695DFB0] null];
-  v79 = [v77 isEqual:v78];
+  v77 = [dictionaryCopy objectForKeyedSubscript:@"axSettings"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v79 = [v77 isEqual:null];
 
   v6 = v327;
   v314 = v26;
   if (v79)
   {
-    self = v25;
+    self = selfCopy2;
 
     v77 = 0;
   }
@@ -2081,7 +2081,7 @@ LABEL_77:
   else
   {
     v13 = v26;
-    self = v25;
+    self = selfCopy2;
     if (v77)
     {
       objc_opt_class();
@@ -2089,12 +2089,12 @@ LABEL_77:
       {
         v8 = v324;
         v306 = v77;
-        if (!v323)
+        if (!errorCopy11)
         {
-          v34 = 0;
+          selfCopy5 = 0;
           v33 = v332;
           v50 = v317;
-          a4 = v305;
+          error = v305;
           goto LABEL_429;
         }
 
@@ -2104,13 +2104,13 @@ LABEL_77:
         v304 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"axSettings"];
         v397 = v304;
         v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v397 forKeys:&v396 count:1];
-        v34 = 0;
-        *v323 = [v100 initWithDomain:v101 code:2 userInfo:v102];
+        selfCopy5 = 0;
+        *errorCopy11 = [v100 initWithDomain:v101 code:2 userInfo:v102];
         v99 = v102;
         v33 = v332;
         v50 = v317;
 LABEL_101:
-        a4 = v305;
+        error = v305;
         goto LABEL_428;
       }
     }
@@ -2145,7 +2145,7 @@ LABEL_101:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v323)
+        if (errorCopy11)
         {
           v90 = objc_alloc(MEMORY[0x1E696ABC0]);
           v91 = *MEMORY[0x1E698F240];
@@ -2160,9 +2160,9 @@ LABEL_96:
           v33 = v332;
           v50 = v317;
           v27 = v318;
-          a4 = v305;
-          v34 = 0;
-          *v323 = [v93 initWithDomain:v94 code:2 userInfo:v95];
+          error = v305;
+          selfCopy5 = 0;
+          *errorCopy11 = [v93 initWithDomain:v94 code:2 userInfo:v95];
           v301 = v306;
           v8 = v324;
           v6 = v327;
@@ -2175,7 +2175,7 @@ LABEL_96:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v323)
+        if (errorCopy11)
         {
           v96 = objc_alloc(MEMORY[0x1E696ABC0]);
           v97 = *MEMORY[0x1E698F240];
@@ -2191,7 +2191,7 @@ LABEL_96:
         }
 
 LABEL_97:
-        v34 = 0;
+        selfCopy5 = 0;
         v99 = v81;
         v8 = v324;
         v6 = v327;
@@ -2218,7 +2218,7 @@ LABEL_97:
 
 LABEL_90:
 
-  v88 = [v334 objectForKeyedSubscript:@"alFacVersion"];
+  v88 = [dictionaryCopy objectForKeyedSubscript:@"alFacVersion"];
   if (v88)
   {
     v89 = v88;
@@ -2226,7 +2226,7 @@ LABEL_90:
     goto LABEL_105;
   }
 
-  v89 = [v334 objectForKeyedSubscript:@"facVersion"];
+  v89 = [dictionaryCopy objectForKeyedSubscript:@"facVersion"];
 
   if (!v89)
   {
@@ -2247,7 +2247,7 @@ LABEL_105:
   {
     v302 = v89;
     v8 = v324;
-    if (v323)
+    if (errorCopy11)
     {
       v108 = objc_alloc(MEMORY[0x1E696ABC0]);
       v109 = *MEMORY[0x1E698F240];
@@ -2256,8 +2256,8 @@ LABEL_105:
       v390 = v92;
       v300 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v390 forKeys:&v389 count:1];
       v301 = 0;
-      v34 = 0;
-      *v323 = [v108 initWithDomain:v109 code:2 userInfo:?];
+      selfCopy5 = 0;
+      *errorCopy11 = [v108 initWithDomain:v109 code:2 userInfo:?];
       v6 = v327;
       v33 = v332;
       v50 = v317;
@@ -2265,11 +2265,11 @@ LABEL_105:
     }
 
     v301 = 0;
-    v34 = 0;
+    selfCopy5 = 0;
     v6 = v327;
     v33 = v332;
     v50 = v317;
-    a4 = v305;
+    error = v305;
     v13 = v314;
     goto LABEL_427;
   }
@@ -2277,7 +2277,7 @@ LABEL_105:
   v89 = v89;
   v301 = v89;
 LABEL_109:
-  v105 = [v334 objectForKeyedSubscript:@"alFacePoseVersion"];
+  v105 = [dictionaryCopy objectForKeyedSubscript:@"alFacePoseVersion"];
   v302 = v89;
   if (v105)
   {
@@ -2287,7 +2287,7 @@ LABEL_109:
     goto LABEL_114;
   }
 
-  v92 = [v334 objectForKeyedSubscript:@"facePoseVersion"];
+  v92 = [dictionaryCopy objectForKeyedSubscript:@"facePoseVersion"];
 
   v8 = v324;
   if (!v92)
@@ -2295,7 +2295,7 @@ LABEL_109:
     v300 = 0;
     v6 = v327;
 LABEL_124:
-    v113 = [v334 objectForKeyedSubscript:@"alPadtoolVersion"];
+    v113 = [dictionaryCopy objectForKeyedSubscript:@"alPadtoolVersion"];
     if (v113)
     {
       v112 = v113;
@@ -2303,7 +2303,7 @@ LABEL_124:
 
     else
     {
-      v112 = [v334 objectForKeyedSubscript:@"padtoolVersion"];
+      v112 = [dictionaryCopy objectForKeyedSubscript:@"padtoolVersion"];
 
       if (!v112)
       {
@@ -2317,14 +2317,14 @@ LABEL_124:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v323)
+        if (!errorCopy11)
         {
           v298 = 0;
-          v34 = 0;
+          selfCopy5 = 0;
           v33 = v332;
           v50 = v317;
           v27 = v318;
-          a4 = v305;
+          error = v305;
 LABEL_424:
 
           goto LABEL_425;
@@ -2340,12 +2340,12 @@ LABEL_424:
         v295 = v116;
         v118 = [v299 initWithDomain:v117 code:2 userInfo:?];
         v298 = 0;
-        v34 = 0;
-        *v323 = v118;
+        selfCopy5 = 0;
+        *errorCopy11 = v118;
         v33 = v332;
         v50 = v317;
         v27 = v318;
-        a4 = v305;
+        error = v305;
         goto LABEL_423;
       }
 
@@ -2353,7 +2353,7 @@ LABEL_424:
       v298 = v112;
       v27 = v318;
 LABEL_131:
-      v114 = [v334 objectForKeyedSubscript:@"alPrdVersion"];
+      v114 = [dictionaryCopy objectForKeyedSubscript:@"alPrdVersion"];
       v297 = v112;
       if (v114)
       {
@@ -2362,7 +2362,7 @@ LABEL_131:
 
       else
       {
-        v115 = [v334 objectForKeyedSubscript:@"prdVersion"];
+        v115 = [dictionaryCopy objectForKeyedSubscript:@"prdVersion"];
 
         if (!v115)
         {
@@ -2378,13 +2378,13 @@ LABEL_131:
 LABEL_144:
         v293 = 0;
 LABEL_145:
-        v121 = [v334 objectForKeyedSubscript:@"didStepUp"];
+        v121 = [dictionaryCopy objectForKeyedSubscript:@"didStepUp"];
         v292 = v121;
         if (!v121 || (v122 = v121, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v290 = 0;
 LABEL_148:
-          v123 = [v334 objectForKeyedSubscript:@"plGestureAssessment"];
+          v123 = [dictionaryCopy objectForKeyedSubscript:@"plGestureAssessment"];
           if (v123)
           {
             v124 = v123;
@@ -2392,14 +2392,14 @@ LABEL_148:
 
           else
           {
-            v124 = [v334 objectForKeyedSubscript:@"passiveGestureAssessment"];
+            v124 = [dictionaryCopy objectForKeyedSubscript:@"passiveGestureAssessment"];
 
             if (!v124)
             {
 LABEL_152:
               v287 = 0;
 LABEL_155:
-              v125 = [v334 objectForKeyedSubscript:@"plAssessment"];
+              v125 = [dictionaryCopy objectForKeyedSubscript:@"plAssessment"];
               v289 = v124;
               if (v125)
               {
@@ -2408,7 +2408,7 @@ LABEL_155:
 
               else
               {
-                v126 = [v334 objectForKeyedSubscript:@"passiveLivenessAssessment"];
+                v126 = [dictionaryCopy objectForKeyedSubscript:@"passiveLivenessAssessment"];
 
                 if (!v126)
                 {
@@ -2432,7 +2432,7 @@ LABEL_175:
                 v286 = v126;
                 v284 = v286;
 LABEL_176:
-                v136 = [v334 objectForKeyedSubscript:@"plFacVersion"];
+                v136 = [dictionaryCopy objectForKeyedSubscript:@"plFacVersion"];
                 if (v136)
                 {
                   v137 = v136;
@@ -2440,7 +2440,7 @@ LABEL_176:
 
                 else
                 {
-                  v137 = [v334 objectForKeyedSubscript:@"passiveLivenessFacVersion"];
+                  v137 = [dictionaryCopy objectForKeyedSubscript:@"passiveLivenessFacVersion"];
 
                   if (!v137)
                   {
@@ -2448,7 +2448,7 @@ LABEL_180:
                     v282 = 0;
 LABEL_183:
                     v281 = v137;
-                    v138 = [v334 objectForKeyedSubscript:@"plFacePoseVersion"];
+                    v138 = [dictionaryCopy objectForKeyedSubscript:@"plFacePoseVersion"];
                     if (v138)
                     {
                       v139 = v138;
@@ -2456,7 +2456,7 @@ LABEL_183:
 
                     else
                     {
-                      v139 = [v334 objectForKeyedSubscript:@"passiveLivenessFacePoseVersion"];
+                      v139 = [dictionaryCopy objectForKeyedSubscript:@"passiveLivenessFacePoseVersion"];
 
                       if (!v139)
                       {
@@ -2480,7 +2480,7 @@ LABEL_197:
                       v279 = v139;
                       v277 = v279;
 LABEL_198:
-                      v145 = [v334 objectForKeyedSubscript:@"plPadtoolVersion"];
+                      v145 = [dictionaryCopy objectForKeyedSubscript:@"plPadtoolVersion"];
                       if (v145)
                       {
                         v146 = v145;
@@ -2488,7 +2488,7 @@ LABEL_198:
 
                       else
                       {
-                        v146 = [v334 objectForKeyedSubscript:@"passiveLivenessPadtoolVersion"];
+                        v146 = [dictionaryCopy objectForKeyedSubscript:@"passiveLivenessPadtoolVersion"];
 
                         if (!v146)
                         {
@@ -2496,7 +2496,7 @@ LABEL_202:
                           v275 = 0;
 LABEL_205:
                           v274 = v146;
-                          v147 = [v334 objectForKeyedSubscript:@"plPrdVersion"];
+                          v147 = [dictionaryCopy objectForKeyedSubscript:@"plPrdVersion"];
                           if (v147)
                           {
                             v148 = v147;
@@ -2504,7 +2504,7 @@ LABEL_205:
 
                           else
                           {
-                            v148 = [v334 objectForKeyedSubscript:@"passiveLivenessPrdVersion"];
+                            v148 = [dictionaryCopy objectForKeyedSubscript:@"passiveLivenessPrdVersion"];
 
                             if (!v148)
                             {
@@ -2520,7 +2520,7 @@ LABEL_205:
                             v270 = 0;
                             v272 = v148;
 LABEL_221:
-                            v154 = [v334 objectForKeyedSubscript:@"shadowLabel"];
+                            v154 = [dictionaryCopy objectForKeyedSubscript:@"shadowLabel"];
                             if (v154)
                             {
                               v155 = v154;
@@ -2528,7 +2528,7 @@ LABEL_221:
 
                             else
                             {
-                              v155 = [v334 objectForKeyedSubscript:@"livenessShadowLabel"];
+                              v155 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowLabel"];
 
                               if (!v155)
                               {
@@ -2536,7 +2536,7 @@ LABEL_225:
                                 v268 = 0;
 LABEL_228:
                                 v267 = v155;
-                                v156 = [v334 objectForKeyedSubscript:@"smFacVersion"];
+                                v156 = [dictionaryCopy objectForKeyedSubscript:@"smFacVersion"];
                                 if (v156)
                                 {
                                   v157 = v156;
@@ -2544,7 +2544,7 @@ LABEL_228:
 
                                 else
                                 {
-                                  v157 = [v334 objectForKeyedSubscript:@"livenessShadowFacVersion"];
+                                  v157 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowFacVersion"];
 
                                   if (!v157)
                                   {
@@ -2560,7 +2560,7 @@ LABEL_228:
                                   v263 = 0;
                                   v265 = v157;
 LABEL_244:
-                                  v163 = [v334 objectForKeyedSubscript:@"smFacePoseVersion"];
+                                  v163 = [dictionaryCopy objectForKeyedSubscript:@"smFacePoseVersion"];
                                   if (v163)
                                   {
                                     v164 = v163;
@@ -2568,7 +2568,7 @@ LABEL_244:
 
                                   else
                                   {
-                                    v164 = [v334 objectForKeyedSubscript:@"livenessShadowFacePoseVersion"];
+                                    v164 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowFacePoseVersion"];
 
                                     if (!v164)
                                     {
@@ -2591,7 +2591,7 @@ LABEL_248:
                                     v261 = v164;
 LABEL_251:
                                     v260 = v164;
-                                    v165 = [v334 objectForKeyedSubscript:@"smPrdVersion"];
+                                    v165 = [dictionaryCopy objectForKeyedSubscript:@"smPrdVersion"];
                                     if (v165)
                                     {
                                       v166 = v165;
@@ -2599,7 +2599,7 @@ LABEL_251:
 
                                     else
                                     {
-                                      v166 = [v334 objectForKeyedSubscript:@"livenessShadowPrdVersion"];
+                                      v166 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowPrdVersion"];
 
                                       if (!v166)
                                       {
@@ -2622,14 +2622,14 @@ LABEL_251:
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
                                         v256 = v166;
-                                        if (!v323)
+                                        if (!errorCopy11)
                                         {
                                           v258 = 0;
-                                          v34 = 0;
+                                          selfCopy5 = 0;
                                           v33 = v332;
                                           v50 = v317;
                                           v27 = v318;
-                                          a4 = v305;
+                                          error = v305;
 LABEL_411:
                                           v169 = v256;
                                           goto LABEL_412;
@@ -2643,8 +2643,8 @@ LABEL_411:
                                         v253 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v362 forKeys:&v361 count:1];
                                         v171 = [v170 initWithDomain:v259 code:2 userInfo:?];
                                         v258 = 0;
-                                        v34 = 0;
-                                        *v323 = v171;
+                                        selfCopy5 = 0;
+                                        *errorCopy11 = v171;
                                         goto LABEL_310;
                                       }
 
@@ -2653,7 +2653,7 @@ LABEL_411:
                                     }
 
 LABEL_267:
-                                    v172 = [v334 objectForKeyedSubscript:@"smPadtoolVersion"];
+                                    v172 = [dictionaryCopy objectForKeyedSubscript:@"smPadtoolVersion"];
                                     if (v172)
                                     {
                                       v173 = v172;
@@ -2661,7 +2661,7 @@ LABEL_267:
 
                                     else
                                     {
-                                      v173 = [v334 objectForKeyedSubscript:@"livenessShadowPadtoolVersion"];
+                                      v173 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowPadtoolVersion"];
 
                                       if (!v173)
                                       {
@@ -2669,7 +2669,7 @@ LABEL_271:
                                         v254 = 0;
 LABEL_274:
                                         v253 = v173;
-                                        v174 = [v334 objectForKeyedSubscript:@"smLivenessAssessment"];
+                                        v174 = [dictionaryCopy objectForKeyedSubscript:@"smLivenessAssessment"];
                                         if (v174)
                                         {
                                           v175 = v174;
@@ -2677,14 +2677,14 @@ LABEL_274:
 
                                         else
                                         {
-                                          v175 = [v334 objectForKeyedSubscript:@"livenessShadowLivenessAssessment"];
+                                          v175 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowLivenessAssessment"];
 
                                           if (!v175)
                                           {
 LABEL_278:
                                             v251 = 0;
 LABEL_281:
-                                            v176 = [v334 objectForKeyedSubscript:@"smGestureAssessment"];
+                                            v176 = [dictionaryCopy objectForKeyedSubscript:@"smGestureAssessment"];
                                             v249 = v175;
                                             if (v176)
                                             {
@@ -2693,7 +2693,7 @@ LABEL_281:
 
                                             else
                                             {
-                                              v177 = [v334 objectForKeyedSubscript:@"livenessShadowGestureAssessment"];
+                                              v177 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowGestureAssessment"];
 
                                               if (!v177)
                                               {
@@ -2709,7 +2709,7 @@ LABEL_281:
                                               v246 = 0;
                                               v247 = v177;
 LABEL_300:
-                                              v187 = [v334 objectForKeyedSubscript:@"smLivenessType"];
+                                              v187 = [dictionaryCopy objectForKeyedSubscript:@"smLivenessType"];
                                               if (v187)
                                               {
                                                 v188 = v187;
@@ -2717,7 +2717,7 @@ LABEL_300:
 
                                               else
                                               {
-                                                v188 = [v334 objectForKeyedSubscript:@"livenessShadowLivenessType"];
+                                                v188 = [dictionaryCopy objectForKeyedSubscript:@"livenessShadowLivenessType"];
 
                                                 if (!v188)
                                                 {
@@ -2733,8 +2733,8 @@ LABEL_300:
                                                 v244 = v188;
                                                 v245 = 0;
 LABEL_312:
-                                                v192 = [v334 objectForKeyedSubscript:@"fmAssessment"];
-                                                v243 = self;
+                                                v192 = [dictionaryCopy objectForKeyedSubscript:@"fmAssessment"];
+                                                selfCopy3 = self;
                                                 v328 = v6;
                                                 v239 = v92;
                                                 if (v192)
@@ -2744,7 +2744,7 @@ LABEL_312:
 
                                                 else
                                                 {
-                                                  v193 = [v334 objectForKeyedSubscript:@"faceMatchingAssessment"];
+                                                  v193 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingAssessment"];
 
                                                   if (!v193)
                                                   {
@@ -2760,7 +2760,7 @@ LABEL_312:
                                                   v241 = v193;
                                                   v242 = 0;
 LABEL_324:
-                                                  v196 = [v334 objectForKeyedSubscript:@"fmModelVersion"];
+                                                  v196 = [dictionaryCopy objectForKeyedSubscript:@"fmModelVersion"];
                                                   if (v196)
                                                   {
                                                     v197 = v196;
@@ -2768,14 +2768,14 @@ LABEL_324:
 
                                                   else
                                                   {
-                                                    v197 = [v334 objectForKeyedSubscript:@"faceMatchingModelVersion"];
+                                                    v197 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingModelVersion"];
 
                                                     if (!v197)
                                                     {
 LABEL_328:
                                                       v240 = 0;
 LABEL_331:
-                                                      v198 = [v334 objectForKeyedSubscript:@"fmDetectorModelVersion"];
+                                                      v198 = [dictionaryCopy objectForKeyedSubscript:@"fmDetectorModelVersion"];
                                                       v238 = v197;
                                                       if (v198)
                                                       {
@@ -2784,7 +2784,7 @@ LABEL_331:
 
                                                       else
                                                       {
-                                                        v199 = [v334 objectForKeyedSubscript:@"faceMatchingDetectorModelVersion"];
+                                                        v199 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingDetectorModelVersion"];
 
                                                         if (!v199)
                                                         {
@@ -2800,7 +2800,7 @@ LABEL_331:
                                                         v236 = v199;
                                                         v237 = 0;
 LABEL_347:
-                                                        v204 = [v334 objectForKeyedSubscript:@"fmSMAssessment"];
+                                                        v204 = [dictionaryCopy objectForKeyedSubscript:@"fmSMAssessment"];
                                                         if (v204)
                                                         {
                                                           v205 = v204;
@@ -2808,7 +2808,7 @@ LABEL_347:
 
                                                         else
                                                         {
-                                                          v205 = [v334 objectForKeyedSubscript:@"faceMatchingShadowAssessment"];
+                                                          v205 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingShadowAssessment"];
 
                                                           if (!v205)
                                                           {
@@ -2824,7 +2824,7 @@ LABEL_347:
 LABEL_358:
                                                           v235 = 0;
 LABEL_359:
-                                                          v208 = [v334 objectForKeyedSubscript:@"fmSMModelVersion"];
+                                                          v208 = [dictionaryCopy objectForKeyedSubscript:@"fmSMModelVersion"];
                                                           if (v208)
                                                           {
                                                             v209 = v208;
@@ -2832,7 +2832,7 @@ LABEL_359:
 
                                                           else
                                                           {
-                                                            v209 = [v334 objectForKeyedSubscript:@"faceMatchingShadowModelVersion"];
+                                                            v209 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingShadowModelVersion"];
 
                                                             if (!v209)
                                                             {
@@ -2851,7 +2851,7 @@ LABEL_359:
                                                               v234 = v209;
                                                               v232 = v234;
 LABEL_371:
-                                                              v212 = [v334 objectForKeyedSubscript:@"fmSMDetectorModelVersion"];
+                                                              v212 = [dictionaryCopy objectForKeyedSubscript:@"fmSMDetectorModelVersion"];
                                                               if (v212)
                                                               {
                                                                 v213 = v212;
@@ -2859,12 +2859,12 @@ LABEL_371:
 
                                                               else
                                                               {
-                                                                v214 = self;
-                                                                v213 = [v334 objectForKeyedSubscript:@"faceMatchingShadowDetectorModelVersion"];
+                                                                selfCopy4 = self;
+                                                                v213 = [dictionaryCopy objectForKeyedSubscript:@"faceMatchingShadowDetectorModelVersion"];
 
                                                                 if (!v213)
                                                                 {
-                                                                  self = v214;
+                                                                  self = selfCopy4;
                                                                   v231 = 0;
                                                                   goto LABEL_383;
                                                                 }
@@ -2874,26 +2874,26 @@ LABEL_371:
                                                               v231 = v213;
                                                               if (objc_opt_isKindOfClass())
                                                               {
-                                                                self = v243;
+                                                                self = selfCopy3;
 LABEL_383:
                                                                 v215 = 0;
 LABEL_384:
-                                                                v229 = [v334 objectForKeyedSubscript:@"identityType"];
+                                                                v229 = [dictionaryCopy objectForKeyedSubscript:@"identityType"];
                                                                 v230 = v215;
                                                                 if (!v229 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                 {
                                                                   v219 = 0;
                                                                   v33 = v332;
                                                                   v50 = v317;
-                                                                  a4 = v305;
+                                                                  error = v305;
                                                                   v220 = v304;
                                                                   v92 = v239;
 LABEL_387:
                                                                   v218 = v219;
                                                                   v228 = v215;
                                                                   v8 = v324;
-                                                                  self = [(BMWalletPaymentsCommerceUserProofingResult *)self initWithAge:v324 gender:v33 skinTone:v314 ethnicity:v329 deviceLanguage:v50 proofingDecision:v325 issuer:v316 alAssessment:a4 alGestureAssessment:v307 axSettings:v220 alFacVersion:v301 alFacePoseVersion:v92 alPadtoolVersion:v298 alPrdVersion:v293 didStepUp:v290 plGestureAssessment:v287 plAssessment:v284 plFacVersion:v282 plFacePoseVersion:v277 plPadtoolVersion:v275 plPrdVersion:v270 shadowLabel:v268 smFacVersion:v263 smFacePoseVersion:v261 smPrdVersion:v258 smPadtoolVersion:v254 smLivenessAssessment:v251 smGestureAssessment:v246 smLivenessType:v245 fmAssessment:v242 fmModelVersion:v240 fmDetectorModelVersion:v237 fmSMAssessment:v235 fmSMModelVersion:v232 fmSMDetectorModelVersion:v228 identityType:v219];
-                                                                  v34 = self;
+                                                                  self = [(BMWalletPaymentsCommerceUserProofingResult *)self initWithAge:v324 gender:v33 skinTone:v314 ethnicity:v329 deviceLanguage:v50 proofingDecision:v325 issuer:v316 alAssessment:error alGestureAssessment:v307 axSettings:v220 alFacVersion:v301 alFacePoseVersion:v92 alPadtoolVersion:v298 alPrdVersion:v293 didStepUp:v290 plGestureAssessment:v287 plAssessment:v284 plFacVersion:v282 plFacePoseVersion:v277 plPadtoolVersion:v275 plPrdVersion:v270 shadowLabel:v268 smFacVersion:v263 smFacePoseVersion:v261 smPrdVersion:v258 smPadtoolVersion:v254 smLivenessAssessment:v251 smGestureAssessment:v246 smLivenessType:v245 fmAssessment:v242 fmModelVersion:v240 fmDetectorModelVersion:v237 fmSMAssessment:v235 fmSMModelVersion:v232 fmSMDetectorModelVersion:v228 identityType:v219];
+                                                                  selfCopy5 = self;
                                                                   v27 = v318;
 LABEL_396:
 
@@ -2909,13 +2909,13 @@ LABEL_401:
                                                                   v219 = v229;
                                                                   v33 = v332;
                                                                   v50 = v317;
-                                                                  a4 = v305;
+                                                                  error = v305;
                                                                   v220 = v304;
                                                                   v92 = v239;
                                                                   goto LABEL_387;
                                                                 }
 
-                                                                if (v323)
+                                                                if (errorCopy11)
                                                                 {
                                                                   v221 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                   v222 = *MEMORY[0x1E698F240];
@@ -2923,23 +2923,23 @@ LABEL_401:
                                                                   v223 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"identityType"];
                                                                   v340 = v223;
                                                                   v224 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v340 forKeys:&v339 count:1];
-                                                                  *v323 = [v221 initWithDomain:v222 code:2 userInfo:v224];
+                                                                  *errorCopy11 = [v221 initWithDomain:v222 code:2 userInfo:v224];
                                                                 }
 
                                                                 v218 = 0;
-                                                                v34 = 0;
+                                                                selfCopy5 = 0;
 LABEL_395:
                                                                 v8 = v324;
                                                                 v33 = v332;
                                                                 v50 = v317;
                                                                 v27 = v318;
-                                                                a4 = v305;
+                                                                error = v305;
                                                                 v92 = v239;
                                                                 v112 = v297;
                                                                 goto LABEL_396;
                                                               }
 
-                                                              self = v243;
+                                                              self = selfCopy3;
                                                               objc_opt_class();
                                                               if (objc_opt_isKindOfClass())
                                                               {
@@ -2948,7 +2948,7 @@ LABEL_395:
                                                                 goto LABEL_384;
                                                               }
 
-                                                              if (v323)
+                                                              if (errorCopy11)
                                                               {
                                                                 v216 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                 v217 = *MEMORY[0x1E698F240];
@@ -2957,24 +2957,24 @@ LABEL_395:
                                                                 v342 = v218;
                                                                 v229 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v342 forKeys:&v341 count:1];
                                                                 v230 = 0;
-                                                                v34 = 0;
-                                                                *v323 = [v216 initWithDomain:v217 code:2 userInfo:?];
+                                                                selfCopy5 = 0;
+                                                                *errorCopy11 = [v216 initWithDomain:v217 code:2 userInfo:?];
                                                                 goto LABEL_395;
                                                               }
 
                                                               v230 = 0;
-                                                              v34 = 0;
+                                                              selfCopy5 = 0;
                                                               v8 = v324;
                                                               v33 = v332;
 LABEL_400:
                                                               v50 = v317;
                                                               v27 = v318;
-                                                              a4 = v305;
+                                                              error = v305;
                                                               v92 = v239;
                                                               goto LABEL_401;
                                                             }
 
-                                                            if (v323)
+                                                            if (errorCopy11)
                                                             {
                                                               v210 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                               v211 = *MEMORY[0x1E698F240];
@@ -2983,19 +2983,19 @@ LABEL_400:
                                                               v344 = v230;
                                                               v231 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v344 forKeys:&v343 count:1];
                                                               v232 = 0;
-                                                              v34 = 0;
-                                                              *v323 = [v210 initWithDomain:v211 code:2 userInfo:?];
+                                                              selfCopy5 = 0;
+                                                              *errorCopy11 = [v210 initWithDomain:v211 code:2 userInfo:?];
                                                               v33 = v332;
                                                               goto LABEL_400;
                                                             }
 
                                                             v232 = 0;
-                                                            v34 = 0;
+                                                            selfCopy5 = 0;
                                                             v33 = v332;
 LABEL_398:
                                                             v50 = v317;
                                                             v27 = v318;
-                                                            a4 = v305;
+                                                            error = v305;
 LABEL_402:
 
                                                             goto LABEL_403;
@@ -3015,7 +3015,7 @@ LABEL_370:
                                                         }
 
                                                         v233 = v205;
-                                                        if (v323)
+                                                        if (errorCopy11)
                                                         {
                                                           v206 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                           v207 = *MEMORY[0x1E698F240];
@@ -3024,20 +3024,20 @@ LABEL_370:
                                                           v346 = v232;
                                                           v234 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v346 forKeys:&v345 count:1];
                                                           v235 = 0;
-                                                          v34 = 0;
-                                                          *v323 = [v206 initWithDomain:v207 code:2 userInfo:?];
+                                                          selfCopy5 = 0;
+                                                          *errorCopy11 = [v206 initWithDomain:v207 code:2 userInfo:?];
                                                           v33 = v332;
                                                           goto LABEL_398;
                                                         }
 
                                                         v235 = 0;
-                                                        v34 = 0;
+                                                        selfCopy5 = 0;
 LABEL_391:
                                                         v6 = v328;
                                                         v33 = v332;
                                                         v50 = v317;
                                                         v27 = v318;
-                                                        a4 = v305;
+                                                        error = v305;
 LABEL_403:
 
                                                         goto LABEL_404;
@@ -3052,7 +3052,7 @@ LABEL_403:
                                                       }
 
                                                       v236 = v199;
-                                                      if (v323)
+                                                      if (errorCopy11)
                                                       {
                                                         v202 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                         v203 = *MEMORY[0x1E698F240];
@@ -3061,19 +3061,19 @@ LABEL_403:
                                                         v348 = v235;
                                                         v233 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v348 forKeys:&v347 count:1];
                                                         v237 = 0;
-                                                        v34 = 0;
-                                                        *v323 = [v202 initWithDomain:v203 code:2 userInfo:?];
+                                                        selfCopy5 = 0;
+                                                        *errorCopy11 = [v202 initWithDomain:v203 code:2 userInfo:?];
                                                         goto LABEL_391;
                                                       }
 
                                                       v237 = 0;
-                                                      v34 = 0;
+                                                      selfCopy5 = 0;
 LABEL_381:
                                                       v6 = v328;
                                                       v33 = v332;
                                                       v50 = v317;
                                                       v27 = v318;
-                                                      a4 = v305;
+                                                      error = v305;
 LABEL_404:
 
                                                       goto LABEL_405;
@@ -3095,7 +3095,7 @@ LABEL_404:
                                                   }
 
                                                   v238 = v197;
-                                                  if (v323)
+                                                  if (errorCopy11)
                                                   {
                                                     v200 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v201 = *MEMORY[0x1E698F240];
@@ -3104,19 +3104,19 @@ LABEL_404:
                                                     v350 = v237;
                                                     v236 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v350 forKeys:&v349 count:1];
                                                     v240 = 0;
-                                                    v34 = 0;
-                                                    *v323 = [v200 initWithDomain:v201 code:2 userInfo:?];
+                                                    selfCopy5 = 0;
+                                                    *errorCopy11 = [v200 initWithDomain:v201 code:2 userInfo:?];
                                                     goto LABEL_381;
                                                   }
 
                                                   v240 = 0;
-                                                  v34 = 0;
+                                                  selfCopy5 = 0;
 LABEL_368:
                                                   v6 = v328;
                                                   v33 = v332;
                                                   v50 = v317;
                                                   v27 = v318;
-                                                  a4 = v305;
+                                                  error = v305;
 LABEL_405:
 
                                                   goto LABEL_406;
@@ -3131,7 +3131,7 @@ LABEL_405:
                                                 }
 
                                                 v241 = v193;
-                                                if (v323)
+                                                if (errorCopy11)
                                                 {
                                                   v194 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                   v195 = *MEMORY[0x1E698F240];
@@ -3140,17 +3140,17 @@ LABEL_405:
                                                   v352 = v240;
                                                   v238 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v352 forKeys:&v351 count:1];
                                                   v242 = 0;
-                                                  v34 = 0;
-                                                  *v323 = [v194 initWithDomain:v195 code:2 userInfo:?];
+                                                  selfCopy5 = 0;
+                                                  *errorCopy11 = [v194 initWithDomain:v195 code:2 userInfo:?];
                                                   goto LABEL_368;
                                                 }
 
                                                 v242 = 0;
-                                                v34 = 0;
+                                                selfCopy5 = 0;
                                                 v33 = v332;
                                                 v50 = v317;
                                                 v27 = v318;
-                                                a4 = v305;
+                                                error = v305;
 LABEL_406:
 
                                                 goto LABEL_407;
@@ -3165,7 +3165,7 @@ LABEL_406:
                                               }
 
                                               v244 = v188;
-                                              if (v323)
+                                              if (errorCopy11)
                                               {
                                                 v189 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v190 = *MEMORY[0x1E698F240];
@@ -3175,22 +3175,22 @@ LABEL_406:
                                                 v241 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v354 forKeys:&v353 count:1];
                                                 v191 = [v189 initWithDomain:v190 code:2 userInfo:?];
                                                 v245 = 0;
-                                                v34 = 0;
-                                                *v323 = v191;
+                                                selfCopy5 = 0;
+                                                *errorCopy11 = v191;
                                                 v33 = v332;
                                                 v50 = v317;
                                                 v27 = v318;
-                                                a4 = v305;
+                                                error = v305;
                                                 goto LABEL_406;
                                               }
 
                                               v245 = 0;
-                                              v34 = 0;
+                                              selfCopy5 = 0;
 LABEL_345:
                                               v33 = v332;
                                               v50 = v317;
                                               v27 = v318;
-                                              a4 = v305;
+                                              error = v305;
 LABEL_407:
 
                                               goto LABEL_408;
@@ -3205,7 +3205,7 @@ LABEL_407:
                                             }
 
                                             v247 = v177;
-                                            if (v323)
+                                            if (errorCopy11)
                                             {
                                               v184 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v185 = *MEMORY[0x1E698F240];
@@ -3215,18 +3215,18 @@ LABEL_407:
                                               v244 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v356 forKeys:&v355 count:1];
                                               v186 = [v184 initWithDomain:v185 code:2 userInfo:?];
                                               v246 = 0;
-                                              v34 = 0;
-                                              *v323 = v186;
+                                              selfCopy5 = 0;
+                                              *errorCopy11 = v186;
                                               goto LABEL_345;
                                             }
 
                                             v246 = 0;
-                                            v34 = 0;
+                                            selfCopy5 = 0;
 LABEL_343:
                                             v33 = v332;
                                             v50 = v317;
                                             v27 = v318;
-                                            a4 = v305;
+                                            error = v305;
 LABEL_408:
 
                                             goto LABEL_409;
@@ -3248,7 +3248,7 @@ LABEL_408:
                                         }
 
                                         v249 = v175;
-                                        if (v323)
+                                        if (errorCopy11)
                                         {
                                           v252 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v248 = *MEMORY[0x1E698F240];
@@ -3260,18 +3260,18 @@ LABEL_408:
                                           v247 = v181;
                                           v183 = [v252 initWithDomain:v182 code:2 userInfo:?];
                                           v251 = 0;
-                                          v34 = 0;
-                                          *v323 = v183;
+                                          selfCopy5 = 0;
+                                          *errorCopy11 = v183;
                                           goto LABEL_343;
                                         }
 
                                         v251 = 0;
-                                        v34 = 0;
+                                        selfCopy5 = 0;
 LABEL_322:
                                         v33 = v332;
                                         v50 = v317;
                                         v27 = v318;
-                                        a4 = v305;
+                                        error = v305;
 LABEL_409:
 
                                         goto LABEL_410;
@@ -3293,7 +3293,7 @@ LABEL_409:
                                     }
 
                                     v253 = v173;
-                                    if (v323)
+                                    if (errorCopy11)
                                     {
                                       v255 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v250 = *MEMORY[0x1E698F240];
@@ -3305,25 +3305,25 @@ LABEL_409:
                                       v249 = v178;
                                       v180 = [v255 initWithDomain:v179 code:2 userInfo:?];
                                       v254 = 0;
-                                      v34 = 0;
-                                      *v323 = v180;
+                                      selfCopy5 = 0;
+                                      *errorCopy11 = v180;
                                       goto LABEL_322;
                                     }
 
                                     v254 = 0;
-                                    v34 = 0;
+                                    selfCopy5 = 0;
 LABEL_310:
                                     v33 = v332;
                                     v50 = v317;
                                     v27 = v318;
-                                    a4 = v305;
+                                    error = v305;
 LABEL_410:
 
                                     goto LABEL_411;
                                   }
 
                                   v260 = v164;
-                                  if (v323)
+                                  if (errorCopy11)
                                   {
                                     v262 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v257 = *MEMORY[0x1E698F240];
@@ -3333,25 +3333,25 @@ LABEL_410:
                                     v167 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v364 forKeys:&v363 count:1];
                                     v168 = [v262 initWithDomain:v257 code:2 userInfo:v167];
                                     v261 = 0;
-                                    v34 = 0;
-                                    *v323 = v168;
+                                    selfCopy5 = 0;
+                                    *errorCopy11 = v168;
                                     v169 = v167;
                                     v33 = v332;
                                     v50 = v317;
                                     v27 = v318;
-                                    a4 = v305;
+                                    error = v305;
 LABEL_412:
 
                                     goto LABEL_413;
                                   }
 
                                   v261 = 0;
-                                  v34 = 0;
+                                  selfCopy5 = 0;
 LABEL_297:
                                   v33 = v332;
                                   v50 = v317;
                                   v27 = v318;
-                                  a4 = v305;
+                                  error = v305;
 LABEL_413:
 
                                   goto LABEL_414;
@@ -3366,7 +3366,7 @@ LABEL_413:
                                 }
 
                                 v265 = v157;
-                                if (v323)
+                                if (errorCopy11)
                                 {
                                   v161 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v264 = *MEMORY[0x1E698F240];
@@ -3376,18 +3376,18 @@ LABEL_413:
                                   v260 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v366 forKeys:&v365 count:1];
                                   v162 = [v161 initWithDomain:v264 code:2 userInfo:?];
                                   v263 = 0;
-                                  v34 = 0;
-                                  *v323 = v162;
+                                  selfCopy5 = 0;
+                                  *errorCopy11 = v162;
                                   goto LABEL_297;
                                 }
 
                                 v263 = 0;
-                                v34 = 0;
+                                selfCopy5 = 0;
 LABEL_293:
                                 v33 = v332;
                                 v50 = v317;
                                 v27 = v318;
-                                a4 = v305;
+                                error = v305;
 LABEL_414:
 
                                 goto LABEL_415;
@@ -3409,7 +3409,7 @@ LABEL_414:
                             }
 
                             v267 = v155;
-                            if (v323)
+                            if (errorCopy11)
                             {
                               v269 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v266 = *MEMORY[0x1E698F240];
@@ -3421,18 +3421,18 @@ LABEL_414:
                               v265 = v158;
                               v160 = [v269 initWithDomain:v159 code:2 userInfo:?];
                               v268 = 0;
-                              v34 = 0;
-                              *v323 = v160;
+                              selfCopy5 = 0;
+                              *errorCopy11 = v160;
                               goto LABEL_293;
                             }
 
                             v268 = 0;
-                            v34 = 0;
+                            selfCopy5 = 0;
 LABEL_265:
                             v33 = v332;
                             v50 = v317;
                             v27 = v318;
-                            a4 = v305;
+                            error = v305;
 LABEL_415:
 
                             goto LABEL_416;
@@ -3447,7 +3447,7 @@ LABEL_415:
                           }
 
                           v272 = v148;
-                          if (v323)
+                          if (errorCopy11)
                           {
                             v152 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v271 = *MEMORY[0x1E698F240];
@@ -3457,18 +3457,18 @@ LABEL_415:
                             v267 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v370 forKeys:&v369 count:1];
                             v153 = [v152 initWithDomain:v271 code:2 userInfo:?];
                             v270 = 0;
-                            v34 = 0;
-                            *v323 = v153;
+                            selfCopy5 = 0;
+                            *errorCopy11 = v153;
                             goto LABEL_265;
                           }
 
                           v270 = 0;
-                          v34 = 0;
+                          selfCopy5 = 0;
 LABEL_263:
                           v33 = v332;
                           v50 = v317;
                           v27 = v318;
-                          a4 = v305;
+                          error = v305;
 LABEL_416:
 
                           goto LABEL_417;
@@ -3490,7 +3490,7 @@ LABEL_416:
                       }
 
                       v274 = v146;
-                      if (v323)
+                      if (errorCopy11)
                       {
                         v276 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v273 = *MEMORY[0x1E698F240];
@@ -3502,25 +3502,25 @@ LABEL_416:
                         v272 = v149;
                         v151 = [v276 initWithDomain:v150 code:2 userInfo:?];
                         v275 = 0;
-                        v34 = 0;
-                        *v323 = v151;
+                        selfCopy5 = 0;
+                        *errorCopy11 = v151;
                         goto LABEL_263;
                       }
 
                       v275 = 0;
-                      v34 = 0;
+                      selfCopy5 = 0;
 LABEL_242:
                       v33 = v332;
                       v50 = v317;
                       v27 = v318;
-                      a4 = v305;
+                      error = v305;
 LABEL_417:
 
                       goto LABEL_418;
                     }
 
                     v279 = v139;
-                    if (v323)
+                    if (errorCopy11)
                     {
                       v143 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v278 = *MEMORY[0x1E698F240];
@@ -3530,18 +3530,18 @@ LABEL_417:
                       v274 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v374 forKeys:&v373 count:1];
                       v144 = [v143 initWithDomain:v278 code:2 userInfo:?];
                       v277 = 0;
-                      v34 = 0;
-                      *v323 = v144;
+                      selfCopy5 = 0;
+                      *errorCopy11 = v144;
                       goto LABEL_242;
                     }
 
                     v277 = 0;
-                    v34 = 0;
+                    selfCopy5 = 0;
 LABEL_240:
                     v33 = v332;
                     v50 = v317;
                     v27 = v318;
-                    a4 = v305;
+                    error = v305;
 LABEL_418:
 
                     goto LABEL_419;
@@ -3563,7 +3563,7 @@ LABEL_418:
                 }
 
                 v281 = v137;
-                if (v323)
+                if (errorCopy11)
                 {
                   v283 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v280 = *MEMORY[0x1E698F240];
@@ -3575,25 +3575,25 @@ LABEL_418:
                   v279 = v140;
                   v142 = [v283 initWithDomain:v141 code:2 userInfo:?];
                   v282 = 0;
-                  v34 = 0;
-                  *v323 = v142;
+                  selfCopy5 = 0;
+                  *errorCopy11 = v142;
                   goto LABEL_240;
                 }
 
                 v282 = 0;
-                v34 = 0;
+                selfCopy5 = 0;
 LABEL_219:
                 v33 = v332;
                 v50 = v317;
                 v27 = v318;
-                a4 = v305;
+                error = v305;
 LABEL_419:
 
                 goto LABEL_420;
               }
 
               v286 = v126;
-              if (v323)
+              if (errorCopy11)
               {
                 v134 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v285 = *MEMORY[0x1E698F240];
@@ -3603,18 +3603,18 @@ LABEL_419:
                 v281 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v378 forKeys:&v377 count:1];
                 v135 = [v134 initWithDomain:v285 code:2 userInfo:?];
                 v284 = 0;
-                v34 = 0;
-                *v323 = v135;
+                selfCopy5 = 0;
+                *errorCopy11 = v135;
                 goto LABEL_219;
               }
 
               v284 = 0;
-              v34 = 0;
+              selfCopy5 = 0;
 LABEL_217:
               v33 = v332;
               v50 = v317;
               v27 = v318;
-              a4 = v305;
+              error = v305;
 LABEL_420:
 
               goto LABEL_421;
@@ -3636,7 +3636,7 @@ LABEL_420:
           }
 
           v289 = v124;
-          if (v323)
+          if (errorCopy11)
           {
             v127 = objc_alloc(MEMORY[0x1E696ABC0]);
             v288 = *MEMORY[0x1E698F240];
@@ -3646,17 +3646,17 @@ LABEL_420:
             v286 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v380 forKeys:&v379 count:1];
             v128 = [v127 initWithDomain:v288 code:2 userInfo:?];
             v287 = 0;
-            v34 = 0;
-            *v323 = v128;
+            selfCopy5 = 0;
+            *errorCopy11 = v128;
             goto LABEL_217;
           }
 
           v287 = 0;
-          v34 = 0;
+          selfCopy5 = 0;
           v33 = v332;
           v50 = v317;
           v27 = v318;
-          a4 = v305;
+          error = v305;
 LABEL_421:
 
           goto LABEL_422;
@@ -3669,16 +3669,16 @@ LABEL_421:
           goto LABEL_148;
         }
 
-        if (v323)
+        if (errorCopy11)
         {
           v129 = objc_alloc(MEMORY[0x1E696ABC0]);
           v291 = *MEMORY[0x1E698F240];
           v381 = *MEMORY[0x1E696A578];
-          v130 = self;
+          selfCopy6 = self;
           v131 = objc_alloc(MEMORY[0x1E696AEC0]);
           v227 = objc_opt_class();
           v132 = v131;
-          self = v130;
+          self = selfCopy6;
           v112 = v297;
           v27 = v318;
           v287 = [v132 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v227, @"didStepUp"];
@@ -3686,19 +3686,19 @@ LABEL_421:
           v289 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v382 forKeys:&v381 count:1];
           v133 = [v129 initWithDomain:v291 code:2 userInfo:?];
           v290 = 0;
-          v34 = 0;
-          *v323 = v133;
+          selfCopy5 = 0;
+          *errorCopy11 = v133;
           v33 = v332;
           v50 = v317;
-          a4 = v305;
+          error = v305;
           goto LABEL_421;
         }
 
         v290 = 0;
-        v34 = 0;
+        selfCopy5 = 0;
         v33 = v332;
         v50 = v317;
-        a4 = v305;
+        error = v305;
 LABEL_422:
 
         goto LABEL_423;
@@ -3714,7 +3714,7 @@ LABEL_422:
       }
 
       v295 = v115;
-      if (v323)
+      if (errorCopy11)
       {
         v119 = objc_alloc(MEMORY[0x1E696ABC0]);
         v294 = *MEMORY[0x1E698F240];
@@ -3724,21 +3724,21 @@ LABEL_422:
         v292 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v384 forKeys:&v383 count:1];
         v120 = [v119 initWithDomain:v294 code:2 userInfo:?];
         v293 = 0;
-        v34 = 0;
-        *v323 = v120;
+        selfCopy5 = 0;
+        *errorCopy11 = v120;
         v33 = v332;
         v50 = v317;
         v27 = v318;
-        a4 = v305;
+        error = v305;
         goto LABEL_422;
       }
 
       v293 = 0;
-      v34 = 0;
+      selfCopy5 = 0;
       v33 = v332;
       v50 = v317;
       v27 = v318;
-      a4 = v305;
+      error = v305;
 LABEL_423:
 
       goto LABEL_424;
@@ -3769,7 +3769,7 @@ LABEL_114:
   }
 
   v300 = v92;
-  if (v323)
+  if (errorCopy11)
   {
     v110 = objc_alloc(MEMORY[0x1E696ABC0]);
     v111 = *MEMORY[0x1E698F240];
@@ -3778,22 +3778,22 @@ LABEL_114:
     v388 = v298;
     v112 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v388 forKeys:&v387 count:1];
     v92 = 0;
-    v34 = 0;
-    *v323 = [v110 initWithDomain:v111 code:2 userInfo:v112];
+    selfCopy5 = 0;
+    *errorCopy11 = [v110 initWithDomain:v111 code:2 userInfo:v112];
     v33 = v332;
     v50 = v317;
     v27 = v318;
-    a4 = v305;
+    error = v305;
     goto LABEL_424;
   }
 
   v92 = 0;
-  v34 = 0;
+  selfCopy5 = 0;
   v33 = v332;
   v50 = v317;
   v27 = v318;
 LABEL_167:
-  a4 = v305;
+  error = v305;
 LABEL_425:
 
 LABEL_426:
@@ -3809,7 +3809,7 @@ LABEL_430:
   v17 = v308;
 LABEL_431:
 
-  a4 = v329;
+  error = v329;
 LABEL_432:
 
 LABEL_433:
@@ -3825,22 +3825,22 @@ LABEL_437:
 LABEL_438:
 
   v225 = *MEMORY[0x1E69E9840];
-  return v34;
+  return selfCopy5;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceUserProofingResult *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_age)
   {
     PBDataWriterWriteStringField();
@@ -4052,9 +4052,9 @@ LABEL_438:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v33.receiver = self;
   v33.super_class = BMWalletPaymentsCommerceUserProofingResult;
   v5 = [(BMEventBase *)&v33 init];
@@ -4066,8 +4066,8 @@ LABEL_438:
   v6 = objc_opt_new();
   while (1)
   {
-    v7 = [v4 position];
-    if (v7 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -4078,18 +4078,18 @@ LABEL_438:
     while (1)
     {
       v34 = 0;
-      v11 = [v4 position] + 1;
-      if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+      v11 = [fromCopy position] + 1;
+      if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
       {
-        v13 = [v4 data];
-        [v13 getBytes:&v34 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v10 |= (v34 & 0x7F) << v8;
@@ -4107,9 +4107,9 @@ LABEL_438:
       }
     }
 
-    v15 = [v4 hasError] ? 0 : v10;
+    v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_17:
-    if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
     {
       break;
     }
@@ -4287,18 +4287,18 @@ LABEL_74:
     while (1)
     {
       v34 = 0;
-      v21 = [v4 position] + 1;
-      if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+      v21 = [fromCopy position] + 1;
+      if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
       {
-        v23 = [v4 data];
-        [v23 getBytes:&v34 range:{objc_msgSend(v4, "position"), 1}];
+        data2 = [fromCopy data];
+        [data2 getBytes:&v34 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v20 |= (v34 & 0x7F) << v18;
@@ -4316,7 +4316,7 @@ LABEL_74:
       }
     }
 
-    v24 = (v20 != 0) & ~[v4 hasError];
+    v24 = (v20 != 0) & ~[fromCopy hasError];
 LABEL_69:
     v5->_didStepUp = v24;
   }
@@ -4325,8 +4325,8 @@ LABEL_69:
   axSettings = v5->_axSettings;
   v5->_axSettings = v28;
 
-  v30 = [v4 hasError];
-  if (v30)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_71:
     v31 = 0;
@@ -4345,111 +4345,111 @@ LABEL_72:
 {
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v41 = [(BMWalletPaymentsCommerceUserProofingResult *)self age];
-  v40 = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
-  v39 = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
-  v38 = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
-  v37 = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
-  v36 = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
-  v35 = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
-  v34 = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
-  v33 = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
-  v31 = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
-  v32 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
-  v27 = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
-  v30 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
-  v15 = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
+  gender = [(BMWalletPaymentsCommerceUserProofingResult *)self gender];
+  skinTone = [(BMWalletPaymentsCommerceUserProofingResult *)self skinTone];
+  ethnicity = [(BMWalletPaymentsCommerceUserProofingResult *)self ethnicity];
+  deviceLanguage = [(BMWalletPaymentsCommerceUserProofingResult *)self deviceLanguage];
+  proofingDecision = [(BMWalletPaymentsCommerceUserProofingResult *)self proofingDecision];
+  issuer = [(BMWalletPaymentsCommerceUserProofingResult *)self issuer];
+  alAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alAssessment];
+  alGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self alGestureAssessment];
+  axSettings = [(BMWalletPaymentsCommerceUserProofingResult *)self axSettings];
+  alFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacVersion];
+  alFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alFacePoseVersion];
+  alPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPadtoolVersion];
+  alPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self alPrdVersion];
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMWalletPaymentsCommerceUserProofingResult didStepUp](self, "didStepUp")}];
-  v28 = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
-  v26 = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
-  v14 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
-  v25 = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
-  v24 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
-  v23 = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
-  v22 = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
-  v21 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
-  v20 = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
-  v19 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
-  v18 = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
-  v13 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
-  v12 = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
-  v3 = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
-  v4 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
-  v5 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
-  v6 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
-  v7 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
-  v8 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
-  v9 = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
-  v10 = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
-  v17 = [v16 initWithFormat:@"BMWalletPaymentsCommerceUserProofingResult with age: %@, gender: %@, skinTone: %@, ethnicity: %@, deviceLanguage: %@, proofingDecision: %@, issuer: %@, alAssessment: %@, alGestureAssessment: %@, axSettings: %@, alFacVersion: %@, alFacePoseVersion: %@, alPadtoolVersion: %@, alPrdVersion: %@, didStepUp: %@, plGestureAssessment: %@, plAssessment: %@, plFacVersion: %@, plFacePoseVersion: %@, plPadtoolVersion: %@, plPrdVersion: %@, shadowLabel: %@, smFacVersion: %@, smFacePoseVersion: %@, smPrdVersion: %@, smPadtoolVersion: %@, smLivenessAssessment: %@, smGestureAssessment: %@, smLivenessType: %@, fmAssessment: %@, fmModelVersion: %@, fmDetectorModelVersion: %@, fmSMAssessment: %@, fmSMModelVersion: %@, fmSMDetectorModelVersion: %@, identityType: %@", v41, v40, v39, v38, v37, v36, v35, v34, v33, v31, v32, v27, v30, v15, v29, v28, v26, v14, v25, v24, v23, v22, v21, v20, v19, v18, v13, v12, v3, v4, v5, v6, v7, v8, v9, v10];
+  plGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plGestureAssessment];
+  plAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self plAssessment];
+  plFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacVersion];
+  plFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plFacePoseVersion];
+  plPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPadtoolVersion];
+  plPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self plPrdVersion];
+  shadowLabel = [(BMWalletPaymentsCommerceUserProofingResult *)self shadowLabel];
+  smFacVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacVersion];
+  smFacePoseVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smFacePoseVersion];
+  smPrdVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPrdVersion];
+  smPadtoolVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self smPadtoolVersion];
+  smLivenessAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessAssessment];
+  smGestureAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self smGestureAssessment];
+  smLivenessType = [(BMWalletPaymentsCommerceUserProofingResult *)self smLivenessType];
+  fmAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmAssessment];
+  fmModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmModelVersion];
+  fmDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmDetectorModelVersion];
+  fmSMAssessment = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMAssessment];
+  fmSMModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMModelVersion];
+  fmSMDetectorModelVersion = [(BMWalletPaymentsCommerceUserProofingResult *)self fmSMDetectorModelVersion];
+  identityType = [(BMWalletPaymentsCommerceUserProofingResult *)self identityType];
+  v17 = [v16 initWithFormat:@"BMWalletPaymentsCommerceUserProofingResult with age: %@, gender: %@, skinTone: %@, ethnicity: %@, deviceLanguage: %@, proofingDecision: %@, issuer: %@, alAssessment: %@, alGestureAssessment: %@, axSettings: %@, alFacVersion: %@, alFacePoseVersion: %@, alPadtoolVersion: %@, alPrdVersion: %@, didStepUp: %@, plGestureAssessment: %@, plAssessment: %@, plFacVersion: %@, plFacePoseVersion: %@, plPadtoolVersion: %@, plPrdVersion: %@, shadowLabel: %@, smFacVersion: %@, smFacePoseVersion: %@, smPrdVersion: %@, smPadtoolVersion: %@, smLivenessAssessment: %@, smGestureAssessment: %@, smLivenessType: %@, fmAssessment: %@, fmModelVersion: %@, fmDetectorModelVersion: %@, fmSMAssessment: %@, fmSMModelVersion: %@, fmSMDetectorModelVersion: %@, identityType: %@", v41, gender, skinTone, ethnicity, deviceLanguage, proofingDecision, issuer, alAssessment, alGestureAssessment, axSettings, alFacVersion, alFacePoseVersion, alPadtoolVersion, alPrdVersion, v29, plGestureAssessment, plAssessment, plFacVersion, plFacePoseVersion, plPadtoolVersion, plPrdVersion, shadowLabel, smFacVersion, smFacePoseVersion, smPrdVersion, smPadtoolVersion, smLivenessAssessment, smGestureAssessment, smLivenessType, fmAssessment, fmModelVersion, fmDetectorModelVersion, fmSMAssessment, fmSMModelVersion, fmSMDetectorModelVersion, identityType];
 
   return v17;
 }
 
-- (BMWalletPaymentsCommerceUserProofingResult)initWithAge:(id)a3 gender:(id)a4 skinTone:(id)a5 ethnicity:(id)a6 deviceLanguage:(id)a7 proofingDecision:(id)a8 issuer:(id)a9 alAssessment:(id)a10 alGestureAssessment:(id)a11 axSettings:(id)a12 alFacVersion:(id)a13 alFacePoseVersion:(id)a14 alPadtoolVersion:(id)a15 alPrdVersion:(id)a16 didStepUp:(id)a17 plGestureAssessment:(id)a18 plAssessment:(id)a19 plFacVersion:(id)a20 plFacePoseVersion:(id)a21 plPadtoolVersion:(id)a22 plPrdVersion:(id)a23 shadowLabel:(id)a24 smFacVersion:(id)a25 smFacePoseVersion:(id)a26 smPrdVersion:(id)a27 smPadtoolVersion:(id)a28 smLivenessAssessment:(id)a29 smGestureAssessment:(id)a30 smLivenessType:(id)a31 fmAssessment:(id)a32 fmModelVersion:(id)a33 fmDetectorModelVersion:(id)a34 fmSMAssessment:(id)a35 fmSMModelVersion:(id)a36 fmSMDetectorModelVersion:(id)a37 identityType:(id)a38
+- (BMWalletPaymentsCommerceUserProofingResult)initWithAge:(id)age gender:(id)gender skinTone:(id)tone ethnicity:(id)ethnicity deviceLanguage:(id)language proofingDecision:(id)decision issuer:(id)issuer alAssessment:(id)self0 alGestureAssessment:(id)self1 axSettings:(id)self2 alFacVersion:(id)self3 alFacePoseVersion:(id)self4 alPadtoolVersion:(id)self5 alPrdVersion:(id)self6 didStepUp:(id)self7 plGestureAssessment:(id)self8 plAssessment:(id)self9 plFacVersion:(id)facVersion plFacePoseVersion:(id)facePoseVersion plPadtoolVersion:(id)plPadtoolVersion plPrdVersion:(id)plPrdVersion shadowLabel:(id)label smFacVersion:(id)smFacVersion smFacePoseVersion:(id)smFacePoseVersion smPrdVersion:(id)smPrdVersion smPadtoolVersion:(id)smPadtoolVersion smLivenessAssessment:(id)livenessAssessment smGestureAssessment:(id)age0 smLivenessType:(id)age1 fmAssessment:(id)age2 fmModelVersion:(id)age3 fmDetectorModelVersion:(id)age4 fmSMAssessment:(id)age5 fmSMModelVersion:(id)age6 fmSMDetectorModelVersion:(id)age7 identityType:(id)age8
 {
-  v85 = a3;
-  v49 = a4;
-  v84 = a4;
-  v50 = a5;
-  v83 = a5;
-  v82 = a6;
-  v81 = a7;
-  v80 = a8;
-  v79 = a9;
-  v78 = a10;
-  v77 = a11;
-  v76 = a12;
-  v75 = a13;
-  v74 = a14;
-  v73 = a15;
-  v72 = a16;
-  v51 = a17;
-  v71 = a18;
-  v70 = a19;
-  v69 = a20;
-  v68 = a21;
-  v67 = a22;
-  v66 = a23;
-  v65 = a24;
-  v55 = a25;
-  v53 = a26;
-  v43 = a27;
-  v56 = a28;
-  v64 = a29;
-  v63 = a30;
-  v62 = a31;
-  v61 = a32;
-  v60 = a33;
-  v59 = a34;
-  v44 = a35;
-  v58 = a36;
-  v45 = v51;
-  v57 = a37;
-  v54 = a38;
+  ageCopy = age;
+  genderCopy = gender;
+  genderCopy2 = gender;
+  toneCopy = tone;
+  toneCopy2 = tone;
+  ethnicityCopy = ethnicity;
+  languageCopy = language;
+  decisionCopy = decision;
+  issuerCopy = issuer;
+  assessmentCopy = assessment;
+  gestureAssessmentCopy = gestureAssessment;
+  settingsCopy = settings;
+  versionCopy = version;
+  poseVersionCopy = poseVersion;
+  padtoolVersionCopy = padtoolVersion;
+  prdVersionCopy = prdVersion;
+  upCopy = up;
+  plGestureAssessmentCopy = plGestureAssessment;
+  plAssessmentCopy = plAssessment;
+  facVersionCopy = facVersion;
+  facePoseVersionCopy = facePoseVersion;
+  plPadtoolVersionCopy = plPadtoolVersion;
+  plPrdVersionCopy = plPrdVersion;
+  labelCopy = label;
+  smFacVersionCopy = smFacVersion;
+  smFacePoseVersionCopy = smFacePoseVersion;
+  smPrdVersionCopy = smPrdVersion;
+  smPadtoolVersionCopy = smPadtoolVersion;
+  livenessAssessmentCopy = livenessAssessment;
+  smGestureAssessmentCopy = smGestureAssessment;
+  typeCopy = type;
+  fmAssessmentCopy = fmAssessment;
+  modelVersionCopy = modelVersion;
+  detectorModelVersionCopy = detectorModelVersion;
+  mAssessmentCopy = mAssessment;
+  mModelVersionCopy = mModelVersion;
+  v45 = upCopy;
+  mDetectorModelVersionCopy = mDetectorModelVersion;
+  identityTypeCopy = identityType;
   v86.receiver = self;
   v86.super_class = BMWalletPaymentsCommerceUserProofingResult;
   v46 = [(BMEventBase *)&v86 init];
   if (v46)
   {
     v46->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v46->_age, a3);
-    objc_storeStrong(&v46->_gender, v49);
-    objc_storeStrong(&v46->_skinTone, v50);
-    objc_storeStrong(&v46->_ethnicity, a6);
-    objc_storeStrong(&v46->_deviceLanguage, a7);
-    objc_storeStrong(&v46->_proofingDecision, a8);
-    objc_storeStrong(&v46->_issuer, a9);
-    objc_storeStrong(&v46->_alAssessment, a10);
-    objc_storeStrong(&v46->_alGestureAssessment, a11);
-    objc_storeStrong(&v46->_axSettings, a12);
-    objc_storeStrong(&v46->_alFacVersion, a13);
-    objc_storeStrong(&v46->_alFacePoseVersion, a14);
-    objc_storeStrong(&v46->_alPadtoolVersion, a15);
-    objc_storeStrong(&v46->_alPrdVersion, a16);
-    if (v51)
+    objc_storeStrong(&v46->_age, age);
+    objc_storeStrong(&v46->_gender, genderCopy);
+    objc_storeStrong(&v46->_skinTone, toneCopy);
+    objc_storeStrong(&v46->_ethnicity, ethnicity);
+    objc_storeStrong(&v46->_deviceLanguage, language);
+    objc_storeStrong(&v46->_proofingDecision, decision);
+    objc_storeStrong(&v46->_issuer, issuer);
+    objc_storeStrong(&v46->_alAssessment, assessment);
+    objc_storeStrong(&v46->_alGestureAssessment, gestureAssessment);
+    objc_storeStrong(&v46->_axSettings, settings);
+    objc_storeStrong(&v46->_alFacVersion, version);
+    objc_storeStrong(&v46->_alFacePoseVersion, poseVersion);
+    objc_storeStrong(&v46->_alPadtoolVersion, padtoolVersion);
+    objc_storeStrong(&v46->_alPrdVersion, prdVersion);
+    if (upCopy)
     {
       v46->_hasDidStepUp = 1;
-      v46->_didStepUp = [v51 BOOLValue];
+      v46->_didStepUp = [upCopy BOOLValue];
     }
 
     else
@@ -4459,27 +4459,27 @@ LABEL_72:
       v46->_didStepUp = 0;
     }
 
-    objc_storeStrong(&v46->_plGestureAssessment, a18);
-    objc_storeStrong(&v46->_plAssessment, a19);
-    objc_storeStrong(&v46->_plFacVersion, a20);
-    objc_storeStrong(&v46->_plFacePoseVersion, a21);
-    objc_storeStrong(&v46->_plPadtoolVersion, a22);
-    objc_storeStrong(&v46->_plPrdVersion, a23);
-    objc_storeStrong(&v46->_shadowLabel, a24);
-    objc_storeStrong(&v46->_smFacVersion, a25);
-    objc_storeStrong(&v46->_smFacePoseVersion, a26);
-    objc_storeStrong(&v46->_smPrdVersion, a27);
-    objc_storeStrong(&v46->_smPadtoolVersion, a28);
-    objc_storeStrong(&v46->_smLivenessAssessment, a29);
-    objc_storeStrong(&v46->_smGestureAssessment, a30);
-    objc_storeStrong(&v46->_smLivenessType, a31);
-    objc_storeStrong(&v46->_fmAssessment, a32);
-    objc_storeStrong(&v46->_fmModelVersion, a33);
-    objc_storeStrong(&v46->_fmDetectorModelVersion, a34);
-    objc_storeStrong(&v46->_fmSMAssessment, a35);
-    objc_storeStrong(&v46->_fmSMModelVersion, a36);
-    objc_storeStrong(&v46->_fmSMDetectorModelVersion, a37);
-    objc_storeStrong(&v46->_identityType, a38);
+    objc_storeStrong(&v46->_plGestureAssessment, plGestureAssessment);
+    objc_storeStrong(&v46->_plAssessment, plAssessment);
+    objc_storeStrong(&v46->_plFacVersion, facVersion);
+    objc_storeStrong(&v46->_plFacePoseVersion, facePoseVersion);
+    objc_storeStrong(&v46->_plPadtoolVersion, plPadtoolVersion);
+    objc_storeStrong(&v46->_plPrdVersion, plPrdVersion);
+    objc_storeStrong(&v46->_shadowLabel, label);
+    objc_storeStrong(&v46->_smFacVersion, smFacVersion);
+    objc_storeStrong(&v46->_smFacePoseVersion, smFacePoseVersion);
+    objc_storeStrong(&v46->_smPrdVersion, smPrdVersion);
+    objc_storeStrong(&v46->_smPadtoolVersion, smPadtoolVersion);
+    objc_storeStrong(&v46->_smLivenessAssessment, livenessAssessment);
+    objc_storeStrong(&v46->_smGestureAssessment, smGestureAssessment);
+    objc_storeStrong(&v46->_smLivenessType, type);
+    objc_storeStrong(&v46->_fmAssessment, fmAssessment);
+    objc_storeStrong(&v46->_fmModelVersion, modelVersion);
+    objc_storeStrong(&v46->_fmDetectorModelVersion, detectorModelVersion);
+    objc_storeStrong(&v46->_fmSMAssessment, mAssessment);
+    objc_storeStrong(&v46->_fmSMModelVersion, mModelVersion);
+    objc_storeStrong(&v46->_fmSMDetectorModelVersion, mDetectorModelVersion);
+    objc_storeStrong(&v46->_identityType, identityType);
   }
 
   return v46;
@@ -4710,13 +4710,13 @@ id __53__BMWalletPaymentsCommerceUserProofingResult_columns__block_invoke(uint64
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMWalletPaymentsCommerceUserProofingResult alloc] initByReadFrom:v6];
     v8 = v7;

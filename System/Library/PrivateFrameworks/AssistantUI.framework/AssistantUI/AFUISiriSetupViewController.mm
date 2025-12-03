@@ -2,24 +2,24 @@
 - (AFUISiriSetupViewController)init;
 - (AFUISiriSetupViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_continueTapped:(id)a3;
-- (void)_continueWithLanguageCode:(id)a3 commitLanguageCodeToPreferences:(BOOL)a4;
+- (void)_continueTapped:(id)tapped;
+- (void)_continueWithLanguageCode:(id)code commitLanguageCodeToPreferences:(BOOL)preferences;
 - (void)_fetchEnablementConfiguration;
-- (void)_laterTapped:(id)a3;
+- (void)_laterTapped:(id)tapped;
 - (void)_presentDataSharingOptInViewController;
-- (void)_setLoadingEnablementConfiguration:(BOOL)a3;
-- (void)aboutSelectedInTurnOnSiriView:(id)a3;
-- (void)animatedAppearanceWithFactory:(id)a3 completion:(id)a4;
-- (void)animatedDisappearanceWithFactory:(id)a3 completion:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setLastTimeShown:(BOOL)a3;
-- (void)siriDataSharingOptInViewControllerDidDismissFromPresenter:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)voiceSelectionController:(id)a3 didSelectVoice:(id)a4;
+- (void)_setLoadingEnablementConfiguration:(BOOL)configuration;
+- (void)aboutSelectedInTurnOnSiriView:(id)view;
+- (void)animatedAppearanceWithFactory:(id)factory completion:(id)completion;
+- (void)animatedDisappearanceWithFactory:(id)factory completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setLastTimeShown:(BOOL)shown;
+- (void)siriDataSharingOptInViewControllerDidDismissFromPresenter:(id)presenter;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)voiceSelectionController:(id)controller didSelectVoice:(id)voice;
 @end
 
 @implementation AFUISiriSetupViewController
@@ -70,12 +70,12 @@
 
       [(VTUITurnOnSiriView *)v3->_setupView setStateViewDelegate:v3];
       [(VTUITurnOnSiriView *)v3->_setupView setAutoresizingMask:18];
-      v12 = [(VTUITurnOnSiriView *)v3->_setupView continueButton];
+      continueButton = [(VTUITurnOnSiriView *)v3->_setupView continueButton];
 
-      if (v12)
+      if (continueButton)
       {
-        v13 = [(VTUITurnOnSiriView *)v3->_setupView continueButton];
-        [v13 addTarget:v3 action:sel__continueTapped_ forControlEvents:64];
+        continueButton2 = [(VTUITurnOnSiriView *)v3->_setupView continueButton];
+        [continueButton2 addTarget:v3 action:sel__continueTapped_ forControlEvents:64];
       }
 
       else
@@ -84,8 +84,8 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v13 = [(VTUITurnOnSiriView *)v3->_setupView continueButtons];
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v39 count:16];
+        continueButton2 = [(VTUITurnOnSiriView *)v3->_setupView continueButtons];
+        v14 = [continueButton2 countByEnumeratingWithState:&v25 objects:v39 count:16];
         if (v14)
         {
           v15 = *v26;
@@ -95,26 +95,26 @@
             {
               if (*v26 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(continueButton2);
               }
 
               [*(*(&v25 + 1) + 8 * i) addTarget:v3 action:sel__continueTapped_ forControlEvents:64];
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v25 objects:v39 count:16];
+            v14 = [continueButton2 countByEnumeratingWithState:&v25 objects:v39 count:16];
           }
 
           while (v14);
         }
       }
 
-      v17 = [(VTUITurnOnSiriView *)v3->_setupView laterButton];
-      [v17 addTarget:v3 action:sel__laterTapped_ forControlEvents:64];
+      laterButton = [(VTUITurnOnSiriView *)v3->_setupView laterButton];
+      [laterButton addTarget:v3 action:sel__laterTapped_ forControlEvents:64];
 
       [(UIView *)v3->_contentView addSubview:v3->_setupView];
       v18 = v3->_contentView;
-      v19 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(UIView *)v18 setBackgroundColor:v19];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(UIView *)v18 setBackgroundColor:systemBackgroundColor];
 
       [(AFUISiriSetupViewController *)v3 setSiriSetupView:v3->_setupView];
     }
@@ -159,10 +159,10 @@
   enablementConfigurationProvider = self->_enablementConfigurationProvider;
   self->_enablementConfigurationProvider = v3;
 
-  v5 = [MEMORY[0x277CEF368] sharedPreferences];
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [v5 allSiriLanguageCodesForSystemLanguageCode:v7 isGoodFit:0];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v8 = [mEMORY[0x277CEF368] allSiriLanguageCodesForSystemLanguageCode:localeIdentifier isGoodFit:0];
 
   [(AFUISiriSetupViewController *)self _setLoadingEnablementConfiguration:1];
   objc_initWeak(&location, self);
@@ -211,19 +211,19 @@ void __60__AFUISiriSetupViewController__fetchEnablementConfiguration__block_invo
   [WeakRetained _setLoadingEnablementConfiguration:0];
 }
 
-- (void)_setLoadingEnablementConfiguration:(BOOL)a3
+- (void)_setLoadingEnablementConfiguration:(BOOL)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(VTUITurnOnSiriView *)self->_setupView continueButton];
-  [v5 setEnabled:!v3];
+  continueButton = [(VTUITurnOnSiriView *)self->_setupView continueButton];
+  [continueButton setEnabled:!configurationCopy];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(VTUITurnOnSiriView *)self->_setupView continueButtons];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  continueButtons = [(VTUITurnOnSiriView *)self->_setupView continueButtons];
+  v7 = [continueButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -235,67 +235,67 @@ void __60__AFUISiriSetupViewController__fetchEnablementConfiguration__block_invo
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(continueButtons);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setEnabled:!v3];
+        [*(*(&v11 + 1) + 8 * v10++) setEnabled:!configurationCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [continueButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 
-  self->_isLoadingEnablementConfiguration = v3;
+  self->_isLoadingEnablementConfiguration = configurationCopy;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AFUISiriSetupViewController;
-  [(AFUISiriSetupViewController *)&v7 viewWillAppear:a3];
-  v4 = [(AFUISiriSetupViewController *)self navigationController];
-  v5 = [v4 navigationBar];
+  [(AFUISiriSetupViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(AFUISiriSetupViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  [v5 _setHidesShadow:1];
+  [navigationBar _setHidesShadow:1];
   v6 = objc_opt_new();
-  [v5 setBackgroundImage:v6 forBarMetrics:0];
+  [navigationBar setBackgroundImage:v6 forBarMetrics:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = AFUISiriSetupViewController;
-  [(AFUISiriSetupViewController *)&v3 viewWillDisappear:a3];
+  [(AFUISiriSetupViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AFUISiriSetupViewController;
-  [(AFUISiriSetupViewController *)&v4 viewDidAppear:a3];
+  [(AFUISiriSetupViewController *)&v4 viewDidAppear:appear];
   [(AFUISiriSetupViewController *)self setVisible:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = AFUISiriSetupViewController;
-  [(AFUISiriSetupViewController *)&v7 viewDidDisappear:a3];
+  [(AFUISiriSetupViewController *)&v7 viewDidDisappear:disappear];
   [(AFUISiriSetupViewController *)self setVisible:0];
-  v4 = [(AFUISiriSetupViewController *)self siriSetupView];
+  siriSetupView = [(AFUISiriSetupViewController *)self siriSetupView];
   v5 = *(MEMORY[0x277CBF2C0] + 16);
   v6[0] = *MEMORY[0x277CBF2C0];
   v6[1] = v5;
   v6[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v4 setTransform:v6];
+  [siriSetupView setTransform:v6];
 }
 
-- (void)animatedAppearanceWithFactory:(id)a3 completion:(id)a4
+- (void)animatedAppearanceWithFactory:(id)factory completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CF0D38];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -306,9 +306,9 @@ void __60__AFUISiriSetupViewController__fetchEnablementConfiguration__block_invo
   v9[1] = 3221225472;
   v9[2] = __72__AFUISiriSetupViewController_animatedAppearanceWithFactory_completion___block_invoke_2;
   v9[3] = &unk_278CD5938;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateWithFactory:a3 actions:v11 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 animateWithFactory:factory actions:v11 completion:v9];
 }
 
 void __72__AFUISiriSetupViewController_animatedAppearanceWithFactory_completion___block_invoke(uint64_t a1)
@@ -334,9 +334,9 @@ uint64_t __72__AFUISiriSetupViewController_animatedAppearanceWithFactory_complet
   return result;
 }
 
-- (void)animatedDisappearanceWithFactory:(id)a3 completion:(id)a4
+- (void)animatedDisappearanceWithFactory:(id)factory completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CF0D38];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -347,9 +347,9 @@ uint64_t __72__AFUISiriSetupViewController_animatedAppearanceWithFactory_complet
   v9[1] = 3221225472;
   v9[2] = __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_completion___block_invoke_3;
   v9[3] = &unk_278CD5938;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateWithFactory:a3 actions:v11 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 animateWithFactory:factory actions:v11 completion:v9];
 }
 
 void __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_completion___block_invoke(uint64_t a1)
@@ -389,25 +389,25 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   return result;
 }
 
-- (void)setLastTimeShown:(BOOL)a3
+- (void)setLastTimeShown:(BOOL)shown
 {
-  self->_lastTimeShown = a3;
-  if (a3)
+  self->_lastTimeShown = shown;
+  if (shown)
   {
     [(VTUITurnOnSiriView *)self->_setupView prepareForLastTimeShown];
   }
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   ADClientAddValueForScalarKey();
-  v5 = [(VTUITurnOnSiriView *)self->_setupView continueButtons];
-  v6 = [v5 containsObject:v4];
+  continueButtons = [(VTUITurnOnSiriView *)self->_setupView continueButtons];
+  v6 = [continueButtons containsObject:tappedCopy];
 
   if (v6)
   {
-    v7 = [(VTUITurnOnSiriView *)self->_setupView languageSelectionOfContinueButton:v4];
+    v7 = [(VTUITurnOnSiriView *)self->_setupView languageSelectionOfContinueButton:tappedCopy];
     selectedRecognitionLanguageCode = self->_selectedRecognitionLanguageCode;
     self->_selectedRecognitionLanguageCode = v7;
   }
@@ -415,8 +415,8 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   v9 = self->_selectedRecognitionLanguageCode;
   if (!v9)
   {
-    v10 = [MEMORY[0x277CEF368] sharedPreferences];
-    v11 = [v10 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    v11 = [mEMORY[0x277CEF368] bestSupportedLanguageCodeForLanguageCode:0];
     v12 = self->_selectedRecognitionLanguageCode;
     self->_selectedRecognitionLanguageCode = v11;
 
@@ -454,14 +454,14 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
     v18 = v17;
     _Block_object_dispose(&v24, 8);
     v19 = [[v17 alloc] initWithRecognitionLanguage:self->_selectedRecognitionLanguageCode allowsRandomSelection:-[AFEnablementConfiguration voiceSelectionAllowsRandomSelection](self->_enablementConfiguration barButtonItemForContinue:"voiceSelectionAllowsRandomSelection") customVoicePreviewer:v16 delegate:{0, self}];
-    v20 = [v19 navigationItem];
-    [v20 setRightBarButtonItem:v16];
+    navigationItem = [v19 navigationItem];
+    [navigationItem setRightBarButtonItem:v16];
 
-    v21 = [v19 navigationItem];
-    [v21 setHidesBackButton:1];
+    navigationItem2 = [v19 navigationItem];
+    [navigationItem2 setHidesBackButton:1];
 
-    v22 = [(AFUISiriSetupViewController *)self navigationController];
-    [v22 pushViewController:v19 animated:1];
+    navigationController = [(AFUISiriSetupViewController *)self navigationController];
+    [navigationController pushViewController:v19 animated:1];
   }
 
   else
@@ -470,15 +470,15 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   }
 }
 
-- (void)_continueWithLanguageCode:(id)a3 commitLanguageCodeToPreferences:(BOOL)a4
+- (void)_continueWithLanguageCode:(id)code commitLanguageCodeToPreferences:(BOOL)preferences
 {
-  v4 = a4;
+  preferencesCopy = preferences;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  codeCopy = code;
+  if (preferencesCopy)
   {
-    v7 = [MEMORY[0x277CEF368] sharedPreferences];
-    [v7 setLanguageCode:v6];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    [mEMORY[0x277CEF368] setLanguageCode:codeCopy];
   }
 
   v8 = *MEMORY[0x277CEF098];
@@ -489,8 +489,8 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s Enabling assistant and starting Siri", &buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v9 setAssistantIsEnabled:1];
+  mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368]2 setAssistantIsEnabled:1];
 
   v20 = 0;
   v21 = &v20;
@@ -510,7 +510,7 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
 
   v11 = v10;
   _Block_object_dispose(&v20, 8);
-  v12 = [v10 sharedInstance];
+  sharedInstance = [v10 sharedInstance];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -536,7 +536,7 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
     [AFUISiriSetupViewController _continueWithLanguageCode:commitLanguageCodeToPreferences:];
   }
 
-  [v12 didCompleteFlow:{*v13, v20}];
+  [sharedInstance didCompleteFlow:{*v13, v20}];
 
   if ([(VTUISiriDataSharingOptInPresenter *)self->_dataSharingOptInPresenter shouldShowSiriDataSharingOptInView])
   {
@@ -545,24 +545,24 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
 
   else
   {
-    v16 = [(AFUISiriSetupViewController *)self delegate];
-    [v16 openSiriRequestedBySiriSetupViewController:self];
+    delegate = [(AFUISiriSetupViewController *)self delegate];
+    [delegate openSiriRequestedBySiriSetupViewController:self];
   }
 
-  v17 = [(AFUISiriSetupViewController *)self delegate];
+  delegate2 = [(AFUISiriSetupViewController *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(AFUISiriSetupViewController *)self delegate];
-    [v19 updateHomeGestureSharingForSiriSetup:1];
+    delegate3 = [(AFUISiriSetupViewController *)self delegate];
+    [delegate3 updateHomeGestureSharingForSiriSetup:1];
   }
 }
 
-- (void)_laterTapped:(id)a3
+- (void)_laterTapped:(id)tapped
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -571,20 +571,20 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s Later Tapped, dismissing", &v8, 0xCu);
   }
 
-  v6 = [(AFUISiriSetupViewController *)self delegate];
-  [v6 dismissSiriSetupViewController:self];
+  delegate = [(AFUISiriSetupViewController *)self delegate];
+  [delegate dismissSiriSetupViewController:self];
 
   if (self->_lastTimeShown)
   {
-    v7 = [(AFUISiriSetupViewController *)self delegate];
-    [v7 disableSiriActivationRequestedBySiriSetupViewController:self];
+    delegate2 = [(AFUISiriSetupViewController *)self delegate];
+    [delegate2 disableSiriActivationRequestedBySiriSetupViewController:self];
   }
 }
 
-- (void)aboutSelectedInTurnOnSiriView:(id)a3
+- (void)aboutSelectedInTurnOnSiriView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -613,8 +613,8 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   _Block_object_dispose(&v12, 8);
   v8 = [v6 presenterForPrivacySplashWithIdentifer:{@"com.apple.onboarding.siri", v12}];
   [v8 setPresentingViewController:self];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v10 = [currentDevice userInterfaceIdiom] == 1;
 
   if (v10)
   {
@@ -645,17 +645,17 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   dataSharingOptInViewController = self->_dataSharingOptInViewController;
   self->_dataSharingOptInViewController = v4;
 
-  v6 = [(OBWelcomeController *)self->_dataSharingOptInViewController navigationItem];
-  [v6 setHidesBackButton:1];
+  navigationItem = [(OBWelcomeController *)self->_dataSharingOptInViewController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v7 = [(AFUISiriSetupViewController *)self navigationController];
-  [v7 pushViewController:self->_dataSharingOptInViewController animated:1];
+  navigationController = [(AFUISiriSetupViewController *)self navigationController];
+  [navigationController pushViewController:self->_dataSharingOptInViewController animated:1];
 }
 
-- (void)siriDataSharingOptInViewControllerDidDismissFromPresenter:(id)a3
+- (void)siriDataSharingOptInViewControllerDidDismissFromPresenter:(id)presenter
 {
-  v4 = [(AFUISiriSetupViewController *)self delegate];
-  [v4 openSiriRequestedBySiriSetupViewController:self];
+  delegate = [(AFUISiriSetupViewController *)self delegate];
+  [delegate openSiriRequestedBySiriSetupViewController:self];
 
   dataSharingOptInViewController = self->_dataSharingOptInViewController;
   self->_dataSharingOptInViewController = 0;
@@ -677,34 +677,34 @@ uint64_t __75__AFUISiriSetupViewController_animatedDisappearanceWithFactory_comp
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v4 = [(AFUISiriSetupViewController *)self view:a4];
+  v4 = [(AFUISiriSetupViewController *)self view:coordinator];
   [v4 layoutSubviews];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((assistantIsEnabled & 1) == 0)
   {
-    v6 = [(AFUISiriSetupViewController *)self delegate];
-    [v6 dismissSiriSetupViewController:self];
+    delegate = [(AFUISiriSetupViewController *)self delegate];
+    [delegate dismissSiriSetupViewController:self];
   }
 
-  v8 = [(AFEnablementConfiguration *)self->_enablementConfiguration completionLoggingBlock];
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  v8[2](v8, [v7 assistantIsEnabled]);
+  completionLoggingBlock = [(AFEnablementConfiguration *)self->_enablementConfiguration completionLoggingBlock];
+  mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+  completionLoggingBlock[2](completionLoggingBlock, [mEMORY[0x277CEF368]2 assistantIsEnabled]);
 }
 
-- (void)voiceSelectionController:(id)a3 didSelectVoice:(id)a4
+- (void)voiceSelectionController:(id)controller didSelectVoice:(id)voice
 {
   v5 = MEMORY[0x277CEF368];
-  v6 = a4;
-  v7 = [v5 sharedPreferences];
-  [v7 setLanguageCode:self->_selectedRecognitionLanguageCode outputVoice:v6];
+  voiceCopy = voice;
+  sharedPreferences = [v5 sharedPreferences];
+  [sharedPreferences setLanguageCode:self->_selectedRecognitionLanguageCode outputVoice:voiceCopy];
 
   selectedRecognitionLanguageCode = self->_selectedRecognitionLanguageCode;
 

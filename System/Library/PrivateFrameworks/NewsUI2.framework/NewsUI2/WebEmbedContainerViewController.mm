@@ -1,15 +1,15 @@
 @interface WebEmbedContainerViewController
-- (_TtC7NewsUI231WebEmbedContainerViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI231WebEmbedContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)showShareSheet:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC7NewsUI231WebEmbedContainerViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI231WebEmbedContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)showShareSheet:(id)sheet;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WebEmbedContainerViewController
 
-- (_TtC7NewsUI231WebEmbedContainerViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI231WebEmbedContainerViewController)initWithCoder:(id)coder
 {
   v4 = sub_219BF1664();
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC7NewsUI231WebEmbedContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI231WebEmbedContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -34,28 +34,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219884F2C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_21988625C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_21988625C(change);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2198863D0();
 }
 
-- (void)showShareSheet:(id)a3
+- (void)showShareSheet:(id)sheet
 {
-  v4 = a3;
-  v5 = self;
-  sub_219886594(v4);
+  sheetCopy = sheet;
+  selfCopy = self;
+  sub_219886594(sheetCopy);
 }
 
 @end

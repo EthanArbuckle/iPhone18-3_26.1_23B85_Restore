@@ -1,20 +1,20 @@
 @interface CCUIControlImageView
-- (BOOL)ccui_configureForPunchOutRendering:(BOOL)a3;
-- (CCUIControlImageView)initWithCoder:(id)a3;
-- (CCUIControlImageView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)ccui_configureForPunchOutRendering:(BOOL)rendering;
+- (CCUIControlImageView)initWithCoder:(id)coder;
+- (CCUIControlImageView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)systemImageName;
 - (id)ccui_punchOutCompensatingCopy;
-- (id)copyWithZone:(void *)a3;
-- (void)ccui_applyGlyphTintColor:(id)a3;
-- (void)ccui_applyGlyphTintColor:(id)a3 isActive:(BOOL)a4;
-- (void)ccui_setCompensationAlpha:(double)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)ccui_applyGlyphTintColor:(id)color;
+- (void)ccui_applyGlyphTintColor:(id)color isActive:(BOOL)active;
+- (void)ccui_setCompensationAlpha:(double)alpha;
 - (void)ccui_updatePunchOutCompensationIfNecessary;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setGlyphTintColor:(id)a3;
-- (void)setSystemImageName:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setFont:(id)font;
+- (void)setGlyphTintColor:(id)color;
+- (void)setSystemImageName:(id)name;
 @end
 
 @implementation CCUIControlImageView
@@ -23,27 +23,27 @@
 {
   v4.receiver = self;
   v4.super_class = CCUIControlImageView;
-  v2 = self;
+  selfCopy = self;
   [(CCUIControlImageView *)&v4 layoutSubviews];
-  v3 = *(v2 + OBJC_IVAR___CCUIControlImageView_hostingView);
-  [(CCUIControlImageView *)v2 bounds:v4.receiver];
+  v3 = *(selfCopy + OBJC_IVAR___CCUIControlImageView_hostingView);
+  [(CCUIControlImageView *)selfCopy bounds:v4.receiver];
   [v3 setFrame_];
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D168F1D0(a3, &OBJC_IVAR___CCUIControlImageView_glyphTintColor, &unk_1EC640AC8, 0x1E69DC888, sub_1D168FA54);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D168F1D0(color, &OBJC_IVAR___CCUIControlImageView_glyphTintColor, &unk_1EC640AC8, 0x1E69DC888, sub_1D168FA54);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v4 = *(self + OBJC_IVAR___CCUIControlImageView__isActive);
-  *(self + OBJC_IVAR___CCUIControlImageView__isActive) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR___CCUIControlImageView__isActive) = active;
+  if (v4 != active)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1D168FA54();
   }
 }
@@ -64,9 +64,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1D1690294(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -75,14 +75,14 @@
   return v4;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D168F1D0(a3, &OBJC_IVAR___CCUIControlImageView_font, &unk_1EC640AE0, 0x1E69DB878, sub_1D168FD84);
+  fontCopy = font;
+  selfCopy = self;
+  sub_1D168F1D0(font, &OBJC_IVAR___CCUIControlImageView_font, &unk_1EC640AE0, 0x1E69DB878, sub_1D168FD84);
 }
 
-- (void)setSystemImageName:(id)a3
+- (void)setSystemImageName:(id)name
 {
   v5 = sub_1D16CC4A4();
   v6 = (self + OBJC_IVAR___CCUIControlImageView_systemImageName);
@@ -97,7 +97,7 @@
   else
   {
     v10 = sub_1D16CC6F4();
-    v11 = self;
+    selfCopy = self;
 
     if ((v10 & 1) == 0)
     {
@@ -116,7 +116,7 @@
   [(CCUIControlImageView *)self ccui_setCompensationAlpha:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(self + OBJC_IVAR___CCUIControlImageView_hostingView) sizeThatFits_];
   result.height = v4;
@@ -124,12 +124,12 @@
   return result;
 }
 
-- (BOOL)ccui_configureForPunchOutRendering:(BOOL)a3
+- (BOOL)ccui_configureForPunchOutRendering:(BOOL)rendering
 {
-  v3 = a3;
-  v4 = [(CCUIControlImageView *)self layer];
-  v5 = v4;
-  if (v3)
+  renderingCopy = rendering;
+  layer = [(CCUIControlImageView *)self layer];
+  v5 = layer;
+  if (renderingCopy)
   {
     v6 = *MEMORY[0x1E69798E8];
   }
@@ -139,40 +139,40 @@
     v6 = 0;
   }
 
-  [v4 setCompositingFilter:v6];
-  v7 = [v5 superlayer];
-  [v7 setAllowsGroupOpacity:!v3];
-  [v7 setAllowsGroupBlending:!v3];
+  [layer setCompositingFilter:v6];
+  superlayer = [v5 superlayer];
+  [superlayer setAllowsGroupOpacity:!renderingCopy];
+  [superlayer setAllowsGroupBlending:!renderingCopy];
 
   return 1;
 }
 
-- (void)ccui_setCompensationAlpha:(double)a3
+- (void)ccui_setCompensationAlpha:(double)alpha
 {
-  if (a3 > 0.4)
+  if (alpha > 0.4)
   {
-    a3 = 0.4;
+    alpha = 0.4;
   }
 
-  [(CCUIControlImageView *)self setAlpha:a3];
+  [(CCUIControlImageView *)self setAlpha:alpha];
 }
 
-- (void)ccui_applyGlyphTintColor:(id)a3
+- (void)ccui_applyGlyphTintColor:(id)color
 {
-  [(CCUIControlImageView *)self setGlyphTintColor:a3];
+  [(CCUIControlImageView *)self setGlyphTintColor:color];
 
   [(CCUIControlImageView *)self setActive:1];
 }
 
-- (void)ccui_applyGlyphTintColor:(id)a3 isActive:(BOOL)a4
+- (void)ccui_applyGlyphTintColor:(id)color isActive:(BOOL)active
 {
-  v4 = a4;
-  [(CCUIControlImageView *)self setGlyphTintColor:a3];
+  activeCopy = active;
+  [(CCUIControlImageView *)self setGlyphTintColor:color];
 
-  [(CCUIControlImageView *)self setActive:v4];
+  [(CCUIControlImageView *)self setActive:activeCopy];
 }
 
-- (CCUIControlImageView)initWithCoder:(id)a3
+- (CCUIControlImageView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___CCUIControlImageView__isActive) = 0;
   *(self + OBJC_IVAR___CCUIControlImageView_glyphTintColor) = 0;
@@ -185,7 +185,7 @@
   return result;
 }
 
-- (CCUIControlImageView)initWithFrame:(CGRect)a3
+- (CCUIControlImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

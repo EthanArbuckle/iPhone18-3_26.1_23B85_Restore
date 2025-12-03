@@ -1,38 +1,38 @@
 @interface _GCDevicePhysicalInputStateTable
-+ (_DWORD)stateTableWithCopyOfStateTable:(uint64_t)a1;
-+ (_DWORD)stateTableWithMagic:(unsigned int)a3 primitiveSlotCount:(unsigned int)a4 objectSlotCount:;
-- (BOOL)testAndSetObjectValue:(id)a3 atIndex:(unsigned int)a4 policy:(unint64_t)a5 compareObjects:(BOOL)a6 previous:(id *)a7;
-- (BOOL)testAndSetPrimitiveValue:(unint64_t)a3 atIndex:(unsigned int)a4 previous:(unint64_t *)a5;
++ (_DWORD)stateTableWithCopyOfStateTable:(uint64_t)table;
++ (_DWORD)stateTableWithMagic:(unsigned int)magic primitiveSlotCount:(unsigned int)count objectSlotCount:;
+- (BOOL)testAndSetObjectValue:(id)value atIndex:(unsigned int)index policy:(unint64_t)policy compareObjects:(BOOL)objects previous:(id *)previous;
+- (BOOL)testAndSetPrimitiveValue:(unint64_t)value atIndex:(unsigned int)index previous:(unint64_t *)previous;
 - (_GCDevicePhysicalInputStateTable)init;
-- (id)objectValueAtIndex:(unsigned int)a3;
+- (id)objectValueAtIndex:(unsigned int)index;
 - (uint64_t)generation;
-- (unint64_t)primitiveValueAtIndex:(unsigned int)a3;
+- (unint64_t)primitiveValueAtIndex:(unsigned int)index;
 - (void)dealloc;
-- (void)setObjectValue:(id)a3 atIndex:(unsigned int)a4 policy:(unint64_t)a5;
-- (void)setPrimitiveValue:(unint64_t)a3 atIndex:(unsigned int)a4;
-- (void)updateStateTableWithContentsOf:(uint64_t)a1;
+- (void)setObjectValue:(id)value atIndex:(unsigned int)index policy:(unint64_t)policy;
+- (void)setPrimitiveValue:(unint64_t)value atIndex:(unsigned int)index;
+- (void)updateStateTableWithContentsOf:(uint64_t)of;
 @end
 
 @implementation _GCDevicePhysicalInputStateTable
 
-+ (_DWORD)stateTableWithMagic:(unsigned int)a3 primitiveSlotCount:(unsigned int)a4 objectSlotCount:
++ (_DWORD)stateTableWithMagic:(unsigned int)magic primitiveSlotCount:(unsigned int)count objectSlotCount:
 {
   objc_opt_self();
   v7 = objc_opt_class();
-  Instance = class_createInstance(v7, 16 * a4 + 8 * a3);
+  Instance = class_createInstance(v7, 16 * count + 8 * magic);
   Instance[2] = 0;
   *(Instance + 6) = a2;
   *(Instance + 2) = 1;
-  Instance[8] = a3;
+  Instance[8] = magic;
   *(Instance + 5) = object_getIndexedIvars(Instance);
   *(Instance + 3) = 1;
-  Instance[9] = a4;
-  *(Instance + 6) = object_getIndexedIvars(Instance) + 8 * a3;
+  Instance[9] = count;
+  *(Instance + 6) = object_getIndexedIvars(Instance) + 8 * magic;
 
   return Instance;
 }
 
-+ (_DWORD)stateTableWithCopyOfStateTable:(uint64_t)a1
++ (_DWORD)stateTableWithCopyOfStateTable:(uint64_t)table
 {
   v3 = objc_opt_self();
   if (!a2)
@@ -80,84 +80,84 @@
   [(_GCDevicePhysicalInputStateTable *)&v7 dealloc];
 }
 
-- (unint64_t)primitiveValueAtIndex:(unsigned int)a3
+- (unint64_t)primitiveValueAtIndex:(unsigned int)index
 {
   os_unfair_lock_lock_with_options();
-  if (self->_primitiveSlotCount <= a3)
+  if (self->_primitiveSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable primitiveValueAtIndex:];
   }
 
-  var0 = self->_primitiveState[a3].var0;
+  var0 = self->_primitiveState[index].var0;
   os_unfair_lock_unlock(&self->_stateLock);
   return var0;
 }
 
-- (void)setPrimitiveValue:(unint64_t)a3 atIndex:(unsigned int)a4
+- (void)setPrimitiveValue:(unint64_t)value atIndex:(unsigned int)index
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_primitiveSlotCount <= a4)
+  if (self->_primitiveSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable setPrimitiveValue:atIndex:];
   }
 
-  self->_primitiveState[a4].var0 = a3;
+  self->_primitiveState[index].var0 = value;
   ++self->_primitiveStateGeneration;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)testAndSetPrimitiveValue:(unint64_t)a3 atIndex:(unsigned int)a4 previous:(unint64_t *)a5
+- (BOOL)testAndSetPrimitiveValue:(unint64_t)value atIndex:(unsigned int)index previous:(unint64_t *)previous
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_primitiveSlotCount <= a4)
+  if (self->_primitiveSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable testAndSetPrimitiveValue:atIndex:previous:];
   }
 
   primitiveState = self->_primitiveState;
-  var0 = primitiveState[a4].var0;
-  if (var0 != a3)
+  var0 = primitiveState[index].var0;
+  if (var0 != value)
   {
-    if (a5)
+    if (previous)
     {
-      *a5 = var0;
+      *previous = var0;
     }
 
-    primitiveState[a4].var0 = a3;
+    primitiveState[index].var0 = value;
     ++self->_primitiveStateGeneration;
   }
 
-  v11 = var0 != a3;
+  v11 = var0 != value;
   os_unfair_lock_unlock(&self->_stateLock);
   return v11;
 }
 
-- (id)objectValueAtIndex:(unsigned int)a3
+- (id)objectValueAtIndex:(unsigned int)index
 {
   os_unfair_lock_lock_with_options();
-  if (self->_objectSlotCount <= a3)
+  if (self->_objectSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable objectValueAtIndex:];
   }
 
-  v5 = self->_objectState[a3].var1;
+  v5 = self->_objectState[index].var1;
   os_unfair_lock_unlock(&self->_stateLock);
 
   return v5;
 }
 
-- (void)setObjectValue:(id)a3 atIndex:(unsigned int)a4 policy:(unint64_t)a5
+- (void)setObjectValue:(id)value atIndex:(unsigned int)index policy:(unint64_t)policy
 {
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_objectSlotCount <= a4)
+  if (self->_objectSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable setObjectValue:atIndex:policy:];
   }
 
   objectState = self->_objectState;
-  v10 = a4;
-  v11 = &objectState[a4];
+  indexCopy = index;
+  v11 = &objectState[index];
   if (v11->var0)
   {
 
@@ -165,9 +165,9 @@
   }
 
   v11->var1 = 0;
-  if (a5 <= 2)
+  if (policy <= 2)
   {
-    if (!a5)
+    if (!policy)
     {
       goto LABEL_11;
     }
@@ -175,50 +175,50 @@
     goto LABEL_9;
   }
 
-  if (a5 != 3 && a5 != 771)
+  if (policy != 3 && policy != 771)
   {
 LABEL_9:
-    v12 = a3;
+    valueCopy = value;
     goto LABEL_10;
   }
 
-  v12 = [a3 copyWithZone:0];
+  valueCopy = [value copyWithZone:0];
 LABEL_10:
-  a3 = v12;
+  value = valueCopy;
 LABEL_11:
-  objectState[v10].var1 = a3;
-  self->_objectState[v10].var0 = a5;
+  objectState[indexCopy].var1 = value;
+  self->_objectState[indexCopy].var0 = policy;
   ++self->_objectStateGeneration;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)testAndSetObjectValue:(id)a3 atIndex:(unsigned int)a4 policy:(unint64_t)a5 compareObjects:(BOOL)a6 previous:(id *)a7
+- (BOOL)testAndSetObjectValue:(id)value atIndex:(unsigned int)index policy:(unint64_t)policy compareObjects:(BOOL)objects previous:(id *)previous
 {
-  v8 = a6;
+  objectsCopy = objects;
   os_unfair_lock_lock(&self->_stateLock);
-  if (self->_objectSlotCount <= a4)
+  if (self->_objectSlotCount <= index)
   {
     [_GCDevicePhysicalInputStateTable testAndSetObjectValue:atIndex:policy:compareObjects:previous:];
   }
 
-  v13 = &self->_objectState[a4];
+  v13 = &self->_objectState[index];
   var1 = v13->var1;
-  if (v8)
+  if (objectsCopy)
   {
-    if (var1 == a3 || ([a3 isEqual:v13->var1] & 1) != 0)
+    if (var1 == value || ([value isEqual:v13->var1] & 1) != 0)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    if (a7)
+    if (previous)
     {
-      *a7 = var1;
+      *previous = var1;
     }
 
     objectState = self->_objectState;
-    v17 = &objectState[a4];
+    v17 = &objectState[index];
     if (v17->var0)
     {
 
@@ -226,32 +226,32 @@ LABEL_7:
     }
 
     v17->var1 = 0;
-    if (a5 <= 2)
+    if (policy <= 2)
     {
-      if (!a5)
+      if (!policy)
       {
 LABEL_18:
-        objectState[a4].var1 = a3;
-        self->_objectState[a4].var0 = a5;
+        objectState[index].var1 = value;
+        self->_objectState[index].var0 = policy;
         ++self->_objectStateGeneration;
         v15 = 1;
         goto LABEL_19;
       }
     }
 
-    else if (a5 == 3 || a5 == 771)
+    else if (policy == 3 || policy == 771)
     {
-      v18 = [a3 copyWithZone:0];
+      valueCopy = [value copyWithZone:0];
 LABEL_17:
-      a3 = v18;
+      value = valueCopy;
       goto LABEL_18;
     }
 
-    v18 = a3;
+    valueCopy = value;
     goto LABEL_17;
   }
 
-  if (var1 != a3)
+  if (var1 != value)
   {
     goto LABEL_7;
   }
@@ -263,65 +263,65 @@ LABEL_19:
   return v15;
 }
 
-- (void)updateStateTableWithContentsOf:(uint64_t)a1
+- (void)updateStateTableWithContentsOf:(uint64_t)of
 {
-  if (!a1)
+  if (!of)
   {
     return;
   }
 
-  if (*(a1 + 12) != *(a2 + 12))
+  if (*(of + 12) != *(a2 + 12))
   {
     [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_0_15();
-    [v18 handleFailureInMethod:a1 object:a2 file:? lineNumber:? description:?];
+    [v18 handleFailureInMethod:of object:a2 file:? lineNumber:? description:?];
   }
 
   os_unfair_lock_lock_with_options();
   os_unfair_lock_lock_with_options();
   v4 = *(a2 + 16);
-  v5 = *(a1 + 16);
+  v5 = *(of + 16);
   if (v4 < v5)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_0_15();
-    [v19 handleFailureInMethod:a1 object:a2 file:? lineNumber:? description:?];
+    [v19 handleFailureInMethod:of object:a2 file:? lineNumber:? description:?];
     v4 = *(a2 + 16);
-    v5 = *(a1 + 16);
+    v5 = *(of + 16);
   }
 
   if (v4 > v5)
   {
-    v6 = *(a1 + 32);
+    v6 = *(of + 32);
     if (v6 != *(a2 + 32))
     {
       [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_15();
-      [v21 handleFailureInMethod:a1 object:a2 file:? lineNumber:? description:?];
-      v6 = *(a1 + 32);
+      [v21 handleFailureInMethod:of object:a2 file:? lineNumber:? description:?];
+      v6 = *(of + 32);
     }
 
-    memcpy(*(a1 + 40), *(a2 + 40), 8 * v6);
-    *(a1 + 16) = *(a2 + 16);
+    memcpy(*(of + 40), *(a2 + 40), 8 * v6);
+    *(of + 16) = *(a2 + 16);
   }
 
   v7 = *(a2 + 24);
-  v8 = *(a1 + 24);
+  v8 = *(of + 24);
   if (v7 < v8)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
     OUTLINED_FUNCTION_0_15();
-    [v20 handleFailureInMethod:a1 object:a2 file:? lineNumber:? description:?];
+    [v20 handleFailureInMethod:of object:a2 file:? lineNumber:? description:?];
     v7 = *(a2 + 24);
-    v8 = *(a1 + 24);
+    v8 = *(of + 24);
   }
 
   if (v7 > v8)
   {
-    v9 = *(a1 + 36);
+    v9 = *(of + 36);
     if (v9 == *(a2 + 36))
     {
-      if (*(a1 + 36))
+      if (*(of + 36))
       {
         goto LABEL_15;
       }
@@ -331,14 +331,14 @@ LABEL_19:
     {
       [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_15();
-      [v22 handleFailureInMethod:a1 object:a2 file:? lineNumber:? description:?];
-      v9 = *(a1 + 36);
-      if (*(a1 + 36))
+      [v22 handleFailureInMethod:of object:a2 file:? lineNumber:? description:?];
+      v9 = *(of + 36);
+      if (*(of + 36))
       {
 LABEL_15:
         v10 = 0;
         v11 = 0;
-        v12 = *(a1 + 48);
+        v12 = *(of + 48);
         v13 = *(a2 + 48);
         do
         {
@@ -357,19 +357,19 @@ LABEL_15:
             if (*(v13 + v10))
             {
               v17 = *(v13 + v10 + 8);
-              v12 = *(a1 + 48);
+              v12 = *(of + 48);
               *(v12 + v10 + 8) = v17;
               v13 = *(a2 + 48);
             }
 
             else
             {
-              v12 = *(a1 + 48);
+              v12 = *(of + 48);
               *(v12 + v10 + 8) = *(v13 + v10 + 8);
             }
 
             *(v12 + v10) = *(v13 + v10);
-            v9 = *(a1 + 36);
+            v9 = *(of + 36);
           }
 
           ++v11;
@@ -380,12 +380,12 @@ LABEL_15:
       }
     }
 
-    *(a1 + 24) = *(a2 + 24);
+    *(of + 24) = *(a2 + 24);
   }
 
   os_unfair_lock_unlock((a2 + 8));
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((of + 8));
 }
 
 - (uint64_t)generation

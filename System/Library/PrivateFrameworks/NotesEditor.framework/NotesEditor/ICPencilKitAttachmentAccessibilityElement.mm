@@ -8,7 +8,7 @@
 - (CGRect)accessibilityFrame;
 - (ICEditingTextView)textView;
 - (ICInlineCanvasTextAttachment)textAttachment;
-- (ICPencilKitAttachmentAccessibilityElement)initWithTextAttachment:(id)a3 textView:(id)a4;
+- (ICPencilKitAttachmentAccessibilityElement)initWithTextAttachment:(id)attachment textView:(id)view;
 - (NSArray)resizeHandleElements;
 - (NSArray)supportedRotorTypes;
 - (UIView)attachmentDrawingView;
@@ -25,12 +25,12 @@
 
 @implementation ICPencilKitAttachmentAccessibilityElement
 
-- (ICPencilKitAttachmentAccessibilityElement)initWithTextAttachment:(id)a3 textView:(id)a4
+- (ICPencilKitAttachmentAccessibilityElement)initWithTextAttachment:(id)attachment textView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 accessibilityContainer];
-  v9 = ICAccessibilityFindReparentingTarget(v8);
+  attachmentCopy = attachment;
+  viewCopy = view;
+  accessibilityContainer = [viewCopy accessibilityContainer];
+  v9 = ICAccessibilityFindReparentingTarget(accessibilityContainer);
 
   if (v9)
   {
@@ -40,8 +40,8 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeWeak(&v10->_textAttachment, v6);
-      objc_storeWeak(&v11->_textView, v7);
+      objc_storeWeak(&v10->_textAttachment, attachmentCopy);
+      objc_storeWeak(&v11->_textView, viewCopy);
     }
   }
 
@@ -56,17 +56,17 @@
 
 - (BOOL)isShowingGenerationPrompt
 {
-  v2 = [(ICPencilKitAttachmentAccessibilityElement *)self canvasGenerationToolView];
-  v3 = v2 != 0;
+  canvasGenerationToolView = [(ICPencilKitAttachmentAccessibilityElement *)self canvasGenerationToolView];
+  v3 = canvasGenerationToolView != 0;
 
   return v3;
 }
 
 - (id)canvasGenerationToolView
 {
-  v2 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-  v3 = [v2 subviews];
-  v4 = [v3 ax_firstObjectUsingBlock:&__block_literal_global_8];
+  attachmentDrawingView = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+  subviews = [attachmentDrawingView subviews];
+  v4 = [subviews ax_firstObjectUsingBlock:&__block_literal_global_8];
 
   return v4;
 }
@@ -81,41 +81,41 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
 
 - (id)accessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"handwriting attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"handwriting attachment" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v4 = [v3 editorController];
-  v5 = [v4 note];
-  v6 = [v5 calculateAccessibilityController];
-  v7 = [(ICPencilKitAttachmentAccessibilityElement *)self rangeInTextStorage];
-  v9 = [v6 getValueForPencilKitAttachmentAtRange:{v7, v8}];
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
+  calculateAccessibilityController = [note calculateAccessibilityController];
+  rangeInTextStorage = [(ICPencilKitAttachmentAccessibilityElement *)self rangeInTextStorage];
+  v9 = [calculateAccessibilityController getValueForPencilKitAttachmentAtRange:{rangeInTextStorage, v8}];
 
   if ([v9 length])
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Handwritten math: %@" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    handwritingSummary = [mainBundle localizedStringForKey:@"Handwritten math: %@" value:&stru_282757698 table:0];
 
-    v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v11, v9];
+    v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:handwritingSummary, v9];
   }
 
   else
   {
-    v13 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
-    v14 = [v13 attachment];
-    v11 = [v14 handwritingSummary];
+    textAttachment = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
+    attachment = [textAttachment attachment];
+    handwritingSummary = [attachment handwritingSummary];
 
-    if ([v11 length])
+    if ([handwritingSummary length])
     {
-      v15 = [MEMORY[0x277CCA8D8] mainBundle];
-      v16 = [v15 localizedStringForKey:@"Possible handwriting: %@" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v16 = [mainBundle2 localizedStringForKey:@"Possible handwriting: %@" value:&stru_282757698 table:0];
 
-      v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v16, v11];
+      v12 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v16, handwritingSummary];
     }
 
     else
@@ -136,8 +136,8 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
 
   else
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v3 localizedStringForKey:@"Double tap to show resize handles." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v2 = [mainBundle localizedStringForKey:@"Double tap to show resize handles." value:&stru_282757698 table:0];
   }
 
   return v2;
@@ -145,43 +145,43 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-  v4 = [v3 isFirstResponder];
+  attachmentDrawingView = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+  isFirstResponder = [attachmentDrawingView isFirstResponder];
 
-  if ((v4 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
     _UIAccessibilityBlockPostingOfNotification();
-    v5 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-    [v5 becomeFirstResponder];
+    attachmentDrawingView2 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+    [attachmentDrawingView2 becomeFirstResponder];
 
     _UIAccessibilityUnblockPostingOfNotification();
-    v6 = [(ICPencilKitAttachmentAccessibilityElement *)self resizeHandleElements];
-    v7 = [v6 firstObject];
-    v8 = [v7 isEnabled];
+    resizeHandleElements = [(ICPencilKitAttachmentAccessibilityElement *)self resizeHandleElements];
+    firstObject = [resizeHandleElements firstObject];
+    isEnabled = [firstObject isEnabled];
 
-    if (v8)
+    if (isEnabled)
     {
       v9 = *MEMORY[0x277D76488];
-      v10 = [(ICPencilKitAttachmentAccessibilityElement *)self resizeHandleElements];
-      v11 = [v10 firstObject];
-      UIAccessibilityPostNotification(v9, v11);
+      resizeHandleElements2 = [(ICPencilKitAttachmentAccessibilityElement *)self resizeHandleElements];
+      firstObject2 = [resizeHandleElements2 firstObject];
+      UIAccessibilityPostNotification(v9, firstObject2);
     }
   }
 
-  return v4 ^ 1;
+  return isFirstResponder ^ 1;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-  [v3 accessibilityFrame];
+  attachmentDrawingView = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+  [attachmentDrawingView accessibilityFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-  v13 = [v12 window];
-  [v13 bounds];
+  attachmentDrawingView2 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+  window = [attachmentDrawingView2 window];
+  [window bounds];
   v29.origin.x = v14;
   v29.origin.y = v15;
   v29.size.width = v16;
@@ -230,8 +230,8 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
 {
   v5.receiver = self;
   v5.super_class = ICPencilKitAttachmentAccessibilityElement;
-  v2 = [(ICPencilKitAttachmentAccessibilityElement *)&v5 accessibilityContainer];
-  v3 = ICAccessibilityFindReparentingTarget(v2);
+  accessibilityContainer = [(ICPencilKitAttachmentAccessibilityElement *)&v5 accessibilityContainer];
+  v3 = ICAccessibilityFindReparentingTarget(accessibilityContainer);
 
   return v3;
 }
@@ -241,14 +241,14 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
   v3 = MEMORY[0x277CBEB18];
   v12.receiver = self;
   v12.super_class = ICPencilKitAttachmentAccessibilityElement;
-  v4 = [(ICPencilKitAttachmentAccessibilityElement *)&v12 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(ICPencilKitAttachmentAccessibilityElement *)&v12 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
   if (![(ICPencilKitAttachmentAccessibilityElement *)self isSelected])
   {
     v6 = objc_alloc(MEMORY[0x277D75088]);
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 localizedStringForKey:@"Select" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"Select" value:&stru_282757698 table:0];
     v9 = [v6 initWithName:v8 target:self selector:sel_selectTextRangeAction];
 
     [v5 addObject:v9];
@@ -261,75 +261,75 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v3 = [v2 editorController];
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  editorController = [textView editorController];
   v4 = +[ICAccessibilityCustomRotorController sharedInstance];
-  [v4 setNoteEditorViewController:v3];
+  [v4 setNoteEditorViewController:editorController];
 
   v5 = +[ICAccessibilityCustomRotorController sharedInstance];
-  v6 = [v5 sharedTextViewRotors];
+  sharedTextViewRotors = [v5 sharedTextViewRotors];
 
-  return v6;
+  return sharedTextViewRotors;
 }
 
 - (id)accessibilityDragSourceDescriptors
 {
   if ([(ICPencilKitAttachmentAccessibilityElement *)self isSelected])
   {
-    v3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-    v4 = [v3 accessibilityDragSourceDescriptors];
+    textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+    accessibilityDragSourceDescriptors = [textView accessibilityDragSourceDescriptors];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityDragSourceDescriptors = 0;
   }
 
-  return v4;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (UIView)attachmentDrawingView
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self rangeInTextStorage];
-  v4 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v5 = [v4 superview];
+  rangeInTextStorage = [(ICPencilKitAttachmentAccessibilityElement *)self rangeInTextStorage];
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  superview = [textView superview];
 
-  v6 = 0;
-  if (v5 && v3 != 0x7FFFFFFFFFFFFFFFLL)
+  view = 0;
+  if (superview && rangeInTextStorage != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v7 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-      v8 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
-      v9 = [v7 _pk_viewProviderForAttachment:v8 atCharacterIndex:v3 createIfNeeded:1];
-      v6 = [v9 view];
+      textView2 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+      textAttachment = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
+      textView3 = [textView2 _pk_viewProviderForAttachment:textAttachment atCharacterIndex:rangeInTextStorage createIfNeeded:1];
+      view = [textView3 view];
     }
 
     else
     {
-      v7 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
-      v8 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-      v9 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-      v10 = [v9 layoutManager];
-      v11 = [v7 viewProviderForParentView:v8 characterIndex:v3 layoutManager:v10];
-      v6 = [v11 view];
+      textView2 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
+      textAttachment = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+      textView3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+      layoutManager = [textView3 layoutManager];
+      v11 = [textView2 viewProviderForParentView:textAttachment characterIndex:rangeInTextStorage layoutManager:layoutManager];
+      view = [v11 view];
     }
   }
 
-  return v6;
+  return view;
 }
 
 - (_NSRange)rangeInTextStorage
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v4 = [v3 textStorage];
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  textStorage = [textView textStorage];
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x3010000000;
   v15 = &unk_21552D17E;
   v16 = xmmword_2154BBE70;
-  v5 = [v4 length];
+  v5 = [textStorage length];
   v6 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -337,7 +337,7 @@ uint64_t __69__ICPencilKitAttachmentAccessibilityElement_canvasGenerationToolVie
   v11[3] = &unk_2781AC9B8;
   v11[4] = self;
   v11[5] = &v12;
-  [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v11}];
+  [textStorage enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v11}];
   v7 = v13[4];
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -367,28 +367,28 @@ void __63__ICPencilKitAttachmentAccessibilityElement_rangeInTextStorage__block_i
 - (NSArray)resizeHandleElements
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self cachedResizeHandleElements];
+  cachedResizeHandleElements = [(ICPencilKitAttachmentAccessibilityElement *)self cachedResizeHandleElements];
 
-  if (v3)
+  if (cachedResizeHandleElements)
   {
     goto LABEL_31;
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
-  v6 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
+  array = [MEMORY[0x277CBEB18] array];
+  attachmentDrawingView = [(ICPencilKitAttachmentAccessibilityElement *)self attachmentDrawingView];
+  textAttachment = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v27 = v5;
+    v27 = attachmentDrawingView;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [v5 subviews];
-    v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    subviews = [attachmentDrawingView subviews];
+    v9 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v9)
     {
       v10 = v9;
@@ -401,7 +401,7 @@ void __63__ICPencilKitAttachmentAccessibilityElement_rangeInTextStorage__block_i
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
           objc_opt_class();
@@ -433,7 +433,7 @@ void __63__ICPencilKitAttachmentAccessibilityElement_rangeInTextStorage__block_i
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v10);
@@ -445,29 +445,29 @@ void __63__ICPencilKitAttachmentAccessibilityElement_rangeInTextStorage__block_i
       v12 = 0;
     }
 
-    v5 = v27;
+    attachmentDrawingView = v27;
     goto LABEL_24;
   }
 
-  v20 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
+  textAttachment2 = [(ICPencilKitAttachmentAccessibilityElement *)self textAttachment];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
   if (v21)
   {
-    v12 = [v5 safeValueForKey:@"topResizeView"];
-    v11 = [v5 safeValueForKey:@"bottomResizeView"];
+    v12 = [attachmentDrawingView safeValueForKey:@"topResizeView"];
+    v11 = [attachmentDrawingView safeValueForKey:@"bottomResizeView"];
 LABEL_24:
     if (v12)
     {
       v22 = [[ICPencilKitAttachmentResizeHandleAccessibilityElement alloc] initWithAttachmentAccessibilityElement:self drawingResizeView:v12];
-      [v4 addObject:v22];
+      [array addObject:v22];
     }
 
     if (v11)
     {
       v23 = [[ICPencilKitAttachmentResizeHandleAccessibilityElement alloc] initWithAttachmentAccessibilityElement:self drawingResizeView:v11];
-      [v4 addObject:v23];
+      [array addObject:v23];
     }
 
     goto LABEL_28;
@@ -476,16 +476,16 @@ LABEL_24:
   v11 = 0;
   v12 = 0;
 LABEL_28:
-  if ([v4 count])
+  if ([array count])
   {
-    v24 = [v4 copy];
+    v24 = [array copy];
     [(ICPencilKitAttachmentAccessibilityElement *)self setCachedResizeHandleElements:v24];
   }
 
 LABEL_31:
-  v25 = [(ICPencilKitAttachmentAccessibilityElement *)self cachedResizeHandleElements];
+  cachedResizeHandleElements2 = [(ICPencilKitAttachmentAccessibilityElement *)self cachedResizeHandleElements];
 
-  return v25;
+  return cachedResizeHandleElements2;
 }
 
 - (BOOL)showingResizeHandles
@@ -534,25 +534,25 @@ LABEL_11:
 - (BOOL)selectTextRangeAction
 {
   _UIAccessibilityBlockPostingOfAllNotifications();
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v4 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  [v3 select:v4];
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  textView2 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  [textView select:textView2];
 
-  v5 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v6 = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
-  [v5 setSelectedRange:{v6, v7}];
+  textView3 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  textRangeInNote = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
+  [textView3 setSelectedRange:{textRangeInNote, v7}];
 
-  v8 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v9 = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
-  [v8 scrollRangeToVisible:{v9, v10}];
+  textView4 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  textRangeInNote2 = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
+  [textView4 scrollRangeToVisible:{textRangeInNote2, v10}];
 
   _UIAccessibilityUnblockPostingOfAllNotifications();
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(ICPencilKitAttachmentAccessibilityElement *)self accessibilityLabel];
-  v15 = [v13 localizedStringWithFormat:v12, v14];
+  accessibilityLabel = [(ICPencilKitAttachmentAccessibilityElement *)self accessibilityLabel];
+  v15 = [v13 localizedStringWithFormat:v12, accessibilityLabel];
 
   UIAccessibilityPostNotification(*MEMORY[0x277D76438], v15);
   return 1;
@@ -569,10 +569,10 @@ LABEL_11:
 
 - (BOOL)isSelected
 {
-  v3 = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
+  textRangeInNote = [(ICPencilKitAttachmentAccessibilityElement *)self textRangeInNote];
   v5 = v4;
-  v6 = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
-  v9 = v3 == [v6 selectedRange] && v5 == v7;
+  textView = [(ICPencilKitAttachmentAccessibilityElement *)self textView];
+  v9 = textRangeInNote == [textView selectedRange] && v5 == v7;
 
   return v9;
 }

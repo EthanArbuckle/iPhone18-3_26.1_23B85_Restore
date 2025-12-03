@@ -1,5 +1,5 @@
 @interface HeadphoneHeadGesturesUpsellViewController
-- (_TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008CF20();
 }
 
-- (_TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController_headphoneProxFeatureManager;
   type metadata accessor for HeadphoneProxFeatureManager();
-  v7 = a3;
+  viewCopy = view;
   *&self->PRXCardContentViewController_opaque[v6] = static HeadphoneProxFeatureManager.shared.getter();
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController____lazy_storage___movieLoopView] = 0;
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController____lazy_storage___topAsset] = 0;
@@ -25,7 +25,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService41HeadphoneHeadGesturesUpsellViewController_type] = 13;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(HeadphoneHeadGesturesUpsellViewController *)&v10 initWithContentView:v7];
+  v8 = [(HeadphoneHeadGesturesUpsellViewController *)&v10 initWithContentView:viewCopy];
 
   return v8;
 }

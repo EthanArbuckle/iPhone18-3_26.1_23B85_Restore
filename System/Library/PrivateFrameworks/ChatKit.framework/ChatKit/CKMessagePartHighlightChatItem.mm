@@ -1,8 +1,8 @@
 @interface CKMessagePartHighlightChatItem
 - (BOOL)failed;
 - (BOOL)parentMessageIsFromMe;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKMessagePartHighlightChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKMessagePartHighlightChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (IMAssociatedMessageGeometryDescriptor)geometryDescriptor;
 - (UIEdgeInsets)contentInsets;
 - (_NSRange)associatedMessageRange;
@@ -15,59 +15,59 @@
 
 @implementation CKMessagePartHighlightChatItem
 
-- (CKMessagePartHighlightChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKMessagePartHighlightChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v5.receiver = self;
   v5.super_class = CKMessagePartHighlightChatItem;
-  return [(CKChatItem *)&v5 initWithIMChatItem:a3 maxWidth:a4];
+  return [(CKChatItem *)&v5 initWithIMChatItem:item maxWidth:width];
 }
 
 - (id)guid
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 guid];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  guid = [messagePartHighlightChatItem guid];
 
-  return v3;
+  return guid;
 }
 
 - (id)associatedChatItemGUID
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 highlightedMessagePartGUID];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  highlightedMessagePartGUID = [messagePartHighlightChatItem highlightedMessagePartGUID];
 
-  return v3;
+  return highlightedMessagePartGUID;
 }
 
 - (BOOL)parentMessageIsFromMe
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 highlightedMessageIsFromMe];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  highlightedMessageIsFromMe = [messagePartHighlightChatItem highlightedMessageIsFromMe];
 
-  return v3;
+  return highlightedMessageIsFromMe;
 }
 
 - (BOOL)failed
 {
-  v3 = [(CKChatItem *)self isFromMe];
-  if (v3)
+  isFromMe = [(CKChatItem *)self isFromMe];
+  if (isFromMe)
   {
-    v4 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-    v5 = [v4 failed];
+    messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+    failed = [messagePartHighlightChatItem failed];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isFromMe) = failed;
   }
 
-  return v3;
+  return isFromMe;
 }
 
 - (IMAssociatedMessageGeometryDescriptor)geometryDescriptor
 {
-  v4 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  if (v4)
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  if (messagePartHighlightChatItem)
   {
-    v6 = v4;
-    [v4 geometryDescriptor];
-    v4 = v6;
+    v6 = messagePartHighlightChatItem;
+    [messagePartHighlightChatItem geometryDescriptor];
+    messagePartHighlightChatItem = v6;
   }
 
   else
@@ -83,36 +83,36 @@
 
 - (id)time
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 time];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  time = [messagePartHighlightChatItem time];
 
-  return v3;
+  return time;
 }
 
 - (id)sender
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 sender];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  sender = [messagePartHighlightChatItem sender];
 
-  return v3;
+  return sender;
 }
 
 - (_NSRange)associatedMessageRange
 {
-  v2 = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
-  v3 = [v2 highlightedMessagePartRange];
+  messagePartHighlightChatItem = [(CKMessagePartHighlightChatItem *)self messagePartHighlightChatItem];
+  highlightedMessagePartRange = [messagePartHighlightChatItem highlightedMessagePartRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = highlightedMessagePartRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  v4 = [CKUIBehavior sharedBehaviors:a4];
+  v4 = [CKUIBehavior sharedBehaviors:insets];
   [v4 messageHighlightTranscriptBalloonSize];
   v6 = v5;
   v8 = v7;

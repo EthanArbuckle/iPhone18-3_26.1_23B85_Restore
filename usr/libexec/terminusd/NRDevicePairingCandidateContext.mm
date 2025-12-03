@@ -1,21 +1,21 @@
 @interface NRDevicePairingCandidateContext
-- (BOOL)sendPacketData:(id)a3;
+- (BOOL)sendPacketData:(id)data;
 - (NSString)description;
 - (void)dealloc;
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8;
-- (void)setPacketReceiver:(id)a3;
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock;
+- (void)setPacketReceiver:(id)receiver;
 @end
 
 @implementation NRDevicePairingCandidateContext
 
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock
 {
-  v18 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  listenerCopy = listener;
+  sessionCopy = session;
+  configCopy = config;
+  childConfigCopy = childConfig;
+  blockCopy = block;
+  responseBlockCopy = responseBlock;
   if (qword_1002291E8 != -1)
   {
     dispatch_once(&qword_1002291E8, &stru_1001FC218);
@@ -31,21 +31,21 @@
     _NRLogWithArgs();
   }
 
-  (*(v17 + 2))(v17, 0, 0, 0);
+  (*(responseBlockCopy + 2))(responseBlockCopy, 0, 0, 0);
 }
 
-- (void)setPacketReceiver:(id)a3
+- (void)setPacketReceiver:(id)receiver
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  receiverCopy = receiver;
+  v9 = receiverCopy;
+  if (receiverCopy)
   {
     if (!self)
     {
       goto LABEL_5;
     }
 
-    v5 = v4;
+    v5 = receiverCopy;
     ikePacketReceiver = self->_ikePacketReceiver;
     self->_ikePacketReceiver = v5;
     goto LABEL_4;
@@ -54,24 +54,24 @@
   v7 = sub_100123258();
   IsLevelEnabled = _NRLogIsLevelEnabled();
 
-  v4 = 0;
+  receiverCopy = 0;
   if (IsLevelEnabled)
   {
     ikePacketReceiver = sub_100123258();
     _NRLogWithArgs();
 LABEL_4:
 
-    v4 = v9;
+    receiverCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (BOOL)sendPacketData:(id)a3
+- (BOOL)sendPacketData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v12 = sub_100123258();
     LODWORD(self) = _NRLogIsLevelEnabled();
@@ -99,7 +99,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v4 length];
+  v6 = [dataCopy length];
   v21 = bswap32(v6) >> 16;
   v7 = [[NSMutableData alloc] initWithCapacity:v6 + 5];
   [v7 appendBytes:&unk_100196570 length:1];

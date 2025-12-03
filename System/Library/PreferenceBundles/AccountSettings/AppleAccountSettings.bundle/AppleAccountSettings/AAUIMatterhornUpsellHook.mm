@@ -1,69 +1,69 @@
 @interface AAUIMatterhornUpsellHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_matterhornUpsell:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)_matterhornUpsell:(id)upsell;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation AAUIMatterhornUpsellHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [@"action:matterhornUpsell" isEqualToString:v3];
+  name = [element name];
+  v4 = [@"action:matterhornUpsell" isEqualToString:name];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:AAUIClientInfoActionKey];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:AAUIClientInfoActionKey];
   v5 = [@"action:matterhornUpsell" isEqualToString:v4];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  elementCopy = element;
+  modelCopy = model;
+  completionCopy = completion;
   v12 = _AAUILogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v9;
+    v14 = elementCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = modelCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "matterhorn upsell with element %@ and objectmodel %@", &v13, 0x16u);
   }
 
-  [(AAUIMatterhornUpsellHook *)self _matterhornUpsell:v11];
+  [(AAUIMatterhornUpsellHook *)self _matterhornUpsell:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = modelCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "matterhorn upsell with objectModel %@", &v9, 0xCu);
   }
 
-  [(AAUIMatterhornUpsellHook *)self _matterhornUpsell:v7];
+  [(AAUIMatterhornUpsellHook *)self _matterhornUpsell:completionCopy];
 }
 
-- (void)_matterhornUpsell:(id)a3
+- (void)_matterhornUpsell:(id)upsell
 {
-  v4 = a3;
+  upsellCopy = upsell;
   v5 = [[ICQUpgradeFlowManager alloc] initWithJourneyId:@"settingsHideMyEmail"];
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -73,7 +73,7 @@
 
   if (v5)
   {
-    v7 = [v4 copy];
+    v7 = [upsellCopy copy];
     v8 = _hookCompletion;
     _hookCompletion = v7;
 
@@ -89,7 +89,7 @@
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v3 = _AAUILogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v3 = _AAUILogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))

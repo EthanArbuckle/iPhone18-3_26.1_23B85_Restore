@@ -1,14 +1,14 @@
 @interface ListenerWithDelegate
-- (ListenerWithDelegate)initWithMachServiceName:(id)a3;
+- (ListenerWithDelegate)initWithMachServiceName:(id)name;
 @end
 
 @implementation ListenerWithDelegate
 
-- (ListenerWithDelegate)initWithMachServiceName:(id)a3
+- (ListenerWithDelegate)initWithMachServiceName:(id)name
 {
   v6.receiver = self;
   v6.super_class = ListenerWithDelegate;
-  v3 = [(ListenerWithDelegate *)&v6 initWithMachServiceName:a3];
+  v3 = [(ListenerWithDelegate *)&v6 initWithMachServiceName:name];
   v4 = v3;
   if (v3)
   {

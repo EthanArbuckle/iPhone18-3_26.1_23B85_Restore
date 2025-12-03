@@ -1,6 +1,6 @@
 @interface BindingVariablesXPCEnvelope
 - (NSDictionary)_bindingVariables;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BindingVariablesXPCEnvelope
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  BindingVariablesXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  BindingVariablesXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

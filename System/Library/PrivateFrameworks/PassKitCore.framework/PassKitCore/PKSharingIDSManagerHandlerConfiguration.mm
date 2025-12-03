@@ -1,18 +1,18 @@
 @interface PKSharingIDSManagerHandlerConfiguration
-- (PKSharingIDSManagerHandlerConfiguration)initWithSharingGroup:(unint64_t)a3;
+- (PKSharingIDSManagerHandlerConfiguration)initWithSharingGroup:(unint64_t)group;
 - (id)description;
 @end
 
 @implementation PKSharingIDSManagerHandlerConfiguration
 
-- (PKSharingIDSManagerHandlerConfiguration)initWithSharingGroup:(unint64_t)a3
+- (PKSharingIDSManagerHandlerConfiguration)initWithSharingGroup:(unint64_t)group
 {
   v5.receiver = self;
   v5.super_class = PKSharingIDSManagerHandlerConfiguration;
   result = [(PKSharingIDSManagerHandlerConfiguration *)&v5 init];
   if (result)
   {
-    result->_sharingGroup = a3;
+    result->_sharingGroup = group;
   }
 
   return result;

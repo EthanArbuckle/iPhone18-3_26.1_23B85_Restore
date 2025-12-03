@@ -1,38 +1,38 @@
 @interface _SFPBRFBinaryButtonCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFBinaryButtonCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFBinaryButtonCardSection)initWithFacade:(id)a3;
-- (_SFPBRFBinaryButtonCardSection)initWithJSON:(id)a3;
+- (_SFPBRFBinaryButtonCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFBinaryButtonCardSection)initWithFacade:(id)facade;
+- (_SFPBRFBinaryButtonCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFBinaryButtonCardSection
 
-- (_SFPBRFBinaryButtonCardSection)initWithFacade:(id)a3
+- (_SFPBRFBinaryButtonCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFBinaryButtonCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 primary_button];
+    primary_button = [facadeCopy primary_button];
 
-    if (v6)
+    if (primary_button)
     {
       v7 = [_SFPBButtonItem alloc];
-      v8 = [v4 primary_button];
-      v9 = [(_SFPBButtonItem *)v7 initWithFacade:v8];
+      primary_button2 = [facadeCopy primary_button];
+      v9 = [(_SFPBButtonItem *)v7 initWithFacade:primary_button2];
       [(_SFPBRFBinaryButtonCardSection *)v5 setPrimary_button:v9];
     }
 
-    v10 = [v4 secondary_button];
+    secondary_button = [facadeCopy secondary_button];
 
-    if (v10)
+    if (secondary_button)
     {
       v11 = [_SFPBButtonItem alloc];
-      v12 = [v4 secondary_button];
-      v13 = [(_SFPBButtonItem *)v11 initWithFacade:v12];
+      secondary_button2 = [facadeCopy secondary_button];
+      v13 = [(_SFPBButtonItem *)v11 initWithFacade:secondary_button2];
       [(_SFPBRFBinaryButtonCardSection *)v5 setSecondary_button:v13];
     }
 
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (_SFPBRFBinaryButtonCardSection)initWithDictionary:(id)a3
+- (_SFPBRFBinaryButtonCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRFBinaryButtonCardSection;
   v5 = [(_SFPBRFBinaryButtonCardSection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"primaryButton"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"primaryButton"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(_SFPBRFBinaryButtonCardSection *)v5 setPrimary_button:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"secondaryButton"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"secondaryButton"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (_SFPBRFBinaryButtonCardSection)initWithJSON:(id)a3
+- (_SFPBRFBinaryButtonCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFBinaryButtonCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFBinaryButtonCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFBinaryButtonCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,64 +108,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_primary_button)
   {
-    v4 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    primary_button = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
+    dictionaryRepresentation = [primary_button dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"primaryButton"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"primaryButton"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"primaryButton"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"primaryButton"];
     }
   }
 
   if (self->_secondary_button)
   {
-    v7 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    secondary_button = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
+    dictionaryRepresentation2 = [secondary_button dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"secondaryButton"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"secondaryButton"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"secondaryButton"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"secondaryButton"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
-  v6 = [v4 primary_button];
-  if ((v5 != 0) == (v6 == 0))
+  primary_button = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
+  primary_button2 = [equalCopy primary_button];
+  if ((primary_button != 0) == (primary_button2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
-  if (v7)
+  primary_button3 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
+  if (primary_button3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
-    v10 = [v4 primary_button];
-    v11 = [v9 isEqual:v10];
+    v8 = primary_button3;
+    primary_button4 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
+    primary_button5 = [equalCopy primary_button];
+    v11 = [primary_button4 isEqual:primary_button5];
 
     if (!v11)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
-  v6 = [v4 secondary_button];
-  if ((v5 != 0) != (v6 == 0))
+  primary_button = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
+  primary_button2 = [equalCopy secondary_button];
+  if ((primary_button != 0) != (primary_button2 == 0))
   {
-    v12 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
-    if (!v12)
+    secondary_button = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
+    if (!secondary_button)
     {
 
 LABEL_15:
@@ -190,10 +190,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
-    v15 = [v4 secondary_button];
-    v16 = [v14 isEqual:v15];
+    v13 = secondary_button;
+    secondary_button2 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
+    secondary_button3 = [equalCopy secondary_button];
+    v16 = [secondary_button2 isEqual:secondary_button3];
 
     if (v16)
     {
@@ -213,17 +213,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
-  if (v4)
+  toCopy = to;
+  primary_button = [(_SFPBRFBinaryButtonCardSection *)self primary_button];
+  if (primary_button)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
-  if (v5)
+  secondary_button = [(_SFPBRFBinaryButtonCardSection *)self secondary_button];
+  if (secondary_button)
   {
     PBDataWriterWriteSubmessage();
   }

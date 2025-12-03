@@ -1,9 +1,9 @@
 @interface AXAssetsXPCServer
 - (AXAssetsXPCServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_xpcQueue_acceptNewConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_xpcQueue_acceptNewConnection:(id)connection;
 - (void)startServer;
-- (void)updateAssetForAssetType:(id)a3;
+- (void)updateAssetForAssetType:(id)type;
 @end
 
 @implementation AXAssetsXPCServer
@@ -45,10 +45,10 @@
   [(NSXPCListener *)self->_xpcListener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.accessibility.axassets"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.accessibility.axassets"];
   v7 = [v6 isEqual:&__kCFBooleanTrue];
 
   if (v7)
@@ -57,19 +57,19 @@
   }
 
   v9 = [NSSet setWithArray:&off_1000193C8];
-  v10 = [v5 valueForEntitlement:@"application-identifier"];
+  v10 = [connectionCopy valueForEntitlement:@"application-identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 lowercaseString];
-    v12 = [v9 containsObject:v11];
+    lowercaseString = [v10 lowercaseString];
+    v12 = [v9 containsObject:lowercaseString];
 
     if (v12)
     {
 
 LABEL_2:
-      [(AXAssetsXPCServer *)self _xpcQueue_acceptNewConnection:v5];
-      [v5 resume];
+      [(AXAssetsXPCServer *)self _xpcQueue_acceptNewConnection:connectionCopy];
+      [connectionCopy resume];
       v8 = 1;
       goto LABEL_9;
     }
@@ -78,7 +78,7 @@ LABEL_2:
   v13 = AXLogAssetDaemon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_10000DC44(v5, v10, v13);
+    sub_10000DC44(connectionCopy, v10, v13);
   }
 
   v8 = 0;
@@ -87,50 +87,50 @@ LABEL_9:
   return v8;
 }
 
-- (void)_xpcQueue_acceptNewConnection:(id)a3
+- (void)_xpcQueue_acceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = AXLogAssetDaemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = [v4 processIdentifier];
+    HIDWORD(buf) = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Accepting new system connection from PID %d", &buf, 8u);
   }
 
-  [v4 _setQueue:self->_xpcQueue];
+  [connectionCopy _setQueue:self->_xpcQueue];
   v6 = _AXCreateAXAssetsServiceInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:self];
-  [v4 setRemoteObjectInterface:0];
-  objc_initWeak(&buf, v4);
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setRemoteObjectInterface:0];
+  objc_initWeak(&buf, connectionCopy);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100005344;
   v9[3] = &unk_100018788;
   objc_copyWeak(&v10, &buf);
-  [v4 setInterruptionHandler:v9];
+  [connectionCopy setInterruptionHandler:v9];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005404;
   v7[3] = &unk_100018788;
   objc_copyWeak(&v8, &buf);
-  [v4 setInvalidationHandler:v7];
+  [connectionCopy setInvalidationHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&buf);
 }
 
-- (void)updateAssetForAssetType:(id)a3
+- (void)updateAssetForAssetType:(id)type
 {
-  v6 = a3;
-  v4 = [(AXAssetsXPCServer *)self updateAssetForAssetTypeHandler];
+  typeCopy = type;
+  updateAssetForAssetTypeHandler = [(AXAssetsXPCServer *)self updateAssetForAssetTypeHandler];
 
-  if (v4)
+  if (updateAssetForAssetTypeHandler)
   {
-    v5 = [(AXAssetsXPCServer *)self updateAssetForAssetTypeHandler];
-    (v5)[2](v5, v6);
+    updateAssetForAssetTypeHandler2 = [(AXAssetsXPCServer *)self updateAssetForAssetTypeHandler];
+    (updateAssetForAssetTypeHandler2)[2](updateAssetForAssetTypeHandler2, typeCopy);
   }
 }
 

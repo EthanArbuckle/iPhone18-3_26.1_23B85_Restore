@@ -1,7 +1,7 @@
 @interface NRNewsDaemonBloomFilterInfoService
 - (NRNewsDaemonBloomFilterInfoService)init;
-- (void)_fetchBloomFilterInfoWithCompletion:(id)a3;
-- (void)fetchWebURLBloomFilterInfoWithCompletion:(id)a3;
+- (void)_fetchBloomFilterInfoWithCompletion:(id)completion;
+- (void)fetchWebURLBloomFilterInfoWithCompletion:(id)completion;
 @end
 
 @implementation NRNewsDaemonBloomFilterInfoService
@@ -62,18 +62,18 @@ void __42__NRNewsDaemonBloomFilterInfoService_init__block_invoke_2(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchWebURLBloomFilterInfoWithCompletion:(id)a3
+- (void)fetchWebURLBloomFilterInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NRNewsDaemonBloomFilterInfoService *)self fetchOnceOperation];
+  completionCopy = completion;
+  fetchOnceOperation = [(NRNewsDaemonBloomFilterInfoService *)self fetchOnceOperation];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__NRNewsDaemonBloomFilterInfoService_fetchWebURLBloomFilterInfoWithCompletion___block_invoke;
   v8[3] = &unk_2799A8EB8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 executeWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [fetchOnceOperation executeWithCompletionHandler:v8];
 }
 
 void __79__NRNewsDaemonBloomFilterInfoService_fetchWebURLBloomFilterInfoWithCompletion___block_invoke(uint64_t a1)
@@ -83,10 +83,10 @@ void __79__NRNewsDaemonBloomFilterInfoService_fetchWebURLBloomFilterInfoWithComp
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_fetchBloomFilterInfoWithCompletion:(id)a3
+- (void)_fetchBloomFilterInfoWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRNewsDaemonBloomFilterInfoService _fetchBloomFilterInfoWithCompletion:];
   }
@@ -102,7 +102,7 @@ void __79__NRNewsDaemonBloomFilterInfoService_fetchWebURLBloomFilterInfoWithComp
   v15[1] = 3221225472;
   v15[2] = __74__NRNewsDaemonBloomFilterInfoService__fetchBloomFilterInfoWithCompletion___block_invoke;
   v15[3] = &unk_2799A8EE0;
-  v7 = v3;
+  v7 = completionCopy;
   v17 = v7;
   v8 = v4;
   v16 = v8;

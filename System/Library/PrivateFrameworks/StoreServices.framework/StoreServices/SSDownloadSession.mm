@@ -1,9 +1,9 @@
 @interface SSDownloadSession
 - (SSDownload)download;
 - (SSDownloadAsset)downloadAsset;
-- (id)_copySessionPropertyWithKey:(const char *)a3;
+- (id)_copySessionPropertyWithKey:(const char *)key;
 - (id)_initSSDownloadSession;
-- (id)_initWithMessage:(id)a3 controlConnection:(id)a4;
+- (id)_initWithMessage:(id)message controlConnection:(id)connection;
 - (id)description;
 - (void)dealloc;
 @end
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (id)_initWithMessage:(id)a3 controlConnection:(id)a4
+- (id)_initWithMessage:(id)message controlConnection:(id)connection
 {
-  v6 = [(SSDownloadSession *)self _initSSDownloadSession];
-  if (v6)
+  _initSSDownloadSession = [(SSDownloadSession *)self _initSSDownloadSession];
+  if (_initSSDownloadSession)
   {
-    v6[1] = a4;
-    v6[4] = xpc_dictionary_get_int64(a3, "3");
-    v6[5] = xpc_dictionary_get_int64(a3, "2");
-    v6[3] = xpc_dictionary_get_int64(a3, "1");
+    _initSSDownloadSession[1] = connection;
+    _initSSDownloadSession[4] = xpc_dictionary_get_int64(message, "3");
+    _initSSDownloadSession[5] = xpc_dictionary_get_int64(message, "2");
+    _initSSDownloadSession[3] = xpc_dictionary_get_int64(message, "1");
   }
 
-  return v6;
+  return _initSSDownloadSession;
 }
 
 - (void)dealloc
@@ -118,7 +118,7 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: SessionID: %lld", -[SSDownloadSession description](&v3, sel_description), self->_sessionID];
 }
 
-- (id)_copySessionPropertyWithKey:(const char *)a3
+- (id)_copySessionPropertyWithKey:(const char *)key
 {
   v30 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -129,15 +129,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -182,7 +182,7 @@
   v24[2] = __49__SSDownloadSession__copySessionPropertyWithKey___block_invoke;
   v24[3] = &unk_1E84B0AB8;
   v24[5] = &v25;
-  v24[6] = a3;
+  v24[6] = key;
   v24[4] = v19;
   [(SSXPCConnection *)controlConnection sendMessage:v18 withReply:v24];
   dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);

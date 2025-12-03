@@ -1,15 +1,15 @@
 @interface FMDRemoteAssetMIMETypeProvider
-- (id)mimeTypeForFileExtension:(id)a3;
+- (id)mimeTypeForFileExtension:(id)extension;
 @end
 
 @implementation FMDRemoteAssetMIMETypeProvider
 
-- (id)mimeTypeForFileExtension:(id)a3
+- (id)mimeTypeForFileExtension:(id)extension
 {
-  v3 = [UTType typeWithFilenameExtension:a3];
-  v4 = [v3 preferredMIMEType];
+  v3 = [UTType typeWithFilenameExtension:extension];
+  preferredMIMEType = [v3 preferredMIMEType];
 
-  return v4;
+  return preferredMIMEType;
 }
 
 @end

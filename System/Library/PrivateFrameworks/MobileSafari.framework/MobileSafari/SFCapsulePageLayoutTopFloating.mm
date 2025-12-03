@@ -2,15 +2,15 @@
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
 - (_TtC12MobileSafari30SFCapsulePageLayoutTopFloating)init;
-- (_TtC12MobileSafari30SFCapsulePageLayoutTopFloating)initWithContainer:(id)a3;
+- (_TtC12MobileSafari30SFCapsulePageLayoutTopFloating)initWithContainer:(id)container;
 - (double)pageWidth;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutTopFloating
 
-- (_TtC12MobileSafari30SFCapsulePageLayoutTopFloating)initWithContainer:(id)a3
+- (_TtC12MobileSafari30SFCapsulePageLayoutTopFloating)initWithContainer:(id)container
 {
   *(self + OBJC_IVAR____TtC12MobileSafari30SFCapsulePageLayoutTopFloating_capsuleEdgePadding) = 0x4030000000000000;
   *(self + OBJC_IVAR____TtC12MobileSafari30SFCapsulePageLayoutTopFloating_toolbarEdgePadding) = 0x4020000000000000;
@@ -41,7 +41,7 @@
   }
 
   v4 = Strong;
-  v5 = self;
+  selfCopy = self;
   [v4 bounds];
   v7 = v6;
   v9 = v8;
@@ -73,23 +73,23 @@
   return v6;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18BBE248C();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_18BBE19B8(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_18BBE19B8(v6, v8, page);
   swift_unknownObjectRelease();
 
   return v10;

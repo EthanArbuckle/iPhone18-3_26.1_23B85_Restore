@@ -9,9 +9,9 @@
   v6.receiver = self;
   v6.super_class = PICompositionExporterAuxiliaryOptions;
   v2 = [(PICompositionExporterOptions *)&v6 init];
-  v3 = [MEMORY[0x1E69B3B08] defaultAuxiliaryImageTypes];
+  defaultAuxiliaryImageTypes = [MEMORY[0x1E69B3B08] defaultAuxiliaryImageTypes];
   auxiliaryImageTypes = v2->_auxiliaryImageTypes;
-  v2->_auxiliaryImageTypes = v3;
+  v2->_auxiliaryImageTypes = defaultAuxiliaryImageTypes;
 
   return v2;
 }

@@ -11,8 +11,8 @@
     +[AXMapsGlue accessibilityInitializeBundle];
   }
 
-  v2 = [MEMORY[0x29EDBD690] sharedInstance];
-  [v2 addHandler:&__block_literal_global_933 forFramework:@"StoreKitUI"];
+  mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+  [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_933 forFramework:@"StoreKitUI"];
 }
 
 void __43__AXMapsGlue_accessibilityInitializeBundle__block_invoke()

@@ -1,15 +1,15 @@
 @interface CNComposeRecipientShortNamer
-+ (__CFString)shortNameForComposeRecipient:(uint64_t)a1;
-+ (id)buildAdHocNameForGroup:(id)a3;
-+ (id)nameComponentsFromDisplayName:(id)a3;
-+ (id)nameForGroup:(id)a3;
-+ (id)nameForPerson:(id)a3;
++ (__CFString)shortNameForComposeRecipient:(uint64_t)recipient;
++ (id)buildAdHocNameForGroup:(id)group;
++ (id)nameComponentsFromDisplayName:(id)name;
++ (id)nameForGroup:(id)group;
++ (id)nameForPerson:(id)person;
 + (id)os_log;
-+ (id)shortNameFromAddressForComposeRecipient:(id)a3;
-+ (id)shortNameFromCompositeNameForComposeRecipient:(id)a3;
-+ (id)shortNameFromDisplayStringForPerson:(id)a3;
-+ (id)shortNameFromNameComponents:(id)a3;
-+ (id)shortNameFromNameComponentsForComposeRecipient:(id)a3;
++ (id)shortNameFromAddressForComposeRecipient:(id)recipient;
++ (id)shortNameFromCompositeNameForComposeRecipient:(id)recipient;
++ (id)shortNameFromDisplayStringForPerson:(id)person;
++ (id)shortNameFromNameComponents:(id)components;
++ (id)shortNameFromNameComponentsForComposeRecipient:(id)recipient;
 @end
 
 @implementation CNComposeRecipientShortNamer
@@ -33,7 +33,7 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (__CFString)shortNameForComposeRecipient:(uint64_t)a1
++ (__CFString)shortNameForComposeRecipient:(uint64_t)recipient
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -53,10 +53,10 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
 
   else
   {
-    v4 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
-      [CNComposeRecipientShortNamer shortNameForComposeRecipient:v4];
+      [CNComposeRecipientShortNamer shortNameForComposeRecipient:os_log];
     }
 
     v5 = &stru_1F3002C60;
@@ -65,62 +65,62 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
   return v5;
 }
 
-+ (id)nameForGroup:(id)a3
++ (id)nameForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [a1 shortNameFromDisplayStringForGroup:v4];
+  groupCopy = group;
+  placeholderName = [self shortNameFromDisplayStringForGroup:groupCopy];
   v6 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v5))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], placeholderName))
   {
 
-    v5 = [a1 buildAdHocNameForGroup:v4];
-    if ((*(v6 + 16))(v6, v5))
+    placeholderName = [self buildAdHocNameForGroup:groupCopy];
+    if ((*(v6 + 16))(v6, placeholderName))
     {
 
-      v5 = [v4 placeholderName];
+      placeholderName = [groupCopy placeholderName];
     }
   }
 
-  return v5;
+  return placeholderName;
 }
 
-+ (id)nameForPerson:(id)a3
++ (id)nameForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [a1 shortNameFromNameComponentsForComposeRecipient:v4];
+  personCopy = person;
+  placeholderName = [self shortNameFromNameComponentsForComposeRecipient:personCopy];
   v6 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v5))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], placeholderName))
   {
 
-    v5 = [a1 shortNameFromDisplayStringForPerson:v4];
-    if ((*(v6 + 16))(v6, v5))
+    placeholderName = [self shortNameFromDisplayStringForPerson:personCopy];
+    if ((*(v6 + 16))(v6, placeholderName))
     {
 
-      v5 = [a1 shortNameFromCompositeNameForComposeRecipient:v4];
-      if ((*(v6 + 16))(v6, v5))
+      placeholderName = [self shortNameFromCompositeNameForComposeRecipient:personCopy];
+      if ((*(v6 + 16))(v6, placeholderName))
       {
 
-        v5 = [a1 shortNameFromAddressForComposeRecipient:v4];
-        if ((*(v6 + 16))(v6, v5))
+        placeholderName = [self shortNameFromAddressForComposeRecipient:personCopy];
+        if ((*(v6 + 16))(v6, placeholderName))
         {
 
-          v5 = [v4 placeholderName];
+          placeholderName = [personCopy placeholderName];
         }
       }
     }
   }
 
-  return v5;
+  return placeholderName;
 }
 
-+ (id)buildAdHocNameForGroup:(id)a3
++ (id)buildAdHocNameForGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 children];
+  groupCopy = group;
+  children = [groupCopy children];
   v5 = objc_opt_new();
   v6 = objc_alloc_init(CNNameListBuilderBlockDelegate);
-  v7 = [v3 children];
-  -[CNNameListBuilderBlockDelegate setCountOfNames:](v6, "setCountOfNames:", [v7 count]);
+  children2 = [groupCopy children];
+  -[CNNameListBuilderBlockDelegate setCountOfNames:](v6, "setCountOfNames:", [children2 count]);
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -128,7 +128,7 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
   v20[3] = &unk_1E7CD2080;
   v8 = v5;
   v21 = v8;
-  v9 = v4;
+  v9 = children;
   v22 = v9;
   [(CNNameListBuilderBlockDelegate *)v6 setNameProviderBlock:v20];
   v18[0] = MEMORY[0x1E69E9820];
@@ -140,12 +140,12 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
   [(CNNameListBuilderBlockDelegate *)v6 setLengthValidationBlock:v18];
   v11 = [[CNNameListBuilder alloc] initWithDelegate:v6];
   [(CNNameListBuilder *)v11 setShouldStripEllipses:1];
-  v12 = [(CNNameListBuilder *)v11 build];
-  v13 = v12;
-  if (v12 && [v12 length])
+  build = [(CNNameListBuilder *)v11 build];
+  v13 = build;
+  if (build && [build length])
   {
-    v14 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientShortNamer buildAdHocNameForGroup:];
     }
@@ -155,8 +155,8 @@ uint64_t __38__CNComposeRecipientShortNamer_os_log__block_invoke()
 
   else
   {
-    v16 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientShortNamer buildAdHocNameForGroup:];
     }
@@ -176,14 +176,14 @@ id __55__CNComposeRecipientShortNamer_buildAdHocNameForGroup___block_invoke(uint
   return v5;
 }
 
-+ (id)shortNameFromNameComponentsForComposeRecipient:(id)a3
++ (id)shortNameFromNameComponentsForComposeRecipient:(id)recipient
 {
-  v4 = [a3 nameComponents];
-  if (v4)
+  nameComponents = [recipient nameComponents];
+  if (nameComponents)
   {
-    v5 = [a1 shortNameFromNameComponents:v4];
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    v5 = [self shortNameFromNameComponents:nameComponents];
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientShortNamer shortNameFromNameComponentsForComposeRecipient:];
     }
@@ -197,20 +197,20 @@ id __55__CNComposeRecipientShortNamer_buildAdHocNameForGroup___block_invoke(uint
   return v5;
 }
 
-+ (id)shortNameFromDisplayStringForPerson:(id)a3
++ (id)shortNameFromDisplayStringForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 displayString];
-  v6 = [a1 nameComponentsFromDisplayName:v5];
+  personCopy = person;
+  displayString = [personCopy displayString];
+  v6 = [self nameComponentsFromDisplayName:displayString];
 
   if (v6)
   {
-    v7 = [a1 shortNameFromNameComponents:v6];
+    v7 = [self shortNameFromNameComponents:v6];
     v8 = v7;
     if (v7 && [v7 length])
     {
-      v9 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
       {
         +[CNComposeRecipientShortNamer shortNameFromDisplayStringForPerson:];
       }
@@ -219,18 +219,18 @@ id __55__CNComposeRecipientShortNamer_buildAdHocNameForGroup___block_invoke(uint
     }
   }
 
-  v10 = [v4 displayString];
-  v9 = v10;
-  if (v10 && [v10 length])
+  displayString2 = [personCopy displayString];
+  os_log = displayString2;
+  if (displayString2 && [displayString2 length])
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
     {
       +[CNComposeRecipientShortNamer shortNameFromDisplayStringForPerson:];
     }
 
-    v9 = v9;
-    v8 = v9;
+    os_log = os_log;
+    v8 = os_log;
   }
 
   else
@@ -243,54 +243,54 @@ LABEL_13:
   return v8;
 }
 
-+ (id)shortNameFromNameComponents:(id)a3
++ (id)shortNameFromNameComponents:(id)components
 {
-  v3 = a3;
-  if (!v3)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
-    v4 = 0;
+    currentEnvironment = 0;
     goto LABEL_11;
   }
 
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 composeRecipientNameOptions];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  composeRecipientNameOptions = [currentEnvironment composeRecipientNameOptions];
 
-  v6 = [v5 shortNameFormat];
-  if (v6 == 2)
+  shortNameFormat = [composeRecipientNameOptions shortNameFormat];
+  if (shortNameFormat == 2)
   {
-    v8 = [v3 familyName];
+    familyName = [componentsCopy familyName];
   }
 
   else
   {
-    if (v6 != 1)
+    if (shortNameFormat != 1)
     {
-      if (!v6)
+      if (!shortNameFormat)
       {
         v7 = objc_opt_new();
         [v7 setStyle:1];
-        v4 = [v7 stringFromPersonNameComponents:v3];
+        currentEnvironment = [v7 stringFromPersonNameComponents:componentsCopy];
       }
 
       goto LABEL_10;
     }
 
-    v8 = [v3 givenName];
+    familyName = [componentsCopy givenName];
   }
 
-  v4 = v8;
+  currentEnvironment = familyName;
 LABEL_10:
 
 LABEL_11:
 
-  return v4;
+  return currentEnvironment;
 }
 
-+ (id)nameComponentsFromDisplayName:(id)a3
++ (id)nameComponentsFromDisplayName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v5 = objc_opt_new();
     v6 = [v5 personNameComponentsFromString:v4];
@@ -304,11 +304,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)shortNameFromCompositeNameForComposeRecipient:(id)a3
++ (id)shortNameFromCompositeNameForComposeRecipient:(id)recipient
 {
-  v3 = [CNComposeRecipientNamer nameForComposeRecipient:a3];
-  v4 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  v3 = [CNComposeRecipientNamer nameForComposeRecipient:recipient];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     +[CNComposeRecipientShortNamer shortNameFromCompositeNameForComposeRecipient:];
   }
@@ -316,16 +316,16 @@ LABEL_11:
   return v3;
 }
 
-+ (id)shortNameFromAddressForComposeRecipient:(id)a3
++ (id)shortNameFromAddressForComposeRecipient:(id)recipient
 {
-  v3 = [a3 address];
-  v4 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  address = [recipient address];
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     +[CNComposeRecipientShortNamer shortNameFromAddressForComposeRecipient:];
   }
 
-  return v3;
+  return address;
 }
 
 + (void)buildAdHocNameForGroup:.cold.1()

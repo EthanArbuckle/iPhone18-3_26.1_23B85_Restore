@@ -1,29 +1,29 @@
 @interface STUIStatusBarFocusableImageView
-- (void)applyStyleAttributes:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation STUIStatusBarFocusableImageView
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarFocusableImageView;
-  v4 = a3;
-  [(STUIStatusBarImageView *)&v7 applyStyleAttributes:v4];
-  v5 = [v4 imageTintColor];
+  attributesCopy = attributes;
+  [(STUIStatusBarImageView *)&v7 applyStyleAttributes:attributesCopy];
+  imageTintColor = [attributesCopy imageTintColor];
 
   unfocusedTintColor = self->_unfocusedTintColor;
-  self->_unfocusedTintColor = v5;
+  self->_unfocusedTintColor = imageTintColor;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = [a3 nextFocusedItem];
-  if (v6 == self)
+  nextFocusedItem = [context nextFocusedItem];
+  if (nextFocusedItem == self)
   {
-    v5 = [(STUIStatusBarFocusableImageView *)self focusedImageTintColor];
-    [(STUIStatusBarFocusableImageView *)self setTintColor:v5];
+    focusedImageTintColor = [(STUIStatusBarFocusableImageView *)self focusedImageTintColor];
+    [(STUIStatusBarFocusableImageView *)self setTintColor:focusedImageTintColor];
   }
 
   else

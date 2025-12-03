@@ -1,16 +1,16 @@
 @interface SKPartition
-- (id)buildWithScheme:(int)a3 sectorSize:(unint64_t)a4;
+- (id)buildWithScheme:(int)scheme sectorSize:(unint64_t)size;
 @end
 
 @implementation SKPartition
 
-- (id)buildWithScheme:(int)a3 sectorSize:(unint64_t)a4
+- (id)buildWithScheme:(int)scheme sectorSize:(unint64_t)size
 {
   v10 = 0;
   v5 = [(SKPartition *)self fs];
   [v5 contentMask];
 
-  v6 = [(SKPartition *)self name];
+  name = [(SKPartition *)self name];
   [(SKPartition *)self size];
   v7 = MKCFBuildPartition();
 

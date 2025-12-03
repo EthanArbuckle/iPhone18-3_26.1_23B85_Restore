@@ -12,12 +12,12 @@
   v6 = MEMORY[0x277CBEB18];
   v7 = a4;
   v8 = objc_alloc_init(v6);
-  v9 = [a1 phoneticTitle];
-  v10 = [a1 title];
-  v11 = TIGenerateReading(v9, v10, a3, v7);
+  phoneticTitle = [self phoneticTitle];
+  title = [self title];
+  v11 = TIGenerateReading(phoneticTitle, title, a3, v7);
 
-  v12 = [a1 title];
-  v13 = [TINameReadingPair nameReadingPairWithName:v12 reading:v11];
+  title2 = [self title];
+  v13 = [TINameReadingPair nameReadingPairWithName:title2 reading:v11];
 
   [v8 addObject:v13];
 
@@ -28,8 +28,8 @@
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 title];
-  v11 = rangesOfStringInString(v10, v9, a4, v8);
+  title = [self title];
+  v11 = rangesOfStringInString(title, v9, a4, v8);
 
   return v11;
 }
@@ -37,13 +37,13 @@
 - (uint64_t)core_isEqualToMecabraCandidate:()TextInputCore
 {
   v6 = a3;
-  v7 = [v6 input];
-  v8 = [v7 length];
+  input = [v6 input];
+  v8 = [input length];
   if (v8)
   {
-    v3 = [a1 phoneticTitle];
-    v4 = [v6 input];
-    if ([v3 isEqualToString:v4])
+    phoneticTitle = [self phoneticTitle];
+    input2 = [v6 input];
+    if ([phoneticTitle isEqualToString:input2])
     {
       v9 = 1;
 LABEL_8:
@@ -52,12 +52,12 @@ LABEL_8:
     }
   }
 
-  v10 = [v6 candidate];
-  if ([v10 length])
+  candidate = [v6 candidate];
+  if ([candidate length])
   {
-    v11 = [a1 title];
-    v12 = [v6 candidate];
-    v9 = [v11 isEqualToString:v12];
+    title = [self title];
+    candidate2 = [v6 candidate];
+    v9 = [title isEqualToString:candidate2];
   }
 
   else
@@ -79,18 +79,18 @@ LABEL_9:
 {
   v12 = a3;
   v4 = objc_alloc(MEMORY[0x277D1C0B8]);
-  v5 = [a1 title];
-  v6 = [v4 initWithName:v5 data:{objc_msgSend(a1, "identifier")}];
+  title = [self title];
+  v6 = [v4 initWithName:title data:{objc_msgSend(self, "identifier")}];
   [v12 addObject:v6];
 
-  v7 = [a1 phoneticTitle];
-  v8 = [v7 length];
+  phoneticTitle = [self phoneticTitle];
+  v8 = [phoneticTitle length];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D1C0B8]);
-    v10 = [a1 phoneticTitle];
-    v11 = [v9 initWithName:v10 data:{objc_msgSend(a1, "identifier")}];
+    phoneticTitle2 = [self phoneticTitle];
+    v11 = [v9 initWithName:phoneticTitle2 data:{objc_msgSend(self, "identifier")}];
     [v12 addObject:v11];
   }
 }

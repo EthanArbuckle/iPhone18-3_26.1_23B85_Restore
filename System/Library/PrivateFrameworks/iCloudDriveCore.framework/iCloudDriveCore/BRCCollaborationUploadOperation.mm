@@ -1,33 +1,33 @@
 @interface BRCCollaborationUploadOperation
-- (BRCCollaborationUploadOperation)initWithRecord:(id)a3 progress:(id)a4 syncContext:(id)a5 sessionContext:(id)a6 options:(unint64_t)a7;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRCCollaborationUploadOperation)initWithRecord:(id)record progress:(id)progress syncContext:(id)context sessionContext:(id)sessionContext options:(unint64_t)options;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCCollaborationUploadOperation
 
-- (BRCCollaborationUploadOperation)initWithRecord:(id)a3 progress:(id)a4 syncContext:(id)a5 sessionContext:(id)a6 options:(unint64_t)a7
+- (BRCCollaborationUploadOperation)initWithRecord:(id)record progress:(id)progress syncContext:(id)context sessionContext:(id)sessionContext options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
-  v16 = [v12 recordID];
-  v17 = [v16 recordName];
-  v18 = [@"upload-" stringByAppendingString:v17];
+  recordCopy = record;
+  progressCopy = progress;
+  sessionContextCopy = sessionContext;
+  contextCopy = context;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v18 = [@"upload-" stringByAppendingString:recordName];
 
   v23.receiver = self;
   v23.super_class = BRCCollaborationUploadOperation;
-  v19 = [(_BRCOperation *)&v23 initWithName:v18 syncContext:v15 sessionContext:v14];
+  v19 = [(_BRCOperation *)&v23 initWithName:v18 syncContext:contextCopy sessionContext:sessionContextCopy];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_record, a3);
-    objc_storeStrong(&v19->_progress, a4);
-    v19->_options = a7;
+    objc_storeStrong(&v19->_record, record);
+    objc_storeStrong(&v19->_progress, progress);
+    v19->_options = options;
     [(_BRCOperation *)v19 setNonDiscretionary:1];
-    v20 = [MEMORY[0x277CBC4F8] br_collaborationUpload];
-    [(_BRCOperation *)v19 setGroup:v20];
+    br_collaborationUpload = [MEMORY[0x277CBC4F8] br_collaborationUpload];
+    [(_BRCOperation *)v19 setGroup:br_collaborationUpload];
   }
 
   return v19;
@@ -86,19 +86,19 @@ void __39__BRCCollaborationUploadOperation_main__block_invoke_166(uint64_t a1, v
   [*(a1 + 32) completedWithResult:v7 error:v6];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   uploadCompletionBlock = self->_uploadCompletionBlock;
   if (uploadCompletionBlock)
   {
-    uploadCompletionBlock[2](uploadCompletionBlock, v6, v7);
+    uploadCompletionBlock[2](uploadCompletionBlock, resultCopy, errorCopy);
   }
 
   v9.receiver = self;
   v9.super_class = BRCCollaborationUploadOperation;
-  [(_BRCOperation *)&v9 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

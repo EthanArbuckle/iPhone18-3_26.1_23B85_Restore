@@ -1,5 +1,5 @@
 @interface NSUnitFrequency
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4;
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system;
 + (void)initialize;
 @end
 
@@ -7,26 +7,26 @@
 
 + (void)initialize
 {
-  if (NSUnitFrequency == a1)
+  if (NSUnitFrequency == self)
   {
     objc_opt_class();
   }
 }
 
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system
 {
-  v4 = a3;
-  if (a4)
+  scaleCopy = scale;
+  if (system)
   {
-    return v4;
+    return scaleCopy;
   }
 
-  if (([objc_msgSend(a3 "unit")] & 1) == 0)
+  if (([objc_msgSend(scale "unit")] & 1) == 0)
   {
-    v4 = [v4 measurementByConvertingToUnit:{+[NSUnitFrequency baseUnit](NSUnitFrequency, "baseUnit")}];
+    scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitFrequency baseUnit](NSUnitFrequency, "baseUnit")}];
   }
 
-  [v4 doubleValue];
+  [scaleCopy doubleValue];
   if (v6 >= 1000.0)
   {
     v7 = +[NSUnitFrequency kilohertz];
@@ -36,13 +36,13 @@
   {
     if (v6 > 0.001)
     {
-      return v4;
+      return scaleCopy;
     }
 
     v7 = +[NSUnitFrequency millihertz];
   }
 
-  return [v4 measurementByConvertingToUnit:v7];
+  return [scaleCopy measurementByConvertingToUnit:v7];
 }
 
 @end

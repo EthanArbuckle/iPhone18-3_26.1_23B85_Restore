@@ -1,48 +1,48 @@
 @interface PRPosterRenderingConfiguration
-+ (PRPosterRenderingConfiguration)allocWithZone:(_NSZone *)a3;
-+ (id)renderingConfigurationFromDictionaryRepresentation:(id)a3;
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (PRPosterRenderingConfiguration)allocWithZone:(_NSZone *)zone;
++ (id)renderingConfigurationFromDictionaryRepresentation:(id)representation;
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRPosterRenderingConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterRenderingConfiguration)initWithDepthEffectDisabled:(BOOL)a3 motionEffectsDisabled:(BOOL)a4;
-- (PRPosterRenderingConfiguration)initWithRenderingConfiguration:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PRPosterRenderingConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterRenderingConfiguration)initWithDepthEffectDisabled:(BOOL)disabled motionEffectsDisabled:(BOOL)effectsDisabled;
+- (PRPosterRenderingConfiguration)initWithRenderingConfiguration:(id)configuration;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation PRPosterRenderingConfiguration
 
-+ (PRPosterRenderingConfiguration)allocWithZone:(_NSZone *)a3
++ (PRPosterRenderingConfiguration)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(PRPosterRenderingConfiguration *)PRImmutablePosterRenderingConfiguration allocWithZone:a3];
+    return [(PRPosterRenderingConfiguration *)PRImmutablePosterRenderingConfiguration allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PRPosterRenderingConfiguration;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (PRPosterRenderingConfiguration)initWithDepthEffectDisabled:(BOOL)a3 motionEffectsDisabled:(BOOL)a4
+- (PRPosterRenderingConfiguration)initWithDepthEffectDisabled:(BOOL)disabled motionEffectsDisabled:(BOOL)effectsDisabled
 {
-  v4 = a4;
-  v5 = a3;
+  effectsDisabledCopy = effectsDisabled;
+  disabledCopy = disabled;
   v7 = objc_opt_self();
   v8 = [(PRPosterRenderingConfiguration *)self isMemberOfClass:v7];
 
   if (v8)
   {
-    v9 = [[PRImmutablePosterRenderingConfiguration alloc] initWithDepthEffectDisabled:v5 motionEffectsDisabled:v4];
+    v9 = [[PRImmutablePosterRenderingConfiguration alloc] initWithDepthEffectDisabled:disabledCopy motionEffectsDisabled:effectsDisabledCopy];
   }
 
   else
@@ -58,22 +58,22 @@
   return p_super;
 }
 
-- (PRPosterRenderingConfiguration)initWithRenderingConfiguration:(id)a3
+- (PRPosterRenderingConfiguration)initWithRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 isDepthEffectDisabled];
-  v6 = [v4 areMotionEffectsDisabled];
+  configurationCopy = configuration;
+  isDepthEffectDisabled = [configurationCopy isDepthEffectDisabled];
+  areMotionEffectsDisabled = [configurationCopy areMotionEffectsDisabled];
 
-  return [(PRPosterRenderingConfiguration *)self initWithDepthEffectDisabled:v5 motionEffectsDisabled:v6];
+  return [(PRPosterRenderingConfiguration *)self initWithDepthEffectDisabled:isDepthEffectDisabled motionEffectsDisabled:areMotionEffectsDisabled];
 }
 
-+ (id)renderingConfigurationFromDictionaryRepresentation:(id)a3
++ (id)renderingConfigurationFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"depthEffectDisabled"];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKey:@"depthEffectDisabled"];
   if (v4)
   {
-    v5 = [v3 bs_BOOLForKey:@"depthEffectDisabled"];
+    v5 = [representationCopy bs_BOOLForKey:@"depthEffectDisabled"];
   }
 
   else
@@ -81,10 +81,10 @@
     v5 = 1;
   }
 
-  v6 = [v3 objectForKey:@"motionEffectsDisabled"];
+  v6 = [representationCopy objectForKey:@"motionEffectsDisabled"];
   if (v6)
   {
-    v7 = [v3 bs_BOOLForKey:@"motionEffectsDisabled"];
+    v7 = [representationCopy bs_BOOLForKey:@"motionEffectsDisabled"];
   }
 
   else
@@ -97,10 +97,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
@@ -112,12 +112,12 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
-      if (v8 == [(PRPosterRenderingConfiguration *)v7 isDepthEffectDisabled])
+      v7 = equalCopy;
+      isDepthEffectDisabled = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
+      if (isDepthEffectDisabled == [(PRPosterRenderingConfiguration *)v7 isDepthEffectDisabled])
       {
-        v10 = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
-        v9 = v10 ^ [(PRPosterRenderingConfiguration *)v7 areMotionEffectsDisabled]^ 1;
+        areMotionEffectsDisabled = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
+        v9 = areMotionEffectsDisabled ^ [(PRPosterRenderingConfiguration *)v7 areMotionEffectsDisabled]^ 1;
       }
 
       else
@@ -137,15 +137,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
-  v4 = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
+  isDepthEffectDisabled = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
+  areMotionEffectsDisabled = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
   v5 = 2;
-  if (!v4)
+  if (!areMotionEffectsDisabled)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | isDepthEffectDisabled;
 }
 
 - (NSString)description
@@ -155,7 +155,7 @@
   v8 = 3221225472;
   v9 = __45__PRPosterRenderingConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -164,30 +164,30 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(PRPosterRenderingConfiguration *)PRMutablePosterRenderingConfiguration allocWithZone:a3];
+  v4 = [(PRPosterRenderingConfiguration *)PRMutablePosterRenderingConfiguration allocWithZone:zone];
 
   return [(PRPosterRenderingConfiguration *)v4 initWithRenderingConfiguration:self];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
-  [v6 encodeBool:v4 forKey:*MEMORY[0x1E69C54D0]];
-  v5 = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
-  [v6 encodeBool:v5 forKey:*MEMORY[0x1E69C54C8]];
+  coderCopy = coder;
+  isDepthEffectDisabled = [(PRPosterRenderingConfiguration *)self isDepthEffectDisabled];
+  [coderCopy encodeBool:isDepthEffectDisabled forKey:*MEMORY[0x1E69C54D0]];
+  areMotionEffectsDisabled = [(PRPosterRenderingConfiguration *)self areMotionEffectsDisabled];
+  [coderCopy encodeBool:areMotionEffectsDisabled forKey:*MEMORY[0x1E69C54C8]];
 }
 
-- (PRPosterRenderingConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterRenderingConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:*MEMORY[0x1E69C54D0]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:*MEMORY[0x1E69C54D0]];
   v6 = *MEMORY[0x1E69C54C8];
-  if ([v4 containsValueForKey:*MEMORY[0x1E69C54C8]])
+  if ([coderCopy containsValueForKey:*MEMORY[0x1E69C54C8]])
   {
-    v7 = [v4 decodeBoolForKey:v6];
+    v7 = [coderCopy decodeBoolForKey:v6];
   }
 
   else
@@ -200,17 +200,17 @@
   return v8;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendBool:-[PRPosterRenderingConfiguration isDepthEffectDisabled](self withName:{"isDepthEffectDisabled"), @"depthEffectDisabled"}];
-  v5 = [v6 appendBool:-[PRPosterRenderingConfiguration areMotionEffectsDisabled](self withName:{"areMotionEffectsDisabled"), @"motionEffectsDisabled"}];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendBool:-[PRPosterRenderingConfiguration isDepthEffectDisabled](self withName:{"isDepthEffectDisabled"), @"depthEffectDisabled"}];
+  v5 = [formatterCopy appendBool:-[PRPosterRenderingConfiguration areMotionEffectsDisabled](self withName:{"areMotionEffectsDisabled"), @"motionEffectsDisabled"}];
 }
 
-+ (void)performClassReplacementForKeyedUnarchiver:(id)a3
++ (void)performClassReplacementForKeyedUnarchiver:(id)unarchiver
 {
   sub_1A8BDDB24();
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   sub_1A8BDDB14();
 }
 

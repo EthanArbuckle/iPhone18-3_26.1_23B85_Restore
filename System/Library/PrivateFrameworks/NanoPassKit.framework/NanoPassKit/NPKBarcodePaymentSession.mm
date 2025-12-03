@@ -1,38 +1,38 @@
 @interface NPKBarcodePaymentSession
-- (NPKBarcodePaymentSession)initWithPaymentPass:(id)a3 authorizationCredential:(id)a4;
+- (NPKBarcodePaymentSession)initWithPaymentPass:(id)pass authorizationCredential:(id)credential;
 - (NPKBarcodePaymentSessionDelegate)delegate;
 - (void)_acquireExpressTransactionSuppressAssertion;
 - (void)_acquireNotificationSuppressionAssertion;
-- (void)_completedAuthenticationForTransaction:(id)a3;
+- (void)_completedAuthenticationForTransaction:(id)transaction;
 - (void)_extendSessionTimeoutTimer;
-- (void)_fetchDecryptedBarcodeWithCredential:(id)a3;
+- (void)_fetchDecryptedBarcodeWithCredential:(id)credential;
 - (void)_handleSessionTimeout;
-- (void)_handleUpdatedPaymentTransaction:(id)a3;
-- (void)_handleUpdatedTransactionStatus:(unint64_t)a3;
+- (void)_handleUpdatedPaymentTransaction:(id)transaction;
+- (void)_handleUpdatedTransactionStatus:(unint64_t)status;
 - (void)_insertPaymentTransactionForActiveBarcode;
 - (void)_invokeExtensionToCollectPaymentInformation;
-- (void)_processedAuthenticationMechanismForTransaction:(id)a3;
+- (void)_processedAuthenticationMechanismForTransaction:(id)transaction;
 - (void)_releaseExpressTransactionSuppressionAssertion;
 - (void)_releaseNotificationSuppressionAssertion;
 - (void)_startSessionTimeoutTimer;
 - (void)_stopSessionTimeoutTimer;
-- (void)_updateCurrentPaymentBarcodeWithBarcodeIdentifier:(id)a3 decryptedBarcodeCredential:(id)a4 error:(id)a5;
-- (void)_updateCurrentTransactionStatus:(unint64_t)a3 transaction:(id)a4;
+- (void)_updateCurrentPaymentBarcodeWithBarcodeIdentifier:(id)identifier decryptedBarcodeCredential:(id)credential error:(id)error;
+- (void)_updateCurrentTransactionStatus:(unint64_t)status transaction:(id)transaction;
 - (void)invalidateSession;
 - (void)retryFetchingBarcode;
 - (void)startSession;
-- (void)submitPinCode:(id)a3;
-- (void)submitUserIntentionConfirmation:(BOOL)a3;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)submitPinCode:(id)code;
+- (void)submitUserIntentionConfirmation:(BOOL)confirmation;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 @end
 
 @implementation NPKBarcodePaymentSession
 
-- (NPKBarcodePaymentSession)initWithPaymentPass:(id)a3 authorizationCredential:(id)a4
+- (NPKBarcodePaymentSession)initWithPaymentPass:(id)pass authorizationCredential:(id)credential
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  credentialCopy = credential;
   v19.receiver = self;
   v19.super_class = NPKBarcodePaymentSession;
   v9 = [(NPKBarcodePaymentSession *)&v19 init];
@@ -46,15 +46,15 @@
       v12 = pk_Payment_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v7 uniqueID];
+        uniqueID = [passCopy uniqueID];
         *buf = 138412290;
-        v21 = v13;
+        v21 = uniqueID;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] New barcode session created for pass: %@", buf, 0xCu);
       }
     }
 
-    objc_storeStrong(&v9->_paymentPass, a3);
-    objc_storeStrong(&v9->_authorizationCredential, a4);
+    objc_storeStrong(&v9->_paymentPass, pass);
+    objc_storeStrong(&v9->_authorizationCredential, credential);
     v9->_currentTransactionStatus = 0;
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("com.apple.NanoPassKit.BarcodePaymentSession", v14);
@@ -78,7 +78,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] %@ session started!", &v9, 0xCu);
     }
   }
@@ -89,8 +89,8 @@
 
   [(NPKBarcodePaymentSession *)self _startSessionTimeoutTimer];
   [(NPKBarcodePaymentSession *)self _updateCurrentPaymentBarcodeWithBarcodeIdentifier:0 decryptedBarcodeCredential:0 error:0];
-  v7 = [(NPKBarcodePaymentSession *)self authorizationCredential];
-  [(NPKBarcodePaymentSession *)self _fetchDecryptedBarcodeWithCredential:v7];
+  authorizationCredential = [(NPKBarcodePaymentSession *)self authorizationCredential];
+  [(NPKBarcodePaymentSession *)self _fetchDecryptedBarcodeWithCredential:authorizationCredential];
 
   [(NPKBarcodePaymentSession *)self _acquireNotificationSuppressionAssertion];
   [(NPKBarcodePaymentSession *)self _acquireExpressTransactionSuppressAssertion];
@@ -109,15 +109,15 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] %@ session retried!", &v8, 0xCu);
     }
   }
 
   [(NPKBarcodePaymentSession *)self _extendSessionTimeoutTimer];
   [(NPKBarcodePaymentSession *)self _updateCurrentPaymentBarcodeWithBarcodeIdentifier:0 decryptedBarcodeCredential:0 error:0];
-  v6 = [(NPKBarcodePaymentSession *)self authorizationCredential];
-  [(NPKBarcodePaymentSession *)self _fetchDecryptedBarcodeWithCredential:v6];
+  authorizationCredential = [(NPKBarcodePaymentSession *)self authorizationCredential];
+  [(NPKBarcodePaymentSession *)self _fetchDecryptedBarcodeWithCredential:authorizationCredential];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -134,14 +134,14 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] %@ session invalidated!", &v8, 0xCu);
     }
   }
 
   [(NPKBarcodePaymentSession *)self setSessionStarted:0];
-  v6 = [(NPKBarcodePaymentSession *)self paymentService];
-  [v6 setDelegate:0];
+  paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+  [paymentService setDelegate:0];
 
   [(NPKBarcodePaymentSession *)self setPaymentService:0];
   [(NPKBarcodePaymentSession *)self _stopSessionTimeoutTimer];
@@ -150,28 +150,28 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitUserIntentionConfirmation:(BOOL)a3
+- (void)submitUserIntentionConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     [(NPKBarcodePaymentSession *)self setSubmittingAuthenticationResult:1];
-    v4 = [(NPKBarcodePaymentSession *)self paymentService];
-    v5 = [(NPKBarcodePaymentSession *)self currentTransaction];
-    v6 = [v5 identifier];
+    paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+    currentTransaction = [(NPKBarcodePaymentSession *)self currentTransaction];
+    identifier = [currentTransaction identifier];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__NPKBarcodePaymentSession_submitUserIntentionConfirmation___block_invoke;
     v8[3] = &unk_27994B268;
     v8[4] = self;
-    [v4 submitUserConfirmation:1 forTransactionIdentifier:v6 completion:v8];
+    [paymentService submitUserConfirmation:1 forTransactionIdentifier:identifier completion:v8];
 
     [(NPKBarcodePaymentSession *)self _extendSessionTimeoutTimer];
   }
 
   else
   {
-    v7 = [(NPKBarcodePaymentSession *)self currentTransaction];
-    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:v7];
+    currentTransaction2 = [(NPKBarcodePaymentSession *)self currentTransaction];
+    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:currentTransaction2];
 
     [(NPKBarcodePaymentSession *)self _handleUpdatedTransactionStatus:2];
   }
@@ -224,36 +224,36 @@ uint64_t __60__NPKBarcodePaymentSession_submitUserIntentionConfirmation___block_
   return result;
 }
 
-- (void)submitPinCode:(id)a3
+- (void)submitPinCode:(id)code
 {
-  v4 = a3;
-  if (v4)
+  codeCopy = code;
+  if (codeCopy)
   {
     [(NPKBarcodePaymentSession *)self setSubmittingAuthenticationResult:1];
-    v5 = [(NPKBarcodePaymentSession *)self paymentPass];
-    v6 = [v5 uniqueID];
+    paymentPass = [(NPKBarcodePaymentSession *)self paymentPass];
+    uniqueID = [paymentPass uniqueID];
 
-    v7 = [(NPKBarcodePaymentSession *)self currentTransaction];
-    v8 = [(NPKBarcodePaymentSession *)self paymentService];
+    currentTransaction = [(NPKBarcodePaymentSession *)self currentTransaction];
+    paymentService = [(NPKBarcodePaymentSession *)self paymentService];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __42__NPKBarcodePaymentSession_submitPinCode___block_invoke;
     v15 = &unk_27994B290;
-    v16 = v4;
-    v17 = v7;
-    v18 = v6;
-    v19 = self;
-    v9 = v6;
-    v10 = v7;
-    [v8 retrievePINEncryptionCertificateForPassUniqueIdentifier:v9 withCompletion:&v12];
+    v16 = codeCopy;
+    v17 = currentTransaction;
+    v18 = uniqueID;
+    selfCopy = self;
+    v9 = uniqueID;
+    v10 = currentTransaction;
+    [paymentService retrievePINEncryptionCertificateForPassUniqueIdentifier:v9 withCompletion:&v12];
 
     [(NPKBarcodePaymentSession *)self _extendSessionTimeoutTimer:v12];
   }
 
   else
   {
-    v11 = [(NPKBarcodePaymentSession *)self currentTransaction];
-    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:v11];
+    currentTransaction2 = [(NPKBarcodePaymentSession *)self currentTransaction];
+    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:currentTransaction2];
 
     [(NPKBarcodePaymentSession *)self _handleUpdatedTransactionStatus:2];
   }
@@ -371,16 +371,16 @@ uint64_t __42__NPKBarcodePaymentSession_submitPinCode___block_invoke_2_59(uint64
   return result;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v5 = a4;
+  transactionCopy = transaction;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__NPKBarcodePaymentSession_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -426,10 +426,10 @@ LABEL_10:
   [v10 _handleUpdatedPaymentTransaction:v11];
 }
 
-- (void)_fetchDecryptedBarcodeWithCredential:(id)a3
+- (void)_fetchDecryptedBarcodeWithCredential:(id)credential
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  credentialCopy = credential;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -439,21 +439,21 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = credentialCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Start fetching decrypted barcode with credential: %@", buf, 0xCu);
     }
   }
 
   objc_initWeak(buf, self);
-  v8 = [(NPKBarcodePaymentSession *)self paymentService];
-  v9 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v10 = [v9 uniqueID];
+  paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+  paymentPass = [(NPKBarcodePaymentSession *)self paymentPass];
+  uniqueID = [paymentPass uniqueID];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__NPKBarcodePaymentSession__fetchDecryptedBarcodeWithCredential___block_invoke;
   v12[3] = &unk_27994B2E0;
   objc_copyWeak(&v13, buf);
-  [v8 retrieveDecryptedBarcodeCredentialForPassUniqueIdentifier:v10 authorization:v4 withCompletion:v12];
+  [paymentService retrieveDecryptedBarcodeCredentialForPassUniqueIdentifier:uniqueID authorization:credentialCopy withCompletion:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -565,17 +565,17 @@ LABEL_10:
 - (void)_invokeExtensionToCollectPaymentInformation
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v4 = [v3 uniqueID];
+  paymentPass = [(NPKBarcodePaymentSession *)self paymentPass];
+  uniqueID = [paymentPass uniqueID];
 
-  v5 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
-  v6 = [v5 barcodeIdentifier];
+  currentPaymentBarcode = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+  barcodeIdentifier = [currentPaymentBarcode barcodeIdentifier];
 
-  v7 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v8 = [v7 deviceAccountIdentifier];
+  paymentPass2 = [(NPKBarcodePaymentSession *)self paymentPass];
+  deviceAccountIdentifier = [paymentPass2 deviceAccountIdentifier];
 
-  v9 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v10 = [v9 associatedApplicationIdentifiers];
+  paymentPass3 = [(NPKBarcodePaymentSession *)self paymentPass];
+  associatedApplicationIdentifiers = [paymentPass3 associatedApplicationIdentifiers];
 
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -586,7 +586,7 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = uniqueID;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Starting to collect payment information for pass %@", &buf, 0xCu);
     }
   }
@@ -615,31 +615,31 @@ LABEL_10:
   v46[1] = v46;
   v46[2] = 0x2020000000;
   v47 = 0;
-  v17 = [(NPKBarcodePaymentSession *)self paymentService];
-  objc_initWeak(&location, v17);
+  paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+  objc_initWeak(&location, paymentService);
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformation__block_invoke_2;
   v39[3] = &unk_27994B328;
   v43 = v46;
-  v18 = v8;
+  v18 = deviceAccountIdentifier;
   v40 = v18;
-  v19 = v6;
+  v19 = barcodeIdentifier;
   v41 = v19;
-  v20 = v4;
+  v20 = uniqueID;
   v42 = v20;
   objc_copyWeak(&v44, &location);
   v21 = _Block_copy(v39);
   v22 = [MEMORY[0x277D37E98] providerForExtensionPoint:*MEMORY[0x277D38630]];
-  v23 = [v10 allObjects];
+  allObjects = [associatedApplicationIdentifiers allObjects];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformation__block_invoke_76;
   v31[3] = &unk_27994B418;
   v24 = v20;
   v32 = v24;
-  v33 = self;
+  selfCopy = self;
   v25 = v21;
   v37 = v25;
   v26 = v16;
@@ -648,9 +648,9 @@ LABEL_10:
   v34 = v27;
   v28 = v18;
   v35 = v28;
-  v29 = v10;
+  v29 = associatedApplicationIdentifiers;
   v36 = v29;
-  [v22 extensionsWithContainingApplicationIdentifiers:v23 completion:v31];
+  [v22 extensionsWithContainingApplicationIdentifiers:allObjects completion:v31];
 
   objc_destroyWeak(&v44);
   objc_destroyWeak(&location);
@@ -1197,22 +1197,22 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_updateCurrentPaymentBarcodeWithBarcodeIdentifier:(id)a3 decryptedBarcodeCredential:(id)a4 error:(id)a5
+- (void)_updateCurrentPaymentBarcodeWithBarcodeIdentifier:(id)identifier decryptedBarcodeCredential:(id)credential error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  credentialCopy = credential;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [[NPKPaymentBarcode alloc] initWithBarcodeIdentifier:v10 decryptedBarcodeCredential:v9 error:v8];
+  v11 = [[NPKPaymentBarcode alloc] initWithBarcodeIdentifier:identifierCopy decryptedBarcodeCredential:credentialCopy error:errorCopy];
 
-  v12 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
-  LOBYTE(v8) = [v12 isEqual:v11];
+  currentPaymentBarcode = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+  LOBYTE(errorCopy) = [currentPaymentBarcode isEqual:v11];
 
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
-  if (v8)
+  if (errorCopy)
   {
     if (v14)
     {
@@ -1232,9 +1232,9 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+        currentPaymentBarcode2 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
         v23 = 138412546;
-        v24 = v17;
+        v24 = currentPaymentBarcode2;
         v25 = 2112;
         v26 = v11;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Updating barcode state from %@ to %@", &v23, 0x16u);
@@ -1242,14 +1242,14 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
     }
 
     [(NPKBarcodePaymentSession *)self setCurrentPaymentBarcode:v11];
-    v18 = [(NPKBarcodePaymentSession *)self delegate];
+    delegate = [(NPKBarcodePaymentSession *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(NPKBarcodePaymentSession *)self delegate];
-      v21 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
-      [v20 barcodePaymentSession:self didReceivePaymentBarcode:v21];
+      delegate2 = [(NPKBarcodePaymentSession *)self delegate];
+      currentPaymentBarcode3 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+      [delegate2 barcodePaymentSession:self didReceivePaymentBarcode:currentPaymentBarcode3];
     }
 
     if ([(NPKPaymentBarcode *)v11 state]== 1)
@@ -1262,18 +1262,18 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdatedPaymentTransaction:(id)a3
+- (void)_handleUpdatedPaymentTransaction:(id)transaction
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v4 transactionStatus];
+  transactionStatus = [transactionCopy transactionStatus];
   v6 = 0;
-  if (v5 <= 3)
+  if (transactionStatus <= 3)
   {
-    if (v5 > 0)
+    if (transactionStatus > 0)
     {
-      if (v5 == 1)
+      if (transactionStatus == 1)
       {
         v21 = MEMORY[0x277D37D28];
         v22 = *MEMORY[0x277D38558];
@@ -1289,7 +1289,7 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
         goto LABEL_28;
       }
 
-      if (v5 != 2)
+      if (transactionStatus != 2)
       {
         v6 = 4;
         goto LABEL_28;
@@ -1298,9 +1298,9 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
       goto LABEL_9;
     }
 
-    if (v5 != -1)
+    if (transactionStatus != -1)
     {
-      if (v5)
+      if (transactionStatus)
       {
         goto LABEL_28;
       }
@@ -1316,18 +1316,18 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
           v14 = pk_Payment_log();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v4 authenticationContext];
-            [v15 requestedAuthenticationMechanisms];
+            authenticationContext = [transactionCopy authenticationContext];
+            [authenticationContext requestedAuthenticationMechanisms];
             v16 = PKTransactionAuthenticationMechanismToStrings();
             *buf = 138412546;
-            v33 = v4;
+            v33 = transactionCopy;
             v34 = 2112;
             v35 = v16;
             _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] PKPaymentTransaction %@ status is pending with authentication request %@.", buf, 0x16u);
           }
         }
 
-        [(NPKBarcodePaymentSession *)self _processedAuthenticationMechanismForTransaction:v4];
+        [(NPKBarcodePaymentSession *)self _processedAuthenticationMechanismForTransaction:transactionCopy];
         v6 = 1;
         goto LABEL_28;
       }
@@ -1338,7 +1338,7 @@ uint64_t __71__NPKBarcodePaymentSession__invokeExtensionToCollectPaymentInformat
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v33 = v4;
+          v33 = transactionCopy;
           _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] PKPaymentTransaction %@ status is pending without valid authentication context. Skipping.", buf, 0xCu);
         }
 
@@ -1359,10 +1359,10 @@ LABEL_21:
       v19 = pk_Payment_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 transactionStatus];
+        [transactionCopy transactionStatus];
         v20 = PKPaymentTransactionStatusToString();
         *buf = 138412546;
-        v33 = v4;
+        v33 = transactionCopy;
         v34 = 2112;
         v35 = v20;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] PKPaymentTransaction %@ status %@ is not relevant. Skipping.", buf, 0x16u);
@@ -1376,16 +1376,16 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  if (v5 <= 6)
+  if (transactionStatus <= 6)
   {
-    if ((v5 - 4) < 2)
+    if ((transactionStatus - 4) < 2)
     {
 LABEL_10:
       v6 = 3;
       goto LABEL_28;
     }
 
-    if (v5 != 6)
+    if (transactionStatus != 6)
     {
       goto LABEL_28;
     }
@@ -1404,36 +1404,36 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v5 == 7)
+  if (transactionStatus == 7)
   {
     v6 = 5;
     goto LABEL_28;
   }
 
-  if (v5 == 8)
+  if (transactionStatus == 8)
   {
     goto LABEL_21;
   }
 
 LABEL_28:
-  [(NPKBarcodePaymentSession *)self _updateCurrentTransactionStatus:v6 transaction:v4];
+  [(NPKBarcodePaymentSession *)self _updateCurrentTransactionStatus:v6 transaction:transactionCopy];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdatedTransactionStatus:(unint64_t)a3
+- (void)_handleUpdatedTransactionStatus:(unint64_t)status
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NPKBarcodePaymentSession *)self currentTransaction];
-  [(NPKBarcodePaymentSession *)self _updateCurrentTransactionStatus:a3 transaction:v5];
+  currentTransaction = [(NPKBarcodePaymentSession *)self currentTransaction];
+  [(NPKBarcodePaymentSession *)self _updateCurrentTransactionStatus:status transaction:currentTransaction];
 }
 
-- (void)_updateCurrentTransactionStatus:(unint64_t)a3 transaction:(id)a4
+- (void)_updateCurrentTransactionStatus:(unint64_t)status transaction:(id)transaction
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ([(NPKBarcodePaymentSession *)self currentTransactionStatus]!= a3 || ([(NPKBarcodePaymentSession *)self currentTransaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = PKEqualObjects(), v7, (v8 & 1) == 0))
+  if ([(NPKBarcodePaymentSession *)self currentTransactionStatus]!= status || ([(NPKBarcodePaymentSession *)self currentTransaction], v7 = objc_claimAutoreleasedReturnValue(), v8 = PKEqualObjects(), v7, (v8 & 1) == 0))
   {
     v9 = pk_Payment_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -1444,16 +1444,16 @@ LABEL_28:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 134218242;
-        v20 = a3;
+        statusCopy = status;
         v21 = 2112;
-        v22 = v6;
+        v22 = transactionCopy;
         _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Session status is updated to %lu with transaction %@.", &v19, 0x16u);
       }
     }
 
-    [(NPKBarcodePaymentSession *)self setCurrentTransactionStatus:a3];
-    [(NPKBarcodePaymentSession *)self setCurrentTransaction:v6];
-    if (a3 == 1)
+    [(NPKBarcodePaymentSession *)self setCurrentTransactionStatus:status];
+    [(NPKBarcodePaymentSession *)self setCurrentTransaction:transactionCopy];
+    if (status == 1)
     {
       v12 = pk_Payment_log();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -1471,13 +1471,13 @@ LABEL_28:
       [(NPKBarcodePaymentSession *)self _extendSessionTimeoutTimer];
     }
 
-    v15 = [(NPKBarcodePaymentSession *)self delegate];
+    delegate = [(NPKBarcodePaymentSession *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(NPKBarcodePaymentSession *)self delegate];
-      [v17 barcodePaymentSession:self didUpdateTransactionStatus:a3 withTransaction:v6];
+      delegate2 = [(NPKBarcodePaymentSession *)self delegate];
+      [delegate2 barcodePaymentSession:self didUpdateTransactionStatus:status withTransaction:transactionCopy];
     }
   }
 
@@ -1489,75 +1489,75 @@ LABEL_28:
   v22 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D38140] paymentTransactionWithSource:1];
   [v3 setOriginatedByDevice:1];
-  v4 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
-  v5 = [v4 barcodeIdentifier];
+  currentPaymentBarcode = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+  barcodeIdentifier = [currentPaymentBarcode barcodeIdentifier];
   v6 = PKTransactionPaymentHashForBarcodeIdentifier();
   [v3 setPaymentHash:v6];
 
   [v3 addUpdateReasons:0x20000];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v3 setTransactionDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v3 setTransactionDate:date];
 
   v8 = pk_Payment_log();
-  LODWORD(v5) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+  LODWORD(barcodeIdentifier) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
-  if (v5)
+  if (barcodeIdentifier)
   {
     v9 = pk_Payment_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
-      v11 = [v10 barcodeIdentifier];
+      currentPaymentBarcode2 = [(NPKBarcodePaymentSession *)self currentPaymentBarcode];
+      barcodeIdentifier2 = [currentPaymentBarcode2 barcodeIdentifier];
       v18 = 138412546;
       v19 = v3;
       v20 = 2112;
-      v21 = v11;
+      v21 = barcodeIdentifier2;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Inserting transaction %@ for current barcode: %@", &v18, 0x16u);
     }
   }
 
-  v12 = [(NPKBarcodePaymentSession *)self paymentService];
-  v13 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v14 = [v13 uniqueID];
-  v15 = [(NPKBarcodePaymentSession *)self paymentPass];
-  v16 = [v15 devicePrimaryBarcodePaymentApplication];
-  [v12 insertOrUpdatePaymentTransaction:v3 forPassUniqueIdentifier:v14 paymentApplication:v16 completion:0];
+  paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+  paymentPass = [(NPKBarcodePaymentSession *)self paymentPass];
+  uniqueID = [paymentPass uniqueID];
+  paymentPass2 = [(NPKBarcodePaymentSession *)self paymentPass];
+  devicePrimaryBarcodePaymentApplication = [paymentPass2 devicePrimaryBarcodePaymentApplication];
+  [paymentService insertOrUpdatePaymentTransaction:v3 forPassUniqueIdentifier:uniqueID paymentApplication:devicePrimaryBarcodePaymentApplication completion:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processedAuthenticationMechanismForTransaction:(id)a3
+- (void)_processedAuthenticationMechanismForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 authenticationContext];
-  v6 = [v5 requestedAuthenticationMechanisms];
+  transactionCopy = transaction;
+  authenticationContext = [transactionCopy authenticationContext];
+  requestedAuthenticationMechanisms = [authenticationContext requestedAuthenticationMechanisms];
 
-  if ((v6 & 8) != 0)
+  if ((requestedAuthenticationMechanisms & 8) != 0)
   {
-    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:v4];
+    [(NPKBarcodePaymentSession *)self _completedAuthenticationForTransaction:transactionCopy];
   }
 
   else
   {
-    if (v6)
+    if (requestedAuthenticationMechanisms)
     {
       v7 = 1;
       goto LABEL_7;
     }
 
-    if ((v6 & 4) != 0)
+    if ((requestedAuthenticationMechanisms & 4) != 0)
     {
       v7 = 4;
 LABEL_7:
-      v8 = [(NPKBarcodePaymentSession *)self paymentService];
-      v9 = [v4 identifier];
+      paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+      identifier = [transactionCopy identifier];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __76__NPKBarcodePaymentSession__processedAuthenticationMechanismForTransaction___block_invoke;
       v10[3] = &unk_279945830;
       v12 = v7;
-      v11 = v4;
-      [v8 processedAuthenticationMechanism:v7 forTransactionIdentifier:v9 completion:v10];
+      v11 = transactionCopy;
+      [paymentService processedAuthenticationMechanism:v7 forTransactionIdentifier:identifier completion:v10];
     }
   }
 }
@@ -1587,19 +1587,19 @@ void __76__NPKBarcodePaymentSession__processedAuthenticationMechanismForTransact
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completedAuthenticationForTransaction:(id)a3
+- (void)_completedAuthenticationForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(NPKBarcodePaymentSession *)self paymentService];
-  v6 = [(NPKBarcodePaymentSession *)self currentTransaction];
-  v7 = [v6 identifier];
+  transactionCopy = transaction;
+  paymentService = [(NPKBarcodePaymentSession *)self paymentService];
+  currentTransaction = [(NPKBarcodePaymentSession *)self currentTransaction];
+  identifier = [currentTransaction identifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__NPKBarcodePaymentSession__completedAuthenticationForTransaction___block_invoke;
   v9[3] = &unk_279944F98;
-  v10 = v4;
-  v8 = v4;
-  [v5 markAuthenticationCompleteForTransactionIdentifier:v7 completion:v9];
+  v10 = transactionCopy;
+  v8 = transactionCopy;
+  [paymentService markAuthenticationCompleteForTransactionIdentifier:identifier completion:v9];
 }
 
 void __67__NPKBarcodePaymentSession__completedAuthenticationForTransaction___block_invoke(uint64_t a1)
@@ -1760,15 +1760,15 @@ void __68__NPKBarcodePaymentSession__acquireNotificationSuppressionAssertion__bl
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKBarcodePaymentSession *)self notificationSuppressionAssertion];
+      notificationSuppressionAssertion = [(NPKBarcodePaymentSession *)self notificationSuppressionAssertion];
       v9 = 138412290;
-      v10 = v6;
+      v10 = notificationSuppressionAssertion;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Released notification suppression assertion: %@", &v9, 0xCu);
     }
   }
 
-  v7 = [(NPKBarcodePaymentSession *)self notificationSuppressionAssertion];
-  [v7 invalidate];
+  notificationSuppressionAssertion2 = [(NPKBarcodePaymentSession *)self notificationSuppressionAssertion];
+  [notificationSuppressionAssertion2 invalidate];
 
   [(NPKBarcodePaymentSession *)self setNotificationSuppressionAssertion:0];
   v8 = *MEMORY[0x277D85DE8];
@@ -1911,15 +1911,15 @@ void __71__NPKBarcodePaymentSession__acquireExpressTransactionSuppressAssertion_
     v5 = pk_Payment_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKBarcodePaymentSession *)self expressTransactionSuppressionAssertion];
+      expressTransactionSuppressionAssertion = [(NPKBarcodePaymentSession *)self expressTransactionSuppressionAssertion];
       v9 = 138412290;
-      v10 = v6;
+      v10 = expressTransactionSuppressionAssertion;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: [BarcodePayment] Released express transaction suppression assertion: %@", &v9, 0xCu);
     }
   }
 
-  v7 = [(NPKBarcodePaymentSession *)self expressTransactionSuppressionAssertion];
-  [v7 invalidate];
+  expressTransactionSuppressionAssertion2 = [(NPKBarcodePaymentSession *)self expressTransactionSuppressionAssertion];
+  [expressTransactionSuppressionAssertion2 invalidate];
 
   [(NPKBarcodePaymentSession *)self setExpressTransactionSuppressionAssertion:0];
   v8 = *MEMORY[0x277D85DE8];
@@ -1927,30 +1927,30 @@ void __71__NPKBarcodePaymentSession__acquireExpressTransactionSuppressAssertion_
 
 - (void)_startSessionTimeoutTimer
 {
-  v3 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+  sessionTimeoutTimer = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
 
-  if (!v3)
+  if (!sessionTimeoutTimer)
   {
     objc_initWeak(&location, self);
     v4 = dispatch_get_global_queue(21, 0);
     v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
     [(NPKBarcodePaymentSession *)self setSessionTimeoutTimer:v5];
 
-    v6 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+    sessionTimeoutTimer2 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
     v7 = dispatch_time(0, 0xDF8476000);
-    dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_timer(sessionTimeoutTimer2, v7, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-    v8 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+    sessionTimeoutTimer3 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __53__NPKBarcodePaymentSession__startSessionTimeoutTimer__block_invoke;
     handler[3] = &unk_279945240;
     objc_copyWeak(&v11, &location);
     handler[4] = self;
-    dispatch_source_set_event_handler(v8, handler);
+    dispatch_source_set_event_handler(sessionTimeoutTimer3, handler);
 
-    v9 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
-    dispatch_resume(v9);
+    sessionTimeoutTimer4 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+    dispatch_resume(sessionTimeoutTimer4);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -1973,12 +1973,12 @@ void __53__NPKBarcodePaymentSession__startSessionTimeoutTimer__block_invoke(uint
 
 - (void)_stopSessionTimeoutTimer
 {
-  v3 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+  sessionTimeoutTimer = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
 
-  if (v3)
+  if (sessionTimeoutTimer)
   {
-    v4 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
-    dispatch_source_cancel(v4);
+    sessionTimeoutTimer2 = [(NPKBarcodePaymentSession *)self sessionTimeoutTimer];
+    dispatch_source_cancel(sessionTimeoutTimer2);
 
     [(NPKBarcodePaymentSession *)self setSessionTimeoutTimer:0];
   }

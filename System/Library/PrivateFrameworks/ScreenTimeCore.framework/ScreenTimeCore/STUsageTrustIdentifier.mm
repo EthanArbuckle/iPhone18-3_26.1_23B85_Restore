@@ -1,19 +1,19 @@
 @interface STUsageTrustIdentifier
-- (BOOL)isEqual:(id)a3;
-- (STUsageTrustIdentifier)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (STUsageTrustIdentifier)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_stUsageTrustIdentifierCommonInitWithIdentifier:(id)a3 usageTrusted:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_stUsageTrustIdentifierCommonInitWithIdentifier:(id)identifier usageTrusted:(BOOL)trusted;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STUsageTrustIdentifier
 
-- (STUsageTrustIdentifier)initWithCoder:(id)a3
+- (STUsageTrustIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-  v6 = [v4 containsValueForKey:@"UsageTrusted"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  v6 = [coderCopy containsValueForKey:@"UsageTrusted"];
   if (v5)
   {
     v7 = v6 == 0;
@@ -41,42 +41,42 @@
     v11.receiver = self;
     v11.super_class = STUsageTrustIdentifier;
     v9 = [(STUsageTrustIdentifier *)&v11 init];
-    -[STUsageTrustIdentifier _stUsageTrustIdentifierCommonInitWithIdentifier:usageTrusted:](v9, "_stUsageTrustIdentifierCommonInitWithIdentifier:usageTrusted:", v5, [v4 decodeBoolForKey:@"UsageTrusted"]);
+    -[STUsageTrustIdentifier _stUsageTrustIdentifierCommonInitWithIdentifier:usageTrusted:](v9, "_stUsageTrustIdentifierCommonInitWithIdentifier:usageTrusted:", v5, [coderCopy decodeBoolForKey:@"UsageTrusted"]);
   }
 
   return v9;
 }
 
-- (void)_stUsageTrustIdentifierCommonInitWithIdentifier:(id)a3 usageTrusted:(BOOL)a4
+- (void)_stUsageTrustIdentifierCommonInitWithIdentifier:(id)identifier usageTrusted:(BOOL)trusted
 {
-  v6 = [a3 copy];
+  v6 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v6;
 
-  self->_usageTrusted = a4;
+  self->_usageTrusted = trusted;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeBool:self->_usageTrusted forKey:@"UsageTrusted"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeBool:self->_usageTrusted forKey:@"UsageTrusted"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(STUsageTrustIdentifier *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(STUsageTrustIdentifier *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(STUsageTrustIdentifier *)self usageTrusted];
-      v9 = v8 ^ [v5 usageTrusted] ^ 1;
+      usageTrusted = [(STUsageTrustIdentifier *)self usageTrusted];
+      v9 = usageTrusted ^ [v5 usageTrusted] ^ 1;
     }
 
     else
@@ -95,16 +95,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STUsageTrustIdentifier *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(STUsageTrustIdentifier *)self usageTrusted];
+  identifier = [(STUsageTrustIdentifier *)self identifier];
+  v4 = [identifier hash];
+  usageTrusted = [(STUsageTrustIdentifier *)self usageTrusted];
 
-  return v4 ^ v5;
+  return v4 ^ usageTrusted;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STUsageTrustIdentifier allocWithZone:a3];
+  v4 = [STUsageTrustIdentifier allocWithZone:zone];
   identifier = self->_identifier;
   usageTrusted = self->_usageTrusted;
 

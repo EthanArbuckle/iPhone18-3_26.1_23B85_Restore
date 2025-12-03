@@ -1,27 +1,27 @@
 @interface CRXCEyePrismCorrection
 - (CRXCEyePrismCorrection)init;
-- (CRXCEyePrismCorrection)initWithHorizontalBaseDirection:(int64_t)a3 horizontalAmount:(double)a4 verticalBaseDirection:(int64_t)a5 verticalAmount:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (CRXCEyePrismCorrection)initWithHorizontalBaseDirection:(int64_t)direction horizontalAmount:(double)amount verticalBaseDirection:(int64_t)baseDirection verticalAmount:(double)verticalAmount;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCEyePrismCorrection
 
-- (CRXCEyePrismCorrection)initWithHorizontalBaseDirection:(int64_t)a3 horizontalAmount:(double)a4 verticalBaseDirection:(int64_t)a5 verticalAmount:(double)a6
+- (CRXCEyePrismCorrection)initWithHorizontalBaseDirection:(int64_t)direction horizontalAmount:(double)amount verticalBaseDirection:(int64_t)baseDirection verticalAmount:(double)verticalAmount
 {
-  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_horizontalBaseDirection) = a3;
-  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_horizontalAmount) = a4;
-  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_verticalBaseDirection) = a5;
-  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_verticalAmount) = a6;
+  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_horizontalBaseDirection) = direction;
+  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_horizontalAmount) = amount;
+  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_verticalBaseDirection) = baseDirection;
+  *(&self->super.isa + OBJC_IVAR___CRXCEyePrismCorrection_verticalAmount) = verticalAmount;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRXCEyePrismCorrection();
   return [(CRXCEyePrismCorrection *)&v7 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCEyePrismCorrection.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCEyePrismCorrection.encode(with:)(coderCopy);
 }
 
 - (CRXCEyePrismCorrection)init

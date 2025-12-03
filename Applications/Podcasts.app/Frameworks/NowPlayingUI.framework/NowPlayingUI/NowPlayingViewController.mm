@@ -1,89 +1,89 @@
 @interface NowPlayingViewController
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
-- (_TtC12NowPlayingUI24NowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForHeaderInSection:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureCell:(id)a3 forMovie:(id)a4;
-- (void)configureCell:(id)a3 forPodcastEpisode:(id)a4;
-- (void)configureCell:(id)a3 forSong:(id)a4;
-- (void)configureCell:(id)a3 forTVEpisode:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
+- (_TtC12NowPlayingUI24NowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForHeaderInSection:(int64_t)section;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forMovie:(id)movie;
+- (void)configureCell:(id)cell forPodcastEpisode:(id)episode;
+- (void)configureCell:(id)cell forSong:(id)song;
+- (void)configureCell:(id)cell forTVEpisode:(id)episode;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NowPlayingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_7D888();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_7EE30(a3);
+  selfCopy = self;
+  sub_7EE30(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_7F5E4(a3);
+  selfCopy = self;
+  sub_7F5E4(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_7F808(a3);
+  selfCopy = self;
+  sub_7F808(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_7F998();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_7FB40(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_7FB40(scrollCopy);
 }
 
-- (_TtC12NowPlayingUI24NowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NowPlayingUI24NowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v7 = sub_140C2C();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v11 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   sub_865D8();
 
   swift_unknownObjectRelease();
@@ -94,22 +94,22 @@
   return v13.super.isa;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_80AF8(v6, a4);
+  selfCopy = self;
+  sub_80AF8(viewCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1C4A80);
   __chkstk_darwin(v9 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     sub_140BAC();
     v12 = sub_140C2C();
@@ -122,10 +122,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = sub_86BC0(a4, v11);
+  selfCopy = self;
+  v16 = sub_86BC0(update, v11);
 
   swift_unknownObjectRelease();
   sub_15340(v11, &unk_1C4A80);
@@ -133,66 +133,66 @@
   return v16;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = sub_870B0();
 
   return v6;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_871F4(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_871F4(section);
 
   return v8;
 }
 
-- (void)configureCell:(id)a3 forPodcastEpisode:(id)a4
+- (void)configureCell:(id)cell forPodcastEpisode:(id)episode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_815DC(v6, v7);
+  cellCopy = cell;
+  episodeCopy = episode;
+  selfCopy = self;
+  sub_815DC(cellCopy, episodeCopy);
 }
 
-- (void)configureCell:(id)a3 forSong:(id)a4
+- (void)configureCell:(id)cell forSong:(id)song
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_875F4(v6, v7);
+  cellCopy = cell;
+  songCopy = song;
+  selfCopy = self;
+  sub_875F4(cellCopy, songCopy);
 }
 
-- (void)configureCell:(id)a3 forTVEpisode:(id)a4
+- (void)configureCell:(id)cell forTVEpisode:(id)episode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_87850(v6, v7);
+  cellCopy = cell;
+  episodeCopy = episode;
+  selfCopy = self;
+  sub_87850(cellCopy, episodeCopy);
 }
 
-- (void)configureCell:(id)a3 forMovie:(id)a4
+- (void)configureCell:(id)cell forMovie:(id)movie
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_87A50(v6, v7);
+  cellCopy = cell;
+  movieCopy = movie;
+  selfCopy = self;
+  sub_87A50(cellCopy, movieCopy);
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_140C2C();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v10 = a3;
-  v11 = self;
-  sub_8207C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_8207C(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);
@@ -200,22 +200,22 @@
   return v13;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_140C2C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_87CDC(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_87CDC(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v7 = sub_140C2C();
   v8 = *(v7 - 8);
@@ -227,8 +227,8 @@
   v16 = &v22 - v15;
   sub_140BAC();
   sub_140BAC();
-  v17 = a3;
-  v18 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_839C8(v13, v10, v16);
 
   v19 = *(v8 + 8);
@@ -240,22 +240,22 @@
   return v20.super.isa;
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
   v6 = sub_140C2C();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_87BEC();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v7 = sub_140C2C();
   v8 = *(v7 - 8);
@@ -265,8 +265,8 @@
   v13 = &v17 - v12;
   sub_140BAC();
   sub_140BAC();
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_866D8(v13, v10);
 
   v16 = *(v8 + 8);
@@ -274,7 +274,7 @@
   v16(v13, v7);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_140C2C();
   v8 = *(v7 - 8);
@@ -282,9 +282,9 @@
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1448DC();
   sub_140BAC();
-  v11 = a3;
-  v12 = self;
-  sub_84518(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_84518(viewCopy);
   v14 = v13;
 
   (*(v8 + 8))(v10, v7);
@@ -292,48 +292,48 @@
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_140C2C();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v10 = a3;
-  v11 = self;
-  sub_84C3C(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_84C3C(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForHeaderInSection:(int64_t)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_87E28(v8, a5);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v11 = sub_87E28(viewCopy, section);
 
   return v11;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path
 {
   v8 = sub_140C2C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_88344(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_88344(viewCopy);
   v16 = v15;
 
   (*(v9 + 8))(v11, v8);
   return v16;
 }
 
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path
 {
   v5 = sub_140C2C();
   v6 = *(v5 - 8);
@@ -344,16 +344,16 @@
   return 0;
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path
 {
   v8 = sub_140C2C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_140BAC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
   v15 = sub_888F4();
 
   (*(v9 + 8))(v11, v8);

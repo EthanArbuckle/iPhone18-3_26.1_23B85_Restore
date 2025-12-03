@@ -1,5 +1,5 @@
 @interface _UIResponder_Override
-+ (id)overrideForResponder:(id)a3 withTarget:(id)a4 forType:(int64_t)a5;
++ (id)overrideForResponder:(id)responder withTarget:(id)target forType:(int64_t)type;
 - (UIResponder)owner;
 - (UIResponder)target;
 - (id)description;
@@ -15,21 +15,21 @@
   return WeakRetained;
 }
 
-+ (id)overrideForResponder:(id)a3 withTarget:(id)a4 forType:(int64_t)a5
++ (id)overrideForResponder:(id)responder withTarget:(id)target forType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 _currentOverrideClient];
-  v10 = v9;
-  if (v9 && (v11 = objc_loadWeakRetained((v9 + 16)), v11, v11 == v8))
+  responderCopy = responder;
+  targetCopy = target;
+  _currentOverrideClient = [responderCopy _currentOverrideClient];
+  v10 = _currentOverrideClient;
+  if (_currentOverrideClient && (v11 = objc_loadWeakRetained((_currentOverrideClient + 16)), v11, v11 == targetCopy))
   {
-    if ((*(v10 + 24) & a5) == 0)
+    if ((*(v10 + 24) & type) == 0)
     {
       WeakRetained = objc_loadWeakRetained((v10 + 16));
-      v17 = [WeakRetained _overrideHost];
-      [v17 attachOverrider:v7 forTypes:a5];
+      _overrideHost = [WeakRetained _overrideHost];
+      [_overrideHost attachOverrider:responderCopy forTypes:type];
 
-      *(v10 + 24) |= a5;
+      *(v10 + 24) |= type;
     }
   }
 
@@ -39,11 +39,11 @@
 
     if (v12)
     {
-      objc_storeWeak((v12 + 8), v7);
-      objc_storeWeak((v12 + 16), v8);
-      *(v12 + 24) = a5;
-      v13 = [v8 _overrideHost];
-      [v13 attachOverrider:v7 forTypes:a5];
+      objc_storeWeak((v12 + 8), responderCopy);
+      objc_storeWeak((v12 + 16), targetCopy);
+      *(v12 + 24) = type;
+      _overrideHost2 = [targetCopy _overrideHost];
+      [_overrideHost2 attachOverrider:responderCopy forTypes:type];
     }
 
     v10 = v12;
@@ -57,9 +57,9 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  v4 = [WeakRetained _overrideHost];
+  _overrideHost = [WeakRetained _overrideHost];
   v5 = objc_loadWeakRetained(&self->_owner);
-  [v4 detachOverrider:v5 forTypes:self->_types];
+  [_overrideHost detachOverrider:v5 forTypes:self->_types];
 
   v6.receiver = self;
   v6.super_class = _UIResponder_Override;

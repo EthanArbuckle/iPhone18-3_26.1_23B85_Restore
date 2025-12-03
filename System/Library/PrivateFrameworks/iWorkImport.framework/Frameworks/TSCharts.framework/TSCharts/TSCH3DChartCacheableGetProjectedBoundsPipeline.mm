@@ -1,11 +1,11 @@
 @interface TSCH3DChartCacheableGetProjectedBoundsPipeline
-+ (BOOL)includesDepthForUnitScaleForScene:(id)a3;
-+ (void)setIncludesDepthForUnitScale:(BOOL)a3 forScene:(id)a4;
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3;
-- (TSCH3DChartCacheableGetProjectedBoundsPipeline)initWithScene:(id)a3;
-- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)a3;
++ (BOOL)includesDepthForUnitScaleForScene:(id)scene;
++ (void)setIncludesDepthForUnitScale:(BOOL)scale forScene:(id)scene;
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer;
+- (TSCH3DChartCacheableGetProjectedBoundsPipeline)initWithScene:(id)scene;
+- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)type;
 - (id).cxx_construct;
-- (id)updatedConstantDepthSceneFromScene:(id)a3;
+- (id)updatedConstantDepthSceneFromScene:(id)scene;
 - (void)calculateBounds;
 - (void)calculateLayoutBounds;
 - (void)updateBounds;
@@ -15,31 +15,31 @@
 
 @implementation TSCH3DChartCacheableGetProjectedBoundsPipeline
 
-+ (void)setIncludesDepthForUnitScale:(BOOL)a3 forScene:(id)a4
++ (void)setIncludesDepthForUnitScale:(BOOL)scale forScene:(id)scene
 {
-  v4 = a3;
-  v14 = a4;
-  v9 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, v6, v7, v8, v4);
-  objc_msgSend_setProperties_forType_(v14, v10, v11, v12, v13, v9, @"TSCH3DChartCacheableGetProjectedBoundsPipeline.includesDepthForUnitScale");
+  scaleCopy = scale;
+  sceneCopy = scene;
+  v9 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v5, v6, v7, v8, scaleCopy);
+  objc_msgSend_setProperties_forType_(sceneCopy, v10, v11, v12, v13, v9, @"TSCH3DChartCacheableGetProjectedBoundsPipeline.includesDepthForUnitScale");
 }
 
-+ (BOOL)includesDepthForUnitScaleForScene:(id)a3
++ (BOOL)includesDepthForUnitScaleForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   objc_opt_class();
-  v8 = objc_msgSend_propertiesForType_(v3, v4, v5, v6, v7, @"TSCH3DChartCacheableGetProjectedBoundsPipeline.includesDepthForUnitScale");
+  v8 = objc_msgSend_propertiesForType_(sceneCopy, v4, v5, v6, v7, @"TSCH3DChartCacheableGetProjectedBoundsPipeline.includesDepthForUnitScale");
   v9 = TSUCheckedDynamicCast();
   v14 = objc_msgSend_BOOLValue(v9, v10, v11, v12, v13);
 
   return v14;
 }
 
-- (TSCH3DChartCacheableGetProjectedBoundsPipeline)initWithScene:(id)a3
+- (TSCH3DChartCacheableGetProjectedBoundsPipeline)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v18.receiver = self;
   v18.super_class = TSCH3DChartCacheableGetProjectedBoundsPipeline;
-  v6 = [(TSCH3DGetBoundsPipeline *)&v18 initWithScene:v4];
+  v6 = [(TSCH3DGetBoundsPipeline *)&v18 initWithScene:sceneCopy];
   if (v6)
   {
     v10 = objc_msgSend_identity(TSCH3DSceneRenderSetup, v5, v7, v8, v9);
@@ -53,10 +53,10 @@
   return v6;
 }
 
-- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)a3
+- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)type
 {
   v7 = *&a4;
-  v10 = objc_msgSend_bounds(self, a3, v4, v5, v6);
+  v10 = objc_msgSend_bounds(self, type, v4, v5, v6);
   v92 = *v10;
   v93 = *(v10 + 16);
   if (!objc_msgSend_useIndividualBounds(self, v11, v93, v12, v13))
@@ -142,9 +142,9 @@ LABEL_19:
   return result;
 }
 
-- (id)updatedConstantDepthSceneFromScene:(id)a3
+- (id)updatedConstantDepthSceneFromScene:(id)scene
 {
-  v6 = objc_msgSend_clone(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_clone(scene, a2, v3, v4, v5);
   v11 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v7, v8, v9, v10, v6);
   v16 = v11;
   if (v11)
@@ -528,9 +528,9 @@ LABEL_6:
   return self;
 }
 
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer
 {
-  objc_msgSend_useIndividualBounds(self, a2, v3, v4, v5, a3);
+  objc_msgSend_useIndividualBounds(self, a2, v3, v4, v5, renderer);
   v6 = objc_opt_class();
 
   return v6;

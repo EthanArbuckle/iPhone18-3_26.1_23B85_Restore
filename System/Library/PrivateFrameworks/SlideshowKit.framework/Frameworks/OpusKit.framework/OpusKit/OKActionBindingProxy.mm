@@ -1,16 +1,16 @@
 @interface OKActionBindingProxy
 + (id)actionBinding;
-+ (id)actionBindingWithGestureRecognizer:(id)a3 fromActionResponder:(id)a4;
++ (id)actionBindingWithGestureRecognizer:(id)recognizer fromActionResponder:(id)responder;
 + (id)supportedSettings;
-- (BOOL)performAction:(id)a3;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
-- (CGPoint)locationForActionFromGesture:(id)a3;
+- (BOOL)performAction:(id)action;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
+- (CGPoint)locationForActionFromGesture:(id)gesture;
 - (OKActionBindingProxy)init;
-- (OKActionBindingProxy)initWithSettings:(id)a3;
+- (OKActionBindingProxy)initWithSettings:(id)settings;
 - (SEL)selector;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation OKActionBindingProxy
@@ -46,36 +46,36 @@
   return v3;
 }
 
-- (OKActionBindingProxy)initWithSettings:(id)a3
+- (OKActionBindingProxy)initWithSettings:(id)settings
 {
   v4 = [(OKActionBindingProxy *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"actionScript"];
+    v5 = [settings objectForKey:@"actionScript"];
     if (v5)
     {
       v4->_actionScript = [v5 copy];
     }
 
-    v6 = [a3 objectForKey:@"shouldRecognizeSimultaneously"];
+    v6 = [settings objectForKey:@"shouldRecognizeSimultaneously"];
     if (v6)
     {
       -[NSMutableArray addObjectsFromArray:](v4->_shouldRecognizeSimultaneously, "addObjectsFromArray:", [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v6 copyItems:1]);
     }
 
-    v7 = [a3 objectForKey:@"alwaysRecognizeSimultaneously"];
+    v7 = [settings objectForKey:@"alwaysRecognizeSimultaneously"];
     if (v7)
     {
       v4->_alwaysRecognizeSimultaneously = [v7 BOOLValue];
     }
 
-    v8 = [a3 objectForKey:@"requireToFail"];
+    v8 = [settings objectForKey:@"requireToFail"];
     if (v8)
     {
       -[NSMutableArray addObjectsFromArray:](v4->_requireToFail, "addObjectsFromArray:", [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v8 copyItems:1]);
     }
 
-    v9 = [a3 objectForKey:@"canBeTriggeredWithoutInteractivity"];
+    v9 = [settings objectForKey:@"canBeTriggeredWithoutInteractivity"];
     if (v9)
     {
       v4->_canBeTriggeredWithoutInteractivity = [v9 BOOLValue];
@@ -128,7 +128,7 @@
   [(OKActionBindingProxy *)&v7 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -142,7 +142,7 @@
   return v5;
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -155,23 +155,23 @@
   return 0;
 }
 
-- (BOOL)performAction:(id)a3
+- (BOOL)performAction:(id)action
 {
   v5 = [(OKActionResponder *)self->_actionResponder canPerformAction:?];
   if (v5)
   {
     if (self->_actionScript)
     {
-      [(OKActionBindingProxy *)self prepareAction:a3];
+      [(OKActionBindingProxy *)self prepareAction:action];
       actionResponder = self->_actionResponder;
       actionScript = self->_actionScript;
 
-      LOBYTE(v5) = [(OKActionResponder *)actionResponder performActionScript:actionScript withAction:a3];
+      LOBYTE(v5) = [(OKActionResponder *)actionResponder performActionScript:actionScript withAction:action];
     }
 
     else if (self->_target && self->_selector)
     {
-      [(OKActionBindingProxy *)self prepareAction:a3];
+      [(OKActionBindingProxy *)self prepareAction:action];
       if (self->_selector)
       {
         selector = self->_selector;
@@ -182,7 +182,7 @@
         selector = 0;
       }
 
-      [self->_target performSelector:selector withObject:a3];
+      [self->_target performSelector:selector withObject:action];
       LOBYTE(v5) = 1;
     }
 
@@ -198,7 +198,7 @@
 + (id)supportedSettings
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12[0] = @"actionScript";
   v10[0] = @"type";
   v10[1] = @"default";
@@ -223,19 +223,19 @@
   v5[0] = &unk_287AF19B8;
   v5[1] = MEMORY[0x277CBEC28];
   v13[3] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:2];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v13, v12, 4)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v13, v12, 4)}];
+  return dictionary;
 }
 
-+ (id)actionBindingWithGestureRecognizer:(id)a3 fromActionResponder:(id)a4
++ (id)actionBindingWithGestureRecognizer:(id)recognizer fromActionResponder:(id)responder
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a4 allActionBindings];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allActionBindings = [responder allActionBindings];
+  v6 = [allActionBindings countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
     return 0;
@@ -249,18 +249,18 @@ LABEL_3:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(allActionBindings);
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 ownsGestureRecognizer:a3])
+    if ([v10 ownsGestureRecognizer:recognizer])
     {
       return v10;
     }
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allActionBindings countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -271,11 +271,11 @@ LABEL_3:
   }
 }
 
-- (CGPoint)locationForActionFromGesture:(id)a3
+- (CGPoint)locationForActionFromGesture:(id)gesture
 {
-  v4 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "view")];
+  v4 = [objc_msgSend(objc_msgSend(objc_msgSend(gesture "view")];
 
-  [a3 locationInView:v4];
+  [gesture locationInView:v4];
   result.y = v6;
   result.x = v5;
   return result;
@@ -294,19 +294,19 @@ LABEL_3:
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface MobileCalDAViCloudDaemonAccount
 - (BOOL)useSSL;
-- (MobileCalDAViCloudDaemonAccount)initWithBackingAccountInfo:(id)a3;
+- (MobileCalDAViCloudDaemonAccount)initWithBackingAccountInfo:(id)info;
 - (id)additionalHeaderValues;
 - (id)getAppleIDSession;
 - (id)host;
 - (id)principalURL;
 - (int64_t)port;
-- (void)noteHomeSetOnDifferentHost:(id)a3;
-- (void)setHost:(id)a3;
+- (void)noteHomeSetOnDifferentHost:(id)host;
+- (void)setHost:(id)host;
 @end
 
 @implementation MobileCalDAViCloudDaemonAccount
 
-- (MobileCalDAViCloudDaemonAccount)initWithBackingAccountInfo:(id)a3
+- (MobileCalDAViCloudDaemonAccount)initWithBackingAccountInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = MobileCalDAViCloudDaemonAccount;
-  v3 = [(MobileCalDAVDaemonAccount *)&v7 initWithBackingAccountInfo:a3];
+  v3 = [(MobileCalDAVDaemonAccount *)&v7 initWithBackingAccountInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  if (self->_host != a3)
+  if (self->_host != host)
   {
-    v4 = [a3 copy];
+    v4 = [host copy];
     host = self->_host;
     self->_host = v4;
 
@@ -56,17 +56,17 @@
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      host = v5;
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = MobileCalDAViCloudDaemonAccount;
-      v7 = [(MobileCalDAViCloudDaemonAccount *)&v9 host];
+      host = [(MobileCalDAViCloudDaemonAccount *)&v9 host];
     }
 
-    v3 = v7;
+    v3 = host;
   }
 
   return v3;
@@ -103,13 +103,13 @@
 {
   v6.receiver = self;
   v6.super_class = MobileCalDAViCloudDaemonAccount;
-  v3 = [(MobileCalDAViCloudDaemonAccount *)&v6 principalURL];
-  v4 = [(MobileCalDAViCloudDaemonAccount *)self addUsernameToURL:v3];
+  principalURL = [(MobileCalDAViCloudDaemonAccount *)&v6 principalURL];
+  v4 = [(MobileCalDAViCloudDaemonAccount *)self addUsernameToURL:principalURL];
 
   return v4;
 }
 
-- (void)noteHomeSetOnDifferentHost:(id)a3
+- (void)noteHomeSetOnDifferentHost:(id)host
 {
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[4];
@@ -120,41 +120,41 @@
   }
 
   v6 = sharedDAAccountStore();
-  v7 = [(MobileCalDAViCloudDaemonAccount *)self backingAccountInfo];
-  v8 = [v7 parentAccount];
+  backingAccountInfo = [(MobileCalDAViCloudDaemonAccount *)self backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2FC4;
   v9[3] = &unk_20550;
   v9[4] = self;
-  [v6 aa_updatePropertiesForAppleAccount:v8 completion:v9];
+  [v6 aa_updatePropertiesForAppleAccount:parentAccount completion:v9];
 }
 
 - (id)additionalHeaderValues
 {
   v11.receiver = self;
   v11.super_class = MobileCalDAViCloudDaemonAccount;
-  v3 = [(MobileCalDAViCloudDaemonAccount *)&v11 additionalHeaderValues];
+  additionalHeaderValues = [(MobileCalDAViCloudDaemonAccount *)&v11 additionalHeaderValues];
   v4 = +[DARefreshManager sharedManager];
-  v5 = [(MobileCalDAViCloudDaemonAccount *)self mainPrincipal];
-  v6 = [v5 APSEnv];
-  v7 = [v4 pushTokenForEnvironment:v6];
+  mainPrincipal = [(MobileCalDAViCloudDaemonAccount *)self mainPrincipal];
+  aPSEnv = [mainPrincipal APSEnv];
+  v7 = [v4 pushTokenForEnvironment:aPSEnv];
 
   if ([v7 length])
   {
-    v8 = [v3 mutableCopy];
+    v8 = [additionalHeaderValues mutableCopy];
     if (!v8)
     {
       v8 = objc_opt_new();
     }
 
-    v9 = [v7 da_lowercaseHexStringWithoutSpaces];
-    [v8 setValue:v9 forKey:CalDAVHTTPHeader_XAppleDAVPushToken];
+    da_lowercaseHexStringWithoutSpaces = [v7 da_lowercaseHexStringWithoutSpaces];
+    [v8 setValue:da_lowercaseHexStringWithoutSpaces forKey:CalDAVHTTPHeader_XAppleDAVPushToken];
 
-    v3 = v8;
+    additionalHeaderValues = v8;
   }
 
-  return v3;
+  return additionalHeaderValues;
 }
 
 - (id)getAppleIDSession

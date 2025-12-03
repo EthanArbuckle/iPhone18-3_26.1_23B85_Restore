@@ -1,13 +1,13 @@
 @interface AXWebProcessLoader
 + (void)_accessibilityLoadWebCoreAXBundle;
-+ (void)_axUpdated:(id)a3;
++ (void)_axUpdated:(id)updated;
 + (void)_registerForAccessibility;
 + (void)initialize;
 @end
 
 @implementation AXWebProcessLoader
 
-+ (void)_axUpdated:(id)a3
++ (void)_axUpdated:(id)updated
 {
   v3 = dispatch_time(0, 50000000);
   v4 = MEMORY[0x29EDCA578];
@@ -71,8 +71,8 @@ void __33__AXWebProcessLoader__axUpdated___block_invoke_281()
 
 + (void)_registerForAccessibility
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:a1 selector:sel__axUpdated_ name:*MEMORY[0x29EDC83D8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__axUpdated_ name:*MEMORY[0x29EDC83D8] object:0];
 }
 
 + (void)initialize
@@ -81,7 +81,7 @@ void __33__AXWebProcessLoader__axUpdated___block_invoke_281()
   block[1] = 3221225472;
   block[2] = __32__AXWebProcessLoader_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);

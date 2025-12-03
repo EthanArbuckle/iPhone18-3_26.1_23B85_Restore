@@ -12,10 +12,10 @@
 
 - (id)px_popFirst
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 objectAtIndex:0];
-    [a1 removeObjectAtIndex:0];
+    v2 = [self objectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
   else
@@ -28,11 +28,11 @@
 
 - (id)px_popLast
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 count] - 1;
-    v3 = [a1 objectAtIndex:v2];
-    [a1 removeObjectAtIndex:v2];
+    v2 = [self count] - 1;
+    v3 = [self objectAtIndex:v2];
+    [self removeObjectAtIndex:v2];
   }
 
   else
@@ -49,12 +49,12 @@
   if (v6)
   {
     v7 = v6;
-    while ([a1 count] >= a4)
+    while ([self count] >= a4)
     {
-      [a1 removeObjectAtIndex:0];
+      [self removeObjectAtIndex:0];
     }
 
-    [a1 addObject:v7];
+    [self addObject:v7];
     v6 = v7;
   }
 }
@@ -63,10 +63,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)px_insertObjects:()PhotosUIFoundation atIndex:
@@ -74,12 +74,12 @@
   v6 = MEMORY[0x1E696AC90];
   v7 = a3;
   v8 = [[v6 alloc] initWithIndexesInRange:{a4, objc_msgSend(v7, "count")}];
-  [a1 insertObjects:v7 atIndexes:v8];
+  [self insertObjects:v7 atIndexes:v8];
 }
 
 - (id)px_popFirstPassingTest:()PhotosUIFoundation
 {
-  v2 = [a1 indexOfObjectPassingTest:?];
+  v2 = [self indexOfObjectPassingTest:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -88,8 +88,8 @@
   else
   {
     v4 = v2;
-    v3 = [a1 objectAtIndex:v2];
-    [a1 removeObjectAtIndex:v4];
+    v3 = [self objectAtIndex:v2];
+    [self removeObjectAtIndex:v4];
   }
 
   return v3;
@@ -98,9 +98,9 @@
 - (id)px_popRange:()PhotosUIFoundation
 {
   v7 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:?];
-  v8 = [a1 objectsAtIndexes:v7];
+  v8 = [self objectsAtIndexes:v7];
 
-  [a1 removeObjectsInRange:{a3, a4}];
+  [self removeObjectsInRange:{a3, a4}];
 
   return v8;
 }

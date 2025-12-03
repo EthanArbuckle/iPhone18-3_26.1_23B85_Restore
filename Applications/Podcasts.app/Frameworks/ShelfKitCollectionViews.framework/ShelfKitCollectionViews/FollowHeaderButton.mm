@@ -1,27 +1,27 @@
 @interface FollowHeaderButton
 - (NSString)accessibilityIdentifier;
 - (NSString)accessibilityLabel;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)primaryActionTriggered;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FollowHeaderButton
 
 - (void)primaryActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_AF124();
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  sub_AF438(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  sub_AF438(superview);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   sub_124C4(0, &qword_400A88);
   v4 = swift_allocObject();
@@ -33,7 +33,7 @@
 
 - (NSString)accessibilityIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_B032C();
   v4 = v3;
 

@@ -1,12 +1,12 @@
 @interface SetupInProgressCardViewController
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SetupInProgressCardViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000025B4();
 }
 

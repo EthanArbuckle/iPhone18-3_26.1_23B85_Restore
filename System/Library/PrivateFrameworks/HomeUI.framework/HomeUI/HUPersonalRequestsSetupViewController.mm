@@ -1,25 +1,25 @@
 @interface HUPersonalRequestsSetupViewController
-+ (id)_bulletImageWithSystemName:(id)a3 color:(id)a4;
++ (id)_bulletImageWithSystemName:(id)name color:(id)color;
 - (BOOL)_allPersonalRequestsDevicesSupportVoiceRecognition;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUPersonalRequestsSetupViewController)initWithHome:(id)a3;
-- (HUPersonalRequestsSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HUPersonalRequestsSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (HUPersonalRequestsSetupViewController)initWithHome:(id)home;
+- (HUPersonalRequestsSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HUPersonalRequestsSetupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)hu_preloadContent;
 - (unint64_t)_numberOfDevicesSupportingVR;
-- (void)_customizePersonalRequests:(id)a3;
-- (void)_dontUsePersonalRequests:(id)a3;
+- (void)_customizePersonalRequests:(id)requests;
+- (void)_dontUsePersonalRequests:(id)requests;
 - (void)_setupPersonalRequestsItemInfrastructure;
-- (void)_turnOnAllPersonalRequests:(id)a3;
+- (void)_turnOnAllPersonalRequests:(id)requests;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUPersonalRequestsSetupViewController
 
-- (HUPersonalRequestsSetupViewController)initWithHome:(id)a3
+- (HUPersonalRequestsSetupViewController)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = _HULocalizedStringWithDefaultValue(@"HUPersonalContentSetup_Title", @"HUPersonalContentSetup_Title", 1);
   v9.receiver = self;
   v9.super_class = HUPersonalRequestsSetupViewController;
@@ -27,39 +27,39 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_home, a3);
+    objc_storeStrong(&v7->_home, home);
   }
 
   return v7;
 }
 
-- (HUPersonalRequestsSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HUPersonalRequestsSetupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsSetupViewController.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsSetupViewController initWithTitle:detailText:symbolName:contentLayout:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsSetupViewController.m" lineNumber:60 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsSetupViewController initWithTitle:detailText:symbolName:contentLayout:]", v9}];
 
   return 0;
 }
 
-- (HUPersonalRequestsSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HUPersonalRequestsSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsSetupViewController.m" lineNumber:65 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsSetupViewController initWithTitle:detailText:icon:contentLayout:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsSetupViewController.m" lineNumber:65 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsSetupViewController initWithTitle:detailText:icon:contentLayout:]", v9}];
 
   return 0;
 }
 
-+ (id)_bulletImageWithSystemName:(id)a3 color:(id)a4
++ (id)_bulletImageWithSystemName:(id)name color:(id)color
 {
   v5 = MEMORY[0x277D755B8];
   v6 = MEMORY[0x277D75348];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 systemWhiteColor];
+  colorCopy = color;
+  nameCopy = name;
+  systemWhiteColor = [v6 systemWhiteColor];
   v10 = [MEMORY[0x277D755D0] configurationWithPointSize:22.0];
-  v11 = [v5 hu_systemImageNamed:v8 withBackgroundColor:v7 symbolColor:v9 size:v10 cornerRadius:40.0 configuration:{40.0, 10.0}];
+  v11 = [v5 hu_systemImageNamed:nameCopy withBackgroundColor:colorCopy symbolColor:systemWhiteColor size:v10 cornerRadius:40.0 configuration:{40.0, 10.0}];
 
   return v11;
 }
@@ -67,25 +67,25 @@
 - (void)_setupPersonalRequestsItemInfrastructure
 {
   v4 = objc_alloc(MEMORY[0x277D14C98]);
-  v5 = [(HUPersonalRequestsSetupViewController *)self home];
-  v6 = [(HUPersonalRequestsSetupViewController *)self home];
-  v7 = [v6 currentUser];
-  v15 = [v4 initWithHome:v5 user:v7 nameStyle:0];
+  home = [(HUPersonalRequestsSetupViewController *)self home];
+  home2 = [(HUPersonalRequestsSetupViewController *)self home];
+  currentUser = [home2 currentUser];
+  v15 = [v4 initWithHome:home user:currentUser nameStyle:0];
 
   v8 = [[HUPersonalRequestsEditorItemManager alloc] initWithDelegate:self userItem:v15 onlyShowDeviceSwitches:0];
   [(HUPersonalRequestsSetupViewController *)self setPrEditorItemManager:v8];
 
   v9 = [HUPersonalRequestsDevicesModuleController alloc];
-  v10 = [(HUPersonalRequestsSetupViewController *)self prEditorItemManager];
-  v11 = [v10 prDevicesModule];
-  v12 = [(HUPersonalRequestsDevicesModuleController *)v9 initWithModule:v11 host:self];
+  prEditorItemManager = [(HUPersonalRequestsSetupViewController *)self prEditorItemManager];
+  prDevicesModule = [prEditorItemManager prDevicesModule];
+  v12 = [(HUPersonalRequestsDevicesModuleController *)v9 initWithModule:prDevicesModule host:self];
   [(HUPersonalRequestsSetupViewController *)self setPrDevicesModuleController:v12];
 
-  v13 = [(HUPersonalRequestsSetupViewController *)self prEditorItemManager];
-  v14 = [v13 reloadAndUpdateAllItemsFromSenderSelector:a2];
+  prEditorItemManager2 = [(HUPersonalRequestsSetupViewController *)self prEditorItemManager];
+  v14 = [prEditorItemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
 }
 
-- (void)_customizePersonalRequests:(id)a3
+- (void)_customizePersonalRequests:(id)requests
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -93,20 +93,20 @@
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v7 = [(HUPersonalRequestsSetupViewController *)self delegate];
+  delegate = [(HUPersonalRequestsSetupViewController *)self delegate];
   v8 = [(HUPersonalRequestsSetupViewController *)self locationDevice:@"HUPersonalRequestsOnboardingKey_UserInput"];
   v11[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:2];
-  [v7 viewController:self didFinishWithConfigurationResults:v9];
+  [delegate viewController:self didFinishWithConfigurationResults:v9];
 }
 
-- (void)_dontUsePersonalRequests:(id)a3
+- (void)_dontUsePersonalRequests:(id)requests
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -114,7 +114,7 @@
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -125,31 +125,31 @@
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412290;
-    v17 = v8;
+    selfCopy = v8;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@: Turning off all Personal Requests devices", buf, 0xCu);
   }
 
-  v9 = [(HUPersonalRequestsSetupViewController *)self prDevicesModuleController];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [v9 setPersonalRequestsDevices:v10];
+  prDevicesModuleController = [(HUPersonalRequestsSetupViewController *)self prDevicesModuleController];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [prDevicesModuleController setPersonalRequestsDevices:array];
 
-  v12 = [(HUPersonalRequestsSetupViewController *)self delegate];
+  delegate = [(HUPersonalRequestsSetupViewController *)self delegate];
   v14 = @"HUPersonalRequestsOnboardingKey_UserInput";
   v15 = &unk_282490E00;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  [v12 viewController:self didFinishWithConfigurationResults:v13];
+  [delegate viewController:self didFinishWithConfigurationResults:v13];
 }
 
-- (void)_turnOnAllPersonalRequests:(id)a3
+- (void)_turnOnAllPersonalRequests:(id)requests
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestsCopy = requests;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -160,12 +160,12 @@
   {
     v9 = NSStringFromSelector(a2);
     *buf = 138412290;
-    v16 = v9;
+    selfCopy = v9;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: Turning on Personal Requests for all multi-user capable devices", buf, 0xCu);
   }
 
-  v10 = [(HUPersonalRequestsSetupViewController *)self prDevicesModuleController];
-  v11 = [v10 turnOnPersonalRequestsForAllMultiUserCapableDevices];
+  prDevicesModuleController = [(HUPersonalRequestsSetupViewController *)self prDevicesModuleController];
+  turnOnPersonalRequestsForAllMultiUserCapableDevices = [prDevicesModuleController turnOnPersonalRequestsForAllMultiUserCapableDevices];
 
   objc_initWeak(buf, self);
   v13[0] = MEMORY[0x277D85DD0];
@@ -173,7 +173,7 @@
   v13[2] = __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___block_invoke;
   v13[3] = &unk_277DB99B8;
   objc_copyWeak(&v14, buf);
-  v12 = [v11 addSuccessBlock:v13];
+  v12 = [turnOnPersonalRequestsForAllMultiUserCapableDevices addSuccessBlock:v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
@@ -192,41 +192,41 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
 - (BOOL)_allPersonalRequestsDevicesSupportVoiceRecognition
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(HUPersonalRequestsSetupViewController *)self home];
-  v5 = [v4 hf_numberOfHomePods];
+  home = [(HUPersonalRequestsSetupViewController *)self home];
+  hf_numberOfHomePods = [home hf_numberOfHomePods];
 
-  v6 = [(HUPersonalRequestsSetupViewController *)self home];
-  v7 = [v6 hf_siriEndPointAccessories];
-  v8 = [v7 count] + v5;
+  home2 = [(HUPersonalRequestsSetupViewController *)self home];
+  hf_siriEndPointAccessories = [home2 hf_siriEndPointAccessories];
+  v8 = [hf_siriEndPointAccessories count] + hf_numberOfHomePods;
 
-  v9 = [(HUPersonalRequestsSetupViewController *)self _numberOfDevicesSupportingVR];
-  if (v9 != v8)
+  _numberOfDevicesSupportingVR = [(HUPersonalRequestsSetupViewController *)self _numberOfDevicesSupportingVR];
+  if (_numberOfDevicesSupportingVR != v8)
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSelector(a2);
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@: NO: Not all HomePods and Siri endpoints are on the supported Voice Recognition language", &v13, 0x16u);
     }
   }
 
-  return v9 == v8;
+  return _numberOfDevicesSupportingVR == v8;
 }
 
 - (unint64_t)_numberOfDevicesSupportingVR
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(HUPersonalRequestsSetupViewController *)self home];
-  v5 = [v4 hf_homePods];
-  v6 = [v5 na_any:&__block_literal_global_42];
+  home = [(HUPersonalRequestsSetupViewController *)self home];
+  hf_homePods = [home hf_homePods];
+  v6 = [hf_homePods na_any:&__block_literal_global_42];
 
-  v7 = [(HUPersonalRequestsSetupViewController *)self home];
-  v8 = [v7 hf_siriEndPointAccessories];
-  v9 = [v8 na_any:&__block_literal_global_25];
+  home2 = [(HUPersonalRequestsSetupViewController *)self home];
+  hf_siriEndPointAccessories = [home2 hf_siriEndPointAccessories];
+  v9 = [hf_siriEndPointAccessories na_any:&__block_literal_global_25];
 
   if ((v6 & 1) != 0 || v9)
   {
@@ -235,7 +235,7 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
     {
       v19 = NSStringFromSelector(a2);
       v20 = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v19;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@:%@: NO: Some HomePods do NOT support voice recognition", &v20, 0x16u);
@@ -246,14 +246,14 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
 
   else
   {
-    v10 = [(HUPersonalRequestsSetupViewController *)self home];
-    v11 = [(HUPersonalRequestsSetupViewController *)self supportedVoiceRecognitionLanguages];
-    v12 = [HUHomeFeatureOnboardingUtilities home:v10 createMultiUserLanguageToHomePodsMapping:v11];
+    home3 = [(HUPersonalRequestsSetupViewController *)self home];
+    supportedVoiceRecognitionLanguages = [(HUPersonalRequestsSetupViewController *)self supportedVoiceRecognitionLanguages];
+    v12 = [HUHomeFeatureOnboardingUtilities home:home3 createMultiUserLanguageToHomePodsMapping:supportedVoiceRecognitionLanguages];
 
-    v13 = [MEMORY[0x277CEF368] sharedPreferences];
-    v14 = [v13 languageCode];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
 
-    v15 = [v12 objectForKeyedSubscript:v14];
+    v15 = [v12 objectForKeyedSubscript:languageCode];
     v16 = [v15 count];
 
     return v16;
@@ -262,19 +262,19 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
 
 - (id)hu_preloadContent
 {
-  v4 = [(HUPersonalRequestsSetupViewController *)self home];
-  if ([v4 hf_atleastOneMediaAccessorySupportingJustSiri])
+  home = [(HUPersonalRequestsSetupViewController *)self home];
+  if ([home hf_atleastOneMediaAccessorySupportingJustSiri])
   {
-    v5 = [(HUPersonalRequestsSetupViewController *)self home];
-    if ([v5 siriPhraseOptions] == 2)
+    home2 = [(HUPersonalRequestsSetupViewController *)self home];
+    if ([home2 siriPhraseOptions] == 2)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(HUPersonalRequestsSetupViewController *)self home];
-      v6 = [v7 siriPhraseOptions] == 3;
+      home3 = [(HUPersonalRequestsSetupViewController *)self home];
+      v6 = [home3 siriPhraseOptions] == 3;
     }
   }
 
@@ -285,8 +285,8 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
 
   v8 = HUSiriLocalizedString(@"HUPersonalRequestsSetup_CalendarBulletText");
   v9 = objc_opt_class();
-  v10 = [MEMORY[0x277D75348] systemRedColor];
-  v11 = [v9 _bulletImageWithSystemName:@"calendar" color:v10];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  v11 = [v9 _bulletImageWithSystemName:@"calendar" color:systemRedColor];
   [(HUPersonalRequestsSetupViewController *)self addBulletedListItemWithTitle:&stru_2823E0EE8 description:v8 image:v11];
 
   v12 = HUSiriLocalizedString(@"HUPersonalRequestsSetup_MessagesBulletText_HEY_SIRI");
@@ -298,14 +298,14 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
   }
 
   v14 = objc_opt_class();
-  v15 = [MEMORY[0x277D75348] systemGreenColor];
-  v16 = [v14 _bulletImageWithSystemName:@"message.fill" color:v15];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v16 = [v14 _bulletImageWithSystemName:@"message.fill" color:systemGreenColor];
   [(HUPersonalRequestsSetupViewController *)self addBulletedListItemWithTitle:&stru_2823E0EE8 description:v12 image:v16];
 
   v17 = HUSiriLocalizedString(@"HUPersonalRequestsSetup_RemindersBulletText");
   v18 = objc_opt_class();
-  v19 = [MEMORY[0x277D75348] systemYellowColor];
-  v20 = [v18 _bulletImageWithSystemName:@"list.bullet" color:v19];
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v20 = [v18 _bulletImageWithSystemName:@"list.bullet" color:systemYellowColor];
   [(HUPersonalRequestsSetupViewController *)self addBulletedListItemWithTitle:&stru_2823E0EE8 description:v17 image:v20];
 
   v21 = HUSiriLocalizedString(@"HUPersonalRequestsSetup_PersonalUpdateBulletText_HEY_SIRI");
@@ -317,8 +317,8 @@ void __68__HUPersonalRequestsSetupViewController__turnOnAllPersonalRequests___bl
   }
 
   v23 = objc_opt_class();
-  v24 = [MEMORY[0x277D75348] systemIndigoColor];
-  v25 = [v23 _bulletImageWithSystemName:@"heart.text.square.fill" color:v24];
+  systemIndigoColor = [MEMORY[0x277D75348] systemIndigoColor];
+  v25 = [v23 _bulletImageWithSystemName:@"heart.text.square.fill" color:systemIndigoColor];
   [(HUPersonalRequestsSetupViewController *)self addBulletedListItemWithTitle:&stru_2823E0EE8 description:v21 image:v25];
 
   objc_initWeak(location, self);
@@ -516,42 +516,42 @@ id __58__HUPersonalRequestsSetupViewController_hu_preloadContent__block_invoke_3
   v29.receiver = self;
   v29.super_class = HUPersonalRequestsSetupViewController;
   [(OBBaseWelcomeController *)&v29 viewDidLoad];
-  v4 = [(HUPersonalRequestsSetupViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282492D88];
+  headerView = [(HUPersonalRequestsSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492D88];
 
-  v6 = [(HUPersonalRequestsSetupViewController *)self home];
-  v7 = [v6 hf_numberOfHomePods];
+  home = [(HUPersonalRequestsSetupViewController *)self home];
+  hf_numberOfHomePods = [home hf_numberOfHomePods];
 
-  v8 = [MEMORY[0x277D37618] boldButton];
-  [(HUPersonalRequestsSetupViewController *)self setUsePRButton:v8];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUPersonalRequestsSetupViewController *)self setUsePRButton:boldButton];
 
-  v9 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  usePRButton = [(HUPersonalRequestsSetupViewController *)self usePRButton];
+  [usePRButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v10 = _HULocalizedStringWithDefaultValue(@"HUPersonalContentSetup_UsePersonalContentButton", @"HUPersonalContentSetup_UsePersonalContentButton", 1);
-  v11 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
-  [v11 setTitle:v10 forState:0];
+  usePRButton2 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
+  [usePRButton2 setTitle:v10 forState:0];
 
-  v12 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
-  [v12 setAccessibilityIdentifier:@"Home.OnboardingView.PersonalRequests.SetUp.UsePersonalRequestsButton"];
+  usePRButton3 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
+  [usePRButton3 setAccessibilityIdentifier:@"Home.OnboardingView.PersonalRequests.SetUp.UsePersonalRequestsButton"];
 
-  v13 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
-  [v13 addTarget:self action:sel__turnOnAllPersonalRequests_ forControlEvents:64];
+  usePRButton4 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
+  [usePRButton4 addTarget:self action:sel__turnOnAllPersonalRequests_ forControlEvents:64];
 
-  v14 = [(HUPersonalRequestsSetupViewController *)self buttonTray];
-  v15 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
-  [v14 addButton:v15];
+  buttonTray = [(HUPersonalRequestsSetupViewController *)self buttonTray];
+  usePRButton5 = [(HUPersonalRequestsSetupViewController *)self usePRButton];
+  [buttonTray addButton:usePRButton5];
 
-  v16 = [MEMORY[0x277D37650] linkButton];
-  [(HUPersonalRequestsSetupViewController *)self setCustomizeButton:v16];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [(HUPersonalRequestsSetupViewController *)self setCustomizeButton:linkButton];
 
-  v17 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  customizeButton = [(HUPersonalRequestsSetupViewController *)self customizeButton];
+  [customizeButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
-  v19 = v7 > 1;
-  if (v7 <= 1)
+  customizeButton2 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
+  v19 = hf_numberOfHomePods > 1;
+  if (hf_numberOfHomePods <= 1)
   {
     v20 = @"HUPersonalContentCustomize_DoNotUseButton";
   }
@@ -561,7 +561,7 @@ id __58__HUPersonalRequestsSetupViewController_hu_preloadContent__block_invoke_3
     v20 = @"HUPersonalRequestsSetup_CustomizeButton";
   }
 
-  if (v7 <= 1)
+  if (hf_numberOfHomePods <= 1)
   {
     v21 = @"Home.OnboardingView.PersonalRequests.SetUp.DoNotUseLinkButton";
   }
@@ -582,16 +582,16 @@ id __58__HUPersonalRequestsSetupViewController_hu_preloadContent__block_invoke_3
   }
 
   v23 = _HULocalizedStringWithDefaultValue(v20, v20, 1);
-  [v18 setTitle:v23 forState:0];
+  [customizeButton2 setTitle:v23 forState:0];
 
-  v24 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
-  [v24 setAccessibilityIdentifier:v21];
+  customizeButton3 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
+  [customizeButton3 setAccessibilityIdentifier:v21];
 
-  v25 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
-  [v25 addTarget:self action:*v22 forControlEvents:64];
+  customizeButton4 = [(HUPersonalRequestsSetupViewController *)self customizeButton];
+  [customizeButton4 addTarget:self action:*v22 forControlEvents:64];
 
-  v26 = [(HUPersonalRequestsSetupViewController *)self buttonTray];
-  [v26 addButton:self->_customizeButton];
+  buttonTray2 = [(HUPersonalRequestsSetupViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_customizeButton];
 
   [(HUPersonalRequestsSetupViewController *)self setModalInPresentation:1];
   [(HUPersonalRequestsSetupViewController *)self _setupPersonalRequestsItemInfrastructure];
@@ -600,19 +600,19 @@ id __58__HUPersonalRequestsSetupViewController_hu_preloadContent__block_invoke_3
   {
     v28 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v28;
     _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: PRSVC", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUPersonalRequestsSetupViewController;
-  [(OBBaseWelcomeController *)&v8 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v8 viewWillDisappear:disappear];
   if ([(HUPersonalRequestsSetupViewController *)self isMovingFromParentViewController])
   {
     v5 = HFLogForCategory();
@@ -620,14 +620,14 @@ id __58__HUPersonalRequestsSetupViewController_hu_preloadContent__block_invoke_3
     {
       v6 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped BACK button", buf, 0x16u);
     }
 
-    v7 = [(HUPersonalRequestsSetupViewController *)self delegate];
-    [v7 viewControllerDidGoBack:self];
+    delegate = [(HUPersonalRequestsSetupViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 

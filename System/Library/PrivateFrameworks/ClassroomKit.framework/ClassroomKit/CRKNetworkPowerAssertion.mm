@@ -17,14 +17,14 @@
   if (v2)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     v6 = MEMORY[0x277CCABB0];
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v6 numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v8 = [v6 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v3 stringWithFormat:@"%@:%@:%@:%p", v5, v8, v10, v2];
+    v11 = [v3 stringWithFormat:@"%@:%@:%@:%p", processName, v8, v10, v2];
     name = v2->_name;
     v2->_name = v11;
   }
@@ -53,8 +53,8 @@ uint64_t __42__CRKNetworkPowerAssertion_sharedInstance__block_invoke()
 
 + (void)increment
 {
-  v2 = [a1 sharedInstance];
-  [v2 increment];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance increment];
 }
 
 - (void)increment
@@ -64,9 +64,9 @@ uint64_t __42__CRKNetworkPowerAssertion_sharedInstance__block_invoke()
   {
     IOPMAssertionRetain(self->mPowerAssertion);
     v3 = [(CRKNetworkPowerAssertion *)self count]+ 1;
-    v4 = self;
+    selfCopy2 = self;
 LABEL_3:
-    [(CRKNetworkPowerAssertion *)v4 setCount:v3];
+    [(CRKNetworkPowerAssertion *)selfCopy2 setCount:v3];
     goto LABEL_9;
   }
 
@@ -80,12 +80,12 @@ LABEL_3:
     v5 = @"NetworkClientActive";
   }
 
-  v6 = [(CRKNetworkPowerAssertion *)self name];
-  v7 = IOPMAssertionCreateWithName(v5, 0xFFu, v6, &self->mPowerAssertion);
+  name = [(CRKNetworkPowerAssertion *)self name];
+  v7 = IOPMAssertionCreateWithName(v5, 0xFFu, name, &self->mPowerAssertion);
 
   if (!v7)
   {
-    v4 = self;
+    selfCopy2 = self;
     v3 = 1;
     goto LABEL_3;
   }
@@ -103,8 +103,8 @@ LABEL_9:
 
 + (void)decrement
 {
-  v2 = [a1 sharedInstance];
-  [v2 decrement];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance decrement];
 }
 
 - (void)decrement
@@ -113,7 +113,7 @@ LABEL_9:
   v4 = 138543618;
   v5 = objc_opt_class();
   v6 = 2048;
-  v7 = [a1 count];
+  v7 = [self count];
   _os_log_error_impl(&dword_243550000, a2, OS_LOG_TYPE_ERROR, "%{public}@: Unbalanced number of calls to increment/decrement. self.count = %lu", &v4, 0x16u);
 }
 

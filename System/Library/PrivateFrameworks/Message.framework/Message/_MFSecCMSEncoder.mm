@@ -1,33 +1,33 @@
 @interface _MFSecCMSEncoder
 - (id)data;
-- (id)initForEncryptionWithCompositionSpecification:(void *)a3 error:;
-- (id)initForSigningWithSender:(void *)a3 compositionSpecification:(void *)a4 error:;
-- (int64_t)appendData:(id)a3;
+- (id)initForEncryptionWithCompositionSpecification:(void *)specification error:;
+- (id)initForSigningWithSender:(void *)sender compositionSpecification:(void *)specification error:;
+- (int64_t)appendData:(id)data;
 - (void)dealloc;
 - (void)done;
 @end
 
 @implementation _MFSecCMSEncoder
 
-- (id)initForSigningWithSender:(void *)a3 compositionSpecification:(void *)a4 error:
+- (id)initForSigningWithSender:(void *)sender compositionSpecification:(void *)specification error:
 {
   v26 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  senderCopy = sender;
+  if (!self)
   {
     goto LABEL_30;
   }
 
-  v24.receiver = a1;
+  v24.receiver = self;
   v24.super_class = _MFSecCMSEncoder;
-  a1 = objc_msgSendSuper2(&v24, sel_init);
-  if (!a1)
+  self = objc_msgSendSuper2(&v24, sel_init);
+  if (!self)
   {
     goto LABEL_30;
   }
 
-  v9 = [v8 objectForKey:@"SigningIdentity"];
+  v9 = [senderCopy objectForKey:@"SigningIdentity"];
   if (!v9)
   {
     v12 = MFLogGeneral();
@@ -69,13 +69,13 @@ LABEL_12:
   }
 
   SecCmsMessageGetContentInfo();
-  *(a1 + 10) = SecCmsContentInfoSetContentSignedData();
-  if (*(a1 + 10))
+  *(self + 10) = SecCmsContentInfoSetContentSignedData();
+  if (*(self + 10))
   {
     v11 = MFLogGeneral();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForSigningWithSender:a1 compositionSpecification:? error:?];
+      [_MFSecCMSEncoder initForSigningWithSender:self compositionSpecification:? error:?];
     }
 
 LABEL_22:
@@ -86,13 +86,13 @@ LABEL_23:
   }
 
   SecCmsSignedDataGetContentInfo();
-  *(a1 + 10) = SecCmsContentInfoSetContentData();
-  if (*(a1 + 10))
+  *(self + 10) = SecCmsContentInfoSetContentData();
+  if (*(self + 10))
   {
     v11 = MFLogGeneral();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForSigningWithSender:a1 compositionSpecification:? error:?];
+      [_MFSecCMSEncoder initForSigningWithSender:self compositionSpecification:? error:?];
     }
 
     goto LABEL_22;
@@ -111,20 +111,20 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  *(a1 + 10) = SecCmsSignerInfoIncludeCerts();
-  if (*(a1 + 10))
+  *(self + 10) = SecCmsSignerInfoIncludeCerts();
+  if (*(self + 10))
   {
     v11 = MFLogGeneral();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForSigningWithSender:a1 compositionSpecification:? error:?];
+      [_MFSecCMSEncoder initForSigningWithSender:self compositionSpecification:? error:?];
     }
 
     goto LABEL_22;
   }
 
   *buf = 0;
-  v19 = [v8 objectForKey:@"EncryptionIdentity"];
+  v19 = [senderCopy objectForKey:@"EncryptionIdentity"];
   if (v19)
   {
     SecIdentityCopyCertificate(v19, buf);
@@ -156,7 +156,7 @@ LABEL_23:
   MEMORY[0x1B272A3B0](v18, v21, 0);
   if (*buf && !CFEqual(*buf, certificateRef))
   {
-    *(a1 + 10) = SecCmsSignedDataAddCertChain();
+    *(self + 10) = SecCmsSignedDataAddCertChain();
   }
 
   if (certificateRef)
@@ -169,12 +169,12 @@ LABEL_23:
     CFRelease(*buf);
   }
 
-  if (*(a1 + 10))
+  if (*(self + 10))
   {
     v22 = MFLogGeneral();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForSigningWithSender:a1 compositionSpecification:? error:?];
+      [_MFSecCMSEncoder initForSigningWithSender:self compositionSpecification:? error:?];
     }
 
     goto LABEL_23;
@@ -182,46 +182,46 @@ LABEL_23:
 
   CFAbsoluteTimeGetCurrent();
   SecCmsSignerInfoAddSigningTime();
-  *(a1 + 7) = v10;
+  *(self + 7) = v10;
 LABEL_24:
-  if (!*(a1 + 6) && !*(a1 + 7) || *(a1 + 10))
+  if (!*(self + 6) && !*(self + 7) || *(self + 10))
   {
-    if (a4)
+    if (specification)
     {
       v13 = MEMORY[0x1E696AEC0];
       v14 = MFLookupLocalizedString(@"SMIME_CANT_SIGN_MESSAGE", @"An error occurred while trying to sign this message with a certificate from “%@”. Verify that your certificate for this address is correct, and that its private key is in your keychain.", @"Delayed");
       v15 = [v13 stringWithFormat:v14, v7];
-      *a4 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:v15];
+      *specification = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:v15];
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_30:
 
   v16 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (id)initForEncryptionWithCompositionSpecification:(void *)a3 error:
+- (id)initForEncryptionWithCompositionSpecification:(void *)specification error:
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_45;
   }
 
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = _MFSecCMSEncoder;
-  a1 = objc_msgSendSuper2(&v33, sel_init);
-  if (!a1)
+  self = objc_msgSendSuper2(&v33, sel_init);
+  if (!self)
   {
     goto LABEL_45;
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v27 = a3;
+  specificationCopy = specification;
   [v5 objectForKey:@"RecipientCertificates"];
   v32 = 0u;
   v31 = 0u;
@@ -306,26 +306,26 @@ LABEL_26:
   }
 
   SecCmsMessageGetContentInfo();
-  *(a1 + 10) = SecCmsContentInfoSetContentEnvelopedData();
-  if (*(a1 + 10))
+  *(self + 10) = SecCmsContentInfoSetContentEnvelopedData();
+  if (*(self + 10))
   {
     v18 = MFLogGeneral();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForEncryptionWithCompositionSpecification:a1 error:?];
+      [_MFSecCMSEncoder initForEncryptionWithCompositionSpecification:self error:?];
     }
 
     goto LABEL_37;
   }
 
   SecCmsEnvelopedDataGetContentInfo();
-  *(a1 + 10) = SecCmsContentInfoSetContentData();
-  if (*(a1 + 10))
+  *(self + 10) = SecCmsContentInfoSetContentData();
+  if (*(self + 10))
   {
     v18 = MFLogGeneral();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [_MFSecCMSEncoder initForEncryptionWithCompositionSpecification:a1 error:?];
+      [_MFSecCMSEncoder initForEncryptionWithCompositionSpecification:self error:?];
     }
 
     goto LABEL_37;
@@ -333,7 +333,7 @@ LABEL_26:
 
   if (v13)
   {
-    while (!*(a1 + 10))
+    while (!*(self + 10))
     {
       v21 = *v15;
       if (!SecCmsRecipientInfoCreate())
@@ -360,23 +360,23 @@ LABEL_26:
   }
 
 LABEL_34:
-  *(a1 + 7) = v17;
+  *(self + 7) = v17;
 LABEL_38:
-  if (!*(a1 + 6) && !*(a1 + 7) || *(a1 + 10))
+  if (!*(self + 6) && !*(self + 7) || *(self + 10))
   {
-    if (v27)
+    if (specificationCopy)
     {
       v22 = MFLookupLocalizedString(@"SMIME_CANT_ENCRYPT_MESSAGE", @"An error occurred while trying to encrypt your message. Verify that you have valid certificates in your keychain for all of the recipients.", @"Delayed");
       v23 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:v22];
-      *v27 = v23;
+      *specificationCopy = v23;
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_45:
   v24 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -396,10 +396,10 @@ LABEL_45:
   [(MFBufferedDataConsumer *)&v3 dealloc];
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_SecCMSError)
   {
     v6 = MFLogGeneral();
@@ -426,7 +426,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v7 = [v4 length];
+  v7 = [dataCopy length];
   v16[1] = [v5 bytes];
   v8 = objc_alloc_init(MEMORY[0x1E69AD730]);
   singleShot = self->_singleShot;
@@ -457,7 +457,7 @@ LABEL_11:
 
 - (void)done
 {
-  OUTLINED_FUNCTION_7_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_7_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_3_1();
   OUTLINED_FUNCTION_1_2(&dword_1B0389000, v1, v2, "#SMIMEErrors SecCmsEncoderFinish on -done returned %ld", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -465,15 +465,15 @@ LABEL_11:
 
 - (id)data
 {
-  v3 = self->_singleShot;
-  if (!v3)
+  data = self->_singleShot;
+  if (!data)
   {
     v5.receiver = self;
     v5.super_class = _MFSecCMSEncoder;
-    v3 = [(MFBufferedDataConsumer *)&v5 data];
+    data = [(MFBufferedDataConsumer *)&v5 data];
   }
 
-  return v3;
+  return data;
 }
 
 - (void)initForSigningWithSender:(uint64_t)a1 compositionSpecification:error:.cold.1(uint64_t a1)

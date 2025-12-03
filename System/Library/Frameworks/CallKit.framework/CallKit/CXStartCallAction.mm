@@ -3,66 +3,66 @@
 - (CGSize)localPortraitAspectRatio;
 - (CXHandle)handle;
 - (CXStartCallAction)initWithCallUUID:(NSUUID *)callUUID handle:(CXHandle *)handle;
-- (CXStartCallAction)initWithCallUUID:(id)a3 handles:(id)a4;
+- (CXStartCallAction)initWithCallUUID:(id)d handles:(id)handles;
 - (CXStartCallAction)initWithCoder:(NSCoder *)aDecoder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fulfill;
 - (void)fulfillWithDateStarted:(NSDate *)dateStarted;
 - (void)setHandle:(CXHandle *)handle;
-- (void)updateAsFulfilledWithDateStarted:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)updateAsFulfilledWithDateStarted:(id)started;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXStartCallAction
 
 - (CXHandle)handle
 {
-  v2 = [(CXStartCallAction *)self handles];
-  v3 = [v2 firstObject];
+  handles = [(CXStartCallAction *)self handles];
+  firstObject = [handles firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)customDescription
 {
   v11.receiver = self;
   v11.super_class = CXStartCallAction;
-  v3 = [(CXCallAction *)&v11 customDescription];
-  v4 = [(CXStartCallAction *)self handles];
-  [v3 appendFormat:@" handles=%@", v4];
+  customDescription = [(CXCallAction *)&v11 customDescription];
+  handles = [(CXStartCallAction *)self handles];
+  [customDescription appendFormat:@" handles=%@", handles];
 
-  v5 = [(CXStartCallAction *)self contactIdentifier];
-  [v3 appendFormat:@" contactIdentifier=%@", v5];
+  contactIdentifier = [(CXStartCallAction *)self contactIdentifier];
+  [customDescription appendFormat:@" contactIdentifier=%@", contactIdentifier];
 
-  [v3 appendFormat:@" video=%d", -[CXStartCallAction isVideo](self, "isVideo")];
-  [v3 appendFormat:@" isUpgradeToVideo=%d", -[CXStartCallAction isUpgradeToVideo](self, "isUpgradeToVideo")];
-  [v3 appendFormat:@" relay=%d", -[CXStartCallAction isRelay](self, "isRelay")];
-  [v3 appendFormat:@" upgrade=%d", -[CXStartCallAction isUpgrade](self, "isUpgrade")];
-  [v3 appendFormat:@" retry=%d", -[CXStartCallAction isRetry](self, "isRetry")];
-  [v3 appendFormat:@" emergency=%d", -[CXStartCallAction isEmergency](self, "isEmergency")];
-  [v3 appendFormat:@" isVoicemail=%d", -[CXStartCallAction isVoicemail](self, "isVoicemail")];
-  [v3 appendFormat:@" ttyType=%ld", -[CXStartCallAction ttyType](self, "ttyType")];
+  [customDescription appendFormat:@" video=%d", -[CXStartCallAction isVideo](self, "isVideo")];
+  [customDescription appendFormat:@" isUpgradeToVideo=%d", -[CXStartCallAction isUpgradeToVideo](self, "isUpgradeToVideo")];
+  [customDescription appendFormat:@" relay=%d", -[CXStartCallAction isRelay](self, "isRelay")];
+  [customDescription appendFormat:@" upgrade=%d", -[CXStartCallAction isUpgrade](self, "isUpgrade")];
+  [customDescription appendFormat:@" retry=%d", -[CXStartCallAction isRetry](self, "isRetry")];
+  [customDescription appendFormat:@" emergency=%d", -[CXStartCallAction isEmergency](self, "isEmergency")];
+  [customDescription appendFormat:@" isVoicemail=%d", -[CXStartCallAction isVoicemail](self, "isVoicemail")];
+  [customDescription appendFormat:@" ttyType=%ld", -[CXStartCallAction ttyType](self, "ttyType")];
   [(CXStartCallAction *)self localLandscapeAspectRatio];
   v6 = NSStringFromSize(v13);
-  [v3 appendFormat:@" localLandscapeAspectRatio=%@", v6];
+  [customDescription appendFormat:@" localLandscapeAspectRatio=%@", v6];
 
   [(CXStartCallAction *)self localPortraitAspectRatio];
   v7 = NSStringFromSize(v14);
-  [v3 appendFormat:@" localPortraitAspectRatio=%@", v7];
+  [customDescription appendFormat:@" localPortraitAspectRatio=%@", v7];
 
-  v8 = [(CXStartCallAction *)self dateStarted];
-  [v3 appendFormat:@" dateStarted=%@", v8];
+  dateStarted = [(CXStartCallAction *)self dateStarted];
+  [customDescription appendFormat:@" dateStarted=%@", dateStarted];
 
-  v9 = [(CXStartCallAction *)self localSenderIdentityUUID];
-  [v3 appendFormat:@" localSenderIdentityUUID=%@", v9];
+  localSenderIdentityUUID = [(CXStartCallAction *)self localSenderIdentityUUID];
+  [customDescription appendFormat:@" localSenderIdentityUUID=%@", localSenderIdentityUUID];
 
-  [v3 appendFormat:@" shouldSuppressInCallUI=%d", -[CXStartCallAction shouldSuppressInCallUI](self, "shouldSuppressInCallUI")];
-  [v3 appendFormat:@" startCallMuted=%d", -[CXStartCallAction startCallMuted](self, "startCallMuted")];
-  [v3 appendFormat:@" launchInBackground=%d", -[CXStartCallAction launchInBackground](self, "launchInBackground")];
+  [customDescription appendFormat:@" shouldSuppressInCallUI=%d", -[CXStartCallAction shouldSuppressInCallUI](self, "shouldSuppressInCallUI")];
+  [customDescription appendFormat:@" startCallMuted=%d", -[CXStartCallAction startCallMuted](self, "startCallMuted")];
+  [customDescription appendFormat:@" launchInBackground=%d", -[CXStartCallAction launchInBackground](self, "launchInBackground")];
 
-  return v3;
+  return customDescription;
 }
 
 - (CGSize)localLandscapeAspectRatio
@@ -107,20 +107,20 @@
   return v7;
 }
 
-- (CXStartCallAction)initWithCallUUID:(id)a3 handles:(id)a4
+- (CXStartCallAction)initWithCallUUID:(id)d handles:(id)handles
 {
-  v7 = a4;
+  handlesCopy = handles;
   v10.receiver = self;
   v10.super_class = CXStartCallAction;
-  v8 = [(CXCallAction *)&v10 initWithCallUUID:a3];
+  v8 = [(CXCallAction *)&v10 initWithCallUUID:d];
   if (v8)
   {
-    if (![v7 count])
+    if (![handlesCopy count])
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: array '%@' cannot be empty", "-[CXStartCallAction initWithCallUUID:handles:]", @"handles"}];
     }
 
-    objc_storeStrong(&v8->_handles, a4);
+    objc_storeStrong(&v8->_handles, handles);
   }
 
   return v8;
@@ -140,8 +140,8 @@
 
 - (void)fulfill
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(CXStartCallAction *)self fulfillWithDateStarted:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CXStartCallAction *)self fulfillWithDateStarted:date];
 }
 
 - (void)fulfillWithDateStarted:(NSDate *)dateStarted
@@ -154,59 +154,59 @@
 
   v4 = [(CXStartCallAction *)self copy];
   [v4 updateAsFulfilledWithDateStarted:v6];
-  v5 = [v4 delegate];
-  [v5 actionCompleted:v4];
+  delegate = [v4 delegate];
+  [delegate actionCompleted:v4];
 }
 
-- (void)updateAsFulfilledWithDateStarted:(id)a3
+- (void)updateAsFulfilledWithDateStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   [(CXAction *)self updateAsFulfilled];
-  [(CXStartCallAction *)self setDateStarted:v4];
+  [(CXStartCallAction *)self setDateStarted:startedCopy];
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CXStartCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v10 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXCallAction *)&v10 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXStartCallAction *)self dateStarted:v10.receiver];
-  [v6 setDateStarted:v7];
+  [copyCopy setDateStarted:v7];
 
-  v8 = [(CXStartCallAction *)self handles];
-  [v6 setHandles:v8];
+  handles = [(CXStartCallAction *)self handles];
+  [copyCopy setHandles:handles];
 
-  v9 = [(CXStartCallAction *)self contactIdentifier];
-  [v6 setContactIdentifier:v9];
+  contactIdentifier = [(CXStartCallAction *)self contactIdentifier];
+  [copyCopy setContactIdentifier:contactIdentifier];
 
-  [v6 setVideo:{-[CXStartCallAction isVideo](self, "isVideo")}];
+  [copyCopy setVideo:{-[CXStartCallAction isVideo](self, "isVideo")}];
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CXStartCallAction;
-  v6 = a3;
-  [(CXAction *)&v9 updateCopy:v6 withZone:a4];
-  [v6 setRelay:{-[CXStartCallAction isRelay](self, "isRelay", v9.receiver, v9.super_class)}];
-  [v6 setUpgrade:{-[CXStartCallAction isUpgrade](self, "isUpgrade")}];
-  [v6 setIsUpgradeToVideo:{-[CXStartCallAction isUpgradeToVideo](self, "isUpgradeToVideo")}];
-  [v6 setEmergency:{-[CXStartCallAction isEmergency](self, "isEmergency")}];
-  [v6 setVoicemail:{-[CXStartCallAction isVoicemail](self, "isVoicemail")}];
-  [v6 setTTYType:{-[CXStartCallAction ttyType](self, "ttyType")}];
-  v7 = [(CXStartCallAction *)self localSenderIdentityUUID];
-  [v6 setLocalSenderIdentityUUID:v7];
+  copyCopy = copy;
+  [(CXAction *)&v9 updateCopy:copyCopy withZone:zone];
+  [copyCopy setRelay:{-[CXStartCallAction isRelay](self, "isRelay", v9.receiver, v9.super_class)}];
+  [copyCopy setUpgrade:{-[CXStartCallAction isUpgrade](self, "isUpgrade")}];
+  [copyCopy setIsUpgradeToVideo:{-[CXStartCallAction isUpgradeToVideo](self, "isUpgradeToVideo")}];
+  [copyCopy setEmergency:{-[CXStartCallAction isEmergency](self, "isEmergency")}];
+  [copyCopy setVoicemail:{-[CXStartCallAction isVoicemail](self, "isVoicemail")}];
+  [copyCopy setTTYType:{-[CXStartCallAction ttyType](self, "ttyType")}];
+  localSenderIdentityUUID = [(CXStartCallAction *)self localSenderIdentityUUID];
+  [copyCopy setLocalSenderIdentityUUID:localSenderIdentityUUID];
 
-  [v6 setShouldSuppressInCallUI:{-[CXStartCallAction shouldSuppressInCallUI](self, "shouldSuppressInCallUI")}];
-  [v6 setStartCallMuted:{-[CXStartCallAction startCallMuted](self, "startCallMuted")}];
-  [v6 setLaunchInBackground:{-[CXStartCallAction launchInBackground](self, "launchInBackground")}];
+  [copyCopy setShouldSuppressInCallUI:{-[CXStartCallAction shouldSuppressInCallUI](self, "shouldSuppressInCallUI")}];
+  [copyCopy setStartCallMuted:{-[CXStartCallAction startCallMuted](self, "startCallMuted")}];
+  [copyCopy setLaunchInBackground:{-[CXStartCallAction launchInBackground](self, "launchInBackground")}];
   [(CXStartCallAction *)self localLandscapeAspectRatio];
-  [v6 setLocalLandscapeAspectRatio:?];
+  [copyCopy setLocalLandscapeAspectRatio:?];
   [(CXStartCallAction *)self localPortraitAspectRatio];
-  [v6 setLocalPortraitAspectRatio:?];
-  v8 = [(CXStartCallAction *)self handles];
-  [v6 setHandles:v8];
+  [copyCopy setLocalPortraitAspectRatio:?];
+  handles = [(CXStartCallAction *)self handles];
+  [copyCopy setHandles:handles];
 }
 
 - (CXStartCallAction)initWithCoder:(NSCoder *)aDecoder
@@ -288,83 +288,83 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v45.receiver = self;
   v45.super_class = CXStartCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v45 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v45 encodeWithCoder:coderCopy];
   v5 = [(CXStartCallAction *)self handles:v45.receiver];
   v6 = NSStringFromSelector(sel_handles);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(CXStartCallAction *)self contactIdentifier];
+  contactIdentifier = [(CXStartCallAction *)self contactIdentifier];
   v8 = NSStringFromSelector(sel_contactIdentifier);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:contactIdentifier forKey:v8];
 
-  v9 = [(CXStartCallAction *)self isVideo];
+  isVideo = [(CXStartCallAction *)self isVideo];
   v10 = NSStringFromSelector(sel_isVideo);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:isVideo forKey:v10];
 
-  v11 = [(CXStartCallAction *)self isUpgradeToVideo];
+  isUpgradeToVideo = [(CXStartCallAction *)self isUpgradeToVideo];
   v12 = NSStringFromSelector(sel_isUpgradeToVideo);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isUpgradeToVideo forKey:v12];
 
-  v13 = [(CXStartCallAction *)self isRelay];
+  isRelay = [(CXStartCallAction *)self isRelay];
   v14 = NSStringFromSelector(sel_isRelay);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isRelay forKey:v14];
 
-  v15 = [(CXStartCallAction *)self isUpgrade];
+  isUpgrade = [(CXStartCallAction *)self isUpgrade];
   v16 = NSStringFromSelector(sel_isUpgrade);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:isUpgrade forKey:v16];
 
-  v17 = [(CXStartCallAction *)self isRetry];
+  isRetry = [(CXStartCallAction *)self isRetry];
   v18 = NSStringFromSelector(sel_isRetry);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:isRetry forKey:v18];
 
-  v19 = [(CXStartCallAction *)self isEmergency];
+  isEmergency = [(CXStartCallAction *)self isEmergency];
   v20 = NSStringFromSelector(sel_isEmergency);
-  [v4 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:isEmergency forKey:v20];
 
-  v21 = [(CXStartCallAction *)self isVoicemail];
+  isVoicemail = [(CXStartCallAction *)self isVoicemail];
   v22 = NSStringFromSelector(sel_isVoicemail);
-  [v4 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:isVoicemail forKey:v22];
 
-  v23 = [(CXStartCallAction *)self ttyType];
+  ttyType = [(CXStartCallAction *)self ttyType];
   v24 = NSStringFromSelector(sel_ttyType);
-  [v4 encodeInteger:v23 forKey:v24];
+  [coderCopy encodeInteger:ttyType forKey:v24];
 
-  v25 = [(CXStartCallAction *)self localSenderIdentityUUID];
+  localSenderIdentityUUID = [(CXStartCallAction *)self localSenderIdentityUUID];
   v26 = NSStringFromSelector(sel_localSenderIdentityUUID);
-  [v4 encodeObject:v25 forKey:v26];
+  [coderCopy encodeObject:localSenderIdentityUUID forKey:v26];
 
-  v27 = [(CXStartCallAction *)self shouldSuppressInCallUI];
+  shouldSuppressInCallUI = [(CXStartCallAction *)self shouldSuppressInCallUI];
   v28 = NSStringFromSelector(sel_shouldSuppressInCallUI);
-  [v4 encodeBool:v27 forKey:v28];
+  [coderCopy encodeBool:shouldSuppressInCallUI forKey:v28];
 
-  v29 = [(CXStartCallAction *)self startCallMuted];
+  startCallMuted = [(CXStartCallAction *)self startCallMuted];
   v30 = NSStringFromSelector(sel_startCallMuted);
-  [v4 encodeBool:v29 forKey:v30];
+  [coderCopy encodeBool:startCallMuted forKey:v30];
 
-  v31 = [(CXStartCallAction *)self launchInBackground];
+  launchInBackground = [(CXStartCallAction *)self launchInBackground];
   v32 = NSStringFromSelector(sel_launchInBackground);
-  [v4 encodeBool:v31 forKey:v32];
+  [coderCopy encodeBool:launchInBackground forKey:v32];
 
   [(CXStartCallAction *)self localLandscapeAspectRatio];
   v34 = v33;
   v36 = v35;
   v37 = NSStringFromSelector(sel_localLandscapeAspectRatio);
-  [v4 encodeSize:v37 forKey:{v34, v36}];
+  [coderCopy encodeSize:v37 forKey:{v34, v36}];
 
   [(CXStartCallAction *)self localPortraitAspectRatio];
   v39 = v38;
   v41 = v40;
   v42 = NSStringFromSelector(sel_localPortraitAspectRatio);
-  [v4 encodeSize:v42 forKey:{v39, v41}];
+  [coderCopy encodeSize:v42 forKey:{v39, v41}];
 
-  v43 = [(CXStartCallAction *)self dateStarted];
+  dateStarted = [(CXStartCallAction *)self dateStarted];
   v44 = NSStringFromSelector(sel_dateStarted);
-  [v4 encodeObject:v43 forKey:v44];
+  [coderCopy encodeObject:dateStarted forKey:v44];
 }
 
 @end

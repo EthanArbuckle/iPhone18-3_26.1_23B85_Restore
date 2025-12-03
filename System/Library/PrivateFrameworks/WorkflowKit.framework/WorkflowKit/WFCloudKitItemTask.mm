@@ -15,8 +15,8 @@
     v3 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(WFCloudKitItemTask *)v2 setOperationQueue:v3];
 
-    v4 = [(WFCloudKitItemTask *)v2 operationQueue];
-    [v4 setQualityOfService:25];
+    operationQueue = [(WFCloudKitItemTask *)v2 operationQueue];
+    [operationQueue setQualityOfService:25];
 
     v5 = v2;
   }
@@ -26,11 +26,11 @@
 
 - (void)cancel
 {
-  v3 = [(WFCloudKitItemTask *)self operationQueue];
-  [v3 cancelAllOperations];
+  operationQueue = [(WFCloudKitItemTask *)self operationQueue];
+  [operationQueue cancelAllOperations];
 
-  v4 = [(WFCloudKitItemTask *)self cloudOperation];
-  [v4 cancel];
+  cloudOperation = [(WFCloudKitItemTask *)self cloudOperation];
+  [cloudOperation cancel];
 
   v5.receiver = self;
   v5.super_class = WFCloudKitItemTask;

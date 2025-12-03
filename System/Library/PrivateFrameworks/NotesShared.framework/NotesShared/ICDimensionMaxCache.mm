@@ -1,21 +1,21 @@
 @interface ICDimensionMaxCache
 - (ICDimensionMaxCache)init;
-- (ICDimensionMaxCache)initWithComparator:(id)a3;
-- (double)dimensionForKey:(id)a3;
+- (ICDimensionMaxCache)initWithComparator:(id)comparator;
+- (double)dimensionForKey:(id)key;
 - (double)max;
 - (unint64_t)count;
-- (void)removeDimensionForKey:(id)a3;
-- (void)setDimension:(double)a3 forKey:(id)a4;
+- (void)removeDimensionForKey:(id)key;
+- (void)setDimension:(double)dimension forKey:(id)key;
 @end
 
 @implementation ICDimensionMaxCache
 
 - (double)max
 {
-  v2 = [(ICDimensionMaxCache *)self sortedDimensions];
-  v3 = [v2 lastObject];
+  sortedDimensions = [(ICDimensionMaxCache *)self sortedDimensions];
+  lastObject = [sortedDimensions lastObject];
 
-  [v3 doubleValue];
+  [lastObject doubleValue];
   v5 = v4;
 
   return v5;
@@ -23,8 +23,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(ICDimensionMaxCache *)self dimensions];
-  v3 = [v2 count];
+  dimensions = [(ICDimensionMaxCache *)self dimensions];
+  v3 = [dimensions count];
 
   return v3;
 }
@@ -36,23 +36,23 @@
   return 0;
 }
 
-- (ICDimensionMaxCache)initWithComparator:(id)a3
+- (ICDimensionMaxCache)initWithComparator:(id)comparator
 {
-  v4 = a3;
+  comparatorCopy = comparator;
   v13.receiver = self;
   v13.super_class = ICDimensionMaxCache;
   v5 = [(ICDimensionMaxCache *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dimensions = v5->_dimensions;
-    v5->_dimensions = v6;
+    v5->_dimensions = dictionary;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sortedDimensions = v5->_sortedDimensions;
-    v5->_sortedDimensions = v8;
+    v5->_sortedDimensions = array;
 
-    v10 = _Block_copy(v4);
+    v10 = _Block_copy(comparatorCopy);
     comparator = v5->_comparator;
     v5->_comparator = v10;
   }
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (double)dimensionForKey:(id)a3
+- (double)dimensionForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICDimensionMaxCache *)self dimensions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dimensions = [(ICDimensionMaxCache *)self dimensions];
+  v6 = [dimensions objectForKeyedSubscript:keyCopy];
 
   [v6 doubleValue];
   v8 = v7;
@@ -72,13 +72,13 @@
   return v8;
 }
 
-- (void)setDimension:(double)a3 forKey:(id)a4
+- (void)setDimension:(double)dimension forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(ICDimensionMaxCache *)self dimensions];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  dimensions = [(ICDimensionMaxCache *)self dimensions];
+  v8 = [dimensions objectForKey:keyCopy];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:dimension];
   if (v8)
   {
     if ([v8 isEqual:v9])
@@ -86,40 +86,40 @@
       goto LABEL_9;
     }
 
-    v10 = [(ICDimensionMaxCache *)self sortedDimensions];
-    v11 = [(ICDimensionMaxCache *)self comparator];
-    v12 = [v10 ic_indexOfSortedObject:v8 insertionIndex:0 usingComparator:v11];
+    sortedDimensions = [(ICDimensionMaxCache *)self sortedDimensions];
+    comparator = [(ICDimensionMaxCache *)self comparator];
+    v12 = [sortedDimensions ic_indexOfSortedObject:v8 insertionIndex:0 usingComparator:comparator];
 
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"prevIndex != NSNotFound" functionName:"-[ICDimensionMaxCache setDimension:forKey:]" simulateCrash:1 showAlert:0 format:@"index of existing dimension should exist"];
     }
 
-    v13 = [(ICDimensionMaxCache *)self sortedDimensions];
-    [v13 removeObjectAtIndex:v12];
+    sortedDimensions2 = [(ICDimensionMaxCache *)self sortedDimensions];
+    [sortedDimensions2 removeObjectAtIndex:v12];
   }
 
   v22 = 0;
-  v14 = [(ICDimensionMaxCache *)self sortedDimensions];
-  v15 = [(ICDimensionMaxCache *)self comparator];
-  [v14 ic_indexOfSortedObject:v9 insertionIndex:&v22 usingComparator:v15];
+  sortedDimensions3 = [(ICDimensionMaxCache *)self sortedDimensions];
+  comparator2 = [(ICDimensionMaxCache *)self comparator];
+  [sortedDimensions3 ic_indexOfSortedObject:v9 insertionIndex:&v22 usingComparator:comparator2];
 
   if (v22 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"index != NSNotFound" functionName:"-[ICDimensionMaxCache setDimension:forKey:]" simulateCrash:1 showAlert:0 format:@"insertion index should be found"];
   }
 
-  v16 = [(ICDimensionMaxCache *)self sortedDimensions];
-  [v16 insertObject:v9 atIndex:v22];
+  sortedDimensions4 = [(ICDimensionMaxCache *)self sortedDimensions];
+  [sortedDimensions4 insertObject:v9 atIndex:v22];
 
-  v17 = [(ICDimensionMaxCache *)self dimensions];
-  [v17 setObject:v9 forKey:v6];
+  dimensions2 = [(ICDimensionMaxCache *)self dimensions];
+  [dimensions2 setObject:v9 forKey:keyCopy];
 
 LABEL_9:
-  v18 = [(ICDimensionMaxCache *)self dimensions];
-  v19 = [v18 count];
-  v20 = [(ICDimensionMaxCache *)self sortedDimensions];
-  v21 = [v20 count];
+  dimensions3 = [(ICDimensionMaxCache *)self dimensions];
+  v19 = [dimensions3 count];
+  sortedDimensions5 = [(ICDimensionMaxCache *)self sortedDimensions];
+  v21 = [sortedDimensions5 count];
 
   if (v19 != v21)
   {
@@ -127,28 +127,28 @@ LABEL_9:
   }
 }
 
-- (void)removeDimensionForKey:(id)a3
+- (void)removeDimensionForKey:(id)key
 {
-  v11 = a3;
-  v4 = [(ICDimensionMaxCache *)self dimensions];
-  v5 = [v4 objectForKey:v11];
+  keyCopy = key;
+  dimensions = [(ICDimensionMaxCache *)self dimensions];
+  v5 = [dimensions objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [(ICDimensionMaxCache *)self sortedDimensions];
-    v7 = [(ICDimensionMaxCache *)self comparator];
-    v8 = [v6 ic_indexOfSortedObject:v5 insertionIndex:0 usingComparator:v7];
+    sortedDimensions = [(ICDimensionMaxCache *)self sortedDimensions];
+    comparator = [(ICDimensionMaxCache *)self comparator];
+    v8 = [sortedDimensions ic_indexOfSortedObject:v5 insertionIndex:0 usingComparator:comparator];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"index != NSNotFound" functionName:"-[ICDimensionMaxCache removeDimensionForKey:]" simulateCrash:1 showAlert:0 format:@"index of existing dimension should exist"];
     }
 
-    v9 = [(ICDimensionMaxCache *)self sortedDimensions];
-    [v9 removeObjectAtIndex:v8];
+    sortedDimensions2 = [(ICDimensionMaxCache *)self sortedDimensions];
+    [sortedDimensions2 removeObjectAtIndex:v8];
 
-    v10 = [(ICDimensionMaxCache *)self dimensions];
-    [v10 removeObjectForKey:v11];
+    dimensions2 = [(ICDimensionMaxCache *)self dimensions];
+    [dimensions2 removeObjectForKey:keyCopy];
   }
 }
 

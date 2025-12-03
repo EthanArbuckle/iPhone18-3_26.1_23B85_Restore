@@ -1,16 +1,16 @@
 @interface WCAFetchRequest
-- (WCAFetchRequest)initWithCoder:(id)a3;
+- (WCAFetchRequest)initWithCoder:(id)coder;
 @end
 
 @implementation WCAFetchRequest
 
-- (WCAFetchRequest)initWithCoder:(id)a3
+- (WCAFetchRequest)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WCAFetchRequest;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(WCAFetchRequest *)&v8 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"_asset", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"_asset", v8.receiver, v8.super_class}];
 
   asset = v4->_asset;
   v4->_asset = v5;

@@ -1,11 +1,11 @@
 @interface CDPContext
 + (BOOL)_isKeychainSyncAllowedByMDM;
-+ (CDPContext)contextWithAuthenticationResults:(id)a3;
-+ (id)contextForAccountWithAltDSID:(id)a3;
-+ (id)contextForAccountWithAppleID:(id)a3;
-+ (id)contextForAccountWithDSID:(id)a3;
++ (CDPContext)contextWithAuthenticationResults:(id)results;
++ (id)contextForAccountWithAltDSID:(id)d;
++ (id)contextForAccountWithAppleID:(id)d;
++ (id)contextForAccountWithDSID:(id)d;
 + (id)contextForPrimaryAccount;
-+ (id)preflightContext:(id)a3;
++ (id)preflightContext:(id)context;
 + (void)contextForPrimaryAccount;
 - (BOOL)_isLocalSecretCachedAcknowledgingInMemoryValue;
 - (BOOL)desiresAllRecords;
@@ -16,51 +16,51 @@
 - (BOOL)isPiggybackingRecovery;
 - (BOOL)isPrimaryAccount;
 - (BOOL)isTTSURecovery;
-- (BOOL)isiCDPEligibleWithError:(id *)a3;
+- (BOOL)isiCDPEligibleWithError:(id *)error;
 - (BOOL)keychainSyncAllowedByServer;
 - (CDPContext)init;
-- (CDPContext)initWithAccount:(id)a3;
-- (CDPContext)initWithAuthenticationResults:(id)a3;
-- (CDPContext)initWithCoder:(id)a3;
+- (CDPContext)initWithAccount:(id)account;
+- (CDPContext)initWithAuthenticationResults:(id)results;
+- (CDPContext)initWithCoder:(id)coder;
 - (NSNumber)adpCohort;
 - (NSString)telemetryDeviceSessionID;
 - (id)cliqueConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initNeedingPreflight:(BOOL)a3;
+- (id)initNeedingPreflight:(BOOL)preflight;
 - (int64_t)numberOfTrustedDevices;
 - (void)_fakeSOSFlagsWithUserDefaults;
 - (void)_isLocalSecretCachedAcknowledgingInMemoryValue;
 - (void)adpCohort;
-- (void)akTrustedDeviceListChanged:(id)a3;
-- (void)augmentWithCredentialsFromContext:(id)a3;
+- (void)akTrustedDeviceListChanged:(id)changed;
+- (void)augmentWithCredentialsFromContext:(id)context;
 - (void)clearNewPassword;
 - (void)clearOldPassword;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)init;
 - (void)isPrimaryAccount;
 - (void)keychainSyncAllowedByServer;
 - (void)numberOfTrustedDevices;
 - (void)purgeResumeData;
-- (void)setNewPassword:(id)a3 oldPassword:(id)a4;
-- (void)setPassword:(id)a3;
+- (void)setNewPassword:(id)password oldPassword:(id)oldPassword;
+- (void)setPassword:(id)password;
 - (void)startObservingTrustedDeviceList;
 - (void)stoptObservingTrustedDeviceList;
-- (void)updateDemoAttributesWithAccount:(id)a3;
-- (void)updateWithAuthenticationResults:(id)a3;
+- (void)updateDemoAttributesWithAccount:(id)account;
+- (void)updateWithAuthenticationResults:(id)results;
 @end
 
 @implementation CDPContext
 
 + (id)contextForPrimaryAccount
 {
-  v2 = [MEMORY[0x1E698DC80] sharedInstance];
-  v3 = [v2 primaryAuthKitAccount];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
 
-  if (v3)
+  if (primaryAuthKitAccount)
   {
-    v4 = [[CDPContext alloc] initWithAccount:v3];
+    v4 = [[CDPContext alloc] initWithAccount:primaryAuthKitAccount];
   }
 
   else
@@ -79,8 +79,8 @@
 
 + (BOOL)_isKeychainSyncAllowedByMDM
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE30]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] isBoolSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE30]];
 
   return v3 ^ 1;
 }
@@ -103,23 +103,23 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E697AA88]);
   [v3 setContext:*MEMORY[0x1E697AAD0]];
-  v4 = [(CDPContext *)self dsid];
-  v5 = [v4 stringValue];
-  [v3 setDsid:v5];
+  dsid = [(CDPContext *)self dsid];
+  stringValue = [dsid stringValue];
+  [v3 setDsid:stringValue];
 
-  v6 = [(CDPContext *)self altDSID];
-  [v3 setAltDSID:v6];
+  altDSID = [(CDPContext *)self altDSID];
+  [v3 setAltDSID:altDSID];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(CDPContext *)self telemetryFlowID];
-    [v3 setFlowID:v7];
+    telemetryFlowID = [(CDPContext *)self telemetryFlowID];
+    [v3 setFlowID:telemetryFlowID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(CDPContext *)self telemetryDeviceSessionID];
-    [v3 setDeviceSessionID:v8];
+    telemetryDeviceSessionID = [(CDPContext *)self telemetryDeviceSessionID];
+    [v3 setDeviceSessionID:telemetryDeviceSessionID];
   }
 
   return v3;
@@ -130,11 +130,11 @@
   telemetryDeviceSessionID = self->_telemetryDeviceSessionID;
   if (!telemetryDeviceSessionID)
   {
-    v4 = [MEMORY[0x1E698DC80] sharedInstance];
-    v5 = [v4 authKitAccountWithAltDSID:self->_altDSID];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v5 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:self->_altDSID];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 telemetryDeviceSessionIDForAccount:v5];
+      v6 = [mEMORY[0x1E698DC80] telemetryDeviceSessionIDForAccount:v5];
       v7 = self->_telemetryDeviceSessionID;
       self->_telemetryDeviceSessionID = v6;
     }
@@ -155,13 +155,13 @@
 
 - (void)stoptObservingTrustedDeviceList
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -169,21 +169,21 @@
   }
 
   password = self->_password;
-  self->_password = v4;
+  self->_password = passwordCopy;
 }
 
-- (void)setNewPassword:(id)a3 oldPassword:(id)a4
+- (void)setNewPassword:(id)password oldPassword:(id)oldPassword
 {
-  v8 = a3;
-  v7 = a4;
-  if (v8 && [v8 length])
+  passwordCopy = password;
+  oldPasswordCopy = oldPassword;
+  if (passwordCopy && [passwordCopy length])
   {
-    objc_storeStrong(&self->_password, a3);
+    objc_storeStrong(&self->_password, password);
   }
 
-  if (v7 && [v7 length])
+  if (oldPasswordCopy && [oldPasswordCopy length])
   {
-    objc_storeStrong(&self->_oldPassword, a4);
+    objc_storeStrong(&self->_oldPassword, oldPassword);
   }
 }
 
@@ -201,17 +201,17 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)contextForAccountWithAppleID:(id)a3
++ (id)contextForAccountWithAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[CDPContext contextForAccountWithAppleID:];
   }
 
-  v5 = [MEMORY[0x1E698DC80] sharedInstance];
-  v6 = [v5 authKitAccountWithAppleID:v3];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v6 = [mEMORY[0x1E698DC80] authKitAccountWithAppleID:dCopy];
 
   if (v6)
   {
@@ -232,17 +232,17 @@
   return v7;
 }
 
-+ (id)contextForAccountWithAltDSID:(id)a3
++ (id)contextForAccountWithAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[CDPContext contextForAccountWithAltDSID:];
   }
 
-  v5 = [MEMORY[0x1E698DC80] sharedInstance];
-  v6 = [v5 authKitAccountWithAltDSID:v3];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v6 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:dCopy];
 
   if (v6)
   {
@@ -263,17 +263,17 @@
   return v7;
 }
 
-+ (id)contextForAccountWithDSID:(id)a3
++ (id)contextForAccountWithDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[CDPContext contextForAccountWithDSID:];
   }
 
-  v5 = [MEMORY[0x1E698DC80] sharedInstance];
-  v6 = [v5 authKitAccountWithDSID:v3];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v6 = [mEMORY[0x1E698DC80] authKitAccountWithDSID:dCopy];
 
   if (v6)
   {
@@ -294,25 +294,25 @@
   return v7;
 }
 
-+ (CDPContext)contextWithAuthenticationResults:(id)a3
++ (CDPContext)contextWithAuthenticationResults:(id)results
 {
-  v3 = a3;
-  v4 = [[CDPContext alloc] initWithAuthenticationResults:v3];
+  resultsCopy = results;
+  v4 = [[CDPContext alloc] initWithAuthenticationResults:resultsCopy];
 
   return v4;
 }
 
-- (id)initNeedingPreflight:(BOOL)a3
+- (id)initNeedingPreflight:(BOOL)preflight
 {
   v12.receiver = self;
   v12.super_class = CDPContext;
   v4 = [(CDPContext *)&v12 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v4->_bundleID;
-    v4->_bundleID = v6;
+    v4->_bundleID = bundleIdentifier;
 
     UMUserManagerClass = UserManagementLibraryCore();
     if (UMUserManagerClass)
@@ -320,11 +320,11 @@
       UMUserManagerClass = getUMUserManagerClass();
     }
 
-    v9 = [UMUserManagerClass sharedManager];
-    v4->_isSharediPad = [v9 isSharedIPad];
+    uMUserManagerClass = [UMUserManagerClass sharedManager];
+    v4->_isSharediPad = [uMUserManagerClass isSharedIPad];
 
     v4->_cachedPassphraseMissing = 0;
-    v4->_needsPreflight = a3;
+    v4->_needsPreflight = preflight;
     v4->_managedAccountsAllowedInCDP = _os_feature_enabled_impl();
     v4->_multiUserManateeAllowed = +[CDPUtilities canEnableMultiUserManatee];
     v4->_keychainSyncSystem = 0;
@@ -346,15 +346,15 @@
   return [(CDPContext *)self initNeedingPreflight:1];
 }
 
-- (CDPContext)initWithAccount:(id)a3
+- (CDPContext)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [(CDPContext *)self initNeedingPreflight:0];
   v6 = v5;
   if (!v5)
   {
-    v7 = _CDPLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    mEMORY[0x1E698DC80] = _CDPLogSystem();
+    if (os_log_type_enabled(mEMORY[0x1E698DC80], OS_LOG_TYPE_ERROR))
     {
       [CDPContext initWithAccount:];
     }
@@ -362,9 +362,9 @@
     goto LABEL_24;
   }
 
-  v7 = [MEMORY[0x1E698DC80] sharedInstance];
-  v8 = [v4 username];
-  if (!v8)
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  username = [accountCopy username];
+  if (!username)
   {
     v21 = _CDPLogSystem();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -375,16 +375,16 @@
     goto LABEL_23;
   }
 
-  v9 = v8;
-  objc_storeStrong(v6 + 9, v8);
+  v9 = username;
+  objc_storeStrong(v6 + 9, username);
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DC48]];
+  v10 = [accountCopy objectForKeyedSubscript:*MEMORY[0x1E698DC48]];
   if (!v10)
   {
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DC40]];
+    v10 = [accountCopy objectForKeyedSubscript:*MEMORY[0x1E698DC40]];
     if (!v10)
     {
-      v10 = [v7 DSIDForAccount:v4];
+      v10 = [mEMORY[0x1E698DC80] DSIDForAccount:accountCopy];
       if (!v10)
       {
         v21 = _CDPLogSystem();
@@ -401,7 +401,7 @@
   v11 = v10;
   objc_storeStrong(v6 + 13, v10);
 
-  v12 = [v7 altDSIDForAccount:v4];
+  v12 = [mEMORY[0x1E698DC80] altDSIDForAccount:accountCopy];
   if (!v12)
   {
     v21 = _CDPLogSystem();
@@ -420,7 +420,7 @@ LABEL_24:
   v13 = v12;
   objc_storeStrong(v6 + 14, v12);
 
-  v14 = [v7 securityLevelForAccount:v4];
+  v14 = [mEMORY[0x1E698DC80] securityLevelForAccount:accountCopy];
   *(v6 + 29) = v14;
   if (!v14)
   {
@@ -435,49 +435,49 @@ LABEL_24:
 
   *(v6 + 32) = v14 == 4;
   *(v6 + 40) = v14 == 5;
-  *(v6 + 33) = [v7 authenticationModeForAccount:v4]== 2;
-  *(v6 + 34) = [v7 isBeneficiaryForAccount:v4];
+  *(v6 + 33) = [mEMORY[0x1E698DC80] authenticationModeForAccount:accountCopy]== 2;
+  *(v6 + 34) = [mEMORY[0x1E698DC80] isBeneficiaryForAccount:accountCopy];
   *(v6 + 36) = 0;
-  v16 = [v7 hasSOSActiveDeviceForAccount:v4];
-  v17 = [v16 BOOLValue];
+  v16 = [mEMORY[0x1E698DC80] hasSOSActiveDeviceForAccount:accountCopy];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     *(v6 + 36) |= 1uLL;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v7 isSOSNeededForAccount:v4];
-    v19 = [v18 BOOLValue];
+    v18 = [mEMORY[0x1E698DC80] isSOSNeededForAccount:accountCopy];
+    bOOLValue2 = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue2)
     {
       *(v6 + 36) |= 2uLL;
     }
   }
 
   [v6 _fakeSOSFlagsWithUserDefaults];
-  [v6 updateDemoAttributesWithAccount:v4];
+  [v6 updateDemoAttributesWithAccount:accountCopy];
   v20 = v6;
 LABEL_25:
 
   return v20;
 }
 
-- (CDPContext)initWithAuthenticationResults:(id)a3
+- (CDPContext)initWithAuthenticationResults:(id)results
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  resultsCopy = results;
+  v5 = resultsCopy;
+  if (resultsCopy && [resultsCopy count])
   {
     v6 = _CDPLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 ak_redactedCopy];
+      ak_redactedCopy = [v5 ak_redactedCopy];
       v60 = 138412290;
-      v61 = v7;
+      v61 = ak_redactedCopy;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "Starting with auth results:\n%@", &v60, 0xCu);
     }
 
@@ -568,9 +568,9 @@ LABEL_25:
 
       if (v40)
       {
-        v41 = [v40 aaf_toBase64DecodedData];
+        aaf_toBase64DecodedData = [v40 aaf_toBase64DecodedData];
         v42 = v9[33];
-        v9[33] = v41;
+        v9[33] = aaf_toBase64DecodedData;
       }
 
       v43 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBE0]];
@@ -586,30 +586,30 @@ LABEL_25:
       else
       {
         v46 = [v5 objectForKeyedSubscript:@"hasSOSActiveDevice"];
-        v47 = [v46 BOOLValue];
+        bOOLValue = [v46 BOOLValue];
 
-        if (!v47)
+        if (!bOOLValue)
         {
 LABEL_22:
           v48 = [v5 objectForKeyedSubscript:@"SOSNeeded"];
-          v49 = [v48 BOOLValue];
+          bOOLValue2 = [v48 BOOLValue];
 
-          if (v49)
+          if (bOOLValue2)
           {
             v9[36] |= 2uLL;
           }
 
           [v9 _fakeSOSFlagsWithUserDefaults];
           v50 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DC18]];
-          v51 = [v50 BOOLValue];
+          bOOLValue3 = [v50 BOOLValue];
 
-          if (v51)
+          if (bOOLValue3)
           {
             [v9 setType:11];
           }
 
-          v52 = [MEMORY[0x1E698DC80] sharedInstance];
-          v53 = [v52 authKitAccountWithAltDSID:v9[14]];
+          mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+          v53 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:v9[14]];
 
           [v9 updateDemoAttributesWithAccount:v53];
           v54 = [v5 objectForKeyedSubscript:@"adpCh"];
@@ -654,12 +654,12 @@ LABEL_31:
   return v57;
 }
 
-- (void)updateDemoAttributesWithAccount:(id)a3
+- (void)updateDemoAttributesWithAccount:(id)account
 {
   v4 = MEMORY[0x1E698DC80];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 demoAccountForAccount:v5];
+  accountCopy = account;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance demoAccountForAccount:accountCopy];
 
   if (v7)
   {
@@ -679,11 +679,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E698DC80] sharedInstance];
-  v5 = [v4 authKitAccountWithAltDSID:self->_altDSID];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v5 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:self->_altDSID];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 adpCohortForAccount:v5];
+    v6 = [mEMORY[0x1E698DC80] adpCohortForAccount:v5];
     v7 = self->_adpCohort;
     self->_adpCohort = v6;
 
@@ -705,7 +705,7 @@ LABEL_6:
   v13 = _CDPLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
-    [(CDPContext *)v4 adpCohort];
+    [(CDPContext *)mEMORY[0x1E698DC80] adpCohort];
   }
 
   v10 = 0;
@@ -722,7 +722,7 @@ LABEL_7:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)akTrustedDeviceListChanged:(id)a3
+- (void)akTrustedDeviceListChanged:(id)changed
 {
   v4 = _CDPLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -758,9 +758,9 @@ LABEL_7:
   isPrimaryAccountInternal = self->_isPrimaryAccountInternal;
   if (!isPrimaryAccountInternal)
   {
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
-    v6 = [(CDPContext *)self altDSID];
-    v7 = [v5 aa_appleAccountWithAltDSID:v6];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    altDSID = [(CDPContext *)self altDSID];
+    v7 = [defaultStore aa_appleAccountWithAltDSID:altDSID];
 
     if (v7)
     {
@@ -771,14 +771,14 @@ LABEL_7:
       p_super = _CDPLogSystem();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(CDPContext *)self altDSID];
-        v12 = [(NSNumber *)self->_isPrimaryAccountInternal BOOLValue];
+        altDSID2 = [(CDPContext *)self altDSID];
+        bOOLValue = [(NSNumber *)self->_isPrimaryAccountInternal BOOLValue];
         v18 = 141558530;
         v19 = 1752392040;
         v20 = 2112;
-        v21 = v11;
+        v21 = altDSID2;
         v22 = 1024;
-        v23 = v12;
+        v23 = bOOLValue;
         _os_log_impl(&dword_1DED99000, p_super, OS_LOG_TYPE_DEFAULT, "isPrimaryAccount: Account for %{mask.hash}@ account primary: %{BOOL}d", &v18, 0x1Cu);
       }
     }
@@ -788,8 +788,8 @@ LABEL_7:
       v13 = _CDPLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(CDPContext *)self altDSID];
-        [(CDPContext *)v14 isPrimaryAccount];
+        altDSID3 = [(CDPContext *)self altDSID];
+        [(CDPContext *)altDSID3 isPrimaryAccount];
       }
 
       p_super = &self->_isPrimaryAccountInternal->super.super;
@@ -799,11 +799,11 @@ LABEL_7:
     isPrimaryAccountInternal = self->_isPrimaryAccountInternal;
   }
 
-  v15 = [(NSNumber *)isPrimaryAccountInternal BOOLValue];
+  bOOLValue2 = [(NSNumber *)isPrimaryAccountInternal BOOLValue];
   objc_sync_exit(v3);
 
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return bOOLValue2;
 }
 
 - (BOOL)keychainSyncAllowedByServer
@@ -814,9 +814,9 @@ LABEL_7:
   keychainSyncAllowedByServerInternal = self->_keychainSyncAllowedByServerInternal;
   if (!keychainSyncAllowedByServerInternal)
   {
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
-    v6 = [(CDPContext *)self altDSID];
-    v7 = [v5 aa_appleAccountWithAltDSID:v6];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    altDSID = [(CDPContext *)self altDSID];
+    v7 = [defaultStore aa_appleAccountWithAltDSID:altDSID];
 
     if (v7)
     {
@@ -855,11 +855,11 @@ LABEL_7:
       p_super = _CDPLogSystem();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(CDPContext *)self altDSID];
+        altDSID2 = [(CDPContext *)self altDSID];
         v21 = 141558530;
         v22 = 1752392040;
         v23 = 2112;
-        v24 = v15;
+        v24 = altDSID2;
         v25 = 1024;
         v26 = v10;
         _os_log_impl(&dword_1DED99000, p_super, OS_LOG_TYPE_DEFAULT, "keychainSyncAllowedByServer: Account for %{mask.hash}@ account primary: %{BOOL}d", &v21, 0x1Cu);
@@ -871,8 +871,8 @@ LABEL_7:
       v16 = _CDPLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(CDPContext *)self altDSID];
-        [(CDPContext *)v17 keychainSyncAllowedByServer];
+        altDSID3 = [(CDPContext *)self altDSID];
+        [(CDPContext *)altDSID3 keychainSyncAllowedByServer];
       }
 
       p_super = &self->_keychainSyncAllowedByServerInternal->super.super;
@@ -882,11 +882,11 @@ LABEL_7:
     keychainSyncAllowedByServerInternal = self->_keychainSyncAllowedByServerInternal;
   }
 
-  v18 = [(NSNumber *)keychainSyncAllowedByServerInternal BOOLValue];
+  bOOLValue = [(NSNumber *)keychainSyncAllowedByServerInternal BOOLValue];
   objc_sync_exit(v3);
 
   v19 = *MEMORY[0x1E69E9840];
-  return v18;
+  return bOOLValue;
 }
 
 - (void)purgeResumeData
@@ -908,218 +908,218 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(CDPContext *)self findMyiPhoneUUID];
-  v3 = v4 != 0;
+  findMyiPhoneUUID = [(CDPContext *)self findMyiPhoneUUID];
+  v3 = findMyiPhoneUUID != 0;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appleID = self->_appleID;
-  v6 = a3;
-  [v6 encodeObject:appleID forKey:@"_appleID"];
-  [v6 encodeObject:self->_password forKey:@"_password"];
-  [v6 encodeObject:self->_passwordEquivToken forKey:@"_passwordEquivToken"];
-  [v6 encodeObject:self->_dsid forKey:@"_dsid"];
-  [v6 encodeBool:self->_isHSA2Account forKey:@"_isHSA2Account"];
-  [v6 encodeBool:self->_isManagedAccount forKey:@"_isManagedAccount"];
-  [v6 encodeBool:self->_didUseSMSVerification forKey:@"_didUseSMSVerification"];
-  [v6 encodeObject:self->_cachedLocalSecret forKey:@"_cachedLocalSecret"];
-  [v6 encodeInteger:self->_cachedLocalSecretType forKey:@"_cachedLocalSecretType"];
-  [v6 encodeBool:self->__alwaysCreateEscrowRecord forKey:@"__alwaysCreateEscrowRecord"];
-  [v6 encodeBool:self->__skipEscrowFetches forKey:@"__skipEscrowFetches"];
-  [v6 encodeBool:self->_guestMode forKey:@"_guestMode"];
-  [v6 encodeBool:self->_idmsRecovery forKey:@"_idmsRecovery"];
-  [v6 encodeBool:self->_idmsMasterKeyRecovery forKey:@"_idmsMasterKeyRecovery"];
-  [v6 encodeObject:self->_duplexSession forKey:@"_duplexSession"];
-  [v6 encodeObject:self->_resumeContext forKey:@"_resumeContext"];
-  [v6 encodeObject:self->_sharingChannel forKey:@"_sharingChannel"];
-  [v6 encodeInteger:self->_type forKey:@"_type"];
-  [v6 encodeBool:self->_isAttemptingBackupRestore forKey:@"_isAttemptingBackupRestore"];
-  [v6 encodeObject:self->_findMyiPhoneUUID forKey:@"_findMyiPhoneUUID"];
-  [v6 encodeObject:self->_altDSID forKey:@"_altDSID"];
-  [v6 encodeBool:self->_isFederatedAccount forKey:@"_isFederatedAccount"];
-  [v6 encodeBool:self->_isBeneficiaryAccount forKey:@"_isBeneficiaryAccount"];
-  [v6 encodeBool:self->__ignoreLockAssertErrors forKey:@"__ignoreLockAssertErrors"];
-  [v6 encodeObject:self->_custodianRecoveryInfo forKey:@"_custodianRecoveryInfo"];
-  [v6 encodeObject:self->_beneficiaryIdentifier forKey:@"_beneficiaryAccount"];
-  [v6 encodeObject:self->_beneficiaryWrappedKeyData forKey:@"_beneficiaryWrappedKeyData"];
-  [v6 encodeBool:self->__supportsCustodianRecovery forKey:@"__supportsCustodianRecovery"];
-  [v6 encodeObject:self->_bundleID forKey:@"_bundleID"];
-  [v6 encodeBool:self->__disableAsyncSecureBackupEnrollment forKey:@"__disableAsyncSecureBackupEnrollment"];
-  [v6 encodeBool:self->_mandatesRecoveryKey forKey:@"_mandatesRecoveryKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appleID forKey:@"_appleID"];
+  [coderCopy encodeObject:self->_password forKey:@"_password"];
+  [coderCopy encodeObject:self->_passwordEquivToken forKey:@"_passwordEquivToken"];
+  [coderCopy encodeObject:self->_dsid forKey:@"_dsid"];
+  [coderCopy encodeBool:self->_isHSA2Account forKey:@"_isHSA2Account"];
+  [coderCopy encodeBool:self->_isManagedAccount forKey:@"_isManagedAccount"];
+  [coderCopy encodeBool:self->_didUseSMSVerification forKey:@"_didUseSMSVerification"];
+  [coderCopy encodeObject:self->_cachedLocalSecret forKey:@"_cachedLocalSecret"];
+  [coderCopy encodeInteger:self->_cachedLocalSecretType forKey:@"_cachedLocalSecretType"];
+  [coderCopy encodeBool:self->__alwaysCreateEscrowRecord forKey:@"__alwaysCreateEscrowRecord"];
+  [coderCopy encodeBool:self->__skipEscrowFetches forKey:@"__skipEscrowFetches"];
+  [coderCopy encodeBool:self->_guestMode forKey:@"_guestMode"];
+  [coderCopy encodeBool:self->_idmsRecovery forKey:@"_idmsRecovery"];
+  [coderCopy encodeBool:self->_idmsMasterKeyRecovery forKey:@"_idmsMasterKeyRecovery"];
+  [coderCopy encodeObject:self->_duplexSession forKey:@"_duplexSession"];
+  [coderCopy encodeObject:self->_resumeContext forKey:@"_resumeContext"];
+  [coderCopy encodeObject:self->_sharingChannel forKey:@"_sharingChannel"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeBool:self->_isAttemptingBackupRestore forKey:@"_isAttemptingBackupRestore"];
+  [coderCopy encodeObject:self->_findMyiPhoneUUID forKey:@"_findMyiPhoneUUID"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
+  [coderCopy encodeBool:self->_isFederatedAccount forKey:@"_isFederatedAccount"];
+  [coderCopy encodeBool:self->_isBeneficiaryAccount forKey:@"_isBeneficiaryAccount"];
+  [coderCopy encodeBool:self->__ignoreLockAssertErrors forKey:@"__ignoreLockAssertErrors"];
+  [coderCopy encodeObject:self->_custodianRecoveryInfo forKey:@"_custodianRecoveryInfo"];
+  [coderCopy encodeObject:self->_beneficiaryIdentifier forKey:@"_beneficiaryAccount"];
+  [coderCopy encodeObject:self->_beneficiaryWrappedKeyData forKey:@"_beneficiaryWrappedKeyData"];
+  [coderCopy encodeBool:self->__supportsCustodianRecovery forKey:@"__supportsCustodianRecovery"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"_bundleID"];
+  [coderCopy encodeBool:self->__disableAsyncSecureBackupEnrollment forKey:@"__disableAsyncSecureBackupEnrollment"];
+  [coderCopy encodeBool:self->_mandatesRecoveryKey forKey:@"_mandatesRecoveryKey"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_walrusStatus];
-  [v6 encodeObject:v5 forKey:@"_walrusStatus"];
+  [coderCopy encodeObject:v5 forKey:@"_walrusStatus"];
 
-  [v6 encodeBool:self->__forceManateeReset forKey:@"__forceManateeReset"];
-  [v6 encodeBool:self->__recoveryMethodAvailable forKey:@"__recoveryMethodAvailable"];
-  [v6 encodeBool:self->_isSOSCFUFlow forKey:@"_isSOSCFUFlow"];
-  [v6 encodeInteger:self->_sosCompatibilityType forKey:@"_sosCompatibilityType"];
-  [v6 encodeInteger:self->_keychainSyncSystem forKey:@"_keychainSyncSystem"];
-  [v6 encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
-  [v6 encodeObject:self->_telemetryDeviceSessionID forKey:@"_telemetryDeviceSessionID"];
-  [v6 encodeBool:self->_needsPreflight forKey:@"_needsPreflight"];
-  [v6 encodeBool:self->_isSharediPad forKey:@"_isSharediPad"];
-  [v6 encodeInteger:self->_securityLevel forKey:@"_securityLevel"];
-  [v6 encodeObject:self->_followUpType forKey:@"_followUpType"];
-  [v6 encodeBool:self->__useSecureBackupCachedPassphrase forKey:@"__useSecureBackupCachedPassphrase"];
-  [v6 encodeBool:self->_cachedPassphraseMissing forKey:@"_cachedPassphraseMissing"];
-  [v6 encodeObject:self->_adpCohort forKey:@"_adpCohort"];
-  [v6 encodeBool:self->_newAccountCreated forKey:@"_newAccountCreated"];
-  [v6 encodeBool:self->_willAttemptAsyncSecureBackupEnablement forKey:@"_willAttemptAsyncSecureBackupEnablement"];
-  [v6 encodeBool:self->_didAttemptSecureBackupEnablement forKey:@"_didAttemptSecureBackupEnablement"];
-  [v6 encodeBool:self->_secureBackupEnablementNotRequired forKey:@"_secureBackupEnablementNotRequired"];
+  [coderCopy encodeBool:self->__forceManateeReset forKey:@"__forceManateeReset"];
+  [coderCopy encodeBool:self->__recoveryMethodAvailable forKey:@"__recoveryMethodAvailable"];
+  [coderCopy encodeBool:self->_isSOSCFUFlow forKey:@"_isSOSCFUFlow"];
+  [coderCopy encodeInteger:self->_sosCompatibilityType forKey:@"_sosCompatibilityType"];
+  [coderCopy encodeInteger:self->_keychainSyncSystem forKey:@"_keychainSyncSystem"];
+  [coderCopy encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
+  [coderCopy encodeObject:self->_telemetryDeviceSessionID forKey:@"_telemetryDeviceSessionID"];
+  [coderCopy encodeBool:self->_needsPreflight forKey:@"_needsPreflight"];
+  [coderCopy encodeBool:self->_isSharediPad forKey:@"_isSharediPad"];
+  [coderCopy encodeInteger:self->_securityLevel forKey:@"_securityLevel"];
+  [coderCopy encodeObject:self->_followUpType forKey:@"_followUpType"];
+  [coderCopy encodeBool:self->__useSecureBackupCachedPassphrase forKey:@"__useSecureBackupCachedPassphrase"];
+  [coderCopy encodeBool:self->_cachedPassphraseMissing forKey:@"_cachedPassphraseMissing"];
+  [coderCopy encodeObject:self->_adpCohort forKey:@"_adpCohort"];
+  [coderCopy encodeBool:self->_newAccountCreated forKey:@"_newAccountCreated"];
+  [coderCopy encodeBool:self->_willAttemptAsyncSecureBackupEnablement forKey:@"_willAttemptAsyncSecureBackupEnablement"];
+  [coderCopy encodeBool:self->_didAttemptSecureBackupEnablement forKey:@"_didAttemptSecureBackupEnablement"];
+  [coderCopy encodeBool:self->_secureBackupEnablementNotRequired forKey:@"_secureBackupEnablementNotRequired"];
 }
 
-- (CDPContext)initWithCoder:(id)a3
+- (CDPContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[CDPContext initNeedingPreflight:](self, "initNeedingPreflight:", [v4 decodeBoolForKey:@"_needsPreflight"]);
+  coderCopy = coder;
+  v5 = -[CDPContext initNeedingPreflight:](self, "initNeedingPreflight:", [coderCopy decodeBoolForKey:@"_needsPreflight"]);
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_appleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
     password = v5->_password;
     v5->_password = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_passwordEquivToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_passwordEquivToken"];
     passwordEquivToken = v5->_passwordEquivToken;
     v5->_passwordEquivToken = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dsid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v12;
 
-    v5->_isHSA2Account = [v4 decodeBoolForKey:@"_isHSA2Account"];
-    v5->_isManagedAccount = [v4 decodeBoolForKey:@"_isManagedAccount"];
-    v5->_didUseSMSVerification = [v4 decodeBoolForKey:@"_didUseSMSVerification"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cachedLocalSecret"];
+    v5->_isHSA2Account = [coderCopy decodeBoolForKey:@"_isHSA2Account"];
+    v5->_isManagedAccount = [coderCopy decodeBoolForKey:@"_isManagedAccount"];
+    v5->_didUseSMSVerification = [coderCopy decodeBoolForKey:@"_didUseSMSVerification"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cachedLocalSecret"];
     cachedLocalSecret = v5->_cachedLocalSecret;
     v5->_cachedLocalSecret = v14;
 
-    v5->_cachedLocalSecretType = [v4 decodeIntegerForKey:@"_cachedLocalSecretType"];
-    v5->__alwaysCreateEscrowRecord = [v4 decodeBoolForKey:@"__alwaysCreateEscrowRecord"];
-    v5->__skipEscrowFetches = [v4 decodeBoolForKey:@"__skipEscrowFetches"];
-    v5->_guestMode = [v4 decodeBoolForKey:@"_guestMode"];
-    v5->_idmsRecovery = [v4 decodeBoolForKey:@"_idmsRecovery"];
-    v5->_idmsMasterKeyRecovery = [v4 decodeBoolForKey:@"_idmsMasterKeyRecovery"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_duplexSession"];
+    v5->_cachedLocalSecretType = [coderCopy decodeIntegerForKey:@"_cachedLocalSecretType"];
+    v5->__alwaysCreateEscrowRecord = [coderCopy decodeBoolForKey:@"__alwaysCreateEscrowRecord"];
+    v5->__skipEscrowFetches = [coderCopy decodeBoolForKey:@"__skipEscrowFetches"];
+    v5->_guestMode = [coderCopy decodeBoolForKey:@"_guestMode"];
+    v5->_idmsRecovery = [coderCopy decodeBoolForKey:@"_idmsRecovery"];
+    v5->_idmsMasterKeyRecovery = [coderCopy decodeBoolForKey:@"_idmsMasterKeyRecovery"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_duplexSession"];
     duplexSession = v5->_duplexSession;
     v5->_duplexSession = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_resumeContext"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_resumeContext"];
     resumeContext = v5->_resumeContext;
     v5->_resumeContext = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sharingChannel"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sharingChannel"];
     sharingChannel = v5->_sharingChannel;
     v5->_sharingChannel = v20;
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_isAttemptingBackupRestore = [v4 decodeBoolForKey:@"_isAttemptingBackupRestore"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_findMyiPhoneUUID"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_isAttemptingBackupRestore = [coderCopy decodeBoolForKey:@"_isAttemptingBackupRestore"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_findMyiPhoneUUID"];
     findMyiPhoneUUID = v5->_findMyiPhoneUUID;
     v5->_findMyiPhoneUUID = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v24;
 
-    v5->_isFederatedAccount = [v4 decodeBoolForKey:@"_isFederatedAccount"];
-    v5->_isBeneficiaryAccount = [v4 decodeBoolForKey:@"_isBeneficiaryAccount"];
-    v5->__ignoreLockAssertErrors = [v4 decodeBoolForKey:@"__ignoreLockAssertErrors"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianRecoveryInfo"];
+    v5->_isFederatedAccount = [coderCopy decodeBoolForKey:@"_isFederatedAccount"];
+    v5->_isBeneficiaryAccount = [coderCopy decodeBoolForKey:@"_isBeneficiaryAccount"];
+    v5->__ignoreLockAssertErrors = [coderCopy decodeBoolForKey:@"__ignoreLockAssertErrors"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianRecoveryInfo"];
     custodianRecoveryInfo = v5->_custodianRecoveryInfo;
     v5->_custodianRecoveryInfo = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryAccount"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryAccount"];
     beneficiaryIdentifier = v5->_beneficiaryIdentifier;
     v5->_beneficiaryIdentifier = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryWrappedKeyData"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_beneficiaryWrappedKeyData"];
     beneficiaryWrappedKeyData = v5->_beneficiaryWrappedKeyData;
     v5->_beneficiaryWrappedKeyData = v30;
 
-    v5->__supportsCustodianRecovery = [v4 decodeBoolForKey:@"__supportsCustodianRecovery"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
+    v5->__supportsCustodianRecovery = [coderCopy decodeBoolForKey:@"__supportsCustodianRecovery"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v32;
 
-    v5->__disableAsyncSecureBackupEnrollment = [v4 decodeBoolForKey:@"__disableAsyncSecureBackupEnrollment"];
-    v5->_mandatesRecoveryKey = [v4 decodeBoolForKey:@"_mandatesRecoveryKey"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_walrusStatus"];
+    v5->__disableAsyncSecureBackupEnrollment = [coderCopy decodeBoolForKey:@"__disableAsyncSecureBackupEnrollment"];
+    v5->_mandatesRecoveryKey = [coderCopy decodeBoolForKey:@"_mandatesRecoveryKey"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_walrusStatus"];
     v5->_walrusStatus = [v34 unsignedIntValue];
 
-    v5->__forceManateeReset = [v4 decodeBoolForKey:@"__forceManateeReset"];
-    v5->__recoveryMethodAvailable = [v4 decodeBoolForKey:@"__recoveryMethodAvailable"];
-    v5->_isSOSCFUFlow = [v4 decodeBoolForKey:@"_isSOSCFUFlow"];
-    v5->_sosCompatibilityType = [v4 decodeIntForKey:@"_sosCompatibilityType"];
-    v5->_keychainSyncSystem = [v4 decodeIntegerForKey:@"_keychainSyncSystem"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
+    v5->__forceManateeReset = [coderCopy decodeBoolForKey:@"__forceManateeReset"];
+    v5->__recoveryMethodAvailable = [coderCopy decodeBoolForKey:@"__recoveryMethodAvailable"];
+    v5->_isSOSCFUFlow = [coderCopy decodeBoolForKey:@"_isSOSCFUFlow"];
+    v5->_sosCompatibilityType = [coderCopy decodeIntForKey:@"_sosCompatibilityType"];
+    v5->_keychainSyncSystem = [coderCopy decodeIntegerForKey:@"_keychainSyncSystem"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
     telemetryFlowID = v5->_telemetryFlowID;
     v5->_telemetryFlowID = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryDeviceSessionID"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryDeviceSessionID"];
     telemetryDeviceSessionID = v5->_telemetryDeviceSessionID;
     v5->_telemetryDeviceSessionID = v37;
 
-    v5->_isSharediPad = [v4 decodeBoolForKey:@"_isSharediPad"];
-    v5->_securityLevel = [v4 decodeIntegerForKey:@"_securityLevel"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_followUpType"];
+    v5->_isSharediPad = [coderCopy decodeBoolForKey:@"_isSharediPad"];
+    v5->_securityLevel = [coderCopy decodeIntegerForKey:@"_securityLevel"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_followUpType"];
     followUpType = v5->_followUpType;
     v5->_followUpType = v39;
 
-    v5->__useSecureBackupCachedPassphrase = [v4 decodeBoolForKey:@"__useSecureBackupCachedPassphrase"];
-    v5->_cachedPassphraseMissing = [v4 decodeBoolForKey:@"_cachedPassphraseMissing"];
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_adpCohort"];
+    v5->__useSecureBackupCachedPassphrase = [coderCopy decodeBoolForKey:@"__useSecureBackupCachedPassphrase"];
+    v5->_cachedPassphraseMissing = [coderCopy decodeBoolForKey:@"_cachedPassphraseMissing"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_adpCohort"];
     adpCohort = v5->_adpCohort;
     v5->_adpCohort = v41;
 
-    v5->_newAccountCreated = [v4 decodeBoolForKey:@"_newAccountCreated"];
-    v5->_willAttemptAsyncSecureBackupEnablement = [v4 decodeBoolForKey:@"_willAttemptAsyncSecureBackupEnablement"];
-    v5->_didAttemptSecureBackupEnablement = [v4 decodeBoolForKey:@"_didAttemptSecureBackupEnablement"];
-    v5->_secureBackupEnablementNotRequired = [v4 decodeBoolForKey:@"_secureBackupEnablementNotRequired"];
+    v5->_newAccountCreated = [coderCopy decodeBoolForKey:@"_newAccountCreated"];
+    v5->_willAttemptAsyncSecureBackupEnablement = [coderCopy decodeBoolForKey:@"_willAttemptAsyncSecureBackupEnablement"];
+    v5->_didAttemptSecureBackupEnablement = [coderCopy decodeBoolForKey:@"_didAttemptSecureBackupEnablement"];
+    v5->_secureBackupEnablementNotRequired = [coderCopy decodeBoolForKey:@"_secureBackupEnablementNotRequired"];
   }
 
   return v5;
 }
 
-- (void)updateWithAuthenticationResults:(id)a3
+- (void)updateWithAuthenticationResults:(id)results
 {
   v4 = *MEMORY[0x1E698DBC8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  resultsCopy = results;
+  v6 = [resultsCopy objectForKeyedSubscript:v4];
   passwordEquivToken = self->_passwordEquivToken;
   self->_passwordEquivToken = v6;
 
-  v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
+  v8 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD0]];
   password = self->_password;
   self->_password = v8;
 
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
+  v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB68]];
   dsid = self->_dsid;
   self->_dsid = v10;
 
-  v12 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB48]];
+  v12 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB48]];
   self->_isFederatedAccount = [v12 unsignedIntegerValue] == 2;
 
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBA0]];
+  v13 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBA0]];
   self->_isBeneficiaryAccount = [v13 BOOLValue];
 
-  v14 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
+  v14 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB40]];
   altDSID = self->_altDSID;
   self->_altDSID = v14;
 
-  v16 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
+  v16 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBD8]];
 
   self->_securityLevel = [v16 unsignedIntegerValue];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CDPContext);
   v5 = [(NSString *)self->_appleID copy];
@@ -1227,78 +1227,78 @@ LABEL_7:
   return v3;
 }
 
-- (void)augmentWithCredentialsFromContext:(id)a3
+- (void)augmentWithCredentialsFromContext:(id)context
 {
-  v20 = a3;
+  contextCopy = context;
   if (!self->_appleID)
   {
-    v4 = [v20 appleID];
+    appleID = [contextCopy appleID];
     appleID = self->_appleID;
-    self->_appleID = v4;
+    self->_appleID = appleID;
   }
 
   if (!self->_password)
   {
-    v6 = [v20 password];
+    password = [contextCopy password];
     password = self->_password;
-    self->_password = v6;
+    self->_password = password;
   }
 
   if (!self->_oldPassword)
   {
-    v8 = [v20 oldPassword];
+    oldPassword = [contextCopy oldPassword];
     oldPassword = self->_oldPassword;
-    self->_oldPassword = v8;
+    self->_oldPassword = oldPassword;
   }
 
   if (!self->_passwordEquivToken)
   {
-    v10 = [v20 passwordEquivToken];
+    passwordEquivToken = [contextCopy passwordEquivToken];
     passwordEquivToken = self->_passwordEquivToken;
-    self->_passwordEquivToken = v10;
+    self->_passwordEquivToken = passwordEquivToken;
   }
 
   if (!self->_dsid)
   {
-    v12 = [v20 dsid];
+    dsid = [contextCopy dsid];
     dsid = self->_dsid;
-    self->_dsid = v12;
+    self->_dsid = dsid;
   }
 
   if (!self->_altDSID)
   {
-    v14 = [v20 altDSID];
+    altDSID = [contextCopy altDSID];
     altDSID = self->_altDSID;
-    self->_altDSID = v14;
+    self->_altDSID = altDSID;
   }
 
   if (!self->_telemetryDeviceSessionID)
   {
-    v16 = [v20 telemetryDeviceSessionID];
+    telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
     telemetryDeviceSessionID = self->_telemetryDeviceSessionID;
-    self->_telemetryDeviceSessionID = v16;
+    self->_telemetryDeviceSessionID = telemetryDeviceSessionID;
   }
 
   if (!self->_telemetryFlowID)
   {
-    v18 = [v20 telemetryFlowID];
+    telemetryFlowID = [contextCopy telemetryFlowID];
     telemetryFlowID = self->_telemetryFlowID;
-    self->_telemetryFlowID = v18;
+    self->_telemetryFlowID = telemetryFlowID;
   }
 
   if (!self->_securityLevel)
   {
-    self->_securityLevel = [v20 securityLevel];
+    self->_securityLevel = [contextCopy securityLevel];
   }
 }
 
 - (BOOL)isPiggybackingRecovery
 {
-  v3 = [(CDPContext *)self duplexSession];
-  if (v3)
+  duplexSession = [(CDPContext *)self duplexSession];
+  if (duplexSession)
   {
-    v4 = [(CDPContext *)self resumeContext];
-    v5 = v4 != 0;
+    resumeContext = [(CDPContext *)self resumeContext];
+    v5 = resumeContext != 0;
   }
 
   else
@@ -1311,13 +1311,13 @@ LABEL_7:
 
 - (BOOL)isTTSURecovery
 {
-  v2 = [(CDPContext *)self sharingChannel];
-  v3 = v2 != 0;
+  sharingChannel = [(CDPContext *)self sharingChannel];
+  v3 = sharingChannel != 0;
 
   return v3;
 }
 
-- (BOOL)isiCDPEligibleWithError:(id *)a3
+- (BOOL)isiCDPEligibleWithError:(id *)error
 {
   if ([(CDPContext *)self isSharediPad])
   {
@@ -1328,14 +1328,14 @@ LABEL_7:
       _os_log_impl(&dword_1DED99000, v5, OS_LOG_TYPE_DEFAULT, "isiCDPEligible: managed accounts on shared iPad is not manatee eligible, returning NO", buf, 2u);
     }
 
-    if (a3)
+    if (error)
     {
       v6 = -5004;
 LABEL_33:
       v17 = _CDPStateError(v6, 0);
       v18 = v17;
       result = 0;
-      *a3 = v17;
+      *error = v17;
       return result;
     }
 
@@ -1386,10 +1386,10 @@ LABEL_30:
 
   if ([(CDPContext *)self managedAccountsAllowedInCDP])
   {
-    v9 = [(CDPContext *)self isPrimaryAccount];
+    isPrimaryAccount = [(CDPContext *)self isPrimaryAccount];
     v10 = _CDPLogSystem();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (isPrimaryAccount)
     {
       if (v11)
       {
@@ -1410,7 +1410,7 @@ LABEL_30:
 
 LABEL_31:
 
-    if (a3)
+    if (error)
     {
       v6 = -5111;
       goto LABEL_33;
@@ -1431,7 +1431,7 @@ LABEL_25:
 
 LABEL_26:
 
-  if (a3)
+  if (error)
   {
     v6 = -5110;
     goto LABEL_33;
@@ -1442,37 +1442,37 @@ LABEL_26:
 
 - (BOOL)isBeneficiaryFlow
 {
-  v3 = [(CDPContext *)self beneficiaryIdentifier];
-  v4 = [v3 UUIDString];
-  if ([v4 length])
+  beneficiaryIdentifier = [(CDPContext *)self beneficiaryIdentifier];
+  uUIDString = [beneficiaryIdentifier UUIDString];
+  if ([uUIDString length])
   {
-    v5 = 1;
+    isBeneficiaryAccount = 1;
   }
 
   else
   {
-    v5 = [(CDPContext *)self isBeneficiaryAccount];
+    isBeneficiaryAccount = [(CDPContext *)self isBeneficiaryAccount];
   }
 
-  return v5;
+  return isBeneficiaryAccount;
 }
 
 - (BOOL)is2FAFAUserFromNetwork
 {
-  v3 = [(CDPContext *)self isHSA2Account];
-  if (v3)
+  isHSA2Account = [(CDPContext *)self isHSA2Account];
+  if (isHSA2Account)
   {
-    LOBYTE(v3) = ![(CDPContext *)self isICDPEnabledFromNetwork];
+    LOBYTE(isHSA2Account) = ![(CDPContext *)self isICDPEnabledFromNetwork];
   }
 
-  return v3;
+  return isHSA2Account;
 }
 
 - (BOOL)isICDPEnabledFromNetwork
 {
-  v2 = [(CDPContext *)self dsid];
-  v3 = [v2 stringValue];
-  v4 = [CDPAccount isICDPEnabledForDSID:v3 checkWithServer:1];
+  dsid = [(CDPContext *)self dsid];
+  stringValue = [dsid stringValue];
+  v4 = [CDPAccount isICDPEnabledForDSID:stringValue checkWithServer:1];
 
   return v4;
 }
@@ -1492,33 +1492,33 @@ LABEL_26:
       return 0;
     }
 
-    v5 = [(CDPContext *)self cachedLocalSecret];
-    if (v5)
+    cachedLocalSecret = [(CDPContext *)self cachedLocalSecret];
+    if (cachedLocalSecret)
     {
-      v4 = 1;
+      _useSecureBackupCachedPassphrase = 1;
     }
 
     else
     {
-      v4 = [(CDPContext *)self _useSecureBackupCachedPassphrase];
+      _useSecureBackupCachedPassphrase = [(CDPContext *)self _useSecureBackupCachedPassphrase];
     }
 
-    return v4;
+    return _useSecureBackupCachedPassphrase;
   }
 }
 
 - (BOOL)_isLocalSecretCachedAcknowledgingInMemoryValue
 {
-  v3 = [(CDPContext *)self cachedLocalSecret];
+  cachedLocalSecret = [(CDPContext *)self cachedLocalSecret];
 
-  if (v3)
+  if (cachedLocalSecret)
   {
-    v4 = [(CDPContext *)self cachedLocalSecret];
-    if (v4)
+    cachedLocalSecret2 = [(CDPContext *)self cachedLocalSecret];
+    if (cachedLocalSecret2)
     {
-      v5 = v4;
-      v6 = [(CDPContext *)self cachedLocalSecret];
-      v7 = [v6 length];
+      v5 = cachedLocalSecret2;
+      cachedLocalSecret3 = [(CDPContext *)self cachedLocalSecret];
+      v7 = [cachedLocalSecret3 length];
 
       if (!v7)
       {
@@ -1530,27 +1530,27 @@ LABEL_26:
       }
     }
 
-    LOBYTE(v9) = 1;
+    LOBYTE(_useSecureBackupCachedPassphrase) = 1;
   }
 
   else
   {
-    v9 = [(CDPContext *)self _useSecureBackupCachedPassphrase];
-    if (v9)
+    _useSecureBackupCachedPassphrase = [(CDPContext *)self _useSecureBackupCachedPassphrase];
+    if (_useSecureBackupCachedPassphrase)
     {
-      LOBYTE(v9) = ![(CDPContext *)self cachedPassphraseMissing];
+      LOBYTE(_useSecureBackupCachedPassphrase) = ![(CDPContext *)self cachedPassphraseMissing];
     }
   }
 
-  return v9;
+  return _useSecureBackupCachedPassphrase;
 }
 
-+ (id)preflightContext:(id)a3
++ (id)preflightContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  contextCopy = context;
+  v4 = contextCopy;
+  if (!contextCopy)
   {
     v13 = _CDPLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1562,7 +1562,7 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  if (([v3 needsPreflight] & 1) == 0)
+  if (([contextCopy needsPreflight] & 1) == 0)
   {
     v15 = _CDPLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1576,26 +1576,26 @@ LABEL_16:
     goto LABEL_42;
   }
 
-  v5 = [v4 altDSID];
+  altDSID = [v4 altDSID];
 
-  if (v5)
+  if (altDSID)
   {
     v6 = _CDPLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 altDSID];
+      altDSID2 = [v4 altDSID];
       v35 = 141558274;
       v36 = 1752392040;
       v37 = 2112;
-      v38 = v7;
+      v38 = altDSID2;
       _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "preflightContext: Attempting to backfill context for altDSID %{mask.hash}@ . Please use +[CDPContext contextForAccountWithAltDSID:] to do this in the future.", &v35, 0x16u);
     }
 
-    v8 = [MEMORY[0x1E698DC80] sharedInstance];
-    v9 = [v4 altDSID];
-    v10 = [v8 authKitAccountWithAltDSID:v9];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    altDSID3 = [v4 altDSID];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:altDSID3];
 
-    if (v10)
+    if (primaryAuthKitAccount)
     {
       goto LABEL_34;
     }
@@ -1614,26 +1614,26 @@ LABEL_16:
     v12 = 0;
   }
 
-  v17 = [v4 dsid];
+  dsid = [v4 dsid];
 
-  if (v17)
+  if (dsid)
   {
     v18 = _CDPLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v4 dsid];
+      dsid2 = [v4 dsid];
       v35 = 141558274;
       v36 = 1752392040;
       v37 = 2112;
-      v38 = v19;
+      v38 = dsid2;
       _os_log_impl(&dword_1DED99000, v18, OS_LOG_TYPE_DEFAULT, "preflightContext: Attempting to find account for dsid %{mask.hash}@ . Please use +[CDPContext contextForAccountWithAltDSID:] to do this in the future.", &v35, 0x16u);
     }
 
-    v20 = [MEMORY[0x1E698DC80] sharedInstance];
-    v21 = [v4 dsid];
-    v10 = [v20 authKitAccountWithDSID:v21];
+    mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+    dsid3 = [v4 dsid];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80]2 authKitAccountWithDSID:dsid3];
 
-    if (v10)
+    if (primaryAuthKitAccount)
     {
       goto LABEL_34;
     }
@@ -1647,26 +1647,26 @@ LABEL_16:
     v12 = 1;
   }
 
-  v23 = [v4 appleID];
+  appleID = [v4 appleID];
 
-  if (v23)
+  if (appleID)
   {
     v24 = _CDPLogSystem();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v4 appleID];
+      appleID2 = [v4 appleID];
       v35 = 141558274;
       v36 = 1752392040;
       v37 = 2112;
-      v38 = v25;
+      v38 = appleID2;
       _os_log_impl(&dword_1DED99000, v24, OS_LOG_TYPE_DEFAULT, "preflightContext: Attempting to find account for appleID %{mask.hash}@ . Please use +[CDPContext contextForAccountWithAppleID:] to do this in the future.", &v35, 0x16u);
     }
 
-    v26 = [MEMORY[0x1E698DC80] sharedInstance];
-    v27 = [v4 appleID];
-    v10 = [v26 authKitAccountWithAppleID:v27];
+    mEMORY[0x1E698DC80]3 = [MEMORY[0x1E698DC80] sharedInstance];
+    appleID3 = [v4 appleID];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80]3 authKitAccountWithAppleID:appleID3];
 
-    if (v10)
+    if (primaryAuthKitAccount)
     {
       goto LABEL_34;
     }
@@ -1686,24 +1686,24 @@ LABEL_16:
       +[CDPContext(Account) preflightContext:];
     }
 
-    v29 = [MEMORY[0x1E698DC80] sharedInstance];
-    v10 = [v29 primaryAuthKitAccount];
+    mEMORY[0x1E698DC80]4 = [MEMORY[0x1E698DC80] sharedInstance];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80]4 primaryAuthKitAccount];
     goto LABEL_36;
   }
 
-  v10 = 0;
+  primaryAuthKitAccount = 0;
 LABEL_34:
-  v29 = _CDPLogSystem();
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+  mEMORY[0x1E698DC80]4 = _CDPLogSystem();
+  if (os_log_type_enabled(mEMORY[0x1E698DC80]4, OS_LOG_TYPE_DEBUG))
   {
     +[CDPContext(Account) preflightContext:];
   }
 
 LABEL_36:
 
-  if (v10)
+  if (primaryAuthKitAccount)
   {
-    v30 = [v4 initWithAccount:v10];
+    v30 = [v4 initWithAccount:primaryAuthKitAccount];
   }
 
   else
@@ -1888,7 +1888,7 @@ LABEL_42:
   v3 = 136315394;
   v4 = "[CDPContext adpCohort]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1DED99000, a2, OS_LOG_TYPE_FAULT, "%s: Unable to obtain the adpCohortForAccount because AKAccountManager (%@) doesn't respond to selector.", &v3, 0x16u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -1903,7 +1903,7 @@ LABEL_42:
 - (void)numberOfTrustedDevices
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x1E69E9840];
@@ -1911,13 +1911,13 @@ LABEL_42:
 
 - (void)isPrimaryAccount
 {
-  OUTLINED_FUNCTION_5_1(a1, a2, 7.2225e-34);
+  OUTLINED_FUNCTION_5_1(self, a2, 7.2225e-34);
   _os_log_error_impl(&dword_1DED99000, v3, OS_LOG_TYPE_ERROR, "isPrimaryAccount: Did not find account for %{mask.hash}@ we can't determine if the account is primary!", v4, 0x16u);
 }
 
 - (void)keychainSyncAllowedByServer
 {
-  OUTLINED_FUNCTION_5_1(a1, a2, 7.2225e-34);
+  OUTLINED_FUNCTION_5_1(self, a2, 7.2225e-34);
   _os_log_error_impl(&dword_1DED99000, v3, OS_LOG_TYPE_ERROR, "keychainSyncAllowedByServer: Did not find account for %{mask.hash}@ we can't determine if the account can use keychain!", v4, 0x16u);
 }
 

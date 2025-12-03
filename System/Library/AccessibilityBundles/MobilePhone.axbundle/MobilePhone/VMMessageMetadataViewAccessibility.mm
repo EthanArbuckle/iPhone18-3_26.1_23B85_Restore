@@ -1,5 +1,5 @@
 @interface VMMessageMetadataViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsVoiceMailUnread;
 - (id)accessibilityLabel;
 - (int64_t)_accessibilityExpandedStatus;
@@ -7,18 +7,18 @@
 
 @implementation VMMessageMetadataViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"shortDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"shortDurationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"currentViewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell"];
-  [v3 validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"unreadIndicatorImageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"shortDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"shortDurationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VMMessageMetadataView" hasInstanceMethod:@"currentViewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell"];
+  [validationsCopy validateClass:@"PHVoicemailMessageTableViewCell" hasInstanceMethod:@"unreadIndicatorImageView" withFullSignature:{"@", 0}];
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -50,18 +50,18 @@
   }
 
   v4 = [(VMMessageMetadataViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
   v6 = [(VMMessageMetadataViewAccessibility *)self safeValueForKey:@"subtitleLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
 
   objc_opt_class();
   v8 = [(VMMessageMetadataViewAccessibility *)self safeValueForKey:@"shortDateLabel"];
   v9 = __UIAccessibilityCastAsClass();
 
-  v10 = [v9 date];
+  date = [v9 date];
 
-  v11 = [MEMORY[0x29EDB9F78] localizedStringFromDate:v10 dateStyle:3 timeStyle:{-[VMMessageMetadataViewAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"isExpanded"}];
+  v11 = [MEMORY[0x29EDB9F78] localizedStringFromDate:date dateStyle:3 timeStyle:{-[VMMessageMetadataViewAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"isExpanded"}];
   if (([(VMMessageMetadataViewAccessibility *)self safeBoolForKey:@"isExpanded"]& 1) != 0)
   {
     v12 = 0;
@@ -70,7 +70,7 @@
   else
   {
     v13 = [(VMMessageMetadataViewAccessibility *)self safeValueForKey:@"shortDurationLabel"];
-    v14 = [v13 accessibilityLabel];
+    accessibilityLabel3 = [v13 accessibilityLabel];
     v12 = AXLocalizeDurationTime();
   }
 
@@ -78,7 +78,7 @@
   v15 = [(VMMessageMetadataViewAccessibility *)self safeValueForKey:@"currentViewModel"];
   v16 = __UIAccessibilityCastAsSafeCategory();
 
-  v19 = [v16 _axLocalizedSenderIdentityFullName];
+  _axLocalizedSenderIdentityFullName = [v16 _axLocalizedSenderIdentityFullName];
   v17 = __UIAXStringForVariables();
 
   return v17;

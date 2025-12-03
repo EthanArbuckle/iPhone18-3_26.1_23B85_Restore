@@ -1,24 +1,24 @@
 @interface PDXPCEventStreamManager
-- (PDXPCEventStreamManager)initWithEventStream:(id)a3 startedPaused:(BOOL)a4;
-- (void)_deliverEvent:(id)a3 toObservers:(id)a4 withTransaction:(id)a5;
-- (void)_deliverEvents:(id)a3 eventsWerePreviouslyDeferred:(BOOL)a4;
+- (PDXPCEventStreamManager)initWithEventStream:(id)stream startedPaused:(BOOL)paused;
+- (void)_deliverEvent:(id)event toObservers:(id)observers withTransaction:(id)transaction;
+- (void)_deliverEvents:(id)events eventsWerePreviouslyDeferred:(BOOL)deferred;
 - (void)beginEventDelivery;
-- (void)registerObserver:(id)a3 withReplyQueue:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer withReplyQueue:(id)queue;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PDXPCEventStreamManager
 
-- (PDXPCEventStreamManager)initWithEventStream:(id)a3 startedPaused:(BOOL)a4
+- (PDXPCEventStreamManager)initWithEventStream:(id)stream startedPaused:(BOOL)paused
 {
-  v4 = a4;
-  v6 = a3;
+  pausedCopy = paused;
+  streamCopy = stream;
   v26.receiver = self;
   v26.super_class = PDXPCEventStreamManager;
   v7 = [(PDXPCEventStreamManager *)&v26 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [streamCopy copy];
     eventStream = v7->_eventStream;
     v7->_eventStream = v8;
 
@@ -27,7 +27,7 @@
     observers = v7->_observers;
     v7->_observers = v10;
 
-    if (v4)
+    if (pausedCopy)
     {
       v12 = objc_alloc_init(NSMutableArray);
       pendingEvents = v7->_pendingEvents;
@@ -52,14 +52,14 @@
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "PDXPCEventStreamManager: Registering for stream %{public}@.", buf, 0xCu);
     }
 
-    v21 = [(NSString *)v7->_eventStream UTF8String];
+    uTF8String = [(NSString *)v7->_eventStream UTF8String];
     v22 = v7->_eventQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100050C78;
     handler[3] = &unk_10083F148;
     v25 = v7;
-    xpc_set_event_stream_handler(v21, v22, handler);
+    xpc_set_event_stream_handler(uTF8String, v22, handler);
   }
 
   return v7;
@@ -85,17 +85,17 @@
     block[2] = sub_100050E3C;
     block[3] = &unk_10083C4C0;
     v9 = v4;
-    v10 = self;
+    selfCopy = self;
     v11 = v3;
     dispatch_async(eventQueue, block);
   }
 }
 
-- (void)registerObserver:(id)a3 withReplyQueue:(id)a4
+- (void)registerObserver:(id)observer withReplyQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  observerCopy = observer;
+  queueCopy = queue;
+  if (observerCopy)
   {
     v8 = objc_alloc_init(NSMutableArray);
     os_unfair_lock_lock(&self->_observersLock);
@@ -119,13 +119,13 @@
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          v15 = [v14 observer];
-          if (v15)
+          observer = [v14 observer];
+          if (observer)
           {
-            [v8 addObject:v15];
-            if (v15 == v6)
+            [v8 addObject:observer];
+            if (observer == observerCopy)
             {
-              [v14 setReplyQueue:v7];
+              [v14 setReplyQueue:queueCopy];
 
               goto LABEL_13;
             }
@@ -143,8 +143,8 @@
     }
 
     v9 = objc_alloc_init(PDXPCEventStreamObserverEntry);
-    [(NSMutableArray *)v9 setObserver:v6];
-    [(NSMutableArray *)v9 setReplyQueue:v7];
+    [(NSMutableArray *)v9 setObserver:observerCopy];
+    [(NSMutableArray *)v9 setReplyQueue:queueCopy];
     [(NSMutableArray *)self->_observers addObject:v9];
 LABEL_13:
 
@@ -152,9 +152,9 @@ LABEL_13:
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v10 = a3;
+  observerCopy = observer;
   v4 = objc_alloc_init(NSMutableArray);
   os_unfair_lock_lock(&self->_observersLock);
   v5 = [(NSMutableArray *)self->_observers count];
@@ -164,9 +164,9 @@ LABEL_13:
     for (i = 0; i != v5; ++i)
     {
       v8 = [(NSMutableArray *)self->_observers objectAtIndexedSubscript:i];
-      v9 = [v8 observer];
+      observer = [v8 observer];
 
-      if (!v9 || ([v4 addObject:v9], v10) && v9 == v10)
+      if (!observer || ([v4 addObject:observer], observerCopy) && observer == observerCopy)
       {
         [v6 addIndex:i];
       }
@@ -177,10 +177,10 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)_deliverEvents:(id)a3 eventsWerePreviouslyDeferred:(BOOL)a4
+- (void)_deliverEvents:(id)events eventsWerePreviouslyDeferred:(BOOL)deferred
 {
-  v4 = a4;
-  v6 = a3;
+  deferredCopy = deferred;
+  eventsCopy = events;
   os_unfair_lock_lock(&self->_observersLock);
   pendingEvents = self->_pendingEvents;
   if (!pendingEvents)
@@ -197,8 +197,8 @@ LABEL_13:
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v33 = v6;
-    obj = v6;
+    v33 = eventsCopy;
+    obj = eventsCopy;
     v20 = [obj countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (!v20)
     {
@@ -219,7 +219,7 @@ LABEL_17:
       v24 = *(*(&v39 + 1) + 8 * v23);
       v25 = PKLogFacilityTypeGetObject();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (deferredCopy)
       {
         if (v26)
         {
@@ -265,7 +265,7 @@ LABEL_28:
     }
   }
 
-  [(NSMutableArray *)pendingEvents addObjectsFromArray:v6];
+  [(NSMutableArray *)pendingEvents addObjectsFromArray:eventsCopy];
   if (!self->_pendingEventsTransaction)
   {
     v8 = PDOSTransactionCreate("PDXPCEventStreamManager.deferred");
@@ -278,12 +278,12 @@ LABEL_28:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = v6;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v11)
   {
     v12 = v11;
-    v33 = v6;
+    v33 = eventsCopy;
     v13 = *v36;
     do
     {
@@ -314,7 +314,7 @@ LABEL_28:
     while (v12);
     v19 = 0;
 LABEL_29:
-    v6 = v33;
+    eventsCopy = v33;
   }
 
   else
@@ -325,19 +325,19 @@ LABEL_29:
 LABEL_32:
 }
 
-- (void)_deliverEvent:(id)a3 toObservers:(id)a4 withTransaction:(id)a5
+- (void)_deliverEvent:(id)event toObservers:(id)observers withTransaction:(id)transaction
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  eventCopy = event;
+  observersCopy = observers;
+  transactionCopy = transaction;
+  if ([observersCopy count])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = v8;
-    v10 = v8;
+    v20 = observersCopy;
+    v10 = observersCopy;
     v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v11)
     {
@@ -353,12 +353,12 @@ LABEL_32:
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
-          v16 = [v15 observer];
-          if (v16)
+          observer = [v15 observer];
+          if (observer)
           {
-            v17 = [v15 replyQueue];
-            replyQueue = v17;
-            if (!v17)
+            replyQueue = [v15 replyQueue];
+            replyQueue = replyQueue;
+            if (!replyQueue)
             {
               replyQueue = self->_replyQueue;
             }
@@ -369,10 +369,10 @@ LABEL_32:
             block[1] = 3221225472;
             block[2] = sub_1000516C0;
             block[3] = &unk_10083E088;
-            v23 = v9;
-            v24 = v16;
-            v25 = v21;
-            v26 = self;
+            v23 = transactionCopy;
+            v24 = observer;
+            v25 = eventCopy;
+            selfCopy = self;
             dispatch_async(v19, block);
           }
         }
@@ -383,7 +383,7 @@ LABEL_32:
       while (v12);
     }
 
-    v8 = v20;
+    observersCopy = v20;
   }
 }
 

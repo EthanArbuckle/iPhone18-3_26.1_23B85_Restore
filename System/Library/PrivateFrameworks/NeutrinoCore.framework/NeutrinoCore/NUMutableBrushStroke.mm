@@ -1,15 +1,15 @@
 @interface NUMutableBrushStroke
-- (NUMutableBrushStroke)initWithRadius:(float)a3 softness:(float)a4 opacity:(float)a5 clipRect:(id *)a6 pressureMode:(int64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUMutableBrushStroke)initWithRadius:(float)radius softness:(float)softness opacity:(float)opacity clipRect:(id *)rect pressureMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)points;
-- (void)appendPoint:(id)a3;
-- (void)appendPoints:(id *)a3 pointCount:(int64_t)a4;
-- (void)applyTransform:(CGAffineTransform *)a3;
+- (void)appendPoint:(id)point;
+- (void)appendPoints:(id *)points pointCount:(int64_t)count;
+- (void)applyTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation NUMutableBrushStroke
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(NSMutableData *)self->super._data mutableCopy];
   v6 = [[NUBrushStroke allocWithZone:?]];
@@ -31,10 +31,10 @@
   return v6;
 }
 
-- (void)applyTransform:(CGAffineTransform *)a3
+- (void)applyTransform:(CGAffineTransform *)transform
 {
-  v5 = [(NUBrushStroke *)self pointCount];
-  v6 = vmlaq_n_f64(vmulq_n_f64(*&a3->c, self->super._radius), *&a3->a, self->super._radius);
+  pointCount = [(NUBrushStroke *)self pointCount];
+  v6 = vmlaq_n_f64(vmulq_n_f64(*&transform->c, self->super._radius), *&transform->a, self->super._radius);
   v7 = v6.f64[1];
   if (v6.f64[0] >= v6.f64[1])
   {
@@ -43,12 +43,12 @@
 
   v8 = v7;
   self->super._radius = v8;
-  if (v5 >= 1)
+  if (pointCount >= 1)
   {
-    v9 = v5;
+    v9 = pointCount;
     v10 = v8 * 2.0 + 1.0;
-    v11 = [(NSMutableData *)self->super._data mutableBytes];
-    v12 = &v11[3 * v9];
+    mutableBytes = [(NSMutableData *)self->super._data mutableBytes];
+    v12 = &mutableBytes[3 * v9];
     v13.f64[0] = NAN;
     v13.f64[1] = NAN;
     v14 = vnegq_f64(v13);
@@ -57,9 +57,9 @@
     {
       v17 = v15;
       v18 = v14;
-      v16 = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v11[1]), *&a3->a, *v11));
-      *v11 = vcvt_f32_f64(v16);
-      v11 += 3;
+      v16 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, mutableBytes[1]), *&transform->a, *mutableBytes));
+      *mutableBytes = vcvt_f32_f64(v16);
+      mutableBytes += 3;
       v20.origin = vsubq_f64(v16, vdupq_lane_s64(COERCE__INT64(self->super._radius), 0));
       v20.size.width = v10;
       v20.size.height = v10;
@@ -71,13 +71,13 @@
       v15 = v19[1];
     }
 
-    while (v11 != v12);
+    while (mutableBytes != v12);
     self->super._extent.origin = v19[0];
     self->super._extent.size = v15;
   }
 }
 
-- (void)appendPoints:(id *)a3 pointCount:(int64_t)a4
+- (void)appendPoints:(id *)points pointCount:(int64_t)count
 {
   width = self->super._extent.size.width;
   height = self->super._extent.size.height;
@@ -108,16 +108,16 @@
   }
 
   [(NUBrushStroke *)self radius];
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v15 = ((*v14.i32 * 2.0) + 1.0);
     v16 = vdup_lane_s32(v14, 0);
-    v17 = a3;
-    v18 = a4;
+    pointsCopy = points;
+    countCopy = count;
     do
     {
-      v19 = *&v17->var0;
-      ++v17;
+      v19 = *&pointsCopy->var0;
+      ++pointsCopy;
       v22.origin = vcvtq_f64_f32(vsub_f32(v19, v16));
       v22.size.width = v15;
       v22.size.height = v15;
@@ -143,24 +143,24 @@
         v13 = v20.i64[1];
       }
 
-      --v18;
+      --countCopy;
     }
 
-    while (v18);
+    while (countCopy);
   }
 
   self->super._extent.origin.x = x;
   self->super._extent.origin.y = y;
   self->super._extent.size.width = v12 - x;
   self->super._extent.size.height = v13 - y;
-  [(NSMutableData *)self->super._data appendBytes:a3 length:12 * a4];
+  [(NSMutableData *)self->super._data appendBytes:points length:12 * count];
 }
 
-- (void)appendPoint:(id)a3
+- (void)appendPoint:(id)point
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a3;
+  var1 = point.var1;
+  var0 = point.var0;
+  pointCopy = point;
   [(NUBrushStroke *)self radius];
   v12.origin.x = (var0 - v6);
   v12.origin.y = (var1 - v6);
@@ -176,7 +176,7 @@
   v9 = v11.size;
   self->super._extent.origin = v11.origin;
   self->super._extent.size = v9;
-  [(NSMutableData *)self->super._data appendBytes:&v10 length:12];
+  [(NSMutableData *)self->super._data appendBytes:&pointCopy length:12];
 }
 
 - (id)points
@@ -186,19 +186,19 @@
   return v2;
 }
 
-- (NUMutableBrushStroke)initWithRadius:(float)a3 softness:(float)a4 opacity:(float)a5 clipRect:(id *)a6 pressureMode:(int64_t)a7
+- (NUMutableBrushStroke)initWithRadius:(float)radius softness:(float)softness opacity:(float)opacity clipRect:(id *)rect pressureMode:(int64_t)mode
 {
   v13 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:6000];
   v20.receiver = self;
   v20.super_class = NUMutableBrushStroke;
   v14 = [(NUMutableBrushStroke *)&v20 init];
   memset(v19, 0, sizeof(v19));
-  var1 = a6->var1;
-  v18[0] = a6->var0;
+  var1 = rect->var1;
+  v18[0] = rect->var0;
   v18[1] = var1;
-  *&var1.var0 = a4;
-  *&v16 = a5;
-  [(NUBrushStroke *)v14 _initializeWithRadius:v19 softness:v18 opacity:v13 extent:a7 clipRect:COERCE_DOUBLE(__PAIR64__(DWORD1(v18[0]) data:LODWORD(a3))) pressureMode:*&var1.var0, v16];
+  *&var1.var0 = softness;
+  *&v16 = opacity;
+  [(NUBrushStroke *)v14 _initializeWithRadius:v19 softness:v18 opacity:v13 extent:mode clipRect:COERCE_DOUBLE(__PAIR64__(DWORD1(v18[0]) data:LODWORD(radius))) pressureMode:*&var1.var0, v16];
 
   return v14;
 }

@@ -1,19 +1,19 @@
 @interface CSFileAudioInjectionBuiltInEngine
 - (BOOL)alwaysOnVoiceTriggerEnabled;
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4;
-- (BOOL)injectAudio:(id)a3;
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6;
+- (BOOL)attachDevice:(id)device withOutError:(id *)error;
+- (BOOL)injectAudio:(id)audio;
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion;
 - (BOOL)isRecording;
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4;
-- (BOOL)stopAudioStreamWithOutError:(id *)a3;
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error;
+- (BOOL)stopAudioStreamWithOutError:(id *)error;
 - (CSAudioInjectionDevice)connectedDevice;
 - (CSAudioInjectionEngineDelegate)delegate;
-- (CSFileAudioInjectionBuiltInEngine)initWithStreamHandleId:(unint64_t)a3;
-- (int64_t)getBestSampleCountWithOption:(id)a3;
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8;
+- (CSFileAudioInjectionBuiltInEngine)initWithStreamHandleId:(unint64_t)id;
+- (int64_t)getBestSampleCountWithOption:(id)option;
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer;
 - (void)dealloc;
-- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
+- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 - (void)stop;
 @end
@@ -34,24 +34,24 @@
   return WeakRetained;
 }
 
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer
 {
-  v12 = a5;
+  bufferCopy = buffer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C2CC8;
   block[3] = &unk_100252C40;
-  v16 = v12;
-  v17 = self;
-  v18 = a7;
-  v19 = a4;
-  v20 = a8;
-  v14 = v12;
+  v16 = bufferCopy;
+  selfCopy = self;
+  timeCopy = time;
+  idCopy = id;
+  loadedBufferCopy = loadedBuffer;
+  v14 = bufferCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)stopAudioStreamWithOutError:(id *)a3
+- (BOOL)stopAudioStreamWithOutError:(id *)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -63,31 +63,31 @@
   return 1;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error
 {
-  v5 = a3;
+  optionCopy = option;
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000C3574;
   v9[3] = &unk_100253C48;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = optionCopy;
+  v7 = optionCopy;
   dispatch_async(queue, v9);
 
   return 1;
 }
 
-- (int64_t)getBestSampleCountWithOption:(id)a3
+- (int64_t)getBestSampleCountWithOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   self->_lastForwardedSampleCount = [(CSAudioCircularBuffer *)self->_circularBuffer sampleCount];
-  if ([v4 requestHistoricalAudioDataWithHostTime])
+  if ([optionCopy requestHistoricalAudioDataWithHostTime])
   {
     v5 = 10000000000;
-    v20 = v4;
-    v6 = [v4 startRecordingHostTime];
+    v20 = optionCopy;
+    startRecordingHostTime = [optionCopy startRecordingHostTime];
     lastForwardedSampleCount = [(CSAudioCircularBuffer *)self->_circularBuffer sampleCount];
     if ([(NSMutableArray *)self->_hostTimeBuffer count]< 1)
     {
@@ -101,17 +101,17 @@
       {
         v9 = [(NSMutableArray *)self->_hostTimeBuffer objectAtIndex:v8];
         v10 = [v9 objectForKeyedSubscript:@"SampleCount"];
-        v11 = [v10 unsignedIntValue];
+        unsignedIntValue = [v10 unsignedIntValue];
 
         v12 = [v9 objectForKeyedSubscript:@"HostTime"];
-        v13 = [v12 unsignedLongLongValue];
-        v14 = v13 - v6;
-        if (v13 - v6 >= v5)
+        unsignedLongLongValue = [v12 unsignedLongLongValue];
+        v14 = unsignedLongLongValue - startRecordingHostTime;
+        if (unsignedLongLongValue - startRecordingHostTime >= v5)
         {
           v14 = v5;
         }
 
-        if (v13 >= v6)
+        if (unsignedLongLongValue >= startRecordingHostTime)
         {
           v15 = v14;
         }
@@ -121,9 +121,9 @@
           v15 = v5;
         }
 
-        if (v13 - v6 <= v5 && v13 >= v6)
+        if (unsignedLongLongValue - startRecordingHostTime <= v5 && unsignedLongLongValue >= startRecordingHostTime)
         {
-          lastForwardedSampleCount = v11;
+          lastForwardedSampleCount = unsignedIntValue;
         }
 
         ++v8;
@@ -148,7 +148,7 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s Looking up audio diff:%llu sampleCount:%llu %@", buf, 0x2Au);
     }
 
-    v4 = v20;
+    optionCopy = v20;
   }
 
   else
@@ -178,18 +178,18 @@
   return v3;
 }
 
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion
 {
   v7.receiver = self;
   v7.super_class = CSFileAudioInjectionBuiltInEngine;
-  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:a3 withScaleFactor:a5 playbackStarted:a6 completion:?];
+  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:audio withScaleFactor:started playbackStarted:completion completion:?];
 }
 
-- (BOOL)injectAudio:(id)a3
+- (BOOL)injectAudio:(id)audio
 {
   v4.receiver = self;
   v4.super_class = CSFileAudioInjectionBuiltInEngine;
-  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:a3];
+  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:audio];
 }
 
 - (void)stop
@@ -232,22 +232,22 @@
   [(CSFileAudioInjectionEngine *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CSFileAudioInjectionBuiltInEngine;
-  v4 = a3;
+  delegateCopy = delegate;
   [(CSFileAudioInjectionEngine *)&v5 setDelegate:self];
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
-- (BOOL)attachDevice:(id)a3 withOutError:(id *)a4
+- (BOOL)attachDevice:(id)device withOutError:(id *)error
 {
-  v5 = a3;
-  [(CSFileAudioInjectionBuiltInEngine *)self setConnectedDevice:v5];
-  v6 = [v5 enableAlwaysOnVoiceTrigger];
+  deviceCopy = device;
+  [(CSFileAudioInjectionBuiltInEngine *)self setConnectedDevice:deviceCopy];
+  enableAlwaysOnVoiceTrigger = [deviceCopy enableAlwaysOnVoiceTrigger];
 
-  v7 = v6 && [(CSFileAudioInjectionBuiltInEngine *)self isAlwaysOnVoiceTriggerAvailable];
+  v7 = enableAlwaysOnVoiceTrigger && [(CSFileAudioInjectionBuiltInEngine *)self isAlwaysOnVoiceTriggerAvailable];
   [(CSFileAudioInjectionBuiltInEngine *)self setAlwaysOnVoiceTriggerEnabled:v7];
   return 1;
 }
@@ -271,7 +271,7 @@
   return v3;
 }
 
-- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)a3
+- (void)setAlwaysOnVoiceTriggerEnabled:(BOOL)enabled
 {
   if (CSHasAOP())
   {
@@ -281,16 +281,16 @@
     v6[2] = sub_1000C42B8;
     v6[3] = &unk_100253BF8;
     v6[4] = self;
-    v7 = a3;
+    enabledCopy = enabled;
     dispatch_async(queue, v6);
   }
 }
 
-- (CSFileAudioInjectionBuiltInEngine)initWithStreamHandleId:(unint64_t)a3
+- (CSFileAudioInjectionBuiltInEngine)initWithStreamHandleId:(unint64_t)id
 {
   v22.receiver = self;
   v22.super_class = CSFileAudioInjectionBuiltInEngine;
-  v3 = [(CSFileAudioInjectionEngine *)&v22 initWithStreamHandleId:a3];
+  v3 = [(CSFileAudioInjectionEngine *)&v22 initWithStreamHandleId:id];
   if (v3)
   {
     v4 = dispatch_queue_create("CSFileAudioInjectionBuiltInEngine", 0);

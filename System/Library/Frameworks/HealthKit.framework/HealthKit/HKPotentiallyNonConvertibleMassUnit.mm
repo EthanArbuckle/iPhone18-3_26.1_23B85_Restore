@@ -1,31 +1,31 @@
 @interface HKPotentiallyNonConvertibleMassUnit
-- (id)_unitByPrefixing:(id)a3 withConversionConstant:(id)a4;
+- (id)_unitByPrefixing:(id)prefixing withConversionConstant:(id)constant;
 @end
 
 @implementation HKPotentiallyNonConvertibleMassUnit
 
-- (id)_unitByPrefixing:(id)a3 withConversionConstant:(id)a4
+- (id)_unitByPrefixing:(id)prefixing withConversionConstant:(id)constant
 {
-  v6 = a4;
-  if (v6)
+  constantCopy = constant;
+  if (constantCopy)
   {
-    v7 = a3;
+    prefixingCopy = prefixing;
     v8 = [HKMassUnit alloc];
-    v9 = [(HKBaseUnit *)self unitString];
+    unitString = [(HKBaseUnit *)self unitString];
     [(HKBaseUnit *)self proportionalSize];
     v11 = v10;
     [(HKUnit *)self scaleOffset];
-    v13 = [(HKBaseUnit *)v8 _initWithUnitString:v9 proportionalSize:v11 scaleOffset:v12];
+    v13 = [(HKBaseUnit *)v8 _initWithUnitString:unitString proportionalSize:v11 scaleOffset:v12];
 
-    v14 = [v13 _unitByPrefixing:v7 withConversionConstant:v6];
+    v14 = [v13 _unitByPrefixing:prefixingCopy withConversionConstant:constantCopy];
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = HKPotentiallyNonConvertibleMassUnit;
-    v15 = a3;
-    v14 = [(HKBaseUnit *)&v17 _unitByPrefixing:v15 withConversionConstant:0];
+    prefixingCopy2 = prefixing;
+    v14 = [(HKBaseUnit *)&v17 _unitByPrefixing:prefixingCopy2 withConversionConstant:0];
   }
 
   return v14;

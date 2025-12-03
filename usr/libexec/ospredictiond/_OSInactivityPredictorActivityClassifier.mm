@@ -1,10 +1,10 @@
 @interface _OSInactivityPredictorActivityClassifier
 + (id)predictor;
 - (_OSInactivityPredictorActivityClassifier)init;
-- (double)determineTimeSinceInactiveWithInputDate:(id)a3 andInputTimeSinceInactive:(double)a4;
-- (double)extrapolatedWaitdDurationsAtDate:(id)a3;
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6;
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4;
+- (double)determineTimeSinceInactiveWithInputDate:(id)date andInputTimeSinceInactive:(double)inactive;
+- (double)extrapolatedWaitdDurationsAtDate:(id)date;
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error;
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error;
 - (void)loadTrialFactors;
 @end
 
@@ -69,15 +69,15 @@
   }
 
   v3 = [(TRIClient *)self->_trialClient levelForFactor:@"macInactivityClassifier" withNamespaceName:@"COREOS_PREDICTION_INACTIVITY"];
-  v4 = [v3 directoryValue];
-  v5 = [v4 path];
+  directoryValue = [v3 directoryValue];
+  path = [directoryValue path];
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10005A8A4();
   }
 
-  v6 = [OSIntelligenceUtilities loadCompiledModelFromPath:v5];
+  v6 = [OSIntelligenceUtilities loadCompiledModelFromPath:path];
   [(_OSInactivityPredictorActivityClassifier *)self setClassifier:v6];
 
   [(_OSInactivityPredictor *)self setModelVersion:@"y9eiznriuc"];
@@ -186,7 +186,7 @@
   }
 }
 
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error
 {
   v7 = +[NSDate now];
   [(_OSInactivityPredictor *)self waitedDuration];
@@ -198,7 +198,7 @@
     v12 = v7;
     while (1)
     {
-      v13 = [(_OSInactivityPredictorActivityClassifier *)self longInactivityPredictionResultAtDate:v12 withTimeSinceInactive:a3 withOptions:a4 withError:v9];
+      v13 = [(_OSInactivityPredictorActivityClassifier *)self longInactivityPredictionResultAtDate:v12 withTimeSinceInactive:options withOptions:error withError:v9];
       v14 = v13;
       if (!v11)
       {
@@ -241,13 +241,13 @@ LABEL_10:
   return v11;
 }
 
-- (double)extrapolatedWaitdDurationsAtDate:(id)a3
+- (double)extrapolatedWaitdDurationsAtDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[_OSActivityHistory sharedInstance];
-  v5 = [v4 historicalSecondsSinceInactiveAtDate:v3 whichStrata:3];
-  v6 = [v4 historicalSecondsSinceInactiveAtDate:v3 whichStrata:1];
-  v7 = [v4 historicalSecondsSinceInactiveAtDate:v3 whichStrata:2];
+  v5 = [v4 historicalSecondsSinceInactiveAtDate:dateCopy whichStrata:3];
+  v6 = [v4 historicalSecondsSinceInactiveAtDate:dateCopy whichStrata:1];
+  v7 = [v4 historicalSecondsSinceInactiveAtDate:dateCopy whichStrata:2];
 
   [OSIntelligenceUtilities medianOf:v5];
   v8 = [NSNumber numberWithDouble:?];
@@ -265,17 +265,17 @@ LABEL_10:
   return v13;
 }
 
-- (double)determineTimeSinceInactiveWithInputDate:(id)a3 andInputTimeSinceInactive:(double)a4
+- (double)determineTimeSinceInactiveWithInputDate:(id)date andInputTimeSinceInactive:(double)inactive
 {
-  v6 = a3;
-  v7 = *&v6;
-  if (a4 >= 0.0)
+  dateCopy = date;
+  v7 = *&dateCopy;
+  if (inactive >= 0.0)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134217984;
-      v19 = a4 / 60.0;
+      v19 = inactive / 60.0;
       v11 = "Input timeSinceInactive is explicitly set to %.2f min";
       v13 = log;
       v14 = 12;
@@ -286,7 +286,7 @@ LABEL_15:
 
   else
   {
-    if (!v6)
+    if (!dateCopy)
     {
       +[NSDate now];
       v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -298,14 +298,14 @@ LABEL_15:
       if (v8 >= -900.0)
       {
         [(_OSInactivityPredictor *)self waitedDuration];
-        a4 = v16;
+        inactive = v16;
         v10 = self->_log;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412546;
           v19 = v7;
           v20 = 2048;
-          v21 = a4 / 60.0;
+          v21 = inactive / 60.0;
           v11 = "Querying near now at %@. Real-time timeSinceInactive = %.2f min";
           goto LABEL_14;
         }
@@ -314,14 +314,14 @@ LABEL_15:
       else
       {
         [OSIntelligenceUtilities secondsSinceBecomingInactiveAtDate:*&v7];
-        a4 = v15;
+        inactive = v15;
         v10 = self->_log;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412546;
           v19 = v7;
           v20 = 2048;
-          v21 = a4 / 60.0;
+          v21 = inactive / 60.0;
           v11 = "Querying into the past at %@. Historical timeSinceInactive = %.2f min";
           goto LABEL_14;
         }
@@ -331,14 +331,14 @@ LABEL_15:
     else
     {
       [(_OSInactivityPredictorActivityClassifier *)self extrapolatedWaitdDurationsAtDate:*&v7];
-      a4 = v9;
+      inactive = v9;
       v10 = self->_log;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
         v19 = v7;
         v20 = 2048;
-        v21 = a4 / 60.0;
+        v21 = inactive / 60.0;
         v11 = "Querying into the future at %@. Extrapolated timeSinceInactive = %.2f min";
 LABEL_14:
         v13 = v10;
@@ -348,23 +348,23 @@ LABEL_14:
     }
   }
 
-  return a4;
+  return inactive;
 }
 
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error
 {
-  v9 = a3;
+  dateCopy = date;
   v10 = os_transaction_create();
   if (!self->_classifier)
   {
-    *a6 = [NSError errorWithDomain:@"com.apple.OSIntelligence.InactivityPredictorActivityClassifier" code:6 userInfo:&off_10009CAC0];
-    v19 = [[_OSInactivityPredictorOutput alloc] initInvalidOutput];
+    *error = [NSError errorWithDomain:@"com.apple.OSIntelligence.InactivityPredictorActivityClassifier" code:6 userInfo:&off_10009CAC0];
+    initInvalidOutput = [[_OSInactivityPredictorOutput alloc] initInvalidOutput];
 LABEL_7:
-    v20 = v19;
+    v20 = initInvalidOutput;
     goto LABEL_13;
   }
 
-  [v9 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v11 > 43260.0)
   {
     log = self->_log;
@@ -380,48 +380,48 @@ LABEL_7:
     [(_OSInactivityPredictor *)self confidenceThresholdRelaxed];
     v17 = v16;
     [(_OSInactivityPredictor *)self confidenceThresholdStrict];
-    v19 = [v13 initWithConfidenceValue:1 andRelaxedThreshold:v15 andStrictThreshold:v17 andPredictedDuration:v18 andReason:2.0];
+    initInvalidOutput = [v13 initWithConfidenceValue:1 andRelaxedThreshold:v15 andStrictThreshold:v17 andPredictedDuration:v18 andReason:2.0];
     goto LABEL_7;
   }
 
-  [(_OSInactivityPredictorActivityClassifier *)self determineTimeSinceInactiveWithInputDate:v9 andInputTimeSinceInactive:a4];
+  [(_OSInactivityPredictorActivityClassifier *)self determineTimeSinceInactiveWithInputDate:dateCopy andInputTimeSinceInactive:inactive];
   v22 = v21;
-  v23 = [(MLModel *)self->_classifier modelDescription];
-  v24 = [v23 inputDescriptionsByName];
-  v25 = [v24 allKeys];
+  modelDescription = [(MLModel *)self->_classifier modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  allKeys = [inputDescriptionsByName allKeys];
 
   v26 = +[_OSActivityHistory sharedInstance];
   v52 = @"time_since_inactive";
   v27 = [NSNumber numberWithDouble:v22 / 3600.0];
   v53 = v27;
   v28 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-  v29 = [_OSInactivityFeatureFactory inputFeaturesWithNames:v25 atDate:v9 withIntervalHistory:v26 withContext:v28];
+  v29 = [_OSInactivityFeatureFactory inputFeaturesWithNames:allKeys atDate:dateCopy withIntervalHistory:v26 withContext:v28];
 
   v30 = self->_log;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v31 = v30;
-    v32 = [v29 dictionary];
-    [v32 description];
+    dictionary = [v29 dictionary];
+    [dictionary description];
     v49 = v29;
     v33 = v10;
     v34 = v26;
-    v36 = v35 = v25;
+    v36 = v35 = allKeys;
     *buf = 138412290;
     v51 = v36;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Features: %@", buf, 0xCu);
 
-    v25 = v35;
+    allKeys = v35;
     v26 = v34;
     v10 = v33;
     v29 = v49;
   }
 
-  v37 = [(MLModel *)self->_classifier predictionFromFeatures:v29 error:a6];
+  v37 = [(MLModel *)self->_classifier predictionFromFeatures:v29 error:error];
   v38 = [v37 featureValueForName:@"classProbability"];
-  v39 = [v38 dictionaryValue];
+  dictionaryValue = [v38 dictionaryValue];
 
-  v40 = [v39 objectForKeyedSubscript:&off_10009B538];
+  v40 = [dictionaryValue objectForKeyedSubscript:&off_10009B538];
   [v40 doubleValue];
   v42 = v41;
 

@@ -1,39 +1,39 @@
 @interface BLTBulletinFetcher
-+ (id)batchBulletinFetchForBulletinIDs:(id)a3 fetcher:(id)a4 completion:(id)a5;
++ (id)batchBulletinFetchForBulletinIDs:(id)ds fetcher:(id)fetcher completion:(id)completion;
 - (BOOL)_incrementSection;
 - (void)_fetchBulletins;
-- (void)_setBulletinIDs:(id)a3;
-- (void)_setClientCompletion:(id)a3;
-- (void)_setFetcher:(id)a3;
+- (void)_setBulletinIDs:(id)ds;
+- (void)_setClientCompletion:(id)completion;
+- (void)_setFetcher:(id)fetcher;
 @end
 
 @implementation BLTBulletinFetcher
 
-- (void)_setFetcher:(id)a3
+- (void)_setFetcher:(id)fetcher
 {
-  v4 = [a3 copy];
+  v4 = [fetcher copy];
   fetcher = self->_fetcher;
   self->_fetcher = v4;
 
   MEMORY[0x2821F96F8](v4, fetcher);
 }
 
-- (void)_setClientCompletion:(id)a3
+- (void)_setClientCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   clientCompletion = self->_clientCompletion;
   self->_clientCompletion = v4;
 
   MEMORY[0x2821F96F8](v4, clientCompletion);
 }
 
-- (void)_setBulletinIDs:(id)a3
+- (void)_setBulletinIDs:(id)ds
 {
-  objc_storeStrong(&self->_bulletinIDs, a3);
-  v5 = a3;
-  v6 = [(NSDictionary *)self->_bulletinIDs allKeys];
+  objc_storeStrong(&self->_bulletinIDs, ds);
+  dsCopy = ds;
+  allKeys = [(NSDictionary *)self->_bulletinIDs allKeys];
   sectionIDs = self->_sectionIDs;
-  self->_sectionIDs = v6;
+  self->_sectionIDs = allKeys;
 
   self->_sectionIDsIndex = -1;
 
@@ -131,16 +131,16 @@ uint64_t __37__BLTBulletinFetcher__fetchBulletins__block_invoke_2(uint64_t a1)
   return result;
 }
 
-+ (id)batchBulletinFetchForBulletinIDs:(id)a3 fetcher:(id)a4 completion:(id)a5
++ (id)batchBulletinFetchForBulletinIDs:(id)ds fetcher:(id)fetcher completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  fetcherCopy = fetcher;
+  dsCopy = ds;
   v10 = objc_alloc_init(BLTBulletinFetcher);
-  [(BLTBulletinFetcher *)v10 _setFetcher:v8];
+  [(BLTBulletinFetcher *)v10 _setFetcher:fetcherCopy];
 
-  [(BLTBulletinFetcher *)v10 _setClientCompletion:v7];
-  [(BLTBulletinFetcher *)v10 _setBulletinIDs:v9];
+  [(BLTBulletinFetcher *)v10 _setClientCompletion:completionCopy];
+  [(BLTBulletinFetcher *)v10 _setBulletinIDs:dsCopy];
 
   [(BLTBulletinFetcher *)v10 _fetchBulletins];
 

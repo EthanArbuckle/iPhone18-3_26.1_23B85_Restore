@@ -1,28 +1,28 @@
 @interface AALoginOrCreateDelegatesRequest
-- (AALoginOrCreateDelegatesRequest)initWithAccount:(id)a3 parameters:(id)a4 signingSession:(id)a5;
+- (AALoginOrCreateDelegatesRequest)initWithAccount:(id)account parameters:(id)parameters signingSession:(id)session;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AALoginOrCreateDelegatesRequest
 
-- (AALoginOrCreateDelegatesRequest)initWithAccount:(id)a3 parameters:(id)a4 signingSession:(id)a5
+- (AALoginOrCreateDelegatesRequest)initWithAccount:(id)account parameters:(id)parameters signingSession:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  parametersCopy = parameters;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = AALoginOrCreateDelegatesRequest;
   v12 = [(AALoginOrCreateDelegatesRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_account, account);
+    v14 = [parametersCopy copy];
     parameters = v13->_parameters;
     v13->_parameters = v14;
 
-    objc_storeStrong(&v13->_signingSession, a5);
+    objc_storeStrong(&v13->_signingSession, session);
   }
 
   return v13;
@@ -52,8 +52,8 @@
   v21 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = AALoginOrCreateDelegatesRequest;
-  v3 = [(AARequest *)&v18 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v18 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   parameters = self->_parameters;
@@ -70,9 +70,9 @@
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138412290;
-      v20 = v9;
+      v20 = localizedDescription;
       _os_log_impl(&dword_1B6F6A000, v8, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
@@ -86,9 +86,9 @@
     _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "LoginOrCreateAccount request body: \n%@", buf, 0xCu);
   }
 
-  v12 = [(ACAccount *)self->_account aa_password];
+  aa_password = [(ACAccount *)self->_account aa_password];
 
-  if (!v12)
+  if (!aa_password)
   {
     [v4 aa_addAuthTokenOrBasicAuthHeaderWithAccount:self->_account preferUsingPassword:0];
   }

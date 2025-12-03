@@ -1,33 +1,33 @@
 @interface PBCFUserNotificationPasteAnnouncer
-- (PBCFUserNotificationPasteAnnouncer)initWithAuditTokenInfo:(id)a3;
-- (void)authorizationDidCompleteWithPasteAllowed:(BOOL)a3;
+- (PBCFUserNotificationPasteAnnouncer)initWithAuditTokenInfo:(id)info;
+- (void)authorizationDidCompleteWithPasteAllowed:(BOOL)allowed;
 - (void)dealloc;
 - (void)invalidate;
-- (void)requestAuthorizationForPaste:(id)a3 replyHandler:(id)a4;
+- (void)requestAuthorizationForPaste:(id)paste replyHandler:(id)handler;
 @end
 
 @implementation PBCFUserNotificationPasteAnnouncer
 
-- (PBCFUserNotificationPasteAnnouncer)initWithAuditTokenInfo:(id)a3
+- (PBCFUserNotificationPasteAnnouncer)initWithAuditTokenInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = PBCFUserNotificationPasteAnnouncer;
   v6 = [(PBCFUserNotificationPasteAnnouncer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_auditTokenInfo, a3);
+    objc_storeStrong(&v6->_auditTokenInfo, info);
   }
 
   return v7;
 }
 
-- (void)requestAuthorizationForPaste:(id)a3 replyHandler:(id)a4
+- (void)requestAuthorizationForPaste:(id)paste replyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   error = 0;
-  v7 = a3;
+  pasteCopy = paste;
   v8 = sub_100016EDC();
   v9 = [v8 localizedStringForKey:@"PASTE_AUTHORIZATION_BUTTON_ALLOW" value:@"Allow" table:@"Localizable"];
 
@@ -38,8 +38,8 @@
   v13 = [v12 localizedStringForKey:@"PASTE_AUTHORIZATION_BUTTON_MESSAGE" value:@"Do you want to allow this?" table:@"Localizable"];
 
   v27[0] = kCFUserNotificationAlertHeaderKey;
-  v14 = [v7 localizedAuthorizationText];
-  v28[0] = v14;
+  localizedAuthorizationText = [pasteCopy localizedAuthorizationText];
+  v28[0] = localizedAuthorizationText;
   v28[1] = v13;
   v27[1] = kCFUserNotificationAlertMessageKey;
   v27[2] = kCFUserNotificationDefaultButtonTitleKey;
@@ -54,7 +54,7 @@
   v28[6] = &off_100033C68;
   v15 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:7];
 
-  [v7 timeout];
+  [pasteCopy timeout];
   v17 = v16;
 
   v18 = CFUserNotificationCreate(kCFAllocatorDefault, v17, 3uLL, &error, v15);
@@ -66,7 +66,7 @@
     CFRunLoopAddSource(Main, v20, kCFRunLoopCommonModes);
     CFRelease(v20);
     objc_setAssociatedObject(self->_userNotification, &unk_100039330, self, 0);
-    v22 = objc_retainBlock(v6);
+    v22 = objc_retainBlock(handlerCopy);
     replyBlock = self->_replyBlock;
     self->_replyBlock = v22;
   }
@@ -80,17 +80,17 @@
       _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Tried to create a CFUserNotification for a paste announcement, but got a nil CFUN. Calling return block with denied authorization.", v25, 2u);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
 - (void)invalidate
 {
-  v2 = self;
-  replyBlock = v2->_replyBlock;
+  selfCopy = self;
+  replyBlock = selfCopy->_replyBlock;
   if (replyBlock)
   {
-    v5 = v2;
+    v5 = selfCopy;
     replyBlock[2](replyBlock, 0);
     v4 = v5->_replyBlock;
     v5->_replyBlock = 0;
@@ -99,15 +99,15 @@
   _objc_release_x1();
 }
 
-- (void)authorizationDidCompleteWithPasteAllowed:(BOOL)a3
+- (void)authorizationDidCompleteWithPasteAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  v4 = self;
-  replyBlock = v4->_replyBlock;
+  allowedCopy = allowed;
+  selfCopy = self;
+  replyBlock = selfCopy->_replyBlock;
   if (replyBlock)
   {
-    v7 = v4;
-    replyBlock[2](replyBlock, v3);
+    v7 = selfCopy;
+    replyBlock[2](replyBlock, allowedCopy);
     v6 = v7->_replyBlock;
     v7->_replyBlock = 0;
   }

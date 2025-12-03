@@ -1,30 +1,30 @@
 @interface WFActionDrawerSection
-- (WFActionDrawerSection)initWithLocalizedTitle:(id)a3 donations:(id)a4 bundleIdentifier:(id)a5 sectionType:(int64_t)a6;
+- (WFActionDrawerSection)initWithLocalizedTitle:(id)title donations:(id)donations bundleIdentifier:(id)identifier sectionType:(int64_t)type;
 @end
 
 @implementation WFActionDrawerSection
 
-- (WFActionDrawerSection)initWithLocalizedTitle:(id)a3 donations:(id)a4 bundleIdentifier:(id)a5 sectionType:(int64_t)a6
+- (WFActionDrawerSection)initWithLocalizedTitle:(id)title donations:(id)donations bundleIdentifier:(id)identifier sectionType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  donationsCopy = donations;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = WFActionDrawerSection;
   v14 = [(WFActionDrawerSection *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_localizedTitle, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_localizedTitle, title);
+    v16 = [donationsCopy copy];
     donations = v15->_donations;
     v15->_donations = v16;
 
-    v18 = [v13 copy];
+    v18 = [identifierCopy copy];
     bundleIdentifier = v15->_bundleIdentifier;
     v15->_bundleIdentifier = v18;
 
-    v15->_sectionType = a6;
+    v15->_sectionType = type;
     v20 = v15;
   }
 

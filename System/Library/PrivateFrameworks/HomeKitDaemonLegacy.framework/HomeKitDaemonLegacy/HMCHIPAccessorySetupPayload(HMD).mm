@@ -8,26 +8,26 @@
 - (id)chipSetupPayload
 {
   v2 = objc_alloc(MEMORY[0x277D17B48]);
-  v3 = [a1 setupCode];
-  v4 = [a1 discriminator];
-  v5 = [v2 initWithSetupCode:v3 discriminator:v4];
+  setupCode = [self setupCode];
+  discriminator = [self discriminator];
+  v5 = [v2 initWithSetupCode:setupCode discriminator:discriminator];
 
-  [v5 setHasShortDiscriminator:{objc_msgSend(a1, "hasShortDiscriminator")}];
-  v6 = [a1 setupPayloadString];
-  [v5 setSetupPayloadString:v6];
+  [v5 setHasShortDiscriminator:{objc_msgSend(self, "hasShortDiscriminator")}];
+  setupPayloadString = [self setupPayloadString];
+  [v5 setSetupPayloadString:setupPayloadString];
 
-  v7 = [a1 vendorID];
-  [v5 setVendorID:v7];
+  vendorID = [self vendorID];
+  [v5 setVendorID:vendorID];
 
-  v8 = [a1 productID];
-  [v5 setProductID:v8];
+  productID = [self productID];
+  [v5 setProductID:productID];
 
-  v9 = [a1 serialNumber];
-  [v5 setSerialNumber:v9];
+  serialNumber = [self serialNumber];
+  [v5 setSerialNumber:serialNumber];
 
-  [v5 setRequiresCustomFlow:{objc_msgSend(a1, "requiresCustomFlow")}];
-  v10 = [a1 deviceTypeID];
-  [v5 setDeviceTypeID:v10];
+  [v5 setRequiresCustomFlow:{objc_msgSend(self, "requiresCustomFlow")}];
+  deviceTypeID = [self deviceTypeID];
+  [v5 setDeviceTypeID:deviceTypeID];
 
   v11 = [v5 copy];
 
@@ -37,28 +37,28 @@
 - (uint64_t)initWithCHIPSetupPayload:()HMD
 {
   v4 = a3;
-  v5 = [v4 setupCode];
-  v6 = [v4 discriminator];
-  v7 = [a1 initWithSetupCode:v5 discriminator:v6];
+  setupCode = [v4 setupCode];
+  discriminator = [v4 discriminator];
+  v7 = [self initWithSetupCode:setupCode discriminator:discriminator];
   v8 = [v7 mutableCopy];
 
   [v8 setHasShortDiscriminator:{objc_msgSend(v4, "hasShortDiscriminator")}];
-  v9 = [v4 setupPayloadString];
-  [v8 setSetupPayloadString:v9];
+  setupPayloadString = [v4 setupPayloadString];
+  [v8 setSetupPayloadString:setupPayloadString];
 
-  v10 = [v4 vendorID];
-  [v8 setVendorID:v10];
+  vendorID = [v4 vendorID];
+  [v8 setVendorID:vendorID];
 
-  v11 = [v4 productID];
-  [v8 setProductID:v11];
+  productID = [v4 productID];
+  [v8 setProductID:productID];
 
-  v12 = [v4 serialNumber];
-  [v8 setSerialNumber:v12];
+  serialNumber = [v4 serialNumber];
+  [v8 setSerialNumber:serialNumber];
 
   [v8 setRequiresCustomFlow:{objc_msgSend(v4, "requiresCustomFlow")}];
-  v13 = [v4 deviceTypeID];
+  deviceTypeID = [v4 deviceTypeID];
 
-  [v8 setDeviceTypeID:v13];
+  [v8 setDeviceTypeID:deviceTypeID];
   v14 = [v8 copy];
 
   return v14;

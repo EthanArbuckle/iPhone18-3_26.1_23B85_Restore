@@ -1,5 +1,5 @@
 @interface _MADObjCStickerStoreFacade
-- (BOOL)addAnimatedRepresentationWithIdentifiers:(id)a3 data:(id)a4 uti:(id)a5 size:(CGSize)a6 isPreferred:(BOOL)a7 error:(id *)a8;
+- (BOOL)addAnimatedRepresentationWithIdentifiers:(id)identifiers data:(id)data uti:(id)uti size:(CGSize)size isPreferred:(BOOL)preferred error:(id *)error;
 - (_MADObjCStickerStoreFacade)init;
 @end
 
@@ -27,24 +27,24 @@
   return [(_MADObjCStickerStoreFacade *)&v13 init];
 }
 
-- (BOOL)addAnimatedRepresentationWithIdentifiers:(id)a3 data:(id)a4 uti:(id)a5 size:(CGSize)a6 isPreferred:(BOOL)a7 error:(id *)a8
+- (BOOL)addAnimatedRepresentationWithIdentifiers:(id)identifiers data:(id)data uti:(id)uti size:(CGSize)size isPreferred:(BOOL)preferred error:(id *)error
 {
-  v23[1] = a8;
-  v8 = a7;
+  v23[1] = error;
+  preferredCopy = preferred;
   v24 = sub_1C9F3FC40();
   v12 = *(v24 - 8);
   MEMORY[0x1EEE9AC00](v24);
   v14 = v23 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C9F3F6E0();
   v15 = sub_1C9F40050();
-  v16 = a4;
-  v17 = a5;
-  v18 = self;
+  dataCopy = data;
+  utiCopy = uti;
+  selfCopy = self;
   v19 = sub_1C9F3F6C0();
   v21 = v20;
 
   sub_1C9F3FC30();
-  sub_1C9EEF810(v15, v19, v21, v14, v8);
+  sub_1C9EEF810(v15, v19, v21, v14, preferredCopy);
   (*(v12 + 8))(v14, v24);
 
   sub_1C9EE26D4(v19, v21);

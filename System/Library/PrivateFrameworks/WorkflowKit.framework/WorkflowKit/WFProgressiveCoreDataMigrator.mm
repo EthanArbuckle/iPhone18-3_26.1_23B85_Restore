@@ -1,15 +1,15 @@
 @interface WFProgressiveCoreDataMigrator
-+ (BOOL)migrateDatabaseAtPersistentStoreDescription:(id)a3 error:(id *)a4;
-+ (id)customModificationsStepForSchemaWithIdentifier:(id)a3;
++ (BOOL)migrateDatabaseAtPersistentStoreDescription:(id)description error:(id *)error;
++ (id)customModificationsStepForSchemaWithIdentifier:(id)identifier;
 @end
 
 @implementation WFProgressiveCoreDataMigrator
 
-+ (BOOL)migrateDatabaseAtPersistentStoreDescription:(id)a3 error:(id *)a4
++ (BOOL)migrateDatabaseAtPersistentStoreDescription:(id)description error:(id *)error
 {
   v155[1] = *MEMORY[0x1E69E9840];
-  v102 = a3;
-  v117 = [v102 URL];
+  descriptionCopy = description;
+  v117 = [descriptionCopy URL];
   v116 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v103 = [v116 URLForResource:@"Shortcuts" withExtension:@"momd"];
   v4 = *MEMORY[0x1E695D4A8];
@@ -35,9 +35,9 @@
 
   context = v103;
   v112 = v106;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v139 = 0;
-  v6 = [v5 contentsOfDirectoryAtURL:context includingPropertiesForKeys:0 options:0 error:&v139];
+  v6 = [defaultManager contentsOfDirectoryAtURL:context includingPropertiesForKeys:0 options:0 error:&v139];
   v110 = v139;
   v119 = [v6 mutableCopy];
 
@@ -74,14 +74,14 @@
 
     v16 = v11;
 
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
-    if (v17)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = v17;
+        v18 = firstObject;
       }
 
       else
@@ -101,8 +101,8 @@
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v20 = v119;
-    v21 = [v20 countByEnumeratingWithState:&v135 objects:buf count:16];
+    reverseObjectEnumerator = v119;
+    v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v135 objects:buf count:16];
     if (v21)
     {
       v22 = *v136;
@@ -112,7 +112,7 @@
         {
           if (*v136 != v22)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v24 = *(*(&v135 + 1) + 8 * i);
@@ -133,9 +133,9 @@
           }
 
           [v121 addObject:v25];
-          v26 = [v25 versionIdentifiers];
-          v27 = [v26 anyObject];
-          v28 = [v27 isEqualToString:v19];
+          versionIdentifiers = [v25 versionIdentifiers];
+          anyObject = [versionIdentifiers anyObject];
+          v28 = [anyObject isEqualToString:v19];
 
           if (v28)
           {
@@ -143,7 +143,7 @@
           }
         }
 
-        v21 = [v20 countByEnumeratingWithState:&v135 objects:buf count:16];
+        v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v135 objects:buf count:16];
         if (v21)
         {
           continue;
@@ -156,24 +156,24 @@
 LABEL_30:
 
     v29 = [v121 count];
-    if (v29 == [v20 count])
+    if (v29 == [reverseObjectEnumerator count])
     {
-      v20 = getWFDatabaseLogObject();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      reverseObjectEnumerator = getWFDatabaseLogObject();
+      if (os_log_type_enabled(reverseObjectEnumerator, OS_LOG_TYPE_DEFAULT))
       {
         *v143 = 136315138;
         v144 = "WFManagedObjectModelsFromCurrentToLatest";
-        _os_log_impl(&dword_1CA256000, v20, OS_LOG_TYPE_DEFAULT, "%s None of the models are compatible with with the store metadata, the database was likely truncated before.", v143, 0xCu);
+        _os_log_impl(&dword_1CA256000, reverseObjectEnumerator, OS_LOG_TYPE_DEFAULT, "%s None of the models are compatible with with the store metadata, the database was likely truncated before.", v143, 0xCu);
       }
 
 LABEL_37:
-      v118 = MEMORY[0x1E695E0F0];
+      allObjects = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v20 = [v121 reverseObjectEnumerator];
-      v118 = [v20 allObjects];
+      reverseObjectEnumerator = [v121 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
     }
   }
 
@@ -191,22 +191,22 @@ LABEL_37:
       _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_ERROR, "%s Failed to get model URLs in directory %{public}@: %{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v110;
-      *a4 = v110;
+      *error = v110;
     }
 
-    v118 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
-  if ([v118 count]<= 1)
+  if ([allObjects count]<= 1)
   {
     oslog = getWFDatabaseLogObject();
     v13 = 1;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      v31 = [v118 count];
+      v31 = [allObjects count];
       *buf = 136315394;
       v148 = "+[WFProgressiveCoreDataMigrator migrateDatabaseAtPersistentStoreDescription:error:]";
       v149 = 2050;
@@ -231,14 +231,14 @@ LABEL_37:
     goto LABEL_112;
   }
 
-  v32 = [v118 firstObject];
-  v33 = [v32 isConfiguration:0 compatibleWithStoreMetadata:v112];
+  firstObject2 = [allObjects firstObject];
+  v33 = [firstObject2 isConfiguration:0 compatibleWithStoreMetadata:v112];
 
   if ((v33 & 1) == 0)
   {
     v34 = objc_alloc(MEMORY[0x1E695D6C0]);
-    v35 = [v118 firstObject];
-    v36 = [v34 initWithManagedObjectModel:v35];
+    firstObject3 = [allObjects firstObject];
+    v36 = [v34 initWithManagedObjectModel:firstObject3];
 
     v37 = *MEMORY[0x1E695D318];
     v141[0] = *MEMORY[0x1E695D380];
@@ -246,10 +246,10 @@ LABEL_37:
     v142[0] = MEMORY[0x1E695E118];
     v142[1] = MEMORY[0x1E695E118];
     v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v142 forKeys:v141 count:2];
-    v39 = [v102 type];
-    v40 = [v102 configuration];
-    v41 = [v102 URL];
-    v42 = [v36 addPersistentStoreWithType:v39 configuration:v40 URL:v41 options:v38 error:a4];
+    type = [descriptionCopy type];
+    configuration = [descriptionCopy configuration];
+    v41 = [descriptionCopy URL];
+    v42 = [v36 addPersistentStoreWithType:type configuration:configuration URL:v41 options:v38 error:error];
     v43 = v42 == 0;
 
     if (!v43)
@@ -273,8 +273,8 @@ LABEL_112:
 
 LABEL_46:
   v44 = objc_alloc(MEMORY[0x1E695D6C0]);
-  v45 = [v118 lastObject];
-  v46 = [v44 initWithManagedObjectModel:v45];
+  lastObject = [allObjects lastObject];
+  v46 = [v44 initWithManagedObjectModel:lastObject];
 
   v47 = objc_opt_new();
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -294,30 +294,30 @@ LABEL_46:
     _os_log_impl(&dword_1CA256000, v48, OS_LOG_TYPE_INFO, "%s Starting Core Data migration", buf, 0xCu);
   }
 
-  v49 = [MEMORY[0x1E696AFB0] UUID];
-  v105 = [v49 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v50 = 0;
   v51 = 0;
-  v52 = v118;
+  v52 = allObjects;
   while (v50 < [v52 count]- 1)
   {
     contexta = objc_autoreleasePoolPush();
-    v53 = [v118 objectAtIndexedSubscript:v50];
+    v53 = [allObjects objectAtIndexedSubscript:v50];
     v54 = v50 + 1;
-    v122 = [v118 objectAtIndexedSubscript:v54];
-    v55 = [v107 lastObject];
-    v56 = v55;
+    v122 = [allObjects objectAtIndexedSubscript:v54];
+    lastObject2 = [v107 lastObject];
+    v56 = lastObject2;
     v57 = v117;
-    if (v55)
+    if (lastObject2)
     {
-      v57 = v55;
+      v57 = lastObject2;
     }
 
     v120 = v57;
 
     v113 = v54 - 1;
-    v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Shortcuts-%@-%lu.sqlite", v105, v54 - 1];
+    v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Shortcuts-%@-%lu.sqlite", uUIDString, v54 - 1];
     v59 = [oslog URLByAppendingPathComponent:v58];
 
     v60 = MEMORY[0x1E695D648];
@@ -360,15 +360,15 @@ LABEL_46:
       }
     }
 
-    v65 = [v53 versionIdentifiers];
-    v66 = [v65 anyObject];
+    versionIdentifiers2 = [v53 versionIdentifiers];
+    anyObject2 = [versionIdentifiers2 anyObject];
 
-    if (v66)
+    if (anyObject2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v67 = v66;
+        v67 = anyObject2;
       }
 
       else
@@ -384,15 +384,15 @@ LABEL_46:
 
     v111 = v67;
 
-    v68 = [v122 versionIdentifiers];
-    v69 = [v68 anyObject];
+    versionIdentifiers3 = [v122 versionIdentifiers];
+    anyObject3 = [versionIdentifiers3 anyObject];
 
-    if (v69)
+    if (anyObject3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v70 = v69;
+        v70 = anyObject3;
       }
 
       else
@@ -418,7 +418,7 @@ LABEL_46:
       _os_log_impl(&dword_1CA256000, v72, OS_LOG_TYPE_INFO, "%s Migrating to schema with identifier %{public}@", buf, 0x16u);
     }
 
-    v73 = [a1 customModificationsStepForSchemaWithIdentifier:v71];
+    v73 = [self customModificationsStepForSchemaWithIdentifier:v71];
     if (objc_opt_respondsToSelector())
     {
       v129 = v63;
@@ -545,7 +545,7 @@ LABEL_98:
 
 LABEL_99:
     objc_autoreleasePoolPop(contexta);
-    v52 = v118;
+    v52 = allObjects;
     v50 = v113 + 1;
     if ((v83 & 1) == 0)
     {
@@ -555,11 +555,11 @@ LABEL_99:
 
   if (v51)
   {
-    if (a4)
+    if (error)
     {
       v87 = v51;
       v13 = 0;
-      *a4 = v51;
+      *error = v51;
       goto LABEL_119;
     }
 
@@ -569,20 +569,20 @@ LABEL_118:
 
   else
   {
-    v88 = [v107 lastObject];
-    v89 = [v98 replacePersistentStoreAtURL:v117 destinationOptions:0 withPersistentStoreFromURL:v88 sourceOptions:0 storeType:v104 error:a4];
+    lastObject3 = [v107 lastObject];
+    v89 = [v98 replacePersistentStoreAtURL:v117 destinationOptions:0 withPersistentStoreFromURL:lastObject3 sourceOptions:0 storeType:v104 error:error];
 
     if ((v89 & 1) == 0)
     {
       v92 = getWFDatabaseLogObject();
       if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
       {
-        v93 = [v107 lastObject];
-        v94 = v93;
-        v95 = a4;
-        if (a4)
+        lastObject4 = [v107 lastObject];
+        v94 = lastObject4;
+        errorCopy = error;
+        if (error)
         {
-          v95 = *a4;
+          errorCopy = *error;
         }
 
         *buf = 136315906;
@@ -590,9 +590,9 @@ LABEL_118:
         v149 = 2114;
         v150 = v117;
         v151 = 2114;
-        v152 = v93;
+        v152 = lastObject4;
         v153 = 2114;
-        v154 = v95;
+        v154 = errorCopy;
         _os_log_impl(&dword_1CA256000, v92, OS_LOG_TYPE_ERROR, "%s Failed to replace persistent store at %{public}@ with %{public}@. Error: %{public}@", buf, 0x2Au);
       }
 
@@ -617,7 +617,7 @@ LABEL_119:
 LABEL_120:
 
 LABEL_121:
-  v12 = v118;
+  v12 = allObjects;
 LABEL_122:
 
   v96 = *MEMORY[0x1E69E9840];
@@ -678,10 +678,10 @@ void __83__WFProgressiveCoreDataMigrator_migrateDatabaseAtPersistentStoreDescrip
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)customModificationsStepForSchemaWithIdentifier:(id)a3
++ (id)customModificationsStepForSchemaWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"v3"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"identifierCopy"])
   {
     v4 = off_1E836F278;
 LABEL_11:
@@ -690,25 +690,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"v5"])
+  if ([identifierCopy isEqualToString:@"v5"])
   {
     v4 = off_1E836F280;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"v7"])
+  if ([identifierCopy isEqualToString:@"v7"])
   {
     v4 = off_1E836DCF0;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"v10"])
+  if ([identifierCopy isEqualToString:@"v10"])
   {
     v4 = off_1E836F268;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"v12"])
+  if ([identifierCopy isEqualToString:@"v12"])
   {
     v4 = off_1E836F270;
     goto LABEL_11;

@@ -1,17 +1,17 @@
 @interface CALNResourceChangedLaunchUtils
-+ (void)setResourceChangedEventURLForCalendarNotification:(id)a3 onNotificationContent:(id)a4;
++ (void)setResourceChangedEventURLForCalendarNotification:(id)notification onNotificationContent:(id)content;
 @end
 
 @implementation CALNResourceChangedLaunchUtils
 
-+ (void)setResourceChangedEventURLForCalendarNotification:(id)a3 onNotificationContent:(id)a4
++ (void)setResourceChangedEventURLForCalendarNotification:(id)notification onNotificationContent:(id)content
 {
-  v5 = a4;
-  v9 = [a3 startDate];
+  contentCopy = content;
+  startDate = [notification startDate];
   v6 = MEMORY[0x277CCACA8];
-  [v9 timeIntervalSinceReferenceDate];
+  [startDate timeIntervalSinceReferenceDate];
   v8 = [v6 stringWithFormat:@"calshow:%.0f", v7];
-  [v5 setUserInfoValue:v8 forKey:@"kCALNResourceChangedShowEventURLKey"];
+  [contentCopy setUserInfoValue:v8 forKey:@"kCALNResourceChangedShowEventURLKey"];
 }
 
 @end

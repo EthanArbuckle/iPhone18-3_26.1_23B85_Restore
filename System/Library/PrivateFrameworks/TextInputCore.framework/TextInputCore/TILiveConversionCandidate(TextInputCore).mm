@@ -7,7 +7,7 @@
 - (void)initWithMecabraCandidate:()TextInputCore candidate:
 {
   v7 = a4;
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_28403A768;
   v8 = objc_msgSendSuper2(&v12, sel_initWithMecabraCandidate_, a3);
   v9 = v8;

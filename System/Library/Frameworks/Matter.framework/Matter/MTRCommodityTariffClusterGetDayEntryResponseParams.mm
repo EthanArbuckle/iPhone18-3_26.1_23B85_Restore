@@ -1,9 +1,9 @@
 @interface MTRCommodityTariffClusterGetDayEntryResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRCommodityTariffClusterGetDayEntryResponseParams)init;
-- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterGetDayEntryResponseParams);
-  v5 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-  [(MTRCommodityTariffClusterGetDayEntryResponseParams *)v4 setDayEntry:v5];
+  dayEntry = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+  [(MTRCommodityTariffClusterGetDayEntryResponseParams *)v4 setDayEntry:dayEntry];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = MTRCommodityTariffClusterGetDayEntryResponseParams;
   v7 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)&v19 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1792 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1792 commandID:1 error:error];
   if (v18)
   {
     sub_2393C5AAC(v17);
@@ -80,7 +80,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -91,7 +91,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRCommodityTariffClusterGetDayEntryResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRCommodityTariffClusterGetDayEntryResponseParams;
@@ -99,7 +99,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -115,58 +115,58 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self setDayEntry:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*a3];
-  v7 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-  [v7 setDayEntryID:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*struct];
+  dayEntry = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+  [dayEntry setDayEntryID:v6];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 2)];
-  v9 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-  [v9 setStartTime:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 2)];
+  dayEntry2 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+  [dayEntry2 setStartTime:v8];
 
-  if (*(a3 + 6) == 1)
+  if (*(struct + 6) == 1)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(a3 + 6)];
-    v11 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v11 setDuration:v10];
+    dayEntry4 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(struct + 6)];
+    dayEntry3 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry3 setDuration:dayEntry4];
   }
 
   else
   {
-    v10 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v10 setDuration:0];
+    dayEntry4 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry4 setDuration:0];
   }
 
-  if (*(a3 + 10) == 1)
+  if (*(struct + 10) == 1)
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithShort:*sub_238E0A934(a3 + 10)];
-    v13 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v13 setRandomizationOffset:v12];
+    dayEntry6 = [MEMORY[0x277CCABB0] numberWithShort:*sub_238E0A934(struct + 10)];
+    dayEntry5 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry5 setRandomizationOffset:dayEntry6];
   }
 
   else
   {
-    v12 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v12 setRandomizationOffset:0];
+    dayEntry6 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry6 setRandomizationOffset:0];
   }
 
-  v15 = *(a3 + 14);
-  v14 = a3 + 14;
+  v15 = *(struct + 14);
+  v14 = struct + 14;
   if (v15 == 1)
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v14)];
-    v17 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v17 setRandomizationType:v16];
+    dayEntry8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v14)];
+    dayEntry7 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry7 setRandomizationType:dayEntry8];
   }
 
   else
   {
-    v16 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
-    [v16 setRandomizationType:0];
+    dayEntry8 = [(MTRCommodityTariffClusterGetDayEntryResponseParams *)self dayEntry];
+    [dayEntry8 setRandomizationType:0];
   }
 
   v18 = 0;

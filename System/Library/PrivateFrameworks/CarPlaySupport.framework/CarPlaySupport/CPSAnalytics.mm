@@ -1,22 +1,22 @@
 @interface CPSAnalytics
 + (id)sharedInstance;
-- (void)_sendCoreAnalyticsEvent:(id)a3 withDictionary:(id)a4;
-- (void)audioAppMetadataThrottledWithBundleIdentifier:(id)a3;
-- (void)navigationStartedWithBundleIdentifier:(id)a3;
+- (void)_sendCoreAnalyticsEvent:(id)event withDictionary:(id)dictionary;
+- (void)audioAppMetadataThrottledWithBundleIdentifier:(id)identifier;
+- (void)navigationStartedWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation CPSAnalytics
 
 + (id)sharedInstance
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __30__CPSAnalytics_sharedInstance__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedInstance_onceToken;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -40,16 +40,16 @@ double __30__CPSAnalytics_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_sendCoreAnalyticsEvent:(id)a3 withDictionary:(id)a4
+- (void)_sendCoreAnalyticsEvent:(id)event withDictionary:(id)dictionary
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([(CPSAnalytics *)v9 shouldRecordAnalyticsEvents])
+  objc_storeStrong(&v7, dictionary);
+  if ([(CPSAnalytics *)selfCopy shouldRecordAnalyticsEvents])
   {
     oslog = CarPlaySupportGeneralLogging();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
@@ -72,14 +72,14 @@ double __30__CPSAnalytics_sharedInstance__block_invoke(uint64_t a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)navigationStartedWithBundleIdentifier:(id)a3
+- (void)navigationStartedWithBundleIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, identifier);
+  v3 = selfCopy;
   v7 = @"bundleID";
   v8[0] = location[0];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
@@ -88,14 +88,14 @@ double __30__CPSAnalytics_sharedInstance__block_invoke(uint64_t a1)
   objc_storeStrong(location, 0);
 }
 
-- (void)audioAppMetadataThrottledWithBundleIdentifier:(id)a3
+- (void)audioAppMetadataThrottledWithBundleIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, identifier);
+  v3 = selfCopy;
   v7 = @"bundleID";
   v8[0] = location[0];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];

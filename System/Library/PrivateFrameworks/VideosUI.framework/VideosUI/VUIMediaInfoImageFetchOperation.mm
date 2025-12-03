@@ -1,30 +1,30 @@
 @interface VUIMediaInfoImageFetchOperation
 - (BOOL)shouldUsePrepareImageForDisplay;
-- (VUIMediaInfoImageFetchOperation)initWithMediaInfo:(id)a3;
+- (VUIMediaInfoImageFetchOperation)initWithMediaInfo:(id)info;
 - (id)imageProxy;
-- (void)addCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
 - (void)cancel;
 - (void)executionDidBegin;
-- (void)fetchImageWithCompletion:(id)a3;
+- (void)fetchImageWithCompletion:(id)completion;
 @end
 
 @implementation VUIMediaInfoImageFetchOperation
 
-- (VUIMediaInfoImageFetchOperation)initWithMediaInfo:(id)a3
+- (VUIMediaInfoImageFetchOperation)initWithMediaInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = VUIMediaInfoImageFetchOperation;
   v5 = [(VUIMediaInfoImageFetchOperation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infoCopy copy];
     mediaInfo = v5->_mediaInfo;
     v5->_mediaInfo = v6;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     completionBlocks = v5->_completionBlocks;
-    v5->_completionBlocks = v8;
+    v5->_completionBlocks = array;
 
     image = v5->_image;
     v5->_image = 0;
@@ -39,50 +39,50 @@
   return v5;
 }
 
-- (void)fetchImageWithCompletion:(id)a3
+- (void)fetchImageWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   VUIRequireMainThread();
   if ([(VUIAsynchronousOperation *)self isFinished])
   {
-    v4 = [(VUIMediaInfoImageFetchOperation *)self image];
-    v5 = [(VUIMediaInfoImageFetchOperation *)self error];
-    v6[2](v6, v4, v5, [(VUIMediaInfoImageFetchOperation *)self imageLoadFinished]);
+    image = [(VUIMediaInfoImageFetchOperation *)self image];
+    error = [(VUIMediaInfoImageFetchOperation *)self error];
+    completionCopy[2](completionCopy, image, error, [(VUIMediaInfoImageFetchOperation *)self imageLoadFinished]);
   }
 
   else
   {
-    [(VUIMediaInfoImageFetchOperation *)self addCompletion:v6];
+    [(VUIMediaInfoImageFetchOperation *)self addCompletion:completionCopy];
   }
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
-    v6 = [(VUIMediaInfoImageFetchOperation *)self completionBlocks];
-    v5 = _Block_copy(v4);
+    completionCopy = completion;
+    completionBlocks = [(VUIMediaInfoImageFetchOperation *)self completionBlocks];
+    v5 = _Block_copy(completionCopy);
 
-    [v6 addObject:v5];
+    [completionBlocks addObject:v5];
   }
 }
 
 - (id)imageProxy
 {
-  v2 = [(VUIMediaInfoImageFetchOperation *)self mediaInfo];
-  v3 = [v2 imageProxies];
-  v4 = [v3 firstObject];
+  mediaInfo = [(VUIMediaInfoImageFetchOperation *)self mediaInfo];
+  imageProxies = [mediaInfo imageProxies];
+  firstObject = [imageProxies firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (BOOL)shouldUsePrepareImageForDisplay
 {
   v2 = +[VUIFeaturesConfiguration sharedInstance];
-  v3 = [v2 launchConfig];
+  launchConfig = [v2 launchConfig];
 
-  LOBYTE(v2) = [v3 usePrepareImageForDisplay];
+  LOBYTE(v2) = [launchConfig usePrepareImageForDisplay];
   return v2;
 }
 
@@ -96,17 +96,17 @@
   objc_copyWeak(&v14, &location);
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
+  imageProxy = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
 
-  if (v4)
+  if (imageProxy)
   {
-    v5 = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
+    imageProxy2 = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __52__VUIMediaInfoImageFetchOperation_executionDidBegin__block_invoke_3;
     v11 = &unk_1E8732270;
     v12 = v3;
-    [v5 setCompletionHandler:&v8];
+    [imageProxy2 setCompletionHandler:&v8];
 
     v6 = [(VUIMediaInfoImageFetchOperation *)self imageProxy:v8];
     [v6 load];
@@ -210,8 +210,8 @@ void __52__VUIMediaInfoImageFetchOperation_executionDidBegin__block_invoke_2(uin
   v4.receiver = self;
   v4.super_class = VUIMediaInfoImageFetchOperation;
   [(VUIMediaInfoImageFetchOperation *)&v4 cancel];
-  v3 = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
-  [v3 cancel];
+  imageProxy = [(VUIMediaInfoImageFetchOperation *)self imageProxy];
+  [imageProxy cancel];
 }
 
 @end

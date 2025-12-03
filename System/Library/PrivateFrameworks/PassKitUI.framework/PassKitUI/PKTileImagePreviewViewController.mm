@@ -1,18 +1,18 @@
 @interface PKTileImagePreviewViewController
-+ (void)presentWithImageView:(id)a3 title:(id)a4 presenting:(id)a5;
-- (PKTileImagePreviewViewController)initWithCoder:(id)a3;
-- (PKTileImagePreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)viewForZoomingInScrollView:(id)a3;
++ (void)presentWithImageView:(id)view title:(id)title presenting:(id)presenting;
+- (PKTileImagePreviewViewController)initWithCoder:(id)coder;
+- (PKTileImagePreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)viewForZoomingInScrollView:(id)view;
 - (void)close;
 - (void)loadView;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)swiped:(id)a3;
-- (void)tapped:(id)a3;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)swiped:(id)swiped;
+- (void)tapped:(id)tapped;
 @end
 
 @implementation PKTileImagePreviewViewController
 
-- (PKTileImagePreviewViewController)initWithCoder:(id)a3
+- (PKTileImagePreviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___PKTileImagePreviewViewController_imageView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___PKTileImagePreviewViewController_scrollView) = 0;
@@ -21,62 +21,62 @@
   return result;
 }
 
-+ (void)presentWithImageView:(id)a3 title:(id)a4 presenting:(id)a5
++ (void)presentWithImageView:(id)view title:(id)title presenting:(id)presenting
 {
   v7 = sub_1BE052434();
   v9 = v8;
-  v10 = a3;
-  v11 = a5;
-  _s9PassKitUI30TileImagePreviewViewControllerC7present05imageG05title10presentingySo07UIImageG0C_SSSo06UIViewH0CtFZ_0(v10, v7, v9, v11);
+  viewCopy = view;
+  presentingCopy = presenting;
+  _s9PassKitUI30TileImagePreviewViewControllerC7present05imageG05title10presentingySo07UIImageG0C_SSSo06UIViewH0CtFZ_0(viewCopy, v7, v9, presentingCopy);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   TileImagePreviewViewController.loadView()();
 }
 
-- (void)tapped:(id)a3
+- (void)tapped:(id)tapped
 {
-  v5 = self;
-  v3 = [(PKTileImagePreviewViewController *)v5 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(PKTileImagePreviewViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
-    [v3 setNavigationBarHidden:objc_msgSend(v3 animated:{sel_isNavigationBarHidden) ^ 1, 1}];
+    v4 = navigationController;
+    [navigationController setNavigationBarHidden:objc_msgSend(navigationController animated:{sel_isNavigationBarHidden) ^ 1, 1}];
   }
 }
 
-- (void)swiped:(id)a3
+- (void)swiped:(id)swiped
 {
-  v4 = a3;
-  v5 = self;
+  swipedCopy = swiped;
+  selfCopy = self;
   sub_1BD372104();
 }
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD372104();
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = _s9PassKitUI30TileImagePreviewViewControllerC14viewForZooming2inSo6UIViewCSgSo08UIScrollG0C_tF_0();
 
   return v6;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  TileImagePreviewViewController.scrollViewDidZoom(_:)(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  TileImagePreviewViewController.scrollViewDidZoom(_:)(zoomCopy);
 }
 
-- (PKTileImagePreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKTileImagePreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

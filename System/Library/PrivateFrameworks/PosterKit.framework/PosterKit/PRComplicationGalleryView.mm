@@ -1,48 +1,48 @@
 @interface PRComplicationGalleryView
-- (PRComplicationGalleryView)initWithFrame:(CGRect)a3;
+- (PRComplicationGalleryView)initWithFrame:(CGRect)frame;
 - (PRComplicationGalleryViewDelegate)delegate;
 - (id)_makeLayout;
 @end
 
 @implementation PRComplicationGalleryView
 
-- (PRComplicationGalleryView)initWithFrame:(CGRect)a3
+- (PRComplicationGalleryView)initWithFrame:(CGRect)frame
 {
   v26[4] = *MEMORY[0x1E69E9840];
   v25.receiver = self;
   v25.super_class = PRComplicationGalleryView;
-  v3 = [(PRComplicationGalleryView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRComplicationGalleryView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-    v5 = [(PRComplicationGalleryView *)v3 _makeLayout];
-    v6 = [v4 initWithFrame:v5 collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    _makeLayout = [(PRComplicationGalleryView *)v3 _makeLayout];
+    v6 = [v4 initWithFrame:_makeLayout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     collectionView = v3->_collectionView;
     v3->_collectionView = v6;
 
     v8 = v3->_collectionView;
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v8 setBackgroundColor:clearColor];
 
     [(UICollectionView *)v3->_collectionView setShowsVerticalScrollIndicator:0];
     [(UICollectionView *)v3->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PRComplicationGalleryView *)v3 addSubview:v3->_collectionView];
     v20 = MEMORY[0x1E696ACD8];
-    v24 = [(UICollectionView *)v3->_collectionView leadingAnchor];
-    v23 = [(PRComplicationGalleryView *)v3 leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(UICollectionView *)v3->_collectionView leadingAnchor];
+    leadingAnchor2 = [(PRComplicationGalleryView *)v3 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v22;
-    v21 = [(UICollectionView *)v3->_collectionView trailingAnchor];
-    v10 = [(PRComplicationGalleryView *)v3 trailingAnchor];
-    v11 = [v21 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UICollectionView *)v3->_collectionView trailingAnchor];
+    trailingAnchor2 = [(PRComplicationGalleryView *)v3 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v11;
-    v12 = [(UICollectionView *)v3->_collectionView topAnchor];
-    v13 = [(PRComplicationGalleryView *)v3 topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    topAnchor = [(UICollectionView *)v3->_collectionView topAnchor];
+    topAnchor2 = [(PRComplicationGalleryView *)v3 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[2] = v14;
-    v15 = [(UICollectionView *)v3->_collectionView bottomAnchor];
-    v16 = [(PRComplicationGalleryView *)v3 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(UICollectionView *)v3->_collectionView bottomAnchor];
+    bottomAnchor2 = [(PRComplicationGalleryView *)v3 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v20 activateConstraints:v18];

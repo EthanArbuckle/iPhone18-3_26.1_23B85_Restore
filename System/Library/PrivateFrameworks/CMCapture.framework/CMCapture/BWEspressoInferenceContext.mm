@@ -1,23 +1,23 @@
 @interface BWEspressoInferenceContext
-- (BWEspressoInferenceContext)initWithExecutionTarget:(int)a3 shareIntermediateBuffer:(BOOL)a4;
-- (int)configureIntermediateBufferSharingForPlanPostbuild:(void *)a3;
-- (int)configureIntermediateBufferSharingForPlanPrebuild:(void *)a3;
-- (int)enableIntermediateBufferSharingWithNetworksLoadedFromPath:(id)a3;
+- (BWEspressoInferenceContext)initWithExecutionTarget:(int)target shareIntermediateBuffer:(BOOL)buffer;
+- (int)configureIntermediateBufferSharingForPlanPostbuild:(void *)postbuild;
+- (int)configureIntermediateBufferSharingForPlanPrebuild:(void *)prebuild;
+- (int)enableIntermediateBufferSharingWithNetworksLoadedFromPath:(id)path;
 - (int)prepareForInference;
 - (void)dealloc;
 @end
 
 @implementation BWEspressoInferenceContext
 
-- (BWEspressoInferenceContext)initWithExecutionTarget:(int)a3 shareIntermediateBuffer:(BOOL)a4
+- (BWEspressoInferenceContext)initWithExecutionTarget:(int)target shareIntermediateBuffer:(BOOL)buffer
 {
   v7.receiver = self;
   v7.super_class = BWEspressoInferenceContext;
   result = [(BWEspressoInferenceContext *)&v7 init];
   if (result)
   {
-    result->_executionTarget = a3;
-    result->_shareIntermediateBuffer = a4;
+    result->_executionTarget = target;
+    result->_shareIntermediateBuffer = buffer;
   }
 
   return result;
@@ -65,9 +65,9 @@
   }
 }
 
-- (int)configureIntermediateBufferSharingForPlanPrebuild:(void *)a3
+- (int)configureIntermediateBufferSharingForPlanPrebuild:(void *)prebuild
 {
-  if (!a3)
+  if (!prebuild)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -92,13 +92,13 @@
   return result;
 }
 
-- (int)configureIntermediateBufferSharingForPlanPostbuild:(void *)a3
+- (int)configureIntermediateBufferSharingForPlanPostbuild:(void *)postbuild
 {
   if (self->_shareIntermediateBuffer)
   {
     if (self->_executionTarget == 3 && !self->_rootIntermediateBufferPlan)
     {
-      self->_rootIntermediateBufferPlan = a3;
+      self->_rootIntermediateBufferPlan = postbuild;
       sharedBufferNetworksPath = self->_sharedBufferNetworksPath;
       if (sharedBufferNetworksPath)
       {
@@ -128,7 +128,7 @@
   return sharedBufferNetworksPath;
 }
 
-- (int)enableIntermediateBufferSharingWithNetworksLoadedFromPath:(id)a3
+- (int)enableIntermediateBufferSharingWithNetworksLoadedFromPath:(id)path
 {
   if (!self->_shareIntermediateBuffer)
   {
@@ -144,13 +144,13 @@
   if (!sharedBufferNetworksPath)
   {
 LABEL_6:
-    if (a3)
+    if (path)
     {
-      if (!self->_rootIntermediateBufferPlan || ([a3 UTF8String], !espresso_will_share_intermediate_buffer_with_existing_plan()))
+      if (!self->_rootIntermediateBufferPlan || ([path UTF8String], !espresso_will_share_intermediate_buffer_with_existing_plan()))
       {
-        v6 = a3;
+        pathCopy = path;
         result = 0;
-        self->_sharedBufferNetworksPath = v6;
+        self->_sharedBufferNetworksPath = pathCopy;
         return result;
       }
 

@@ -1,68 +1,68 @@
 @interface SiriTTSTrainerTask
 - (NSError)error;
-- (SiriTTSTrainerTask)initWithCoder:(id)a3;
-- (SiriTTSTrainerTask)initWithLanguage:(id)a3 name:(id)a4;
-- (SiriTTSTrainerTask)initWithTask:(id)a3;
+- (SiriTTSTrainerTask)initWithCoder:(id)coder;
+- (SiriTTSTrainerTask)initWithLanguage:(id)language name:(id)name;
+- (SiriTTSTrainerTask)initWithTask:(id)task;
 - (double)timeIntervalSinceSubmission;
 - (double)timeIntervalSinceTrainingStart;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriTTSTrainerTask
 
-- (SiriTTSTrainerTask)initWithLanguage:(id)a3 name:(id)a4
+- (SiriTTSTrainerTask)initWithLanguage:(id)language name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  languageCopy = language;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SiriTTSTrainerTask;
   v9 = [(SiriTTSTrainerTask *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetLanguage, a3);
-    objc_storeStrong(&v10->_assetName, a4);
+    objc_storeStrong(&v9->_assetLanguage, language);
+    objc_storeStrong(&v10->_assetName, name);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (SiriTTSTrainerTask)initWithTask:(id)a3
+- (SiriTTSTrainerTask)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v20.receiver = self;
   v20.super_class = SiriTTSTrainerTask;
   v5 = [(SiriTTSTrainerTask *)&v20 init];
   if (v5)
   {
-    v6 = [v4 taskId];
+    taskId = [taskCopy taskId];
     taskId = v5->_taskId;
-    v5->_taskId = v6;
+    v5->_taskId = taskId;
 
-    v8 = [v4 trainingAssetPath];
+    trainingAssetPath = [taskCopy trainingAssetPath];
     trainingAssetPath = v5->_trainingAssetPath;
-    v5->_trainingAssetPath = v8;
+    v5->_trainingAssetPath = trainingAssetPath;
 
-    v10 = [v4 dataAssetPath];
+    dataAssetPath = [taskCopy dataAssetPath];
     dataAssetPath = v5->_dataAssetPath;
-    v5->_dataAssetPath = v10;
+    v5->_dataAssetPath = dataAssetPath;
 
-    v12 = [v4 inferenceAssetPath];
+    inferenceAssetPath = [taskCopy inferenceAssetPath];
     inferenceAssetPath = v5->_inferenceAssetPath;
-    v5->_inferenceAssetPath = v12;
+    v5->_inferenceAssetPath = inferenceAssetPath;
 
-    v5->_forceToStart = [v4 forceToStart];
-    v5->_taskStatus = [v4 taskStatus];
-    v5->_taskMode = [v4 taskMode];
-    v5->_trainingStatus = [v4 trainingStatus];
-    v14 = [v4 assetLanguage];
+    v5->_forceToStart = [taskCopy forceToStart];
+    v5->_taskStatus = [taskCopy taskStatus];
+    v5->_taskMode = [taskCopy taskMode];
+    v5->_trainingStatus = [taskCopy trainingStatus];
+    assetLanguage = [taskCopy assetLanguage];
     assetLanguage = v5->_assetLanguage;
-    v5->_assetLanguage = v14;
+    v5->_assetLanguage = assetLanguage;
 
-    v16 = [v4 assetName];
+    assetName = [taskCopy assetName];
     assetName = v5->_assetName;
-    v5->_assetName = v16;
+    v5->_assetName = assetName;
 
     v5->_retryTimes = 0;
     v5->_normalizedProgressValue = 0.0;
@@ -73,78 +73,78 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetLanguage = self->_assetLanguage;
-  v6 = a3;
-  [v6 encodeObject:assetLanguage forKey:@"assetLanguage"];
-  [v6 encodeObject:self->_assetName forKey:@"assetName"];
-  [v6 encodeObject:self->_taskId forKey:@"taskId"];
-  [v6 encodeObject:self->_trainingAssetPath forKey:@"trainingAssetPath"];
-  [v6 encodeObject:self->_dataAssetPath forKey:@"dataAssetPath"];
-  [v6 encodeObject:self->_inferenceAssetPath forKey:@"inferenceAssetPath"];
-  [v6 encodeObject:self->_appId forKey:@"appId"];
-  [v6 encodeBool:self->_forceToStart forKey:@"forceToStart"];
-  [v6 encodeInteger:self->_taskStatus forKey:@"taskStatus"];
-  [v6 encodeInteger:self->_taskMode forKey:@"taskMode"];
-  [v6 encodeInteger:self->_trainingStatus forKey:@"trainingStatus"];
-  [v6 encodeInteger:self->_currentTaskStatusProgressValue forKey:@"currentTaskStatusProgressValue"];
-  [v6 encodeInteger:self->_totalTaskStatusProgressValue forKey:@"totalTaskStatusProgressValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assetLanguage forKey:@"assetLanguage"];
+  [coderCopy encodeObject:self->_assetName forKey:@"assetName"];
+  [coderCopy encodeObject:self->_taskId forKey:@"taskId"];
+  [coderCopy encodeObject:self->_trainingAssetPath forKey:@"trainingAssetPath"];
+  [coderCopy encodeObject:self->_dataAssetPath forKey:@"dataAssetPath"];
+  [coderCopy encodeObject:self->_inferenceAssetPath forKey:@"inferenceAssetPath"];
+  [coderCopy encodeObject:self->_appId forKey:@"appId"];
+  [coderCopy encodeBool:self->_forceToStart forKey:@"forceToStart"];
+  [coderCopy encodeInteger:self->_taskStatus forKey:@"taskStatus"];
+  [coderCopy encodeInteger:self->_taskMode forKey:@"taskMode"];
+  [coderCopy encodeInteger:self->_trainingStatus forKey:@"trainingStatus"];
+  [coderCopy encodeInteger:self->_currentTaskStatusProgressValue forKey:@"currentTaskStatusProgressValue"];
+  [coderCopy encodeInteger:self->_totalTaskStatusProgressValue forKey:@"totalTaskStatusProgressValue"];
   *&v5 = self->_normalizedProgressValue;
-  [v6 encodeFloat:@"normalizedProgressValue" forKey:v5];
-  [v6 encodeInteger:self->_retryTimes forKey:@"retryTimes"];
+  [coderCopy encodeFloat:@"normalizedProgressValue" forKey:v5];
+  [coderCopy encodeInteger:self->_retryTimes forKey:@"retryTimes"];
   [(NSDate *)self->_taskSubmissionDate timeIntervalSinceReferenceDate];
-  [v6 encodeDouble:@"taskSubmissionDate" forKey:?];
-  [v6 encodeDouble:@"totalTrainingTime" forKey:self->_totalTrainingTime];
-  [v6 encodeInteger:self->_assetVersion forKey:@"assetVersion"];
+  [coderCopy encodeDouble:@"taskSubmissionDate" forKey:?];
+  [coderCopy encodeDouble:@"totalTrainingTime" forKey:self->_totalTrainingTime];
+  [coderCopy encodeInteger:self->_assetVersion forKey:@"assetVersion"];
 }
 
-- (SiriTTSTrainerTask)initWithCoder:(id)a3
+- (SiriTTSTrainerTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SiriTTSTrainerTask *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetLanguage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetLanguage"];
   assetLanguage = v5->_assetLanguage;
   v5->_assetLanguage = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetName"];
   assetName = v5->_assetName;
   v5->_assetName = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
   taskId = v5->_taskId;
   v5->_taskId = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trainingAssetPath"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trainingAssetPath"];
   trainingAssetPath = v5->_trainingAssetPath;
   v5->_trainingAssetPath = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataAssetPath"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataAssetPath"];
   dataAssetPath = v5->_dataAssetPath;
   v5->_dataAssetPath = v14;
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inferenceAssetPath"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inferenceAssetPath"];
   inferenceAssetPath = v5->_inferenceAssetPath;
   v5->_inferenceAssetPath = v16;
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appId"];
   appId = v5->_appId;
   v5->_appId = v18;
 
-  v5->_forceToStart = [v4 decodeBoolForKey:@"forceToStart"];
-  v5->_taskStatus = [v4 decodeIntegerForKey:@"taskStatus"];
-  v5->_taskMode = [v4 decodeIntegerForKey:@"taskMode"];
-  v5->_trainingStatus = [v4 decodeIntegerForKey:@"trainingStatus"];
-  v5->_currentTaskStatusProgressValue = [v4 decodeIntegerForKey:@"currentTaskStatusProgressValue"];
-  v5->_totalTaskStatusProgressValue = [v4 decodeIntegerForKey:@"totalTaskStatusProgressValue"];
-  [v4 decodeFloatForKey:@"normalizedProgressValue"];
+  v5->_forceToStart = [coderCopy decodeBoolForKey:@"forceToStart"];
+  v5->_taskStatus = [coderCopy decodeIntegerForKey:@"taskStatus"];
+  v5->_taskMode = [coderCopy decodeIntegerForKey:@"taskMode"];
+  v5->_trainingStatus = [coderCopy decodeIntegerForKey:@"trainingStatus"];
+  v5->_currentTaskStatusProgressValue = [coderCopy decodeIntegerForKey:@"currentTaskStatusProgressValue"];
+  v5->_totalTaskStatusProgressValue = [coderCopy decodeIntegerForKey:@"totalTaskStatusProgressValue"];
+  [coderCopy decodeFloatForKey:@"normalizedProgressValue"];
   v5->_normalizedProgressValue = v20;
-  v5->_retryTimes = [v4 decodeIntegerForKey:@"retryTimes"];
-  [v4 decodeDoubleForKey:@"taskSubmissionDate"];
+  v5->_retryTimes = [coderCopy decodeIntegerForKey:@"retryTimes"];
+  [coderCopy decodeDoubleForKey:@"taskSubmissionDate"];
   v5->_taskSubmissionDate = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  [v4 decodeDoubleForKey:@"totalTrainingTime"];
+  [coderCopy decodeDoubleForKey:@"totalTrainingTime"];
   v5->_totalTrainingTime = v21;
-  v22 = [v4 decodeIntegerForKey:@"assetVersion"];
+  v22 = [coderCopy decodeIntegerForKey:@"assetVersion"];
 
   v5->_assetVersion = v22;
   return v5;

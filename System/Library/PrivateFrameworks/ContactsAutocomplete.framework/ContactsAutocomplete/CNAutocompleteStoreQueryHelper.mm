@@ -1,7 +1,7 @@
 @interface CNAutocompleteStoreQueryHelper
 - (CNAutocompleteFetchDelegate)delegate;
-- (CNAutocompleteStoreQueryHelper)initWithSearchProvider:(id)a3 delegate:(id)a4 probeProvider:(id)a5 scheduler:(id)a6 userSession:(id)a7;
-- (id)executeFetchRequest:(id)a3 delegate:(id)a4 delegateToken:(id)a5;
+- (CNAutocompleteStoreQueryHelper)initWithSearchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session;
+- (id)executeFetchRequest:(id)request delegate:(id)delegate delegateToken:(id)token;
 @end
 
 @implementation CNAutocompleteStoreQueryHelper
@@ -13,56 +13,56 @@
   return WeakRetained;
 }
 
-- (CNAutocompleteStoreQueryHelper)initWithSearchProvider:(id)a3 delegate:(id)a4 probeProvider:(id)a5 scheduler:(id)a6 userSession:(id)a7
+- (CNAutocompleteStoreQueryHelper)initWithSearchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  probeProviderCopy = probeProvider;
+  schedulerCopy = scheduler;
+  sessionCopy = session;
   v24.receiver = self;
   v24.super_class = CNAutocompleteStoreQueryHelper;
   v18 = [(CNAutocompleteStoreQueryHelper *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_searchProvider, a3);
-    objc_storeWeak(&v19->_delegate, v14);
+    objc_storeStrong(&v18->_searchProvider, provider);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
     v20 = objc_alloc_init(CNAutocompleteStoreQueryContext);
     queryContext = v19->_queryContext;
     v19->_queryContext = v20;
 
-    objc_storeStrong(&v19->_probeProvider, a5);
-    objc_storeStrong(&v19->_scheduler, a6);
-    objc_storeStrong(&v19->_userSession, a7);
+    objc_storeStrong(&v19->_probeProvider, probeProvider);
+    objc_storeStrong(&v19->_scheduler, scheduler);
+    objc_storeStrong(&v19->_userSession, session);
     v22 = v19;
   }
 
   return v19;
 }
 
-- (id)executeFetchRequest:(id)a3 delegate:(id)a4 delegateToken:(id)a5
+- (id)executeFetchRequest:(id)request delegate:(id)delegate delegateToken:(id)token
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  requestCopy = request;
+  delegateCopy = delegate;
+  tokenCopy = token;
+  if (delegateCopy)
   {
-    v11 = v9;
+    delegate = delegateCopy;
   }
 
   else
   {
-    v11 = [(CNAutocompleteStoreQueryHelper *)self delegate];
+    delegate = [(CNAutocompleteStoreQueryHelper *)self delegate];
   }
 
-  v12 = v11;
-  v13 = [(CNAutocompleteStoreQueryHelper *)self searchProvider];
-  v14 = [(CNAutocompleteStoreQueryHelper *)self probeProvider];
-  v15 = [(CNAutocompleteStoreQueryHelper *)self scheduler];
-  v16 = [(CNAutocompleteStoreQueryHelper *)self userSession];
-  v17 = [CNAutocompleteQuery queryWithRequest:v8 searchProvider:v13 delegate:v12 probeProvider:v14 scheduler:v15 userSession:v16 delegateToken:v10];
+  v12 = delegate;
+  searchProvider = [(CNAutocompleteStoreQueryHelper *)self searchProvider];
+  probeProvider = [(CNAutocompleteStoreQueryHelper *)self probeProvider];
+  scheduler = [(CNAutocompleteStoreQueryHelper *)self scheduler];
+  userSession = [(CNAutocompleteStoreQueryHelper *)self userSession];
+  v17 = [CNAutocompleteQuery queryWithRequest:requestCopy searchProvider:searchProvider delegate:v12 probeProvider:probeProvider scheduler:scheduler userSession:userSession delegateToken:tokenCopy];
 
   v18 = CNALoggingContextDebug();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -72,8 +72,8 @@
     _os_log_impl(&dword_2155FE000, v18, OS_LOG_TYPE_DEFAULT, "Query: %@", buf, 0xCu);
   }
 
-  v19 = [(CNAutocompleteStoreQueryHelper *)self queryContext];
-  v20 = [v17 executeWithContext:v19];
+  queryContext = [(CNAutocompleteStoreQueryHelper *)self queryContext];
+  v20 = [v17 executeWithContext:queryContext];
 
   v21 = *MEMORY[0x277D85DE8];
 

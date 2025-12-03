@@ -1,8 +1,8 @@
 @interface DUCategoryResult
 - (NSString)categoryIdentifier;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCategoryIdentifier:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCategoryIdentifier:(id)identifier;
 @end
 
 @implementation DUCategoryResult
@@ -15,17 +15,17 @@
   return v2;
 }
 
-- (void)setCategoryIdentifier:(id)a3
+- (void)setCategoryIdentifier:(id)identifier
 {
   v4 = sub_232CE9D50();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_232B517F4(v4, v6);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B51A9C(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B51B8C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B51B8C(coderCopy);
 }
 
 @end

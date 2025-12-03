@@ -1,55 +1,55 @@
 @interface MKMapSnapshot
-+ (id)createSnapshotWithOptions:(id)a3 timeoutInSeconds:(int64_t)a4;
++ (id)createSnapshotWithOptions:(id)options timeoutInSeconds:(int64_t)seconds;
 - (CGPoint)pointForCoordinate:(CLLocationCoordinate2D)coordinate;
-- (CLLocationCoordinate2D)_coordinateForPoint:(CGPoint)a3;
-- (MKMapSnapshot)snapshotWithAnnotationView:(id)a3 atCoordinate:(CLLocationCoordinate2D)a4;
-- (MKMapSnapshot)snapshotWithAnnotationView:(id)a3 atPoint:(CGPoint)a4;
-- (id)_initWithSnapshot:(id)a3 traitCollection:(id)a4;
-- (void)_compositeOnImages:(id)a3 drawQueue:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
-- (void)_displayAppleLogoForMapType:(unint64_t)a3 callbackQueue:(id)a4 completionHandler:(id)a5;
-- (void)_prepareForRenderWithAnnotationViews:(id)a3 workQueue:(id)a4 completionHandler:(id)a5;
+- (CLLocationCoordinate2D)_coordinateForPoint:(CGPoint)point;
+- (MKMapSnapshot)snapshotWithAnnotationView:(id)view atCoordinate:(CLLocationCoordinate2D)coordinate;
+- (MKMapSnapshot)snapshotWithAnnotationView:(id)view atPoint:(CGPoint)point;
+- (id)_initWithSnapshot:(id)snapshot traitCollection:(id)collection;
+- (void)_compositeOnImages:(id)images drawQueue:(id)queue callbackQueue:(id)callbackQueue completionHandler:(id)handler;
+- (void)_displayAppleLogoForMapType:(unint64_t)type callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)_prepareForRenderWithAnnotationViews:(id)views workQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation MKMapSnapshot
 
-- (MKMapSnapshot)snapshotWithAnnotationView:(id)a3 atPoint:(CGPoint)a4
+- (MKMapSnapshot)snapshotWithAnnotationView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_opt_new();
-    [v8 addSubview:v7];
+    [v8 addSubview:viewCopy];
   }
 
-  v9 = [(MKMapSnapshot *)self image];
-  [v9 size];
+  image = [(MKMapSnapshot *)self image];
+  [image size];
   v11 = v10;
   v13 = v12;
-  v14 = [(MKMapSnapshot *)self image];
-  [v14 scale];
+  image2 = [(MKMapSnapshot *)self image];
+  [image2 scale];
   v16 = v15;
   v29.width = v11;
   v29.height = v13;
   UIGraphicsBeginImageContextWithOptions(v29, 0, v16);
 
-  v17 = [(MKMapSnapshot *)self image];
-  [v17 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  image3 = [(MKMapSnapshot *)self image];
+  [image3 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
   CurrentContext = UIGraphicsGetCurrentContext();
   UIGraphicsPushContext(CurrentContext);
-  [v7 centerOffset];
+  [viewCopy centerOffset];
   v20 = v19;
   v22 = v21;
-  [v7 bounds];
+  [viewCopy bounds];
   v23 = v20 + x - CGRectGetWidth(v30) * 0.5;
-  [v7 bounds];
+  [viewCopy bounds];
   Height = CGRectGetHeight(v31);
   CGContextTranslateCTM(CurrentContext, v23, v22 + y - Height * 0.5);
-  v25 = [v7 layer];
-  [v25 renderInContext:CurrentContext];
+  layer = [viewCopy layer];
+  [layer renderInContext:CurrentContext];
 
   UIGraphicsPopContext();
   v26 = UIGraphicsGetImageFromCurrentImageContext();
@@ -58,20 +58,20 @@
   return v26;
 }
 
-- (MKMapSnapshot)snapshotWithAnnotationView:(id)a3 atCoordinate:(CLLocationCoordinate2D)a4
+- (MKMapSnapshot)snapshotWithAnnotationView:(id)view atCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
   [(MKMapSnapshot *)self pointForCoordinate:latitude, longitude];
-  v8 = [(MKMapSnapshot *)self snapshotWithAnnotationView:v7 atPoint:?];
+  v8 = [(MKMapSnapshot *)self snapshotWithAnnotationView:viewCopy atPoint:?];
 
   return v8;
 }
 
-+ (id)createSnapshotWithOptions:(id)a3 timeoutInSeconds:(int64_t)a4
++ (id)createSnapshotWithOptions:(id)options timeoutInSeconds:(int64_t)seconds
 {
-  v5 = a3;
+  optionsCopy = options;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -79,7 +79,7 @@
   v23 = __Block_byref_object_dispose__33071;
   v24 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [[MKMapSnapshotter alloc] initWithOptions:v5];
+  v7 = [[MKMapSnapshotter alloc] initWithOptions:optionsCopy];
   v8 = dispatch_get_global_queue(25, 0);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -90,7 +90,7 @@
   v17 = v9;
   [(MKMapSnapshotter *)v7 startWithQueue:v8 completionHandler:&v13];
 
-  v10 = dispatch_time(0, 1000000000 * a4);
+  v10 = dispatch_time(0, 1000000000 * seconds);
   if (dispatch_semaphore_wait(v9, v10))
   {
     [(MKMapSnapshotter *)v7 cancel:v13];
@@ -114,9 +114,9 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (CLLocationCoordinate2D)_coordinateForPoint:(CGPoint)a3
+- (CLLocationCoordinate2D)_coordinateForPoint:(CGPoint)point
 {
-  [(VKMapSnapshot *)self->_snapshot coordinateForPoint:a3.x, a3.y];
+  [(VKMapSnapshot *)self->_snapshot coordinateForPoint:point.x, point.y];
   result.longitude = v4;
   result.latitude = v3;
   return result;
@@ -130,17 +130,17 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
   return result;
 }
 
-- (id)_initWithSnapshot:(id)a3 traitCollection:(id)a4
+- (id)_initWithSnapshot:(id)snapshot traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  snapshotCopy = snapshot;
+  collectionCopy = collection;
   v50.receiver = self;
   v50.super_class = MKMapSnapshot;
   v9 = [(MKMapSnapshot *)&v50 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    v11 = v7 == 0;
+    v11 = snapshotCopy == 0;
   }
 
   else
@@ -155,21 +155,21 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
 
   else
   {
-    objc_storeStrong(&v9->_snapshot, a3);
-    v13 = [MEMORY[0x1E695DF70] array];
-    v14 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v9->_snapshot, snapshot);
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __51__MKMapSnapshot__initWithSnapshot_traitCollection___block_invoke;
     v46[3] = &unk_1E76CD590;
-    v47 = v7;
-    v15 = v13;
+    v47 = snapshotCopy;
+    v15 = array;
     v48 = v15;
-    v16 = v14;
+    v16 = array2;
     v49 = v16;
     [v47 enumerateImagesWithBlock:v46];
-    objc_storeStrong(p_isa + 4, v13);
-    objc_storeStrong(p_isa + 5, v14);
+    objc_storeStrong(p_isa + 4, array);
+    objc_storeStrong(p_isa + 5, array2);
     if ([p_isa[5] count] >= 2 && (v17 = objc_msgSend(p_isa[5], "count"), v17 == objc_msgSend(p_isa[4], "count")))
     {
       v18 = objc_alloc_init(MEMORY[0x1E69DCAC0]);
@@ -188,19 +188,19 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
         while (v19 < [p_isa[5] count]);
       }
 
-      v22 = [v18 imageWithTraitCollection:v8];
+      v22 = [v18 imageWithTraitCollection:collectionCopy];
       v23 = v22;
       if (v22)
       {
         v24 = v22;
-        v25 = p_isa[2];
+        firstObject = p_isa[2];
         p_isa[2] = v24;
       }
 
       else
       {
-        v25 = [p_isa[4] firstObject];
-        v27 = [v18 imageWithTraitCollection:v25];
+        firstObject = [p_isa[4] firstObject];
+        v27 = [v18 imageWithTraitCollection:firstObject];
         v28 = p_isa[2];
         p_isa[2] = v27;
       }
@@ -208,9 +208,9 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
 
     else
     {
-      v26 = [p_isa[5] firstObject];
+      firstObject2 = [p_isa[5] firstObject];
       v18 = p_isa[2];
-      p_isa[2] = v26;
+      p_isa[2] = firstObject2;
     }
 
     v29 = p_isa[2];
@@ -218,13 +218,13 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
     {
       [v29 scale];
       v31 = v30;
-      [v8 displayScale];
+      [collectionCopy displayScale];
       if (vabdd_f64(v31, v32) >= 0.000001)
       {
         [p_isa[2] size];
         v34 = v33;
         v36 = v35;
-        [v8 displayScale];
+        [collectionCopy displayScale];
         v38 = v37;
         v51.width = v34;
         v51.height = v36;
@@ -241,7 +241,7 @@ void __81__MKMapSnapshot_MKMapSnapshotExtras__createSnapshotWithOptions_timeoutI
         UIGraphicsEndImageContext();
       }
 
-      objc_storeStrong(p_isa + 3, a4);
+      objc_storeStrong(p_isa + 3, collection);
       v12 = p_isa;
     }
 
@@ -294,14 +294,14 @@ void __51__MKMapSnapshot__initWithSnapshot_traitCollection___block_invoke_2(uint
   [v5 setUserInterfaceStyle:v4];
 }
 
-- (void)_displayAppleLogoForMapType:(unint64_t)a3 callbackQueue:(id)a4 completionHandler:(id)a5
+- (void)_displayAppleLogoForMapType:(unint64_t)type callbackQueue:(id)queue completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__MKMapSnapshot__displayAppleLogoForMapType_callbackQueue_completionHandler___block_invoke;
   v5[3] = &__block_descriptor_40_e39_v40__0_CGRect__CGPoint_dd__CGSize_dd__8l;
-  v5[4] = a3;
-  [(MKMapSnapshot *)self _compositeOnImages:v5 drawQueue:0 callbackQueue:a4 completionHandler:a5];
+  v5[4] = type;
+  [(MKMapSnapshot *)self _compositeOnImages:v5 drawQueue:0 callbackQueue:queue completionHandler:handler];
 }
 
 void __77__MKMapSnapshot__displayAppleLogoForMapType_callbackQueue_completionHandler___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)
@@ -318,27 +318,27 @@ void __77__MKMapSnapshot__displayAppleLogoForMapType_callbackQueue_completionHan
   [v14 drawInRect:{14.0, v10, v12, v13}];
 }
 
-- (void)_prepareForRenderWithAnnotationViews:(id)a3 workQueue:(id)a4 completionHandler:(id)a5
+- (void)_prepareForRenderWithAnnotationViews:(id)views workQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  viewsCopy = views;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([viewsCopy count])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __82__MKMapSnapshot__prepareForRenderWithAnnotationViews_workQueue_completionHandler___block_invoke;
     v11[3] = &unk_1E76CD520;
-    v12 = v8;
-    v13 = self;
-    [(MKMapSnapshot *)self _compositeOnImages:v11 drawQueue:MEMORY[0x1E69E96A0] callbackQueue:v9 completionHandler:v10];
+    v12 = viewsCopy;
+    selfCopy = self;
+    [(MKMapSnapshot *)self _compositeOnImages:v11 drawQueue:MEMORY[0x1E69E96A0] callbackQueue:queueCopy completionHandler:handlerCopy];
 
-    v10 = v12;
+    handlerCopy = v12;
   }
 
   else
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -389,16 +389,16 @@ void __82__MKMapSnapshot__prepareForRenderWithAnnotationViews_workQueue_completi
   [v10 drawViewHierarchyInRect:1 afterScreenUpdates:{a2, a3, a4, a5}];
 }
 
-- (void)_compositeOnImages:(id)a3 drawQueue:(id)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (void)_compositeOnImages:(id)images drawQueue:(id)queue callbackQueue:(id)callbackQueue completionHandler:(id)handler
 {
-  v52 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  imagesCopy = images;
+  queueCopy = queue;
+  queueCopy2 = callbackQueue;
+  handlerCopy = handler;
   if (![(NSArray *)self->_allTraitCollections count])
   {
 LABEL_23:
-    dispatch_async(v11, v12);
+    dispatch_async(queueCopy2, handlerCopy);
     goto LABEL_20;
   }
 
@@ -429,29 +429,29 @@ LABEL_23:
   v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_DEFAULT, 0);
 
-  if (v10 && [(NSArray *)self->_allTraitCollections count]> 1)
+  if (queueCopy && [(NSArray *)self->_allTraitCollections count]> 1)
   {
-    v17 = dispatch_queue_create_with_target_V2(0, v16, v10);
+    v17 = dispatch_queue_create_with_target_V2(0, v16, queueCopy);
   }
 
   else
   {
-    v17 = v10;
+    v17 = queueCopy;
   }
 
   v18 = v17;
-  queue = v11;
-  v48 = v10;
+  queue = queueCopy2;
+  v48 = queueCopy;
   v45 = v16;
-  v46 = v12;
+  v46 = handlerCopy;
   if ([(NSArray *)self->_allTraitCollections count]<= 1)
   {
-    v19 = v11;
+    v19 = queueCopy2;
   }
 
   else
   {
-    v19 = dispatch_queue_create_with_target_V2(0, v16, v11);
+    v19 = dispatch_queue_create_with_target_V2(0, v16, queueCopy2);
   }
 
   v49 = v19;
@@ -483,12 +483,12 @@ LABEL_23:
       v77.size.width = v36;
       v77.size.height = v37;
       CGContextClearRect(v35, v77);
-      v38 = [v22 CGImage];
+      cGImage = [v22 CGImage];
       v78.origin.x = 0.0;
       v78.origin.y = 0.0;
       v78.size.width = v36;
       v78.size.height = v37;
-      CGContextDrawImage(v35, v78, v38);
+      CGContextDrawImage(v35, v78, cGImage);
       CGContextTranslateCTM(v35, 0.0, v37);
       CGContextScaleCTM(v35, v28, -v28);
       CGContextGetCTM(&v76, v35);
@@ -500,7 +500,7 @@ LABEL_23:
       v71 = v35;
       v39 = v21;
       v69 = v39;
-      v70 = v52;
+      v70 = imagesCopy;
       v72 = 0;
       v73 = 0;
       v74 = v24;
@@ -549,14 +549,14 @@ LABEL_23:
   v53[4] = self;
   v54 = v51;
   v55 = v50;
-  v12 = v46;
+  handlerCopy = v46;
   v56 = v46;
   v43 = v50;
   v44 = v51;
-  v11 = queue;
+  queueCopy2 = queue;
   dispatch_group_notify(v14, queue, v53);
 
-  v10 = v48;
+  queueCopy = v48;
 LABEL_20:
 }
 

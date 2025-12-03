@@ -1,23 +1,23 @@
 @interface _ML3ArtworkConfigurationMediaArtworkTypeKey
-+ (id)keyWithMediaType:(unsigned int)a3 artworkType:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)keyWithMediaType:(unsigned int)type artworkType:(int64_t)artworkType;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _ML3ArtworkConfigurationMediaArtworkTypeKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4 || v4 && self->_mediaType == v4->_mediaType && self->_artworkType == v4->_artworkType;
+  equalCopy = equal;
+  v5 = self == equalCopy || equalCopy && self->_mediaType == equalCopy->_mediaType && self->_artworkType == equalCopy->_artworkType;
 
   return v5;
 }
 
-+ (id)keyWithMediaType:(unsigned int)a3 artworkType:(int64_t)a4
++ (id)keyWithMediaType:(unsigned int)type artworkType:(int64_t)artworkType
 {
-  v6 = objc_alloc_init(a1);
-  v6[2] = a3;
-  *(v6 + 2) = a4;
+  v6 = objc_alloc_init(self);
+  v6[2] = type;
+  *(v6 + 2) = artworkType;
 
   return v6;
 }

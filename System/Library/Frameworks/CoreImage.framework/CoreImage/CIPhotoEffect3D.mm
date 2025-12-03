@@ -1,7 +1,7 @@
 @interface CIPhotoEffect3D
 + (id)customAttributes;
 - (CIPhotoEffect3D)init;
-- (id)applyCubeWithName:(id)a3 toImage:(id)a4;
+- (id)applyCubeWithName:(id)name toImage:(id)image;
 - (id)backgroundCubeName;
 - (id)backgroundCubePath;
 - (id)cubeName;
@@ -103,17 +103,17 @@
 
 - (id)cubeName
 {
-  v3 = [-[CIPhotoEffect3D valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
-  if (v3 >= [(CIPhotoEffect3D *)self _maxVersion])
+  _maxVersion = [-[CIPhotoEffect3D valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
+  if (_maxVersion >= [(CIPhotoEffect3D *)self _maxVersion])
   {
-    v3 = [(CIPhotoEffect3D *)self _maxVersion];
+    _maxVersion = [(CIPhotoEffect3D *)self _maxVersion];
   }
 
   v4 = objc_opt_class();
   result = NSStringFromClass(v4);
-  if (v3 >= 1)
+  if (_maxVersion >= 1)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, v3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, _maxVersion];
   }
 
   return result;
@@ -121,17 +121,17 @@
 
 - (id)backgroundCubeName
 {
-  v3 = [-[CIPhotoEffect3D valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
-  if (v3 >= [(CIPhotoEffect3D *)self _maxVersionBG])
+  _maxVersionBG = [-[CIPhotoEffect3D valueForKey:](self valueForKey:{@"__inputVersion", "intValue"}];
+  if (_maxVersionBG >= [(CIPhotoEffect3D *)self _maxVersionBG])
   {
-    v3 = [(CIPhotoEffect3D *)self _maxVersionBG];
+    _maxVersionBG = [(CIPhotoEffect3D *)self _maxVersionBG];
   }
 
   v4 = objc_opt_class();
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@BG", NSStringFromClass(v4)];
-  if (v3 >= 1)
+  if (_maxVersionBG >= 1)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, v3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%d", result, _maxVersionBG];
   }
 
   return result;
@@ -140,20 +140,20 @@
 - (id)cubePath
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [(CIPhotoEffect3D *)self cubeName];
+  cubeName = [(CIPhotoEffect3D *)self cubeName];
 
-  return [v3 pathForResource:v4 ofType:@"scube"];
+  return [v3 pathForResource:cubeName ofType:@"scube"];
 }
 
 - (id)backgroundCubePath
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [(CIPhotoEffect3D *)self backgroundCubeName];
+  backgroundCubeName = [(CIPhotoEffect3D *)self backgroundCubeName];
 
-  return [v3 pathForResource:v4 ofType:@"scube"];
+  return [v3 pathForResource:backgroundCubeName ofType:@"scube"];
 }
 
-- (id)applyCubeWithName:(id)a3 toImage:(id)a4
+- (id)applyCubeWithName:(id)name toImage:(id)image
 {
   if ([CIPhotoEffect3D applyCubeWithName:toImage:]::once != -1)
   {
@@ -170,9 +170,9 @@
   v9[1] = 3221225472;
   v9[2] = __45__CIPhotoEffect3D_applyCubeWithName_toImage___block_invoke_44;
   v9[3] = &unk_1E75C3780;
-  v9[4] = a3;
+  v9[4] = name;
   v9[5] = self;
-  v9[6] = a4;
+  v9[6] = image;
   v9[7] = &v10;
   dispatch_sync([CIPhotoEffect3D applyCubeWithName:toImage:]::isolationQueue, v9);
   v7 = v11[5];
@@ -219,18 +219,18 @@ uint64_t __45__CIPhotoEffect3D_applyCubeWithName_toImage___block_invoke_44(void 
     return 0;
   }
 
-  v6 = [(CIPhotoEffect3D *)self cubeName];
+  cubeName = [(CIPhotoEffect3D *)self cubeName];
   v7 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0B8]);
   inputImage = self->inputImage;
   if (v7)
   {
     inputImage = [(CIImage *)inputImage imageByColorMatchingWorkingSpaceToColorSpace:v7];
-    v9 = [-[CIPhotoEffect3D applyCubeWithName:toImage:](self applyCubeWithName:v6 toImage:{inputImage), "imageByColorMatchingColorSpaceToWorkingSpace:", v7}];
+    v9 = [-[CIPhotoEffect3D applyCubeWithName:toImage:](self applyCubeWithName:cubeName toImage:{inputImage), "imageByColorMatchingColorSpaceToWorkingSpace:", v7}];
   }
 
   else
   {
-    v9 = [(CIPhotoEffect3D *)self applyCubeWithName:v6 toImage:inputImage];
+    v9 = [(CIPhotoEffect3D *)self applyCubeWithName:cubeName toImage:inputImage];
   }
 
   v5 = v9;
@@ -258,14 +258,14 @@ uint64_t __45__CIPhotoEffect3D_applyCubeWithName_toImage___block_invoke_44(void 
       inputDepthMap = [(CIImage *)inputDepthMap imageByApplyingTransform:&v36];
     }
 
-    v21 = [(CIPhotoEffect3D *)self _CIPhotoEffectDepthBlend];
+    _CIPhotoEffectDepthBlend = [(CIPhotoEffect3D *)self _CIPhotoEffectDepthBlend];
     [v5 extent];
     v39[0] = v5;
     v39[1] = v13;
     inputThreshold = self->inputThreshold;
     v39[2] = inputDepthMap;
     v39[3] = inputThreshold;
-    v5 = [v21 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 4), v23, v24, v25, v26}];
+    v5 = [_CIPhotoEffectDepthBlend applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 4), v23, v24, v25, v26}];
     [(NSNumber *)self->inputGrainAmount floatValue];
     v28 = v27;
     [(NSNumber *)self->inputScale floatValue];

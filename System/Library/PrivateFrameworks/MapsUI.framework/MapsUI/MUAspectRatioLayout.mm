@@ -1,13 +1,13 @@
 @interface MUAspectRatioLayout
-- (MUAspectRatioLayout)initWithItem:(id)a3 aspectRatio:(double)a4;
+- (MUAspectRatioLayout)initWithItem:(id)item aspectRatio:(double)ratio;
 @end
 
 @implementation MUAspectRatioLayout
 
-- (MUAspectRatioLayout)initWithItem:(id)a3 aspectRatio:(double)a4
+- (MUAspectRatioLayout)initWithItem:(id)item aspectRatio:(double)ratio
 {
-  v6 = a3;
-  v7 = [[MUAspectRatioLayoutInternal alloc] initWithItem:v6 aspectRatio:a4];
+  itemCopy = item;
+  v7 = [[MUAspectRatioLayoutInternal alloc] initWithItem:itemCopy aspectRatio:ratio];
 
   v11.receiver = self;
   v11.super_class = MUAspectRatioLayout;

@@ -7,9 +7,9 @@
 - (BOOL)ml_isValid
 {
   v2 = objc_getAssociatedObject(self, "MLNSXPCConnectionIsValidKey");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface WBSContactsEntry
-+ (BOOL)_isContactsLabel:(id)a3;
-+ (BOOL)_isContactsProperty:(id)a3;
-+ (id)localizedWBSPropertyOrLabel:(id)a3;
-- (WBSContactsEntry)initWithContact:(id)a3;
++ (BOOL)_isContactsLabel:(id)label;
++ (BOOL)_isContactsProperty:(id)property;
++ (id)localizedWBSPropertyOrLabel:(id)label;
+- (WBSContactsEntry)initWithContact:(id)contact;
 - (id)fullName;
 @end
 
 @implementation WBSContactsEntry
 
-- (WBSContactsEntry)initWithContact:(id)a3
+- (WBSContactsEntry)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v10.receiver = self;
   v10.super_class = WBSContactsEntry;
   v6 = [(WBSContactsEntry *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (BOOL)_isContactsProperty:(id)a3
++ (BOOL)_isContactsProperty:(id)property
 {
   v3 = _isContactsProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     +[WBSContactsEntry _isContactsProperty:];
   }
 
-  v5 = [_isContactsProperty__contactsPropertySet containsObject:v4];
+  v5 = [_isContactsProperty__contactsPropertySet containsObject:propertyCopy];
 
   return v5;
 }
@@ -64,16 +64,16 @@ void __40__WBSContactsEntry__isContactsProperty___block_invoke()
   _isContactsProperty__contactsPropertySet = v7;
 }
 
-+ (BOOL)_isContactsLabel:(id)a3
++ (BOOL)_isContactsLabel:(id)label
 {
   v3 = _isContactsLabel__onceToken;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     +[WBSContactsEntry _isContactsLabel:];
   }
 
-  v5 = [_isContactsLabel__contactsLabelSet containsObject:v4];
+  v5 = [_isContactsLabel__contactsLabelSet containsObject:labelCopy];
 
   return v5;
 }
@@ -104,27 +104,27 @@ void __37__WBSContactsEntry__isContactsLabel___block_invoke()
   _isContactsLabel__contactsLabelSet = v7;
 }
 
-+ (id)localizedWBSPropertyOrLabel:(id)a3
++ (id)localizedWBSPropertyOrLabel:(id)label
 {
-  v4 = a3;
-  if ([v4 length])
+  labelCopy = label;
+  if ([labelCopy length])
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E69C8AD8]])
+    if ([labelCopy isEqualToString:*MEMORY[0x1E69C8AD8]])
     {
       v5 = _WBSLocalizedString();
     }
 
     else
     {
-      v6 = [WBSContactsHelper CNContactKeyFromWBSABKey:v4];
+      v6 = [WBSContactsHelper CNContactKeyFromWBSABKey:labelCopy];
       if ([v6 length])
       {
-        if ([a1 _isContactsProperty:v6])
+        if ([self _isContactsProperty:v6])
         {
           v7 = [MEMORY[0x1E695CD58] localizedStringForKey:v6];
         }
 
-        else if ([a1 _isContactsLabel:v6])
+        else if ([self _isContactsLabel:v6])
         {
           v7 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v6];
         }

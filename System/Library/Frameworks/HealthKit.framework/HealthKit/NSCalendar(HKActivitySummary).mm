@@ -6,8 +6,8 @@
 
 - (id)hk_activitySummaryDateComponentsFromDate:()HKActivitySummary
 {
-  v4 = [a1 components:30 fromDate:a3];
-  [v4 setCalendar:a1];
+  v4 = [self components:30 fromDate:a3];
+  [v4 setCalendar:self];
 
   return v4;
 }

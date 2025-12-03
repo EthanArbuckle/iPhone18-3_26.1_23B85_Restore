@@ -1,22 +1,22 @@
 @interface ISIconObserver
-- (ISIconObserver)initWithDelegate:(id)a3;
+- (ISIconObserver)initWithDelegate:(id)delegate;
 - (ISIconObserverDelegate)delegate;
 - (void)dealloc;
-- (void)iconManager:(id)a3 didInvalidateIcons:(id)a4;
+- (void)iconManager:(id)manager didInvalidateIcons:(id)icons;
 @end
 
 @implementation ISIconObserver
 
-- (ISIconObserver)initWithDelegate:(id)a3
+- (ISIconObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ISIconObserver;
   v5 = [(ISIconObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[ISIconManager sharedInstance];
     [v7 addObserver:v6];
   }
@@ -34,11 +34,11 @@
   [(ISIconObserver *)&v4 dealloc];
 }
 
-- (void)iconManager:(id)a3 didInvalidateIcons:(id)a4
+- (void)iconManager:(id)manager didInvalidateIcons:(id)icons
 {
-  v5 = a4;
+  iconsCopy = icons;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained iconObserver:self didInvalidateIcons:v5];
+  [WeakRetained iconObserver:self didInvalidateIcons:iconsCopy];
 }
 
 - (ISIconObserverDelegate)delegate

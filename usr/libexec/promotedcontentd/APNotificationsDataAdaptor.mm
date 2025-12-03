@@ -1,41 +1,41 @@
 @interface APNotificationsDataAdaptor
-- (BOOL)_validateParameters:(id *)a3;
+- (BOOL)_validateParameters:(id *)parameters;
 - (id)_biomeStream;
 - (id)calculateResultFromEvents;
-- (void)_incrementBundleIDCount:(id)a3;
-- (void)eventReceived:(id)a3;
+- (void)_incrementBundleIDCount:(id)count;
+- (void)eventReceived:(id)received;
 @end
 
 @implementation APNotificationsDataAdaptor
 
-- (BOOL)_validateParameters:(id *)a3
+- (BOOL)_validateParameters:(id *)parameters
 {
   v15.receiver = self;
   v15.super_class = APNotificationsDataAdaptor;
   if ([(APBiomeDataAdaptor *)&v15 _validateParameters:?])
   {
-    v5 = [(APDataAdaptor *)self parameters];
-    v6 = [v5 objectForKeyedSubscript:@"bundleIDs"];
-    v7 = [(APDataAdaptor *)self _requireClassType:v6 name:@"bundleIDs" expectedClass:objc_opt_class() error:a3];
+    parameters = [(APDataAdaptor *)self parameters];
+    v6 = [parameters objectForKeyedSubscript:@"bundleIDs"];
+    v7 = [(APDataAdaptor *)self _requireClassType:v6 name:@"bundleIDs" expectedClass:objc_opt_class() error:parameters];
     if (!v7)
     {
 
       goto LABEL_7;
     }
 
-    v8 = [(APDataAdaptor *)self parameters];
-    v9 = [v8 objectForKeyedSubscript:@"minCount"];
-    v10 = [(APDataAdaptor *)self _checkClassType:v9 name:@"minCount" expectedClass:objc_opt_class() error:a3];
+    parameters2 = [(APDataAdaptor *)self parameters];
+    v9 = [parameters2 objectForKeyedSubscript:@"minCount"];
+    v10 = [(APDataAdaptor *)self _checkClassType:v9 name:@"minCount" expectedClass:objc_opt_class() error:parameters];
 
     if (v10)
     {
-      v11 = [(APDataAdaptor *)self parameters];
-      v12 = [v11 objectForKeyedSubscript:@"bundleIDs"];
+      parameters3 = [(APDataAdaptor *)self parameters];
+      v12 = [parameters3 objectForKeyedSubscript:@"bundleIDs"];
       v13 = [NSSet setWithArray:v12];
       [(APNotificationsDataAdaptor *)self setBundleIDs:v13];
 
-      v5 = +[NSMutableDictionary dictionary];
-      [(APNotificationsDataAdaptor *)self setFoundBundleIDs:v5];
+      parameters = +[NSMutableDictionary dictionary];
+      [(APNotificationsDataAdaptor *)self setFoundBundleIDs:parameters];
 LABEL_7:
 
       return v7;
@@ -48,10 +48,10 @@ LABEL_7:
 - (id)_biomeStream
 {
   v2 = BiomeLibrary();
-  v3 = [v2 Notification];
-  v4 = [v3 Usage];
+  notification = [v2 Notification];
+  usage = [notification Usage];
 
-  return v4;
+  return usage;
 }
 
 - (id)calculateResultFromEvents
@@ -60,10 +60,10 @@ LABEL_7:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
-  v4 = [v3 allValues];
+  foundBundleIDs = [(APNotificationsDataAdaptor *)self foundBundleIDs];
+  allValues = [foundBundleIDs allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -75,15 +75,15 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) intValue];
-        v11 = [(APNotificationsDataAdaptor *)self minCount];
-        v7 |= v10 > [v11 intValue];
+        intValue = [*(*(&v14 + 1) + 8 * i) intValue];
+        minCount = [(APNotificationsDataAdaptor *)self minCount];
+        v7 |= intValue > [minCount intValue];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -99,23 +99,23 @@ LABEL_7:
   return v12;
 }
 
-- (void)eventReceived:(id)a3
+- (void)eventReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || ([v4 eventBody], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass))
+  if (objc_opt_isKindOfClass() & 1) != 0 || ([receivedCopy eventBody], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass))
   {
-    v7 = v4;
-    v8 = [(APNotificationsDataAdaptor *)self bundleIDs];
-    v9 = [v7 eventBody];
-    v10 = [v9 bundleID];
-    v11 = [v8 containsObject:v10];
+    v7 = receivedCopy;
+    bundleIDs = [(APNotificationsDataAdaptor *)self bundleIDs];
+    eventBody = [v7 eventBody];
+    bundleID = [eventBody bundleID];
+    v11 = [bundleIDs containsObject:bundleID];
 
     if (v11)
     {
-      v12 = [v7 eventBody];
-      v13 = [v12 bundleID];
-      [(APNotificationsDataAdaptor *)self _incrementBundleIDCount:v13];
+      eventBody2 = [v7 eventBody];
+      bundleID2 = [eventBody2 bundleID];
+      [(APNotificationsDataAdaptor *)self _incrementBundleIDCount:bundleID2];
     }
   }
 
@@ -125,7 +125,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_10021A604;
     block[3] = &unk_1004790A8;
-    v15 = v4;
+    v15 = receivedCopy;
     if (qword_1004DF638 != -1)
     {
       dispatch_once(&qword_1004DF638, block);
@@ -133,23 +133,23 @@ LABEL_7:
   }
 }
 
-- (void)_incrementBundleIDCount:(id)a3
+- (void)_incrementBundleIDCount:(id)count
 {
-  v9 = a3;
-  v4 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  countCopy = count;
+  foundBundleIDs = [(APNotificationsDataAdaptor *)self foundBundleIDs];
+  v5 = [foundBundleIDs objectForKeyedSubscript:countCopy];
 
   if (!v5)
   {
     v5 = [NSNumber numberWithInt:0];
-    v6 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
-    [v6 setObject:v5 forKey:v9];
+    foundBundleIDs2 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
+    [foundBundleIDs2 setObject:v5 forKey:countCopy];
   }
 
   v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 intValue] + 1);
 
-  v8 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
-  [v8 setObject:v7 forKey:v9];
+  foundBundleIDs3 = [(APNotificationsDataAdaptor *)self foundBundleIDs];
+  [foundBundleIDs3 setObject:v7 forKey:countCopy];
 }
 
 @end

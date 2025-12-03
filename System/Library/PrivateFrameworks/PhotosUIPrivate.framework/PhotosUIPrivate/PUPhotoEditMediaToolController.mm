@@ -5,14 +5,14 @@
 - (BOOL)_wantsPortraitVideoControls;
 - (BOOL)_wantsRateControl;
 - (BOOL)_wantsTrimControl;
-- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)orientation;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)hasTrimmedVideo;
 - (PUPhotoEditMediaToolController)init;
 - (id)_localizedTitleForCurrentPlaybackVariation;
 - (id)_rateToolbarButtonMenuElements;
-- (id)accessibilityHUDItemForButton:(id)a3;
-- (id)axDescriptionForFocusDecisionAtTime:(id *)a3;
+- (id)accessibilityHUDItemForButton:(id)button;
+- (id)axDescriptionForFocusDecisionAtTime:(id *)time;
 - (id)centerToolbarView;
 - (id)leadingToolbarViews;
 - (id)livePortraitBehaviorController;
@@ -22,97 +22,97 @@
 - (id)toolbarIconAccessibilityLabel;
 - (id)toolbarIconGlyphName;
 - (id)trailingToolbarViews;
-- (void)_handleAutoFocusButton:(id)a3;
-- (void)_handleLivePhotoButton:(id)a3;
-- (void)_handleMuteButton:(id)a3;
-- (void)_handlePortraitVideoButton:(id)a3;
-- (void)_handlePortraitVideoButtonLongPress:(id)a3;
-- (void)_handleStabilizeButton:(id)a3;
+- (void)_handleAutoFocusButton:(id)button;
+- (void)_handleLivePhotoButton:(id)button;
+- (void)_handleMuteButton:(id)button;
+- (void)_handlePortraitVideoButton:(id)button;
+- (void)_handlePortraitVideoButtonLongPress:(id)press;
+- (void)_handleStabilizeButton:(id)button;
 - (void)_initializeCinematographyScript;
 - (void)_invalidateConstraints;
 - (void)_layoutToolGradient;
 - (void)_presentPortraitVideoDebugControls;
-- (void)_reportStabilizeProgress:(double)a3;
-- (void)_setPlaybackRate:(double)a3;
-- (void)_setToolMode:(int64_t)a3;
+- (void)_reportStabilizeProgress:(double)progress;
+- (void)_setPlaybackRate:(double)rate;
+- (void)_setToolMode:(int64_t)mode;
 - (void)_showPrimaryViewIfNeeded;
-- (void)_updateApertureControlsAnimated:(BOOL)a3;
+- (void)_updateApertureControlsAnimated:(BOOL)animated;
 - (void)_updateApertureSliderLength;
-- (void)_updateBackgroundAnimated:(BOOL)a3;
-- (void)_updateLivePhotoButtonAnimated:(BOOL)a3;
-- (void)_updateMuteButtonAnimated:(BOOL)a3;
-- (void)_updatePortraitVideoButtonAnimated:(BOOL)a3;
+- (void)_updateBackgroundAnimated:(BOOL)animated;
+- (void)_updateLivePhotoButtonAnimated:(BOOL)animated;
+- (void)_updateMuteButtonAnimated:(BOOL)animated;
+- (void)_updatePortraitVideoButtonAnimated:(BOOL)animated;
 - (void)_updateRateToolbarButton;
-- (void)_updateStabilizationInProgress:(BOOL)a3;
-- (void)_updateStabilizeButtonAnimated:(BOOL)a3;
-- (void)_updateStabilizeProgressViewAnimated:(BOOL)a3;
-- (void)_updateToolVisibilityAnimated:(BOOL)a3;
-- (void)_updateTrackerDisplay:(BOOL)a3;
+- (void)_updateStabilizationInProgress:(BOOL)progress;
+- (void)_updateStabilizeButtonAnimated:(BOOL)animated;
+- (void)_updateStabilizeProgressViewAnimated:(BOOL)animated;
+- (void)_updateToolVisibilityAnimated:(BOOL)animated;
+- (void)_updateTrackerDisplay:(BOOL)display;
 - (void)_updateTrimControlAndToolbarButtons;
 - (void)addCropToolGainMapIfNeeded;
-- (void)apertureToolbar:(id)a3 didChangeValue:(double)a4;
-- (void)apertureToolbar:(id)a3 didUpdateDepthActive:(BOOL)a4;
-- (void)apertureToolbarDidStartSliding:(id)a3;
-- (void)apertureToolbarDidStopSliding:(id)a3;
+- (void)apertureToolbar:(id)toolbar didChangeValue:(double)value;
+- (void)apertureToolbar:(id)toolbar didUpdateDepthActive:(BOOL)active;
+- (void)apertureToolbarDidStartSliding:(id)sliding;
+- (void)apertureToolbarDidStopSliding:(id)sliding;
 - (void)baseMediaInvalidated;
-- (void)cineScriptBecameAvailable:(id)a3;
-- (void)cineScriptCouldNotInitializeWithError:(id)a3;
+- (void)cineScriptBecameAvailable:(id)available;
+- (void)cineScriptCouldNotInitializeWithError:(id)error;
 - (void)cinematographyWasEdited;
-- (void)cinematographyWasEditedAtTime:(id *)a3;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)configureForAdjustmentCategory:(int64_t)a3;
-- (void)decreaseScrubberValue:(BOOL)a3;
+- (void)cinematographyWasEditedAtTime:(id *)time;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)configureForAdjustmentCategory:(int64_t)category;
+- (void)decreaseScrubberValue:(BOOL)value;
 - (void)didBecomeActiveTool;
 - (void)didResignActiveTool;
 - (void)disableCinematicUIForLoadingAsset;
-- (void)increaseScrubberValue:(BOOL)a3;
+- (void)increaseScrubberValue:(BOOL)value;
 - (void)interactionBegan;
 - (void)loadView;
-- (void)mediaView:(id)a3 didZoom:(double)a4;
+- (void)mediaView:(id)view didZoom:(double)zoom;
 - (void)mediaViewInsetsUpdated;
-- (void)objectTrackingFinishedWithSuccess:(BOOL)a3;
-- (void)objectTrackingStartedAtTime:(id *)a3;
+- (void)objectTrackingFinishedWithSuccess:(BOOL)success;
+- (void)objectTrackingStartedAtTime:(id *)time;
 - (void)reactivate;
-- (void)reloadToolbarButtons:(BOOL)a3;
+- (void)reloadToolbarButtons:(BOOL)buttons;
 - (void)removeCropToolGainMap;
-- (void)removeFocusDecisionAtTime:(id *)a3;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setHorizontalControlPadding:(double)a3;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)setOriginalStillImageTime:(id *)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPrimaryView:(id)a3;
-- (void)setUseGradientBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)setVerticalButtonOffset:(double)a3;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
-- (void)togglePlayback:(id)a3;
-- (void)trackedObjectWasUpdatedAtTime:(id *)a3 shouldStop:(BOOL *)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)trimToolController:(id)a3 didBeginInteractivelyEditingElement:(int64_t)a4;
-- (void)trimToolController:(id)a3 didEndInteractivelyEditingElement:(int64_t)a4;
-- (void)trimToolControllerDidChange:(id)a3 state:(unint64_t)a4;
+- (void)removeFocusDecisionAtTime:(id *)time;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setHorizontalControlPadding:(double)padding;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)setOriginalStillImageTime:(id *)time;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPrimaryView:(id)view;
+- (void)setUseGradientBackground:(BOOL)background animated:(BOOL)animated;
+- (void)setVerticalButtonOffset:(double)offset;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
+- (void)togglePlayback:(id)playback;
+- (void)trackedObjectWasUpdatedAtTime:(id *)time shouldStop:(BOOL *)stop;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)trimToolController:(id)controller didBeginInteractivelyEditingElement:(int64_t)element;
+- (void)trimToolController:(id)controller didEndInteractivelyEditingElement:(int64_t)element;
+- (void)trimToolControllerDidChange:(id)change state:(unint64_t)state;
 - (void)updateCinematicVideoControlsEnableState;
 - (void)updateForIncomingAnimation;
-- (void)updateToolbarButtonsAnimated:(BOOL)a3;
+- (void)updateToolbarButtonsAnimated:(BOOL)animated;
 - (void)updateViewConstraints;
 - (void)videoRenderingChanged;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)willBecomeActiveTool;
 - (void)willResignActiveTool;
 @end
 
 @implementation PUPhotoEditMediaToolController
 
-- (void)apertureToolbar:(id)a3 didUpdateDepthActive:(BOOL)a4
+- (void)apertureToolbar:(id)toolbar didUpdateDepthActive:(BOOL)active
 {
-  [(PXCinematicEditController *)self->_cinematographyController setCinematicAdjustmentActive:a4];
+  [(PXCinematicEditController *)self->_cinematographyController setCinematicAdjustmentActive:active];
 
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
 }
 
-- (void)apertureToolbarDidStopSliding:(id)a3
+- (void)apertureToolbarDidStopSliding:(id)sliding
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
@@ -123,15 +123,15 @@
   if (v5 == 0.0 && self->_lastKnownAperture > 0.0)
   {
     self->_suspendUIUpdatesFromComposition = 1;
-    v6 = [(PUPhotoEditToolController *)self compositionController];
-    v7 = [v6 adjustmentConstants];
-    v8 = [v7 PIPortraitVideoAdjustmentKey];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    adjustmentConstants = [compositionController adjustmentConstants];
+    pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_invoke;
     v9[3] = &unk_1E7B7B450;
     v9[4] = self;
-    [v6 modifyAdjustmentWithKey:v8 modificationBlock:v9];
+    [compositionController modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v9];
 
     self->_suspendUIUpdatesFromComposition = 0;
   }
@@ -146,7 +146,7 @@ void __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_
   [v4 setAperture:v5];
 }
 
-- (void)apertureToolbarDidStartSliding:(id)a3
+- (void)apertureToolbarDidStartSliding:(id)sliding
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:1];
@@ -159,42 +159,42 @@ void __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_
   }
 }
 
-- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)a3
+- (BOOL)apertureToolbarShouldRotateLabelsWithOrientation:(id)orientation
 {
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle] == 4;
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  v4 = [photoEditSpec currentLayoutStyle] == 4;
 
   return v4;
 }
 
-- (void)apertureToolbar:(id)a3 didChangeValue:(double)a4
+- (void)apertureToolbar:(id)toolbar didChangeValue:(double)value
 {
-  [(PXCinematicEditController *)self->_cinematographyController setCinematicAperture:a3, a4];
+  [(PXCinematicEditController *)self->_cinematographyController setCinematicAperture:toolbar, value];
 
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
 }
 
 - (id)livePortraitBehaviorController
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  v3 = [v2 livePortraitBehaviorController];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
 
-  return v3;
+  return livePortraitBehaviorController;
 }
 
 - (void)addCropToolGainMapIfNeeded
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  [v2 addCropToolGainMapIfNeeded];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate addCropToolGainMapIfNeeded];
 }
 
 - (void)removeCropToolGainMap
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  [v2 removeCropToolGainMap];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate removeCropToolGainMap];
 }
 
-- (void)trimToolController:(id)a3 didEndInteractivelyEditingElement:(int64_t)a4
+- (void)trimToolController:(id)controller didEndInteractivelyEditingElement:(int64_t)element
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
   if ([(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls])
@@ -202,28 +202,28 @@ void __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_
     [(PUPhotoEditMediaToolController *)self _updateTrackerDisplay:1];
   }
 
-  if ((a4 - 1) <= 1)
+  if ((element - 1) <= 1)
   {
     v6 = PULocalizedString(@"PHOTOEDIT_TRIM_ACTION_TITLE");
     [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v6];
   }
 
-  v9 = [(PUTrimToolController *)self->_trimController playerWrapper];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
   v7 = +[PUPhotoEditProtoSettings sharedInstance];
-  v8 = [v7 pauseAfterMovingPlayhead];
+  pauseAfterMovingPlayhead = [v7 pauseAfterMovingPlayhead];
 
-  if (a4 != 2 && self->_wasPlayingBeforeBeginningToScrubVideo && (v8 & 1) == 0)
+  if (element != 2 && self->_wasPlayingBeforeBeginningToScrubVideo && (pauseAfterMovingPlayhead & 1) == 0)
   {
-    [v9 play];
+    [playerWrapper play];
   }
 }
 
-- (void)trimToolController:(id)a3 didBeginInteractivelyEditingElement:(int64_t)a4
+- (void)trimToolController:(id)controller didBeginInteractivelyEditingElement:(int64_t)element
 {
-  v6 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  self->_wasPlayingBeforeBeginningToScrubVideo = [v6 isPlaying];
-  [v6 pause];
-  if ((a4 - 1) > 1)
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  self->_wasPlayingBeforeBeginningToScrubVideo = [playerWrapper isPlaying];
+  [playerWrapper pause];
+  if ((element - 1) > 1)
   {
     [(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls];
   }
@@ -240,16 +240,16 @@ void __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_
   }
 }
 
-- (id)axDescriptionForFocusDecisionAtTime:(id *)a3
+- (id)axDescriptionForFocusDecisionAtTime:(id *)time
 {
   cinematographyController = self->_cinematographyController;
-  v6 = *a3;
+  v6 = *time;
   v4 = [(PXCinematicEditController *)cinematographyController axDescriptionForFocusDecisionAtTime:&v6];
 
   return v4;
 }
 
-- (void)removeFocusDecisionAtTime:(id *)a3
+- (void)removeFocusDecisionAtTime:(id *)time
 {
   v5 = objc_alloc(MEMORY[0x1E69C34C0]);
   cinematographyController = self->_cinematographyController;
@@ -257,10 +257,10 @@ void __64__PUPhotoEditMediaToolController_apertureToolbarDidStopSliding___block_
   v9[1] = 3221225472;
   v9[2] = __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_invoke;
   v9[3] = &__block_descriptor_56_e35_v16__0__PXCinematicEditController_8l;
-  v10 = *a3;
+  v10 = *time;
   v7 = [v5 initWithCinematicController:cinematographyController changeBlock:v9];
-  v8 = [(PUPhotoEditMediaToolController *)self undoManager];
-  [v7 executeWithUndoManager:v8];
+  undoManager = [(PUPhotoEditMediaToolController *)self undoManager];
+  [v7 executeWithUndoManager:undoManager];
 }
 
 uint64_t __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_invoke(uint64_t a1, void *a2)
@@ -270,18 +270,18 @@ uint64_t __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_
   return [a2 removeFocusDecisionAtTime:&v3];
 }
 
-- (void)trimToolControllerDidChange:(id)a3 state:(unint64_t)a4
+- (void)trimToolControllerDidChange:(id)change state:(unint64_t)state
 {
-  v5 = a3;
+  changeCopy = change;
   [(PUPhotoEditMediaToolController *)self _updateTrackerDisplay:1];
-  v6 = [v5 state];
+  state = [changeCopy state];
 
-  if (!v6)
+  if (!state)
   {
-    v7 = [(PUPhotoEditToolController *)self delegate];
-    v8 = [v7 isStandardVideo];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    isStandardVideo = [delegate isStandardVideo];
 
-    if (v8)
+    if (isStandardVideo)
     {
       trimController = self->_trimController;
       if (trimController)
@@ -295,27 +295,27 @@ uint64_t __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_
         v15 = 0;
       }
 
-      v10 = [(PUPhotoEditToolController *)self valuesCalculator];
+      valuesCalculator = [(PUPhotoEditToolController *)self valuesCalculator];
       v12 = v14;
       v13 = v15;
-      [v10 setVideoFrameTime:&v12];
+      [valuesCalculator setVideoFrameTime:&v12];
 
-      v11 = [(PUPhotoEditToolController *)self valuesCalculator];
-      [v11 precomputeImageValues];
+      valuesCalculator2 = [(PUPhotoEditToolController *)self valuesCalculator];
+      [valuesCalculator2 precomputeImageValues];
     }
   }
 }
 
 - (BOOL)hasTrimmedVideo
 {
-  v3 = [(PUTrimToolController *)self->_trimController playerWrapper];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(PUTrimToolController *)self->_trimController playerWrapper];
-    v6 = [v5 showsUntrimmed] ^ 1;
+    playerWrapper2 = [(PUTrimToolController *)self->_trimController playerWrapper];
+    v6 = [playerWrapper2 showsUntrimmed] ^ 1;
   }
 
   else
@@ -328,53 +328,53 @@ uint64_t __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_
 
 - (void)interactionBegan
 {
-  v2 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  [v2 pause];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  [playerWrapper pause];
 }
 
-- (void)objectTrackingFinishedWithSuccess:(BOOL)a3
+- (void)objectTrackingFinishedWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v4 = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
-  [v4 objectTrackingFinishedWithSuccess:v3];
+  successCopy = success;
+  focusTimelineDelegate = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
+  [focusTimelineDelegate objectTrackingFinishedWithSuccess:successCopy];
 }
 
-- (void)trackedObjectWasUpdatedAtTime:(id *)a3 shouldStop:(BOOL *)a4
+- (void)trackedObjectWasUpdatedAtTime:(id *)time shouldStop:(BOOL *)stop
 {
-  v6 = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
-  v7 = *a3;
-  [v6 updateObjectTrackingProgressAtTime:&v7 shouldStop:a4];
+  focusTimelineDelegate = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
+  v7 = *time;
+  [focusTimelineDelegate updateObjectTrackingProgressAtTime:&v7 shouldStop:stop];
 }
 
-- (void)objectTrackingStartedAtTime:(id *)a3
+- (void)objectTrackingStartedAtTime:(id *)time
 {
-  v4 = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
-  v5 = *a3;
-  [v4 objectTrackingStartedAtTime:&v5];
+  focusTimelineDelegate = [(PXCinematicEditController *)self->_cinematographyController focusTimelineDelegate];
+  v5 = *time;
+  [focusTimelineDelegate objectTrackingStartedAtTime:&v5];
 }
 
 - (void)updateCinematicVideoControlsEnableState
 {
   if ([(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton])
   {
-    v3 = [(PUPhotoEditToolController *)self delegate];
-    [v3 toolControllerDidUpdateToolbar:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerDidUpdateToolbar:self];
   }
 
-  v4 = [(PXCinematicEditController *)self->_cinematographyController cinematicAdjustmentActive];
-  v5 = [(PXCinematicEditController *)self->_cinematographyController isInAutoFocusState];
-  v6 = [(PXCinematicEditController *)self->_cinematographyController canToggleBackToUserFocusState];
-  v7 = v5 ^ 1;
+  cinematicAdjustmentActive = [(PXCinematicEditController *)self->_cinematographyController cinematicAdjustmentActive];
+  isInAutoFocusState = [(PXCinematicEditController *)self->_cinematographyController isInAutoFocusState];
+  canToggleBackToUserFocusState = [(PXCinematicEditController *)self->_cinematographyController canToggleBackToUserFocusState];
+  v7 = isInAutoFocusState ^ 1;
   [(PUPhotoEditToolbarButton *)self->_autoFocusButton setSelected:v7 & 1];
   autoFocusButton = self->_autoFocusButton;
 
-  [(PUPhotoEditToolbarButton *)autoFocusButton setEnabled:v4 & (v7 | v6)];
+  [(PUPhotoEditToolbarButton *)autoFocusButton setEnabled:cinematicAdjustmentActive & (v7 | canToggleBackToUserFocusState)];
 }
 
-- (void)cinematographyWasEditedAtTime:(id *)a3
+- (void)cinematographyWasEditedAtTime:(id *)time
 {
-  v5 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  [v5 pause];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  [playerWrapper pause];
 
   v6 = objc_alloc(MEMORY[0x1E69C34C0]);
   cinematographyController = self->_cinematographyController;
@@ -382,10 +382,10 @@ uint64_t __60__PUPhotoEditMediaToolController_removeFocusDecisionAtTime___block_
   v10[1] = 3221225472;
   v10[2] = __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___block_invoke;
   v10[3] = &__block_descriptor_56_e35_v16__0__PXCinematicEditController_8l;
-  v11 = *a3;
+  v11 = *time;
   v8 = [v6 initWithCinematicController:cinematographyController changeBlock:v10];
-  v9 = [(PUPhotoEditMediaToolController *)self undoManager];
-  [v8 executeWithUndoManager:v9];
+  undoManager = [(PUPhotoEditMediaToolController *)self undoManager];
+  [v8 executeWithUndoManager:undoManager];
 
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
 }
@@ -399,19 +399,19 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
 
 - (void)cinematographyWasEdited
 {
-  v3 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  [v3 pause];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  [playerWrapper pause];
 
   [(PXCinematicEditController *)self->_cinematographyController cinematographyWasEdited];
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
   if ([(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton])
   {
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    [v4 toolControllerDidUpdateToolbar:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerDidUpdateToolbar:self];
   }
 }
 
-- (void)cineScriptCouldNotInitializeWithError:(id)a3
+- (void)cineScriptCouldNotInitializeWithError:(id)error
 {
   self->_isLoadingCinematographyScript = 0;
   cinematographyController = self->_cinematographyController;
@@ -421,43 +421,43 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
   [(PUTrimToolController *)self->_trimController showFocusTimeline:0];
   [(PUVideoEditOverlayViewController *)self->_overlayController willMoveToParentViewController:0];
   [(PUPhotoEditMediaToolController *)self removeChildViewController:self->_overlayController];
-  v5 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-  [v5 removeFromSuperview];
+  view = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+  [view removeFromSuperview];
 
   overlayController = self->_overlayController;
   self->_overlayController = 0;
 }
 
-- (void)cineScriptBecameAvailable:(id)a3
+- (void)cineScriptBecameAvailable:(id)available
 {
   self->_isLoadingCinematographyScript = 0;
   [(PUVideoEditOverlayViewController *)self->_overlayController enableUIForCinematographyScriptLoad:1];
   [(PUTrimToolController *)self->_trimController enableUIForCinematographyScriptLoad:1];
-  v4 = [(PUPhotoEditToolController *)self compositionController];
-  v13 = [v4 portraitVideoAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
 
-  if (v13)
+  if (portraitVideoAdjustmentController)
   {
-    v5 = [v13 enabled];
+    enabled = [portraitVideoAdjustmentController enabled];
     trimController = self->_trimController;
-    if (v5)
+    if (enabled)
     {
-      v7 = [(PUPhotoEditToolController *)self isActiveTool];
+      isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
     }
 
     else
     {
-      v7 = 0;
+      isActiveTool = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isActiveTool = 0;
     trimController = self->_trimController;
   }
 
-  [(PUTrimToolController *)trimController enableFocusTimeline:v7];
+  [(PUTrimToolController *)trimController enableFocusTimeline:isActiveTool];
   self->_cinematicButtonsNeedDimmingViews = 0;
   [(UIView *)self->_portraitVideoButtonDimmingView removeFromSuperview];
   portraitVideoButtonDimmingView = self->_portraitVideoButtonDimmingView;
@@ -471,8 +471,8 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
   [(PXCinematicEditController *)self->_cinematographyController updateFocusDecisions];
   if ([(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton])
   {
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    [v10 toolControllerDidUpdateToolbar:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerDidUpdateToolbar:self];
   }
 
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
@@ -480,8 +480,8 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
   apertureToolbar = self->_apertureToolbar;
   [(PXCinematicEditController *)self->_cinematographyController originalAperture];
   [(PUPhotoEditApertureToolbar *)apertureToolbar setOriginalApertureValueClosestTo:?];
-  v12 = [(PUPhotoEditToolController *)self delegate];
-  [v12 initialCinematographyLoadComplete];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  [delegate2 initialCinematographyLoadComplete];
 }
 
 - (void)disableCinematicUIForLoadingAsset
@@ -497,17 +497,17 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
 - (void)_initializeCinematographyScript
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self editSource];
+  editSource = [(PUPhotoEditToolController *)self editSource];
 
-  if (v3)
+  if (editSource)
   {
-    v4 = [(PUPhotoEditToolController *)self editSource];
+    editSource2 = [(PUPhotoEditToolController *)self editSource];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PUPhotoEditToolController *)self editSource];
+      editSource3 = [(PUPhotoEditToolController *)self editSource];
 
-      if (v5)
+      if (editSource3)
       {
         v6 = objc_alloc_init(MEMORY[0x1E69C33B8]);
         cinematographyController = self->_cinematographyController;
@@ -516,8 +516,8 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
         [(PXCinematicEditController *)self->_cinematographyController setDelegate:self];
         [(PXCinematicEditController *)self->_cinematographyController setFocusTimelineDelegate:self->_trimController];
         v8 = self->_cinematographyController;
-        v9 = [(PUPhotoEditToolController *)self asset];
-        [(PXCinematicEditController *)v8 setAsset:v9 editSource:v5];
+        asset = [(PUPhotoEditToolController *)self asset];
+        [(PXCinematicEditController *)v8 setAsset:asset editSource:editSource3];
 
         if (self->_apertureToolbar)
         {
@@ -538,29 +538,29 @@ uint64_t __64__PUPhotoEditMediaToolController_cinematographyWasEditedAtTime___bl
     v10 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PUPhotoEditToolController *)self editSource];
+      editSource4 = [(PUPhotoEditToolController *)self editSource];
       v12 = 138412290;
-      v13 = v11;
+      v13 = editSource4;
       _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_ERROR, "Cannot initialize cinematography; edit source is not a PLVideoEditSource: %@", &v12, 0xCu);
     }
 
-    v5 = 0;
+    editSource3 = 0;
   }
 
   else
   {
-    v5 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    editSource3 = PLPhotoEditGetLog();
+    if (os_log_type_enabled(editSource3, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_ERROR, "Cannot initialize cinematography; edit source is nil", &v12, 2u);
+      _os_log_impl(&dword_1B36F3000, editSource3, OS_LOG_TYPE_ERROR, "Cannot initialize cinematography; edit source is nil", &v12, 2u);
     }
   }
 
 LABEL_12:
 }
 
-- (void)_handleAutoFocusButton:(id)a3
+- (void)_handleAutoFocusButton:(id)button
 {
   v4 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -574,8 +574,8 @@ LABEL_12:
   [(PUVideoEditOverlayViewController *)self->_overlayController setNeedsUpdateTrackingFrame];
   v6 = [objc_alloc(MEMORY[0x1E69C34E0]) initWithCinematicController:self->_cinematographyController];
   [v6 setLocalizedActionName:v5];
-  v7 = [(PUPhotoEditMediaToolController *)self undoManager];
-  [v6 executeWithUndoManager:v7 completionHandler:&__block_literal_global_428];
+  undoManager = [(PUPhotoEditMediaToolController *)self undoManager];
+  [v6 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_428];
 
   [(PUPhotoEditMediaToolController *)self cinematographyWasEdited];
   [(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton];
@@ -585,17 +585,17 @@ LABEL_12:
 {
   if (self->_apertureToolbar)
   {
-    v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v4 = [v3 shouldDisplayCompactToolbar];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    shouldDisplayCompactToolbar = [photoEditSpec shouldDisplayCompactToolbar];
 
     v5 = 0.0;
-    if ((v4 & 1) == 0)
+    if ((shouldDisplayCompactToolbar & 1) == 0)
     {
-      v6 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v7 = [v6 currentLayoutStyle];
+      photoEditSpec2 = [(PUPhotoEditToolController *)self photoEditSpec];
+      currentLayoutStyle = [photoEditSpec2 currentLayoutStyle];
 
-      v8 = [(PUPhotoEditToolController *)self layoutOrientation];
-      v9 = v7 != 4 && v8 == 1;
+      layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+      v9 = currentLayoutStyle != 4 && layoutOrientation == 1;
       v5 = 275.0;
       if (!v9)
       {
@@ -613,16 +613,16 @@ LABEL_12:
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = [[PUPortraitVideoDebugController alloc] initWithNibName:0 bundle:0];
-  v4 = [(PUPhotoEditToolController *)self compositionController];
-  [(PUPortraitVideoDebugController *)v3 setCompositionController:v4];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  [(PUPortraitVideoDebugController *)v3 setCompositionController:compositionController];
 
   v5 = v3;
   [(PUPortraitVideoDebugController *)v5 loadViewIfNeeded];
-  v6 = [(PUPhotoEditMediaToolController *)self view];
-  v7 = [v6 traitCollection];
-  v8 = [v7 horizontalSizeClass];
+  view = [(PUPhotoEditMediaToolController *)self view];
+  traitCollection = [view traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v8 == 1)
+  if (horizontalSizeClass == 1)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
 
@@ -630,24 +630,24 @@ LABEL_12:
     v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__dismissPortraitVideoDebugControls_];
     v17[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    v12 = [(PUPortraitVideoDebugController *)v5 navigationItem];
-    [v12 setRightBarButtonItems:v11];
+    navigationItem = [(PUPortraitVideoDebugController *)v5 navigationItem];
+    [navigationItem setRightBarButtonItems:v11];
 
-    v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v14 = [(PUPortraitVideoDebugController *)v5 view];
-    [v14 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view2 = [(PUPortraitVideoDebugController *)v5 view];
+    [view2 setBackgroundColor:systemBackgroundColor];
 
-    v15 = [(PUPortraitVideoDebugController *)v5 view];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:1];
+    view3 = [(PUPortraitVideoDebugController *)v5 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:1];
   }
 
   else
   {
     [(PUPortraitVideoDebugController *)v5 setModalPresentationStyle:7];
-    v16 = [(PUPortraitVideoDebugController *)v5 popoverPresentationController];
-    [v16 setSourceView:self->_portraitVideoButton];
+    popoverPresentationController = [(PUPortraitVideoDebugController *)v5 popoverPresentationController];
+    [popoverPresentationController setSourceView:self->_portraitVideoButton];
     [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton bounds];
-    [v16 setSourceRect:?];
+    [popoverPresentationController setSourceRect:?];
     [(PUPortraitVideoDebugController *)v5 setPreferredContentSize:580.0, 340.0];
 
     v9 = v5;
@@ -656,33 +656,33 @@ LABEL_12:
   [(PUPhotoEditMediaToolController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_handlePortraitVideoButtonLongPress:(id)a3
+- (void)_handlePortraitVideoButtonLongPress:(id)press
 {
-  if ([a3 state] == 3)
+  if ([press state] == 3)
   {
 
     [(PUPhotoEditMediaToolController *)self _presentPortraitVideoDebugControls];
   }
 }
 
-- (void)_handlePortraitVideoButton:(id)a3
+- (void)_handlePortraitVideoButton:(id)button
 {
-  v4 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  [v4 pause];
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  [playerWrapper pause];
 
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  v5 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton isSelected];
-  v6 = [(PUPhotoEditToolController *)self compositionController];
-  v7 = [v6 adjustmentConstants];
-  v8 = [v7 PIPortraitVideoAdjustmentKey];
+  isSelected = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton isSelected];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__PUPhotoEditMediaToolController__handlePortraitVideoButton___block_invoke;
   v11[3] = &__block_descriptor_33_e45_v16__0__PIPortraitVideoAdjustmentController_8l;
-  v12 = v5;
-  [v6 modifyAdjustmentWithKey:v8 modificationBlock:v11];
+  v12 = isSelected;
+  [compositionController modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v11];
 
-  if (v5)
+  if (isSelected)
   {
     v9 = @"PHOTOEDIT_CINEMATIC_ENABLE_ACTION";
   }
@@ -699,14 +699,14 @@ LABEL_12:
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
 }
 
-- (void)_setToolMode:(int64_t)a3
+- (void)_setToolMode:(int64_t)mode
 {
-  if (self->_toolMode != a3)
+  if (self->_toolMode != mode)
   {
-    self->_toolMode = a3;
-    v5 = a3 == 1;
-    v6 = [(PUPhotoEditToolController *)self delegate];
-    [v6 toolController:self showVideoScrubber:v5 animated:v5];
+    self->_toolMode = mode;
+    v5 = mode == 1;
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolController:self showVideoScrubber:v5 animated:v5];
 
     [(PUPhotoEditMediaToolController *)self _updateApertureControlsAnimated:1];
 
@@ -714,22 +714,22 @@ LABEL_12:
   }
 }
 
-- (void)_updateApertureControlsAnimated:(BOOL)a3
+- (void)_updateApertureControlsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  if (a3)
+  animatedCopy = animated;
+  if (animated)
   {
-    v5 = [(UIView *)self->_apertureButtonContainer superview];
-    [v5 layoutIfNeeded];
+    superview = [(UIView *)self->_apertureButtonContainer superview];
+    [superview layoutIfNeeded];
   }
 
-  v6 = [(PXCinematicEditController *)self->_cinematographyController cinematicAdjustmentActive];
+  cinematicAdjustmentActive = [(PXCinematicEditController *)self->_cinematographyController cinematicAdjustmentActive];
   [(PXCinematicEditController *)self->_cinematographyController cinematicAperture];
   v8 = v7;
   [(CEKApertureButton *)self->_apertureButton setActive:self->_toolMode == 1];
   [(CEKApertureButton *)self->_apertureButton setApertureValue:v8];
-  v9 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v10 = [v9 shouldAllowApertureButtonExpansion];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  shouldAllowApertureButtonExpansion = [photoEditSpec shouldAllowApertureButtonExpansion];
 
   toolMode = self->_toolMode;
   if (MEMORY[0x1B8C6D660]())
@@ -741,29 +741,29 @@ LABEL_12:
 
   else
   {
-    v15 = (toolMode != 1) & v6;
+    v15 = (toolMode != 1) & cinematicAdjustmentActive;
     if (v8 <= 0.0)
     {
       v15 = 0;
     }
 
     apertureButton = self->_apertureButton;
-    v13 = v15 & v10;
-    v14 = v3;
+    v13 = v15 & shouldAllowApertureButtonExpansion;
+    v14 = animatedCopy;
   }
 
   [(CEKApertureButton *)apertureButton setShouldShowApertureValue:v13 animated:v14];
-  v16 = [(CEKApertureButton *)self->_apertureButton superview];
-  [v16 setNeedsLayout];
+  superview2 = [(CEKApertureButton *)self->_apertureButton superview];
+  [superview2 setNeedsLayout];
 
   v17 = +[PUPhotoEditProtoSettings sharedInstance];
-  v18 = [v17 apertureSliderHasOffPosition];
+  apertureSliderHasOffPosition = [v17 apertureSliderHasOffPosition];
 
   apertureToolbar = self->_apertureToolbar;
-  if ((v18 & 1) == 0)
+  if ((apertureSliderHasOffPosition & 1) == 0)
   {
-    [(PUPhotoEditApertureToolbar *)apertureToolbar setEnabled:v6];
-    if (!v6)
+    [(PUPhotoEditApertureToolbar *)apertureToolbar setEnabled:cinematicAdjustmentActive];
+    if (!cinematicAdjustmentActive)
     {
       goto LABEL_13;
     }
@@ -771,8 +771,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(PUPhotoEditApertureToolbar *)apertureToolbar setDepthIsOn:v6];
-  if (v6)
+  [(PUPhotoEditApertureToolbar *)apertureToolbar setDepthIsOn:cinematicAdjustmentActive];
+  if (cinematicAdjustmentActive)
   {
 LABEL_12:
     [(PUPhotoEditApertureToolbar *)self->_apertureToolbar setApertureValueClosestTo:v8];
@@ -801,7 +801,7 @@ LABEL_13:
   v24[4] = self;
   v25 = v20;
   v23 = _Block_copy(v24);
-  if (v3)
+  if (animatedCopy)
   {
     [(UIView *)self->_apertureContainer setHidden:0];
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v22 options:v23 animations:0.25 completion:0.0];
@@ -831,13 +831,13 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
   return [v4 _updateTrackerDisplay:1];
 }
 
-- (void)_updateTrackerDisplay:(BOOL)a3
+- (void)_updateTrackerDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v5 = +[PUPhotoEditProtoSettings sharedInstance];
-  v6 = [v5 hideTrackersDuringPlayback];
+  hideTrackersDuringPlayback = [v5 hideTrackersDuringPlayback];
 
-  if (v6)
+  if (hideTrackersDuringPlayback)
   {
     v7 = [(PUTrimToolController *)self->_trimController state]== 1;
   }
@@ -847,43 +847,43 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
     v7 = 0;
   }
 
-  v8 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton isSelected];
+  isSelected = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton isSelected];
   toolMode = self->_toolMode;
-  v10 = [(PUTrimToolController *)self->_trimController currentlyInteractingElement];
+  currentlyInteractingElement = [(PUTrimToolController *)self->_trimController currentlyInteractingElement];
   overlayController = self->_overlayController;
-  v12 = [(PUPhotoEditToolController *)self isActiveTool];
+  isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
   isLoadingCinematographyScript = 1;
-  if (v12 && !v7)
+  if (isActiveTool && !v7)
   {
-    v14 = !v8 || toolMode == 1;
-    if (!v14 && (v10 - 1) >= 2)
+    v14 = !isSelected || toolMode == 1;
+    if (!v14 && (currentlyInteractingElement - 1) >= 2)
     {
       isLoadingCinematographyScript = self->_isLoadingCinematographyScript;
     }
   }
 
-  [(PUVideoEditOverlayViewController *)overlayController setHidden:isLoadingCinematographyScript animated:v3];
+  [(PUVideoEditOverlayViewController *)overlayController setHidden:isLoadingCinematographyScript animated:displayCopy];
 }
 
-- (void)_updatePortraitVideoButtonAnimated:(BOOL)a3
+- (void)_updatePortraitVideoButtonAnimated:(BOOL)animated
 {
   if (self->_portraitVideoButton && self->_cinematographyController)
   {
-    v4 = a3;
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v12 = [v5 portraitVideoAdjustmentController];
+    animatedCopy = animated;
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    portraitVideoAdjustmentController = [compositionController portraitVideoAdjustmentController];
 
-    if (v12)
+    if (portraitVideoAdjustmentController)
     {
-      v6 = [v12 enabled];
+      enabled = [portraitVideoAdjustmentController enabled];
     }
 
     else
     {
-      v6 = 0;
+      enabled = 0;
     }
 
-    [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton setSelected:v6];
+    [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton setSelected:enabled];
     v7 = MEMORY[0x1E69C3BF0];
     if ([(PUPhotoEditToolActivationButton *)self->_portraitVideoButton isSelected])
     {
@@ -899,41 +899,41 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
     [(PXUIButton *)self->_portraitVideoButton setPx_configuration:v9];
 
     trimController = self->_trimController;
-    if (v6)
+    if (enabled)
     {
-      v11 = [(PUPhotoEditToolController *)self isActiveTool];
+      isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
     }
 
     else
     {
-      v11 = 0;
+      isActiveTool = 0;
     }
 
-    [(PUTrimToolController *)trimController enableFocusTimeline:v11];
-    [(PUPhotoEditMediaToolController *)self _updateTrackerDisplay:v4];
+    [(PUTrimToolController *)trimController enableFocusTimeline:isActiveTool];
+    [(PUPhotoEditMediaToolController *)self _updateTrackerDisplay:animatedCopy];
   }
 }
 
 - (BOOL)_wantsPortraitVideoControls
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  v3 = [v2 isPortraitVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isPortraitVideo = [delegate isPortraitVideo];
 
-  return v3;
+  return isPortraitVideo;
 }
 
 - (id)_rateToolbarButtonMenuElements
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 playbackRateOptions];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  playbackRateOptions = [delegate playbackRateOptions];
 
-  v21 = [(PUPhotoEditToolController *)self compositionController];
-  v5 = [v21 slomoAdjustmentController];
-  v20 = v5;
-  if (v5)
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  slomoAdjustmentController = [compositionController slomoAdjustmentController];
+  v20 = slomoAdjustmentController;
+  if (slomoAdjustmentController)
   {
-    [v5 rate];
+    [slomoAdjustmentController rate];
     v7 = v6;
   }
 
@@ -947,7 +947,7 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = playbackRateOptions;
   v9 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -964,7 +964,7 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
         v12 = *(*(&v27 + 1) + 8 * i);
         [v12 playbackRate];
         v14 = v13;
-        v15 = [v12 localizedTitle];
+        localizedTitle = [v12 localizedTitle];
         objc_initWeak(&location, self);
         v16 = MEMORY[0x1E69DC628];
         v23[0] = MEMORY[0x1E69E9820];
@@ -973,9 +973,9 @@ uint64_t __66__PUPhotoEditMediaToolController__updateApertureControlsAnimated___
         v23[3] = &unk_1E7B7ACF0;
         objc_copyWeak(&v24, &location);
         v25 = v14;
-        v17 = [v16 actionWithTitle:v15 image:0 identifier:0 handler:v23];
-        v18 = [v12 localizedSubtitle];
-        [v17 setSubtitle:v18];
+        v17 = [v16 actionWithTitle:localizedTitle image:0 identifier:0 handler:v23];
+        localizedSubtitle = [v12 localizedSubtitle];
+        [v17 setSubtitle:localizedSubtitle];
 
         [v17 setState:v7 == v14];
         [v8 addObject:v17];
@@ -1002,14 +1002,14 @@ void __64__PUPhotoEditMediaToolController__rateToolbarButtonMenuElements__block_
 - (void)_updateRateToolbarButton
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditMediaToolController *)self _wantsRateControl];
+  _wantsRateControl = [(PUPhotoEditMediaToolController *)self _wantsRateControl];
   rateButton = self->_rateButton;
-  if (v3)
+  if (_wantsRateControl)
   {
     if (!rateButton)
     {
-      v5 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"gauge.with.dots.needle.33percent" selectedImageNamed:@"gauge.with.dots.needle.33percent" accessibilityLabel:&stru_1F2AC6818 spec:v5];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"gauge.with.dots.needle.33percent" selectedImageNamed:@"gauge.with.dots.needle.33percent" accessibilityLabel:&stru_1F2AC6818 spec:photoEditSpec];
       v7 = self->_rateButton;
       self->_rateButton = v6;
 
@@ -1060,14 +1060,14 @@ void __58__PUPhotoEditMediaToolController__updateRateToolbarButton__block_invoke
   a2[2](v4, v7);
 }
 
-- (void)_setPlaybackRate:(double)a3
+- (void)_setPlaybackRate:(double)rate
 {
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 slomoAdjustmentController];
-  v7 = v6;
-  if (v6)
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  slomoAdjustmentController = [compositionController slomoAdjustmentController];
+  v7 = slomoAdjustmentController;
+  if (slomoAdjustmentController)
   {
-    [v6 rate];
+    [slomoAdjustmentController rate];
   }
 
   else
@@ -1075,24 +1075,24 @@ void __58__PUPhotoEditMediaToolController__updateRateToolbarButton__block_invoke
     v8 = 1.0;
   }
 
-  if (v8 != a3)
+  if (v8 != rate)
   {
     [(PUPhotoEditToolController *)self willModifyAdjustment];
-    if (a3 != 1.0 || (-[PUPhotoEditToolController asset](self, "asset"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 mediaSubtypes], v9, (v10 & 0x20000) != 0))
+    if (rate != 1.0 || (-[PUPhotoEditToolController asset](self, "asset"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 mediaSubtypes], v9, (v10 & 0x20000) != 0))
     {
       v11 = *MEMORY[0x1E69BE160];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __51__PUPhotoEditMediaToolController__setPlaybackRate___block_invoke;
       v13[3] = &unk_1E7B7ACC8;
-      *&v13[5] = a3;
+      *&v13[5] = rate;
       v13[4] = self;
-      [v5 modifyAdjustmentWithKey:v11 modificationBlock:v13];
+      [compositionController modifyAdjustmentWithKey:v11 modificationBlock:v13];
     }
 
     else
     {
-      [v5 removeAdjustmentWithKey:*MEMORY[0x1E69BE160]];
+      [compositionController removeAdjustmentWithKey:*MEMORY[0x1E69BE160]];
     }
 
     v12 = PULocalizedString(@"PhotoEditPlaybackRateChangeActionName");
@@ -1154,10 +1154,10 @@ LABEL_9:
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    v5 = [v4 isHighframeRateVideo];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    isHighframeRateVideo = [delegate isHighframeRateVideo];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isHighframeRateVideo;
   }
 
   return v3;
@@ -1165,49 +1165,49 @@ LABEL_9:
 
 - (BOOL)_isSlomoEnabled
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isHighframeRateVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isHighframeRateVideo = [delegate isHighframeRateVideo];
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v6 = [v5 slomoAdjustmentController];
-    v7 = v6;
-    if (v6)
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    slomoAdjustmentController = [compositionController slomoAdjustmentController];
+    v7 = slomoAdjustmentController;
+    if (slomoAdjustmentController)
     {
-      [v6 rate];
-      v4 = v8 < 1.0;
+      [slomoAdjustmentController rate];
+      isHighframeRateVideo = v8 < 1.0;
     }
 
     else
     {
-      v4 = 0;
+      isHighframeRateVideo = 0;
     }
   }
 
-  return v4;
+  return isHighframeRateVideo;
 }
 
-- (void)_updateStabilizationInProgress:(BOOL)a3
+- (void)_updateStabilizationInProgress:(BOOL)progress
 {
-  self->_stabilizationInProgress = a3;
+  self->_stabilizationInProgress = progress;
   [(PUPhotoEditMediaToolController *)self _updateStabilizeButtonAnimated:1];
 
   [(PUPhotoEditMediaToolController *)self _updateStabilizeProgressViewAnimated:1];
 }
 
-- (void)_reportStabilizeProgress:(double)a3
+- (void)_reportStabilizeProgress:(double)progress
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__PUPhotoEditMediaToolController__reportStabilizeProgress___block_invoke;
   v3[3] = &unk_1E7B7FF70;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = progress;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-- (void)_updateStabilizeProgressViewAnimated:(BOOL)a3
+- (void)_updateStabilizeProgressViewAnimated:(BOOL)animated
 {
   v14[2] = *MEMORY[0x1E69E9840];
   stabilizeProgressView = self->_stabilizeProgressView;
@@ -1224,11 +1224,11 @@ LABEL_9:
 
     [(PLRoundProgressView *)self->_stabilizeProgressView setTranslatesAutoresizingMaskIntoConstraints:0];
     v7 = MEMORY[0x1E696ACD8];
-    v8 = [(PLRoundProgressView *)self->_stabilizeProgressView widthAnchor];
-    v9 = [v8 constraintEqualToConstant:20.0];
+    widthAnchor = [(PLRoundProgressView *)self->_stabilizeProgressView widthAnchor];
+    v9 = [widthAnchor constraintEqualToConstant:20.0];
     v14[0] = v9;
-    v10 = [(PLRoundProgressView *)self->_stabilizeProgressView heightAnchor];
-    v11 = [v10 constraintEqualToConstant:20.0];
+    heightAnchor = [(PLRoundProgressView *)self->_stabilizeProgressView heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:20.0];
     v14[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     [v7 activateConstraints:v12];
@@ -1244,21 +1244,21 @@ LABEL_9:
     self->_stabilizeProgressView = 0;
   }
 
-  v13 = [(PUPhotoEditToolController *)self delegate];
-  [v13 toolControllerDidUpdateToolbar:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerDidUpdateToolbar:self];
 }
 
-- (void)_handleStabilizeButton:(id)a3
+- (void)_handleStabilizeButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 adjustmentConstants];
-  v7 = [v5 videoStabilizeAdjustmentController];
+  buttonCopy = button;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
+  videoStabilizeAdjustmentController = [compositionController videoStabilizeAdjustmentController];
 
-  if (v7)
+  if (videoStabilizeAdjustmentController)
   {
-    v8 = [v6 PIVideoStabilizeAdjustmentKey];
-    [v5 modifyAdjustmentWithKey:v8 modificationBlock:&__block_literal_global_380_54290];
+    pIVideoStabilizeAdjustmentKey = [adjustmentConstants PIVideoStabilizeAdjustmentKey];
+    [compositionController modifyAdjustmentWithKey:pIVideoStabilizeAdjustmentKey modificationBlock:&__block_literal_global_380_54290];
   }
 
   else if (!self->_stabilizationInProgress)
@@ -1266,8 +1266,8 @@ LABEL_9:
     [(PUPhotoEditMediaToolController *)self _updateStabilizationInProgress:1];
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x1E69BDF80]);
-    v10 = [v5 composition];
-    v11 = [v9 initWithComposition:v10];
+    composition = [compositionController composition];
+    v11 = [v9 initWithComposition:composition];
 
     v12 = +[PUPhotoEditProtoSettings sharedInstance];
     [v12 videoStabilizeMaxCropFraction];
@@ -1286,8 +1286,8 @@ LABEL_9:
     v15[1] = 3221225472;
     v15[2] = __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke_3;
     v15[3] = &unk_1E7B7B428;
-    v16 = v5;
-    v17 = v6;
+    v16 = compositionController;
+    v17 = adjustmentConstants;
     v18[1] = v14;
     objc_copyWeak(v18, &location);
     [v11 submit:v15];
@@ -1376,16 +1376,16 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
   [v2 setEnabled:{objc_msgSend(v2, "enabled") ^ 1}];
 }
 
-- (void)_updateStabilizeButtonAnimated:(BOOL)a3
+- (void)_updateStabilizeButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPhotoEditToolController *)self delegate];
-  v6 = [v5 isStandardVideo];
+  animatedCopy = animated;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
   if (self->_stabilizeButton)
   {
-    v7 = [(PUPhotoEditToolController *)self delegate];
-    [v7 configureEnablenessOfControlButton:self->_stabilizeButton animated:v3 canVisuallyDisable:1];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    [delegate2 configureEnablenessOfControlButton:self->_stabilizeButton animated:animatedCopy canVisuallyDisable:1];
 
     stabilizeButton = self->_stabilizeButton;
   }
@@ -1395,24 +1395,24 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
     stabilizeButton = 0;
   }
 
-  [(UIButton *)stabilizeButton setHidden:v6 ^ 1];
-  [(UIButton *)self->_stabilizeButton setEnabled:v6];
-  v16 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [v16 videoStabilizeAdjustmentController];
-  v10 = v9;
-  if (v9)
+  [(UIButton *)stabilizeButton setHidden:isStandardVideo ^ 1];
+  [(UIButton *)self->_stabilizeButton setEnabled:isStandardVideo];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  videoStabilizeAdjustmentController = [compositionController videoStabilizeAdjustmentController];
+  v10 = videoStabilizeAdjustmentController;
+  if (videoStabilizeAdjustmentController)
   {
-    v11 = [v9 enabled];
+    enabled = [videoStabilizeAdjustmentController enabled];
   }
 
   else
   {
-    v11 = 0;
+    enabled = 0;
   }
 
   v12 = +[PUInterfaceManager currentTheme];
   v13 = self->_stabilizeButton;
-  if (v11)
+  if (enabled)
   {
     [(UIButton *)v13 setSelected:1];
     v14 = self->_stabilizeButton;
@@ -1429,46 +1429,46 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
   [(UIButton *)v14 setTintColor:v15];
 }
 
-- (void)_handleMuteButton:(id)a3
+- (void)_handleMuteButton:(id)button
 {
   v4 = MEMORY[0x1E69C34B8];
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v4 muteToggleActionWithCompositionController:v5 isLoopingVideo:{objc_msgSend(v6, "isLoopingVideo")}];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v8 = [v4 muteToggleActionWithCompositionController:compositionController isLoopingVideo:{objc_msgSend(delegate, "isLoopingVideo")}];
 
-  v7 = [(PUPhotoEditMediaToolController *)self undoManager];
-  [v8 executeWithUndoManager:v7 completionHandler:&__block_literal_global_54301];
+  undoManager = [(PUPhotoEditMediaToolController *)self undoManager];
+  [v8 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_54301];
 }
 
-- (void)_updateMuteButtonAnimated:(BOOL)a3
+- (void)_updateMuteButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPhotoEditToolController *)self asset];
-  if ([v5 isLivePhoto])
+  animatedCopy = animated;
+  asset = [(PUPhotoEditToolController *)self asset];
+  if ([asset isLivePhoto])
   {
-    v6 = 1;
+    isStandardVideo = 1;
   }
 
   else
   {
-    v7 = [(PUPhotoEditToolController *)self delegate];
-    if ([v7 isLoopingVideo])
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    if ([delegate isLoopingVideo])
     {
-      v6 = 1;
+      isStandardVideo = 1;
     }
 
     else
     {
-      v8 = [(PUPhotoEditToolController *)self delegate];
-      v6 = [v8 isStandardVideo];
+      delegate2 = [(PUPhotoEditToolController *)self delegate];
+      isStandardVideo = [delegate2 isStandardVideo];
     }
   }
 
-  v26 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [v26 autoLoopAdjustmentController];
-  v10 = [v9 flavor];
-  v11 = [(PUPhotoEditToolController *)self delegate];
-  if ([v11 isLoopingVideo])
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  autoLoopAdjustmentController = [compositionController autoLoopAdjustmentController];
+  flavor = [autoLoopAdjustmentController flavor];
+  delegate3 = [(PUPhotoEditToolController *)self delegate];
+  if ([delegate3 isLoopingVideo])
   {
     v12 = PIAutoLoopFlavorFromString() != 2;
   }
@@ -1478,10 +1478,10 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
     v12 = 1;
   }
 
-  if (v6)
+  if (isStandardVideo)
   {
-    v13 = [(PUPhotoEditToolController *)self delegate];
-    v14 = [v13 isVideoOn] & v12;
+    delegate4 = [(PUPhotoEditToolController *)self delegate];
+    v14 = [delegate4 isVideoOn] & v12;
   }
 
   else
@@ -1491,8 +1491,8 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
 
   if (self->_muteButton)
   {
-    v15 = [(PUPhotoEditToolController *)self delegate];
-    [v15 configureEnablenessOfControlButton:self->_muteButton animated:v3 canVisuallyDisable:1];
+    delegate5 = [(PUPhotoEditToolController *)self delegate];
+    [delegate5 configureEnablenessOfControlButton:self->_muteButton animated:animatedCopy canVisuallyDisable:1];
 
     muteButton = self->_muteButton;
   }
@@ -1502,47 +1502,47 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
     muteButton = 0;
   }
 
-  [(PUPhotoEditToolbarButton *)muteButton setHidden:v6 ^ 1u];
+  [(PUPhotoEditToolbarButton *)muteButton setHidden:isStandardVideo ^ 1u];
   [(PUPhotoEditToolbarButton *)self->_muteButton setEnabled:v14];
-  v17 = [(PUPhotoEditToolController *)self compositionController];
-  v18 = [v17 adjustmentControllerForKey:*MEMORY[0x1E69BE048]];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  v18 = [compositionController2 adjustmentControllerForKey:*MEMORY[0x1E69BE048]];
 
   if (v18)
   {
-    v19 = [v18 enabled];
+    enabled = [v18 enabled];
   }
 
   else
   {
-    v20 = [(PUPhotoEditToolController *)self delegate];
-    v19 = [v20 hasLoopingVideoAdjustment];
+    delegate6 = [(PUPhotoEditToolController *)self delegate];
+    enabled = [delegate6 hasLoopingVideoAdjustment];
   }
 
   v21 = +[PUInterfaceManager currentTheme];
   v22 = v21;
-  if (v19)
+  if (enabled)
   {
-    v23 = [v21 photoEditingIrisDisabledColor];
+    photoEditingIrisDisabledColor = [v21 photoEditingIrisDisabledColor];
     v24 = @"PHOTOEDIT_MUTE_BUTTON_AX_VALUE_ON";
   }
 
   else
   {
-    v23 = [v21 photoEditingIrisEnabledColor];
+    photoEditingIrisDisabledColor = [v21 photoEditingIrisEnabledColor];
     v24 = @"PHOTOEDIT_MUTE_BUTTON_AX_VALUE_OFF";
   }
 
-  [(PUPhotoEditToolbarButton *)self->_muteButton setTintColor:v23];
-  [(PUPhotoEditToolbarButton *)self->_muteButton setSelected:v19];
+  [(PUPhotoEditToolbarButton *)self->_muteButton setTintColor:photoEditingIrisDisabledColor];
+  [(PUPhotoEditToolbarButton *)self->_muteButton setSelected:enabled];
   v25 = PULocalizedString(v24);
   [(PUPhotoEditToolbarButton *)self->_muteButton setAccessibilityValue:v25];
 }
 
 - (id)_localizedTitleForCurrentPlaybackVariation
 {
-  v2 = [(PUPhotoEditToolController *)self compositionController];
-  v3 = [v2 autoLoopAdjustmentController];
-  v4 = [v3 flavor];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  autoLoopAdjustmentController = [compositionController autoLoopAdjustmentController];
+  flavor = [autoLoopAdjustmentController flavor];
 
   v5 = PIAutoLoopFlavorFromString();
   if (v5 > 3)
@@ -1560,7 +1560,7 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
   return v7;
 }
 
-- (void)_handleLivePhotoButton:(id)a3
+- (void)_handleLivePhotoButton:(id)button
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1568,19 +1568,19 @@ void __57__PUPhotoEditMediaToolController__handleStabilizeButton___block_invoke(
   aBlock[3] = &unk_1E7B7F020;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [(PUPhotoEditToolController *)self delegate];
-  v6 = [v5 isVideoOn];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isVideoOn = [delegate isVideoOn];
 
-  if (v6)
+  if (isVideoOn)
   {
     v4[2](v4, 1);
   }
 
   else
   {
-    v7 = [(PUPhotoEditMediaToolController *)self livePortraitBehaviorController];
-    v8 = [(PUPhotoEditToolController *)self compositionController];
-    v9 = [v7 confirmationWarningStringForAction:4 compositionController:v8];
+    livePortraitBehaviorController = [(PUPhotoEditMediaToolController *)self livePortraitBehaviorController];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    v9 = [livePortraitBehaviorController confirmationWarningStringForAction:4 compositionController:compositionController];
 
     if (v9)
     {
@@ -1637,21 +1637,21 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
   }
 }
 
-- (void)_updateLivePhotoButtonAnimated:(BOOL)a3
+- (void)_updateLivePhotoButtonAnimated:(BOOL)animated
 {
   if (self->_livePhotoButton)
   {
-    v4 = a3;
-    v5 = [(PUPhotoEditToolController *)self delegate];
-    [v5 configureEnablenessOfControlButton:self->_livePhotoButton animated:v4 canVisuallyDisable:0];
+    animatedCopy = animated;
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate configureEnablenessOfControlButton:self->_livePhotoButton animated:animatedCopy canVisuallyDisable:0];
   }
 
-  v6 = [(PUPhotoEditToolController *)self asset];
-  v7 = [v6 isLivePhotoVisibilityAdjustmentAllowed];
+  asset = [(PUPhotoEditToolController *)self asset];
+  isLivePhotoVisibilityAdjustmentAllowed = [asset isLivePhotoVisibilityAdjustmentAllowed];
 
-  [(PUPhotoEditToolActivationButton *)self->_livePhotoButton setHidden:v7 ^ 1u];
-  v8 = [(PUPhotoEditToolController *)self delegate];
-  -[PUPhotoEditToolActivationButton setSelected:](self->_livePhotoButton, "setSelected:", [v8 isVideoOn]);
+  [(PUPhotoEditToolActivationButton *)self->_livePhotoButton setHidden:isLivePhotoVisibilityAdjustmentAllowed ^ 1u];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  -[PUPhotoEditToolActivationButton setSelected:](self->_livePhotoButton, "setSelected:", [delegate2 isVideoOn]);
 
   v9 = MEMORY[0x1E69C3BF0];
   if ([(PUPhotoEditToolActivationButton *)self->_livePhotoButton isSelected])
@@ -1668,28 +1668,28 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
   [(PXUIButton *)self->_livePhotoButton setPx_configuration:v11];
 }
 
-- (void)togglePlayback:(id)a3
+- (void)togglePlayback:(id)playback
 {
-  v3 = [(PUTrimToolController *)self->_trimController playerWrapper];
-  if ([v3 isPlaying])
+  playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+  if ([playerWrapper isPlaying])
   {
-    [v3 pause];
+    [playerWrapper pause];
   }
 
   else
   {
-    [v3 play];
+    [playerWrapper play];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_togglePlayback_ == a3)
+  if (sel_togglePlayback_ == action)
   {
-    v5 = [(PUTrimToolController *)self->_trimController playerWrapper];
-    v6 = [v5 isReadyToPlay];
+    playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+    isReadyToPlay = [playerWrapper isReadyToPlay];
 
-    return v6;
+    return isReadyToPlay;
   }
 
   else
@@ -1700,23 +1700,23 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
   }
 }
 
-- (void)updateToolbarButtonsAnimated:(BOOL)a3
+- (void)updateToolbarButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = PUPhotoEditMediaToolController;
   [(PUPhotoEditToolController *)&v5 updateToolbarButtonsAnimated:?];
-  [(PUPhotoEditMediaToolController *)self _updateLivePhotoButtonAnimated:v3];
-  [(PUPhotoEditMediaToolController *)self _updateMuteButtonAnimated:v3];
-  [(PUPhotoEditMediaToolController *)self _updateStabilizeButtonAnimated:v3];
-  [(PUPhotoEditMediaToolController *)self _updatePortraitVideoButtonAnimated:v3];
-  [(PUPhotoEditMediaToolController *)self _updateApertureControlsAnimated:v3];
+  [(PUPhotoEditMediaToolController *)self _updateLivePhotoButtonAnimated:animatedCopy];
+  [(PUPhotoEditMediaToolController *)self _updateMuteButtonAnimated:animatedCopy];
+  [(PUPhotoEditMediaToolController *)self _updateStabilizeButtonAnimated:animatedCopy];
+  [(PUPhotoEditMediaToolController *)self _updatePortraitVideoButtonAnimated:animatedCopy];
+  [(PUPhotoEditMediaToolController *)self _updateApertureControlsAnimated:animatedCopy];
 }
 
-- (void)reloadToolbarButtons:(BOOL)a3
+- (void)reloadToolbarButtons:(BOOL)buttons
 {
-  v3 = a3;
-  v5 = [(PUPhotoEditToolController *)self editSource];
+  buttonsCopy = buttons;
+  editSource = [(PUPhotoEditToolController *)self editSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1724,7 +1724,7 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
 
   else
   {
-    v6 = [(PUPhotoEditToolController *)self editSource];
+    editSource2 = [(PUPhotoEditToolController *)self editSource];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1734,7 +1734,7 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
     }
   }
 
-  if (v3)
+  if (buttonsCopy)
   {
     livePhotoButton = self->_livePhotoButton;
     self->_livePhotoButton = 0;
@@ -1769,62 +1769,62 @@ void __57__PUPhotoEditMediaToolController__handleLivePhotoButton___block_invoke(
 - (id)makeTrimToolController
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  if ([v3 isLoopingVideo])
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  if ([delegate isLoopingVideo])
   {
   }
 
   else
   {
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    v5 = [v4 isStandardVideo];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    isStandardVideo = [delegate2 isStandardVideo];
 
-    if (!v5)
+    if (!isStandardVideo)
     {
       v15 = objc_alloc(MEMORY[0x1E69C3BD0]);
-      v14 = [(PUPhotoEditToolController *)self delegate];
-      v16 = [v14 mainLivePhotoView];
-      v9 = [v15 initWithLivePhotoView:v16];
+      delegate3 = [(PUPhotoEditToolController *)self delegate];
+      mainLivePhotoView = [delegate3 mainLivePhotoView];
+      v9 = [v15 initWithLivePhotoView:mainLivePhotoView];
 
       goto LABEL_9;
     }
   }
 
   v6 = objc_alloc(MEMORY[0x1E69C3BD8]);
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v7 mediaView];
-  v9 = [v6 initWithNUMediaView:v8];
+  delegate4 = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate4 mediaView];
+  v9 = [v6 initWithNUMediaView:mediaView];
 
-  v10 = [(PUPhotoEditToolController *)self delegate];
-  LODWORD(v8) = [v10 isLoopingVideo];
+  delegate5 = [(PUPhotoEditToolController *)self delegate];
+  LODWORD(mediaView) = [delegate5 isLoopingVideo];
 
-  if (v8)
+  if (mediaView)
   {
-    v11 = [MEMORY[0x1E69BDEF8] autoloopStabilizedVideoFilter];
-    v26[0] = v11;
+    autoloopStabilizedVideoFilter = [MEMORY[0x1E69BDEF8] autoloopStabilizedVideoFilter];
+    v26[0] = autoloopStabilizedVideoFilter;
     v12 = v26;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69BDEF8] stripAllTimeAdjustmentsFilter];
-    v25 = v11;
+    autoloopStabilizedVideoFilter = [MEMORY[0x1E69BDEF8] stripAllTimeAdjustmentsFilter];
+    v25 = autoloopStabilizedVideoFilter;
     v12 = &v25;
   }
 
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   [v9 setFullVideoPipelineFilters:v13];
 
-  v14 = [(PUPhotoEditToolController *)self delegate];
-  [v9 setPlayerItemSource:v14];
+  delegate3 = [(PUPhotoEditToolController *)self delegate];
+  [v9 setPlayerItemSource:delegate3];
 LABEL_9:
 
   v17 = [PUTrimToolController alloc];
-  v18 = [(PUPhotoEditToolController *)self delegate];
-  v19 = [v18 isStandardVideo];
-  v20 = [(PUPhotoEditMediaToolController *)self _isSlomoEnabled];
-  v21 = [(PUPhotoEditToolController *)self delegate];
-  v22 = -[PUTrimToolController initWithPlayerWrapper:playButtonEnabled:slomoEnabled:portraitVideoEnabled:](v17, "initWithPlayerWrapper:playButtonEnabled:slomoEnabled:portraitVideoEnabled:", v9, v19, v20, [v21 isPortraitVideo]);
+  delegate6 = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo2 = [delegate6 isStandardVideo];
+  _isSlomoEnabled = [(PUPhotoEditMediaToolController *)self _isSlomoEnabled];
+  delegate7 = [(PUPhotoEditToolController *)self delegate];
+  v22 = -[PUTrimToolController initWithPlayerWrapper:playButtonEnabled:slomoEnabled:portraitVideoEnabled:](v17, "initWithPlayerWrapper:playButtonEnabled:slomoEnabled:portraitVideoEnabled:", v9, isStandardVideo2, _isSlomoEnabled, [delegate7 isPortraitVideo]);
 
   cinematographyController = self->_cinematographyController;
   if (cinematographyController)
@@ -1859,8 +1859,8 @@ LABEL_9:
     if (!self->_autoFocusButton)
     {
       v5 = PULocalizedString(@"PHOTOEDIT_CINEMATIC_AUTO_FOCUS_AX_LABEL");
-      v6 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v7 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"dot.viewfinder" selectedImageNamed:@"dot.circle.viewfinder" accessibilityLabel:v5 spec:v6];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      v7 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"dot.viewfinder" selectedImageNamed:@"dot.circle.viewfinder" accessibilityLabel:v5 spec:photoEditSpec];
       v8 = self->_autoFocusButton;
       self->_autoFocusButton = v7;
 
@@ -1911,22 +1911,22 @@ void __63__PUPhotoEditMediaToolController__updateAutoFocusToolbarButton__block_i
 - (void)_updateTrimControlAndToolbarButtons
 {
   v185[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v155 = [v3 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
   if ([(PUPhotoEditMediaToolController *)self _wantsTrimControl])
   {
     if (!self->_trimController)
     {
-      v4 = [(PUPhotoEditMediaToolController *)self makeTrimToolController];
+      makeTrimToolController = [(PUPhotoEditMediaToolController *)self makeTrimToolController];
       trimController = self->_trimController;
-      self->_trimController = v4;
+      self->_trimController = makeTrimToolController;
 
-      v6 = [(PUTrimToolController *)self->_trimController view];
-      [v6 setAlpha:0.0];
+      view = [(PUTrimToolController *)self->_trimController view];
+      [view setAlpha:0.0];
 
-      v7 = [(PUTrimToolController *)self->_trimController view];
-      [(PUPhotoEditMediaToolController *)self setPrimaryView:v7];
+      view2 = [(PUTrimToolController *)self->_trimController view];
+      [(PUPhotoEditMediaToolController *)self setPrimaryView:view2];
 
       [(PUPhotoEditMediaToolController *)self addChildViewController:self->_trimController];
       [(PUTrimToolController *)self->_trimController didMoveToParentViewController:self];
@@ -1957,17 +1957,17 @@ void __63__PUPhotoEditMediaToolController__updateAutoFocusToolbarButton__block_i
   }
 
   v8 = self->_trimController;
-  v9 = [(PUPhotoEditToolController *)self delegate];
-  v10 = [v9 toolControllerPlaceholderImage:self];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  v10 = [delegate2 toolControllerPlaceholderImage:self];
   [(PUTrimToolController *)v8 setPlaceholderImage:v10];
 
-  v158 = [(PUPhotoEditToolController *)self compositionController];
-  v11 = [v158 trimAdjustmentController];
-  v154 = v11;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  trimAdjustmentController = [compositionController trimAdjustmentController];
+  v154 = trimAdjustmentController;
   v12 = MEMORY[0x1E69BE180];
-  if (v11)
+  if (trimAdjustmentController)
   {
-    [v11 startTime];
+    [trimAdjustmentController startTime];
     if ((v179 & 0x100000000) != 0)
     {
       goto LABEL_15;
@@ -1990,26 +1990,26 @@ void __63__PUPhotoEditMediaToolController__updateAutoFocusToolbarButton__block_i
     v175 = 0;
   }
 
-  [v158 removeAdjustmentWithKey:*v12];
+  [compositionController removeAdjustmentWithKey:*v12];
 LABEL_15:
-  [(PUTrimToolController *)self->_trimController setCompositionController:v158];
+  [(PUTrimToolController *)self->_trimController setCompositionController:compositionController];
   v13 = self->_trimController;
-  v14 = [(PUPhotoEditToolController *)self editSource];
-  [(PUTrimToolController *)v13 setEditSource:v14];
+  editSource = [(PUPhotoEditToolController *)self editSource];
+  [(PUTrimToolController *)v13 setEditSource:editSource];
 
   v15 = self->_trimController;
   *location = *&self->_originalStillImageTime.value;
   epoch = self->_originalStillImageTime.epoch;
   [(PUTrimToolController *)v15 setUnadjustedStillImageTime:location];
-  v157 = [v158 copy];
+  v157 = [compositionController copy];
   [v157 removeAdjustmentWithKey:*v12];
   [v157 removeAdjustmentWithKey:*MEMORY[0x1E69BE030]];
-  v16 = [v157 trimAdjustmentController];
-  v156 = v16;
-  if (v16)
+  trimAdjustmentController2 = [v157 trimAdjustmentController];
+  v156 = trimAdjustmentController2;
+  if (trimAdjustmentController2)
   {
-    [v16 startTime];
-    v16 = v156;
+    [trimAdjustmentController2 startTime];
+    trimAdjustmentController2 = v156;
   }
 
   else
@@ -2018,7 +2018,7 @@ LABEL_15:
     v172 = 0;
   }
 
-  v17 = v16 == 0;
+  v17 = trimAdjustmentController2 == 0;
   v18 = self->_trimController;
   *location = v171;
   epoch = v172;
@@ -2038,28 +2038,28 @@ LABEL_15:
   *location = v169;
   epoch = v170;
   [(PUTrimToolController *)v19 setOriginalEndTime:location];
-  v20 = [(PUPhotoEditToolController *)self asset];
+  asset = [(PUPhotoEditToolController *)self asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v21 = +[PUPhotoEditProtoSettings sharedInstance];
-    v22 = [v21 showSuggestedKeyFrame];
+    showSuggestedKeyFrame = [v21 showSuggestedKeyFrame];
 
-    if (!v22)
+    if (!showSuggestedKeyFrame)
     {
       goto LABEL_29;
     }
 
-    v20 = [(PUPhotoEditToolController *)self asset];
-    [v20 fetchPropertySetsIfNeeded];
+    asset = [(PUPhotoEditToolController *)self asset];
+    [asset fetchPropertySetsIfNeeded];
     location[0] = 0;
     location[1] = 0;
     epoch = 0;
-    v23 = [v20 mediaAnalysisProperties];
-    v24 = v23;
-    if (v23)
+    mediaAnalysisProperties = [asset mediaAnalysisProperties];
+    v24 = mediaAnalysisProperties;
+    if (mediaAnalysisProperties)
     {
-      [v23 bestKeyFrameTime];
+      [mediaAnalysisProperties bestKeyFrameTime];
     }
 
     else
@@ -2078,22 +2078,22 @@ LABEL_15:
   }
 
 LABEL_29:
-  v25 = [(PUPhotoEditToolController *)self delegate];
-  v152 = [v25 fontForButtons];
+  delegate3 = [(PUPhotoEditToolController *)self delegate];
+  fontForButtons = [delegate3 fontForButtons];
 
   v153 = +[PUInterfaceManager currentTheme];
   objc_initWeak(location, self);
-  v26 = [(PUPhotoEditToolController *)self editSource];
-  v27 = [v26 mediaType] == 3;
+  editSource2 = [(PUPhotoEditToolController *)self editSource];
+  v27 = [editSource2 mediaType] == 3;
 
   muteButton = self->_muteButton;
-  if ((v27 | v155))
+  if ((v27 | isStandardVideo))
   {
     if (!muteButton)
     {
       v29 = PULocalizedString(@"PHOTOEDIT_MUTE_BUTTON_AX_LABEL");
-      v30 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v31 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"speaker.wave.2.fill" selectedImageNamed:@"speaker.slash.fill" accessibilityLabel:v29 spec:v30];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      v31 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"speaker.wave.2.fill" selectedImageNamed:@"speaker.slash.fill" accessibilityLabel:v29 spec:photoEditSpec];
       v32 = self->_muteButton;
       self->_muteButton = v31;
 
@@ -2117,8 +2117,8 @@ LABEL_29:
     if (!self->_portraitVideoButton)
     {
       v33 = PULocalizedString(@"PHOTOEDIT_CINEMATIC_SWITCH");
-      v34 = [v33 localizedUppercaseString];
-      v35 = [PUPhotoEditToolActivationButton buttonWithTitle:v34];
+      localizedUppercaseString = [v33 localizedUppercaseString];
+      v35 = [PUPhotoEditToolActivationButton buttonWithTitle:localizedUppercaseString];
       portraitVideoButton = self->_portraitVideoButton;
       self->_portraitVideoButton = v35;
 
@@ -2148,28 +2148,28 @@ LABEL_29:
         v41 = self->_portraitVideoButtonDimmingView;
         self->_portraitVideoButtonDimmingView = v40;
 
-        v42 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-        v43 = [v42 colorWithAlphaComponent:0.6];
+        systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+        v43 = [systemBackgroundColor colorWithAlphaComponent:0.6];
         [(UIView *)self->_portraitVideoButtonDimmingView setBackgroundColor:v43];
 
         [(UIView *)self->_portraitVideoButtonDimmingView setTranslatesAutoresizingMaskIntoConstraints:0];
         [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton addSubview:self->_portraitVideoButtonDimmingView];
         v138 = MEMORY[0x1E696ACD8];
-        v150 = [(UIView *)self->_portraitVideoButtonDimmingView leadingAnchor];
-        v147 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton leadingAnchor];
-        v144 = [v150 constraintEqualToAnchor:v147];
+        leadingAnchor = [(UIView *)self->_portraitVideoButtonDimmingView leadingAnchor];
+        leadingAnchor2 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton leadingAnchor];
+        v144 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v185[0] = v144;
-        v141 = [(UIView *)self->_portraitVideoButtonDimmingView trailingAnchor];
-        v44 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton trailingAnchor];
-        v45 = [v141 constraintEqualToAnchor:v44];
+        trailingAnchor = [(UIView *)self->_portraitVideoButtonDimmingView trailingAnchor];
+        trailingAnchor2 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton trailingAnchor];
+        v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v185[1] = v45;
-        v46 = [(UIView *)self->_portraitVideoButtonDimmingView topAnchor];
-        v47 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton topAnchor];
-        v48 = [v46 constraintEqualToAnchor:v47];
+        topAnchor = [(UIView *)self->_portraitVideoButtonDimmingView topAnchor];
+        topAnchor2 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton topAnchor];
+        v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v185[2] = v48;
-        v49 = [(UIView *)self->_portraitVideoButtonDimmingView bottomAnchor];
-        v50 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton bottomAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        bottomAnchor = [(UIView *)self->_portraitVideoButtonDimmingView bottomAnchor];
+        bottomAnchor2 = [(PUPhotoEditToolActivationButton *)self->_portraitVideoButton bottomAnchor];
+        v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v185[3] = v51;
         v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v185 count:4];
         [v138 activateConstraints:v52];
@@ -2187,8 +2187,8 @@ LABEL_29:
 
     v58 = objc_alloc_init(PUPhotoEditApertureButton);
     objc_storeStrong(&self->_apertureButton, v58);
-    v59 = [(PUPhotoEditMediaToolController *)self view];
-    v60 = [v59 effectiveUserInterfaceLayoutDirection] != 1;
+    view3 = [(PUPhotoEditMediaToolController *)self view];
+    v60 = [view3 effectiveUserInterfaceLayoutDirection] != 1;
 
     [(PUPhotoEditApertureButton *)v58 setExpansionDirection:v60];
     [(PUPhotoEditApertureButton *)v58 setTappableEdgeInsets:11.0, 11.0, 11.0, 11.0];
@@ -2207,28 +2207,28 @@ LABEL_29:
       v65 = self->_apertureButtonContainerDimmingView;
       self->_apertureButtonContainerDimmingView = v64;
 
-      v66 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      v67 = [v66 colorWithAlphaComponent:0.6];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      v67 = [systemBackgroundColor2 colorWithAlphaComponent:0.6];
       [(UIView *)self->_apertureButtonContainerDimmingView setBackgroundColor:v67];
 
       [(UIView *)self->_apertureButtonContainerDimmingView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_apertureButtonContainer addSubview:self->_apertureButtonContainerDimmingView];
       v136 = MEMORY[0x1E696ACD8];
-      v151 = [(UIView *)self->_apertureButtonContainerDimmingView leadingAnchor];
-      v148 = [(UIView *)self->_apertureButtonContainer leadingAnchor];
-      v145 = [v151 constraintEqualToAnchor:v148];
+      leadingAnchor3 = [(UIView *)self->_apertureButtonContainerDimmingView leadingAnchor];
+      leadingAnchor4 = [(UIView *)self->_apertureButtonContainer leadingAnchor];
+      v145 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v184[0] = v145;
-      v142 = [(UIView *)self->_apertureButtonContainerDimmingView trailingAnchor];
-      v139 = [(UIView *)self->_apertureButtonContainer trailingAnchor];
-      v68 = [v142 constraintEqualToAnchor:v139];
+      trailingAnchor3 = [(UIView *)self->_apertureButtonContainerDimmingView trailingAnchor];
+      trailingAnchor4 = [(UIView *)self->_apertureButtonContainer trailingAnchor];
+      v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v184[1] = v68;
-      v69 = [(UIView *)self->_apertureButtonContainerDimmingView topAnchor];
-      v70 = [(UIView *)self->_apertureButtonContainer topAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70];
+      topAnchor3 = [(UIView *)self->_apertureButtonContainerDimmingView topAnchor];
+      topAnchor4 = [(UIView *)self->_apertureButtonContainer topAnchor];
+      v71 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v184[2] = v71;
-      v72 = [(UIView *)self->_apertureButtonContainerDimmingView bottomAnchor];
-      v73 = [(UIView *)self->_apertureButtonContainer bottomAnchor];
-      v74 = [v72 constraintEqualToAnchor:v73];
+      bottomAnchor3 = [(UIView *)self->_apertureButtonContainerDimmingView bottomAnchor];
+      bottomAnchor4 = [(UIView *)self->_apertureButtonContainer bottomAnchor];
+      v74 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v184[3] = v74;
       v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v184 count:4];
       [v136 activateConstraints:v75];
@@ -2272,26 +2272,26 @@ LABEL_53:
   {
     if (!overlayController)
     {
-      v77 = [(PUPhotoEditToolController *)self delegate];
-      v78 = [v77 mediaView];
+      delegate4 = [(PUPhotoEditToolController *)self delegate];
+      mediaView = [delegate4 mediaView];
 
-      v79 = [(PXCinematicEditController *)self->_cinematographyController cinematographyScript];
-      v80 = v79;
-      if (v78 && v79)
+      cinematographyScript = [(PXCinematicEditController *)self->_cinematographyController cinematographyScript];
+      v80 = cinematographyScript;
+      if (mediaView && cinematographyScript)
       {
-        v81 = [[PUVideoEditOverlayViewController alloc] initWithMediaView:v78 cineController:self->_cinematographyController];
+        v81 = [[PUVideoEditOverlayViewController alloc] initWithMediaView:mediaView cineController:self->_cinematographyController];
         v82 = self->_overlayController;
         self->_overlayController = v81;
 
         [(PUVideoEditOverlayViewController *)self->_overlayController setOverlayControllerDelegate:self];
-        v83 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-        [v83 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view4 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+        [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
         [(PUPhotoEditMediaToolController *)self addChildViewController:self->_overlayController];
         [(PUVideoEditOverlayViewController *)self->_overlayController didMoveToParentViewController:self];
-        v84 = [(PUPhotoEditMediaToolController *)self view];
-        v85 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-        [v84 insertSubview:v85 atIndex:0];
+        view5 = [(PUPhotoEditMediaToolController *)self view];
+        view6 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+        [view5 insertSubview:view6 atIndex:0];
       }
     }
 
@@ -2314,36 +2314,36 @@ LABEL_53:
 
       [(PUPhotoEditApertureToolbar *)self->_apertureToolbar willMoveToParentViewController:self];
       apertureContainer = self->_apertureContainer;
-      v90 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      [(UIView *)apertureContainer addSubview:v90];
+      view7 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      [(UIView *)apertureContainer addSubview:view7];
 
       [(UIView *)self->_apertureContainer setHidden:1];
-      v132 = [(PUPhotoEditMediaToolController *)self view];
-      v146 = [(UIView *)self->_apertureContainer widthAnchor];
-      v149 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v143 = [v149 widthAnchor];
-      v140 = [v146 constraintEqualToAnchor:v143];
+      view8 = [(PUPhotoEditMediaToolController *)self view];
+      widthAnchor = [(UIView *)self->_apertureContainer widthAnchor];
+      view9 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      widthAnchor2 = [view9 widthAnchor];
+      v140 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v183[0] = v140;
-      v135 = [(UIView *)self->_apertureContainer centerXAnchor];
-      v137 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v134 = [v137 centerXAnchor];
-      v133 = [v135 constraintEqualToAnchor:v134];
+      centerXAnchor = [(UIView *)self->_apertureContainer centerXAnchor];
+      view10 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      centerXAnchor2 = [view10 centerXAnchor];
+      v133 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v183[1] = v133;
-      v91 = [(UIView *)self->_apertureContainer heightAnchor];
-      v92 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v93 = [v92 heightAnchor];
-      v94 = [v91 constraintEqualToAnchor:v93];
+      heightAnchor = [(UIView *)self->_apertureContainer heightAnchor];
+      view11 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      heightAnchor2 = [view11 heightAnchor];
+      v94 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v183[2] = v94;
-      v95 = [(UIView *)self->_apertureContainer bottomAnchor];
-      v96 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      v97 = [v96 bottomAnchor];
-      v98 = [v95 constraintEqualToAnchor:v97];
+      bottomAnchor5 = [(UIView *)self->_apertureContainer bottomAnchor];
+      view12 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      bottomAnchor6 = [view12 bottomAnchor];
+      v98 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
       v183[3] = v98;
       v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:v183 count:4];
-      [v132 addConstraints:v99];
+      [view8 addConstraints:v99];
 
-      v100 = [(PUPhotoEditToolController *)self photoEditSpec];
-      LOBYTE(v99) = [v100 currentLayoutStyle] == 4;
+      photoEditSpec2 = [(PUPhotoEditToolController *)self photoEditSpec];
+      LOBYTE(v99) = [photoEditSpec2 currentLayoutStyle] == 4;
 
       if ((v99 & 1) == 0)
       {
@@ -2366,8 +2366,8 @@ LABEL_53:
     {
       [(PUVideoEditOverlayViewController *)overlayController willMoveToParentViewController:0];
       [(PUPhotoEditMediaToolController *)self removeChildViewController:self->_overlayController];
-      v104 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-      [v104 removeFromSuperview];
+      view13 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+      [view13 removeFromSuperview];
 
       v105 = self->_overlayController;
       self->_overlayController = 0;
@@ -2377,8 +2377,8 @@ LABEL_53:
     if (v106)
     {
       [(PUPhotoEditApertureToolbar *)v106 removeFromParentViewController];
-      v107 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
-      [v107 removeFromSuperview];
+      view14 = [(PUPhotoEditApertureToolbar *)self->_apertureToolbar view];
+      [view14 removeFromSuperview];
 
       v108 = self->_apertureToolbar;
       self->_apertureToolbar = 0;
@@ -2391,9 +2391,9 @@ LABEL_53:
   [(PUPhotoEditMediaToolController *)self _updateRateToolbarButton];
   [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
   v110 = +[PUPhotoEditProtoSettings sharedInstance];
-  v111 = [v110 enableVideoStabilizion];
+  enableVideoStabilizion = [v110 enableVideoStabilizion];
 
-  if ((v111 & v155) != 0 && !self->_stabilizeButton)
+  if ((enableVideoStabilizion & isStandardVideo) != 0 && !self->_stabilizeButton)
   {
     v112 = objc_alloc_init(MEMORY[0x1E69DC738]);
     stabilizeButton = self->_stabilizeButton;
@@ -2401,7 +2401,7 @@ LABEL_53:
 
     [(UIButton *)self->_stabilizeButton addTarget:self action:sel__handleStabilizeButton_ forControlEvents:64];
     [(UIButton *)self->_stabilizeButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v114 = [MEMORY[0x1E69DCAD8] configurationWithFont:v152];
+    v114 = [MEMORY[0x1E69DCAD8] configurationWithFont:fontForButtons];
     v115 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"s.square"];
     v116 = [v115 imageWithSymbolConfiguration:v114];
 
@@ -2412,20 +2412,20 @@ LABEL_53:
     [(UIButton *)self->_stabilizeButton setImage:v118 forState:4];
   }
 
-  v119 = [(PUPhotoEditToolController *)self asset];
-  v120 = [v119 isLivePhotoVisibilityAdjustmentAllowed];
+  asset2 = [(PUPhotoEditToolController *)self asset];
+  isLivePhotoVisibilityAdjustmentAllowed = [asset2 isLivePhotoVisibilityAdjustmentAllowed];
 
   livePhotoButton = self->_livePhotoButton;
-  if (v120)
+  if (isLivePhotoVisibilityAdjustmentAllowed)
   {
     if (livePhotoButton)
     {
       goto LABEL_78;
     }
 
-    v122 = [(PUPhotoEditMediaToolController *)self _localizedTitleForCurrentPlaybackVariation];
-    v123 = [v122 localizedUppercaseString];
-    v124 = [PUPhotoEditToolActivationButton buttonWithTitle:v123];
+    _localizedTitleForCurrentPlaybackVariation = [(PUPhotoEditMediaToolController *)self _localizedTitleForCurrentPlaybackVariation];
+    localizedUppercaseString2 = [_localizedTitleForCurrentPlaybackVariation localizedUppercaseString];
+    v124 = [PUPhotoEditToolActivationButton buttonWithTitle:localizedUppercaseString2];
     v125 = self->_livePhotoButton;
     self->_livePhotoButton = v124;
 
@@ -2458,29 +2458,29 @@ LABEL_53:
 
     self->_livePhotoButton = 0;
 
-    v122 = [(PUPhotoEditToolController *)self delegate];
-    [v122 dismissLivePhotoRevertConfirmationAlert];
+    _localizedTitleForCurrentPlaybackVariation = [(PUPhotoEditToolController *)self delegate];
+    [_localizedTitleForCurrentPlaybackVariation dismissLivePhotoRevertConfirmationAlert];
   }
 
 LABEL_78:
   videoLabelView = self->_videoLabelView;
-  if (v155)
+  if (isStandardVideo)
   {
     if (!videoLabelView)
     {
       v127 = PULocalizedString(@"PHOTOEDIT_VIDEO_TOP_LABEL");
       videoLabelView = [v127 localizedUppercaseString];
 
-      v128 = [v153 photoEditingTopToolbarToolLabelButtonColor];
+      photoEditingTopToolbarToolLabelButtonColor = [v153 photoEditingTopToolbarToolLabelButtonColor];
       v129 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       v130 = self->_videoLabelView;
       self->_videoLabelView = v129;
 
       [(UILabel *)self->_videoLabelView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)self->_videoLabelView setText:videoLabelView];
-      [(UILabel *)self->_videoLabelView setTextColor:v128];
-      v131 = [v153 topToolbarToolLabelFont];
-      [(UILabel *)self->_videoLabelView setFont:v131];
+      [(UILabel *)self->_videoLabelView setTextColor:photoEditingTopToolbarToolLabelButtonColor];
+      topToolbarToolLabelFont = [v153 topToolbarToolLabelFont];
+      [(UILabel *)self->_videoLabelView setFont:topToolbarToolLabelFont];
 
 LABEL_83:
     }
@@ -2539,26 +2539,26 @@ uint64_t __69__PUPhotoEditMediaToolController__updateTrimControlAndToolbarButton
 
 - (BOOL)_wantsTrimControl
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if ((v4 & 1) == 0)
+  if ((isStandardVideo & 1) == 0)
   {
-    v6 = [(PUPhotoEditToolController *)self asset];
-    if ([v6 isLivePhoto])
+    asset = [(PUPhotoEditToolController *)self asset];
+    if ([asset isLivePhoto])
     {
-      v7 = [(PUPhotoEditToolController *)self editSource];
-      v8 = [v7 mediaType];
+      editSource = [(PUPhotoEditToolController *)self editSource];
+      mediaType = [editSource mediaType];
 
-      if (v8 == 3)
+      if (mediaType == 3)
       {
-        v9 = [(PUPhotoEditToolController *)self delegate];
-        v10 = [v9 hasLoopingVideoAdjustment];
+        delegate2 = [(PUPhotoEditToolController *)self delegate];
+        hasLoopingVideoAdjustment = [delegate2 hasLoopingVideoAdjustment];
 
         v11 = +[PUPhotoEditProtoSettings sharedInstance];
-        v12 = [v11 loopBounceTrimAllowed];
+        loopBounceTrimAllowed = [v11 loopBounceTrimAllowed];
 
-        v5 = v10 ^ 1 | v12;
+        v5 = hasLoopingVideoAdjustment ^ 1 | loopBounceTrimAllowed;
         return (self->_toolMode != 1) & v5;
       }
     }
@@ -2578,51 +2578,51 @@ uint64_t __69__PUPhotoEditMediaToolController__updateTrimControlAndToolbarButton
 - (BOOL)_isTrimAllowed
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isLoopingVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isLoopingVideo = [delegate isLoopingVideo];
 
-  if (v5)
+  if (isLoopingVideo)
   {
-    v6 = [v3 loopBounceTrimAllowed];
+    loopBounceTrimAllowed = [v3 loopBounceTrimAllowed];
   }
 
   else
   {
-    v6 = 1;
+    loopBounceTrimAllowed = 1;
   }
 
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v7 isStandardVideo];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate2 isStandardVideo];
 
-  if ((v8 & 1) != 0 || v6)
+  if ((isStandardVideo & 1) != 0 || loopBounceTrimAllowed)
   {
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    v9 = [v10 isVideoOn];
+    delegate3 = [(PUPhotoEditToolController *)self delegate];
+    isVideoOn = [delegate3 isVideoOn];
   }
 
   else
   {
-    v9 = 0;
+    isVideoOn = 0;
   }
 
-  return v9;
+  return isVideoOn;
 }
 
-- (void)_updateBackgroundAnimated:(BOOL)a3
+- (void)_updateBackgroundAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   useTranslucentBackground = self->_useTranslucentBackground;
-  v6 = [(UIView *)self->_solidBackgroundView isHidden];
+  isHidden = [(UIView *)self->_solidBackgroundView isHidden];
   if (useTranslucentBackground)
   {
-    if (v6)
+    if (isHidden)
     {
       return;
     }
 
     [(_UIBackdropView *)self->_backdropBackgroundView setHidden:0];
     solidBackgroundView = self->_solidBackgroundView;
-    if (v3)
+    if (animatedCopy)
     {
       [(UIView *)solidBackgroundView setAlpha:1.0];
       v8 = MEMORY[0x1E69DD250];
@@ -2630,16 +2630,16 @@ uint64_t __69__PUPhotoEditMediaToolController__updateTrimControlAndToolbarButton
       v28 = 3221225472;
       v29 = __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_invoke;
       v30 = &unk_1E7B80DD0;
-      v31 = self;
+      selfCopy = self;
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_invoke_2;
       v25 = &unk_1E7B7F020;
-      v26 = self;
+      selfCopy2 = self;
       v9 = &v27;
       v10 = &v22;
 LABEL_8:
-      [v8 animateWithDuration:v9 animations:v10 completion:{0.2, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31}];
+      [v8 animateWithDuration:v9 animations:v10 completion:{0.2, v12, v13, v14, v15, selfCopy4, v17, v18, v19, v20, selfCopy3, v22, v23, v24, v25, selfCopy2, v27, v28, v29, v30, selfCopy}];
       return;
     }
 
@@ -2648,13 +2648,13 @@ LABEL_8:
 
   else
   {
-    if (!v6)
+    if (!isHidden)
     {
       return;
     }
 
     [(UIView *)self->_solidBackgroundView setHidden:0];
-    if (v3)
+    if (animatedCopy)
     {
       [(UIView *)self->_solidBackgroundView setAlpha:0.0];
       v8 = MEMORY[0x1E69DD250];
@@ -2662,12 +2662,12 @@ LABEL_8:
       v18 = 3221225472;
       v19 = __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_invoke_3;
       v20 = &unk_1E7B80DD0;
-      v21 = self;
+      selfCopy3 = self;
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_invoke_4;
       v15 = &unk_1E7B7F020;
-      v16 = self;
+      selfCopy4 = self;
       v9 = &v17;
       v10 = &v12;
       goto LABEL_8;
@@ -2702,11 +2702,11 @@ uint64_t __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_
 
 - (id)trailingToolbarViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls];
+  array = [MEMORY[0x1E695DF70] array];
+  _wantsPortraitVideoControls = [(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls];
   if (self->_muteButton)
   {
-    v5 = !v4;
+    v5 = !_wantsPortraitVideoControls;
   }
 
   else
@@ -2716,27 +2716,27 @@ uint64_t __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_
 
   if (!v5)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_stabilizeProgressView)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_stabilizeButton)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_rateButton)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v6 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+    v6 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
   else
@@ -2764,26 +2764,26 @@ uint64_t __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_
 
 - (id)leadingToolbarViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls];
-  if (self->_muteButton && !v4)
+  array = [MEMORY[0x1E695DF70] array];
+  _wantsPortraitVideoControls = [(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls];
+  if (self->_muteButton && !_wantsPortraitVideoControls)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_autoFocusButton)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_apertureButtonContainer)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v5 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+    v5 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
   else
@@ -2794,70 +2794,70 @@ uint64_t __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_
   return v5;
 }
 
-- (void)setPrimaryView:(id)a3
+- (void)setPrimaryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   primaryView = self->_primaryView;
-  if (primaryView != v5)
+  if (primaryView != viewCopy)
   {
-    v10 = v5;
-    v7 = [(PUPhotoEditMediaToolController *)self view];
-    v8 = [(UIView *)primaryView isDescendantOfView:v7];
+    v10 = viewCopy;
+    view = [(PUPhotoEditMediaToolController *)self view];
+    v8 = [(UIView *)primaryView isDescendantOfView:view];
 
     if (v8)
     {
       [(UIView *)self->_primaryView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_primaryView, a3);
-    v9 = [(PUPhotoEditMediaToolController *)self view];
-    [v9 addSubview:self->_primaryView];
+    objc_storeStrong(&self->_primaryView, view);
+    view2 = [(PUPhotoEditMediaToolController *)self view];
+    [view2 addSubview:self->_primaryView];
 
     [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (void)setVerticalButtonOffset:(double)a3
+- (void)setVerticalButtonOffset:(double)offset
 {
-  if (self->_verticalButtonOffset != a3)
+  if (self->_verticalButtonOffset != offset)
   {
-    self->_verticalButtonOffset = a3;
-    [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
-  }
-}
-
-- (void)setHorizontalControlPadding:(double)a3
-{
-  if (self->_horizontalControlPadding != a3)
-  {
-    self->_horizontalControlPadding = a3;
+    self->_verticalButtonOffset = offset;
     [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
   }
 }
 
-- (void)setUseGradientBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setHorizontalControlPadding:(double)padding
 {
-  if (self->_useTranslucentBackground != a3)
+  if (self->_horizontalControlPadding != padding)
   {
-    self->_useTranslucentBackground = a3;
-    [(PUPhotoEditMediaToolController *)self _updateBackgroundAnimated:a4];
+    self->_horizontalControlPadding = padding;
+    [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
   }
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setUseGradientBackground:(BOOL)background animated:(BOOL)animated
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self backdropViewGroupName];
-  v6 = [v5 isEqualToString:v4];
+  if (self->_useTranslucentBackground != background)
+  {
+    self->_useTranslucentBackground = background;
+    [(PUPhotoEditMediaToolController *)self _updateBackgroundAnimated:animated];
+  }
+}
+
+- (void)setBackdropViewGroupName:(id)name
+{
+  nameCopy = name;
+  backdropViewGroupName = [(PUPhotoEditToolController *)self backdropViewGroupName];
+  v6 = [backdropViewGroupName isEqualToString:nameCopy];
 
   if ((v6 & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = PUPhotoEditMediaToolController;
-    [(PUPhotoEditToolController *)&v8 setBackdropViewGroupName:v4];
-    v7 = [(PUPhotoEditToolController *)self backdropViewGroupName];
-    [(_UIBackdropView *)self->_backdropBackgroundView setGroupName:v7];
+    [(PUPhotoEditToolController *)&v8 setBackdropViewGroupName:nameCopy];
+    backdropViewGroupName2 = [(PUPhotoEditToolController *)self backdropViewGroupName];
+    [(_UIBackdropView *)self->_backdropBackgroundView setGroupName:backdropViewGroupName2];
   }
 }
 
@@ -2868,71 +2868,71 @@ uint64_t __60__PUPhotoEditMediaToolController__updateBackgroundAnimated___block_
   [(PUPhotoEditMediaToolController *)self updateViewConstraints];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  [(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton:a3];
+  [(PUPhotoEditMediaToolController *)self _updateAutoFocusToolbarButton:environment];
 
   [(PUPhotoEditMediaToolController *)self _updateRateToolbarButton];
 }
 
-- (id)accessibilityHUDItemForButton:(id)a3
+- (id)accessibilityHUDItemForButton:(id)button
 {
-  v4 = a3;
-  if (![v4 isEqual:self->_livePhotoButton])
+  buttonCopy = button;
+  if (![buttonCopy isEqual:self->_livePhotoButton])
   {
     goto LABEL_5;
   }
 
-  if (![v4 state])
+  if (![buttonCopy state])
   {
-    v5 = PULocalizedString(@"PHOTOEDIT_LIVE_SWITCH_OFF");
+    _localizedTitleForCurrentPlaybackVariation = PULocalizedString(@"PHOTOEDIT_LIVE_SWITCH_OFF");
     v6 = @"PULivePhotoOff";
     goto LABEL_11;
   }
 
-  if ([v4 state] != 4)
+  if ([buttonCopy state] != 4)
   {
 LABEL_5:
-    v7 = 0;
+    localizedUppercaseString = 0;
     v8 = 0;
 LABEL_6:
     v14.receiver = self;
     v14.super_class = PUPhotoEditMediaToolController;
-    v9 = [(PUPhotoEditToolController *)&v14 accessibilityHUDItemForButton:v4];
+    v9 = [(PUPhotoEditToolController *)&v14 accessibilityHUDItemForButton:buttonCopy];
     goto LABEL_7;
   }
 
-  v5 = [(PUPhotoEditMediaToolController *)self _localizedTitleForCurrentPlaybackVariation];
+  _localizedTitleForCurrentPlaybackVariation = [(PUPhotoEditMediaToolController *)self _localizedTitleForCurrentPlaybackVariation];
   v6 = @"PULivePhotoOn";
 LABEL_11:
-  v7 = [v5 localizedUppercaseString];
+  localizedUppercaseString = [_localizedTitleForCurrentPlaybackVariation localizedUppercaseString];
   v12 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:v6];
   v8 = [v12 imageWithRenderingMode:2];
 
-  if (!v7 || !v8)
+  if (!localizedUppercaseString || !v8)
   {
     goto LABEL_6;
   }
 
   v13 = objc_alloc(MEMORY[0x1E69DC618]);
-  v9 = [v13 initWithTitle:v7 image:v8 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  v9 = [v13 initWithTitle:localizedUppercaseString image:v8 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 LABEL_7:
   v10 = v9;
 
   return v10;
 }
 
-- (void)mediaView:(id)a3 didZoom:(double)a4
+- (void)mediaView:(id)view didZoom:(double)zoom
 {
-  [(PUVideoEditOverlayViewController *)self->_overlayController renderDidChange:1, a4];
-  v5 = [(PUPhotoEditMediaToolController *)self trimController];
-  [v5 mediaViewDidZoom];
+  [(PUVideoEditOverlayViewController *)self->_overlayController renderDidChange:1, zoom];
+  trimController = [(PUPhotoEditMediaToolController *)self trimController];
+  [trimController mediaViewDidZoom];
 }
 
-- (void)decreaseScrubberValue:(BOOL)a3
+- (void)decreaseScrubberValue:(BOOL)value
 {
   trimController = self->_trimController;
-  if (a3)
+  if (value)
   {
     v4 = -6;
   }
@@ -2945,10 +2945,10 @@ LABEL_7:
   [(PUTrimToolController *)trimController stepByCount:v4];
 }
 
-- (void)increaseScrubberValue:(BOOL)a3
+- (void)increaseScrubberValue:(BOOL)value
 {
   trimController = self->_trimController;
-  if (a3)
+  if (value)
   {
     v4 = 6;
   }
@@ -2961,59 +2961,59 @@ LABEL_7:
   [(PUTrimToolController *)trimController stepByCount:v4];
 }
 
-- (void)configureForAdjustmentCategory:(int64_t)a3
+- (void)configureForAdjustmentCategory:(int64_t)category
 {
-  if (a3 == 12 && [(PUPhotoEditMediaToolController *)self _wantsRateControl]&& ([(PUPhotoEditToolbarButton *)self->_rateButton isHeld]& 1) == 0)
+  if (category == 12 && [(PUPhotoEditMediaToolController *)self _wantsRateControl]&& ([(PUPhotoEditToolbarButton *)self->_rateButton isHeld]& 1) == 0)
   {
-    v4 = [(PUPhotoEditToolbarButton *)self->_rateButton contextMenuInteraction];
-    [v4 _presentMenuAtLocation:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    contextMenuInteraction = [(PUPhotoEditToolbarButton *)self->_rateButton contextMenuInteraction];
+    [contextMenuInteraction _presentMenuAtLocation:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   }
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  v20 = a3;
-  v4 = [(PUPhotoEditToolController *)self compositionController];
-  v5 = [v4 adjustmentConstants];
+  adjustmentsCopy = adjustments;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
 
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [v5 nonVisualAdjustmentTypes];
-  v8 = [v6 setWithArray:v7];
-  v9 = [v20 isSubsetOfSet:v8];
+  nonVisualAdjustmentTypes = [adjustmentConstants nonVisualAdjustmentTypes];
+  v8 = [v6 setWithArray:nonVisualAdjustmentTypes];
+  v9 = [adjustmentsCopy isSubsetOfSet:v8];
 
   if ((v9 & 1) == 0)
   {
     [(PUPhotoEditMediaToolController *)self _invalidateTrimControlScrubberThumbnails];
   }
 
-  v10 = [v5 PIPortraitVideoAdjustmentKey];
-  v11 = [v20 containsObject:v10];
+  pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
+  v11 = [adjustmentsCopy containsObject:pIPortraitVideoAdjustmentKey];
 
   if (v11)
   {
-    v12 = [(PUTrimToolController *)self->_trimController playerWrapper];
-    [v12 pause];
+    playerWrapper = [(PUTrimToolController *)self->_trimController playerWrapper];
+    [playerWrapper pause];
 
     [(PUPhotoEditMediaToolController *)self updateCinematicVideoControlsEnableState];
   }
 
-  v13 = [v5 PITrimAdjustmentKey];
-  v14 = [v20 containsObject:v13];
+  pITrimAdjustmentKey = [adjustmentConstants PITrimAdjustmentKey];
+  v14 = [adjustmentsCopy containsObject:pITrimAdjustmentKey];
 
   if (v14)
   {
     [(PUVideoEditOverlayViewController *)self->_overlayController frameTimeDidChange];
   }
 
-  v15 = [v5 PISlomoAdjustmentKey];
-  v16 = [v20 containsObject:v15];
+  pISlomoAdjustmentKey = [adjustmentConstants PISlomoAdjustmentKey];
+  v16 = [adjustmentsCopy containsObject:pISlomoAdjustmentKey];
 
   if (v16)
   {
-    v17 = [(PUTrimToolController *)self->_trimController isSlomoEnabled];
-    v18 = [(PUPhotoEditMediaToolController *)self _isSlomoEnabled];
+    isSlomoEnabled = [(PUTrimToolController *)self->_trimController isSlomoEnabled];
+    _isSlomoEnabled = [(PUPhotoEditMediaToolController *)self _isSlomoEnabled];
     [(PUTrimToolController *)self->_trimController setSlomoEnabled:[(PUPhotoEditMediaToolController *)self _isSlomoEnabled]];
-    if (v17 != v18)
+    if (isSlomoEnabled != _isSlomoEnabled)
     {
       [(PUPhotoEditMediaToolController *)self _updateRateToolbarButton];
       [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
@@ -3029,15 +3029,15 @@ LABEL_7:
   [(PUPhotoEditMediaToolController *)self _updateStabilizeButtonAnimated:1];
   [(PUPhotoEditMediaToolController *)self _updatePortraitVideoButtonAnimated:1];
   [(PUPhotoEditMediaToolController *)self _updateApertureControlsAnimated:1];
-  v19 = [(PUPhotoEditMediaToolController *)self trimController];
-  [v19 compositionControllerDidChangeForAdjustments:v20];
+  trimController = [(PUPhotoEditMediaToolController *)self trimController];
+  [trimController compositionControllerDidChangeForAdjustments:adjustmentsCopy];
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   v7.receiver = self;
   v7.super_class = PUPhotoEditMediaToolController;
-  [(PUPhotoEditToolController *)&v7 setupWithAsset:a3 compositionController:a4 editSource:a5 valuesCalculator:a6];
+  [(PUPhotoEditToolController *)&v7 setupWithAsset:asset compositionController:controller editSource:source valuesCalculator:calculator];
   if ([(PUPhotoEditMediaToolController *)self _wantsPortraitVideoControls])
   {
     [(PUPhotoEditMediaToolController *)self _initializeCinematographyScript];
@@ -3048,8 +3048,8 @@ LABEL_7:
 {
   if (self->_constraints)
   {
-    v3 = [(PUPhotoEditMediaToolController *)self primaryView];
-    [v3 alpha];
+    primaryView = [(PUPhotoEditMediaToolController *)self primaryView];
+    [primaryView alpha];
     v5 = v4;
 
     if (v5 < 1.0)
@@ -3075,8 +3075,8 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
   v4.receiver = self;
   v4.super_class = PUPhotoEditMediaToolController;
   [(PUPhotoEditToolController *)&v4 didResignActiveTool];
-  v3 = [(PUPhotoEditMediaToolController *)self primaryView];
-  [v3 setAlpha:0.0];
+  primaryView = [(PUPhotoEditMediaToolController *)self primaryView];
+  [primaryView setAlpha:0.0];
 }
 
 - (void)willResignActiveTool
@@ -3127,16 +3127,16 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
   [(PUTrimToolController *)self->_trimController willShowTrimTool];
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
   trimController = self->_trimController;
-  v5 = a3;
-  [(PUTrimToolController *)trimController setPlaceholderImage:v5];
+  imageCopy = image;
+  [(PUTrimToolController *)trimController setPlaceholderImage:imageCopy];
   [(PUTrimToolController *)self->_trimController livePhotoRenderDidChange:self->_trimControllerScrubberNeedsVisualUpdate];
   self->_trimControllerScrubberNeedsVisualUpdate = 0;
   v6.receiver = self;
   v6.super_class = PUPhotoEditMediaToolController;
-  [(PUPhotoEditToolController *)&v6 setPlaceholderImage:v5];
+  [(PUPhotoEditToolController *)&v6 setPlaceholderImage:imageCopy];
 }
 
 - (void)baseMediaInvalidated
@@ -3155,14 +3155,14 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
   [(PUPhotoEditMediaToolController *)self _updateTrimControlAndToolbarButtons];
 }
 
-- (void)setOriginalStillImageTime:(id *)a3
+- (void)setOriginalStillImageTime:(id *)time
 {
   v7.receiver = self;
   v7.super_class = PUPhotoEditMediaToolController;
-  v6 = *a3;
+  v6 = *time;
   [(PUPhotoEditToolController *)&v7 setOriginalStillImageTime:&v6];
-  var3 = a3->var3;
-  *&self->_originalStillImageTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_originalStillImageTime.value = *&time->var0;
   self->_originalStillImageTime.epoch = var3;
   [(PUPhotoEditMediaToolController *)self _updateTrimControlAndToolbarButtons];
 }
@@ -3170,10 +3170,10 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
 - (id)toolbarIconAccessibilityLabel
 {
   v3 = PULocalizedString(@"PHOTOEDIT_MEDIA_TOOLBAR_LIVE_PHOTO_BUTTON_AX_LABEL");
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v5)
+  if (isStandardVideo)
   {
     v6 = PULocalizedString(@"PHOTOEDIT_MEDIA_TOOLBAR_VIDEO_BUTTON_AX_LABEL");
 
@@ -3185,18 +3185,18 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
 
 - (id)selectedToolbarIconGlyphName
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isPortraitVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isPortraitVideo = [delegate isPortraitVideo];
 
-  if (v4)
+  if (isPortraitVideo)
   {
     return @"cinematic.video.fill";
   }
 
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 isStandardVideo];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate2 isStandardVideo];
 
-  if (v7)
+  if (isStandardVideo)
   {
     return @"video.fill";
   }
@@ -3209,18 +3209,18 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
 
 - (id)toolbarIconGlyphName
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isPortraitVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isPortraitVideo = [delegate isPortraitVideo];
 
-  if (v4)
+  if (isPortraitVideo)
   {
     return @"cinematic.video";
   }
 
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 isStandardVideo];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate2 isStandardVideo];
 
-  if (v7)
+  if (isStandardVideo)
   {
     return @"video";
   }
@@ -3234,10 +3234,10 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
 - (id)localizedName
 {
   v3 = PULocalizedString(@"PHOTOEDIT_LIVEPHOTO_TOOL_BUTTON");
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v5)
+  if (isStandardVideo)
   {
     v6 = PULocalizedString(@"PHOTOEDIT_VIDEO_TOOL_BUTTON");
 
@@ -3247,12 +3247,12 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
   return v3;
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v27.receiver = self;
   v27.super_class = PUPhotoEditMediaToolController;
-  [(PUPhotoEditToolController *)&v27 setLayoutOrientation:a3 withTransitionCoordinator:v6];
+  [(PUPhotoEditToolController *)&v27 setLayoutOrientation:orientation withTransitionCoordinator:coordinatorCopy];
   livePhotoButton = self->_livePhotoButton;
   self->_livePhotoButton = 0;
 
@@ -3297,21 +3297,21 @@ void __58__PUPhotoEditMediaToolController__showPrimaryViewIfNeeded__block_invoke
     v24[2] = __81__PUPhotoEditMediaToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke;
     v24[3] = &unk_1E7B7AC08;
     v25 = v19;
-    v26 = self;
+    selfCopy = self;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __81__PUPhotoEditMediaToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke_2;
     v22[3] = &unk_1E7B7DC38;
     v23 = v25;
-    [v6 animateAlongsideTransition:v24 completion:v22];
+    [coordinatorCopy animateAlongsideTransition:v24 completion:v22];
   }
 
-  v20 = [(PUPhotoEditMediaToolController *)self trimController];
-  [v20 setLayoutOrientation:a3];
+  trimController = [(PUPhotoEditMediaToolController *)self trimController];
+  [trimController setLayoutOrientation:orientation];
 
-  v21 = [(PUPhotoEditToolController *)self asset];
+  asset = [(PUPhotoEditToolController *)self asset];
 
-  if (v21)
+  if (asset)
   {
     [(PUPhotoEditMediaToolController *)self _updateTrimControlAndToolbarButtons];
   }
@@ -3335,9 +3335,9 @@ uint64_t __81__PUPhotoEditMediaToolController_setLayoutOrientation_withTransitio
   return [v2 setHidden:0 animated:1];
 }
 
-- (void)_updateToolVisibilityAnimated:(BOOL)a3
+- (void)_updateToolVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = self->_toolMode == 1;
   [(PUPhotoEditToolController *)self setToolGradientDistance:66.0];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -3354,7 +3354,7 @@ uint64_t __81__PUPhotoEditMediaToolController_setLayoutOrientation_withTransitio
   v8[4] = self;
   v9 = v5;
   v7 = _Block_copy(v8);
-  if (v3)
+  if (animatedCopy)
   {
     [(UIView *)self->_apertureContainer setHidden:0];
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v6 options:v7 animations:0.25 completion:0.0];
@@ -3380,8 +3380,8 @@ uint64_t __64__PUPhotoEditMediaToolController__updateToolVisibilityAnimated___bl
 
 - (void)_invalidateConstraints
 {
-  v3 = [(PUPhotoEditMediaToolController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  view = [(PUPhotoEditMediaToolController *)self view];
+  [view setNeedsUpdateConstraints];
 
   if ([(NSMutableArray *)self->_constraints count])
   {
@@ -3397,78 +3397,78 @@ uint64_t __64__PUPhotoEditMediaToolController__updateToolVisibilityAnimated___bl
   v189[4] = *MEMORY[0x1E69E9840];
   if (![(NSMutableArray *)self->_constraints count])
   {
-    v3 = [(PUPhotoEditMediaToolController *)self view];
-    v4 = [v3 window];
+    view = [(PUPhotoEditMediaToolController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [(PUPhotoEditMediaToolController *)self view];
+      view2 = [(PUPhotoEditMediaToolController *)self view];
       v6 = self->_containerView;
-      v7 = [(PUPhotoEditMediaToolController *)self primaryView];
-      [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+      primaryView = [(PUPhotoEditMediaToolController *)self primaryView];
+      [primaryView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PUPhotoEditMediaToolController *)self horizontalControlPadding];
       v9 = v8;
-      v10 = [v5 leadingAnchor];
-      v11 = [(UIView *)v6 leadingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      leadingAnchor = [view2 leadingAnchor];
+      leadingAnchor2 = [(UIView *)v6 leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v12 setActive:1];
 
-      v13 = [v5 trailingAnchor];
-      v14 = [(UIView *)v6 trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [view2 trailingAnchor];
+      trailingAnchor2 = [(UIView *)v6 trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v15 setActive:1];
 
-      v182 = v5;
-      v16 = [v5 bottomAnchor];
-      v17 = [(UIView *)v6 bottomAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      v182 = view2;
+      bottomAnchor = [view2 bottomAnchor];
+      bottomAnchor2 = [(UIView *)v6 bottomAnchor];
+      v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v18 setActive:1];
 
-      v19 = [(_UIBackdropView *)self->_backdropBackgroundView leadingAnchor];
-      v20 = [(UIView *)v6 leadingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
+      leadingAnchor3 = [(_UIBackdropView *)self->_backdropBackgroundView leadingAnchor];
+      leadingAnchor4 = [(UIView *)v6 leadingAnchor];
+      v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       [v21 setActive:1];
 
-      v22 = [(_UIBackdropView *)self->_backdropBackgroundView trailingAnchor];
-      v23 = [(UIView *)v6 trailingAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      trailingAnchor3 = [(_UIBackdropView *)self->_backdropBackgroundView trailingAnchor];
+      trailingAnchor4 = [(UIView *)v6 trailingAnchor];
+      v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       [v24 setActive:1];
 
-      v25 = [(_UIBackdropView *)self->_backdropBackgroundView topAnchor];
-      v26 = [(UIView *)v6 topAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      topAnchor = [(_UIBackdropView *)self->_backdropBackgroundView topAnchor];
+      topAnchor2 = [(UIView *)v6 topAnchor];
+      v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v27 setActive:1];
 
-      v28 = [(_UIBackdropView *)self->_backdropBackgroundView bottomAnchor];
-      v29 = [(UIView *)v6 bottomAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      bottomAnchor3 = [(_UIBackdropView *)self->_backdropBackgroundView bottomAnchor];
+      bottomAnchor4 = [(UIView *)v6 bottomAnchor];
+      v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v30 setActive:1];
 
-      v31 = [(UIView *)self->_solidBackgroundView leadingAnchor];
-      v32 = [(UIView *)v6 leadingAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      leadingAnchor5 = [(UIView *)self->_solidBackgroundView leadingAnchor];
+      leadingAnchor6 = [(UIView *)v6 leadingAnchor];
+      v33 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       [v33 setActive:1];
 
-      v34 = [(UIView *)self->_solidBackgroundView trailingAnchor];
-      v35 = [(UIView *)v6 trailingAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
+      trailingAnchor5 = [(UIView *)self->_solidBackgroundView trailingAnchor];
+      trailingAnchor6 = [(UIView *)v6 trailingAnchor];
+      v36 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       [v36 setActive:1];
 
-      v37 = [(UIView *)self->_solidBackgroundView topAnchor];
-      v38 = [(UIView *)v6 topAnchor];
-      v39 = [v37 constraintEqualToAnchor:v38];
+      topAnchor3 = [(UIView *)self->_solidBackgroundView topAnchor];
+      topAnchor4 = [(UIView *)v6 topAnchor];
+      v39 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v39 setActive:1];
 
-      v40 = [(UIView *)self->_solidBackgroundView bottomAnchor];
-      v41 = [(UIView *)v6 bottomAnchor];
-      v42 = [v40 constraintEqualToAnchor:v41];
+      bottomAnchor5 = [(UIView *)self->_solidBackgroundView bottomAnchor];
+      bottomAnchor6 = [(UIView *)v6 bottomAnchor];
+      v42 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
       [v42 setActive:1];
 
-      if (!v7)
+      if (!primaryView)
       {
         constraints = self->_constraints;
-        v88 = [(UIView *)v6 heightAnchor];
-        v89 = [v88 constraintEqualToConstant:0.0];
+        heightAnchor = [(UIView *)v6 heightAnchor];
+        v89 = [heightAnchor constraintEqualToConstant:0.0];
         [(NSMutableArray *)constraints addObject:v89];
 
 LABEL_37:
@@ -3477,12 +3477,12 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v43 = [(PUPhotoEditToolController *)self layoutOrientation];
-      v44 = [(PUPhotoEditToolController *)self photoEditSpec];
-      v45 = [v44 currentLayoutStyle];
+      layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+      photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+      currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-      v174 = v45;
-      if (v45 == 4)
+      v174 = currentLayoutStyle;
+      if (currentLayoutStyle == 4)
       {
         v46 = 27.0;
       }
@@ -3492,45 +3492,45 @@ LABEL_37:
         v46 = 8.0;
       }
 
-      if (v45 != 4 && v43 == 1)
+      if (currentLayoutStyle != 4 && layoutOrientation == 1)
       {
-        v47 = [(PUPhotoEditToolController *)self editSource];
-        v48 = [v47 mediaType] == 3;
+        editSource = [(PUPhotoEditToolController *)self editSource];
+        v48 = [editSource mediaType] == 3;
 
         v46 = dbl_1B3D0CF40[v48];
       }
 
-      v49 = [v7 widthAnchor];
-      v50 = [v49 constraintEqualToConstant:477.0];
+      widthAnchor = [primaryView widthAnchor];
+      v50 = [widthAnchor constraintEqualToConstant:477.0];
 
       LODWORD(v51) = 1144750080;
       [v50 setPriority:v51];
       v179 = v50;
       [(NSMutableArray *)self->_constraints addObject:v50];
-      v52 = [(PUPhotoEditMediaToolController *)self view];
-      v53 = [v52 window];
+      view3 = [(PUPhotoEditMediaToolController *)self view];
+      window2 = [view3 window];
 
-      v181 = v7;
-      v176 = v43;
-      if (v53)
+      v181 = primaryView;
+      v176 = layoutOrientation;
+      if (window2)
       {
-        if (v43 != 1)
+        if (layoutOrientation != 1)
         {
-          v54 = [(PUPhotoEditToolController *)self delegate];
-          v55 = [v54 mediaView];
+          delegate = [(PUPhotoEditToolController *)self delegate];
+          mediaView = [delegate mediaView];
 
-          [v55 bounds];
+          [mediaView bounds];
           v57 = v56;
           v59 = v58;
           v61 = v60;
           v63 = v62;
-          [v55 edgeInsets];
+          [mediaView edgeInsets];
           v65 = v57 + v64;
           v67 = v59 + v66;
           v69 = v61 - (v64 + v68);
           v71 = v63 - (v66 + v70);
-          v72 = [(PUPhotoEditMediaToolController *)self view];
-          [v72 convertRect:v55 fromView:{v65, v67, v69, v71}];
+          view4 = [(PUPhotoEditMediaToolController *)self view];
+          [view4 convertRect:mediaView fromView:{v65, v67, v69, v71}];
           v74 = v73;
           v76 = v75;
           v78 = v77;
@@ -3542,49 +3542,49 @@ LABEL_37:
           v190.size.height = v80;
           MidX = CGRectGetMidX(v190);
           v82 = self->_constraints;
-          v83 = [v7 centerXAnchor];
-          v84 = [(PUPhotoEditMediaToolController *)self view];
-          v85 = [v84 leadingAnchor];
-          v86 = [v83 constraintEqualToAnchor:v85 constant:MidX];
+          centerXAnchor = [primaryView centerXAnchor];
+          view5 = [(PUPhotoEditMediaToolController *)self view];
+          leadingAnchor7 = [view5 leadingAnchor];
+          v86 = [centerXAnchor constraintEqualToAnchor:leadingAnchor7 constant:MidX];
           [(NSMutableArray *)v82 addObject:v86];
 
-          v7 = v181;
+          primaryView = v181;
 LABEL_18:
 
 LABEL_19:
           v105 = self->_constraints;
           v180 = v6;
-          v106 = [(UIView *)v6 safeAreaLayoutGuide];
-          v107 = [v106 bottomAnchor];
-          v108 = [v7 bottomAnchor];
-          v109 = [v107 constraintEqualToAnchor:v108 constant:v46];
+          safeAreaLayoutGuide = [(UIView *)v6 safeAreaLayoutGuide];
+          bottomAnchor7 = [safeAreaLayoutGuide bottomAnchor];
+          bottomAnchor8 = [primaryView bottomAnchor];
+          v109 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:v46];
           [(NSMutableArray *)v105 addObject:v109];
 
           if (self->_overlayController)
           {
-            v110 = [(PUPhotoEditToolController *)self delegate];
-            v111 = [v110 mediaView];
+            delegate2 = [(PUPhotoEditToolController *)self delegate];
+            mediaView2 = [delegate2 mediaView];
 
             v160 = self->_constraints;
-            v172 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-            v170 = [v172 leadingAnchor];
-            v168 = [v111 leadingAnchor];
-            v166 = [v170 constraintEqualToAnchor:v168];
+            view6 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+            leadingAnchor8 = [view6 leadingAnchor];
+            leadingAnchor9 = [mediaView2 leadingAnchor];
+            v166 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
             v189[0] = v166;
-            v164 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-            v162 = [v164 trailingAnchor];
-            v161 = [v111 trailingAnchor];
-            v159 = [v162 constraintEqualToAnchor:v161];
+            view7 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+            trailingAnchor7 = [view7 trailingAnchor];
+            trailingAnchor8 = [mediaView2 trailingAnchor];
+            v159 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
             v189[1] = v159;
-            v158 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-            v112 = [v158 topAnchor];
-            v113 = [v111 topAnchor];
-            v114 = [v112 constraintEqualToAnchor:v113];
+            view8 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+            topAnchor5 = [view8 topAnchor];
+            topAnchor6 = [mediaView2 topAnchor];
+            v114 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
             v189[2] = v114;
-            v115 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
-            v116 = [v115 bottomAnchor];
-            v117 = [v111 bottomAnchor];
-            v118 = [v116 constraintEqualToAnchor:v117];
+            view9 = [(PUVideoEditOverlayViewController *)self->_overlayController view];
+            bottomAnchor9 = [view9 bottomAnchor];
+            bottomAnchor10 = [mediaView2 bottomAnchor];
+            v118 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
             v189[3] = v118;
             v119 = [MEMORY[0x1E695DEC8] arrayWithObjects:v189 count:4];
             [(NSMutableArray *)v160 addObjectsFromArray:v119];
@@ -3599,23 +3599,23 @@ LABEL_19:
             *&v185.tx = *(MEMORY[0x1E695EFD0] + 32);
             [(UIView *)apertureContainer setTransform:&v185];
             v175 = self->_constraints;
-            v177 = [v182 widthAnchor];
-            v136 = [(UIView *)self->_apertureContainer widthAnchor];
-            v137 = [v177 constraintEqualToAnchor:v136];
+            widthAnchor2 = [v182 widthAnchor];
+            widthAnchor3 = [(UIView *)self->_apertureContainer widthAnchor];
+            v137 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
             v188[0] = v137;
-            v138 = [v182 centerXAnchor];
-            v139 = [(UIView *)self->_apertureContainer centerXAnchor];
-            v140 = [v138 constraintEqualToAnchor:v139];
+            centerXAnchor2 = [v182 centerXAnchor];
+            centerXAnchor3 = [(UIView *)self->_apertureContainer centerXAnchor];
+            v140 = [centerXAnchor2 constraintEqualToAnchor:centerXAnchor3];
             v188[1] = v140;
-            v141 = [v182 bottomAnchor];
-            v142 = [(UIView *)self->_apertureContainer bottomAnchor];
-            v143 = [v141 constraintEqualToAnchor:v142];
+            bottomAnchor11 = [v182 bottomAnchor];
+            bottomAnchor12 = [(UIView *)self->_apertureContainer bottomAnchor];
+            v143 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12];
             v188[2] = v143;
             v144 = [MEMORY[0x1E695DEC8] arrayWithObjects:v188 count:3];
             [(NSMutableArray *)v175 addObjectsFromArray:v144];
 
             v6 = v180;
-            v7 = v181;
+            primaryView = v181;
           }
 
           else
@@ -3624,17 +3624,17 @@ LABEL_19:
             apertureContainerLayoutGuide = self->_apertureContainerLayoutGuide;
             self->_apertureContainerLayoutGuide = v120;
 
-            v122 = [(PUPhotoEditMediaToolController *)self view];
-            [v122 addLayoutGuide:self->_apertureContainerLayoutGuide];
+            view10 = [(PUPhotoEditMediaToolController *)self view];
+            [view10 addLayoutGuide:self->_apertureContainerLayoutGuide];
 
             v123 = self->_constraints;
-            v124 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide heightAnchor];
-            v125 = [v182 heightAnchor];
-            v126 = [v124 constraintEqualToAnchor:v125];
+            heightAnchor2 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide heightAnchor];
+            heightAnchor3 = [v182 heightAnchor];
+            v126 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
             v187[0] = v126;
-            v127 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerYAnchor];
-            v128 = [v182 centerYAnchor];
-            v129 = [v127 constraintEqualToAnchor:v128];
+            centerYAnchor = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerYAnchor];
+            centerYAnchor2 = [v182 centerYAnchor];
+            v129 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
             v187[1] = v129;
             v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:v187 count:2];
             [(NSMutableArray *)v123 addObjectsFromArray:v130];
@@ -3642,37 +3642,37 @@ LABEL_19:
             if ([(PUPhotoEditToolController *)self layoutOrientation]== 3 || [(PUPhotoEditToolController *)self layoutOrientation]== 2 || v174 == 4)
             {
               v131 = self->_constraints;
-              v132 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide rightAnchor];
-              v133 = [v182 rightAnchor];
+              rightAnchor = [(UILayoutGuide *)self->_apertureContainerLayoutGuide rightAnchor];
+              rightAnchor2 = [v182 rightAnchor];
             }
 
             else
             {
               v131 = self->_constraints;
-              v132 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide leftAnchor];
-              v133 = [v182 leftAnchor];
+              rightAnchor = [(UILayoutGuide *)self->_apertureContainerLayoutGuide leftAnchor];
+              rightAnchor2 = [v182 leftAnchor];
             }
 
-            v145 = v133;
-            v146 = [v132 constraintEqualToAnchor:v133];
+            v145 = rightAnchor2;
+            v146 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
             [(NSMutableArray *)v131 addObject:v146];
 
             v165 = self->_constraints;
-            v178 = [(UIView *)self->_apertureContainer centerXAnchor];
-            v173 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerXAnchor];
-            v171 = [v178 constraintEqualToAnchor:v173];
+            centerXAnchor4 = [(UIView *)self->_apertureContainer centerXAnchor];
+            centerXAnchor5 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerXAnchor];
+            v171 = [centerXAnchor4 constraintEqualToAnchor:centerXAnchor5];
             v186[0] = v171;
-            v169 = [(UIView *)self->_apertureContainer centerYAnchor];
-            v167 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerYAnchor];
-            v163 = [v169 constraintEqualToAnchor:v167];
+            centerYAnchor3 = [(UIView *)self->_apertureContainer centerYAnchor];
+            centerYAnchor4 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide centerYAnchor];
+            v163 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
             v186[1] = v163;
-            v147 = [(UIView *)self->_apertureContainer widthAnchor];
-            v148 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide heightAnchor];
-            v149 = [v147 constraintEqualToAnchor:v148];
+            widthAnchor4 = [(UIView *)self->_apertureContainer widthAnchor];
+            heightAnchor4 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide heightAnchor];
+            v149 = [widthAnchor4 constraintEqualToAnchor:heightAnchor4];
             v186[2] = v149;
-            v150 = [(UIView *)self->_apertureContainer heightAnchor];
-            v151 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide widthAnchor];
-            v152 = [v150 constraintEqualToAnchor:v151];
+            heightAnchor5 = [(UIView *)self->_apertureContainer heightAnchor];
+            widthAnchor5 = [(UILayoutGuide *)self->_apertureContainerLayoutGuide widthAnchor];
+            v152 = [heightAnchor5 constraintEqualToAnchor:widthAnchor5];
             v186[3] = v152;
             v153 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:4];
             [(NSMutableArray *)v165 addObjectsFromArray:v153];
@@ -3684,8 +3684,8 @@ LABEL_19:
 
             else
             {
-              v155 = [(PUPhotoEditToolController *)self layoutOrientation];
-              v156 = v174 == 4 || v155 == 2;
+              layoutOrientation2 = [(PUPhotoEditToolController *)self layoutOrientation];
+              v156 = v174 == 4 || layoutOrientation2 == 2;
               v154 = 1.57079633;
               if (v156)
               {
@@ -3694,7 +3694,7 @@ LABEL_19:
             }
 
             v6 = v180;
-            v7 = v181;
+            primaryView = v181;
             CGAffineTransformMakeRotation(&v184, v154);
             v157 = self->_apertureContainer;
             v185 = v184;
@@ -3705,38 +3705,38 @@ LABEL_19:
         }
 
         v90 = self->_constraints;
-        v91 = [v7 centerXAnchor];
-        v92 = [(PUPhotoEditMediaToolController *)self view];
-        v93 = [v92 window];
-        v94 = [v93 safeAreaLayoutGuide];
-        v95 = [v94 centerXAnchor];
-        v96 = [v91 constraintEqualToAnchor:v95];
+        centerXAnchor6 = [primaryView centerXAnchor];
+        view11 = [(PUPhotoEditMediaToolController *)self view];
+        window3 = [view11 window];
+        safeAreaLayoutGuide2 = [window3 safeAreaLayoutGuide];
+        centerXAnchor7 = [safeAreaLayoutGuide2 centerXAnchor];
+        v96 = [centerXAnchor6 constraintEqualToAnchor:centerXAnchor7];
         [(NSMutableArray *)v90 addObject:v96];
 
-        v7 = v181;
+        primaryView = v181;
       }
 
-      else if (v43 != 1)
+      else if (layoutOrientation != 1)
       {
         goto LABEL_19;
       }
 
       [(PUPhotoEditMediaToolController *)self horizontalPrimaryViewPaddingOffset];
       v98 = v9 + v97;
-      v99 = [v7 leadingAnchor];
-      v100 = [(UIView *)v6 leadingAnchor];
-      v55 = [v99 constraintGreaterThanOrEqualToAnchor:v100 constant:v98];
+      leadingAnchor10 = [primaryView leadingAnchor];
+      leadingAnchor11 = [(UIView *)v6 leadingAnchor];
+      mediaView = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:leadingAnchor11 constant:v98];
 
       LODWORD(v101) = *"";
-      [v55 setPriority:v101];
-      [(NSMutableArray *)self->_constraints addObject:v55];
-      v102 = [v7 trailingAnchor];
-      v103 = [(UIView *)v6 trailingAnchor];
-      v83 = [v102 constraintLessThanOrEqualToAnchor:v103 constant:-v98];
+      [mediaView setPriority:v101];
+      [(NSMutableArray *)self->_constraints addObject:mediaView];
+      trailingAnchor9 = [primaryView trailingAnchor];
+      trailingAnchor10 = [(UIView *)v6 trailingAnchor];
+      centerXAnchor = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10 constant:-v98];
 
       LODWORD(v104) = *"";
-      [v83 setPriority:v104];
-      [(NSMutableArray *)self->_constraints addObject:v83];
+      [centerXAnchor setPriority:v104];
+      [(NSMutableArray *)self->_constraints addObject:centerXAnchor];
       goto LABEL_18;
     }
   }
@@ -3751,14 +3751,14 @@ LABEL_38:
 {
   if (self->_apertureGradientView)
   {
-    v3 = [(PUPhotoEditMediaToolController *)self view];
-    [v3 bounds];
+    view = [(PUPhotoEditMediaToolController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
 
     [(UIView *)self->_apertureContainer bounds];
     [(CEKEdgeGradientView *)self->_apertureGradientView setFrame:?];
-    v8 = [(PUPhotoEditToolController *)self layoutOrientation];
+    layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
     if (v5 >= v7)
     {
       v9 = v7;
@@ -3772,7 +3772,7 @@ LABEL_38:
     v10 = v9 * 0.03;
     v11 = v9 * 0.07;
     v12 = 44.0;
-    if (v8 == 1)
+    if (layoutOrientation == 1)
     {
       v12 = 0.0;
     }
@@ -3792,20 +3792,20 @@ LABEL_38:
   [(PUPhotoEditMediaToolController *)self _layoutToolGradient];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditMediaToolController;
-  [(PUPhotoEditToolController *)&v4 viewDidAppear:a3];
+  [(PUPhotoEditToolController *)&v4 viewDidAppear:appear];
   self->_viewHasAppeared = 1;
   [(PUPhotoEditMediaToolController *)self _updateTrimControlAndToolbarButtons];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditMediaToolController;
-  [(PUPhotoEditMediaToolController *)&v4 viewIsAppearing:a3];
+  [(PUPhotoEditMediaToolController *)&v4 viewIsAppearing:appearing];
   if (self->_isActiveTool)
   {
     [(PUPhotoEditMediaToolController *)self _invalidateConstraints];
@@ -3822,8 +3822,8 @@ LABEL_38:
 
   v9 = objc_alloc_init(PUPhotoEditToolControllerView);
   [(PUPhotoEditToolControllerView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [(PUPhotoEditToolControllerView *)v9 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PUPhotoEditToolControllerView *)v9 setBackgroundColor:clearColor];
 
   [(PUPhotoEditMediaToolController *)self setView:v9];
   [(UIView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -3860,12 +3860,12 @@ LABEL_38:
     backdropBackgroundView = v2->_backdropBackgroundView;
     v2->_backdropBackgroundView = v5;
 
-    v7 = [(_UIBackdropView *)v2->_backdropBackgroundView groupName];
-    [(PUPhotoEditMediaToolController *)v2 setBackdropViewGroupName:v7];
+    groupName = [(_UIBackdropView *)v2->_backdropBackgroundView groupName];
+    [(PUPhotoEditMediaToolController *)v2 setBackdropViewGroupName:groupName];
 
     [(_UIBackdropView *)v2->_backdropBackgroundView setHidden:1];
-    v8 = [(_UIBackdropView *)v2->_backdropBackgroundView layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer = [(_UIBackdropView *)v2->_backdropBackgroundView layer];
+    [layer setAllowsGroupOpacity:0];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
     solidBackgroundView = v2->_solidBackgroundView;
@@ -3873,8 +3873,8 @@ LABEL_38:
 
     [(UIView *)v2->_solidBackgroundView setAlpha:0.0];
     v11 = +[PUInterfaceManager currentTheme];
-    v12 = [v11 photoEditingBackgroundColor];
-    [(UIView *)v2->_solidBackgroundView setBackgroundColor:v12];
+    photoEditingBackgroundColor = [v11 photoEditingBackgroundColor];
+    [(UIView *)v2->_solidBackgroundView setBackgroundColor:photoEditingBackgroundColor];
 
     v2->_trimControllerScrubberNeedsVisualUpdate = 1;
     [(PUPhotoEditToolController *)v2 setHasMediaScrubber:1];

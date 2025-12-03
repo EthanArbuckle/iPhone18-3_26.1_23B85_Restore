@@ -11,9 +11,9 @@
 {
   v4.receiver = self;
   v4.super_class = PKSettingTableCellAccessibility;
-  v2 = [(PKSettingTableCellAccessibility *)&v4 accessibilityElements];
+  accessibilityElements = [(PKSettingTableCellAccessibility *)&v4 accessibilityElements];
 
-  return v2;
+  return accessibilityElements;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -33,17 +33,17 @@
 - (id)accessibilityValue
 {
   v2 = [(PKSettingTableCellAccessibility *)self safeValueForKey:@"_settingSwitch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(PKSettingTableCellAccessibility *)self safeValueForKey:@"_settingSwitch"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

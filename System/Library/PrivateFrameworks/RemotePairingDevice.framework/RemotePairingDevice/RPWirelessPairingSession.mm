@@ -1,47 +1,47 @@
 @interface RPWirelessPairingSession
 - (BOOL)invalidated;
-- (RPWirelessPairingSession)initWithUnderlyingObject:(id)a3;
+- (RPWirelessPairingSession)initWithUnderlyingObject:(id)object;
 - (void)endSession;
-- (void)registerInvalidationHandlerOnQueue:(id)a3 handler:(id)a4;
+- (void)registerInvalidationHandlerOnQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation RPWirelessPairingSession
 
-- (RPWirelessPairingSession)initWithUnderlyingObject:(id)a3
+- (RPWirelessPairingSession)initWithUnderlyingObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = RPWirelessPairingSession;
   v6 = [(RPWirelessPairingSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingObject, a3);
+    objc_storeStrong(&v6->_underlyingObject, object);
   }
 
   return v7;
 }
 
-- (void)registerInvalidationHandlerOnQueue:(id)a3 handler:(id)a4
+- (void)registerInvalidationHandlerOnQueue:(id)queue handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RPWirelessPairingSession *)self underlyingObject];
-  [v8 registerInvalidationHandlerWithInvokingOnQueue:v7 handler:v6];
+  handlerCopy = handler;
+  queueCopy = queue;
+  underlyingObject = [(RPWirelessPairingSession *)self underlyingObject];
+  [underlyingObject registerInvalidationHandlerWithInvokingOnQueue:queueCopy handler:handlerCopy];
 }
 
 - (void)endSession
 {
-  v2 = [(RPWirelessPairingSession *)self underlyingObject];
-  [v2 endSession];
+  underlyingObject = [(RPWirelessPairingSession *)self underlyingObject];
+  [underlyingObject endSession];
 }
 
 - (BOOL)invalidated
 {
-  v2 = [(RPWirelessPairingSession *)self underlyingObject];
-  v3 = [v2 invalidated];
+  underlyingObject = [(RPWirelessPairingSession *)self underlyingObject];
+  invalidated = [underlyingObject invalidated];
 
-  return v3;
+  return invalidated;
 }
 
 @end

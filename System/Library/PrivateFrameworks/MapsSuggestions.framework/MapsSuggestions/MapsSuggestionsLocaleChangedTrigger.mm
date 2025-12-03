@@ -16,15 +16,15 @@
 - (void)didAddFirstObserver
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [MEMORY[0x1E696ADC8] currentQueue];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  currentQueue = [MEMORY[0x1E696ADC8] currentQueue];
   v4 = *MEMORY[0x1E695D8F0];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__MapsSuggestionsLocaleChangedTrigger_didAddFirstObserver__block_invoke;
   v6[3] = &unk_1E81F8098;
   objc_copyWeak(&v7, &location);
-  v5 = [v2 addObserverForName:v4 object:0 queue:v3 usingBlock:v6];
+  v5 = [defaultCenter addObserverForName:v4 object:0 queue:currentQueue usingBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -59,8 +59,8 @@ void __58__MapsSuggestionsLocaleChangedTrigger_didAddFirstObserver__block_invoke
 
 - (void)didRemoveLastObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 @end

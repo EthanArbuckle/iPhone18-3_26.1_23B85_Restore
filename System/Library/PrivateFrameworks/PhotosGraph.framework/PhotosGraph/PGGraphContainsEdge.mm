@@ -1,15 +1,15 @@
 @interface PGGraphContainsEdge
 + (id)filter;
-- (id)initFromHighlightNode:(id)a3 toMomentNode:(id)a4;
+- (id)initFromHighlightNode:(id)node toMomentNode:(id)momentNode;
 @end
 
 @implementation PGGraphContainsEdge
 
-- (id)initFromHighlightNode:(id)a3 toMomentNode:(id)a4
+- (id)initFromHighlightNode:(id)node toMomentNode:(id)momentNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphContainsEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:momentNode];
 }
 
 + (id)filter

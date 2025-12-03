@@ -1,9 +1,9 @@
 @interface NTKComplicationControllerDisplayProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTKComplicationControllerDisplayProperties)init;
-- (id)_initWithDisplayProperties:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithDisplayProperties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -36,49 +36,49 @@
   return v3;
 }
 
-- (id)_initWithDisplayProperties:(id)a3
+- (id)_initWithDisplayProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = NTKComplicationControllerDisplayProperties;
   v5 = [(NTKComplicationControllerDisplayProperties *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v5->_faceDataMode = *(v4 + 1);
-    v7 = [*(v4 + 2) copy];
+    v5->_faceDataMode = *(propertiesCopy + 1);
+    v7 = [*(propertiesCopy + 2) copy];
     launchLocation = v6->_launchLocation;
     v6->_launchLocation = v7;
 
-    v6->_tapEnabled = *(v4 + 24);
-    v6->_defaultTapAnimationEnabled = *(v4 + 25);
-    v6->_supportsWatchGestureInteraction = *(v4 + 26);
-    v6->_visibility = *(v4 + 4);
-    v6->_supportsTinting = *(v4 + 40);
-    v6->_supportsSpecularHighlighting = *(v4 + 41);
-    v6->_showsWhenLocked = *(v4 + 42);
-    v6->_showsInLowLuminance = *(v4 + 43);
-    v9 = [*(v4 + 6) copy];
+    v6->_tapEnabled = *(propertiesCopy + 24);
+    v6->_defaultTapAnimationEnabled = *(propertiesCopy + 25);
+    v6->_supportsWatchGestureInteraction = *(propertiesCopy + 26);
+    v6->_visibility = *(propertiesCopy + 4);
+    v6->_supportsTinting = *(propertiesCopy + 40);
+    v6->_supportsSpecularHighlighting = *(propertiesCopy + 41);
+    v6->_showsWhenLocked = *(propertiesCopy + 42);
+    v6->_showsInLowLuminance = *(propertiesCopy + 43);
+    v9 = [*(propertiesCopy + 6) copy];
     widgetConfigurationIdentifier = v6->_widgetConfigurationIdentifier;
     v6->_widgetConfigurationIdentifier = v9;
 
-    v6->_widgetShowsSnapshot = *(v4 + 56);
-    v6->_widgetRequiresSnapshot = *(v4 + 57);
-    v6->_widgetHostPriorityTransientSnapshot = *(v4 + 58);
-    v6->_contentOverride = *(v4 + 8);
+    v6->_widgetShowsSnapshot = *(propertiesCopy + 56);
+    v6->_widgetRequiresSnapshot = *(propertiesCopy + 57);
+    v6->_widgetHostPriorityTransientSnapshot = *(propertiesCopy + 58);
+    v6->_contentOverride = *(propertiesCopy + 8);
   }
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NTKMutableComplicationControllerDisplayProperties allocWithZone:a3];
+  v4 = [NTKMutableComplicationControllerDisplayProperties allocWithZone:zone];
 
   return [(NTKComplicationControllerDisplayProperties *)v4 _initWithDisplayProperties:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(NTKComplicationControllerDisplayProperties *)self isMemberOfClass:objc_opt_class()])
   {
@@ -88,7 +88,7 @@
 
   else
   {
-    v5 = [NTKComplicationControllerDisplayProperties allocWithZone:a3];
+    v5 = [NTKComplicationControllerDisplayProperties allocWithZone:zone];
 
     return [(NTKComplicationControllerDisplayProperties *)v5 _initWithDisplayProperties:self];
   }
@@ -96,37 +96,37 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_faceDataMode];
-  v5 = [v3 appendString:self->_launchLocation];
-  v6 = [v3 appendBool:self->_tapEnabled];
-  v7 = [v3 appendBool:self->_defaultTapAnimationEnabled];
-  v8 = [v3 appendBool:self->_supportsWatchGestureInteraction];
-  v9 = [v3 appendUnsignedInteger:self->_visibility];
-  v10 = [v3 appendBool:self->_supportsTinting];
-  v11 = [v3 appendBool:self->_supportsSpecularHighlighting];
-  v12 = [v3 appendBool:self->_showsWhenLocked];
-  v13 = [v3 appendBool:self->_showsInLowLuminance];
-  v14 = [v3 appendString:self->_widgetConfigurationIdentifier];
-  v15 = [v3 appendBool:self->_widgetShowsSnapshot];
-  v16 = [v3 appendBool:self->_widgetRequiresSnapshot];
-  v17 = [v3 appendBool:self->_widgetHostPriorityTransientSnapshot];
-  v18 = [v3 appendUnsignedInteger:self->_contentOverride];
-  v19 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_faceDataMode];
+  v5 = [builder appendString:self->_launchLocation];
+  v6 = [builder appendBool:self->_tapEnabled];
+  v7 = [builder appendBool:self->_defaultTapAnimationEnabled];
+  v8 = [builder appendBool:self->_supportsWatchGestureInteraction];
+  v9 = [builder appendUnsignedInteger:self->_visibility];
+  v10 = [builder appendBool:self->_supportsTinting];
+  v11 = [builder appendBool:self->_supportsSpecularHighlighting];
+  v12 = [builder appendBool:self->_showsWhenLocked];
+  v13 = [builder appendBool:self->_showsInLowLuminance];
+  v14 = [builder appendString:self->_widgetConfigurationIdentifier];
+  v15 = [builder appendBool:self->_widgetShowsSnapshot];
+  v16 = [builder appendBool:self->_widgetRequiresSnapshot];
+  v17 = [builder appendBool:self->_widgetHostPriorityTransientSnapshot];
+  v18 = [builder appendUnsignedInteger:self->_contentOverride];
+  v19 = [builder hash];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   faceDataMode = self->_faceDataMode;
   v80[0] = MEMORY[0x277D85DD0];
   v80[1] = 3221225472;
   v80[2] = __54__NTKComplicationControllerDisplayProperties_isEqual___block_invoke;
   v80[3] = &unk_278780170;
-  v7 = v4;
+  v7 = equalCopy;
   v81 = v7;
   v8 = [v5 appendInteger:faceDataMode counterpart:v80];
   launchLocation = self->_launchLocation;

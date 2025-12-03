@@ -1,19 +1,19 @@
 @interface _MTLIOHandleRaw
-- (_MTLIOHandleRaw)initWithDevice:(id)a3 path:(const char *)a4 error:(id *)a5 uncached:(BOOL)a6;
+- (_MTLIOHandleRaw)initWithDevice:(id)device path:(const char *)path error:(id *)error uncached:(BOOL)uncached;
 - (void)dealloc;
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6;
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6 needsDecompress:(BOOL *)a7;
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size;
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size needsDecompress:(BOOL *)decompress;
 @end
 
 @implementation _MTLIOHandleRaw
 
-- (_MTLIOHandleRaw)initWithDevice:(id)a3 path:(const char *)a4 error:(id *)a5 uncached:(BOOL)a6
+- (_MTLIOHandleRaw)initWithDevice:(id)device path:(const char *)path error:(id *)error uncached:(BOOL)uncached
 {
-  v6 = a6;
+  uncachedCopy = uncached;
   v32[1] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v26.receiver = self;
@@ -21,12 +21,12 @@
   v10 = [(_MTLObjectWithLabel *)&v26 init];
   if (v10)
   {
-    v10->_device = a3;
-    v11 = open(a4, 0);
+    v10->_device = device;
+    v11 = open(path, 0);
     v10->_fd = v11;
     if (v11 < 0)
     {
-      if (a5)
+      if (error)
       {
         v12 = MEMORY[0x1E696ABC0];
         v13 = *__error();
@@ -38,13 +38,13 @@
         v17 = v12;
         v18 = v13;
 LABEL_19:
-        *a5 = [v17 errorWithDomain:@"MTLIOError" code:v18 userInfo:v16];
+        *error = [v17 errorWithDomain:@"MTLIOError" code:v18 userInfo:v16];
       }
     }
 
     else if (fstat(v11, &v25) < 0)
     {
-      if (a5)
+      if (error)
       {
         v19 = MEMORY[0x1E696ABC0];
         v29 = *MEMORY[0x1E696A578];
@@ -64,7 +64,7 @@ LABEL_18:
     {
       if ((v25.st_mode & 0xF000) == 0x8000)
       {
-        if (v6)
+        if (uncachedCopy)
         {
           fcntl(v10->_fd, 48, 1);
         }
@@ -75,7 +75,7 @@ LABEL_18:
           if (MTLTraceEnabled())
           {
             [(_MTLIOHandleRaw *)v10 globalTraceObjectID];
-            [a3 registryID];
+            [device registryID];
             kdebug_trace();
           }
         }
@@ -83,7 +83,7 @@ LABEL_18:
         goto LABEL_21;
       }
 
-      if (a5)
+      if (error)
       {
         v19 = MEMORY[0x1E696ABC0];
         v27 = *MEMORY[0x1E696A578];
@@ -116,11 +116,11 @@ LABEL_21:
   [(_MTLObjectWithLabel *)&v4 dealloc];
 }
 
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size
 {
-  if (pread(self->_fd, a5, a3, a4) >= a3)
+  if (pread(self->_fd, stagingBuffer, buffer, offset) >= buffer)
   {
-    return a5;
+    return stagingBuffer;
   }
 
   else
@@ -129,12 +129,12 @@ LABEL_21:
   }
 }
 
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6 needsDecompress:(BOOL *)a7
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size needsDecompress:(BOOL *)decompress
 {
-  *a7 = 0;
-  if (pread(self->_fd, a5, a3, a4) >= a3)
+  *decompress = 0;
+  if (pread(self->_fd, stagingBuffer, buffer, offset) >= buffer)
   {
-    return a5;
+    return stagingBuffer;
   }
 
   else

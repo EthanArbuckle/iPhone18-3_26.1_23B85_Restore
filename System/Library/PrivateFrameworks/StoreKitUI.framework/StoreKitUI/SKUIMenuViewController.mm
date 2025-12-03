@@ -1,20 +1,20 @@
 @interface SKUIMenuViewController
-- (SKUIMenuViewController)initWithMenuTitles:(id)a3 images:(id)a4;
+- (SKUIMenuViewController)initWithMenuTitles:(id)titles images:(id)images;
 - (SKUIMenuViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)setIndexOfCheckedTitle:(int64_t)a3;
-- (void)setMenuStyle:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setIndexOfCheckedTitle:(int64_t)title;
+- (void)setMenuStyle:(int64_t)style;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation SKUIMenuViewController
 
-- (SKUIMenuViewController)initWithMenuTitles:(id)a3 images:(id)a4
+- (SKUIMenuViewController)initWithMenuTitles:(id)titles images:(id)images
 {
-  v6 = a3;
-  v7 = a4;
+  titlesCopy = titles;
+  imagesCopy = images;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMenuViewController initWithMenuTitles:images:];
@@ -27,11 +27,11 @@
   if (v8)
   {
     v8->_indexOfCheckedTitle = 0x7FFFFFFFFFFFFFFFLL;
-    v10 = [v6 copy];
+    v10 = [titlesCopy copy];
     menuTitles = v9->_menuTitles;
     v9->_menuTitles = v10;
 
-    v12 = [v7 copy];
+    v12 = [imagesCopy copy];
     menuImages = v9->_menuImages;
     v9->_menuImages = v12;
   }
@@ -39,9 +39,9 @@
   return v9;
 }
 
-- (void)setIndexOfCheckedTitle:(int64_t)a3
+- (void)setIndexOfCheckedTitle:(int64_t)title
 {
-  if (self->_indexOfCheckedTitle != a3)
+  if (self->_indexOfCheckedTitle != title)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     indexOfCheckedTitle = self->_indexOfCheckedTitle;
@@ -51,28 +51,28 @@
       [v9 addObject:v6];
     }
 
-    self->_indexOfCheckedTitle = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_indexOfCheckedTitle = title;
+    if (title != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
+      v7 = [MEMORY[0x277CCAA70] indexPathForRow:title inSection:0];
       [v9 addObject:v7];
     }
 
     if ([(SKUIMenuViewController *)self isViewLoaded])
     {
-      v8 = [(SKUIMenuViewController *)self tableView];
-      [v8 reloadRowsAtIndexPaths:v9 withRowAnimation:5];
+      tableView = [(SKUIMenuViewController *)self tableView];
+      [tableView reloadRowsAtIndexPaths:v9 withRowAnimation:5];
     }
   }
 }
 
-- (void)setMenuStyle:(int64_t)a3
+- (void)setMenuStyle:(int64_t)style
 {
-  if (self->_menuStyle != a3)
+  if (self->_menuStyle != style)
   {
-    self->_menuStyle = a3;
-    v4 = [(SKUIMenuViewController *)self view];
-    [v4 setNeedsDisplay];
+    self->_menuStyle = style;
+    view = [(SKUIMenuViewController *)self view];
+    [view setNeedsDisplay];
   }
 }
 
@@ -81,28 +81,28 @@
   v7.receiver = self;
   v7.super_class = SKUIMenuViewController;
   [(SKUIMenuViewController *)&v7 loadView];
-  v3 = [(SKUIMenuViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"a"];
-  [v3 setSeparatorStyle:0];
-  [v3 setSemanticContentAttribute:storeSemanticContentAttribute()];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  tableView = [(SKUIMenuViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"a"];
+  [tableView setSeparatorStyle:0];
+  [tableView setSemanticContentAttribute:storeSemanticContentAttribute()];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [tableView setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(SKUIMenuViewController *)self view];
-  v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  view = [(SKUIMenuViewController *)self view];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor2];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"a" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"a" forIndexPath:pathCopy];
   if (!v7)
   {
     v7 = [[SKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"a"];
   }
 
-  v8 = [v6 row];
+  v8 = [pathCopy row];
   if (v8 == self->_indexOfCheckedTitle)
   {
     v9 = 3;
@@ -114,12 +114,12 @@
   }
 
   [(SKUITableViewCell *)v7 setAccessoryType:v9];
-  v10 = [(SKUITableViewCell *)v7 textLabel];
+  textLabel = [(SKUITableViewCell *)v7 textLabel];
   v11 = [(NSArray *)self->_menuTitles objectAtIndex:v8];
-  [v10 setText:v11];
+  [textLabel setText:v11];
 
-  v12 = [MEMORY[0x277D75348] labelColor];
-  [v10 setTextColor:v12];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [textLabel setTextColor:labelColor];
 
   menuImages = self->_menuImages;
   if (menuImages)
@@ -132,8 +132,8 @@
     v15 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v16 = [(SKUITableViewCell *)v7 imageView];
-    [v16 setImage:v15];
+    imageView = [(SKUITableViewCell *)v7 imageView];
+    [imageView setImage:v15];
   }
 
   if (v8 == [(NSArray *)self->_menuTitles count]- 1)
@@ -143,34 +143,34 @@
 
   else
   {
-    v17 = [MEMORY[0x277D75348] tableSeparatorColor];
-    [(SKUITableViewCell *)v7 setBottomBorderColor:v17];
+    tableSeparatorColor = [MEMORY[0x277D75348] tableSeparatorColor];
+    [(SKUITableViewCell *)v7 setBottomBorderColor:tableSeparatorColor];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 menuViewController:self didSelectItemAtIndex:{objc_msgSend(v6, "row")}];
+    [v9 menuViewController:self didSelectItemAtIndex:{objc_msgSend(pathCopy, "row")}];
   }
 
-  [v10 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 }
 
 - (SKUIMenuViewControllerDelegate)delegate

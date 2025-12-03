@@ -1,13 +1,13 @@
 @interface NSObject
-+ (BOOL)tsu_object:(id)a3 isEqualToObject:(id)a4;
-- (id)tsu_addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
-- (void)tsu_performSelector:(SEL)a3 withValue:(id)a4;
-- (void)tsu_removeObserverForToken:(id)a3;
++ (BOOL)tsu_object:(id)tsu_object isEqualToObject:(id)object;
+- (id)tsu_addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
+- (void)tsu_performSelector:(SEL)selector withValue:(id)value;
+- (void)tsu_removeObserverForToken:(id)token;
 @end
 
 @implementation NSObject
 
-- (void)tsu_performSelector:(SEL)a3 withValue:(id)a4
+- (void)tsu_performSelector:(SEL)selector withValue:(id)value
 {
   v7 = [self methodSignatureForSelector:?];
   if (v7)
@@ -53,16 +53,16 @@
           case 'p':
             goto LABEL_11;
           case 'B':
-            [a4 BOOLValue];
+            [value BOOLValue];
             goto LABEL_31;
           case 'C':
-            [a4 unsignedCharValue];
+            [value unsignedCharValue];
             goto LABEL_31;
           case 'I':
-            [a4 unsignedIntValue];
+            [value unsignedIntValue];
             goto LABEL_31;
           case 'L':
-            [a4 unsignedLongValue];
+            [value unsignedLongValue];
             goto LABEL_35;
           case 'N':
           case 'O':
@@ -74,75 +74,75 @@
             ++v9;
             continue;
           case 'Q':
-            [a4 unsignedLongLongValue];
+            [value unsignedLongLongValue];
             goto LABEL_35;
           case 'S':
-            [a4 unsignedShortValue];
+            [value unsignedShortValue];
             goto LABEL_31;
           case '^':
-            [a4 pointerValue];
+            [value pointerValue];
             goto LABEL_35;
           case 'c':
-            [a4 charValue];
+            [value charValue];
             goto LABEL_31;
           case 'd':
-            [a4 doubleValue];
-            v10 = self;
-            v11 = a3;
+            [value doubleValue];
+            selfCopy5 = self;
+            selectorCopy5 = selector;
 
             goto LABEL_16;
           case 'f':
-            [a4 floatValue];
-            v10 = self;
-            v11 = a3;
+            [value floatValue];
+            selfCopy5 = self;
+            selectorCopy5 = selector;
 
             goto LABEL_16;
           case 'i':
-            [a4 intValue];
+            [value intValue];
             goto LABEL_31;
           case 'l':
-            [a4 longValue];
+            [value longValue];
             goto LABEL_35;
           case 'q':
-            [a4 longLongValue];
+            [value longLongValue];
 LABEL_35:
-            v10 = self;
-            v11 = a3;
+            selfCopy5 = self;
+            selectorCopy5 = selector;
             goto LABEL_36;
           case 's':
-            [a4 shortValue];
+            [value shortValue];
 LABEL_31:
-            v10 = self;
-            v11 = a3;
+            selfCopy5 = self;
+            selectorCopy5 = selector;
 
             goto LABEL_16;
           default:
             if (*v9 == 35)
             {
 LABEL_10:
-              v10 = self;
-              v11 = a3;
+              selfCopy5 = self;
+              selectorCopy5 = selector;
 LABEL_36:
 
 LABEL_16:
-              [v10 v11];
+              [selfCopy5 selectorCopy5];
               return;
             }
 
 LABEL_11:
-            v12 = [a4 objCType];
-            if (v12)
+            objCType = [value objCType];
+            if (objCType)
             {
-              v13 = v12;
-              if (!strcmp(v9, v12))
+              v13 = objCType;
+              if (!strcmp(v9, objCType))
               {
                 v14 = [NSInvocation invocationWithMethodSignature:v8];
                 [(NSInvocation *)v14 setTarget:self];
-                [(NSInvocation *)v14 setSelector:a3];
+                [(NSInvocation *)v14 setSelector:selector];
                 sizep = 0;
                 NSGetSizeAndAlignment(v13, &sizep, 0);
                 v15 = malloc_type_malloc(sizep, 0x3E329894uLL);
-                [a4 getValue:v15];
+                [value getValue:v15];
                 [(NSInvocation *)v14 setArgument:v15 atIndex:2];
                 [(NSInvocation *)v14 invoke];
                 free(v15);
@@ -151,7 +151,7 @@ LABEL_11:
             }
 
             v19 = objc_opt_class();
-            v17 = [NSString stringWithFormat:@"*** [%@ %@] first argument type does not match type of %@.", v19, NSStringFromSelector(a3), a4];
+            value = [NSString stringWithFormat:@"*** [%@ %@] first argument type does not match type of %@.", v19, NSStringFromSelector(selector), value];
             v18 = NSInvalidArgumentException;
             break;
         }
@@ -163,50 +163,50 @@ LABEL_11:
     else
     {
       v16 = objc_opt_class();
-      v17 = [NSString stringWithFormat:@"*** [%@ %@] does not take one argument.", v16, NSStringFromSelector(a3)];
+      value = [NSString stringWithFormat:@"*** [%@ %@] does not take one argument.", v16, NSStringFromSelector(selector)];
       v18 = NSInvalidArgumentException;
     }
 
-    objc_exception_throw([NSException exceptionWithName:v18 reason:v17 userInfo:0]);
+    objc_exception_throw([NSException exceptionWithName:v18 reason:value userInfo:0]);
   }
 
-  [self doesNotRecognizeSelector:a3];
+  [self doesNotRecognizeSelector:selector];
 }
 
-+ (BOOL)tsu_object:(id)a3 isEqualToObject:(id)a4
++ (BOOL)tsu_object:(id)tsu_object isEqualToObject:(id)object
 {
-  if (a3 == a4)
+  if (tsu_object == object)
   {
     return 1;
   }
 
-  if (a3)
+  if (tsu_object)
   {
-    v4 = a3;
-    v5 = a4;
-    return [v4 isEqual:v5];
+    objectCopy2 = tsu_object;
+    objectCopy = object;
+    return [objectCopy2 isEqual:objectCopy];
   }
 
-  if (a4)
+  if (object)
   {
-    v4 = a4;
-    v5 = 0;
-    return [v4 isEqual:v5];
+    objectCopy2 = object;
+    objectCopy = 0;
+    return [objectCopy2 isEqual:objectCopy];
   }
 
   return 0;
 }
 
-- (id)tsu_addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (id)tsu_addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  v11 = [[TSUKVOToken alloc] initWithObserver:a3 target:self keyPath:a4 context:a6];
+  v11 = [[TSUKVOToken alloc] initWithObserver:observer target:self keyPath:path context:context];
   AssociatedObject = objc_getAssociatedObject(self, off_1001E9970);
   if (!AssociatedObject)
   {
     v15 = [NSMutableSet setWithObjects:v11, 0];
     objc_setAssociatedObject(self, off_1001E9970, v15, 1);
 LABEL_9:
-    [self addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+    [self addObserver:observer forKeyPath:path options:options context:context];
     return v11;
   }
 
@@ -226,23 +226,23 @@ LABEL_9:
   if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
   {
     *buf = 138413058;
-    v18 = a3;
+    observerCopy = observer;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = a4;
+    pathCopy = path;
     v23 = 2048;
-    v24 = a6;
+    contextCopy = context;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@ is already observing %@ for key path %@ using context %p", buf, 0x2Au);
   }
 
   return v11;
 }
 
-- (void)tsu_removeObserverForToken:(id)a3
+- (void)tsu_removeObserverForToken:(id)token
 {
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, a3);
+  v6 = TSUDynamicCast(v5, token);
   if (v6)
   {
     v7 = v6;

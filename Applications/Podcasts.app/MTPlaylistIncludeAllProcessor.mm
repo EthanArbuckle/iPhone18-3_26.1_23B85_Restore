@@ -1,12 +1,12 @@
 @interface MTPlaylistIncludeAllProcessor
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5;
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds;
 @end
 
 @implementation MTPlaylistIncludeAllProcessor
 
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds
 {
-  if ([a4 count])
+  if ([insertIds count])
   {
 
     [(MTBaseProcessor *)self results:&stru_1004DB490];

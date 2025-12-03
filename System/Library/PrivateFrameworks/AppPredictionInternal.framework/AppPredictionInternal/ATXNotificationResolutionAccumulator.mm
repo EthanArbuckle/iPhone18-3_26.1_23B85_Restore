@@ -1,9 +1,9 @@
 @interface ATXNotificationResolutionAccumulator
 - (ATXNotificationResolutionAccumulator)init;
-- (id)dateIntervalFromModeEvent:(id)a3;
-- (id)dateIntervalFromNotificationEvent:(id)a3;
-- (void)cacheAppLaunchDataFromStartTime:(id)a3 toEndTime:(id)a4;
-- (void)computeFeaturesForNotification:(id)a3 mode:(unint64_t)a4;
+- (id)dateIntervalFromModeEvent:(id)event;
+- (id)dateIntervalFromNotificationEvent:(id)event;
+- (void)cacheAppLaunchDataFromStartTime:(id)time toEndTime:(id)endTime;
+- (void)computeFeaturesForNotification:(id)notification mode:(unint64_t)mode;
 - (void)computeHistoricalResolutionsIfNecessary;
 - (void)computeTimeToLaunchAppForNotification;
 - (void)dealloc;
@@ -21,9 +21,9 @@
   v2 = [(ATXNotificationResolutionAccumulator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEBC88] sharedInstance];
+    mEMORY[0x277CEBC88] = [MEMORY[0x277CEBC88] sharedInstance];
     memoryPressureMonitor = v2->_memoryPressureMonitor;
-    v2->_memoryPressureMonitor = v3;
+    v2->_memoryPressureMonitor = mEMORY[0x277CEBC88];
 
     [(ATXMemoryPressureMonitor *)v2->_memoryPressureMonitor registerObserver:v2];
   }
@@ -42,24 +42,24 @@
   [(ATXNotificationResolutionAccumulator *)&v4 dealloc];
 }
 
-- (void)computeFeaturesForNotification:(id)a3 mode:(unint64_t)a4
+- (void)computeFeaturesForNotification:(id)notification mode:(unint64_t)mode
 {
-  objc_storeStrong(&self->_userNotification, a3);
-  v7 = a3;
-  self->_mode = a4;
+  objc_storeStrong(&self->_userNotification, notification);
+  notificationCopy = notification;
+  self->_mode = mode;
   v8 = MEMORY[0x277CBEAA8];
-  [v7 timestamp];
+  [notificationCopy timestamp];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
   v10 = [(NSDate *)v9 dateByAddingTimeInterval:-1209600.0];
   v11 = [[ATXUnifiedComputedAndInferredModeStream alloc] initWithStartTime:v10 toEndTime:v9];
-  v12 = [(ATXUnifiedComputedAndInferredModeStream *)v11 fetchUnifiedModeEvents];
+  fetchUnifiedModeEvents = [(ATXUnifiedComputedAndInferredModeStream *)v11 fetchUnifiedModeEvents];
   unifiedModePublisher = self->_unifiedModePublisher;
-  self->_unifiedModePublisher = v12;
+  self->_unifiedModePublisher = fetchUnifiedModeEvents;
 
   v14 = BiomeLibrary();
-  v15 = [v14 Notification];
-  v16 = [v15 Usage];
-  v17 = [v16 atx_publisherWithStartDate:v10 endDate:v9 maxEvents:0 lastN:0 reversed:0];
+  notification = [v14 Notification];
+  usage = [notification Usage];
+  v17 = [usage atx_publisherWithStartDate:v10 endDate:v9 maxEvents:0 lastN:0 reversed:0];
   notificationPublisher = self->_notificationPublisher;
   self->_notificationPublisher = v17;
 
@@ -89,8 +89,8 @@
   v7 = [v5 dateWithTimeIntervalSinceReferenceDate:v6 + 3600.0];
   v8 = BiomeLibrary();
   v9 = [v8 App];
-  v10 = [v9 InFocus];
-  v11 = [v10 atx_publisherWithStartDate:v4 endDate:v7 maxEvents:0 lastN:0 reversed:0];
+  inFocus = [v9 InFocus];
+  v11 = [inFocus atx_publisherWithStartDate:v4 endDate:v7 maxEvents:0 lastN:0 reversed:0];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -170,22 +170,22 @@ uint64_t __77__ATXNotificationResolutionAccumulator_computeTimeToLaunchAppForNot
     cachedHistoricalResolutionsForNotifications = obj->_cachedHistoricalResolutionsForNotifications;
   }
 
-  v6 = [(ATXUserNotification *)v2->_userNotification bundleID];
-  v7 = [(NSMutableDictionary *)cachedHistoricalResolutionsForNotifications objectForKeyedSubscript:v6];
+  bundleID = [(ATXUserNotification *)v2->_userNotification bundleID];
+  v7 = [(NSMutableDictionary *)cachedHistoricalResolutionsForNotifications objectForKeyedSubscript:bundleID];
 
   if (v7)
   {
-    v8 = [v7 userNotification];
-    v9 = [v8 bundleID];
-    v10 = [(ATXUserNotification *)obj->_userNotification bundleID];
-    v11 = [v9 isEqualToString:v10];
+    userNotification = [v7 userNotification];
+    bundleID2 = [userNotification bundleID];
+    bundleID3 = [(ATXUserNotification *)obj->_userNotification bundleID];
+    v11 = [bundleID2 isEqualToString:bundleID3];
 
     if (v11)
     {
       [(ATXUserNotification *)obj->_userNotification timestamp];
       v13 = v12;
-      v14 = [v7 userNotification];
-      [v14 timestamp];
+      userNotification2 = [v7 userNotification];
+      [userNotification2 timestamp];
       v16 = (v13 - v15);
 
       if ((v16 - 1) <= 0xE0F)
@@ -207,9 +207,9 @@ LABEL_11:
     [(ATXNotificationResolutionAccumulator *)obj removeOldestEntry];
   }
 
-  v19 = [(ATXUserNotification *)obj->_userNotification bundleID];
+  bundleID4 = [(ATXUserNotification *)obj->_userNotification bundleID];
 
-  if (v19)
+  if (bundleID4)
   {
     v20 = obj->_historicalResolutionsForNotification;
     v21 = obj->_cachedHistoricalResolutionsForNotifications;
@@ -223,16 +223,16 @@ LABEL_12:
   objc_sync_exit(obj);
 }
 
-- (void)cacheAppLaunchDataFromStartTime:(id)a3 toEndTime:(id)a4
+- (void)cacheAppLaunchDataFromStartTime:(id)time toEndTime:(id)endTime
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = BiomeLibrary();
   v10 = [v9 App];
-  v11 = [v10 InFocus];
-  v12 = [v11 atx_publisherWithStartDate:v6 endDate:v7 maxEvents:0 lastN:0 reversed:0];
+  inFocus = [v10 InFocus];
+  v12 = [inFocus atx_publisherWithStartDate:timeCopy endDate:endTimeCopy maxEvents:0 lastN:0 reversed:0];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -424,60 +424,60 @@ void __82__ATXNotificationResolutionAccumulator_cacheAppLaunchDataFromStartTime_
   v71 = v16;
   v17 = [v16 sinkWithCompletion:&__block_literal_global_66 shouldContinue:v109];
   v18 = objc_alloc(MEMORY[0x277CEB778]);
-  v19 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v20 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v21 = [v108 countForObject:v20];
-  v22 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v23 = [v106 countForObject:v22];
-  v24 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v25 = percentageOfBundleIDInBucket(v24, v108);
-  v26 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v76 = [v18 initWithBundleID:v19 dailyNumberOfNotificationsReceivedForBundleID:v21 weeklyNumberOfNotificationsReceivedForBundleID:v23 dailyPercentageOfNotificationsReceivedForBundleID:v25 weeklyPercentageOfNotificationsReceivedForBundleID:{percentageOfBundleIDInBucket(v26, v106)}];
+  bundleID = [(ATXUserNotification *)self->_userNotification bundleID];
+  bundleID2 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v21 = [v108 countForObject:bundleID2];
+  bundleID3 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v23 = [v106 countForObject:bundleID3];
+  bundleID4 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v25 = percentageOfBundleIDInBucket(bundleID4, v108);
+  bundleID5 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v76 = [v18 initWithBundleID:bundleID dailyNumberOfNotificationsReceivedForBundleID:v21 weeklyNumberOfNotificationsReceivedForBundleID:v23 dailyPercentageOfNotificationsReceivedForBundleID:v25 weeklyPercentageOfNotificationsReceivedForBundleID:{percentageOfBundleIDInBucket(bundleID5, v106)}];
 
   v27 = objc_alloc(MEMORY[0x277CEB778]);
-  v28 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v29 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v30 = [v104 countForObject:v29];
-  v31 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v32 = [v103 countForObject:v31];
-  v33 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v34 = percentageOfBundleIDInBucket(v33, v104);
-  v35 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v75 = [v27 initWithBundleID:v28 dailyNumberOfNotificationsReceivedForBundleID:v30 weeklyNumberOfNotificationsReceivedForBundleID:v32 dailyPercentageOfNotificationsReceivedForBundleID:v34 weeklyPercentageOfNotificationsReceivedForBundleID:{percentageOfBundleIDInBucket(v35, v103)}];
+  bundleID6 = [(ATXUserNotification *)self->_userNotification bundleID];
+  bundleID7 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v30 = [v104 countForObject:bundleID7];
+  bundleID8 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v32 = [v103 countForObject:bundleID8];
+  bundleID9 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v34 = percentageOfBundleIDInBucket(bundleID9, v104);
+  bundleID10 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v75 = [v27 initWithBundleID:bundleID6 dailyNumberOfNotificationsReceivedForBundleID:v30 weeklyNumberOfNotificationsReceivedForBundleID:v32 dailyPercentageOfNotificationsReceivedForBundleID:v34 weeklyPercentageOfNotificationsReceivedForBundleID:{percentageOfBundleIDInBucket(bundleID10, v103)}];
 
   v36 = objc_alloc(MEMORY[0x277CEB748]);
-  v37 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v38 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v39 = percentageOfBundleIDInBucket(v38, v101);
-  v40 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v41 = percentageOfBundleIDInBucket(v40, v99);
-  v42 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v43 = percentageOfBundleIDInBucket(v42, v97);
-  v44 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v45 = percentageOfBundleIDInBucket(v44, v95);
-  v46 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v47 = percentageOfBundleIDInBucket(v46, v93);
-  v48 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v49 = percentageOfBundleIDInBucket(v48, v91);
-  v50 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v74 = [v36 initWithBundleID:v37 percentageForOneMinuteDuration:v39 percentageForTwoMinutesDuration:v41 percentageForFiveMinutesDuration:v43 percentageForTenMinutesDuration:v45 percentageForTwentyMinutesDuration:v47 percentageForThirtyMinutesDuration:v49 percentageForSixtyMinutesDuration:{percentageOfBundleIDInBucket(v50, v89)}];
+  bundleID11 = [(ATXUserNotification *)self->_userNotification bundleID];
+  bundleID12 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v39 = percentageOfBundleIDInBucket(bundleID12, v101);
+  bundleID13 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v41 = percentageOfBundleIDInBucket(bundleID13, v99);
+  bundleID14 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v43 = percentageOfBundleIDInBucket(bundleID14, v97);
+  bundleID15 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v45 = percentageOfBundleIDInBucket(bundleID15, v95);
+  bundleID16 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v47 = percentageOfBundleIDInBucket(bundleID16, v93);
+  bundleID17 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v49 = percentageOfBundleIDInBucket(bundleID17, v91);
+  bundleID18 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v74 = [v36 initWithBundleID:bundleID11 percentageForOneMinuteDuration:v39 percentageForTwoMinutesDuration:v41 percentageForFiveMinutesDuration:v43 percentageForTenMinutesDuration:v45 percentageForTwentyMinutesDuration:v47 percentageForThirtyMinutesDuration:v49 percentageForSixtyMinutesDuration:{percentageOfBundleIDInBucket(bundleID18, v89)}];
 
   v51 = objc_alloc(MEMORY[0x277CEB748]);
-  v52 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v53 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v54 = percentageOfBundleIDInBucket(v53, v87);
-  v55 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v56 = percentageOfBundleIDInBucket(v55, v85);
-  v57 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v58 = percentageOfBundleIDInBucket(v57, v84);
-  v59 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v60 = percentageOfBundleIDInBucket(v59, v83);
-  v61 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v62 = percentageOfBundleIDInBucket(v61, v82);
-  v63 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v64 = percentageOfBundleIDInBucket(v63, v80);
-  v65 = [(ATXUserNotification *)self->_userNotification bundleID];
-  v66 = [v51 initWithBundleID:v52 percentageForOneMinuteDuration:v54 percentageForTwoMinutesDuration:v56 percentageForFiveMinutesDuration:v58 percentageForTenMinutesDuration:v60 percentageForTwentyMinutesDuration:v62 percentageForThirtyMinutesDuration:v64 percentageForSixtyMinutesDuration:{percentageOfBundleIDInBucket(v65, v78)}];
+  bundleID19 = [(ATXUserNotification *)self->_userNotification bundleID];
+  bundleID20 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v54 = percentageOfBundleIDInBucket(bundleID20, v87);
+  bundleID21 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v56 = percentageOfBundleIDInBucket(bundleID21, v85);
+  bundleID22 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v58 = percentageOfBundleIDInBucket(bundleID22, v84);
+  bundleID23 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v60 = percentageOfBundleIDInBucket(bundleID23, v83);
+  bundleID24 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v62 = percentageOfBundleIDInBucket(bundleID24, v82);
+  bundleID25 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v64 = percentageOfBundleIDInBucket(bundleID25, v80);
+  bundleID26 = [(ATXUserNotification *)self->_userNotification bundleID];
+  v66 = [v51 initWithBundleID:bundleID19 percentageForOneMinuteDuration:v54 percentageForTwoMinutesDuration:v56 percentageForFiveMinutesDuration:v58 percentageForTenMinutesDuration:v60 percentageForTwentyMinutesDuration:v62 percentageForThirtyMinutesDuration:v64 percentageForSixtyMinutesDuration:{percentageOfBundleIDInBucket(bundleID26, v78)}];
 
   v67 = [[ATXHistoricalResolutonsForNotification alloc] initWithNotification:self->_userNotification historicalVolumeByCountAndPercentage:v76 modeConditionedHistoricalVolumeByCountAndPercentage:v75 historicalResolutionByPercentage:v74 modeConditionedHistoricalResolutionByPercentage:v66];
   historicalResolutionsForNotification = self->_historicalResolutionsForNotification;
@@ -978,18 +978,18 @@ LABEL_73:
   return 1;
 }
 
-- (id)dateIntervalFromModeEvent:(id)a3
+- (id)dateIntervalFromModeEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 endTime];
+    v4 = eventCopy;
+    endTime = [v4 endTime];
 
     v6 = objc_alloc(MEMORY[0x277CCA970]);
-    v7 = [v4 startTime];
-    if (v5)
+    startTime = [v4 startTime];
+    if (endTime)
     {
       [v4 endTime];
     }
@@ -999,7 +999,7 @@ LABEL_73:
       [v4 startTime];
     }
     v9 = ;
-    v8 = [v6 initWithStartDate:v7 endDate:v9];
+    v8 = [v6 initWithStartDate:startTime endDate:v9];
   }
 
   else
@@ -1010,24 +1010,24 @@ LABEL_73:
   return v8;
 }
 
-- (id)dateIntervalFromNotificationEvent:(id)a3
+- (id)dateIntervalFromNotificationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 eventBody];
+    v4 = eventCopy;
+    eventBody = [v4 eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 eventBody];
+      eventBody2 = [v4 eventBody];
       v8 = objc_alloc(MEMORY[0x277CCA970]);
-      v9 = [v7 absoluteTimestamp];
-      v10 = [v7 absoluteTimestamp];
-      v11 = [v8 initWithStartDate:v9 endDate:v10];
+      absoluteTimestamp = [eventBody2 absoluteTimestamp];
+      absoluteTimestamp2 = [eventBody2 absoluteTimestamp];
+      v11 = [v8 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
     }
 
     else
@@ -1047,19 +1047,19 @@ LABEL_73:
 - (void)removeOldestEntry
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(NSMutableDictionary *)self->_cachedHistoricalResolutionsForNotifications allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [(NSMutableDictionary *)self->_cachedHistoricalResolutionsForNotifications allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     v8 = *v20;
-    obj = v4;
+    obj = allKeys;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -1072,16 +1072,16 @@ LABEL_73:
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_cachedHistoricalResolutionsForNotifications objectForKeyedSubscript:v10];
         v12 = MEMORY[0x277CBEAA8];
-        v13 = [v11 userNotification];
-        [v13 timestamp];
+        userNotification = [v11 userNotification];
+        [userNotification timestamp];
         v14 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
 
-        if ([v14 compare:v3] == -1)
+        if ([v14 compare:distantFuture] == -1)
         {
           v15 = v14;
 
           v16 = v10;
-          v3 = v15;
+          distantFuture = v15;
           v7 = v16;
         }
       }

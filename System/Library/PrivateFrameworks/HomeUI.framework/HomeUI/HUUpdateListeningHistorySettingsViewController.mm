@@ -1,20 +1,20 @@
 @interface HUUpdateListeningHistorySettingsViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HUUpdateListeningHistorySettingsViewController)initWithUserItem:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HUUpdateListeningHistorySettingsViewController)initWithUserItem:(id)item;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUUpdateListeningHistorySettingsViewController
 
-- (HUUpdateListeningHistorySettingsViewController)initWithUserItem:(id)a3
+- (HUUpdateListeningHistorySettingsViewController)initWithUserItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__HUUpdateListeningHistorySettingsViewController_initWithUserItem___block_invoke;
   v14[3] = &unk_277DB7478;
-  v6 = v4;
+  v6 = itemCopy;
   v15 = v6;
   [v5 setHomeCreator:v14];
   v12[0] = MEMORY[0x277D85DD0];
@@ -60,70 +60,70 @@ id __67__HUUpdateListeningHistorySettingsViewController_initWithUserItem___block
   return v8;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [(HUItemModuleController *)[HUUpdateListeningHistorySettingsItemModuleController alloc] initWithModule:v4];
+  v5 = [(HUItemModuleController *)[HUUpdateListeningHistorySettingsItemModuleController alloc] initWithModule:moduleCopy];
   [(HUUpdateListeningHistorySettingsViewController *)self setModuleController:v5];
 
-  v6 = [(HUUpdateListeningHistorySettingsViewController *)self moduleController];
+  moduleController = [(HUUpdateListeningHistorySettingsViewController *)self moduleController];
 
-  return v6;
+  return moduleController;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v21, 0x16u);
   }
 
-  v9 = [v7 absoluteString];
-  v10 = [MEMORY[0x277D14C80] musicPrivacyURL];
-  v11 = [v10 absoluteString];
-  v12 = [v9 isEqualToString:v11];
+  absoluteString = [lCopy absoluteString];
+  musicPrivacyURL = [MEMORY[0x277D14C80] musicPrivacyURL];
+  absoluteString2 = [musicPrivacyURL absoluteString];
+  v12 = [absoluteString isEqualToString:absoluteString2];
 
   if (v12)
   {
-    v13 = [(HUUpdateListeningHistorySettingsViewController *)self navigationController];
-    v14 = v13;
-    if (v13)
+    navigationController = [(HUUpdateListeningHistorySettingsViewController *)self navigationController];
+    v14 = navigationController;
+    if (navigationController)
     {
-      v15 = v13;
+      selfCopy2 = navigationController;
     }
 
     else
     {
-      v15 = self;
+      selfCopy2 = self;
     }
 
-    v16 = v15;
+    v16 = selfCopy2;
 
-    v17 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
-    v18 = [v17 splashController];
-    [v18 setDisplayDeviceType:6];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
+    splashController = [mEMORY[0x277D148E8] splashController];
+    [splashController setDisplayDeviceType:6];
 
-    [v17 setPresentingViewController:v16];
-    [v17 present];
+    [mEMORY[0x277D148E8] setPresentingViewController:v16];
+    [mEMORY[0x277D148E8] present];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D148E8] sharedInstance];
-    v19 = [v17 openURL:v7];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v19 = [mEMORY[0x277D148E8] openURL:lCopy];
   }
 
   return 0;

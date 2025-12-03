@@ -1,29 +1,29 @@
 @interface SearchUICommandButton
-- (SearchUICommandButton)initWithWatchListState:(id)a3;
+- (SearchUICommandButton)initWithWatchListState:(id)state;
 - (void)updateStateIfNecessary;
-- (void)watchListStateDidChange:(id)a3;
+- (void)watchListStateDidChange:(id)change;
 @end
 
 @implementation SearchUICommandButton
 
-- (SearchUICommandButton)initWithWatchListState:(id)a3
+- (SearchUICommandButton)initWithWatchListState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v12.receiver = self;
   v12.super_class = SearchUICommandButton;
   v5 = [(TLKTextButton *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUICommandButton *)v5 setWatchListState:v4];
+    [(SearchUICommandButton *)v5 setWatchListState:stateCopy];
     [(SearchUICommandButton *)v6 updateStateIfNecessary];
-    v7 = [(TLKTextButton *)v6 tlkImageView];
+    tlkImageView = [(TLKTextButton *)v6 tlkImageView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __48__SearchUICommandButton_initWithWatchListState___block_invoke;
     v10[3] = &unk_1E85B24C8;
-    v11 = v7;
-    v8 = v7;
+    v11 = tlkImageView;
+    v8 = tlkImageView;
     [v8 performBatchUpdates:v10];
   }
 
@@ -42,7 +42,7 @@ uint64_t __48__SearchUICommandButton_initWithWatchListState___block_invoke(uint6
   return [v3 setSymbolScale:3];
 }
 
-- (void)watchListStateDidChange:(id)a3
+- (void)watchListStateDidChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -54,14 +54,14 @@ uint64_t __48__SearchUICommandButton_initWithWatchListState___block_invoke(uint6
 
 - (void)updateStateIfNecessary
 {
-  v3 = [(SearchUICommandButton *)self watchListState];
+  watchListState = [(SearchUICommandButton *)self watchListState];
 
-  if (v3)
+  if (watchListState)
   {
-    v4 = [(SearchUICommandButton *)self watchListState];
-    v5 = [v4 isWatchListed];
+    watchListState2 = [(SearchUICommandButton *)self watchListState];
+    isWatchListed = [watchListState2 isWatchListed];
     v6 = @"plus";
-    if (v5)
+    if (isWatchListed)
     {
       v6 = @"checkmark";
     }

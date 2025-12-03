@@ -40,11 +40,11 @@
     battData = v2->_battData;
     v2->_battData = v6;
 
-    v8 = [(BatteryAlgorithmsInit *)v2 battData];
-    v9 = v8;
-    if (v8)
+    battData = [(BatteryAlgorithmsInit *)v2 battData];
+    v9 = battData;
+    if (battData)
     {
-      v10 = [v8 objectForKey:@"BatteryData"];
+      v10 = [battData objectForKey:@"BatteryData"];
       if (sub_10001F830(v10) || (sub_10001F914(v10) & 1) == 0)
       {
         if (os_log_type_enabled(qword_100057880, OS_LOG_TYPE_ERROR))
@@ -165,9 +165,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v40 = [v39 intValue];
+        intValue = [v39 intValue];
 
-        v37 = v40 != 4;
+        v37 = intValue != 4;
       }
 
       else
@@ -191,11 +191,11 @@
 
     v44 = [NSMutableDictionary alloc];
     v64[0] = @"smcData";
-    v45 = [(BatteryAlgorithmsInit *)v2 smcKeys];
+    smcKeys = [(BatteryAlgorithmsInit *)v2 smcKeys];
     v64[1] = @"systemState";
-    v65[0] = v45;
-    v46 = [(BatteryAlgorithmsInit *)v2 deviceState];
-    v65[1] = v46;
+    v65[0] = smcKeys;
+    deviceState = [(BatteryAlgorithmsInit *)v2 deviceState];
+    v65[1] = deviceState;
     v47 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
     v48 = [v44 initWithDictionary:v47];
     preInitData = v2->_preInitData;

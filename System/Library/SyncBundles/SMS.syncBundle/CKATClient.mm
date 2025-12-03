@@ -1,14 +1,14 @@
 @interface CKATClient
 + (void)restoreProtectedCloudStorageMobileBackup;
-- (BOOL)reconcileRestoreOfType:(int)a3 withError:(id *)a4;
-- (BOOL)shouldBackgroundRestoreFile:(id)a3 backupManager:(id)a4;
-- (BOOL)shouldRestoreFile:(id)a3 backupManager:(id)a4;
+- (BOOL)reconcileRestoreOfType:(int)type withError:(id *)error;
+- (BOOL)shouldBackgroundRestoreFile:(id)file backupManager:(id)manager;
+- (BOOL)shouldRestoreFile:(id)file backupManager:(id)manager;
 - (id)outstandingAssetTransfers;
 - (void)_prioritizeRecentAttachments;
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
-- (void)logMOCDefaultsWithContext:(id)a3;
-- (void)prioritizeAsset:(id)a3;
-- (void)restoreEndedWithError:(id)a3;
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
+- (void)logMOCDefaultsWithContext:(id)context;
+- (void)prioritizeAsset:(id)asset;
+- (void)restoreEndedWithError:(id)error;
 @end
 
 @implementation CKATClient
@@ -33,27 +33,27 @@
   }
 }
 
-- (void)prioritizeAsset:(id)a3
+- (void)prioritizeAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MBManager);
-  [v4 prioritizeRestoreFileWithPath:v3];
+  [v4 prioritizeRestoreFileWithPath:assetCopy];
 }
 
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  transferCopy = transfer;
+  errorCopy = error;
   v9 = _ATLogCategorySyncBundle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (!a4)
+  if (!succeeded)
   {
     if (v10)
     {
       v16 = 138412546;
-      v17 = v7;
+      v17 = transferCopy;
       v18 = 2114;
-      v19 = v8;
+      v19 = errorCopy;
       v13 = "failed to restore %@: %{public}@";
       v14 = v9;
       v15 = 22;
@@ -68,7 +68,7 @@ LABEL_10:
   if (v10)
   {
     v16 = 138412290;
-    v17 = v7;
+    v17 = transferCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "successfully restored %@", &v16, 0xCu);
   }
 
@@ -134,9 +134,9 @@ LABEL_11:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 path];
-        v13 = [ATAsset downloadAssetWithIdentifier:v12 dataclass:@"MessagePart" prettyName:v12];
-        [v13 setPath:v12];
+        path = [v11 path];
+        v13 = [ATAsset downloadAssetWithIdentifier:path dataclass:@"MessagePart" prettyName:path];
+        [v13 setPath:path];
         [v13 setIsRestore:1];
         [v13 setPriority:{objc_msgSend(v11, "priority")}];
         [v5 addObject:v13];
@@ -210,9 +210,9 @@ LABEL_11:
   }
 }
 
-- (void)logMOCDefaultsWithContext:(id)a3
+- (void)logMOCDefaultsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = IMGetDomainValueForKey();
   v5 = IMGetDomainBoolForKey();
   v6 = IMGetDomainBoolForKey();
@@ -221,7 +221,7 @@ LABEL_11:
   {
     v8 = @"NO";
     v10 = 138413058;
-    v11 = v3;
+    v11 = contextCopy;
     if (v5)
     {
       v9 = @"YES";
@@ -247,7 +247,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)reconcileRestoreOfType:(int)a3 withError:(id *)a4
+- (BOOL)reconcileRestoreOfType:(int)type withError:(id *)error
 {
   v5 = IMGetDomainValueForKey();
   v6 = IMGetDomainBoolForKey();
@@ -299,10 +299,10 @@ LABEL_11:
   return v12;
 }
 
-- (void)restoreEndedWithError:(id)a3
+- (void)restoreEndedWithError:(id)error
 {
   [(CKATClient *)self logMOCDefaultsWithContext:@"Checking MOC defaults after restore ended"];
-  if (!a3)
+  if (!error)
   {
     v5 = +[NSString stringGUID];
     v6 = +[IMDaemonController sharedController];
@@ -312,8 +312,8 @@ LABEL_11:
     [v7 blockUntilConnected];
 
     v8 = +[IMDaemonController sharedController];
-    v9 = [v8 remoteDaemon];
-    [v9 cleanupAttachments];
+    remoteDaemon = [v8 remoteDaemon];
+    [remoteDaemon cleanupAttachments];
 
     v10 = +[IMDaemonController sharedController];
     [v10 removeListenerID:v5];
@@ -331,21 +331,21 @@ LABEL_11:
   }
 }
 
-- (BOOL)shouldRestoreFile:(id)a3 backupManager:(id)a4
+- (BOOL)shouldRestoreFile:(id)file backupManager:(id)manager
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = [(CKATClient *)self _isMessagesPath:v6];
+  fileCopy = file;
+  path = [fileCopy path];
+  v7 = [(CKATClient *)self _isMessagesPath:path];
 
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v5 path];
-  v9 = [(CKATClient *)self _isSMSTempDB:v8];
+  path2 = [fileCopy path];
+  v9 = [(CKATClient *)self _isSMSTempDB:path2];
 
-  if (v9 & 1) != 0 || ([v5 path], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[CKATClient _isABCache:](self, "_isABCache:", v10), v10, (v11))
+  if (v9 & 1) != 0 || ([fileCopy path], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[CKATClient _isABCache:](self, "_isABCache:", v10), v10, (v11))
   {
     v12 = 0;
   }
@@ -359,33 +359,33 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)shouldBackgroundRestoreFile:(id)a3 backupManager:(id)a4
+- (BOOL)shouldBackgroundRestoreFile:(id)file backupManager:(id)manager
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = [v5 isDirectory];
+  fileCopy = file;
+  path = [fileCopy path];
+  isDirectory = [fileCopy isDirectory];
 
-  if ((v7 & 1) != 0 || ![(CKATClient *)self _isMessagesPath:v6])
+  if ((isDirectory & 1) != 0 || ![(CKATClient *)self _isMessagesPath:path])
   {
     v9 = 0;
   }
 
   else
   {
-    if ([(CKATClient *)self _isLegacyAttachment:v6])
+    if ([(CKATClient *)self _isLegacyAttachment:path])
     {
       v8 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v6;
+        v12 = path;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Legacy attachment, yup: %@", &v11, 0xCu);
       }
     }
 
-    else if (![(CKATClient *)self _isAttachment:v6])
+    else if (![(CKATClient *)self _isAttachment:path])
     {
-      v9 = [(CKATClient *)self _isSticker:v6];
+      v9 = [(CKATClient *)self _isSticker:path];
       goto LABEL_8;
     }
 

@@ -4,7 +4,7 @@
 - (NSString)personalizedBuyParams;
 - (NSString)previewArtworkURL;
 - (VUIExtrasInfo)iTunesExtrasInfo;
-- (VUIFamilySharingMediaItem)initWithAMSEntity:(id)a3 requestedProperties:(id)a4;
+- (VUIFamilySharingMediaItem)initWithAMSEntity:(id)entity requestedProperties:(id)properties;
 - (VUIFamilySharingRelationships)relationships;
 - (VUIMediaEntityAssetController)assetController;
 - (VUIVideosPlayable)videosPlayable;
@@ -33,23 +33,23 @@
 
 @implementation VUIFamilySharingMediaItem
 
-- (VUIFamilySharingMediaItem)initWithAMSEntity:(id)a3 requestedProperties:(id)a4
+- (VUIFamilySharingMediaItem)initWithAMSEntity:(id)entity requestedProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  entityCopy = entity;
+  propertiesCopy = properties;
   v9 = [VUIFamilySharingMediaEntityIdentifier alloc];
-  v10 = [v7 identifier];
-  v11 = [v7 type];
-  v12 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:v10 mediaEntityType:v11];
+  identifier = [entityCopy identifier];
+  type = [entityCopy type];
+  v12 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:identifier mediaEntityType:type];
 
   v13 = VUIFamilySharingMediaItemKind();
   v16.receiver = self;
   v16.super_class = VUIFamilySharingMediaItem;
-  v14 = [(VUIMediaEntity *)&v16 initWithMediaLibrary:0 identifier:v12 requestedProperties:v8 kind:v13];
+  v14 = [(VUIMediaEntity *)&v16 initWithMediaLibrary:0 identifier:v12 requestedProperties:propertiesCopy kind:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_entity, a3);
+    objc_storeStrong(&v14->_entity, entity);
   }
 
   return v14;
@@ -57,14 +57,14 @@
 
 - (id)storeID
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 identifier];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  identifier = [entity identifier];
 
-  if (v3)
+  if (identifier)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v4 setNumberStyle:1];
-    v5 = [v4 numberFromString:v3];
+    v5 = [v4 numberFromString:identifier];
   }
 
   else
@@ -77,21 +77,21 @@
 
 - (id)title
 {
-  v3 = [(VUIFamilySharingMediaItem *)self entity];
-  v4 = [v3 title];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  title = [entity title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(VUIFamilySharingMediaItem *)self entity];
-    v6 = [v5 title];
+    entity2 = [(VUIFamilySharingMediaItem *)self entity];
+    title2 = [entity2 title];
   }
 
   else
   {
-    v6 = &stru_1F5DB25C0;
+    title2 = &stru_1F5DB25C0;
   }
 
-  return v6;
+  return title2;
 }
 
 - (NSString)artworkURL
@@ -104,20 +104,20 @@
 
   else
   {
-    v5 = [(VUIFamilySharingMediaItem *)self entity];
-    v6 = [v5 artworkURL];
+    entity = [(VUIFamilySharingMediaItem *)self entity];
+    artworkURL = [entity artworkURL];
 
-    if (v6)
+    if (artworkURL)
     {
-      v7 = [(VUIFamilySharingMediaItem *)self entity];
-      v8 = [v7 artworkURL];
+      entity2 = [(VUIFamilySharingMediaItem *)self entity];
+      artworkURL2 = [entity2 artworkURL];
 
-      objc_storeStrong(&self->_artworkURL, v8);
+      objc_storeStrong(&self->_artworkURL, artworkURL2);
     }
 
     else
     {
-      v8 = &stru_1F5DB25C0;
+      artworkURL2 = &stru_1F5DB25C0;
     }
 
     v3 = self->_artworkURL;
@@ -128,12 +128,12 @@
 
 - (id)extrasURL
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 iTunesExtrasUrl];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  iTunesExtrasUrl = [entity iTunesExtrasUrl];
 
-  if (v3)
+  if (iTunesExtrasUrl)
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v4 = [MEMORY[0x1E695DFF8] URLWithString:iTunesExtrasUrl];
   }
 
   else
@@ -154,8 +154,8 @@
 
   else
   {
-    v5 = [(VUIFamilySharingMediaItem *)self _itunesExtrasDictionary];
-    v6 = [[VUIExtrasInfo alloc] initWithDictionary:v5];
+    _itunesExtrasDictionary = [(VUIFamilySharingMediaItem *)self _itunesExtrasDictionary];
+    v6 = [[VUIExtrasInfo alloc] initWithDictionary:_itunesExtrasDictionary];
     v7 = self->_iTunesExtrasInfo;
     self->_iTunesExtrasInfo = v6;
     v8 = v6;
@@ -176,20 +176,20 @@
 
   else
   {
-    v5 = [(VUIFamilySharingMediaItem *)self entity];
-    v6 = [v5 previewArtworkURL];
+    entity = [(VUIFamilySharingMediaItem *)self entity];
+    previewArtworkURL = [entity previewArtworkURL];
 
-    if (v6)
+    if (previewArtworkURL)
     {
-      v7 = [(VUIFamilySharingMediaItem *)self entity];
-      v8 = [v7 previewArtworkURL];
+      entity2 = [(VUIFamilySharingMediaItem *)self entity];
+      previewArtworkURL2 = [entity2 previewArtworkURL];
 
-      objc_storeStrong(&self->_previewArtworkURL, v8);
+      objc_storeStrong(&self->_previewArtworkURL, previewArtworkURL2);
     }
 
     else
     {
-      v8 = &stru_1F5DB25C0;
+      previewArtworkURL2 = &stru_1F5DB25C0;
     }
 
     v3 = self->_previewArtworkURL;
@@ -208,11 +208,11 @@
     goto LABEL_37;
   }
 
-  v71 = [(VUIFamilySharingMediaItem *)self _itunesExtrasDictionary];
+  _itunesExtrasDictionary = [(VUIFamilySharingMediaItem *)self _itunesExtrasDictionary];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
-  if (!v7)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _bestRedownloadOffer = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
+  if (!_bestRedownloadOffer)
   {
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -221,82 +221,82 @@
       _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "[VUIFamilySharingMediaItem] - No personalized redownload offer found. Falling back to buy offers", buf, 2u);
     }
 
-    v7 = [(VUIFamilySharingMediaItem *)self _bestOffer];
+    _bestRedownloadOffer = [(VUIFamilySharingMediaItem *)self _bestOffer];
   }
 
-  v9 = [(VUIFamilySharingMediaItem *)self entity];
-  v10 = [v9 type];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  type = [entity type];
 
-  v72 = [v10 stringDescription];
-  v67 = [v7 dictionary];
-  v69 = [v67 objectForKey:@"hlsUrl"];
+  stringDescription = [type stringDescription];
+  dictionary2 = [_bestRedownloadOffer dictionary];
+  v69 = [dictionary2 objectForKey:@"hlsUrl"];
   if ([v69 length])
   {
     [v5 setObject:v69 forKey:@"hlsUrl"];
     v11 = [MEMORY[0x1E695DFF8] URLWithString:v69];
     v12 = [v11 vui_URLByAddingQueryParamWithName:@"playback-type" value:@"download"];
-    v13 = [v12 absoluteString];
+    absoluteString = [v12 absoluteString];
 
-    if ([v13 length])
+    if ([absoluteString length])
     {
-      [v5 setObject:v13 forKey:@"hlsDownloadUrl"];
+      [v5 setObject:absoluteString forKey:@"hlsDownloadUrl"];
     }
   }
 
-  v68 = v7;
-  v14 = [v7 buyParameters];
-  [v5 setValue:v14 forKey:@"buyParams"];
+  v68 = _bestRedownloadOffer;
+  buyParameters = [_bestRedownloadOffer buyParameters];
+  [v5 setValue:buyParameters forKey:@"buyParams"];
 
-  [v5 setValue:v72 forKey:@"mediaType"];
+  [v5 setValue:stringDescription forKey:@"mediaType"];
   [v5 setValue:&unk_1F5E5D458 forKey:@"sharedPurchase"];
   [v5 setValue:*MEMORY[0x1E69E1688] forKey:@"channelId"];
-  v15 = [(VUIFamilySharingMediaItem *)self entity];
-  v16 = [v15 identifier];
-  [v5 setValue:v16 forKey:@"externalId"];
+  entity2 = [(VUIFamilySharingMediaItem *)self entity];
+  identifier = [entity2 identifier];
+  [v5 setValue:identifier forKey:@"externalId"];
 
-  v17 = [(VUIFamilySharingMediaItem *)self entity];
-  v18 = [v17 identifier];
-  [v5 setValue:v18 forKey:@"bookmarkId"];
+  entity3 = [(VUIFamilySharingMediaItem *)self entity];
+  identifier2 = [entity3 identifier];
+  [v5 setValue:identifier2 forKey:@"bookmarkId"];
 
-  v19 = [(VUIFamilySharingMediaItem *)self entity];
-  v20 = [v19 identifier];
-  [v5 setValue:v20 forKey:@"adamId"];
+  entity4 = [(VUIFamilySharingMediaItem *)self entity];
+  identifier3 = [entity4 identifier];
+  [v5 setValue:identifier3 forKey:@"adamId"];
 
-  v21 = [(VUIFamilySharingMediaItem *)self entity];
-  v22 = [v21 relationships];
-  v23 = [v22 show];
-  v24 = [v23 identifier];
+  entity5 = [(VUIFamilySharingMediaItem *)self entity];
+  relationships = [entity5 relationships];
+  show = [relationships show];
+  identifier4 = [show identifier];
 
-  v25 = [(VUIFamilySharingMediaItem *)self entity];
-  v26 = [v25 relationships];
-  v27 = [v26 season];
-  v28 = [v27 identifier];
+  entity6 = [(VUIFamilySharingMediaItem *)self entity];
+  relationships2 = [entity6 relationships];
+  season = [relationships2 season];
+  identifier5 = [season identifier];
 
-  if (v24)
+  if (identifier4)
   {
-    [v5 setObject:v24 forKey:@"showAdamID"];
+    [v5 setObject:identifier4 forKey:@"showAdamID"];
   }
 
-  if (v28)
+  if (identifier5)
   {
-    [v5 setObject:v28 forKey:@"seasonAdamID"];
+    [v5 setObject:identifier5 forKey:@"seasonAdamID"];
   }
 
-  v66 = v24;
-  if (v71)
+  v66 = identifier4;
+  if (_itunesExtrasDictionary)
   {
-    [v5 setValue:v71 forKey:@"extras"];
+    [v5 setValue:_itunesExtrasDictionary forKey:@"extras"];
   }
 
-  v29 = [(VUIFamilySharingMediaItem *)self entity];
-  v30 = [v29 contentRating];
-  v31 = [v30 rank];
+  entity7 = [(VUIFamilySharingMediaItem *)self entity];
+  contentRating = [entity7 contentRating];
+  rank = [contentRating rank];
 
-  v32 = [v72 rangeOfString:@"Movie"];
+  v32 = [stringDescription rangeOfString:@"Movie"];
   v33 = +[VUIMediaEntityType movie];
 
-  v70 = v10;
-  if (v10 == v33)
+  v70 = type;
+  if (type == v33)
   {
     v37 = VUIContentMetadataTypeMovie;
   }
@@ -305,7 +305,7 @@
   {
     v34 = +[VUIMediaEntityType show];
 
-    if (v10 == v34)
+    if (type == v34)
     {
       v37 = VUIContentMetadataTypeShow;
     }
@@ -314,7 +314,7 @@
     {
       v35 = +[VUIMediaEntityType episode];
 
-      if (v10 != v35)
+      if (type != v35)
       {
         v36 = 0;
         goto LABEL_25;
@@ -327,9 +327,9 @@
   v36 = *v37;
 LABEL_25:
   v64 = v36;
-  [v6 vui_setObjectIfNotNil:v36 forKey:@"type"];
-  v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v31];
-  [v6 vui_setObjectIfNotNil:v38 forKey:@"ratingValue"];
+  [dictionary vui_setObjectIfNotNil:v36 forKey:@"type"];
+  v38 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:rank];
+  [dictionary vui_setObjectIfNotNil:v38 forKey:@"ratingValue"];
 
   v39 = MEMORY[0x1E69D5B10];
   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
@@ -337,44 +337,44 @@ LABEL_25:
     v39 = MEMORY[0x1E69D5B18];
   }
 
-  [v6 vui_setObjectIfNotNil:*v39 forKey:@"ratingDomain"];
-  v40 = [(VUIFamilySharingMediaItem *)self entity];
-  v41 = [v40 title];
-  [v6 vui_setObjectIfNotNil:v41 forKey:@"title"];
+  [dictionary vui_setObjectIfNotNil:*v39 forKey:@"ratingDomain"];
+  entity8 = [(VUIFamilySharingMediaItem *)self entity];
+  title = [entity8 title];
+  [dictionary vui_setObjectIfNotNil:title forKey:@"title"];
 
-  v42 = [(VUIFamilySharingMediaItem *)self entity];
-  v43 = [v42 showTitle];
-  [v6 vui_setObjectIfNotNil:v43 forKey:@"showTitle"];
+  entity9 = [(VUIFamilySharingMediaItem *)self entity];
+  showTitle = [entity9 showTitle];
+  [dictionary vui_setObjectIfNotNil:showTitle forKey:@"showTitle"];
 
-  v44 = [(VUIFamilySharingMediaItem *)self entity];
-  v45 = [v44 episodeNumber];
-  [v6 vui_setObjectIfNotNil:v45 forKey:@"episodeNumber"];
+  entity10 = [(VUIFamilySharingMediaItem *)self entity];
+  episodeNumber = [entity10 episodeNumber];
+  [dictionary vui_setObjectIfNotNil:episodeNumber forKey:@"episodeNumber"];
 
-  v46 = [(VUIFamilySharingMediaItem *)self entity];
-  v47 = [v46 seasonNumber];
-  [v6 vui_setObjectIfNotNil:v47 forKey:@"seasonNumber"];
+  entity11 = [(VUIFamilySharingMediaItem *)self entity];
+  seasonNumber = [entity11 seasonNumber];
+  [dictionary vui_setObjectIfNotNil:seasonNumber forKey:@"seasonNumber"];
 
-  v48 = [(VUIFamilySharingMediaItem *)self entity];
-  v49 = [v48 artworkURL];
+  entity12 = [(VUIFamilySharingMediaItem *)self entity];
+  artworkURL = [entity12 artworkURL];
 
-  v65 = v28;
-  if (![v49 length])
+  v65 = identifier5;
+  if (![artworkURL length])
   {
     goto LABEL_34;
   }
 
-  v50 = [MEMORY[0x1E695DF90] dictionary];
-  [v50 setObject:v49 forKey:@"url"];
-  [v50 setObject:&unk_1F5E5D470 forKey:@"width"];
-  [v50 setObject:&unk_1F5E5D488 forKey:@"height"];
-  [v6 setObject:v50 forKey:@"artwork"];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary3 setObject:artworkURL forKey:@"url"];
+  [dictionary3 setObject:&unk_1F5E5D470 forKey:@"width"];
+  [dictionary3 setObject:&unk_1F5E5D488 forKey:@"height"];
+  [dictionary setObject:dictionary3 forKey:@"artwork"];
   v51 = +[VUIMediaEntityType episode];
   v52 = v51;
   if (v70 == v51)
   {
 
 LABEL_32:
-    [v6 setObject:v50 forKey:@"showArtwork"];
+    [dictionary setObject:dictionary3 forKey:@"showArtwork"];
     goto LABEL_33;
   }
 
@@ -388,27 +388,27 @@ LABEL_32:
 LABEL_33:
 
 LABEL_34:
-  v54 = [(VUIFamilySharingMediaItem *)self entity];
-  v55 = [v54 previewArtworkURL];
+  entity13 = [(VUIFamilySharingMediaItem *)self entity];
+  previewArtworkURL = [entity13 previewArtworkURL];
 
-  if ([v55 length])
+  if ([previewArtworkURL length])
   {
-    v56 = [MEMORY[0x1E695DF90] dictionary];
-    [v56 setObject:v55 forKey:@"url"];
-    [v56 setObject:&unk_1F5E5D470 forKey:@"width"];
-    [v56 setObject:&unk_1F5E5D488 forKey:@"height"];
-    [v6 setObject:v56 forKey:@"previewFrameArtwork"];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary4 setObject:previewArtworkURL forKey:@"url"];
+    [dictionary4 setObject:&unk_1F5E5D470 forKey:@"width"];
+    [dictionary4 setObject:&unk_1F5E5D488 forKey:@"height"];
+    [dictionary setObject:dictionary4 forKey:@"previewFrameArtwork"];
   }
 
   v57 = [v5 copy];
   v74[0] = v57;
   v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:1];
-  v59 = [VUIVideosPlayable videosPlayablesFromDictionaries:v58 andMetadataDictionary:v6];
+  v59 = [VUIVideosPlayable videosPlayablesFromDictionaries:v58 andMetadataDictionary:dictionary];
 
-  v60 = [v59 firstObject];
+  firstObject = [v59 firstObject];
   v61 = self->_videosPlayable;
-  self->_videosPlayable = v60;
-  v62 = v60;
+  self->_videosPlayable = firstObject;
+  v62 = firstObject;
 
   v3 = self->_videosPlayable;
 LABEL_37:
@@ -418,19 +418,19 @@ LABEL_37:
 
 - (id)showIdentifier
 {
-  v3 = [(VUIFamilySharingMediaItem *)self entity];
-  v4 = [v3 relationships];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  relationships = [entity relationships];
 
-  if (v4)
+  if (relationships)
   {
-    v5 = [(VUIFamilySharingMediaItem *)self entity];
-    v6 = [v5 relationships];
-    v7 = [v6 show];
+    entity2 = [(VUIFamilySharingMediaItem *)self entity];
+    relationships2 = [entity2 relationships];
+    show = [relationships2 show];
 
-    v8 = [v7 identifier];
+    identifier = [show identifier];
     v9 = [VUIFamilySharingMediaEntityIdentifier alloc];
     v10 = +[VUIMediaEntityType show];
-    v11 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:v8 mediaEntityType:v10];
+    v11 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:identifier mediaEntityType:v10];
   }
 
   else
@@ -443,19 +443,19 @@ LABEL_37:
 
 - (id)seasonIdentifier
 {
-  v3 = [(VUIFamilySharingMediaItem *)self entity];
-  v4 = [v3 relationships];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  relationships = [entity relationships];
 
-  if (v4)
+  if (relationships)
   {
-    v5 = [(VUIFamilySharingMediaItem *)self entity];
-    v6 = [v5 relationships];
-    v7 = [v6 season];
+    entity2 = [(VUIFamilySharingMediaItem *)self entity];
+    relationships2 = [entity2 relationships];
+    season = [relationships2 season];
 
-    v8 = [v7 identifier];
+    identifier = [season identifier];
     v9 = [VUIFamilySharingMediaEntityIdentifier alloc];
     v10 = +[VUIMediaEntityType season];
-    v11 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:v8 mediaEntityType:v10];
+    v11 = [(VUIFamilySharingMediaEntityIdentifier *)v9 initWithEntityIdentifier:identifier mediaEntityType:v10];
   }
 
   else
@@ -468,46 +468,46 @@ LABEL_37:
 
 - (id)episodeNumber
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 episodeNumber];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  episodeNumber = [entity episodeNumber];
 
-  return v3;
+  return episodeNumber;
 }
 
 - (id)seasonNumber
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 seasonNumber];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  seasonNumber = [entity seasonNumber];
 
-  return v3;
+  return seasonNumber;
 }
 
 - (id)showTitle
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 showTitle];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  showTitle = [entity showTitle];
 
-  return v3;
+  return showTitle;
 }
 
 - (id)genreTitle
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 genreTitle];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  genreTitle = [entity genreTitle];
 
-  return v3;
+  return genreTitle;
 }
 
 - (id)bookmark
 {
-  v2 = [(VUIFamilySharingMediaItem *)self relationships];
-  v3 = [v2 playbackPosition];
-  v4 = v3;
+  relationships = [(VUIFamilySharingMediaItem *)self relationships];
+  playbackPosition = [relationships playbackPosition];
+  v4 = playbackPosition;
   v5 = MEMORY[0x1E696AD98];
-  if (v3)
+  if (playbackPosition)
   {
-    v6 = [v3 positionInMilliseconds];
-    [v6 floatValue];
+    positionInMilliseconds = [playbackPosition positionInMilliseconds];
+    [positionInMilliseconds floatValue];
     *&v8 = v7 / 1000.0;
     v9 = [v5 numberWithFloat:v8];
   }
@@ -522,12 +522,12 @@ LABEL_37:
 
 - (id)duration
 {
-  v2 = [(VUIFamilySharingMediaItem *)self _bestOffer];
-  v3 = v2;
-  if (v2)
+  _bestOffer = [(VUIFamilySharingMediaItem *)self _bestOffer];
+  v3 = _bestOffer;
+  if (_bestOffer)
   {
-    v4 = [v2 dictionary];
-    v5 = [v4 vui_numberForKey:@"durationInMilliseconds"];
+    dictionary = [_bestOffer dictionary];
+    v5 = [dictionary vui_numberForKey:@"durationInMilliseconds"];
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v5 doubleValue], v6 / 1000.0 > 0.0))
     {
@@ -550,38 +550,38 @@ LABEL_37:
 
 - (id)releaseDate
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 releaseDate];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  releaseDate = [entity releaseDate];
 
-  return v3;
+  return releaseDate;
 }
 
 - (id)releaseYear
 {
-  v2 = [(VUIFamilySharingMediaItem *)self releaseDate];
+  releaseDate = [(VUIFamilySharingMediaItem *)self releaseDate];
   v3 = objc_alloc(MEMORY[0x1E695DEE8]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v5 = [v4 components:4 fromDate:v2];
-  v6 = [v5 year];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v5 = [v4 components:4 fromDate:releaseDate];
+  year = [v5 year];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:year];
 
   return v7;
 }
 
 - (id)contentRating
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 contentRating];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  contentRating = [entity contentRating];
 
-  return v3;
+  return contentRating;
 }
 
 - (id)contentDescription
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 standardDescription];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  standardDescription = [entity standardDescription];
 
-  return v3;
+  return standardDescription;
 }
 
 - (VUIFamilySharingRelationships)relationships
@@ -589,10 +589,10 @@ LABEL_37:
   relationships = self->_relationships;
   if (!relationships)
   {
-    v4 = [(VUIFamilySharingMediaItem *)self entity];
-    v5 = [v4 relationships];
+    entity = [(VUIFamilySharingMediaItem *)self entity];
+    relationships = [entity relationships];
     v6 = self->_relationships;
-    self->_relationships = v5;
+    self->_relationships = relationships;
 
     relationships = self->_relationships;
   }
@@ -604,27 +604,27 @@ LABEL_37:
 
 - (id)_bestOffer
 {
-  v3 = [(VUIFamilySharingMediaItem *)self entity];
-  v4 = [v3 offerListing];
-  v5 = [v4 bestStoreBuyOffer];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  offerListing = [entity offerListing];
+  bestStoreBuyOffer = [offerListing bestStoreBuyOffer];
 
-  if (!v5)
+  if (!bestStoreBuyOffer)
   {
-    v6 = [(VUIFamilySharingMediaItem *)self entity];
-    v7 = [v6 offerListing];
-    v5 = [v7 bestStoreGetOffer];
+    entity2 = [(VUIFamilySharingMediaItem *)self entity];
+    offerListing2 = [entity2 offerListing];
+    bestStoreBuyOffer = [offerListing2 bestStoreGetOffer];
   }
 
-  return v5;
+  return bestStoreBuyOffer;
 }
 
 - (id)_bestRedownloadOffer
 {
-  v2 = [(VUIFamilySharingMediaItem *)self entity];
-  v3 = [v2 personalizedOfferListing];
-  v4 = [v3 bestStoreRedownloadOffer];
+  entity = [(VUIFamilySharingMediaItem *)self entity];
+  personalizedOfferListing = [entity personalizedOfferListing];
+  bestStoreRedownloadOffer = [personalizedOfferListing bestStoreRedownloadOffer];
 
-  return v4;
+  return bestStoreRedownloadOffer;
 }
 
 - (NSString)buyParams
@@ -637,20 +637,20 @@ LABEL_37:
 
   else
   {
-    v5 = [(VUIFamilySharingMediaItem *)self _bestOffer];
-    v6 = v5;
-    if (v5)
+    _bestOffer = [(VUIFamilySharingMediaItem *)self _bestOffer];
+    v6 = _bestOffer;
+    if (_bestOffer)
     {
-      v7 = [v5 buyParameters];
+      buyParameters = [_bestOffer buyParameters];
     }
 
     else
     {
-      v7 = &stru_1F5DB25C0;
+      buyParameters = &stru_1F5DB25C0;
     }
 
     v8 = self->_buyParams;
-    self->_buyParams = &v7->isa;
+    self->_buyParams = &buyParameters->isa;
 
     v3 = self->_buyParams;
   }
@@ -668,20 +668,20 @@ LABEL_37:
 
   else
   {
-    v5 = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
-    v6 = v5;
-    if (v5)
+    _bestRedownloadOffer = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
+    v6 = _bestRedownloadOffer;
+    if (_bestRedownloadOffer)
     {
-      v7 = [v5 buyParameters];
+      buyParameters = [_bestRedownloadOffer buyParameters];
     }
 
     else
     {
-      v7 = &stru_1F5DB25C0;
+      buyParameters = &stru_1F5DB25C0;
     }
 
     v8 = self->_personalizedBuyParams;
-    self->_personalizedBuyParams = &v7->isa;
+    self->_personalizedBuyParams = &buyParameters->isa;
 
     v3 = self->_personalizedBuyParams;
   }
@@ -695,8 +695,8 @@ LABEL_37:
   if (!assetController)
   {
     v4 = [VUIUniversalAssetController alloc];
-    v5 = [(VUIFamilySharingMediaItem *)self videosPlayable];
-    v6 = [(VUIUniversalAssetController *)v4 initWithVideosPlayable:v5];
+    videosPlayable = [(VUIFamilySharingMediaItem *)self videosPlayable];
+    v6 = [(VUIUniversalAssetController *)v4 initWithVideosPlayable:videosPlayable];
     v7 = self->_assetController;
     self->_assetController = v6;
 
@@ -709,37 +709,37 @@ LABEL_37:
 - (id)_itunesExtrasDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
-  if (!v4)
+  _bestRedownloadOffer = [(VUIFamilySharingMediaItem *)self _bestRedownloadOffer];
+  if (!_bestRedownloadOffer)
   {
-    v4 = [(VUIFamilySharingMediaItem *)self _bestOffer];
+    _bestRedownloadOffer = [(VUIFamilySharingMediaItem *)self _bestOffer];
   }
 
-  v5 = [v4 dictionary];
-  v6 = [v5 vui_arrayForKey:@"capabilities"];
+  dictionary = [_bestRedownloadOffer dictionary];
+  v6 = [dictionary vui_arrayForKey:@"capabilities"];
 
   if ([v6 containsObject:@"iTunesExtras"])
   {
-    v7 = [(VUIFamilySharingMediaItem *)self entity];
-    v8 = [v7 iTunesExtrasUrl];
+    entity = [(VUIFamilySharingMediaItem *)self entity];
+    iTunesExtrasUrl = [entity iTunesExtrasUrl];
 
-    if (v8)
+    if (iTunesExtrasUrl)
     {
-      [v3 setValue:v8 forKey:@"extrasUrl"];
-      v9 = [v4 buyParameters];
-      [v3 setValue:v9 forKey:@"buyParams"];
+      [v3 setValue:iTunesExtrasUrl forKey:@"extrasUrl"];
+      buyParameters = [_bestRedownloadOffer buyParameters];
+      [v3 setValue:buyParameters forKey:@"buyParams"];
 
-      v10 = [(VUIFamilySharingMediaItem *)self storeID];
-      [v3 setValue:v10 forKey:@"adamId"];
+      storeID = [(VUIFamilySharingMediaItem *)self storeID];
+      [v3 setValue:storeID forKey:@"adamId"];
 
-      v11 = [(VUIFamilySharingMediaItem *)self contentRating];
-      v12 = v11;
-      if (v11)
+      contentRating = [(VUIFamilySharingMediaItem *)self contentRating];
+      v12 = contentRating;
+      if (contentRating)
       {
-        v13 = [v11 rank];
-        if (v13)
+        rank = [contentRating rank];
+        if (rank)
         {
-          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
+          v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:rank];
           [v3 setValue:v14 forKey:@"ratingValue"];
         }
       }
@@ -753,8 +753,8 @@ LABEL_37:
 
 - (id)resolution
 {
-  v2 = [(VUIFamilySharingEntity *)self->_entity capabilities];
-  v3 = [v2 containsObject:@"4K"];
+  capabilities = [(VUIFamilySharingEntity *)self->_entity capabilities];
+  v3 = [capabilities containsObject:@"4K"];
 
   if (v3)
   {
@@ -769,23 +769,23 @@ LABEL_37:
 
 - (id)colorCapability
 {
-  v3 = [(VUIFamilySharingEntity *)self->_entity capabilities];
-  v4 = [v3 containsObject:@"dolbyVision"];
+  capabilities = [(VUIFamilySharingEntity *)self->_entity capabilities];
+  v4 = [capabilities containsObject:@"dolbyVision"];
 
   if (v4)
   {
     return &unk_1F5E5D4B8;
   }
 
-  v6 = [(VUIFamilySharingEntity *)self->_entity capabilities];
-  if ([v6 containsObject:@"HDR"])
+  capabilities2 = [(VUIFamilySharingEntity *)self->_entity capabilities];
+  if ([capabilities2 containsObject:@"HDR"])
   {
 
     return &unk_1F5E5D4D0;
   }
 
-  v7 = [(VUIFamilySharingEntity *)self->_entity capabilities];
-  v8 = [v7 containsObject:@"HDR10+"];
+  capabilities3 = [(VUIFamilySharingEntity *)self->_entity capabilities];
+  v8 = [capabilities3 containsObject:@"HDR10+"];
 
   if (v8)
   {
@@ -797,8 +797,8 @@ LABEL_37:
 
 - (id)audioCapability
 {
-  v2 = [(VUIFamilySharingEntity *)self->_entity capabilities];
-  v3 = [v2 containsObject:@"dolbyAtmos"];
+  capabilities = [(VUIFamilySharingEntity *)self->_entity capabilities];
+  v3 = [capabilities containsObject:@"dolbyAtmos"];
 
   if (v3)
   {

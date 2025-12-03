@@ -1,17 +1,17 @@
 @interface NTKFaceSnapshotter
 + (id)defaultModernSnapshotOptions;
 - (NTKFaceSnapshotter)init;
-- (id)viewControllerForFace:(id)a3 withOptions:(id)a4;
+- (id)viewControllerForFace:(id)face withOptions:(id)options;
 - (void)_hideSnapshotWindow;
-- (void)_mainQueue_serviceRequest:(id)a3 metrics:(id)a4 completion:(id)a5;
+- (void)_mainQueue_serviceRequest:(id)request metrics:(id)metrics completion:(id)completion;
 - (void)_queue_serviceRequestIfIdle;
-- (void)_setupNotificationForCollectionLoadForDevice:(id)a3 completion:(id)a4;
-- (void)_showSnapshotWindowForDevice:(id)a3;
-- (void)complicationCollectionDidLoad:(id)a3;
+- (void)_setupNotificationForCollectionLoadForDevice:(id)device completion:(id)completion;
+- (void)_showSnapshotWindowForDevice:(id)device;
+- (void)complicationCollectionDidLoad:(id)load;
 - (void)dealloc;
-- (void)provideSnapshotOfFace:(id)a3 completion:(id)a4;
-- (void)provideSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)requestSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)provideSnapshotOfFace:(id)face completion:(id)completion;
+- (void)provideSnapshotOfFace:(id)face options:(id)options completion:(id)completion;
+- (void)requestSnapshotOfFace:(id)face options:(id)options completion:(id)completion;
 @end
 
 @implementation NTKFaceSnapshotter
@@ -60,36 +60,36 @@
   return v3;
 }
 
-- (void)_setupNotificationForCollectionLoadForDevice:(id)a3 completion:(id)a4
+- (void)_setupNotificationForCollectionLoadForDevice:(id)device completion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_7CF0;
   block[3] = &unk_20940;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  deviceCopy = device;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = deviceCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)provideSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5
+- (void)provideSnapshotOfFace:(id)face options:(id)options completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_7EDC;
   v9[3] = &unk_20968;
-  v10 = a5;
-  v8 = v10;
-  [(NTKFaceSnapshotter *)self requestSnapshotOfFace:a3 options:a4 completion:v9];
+  completionCopy = completion;
+  v8 = completionCopy;
+  [(NTKFaceSnapshotter *)self requestSnapshotOfFace:face options:options completion:v9];
 }
 
-- (void)requestSnapshotOfFace:(id)a3 options:(id)a4 completion:(id)a5
+- (void)requestSnapshotOfFace:(id)face options:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v28 = a5;
+  faceCopy = face;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,17 +97,17 @@
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "dispatching to face snapshotter queue", buf, 2u);
   }
 
-  v10 = [v8 objectForKey:@"NTKSnapshotMetricsKey"];
+  v10 = [optionsCopy objectForKey:@"NTKSnapshotMetricsKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 copy];
+    v11 = [optionsCopy copy];
     v12 = v10;
   }
 
   else
   {
-    v13 = [v8 mutableCopy];
+    v13 = [optionsCopy mutableCopy];
     v12 = [NTKFaceSnapshotServiceTaskResult rootTaskNamed:@"SnapshotterMetrics"];
     [v13 setObject:v12 forKey:@"NTKSnapshotMetricsKey"];
     v11 = [v13 copy];
@@ -125,10 +125,10 @@
     }
   }
 
-  v17 = [v7 device];
-  if (v17)
+  device = [faceCopy device];
+  if (device)
   {
-    v27 = v8;
+    v27 = optionsCopy;
     v39 = 0;
     v18 = [v12 childTaskNamed:@"CollectionLoad" error:&v39];
     v19 = v39;
@@ -146,11 +146,11 @@
     v36[2] = sub_82D0;
     v36[3] = &unk_20868;
     v37 = v18;
-    v38 = self;
+    selfCopy = self;
     v21 = v18;
-    [(NTKFaceSnapshotter *)self _setupNotificationForCollectionLoadForDevice:v17 completion:v36];
+    [(NTKFaceSnapshotter *)self _setupNotificationForCollectionLoadForDevice:device completion:v36];
 
-    v8 = v27;
+    optionsCopy = v27;
   }
 
   v22 = qword_277C8;
@@ -158,15 +158,15 @@
   block[1] = 3221225472;
   block[2] = sub_83C4;
   block[3] = &unk_209F8;
-  v31 = v7;
+  v31 = faceCopy;
   v32 = v11;
-  v34 = self;
-  v35 = v28;
+  selfCopy2 = self;
+  v35 = completionCopy;
   v33 = v14;
-  v23 = v28;
+  v23 = completionCopy;
   v24 = v14;
   v25 = v11;
-  v26 = v7;
+  v26 = faceCopy;
   dispatch_async(v22, block);
 }
 
@@ -201,7 +201,7 @@ LABEL_10:
         v8[2] = sub_8998;
         v8[3] = &unk_20868;
         v9 = v7;
-        v10 = self;
+        selfCopy = self;
         v3 = v7;
         dispatch_async(&_dispatch_main_q, v8);
 
@@ -232,55 +232,55 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)provideSnapshotOfFace:(id)a3 completion:(id)a4
+- (void)provideSnapshotOfFace:(id)face completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12 = @"NTKSnapshotUIOnlyKey";
   v13 = &__kCFBooleanTrue;
-  v7 = a3;
+  faceCopy = face;
   v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_8D2C;
   v10[3] = &unk_20A60;
-  v11 = v6;
-  v9 = v6;
-  [(NTKFaceSnapshotter *)self provideSnapshotOfFace:v7 options:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(NTKFaceSnapshotter *)self provideSnapshotOfFace:faceCopy options:v8 completion:v10];
 }
 
-- (id)viewControllerForFace:(id)a3 withOptions:(id)a4
+- (id)viewControllerForFace:(id)face withOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  faceCopy = face;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setRootViewController:0];
   [(NTKFaceSnapshotter *)self _hideSnapshotWindow];
-  v8 = [v7 deepCopy];
+  deepCopy = [faceCopy deepCopy];
 
   v9 = [NTKFaceViewController alloc];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_8E54;
   v13[3] = &unk_20A88;
-  v14 = v6;
-  v10 = v6;
-  v11 = [v9 initWithFace:v8 configuration:v13];
+  v14 = optionsCopy;
+  v10 = optionsCopy;
+  v11 = [v9 initWithFace:deepCopy configuration:v13];
   [v11 freeze];
 
   return v11;
 }
 
-- (void)_mainQueue_serviceRequest:(id)a3 metrics:(id)a4 completion:(id)a5
+- (void)_mainQueue_serviceRequest:(id)request metrics:(id)metrics completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v67 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v10 = [v8 face];
-  v65 = [v10 dailySnapshotKey];
-  v64 = [v10 unsafeDailySnapshotKey];
-  v72 = [v8 options];
-  v69 = [v10 description];
+  face = [requestCopy face];
+  dailySnapshotKey = [face dailySnapshotKey];
+  unsafeDailySnapshotKey = [face unsafeDailySnapshotKey];
+  options = [requestCopy options];
+  v69 = [face description];
   v11 = _NTKLoggingObjectForDomain();
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -295,7 +295,7 @@ LABEL_12:
   v62 = v12;
 
   Current = CFAbsoluteTimeGetCurrent();
-  v16 = [v72 objectForKeyedSubscript:@"NTKSnapshotOverrideDateKey"];
+  v16 = [options objectForKeyedSubscript:@"NTKSnapshotOverrideDateKey"];
   if (v16)
   {
     v17 = NTKRoundDateDownToNearestSecond();
@@ -321,10 +321,10 @@ LABEL_12:
   v117[2] = 0x2020000000;
   v118 = 0;
   v116 = 0;
-  v71 = [v9 childTaskNamed:@"FVC-Load" error:&v116];
+  v71 = [metricsCopy childTaskNamed:@"FVC-Load" error:&v116];
   v18 = v116;
   v19 = v18;
-  if (v9 && v18)
+  if (metricsCopy && v18)
   {
     v20 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -335,10 +335,10 @@ LABEL_12:
 
   v21 = objc_autoreleasePoolPush();
   v22 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-  v23 = [v10 device];
-  [v22 setDevice:v23];
+  device = [face device];
+  [v22 setDevice:device];
 
-  v24 = [(NTKFaceSnapshotter *)self viewControllerForFace:v10 withOptions:v72];
+  v24 = [(NTKFaceSnapshotter *)self viewControllerForFace:face withOptions:options];
   v25 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v24;
 
@@ -349,8 +349,8 @@ LABEL_12:
   v115[3] = &unk_20AB0;
   v115[4] = v117;
   [v26 enumerateComplicationControllersAndDisplaysWithBlock:v115];
-  v27 = [v10 device];
-  [(NTKFaceSnapshotter *)self _showSnapshotWindowForDevice:v27];
+  device2 = [face device];
+  [(NTKFaceSnapshotter *)self _showSnapshotWindowForDevice:device2];
 
   [*(*(&buf + 1) + 40) prepareForSnapshotting];
   v28 = +[UIColor clearColor];
@@ -360,22 +360,22 @@ LABEL_12:
   _UIAppSetStatusBarHeight();
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setRootViewController:*(*(&buf + 1) + 40)];
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setHidden:0];
-  v29 = [*(*(&buf + 1) + 40) faceView];
+  faceView = [*(*(&buf + 1) + 40) faceView];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setNeedsLayout];
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow layoutIfNeeded];
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setNeedsDisplay];
-  [v29 setNeedsRender];
+  [faceView setNeedsRender];
   +[CATransaction commit];
   +[CATransaction flush];
 
   objc_autoreleasePoolPop(v21);
   v114 = v19;
-  LOBYTE(v29) = [v71 finishWithError:&v114];
+  LOBYTE(faceView) = [v71 finishWithError:&v114];
   v30 = v114;
 
-  if (!(v29 & 1 | (v9 == 0)))
+  if (!(faceView & 1 | (metricsCopy == 0)))
   {
     v31 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -413,20 +413,20 @@ LABEL_12:
   v70 = v32;
   v89 = v32;
   v98 = &v107;
-  v33 = v9;
+  v33 = metricsCopy;
   v90 = v33;
-  v58 = v10;
+  v58 = face;
   v91 = v58;
-  v63 = v65;
+  v63 = dailySnapshotKey;
   v92 = v63;
-  v66 = v64;
+  v66 = unsafeDailySnapshotKey;
   v93 = v66;
   v34 = v61;
   v94 = v34;
-  v35 = v8;
+  v35 = requestCopy;
   v95 = v35;
   p_buf = &buf;
-  v68 = v67;
+  v68 = completionCopy;
   v96 = v68;
   v36 = objc_retainBlock(v86);
   v37 = v102[5];
@@ -462,22 +462,22 @@ LABEL_12:
   objc_copyWeak(&v81, &location);
   v80[7] = v84;
   v39 = objc_retainBlock(v80);
-  v40 = [v35 options];
-  v41 = [v40 valueForKey:@"NTKSnapshotPerformPrewarmRoutineKey"];
+  options2 = [v35 options];
+  v41 = [options2 valueForKey:@"NTKSnapshotPerformPrewarmRoutineKey"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v43 = [v35 options];
-    v44 = [v43 valueForKey:@"NTKSnapshotPerformPrewarmRoutineKey"];
+    options3 = [v35 options];
+    v44 = [options3 valueForKey:@"NTKSnapshotPerformPrewarmRoutineKey"];
 
-    v45 = [v44 BOOLValue];
+    bOOLValue = [v44 BOOLValue];
   }
 
   else
   {
-    v45 = 0;
+    bOOLValue = 0;
   }
 
   v79 = v30;
@@ -496,12 +496,12 @@ LABEL_12:
     }
   }
 
-  if (v45)
+  if (bOOLValue)
   {
     v50 = v108[5];
     v78 = v47;
     v51 = [v50 childTaskNamed:@"Prewarm" error:&v78];
-    v52 = v9 != 0;
+    v52 = metricsCopy != 0;
     v53 = v78;
 
     if (v53)
@@ -556,22 +556,22 @@ LABEL_12:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_showSnapshotWindowForDevice:(id)a3
+- (void)_showSnapshotWindowForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   snapshotWindow = self->_snapshotWindow;
-  v8 = v4;
+  v8 = deviceCopy;
   if (!snapshotWindow)
   {
     v6 = objc_alloc_init(NTKFaceSnapshottingWindow);
     v7 = self->_snapshotWindow;
     self->_snapshotWindow = v6;
 
-    v4 = v8;
+    deviceCopy = v8;
     snapshotWindow = self->_snapshotWindow;
   }
 
-  [(NTKFaceSnapshottingWindow *)snapshotWindow updateForDevice:v4];
+  [(NTKFaceSnapshottingWindow *)snapshotWindow updateForDevice:deviceCopy];
   [(NTKFaceSnapshottingWindow *)self->_snapshotWindow setHidden:0];
 }
 
@@ -590,7 +590,7 @@ LABEL_12:
   [(NTKFaceSnapshotter *)&v3 dealloc];
 }
 
-- (void)complicationCollectionDidLoad:(id)a3
+- (void)complicationCollectionDidLoad:(id)load
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

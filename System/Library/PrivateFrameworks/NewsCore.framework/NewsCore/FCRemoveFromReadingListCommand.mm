@@ -1,18 +1,18 @@
 @interface FCRemoveFromReadingListCommand
-- (FCRemoveFromReadingListCommand)initWithEntryID:(id)a3;
-- (FCRemoveFromReadingListCommand)initWithEntryIDs:(id)a3;
+- (FCRemoveFromReadingListCommand)initWithEntryID:(id)d;
+- (FCRemoveFromReadingListCommand)initWithEntryIDs:(id)ds;
 @end
 
 @implementation FCRemoveFromReadingListCommand
 
-- (FCRemoveFromReadingListCommand)initWithEntryID:(id)a3
+- (FCRemoveFromReadingListCommand)initWithEntryID:(id)d
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"ReadingList" ownerName:*MEMORY[0x1E695B728]];
-  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5 zoneID:v7];
+  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy zoneID:v7];
 
   if (v8)
   {
@@ -30,10 +30,10 @@
   return v10;
 }
 
-- (FCRemoveFromReadingListCommand)initWithEntryIDs:(id)a3
+- (FCRemoveFromReadingListCommand)initWithEntryIDs:(id)ds
 {
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dsCopy = ds;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"ReadingList" ownerName:*MEMORY[0x1E695B728]];
   v13[0] = MEMORY[0x1E69E9820];
@@ -42,7 +42,7 @@
   v13[3] = &unk_1E7C38BD8;
   v14 = v7;
   v8 = v7;
-  v9 = [v5 fc_arrayByTransformingWithBlock:v13];
+  v9 = [dsCopy fc_arrayByTransformingWithBlock:v13];
 
   if (v9)
   {

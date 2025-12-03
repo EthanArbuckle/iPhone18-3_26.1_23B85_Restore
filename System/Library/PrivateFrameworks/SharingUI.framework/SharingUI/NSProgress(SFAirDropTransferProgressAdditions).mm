@@ -37,46 +37,46 @@
   v18[4] = v9;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
 
-  v15 = a1;
-  [v15 setCompletedUnitCount:-1];
-  [v15 setTotalUnitCount:0];
-  [v15 setCancellable:1];
-  [v15 setPausable:0];
-  [v15 setSf_transferState:0];
+  selfCopy = self;
+  [selfCopy setCompletedUnitCount:-1];
+  [selfCopy setTotalUnitCount:0];
+  [selfCopy setCancellable:1];
+  [selfCopy setPausable:0];
+  [selfCopy setSf_transferState:0];
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)sf_publishingKey
 {
   v2 = MEMORY[0x1E696AE38];
-  v3 = [a1 sf_bundleID];
-  v4 = [a1 sf_sessionID];
-  v5 = [v2 sf_publishingKeyForApp:v3 sessionID:v4];
+  sf_bundleID = [self sf_bundleID];
+  sf_sessionID = [self sf_sessionID];
+  v5 = [v2 sf_publishingKeyForApp:sf_bundleID sessionID:sf_sessionID];
 
   return v5;
 }
 
 - (id)sf_bundleID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"bundleID"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"bundleID"];
 
   return v2;
 }
 
 - (id)sf_sessionID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"sessionID"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"sessionID"];
 
   return v2;
 }
 
 - (id)sf_personRealName
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"personRealName"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"personRealName"];
 
   return v2;
 }
@@ -93,14 +93,14 @@
   v11[1] = v5;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  v8 = a1;
-  [v8 setCompletedUnitCount:-1];
-  [v8 setTotalUnitCount:0];
-  [v8 setCancellable:1];
-  [v8 setPausable:0];
-  [v8 setSf_transferState:0];
+  selfCopy = self;
+  [selfCopy setCompletedUnitCount:-1];
+  [selfCopy setTotalUnitCount:0];
+  [selfCopy setCancellable:1];
+  [selfCopy setPausable:0];
+  [selfCopy setSf_transferState:0];
 
-  return v8;
+  return selfCopy;
 }
 
 + (__CFString)sf_transferStateAsString:()SFAirDropTransferProgressAdditions
@@ -119,43 +119,43 @@
 - (void)setSf_initiator:()SFAirDropTransferProgressAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-  objc_setAssociatedObject(a1, "SFAirDropTransferProgressInitiator", v2, 0x301);
+  objc_setAssociatedObject(self, "SFAirDropTransferProgressInitiator", v2, 0x301);
 }
 
 - (uint64_t)sf_initiator
 {
-  v1 = objc_getAssociatedObject(a1, "SFAirDropTransferProgressInitiator");
-  v2 = [v1 unsignedIntValue];
+  v1 = objc_getAssociatedObject(self, "SFAirDropTransferProgressInitiator");
+  unsignedIntValue = [v1 unsignedIntValue];
 
-  return v2;
+  return unsignedIntValue;
 }
 
 - (void)setSf_transferState:()SFAirDropTransferProgressAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  [a1 setUserInfoObject:v2 forKey:@"sendState"];
+  [self setUserInfoObject:v2 forKey:@"sendState"];
 }
 
 - (uint64_t)sf_transferState
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"sendState"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"sendState"];
 
-  v3 = [v2 integerValue];
-  return v3;
+  integerValue = [v2 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)sf_failedWithError:()SFAirDropTransferProgressAdditions
 {
-  [a1 setUserInfoObject:a3 forKey:@"error"];
+  [self setUserInfoObject:a3 forKey:@"error"];
 
-  return [a1 setSf_transferState:5];
+  return [self setSf_transferState:5];
 }
 
 - (id)sf_error
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"error"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"error"];
 
   return v2;
 }

@@ -1,14 +1,14 @@
 @interface AWDITesterCertTestFinish
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTestStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTestStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDITesterCertTestFinish
@@ -23,9 +23,9 @@
   [(AWDITesterCertTestFinish *)&v3 dealloc];
 }
 
-- (void)setHasTestStatus:(BOOL)a3
+- (void)setHasTestStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -47,39 +47,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   testName = self->_testName;
   if (testName)
   {
-    [v3 setObject:testName forKey:@"testName"];
+    [dictionary setObject:testName forKey:@"testName"];
   }
 
   accessoryName = self->_accessoryName;
   if (accessoryName)
   {
-    [v3 setObject:accessoryName forKey:@"accessoryName"];
+    [dictionary setObject:accessoryName forKey:@"accessoryName"];
   }
 
   accessoryType = self->_accessoryType;
   if (accessoryType)
   {
-    [v3 setObject:accessoryType forKey:@"accessoryType"];
+    [dictionary setObject:accessoryType forKey:@"accessoryType"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_testStatus), @"testStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_testStatus), @"testStatus"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -110,39 +110,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
   }
 
   if (self->_testName)
   {
-    [a3 setTestName:?];
+    [to setTestName:?];
   }
 
   if (self->_accessoryName)
   {
-    [a3 setAccessoryName:?];
+    [to setAccessoryName:?];
   }
 
   if (self->_accessoryType)
   {
-    [a3 setAccessoryType:?];
+    [to setAccessoryType:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 10) = self->_testStatus;
-    *(a3 + 44) |= 2u;
+    *(to + 10) = self->_testStatus;
+    *(to + 44) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -150,10 +150,10 @@
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_accessoryName copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_testName copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_accessoryName copyWithZone:zone];
 
-  *(v6 + 24) = [(NSString *)self->_accessoryType copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_accessoryType copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 40) = self->_testStatus;
@@ -163,21 +163,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 44);
+    v6 = *(equal + 44);
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_17;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
 LABEL_17:
       LOBYTE(v5) = 0;
@@ -185,18 +185,18 @@ LABEL_17:
     }
 
     testName = self->_testName;
-    if (!(testName | *(a3 + 4)) || (v5 = [(NSString *)testName isEqual:?]) != 0)
+    if (!(testName | *(equal + 4)) || (v5 = [(NSString *)testName isEqual:?]) != 0)
     {
       accessoryName = self->_accessoryName;
-      if (!(accessoryName | *(a3 + 2)) || (v5 = [(NSString *)accessoryName isEqual:?]) != 0)
+      if (!(accessoryName | *(equal + 2)) || (v5 = [(NSString *)accessoryName isEqual:?]) != 0)
       {
         accessoryType = self->_accessoryType;
-        if (!(accessoryType | *(a3 + 3)) || (v5 = [(NSString *)accessoryType isEqual:?]) != 0)
+        if (!(accessoryType | *(equal + 3)) || (v5 = [(NSString *)accessoryType isEqual:?]) != 0)
         {
-          LOBYTE(v5) = (*(a3 + 44) & 2) == 0;
+          LOBYTE(v5) = (*(equal + 44) & 2) == 0;
           if ((*&self->_has & 2) != 0)
           {
-            if ((*(a3 + 44) & 2) == 0 || self->_testStatus != *(a3 + 10))
+            if ((*(equal + 44) & 2) == 0 || self->_testStatus != *(equal + 10))
             {
               goto LABEL_17;
             }
@@ -239,32 +239,32 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDITesterCertTestFinish *)self setTestName:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDITesterCertTestFinish *)self setAccessoryName:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDITesterCertTestFinish *)self setAccessoryType:?];
   }
 
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
-    self->_testStatus = *(a3 + 10);
+    self->_testStatus = *(from + 10);
     *&self->_has |= 2u;
   }
 }

@@ -1,21 +1,21 @@
 @interface PKDynamicProvisioningFieldsPageViewController
-- (PKDynamicProvisioningFieldsPageViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 fieldsPage:(id)a6;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
-- (void)showSpinner:(BOOL)a3;
+- (PKDynamicProvisioningFieldsPageViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate fieldsPage:(id)page;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
+- (void)showSpinner:(BOOL)spinner;
 - (void)viewDidLoad;
 @end
 
 @implementation PKDynamicProvisioningFieldsPageViewController
 
-- (PKDynamicProvisioningFieldsPageViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 fieldsPage:(id)a6
+- (PKDynamicProvisioningFieldsPageViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate fieldsPage:(id)page
 {
-  v31 = a3;
-  v30 = a5;
-  v8 = a6;
-  v9 = [v8 fieldModel];
-  v10 = [v9 visiblePaymentSetupFields];
+  serviceCopy = service;
+  delegateCopy = delegate;
+  pageCopy = page;
+  fieldModel = [pageCopy fieldModel];
+  visiblePaymentSetupFields = [fieldModel visiblePaymentSetupFields];
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v10];
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:visiblePaymentSetupFields];
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -40,7 +40,7 @@
   v18 = v11;
   v37 = v18;
   v39 = &v45;
-  v19 = v10;
+  v19 = visiblePaymentSetupFields;
   v38 = v19;
   v40 = &v41;
   [v19 enumerateObjectsUsingBlock:v33];
@@ -65,12 +65,12 @@
 
   v32.receiver = self;
   v32.super_class = PKDynamicProvisioningFieldsPageViewController;
-  v25 = [(PKPaymentSetupFieldsViewController *)&v32 initWithWebService:v31 context:a4 setupDelegate:v30 setupFieldsModel:v24, self, a4];
-  v26 = v25;
-  if (v25)
+  context = [(PKPaymentSetupFieldsViewController *)&v32 initWithWebService:serviceCopy context:context setupDelegate:delegateCopy setupFieldsModel:v24, self, context];
+  v26 = context;
+  if (context)
   {
-    [(PKPaymentSetupFieldsViewController *)v25 setSectionIdentifiers:v17];
-    objc_storeStrong(&v26->_fieldsPage, a6);
+    [(PKPaymentSetupFieldsViewController *)context setSectionIdentifiers:v17];
+    objc_storeStrong(&v26->_fieldsPage, page);
   }
 
   _Block_object_dispose(&v41, 8);
@@ -158,40 +158,40 @@ LABEL_11:
   [(PKPaymentSetupFieldsViewController *)self _setLeftBarButtonItems:v5 animated:0];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != spinner)
   {
-    v3 = a3;
-    self->_isLoading = a3;
-    v5 = [(PKDynamicProvisioningFieldsPageViewController *)self navigationController];
-    v6 = [v5 view];
-    v7 = v6;
-    if (v6)
+    spinnerCopy = spinner;
+    self->_isLoading = spinner;
+    navigationController = [(PKDynamicProvisioningFieldsPageViewController *)self navigationController];
+    view = [navigationController view];
+    v7 = view;
+    if (view)
     {
-      v8 = v6;
+      view2 = view;
     }
 
     else
     {
-      v8 = [(PKDynamicProvisioningFieldsPageViewController *)self view];
+      view2 = [(PKDynamicProvisioningFieldsPageViewController *)self view];
     }
 
-    v18 = v8;
+    v18 = view2;
 
-    [v18 setUserInteractionEnabled:!v3];
-    v9 = [(PKPaymentSetupTableViewController *)self dockView];
-    [v9 setButtonsEnabled:!v3];
+    [v18 setUserInteractionEnabled:!spinnerCopy];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    [dockView setButtonsEnabled:!spinnerCopy];
 
-    [(PKDynamicProvisioningFieldsPageViewController *)self _setNavigationBarEnabled:!v3];
-    v10 = [(PKDynamicProvisioningFieldsPageViewController *)self navigationItem];
-    v11 = v10;
+    [(PKDynamicProvisioningFieldsPageViewController *)self _setNavigationBarEnabled:!spinnerCopy];
+    navigationItem = [(PKDynamicProvisioningFieldsPageViewController *)self navigationItem];
+    v11 = navigationItem;
     if (self->_isLoading)
     {
-      self->_backHidden = [v10 hidesBackButton];
-      v12 = [v11 rightBarButtonItem];
+      self->_backHidden = [navigationItem hidesBackButton];
+      rightBarButtonItem = [v11 rightBarButtonItem];
       hiddenRightBarButtonItem = self->_hiddenRightBarButtonItem;
-      self->_hiddenRightBarButtonItem = v12;
+      self->_hiddenRightBarButtonItem = rightBarButtonItem;
 
       if (!self->_spinningNavBarItem)
       {
@@ -221,22 +221,22 @@ LABEL_11:
   }
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKDynamicProvisioningFieldsPageViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKDynamicProvisioningFieldsPageViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKDynamicProvisioningFieldsPageViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKDynamicProvisioningFieldsPageViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
 @end

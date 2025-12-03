@@ -1,13 +1,13 @@
 @interface HUHomeEnergyAnalyticsHelper
-+ (void)sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:(int64_t)a3;
-+ (void)sendUtilityOTPMethodSelectedByUserEventWithUtilityID:(id)a3 selectedOTPMethod:(id)a4;
-+ (void)sendUtilityOnboardingCompletedEventWithUtilityID:(id)a3 onboardingMethod:(int64_t)a4 didAttemptPasswordless:(BOOL)a5;
++ (void)sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:(int64_t)utilities;
++ (void)sendUtilityOTPMethodSelectedByUserEventWithUtilityID:(id)d selectedOTPMethod:(id)method;
++ (void)sendUtilityOnboardingCompletedEventWithUtilityID:(id)d onboardingMethod:(int64_t)method didAttemptPasswordless:(BOOL)passwordless;
 - (HUHomeEnergyAnalyticsHelper)init;
 @end
 
 @implementation HUHomeEnergyAnalyticsHelper
 
-+ (void)sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:(int64_t)a3
++ (void)sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:(int64_t)utilities
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81D090);
   MEMORY[0x28223BE20](v3 - 8);
@@ -27,18 +27,18 @@
   MEMORY[0x20F318F80]();
 }
 
-+ (void)sendUtilityOTPMethodSelectedByUserEventWithUtilityID:(id)a3 selectedOTPMethod:(id)a4
++ (void)sendUtilityOTPMethodSelectedByUserEventWithUtilityID:(id)d selectedOTPMethod:(id)method
 {
-  v4 = a4;
-  if (a3)
+  methodCopy = method;
+  if (d)
   {
     v5 = sub_20D567838();
     v7 = v6;
-    if (v4)
+    if (methodCopy)
     {
 LABEL_3:
       v8 = sub_20D567838();
-      v4 = v9;
+      methodCopy = v9;
       goto LABEL_6;
     }
   }
@@ -47,7 +47,7 @@ LABEL_3:
   {
     v5 = 0;
     v7 = 0;
-    if (a4)
+    if (method)
     {
       goto LABEL_3;
     }
@@ -55,12 +55,12 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  sub_20CF910B8(v5, v7, v8, v4);
+  sub_20CF910B8(v5, v7, v8, methodCopy);
 }
 
-+ (void)sendUtilityOnboardingCompletedEventWithUtilityID:(id)a3 onboardingMethod:(int64_t)a4 didAttemptPasswordless:(BOOL)a5
++ (void)sendUtilityOnboardingCompletedEventWithUtilityID:(id)d onboardingMethod:(int64_t)method didAttemptPasswordless:(BOOL)passwordless
 {
-  if (a3)
+  if (d)
   {
     sub_20D567838();
   }

@@ -14,7 +14,7 @@
   v7 = a4 - 2;
   if (a4 >= 2)
   {
-    v8 = [a1 subdataWithRange:{v7 + a3, 2}];
+    v8 = [self subdataWithRange:{v7 + a3, 2}];
     if ([v8 isEqualToData:wl_subdataWithRangeExcludingTrailingCrnl__crlfData])
     {
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
@@ -26,7 +26,7 @@
 
   if (a4)
   {
-    v9 = [a1 subdataWithRange:{a3, a4}];
+    v9 = [self subdataWithRange:{a3, a4}];
   }
 
   else

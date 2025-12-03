@@ -1,28 +1,28 @@
 @interface NSConcreteSetChanges
 - (NSConcreteSetChanges)init;
-- (NSConcreteSetChanges)initWithCapacity:(unint64_t)a3;
-- (NSConcreteSetChanges)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (NSConcreteSetChanges)initWithSet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSConcreteSetChanges)initWithCapacity:(unint64_t)capacity;
+- (NSConcreteSetChanges)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (NSConcreteSetChanges)initWithSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)member:(id)a3;
+- (id)member:(id)member;
 - (id)objectEnumerator;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)_fault;
 - (void)_willChange;
-- (void)addChange:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addChange:(id)change;
+- (void)addObjectsFromArray:(id)array;
 - (void)dealloc;
-- (void)enumerateChanges:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateChangesUsingBlock:(id)a3;
-- (void)filterObjectsWithTest:(id)a3;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)enumerateChanges:(unint64_t)changes usingBlock:(id)block;
+- (void)enumerateChangesUsingBlock:(id)block;
+- (void)filterObjectsWithTest:(id)test;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)setSet:(id)a3;
-- (void)transformObjectsWithBlock:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)setSet:(id)set;
+- (void)transformObjectsWithBlock:(id)block;
+- (void)unionSet:(id)set;
 @end
 
 @implementation NSConcreteSetChanges
@@ -39,7 +39,7 @@
   return [(NSSet *)backing count];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   if (self->_changes)
   {
@@ -48,7 +48,7 @@
 
   backing = self->_backing;
 
-  return [(NSSet *)backing member:a3];
+  return [(NSSet *)backing member:member];
 }
 
 - (id)objectEnumerator
@@ -70,21 +70,21 @@
   return [(NSConcreteSetChanges *)self initWithSet:v3];
 }
 
-- (NSConcreteSetChanges)initWithCapacity:(unint64_t)a3
+- (NSConcreteSetChanges)initWithCapacity:(unint64_t)capacity
 {
   v4 = [MEMORY[0x1E695DFD8] set];
 
   return [(NSConcreteSetChanges *)self initWithSet:v4];
 }
 
-- (NSConcreteSetChanges)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (NSConcreteSetChanges)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v5 = [MEMORY[0x1E695DFD8] setWithObjects:a3 count:a4];
+  v5 = [MEMORY[0x1E695DFD8] setWithObjects:objects count:count];
 
   return [(NSConcreteSetChanges *)self initWithSet:v5];
 }
 
-- (NSConcreteSetChanges)initWithSet:(id)a3
+- (NSConcreteSetChanges)initWithSet:(id)set
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -92,7 +92,7 @@
   v4 = [(NSConcreteSetChanges *)&v6 init];
   if (v4)
   {
-    v4->_backing = [a3 copy];
+    v4->_backing = [set copy];
   }
 
   return v4;
@@ -106,23 +106,23 @@
   }
 }
 
-- (void)addChange:(id)a3
+- (void)addChange:(id)change
 {
   [(NSConcreteSetChanges *)self _willChange];
   [(NSConcreteSetChanges *)self willChangeValueForKey:@"changeCount"];
-  [(NSMutableArray *)self->_changes addObject:a3];
+  [(NSMutableArray *)self->_changes addObject:change];
 
   [(NSConcreteSetChanges *)self didChangeValueForKey:@"changeCount"];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v5 = [array countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -134,21 +134,21 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         [(NSSetChanges *)self addObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [array countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (self->_changes)
   {
@@ -157,10 +157,10 @@
 
   backing = self->_backing;
 
-  return [(NSSet *)backing countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [(NSSet *)backing countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   v17 = *MEMORY[0x1E69E9840];
   [(NSConcreteSetChanges *)self _willChange];
@@ -189,7 +189,7 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (![a3 member:v10])
+        if (![set member:v10])
         {
           v11 = [[NSSetChange alloc] initWithType:3 object:v10];
           [(NSConcreteSetChanges *)self addChange:v11];
@@ -203,14 +203,14 @@
   }
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   [(NSConcreteSetChanges *)self removeAllObjects];
 
-  [(NSConcreteSetChanges *)self unionSet:a3];
+  [(NSConcreteSetChanges *)self unionSet:set];
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   v15 = *MEMORY[0x1E69E9840];
   [(NSConcreteSetChanges *)self _willChange];
@@ -218,7 +218,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [set countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -230,7 +230,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(set);
         }
 
         v9 = [[NSSetChange alloc] initWithType:3 object:*(*(&v11 + 1) + 8 * v8)];
@@ -240,7 +240,7 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [set countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
@@ -259,7 +259,7 @@
   [(NSConcreteSetChanges *)self minusSet:backing];
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   v15 = *MEMORY[0x1E69E9840];
   [(NSConcreteSetChanges *)self _willChange];
@@ -267,7 +267,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [set countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -279,7 +279,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(set);
         }
 
         v9 = [[NSSetChange alloc] initWithType:2 object:*(*(&v11 + 1) + 8 * v8)];
@@ -289,14 +289,14 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [set countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)filterObjectsWithTest:(id)a3
+- (void)filterObjectsWithTest:(id)test
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -325,7 +325,7 @@ LABEL_5:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      if (((*(a3 + 2))(a3, v10, &v11) & 1) == 0)
+      if (((*(test + 2))(test, v10, &v11) & 1) == 0)
       {
         [(NSSetChanges *)self removeObject:v10];
       }
@@ -349,7 +349,7 @@ LABEL_5:
   }
 }
 
-- (void)transformObjectsWithBlock:(id)a3
+- (void)transformObjectsWithBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -378,7 +378,7 @@ LABEL_5:
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      v11 = (*(a3 + 2))(a3, v10, &v13);
+      v11 = (*(block + 2))(block, v10, &v13);
       if (v11 != v10)
       {
         v12 = v11;
@@ -405,7 +405,7 @@ LABEL_5:
   }
 }
 
-- (void)enumerateChangesUsingBlock:(id)a3
+- (void)enumerateChangesUsingBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -428,7 +428,7 @@ LABEL_3:
         objc_enumerationMutation(changes);
       }
 
-      (*(a3 + 2))(a3, *(*(&v11 + 1) + 8 * v8), &v9);
+      (*(block + 2))(block, *(*(&v11 + 1) + 8 * v8), &v9);
       if (v9)
       {
         break;
@@ -448,7 +448,7 @@ LABEL_3:
   }
 }
 
-- (void)enumerateChanges:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateChanges:(unint64_t)changes usingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -472,9 +472,9 @@ LABEL_3:
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if ([v11 changeType] == a3)
+      if ([v11 changeType] == changes)
       {
-        (*(a4 + 2))(a4, v11, &v12);
+        (*(block + 2))(block, v11, &v12);
       }
 
       if (v12)
@@ -496,7 +496,7 @@ LABEL_3:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSConcreteSetChanges alloc] initWithSet:self->_backing];
   v4->_changes = [(NSMutableArray *)self->_changes mutableCopy];

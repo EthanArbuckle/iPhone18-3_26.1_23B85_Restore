@@ -1,22 +1,22 @@
 @interface PKAppleBalanceDirectTopUpConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PKAppleBalanceDirectTopUpConfiguration)initWithAMSResponseDictionary:(id)a3;
-- (PKAppleBalanceDirectTopUpConfiguration)initWithCoder:(id)a3;
-- (PKAppleBalanceDirectTopUpConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAppleBalanceDirectTopUpConfiguration)initWithAMSResponseDictionary:(id)dictionary;
+- (PKAppleBalanceDirectTopUpConfiguration)initWithCoder:(id)coder;
+- (PKAppleBalanceDirectTopUpConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayableDenominations;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDenominations:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDenominations:(id)denominations;
 @end
 
 @implementation PKAppleBalanceDirectTopUpConfiguration
 
-- (PKAppleBalanceDirectTopUpConfiguration)initWithDictionary:(id)a3
+- (PKAppleBalanceDirectTopUpConfiguration)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKAppleBalanceDirectTopUpConfiguration;
   v5 = [(PKAppleBalanceDirectTopUpConfiguration *)&v29 init];
@@ -27,22 +27,22 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKDecimalNumberForKey:@"minAmount"];
+    v6 = [dictionaryCopy PKDecimalNumberForKey:@"minAmount"];
     minAmount = v5->_minAmount;
     v5->_minAmount = v6;
 
-    v8 = [v4 PKDecimalNumberForKey:@"maxAmount"];
+    v8 = [dictionaryCopy PKDecimalNumberForKey:@"maxAmount"];
     maxAmount = v5->_maxAmount;
     v5->_maxAmount = v8;
 
-    v10 = [v4 PKDecimalNumberForKey:@"maxBalance"];
+    v10 = [dictionaryCopy PKDecimalNumberForKey:@"maxBalance"];
     maxBalance = v5->_maxBalance;
     v5->_maxBalance = v10;
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v13 = [v4 PKArrayForKey:@"denominations"];
+    v13 = [dictionaryCopy PKArrayForKey:@"denominations"];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -76,7 +76,7 @@ LABEL_11:
     }
 
     [(PKAppleBalanceDirectTopUpConfiguration *)v5 setDenominations:v12];
-    v19 = [v4 PKURLForKey:@"termsURL"];
+    v19 = [dictionaryCopy PKURLForKey:@"termsURL"];
     termsURL = v5->_termsURL;
     v5->_termsURL = v19;
 
@@ -96,10 +96,10 @@ LABEL_15:
   return v21;
 }
 
-- (PKAppleBalanceDirectTopUpConfiguration)initWithAMSResponseDictionary:(id)a3
+- (PKAppleBalanceDirectTopUpConfiguration)initWithAMSResponseDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = PKAppleBalanceDirectTopUpConfiguration;
   v5 = [(PKAppleBalanceDirectTopUpConfiguration *)&v40 init];
@@ -110,9 +110,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKDictionaryForKey:@"amount-limit"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"amount-limit"];
     v7 = [v6 PKDecimalNumberForKey:@"max"];
     maxAmount = v5->_maxAmount;
     v5->_maxAmount = v7;
@@ -127,10 +127,10 @@ LABEL_11:
     v32 = v5;
     v5->_maxBalance = v11;
 
-    v13 = [v4 PKStringForKey:@"currency-code-iso3a"];
+    v13 = [dictionaryCopy PKStringForKey:@"currency-code-iso3a"];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v33 = v4;
-    [v4 PKArrayForKey:@"amounts"];
+    v33 = dictionaryCopy;
+    [dictionaryCopy PKArrayForKey:@"amounts"];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -175,7 +175,7 @@ LABEL_11:
 
     v5 = v32;
     [(PKAppleBalanceDirectTopUpConfiguration *)v32 setDenominations:v14];
-    v4 = v33;
+    dictionaryCopy = v33;
     v25 = [v33 PKStringForKey:@"link-terms-conditions"];
     v26 = [MEMORY[0x1E695DFF8] URLWithString:v25];
     termsURL = v32->_termsURL;
@@ -197,9 +197,9 @@ LABEL_15:
   return v28;
 }
 
-- (void)setDenominations:(id)a3
+- (void)setDenominations:(id)denominations
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_126];
+  v4 = [denominations sortedArrayUsingComparator:&__block_literal_global_126];
   denominations = self->_denominations;
   self->_denominations = v4;
 }
@@ -259,9 +259,9 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 amount];
-        v16 = [v14 currencyCode];
-        v17 = [PKNumericSuggestion suggestionWithValue:v15 currencyCode:v16];
+        amount = [v14 amount];
+        currencyCode = [v14 currencyCode];
+        v17 = [PKNumericSuggestion suggestionWithValue:amount currencyCode:currencyCode];
 
         [v8 addObject:v17];
       }
@@ -277,31 +277,31 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   return v18;
 }
 
-- (PKAppleBalanceDirectTopUpConfiguration)initWithCoder:(id)a3
+- (PKAppleBalanceDirectTopUpConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppleBalanceDirectTopUpConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minAmount"];
     minAmount = v5->_minAmount;
     v5->_minAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxAmount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxAmount"];
     maxAmount = v5->_maxAmount;
     v5->_maxAmount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxBalance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxBalance"];
     maxBalance = v5->_maxBalance;
     v5->_maxBalance = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"denominations"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"denominations"];
 
     [(PKAppleBalanceDirectTopUpConfiguration *)v5 setDenominations:v15];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
     termsURL = v5->_termsURL;
     v5->_termsURL = v16;
   }
@@ -309,20 +309,20 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minAmount = self->_minAmount;
-  v5 = a3;
-  [v5 encodeObject:minAmount forKey:@"minAmount"];
-  [v5 encodeObject:self->_maxAmount forKey:@"maxAmount"];
-  [v5 encodeObject:self->_maxBalance forKey:@"maxBalance"];
-  [v5 encodeObject:self->_denominations forKey:@"denominations"];
-  [v5 encodeObject:self->_termsURL forKey:@"termsURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:minAmount forKey:@"minAmount"];
+  [coderCopy encodeObject:self->_maxAmount forKey:@"maxAmount"];
+  [coderCopy encodeObject:self->_maxBalance forKey:@"maxBalance"];
+  [coderCopy encodeObject:self->_denominations forKey:@"denominations"];
+  [coderCopy encodeObject:self->_termsURL forKey:@"termsURL"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -330,7 +330,7 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   }
 
   minAmount = self->_minAmount;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (minAmount && v6)
   {
     if (([(NSDecimalNumber *)minAmount isEqual:?]& 1) == 0)
@@ -345,7 +345,7 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   }
 
   maxAmount = self->_maxAmount;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (maxAmount && v8)
   {
     if (([(NSDecimalNumber *)maxAmount isEqual:?]& 1) == 0)
@@ -360,7 +360,7 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   }
 
   maxBalance = self->_maxBalance;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (maxBalance && v10)
   {
     if (([(NSDecimalNumber *)maxBalance isEqual:?]& 1) == 0)
@@ -375,7 +375,7 @@ BOOL __59__PKAppleBalanceDirectTopUpConfiguration_setDenominations___block_invok
   }
 
   denominations = self->_denominations;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (!denominations || !v12)
   {
     if (denominations == v12)
@@ -395,7 +395,7 @@ LABEL_24:
 
 LABEL_20:
   termsURL = self->_termsURL;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (termsURL && v14)
   {
     v15 = [(NSURL *)termsURL isEqual:?];
@@ -479,26 +479,26 @@ LABEL_25:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAppleBalanceDirectTopUpConfiguration allocWithZone:](PKAppleBalanceDirectTopUpConfiguration init];
-  v6 = [(NSDecimalNumber *)self->_minAmount copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_minAmount copyWithZone:zone];
   minAmount = v5->_minAmount;
   v5->_minAmount = v6;
 
-  v8 = [(NSDecimalNumber *)self->_maxAmount copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_maxAmount copyWithZone:zone];
   maxAmount = v5->_maxAmount;
   v5->_maxAmount = v8;
 
-  v10 = [(NSDecimalNumber *)self->_maxBalance copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_maxBalance copyWithZone:zone];
   maxBalance = v5->_maxBalance;
   v5->_maxBalance = v10;
 
-  v12 = [(NSArray *)self->_denominations copyWithZone:a3];
+  v12 = [(NSArray *)self->_denominations copyWithZone:zone];
   denominations = v5->_denominations;
   v5->_denominations = v12;
 
-  v14 = [(NSURL *)self->_termsURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_termsURL copyWithZone:zone];
   termsURL = v5->_termsURL;
   v5->_termsURL = v14;
 

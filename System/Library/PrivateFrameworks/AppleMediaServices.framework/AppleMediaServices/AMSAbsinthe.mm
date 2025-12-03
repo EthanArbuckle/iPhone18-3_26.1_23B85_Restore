@@ -1,35 +1,35 @@
 @interface AMSAbsinthe
 + (AMSBagKeySet)bagKeySet;
-+ (id)_dataToSignFromRequest:(id)a3 bagDefinition:(id)a4;
-+ (id)_signingDataFromRequest:(id)a3 buyParams:(id)a4 definitions:(id)a5;
++ (id)_dataToSignFromRequest:(id)request bagDefinition:(id)definition;
++ (id)_signingDataFromRequest:(id)request buyParams:(id)params definitions:(id)definitions;
 + (id)createBagForSubProfile;
-+ (id)handleResponse:(id)a3 bag:(id)a4;
-+ (id)headersForRequest:(id)a3 buyParams:(id)a4 bag:(id)a5;
++ (id)handleResponse:(id)response bag:(id)bag;
++ (id)headersForRequest:(id)request buyParams:(id)params bag:(id)bag;
 @end
 
 @implementation AMSAbsinthe
 
-+ (id)headersForRequest:(id)a3 buyParams:(id)a4 bag:(id)a5
++ (id)headersForRequest:(id)request buyParams:(id)params bag:(id)bag
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  paramsCopy = params;
+  bagCopy = bag;
   v11 = AMSSetLogKeyIfNeeded();
-  if (v10)
+  if (bagCopy)
   {
-    v12 = [v10 arrayForKey:@"absinthe-requests"];
-    v13 = [v12 valuePromise];
+    v12 = [bagCopy arrayForKey:@"absinthe-requests"];
+    valuePromise = [v12 valuePromise];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __47__AMSAbsinthe_headersForRequest_buyParams_bag___block_invoke;
     v22[3] = &unk_1E73B3340;
     v23 = v11;
-    v27 = a1;
-    v24 = v8;
-    v25 = v9;
-    v26 = v10;
-    v14 = [v13 continueWithBlock:v22];
+    selfCopy = self;
+    v24 = requestCopy;
+    v25 = paramsCopy;
+    v26 = bagCopy;
+    v14 = [valuePromise continueWithBlock:v22];
   }
 
   else
@@ -40,8 +40,8 @@
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = MEMORY[0x1E696AEC0];
       v18 = objc_opt_class();
@@ -57,7 +57,7 @@
       v19 = ;
       *buf = 138543362;
       v29 = v19;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@No bag provided. Defaulting to skipping Absinthe signing.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@No bag provided. Defaulting to skipping Absinthe signing.", buf, 0xCu);
     }
 
     v14 = [AMSPromise promiseWithResult:MEMORY[0x1E695E0F8]];
@@ -189,17 +189,17 @@ id __47__AMSAbsinthe_headersForRequest_buyParams_bag___block_invoke_43(uint64_t 
   return v17;
 }
 
-+ (id)handleResponse:(id)a3 bag:(id)a4
++ (id)handleResponse:(id)response bag:(id)bag
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = responseCopy;
 
     v7 = 0;
-    if (v6 && a4)
+    if (v6 && bag)
     {
       v8 = AMSSetLogKeyIfNeeded();
       v9 = [v6 ams_valueForHTTPHeaderField:@"X-Apple-AbsintheAction"];
@@ -214,20 +214,20 @@ id __47__AMSAbsinthe_headersForRequest_buyParams_bag___block_invoke_43(uint64_t 
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543618;
         v16 = objc_opt_class();
         v17 = 2114;
         v18 = v8;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling reprovision action", &v15, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling reprovision action", &v15, 0x16u);
       }
 
       v12 = +[AMSAbsintheSession defaultSession];
-      v13 = [v12 clearSession];
+      clearSession = [v12 clearSession];
 
-      if (v13)
+      if (clearSession)
       {
         v7 = +[AMSURLAction retryAction];
         [v7 setReason:@"absinthe"];
@@ -254,26 +254,26 @@ LABEL_12:
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (id)_dataToSignFromRequest:(id)a3 bagDefinition:(id)a4
++ (id)_dataToSignFromRequest:(id)request bagDefinition:(id)definition
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  definitionCopy = definition;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [v6 objectForKeyedSubscript:@"body"];
+  v8 = [definitionCopy objectForKeyedSubscript:@"body"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 BOOLValue])
   {
-    v9 = [v5 HTTPBody];
-    if ([v9 length])
+    hTTPBody = [requestCopy HTTPBody];
+    if ([hTTPBody length])
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
+      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:hTTPBody encoding:4];
       if (v10)
       {
         [v7 appendString:v10];
@@ -281,10 +281,10 @@ LABEL_12:
     }
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"cookies"];
+  v11 = [definitionCopy objectForKeyedSubscript:@"cookies"];
   objc_opt_class();
-  v44 = v6;
-  v45 = v5;
+  v44 = definitionCopy;
+  v45 = requestCopy;
   v46 = v8;
   if (objc_opt_isKindOfClass())
   {
@@ -292,7 +292,7 @@ LABEL_12:
 
     if (v12)
     {
-      v13 = [v5 ams_cookies];
+      ams_cookies = [requestCopy ams_cookies];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
@@ -333,7 +333,7 @@ LABEL_12:
 
           v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v18];
 LABEL_20:
-          v20 = [v13 objectForKeyedSubscript:v19];
+          v20 = [ams_cookies objectForKeyedSubscript:v19];
           if (v20)
           {
             [v7 appendString:v20];
@@ -345,7 +345,7 @@ LABEL_20:
         {
 LABEL_24:
 
-          v6 = v44;
+          definitionCopy = v44;
           goto LABEL_27;
         }
       }
@@ -358,15 +358,15 @@ LABEL_24:
 
   obj = 0;
 LABEL_27:
-  v21 = [v6 objectForKeyedSubscript:@"headers"];
+  allHTTPHeaderFields = [definitionCopy objectForKeyedSubscript:@"headers"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v21;
+    v22 = allHTTPHeaderFields;
 
     if (v22)
     {
-      v21 = [v5 allHTTPHeaderFields];
+      allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
@@ -407,7 +407,7 @@ LABEL_27:
 
           v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v27];
 LABEL_39:
-          v29 = [v21 objectForKeyedSubscript:v28];
+          v29 = [allHTTPHeaderFields objectForKeyedSubscript:v28];
           if (v29)
           {
             [v7 appendString:v29];
@@ -419,8 +419,8 @@ LABEL_39:
         {
 LABEL_43:
 
-          v6 = v44;
-          v5 = v45;
+          definitionCopy = v44;
+          requestCopy = v45;
           goto LABEL_45;
         }
       }
@@ -435,16 +435,16 @@ LABEL_43:
 LABEL_45:
   }
 
-  v30 = [v6 objectForKeyedSubscript:@"params"];
+  ams_parameters = [definitionCopy objectForKeyedSubscript:@"params"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v31 = v30;
+    v31 = ams_parameters;
 
     if (v31)
     {
-      v32 = [v5 URL];
-      v30 = [v32 ams_parameters];
+      v32 = [requestCopy URL];
+      ams_parameters = [v32 ams_parameters];
 
       v51 = 0u;
       v52 = 0u;
@@ -486,7 +486,7 @@ LABEL_45:
 
           v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v38];
 LABEL_58:
-          v40 = [v30 objectForKeyedSubscript:v39];
+          v40 = [ams_parameters objectForKeyedSubscript:v39];
           if (v40)
           {
             [v7 appendString:v40];
@@ -498,8 +498,8 @@ LABEL_58:
         {
 LABEL_62:
 
-          v6 = v44;
-          v5 = v45;
+          definitionCopy = v44;
+          requestCopy = v45;
           goto LABEL_64;
         }
       }
@@ -531,12 +531,12 @@ LABEL_69:
   return v42;
 }
 
-+ (id)_signingDataFromRequest:(id)a3 buyParams:(id)a4 definitions:(id)a5
++ (id)_signingDataFromRequest:(id)request buyParams:(id)params definitions:(id)definitions
 {
   v91 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v74 = a4;
-  v9 = a5;
+  requestCopy = request;
+  paramsCopy = params;
+  definitionsCopy = definitions;
   v10 = AMSSetLogKeyIfNeeded();
   v11 = +[AMSLogConfig sharedConfig];
   if (!v11)
@@ -544,9 +544,9 @@ LABEL_69:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
+  oSLogObject = [v11 OSLogObject];
   v13 = 0x1E696A000uLL;
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
@@ -560,24 +560,24 @@ LABEL_69:
       [v14 stringWithFormat:@"%@: ", v15, v66];
     }
     v16 = ;
-    v17 = AMSLogableURLRequest(v8);
+    v17 = AMSLogableURLRequest(requestCopy);
     *buf = 138543618;
     v88 = v16;
     v89 = 2114;
     v90 = v17;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Determining signing data for request %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Determining signing data for request %{public}@", buf, 0x16u);
 
     v13 = 0x1E696A000uLL;
   }
 
-  v67 = a1;
+  selfCopy = self;
   v68 = v10;
 
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v18 = v9;
+  v18 = definitionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v81 objects:v86 count:16];
   if (!v19)
   {
@@ -587,7 +587,7 @@ LABEL_69:
   v20 = v19;
   v21 = *v82;
   v69 = v18;
-  v70 = v8;
+  v70 = requestCopy;
   v71 = *v82;
   do
   {
@@ -624,7 +624,7 @@ LABEL_69:
         goto LABEL_65;
       }
 
-      v26 = [v25 objectForKeyedSubscript:@"host"];
+      host = [v25 objectForKeyedSubscript:@"host"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -635,16 +635,16 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v27 = v26;
+      v27 = host;
 
       if (v27)
       {
-        v28 = [v8 URL];
-        v26 = [v28 host];
+        v28 = [requestCopy URL];
+        host = [v28 host];
 
-        if (v26)
+        if (host)
         {
-          LODWORD(v29) = [v26 hasSuffix:v27];
+          LODWORD(v29) = [host hasSuffix:v27];
         }
 
         else
@@ -657,12 +657,12 @@ LABEL_23:
 
       LODWORD(v29) = 1;
 LABEL_24:
-      v30 = [v25 objectForKeyedSubscript:@"path"];
+      path = [v25 objectForKeyedSubscript:@"path"];
       objc_opt_class();
       v75 = v27;
       if (objc_opt_isKindOfClass())
       {
-        v31 = v30;
+        v31 = path;
 
         v76 = v31;
         if (v31)
@@ -680,12 +680,12 @@ LABEL_24:
           goto LABEL_33;
         }
 
-        v33 = [v8 URL];
-        v30 = [v33 path];
+        v33 = [requestCopy URL];
+        path = [v33 path];
 
-        if (v30)
+        if (path)
         {
-          LODWORD(v29) = [v30 containsString:v76];
+          LODWORD(v29) = [path containsString:v76];
         }
 
         else
@@ -700,7 +700,7 @@ LABEL_24:
       }
 
 LABEL_33:
-      v34 = [v25 objectForKeyedSubscript:@"buyParams"];
+      allKeys = [v25 objectForKeyedSubscript:@"buyParams"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -708,7 +708,7 @@ LABEL_33:
         goto LABEL_53;
       }
 
-      v35 = v34;
+      v35 = allKeys;
 
       if (v35)
       {
@@ -735,8 +735,8 @@ LABEL_33:
       v80 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v34 = [v35 allKeys];
-      v37 = [v34 countByEnumeratingWithState:&v77 objects:v85 count:16];
+      allKeys = [v35 allKeys];
+      v37 = [allKeys countByEnumeratingWithState:&v77 objects:v85 count:16];
       if (!v37)
       {
         LODWORD(v29) = 1;
@@ -751,7 +751,7 @@ LABEL_33:
         {
           if (*v78 != v73)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(allKeys);
           }
 
           v40 = *(*(&v77 + 1) + 8 * i);
@@ -767,14 +767,14 @@ LABEL_33:
             v42 = 0;
           }
 
-          v43 = [v74 parameterForKey:v40];
+          v43 = [paramsCopy parameterForKey:v40];
           v29 = v43;
           if (!v43)
           {
 
 LABEL_76:
             v18 = v69;
-            v8 = v70;
+            requestCopy = v70;
             v13 = 0x1E696A000;
             goto LABEL_53;
           }
@@ -790,7 +790,7 @@ LABEL_76:
           v13 = 0x1E696A000;
         }
 
-        v38 = [v34 countByEnumeratingWithState:&v77 objects:v85 count:16];
+        v38 = [allKeys countByEnumeratingWithState:&v77 objects:v85 count:16];
         LODWORD(v29) = 1;
         if (v38)
         {
@@ -801,7 +801,7 @@ LABEL_76:
       }
 
       v18 = v69;
-      v8 = v70;
+      requestCopy = v70;
 LABEL_53:
 
 LABEL_54:
@@ -837,19 +837,19 @@ LABEL_63:
         goto LABEL_63;
       }
 
-      v48 = [v8 URL];
-      v49 = [v48 absoluteString];
+      v48 = [requestCopy URL];
+      absoluteString = [v48 absoluteString];
 
-      if (v49)
+      if (absoluteString)
       {
-        v50 = [v49 rangeOfString:v46 options:1024];
+        v50 = [absoluteString rangeOfString:v46 options:1024];
 
         v51 = v50 == 0x7FFFFFFFFFFFFFFFLL;
         v13 = 0x1E696A000;
         if (!v51)
         {
 LABEL_83:
-          v58 = [v67 _dataToSignFromRequest:v8 bagDefinition:v23];
+          v58 = [selfCopy _dataToSignFromRequest:requestCopy bagDefinition:v23];
 
           v55 = v68;
           if (!v58)
@@ -860,8 +860,8 @@ LABEL_83:
               v53 = +[AMSLogConfig sharedConfig];
             }
 
-            v54 = [v53 OSLogObject];
-            if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [v53 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v59 = MEMORY[0x1E696AEC0];
               v60 = objc_opt_class();
@@ -878,7 +878,7 @@ LABEL_83:
               *buf = 138543362;
               v88 = v61;
               v62 = "%{public}@Criteria matches, but no data to sign";
-              v63 = v54;
+              v63 = oSLogObject2;
               v64 = OS_LOG_TYPE_ERROR;
               goto LABEL_93;
             }
@@ -919,9 +919,9 @@ LABEL_78:
     v53 = +[AMSLogConfig sharedConfig];
   }
 
-  v54 = [v53 OSLogObject];
+  oSLogObject2 = [v53 OSLogObject];
   v55 = v68;
-  if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v56 = *(v13 + 3776);
     v57 = objc_opt_class();
@@ -938,7 +938,7 @@ LABEL_78:
     *buf = 138543362;
     v88 = v61;
     v62 = "%{public}@Skipping absinthe";
-    v63 = v54;
+    v63 = oSLogObject2;
     v64 = OS_LOG_TYPE_DEFAULT;
 LABEL_93:
     _os_log_impl(&dword_192869000, v63, v64, v62, buf, 0xCu);

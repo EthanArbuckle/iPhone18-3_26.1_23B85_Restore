@@ -14,7 +14,7 @@
 - (id)CalDisplayName
 {
   v2 = objc_alloc_init(MEMORY[0x1E695CD80]);
-  v3 = [v2 stringFromContact:a1];
+  v3 = [v2 stringFromContact:self];
 
   return v3;
 }
@@ -29,16 +29,16 @@
 
 - (id)CalEmailAddresses
 {
-  v1 = [a1 emailAddresses];
-  v2 = [v1 valueForKeyPath:@"value"];
+  emailAddresses = [self emailAddresses];
+  v2 = [emailAddresses valueForKeyPath:@"value"];
 
   return v2;
 }
 
 - (id)CalPhoneNumbers
 {
-  v1 = [a1 phoneNumbers];
-  v2 = [v1 valueForKeyPath:@"value"];
+  phoneNumbers = [self phoneNumbers];
+  v2 = [phoneNumbers valueForKeyPath:@"value"];
 
   return v2;
 }
@@ -46,36 +46,36 @@
 - (id)CalBirthdayStringForDate:()CalExtensions
 {
   v4 = a3;
-  v5 = [a1 CalDisplayName];
-  v6 = [a1 birthday];
-  if (v6)
+  calDisplayName = [self CalDisplayName];
+  birthday = [self birthday];
+  if (birthday)
   {
-    v7 = v6;
-    v8 = [a1 nonGregorianBirthday];
+    v7 = birthday;
+    nonGregorianBirthday = [self nonGregorianBirthday];
 
-    if (!v8)
+    if (!nonGregorianBirthday)
     {
       goto LABEL_12;
     }
   }
 
-  v9 = [a1 nonGregorianBirthday];
-  if (v9)
+  nonGregorianBirthday2 = [self nonGregorianBirthday];
+  if (nonGregorianBirthday2)
   {
-    v10 = v9;
-    v11 = [a1 birthday];
+    v10 = nonGregorianBirthday2;
+    birthday2 = [self birthday];
 
-    if (!v11)
+    if (!birthday2)
     {
-      v24 = [a1 nonGregorianBirthday];
+      nonGregorianBirthday3 = [self nonGregorianBirthday];
       goto LABEL_15;
     }
   }
 
-  v12 = [a1 birthday];
-  if (!v12 || (v13 = v12, [a1 nonGregorianBirthday], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
+  birthday3 = [self birthday];
+  if (!birthday3 || (v13 = birthday3, [self nonGregorianBirthday], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
   {
-    v25 = [MEMORY[0x1E695CD58] CalDefaultBirthdayString];
+    calDefaultBirthdayString = [MEMORY[0x1E695CD58] CalDefaultBirthdayString];
     goto LABEL_21;
   }
 
@@ -84,100 +84,100 @@
     goto LABEL_12;
   }
 
-  v15 = [a1 birthday];
-  v16 = [v15 calendar];
-  v17 = [v16 components:30 fromDate:v4];
+  birthday4 = [self birthday];
+  calendar = [birthday4 calendar];
+  v17 = [calendar components:30 fromDate:v4];
 
   if (!v17)
   {
 LABEL_12:
-    v24 = [a1 birthday];
+    nonGregorianBirthday3 = [self birthday];
 LABEL_15:
-    v26 = v24;
+    v26 = nonGregorianBirthday3;
     goto LABEL_16;
   }
 
   v18 = [v17 day];
-  v19 = [a1 birthday];
-  if (v18 != [v19 day])
+  birthday5 = [self birthday];
+  if (v18 != [birthday5 day])
   {
 
     goto LABEL_25;
   }
 
-  v20 = [v17 month];
-  v21 = [a1 birthday];
-  v22 = [v21 month];
+  month = [v17 month];
+  birthday6 = [self birthday];
+  month2 = [birthday6 month];
 
-  if (v20 != v22)
+  if (month != month2)
   {
 LABEL_25:
-    v23 = [a1 nonGregorianBirthday];
+    nonGregorianBirthday4 = [self nonGregorianBirthday];
     goto LABEL_26;
   }
 
-  v23 = [a1 birthday];
+  nonGregorianBirthday4 = [self birthday];
 LABEL_26:
-  v26 = v23;
+  v26 = nonGregorianBirthday4;
 
 LABEL_16:
-  v27 = [v26 calendar];
-  v28 = [v27 calendarIdentifier];
+  calendar2 = [v26 calendar];
+  calendarIdentifier = [calendar2 calendarIdentifier];
 
-  v29 = [v5 length];
+  v29 = [calDisplayName length];
   if (v26 && v29)
   {
-    v30 = [v26 calendar];
-    v31 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    [v30 setTimeZone:v31];
+    calendar3 = [v26 calendar];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    [calendar3 setTimeZone:defaultTimeZone];
 
-    v32 = [v30 dateFromComponents:v26];
-    v25 = [CalContactsProvider birthdayStringForContactName:v5 eventDate:v4 birthDate:v32 lunarCalendar:v28];
+    v32 = [calendar3 dateFromComponents:v26];
+    calDefaultBirthdayString = [CalContactsProvider birthdayStringForContactName:calDisplayName eventDate:v4 birthDate:v32 lunarCalendar:calendarIdentifier];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E695CD58] CalDefaultBirthdayString];
+    calDefaultBirthdayString = [MEMORY[0x1E695CD58] CalDefaultBirthdayString];
   }
 
 LABEL_21:
 
-  return v25;
+  return calDefaultBirthdayString;
 }
 
 - (id)CalFirstValueForKey:()CalExtensions
 {
-  v1 = [a1 valueForKey:?];
+  v1 = [self valueForKey:?];
   if ([v1 count])
   {
-    v2 = [v1 firstObject];
-    v3 = [v2 value];
+    firstObject = [v1 firstObject];
+    value = [firstObject value];
   }
 
   else
   {
-    v3 = 0;
+    value = 0;
   }
 
-  return v3;
+  return value;
 }
 
 - (id)CalValueForKey:()CalExtensions withLabel:
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  [a1 valueForKey:a3];
+  [self valueForKey:a3];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v7 = v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
-  if (v8)
+  value = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  if (value)
   {
     v9 = *v17;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v17 != v9)
         {
@@ -185,18 +185,18 @@ LABEL_21:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 label];
-        v13 = [v12 isEqualToString:v6];
+        label = [v11 label];
+        v13 = [label isEqualToString:v6];
 
         if (v13)
         {
-          v8 = [v11 value];
+          value = [v11 value];
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
-      if (v8)
+      value = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      if (value)
       {
         continue;
       }
@@ -209,7 +209,7 @@ LABEL_11:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return value;
 }
 
 + (id)CalKeys

@@ -26,8 +26,8 @@
   [v3 setNumberOfRows:{2, v9, v10, v11, v12}];
   [v3 setNumberOfColumns:2];
   [v3 setNamespaceIdentifier:@"MTPlaylist"];
-  v4 = [(MTPlaylist *)self uuid];
-  [v3 setEntityIdentifier:v4];
+  uuid = [(MTPlaylist *)self uuid];
+  [v3 setEntityIdentifier:uuid];
 
   v5 = [MPArtworkCatalog alloc];
   v6 = +[MPTiledArtworkDataSource sharedDataSource];

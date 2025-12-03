@@ -1,5 +1,5 @@
 @interface AVAssetWriterFinishWritingHelper
-- (AVAssetWriterFinishWritingHelper)initWithConfigurationState:(id)a3 finishWritingOperations:(id)a4 figAssetWriterCallbackContextToken:(void *)a5 figAssetWriter:(OpaqueFigAssetWriter *)a6 figAssetWriterIsRemote:(BOOL)a7;
+- (AVAssetWriterFinishWritingHelper)initWithConfigurationState:(id)state finishWritingOperations:(id)operations figAssetWriterCallbackContextToken:(void *)token figAssetWriter:(OpaqueFigAssetWriter *)writer figAssetWriterIsRemote:(BOOL)remote;
 - (BOOL)_isDefunct;
 - (void)_finishWritingOperationsDidFinish;
 - (void)cancelWriting;
@@ -131,13 +131,13 @@ uint64_t __160__AVAssetWriterFinishWritingHelper_initWithConfigurationState_fini
   return v5 == 1;
 }
 
-- (AVAssetWriterFinishWritingHelper)initWithConfigurationState:(id)a3 finishWritingOperations:(id)a4 figAssetWriterCallbackContextToken:(void *)a5 figAssetWriter:(OpaqueFigAssetWriter *)a6 figAssetWriterIsRemote:(BOOL)a7
+- (AVAssetWriterFinishWritingHelper)initWithConfigurationState:(id)state finishWritingOperations:(id)operations figAssetWriterCallbackContextToken:(void *)token figAssetWriter:(OpaqueFigAssetWriter *)writer figAssetWriterIsRemote:(BOOL)remote
 {
   v55 = *MEMORY[0x1E69E9840];
   v13 = [[AVWeakReference alloc] initWithReferencedObject:self];
   v53.receiver = self;
   v53.super_class = AVAssetWriterFinishWritingHelper;
-  v14 = [(AVAssetWriterHelper *)&v53 initWithConfigurationState:a3];
+  v14 = [(AVAssetWriterHelper *)&v53 initWithConfigurationState:state];
   if (v14)
   {
     v48 = MEMORY[0x1E69E9820];
@@ -159,7 +159,7 @@ uint64_t __160__AVAssetWriterFinishWritingHelper_initWithConfigurationState_fini
         {
           if (*v40 != v26)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(operations);
           }
 
           v28 = [(AVWorkaroundNSBlockOperation *)v15 addDependency:*(v39 + 8 * v27++)];
@@ -172,12 +172,12 @@ uint64_t __160__AVAssetWriterFinishWritingHelper_initWithConfigurationState_fini
       while (v25);
     }
 
-    v14->_finishWritingOperations = [a4 copy];
+    v14->_finishWritingOperations = [operations copy];
     v14->_transitionToTerminalStatusOperation = v15;
-    v14->_figAssetWriterCallbackContextToken = a5;
-    if (a6)
+    v14->_figAssetWriterCallbackContextToken = token;
+    if (writer)
     {
-      v36 = CFRetain(a6);
+      v36 = CFRetain(writer);
     }
 
     else
@@ -186,7 +186,7 @@ uint64_t __160__AVAssetWriterFinishWritingHelper_initWithConfigurationState_fini
     }
 
     v14->_figAssetWriter = v36;
-    v14->_figAssetWriterIsRemote = a7;
+    v14->_figAssetWriterIsRemote = remote;
   }
 
   return v14;

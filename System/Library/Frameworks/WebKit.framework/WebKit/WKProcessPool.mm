@@ -7,44 +7,44 @@
 + (id)_networkingProcessInfo;
 + (id)_sharedProcessPool;
 + (id)_webContentProcessInfo;
-+ (id)_websiteDataURLForContainerWithURL:(id)a3 bundleIdentifierIfNotInContainer:(id)a4;
++ (id)_websiteDataURLForContainerWithURL:(id)l bundleIdentifierIfNotInContainer:(id)container;
 - (BOOL)_hasPrewarmedWebProcess;
-- (BOOL)_isWebProcessSuspended:(int)a3;
-- (BOOL)_requestWebProcessTermination:(int)a3;
+- (BOOL)_isWebProcessSuspended:(int)suspended;
+- (BOOL)_requestWebProcessTermination:(int)termination;
 - (NSString)description;
 - (NSURL)_javaScriptConfigurationDirectory;
 - (OpaqueWKNotificationManager)_notificationManagerForTesting;
 - (WKGeolocationProviderIOS)_geolocationProvider;
 - (WKProcessPool)init;
-- (WKProcessPool)initWithCoder:(id)a3;
+- (WKProcessPool)initWithCoder:(id)coder;
 - (_WKProcessPoolConfiguration)_configuration;
 - (id).cxx_construct;
-- (id)_initWithConfiguration:(id)a3;
+- (id)_initWithConfiguration:(id)configuration;
 - (int)_gpuProcessIdentifier;
 - (int)_prewarmedProcessIdentifier;
 - (unint64_t)_numberOfConnectedGamepadsForTesting;
 - (unint64_t)_processCacheSize;
 - (unint64_t)_webPageContentProcessCount;
 - (unint64_t)_webProcessCountIgnoringPrewarmedAndCached;
-- (void)_addSupportedPlugin:(id)a3 named:(id)a4 withMimeTypes:(id)a5 withExtensions:(id)a6;
+- (void)_addSupportedPlugin:(id)plugin named:(id)named withMimeTypes:(id)types withExtensions:(id)extensions;
 - (void)_automationCapabilitiesDidChange;
-- (void)_clearPermanentCredentialsForProtectionSpace:(id)a3;
-- (void)_getActivePagesOriginsInWebProcessForTesting:(int)a3 completionHandler:(id)a4;
-- (void)_isJITDisabledInAllRemoteWorkerProcesses:(id)a3;
-- (void)_registerURLSchemeAsBypassingContentSecurityPolicy:(id)a3;
-- (void)_registerURLSchemeAsCanDisplayOnlyIfCanRequest:(id)a3;
-- (void)_registerURLSchemeAsSecure:(id)a3;
-- (void)_seedResourceLoadStatisticsForTestingWithFirstParty:(id)a3 thirdParty:(id)a4 shouldScheduleNotification:(BOOL)a5 completionHandler:(id)a6;
-- (void)_setAutomationDelegate:(id)a3;
-- (void)_setAutomationSession:(id)a3;
-- (void)_setCoreLocationProvider:(id)a3;
-- (void)_setDomainRelaxationForbiddenForURLScheme:(id)a3;
-- (void)_setDownloadDelegate:(id)a3;
-- (void)_setJavaScriptConfigurationDirectory:(id)a3;
-- (void)_setObject:(id)a3 forBundleParameter:(id)a4;
-- (void)_setObjectsForBundleParametersWithDictionary:(id)a3;
+- (void)_clearPermanentCredentialsForProtectionSpace:(id)space;
+- (void)_getActivePagesOriginsInWebProcessForTesting:(int)testing completionHandler:(id)handler;
+- (void)_isJITDisabledInAllRemoteWorkerProcesses:(id)processes;
+- (void)_registerURLSchemeAsBypassingContentSecurityPolicy:(id)policy;
+- (void)_registerURLSchemeAsCanDisplayOnlyIfCanRequest:(id)request;
+- (void)_registerURLSchemeAsSecure:(id)secure;
+- (void)_seedResourceLoadStatisticsForTestingWithFirstParty:(id)party thirdParty:(id)thirdParty shouldScheduleNotification:(BOOL)notification completionHandler:(id)handler;
+- (void)_setAutomationDelegate:(id)delegate;
+- (void)_setAutomationSession:(id)session;
+- (void)_setCoreLocationProvider:(id)provider;
+- (void)_setDomainRelaxationForbiddenForURLScheme:(id)scheme;
+- (void)_setDownloadDelegate:(id)delegate;
+- (void)_setJavaScriptConfigurationDirectory:(id)directory;
+- (void)_setObject:(id)object forBundleParameter:(id)parameter;
+- (void)_setObjectsForBundleParametersWithDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WKProcessPool
@@ -57,7 +57,7 @@
   return self;
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = WKProcessPool;
@@ -66,10 +66,10 @@
   if (v4)
   {
     v6 = API::Object::apiObjectsUnderConstruction(v4);
-    v11 = [(WKProcessPool *)v5 _apiObject];
+    _apiObject = [(WKProcessPool *)v5 _apiObject];
     v10 = v5;
-    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &v11, &v10, v9);
-    WebKit::WebProcessPool::WebProcessPool([(WKProcessPool *)v5 _apiObject], (a3 + 8));
+    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &_apiObject, &v10, v9);
+    WebKit::WebProcessPool::WebProcessPool([(WKProcessPool *)v5 _apiObject], (configuration + 8));
   }
 
   return 0;
@@ -98,7 +98,7 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (_MergedGlobals_173 == 1)
   {
@@ -114,14 +114,14 @@
 
   if (v3 == self)
   {
-    [a3 encodeBool:1 forKey:@"isSharedProcessPool"];
+    [coder encodeBool:1 forKey:@"isSharedProcessPool"];
   }
 }
 
-- (WKProcessPool)initWithCoder:(id)a3
+- (WKProcessPool)initWithCoder:(id)coder
 {
   v4 = [(WKProcessPool *)self init];
-  if (!v4 || ![a3 decodeBoolForKey:@"isSharedProcessPool"])
+  if (!v4 || ![coder decodeBoolForKey:@"isSharedProcessPool"])
   {
     return v4;
   }
@@ -279,21 +279,21 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
   return v4;
 }
 
-+ (id)_websiteDataURLForContainerWithURL:(id)a3 bundleIdentifierIfNotInContainer:(id)a4
++ (id)_websiteDataURLForContainerWithURL:(id)l bundleIdentifierIfNotInContainer:(id)container
 {
-  v5 = [objc_msgSend(a3 URLByAppendingPathComponent:@"Library" isDirectory:{1), "URLByAppendingPathComponent:isDirectory:", @"WebKit", 1}];
+  v5 = [objc_msgSend(l URLByAppendingPathComponent:@"Library" isDirectory:{1), "URLByAppendingPathComponent:isDirectory:", @"WebKit", 1}];
   HasContainer = WebKit::processHasContainer(v5);
-  if (a4 && (HasContainer & 1) == 0)
+  if (container && (HasContainer & 1) == 0)
   {
-    v5 = [(WebKit *)v5 URLByAppendingPathComponent:a4 isDirectory:1];
+    v5 = [(WebKit *)v5 URLByAppendingPathComponent:container isDirectory:1];
   }
 
   return [(WebKit *)v5 URLByAppendingPathComponent:@"WebsiteData" isDirectory:1];
 }
 
-- (void)_registerURLSchemeAsCanDisplayOnlyIfCanRequest:(id)a3
+- (void)_registerURLSchemeAsCanDisplayOnlyIfCanRequest:(id)request
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, request);
   WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_anon_38[344], &v7, v4, v8);
   v8[0] = &v7;
   WebKit::WebProcessPool::sendToAllProcesses<Messages::WebProcess::RegisterURLSchemeAsCanDisplayOnlyIfCanRequest>(&self->_processPool, v8);
@@ -308,9 +308,9 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
   }
 }
 
-- (void)_registerURLSchemeAsSecure:(id)a3
+- (void)_registerURLSchemeAsSecure:(id)secure
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, secure);
   WebKit::WebProcessPool::registerURLSchemeAsSecure(&self->_processPool, &v7, v4);
   v6 = v7;
   v7 = 0;
@@ -323,9 +323,9 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
   }
 }
 
-- (void)_registerURLSchemeAsBypassingContentSecurityPolicy:(id)a3
+- (void)_registerURLSchemeAsBypassingContentSecurityPolicy:(id)policy
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, policy);
   WebKit::WebProcessPool::registerURLSchemeAsBypassingContentSecurityPolicy(&self->_processPool, &v7, v4);
   v6 = v7;
   v7 = 0;
@@ -338,9 +338,9 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
   }
 }
 
-- (void)_setDomainRelaxationForbiddenForURLScheme:(id)a3
+- (void)_setDomainRelaxationForbiddenForURLScheme:(id)scheme
 {
-  MEMORY[0x19EB02040](&v7, a3);
+  MEMORY[0x19EB02040](&v7, scheme);
   WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_anon_38[304], &v7, v4, v8);
   v8[0] = &v7;
   WebKit::WebProcessPool::sendToAllProcesses<Messages::WebProcess::SetDomainRelaxationForbiddenForURLScheme>(&self->_processPool, v8);
@@ -355,33 +355,33 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
   }
 }
 
-- (void)_setObject:(id)a3 forBundleParameter:(id)a4
+- (void)_setObject:(id)object forBundleParameter:(id)parameter
 {
-  v6 = [a3 copy];
+  v6 = [object copy];
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v7 encodeObject:v6 forKey:@"parameter"];
   [v7 finishEncoding];
   if (v6)
   {
-    [WebKit::WebProcessPool::ensureBundleParameters(&self->_processPool) setObject:v6 forKey:a4];
+    [WebKit::WebProcessPool::ensureBundleParameters(&self->_processPool) setObject:v6 forKey:parameter];
   }
 
   else
   {
-    [WebKit::WebProcessPool::ensureBundleParameters(&self->_processPool) removeObjectForKey:a4];
+    [WebKit::WebProcessPool::ensureBundleParameters(&self->_processPool) removeObjectForKey:parameter];
   }
 
-  v8 = [v7 encodedData];
-  MEMORY[0x19EB02040](&v23, a4);
-  if (v8)
+  encodedData = [v7 encodedData];
+  MEMORY[0x19EB02040](&v23, parameter);
+  if (encodedData)
   {
-    v10 = [v8 bytes];
-    v11 = [v8 length];
+    bytes = [encodedData bytes];
+    v11 = [encodedData length];
   }
 
   else
   {
-    v10 = 0;
+    bytes = 0;
     v11 = 0;
   }
 
@@ -407,7 +407,7 @@ void __46__WKProcessPool_WKPrivate___sharedProcessPool__block_invoke()
         IPC::Encoder::encodeHeader(v17);
         v26 = v17;
         IPC::ArgumentCoder<WTF::String,void>::encode<IPC::Encoder>(v17, &v23);
-        IPC::ArgumentCoder<std::span<unsigned char const,18446744073709551615ul>,void>::encode<IPC::Encoder>(v17, v10, v11);
+        IPC::ArgumentCoder<std::span<unsigned char const,18446744073709551615ul>,void>::encode<IPC::Encoder>(v17, bytes, v11);
         LOBYTE(v24) = 0;
         v25 = 0;
         WebKit::AuxiliaryProcessProxy::sendMessage(v15, &v26, 0, &v24, 1);
@@ -461,24 +461,24 @@ LABEL_21:
   }
 }
 
-- (void)_setObjectsForBundleParametersWithDictionary:(id)a3
+- (void)_setObjectsForBundleParametersWithDictionary:(id)dictionary
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:a3 copyItems:1];
+  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:dictionary copyItems:1];
   v5 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v5 encodeObject:v4 forKey:@"parameters"];
   [v5 finishEncoding];
   [WebKit::WebProcessPool::ensureBundleParameters(&self->_processPool) setValuesForKeysWithDictionary:v4];
-  v6 = [v5 encodedData];
-  v8 = v6;
-  if (v6)
+  encodedData = [v5 encodedData];
+  v8 = encodedData;
+  if (encodedData)
   {
-    v9 = [v6 bytes];
+    bytes = [encodedData bytes];
     v8 = [v8 length];
   }
 
   else
   {
-    v9 = 0;
+    bytes = 0;
   }
 
   v10 = *&self->_anon_38[36];
@@ -502,7 +502,7 @@ LABEL_21:
         *(v15 + 1) = 0;
         IPC::Encoder::encodeHeader(v15);
         v22 = v15;
-        IPC::ArgumentCoder<std::span<unsigned char const,18446744073709551615ul>,void>::encode<IPC::Encoder>(v15, v9, v8);
+        IPC::ArgumentCoder<std::span<unsigned char const,18446744073709551615ul>,void>::encode<IPC::Encoder>(v15, bytes, v8);
         LOBYTE(v20) = 0;
         v21 = 0;
         WebKit::AuxiliaryProcessProxy::sendMessage(v13, &v22, 0, &v20, 1);
@@ -541,9 +541,9 @@ LABEL_21:
   }
 }
 
-- (void)_setDownloadDelegate:(id)a3
+- (void)_setDownloadDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_downloadDelegate.m_weakReference, a3);
+  objc_storeWeak(&self->_downloadDelegate.m_weakReference, delegate);
   if (WebKit::LegacyDownloadClient::s_heapRef)
   {
     NonCompact = bmalloc::api::tzoneAllocateNonCompact(WebKit::LegacyDownloadClient::s_heapRef, v5);
@@ -555,7 +555,7 @@ LABEL_21:
   }
 
   v7 = NonCompact;
-  WebKit::LegacyDownloadClient::LegacyDownloadClient(NonCompact, a3);
+  WebKit::LegacyDownloadClient::LegacyDownloadClient(NonCompact, delegate);
   v8 = *&self->_anon_38[256];
   *&self->_anon_38[256] = v7;
   if (v8)
@@ -574,9 +574,9 @@ LABEL_21:
   }
 }
 
-- (void)_setAutomationDelegate:(id)a3
+- (void)_setAutomationDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_automationDelegate.m_weakReference, a3);
+  objc_storeWeak(&self->_automationDelegate.m_weakReference, delegate);
   if (WebKit::AutomationClient::s_heapRef)
   {
     NonCompact = bmalloc::api::tzoneAllocateNonCompact(WebKit::AutomationClient::s_heapRef, v5);
@@ -588,7 +588,7 @@ LABEL_21:
   }
 
   v7 = NonCompact;
-  WebKit::AutomationClient::AutomationClient(NonCompact, self, a3);
+  WebKit::AutomationClient::AutomationClient(NonCompact, self, delegate);
   v9 = v7;
   WebKit::WebProcessPool::setAutomationClient(&self->_processPool, &v9);
   if (v9)
@@ -606,23 +606,23 @@ LABEL_21:
   MEMORY[0x1EEDCB9D8](v2);
 }
 
-- (void)_setAutomationSession:(id)a3
+- (void)_setAutomationSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    v5 = a3;
+    sessionCopy = session;
   }
 
   m_ptr = self->_automationSession.m_ptr;
-  self->_automationSession.m_ptr = a3;
+  self->_automationSession.m_ptr = session;
   if (m_ptr)
   {
   }
 
-  if (a3)
+  if (session)
   {
-    v7 = a3 + 8;
-    CFRetain(*(a3 + 2));
+    v7 = session + 8;
+    CFRetain(*(session + 2));
   }
 
   else
@@ -670,14 +670,14 @@ LABEL_21:
   return v6;
 }
 
-- (void)_setJavaScriptConfigurationDirectory:(id)a3
+- (void)_setJavaScriptConfigurationDirectory:(id)directory
 {
-  if (a3 && ([a3 isFileURL] & 1) == 0)
+  if (directory && ([directory isFileURL] & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ is not a file URL", directory}];
   }
 
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [directory path]);
   v6 = v9;
   if (v9)
   {
@@ -702,7 +702,7 @@ LABEL_21:
   }
 }
 
-- (void)_addSupportedPlugin:(id)a3 named:(id)a4 withMimeTypes:(id)a5 withExtensions:(id)a6
+- (void)_addSupportedPlugin:(id)plugin named:(id)named withMimeTypes:(id)types withExtensions:(id)extensions
 {
   v40 = *MEMORY[0x1E69E9840];
   v37 = 0;
@@ -710,7 +710,7 @@ LABEL_21:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [a5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  v10 = [types countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v10)
   {
     v11 = *v34;
@@ -720,7 +720,7 @@ LABEL_21:
       {
         if (*v34 != v11)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(types);
         }
 
         MEMORY[0x19EB02040](&v32, *(*(&v33 + 1) + 8 * i));
@@ -733,7 +733,7 @@ LABEL_21:
         }
       }
 
-      v10 = [a5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v10 = [types countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v10);
@@ -744,7 +744,7 @@ LABEL_21:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = [a6 countByEnumeratingWithState:&v27 objects:v38 count:16];
+  v16 = [extensions countByEnumeratingWithState:&v27 objects:v38 count:16];
   if (v16)
   {
     v17 = *v28;
@@ -754,7 +754,7 @@ LABEL_21:
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(a6);
+          objc_enumerationMutation(extensions);
         }
 
         MEMORY[0x19EB02040](&v26, *(*(&v27 + 1) + 8 * j));
@@ -767,14 +767,14 @@ LABEL_21:
         }
       }
 
-      v16 = [a6 countByEnumeratingWithState:&v27 objects:v38 count:16];
+      v16 = [extensions countByEnumeratingWithState:&v27 objects:v38 count:16];
     }
 
     while (v16);
   }
 
-  MEMORY[0x19EB02040](v31, a3);
-  MEMORY[0x19EB02040](&v26, a4);
+  MEMORY[0x19EB02040](v31, plugin);
+  MEMORY[0x19EB02040](&v26, named);
   v23 = v32;
   v32 = 0;
   if (v23)
@@ -846,7 +846,7 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)_requestWebProcessTermination:(int)a3
+- (BOOL)_requestWebProcessTermination:(int)termination
 {
   v3 = *&self->_anon_38[36];
   if (v3)
@@ -860,7 +860,7 @@ LABEL_21:
       LODWORD(v6) = *(v6 + 108);
     }
 
-    if (v6 == a3)
+    if (v6 == termination)
     {
       WebKit::WebProcessProxy::requestTermination(v4, 2);
     }
@@ -871,7 +871,7 @@ LABEL_21:
   return v3 != 0;
 }
 
-- (BOOL)_isWebProcessSuspended:(int)a3
+- (BOOL)_isWebProcessSuspended:(int)suspended
 {
   v3 = *&self->_anon_38[36];
   if (!v3)
@@ -892,7 +892,7 @@ LABEL_21:
       LODWORD(v9) = *(v9 + 108);
     }
 
-    if (v9 == a3)
+    if (v9 == suspended)
     {
       break;
     }
@@ -995,9 +995,9 @@ LABEL_21:
   }
 }
 
-- (void)_isJITDisabledInAllRemoteWorkerProcesses:(id)a3
+- (void)_isJITDisabledInAllRemoteWorkerProcesses:(id)processes
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(processes);
   v5 = WTF::fastMalloc(0x10);
   *v5 = &unk_1F10F87B0;
   v5[1] = v4;
@@ -1020,7 +1020,7 @@ LABEL_21:
 
   else
   {
-    isLockdownModeEnabledBySystemIgnoringCaching = WebKit::isLockdownModeEnabledBySystemIgnoringCaching(a1);
+    isLockdownModeEnabledBySystemIgnoringCaching = WebKit::isLockdownModeEnabledBySystemIgnoringCaching(self);
     WebKit::cachedLockdownModeEnabledGlobally(void)::cachedLockdownModeEnabledGlobally = isLockdownModeEnabledBySystemIgnoringCaching | 0x100;
   }
 
@@ -1079,33 +1079,33 @@ LABEL_6:
   return v3 & 1;
 }
 
-- (void)_setCoreLocationProvider:(id)a3
+- (void)_setCoreLocationProvider:(id)provider
 {
   if (self->_geolocationProvider.m_ptr)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Changing the location provider is not supported after a web view in the process pool has begun servicing geolocation requests."];
   }
 
-  if (a3)
+  if (provider)
   {
-    v5 = a3;
+    providerCopy = provider;
   }
 
   m_ptr = self->_coreLocationProvider.m_ptr;
-  self->_coreLocationProvider.m_ptr = a3;
+  self->_coreLocationProvider.m_ptr = provider;
   if (m_ptr)
   {
   }
 }
 
-- (void)_getActivePagesOriginsInWebProcessForTesting:(int)a3 completionHandler:(id)a4
+- (void)_getActivePagesOriginsInWebProcessForTesting:(int)testing completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = WTF::fastMalloc(0x10);
   *v7 = &unk_1F10F87D8;
   v7[1] = v6;
   v9 = v7;
-  WebKit::WebProcessPool::activePagesOriginsInWebProcessForTesting(&self->_processPool, a3, &v9);
+  WebKit::WebProcessPool::activePagesOriginsInWebProcessForTesting(&self->_processPool, testing, &v9);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -1116,9 +1116,9 @@ LABEL_6:
   _Block_release(0);
 }
 
-- (void)_clearPermanentCredentialsForProtectionSpace:(id)a3
+- (void)_clearPermanentCredentialsForProtectionSpace:(id)space
 {
-  WebCore::ProtectionSpace::ProtectionSpace(&v8, a3);
+  WebCore::ProtectionSpace::ProtectionSpace(&v8, space);
   WebKit::WebProcessPool::clearPermanentCredentialsForProtectionSpace(&self->_processPool, &v8);
   v5 = v10;
   v10 = 0;
@@ -1144,18 +1144,18 @@ LABEL_6:
   }
 }
 
-- (void)_seedResourceLoadStatisticsForTestingWithFirstParty:(id)a3 thirdParty:(id)a4 shouldScheduleNotification:(BOOL)a5 completionHandler:(id)a6
+- (void)_seedResourceLoadStatisticsForTestingWithFirstParty:(id)party thirdParty:(id)thirdParty shouldScheduleNotification:(BOOL)notification completionHandler:(id)handler
 {
-  MEMORY[0x19EB01DE0](v20, a3);
+  MEMORY[0x19EB01DE0](v20, party);
   WebCore::RegistrableDomain::RegistrableDomain(&v21, v20);
-  MEMORY[0x19EB01DE0](v18, a4);
+  MEMORY[0x19EB01DE0](v18, thirdParty);
   WebCore::RegistrableDomain::RegistrableDomain(&v19, v18);
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = WTF::fastMalloc(0x10);
   *v11 = &unk_1F10F8800;
   v11[1] = v10;
   v17 = v11;
-  WebKit::WebProcessPool::seedResourceLoadStatisticsForTesting(&self->_processPool, &v21, &v19, a5, &v17);
+  WebKit::WebProcessPool::seedResourceLoadStatisticsForTesting(&self->_processPool, &v21, &v19, notification, &v17);
   if (v17)
   {
     (*(*v17 + 8))(v17);

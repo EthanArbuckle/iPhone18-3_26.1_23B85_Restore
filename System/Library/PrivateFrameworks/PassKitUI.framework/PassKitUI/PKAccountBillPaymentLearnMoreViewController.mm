@@ -1,34 +1,34 @@
 @interface PKAccountBillPaymentLearnMoreViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (PKAccountBillPaymentLearnMoreViewController)initWithAccount:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (PKAccountBillPaymentLearnMoreViewController)initWithAccount:(id)account;
 - (id)_customerAgreementAttributedString;
-- (void)_reportEventForPassIfNecessary:(id)a3;
+- (void)_reportEventForPassIfNecessary:(id)necessary;
 - (void)doneButtonTapped;
 - (void)loadView;
-- (void)showSpinner:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showSpinner:(BOOL)spinner;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PKAccountBillPaymentLearnMoreViewController
 
-- (PKAccountBillPaymentLearnMoreViewController)initWithAccount:(id)a3
+- (PKAccountBillPaymentLearnMoreViewController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v55.receiver = self;
   v55.super_class = PKAccountBillPaymentLearnMoreViewController;
   v6 = [(PKAccountBillPaymentLearnMoreViewController *)&v55 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     [(PKAccount *)v7->_account feature];
-    v8 = [(PKAccountBillPaymentLearnMoreViewController *)v7 navigationItem];
+    navigationItem = [(PKAccountBillPaymentLearnMoreViewController *)v7 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v8 pkui_setupScrollEdgeChromelessAppearance];
-      [v8 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
     objc_initWeak(&location, v7);
@@ -40,10 +40,10 @@
     objc_copyWeak(&v53, &location);
     v10 = [v9 actionWithHandler:v52];
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 primaryAction:v10];
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [v11 setTintColor:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v11 setTintColor:labelColor];
 
-    [v8 setRightBarButtonItem:v11];
+    [navigationItem setRightBarButtonItem:v11];
     v13 = PKLocalizedFeatureString();
     titleText = v7->_titleText;
     v7->_titleText = v13;
@@ -58,7 +58,7 @@
 
     v50 = v7->_customerAgreementLinkText;
     v19 = PKLocalizedFeatureString();
-    v51 = v5;
+    v51 = accountCopy;
     customerAgreementText = v7->_customerAgreementText;
     v7->_customerAgreementText = v19;
 
@@ -139,7 +139,7 @@
     objc_destroyWeak(&v53);
     objc_destroyWeak(&location);
 
-    v5 = v51;
+    accountCopy = v51;
   }
 
   return v7;
@@ -157,9 +157,9 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   v70.receiver = self;
   v70.super_class = PKAccountBillPaymentLearnMoreViewController;
   [(PKAccountBillPaymentLearnMoreViewController *)&v70 loadView];
-  v3 = [(PKAccountBillPaymentLearnMoreViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKAccountBillPaymentLearnMoreViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc(MEMORY[0x1E69DCEF8]);
   v6 = *MEMORY[0x1E695F058];
@@ -170,8 +170,8 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   scrollView = self->_scrollView;
   self->_scrollView = v10;
 
-  v59 = v3;
-  [v3 addSubview:self->_scrollView];
+  v59 = view;
+  [view addSubview:self->_scrollView];
   v12 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
   titleLabel = self->_titleLabel;
   self->_titleLabel = v12;
@@ -207,7 +207,7 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v24 = self;
+  selfCopy = self;
   v25 = self->_suggestionDescriptions;
   v26 = [(NSArray *)v25 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v26)
@@ -232,8 +232,8 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
         [v31 setTextColor:v33];
 
         [v31 setNumberOfLines:0];
-        v34 = [v30 title];
-        [v31 setText:v34];
+        title = [v30 title];
+        [v31 setText:title];
 
         v35 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
         v36 = PKOBKBulletSubtitleFont();
@@ -243,8 +243,8 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
         [v35 setTextColor:v37];
 
         [v35 setNumberOfLines:0];
-        v38 = [v30 message];
-        [v35 setText:v38];
+        message = [v30 message];
+        [v35 setText:message];
 
         v39 = objc_alloc_init(PKAccountBillPaymentLearnMoreSuggestionDescriptionLabel);
         [(PKAccountBillPaymentLearnMoreSuggestionDescriptionLabel *)v39 setTitleLabel:v31];
@@ -269,7 +269,7 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v24->_footnotes;
+  obj = selfCopy->_footnotes;
   v43 = [(NSArray *)obj countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (v43)
   {
@@ -296,7 +296,7 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
 
         [v50 setNumberOfLines:0];
         [v50 setText:v49];
-        [(UIScrollView *)v24->_scrollView addSubview:v50];
+        [(UIScrollView *)selfCopy->_scrollView addSubview:v50];
         [v42 addObject:v50];
       }
 
@@ -307,43 +307,43 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   }
 
   v53 = [v42 copy];
-  footnoteLabels = v24->_footnoteLabels;
-  v24->_footnoteLabels = v53;
+  footnoteLabels = selfCopy->_footnoteLabels;
+  selfCopy->_footnoteLabels = v53;
 
   v55 = [MEMORY[0x1E69DD168] pkui_plainNonInteractiveTextViewWithFrame:{v6, v7, v8, v9}];
-  customerAgreementTextView = v24->_customerAgreementTextView;
-  v24->_customerAgreementTextView = v55;
+  customerAgreementTextView = selfCopy->_customerAgreementTextView;
+  selfCopy->_customerAgreementTextView = v55;
 
-  [(UITextView *)v24->_customerAgreementTextView setDelegate:v24];
-  [(UITextView *)v24->_customerAgreementTextView setSelectable:1];
-  [(UITextView *)v24->_customerAgreementTextView setUserInteractionEnabled:1];
-  [(UITextView *)v24->_customerAgreementTextView _setInteractiveTextSelectionDisabled:1];
-  [(UITextView *)v24->_customerAgreementTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-  v57 = v24->_customerAgreementTextView;
-  v58 = [(PKAccountBillPaymentLearnMoreViewController *)v24 _customerAgreementAttributedString];
-  [(UITextView *)v57 setAttributedText:v58];
+  [(UITextView *)selfCopy->_customerAgreementTextView setDelegate:selfCopy];
+  [(UITextView *)selfCopy->_customerAgreementTextView setSelectable:1];
+  [(UITextView *)selfCopy->_customerAgreementTextView setUserInteractionEnabled:1];
+  [(UITextView *)selfCopy->_customerAgreementTextView _setInteractiveTextSelectionDisabled:1];
+  [(UITextView *)selfCopy->_customerAgreementTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
+  v57 = selfCopy->_customerAgreementTextView;
+  _customerAgreementAttributedString = [(PKAccountBillPaymentLearnMoreViewController *)selfCopy _customerAgreementAttributedString];
+  [(UITextView *)v57 setAttributedText:_customerAgreementAttributedString];
 
-  [(UIScrollView *)v24->_scrollView addSubview:v24->_customerAgreementTextView];
+  [(UIScrollView *)selfCopy->_scrollView addSubview:selfCopy->_customerAgreementTextView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKAccountBillPaymentLearnMoreViewController;
-  [(PKAccountBillPaymentLearnMoreViewController *)&v5 viewDidAppear:a3];
+  [(PKAccountBillPaymentLearnMoreViewController *)&v5 viewDidAppear:appear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA818];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKAccountBillPaymentLearnMoreViewController *)self _reportEventForPassIfNecessary:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKAccountBillPaymentLearnMoreViewController;
-  [(PKAccountBillPaymentLearnMoreViewController *)&v5 viewDidDisappear:a3];
+  [(PKAccountBillPaymentLearnMoreViewController *)&v5 viewDidDisappear:disappear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA820];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
@@ -353,14 +353,14 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
 - (void)viewDidLayoutSubviews
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [(PKAccountBillPaymentLearnMoreViewController *)self view];
-  [v3 bounds];
+  view = [(PKAccountBillPaymentLearnMoreViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v46 = v8;
   v9 = PKSetupViewConstantsViewMargin();
-  [v3 safeAreaInsets];
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
+  [view safeAreaInsets];
   v10 = v9 + v5;
   v11 = v7 - (v9 + v9);
   [(UILabel *)self->_titleLabel frame];
@@ -401,21 +401,21 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
         }
 
         v23 = *(*(&v51 + 1) + 8 * i);
-        v24 = [v23 titleLabel];
-        [v24 frame];
-        [v24 pkui_sizeThatFits:1 forceWordWrap:{v11, 1.79769313e308}];
+        titleLabel = [v23 titleLabel];
+        [titleLabel frame];
+        [titleLabel pkui_sizeThatFits:1 forceWordWrap:{v11, 1.79769313e308}];
         v26 = v25;
-        [v24 setFrame:{v10, v17, v11, v25}];
+        [titleLabel setFrame:{v10, v17, v11, v25}];
         v60.origin.x = v10;
         v60.origin.y = v17;
         v60.size.width = v7 - (v9 + v9);
         v60.size.height = v26;
         v27 = CGRectGetMaxY(v60);
-        v28 = [v23 messageLabel];
-        [v28 frame];
-        [v28 pkui_sizeThatFits:1 forceWordWrap:{v11, 1.79769313e308}];
+        messageLabel = [v23 messageLabel];
+        [messageLabel frame];
+        [messageLabel pkui_sizeThatFits:1 forceWordWrap:{v11, 1.79769313e308}];
         v30 = v29;
-        [v28 setFrame:{v10, v27, v11, v29}];
+        [messageLabel setFrame:{v10, v27, v11, v29}];
         v61.origin.x = v10;
         v61.origin.y = v27;
         v61.size.width = v7 - (v9 + v9);
@@ -507,13 +507,13 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
   }
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  if ([(UIActivityIndicatorView *)self->_activityIndicatorView isAnimating]!= a3)
+  spinnerCopy = spinner;
+  if ([(UIActivityIndicatorView *)self->_activityIndicatorView isAnimating]!= spinner)
   {
     activityIndicatorView = self->_activityIndicatorView;
-    if (v3)
+    if (spinnerCopy)
     {
       if (!activityIndicatorView)
       {
@@ -522,8 +522,8 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
         self->_activityIndicatorView = v6;
 
         v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_activityIndicatorView];
-        v9 = [(PKAccountBillPaymentLearnMoreViewController *)self navigationItem];
-        [v9 setLeftBarButtonItem:v8];
+        navigationItem = [(PKAccountBillPaymentLearnMoreViewController *)self navigationItem];
+        [navigationItem setLeftBarButtonItem:v8];
 
         activityIndicatorView = self->_activityIndicatorView;
       }
@@ -537,26 +537,26 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
       v10 = self->_activityIndicatorView;
       self->_activityIndicatorView = 0;
 
-      v11 = [(PKAccountBillPaymentLearnMoreViewController *)self navigationItem];
-      [v11 setLeftBarButtonItem:0];
+      navigationItem2 = [(PKAccountBillPaymentLearnMoreViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:0];
     }
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKAccount *)self->_account creditDetails];
-  v11 = [v10 termsIdentifier];
+  viewCopy = view;
+  lCopy = l;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  termsIdentifier = [creditDetails termsIdentifier];
 
-  if (v11)
+  if (termsIdentifier)
   {
     v12 = [PKAccountTermsAndConditionsController alloc];
     account = self->_account;
-    v14 = [MEMORY[0x1E69B8EF8] sharedService];
-    v15 = [(PKAccountTermsAndConditionsController *)v12 initWithAccount:account webService:v14 context:0 termsIdentifier:v11];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v15 = [(PKAccountTermsAndConditionsController *)v12 initWithAccount:account webService:mEMORY[0x1E69B8EF8] context:0 termsIdentifier:termsIdentifier];
     termsController = self->_termsController;
     self->_termsController = v15;
 
@@ -578,9 +578,9 @@ void __63__PKAccountBillPaymentLearnMoreViewController_initWithAccount___block_i
     v18 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(PKAccount *)self->_account accountIdentifier];
+      accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v19;
+      *(location + 4) = accountIdentifier;
       _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "Error: Account: %@ is missing terms and conditions. Using the value in the pass instead.", location, 0xCu);
     }
   }
@@ -621,11 +621,11 @@ void __98__PKAccountBillPaymentLearnMoreViewController_textView_shouldInteractWi
     v7 = v6;
     v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD10], *MEMORY[0x1E69DDC38]);
     v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:self->_customerAgreementText];
-    v10 = [MEMORY[0x1E69DC888] linkColor];
-    [v9 pk_addLinkURL:v4 toRange:v5 withColor:v7 isUnderlined:{v10, 0}];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    [v9 pk_addLinkURL:v4 toRange:v5 withColor:v7 isUnderlined:{linkColor, 0}];
 
-    v11 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v12 = [v11 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v12 = [defaultParagraphStyle mutableCopy];
 
     [v12 setLineBreakMode:0];
     [v9 addAttribute:*MEMORY[0x1E69DB688] value:v12 range:{0, v3}];
@@ -644,13 +644,13 @@ void __98__PKAccountBillPaymentLearnMoreViewController_textView_shouldInteractWi
   return v9;
 }
 
-- (void)_reportEventForPassIfNecessary:(id)a3
+- (void)_reportEventForPassIfNecessary:(id)necessary
 {
-  v8 = a3;
+  necessaryCopy = necessary;
   v4 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForAccount:self->_account];
-  if (v8 && v4)
+  if (necessaryCopy && v4)
   {
-    v5 = [v8 mutableCopy];
+    v5 = [necessaryCopy mutableCopy];
     [v5 setObject:*MEMORY[0x1E69BA598] forKey:*MEMORY[0x1E69BABE8]];
     v6 = MEMORY[0x1E69B8540];
     v7 = [v5 copy];

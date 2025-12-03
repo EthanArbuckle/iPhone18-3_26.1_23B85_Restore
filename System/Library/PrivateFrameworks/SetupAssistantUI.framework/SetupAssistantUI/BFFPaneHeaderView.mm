@@ -1,28 +1,28 @@
 @interface BFFPaneHeaderView
-- (BFFPaneHeaderView)initWithFrame:(CGRect)a3;
+- (BFFPaneHeaderView)initWithFrame:(CGRect)frame;
 - (CGSize)iconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_labelsAndLinksBaselineOffsetForView:(id)a3;
-- (double)heightForWidth:(double)a3 inView:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_labelsAndLinksBaselineOffsetForView:(id)view;
+- (double)heightForWidth:(double)width inView:(id)view;
 - (void)_linkButtonPressed;
 - (void)layoutSubviews;
-- (void)setBottomLineColor:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setIconAccessibilityLabel:(id)a3;
-- (void)setIconInheritsTint:(BOOL)a3;
-- (void)setIconSize:(CGSize)a3;
-- (void)setLinkText:(id)a3 handler:(id)a4;
-- (void)setTitleText:(id)a3;
+- (void)setBottomLineColor:(id)color;
+- (void)setIcon:(id)icon;
+- (void)setIconAccessibilityLabel:(id)label;
+- (void)setIconInheritsTint:(BOOL)tint;
+- (void)setIconSize:(CGSize)size;
+- (void)setLinkText:(id)text handler:(id)handler;
+- (void)setTitleText:(id)text;
 - (void)tintColorDidChange;
 @end
 
 @implementation BFFPaneHeaderView
 
-- (BFFPaneHeaderView)initWithFrame:(CGRect)a3
+- (BFFPaneHeaderView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = BFFPaneHeaderView;
-  v3 = [(BFFPaneHeaderView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BFFPaneHeaderView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[BFFStyle sharedStyle];
@@ -68,8 +68,8 @@
     [v22 applyThemeToLabel:v3->_subLabel];
 
     [(UILabel *)v3->_subLabel setTextAlignment:1];
-    v23 = [(UILabel *)v3->_detailTextLabel font];
-    [(UILabel *)v3->_subLabel setFont:v23];
+    font = [(UILabel *)v3->_detailTextLabel font];
+    [(UILabel *)v3->_subLabel setFont:font];
 
     [(BFFPaneHeaderView *)v3 addSubview:v3->_subLabel];
     [(BFFPaneHeaderView *)v3 setCustomTopPadding:-1.0];
@@ -78,16 +78,16 @@
   return v3;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
-  if (self->_icon != v4)
+  iconCopy = icon;
+  if (self->_icon != iconCopy)
   {
-    obj = v4;
+    obj = iconCopy;
     if ([(BFFPaneHeaderView *)self iconInheritsTint]&& ([(BFFPaneHeaderView *)self tintColor], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v6 = [(BFFPaneHeaderView *)self tintColor];
-      v7 = [(UIImage *)obj _flatImageWithColor:v6];
+      tintColor = [(BFFPaneHeaderView *)self tintColor];
+      v7 = [(UIImage *)obj _flatImageWithColor:tintColor];
 
       v8 = v7;
     }
@@ -127,7 +127,7 @@
 
 LABEL_17:
       [(BFFPaneHeaderView *)self setNeedsLayout];
-      v4 = obja;
+      iconCopy = obja;
       goto LABEL_18;
     }
 
@@ -138,22 +138,22 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)setIconAccessibilityLabel:(id)a3
+- (void)setIconAccessibilityLabel:(id)label
 {
   iconView = self->_iconView;
-  v5 = a3 != 0;
-  v6 = a3;
+  v5 = label != 0;
+  labelCopy = label;
   [(UIImageView *)iconView setIsAccessibilityElement:v5];
-  [(UIImageView *)self->_iconView setAccessibilityLabel:v6];
+  [(UIImageView *)self->_iconView setAccessibilityLabel:labelCopy];
 }
 
-- (void)setIconSize:(CGSize)a3
+- (void)setIconSize:(CGSize)size
 {
   p_iconSize = &self->_iconSize;
-  if (a3.width != self->_iconSize.width || a3.height != self->_iconSize.height)
+  if (size.width != self->_iconSize.width || size.height != self->_iconSize.height)
   {
-    p_iconSize->width = a3.width;
-    self->_iconSize.height = a3.height;
+    p_iconSize->width = size.width;
+    self->_iconSize.height = size.height;
     [(UIImageView *)self->_iconView frame];
     v7 = v6;
     v9 = v8;
@@ -187,11 +187,11 @@ LABEL_18:
   return result;
 }
 
-- (void)setIconInheritsTint:(BOOL)a3
+- (void)setIconInheritsTint:(BOOL)tint
 {
-  if (self->_iconInheritsTint != a3)
+  if (self->_iconInheritsTint != tint)
   {
-    self->_iconInheritsTint = a3;
+    self->_iconInheritsTint = tint;
     [(BFFPaneHeaderView *)self tintColorDidChange];
   }
 }
@@ -203,14 +203,14 @@ LABEL_18:
   [(BFFPaneHeaderView *)&v8 tintColorDidChange];
   if ([(BFFPaneHeaderView *)self iconInheritsTint])
   {
-    v3 = [(BFFPaneHeaderView *)self tintColor];
+    tintColor = [(BFFPaneHeaderView *)self tintColor];
 
-    if (v3)
+    if (tintColor)
     {
       iconView = self->_iconView;
-      v5 = [(UIImageView *)iconView image];
-      v6 = [(BFFPaneHeaderView *)self tintColor];
-      v7 = [v5 _flatImageWithColor:v6];
+      image = [(UIImageView *)iconView image];
+      tintColor2 = [(BFFPaneHeaderView *)self tintColor];
+      v7 = [image _flatImageWithColor:tintColor2];
       [(UIImageView *)iconView setImage:v7];
     }
   }
@@ -225,43 +225,43 @@ LABEL_18:
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  [(UILabel *)self->_textLabel setText:a3];
+  [(UILabel *)self->_textLabel setText:text];
   v4 = +[BFFStyle sharedStyle];
   [v4 applyThemeToTitleLabel:self->_textLabel];
 
   [(BFFPaneHeaderView *)self setNeedsLayout];
 }
 
-- (void)setLinkText:(id)a3 handler:(id)a4
+- (void)setLinkText:(id)text handler:(id)handler
 {
-  v19 = a3;
-  v6 = a4;
+  textCopy = text;
+  handlerCopy = handler;
   [(UIButton *)self->_linkButton removeFromSuperview];
-  v7 = [v19 length];
-  if (v6 && v7)
+  v7 = [textCopy length];
+  if (handlerCopy && v7)
   {
     v8 = [MEMORY[0x277D75220] buttonWithType:1];
     linkButton = self->_linkButton;
     self->_linkButton = v8;
 
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v11 = [(UIButton *)self->_linkButton titleLabel];
-    [v11 setFont:v10];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel setFont:v10];
 
-    v12 = [(UIButton *)self->_linkButton titleLabel];
-    [v12 setLineBreakMode:0];
+    titleLabel2 = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel2 setLineBreakMode:0];
 
-    v13 = [(UIButton *)self->_linkButton titleLabel];
-    [v13 setNumberOfLines:0];
+    titleLabel3 = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel3 setNumberOfLines:0];
 
-    v14 = [(UIButton *)self->_linkButton titleLabel];
-    [v14 setTextAlignment:1];
+    titleLabel4 = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel4 setTextAlignment:1];
 
-    [(UIButton *)self->_linkButton setTitle:v19 forState:0];
+    [(UIButton *)self->_linkButton setTitle:textCopy forState:0];
     [(UIButton *)self->_linkButton addTarget:self action:sel__linkButtonPressed forControlEvents:0x2000];
-    v15 = _Block_copy(v6);
+    v15 = _Block_copy(handlerCopy);
     linkHandler = self->_linkHandler;
     self->_linkHandler = v15;
 
@@ -280,16 +280,16 @@ LABEL_18:
   [(BFFPaneHeaderView *)self setNeedsLayout];
 }
 
-- (void)setBottomLineColor:(id)a3
+- (void)setBottomLineColor:(id)color
 {
-  v10 = a3;
-  v4 = [(UIView *)self->_bottomLine backgroundColor];
+  colorCopy = color;
+  backgroundColor = [(UIView *)self->_bottomLine backgroundColor];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = colorCopy;
+  if (backgroundColor != colorCopy)
   {
     [(UIView *)self->_bottomLine removeFromSuperview];
-    if (v10)
+    if (colorCopy)
     {
       bottomLine = self->_bottomLine;
       if (!bottomLine)
@@ -305,23 +305,23 @@ LABEL_18:
       [(BFFPaneHeaderView *)self addSubview:bottomLine];
     }
 
-    [(UIView *)self->_bottomLine setBackgroundColor:v10];
+    [(UIView *)self->_bottomLine setBackgroundColor:colorCopy];
     [(BFFPaneHeaderView *)self setNeedsLayout];
-    v5 = v10;
+    v5 = colorCopy;
   }
 }
 
-- (double)_labelsAndLinksBaselineOffsetForView:(id)a3
+- (double)_labelsAndLinksBaselineOffsetForView:(id)view
 {
   v3 = MEMORY[0x277D75520];
   v4 = *MEMORY[0x277D76918];
-  v5 = a3;
+  viewCopy = view;
   v6 = [v3 metricsForTextStyle:v4];
-  v7 = [v5 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  v8 = [v7 horizontalSizeClass];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
   v9 = 34.0;
-  if (v8 == 1)
+  if (horizontalSizeClass == 1)
   {
     v9 = 30.0;
   }
@@ -346,8 +346,8 @@ LABEL_18:
   [v8 horizontalInsetsForContainingInView:self width:v7];
   v10 = v9;
 
-  v11 = [(BFFPaneHeaderView *)self superview];
-  [v11 safeAreaInsets];
+  superview = [(BFFPaneHeaderView *)self superview];
+  [superview safeAreaInsets];
   v13 = v12;
 
   if (iconView)
@@ -406,15 +406,15 @@ LABEL_18:
   v39 = v38;
   v103 = v40;
   v101 = v41;
-  v42 = [(UILabel *)self->_textLabel text];
-  v43 = [v42 length];
+  text = [(UILabel *)self->_textLabel text];
+  v43 = [text length];
 
   if (v43)
   {
     v37 = BFFRoundToPixel(v33);
-    v44 = [(BFFPaneHeaderView *)self isTextLabelAlignedByLastBaseline];
+    isTextLabelAlignedByLastBaseline = [(BFFPaneHeaderView *)self isTextLabelAlignedByLastBaseline];
     textLabel = self->_textLabel;
-    if (v44)
+    if (isTextLabelAlignedByLastBaseline)
     {
       [(UILabel *)textLabel _lastLineBaseline];
     }
@@ -453,9 +453,9 @@ LABEL_18:
   v59 = v58;
   v98 = v61;
   v99 = v60;
-  v62 = [(UILabel *)self->_detailTextLabel text];
+  text2 = [(UILabel *)self->_detailTextLabel text];
   v100 = v37;
-  if ([v62 length])
+  if ([text2 length])
   {
 
 LABEL_20:
@@ -468,8 +468,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v63 = [(UILabel *)self->_detailTextLabel attributedText];
-  v64 = [v63 length];
+  attributedText = [(UILabel *)self->_detailTextLabel attributedText];
+  v64 = [attributedText length];
 
   if (v64)
   {
@@ -483,8 +483,8 @@ LABEL_21:
   v71 = v70;
   v95 = v73;
   v96 = v72;
-  v74 = [(UILabel *)self->_subLabel text];
-  v75 = [v74 length];
+  text3 = [(UILabel *)self->_subLabel text];
+  v75 = [text3 length];
 
   v97 = v57;
   if (v75)
@@ -504,8 +504,8 @@ LABEL_21:
   {
     [(UIButton *)linkButton layoutSubviews];
     v84 = BFFRoundToPixel((v65 - v81) * 0.5);
-    v85 = [(UIButton *)self->_linkButton titleLabel];
-    [v85 _firstLineBaselineOffsetFromBoundsTop];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel _firstLineBaselineOffsetFromBoundsTop];
     v87 = v47 - v86;
   }
 
@@ -516,9 +516,9 @@ LABEL_21:
   }
 
   v88 = v102;
-  v89 = [(BFFPaneHeaderView *)self bottomLineColor];
+  bottomLineColor = [(BFFPaneHeaderView *)self bottomLineColor];
 
-  if (v89)
+  if (bottomLineColor)
   {
     UICeilToViewScale();
     v91 = v90;
@@ -535,10 +535,10 @@ LABEL_21:
   [(UIButton *)self->_linkButton setFrame:v84, v87, v81, v94];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(BFFPaneHeaderView *)self heightForWidth:self inView:a3.width, a3.height];
+  width = fits.width;
+  [(BFFPaneHeaderView *)self heightForWidth:self inView:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -546,52 +546,52 @@ LABEL_21:
   return result;
 }
 
-- (double)heightForWidth:(double)a3 inView:(id)a4
+- (double)heightForWidth:(double)width inView:(id)view
 {
-  v6 = a4;
-  v7 = [v6 traitCollection];
-  v95 = [v7 horizontalSizeClass];
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v8 = +[BFFStyle sharedStyle];
-  [v8 horizontalInsetsForContainingInView:v6 width:a3];
+  [v8 horizontalInsetsForContainingInView:viewCopy width:width];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(BFFPaneHeaderView *)self superview];
-  [v13 safeAreaInsets];
-  v15 = a3 - v10 - v12 - v14;
-  v16 = [(BFFPaneHeaderView *)self superview];
-  [v16 safeAreaInsets];
+  superview = [(BFFPaneHeaderView *)self superview];
+  [superview safeAreaInsets];
+  v15 = width - v10 - v12 - v14;
+  superview2 = [(BFFPaneHeaderView *)self superview];
+  [superview2 safeAreaInsets];
   v18 = v17;
 
   v99 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
-  [(BFFPaneHeaderView *)self _labelsAndLinksBaselineOffsetForView:v6];
+  [(BFFPaneHeaderView *)self _labelsAndLinksBaselineOffsetForView:viewCopy];
   v20 = v19;
   iconView = self->_iconView;
-  v22 = [(UILabel *)self->_textLabel text];
-  v96 = [v22 length];
+  text = [(UILabel *)self->_textLabel text];
+  v96 = [text length];
 
-  v23 = [(UILabel *)self->_detailTextLabel text];
-  if ([v23 length])
+  text2 = [(UILabel *)self->_detailTextLabel text];
+  if ([text2 length])
   {
     v97 = 1;
   }
 
   else
   {
-    v24 = [(UILabel *)self->_detailTextLabel attributedText];
-    v97 = [v24 length] != 0;
+    attributedText = [(UILabel *)self->_detailTextLabel attributedText];
+    v97 = [attributedText length] != 0;
   }
 
   v25 = v15 - v18;
 
-  v26 = [(UILabel *)self->_subLabel text];
-  v27 = [v26 length];
+  text3 = [(UILabel *)self->_subLabel text];
+  v27 = [text3 length];
 
   linkButton = self->_linkButton;
   v28 = +[BFFStyle sharedStyle];
   [(BFFPaneHeaderView *)self iconSize];
-  [v28 headerTitleBaselineOffsetForView:v6 iconSize:?];
+  [v28 headerTitleBaselineOffsetForView:viewCopy iconSize:?];
   v30 = v29;
 
   if (!iconView)
@@ -646,32 +646,32 @@ LABEL_24:
     width = p_iconSize->width;
   }
 
-  if (width < a3)
+  if (width < width)
   {
-    a3 = width;
+    width = width;
   }
 
-  v43 = [(UIImageView *)self->_iconView image];
-  [v43 size];
-  v45 = a3 * v44;
-  v46 = [(UIImageView *)self->_iconView image];
-  [v46 size];
+  image = [(UIImageView *)self->_iconView image];
+  [image size];
+  v45 = width * v44;
+  image2 = [(UIImageView *)self->_iconView image];
+  [image2 size];
   v48 = v45 / v47;
 
-  if (a3 != v36 || v48 != v37)
+  if (width != v36 || v48 != v37)
   {
-    p_iconSize->width = a3;
+    p_iconSize->width = width;
     self->_iconSize.height = v48;
   }
 
-  [(UIImageView *)self->_iconView setFrame:v32, v34, a3, v48];
+  [(UIImageView *)self->_iconView setFrame:v32, v34, width, v48];
   v20 = v94;
   v42 = v97;
   if (!v96)
   {
     v63 = +[BFFStyle sharedStyle];
     [(BFFPaneHeaderView *)self iconSize];
-    [v63 headerYOffsetForIconSize:v6 inView:?];
+    [v63 headerYOffsetForIconSize:viewCopy inView:?];
     v30 = v64;
 
     goto LABEL_24;
@@ -703,7 +703,7 @@ LABEL_17:
   if ((v58 & 1) != 0 || linkButton)
   {
     v61 = +[BFFStyle sharedStyle];
-    [v61 headerSubheaderBaselineSpacingForView:v6];
+    [v61 headerSubheaderBaselineSpacingForView:viewCopy];
     [v99 scaledValueForValue:?];
     v57 = v57 + v62;
 
@@ -712,7 +712,7 @@ LABEL_17:
 
 LABEL_29:
   v66 = 56.0;
-  if (v95 == 1)
+  if (horizontalSizeClass == 1)
   {
     v66 = 37.0;
   }
@@ -753,8 +753,8 @@ LABEL_32:
     [(UIButton *)self->_linkButton frame];
     v85 = v84;
     v87 = v86;
-    v88 = [(UIButton *)self->_linkButton titleLabel];
-    [v88 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, v25, 1.79769313e308}];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, v25, 1.79769313e308}];
     v90 = v89;
     v92 = v91;
 

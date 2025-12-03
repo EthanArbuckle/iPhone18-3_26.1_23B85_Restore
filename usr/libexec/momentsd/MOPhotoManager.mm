@@ -1,91 +1,91 @@
 @interface MOPhotoManager
-- (BOOL)_doesAssetHaveFaceProcessing:(id)a3;
-- (BOOL)_doesAssetHaveSceneProcessing:(id)a3;
-- (BOOL)_persistPhotoMemoryPlistFile:(id)a3 withData:(id)a4;
-- (BOOL)isCandidateForMemoryEvent:(id)a3;
-- (BOOL)isDesirableCategoryOrTrigger:(id)a3;
-- (MOPhotoManager)initWithUniverse:(id)a3;
-- (id)_calculateDistanceBetweenUserLocation:(id)a3 PhotoLocation:(id)a4;
-- (id)_createEventFromAsset:(id)a3;
-- (id)_createEventFromPhotoMemory:(id)a3;
-- (id)_fetchCuratedAssetsForPhotoMemory:(id)a3;
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 photoMemories:(id)a4;
+- (BOOL)_doesAssetHaveFaceProcessing:(id)processing;
+- (BOOL)_doesAssetHaveSceneProcessing:(id)processing;
+- (BOOL)_persistPhotoMemoryPlistFile:(id)file withData:(id)data;
+- (BOOL)isCandidateForMemoryEvent:(id)event;
+- (BOOL)isDesirableCategoryOrTrigger:(id)trigger;
+- (MOPhotoManager)initWithUniverse:(id)universe;
+- (id)_calculateDistanceBetweenUserLocation:(id)location PhotoLocation:(id)photoLocation;
+- (id)_createEventFromAsset:(id)asset;
+- (id)_createEventFromPhotoMemory:(id)memory;
+- (id)_fetchCuratedAssetsForPhotoMemory:(id)memory;
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events photoMemories:(id)memories;
 - (id)_getPhotoMemoryPlistFileURL;
-- (id)_getPhotosByAssetProperties:(id)a3 UserLocations:(id)a4 IsLocationCheckMandatory:(BOOL)a5 MinDistance:(double)a6;
-- (id)_readPhotoMemoryPlistFile:(id)a3;
-- (id)_sceneLabelsForSceneClassifications:(id)a3;
-- (id)getClassificationInfo:(id)a3;
-- (id)getPersonsInAsset:(id)a3;
+- (id)_getPhotosByAssetProperties:(id)properties UserLocations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory MinDistance:(double)distance;
+- (id)_readPhotoMemoryPlistFile:(id)file;
+- (id)_sceneLabelsForSceneClassifications:(id)classifications;
+- (id)getClassificationInfo:(id)info;
+- (id)getPersonsInAsset:(id)asset;
 - (id)getTraitsOverrideArray;
 - (id)initializeVisualIdentifierView;
 - (id)intializeEntityTaggingService;
 - (unint64_t)gmsAvailabilityStatus;
-- (void)_buildCuratedAssetMap:(id)a3 handler:(id)a4;
-- (void)_createNewEventsFromPhotoMemories:(id)a3 storedEvents:(id)a4 handler:(id)a5;
-- (void)_fetchCuratedPhotosFromHighlights:(id)a3 StartDate:(id)a4 EndDate:(id)a5 BundleInterfaceType:(unint64_t)a6 Locations:(id)a7 IsLocationCheckMandatory:(BOOL)a8 handler:(id)a9;
-- (void)_fetchPhotoMemoriesBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)_fetchPhotoMemoryEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchPhotosTraitsFromAssets:(id)a3 StartDate:(id)a4 EndDate:(id)a5 handler:(id)a6;
-- (void)_fetchSharedPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)_fetchUnprocessedPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 Locations:(id)a5 IsLocationCheckMandatory:(BOOL)a6 handler:(id)a7;
+- (void)_buildCuratedAssetMap:(id)map handler:(id)handler;
+- (void)_createNewEventsFromPhotoMemories:(id)memories storedEvents:(id)events handler:(id)handler;
+- (void)_fetchCuratedPhotosFromHighlights:(id)highlights StartDate:(id)date EndDate:(id)endDate BundleInterfaceType:(unint64_t)type Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler;
+- (void)_fetchPhotoMemoriesBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)_fetchPhotoMemoryEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchPhotosTraitsFromAssets:(id)assets StartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)_fetchSharedPhotosBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)_fetchUnprocessedPhotosBetweenStartDate:(id)date EndDate:(id)endDate Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler;
 - (void)_getPhotoMemoryPlistFileURL;
-- (void)_rehydratePhotoMemories:(id)a3 handler:(id)a4;
-- (void)_rehydrateSharedPhotos:(id)a3 handler:(id)a4;
-- (void)_rehydrateStoredEvents:(id)a3 fromPhotoMemories:(id)a4 fetchResult:(id)a5 handler:(id)a6;
-- (void)_saveEvents:(id)a3 category:(unint64_t)a4 handler:(id)a5;
-- (void)_scheduleMediaAnalysisDeferredProcessing:(id)a3;
-- (void)_setDynamicPropertiesForMemoryEvent:(id)a3 fromMemory:(id)a4 keyAsset:(id)a5;
+- (void)_rehydratePhotoMemories:(id)memories handler:(id)handler;
+- (void)_rehydrateSharedPhotos:(id)photos handler:(id)handler;
+- (void)_rehydrateStoredEvents:(id)events fromPhotoMemories:(id)memories fetchResult:(id)result handler:(id)handler;
+- (void)_saveEvents:(id)events category:(unint64_t)category handler:(id)handler;
+- (void)_scheduleMediaAnalysisDeferredProcessing:(id)processing;
+- (void)_setDynamicPropertiesForMemoryEvent:(id)event fromMemory:(id)memory keyAsset:(id)asset;
 - (void)deletePhotoMemoryPlistFile;
-- (void)fetchAssetUsingID:(id)a3 handler:(id)a4;
-- (void)fetchPhotoMemoryEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)fetchPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 SuggestionID:(id)a5 BundleInterfaceType:(unint64_t)a6 Locations:(id)a7 IsLocationCheckMandatory:(BOOL)a8 handler:(id)a9;
+- (void)fetchAssetUsingID:(id)d handler:(id)handler;
+- (void)fetchPhotoMemoryEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)fetchPhotosBetweenStartDate:(id)date EndDate:(id)endDate SuggestionID:(id)d BundleInterfaceType:(unint64_t)type Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler;
 - (void)intializeEntityTaggingService;
-- (void)rehydratePhotoMemories:(id)a3 handler:(id)a4;
-- (void)rehydrateSharedPhotos:(id)a3 handler:(id)a4;
+- (void)rehydratePhotoMemories:(id)memories handler:(id)handler;
+- (void)rehydrateSharedPhotos:(id)photos handler:(id)handler;
 @end
 
 @implementation MOPhotoManager
 
 - (unint64_t)gmsAvailabilityStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __39__MOPhotoManager_gmsAvailabilityStatus__block_invoke;
   block[3] = &unk_100335F40;
-  block[4] = v2;
+  block[4] = selfCopy;
   if (gmsAvailabilityStatus_onceToken != -1)
   {
     dispatch_once(&gmsAvailabilityStatus_onceToken, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v3 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    gmsAvailabilityStatus = v2->_gmsAvailabilityStatus;
+    gmsAvailabilityStatus = selfCopy->_gmsAvailabilityStatus;
     *buf = 134217984;
     v8 = gmsAvailabilityStatus;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "gmsAvailabilityStatus,%lu", buf, 0xCu);
   }
 
-  return v2->_gmsAvailabilityStatus;
+  return selfCopy->_gmsAvailabilityStatus;
 }
 
-- (MOPhotoManager)initWithUniverse:(id)a3
+- (MOPhotoManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v5 getService:v10];
+    v11 = [universeCopy getService:v10];
 
     if (v11)
     {
@@ -117,7 +117,7 @@
 
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [v5 getService:v19];
+      v20 = [universeCopy getService:v19];
 
       obj = v15;
       if (v20)
@@ -147,15 +147,15 @@
           }
         }
 
-        v24 = [v21 librarySpecificFetchOptions];
-        v25 = [PHPerson fetchMePersonWithOptions:v24];
-        v26 = [v25 firstObject];
+        librarySpecificFetchOptions = [v21 librarySpecificFetchOptions];
+        v25 = [PHPerson fetchMePersonWithOptions:librarySpecificFetchOptions];
+        firstObject = [v25 firstObject];
 
         v27 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v53 = v26;
+          v53 = firstObject;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Me person from Photos: %@", buf, 0xCu);
         }
 
@@ -178,14 +178,14 @@
           objc_storeStrong(&v28->_configurationManager, v8);
           objc_storeStrong(&v28->_defaultsManager, v11);
           objc_storeStrong(&v28->_suggestedMePersonIdentifier, v46);
-          objc_storeStrong(&v28->_mePerson, v26);
-          v34 = [(MOPhotoManager *)v28 initializeVisualIdentifierView];
+          objc_storeStrong(&v28->_mePerson, firstObject);
+          initializeVisualIdentifierView = [(MOPhotoManager *)v28 initializeVisualIdentifierView];
           visualIdentifierView = v28->_visualIdentifierView;
-          v28->_visualIdentifierView = v34;
+          v28->_visualIdentifierView = initializeVisualIdentifierView;
 
-          v36 = [(MOPhotoManager *)v28 intializeEntityTaggingService];
+          intializeEntityTaggingService = [(MOPhotoManager *)v28 intializeEntityTaggingService];
           entityTaggingSerice = v28->_entityTaggingSerice;
-          v28->_entityTaggingSerice = v36;
+          v28->_entityTaggingSerice = intializeEntityTaggingService;
 
           v38 = objc_alloc_init(CNContactStore);
           contactStore = v28->_contactStore;
@@ -195,7 +195,7 @@
         self = v28;
 
         v16 = v29;
-        v40 = self;
+        selfCopy = self;
       }
 
       else
@@ -208,7 +208,7 @@
 
         v30 = +[NSAssertionHandler currentHandler];
         [v30 handleFailureInMethod:a2 object:self file:@"MOPhotoManager.m" lineNumber:132 description:@"Invalid parameter not satisfying: eventStore"];
-        v40 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -222,7 +222,7 @@
 
       v16 = +[NSAssertionHandler currentHandler];
       [v16 handleFailureInMethod:a2 object:self file:@"MOPhotoManager.m" lineNumber:111 description:@"Invalid parameter not satisfying: defaultsManager"];
-      v40 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -236,10 +236,10 @@
 
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"MOPhotoManager.m" lineNumber:105 description:@"Invalid parameter not satisfying: configurationManager"];
-    v40 = 0;
+    selfCopy = 0;
   }
 
-  return v40;
+  return selfCopy;
 }
 
 unint64_t __39__MOPhotoManager_gmsAvailabilityStatus__block_invoke(uint64_t a1)
@@ -249,16 +249,16 @@ unint64_t __39__MOPhotoManager_gmsAvailabilityStatus__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_sceneLabelsForSceneClassifications:(id)a3
+- (id)_sceneLabelsForSceneClassifications:(id)classifications
 {
-  v3 = a3;
+  classificationsCopy = classifications;
   v4 = objc_alloc_init(NSMutableSet);
   v5 = objc_alloc_init(PFSceneTaxonomy);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v3;
+  v6 = classificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -384,47 +384,47 @@ unint64_t __39__MOPhotoManager_gmsAvailabilityStatus__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)fetchPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 SuggestionID:(id)a5 BundleInterfaceType:(unint64_t)a6 Locations:(id)a7 IsLocationCheckMandatory:(BOOL)a8 handler:(id)a9
+- (void)fetchPhotosBetweenStartDate:(id)date EndDate:(id)endDate SuggestionID:(id)d BundleInterfaceType:(unint64_t)type Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler
 {
-  v9 = a8;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
+  mandatoryCopy = mandatory;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v20 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    v34 = v15;
+    v34 = dateCopy;
     v35 = 2112;
-    v36 = v16;
+    v36 = endDateCopy;
     v37 = 2112;
-    v38 = v17;
+    v38 = dCopy;
     v39 = 2048;
-    v40 = a6;
+    typeCopy = type;
     v41 = 1024;
-    v42 = v9;
+    v42 = mandatoryCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "fetchPhotosBetweenStartDate, startDate, %@, endDate, %@, suggestionID, %@, interfaceType, %lu, isLocationCheckMandatory, %d", buf, 0x30u);
   }
 
-  v21 = [(MOPhotoManager *)self queue];
+  queue = [(MOPhotoManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_BundleInterfaceType_Locations_IsLocationCheckMandatory_handler___block_invoke;
   block[3] = &unk_10033F300;
   block[4] = self;
-  v27 = v15;
-  v28 = v16;
-  v29 = v18;
-  v32 = v9;
-  v30 = v19;
-  v31 = a6;
-  v22 = v19;
-  v23 = v18;
-  v24 = v16;
-  v25 = v15;
-  dispatch_async(v21, block);
+  v27 = dateCopy;
+  v28 = endDateCopy;
+  v29 = locationsCopy;
+  v32 = mandatoryCopy;
+  v30 = handlerCopy;
+  typeCopy2 = type;
+  v22 = handlerCopy;
+  v23 = locationsCopy;
+  v24 = endDateCopy;
+  v25 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_BundleInterfaceType_Locations_IsLocationCheckMandatory_handler___block_invoke(uint64_t a1)
@@ -714,18 +714,18 @@ void __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_Bund
   (*(v13[7] + 16))();
 }
 
-- (id)getClassificationInfo:(id)a3
+- (id)getClassificationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v43 = v4;
+    v43 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#megadome,getClassificationInfo,personLocalIdentifier, %@", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!infoCopy)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -738,7 +738,7 @@ void __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_Bund
     goto LABEL_57;
   }
 
-  v6 = [(GDVisualIdentifierView *)self->_visualIdentifierView personForIdentifier:v4];
+  v6 = [(GDVisualIdentifierView *)self->_visualIdentifierView personForIdentifier:infoCopy];
   v7 = v6;
   if (!v6)
   {
@@ -752,24 +752,24 @@ void __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_Bund
     goto LABEL_56;
   }
 
-  v8 = [v6 entityIdentifier];
-  v9 = [v8 stringValue];
+  entityIdentifier = [v6 entityIdentifier];
+  stringValue = [entityIdentifier stringValue];
 
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v43 = v9;
+    v43 = stringValue;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "#megadome,personLocalIdentifierMD, %@", buf, 0xCu);
   }
 
-  if (!v9)
+  if (!stringValue)
   {
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v43 = v4;
+      v43 = infoCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#megadome,could not get MD identifier for personLocalIdentifier %@", buf, 0xCu);
     }
 
@@ -781,7 +781,7 @@ void __130__MOPhotoManager_fetchPhotosBetweenStartDate_EndDate_SuggestionID_Bund
   v11 = [[GDPersonTaggingOptions alloc] initWithTagThresholds:&off_10036EB58];
   entityTaggingSerice = self->_entityTaggingSerice;
   v41 = 0;
-  v13 = [(GDEntityTaggingService *)entityTaggingSerice entityTagsForIdentifier:v9 options:v11 error:&v41];
+  v13 = [(GDEntityTaggingService *)entityTaggingSerice entityTagsForIdentifier:stringValue options:v11 error:&v41];
   v14 = v41;
   if (v14)
   {
@@ -808,16 +808,16 @@ LABEL_11:
   }
 
   v33 = v11;
-  v34 = v9;
-  v35 = v4;
+  v34 = stringValue;
+  v35 = infoCopy;
   v32 = v13;
-  v16 = [v13 scoredPersonEntityTags];
+  scoredPersonEntityTags = [v13 scoredPersonEntityTags];
   v15 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v16;
+  obj = scoredPersonEntityTags;
   v17 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (!v17)
   {
@@ -923,9 +923,9 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "#megadome,classification, %@", buf, 0xCu);
   }
 
-  v4 = v35;
+  infoCopy = v35;
   v11 = v33;
-  v9 = v34;
+  stringValue = v34;
   v13 = v32;
   v14 = 0;
 LABEL_54:
@@ -938,15 +938,15 @@ LABEL_57:
   return v15;
 }
 
-- (id)getPersonsInAsset:(id)a3
+- (id)getPersonsInAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  assetCopy = asset;
+  v5 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:assetCopy];
   [v5 setPersonContext:0];
   [v5 setIncludedDetectionTypes:&off_10036E2C8];
-  v91 = v4;
+  v91 = assetCopy;
   v87 = v5;
-  v6 = [PHPerson fetchPersonsInAsset:v4 options:v5];
+  v6 = [PHPerson fetchPersonsInAsset:assetCopy options:v5];
   v89 = +[NSMutableSet set];
   v106 = 0u;
   v107 = 0u;
@@ -957,7 +957,7 @@ LABEL_57:
   if (v98)
   {
     v97 = *v107;
-    v90 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v98; i = i + 1)
@@ -971,82 +971,82 @@ LABEL_57:
         if ([v8 type] != -1)
         {
           v99 = i;
-          v101 = [v8 displayName];
-          v102 = [v8 name];
-          v103 = [v8 personUri];
+          displayName = [v8 displayName];
+          name = [v8 name];
+          personUri = [v8 personUri];
           v9 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
-            v10 = [v91 localIdentifier];
-            v93 = [v8 type];
-            v95 = [v8 contactMatchingDictionary];
-            v11 = [v95 description];
-            v12 = [v8 isMe];
-            v13 = [v8 faceCount];
-            v14 = [v8 isVerified];
-            v15 = [v8 verifiedType];
-            v16 = [v8 detectionType];
-            v17 = [v8 localIdentifier];
+            localIdentifier = [v91 localIdentifier];
+            type = [v8 type];
+            contactMatchingDictionary = [v8 contactMatchingDictionary];
+            v11 = [contactMatchingDictionary description];
+            isMe = [v8 isMe];
+            faceCount = [v8 faceCount];
+            isVerified = [v8 isVerified];
+            verifiedType = [v8 verifiedType];
+            detectionType = [v8 detectionType];
+            localIdentifier2 = [v8 localIdentifier];
             *buf = 138415106;
-            v112 = v10;
+            v112 = localIdentifier;
             v113 = 2048;
-            v114 = v93;
+            v114 = type;
             v115 = 2112;
             v116 = v11;
             v117 = 1024;
-            *v118 = v12;
+            *v118 = isMe;
             *&v118[4] = 2112;
-            *&v118[6] = v102;
+            *&v118[6] = name;
             *&v118[14] = 2112;
-            *&v118[16] = v101;
+            *&v118[16] = displayName;
             *&v118[24] = 2112;
-            *&v118[26] = v103;
+            *&v118[26] = personUri;
             v119 = 2048;
-            v120 = v13;
+            v120 = faceCount;
             v121 = 1024;
-            v122 = v14;
-            self = v90;
+            v122 = isVerified;
+            self = selfCopy;
             v123 = 2048;
-            v124 = v15;
+            v124 = verifiedType;
             v125 = 1024;
-            v126 = v16;
+            v126 = detectionType;
             v127 = 2112;
-            v128 = v17;
+            v128 = localIdentifier2;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Asset : %@, type : %ld, contactMatchingDictionary : %@, isMe : %d, name : %@, displayName : %@, personURI : %@, faceCount : %ld, verified : %d, verifiedType : %ld, detectionType : %hd, localIdentifier : %@", buf, 0x6Eu);
           }
 
-          v18 = [v8 isMe];
-          if (v18)
+          isMe2 = [v8 isMe];
+          if (isMe2)
           {
             v19 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
-              v20 = [v8 localIdentifier];
+              localIdentifier3 = [v8 localIdentifier];
               *buf = 138412290;
-              v112 = v20;
+              v112 = localIdentifier3;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "got current person as me person from Photos, localIdentifier : %@", buf, 0xCu);
             }
           }
 
-          v21 = [(MOPhotoManager *)self mePerson];
+          mePerson = [(MOPhotoManager *)self mePerson];
 
-          if (v21)
+          if (mePerson)
           {
             v22 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
-              v23 = [(MOPhotoManager *)self mePerson];
-              v24 = [v23 localIdentifier];
+              mePerson2 = [(MOPhotoManager *)self mePerson];
+              localIdentifier4 = [mePerson2 localIdentifier];
               *buf = 138412290;
-              v112 = v24;
+              v112 = localIdentifier4;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "got me person from Photo person localIdentifier :  %@", buf, 0xCu);
             }
 
-            v25 = [v8 localIdentifier];
-            v26 = [(MOPhotoManager *)self mePerson];
-            v27 = [v26 localIdentifier];
+            localIdentifier5 = [v8 localIdentifier];
+            mePerson3 = [(MOPhotoManager *)self mePerson];
+            localIdentifier6 = [mePerson3 localIdentifier];
 
-            if (v25 == v27)
+            if (localIdentifier5 == localIdentifier6)
             {
               v28 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -1055,26 +1055,26 @@ LABEL_57:
                 _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Current person matched with the me Person", buf, 2u);
               }
 
-              v18 = 1;
+              isMe2 = 1;
             }
           }
 
-          v29 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
+          suggestedMePersonIdentifier = [(MOPhotoManager *)self suggestedMePersonIdentifier];
 
-          if (v29)
+          if (suggestedMePersonIdentifier)
           {
             v30 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
-              v31 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
+              suggestedMePersonIdentifier2 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
               *buf = 138412290;
-              v112 = v31;
+              v112 = suggestedMePersonIdentifier2;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "got inferred me person from Photos, localIdentifier : %@", buf, 0xCu);
             }
 
-            v32 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
-            v33 = [v8 localIdentifier];
-            v34 = [v32 isEqualToString:v33];
+            suggestedMePersonIdentifier3 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
+            localIdentifier7 = [v8 localIdentifier];
+            v34 = [suggestedMePersonIdentifier3 isEqualToString:localIdentifier7];
 
             if (v34)
             {
@@ -1085,12 +1085,12 @@ LABEL_57:
                 _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Current PHPerson matched as the inferred Me Person, setting it as mePerson", buf, 2u);
               }
 
-              v18 = 1;
+              isMe2 = 1;
             }
           }
 
-          v36 = [v8 localIdentifier];
-          v37 = [(MOPhotoManager *)self getClassificationInfo:v36];
+          localIdentifier8 = [v8 localIdentifier];
+          v37 = [(MOPhotoManager *)self getClassificationInfo:localIdentifier8];
 
           v38 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -1100,11 +1100,11 @@ LABEL_57:
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "people relationships : %@", buf, 0xCu);
           }
 
-          v39 = v101;
-          if ([v101 length])
+          v39 = displayName;
+          if ([displayName length])
           {
-            v40 = v101;
-            if (!v40)
+            givenName2 = displayName;
+            if (!givenName2)
             {
               goto LABEL_55;
             }
@@ -1112,29 +1112,29 @@ LABEL_57:
 
           else
           {
-            if (![v103 length])
+            if (![personUri length])
             {
               goto LABEL_55;
             }
 
-            v94 = v18;
+            v94 = isMe2;
             v110[0] = CNContactGivenNameKey;
             v110[1] = CNContactFamilyNameKey;
             v51 = [NSArray arrayWithObjects:v110 count:2];
             contactStore = self->_contactStore;
             v105 = 0;
-            v53 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v103 keysToFetch:v51 error:&v105];
+            v53 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:personUri keysToFetch:v51 error:&v105];
             v54 = v105;
             v55 = v54;
             v96 = v53;
             if (v53)
             {
               v88 = v54;
-              v56 = [v53 givenName];
-              v57 = v56;
-              if (v56)
+              givenName = [v53 givenName];
+              v57 = givenName;
+              if (givenName)
               {
-                v58 = v56;
+                v58 = givenName;
               }
 
               else
@@ -1142,11 +1142,11 @@ LABEL_57:
                 v58 = &stru_1003416B0;
               }
 
-              v59 = [v53 familyName];
-              v60 = v59;
-              if (v59)
+              familyName = [v53 familyName];
+              v60 = familyName;
+              if (familyName)
               {
-                v61 = v59;
+                v61 = familyName;
               }
 
               else
@@ -1161,18 +1161,18 @@ LABEL_57:
 
               if ([v64 length])
               {
-                v40 = [v53 givenName];
+                givenName2 = [v53 givenName];
               }
 
               else
               {
-                v40 = 0;
+                givenName2 = 0;
               }
 
               v68 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-              v39 = v101;
+              v39 = displayName;
               v55 = v88;
-              v18 = v94;
+              isMe2 = v94;
               if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
@@ -1187,13 +1187,13 @@ LABEL_57:
               v64 = v65;
               if (v55)
               {
-                v18 = v94;
+                isMe2 = v94;
                 if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                 {
                   [v55 description];
                   v67 = v66 = v55;
                   *buf = 138412546;
-                  v112 = v103;
+                  v112 = personUri;
                   v113 = 2112;
                   v114 = v67;
                   _os_log_error_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "Failed to fetch contact:%@ error: %@", buf, 0x16u);
@@ -1204,52 +1204,52 @@ LABEL_57:
 
               else
               {
-                v18 = v94;
+                isMe2 = v94;
                 if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v112 = v103;
+                  v112 = personUri;
                   _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "No contact found for URI : %@", buf, 0xCu);
                 }
               }
 
-              v40 = 0;
+              givenName2 = 0;
             }
 
-            if (!v40)
+            if (!givenName2)
             {
 LABEL_55:
-              if ([v102 length])
+              if ([name length])
               {
                 v69 = +[NSCharacterSet whitespaceCharacterSet];
-                v70 = [v102 stringByTrimmingCharactersInSet:v69];
+                v70 = [name stringByTrimmingCharactersInSet:v69];
 
                 v71 = [v70 componentsSeparatedByString:@" "];
-                v40 = [v71 firstObject];
+                givenName2 = [v71 firstObject];
 
                 v72 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
                 if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v112 = v40;
+                  v112 = givenName2;
                   _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "Using fallback resolved name from person.name: %@", buf, 0xCu);
                 }
               }
 
               else
               {
-                v40 = 0;
+                givenName2 = 0;
               }
             }
           }
 
-          if ([v40 length])
+          if ([givenName2 length])
           {
             v73 = [MOPerson alloc];
-            v74 = [v8 localIdentifier];
-            if ([v103 length])
+            localIdentifier9 = [v8 localIdentifier];
+            if ([personUri length])
             {
-              v75 = v103;
+              v75 = personUri;
             }
 
             else
@@ -1257,20 +1257,20 @@ LABEL_55:
               v75 = 0;
             }
 
-            v76 = [v8 type];
-            v77 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
-            if (((v77 == 0) & ~v18) != 0)
+            type2 = [v8 type];
+            suggestedMePersonIdentifier4 = [(MOPhotoManager *)self suggestedMePersonIdentifier];
+            if (((suggestedMePersonIdentifier4 == 0) & ~isMe2) != 0)
             {
-              v79 = v76 == 1;
-              v80 = [(MOPhotoManager *)self mePerson];
-              LOBYTE(v86) = v80 != 0;
-              v78 = [(MOPerson *)v73 initWithLocalIdentifier:v74 name:v40 contactIdentifier:v75 family:0 isPHPersonTypeImportant:v79 isMePerson:0 mePersonIdentified:0.0 personRelationships:0.0 priorityScore:v86 significanceScore:v37];
+              v79 = type2 == 1;
+              mePerson4 = [(MOPhotoManager *)self mePerson];
+              LOBYTE(v86) = mePerson4 != 0;
+              v78 = [(MOPerson *)v73 initWithLocalIdentifier:localIdentifier9 name:givenName2 contactIdentifier:v75 family:0 isPHPersonTypeImportant:v79 isMePerson:0 mePersonIdentified:0.0 personRelationships:0.0 priorityScore:v86 significanceScore:v37];
             }
 
             else
             {
               LOBYTE(v86) = 1;
-              v78 = [(MOPerson *)v73 initWithLocalIdentifier:v74 name:v40 contactIdentifier:v75 family:0 isPHPersonTypeImportant:v76 == 1 isMePerson:v18 mePersonIdentified:0.0 personRelationships:0.0 priorityScore:v86 significanceScore:v37];
+              v78 = [(MOPerson *)v73 initWithLocalIdentifier:localIdentifier9 name:givenName2 contactIdentifier:v75 family:0 isPHPersonTypeImportant:type2 == 1 isMePerson:isMe2 mePersonIdentified:0.0 personRelationships:0.0 priorityScore:v86 significanceScore:v37];
             }
 
             [(MOPerson *)v78 setSourceEventAccessType:4];
@@ -1286,36 +1286,36 @@ LABEL_55:
         {
           [v91 localIdentifier];
           v104 = v100 = i;
-          v41 = [v8 type];
-          v42 = [v8 contactMatchingDictionary];
-          v43 = [v42 description];
-          v44 = [v8 displayName];
-          v45 = [v8 personUri];
-          v46 = [v8 faceCount];
+          type3 = [v8 type];
+          contactMatchingDictionary2 = [v8 contactMatchingDictionary];
+          v43 = [contactMatchingDictionary2 description];
+          displayName2 = [v8 displayName];
+          personUri2 = [v8 personUri];
+          faceCount2 = [v8 faceCount];
           v47 = v39;
-          v48 = [v8 isVerified];
-          v49 = [v8 verifiedType];
-          v50 = [v8 detectionType];
+          isVerified2 = [v8 isVerified];
+          verifiedType2 = [v8 verifiedType];
+          detectionType2 = [v8 detectionType];
           *buf = 138414338;
           v112 = v104;
           v113 = 2048;
-          v114 = v41;
+          v114 = type3;
           v115 = 2112;
           v116 = v43;
           v117 = 2112;
-          *v118 = v44;
+          *v118 = displayName2;
           *&v118[8] = 2112;
-          *&v118[10] = v45;
+          *&v118[10] = personUri2;
           *&v118[18] = 2048;
-          *&v118[20] = v46;
+          *&v118[20] = faceCount2;
           *&v118[28] = 1024;
-          *&v118[30] = v48;
+          *&v118[30] = isVerified2;
           v39 = v47;
           v119 = 2048;
-          v120 = v49;
-          self = v90;
+          v120 = verifiedType2;
+          self = selfCopy;
           v121 = 1024;
-          v122 = v50;
+          v122 = detectionType2;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "Asset : %@, skipping as type : %ld, contactMatchingDictionary : %@, displayName : %@, personURI : %@, faceCount : %ld, verified : %d, verifiedType : %ld, detectionType : %hd", buf, 0x54u);
 
           i = v100;
@@ -1337,9 +1337,9 @@ LABEL_69:
   {
     if (v83)
     {
-      v84 = [v89 allObjects];
+      allObjects = [v89 allObjects];
       *buf = 138412290;
-      v112 = v84;
+      v112 = allObjects;
       _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_INFO, "people names from current asset : %@ ", buf, 0xCu);
     }
   }
@@ -1353,21 +1353,21 @@ LABEL_69:
   return v89;
 }
 
-- (void)_fetchCuratedPhotosFromHighlights:(id)a3 StartDate:(id)a4 EndDate:(id)a5 BundleInterfaceType:(unint64_t)a6 Locations:(id)a7 IsLocationCheckMandatory:(BOOL)a8 handler:(id)a9
+- (void)_fetchCuratedPhotosFromHighlights:(id)highlights StartDate:(id)date EndDate:(id)endDate BundleInterfaceType:(unint64_t)type Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler
 {
-  v62 = a8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v64 = a7;
-  v65 = a9;
+  mandatoryCopy = mandatory;
+  highlightsCopy = highlights;
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v15 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v13;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = endDateCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "#photoscuration, fetchCuratedPhotosFromHighlights, startDate, %@, endDate, %@", buf, 0x16u);
   }
 
@@ -1376,7 +1376,7 @@ LABEL_69:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  obj = v12;
+  obj = highlightsCopy;
   v73 = [obj countByEnumeratingWithState:&v105 objects:v120 count:16];
   if (v73)
   {
@@ -1400,37 +1400,37 @@ LABEL_69:
 
         v75 = v16;
         v18 = *(*(&v105 + 1) + 8 * v16);
-        v19 = [(MOPhotoManager *)self photoLibrary];
-        v79 = [v19 librarySpecificFetchOptions];
+        photoLibrary = [(MOPhotoManager *)self photoLibrary];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-        [v79 setIncludeGuestAssets:1];
+        [librarySpecificFetchOptions setIncludeGuestAssets:1];
         v119[0] = v71;
         v119[1] = v70;
         v119[2] = v69;
         v119[3] = v68;
         v119[4] = v67;
         v20 = [NSArray arrayWithObjects:v119 count:5];
-        [v79 setFetchPropertySets:v20];
+        [librarySpecificFetchOptions setFetchPropertySets:v20];
 
-        [v79 setShouldPrefetchCount:1];
-        [v79 setHighlightCurationType:1];
+        [librarySpecificFetchOptions setShouldPrefetchCount:1];
+        [librarySpecificFetchOptions setHighlightCurationType:1];
         v104 = 0;
-        v77 = [PHAsset fetchSummaryCurationForHighlight:v18 fetchOptions:v79 allowsOnDemand:1 error:&v104];
+        v77 = [PHAsset fetchSummaryCurationForHighlight:v18 fetchOptions:librarySpecificFetchOptions allowsOnDemand:1 error:&v104];
         v76 = v104;
-        v21 = [v77 fetchError];
-        v22 = (v21 | v76) != 0;
+        fetchError = [v77 fetchError];
+        v22 = (fetchError | v76) != 0;
 
         if (v22)
         {
           v23 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v18 localIdentifier];
-            v25 = [v77 fetchError];
+            localIdentifier = [v18 localIdentifier];
+            fetchError2 = [v77 fetchError];
             *buf = 138412546;
-            *&buf[4] = v24;
+            *&buf[4] = localIdentifier;
             *&buf[12] = 2112;
-            *&buf[14] = v25;
+            *&buf[14] = fetchError2;
             _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "#photoscuration, fetching curated assets for highlight, %@, hit error, %@", buf, 0x16u);
           }
         }
@@ -1444,9 +1444,9 @@ LABEL_69:
           {
             if (v27)
             {
-              v39 = [v18 localIdentifier];
+              localIdentifier2 = [v18 localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v39;
+              *&buf[4] = localIdentifier2;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "#photoscuration, fetching curated assets for highlight, %@, asset count is 0", buf, 0xCu);
             }
           }
@@ -1455,10 +1455,10 @@ LABEL_69:
           {
             if (v27)
             {
-              v28 = [v18 localIdentifier];
+              localIdentifier3 = [v18 localIdentifier];
               v29 = [v77 count];
               *buf = 138412546;
-              *&buf[4] = v28;
+              *&buf[4] = localIdentifier3;
               *&buf[12] = 2048;
               *&buf[14] = v29;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "#photoscuration, fetching curated assets successful for highlight, %@, asset count, %lu", buf, 0x16u);
@@ -1484,8 +1484,8 @@ LABEL_69:
 
                   v33 = *(*(&v100 + 1) + 8 * i);
                   [v33 fetchPropertySetsIfNeeded];
-                  v34 = [v33 creationDate];
-                  v35 = [v34 betweenDate:v13 andDate:v14];
+                  creationDate = [v33 creationDate];
+                  v35 = [creationDate betweenDate:dateCopy andDate:endDateCopy];
 
                   if (v35)
                   {
@@ -1493,12 +1493,12 @@ LABEL_69:
                     v36 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
                     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
                     {
-                      v37 = [v33 localIdentifier];
-                      v38 = [v33 creationDate];
+                      localIdentifier4 = [v33 localIdentifier];
+                      creationDate2 = [v33 creationDate];
                       *buf = 138412546;
-                      *&buf[4] = v37;
+                      *&buf[4] = localIdentifier4;
                       *&buf[12] = 2112;
-                      *&buf[14] = v38;
+                      *&buf[14] = creationDate2;
                       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "#photoscuration, fetched asset within timerange identifier, %@, creationDate, %@", buf, 0x16u);
                     }
                   }
@@ -1524,19 +1524,19 @@ LABEL_69:
 
   if ([v81 count])
   {
-    v40 = [(MOPhotoManager *)self configurationManager];
-    v41 = v40;
-    if (a6 == 7)
+    configurationManager = [(MOPhotoManager *)self configurationManager];
+    v41 = configurationManager;
+    if (type == 7)
     {
-      [v40 getDoubleSettingForKey:@"Photos_DistanceFromHomeThreshold" withFallback:75.0];
+      [configurationManager getDoubleSettingForKey:@"Photos_DistanceFromHomeThreshold" withFallback:75.0];
     }
 
     else
     {
-      [v40 getDoubleSettingForKey:@"Photos_DistanceFromDefaultThreshold" withFallback:200.0];
+      [configurationManager getDoubleSettingForKey:@"Photos_DistanceFromDefaultThreshold" withFallback:200.0];
     }
 
-    v78 = [(MOPhotoManager *)self _getPhotosByAssetProperties:v81 UserLocations:v64 IsLocationCheckMandatory:v62 MinDistance:?];
+    v78 = [(MOPhotoManager *)self _getPhotosByAssetProperties:v81 UserLocations:locationsCopy IsLocationCheckMandatory:mandatoryCopy MinDistance:?];
 
     v44 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
@@ -1581,9 +1581,9 @@ LABEL_69:
               v52 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
               if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
               {
-                v53 = [v51 uuid];
+                uuid = [v51 uuid];
                 *buf = 138412290;
-                *&buf[4] = v53;
+                *&buf[4] = uuid;
                 _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "#photoscuration, asset has not completed scene or face processing yet, %@", buf, 0xCu);
               }
             }
@@ -1648,8 +1648,8 @@ LABEL_69:
       v82[2] = __133__MOPhotoManager__fetchCuratedPhotosFromHighlights_StartDate_EndDate_BundleInterfaceType_Locations_IsLocationCheckMandatory_handler___block_invoke_2;
       v82[3] = &unk_100337E98;
       v82[4] = &v84;
-      [(MOPhotoManager *)self _fetchPhotosTraitsFromAssets:v58 StartDate:v13 EndDate:v14 handler:v82];
-      (*(v65 + 2))(v65, *(*&buf[8] + 40), v91[5], v85[5], 0);
+      [(MOPhotoManager *)self _fetchPhotosTraitsFromAssets:v58 StartDate:dateCopy EndDate:endDateCopy handler:v82];
+      (*(handlerCopy + 2))(handlerCopy, *(*&buf[8] + 40), v91[5], v85[5], 0);
       _Block_object_dispose(&v84, 8);
 
       _Block_object_dispose(&v90, 8);
@@ -1667,15 +1667,15 @@ LABEL_69:
       if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        *&buf[4] = v13;
+        *&buf[4] = dateCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v14;
+        *&buf[14] = endDateCopy;
         *&buf[22] = 2112;
         v110 = v60;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "#photoscuration, fetchCuratedPhotosFromHighlights, start date, %@, end date, %@, error, %@", buf, 0x20u);
       }
 
-      (*(v65 + 2))(v65, 0, 0, 0, v60);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v60);
     }
   }
 
@@ -1690,15 +1690,15 @@ LABEL_69:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = v13;
+      *&buf[4] = dateCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v14;
+      *&buf[14] = endDateCopy;
       *&buf[22] = 2112;
       v110 = v78;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "#photoscuration, fetchCuratedPhotosFromHighlights, start date, %@, end date, %@, error, %@", buf, 0x20u);
     }
 
-    (*(v65 + 2))(v65, 0, 0, 0, v78);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v78);
   }
 }
 
@@ -1718,20 +1718,20 @@ void __133__MOPhotoManager__fetchCuratedPhotosFromHighlights_StartDate_EndDate_B
 
 - (id)getTraitsOverrideArray
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __40__MOPhotoManager_getTraitsOverrideArray__block_invoke;
   block[3] = &unk_100335F40;
-  block[4] = v2;
+  block[4] = selfCopy;
   if (getTraitsOverrideArray_onceToken != -1)
   {
     dispatch_once(&getTraitsOverrideArray_onceToken, block);
   }
 
   v3 = getTraitsOverrideArray_traitsOverrideArray;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1751,34 +1751,34 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_fetchPhotosTraitsFromAssets:(id)a3 StartDate:(id)a4 EndDate:(id)a5 handler:(id)a6
+- (void)_fetchPhotosTraitsFromAssets:(id)assets StartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  assetsCopy = assets;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v70 = v10;
+    v70 = dateCopy;
     v71 = 2112;
-    v72 = v11;
+    v72 = endDateCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets, startDate, %@, endDate, %@", buf, 0x16u);
   }
 
   v14 = objc_opt_new();
-  if ([v9 count])
+  if ([assetsCopy count])
   {
-    v48 = v12;
-    v49 = v11;
-    v50 = v10;
+    v48 = handlerCopy;
+    v49 = endDateCopy;
+    v50 = dateCopy;
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v47 = v9;
-    v15 = v9;
+    v47 = assetsCopy;
+    v15 = assetsCopy;
     v16 = [v15 countByEnumeratingWithState:&v63 objects:v77 count:16];
     if (v16)
     {
@@ -1794,15 +1794,15 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
           }
 
           v20 = *(*(&v63 + 1) + 8 * i);
-          v21 = [v20 uuid];
-          [v14 addObject:v21];
+          uuid = [v20 uuid];
+          [v14 addObject:uuid];
 
           v22 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
-            v23 = [v20 uuid];
+            uuid2 = [v20 uuid];
             *buf = 138412290;
-            v70 = v23;
+            v70 = uuid2;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets, asset uuid, %@", buf, 0xCu);
           }
         }
@@ -1825,8 +1825,8 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
       v28 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v27];
 
       v29 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-      v11 = v49;
-      v10 = v50;
+      endDateCopy = v49;
+      dateCopy = v50;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
@@ -1838,14 +1838,14 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets, start date, %@, end date, %@, error, %@", buf, 0x20u);
       }
 
-      v12[2](v12, 0, v26);
-      v9 = v47;
+      handlerCopy[2](handlerCopy, 0, v26);
+      assetsCopy = v47;
       goto LABEL_48;
     }
 
     v31 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-    v11 = v49;
-    v10 = v50;
+    endDateCopy = v49;
+    dateCopy = v50;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
@@ -1857,16 +1857,16 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets, startDate, %@, endDate, %@, traits, %@", buf, 0x20u);
     }
 
-    v32 = [(MOPhotoManager *)self getTraitsOverrideArray];
-    obj = v32;
-    if (v32)
+    getTraitsOverrideArray = [(MOPhotoManager *)self getTraitsOverrideArray];
+    obj = getTraitsOverrideArray;
+    if (getTraitsOverrideArray)
     {
       v52 = v25;
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v33 = [v32 countByEnumeratingWithState:&v58 objects:v68 count:16];
+      v33 = [getTraitsOverrideArray countByEnumeratingWithState:&v58 objects:v68 count:16];
       if (v33)
       {
         v34 = v33;
@@ -1918,9 +1918,9 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
         }
 
         while (v34);
-        v11 = v49;
-        v10 = v50;
-        v12 = v48;
+        endDateCopy = v49;
+        dateCopy = v50;
+        handlerCopy = v48;
         if (v35)
         {
           v44 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
@@ -1937,7 +1937,7 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
           }
 
           v45 = [obj copy];
-          v9 = v47;
+          assetsCopy = v47;
           v25 = v52;
           goto LABEL_47;
         }
@@ -1949,9 +1949,9 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v70 = v10;
+        v70 = dateCopy;
         v71 = 2112;
-        v72 = v11;
+        v72 = endDateCopy;
         v73 = 2112;
         v74 = v52;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets, startDate, %@, endDate, %@, final traits (no override), %@", buf, 0x20u);
@@ -1959,9 +1959,9 @@ void __40__MOPhotoManager_getTraitsOverrideArray__block_invoke(uint64_t a1)
     }
 
     v45 = [v25 copy];
-    v9 = v47;
+    assetsCopy = v47;
 LABEL_47:
-    (v12)[2](v12, v45, 0);
+    (handlerCopy)[2](handlerCopy, v45, 0);
 
     v28 = obj;
 LABEL_48:
@@ -1976,64 +1976,64 @@ LABEL_48:
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "#traits, fetchPhotosTraitsFromAssets early exit because asset count is zero", buf, 2u);
   }
 
-  v12[2](v12, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
 LABEL_49:
 }
 
-- (void)_fetchUnprocessedPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 Locations:(id)a5 IsLocationCheckMandatory:(BOOL)a6 handler:(id)a7
+- (void)_fetchUnprocessedPhotosBetweenStartDate:(id)date EndDate:(id)endDate Locations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory handler:(id)handler
 {
-  v75 = a6;
-  v82 = a3;
-  v83 = a4;
-  v78 = a5;
-  v81 = a7;
+  mandatoryCopy = mandatory;
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v82;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v83;
+    *&buf[14] = endDateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#customcuration,fetchUnprocessedPhotosBetweenStartDate,startDate,%@, endDate,%@", buf, 0x16u);
   }
 
-  v12 = [(MOPhotoManager *)self photoLibrary];
-  v86 = [v12 librarySpecificFetchOptions];
+  photoLibrary = [(MOPhotoManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v113[0] = PHAssetPropertySetSceneAnalysis;
   v113[1] = PHAssetPropertySetMediaAnalysis;
   v113[2] = PHAssetPropertySetAesthetic;
   v113[3] = PHAssetPropertySetSceneprint;
   v13 = [NSArray arrayWithObjects:v113 count:4];
-  [v86 setFetchPropertySets:v13];
+  [librarySpecificFetchOptions setFetchPropertySets:v13];
 
-  [v86 setShouldPrefetchCount:1];
-  [v86 setIncludeGuestAssets:1];
-  v14 = [NSPredicate predicateWithFormat:@"%K >= %@ && %K <= %@", @"creationDate", v82, @"creationDate", v83];
-  [v86 setPredicate:v14];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  endDateCopy = [NSPredicate predicateWithFormat:@"%K >= %@ && %K <= %@", @"creationDate", dateCopy, @"creationDate", endDateCopy];
+  [librarySpecificFetchOptions setPredicate:endDateCopy];
 
-  v84 = [PHAsset fetchAssetsWithOptions:v86];
-  v15 = [v84 fetchError];
+  v84 = [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions];
+  fetchError = [v84 fetchError];
 
-  v16 = v15 == 0;
+  v16 = fetchError == 0;
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v18 = v17;
   if (!v16)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v74 = [v84 fetchError];
+      fetchError2 = [v84 fetchError];
       *buf = 138412802;
-      *&buf[4] = v82;
+      *&buf[4] = dateCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v83;
+      *&buf[14] = endDateCopy;
       *&buf[22] = 2112;
-      v104 = v74;
+      v104 = fetchError2;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "#customcuration,fetchUnprocessedPhotosBetweenStartDate, start date, %@, end date, %@, fetching assets hit error, %@", buf, 0x20u);
     }
 
-    v87 = [v84 fetchError];
-    (*(v81 + 2))(v81, 0, 0, v87);
+    fetchError3 = [v84 fetchError];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, fetchError3);
     goto LABEL_77;
   }
 
@@ -2047,7 +2047,7 @@ LABEL_49:
 
   if ([v84 count])
   {
-    v87 = objc_opt_new();
+    fetchError3 = objc_opt_new();
     v85 = objc_opt_new();
     v80 = objc_opt_new();
     v77 = objc_opt_new();
@@ -2078,20 +2078,20 @@ LABEL_49:
         [v24 fetchPropertySetsIfNeeded];
         if (([v24 mediaSubtypes] & 4) == 0 && (objc_msgSend(v24, "mediaSubtypes") & 0x80000) == 0 && (objc_msgSend(v24, "mediaSubtypes") & 0x20000) == 0 && objc_msgSend(v24, "mediaType") != 3)
         {
-          v25 = [v24 importProperties];
-          if ([v25 importedBy] == 2)
+          importProperties = [v24 importProperties];
+          if ([importProperties importedBy] == 2)
           {
             goto LABEL_24;
           }
 
-          v26 = [v24 importProperties];
-          if ([v26 importedBy] == 1)
+          importProperties2 = [v24 importProperties];
+          if ([importProperties2 importedBy] == 1)
           {
             goto LABEL_23;
           }
 
-          v27 = [v24 importProperties];
-          if ([v27 importedBy] == 8)
+          importProperties3 = [v24 importProperties];
+          if ([importProperties3 importedBy] == 8)
           {
 
 LABEL_23:
@@ -2100,8 +2100,8 @@ LABEL_24:
 
           else
           {
-            v36 = [v24 importProperties];
-            v79 = [v36 importedBy] == 12;
+            importProperties4 = [v24 importProperties];
+            v79 = [importProperties4 importedBy] == 12;
 
             if (!v79)
             {
@@ -2109,24 +2109,24 @@ LABEL_24:
             }
           }
 
-          v28 = [v24 isFavorite];
-          v29 = v87;
-          if ((v28 & 1) == 0)
+          isFavorite = [v24 isFavorite];
+          v29 = fetchError3;
+          if ((isFavorite & 1) == 0)
           {
-            v30 = [v24 assetUserActivityProperties];
-            v31 = [v30 shareCount] > 0;
+            assetUserActivityProperties = [v24 assetUserActivityProperties];
+            v31 = [assetUserActivityProperties shareCount] > 0;
 
             v29 = v85;
             if (!v31)
             {
-              v32 = [v24 assetUserActivityProperties];
-              v33 = [v32 viewCount] > 2;
+              assetUserActivityProperties2 = [v24 assetUserActivityProperties];
+              v33 = [assetUserActivityProperties2 viewCount] > 2;
 
               v29 = v80;
               if (!v33)
               {
-                v34 = [v24 mediaAnalysisProperties];
-                v35 = [v34 faceCount] == 0;
+                mediaAnalysisProperties = [v24 mediaAnalysisProperties];
+                v35 = [mediaAnalysisProperties faceCount] == 0;
 
                 if (v35)
                 {
@@ -2158,7 +2158,7 @@ LABEL_37:
         v38 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
-          v39 = [v87 count];
+          v39 = [fetchError3 count];
           *buf = 134217984;
           *&buf[4] = v39;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "#customcuration,fetched %lu favorite photo", buf, 0xCu);
@@ -2201,7 +2201,7 @@ LABEL_37:
         }
 
         v48 = objc_opt_new();
-        [v48 addObjectsFromArray:v87];
+        [v48 addObjectsFromArray:fetchError3];
         [v48 addObjectsFromArray:v85];
         [v48 addObjectsFromArray:v80];
         [v48 addObjectsFromArray:v77];
@@ -2215,7 +2215,7 @@ LABEL_37:
           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "#customcuration,total asset count before location filtering,%lu", buf, 0xCu);
         }
 
-        v51 = [(MOPhotoManager *)self _getPhotosByAssetProperties:v48 UserLocations:v78 IsLocationCheckMandatory:v75 MinDistance:200.0];
+        v51 = [(MOPhotoManager *)self _getPhotosByAssetProperties:v48 UserLocations:locationsCopy IsLocationCheckMandatory:mandatoryCopy MinDistance:200.0];
         v52 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
         {
@@ -2315,7 +2315,7 @@ LABEL_37:
           [(MOPhotoManager *)self _buildCuratedAssetMap:v54 handler:v88];
           v67 = [*(*&buf[8] + 40) copy];
           v68 = [v90[5] copy];
-          (*(v81 + 2))(v81, v67, v68, 0);
+          (*(handlerCopy + 2))(handlerCopy, v67, v68, 0);
 
           _Block_object_dispose(&v89, 8);
           _Block_object_dispose(buf, 8);
@@ -2332,15 +2332,15 @@ LABEL_37:
           if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            *&buf[4] = v82;
+            *&buf[4] = dateCopy;
             *&buf[12] = 2112;
-            *&buf[14] = v83;
+            *&buf[14] = endDateCopy;
             *&buf[22] = 2112;
             v104 = v72;
             _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_INFO, "#customcuration,no photo assets to bundle after filtering, start date, %@, end date, %@, error, %@", buf, 0x20u);
           }
 
-          (*(v81 + 2))(v81, 0, 0, v72);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v72);
         }
 
         goto LABEL_77;
@@ -2351,21 +2351,21 @@ LABEL_37:
   v111 = NSLocalizedDescriptionKey;
   v112 = @"#customcuration,no unprocessed photos inside the time range";
   v69 = [NSDictionary dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-  v87 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v69];
+  fetchError3 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v69];
 
   v70 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    *&buf[4] = v82;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v83;
+    *&buf[14] = endDateCopy;
     *&buf[22] = 2112;
-    v104 = v87;
+    v104 = fetchError3;
     _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_INFO, "#customcuration,fetchUnprocessedPhotosBetweenStartDate, start date, %@, end date, %@, error, %@", buf, 0x20u);
   }
 
-  (*(v81 + 2))(v81, 0, 0, v87);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, fetchError3);
 LABEL_77:
 }
 
@@ -2383,10 +2383,10 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   *(v9 + 40) = v6;
 }
 
-- (void)_buildCuratedAssetMap:(id)a3 handler:(id)a4
+- (void)_buildCuratedAssetMap:(id)map handler:(id)handler
 {
-  v5 = a3;
-  v79 = a4;
+  mapCopy = map;
+  handlerCopy = handler;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -2400,7 +2400,7 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  obj = v5;
+  obj = mapCopy;
   v7 = [obj countByEnumeratingWithState:&v104 objects:v118 count:16];
   if (v7)
   {
@@ -2419,10 +2419,10 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         v12 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 uuid];
+          uuid = [v11 uuid];
           [v11 curationScore];
           *buf = 138412546;
-          v111 = v13;
+          v111 = uuid;
           v112 = 2048;
           v113 = v14;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "#assetscore, asset, %@, score, %f", buf, 0x16u);
@@ -2431,8 +2431,8 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         [v11 curationScore];
         if (v15 <= 2.22044605e-16)
         {
-          v16 = [v11 uuid];
-          [v84 addObject:v16];
+          uuid2 = [v11 uuid];
+          [v84 addObject:uuid2];
         }
       }
 
@@ -2498,9 +2498,9 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
       while (v25);
     }
 
-    v30 = [(PHPhotoLibrary *)self->_photoLibrary photoAnalysisClient];
+    photoAnalysisClient = [(PHPhotoLibrary *)self->_photoLibrary photoAnalysisClient];
     v99 = 0;
-    v31 = [v30 requestCurationScoreByAssetUUIDForAssetUUIDs:v23 error:&v99];
+    v31 = [photoAnalysisClient requestCurationScoreByAssetUUIDForAssetUUIDs:v23 error:&v99];
     v32 = v99;
 
     v33 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
@@ -2567,8 +2567,8 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         {
           if (v31)
           {
-            v46 = [v39 uuid];
-            v42 = [v31 objectForKeyedSubscript:v46];
+            uuid3 = [v39 uuid];
+            v42 = [v31 objectForKeyedSubscript:uuid3];
 
             v47 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
             v48 = v47;
@@ -2576,13 +2576,13 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
             {
               if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
               {
-                v49 = [v39 uuid];
-                v50 = [v39 localIdentifier];
+                uuid4 = [v39 uuid];
+                localIdentifier = [v39 localIdentifier];
                 [v42 floatValue];
                 *buf = 138412802;
-                v111 = v49;
+                v111 = uuid4;
                 v112 = 2112;
-                v113 = v50;
+                v113 = localIdentifier;
                 v114 = 2048;
                 v115 = v51;
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "#assetscore, onDemandCurationScore for asset with uuid %@ and localIdentifier %@ is %f", buf, 0x20u);
@@ -2597,12 +2597,12 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
             {
               if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
-                v52 = [v39 uuid];
-                v53 = [v39 localIdentifier];
+                uuid5 = [v39 uuid];
+                localIdentifier2 = [v39 localIdentifier];
                 *buf = 138412546;
-                v111 = v52;
+                v111 = uuid5;
                 v112 = 2112;
-                v113 = v53;
+                v113 = localIdentifier2;
                 _os_log_error_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "#assetscore, buildCuratedAssetMap, invalid score recieved for asset with uuid %@ and localIdentifier %@", buf, 0x16u);
               }
             }
@@ -2628,13 +2628,13 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
           v42 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
-            v43 = [v39 uuid];
-            v44 = [v39 localIdentifier];
+            uuid6 = [v39 uuid];
+            localIdentifier3 = [v39 localIdentifier];
             [v39 curationScore];
             *buf = 138412802;
-            v111 = v43;
+            v111 = uuid6;
             v112 = 2112;
-            v113 = v44;
+            v113 = localIdentifier3;
             v114 = 2048;
             v115 = v45;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "#assetscore, persistedCurationScore for asset with uuid %@ and localIdentifier %@ is %f", buf, 0x20u);
@@ -2685,10 +2685,10 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         v63 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
-          v64 = [v62 localIdentifier];
+          localIdentifier4 = [v62 localIdentifier];
           v65 = [v57 objectForKey:v62];
           *buf = 138412546;
-          v111 = v64;
+          v111 = localIdentifier4;
           v112 = 2112;
           v113 = v65;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "#assetscore, buildCuratedAssetMap, assetsInfo, asset.localIdentifier=%@ score=%@", buf, 0x16u);
@@ -2724,12 +2724,12 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         v72 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
         {
-          v73 = [v71 localIdentifier];
-          v74 = [v71 uuid];
+          localIdentifier5 = [v71 localIdentifier];
+          uuid7 = [v71 uuid];
           *buf = 138412546;
-          v111 = v73;
+          v111 = localIdentifier5;
           v112 = 2112;
-          v113 = v74;
+          v113 = uuid7;
           _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "#assetscore, buildCuratedAssetMap, sortedKeysSubArray, asset.localIdentifier=%@, asset.uuid=%@", buf, 0x16u);
         }
       }
@@ -2742,12 +2742,12 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
 
   v75 = [v57 copy];
   v76 = [v66 copy];
-  v79[2](v79, v75, v76);
+  handlerCopy[2](handlerCopy, v75, v76);
 }
 
-- (void)_scheduleMediaAnalysisDeferredProcessing:(id)a3
+- (void)_scheduleMediaAnalysisDeferredProcessing:(id)processing
 {
-  v4 = a3;
+  processingCopy = processing;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = objc_opt_new();
@@ -2755,7 +2755,7 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v8 = v4;
+  v8 = processingCopy;
   v9 = [v8 countByEnumeratingWithState:&v84 objects:v97 count:16];
   if (v9)
   {
@@ -2847,9 +2847,9 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
           v31 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
           {
-            v32 = [v30 localIdentifier];
+            localIdentifier = [v30 localIdentifier];
             *buf = 138412290;
-            v92 = v32;
+            v92 = localIdentifier;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "#MADRequest, sceneAndFaceAnalysisPending, asset, %@", buf, 0xCu);
           }
         }
@@ -2912,9 +2912,9 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
           v44 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
           {
-            v45 = [v43 localIdentifier];
+            localIdentifier2 = [v43 localIdentifier];
             *buf = 138412290;
-            v92 = v45;
+            v92 = localIdentifier2;
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "#MADRequest, sceneAnalysisPending, asset, %@", buf, 0xCu);
           }
         }
@@ -2977,9 +2977,9 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
           v57 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
           {
-            v58 = [v56 localIdentifier];
+            localIdentifier3 = [v56 localIdentifier];
             *buf = 138412290;
-            v92 = v58;
+            v92 = localIdentifier3;
             _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "#MADRequest, faceAnalysisPending, asset, %@", buf, 0xCu);
           }
         }
@@ -2997,16 +2997,16 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   }
 }
 
-- (BOOL)_doesAssetHaveSceneProcessing:(id)a3
+- (BOOL)_doesAssetHaveSceneProcessing:(id)processing
 {
-  v3 = a3;
-  v4 = [v3 sceneAnalysisProperties];
-  v5 = [v4 sceneAnalysisVersion];
-  if (VCPPhotosSceneProcessingVersion == v5)
+  processingCopy = processing;
+  sceneAnalysisProperties = [processingCopy sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
+  if (VCPPhotosSceneProcessingVersion == sceneAnalysisVersion)
   {
-    v6 = [v4 sceneAnalysisTimestamp];
-    v7 = [v3 adjustmentVersion];
-    v8 = [v6 isEqualToDate:v7];
+    sceneAnalysisTimestamp = [sceneAnalysisProperties sceneAnalysisTimestamp];
+    adjustmentVersion = [processingCopy adjustmentVersion];
+    v8 = [sceneAnalysisTimestamp isEqualToDate:adjustmentVersion];
   }
 
   else
@@ -3017,32 +3017,32 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   return v8;
 }
 
-- (BOOL)_doesAssetHaveFaceProcessing:(id)a3
+- (BOOL)_doesAssetHaveFaceProcessing:(id)processing
 {
-  v3 = a3;
-  v4 = [v3 faceAdjustmentVersion];
+  processingCopy = processing;
+  faceAdjustmentVersion = [processingCopy faceAdjustmentVersion];
   v5 = +[PHAsset quickClassificationFaceAdjustmentVersion];
-  if ([v4 isEqualToDate:v5])
+  if ([faceAdjustmentVersion isEqualToDate:v5])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 faceAdjustmentVersion];
-    v8 = [v3 adjustmentVersion];
-    v6 = [v7 isEqualToDate:v8];
+    faceAdjustmentVersion2 = [processingCopy faceAdjustmentVersion];
+    adjustmentVersion = [processingCopy adjustmentVersion];
+    v6 = [faceAdjustmentVersion2 isEqualToDate:adjustmentVersion];
   }
 
   return v6;
 }
 
-- (id)_calculateDistanceBetweenUserLocation:(id)a3 PhotoLocation:(id)a4
+- (id)_calculateDistanceBetweenUserLocation:(id)location PhotoLocation:(id)photoLocation
 {
   v5 = 0;
-  if (a3 && a4)
+  if (location && photoLocation)
   {
-    [a3 distanceFromLocation:a4];
+    [location distanceFromLocation:photoLocation];
     v5 = [NSNumber numberWithDouble:?];
     v4 = vars8;
   }
@@ -3050,24 +3050,24 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   return v5;
 }
 
-- (id)_getPhotosByAssetProperties:(id)a3 UserLocations:(id)a4 IsLocationCheckMandatory:(BOOL)a5 MinDistance:(double)a6
+- (id)_getPhotosByAssetProperties:(id)properties UserLocations:(id)locations IsLocationCheckMandatory:(BOOL)mandatory MinDistance:(double)distance
 {
-  v7 = a5;
-  v10 = a3;
-  v131 = a4;
+  mandatoryCopy = mandatory;
+  propertiesCopy = properties;
+  locationsCopy = locations;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v168 = [v131 count];
+    v168 = [locationsCopy count];
     v169 = 1024;
-    *v170 = v7;
+    *v170 = mandatoryCopy;
     *&v170[4] = 2048;
-    *&v170[6] = a6;
+    *&v170[6] = distance;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#assetfilter, user location count, %lu, isLocationCheckMandatory, %d, minDistance, %f", buf, 0x1Cu);
   }
 
-  v124 = v7;
+  v124 = mandatoryCopy;
 
   v125 = objc_opt_new();
   v12 = objc_opt_new();
@@ -3078,10 +3078,10 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
   v161 = 0u;
   v162 = 0u;
   v163 = 0u;
-  obj = v10;
+  obj = propertiesCopy;
   v13 = [obj countByEnumeratingWithState:&v160 objects:v185 count:16];
   v135 = v12;
-  v137 = self;
+  selfCopy = self;
   if (v13)
   {
     v14 = v13;
@@ -3098,20 +3098,20 @@ void __109__MOPhotoManager__fetchUnprocessedPhotosBetweenStartDate_EndDate_Locat
         v17 = *(*(&v160 + 1) + 8 * i);
         if ([v17 mediaType] != 3 && (objc_msgSend(v17, "mediaSubtypes") & 4) == 0 && (objc_msgSend(v17, "mediaSubtypes") & 0x80000) == 0 && (objc_msgSend(v17, "mediaSubtypes") & 0x20000) == 0)
         {
-          v18 = [v17 importProperties];
-          if ([v18 importedBy] == 2)
+          importProperties = [v17 importProperties];
+          if ([importProperties importedBy] == 2)
           {
             goto LABEL_17;
           }
 
-          v19 = [v17 importProperties];
-          if ([v19 importedBy] == 1)
+          importProperties2 = [v17 importProperties];
+          if ([importProperties2 importedBy] == 1)
           {
             goto LABEL_16;
           }
 
-          v20 = [v17 importProperties];
-          if ([v20 importedBy] == 8)
+          importProperties3 = [v17 importProperties];
+          if ([importProperties3 importedBy] == 8)
           {
 
             v12 = v135;
@@ -3126,34 +3126,34 @@ LABEL_18:
               goto LABEL_24;
             }
 
-            v22 = [v17 localIdentifier];
-            v23 = [v17 creationDate];
-            v24 = [v17 mediaType];
-            v25 = [v17 mediaSubtypes];
-            v26 = [v17 importProperties];
-            v27 = [v26 importedBy];
+            localIdentifier = [v17 localIdentifier];
+            creationDate = [v17 creationDate];
+            mediaType = [v17 mediaType];
+            mediaSubtypes = [v17 mediaSubtypes];
+            importProperties4 = [v17 importProperties];
+            importedBy = [importProperties4 importedBy];
             *buf = 138413314;
-            v168 = v22;
+            v168 = localIdentifier;
             v169 = 2112;
-            *v170 = v23;
+            *v170 = creationDate;
             *&v170[8] = 2048;
-            *&v170[10] = v24;
+            *&v170[10] = mediaType;
             v171 = 2048;
-            v172 = v25;
-            self = v137;
+            v172 = mediaSubtypes;
+            self = selfCopy;
             v173 = 2048;
-            v174 = v27;
+            v174 = importedBy;
             v28 = v21;
             v29 = "#assetfilter, Accepted curated asset by properties, localIdentifier, %@, creationDate, %@, mediaType, %lu, mediaSubtypes, %lu, importProperties.importedBy, %lu";
             goto LABEL_23;
           }
 
-          v30 = [v17 importProperties];
-          v31 = [v30 importedBy];
+          importProperties5 = [v17 importProperties];
+          importedBy2 = [importProperties5 importedBy];
 
-          self = v137;
+          self = selfCopy;
           v12 = v135;
-          if (v31 == 12)
+          if (importedBy2 == 12)
           {
             goto LABEL_18;
           }
@@ -3165,23 +3165,23 @@ LABEL_18:
           goto LABEL_24;
         }
 
-        v22 = [v17 localIdentifier];
-        v23 = [v17 creationDate];
-        v32 = [v17 mediaType];
-        v33 = [v17 mediaSubtypes];
-        v26 = [v17 importProperties];
-        v34 = [v26 importedBy];
+        localIdentifier = [v17 localIdentifier];
+        creationDate = [v17 creationDate];
+        mediaType2 = [v17 mediaType];
+        mediaSubtypes2 = [v17 mediaSubtypes];
+        importProperties4 = [v17 importProperties];
+        importedBy3 = [importProperties4 importedBy];
         *buf = 138413314;
-        v168 = v22;
+        v168 = localIdentifier;
         v169 = 2112;
-        *v170 = v23;
+        *v170 = creationDate;
         *&v170[8] = 2048;
-        *&v170[10] = v32;
+        *&v170[10] = mediaType2;
         v171 = 2048;
-        v172 = v33;
-        self = v137;
+        v172 = mediaSubtypes2;
+        self = selfCopy;
         v173 = 2048;
-        v174 = v34;
+        v174 = importedBy3;
         v28 = v21;
         v29 = "#assetfilter, Denied curated asset by properties, localIdentifier, %@, creationDate, %@, mediaType, %lu, mediaSubtypes, %lu, importProperties.importedBy, %lu";
 LABEL_23:
@@ -3197,14 +3197,14 @@ LABEL_24:
     while (v14);
   }
 
-  v35 = [v131 count];
+  v35 = [locationsCopy count];
   log = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v36 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
   if (v35)
   {
     if (v36)
     {
-      v37 = [v131 count];
+      v37 = [locationsCopy count];
       *buf = 134217984;
       v168 = v37;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "#assetfilter, User location(s) available for checking, count, %lu", buf, 0xCu);
@@ -3231,27 +3231,27 @@ LABEL_24:
           }
 
           v41 = *(*(&v156 + 1) + 8 * j);
-          v42 = [v41 location];
+          location = [v41 location];
 
-          if (v42)
+          if (location)
           {
             v132 = j;
             v43 = [RTLocation alloc];
-            v44 = [v41 location];
-            [v44 coordinate];
+            location2 = [v41 location];
+            [location2 coordinate];
             v46 = v45;
-            v47 = [v41 location];
-            [v47 coordinate];
+            location3 = [v41 location];
+            [location3 coordinate];
             v49 = v48;
-            v50 = [v41 location];
-            [v50 horizontalAccuracy];
+            location4 = [v41 location];
+            [location4 horizontalAccuracy];
             v138 = [v43 initWithLatitude:0 longitude:v46 horizontalUncertainty:v49 date:v51];
 
             v154 = 0u;
             v155 = 0u;
             v152 = 0u;
             v153 = 0u;
-            v139 = v131;
+            v139 = locationsCopy;
             v52 = [v139 countByEnumeratingWithState:&v152 objects:v183 count:16];
             if (!v52)
             {
@@ -3278,9 +3278,9 @@ LABEL_24:
                     goto LABEL_63;
                   }
 
-                  v58 = [v41 localIdentifier];
+                  localIdentifier2 = [v41 localIdentifier];
                   *buf = 138412290;
-                  v168 = v58;
+                  v168 = localIdentifier2;
                   v59 = v57;
                   v60 = "#assetfilter, Photo asset, %@, has already passed location check";
                   v61 = 12;
@@ -3292,11 +3292,11 @@ LABEL_58:
                 v57 = [(MOPhotoManager *)self _calculateDistanceBetweenUserLocation:v56 PhotoLocation:v138];
                 if (!v57)
                 {
-                  v58 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-                  if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
+                  localIdentifier2 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
+                  if (os_log_type_enabled(localIdentifier2, OS_LOG_TYPE_INFO))
                   {
                     *buf = 0;
-                    v59 = v58;
+                    v59 = localIdentifier2;
                     v60 = "#assetfilter, Photo asset, distanceInMeters is nil";
                     v61 = 2;
                     goto LABEL_58;
@@ -3309,23 +3309,23 @@ LABEL_59:
 
                 [v56 horizontalUncertainty];
                 v63 = v62 + v62;
-                if (v63 >= a6)
+                if (v63 >= distance)
                 {
-                  v64 = v63;
+                  distanceCopy = v63;
                 }
 
                 else
                 {
-                  v64 = a6;
+                  distanceCopy = distance;
                 }
 
-                v65 = [(MOPhotoManager *)self configurationManager];
-                [v65 getDoubleSettingForKey:@"Photos_DistanceFromDefaultMaxThreshold" withFallback:v39];
+                configurationManager = [(MOPhotoManager *)self configurationManager];
+                [configurationManager getDoubleSettingForKey:@"Photos_DistanceFromDefaultMaxThreshold" withFallback:v39];
                 v67 = v66;
 
-                if (v64 < v67)
+                if (distanceCopy < v67)
                 {
-                  v67 = v64;
+                  v67 = distanceCopy;
                 }
 
                 v68 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
@@ -3336,18 +3336,18 @@ LABEL_59:
                   [v56 longitude];
                   v71 = v70;
                   [v56 horizontalUncertainty];
-                  v72 = a6;
+                  distanceCopy2 = distance;
                   v73 = v39;
                   v75 = v74;
-                  v76 = [v41 localIdentifier];
-                  v77 = [v41 location];
-                  [v77 coordinate];
+                  localIdentifier3 = [v41 localIdentifier];
+                  location5 = [v41 location];
+                  [location5 coordinate];
                   v79 = v78;
-                  v80 = [v41 location];
-                  [v80 coordinate];
+                  location6 = [v41 location];
+                  [location6 coordinate];
                   v82 = v81;
-                  v83 = [v41 location];
-                  [v83 horizontalAccuracy];
+                  location7 = [v41 location];
+                  [location7 horizontalAccuracy];
                   v85 = v84;
                   [v57 doubleValue];
                   *buf = 134547715;
@@ -3357,9 +3357,9 @@ LABEL_59:
                   *&v170[8] = 2048;
                   *&v170[10] = v75;
                   v39 = v73;
-                  a6 = v72;
+                  distance = distanceCopy2;
                   v171 = 2112;
-                  v172 = v76;
+                  v172 = localIdentifier3;
                   v173 = 2053;
                   v174 = v79;
                   v175 = 2053;
@@ -3378,37 +3378,37 @@ LABEL_59:
                 [v57 doubleValue];
                 if (v87 < v67)
                 {
-                  self = v137;
+                  self = selfCopy;
                   if (([v12 containsObject:v41] & 1) == 0)
                   {
                     [v12 addObject:v41];
                   }
 
-                  v58 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-                  if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
+                  localIdentifier2 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
+                  if (os_log_type_enabled(localIdentifier2, OS_LOG_TYPE_INFO))
                   {
-                    v88 = [v41 localIdentifier];
+                    localIdentifier4 = [v41 localIdentifier];
                     [v57 doubleValue];
                     *buf = 138412802;
-                    v168 = v88;
+                    v168 = localIdentifier4;
                     v169 = 2048;
                     *v170 = v89;
                     *&v170[8] = 2048;
                     *&v170[10] = v67;
-                    _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_INFO, "#assetfilter, Adding photo asset, %@, since distanceInMeters, %f is cleared, distanceThreshold, %f", buf, 0x20u);
+                    _os_log_impl(&_mh_execute_header, localIdentifier2, OS_LOG_TYPE_INFO, "#assetfilter, Adding photo asset, %@, since distanceInMeters, %f is cleared, distanceThreshold, %f", buf, 0x20u);
                   }
 
                   goto LABEL_59;
                 }
 
                 v90 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
-                self = v137;
+                self = selfCopy;
                 if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
                 {
-                  v91 = [v41 localIdentifier];
+                  localIdentifier5 = [v41 localIdentifier];
                   [v57 doubleValue];
                   *buf = 138412802;
-                  v168 = v91;
+                  v168 = localIdentifier5;
                   v169 = 2048;
                   *v170 = v92;
                   *&v170[8] = 2048;
@@ -3436,9 +3436,9 @@ LABEL_65:
           v93 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
           {
-            v94 = [v41 localIdentifier];
+            localIdentifier6 = [v41 localIdentifier];
             *buf = 138412290;
-            v168 = v94;
+            v168 = localIdentifier6;
             _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_INFO, "#assetfilter, Filtering out, %@, location object is nil", buf, 0xCu);
           }
 
@@ -3491,25 +3491,25 @@ LABEL_68:
       }
 
       v100 = *(*(&v148 + 1) + 8 * m);
-      v101 = [v100 location];
-      if (v101 && [v131 count])
+      location8 = [v100 location];
+      if (location8 && [locationsCopy count])
       {
 
         continue;
       }
 
-      v102 = [v100 importProperties];
-      if ([v102 importedBy] == 2)
+      importProperties6 = [v100 importProperties];
+      if ([importProperties6 importedBy] == 2)
       {
       }
 
       else
       {
-        v103 = [v100 importProperties];
-        v104 = [v103 importedBy];
+        importProperties7 = [v100 importProperties];
+        importedBy4 = [importProperties7 importedBy];
 
         v12 = v135;
-        if (v104 != 1)
+        if (importedBy4 != 1)
         {
           continue;
         }
@@ -3518,9 +3518,9 @@ LABEL_68:
       v105 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v105, OS_LOG_TYPE_INFO))
       {
-        v106 = [v100 localIdentifier];
+        localIdentifier7 = [v100 localIdentifier];
         *buf = 138412290;
-        v168 = v106;
+        v168 = localIdentifier7;
         _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_INFO, "#assetfilter, Photo asset, %@, adding photo as fallback", buf, 0xCu);
       }
 
@@ -3560,9 +3560,9 @@ LABEL_92:
           v113 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v113, OS_LOG_TYPE_INFO))
           {
-            v114 = [v112 localIdentifier];
+            localIdentifier8 = [v112 localIdentifier];
             *buf = 138412290;
-            v168 = v114;
+            v168 = localIdentifier8;
             _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_INFO, "#assetfilter, filteredInAsset, %@", buf, 0xCu);
           }
 
@@ -3606,9 +3606,9 @@ LABEL_92:
             v121 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
             if (os_log_type_enabled(v121, OS_LOG_TYPE_INFO))
             {
-              v122 = [v120 localIdentifier];
+              localIdentifier9 = [v120 localIdentifier];
               *buf = 138412290;
-              v168 = v122;
+              v168 = localIdentifier9;
               _os_log_impl(&_mh_execute_header, v121, OS_LOG_TYPE_INFO, "#assetfilter, fallbackResult, %@", buf, 0xCu);
             }
 
@@ -3629,16 +3629,16 @@ LABEL_92:
   return v133;
 }
 
-- (void)_fetchSharedPhotosBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)_fetchSharedPhotosBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v11 = objc_opt_new();
-  v39 = self;
+  selfCopy = self;
   [v11 setPhotoLibrary:self->_syndicationPhotoLibrary];
-  v12 = [NSPredicate predicateWithFormat:@"dateCreated > %@", v8];
-  v53[0] = v12;
+  dateCopy = [NSPredicate predicateWithFormat:@"dateCreated > %@", dateCopy];
+  v53[0] = dateCopy;
   v13 = [NSPredicate predicateWithFormat:@"additionalAttributes.importedByBundleIdentifier == %@", @"com.apple.MobileSMS"];
   v53[1] = v13;
   v14 = [NSArray arrayWithObjects:v53 count:2];
@@ -3652,63 +3652,63 @@ LABEL_92:
     v51 = NSLocalizedDescriptionKey;
     v52 = @"photo fetch result is nil";
     v22 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-    v21 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v22];
+    fetchError3 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v22];
 
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v46 = v8;
+      countOfAssetCollections = dateCopy;
       v47 = 2112;
-      v48 = v9;
+      v48 = endDateCopy;
       v49 = 2112;
-      v50 = v21;
+      v50 = fetchError3;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "fetch result is nil from photo library, start date, %@, end date, %@, error, %@", buf, 0x20u);
     }
 
     goto LABEL_10;
   }
 
-  v18 = [v17 fetchError];
+  fetchError = [v17 fetchError];
 
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v20 = v19;
-  if (v18)
+  if (fetchError)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v34 = [v17 fetchError];
+      fetchError2 = [v17 fetchError];
       *buf = 138412802;
-      v46 = v34;
+      countOfAssetCollections = fetchError2;
       v47 = 2112;
-      v48 = v8;
+      v48 = dateCopy;
       v49 = 2112;
-      v50 = v9;
+      v50 = endDateCopy;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "fetch shared photos from photo library hit error, %@, start date, %@, end date, %@", buf, 0x20u);
     }
 
-    v21 = [v17 fetchError];
+    fetchError3 = [v17 fetchError];
 LABEL_10:
-    v10[2](v10, &__NSArray0__struct, v21);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, fetchError3);
     goto LABEL_11;
   }
 
-  v36 = v10;
+  v36 = handlerCopy;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v46 = [v17 countOfAssetCollections];
+    countOfAssetCollections = [v17 countOfAssetCollections];
     v47 = 2112;
-    v48 = v8;
+    v48 = dateCopy;
     v49 = 2112;
-    v50 = v9;
+    v50 = endDateCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "fetch %lu shared photos from photo library, start date, %@, end date, %@", buf, 0x20u);
   }
 
-  v37 = v9;
-  v38 = v8;
+  v37 = endDateCopy;
+  v38 = dateCopy;
 
-  v21 = objc_opt_new();
+  fetchError3 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -3733,17 +3733,17 @@ LABEL_10:
         v30 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
-          v31 = [v29 localIdentifier];
-          v32 = [v29 creationDate];
+          localIdentifier = [v29 localIdentifier];
+          creationDate = [v29 creationDate];
           *buf = 138412546;
-          v46 = v31;
+          countOfAssetCollections = localIdentifier;
           v47 = 2112;
-          v48 = v32;
+          v48 = creationDate;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, ",shared photo assetid, %@, creation date, %@", buf, 0x16u);
         }
 
-        v33 = [(MOPhotoManager *)v39 _createEventFromAsset:v29];
-        [v21 addObject:v33];
+        v33 = [(MOPhotoManager *)selfCopy _createEventFromAsset:v29];
+        [fetchError3 addObject:v33];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -3752,19 +3752,19 @@ LABEL_10:
     while (v26);
   }
 
-  v10 = v36;
-  v36[2](v36, v21, 0);
-  v9 = v37;
-  v8 = v38;
+  handlerCopy = v36;
+  v36[2](v36, fetchError3, 0);
+  endDateCopy = v37;
+  dateCopy = v38;
   v17 = v35;
 LABEL_11:
 }
 
-- (void)_fetchPhotoMemoriesBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)_fetchPhotoMemoriesBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -3785,43 +3785,43 @@ LABEL_11:
     v62 = NSLocalizedDescriptionKey;
     v63 = @"photo memory fetch result is nil";
     v20 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-    v47 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
+    fetchError3 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
 
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v53 = v8;
+      v53 = dateCopy;
       v54 = 2112;
-      *v55 = v9;
+      *v55 = endDateCopy;
       *&v55[8] = 2112;
-      *v56 = v47;
+      *v56 = fetchError3;
       _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "#PhotoMemory,memories fetch result is nil, start date, %@, end date, %@, error, %@", buf, 0x20u);
     }
 
     goto LABEL_11;
   }
 
-  v17 = [v16 fetchError];
+  fetchError = [v16 fetchError];
 
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
-  if (v17)
+  if (fetchError)
   {
     if (v19)
     {
-      v38 = [v16 fetchError];
+      fetchError2 = [v16 fetchError];
       *buf = 138412802;
-      v53 = v38;
+      v53 = fetchError2;
       v54 = 2112;
-      *v55 = v8;
+      *v55 = dateCopy;
       *&v55[8] = 2112;
-      *v56 = v9;
+      *v56 = endDateCopy;
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "#PhotoMemory,fetch memories hit error, %@, start date, %@, end date, %@", buf, 0x20u);
     }
 
-    v47 = [v16 fetchError];
-    v10[2](v10, &__NSArray0__struct, v47);
+    fetchError3 = [v16 fetchError];
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, fetchError3);
     goto LABEL_12;
   }
 
@@ -3835,7 +3835,7 @@ LABEL_11:
     v60 = NSLocalizedDescriptionKey;
     v61 = @"photo memory fetch count is invalid";
     v36 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-    v47 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v36];
+    fetchError3 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v36];
 
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -3845,16 +3845,16 @@ LABEL_11:
 
 LABEL_11:
 
-    v10[2](v10, &__NSArray0__struct, v47);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, fetchError3);
     goto LABEL_12;
   }
 
   v40 = v13;
   v41 = v11;
-  v42 = v10;
-  v43 = v9;
-  v44 = v8;
-  v47 = objc_opt_new();
+  v42 = handlerCopy;
+  v43 = endDateCopy;
+  v44 = dateCopy;
+  fetchError3 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -3880,18 +3880,18 @@ LABEL_11:
         v29 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
-          v46 = [v27 localIdentifier];
-          v45 = [v27 pendingState];
-          v31 = [v27 isFavorite];
-          v32 = [v27 category];
+          localIdentifier = [v27 localIdentifier];
+          pendingState = [v27 pendingState];
+          isFavorite = [v27 isFavorite];
+          category = [v27 category];
           *buf = 138413314;
-          v53 = v46;
+          v53 = localIdentifier;
           v54 = 1024;
-          *v55 = v45;
+          *v55 = pendingState;
           *&v55[4] = 1024;
-          *&v55[6] = v31;
+          *&v55[6] = isFavorite;
           *v56 = 2048;
-          *&v56[2] = v32;
+          *&v56[2] = category;
           v57 = 1024;
           v58 = v28;
           _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "#PhotoMemory,memoryInfo,id,%@,pendingState,%hu,isFavorite,%d,category,%lu,isCandidateForMemoryEvent,isSelected,%d", buf, 0x28u);
@@ -3902,7 +3902,7 @@ LABEL_11:
           v30 = [(MOPhotoManager *)self _createEventFromPhotoMemory:v27];
           if (v30)
           {
-            [v47 addObject:v30];
+            [fetchError3 addObject:v30];
           }
         }
       }
@@ -3913,14 +3913,14 @@ LABEL_11:
     while (v24);
   }
 
-  if ([v47 count] < 4)
+  if ([fetchError3 count] < 4)
   {
-    v35 = v47;
+    v35 = fetchError3;
   }
 
   else
   {
-    v33 = [v47 count];
+    v33 = [fetchError3 count];
     if (v33 >= 3)
     {
       v34 = 3;
@@ -3931,14 +3931,14 @@ LABEL_11:
       v34 = v33;
     }
 
-    v35 = [v47 subarrayWithRange:{0, v34}];
+    v35 = [fetchError3 subarrayWithRange:{0, v34}];
   }
 
   v37 = v35;
-  v9 = v43;
-  v8 = v44;
+  endDateCopy = v43;
+  dateCopy = v44;
   v11 = v41;
-  v10 = v42;
+  handlerCopy = v42;
   v13 = v40;
   v42[2](v42, v35, 0);
 
@@ -3948,12 +3948,12 @@ LABEL_12:
   objc_autoreleasePoolPop(v11);
 }
 
-- (BOOL)isCandidateForMemoryEvent:(id)a3
+- (BOOL)isCandidateForMemoryEvent:(id)event
 {
-  v4 = a3;
-  if ([(MOPhotoManager *)self isDesirableCategoryOrTrigger:v4])
+  eventCopy = event;
+  if ([(MOPhotoManager *)self isDesirableCategoryOrTrigger:eventCopy])
   {
-    [PHMemory fetchMomentsBackingMemory:v4 options:0];
+    [PHMemory fetchMomentsBackingMemory:eventCopy options:0];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -3980,37 +3980,37 @@ LABEL_12:
 
           v12 = *(*(&v33 + 1) + 8 * v11);
           v13 = [v9[229] now];
-          v14 = [v10[227] currentCalendar];
-          v15 = [v12 localStartDate];
+          currentCalendar = [v10[227] currentCalendar];
+          localStartDate = [v12 localStartDate];
           v32 = v13;
-          v16 = [v14 components:120 fromDate:v15 toDate:v13 options:0];
+          v16 = [currentCalendar components:120 fromDate:localStartDate toDate:v13 options:0];
 
           v17 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
-            v31 = [v4 localIdentifier];
-            v30 = [v16 minute];
+            localIdentifier = [eventCopy localIdentifier];
+            minute = [v16 minute];
             v18 = v9;
             v19 = v8;
-            v20 = v4;
-            v21 = [v16 hour];
+            v20 = eventCopy;
+            hour = [v16 hour];
             v22 = [v16 day];
-            v23 = [v16 month];
+            month = [v16 month];
             *buf = v27;
-            v38 = v31;
+            v38 = localIdentifier;
             v39 = 2048;
-            v40 = v30;
+            v40 = minute;
             v10 = &GEOPOICategoryGasStation_ptr;
             v41 = 2048;
-            v42 = v21;
-            v4 = v20;
+            v42 = hour;
+            eventCopy = v20;
             v8 = v19;
             v9 = v18;
             v7 = v28;
             v43 = 2048;
             v44 = v22;
             v45 = 2048;
-            v46 = v23;
+            v46 = month;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "#PhotoMemory,memory,id,%@,Break down: %li min : %li hours : %li days : %li months", buf, 0x34u);
           }
 
@@ -4047,26 +4047,26 @@ LABEL_15:
   return v25;
 }
 
-- (BOOL)isDesirableCategoryOrTrigger:(id)a3
+- (BOOL)isDesirableCategoryOrTrigger:(id)trigger
 {
-  v3 = a3;
-  if ([v3 isRejected])
+  triggerCopy = trigger;
+  if ([triggerCopy isRejected])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 category];
-    v6 = v5;
-    v7 = v5 > 0x18;
+    category = [triggerCopy category];
+    v6 = category;
+    v7 = category > 0x18;
     v23 = 0;
     v24[0] = &v23;
     v24[1] = 0x2020000000;
     v25 = 0;
-    v8 = [v3 triggerTypes];
+    triggerTypes = [triggerCopy triggerTypes];
     v4 = v7 | (0xD3FF7Fu >> v6);
-    if (!v8 || ([v3 triggerTypes], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count") == 0, v9, v8, v10))
+    if (!triggerTypes || ([triggerCopy triggerTypes], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count") == 0, v9, triggerTypes, v10))
     {
       v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -4082,8 +4082,8 @@ LABEL_15:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v12 = [v3 triggerTypes];
-      v13 = [v12 countByEnumeratingWithState:&v19 objects:v26 count:16];
+      triggerTypes2 = [triggerCopy triggerTypes];
+      v13 = [triggerTypes2 countByEnumeratingWithState:&v19 objects:v26 count:16];
       if (v13)
       {
         v14 = *v20;
@@ -4093,13 +4093,13 @@ LABEL_15:
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(triggerTypes2);
             }
 
             -[NSObject addIndex:](v11, "addIndex:", [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue]);
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v26 count:16];
+          v13 = [triggerTypes2 countByEnumeratingWithState:&v19 objects:v26 count:16];
         }
 
         while (v13);
@@ -4145,67 +4145,67 @@ uint64_t __47__MOPhotoManager_isDesirableCategoryOrTrigger___block_invoke(uint64
   return result;
 }
 
-- (id)_createEventFromAsset:(id)a3
+- (id)_createEventFromAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 creationDate];
-  v8 = [v4 creationDate];
+  creationDate = [assetCopy creationDate];
+  creationDate2 = [assetCopy creationDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:2 category:14];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:creationDate endDate:creationDate2 creationDate:v9 provider:2 category:14];
 
   [(MOEvent *)v10 setPhotoMomentSource:3];
-  v11 = [v4 localIdentifier];
-  [(MOEvent *)v10 setIdentifierFromProvider:v11];
+  localIdentifier = [assetCopy localIdentifier];
+  [(MOEvent *)v10 setIdentifierFromProvider:localIdentifier];
 
-  v12 = [v4 creationDate];
+  creationDate3 = [assetCopy creationDate];
 
-  v13 = [(MOPhotoManager *)self configurationManager];
+  configurationManager = [(MOPhotoManager *)self configurationManager];
   LODWORD(v14) = 1242802176;
-  [v13 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v14];
-  v16 = [v12 dateByAddingTimeInterval:v15];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v14];
+  v16 = [creationDate3 dateByAddingTimeInterval:v15];
   [(MOEvent *)v10 setExpirationDate:v16];
 
   return v10;
 }
 
-- (id)_createEventFromPhotoMemory:(id)a3
+- (id)_createEventFromPhotoMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 localIdentifier];
+    localIdentifier = [memoryCopy localIdentifier];
     v20 = 138412290;
-    v21 = v6;
+    v21 = localIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#PhotoMemory,_createEventFromPhotoMemory,%@", &v20, 0xCu);
   }
 
   v7 = [MOEvent alloc];
   v8 = +[NSUUID UUID];
-  v9 = [v4 creationDate];
-  v10 = [v4 creationDate];
+  creationDate = [memoryCopy creationDate];
+  creationDate2 = [memoryCopy creationDate];
   v11 = +[NSDate date];
-  v12 = [(MOEvent *)v7 initWithEventIdentifier:v8 startDate:v9 endDate:v10 creationDate:v11 provider:2 category:17];
+  v12 = [(MOEvent *)v7 initWithEventIdentifier:v8 startDate:creationDate endDate:creationDate2 creationDate:v11 provider:2 category:17];
 
-  v13 = [v4 localIdentifier];
-  [(MOEvent *)v12 setIdentifierFromProvider:v13];
+  localIdentifier2 = [memoryCopy localIdentifier];
+  [(MOEvent *)v12 setIdentifierFromProvider:localIdentifier2];
 
-  v14 = [v4 creationDate];
-  v15 = [(MOPhotoManager *)self configurationManager];
+  creationDate3 = [memoryCopy creationDate];
+  configurationManager = [(MOPhotoManager *)self configurationManager];
   LODWORD(v16) = 1242802176;
-  [v15 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v16];
-  v18 = [v14 dateByAddingTimeInterval:v17];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v16];
+  v18 = [creationDate3 dateByAddingTimeInterval:v17];
   [(MOEvent *)v12 setExpirationDate:v18];
 
   return v12;
 }
 
-- (void)_saveEvents:(id)a3 category:(unint64_t)a4 handler:(id)a5
+- (void)_saveEvents:(id)events category:(unint64_t)category handler:(id)handler
 {
-  v6 = a3;
-  v22 = a5;
+  eventsCopy = events;
+  handlerCopy = handler;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -4224,13 +4224,13 @@ uint64_t __47__MOPhotoManager_isDesirableCategoryOrTrigger___block_invoke(uint64
   v32[2] = __47__MOPhotoManager__saveEvents_category_handler___block_invoke;
   v32[3] = &unk_1003378A0;
   v32[4] = &v33;
-  [(MOEventStore *)eventStore fetchLastEventOfCategory:a4 CompletionHandler:v32];
+  [(MOEventStore *)eventStore fetchLastEventOfCategory:category CompletionHandler:v32];
   v9 = +[NSMutableArray array];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v6;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v43 count:16];
   if (v11)
   {
@@ -4251,11 +4251,11 @@ uint64_t __47__MOPhotoManager_isDesirableCategoryOrTrigger___block_invoke(uint64
           v18 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            v19 = [v14 eventIdentifier];
+            eventIdentifier = [v14 eventIdentifier];
             *buf = 134218242;
-            v40 = a4;
+            categoryCopy = category;
             v41 = 2112;
-            v42 = v19;
+            v42 = eventIdentifier;
             _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "saving category %lu photo,event,%@,", buf, 0x16u);
           }
 
@@ -4277,8 +4277,8 @@ uint64_t __47__MOPhotoManager_isDesirableCategoryOrTrigger___block_invoke(uint64
   v25[1] = 3221225472;
   v25[2] = __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427;
   v25[3] = &unk_10033F398;
-  v27 = a4;
-  v21 = v22;
+  categoryCopy2 = category;
+  v21 = handlerCopy;
   v26 = v21;
   [(MOEventStore *)v20 storeEvents:v9 CompletionHandler:v25];
 
@@ -4305,27 +4305,27 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
   }
 }
 
-- (void)rehydrateSharedPhotos:(id)a3 handler:(id)a4
+- (void)rehydrateSharedPhotos:(id)photos handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOPhotoManager *)self queue];
+  photosCopy = photos;
+  handlerCopy = handler;
+  queue = [(MOPhotoManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __48__MOPhotoManager_rehydrateSharedPhotos_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = photosCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = photosCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateSharedPhotos:(id)a3 handler:(id)a4
+- (void)_rehydrateSharedPhotos:(id)photos handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  photosCopy = photos;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v51[0] = _NSConcreteStackBlock;
@@ -4336,7 +4336,7 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
   v52 = v10;
   v45 = v9;
   v53 = v45;
-  [v6 enumerateObjectsUsingBlock:v51];
+  [photosCopy enumerateObjectsUsingBlock:v51];
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -4354,16 +4354,16 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
     v15 = v14;
     if (v14 && [v14 count])
     {
-      v16 = [v15 fetchError];
+      fetchError = [v15 fetchError];
 
       v17 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       v18 = v17;
-      if (!v16)
+      if (!fetchError)
       {
         v41 = v13;
         v42 = v10;
-        v43 = v7;
-        v44 = v6;
+        v43 = handlerCopy;
+        v44 = photosCopy;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           v23 = [v15 count];
@@ -4372,7 +4372,7 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "fetch %lu shared photos from syndication library for rehydration", buf, 0xCu);
         }
 
-        v19 = objc_alloc_init(NSMutableArray);
+        fetchError2 = objc_alloc_init(NSMutableArray);
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
@@ -4396,8 +4396,8 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
               }
 
               v29 = *(*(&v47 + 1) + 8 * i);
-              v30 = [v29 localIdentifier];
-              v31 = [v22 objectForKeyedSubscript:v30];
+              localIdentifier = [v29 localIdentifier];
+              v31 = [v22 objectForKeyedSubscript:localIdentifier];
 
               if (v31)
               {
@@ -4407,19 +4407,19 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
                 {
                   [v32 photoAsset];
-                  v34 = v19;
+                  v34 = fetchError2;
                   v36 = v35 = v26;
-                  v37 = [v36 localIdentifier];
+                  localIdentifier2 = [v36 localIdentifier];
                   *buf = 138412290;
-                  v58 = v37;
+                  v58 = localIdentifier2;
                   _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "assigning photoassets %@", buf, 0xCu);
 
                   v22 = v45;
                   v26 = v35;
-                  v19 = v34;
+                  fetchError2 = v34;
                 }
 
-                [v19 addObject:v32];
+                [fetchError2 addObject:v32];
               }
             }
 
@@ -4433,15 +4433,15 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v58 = v19;
+          v58 = fetchError2;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "shared photos rehydratedEvents %@", buf, 0xCu);
         }
 
-        v39 = [v19 copy];
-        v7 = v43;
+        v39 = [fetchError2 copy];
+        handlerCopy = v43;
         v43[2](v43, v39, 0);
 
-        v6 = v44;
+        photosCopy = v44;
         v13 = v41;
         v10 = v42;
         v15 = v40;
@@ -4453,7 +4453,7 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
         [MOPhotoManager _rehydrateSharedPhotos:v15 handler:?];
       }
 
-      v19 = [v15 fetchError];
+      fetchError2 = [v15 fetchError];
     }
 
     else
@@ -4461,7 +4461,7 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
       v55 = NSLocalizedDescriptionKey;
       v56 = @"photo fetch result is nil";
       v20 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-      v19 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
+      fetchError2 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
 
       v21 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -4470,7 +4470,7 @@ void __47__MOPhotoManager__saveEvents_category_handler___block_invoke_427(uint64
       }
     }
 
-    v7[2](v7, &__NSArray0__struct, v19);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, fetchError2);
     v22 = v45;
 LABEL_14:
 
@@ -4478,9 +4478,9 @@ LABEL_14:
   }
 
   v22 = v45;
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 
 LABEL_17:
@@ -4512,10 +4512,10 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
   }
 }
 
-- (void)rehydratePhotoMemories:(id)a3 handler:(id)a4
+- (void)rehydratePhotoMemories:(id)memories handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  memoriesCopy = memories;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -4523,23 +4523,23 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "#PhotoMemory,invoking rehydratePhotoMemories", buf, 2u);
   }
 
-  v9 = [(MOPhotoManager *)self queue];
+  queue = [(MOPhotoManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __49__MOPhotoManager_rehydratePhotoMemories_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = memoriesCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = memoriesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydratePhotoMemories:(id)a3 handler:(id)a4
+- (void)_rehydratePhotoMemories:(id)memories handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  memoriesCopy = memories;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -4552,7 +4552,7 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
   v54[3] = &unk_100338810;
   v9 = objc_opt_new();
   v55 = v9;
-  [v6 enumerateObjectsUsingBlock:v54];
+  [memoriesCopy enumerateObjectsUsingBlock:v54];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -4562,7 +4562,7 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
   if ([v9 count])
   {
     v11 = objc_opt_new();
-    v47 = self;
+    selfCopy = self;
     [v11 setPhotoLibrary:self->_photoLibrary];
     v12 = [NSPredicate predicateWithFormat:@"featuredState == %ul", 1];
     [v11 setInternalPredicate:v12];
@@ -4572,18 +4572,18 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
     v14 = v13;
     if (v13 && [v13 count])
     {
-      v15 = [v14 fetchError];
+      fetchError = [v14 fetchError];
 
       v16 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       v17 = v16;
-      if (v15)
+      if (fetchError)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           [MOPhotoManager _rehydratePhotoMemories:v14 handler:?];
         }
 
-        v18 = [v14 fetchError];
+        fetchError2 = [v14 fetchError];
         goto LABEL_15;
       }
 
@@ -4596,8 +4596,8 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
       {
         v41 = v11;
         v42 = v9;
-        v43 = v7;
-        v44 = v6;
+        v43 = handlerCopy;
+        v44 = memoriesCopy;
         v21 = objc_opt_new();
         v50 = 0u;
         v51 = 0u;
@@ -4606,7 +4606,7 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
         v40 = v14;
         v22 = v14;
         v23 = [v22 countByEnumeratingWithState:&v50 objects:v66 count:16];
-        v24 = v47;
+        v24 = selfCopy;
         v45 = v22;
         v46 = v21;
         if (v23)
@@ -4627,20 +4627,20 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
               v30 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
-                v31 = [v28 localIdentifier];
-                v32 = [v28 pendingState];
-                v33 = [v28 isFavorite];
-                v34 = [v28 category];
+                localIdentifier = [v28 localIdentifier];
+                pendingState = [v28 pendingState];
+                isFavorite = [v28 isFavorite];
+                category = [v28 category];
                 *buf = 138413314;
-                v57 = v31;
+                v57 = localIdentifier;
                 v58 = 1024;
-                v59 = v32;
+                v59 = pendingState;
                 v60 = 1024;
-                v61 = v33;
+                v61 = isFavorite;
                 v22 = v45;
-                v24 = v47;
+                v24 = selfCopy;
                 v62 = 2048;
-                v63 = v34;
+                v63 = category;
                 v64 = 1024;
                 v65 = v29;
                 _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "#PhotoMemory,memoryInfo,id,%@,pendingState,%hu,isFavorite,%d,category,%lu,isCandidateForMemoryEvent,isSelected,%d", buf, 0x28u);
@@ -4682,8 +4682,8 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
         }
 
         v39 = v37;
-        v7 = v43;
-        v6 = v44;
+        handlerCopy = v43;
+        memoriesCopy = v44;
         v11 = v41;
         v9 = v42;
         v14 = v40;
@@ -4692,16 +4692,16 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
         v48[2] = __50__MOPhotoManager__rehydratePhotoMemories_handler___block_invoke_430;
         v48[3] = &unk_1003369E0;
         v49 = v43;
-        [(MOPhotoManager *)v47 _rehydrateStoredEvents:v44 fromPhotoMemories:v39 fetchResult:v45 handler:v48];
+        [(MOPhotoManager *)selfCopy _rehydrateStoredEvents:v44 fromPhotoMemories:v39 fetchResult:v45 handler:v48];
 
-        v18 = v46;
+        fetchError2 = v46;
         goto LABEL_16;
       }
 
       v67 = NSLocalizedDescriptionKey;
       v68 = @"photo memory fetch count is invalid";
       v38 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-      v18 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v38];
+      fetchError2 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v38];
 
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -4715,7 +4715,7 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
       v69 = NSLocalizedDescriptionKey;
       v70 = @"photo memory fetch result is nil";
       v19 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-      v18 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v19];
+      fetchError2 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v19];
 
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -4725,15 +4725,15 @@ void __49__MOPhotoManager__rehydrateSharedPhotos_handler___block_invoke(uint64_t
     }
 
 LABEL_15:
-    (*(v7 + 2))(v7, &__NSArray0__struct, v18);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, fetchError2);
 LABEL_16:
 
     goto LABEL_19;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 
 LABEL_19:
@@ -4758,30 +4758,30 @@ void __50__MOPhotoManager__rehydratePhotoMemories_handler___block_invoke(uint64_
   }
 }
 
-- (void)fetchAssetUsingID:(id)a3 handler:(id)a4
+- (void)fetchAssetUsingID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (dCopy)
   {
     if (v9)
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "fetchAssetUsingID,identifier,%@", buf, 0xCu);
     }
 
-    v10 = [(MOPhotoManager *)self queue];
+    queue = [(MOPhotoManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __44__MOPhotoManager_fetchAssetUsingID_handler___block_invoke;
     block[3] = &unk_100336A58;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
-    dispatch_async(v10, block);
+    v14 = dCopy;
+    v15 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -4797,7 +4797,7 @@ void __50__MOPhotoManager__rehydratePhotoMemories_handler___block_invoke(uint64_
     v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v12 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v11];
 
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -4874,12 +4874,12 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_rehydrateStoredEvents:(id)a3 fromPhotoMemories:(id)a4 fetchResult:(id)a5 handler:(id)a6
+- (void)_rehydrateStoredEvents:(id)events fromPhotoMemories:(id)memories fetchResult:(id)result handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  eventsCopy = events;
+  memoriesCopy = memories;
+  resultCopy = result;
+  handlerCopy = handler;
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -4887,33 +4887,33 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "#PhotoMemory,invoking _rehydrateStoredEvents", buf, 2u);
   }
 
-  if ([v9 count])
+  if ([eventsCopy count])
   {
-    if ([v10 count])
+    if ([memoriesCopy count])
     {
-      v49 = v12;
+      v49 = handlerCopy;
       v65[0] = _NSConcreteStackBlock;
       v65[1] = 3221225472;
       v65[2] = __79__MOPhotoManager__rehydrateStoredEvents_fromPhotoMemories_fetchResult_handler___block_invoke;
       v65[3] = &unk_100338810;
       v14 = objc_opt_new();
       v66 = v14;
-      v52 = v9;
-      [v9 enumerateObjectsUsingBlock:v65];
+      v52 = eventsCopy;
+      [eventsCopy enumerateObjectsUsingBlock:v65];
       v56 = objc_alloc_init(NSMutableArray);
       v53 = objc_alloc_init(NSMutableArray);
       v15 = objc_autoreleasePoolPush();
-      v16 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-      v50 = v11;
-      v55 = [PHAsset fetchKeyAssetByMemoryUUIDForMemories:v11 options:v16];
+      librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+      v50 = resultCopy;
+      v55 = [PHAsset fetchKeyAssetByMemoryUUIDForMemories:resultCopy options:librarySpecificFetchOptions];
 
       objc_autoreleasePoolPop(v15);
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v51 = v10;
-      obj = v10;
+      v51 = memoriesCopy;
+      obj = memoriesCopy;
       v17 = [obj countByEnumeratingWithState:&v61 objects:v69 count:16];
       if (v17)
       {
@@ -4931,34 +4931,34 @@ LABEL_11:
 
             v21 = *(*(&v61 + 1) + 8 * v20);
             v22 = objc_autoreleasePoolPush();
-            v23 = [v21 localIdentifier];
-            v24 = [v14 objectForKeyedSubscript:v23];
+            localIdentifier = [v21 localIdentifier];
+            v24 = [v14 objectForKeyedSubscript:localIdentifier];
 
             if (v24)
             {
               v25 = [v24 copy];
-              v26 = [v21 uuid];
-              v27 = [v55 objectForKeyedSubscript:v26];
+              uuid = [v21 uuid];
+              v27 = [v55 objectForKeyedSubscript:uuid];
 
               [(MOPhotoManager *)self _setDynamicPropertiesForMemoryEvent:v25 fromMemory:v21 keyAsset:v27];
               if ([v25 rehydrationFailCount])
               {
                 v58 = [MORehydrationThresholdMetrics alloc];
-                v28 = [v25 category];
+                category = [v25 category];
                 v29 = v27;
                 v30 = v22;
                 v31 = v18;
                 v32 = v19;
                 v33 = v14;
-                v34 = [v24 provider];
-                v35 = [v25 rehydrationFailCount];
-                v36 = v34;
+                provider = [v24 provider];
+                rehydrationFailCount = [v25 rehydrationFailCount];
+                v36 = provider;
                 v14 = v33;
                 v19 = v32;
                 v18 = v31;
                 v22 = v30;
                 v27 = v29;
-                v37 = [(MORehydrationThresholdMetrics *)v58 initWithCategory:v28 provider:v36 failureCount:v35];
+                v37 = [(MORehydrationThresholdMetrics *)v58 initWithCategory:category provider:v36 failureCount:rehydrationFailCount];
                 v60 = 0;
                 [(MORehydrationThresholdMetrics *)v37 submitMetricsWithError:&v60];
                 [v25 setRehydrationFailCount:0];
@@ -4982,23 +4982,23 @@ LABEL_11:
       v48 = v14;
 
       v38 = objc_autoreleasePoolPush();
-      v12 = v49;
+      handlerCopy = v49;
       v49[2](v49, v56, 0);
       objc_autoreleasePoolPop(v38);
       v39 = objc_autoreleasePoolPush();
       v40 = [MORehydrationMetrics alloc];
-      v9 = v52;
-      v41 = [v52 firstObject];
-      v42 = [v41 category];
-      v43 = [v52 firstObject];
-      v44 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v40, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v42, [v43 provider], 1, 0, objc_msgSend(v52, "count"), 3, (objc_msgSend(v52, "count") - objc_msgSend(v56, "count")), objc_msgSend(v53, "count"));
+      eventsCopy = v52;
+      firstObject = [v52 firstObject];
+      category2 = [firstObject category];
+      firstObject2 = [v52 firstObject];
+      v44 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v40, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category2, [firstObject2 provider], 1, 0, objc_msgSend(v52, "count"), 3, (objc_msgSend(v52, "count") - objc_msgSend(v56, "count")), objc_msgSend(v53, "count"));
 
       v59 = 0;
       [(MORehydrationMetrics *)v44 submitMetricsWithError:&v59];
 
       objc_autoreleasePoolPop(v39);
-      v11 = v50;
-      v10 = v51;
+      resultCopy = v50;
+      memoriesCopy = v51;
     }
 
     else
@@ -5009,8 +5009,8 @@ LABEL_11:
         [MOPhotoManager _rehydrateStoredEvents:fromPhotoMemories:fetchResult:handler:];
       }
 
-      v12[2](v12, &__NSArray0__struct, 0);
-      v47 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 17, 2, 1, 0, [v9 count], 3, objc_msgSend(v9, "count"), 0.0);
+      handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
+      v47 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 17, 2, 1, 0, [eventsCopy count], 3, objc_msgSend(eventsCopy, "count"), 0.0);
       v67 = 0;
       [(MORehydrationMetrics *)v47 submitMetricsWithError:&v67];
     }
@@ -5024,7 +5024,7 @@ LABEL_11:
       [MOPhotoManager _rehydrateStoredEvents:fromPhotoMemories:fetchResult:handler:];
     }
 
-    v12[2](v12, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -5050,9 +5050,9 @@ void __79__MOPhotoManager__rehydrateStoredEvents_fromPhotoMemories_fetchResult_h
   }
 }
 
-- (id)_fetchCuratedAssetsForPhotoMemory:(id)a3
+- (id)_fetchCuratedAssetsForPhotoMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5063,10 +5063,10 @@ void __79__MOPhotoManager__rehydrateStoredEvents_fromPhotoMemories_fetchResult_h
   v6 = objc_opt_new();
   [v6 setPhotoLibrary:self->_photoLibrary];
   [v6 setIncludeGuestAssets:1];
-  v7 = [PHAsset fetchCustomUserAssetsInMemory:v4 options:v6];
+  v7 = [PHAsset fetchCustomUserAssetsInMemory:memoryCopy options:v6];
   if (![v7 count])
   {
-    v8 = [PHAsset fetchUserCuratedAssetsInMemory:v4 options:v6];
+    v8 = [PHAsset fetchUserCuratedAssetsInMemory:memoryCopy options:v6];
 
     v7 = v8;
   }
@@ -5081,7 +5081,7 @@ void __79__MOPhotoManager__rehydrateStoredEvents_fromPhotoMemories_fetchResult_h
 
   else
   {
-    v9 = [PHAsset fetchCuratedAssetsInAssetCollection:v4 options:v6];
+    v9 = [PHAsset fetchCuratedAssetsInAssetCollection:memoryCopy options:v6];
 
     v7 = v9;
     if (!v9)
@@ -5095,7 +5095,7 @@ LABEL_13:
       v14 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [MOPhotoManager _fetchCuratedAssetsForPhotoMemory:v4];
+        [MOPhotoManager _fetchCuratedAssetsForPhotoMemory:memoryCopy];
       }
 
 LABEL_16:
@@ -5109,21 +5109,21 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v10 = [v7 fetchError];
+  fetchError = [v7 fetchError];
 
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v12 = v11;
-  if (v10)
+  if (fetchError)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(MOPhotoManager *)v4 _fetchCuratedAssetsForPhotoMemory:v7];
+      [(MOPhotoManager *)memoryCopy _fetchCuratedAssetsForPhotoMemory:v7];
     }
 
     goto LABEL_16;
   }
 
-  v37 = v4;
+  v37 = memoryCopy;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v17 = [v7 count];
@@ -5201,18 +5201,18 @@ LABEL_16:
   v15 = [v32 sortedArrayUsingDescriptors:v34];
 
   v6 = v36;
-  v4 = v37;
+  memoryCopy = v37;
   v7 = v35;
 LABEL_17:
 
   return v15;
 }
 
-- (void)_setDynamicPropertiesForMemoryEvent:(id)a3 fromMemory:(id)a4 keyAsset:(id)a5
+- (void)_setDynamicPropertiesForMemoryEvent:(id)event fromMemory:(id)memory keyAsset:(id)asset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  memoryCopy = memory;
+  assetCopy = asset;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -5220,32 +5220,32 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#PhotoMemory,invoking _setDynamicPropertiesForMemoryEvent", buf, 2u);
   }
 
-  v12 = [(MOPhotoManager *)self _fetchCuratedAssetsForPhotoMemory:v9];
+  v12 = [(MOPhotoManager *)self _fetchCuratedAssetsForPhotoMemory:memoryCopy];
   v13 = objc_alloc_init(NSMutableArray);
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v10)
+  if (assetCopy)
   {
     if (v15)
     {
-      v16 = [v9 localIdentifier];
+      localIdentifier = [memoryCopy localIdentifier];
       *buf = 138412546;
-      *v66 = v16;
+      *v66 = localIdentifier;
       *&v66[8] = 2112;
-      *&v66[10] = v10;
+      *&v66[10] = assetCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "#PhotoMemory, Key asset for memory,%@,is,%@ ", buf, 0x16u);
     }
 
-    [v13 addObject:v10];
+    [v13 addObject:assetCopy];
   }
 
   else
   {
     if (v15)
     {
-      v17 = [v9 localIdentifier];
+      localIdentifier2 = [memoryCopy localIdentifier];
       *buf = 138412290;
-      *v66 = v17;
+      *v66 = localIdentifier2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "#PhotoMemory, Key asset is nil for memory,%@", buf, 0xCu);
     }
   }
@@ -5282,12 +5282,12 @@ LABEL_17:
     while (v20);
   }
 
-  v24 = [v9 title];
-  v25 = [v9 subtitle];
-  v26 = v25;
-  if (v24)
+  title = [memoryCopy title];
+  subtitle = [memoryCopy subtitle];
+  v26 = subtitle;
+  if (title)
   {
-    v27 = [v24 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    v27 = [title stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
     if (v26)
     {
@@ -5301,7 +5301,7 @@ LABEL_21:
   else
   {
     v27 = 0;
-    if (v25)
+    if (subtitle)
     {
       goto LABEL_21;
     }
@@ -5310,7 +5310,7 @@ LABEL_21:
   v28 = 0;
 LABEL_24:
   v51 = v27;
-  v52 = v10;
+  v52 = assetCopy;
   v50 = v28;
   if (v27 | v28)
   {
@@ -5334,18 +5334,18 @@ LABEL_24:
       [NSString stringWithFormat:@"%@", v29, v49];
     }
     v30 = ;
-    [v8 setPhotoMemoryTitle:v30];
+    [eventCopy setPhotoMemoryTitle:v30];
   }
 
   else
   {
-    [v8 setPhotoMemoryTitle:&stru_1003416B0];
+    [eventCopy setPhotoMemoryTitle:&stru_1003416B0];
   }
 
-  [v8 setPhotoMemoryCategory:{objc_msgSend(v9, "category")}];
-  v31 = [v9 subcategory];
-  v32 = [v8 photoEvent];
-  [v32 setPhotoMemorySubCategory:v31];
+  [eventCopy setPhotoMemoryCategory:{objc_msgSend(memoryCopy, "category")}];
+  subcategory = [memoryCopy subcategory];
+  photoEvent = [eventCopy photoEvent];
+  [photoEvent setPhotoMemorySubCategory:subcategory];
 
   v33 = [v13 count];
   if (v33 >= 0xD)
@@ -5359,25 +5359,25 @@ LABEL_24:
   }
 
   v35 = [v13 subarrayWithRange:{0, v34}];
-  [v8 setPhotoMemoryAssets:v35];
+  [eventCopy setPhotoMemoryAssets:v35];
 
-  v36 = [v9 isFavorite];
-  v37 = [v8 photoEvent];
-  [v37 setPhotoMemoryIsFavorite:v36];
+  isFavorite = [memoryCopy isFavorite];
+  photoEvent2 = [eventCopy photoEvent];
+  [photoEvent2 setPhotoMemoryIsFavorite:isFavorite];
 
-  v53 = v9;
-  [v9 currentRelevanceScore];
+  v53 = memoryCopy;
+  [memoryCopy currentRelevanceScore];
   v39 = v38;
-  v40 = [v8 photoEvent];
-  [v40 setPhotoMemoryRelevanceScore:v39];
+  photoEvent3 = [eventCopy photoEvent];
+  [photoEvent3 setPhotoMemoryRelevanceScore:v39];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v54 = v8;
-  v41 = [v8 photoMemoryAssets];
-  v42 = [v41 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  v54 = eventCopy;
+  photoMemoryAssets = [eventCopy photoMemoryAssets];
+  v42 = [photoMemoryAssets countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v42)
   {
     v43 = v42;
@@ -5389,7 +5389,7 @@ LABEL_24:
       {
         if (*v56 != v45)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(photoMemoryAssets);
         }
 
         v47 = *(*(&v55 + 1) + 8 * j);
@@ -5405,49 +5405,49 @@ LABEL_24:
         }
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v43 = [photoMemoryAssets countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v43);
   }
 }
 
-- (void)fetchPhotoMemoryEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchPhotoMemoryEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOPhotoManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOPhotoManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __90__MOPhotoManager_fetchPhotoMemoryEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchPhotoMemoryEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchPhotoMemoryEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v50 = a3;
-  v51 = a4;
-  v47 = a5;
-  v45 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v50;
+    *&buf[4] = dateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v51;
+    *&buf[14] = endDateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "#PhotoMemory,fetchPhotoMemoriesBetweenStartDate,startDate,%@,endDate,%@", buf, 0x16u);
   }
 
@@ -5458,7 +5458,7 @@ LABEL_24:
   v10 = [NSArray arrayWithObjects:v84 count:2];
   v46 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
 
-  v52 = [v47 filteredArrayUsingPredicate:v46];
+  v52 = [eventsCopy filteredArrayUsingPredicate:v46];
   v55 = objc_opt_new();
   [v55 setPhotoLibrary:self->_photoLibrary];
   v11 = [NSPredicate predicateWithFormat:@"featuredState == %ul", 1];
@@ -5473,13 +5473,13 @@ LABEL_24:
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v54 fetchError];
+      fetchError = [v54 fetchError];
       *buf = 138412802;
-      *&buf[4] = v22;
+      *&buf[4] = fetchError;
       *&buf[12] = 2112;
-      *&buf[14] = v50;
+      *&buf[14] = dateCopy;
       *&buf[22] = 2112;
-      *&v79 = v51;
+      *&v79 = endDateCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "#PhotoMemory,fetch memories result is nil, %@, start date, %@, end date, %@", buf, 0x20u);
     }
 
@@ -5488,7 +5488,7 @@ LABEL_24:
     v23 = [NSDictionary dictionaryWithObjects:&v83 forKeys:&v82 count:1];
     v20 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v23];
 
-    v45[2](v45, v20, &__NSDictionary0__struct);
+    handlerCopy[2](handlerCopy, v20, &__NSDictionary0__struct);
     v24 = [MORehydrationMetrics alloc];
     v25 = [(MOMetric *)v20 description];
     v26 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v24, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 17, 2, 0, v25, [v52 count], 3, objc_msgSend(v52, "count"), 0.0);
@@ -5499,29 +5499,29 @@ LABEL_24:
     goto LABEL_12;
   }
 
-  v13 = [v54 fetchError];
+  fetchError2 = [v54 fetchError];
 
-  if (v13)
+  if (fetchError2)
   {
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v54 fetchError];
+      fetchError3 = [v54 fetchError];
       *buf = 138412802;
-      *&buf[4] = v15;
+      *&buf[4] = fetchError3;
       *&buf[12] = 2112;
-      *&buf[14] = v50;
+      *&buf[14] = dateCopy;
       *&buf[22] = 2112;
-      *&v79 = v51;
+      *&v79 = endDateCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "#PhotoMemory,fetch memories hit error, %@, start date, %@, end date, %@", buf, 0x20u);
     }
 
-    v16 = [v54 fetchError];
-    v45[2](v45, v16, &__NSDictionary0__struct);
+    fetchError4 = [v54 fetchError];
+    handlerCopy[2](handlerCopy, fetchError4, &__NSDictionary0__struct);
 
     v17 = [MORehydrationMetrics alloc];
-    v18 = [v54 fetchError];
-    v19 = [v18 description];
+    fetchError5 = [v54 fetchError];
+    v19 = [fetchError5 description];
     v20 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v17, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 17, 2, 0, v19, [v52 count], 3, objc_msgSend(v52, "count"), 0.0);
 
     v76 = 0;
@@ -5557,18 +5557,18 @@ LABEL_16:
       v33 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
-        v34 = [v31 localIdentifier];
-        v35 = [v31 pendingState];
-        v36 = [v31 isFavorite];
-        v37 = [v31 category];
+        localIdentifier = [v31 localIdentifier];
+        pendingState = [v31 pendingState];
+        isFavorite = [v31 isFavorite];
+        category = [v31 category];
         *buf = 138413314;
-        *&buf[4] = v34;
+        *&buf[4] = localIdentifier;
         *&buf[12] = 1024;
-        *&buf[14] = v35;
+        *&buf[14] = pendingState;
         *&buf[18] = 1024;
-        *&buf[20] = v36;
+        *&buf[20] = isFavorite;
         LOWORD(v79) = 2048;
-        *(&v79 + 2) = v37;
+        *(&v79 + 2) = category;
         WORD5(v79) = 1024;
         HIDWORD(v79) = v32;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "#PhotoMemory,memoryInfo,id,%@,pendingState,%hu,isFavorite,%d,category,%lu,isCandidateForMemoryEvent,isSelected,%d", buf, 0x28u);
@@ -5629,7 +5629,7 @@ LABEL_16:
   v41 = v40;
   v65 = v41;
   [(MOPhotoManager *)self _createNewEventsFromPhotoMemories:v38 storedEvents:v52 handler:v64];
-  v42 = [(MOPhotoManager *)self queue];
+  queue = [(MOPhotoManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __91__MOPhotoManager__fetchPhotoMemoryEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke_3;
@@ -5637,13 +5637,13 @@ LABEL_16:
   block[4] = self;
   v57 = v52;
   v58 = v38;
-  v59 = v50;
-  v60 = v51;
+  v59 = dateCopy;
+  v60 = endDateCopy;
   v62 = buf;
   v63 = v67;
-  v61 = v45;
+  v61 = handlerCopy;
   v43 = v38;
-  dispatch_group_notify(v41, v42, block);
+  dispatch_group_notify(v41, queue, block);
 
   _Block_object_dispose(v67, 8);
   _Block_object_dispose(buf, 8);
@@ -5838,11 +5838,11 @@ void __91__MOPhotoManager__fetchPhotoMemoryEventsBetweenStartDate_endDate_withSt
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)_createNewEventsFromPhotoMemories:(id)a3 storedEvents:(id)a4 handler:(id)a5
+- (void)_createNewEventsFromPhotoMemories:(id)memories storedEvents:(id)events handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memoriesCopy = memories;
+  eventsCopy = events;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -5864,7 +5864,7 @@ void __91__MOPhotoManager__fetchPhotoMemoryEventsBetweenStartDate_endDate_withSt
     v105 = NSLocalizedDescriptionKey;
     v106 = @"photo memory fetch result is nil";
     v20 = [NSDictionary dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-    v19 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
+    fetchError2 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v20];
 
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -5875,9 +5875,9 @@ void __91__MOPhotoManager__fetchPhotoMemoryEventsBetweenStartDate_endDate_withSt
     goto LABEL_12;
   }
 
-  v17 = [v16 fetchError];
+  fetchError = [v16 fetchError];
 
-  if (v17)
+  if (fetchError)
   {
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -5885,34 +5885,34 @@ void __91__MOPhotoManager__fetchPhotoMemoryEventsBetweenStartDate_endDate_withSt
       [MOPhotoManager _createNewEventsFromPhotoMemories:v16 storedEvents:? handler:?];
     }
 
-    v19 = [v16 fetchError];
+    fetchError2 = [v16 fetchError];
 LABEL_12:
-    v10[2](v10, &__NSArray0__struct, v19);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, fetchError2);
 
     objc_autoreleasePoolPop(v14);
     goto LABEL_13;
   }
 
-  v22 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v83 = [PHAsset fetchKeyAssetByMemoryUUIDForMemories:v16 options:v22];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v83 = [PHAsset fetchKeyAssetByMemoryUUIDForMemories:v16 options:librarySpecificFetchOptions];
 
   objc_autoreleasePoolPop(v14);
-  if ([v8 count])
+  if ([memoriesCopy count])
   {
     v79 = v12;
-    v81 = v9;
+    v81 = eventsCopy;
     v23 = &GEOPOICategoryGasStation_ptr;
     v84 = objc_opt_new();
-    v24 = [(MOPhotoManager *)self _getPhotoMemoryPlistFileURL];
-    v25 = [(MOPhotoManager *)self _readPhotoMemoryPlistFile:v24];
+    _getPhotoMemoryPlistFileURL = [(MOPhotoManager *)self _getPhotoMemoryPlistFileURL];
+    v25 = [(MOPhotoManager *)self _readPhotoMemoryPlistFile:_getPhotoMemoryPlistFileURL];
     v26 = objc_opt_new();
     v87 = v25;
-    v88 = self;
-    v77 = v24;
+    selfCopy = self;
+    v77 = _getPhotoMemoryPlistFileURL;
     v78 = v16;
-    v82 = v8;
-    v80 = v10;
-    if (v24 && v25)
+    v82 = memoriesCopy;
+    v80 = handlerCopy;
+    if (_getPhotoMemoryPlistFileURL && v25)
     {
       v85 = [v25 mutableCopy];
 
@@ -5943,8 +5943,8 @@ LABEL_12:
             [v35 doubleValue];
             v37 = v36;
 
-            v38 = [(MOPhotoManager *)v88 configurationManager];
-            [v38 getDoubleSettingForKey:@"PhotoMemoryIDPersistDuration" withFallback:7257600.0];
+            configurationManager = [(MOPhotoManager *)selfCopy configurationManager];
+            [configurationManager getDoubleSettingForKey:@"PhotoMemoryIDPersistDuration" withFallback:7257600.0];
             v40 = v39;
 
             v41 = +[NSDate date];
@@ -5981,7 +5981,7 @@ LABEL_12:
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v45 = v8;
+      v45 = memoriesCopy;
       v46 = [v45 countByEnumeratingWithState:&v89 objects:v103 count:16];
       v47 = v84;
       if (v46)
@@ -5998,8 +5998,8 @@ LABEL_12:
             }
 
             v51 = *(*(&v89 + 1) + 8 * j);
-            v52 = [v51 localIdentifier];
-            v53 = [v27 containsObject:v52];
+            localIdentifier = [v51 localIdentifier];
+            v53 = [v27 containsObject:localIdentifier];
 
             if ((v53 & 1) == 0)
             {
@@ -6020,14 +6020,14 @@ LABEL_12:
     else
     {
       v47 = v84;
-      [v84 addObjectsFromArray:v8];
+      [v84 addObjectsFromArray:memoriesCopy];
     }
 
     v55 = v23[233];
     v56 = objc_opt_new();
     v57 = v26;
-    v58 = [v26 allKeys];
-    v59 = [v58 count];
+    allKeys = [v26 allKeys];
+    v59 = [allKeys count];
 
     if ([v47 count])
     {
@@ -6039,32 +6039,32 @@ LABEL_12:
         v63 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
-          v64 = [v62 localIdentifier];
-          v65 = [v62 pendingState];
-          v66 = [v62 isFavorite];
-          v67 = [v62 category];
+          localIdentifier2 = [v62 localIdentifier];
+          pendingState = [v62 pendingState];
+          isFavorite = [v62 isFavorite];
+          category = [v62 category];
           *buf = 138413058;
-          v98 = v64;
+          v98 = localIdentifier2;
           v99 = 1024;
-          *v100 = v65;
+          *v100 = pendingState;
           *&v100[4] = 1024;
-          *&v100[6] = v66;
+          *&v100[6] = isFavorite;
           v101 = 2048;
-          v102 = v67;
+          v102 = category;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "#PhotoMemory,memoryInfo,id,%@,pendingState,%hu,isFavorite,%d,category,%lu", buf, 0x22u);
         }
 
-        v68 = [(MOPhotoManager *)v88 _createEventFromPhotoMemory:v62];
+        v68 = [(MOPhotoManager *)selfCopy _createEventFromPhotoMemory:v62];
         if (v68)
         {
-          v69 = [v62 uuid];
-          v70 = [v83 objectForKeyedSubscript:v69];
+          uuid = [v62 uuid];
+          v70 = [v83 objectForKeyedSubscript:uuid];
 
-          [(MOPhotoManager *)v88 _setDynamicPropertiesForMemoryEvent:v68 fromMemory:v62 keyAsset:v70];
+          [(MOPhotoManager *)selfCopy _setDynamicPropertiesForMemoryEvent:v68 fromMemory:v62 keyAsset:v70];
           [v56 addObject:v68];
           v71 = objc_opt_new();
-          v72 = [v62 localIdentifier];
-          [v71 setObject:v72 forKey:@"photoMemoryID"];
+          localIdentifier3 = [v62 localIdentifier];
+          [v71 setObject:localIdentifier3 forKey:@"photoMemoryID"];
 
           v73 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
           [v71 setObject:v73 forKey:@"photoMemoryIDFirstPersistTime"];
@@ -6089,12 +6089,12 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "#PhotoMemory, create %lu new memory events", buf, 0xCu);
     }
 
-    [(MOPhotoManager *)v88 _persistPhotoMemoryPlistFile:v77 withData:v57];
-    v10 = v80;
+    [(MOPhotoManager *)selfCopy _persistPhotoMemoryPlistFile:v77 withData:v57];
+    handlerCopy = v80;
     v80[2](v80, v56, 0);
 
-    v9 = v81;
-    v8 = v82;
+    eventsCopy = v81;
+    memoriesCopy = v82;
     v16 = v78;
     v12 = v79;
   }
@@ -6108,16 +6108,16 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "#PhotoMemory,result of fetched memories contains no memory to create new events", buf, 2u);
     }
 
-    v10[2](v10, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 
 LABEL_13:
 }
 
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 photoMemories:(id)a4
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events photoMemories:(id)memories
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  memoriesCopy = memories;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -6125,9 +6125,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#PhotoMemory,invoking _findUnrehydratedEventsWithStoredEvents", buf, 2u);
   }
 
-  if ([v5 count])
+  if ([eventsCopy count])
   {
-    if ([v6 count])
+    if ([memoriesCopy count])
     {
       v8 = objc_opt_new();
       v9 = objc_alloc_init(NSMutableArray);
@@ -6135,8 +6135,8 @@ LABEL_13:
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v35 = v6;
-      v10 = v6;
+      v35 = memoriesCopy;
+      v10 = memoriesCopy;
       v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (v11)
       {
@@ -6151,8 +6151,8 @@ LABEL_13:
               objc_enumerationMutation(v10);
             }
 
-            v15 = [*(*(&v40 + 1) + 8 * i) localIdentifier];
-            [v8 addObject:v15];
+            localIdentifier = [*(*(&v40 + 1) + 8 * i) localIdentifier];
+            [v8 addObject:localIdentifier];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -6165,7 +6165,7 @@ LABEL_13:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v16 = v5;
+      v16 = eventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (v17)
       {
@@ -6181,8 +6181,8 @@ LABEL_13:
             }
 
             v21 = *(*(&v36 + 1) + 8 * j);
-            v22 = [v21 identifierFromProvider];
-            v23 = [v8 containsObject:v22];
+            identifierFromProvider = [v21 identifierFromProvider];
+            v23 = [v8 containsObject:identifierFromProvider];
 
             if ((v23 & 1) == 0)
             {
@@ -6206,7 +6206,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "#PhotoMemory,unrehydrated photo memories count, %lu", buf, 0xCu);
       }
 
-      v6 = v35;
+      memoriesCopy = v35;
     }
 
     else
@@ -6215,7 +6215,7 @@ LABEL_13:
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v27 = v5;
+      v27 = eventsCopy;
       v28 = [v27 countByEnumeratingWithState:&v44 objects:v52 count:16];
       if (v28)
       {
@@ -6290,14 +6290,14 @@ LABEL_13:
   return v4;
 }
 
-- (id)_readPhotoMemoryPlistFile:(id)a3
+- (id)_readPhotoMemoryPlistFile:(id)file
 {
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    path = [fileCopy path];
+    v6 = [v4 fileExistsAtPath:path];
 
     if (v6)
     {
@@ -6308,7 +6308,7 @@ LABEL_13:
       }
 
       v22 = 0;
-      v15 = [[NSDictionary alloc] initWithContentsOfURL:v3 error:&v22];
+      v15 = [[NSDictionary alloc] initWithContentsOfURL:fileCopy error:&v22];
       v16 = v22;
       if (v16)
       {
@@ -6348,13 +6348,13 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)_persistPhotoMemoryPlistFile:(id)a3 withData:(id)a4
+- (BOOL)_persistPhotoMemoryPlistFile:(id)file withData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  fileCopy = file;
+  if (fileCopy)
   {
     v17 = 0;
-    v6 = [NSPropertyListSerialization dataWithPropertyList:a4 format:100 options:0 error:&v17];
+    v6 = [NSPropertyListSerialization dataWithPropertyList:data format:100 options:0 error:&v17];
     v7 = v17;
     if (v6)
     {
@@ -6369,7 +6369,7 @@ LABEL_13:
     if (v8)
     {
       v16 = 0;
-      v12 = [v6 writeToURL:v5 options:805306369 error:&v16];
+      v12 = [v6 writeToURL:fileCopy options:805306369 error:&v16];
       v9 = v16;
       v13 = _mo_log_facility_get_os_log(&MOLogFacilityPhoto);
       v10 = v13;
@@ -6422,8 +6422,8 @@ LABEL_20:
 
 - (void)deletePhotoMemoryPlistFile
 {
-  v3 = [(MOPhotoManager *)self _getPhotoMemoryPlistFileURL];
-  [(MOPhotoManager *)self _deletePhotoMemoryPlistFile:v3];
+  _getPhotoMemoryPlistFileURL = [(MOPhotoManager *)self _getPhotoMemoryPlistFileURL];
+  [(MOPhotoManager *)self _deletePhotoMemoryPlistFile:_getPhotoMemoryPlistFileURL];
 }
 
 - (void)initWithUniverse:.cold.1()
@@ -6463,7 +6463,7 @@ LABEL_20:
 
 - (void)intializeEntityTaggingService
 {
-  v1 = [*a1 localizedDescription];
+  localizedDescription = [*self localizedDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_1_8();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

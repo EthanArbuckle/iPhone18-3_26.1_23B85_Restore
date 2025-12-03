@@ -12,8 +12,8 @@
   v5 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v6 = [v3 predicateWithFormat:@"((deletedFlag == %@) AND (body.content != nil) AND (isBookkeepingEntry == %@))", v4, v5];
 
-  v7 = [(NoteCollectionObject *)self predicateForNotes];
-  v12[0] = v7;
+  predicateForNotes = [(NoteCollectionObject *)self predicateForNotes];
+  v12[0] = predicateForNotes;
   v12[1] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 

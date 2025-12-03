@@ -1,8 +1,8 @@
 @interface ICNoteHTMLActivityItemSource
 - (ICNoteHTMLActivityItemSource)init;
-- (ICNoteHTMLActivityItemSource)initWithNote:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (ICNoteHTMLActivityItemSource)initWithNote:(id)note;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 @end
 
 @implementation ICNoteHTMLActivityItemSource
@@ -14,29 +14,29 @@
   return 0;
 }
 
-- (ICNoteHTMLActivityItemSource)initWithNote:(id)a3
+- (ICNoteHTMLActivityItemSource)initWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v8.receiver = self;
   v8.super_class = ICNoteHTMLActivityItemSource;
   v5 = [(ICNoteHTMLActivityItemSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICNoteHTMLActivityItemSource *)v5 setNote:v4];
+    [(ICNoteHTMLActivityItemSource *)v5 setNote:noteCopy];
   }
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDAA0]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDAA0]])
   {
-    v5 = [(ICNoteHTMLActivityItemSource *)self note];
-    v6 = [v5 htmlStringWithHTMLAttachments];
+    note = [(ICNoteHTMLActivityItemSource *)self note];
+    htmlStringWithHTMLAttachments = [note htmlStringWithHTMLAttachments];
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<html><body>%@</body></html>", v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<html><body>%@</body></html>", htmlStringWithHTMLAttachments];
   }
 
   else
@@ -47,25 +47,25 @@
   return v7;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__10;
   v17 = __Block_byref_object_dispose__10;
   v18 = 0;
-  v8 = [(ICNoteHTMLActivityItemSource *)self note];
-  v9 = [v8 managedObjectContext];
+  note = [(ICNoteHTMLActivityItemSource *)self note];
+  managedObjectContext = [note managedObjectContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__ICNoteHTMLActivityItemSource_activityViewController_subjectForActivityType___block_invoke;
   v12[3] = &unk_1E8468FA8;
   v12[4] = self;
   v12[5] = &v13;
-  [v9 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);

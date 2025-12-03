@@ -1,5 +1,5 @@
 @interface MapsDebugCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsSelected;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -12,14 +12,14 @@
 
 @implementation MapsDebugCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MapsDebugCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"MapsDebugCollectionViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MapsDebugCollectionViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"contentConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewListCell" hasInstanceMethod:@"trailingAccessoryConfigurations" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MapsDebugCollectionViewCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"MapsDebugCollectionViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MapsDebugCollectionViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"contentConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewListCell" hasInstanceMethod:@"trailingAccessoryConfigurations" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -27,12 +27,12 @@
   v3 = [(MapsDebugCollectionViewCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"textLabel, detailTextLabel"];
   if (!v3)
   {
-    v4 = [(MapsDebugCollectionViewCellAccessibility *)self _axContentConfiguration];
-    v5 = v4;
-    if (v4)
+    _axContentConfiguration = [(MapsDebugCollectionViewCellAccessibility *)self _axContentConfiguration];
+    v5 = _axContentConfiguration;
+    if (_axContentConfiguration)
     {
-      v6 = [v4 text];
-      v8 = [v5 secondaryText];
+      text = [_axContentConfiguration text];
+      secondaryText = [v5 secondaryText];
       v3 = __AXStringForVariables();
     }
 
@@ -47,34 +47,34 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+  _axSwitch = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
 
-  if (v3)
+  if (_axSwitch)
   {
-    v4 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
-    v5 = [v4 accessibilityValue];
+    _axSwitch2 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+    accessibilityValue = [_axSwitch2 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MapsDebugCollectionViewCellAccessibility;
-    v5 = [(MapsDebugCollectionViewCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(MapsDebugCollectionViewCellAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+  _axSwitch = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
 
-  if (v3)
+  if (_axSwitch)
   {
-    v4 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
-    v5 = [v4 accessibilityTraits];
+    _axSwitch2 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+    accessibilityTraits = [_axSwitch2 accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 
   else if ([(MapsDebugCollectionViewCellAccessibility *)self _axIsSelected])
@@ -96,16 +96,16 @@
 {
   v9.receiver = self;
   v9.super_class = MapsDebugCollectionViewCellAccessibility;
-  v3 = [(MapsDebugCollectionViewCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
-  v4 = [v3 mutableCopy];
+  _accessibilitySupplementaryFooterViews = [(MapsDebugCollectionViewCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+  v4 = [_accessibilitySupplementaryFooterViews mutableCopy];
 
-  v5 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
-  v6 = [v4 containsObject:v5];
+  _axSwitch = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+  v6 = [v4 containsObject:_axSwitch];
 
   if (v6)
   {
-    v7 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
-    [v4 removeObject:v7];
+    _axSwitch2 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+    [v4 removeObject:_axSwitch2];
   }
 
   return v4;
@@ -113,21 +113,21 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
-  v4 = v3;
-  if (v3)
+  _axSwitch = [(MapsDebugCollectionViewCellAccessibility *)self _axSwitch];
+  v4 = _axSwitch;
+  if (_axSwitch)
   {
-    v5 = [v3 accessibilityActivate];
+    accessibilityActivate = [_axSwitch accessibilityActivate];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MapsDebugCollectionViewCellAccessibility;
-    v5 = [(MapsDebugCollectionViewCellAccessibility *)&v8 accessibilityActivate];
+    accessibilityActivate = [(MapsDebugCollectionViewCellAccessibility *)&v8 accessibilityActivate];
   }
 
-  v6 = v5;
+  v6 = accessibilityActivate;
 
   return v6;
 }

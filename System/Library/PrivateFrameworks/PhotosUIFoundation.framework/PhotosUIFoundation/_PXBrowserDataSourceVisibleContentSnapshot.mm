@@ -1,5 +1,5 @@
 @interface _PXBrowserDataSourceVisibleContentSnapshot
-- (_PXBrowserDataSourceVisibleContentSnapshot)initWithIndexPaths:(id)a3 dataSource:(id)a4 dateIntervalGranularity:(unint64_t)a5 dateType:(unint64_t)a6;
+- (_PXBrowserDataSourceVisibleContentSnapshot)initWithIndexPaths:(id)paths dataSource:(id)source dateIntervalGranularity:(unint64_t)granularity dateType:(unint64_t)type;
 - (id)dateInterval;
 @end
 
@@ -8,13 +8,13 @@
 - (id)dateInterval
 {
   v27 = *MEMORY[0x1E69E9840];
-  v19 = [(_PXBrowserDataSourceVisibleContentSnapshot *)self dataSource];
+  dataSource = [(_PXBrowserDataSourceVisibleContentSnapshot *)self dataSource];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(_PXBrowserDataSourceVisibleContentSnapshot *)self indexPaths];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  indexPaths = [(_PXBrowserDataSourceVisibleContentSnapshot *)self indexPaths];
+  v4 = [indexPaths countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v4)
   {
 
@@ -30,7 +30,7 @@
   v7 = 0;
   v8 = 0;
   v9 = *v23;
-  obj = v3;
+  obj = indexPaths;
   do
   {
     v10 = 0;
@@ -43,7 +43,7 @@
         objc_enumerationMutation(obj);
       }
 
-      v13 = [v19 displayAssetAtIndexPath:{*(*(&v22 + 1) + 8 * v10), obj}];
+      v13 = [dataSource displayAssetAtIndexPath:{*(*(&v22 + 1) + 8 * v10), obj}];
       if ([(_PXBrowserDataSourceVisibleContentSnapshot *)self dateType])
       {
         if ([(_PXBrowserDataSourceVisibleContentSnapshot *)self dateType]!= 1)
@@ -51,15 +51,15 @@
           goto LABEL_11;
         }
 
-        v14 = [v13 importDate];
+        importDate = [v13 importDate];
       }
 
       else
       {
-        v14 = [v13 creationDate];
+        importDate = [v13 creationDate];
       }
 
-      v15 = v14;
+      v15 = importDate;
 
       v8 = v15;
 LABEL_11:
@@ -91,21 +91,21 @@ LABEL_17:
   return v16;
 }
 
-- (_PXBrowserDataSourceVisibleContentSnapshot)initWithIndexPaths:(id)a3 dataSource:(id)a4 dateIntervalGranularity:(unint64_t)a5 dateType:(unint64_t)a6
+- (_PXBrowserDataSourceVisibleContentSnapshot)initWithIndexPaths:(id)paths dataSource:(id)source dateIntervalGranularity:(unint64_t)granularity dateType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
+  pathsCopy = paths;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = _PXBrowserDataSourceVisibleContentSnapshot;
-  v12 = [(PXBrowserVisibleContentSnapshot *)&v16 initWithDateIntervalGranularity:a5];
+  v12 = [(PXBrowserVisibleContentSnapshot *)&v16 initWithDateIntervalGranularity:granularity];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [pathsCopy copy];
     indexPaths = v12->_indexPaths;
     v12->_indexPaths = v13;
 
-    objc_storeStrong(&v12->_dataSource, a4);
-    v12->_dateType = a6;
+    objc_storeStrong(&v12->_dataSource, source);
+    v12->_dateType = type;
   }
 
   return v12;

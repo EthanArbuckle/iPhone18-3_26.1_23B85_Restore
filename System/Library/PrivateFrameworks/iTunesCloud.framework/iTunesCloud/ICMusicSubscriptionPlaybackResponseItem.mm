@@ -1,22 +1,22 @@
 @interface ICMusicSubscriptionPlaybackResponseItem
-- (ICMusicSubscriptionPlaybackResponseItem)initWithItemResponseDictionary:(id)a3 urlBag:(id)a4;
+- (ICMusicSubscriptionPlaybackResponseItem)initWithItemResponseDictionary:(id)dictionary urlBag:(id)bag;
 - (ICStoreHLSAssetInfo)hlsAsset;
 - (NSArray)fileAssets;
-- (id)fileAssetWithFlavorType:(int64_t)a3;
+- (id)fileAssetWithFlavorType:(int64_t)type;
 - (int64_t)storeAdamID;
 @end
 
 @implementation ICMusicSubscriptionPlaybackResponseItem
 
-- (id)fileAssetWithFlavorType:(int64_t)a3
+- (id)fileAssetWithFlavorType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ICMusicSubscriptionPlaybackResponseItem *)self fileAssets];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  fileAssets = [(ICMusicSubscriptionPlaybackResponseItem *)self fileAssets];
+  v5 = [fileAssets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,18 +27,18 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fileAssets);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 flavorType] == a3)
+        if ([v9 flavorType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [fileAssets countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -59,71 +59,71 @@ LABEL_11:
   v2 = [(NSDictionary *)self->_itemResponseDictionary objectForKey:@"songId"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (ICStoreHLSAssetInfo)hlsAsset
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = [[ICStoreHLSAssetInfo alloc] initWithItemResponseDictionary:self->_itemResponseDictionary];
-  v4 = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
-  if (!v4 || (v5 = v4, [(ICStoreHLSAssetInfo *)v3 keyCertificateURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  keyServerURL = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
+  if (!keyServerURL || (v5 = keyServerURL, [(ICStoreHLSAssetInfo *)v3 keyCertificateURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    v7 = [(ICStoreHLSAssetInfo *)v3 keyServerProtocolType];
-    v8 = v7;
-    if (v7 == @"simplified")
+    keyServerProtocolType = [(ICStoreHLSAssetInfo *)v3 keyServerProtocolType];
+    v8 = keyServerProtocolType;
+    if (keyServerProtocolType == @"simplified")
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [(__CFString *)v7 isEqual:@"simplified"];
+      v9 = [(__CFString *)keyServerProtocolType isEqual:@"simplified"];
     }
 
-    v10 = [(ICURLBag *)self->_urlBag enhancedAudioConfiguration];
-    v11 = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
+    enhancedAudioConfiguration = [(ICURLBag *)self->_urlBag enhancedAudioConfiguration];
+    keyServerURL2 = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
 
-    if (!v11)
+    if (!keyServerURL2)
     {
-      if (v9 && ([v10 keyServerURL], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v9 && ([enhancedAudioConfiguration keyServerURL], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v13 = v12;
-        v14 = [v10 keyServerURL];
+        keyServerURL3 = [enhancedAudioConfiguration keyServerURL];
       }
 
       else
       {
-        v14 = [(ICURLBag *)self->_urlBag urlForBagKey:@"fps-request"];
+        keyServerURL3 = [(ICURLBag *)self->_urlBag urlForBagKey:@"fps-request"];
       }
 
-      [(ICStoreHLSAssetInfo *)v3 setKeyServerURL:v14];
+      [(ICStoreHLSAssetInfo *)v3 setKeyServerURL:keyServerURL3];
     }
 
-    v15 = [(ICStoreHLSAssetInfo *)v3 keyCertificateURL];
+    keyCertificateURL = [(ICStoreHLSAssetInfo *)v3 keyCertificateURL];
 
-    if (!v15)
+    if (!keyCertificateURL)
     {
-      if (v9 && ([v10 certificateURL], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v9 && ([enhancedAudioConfiguration certificateURL], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v17 = v16;
-        v18 = [v10 certificateURL];
+        certificateURL = [enhancedAudioConfiguration certificateURL];
       }
 
       else
       {
-        v18 = [(ICURLBag *)self->_urlBag urlForBagKey:@"fps-cert"];
+        certificateURL = [(ICURLBag *)self->_urlBag urlForBagKey:@"fps-cert"];
       }
 
-      [(ICStoreHLSAssetInfo *)v3 setKeyCertificateURL:v18];
+      [(ICStoreHLSAssetInfo *)v3 setKeyCertificateURL:certificateURL];
     }
   }
 
@@ -135,16 +135,16 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v20 = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
-  if (v20)
+  keyServerURL4 = [(ICStoreHLSAssetInfo *)v3 keyServerURL];
+  if (keyServerURL4)
   {
   }
 
   else
   {
-    v21 = [(ICStoreHLSAssetInfo *)v3 keyCertificateURL];
+    keyCertificateURL2 = [(ICStoreHLSAssetInfo *)v3 keyCertificateURL];
 
-    if (!v21)
+    if (!keyCertificateURL2)
     {
       goto LABEL_27;
     }
@@ -155,7 +155,7 @@ LABEL_11:
   {
     itemResponseDictionary = self->_itemResponseDictionary;
     v25 = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
     v28 = itemResponseDictionary;
     _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_ERROR, "%{public}@ Payload contains HLS asset without an adam ID, which is unexpected: %{public}@", &v25, 0x16u);
@@ -181,7 +181,7 @@ LABEL_27:
     if (v5)
     {
       v6 = v5;
-      v7 = 0;
+      assetURL = 0;
       v8 = *v15;
       do
       {
@@ -200,12 +200,12 @@ LABEL_27:
             [(ICStoreFileAssetInfo *)v12 setExpectedProtectionType:3];
             if (v12)
             {
-              if (!v7)
+              if (!assetURL)
               {
-                v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[ICStoreFileAssetInfo count](v4, "count")}];
+                assetURL = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[ICStoreFileAssetInfo count](v4, "count")}];
               }
 
-              [v7 addObject:v12];
+              [assetURL addObject:v12];
             }
           }
         }
@@ -218,37 +218,37 @@ LABEL_27:
 
     else
     {
-      v7 = 0;
+      assetURL = 0;
     }
   }
 
   else
   {
     v4 = [[ICStoreFileAssetInfo alloc] initWithFileAssetResponseDictionary:self->_itemResponseDictionary];
-    v7 = [(ICStoreFileAssetInfo *)v4 assetURL];
+    assetURL = [(ICStoreFileAssetInfo *)v4 assetURL];
 
-    if (v7)
+    if (assetURL)
     {
       v18 = v4;
-      v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
+      assetURL = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     }
   }
 
-  return v7;
+  return assetURL;
 }
 
-- (ICMusicSubscriptionPlaybackResponseItem)initWithItemResponseDictionary:(id)a3 urlBag:(id)a4
+- (ICMusicSubscriptionPlaybackResponseItem)initWithItemResponseDictionary:(id)dictionary urlBag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bagCopy = bag;
   v8 = [(ICMusicSubscriptionPlaybackResponseItem *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dictionaryCopy copy];
     itemResponseDictionary = v8->_itemResponseDictionary;
     v8->_itemResponseDictionary = v9;
 
-    objc_storeStrong(&v8->_urlBag, a4);
+    objc_storeStrong(&v8->_urlBag, bag);
   }
 
   return v8;

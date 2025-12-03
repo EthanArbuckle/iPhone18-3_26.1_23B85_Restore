@@ -1,23 +1,23 @@
 @interface BMXPCActivity
-- (BMXPCActivity)initWithActivity:(id)a3 activityName:(id)a4;
+- (BMXPCActivity)initWithActivity:(id)activity activityName:(id)name;
 - (BOOL)didDefer;
 - (void)didDefer;
 @end
 
 @implementation BMXPCActivity
 
-- (BMXPCActivity)initWithActivity:(id)a3 activityName:(id)a4
+- (BMXPCActivity)initWithActivity:(id)activity activityName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = BMXPCActivity;
   v9 = [(BMXPCActivity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activity, a3);
-    objc_storeStrong(&v10->_activityName, a4);
+    objc_storeStrong(&v9->_activity, activity);
+    objc_storeStrong(&v10->_activityName, name);
   }
 
   return v10;
@@ -41,10 +41,10 @@ LABEL_4:
 
   if ([(BMXPCActivity *)self shouldDefer])
   {
-    v5 = [(BMXPCActivity *)self _setDefer];
+    _setDefer = [(BMXPCActivity *)self _setDefer];
     v6 = __biome_log_for_category(0);
     v3 = v6;
-    if (v5)
+    if (_setDefer)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -85,7 +85,7 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
-  v4 = *(a1 + 16);
+  v4 = *(self + 16);
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_1_3(&dword_1AC15D000, v5, v6, "%@ with name: %@ has already been deferred, didDefer returning YES", v7, v8, v9, v10, v12);
 

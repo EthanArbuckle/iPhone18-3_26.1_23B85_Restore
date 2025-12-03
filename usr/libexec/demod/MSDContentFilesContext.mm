@@ -1,7 +1,7 @@
 @interface MSDContentFilesContext
-+ (id)defaultContextForBackupItem:(id)a3;
-+ (id)defaultContextForContainerizedAppDataItem:(id)a3;
-+ (id)defaultContextForNonContainerizedAppDataItem:(id)a3;
++ (id)defaultContextForBackupItem:(id)item;
++ (id)defaultContextForContainerizedAppDataItem:(id)item;
++ (id)defaultContextForNonContainerizedAppDataItem:(id)item;
 + (void)initialize;
 - (_NSRange)contentBeingInstalled;
 - (id)secondaryStagingRootPath;
@@ -15,7 +15,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = +[NSMutableSet set];
     v5 = qword_1001A5840;
@@ -25,11 +25,11 @@
   }
 }
 
-+ (id)defaultContextForBackupItem:(id)a3
++ (id)defaultContextForBackupItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MSDContentFilesContext);
-  [(MSDOperationContext *)v4 setIdentifier:v3];
+  [(MSDOperationContext *)v4 setIdentifier:itemCopy];
 
   [(MSDContentFilesContext *)v4 setContentRootPath:@"/"];
   [(MSDContentFilesContext *)v4 setContainerType:@"BackupData"];
@@ -38,11 +38,11 @@
   return v4;
 }
 
-+ (id)defaultContextForContainerizedAppDataItem:(id)a3
++ (id)defaultContextForContainerizedAppDataItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MSDContentFilesContext);
-  [(MSDOperationContext *)v4 setIdentifier:v3];
+  [(MSDOperationContext *)v4 setIdentifier:itemCopy];
 
   [(MSDContentFilesContext *)v4 setContentRootPath:0];
   [(MSDContentFilesContext *)v4 setContainerized:1];
@@ -51,11 +51,11 @@
   return v4;
 }
 
-+ (id)defaultContextForNonContainerizedAppDataItem:(id)a3
++ (id)defaultContextForNonContainerizedAppDataItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MSDContentFilesContext);
-  [(MSDOperationContext *)v4 setIdentifier:v3];
+  [(MSDOperationContext *)v4 setIdentifier:itemCopy];
 
   [(MSDContentFilesContext *)v4 setContentRootPath:@"/"];
   [(MSDContentFilesContext *)v4 setContainerized:0];
@@ -69,9 +69,9 @@
   uniqueName = self->_uniqueName;
   if (!uniqueName)
   {
-    v4 = [(MSDContentFilesContext *)self containerType];
-    v5 = [(MSDOperationContext *)self identifier];
-    v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+    containerType = [(MSDContentFilesContext *)self containerType];
+    identifier = [(MSDOperationContext *)self identifier];
+    v6 = [NSString stringWithFormat:@"%@.%@", containerType, identifier];
     v7 = self->_uniqueName;
     self->_uniqueName = v6;
 
@@ -87,17 +87,17 @@
   {
     if (+[MSDOperationContext downloadOnly])
     {
-      v3 = [(MSDContentFilesContext *)self uniqueName];
+      uniqueName = [(MSDContentFilesContext *)self uniqueName];
       v4 = @"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer/MSD_secondary_staging";
     }
 
     else
     {
-      v3 = [(MSDContentFilesContext *)self appIdentifier];
+      uniqueName = [(MSDContentFilesContext *)self appIdentifier];
       v4 = @"/var/MSDWorkContainer/MSD_secondary_staging";
     }
 
-    v5 = [(__CFString *)v4 stringByAppendingPathComponent:v3];
+    v5 = [(__CFString *)v4 stringByAppendingPathComponent:uniqueName];
     secondaryStagingRootPath = self->_secondaryStagingRootPath;
     self->_secondaryStagingRootPath = v5;
   }
@@ -112,8 +112,8 @@
   stashedStagingRootPath = self->_stashedStagingRootPath;
   if (!stashedStagingRootPath)
   {
-    v4 = [(MSDContentFilesContext *)self uniqueName];
-    v5 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer/MSD_stashed_staging" stringByAppendingPathComponent:v4];
+    uniqueName = [(MSDContentFilesContext *)self uniqueName];
+    v5 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer/MSD_stashed_staging" stringByAppendingPathComponent:uniqueName];
     v6 = self->_stashedStagingRootPath;
     self->_stashedStagingRootPath = v5;
 
